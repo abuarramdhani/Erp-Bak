@@ -71,6 +71,9 @@ class C_trackingInvoice extends CI_Controller{
 		if ($cek_login[0]['unit_name'] == 'PEMBELIAN SUPPLIER' OR $cek_login[0]['unit_name'] == 'PENGEMBANGAN PEMBELIAN' OR $cek_login[0]['unit_name'] == 'PEMBELIAN SUBKONTRAKTOR') {
 			$getVendors .= "WHERE source = 'PEMBELIAN SUPPLIER' OR source = 'PENGEMBANGAN PEMBELIAN' OR source = 'PEMBELIAN SUBKONTRAKTOR'";
 			$nama_vendor = $this->M_trackingInvoice->getVendorName($getVendors);
+		} elseif($cek_login[0]['unit_name'] == 'INFORMATION & COMMUNICATION TECHNOLOGY'){
+			$getVendors .= "WHERE source = 'INFORMATION & COMMUNICATION TECHNOLOGY'";
+			$nama_vendor = $this->M_trackingInvoice->getVendorName($getVendors);
 		} else{
 			$nama_vendor = $this->M_trackingInvoice->getVendorName($getVendors);
 		}
@@ -126,6 +129,9 @@ class C_trackingInvoice extends CI_Controller{
 
 		if ($cek_login[0]['unit_name'] == 'PEMBELIAN SUPPLIER' OR $cek_login[0]['unit_name'] == 'PENGEMBANGAN PEMBELIAN' OR $cek_login[0]['unit_name'] == 'PEMBELIAN SUBKONTRAKTOR') {
 			$param_akses .= "AND ami.source = 'PEMBELIAN SUPPLIER' OR ami.source = 'PENGEMBANGAN PEMBELIAN' OR ami.source = 'PEMBELIAN SUBKONTRAKTOR'";
+			$tabel = $this->M_trackingInvoice->searchMonitoringInvoice($param_inv,$param_akses);
+		} elseif($cek_login[0]['unit_name'] == 'INFORMATION & COMMUNICATION TECHNOLOGY'){
+			$param_akses .= "AND ami.source = 'INFORMATION & COMMUNICATION TECHNOLOGY'";
 			$tabel = $this->M_trackingInvoice->searchMonitoringInvoice($param_inv,$param_akses);
 		} else{
 			$tabel = $this->M_trackingInvoice->searchMonitoringInvoice($param_inv,$param_akses);

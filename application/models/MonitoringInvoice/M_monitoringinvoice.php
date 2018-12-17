@@ -200,7 +200,7 @@ SELECT DISTINCT pol.po_line_id line_id,
     }
 
 
-    public function showInvoice(){
+    public function showInvoice($source){
         $oracle = $this->load->database('oracle', true);
         $query = "SELECT   ami.invoice_number invoice_number, ami.invoice_date invoice_date,
                          ami.tax_invoice_number tax_invoice_number,
@@ -237,6 +237,7 @@ SELECT DISTINCT pol.po_line_id line_id,
                       GROUP BY aipo.invoice_id) aaipo
                WHERE aaipo.invoice_id = ami.invoice_id
                  AND ami.batch_number IS NULL
+                 $source
             ORDER BY ami.last_admin_date
                 ";
         $runQuery = $oracle->query($query);
@@ -403,13 +404,14 @@ SELECT DISTINCT pol.po_line_id line_id,
         return $runQuery->result_array();
     }
 
-    public function showListSubmitted(){
+    public function showListSubmitted($source){
         $oracle = $this->load->database('oracle',true);
         $sql = "SELECT distinct batch_number batch_number, to_date(last_status_purchasing_date) submited_date, last_purchasing_invoice_status last_purchasing_invoice_status, last_finance_invoice_status last_finance_invoice_status
                 FROM khs_ap_monitoring_invoice
                 WHERE batch_number is not null
-                and last_purchasing_invoice_status in(1,2)
-                or last_finance_invoice_status = 2
+                and (last_purchasing_invoice_status in(1,2)
+                or last_finance_invoice_status = 2)
+                $source
                 ORDER BY batch_number desc";
         $query = $oracle->query($sql);
         return $query->result_array();
@@ -810,7 +812,7 @@ SELECT DISTINCT pol.po_line_id line_id,
         return $query->result_array();
     }
 
-   public function invoicereject()
+   public function invoicereject($source_login)
     {
         $oracle = $this->load->database("oracle",TRUE);
         $query = "SELECT   ami.invoice_number invoice_number, ami.invoice_date invoice_date,
@@ -856,6 +858,7 @@ SELECT DISTINCT pol.po_line_id line_id,
                  AND (last_purchasing_invoice_status = 3
                       OR last_finance_invoice_status = 3
                      )
+                 $source_login
             ORDER BY last_status_purchasing_date";
         $run = $oracle->query($query);
         return $run->result_array();

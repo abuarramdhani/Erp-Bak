@@ -7,6 +7,17 @@ class M_monitoringakuntansi extends CI_Model {
 		$this->load->library('encrypt');
 	}
 
+  public function checkLoginInAkuntansi($employee_code)
+    {
+        $oracle = $this->load->database('erp_db',true);
+        $query = "select eea.employee_code, es.unit_name
+                    from er.er_employee_all eea, er.er_section es
+                    where eea.section_code = es.section_code
+                    and eea.employee_code = '$employee_code' ";
+        $runQuery = $oracle->query($query);
+        return $runQuery->result_array();
+    }
+
 	public function unprocessedInvoice($batchNumber)
 	{
 		$erp_db = $this->load->database('oracle',true);
@@ -200,11 +211,12 @@ class M_monitoringakuntansi extends CI_Model {
         return $runQuery->result_array();
 	}
 
-	public function showFinanceNumber(){
+	public function showFinanceNumber($login){
 		$erp_db = $this->load->database('oracle',true);
         $sql = "SELECT batch_number batch_number, to_date(last_status_purchasing_date) submited_date
         FROM khs_ap_monitoring_invoice
         WHERE last_finance_invoice_status = 1
+        $login
         GROUP BY batch_number, to_date(last_status_purchasing_date) 
         ORDER BY submited_date";
 		$run = $erp_db->query($sql);
@@ -269,7 +281,7 @@ class M_monitoringakuntansi extends CI_Model {
         return $runQuery->result_array();
     }
 
-    public function showFinishBatch(){
+    public function showFinishBatch($login){
         $erp_db = $this->load->database('oracle',true);
         $sql = "SELECT DISTINCT a.purchasing_batch_number, 
                                 a.batch_number, 
@@ -286,6 +298,7 @@ class M_monitoringakuntansi extends CI_Model {
                                   AND last_finance_invoice_status = 2)jml_invoice
                 FROM khs_ap_monitoring_invoice a
                 WHERE last_finance_invoice_status = 2
+                $login
                 ORDER BY submited_date";
         $run = $erp_db->query($sql);
         return $run->result_array();

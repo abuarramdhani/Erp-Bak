@@ -7,7 +7,18 @@ class M_kasiepembelian extends CI_Model {
 		$this->load->library('encrypt');
 	}
 
-	public function showListSubmittedForChecking(){
+  public function checkLoginInKasiePembelian($employee_code)
+    {
+        $oracle = $this->load->database('erp_db',true);
+        $query = "select eea.employee_code, es.unit_name
+                    from er.er_employee_all eea, er.er_section es
+                    where eea.section_code = es.section_code
+                    and eea.employee_code = '$employee_code' ";
+        $runQuery = $oracle->query($query);
+        return $runQuery->result_array();
+    }
+
+	public function showListSubmittedForChecking($login){
 		$erp_db = $this->load->database('oracle',true);
 		$sql = "SELECT distinct batch_number batch_number, to_date(last_status_purchasing_date) submited_date,
                 last_purchasing_invoice_status, last_finance_invoice_status
@@ -15,6 +26,7 @@ class M_kasiepembelian extends CI_Model {
                 WHERE (last_purchasing_invoice_status = 1
                 OR last_purchasing_invoice_status = 2)
                 AND LAST_FINANCE_INVOICE_STATUS=0
+                $login
                 ORDER BY submited_date";
 		$run = $erp_db->query($sql);
 		return $run->result_array();
@@ -186,7 +198,7 @@ class M_kasiepembelian extends CI_Model {
         return $runQuery->result_array();
     }
 
-    public function showFinishBatch(){
+    public function showFinishBatch($login){
         $erp_db = $this->load->database('oracle',true);
         $sql = "SELECT DISTINCT a.batch_number, 
                                 a.finance_batch_number, 
@@ -203,6 +215,7 @@ class M_kasiepembelian extends CI_Model {
                 FROM khs_ap_monitoring_invoice a
                 WHERE a.batch_number IS NOT NULL
                 AND (a.last_finance_invoice_status = 1 and a.last_purchasing_invoice_status = 2)
+                $login
                 ORDER BY submited_date";
         $run = $erp_db->query($sql);
         return $run->result_array();

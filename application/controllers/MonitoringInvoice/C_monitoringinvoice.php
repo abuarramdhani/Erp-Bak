@@ -44,7 +44,19 @@ class C_monitoringinvoice extends CI_Controller{
 		$data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id);
 		$data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id);
 
-		$invoice = $this->M_monitoringinvoice->showInvoice();
+		$noinduk = $this->session->userdata['user'];
+		$cek_login = $this->M_monitoringinvoice->checkSourceLogin($noinduk);
+		$source_login = '';
+
+		if ($cek_login[0]['unit_name'] == 'PEMBELIAN SUPPLIER' OR $cek_login[0]['unit_name'] == 'PENGEMBANGAN PEMBELIAN') {
+			$source_login .= "AND source = 'PEMBELIAN SUPPLIER' OR source = 'PENGEMBANGAN PEMBELIAN'";
+		}elseif ($cek_login[0]['unit_name'] == 'PEMBELIAN SUBKONTRAKTOR'){
+			$source_login .= "AND source = 'PEMBELIAN SUBKONTRAKTOR'";
+		}elseif ($cek_login[0]['unit_name'] == 'INFORMATION & COMMUNICATION TECHNOLOGY') {
+			$source_login .= "AND source = 'INFORMATION & COMMUNICATION TECHNOLOGY'";
+		}
+
+		$invoice = $this->M_monitoringinvoice->showInvoice($source_login);
 		$no = 0;
 		$keputusan = array();
 		foreach ($invoice as $inv ) {
@@ -128,7 +140,19 @@ class C_monitoringinvoice extends CI_Controller{
 		$data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id);
 		$data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id); 
 
-		$listBatch = $this->M_monitoringinvoice->showListSubmitted();
+		$noinduk = $this->session->userdata['user'];
+		$cek_login = $this->M_monitoringinvoice->checkSourceLogin($noinduk);
+		$source_login = '';
+
+		if ($cek_login[0]['unit_name'] == 'PEMBELIAN SUPPLIER' OR $cek_login[0]['unit_name'] == 'PENGEMBANGAN PEMBELIAN') {
+			$source_login .= "AND source = 'PEMBELIAN SUPPLIER' OR source = 'PENGEMBANGAN PEMBELIAN'";
+		}elseif ($cek_login[0]['unit_name'] == 'PEMBELIAN SUBKONTRAKTOR'){
+			$source_login .= "AND source = 'PEMBELIAN SUBKONTRAKTOR'";
+		}elseif ($cek_login[0]['unit_name'] == 'INFORMATION & COMMUNICATION TECHNOLOGY') {
+			$source_login .= "AND source = 'INFORMATION & COMMUNICATION TECHNOLOGY'";
+		}
+		
+		$listBatch = $this->M_monitoringinvoice->showListSubmitted($source_login);
 		
 		$no = 0;
 		foreach ($listBatch as $key => $value) {
@@ -252,6 +276,8 @@ class C_monitoringinvoice extends CI_Controller{
 			$source_login = 'PENGEMBANGAN PEMBELIAN';
 		} elseif ($cek_login[0]['unit_name'] == 'PEMBELIAN SUBKONTRAKTOR'){
 			$source_login = 'PEMBELIAN SUBKONTRAKTOR';
+		} elseif ($cek_login[0]['unit_name'] == 'INFORMATION & COMMUNICATION TECHNOLOGY') {
+			$source_login = 'INFORMATION & COMMUNICATION TECHNOLOGY';
 		}
 
 		//$amount = str_replace(',', '', $invoice_amount);
@@ -384,12 +410,12 @@ class C_monitoringinvoice extends CI_Controller{
 			}else{
 				$batch_number = 'SUB'.'-'.$invoice_category.'-'.$date;
 			}
+		} else{
+			if($this->form_validation->run() == FALSE){
+			  echo '<script> alert("'.str_replace(array('\r','\n'), '\n', validation_errors()).'"); </script>';
+			  redirect('AccountPayables/MonitoringInvoice/Invoice');
+			}
 		}
-
-		// echo "<pre>";
-		// print_r($_POST);
-		// print_r($batch_number);
-		// exit();
 
 		foreach ($array2 as $po => $value) {
 			$checkList = $this->M_monitoringinvoice->getInvoiceById($value);
@@ -709,7 +735,19 @@ class C_monitoringinvoice extends CI_Controller{
 		$data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id);
 		$data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id);
 
-		$invoice = $this->M_monitoringinvoice->invoicereject();
+		$noinduk = $this->session->userdata['user'];
+		$cek_login = $this->M_monitoringinvoice->checkSourceLogin($noinduk);
+		$source_login = '';
+
+		if ($cek_login[0]['unit_name'] == 'PEMBELIAN SUPPLIER' OR $cek_login[0]['unit_name'] == 'PENGEMBANGAN PEMBELIAN') {
+			$source_login .= "AND source = 'PEMBELIAN SUPPLIER' OR source = 'PENGEMBANGAN PEMBELIAN'";
+		}elseif ($cek_login[0]['unit_name'] == 'PEMBELIAN SUBKONTRAKTOR'){
+			$source_login .= "AND source = 'PEMBELIAN SUBKONTRAKTOR'";
+		}elseif ($cek_login[0]['unit_name'] == 'INFORMATION & COMMUNICATION TECHNOLOGY') {
+			$source_login .= "AND source = 'INFORMATION & COMMUNICATION TECHNOLOGY'";
+		}
+
+		$invoice = $this->M_monitoringinvoice->invoicereject($source_login);
 		$no = 0;
 		$keputusan = array();
 		foreach ($invoice as $inv ) {

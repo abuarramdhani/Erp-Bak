@@ -44,7 +44,19 @@ class C_monitoringakuntansi extends CI_Controller{
 		$data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id);
 		$data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id);
 
-		$listBatch = $this->M_monitoringakuntansi->showFinanceNumber();
+		$noinduk = $this->session->userdata['user'];
+		$cek_login = $this->M_monitoringakuntansi->checkLoginInAkuntansi($noinduk);
+		$source_login = '';
+
+		if ($cek_login[0]['unit_name'] == 'PEMBELIAN SUPPLIER' OR $cek_login[0]['unit_name'] == 'PENGEMBANGAN PEMBELIAN') {
+			$source_login .= "AND source = 'PEMBELIAN SUPPLIER' OR source = 'PENGEMBANGAN PEMBELIAN'";
+		}elseif ($cek_login[0]['unit_name'] == 'PEMBELIAN SUBKONTRAKTOR'){
+			$source_login .= "AND source = 'PEMBELIAN SUBKONTRAKTOR'";
+		}elseif ($cek_login[0]['unit_name'] == 'INFORMATION & COMMUNICATION TECHNOLOGY') {
+			$source_login .= "AND source = 'INFORMATION & COMMUNICATION TECHNOLOGY'";
+		}
+
+		$listBatch = $this->M_monitoringakuntansi->showFinanceNumber($source_login);
 		foreach($listBatch as $key => $value){
 			$batchNumber = $value['BATCH_NUMBER'];
 			$jmlInv = $this->M_monitoringakuntansi->jumlahInvoice($batchNumber);
@@ -268,7 +280,19 @@ class C_monitoringakuntansi extends CI_Controller{
 		$data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id);
 		$data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id);
 
-		$listBatch = $this->M_monitoringakuntansi->showFinishBatch();
+		$noinduk = $this->session->userdata['user'];
+		$cek_login = $this->M_monitoringakuntansi->checkLoginInAkuntansi($noinduk);
+		$source_login = '';
+
+		if ($cek_login[0]['unit_name'] == 'PEMBELIAN SUPPLIER' OR $cek_login[0]['unit_name'] == 'PENGEMBANGAN PEMBELIAN') {
+			$source_login .= "AND source = 'PEMBELIAN SUPPLIER' OR source = 'PENGEMBANGAN PEMBELIAN'";
+		}elseif ($cek_login[0]['unit_name'] == 'PEMBELIAN SUBKONTRAKTOR'){
+			$source_login .= "AND source = 'PEMBELIAN SUBKONTRAKTOR'";
+		}elseif ($cek_login[0]['unit_name'] == 'INFORMATION & COMMUNICATION TECHNOLOGY') {
+			$source_login .= "AND source = 'INFORMATION & COMMUNICATION TECHNOLOGY'";
+		}
+
+		$listBatch = $this->M_monitoringakuntansi->showFinishBatch($source_login);
 
 		foreach($listBatch as $key => $lb){
 			$detail = $this->M_monitoringakuntansi->detailBatch($lb['BATCH_NUMBER']);

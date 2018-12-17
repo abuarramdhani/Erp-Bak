@@ -43,8 +43,20 @@ class C_kasiepembelian extends CI_Controller{
 		$data['UserMenu'] = $this->M_user->getUserMenu($user_id,$this->session->responsibility_id);
 		$data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id);
 		$data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id);
+
+		$noinduk = $this->session->userdata['user'];
+		$cek_login = $this->M_kasiepembelian->checkLoginInKasiePembelian($noinduk);
+		$login_kasie_pembelian = '';
+
+		if ($cek_login[0]['unit_name'] == 'PEMBELIAN SUPPLIER' OR $cek_login[0]['unit_name'] == 'PENGEMBANGAN PEMBELIAN') {
+			$login_kasie_pembelian .= "AND source = 'PEMBELIAN SUPPLIER' OR source = 'PENGEMBANGAN PEMBELIAN'";
+		}elseif ($cek_login[0]['unit_name'] == 'PEMBELIAN SUBKONTRAKTOR'){
+			$login_kasie_pembelian .= "AND source = 'PEMBELIAN SUBKONTRAKTOR'";
+		}elseif ($cek_login[0]['unit_name'] == 'INFORMATION & COMMUNICATION TECHNOLOGY') {
+			$login_kasie_pembelian .= "AND source = 'INFORMATION & COMMUNICATION TECHNOLOGY'";
+		}
 		
-		$listBatch = $this->M_kasiepembelian->showListSubmittedForChecking();
+		$listBatch = $this->M_kasiepembelian->showListSubmittedForChecking($login_kasie_pembelian);
 
 		$no = 0;
 		foreach($listBatch as $lb){
@@ -147,6 +159,19 @@ class C_kasiepembelian extends CI_Controller{
 		redirect('AccountPayables/MonitoringInvoice/InvoiceKasie/batchDetailPembelian/'.$nomorbatch);
 	}
 
+	public function saveInvoicebyKasiePurchasing(){
+		$invoice_number = $this->input->post('invoice_number');
+		$invoice_date = $this->input->post('invoice_date');
+		$invoice_amount = $this->input->post('invoice_amount');
+		$tax_invoice_number = $this->input->post('tax_invoice_number');
+		$invoice_category = $this->input->post('invoice_category');
+		$nominal_dpp = $this->input->post('nominal_dpp');
+		$info = $this->input->post('info');
+
+		echo "<pre>";
+		print_r($_POST);
+	}
+
 	public function invoiceDetail($invoice_id,$nomorbatch){
 		$nomorbatch = str_replace('%20', ' ', $nomorbatch);
 		$this->checkSession();
@@ -181,7 +206,19 @@ class C_kasiepembelian extends CI_Controller{
 		$data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id);
 		$data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id);
 
-		$listBatch = $this->M_kasiepembelian->showFinishBatch();
+		$noinduk = $this->session->userdata['user'];
+		$cek_login = $this->M_kasiepembelian->checkLoginInKasiePembelian($noinduk);
+		$login_kasie_pembelian = '';
+
+		if ($cek_login[0]['unit_name'] == 'PEMBELIAN SUPPLIER' OR $cek_login[0]['unit_name'] == 'PENGEMBANGAN PEMBELIAN') {
+			$login_kasie_pembelian .= "AND source = 'PEMBELIAN SUPPLIER' OR source = 'PENGEMBANGAN PEMBELIAN'";
+		}elseif ($cek_login[0]['unit_name'] == 'PEMBELIAN SUBKONTRAKTOR'){
+			$login_kasie_pembelian .= "AND source = 'PEMBELIAN SUBKONTRAKTOR'";
+		}elseif ($cek_login[0]['unit_name'] == 'INFORMATION & COMMUNICATION TECHNOLOGY') {
+			$login_kasie_pembelian .= "AND source = 'INFORMATION & COMMUNICATION TECHNOLOGY'";
+		}
+
+		$listBatch = $this->M_kasiepembelian->showFinishBatch($login_kasie_pembelian);
 
 		foreach($listBatch as $key => $lb){
 			$detail = $this->M_kasiepembelian->detailBatch($lb['BATCH_NUMBER']);
