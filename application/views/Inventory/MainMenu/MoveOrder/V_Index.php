@@ -38,6 +38,8 @@
 	</style>
 
 <body>
+<div style="padding-top: <?= ($assemblyLength > 1) ? (($assemblyLength-1)*13).'px' : '0' ?>">
+	
 <?= $urut != '0' ? '<pagebreak resetpagenum="1" />' : '' ?>
 	<table class="table table-bordered hor-center ver-top" >
 	<?php 
@@ -57,4 +59,5 @@
 						</tr>
 	<?php } ?>
 			</table>
+</div>
 </body>

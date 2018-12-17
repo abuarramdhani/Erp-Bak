@@ -13,7 +13,7 @@
 		</td>
 	</tr>
 </table>
-<table class="table table-head" style="margin-top: -10px; ">
+<table class="table table-head" style="margin-top: -10px;">
 	<?php foreach ($dataall['head'] as $key => $value) { ?>
 				<tr>
 					<td width="15%">Tanggal Cetak</td>
@@ -54,7 +54,7 @@
 					<td></td>
 					<td></td>
 					<td>Nama Assembly</td>
-					<td>: <?php echo $value['PRODUK_DESC'] ?></td>
+					<td>: <?php  echo $value['PRODUK_DESC']?></td>
 				</tr>
 				<tr>
 					<td colspan="2"><?php echo $value['SCHEDULE'] ?></td>
@@ -63,7 +63,7 @@
 				</tr>
 	<?php } ?>
 			</table>
-			<table class="table table-bordered hor-center ver-center" style="margin-bottom: 40px">
+			<table class="table table-bordered hor-center ver-center" >
 		
 				<tr style="background-color: #f0f0f0;" class="table-head">
 					<td rowspan="2" width="4%">No</td>

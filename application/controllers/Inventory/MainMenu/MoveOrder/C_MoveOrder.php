@@ -236,6 +236,11 @@ class C_MoveOrder extends CI_Controller
 			foreach ($dataall as $key => $value) {
 				// print_r($value);
 				$pdf->AliasNbPageGroups('[pagetotal]');
+					foreach ($value['head'] as $key2 => $value2) {
+						$judulAssembly = strlen($value2['PRODUK_DESC']);
+					}
+					$assemblyLength = ceil($judulAssembly/30);
+				$data['assemblyLength'] = $assemblyLength;
 				$data['dataall'] = $value;
 				$data['urut'] = $key;
 				$head = $this->load->view('Inventory/MainMenu/MoveOrder/V_Head', $data, TRUE);
