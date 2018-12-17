@@ -81,7 +81,7 @@ class C_MoveOrder extends CI_Controller
 		}
 		foreach ($array_terkelompok as $key => $value) {
 		 	$checkPicklist = $this->M_MoveOrder->checkPicklist($key);
-		 	if ($checkPicklist > 0) {
+		 	if (count($checkPicklist) > 0) {
 				$array_terkelompok[$key]['header']['KET'] = 1 ;
 		 	}else{
 				$array_terkelompok[$key]['header']['KET'] = 0 ;
