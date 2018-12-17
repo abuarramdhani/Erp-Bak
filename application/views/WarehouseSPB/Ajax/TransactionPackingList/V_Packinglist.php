@@ -63,6 +63,14 @@
 						}else{
 							$a = '';
 						}
+
+						if($value['QUANTITY_STANDARD'] != NULL) {
+							$x = '';
+						}elseif ($value['QUANTITY_TRANSACT'] > 10){
+							$x = '';
+						}else{
+							$x = 'disabled=""';
+						}
 					?>
 						
 						<tr data-row="<?php echo $value['ITEM_CODE']; ?>" data-id="<?php echo $value['INVENTORY_ITEM_ID']; ?>" <?php echo $a; ?>>
@@ -78,7 +86,7 @@
 							<td>
 								<input type="number" name="packingqty[]" class="form-control" readonly="" placeholder=<?php 
 								if($value['LINE_STATUS'] == 6){
-									echo "Cancel";
+									echo "CANCELED";
 								}else{
 									echo "Total Item";
 								}
@@ -86,12 +94,12 @@
 								max="<?php echo $value['QUANTITY_TRANSACT'] ?>" min="0">
 							</td>
 							<td width="25px">
-								<button type="button" class="btn btn-default" onclick="mdlPackingQtyCustom(this,'<?php echo $value['ITEM_CODE']; ?>')">
+								<button type="button" class="btn btn-default" <?php echo $x; ?> onclick="mdlPackingQtyCustom(this,'<?php echo $value['ITEM_CODE']; ?>')" >
 									<i class="fa fa-edit"></i>
 								</button>
 							</td>
 							<td width="25px">
-								<button type="button" class="btn btn-danger" onclick="resetThis(this)">
+					<button type="button" class="btn btn-danger"  onclick="resetThis(this)">
 									<i class="fa fa-trash"></i>
 								</button>
 							</td>
