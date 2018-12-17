@@ -4,7 +4,6 @@
     <link rel="stylesheet" href="<?php echo base_url('assets/plugins/bootstrap/3.3.7/css/bootstrap.css');?>" />
     <script src="<?php echo base_url('assets/plugins/dataTables/jquery.dataTables.min.js');?>"></script>
 	<script src="<?php echo base_url('assets/plugins/dataTables/dataTables.bootstrap.js');?>"></script>
-	<!-- <script src="<?php // echo base_url('assets/js/customIMO.js');?>"></script> -->
 	<script type="text/javascript">
 		$('.ch_komp_imo').on('click',function(){
 			var a = 0;
@@ -74,7 +73,7 @@
 
  	table th{
  		text-align: center;
- 		vertical-align: middle;
+ 		vertical-align: middle !important;
  	}
 
  	.hdr {

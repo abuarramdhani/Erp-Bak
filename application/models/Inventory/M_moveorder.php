@@ -13,7 +13,7 @@ class M_moveorder extends CI_Model
 		$sql = "SELECT we.WIP_ENTITY_ID job_id ,we.WIP_ENTITY_NAME, msib.SEGMENT1 item_code, msib.DESCRIPTION, wdj.start_quantity,
 						msib2.INVENTORY_ITEM_ID, msib2.SEGMENT1 komponen, msib2.DESCRIPTION komp_desc
 						,wro.REQUIRED_QUANTITY,msib2.PRIMARY_UOM_CODE, bic.ATTRIBUTE1 gudang_asal, mil.SEGMENT1 locator_asal
-						,bor.COMPLETION_SUBINVENTORY gudang_tujuan,bor.COMPLETION_LOCATOR_ID locator_tujuan_id ,mil2.SEGMENT1 locator_tujuan
+						,bic.SUPPLY_SUBINVENTORY gudang_tujuan,bic.SUPPLY_LOCATOR_ID locator_tujuan_id ,mil2.SEGMENT1 locator_tujuan
 						,khs_inv_qty_atr(wdj.ORGANIZATION_ID,wro.INVENTORY_ITEM_ID,bic.ATTRIBUTE1,bic.ATTRIBUTE2,'') atr
 						,bd.DEPARTMENT_CLASS_CODE dept_class, bcs.DESCRIPTION
 						 FROM wip_entities we
@@ -42,7 +42,7 @@ class M_moveorder extends CI_Model
 						and bic.COMPONENT_ITEM_ID = msib2.inventory_item_id
 						and wdj.COMMON_BOM_SEQUENCE_ID = bom.COMMON_BILL_SEQUENCE_ID
 						and bic.ATTRIBUTE2 = mil.INVENTORY_LOCATION_ID(+)
-						and bor.COMPLETION_LOCATOR_ID = mil2.INVENTORY_LOCATION_ID(+)
+						and bic.SUPPLY_LOCATOR_ID = mil2.INVENTORY_LOCATION_ID(+)
 						--routing
 						and wdj.COMMON_ROUTING_SEQUENCE_ID = bor.ROUTING_SEQUENCE_ID
 						--
@@ -66,7 +66,7 @@ class M_moveorder extends CI_Model
 		$sql = "
 				SELECT we.WIP_ENTITY_ID job_id,  we.WIP_ENTITY_NAME ,msib2.SEGMENT1 komponen, msib2.DESCRIPTION komp_desc, msib2.inventory_item_id
 					,wro.REQUIRED_QUANTITY,msib2.PRIMARY_UOM_CODE, bic.ATTRIBUTE1 gudang_asal, mil.SEGMENT1 locator_asal
-					,bor.COMPLETION_SUBINVENTORY gudang_tujuan,bor.COMPLETION_LOCATOR_ID locator_tujuan_id ,mil2.SEGMENT1 locator_tujuan
+					,bic.SUPPLY_SUBINVENTORY gudang_tujuan,bic.SUPPLY_LOCATOR_ID locator_tujuan_id ,mil2.SEGMENT1 locator_tujuan
 					,khs_inv_qty_atr(wdj.ORGANIZATION_ID,wro.INVENTORY_ITEM_ID,bic.ATTRIBUTE1,bic.ATTRIBUTE2,'') atr
 					,bd.DEPARTMENT_CLASS_CODE dept_class, bcs.DESCRIPTION, wdj.SCHEDULED_START_DATE 
 					 FROM wip_entities we
@@ -95,7 +95,7 @@ class M_moveorder extends CI_Model
 					and bic.COMPONENT_ITEM_ID = msib2.inventory_item_id
 					and wdj.COMMON_BOM_SEQUENCE_ID = bom.COMMON_BILL_SEQUENCE_ID
 					and bic.ATTRIBUTE2 = mil.INVENTORY_LOCATION_ID(+)
-					and bor.COMPLETION_LOCATOR_ID = mil2.INVENTORY_LOCATION_ID(+)
+					and bic.SUPPLY_LOCATOR_ID = mil2.INVENTORY_LOCATION_ID(+)
 					--routing
 					and wdj.COMMON_ROUTING_SEQUENCE_ID = bor.ROUTING_SEQUENCE_ID
 					--
@@ -107,7 +107,7 @@ class M_moveorder extends CI_Model
 					and we.WIP_ENTITY_NAME = '$job_no'
 					group by we.WIP_ENTITY_ID,  we.WIP_ENTITY_NAME ,msib2.SEGMENT1, msib2.DESCRIPTION, msib2.inventory_item_id
                     ,wro.REQUIRED_QUANTITY,msib2.PRIMARY_UOM_CODE, bic.ATTRIBUTE1, mil.SEGMENT1
-                    ,bor.COMPLETION_SUBINVENTORY,bor.COMPLETION_LOCATOR_ID ,mil2.SEGMENT1
+                    ,bic.SUPPLY_SUBINVENTORY,bic.SUPPLY_LOCATOR_ID ,mil2.SEGMENT1
                     ,wdj.ORGANIZATION_ID,wro.INVENTORY_ITEM_ID,bic.ATTRIBUTE1,bic.ATTRIBUTE2
                     ,bd.DEPARTMENT_CLASS_CODE, bcs.DESCRIPTION, wdj.SCHEDULED_START_DATE
                     order by bic.ATTRIBUTE1, bic.ATTRIBUTE2
