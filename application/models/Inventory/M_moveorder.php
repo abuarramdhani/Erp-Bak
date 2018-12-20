@@ -493,6 +493,7 @@ class M_moveorder extends CI_Model
 		// echo ':P_PARAM9 = '.$nour.'<br>';
 		// echo ':P_PARAM10 = '.$status.'<br>';
 		// exit();
+		// $conn = oci_connect('APPS', 'APPS', '192.168.7.3:1522/DEV');
 		$conn = oci_connect('APPS', 'APPS', '192.168.7.1:1521/PROD');
 			if (!$conn) {
 	   			 $e = oci_error();
@@ -530,6 +531,56 @@ class M_moveorder extends CI_Model
 		
 		// and now, execute the cursor
 		oci_execute($cursor);
+	}
+
+	function getQuantityActual($job)
+	{
+		$oracle = $this->load->database('oracle',TRUE);
+		$sql = "SELECT wro.REQUIRED_QUANTITY req,khs_inv_qty_atr(wdj.ORGANIZATION_ID,wro.INVENTORY_ITEM_ID,bic.ATTRIBUTE1,bic.ATTRIBUTE2,'') atr
+					 FROM wip_entities we
+					,wip_discrete_jobs wdj
+					,mtl_system_items_b msib
+					,wip_requirement_operations wro
+					,mtl_system_items_b msib2
+					,bom_bill_of_materials bom
+					,bom_inventory_components bic
+					,MTL_ITEM_LOCATIONS mil
+					,MTL_ITEM_LOCATIONS mil2
+					,wip_operations wo
+					,bom_calendar_shifts bcs
+					,bom_departments bd
+					,BOM_OPERATIONAL_ROUTINGS bor
+					where we.WIP_ENTITY_ID = wdj.WIP_ENTITY_ID
+					and we.ORGANIZATION_ID = wdj.ORGANIZATION_ID
+					and we.PRIMARY_ITEM_ID = msib.INVENTORY_ITEM_ID
+					and we.ORGANIZATION_ID = msib.ORGANIZATION_ID
+					and wdj.WIP_ENTITY_ID = wro.WIP_ENTITY_ID
+					and wro.INVENTORY_ITEM_ID = msib2.inventory_item_id
+					and wro.ORGANIZATION_ID = msib2.ORGANIZATION_ID
+					and bom.bill_sequence_id = bic.bill_sequence_id
+					and bom.ASSEMBLY_ITEM_ID = msib.inventory_item_id
+					and bom.organization_id = msib.organization_id
+					and bic.COMPONENT_ITEM_ID = msib2.inventory_item_id
+					and wdj.COMMON_BOM_SEQUENCE_ID = bom.COMMON_BILL_SEQUENCE_ID
+					and bic.ATTRIBUTE2 = mil.INVENTORY_LOCATION_ID(+)
+					and bic.SUPPLY_LOCATOR_ID = mil2.INVENTORY_LOCATION_ID(+)
+					--routing
+					and wdj.COMMON_ROUTING_SEQUENCE_ID = bor.ROUTING_SEQUENCE_ID
+					--
+					and wo.WIP_ENTITY_ID = wdj.WIP_ENTITY_ID
+					and wo.ORGANIZATION_ID = we.ORGANIZATION_ID
+					and wo.DEPARTMENT_ID = bd.DEPARTMENT_ID
+					and khs_shift(wdj.SCHEDULED_START_DATE) = bcs.SHIFT_NUM
+					and bic.ATTRIBUTE1 is not null
+					and we.WIP_ENTITY_NAME = '$job'
+					group by we.WIP_ENTITY_ID,  we.WIP_ENTITY_NAME ,msib2.SEGMENT1, msib2.DESCRIPTION, msib2.inventory_item_id
+                    ,wro.REQUIRED_QUANTITY,msib2.PRIMARY_UOM_CODE, bic.ATTRIBUTE1, mil.SEGMENT1
+                    ,bic.SUPPLY_SUBINVENTORY,bic.SUPPLY_LOCATOR_ID ,mil2.SEGMENT1
+                    ,wdj.ORGANIZATION_ID,wro.INVENTORY_ITEM_ID,bic.ATTRIBUTE1,bic.ATTRIBUTE2
+                    ,bd.DEPARTMENT_CLASS_CODE, bcs.DESCRIPTION, wdj.SCHEDULED_START_DATE,we.ORGANIZATION_ID
+                    order by bic.ATTRIBUTE1, bic.ATTRIBUTE2";
+		$query = $oracle->query($sql);
+		return $query->result_array();
 	}
 
 }
