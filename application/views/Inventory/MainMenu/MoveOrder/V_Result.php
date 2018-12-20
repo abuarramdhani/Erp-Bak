@@ -100,6 +100,7 @@
 	</thead>
 	<tbody>
 		<?php  
+			if ($requirement):
 
 			$allInvID = array();
 			$allQty = array();
@@ -124,9 +125,16 @@
 		?>
 		<tr class="hdr" >
 			<td rowspan="2"   class="<?= $penanda ?>" style="vertical-align: top;" >
-				<center><b <?= ($value['body']) ? '' : 'style="color: #c1c1c1"' ?>><?= $no++; ?></b> <br>
-					<input type="checkbox"  class="ch_komp_imo" <?= ($value['body']) ? ' name="ch_komp[]"' : 'onclick="return false;"' ?>
-						value="<?= $value['header']['WIP_ENTITY_NAME'].'+'; ?>">
+				<center>
+				<?php if ($penandabutton == 1) { ?>
+					<b style="color: #c1c1c1"> <?= $no++; ?></b> <br>
+						<input type="checkbox"  class="ch_komp_imo" onclick="return false;"
+							value="<?= $value['header']['WIP_ENTITY_NAME'].'+'; ?>">
+				<?php } else{ ?>
+						<b <?= ($value['body']) ? '' : 'style="color: #c1c1c1"' ?>><?= $no++; ?></b> <br>
+						<input type="checkbox"  class="ch_komp_imo" <?= ($value['body']) ? ' name="ch_komp[]"' : 'onclick="return false;"' ?>
+							value="<?= $value['header']['WIP_ENTITY_NAME'].'+'; ?>">
+				<?php } ?>
 				</center>
 			</td>
 			<td class="<?= $penanda ?>" ><?= $value['header']['WIP_ENTITY_NAME']; ?></td>
@@ -217,7 +225,11 @@
 				</div>
 			</td>
 		</tr>
-		<?php } ?>
+		<?php } else: ?>
+		<tr>
+			<td colspan="9"> No Data Found .. :(  </td>
+		</tr>
+		<?php endif; ?>
 	</tbody>
 </table>
 <div>
