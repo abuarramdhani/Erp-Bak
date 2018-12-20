@@ -61,9 +61,10 @@ class C_Upload extends CI_Controller
 		// 	}
 
 		if(isset($_FILES['file_pph']['name']) &&  $_FILES['file_pph']['name'] != ''):
-			 $valid_extension = array('xls','xlsx');
+			 $valid_extension = array('xls','xlsx','ods');
 			 $file_data = explode('.', $_FILES['file_pph']['name']);
 			 $file_extension = end($file_data);
+			 $file_name = $file_data[0];
 			 $array_error = array();
 			 if(in_array($file_extension, $valid_extension))
 			 {
@@ -78,7 +79,9 @@ class C_Upload extends CI_Controller
 				$batch 	 = str_pad($getUrut[0]['batch_num']+1, 3, 0 , STR_PAD_LEFT);
 
 				for ($i=0; $i <= $lastRow ; $i++) { 
-					if (($worksheet->getCell('A'.$i)->getValue() != 'Jenis Pph') && ($worksheet->getCell('A'.$i)->getValue() != '')) {
+					$jenis_pph = strtoupper(str_replace(' ', '', $worksheet->getCell('A'.$i)->getValue()));
+					$jns = $jenis_pph ? substr($jenis_pph, 0,3) : '';
+					if ($jns == 'PPH') {
 					$jenispph[$i]['jenis_pph']	 = $worksheet->getCell('A'.$i)->getValue();
 					$jenispph[$i]['tarif_pph'] 	 = $worksheet->getCell('B'.$i)->getValue();
 					$jenispph[$i]['no_npwp'] 		 = $worksheet->getCell('C'.$i)->getValue();
@@ -102,6 +105,7 @@ class C_Upload extends CI_Controller
 					$jenispph[$i]['batch_num'] = $batch;
 					$jenispph[$i]['tgl_upload'] = date('Y-m-d H:i:s');
 					$jenispph[$i]['arsip'] = 0;
+					$jenispph[$i]['nama_file'] = $file_name;
 
 					$checkexist = $this->M_uploadpph->checkVendorInvoice($jenispph[$i]['nama_vendor'], $jenispph[$i]['no_invoice']);
 					if ($checkexist > 0) {
@@ -117,6 +121,7 @@ class C_Upload extends CI_Controller
 			 }
 			 // echo "<pre>";
 			 // print_r($jenispph);
+			 // exit();
 		endif;
 
 		if ($array_error) {

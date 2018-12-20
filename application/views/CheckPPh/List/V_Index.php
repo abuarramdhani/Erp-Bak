@@ -1,4 +1,34 @@
+<style type="text/css">
+	.table-but td {
+		/*border: 1px solid black;*/
+		padding: 2px;
+	}
 
+	.table-but td:first-child{
+		padding-right: 20px;
+		width: 60%;
+	}
+
+	.table-but{
+		width: 80%;
+	}
+
+	.btns {
+		width: 100%;
+	}
+	.td-center{
+		vertical-align: top
+	}
+
+	.btns2 {
+		width: 100%;
+	}
+
+	.tblDataPPH {
+		/*border: 1px solid black;*/
+	}
+
+</style>
 <section class="content">
 	<div class="inner" >
 	<div class="row">
@@ -34,48 +64,66 @@
 									<thead>
 										<tr class="bg-primary">
 											<th width="5%"><center>No</center></th>
+											<th width="25%"><center>Nama File</center></th>
 											<th width="10%"><center>Batch Number</center></th>
 											<th width="15%"><center>Tanggal Upload</center></th>
 											<th width="10%"><center>Jumlah Data</center></th>
-											<th width="60%"><center>Action</center></th>
+											<th width="35%"><center>Action</center></th>
 										</tr>
 									</thead>
 									<tbody>
 										<?php $i = 1;  foreach ($list as $key => $value) { ?>
 										<tr>
-											<td><center><?= $i++; ?></center></td>
-											<td><?= str_pad($value['batch_num'], 3, 0 , STR_PAD_LEFT);  ?></td>
-											<td><?= date('d-M-Y', strtotime($value['tgl_upload']));  ?></td>
+											<td><center><b><?= $i++; ?></b></center></td>
+											<td><?= $value['nama_file'] ?></td>
+											<td><center><?= str_pad($value['batch_num'], 3, 0 , STR_PAD_LEFT);  ?></center></td>
+											<td><center><?= date('d-M-Y', strtotime($value['tgl_upload']));  ?></center></td>
 											<td><center><?= $value['jumlah'] ?></center></td>
 											<td>
 												<center>
 												<form target="_blank" action="<?= base_url('AccountPayables/CheckPPh/List/action') ?>" method="POST">
-													<input type="hidden" name="txtBatchNum" value="<?= $value['batch_num']; ?>">
-													<button name="jenisAct" value="subPPH" class="btn btn-sm btn-primary"> 
-														<b class="fa fa-file-text "></b> Lap. Subtotal PPH
-													</button>
-													<button name="jenisAct" value="sumPPH" class="btn btn-sm btn-primary"> 
-														<b class="fa fa-file-text "></b> Lap. Summary PPH
-													</button>
-													<button name="jenisAct" value="recPPH" class="btn btn-sm btn-primary"> 
-														<b class="fa fa-file-text "></b> Rekap Laporan PPH
-													</button> 
-													&nbsp;&nbsp;&nbsp;
-													<?php if ($value['arsip'] == 1) { ?>
-														<button type="button" id="btnDelPPh" class="btn btn-sm btn-default"> 
-															<b class="fa fa-trash"></b> Delete
-														</button>
-														<button type="button" class="btn btn-sm btn-default" style="color: orange ; border-color: orange"> 
-															<b class="fa fa-archive "></b> <b>Archived</b> <b class="fa fa-check" style="color:orange"></b>
-														</button>
-													<?php }else{ ?>
-														<button type="button" id="btnDelPPh" onclick="delPPH(this)" data-toggle="modal" data-batch="<?= str_pad($value['batch_num'], 3, 0 , STR_PAD_LEFT);  ?>" data-target="#modalDelete" name="jenisAct" value="" class="btn btn-sm btn-danger"> 
-															<b class="fa fa-trash"></b> Delete
-														</button>
-														<button name="jenisAct" value="arcPPH" class="btn btn-sm btn-warning"> 
-															<b class="fa fa-archive "></b> <b>Archive</b> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
-														</button>
-													<?php } ?>
+												<table class="table-but">
+													<tr>
+														<td>
+															<input type="hidden" name="txtBatchNum" value="<?= $value['batch_num']; ?>">
+															<button name="jenisAct" value="subPPH" class="btn btn-xs btn-primary btns"> 
+																<b class="fa fa-file-text "></b> Lap. Subtotal PPH
+															</button>
+														</td>
+														<td rowspan="3" class="td-center">
+															<?php if ($value['arsip'] == 1) { ?>
+																<button type="button" id="btnDelPPh" class="btn btn-sm btn-default btns2"> 
+																	<b class="fa fa-trash"></b> Delete
+																</button><br/><br />
+																<button type="button" class="btn btn-sm btn-default btns2" style="color: orange ; border-color: orange"> 
+																	<b class="fa fa-archive "></b> <b>Archived</b> <b class="fa fa-check" style="color:orange"></b>
+																</button>
+															<?php }else{ ?>
+																<button type="button" id="btnDelPPh" onclick="delPPH(this)" data-toggle="modal" data-batch="<?= str_pad($value['batch_num'], 3, 0 , STR_PAD_LEFT);  ?>" data-target="#modalDelete" name="jenisAct" value="" class="btn btn-sm btn-danger btns2"> 
+																	<b class="fa fa-trash"></b> Delete
+																</button><br/><br />
+																<button name="jenisAct" value="arcPPH" class="btn btn-sm btn-warning btns2"> 
+																	<b class="fa fa-archive "></b> <b>Archive</b>
+																</button>
+															<?php } ?>
+															
+														</td>
+													</tr>
+														<td>
+															<button name="jenisAct" value="sumPPH" class="btn btn-xs btn-primary btns"> 
+																<b class="fa fa-file-text "></b> Lap. Summary PPH
+															</button>
+														</td>
+													</tr>
+														<td>
+															<button name="jenisAct" value="recPPH" class="btn btn-xs btn-primary btns"> 
+																<b class="fa fa-file-text "></b> Rekap Laporan PPH
+															</button> 
+															
+														</td>
+													</tr>
+
+												</table>
 												</form>
 												</center>
 											</td>

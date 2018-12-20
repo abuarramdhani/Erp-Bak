@@ -96,24 +96,30 @@ class C_List extends CI_Controller
 		$this->load->library('Excel');
 		$data = $this->M_uploadpph->getDataBatch($no);
 		$arraySpezial = array('CABANG_LAIN','TUKSONO','YOGYAKARTA');
-		$arrayJenis = array('21','23','4','0');
+		$arrayJenis = array('PPH21PES','PPH21','PPH23','PPH4KON','PPH4SE','PPH4UN','0');
 		$datagroup = array();
 			foreach ($data as $key2 => $value2) {
-				if (strpos($value2['jenis_pph'],'21')) {
-					$code_jenis = '21';
-				}elseif (strpos($value2['jenis_pph'],'23')) {
-					$code_jenis = '23';
-				}elseif (strpos($value2['jenis_pph'],'4')) {
-					$code_jenis = '4';
+				$jenispajak = strtoupper(str_replace(' ','', $value2['jenis_pph']));
+				if (strpos($jenispajak,'PPH21') !== false) {
+					if (strpos($jenispajak,'PPH21PES')  !== false) {
+						$code_jenis = 'PPH21PES';
+					}else{
+						$code_jenis = 'PPH21';
+					}
+				}elseif(strpos($jenispajak,'PPH23') !== false) {
+					$code_jenis = 'PPH23';
+				}elseif(strpos($jenispajak,'PPH4KON') !== false) {
+					$code_jenis = 'PPH4KON';
+				}elseif(strpos($jenispajak,'PPH4SE') !== false) {
+					$code_jenis = 'PPH4SE';
+				}elseif(strpos($jenispajak,'PPH4UN') !== false) {
+					$code_jenis = 'PPH4UN';
 				}else{
 					$code_jenis = '0';
 				}
 				$datagroup[$code_jenis][$value2['jenis_pph'].'<>'.$value2['lokasi']][$value2['nama_vendor']][] = $data[$key2];
 
 			}
-		// foreach ($datagroup as $key => $value) {
-		// 	$datagroup2[]
-		// }
 
 			foreach ($arrayJenis as $kJ => $vJ) {
 				if (isset($datagroup[$vJ])) {
@@ -122,21 +128,26 @@ class C_List extends CI_Controller
 						$namex = explode('<>', $key);
 						$nameindex = $namex[1];
 						if (in_array(strtoupper($nameindex), $arraySpezial)) {
-							$datagroup2[strtoupper($nameindex)][$key] = $value;
+							$datagroup2[strtoupper($nameindex)][$vJ][$key] = $value;
 						}else{
-							$datagroup2['CABANG_LAIN'][$key] = $value;
+							$datagroup2['CABANG_LAIN'][$vJ][$key] = $value;
 						}
 					}
 				}
 			}
-   //          foreach ($arraySpezial as $kSp => $vSp) {
-   //          	foreach ($datagroup2[$vSp] as $key => $value) {
-   //          		$datagroup3[$key] = $value;
-   //          	}
-			// }
+
+			foreach ($datagroup2 as $key => $value) {
+				foreach ($value as $key2 => $value2) {
+					foreach ($value2 as $key3 => $value3) {
+						foreach ($value3 as $key4 => $value4) {
+							$datagroup3[$key][$key2][$key4] = $value4;
+						}
+					}
+				}
+			}
 
 		// echo "<pre>";
-		// print_r($datagroup3);
+		// print_r($datagroup);
 		// exit();
 
 		//mulai
@@ -206,12 +217,12 @@ class C_List extends CI_Controller
             //isi
             $row = 4;
             foreach ($arraySpezial as $kSp => $vSp) {
-            	if (isset($datagroup2[$vSp])) {
+            	if (isset($datagroup3[$vSp])) {
 	            	$object->setActiveSheetIndex(0)
 		                    ->setCellValue('A'.$row, $vSp);
 		            $object->getActiveSheet()->getStyle('A'.$row)->applyFromArray($Font10Bold);
 		            $row++;
-		            foreach ($datagroup2[$vSp] as $key => $value) {
+		            foreach ($datagroup3[$vSp] as $key => $value) {
 		            	$gandtotdpp = 0;
 						$grandtotpph = 0;
 			            $object->setActiveSheetIndex(0)
@@ -298,66 +309,88 @@ class C_List extends CI_Controller
 	{
 		$this->load->library('Excel');
 		$data = $this->M_uploadpph->getDataBatch($no);
+		$arrayJenis = array('PPH21PES','PPH21','PPH23','PPH4KON','PPH4SE','PPH4UN','0');
 		$datagroup = array();
 		$datagroup2 = array();
-		foreach ($data as $key => $value) {
-			$datagroup[$value['nama_vendor']][] = $value;
-		}
+		// foreach ($data as $key => $value) {
+		// 	$datagroup[$value['nama_vendor']][] = $value;
+		// }
 		$arrayzzz = array();
 
-		foreach ($datagroup as $key => $value) {
-			$arrayNew = array();
-			$arraysudah = array();
-			$arrayBaru = array();
-			$pph = array();
-			$dpp = array();
-		
-			foreach ($value as $key2 => $value2) {
-				$arrayBaru[$value2['jenis_jasa']] = $value2;
-				$namadpp = 'dpp'.$value2['jenis_jasa'];
-				$namapph = 'pph'.$value2['jenis_jasa'];
-
-				if (in_array($value2['jenis_jasa'], $arraysudah)) {
-					$$namadpp += $value2['dpp'];
-					$$namapph += $value2['pph'];
+		foreach ($data as $key2 => $value2) {
+				$jenispajak = strtoupper(str_replace(' ','', $value2['jenis_pph']));
+				if (strpos($jenispajak,'PPH21') !== false) {
+					if (strpos($jenispajak,'PPH21PES')  !== false) {
+						$code_jenis = 'PPH21PES';
+					}else{
+						$code_jenis = 'PPH21';
+					}
+				}elseif(strpos($jenispajak,'PPH23') !== false) {
+					$code_jenis = 'PPH23';
+				}elseif(strpos($jenispajak,'PPH4KON') !== false) {
+					$code_jenis = 'PPH4KON';
+				}elseif(strpos($jenispajak,'PPH4SE') !== false) {
+					$code_jenis = 'PPH4SE';
+				}elseif(strpos($jenispajak,'PPH4UN') !== false) {
+					$code_jenis = 'PPH4UN';
 				}else{
-					array_push($arraysudah, $value2['jenis_jasa']);
-					$$namadpp = 0;
-					$$namapph = 0;
-					$$namadpp += $value2['dpp'];
-					$$namapph += $value2['pph'];
+					$code_jenis = '0';
 				}
+				$datagroup[$code_jenis][$value2['jenis_pph'].'<>'.$value2['lokasi']][$value2['nama_vendor']][] = $data[$key2];
 
 			}
-			foreach ($arrayBaru as $k => $v) {
-				$namadpp = 'dpp'.$k;
-				$namapph = 'pph'.$k;
-				$v['dpp'] = $$namadpp;
-				$v['pph'] = $$namapph;
-				$arrayNew[] = $v;
+
+		foreach ($arrayJenis as $kJ => $vJ) {
+				if (isset($datagroup[$vJ])) {
+					foreach ($datagroup[$vJ] as $key => $value) {
+						// $datagroup2[$key] = $value;
+						$namex = explode('<>', $key);
+						$nameindex = $namex[1];
+						$datagroup2[strtoupper($nameindex)][$vJ][$key] = $value;
+					}
+				}
 			}
 
-			$arrayzzz[$key] = $arrayNew;
-	
-		}
-		$datagroup = $arrayzzz;	
+			foreach ($datagroup2 as $key => $value) {
+				foreach ($value as $key2 => $value2) {
+					foreach ($value2 as $key3 => $value3) {
+						foreach ($value3 as $key4 => $value4) {
+							$arrayNew = array();
+							$arraysudah = array();
+							$arrayBaru = array();
+							$pph = array();
+							$dpp = array();
+							foreach ($value4 as $key5 => $value5) {
+								$arrayBaru[$value5['jenis_jasa']] = $value5;
+								$namadpp = 'dpp'.$value5['jenis_jasa'];
+								$namapph = 'pph'.$value5['jenis_jasa'];
 
-		foreach ($datagroup as $key => $value) {
-			foreach ($value as $key2 => $value2) {
-				$datagroup2[$value2['jenis_pph'].'>'.$value2['lokasi']][$key][] = $value2;
+								if (in_array($value5['jenis_jasa'], $arraysudah)) {
+									$$namadpp += $value5['dpp'];
+									$$namapph += $value5['pph'];
+								}else{
+									array_push($arraysudah, $value5['jenis_jasa']);
+									$$namadpp = 0;
+									$$namapph = 0;
+									$$namadpp += $value5['dpp'];
+									$$namapph += $value5['pph'];
+								}
+							}
+							foreach ($arrayBaru as $k => $v) {
+								$namadpp = 'dpp'.$k;
+								$namapph = 'pph'.$k;
+								$v['dpp'] = $$namadpp;
+								$v['pph'] = $$namapph;
+								$arrayNew[] = $v;
+							}
+							$datagroup3[$key][$key2][$key4] = $arrayNew;
+
+						}
+					}
+				}
 			}
-		}
 
-		foreach ($datagroup2 as $key => $value) {
-			$awal = strpos($key,'>');
-			$tot  = strlen($key);
-			$nama = substr($key, ($awal+1), ($tot-$awal));
-			$datagroup3[$nama][$key] = $value;
-		}
 
-			// echo "<pre>";
-			// print_r($datagroup2);
-			// exit();
 
 
 		//mulai

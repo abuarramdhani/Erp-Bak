@@ -25,10 +25,11 @@ class M_uploadpph extends CI_Model
 		$qbatch = ($batch === FALSE) ? '' : ' WHERE batch_num = '.$batch;
 		$sql = "SELECT atd.batch_num
 						,atd.tgl_upload
+						,atd.nama_file
 						,atd.arsip
 						, (SELECT count(*) jumlah FROM ap.ap_tax_data atd2 WHERE atd2.batch_num = atd.batch_num ) jumlah
 				FROM ap.ap_tax_data atd $qbatch 
-				GROUP BY atd.batch_num, atd.tgl_upload, atd.arsip ";
+				GROUP BY atd.batch_num, atd.tgl_upload,atd.nama_file, atd.arsip order by batch_num ";
 		$query = $this->db->query($sql);
 		return $query->result_array();
 	}
