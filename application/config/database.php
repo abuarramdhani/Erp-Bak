@@ -290,11 +290,34 @@ $db['oracle_dev'] = array(
 	'save_queries' => TRUE
 );
 
+// $db['dinas_luar'] = array(
+// 	'dsn'	=> '',
+// 	'hostname' => 'dl.quick.com',
+// 	'username' => 'quickc01_dlo',
+// 	'password' => '{#QE.k.WxaZG',
+// 	'database' => 'quickc01_dinas_luar_online',
+// 	'dbdriver' => 'mysqli',
+// 	'dbprefix' => '',
+// 	'pconnect' => FALSE,
+// 	'db_debug' => TRUE,
+// 	'cache_on' => FALSE,
+// 	'cachedir' => '',
+// 	'char_set' => 'utf8',
+// 	'dbcollat' => 'utf8_general_ci',
+// 	'swap_pre' => '',
+// 	'encrypt' => FALSE,
+// 	'compress' => FALSE,
+// 	'stricton' => FALSE,
+// 	'failover' => array(),
+// 	'save_queries' => TRUE,
+// 	'port' => 3306
+// );
+
 $db['dinas_luar'] = array(
 	'dsn'	=> '',
-	'hostname' => 'dl.quick.com',
-	'username' => 'quickc01_dlo',
-	'password' => '{#QE.k.WxaZG',
+	'hostname' => 'dev.quick.com',
+	'username' => 'amri',
+	'password' => 'amri',
 	'database' => 'quickc01_dinas_luar_online',
 	'dbdriver' => 'mysqli',
 	'dbprefix' => '',
@@ -312,6 +335,7 @@ $db['dinas_luar'] = array(
 	'save_queries' => TRUE,
 	'port' => 3306
 );
+
 $db['daerah'] = array(
 	'dsn'	=> '',
 	'hostname' => 'database.quick.com',
