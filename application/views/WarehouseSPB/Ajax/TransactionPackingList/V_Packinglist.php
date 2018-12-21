@@ -32,7 +32,7 @@
 		<input type="text" id="idItemColy" name="coly" class="form-control" placeholder="Item Coly" >
 	</div>
 	<div class="col-md-4">
-		<input type="text" id="inputPackingPlus" name="ItemCode" class="form-control" placeholder="Packing item" disabled onkeyup="updatePackingQty(event,this)">
+		<input type="text" style="text-transform:uppercase" id="inputPackingPlus" name="ItemCode" class="form-control" placeholder="Packing item" disabled onkeyup="updatePackingQty(event,this)">
 	</div>
 </div>
 <form onsubmit="setPacking()" id="formSetPacking">

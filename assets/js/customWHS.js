@@ -267,6 +267,8 @@ function getSum(th) {
 
 function resetThis(th){
     $(th).closest('tr').find('input[name="packingqty[]"]').val(null);
+    $(th).closest('tr').removeClass('bg-success');
+
     
 }
 
