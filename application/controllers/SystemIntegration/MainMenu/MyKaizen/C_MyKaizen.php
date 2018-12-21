@@ -189,7 +189,7 @@ class C_MyKaizen extends CI_Controller
 			if (!$level1 && !$level2 && !$level3) {
 				$this->M_submit->DeleteApprover($kaizen_id);
 			}else{
-				$status_date =  date('Y-m-d h:i:s', strtotime('+5 hours'));
+				$status_date =  date('Y-m-d h:i:s');
 				$this->M_submit->UpdateStatus($kaizen_id, 2 ,$status_date);
 				//log
 				foreach ($approverExist as $key => $value) {
@@ -209,7 +209,7 @@ class C_MyKaizen extends CI_Controller
 					'kaizen_id' => $kaizen_id,
 					'status' => 2,
 					'detail' => $detail,
-					'waktu' => date('Y-m-d h:i:s', strtotime('+5 hours')),
+					'waktu' => date('Y-m-d h:i:s'),
 					 );
 				$this->M_log->save_log($datalog);
 			}
@@ -248,7 +248,7 @@ class C_MyKaizen extends CI_Controller
 				'kaizen_id' => $kaizen_id,
 				'status' 	=> 6,
 				'detail' 	=> $detail,
-				'waktu' 	=> date('Y-m-d h:i:s', strtotime('+5 hours')),
+				'waktu' 	=> date('Y-m-d h:i:s'),
 				 );
 			$this->M_log->save_log($datalog);
 
@@ -327,7 +327,7 @@ class C_MyKaizen extends CI_Controller
 				$getKaizen = $this->M_submit->getKaizen($kaizen_id,FALSE);
 
 				//get template
-				$link = base_url("SystemIntegration/KaizenGenerator/View/$kaizen_id");
+				$link = base_url("SystemIntegration/KaizenGenerator/ApprovalKaizen/View/$kaizen_id");
 				$getEmailTemplate = $this->M_submit->getEmailTemplate(2);
 				$subject = $getEmailTemplate[0]['subject'];
 				$body = sprintf($getEmailTemplate[0]['body'], $getKaizen[0]['pencetus'],$getKaizen[0]['judul'],$link);
@@ -343,7 +343,7 @@ class C_MyKaizen extends CI_Controller
 		$this->load->model('SystemIntegration/M_approvalkaizen');
 
 		$kaizen_id = $this->input->post('id');
-		$status_date =  date('Y-m-d h:i:s', strtotime('+5 hours'));
+		$status_date =  date('Y-m-d h:i:s');
 		$this->M_submit->UpdateStatus($kaizen_id, 9, $status_date);
 		$detail = "(Kaizen Reported) - ";
 		$detail .= "Kaizen ini telah dilaporkan dan siap dicetak";
@@ -369,7 +369,7 @@ class C_MyKaizen extends CI_Controller
 			'kaizen_id' => $kaizen_id,
 			'status' => 9,
 			'detail' => $detail,
-			'waktu' => date('Y-m-d h:i:s', strtotime('+5 hours')),
+			'waktu' => date('Y-m-d h:i:s'),
 			 );
 		echo date('d M Y');
 	}

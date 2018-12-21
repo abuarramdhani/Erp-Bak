@@ -132,7 +132,7 @@ class C_Submit extends CI_Controller
 				'kaizen_id' => $kaizen_id,
 				'status' => 0,
 				'detail' => $detail,
-				'waktu' => date('Y-m-d h:i:s', strtotime('+5 hours')),
+				'waktu' => date('Y-m-d h:i:s'),
 				 );
 			$this->M_log->save_log($datalog);
 			//helper_log($kaizen_id,0,$detail,date('Y-m-d h:i:s'));
@@ -330,8 +330,8 @@ class C_Submit extends CI_Controller
 					'usulan_kaizen' => $this->input->post('txtUsulan'),
 					'pertimbangan' => $this->input->post('txtPertimbangan'),
 					'rencana_realisasi' => date("Y-m-d", strtotime($this->input->post('txtRencanaRealisasi'))),
-					'updated_date' => date('Y-m-d h:i:s', strtotime('+5 hours')),
-					'status_date' => date('Y-m-d h:i:s', strtotime('+5 hours')),
+					'updated_date' => date('Y-m-d h:i:s'),
+					'status_date' => date('Y-m-d h:i:s'),
 					'status' => $status_new,
 					'komponen' => $komponen,
 				);
@@ -348,7 +348,7 @@ class C_Submit extends CI_Controller
 					'kaizen_id' => $id,
 					'status' => $status_new,
 					'detail' => $detail,
-					'waktu' => date('Y-m-d h:i:s', strtotime('+5 hours')),
+					'waktu' => date('Y-m-d h:i:s'),
 					 );
 				$this->M_log->save_log($datalog);
 				redirect(base_url("SystemIntegration/KaizenGenerator/View/$id"));
@@ -502,8 +502,8 @@ class C_Submit extends CI_Controller
 				$data = array(
 						'kondisi_akhir' => $this->input->post('txtKondisiAkhir'),
 						'tgl_realisasi' => date("Y-m-d h:i:s", strtotime($this->input->post('txtTanggalRealisasi'))),
-						'updated_date' => date('Y-m-d h:i:s', strtotime('+5 hours')),
-						'status_date' => date('Y-m-d h:i:s', strtotime('+5 hours')),
+						'updated_date' => date('Y-m-d h:i:s'),
+						'status_date' => date('Y-m-d h:i:s'),
 						'status' => 6,
 						'standarisasi_kaizen' => $standarisasi_kaizen_thread,
 						'sosialisasi_pelaksanaan' => date("Y-m-d", strtotime($sosialisasi_pelaksanaan)),
@@ -523,7 +523,7 @@ class C_Submit extends CI_Controller
 						'kaizen_id' => $id,
 						'status' => 6,
 						'detail' => $detail,
-						'waktu' => date('Y-m-d h:i:s', strtotime('+5 hours')),
+						'waktu' => date('Y-m-d h:i:s'),
 						 );
 					$this->M_log->save_log($datalog);
 					
@@ -531,7 +531,7 @@ class C_Submit extends CI_Controller
 					$data = array(
 							'kondisi_akhir' => $this->input->post('txtKondisiAkhir'),
 							'tgl_realisasi' => date("Y-m-d h:i:s", strtotime($this->input->post('txtTanggalRealisasi'))),
-							'updated_date' =>date('Y-m-d h:i:s', strtotime('+5 hours')),
+							'updated_date' =>date('Y-m-d h:i:s'),
 						);
 					$this->M_submit->saveUpdate($id,$data);
 			}

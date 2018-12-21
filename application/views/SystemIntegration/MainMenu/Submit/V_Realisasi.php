@@ -98,7 +98,7 @@
                   <div class="input-group-addon">
                     <i class="fa fa-calendar"></i>
                   </div>
-                  <input onchange="checkFillRealisasi()" type="text" class="form-control pull-right must datetimeSI" id="" name="txtTanggalPelaksanaan" disabled="disabled" placeholder="Masukan Tanggal Pelaksanaan">
+                  <input onchange="checkFillRealisasi()" type="text" class="form-control pull-right must datetimeSI" id="" name="txtTanggalPelaksanaan" disabled="disabled" placeholder="Masukan Tanggal Pelaksanaan" required>
                 </div>
               </div>
               <div class="form-group">
