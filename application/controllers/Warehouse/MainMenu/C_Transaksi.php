@@ -841,6 +841,7 @@ public function createLaporan1(){
 			'vertical'   => PHPExcel_Style_Alignment::VERTICAL_CENTER, ));
 
 		// ----------------- Set format table -----------------
+	if($pinjam == "PINJAM"){
 	$worksheet->getColumnDimension('A')->setWidth(10);
 	$worksheet->getColumnDimension('B')->setWidth(20);
 	$worksheet->getColumnDimension('C')->setWidth(10);
@@ -853,6 +854,24 @@ public function createLaporan1(){
 	$worksheet->getColumnDimension('J')->setWidth(30);
 	$worksheet->getColumnDimension('K')->setWidth(40);
 
+	}else{
+	$worksheet->getColumnDimension('A')->setWidth(10);
+	$worksheet->getColumnDimension('B')->setWidth(20);
+	$worksheet->getColumnDimension('C')->setWidth(20);
+	$worksheet->getColumnDimension('D')->setWidth(10);
+	$worksheet->getColumnDimension('E')->setWidth(20);
+	$worksheet->getColumnDimension('F')->setWidth(15);
+	$worksheet->getColumnDimension('G')->setWidth(25);
+	$worksheet->getColumnDimension('H')->setWidth(10);
+	$worksheet->getColumnDimension('I')->setWidth(10);
+	$worksheet->getColumnDimension('J')->setWidth(10);
+	$worksheet->getColumnDimension('K')->setWidth(30);
+	$worksheet->getColumnDimension('L')->setWidth(30);
+	$worksheet->getColumnDimension('M')->setWidth(40);
+
+	}
+
+	
 
 
 		// ----------------- STATIC DATA -----------------
@@ -885,15 +904,17 @@ public function createLaporan1(){
 		$worksheet->setCellValue('D4', 'Item Code');
 		$worksheet->setCellValue('E4', 'Item');
 		$worksheet->setCellValue('F4', 'Merk');
-		$worksheet->setCellValue('G4', 'Stok Awal');
-		$worksheet->setCellValue('H4', 'Qty Kembali');	
-		$worksheet->setCellValue('I4', 'Shift');
-		$worksheet->setCellValue('J4', 'Nama');
-		$worksheet->setCellValue('K4', 'Toolman');
-		$worksheet->setCellValue('L4', 'Deskripsi');
+		$worksheet->setCellValue('G4', 'Keterangan');
+		$worksheet->setCellValue('H4', 'Stok Awal');
+		$worksheet->setCellValue('I4', 'Qty Kembali');	
+		$worksheet->setCellValue('J4', 'Shift');
+		$worksheet->setCellValue('K4', 'Nama');
+		$worksheet->setCellValue('L4', 'Toolman');
+		$worksheet->setCellValue('M4', 'Deskripsi');
+		
 	}
 
-	$worksheet->getStyle('A4:K4')->getAlignment()->setWrapText(true);
+	$worksheet->getStyle('A4:M4')->getAlignment()->setWrapText(true);
 	$worksheet->getStyle('A4:K4')->applyFromArray($aligncenter);
 	$worksheet->getStyle('A3:D3')->applyFromArray($styleNotice);
 	$worksheet->getStyle('F1:F3')->applyFromArray($styleNotice);
@@ -906,9 +927,11 @@ public function createLaporan1(){
 	$worksheet->getStyle('F')->applyFromArray($aligncenter);
 	$worksheet->getStyle('G')->applyFromArray($aligncenter);
 	$worksheet->getStyle('H')->applyFromArray($aligncenter);
+	$worksheet->getStyle('I')->applyFromArray($aligncenter);
+	$worksheet->getStyle('J')->applyFromArray($aligncenter);
 	$worksheet->getStyle('K')->applyFromArray($aligncenter);
 	$worksheet->getStyle('L')->applyFromArray($aligncenter);
-
+	$worksheet->getStyle('M')->applyFromArray($aligncenter);
 		// ----------------- DYNAMIC DATA -----------------
 	
 
@@ -972,14 +995,25 @@ public function createLaporan1(){
 					$worksheet->setCellValue('D'.$highestRow,$sc['item_id']);
 					$worksheet->setCellValue('E'.$highestRow,$sc['item_name']);
 					$worksheet->setCellValue('F'.$highestRow,$sc['merk']);
-					$worksheet->setCellValue('G'.$highestRow,$sc['item_qty']);
 
-					$worksheet->setCellValue('H'.$highestRow,$sc['qty_kembali']);	
 
-					$worksheet->setCellValue('I'.$highestRow,$sc['shift']);
-					$worksheet->setCellValue('J'.$highestRow,$sc['name']);
-					$worksheet->setCellValue('K'.$highestRow,$sc['toolman']);
-					$worksheet->setCellValue('L'.$highestRow,$sc['item_desc']);
+					if($sc['qty_kembali'] > 0 && $sc['status_kembali'] == 1){
+						$worksheet->setCellValue('G'.$highestRow,'DIKEMBALIKAN SEMUA');
+					}else if($sc['qty_kembali'] > 0 && $sc['status_kembali'] == 0){
+						$worksheet->setCellValue('G'.$highestRow,'DIKEMBALIKAN '.$sc['qty_kembali'].' BUAH');
+					}else{
+						$worksheet->setCellValue('G'.$highestRow,'PINJAM');
+					}
+
+					$worksheet->setCellValue('H'.$highestRow,$sc['item_qty']);
+
+					$worksheet->setCellValue('I'.$highestRow,$sc['qty_kembali']);	
+
+					$worksheet->setCellValue('J'.$highestRow,$sc['shift']);
+					$worksheet->setCellValue('K'.$highestRow,$sc['name']);
+					$worksheet->setCellValue('L'.$highestRow,$sc['toolman']);
+					$worksheet->setCellValue('M'.$highestRow,$sc['item_desc']);
+					
 
 
 					$highestRow++;
