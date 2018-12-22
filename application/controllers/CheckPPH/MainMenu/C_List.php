@@ -146,9 +146,6 @@ class C_List extends CI_Controller
 				}
 			}
 
-		// echo "<pre>";
-		// print_r($datagroup);
-		// exit();
 
 		//mulai
             $object = new PHPExcel();
@@ -270,7 +267,7 @@ class C_List extends CI_Controller
 					            $vendor = $value3['nama_vendor'];
 					            $row++;
 			            	}
-			            	$object->setActiveSheetIndex(0)
+				            	$object->setActiveSheetIndex(0)
 					                    ->setCellValue('C'.$row,$vendor.' Result')
 					                    ->setCellValue('H'.$row,$totdpp)
 					                    ->setCellValue('I'.$row,$totpph);
@@ -281,11 +278,13 @@ class C_List extends CI_Controller
 					            $row++;
 		            	}
 				            $object->setActiveSheetIndex(0)
-					                    ->setCellValue('C'.$row,'Grand Total')
-					                    ->setCellValue('H'.$row,$gandtotdpp)
-					                    ->setCellValue('I'.$row,$grandtotpph);
-					            $object->getActiveSheet()->getStyle('C'.$row.':I'.$row)->applyFromArray($Font10BoldUI);
-					            $object->getActiveSheet()->getStyle('H'.$row.':I'.$row)->getNumberFormat()->setFormatCode('#,##0;[Red]-#,##0');
+				                    ->setCellValue('C'.$row,'Grand Total')
+				                    ->setCellValue('H'.$row,$gandtotdpp)
+				                    ->setCellValue('I'.$row,$grandtotpph);
+
+				            $object->getActiveSheet()->getStyle('C'.$row.':I'.$row)->applyFromArray($Font10BoldUI);
+				            $object->getActiveSheet()->getStyle('H'.$row.':I'.$row)->getNumberFormat()->setFormatCode('#,##0;[Red]-#,##0');
+			            	
 			            	$row+=2;
 		            }
             	}
@@ -541,9 +540,13 @@ class C_List extends CI_Controller
 	private function create_recap($no)
 	{
 		$this->load->library('Excel');
+		$arrayJenis = array('213110','213102','213105','213106','213108','213103');
+		$arrayUrut = array();
+		$arraySpezial = array('YOGYAKARTA','TUKSONO');
 		$data = $this->M_uploadpph->getDataBatch($no);
 		$datagroup = array();
 		$datagroup2 = array();
+		$arrayzzz = array();
 		$periode = '';
 		$arrayMonth = array(
               '01' => 'Januari',
@@ -560,32 +563,16 @@ class C_List extends CI_Controller
               '12' => 'Desember',
           );
 
-		$arrayzzz = array();
-		foreach ($data as $key => $value) {
-			$datagroup[$value['nama_vendor']][] = $value;
+		foreach ($arrayJenis as $key => $value) {
+			foreach ($arraySpezial as $key2 => $value2) {
+				$arrayUrut[] = $value.'-'.$value2;
+			}
 		}
-		$arrayPajak = array(
-						'213109-YOGYAKARTA' => array('lokasi' 	 => 'YOGYAKARTA',
-											'jenis_pph'  => 'PPH PASAL 15',
-											'branch_coa' => 'AA – 213109',
-											'kode_pajak' => '411128-410'),
-						'213105-TUKSONO' => array('lokasi' 	 => 'TUKSONO',
-											'jenis_pph'  => 'PPH PASAL 4 KONSTRUKSI',
-											'branch_coa' => 'AC – 213105',
-											'kode_pajak' => '411128-409'),
-						'213102-YOGYAKARTA' => array('lokasi' 	 => 'YOGYAKARTA',
-											'jenis_pph'  => 'PPH PASAL 21',
-											'branch_coa' => 'AA-213102',
-											'kode_pajak' => '411121-100'),
-						'213103-YOGYAKARTA' => array('lokasi' 	 => 'YOGYAKARTA',
-											'jenis_pph'  => 'PPH 23',
-											'branch_coa' => 'AA – 213103',
-											'kode_pajak' => '411124-100'),
-						'213103-TUKSONO' => array('lokasi' 	 => 'TUKSONO',
-											'jenis_pph'  => 'PPH 23',
-											'branch_coa' => 'AA – 213103',
-											'kode_pajak' => '411124-100'),
-					);
+
+		// foreach ($data as $key => $value) {
+		// 	$datagroup[$value['nama_vendor']][] = $value;
+		// }
+		
 		$arrayKodeLokasi = array(
 								'YOGYAKARTA' => 'AA',	
 								'MLATI' => 'AB',	
@@ -659,118 +646,139 @@ class C_List extends CI_Controller
 									)
 					);
 
-		foreach ($datagroup as $key => $value) {
-			$arrayNew 	= array();
-			$arraysudah = array();
-			$arrayBaru 	= array();
-			$pph = array();
-			$dpp = array();
-		
-			foreach ($value as $key2 => $value2) {
-				$arrayBaru[$value2['jenis_jasa']] = $value2;
-				$namadpp = 'dpp'.$value2['jenis_jasa'];
-				$namapph = 'pph'.$value2['jenis_jasa'];
-
-				if (in_array($value2['jenis_jasa'], $arraysudah)) {
-					$$namadpp += $value2['dpp'];
-					$$namapph += $value2['pph'];
+		// 
+			foreach ($data as $key2 => $value2) {
+				$jenispajak = strtoupper(str_replace(' ','', $value2['jenis_pph']));
+				if (strpos($jenispajak,'PPH21') !== false) {
+					if (strpos($jenispajak,'PPH21PES')  !== false) {
+						$code_jenis = '213110';
+					}else{
+						$code_jenis = '213102';
+					}
+				}elseif(strpos($jenispajak,'PPH23') !== false) {
+					$code_jenis = '213103';
+				}elseif(strpos($jenispajak,'PPH4KON') !== false) {
+					$code_jenis = '213105';
+				}elseif(strpos($jenispajak,'PPH4SE') !== false) {
+					$code_jenis = '213106';
+				}elseif(strpos($jenispajak,'PPH4UN') !== false) {
+					$code_jenis = '213108';
 				}else{
-					array_push($arraysudah, $value2['jenis_jasa']);
-					$$namadpp = 0;
-					$$namapph = 0;
-					$$namadpp += $value2['dpp'];
-					$$namapph += $value2['pph'];
+					$code_jenis = '0';
 				}
+				$datagroup[$code_jenis][$value2['jenis_pph'].'<>'.$value2['lokasi']][$value2['nama_vendor']][] = $data[$key2];
 
 			}
-			foreach ($arrayBaru as $k => $v) {
-				$namadpp = 'dpp'.$k;
-				$namapph = 'pph'.$k;
-				$v['dpp'] = $$namadpp;
-				$v['pph'] = $$namapph;
-				$arrayNew[] = $v;
-				$tglperiode = $v['tgl_transaksi'];
+
+		foreach ($arrayJenis as $kJ => $vJ) {
+				if (isset($datagroup[$vJ])) {
+					foreach ($datagroup[$vJ] as $key => $value) {
+						// $datagroup2[$key] = $value;
+						$namex = explode('<>', $key);
+						$nameindex = $namex[1];
+						if (in_array(strtoupper($nameindex), $arraySpezial)) {
+							$datagroup2[strtoupper($nameindex)][$vJ][$key] = $value;
+						}
+					}
+				}
 			}
 
-			$arrayzzz[$key] = $arrayNew;
-	
-		}
-		$datagroup = $arrayzzz;
-		if ($datagroup) {
+			foreach ($datagroup2 as $key => $value) {
+				foreach ($value as $key2 => $value2) {
+					foreach ($value2 as $key3 => $value3) {
+						foreach ($value3 as $key4 => $value4) {
+							$arrayNew = array();
+							$arraysudah = array();
+							$arrayBaru = array();
+							$pph = array();
+							$dpp = array();
+							foreach ($value4 as $key5 => $value5) {
+								$arrayBaru[$value5['jenis_jasa']] = $value5;
+								$namadpp = 'dpp'.$value5['jenis_jasa'];
+								$namapph = 'pph'.$value5['jenis_jasa'];
+
+								if (in_array($value5['jenis_jasa'], $arraysudah)) {
+									$$namadpp += $value5['dpp'];
+									$$namapph += $value5['pph'];
+								}else{
+									array_push($arraysudah, $value5['jenis_jasa']);
+									$$namadpp = 0;
+									$$namapph = 0;
+									$$namadpp += $value5['dpp'];
+									$$namapph += $value5['pph'];
+								}
+							}
+							foreach ($arrayBaru as $k => $v) {
+								$namadpp = 'dpp'.$k;
+								$namapph = 'pph'.$k;
+								$v['dpp'] = $$namadpp;
+								$v['pph'] = $$namapph;
+								$tglperiode = $v['tgl_transaksi'];
+								$arrayNew[] = $v;
+							}
+							$datagroup3[$key][$key2][$key4] = $arrayNew;
+
+						}
+					}
+				}
+			}
+		if ($datagroup3) {
 				$periode = strtoupper($arrayMonth[date('m',strtotime($tglperiode))]).' '.date('Y',strtotime($tglperiode));
-			}	
-
-
-		foreach ($datagroup as $key => $value) {
-			foreach ($value as $key2 => $value2) {
-				$datagroup2[$value2['jenis_pph'].'>'.$value2['lokasi']][$key][] = $value2;
 			}
-		}
 
-		// foreach ($datagroup2 as $key => $value) {
-		// 	$awal = strpos($key,'>');
-		// 	$tot  = strlen($key);
-		// 	$nama = substr($key, ($awal+1), ($tot-$awal));
-		// 	$datagroup3[$nama][$key] = $value;
-		// }
 
-		foreach ($datagroup2 as $key => $value) {
+		// 
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                       
+
+		echo "<pre>";
+		foreach ($datagroup3 as $key => $value) {
 			foreach ($value as $key2 => $value2) {
 				foreach ($value2 as $key3 => $value3) {
-					$no_urut = $value3['no_urut'];
-					$tgl_transaksi = $value3['tgl_transaksi'];
-					$nama_vendor = $value3['nama_vendor'];
-					$jenis_pph = $value3['jenis_pph'];
-					$batch_num = $value3['batch_num'];
-					$lokasi = $value3['lokasi'];
-				}
-				if (!$no_urut) {
-					$datagroup2[$key][$key2][$key3]['nama_vendor'];
-					// echo $jenis_pph.' - '.$tgl_transaksi.' - '.$nama_vendor.' - '.$batch_num.'<br>';
-					$newNoUrut = $this->generateNumberBukpot($jenis_pph,$lokasi,$tgl_transaksi,$nama_vendor,$batch_num);
-					foreach ($value2 as $key3 => $value3) {
-						$datagroup2[$key][$key2][$key3]['no_urut'] = $newNoUrut;
+					foreach ($value3 as $key4 => $value4) {
+						$no_urut = $value4['no_urut'];
+						$tgl_transaksi = $value4['tgl_transaksi'];
+						$nama_vendor = $value4['nama_vendor'];
+						$jenis_pph = $value4['jenis_pph'];
+						$coa = $key2;
+						$batch_num = $value4['batch_num'];
+						$lokasi = $value4['lokasi'];
+					}
+					if (!$no_urut) {
+						// $datagroup2[$key][$key2][$key3]['nama_vendor'];
+						$newNoUrut = $this->generateNumberBukpot($coa, $jenis_pph,$lokasi,$tgl_transaksi,$nama_vendor,$batch_num);
+						foreach ($value3 as $key4 => $value4) {
+							$datagroup3[$key][$key2][$key3][$key4]['no_urut'] = $newNoUrut;
+						}
+						// echo "durunggg";
 					}
 				}
 			}
 		}
 
-
-		// exit();
+			// echo $periode.'<br>';
+			// print_r($datagroup3);
+			// exit();
 
 		$arrayRekap = array();
-		// $nomer = 0;
-		foreach ($datagroup2 as $key => $value) {
-			// echo count($value);
-			$namepjkexplode = explode('>', $key);
-			$jenispph = strtoupper(str_replace(' ','',$namepjkexplode[0]));
-			$lokasi = strtoupper($namepjkexplode[1]);
-			$jenis_pph_rekap = $coa= '';
-			foreach($arrayCOA as $k => $v){
-				if (in_array($jenispph, $v['JENISPPH'])) {
-					$coa  = $k;
-					$jenis_pph_rekap = $v['JENISPPHREKAP'];
-					$kodepajak = $v['KODEPAJAK'];
-
-				}
-			}
-			$arrayRekap[$coa.'-'.$lokasi]['LOKASI'] = $lokasi;
-			$arrayRekap[$coa.'-'.$lokasi]['JENIS_PPH'] = $jenis_pph_rekap;
-			$arrayRekap[$coa.'-'.$lokasi]['BRANCH'] = $arrayKodeLokasi[$lokasi];
-			$arrayRekap[$coa.'-'.$lokasi]['COA'] = $coa;
-			$arrayRekap[$coa.'-'.$lokasi]['KODEPAJAK'] = $kodepajak;
+		foreach ($datagroup3 as $key => $value) {
 			foreach ($value as $key2 => $value2) {
-				$arrayRekap[$coa.'-'.$lokasi]['DATA'][$key2] = $value2;
-				
+				$namepjkexplode = explode('>', $key);
+				$jenispph = strtoupper(str_replace(' ','',$namepjkexplode[0]));
+				$lokasi = $key;
+				$coa 		= $key2;
+				$jenis_pph_rekap = $arrayCOA[$key2]['JENISPPHREKAP'];
+				$kodepajak  = $arrayCOA[$key2]['KODEPAJAK'];
+
+				$arrayRekap[$coa.'-'.$lokasi]['LOKASI'] = $lokasi;
+				$arrayRekap[$coa.'-'.$lokasi]['JENIS_PPH'] = $jenis_pph_rekap;
+				$arrayRekap[$coa.'-'.$lokasi]['BRANCH'] = $arrayKodeLokasi[$lokasi];
+				$arrayRekap[$coa.'-'.$lokasi]['COA'] = $coa;
+				$arrayRekap[$coa.'-'.$lokasi]['KODEPAJAK'] = $kodepajak;
+				$arrayRekap[$coa.'-'.$lokasi]['DATA'] = $value2;
 			}
-			// $nomer++;
 			
 		}
 
-			// echo "<pre>";
-			// echo $periode.'<br>';
-			// print_r($arrayRekap);
-			// exit();
 
 		//mulai
             $object = new PHPExcel();
@@ -850,16 +858,18 @@ class C_List extends CI_Controller
             //isi
             $row = 4;
             $row1 = $row;
-            foreach ($arrayRekap as $kp => $vp) { 
+            foreach ($arrayUrut as $kUrut => $vUrut) {
+        	if(isset($arrayRekap[$vUrut])):
+            // foreach ($arrayRekap[$vUrut] as $vUrut => $arrayRekap[$vUrut]) { 
             	$object->setActiveSheetIndex(0)
 	                    ->setCellValue('A'.$row,'LOKASI')
 	                    ->setCellValue('A'.($row+1),'JENIS PPH')
 	                    ->setCellValue('A'.($row+2),'BRANCH – COA')
 	                    ->setCellValue('A'.($row+3),'KODE AKUN PAJAK')
-	                    ->setCellValue('C'.$row,': '.$vp['LOKASI'])
-	                    ->setCellValue('C'.($row+1),': '.$vp['JENIS_PPH'])
-	                    ->setCellValue('C'.($row+2),': '.$vp['BRANCH'].' - '.$vp['COA'])
-	                    ->setCellValue('C'.($row+3),': '.$vp['KODEPAJAK']);
+	                    ->setCellValue('C'.$row,': '.$arrayRekap[$vUrut]['LOKASI'])
+	                    ->setCellValue('C'.($row+1),': '.$arrayRekap[$vUrut]['JENIS_PPH'])
+	                    ->setCellValue('C'.($row+2),': '.$arrayRekap[$vUrut]['BRANCH'].' - '.$arrayRekap[$vUrut]['COA'])
+	                    ->setCellValue('C'.($row+3),': '.$arrayRekap[$vUrut]['KODEPAJAK']);
 	            $object->getActiveSheet()->getStyle('A'.$row.':K'.($row+4))->applyFromArray($Font13Bold);
 	            $row += 4;
 	            $object->setActiveSheetIndex(0)
@@ -882,14 +892,14 @@ class C_List extends CI_Controller
 	           );
 	             $object->getActiveSheet()->getRowDimension($row)->setRowHeight(28);
 	        $row++; $nom =1;
-        	$totdpp[$kp] = $totpph[$kp]  = 0;
-	        if ($vp['DATA']) {
-		        foreach ($vp['DATA'] as $key1 => $value1) {
+        	$totdpp[$vUrut] = $totpph[$vUrut]  = 0;
+	        if ($arrayRekap[$vUrut]['DATA']) {
+		        foreach ($arrayRekap[$vUrut]['DATA'] as $key1 => $value1) {
 		        	$a = count($value1);
 		        	foreach($value1 as $key2 => $value2){
-		        		if (!$value2['no_urut']) {
+		        	// 	if (!$value2['no_urut']) {
 		        			// $nomor_urut = $this->generateNumberBukpot($value2['jenis_pph'],$value2['tgl_transaksi']);
-		        		}
+		        		// }
 		        	$object->setActiveSheetIndex(0)
 		                    ->setCellValue('A'.$row,$nom)
 		                    ->setCellValue('B'.$row,strtoupper(date('d-M-y', strtotime($value2['tgl_transaksi']))))
@@ -915,16 +925,16 @@ class C_List extends CI_Controller
 		            $object->getActiveSheet()->getStyle('G'.$row.':H'.$row)->getNumberFormat()->setFormatCode('#,##0;[Red]-#,##0');
 					$object->getActiveSheet()->getStyle('A'.$row.':K'.$row)->getAlignment()->setWrapText(true);
 		            $object->getActiveSheet()->getRowDimension($row)->setRowHeight(28);
-			        $row++; $nom++; $totdpp[$kp] += $value2['dpp']; $totpph[$kp] += $value2['pph'];
+			        $row++; $nom++; $totdpp[$vUrut] += $value2['dpp']; $totpph[$vUrut] += $value2['pph'];
 			        $jenis_jasa_nya = str_replace(' ','>',$value2['jenis_jasa']);
-			        if (!isset($totdppperjasa[$kp][strtoupper($jenis_jasa_nya)])) {
-			        	$totdppperjasa[$kp][strtoupper($jenis_jasa_nya)] = 0;
+			        if (!isset($totdppperjasa[$vUrut][strtoupper($jenis_jasa_nya)])) {
+			        	$totdppperjasa[$vUrut][strtoupper($jenis_jasa_nya)] = 0;
 			        }
-			        if (!isset($totpphperjasa[$kp][strtoupper($jenis_jasa_nya)])) {
-			        	$totpphperjasa[$kp][strtoupper($jenis_jasa_nya)] = 0;
+			        if (!isset($totpphperjasa[$vUrut][strtoupper($jenis_jasa_nya)])) {
+			        	$totpphperjasa[$vUrut][strtoupper($jenis_jasa_nya)] = 0;
 			        }
-			        $totdppperjasa[$kp][strtoupper($jenis_jasa_nya)] += $value2['dpp'];
-			        $totpphperjasa[$kp][strtoupper($jenis_jasa_nya)] += $value2['pph'];
+			        $totdppperjasa[$vUrut][strtoupper($jenis_jasa_nya)] += $value2['dpp'];
+			        $totpphperjasa[$vUrut][strtoupper($jenis_jasa_nya)] += $value2['pph'];
 			       }
 			       $object->getActiveSheet()->mergeCells('J'.($row-($a)).':J'.($row-1));
 		        } 
@@ -950,11 +960,11 @@ class C_List extends CI_Controller
 			       }
 	        }
 	        	$object->getActiveSheet()->mergeCells('A'.$row.':F'.$row);
-	        	$kettot = ($vp['KODEPAJAK'] == '411124-100') ? $vp['JENIS_PPH'].' '.$vp['LOKASI'] : $vp['JENIS_PPH'];
+	        	$kettot = ($arrayRekap[$vUrut]['KODEPAJAK'] == '411124-100') ? $arrayRekap[$vUrut]['JENIS_PPH'].' '.$arrayRekap[$vUrut]['LOKASI'] : $arrayRekap[$vUrut]['JENIS_PPH'];
 	        	$object->setActiveSheetIndex(0)
 	                    ->setCellValue('A'.$row,'TOTAL '.$kettot)
-	                    ->setCellValue('G'.$row, $totdpp[$kp])
-	                    ->setCellValue('H'.$row, $totpph[$kp]);
+	                    ->setCellValue('G'.$row, $totdpp[$vUrut])
+	                    ->setCellValue('H'.$row, $totpph[$vUrut]);
 	            $object->getActiveSheet()->getRowDimension($row)->setRowHeight(28);
 	            $object->getActiveSheet()->getRowDimension(($row+1))->setRowHeight(28);
 	            $object->getActiveSheet()->getStyle('A'.$row.':K'.$row)->applyFromArray($Font13Bold);
@@ -966,7 +976,9 @@ class C_List extends CI_Controller
 	           );
 
 	        $row+=2;
-            }
+            // }
+	        endif;
+	        }
             //foooter
             $object->getActiveSheet()->mergeCells('E'.($row+2).':E'.($row+3));
             $object->getActiveSheet()->mergeCells('E'.($row+6).':E'.($row+8));
@@ -985,17 +997,17 @@ class C_List extends CI_Controller
 	                    $object->getActiveSheet()->getStyle('E'.$row.':E'.($row+1))->applyFromArray($Font13BoldU);
 	                    $object->getActiveSheet()->getStyle('E'.($row+14))->applyFromArray($Font13BoldU);
 	         $object->setActiveSheetIndex(0)
-	                    ->setCellValue('F'.($row+2),'Bonus/Hadiah')
+	                    ->setCellValue('F'.($row+2),'Hadiah')
 	                    ->setCellValue('F'.($row+3),'Sewa Aktiva')
 	                    ->setCellValue('F'.($row+6),'Teknik')
 	                    ->setCellValue('F'.($row+7),'Manajemen')
 	                    ->setCellValue('F'.($row+8),'Jasa Lain sesuai PMK – 244/PMK.03/2008');
 	                    $object->getActiveSheet()->getStyle('F'.$row.':F'.($row+8))->applyFromArray($Font13Reg);
 
-	        $pph23_dpp_pusat_bonus = isset($totdppperjasa['213103-YOGYAKARTA']['BONUS/HADIAH']) ? $totdppperjasa['213103-YOGYAKARTA']['BONUS/HADIAH'] : 0;
-	        $pph23_pph_pusat_bonus = isset($totpphperjasa['213103-YOGYAKARTA']['BONUS/HADIAH']) ? $totpphperjasa['213103-YOGYAKARTA']['BONUS/HADIAH'] : 0;
-	        $pph23_dpp_tuksono_bonus = isset($totdppperjasa['213103-TUKSONO']['BONUS/HADIAH']) ? $totdppperjasa['213103-TUKSONO']['BONUS/HADIAH'] : 0;
-	        $pph23_pph_tuksono_bonus = isset($totpphperjasa['213103-TUKSONO']['BONUS/HADIAH']) ? $totpphperjasa['213103-TUKSONO']['BONUS/HADIAH'] : 0;
+	        $pph23_dpp_pusat_bonus = isset($totdppperjasa['213103-YOGYAKARTA']['HADIAH']) ? $totdppperjasa['213103-YOGYAKARTA']['HADIAH'] : 0;
+	        $pph23_pph_pusat_bonus = isset($totpphperjasa['213103-YOGYAKARTA']['HADIAH']) ? $totpphperjasa['213103-YOGYAKARTA']['HADIAH'] : 0;
+	        $pph23_dpp_tuksono_bonus = isset($totdppperjasa['213103-TUKSONO']['HADIAH']) ? $totdppperjasa['213103-TUKSONO']['HADIAH'] : 0;
+	        $pph23_pph_tuksono_bonus = isset($totpphperjasa['213103-TUKSONO']['HADIAH']) ? $totpphperjasa['213103-TUKSONO']['HADIAH'] : 0;
 	        $pph23_dpp_pusat_sewa = isset($totdppperjasa['213103-YOGYAKARTA']['SEWA>AKTIVA']) ? $totdppperjasa['213103-YOGYAKARTA']['SEWA>AKTIVA'] : 0;
 	        $pph23_pph_pusat_sewa = isset($totpphperjasa['213103-YOGYAKARTA']['SEWA>AKTIVA']) ? $totpphperjasa['213103-YOGYAKARTA']['SEWA>AKTIVA'] : 0;
 	        $pph23_dpp_tuksono_sewa = isset($totdppperjasa['213103-TUKSONO']['SEWA>AKTIVA']) ? $totdppperjasa['213103-TUKSONO']['SEWA>AKTIVA'] : 0;
@@ -1009,11 +1021,11 @@ class C_List extends CI_Controller
 	        $pph23_pph_pusat_teknik = isset($totpphperjasa['213103-YOGYAKARTA']['TEKNIK']) ? $totpphperjasa['213103-YOGYAKARTA']['TEKNIK'] : 0;
 	        $pph23_dpp_tuksono_teknik = isset($totdppperjasa['213103-TUKSONO']['TEKNIK']) ? $totdppperjasa['213103-TUKSONO']['TEKNIK'] : 0;
 	        $pph23_pph_tuksono_teknik = isset($totpphperjasa['213103-TUKSONO']['TEKNIK']) ? $totpphperjasa['213103-TUKSONO']['TEKNIK'] : 0;
-	        $pph23_dpp_pusat_mnj = isset($totdppperjasa['213103-YOGYAKARTA']['MANAJEMEN']) ? $totdppperjasa['213103-YOGYAKARTA']['MANAJEMEN'] : 0;
-	        $pph23_pph_pusat_mnj = isset($totpphperjasa['213103-YOGYAKARTA']['MANAJEMEN']) ? $totpphperjasa['213103-YOGYAKARTA']['MANAJEMEN'] : 0;
-	        $pph23_dpp_tuksono_mnj = isset($totdppperjasa['213103-TUKSONO']['MANAJEMEN']) ? $totdppperjasa['213103-TUKSONO']['MANAJEMEN'] : 0;
-	        $pph23_pph_tuksono_mnj = isset($totpphperjasa['213103-TUKSONO']['MANAJEMEN']) ? $totpphperjasa['213103-TUKSONO']['MANAJEMEN'] : 0;
-	        $array_kecuali = array('TEKNIK','MANAJEMEN','BONUS/HADIAH','SEWA>AKTIVA');
+	        $pph23_dpp_pusat_mnj = isset($totdppperjasa['213103-YOGYAKARTA']['MANAGEMENT']) ? $totdppperjasa['213103-YOGYAKARTA']['MANAGEMENT'] : 0;
+	        $pph23_pph_pusat_mnj = isset($totpphperjasa['213103-YOGYAKARTA']['MANAGEMENT']) ? $totpphperjasa['213103-YOGYAKARTA']['MANAGEMENT'] : 0;
+	        $pph23_dpp_tuksono_mnj = isset($totdppperjasa['213103-TUKSONO']['MANAGEMENT']) ? $totdppperjasa['213103-TUKSONO']['MANAGEMENT'] : 0;
+	        $pph23_pph_tuksono_mnj = isset($totpphperjasa['213103-TUKSONO']['MANAGEMENT']) ? $totpphperjasa['213103-TUKSONO']['MANAGEMENT'] : 0;
+	        $array_kecuali = array('TEKNIK','MANAGEMENT','HADIAH','SEWA>AKTIVA');
 	        $pph23_dpp_pusat_lain = $pph23_pph_pusat_lain = $pph23_pph_tuksono_lain = $pph23_dpp_tuksono_lain = 0;
 	        foreach ($totpphperjasa['213103-TUKSONO'] as $kj => $vj) {
 	        	if (!in_array($kj, $array_kecuali)) {
@@ -1134,21 +1146,23 @@ class C_List extends CI_Controller
 	        $row2 = $row;
 	        $tot_pusat_dpp = $tot_pusat_pph = $tot_tuksono_dpp = $tot_tuksono_pph = 0;
 	        foreach ($totdppperjasa['213103-YOGYAKARTA'] as $kj => $vj) {
-	        	 $jenis_jasa = ucwords(strtolower(str_replace('>', ' ', $kj)));
-	        	 $pph_pusat = isset($totpphperjasa['213103-YOGYAKARTA'][$kj]) ? $totpphperjasa['213103-YOGYAKARTA'][$kj] : 0;
-	        	 $dpp_tuksono = isset($totdppperjasa['213103-TUKSONO'][$kj]) ? $totdppperjasa['213103-TUKSONO'][$kj] : 0;
-	        	 $pph_tuksono = isset($totpphperjasa['213103-TUKSONO'][$kj]) ? $totpphperjasa['213103-TUKSONO'][$kj] : 0;
-	        	 $object->setActiveSheetIndex(0)
-	                    ->setCellValue('F'.($row2),$jenis_jasa)
-	                    ->setCellValue('G'.($row2),($vj ? $vj : ''))
-	                    ->setCellValue('H'.($row2),($pph_pusat ? $pph_pusat : ''))
-	                    ->setCellValue('J'.($row2),($dpp_tuksono ? $dpp_tuksono : ''))
-	                    ->setCellValue('K'.($row2),($pph_tuksono ? $pph_tuksono : ''));
-	                    $tot_pusat_dpp += $vj;
-	                    $tot_pusat_pph += $pph_pusat;
-	                    $tot_tuksono_dpp += $dpp_tuksono;
-	                    $tot_tuksono_pph += $pph_tuksono;
-	        	$row2++;
+	        	if(!in_array($kj, $array_kecuali)){
+		        	 $jenis_jasa = ucwords(strtolower(str_replace('>', ' ', $kj)));
+		        	 $pph_pusat = isset($totpphperjasa['213103-YOGYAKARTA'][$kj]) ? $totpphperjasa['213103-YOGYAKARTA'][$kj] : 0;
+		        	 $dpp_tuksono = isset($totdppperjasa['213103-TUKSONO'][$kj]) ? $totdppperjasa['213103-TUKSONO'][$kj] : 0;
+		        	 $pph_tuksono = isset($totpphperjasa['213103-TUKSONO'][$kj]) ? $totpphperjasa['213103-TUKSONO'][$kj] : 0;
+		        	 $object->setActiveSheetIndex(0)
+		                    ->setCellValue('F'.($row2),$jenis_jasa)
+		                    ->setCellValue('G'.($row2),($vj ? $vj : ''))
+		                    ->setCellValue('H'.($row2),($pph_pusat ? $pph_pusat : ''))
+		                    ->setCellValue('J'.($row2),($dpp_tuksono ? $dpp_tuksono : ''))
+		                    ->setCellValue('K'.($row2),($pph_tuksono ? $pph_tuksono : ''));
+		                    $tot_pusat_dpp += $vj;
+		                    $tot_pusat_pph += $pph_pusat;
+		                    $tot_tuksono_dpp += $dpp_tuksono;
+		                    $tot_tuksono_pph += $pph_tuksono;
+		        	$row2++;
+	        	}
 	        }
 
 	        	$object->setActiveSheetIndex(0)
@@ -1201,36 +1215,18 @@ class C_List extends CI_Controller
 	}
 
 
-	private function generateNumberBukpot($jenis,$lokasi,$tgltransaksi,$vendor,$batch_num){
-		$jenispph = strtoupper(str_replace(' ', '', $jenis));
+	private function generateNumberBukpot($coa,$jenis,$lokasi,$tgltransaksi,$vendor,$batch_num){
+		// $jenispph = strtoupper(str_replace(' ', '', $jenis));
 		$period = date('m/Y', strtotime($tgltransaksi));
-		$array21 = array(
-						'PPH21-50%',
-						'PPH21NON-50%',
-						'PPH21PGT-NON',
-						'PPH21PUNGUTAN');
-		$array23 = array(
-						'PPH23HADIAH',
-						'PPH23JASA',
-						'PPH23JS-NON');
-		$array4Kons =array(
-						'PPH4KONSTR2%',
-						'PPH4KONSTR3%',
-						'PPH4KONSTR4%');
-		$array4Sewa = array('PPH4SEWA');
-		$array15 = array('PPH15-1.2%');
-		$kode = $param = '';
-		if(in_array($jenispph, $array21)){
-			$param = '21/'.$period;
-		}elseif (in_array($jenispph, $array23)) {
-			$param = '23/'.$period;
-		}elseif(in_array($jenispph, $array4Kons)) {
-			$param = 'Kons/'.$period;
-		}elseif (in_array($jenispph,$array4Sewa)) {
-			$param = 'Sewa/'.$period;
-		}elseif (in_array($jenispph,$array15)) {
-			$param = '15/'.$period;
-		}
+		$arrayKode = array(
+					'213110' => '21Pes/',
+					'213102' => '21/',
+					'213103' => '23/',
+					'213105' => 'Kons/',
+					'213106' => 'Sewa/',
+					'213108' => 'Undian/',
+				);
+		$param = $arrayKode[$coa].$period;
 		$getMaxNumb = $this->M_uploadpph->getMaxNumb($param,$lokasi);
 		if ($getMaxNumb) {
 			$maxNumb1 = $getMaxNumb[0]['nomor'];

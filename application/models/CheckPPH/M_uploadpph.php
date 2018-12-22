@@ -45,7 +45,8 @@ class M_uploadpph extends CI_Model
 	{
 		$sql = "SELECT * 
 				FROM ap.ap_tax_data 
-				WHERE batch_num = '$batch'";
+				WHERE batch_num = '$batch'
+				order by no_urut";
 		$query = $this->db->query($sql);
 		return $query->result_array();
 	}
