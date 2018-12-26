@@ -78,6 +78,7 @@ class C_infokirim extends CI_Controller
 			$data['kategori'] = $this->input->post('txtPilihKat');
 			$data['text'] = $this->input->post('txtHiddenValue');
 			$periode = $this->input->post('txtPeriodeInfo');
+			$periode = explode(" - ", $periode);
 			if (isset($_POST['txtValueSek'])) {
 				$data['value'] = $this->input->post('txtValueSek');
 				$data['tabel'] = $this->M_info->chartLimbah($data['value'],$periode);
@@ -86,15 +87,16 @@ class C_infokirim extends CI_Controller
 				$data['tabel'] = $this->M_info->chartSeksi($data['value'],$periode);
 			}
 		}else{
-			$data['periode'] = date('F Y');
+			$pd = $this->M_info->getPeriodeDefault();
+			$data['periode'] = $pd[0]['awal']." - ".$pd[0]['akhir'];
 			$data['kategori'] = "seksi";
 			foreach ($data['seksi'] as $key) {
 				if ($kodesie == $key['section_code']) {
 					$data['text'] = $key['section_name'];
 				}
 			}
-			$periode = date('F Y');
-			$data['tabel'] = $this->M_info->chartLimbah($kodesie,$periode);
+			
+			$data['tabel'] = $this->M_info->chartLimbah($kodesie);
 		}
 		
 
@@ -111,7 +113,7 @@ class C_infokirim extends CI_Controller
 	public function Chart(){
 
 		$periode = $this->input->post('txtPeriodeInfo');
-
+		$periode = explode(" - ", $periode);
 		if (isset($_POST['txtValueSek'])) {
 			$seksi = $this->input->post('txtValueSek');
 			$data['chart'] = $this->M_info->chartLimbah($seksi,$periode);
