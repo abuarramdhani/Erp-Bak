@@ -54,8 +54,9 @@
 																		$a = $key['id_jenis_limbah'];
 																		$b = $key['jenis_limbah'];
 																		$c = $key['kode_limbah'];
+																		$d = $key['satuan'];
 																		if ($a !== '26' and $a !== '27' and $a !== '28') {
-																			echo "<option value='$a'>$c - $b</option>";
+																			echo "<option value='$a' data-satuan= '$d'>$c - $b</option>";
 																		}
 																	}
 																}else{
@@ -95,7 +96,7 @@
 													</div>
 												</div>
 											</div>
-											<div class="form-group">
+											<div class="form-group hidden">
 												<label for="txtSeksi" class="control-label col-lg-4">Seksi Asal Limbah</label>
 												<div class="col-lg-4">
 													<div class="col-lg-12">
