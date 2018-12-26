@@ -64,7 +64,7 @@
 													</div>
 												</div>
 											</div>
-											<div class="form-group">
+											<div class="form-group hidden">
 												<label for="txtSeksi" class="control-label col-lg-4">Seksi Pengirim</label>
 												<div class="col-lg-4">
 													<div class="col-lg-12">
