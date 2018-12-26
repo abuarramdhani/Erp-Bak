@@ -215,14 +215,31 @@ $(function(){
 
   	});
 
-  	$('#txtPeriodeInfo').datepicker({
+  	// $('#txtPeriodeInfo').datepicker({
+  	// 	"autoclose": true,
+   //    	"todayHiglight": true,
+   //    	"autoApply": true,
+   //    	"format":'MM yyyy',
+   //    	"viewMode":'months',
+   //    	"minViewMode":'months'
+  	// });
+
+  	$('#txtPeriodeInfo').daterangepicker({
   		"autoclose": true,
-      	"todayHiglight": true,
-      	"autoApply": true,
-      	"format":'MM yyyy',
-      	"viewMode":'months',
-      	"minViewMode":'months'
-  	});
+ 		"todayHiglight": true,
+ 		locale: {
+     			cancelLabel: 'Clear',
+     			"format": "YYYY-MM-DD",
+				"separator": " - ",
+     		}
+     });
+
+  	$('input[id="txtPeriodeInfo"]').on('apply.daterangepicker', function(ev, picker) {
+ 		$(this).val(picker.startDate.format('YYYY-MM-DD') + ' - ' + picker.endDate.format('YYYY-MM-DD'));
+ 	});
+   	$('input[id="txtPeriodeInfo"]').on('cancel.daterangepicker', function(ev, picker) {
+ 		$(this).val('');
+ 	});
 
 
   	$('#txtWaktuKirimLimbah').timepicker({
