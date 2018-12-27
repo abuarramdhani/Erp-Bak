@@ -75,7 +75,7 @@
 	<script src="<?php echo base_url('assets/plugins/redactor/plugins/fontfamily.min.js');?>"></script>
 	<script src="<?php echo base_url('assets/plugins/redactor/plugins/fontsize.min.js');?>"></script>
 	<script src="<?php echo base_url('assets/plugins/redactor/plugins/imagemanager.min.js');?>"></script> -->
-
+	<script src="<?php echo base_url('assets/plugins/mdtimepicker/mdtimepicker.js');?>"></script>
 
 	<!-- Custom Javascript -->
     <script src="<?php echo base_url('assets/js/custom.js');?>" type="text/javascript"></script>
@@ -129,7 +129,6 @@
 	<script src="<?php echo base_url('assets/js/customMO.js');?>" type="text/javascript"></script>
 	<script src="<?php echo base_url('assets/js/customERC.js');?>" type="text/javascript"></script>
 	<script type="text/javascript">
-    <script type="text/javascript">
 		if(counter_row <= 0){
 			var counter_row = 0;
 		}
