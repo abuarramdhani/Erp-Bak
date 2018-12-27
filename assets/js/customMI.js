@@ -1,6 +1,6 @@
 $(document).ready(function(){
 
-	$('#tbListSubmit, #tbListInvoice').DataTable({
+	$('#tbListSubmit, #invoice_detail, #tbListInvoice').DataTable({
 		"pageLength": 10,
         "paging": true,
         "searching": true,
@@ -12,7 +12,7 @@ $(document).ready(function(){
         "searching": true,
 	});
 
-	$('#tabel_detail_purchasing, #invoice_detail, #editlinespo, #tabel_invoice, #rejectpo, #rejectinvoice, #finishInvoice, #unprocessTabel').DataTable({
+	$('#tabel_detail_purchasing, #editlinespo, #tabel_invoice, #rejectpo, #rejectinvoice, #finishInvoice, #unprocessTabel').DataTable({
         "paging":   false,
         "ordering": false,
         "info":     false
@@ -105,7 +105,11 @@ $(document).ready(function(){
 				// console.log(response);
 				
 				$('#tablePoLines').html(response);
-				$('#poLinesTable').DataTable();
+				$('#poLinesTable').DataTable({
+					"paging":   false,
+			        "ordering": false,
+			        "info":     false	
+				});
 
 				$('#btnAddPoNumber').on('click', function(){
 				    var inputName = ['line_num','vendor_name','po_number','lppb_number','status','shipment_number',
