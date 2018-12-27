@@ -29,6 +29,7 @@
 											<th class="text-center">Invoice Date</th>
 											<th class="text-center">PPN</th>
 											<th class="text-center">Tax Invoice Number</th>
+											<th class="text-center">Nominal DPP</th>
 											<th class="text-center">Invoice Amount</th>
 											<th class="text-center">Po Amount</th>
 											<th class="text-center">Purchasing Submit Date</th>
@@ -48,6 +49,7 @@
 											<td><?php echo date('d-M-Y',strtotime($f['INVOICE_DATE']))?></td>
 											<td><?php echo $f['PPN']?></td>
 											<td><?php echo $f['TAX_INVOICE_NUMBER']?></td>
+											<td><?php echo $f['NOMINAL_DPP']?></td>
 											<td class="inv_amount" id="invoice_amount"><?php echo $f['INVOICE_AMOUNT']?></td>
 											<td class="po_amount"><?php echo $f['PO_AMOUNT']?></td>
 											<td><?php echo $f['LAST_STATUS_PURCHASING_DATE']?></td>

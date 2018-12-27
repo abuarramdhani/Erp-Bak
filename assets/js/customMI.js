@@ -1,6 +1,6 @@
 $(document).ready(function(){
 
-	$('#tabel_invoice, #tbListSubmit, #tbListInvoice, #rejectinvoice, #finishInvoice, #unprocessTabel').DataTable({
+	$('#tbListSubmit, #tbListInvoice').DataTable({
 		"pageLength": 10,
         "paging": true,
         "searching": true,
@@ -12,7 +12,7 @@ $(document).ready(function(){
         "searching": true,
 	});
 
-	$('#tabel_detail_purchasing').DataTable({
+	$('#tabel_detail_purchasing, #invoice_detail, #editlinespo, #tabel_invoice, #rejectpo, #rejectinvoice, #finishInvoice, #unprocessTabel').DataTable({
         "paging":   false,
         "ordering": false,
         "info":     false
