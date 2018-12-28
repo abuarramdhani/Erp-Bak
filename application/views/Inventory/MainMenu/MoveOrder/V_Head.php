@@ -4,7 +4,7 @@
 			<h4>CV. KARYA HIDUP SENTOSA</h4>
 		</td>
 		<td class="ver-center" rowspan="2">
-			<h3>PICK LIST GUDANG (ODM)</h3>
+			<h3>PICK LIST GUDANG (MO) (ODM)</h3>
 		</td>
 	</tr>
 	<tr>

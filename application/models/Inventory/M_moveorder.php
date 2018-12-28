@@ -9,7 +9,7 @@ class M_moveorder extends CI_Model
 
 	function search($date,$dept,$shift)
 	{
-		$oracle = $this->load->database('oracle',TRUE);
+		$oracle = $this->load->database('oracle_dev',TRUE);
 		$sql = "SELECT we.WIP_ENTITY_ID job_id ,we.WIP_ENTITY_NAME, msib.SEGMENT1 item_code, msib.DESCRIPTION, wdj.start_quantity,
 						msib2.INVENTORY_ITEM_ID, msib2.SEGMENT1 komponen, msib2.DESCRIPTION komp_desc
 						,wro.REQUIRED_QUANTITY,msib2.PRIMARY_UOM_CODE, bic.ATTRIBUTE1 gudang_asal, mil.SEGMENT1 locator_asal
@@ -62,7 +62,7 @@ class M_moveorder extends CI_Model
 
 	function getBody($job_no)
 	{
-		$oracle = $this->load->database('oracle',TRUE);
+		$oracle = $this->load->database('oracle_dev',TRUE);
 		$sql = "
 				SELECT we.WIP_ENTITY_ID job_id,  we.WIP_ENTITY_NAME ,msib2.SEGMENT1 komponen, msib2.DESCRIPTION komp_desc, msib2.inventory_item_id
 					,wro.REQUIRED_QUANTITY,msib2.PRIMARY_UOM_CODE, bic.ATTRIBUTE1 gudang_asal, mil.SEGMENT1 locator_asal
@@ -119,7 +119,7 @@ class M_moveorder extends CI_Model
 
 	function getShift($date=FALSE)
 	{
-		$oracle = $this->load->database('oracle',TRUE);
+		$oracle = $this->load->database('oracle_dev',TRUE);
 		if ($date === FALSE) {
 			$date = date('Y/m/d');
 		}
@@ -141,7 +141,7 @@ class M_moveorder extends CI_Model
 
 	function getDept()
 	{
-		$oracle = $this->load->database('oracle',TRUE);
+		$oracle = $this->load->database('oracle_dev',TRUE);
 		$sql = " SELECT distinct dept, description 
 				  FROM KHS_DEPT_ROUT_CLASS_V
 				  ORDER BY dept asc";
@@ -152,7 +152,7 @@ class M_moveorder extends CI_Model
 
 	function checkPicklist($no)
 	{
-		$oracle = $this->load->database('oracle',TRUE);
+		$oracle = $this->load->database('oracle_dev',TRUE);
 		$sql = "SELECT mtrh.REQUEST_NUMBER from mtl_txn_request_headers mtrh, wip_entities we
 				    where mtrh.ATTRIBUTE1 = we.WIP_ENTITY_ID
 				    and mtrh.ORGANIZATION_ID = we.ORGANIZATION_ID
@@ -166,7 +166,7 @@ class M_moveorder extends CI_Model
 
 	function getHeader($moveOrderAwal=FALSE, $moveOrderAkhir=FALSE)
 	{
-		$oracle = $this->load->database('oracle',TRUE);
+		$oracle = $this->load->database('oracle_dev',TRUE);
 		if ($moveOrderAwal==FALSE) {
 			$moveOrder = '';
 		}else{
@@ -179,7 +179,7 @@ class M_moveorder extends CI_Model
                  msib_produk.organization_id, 
                  KHS_INV_UTILITIES_PKG.GET_KLMPK_PRODUCT(msib_produk.inventory_item_id) kategori_produk, 
                  TO_CHAR( SYSDATE, 'DD/MM/YYYY HH24:MI:SS' ) Print_date, 
-                 TO_CHAR( mtrh.DATE_REQUIRED, 'DD/MM/YYYY HH24:MI:SS' ) Date_Required, 
+                 TO_CHAR( NVL(wdj.DATE_RELEASED,wdj.SCHEDULED_START_DATE), 'DD/MM/YYYY HH24:MI:SS' ) Date_Required, 
                  bd.DEPARTMENT_CLASS_CODE department, 
                  we.WIP_ENTITY_NAME job_no, 
                  wdj.start_quantity, 
@@ -227,7 +227,7 @@ class M_moveorder extends CI_Model
                      wdj.start_quantity, 
                      mtrh.FROM_SUBINVENTORY_CODE , 
                      bcs.DESCRIPTION,bst.FROM_TIME,bst.to_TIME, 
-                     mtrh.request_number  
+                     mtrh.request_number ,wdj.DATE_RELEASED,wdj.SCHEDULED_START_DATE 
                  ORDER BY we.WIP_ENTITY_NAME --mmtt.SUBINVENTORY_CODE
 		";
 
@@ -237,7 +237,7 @@ class M_moveorder extends CI_Model
 
 	function getDetail($moveOrderAwal=FALSE, $moveOrderAkhir=FALSE)
 	{
-		$oracle = $this->load->database('oracle',TRUE);
+		$oracle = $this->load->database('oracle_dev',TRUE);
 		if ($moveOrderAwal==FALSE || $moveOrderAkhir==FALSE) {
 			$moveOrder = '';
 		}else{
@@ -256,9 +256,9 @@ class M_moveorder extends CI_Model
 				'DD/MM/YYYY HH24:MI:SS'
 				) Print_date,
 				to_char(
-				mtrl.DATE_REQUIRED,
+				NVL(wdj.DATE_RELEASED,wdj.SCHEDULED_START_DATE),
 				'DD/MM/YYYY HH24:MI:SS'
-				) Date_Required,
+				) DATE_REQUIRED,
 				bd.DEPARTMENT_CLASS_CODE department, --Produk
 				mtrh.request_number move_order_no,
 				we.WIP_ENTITY_NAME job_no,
@@ -399,7 +399,7 @@ class M_moveorder extends CI_Model
 
 	function getJobID($job)
 	{
-		$oracle = $this->load->database('oracle',TRUE);
+		$oracle = $this->load->database('oracle_dev',TRUE);
 		$sql = "SELECT we.WIP_ENTITY_ID from wip_entities we	
 				where we.WIP_ENTITY_NAME = '$job'";
 		$query = $oracle->query($sql);
@@ -408,7 +408,7 @@ class M_moveorder extends CI_Model
 
 	function updateAttr10($id_job, $no_mo)
 	{
-		$oracle = $this->load->database('oracle',TRUE);
+		$oracle = $this->load->database('oracle_dev',TRUE);
 		$sql = "UPDATE mtl_txn_request_headers mtrh
 				set mtrh.ATTRIBUTE1 = '$id_job'
 				where mtrh.REQUEST_NUMBER = '$no_mo'
@@ -423,7 +423,7 @@ class M_moveorder extends CI_Model
 
 	function deleteTemp($ip, $job_id)
 	{
-		$oracle = $this->load->database('oracle',TRUE);
+		$oracle = $this->load->database('oracle_dev',TRUE);
 		$sql = "DELETE from CREATE_MO_KIB_TEMP where IP_ADDRESS = '$ip' and JOB_ID = $job_id ";
 		$oracle->trans_start();
 		$oracle->query($sql);
@@ -432,7 +432,7 @@ class M_moveorder extends CI_Model
 
 	function createTemp($data)
 	{
-		$oracle = $this->load->database('oracle',TRUE);
+		$oracle = $this->load->database('oracle_dev',TRUE);
 		$oracle->trans_start();
 		$oracle->insert('CREATE_MO_KIB_TEMP',$data);
 		$oracle->trans_complete();
@@ -493,8 +493,8 @@ class M_moveorder extends CI_Model
 		// echo ':P_PARAM9 = '.$nour.'<br>';
 		// echo ':P_PARAM10 = '.$status.'<br>';
 		// exit();
-		// $conn = oci_connect('APPS', 'APPS', '192.168.7.3:1522/DEV');
-		$conn = oci_connect('APPS', 'APPS', '192.168.7.1:1521/PROD');
+		$conn = oci_connect('APPS', 'APPS', '192.168.7.3:1522/DEV');
+		// $conn = oci_connect('APPS', 'APPS', '192.168.7.1:1521/PROD');
 			if (!$conn) {
 	   			 $e = oci_error();
 	    		trigger_error(htmlentities($e['message'], ENT_QUOTES), E_USER_ERROR);
@@ -535,7 +535,7 @@ class M_moveorder extends CI_Model
 
 	function getQuantityActual($job)
 	{
-		$oracle = $this->load->database('oracle',TRUE);
+		$oracle = $this->load->database('oracle_dev',TRUE);
 		$sql = "SELECT wro.REQUIRED_QUANTITY req,khs_inv_qty_atr(wdj.ORGANIZATION_ID,wro.INVENTORY_ITEM_ID,bic.ATTRIBUTE1,bic.ATTRIBUTE2,'') atr
 					 FROM wip_entities we
 					,wip_discrete_jobs wdj
