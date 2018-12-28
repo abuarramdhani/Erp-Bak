@@ -441,7 +441,6 @@ SELECT DISTINCT pol.po_line_id line_id,
                          ami.last_purchasing_invoice_status status, 
                          ami.reason reason,
                          ami.batch_number batch_number,
-                         aipo.po_number po_number,
                          poh.attribute2 ppn,
                          ami.vendor_name vendor_name,
                          ami.last_finance_invoice_status last_finance_invoice_status,
@@ -832,7 +831,7 @@ SELECT DISTINCT pol.po_line_id line_id,
                                                  OR (purchasing_status = 2 and finance_status = 3))
                                                 AND aiac.invoice_id = ami.invoice_id) reject_date
                 FROM khs_ap_monitoring_invoice ami,
-                     (SELECT   aipo.invoice_id, aipo.po_number,
+                     (SELECT   aipo.invoice_id,
                                REPLACE
                                   ((RTRIM
                                        (XMLAGG (XMLELEMENT (e,
@@ -852,13 +851,14 @@ SELECT DISTINCT pol.po_line_id line_id,
                                    '@',
                                    '<br>'
                                   ) po_detail
-                          FROM khs_ap_invoice_purchase_order aipo
-                      GROUP BY aipo.invoice_id, aipo.po_number) aaipo
+                          FROM (SELECT DISTINCT invoice_id, po_number, line_number, lppb_number
+                                                      FROM khs_ap_invoice_purchase_order) aipo
+                      GROUP BY aipo.invoice_id) aaipo
                WHERE aaipo.invoice_id = ami.invoice_id
                  AND (last_purchasing_invoice_status = 3
                       OR last_finance_invoice_status = 3
                      )
-                 $source_login
+                     $source_login
             ORDER BY last_status_purchasing_date";
         $run = $oracle->query($query);
         return $run->result_array();

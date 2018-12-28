@@ -72,9 +72,9 @@
 										<td>
 											<select name="invoice_category" class="form-control select2 select2-hidden-accessible" style="width:320px;">
 												<option></option>
-												<option>BARANG (BARANG)</option>
-												<option>JASA NON EKSPEDISI TRAKTOR (JASA NON EKSP TRAK)</option>
-												<option>JASA EKSPEDISI TRAKTOR (JASA EKSP TRAK)</option>
+												<option>BARANG</option>
+												<option>JASA NON EKSPEDISI TRAKTOR</option>
+												<option>JASA EKSPEDISI TRAKTOR</option>
 											</select>
 										</td>
 									</tr>
@@ -88,10 +88,10 @@
 									</tr>
 									<tr>
 										<td>
-											<span><label>Nominal DPP</label></span>
+											<span><label>Nominal DPP Faktur Pajak</label></span>
 										</td>
 										<td>
-											<input class="form-control" size="40" type="text" name="nominal_dpp" placeholder="Nominal DPP" >
+											<input class="form-control" size="40" type="text" name="nominal_dpp" placeholder="Nominal DPP Faktur Pajak" >
 										</td>
 									</tr>
 									<tr>

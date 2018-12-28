@@ -29,7 +29,7 @@
 											<span><label>Vendor Name</label></span>
 										</td>
 										<td>
-		                     				<input class="form-control" size="40" type="text" name="vendor_name" value="<?php echo $invoice[0]['VENDOR_NAME']?>">
+		                     				<input class="form-control" size="40" type="text" name="vendor_name" value="<?php echo $invoice[0]['VENDOR_NAME']?>" readonly>
 		                     			</td>
 									</tr>
 									<tr>
@@ -37,7 +37,7 @@
 											<span><label>Invoice Number</label></span>
 										</td>
 										<td>
-											<input  class="form-control" size="40" type="text" name="invoice_number" value="<?php echo $invoice[0]['INVOICE_NUMBER']?>">
+											<input  class="form-control" size="40" type="text" name="invoice_number" value="<?php echo $invoice[0]['INVOICE_NUMBER']?>" readonly>
 										</td>
 									</tr>
 									<tr>
@@ -45,7 +45,7 @@
 											<span><label>Invoice Date</label></span>
 										</td>
 										<td>
-						                    <input type='text' class="form-control" size="40" value="<?php echo date('d-M-Y',strtotime($invoice[0]['INVOICE_DATE']))?>"  name="invoice_date">
+						                    <input type='text' class="form-control" size="40" value="<?php echo date('d-M-Y',strtotime($invoice[0]['INVOICE_DATE']))?>"  name="invoice_date" readonly>
 										</td>
 									</tr>
 									<tr>
@@ -53,7 +53,7 @@
 											<span><label>Invoice Amount</label></span>
 										</td>
 										<td>
-											<input class="form-control inv_amount" size="40" type="text" name="invoice_amount" value="<?php echo $invoice[0]['INVOICE_AMOUNT']?>" id="invoice_amount">
+											<input readonly="readonly" class="form-control inv_amount" size="40" type="text" name="invoice_amount" value="<?php echo $invoice[0]['INVOICE_AMOUNT']?>" id="invoice_amount">
 										</td>
 									</tr>
 									<tr>
@@ -61,7 +61,7 @@
 											<span><label>Tax Invoice Number</label></span>
 										</td>
 										<td>
-											<input class="form-control" size="40" type="text" name="tax_invoice_number" value="<?php echo $invoice[0]['TAX_INVOICE_NUMBER']?>">
+											<input class="form-control" size="40" type="text" name="tax_invoice_number" value="<?php echo $invoice[0]['TAX_INVOICE_NUMBER']?>" readonly>
 										</td>
 									</tr>
 									<tr>
@@ -69,15 +69,15 @@
 											<span><label>Invoice Category</label></span>
 										</td>
 										<td>
-		                     				<input class="form-control" size="40" type="text" name="invoice_category" value="<?php echo $invoice[0]['INVOICE_CATEGORY']?>">
+		                     				<input class="form-control" size="40" type="text" name="invoice_category" value="<?php echo $invoice[0]['INVOICE_CATEGORY']?>" readonly>
 		                     			</td>
 									</tr>
 									<tr>
 										<td>
-											<span><label>Nominal DPP</label></span>
+											<span><label>Nominal DPP Faktur Pajak</label></span>
 										</td>
 										<td>
-		                     				<input class="form-control" size="40" type="text" name="nominal_dpp" value="<?php echo $invoice[0]['NOMINAL_DPP']?>">
+		                     				<input class="form-control" size="40" type="text" name="nominal_dpp" value="<?php echo $invoice[0]['NOMINAL_DPP']?>" readonly>
 		                     			</td>
 									</tr>
 									<tr>
@@ -85,7 +85,7 @@
 											<span><label>Info</label></span>
 										</td>
 										<td>
-		                     				<textarea class="form-control" size="40" type="text" name="note_admin"><?php echo $invoice[0]['INFO']?></textarea> 
+		                     				<textarea readonly class="form-control" size="40" type="text" name="note_admin"><?php echo $invoice[0]['INFO'] ?></textarea> 
 		                     			</td>
 									</tr>
 								</table>

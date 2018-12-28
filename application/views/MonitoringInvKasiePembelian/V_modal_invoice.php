@@ -1,3 +1,4 @@
+<!-- <form method="post" action="<?php echo base_url('AccountPayables/MonitoringInvoice/InvoiceKasie/saveInvoicebyKasiePurchasing')?>"> -->
 <div class="row">
 				<div class="col-lg-12">
 					<div class="box box-primary box-solid">
@@ -7,7 +8,7 @@
 									<td>
 										<span><label>Invoice Number</label></span>
 									</td>
-									<td><input  class="form-control" style="margin-bottom: 10px;" size="40" type="text" name="invoice_number" value="<?php echo $invoice[0]['INVOICE_NUMBER']?>" readonly>
+									<td><input  class="form-control" style="margin-bottom: 10px;" size="40" type="text" name="invoice_number" value="<?php echo $invoice[0]['INVOICE_NUMBER']?>">
 										<input type="hidden" name="invoice_id" value="<?php echo $invoice[0]['INVOICE_ID']?>">
 									</td>
 								</tr>
@@ -16,7 +17,7 @@
 										<span><label>Invoice Date</label></span>
 									</td>
 									<td>
-										<input  class="form-control" style="margin-bottom: 10px;" size="40" type="text" value="<?php echo $invoice[0]['INVOICE_DATE']?>" readonly>
+										<input  class="form-control" style="margin-bottom: 10px;" size="40" type="text" value="<?php echo $invoice[0]['INVOICE_DATE']?>" name="invoice_date">
 									</td>
 								</tr>
 								<tr>
@@ -24,7 +25,7 @@
 										<span><label>Invoice Amount</label></span>
 									</td>
 									<td >
-										<input class="form-control" style="margin-bottom: 10px;" size="40" type="text" value="<?php echo $invoice[0]['INVOICE_AMOUNT']?>" readonly>
+										<input class="form-control" style="margin-bottom: 10px;" size="40" type="text" value="<?php echo $invoice[0]['INVOICE_AMOUNT']?>" name="invoice_amount">
 									</td>
 								</tr>
 								<tr>
@@ -32,7 +33,7 @@
 										<span><label>Tax Invoice Number</label></span>
 									</td>
 									<td>
-										<input  class="form-control" style="margin-bottom: 10px;"  size="40" type="text" value="<?php echo $invoice[0]['TAX_INVOICE_NUMBER']?>" readonly>
+										<input  class="form-control" style="margin-bottom: 10px;"  size="40" type="text" value="<?php echo $invoice[0]['TAX_INVOICE_NUMBER']?>" name="tax_invoice_number">
 									</td>
 								</tr>
 								<tr>
@@ -40,15 +41,15 @@
 										<span><label>Invoice Category</label></span>
 									</td>
 									<td>
-										<input  class="form-control" style="margin-bottom: 10px;"  size="40" type="text" value="<?php echo $invoice[0]['INVOICE_CATEGORY']?>" readonly>
+										<input  class="form-control" style="margin-bottom: 10px;"  size="40" type="text" value="<?php echo $invoice[0]['INVOICE_CATEGORY']?>" name="invoice_category">
 									</td>
 								</tr>
 								<tr>
 									<td>
-										<span><label>NOMINAL DPP</label></span>
+										<span><label>Nominal DPP Faktur Pajak</label></span>
 									</td>
 									<td>
-										<input  class="form-control" style="margin-bottom: 10px;"  size="40" type="text" value="<?php echo $invoice[0]['NOMINAL_DPP']?>" readonly>
+										<input  class="form-control" style="margin-bottom: 10px;"  size="40" type="text" value="<?php echo $invoice[0]['NOMINAL_DPP']?>" name="nominal_dpp">
 									</td>
 								</tr>
 								<tr>
@@ -56,7 +57,7 @@
 										<span><label>Info</label></span>
 									</td>
 									<td>
-										<textarea class="form-control" size="40" type="text" readonly><?php echo $invoice[0]['INFO']?></textarea>
+										<textarea class="form-control" size="40" name="info" type="text"><?php echo $invoice[0]['INFO']?></textarea>
 									</td>
 								</tr>
 							</table>
@@ -103,7 +104,10 @@
 							</div>
 		<div class="pull-left">
 			<label>Po Amount : </label><span><?php echo $po_amount ?></span>
+			<!-- <button type="submit" class="btn btn-primary">Save Edit</button> -->
 		</div>
 		</div>
 	</div>
 </div>
+</div>
+<!-- </form> -->

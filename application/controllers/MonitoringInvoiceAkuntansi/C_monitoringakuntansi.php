@@ -256,13 +256,15 @@ class C_monitoringakuntansi extends CI_Controller{
 		$this->load->view('V_Footer',$data);
 	}
 
-	public function saveReasonAkuntansi(){
+	public function saveActionAkuntansi(){
 		$alasan = $this->input->post('reason_finance[]');
 		$id = $this->input->post('id_reason[]');
+		$proses = $this->input->post('hdnProses[]');
+		$saveDate = date('d-m-Y H:i:s');
 
-		for ($i=0; $i < count($id); $i++) { 
-			echo $id[$i]."<br>".$alasan[$i]."<br><br>";
-			$this->M_monitoringakuntansi->reason_finance($id[$i],$alasan[$i]);
+		foreach ($proses as $p => $value) {
+			$this->M_monitoringakuntansi->saveProses($proses[$p],$saveDate,$alasan[$p],$id[$p]);
+			$this->M_monitoringakuntansi->insertproses($id[$p],$saveDate,$proses[$p]);
 		}
 
 		redirect('AccountPayables/MonitoringInvoice/Finish');

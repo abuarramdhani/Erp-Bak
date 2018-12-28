@@ -701,9 +701,6 @@ class C_monitoringinvoice extends CI_Controller{
 		}
 		
 
-		$data['invoice'] =$invoice;
-		
-
 		$amount = $this->M_monitoringinvoice->saveInvoiveAmount($invoice_number,$invoice_date,$invoice_amount,$tax_invoice_number,$vendor_name,$invoice_category,$nominal_dpp,$note_admin,$id);
 
 		
@@ -711,6 +708,7 @@ class C_monitoringinvoice extends CI_Controller{
 			$add['invoice'] = $this->M_monitoringinvoice->savePoNumberNew($line_number[$key],$po_number[$key],$lppb_number[$key],$shipment_number[$key],$receive_date[$key],$item_desc[$key],$item_code[$key],$qty_receipt[$key],$qty_reject[$key],$currency[$key],$unit_price[$key],$qty_invoice[$key],$id);
 		
 		}
+		$data['invoice'] =$invoice;
 
 		redirect('AccountPayables/MonitoringInvoice/Invoice');
 	}
@@ -754,7 +752,7 @@ class C_monitoringinvoice extends CI_Controller{
 
 			$invoice_id = $inv['INVOICE_ID'] ;
 			$po_detail = $inv['PO_DETAIL'];
-			$batch_number = $inv['BATCH_NUMBER'];
+			// $po_number = $inv['PO_NUMBER'];
 
 			$keputusan[$inv['INVOICE_ID']] = "";
 			$hasil_komitmen = '';
@@ -791,7 +789,7 @@ class C_monitoringinvoice extends CI_Controller{
 
 				$n++;
 			}
-			
+
 			$po_amount = 0;
 			$unit = $this->M_monitoringinvoice->getUnitPrice($invoice_id);
 
@@ -800,6 +798,10 @@ class C_monitoringinvoice extends CI_Controller{
 				$po_amount = $po_amount + $total;
 			}
 
+
+			$cekPPN = $this->M_monitoringinvoice->checkPPN($po_number_explode);
+
+			$invoice[$no]['PPN'] = $cekPPN[0]['PPN'];
 			$invoice[$no]['PO_AMOUNT'] = $po_amount;
 			$no++;
 		}

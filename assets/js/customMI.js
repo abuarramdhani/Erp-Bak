@@ -1,6 +1,6 @@
 $(document).ready(function(){
 
-	$('#tbListSubmit, #invoice_detail, #tbListInvoice').DataTable({
+	$('#tbListSubmit, #tbListInvoice, #tabel_invoice, #rejectinvoice').DataTable({
 		"pageLength": 10,
         "paging": true,
         "searching": true,
@@ -12,7 +12,7 @@ $(document).ready(function(){
         "searching": true,
 	});
 
-	$('#tabel_detail_purchasing, #editlinespo, #tabel_invoice, #rejectpo, #rejectinvoice, #finishInvoice, #unprocessTabel').DataTable({
+	$('#tabel_detail_purchasing, #invoice_detail, #editlinespo, #rejectpo, #finishInvoice, #unprocessTabel').DataTable({
         "paging":   false,
         "ordering": false,
         "info":     false
@@ -288,26 +288,17 @@ $(document).ready(function(){
 function prosesInvMI(th){
 	var invoice_id = $(th).attr('data-id');
 	var proses = $(th).attr('value');
+	var prnt = $(th).parent();
 
-	var request = $.ajax ({
-			url: baseurl+'AccountPayables/MonitoringInvoice/Unprocess/prosesAkuntansi/'+invoice_id,
-			data: {
-					proses : proses
-					},
-			type: 'POST',
-			dataType: 'html', 
-		});
-		$(th).parent().html('<img src="'+baseurl+'assets/img/gif/loading5.gif" id="gambarloading">');
+	prnt.html('<img src="'+baseurl+'assets/img/gif/loading5.gif" id="gambarloading">');
 		
 		if (proses == 2) {
-			request.done(function(output){
-				$("#gambarloading").parent().html('<span class="btn btn-success" style="cursor: none;font-size: 10pt;" >Diterima</span>');
-			});
+			prnt.html('<span class="btn btn-success" style="cursor: none;font-size: 10pt;" >Diterima<input type="hidden" name="hdnProses[]" class="hdnProses" value="2"></span>');
 		} else {
-			request.done(function(output){
-				$("#gambarloading").parent().html('<span class="btn btn-danger" style="font-size: 8pt ;cursor: none;">Ditolak (Isikan Alasan)</span>');
+			prnt.html('<span class="btn btn-danger" style="font-size: 8pt ;cursor: none;">Ditolak (Isikan Alasan)<input type="hidden" name="hdnProses[]" class="hdnProses" value="3"></span>');
+				prnt.siblings('td').children('.reason_finance_class').show();
+				prnt.siblings('td').children('.reason_finance_class').attr('required',true);
 				alert('Alasan harus diisi');
-			});
 		}
 }
 

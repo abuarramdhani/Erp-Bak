@@ -29,7 +29,7 @@
 											<th class="text-center">Invoice Date</th>
 											<th class="text-center">PPN</th>
 											<th class="text-center">Tax Invoice Number</th>
-											<th class="text-center">Nominal DPP</th>
+											<th class="text-center">Nominal DPP Faktur Pajak</th>
 											<th class="text-center">Invoice Amount</th>
 											<th class="text-center">Po Amount</th>
 											<th class="text-center">Purchasing Submit Date</th>

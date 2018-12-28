@@ -28,6 +28,12 @@
 								<div class="row" style="margin-bottom: 10px">
 									<div class="col-md-6">
 										<button type="button" class="btn btn-primary pull-left" id="btnSubmitChecking" data-toggle="modal" data-target="#mdlChecking">Submit for Checking</button>
+										<?php 
+											$err = validation_errors();
+											if(isset($err) && !empty($err)):
+											echo '<script> alert("'.str_replace(array('\r','\n'), '\n', $err).'"); </script>';
+											endif;
+										?>
 									</div>
 									<div class="col-md-6">
 										<span class="btn btn-warning pull-right" style="cursor: none"><i class="fa fa-exclamation-triangle"></i> Submit hanya berdasarkan kategori invoice yang sama</span>

@@ -66,7 +66,7 @@
 									</tr>
 									<tr>
 										<td>
-											<span><label>Nominal DPP</label></span>
+											<span><label>Nominal DPP Faktur Pajak</label></span>
 										</td>
 										<td>
 											<input  class="form-control" size="40" type="text" value="<?php echo $invoice_detail[0]['NOMINAL_DPP']?>" readonly>
