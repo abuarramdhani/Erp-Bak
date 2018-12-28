@@ -141,6 +141,7 @@ class C_MoveOrder extends CI_Controller
 										'UOM' => $uom[$key],
 										'IP_ADDRESS' => $ip_address,
 										'JOB_ID' => $job_id[$key]);
+						$data2[$subinv_from[$key]] = $locator_from[$key];
 
 					}
 					
@@ -155,7 +156,7 @@ class C_MoveOrder extends CI_Controller
 							$i++;
 						}
 							//create MO         
-							$this->M_MoveOrder->createMO($ip_address,$job_id[0],$subinv_to[0],$locator_to[0],$key,$locator_from[0]);
+							$this->M_MoveOrder->createMO($ip_address,$job_id[0],$subinv_to[0],$locator_to[0],$key,$data2[$key]);
 
 							//delete
 							$this->M_MoveOrder->deleteTemp($ip_address,$job_id[0]);
@@ -275,7 +276,7 @@ class C_MoveOrder extends CI_Controller
 		$array_mo = array();
 
 		foreach ($no_job as $key => $value) {
-			if (strpos($value, '<>')) {
+			if (strpos($value, '<>') !== false ) {
 				$no_job2		= explode('<>', $no_job[$key]);
 				$qty2			= explode('<>', $qty[$key]);
 				$invID2			= explode('<>', $invID[$key]);
@@ -310,18 +311,19 @@ class C_MoveOrder extends CI_Controller
 						if (!in_array(1, $errQty)) {
 							// START
 								foreach ($no_job2 as $k => $v) {
-									$data[$subinv_from[$key]][] = array('NO_URUT' => '',
+									$data[$subinv_from2[$k]][] = array('NO_URUT' => '',
 													'INVENTORY_ITEM_ID' => $invID2[$k],
 													'QUANTITY' => $qty2[$k],
 													'UOM' => $uom2[$k],
 													'IP_ADDRESS' => $ip_address,
 													'JOB_ID' => $job_id2[$k]);
+									$data2[$subinv_from2[$k]] = $locator_from2[$k];
 
 								}
 								
-								foreach ($data as $key => $value) {
+								foreach ($data as $kSub => $vSub) {
 									$i = 1; 
-									foreach ($value as $key2 => $value2) {
+									foreach ($vSub as $key2 => $value2) {
 										$dataNew = $value2;
 										$dataNew['NO_URUT'] = $i;
 										//create TEMP
@@ -329,10 +331,11 @@ class C_MoveOrder extends CI_Controller
 										$i++;
 									}
 										//create MO         
-										$this->M_MoveOrder->createMO($ip_address,$job_id[0],$subinv_to[0],$locator_to[0],$key,$locator_from[0]);
+										$this->M_MoveOrder->createMO($ip_address,$job_id2[0],$subinv_to2[0],$locator_to2[0],$kSub,$data2[$kSub]);
+
 
 										//delete
-										$this->M_MoveOrder->deleteTemp($ip_address,$job_id[0]);
+										$this->M_MoveOrder->deleteTemp($ip_address,$job_id2[0]);
 								}
 							// END
 
@@ -372,6 +375,7 @@ class C_MoveOrder extends CI_Controller
 									'UOM' => $uom[$key],
 									'IP_ADDRESS' => $ip_address,
 									'JOB_ID' => $job_id[$key]);
+							// $data2[$subinv_from2[$k]] = $locator_from2[$k];
 							//create TEMP
 							$this->M_MoveOrder->createTemp($data);
 

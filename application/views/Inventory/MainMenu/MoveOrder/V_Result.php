@@ -115,12 +115,23 @@
 			foreach ($value['body'] as $k => $v) {
 				if($v['REQUIRED_QUANTITY'] > $v['ATR']) { array_push($arrErr, $v['REQUIRED_QUANTITY']); }
 			}
-			$penanda = ((count($arrErr) > 0) && ($value['header']['KET'] == 0)) ? 'bg-danger' : '' ;
-			if ((count($arrErr) > 0) && ($value['header']['KET'] == 0)) {
-				$penandabutton = 1;
+
+			if($value['header']['KET'] == 0){
+				if(count($arrErr) > 0){
+					$penanda = 'bg-danger';
+					$penandabutton = 1;
+					$text_button = '<b>Create Picklist</b>';
+				}else{
+					$penanda = '';
+					$penandabutton = 0;
+					$text_button = '<b>Create Picklist</b>';
+				}
 			}else{
+				$penanda = 'bg-success';
 				$penandabutton = 0;
+				$text_button = '<b>Print Picklist</b>';
 			}
+
 
 		?>
 		<tr class="hdr" >
@@ -137,24 +148,24 @@
 				<?php } ?>
 				</center>
 			</td>
-			<td class="<?= $penanda ?>" ><?= $value['header']['WIP_ENTITY_NAME']; ?></td>
+			<td class="<?= $penanda ?>" ><b><?= $value['header']['WIP_ENTITY_NAME']; ?></b></td>
 			<td class="<?= $penanda ?>" ><?= $value['header']['ITEM_CODE'] ?></td>
 			<td class="<?= $penanda ?>" ><?= $value['header']['DESCRIPTION'] ?></td>
 			<td class="<?= $penanda ?>" ><?= $value['header']['START_QUANTITY'] ?></td>
 			<td class="<?= $penanda ?>" ><?= $value['header']['DEPT_CLASS'] ?></td>
 			<td class="<?= $penanda ?>" ><?= $value['header']['DESCRIPTION'] ?></td>
-			<td class="<?= $penanda ?>" ><?= ($value['header']['KET'] == 1) ? 'Sudah Dibuat Picklist' : 'Belum Dibuat Picklist' ?>
+			<td class="<?= $penanda ?>" ><?= ($value['header']['KET'] == 1) ? '<b>Sudah Dibuat Picklist</b>' : 'Belum Dibuat Picklist' ?>
 				
 			</td>
 			<td class="<?= $penanda ?>">
 				<?php if ($penandabutton == 1) { ?>
-				<button class="btn btn-sm  'disabled btn-default' " target="_blank" >
-						 Create Picklist 
+				<button class="btn btn-sm  disabled btn-default " target="_blank" >
+						 <?= $text_button; ?> 
 				</button>
 				<?php } else{ ?>
 				<button class="btn btn-sm  <?= ($value['body']) ? 'btn-success' : 'disabled btn-default' ?>" target="_blank"
 						 <?= ($value['body']) ? "onclick=document.getElementById('form".$value['header']['WIP_ENTITY_NAME']."').submit();" :'' ?>>
-						 Create Picklist 
+						 <?= $text_button; ?> 
 				</button>
 				<?php } ?>
 			</td>
@@ -207,7 +218,7 @@
 							$allJobID[$no][] =  $vulue['JOB_ID'];
 							$allSubInvTo[$no][] =  $vulue['GUDANG_TUJUAN'];
 							$allSubFrom[$no][] =  $vulue['GUDANG_ASAL'];
-							$allLocatorTo[$no][] =  $vulue['LOCATOR_TUJUAN'];
+							$allLocatorTo[$no][] =  $vulue['LOCATOR_TUJUAN_ID'];
 							$allLocatorFrom[$no][] =  $vulue['LOCATOR_ASAL'];
 						?>
 						<?php }
