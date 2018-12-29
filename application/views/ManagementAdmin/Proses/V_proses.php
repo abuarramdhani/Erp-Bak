@@ -53,7 +53,8 @@
 													<div class="form-group">	
 														<label class="control-label col-lg-4">Target Total</label>
 														<div class="col-lg-4">
-															<input type="number" name="txtTargetTotal" class="form-control" placeholder="Target Total" required="">
+															<input type="number" name="txtTargetTotal" class="form-control" placeholder="Target Total" disabled>
+															<input type="hidden" name="txtTargetTotal">
 														</div>
 													</div>
 													<div class="form-group">
