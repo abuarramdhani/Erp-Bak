@@ -1981,6 +1981,8 @@ $route['HitungHlcm/Approval/(:any)/(:any)'] 	= 'UpahHlCm/MasterData/C_Approval/$
 $route['HitungHlcm/HitungGaji'] 	= 'UpahHlCm/ProsesGaji/C_ProsesGaji';
 $route['HitungHlcm/HitungGaji/(:any)'] 	= 'UpahHlCm/ProsesGaji/C_ProsesGaji/$1';
 $route['HitungHlcm/HitungGaji/(:any)/(:any)'] 	= 'UpahHlCm/ProsesGaji/C_ProsesGaji/$1/$2';
+$route['HitungHlcm/HitungGaji/(:any)/(:any)/(:any)'] 	= 'UpahHlCm/ProsesGaji/C_ProsesGaji/$1/$2/$3';
+$route['HitungHlcm/HitungGaji/(:any)/(:any)/(:any)/(:any)'] 	= 'UpahHlCm/ProsesGaji/C_ProsesGaji/$1/$2/$3/$4';
 $route['HitungHlcm/SlipGaji'] 	= 'UpahHlCm/MenuCetak/C_SlipGaji';
 $route['HitungHlcm/SlipGaji/(:any)'] 	= 'UpahHlCm/MenuCetak/C_SlipGaji/$1';
 $route['HitungHlcm/SlipGaji/(:any)/(:any)'] 	= 'UpahHlCm/MenuCetak/C_SlipGaji/$1/$2';
@@ -1993,6 +1995,9 @@ $route['HitungHlcm/Rekap/(:any)/(:any)'] 	= 'UpahHlCm/MenuCetak/C_Rekap/$1/$2';
 $route['HitungHlcm/Memo'] 	= 'UpahHlCm/MenuCetak/C_Memo';
 $route['HitungHlcm/Memo/(:any)'] 	= 'UpahHlCm/MenuCetak/C_Memo/$1';
 $route['HitungHlcm/Memo/(:any)/(:any)'] 	= 'UpahHlCm/MenuCetak/C_Memo/$1/$2';
+$route['HitungHlcm/Arsip'] 	= 'UpahHlCm/MenuCetak/C_Arsip';
+$route['HitungHlcm/Arsip/(:any)'] 	= 'UpahHlCm/MenuCetak/C_Arsip/$1';
+$route['HitungHlcm/Arsip/(:any)/(:any)'] 	= 'UpahHlCm/MenuCetak/C_Arsip/$1/$2';
 
 //------------------------------------------------Inventory------------------------------------------------//
 //Move Order
