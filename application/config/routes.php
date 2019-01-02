@@ -2174,3 +2174,8 @@ $route['TrackingInvoice'] = 'TrackingInvoice/C_trackingInvoice';
 $route['Monitoring/TrackingInvoice'] = 'TrackingInvoice/C_trackingInvoice/TrackingInvoice';
 $route['Monitoring/TrackingInvoice/(:any)'] = 'TrackingInvoice/C_trackingInvoice/$1';
 $route['Monitoring/TrackingInvoice/(:any)/(:any)'] = 'TrackingInvoice/C_trackingInvoice/$1/$2';
+
+//-----------------------------------Tarik FingerSpot----------------------------------//
+$route['TarikFingerspot'] = 'TarikFingerspot/C_TarikFingerspot';
+$route['TarikFingerspot/TarikData'] = 'TarikFingerspot/C_TarikFingerspot/TarikData';
+$route['TarikFingerspot/TarikData/(:any)'] = 'TarikFingerspot/C_TarikFingerspot/TarikData/$1';

@@ -516,3 +516,26 @@ $efg="";
 			'save_queries'		=> TRUE,
 			'port' 				=> 3306
 		);
+
+		$db['db_fingerspot'] = array(
+			'dsn'				=> '',
+			'hostname' 			=> '192.168.168.50',
+			'username' 			=> 'root',
+			'password' 			=> '123456',
+			'database' 			=> 'fin_pro',
+			'dbdriver' 			=> 'mysqli',
+			'dbprefix' 			=> '',
+			'pconnect' 			=> FALSE,
+			'db_debug' 			=> TRUE,
+			'cache_on' 			=> FALSE,
+			'cachedir' 			=> '',
+			'char_set' 			=> 'utf8',
+			'dbcollat' 			=> 'utf8_general_ci',
+			'swap_pre' 			=> '',
+			'encrypt' 			=> FALSE,
+			'compress' 			=> FALSE,
+			'stricton' 			=> FALSE,
+			'failover' 			=> array(),
+			'save_queries'		=> TRUE,
+			'port' 				=> 3306
+		);
