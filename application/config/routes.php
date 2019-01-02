@@ -447,6 +447,9 @@ $route['RekapTIMSPromosiPekerja/GetNoInduk'] = 'er/RekapTIMS/C_RekapPerPekerja/G
 	// Rekap Bobot TIM
 			$route['RekapTIMSPromosiPekerja/RekapBobot']  =  'er/RekapTIMS/C_RekapBobot';
 			$route['RekapTIMSPromosiPekerja/RekapBobot/(:any)']  =  'er/RekapTIMS/C_RekapBobot/$1';
+
+	//Tims 2 tahun
+			$route['RekapTIMSPromosiPekerja/Tims2tahun'] = 'er/RekapTIMS/C_Tims2tahun';
 //------------------------------------Rekap TIMS.end---------------------------------------------------
 $route['StockControl'] = 'StockControl/C_StockControl/index';
 
