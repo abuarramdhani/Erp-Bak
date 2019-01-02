@@ -25,7 +25,7 @@
 											<div class="form-group">
 												<label class="control-label col-lg-4">Tanggal</label>
 												<div class="col-lg-3">
-													<input type="text" name="txtTanggalTarikFinger" class="date form-control" id="tanggalTarikFinger" required>
+													<input type="text" placeholder="Tanggal Tarik" name="txtTanggalTarikFinger" class="date form-control" id="tanggalTarikFinger" required>
 												</div>
 												<div class="col-lg-2">
 													<button type="submit" class="btn btn-primary">Cari</button>
@@ -52,8 +52,8 @@
 														</tr>
 													</thead>
 													<tbody>
-														<?php foreach ($table as $key) { 
-															$no = 1; ?>
+														<?php $no = 1; foreach ($table as $key) { 
+															 ?>
 															<tr>
 																<td><?php echo $no; ?></td>
 																<td><?php echo $key['tanggal']; ?></td>
