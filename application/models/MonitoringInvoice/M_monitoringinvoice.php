@@ -139,12 +139,12 @@ SELECT DISTINCT pol.po_line_id line_id,
         $oracle->query($query);
     }
 
-    public function savePoNumber2($invoice_number,$invoice_date,$invoice_amount,$tax_invoice_number,$vendor_number,$vendor_name,$last_admin_date,$info,$invoice_category,$nominal_dpp,$source_login){
+    public function savePoNumber2($invoice_number,$invoice_date,$invoice_amount,$tax_invoice_number,$vendor_number,$vendor_name,$last_admin_date,$info,$invoice_category,$nominal_dpp,$source_login,$jenis_jasa){
         $oracle = $this->load->database('oracle',true);
         $query = "INSERT INTO khs_ap_monitoring_invoice
-                    (invoice_number, invoice_date, invoice_amount,tax_invoice_number, vendor_number, vendor_name, last_admin_date, info,invoice_category,nominal_dpp,source)
+                    (invoice_number, invoice_date, invoice_amount,tax_invoice_number, vendor_number, vendor_name, last_admin_date, info,invoice_category,nominal_dpp,source,jenis_jasa)
                     VALUES 
-                    ('$invoice_number','$invoice_date','$invoice_amount', '$tax_invoice_number','$vendor_number','$vendor_name',to_date('$last_admin_date', 'DD/MM/YYYY HH24:MI:SS'), '$info','$invoice_category','$nominal_dpp','$source_login')";
+                    ('$invoice_number','$invoice_date','$invoice_amount', '$tax_invoice_number','$vendor_number','$vendor_name',to_date('$last_admin_date', 'DD/MM/YYYY HH24:MI:SS'), '$info','$invoice_category','$nominal_dpp','$source_login','$jenis_jasa')";
         $oracle->query($query);
 
         if ($vendor_name) {
@@ -210,7 +210,8 @@ SELECT DISTINCT pol.po_line_id line_id,
                          aaipo.po_detail po_detail,
                          ami.last_admin_date last_admin_date, ami.vendor_name vendor_name,
                          ami.info info,
-                         ami.invoice_category invoice_category
+                         ami.invoice_category invoice_category,
+                         ami.jenis_jasa jenis_jasa
                 FROM khs_ap_monitoring_invoice ami,
                      (SELECT   aipo.invoice_id,
                                REPLACE
@@ -297,7 +298,8 @@ SELECT DISTINCT pol.po_line_id line_id,
                          vendor_name vendor_name,
                          info info,
                          nominal_dpp,
-                         invoice_category
+                         invoice_category,
+                         jenis_jasa
                 FROM khs_ap_monitoring_invoice
                 WHERE invoice_id = $invoice_id";
         $runQuery = $oracle->query($query);
@@ -342,7 +344,7 @@ SELECT DISTINCT pol.po_line_id line_id,
         
     }
 
-    public function saveEditInvoice2($invoice_id,$invoice_number,$invoice_date,$invoice_amount,$tax_invoice_number,$info,$nominal_dpp,$invoice_category)
+    public function saveEditInvoice2($invoice_id,$invoice_number,$invoice_date,$invoice_amount,$tax_invoice_number,$info,$nominal_dpp,$invoice_category,$jenis_jasa)
     {
        $oracle = $this->load->database('oracle',true);
        $query2 = "UPDATE khs_ap_monitoring_invoice 
@@ -352,7 +354,8 @@ SELECT DISTINCT pol.po_line_id line_id,
                     tax_invoice_number = '$tax_invoice_number',
                     info = '$info',
                     nominal_dpp = '$nominal_dpp',
-                    invoice_category = '$invoice_category'
+                    invoice_category = '$invoice_category',
+                    jenis_jasa = '$jenis_jasa'
                  WHERE invoice_id = $invoice_id ";
         $runQuery2 = $oracle->query($query2);
         // oci_commit($oracle);
@@ -446,7 +449,8 @@ SELECT DISTINCT pol.po_line_id line_id,
                          ami.last_finance_invoice_status last_finance_invoice_status,
                          ami.info info,
                          ami.nominal_dpp nominal_dpp,
-                         ami.invoice_category invoice_category
+                         ami.invoice_category invoice_category,
+                         ami.jenis_jasa jenis_jasa
                 FROM khs_ap_monitoring_invoice ami,
                      khs_ap_invoice_purchase_order aipo,
                      po_headers_all poh
@@ -469,7 +473,8 @@ SELECT DISTINCT pol.po_line_id line_id,
                          reason reason,
                          info info,
                          nominal_dpp,
-                         invoice_category
+                         invoice_category,
+                         jenis_jasa
                 FROM khs_ap_monitoring_invoice
                 WHERE invoice_id = '$invoice_id'";
         $runQuery = $oracle->query($query);
@@ -873,7 +878,7 @@ SELECT DISTINCT pol.po_line_id line_id,
         oci_commit($oracle);
     }
 
-    public function saveReject($invoice_id,$invoice_number,$invoice_date,$invoice_amount,$tax_invoice_number,$last_purchasing_invoice_status,$info)
+    public function saveReject($invoice_id,$invoice_number,$invoice_date,$invoice_amount,$tax_invoice_number,$last_purchasing_invoice_status,$info,$invoice_category,$nominal_dpp,$jenis_jasa)
     {
        $oracle = $this->load->database('oracle',true);
        $query2 = "UPDATE khs_ap_monitoring_invoice 
@@ -888,7 +893,10 @@ SELECT DISTINCT pol.po_line_id line_id,
                     last_status_purchasing_date = null,
                     last_status_finance_date = null,
                     reason = null,
-                    info = '$info'
+                    info = '$info',
+                    invoice_category = '$invoice_category',
+                    nominal_dpp = '$nominal_dpp',
+                    jenis_jasa = '$jenis_jasa'
                  WHERE invoice_id = $invoice_id ";
         $runQuery2 = $oracle->query($query2);
         // oci_commit($oracle);

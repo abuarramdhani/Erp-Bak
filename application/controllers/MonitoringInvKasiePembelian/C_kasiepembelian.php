@@ -139,12 +139,18 @@ class C_kasiepembelian extends CI_Controller{
 	public function approvedbykasiepurchasing(){
 		$approved = $this->input->post('prosesapprove');
 		$saveDate = date('d-m-Y H:i:s');
-		$invoice_id = $this->input->post('invoice_id');
+		$invoice_id = $this->input->post('idYangDiPilih');
 		$nomorbatch = $this->input->post('nomor_batch');
 
-		$this->M_kasiepembelian->approvedbykasiepurchasing($invoice_id,$approved,$saveDate);
-		$this->M_kasiepembelian->inputstatuspurchasing($invoice_id,$saveDate,$approved);
+		$expid = explode(',', $invoice_id);
+
+		foreach ($expid as $key => $value) {
+			$this->M_kasiepembelian->approvedbykasiepurchasing($value,$approved,$saveDate);
+			$this->M_kasiepembelian->inputstatuspurchasing($value,$saveDate,$approved);
+		}
+		
 		redirect('AccountPayables/MonitoringInvoice/InvoiceKasie/batchDetailPembelian/'.$nomorbatch);
+
 	}
 
 	public function rejectbykasiepurchasing(){
@@ -160,6 +166,7 @@ class C_kasiepembelian extends CI_Controller{
 	}
 
 	public function saveInvoicebyKasiePurchasing(){
+		$invoice_id = $this->input->post('invoice_id');
 		$invoice_number = $this->input->post('invoice_number');
 		$invoice_date = $this->input->post('invoice_date');
 		$invoice_amount = $this->input->post('invoice_amount');
@@ -167,9 +174,11 @@ class C_kasiepembelian extends CI_Controller{
 		$invoice_category = $this->input->post('invoice_category');
 		$nominal_dpp = $this->input->post('nominal_dpp');
 		$info = $this->input->post('info');
+		$jenis_jasa = $this->input->post('jenis_jasa');
+		$nomorbatch = $this->input->post('nomor_batch');
 
-		echo "<pre>";
-		print_r($_POST);
+		$this->M_kasiepembelian->editInvoiceKasiePurc($invoice_id,$invoice_number,$invoice_date,$invoice_amount,$tax_invoice_number,$info,$nominal_dpp,$invoice_category,$jenis_jasa);
+		redirect('AccountPayables/MonitoringInvoice/InvoiceKasie/batchDetailPembelian/'.$nomorbatch);
 	}
 
 	public function invoiceDetail($invoice_id,$nomorbatch){

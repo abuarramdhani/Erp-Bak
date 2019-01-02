@@ -34,7 +34,15 @@ class M_monitoringakuntansi extends CI_Model {
                 ami.info info,
                 ami.invoice_category invoice_category,
                 ami.nominal_dpp nominal_dpp,
-                ami.batch_number batch_number
+                ami.batch_number batch_number,
+                ami.jenis_jasa jenis_jasa,
+                (SELECT distinct poh.attribute2
+                            from PO_HEADERS_ALL POH
+                            ,PO_LINES_ALL POL
+                            ,PO_LINE_LOCATIONS_ALL PLL
+                        where poh.po_header_id(+) = pol.po_header_id
+                        AND POL.PO_LINE_ID (+) = PLL.PO_LINE_ID
+                        AND POH.SEGMENT1 = aipo2.po_detail) ppn
                FROM khs_ap_monitoring_invoice ami,
                     (SELECT   aipo.invoice_id,
                                REPLACE
@@ -57,7 +65,8 @@ class M_monitoringakuntansi extends CI_Model {
               WHERE ami.invoice_id = aipo2.invoice_id
                 AND ami.last_finance_invoice_status = 1
                 AND ami.batch_number = '$batchNumber'
-           ORDER BY vendor_name";
+           ORDER BY vendor_name
+           ";
 		$run = $erp_db->query($sql);
 		return $run->result_array();
 	}
@@ -107,7 +116,8 @@ class M_monitoringakuntansi extends CI_Model {
                 ami.info info,
                 ami.invoice_category invoice_category,
                 ami.nominal_dpp nominal_dpp,
-                ami.batch_number batch_number
+                ami.batch_number batch_number,
+                ami.jenis_jasa jenis_jasa
                 FROM khs_ap_monitoring_invoice ami
                 JOIN khs_ap_invoice_purchase_order aipo ON ami.invoice_id = aipo.invoice_id
                 WHERE ami.batch_number = '$batch_num'
@@ -165,7 +175,8 @@ class M_monitoringakuntansi extends CI_Model {
                          ami.info info,
                          ami.invoice_category invoice_category,
                          ami.nominal_dpp nominal_dpp,
-                         ami.batch_number batch_number
+                         ami.batch_number batch_number,
+                         ami.jenis_jasa jenis_jasa
                 FROM khs_ap_monitoring_invoice ami,
                      khs_ap_invoice_purchase_order aipo,
                      po_headers_all poh
@@ -203,7 +214,8 @@ class M_monitoringakuntansi extends CI_Model {
                 ami.finance_batch_number finance_batch_number,
                 ami.invoice_category invoice_category,
                 ami.nominal_dpp nominal_dpp,
-                ami.batch_number batch_number
+                ami.batch_number batch_number,
+                ami.jenis_jasa jenis_jasa
                 FROM khs_ap_monitoring_invoice ami
                 ,khs_ap_invoice_purchase_order aipo
                 WHERE ami.invoice_id = aipo.invoice_id

@@ -41,7 +41,21 @@
 										<span><label>Invoice Category</label></span>
 									</td>
 									<td>
-										<input  class="form-control" style="margin-bottom: 10px;"  size="40" type="text" value="<?php echo $invoice[0]['INVOICE_CATEGORY']?>" name="invoice_category">
+										<select id="invoice_categorySlc" name="invoice_category" class="form-control select2 select2-hidden-accessible" style="width:320px;">
+											<option><?php echo $invoice[0]['INVOICE_CATEGORY']?></option>
+											<option value="BARANG">BARANG</option>
+											<option value="JASA NON EKSPEDISI TRAKTOR">JASA NON EKSPEDISI TRAKTOR</option>
+											<option value="JASA EKSPEDISI TRAKTOR">JASA EKSPEDISI TRAKTOR</option>
+										</select>
+									</td>
+									<td>
+										<select name="jenis_jasa" id="jenis_jasaSlc" class="form-control select2 select2-hidden-accessible" style="width:320px;">
+											<option style="margin-left: 10px;"><?php echo $invoice[0]['JENIS_JASA']?></option>
+											<option></option>
+											<option>RECEIPT</option>
+											<option>RECEIPT DAN PEMBAYARAN</option>
+											<option>RECEIPT DAN REASLISASI PREPAYMENT</option>
+										</select>
 									</td>
 								</tr>
 								<tr>
@@ -49,7 +63,7 @@
 										<span><label>Nominal DPP Faktur Pajak</label></span>
 									</td>
 									<td>
-										<input  class="form-control" style="margin-bottom: 10px;"  size="40" type="text" value="<?php echo $invoice[0]['NOMINAL_DPP']?>" name="nominal_dpp">
+										<input  class="form-control" style="margin-bottom: 10px; margin-top: 10px"  size="40" type="text" value="<?php echo $invoice[0]['NOMINAL_DPP']?>" name="nominal_dpp">
 									</td>
 								</tr>
 								<tr>
@@ -102,10 +116,12 @@
 							</tbody>
 							</table>
 							</div>
-		<div class="pull-left">
+		<div class="pull-left" style="margin-top: 10px">
 			<label>Po Amount : </label><span><?php echo $po_amount ?></span>
-			<!-- <button type="submit" class="btn btn-primary">Save Edit</button> -->
 		</div>
+		<!-- <div class="pull-right" style="margin-top: 10px">
+			<button type="submit" class="btn btn-primary">Save Edit</button>
+		</div> -->
 		</div>
 	</div>
 </div>

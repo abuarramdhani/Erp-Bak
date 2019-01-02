@@ -46,6 +46,7 @@
 											<th width="5%" class="text-center"><input type="checkbox" class="submit_checking_all" onclick="chkSubmitChecking($(this));"></th>
 											<th width="10%" class="text-center">Action</th>
 											<th width="10%" class="text-center">Invoice Category</th>
+											<th width="10%" class="text-center">Jasa</th>
 											<th width="5%"class="text-center">Supplier</th>
 											<th class="text-center">Invoice Number</th>
 											<th class="text-center">Invoice Date</th>
@@ -73,6 +74,9 @@
 											</a>
 										</td>
 										<td><?php echo $inv['INVOICE_CATEGORY']?></td>
+										<td>
+											<?php echo $inv['JENIS_JASA'] ?>
+										</td>
 										<td><?php echo $inv['VENDOR_NAME']?></td>
 										<td><?php echo  $inv['INVOICE_NUMBER'] ?></td>
 										<td> <?php echo date('d-M-Y',strtotime($inv['INVOICE_DATE'])) ?></td>

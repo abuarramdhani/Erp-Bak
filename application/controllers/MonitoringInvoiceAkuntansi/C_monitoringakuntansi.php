@@ -113,14 +113,14 @@ class C_monitoringakuntansi extends CI_Controller{
 					$explodeId = $string_id;
 				}
 
-				foreach ($explodeId as $exp => $value) {
-					$cekPPN = $this->M_monitoringakuntansi->checkPPN($value);
-					foreach ($cekPPN as $key => $value2) {
-						foreach ($value2 as $va2 => $value3) {
-							$ppn = $value3;
-						}
-					}
-				}
+				// foreach ($explodeId as $exp => $value) {
+				// 	$cekPPN = $this->M_monitoringakuntansi->checkPPN($value);
+				// 	foreach ($cekPPN as $key => $value2) {
+				// 		foreach ($value2 as $va2 => $value3) {
+				// 			$ppn = $value3;
+				// 		}
+				// 	}
+				// }
 			}
 			
 			$no++;
@@ -128,7 +128,7 @@ class C_monitoringakuntansi extends CI_Controller{
 
 		$data['unprocess'] =$unprocess;
 		$data['batch_num'] =$batch;
-		$data['ppn'] = $ppn;
+		// $data['ppn'] = $ppn;
 
 		$this->load->view('V_Header',$data);
 		$this->load->view('V_Sidemenu',$data);

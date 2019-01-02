@@ -57,7 +57,8 @@ class M_kasiepembelian extends CI_Model {
                          ami.last_purchasing_invoice_status last_purchasing_invoice_status,
                          ami.info info,
                          ami.invoice_category invoice_category,
-                         ami.nominal_dpp nominal_dpp
+                         ami.nominal_dpp nominal_dpp,
+                         ami.jenis_jasa jenis_jasa
                 FROM khs_ap_monitoring_invoice ami,
                      khs_ap_invoice_purchase_order aipo,
                      po_headers_all poh,
@@ -169,7 +170,8 @@ class M_kasiepembelian extends CI_Model {
                 ami.batch_number batch_number,
                 ami.info info,
                 ami.invoice_category invoice_category,
-                ami.nominal_dpp nominal_dpp
+                ami.nominal_dpp nominal_dpp,
+                ami.jenis_jasa jenis_jasa
                 FROM khs_ap_monitoring_invoice ami
                 ,khs_ap_invoice_purchase_order aipo
                 WHERE ami.invoice_id = aipo.invoice_id
@@ -234,7 +236,8 @@ class M_kasiepembelian extends CI_Model {
                          ami.batch_number batch_number,
                          ami.info info,
                          ami.invoice_category invoice_category,
-                         ami.nominal_dpp nominal_dpp
+                         ami.nominal_dpp nominal_dpp,
+                         ami.jenis_jasa jenis_jasa
                 FROM khs_ap_monitoring_invoice ami,
                      khs_ap_invoice_purchase_order aipo,
                      po_headers_all poh
@@ -268,7 +271,8 @@ class M_kasiepembelian extends CI_Model {
                 qty_invoice qty_invoice,
                 info info,
                 invoice_category,
-                nominal_dpp
+                nominal_dpp,
+                jenis_jasa
                 FROM khs_ap_monitoring_invoice ami
                 JOIN khs_ap_invoice_purchase_order aipo ON ami.invoice_id = aipo.invoice_id
                 WHERE aipo.invoice_id = $invoice_id";
@@ -311,6 +315,22 @@ class M_kasiepembelian extends CI_Model {
               FROM khs_ap_monitoring_invoice a";
         $run = $oracle->query($sql);
         return $run->result_array();
+    }
+
+    public function editInvoiceKasiePurc($invoice_id,$invoice_number,$invoice_date,$invoice_amount,$tax_invoice_number,$info,$nominal_dpp,$invoice_category,$jenis_jasa){
+       $oracle = $this->load->database('oracle',true);
+       $query2 = "UPDATE khs_ap_monitoring_invoice 
+                  SET invoice_number = '$invoice_number', 
+                    invoice_date = '$invoice_date',
+                    invoice_amount = '$invoice_amount',
+                    tax_invoice_number = '$tax_invoice_number',
+                    info = '$info',
+                    nominal_dpp = '$nominal_dpp',
+                    invoice_category = '$invoice_category',
+                    jenis_jasa = '$jenis_jasa'
+                 WHERE invoice_id = $invoice_id ";
+        $runQuery2 = $oracle->query($query2);
+        // oci_commit($oracle);
     }
 
 }

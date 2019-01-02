@@ -47,7 +47,7 @@
 											<td><?php echo $u['VENDOR_NAME']?></td>
 											<td><strong><?php echo $u['INVOICE_NUMBER']?></strong></td>
 											<td><?php echo date('d-M-Y',strtotime($u['INVOICE_DATE']))?></td>
-											<td><?php echo $ppn ?></td>
+											<td><?php echo $u['PPN'] ?></td>
 											<td><?php echo $u['TAX_INVOICE_NUMBER']?></td>
 											<td class="inv_amount" id="invoice_amount"><?php echo $u['INVOICE_AMOUNT']?></td>
 											<td class="po_amount"><?php echo $u['PO_AMOUNT']?></td>

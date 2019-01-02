@@ -71,6 +71,12 @@
 										<td>
 		                     				<input class="form-control" size="40" type="text" name="invoice_category" value="<?php echo $invoice[0]['INVOICE_CATEGORY']?>" readonly>
 		                     			</td>
+		                     			<td>
+											<span><label>Jenis Jasa</label></span>
+										</td>
+										<td>
+		                     				<input class="form-control" size="40" type="text" name="jenis_jasa" value="<?php echo $invoice[0]['JENIS_JASA']?>" readonly>
+		                     			</td>
 									</tr>
 									<tr>
 										<td>

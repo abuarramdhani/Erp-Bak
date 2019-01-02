@@ -63,6 +63,12 @@
 										<td>
 											<input  class="form-control" size="40" type="text" value="<?php echo $invoice_detail[0]['INVOICE_CATEGORY']?>" readonly>
 										</td>
+										<td>
+											<span><label>Jenis Jasa</label></span>
+										</td>
+										<td>
+											<input  class="form-control" size="40" type="text" value="<?php echo $invoice_detail[0]['JENIS_JASA']?>" readonly>
+										</td>
 									</tr>
 									<tr>
 										<td>

@@ -61,8 +61,21 @@
 											<span><label>Invoice Category</label></span>
 										</td>
 										<td>
-		                     				<input class="form-control" size="40" type="text" name="invoice_category" value="<?php echo $invoice[0]['INVOICE_CATEGORY']?>">
-		                     			</td>
+											<select name="invoice_category" class="form-control select2 select2-hidden-accessible" style="width:320px;">
+												<option><?php echo $invoice[0]['INVOICE_CATEGORY']?></option>
+												<option value="BARANG">BARANG</option>
+												<option value="JASA NON EKSPEDISI TRAKTOR">JASA NON EKSPEDISI TRAKTOR</option>
+												<option value="JASA EKSPEDISI TRAKTOR">JASA EKSPEDISI TRAKTOR</option>
+											</select>
+										</td>
+										<td>
+											<select name="jenis_jasa" class="form-control select2 select2-hidden-accessible" style="width:320px;">
+												<option><?php echo $invoice[0]['JENIS_JASA']?></option>
+												<option>RECEIPT</option>
+												<option>RECEIPT DAN PEMBAYARAN</option>
+												<option>RECEIPT DAN REASLISASI PREPAYMENT</option>
+											</select>
+										</td>
 									</tr>
 									<tr>
 										<td>

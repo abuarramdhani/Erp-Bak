@@ -33,8 +33,8 @@ $(document).ready(function(){
 			}
 		});
 		$('#jmlChecked').text(jml);
-		$('#content1').slideDown();
-		$('#content2').slideUp();
+		// $('#content1').slideDown();
+		// $('#content2').slideUp();
 	});
 
 	// $('.inv_amount').moneyFormat();
@@ -282,6 +282,14 @@ $(document).ready(function(){
 			// alert('dua');
 		};
 	})
+	
+	$('#invoice_category').on('change', function(){
+		var jasa = $(this).val();
+		 if (jasa == 'JASA NON EKSPEDISI TRAKTOR' || jasa == 'JASA EKSPEDISI TRAKTOR') {
+			$('#jenis_jasa').show();
+		 }
+
+	})
 
 });
 
@@ -343,6 +351,8 @@ function bukaMOdal(elm){
 		$('.body_invoice').html(response);
 		$('.invoice_id').val(id);
 		$('#modal-invoice').modal('show');
+		$('#invoice_categorySlc').select2();
+		$('#jenis_jasaSlc').select2();
 		}
 	});
 }
@@ -351,5 +361,4 @@ function PresTab(th)
 {
    $(th).parent().parent().next().find('.qty_invoice').focus();
 }
-
 

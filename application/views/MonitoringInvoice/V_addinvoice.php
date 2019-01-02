@@ -70,11 +70,19 @@
 											<span><label>Invoice Category</label></span>
 										</td>
 										<td>
-											<select name="invoice_category" class="form-control select2 select2-hidden-accessible" style="width:320px;">
+											<select name="invoice_category" id="invoice_category" class="form-control select2 select2-hidden-accessible" style="width:320px;">
 												<option></option>
-												<option>BARANG</option>
-												<option>JASA NON EKSPEDISI TRAKTOR</option>
-												<option>JASA EKSPEDISI TRAKTOR</option>
+												<option value="BARANG">BARANG</option>
+												<option value="JASA NON EKSPEDISI TRAKTOR">JASA NON EKSPEDISI TRAKTOR</option>
+												<option value="JASA EKSPEDISI TRAKTOR">JASA EKSPEDISI TRAKTOR</option>
+											</select>
+										</td>
+										<td id="jenis_jasa" style="display: none">
+											<select name="jenis_jasa" class="form-control select2 select2-hidden-accessible" style="width:320px;">
+												<option></option>
+												<option>RECEIPT</option>
+												<option>RECEIPT DAN PEMBAYARAN</option>
+												<option>RECEIPT DAN REASLISASI PREPAYMENT</option>
 											</select>
 										</td>
 									</tr>

@@ -59,6 +59,17 @@
 												<option>JASA NON EKSPEDISI TRAKTOR</option>
 												<option>JASA EKSPEDISI TRAKTOR</option>
 											</select>
+										</td> 
+										<td>
+											<span><label>Jenis Jasa</label></span>
+										</td>
+		                     			<td>
+											<select name="jenis_jasa" class="form-control select2 select2-hidden-accessible" style="width:320px;">
+												<option><?php echo $invoice[0]['JENIS_JASA']?></option>
+												<option>RECEIPT</option>
+												<option>RECEIPT DAN PEMBAYARAN</option>
+												<option>RECEIPT DAN REASLISASI PREPAYMENT</option>
+											</select>
 										</td>
 									</tr>
 									<tr>

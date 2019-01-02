@@ -69,7 +69,13 @@
 											<span><label>Invoice Category</label></span>
 										</td>
 										<td>
-		                     				<input class="form-control" size="40" type="text" name="vendor_name" value="<?php echo $invoice[0]['INVOICE_CATEGORY']?>" readonly>
+		                     				<input class="form-control" size="40" type="text" name="invoice_category" value="<?php echo $invoice[0]['INVOICE_CATEGORY']?>" readonly>
+		                     			</td>
+		                     			<td>
+											<span><label>Jenis Jasa</label></span>
+										</td>
+										<td>
+		                     				<input class="form-control" size="40" type="text" name="jenis_jasa" value="<?php echo $invoice[0]['JENIS_JASA']?>" readonly>
 		                     			</td>
 									</tr>
 									<tr>
@@ -77,7 +83,7 @@
 											<span><label>Nominal DPP Faktur Pajak</label></span>
 										</td>
 										<td>
-		                     				<input class="form-control" size="40" type="text" name="vendor_name" value="<?php echo $invoice[0]['NOMINAL_DPP']?>" readonly>
+		                     				<input class="form-control" size="40" type="text" name="nominal_dpp" value="<?php echo $invoice[0]['NOMINAL_DPP']?>" readonly>
 		                     			</td>
 									</tr>
 									<tr>
