@@ -29,7 +29,7 @@ class M_ajax extends CI_Model {
 	function getSPB($id, $subInv)
 	{
 		$sql	= "SELECT DISTINCT mtrh.request_number no_spb, mtrl.line_number,
-                msib.segment1 item_code, msib.description item_desc,
+                msib.segment1 item_code, msib.description item_desc,msib.ATTRIBUTE26 quantity_standard,
                 mtrl.quantity quantity_normal,
                 mtrl.quantity_detailed quantity_allocate,
                 (  mtrl.quantity_delivered
@@ -65,8 +65,13 @@ class M_ajax extends CI_Model {
           WHERE mtrh.header_id = mtrl.header_id
             AND msib.inventory_item_id = mtrl.inventory_item_id
             AND mtrh.request_number = '$id'
+            AND msib.organization_id  = 81
 		-- AND mtrl.organization_id = 225
 		ORDER BY  no_spb, line_number";
+
+        // echo "<pre>";
+        // print_r($sql);
+        // exit();
 
 		$query = $this->oracle->query($sql);
 		return $query->result_array();

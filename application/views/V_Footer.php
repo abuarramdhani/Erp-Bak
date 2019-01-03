@@ -75,7 +75,7 @@
 	<script src="<?php echo base_url('assets/plugins/redactor/plugins/fontfamily.min.js');?>"></script>
 	<script src="<?php echo base_url('assets/plugins/redactor/plugins/fontsize.min.js');?>"></script>
 	<script src="<?php echo base_url('assets/plugins/redactor/plugins/imagemanager.min.js');?>"></script> -->
-
+	<script src="<?php echo base_url('assets/plugins/mdtimepicker/mdtimepicker.js');?>"></script>
 
 	<!-- Custom Javascript -->
     <script src="<?php echo base_url('assets/js/custom.js');?>" type="text/javascript"></script>
@@ -131,7 +131,7 @@
 	<script src="<?php echo base_url('assets/js/customBI.js');?>" type="text/javascript"></script>
 	<script src="<?php echo base_url('assets/js/customMA.js');?>" type="text/javascript"></script>
 	<script src="<?php echo base_url('assets/js/customTI.js');?>" type="text/javascript"></script>
-	<script src="<?php echo base_url('assets/js/customPPH.js');?>" type="text/javascript"></script>
+	<script src="<?php echo base_url('assets/js/customTF.js');?>" type="text/javascript"></script>
 	<script type="text/javascript">
 		if(counter_row <= 0){
 			var counter_row = 0;

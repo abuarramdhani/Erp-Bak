@@ -12,7 +12,7 @@ class M_monitoring extends CI_Model
 		$this->load->database();
 	}
 
-	public function getDataPending(){
+	public function getData($tanggal,$pekerja,$pekerjaan){
 		$sql = "select *,	(	select concat(noind,' - ',nama_pekerja) 
 								from ma.ma_pekerja pkj 
 								where pkj.id_pekerja = cast(pls.id_pekerja as int)
@@ -29,7 +29,13 @@ class M_monitoring extends CI_Model
 								''
 							end alasan
 				from ma.ma_pelaksanaan pls
-				where status_selesai = '1'";
+				where status_selesai = '1' $tanggal $pekerja $pekerjaan";
+		$result = $this->db->query($sql);
+		return $result->result_array();
+	}
+
+	public function getPekerjaan(){
+		$sql = "select * from ma.ma_target";
 		$result = $this->db->query($sql);
 		return $result->result_array();
 	}

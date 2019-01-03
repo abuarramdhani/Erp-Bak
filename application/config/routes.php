@@ -447,6 +447,9 @@ $route['RekapTIMSPromosiPekerja/GetNoInduk'] = 'er/RekapTIMS/C_RekapPerPekerja/G
 	// Rekap Bobot TIM
 			$route['RekapTIMSPromosiPekerja/RekapBobot']  =  'er/RekapTIMS/C_RekapBobot';
 			$route['RekapTIMSPromosiPekerja/RekapBobot/(:any)']  =  'er/RekapTIMS/C_RekapBobot/$1';
+
+	//Tims 2 tahun
+			$route['RekapTIMSPromosiPekerja/Tims2tahun'] = 'er/RekapTIMS/C_Tims2tahun';
 //------------------------------------Rekap TIMS.end---------------------------------------------------
 $route['StockControl'] = 'StockControl/C_StockControl/index';
 
@@ -1981,6 +1984,8 @@ $route['HitungHlcm/Approval/(:any)/(:any)'] 	= 'UpahHlCm/MasterData/C_Approval/$
 $route['HitungHlcm/HitungGaji'] 	= 'UpahHlCm/ProsesGaji/C_ProsesGaji';
 $route['HitungHlcm/HitungGaji/(:any)'] 	= 'UpahHlCm/ProsesGaji/C_ProsesGaji/$1';
 $route['HitungHlcm/HitungGaji/(:any)/(:any)'] 	= 'UpahHlCm/ProsesGaji/C_ProsesGaji/$1/$2';
+$route['HitungHlcm/HitungGaji/(:any)/(:any)/(:any)'] 	= 'UpahHlCm/ProsesGaji/C_ProsesGaji/$1/$2/$3';
+$route['HitungHlcm/HitungGaji/(:any)/(:any)/(:any)/(:any)'] 	= 'UpahHlCm/ProsesGaji/C_ProsesGaji/$1/$2/$3/$4';
 $route['HitungHlcm/SlipGaji'] 	= 'UpahHlCm/MenuCetak/C_SlipGaji';
 $route['HitungHlcm/SlipGaji/(:any)'] 	= 'UpahHlCm/MenuCetak/C_SlipGaji/$1';
 $route['HitungHlcm/SlipGaji/(:any)/(:any)'] 	= 'UpahHlCm/MenuCetak/C_SlipGaji/$1/$2';
@@ -1993,6 +1998,9 @@ $route['HitungHlcm/Rekap/(:any)/(:any)'] 	= 'UpahHlCm/MenuCetak/C_Rekap/$1/$2';
 $route['HitungHlcm/Memo'] 	= 'UpahHlCm/MenuCetak/C_Memo';
 $route['HitungHlcm/Memo/(:any)'] 	= 'UpahHlCm/MenuCetak/C_Memo/$1';
 $route['HitungHlcm/Memo/(:any)/(:any)'] 	= 'UpahHlCm/MenuCetak/C_Memo/$1/$2';
+$route['HitungHlcm/Arsip'] 	= 'UpahHlCm/MenuCetak/C_Arsip';
+$route['HitungHlcm/Arsip/(:any)'] 	= 'UpahHlCm/MenuCetak/C_Arsip/$1';
+$route['HitungHlcm/Arsip/(:any)/(:any)'] 	= 'UpahHlCm/MenuCetak/C_Arsip/$1/$2';
 
 //------------------------------------------------Inventory------------------------------------------------//
 //Move Order
@@ -2170,8 +2178,7 @@ $route['Monitoring/TrackingInvoice'] = 'TrackingInvoice/C_trackingInvoice/Tracki
 $route['Monitoring/TrackingInvoice/(:any)'] = 'TrackingInvoice/C_trackingInvoice/$1';
 $route['Monitoring/TrackingInvoice/(:any)/(:any)'] = 'TrackingInvoice/C_trackingInvoice/$1/$2';
 
-//--------------------------------------------------- Check PPh --------------------------------------------------//
-$route['AccountPayables/CheckPPh/Upload'] = 'CheckPPH/MainMenu/C_Upload';
-$route['AccountPayables/CheckPPh/Upload/(:any)'] = 'CheckPPH/MainMenu/C_Upload/$1';
-$route['AccountPayables/CheckPPh/List'] = 'CheckPPH/MainMenu/C_List';
-$route['AccountPayables/CheckPPh/List/(:any)'] = 'CheckPPH/MainMenu/C_List/$1';
+//-----------------------------------Tarik FingerSpot----------------------------------//
+$route['TarikFingerspot'] = 'TarikFingerspot/C_TarikFingerspot';
+$route['TarikFingerspot/TarikData'] = 'TarikFingerspot/C_TarikFingerspot/TarikData';
+$route['TarikFingerspot/TarikData/(:any)'] = 'TarikFingerspot/C_TarikFingerspot/TarikData/$1';

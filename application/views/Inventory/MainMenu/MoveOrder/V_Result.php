@@ -4,7 +4,6 @@
     <link rel="stylesheet" href="<?php echo base_url('assets/plugins/bootstrap/3.3.7/css/bootstrap.css');?>" />
     <script src="<?php echo base_url('assets/plugins/dataTables/jquery.dataTables.min.js');?>"></script>
 	<script src="<?php echo base_url('assets/plugins/dataTables/dataTables.bootstrap.js');?>"></script>
-	<!-- <script src="<?php // echo base_url('assets/js/customIMO.js');?>"></script> -->
 	<script type="text/javascript">
 		$('.ch_komp_imo').on('click',function(){
 			var a = 0;
@@ -74,7 +73,7 @@
 
  	table th{
  		text-align: center;
- 		vertical-align: middle;
+ 		vertical-align: middle !important;
  	}
 
  	.hdr {
@@ -101,6 +100,7 @@
 	</thead>
 	<tbody>
 		<?php  
+			if ($requirement):
 
 			$allInvID = array();
 			$allQty = array();
@@ -115,30 +115,59 @@
 			foreach ($value['body'] as $k => $v) {
 				if($v['REQUIRED_QUANTITY'] > $v['ATR']) { array_push($arrErr, $v['REQUIRED_QUANTITY']); }
 			}
-			$penanda = (count($arrErr) > 0) ? 'bg-danger' : '' 
+
+			if($value['header']['KET'] == 0){
+				if(count($arrErr) > 0){
+					$penanda = 'bg-danger';
+					$penandabutton = 1;
+					$text_button = '<b>Create Picklist</b>';
+				}else{
+					$penanda = '';
+					$penandabutton = 0;
+					$text_button = '<b>Create Picklist</b>';
+				}
+			}else{
+				$penanda = 'bg-success';
+				$penandabutton = 0;
+				$text_button = '<b>Print Picklist</b>';
+			}
+
 
 		?>
 		<tr class="hdr" >
 			<td rowspan="2"   class="<?= $penanda ?>" style="vertical-align: top;" >
-				<center><b <?= ($value['body']) ? '' : 'style="color: #c1c1c1"' ?>><?= $no++; ?></b> <br>
-					<input type="checkbox"  class="ch_komp_imo" <?= ($value['body']) ? ' name="ch_komp[]"' : 'onclick="return false;"' ?>
-						value="<?= $value['header']['WIP_ENTITY_NAME'].'+'; ?>">
+				<center>
+				<?php if ($penandabutton == 1) { ?>
+					<b style="color: #c1c1c1"> <?= $no++; ?></b> <br>
+						<input type="checkbox"  class="ch_komp_imo" onclick="return false;"
+							value="<?= $value['header']['WIP_ENTITY_NAME'].'+'; ?>">
+				<?php } else{ ?>
+						<b <?= ($value['body']) ? '' : 'style="color: #c1c1c1"' ?>><?= $no++; ?></b> <br>
+						<input type="checkbox"  class="ch_komp_imo" <?= ($value['body']) ? ' name="ch_komp[]"' : 'onclick="return false;"' ?>
+							value="<?= $value['header']['WIP_ENTITY_NAME'].'+'; ?>">
+				<?php } ?>
 				</center>
 			</td>
-			<td class="<?= $penanda ?>" ><?= $value['header']['WIP_ENTITY_NAME']; ?></td>
+			<td class="<?= $penanda ?>" ><b><?= $value['header']['WIP_ENTITY_NAME']; ?></b></td>
 			<td class="<?= $penanda ?>" ><?= $value['header']['ITEM_CODE'] ?></td>
 			<td class="<?= $penanda ?>" ><?= $value['header']['DESCRIPTION'] ?></td>
 			<td class="<?= $penanda ?>" ><?= $value['header']['START_QUANTITY'] ?></td>
 			<td class="<?= $penanda ?>" ><?= $value['header']['DEPT_CLASS'] ?></td>
 			<td class="<?= $penanda ?>" ><?= $value['header']['DESCRIPTION'] ?></td>
-			<td class="<?= $penanda ?>" ><?= ($value['header']['KET'] == 1) ? 'Sudah Dibuat Picklist' : 'Belum Dibuat Picklist' ?>
+			<td class="<?= $penanda ?>" ><?= ($value['header']['KET'] == 1) ? '<b>Sudah Dibuat Picklist</b>' : 'Belum Dibuat Picklist' ?>
 				
 			</td>
 			<td class="<?= $penanda ?>">
+				<?php if ($penandabutton == 1) { ?>
+				<button class="btn btn-sm  disabled btn-default " target="_blank" >
+						 <?= $text_button; ?> 
+				</button>
+				<?php } else{ ?>
 				<button class="btn btn-sm  <?= ($value['body']) ? 'btn-success' : 'disabled btn-default' ?>" target="_blank"
 						 <?= ($value['body']) ? "onclick=document.getElementById('form".$value['header']['WIP_ENTITY_NAME']."').submit();" :'' ?>>
-						 Create Picklist 
+						 <?= $text_button; ?> 
 				</button>
+				<?php } ?>
 			</td>
 		</tr>
 		<tr>
@@ -189,7 +218,7 @@
 							$allJobID[$no][] =  $vulue['JOB_ID'];
 							$allSubInvTo[$no][] =  $vulue['GUDANG_TUJUAN'];
 							$allSubFrom[$no][] =  $vulue['GUDANG_ASAL'];
-							$allLocatorTo[$no][] =  $vulue['LOCATOR_TUJUAN'];
+							$allLocatorTo[$no][] =  $vulue['LOCATOR_TUJUAN_ID'];
 							$allLocatorFrom[$no][] =  $vulue['LOCATOR_ASAL'];
 						?>
 						<?php }
@@ -207,7 +236,11 @@
 				</div>
 			</td>
 		</tr>
-		<?php } ?>
+		<?php } else: ?>
+		<tr>
+			<td colspan="9"> No Data Found .. :(  </td>
+		</tr>
+		<?php endif; ?>
 	</tbody>
 </table>
 <div>

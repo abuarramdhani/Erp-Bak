@@ -37,7 +37,13 @@ class C_Proses extends CI_Controller
 		$user_id 	= $this->session->userid;
 		$user 		= $this->session->user;
 		$res_id 	= $this->session->responsibility_id;
-
+		if ($res_id == '2580') {
+			$this->session->management_admin_res_id = $res_id;
+		}elseif ($res_id == '2579') {
+			$this->session->management_admin_res_id = $res_id;
+		}
+		
+		$ma_res_id = $this->session->management_admin_res_id;
 		// print_r($_SESSION);exit();
 
 		
@@ -46,7 +52,7 @@ class C_Proses extends CI_Controller
 		$data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id);
 		$data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id);
 
-		if ($res_id == '2580') {
+		if ($ma_res_id == '2580') {
 			$data['table_proses'] 	= $this->M_proses->getDataproses($user);
 			$data['table_selesai'] 	= $this->M_proses->getDataselesai($user);
 			$data['Title'] 			= 'Management Admin User';

@@ -34,6 +34,101 @@ class M_cetakdata extends CI_Model {
 		return $data->result_array();
 	}
 
+	public function getCutOffGaji(){
+		$sql = "select distinct periode,
+						case when substring(periode,5,2) = '01' then
+							'Januari'
+						when substring(periode,5,2) = '02' then
+							'Februari'
+						when substring(periode,5,2) = '03' then
+							'Maret'
+						when substring(periode,5,2) = '04' then
+							'April'
+						when substring(periode,5,2) = '05' then
+							'Mei'
+						when substring(periode,5,2) = '06' then
+							'Juni'
+						when substring(periode,5,2) = '07' then
+							'Juli'
+						when substring(periode,5,2) = '08' then
+							'Agustus'
+						when substring(periode,5,2) = '09' then
+							'September'
+						when substring(periode,5,2) = '10' then
+							'Oktober'
+						when substring(periode,5,2) = '11' then
+							'November'
+						when substring(periode,5,2) = '12' then
+							'Desember'
+						end bulan,
+						left(periode,4) tahun,
+						concat(to_char(tgl_awal_periode, 'dd'),
+						' ',
+						(case when extract(month from tgl_awal_periode) = '1' then
+							'Januari'
+						when extract(month from tgl_awal_periode) = '2' then
+							'Februari'
+						when extract(month from tgl_awal_periode) = '3' then
+							'Maret'
+						when extract(month from tgl_awal_periode) = '4' then
+							'April'
+						when extract(month from tgl_awal_periode) = '5' then
+							'Mei'
+						when extract(month from tgl_awal_periode) = '6' then
+							'Juni'
+						when extract(month from tgl_awal_periode) = '7' then
+							'Juli'
+						when extract(month from tgl_awal_periode) = '8' then
+							'Agustus'
+						when extract(month from tgl_awal_periode) = '9' then
+							'September'
+						when extract(month from tgl_awal_periode) = '10' then
+							'Oktober'
+						when extract(month from tgl_awal_periode) = '11' then
+							'November'
+						when extract(month from tgl_awal_periode) = '12' then
+							'Desember'
+						end),
+						' ',
+						to_char(tgl_awal_periode, 'YYYY')
+						) awal,
+						concat(to_char(tgl_akhir_periode, 'dd'),
+						' ',
+						(case when extract(month from tgl_akhir_periode) = '1' then
+							'Januari'
+						when extract(month from tgl_akhir_periode) = '2' then
+							'Februari'
+						when extract(month from tgl_akhir_periode) = '3' then
+							'Maret'
+						when extract(month from tgl_akhir_periode) = '4' then
+							'April'
+						when extract(month from tgl_akhir_periode) = '5' then
+							'Mei'
+						when extract(month from tgl_akhir_periode) = '6' then
+							'Juni'
+						when extract(month from tgl_akhir_periode) = '7' then
+							'Juli'
+						when extract(month from tgl_akhir_periode) = '8' then
+							'Agustus'
+						when extract(month from tgl_akhir_periode) = '9' then
+							'September'
+						when extract(month from tgl_akhir_periode) = '10' then
+							'Oktober'
+						when extract(month from tgl_akhir_periode) = '11' then
+							'November'
+						when extract(month from tgl_akhir_periode) = '12' then
+							'Desember'
+						end),
+						' ',
+						to_char(tgl_awal_periode, 'YYYY')
+						) akhir,
+						concat(tgl_awal_periode,' - ',tgl_akhir_periode) rangetanggal
+				from hlcm.hlcm_proses where left(periode,4) = to_char(current_timestamp,'YYYY') 
+				order by periode";
+		$data = $this->erp->query($sql);
+		return $data->result_array();
+	}
+
 	
 	
 };

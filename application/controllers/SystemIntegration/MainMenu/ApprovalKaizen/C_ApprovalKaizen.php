@@ -166,7 +166,7 @@ class C_ApprovalKaizen extends CI_Controller
 					'kaizen_id' => $kaizen_id,
 					'status' => $status,
 					'detail' => $detail,
-					'waktu' => date('Y-m-d h:i:s', strtotime('+5 hours')),
+					'waktu' => date('Y-m-d h:i:s'),
 				 );
 			$this->M_log->save_log($datalog);
 			
@@ -199,7 +199,7 @@ class C_ApprovalKaizen extends CI_Controller
 
 			if ($needNextApproval == 0) {
 			if ($yangApprove && !$yangReject && !$yangRevisi && !$yangBelum) {
-				$status_date =  date('Y-m-d h:i:s', strtotime('+5 hours'));
+				$status_date =  date('Y-m-d h:i:s');
 				$this->M_approvalkaizen->UpdateStatus($kaizen_id, 3, $status_date);
 
 				//log thread
@@ -213,15 +213,15 @@ class C_ApprovalKaizen extends CI_Controller
 					'kaizen_id' => $kaizen_id,
 					'status' => 3,
 					'detail' => $detail,
-					'waktu' => date('Y-m-d h:i:s', strtotime('+5 hours')),
+					'waktu' => date('Y-m-d h:i:s'),
 					 );
 				$this->M_log->save_log($datalog);
 
 				}elseif($yangRevisi && !$yangReject) {
-					$status_date =  date('Y-m-d h:i:s', strtotime('+5 hours'));
+					$status_date =  date('Y-m-d h:i:s');
 					$this->M_approvalkaizen->UpdateStatus($kaizen_id, 4, $status_date);
 				}elseif ($yangReject) {
-					$status_date =  date('Y-m-d h:i:s', strtotime('+5 hours'));
+					$status_date =  date('Y-m-d h:i:s');
 					$this->M_approvalkaizen->UpdateStatus($kaizen_id, 5, $status_date);
 				}
 			}else{
@@ -253,7 +253,7 @@ class C_ApprovalKaizen extends CI_Controller
 					'kaizen_id' => $kaizen_id,
 					'status' => $status,
 					'detail' => $detail,
-					'waktu' => date('Y-m-d h:i:s', strtotime('+5 hours')),
+					'waktu' => date('Y-m-d h:i:s'),
 					 );
 				$this->M_log->save_log($datalog);
 			}
@@ -287,7 +287,7 @@ class C_ApprovalKaizen extends CI_Controller
 			$level = 6;
 			$status = 3;
 			$update = $this->M_approvalkaizen->updateStatusApprove($kaizen_id,$employee_code,$status,$reason,$level);
-			$status_date =  date('Y-m-d h:i:s', strtotime('+5 hours'));
+			$status_date =  date('Y-m-d h:i:s');
 			$this->M_approvalkaizen->UpdateStatus($kaizen_id, 7, $status_date);
 			//log and mail
 			$status_name = 'Approved'; 
@@ -309,7 +309,7 @@ class C_ApprovalKaizen extends CI_Controller
 					'kaizen_id' => $kaizen_id,
 					'status' => 7,
 					'detail' => $detail,
-					'waktu' => date('Y-m-d h:i:s', strtotime('+5 hours')),
+					'waktu' => date('Y-m-d h:i:s'),
 				 );
 			$this->M_log->save_log($datalog);
 			redirect(base_url('SystemIntegration/KaizenGenerator/ApprovalKaizen/index'));
@@ -384,7 +384,7 @@ class C_ApprovalKaizen extends CI_Controller
 				$getKaizen = $this->M_submit->getKaizen($kaizen_id,FALSE);
 
 				//get template
-				$link = base_url("SystemIntegration/KaizenGenerator/View/$kaizen_id");
+				$link = base_url("SystemIntegration/KaizenGenerator/ApprovalKaizen/View/$kaizen_id");
 				$getEmailTemplate = $this->M_submit->getEmailTemplate(2);
 				$subject = $getEmailTemplate[0]['subject'];
 				$body = sprintf($getEmailTemplate[0]['body'], $getKaizen[0]['pencetus'],$getKaizen[0]['judul'],$link);
