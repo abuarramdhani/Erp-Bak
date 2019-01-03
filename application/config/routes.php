@@ -2182,3 +2182,9 @@ $route['Monitoring/TrackingInvoice/(:any)/(:any)'] = 'TrackingInvoice/C_tracking
 $route['TarikFingerspot'] = 'TarikFingerspot/C_TarikFingerspot';
 $route['TarikFingerspot/TarikData'] = 'TarikFingerspot/C_TarikFingerspot/TarikData';
 $route['TarikFingerspot/TarikData/(:any)'] = 'TarikFingerspot/C_TarikFingerspot/TarikData/$1';
+
+//--------------------------------------------------- Check PPh --------------------------------------------------//
+$route['AccountPayables/CheckPPh/Upload'] = 'CheckPPH/MainMenu/C_Upload';
+$route['AccountPayables/CheckPPh/Upload/(:any)'] = 'CheckPPH/MainMenu/C_Upload/$1';
+$route['AccountPayables/CheckPPh/List'] = 'CheckPPH/MainMenu/C_List';
+$route['AccountPayables/CheckPPh/List/(:any)'] = 'CheckPPH/MainMenu/C_List/$1';
