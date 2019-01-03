@@ -10,7 +10,7 @@ class M_moveorder extends CI_Model
 	function search($date,$dept,$shift)
 	{
 		$oracle = $this->load->database('oracle_dev',TRUE);
-		$sql = "SELECT we.WIP_ENTITY_ID job_id ,we.WIP_ENTITY_NAME, msib.SEGMENT1 item_code, msib.DESCRIPTION, wdj.start_quantity,
+		$sql = "SELECT we.WIP_ENTITY_ID job_id ,we.WIP_ENTITY_NAME, msib.SEGMENT1 item_code, msib.DESCRIPTION item_desc, wdj.start_quantity,
 						msib2.INVENTORY_ITEM_ID, msib2.SEGMENT1 komponen, msib2.DESCRIPTION komp_desc
 						,wro.REQUIRED_QUANTITY,msib2.PRIMARY_UOM_CODE, bic.ATTRIBUTE1 gudang_asal, mil.SEGMENT1 locator_asal
 						,bic.SUPPLY_SUBINVENTORY gudang_tujuan,bic.SUPPLY_LOCATOR_ID locator_tujuan_id ,mil2.SEGMENT1 locator_tujuan
