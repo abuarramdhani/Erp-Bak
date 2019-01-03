@@ -150,7 +150,7 @@
 			</td>
 			<td class="<?= $penanda ?>" ><b><?= $value['header']['WIP_ENTITY_NAME']; ?></b></td>
 			<td class="<?= $penanda ?>" ><?= $value['header']['ITEM_CODE'] ?></td>
-			<td class="<?= $penanda ?>" ><?= $value['header']['DESCRIPTION'] ?></td>
+			<td class="<?= $penanda ?>" ><?= $value['header']['ITEM_DESC'] ?></td>
 			<td class="<?= $penanda ?>" ><?= $value['header']['START_QUANTITY'] ?></td>
 			<td class="<?= $penanda ?>" ><?= $value['header']['DEPT_CLASS'] ?></td>
 			<td class="<?= $penanda ?>" ><?= $value['header']['DESCRIPTION'] ?></td>
