@@ -1325,6 +1325,13 @@ $route['WasteManagement/Simple/(:any)'] = 'WasteManagement/MainMenu/C_Simple/$1'
 $route['WasteManagement/Simple/(:any)/(:any)'] = 'WasteManagement/MainMenu/C_Simple/$1/$2';
 $route['WasteManagement/Simple/(:any)/(:any)/(:any)'] = 'WasteManagement/MainMenu/C_Simple/$1/$2/$3';
 
+//-----------------------------------------Waste Management - Rekap Limbah ---------------------------------//
+
+$route['WasteManagement/RekapLimbah'] = 'WasteManagement/MainMenu/C_LimbahRekap';
+$route['WasteManagement/RekapLimbah/(:any)'] = 'WasteManagement/MainMenu/C_LimbahRekap/$1';
+$route['WasteManagement/RekapLimbah/(:any)/(:any)'] = 'WasteManagement/MainMenu/C_LimbahRekap/$1/$2';
+$route['WasteManagement/RekapLimbah/(:any)/(:any)/(:any)'] = 'WasteManagement/MainMenu/C_LimbahRekap/$1/$2/$3';
+
 //------------------------------------ Calibration Report ----------------------------
 $route['CalibrationReport'] = 'CalibrationReport/C_Index';
 $route['CalibrationReport/Calibration'] = 'CalibrationReport/MainMenu/C_Component';
