@@ -362,7 +362,7 @@ class C_RecordData extends CI_Controller {
 
     public function deleteSampah($id)
     {
-    	$this->M_recorddata->DeleteTimbanganSampah($$id);
+    	$this->M_recorddata->DeleteTimbanganSampah($id);
     	redirect('SiteManagement/RecordData/TimbanganSampah');
     }
 
