@@ -1820,6 +1820,22 @@ $route['SiteManagement/Order'] = 'SiteManagement/MainMenu/C_Order';
 $route['SiteManagement/Order/(:any)'] = 'SiteManagement/MainMenu/C_Order/$1';
 $route['SiteManagement/Order/(:any)/(:any)'] = 'SiteManagement/MainMenu/C_Order/$1/$2';
 
+$route['SiteManagement/InputAsset'] = 'SiteManagement/MainMenu/C_Inputasset';
+$route['SiteManagement/InputAsset/(:any)'] = 'SiteManagement/MainMenu/C_Inputasset/$1';
+$route['SiteManagement/InputAsset/(:any)/(:any)'] = 'SiteManagement/MainMenu/C_Inputasset/$1/$2';
+
+$route['SiteManagement/PembelianAsset'] = 'SiteManagement/MainMenu/C_Pembelianasset';
+$route['SiteManagement/PembelianAsset/(:any)'] = 'SiteManagement/MainMenu/C_Pembelianasset/$1';
+$route['SiteManagement/PembelianAsset/(:any)/(:any)'] = 'SiteManagement/MainMenu/C_Pembelianasset/$1/$2';
+
+$route['SiteManagement/RetirementAsset'] = 'SiteManagement/MainMenu/C_Retirementasset';
+$route['SiteManagement/RetirementAsset/(:any)'] = 'SiteManagement/MainMenu/C_Retirementasset/$1';
+$route['SiteManagement/RetirementAsset/(:any)/(:any)'] = 'SiteManagement/MainMenu/C_Retirementasset/$1/$2';
+
+$route['SiteManagement/TransferAsset'] = 'SiteManagement/MainMenu/C_Transferasset';
+$route['SiteManagement/TransferAsset/(:any)'] = 'SiteManagement/MainMenu/C_Transferasset/$1';
+$route['SiteManagement/TransferAsset/(:any)/(:any)'] = 'SiteManagement/MainMenu/C_Transferasset/$1/$2';
+
 //--------------------------------------------------- Order Site Management --------------------------------------------------//
 $route['OrderSiteManagement'] = 'OrderSiteManagement/C_OrderSiteManagement';
 $route['OrderSiteManagement/Order'] = 'OrderSiteManagement/MainMenu/C_Order';
