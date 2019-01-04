@@ -309,8 +309,9 @@
 			}
 		}
 
-		public function delete_device_scanlog($id_lokasi = FALSE)
-		{
+		public function delete_device_scanlog($id_lokasi)
+		{	
+			//semula : public function delete_device_scanlog($id_lokasi = FALSE) diubah agar tidak menghapus di semua device
 			if ( $id_lokasi !== FALSE )
 			{
 				$id_lokasi_decode	=	$this->general->dekripsi($id_lokasi);
@@ -351,11 +352,21 @@
 					exit();
 				}
 				echo 'Hapus Scanlog '.$device['device_name'].' - '.$device_server_ip.' BERHASIL<br/>';
+				$scanlog_update 	=	array
+										(
+											'workcode'	=>	1,
+										);
+				$where_clause 		= 	array
+										(
+											$device['device_sn']
+										);
+				$this->M_monitoringpresensi->updateStatusDelete($scanlog_update,$where_clause);
 			}
 
 			if ( $this->session->is_logged )
 			{
-				redirect('PresenceManagement/MonitoringPresensi');
+				// redirect('PresenceManagement/MonitoringPresensi');
+				redirect('PresenceManagement/MonFingerspot');
 			}
 		}
 

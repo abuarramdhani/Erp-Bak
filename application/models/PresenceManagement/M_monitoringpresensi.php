@@ -211,6 +211,12 @@
 
  					return $this->quick->get()->result_array();
  				}
+
+ 				public function updateStatusDelete($scanlog, $where_clause){
+ 					$this->quick->where($where_clause);
+
+ 					$this->quick->update('db_datapresensi.tb_scanlog_history', $scanlog);
+ 				}
  		//	}
 
 	    //	Device Management

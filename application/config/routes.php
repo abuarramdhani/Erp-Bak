@@ -589,6 +589,8 @@ $route['PresenceManagement/Monitoring/(:any)/(:any)/(:any)']	= 'PresenceManageme
 		$route['PresenceManagement/MonitoringPresensiPengaturan/(:any)/(:any)'] =	'PresenceManagement/C_MonitoringPresensiPengaturan/$1/$2';
 		$route['PresenceManagement/CekData'] 					= 'PresenceManagement/MainMenu/C_CekData';
 		$route['PresenceManagement/CekData/Detail/(:any)'] 			= 'PresenceManagement/MainMenu/C_CekData/Detail/$1';
+		$route['PresenceManagement/MonFingerspot'] = 'PresenceManagement/C_MonFingerspot';
+		$route['PresenceManagement/MonFingerspot/(:any)'] = 'PresenceManagement/C_MonFingerspot/$1';
 //	}
 
 //---------------------------------Payroll Management----------------------------------

@@ -154,6 +154,12 @@
 							</div>
 						</div>
 						<div class="form-group">
+							<label for="PresenceManagement-MonitoringPresensi-Pengaturan-txtNameDevice" class="control-label col-lg-4">Device Name</label>
+							<div class="col-lg-4">
+								<input type="text" class="form-control" id="PresenceManagement-MonitoringPresensi-Pengaturan-txtNameDevice" name="txtNameDevice" />
+							</div>
+						</div>
+						<div class="form-group">
 							<label for="PresenceManagement-MonitoringPresensi-Pengaturan-txtInisialLokasi" class="control-label col-lg-4">Inisial Lokasi</label>
 							<div class="col-lg-4">
 								<input type="text" class="form-control" id="PresenceManagement-MonitoringPresensi-Pengaturan-txtInisialLokasi" name="txtInisialLokasi" maxlength="5" />
