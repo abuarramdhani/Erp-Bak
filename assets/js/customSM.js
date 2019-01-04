@@ -434,3 +434,409 @@ $(function() {
 		
 
 	});
+
+	//Asset
+$(function(){
+	$('#txtTanggalPPAsset').datepicker({
+		"autoclose" : true,
+		"todayHiglight": true,
+		"format": 'dd MM yyyy'
+	});
+
+	$('#txtTanggalTransferDiterima').datepicker({
+		"autoclose" : true,
+		"todayHiglight": true,
+		"format": 'dd MM yyyy'
+	});
+
+	$('#txtTanggalPembelian').datepicker({
+		"autoclose" : true,
+		"todayHiglight": true,
+		"format": 'dd MM yyyy'
+	});
+
+	$('.table-asset').DataTable({
+		dom: 'frtp',
+	});
+});
+
+$(document).ready(function(){
+	$('#txtSeksiPemakaiAsset').select2({
+		allowClear: false,
+	});
+	$('#txtRequesterAsset').select2({
+		placeholder: "Requester",
+		searching: true,
+		minimumInputLength: 3,
+		allowClear: false,
+		ajax:
+		{
+			url: baseurl+'SiteManagement/InputAsset/GetRequester',
+			dataType: 'json',
+			delay: 500,
+			type: 'GET',
+			data: function(params){
+				return {
+					term: params.term
+				}
+			},
+			processResults: function (data){
+				return {
+					results: $.map(data, function(obj){
+						return {id: obj.noind, text: obj.noind + ' - ' + obj.nama};
+					})
+				}
+			}
+		}
+	});
+
+	$('#txtNoPPAsset').select2({
+		placeholder: "No PP",
+		searching: true,
+		minimumInputLength: 2,
+		allowClear: false,
+		ajax:
+		{
+			url: baseurl+'SiteManagement/PembelianAsset/GetNoPP',
+			dataType: 'json',
+			delay: 500,
+			type: 'GET',
+			data: function(params){
+				return {
+					term: params.term
+				}
+			},
+			processResults: function (data){
+				return {
+					results: $.map(data, function(obj){
+						return {id: obj.id_input_asset, text: obj.no_pp};
+					})
+				}
+			}
+		}
+	});
+
+	$('#txtCostCenter').select2({
+		placeholder: "Cost Center",
+		searching: true,
+		minimumInputLength: 2,
+		allowClear: false,
+		ajax:
+		{
+			url: baseurl+'SiteManagement/PembelianAsset/GetCostCenter',
+			dataType: 'json',
+			delay: 500,
+			type: 'GET',
+			data: function(params){
+				return {
+					term: params.term
+				}
+			},
+			processResults: function (data){
+				return {
+					results: $.map(data, function(obj){
+						return {id: obj.code_cost, text: obj.code_cost+" - "+obj.seksi_cost};
+					})
+				}
+			}
+		}
+	});
+
+	$('#txtNoPPAsset').on('change',function(){
+		var noPPasset = $(this).find(':selected').val();
+		$.ajax({
+			url: baseurl+'SiteManagement/PembelianAsset/GetNamaBarang',
+			type: 'POST',
+			data:{nopp : noPPasset},
+			success:function(data){
+				var data = JSON.parse(data);
+				var textoption = "<option></option>";
+				var nama = "";
+				var kode = "";
+				var jumlah = "";
+				var seksi = "";
+				var id_detail = "";
+				for (var i = 0; i < data.length; i++) {
+					nama 	= data[i]['nama_item'];
+					kode 	= data[i]['kode_item'];
+					jumlah 	= data[i]['jumlah_diminta'];
+					seksi 	= data[i]['seksi'];
+					id_detail 	= data[i]['id_input_asset_detail'];
+					textoption = textoption+"<option value='"+id_detail+"' data-kode='"+kode+"' data-jumlah='"+jumlah+"' data-seksi='"+seksi+"'>"+nama+"</option>";
+				}
+
+				$('#txtNamaBarang').html(textoption);
+
+			}
+		});
+	});
+
+	$('#txtNamaBarang').on('change',function(){
+		var kode = $(this).find(':selected').attr('data-kode');
+		$('#txtKodeBarang').val(kode);
+		var jumlah = $(this).find(':selected').attr('data-jumlah');
+		$('#txtJumlahKebutuhan').val(jumlah);
+		var seksi = $(this).find(':selected').attr('data-seksi');
+		$('#txtSeksiPemakai').val(seksi);
+	});
+
+
+	$('.classaset1').select2({
+		placeholder: "Nama Barang",
+		searching: true,
+		minimumInputLength: 3,
+		allowClear: false,
+		ajax:
+		{
+			url: baseurl+'SiteManagement/InputAsset/GetItem',
+			dataType: 'json',
+			delay: 500,
+			type: 'GET',
+			data: function(params){
+				return {
+					term: params.term
+				}
+			},
+			processResults: function (data){
+				return {
+					results: $.map(data, function(obj){
+						return {id: obj.kode_item, text: obj.nama_item};
+					})
+				}
+			}
+		}
+	});
+
+	$('.tagRetirement').select2({
+		placeholder: "Tag Number",
+		searching: true,
+		minimumInputLength: 3,
+		allowClear: false,
+		ajax:
+		{
+			url: baseurl+'SiteManagement/RetirementAsset/GetTagNumber',
+			dataType: 'json',
+			delay: 500,
+			type: 'GET',
+			data: function(params){
+				return {
+					term: params.term
+				}
+			},
+			processResults: function (data){
+				return {
+					results: $.map(data, function(obj){
+						return {id: obj.id_pembelian, text: obj.tag_number};
+					})
+				}
+			}
+		}
+	});
+
+	$('.tagTransfer').select2({
+		placeholder: "Tag Number",
+		searching: true,
+		minimumInputLength: 3,
+		allowClear: false,
+		ajax:
+		{
+			url: baseurl+'SiteManagement/RetirementAsset/GetTagNumber',
+			dataType: 'json',
+			delay: 500,
+			type: 'GET',
+			data: function(params){
+				return {
+					term: params.term
+				}
+			},
+			processResults: function (data){
+				return {
+					results: $.map(data, function(obj){
+						return {id: obj.id_pembelian, text: obj.tag_number};
+					})
+				}
+			}
+		}
+	});
+
+	$('.seksiTransfer').select2({
+		placeholder: "Seksi Baru",
+		searching: true,
+		minimumInputLength: 3,
+		allowClear: false,
+		ajax:
+		{
+			url: baseurl+'SiteManagement/TransferAsset/GetSeksi',
+			dataType: 'json',
+			delay: 500,
+			type: 'GET',
+			data: function(params){
+				return {
+					term: params.term
+				}
+			},
+			processResults: function (data){
+				return {
+					results: $.map(data, function(obj){
+						return {id: obj.section_code, text: obj.section_name};
+					})
+				}
+			}
+		}
+	});
+
+	$('.requesterBaru').select2({
+		placeholder: "Requester Baru",
+		searching: true,
+		minimumInputLength: 3,
+		allowClear: false,
+		ajax:
+		{
+			url: baseurl+'SiteManagement/TransferAsset/GetRequester',
+			dataType: 'json',
+			delay: 500,
+			type: 'GET',
+			data: function(params){
+				return {
+					term: params.term
+				}
+			},
+			processResults: function (data){
+				return {
+					results: $.map(data, function(obj){
+						return {id: obj.employee_code, text: obj.employee_code+" - "+obj.employee_name};
+					})
+				}
+			}
+		}
+	});
+
+	$('.kotaRetirementAsset').select2({
+		placeholder: "Kota",
+		searching: true,
+		minimumInputLength: 3,
+		allowClear: false,
+		ajax:
+		{
+			url: baseurl+'SiteManagement/RetirementAsset/GetDaerah',
+			dataType: 'json',
+			delay: 500,
+			type: 'GET',
+			data: function(params){
+				return {
+					term: params.term
+				}
+			},
+			processResults: function (data){
+				return {
+					results: $.map(data, function(obj){
+						return {id: obj.id_kab, text: obj.nama};
+					})
+				}
+			}
+		}
+	});
+
+	$('.kotaRetirementAsset').on('change', function(){
+		var kota = $(this).find(':selected').text();
+		$('input[name="txtKotaRetirementAsset"]').val(kota);
+	});
+
+	$('.tagRetirement').on('change',function(){
+		var idTagNum = $(this).val();
+		$.ajax({
+			url 	: baseurl+"SiteManagement/RetirementAsset/getBarang",
+			type 	: 'POST',
+			data 	: {id : idTagNum},
+			success	: function(data){
+				var data = JSON.parse(data);
+				data = data['0'];
+				$('input[name="txtNamaBarangRetirementAsset"]').val(data['nama_item']);
+				$('input[name="txtSeksiRetirementAsset"]').val(data['seksi_pemakai']);
+				$('input[name="txtTagNumberRetirementAsset"]').val(data['tag_number']);
+			}
+		})
+	});
+
+	$('#txtUsulanSeksiRetirementAsset').on('change', function(){
+		var isi = $(this).find(':selected').text();
+		if (isi == 'Lainnya') {
+			$('input[name="txtUsulanLainnyaRetirementAsset"]').removeAttr('disabled');
+		}else{
+			$('input[name="txtUsulanLainnyaRetirementAsset"]').attr('disabled','');
+		}
+		
+	});
+
+	$('.tagTransfer').on('change',function(){
+		var idTagNum = $(this).val();
+		$.ajax({
+			url 	: baseurl+"SiteManagement/RetirementAsset/getBarang",
+			type 	: 'POST',
+			data 	: {id : idTagNum},
+			success	: function(data){
+				var data = JSON.parse(data);
+				data = data['0'];
+				$('input[name="txtNamaBarangTransferAsset"]').val(data['nama_item']);
+				$('input[name="txtSeksiLamaTransferAsset"]').val(data['seksi_pemakai']);
+				$('input[name="txtTagNumberTransferAsset"]').val(data['tag_number']);
+			}
+		})
+	});
+
+	$('.seksiTransfer').on('change',function(){
+		var seksi = $(this).find(':selected').text();
+		$('input[name="txtSeksiBaruTransferAsset"]').val(seksi);
+	});
+
+});
+
+function removeDetailAsset(pos){
+	var numSelect = $('.rowAsset').length;
+	if (numSelect !== 1) {
+		$(pos).closest('tr').remove(); 
+	}
+}
+
+function addDetailAsset(){
+	var newRow = $('.rowAsset:last').clone();
+	$('.tbodyAsset').append(newRow);
+	$(newRow).find('.select2-container').remove();
+	$(newRow).find('.classaset').val("");
+	var angka = $(newRow).find('#angka').html();
+	$(newRow).find('#angka').html(parseInt(angka)+1);
+	$(newRow).find(':selected').val("");
+	$(newRow).find(':selected').text("");
+	$('.classaset1').select2({
+		placeholder: "Nama Barang",
+		searching: true,
+		minimumInputLength: 3,
+		allowClear: false,
+		ajax:
+		{
+			url: baseurl+'SiteManagement/InputAsset/GetItem',
+			dataType: 'json',
+			delay: 500,
+			type: 'GET',
+			data: function(params){
+				return {
+					term: params.term
+				}
+			},
+			processResults: function (data){
+				return {
+					results: $.map(data, function(obj){
+						return {id: obj.kode_item, text: obj.nama_item};
+					})
+				}
+			}
+		}
+	});
+}
+
+function gantiBarang(pos){
+	var kode = $(pos).find(':selected').val();
+	var barang = $(pos).find(':selected').text();
+	$(pos).closest('tr').find('.kode').val(kode);
+	$(pos).find(':selected').val(barang);
+}
