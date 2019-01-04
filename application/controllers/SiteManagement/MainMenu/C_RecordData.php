@@ -14,6 +14,7 @@ class C_RecordData extends CI_Controller {
 		$this->load->library('form_validation');
 		$this->load->library('session');
 		$this->load->library('encrypt');
+		$this->load->library('Personalia');
 
 		$this->load->model('SystemAdministration/MainMenu/M_user');
 		$this->load->model('SiteManagement/MainMenu/M_recorddata');
@@ -224,4 +225,257 @@ class C_RecordData extends CI_Controller {
 			redirect(site_url('SiteManagement/RecordData/PembersihanSajadah'));
 		}
 	}
+
+	public function TimbanganSampah()
+    {
+    	$user = $this->session->username;
+
+		$user_id = $this->session->userid;
+
+
+		$data['Title'] = 'Site Management';
+		$data['Menu'] = 'Record Data';
+		$data['SubMenuOne'] = 'Timbangan Sampah';
+		$data['SubMenuTwo'] = '';
+
+		$data['UserMenu'] = $this->M_user->getUserMenu($user_id,$this->session->responsibility_id);
+		$data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id);
+		$data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id);
+
+		$data['sampah'] = $this->M_recorddata->sampah();
+
+		$this->load->view('V_Header',$data);
+		$this->load->view('V_Sidemenu',$data);
+		$this->load->view('SiteManagement/RecordData/TimbanganSampah/V_Index', $data);
+		$this->load->view('V_Footer',$data);
+    }
+
+    public function TambahTimbanganSampah()
+    {
+    	$user = $this->session->username;
+		$user_id = $this->session->userid;
+
+		$data['Title'] = 'Site Management';
+		$data['Menu'] = 'Record Data';
+		$data['SubMenuOne'] = 'Timbangan Sampah';
+		$data['SubMenuTwo'] = '';
+
+		$data['UserMenu'] = $this->M_user->getUserMenu($user_id,$this->session->responsibility_id);
+		$data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id);
+		$data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id);
+
+		// $data['sampah'] = $this->M_recorddata->sampah();
+
+		$this->load->view('V_Header',$data);
+		$this->load->view('V_Sidemenu',$data);
+		$this->load->view('SiteManagement/RecordData/TimbanganSampah/V_Create', $data);
+		$this->load->view('V_Footer',$data);
+    }
+
+    public function SimpanTimbanganSampah()
+    {
+    	// print_r($_POST);
+    	$no_urut = $this->input->post('txtNoUrut');
+    	$tgl_timbang = $this->input->post('txtTglTimbang');
+    	$no_kendaraan = $this->input->post('txtNoKendaraan');
+    	$asal_sampah = $this->input->post('txtAsalSampah');
+    	$jenis_mobil = $this->input->post('txtJenisMobil');
+    	$sopir = $this->input->post('txtSopir');
+    	$timbangan_1 = $this->input->post('txtBerat1');
+    	$timbangan_2 = $this->input->post('txtBerat2');
+    	$netto = $this->input->post('txtBeratNetto');
+    	$wkt_timbangan = $this->input->post('txtWktTimbangan');
+
+    	$inputSampah	=	array
+    	(
+    		'no_urut'				=>	$no_urut,
+    		'no_kendaraan'				=>	$no_kendaraan,
+    		'asal_sampah'				=>	$asal_sampah,
+    		'jenis_mobil'				=>	$jenis_mobil,
+    		'nama_sopir'				=>	$sopir,
+    		'berat_timbangan_1'				=>	$timbangan_1,
+    		'berat_timbangan_2'				=>	$timbangan_2,
+    		'berat_netto'				=>	$netto,
+    		'waktu'				=>	$wkt_timbangan,
+    		'tgl_timbangan'				=>	$tgl_timbang,
+    	);
+
+    	$this->M_recorddata->SimpanTimbanganSampah($inputSampah);
+    	redirect('SiteManagement/RecordData/TimbanganSampah');
+    }
+
+    public function editSampah($id)
+    {
+    	$user = $this->session->username;
+		$user_id = $this->session->userid;
+
+		$data['Title'] = 'Site Management';
+		$data['Menu'] = 'Record Data';
+		$data['SubMenuOne'] = 'Timbangan Sampah';
+		$data['SubMenuTwo'] = '';
+
+		$data['UserMenu'] = $this->M_user->getUserMenu($user_id,$this->session->responsibility_id);
+		$data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id);
+		$data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id);
+
+		$data['sampah'] = $this->M_recorddata->dataSampah($id);
+		// print_r($data['sampah']);exit();
+
+		$this->load->view('V_Header',$data);
+		$this->load->view('V_Sidemenu',$data);
+		$this->load->view('SiteManagement/RecordData/TimbanganSampah/V_Update', $data);
+		$this->load->view('V_Footer',$data);
+    }
+
+    public function UpdateTimbanganSampah()
+    {
+    	// print_r($_POST);
+    	$no_urut = $this->input->post('txtNoUrut');
+    	$id = $this->input->post('txtId');
+    	$tgl_timbang = $this->input->post('txtTglTimbang');
+    	$no_kendaraan = $this->input->post('txtNoKendaraan');
+    	$asal_sampah = $this->input->post('txtAsalSampah');
+    	$jenis_mobil = $this->input->post('txtJenisMobil');
+    	$sopir = $this->input->post('txtSopir');
+    	$timbangan_1 = $this->input->post('txtBerat1');
+    	$timbangan_2 = $this->input->post('txtBerat2');
+    	$netto = $this->input->post('txtBeratNetto');
+    	$wkt_timbangan = $this->input->post('txtWktTimbangan');
+
+    	$inputSampah	=	array
+    	(
+    		'no_urut'					=>	$no_urut,
+    		'no_kendaraan'				=>	$no_kendaraan,
+    		'asal_sampah'				=>	$asal_sampah,
+    		'jenis_mobil'				=>	$jenis_mobil,
+    		'nama_sopir'				=>	$sopir,
+    		'berat_timbangan_1'			=>	$timbangan_1,
+    		'berat_timbangan_2'			=>	$timbangan_2,
+    		'berat_netto'				=>	$netto,
+    		'waktu'						=>	$wkt_timbangan,
+    		'tgl_timbangan'				=>	$tgl_timbang,
+    	);
+
+    	$this->M_recorddata->UpdateTimbanganSampah($inputSampah,$id);
+    	redirect('SiteManagement/RecordData/TimbanganSampah');
+    }
+
+    public function deleteSampah($id)
+    {
+    	$this->M_recorddata->DeleteTimbanganSampah($$id);
+    	redirect('SiteManagement/RecordData/TimbanganSampah');
+    }
+
+    public function JasaSedotWC()
+    {
+    	$user = $this->session->username;
+		$user_id = $this->session->userid;
+
+		$data['Title'] = 'Site Management';
+		$data['Menu'] = 'Record Data';
+		$data['SubMenuOne'] = 'Jasa Sedot WC';
+		$data['SubMenuTwo'] = '';
+
+		$data['UserMenu'] = $this->M_user->getUserMenu($user_id,$this->session->responsibility_id);
+		$data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id);
+		$data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id);
+
+		$data['wc'] = $this->M_recorddata->dataWc();
+		// print_r($data['sampah']);exit();
+
+		$this->load->view('V_Header',$data);
+		$this->load->view('V_Sidemenu',$data);
+		$this->load->view('SiteManagement/RecordData/JasaSedotWC/V_Index', $data);
+		$this->load->view('V_Footer',$data);
+    }
+    public function TambahJasaSedotWC()
+    {
+    	$user = $this->session->username;
+		$user_id = $this->session->userid;
+
+		$data['Title'] = 'Site Management';
+		$data['Menu'] = 'Record Data';
+		$data['SubMenuOne'] = 'Jasa Sedot WC';
+		$data['SubMenuTwo'] = '';
+
+		$data['UserMenu'] = $this->M_user->getUserMenu($user_id,$this->session->responsibility_id);
+		$data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id);
+		$data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id);
+
+		$this->load->view('V_Header',$data);
+		$this->load->view('V_Sidemenu',$data);
+		$this->load->view('SiteManagement/RecordData/JasaSedotWC/V_Create', $data);
+		$this->load->view('V_Footer',$data);
+    }
+
+    public function SimpanSedotWC()
+    {
+    	$tanggal = $this->input->post('txtTanggal');
+    	$hari = $this->input->post('txtHari');
+    	$seksi = $this->input->post('txtSeksi');
+    	$jumlah = $this->input->post('txtJumlah');
+    	$order = $this->input->post('txtOrder');
+
+    	$inputJasa	=	array
+    	(
+    		'tanggal'			=>	$tanggal,
+    		'hari'				=>	$hari,
+    		'seksi'				=>	$seksi,
+    		'jumlah'			=>	$jumlah,
+    		'pemberi_order'		=>	$order,
+    	);
+
+    	$this->M_recorddata->SimpanJasaSedotWC($inputJasa);
+    	redirect('SiteManagement/RecordData/JasaSedotWC');
+    }
+
+    public function editJasa($id)
+    {
+    	$user = $this->session->username;
+		$user_id = $this->session->userid;
+
+		$data['Title'] = 'Site Management';
+		$data['Menu'] = 'Record Data';
+		$data['SubMenuOne'] = 'Jasa Sedot WC';
+		$data['SubMenuTwo'] = '';
+
+		$data['UserMenu'] = $this->M_user->getUserMenu($user_id,$this->session->responsibility_id);
+		$data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id);
+		$data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id);
+
+		$data['editwc'] = $this->M_recorddata->editWc($id);
+
+		$this->load->view('V_Header',$data);
+		$this->load->view('V_Sidemenu',$data);
+		$this->load->view('SiteManagement/RecordData/JasaSedotWC/V_Update', $data);
+		$this->load->view('V_Footer',$data);
+    }
+
+    public function UpdateSedotWC()
+    {
+    	$id = $this->input->post('txtId');
+    	$tanggal = $this->input->post('txtTanggal');
+    	$hari = $this->input->post('txtHari');
+    	$seksi = $this->input->post('txtSeksi');
+    	$jumlah = $this->input->post('txtJumlah');
+    	$order = $this->input->post('txtOrder');
+
+    	$inputJasa	=	array
+    	(
+    		'tanggal'			=>	$tanggal,
+    		'hari'				=>	$hari,
+    		'seksi'				=>	$seksi,
+    		'jumlah'			=>	$jumlah,
+    		'pemberi_order'		=>	$order,
+    	);
+
+    	$this->M_recorddata->UpdateJasaSedotWC($inputJasa, $id);
+    	redirect('SiteManagement/RecordData/JasaSedotWC');
+    }
+
+    public function deleteJasa($id)
+    {
+    	$this->M_recorddata->DeleteJasaSedotWC($id);
+    	redirect('SiteManagement/RecordData/JasaSedotWC');
+    }
 }
