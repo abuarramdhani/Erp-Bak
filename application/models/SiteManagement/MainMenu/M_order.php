@@ -128,4 +128,14 @@ class M_order extends CI_Model
         $this->db->where('id_order', $id);
         $this->db->delete('sm.sm_order_detail');
     }
+
+    public function allSeksi($term)
+    {
+        $this->personalia = $this->load->database('personalia', TRUE);
+        $sql = "select distinct(seksi) from hrd_khs.tseksi where seksi like '%$term%'";
+        // echo $sql;exit();
+        $query = $this->personalia->query($sql);
+
+        return $query->result_array();
+    }
 }
