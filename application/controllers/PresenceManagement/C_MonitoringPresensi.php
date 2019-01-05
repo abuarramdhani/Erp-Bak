@@ -354,11 +354,11 @@
 				echo 'Hapus Scanlog '.$device['device_name'].' - '.$device_server_ip.' BERHASIL<br/>';
 				$scanlog_update 	=	array
 										(
-											'workcode'	=>	1,
+											'workcode'	=>	'1',
 										);
 				$where_clause 		= 	array
 										(
-											$device['device_sn']
+											'sn' => $device['device_sn']
 										);
 				$this->M_monitoringpresensi->updateStatusDelete($scanlog_update,$where_clause);
 			}
