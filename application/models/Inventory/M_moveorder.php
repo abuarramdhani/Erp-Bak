@@ -179,7 +179,7 @@ class M_moveorder extends CI_Model
                  msib_produk.organization_id, 
                  KHS_INV_UTILITIES_PKG.GET_KLMPK_PRODUCT(msib_produk.inventory_item_id) kategori_produk, 
                  TO_CHAR( SYSDATE, 'DD/MM/YYYY HH24:MI:SS' ) Print_date, 
-                 TO_CHAR( NVL(wdj.DATE_RELEASED,wdj.SCHEDULED_START_DATE), 'DD/MM/YYYY HH24:MI:SS' ) Date_Required, 
+                 TO_CHAR(wdj.SCHEDULED_START_DATE, 'DD/MM/YYYY HH24:MI:SS' ) Date_Required, 
                  bd.DEPARTMENT_CLASS_CODE department, 
                  we.WIP_ENTITY_NAME job_no, 
                  wdj.start_quantity, 
