@@ -69,7 +69,7 @@ class C_Inputasset extends CI_Controller
 		$data['jenis'] = $this->M_inputasset->getJenisAsset();
 		$data['kategori'] = $this->M_inputasset->getKategoriAsset();
 		$data['perolehan'] = $this->M_inputasset->getPerolehanAsset();
-		$data['seksi'] = $this->M_inputasset->getSeksiPemakaiAsset($kodesie);
+		$data['seksi'] = $this->M_inputasset->getSeksiPemakaiAsset();
 
 		$this->load->view('V_Header',$data);
 		$this->load->view('V_Sidemenu',$data);
@@ -175,7 +175,7 @@ class C_Inputasset extends CI_Controller
 		$data['jenis'] = $this->M_inputasset->getJenisAsset();
 		$data['kategori'] = $this->M_inputasset->getKategoriAsset();
 		$data['perolehan'] = $this->M_inputasset->getPerolehanAsset();
-		$data['seksi'] = $this->M_inputasset->getSeksiPemakaiAsset($kodesie);
+		$data['seksi'] = $this->M_inputasset->getSeksiPemakaiAsset();
 		$data['asset'] = $this->M_inputasset->getAssetByID($plaintext_string);
 		$data['link'] = $id;
 
