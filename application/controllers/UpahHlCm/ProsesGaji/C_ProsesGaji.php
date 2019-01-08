@@ -189,7 +189,7 @@ class C_ProsesGaji extends CI_Controller {
 		$plaintext_string = $this->encrypt->decode($plaintext_string);
 		$data = array();
 		$periode = '';
-		$cutoff = $this->M_prosesgaji->getCutOffGaji();
+		$cutoff = $this->M_prosesgaji->getCutOffGaji('All');
 		foreach ($cutoff as $cut) {
 			if ($cut['rangetanggal'] == $plaintext_string) {
 				$periode = $cut['periode'];
@@ -207,7 +207,7 @@ class C_ProsesGaji extends CI_Controller {
 			$this->load->library('pdf');
 			$pdf = $this->pdf->load();
 			$pdf = new mPDF('','A4-L');
-			$filename = 'Penggajian HLCM.pdf';
+			$filename = "Penggajian HLCM Periode - ".$data['periode'].".pdf";
 			$html = $this->load->view('UpahHlCm/ProsesGaji/V_cetak', $data, true);
 			// print_r($data['data']);exit();
 			// $this->load->view('UpahHlCm/ProsesGaji/V_cetak', $data['data']);
@@ -309,7 +309,7 @@ class C_ProsesGaji extends CI_Controller {
 			$this->excel->getActiveSheet()->getPageMargins()->setRight(0.2);
 			$this->excel->getActiveSheet()->getPageMargins()->setBottom(0.2);
 
-			$filename ='Penggajian HLCM.xls';
+			$filename ="Penggajian HLCM Periode - ".$data['periode'].".xls";
 			header('Content-Type: aplication/vnd.ms-excel');
 			header('Content-Disposition:attachment;filename="'.$filename.'"');
 			header('Cache-Control: max-age=0');
