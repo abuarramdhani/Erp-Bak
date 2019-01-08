@@ -12,7 +12,8 @@
 
 			$this->load->model('SystemAdministration/MainMenu/M_user');
 			$this->load->model('PresenceManagement/M_monitoringpresensi');
-
+			$this->load->model('TarikFingerspot/M_tarikfingerspot');
+			
 			date_default_timezone_set('Asia/Jakarta');
 		}
 
@@ -397,40 +398,44 @@
 												'kodesie' 		=>	$presensi_kodesie,
 												'user_' 		=>	$presensi_user,
 											);
+				$cek = $this->M_tarikfingerspot->cekPresensi($data_presensi);
+
+				if ($cek == '0') {
+					//	Kirim ke FrontPresensi.tpresensi
+					//	{
+							$data_presensi['transfer']	=	TRUE;
+		 					$this->M_monitoringpresensi->insert_presensi('"FrontPresensi"', 'tpresensi', $data_presensi);
+					//	}
+
+					//	Kirim ke Catering.tpresensi
+					//	{
+		 					$data_presensi['transfer']	=	FALSE;
+		 					$this->M_monitoringpresensi->insert_presensi('"Catering"', 'tpresensi', $data_presensi);
+					//	}
+
+					//	Kirim ke Presensi.tprs_shift
+					//	{
+		 					$data_presensi['transfer']	=	FALSE;
+		 					$data_presensi['user_']		=	'CRON';
+		 					$this->M_monitoringpresensi->insert_presensi('"Presensi"', 'tprs_shift', $data_presensi);
+					//	}
 
 
-				//	Kirim ke FrontPresensi.tpresensi
-				//	{
-						$data_presensi['transfer']	=	TRUE;
-	 					$this->M_monitoringpresensi->insert_presensi('"FrontPresensi"', 'tpresensi', $data_presensi);
-				//	}
+		 			//	Update transfer
+		 			//	{
+		 					$scanlog_update 	=	array
+		 											(
+		 												'transfer'	=>	TRUE,
+		 											);
+		 					$where_clause 		= 	array
+		 											(
+		 												'id_scanlog ='	=>	$id_scanlog
+		 											);
+		 					$this->M_monitoringpresensi->scanlog_update($scanlog_update, $where_clause);
+		 			//	}
+				}
 
-				//	Kirim ke Catering.tpresensi
-				//	{
-	 					$data_presensi['transfer']	=	FALSE;
-	 					$this->M_monitoringpresensi->insert_presensi('"Catering"', 'tpresensi', $data_presensi);
-				//	}
-
-				//	Kirim ke Presensi.tprs_shift
-				//	{
-	 					$data_presensi['transfer']	=	FALSE;
-	 					$data_presensi['user_']		=	'CRON';
-	 					$this->M_monitoringpresensi->insert_presensi('"Presensi"', 'tprs_shift', $data_presensi);
-				//	}
-
-
-	 			//	Update transfer
-	 			//	{
-	 					$scanlog_update 	=	array
-	 											(
-	 												'transfer'	=>	TRUE,
-	 											);
-	 					$where_clause 		= 	array
-	 											(
-	 												'id_scanlog ='	=>	$id_scanlog
-	 											);
-	 					$this->M_monitoringpresensi->scanlog_update($scanlog_update, $where_clause);
-	 			//	}
+				
 			}
 		}
 
