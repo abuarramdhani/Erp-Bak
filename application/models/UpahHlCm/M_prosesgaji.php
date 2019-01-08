@@ -17,7 +17,13 @@ class M_prosesgaji extends CI_Model {
 		return $data->result_array();
 	}
 
-	public function getCutOffGaji(){
+	public function getCutOffGaji($all = FALSE){
+		if (isset($all) and !empty($all)) {
+			$all = "";
+		}else{
+			$all ="where left(periode,4) = to_char(current_timestamp,'YYYY')";
+		}
+		
 		$sql = "select distinct periode,
 						case when substring(periode,5,2) = '01' then
 							'Januari'
@@ -48,7 +54,7 @@ class M_prosesgaji extends CI_Model {
 						concat(tanggal_awal::date,' - ',tanggal_akhir::date) rangetanggal,
 						tanggal_awal::date,
 						tanggal_akhir::date
-				from \"Presensi\".tcutoff where left(periode,4) = to_char(current_timestamp,'YYYY') 
+				from \"Presensi\".tcutoff $all 
 				order by periode";
 		$data = $this->personalia->query($sql);
 		return $data->result_array();
@@ -1944,13 +1950,13 @@ round((
  (
   case
    when
-    (extract(month from ('2018-12-19')::date)+1)=extract(month from ('2018-12-19')::date)
+    (extract(month from ('$tanggalakhir')::date)+1)=extract(month from ('$tanggalakhir')::date)
    then
     case
      when
-      (30-(('2018-12-19'::date - '2018-11-21'::date)+1))>=0
+      (30-(('$tanggalakhir'::date - '$tanggalawal'::date)+1))>=0
      then
-      (30-(('2018-12-19'::date - '2018-11-21'::date)+1))
+      (30-(('$tanggalakhir'::date - '$tanggalawal'::date)+1))
      else
       0
     end
@@ -2072,16 +2078,43 @@ sum(
   +
   sum((select count(*) 
   from \"Presensi\".tdatapresensi tdp2 
-  where tdp2.tanggal between '2018-11-21' and '2018-12-19' 
+  where tdp2.tanggal between '$tanggalawal' and '$tanggalakhir' 
   and tdp2.noind = tsp.noind
   and tdp2.kd_ket='HL'))/count(tsp.tanggal
   )
 )::decimal,2)
 as um,
-round(coalesce(
+round(
+coalesce(
 	(
-		select sum(tdp1.total_lembur) from \"Presensi\".tdatapresensi tdp1 where tdp1.noind=tp.noind and tanggal between '$tanggalawal' and '$tanggalakhir'
-),0)::decimal,2)
+		select sum(tdp1.total_lembur) 
+		from \"Presensi\".tdatapresensi tdp1 
+		where tdp1.noind=tp.noind 
+		and tanggal between '$tanggalawal' and '$tanggalakhir'
+		and tanggal not in	(
+								select tssl.tanggal 
+								from \"Presensi\".tsusulan tssl
+								where tssl.noind = tp.noind
+								and ket = 'LEMBUR'
+							)
+	)
+,0)::decimal
++
+coalesce(
+	(
+		select sum(tdp1.total_lembur) 
+		from \"Presensi\".tdatapresensi tdp1 
+		where tdp1.noind=tp.noind 
+		and tanggal in	(	
+							select tssl.tanggal 
+							from \"Presensi\".tsusulan tssl
+							where tssl.noind = tp.noind
+							and (reffgaji is null or reffgaji = '$tanggalakhir')
+							and ket = 'LEMBUR'
+						)
+	)
+,0)::decimal
+,2)
 as lembur
 from hrd_khs.tpribadi tp
 left join \"Presensi\".tshiftpekerja tsp on tsp.noind=tp.noind
@@ -2090,6 +2123,9 @@ $lokasi_kerja
 group by tp.noind,tp.nama,tp.kd_pkj,tp.lokasi_kerja
 order by tp.noind";
 $data = $this->personalia->query($query);
+
+$sql = "update \"Presensi\".tsusulan set reffgaji = '$tanggalakhir', stat = true where left(noind,1)='R' and reffgaji is null and stat = false";
+$this->personalia->query($sql);
 return $data->result_array();
 	}
 	

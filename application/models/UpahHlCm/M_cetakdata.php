@@ -123,8 +123,8 @@ class M_cetakdata extends CI_Model {
 						to_char(tgl_awal_periode, 'YYYY')
 						) akhir,
 						concat(tgl_awal_periode,' - ',tgl_akhir_periode) rangetanggal
-				from hlcm.hlcm_proses where left(periode,4) = to_char(current_timestamp,'YYYY') 
-				order by periode";
+				from hlcm.hlcm_proses
+				order by periode desc";
 		$data = $this->erp->query($sql);
 		return $data->result_array();
 	}
