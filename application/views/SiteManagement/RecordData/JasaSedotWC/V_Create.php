@@ -41,6 +41,15 @@
                                             </div>
                                         </div>
                                         <div class="form-group">
+                                            <label class="col-md-4 control-label">Lokasi</label>
+                                            <div class="col-md-4" align="center">
+                                                <!-- <input type="text" class="form-control" name="txtSeksi"> -->
+                                                <select class="form-control sm-pilihlokasi" name="txtLokasi">
+                                                    <option></option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
                                             <label class="col-md-4 control-label">Seksi Pemakai</label>
                                             <div class="col-md-4" align="center">
                                                 <!-- <input type="text" class="form-control" name="txtSeksi"> -->

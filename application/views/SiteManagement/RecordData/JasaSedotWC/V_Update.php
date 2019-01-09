@@ -43,11 +43,20 @@
                                             </div>
                                         </div>
                                         <div class="form-group">
+                                            <label class="col-md-4 control-label">Lokasi</label>
+                                            <div class="col-md-4" align="center">
+                                                <!-- <input type="text" class="form-control" name="txtSeksi"> -->
+                                                <select class="form-control sm-pilihlokasi" name="txtLokasi">
+                                                    <option selected value="<?php echo $key['lokasi']; ?>"><?php echo $key['lokasi']; ?></option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
                                             <label class="col-md-4 control-label">Seksi Pemakai</label>
                                             <div class="col-md-4" align="center">
                                                 <!-- <input type="text" class="form-control" name="txtSeksi" value="<?php echo $key['seksi']; ?>"> -->
                                                 <select class="form-control sm-pilihSeksi" name="txtSeksi">
-                                                    <option value="<?php echo $key['seksi']; ?>"><?php echo $key['seksi']; ?></option>
+                                                    <option selected value="<?php echo $key['seksi']; ?>"><?php echo $key['seksi']; ?></option>
                                                 </select>
                                             </div>
                                         </div>

@@ -732,9 +732,17 @@ class C_Order extends CI_Controller {
     }
 
     public function allSeksi()
+    {	
+    	$lokasi  = strtoupper($this->input->get('lokasi', TRUE));
+    	$term 	 	=	strtoupper($this->input->get('term', TRUE));
+    	$allSeksi = $this->M_order->allSeksi($term, $lokasi);
+    	echo json_encode($allSeksi);
+    }
+
+    public function allLokasi()
     {
     	$term 	 	=	strtoupper($this->input->get('term', TRUE));
-    	$allSeksi = $this->M_order->allSeksi($term);
+    	$allSeksi = $this->M_order->allLokasi($term);
     	echo json_encode($allSeksi);
     }
 

@@ -30,12 +30,14 @@
                             </div>
                             <div class="box-body">
                                 <div>
+                                <!-- <a class="btn btn-warning" href="<?php echo site_url('SiteManagement/RecordData/exportdata'); ?>">export</a> -->
                                     <table class="datatable table table-striped table-bordered table-hover text-center" id="sm_WC" style="font-size:12px;">
                                         <thead class="bg-primary">
                                             <tr>
                                                 <th style="text-align:center; width:30px">No</th>
                                                 <th style="text-align:center; min-width:80px">Action</th>
 												<th class="text-center">Hari/Tanggal</th>
+                                                <th>Lokasi</th>
 												<th>Seksi Pemakai</th>
 												<th>Jumlah Sedot WC</th>
 												<th>Pemberi Order</th>
@@ -55,6 +57,7 @@
 												<td data-order="<?php echo $row['tanggal']; ?>">
                                                 <?php echo $row['hari'].', '.$this->personalia->konversitanggalIndonesia(date('Y-m-d', strtotime($row['tanggal']))); ?>
                                                 </td>
+                                                <td><?php echo $row['lokasi']; ?></td>
 												<td><?php echo $row['seksi']; ?></td>
 												<td><?php echo $row['jumlah']; ?></td>
 												<td><?php echo $row['pemberi_order']; ?></td>

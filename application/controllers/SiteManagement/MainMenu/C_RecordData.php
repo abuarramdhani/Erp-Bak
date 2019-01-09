@@ -410,11 +410,13 @@ class C_RecordData extends CI_Controller {
 
     public function SimpanSedotWC()
     {
+    	// print_r($_POST);exit();
     	$tanggal = $this->input->post('txtTanggal');
     	$hari = $this->input->post('txtHari');
     	$seksi = $this->input->post('txtSeksi');
     	$jumlah = $this->input->post('txtJumlah');
     	$order = $this->input->post('txtOrder');
+    	$lokasi = $this->input->post('txtLokasi');
 
     	$inputJasa	=	array
     	(
@@ -423,6 +425,7 @@ class C_RecordData extends CI_Controller {
     		'seksi'				=>	$seksi,
     		'jumlah'			=>	$jumlah,
     		'pemberi_order'		=>	$order,
+    		'lokasi'			=>	$lokasi,
     	);
 
     	$this->M_recorddata->SimpanJasaSedotWC($inputJasa);
@@ -459,6 +462,7 @@ class C_RecordData extends CI_Controller {
     	$seksi = $this->input->post('txtSeksi');
     	$jumlah = $this->input->post('txtJumlah');
     	$order = $this->input->post('txtOrder');
+    	$lokasi = $this->input->post('txtLokasi');
 
     	$inputJasa	=	array
     	(
@@ -467,6 +471,7 @@ class C_RecordData extends CI_Controller {
     		'seksi'				=>	$seksi,
     		'jumlah'			=>	$jumlah,
     		'pemberi_order'		=>	$order,
+    		'lokasi'			=>	$lokasi,
     	);
 
     	$this->M_recorddata->UpdateJasaSedotWC($inputJasa, $id);
@@ -477,5 +482,120 @@ class C_RecordData extends CI_Controller {
     {
     	$this->M_recorddata->DeleteJasaSedotWC($id);
     	redirect('SiteManagement/RecordData/JasaSedotWC');
+    }
+
+    public function exportdata()
+    {
+    	$this->load->library(array('Excel','Excel/PHPExcel/IOFactory'));
+		$objPHPExcel = new PHPExcel();
+
+		$data = $this->M_recorddata->dataWc();
+
+		$objPHPExcel->getProperties()->setCreator('KHS ERP')
+             ->setTitle("Record Data Penggunaan Jasa Sedot WC")
+             ->setSubject("Sedot WC")
+             ->setDescription("Laporan Record Data Penggunaan Jasa Sedot WC")
+             ->setKeywords("Record Data Penggunaan Jasa Sedot WC");
+
+         $style_col = array(
+          'font' => array('bold' => true), // Set font nya jadi bold
+          'alignment' => array(
+            'horizontal' => PHPExcel_Style_Alignment::HORIZONTAL_CENTER, // Set text jadi ditengah secara horizontal (center)
+            'vertical' => PHPExcel_Style_Alignment::VERTICAL_CENTER // Set text jadi di tengah secara vertical (middle)
+            // 'horizontal' => PHPExcel_Style_Alignment::HORIZONTAL_LEFT // Set text jadi di tengah secara horizontal (left)
+            // 'horizontal' => PHPExcel_Style_Alignment::HORIZONTAL_RIGHT // Set text jadi di tengah secara horizontal (right)
+          ),
+          'borders' => array(
+            'top' => array('style'  => PHPExcel_Style_Border::BORDER_THIN), // Set border top dengan garis tipis
+            'right' => array('style'  => PHPExcel_Style_Border::BORDER_THIN),  // Set border right dengan garis tipis
+            'bottom' => array('style'  => PHPExcel_Style_Border::BORDER_THIN), // Set border bottom dengan garis tipis
+            'left' => array('style'  => PHPExcel_Style_Border::BORDER_THIN) // Set border left dengan garis tipis
+          ),
+           'fill' => array(
+            'type' => PHPExcel_Style_Fill::FILL_SOLID,
+            'color' => array('rgb' => 'bababa')
+          )
+        );  
+
+        $style_col1 = array(
+          'font' => array('bold' => true), // Set font nya jadi bold
+          'borders' => array(
+            'top' => array('style'  => PHPExcel_Style_Border::BORDER_THIN), // Set border top dengan garis tipis
+            'right' => array('style'  => PHPExcel_Style_Border::BORDER_THIN),  // Set border right dengan garis tipis
+            'bottom' => array('style'  => PHPExcel_Style_Border::BORDER_THIN), // Set border bottom dengan garis tipis
+            'left' => array('style'  => PHPExcel_Style_Border::BORDER_THIN) // Set border left dengan garis tipis
+          )
+        );
+        $style_col2 = array(
+          'font' => array('bold' => true), // Set font nya jadi bold
+          'borders' => array(
+            'top' => array('style'  => PHPExcel_Style_Border::BORDER_THIN), // Set border top dengan garis tipis
+            'right' => array('style'  => PHPExcel_Style_Border::BORDER_THIN),  // Set border right dengan garis tipis
+            'bottom' => array('style'  => PHPExcel_Style_Border::BORDER_THIN), // Set border bottom dengan garis tipis
+            'left' => array('style'  => PHPExcel_Style_Border::BORDER_THIN) // Set border left dengan garis tipis
+          ),
+          'fill' => array(
+            'type' => PHPExcel_Style_Fill::FILL_SOLID,
+            'color' => array('rgb' => 'bababa')
+          )
+        );
+
+        $style_row = array(
+          'alignment' => array(
+            'vertical' => PHPExcel_Style_Alignment::VERTICAL_CENTER // Set text jadi di tengah secara vertical (middle)
+          ),
+          'borders' => array(
+            'top' => array('style'  => PHPExcel_Style_Border::BORDER_THIN), // Set border top dengan garis tipis
+            'right' => array('style'  => PHPExcel_Style_Border::BORDER_THIN),  // Set border right dengan garis tipis
+            'bottom' => array('style'  => PHPExcel_Style_Border::BORDER_THIN), // Set border bottom dengan garis tipis
+            'left' => array('style'  => PHPExcel_Style_Border::BORDER_THIN) // Set border left dengan garis tipis
+          )
+        );
+
+        $objPHPExcel->setActiveSheetIndex(0)->setCellValue('A1', "No");
+        $objPHPExcel->setActiveSheetIndex(0)->setCellValue('B1', "Hari / Tanggal");
+        $objPHPExcel->setActiveSheetIndex(0)->setCellValue('C1', "Lokasi");
+        $objPHPExcel->setActiveSheetIndex(0)->setCellValue('D1', "Seksi Pemakai");
+        $objPHPExcel->setActiveSheetIndex(0)->setCellValue('E1', "Jumlah");
+        $objPHPExcel->setActiveSheetIndex(0)->setCellValue('F1', "Pemberi Order");
+        // PHPExcel_Shared_Font::setAutoSizeMethod(PHPExcel_Shared_Font::AUTOSIZE_METHOD_EXACT);
+        for ($c=0; $c < 6; $c++) {
+        	$kolom_new = PHPExcel_Cell::stringFromColumnIndex($c);
+        	$objPHPExcel->getActiveSheet()->getStyle($kolom_new.'1')->applyFromArray($style_col);
+        }
+        foreach(range('A','G') as $columnID) {
+        	$objPHPExcel->getActiveSheet()->getColumnDimension($columnID)
+        	->setAutoSize(true);
+        }
+//data----------------------
+        $tgl_local = $this->personalia->konversitanggalIndonesia(date('Y-m-d', strtotime($row['tanggal'])));
+        $baris = 2;
+        $kolom = 0;
+        $kolom_tgl = 1;
+        $row = 1;
+        foreach ($data as $key ) {
+        	$kolom_new = PHPExcel_Cell::stringFromColumnIndex($kolom);
+        	$kolom_new_1 = PHPExcel_Cell::stringFromColumnIndex($kolom_tgl);
+        	$objPHPExcel->setActiveSheetIndex(0)->setCellValue($kolom_new.$baris, $row);
+        	$objPHPExcel->setActiveSheetIndex(0)->setCellValue($kolom_new_1.$baris, $key['hari'].', '.$tgl_local);
+        	$row++;
+        	$baris++;
+        }
+
+		$objPHPExcel->getActiveSheet()->getDefaultRowDimension()->setRowHeight(15);
+
+		$objPHPExcel->getActiveSheet()->getPageSetup()->setOrientation(PHPExcel_Worksheet_PageSetup::ORIENTATION_LANDSCAPE);
+
+		$objPHPExcel->getActiveSheet()->setTitle('Penggunaan Jasa Sedot WC');
+
+		$objPHPExcel->setActiveSheetIndex(0);  
+		$filename = urlencode("Record_Data_Penggunaan_Jasa_Sedot_WC.xls");
+
+	      header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
+	      header('Content-Disposition: attachment;filename="'.$filename.'"'); //tell browser what's the file name
+	      header('Cache-Control: max-age=0'); //no cache
+
+	      $objWriter = IOFactory::createWriter($objPHPExcel, 'Excel5');                
+	      $objWriter->save('php://output');
     }
 }
