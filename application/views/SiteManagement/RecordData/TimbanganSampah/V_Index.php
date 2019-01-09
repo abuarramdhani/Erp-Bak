@@ -40,7 +40,7 @@
 												<th>No Kendaraan</th>
 												<th>Asal Sampah</th>
 												<th>Jenis Mobil</th>
-												<th>Sopit</th>
+												<th>Sopir</th>
 												<th>Timbangan 1</th>
 												<th>Timbangan 2</th>
 												<th>Netto</th>
