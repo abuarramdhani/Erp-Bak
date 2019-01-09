@@ -85,7 +85,7 @@ class C_Undangan extends CI_Controller
 			}
 			$arrUndangan[$angka] = array(
 				'angka' 	=> $angka+1,
-				'tanggal' 	=> $key['tanggal']." ".$bulan[$key['bulan']]." ".$key['tahun'],
+				'tanggal' 	=> $key['tanggal']." ".$bulan[intval($key['bulan'])]." ".$key['tahun'],
 				'peserta1' 	=> $pesertahtml1,
 				'peserta2' 	=> $pesertahtml2,
 				'keterangan'=> $key['keterangan'],

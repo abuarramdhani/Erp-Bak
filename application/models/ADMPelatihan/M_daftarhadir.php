@@ -17,9 +17,19 @@ class M_daftarhadir extends CI_Model
 						sp.package_scheduling_name,
 						tt.training_type_description , 
 						pt.participant_type_description, 
-						sp.participant_number,
-						cast(start_date as date),
-						cast(end_date as date)
+						coalesce(
+							(
+								select count(distinct ppt.participant_name) 
+								from pl.pl_participant ppt
+								where ppt.scheduling_id in (
+															select st.scheduling_id 
+															from pl.pl_scheduling_training st 
+															where st.package_scheduling_id = sp.package_scheduling_id
+															)
+							) 
+						,0) participant_number,
+						(select min(st.\"date\") from pl.pl_scheduling_training st where st.package_scheduling_id = sp.package_scheduling_id) start_date,
+						(select max(st.\"date\") from pl.pl_scheduling_training st where st.package_scheduling_id = sp.package_scheduling_id) end_date
 				from pl.pl_scheduling_package sp
 				inner join pl.pl_training_type tt 
 					on tt.training_type_id = sp.training_type
