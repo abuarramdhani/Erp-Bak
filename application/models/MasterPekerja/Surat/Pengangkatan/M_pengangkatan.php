@@ -247,23 +247,25 @@
 			return $query->result_array();
 	 	}
 
-	 	public function ambilLayoutSuratPengangkatan()
+	 	public function ambilLayoutSuratPengangkatan($kode)
 	 	{
 	 		$this->personalia->select('isi_surat');
 	 		$this->personalia->from('"Surat".tisi_surat"');
 	 		$this->personalia->where('jenis_surat=', 'PENGANGKATAN');
+	 		$this->personalia->where('staf=', $kode);
 
 	 		return $this->personalia->get()->result_array();
 	 	}
 
-	 	public function ambilNomorSuratPengangkatanTerakhir($parameterTahunBulanPengangkatan, $kodeSurat)
+	 	public function ambilNomorSuratTerakhir($tahun, $bulan, $kodeSurat)
 	 	{
-	 		$ambilNomorSuratPengangkatanTerakhir 		= "	select 		count(*) as jumlah
-													from 		\"Surat\".tsurat_pengangkatan as pengangkatan 
-													where 		to_char(pengangkatan.tanggal_berlaku, 'YYYYMM')='$parameterTahunBulanPengangkatan'
-																and 	kode='$kodeSurat'";
-			$query 		= 	$this->personalia->query($ambilNomorSuratPengangkatanTerakhir);
+	 		$ambilNomorSuratRotasiTerakhir 		= "	select max(no_surat) jumlah from \"Surat\".tsurat_demosi where kode = '$kodeSurat'
+											 		and extract(year from tanggal_cetak) = '$tahun'
+											 		and extract(month from tanggal_cetak) = '$bulan'";
+			// echo $ambilNomorSuratRotasiTerakhir;
+			$query 		= 	$this->personalia->query($ambilNomorSuratRotasiTerakhir);
 			return $query->result_array();
+			return $$ambilNomorSuratRotasiTerakhir;
 	 	}
 
 	 	public function cariTSeksi($seksi_lama)
@@ -293,7 +295,7 @@
 	 		$this->personalia->insert('"Surat".tsurat_pengangkatan', $inputSuratPengangkatan);
 	 	}
 
-	 	public function ambilDaftarSuratPengangkatan()
+	 	public function ambilDaftarSuratPengangkatan($kode)
 	 	{
 	 		$ambilDaftarSuratPengangkatan 		= "	select 		concat
 															(
@@ -388,7 +390,8 @@
 															) as lokasi_kerja_baru,
 															pengangkatan.tanggal_cetak::date,
 															pengangkatan.cetak
-												from 		\"Surat\".tsurat_pengangkatan as pengangkatan";
+												from 		\"Surat\".tsurat_pengangkatan as pengangkatan
+												where pengangkatan.kode like '$kode%'";
 			$query 					=	$this->personalia->query($ambilDaftarSuratPengangkatan);
 			return $query->result_array();
 	 	}
@@ -425,9 +428,15 @@
 													=
 													'$no_surat_decode'";
 			$query 					=	$this->personalia->query($deleteSuratPengangkatan);
+	 	}
 
-
-			
+	 	public function deleteArsipSuratPengangkatan($bulan_surat, $tahun, $kode_surat, $no_surat)
+	 	{
+	 		$this->personalia->where('bulan_surat=', $bulan_surat);
+	 		$this->personalia->where('tahun_surat=', $tahun);
+	 		$this->personalia->where('kode_surat=', $kode_surat);
+	 		$this->personalia->where('nomor_surat=', $no_surat);
+	 		$this->personalia->delete('"Surat".t_arsip_nomor_surat');
 	 	}
 
 	 	public function editSuratPengangkatan($no_surat_decode)
@@ -534,10 +543,15 @@
 													pengangkatan.noind_baru,
 													pengangkatan.jabatan_lama,
 													pengangkatan.jabatan_baru,
+													pengangkatan.nomor_induk_baru,
 													(select jabatan
 													from hrd_khs.torganisasi as torg
 													where torg.kd_jabatan=pengangkatan.kd_jabatan_baru
 													)as jabatann,
+													(select jabatan
+													from hrd_khs.torganisasi as torg
+													where torg.kd_jabatan=pengangkatan.kd_jabatan_lama
+													)as jabatan,
 													pengangkatan.tempat_makan_2_lama,
 													pengangkatan.tempat_makan_2_baru,
 													pengangkatan.kd_pkj_lama,
@@ -576,6 +590,26 @@
 	 		$this->personalia->where('no_surat=', $nomor_surat);
 	 		$this->personalia->where('kode=', $kodeSurat);
 	 		$this->personalia->update('"Surat".tsurat_pengangkatan', $updateSuratPengangkatan);
+	 	}
+		public function cekStaf($nomor_induk)
+	    {
+	    	$cekStaf 		= "	select 		(
+												case 	when 	(
+																	pri.kd_jabatan::int between 1 and 14
+																	or 	pri.kd_jabatan::int in (16, 19, 25)
+																)
+																then 	'STAF'
+														else 	'NONSTAF'
+												end
+											) as status
+								from 		hrd_khs.v_hrd_khs_tpribadi as pri
+								where 		pri.noind='$nomor_induk'";
+			$query 			=	$this->personalia->query($cekStaf);
+			return $query->result_array();
+	    }
+	    public function inputNomorSurat($inputNomorSurat)
+	 	{
+	 		$this->personalia->insert('"Surat".t_arsip_nomor_surat', $inputNomorSurat);
 	 	}
  	}
 

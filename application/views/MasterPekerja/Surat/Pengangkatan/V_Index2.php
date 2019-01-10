@@ -10,8 +10,9 @@
                         <div class="col-lg-1">
                             <div class="text-right hidden-md hidden-sm hidden-xs">
                                 <!-- Ganti yang di dalam site url dengan alamat main menu yang diinginkan -->
-                                <a class="btn btn-default btn-lg" href="<?php echo site_url('MasterPekerja/Surat/SuratPerbantuan');?>">
+                                <a class="btn btn-default btn-lg" href="<?php echo site_url('MasterPekerja/Surat/SuratPengangkatanNonStaff/');?>">
                                     <i class="icon-wrench icon-2x"></i>
+                                    <input type="text" class="stafStatus" value="1" hidden name="txtstafStatus">
                                     <br/>
                                 </a>
                             </div>
@@ -24,7 +25,7 @@
                     <div class="col-lg-12">
                         <div class="box box-primary box-solid">
                             <div class="box-header with-border">
-                                <a href="<?php echo site_url('MasterPekerja/Surat/SuratPerbantuan/create') ?>" style="float:right;margin-right:1%;margin-top:-0.5%;" alt="Add New" title="Add New" >
+                                <a href="<?php echo site_url('MasterPekerja/Surat/SuratPengangkatanNonStaff/create/'.'1') ?>" style="float:right;margin-right:1%;margin-top:-0.5%;" alt="Add New" title="Add New" >
                                     <button type="button" class="btn btn-default btn-sm"><i class="icon-plus icon-2x"></i></button>
                                 </a>
                             </div>
@@ -51,24 +52,19 @@
                                         <tbody>
                                             <?php 
                                                 $no = 1; 
-                                                foreach($DaftarSuratPerbantuan as $row):
+                                                foreach($DaftarSuratPengangkatan as $row):
                                                 $encrypted_string = $this->encrypt->encode($row['no_surat']);
-                                                $encrypted_string = str_replace(array('+', '/', '='), array('-', '_', '~'), $encrypted_string
-                                                    );
-                                                // $encrypt_kode = $this->general->enkripsi($surat['kode']);
-                                                // $encrypt_kode = str_replace(array('+', '/', '='), array('-', '_', '~'), $encrypt_kode
-                                                //     );
-                                                // $parameter = $encrypted_string.'/'.$encrypt_kode;
+                                                $encrypted_string = str_replace(array('+', '/', '='), array('-', '_', '~'), $encrypted_string);
                                             ?>
                                             <tr>
                                                 <td align='center'><?php echo $no++;?></td>
                                                 <td align='center' style="white-space: nowrap;">
-                                                    <a target="_blank" style="margin-right:4px" href="<?php echo base_url('MasterPekerja/Surat/SuratPerbantuan/previewcetak/'.$encrypted_string.''); ?>" data-toggle="tooltip" data-placement="bottom" title="Preview Cetak"><span class="fa fa-file-pdf-o fa-2x"></span></a>
-                                                    <a style="margin-right:4px" href="<?php echo base_url('MasterPekerja/Surat/SuratPerbantuan/update/'.$encrypted_string.''); ?>" data-toggle="tooltip" data-placement="bottom" title="Edit Data"><span class="fa fa-pencil-square-o fa-2x"></span></a>
-                                                    <a href="<?php echo base_url('MasterPekerja/Surat/SuratPerbantuan/delete/'.$encrypted_string.''); ?>" data-toggle="tooltip" data-placement="bottom" title="Hapus Data" onclick="return confirm('Are you sure you want to delete this item?');"><span class="fa fa-trash fa-2x"></span></a>
+                                                    <a target="_blank" style="margin-right:4px" href="<?php echo base_url('MasterPekerja/Surat/SuratPengangkatanNonStaff/previewcetak/'.$encrypted_string.''); ?>" data-toggle="tooltip" data-placement="bottom" title="Preview Cetak"><span class="fa fa-file-pdf-o fa-2x"></span></a>
+                                                    <a style="margin-right:4px" href="<?php echo base_url('MasterPekerja/Surat/SuratPengangkatanNonStaff/update/'.$encrypted_string.''); ?>" data-toggle="tooltip" data-placement="bottom" title="Edit Data"><span class="fa fa-pencil-square-o fa-2x"></span></a>
+                                                    <a href="<?php echo base_url('MasterPekerja/Surat/SuratPengangkatanNonStaff/delete/'.$encrypted_string.''); ?>" data-toggle="tooltip" data-placement="bottom" title="Hapus Data" onclick="return confirm('Are you sure you want to delete this item?');"><span class="fa fa-trash fa-2x"></span></a>
                                                 </td>
                                                 <td><?php echo $row['no_surat'];?></td>
-                                                <td><?php echo $row['tanggal_mulai_perbantuan'].' - '.$row['tanggal_selesai_perbantuan'];?></td>
+                                                <td><?php echo $row['tanggal_berlaku'];?></td>
                                                 <td><?php echo $row['noind'];?></td>
                                                 <td><?php echo $row['nama'];?></td>
                                                 <td><?php echo $row['seksi_lama'];?></td>

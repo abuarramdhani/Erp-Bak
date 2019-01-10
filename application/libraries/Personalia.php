@@ -61,9 +61,12 @@ class personalia
 		$kd_jabatan_2 	=	$kd_jabatan_2;
 		$kodesie_2 		=	$kodesie_2;
 		$lokasi_kerja_2	=	$lokasi_kerja_2;
+		// echo $kd_jabatan_1.'/'.$kodesie_1.'/'.$lokasi_kerja_1.'+++';
+		// echo $kd_jabatan_2.'/'.$kodesie_2.'/'.$lokasi_kerja_2.'+++<br/>';
 
 
 		$jumlahTembus 	=	0;
+		$jumlahTembus2 	=	0;
 		$indeks_1		=	0;
 		$indeks_2		=	0;
 		$tembusan 		=	array();
@@ -77,33 +80,42 @@ class personalia
 			$kodeTingkatan_1 	=	substr($kodesie_1, 0, $tingkat);
 			$kodeTingkatan_2 	=	substr($kodesie_2, 0, $tingkat);
 
-			// echo $kodeTingkatan_1.'<br/>';
+			// echo '1='.$kodeTingkatan_1.'<br/>';
 			for ($panjangKarakter=strlen($kodeTingkatan_1); $panjangKarakter < 9; $panjangKarakter++) 
 			{ 
 				$kodeTingkatan_1 	.= 	'0';
 				$kodeTingkatan_2 	.= 	'0';
 			}
 
-			// echo $kodeTingkatan_1.'<br/>';
-			// echo $kodeTingkatan_2.'<br/>';
+
 
 			$kd_jabatan_i_2 = 1;
 			for ($kd_jabatan_i_1 = 1; $kd_jabatan_i_1 < 14; $kd_jabatan_i_1++)
 			{
 				$ambilTembusan1 		=	$this->CI->M_Promosi->ambilTembusan($kodeTingkatan_1, $kd_jabatan_i_1, $kd_jabatan_1, $lokasi_kerja_1);
 				$ambilTembusan2 		=	$this->CI->M_Promosi->ambilTembusan($kodeTingkatan_2, $kd_jabatan_i_2, $kd_jabatan_2, $lokasi_kerja_2);
-
-				for ($i = 0; $i < 4; $i++) 
+				// echo '1='.$kd_jabatan_1.'<br/>';
+				// echo '2='.$kd_jabatan_2.'<br/>';
+				// echo "t1<br/>";
+				// print_r($ambilTembusan1);
+				// echo $kd_jabatan_i_1."|string//<br/>t2<br/>";
+				// print_r($ambilTembusan2);
+				// echo "<br/>";
+				for ($i = 0; $i < 14; $i++) 
 				{ 
 					if(isset($ambilTembusan1[$i]))
 					{
 						$tembusan[$jumlahTembus]	=	$ambilTembusan1[$i]['jabatan'].' '.$ambilTembusan1[$i]['lingkup'].' '.$ambilTembusan1[$i]['lokasi'];
+						// echo $tembusan[$jumlahTembus];
+
+						// echo "<br/>";
 						$jumlahTembus++;
 					}
 
 					if(isset($ambilTembusan2[$i]))
 					{
 						$tembusan[$jumlahTembus]	=	$ambilTembusan2[$i]['jabatan'].' '.$ambilTembusan2[$i]['lingkup'].' '.$ambilTembusan2[$i]['lokasi'];
+						// echo 't='.$tembusan[$jumlahTembus];
 						$jumlahTembus++;
 					}
 				}

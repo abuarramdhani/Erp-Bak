@@ -542,7 +542,7 @@
 													(select jabatan
 													from hrd_khs.torganisasi as torg
 													where torg.kd_jabatan=mutasi.kd_jabatan_baru
-													)as jabatann,
+													)as jabatan,
 													mutasi.tempat_makan_2_lama,
 													mutasi.tempat_makan_2_baru,
 													mutasi.kd_pkj_lama,

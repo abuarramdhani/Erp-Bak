@@ -129,7 +129,7 @@
                                                      <div class="form-group">
                                                         <label for="txtKdJabatanBaru" class="col-lg-4 control-label">Kd Jabatan Baru</label>
                                                         <div class="col-lg-8">
-                                                            <select required name="txtKdJabatanBaru" class="form-control select2" id="MasterPekerja-DaftarKodeJabatan">
+                                                            <select required name="txtKdJabatanBaru" class="form-control select2 jabatan" id="MasterPekerja-DaftarKodeJabatan">
                                                                 <option value=""></option>
                                                             </select>
                                                         </div>
@@ -137,7 +137,7 @@
                                                     <div class="form-group">
                                                         <label for="txtJabatanBaru" class="col-lg-4 control-label">Jabatan Baru</label>
                                                         <div class="col-lg-8">
-                                                            <input required pattern=".{5,}" class="form-control toupper" type="text" name="txtJabatanBaru">
+                                                            <input required pattern=".{5,}" class="form-control toupper setjabatan" type="text" name="txtJabatanBaru">
                                                         </div>
                                                     </div>
 
@@ -186,7 +186,7 @@
                                                             <a id="MasterPekerja-Surat-btnPreview" title="Preview" class="btn btn-info">Preview</a>
                                                         </div>
                                                         <div class="col-lg-10">
-                                                            <textarea required class="redactor" name="txaPreview" id="MasterPekerja-Surat-txaPreview"></textarea>
+                                                            <textarea required class="redactor MasterPekerja-Surat-txaPreview" name="txaPreview" id=""></textarea>
                                                         </div>
                                                     </div>  
                                                 </div>
@@ -231,3 +231,6 @@
         </div>
     </div>
 </section>
+<div id="surat-loading" hidden style="top: 0;left: 0;right: 0;bottom: 0; margin: auto; position: fixed; background: rgba(0,0,0,.5); z-index: 11;">
+    <img src="<?php echo site_url('assets/img/gif/loadingtwo.gif');?>" style="position: fixed; top: 0;left: 0;right: 0;bottom: 0; margin: auto; width: 40%;">
+</div>
