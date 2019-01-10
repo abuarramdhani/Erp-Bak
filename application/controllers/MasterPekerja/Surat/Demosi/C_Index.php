@@ -107,6 +107,16 @@ class C_Index extends CI_Controller
 		echo json_encode($data);
 	}
 
+	public function jabatan()
+	{
+		$jab = $this->input->post('name');
+		$job = $this->input->post('job');
+		$tex = $this->M_demosi->KdJabatan($jab, $job);
+		foreach ($tex as $key) {
+			echo trim($tex[0]['jabatan']);
+		}
+	}
+
 	public function DaftarPekerja()
 	{
 		$keywordPencarianPekerja 	=	strtoupper($this->input->get('term'));
@@ -311,7 +321,7 @@ class C_Index extends CI_Controller
 		$seksi_lama 				=	substr($this->input->post('txtKodesieLama'), 0, 9);
 		$golongan_pekerjaan_lama 	=	$this->input->post('txtGolonganPekerjaanLama');
 		$pekerjaan_lama 		 	=	$this->input->post('txtPekerjaanLama');
-		$kd_jabatan_lama 			=	$this->input->post('txtKdJabatanLama');
+		$kd_jabatan_lama 			=	substr($this->input->post('txtKdJabatanLama'),0,2);
 		$jabatan_lama 				=	$this->input->post('txtJabatanLama');
 		$lokasi_kerja_lama 			=	$this->input->post('txtLokasiKerja');
 		$tempat_makan1_lama 		=	$this->input->post('txtTempatMakan1');
@@ -332,9 +342,11 @@ class C_Index extends CI_Controller
 		$kode_surat 				=	$this->input->post('txtKodeSurat');
 		$hal_surat 					=	$this->input->post('txtHalSurat');
 		$staf					 	=   $this->input->post('txtStatusStaf');
+		$edit					 	=   $this->input->post('txtStatusEdit');
 
 
-		$parameterTahunBulanDemosi 	=	date('Y-m', strtotime($tanggal_cetak));
+		$parameterTahunDemosi 	=	date('Y', strtotime($tanggal_cetak));
+		$parameterBulanDemosi 	=	date('m', strtotime($tanggal_cetak));
 
 		
 
@@ -344,7 +356,7 @@ class C_Index extends CI_Controller
 
 		$lokasi_kerja_baru 			=	explode(' - ', $lokasi_kerja_baru);
 		$lokasi_baru				=	$lokasi_kerja_baru[1];
-		$kd_lokasi_baru 			=	$lokasi_kerja_lama[0];
+		$kd_lokasi_baru 			=	$lokasi_kerja_baru[0];
 
 		$nama_pekerjaan_lama 		=	'';
 		if(empty($pekerjaan_lama))
@@ -358,10 +370,13 @@ class C_Index extends CI_Controller
 			$kd_pkj_lama             	=   $pekerjaan_lama[0];
 		}
 
+		$posisiLama 				=	$this->M_demosi->ambilPosisi($nomor_induk);
+		$posisi_lama 				=	$posisiLama[0]['posisi'];
+		$cekStaf 					=	$this->M_demosi->cekStaf($nomor_induk);
 		$nama_pekerjaan_baru 		=	'';
 		if(empty($kode_surat))
 		{
-			if((int) $kd_jabatan_lama<17)
+			if($cekStaf[0]['status']=='STAF')
 			{
 				$kode_surat 	=	'DU/KI-C';
 			}
@@ -372,15 +387,30 @@ class C_Index extends CI_Controller
 		}
 		else
 		{
+			if($cekStaf[0]['status']=='STAF')
+			{
+				$kode_surat 	=	'DU/KI-C';
+			}
+			else
+			{
+				$kode_surat 	=	'PS/KI-N';
+			}
 			$kode_surat 	=	$kode_surat;
 		}
 
-		$templateDemosi 			=	$this->M_demosi->ambilLayoutSuratDemosi($kode_surat);
+		$stafff = '1';
+		if($cekStaf[0]['status']=='STAF')
+		{
+			$stafff = '1';
+		}else{
+			$stafff = '0';
+		}
+
+		$templateDemosi 			=	$this->M_demosi->ambilLayoutSuratDemosi($stafff);
 		$nama_pekerja 				=	$this->M_demosi->cariPekerja($nomor_induk);
 		$tseksiLama 				=	$this->M_demosi->cariTSeksi($seksi_lama);
 		$tseksiBaru 				=	$this->M_demosi->cariTSeksi($seksi_baru);
 		
-
 		$nama_pekerja 				=	$nama_pekerja[0]['nama'];
 
 		if(empty($pekerjaan_baru))
@@ -394,10 +424,15 @@ class C_Index extends CI_Controller
 			$nama_pekerjaan_baru 		=	$pekerjaan_baru[0]['pekerjaan'];
 		}
 
-		if(empty($nomor_surat))
+			// echo 'edit = '.$edit;
+		if($edit == '1')
 		{
-
-			$nomorSuratDemosiTerakhir 	= 	$this->M_demosi->ambilNomorSuratDemosiTerakhir($parameterTahunBulanDemosi, $kode_surat);
+			$nomor_surat 	=	$nomor_surat;
+		}
+		else
+		{
+			$nomorSuratDemosiTerakhir 	= 	$this->M_demosi->ambilNomorSuratDemosiTerakhir($parameterTahunDemosi, $parameterBulanDemosi, $kode_surat);
+			// print_r($nomorSuratDemosiTerakhir);
 			$nomorSuratDemosiTerakhir 	=	$nomorSuratDemosiTerakhir[0]['jumlah'];
 			$nomorSuratDemosiTerakhir 	=	$nomorSuratDemosiTerakhir+1;
 
@@ -410,10 +445,6 @@ class C_Index extends CI_Controller
 			}
 
 			$nomor_surat 	=	$nomorSuratDemosiTerakhir;
-		}
-		else
-		{
-			$nomor_surat 	=	$nomor_surat;
 		}
 
 		// echo 'ini ambil tembusan';
@@ -455,7 +486,9 @@ class C_Index extends CI_Controller
 											'[lokasi_kerja_baru]',
 											'[tanggal_cetak]',
 											'[tanggal_demosi]',
-											'[tembusan]'
+											'[tembusan]',
+											'[jabatan_lama]',
+											'[jabatan_baru]'
 										);
 		$parameterDiubah	  		=	array
 										(
@@ -479,7 +512,9 @@ class C_Index extends CI_Controller
 											$lokasi_baru,
 											$this->personalia->konversitanggalIndonesia(date('Y-m-d', strtotime($tanggal_cetak))),
 											$this->personalia->konversitanggalIndonesia(date('Y-m-d', strtotime($tanggal_berlaku))),
-											$tembusan_HTML
+											$tembusan_HTML,
+											$jabatan_lama,
+											$jabatan_baru
 										);
 
 		$data['preview'] 	=	str_replace($parameterUbah, $parameterDiubah, $templateDemosi);
@@ -502,7 +537,7 @@ class C_Index extends CI_Controller
 		$nomor_induk 				=	$this->input->post('txtNoind');
 		$seksi_lama 				=	substr($this->input->post('txtKodesieLama'), 0, 9);
 		$golongan_pekerjaan_lama 	=	$this->input->post('txtGolonganPekerjaanLama');
-		$kd_jabatan_lama 			=	$this->input->post('txtKdJabatanLama');
+		$kd_jabatan_lama 			=	substr($this->input->post('txtKdJabatanLama'),0,2);
 		$jabatan_lama 				=	$this->input->post('txtJabatanLama');
 		$lokasi_kerja_lama 			=	$this->input->post('txtLokasiKerja');
 		$tempat_makan1_lama 		=	$this->input->post('txtTempatMakan1');
@@ -577,15 +612,19 @@ class C_Index extends CI_Controller
 										);
 		$this->M_demosi->inputSuratDemosi($inputSuratDemosi);
 
+		$bulan_surat = date('m', strtotime($tanggal_cetak));
+		$bulan_surat = substr($bulan_surat, 0, 2);
+		$tahun_surat = date('Y', strtotime($tanggal_cetak));
 		$inputNomorSurat 			=	array
-										(
-											'bulan_surat' 			=>	date('Y-m', strtotime($tanggal_cetak)),
-											'kode_surat' 			=>	$kodeSurat,
-											'nomor_surat'			=>	$nomor_surat,
-											'noind' 				=>	$nomor_induk,
-											'jenis_surat'			=>	'DEMOSI',
-										);
-		$this->M_demosi->inputNomorSurat($inputNomorSurat);
+											(
+												'bulan_surat' 			=>	$bulan_surat,
+												'tahun_surat'			=>	$tahun_surat,
+												'kode_surat' 			=>	$kodeSurat,
+												'nomor_surat'			=>	$nomor_surat,
+												'noind' 				=>	$nomor_induk,
+												'jenis_surat'			=>	'DEMOSI',
+											);
+			$this->M_demosi->inputNomorSurat($inputNomorSurat);
 		redirect('MasterPekerja/Surat/SuratDemosi');
 	}
 
@@ -598,7 +637,7 @@ class C_Index extends CI_Controller
 
 		$this->load->library('pdf');
 		$pdf 	=	$this->pdf->load();
-		$pdf 	=	new mPDF('utf-8', array(216,297), 10, "timesnewroman", 20, 20, 40, 40, 0, 0, 'P');
+		$pdf 	=	new mPDF('utf-8', array(216,297), 10, "timesnewroman", 20, 20, 40, 30, 0, 0, 'P');
 		// $pdf 	=	new mPDF();
 
 		$filename	=	'SuratDemosi-'.str_replace('/', '_', $no_surat_decode).'.pdf';
@@ -648,7 +687,7 @@ class C_Index extends CI_Controller
 		$no_surat_decode 	=	str_replace(array('-', '_', '~'), array('+', '/', '='), $no_surat);
 		$no_surat_decode 	=	$this->encrypt->decode($no_surat_decode);
 
-		$nomor_induk 				=	$this->input->post('txtNoind');
+		$nomor_induk 				=	substr($this->input->post('txtNoind'), 0, 5);
 		$seksi_lama 				=	substr($this->input->post('txtKodesieLama'), 0, 9);
 		$golongan_pekerjaan_lama 	=	$this->input->post('txtGolonganPekerjaanLama');
 		$kd_jabatan_lama 			=	$this->input->post('txtKdJabatanLama');
@@ -730,15 +769,18 @@ class C_Index extends CI_Controller
 	{
 		$no_surat_decode 	=	str_replace(array('-', '_', '~'), array('+', '/', '='), $no_surat);
 		$no_surat_decode 	=	$this->encrypt->decode($no_surat_decode);
+		// echo $no_surat_decode;exit();
 
 		$this->M_demosi->deleteSuratDemosi($no_surat_decode);
 
 		$no_surat_decode 		=	explode('/', $no_surat_decode);
 		$no_surat 				=	(int)$no_surat_decode[0];
 		$kode_surat 			=	$no_surat_decode[1].'/'.$no_surat_decode[2];
-		$bulan_surat 			= 	'20'.$no_surat_decode[4].'-'.$no_surat_decode[3];
+		$tahun 					= 	'20'.$no_surat_decode[4];
+		$bulan_surat			=	$no_surat_decode[3];
+		// echo $no_surat;exit();
 
-		$this->M_demosi->deleteArsipSuratDemosi($bulan_surat, $kode_surat, $no_surat);
+		$this->M_demosi->deleteArsipSuratDemosi($bulan_surat, $tahun, $kode_surat, $no_surat);
 		redirect('MasterPekerja/Surat/SuratDemosi');
 
 	}

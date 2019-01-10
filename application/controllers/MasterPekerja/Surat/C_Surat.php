@@ -122,6 +122,21 @@
 					echo json_encode($pekerja);
 				}
 
+				public function daftar_pekerja_pengangkatan()
+				{
+					$keyword 	 	=	strtoupper($this->input->get('term', TRUE));
+					$aktif 			=	1;
+					$pekerja		=	$this->M_surat->pekerja_staf($keyword);
+					echo json_encode($pekerja);
+				}
+				public function daftar_pekerja_pengangkatan_non()
+				{
+					$keyword 	 	=	strtoupper($this->input->get('term', TRUE));
+					$aktif 			=	1;
+					$pekerja		=	$this->M_surat->pekerja_non_staf($keyword);
+					echo json_encode($pekerja);
+				}
+
 				public function daftar_kode_jabatan_kerja()
 				{
 					$keyword 		=	strtoupper($this->input->get('term', TRUE));

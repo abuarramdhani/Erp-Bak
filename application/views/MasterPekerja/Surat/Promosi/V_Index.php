@@ -58,7 +58,7 @@
                                             <tr>
                                                 <td align='center'><?php echo $no++;?></td>
                                                 <td align='center' style="white-space: nowrap;">
-                                                    <a style="margin-right:4px" href="<?php echo base_url('MasterPekerja/Surat/SuratPromosi/previewcetak/'.$encrypted_string.''); ?>" data-toggle="tooltip" data-placement="bottom" title="Preview Cetak"><span class="fa fa-file-pdf-o fa-2x"></span></a>
+                                                    <a target="_blank" style="margin-right:4px" href="<?php echo base_url('MasterPekerja/Surat/SuratPromosi/previewcetak/'.$encrypted_string.''); ?>" data-toggle="tooltip" data-placement="bottom" title="Preview Cetak"><span class="fa fa-file-pdf-o fa-2x"></span></a>
                                                     <a style="margin-right:4px" href="<?php echo base_url('MasterPekerja/Surat/SuratPromosi/update/'.$encrypted_string.''); ?>" data-toggle="tooltip" data-placement="bottom" title="Edit Data"><span class="fa fa-pencil-square-o fa-2x"></span></a>
                                                     <a href="<?php echo base_url('MasterPekerja/Surat/SuratPromosi/delete/'.$encrypted_string.''); ?>" data-toggle="tooltip" data-placement="bottom" title="Hapus Data" onclick="return confirm('Are you sure you want to delete this item?');"><span class="fa fa-trash fa-2x"></span></a>
                                                 </td>

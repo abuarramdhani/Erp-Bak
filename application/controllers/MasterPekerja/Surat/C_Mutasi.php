@@ -1,48 +1,48 @@
 <?php
-	defined('BASEPATH') OR exit('No direct script access allowed');
+defined('BASEPATH') OR exit('No direct script access allowed');
 
-	class C_Mutasi extends CI_Controller 
+class C_Mutasi extends CI_Controller 
+{
+
+	function __construct()
 	{
+		parent::__construct();
 
-		function __construct()
+		$this->load->library('General');
+		$this->load->library('Personalia');
+		$this->load->library('encrypt');
+
+		$this->load->model('SystemAdministration/MainMenu/M_user');
+		$this->load->model('MasterPekerja/Surat/M_surat');
+		$this->load->model('MasterPekerja/Surat/M_mutasi');			
+
+		date_default_timezone_set('Asia/Jakarta');
+
+		$this->checkSession();
+	}
+
+	public function checkSession()
+	{
+		if(!($this->session->is_logged))
 		{
-			parent::__construct();
-
-			$this->load->library('General');
-			$this->load->library('Personalia');
-			$this->load->library('encrypt');
-
-			$this->load->model('SystemAdministration/MainMenu/M_user');
-			$this->load->model('MasterPekerja/Surat/M_surat');
-			$this->load->model('MasterPekerja/Surat/M_mutasi');			
-
-			date_default_timezone_set('Asia/Jakarta');
-
-			$this->checkSession();
+			redirect('');
 		}
+	}
 
-		public function checkSession()
-		{
-			if(!($this->session->is_logged))
-			{
-				redirect('');
-			}
-		}
+	public function index()
+	{
+		$data 			=	$this->general->loadHeaderandSidemenu('Surat Mutasi - Master Pekerja - Quick ERP', 'Surat Mutasi', 'Surat', 'Surat Mutasi');
 
-		public function index()
-		{
-			$data 			=	$this->general->loadHeaderandSidemenu('Surat Mutasi - Master Pekerja - Quick ERP', 'Surat Mutasi', 'Surat', 'Surat Mutasi');
+		$data['view'] 	=	$this->M_mutasi->view();
 
-			$data['view'] 	=	$this->M_mutasi->view();
+		$this->load->view('V_Header',$data);
+		$this->load->view('V_Sidemenu',$data);
+		$this->load->view('MasterPekerja/Surat/Mutasi/V_Index',$data);
+		$this->load->view('V_Footer',$data);
+	}
 
-			$this->load->view('V_Header',$data);
-			$this->load->view('V_Sidemenu',$data);
-			$this->load->view('MasterPekerja/Surat/Mutasi/V_Index',$data);
-			$this->load->view('V_Footer',$data);
-		}
-
-		public function create()
-		{
+	public function create()
+	{
 			/*$user_id = $this->session->userid;
 			
 			$data['Header']			=	'Master Pekerja - Quick ERP';
@@ -170,65 +170,65 @@
 
 			// 	Kode, Nomor, dan Hal Surat
 			//	{
-					$status_staf_bool 	=	FALSE;
-					if( strpos($status_staf, "NON") !== FALSE )
-					{
-						$status_staf_bool 	=	FALSE;	
-					}
-					else
-					{
-						$status_staf_bool 	=	TRUE;
-					}
+			$status_staf_bool 	=	FALSE;
+			if( strpos($status_staf, "NON") !== FALSE )
+			{
+				$status_staf_bool 	=	FALSE;	
+			}
+			else
+			{
+				$status_staf_bool 	=	TRUE;
+			}
 
-					$tahun_cetak 	=	date('Y', strtotime($tanggal_cetak));
-					$bulan_cetak 	=	date('n', strtotime($tanggal_cetak));
-					$tahun_berlaku 	=	date('Y', strtotime($tanggal_berlaku));
-					$bulan_berlaku 	=	date('n', strtotime($tanggal_berlaku));
+			$tahun_cetak 	=	date('Y', strtotime($tanggal_cetak));
+			$bulan_cetak 	=	date('n', strtotime($tanggal_cetak));
+			$tahun_berlaku 	=	date('Y', strtotime($tanggal_berlaku));
+			$bulan_berlaku 	=	date('n', strtotime($tanggal_berlaku));
 
 					// 	Cek kode surat
 					// 	{
-							$tabel_kode_surat 	=	$this->M_surat->kode_surat($jenis_surat, $status_staf_bool);
-							
-							if( empty($tabel_kode_surat) )
-							{
-								echo 'Kode surat tidak ditemukan.<br/>Mohon input terlebih dahulu.';
-								exit();
-							}
-							else
-							{
-								$data['kode_surat'] 	=	$tabel_kode_surat[0]['kode_surat'];
-							}
+			$tabel_kode_surat 	=	$this->M_surat->kode_surat($jenis_surat, $status_staf_bool);
+
+			if( empty($tabel_kode_surat) )
+			{
+				echo 'Kode surat tidak ditemukan.<br/>Mohon input terlebih dahulu.';
+				exit();
+			}
+			else
+			{
+				$data['kode_surat'] 	=	$tabel_kode_surat[0]['kode_surat'];
+			}
 					//	}
 
 					// 	Ambil Nomor Surat Baru
 					// 	{
-							$tabel_arsip_nomor_surat 	=	$this->M_surat->nomor_surat($data['kode_surat'], 'max', $tahun_cetak, $bulan_cetak);
+			$tabel_arsip_nomor_surat 	=	$this->M_surat->nomor_surat($data['kode_surat'], 'max', $tahun_cetak, $bulan_cetak);
 
-							
-							if( empty($tabel_arsip_nomor_surat) )
-							{
-								$data['nomor_surat']	=	'001';
-							}
-							else
-							{
-								$data['nomor_surat']	=	$tabel_arsip_nomor_surat[0]['hitung']+1;
-								if ($data['nomor_surat'] < 10) {
-									$data['nomor_surat'] = '00'.$data['nomor_surat'];
-								}elseif ($data['nomor_surat'] > 10 && $data['nomor_surat'] < 100) {
-									$data['nomor_surat'] = '0'.$data['nomor_surat'];
-								}
-							}
+
+			if( empty($tabel_arsip_nomor_surat) )
+			{
+				$data['nomor_surat']	=	'001';
+			}
+			else
+			{
+				$data['nomor_surat']	=	$tabel_arsip_nomor_surat[0]['hitung']+1;
+				if ($data['nomor_surat'] < 10) {
+					$data['nomor_surat'] = '00'.$data['nomor_surat'];
+				}elseif ($data['nomor_surat'] > 10 && $data['nomor_surat'] < 100) {
+					$data['nomor_surat'] = '0'.$data['nomor_surat'];
+				}
+			}
 					//	}
 
 					//	Hal Surat
 					// 	{
-							$data['hal_surat']		=	$jenis_surat;
+			$data['hal_surat']		=	$jenis_surat;
 					//	}
 			//	}
 
 			// 	Preview Surat
 			//	{
-						
+
 			//	}
 
 			echo json_encode($data);
@@ -261,13 +261,15 @@
 			$kode_surat 				=	$this->input->post('txtKodeSurat');
 			$hal_surat 					=	$this->input->post('txtHalSurat');
 			$staf					 	=   $this->input->post('txtStatusStaf');
+			$edit					 	=   $this->input->post('txtStatusEdit');
 
 
-			$parameterTahunBulanMutasi 	=	date('Y-m', strtotime($tanggal_cetak));
+			$parameterTahun 	=	date('Y', strtotime($tanggal_cetak));
+			$parameterBulan 	=	date('m', strtotime($tanggal_cetak));
 			
 
+			// print_r($lokasi_kerja_lama);exit();
 			$lokasi_kerja_lama 			=	explode(' - ', $lokasi_kerja_lama);
-			// print_r($lokasi_kerja_lama);
 			$lokasi_lama 				=	$lokasi_kerja_lama[1];
 			$kd_lokasi_lama 			=	$lokasi_kerja_lama[0];
 
@@ -345,28 +347,27 @@
 				$posisi_baru 				=	$nama_pekerjaan_baru.'Golongan '.$golongan_pekerjaan_baru.' / '.'Seksi '.$tseksiBaru['0']['seksi'].' / '.'Unit '.$tseksiBaru[0]['unit'].' / '.'Departemen '.$tseksiBaru[0]['dept'];
 			}
 
-			if(empty($nomor_surat))
-			{
-
-				$nomorSuratMutasiTerakhir 	= 	$this->M_surat->ambilNomorSuratTerakhir($kode_surat);
-				$nomorSuratMutasiTerakhir 	=	$nomorSuratMutasiTerakhir[0]['jumlah'];
-				$nomorSuratMutasiTerakhir 	=	$nomorSuratMutasiTerakhir+1;
-
-				if($nomorSuratMutasiTerakhir<1000)
-				{
-					for ($i=strlen($nomorSuratMutasiTerakhir); $i < 3; $i++) 
-					{ 
-						$nomorSuratMutasiTerakhir 	=	'0'.$nomorSuratMutasiTerakhir;
-					}
-				}
-
-				$nomor_surat 	=	$nomorSuratMutasiTerakhir;
-			}
-			else
+			if($edit == '1')
 			{
 				$nomor_surat 	=	$nomor_surat;
 			}
+			else
+			{
+				$nomorSuratTerakhir 	= 	$this->M_surat->ambilNomorSuratTerakhir($parameterTahun, $parameterBulan, $kode_surat);
+			// print_r($nomorSuratTerakhir);
+				$nomorSuratTerakhir 	=	$nomorSuratTerakhir[0]['jumlah'];
+				$nomorSuratTerakhir 	=	$nomorSuratTerakhir+1;
 
+				if($nomorSuratTerakhir<1000)
+				{
+					for ($i=strlen($nomorSuratTerakhir); $i < 3; $i++) 
+					{ 
+						$nomorSuratTerakhir 	=	'0'.$nomorSuratTerakhir;
+					}
+				}
+
+				$nomor_surat 	=	$nomorSuratTerakhir;
+			}
 			$kd_jabatan_lama = explode(' - ', $kd_jabatan_lama);
 			$kd_jabatan_lama = $kd_jabatan_lama[0];
 			$tembusan 	=	$this->personalia->tembusanDuaPihak($kd_jabatan_lama, $seksi_lama, $kd_lokasi_lama, $kd_jabatan_baru, $seksi_baru, $kd_lokasi_baru);
@@ -385,51 +386,51 @@
 			$templateMutasi 			=	$templateMutasi[0]['isi_surat'];
 
 			$parameterUbah 				=	array
-											(
-												'[no_surat]',
-												'[kode_surat]',
-												'[bulan_cetak]',
-												'[tahun_cetak]',
-												'[nomor_induk]',
-												'[nama_pekerja]',
-												'[jabatan_surat]',
-												'[posisi_lama]',
-												'[posisi_baru]',
-												'[lokasi_kerja_lama]',
-												'[lokasi_kerja_baru]',
-												'[tanggal_berlaku]',
-												'[seksi_baru]',
-												'[unit_baru]',
-												'[departemen_baru]',
-												'[tanggal_cetak]',
-												'[tertanda]',
-												'[nama_tanda_tangan]',
-												'[jabatan_tertanda]',
-												'[tembusan]',
-											);
+			(
+				'[no_surat]',
+				'[kode_surat]',
+				'[bulan_cetak]',
+				'[tahun_cetak]',
+				'[nomor_induk]',
+				'[nama_pekerja]',
+				'[jabatan_surat]',
+				'[posisi_lama]',
+				'[posisi_baru]',
+				'[lokasi_kerja_lama]',
+				'[lokasi_kerja_baru]',
+				'[tanggal_berlaku]',
+				'[seksi_baru]',
+				'[unit_baru]',
+				'[departemen_baru]',
+				'[tanggal_cetak]',
+				'[tertanda]',
+				'[nama_tanda_tangan]',
+				'[jabatan_tertanda]',
+				'[tembusan]',
+				);
 			$parameterDiubah	  		=	array
-											(
-												$nomor_surat,
-												$kode_surat,
-												date('m', strtotime($tanggal_cetak)),
-												date('y', strtotime($tanggal_cetak)),
-												$nomor_induk,
-												$nama_pekerja,
-												$jabatan_surat,
-												$posisi_lama,
-												$posisi_baru,
-												$lokasi_lama,
-												$lokasi_baru,
-												$this->personalia->konversitanggalIndonesia(date('Y-m-d', strtotime($tanggal_berlaku))),
-												$tseksiBaru[0]['seksi'],
-												$tseksiBaru[0]['unit'],
-												$tseksiBaru[0]['dept'],
-												$this->personalia->konversitanggalIndonesia(date('Y-m-d', strtotime($tanggal_cetak))),
-												$tertanda,
-												$nama_tanda_tangan,
-												$jabatan_tertanda,
-												$tembusan_HTML,
-											);
+			(
+				$nomor_surat,
+				$kode_surat,
+				date('m', strtotime($tanggal_cetak)),
+				date('y', strtotime($tanggal_cetak)),
+				$nomor_induk,
+				$nama_pekerja,
+				$jabatan_surat,
+				$posisi_lama,
+				$posisi_baru,
+				$lokasi_lama,
+				$lokasi_baru,
+				$this->personalia->konversitanggalIndonesia(date('Y-m-d', strtotime($tanggal_berlaku))),
+				$tseksiBaru[0]['seksi'],
+				$tseksiBaru[0]['unit'],
+				$tseksiBaru[0]['dept'],
+				$this->personalia->konversitanggalIndonesia(date('Y-m-d', strtotime($tanggal_cetak))),
+				$tertanda,
+				$nama_tanda_tangan,
+				$jabatan_tertanda,
+				$tembusan_HTML,
+				);
 
 			$data['preview'] 	=	str_replace($parameterUbah, $parameterDiubah, $templateMutasi);
 			$data['nomor_surat']	=	$nomor_surat;
@@ -452,6 +453,7 @@
 			$seksi_lama 				=	substr($this->input->post('txtKodesieLama'), 0, 9);
 			$golongan_pekerjaan_lama 	=	$this->input->post('txtGolonganPekerjaanLama');
 			$kd_jabatan_lama 			=	substr($this->input->post('txtKdJabatanLama'), 0, 2);
+			// echo $kd_jabatan_lama;exit();
 			$jabatan_lama 				=	$this->input->post('txtJabatanLama');
 			$lokasi_kerja_lama 			=	$this->input->post('txtLokasiKerja');
 			$tempat_makan1_lama 		=	$this->input->post('txtTempatMakan1');
@@ -496,53 +498,53 @@
 			$kd_pkj_baru		      	=	$pekerjaan_baru[0];
 
 			$inputSuratMutasi			= 	array
-											(
-												'no_surat'				=>	$nomor_surat,
-												'kode' 					=>	$kodeSurat,
-												'hal_surat'				=>	$hal_surat,
-												'noind'					=>	$nomor_induk,
-												'kodesie_lama'  		=>  $seksi_lama,
-												'kodesie_baru'  		=>  $seksi_baru,
-												'tempat_makan_1_lama' 	=>  rtrim($tempat_makan1_lama),
-												'tempat_makan_1_baru' 	=>  rtrim($tempat_makan1_baru),
-												'tempat_makan_2_lama' 	=>  rtrim($tempat_makan2_lama),
-												'tempat_makan_2_baru' 	=>  rtrim($tempat_makan2_baru),
-												'lokasi_kerja_lama'		=>	$lokasi_lama,
-												'lokasi_kerja_baru'		=>  $lokasi_baru, 
-												'golkerja_lama'  		=>	$golongan_pekerjaan_lama,
-												'golkerja_baru'  		=>	$golongan_pekerjaan_baru,
-												'kd_jabatan_lama'		=>  $kd_jabatan_lama,
-												'kd_jabatan_baru'		=>  $kd_jabatan_baru,
-												'jabatan_lama'          =>  $jabatan_lama,
-												'jabatan_baru'          =>  rtrim($jabatan_baru),
-												'tanggal_berlaku'       =>	$tanggal_berlaku,
-												'tanggal_cetak'			=>  $tanggal_cetak,
-												'nama'					=>	$nama,
-												'noind_baru'			=>	$noind_baru,
-												'isi_surat'				=>	$isi_surat,
-												'kd_pkj_lama'           =>  $kd_pkj_lama,
-												'kd_pkj_baru'           =>  $kd_pkj_baru,
-												'status_staf' 			=>	$staf,
-											);
+			(
+				'no_surat'				=>	$nomor_surat,
+				'kode' 					=>	$kodeSurat,
+				'hal_surat'				=>	$hal_surat,
+				'noind'					=>	$nomor_induk,
+				'kodesie_lama'  		=>  $seksi_lama,
+				'kodesie_baru'  		=>  $seksi_baru,
+				'tempat_makan_1_lama' 	=>  rtrim($tempat_makan1_lama),
+				'tempat_makan_1_baru' 	=>  rtrim($tempat_makan1_baru),
+				'tempat_makan_2_lama' 	=>  rtrim($tempat_makan2_lama),
+				'tempat_makan_2_baru' 	=>  rtrim($tempat_makan2_baru),
+				'lokasi_kerja_lama'		=>	$lokasi_lama,
+				'lokasi_kerja_baru'		=>  $lokasi_baru, 
+				'golkerja_lama'  		=>	$golongan_pekerjaan_lama,
+				'golkerja_baru'  		=>	$golongan_pekerjaan_baru,
+				'kd_jabatan_lama'		=>  $kd_jabatan_lama,
+				'kd_jabatan_baru'		=>  $kd_jabatan_baru,
+				'jabatan_lama'          =>  $jabatan_lama,
+				'jabatan_baru'          =>  rtrim($jabatan_baru),
+				'tanggal_berlaku'       =>	$tanggal_berlaku,
+				'tanggal_cetak'			=>  $tanggal_cetak,
+				'nama'					=>	$nama,
+				'noind_baru'			=>	$noind_baru,
+				'isi_surat'				=>	$isi_surat,
+				'kd_pkj_lama'           =>  $kd_pkj_lama,
+				'kd_pkj_baru'           =>  $kd_pkj_baru,
+				'status_staf' 			=>	$staf,
+				);
 											// foreach ($inputSuratMutasi as $row) {
 											// 	echo $row;
-											
+
 											// }
 											// exit();
 			$this->M_surat->inputSuratMutasi($inputSuratMutasi);
-											$bulan_surat = date('m', strtotime($tanggal_cetak));
-											$bulan_surat = substr($bulan_surat, 1, 2);
-											$tahun_surat = date('Y', strtotime($tanggal_cetak));
+			$bulan_surat = date('m', strtotime($tanggal_cetak));
+			$bulan_surat = substr($bulan_surat, 0, 2);
+			$tahun_surat = date('Y', strtotime($tanggal_cetak));
 											 // echo $tahun_surat;exit();
 			$inputNomorSurat 			=	array
-											(
-												'bulan_surat' 			=>	$bulan_surat,
-												'tahun_surat'			=>	$tahun_surat,
-												'kode_surat' 			=>	$kodeSurat,
-												'nomor_surat'			=>	$nomor_surat,
-												'noind' 				=>	$nomor_induk,
-												'jenis_surat'			=>	'MUTASI',
-											);
+			(
+				'bulan_surat' 			=>	$bulan_surat,
+				'tahun_surat'			=>	$tahun_surat,
+				'kode_surat' 			=>	$kodeSurat,
+				'nomor_surat'			=>	$nomor_surat,
+				'noind' 				=>	$nomor_induk,
+				'jenis_surat'			=>	'MUTASI',
+				);
 			$this->M_surat->inputNomorSurat($inputNomorSurat);
 			redirect('MasterPekerja/Surat/SuratMutasi');
 		}
@@ -611,12 +613,12 @@
 			$data['DaftarGolongan'] = $this->M_surat->golongan_pekerjaan($tanggal, $kodeDekripsi, $no_surat_decode);
 // 			print_r($data['DaftarGolongan'] );
 // exit();
-	      	$data['DaftarLokasiKerja'] = $this->M_surat->DetailLokasiKerja($tanggal, $kodeDekripsi, $no_surat_decode);
-	      	$data['DaftarKdJabatan'] = $this->M_surat->DetailKdJabatan($tanggal, $kodeDekripsi, $no_surat_decode);
+			$data['DaftarLokasiKerja'] = $this->M_surat->DetailLokasiKerja($tanggal, $kodeDekripsi, $no_surat_decode);
+			$data['DaftarKdJabatan'] = $this->M_surat->DetailKdJabatan($tanggal, $kodeDekripsi, $no_surat_decode);
 	      	// print_r($data['DaftarKdJabatan']);
 	      	// exit();
-	      	$data['DaftarTempatMakan1'] = $this->M_surat->DetailTempatMakan1($tanggal, $kodeDekripsi, $no_surat_decode);
-	      	$data['DaftarTempatMakan2'] = $this->M_surat->DetailTempatMakan2($tanggal, $kodeDekripsi, $no_surat_decode);
+			$data['DaftarTempatMakan1'] = $this->M_surat->DetailTempatMakan1($tanggal, $kodeDekripsi, $no_surat_decode);
+			$data['DaftarTempatMakan2'] = $this->M_surat->DetailTempatMakan2($tanggal, $kodeDekripsi, $no_surat_decode);
 			// echo "<pre>";
 			// print_r($data['editSuratMutasi']);
 			// echo "</pre>";
@@ -629,13 +631,14 @@
 
 		public function edit($no_surat)
 		{
+			// print_r($_POST);exit();
 			$no_surat_decode 	=	str_replace(array('-', '_', '~'), array('+', '/', '='), $no_surat);
 			$no_surat_decode 	=	$this->encrypt->decode($no_surat_decode);
 
-			$nomor_induk 				=	$this->input->post('txtNoind');
+			$nomor_induk 				=	substr($this->input->post('txtNoind'), 0, 5);
 			$seksi_lama 				=	substr($this->input->post('txtKodesieLama'), 0, 9);
 			$golongan_pekerjaan_lama 	=	$this->input->post('txtGolonganPekerjaanLama');
-			$kd_jabatan_lama 			=	$this->input->post('txtKdJabatanLama');
+			$kd_jabatan_lama 			=	substr($this->input->post('txtKdJabatanLama'),0 ,2);
 			$jabatan_lama 				=	$this->input->post('txtJabatanLama');
 			$lokasi_kerja_lama 			=	$this->input->post('txtLokasiKerja');
 			$tempat_makan1_lama 		=	$this->input->post('txtTempatMakan1');
@@ -680,32 +683,32 @@
 			$kd_pkj_baru		      	=	$pekerjaan_baru[0];
 
 			$updateSuratMutasi			= 	array
-											(
-												'hal_surat'				=>	$hal_surat,
-												'noind'					=>	$nomor_induk,
-												'kodesie_lama'  		=>  $seksi_lama,
-												'kodesie_baru'  		=>  $seksi_baru,
-												'tempat_makan_1_lama' 	=>  rtrim($tempat_makan1_lama),
-												'tempat_makan_1_baru' 	=>  rtrim($tempat_makan1_baru),
-												'tempat_makan_2_lama' 	=>  rtrim($tempat_makan2_lama),
-												'tempat_makan_2_baru' 	=>  rtrim($tempat_makan2_baru),
-												'lokasi_kerja_lama'		=>	$lokasi_lama,
-												'lokasi_kerja_baru'		=>  $lokasi_baru, 
-												'golkerja_lama'  		=>	$golongan_pekerjaan_lama,
-												'golkerja_baru'  		=>	$golongan_pekerjaan_baru,
-												'kd_jabatan_lama'		=>  $kd_jabatan_lama,
-												'kd_jabatan_baru'		=>  $kd_jabatan_baru,
-												'jabatan_lama'          =>  $jabatan_lama,
-												'jabatan_baru'          =>  rtrim($jabatan_baru),
-												'tanggal_berlaku'       =>	$tanggal_berlaku,
-												'tanggal_cetak'			=>  $tanggal_cetak,
-												'nama'					=>	$nama,
-												'noind_baru'			=>	$noind_baru,
-												'isi_surat'				=>	$isi_surat,
-												'kd_pkj_lama'           =>  $kd_pkj_lama,
-												'kd_pkj_baru'           =>  $kd_pkj_baru,
-												'status_staf' 			=>	$staf,
-											);
+			(
+				'hal_surat'				=>	$hal_surat,
+				'noind'					=>	$nomor_induk,
+				'kodesie_lama'  		=>  $seksi_lama,
+				'kodesie_baru'  		=>  $seksi_baru,
+				'tempat_makan_1_lama' 	=>  rtrim($tempat_makan1_lama),
+				'tempat_makan_1_baru' 	=>  rtrim($tempat_makan1_baru),
+				'tempat_makan_2_lama' 	=>  rtrim($tempat_makan2_lama),
+				'tempat_makan_2_baru' 	=>  rtrim($tempat_makan2_baru),
+				'lokasi_kerja_lama'		=>	$lokasi_lama,
+				'lokasi_kerja_baru'		=>  $lokasi_baru, 
+				'golkerja_lama'  		=>	$golongan_pekerjaan_lama,
+				'golkerja_baru'  		=>	$golongan_pekerjaan_baru,
+				'kd_jabatan_lama'		=>  $kd_jabatan_lama,
+				'kd_jabatan_baru'		=>  $kd_jabatan_baru,
+				'jabatan_lama'          =>  $jabatan_lama,
+				'jabatan_baru'          =>  rtrim($jabatan_baru),
+				'tanggal_berlaku'       =>	$tanggal_berlaku,
+				'tanggal_cetak'			=>  $tanggal_cetak,
+				'nama'					=>	$nama,
+				'noind_baru'			=>	$noind_baru,
+				'isi_surat'				=>	$isi_surat,
+				'kd_pkj_lama'           =>  $kd_pkj_lama,
+				'kd_pkj_baru'           =>  $kd_pkj_baru,
+				'status_staf' 			=>	$staf,
+				);
 			$this->M_surat->updateSuratMutasi($updateSuratMutasi, $nomor_surat, $kodeSurat);
 			redirect('MasterPekerja/Surat/SuratMutasi');
 		}

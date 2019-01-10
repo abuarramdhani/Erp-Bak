@@ -1734,9 +1734,12 @@ $route['MasterPekerja/Surat/SuratPromosi/(:any)/(:any)/(:any)']=   'MasterPekerj
 $route['MasterPekerja/Surat/SuratRotasi']               =   'MasterPekerja/Surat/Rotasi/C_Index';
 $route['MasterPekerja/Surat/SuratRotasi/(:any)']        =   'MasterPekerja/Surat/Rotasi/C_Index/$1';
 $route['MasterPekerja/Surat/SuratRotasi/(:any)/(:any)'] =   'MasterPekerja/Surat/Rotasi/C_Index/$1/$2/$3';
-$route['MasterPekerja/Surat/SuratPengangkatan']               =   'MasterPekerja/Surat/Pengangkatan/C_Index';
-$route['MasterPekerja/Surat/SuratPengangkatan/(:any)']        =   'MasterPekerja/Surat/Pengangkatan/C_Index/$1';
-$route['MasterPekerja/Surat/SuratPengangkatan/(:any)/(:any)'] =   'MasterPekerja/Surat/Pengangkatan/C_Index/$1/$2/$3';
+$route['MasterPekerja/Surat/SuratPengangkatanStaff']               =   'MasterPekerja/Surat/Pengangkatan/C_Index';
+$route['MasterPekerja/Surat/SuratPengangkatanStaff/(:any)']        =   'MasterPekerja/Surat/Pengangkatan/C_Index/$1';
+$route['MasterPekerja/Surat/SuratPengangkatanStaff/(:any)/(:any)'] =   'MasterPekerja/Surat/Pengangkatan/C_Index/$1/$2/$3';
+$route['MasterPekerja/Surat/SuratPengangkatanNonStaff']               =   'MasterPekerja/Surat/Pengangkatan/C_Index/index2';
+$route['MasterPekerja/Surat/SuratPengangkatanNonStaff/(:any)']        =   'MasterPekerja/Surat/Pengangkatan/C_Index/$1';
+$route['MasterPekerja/Surat/SuratPengangkatanNonStaff/(:any)/(:any)'] =   'MasterPekerja/Surat/Pengangkatan/C_Index/$1/$2/$3';
 
 //------------------------------------ Penerimaan PO ----------------------------------------
 $route['PenerimaanPO']						   = 'PenerimaanPO/C_Penerimaan';
