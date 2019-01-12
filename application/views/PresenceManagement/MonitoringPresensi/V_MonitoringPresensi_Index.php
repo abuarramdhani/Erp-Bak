@@ -64,7 +64,7 @@
 												<a type="button" href="<?php echo site_url('PresenceManagement/MonitoringPresensi/finger_data_get'.'/'.$encrypted_string) ?>" class="btn btn-success btn-sm" data-toggle="tooltip" alt="Get Finger Data From This Device" title="Get Finger Data From This Device" >
 				                                    <i class="fa fa-cloud-download"></i> <i class="fa fa-hand-pointer-o"></i>
 				                                </a>
-				                                <a type="button" href="<?php echo site_url('PresenceManagement/MonitoringPresensi/get_scanlog'.'/'.$encrypted_string) ?>" class="btn btn-success btn-sm" data-toggle="tooltip" alt="Get Scanlog" title="Get Scanlog" >
+				                                <a type="button" target="_blank" href="<?php echo site_url('PresenceManagement/MonitoringPresensi/get_scanlog'.'/'.$encrypted_string) ?>" class="btn btn-success btn-sm" data-toggle="tooltip" alt="Get Scanlog" title="Get Scanlog" >
 				                                    <i class="fa fa-cloud-download"></i> <i class="fa fa-database"></i>
 				                                </a>
 											</td>
