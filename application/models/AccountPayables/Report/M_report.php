@@ -24,6 +24,7 @@ class M_report extends CI_Model {
 					select distinct
 						asa.vendor_name
 						,aia.invoice_type_lookup_code type_invoice
+						,aba.batch_name batch_number
 						,to_char(aia.invoice_date,'DD-MON-YYYY') invoice_date
 						,aia.invoice_num
 						,to_char(aca.check_date,'DD-MON-YYYY') payment_date
@@ -37,6 +38,7 @@ class M_report extends CI_Model {
 
 					from
 						ap_invoices_all aia
+						,ap_batches_all aba
 						,ap_invoice_lines_all aila
 						,ap_invoice_payments_all aipa
 						,ap_checks_all aca
@@ -52,6 +54,7 @@ class M_report extends CI_Model {
 						and aia.vendor_id = asa.vendor_id(+)
 						and aia.invoice_id = aipa.invoice_id
 						and aia.invoice_id = apsa.invoice_id(+)
+						and aba.batch_id(+) = aia.batch_id
 						and aca.status_lookup_code != 'VOIDED'
 						and aia.invoice_id = aila.invoice_id
 						and aila.po_header_id = poh.po_header_id
@@ -75,6 +78,7 @@ class M_report extends CI_Model {
 					select
 					    asa.vendor_name
 					    ,aia.invoice_type_lookup_code type_invoice
+						,aba.batch_name batch_number
 					    ,to_char(aia.invoice_date,'DD-MON-YYYY') invoice_date
 					    ,aia.invoice_num
 					    ,to_char(aca.check_date,'DD-MON-YYYY') payment_date
@@ -85,6 +89,7 @@ class M_report extends CI_Model {
 					    ,aia.attribute3
 					from
 					    ap_invoices_all aia
+						,ap_batches_all aba
 					    ,ap_invoice_payments_all aipa
 					    ,ap_checks_all aca
 					    ,ap_suppliers asa
@@ -97,6 +102,7 @@ class M_report extends CI_Model {
 					    and aia.vendor_id = asa.vendor_id(+)
 					    and aia.invoice_id = aipa.invoice_id
 					    and aia.invoice_id = apsa.invoice_id(+)
+						and aba.batch_id(+) = aia.batch_id
 					    and aca.status_lookup_code != 'VOIDED'
 					    and aia.terms_id = att.term_id
 					    and att.enabled_flag = 'Y'
