@@ -15,6 +15,14 @@ class M_presensi_dl extends CI_Model
         return $sql->result_array();
     }
 
+    public function getkendaraan($val)
+    {
+        $sql = $this->db->query("select a.nomor_polisi,b.merk_kendaraan from ga.ga_fleet_kendaraan a 
+                                    inner join ga.ga_fleet_merk_kendaraan b on a.merk_kendaraan_id=b.merk_kendaraan_id
+                                    where nomor_polisi like '%$val%'");
+        return $sql->result_array();
+    }
+
     public function getSeksi($val)
     {
         $sqlserver = $this->load->database('personalia',true);

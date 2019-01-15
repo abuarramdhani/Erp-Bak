@@ -25,6 +25,31 @@ $(document).ready(function(){
 	  placeholder: '[ pilih Nomor Induk / Nama ]',
 	});
 
+	$('.select-kendaraan-prs').select2({
+		ajax: {
+		    url: baseurl+"Presensi/PresensiDL/get_js_kendaraan",
+		    dataType: 'json',
+		    type: "get",
+		    data: function (params) {
+		      return { p: params.term };
+		    },
+		    processResults: function (data) {
+		      return {
+		        results: $.map(data, function (item) {
+		          return {
+		            id: item.nomor_polisi,
+		            text: item.nomor_polisi+' - '+item.merk_kendaraan,
+		          }
+		        })
+		      };
+		    },
+		    cache: true
+		  },
+	  minimumInputLength: 2,
+	  allowClear: false,
+	  placeholder: '[ pilih Nomor Kendaraan ]',
+	});
+
 	$('.select-kodesie-prs').select2({
 		ajax: {
 		    url: baseurl+"Presensi/PresensiDL/get_js_seksi",

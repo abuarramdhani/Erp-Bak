@@ -89,6 +89,16 @@ public function get_js_pekerja()
 		echo json_encode($data);
 	}
 
+public function get_js_kendaraan()
+	{
+		$this->checkSession();
+
+		$kendaraan = $_GET['p'];
+		$kendaraan = strtoupper($kendaraan);
+		$data = $this->M_presensi_dl->getkendaraan($kendaraan);
+		echo json_encode($data);
+	}
+
 public function get_js_seksi()
 	{
 		$this->checkSession();
