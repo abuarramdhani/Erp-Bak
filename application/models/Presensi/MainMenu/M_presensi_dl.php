@@ -17,10 +17,22 @@ class M_presensi_dl extends CI_Model
 
     public function getkendaraan($val)
     {
-        $sql = $this->db->query("select a.nomor_polisi,b.merk_kendaraan from ga.ga_fleet_kendaraan a 
+        $sql = $this->db->query("select a.nomor_polisi,b.merk_kendaraan,c.warna_kendaraan,d.jenis_kendaraan from ga.ga_fleet_kendaraan a 
                                     inner join ga.ga_fleet_merk_kendaraan b on a.merk_kendaraan_id=b.merk_kendaraan_id
-                                    where nomor_polisi like '%$val%'");
+                                    left join ga.ga_fleet_warna_kendaraan c on a.warna_kendaraan_id=c.warna_kendaraan_id
+                                    left join ga.ga_fleet_jenis_kendaraan d on a.jenis_kendaraan_id=d.jenis_kendaraan_id
+                                    where a.nomor_polisi like '%$val%' and a.end_date = '9999-12-12 00:00:00'");
         return $sql->result_array();
+    }
+
+    public function deleteKendaraan($spdl,$id,$stat){
+        $sql = $this->db->query("delete from ga.ga_fleet_histori_pemakaian where nomor_polisi='$id' and spdl_id='$spdl' and status_='$stat'");
+        return;
+    }
+
+    public function insertKilometerKendaraan($nopol,$tgl,$wkt,$kat,$noind,$kodesie,$stat,$spdl,$transfer,$user_id,$kilometer){
+        $sql = $this->db->query("insert into ga.ga_fleet_histori_pemakaian (nomor_polisi,tanggal,waktu,kategori_kend,noind,status_,spdl_id,transfer,user_id,kilometer) values ('$nopol','$tgl','$wkt','$kat','$noind','$stat','$spdl','$transfer','$user_id','$kilometer')");
+        return;
     }
 
     public function getSeksi($val)

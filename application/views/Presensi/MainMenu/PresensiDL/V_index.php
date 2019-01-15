@@ -167,20 +167,25 @@
                                 <div class="row" style="margin: 10px 10px">
                                     <div class="form-group">
                                       <div class="col-sm-4">
+                                        <select class="form-control select-nama-prs" id="idNoind_prs" name="NamaPekerja" style="width: 100%" >
+                                        </select>
+                                      </div>
+                                      <div class="col-sm-4">
                                         <b>Kilometer Berangkat</b>
                                       </div>
                                       <div class="col-sm-4">
-                                        <input type="number" name="txtTimeBerangkat" class="form-control">
+                                        <input type="number" name="txtKmBerangkat" class="form-control">
                                       </div>
                                     </div> 
                                 </div>
                                 <div class="row" style="margin: 10px 10px">
                                     <div class="form-group">
+                                    <div class="col-sm-4"></div>
                                       <div class="col-sm-4">
                                         <b>Kilometer Pulang</b>
                                       </div>
                                       <div class="col-sm-4">
-                                        <input type="number" name="txtTimePulang" class="form-control">
+                                        <input type="number" name="txtKmPulang" class="form-control">
                                       </div>
                                     </div> 
                                 </div>
@@ -188,6 +193,10 @@
                                     <div class="form-group">
                                       <div class="col-sm-3">
                                         <input type="submit" class="btn btn-primary" style="width: 100%;" value="Simpan">
+                                      </div>
+                                      <div class="col-sm-6"></div>
+                                      <div class="col-sm-3">
+                                        <a href="http://personalia.quick.com/cronjob/postgres/dinas-luar-online/cronjob.dinas.luar.online.kendaraan_manual.php" class="btn btn-success" style="width: 100%;">Transfer</a>
                                       </div>
                                     </div> 
                                 </div>
