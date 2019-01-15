@@ -1,5 +1,5 @@
 <?php
-class M_trackinginvoice extends CI_Model {
+class M_trackingInvoice extends CI_Model {
 
 	public function __construct()
 	{

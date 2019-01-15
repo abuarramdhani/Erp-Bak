@@ -2165,10 +2165,10 @@ $route['Warehouse/Transaksi/UpdateItemConsumable']	= 'Warehouse/MainMenu/C_Trans
 $route['Warehouse/Transaksi/removeNewItemConsumable']	= 'Warehouse/MainMenu/C_Transaksi/removeNewItemConsumable';
 
 //------------------------------------ TRACKING INVOICE ----------------------------
-$route['TrackingInvoice'] = 'TrackingInvoice/C_trackinginvoice';
-$route['Monitoring/TrackingInvoice'] = 'TrackingInvoice/C_trackinginvoice/TrackingInvoice';
-$route['Monitoring/TrackingInvoice/(:any)'] = 'TrackingInvoice/C_trackinginvoice/$1';
-$route['Monitoring/TrackingInvoice/(:any)/(:any)'] = 'TrackingInvoice/C_trackinginvoice/$1/$2';
+$route['TrackingInvoice'] = 'TrackingInvoice/C_trackingInvoice';
+$route['Monitoring/TrackingInvoice'] = 'TrackingInvoice/C_trackingInvoice/TrackingInvoice';
+$route['Monitoring/TrackingInvoice/(:any)'] = 'TrackingInvoice/C_trackingInvoice/$1';
+$route['Monitoring/TrackingInvoice/(:any)/(:any)'] = 'TrackingInvoice/C_trackingInvoice/$1/$2';
 
 //------------------------------------ MONITORING LPPB ----------------------------
 $route['MonitoringLppb'] = 'MonitoringLppbAdmin/C_monitoringlppbadmin';
