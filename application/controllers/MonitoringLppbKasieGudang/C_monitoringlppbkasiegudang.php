@@ -75,7 +75,7 @@ class C_monitoringlppbkasiegudang extends CI_Controller{
 
 		$this->load->view('V_Header',$data);
 		$this->load->view('V_Sidemenu',$data);
-		$this->load->view('MonitoringLppbKasieGudang/V_detailLppbkasiegudang',$data);
+		$this->load->view('MonitoringLppbKasieGudang/V_detaillppbkasiegudang',$data);
 		$this->load->view('V_Footer',$data);
 	}
 
