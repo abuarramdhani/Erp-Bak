@@ -1,7 +1,7 @@
 <?php 
 defined('BASEPATH') OR exit('No direct script access allowed');
 
-class C_trackingLppb extends CI_Controller{
+class C_trackinglppb extends CI_Controller{
 
 	public function __construct()
     {
@@ -14,7 +14,7 @@ class C_trackingLppb extends CI_Controller{
           //load the login model
 		$this->load->library('session');
 		$this->load->model('M_Index');
-		$this->load->model('TrackingLppb/M_trackingLppb');
+		$this->load->model('TrackingLppb/M_trackinglppb');
 		$this->load->model('SystemAdministration/MainMenu/M_user');
 		  
 		if($this->session->userdata('logged_in')!=TRUE) {
@@ -44,12 +44,12 @@ class C_trackingLppb extends CI_Controller{
 		$data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id);
 		$data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id);
 
-		$data['vendor_name'] = $this->M_trackingLppb->getVendorName();
+		$data['vendor_name'] = $this->M_trackinglppb->getVendorName();
 
 
 		$this->load->view('V_Header',$data);
 		$this->load->view('V_Sidemenu',$data);
-		$this->load->view('TrackingLppb/V_searchLppb',$data);
+		$this->load->view('TrackingLppb/V_searchlppb',$data);
 		$this->load->view('V_Footer',$data);
 	}
 
@@ -78,7 +78,7 @@ class C_trackingLppb extends CI_Controller{
 
 		if ($parameter!='') {$parameter.=') ';}	
 
-		$tabel = $this->M_trackingLppb->monitoringLppb($parameter);	
+		$tabel = $this->M_trackinglppb->monitoringLppb($parameter);	
 
 		$data['lppb'] = $tabel;
 		$return = $this->load->view('TrackingLppb/V_table',$data,TRUE);

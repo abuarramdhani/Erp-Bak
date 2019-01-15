@@ -1,7 +1,7 @@
 <?php 
 defined('BASEPATH') OR exit('No direct script access allowed');
 
-class C_monitoringLppbAkuntansi extends CI_Controller{
+class C_monitoringlppbakuntansi extends CI_Controller{
 
 	public function __construct()
     {
@@ -14,7 +14,7 @@ class C_monitoringLppbAkuntansi extends CI_Controller{
           //load the login model
 		$this->load->library('session');
 		$this->load->model('M_Index');
-		$this->load->model('MonitoringLppbAkuntansi/M_monitoringLppbAkuntansi');
+		$this->load->model('MonitoringLppbAkuntansi/M_monitoringlppbakuntansi');
 		$this->load->model('SystemAdministration/MainMenu/M_user');
 		  
 		if($this->session->userdata('logged_in')!=TRUE) {
@@ -44,14 +44,14 @@ class C_monitoringLppbAkuntansi extends CI_Controller{
 		$data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id);
 		$data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id);
 
-		$data['lppb'] = $this->M_monitoringLppbAkuntansi->monitoringLppbAkuntansi();
+		$data['lppb'] = $this->M_monitoringlppbakuntansi->monitoringLppbAkuntansi();
 		// echo "<pre>";
 		// print_r($data['lppb']);
 		// exit();
 
 		$this->load->view('V_Header',$data);
 		$this->load->view('V_Sidemenu',$data);
-		$this->load->view('MonitoringLppbAkuntansi/V_unprocessedLppbAkuntansi',$data);
+		$this->load->view('MonitoringLppbAkuntansi/V_unprocessedlppbakuntansi',$data);
 		$this->load->view('V_Footer',$data);
 	}
 	
@@ -67,18 +67,18 @@ class C_monitoringLppbAkuntansi extends CI_Controller{
 		$data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id);
 		$data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id);
 
-		$detailLppb = $this->M_monitoringLppbAkuntansi->detailLppbAkuntansi($batch_number);
+		$detailLppb = $this->M_monitoringlppbakuntansi->detailLppbAkuntansi($batch_number);
 
 		$lppb_number = $detailLppb[0]['LPPB_NUMBER'];
 
-		$searchLppb = $this->M_monitoringLppbAkuntansi->searchNumberLppb($lppb_number);
+		$searchLppb = $this->M_monitoringlppbakuntansi->searchNumberLppb($lppb_number);
 		$data['detailLppb'] = $detailLppb;
 		$data['lppb'] = $searchLppb;
 		// $data['alasan'] = $alasan;
 
 		$this->load->view('V_Header',$data);
 		$this->load->view('V_Sidemenu',$data);
-		$this->load->view('MonitoringLppbAkuntansi/V_detailLppbAkuntansi',$data);
+		$this->load->view('MonitoringLppbAkuntansi/V_detaillppbakuntansi',$data);
 		$this->load->view('V_Footer',$data);
 	}
 
@@ -91,8 +91,8 @@ class C_monitoringLppbAkuntansi extends CI_Controller{
 
 		foreach ($proses as $p => $value) {
 			
-			$this->M_monitoringLppbAkuntansi->saveProsesAkuntansi($proses[$p],$date,$batch_number,$id[$p]);
-			$this->M_monitoringLppbAkuntansi->saveProsesAkuntansi2($proses[$p],$alasan[$p],$date,$id[$p]);
+			$this->M_monitoringlppbakuntansi->saveProsesAkuntansi($proses[$p],$date,$batch_number,$id[$p]);
+			$this->M_monitoringlppbakuntansi->saveProsesAkuntansi2($proses[$p],$alasan[$p],$date,$id[$p]);
 		}
 
 		redirect('MonitoringLppbAkuntansi/Unprocess');

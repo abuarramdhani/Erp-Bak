@@ -1,5 +1,5 @@
 <?php
-class M_monitoringLppbAdmin extends CI_Model {
+class M_monitoringlppbadmin extends CI_Model {
 
 	public function __construct()
 	{
@@ -213,6 +213,16 @@ class M_monitoringLppbAdmin extends CI_Model {
                     WHERE batch_detail_id = '$batch_detail_id' ";
         $run = $conn->query($query2);
         oci_commit($conn);
+    }
+
+    public function editableLppbNumber($lppb_number,$date,$batch_detail_id){
+        $oracle = $this->load->database('oracle',true);
+        $query = "UPDATE khs_lppb_batch_detail
+                    SET lppb_number = '$lppb_number',
+                    status = '1',
+                    status_date = to_date('$status_date', 'DD/MM/YYYY HH24:MI:SS')
+                    WHERE batch_detail_id = '$batch_detail_id'";
+        $run = $oracle->query($query);
     }
 
 }

@@ -1,5 +1,5 @@
 <?php
-class M_trackingLppb extends CI_Model {
+class M_trackinglppb extends CI_Model {
 
 	public function __construct()
 	{

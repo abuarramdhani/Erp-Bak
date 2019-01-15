@@ -1,7 +1,7 @@
 <?php 
 defined('BASEPATH') OR exit('No direct script access allowed');
 
-class C_trackingInvoice extends CI_Controller{
+class C_trackinginvoice extends CI_Controller{
 
 	public function __construct()
     {
@@ -14,7 +14,7 @@ class C_trackingInvoice extends CI_Controller{
           //load the login model
 		$this->load->library('session');
 		$this->load->model('M_Index');
-		$this->load->model('TrackingInvoice/M_trackingInvoice');
+		$this->load->model('TrackingInvoice/M_trackinginvoice');
 		$this->load->model('SystemAdministration/MainMenu/M_user');
 		  
 		if($this->session->userdata('logged_in')!=TRUE) {
@@ -64,25 +64,25 @@ class C_trackingInvoice extends CI_Controller{
 		$data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id);
 
 		$noinduk = $this->session->userdata['user'];
-		$cek_login = $this->M_trackingInvoice->checkSourceLogin($noinduk);
+		$cek_login = $this->M_trackinginvoice->checkSourceLogin($noinduk);
 
 		$getVendors = '';
 
 		if ($cek_login[0]['unit_name'] == 'PEMBELIAN SUPPLIER' OR $cek_login[0]['unit_name'] == 'PENGEMBANGAN PEMBELIAN' OR $cek_login[0]['unit_name'] == 'PEMBELIAN SUBKONTRAKTOR') {
 			$getVendors .= "WHERE source = 'PEMBELIAN SUPPLIER' OR source = 'PENGEMBANGAN PEMBELIAN' OR source = 'PEMBELIAN SUBKONTRAKTOR'";
-			$nama_vendor = $this->M_trackingInvoice->getVendorName($getVendors);
+			$nama_vendor = $this->M_trackinginvoice->getVendorName($getVendors);
 		} elseif($cek_login[0]['unit_name'] == 'INFORMATION & COMMUNICATION TECHNOLOGY'){
 			$getVendors .= "WHERE source = 'INFORMATION & COMMUNICATION TECHNOLOGY'";
-			$nama_vendor = $this->M_trackingInvoice->getVendorName($getVendors);
+			$nama_vendor = $this->M_trackinginvoice->getVendorName($getVendors);
 		} else{
-			$nama_vendor = $this->M_trackingInvoice->getVendorName($getVendors);
+			$nama_vendor = $this->M_trackinginvoice->getVendorName($getVendors);
 		}
 
 		$data['getVendorName'] =$nama_vendor;
 
 		$this->load->view('V_Header',$data);
 		$this->load->view('V_Sidemenu',$data);
-		$this->load->view('TrackingInvoice/V_searchInvoice',$data);
+		$this->load->view('TrackingInvoice/V_searchinvoice',$data);
 		$this->load->view('V_Footer',$data);
 	}
 
@@ -123,18 +123,18 @@ class C_trackingInvoice extends CI_Controller{
 		if ($param_inv!='') {$param_inv.=') ';}
 
 		$noinduk = $this->session->userdata['user'];
-		$cek_login = $this->M_trackingInvoice->checkSourceLogin($noinduk);
+		$cek_login = $this->M_trackinginvoice->checkSourceLogin($noinduk);
 
 		$param_akses = '';
 
 		if ($cek_login[0]['unit_name'] == 'PEMBELIAN SUPPLIER' OR $cek_login[0]['unit_name'] == 'PENGEMBANGAN PEMBELIAN' OR $cek_login[0]['unit_name'] == 'PEMBELIAN SUBKONTRAKTOR') {
 			$param_akses .= "AND ami.source = 'PEMBELIAN SUPPLIER' OR ami.source = 'PENGEMBANGAN PEMBELIAN' OR ami.source = 'PEMBELIAN SUBKONTRAKTOR'";
-			$tabel = $this->M_trackingInvoice->searchMonitoringInvoice($param_inv,$param_akses);
+			$tabel = $this->M_trackinginvoice->searchMonitoringInvoice($param_inv,$param_akses);
 		} elseif($cek_login[0]['unit_name'] == 'INFORMATION & COMMUNICATION TECHNOLOGY'){
 			$param_akses .= "AND ami.source = 'INFORMATION & COMMUNICATION TECHNOLOGY'";
-			$tabel = $this->M_trackingInvoice->searchMonitoringInvoice($param_inv,$param_akses);
+			$tabel = $this->M_trackinginvoice->searchMonitoringInvoice($param_inv,$param_akses);
 		} else{
-			$tabel = $this->M_trackingInvoice->searchMonitoringInvoice($param_inv,$param_akses);
+			$tabel = $this->M_trackinginvoice->searchMonitoringInvoice($param_inv,$param_akses);
 		}
 
 
@@ -156,7 +156,7 @@ class C_trackingInvoice extends CI_Controller{
 						$line_num = $explode_lagi[1];
 						$lppb_num = $explode_lagi[2];
 
-						$match = $this->M_trackingInvoice->checkStatusLPPB($po_num,$line_num);
+						$match = $this->M_trackinginvoice->checkStatusLPPB($po_num,$line_num);
 
 						if ($match[0]['STATUS']=='' || $match[0]['STATUS']==NULL) {
 							$statusLppb = 'No Status';
@@ -176,7 +176,7 @@ class C_trackingInvoice extends CI_Controller{
 
 		$data['invoice'] = $tabel;
 		$data['status'] = $status;
-		$return = $this->load->view('TrackingInvoice/V_tableSearch',$data,TRUE);
+		$return = $this->load->view('TrackingInvoice/V_tablesearch',$data,TRUE);
 		
 		echo ($return);
 	}
@@ -193,12 +193,12 @@ class C_trackingInvoice extends CI_Controller{
 		$data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id);
 		$data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id);
 
-		$data['invoice'] = $this->M_trackingInvoice->detailInvoice($invoice_id);
-		$data['historyinvoice'] = $this->M_trackingInvoice->detailHistoryInvoice($invoice_id);
+		$data['invoice'] = $this->M_trackinginvoice->detailInvoice($invoice_id);
+		$data['historyinvoice'] = $this->M_trackinginvoice->detailHistoryInvoice($invoice_id);
 
 		$this->load->view('V_Header',$data);
 		$this->load->view('V_Sidemenu',$data);
-		$this->load->view('TrackingInvoice/V_detailTrackingInvoice',$data);
+		$this->load->view('TrackingInvoice/V_detailtrackinginvoice',$data);
 		$this->load->view('V_Footer',$data);
 	}
 

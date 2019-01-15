@@ -1,7 +1,7 @@
 <?php 
 defined('BASEPATH') OR exit('No direct script access allowed');
 
-class C_monitoringLppbKasieGudang extends CI_Controller{
+class C_monitoringlppbkasiegudang extends CI_Controller{
 
 	public function __construct()
     {
@@ -14,7 +14,7 @@ class C_monitoringLppbKasieGudang extends CI_Controller{
           //load the login model
 		$this->load->library('session');
 		$this->load->model('M_Index');
-		$this->load->model('MonitoringLppbKasieGudang/M_monitoringLppbKasieGudang');
+		$this->load->model('MonitoringLppbKasieGudang/M_monitoringlppbkasiegudang');
 		$this->load->model('SystemAdministration/MainMenu/M_user');
 		  
 		if($this->session->userdata('logged_in')!=TRUE) {
@@ -44,11 +44,11 @@ class C_monitoringLppbKasieGudang extends CI_Controller{
 		$data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id);
 		$data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id);
 
-		$data['lppb'] = $this->M_monitoringLppbKasieGudang->showLppbKasieGudang();
+		$data['lppb'] = $this->M_monitoringlppbkasiegudang->showLppbKasieGudang();
 
 		$this->load->view('V_Header',$data);
 		$this->load->view('V_Sidemenu',$data);
-		$this->load->view('MonitoringLppbKasieGudang/V_unprocessedLppb',$data);
+		$this->load->view('MonitoringLppbKasieGudang/V_unprocessedlppb',$data);
 		$this->load->view('V_Footer',$data);
 	}
 	
@@ -64,18 +64,18 @@ class C_monitoringLppbKasieGudang extends CI_Controller{
 		$data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id);
 		$data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id);
 
-		$detailLppb = $this->M_monitoringLppbKasieGudang->lppbDetailKasieGudang($batch_number);
+		$detailLppb = $this->M_monitoringlppbkasiegudang->lppbDetailKasieGudang($batch_number);
 
 		$lppb_number = $detailLppb[0]['LPPB_NUMBER'];
 
-		$searchLppb = $this->M_monitoringLppbKasieGudang->searchNumberLppb($lppb_number);
+		$searchLppb = $this->M_monitoringlppbkasiegudang->searchNumberLppb($lppb_number);
 		$data['detailLppb'] = $detailLppb;
 		$data['lppb'] = $searchLppb;
 		// $data['alasan'] = $alasan;
 
 		$this->load->view('V_Header',$data);
 		$this->load->view('V_Sidemenu',$data);
-		$this->load->view('MonitoringLppbKasieGudang/V_detailLppbKasieGudang',$data);
+		$this->load->view('MonitoringLppbKasieGudang/V_detailLppbkasiegudang',$data);
 		$this->load->view('V_Footer',$data);
 	}
 
@@ -88,8 +88,8 @@ class C_monitoringLppbKasieGudang extends CI_Controller{
 
 		foreach ($proses as $p => $value) {
 			
-			$this->M_monitoringLppbKasieGudang->saveProsesLppbNumber($proses[$p],$date,$batch_number,$id[$p]);
-			$this->M_monitoringLppbKasieGudang->saveProsesLppbNumber2($proses[$p],$alasan[$p],$date,$id[$p]);
+			$this->M_monitoringlppbkasiegudang->saveProsesLppbNumber($proses[$p],$date,$batch_number,$id[$p]);
+			$this->M_monitoringlppbkasiegudang->saveProsesLppbNumber2($proses[$p],$alasan[$p],$date,$id[$p]);
 		}
 
 		redirect('MonitoringLppbKasieGudang/Unprocess');
@@ -99,12 +99,12 @@ class C_monitoringLppbKasieGudang extends CI_Controller{
 		$date = date('d-m-Y H:i:s');
 		$batch_number = $this->input->post('batch_number');
 
-		$this->M_monitoringLppbKasieGudang->submitToKasieAkuntansi($date,$batch_number);
-		$batch_detail_id  = $this->M_monitoringLppbKasieGudang->getBatchDetailId($batch_number);
+		$this->M_monitoringlppbkasiegudang->submitToKasieAkuntansi($date,$batch_number);
+		$batch_detail_id  = $this->M_monitoringlppbkasiegudang->getBatchDetailId($batch_number);
 
 		foreach ($batch_detail_id as $key => $value) {
 			$id = $value['BATCH_DETAIL_ID'];
-			$this->M_monitoringLppbKasieGudang->submitToKasieAkuntansi2($date,$id);
+			$this->M_monitoringlppbkasiegudang->submitToKasieAkuntansi2($date,$id);
 		}
 
 	}

@@ -2165,29 +2165,29 @@ $route['Warehouse/Transaksi/UpdateItemConsumable']	= 'Warehouse/MainMenu/C_Trans
 $route['Warehouse/Transaksi/removeNewItemConsumable']	= 'Warehouse/MainMenu/C_Transaksi/removeNewItemConsumable';
 
 //------------------------------------ TRACKING INVOICE ----------------------------
-$route['TrackingInvoice'] = 'TrackingInvoice/C_trackingInvoice';
-$route['Monitoring/TrackingInvoice'] = 'TrackingInvoice/C_trackingInvoice/TrackingInvoice';
-$route['Monitoring/TrackingInvoice/(:any)'] = 'TrackingInvoice/C_trackingInvoice/$1';
-$route['Monitoring/TrackingInvoice/(:any)/(:any)'] = 'TrackingInvoice/C_trackingInvoice/$1/$2';
+$route['TrackingInvoice'] = 'TrackingInvoice/C_trackinginvoice';
+$route['Monitoring/TrackingInvoice'] = 'TrackingInvoice/C_trackinginvoice/TrackingInvoice';
+$route['Monitoring/TrackingInvoice/(:any)'] = 'TrackingInvoice/C_trackinginvoice/$1';
+$route['Monitoring/TrackingInvoice/(:any)/(:any)'] = 'TrackingInvoice/C_trackinginvoice/$1/$2';
 
 //------------------------------------ MONITORING LPPB ----------------------------
-$route['MonitoringLppb'] = 'MonitoringLppbAdmin/C_monitoringLppbAdmin';
-$route['MonitoringLPPB/ListBatch'] = 'MonitoringLppbAdmin/C_monitoringLppbAdmin/showLppbBatchAdmin';
-$route['MonitoringLPPB/ListBatch/(:any)'] = 'MonitoringLppbAdmin/C_monitoringLppbAdmin/$1';
-$route['MonitoringLPPB/ListBatch/(:any)/(:any)'] = 'MonitoringLppbAdmin/C_monitoringLppbAdmin/$1/$2';
+$route['MonitoringLppb'] = 'MonitoringLppbAdmin/C_monitoringlppbadmin';
+$route['MonitoringLPPB/ListBatch'] = 'MonitoringLppbAdmin/C_monitoringlppbadmin/showLppbBatchAdmin';
+$route['MonitoringLPPB/ListBatch/(:any)'] = 'MonitoringLppbAdmin/C_monitoringlppbadmin/$1';
+$route['MonitoringLPPB/ListBatch/(:any)/(:any)'] = 'MonitoringLppbAdmin/C_monitoringlppbadmin/$1/$2';
 
 //------------------------------------ MONITORING LPPB Kasie Gudang ----------------------------
-$route['MonitoringLppbKasiesGudang'] = 'MonitoringLppbKasieGudang/C_MonitoringLppbKasieGudang';
-$route['MonitoringLppbKasieGudang/Unprocess'] = 'MonitoringLppbKasieGudang/C_MonitoringLppbKasieGudang/index';
-$route['MonitoringLppbKasieGudang/Unprocess/(:any)'] = 'MonitoringLppbKasieGudang/C_MonitoringLppbKasieGudang/$1';
-$route['MonitoringLppbKasieGudang/Unprocess/(:any)/(:any)'] = 'MonitoringLppbKasieGudang/C_MonitoringLppbKasieGudang/$1/$2';
+$route['MonitoringLppbKasiesGudang'] = 'MonitoringLppbKasieGudang/C_monitoringlppbkasiegudang';
+$route['MonitoringLppbKasieGudang/Unprocess'] = 'MonitoringLppbKasieGudang/C_monitoringlppbkasiegudang/index';
+$route['MonitoringLppbKasieGudang/Unprocess/(:any)'] = 'MonitoringLppbKasieGudang/C_monitoringlppbkasiegudang/$1';
+$route['MonitoringLppbKasieGudang/Unprocess/(:any)/(:any)'] = 'MonitoringLppbKasieGudang/C_monitoringlppbkasiegudang/$1/$2';
 
 //------------------------------------ MONITORING LPPB KASIE AKUNTANSI ----------------------------
-$route['MonitoringLppbAkuntansi'] = 'MonitoringLppbAkuntansi/C_MonitoringLppbAkuntansi';
-$route['MonitoringLppbAkuntansi/Unprocess'] = 'MonitoringLppbAkuntansi/C_MonitoringLppbAkuntansi/index';
-$route['MonitoringLppbAkuntansi/Unprocess/(:any)'] = 'MonitoringLppbAkuntansi/C_MonitoringLppbAkuntansi/$1';
-$route['MonitoringLppbAkuntansi/Unprocess/(:any)/(:any)'] = 'MonitoringLppbAkuntansi/C_MonitoringLppbAkuntansi/$1/$2';
+$route['MonitoringLppbAkuntansi'] = 'MonitoringLppbAkuntansi/C_monitoringlppbakuntansi';
+$route['MonitoringLppbAkuntansi/Unprocess'] = 'MonitoringLppbAkuntansi/C_monitoringlppbakuntansi/index';
+$route['MonitoringLppbAkuntansi/Unprocess/(:any)'] = 'MonitoringLppbAkuntansi/C_monitoringlppbakuntansi/$1';
+$route['MonitoringLppbAkuntansi/Unprocess/(:any)/(:any)'] = 'MonitoringLppbAkuntansi/C_monitoringlppbakuntansi/$1/$2';
 
 //------------------------------------ TRACKING LPPB ----------------------------
-$route['TrackingLppb'] = 'TrackingLppb/C_trackingLppb';
-$route['TrackingLppb/Tracking/(:any)'] = 'TrackingLppb/C_trackingLppb/$1';
+$route['TrackingLppb'] = 'TrackingLppb/C_trackinglppb';
+$route['TrackingLppb/Tracking/(:any)'] = 'TrackingLppb/C_trackinglppb/$1';

@@ -86,7 +86,39 @@ $(document).ready(function(){
 
 	$('#save_lppb').click(function(){
 		alert('Berhasil di edit');
-	})
+	});
+
+	$(document).on('click', 'td', function(){
+		$(this).find("span[class~='editable']").hide();
+		$(this).find("input[class~='editor']").fadeIn().focus();
+  	});
+
+  	$(document).on("keypress",".editor",function(e){
+  		if(e.keyCode == 13){
+  			var target = $(e.target);
+  			var lppb_number = target.val();
+  			var batch_detail_id = target.attr('data-id');
+
+			$.ajax({
+				type: "POST",
+				url:baseurl+"MonitoringLPPB/ListBatch/editable",
+				data: {
+  				batch_detail_id: batch_detail_id,
+  				lppb_number: lppb_number
+  				},
+				success: function(response){
+					$('#alert-muncul').slideDown(function() {
+					    setTimeout(function() {
+					        $('#alert-muncul').slideUp();
+					    }, 3000);
+					    	$('.editable').fadeIn();
+					    	$('.editor').hide();
+					});
+
+				}
+			})
+  		}
+  	});
 
 });
 

@@ -1,5 +1,5 @@
 <?php
-class M_monitoringLppbAkuntansi extends CI_Model {
+class M_monitoringlppbakuntansi extends CI_Model {
 
 	public function __construct()
 	{
