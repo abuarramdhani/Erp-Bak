@@ -43,8 +43,7 @@ $(document).ready(function(){
 		        })
 		      };
 		    },
-		    cache: true
-		  },
+		    cache: true},
 	  minimumInputLength: 2,
 	  allowClear: false,
 	  placeholder: '[ pilih Nomor Kendaraan ]',

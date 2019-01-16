@@ -156,7 +156,7 @@
                                 <div class="row" style="margin: 10px 10px">
                                     <div class="form-group">
                                       <div class="col-sm-8">
-                                        <select class="form-control select-kendaraan-prs" id="idKendaraan_prs" name="NomorKendaraan" style="width: 100%" >
+                                        <select class="form-control select-kendaraan-prs" id="idKendaraan_prs" name="NomorKendaraan" style="width:100%" >
                                         </select>
                                       </div>
                                       <div class="col-sm-4">

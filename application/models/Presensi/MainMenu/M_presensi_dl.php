@@ -21,7 +21,7 @@ class M_presensi_dl extends CI_Model
                                     inner join ga.ga_fleet_merk_kendaraan b on a.merk_kendaraan_id=b.merk_kendaraan_id
                                     left join ga.ga_fleet_warna_kendaraan c on a.warna_kendaraan_id=c.warna_kendaraan_id
                                     left join ga.ga_fleet_jenis_kendaraan d on a.jenis_kendaraan_id=d.jenis_kendaraan_id
-                                    where a.nomor_polisi like '%$val%' and a.end_date = '9999-12-12 00:00:00'");
+                                    where a.nomor_polisi like '%$val%' and a.end_date = '9999-12-12 00:00:00' ");
         return $sql->result_array();
     }
 

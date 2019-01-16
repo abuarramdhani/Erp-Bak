@@ -31,7 +31,6 @@ class C_Presensi_DL extends CI_Controller {
 	
 public function Index()
 	{
-		
 		$this->checkSession();
 		$user_id = $this->session->userid;
 		
@@ -92,7 +91,6 @@ public function get_js_pekerja()
 public function get_js_kendaraan()
 	{
 		$this->checkSession();
-
 		$kendaraan = $_GET['p'];
 		$kendaraan = strtoupper($kendaraan);
 		$data = $this->M_presensi_dl->getkendaraan($kendaraan);
