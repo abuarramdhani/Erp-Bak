@@ -141,41 +141,41 @@ class M_invoice extends CI_Model{
 	public function FindFaktur($month,$year,$invoice_num,$name,$ket1,$ket2,$sta1,$sta2,$sta3,$typ1,$typ2,$tanggal_awal,$tanggal_akhir){
 		
 		//VARIABLES
-		$qmonth 	= "AND month = '$month'"; if($month==""){$qmonth="";}
-		$qyear 		= "AND year = '$year'"; if($year==""){$qyear="";}
-		$qinvnum 	= "AND faktur_pajak = '$invoice_num'"; if($invoice_num==""){$qinvnum="";}
-		$qname 		= "AND name = '$name'"; if($name==""){$qname="";}
+		$qmonth 	= "AND kfw.month = '$month'"; if($month==""){$qmonth="";}
+		$qyear 		= "AND kfw.year = '$year'"; if($year==""){$qyear="";}
+		$qinvnum 	= "AND kfw.faktur_pajak = '$invoice_num'"; if($invoice_num==""){$qinvnum="";}
+		$qname 		= "AND kfw.name = '$name'"; if($name==""){$qname="";}
 		
 		$qket		= "";
-						if($ket1=="yes" && $ket2=="no"){$qket="and description = 'REPORTED'";}
-						else if($ket1=="no" && $ket2=="yes"){$qket="and description = 'UNREPORTED'";}
+						if($ket1=="yes" && $ket2=="no"){$qket="and kfw.description = 'REPORTED'";}
+						else if($ket1=="no" && $ket2=="yes"){$qket="and kfw.description = 'UNREPORTED'";}
 						else{$qket="";}
 		
 		$qsta		= "";
 						if($sta1=="yes"){
 							if($sta2=="yes"){
 								if($sta3=="yes"){
-									$qsta="and (status = 'NORMAL' or 'PENGGANTI' or 'DIGANTI')"; //semua
+									$qsta="and (kfw.status = 'NORMAL' or 'PENGGANTI' or 'DIGANTI')"; //semua
 								} else {
-									$qsta="and (status = 'NORMAL' or 'PENGGANTI')"; // A dan B
+									$qsta="and (kfw.status = 'NORMAL' or 'PENGGANTI')"; // A dan B
 								}
 							} else {
 								if($sta3=="yes"){
-									$qsta="and (status = 'NORMAL' or 'DIGANTI')"; // A dan C
+									$qsta="and (kfw.status = 'NORMAL' or 'DIGANTI')"; // A dan C
 								} else {
-									$qsta="and (status = 'NORMAL')"; // A
+									$qsta="and (kfw.status = 'NORMAL')"; // A
 								}
 							}
 						} else {
 							if($sta2=="yes"){
 								if($sta3=="yes"){
-									$qsta="and (status = 'PENGGANTI' or 'DIGANTI')"; // B dan C
+									$qsta="and (kfw.status = 'PENGGANTI' or 'DIGANTI')"; // B dan C
 								} else {
-									$qsta="and (status = 'PENGGANTI')"; // B
+									$qsta="and (kfw.status = 'PENGGANTI')"; // B
 								}
 							} else {
 								if($sta3=="yes"){
-									$qsta="and (status = 'DIGANTI')"; // C
+									$qsta="and (kfw.status = 'DIGANTI')"; // C
 								} else {
 									$qsta=""; //semua
 								}
@@ -183,8 +183,8 @@ class M_invoice extends CI_Model{
 						}
 
 		$qtyp		= "";
-						if($typ1=="yes" && $typ2=="no"){$qtyp="and faktur_type = 'Y'";}
-						else if($typ1=="no" && $typ2=="yes"){$qtyp="and faktur_type = 'N'";}
+						if($typ1=="yes" && $typ2=="no"){$qtyp="and kfw.faktur_type = 'Y'";}
+						else if($typ1=="no" && $typ2=="yes"){$qtyp="and kfw.faktur_type = 'N'";}
 						else if($typ1=="yes" && $typ2=="yes"){$qtyp="";}
 		
 		$oracle = $this->load->database("oracle",true);
@@ -221,8 +221,8 @@ class M_invoice extends CI_Model{
 				$qket
 				$qsta
 				$qtyp
-				and faktur_date BETWEEN TO_DATE('$tanggal_awal','DD-MM-YYYY') AND TO_DATE('$tanggal_akhir','DD-MM-YYYY')
-				and NPWP IS NOT NULL
+				and kfw.faktur_date BETWEEN TO_DATE('$tanggal_awal','DD-MM-YYYY') AND TO_DATE('$tanggal_akhir','DD-MM-YYYY')
+				and kfw.NPWP IS NOT NULL
 		");
 		
 		return $query->result();
