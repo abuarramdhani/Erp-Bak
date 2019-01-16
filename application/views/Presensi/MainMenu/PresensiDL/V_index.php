@@ -196,7 +196,7 @@
                                       </div>
                                       <div class="col-sm-6"></div>
                                       <div class="col-sm-3">
-                                        <a href="http://personalia.quick.com/cronjob/postgres/dinas-luar-online/cronjob.dinas.luar.online.kendaraan_manual.php" class="btn btn-success" style="width: 100%;">Transfer</a>
+                                        <a href="http://personalia.quick.com/cronjob/postgres/dinas-luar-online/cronjob.dinas.luar.online.kendaraan_manual.php" target="blank" class="btn btn-success" style="width: 100%;">Transfer</a>
                                       </div>
                                     </div> 
                                 </div>
