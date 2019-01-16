@@ -149,6 +149,30 @@
                                             </div>
 
                                             <div class="form-group">
+                                                <label class="control-label col-lg-4">Usable</label>
+                                                <div class="col-lg-4" style="padding-top: 6px;">
+                                                    <label><input <?php if ($kendaraanEdit['usable'] == "1") {
+                                                       echo " checked ";
+                                                    } ?> type="radio" name="usable" id="usable" class="form-control" value="1" /> Ya</label>
+                                                    <label style="margin-left: 30px;"><input <?php if ($kendaraanEdit['usable'] == "0") {
+                                                       echo " checked ";
+                                                    } ?> type="radio" name="usable" id="usable" class="form-control" value="0" /> Tidak</label>
+                                                </div>
+                                            </div>
+
+                                            <div class="form-group">
+                                                <label class="control-label col-lg-4">Kepemilikan Kendaraan</label>
+                                                <div class="col-lg-4" style="padding-top: 6px;">
+                                                    <label ><input <?php if ($kendaraanEdit['hak_milik'] == "1") {
+                                                       echo " checked ";
+                                                    } ?> type="radio" name="kepemilikan_kendaraan" id="kepemilikan_kendaraan" class="form-control" value="1" /> Perusahaan</label>
+                                                    <label style="margin-left: 30px;"><input <?php if ($kendaraanEdit['hak_milik'] == "0") {
+                                                       echo " checked ";
+                                                    } ?> type="radio" name="kepemilikan_kendaraan" id="kepemilikan_kendaraan" class="form-control" value="0" /> Rental</label>
+                                                </div>
+                                            </div>
+
+                                            <div class="form-group">
                                                 <label for="txtTanggalDibuat" class="control-label col-lg-4">Tanggal Dibuat</label>
                                                 <div class="col-lg-4">
                                                     <input type="text" placeholder="Tanggal Dibuat" name="TanggalDibuat" id="TanggalDibuat" class="form-control" value="<?php echo $kendaraanEdit['waktu_dibuat'];?>" disabled>
