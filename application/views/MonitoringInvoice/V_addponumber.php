@@ -26,6 +26,14 @@
 								<table id="tbInvoice" >
 									<tr>
 										<td>
+											<span><label>Vendor Name</label></span>
+										</td>
+										<td>
+		                     				<input class="form-control" size="40" type="text" name="vendor_name" value="<?php echo $invoice[0]['VENDOR_NAME']?>" readonly>
+		                     			</td>
+									</tr>
+									<tr>
+										<td>
 											<span><label>Invoice Number</label></span>
 										</td>
 										<td>
@@ -45,7 +53,7 @@
 											<span><label>Invoice Amount</label></span>
 										</td>
 										<td>
-											<input class="form-control inv_amount" size="40" type="text" name="invoice_amount" value="<?php echo $invoice[0]['INVOICE_AMOUNT']?>" id="invoice_amount">
+											<input readonly="readonly" class="form-control inv_amount" size="40" type="text" name="invoice_amount" value="<?php echo $invoice[0]['INVOICE_AMOUNT']?>" id="invoice_amount">
 										</td>
 									</tr>
 									<tr>
@@ -58,10 +66,32 @@
 									</tr>
 									<tr>
 										<td>
-											<span><label>Vendor Name</label></span>
+											<span><label>Invoice Category</label></span>
 										</td>
 										<td>
-		                     				<input class="form-control" size="40" type="text" name="vendor_name" value="<?php echo $invoice[0]['VENDOR_NAME']?>" readonly>
+		                     				<input class="form-control" size="40" type="text" name="invoice_category" value="<?php echo $invoice[0]['INVOICE_CATEGORY']?>" readonly>
+		                     			</td>
+		                     			<td>
+											<span><label>Jenis Jasa</label></span>
+										</td>
+										<td>
+		                     				<input class="form-control" size="40" type="text" name="jenis_jasa" value="<?php echo $invoice[0]['JENIS_JASA']?>" readonly>
+		                     			</td>
+									</tr>
+									<tr>
+										<td>
+											<span><label>Nominal DPP Faktur Pajak</label></span>
+										</td>
+										<td>
+		                     				<input class="form-control" size="40" type="text" name="nominal_dpp" value="<?php echo $invoice[0]['NOMINAL_DPP']?>" readonly>
+		                     			</td>
+									</tr>
+									<tr>
+										<td>
+											<span><label>Info</label></span>
+										</td>
+										<td>
+		                     				<textarea readonly class="form-control" size="40" type="text" name="note_admin"><?php echo $invoice[0]['INFO'] ?></textarea> 
 		                     			</td>
 									</tr>
 								</table>

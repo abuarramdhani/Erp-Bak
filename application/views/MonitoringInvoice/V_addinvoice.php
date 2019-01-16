@@ -67,10 +67,47 @@
 									</tr>
 									<tr>
 										<td>
+											<span><label>Invoice Category</label></span>
+										</td>
+										<td>
+											<select name="invoice_category" id="invoice_category" class="form-control select2 select2-hidden-accessible" style="width:320px;">
+												<option></option>
+												<option value="BARANG">BARANG</option>
+												<option value="JASA NON EKSPEDISI TRAKTOR">JASA NON EKSPEDISI TRAKTOR</option>
+												<option value="JASA EKSPEDISI TRAKTOR">JASA EKSPEDISI TRAKTOR</option>
+											</select>
+										</td>
+										<td id="jenis_jasa" style="display: none">
+											<select name="jenis_jasa" class="form-control select2 select2-hidden-accessible" style="width:320px;">
+												<option></option>
+												<option>RECEIPT</option>
+												<option>RECEIPT DAN PEMBAYARAN</option>
+												<option>RECEIPT DAN REASLISASI PREPAYMENT</option>
+											</select>
+										</td>
+									</tr>
+									<tr>
+										<td>
 											<span><label>Tax Invoice Number</label></span>
 										</td>
 										<td>
 											<input class="form-control" size="40" type="text" name="tax_invoice_number" placeholder="Tax Invoice Number" >
+										</td>
+									</tr>
+									<tr>
+										<td>
+											<span><label>Nominal DPP Faktur Pajak</label></span>
+										</td>
+										<td>
+											<input class="form-control" size="40" type="text" name="nominal_dpp" placeholder="Nominal DPP Faktur Pajak" >
+										</td>
+									</tr>
+									<tr>
+										<td>
+											<span><label>Info</label></span>
+										</td>
+										<td>
+											<textarea class="form-control" size="40" type="text" name="note_admin" placeholder="Info"></textarea>
 										</td>
 									</tr>
 								</table>

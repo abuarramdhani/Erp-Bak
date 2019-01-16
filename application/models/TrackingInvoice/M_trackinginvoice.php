@@ -1,5 +1,5 @@
 <?php
-class M_trackinginvoice extends CI_Model {
+class M_trackingInvoice extends CI_Model {
 
 	public function __construct()
 	{
@@ -7,27 +7,28 @@ class M_trackinginvoice extends CI_Model {
 		$this->load->library('encrypt');
 	}
 
-    public function getVendorName(){
+    public function getVendorName($source){
         $db = $this->load->database('oracle',true);
         $query = "SELECT DISTINCT VENDOR_NAME
-                    FROM KHS_AP_MONITORING_INVOICE";
+                    FROM KHS_AP_MONITORING_INVOICE
+                    $source";
         $run = $db->query($query);
         return $run->result_array();
     }
 
-    public function searchMonitoringInvoice($parameter_invoice){
+    public function searchMonitoringInvoice($parameter_invoice,$parameter_akses){
         $db = $this->load->database('oracle',true);
         $query = "SELECT ami.vendor_name vendor_name, ami.invoice_number invoice_number,
                          ami.invoice_date invoice_date,
                          ami.tax_invoice_number tax_invoice_number,
                          ami.invoice_amount invoice_amount, aaipo.po_detail po_detail,
                          ami.invoice_id invoice_id,
-                         (SELECT CASE payment_status_flag
-                         WHEN 'Y' THEN 'PAID'
-                         WHEN 'N' THEN 'UNPAID'
-                         ELSE '-'
+                         COALESCE((SELECT CASE payment_status_flag
+                         WHEN 'Y' THEN 'Paid'
+                         WHEN 'N' THEN 'Non Paid'
+                         ELSE 'Inprocess Vouching'
                          END
-                         FROM  ap_invoices_all aia  WHERE aia.INVOICE_NUM=ami.INVOICE_NUMBER AND aia.VENDOR_ID=ami.VENDOR_NUMBER ) AS status_payment
+                         FROM  ap_invoices_all aia  WHERE aia.INVOICE_NUM=ami.INVOICE_NUMBER AND aia.VENDOR_ID=ami.VENDOR_NUMBER ),'Blank') AS status_payment
                     FROM khs_ap_monitoring_invoice ami,
                          (SELECT   aipo.invoice_id,
                                    REPLACE
@@ -55,6 +56,7 @@ class M_trackinginvoice extends CI_Model {
                           GROUP BY aipo.invoice_id) aaipo
                    WHERE aaipo.invoice_id = ami.invoice_id
                    $parameter_invoice
+                   $parameter_akses
                 ORDER BY ami.last_admin_date";
 
         $run = $db->query($query);
@@ -120,7 +122,10 @@ class M_trackinginvoice extends CI_Model {
                 aipo.lppb_number, aipo.shipment_number, aipo.received_date,
                 aipo.item_code, aipo.item_description, aipo.qty_receipt,
                 aipo.qty_reject, aipo.currency, aipo.unit_price,
-                aipo.qty_invoice
+                aipo.qty_invoice,
+                ami.invoice_category,
+                ami.info,
+                ami.nominal_dpp
            FROM khs_ap_monitoring_invoice ami,
                 khs_ap_invoice_purchase_order aipo,
                 po_headers_all poh
@@ -145,6 +150,17 @@ class M_trackinginvoice extends CI_Model {
                 ELSE 'Unknown'
                 END AS status
                 FROM khs.KHS_AP_INVOICE_ACTION_DETAIL WHERE INVOICE_ID='$invoice_id' ORDER BY ACTION_DATE DESC";
+        $runQuery = $oracle->query($query);
+        return $runQuery->result_array();
+    }
+
+     public function checkSourceLogin($employee_code)
+    {
+        $oracle = $this->load->database('erp_db',true);
+        $query = "select eea.employee_code, es.unit_name
+                    from er.er_employee_all eea, er.er_section es
+                    where eea.section_code = es.section_code
+                    and eea.employee_code = '$employee_code' ";
         $runQuery = $oracle->query($query);
         return $runQuery->result_array();
     }

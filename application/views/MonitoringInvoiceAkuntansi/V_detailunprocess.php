@@ -55,6 +55,36 @@
 											<input  class="form-control" size="40" type="text" value="<?php echo $detail[0]['TAX_INVOICE_NUMBER']?>" readonly>
 										</td>
 									</tr>
+									<tr>
+										<td>
+											<span><label>Invoice Category</label></span>
+										</td>
+										<td>
+		                     				<input class="form-control" size="40" type="text"  value="<?php echo $detail[0]['INVOICE_CATEGORY']?>" readonly>
+		                     			</td>
+		                     			<td>
+											<span><label>Jenis Jasa</label></span>
+										</td>
+										<td>
+		                     				<input class="form-control" size="40" type="text"  value="<?php echo $detail[0]['JENIS_JASA']?>" readonly>
+		                     			</td>
+									</tr>
+									<tr>
+										<td>
+											<span><label>Nominal DPP Faktur Pajak</label></span>
+										</td>
+										<td>
+		                     				<input class="form-control" size="40" type="text"  value="<?php echo $detail[0]['NOMINAL_DPP']?>" readonly>
+		                     			</td>
+									</tr>
+									<tr>
+										<td>
+											<span><label>Info</label></span>
+										</td>
+										<td>
+											<textarea class="form-control" size="40" type="text" readonly><?php echo $detail[0]['INFO']?></textarea>
+										</td>
+									</tr>
 								</table>
 							</form>
 						<span><b>Invoice PO Detail</b></span>

@@ -26,7 +26,7 @@
 										<tr class="bg-primary">
 											<th class="text-center">No</th>
 											<th class="text-center">Action</th>
-											<th class="text-center">Purchasing Batch Number</th>
+											<th class="text-center">Batch Number</th>
 											<th class="text-center">Submited Date</th>
 											<th class="text-center">Invoices</th>
 											<th class="text-center">Status Invoice</th>
@@ -37,11 +37,11 @@
 										<tr>
 											<td><?php echo $no ?> </td>
 											<td>
-												<a href="<?php echo base_url('AccountPayables/MonitoringInvoice/ListSubmitedChecking/batchDetail/'.$inv['BATCH_NUM'])?>">
+												<a href="<?php echo base_url('AccountPayables/MonitoringInvoice/ListSubmitedChecking/batchDetail/'.$inv['BATCH_NUMBER'])?>">
 													<button type="button" class="btn btn-default">Detail</button>
 												</a>
 											</td>
-											<td><?php echo  $inv['BATCH_NUM'] ?></td>
+											<td><?php echo  $inv['BATCH_NUMBER'] ?></td>
 											<td><?php echo  $inv['SUBMITED_DATE'] ?></td>
 											<td><?php echo $inv['JML_INVOICE']; ?></td>
 											<?php if ($inv['LAST_PURCHASING_INVOICE_STATUS'] == 2 and  $inv['LAST_FINANCE_INVOICE_STATUS'] == 2) {
