@@ -113,6 +113,34 @@
 					return $query->result_array();
 	    		}
 
+	    		public function pekerja_staf($keyword)
+	    		{
+	    			$pekerja = "select * from hrd_khs.v_hrd_khs_tpribadi where
+								(
+								nama like '%$keyword%' or noind like '%$keyword%') and
+								(noind like 'D%' or noind like 'J%')
+								and (
+								nik is not null
+								and 	nik not in ('', '-')
+								) and keluar = '0'";
+					$query 					=	$this->personalia->query($pekerja);
+					return $query->result_array();
+	    		}
+
+	    		public function pekerja_non_staf($keyword)
+	    		{
+	    			$pekerja = "select * from hrd_khs.v_hrd_khs_tpribadi where
+								(
+								nama like '%$keyword%' or noind like '%$keyword%') and
+								(noind like 'E%')
+								and (
+								nik is not null
+								and 	nik not in ('', '-')
+								) and keluar = '0'";
+					$query 					=	$this->personalia->query($pekerja);
+					return $query->result_array();
+	    		}
+
 	    		public function detail_pekerja( $noind )
 	    		{
 	    			$detail_pekerja		= "	select 		pri.noind as noind,
@@ -844,11 +872,11 @@
 			    	return $this->personalia->get()->result_array();
 			    }
 
-			    public function ambilNomorSuratTerakhir($kodeSurat)
+			    public function ambilNomorSuratTerakhir($tahun, $bulan, $kodeSurat)
 			 	{
-			 		$ambilNomorSuratMutasiTerakhir 		= "	select 		max(arsipsurat.nomor_surat) as jumlah
-															from 		\"Surat\".t_arsip_nomor_surat as arsipsurat
-															where 		arsipsurat.kode_surat='$kodeSurat'";
+			 		$ambilNomorSuratMutasiTerakhir 		= "	select max(no_surat) jumlah from \"Surat\".tsurat_mutasi where kode = '$kodeSurat'
+													 		and extract(year from tanggal_cetak) = '$tahun'
+													 		and extract(month from tanggal_cetak) = '$bulan'";
 					$query 		= 	$this->personalia->query($ambilNomorSuratMutasiTerakhir);
 					return $query->result_array();
 			 	}

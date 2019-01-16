@@ -457,16 +457,16 @@ class M_transaksi extends CI_Model {
 			$sql = "";
 
 			if($pinjam != 'PINJAM'){
-				$extra ="order by tl.date_lend asc";
+				$extra ="order by tl.transaction_id, tl.date_lend asc";
 			}else{
 				$extra = "and tl.item_qty is not null
-						  order by tl.date_return asc";
+						  order by tl.transaction_id, tl.date_return asc";
 			}
 
 			
 			if($user === FALSE){
 				$sql = "
-				select tl.status_kembali, tl.status, CASE WHEN tl.date_lend is null THEN tl.date_return else tl.date_lend END tgl_transaksi,wt.creation_date creation_date, mi.item_name,mi.merk,mi.item_qty,wt.shift,wt.toolman,wt.noind, wt.\"name\", mi.item_id , mi.item_desc ,COALESCE(tl.item_qty, 0 )  qty_pinjam, tl.item_qty_return qty_kembali 
+				SELECT tl.status_kembali, tl.status, CASE WHEN tl.date_lend is null THEN tl.date_return else tl.date_lend END tgl_transaksi,wt.creation_date creation_date, mi.item_name,mi.merk,mi.item_qty,wt.shift,wt.toolman,wt.noind, wt.\"name\", mi.item_id , mi.item_desc ,COALESCE(tl.item_qty, 0 )  qty_pinjam, tl.item_qty_return qty_kembali 
 			from wh.wh_transaction_list tl, wh.wh_master_item mi, wh.wh_transaction wt 
 			where tl.item_id = mi.item_id
 			and tl.transaction_id = wt.id_transaction
@@ -475,10 +475,11 @@ class M_transaksi extends CI_Model {
 			$extra
 
 
+
 			";	
 			}else{
 				$sql = "
-				select tl.status_kembali, tl.status, CASE WHEN tl.date_lend is null THEN tl.date_return else tl.date_lend END tgl_transaksi,wt.creation_date creation_date, mi.item_name,mi.merk,mi.item_qty,wt.shift,wt.toolman,wt.noind, wt.\"name\", mi.item_id , mi.item_desc ,COALESCE(tl.item_qty, 0 )  qty_pinjam, tl.item_qty_return qty_kembali 
+				SELECT tl.status_kembali, tl.status, CASE WHEN tl.date_lend is null THEN tl.date_return else tl.date_lend END tgl_transaksi,wt.creation_date creation_date, mi.item_name,mi.merk,mi.item_qty,wt.shift,wt.toolman,wt.noind, wt.\"name\", mi.item_id , mi.item_desc ,COALESCE(tl.item_qty, 0 )  qty_pinjam, tl.item_qty_return qty_kembali 
 			from wh.wh_transaction_list tl, wh.wh_master_item mi, wh.wh_transaction wt 
 			where tl.item_id = mi.item_id
 			and tl.transaction_id = wt.id_transaction

@@ -12,7 +12,7 @@
 					<div class="col-lg-1">
 						<label class="control-label">Periode</label>		
 					</div>
-					<div class="col-lg-3">
+					<!-- <div class="col-lg-3">
 						<div class="input-group">
 							<span class="input-group-addon">
 								<span class="glyphicon glyphicon-calendar">
@@ -21,6 +21,23 @@
 							</span>
 							<input id="periodeGaji" name="periodeData" class="prosesgaji-daterangepicker form-control" placeholder="Periode"></input>		
 						</div>
+					</div> -->
+					<div class="col-lg-2">
+						<input type="text" class="form-control" value="<?php if (isset($periodeGaji) and !empty($periodeGaji)) { echo $periodeGaji['0']['tahun'];} ?>" name="" disabled>
+					</div>
+					<div class="col-lg-3">
+						<select class="select select2" data-placeholder="Bulan" name="periodeData" style="width: 100%">
+							<option></option>
+							<?php if (isset($periodeGaji) and !empty($periodeGaji)) {
+								foreach ($periodeGaji as $key) {
+									$select = '';
+									if ($key['rangetanggal'] == $periodeGajiSelected) {
+										$select = 'selected';
+									}
+									echo '<option value="'.$key['rangetanggal'].'" '.$select.'>'.$key['bulan'].'</option>';
+								}
+							} ?>
+						</select>
 					</div>
 					<div class="col-lg-3">
 						<select name="lokasi_kerja" class="form-control">
@@ -31,11 +48,15 @@
 					</div>
 					<div class="col-lg-3">
 						<button type="submit" class="btn btn-primary">Proses</button>
+						<?php if (isset($valLink)): ?>
+							<a target="_blank" href="<?php echo site_url('HitungHlcm/HitungGaji/printProses/xls/'.$valLink); ?>" class="btn btn-success">Excel</a>
+							<a target="_blank" href="<?php echo site_url('HitungHlcm/HitungGaji/printProses/pdf/'.$valLink); ?>" class="btn btn-danger">PDF</a>
+						<?php endif ?>
 					</div>
 				</div>
 				</form>
 				<br>
-				<table id="table_prosesgaji" class="table table-hover table-bordered">
+				<table id="table_prosesgaji" class="table table-hover table-bordered table-striped">
 					<thead>
 						<tr style="background-color: #00ccff;">
 							<th style="text-align: center; vertical-align: middle;" rowspan="2">No</th>
@@ -73,7 +94,9 @@
 							$gajipokok = $gpokok*$nominalgpokok;
 							$uangmakan = $um*$nominalum;
 							$gajilembur = $lembur*($nominalgpokok/7);
+							$gajilembur = number_format($gajilembur,'0','.','');
 							$total = $gajipokok+$gajilembur+$uangmakan;
+							$total = number_format($total,'0','.','');
 							?>
 							<tr>
 								<td style="text-align: center;"><?php echo $no;?></td>

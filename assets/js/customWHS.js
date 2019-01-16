@@ -198,18 +198,32 @@ function updatePackingQty(event, th) {
 
 
 
+        // if (qtyNow>maxPack) {
+        //     $.toaster('ERROR', 'JUMLAH ITEM TIDAK BOLEH MELEBIHI PERMINTAAN', 'danger');
+        //     $('#tblSPB tbody tr[data-row="'+value+'"]').addClass('bg-success');
+
+        // }else if (qtyNow>maxOnhand) {
+        //     $.toaster('ERROR', 'JUMLAH ITEM TIDAK BISA MELEBIHI ONHAND', 'danger');
+        //     $('#tblSPB tbody tr[data-row="'+value+'"]').addClass('bg-success');
+        // }else if ($('#tblSPB tbody tr[data-row="'+value+'"]').length) {
+        //     $('#tblSPB tbody tr[data-row="'+value+'"] input[name="packingqty[]"]').val(qtyNow);
+        //     kasih+=1;
+        //     $('input[name="totalQtyKasih"]').val(kasih);
+        // }
+
         if (qtyNow>maxPack) {
             $.toaster('ERROR', 'JUMLAH ITEM TIDAK BOLEH MELEBIHI PERMINTAAN', 'danger');
             $('#tblSPB tbody tr[data-row="'+value+'"]').addClass('bg-success');
 
-        }else if (qtyNow>maxOnhand) {
-            $.toaster('ERROR', 'JUMLAH ITEM TIDAK BISA MELEBIHI ONHAND', 'danger');
-            $('#tblSPB tbody tr[data-row="'+value+'"]').addClass('bg-success');
         }else if ($('#tblSPB tbody tr[data-row="'+value+'"]').length) {
             $('#tblSPB tbody tr[data-row="'+value+'"] input[name="packingqty[]"]').val(qtyNow);
             kasih+=1;
             $('input[name="totalQtyKasih"]').val(kasih);
+            if(qtyNow == maxPack){
+                $('#tblSPB tbody tr[data-row="'+value+'"]').addClass('bg-success');
+            }
         }
+
 
         $(th).val('');
         if (kasih>0 && $('#btnSubmitPacking').attr('disabled')) {
@@ -253,6 +267,8 @@ function getSum(th) {
 
 function resetThis(th){
     $(th).closest('tr').find('input[name="packingqty[]"]').val(null);
+    $(th).closest('tr').removeClass('bg-success');
+
     
 }
 

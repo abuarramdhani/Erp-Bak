@@ -37,7 +37,7 @@
 								'Kamis',
 								'Jumat',
 								'Sabtu');?>
-						<p>Yogyakarta, <?php echo $undangan['0']['tg2']." ".$bln[$undangan['0']['b2']]." ".$undangan['0']['th2'] ?></p>
+						<p>Yogyakarta, <?php echo $undangan['0']['tg2']." ".$bln[intval($undangan['0']['b2'])]." ".$undangan['0']['th2'] ?></p>
 					</div>
 					<!-- <div style="float: left;width: 90mm;height: 10mm;text-align: center;font-size: 20pt;color: red;">
 						<p><u>UNDANGAN</u></p>
@@ -91,7 +91,7 @@
 							<tr>
 								<td>Tanggal</td>
 								<td>:</td>
-								<td><?php echo $undangan['0']['tg1']." ".$bln[$undangan['0']['b1']]." ".$undangan['0']['th1'];?></td>
+								<td><?php echo $undangan['0']['tg1']." ".$bln[intval($undangan['0']['b1'])]." ".$undangan['0']['th1'];?></td>
 							</tr>
 							<tr>
 								<td>Waktu</td>

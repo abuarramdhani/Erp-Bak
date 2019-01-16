@@ -110,12 +110,29 @@
 																		<td><?php echo $key['package_scheduling_name'] ?></td>
 																		<td><?php echo $key['training_type_description'] ?></td>
 																		<td><?php echo $key['participant_type_description'] ?></td>
-																		<td><?php echo $key['participant_number'] ?></td>
+																		<td><?php if (!empty($key['participant_number'])) {
+																			echo $key['participant_number'];
+																		}else{
+																			echo "belum ada peserta terjadwal";
+																		}  ?></td>
 																		<td>
 																			<?php 
+																			if (!empty($key['start_date'])) {
 																				$b = explode("-", $key['start_date']);
+																				$cout1 = $b[2]." "." ".strtoupper($bulan[intval($b[1])])." ".$b[0];
+																			}else{
+																				$cout1 = "First Day";
+																			}
+
+																			if (!empty($key['end_date'])) {
 																				$c = explode("-", $key['end_date']);
-																				 echo $b[2]." "." ".strtoupper($bulan[intval($b[1])])." ".$b[0]." - ".$c[2]." ".strtoupper($bulan[intval($c[1])])." ".$c[0] 
+																				$cout2 = $c[2]." ".strtoupper($bulan[intval($c[1])])." ".$c[0];
+																			}else{
+																				$cout2 = "Last Day";
+																			}
+																				
+																				
+																				 echo $cout1." - ".$cout2; 
 																		 	?>
 																		 </td>
 																		<td>

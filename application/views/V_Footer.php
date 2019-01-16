@@ -75,7 +75,7 @@
 	<script src="<?php echo base_url('assets/plugins/redactor/plugins/fontfamily.min.js');?>"></script>
 	<script src="<?php echo base_url('assets/plugins/redactor/plugins/fontsize.min.js');?>"></script>
 	<script src="<?php echo base_url('assets/plugins/redactor/plugins/imagemanager.min.js');?>"></script> -->
-
+	<script src="<?php echo base_url('assets/plugins/mdtimepicker/mdtimepicker.js');?>"></script>
 
 	<!-- Custom Javascript -->
     <script src="<?php echo base_url('assets/js/custom.js');?>" type="text/javascript"></script>
@@ -118,20 +118,22 @@
 	<script src="<?php echo base_url('assets/js/customPKEL.js');?>" type="text/javascript"></script>
 	<script src="<?php echo base_url('assets/js/customECM.js');?>" type="text/javascript"></script>
 	<script src="<?php echo base_url('assets/js/customLKKK.js');?>" type="text/javascript"></script>
-	<script src="<?php echo base_url('assets/js/customWHS.js');?>" type="text/javascript"></script>
 	<script src="<?php echo base_url('assets/js/customWH.js');?>" type="text/javascript"></script>
 	<script src="<?php echo base_url('assets/js/customWMS.js');?>" type="text/javascript"></script>
 	<script src="<?php echo base_url('assets/js/customMI.js');?>" type="text/javascript"></script>
 	<script src="<?php echo base_url('assets/js/customUM.js');?>" type="text/javascript"></script>
 	<script src="<?php echo base_url('assets/js/customHLCM.js');?>" type="text/javascript"></script>
+	<script src="<?php echo base_url('assets/js/customMA.js');?>" type="text/javascript"></script>
+    <script src="<?php echo base_url('assets/js/customMI.js');?>" type="text/javascript"></script>
 	<script src="<?php echo base_url('assets/js/customSI.js');?>" type="text/javascript"></script>
 	<script src="<?php echo base_url('assets/js/customIMO.js');?>" type="text/javascript"></script>
 	<script src="<?php echo base_url('assets/js/customMO.js');?>" type="text/javascript"></script>
 	<script src="<?php echo base_url('assets/js/customERC.js');?>" type="text/javascript"></script>
 	<script src="<?php echo base_url('assets/js/customBI.js');?>" type="text/javascript"></script>
-	<script src="<?php echo base_url('assets/js/customMA.js');?>" type="text/javascript"></script>
-	<script src="<?php echo base_url('assets/js/customTI.js');?>" type="text/javascript"></script>
-	<script src="<?php echo base_url('assets/js/customML.js');?>" type="text/javascript"></script>
+ 	<script src="<?php echo base_url('assets/js/customMA.js');?>" type="text/javascript"></script>
+ 	<script src="<?php echo base_url('assets/js/customTI.js');?>" type="text/javascript"></script>
+ 	<script src="<?php echo base_url('assets/js/customTF.js');?>" type="text/javascript"></script>
+ 	<script src="<?php echo base_url('assets/js/customPPH.js');?>" type="text/javascript"></script>
 	<script type="text/javascript">
 		if(counter_row <= 0){
 			var counter_row = 0;
@@ -219,6 +221,8 @@
 	-->
 	<script src="<?php echo base_url('assets/plugins/jQuery/jquery.toaster.js');?>"></script>
 	<script src="<?php echo base_url('assets/plugins/qtip/jquery.qtip.js');?>" type="text/javascript"></script>
+	<script src="<?php echo base_url('assets/plugins/jasny-bootstrap.min.js');?>" type="text/javascript"></script>
+	<script src="<?php echo base_url('assets/plugins/inputmask/inputmask.bundle.js');?>" type="text/javascript"></script>
     <script>
        $(function () { formInit(); });
 		

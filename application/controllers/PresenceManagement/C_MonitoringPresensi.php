@@ -12,7 +12,8 @@
 
 			$this->load->model('SystemAdministration/MainMenu/M_user');
 			$this->load->model('PresenceManagement/M_monitoringpresensi');
-
+			$this->load->model('TarikFingerspot/M_tarikfingerspot');
+			
 			date_default_timezone_set('Asia/Jakarta');
 		}
 
@@ -194,10 +195,10 @@
 				}
 			}
 
-			if ( $this->session->is_logged )
-			{
-				redirect('PresenceManagement/MonitoringPresensi');
-			}
+			// if ( $this->session->is_logged )
+			// {
+			// 	redirect('PresenceManagement/MonitoringPresensi');
+			// }
 		}
 
 		public function get_scanlog_all($id_lokasi = FALSE)
@@ -309,8 +310,9 @@
 			}
 		}
 
-		public function delete_device_scanlog($id_lokasi = FALSE)
-		{
+		public function delete_device_scanlog($id_lokasi)
+		{	
+			//semula : public function delete_device_scanlog($id_lokasi = FALSE) diubah agar tidak menghapus di semua device
 			if ( $id_lokasi !== FALSE )
 			{
 				$id_lokasi_decode	=	$this->general->dekripsi($id_lokasi);
@@ -351,11 +353,21 @@
 					exit();
 				}
 				echo 'Hapus Scanlog '.$device['device_name'].' - '.$device_server_ip.' BERHASIL<br/>';
+				$scanlog_update 	=	array
+										(
+											'workcode'	=>	'1',
+										);
+				$where_clause 		= 	array
+										(
+											'sn' => $device['device_sn']
+										);
+				$this->M_monitoringpresensi->updateStatusDelete($scanlog_update,$where_clause);
 			}
 
 			if ( $this->session->is_logged )
 			{
-				redirect('PresenceManagement/MonitoringPresensi');
+				// redirect('PresenceManagement/MonitoringPresensi');
+				redirect('PresenceManagement/MonFingerspot');
 			}
 		}
 
@@ -386,40 +398,44 @@
 												'kodesie' 		=>	$presensi_kodesie,
 												'user_' 		=>	$presensi_user,
 											);
+				$cek = $this->M_tarikfingerspot->cekPresensi($data_presensi);
+
+				if ($cek == '0') {
+					//	Kirim ke FrontPresensi.tpresensi
+					//	{
+							$data_presensi['transfer']	=	TRUE;
+		 					$this->M_monitoringpresensi->insert_presensi('"FrontPresensi"', 'tpresensi', $data_presensi);
+					//	}
+
+					//	Kirim ke Catering.tpresensi
+					//	{
+		 					$data_presensi['transfer']	=	FALSE;
+		 					$this->M_monitoringpresensi->insert_presensi('"Catering"', 'tpresensi', $data_presensi);
+					//	}
+
+					//	Kirim ke Presensi.tprs_shift
+					//	{
+		 					$data_presensi['transfer']	=	FALSE;
+		 					$data_presensi['user_']		=	'CRON';
+		 					$this->M_monitoringpresensi->insert_presensi('"Presensi"', 'tprs_shift', $data_presensi);
+					//	}
 
 
-				//	Kirim ke FrontPresensi.tpresensi
-				//	{
-						$data_presensi['transfer']	=	TRUE;
-	 					$this->M_monitoringpresensi->insert_presensi('"FrontPresensi"', 'tpresensi', $data_presensi);
-				//	}
+		 			//	Update transfer
+		 			//	{
+		 					$scanlog_update 	=	array
+		 											(
+		 												'transfer'	=>	TRUE,
+		 											);
+		 					$where_clause 		= 	array
+		 											(
+		 												'id_scanlog ='	=>	$id_scanlog
+		 											);
+		 					$this->M_monitoringpresensi->scanlog_update($scanlog_update, $where_clause);
+		 			//	}
+				}
 
-				//	Kirim ke Catering.tpresensi
-				//	{
-	 					$data_presensi['transfer']	=	FALSE;
-	 					$this->M_monitoringpresensi->insert_presensi('"Catering"', 'tpresensi', $data_presensi);
-				//	}
-
-				//	Kirim ke Presensi.tprs_shift
-				//	{
-	 					$data_presensi['transfer']	=	FALSE;
-	 					$data_presensi['user_']		=	'CRON';
-	 					$this->M_monitoringpresensi->insert_presensi('"Presensi"', 'tprs_shift', $data_presensi);
-				//	}
-
-
-	 			//	Update transfer
-	 			//	{
-	 					$scanlog_update 	=	array
-	 											(
-	 												'transfer'	=>	TRUE,
-	 											);
-	 					$where_clause 		= 	array
-	 											(
-	 												'id_scanlog ='	=>	$id_scanlog
-	 											);
-	 					$this->M_monitoringpresensi->scanlog_update($scanlog_update, $where_clause);
-	 			//	}
+				
 			}
 		}
 

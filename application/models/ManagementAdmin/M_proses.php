@@ -89,10 +89,10 @@ class M_proses extends CI_Model
 		$this->db->query($sql);
 
 		$sql = "update ma.ma_pelaksanaan 
-				set status_tercapai = 	case when total_target >= total_waktu then
-											cast('1' as boolean)
+				set status_tercapai = 	case when cast(total_target as int) >= cast(total_waktu as int) then
+											cast('1' as bool)
 										else
-											cast('0' as boolean)
+											cast('0' as bool)
 										end
 				where status_selesai = '1'
 				and id_pelaksanaan = $id";
@@ -103,16 +103,16 @@ class M_proses extends CI_Model
 		$sql = "insert into ma.ma_pending
 				(id_pekerja,pekerjaan,total_target,start_time,end_time,total_waktu,jml_dokument,id_pelaksanaan)
 				select id_pekerja,pekerjaan,total_target,start_time,end_time,total_waktu,jml_dokument,id_pelaksanaan
-				from ma.ma_pelaksanaan pk where pk.total_waktu > total_target and pk.id_pelaksanaan = $id";
+				from ma.ma_pelaksanaan pk where pk.status_tercapai = '0' and pk.id_pelaksanaan = $id";
 		$this->db->query($sql);
 	}
 
 	public function deleteData($id){
-		$this->db->where('id_pelaksanaan',$id);
-		$this->db->delete('ma.ma_pelaksanaan');
+		$sql = "delete from ma.ma_pelaksanaan where id_pelaksanaan = '$id'";
+		$this->db->query($sql);
 
-		$this->db->where('id_pelaksanaan',$id);
-		$this->db->delete('ma.ma_pending');
+		$sql = "delete from ma.ma_pending where id_pelaksanaan = '$id'";
+		$this->db->query($sql);
 	}
 }
 ?>

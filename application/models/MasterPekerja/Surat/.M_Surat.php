@@ -217,7 +217,7 @@
 		// 	$sql = $this->personalia->query($query);
 		// 	return $sql->result_array();
 		// }
-	 	public function getDetailPekerja($noind)
+	 	public function detailPekerja($noind)
 	 	{
 	 		$getDetailPekerja 		= "	select 		trim(pri.noind) as noind,
 													rtrim(pri.nama) as nama,
@@ -440,7 +440,7 @@
 
 	 	public function getNamaNoindBaru($nomor_induk)
 	 	{
-	 		$getNamaNoindBaru 		= "	select 		trim(noind_baru) as noind_baru,
+	 		$getNamaNoind 		= "	select 		trim(noind_baru) as noind_baru,
 	 												rtrim(nama) as nama
 	 									from 		hrd_khs.tpribadi as pri
 	 									where 		pri.noind='$nomor_induk'";

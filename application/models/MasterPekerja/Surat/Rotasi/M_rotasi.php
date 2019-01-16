@@ -247,24 +247,23 @@
 			return $query->result_array();
 	 	}
 
-	 	public function ambilLayoutSuratRotasi()
+	 	public function ambilLayoutSuratRotasi($stafff)
 	 	{
 	 		$this->personalia->select('isi_surat');
 	 		$this->personalia->from('"Surat".tisi_surat"');
 	 		$this->personalia->where('jenis_surat=', 'ROTASI');
+	 		$this->personalia->where('staf=', $stafff);
 
 	 		return $this->personalia->get()->result_array();
 	 	}
 
-	 	public function ambilNomorSuratRotasiTerakhir($parameterTahunBulanRotasi, $kodeSurat)
+	 	public function ambilNomorSuratTerakhir($tahun, $bulan, $kodeSurat)
 	 	{
-	 		$ambilNomorSuratRotasiTerakhir 		= "	select 		count(*) as jumlah
-													from 		\"Surat\".tsurat_rotasi as rotasi 
-													where 		to_char(rotasi.tanggal_berlaku, 'YYYYMM')='$parameterTahunBulanRotasi'
-																and 	kode='$kodeSurat'";
-			$query 		= 	$this->personalia->query($ambilNomorSuratRotasiTerakhir);
+	 		$ambilNomorSuratTerakhir 		= "	select max(no_surat) jumlah from \"Surat\".tsurat_rotasi where kode = '$kodeSurat'
+											 		and extract(year from tanggal_cetak) = '$tahun'
+											 		and extract(month from tanggal_cetak) = '$bulan'";
+			$query 		= 	$this->personalia->query($ambilNomorSuratTerakhir);
 			return $query->result_array();
-			return $$ambilNomorSuratRotasiTerakhir;
 	 	}
 
 	 	public function cariTSeksi($seksi_lama)
@@ -293,6 +292,11 @@
 	 	{
 	 		$this->personalia->insert('"Surat".tsurat_rotasi', $inputSuratRotasi);
 	 	}
+
+	 	public function inputNomorSurat($inputNomorSurat)
+		{
+			$this->personalia->insert('"Surat".t_arsip_nomor_surat', $inputNomorSurat);
+		}
 
 	 	public function ambilDaftarSuratRotasi()
 	 	{
@@ -433,17 +437,17 @@
 
 	 	public function editSuratRotasi($no_surat_decode)
 	 	{
-	 		$editSuratRotasi 		= "	select 		rotasi.kode,
-													rotasi.no_surat,
-													rotasi.hal_surat,
-													rotasi.nama,
-													rotasi.noind,
-													rotasi.kodesie_lama,
-													rotasi.kodesie_baru,
+	 		$editSuratRotasi 		= "	select 		promosi.kode,
+													promosi.no_surat,
+													promosi.hal_surat,
+													promosi.nama,
+													promosi.noind,
+													promosi.kodesie_lama,
+													promosi.kodesie_baru,
 															concat_ws
 																									(
 																										' - ',
-																										rotasi.kodesie_lama,
+																										promosi.kodesie_lama,
 																										(			
 																											select 		case 	when 	rtrim(seksi)!='-'
 																																		then 	'Seksi ' || rtrim(seksi)
@@ -460,20 +464,20 @@
 																																		)
 																														end
 																											from	 	hrd_khs.tseksi as tseksi
-																											where 		tseksi.kodesie=rotasi.kodesie_lama
+																											where 		tseksi.kodesie=promosi.kodesie_lama
 																										),
 																										(
 																											select		case 	when 	rtrim(pekerjaan)!='-'
 																																		then 	rtrim(pekerjaan)
 																														end
 																											from 		hrd_khs.tseksi as tseksi
-																											where 		tseksi.kodesie=rotasi.kodesie_lama
+																											where 		tseksi.kodesie=promosi.kodesie_lama
 																										)
 																									) as seksi_lama,
 															concat_ws
 																									(
 																										' - ',
-																										rotasi.kodesie_baru,
+																										promosi.kodesie_baru,
 																										(			
 																											select 		case 	when 	rtrim(seksi)!='-'
 																																		then 	'Seksi ' || rtrim(seksi)
@@ -490,84 +494,85 @@
 																																		)
 																														end
 																											from	 	hrd_khs.tseksi as tseksi
-																											where 		tseksi.kodesie=rotasi.kodesie_baru
+																											where 		tseksi.kodesie=promosi.kodesie_baru
 																										),
 																										(
 																											select		case 	when 	rtrim(pekerjaan)!='-'
 																																		then 	rtrim(pekerjaan)
 																														end
 																											from 		hrd_khs.tseksi as tseksi
-																											where 		tseksi.kodesie=rotasi.kodesie_baru
+																											where 		tseksi.kodesie=promosi.kodesie_baru
 																										)
 																									) as seksi_baru,
-													rotasi.tempat_makan_1_lama,
-													rotasi.tempat_makan_1_baru,
-													rotasi.lokasi_kerja_lama,
-													rotasi.lokasi_kerja_baru,
+													promosi.tempat_makan_1_lama,
+													promosi.tempat_makan_1_baru,
+													promosi.lokasi_kerja_lama,
+													promosi.lokasi_kerja_baru,
 													concat_ws
 																									(
 																										' - ',
-																										rotasi.lokasi_kerja_lama,
+																										promosi.lokasi_kerja_lama,
 																										(
 																											select 		lokker.lokasi_kerja
 																											from 		hrd_khs.tlokasi_kerja as lokker
-																											where 		lokker.id_=rotasi.lokasi_kerja_lama
+																											where 		lokker.id_=promosi.lokasi_kerja_lama
 																										)
 																									) as lokasi_lama,
 																									concat_ws
 																									(
 																										' - ',
-																										rotasi.lokasi_kerja_baru,
+																										promosi.lokasi_kerja_baru,
 																										(
 																											select 		lokker.lokasi_kerja
 																											from 		hrd_khs.tlokasi_kerja as lokker
-																											where 		lokker.id_=rotasi.lokasi_kerja_baru
+																											where 		lokker.id_=promosi.lokasi_kerja_baru
 																										)
 																									) as lokasi_baru,
-													rotasi.golkerja_lama,
-													rotasi.golkerja_baru,
-													rotasi.kd_jabatan_lama,
-													rotasi.kd_jabatan_baru,
-													rotasi.tanggal_berlaku,
-													rotasi.isi_surat,
-													rotasi.cetak,
-													rotasi.tanggal_cetak,
-													rotasi.noind_baru,
-													rotasi.jabatan_lama,
-													rotasi.jabatan_baru,
+													promosi.golkerja_lama,
+													promosi.golkerja_baru,
+													promosi.kd_jabatan_lama,
+													promosi.kd_jabatan_baru,
+													promosi.tanggal_berlaku,
+													promosi.isi_surat,
+													promosi.cetak,
+													promosi.tanggal_cetak,
+													promosi.noind_baru,
+													promosi.jabatan_lama,
+													promosi.jabatan_baru,
 													(select jabatan
 													from hrd_khs.torganisasi as torg
-													where torg.kd_jabatan=rotasi.kd_jabatan_baru
+													where torg.kd_jabatan=promosi.kd_jabatan_baru
 													)as jabatann,
-													rotasi.tempat_makan_2_lama,
-													rotasi.tempat_makan_2_baru,
-													rotasi.kd_pkj_lama,
-													rotasi.kd_pkj_baru,
+													promosi.tempat_makan_2_lama,
+													promosi.tempat_makan_2_baru,
+													promosi.kd_pkj_lama,
+													promosi.kd_pkj_baru,
 										            (select pekerjaan
 													from hrd_khs.tpekerjaan as pek
-													where pek.kdpekerjaan=rotasi.kd_pkj_lama
+													where pek.kdpekerjaan=promosi.kd_pkj_lama
 													)as pekerjaan_lama,
 													(select pekerjaan
 													from hrd_khs.tpekerjaan as pek
-													where pek.kdpekerjaan=rotasi.kd_pkj_baru
+													where pek.kdpekerjaan=promosi.kd_pkj_baru
 													)as pekerjaan_baru,
 													(
-														case 	when 	rotasi.kd_jabatan_lama::numeric<17
+														case 	when 	promosi.kd_jabatan_lama::numeric<17
 																		then 	'STAF'
 																else 	'NONSTAF'
 														end
 													) as status_staf
-										from 		\"Surat\".tsurat_rotasi as rotasi
+										from 		\"Surat\".tsurat_rotasi as promosi
 										where 		concat
 													(
-														rotasi.no_surat,
-														'/' || rotasi.kode || '/',
-														to_char(rotasi.tanggal_cetak, 'MM'),
+														promosi.no_surat,
+														'/' || promosi.kode || '/',
+														to_char(promosi.tanggal_cetak, 'MM'),
 														'/',
-														to_char(rotasi.tanggal_cetak, 'yy')
+														to_char(promosi.tanggal_cetak, 'yy')
 													)
 													=
 													'$no_surat_decode';";
+													// echo $editSuratRotasi;exit();
 			$query 			=	$this->personalia->query($editSuratRotasi);
 			return $query->result_array();
 	 	}
@@ -578,5 +583,96 @@
 	 		$this->personalia->where('kode=', $kodeSurat);
 	 		$this->personalia->update('"Surat".tsurat_rotasi', $updateSuratRotasi);
 	 	}
+
+	 	public function ambilPosisi($nomor_induk)
+			    {
+			    	$ambilPosisi 	= "	select 		master.nama,
+													master.noind,
+													(
+														case 	when 	(
+																			master.kd_jabatan::int between 1 and 14
+																			or 	master.kd_jabatan::int in (16, 19, 25)
+																		)
+																		then 	concat_ws(' ', master.jabatan, master.lingkup)
+																else 	concat
+																		(
+																			master.pekerjaan,
+																			' / ',
+																			'Golongan ',
+																			master.golkerja,
+																			' / ',
+																			'Seksi ',
+																			master.seksi,
+																			' / ',
+																			'Unit ',
+																			master.unit,
+																			' / ',
+																			'Departemen ',
+																			master.dept
+																		)
+														end
+													) as posisi
+										from 		(
+										 				select		pri.nama,
+																	pri.noind,
+																	pri.kode_status_kerja,
+																	pri.golkerja,
+																	pri.kd_jabatan,
+																	rtrim(torganisasi.jabatan) as jabatan,
+																	tseksi.dept,
+																	tseksi.bidang,
+																	tseksi.unit,
+																	tseksi.seksi,
+																	tseksi.pekerjaan,
+																	(
+																		case 	when 	tseksi.seksi='-'
+																						then 	(
+																									case 	when 	tseksi.unit='-'
+																													then 	(
+																																case 	when 	tseksi.bidang='-'
+																																				then 	tseksi.dept
+																																		else 	tseksi.bidang
+																																end
+																															)
+																											else 	tseksi.unit
+																									end
+																								)
+																				else 	tseksi.seksi
+																		end
+																	) as lingkup,
+																	pri.kd_pkj,
+																	tpekerjaan.kdpekerjaan as kode_pekerjaan,
+																	pri.lokasi_kerja as kode_lokasi_kerja,
+																	tlokasi_kerja.lokasi_kerja as nama_lokasi_kerja
+														from 		hrd_khs.v_hrd_khs_tpribadi as pri
+																	join 		hrd_khs.v_hrd_khs_tseksi as tseksi
+																				on 	tseksi.kodesie=pri.kodesie
+																	left join 	hrd_khs.tpekerjaan as tpekerjaan
+																				on 	tpekerjaan.kdpekerjaan=pri.kd_pkj
+																	join 		hrd_khs.torganisasi as torganisasi
+																				on 	torganisasi.kd_jabatan=pri.kd_jabatan
+																	join 		hrd_khs.tlokasi_kerja as tlokasi_kerja
+																				on 	tlokasi_kerja.id_=pri.lokasi_kerja
+														where 		pri.noind='$nomor_induk'
+													) as master;";
+					$query 			=	$this->personalia->query($ambilPosisi);
+					return $query->result_array();
+			    }
+			    public function cekStaf($nomor_induk)
+			    {
+			    	$cekStaf 		= "	select 		(
+														case 	when 	(
+																			pri.kd_jabatan::int between 1 and 14
+																			or 	pri.kd_jabatan::int in (16, 19, 25)
+																		)
+																		then 	'STAF'
+																else 	'NONSTAF'
+														end
+													) as status
+										from 		hrd_khs.v_hrd_khs_tpribadi as pri
+										where 		pri.noind='$nomor_induk'";
+					$query 			=	$this->personalia->query($cekStaf);
+					return $query->result_array();
+			    }
  	}
 

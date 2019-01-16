@@ -31,7 +31,6 @@ class C_Presensi_DL extends CI_Controller {
 	
 public function Index()
 	{
-		
 		$this->checkSession();
 		$user_id = $this->session->userid;
 		
@@ -86,6 +85,15 @@ public function get_js_pekerja()
 		$employee = $_GET['p'];
 		$employee = strtoupper($employee);
 		$data = $this->M_presensi_dl->getPekerja($employee);
+		echo json_encode($data);
+	}
+
+public function get_js_kendaraan()
+	{
+		$this->checkSession();
+		$kendaraan = $_GET['p'];
+		$kendaraan = strtoupper($kendaraan);
+		$data = $this->M_presensi_dl->getkendaraan($kendaraan);
 		echo json_encode($data);
 	}
 
@@ -309,6 +317,29 @@ public function CariDataDinasLuar(){
 			}else{
 				//no action
 			}
+		redirect(site_url('Presensi/PresensiDL/'));
+	}
+
+	public function InputKendaraanManual(){
+		date_default_timezone_set("Asia/Bangkok");
+		$nopol = $this->input->post('NomorKendaraan');
+		$noind = $this->input->post('NamaPekerja');
+		$spdl = $this->input->post('txtSPDL');
+		$kmberangkat = $this->input->post('txtKmBerangkat');
+		$kmpulang = $this->input->post('txtKmPulang');
+		$getKendaraan = $this->M_presensi_dl->getKendaraan($noind);
+		
+		$user_id = $this->session->userid;
+		
+		if($kmberangkat!=null){
+			$deleteKendaraan = $this->M_presensi_dl->deleteKendaraan($spdl,$noind,0);
+			$insertBerangkat = $this->M_presensi_dl->insertKilometerKendaraan($nopol,date('Y-m-d'),date('H:i:s'),0,$noind,'-',0,$spdl,0,$user_id,$kmberangkat);
+		}
+
+		if($kmpulang!=null){
+			$deleteKendaraan = $this->M_presensi_dl->deleteKendaraan($spdl,$noind,1);
+			$insertPulang = $this->M_presensi_dl->insertKilometerKendaraan($nopol,date('Y-m-d'),date('H:i:s'),0,$noind,'-',1,$spdl,0,$user_id,$kmpulang);
+		}
 		redirect(site_url('Presensi/PresensiDL/'));
 	}
 

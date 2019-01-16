@@ -90,6 +90,7 @@
     <script src="<?php echo base_url('assets/plugins/modernizr-2.6.2-respond-1.1.0.min.js');?>" type="text/javascript"></script>
     <!-- END GLOBAL SCRIPTS -->
 	<link rel="stylesheet" href="<?php echo base_url('assets/css/custom.css');?>" />
+	<link rel="stylesheet" href="<?php echo base_url('assets/plugins/mdtimepicker/mdtimepicker.css');?>" />
 	
 </head>
      <!-- END HEAD -->

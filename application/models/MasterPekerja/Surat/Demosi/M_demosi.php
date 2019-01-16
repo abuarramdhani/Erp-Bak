@@ -150,6 +150,15 @@
 			// return $DetailKdJabatan;
 	 	}
 
+	 	public function KdJabatan($jab, $job)
+	 	{
+	 		$DetailKdJabatan= "select ti.jabatan, (select pekerjaan from hrd_khs.tpekerjaan where kdpekerjaan = '$job') 
+								from hrd_khs.torganisasi ti where ti.kd_jabatan = '$jab'";
+			$query 	=	$this->personalia->query($DetailKdJabatan);
+			return $query->result_array();	
+			// return $DetailKdJabatan;
+	 	}
+
 	 	public function DetailTempatMakan1()
 	 	{
 	 		$DetailTempatMakan1= "select distinct tempat_makan1 as tempat_makan1 from hrd_khs.tpribadi where keluar='false'";
@@ -247,23 +256,25 @@
 			return $query->result_array();
 	 	}
 
-	 	public function ambilLayoutSuratDemosi()
+	 	public function ambilLayoutSuratDemosi($stafff)
 	 	{
 	 		$this->personalia->select('isi_surat');
 	 		$this->personalia->from('"Surat".tisi_surat"');
 	 		$this->personalia->where('jenis_surat=', 'DEMOSI');
+	 		$this->personalia->where('staf=', $stafff);
 
 	 		return $this->personalia->get()->result_array();
 	 	}
 
-	 	public function ambilNomorSuratDemosiTerakhir($parameterTahunBulanDemosi, $kodeSurat)
+	 	public function ambilNomorSuratDemosiTerakhir($tahun, $bulan, $kodeSurat)
 	 	{
-	 		$ambilNomorSuratDemosiTerakhir 		= "	select 		max(arsipsurat.nomor_surat) as jumlah
-													from 		\"Surat\".t_arsip_kode_surat as arsipsurat
-													where 		arsipsurat.bulan_surat='$parameterTahunBulanDemosi'
-																and 	arsipsurat.kode_surat='$kodeSurat'";
-			$query 		= 	$this->personalia->query($ambilNomorSuratDemosiTerakhir);
+	 		$ambilNomorSuratRotasiTerakhir 		= "	select max(no_surat) jumlah from \"Surat\".tsurat_demosi where kode = '$kodeSurat'
+											 		and extract(year from tanggal_cetak) = '$tahun'
+											 		and extract(month from tanggal_cetak) = '$bulan'";
+			// echo $ambilNomorSuratRotasiTerakhir;
+			$query 		= 	$this->personalia->query($ambilNomorSuratRotasiTerakhir);
 			return $query->result_array();
+			return $$ambilNomorSuratRotasiTerakhir;
 	 	}
 
 	 	public function cariTSeksi($seksi_lama)
@@ -581,15 +592,108 @@
 
 	 	public function inputNomorSurat($inputNomorSurat)
 	 	{
-	 		$this->personalia->insert('"Surat".t_arsip_kode_surat', $inputNomorSurat);
+	 		$this->personalia->insert('"Surat".t_arsip_nomor_surat', $inputNomorSurat);
 	 	}
 
-	 	public function deleteArsipSuratDemosi($bulan_surat, $kode_surat, $no_surat)
+	 	public function deleteArsipSuratDemosi($bulan_surat, $tahun, $kode_surat, $no_surat)
 	 	{
 	 		$this->personalia->where('bulan_surat=', $bulan_surat);
+	 		$this->personalia->where('tahun_surat=', $tahun);
 	 		$this->personalia->where('kode_surat=', $kode_surat);
 	 		$this->personalia->where('nomor_surat=', $no_surat);
-	 		$this->personalia->delete('"Surat".t_arsip_kode_surat');
+	 		$this->personalia->delete('"Surat".t_arsip_nomor_surat');
 	 	}
+
+	 	public function ambilPosisi($nomor_induk)
+			    {
+			    	$ambilPosisi 	= "	select 		master.nama,
+													master.noind,
+													(
+														case 	when 	(
+																			master.kd_jabatan::int between 1 and 14
+																			or 	master.kd_jabatan::int in (16, 19, 25)
+																		)
+																		then 	concat_ws(' ', master.jabatan, master.lingkup)
+																else 	concat
+																		(
+																			master.pekerjaan,
+																			' / ',
+																			'Golongan ',
+																			master.golkerja,
+																			' / ',
+																			'Seksi ',
+																			master.seksi,
+																			' / ',
+																			'Unit ',
+																			master.unit,
+																			' / ',
+																			'Departemen ',
+																			master.dept
+																		)
+														end
+													) as posisi
+										from 		(
+										 				select		pri.nama,
+																	pri.noind,
+																	pri.kode_status_kerja,
+																	pri.golkerja,
+																	pri.kd_jabatan,
+																	rtrim(torganisasi.jabatan) as jabatan,
+																	tseksi.dept,
+																	tseksi.bidang,
+																	tseksi.unit,
+																	tseksi.seksi,
+																	tseksi.pekerjaan,
+																	(
+																		case 	when 	tseksi.seksi='-'
+																						then 	(
+																									case 	when 	tseksi.unit='-'
+																													then 	(
+																																case 	when 	tseksi.bidang='-'
+																																				then 	tseksi.dept
+																																		else 	tseksi.bidang
+																																end
+																															)
+																											else 	tseksi.unit
+																									end
+																								)
+																				else 	tseksi.seksi
+																		end
+																	) as lingkup,
+																	pri.kd_pkj,
+																	tpekerjaan.kdpekerjaan as kode_pekerjaan,
+																	pri.lokasi_kerja as kode_lokasi_kerja,
+																	tlokasi_kerja.lokasi_kerja as nama_lokasi_kerja
+														from 		hrd_khs.v_hrd_khs_tpribadi as pri
+																	join 		hrd_khs.v_hrd_khs_tseksi as tseksi
+																				on 	tseksi.kodesie=pri.kodesie
+																	left join 	hrd_khs.tpekerjaan as tpekerjaan
+																				on 	tpekerjaan.kdpekerjaan=pri.kd_pkj
+																	join 		hrd_khs.torganisasi as torganisasi
+																				on 	torganisasi.kd_jabatan=pri.kd_jabatan
+																	join 		hrd_khs.tlokasi_kerja as tlokasi_kerja
+																				on 	tlokasi_kerja.id_=pri.lokasi_kerja
+														where 		pri.noind='$nomor_induk'
+													) as master;";
+					$query 			=	$this->personalia->query($ambilPosisi);
+					return $query->result_array();
+			    }
+
+		public function cekStaf($nomor_induk)
+			    {
+			    	$cekStaf 		= "	select 		(
+														case 	when 	(
+																			pri.kd_jabatan::int between 1 and 14
+																			or 	pri.kd_jabatan::int in (16, 19, 25)
+																		)
+																		then 	'STAF'
+																else 	'NONSTAF'
+														end
+													) as status
+										from 		hrd_khs.v_hrd_khs_tpribadi as pri
+										where 		pri.noind='$nomor_induk'";
+					$query 			=	$this->personalia->query($cekStaf);
+					return $query->result_array();
+			    }
  	}
 

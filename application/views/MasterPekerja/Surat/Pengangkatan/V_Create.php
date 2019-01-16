@@ -1,16 +1,20 @@
 <section class="content">
     <div class="inner" >
         <div class="row">
-            <form id="MasterPekerja-SuratPengangk-FormCreate" method="post" action="<?php echo site_url('MasterPekerja/Surat/SuraPengangkatan/add');?>" class="form-horizontal" >
+            <form id="MasterPekerja-SuratPengangkatanStaff-FormCreate" method="post" action="<?php echo site_url('MasterPekerja/Surat/SuratPengangkatanStaff/add');?>" class="form-horizontal" >
                 <div class="col-lg-12">
                     <div class="row">
                         <div class="col-lg-12">
                             <div class="col-lg-11">
                                 <div class="text-right"><h1><b><?= $Title ?></b></h1></div>
+                                <?php if ($kode > 0) {
+                                    echo '<input type="text" class="stafStatus" value="1" hidden name="txtstafStatus">';
+                                }
+                                  ?>
                             </div>
                             <div class="col-lg-1 ">
                                 <div class="text-right hidden-md hidden-sm hidden-xs">
-                                    <a class="btn btn-default btn-lg" href="<?php echo site_url('MasterPekerja/Surat/SuratPengangkatan');?>">
+                                    <a class="btn btn-default btn-lg" href="<?php echo site_url('MasterPekerja/Surat/SuratPengangkatanStaff');?>">
                                         <i class="icon-wrench icon-2x"></i>
                                         <span ><br /></span>
                                     </a>                             
@@ -31,7 +35,7 @@
                                                     <div class="form-group">
                                                         <label for="cmbNoind" class="col-lg-4 control-label">Nomor Induk</label>
                                                         <div class="col-lg-8">
-                                                            <select class="select2" name="txtNoind" id="MasterPekerja-SuratMutasi-DaftarPekerja" style="width: 100%">
+                                                            <select class="select2 MasterPekerja-Surat-DaftarPekerja-staf noind" name="txtNoind" id="" style="width: 100%">
                                                                 <option></option>
                                                             </select>
                                                         </div>
@@ -39,9 +43,9 @@
                                                 </div>
                                                 <div class="col-lg-6">
                                                     <div class="form-group">
-                                                        <label for="txtStatusStaf" class="col-lg-4 control-label">Staf/Nonstaf</label>
+                                                        <label for="txtStatusStaf" class="col-lg-4 control-label">Nomor Induk Baru</label>
                                                         <div class="col-lg-8">
-                                                            <input type="text" name="txtStatusStaf" class="form-control" id="MasterPekerja-txtStatusStaf" readonly="">
+                                                            <input type="text" name="txtNoindBaru" class="toupper form-control MasterPekerja-txtNoindBaru">
                                                         </div>
                                                     </div>
                                                 </div>
@@ -49,49 +53,49 @@
                                                     <div class="form-group">
                                                         <label for="txtKodesieLama" class="col-lg-4 control-label">Seksi Asal</label>
                                                         <div class="col-lg-8">
-                                                            <input type="text" name="txtKodesieLama" class="form-control" id="MasterPekerja-txtKodesieLama" readonly="">
+                                                            <input type="text" name="txtKodesieLama" class="form-control MasterPekerja-txtKodesieLama" readonly="">
                                                         </div>
                                                     </div>  
                                                     <div class="form-group">
                                                         <label for="txtGolonganPekerjaanLama" class="col-lg-4 control-label">Gol. Kerja</label>
                                                         <div class="col-lg-8">
-                                                            <input type="text" name="txtGolonganPekerjaanLama" class="form-control" id="MasterPekerja-txtGolonganKerjaLama" readonly="">
+                                                            <input type="text" name="txtGolonganPekerjaanLama" class="form-control MasterPekerja-txtGolonganKerjaLama" readonly="">
                                                         </div>
                                                     </div>   
                                                     <div class="form-group">
                                                         <label for="txtPekerjaanLama" class="col-lg-4 control-label">Pekerjaan</label>
                                                         <div class="col-lg-8">
-                                                            <input type="text" name="txtPekerjaanLama" class="form-control" id="MasterPekerja-txtPekerjaanLama" readonly="">
+                                                            <input type="text" name="txtPekerjaanLama" class="form-control MasterPekerja-txtPekerjaanLama" readonly="">
                                                         </div>
                                                     </div>
                                                     <div class="form-group">
                                                         <label for="txtKdJabatanLama" class="col-lg-4 control-label">Kd Jabatan</label>
                                                         <div class="col-lg-8">
-                                                            <input type="text" name="txtKdJabatanLama" class="form-control" id="MasterPekerja-txtKdJabatanLama" readonly="">
+                                                            <input type="text" name="txtKdJabatanLama" class="form-control MasterPekerja-txtKdJabatanLama" readonly="">
                                                         </div>
                                                     </div>
                                                     <div class="form-group">
                                                         <label for="txtJabatanLama" class="col-lg-4 control-label">Jabatan</label>
                                                         <div class="col-lg-8">
-                                                            <input type="text" name="txtJabatanLama" class="form-control" id="MasterPekerja-txtJabatanLama" readonly="">
+                                                            <input type="text" name="txtJabatanLama" class="form-control MasterPekerja-txtJabatanLama" readonly="">
                                                         </div>
                                                     </div>
                                                     <div class="form-group">
                                                         <label for="txtLokasiKerjaLama" class="col-lg-4 control-label">Lokasi Kerja</label>
                                                         <div class="col-lg-8">
-                                                            <input type="text" name="txtLokasiKerja" class="form-control" id="MasterPekerja-txtLokasiKerjaLama" readonly="">
+                                                            <input type="text" name="txtLokasiKerja" class="form-control MasterPekerja-txtLokasiKerjaLama" readonly="">
                                                         </div>
                                                     </div>
                                                     <div class="form-group">
                                                         <label for="txtTempatMakan1" class="col-lg-4 control-label">Tempat Makan 1</label>
                                                         <div class="col-lg-8">
-                                                            <input type="text" name="txtTempatMakan1" class="form-control" id="MasterPekerja-txtTempatMakan1" readonly="">
+                                                            <input type="text" name="txtTempatMakan1" class="form-control MasterPekerja-txtTempatMakan1" readonly="">
                                                         </div>
                                                     </div>
                                                     <div class="form-group">
                                                         <label for="txtTempatMakan2" class="col-lg-4 control-label">Tempat Makan 2</label>
                                                         <div class="col-lg-8">
-                                                            <input type="text" name="txtTempatMakan2" class="form-control" id="MasterPekerja-txtTempatMakan2" readonly="">
+                                                            <input type="text" name="txtTempatMakan2" class="form-control MasterPekerja-txtTempatMakan2" readonly="">
                                                         </div>
                                                     </div>
                                                 </div>
@@ -99,7 +103,7 @@
                                                     <div class="form-group">
                                                         <label for="txtKodesieBaru" class="col-lg-4 control-label">Pengangkatan</label>
                                                         <div class="col-lg-8">
-                                                            <select name="txtKodesieBaru" class="select2" id="MasterPekerja-SuratMutasi-DaftarSeksi" style="width: 100%">
+                                                            <select name="txtKodesieBaru" class="select2 MasterPekerja-SuratMutasi-DaftarSeksi" style="width: 100%">
                                                                 <option value=""></option>
                                                             </select>
                                                         </div>
@@ -107,7 +111,7 @@
                                                     <div class="form-group">
                                                         <label for="txtGolonganPekerjaanBaru" class="col-lg-4 control-label">Gol.Kerja</label>
                                                         <div class="col-lg-8">
-                                                            <select name="txtGolonganPekerjaanBaru" class="form-control select2" id="MasterPekerja-SuratMutasi-DaftarGolongan">
+                                                            <select name="txtGolonganPekerjaanBaru" class="form-control select2 MasterPekerja-SuratMutasi-DaftarGolongan">
                                                                 <option value=""></option>
                                                             </select>
                                                         </div>
@@ -115,7 +119,7 @@
                                                     <div class="form-group">
                                                         <label for="txtPekerjaanBaru" class="col-lg-4 control-label">Pekerjaan</label>
                                                         <div class="col-lg-8">
-                                                            <select name="txtPekerjaanBaru" class="form-control select2" id="MasterPekerja-SuratMutasi-DaftarPekerjaan">
+                                                            <select name="txtPekerjaanBaru" class="form-control select2 MasterPekerja-SuratMutasi-DaftarPekerjaan">
                                                                 <option value=""></option>
                                                             </select>
                                                         </div>
@@ -123,7 +127,7 @@
                                                      <div class="form-group">
                                                         <label for="txtKdJabatanBaru" class="col-lg-4 control-label">Kd Jabatan Baru</label>
                                                         <div class="col-lg-8">
-                                                            <select name="txtKdJabatanBaru" class="form-control select2">
+                                                            <select name="txtKdJabatanBaru" class="form-control select2 jabatan">
                                                                 <option value=""></option>
                                                                 <?php
                                                                     foreach ($DaftarKdJabatan as $kdjabatan) 
@@ -142,7 +146,7 @@
                                                     <div class="form-group">
                                                         <label for="txtJabatanBaru" class="col-lg-4 control-label">Jabatan Baru</label>
                                                         <div class="col-lg-8">
-                                                            <input class="form-control toupper" type="text" name="txtJabatanBaru">
+                                                            <input class="form-control toupper setjabatan" type="text" name="txtJabatanBaru">
                                                         </div>
                                                     </div>
 
@@ -165,7 +169,7 @@
                                                     <div class="form-group">
                                                         <label for="txtTempatMakan1Baru" class="col-lg-4 control-label">Tempat Makan 1</label>
                                                         <div class="col-lg-8">
-                                                            <select name="txtTempatMakan1Baru" class="form-control select2" >
+                                                            <select name="txtTempatMakan1Baru" class="form-control select2 MasterPekerja-DaftarTempatMakan" >
                                                                 <option value=""></option>
                                                                 <?php
                                                                     foreach ($DaftarTempatMakan1 as $tempatmakan1) 
@@ -181,7 +185,7 @@
                                                     <div class="form-group">
                                                         <label for="txtTempatMakan2Baru" class="col-lg-4 control-label">Tempat Makan 2</label>
                                                         <div class="col-lg-8">
-                                                            <select name="txtTempatMakan2Baru" class="form-control select2" >
+                                                            <select name="txtTempatMakan2Baru" class="form-control select2 MasterPekerja-DaftarTempatMakan" >
                                                                 <option value=""></option>
                                                                 <?php
                                                                     foreach ($DaftarTempatMakan2 as $tempatmakan2) 
@@ -211,13 +215,21 @@
                                                         </div>
                                                     </div>
                                                 </div>
+                                                <div class="col-lg-6">
+                                                    <div class="form-group">
+                                                        <label for="txtStatusStaf" class="col-lg-4 control-label">Staf/Nonstaf</label>
+                                                        <div class="col-lg-8">
+                                                            <input type="text" name="txtStatusStaf" class="form-control MasterPekerja-txtStatusStaf" readonly="">
+                                                        </div>
+                                                    </div>
+                                                </div>
                                                 <div class="col-lg-12">
                                                     <div class="form-group">
                                                         <div class="col-lg-2 text-right">
-                                                            <a id="MasterPekerja-SuratMutasi-btnPreview" title="Preview" class="btn btn-info">Preview</a>
+                                                            <a id="MasterPekerja-SuratPengangkatanStaf-btnPreview" title="Preview" class="btn btn-info">Preview</a>
                                                         </div>
                                                         <div class="col-lg-10">
-                                                            <textarea class="ckeditor" name="txaPreview" id="MasterPekerja-SuratMutasi-txaPreview"></textarea>
+                                                            <textarea class="ckeditor" name="txaPreview" id="MasterPekerja-SuratPengangkatanStaf-txaPreview"></textarea>
                                                         </div>
                                                     </div>  
                                                 </div>
@@ -225,7 +237,7 @@
                                                     <div class="form-group">
                                                         <label for="txtNomorSurat" class="control-label col-lg-4">Nomor Surat</label>
                                                         <div class="col-lg-8">
-                                                            <input type="text" class="form-control" readonly="" name="txtNomorSurat" id="MasterPekerja-SuratMutasi-txtNomorSurat">
+                                                            <input type="text" class="form-control MasterPekerja-SuratMutasi-txtNomorSurat" readonly="" name="txtNomorSurat" id="">
                                                         </div>
                                                     </div>
                                                 </div>
@@ -233,7 +245,7 @@
                                                     <div class="form-group">
                                                         <label for="txtKodeSurat" class="control-label col-lg-4">Kode Surat</label>
                                                         <div class="col-lg-8">
-                                                            <input type="text" class="form-control" readonly="" name="txtKodeSurat" id="MasterPekerja-SuratMutasi-txtKodeSurat">
+                                                            <input type="text" class="form-control MasterPekerja-SuratMutasi-txtKodeSurat" readonly="" name="txtKodeSurat" id="">
                                                         </div>
                                                     </div>
                                                 </div>
@@ -241,7 +253,7 @@
                                                     <div class="form-group">
                                                         <label for="txtNomorSurat" class="control-label col-lg-4">Hal Surat</label>
                                                         <div class="col-lg-8">
-                                                            <input type="text" class="form-control" style="text-transform: uppercase;" name="txtHalSurat" value="" id="MasterPekerja-SuratMutasi-txtHalSurat">
+                                                            <input type="text" class="form-control MasterPekerja-SuratMutasi-txtHalSurat" style="text-transform: uppercase;" name="txtHalSurat" value="" id="">
                                                         </div>
                                                     </div>
                                                 </div>
@@ -262,3 +274,6 @@
         </div>
     </div>
 </section>
+<div id="surat-loading" hidden style="top: 0;left: 0;right: 0;bottom: 0; margin: auto; position: fixed; background: rgba(0,0,0,.5); z-index: 11;">
+    <img src="<?php echo site_url('assets/img/gif/loadingtwo.gif');?>" style="position: fixed; top: 0;left: 0;right: 0;bottom: 0; margin: auto; width: 40%;">
+</div>

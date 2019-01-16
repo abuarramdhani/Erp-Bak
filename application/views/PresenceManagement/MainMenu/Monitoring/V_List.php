@@ -128,6 +128,8 @@
 												$lokasikerja = "KHS PUSAT";
 											}elseif($data_registered['lokasi_kerja'] == "02"){
 												$lokasikerja = "KHS TUKSONO";
+											}elseif($data_registered['lokasi_kerja'] == "03"){
+												$lokasikerja = "KHS MLATI";
 											}else{
 												$lokasikerja = "UNREGISTERED";
 											}

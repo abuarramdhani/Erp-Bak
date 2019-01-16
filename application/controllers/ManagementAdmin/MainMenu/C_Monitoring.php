@@ -45,8 +45,48 @@ class C_Monitoring extends CI_Controller
 		$data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id);
 		$data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id);
 
-		$data['table'] = $this->M_monitoring->getDataPending();
+		$this->form_validation->set_rules('required');	
+		if($this->form_validation->run() === TRUE){
+			// print_r($_POST);exit();
+			$periode = $this->input->post('txtPeriodeMonitoring');
+			$tanggal = explode(" - ", $periode);
+			$tgl = "";
+			foreach ($tanggal as $key) {
+				if ($tgl == "") {
+					$tgl = " and cast(start_time as date) between '".$key."'";
+				}else{
+					$tgl = $tgl." and '".$key."'";
+				}
+			}
+			$pekerja = $this->input->post('txtPekerjaMonitoring');
+			$id_pkj = "";
+			if (!empty($pekerja)) {
+				foreach ($pekerja as $key) {
+					if ($id_pkj == "") {
+						$id_pkj = "'".$key."'";
+					}else{
+						$id_pkj = $id_pkj.",'".$key."'";
+					}
+				}
+				$id_pkj = " and id_pekerja in (".$id_pkj.") ";
+			}
+			$pekerjaan = $this->input->post('selectPekerjaanMonitoring');
+			$id_pkjn = "";
+			if (!empty($pekerjaan)) {
+				foreach ($pekerjaan as $key) {
+					if ($id_pkjn == "") {
+						$id_pkjn = "'".$key."'";
+					}else{
+						$id_pkjn = $id_pkjn.",'".$key."'";
+					}
+				}
+				$id_pkjn = " and pekerjaan in (select pekerjaan from ma.ma_target where id_target in (".$id_pkjn.")) ";
+			}
+			$data['table'] = $this->M_monitoring->getData($tgl,$id_pkj,$id_pkjn);
+		}
 
+		$data['pekerjaan'] = $this->M_monitoring->getPekerjaan();
+		
 		$this->load->view('V_Header',$data);
 		$this->load->view('V_Sidemenu',$data);
 		$this->load->view('ManagementAdmin/Laporan/V_monitoring',$data);

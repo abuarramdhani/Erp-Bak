@@ -19,7 +19,7 @@ class C_Index extends CI_Controller
 		$this->load->library('Personalia');		
 
 		$this->load->model('SystemAdministration/MainMenu/M_user');
-		$this->load->model('MasterPekerja/Surat/M_surat');
+		$this->load->model('MasterPekerja/Surat/Perbantuan/M_perbantuan');
 
 		date_default_timezone_set('Asia/Jakarta');
 
@@ -48,7 +48,7 @@ class C_Index extends CI_Controller
 		$data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id);
 		$data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id);
 
-		$data['DaftarSuratPerbantuan'] 	=	$this->M_surat->ambilDaftarSuratPerbantuan();
+		$data['DaftarSuratPerbantuan'] 	=	$this->M_perbantuan->ambilDaftarSuratPerbantuan();
 
 		$this->load->view('V_Header',$data);
 		$this->load->view('V_Sidemenu',$data);
@@ -70,14 +70,14 @@ class C_Index extends CI_Controller
 		$data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id);
 		$data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id);
 		
-      	// $data['DaftarPekerja']	=	$this->M_surat->getAmbilPekerjaAktif();
-      	// $data['DaftarSeksi']    =   $this->M_surat->getSeksi();
-      	// $data['DaftarPekerjaan'] = $this->M_surat->DetailPekerjaan();
-		$data['DaftarGolongan'] = $this->M_surat->DetailGolongan();
-      	$data['DaftarLokasiKerja'] = $this->M_surat->DetailLokasiKerja();
-      	$data['DaftarKdJabatan'] = $this->M_surat->DetailKdJabatan();
-      	$data['DaftarTempatMakan1'] = $this->M_surat->DetailTempatMakan1();
-      	$data['DaftarTempatMakan2'] = $this->M_surat->DetailTempatMakan2();
+      	// $data['DaftarPekerja']	=	$this->M_perbantuan->getAmbilPekerjaAktif();
+      	// $data['DaftarSeksi']    =   $this->M_perbantuan->getSeksi();
+      	// $data['DaftarPekerjaan'] = $this->M_perbantuan->DetailPekerjaan();
+		$data['DaftarGolongan'] = $this->M_perbantuan->DetailGolongan();
+      	$data['DaftarLokasiKerja'] = $this->M_perbantuan->DetailLokasiKerja();
+      	$data['DaftarKdJabatan'] = $this->M_perbantuan->DetailKdJabatan();
+      	$data['DaftarTempatMakan1'] = $this->M_perbantuan->DetailTempatMakan1();
+      	$data['DaftarTempatMakan2'] = $this->M_perbantuan->DetailTempatMakan2();
 		// echo "<pre>";
 		// print_r($data['DaftarKdJabatan']);
 		// echo "</pre>";
@@ -92,7 +92,7 @@ class C_Index extends CI_Controller
 	public function selectKodesie()
 	{
 		$noind = $this->input->post('noind');
-		$detailPekerja 			= $this->M_surat->getDetailPekerja($noind);
+		$detailPekerja 			= $this->M_perbantuan->getDetailPekerja($noind);
 		$data['seksi'] 				= 	$detailPekerja[0]['nama_seksi'];
 		$data['pekerjaan']			=	$detailPekerja[0]['pekerjaan'];
 		$data['lokasiKerja']		=	$detailPekerja[0]['lokasi_kerja'];
@@ -111,7 +111,7 @@ class C_Index extends CI_Controller
 	{
 		$keywordPencarianPekerja 	=	strtoupper($this->input->get('term'));
 
-		$daftarPekerja 				=	$this->M_surat->cariPekerja($keywordPencarianPekerja);
+		$daftarPekerja 				=	$this->M_perbantuan->cariPekerja($keywordPencarianPekerja);
 		echo json_encode($daftarPekerja);
 	}
 
@@ -119,7 +119,7 @@ class C_Index extends CI_Controller
 	{
 		$keywordPencarianSeksi	=	strtoupper($this->input->get('term'));
 
-		$daftarseksi 			=	$this->M_surat->cariseksi($keywordPencarianSeksi);
+		$daftarseksi 			=	$this->M_perbantuan->cariseksi($keywordPencarianSeksi);
 		echo json_encode($daftarseksi);
 	}
 
@@ -128,7 +128,7 @@ class C_Index extends CI_Controller
 		$keywordPencarianPekerjaan	=	strtoupper($this->input->get('term'));
 		$kodeSeksi 					=	$this->input->get('kode_seksi');
 
-		$daftarPekerjaan 			=	$this->M_surat->cariPekerjaan($keywordPencarianPekerjaan, $kodeSeksi);
+		$daftarPekerjaan 			=	$this->M_perbantuan->cariPekerjaan($keywordPencarianPekerjaan, $kodeSeksi);
 		echo json_encode($daftarPekerjaan);
 	}
 
@@ -137,7 +137,7 @@ class C_Index extends CI_Controller
 		$keywordPencarianGolKerja 	=	strtoupper($this->input->get('term'));
 		$kodeStatusKerja 			=	$this->input->get('kode_status_kerja');
 
-		$golonganPekerjaan 			=	$this->M_surat->cariGolonganPekerjaan($keywordPencarianGolKerja, $kodeStatusKerja);
+		$golonganPekerjaan 			=	$this->M_perbantuan->cariGolonganPekerjaan($keywordPencarianGolKerja, $kodeStatusKerja);
 		echo json_encode($golonganPekerjaan);
 	}
 
@@ -148,7 +148,7 @@ class C_Index extends CI_Controller
 		$seksi_lama 				=	substr($this->input->post('txtKodesieLama'), 0, 9);
 		$golongan_pekerjaan_lama 	=	$this->input->post('txtGolonganPekerjaanLama');
 		$pekerjaan_lama 		 	=	$this->input->post('txtPekerjaanLama');
-		$kd_jabatan_lama 			=	$this->input->post('txtKdJabatanLama');
+		$kd_jabatan_lama 			=	substr($this->input->post('txtKdJabatanLama'),0, 2);
 		$jabatan_lama 				=	$this->input->post('txtJabatanLama');
 		$lokasi_kerja_lama 			=	$this->input->post('txtLokasiKerja');
 		$tempat_makan1_lama 		=	$this->input->post('txtTempatMakan1');
@@ -169,9 +169,11 @@ class C_Index extends CI_Controller
 		$kode_surat 				=	$this->input->post('txtKodeSurat');
 		$hal_surat 					=	$this->input->post('txtHalSurat');
 		$staf					 	=   $this->input->post('txtStatusStaf');
+		$edit					 	=   $this->input->post('txtStatusEdit');
 
 
-		$parameterTahunBulan 		=	date('Y-m', strtotime($tanggal_cetak));
+		$parameterTahun 	=	date('Y', strtotime($tanggal_cetak));
+		$parameterBulan 	=	date('m', strtotime($tanggal_cetak));
 		
 
 		$lokasi_kerja_lama 			=	explode(' - ', $lokasi_kerja_lama);
@@ -185,7 +187,7 @@ class C_Index extends CI_Controller
 		$nama_pekerjaan_lama 		=	'';
 		$nama_pekerjaan_baru 		=	'';
 
-		$cekStaf 					=	$this->M_surat->cekStaf($nomor_induk);
+		$cekStaf 					=	$this->M_perbantuan->cekStaf($nomor_induk);
 		if(empty($kode_surat))
 		{
 			if($cekStaf[0]['status']=='STAF')
@@ -200,18 +202,35 @@ class C_Index extends CI_Controller
 		}
 		else
 		{
+			if($cekStaf[0]['status']=='STAF')
+			{
+				$kode_surat 				=	'DU/KI-B';
+			}
+			else
+			{
+				$kode_surat 				=	'PS/KI-N';
+				
+			}
 			$kode_surat 	=	$kode_surat;
 		}
 
+		$stafff = '1';
+		if($cekStaf[0]['status']=='STAF')
+		{
+			$stafff = '1';
+		}else{
+			$stafff = '0';
+		}
 		
-		$templateMutasi 			=	$this->M_surat->ambilLayoutSuratPerbantuan();
-		$tseksiBaru 				=	$this->M_surat->cariTSeksi($seksi_baru);
+		$templateMutasi 			=	$this->M_perbantuan->ambilLayoutSuratPerbantuan($stafff);
+		// print_r($templateMutasi);exit();
+		$tseksiBaru 				=	$this->M_perbantuan->cariTSeksi($seksi_baru);
 
-		$jabatanSurat 				=	$this->M_surat->cekJabatanSurat($nomor_induk);
+		$jabatanSurat 				=	$this->M_perbantuan->cekJabatanSurat($nomor_induk);
 		$nama_pekerja 				=	$jabatanSurat[0]['nama'];
 		$jabatan_surat 				=	$jabatanSurat[0]['jabatan_surat'];
 
-		$posisiLama 				=	$this->M_surat->ambilPosisi($nomor_induk);
+		$posisiLama 				=	$this->M_perbantuan->ambilPosisi($nomor_induk);
 		$posisi_lama 				=	$posisiLama[0]['posisi'];
 
 		$posisi_baru 				=	'';
@@ -225,7 +244,7 @@ class C_Index extends CI_Controller
 			$tertanda 					= 	'CV Karya Hidup Sentosa';
 			$nama_tanda_tangan 			=	'Drs. Hendro Wijayanto, Akt';
 			$jabatan_tertanda 			=	'Direktur Utama';
-			$posisi_baru 				=	$jabatan_baru;
+			$posisi_baru 				=	'Seksi '.$tseksiBaru['0']['seksi'].' / '.'Unit '.$tseksiBaru[0]['unit'].' / '.'Departemen '.$tseksiBaru[0]['dept'];
 		}
 		else
 		{
@@ -233,7 +252,7 @@ class C_Index extends CI_Controller
 			$nama_tanda_tangan 			=	'Rajiwan';
 			$jabatan_tertanda 			=	'Asisten Kepala Unit Hubungan Kerja & General Affair';
 
-			$cekPekerjaan 				=	$this->M_surat->cekPekerjaan($pekerjaan_baru);
+			$cekPekerjaan 				=	$this->M_perbantuan->cekPekerjaan($pekerjaan_baru);
 			$nama_pekerjaan_baru 		=	$cekPekerjaan[0]['pekerjaan'];
 			if(!(empty($nama_pekerjaan_baru)))
 			{
@@ -246,27 +265,29 @@ class C_Index extends CI_Controller
 			$posisi_baru 				=	$nama_pekerjaan_baru.'Golongan '.$golongan_pekerjaan_baru.' / '.'Seksi '.$tseksiBaru['0']['seksi'].' / '.'Unit '.$tseksiBaru[0]['unit'].' / '.'Departemen '.$tseksiBaru[0]['dept'];
 		}
 
-		if(empty($nomor_surat))
-		{
-
-			$nomorSuratMutasiTerakhir 	= 	$this->M_surat->ambilNomorSuratTerakhir($parameterTahunBulan, $kode_surat);
-			$nomorSuratMutasiTerakhir 	=	$nomorSuratMutasiTerakhir[0]['jumlah'];
-			$nomorSuratMutasiTerakhir 	=	$nomorSuratMutasiTerakhir+1;
-
-			if($nomorSuratMutasiTerakhir<1000)
+		// echo $kode_surat;exit();
+		if($edit == '1')
 			{
-				for ($i=strlen($nomorSuratMutasiTerakhir); $i < 3; $i++) 
-				{ 
-					$nomorSuratMutasiTerakhir 	=	'0'.$nomorSuratMutasiTerakhir;
-				}
+				$nomor_surat 	=	$nomor_surat;
 			}
+			else
+			{
+				$nomorSuratTerakhir 	= 	$this->M_perbantuan->ambilNomorSuratTerakhir($parameterTahun, $parameterBulan, $kode_surat);
+			// print_r($nomorSuratTerakhir);
+				$nomorSuratTerakhir 	=	$nomorSuratTerakhir[0]['jumlah'];
+				$nomorSuratTerakhir 	=	$nomorSuratTerakhir+1;
 
-			$nomor_surat 	=	$nomorSuratMutasiTerakhir;
-		}
-		else
-		{
-			$nomor_surat 	=	$nomor_surat;
-		}
+				if($nomorSuratTerakhir<1000)
+				{
+					for ($i=strlen($nomorSuratTerakhir); $i < 3; $i++) 
+					{ 
+						$nomorSuratTerakhir 	=	'0'.$nomorSuratTerakhir;
+					}
+				}
+
+				$nomor_surat 	=	$nomorSuratTerakhir;
+			}
+		// echo $parameterTahunBulan;
 
 		$tembusan 	=	$this->personalia->tembusanDuaPihak($kd_jabatan_lama, $seksi_lama, $kd_lokasi_lama, $kd_jabatan_baru, $seksi_baru, $kd_lokasi_baru);
 
@@ -356,7 +377,7 @@ class C_Index extends CI_Controller
 		$nomor_induk 				=	$this->input->post('txtNoind');
 		$seksi_lama 				=	substr($this->input->post('txtKodesieLama'), 0, 9);
 		$golongan_pekerjaan_lama 	=	$this->input->post('txtGolonganPekerjaanLama');
-		$kd_jabatan_lama 			=	$this->input->post('txtKdJabatanLama');
+		$kd_jabatan_lama 			=	substr($this->input->post('txtKdJabatanLama'),0 ,2);
 		$jabatan_lama 				=	$this->input->post('txtJabatanLama');
 		$lokasi_kerja_lama 			=	$this->input->post('txtLokasiKerja');
 		$tempat_makan1_lama 		=	$this->input->post('txtTempatMakan1');
@@ -381,7 +402,7 @@ class C_Index extends CI_Controller
 
 		$isi_surat 					=	$this->input->post('txaPreview');
 
-		$getNamaNoindBaru 			=	$this->M_surat->getNamaNoindBaru($nomor_induk);
+		$getNamaNoindBaru 			=	$this->M_perbantuan->getNamaNoindBaru($nomor_induk);
 
 		$nama 						=	$getNamaNoindBaru[0]['nama'];
 		$noind_baru 				=	$getNamaNoindBaru[0]['noind_baru'];
@@ -432,16 +453,20 @@ class C_Index extends CI_Controller
 											'tanggal_mulai_perbantuan'	=>	$tanggal_perbantuan_awal,
 											'tanggal_selesai_perbantuan'=>	$tanggal_perbantuan_akhir,
 										);
-		$this->M_surat->inputSuratPerbantuan($inputSuratPerbantuan);
+		$this->M_perbantuan->inputSuratPerbantuan($inputSuratPerbantuan);
+		$bulan_surat = date('m', strtotime($tanggal_cetak));
+		$bulan_surat = substr($bulan_surat, 0, 2);
+		$tahun_surat = date('Y', strtotime($tanggal_cetak));
 		$inputNomorSurat 			=	array
-										(
-											'bulan_surat' 			=>	date('Y-m', strtotime($tanggal_cetak)),
-											'kode_surat' 			=>	$kodeSurat,
-											'nomor_surat'			=>	$nomor_surat,
-											'noind' 				=>	$nomor_induk,
-											'jenis_surat'			=>	'PERBANTUAN',
-										);
-		$this->M_surat->inputNomorSurat($inputNomorSurat);
+											(
+												'bulan_surat' 			=>	$bulan_surat,
+												'tahun_surat'			=>	$tahun_surat,
+												'kode_surat' 			=>	$kodeSurat,
+												'nomor_surat'			=>	$nomor_surat,
+												'noind' 				=>	$nomor_induk,
+												'jenis_surat'			=>	'PERBANTUAN',
+											);
+			$this->M_Promosi->inputNomorSurat($inputNomorSurat);
 		redirect('MasterPekerja/Surat/SuratPerbantuan');
 	}
 
@@ -450,7 +475,7 @@ class C_Index extends CI_Controller
 		$no_surat_decode 	=	str_replace(array('-', '_', '~'), array('+', '/', '='), $no_surat);
 		$no_surat_decode 	=	$this->encrypt->decode($no_surat_decode);
 
-		$data['isiSuratPerbantuan']		=	$this->M_surat->ambilIsiSuratPerbantuan($no_surat_decode);
+		$data['isiSuratPerbantuan']		=	$this->M_perbantuan->ambilIsiSuratPerbantuan($no_surat_decode);
 
 		$this->load->library('pdf');
 		$pdf 	=	$this->pdf->load();
@@ -483,12 +508,12 @@ class C_Index extends CI_Controller
 		$data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id);
 		$data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id);
 
-		$data['editSuratPerbantuan'] 		= $this->M_surat->editSuratPerbantuan($no_surat_decode);
-		$data['DaftarGolongan'] = $this->M_surat->DetailGolongan();
-      	$data['DaftarLokasiKerja'] = $this->M_surat->DetailLokasiKerja();
-      	$data['DaftarKdJabatan'] = $this->M_surat->DetailKdJabatan();
-      	$data['DaftarTempatMakan1'] = $this->M_surat->DetailTempatMakan1();
-      	$data['DaftarTempatMakan2'] = $this->M_surat->DetailTempatMakan2();
+		$data['editSuratPerbantuan'] 		= $this->M_perbantuan->editSuratPerbantuan($no_surat_decode);
+		$data['DaftarGolongan'] = $this->M_perbantuan->DetailGolongan();
+      	$data['DaftarLokasiKerja'] = $this->M_perbantuan->DetailLokasiKerja();
+      	$data['DaftarKdJabatan'] = $this->M_perbantuan->DetailKdJabatan();
+      	$data['DaftarTempatMakan1'] = $this->M_perbantuan->DetailTempatMakan1();
+      	$data['DaftarTempatMakan2'] = $this->M_perbantuan->DetailTempatMakan2();
 		// echo "<pre>";
 		// print_r($data['editSuratPerbantuan']);
 		// echo "</pre>";
@@ -504,7 +529,7 @@ class C_Index extends CI_Controller
 		$no_surat_decode 	=	str_replace(array('-', '_', '~'), array('+', '/', '='), $no_surat);
 		$no_surat_decode 	=	$this->encrypt->decode($no_surat_decode);
 
-		$nomor_induk 				=	$this->input->post('txtNoind');
+		$nomor_induk 				=	substr($this->input->post('txtNoind'), 0, 5);
 		$seksi_lama 				=	substr($this->input->post('txtKodesieLama'), 0, 9);
 		$golongan_pekerjaan_lama 	=	$this->input->post('txtGolonganPekerjaanLama');
 		$kd_jabatan_lama 			=	$this->input->post('txtKdJabatanLama');
@@ -532,7 +557,7 @@ class C_Index extends CI_Controller
 
 		$isi_surat 					=	$this->input->post('txaPreview');
 
-		$getNamaNoindBaru 			=	$this->M_surat->getNamaNoindBaru($nomor_induk);
+		$getNamaNoindBaru 			=	$this->M_perbantuan->getNamaNoindBaru($nomor_induk);
 
 		$nama 						=	$getNamaNoindBaru[0]['nama'];
 		$noind_baru 				=	$getNamaNoindBaru[0]['noind_baru'];
@@ -580,7 +605,7 @@ class C_Index extends CI_Controller
 											'tanggal_mulai_perbantuan'	=>	$tanggal_perbantuan_awal,
 											'tanggal_selesai_perbantuan'=>	$tanggal_perbantuan_akhir,
 										);
-		$this->M_surat->updateSuratPerbantuan($updateSuratPerbantuan, $nomor_surat, $kodeSurat);
+		$this->M_perbantuan->updateSuratPerbantuan($updateSuratPerbantuan, $nomor_surat, $kodeSurat);
 		redirect('MasterPekerja/Surat/SuratPerbantuan');
 	}
 
@@ -588,16 +613,19 @@ class C_Index extends CI_Controller
 	{
 		$no_surat_decode 	=	str_replace(array('-', '_', '~'), array('+', '/', '='), $no_surat);
 		$no_surat_decode 	=	$this->encrypt->decode($no_surat_decode);
-		// echo $no_surat_decode; exit();
+		// echo $no_surat_decode;exit();
 
-		$this->M_surat->deleteSuratPerbantuan($no_surat_decode);
+		$this->M_perbantuan->deleteSuratPerbantuan($no_surat_decode);
 
-		// $no_surat_decode 		=	explode('/', $no_surat_decode);
-		// $no_surat 				=	(int)$no_surat_decode[0];
-		// $kode_surat 			=	$no_surat_decode[1].'/'.$no_surat_decode[2];
-		// $bulan_surat 			= 	'20'.$no_surat_decode[4].'-'.$no_surat_decode[3];
+		$no_surat_decode 		=	explode('/', $no_surat_decode);
+		$no_surat 				=	(int)$no_surat_decode[0];
+		$kode_surat 			=	$no_surat_decode[1].'/'.$no_surat_decode[2];
+		$tahun 					= 	'20'.$no_surat_decode[4];
+		$bulan_surat			=	$no_surat_decode[3];
+		// echo $bulan_surat;exit();
 
-		$this->M_surat->deleteArsipSuratPerbantuan($no_surat_decode);
+		$this->M_perbantuan->deleteArsipSuratPerbantuan($bulan_surat, $tahun, $kode_surat, $no_surat);
+
 		redirect('MasterPekerja/Surat/SuratPerbantuan');
 
 	}

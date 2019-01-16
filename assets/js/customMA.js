@@ -1,6 +1,11 @@
 $(document).ready(function(){
 	$('.datatable-ma').DataTable({
-		dom : 'frtp'
+		retrieve : true,
+		dom: 'Bfrtip',
+	    buttons: [
+	        'excel',
+	        'pdf'
+	    ]
 	});
 });
 
@@ -224,8 +229,36 @@ function ModalTampilPending(btn){
 	$('#pending-Create').modal("show");
 }
 //pending end
+//monitoring start
+$(document).ready(function(){
+	$('.selectPekerjaanMonitoring').select2({
+		placeholder: "Pekerjaan",
+		searching: true,
+		minimumInputLength: 3,
+		allowClear: false,
+		ajax:
+		{
+			url: baseurl+'ManagementAdmin/Proses/CariPekerjaan',
+			dataType: 'json',
+			delay: 500,
+			type: 'GET',
+			data: function(params){
+				return {
+					term: params.term
+				}
+			},
+			processResults: function (data){
+				return {
+					results: $.map(data, function(obj){
+						return {id: obj.id_target, text: obj.pekerjaan};
+					})
+				}
+			}
+		}
+	});
+});
+//monioring end
 //Monitoring end
-
 //Manual start
 //cetak start
 $(document).ready(function(){
