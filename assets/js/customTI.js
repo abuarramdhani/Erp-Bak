@@ -30,4 +30,9 @@ $(document).ready(function(){
         "paging": true,
         "searching": true,
 	});
+
+	$('.invoice_date').datepicker({
+		format: 'd/m/yyyy',
+		autoclose: true,
+	});
 })

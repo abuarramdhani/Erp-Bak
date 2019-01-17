@@ -195,10 +195,10 @@
 				}
 			}
 
-			if ( $this->session->is_logged )
-			{
-				redirect('PresenceManagement/MonitoringPresensi');
-			}
+			// if ( $this->session->is_logged )
+			// {
+			// 	redirect('PresenceManagement/MonitoringPresensi');
+			// }
 		}
 
 		public function get_scanlog_all($id_lokasi = FALSE)

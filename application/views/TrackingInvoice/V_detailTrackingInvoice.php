@@ -27,6 +27,14 @@
 									<?php $no=1; foreach($invoice as $po_num) { ?>
 									<tr>
 										<td>
+											<span><label>Vendor Name</label></span>
+										</td>
+										<td>
+		                     				<input class="form-control" size="40" type="text" name="vendor_name" value="<?php echo $po_num['VENDOR_NAME']?>" readonly>
+		                     			</td>
+									</tr>
+									<tr>
+										<td>
 											<span><label>Invoice Number</label></span>
 										</td>
 										<td>
@@ -59,11 +67,27 @@
 									</tr>
 									<tr>
 										<td>
-											<span><label>Vendor Name</label></span>
+											<span><label>Invoice Category</label></span>
 										</td>
 										<td>
-		                     				<input class="form-control" size="40" type="text" name="vendor_name" value="<?php echo $po_num['VENDOR_NAME']?>" readonly>
-		                     			</td>
+											<input class="form-control" size="40" type="text" name="invoice_category" value="<?php echo $po_num['INVOICE_CATEGORY']?>" readonly>
+										</td>
+									</tr>
+									<tr>
+										<td>
+											<span><label>Nominal DPP</label></span>
+										</td>
+										<td>
+											<input class="form-control" size="40" type="text" name="nominal_dpp" value="<?php echo $po_num['NOMINAL_DPP']?>" readonly>
+										</td>
+									</tr>
+									<tr>
+										<td>
+											<span><label>Info</label></span>
+										</td>
+										<td>
+											<input class="form-control" size="40" type="text" name="info" value="<?php echo $po_num['INFO']?>" readonly>
+										</td>
 									</tr>
 									<?php $no++; break;} ?>
 								</table>

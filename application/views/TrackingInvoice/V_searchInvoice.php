@@ -25,9 +25,9 @@
 												<div class="col-md-6">
 													<table>
 														<tr>
-															<td><label>Nama Vendor*</label></td>
+															<td><label>Nama Vendor</label></td>
 															<td>
-																<select id="vendor_name" name="vendor_name" class="form-control select2" style="width: 100%" disabled="disabled">
+																<select id="nama_vendor"  name="nama_vendor" class="form-control select2" style="width: 100%">
 																<option></option>
 																<?php foreach ($getVendorName as $name) { ?>
 																<option><?php echo $name['VENDOR_NAME'] ?></option>
@@ -36,15 +36,15 @@
 															</td>
 														</tr>
 														<tr>
-															<td><label>Nomor PO</label></td>
+															<td><label>Nomor PO **</label></td>
 															<td>
-																<input type="text" class="form-control" name="po_number" id="po_number" style="margin: 5px" size="30">
+																<input type="text" class="form-control" name="po_number" id="po_number" style="margin: 5px" size="30" value="%">
 															</td>
 														</tr>
 														<tr>
-															<td><label>Keyword Lain*</label></td>
+															<td><label>Keyword Lain</label></td>
 															<td>
-																<input type="text" class="form-control" name="any_keyword" id="any_keyword" style="margin: 5px" size="30" disabled="disabled">
+																<input type="text" class="form-control" name="any_keyword" id="any_keyword" style="margin: 5px" size="30" >
 															</td>
 														</tr>
 													</table>
@@ -58,9 +58,9 @@
 															</td>
 														</tr>
 														<tr>
-															<td><label>Tanggal Invoice*</label></td>
+															<td><label>Tanggal Invoice</label></td>
 															<td>
-																<input type="text" class="form-control" name="invoice_date" id="invoice_date" style="margin: 5px" size="30" disabled="disabled">
+																<input type="text" class="form-control invoice_date" name="invoice_date" id="invoice_date" style="margin: 5px" size="30">
 															</td>
 														</tr>
 													</table>

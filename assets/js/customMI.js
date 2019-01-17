@@ -1,15 +1,9 @@
 $(document).ready(function(){
 
-	$('#tabel_invoice, #tbListSubmit, #tbListInvoice, #rejectinvoice, #tbListSubmit, #finishInvoice, #unprocessTabel, #tabel_detail_purchasing').DataTable({
-		"pageLength": 10,
-        "paging": true,
-        "searching": true,
-	});
-
-	$('#tabel_invoice_modal').DataTable({
-		"pageLength": 3,
-        "paging": true,
-        "searching": true,
+	$('#tabel_invoice,#tbListSubmit, #tbListInvoice, #rejectinvoice, #tabel_detail_purchasing, #tabel_invoice_modal, #invoice_detail, #editlinespo, #rejectpo, #finishInvoice, #unprocessTabel').DataTable({
+        "paging":   false,
+        "ordering": true,
+        "info":     false
 	});
 
 	$('#btnSubmitChecking').click(function(){
@@ -22,11 +16,13 @@ $(document).ready(function(){
 				arrId.push(valueId);
 				var hasil = arrId.join();
 				$('input[name="idYangDiPilih"]').val(hasil);
+				
+				$('.invoice_category').val($(this).attr('inv-cat'));
 			}
 		});
 		$('#jmlChecked').text(jml);
-		$('#content1').slideDown();
-		$('#content2').slideUp();
+		// $('#content1').slideDown();
+		// $('#content2').slideUp();
 	});
 
 	// $('.inv_amount').moneyFormat();
@@ -97,7 +93,11 @@ $(document).ready(function(){
 				// console.log(response);
 				
 				$('#tablePoLines').html(response);
-				$('#poLinesTable').DataTable();
+				$('#poLinesTable').DataTable({
+					"paging":   false,
+			        "ordering": false,
+			        "info":     false	
+				});
 
 				$('#btnAddPoNumber').on('click', function(){
 				    var inputName = ['line_num','vendor_name','po_number','lppb_number','status','shipment_number',
@@ -254,31 +254,47 @@ $(document).ready(function(){
 		alert('Invoice akan di submit ke finance');
 	});
 
+	// new edit icheck testing chamber
+	$(document).on('ifChanged','.submit_checking_all', function() {
+		if ($('.submit_checking_all').iCheck('update')[0].checked) {
+			// alert('satu');
+			$('.chckInvoice').each(function () {
+				// $(this).prop('checked',true);
+				$(this).iCheck('check');
+			});
+		}else{
+			$('.chckInvoice').each(function () {
+				// $(this).prop('checked',false);
+				$(this).iCheck('uncheck');
+			});
+			// alert('dua');
+		};
+	})
+	
+	$('#invoice_category').on('change', function(){
+		var jasa = $(this).val();
+		 if (jasa == 'JASA NON EKSPEDISI TRAKTOR' || jasa == 'JASA EKSPEDISI TRAKTOR') {
+			$('#jenis_jasa').show();
+		 }
+
+	})
+
 });
 
 function prosesInvMI(th){
 	var invoice_id = $(th).attr('data-id');
 	var proses = $(th).attr('value');
+	var prnt = $(th).parent();
 
-	var request = $.ajax ({
-			url: baseurl+'AccountPayables/MonitoringInvoice/Unprocess/prosesAkuntansi/'+invoice_id,
-			data: {
-					proses : proses
-					},
-			type: 'POST',
-			dataType: 'html', 
-		});
-		$(th).parent().html('<img src="'+baseurl+'assets/img/gif/loading5.gif" id="gambarloading">');
+	prnt.html('<img src="'+baseurl+'assets/img/gif/loading5.gif" id="gambarloading">');
 		
 		if (proses == 2) {
-			request.done(function(output){
-				$("#gambarloading").parent().html('<span class="btn btn-success" style="cursor: none;font-size: 10pt;" >Diterima</span>');
-			});
+			prnt.html('<span class="btn btn-success" style="cursor: none;font-size: 10pt;" >Diterima<input type="hidden" name="hdnProses[]" class="hdnProses" value="2"></span>');
 		} else {
-			request.done(function(output){
-				$("#gambarloading").parent().html('<span class="btn btn-danger" style="font-size: 8pt ;cursor: none;">Ditolak (Isikan Alasan)</span>');
+			prnt.html('<span class="btn btn-danger" style="font-size: 8pt ;cursor: none;">Ditolak (Isikan Alasan)<input type="hidden" name="hdnProses[]" class="hdnProses" value="3"></span>');
+				prnt.siblings('td').children('.reason_finance_class').show();
+				prnt.siblings('td').children('.reason_finance_class').attr('required',true);
 				alert('Alasan harus diisi');
-			});
 		}
 }
 
@@ -323,6 +339,8 @@ function bukaMOdal(elm){
 		$('.body_invoice').html(response);
 		$('.invoice_id').val(id);
 		$('#modal-invoice').modal('show');
+		$('#invoice_categorySlc').select2();
+		$('#jenis_jasaSlc').select2();
 		}
 	});
 }

@@ -44,7 +44,19 @@ class C_monitoringinvoice extends CI_Controller{
 		$data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id);
 		$data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id);
 
-		$invoice = $this->M_monitoringinvoice->showInvoice();
+		$noinduk = $this->session->userdata['user'];
+		$cek_login = $this->M_monitoringinvoice->checkSourceLogin($noinduk);
+		$source_login = '';
+
+		if ($cek_login[0]['unit_name'] == 'PEMBELIAN SUPPLIER' OR $cek_login[0]['unit_name'] == 'PENGEMBANGAN PEMBELIAN') {
+			$source_login .= "AND source = 'PEMBELIAN SUPPLIER' OR source = 'PENGEMBANGAN PEMBELIAN'";
+		}elseif ($cek_login[0]['unit_name'] == 'PEMBELIAN SUBKONTRAKTOR'){
+			$source_login .= "AND source = 'PEMBELIAN SUBKONTRAKTOR'";
+		}elseif ($cek_login[0]['unit_name'] == 'INFORMATION & COMMUNICATION TECHNOLOGY') {
+			$source_login .= "AND source = 'INFORMATION & COMMUNICATION TECHNOLOGY'";
+		}
+
+		$invoice = $this->M_monitoringinvoice->showInvoice($source_login);
 		$no = 0;
 		$keputusan = array();
 		foreach ($invoice as $inv ) {
@@ -52,7 +64,6 @@ class C_monitoringinvoice extends CI_Controller{
 			$invoice_id = $inv['INVOICE_ID'] ;
 			$po_detail = $inv['PO_DETAIL'];
 			// $po_number = $inv['PO_NUMBER'];
-			$batch_number = $inv['PURCHASING_BATCH_NUMBER'];
 
 			$keputusan[$inv['INVOICE_ID']] = "";
 			$hasil_komitmen = '';
@@ -129,12 +140,23 @@ class C_monitoringinvoice extends CI_Controller{
 		$data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id);
 		$data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id); 
 
-		$listBatch = $this->M_monitoringinvoice->showListSubmitted();
+		$noinduk = $this->session->userdata['user'];
+		$cek_login = $this->M_monitoringinvoice->checkSourceLogin($noinduk);
+		$source_login = '';
+
+		if ($cek_login[0]['unit_name'] == 'PEMBELIAN SUPPLIER' OR $cek_login[0]['unit_name'] == 'PENGEMBANGAN PEMBELIAN') {
+			$source_login .= "AND source = 'PEMBELIAN SUPPLIER' OR source = 'PENGEMBANGAN PEMBELIAN'";
+		}elseif ($cek_login[0]['unit_name'] == 'PEMBELIAN SUBKONTRAKTOR'){
+			$source_login .= "AND source = 'PEMBELIAN SUBKONTRAKTOR'";
+		}elseif ($cek_login[0]['unit_name'] == 'INFORMATION & COMMUNICATION TECHNOLOGY') {
+			$source_login .= "AND source = 'INFORMATION & COMMUNICATION TECHNOLOGY'";
+		}
+		
+		$listBatch = $this->M_monitoringinvoice->showListSubmitted($source_login);
 		
 		$no = 0;
 		foreach ($listBatch as $key => $value) {
-			$jmlInv = $this->M_monitoringinvoice->getJmlInvPerBatch($value['BATCH_NUM']);
-			echo $value['BATCH_NUM'];
+			$jmlInv = $this->M_monitoringinvoice->getJmlInvPerBatch($value['BATCH_NUMBER']);
 
 			$listBatch[$no]['JML_INVOICE'] = $jmlInv.' invoice';
 			$no++;
@@ -159,6 +181,8 @@ class C_monitoringinvoice extends CI_Controller{
 		$data['UserMenu'] = $this->M_user->getUserMenu($user_id,$this->session->responsibility_id);
 		$data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id);
 		$data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id);
+		
+
 		$invNumber = $this->input->post('po_numberInv');
 		$query = $this->M_monitoringinvoice->getInvNumber($invNumber);
 		$data['invoice']=$query;
@@ -172,6 +196,7 @@ class C_monitoringinvoice extends CI_Controller{
 	}
 
 	public function batchDetail($batch){
+		$batch = str_replace('%20', ' ', $batch);
 		$this->checkSession();
 		$user_id = $this->session->userid;
 		
@@ -238,13 +263,28 @@ class C_monitoringinvoice extends CI_Controller{
 		$line_number = $this->input->post('line_num[]');
 		$last_admin_date = date('d-m-Y H:i:s');
 		$action_date = date('d-m-Y H:i:s');
+		$note_admin = $this->input->post('note_admin');
+		$invoice_category = $this->input->post('invoice_category');
+		$nominal_dpp = $this->input->post('nominal_dpp');
+		$jenis_jasa = $this->input->post('jenis_jasa');
 
+		$noinduk = $this->session->userdata['user'];
+		$cek_login = $this->M_monitoringinvoice->checkSourceLogin($noinduk);
 
-		// $amount = str_replace(',', '', $invoice_amount);
+		if ($cek_login[0]['unit_name'] == 'PEMBELIAN SUPPLIER') {
+			$source_login = 'PEMBELIAN SUPPLIER';
+		} elseif ($cek_login[0]['unit_name'] == 'PENGEMBANGAN PEMBELIAN') {
+			$source_login = 'PENGEMBANGAN PEMBELIAN';
+		} elseif ($cek_login[0]['unit_name'] == 'PEMBELIAN SUBKONTRAKTOR'){
+			$source_login = 'PEMBELIAN SUBKONTRAKTOR';
+		} elseif ($cek_login[0]['unit_name'] == 'INFORMATION & COMMUNICATION TECHNOLOGY') {
+			$source_login = 'INFORMATION & COMMUNICATION TECHNOLOGY';
+		}
+
+		//$amount = str_replace(',', '', $invoice_amount);
 		$item_desc = str_replace("'", "", $item_description);
-
 		
-		$add2['invoice'] = $this->M_monitoringinvoice->savePoNumber2($invoice_number, $invoice_date, $invoice_amount, $tax_invoice_number,$vendor_number,$vendor_name[0],$last_admin_date,$action_date);
+		$add2['invoice'] = $this->M_monitoringinvoice->savePoNumber2($invoice_number, $invoice_date, $invoice_amount, $tax_invoice_number,$vendor_number,$vendor_name[0],$last_admin_date,$note_admin,$invoice_category,$nominal_dpp,$source_login,$jenis_jasa);
 		
 		foreach ($po_number as $key => $value) {
 
@@ -319,12 +359,17 @@ class C_monitoringinvoice extends CI_Controller{
 		$action_date = date('d-m-Y H:i:s');
 		$item_code = $this->input->post('item_code[]');
 		$invoice_po_id = $this->input->post('invoice_po_id[]');
+		$note_admin = $this->input->post('note_admin');
+		$invoice_category = $this->input->post('invoice_category');
+		$nominal_dpp = $this->input->post('nominal_dpp');
+		$jenis_jasa = $this->input->post('jenis_jasa');
+
 
 		// $amount = str_replace(',', '', $invoice_amount);
 		$item_desc = str_replace("'", "", $item_description);
 
 
-		$data['invoice2'] = $this->M_monitoringinvoice->saveEditInvoice2($invoice_id,$invoice_number,$invoice_date,$invoice_amount,$tax_invoice_number);
+		$data['invoice2'] = $this->M_monitoringinvoice->saveEditInvoice2($invoice_id,$invoice_number,$invoice_date,$invoice_amount,$tax_invoice_number,$note_admin,$nominal_dpp,$invoice_category,$jenis_jasa);
 
 		foreach ($po_number as $key => $value) {
 			$add['invoice'] = $this->M_monitoringinvoice->saveEditInvoice1($invoice_po_id[$key],$po_number[$key],$lppb_number[$key],$shipment_number[$key],$receive_date[$key],$item_desc[$key],$item_code[$key],$qty_receipt[$key],$qty_reject[$key],$currency[$key],$unit_price[$key],$qty_invoice[$key]);
@@ -340,31 +385,46 @@ class C_monitoringinvoice extends CI_Controller{
 		$ArrayIdInv = $this->input->post('idYangDiPilih');
 		$checkList = $this->input->post('mi-check-list[]');
 		$status = $this->input->post('status_purchase');
+		$invoice_category = $this->input->post('invoice_category');
+
+		$date = strtoupper(date('dMY'));
 
 		$hasilExplode = explode(",", $ArrayIdInv);
-		$checkNumBatchExist = $this->M_monitoringinvoice->checkNumBatchExist();
-		$BatchNumberNew = $checkNumBatchExist[0]['BATCH_NUM'] + 1;
+		// $checkNumBatchExist = $this->M_monitoringinvoice->checkNumBatchExist();
+		// $batch = $checkNumBatchExist[0]['BATCH_NUMBER'];
+		$BatchNumberNew = $this->M_monitoringinvoice->checkBatchNumbercount('SUP'.'-'.$invoice_category.'-'.$date);
 		$saveDate = date('d-m-Y H:i:s');
 		$array2 = array_map("unserialize", array_unique(array_map("serialize", $checkList)));
+
+		$noinduk = $this->session->userdata['user'];
+		$cek_login = $this->M_monitoringinvoice->checkSourceLogin($noinduk);
+
+		if ($cek_login[0]['unit_name'] == 'PEMBELIAN SUPPLIER' || $cek_login[0]['unit_name'] == 'PENGEMBANGAN PEMBELIAN' ) {
+			if ($BatchNumberNew) {
+				$batch_number = 'SUP'.'-'.$invoice_category.'-'.$date.'-'.count($BatchNumberNew);
+			}else{
+				$batch_number = 'SUP'.'-'.$invoice_category.'-'.$date;
+			}
+		} elseif ($cek_login[0]['unit_name'] == 'PEMBELIAN SUBKONTRAKTOR') {
+			if ($BatchNumberNew) {
+				$batch_number = 'SUB'.'-'.$invoice_category.'-'.$date.'-'.count($BatchNumberNew);
+			}else{
+				$batch_number = 'SUB'.'-'.$invoice_category.'-'.$date;
+			}
+		} else{
+			if($this->form_validation->run() == FALSE){
+			  echo '<script> alert("'.str_replace(array('\r','\n'), '\n', validation_errors()).'"); </script>';
+			  redirect('AccountPayables/MonitoringInvoice/Invoice');
+			}
+		}
 
 		foreach ($array2 as $po => $value) {
 			$checkList = $this->M_monitoringinvoice->getInvoiceById($value);
 
 			foreach ($checkList as $dt => $value2) {
 				$inv = $value2['INVOICE_ID'];
-				// $no_po = $value2['PO_NUMBER'];
-				// $line_number = $value2['LINE_NUMBER'];
-				// $lppb_number = $value2['LPPB_NUMBER'];
-				// $checkListSubmitted = $this->M_monitoringinvoice->podetails($no_po,$lppb_number,$line_number);
-				$this->M_monitoringinvoice->saveBatchNumberById($inv,$BatchNumberNew,$saveDate,$status);
+				$this->M_monitoringinvoice->saveBatchNumberById($inv,$batch_number,$saveDate,$status);
 				$this->M_monitoringinvoice->saveBatchNumberById2($inv,$saveDate,$status);
-				// if ($checkListSubmitted[0]['STATUS'] == 'DELIVER') {
-				// 	$cekstatus = $checkListSubmitted[0]['STATUS'];
-
-				// 	// $data = $this->M_monitoringinvoice->saveBatchNumberById($inv,$BatchNumberNew,$saveDate);
-				// }elseif ($checkListSubmitted[0]['STATUS'] == 'DELIVER' AND $checkListSubmitted[0]['STATUS'] == '') {
-				// 	$data = $this->M_monitoringinvoice->saveBatchNumberById($inv,$BatchNumberNew,$saveDate);
-				// }
 
 			}
 			
@@ -374,6 +434,7 @@ class C_monitoringinvoice extends CI_Controller{
 	}
 
 	public function showInvoiceInDetail($invoice_id,$batch){
+		$batch = str_replace('%20', ' ', $batch);
 		$this->checkSession();
 		$user_id = $this->session->userid;
 		
@@ -465,7 +526,7 @@ class C_monitoringinvoice extends CI_Controller{
         $objPHPExcel->setActiveSheetIndex(0)->setCellValue('I4', "Invoice Date");
         $objPHPExcel->setActiveSheetIndex(0)->setCellValue('J4', "Invoice Number");
         $objPHPExcel->setActiveSheetIndex(0)->setCellValue('K4', "Accept by Purchasing");
-        $objPHPExcel->setActiveSheetIndex(0)->setCellValue('L4', "Purchase Batch Number");
+        $objPHPExcel->setActiveSheetIndex(0)->setCellValue('L4', "Batch Number");
         $objPHPExcel->setActiveSheetIndex(0)->setCellValue('M4', "Accept by Accounting");
         $objPHPExcel->setActiveSheetIndex(0)->setCellValue('N4', "PPN");
         $objPHPExcel->setActiveSheetIndex(0)->setCellValue('O4', "Tax Invoice Number");
@@ -510,7 +571,7 @@ class C_monitoringinvoice extends CI_Controller{
             $objPHPExcel->setActiveSheetIndex(0)->setCellValue('N'.$numrow, $data['PPN']);
             $objPHPExcel->setActiveSheetIndex(0)->setCellValue('O'.$numrow, $data['TAX_INVOICE_NUMBER']);
             // $objPHPExcel->setActiveSheetIndex(0)->setCellValue('P'.$numrow, $data['accept_by_purchasing']);
-            $objPHPExcel->setActiveSheetIndex(0)->setCellValue('Q'.$numrow, $data['FINANCE_BATCH_NUMBER']);
+            // $objPHPExcel->setActiveSheetIndex(0)->setCellValue('Q'.$numrow, $data['FINANCE_BATCH_NUMBER']);
             // $objPHPExcel->setActiveSheetIndex(0)->setCellValue('R'.$numrow, $data['accept_by_accounting']);
             // $objPHPExcel->setActiveSheetIndex(0)->setCellValue('S'.$numrow, $data['update_by_purchasing']);
             // $objPHPExcel->setActiveSheetIndex(0)->setCellValue('T'.$numrow, $data['update_by_accounting']);
@@ -600,12 +661,11 @@ class C_monitoringinvoice extends CI_Controller{
 	}
 
 	public function addPoNumber2($id){
-		// $invoice_number = $this->input->post('invoice_number');
-		// $invoice_date = $this->input->post('invoice_date');
+		$invoice_number = $this->input->post('invoice_number');
+		$invoice_date = $this->input->post('invoice_date');
 		$invoice_amount = $this->input->post('invoice_amount');
-		// $tax_invoice_number = $this->input->post('tax_invoice_number');
-		// $vendor_name = $this->input->post('vendor_name[]');
-		// $vendor_number = $this->input->post('vendor_number');
+		$tax_invoice_number = $this->input->post('tax_invoice_number');
+		$vendor_name = $this->input->post('vendor_name[]');
 		$po_number = $this->input->post('po_number[]');
 		$lppb_number = $this->input->post('lppb_number[]');
 		$shipment_number = $this->input->post('shipment_number[]');
@@ -618,6 +678,9 @@ class C_monitoringinvoice extends CI_Controller{
 		$unit_price = $this->input->post('unit_price[]');
 		$qty_invoice = $this->input->post('qty_invoice[]');
 		$line_number = $this->input->post('line_num[]');
+		$invoice_category = $this->input->post('invoice_category');
+		$nominal_dpp = $this->input->post('nominal_dpp');
+		$note_admin = $this->input->post('note_admin');
 		
 		// $amount2 = str_replace(',', '', $invoice_amount);
 		$item_desc = str_replace("'", "", $item_description);
@@ -639,16 +702,14 @@ class C_monitoringinvoice extends CI_Controller{
 		}
 		
 
-		$data['invoice'] =$invoice;
-		
-
-		$amount = $this->M_monitoringinvoice->saveInvoiveAmount($invoice_amount,$id);
+		$amount = $this->M_monitoringinvoice->saveInvoiveAmount($invoice_number,$invoice_date,$invoice_amount,$tax_invoice_number,$vendor_name,$invoice_category,$nominal_dpp,$note_admin,$id);
 
 		
 		foreach ($po_number as $key => $value) {
 			$add['invoice'] = $this->M_monitoringinvoice->savePoNumberNew($line_number[$key],$po_number[$key],$lppb_number[$key],$shipment_number[$key],$receive_date[$key],$item_desc[$key],$item_code[$key],$qty_receipt[$key],$qty_reject[$key],$currency[$key],$unit_price[$key],$qty_invoice[$key],$id);
 		
 		}
+		$data['invoice'] =$invoice;
 
 		redirect('AccountPayables/MonitoringInvoice/Invoice');
 	}
@@ -673,14 +734,26 @@ class C_monitoringinvoice extends CI_Controller{
 		$data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id);
 		$data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id);
 
-		$invoice = $this->M_monitoringinvoice->invoicereject();
+		$noinduk = $this->session->userdata['user'];
+		$cek_login = $this->M_monitoringinvoice->checkSourceLogin($noinduk);
+		$source_login = '';
+
+		if ($cek_login[0]['unit_name'] == 'PEMBELIAN SUPPLIER' OR $cek_login[0]['unit_name'] == 'PENGEMBANGAN PEMBELIAN') {
+			$source_login .= "AND source = 'PEMBELIAN SUPPLIER' OR source = 'PENGEMBANGAN PEMBELIAN'";
+		}elseif ($cek_login[0]['unit_name'] == 'PEMBELIAN SUBKONTRAKTOR'){
+			$source_login .= "AND source = 'PEMBELIAN SUBKONTRAKTOR'";
+		}elseif ($cek_login[0]['unit_name'] == 'INFORMATION & COMMUNICATION TECHNOLOGY') {
+			$source_login .= "AND source = 'INFORMATION & COMMUNICATION TECHNOLOGY'";
+		}
+
+		$invoice = $this->M_monitoringinvoice->invoicereject($source_login);
 		$no = 0;
 		$keputusan = array();
 		foreach ($invoice as $inv ) {
 
 			$invoice_id = $inv['INVOICE_ID'] ;
 			$po_detail = $inv['PO_DETAIL'];
-			$batch_number = $inv['PURCHASING_BATCH_NUMBER'];
+			// $po_number = $inv['PO_NUMBER'];
 
 			$keputusan[$inv['INVOICE_ID']] = "";
 			$hasil_komitmen = '';
@@ -717,7 +790,7 @@ class C_monitoringinvoice extends CI_Controller{
 
 				$n++;
 			}
-			
+
 			$po_amount = 0;
 			$unit = $this->M_monitoringinvoice->getUnitPrice($invoice_id);
 
@@ -726,6 +799,10 @@ class C_monitoringinvoice extends CI_Controller{
 				$po_amount = $po_amount + $total;
 			}
 
+
+			$cekPPN = $this->M_monitoringinvoice->checkPPN($po_number_explode);
+
+			$invoice[$no]['PPN'] = $cekPPN[0]['PPN'];
 			$invoice[$no]['PO_AMOUNT'] = $po_amount;
 			$no++;
 		}
@@ -822,12 +899,16 @@ class C_monitoringinvoice extends CI_Controller{
 		$item_code = $this->input->post('item_code[]');
 		$invoice_po_id = $this->input->post('invoice_po_id[]');
 		$status = $this->input->post('saveReject');
+		$note_admin = $this->input->post('note_admin');
+		$invoice_category = $this->input->post('invoice_category');
+		$nominal_dpp = $this->input->post('nominal_dpp');
+		$jenis_jasa = $this->input->post('jenis_jasa');
 
 		// $amount = str_replace(',', '', $invoice_amount);
 		$item_desc = str_replace("'", "", $item_description);
 
 
-		$data['invoice2'] = $this->M_monitoringinvoice->saveReject($invoice_id,$invoice_number,$invoice_date,$invoice_amount,$tax_invoice_number,$status);
+		$data['invoice2'] = $this->M_monitoringinvoice->saveReject($invoice_id,$invoice_number,$invoice_date,$invoice_amount,$tax_invoice_number,$status,$note_admin,$invoice_category,$nominal_dpp,$jenis_jasa);
 
 		foreach ($po_number as $key => $value) {
 			$add['invoice'] = $this->M_monitoringinvoice->saveEditInvoice1($invoice_po_id[$key],$po_number[$key],$lppb_number[$key],$shipment_number[$key],$receive_date[$key],$item_desc[$key],$item_code[$key],$qty_receipt[$key],$qty_reject[$key],$currency[$key],$unit_price[$key],$qty_invoice[$key]);

@@ -204,6 +204,8 @@ class C_FleetKendaraan extends CI_Controller
 			$kode_merk_kendaraan	=	$this->input->post('cmbMerkKendaraanIdHeader', TRUE);
 			$kode_warna_kendaraan	=	$this->input->post('cmbWarnaKendaraanIdHeader', TRUE);
 			$tahun_pembuatan		=	$this->input->post('cmbTahunPembuatan', TRUE);
+			$usable					=	$this->input->post('usable', TRUE);
+			$pemilik_kendaraan		=	$this->input->post('kepemilikan_kendaraan', TRUE);
 
 			// $start_date 			= 	date('Y-m-d H:i:s', strtotime($this->input->post('txtStartDateHeader')));
 			// $end_date 				=	date('Y-m-d H:i:s', strtotime($this->input->post('txtEndDateHeader')));
@@ -308,7 +310,9 @@ class C_FleetKendaraan extends CI_Controller
 				'end_date'				=> '9999-12-12 00:00:00',
 				'creation_date' 		=> date('Y-m-d H:i:s'),
 				'created_by' 			=> $this->session->userid,
-				'kode_lokasi_kerja'		=> $lokasi
+				'kode_lokasi_kerja'		=> $lokasi,
+				'usable'				=> $usable,
+				'hak_milik'				=> $pemilik_kendaraan,
     		);
 
 
@@ -419,6 +423,8 @@ class C_FleetKendaraan extends CI_Controller
 			$statusdata				=	$this->input->post('CheckAktif');
 			$status_data_user 	=	$this->input->post('CheckAktifUser');
 			$WaktuDihapus 			=	$this->input->post('WaktuDihapus');
+			$usable 			=	$this->input->post('usable');
+			$hak_milik 			=	$this->input->post('kepemilikan_kendaraan');
 
 
 			// $tanggalNonaktif		=	$this->input->post('txtTanggalNonaktif');
@@ -536,7 +542,9 @@ class C_FleetKendaraan extends CI_Controller
 				'end_date'				=> $waktu_dihapus,
 				'last_updated'			=> date('Y-m-d H:i:s'),
 				'last_updated_by'		=> $this->session->userid,
-				'created_by' 			=> $this->session->userid
+				'created_by' 			=> $this->session->userid,
+				'usable' 				=> $usable,
+				'hak_milik' 			=> $hak_milik,
     		);
 
 

@@ -29,6 +29,7 @@
                                         $merkKendaraan      =   $headerRow['merk_kendaraan'];
                                         $merkKendaraan      =   explode(' - ', $merkKendaraan);
                                         $jenis_bahanbakar   =   $headerRow['jenis_bahanbakar'];
+                                        $rasio              =   $headerRow['rasio_bahanbakar'];
                                         $produsenKendaraan  =   $merkKendaraan[0];
                                         if (isset($merkKendaraan[1])) 
                                         {
@@ -89,7 +90,25 @@
                                                     </select>
                                                 </div>
                                             </div>
+                                            <div class="form-group">
+                                                <label for="cmbBahanBakar" class="control-label col-lg-4">Rasio Penggunaan BBM</label>
+                                                <div class="col-lg-1">
+                                                    <input class="form-control" name="rasio_liter" value="1" readonly></input>
+                                                  
+                                                </div>
+                                                <div class="col-lg-1" style="margin-left: -20px;padding-top: 6px;">
+                                                      <label> : </label>
+                                                </div>
+                                                <div class="col-lg-1" style="margin-left: -80px;">
+                                                    <input class="form-control" name="rasio_jarak" value="<?php echo substr($rasio, 1) ?>">
+                                                        
+                                                    </input>
+                                                </div>
+                                                <div class="col-lg-1" style="padding-top: 6px;margin-left: -20px;">
+                                                    Km
+                                                </div>
 
+                                            </div>
                                             <div class="form-group">
                                                 <label for="txtStartDateHeader" class="control-label col-lg-4">Waktu Dibuat</label>
                                                 <div class="col-lg-4">

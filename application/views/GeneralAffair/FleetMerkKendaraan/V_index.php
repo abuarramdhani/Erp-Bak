@@ -50,6 +50,7 @@
                                                         <th style="text-align:center; min-width:80px">Action</th>
                                                         <th>Model Kendaraan</th>
                                                         <th>Jenis Bahan Bakar</th>
+                                                        <th>Rasio Penggunaan BBM</th>
                                                         <th>Waktu Dibuat</th>
                                                      </tr>
                                                 </thead>
@@ -68,6 +69,14 @@
                                                         </td>
                                                         <td><?php echo $row['merk_kendaraan'] ?></td>
                                                         <td><?php echo $row['jenis_bahanbakar'] ?></td>
+                                                        <td><?php if ($row['rasio_bahanbakar'] == ""){
+                                                                        echo "";
+                                                                }else{
+                                                                    $liter = substr($row['rasio_bahanbakar'], 0,1);
+                                                                    echo $liter." : "; 
+                                                                    $jarak = substr($row['rasio_bahanbakar'], 1);
+                                                                    echo $jarak." Km";
+                                                                }  ?></td>
                                                         <td><?php echo $row['waktu_dibuat'] ?></td>
                                                  </tr>
                                                     <?php endforeach; ?>
@@ -85,6 +94,7 @@
                                                         <th style="text-align:center; min-width:80px">Action</th>
 												        <th>Model Kendaraan</th>
                                                         <th>Jenis Bahan Bakar</th>
+                                                        <th>Rasio Penggunaan BBM</th>
 												        <th>Waktu Dibuat</th>
                                                         <th>Waktu Dihapus</th>
 											         </tr>
@@ -103,6 +113,14 @@
                                                         </td>
 												        <td><?php echo $row['merk_kendaraan'] ?></td>
                                                         <td><?php echo $row['jenis_bahanbakar'] ?></td>
+                                                        <td><?php if ($row['rasio_bahanbakar'] == ""){
+                                                                        echo "";
+                                                                }else{
+                                                                    $liter = substr($row['rasio_bahanbakar'], 0,1);
+                                                                    echo $liter." : "; 
+                                                                    $jarak = substr($row['rasio_bahanbakar'], 1);
+                                                                    echo $jarak." Km";
+                                                                }  ?></td>
 												        <td><?php echo $row['waktu_dibuat'] ?></td>
                                                         <td><?php echo $row['waktu_dihapus'];?></td>
 											     </tr>

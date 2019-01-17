@@ -2122,6 +2122,8 @@ $route['AdmCabang'] = 'ADMCabang/C_Index';
 $route['AdmCabang/PresensiHarian'] = 'ADMCabang/C_PresensiHarian';
 $route['AdmCabang/PresensiHarian/(:any)'] = 'ADMCabang/C_PresensiHarian/$1';
 
+$route['AdmCabang/PresensiBulanan'] = 'ADMCabang/C_PresensiBulanan';
+$route['AdmCabang/PresensiBulanan/(:any)'] = 'ADMCabang/C_PresensiBulanan/$1';
 
 //--------------------------------------------- Branch Item --------------------------------------------
 $route['BranchItem'] = 'BarangCabang/C_branchitem';

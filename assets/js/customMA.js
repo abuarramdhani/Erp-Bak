@@ -1,5 +1,6 @@
 $(document).ready(function(){
 	$('.datatable-ma').DataTable({
+		retrieve : true,
 		dom: 'Bfrtip',
 	    buttons: [
 	        'excel',

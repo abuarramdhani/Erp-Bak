@@ -177,6 +177,9 @@ class C_FleetMerkKendaraan extends CI_Controller
 			$bahanbakar			= 	$this->input->post('cmbBahanBakar');
 			$merkKendaraan 		=	$produsenKendaraan.' - '.$merkKendaraan;
 			$tanggal_eksekusi 	= 	date('Y-m-d H:i:s');
+			$rasio1 			= 	$this->input->post('rasio_liter');
+			$rasio2 			= 	$this->input->post('rasio_jarak');
+			$rasio_bbm 			= 	$rasio1.$rasio2;
 
 			$data = array(
 				'merk_kendaraan' 	=> $merkKendaraan,
@@ -184,7 +187,8 @@ class C_FleetMerkKendaraan extends CI_Controller
 				'end_date' 			=> '9999-12-12 00:00:00',
 				'creation_date' 	=> $tanggal_eksekusi,
 				'created_by' 		=> $this->session->userid,
-				'jenis_bahanbakar' 	=> $bahanbakar
+				'jenis_bahanbakar' 	=> $bahanbakar,
+				'rasio_bahanbakar'  => $rasio_bbm,
     		);
 
 			$this->M_fleetmerkkendaraan->setFleetMerkKendaraan($data);
@@ -279,6 +283,7 @@ class C_FleetMerkKendaraan extends CI_Controller
 			$merkKendaraan 		= 	$this->input->post('txtMerkKendaraanHeader',TRUE);
 			$merkKendaraan 		=	$produsenKendaraan.' - '.$merkKendaraan;
 			$bahanbakar 		= 	$this->input->post('cmbBahanBakar');
+			$rasio_bbm 			= 	"1".$this->input->post('rasio_jarak');
 
 			$status_data_user 	=	$this->input->post('CheckAktifUser');
 			$status_data 		=	$this->input->post('CheckAktif');
@@ -296,7 +301,8 @@ class C_FleetMerkKendaraan extends CI_Controller
 				'end_date' 			=> $waktu_dihapus,
 				'last_updated' 		=> $waktu_eksekusi,
 				'last_updated_by' 	=> $this->session->userid,
-				'jenis_bahanbakar'	=> $bahanbakar
+				'jenis_bahanbakar'	=> $bahanbakar,
+				'rasio_bahanbakar'	=> $rasio_bbm,
     			);
 			$this->M_fleetmerkkendaraan->updateFleetMerkKendaraan($data, $plaintext_string);
 
