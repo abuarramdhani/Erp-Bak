@@ -1404,6 +1404,14 @@ $route['GeneralAffair/FleetCetakSpk'] = 'GeneralAffair/MainMenu/C_FleetCetakSpk'
 $route['GeneralAffair/FleetCetakSpk/(:any)'] = 'GeneralAffair/MainMenu/C_FleetCetakSpk/$1';
 $route['GeneralAffair/FleetCetakSpk/(:any)/(:any)'] = 'GeneralAffair/MainMenu/C_FleetCetakSpk/$1/$2';
 
+$route['GeneralAffair/FleetJenisService'] = 'GeneralAffair/MainMenu/C_FleetJenisService';
+$route['GeneralAffair/FleetJenisService/(:any)'] = 'GeneralAffair/MainMenu/C_FleetJenisService/$1';
+$route['GeneralAffair/FleetJenisService/(:any)/(:any)'] = 'GeneralAffair/MainMenu/C_FleetJenisService/$1/$2';
+
+$route['GeneralAffair/FleetServiceKendaraan'] = 'GeneralAffair/MainMenu/C_FleetServiceKendaraan';
+$route['GeneralAffair/FleetServiceKendaraan/(:any)'] = 'GeneralAffair/MainMenu/C_FleetServiceKendaraan/$1';
+$route['GeneralAffair/FleetServiceKendaraan/(:any)/(:any)'] = 'GeneralAffair/MainMenu/C_FleetServiceKendaraan/$1/$2';
+
 //------------------------------------ Aplikasi Toolroom ----------------------------
 $route['Toolroom'] = 'Toolroom/C_Index';
 $route['Toolroom/MasterItem'] = 'Toolroom/MainMenu/C_MasterItem';
