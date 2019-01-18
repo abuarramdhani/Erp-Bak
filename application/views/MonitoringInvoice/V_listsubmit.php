@@ -21,7 +21,7 @@
 					<div class="col-lg-12">
 						<div class="box box-primary box-solid">
 							<div class="box-body">
-								<table id="tbListSubmit" class="table table-striped table-bordered table-hover text-center dataTable">
+								<table id="tbListSubmit" class="table table-striped table-bordered table-hover text-center datatable">
 									<thead>
 										<tr class="bg-primary">
 											<th class="text-center">No</th>
@@ -43,7 +43,7 @@
 											</td>
 											<td><?php echo  $inv['BATCH_NUMBER'] ?></td>
 											<td><?php echo  $inv['SUBMITED_DATE'] ?></td>
-											<td><?php echo $inv['JML_INVOICE']; ?></td>
+											<td><?php echo $inv['JML_INVOICE'] ?></td>
 											<?php if ($inv['LAST_PURCHASING_INVOICE_STATUS'] == 2 and  $inv['LAST_FINANCE_INVOICE_STATUS'] == 2) {
 												$stat = 'Approved by Kasie Finance';
 												} elseif($inv['LAST_PURCHASING_INVOICE_STATUS'] == 2){
