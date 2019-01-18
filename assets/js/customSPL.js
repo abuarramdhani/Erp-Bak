@@ -83,10 +83,10 @@ $(function () {
           table.rows.add(send);
           table.draw();
         }else{
-          alert('Data tidak di temukan');
+          // alert('Data tidak di temukan');
         }
       }
-    });
+    }); 
   });
 
   $("#spl_pkj_add").click(function(e){
@@ -134,10 +134,16 @@ $(function () {
       async: false,
       success: function(data) {
         if(data){
-          alert("result code : "+data);
+          // alert("result code : "+data);
           $(".spl-cek").closest("td").css("background", "#ffe6e6");
+          $("button[type*=submit]").attr("type", "button").attr("class", "btn btn-grey");
+          $(".spl-error").remove();
+          $(".spl-cek").closest("td").append("<i style='color:#ed2b1f' class='fa fa-lg fa-times-circle spl-error' title='"+data+"'></i>");
+           
         }else{
           $(".spl-cek").closest("td").css("background", "#ffffff");
+          $("button[type*=button]").attr("type", "submit").attr("class", "btn btn-primary");
+          $(".spl-error").remove();
         }
       }, 
       error : function() {
@@ -167,10 +173,18 @@ $(function () {
           table.rows.add(send);
           table.draw();
         }else{
-          alert('Data tidak di temukan');
+          // alert('Data tidak di temukan');
         }
       }
     });
+  });
+
+  $(document).ajaxStart(function(){
+    $(".spl-loading").removeClass("hidden");
+  });
+
+  $(document).ajaxStop(function(){
+    $(".spl-loading").addClass("hidden");
   });
 
 

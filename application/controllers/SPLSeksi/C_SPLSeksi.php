@@ -281,44 +281,71 @@ class C_SPLSeksi extends CI_Controller {
 
 	public function cek_anonymous(){
 		$error = "";
-		$tanggal = $this->input->post("tanggal");
 		$waktu0 = $this->input->post("waktu0");
 		$waktu1 = $this->input->post("waktu1");
 		$lembur = $this->input->post("lembur");
 		$noind = $this->input->post("noind");
-		$tanggal0 = date_format(date_create($tanggal), 'Y-m-d');
+		$tanggal = $this->input->post("tanggal");
+		$tanggal = date_format(date_create($tanggal), 'Y-m-d');
 
-		if($waktu1 < $waktu0){
-			$tanggal1 = date_format(date_add(date_create($tanggal), date_interval_create_from_date_string('1 days')), "Y-m-d");
-		}else{
-			$tanggal1 = $tanggal0;
-		}
-
-		$shift = $this->M_SPLSeksi->show_current_shift($tanggal0, $noind);
-		foreach($shift as $s){
-			$mulai = date_format(date_create($tanggal0), "Y-m-d")." ".$waktu0;
-			$mulai = date_format(date_create($mulai), 'Y-m-d H:i:s');
-			$selesai = date_format(date_create($tanggal1), "Y-m-d")." ".$waktu1;
-			$selesai = date_format(date_create($selesai), 'Y-m-d H:i:s');
-
-			$mangkat = date_format(date_create($tanggal0), "Y-m-d")." ".$s['jam_msk'];
-			$mangkat = date_format(date_create($mangkat), 'Y-m-d H:i:s');
-			$pulang = date_format(date_create($tanggal0), "Y-m-d")." ".$s['jam_plg'];
-			$pulang = date_format(date_create($pulang), 'Y-m-d H:i:s');
-			$selisih = date_diff(new datetime($mulai), new datetime($selesai));
-
-			if($mulai<$selesai && $selisih->format("%d")<=1){
-				if($lembur!="001" && $lembur!="004"){
-					if(($mulai>$mangkat && $mulai<$pulang) || ($selesai>$mangkat && $selesai<$pulang)){
-						$error = "Waktu lembur titak sesuai";
+		$shift = $this->M_SPLSeksi->show_current_shift($tanggal, $noind);
+		if(!empty($shift)){
+			if($lembur != "004"){
+				foreach($shift as $s){
+					// jam lembur
+					if($waktu1<$waktu0 || ($s['jam_plg']<$s['jam_msk'] && $lembur=="002")){
+						if($s['jam_plg']<$s['jam_msk'] && $lembur=="002"){
+							$tanggal0 = date_format(date_add(date_create($tanggal), date_interval_create_from_date_string('1 days')), "Y-m-d");
+							$tanggal1 = date_format(date_add(date_create($tanggal), date_interval_create_from_date_string('1 days')), "Y-m-d");
+						}else{
+							$tanggal0 = $tanggal;
+							$tanggal1 = date_format(date_add(date_create($tanggal), date_interval_create_from_date_string('1 days')), "Y-m-d");
+						}	
+					}else{
+						$tanggal0 = $tanggal;
+						$tanggal1 = $tanggal;
 					}
+					$mulai = date_format(date_create($tanggal0), "Y-m-d")." ".$waktu0;
+					$mulai = date_format(date_create($mulai), 'Y-m-d H:i:s');
+					$selesai = date_format(date_create($tanggal1), "Y-m-d")." ".$waktu1;
+					$selesai = date_format(date_create($selesai), 'Y-m-d H:i:s');
+
+					// jam shift
+					if($s['jam_plg']<$s['jam_msk']){
+						$tanggal0 = $tanggal;
+						$tanggal1 = date_format(date_add(date_create($tanggal), date_interval_create_from_date_string('1 days')), "Y-m-d");
+					}else{
+						$tanggal0 = $tanggal;
+						$tanggal1 = $tanggal;
+					}
+					$mangkat = date_format(date_create($tanggal0), "Y-m-d")." ".$s['jam_msk'];
+					$mangkat = date_format(date_create($mangkat), 'Y-m-d H:i:s');
+					$pulang = date_format(date_create($tanggal1), "Y-m-d")." ".$s['jam_plg'];
+					$pulang = date_format(date_create($pulang), 'Y-m-d H:i:s');
+
+					// cocokkkan
+					if($mulai<$mangkat && $selesai>$pulang){
+						$error = "[0] Waktu lembur melewati shift -> $mulai@$selesai@$mangkat@$pulang";
+
+					}elseif($lembur=="002" && ($mulai<$pulang || $selesai<$pulang)){
+						$error = "[1] Waktu lembur tidak sesuai -> $mulai@$selesai@$mangkat@$pulang";
+
+					}elseif($lembur=="003" && ($mulai>$mangkat || $selesai>$mangkat)){
+						$error = "[2] Waktu lembur tidak sesuai -> $mulai@$selesai@$mangkat@$pulang";
+
+					}
+
 				}
 			}else{
-				$error = "Waktu lembur tidak sesuai";
+				$error = "[0] Bukan merupakan hari libur";
+			}
+		}else{
+			if($lembur != "004"){
+				$error = "[1] Seharusnya merupakan hari libur";
 			}
 		}
 
-		$lembur = $this->M_SPLSeksi->show_current_spl($tanggal0, $noind, $lembur, '');
+		$lembur = $this->M_SPLSeksi->show_current_spl($tanggal, $noind, $lembur, '');
 		if(!empty($lembur)){
 			$error = "Data lembur pernah di input";
 		}
