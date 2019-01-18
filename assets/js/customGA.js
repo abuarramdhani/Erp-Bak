@@ -8,6 +8,13 @@ $('#dataTables-fleetJenisKendaraan').DataTable( {
         'excel'
       ]
     });
+$('#dataTables-fleetServiceKendaraanDeleted').DataTable( {
+    
+    });
+
+$('#dataTables-fleetservicekendaraan').DataTable( {
+     
+    });
 $('#dataTables-fleetJenisKendaraanDeleted').DataTable( {
       dom: 'Bfrtip',
       buttons: [
@@ -875,7 +882,57 @@ $(document).ready(function(){
         tags: true
     });
 
-});
+    $('#txtMerkKendaraan').select2({
+        minimumInputLength: 0,
+        allowClear: true,
+        placeholder: 'Merk Kendaraan',
+        ajax: {
+          url: baseurl+"GeneralAffair/FleetServiceKendaraan/ambilMerkKendaraan",
+          dataType:'json',
+          type: "GET",
+          data: function (params) {
+            return {term: params.term};
+          },
+          processResults: function (data) {
+            return {
+              results: $.map(data, function (item) {
+                return {
+                  id: item.merk_kendaraan_id,
+                  text: item.merk_kendaraan
+                };
+              })
+              
+            };
+          },
+        },
+      });
+    $('#jenis_service').select2({
+        minimumInputLength: 0,
+        allowClear: true,
+        placeholder: 'Jenis Service',
+        ajax: {
+          url: baseurl+"GeneralAffair/FleetServiceKendaraan/ambilJenisService",
+          dataType:'json',
+          type: "GET",
+          data: function (params) {
+            return {term: params.term};
+          },
+          processResults: function (data) {
+            return {
+              results: $.map(data, function (item) {
+                return {
+                  id: item.jenis_service_id,
+                  text: item.jenis_service
+                };
+              })
+              
+            };
+          },
+        },
+      });
+
+    });
+
 
 $(document).ready(function(){
     $('input[name="radioAsuransi"]').click(function() {
@@ -959,3 +1016,36 @@ $(document).ready(function(){
   $('#tblFleetCetakSpk').DataTable( {
       dom: 'frtp',
     });
+
+  // $(document).ready(function(){
+  //   $('#create_form').on('click',function(){
+  //       var jarak_awal      = $('#jarak_awal').val();
+  //       var kelipatan_jarak = $('#kelipatan_jarak').val();
+
+  //       var lama_awal       = parseInt($('#lama_awal').val());
+  //       var kelipatan_waktu = parseInt($('#kelipatan_waktu').val());
+  //       var batas_lama      = $('#batas_lama').val();
+
+  //       var div_input = document.getElementById("input_service");
+
+  //       for (var i = 0; i < batas_lama ; i++) {
+            
+  //           alert(lama_awal);
+
+  //           // var form2 = document.createElement("label");
+  //           // form2.setAttribute("id", "label_service"+i);
+  //           // document.getElementById("label_service"+i).innerHTML = jarak_awal+" Km/"+lama_awal+" bulan";
+
+  //           var newForm = document.createElement("input");
+  //           newForm.setAttribute("type", "text");
+  //           newForm.setAttribute("id", "form"+i);
+  //           div_input.appendChild(form2);
+  //           div_input.appendChild(newForm);
+  //           div_input.appendChild(document.createElement("br"));
+  //           div_input.appendChild(document.createElement("br"));
+
+  //           var lama_awal = lama_awal+kelipatan_waktu;
+  //           var jarak_awal = jarak_awal+kelipatan_jarak;
+  //       }
+  //   });
+  // });
