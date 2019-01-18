@@ -398,7 +398,7 @@
 												'kodesie' 		=>	$presensi_kodesie,
 												'user_' 		=>	$presensi_user,
 											);
-				if (substr($key['noind'], 0,1) == 'L') {
+				if (substr($presensi_noind, 0,1) == 'L') {
 					$cek = $this->M_tarikfingerspot->cekPresensiL($data_presensi);
 				}else{
 					$cek = $this->M_tarikfingerspot->cekPresensi($data_presensi);
@@ -406,7 +406,7 @@
 
 				if ($cek == '0') {
 
-					if (substr($key['noind'], 0,1) == 'L') {
+					if (substr($presensi_noind, 0,1) == 'L') {
 						//	Kirim ke Presensi.tprs_shift2
 						//	{
 			 					$data_presensi['transfer']	=	FALSE;
