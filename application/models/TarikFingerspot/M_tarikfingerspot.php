@@ -49,6 +49,17 @@ class M_tarikfingerspot extends CI_MODEL
 		return $data;
 	}
 
+	public function cekPresensiL($data){
+		$sql = "select * from \"Presensi\".tprs_shift2 
+				where noind = '".$data['noind']."' 
+				and tanggal = '".$data['tanggal']."' 
+				and waktu = '".$data['waktu']."' ";
+		$result = $this->personalia->query($sql);
+		$n = $result->num_rows();
+		return $n;
+
+	}
+
 	public function cekPresensi($data){
 		$sql = "select * from \"FrontPresensi\".tpresensi 
 				where noind = '".$data['noind']."' 
