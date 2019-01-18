@@ -44,12 +44,12 @@
 									<div class="form-group">
 										<label class="col-sm-2 control-label">Tanggal</label>
 										<div class="col-sm-10">
-											<div class="input-group date">
+											<div class="input-group">
 												<div class="input-group-addon">
 													<i class="fa fa-calendar"></i>
 												</div>
-												<input type="text" class="form-control pull-right" name="tgl_mulai" 
-													value="<?php echo date_format(date_create($l['Tgl_Lembur']), "d/m/Y"); ?>">
+												<input type="text" class="form-control pull-right spl-date" name="tanggal" 
+													value="<?php echo date_format(date_create($l['Tgl_Lembur']), "d-m-Y"); ?>">
 											</div>
 										</div>
 									</div>

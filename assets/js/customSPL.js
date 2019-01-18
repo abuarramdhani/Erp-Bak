@@ -4,6 +4,8 @@ $(function () {
   /////////////////////////////////////////////////////////////////////////////////
   $(".spl-table").DataTable({
     "scrollX": true,
+    "dom": 'Bfrtip',
+    "buttons": ['excel'],
     "aaSorting": []
   });
 
@@ -35,6 +37,11 @@ $(function () {
       type: 'get',
       data: function (params) {
         var other = "";
+
+        if($('#noi').length){
+          other = $('#noi').val();
+        }
+
         return {key: params.term, key2: other};
       },
       processResults: function (data) {
@@ -135,6 +142,33 @@ $(function () {
       }, 
       error : function() {
         alert("error code : spl-cek");
+      }
+    });
+  });
+
+  $('#spl-rekap').on('click', function(e) {
+    e.preventDefault();
+    var table = $('#example1').DataTable();
+    var alamate = baseurl+"SPLSeksi/C_SPLSeksi/rekap_spl_filter";
+
+    $.ajax({
+      url: alamate,
+      type: "POST",
+      data: {
+        dari:$('#tgl_mulai').val(), 
+        sampai:$('#tgl_selesai').val(), 
+        noi:$('#noi').val(), 
+        noind:$('#noind').val()},
+      success: function(data) {
+        if(data != "[]"){
+          var send = $.parseJSON(data);
+          
+          table.clear();
+          table.rows.add(send);
+          table.draw();
+        }else{
+          alert('Data tidak di temukan');
+        }
       }
     });
   });

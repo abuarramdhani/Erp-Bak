@@ -2223,5 +2223,6 @@ $route['AccountPayables/CheckPPh/List/(:any)'] = 'CheckPPH/MainMenu/C_List/$1';
 $route['SPL'] = 'SPLSeksi/C_SPLSeksi';
 $route['SPL/InputLembur'] = 'SPLSeksi/C_SPLSeksi/new_spl';
 $route['SPL/ListLembur'] = 'SPLSeksi/C_SPLSeksi/data_spl';
+$route['SPL/RekapLembur'] = 'SPLSeksi/C_SPLSeksi/rekap_spl';
 $route['SPL/EditLembur/(:any)'] = 'SPLSeksi/C_SPLSeksi/edit_spl/$1';
 $route['SPL/HapusLembur/(:any)'] = 'SPLSeksi/C_SPLSeksi/hapus_spl/$1';

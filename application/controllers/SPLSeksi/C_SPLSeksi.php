@@ -9,6 +9,8 @@ class C_SPLSeksi extends CI_Controller {
 
 		$this->load->model('SPLSeksi/M_SPLSeksi');
 		$this->load->model('SystemAdministration/MainMenu/M_user');
+
+		date_default_timezone_set('Asia/Jakarta');
     }
 
     public function checkSession(){
@@ -54,7 +56,8 @@ class C_SPLSeksi extends CI_Controller {
 
 	public function show_pekerja(){
 		$key = $_GET['key'];
-		$data = $this->M_SPLSeksi->show_pekerja($key);
+		$key2 = $_GET['key2'];
+		$data = $this->M_SPLSeksi->show_pekerja($key, $key2);
  		echo json_encode($data);
 	}
 
@@ -74,15 +77,17 @@ class C_SPLSeksi extends CI_Controller {
 
 	public function data_spl_filter(){
 		$user = $this->session->user;
-		$dari = date("Y-m-d", strtotime($this->input->post('dari')));
-		$sampai = date("Y-m-d", strtotime($this->input->post('sampai')));
+		$dari = $this->input->post('dari');
+		$dari = date_format(date_create($dari), "Y-m-d");
+		$sampai = $this->input->post('sampai');
+		$sampai = date_format(date_create($sampai), "Y-m-d");
 		$status = $this->input->post('status');
 		$lokasi = $this->input->post('lokasi');
 		$noind = $this->input->post('noind');
 
 		// get akses seksi
 		$akses_sie = array();
-		$akses_kue = $this->M_SPLSeksi->show_pekerja($user);
+		$akses_kue = $this->M_SPLSeksi->show_pekerja('', $user);
 		$akses_spl = $this->M_SPLSeksi->show_akses_seksi($user);
 		foreach($akses_kue as $ak){
 			$akses_sie[] = $this->cut_kodesie($ak['kodesie']);
@@ -90,9 +95,6 @@ class C_SPLSeksi extends CI_Controller {
 				$akses_sie[] = $this->cut_kodesie($as['kodesie']);
 			}
 		}
-
-		// print_r($akses_sie);
-		// exit;
 		
 		$data_spl = array();
 		$show_list_spl = $this->M_SPLSeksi->show_spl($dari, $sampai, $status, $lokasi, $noind, $akses_sie);
@@ -103,24 +105,59 @@ class C_SPLSeksi extends CI_Controller {
 				<a href='".site_url('SPL/HapusLembur/'.$sls['ID_SPL'])."' title='Hapus'><i class='fa fa-fw fa-trash'></i></a>";
 			$index[] = $sls['Tgl_Lembur'];
 			$index[] = $sls['Noind'];
-			$index[] = $sls['Nama'];
-			$index[] = $sls['Kodesie'];
-			$index[] = $sls['Seksi'];
+			$index[] = $sls['nama'];
+			$index[] = $sls['kodesie'];
+			$index[] = $sls['seksi'];
 			$index[] = $sls['Pekerjaan'];
-			$index[] = $sls['Nama_Lembur'];
-			$index[] = $sls['Jam_Mulai_lembur'];
+			$index[] = $sls['nama_lembur'];
+			$index[] = $sls['Jam_Mulai_Lembur'];
 			$index[] = $sls['Jam_Akhir_Lembur'];
 			$index[] = $sls['Break'];
 			$index[] = $sls['Istirahat'];
 			$index[] = $sls['target'];
 			$index[] = $sls['realisasi'];
 			$index[] = $sls['alasan_lembur'];
-			$index[] = $sls['Deskripsi']." ".$sls['user_'];
-			$index[] = $sls['tgl_berlaku'];
+			$index[] = $sls['Deskripsi']." ".$sls['User_'];
+			$index[] = $sls['Tgl_Berlaku'];
 			
 			$data_spl[] = $index;
 		}
 		echo json_encode($data_spl);
+	}
+
+	public function data_spl_cetak(){
+		$this->load->library('pdf');
+		$pdf = $this->pdf->load();
+
+		$user = $this->session->user;
+		$dari = $this->input->post('dari');
+		$dari = date_format(date_create($dari), "Y-m-d");
+		$sampai = $this->input->post('sampai');
+		$sampai = date_format(date_create($sampai), "Y-m-d");
+		$status = $this->input->post('status');
+		$lokasi = $this->input->post('lokasi');
+		$noind = $this->input->post('noind');
+
+		// get akses seksi
+		$akses_sie = array();
+		$akses_kue = $this->M_SPLSeksi->show_pekerja('', $user);
+		$akses_spl = $this->M_SPLSeksi->show_akses_seksi($user);
+		foreach($akses_kue as $ak){
+			$akses_sie[] = $this->cut_kodesie($ak['kodesie']);
+			foreach($akses_spl as $as){
+				$akses_sie[] = $this->cut_kodesie($as['kodesie']);
+			}
+		}
+		
+		$data['data_spl'] = $this->M_SPLSeksi->show_spl($dari, $sampai, $status, $lokasi, $noind, $akses_sie);
+		$filename = 'Surat Perintah Lembur.pdf';
+		$pdf = new mPDF('','A4-L', 0, '', 5, 5, 5, 5);
+		$stylesheet = file_get_contents(base_url('assets/plugins/bootstrap/3.3.7/css/bootstrap.css'));
+
+		$pdf->WriteHTML($stylesheet,1);
+		$html = $this->load->view('SPLSeksi/V_cetak_spl',$data, true);
+		$pdf->WriteHTML($html,2);
+		$pdf->Output($filename, 'I');
 	}
 
 	public function hapus_spl($idspl){
@@ -383,6 +420,57 @@ class C_SPLSeksi extends CI_Controller {
 
 		}
 		redirect(base_url('SPL/InputLembur?result=1'));
+	}
+
+	public function rekap_spl(){
+		$data = $this->menu('', '', '');
+		$data['noind'] = $this->M_SPLSeksi->show_noind();
+
+		$this->load->view('V_Header',$data);
+		$this->load->view('V_Sidemenu',$data);
+		$this->load->view('SPLSeksi/V_rekap_spl',$data);
+		$this->load->view('V_Footer',$data);
+	}
+
+	public function rekap_spl_filter(){
+		$user = $this->session->user;
+		$dari = date("Y-m-d", strtotime($this->input->post('dari')));
+		$sampai = date("Y-m-d", strtotime($this->input->post('sampai')));
+		$noi = $this->input->post('noi');
+		$noind = $this->input->post('noind');
+
+		if($noind == ""){ $noind = $noi; }
+
+		// get akses seksi
+		$akses_sie = array();
+		$akses_kue = $this->M_SPLSeksi->show_pekerja('', $user);
+		$akses_spl = $this->M_SPLSeksi->show_akses_seksi($user);
+		foreach($akses_kue as $ak){
+			$akses_sie[] = $this->cut_kodesie($ak['kodesie']);
+			foreach($akses_spl as $as){
+				$akses_sie[] = $this->cut_kodesie($as['kodesie']);
+			}
+		}
+		
+		$x = 1;
+		$data_spl = array();
+		$show_list_spl = $this->M_SPLSeksi->show_rekap($dari, $sampai, $noind, $akses_sie);
+		foreach($show_list_spl as $sls){
+			$index = array();
+			
+			$index[] = $x;
+			$index[] = $sls['tanggal'];
+			$index[] = $sls['noind'];
+			$index[] = $sls['nama'];
+			$index[] = $sls['nama_lembur'];
+			$index[] = $sls['jam_msk'];
+			$index[] = $sls['jam_klr'];
+			$index[] = $sls['total_lembur'];
+			
+			$x++;
+			$data_spl[] = $index;
+		}
+		echo json_encode($data_spl);
 	}
 	
 }

@@ -37,11 +37,11 @@
 									<div class="form-group">
 										<label class="col-sm-2 control-label">Tanggal</label>
 										<div class="col-sm-10">
-											<div class="input-group date">
+											<div class="input-group">
 												<div class="input-group-addon">
 													<i class="fa fa-calendar"></i>
 												</div>
-												<input type="text" class="form-control pull-right" name="tgl_mulai" value="<?php echo date("d-m-Y"); ?>">
+												<input type="text" class="form-control pull-right spl-date" name="tanggal" value="<?php echo date("d-m-Y"); ?>">
 											</div>
 										</div>
 									</div>
@@ -81,20 +81,20 @@
 									<div class="form-group">
 										<label class="col-sm-2 control-label">Istirahat</label>
 										<div class="col-sm-2">
-											<label style="margin-left:2%; top:+3;"><input type="radio" name="istirahat" value="Y" style="transform: scale(1.5); vertical-align:top;" checked> Ya</label>
+											<label style="margin-left:2%; top:+3;"><input type="radio" name="istirahat" value="1" style="transform: scale(1.5); vertical-align:top;" checked> Ya</label>
 										</div>
 										<div class="col-sm-8">
-											<label style="margin-left:5%; vertical-align:bottom;"><input type="radio" name="istirahat" value="T" style="transform: scale(1.5); vertical-align:top;"> Tidak</label>
+											<label style="margin-left:5%; vertical-align:bottom;"><input type="radio" name="istirahat" value="2" style="transform: scale(1.5); vertical-align:top;"> Tidak</label>
 										</div>
 									</div>
 
 									<div class="form-group">
 										<label class="col-sm-2 control-label">Break</label>
 										<div class="col-sm-2">
-											<label style="margin-left:2%; top:+3;"><input type="radio" name="break" value="Y" style="transform: scale(1.5); vertical-align:top;" checked> Ya</label>
+											<label style="margin-left:2%; top:+3;"><input type="radio" name="break" value="1" style="transform: scale(1.5); vertical-align:top;" checked> Ya</label>
 										</div>
 										<div class="col-sm-8">
-											<label style="margin-left:5%; vertical-align:bottom;"><input type="radio" name="break" value="T" style="transform: scale(1.5); vertical-align:top;"> Tidak</label>
+											<label style="margin-left:5%; vertical-align:bottom;"><input type="radio" name="break" value="2" style="transform: scale(1.5); vertical-align:top;"> Tidak</label>
 										</div>
 									</div>
 

@@ -7,6 +7,11 @@ class M_SPLSeksi extends CI_Model{
 		$this->spl = $this->load->database('spl_db',true);
 		$this->prs = $this->load->database('personalia', true);
 	}
+
+	public function show_noind(){
+		$query = $this->spl->get('hrd_khs.tnoind');
+		return $query->result_array();
+	}
 	
 	public function show_lokasi(){
 		$query = $this->spl->get('hrd_khs.tlokasi_kerja');
@@ -18,44 +23,39 @@ class M_SPLSeksi extends CI_Model{
 		return $query->result_array();
 	}
 
-	public function show_pekerja($filter){
-		$sql = "select noind, nama, kodesie from hrd_khs.tpribadi where nama like '%$filter%' or noind like '%$filter%' order by nama";
+	public function show_pekerja($filter, $filter2){
+		$sql = "select noind, nama, kodesie from hrd_khs.tpribadi 
+			where (nama like '%$filter%' or noind like '%$filter%') and noind like '$filter2%' order by nama";
 		$query = $this->spl->query($sql);
 		return $query->result_array();
 	}
 
 	public function show_akses_seksi($filter){
-		$this->db->where('noind', $filter);
+		$this->spl->where('noind', $filter);
 		$query = $this->spl->get('takses_seksi');
 		return $query->result_array();
 	}
 
 	public function show_spl($dari, $sampai, $status, $lokasi, $noind, $akses_sie){
-		$aksesa = "a.kodesie like '-%'";
-		$aksesb = "a.sieperbantuan like '-%'";
+		$x = 0;
 		foreach($akses_sie as $as){
-			$aksesa .= "or a.kodesie like '$as%'";
-			$aksesb .= "or a.sieperbantuan like '$as%'";
+			if($x == 0){
+				$akses = "b.kodesie like '$as%'";
+			}else{
+				$akses .= " or b.kodesie like '$as%'";
+			}
+			$x++;
 		}
 
-		$sql = "select ab.ID_SPL, ab.status, ab.user_, ab.ID_SPL, ab.Tgl_Lembur, ab.Noind, ab.Nama, e.Nama_Lembur, 
-				ab.Kodesie, d.Seksi, d.Unit, ab.Jam_Mulai_lembur, ab.Jam_Akhir_Lembur, ab.Break, 
-				ab.Istirahat, c.Deskripsi, ab.Pekerjaan, ab.tgl_berlaku, ab.target, ab.realisasi, 
-				ab.alasan_lembur, ab.status as kd_status, ab.perbantuan, ab.sieperbantuan, ab.urut_lembur 
-			from (select d.*,a.kodesie,a.nama from splseksi.tspl d 
-				inner join hrd_khs.tpribadi a ON a.Noind = d.Noind 
-				where d.Status like '%$status%' and d.tgl_lembur between '$dari' AND '$sampai' 
-					and d.perbantuan='N' and ($aksesa) and a.noind like '$noind%' and a.lokasi_kerja like '%$lokasi%' 
-				Union 
-				select a.*,d.kodesie,d.nama from splseksi.tspl a 
-				inner join hrd_khs.tpribadi d ON a.Noind = d.Noind 
-				where a.Status like '%$status%' and a.tgl_lembur between '$dari' AND '$sampai' 
-					and a.perbantuan='Y' and ($aksesb) and a.noind like '$noind%' and d.lokasi_kerja like '%$lokasi%') ab 
-			inner join hrd_khs.tpribadi b ON ab.Noind = b.Noind 
-			inner join splseksi.tjenislembur e ON ab.Kd_Lembur = e.Kd_Lembur 
-			inner join splseksi.tstatus_spl c ON ab.Status = c.ID_Status 
-			inner join hrd_khs.tseksi d ON ab.Kodesie = d.Kodesie 
-			order by ab.Tgl_Lembur desc, d.seksi, ab.kd_lembur, ab.Nama, ab.jam_mulai_lembur, ab.Jam_Akhir_Lembur";
+		$sql = "select a.*, b.nama, d.kodesie, d.seksi, d.unit, d.dept, e.nama_lembur, c.Deskripsi
+			from splseksi.tspl a
+			inner join hrd_khs.tpribadi b ON a.noind = b.noind 
+			inner join splseksi.tjenislembur e ON a.kd_lembur = e.kd_lembur 
+			inner join splseksi.tstatus_spl c ON a.status = c.id_status 
+			inner join hrd_khs.tseksi d ON b.kodesie = d.kodesie 
+			where a.status like '%$status%' and a.tgl_lembur between '$dari' AND '$sampai' 
+					and a.perbantuan='N' and ($akses) and b.noind like '$noind%' and b.lokasi_kerja like '%$lokasi%'
+			order by a.tgl_lembur, d.seksi, a.kd_lembur, b.nama, a.jam_mulai_lembur, a.Jam_Akhir_Lembur";
 		$query = $this->spl->query($sql);
 		return $query->result_array();
 	}
@@ -109,6 +109,28 @@ class M_SPLSeksi extends CI_Model{
 		$this->spl->where('ID_SPL', $filter);
 		$this->spl->update('splseksi.tspl', $data);
 		return;
+	}
+
+	public function show_rekap($dari, $sampai, $noind, $akses_sie){
+		$x = 0;
+		foreach($akses_sie as $as){
+			if($x == 0){
+				$akses = "tlb.kodesie like '$as%'";
+			}else{
+				$akses .= " or tlb.kodesie like '$as%'";
+			}
+			$x++;
+		}
+
+		$sql = "select tlb.tanggal, tlb.noind, tpr.nama, tlb.jam_msk, tlb.jam_klr, tlb.jml_lembur, jns.nama_lembur, tdp.total_lembur 
+			from presensi.tlembur tlb 
+			left join presensi.tdatapresensi tdp on tlb.noind=tdp.noind and tlb.tanggal=tdp.tanggal 
+			left join hrd_khs.tpribadi tpr on tlb.noind = tpr.noind 
+			left join presensi.tjenislembur jns on tlb.kd_lembur=jns.kd_lembur 
+			where tlb.noind like '$noind%' and tlb.tanggal between '$dari' and '$sampai' and ($akses)
+			order by tlb.noind, tlb.tanggal";
+		$query = $this->spl->query($sql);
+		return $query->result_array();
 	}
 	
 }
