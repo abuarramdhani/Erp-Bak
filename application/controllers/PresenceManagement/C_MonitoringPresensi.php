@@ -398,27 +398,41 @@
 												'kodesie' 		=>	$presensi_kodesie,
 												'user_' 		=>	$presensi_user,
 											);
-				$cek = $this->M_tarikfingerspot->cekPresensi($data_presensi);
+				if (substr($key['noind'], 0,1) == 'L') {
+					$cek = $this->M_tarikfingerspot->cekPresensiL($data_presensi);
+				}else{
+					$cek = $this->M_tarikfingerspot->cekPresensi($data_presensi);
+				}
 
 				if ($cek == '0') {
-					//	Kirim ke FrontPresensi.tpresensi
-					//	{
-							$data_presensi['transfer']	=	TRUE;
-		 					$this->M_monitoringpresensi->insert_presensi('"FrontPresensi"', 'tpresensi', $data_presensi);
-					//	}
 
-					//	Kirim ke Catering.tpresensi
-					//	{
-		 					$data_presensi['transfer']	=	FALSE;
-		 					$this->M_monitoringpresensi->insert_presensi('"Catering"', 'tpresensi', $data_presensi);
-					//	}
+					if (substr($key['noind'], 0,1) == 'L') {
+						//	Kirim ke Presensi.tprs_shift2
+						//	{
+			 					$data_presensi['transfer']	=	FALSE;
+			 					$data_presensi['user_']		=	'CRON';
+			 					$this->M_tarikfingerspot->insert_presensi('"Presensi"', 'tprs_shift2', $data_presensi);
+						//	}
+					}else{
+						//	Kirim ke FrontPresensi.tpresensi
+						//	{
+								$data_presensi['transfer']	=	TRUE;
+			 					$this->M_monitoringpresensi->insert_presensi('"FrontPresensi"', 'tpresensi', $data_presensi);
+						//	}
 
-					//	Kirim ke Presensi.tprs_shift
-					//	{
-		 					$data_presensi['transfer']	=	FALSE;
-		 					$data_presensi['user_']		=	'CRON';
-		 					$this->M_monitoringpresensi->insert_presensi('"Presensi"', 'tprs_shift', $data_presensi);
-					//	}
+						//	Kirim ke Catering.tpresensi
+						//	{
+			 					$data_presensi['transfer']	=	FALSE;
+			 					$this->M_monitoringpresensi->insert_presensi('"Catering"', 'tpresensi', $data_presensi);
+						//	}
+
+						//	Kirim ke Presensi.tprs_shift
+						//	{
+			 					$data_presensi['transfer']	=	FALSE;
+			 					$data_presensi['user_']		=	'CRON';
+			 					$this->M_monitoringpresensi->insert_presensi('"Presensi"', 'tprs_shift', $data_presensi);
+						//	}
+			 		}
 
 
 		 			//	Update transfer
