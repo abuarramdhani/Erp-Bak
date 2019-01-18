@@ -128,7 +128,7 @@ class C_trackingInvoice extends CI_Controller{
 		$param_akses = '';
 
 		if ($cek_login[0]['unit_name'] == 'PEMBELIAN SUPPLIER' OR $cek_login[0]['unit_name'] == 'PENGEMBANGAN PEMBELIAN' OR $cek_login[0]['unit_name'] == 'PEMBELIAN SUBKONTRAKTOR') {
-			$param_akses .= "AND ami.source = 'PEMBELIAN SUPPLIER' OR ami.source = 'PENGEMBANGAN PEMBELIAN' OR ami.source = 'PEMBELIAN SUBKONTRAKTOR'";
+			$param_akses .= "AND (ami.source = 'PEMBELIAN SUPPLIER' OR ami.source = 'PENGEMBANGAN PEMBELIAN' OR ami.source = 'PEMBELIAN SUBKONTRAKTOR')";
 			$tabel = $this->M_trackingInvoice->searchMonitoringInvoice($param_inv,$param_akses);
 		} elseif($cek_login[0]['unit_name'] == 'INFORMATION & COMMUNICATION TECHNOLOGY'){
 			$param_akses .= "AND ami.source = 'INFORMATION & COMMUNICATION TECHNOLOGY'";
