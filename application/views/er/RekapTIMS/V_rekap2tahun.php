@@ -9,7 +9,7 @@
 						</div>
 						<div class="col-lg-1">
 							<div class="text-right hidden-xs hidden-sm hidden-md">
-								<a href="" class="btn btn-default btn-lg"><i class="icon-wrech icon-2x"></i></a>
+								<a href="" class="btn btn-default btn-lg"><i class="icon-wrench icon-2x"></i></a>
 							</div>
 						</div>
 					</div>

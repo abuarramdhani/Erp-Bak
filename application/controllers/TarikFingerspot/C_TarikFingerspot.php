@@ -96,27 +96,45 @@ class C_TarikFingerspot extends CI_Controller
 						'noind_baru' => $key['noind_baru'],
 						'user_' => $key['user_']
 					);
-					$cek = $this->M_tarikfingerspot->cekPresensi($data_presensi);
+
+					if (substr($key['noind'], 0,1) == 'L') {
+						$cek = $this->M_tarikfingerspot->cekPresensiL($data_presensi);
+					}else{
+						$cek = $this->M_tarikfingerspot->cekPresensi($data_presensi);
+					}
+					
 					
 					if ($cek == '0') {
-						//	Kirim ke FrontPresensi.tpresensi
-						//	{
-								$data_presensi['transfer']	=	TRUE;
-			 					$this->M_tarikfingerspot->insert_presensi('"FrontPresensi"', 'tpresensi', $data_presensi);
-						//	}
 
-						//	Kirim ke Catering.tpresensi
-						//	{
-			 					$data_presensi['transfer']	=	FALSE;
-			 					$this->M_tarikfingerspot->insert_presensi('"Catering"', 'tpresensi', $data_presensi);
-						//	}
+						if (substr($key['noind'], 0,1) == 'L') {
+							//	Kirim ke Presensi.tprs_shift2
+							//	{
+				 					$data_presensi['transfer']	=	FALSE;
+				 					$data_presensi['user_']		=	'CRON';
+				 					$this->M_tarikfingerspot->insert_presensi('"Presensi"', 'tprs_shift2', $data_presensi);
+							//	}
+						}else{
+							//	Kirim ke FrontPresensi.tpresensi
+							//	{
+									$data_presensi['transfer']	=	TRUE;
+				 					$this->M_tarikfingerspot->insert_presensi('"FrontPresensi"', 'tpresensi', $data_presensi);
+							//	}
 
-						//	Kirim ke Presensi.tprs_shift
-						//	{
-			 					$data_presensi['transfer']	=	FALSE;
-			 					$data_presensi['user_']		=	'CRON';
-			 					$this->M_tarikfingerspot->insert_presensi('"Presensi"', 'tprs_shift', $data_presensi);
-						//	}
+							//	Kirim ke Catering.tpresensi
+							//	{
+				 					$data_presensi['transfer']	=	FALSE;
+				 					$this->M_tarikfingerspot->insert_presensi('"Catering"', 'tpresensi', $data_presensi);
+							//	}
+
+							//	Kirim ke Presensi.tprs_shift
+							//	{
+				 					$data_presensi['transfer']	=	FALSE;
+				 					$data_presensi['user_']		=	'CRON';
+				 					$this->M_tarikfingerspot->insert_presensi('"Presensi"', 'tprs_shift', $data_presensi);
+							//	}
+						}
+
+							
 			 			$insert[$no] = $key;
 			 			$no++;
 					}	

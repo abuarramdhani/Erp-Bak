@@ -36,8 +36,8 @@ class C_Tims2tahun extends CI_Controller
 	public function index(){
 		$user_id = $this->session->userid;
 
-		$data['Title'] = 'Tarik FingerSpot';
-		$data['Menu'] = 'tarik Fingerspot';
+		$data['Title'] = 'Rekap TIMS 2 Tahun';
+		$data['Menu'] = 'TIMS 2 Tahun';
 		$data['SubMenuOne'] = '';
 		$data['SubMenuTwo'] = '';
 
