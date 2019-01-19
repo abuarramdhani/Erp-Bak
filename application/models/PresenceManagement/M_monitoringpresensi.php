@@ -26,6 +26,7 @@
  												tpribadi.nama,
  												tpribadi.noind,
  												tpribadi.kodesie,
+ 												tseksi.seksi,
  												tpribadi.keluar,
  												tpribadi.id_lokasi_kerja,
  												coalesce(tlokasi_kerja.lokasi_kerja, "BELUM TERDAFTAR") nama_lokasi_kerja
@@ -33,6 +34,7 @@
  					$this->quick->from('db_datapresensi.tb_user_access useraccess');
  					$this->quick->join('db_datapresensi.vi_tpribadi tpribadi', 'tpribadi.noind = useraccess.noind', 'left');
 			    	$this->quick->join('hrd_khs.tlokasi_kerja tlokasi_kerja', 'tlokasi_kerja.id_ = tpribadi.id_lokasi_kerja', 'left');
+			    	$this->quick->join('hrd_khs.tseksi tseksi', 'tseksi.kodesie = tpribadi.kodesie', 'left');
 
  					$this->quick->where('id_lokasi =', $id_lokasi_decode);
 
