@@ -62,14 +62,15 @@
 								<table class="table table-bordered" id="PresenceManagement-daftarAksesUser">
 									<thead>
 										<tr>
-											<th class="text-center">No.</th>
-											<th class="text-center">Noind Baru</th>
-											<th class="text-center">Noind</th>
-											<th class="text-center">Nama</th>
-											<th class="text-center">Kodesie</th>
-											<th class="text-center">Keluar</th>
-											<th class="text-center">Lokasi Kerja</th>
-											<th class="text-center">Action</th>
+											<th class="text-center" style="width: 5%">No.</th>
+											<th class="text-center" style="width: 5%">Noind Baru</th>
+											<th class="text-center" style="width: 5%">Noind</th>
+											<th class="text-center" style="width: 20%">Nama</th>
+											<th class="text-center" style="width: 10%">Kodesie</th>
+											<th class="text-center" style="width: 20%">Seksi</th>
+											<th class="text-center" style="width: 5%">Keluar</th>
+											<th class="text-center" style="width: 10%">Lokasi Kerja</th>
+											<th class="text-center" style="width: 10%">Action</th>
 										</tr>
 									</thead>
 									<tbody>
@@ -85,6 +86,7 @@
 											<td><?php echo $user_access['noind'];?></td>
 											<td><?php echo $user_access['nama'];?></td>
 											<td><?php echo $user_access['kodesie'];?></td>
+											<td><?php echo $user_access['seksi'];?></td>
 											<td><?php echo $user_access['keluar'];?></td>
 											<td><?php echo $user_access['nama_lokasi_kerja'];?></td>
 											<td class="text-center">
