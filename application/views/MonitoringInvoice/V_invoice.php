@@ -39,7 +39,7 @@
 										<span class="btn btn-warning pull-right" style="cursor: none"><i class="fa fa-exclamation-triangle"></i> Submit hanya berdasarkan kategori invoice yang sama</span>
 									</div>
 								</div>
-								<table id="tabel_invoice" class="table text-center">
+								<table id="tabel_invoice" class="table text-center tblMI">
 									<thead>
 										<tr class="bg-primary">
 											<th width="5%" class="text-center">No</th>

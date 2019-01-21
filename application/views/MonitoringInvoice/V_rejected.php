@@ -21,7 +21,7 @@
 						<div class="box box-primary box-solid">
 							<div class="box-body">
 								<div style="overflow:auto;">
-								<table id="rejectinvoice" class="table table-striped table-bordered table-hover text-center" style="min-width:200%;">
+								<table id="rejectinvoice" class="table table-striped table-bordered table-hover text-center tblMI" style="min-width:200%;">
 									<thead>
 										<tr class="bg-primary">
 											<th class="text-center">No</th>
