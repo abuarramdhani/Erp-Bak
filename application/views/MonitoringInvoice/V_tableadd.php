@@ -17,7 +17,7 @@
 		<input type="hidden" value="<?= $po_num['QUANTITY'] ?>" name="quantity">
 		<?php }} ?>
 
-		<table id="poLinesTable" class="table table-striped table-bordered table-hover text-center dataTable">
+		<table id="poLinesTable" class="table table-striped table-bordered table-hover text-center">
 			<thead style="vertical-align: middle;"> 
 				<tr class="bg-primary">
 					<th class="text-center"><input type="checkbox" class="chkAllAddMonitoringInvoice" onclick="chkAllAddMonitoringInvoice();"></th>
