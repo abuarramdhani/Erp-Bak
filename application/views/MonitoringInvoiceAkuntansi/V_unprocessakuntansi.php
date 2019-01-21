@@ -23,7 +23,7 @@
 						<div class="box box-primary box-solid">
 							<div class="box-body">
 								<!-- <div style="overflow: auto;"> -->
-								<table id="unprocessTabel" class="table table-striped table-bordered table-hover text-center datatable">
+								<table id="unprocessTabel" class="table table-striped table-bordered table-hover text-center">
 									<thead>
 										<tr class="bg-primary">
 											<th class="text-center">No</th>

@@ -94,8 +94,8 @@ $(document).ready(function(){
 				
 				$('#tablePoLines').html(response);
 				$('#poLinesTable').DataTable({
-					"paging":   false,
-			        "ordering": false,
+			        "paging":   false,
+			        "ordering": true,
 			        "info":     false	
 				});
 

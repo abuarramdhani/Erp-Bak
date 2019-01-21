@@ -20,7 +20,7 @@
 					<div class="col-lg-12">
 						<div class="box box-primary box-solid">
 							<div class="box-body">
-								<table id="finishInvoice" class="table table-striped table-bordered table-hover text-center dataTable">
+								<table id="finishInvoice" class="table table-striped table-bordered table-hover text-center">
 									<thead>
 										<tr class="bg-primary">
 											<th class="text-center">No</th>
