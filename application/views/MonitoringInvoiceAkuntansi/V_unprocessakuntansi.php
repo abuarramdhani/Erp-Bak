@@ -23,12 +23,13 @@
 						<div class="box box-primary box-solid">
 							<div class="box-body">
 								<!-- <div style="overflow: auto;"> -->
-								<table id="unprocessTabel" class="table table-striped table-bordered table-hover text-center datatable">
+								<table id="unprocessTabel" class="table table-striped table-bordered table-hover text-center">
 									<thead>
 										<tr class="bg-primary">
 											<th class="text-center">No</th>
 											<th class="text-center">Vendor Name</th>
 											<th class="text-center">Invoice Number</th>
+											<th class="text-center" style="width: 15%">Action</th>
 											<th class="text-center">Invoice Date</th>
 											<th class="text-center">PPN</th>
 											<th class="text-center">Tax Invoice Number</th>
@@ -36,7 +37,6 @@
 											<th class="text-center">Po Amount</th>
 											<th class="text-center">PO Number</th>
 											<th class="text-center">Purchasing Submit Date</th>
-											<th class="text-center" style="width: 15%">Action</th>
 											<th class="text-center">Alasan</th>
 										</tr>
 									</thead>
@@ -46,13 +46,6 @@
 											<td><?php echo $no ?></td>
 											<td><?php echo $u['VENDOR_NAME']?></td>
 											<td><strong><?php echo $u['INVOICE_NUMBER']?></strong></td>
-											<td><?php echo date('d-M-Y',strtotime($u['INVOICE_DATE']))?></td>
-											<td><?php echo $u['PPN'] ?></td>
-											<td><?php echo $u['TAX_INVOICE_NUMBER']?></td>
-											<td class="inv_amount" id="invoice_amount"><?php echo $u['INVOICE_AMOUNT']?></td>
-											<td class="po_amount"><?php echo $u['PO_AMOUNT']?></td>
-											<td><?php echo $u['PO_DETAIL']?></td>
-											<td><?php echo $u['LAST_STATUS_PURCHASING_DATE']?></td>
 											<td>
 												<a title="Detail..." href="<?php echo base_url('AccountPayables/MonitoringInvoice/Unprocess/DetailUnprocess/'.$u['BATCH_NUMBER'].'/'.$u['INVOICE_ID']);?>" class="btn btn-info btn-sm"><i class="fa fa-file-text-o"></i>
 												</a>
@@ -64,6 +57,13 @@
 												<a title="Tolak" type="sumbit" data-id="<?= $u['INVOICE_ID'] ?>" onclick="prosesInvMI(this)" class="btn btn-danger btn-sm" value="3" name="proses"> <i class="glyphicon glyphicon-remove"></i>
 												</a>
 											</td>
+											<td><?php echo date('d-M-Y',strtotime($u['INVOICE_DATE']))?></td>
+											<td><?php echo $u['PPN'] ?></td>
+											<td><?php echo $u['TAX_INVOICE_NUMBER']?></td>
+											<td class="inv_amount" id="invoice_amount"><?php echo $u['INVOICE_AMOUNT']?></td>
+											<td class="po_amount"><?php echo $u['PO_AMOUNT']?></td>
+											<td><?php echo $u['PO_DETAIL']?></td>
+											<td><?php echo $u['LAST_STATUS_PURCHASING_DATE']?></td>
 											<td>
 												 <input type="text" style="display: none" name="reason_finance[]" class="reason_finance_class"> <input type="hidden" name="id_reason[]" value="<?php echo $u['INVOICE_ID']?>">
 											</td>
