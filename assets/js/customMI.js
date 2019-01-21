@@ -1,6 +1,6 @@
 $(document).ready(function(){
 
-	$('#tabel_invoice,#tbListSubmit, #tbListInvoice, #rejectinvoice, #tabel_detail_purchasing, #tabel_invoice_modal, #invoice_detail, #editlinespo, #rejectpo, #finishInvoice, #unprocessTabel').DataTable({
+	$('.tblMI').DataTable({
         "paging":   false,
         "ordering": true,
         "info":     false

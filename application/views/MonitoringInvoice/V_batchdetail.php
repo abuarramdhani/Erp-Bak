@@ -100,7 +100,7 @@
 							<div class="box-body">
 								<div class="col-md-12">
 									<div style="overflow:auto;">
-											<table id="invoice_detail" class="table table-striped table-bordered table-hover text-center" style="min-width:200%;">
+											<table id="invoice_detail" class="table table-striped table-bordered table-hover text-center tblMI" style="min-width:200%;">
 												<thead style="vertical-align: middle;"> 
 													<tr class="bg-primary">
 														<th class="text-center">No</th>

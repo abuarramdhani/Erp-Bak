@@ -90,7 +90,7 @@
 							</form>
 						<span><b>Invoice PO Detail</b></span>
 						<div style="overflow: auto">
-						<table id="invoiceKasiePembelian" class="table table-bordered table-hover table-striped text-center" style="width: 200%">
+						<table id="invoiceKasiePembelian" class="table table-bordered table-hover table-striped text-center tblMI" style="width: 200%">
 							<thead>
 								<tr class="bg-primary">
 									<th class="text-center">No</th>

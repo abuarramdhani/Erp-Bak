@@ -22,7 +22,7 @@
 					<div class="col-lg-12">
 						<div class="box box-primary box-solid">
 							<div class="box-body">
-								<table id="tabel_detail_purchasing" class="table text-center" style="width: 100%">
+								<table id="tabel_detail_purchasing" class="table text-center tblMI" style="width: 100%">
 									<thead>
 										<tr class="bg-primary">
 											<th class="text-center">No</th>
