@@ -189,7 +189,7 @@
 								</div>
 						<span><b>Invoice PO Detail</b></span>
 						<div style="overflow:auto;">
-							<table class="table table-bordered table-hover table-striped text-center tblMI" style="min-width:200%;">
+							<table class="table table-bordered table-hover table-striped text-center" style="min-width:200%;">
 								<thead>
 									<tr class="bg-primary">
 										<th class="text-center">No</th>
