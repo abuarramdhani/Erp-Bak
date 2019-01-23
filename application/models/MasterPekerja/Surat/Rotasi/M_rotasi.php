@@ -577,8 +577,9 @@
 			return $query->result_array();
 	 	}
 
-	 	public function updateSuratRotasi($updateSuratRotasi, $nomor_surat, $kodeSurat)
+	 	public function updateSuratRotasi($updateSuratRotasi, $nomor_surat, $kodeSurat, $tanggal_cetak)
 	 	{
+	 		$this->personalia->where('tanggal_cetak=', $tanggal_cetak);
 	 		$this->personalia->where('no_surat=', $nomor_surat);
 	 		$this->personalia->where('kode=', $kodeSurat);
 	 		$this->personalia->update('"Surat".tsurat_rotasi', $updateSuratRotasi);

@@ -177,6 +177,7 @@
 															or 	noind 	like '%$keywordPencarianPekerja%'
 														)
 									order by 	noind;";
+									// echo $cariPekerja;
 			$query 			=	$this->personalia->query($cariPekerja);
 			return $query->result_array();
 	 	}
@@ -668,8 +669,9 @@ order by 	trefjabatan.kd_jabatan";
 			return $query->result_array();
 	 	}
 
-	 	public function updateSuratPromosi($updateSuratPromosi, $nomor_surat, $kodeSurat)
+	 	public function updateSuratPromosi($updateSuratPromosi, $nomor_surat, $kodeSurat, $tanggal_cetak)
 	 	{
+	 		$this->personalia->where('tanggal_cetak=', $tanggal_cetak);
 	 		$this->personalia->where('no_surat=', $nomor_surat);
 	 		$this->personalia->where('kode=', $kodeSurat);
 	 		$this->personalia->update('"Surat".tsurat_promosi', $updateSuratPromosi);

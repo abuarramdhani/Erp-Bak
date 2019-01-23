@@ -555,6 +555,7 @@ class C_Index extends CI_Controller
 
 		$tanggal_berlaku 			=	$this->input->post('txtTanggalBerlaku');
 		$tanggal_cetak 				=	$this->input->post('txtTanggalCetak');
+		$tanggal_cetak_asli			=	$this->input->post('txtTanggalCetakAsli');
 
 		$nomor_surat 				=	$this->input->post('txtNomorSurat');
 		$hal_surat 					=	strtoupper($this->input->post('txtHalSurat'));
@@ -610,7 +611,7 @@ class C_Index extends CI_Controller
 											'status_staf' 			=>	$staf,
 											'nomor_induk_baru'		=>	$nomor_induk_baru,
 										);
-		$this->M_pengangkatan->updateSuratPengangkatan($updateSuratPengangkatan, $nomor_surat, $kodeSurat);
+		$this->M_pengangkatan->updateSuratPengangkatan($updateSuratPengangkatan, $nomor_surat, $kodeSurat, $tanggal_cetak_asli);
 		if (substr($nomor_induk, 0,1) == 'E') {
 				redirect('MasterPekerja/Surat/SuratPengangkatanNonStaff');
 			}else{

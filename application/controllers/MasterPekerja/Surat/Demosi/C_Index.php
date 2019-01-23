@@ -20,6 +20,8 @@ class C_Index extends CI_Controller
 
 		$this->load->model('SystemAdministration/MainMenu/M_user');
 		$this->load->model('MasterPekerja/Surat/Demosi/M_demosi');
+		$this->load->model('MasterPekerja/Surat/M_surat');
+
 
 		date_default_timezone_set('Asia/Jakarta');
 
@@ -110,10 +112,21 @@ class C_Index extends CI_Controller
 	public function jabatan()
 	{
 		$jab = $this->input->post('name');
+		$kd = $this->input->post('kd');
 		$job = $this->input->post('job');
-		$tex = $this->M_demosi->KdJabatan($jab, $job);
+		$tex = $this->M_demosi->KdJabatan($jab, $job, $kd);
 		foreach ($tex as $key) {
-			echo trim($tex[0]['jabatan']);
+			$seksi = '';
+			if (strlen(trim($tex[0]['bidang'])) < 2) {
+				$seksi = trim($tex[0]['dept']);
+			}elseif (strlen(trim($tex[0]['unit'])) < 2) {
+				$seksi = trim($tex[0]['bidang']);
+			}elseif (strlen(trim($tex[0]['seksi'])) < 2) {
+				$seksi = trim($tex[0]['unit']);
+			}else{
+				$seksi = trim($tex[0]['seksi']);
+			}
+			echo trim($tex[0]['jabatan']).' '.$seksi;
 		}
 	}
 
@@ -397,6 +410,35 @@ class C_Index extends CI_Controller
 			}
 			$kode_surat 	=	$kode_surat;
 		}
+		$posisi_baru = '';
+		$tseksiBaru 				=	$this->M_surat->cariTSeksi($seksi_baru);
+		if($cekStaf[0]['status']=='STAF')
+			{
+				// $kode_surat 				=	'DU/KI-C';
+				$tertanda 					= 	'CV Karya Hidup Sentosa';
+				$nama_tanda_tangan 			=	'Drs. Hendro Wijayanto, Akt';
+				$jabatan_tertanda 			=	'Direktur Utama';
+				$posisi_baru 				=	$jabatan_baru;
+			}
+			else
+			{
+				// $kode_surat 				=	'PS/KI-M';
+				$tertanda 					= 	'Cv Karya Hidup Sentosa<br/>Departemen Personalia';
+				$nama_tanda_tangan 			=	'Rajiwan';
+				$jabatan_tertanda 			=	'Asisten Kepala Unit Hubungan Kerja & General Affair';
+
+				$cekPekerjaan 				=	$this->M_surat->cekPekerjaan($pekerjaan_baru);
+				$nama_pekerjaan_baru 		=	$cekPekerjaan[0]['pekerjaan'];
+				if(!(empty($nama_pekerjaan_baru)))
+				{
+					$nama_pekerjaan_baru 	.=	' / ';
+				}
+				else
+				{
+					$nama_pekerjaan_baru 	=	'';
+				}
+				$posisi_baru 				=	$nama_pekerjaan_baru.'Golongan '.$golongan_pekerjaan_baru.' / '.'Seksi '.$tseksiBaru['0']['seksi'].' / '.'Unit '.$tseksiBaru[0]['unit'].' / '.'Departemen '.$tseksiBaru[0]['dept'];
+			}
 
 		$stafff = '1';
 		if($cekStaf[0]['status']=='STAF')
@@ -464,6 +506,23 @@ class C_Index extends CI_Controller
 
 		$templateDemosi 			=	$templateDemosi[0]['isi_surat'];
 
+		$seksiBaru = ' ';
+			$unitBaru = ' ';
+			$deptBaru = ' ';
+			if (strlen($tseksiBaru[0]['seksi']) > 2) {
+				$seksiBaru = ' Seksi '.$tseksiBaru[0]['seksi'].', ';
+			}
+			if (strlen($tseksiBaru[0]['unit']) > 2) {
+				$unitBaru = 'Unit '.$tseksiBaru[0]['unit'].', ';
+			}
+			if (strlen($tseksiBaru[0]['dept']) > 2) {
+				$deptBaru = 'Departemen '.$tseksiBaru[0]['dept'].',';
+			}
+
+			$seksiNew = $tseksiBaru[0]['seksi'];
+			$unitNew = $tseksiBaru[0]['unit'];
+			$deptNew = $tseksiBaru[0]['dept'];
+
 		$parameterUbah 				=	array
 										(
 											'[no_surat]',
@@ -488,7 +547,10 @@ class C_Index extends CI_Controller
 											'[tanggal_demosi]',
 											'[tembusan]',
 											'[jabatan_lama]',
-											'[jabatan_baru]'
+											'[jabatan_baru]',
+											'[posisi_baru]',
+											'[unit_new]',
+											'[departemen_new]'
 										);
 		$parameterDiubah	  		=	array
 										(
@@ -506,15 +568,18 @@ class C_Index extends CI_Controller
 											$lokasi_lama,
 											$nama_pekerjaan_baru,
 											$golongan_pekerjaan_baru,
-											$tseksiBaru[0]['seksi'],
-											$tseksiBaru[0]['unit'],
-											$tseksiBaru[0]['dept'],
+											$seksiBaru,
+											$unitBaru,
+											$deptBaru,
 											$lokasi_baru,
 											$this->personalia->konversitanggalIndonesia(date('Y-m-d', strtotime($tanggal_cetak))),
 											$this->personalia->konversitanggalIndonesia(date('Y-m-d', strtotime($tanggal_berlaku))),
 											$tembusan_HTML,
 											$jabatan_lama,
-											$jabatan_baru
+											$jabatan_baru,
+											$posisi_baru,
+											$unitNew,
+											$deptNew
 										);
 
 		$data['preview'] 	=	str_replace($parameterUbah, $parameterDiubah, $templateDemosi);
@@ -708,6 +773,7 @@ class C_Index extends CI_Controller
 
 		$tanggal_berlaku 			=	$this->input->post('txtTanggalBerlaku');
 		$tanggal_cetak 				=	$this->input->post('txtTanggalCetak');
+		$tanggal_cetak_asli			=	$this->input->post('txtTanggalCetakAsli');
 
 		$nomor_surat 				=	$this->input->post('txtNomorSurat');
 		$hal_surat 					=	strtoupper($this->input->post('txtHalSurat'));
@@ -761,7 +827,7 @@ class C_Index extends CI_Controller
 											'kd_pkj_baru'           =>  $kd_pkj_baru,
 											'status_staf' 			=>	$staf,
 										);
-		$this->M_demosi->updateSuratDemosi($updateSuratDemosi, $nomor_surat, $kodeSurat);
+		$this->M_demosi->updateSuratDemosi($updateSuratDemosi, $nomor_surat, $kodeSurat, $tanggal_cetak_asli);
 		redirect('MasterPekerja/Surat/SuratDemosi');
 	}
 

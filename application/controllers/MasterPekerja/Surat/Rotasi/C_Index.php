@@ -276,6 +276,32 @@ class C_Index extends CI_Controller
 
 		$templateRotasi 			=	$templateRotasi[0]['isi_surat'];
 
+		$seksiBaru = ' ';
+		$unitBaru = ' ';
+		$deptBaru = ' ';
+		if (strlen($tseksiBaru[0]['seksi']) > 2) {
+			$seksiBaru = ' Seksi '.$tseksiBaru[0]['seksi'].', ';
+		}
+		if (strlen($tseksiBaru[0]['unit']) > 2) {
+			$unitBaru = 'Unit '.$tseksiBaru[0]['unit'].', ';
+		}
+		if (strlen($tseksiBaru[0]['dept']) > 2) {
+			$deptBaru = 'Departemen '.$tseksiBaru[0]['dept'].',';
+		}
+
+		$seksiNew = ' ';
+		$unitNew = ' ';
+		$deptNew = ' ';
+		if (strlen($tseksiBaru[0]['seksi']) > 2) {
+			$seksiNew = ' '.$tseksiBaru[0]['seksi'].' / ';
+		}
+		if (strlen($tseksiBaru[0]['unit']) > 2) {
+			$unitNew = $tseksiBaru[0]['unit'].' / ';
+		}
+		if (strlen($tseksiBaru[0]['dept']) > 2) {
+			$deptNew = $tseksiBaru[0]['dept'];
+		}
+
 		$parameterUbah 				=	array
 										(
 											'[no_surat]',
@@ -298,7 +324,13 @@ class C_Index extends CI_Controller
 											'[lokasi_kerja_baru]',
 											'[tanggal_cetak]',
 											'[tanggal_rotasi]',
-											'[tembusan]'
+											'[tembusan]',
+											'[seksibaru]',
+											'[unitbaru]',
+											'[deptbaru]',
+											'[seksiNew]',
+											'[unitNew]',
+											'[deptNew]'
 										);
 		$parameterDiubah	  		=	array
 										(
@@ -322,7 +354,13 @@ class C_Index extends CI_Controller
 											$lokasi_baru,
 											date('d F Y', strtotime($tanggal_cetak)),
 											date('d F Y', strtotime($tanggal_berlaku)),
-											$tembusan_HTML
+											$tembusan_HTML,
+											$seksiBaru,
+											$unitBaru,
+											$deptBaru,
+											$seksiNew,
+											$unitNew,
+											$deptNew,
 										);
 
 		$data['preview'] 	=	str_replace($parameterUbah, $parameterDiubah, $templateRotasi);
@@ -519,6 +557,7 @@ class C_Index extends CI_Controller
 
 		$tanggal_berlaku 			=	$this->input->post('txtTanggalBerlaku');
 		$tanggal_cetak 				=	$this->input->post('txtTanggalCetak');
+		$tanggal_cetak_asli			=	$this->input->post('txtTanggalCetakAsli');
 
 		$nomor_surat 				=	$this->input->post('txtNomorSurat');
 		$hal_surat 					=	strtoupper($this->input->post('txtHalSurat'));
@@ -572,7 +611,7 @@ class C_Index extends CI_Controller
 											'kd_pkj_baru'           =>  $kd_pkj_baru,
 											'status_staf' 			=>	$staf,
 										);
-		$this->M_Rotasi->updateSuratRotasi($updateSuratRotasi, $nomor_surat, $kodeSurat);
+		$this->M_Rotasi->updateSuratRotasi($updateSuratRotasi, $nomor_surat, $kodeSurat, $tanggal_cetak_asli);
 		redirect('MasterPekerja/Surat/SuratRotasi');
 	}
 

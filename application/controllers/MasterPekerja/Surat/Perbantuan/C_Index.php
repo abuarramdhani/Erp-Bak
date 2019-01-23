@@ -20,6 +20,7 @@ class C_Index extends CI_Controller
 
 		$this->load->model('SystemAdministration/MainMenu/M_user');
 		$this->load->model('MasterPekerja/Surat/Perbantuan/M_perbantuan');
+		$this->load->model('MasterPekerja/Surat/Rotasi/M_Rotasi');
 
 		date_default_timezone_set('Asia/Jakarta');
 
@@ -225,12 +226,14 @@ class C_Index extends CI_Controller
 		$templateMutasi 			=	$this->M_perbantuan->ambilLayoutSuratPerbantuan($stafff);
 		// print_r($templateMutasi);exit();
 		$tseksiBaru 				=	$this->M_perbantuan->cariTSeksi($seksi_baru);
+		$tseksiLama 				=	$this->M_Rotasi->cariTSeksi($seksi_lama);
 
 		$jabatanSurat 				=	$this->M_perbantuan->cekJabatanSurat($nomor_induk);
 		$nama_pekerja 				=	$jabatanSurat[0]['nama'];
 		$jabatan_surat 				=	$jabatanSurat[0]['jabatan_surat'];
 
 		$posisiLama 				=	$this->M_perbantuan->ambilPosisi($nomor_induk);
+		// print_r($posisiLama);
 		$posisi_lama 				=	$posisiLama[0]['posisi'];
 
 		$posisi_baru 				=	'';
@@ -262,7 +265,7 @@ class C_Index extends CI_Controller
 			{
 				$nama_pekerjaan_baru 	=	'';
 			}
-			$posisi_baru 				=	$nama_pekerjaan_baru.'Golongan '.$golongan_pekerjaan_baru.' / '.'Seksi '.$tseksiBaru['0']['seksi'].' / '.'Unit '.$tseksiBaru[0]['unit'].' / '.'Departemen '.$tseksiBaru[0]['dept'];
+			$posisi_baru 				=	'Seksi '.$tseksiBaru['0']['seksi'].' / '.'Unit '.$tseksiBaru[0]['unit'].' / '.'Departemen '.$tseksiBaru[0]['dept'];
 		}
 
 		// echo $kode_surat;exit();
@@ -308,6 +311,19 @@ class C_Index extends CI_Controller
 
 		$templateMutasi 			=	$templateMutasi[0]['isi_surat'];
 
+			$seksiBaru = ' ';
+			$unitBaru = ' ';
+			$deptBaru = ' ';
+			if (strlen($tseksiBaru[0]['seksi']) > 2) {
+				$seksiBaru = ' Seksi '.$tseksiBaru[0]['seksi'].', ';
+			}
+			if (strlen($tseksiBaru[0]['unit']) > 2) {
+				$unitBaru = 'Unit '.$tseksiBaru[0]['unit'].', ';
+			}
+			if (strlen($tseksiBaru[0]['dept']) > 2) {
+				$deptBaru = 'Departemen '.$tseksiBaru[0]['dept'].',';
+			}
+
 		$parameterUbah 				=	array
 										(
 											'[no_surat]',
@@ -331,6 +347,9 @@ class C_Index extends CI_Controller
 											'[nama_tanda_tangan]',
 											'[jabatan_tertanda]',
 											'[tembusan]',
+											'[seksi_lama]',
+											'[unit_lama]',
+											'[departemen_lama]',
 										);
 		$parameterDiubah	  		=	array
 										(
@@ -347,14 +366,17 @@ class C_Index extends CI_Controller
 											$lokasi_baru,
 											$this->personalia->konversitanggalIndonesia(date('Y-m-d', strtotime($tanggal_berlaku_awal))),
 											$this->personalia->konversitanggalIndonesia(date('Y-m-d', strtotime($tanggal_berlaku_akhir))),
-											$tseksiBaru[0]['seksi'],
-											$tseksiBaru[0]['unit'],
-											$tseksiBaru[0]['dept'],
+											$seksiBaru,
+											$unitBaru,
+											$deptBaru,
 											$this->personalia->konversitanggalIndonesia(date('Y-m-d', strtotime($tanggal_cetak))),
 											$tertanda,
 											$nama_tanda_tangan,
 											$jabatan_tertanda,
 											$tembusan_HTML,
+											$tseksiLama[0]['seksi'],
+											$tseksiLama[0]['unit'],
+											$tseksiLama[0]['dept'],
 										);
 
 		$data['preview'] 	=	str_replace($parameterUbah, $parameterDiubah, $templateMutasi);
@@ -550,6 +572,7 @@ class C_Index extends CI_Controller
 
 		$tanggal_berlaku 			=	$this->input->post('txtTanggalBerlaku');
 		$tanggal_cetak 				=	$this->input->post('txtTanggalCetak');
+		$tanggal_cetak_asli			=	$this->input->post('txtTanggalCetakAsli');
 
 		$nomor_surat 				=	$this->input->post('txtNomorSurat');
 		$hal_surat 					=	strtoupper($this->input->post('txtHalSurat'));
@@ -605,7 +628,7 @@ class C_Index extends CI_Controller
 											'tanggal_mulai_perbantuan'	=>	$tanggal_perbantuan_awal,
 											'tanggal_selesai_perbantuan'=>	$tanggal_perbantuan_akhir,
 										);
-		$this->M_perbantuan->updateSuratPerbantuan($updateSuratPerbantuan, $nomor_surat, $kodeSurat);
+		$this->M_perbantuan->updateSuratPerbantuan($updateSuratPerbantuan, $nomor_surat, $kodeSurat, $tanggal_cetak_asli);
 		redirect('MasterPekerja/Surat/SuratPerbantuan');
 	}
 
