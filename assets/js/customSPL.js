@@ -61,11 +61,43 @@ $(function () {
     allowClear: true,
   });
 
+  $('.spl-sie-select2').select2({
+    ajax:{
+      url: baseurl+"SPLSeksi/C_SPLSeksi/show_seksi",
+      dataType: 'json',
+      type: 'get',
+      data: function (params) {
+        var other = "";
+
+        if($('#kodel').length){
+          other = $('#kodel').val();
+        }
+
+        return {key: params.term, key2: other};
+      },
+      processResults: function (data) {
+        return {
+          results: $.map(data, function (item) {
+            return {
+              id: item.kode,
+              text: item.kode+' - '+item.nama,
+            }
+          })
+        };
+      },
+      cache: true
+    },
+    minimumInputLength: 2,
+    placeholder: 'Silahkan pilih',
+    allowClear: true,
+  });
+
   $('#spl-pencarian').on('click', function(e) {
     e.preventDefault();
     var table = $('#example1').DataTable();
     var alamate = baseurl+"SPLSeksi/C_SPLSeksi/data_spl_filter";
 
+    table.clear().draw();
     $.ajax({
       url: alamate,
       type: "POST",
@@ -78,8 +110,6 @@ $(function () {
       success: function(data) {
         if(data != "[]"){
           var send = $.parseJSON(data);
-          
-          table.clear();
           table.rows.add(send);
           table.draw();
         }else{
@@ -157,6 +187,7 @@ $(function () {
     var table = $('#example1').DataTable();
     var alamate = baseurl+"SPLSeksi/C_SPLSeksi/rekap_spl_filter";
 
+    table.clear().draw();
     $.ajax({
       url: alamate,
       type: "POST",
@@ -168,8 +199,6 @@ $(function () {
       success: function(data) {
         if(data != "[]"){
           var send = $.parseJSON(data);
-          
-          table.clear();
           table.rows.add(send);
           table.draw();
         }else{
@@ -185,6 +214,47 @@ $(function () {
 
   $(document).ajaxStop(function(){
     $(".spl-loading").addClass("hidden");
+  });
+
+  // $('#spl-chk-dt').on('click', function(e) {
+  $('#spl-chk-dt').on('change', function(e){
+    alert('dasfg');
+    if(this.checked) {
+      $('#tgl_mulai').prop("disabled", false);
+      $('#tgl_selesai').prop("disabled", false);
+    }else{
+      $('#tgl_mulai').prop("disabled", true);
+      $('#tgl_selesai').prop("disabled", true);
+    }
+
+  });
+
+  $('#spl-approval').on('click', function(e) {
+    e.preventDefault();
+    var table = $('#example1').DataTable();
+    var alamate = baseurl+"SPLSeksi/C_SPLKasie/data_spl_filter";
+
+    table.clear().draw();
+    $.ajax({
+      url: alamate,
+      type: "POST",
+      data: {
+        dari:$('#tgl_mulai').val(), 
+        sampai:$('#tgl_selesai').val(), 
+        status:$('#status').val(), 
+        lokasi:$('#lokasi').val(),
+        noind:$('#noind').val(),
+        kodesie:$('#kodesie').val()},
+      success: function(data) {
+        if(data != "[]"){
+          var send = $.parseJSON(data);
+          table.rows.add(send);
+          table.draw();
+        }else{
+          // alert('Data tidak di temukan');
+        }
+      }
+    }); 
   });
 
 

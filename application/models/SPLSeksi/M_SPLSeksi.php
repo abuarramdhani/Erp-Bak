@@ -30,6 +30,23 @@ class M_SPLSeksi extends CI_Model{
 		return $query->result_array();
 	}
 
+	public function show_seksi($filter, $filter2){
+		$sql = "select distinct substring(kodesie, 1, $filter2) as kode, 
+				(case 
+					when $filter2=7 then seksi
+					when $filter2=5 then unit
+					when $filter2=3 then bidang
+					when $filter2=1 then dept
+					else concat(seksi, ' - ', pekerjaan)
+				end) as nama
+			from hrd_khs.tseksi 
+			where (substring(kodesie, 1, $filter2)=substring('$filter', 1, $filter2)
+				or (dept like '%$filter%' or bidang like '%$filter%' or unit like '%$filter%' or seksi like '%$filter%'))
+				and substring(substring(kodesie, 1, $filter2), -1, 1)<>'0'";
+		$query = $this->spl->query($sql);
+		return $query->result_array();
+	}
+
 	public function show_akses_seksi($filter){
 		$this->spl->where('noind', $filter);
 		$query = $this->spl->get('takses_seksi');

@@ -40,7 +40,7 @@ class C_SPLSeksi extends CI_Controller {
 
 		$this->load->view('V_Header',$data);
 		$this->load->view('V_Sidemenu',$data);
-		$this->load->view('SPLSeksi/V_Index',$data);
+		$this->load->view('SPLSeksi/Seksi/V_Index',$data);
 		$this->load->view('V_Footer',$data);
 	}
 
@@ -50,7 +50,7 @@ class C_SPLSeksi extends CI_Controller {
 
 		$this->load->view('V_Header',$data);
 		$this->load->view('V_Sidemenu',$data);
-		$this->load->view('SPLSeksi/V_data_spl',$data);
+		$this->load->view('SPLSeksi/Seksi/V_data_spl',$data);
 		$this->load->view('V_Footer',$data);
 	}
 
@@ -58,6 +58,13 @@ class C_SPLSeksi extends CI_Controller {
 		$key = $_GET['key'];
 		$key2 = $_GET['key2'];
 		$data = $this->M_SPLSeksi->show_pekerja($key, $key2);
+ 		echo json_encode($data);
+	}
+
+	public function show_seksi(){
+		$key = $_GET['key'];
+		$key2 = $_GET['key2'];
+		$data = $this->M_SPLSeksi->show_seksi($key, $key2);
  		echo json_encode($data);
 	}
 
@@ -155,7 +162,7 @@ class C_SPLSeksi extends CI_Controller {
 		$stylesheet = file_get_contents(base_url('assets/plugins/bootstrap/3.3.7/css/bootstrap.css'));
 
 		$pdf->WriteHTML($stylesheet,1);
-		$html = $this->load->view('SPLSeksi/V_cetak_spl',$data, true);
+		$html = $this->load->view('SPLSeksi/Seksi/V_cetak_spl',$data, true);
 		$pdf->WriteHTML($html,2);
 		$pdf->Output($filename, 'I');
 	}
@@ -173,7 +180,7 @@ class C_SPLSeksi extends CI_Controller {
 
 		$this->load->view('V_Header',$data);
 		$this->load->view('V_Sidemenu',$data);
-		$this->load->view('SPLSeksi/V_edit_spl',$data);
+		$this->load->view('SPLSeksi/Seksi/V_edit_spl',$data);
 		$this->load->view('V_Footer',$data);
 	}
 
@@ -275,7 +282,7 @@ class C_SPLSeksi extends CI_Controller {
 
 		$this->load->view('V_Header',$data);
 		$this->load->view('V_Sidemenu',$data);
-		$this->load->view('SPLSeksi/V_new_spl',$data);
+		$this->load->view('SPLSeksi/Seksi/V_new_spl',$data);
 		$this->load->view('V_Footer',$data);
 	}
 
@@ -455,7 +462,7 @@ class C_SPLSeksi extends CI_Controller {
 
 		$this->load->view('V_Header',$data);
 		$this->load->view('V_Sidemenu',$data);
-		$this->load->view('SPLSeksi/V_rekap_spl',$data);
+		$this->load->view('SPLSeksi/Seksi/V_rekap_spl',$data);
 		$this->load->view('V_Footer',$data);
 	}
 
