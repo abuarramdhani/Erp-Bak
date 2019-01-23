@@ -13,7 +13,7 @@ class M_fleetkendaraan extends CI_Model
     {
         if ($id === FALSE) {
             $ambilKendaraan     = " select      kdrn.kendaraan_id as kode_kendaraan,
-                                                kdrn.nomor_polisi as nomor_polisi,
+                                                kdrn.nomor_polisi as nomor_polisi,kdrn.nomor_rangka as nomor_rangka,
                                                 jeniskdrn.jenis_kendaraan_id as kode_jenis_kendaraan,
                                                 jeniskdrn.jenis_kendaraan as jenis_kendaraan,
                                                 merkkdrn.merk_kendaraan_id as kode_merk_kendaraan,
@@ -43,7 +43,7 @@ class M_fleetkendaraan extends CI_Model
             $query = $this->db->query($ambilKendaraan);
     	} else {
             $ambilKendaraan     ="  select      kdrn.kendaraan_id as kode_kendaraan,
-                                                kdrn.nomor_polisi as nomor_polisi,
+                                                kdrn.nomor_polisi as nomor_polisi,kdrn.nomor_rangka as nomor_rangka,
                                                 jeniskdrn.jenis_kendaraan_id as kode_jenis_kendaraan,
                                                 jeniskdrn.jenis_kendaraan as jenis_kendaraan,
                                                 merkkdrn.merk_kendaraan_id as kode_merk_kendaraan,
@@ -68,7 +68,7 @@ class M_fleetkendaraan extends CI_Model
                                                 join    ga.ga_fleet_warna_kendaraan as warnakdrn
                                                     on  warnakdrn.warna_kendaraan_id=kdrn.warna_kendaraan_id
                                     where       kdrn.kendaraan_id=$id
-                                    order by    kdrn.kendaraan_id;";
+                                    order by    kdrn.kendaraan_id";
             $query              =   $this->db->query($ambilKendaraan);
     		// $query = $this->db->get_where('ga.ga_fleet_kendaraan', array('kendaraan_id' => $id));
     	}
@@ -79,7 +79,7 @@ class M_fleetkendaraan extends CI_Model
     public function getFleetKendaraanCabang($lokasi)
     {
         $query = $this->db->query("select      kdrn.kendaraan_id as kode_kendaraan,
-                                                kdrn.nomor_polisi as nomor_polisi,
+                                                kdrn.nomor_polisi as nomor_polisi,kdrn.nomor_rangka as nomor_rangka,
                                                 jeniskdrn.jenis_kendaraan_id as kode_jenis_kendaraan,
                                                 jeniskdrn.jenis_kendaraan as jenis_kendaraan,
                                                 merkkdrn.merk_kendaraan_id as kode_merk_kendaraan,
@@ -113,7 +113,7 @@ class M_fleetkendaraan extends CI_Model
     {
         if ($id === FALSE) {
             $ambilKendaraan     = " select      kdrn.kendaraan_id as kode_kendaraan,
-                                                kdrn.nomor_polisi as nomor_polisi,
+                                                kdrn.nomor_polisi as nomor_polisi,kdrn.nomor_rangka as nomor_rangka,
                                                 jeniskdrn.jenis_kendaraan_id as kode_jenis_kendaraan,
                                                 jeniskdrn.jenis_kendaraan as jenis_kendaraan,
                                                 merkkdrn.merk_kendaraan_id as kode_merk_kendaraan,

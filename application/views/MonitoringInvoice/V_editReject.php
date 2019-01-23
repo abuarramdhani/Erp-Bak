@@ -105,7 +105,7 @@
 							<div class="box-body">
 								<div class="col-md-12">
 									<div style="overflow:auto;">
-											<table id="editlinespo" class="table text-center dataTable" style="min-width:200%;">
+											<table id="editlinespo" class="table text-center tblMI" style="min-width:200%;">
 												<thead style="vertical-align: middle;"> 
 													<tr class="bg-primary">
 														<th class="text-center">No</th>

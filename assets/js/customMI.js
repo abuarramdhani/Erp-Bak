@@ -1,6 +1,6 @@
 $(document).ready(function(){
 
-	$('#tabel_invoice,#tbListSubmit, #tbListInvoice, #rejectinvoice, #tabel_detail_purchasing, #tabel_invoice_modal, #invoice_detail, #editlinespo, #rejectpo, #finishInvoice, #unprocessTabel').DataTable({
+	$('.tblMI').DataTable({
         "paging":   false,
         "ordering": true,
         "info":     false
@@ -94,8 +94,8 @@ $(document).ready(function(){
 				
 				$('#tablePoLines').html(response);
 				$('#poLinesTable').DataTable({
-					"paging":   false,
-			        "ordering": false,
+			        "paging":   false,
+			        "ordering": true,
 			        "info":     false	
 				});
 
@@ -116,11 +116,12 @@ $(document).ready(function(){
 					           				if (col==1) {
 					           					html+='<td>'+num+'</td>'
 					           				}else{
-					           					html+='<td><input name="'+inputName[(col-2)]+'[]" type="text" class="form-control '+inputName[(col-2)]+'" value="'+$(this).text()+'" row-num="'+num+'" readonly>'
+					           					html+='<td><input style="width: 100%" name="'+inputName[(col-2)]+'[]" type="hidden" class="form-control '+inputName[(col-2)]+'" value="'+$(this).text()+'" row-num="'+num+'" readonly>'
+					           					html+='<span>'+$(this).text()+'</span></td>';
 					           				}
 					           			});
 					           		})
-					               html+='<td><input type="text" onchange="PresTab(this)" name="qty_invoice[]" class="form-control qty_invoice" row-num="'+num+'"></td>'; 
+					               html+='<td><input style="width: 100%" type="text" onchange="PresTab(this)" name="qty_invoice[]" class="form-control qty_invoice" row-num="'+num+'"></td>'; 
 					               html+='<td><button type="button"class="del_row btn btn-danger"><i class="glyphicon glyphicon-trash"></i></button></td>'; 
 					               html+='</tr>'; 
 					               $('#tbodyPoDetailAll').append(html);

@@ -29,7 +29,7 @@
 										<h3><label>Batch Detail : <?=  $batch_number; ?></label></h3>
 									</div>
 								</div>
-								<table id="tbListInvoice" class="table table-striped table-bordered table-hover text-center dataTable">
+								<table id="tbListInvoice" class="table table-striped table-bordered table-hover text-center tblMI">
 									<thead>
 										<tr class="bg-primary">
 											<th class="text-center">No</th>

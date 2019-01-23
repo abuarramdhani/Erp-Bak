@@ -55,6 +55,7 @@
                                                         <th>Lokasi Kerja</th>
                                                         <th>Warna Kendaraan</th>
                                                         <th>Tahun Pembuatan</th>
+                                                        <th>Nomor Rangka</th>
                                                         <th>Status Kepemilikan</th>
                                                         <th>Usable</th>
                                                         <th>QR CODE</th>
@@ -84,6 +85,7 @@
                                                         <td><?php echo $Kendaraan['lokasi'] ?></td>
                                                         <td><?php echo $Kendaraan['warna_kendaraan'] ?></td>
                                                         <td><?php echo $Kendaraan['tahun_pembuatan'] ?></td>
+                                                        <td><?php echo $Kendaraan['nomor_rangka'] ?></td>
                                                         <td><?php if ($Kendaraan['hak_milik'] == "1") {
                                                             echo "Perusahaan";
                                                         }elseif ($Kendaraan['hak_milik'] == "0"){echo "Rental";} ; ?></td>
