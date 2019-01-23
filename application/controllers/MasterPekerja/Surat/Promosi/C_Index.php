@@ -329,6 +329,19 @@ class C_Index extends CI_Controller
 
 		$templatePromosi 			=	$templatePromosi[0]['isi_surat'];
 
+		$seksiBaru = ' ';
+		$unitBaru = ' ';
+		$deptBaru = ' ';
+		if (strlen($tseksiBaru[0]['seksi']) > 2) {
+			$seksiBaru = ' Seksi '.$tseksiBaru[0]['seksi'].', ';
+		}
+		if (strlen($tseksiBaru[0]['unit']) > 2) {
+			$unitBaru = 'Unit '.$tseksiBaru[0]['unit'].', ';
+		}
+		if (strlen($tseksiBaru[0]['dept']) > 2) {
+			$deptBaru = 'Departemen '.$tseksiBaru[0]['dept'].',';
+		}
+
 		$parameterUbah 				=	array
 		(
 			'[no_surat]',
@@ -357,7 +370,10 @@ class C_Index extends CI_Controller
 			'[kd_lama]',
 			'[kd_baru]',
 			'[promosi1]',
-			'[promosi2]'
+			'[promosi2]',
+			'[seksibaru]',
+			'[unitbaru]',
+			'[departemenbaru]',
 			);
 		$parameterDiubah	  		=	array
 		(
@@ -387,7 +403,10 @@ class C_Index extends CI_Controller
 			$jabatan_lama,
 			$jabatan_baru,
 			$this->personalia->konversitanggalIndonesia(date('Y-m-d', strtotime($promosi1))),
-			$this->personalia->konversitanggalIndonesia(date('Y-m-d', strtotime($promosi2)))
+			$this->personalia->konversitanggalIndonesia(date('Y-m-d', strtotime($promosi2))),
+			$seksiBaru,
+			$unitBaru,
+			$deptBaru,
 			);
 
 		$data['preview'] 	=	str_replace($parameterUbah, $parameterDiubah, $templatePromosi);
@@ -599,6 +618,7 @@ class C_Index extends CI_Controller
 
 		$tanggal_berlaku 			=	$this->input->post('txtTanggalBerlaku');
 		$tanggal_cetak 				=	$this->input->post('txtTanggalCetak');
+		$tanggal_cetak_asli			=	$this->input->post('txtTanggalCetakAsli');
 		$tanggal_promosi 			=	$this->input->post('txtTanggalPeriode');
 
 		$nomor_surat 				=	$this->input->post('txtNomorSurat');
@@ -662,7 +682,7 @@ class C_Index extends CI_Controller
 			'tanggal_periode_awal'	=>	$periode_awal,
 			'tanggal_periode_akhir'	=>	$periode_akhir,
 			);
-		$this->M_promosi->updateSuratPromosi($updateSuratPromosi, $nomor_surat, $kodeSurat);
+		$this->M_promosi->updateSuratPromosi($updateSuratPromosi, $nomor_surat, $kodeSurat, $tanggal_cetak_asli);
 		redirect('MasterPekerja/Surat/SuratPromosi');
 	}
 

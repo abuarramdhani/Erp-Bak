@@ -918,6 +918,8 @@ $(function()
 // alert(top.location.pathname);
 $(document).ready(function(){
 	$('.jabatan').change(function(){
+		var kd = $('.mpk-kdbaru').val();
+		// alert(kd);
 		var job = $('.kerja').val();
 		var teks = $('.jabatan').val();
 		var isi = $('.setjabatan').val().length;
@@ -925,7 +927,27 @@ $(document).ready(function(){
 			$.post(baseurl+"MasterPekerja/Surat/SuratDemosi/jabatan",
 			{
 				name: teks,
-				job: job
+				job: job,
+				kd: kd
+			},
+			function(data,status){
+            // alert(data.trim());
+            $('.setjabatan').val(data.trim().toUpperCase());
+        });
+		// }
+	});
+	$('.mpk-kdbaru').change(function(){
+		var kd = $('.mpk-kdbaru').val();
+		// alert(kd);
+		var job = $('.kerja').val();
+		var teks = $('.jabatan').val();
+		var isi = $('.setjabatan').val().length;
+		// if (isi < 1) {
+			$.post(baseurl+"MasterPekerja/Surat/SuratDemosi/jabatan",
+			{
+				name: teks,
+				job: job,
+				kd: kd
 			},
 			function(data,status){
             // alert(data.trim());

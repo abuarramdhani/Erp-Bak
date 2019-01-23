@@ -397,8 +397,23 @@
 	    			// $this->personalia->where('kode=', $kode);
 	    			// $this->personalia->where('no_surat=', $no_surat_decode);
 	    			// return $this->personalia->get()->result_array();
-
-	    			$query = $this->personalia->query('select tm.* , ts.seksi, ts2.seksi seksi2, tp1.pekerjaan, tp2.pekerjaan pekerjaan2, tk.lokasi_kerja, tk2.lokasi_kerja lokasi2,tr.jabatan, tr2.jabatan jabatan2 from "Surat".tsurat_mutasi tm
+	    			$sql = "select tm.* , ts.seksi, case when left(ts2.seksi,1) = '-' then
+			case when left(ts2.unit,1) = '-' then
+				case when left(ts2.bidang,1) = '-' then
+					case when left(ts2.dept,1) = '-' then
+						'-'
+					else
+						ts2.dept
+					end
+				else
+					ts2.bidang
+				end
+			else
+				ts2.unit
+			end
+		else 
+			ts2.seksi
+		end seksi2, tp1.pekerjaan, tp2.pekerjaan pekerjaan2, tk.lokasi_kerja, tk2.lokasi_kerja lokasi2,tr.jabatan, tr2.jabatan jabatan2 from \"Surat\".tsurat_mutasi tm
 						left join hrd_khs.tseksi ts on tm.kodesie_lama = ts.kodesie
 						left join hrd_khs.tseksi ts2 on tm.kodesie_baru = ts2.kodesie
 						left join hrd_khs.tpekerjaan tp1 on tm.kd_pkj_lama = tp1.kdpekerjaan
@@ -407,15 +422,159 @@
 						left join hrd_khs.tlokasi_kerja tk2 on tm.lokasi_kerja_baru = tk2.id_
 						left join hrd_khs.torganisasi tr on tm.kd_jabatan_lama = tr.kd_jabatan
 						left join hrd_khs.torganisasi tr2 on tm.kd_jabatan_baru = tr2.kd_jabatan
-						where tm.tanggal_cetak = '.$waktu.' and tm.kode = '.$kode.' and no_surat = '.$no_surat_decode);
+						where tm.tanggal_cetak = $waktu and tm.kode = $kode and no_surat = $no_surat_decode";
+					// echo $sql;exit();
+	    			$query = $this->personalia->query($sql);
 	    			return $query->result_array();
 	    		}
 
-	    		public function updateSuratMutasi($updateSuratMutasi, $nomor_surat, $kodeSurat)
+	    		public function editSuratMutasai($no_surat_decode)
+	 	{
+	 		$editSuratMutasi 		= "	select 		mutasi.kode,
+													mutasi.no_surat,
+													mutasi.hal_surat,
+													mutasi.nama,
+													mutasi.noind,
+													mutasi.kodesie_lama,
+													mutasi.kodesie_baru,
+															concat_ws
+																									(
+																										' - ',
+																										mutasi.kodesie_lama,
+																										(			
+																											select 		case 	when 	rtrim(seksi)!='-'
+																																		then 	'Seksi ' || rtrim(seksi)
+																																else	(
+																																			case 	when 	rtrim(unit)!='-'
+																																							then 	'Unit ' || rtrim(unit)
+																																					else 	(
+																																								case 	when 	rtrim(bidang)!='-'
+																																												then 	'Bidang ' || rtrim(bidang)
+																																										else 	'Departemen ' || rtrim(dept)
+																																								end
+																																							)
+																																			end
+																																		)
+																														end
+																											from	 	hrd_khs.tseksi as tseksi
+																											where 		tseksi.kodesie=mutasi.kodesie_lama
+																										),
+																										(
+																											select		case 	when 	rtrim(pekerjaan)!='-'
+																																		then 	rtrim(pekerjaan)
+																														end
+																											from 		hrd_khs.tseksi as tseksi
+																											where 		tseksi.kodesie=mutasi.kodesie_lama
+																										)
+																									) as seksi_lama,
+															concat_ws
+																									(
+																										' - ',
+																										mutasi.kodesie_baru,
+																										(			
+																											select 		case 	when 	rtrim(seksi)!='-'
+																																		then 	'Seksi ' || rtrim(seksi)
+																																else	(
+																																			case 	when 	rtrim(unit)!='-'
+																																							then 	'Unit ' || rtrim(unit)
+																																					else 	(
+																																								case 	when 	rtrim(bidang)!='-'
+																																												then 	'Bidang ' || rtrim(bidang)
+																																										else 	'Departemen ' || rtrim(dept)
+																																								end
+																																							)
+																																			end
+																																		)
+																														end
+																											from	 	hrd_khs.tseksi as tseksi
+																											where 		tseksi.kodesie=mutasi.kodesie_baru
+																										),
+																										(
+																											select		case 	when 	rtrim(pekerjaan)!='-'
+																																		then 	rtrim(pekerjaan)
+																														end
+																											from 		hrd_khs.tseksi as tseksi
+																											where 		tseksi.kodesie=mutasi.kodesie_baru
+																										)
+																									) as seksi_baru,
+													mutasi.tempat_makan_1_lama,
+													mutasi.tempat_makan_1_baru,
+													mutasi.lokasi_kerja_lama,
+													mutasi.lokasi_kerja_baru,
+													concat_ws
+																									(
+																										' - ',
+																										mutasi.lokasi_kerja_lama,
+																										(
+																											select 		lokker.lokasi_kerja
+																											from 		hrd_khs.tlokasi_kerja as lokker
+																											where 		lokker.id_=mutasi.lokasi_kerja_lama
+																										)
+																									) as lokasi_lama,
+																									concat_ws
+																									(
+																										' - ',
+																										mutasi.lokasi_kerja_baru,
+																										(
+																											select 		lokker.lokasi_kerja
+																											from 		hrd_khs.tlokasi_kerja as lokker
+																											where 		lokker.id_=mutasi.lokasi_kerja_baru
+																										)
+																									) as lokasi_baru,
+													mutasi.golkerja_lama,
+													mutasi.golkerja_baru,
+													mutasi.kd_jabatan_lama,
+													mutasi.kd_jabatan_baru,
+													mutasi.tanggal_berlaku,
+													mutasi.isi_surat,
+													mutasi.cetak,
+													mutasi.tanggal_cetak,
+													mutasi.noind_baru,
+													mutasi.jabatan_lama,
+													mutasi.jabatan_baru,
+													(select jabatan
+													from hrd_khs.torganisasi as torg
+													where torg.kd_jabatan=mutasi.kd_jabatan_baru
+													)as jabatann,
+													mutasi.tempat_makan_2_lama,
+													mutasi.tempat_makan_2_baru,
+													mutasi.kd_pkj_lama,
+													mutasi.kd_pkj_baru,
+										            (select pekerjaan
+													from hrd_khs.tpekerjaan as pek
+													where pek.kdpekerjaan=mutasi.kd_pkj_lama
+													)as pekerjaan_lama,
+													(select pekerjaan
+													from hrd_khs.tpekerjaan as pek
+													where pek.kdpekerjaan=mutasi.kd_pkj_baru
+													)as pekerjaan_baru,
+													(
+														case 	when 	mutasi.kd_jabatan_lama::numeric<17
+																		then 	'STAF'
+																else 	'NONSTAF'
+														end
+													) as status_staf
+										from 		\"Surat\".tsurat_mutasi as mutasi
+										where 		concat
+													(
+														mutasi.no_surat,
+														'/' || mutasi.kode || '/',
+														to_char(mutasi.tanggal_cetak, 'MM'),
+														'/',
+														to_char(mutasi.tanggal_cetak, 'yy')
+													)
+													=
+													'$no_surat_decode';";
+			$query 			=	$this->personalia->query($editSuratMutasi);
+			return $query->result_array();
+	 	}
+
+	    		public function updateSuratMutasi($updateSuratMutasi, $nomor_surat, $kodeSurat, $tanggal_cetak)
 	    		{
 	    			// echo "$updateSuratMutasi<br>";
 	    			// echo "$nomor_surat<br>";
 	    			// echo "$kodeSurat<br>";
+	    			$this->personalia->where('tanggal_cetak', $tanggal_cetak);
 	    			$this->personalia->where('no_surat', $nomor_surat);
 	    			$this->personalia->where('kode', $kodeSurat);
 	    			$this->personalia->update('"Surat".tsurat_mutasi', $updateSuratMutasi);

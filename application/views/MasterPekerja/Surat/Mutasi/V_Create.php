@@ -105,7 +105,7 @@
                                                     <div class="form-group">
                                                         <label for="txtKodesieBaru" class="col-lg-4 control-label">Mutasi Ke</label>
                                                         <div class="col-lg-8">
-                                                            <select required name="txtKodesieBaru" class="select2" id="MasterPekerja-DaftarSeksi" style="width: 100%">
+                                                            <select required name="txtKodesieBaru" class="mpk-kdbaru select2" id="MasterPekerja-DaftarSeksi" style="width: 100%">
                                                                 <option value=""></option>
                                                             </select>
                                                         </div>
@@ -137,7 +137,7 @@
                                                     <div class="form-group">
                                                         <label for="txtJabatanBaru" class="col-lg-4 control-label">Jabatan Baru</label>
                                                         <div class="col-lg-8">
-                                                            <input required pattern=".{5,}" class="form-control toupper setjabatan" type="text" name="txtJabatanBaru">
+                                                            <input readonly required pattern=".{5,}" class="form-control toupper setjabatan" type="text" name="txtJabatanBaru">
                                                         </div>
                                                     </div>
 
