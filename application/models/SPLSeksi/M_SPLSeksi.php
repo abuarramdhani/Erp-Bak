@@ -23,14 +23,44 @@ class M_SPLSeksi extends CI_Model{
 		return $query->result_array();
 	}
 
-	public function show_pekerja($filter, $filter2){
+	public function show_pekerja($filter, $filter2, $akses_sie){
+		$x = 0;
+		$akses = "";
+		if(!empty($akses_sie)){
+			foreach($akses_sie as $as){
+				if($x == 0){
+					$akses = "kodesie like '$as%'";
+				}else{
+					$akses .= " or kodesie like '$as%'";
+				}
+				$x++;
+			}
+
+			$akses = "and ($akses)";
+		}
+
 		$sql = "select noind, nama, kodesie from hrd_khs.tpribadi 
-			where (nama like '%$filter%' or noind like '%$filter%') and noind like '$filter2%' order by nama";
+			where keluar='0' and (nama like '%$filter%' or noind like '%$filter%') and noind like '$filter2%' $akses order by nama";
 		$query = $this->spl->query($sql);
 		return $query->result_array();
 	}
 
-	public function show_seksi($filter, $filter2){
+	public function show_seksi($filter, $filter2, $akses_sie){
+		$x = 0;
+		$akses = "";
+		if(!empty($akses_sie)){
+			foreach($akses_sie as $as){
+				if($x == 0){
+					$akses = "kodesie like '$as%'";
+				}else{
+					$akses .= " or kodesie like '$as%'";
+				}
+				$x++;
+			}
+
+			$akses = "and ($akses)";
+		}
+
 		$sql = "select distinct substring(kodesie, 1, $filter2) as kode, 
 				(case 
 					when $filter2=7 then seksi
@@ -42,7 +72,7 @@ class M_SPLSeksi extends CI_Model{
 			from hrd_khs.tseksi 
 			where (substring(kodesie, 1, $filter2)=substring('$filter', 1, $filter2)
 				or (dept like '%$filter%' or bidang like '%$filter%' or unit like '%$filter%' or seksi like '%$filter%'))
-				and substring(substring(kodesie, 1, $filter2), -1, 1)<>'0'";
+				and substring(substring(kodesie, 1, $filter2), -1, 1)<>'0' $akses";
 		$query = $this->spl->query($sql);
 		return $query->result_array();
 	}

@@ -57,14 +57,40 @@ class C_SPLSeksi extends CI_Controller {
 	public function show_pekerja(){
 		$key = $_GET['key'];
 		$key2 = $_GET['key2'];
-		$data = $this->M_SPLSeksi->show_pekerja($key, $key2);
+		$user = $this->session->user;
+
+		// get akses seksi
+		$akses_sie = array();
+		$akses_kue = $this->M_SPLSeksi->show_pekerja('', $user, '');
+		$akses_spl = $this->M_SPLSeksi->show_akses_seksi($user);
+		foreach($akses_kue as $ak){
+			$akses_sie[] = $this->cut_kodesie($ak['kodesie']);
+			foreach($akses_spl as $as){
+				$akses_sie[] = $this->cut_kodesie($as['kodesie']);
+			}
+		}
+
+		$data = $this->M_SPLSeksi->show_pekerja($key, $key2, $akses_sie);
  		echo json_encode($data);
 	}
 
 	public function show_seksi(){
 		$key = $_GET['key'];
 		$key2 = $_GET['key2'];
-		$data = $this->M_SPLSeksi->show_seksi($key, $key2);
+		$user = $this->session->user;
+
+		// get akses seksi
+		$akses_sie = array();
+		$akses_kue = $this->M_SPLSeksi->show_pekerja('', $user, '');
+		$akses_spl = $this->M_SPLSeksi->show_akses_seksi($user);
+		foreach($akses_kue as $ak){
+			$akses_sie[] = $this->cut_kodesie($ak['kodesie']);
+			foreach($akses_spl as $as){
+				$akses_sie[] = $this->cut_kodesie($as['kodesie']);
+			}
+		}
+
+		$data = $this->M_SPLSeksi->show_seksi($key, $key2, $akses_sie);
  		echo json_encode($data);
 	}
 
@@ -94,7 +120,7 @@ class C_SPLSeksi extends CI_Controller {
 
 		// get akses seksi
 		$akses_sie = array();
-		$akses_kue = $this->M_SPLSeksi->show_pekerja('', $user);
+		$akses_kue = $this->M_SPLSeksi->show_pekerja('', $user, '');
 		$akses_spl = $this->M_SPLSeksi->show_akses_seksi($user);
 		foreach($akses_kue as $ak){
 			$akses_sie[] = $this->cut_kodesie($ak['kodesie']);
@@ -147,7 +173,7 @@ class C_SPLSeksi extends CI_Controller {
 
 		// get akses seksi
 		$akses_sie = array();
-		$akses_kue = $this->M_SPLSeksi->show_pekerja('', $user);
+		$akses_kue = $this->M_SPLSeksi->show_pekerja('', $user, '');
 		$akses_spl = $this->M_SPLSeksi->show_akses_seksi($user);
 		foreach($akses_kue as $ak){
 			$akses_sie[] = $this->cut_kodesie($ak['kodesie']);
@@ -477,7 +503,7 @@ class C_SPLSeksi extends CI_Controller {
 
 		// get akses seksi
 		$akses_sie = array();
-		$akses_kue = $this->M_SPLSeksi->show_pekerja('', $user);
+		$akses_kue = $this->M_SPLSeksi->show_pekerja('', $user, '');
 		$akses_spl = $this->M_SPLSeksi->show_akses_seksi($user);
 		foreach($akses_kue as $ak){
 			$akses_sie[] = $this->cut_kodesie($ak['kodesie']);

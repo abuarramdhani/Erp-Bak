@@ -6,7 +6,7 @@ $(function () {
     "scrollX": true,
     "dom": 'Bfrtip',
     "buttons": ['excel'],
-    "aaSorting": []
+    "ordering": false
   });
 
   $('.spl-date').daterangepicker({

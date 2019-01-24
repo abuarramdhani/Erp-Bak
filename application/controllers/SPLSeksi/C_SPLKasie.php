@@ -90,7 +90,7 @@ class C_SPLKasie extends CI_Controller {
 
 		// get akses seksi
 		$akses_sie = array();
-		$akses_kue = $this->M_SPLSeksi->show_pekerja('', $user);
+		$akses_kue = $this->M_SPLSeksi->show_pekerja('', $user, '');
 		$akses_spl = $this->M_SPLSeksi->show_akses_seksi($user);
 		foreach($akses_kue as $ak){
 			$akses_sie[] = $this->cut_kodesie($ak['kodesie']);
@@ -135,29 +135,32 @@ class C_SPLKasie extends CI_Controller {
 
 	public function data_spl_submit(){
 		$user = $this->session->user;
-		$user_id = $this->session->userid;
 		$namae = $this->session->employee;
 		$id = $this->input->post('splid');
-		
-		$splid = "";
-		foreach($id as $id){
-			$splid .= $id.", ";
+
+		if(!empty($id)){
+			$splid = "";
+			foreach($id as $id){
+				$splid .= $id.", ";
+			}
+			$pass = uniqid();
+
+			$data_email = $this->M_SPLKasie->show_email_addres($user);
+			if(!empty($data_email)){
+				$addres = $data_email->address;
+				$this->send_email($addres, $namae, $pass);
+			}
+
+			$data_splr = array(
+				"username" => $user,
+				"password" => $pass,
+				"spl_id" => $splid);
+			$to_splr = $this->M_SPLKasie->save_confirm($data_splr);
+
+			redirect(base_url('ALK/ConfLembur'));
+		}else{
+			redirect(base_url('ALK/ListLembur'));
 		}
-		$pass = uniqid();
-
-		$data_email = $this->M_SPLKasie->show_email_addres($user_id);
-		if(!empty($data_email)){
-			$addres = $data_email->address;
-			$this->send_email($addres, $namae, $pass);
-		}
-
-		$data_splr = array(
-			"username" => $user,
-			"password" => $pass,
-			"spl_id" => $splid);
-		$to_splr = $this->M_SPLKasie->save_confirm($data_splr);
-
-		redirect(base_url('ALK/ConfLembur'));
 	}
 
 	public function confirm_spl(){

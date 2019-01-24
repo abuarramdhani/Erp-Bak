@@ -6,7 +6,6 @@ class M_SPLKasie extends CI_Model{
 		$this->load->database();
 		$this->spl = $this->load->database('spl_db',true);
 		$this->prs = $this->load->database('personalia', true);
-		$this->tkt = $this->load->database('ticket',true);
 	}
 
 	public function show_spl($dari, $sampai, $status, $lokasi, $noind, $akses_sie, $kodesie){
@@ -58,8 +57,8 @@ class M_SPLKasie extends CI_Model{
 	}
 
 	public function show_email_addres($filter){
-		$this->tkt->where('user_id', $filter);
-		$query = $this->tkt->get('ticket1.khs_user_email');
+		$this->db->where('employee_code', $filter);
+		$query = $this->db->get('er.er_employee_all');
 		return $query->row();
 	}
 
