@@ -282,9 +282,10 @@ class C_monitoringinvoice extends CI_Controller{
 		}
 
 		//$amount = str_replace(',', '', $invoice_amount);
+		$vendor = str_replace("'", "", $vendor_name);
 		$item_desc = str_replace("'", "", $item_description);
 		
-		$add2['invoice'] = $this->M_monitoringinvoice->savePoNumber2($invoice_number, $invoice_date, $invoice_amount, $tax_invoice_number,$vendor_number,$vendor_name[0],$last_admin_date,$note_admin,$invoice_category,$nominal_dpp,$source_login,$jenis_jasa);
+		$add2['invoice'] = $this->M_monitoringinvoice->savePoNumber2($invoice_number, $invoice_date, $invoice_amount, $tax_invoice_number,$vendor_number,$vendor[0],$last_admin_date,$note_admin,$invoice_category,$nominal_dpp,$source_login,$jenis_jasa);
 		
 		foreach ($po_number as $key => $value) {
 
@@ -683,6 +684,7 @@ class C_monitoringinvoice extends CI_Controller{
 		$note_admin = $this->input->post('note_admin');
 		
 		// $amount2 = str_replace(',', '', $invoice_amount);
+		$vendor = str_replace("'", "", $vendor_name);
 		$item_desc = str_replace("'", "", $item_description);
 
 		$invoice = $this->M_monitoringinvoice->getInvoiceById($id);
@@ -702,7 +704,7 @@ class C_monitoringinvoice extends CI_Controller{
 		}
 		
 
-		$amount = $this->M_monitoringinvoice->saveInvoiveAmount($invoice_number,$invoice_date,$invoice_amount,$tax_invoice_number,$vendor_name,$invoice_category,$nominal_dpp,$note_admin,$id);
+		$amount = $this->M_monitoringinvoice->saveInvoiveAmount($invoice_number,$invoice_date,$invoice_amount,$tax_invoice_number,$vendor,$invoice_category,$nominal_dpp,$note_admin,$id);
 
 		
 		foreach ($po_number as $key => $value) {
