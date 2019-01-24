@@ -96,6 +96,11 @@
 
 	    public function ambilPosisi($nomor_induk)
 			    {
+			    	// master.pekerjaan,
+								// 											' / ',
+								// 											'Golongan ',
+								// 											master.golkerja,
+								// 											' / ',
 			    	$ambilPosisi 	= "	select 		master.nama,
 													master.noind,
 													(
@@ -106,11 +111,6 @@
 																		then 	concat_ws(' ', master.jabatan, master.lingkup)
 																else 	concat
 																		(
-																			master.pekerjaan,
-																			' / ',
-																			'Golongan ',
-																			master.golkerja,
-																			' / ',
 																			'Seksi ',
 																			master.seksi,
 																			' / ',
@@ -730,8 +730,9 @@
 			return $query->result_array();
 	 	}
 
-	 	public function updateSuratPerbantuan($updateSuratPerbantuan, $nomor_surat, $kodeSurat)
+	 	public function updateSuratPerbantuan($updateSuratPerbantuan, $nomor_surat, $kodeSurat, $tanggal_cetak)
 	 	{
+	 		$this->personalia->where('tanggal_cetak=', $tanggal_cetak);
 	 		$this->personalia->where('no_surat=', $nomor_surat);
 	 		$this->personalia->where('kode=', $kodeSurat);
 	 		$this->personalia->update('"Surat".tsurat_perbantuan', $updateSuratPerbantuan);

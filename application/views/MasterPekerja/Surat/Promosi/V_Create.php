@@ -99,7 +99,7 @@
                                                 <div class="form-group">
                                                     <label for="txtKodesieBaru" class="col-lg-4 control-label">Promosi Ke</label>
                                                     <div class="col-lg-8">
-                                                        <select name="txtKodesieBaru" class="select2 MasterPekerja-SuratMutasi-DaftarSeksi" id="" style="width: 100%">
+                                                        <select name="txtKodesieBaru" class="mpk-kdbaru select2 MasterPekerja-SuratMutasi-DaftarSeksi" id="" style="width: 100%">
                                                             <option value=""></option>
                                                         </select>
                                                     </div>
@@ -142,7 +142,7 @@
                                              <div class="form-group">
                                                 <label for="txtJabatanBaru" class="col-lg-4 control-label">Jabatan Baru</label>
                                                 <div class="col-lg-8">
-                                                    <input class="form-control toupper setjabatan" type="text" name="txtJabatanBaru">
+                                                    <input readonly class="form-control toupper setjabatan" type="text" name="txtJabatanBaru">
                                                 </div>
                                             </div>
 

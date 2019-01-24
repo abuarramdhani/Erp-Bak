@@ -114,7 +114,7 @@
                                                     <div class="form-group">
                                                         <label for="txtKodesieBaru" class="col-lg-4 control-label">Demosi Ke</label>
                                                         <div class="col-lg-8">
-                                                            <select name="txtKodesieBaru" class="select2 MasterPekerja-SuratMutasi-DaftarSeksi" style="width: 100%">
+                                                            <select name="txtKodesieBaru" class="mpk-kdbaru select2 MasterPekerja-SuratMutasi-DaftarSeksi" style="width: 100%">
                                                                 <option value="<?php echo $edit['kodesie_baru']?>" selected="true">
                                                                     <?php echo $edit['seksi_baru']?>
                                                                 </option>
@@ -166,7 +166,7 @@
                                                     <div class="form-group">
                                                         <label for="txtJabatanBaru" class="col-lg-4 control-label">Jabatan Baru</label>
                                                         <div class="col-lg-8">
-                                                            <input class="form-control toupper setjabatan" type="text" name="txtJabatanBaru" value="<?php echo $edit['jabatan_baru'];?>">
+                                                            <input readonly class="form-control toupper setjabatan" type="text" name="txtJabatanBaru" value="<?php echo $edit['jabatan_baru'];?>">
                                                         </div>
                                                     </div>
 
@@ -241,6 +241,7 @@
                                                         <label for="txtTanggalCetak" class="col-lg-4 control-label">Tanggal Cetak</label>
                                                         <div class="col-lg-8">
                                                             <input type="text" name="txtTanggalCetak" class="form-control MasterPekerja-daterangepickersingledate" value="<?php echo $edit['tanggal_cetak'];?>">
+                                                            <input hidden type="text" name="txtTanggalCetakAsli" class="" value="<?php echo $edit['tanggal_cetak'];?>">
                                                         </div>
                                                     </div>
                                                 </div>
