@@ -41,7 +41,7 @@
 												<div class="input-group-addon">
 													<i class="fa fa-calendar"></i>
 												</div>
-												<input type="text" class="form-control pull-right spl-date" name="tanggal" value="<?php echo date("d-m-Y"); ?>">
+												<input type="text" class="form-control pull-right spl-date" name="tanggal" value="<?php echo date("d-m-Y"); ?>" required>
 											</div>
 										</div>
 									</div>
@@ -53,7 +53,7 @@
 												<div class="input-group-addon">
 													<i class="fa fa-clock-o"></i>
 												</div>
-												<input type="time" class="form-control timepicker" name="waktu_0">
+												<input type="time" class="form-control timepicker" name="waktu_0" required>
 											</div>
 										</div>
 										<div class="col-sm-5">
@@ -61,7 +61,7 @@
 												<div class="input-group-addon">
 													<i class="fa fa-clock-o"></i>
 												</div>
-												<input type="time" class="form-control timepicker" name="waktu_1">
+												<input type="time" class="form-control timepicker" name="waktu_1" required>
 											</div>
 										</div>
 									</div>
@@ -69,7 +69,7 @@
 									<div class="form-group">
 										<label class="col-sm-2 control-label">Jenis</label>
 										<div class="col-sm-10">
-											<select class="form-control select2" name="kd_lembur">
+											<select class="form-control select2" name="kd_lembur" required>
 												<option value="">-- silahkan pilih --</option>
 												<?php foreach($jenis_lembur as $jl){ ?>
 													<option value="<?php echo $jl['kd_Lembur']; ?>"><?php echo $jl['nama_lembur']; ?></option>
@@ -101,7 +101,7 @@
 									<div class="form-group">
 										<label class="col-sm-2 control-label">Pekerjaan</label>
 										<div class="col-sm-10">
-											<textarea class="form-control" rows="3" name="pekerjaan"></textarea>
+											<textarea class="form-control" rows="3" name="pekerjaan" required></textarea>
 										</div>
 									</div>
 
@@ -127,7 +127,7 @@
 												<tbody>
 													<tr class="multiinput"><td>-</td>
 														<td style="">
-															<select class="form-control spl-pkj-select2 spl-cek" name="noind[]">
+															<select class="form-control spl-pkj-select2 spl-cek" name="noind[]" required>
 															</select>
 														</td>
 														<td><input type="number" class="form-control" name="target[]"></td>

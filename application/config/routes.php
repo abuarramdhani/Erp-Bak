@@ -2234,3 +2234,7 @@ $route['SPL/ListLembur'] = 'SPLSeksi/C_SPLSeksi/data_spl';
 $route['SPL/RekapLembur'] = 'SPLSeksi/C_SPLSeksi/rekap_spl';
 $route['SPL/EditLembur/(:any)'] = 'SPLSeksi/C_SPLSeksi/edit_spl/$1';
 $route['SPL/HapusLembur/(:any)'] = 'SPLSeksi/C_SPLSeksi/hapus_spl/$1';
+
+$route['ALK/ListLembur'] = 'SPLSeksi/C_SPLKasie/data_spl';
+$route['ALK/ConfLembur'] = 'SPLSeksi/C_SPLKasie/confirm_spl';
+$route['ALA/ListLembur'] = 'SPLSeksi/C_SPLAsska/data_spl';
