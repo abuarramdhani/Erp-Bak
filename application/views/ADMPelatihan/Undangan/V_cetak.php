@@ -96,7 +96,7 @@
 							<tr>
 								<td>Waktu</td>
 								<td>:</td>
-								<td><?php $wkt = explode(":", $undangan['0']['wkt']); echo $wkt['0'].".".$wkt['1']." - selesai";?></td>
+								<td><?php if(isset($undangan['0']['wkt']) and !empty($undangan['0']['wkt'])){ $wkt = explode(":", $undangan['0']['wkt']); echo $wkt['0'].".".$wkt['1']." - selesai";}else{echo "<b style='color:white'>________</b>- selesai"; } ?></td>
 							</tr>
 							<tr>
 								<td>Tempat</td>
