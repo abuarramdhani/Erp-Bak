@@ -26,7 +26,7 @@ $(document).ready(function(){
 			processResults: function(data) {
 				return {
 					results: $.map(data, function(obj){
-						return {id: obj.module_id+" - "+obj.module_name, text: obj.module_id+" - "+obj.module_name};
+						return {id: obj.module_id+" - "+obj.user_group_menu_name, text: obj.module_id+" - "+obj.user_group_menu_name};
 					})
 				};
 			}
