@@ -31,6 +31,7 @@
 							<tr>
 								<td><?php echo $number ?></td>
 								<td>
+									<a target="_blank" href="<?php echo site_url('ADMPelatihan/Cetak/Undangan/CetakUndanganPelatihan/'.$rp['scheduling_id']) ?>" class="btn btn-flat btn-sm btn-danger" data-toggle="tooltip" title="Cetak Undangan"><i class="fa fa-file-pdf-o"></i></a>
 									<a href="<?php echo site_url('ADMPelatihan/Record/Detail/'.$rp['scheduling_id']);?>" class="btn btn-flat btn-sm btn-warning" data-toggle="tooltip1" title="View" ><i class="fa fa-search"></i></a>
 									<a href="<?php echo site_url('ADMPelatihan/Record/Confirm/'.$rp['scheduling_id']);?>" class="btn btn-flat btn-sm btn-success" data-toggle="tooltip1" title="Input Kehadiran & Nilai"><i class="fa fa-check"></i></a>
 									<?php $sudahCetak = 0; foreach ($participant_confirm as $pc) {
