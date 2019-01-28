@@ -55,6 +55,26 @@ class M_salestarget extends CI_Model {
 			return $query->result_array();
 		}
 
+		//source order type (updated)
+		public function viewOrderType()
+		{
+
+        	$db = $this->load->database('oracle',true);
+			$sql = "SELECT * FROM oe_transaction_types_tl WHERE
+						(name LIKE '%SAP%'
+							OR name LIKE '%boshi%'
+							OR name LIKE '%HDE%'
+							OR name LIKE '%VDE%'
+							OR name LIKE '%Gasket%'
+							OR name LIKE '%Bando%'
+							OR name LIKE '%Roll%'
+							OR name LIKE '%Bearing%'
+						) AND name LIKE '%DN'
+						ORDER BY name";
+			$query = $db->query($sql);
+			return $query->result_array();
+		}
+
 		//source year (updated)
 		public function viewYear()
 		{
