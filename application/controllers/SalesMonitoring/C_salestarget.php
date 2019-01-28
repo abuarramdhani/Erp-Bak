@@ -110,6 +110,7 @@ class C_salestarget extends CI_Controller {
 		
 		
 		$data['source'] = $this->M_salestarget->viewOrganization();
+		$data['sourceOrderType'] = $this->M_salestarget->viewOrderType();
 		$this->load->view('V_Header',$data);
 		$this->load->view('V_Sidemenu',$data);
 		$this->load->view('SalesMonitoring/setting/salestarget/V_create',$data);

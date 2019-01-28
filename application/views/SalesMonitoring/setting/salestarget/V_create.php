@@ -45,7 +45,13 @@
 							<div class="form-group">
 								<label class="col-lg-4 control-label">Order Type</label>
 								<div class="col-lg-5">
-									<input name="txt_order_type" class="form-control" placeholder="order type">
+									<input type="hidden"  name="txt_order_type" class="form-control" placeholder="order type">
+									<select class="form-control select4" name="txt_order_type_list" class="form-control">
+										<option value=""></option>
+										<?php $no = 0; foreach($sourceOrderType as $src) { $no++ ?>
+										<?php echo '<option value="'.$src['NAME'].'">'.$src['NAME'].'</option>' ?>
+										<?php } ?>
+									</select>
 								</div>
 							</div>
 							<div class="form-group">
@@ -97,4 +103,8 @@
 	</div>
 	</div>
 </section>
-  
+<script>
+document.getElementsByName('txt_order_type_list').item(0).onchange = function(){
+     document.getElementsByName('txt_order_type').item(0).value = document.getElementsByName('txt_order_type_list').item(0).value;
+}
+</script>
