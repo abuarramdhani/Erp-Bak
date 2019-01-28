@@ -7,7 +7,7 @@
 			</div>
 			<div class="panel-body">
 				<br>
-				<form style="margin-left: 200px" method="POST" action="<?php echo base_url('HitungHlcm/Memo/cetakpdf');?>">
+				<form target="_blank" style="margin-left: 200px" method="POST" action="<?php echo base_url('HitungHlcm/Memo/cetakpdf');?>">
 					<div class="row">
 						<div class="form-group">
 							<div class="col-lg-2" style="text-align: right;">
@@ -31,7 +31,9 @@
 					<br>
 					<div class="row">
 						<div class="col-lg-4">
-							<button type="submit" class="btn btn-success pull-right">Cetak</button>
+							<!-- <button type="submit" class="btn btn-success pull-right">Cetak</button> -->
+							<input type="submit" name="txtSubmit" class="btn btn-danger pull-right" value="Cetak Pdf">
+							<input type="submit" name="txtSubmit" class="btn btn-success pull-right" value="Cetak Excel">
 						</div>
 					</div>
 				</form>
