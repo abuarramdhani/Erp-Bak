@@ -1859,6 +1859,9 @@ $route['SiteManagement/TransferAsset'] = 'SiteManagement/MainMenu/C_Transferasse
 $route['SiteManagement/TransferAsset/(:any)'] = 'SiteManagement/MainMenu/C_Transferasset/$1';
 $route['SiteManagement/TransferAsset/(:any)/(:any)'] = 'SiteManagement/MainMenu/C_Transferasset/$1/$2';
 
+$route['SiteManagement/DaftarAsset'] = 'SiteManagement/MainMenu/C_DaftarAsset';
+$route['SiteManagement/DaftarAsset/(:any)'] = 'SiteManagement/MainMenu/C_DaftarAsset/$1';
+
 //--------------------------------------------------- Order Site Management --------------------------------------------------//
 $route['OrderSiteManagement'] = 'OrderSiteManagement/C_OrderSiteManagement';
 $route['OrderSiteManagement/Order'] = 'OrderSiteManagement/MainMenu/C_Order';
