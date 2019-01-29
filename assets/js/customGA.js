@@ -30,6 +30,15 @@ $('#dataTables-fleetMerkKendaraan').DataTable( {
         'excel'
       ]
     });
+$('#tbl_monitoringservice').dataTable({
+      "paging": true,
+      "lengthChange": false,
+      "searching": true,
+      "ordering": true,
+      "info": true,
+      "autoWidth": false,
+      "scroller": true,
+    });
 $('#dataTables-fleetMerkKendaraanDeleted').DataTable( {
       dom: 'Bfrtip',
       buttons: [
