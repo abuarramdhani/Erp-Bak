@@ -1412,6 +1412,9 @@ $route['GeneralAffair/FleetServiceKendaraan'] = 'GeneralAffair/MainMenu/C_FleetS
 $route['GeneralAffair/FleetServiceKendaraan/(:any)'] = 'GeneralAffair/MainMenu/C_FleetServiceKendaraan/$1';
 $route['GeneralAffair/FleetServiceKendaraan/(:any)/(:any)'] = 'GeneralAffair/MainMenu/C_FleetServiceKendaraan/$1/$2';
 
+$route['GeneralAffair/FleetMonitoringServiceKendaraan'] = 'GeneralAffair/MainMenu/C_FleetMonitoringServiceKendaraan';
+$route['GeneralAffair/FleetMonitoringServiceKendaraan/(:any)'] = 'GeneralAffair/MainMenu/C_FleetMonitoringServiceKendaraan/$1';
+$route['GeneralAffair/FleetMonitoringServiceKendaraan/(:any)/(:any)'] = 'GeneralAffair/MainMenu/C_FleetMonitoringServiceKendaraan/$1/$2';
 //------------------------------------ Aplikasi Toolroom ----------------------------
 $route['Toolroom'] = 'Toolroom/C_Index';
 $route['Toolroom/MasterItem'] = 'Toolroom/MainMenu/C_MasterItem';
