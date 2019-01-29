@@ -36,8 +36,10 @@ class C_Ajax extends CI_Controller {
 		if(!empty($SubInv)){
 			$data['spb'] 		= $this->M_ajax->getSPB($id, $SubInv[0]['FROM_SUBINVENTORY_CODE']);
 			$data['ekpedisi'] 	= $this->M_ajax->getEkpedisi($id);
+			$data['listEkspedisi'] = $this->M_ajax->getEkspedisiList();
 			$lastPackCode 		= $this->M_ajax->getLastPackCode($id);
 			
+
 			if (empty($lastPackCode)) {
 				$data['last_pack'] = 1;
 			}else{
