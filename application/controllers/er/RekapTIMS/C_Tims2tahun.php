@@ -1,5 +1,6 @@
 <?php
 Defined('BASEPATH') or exit('No Direct Sekrip Akses Allowed');
+set_time_limit(0);
 /**
  * 
  */
@@ -55,9 +56,12 @@ class C_Tims2tahun extends CI_Controller
 		}else{
 			$periode = $this->input->post('txtPeriodeRekap');
 			$prd = explode(" - ", $periode);
+			$detail = $this->input->post('txtDetailDataTIMS');
 			// print_r($prd);exit();
 			$this->load->library('Excel');
+
 			$objPHPExcel = new PHPExcel();
+
 			$worksheet = $objPHPExcel->getActiveSheet();
 
 			$styleArray = array(
@@ -73,12 +77,8 @@ class C_Tims2tahun extends CI_Controller
 				)
 			);
 
-			
-			/*$rekap_masakerja = $this->M_rekapmssql->data_rekap_masakerja($period2,$status,NULL,NULL,NULL,$section);
-			$rekap_all = $this->M_rekapmssql->ExportRekap($period1,$period2,$status,$departemen,$bidang,$unit,$section);*/
-
 			$rekap_all = $this->M_tims2tahun->getData($prd[0],$prd[1]);
-
+			$dataBln = $this->M_tims2tahun->getBulan($prd[0],$prd[1]);
 
 			$worksheet->getColumnDimension('A')->setWidth(5);
 			$worksheet->getColumnDimension('B')->setWidth(17);
@@ -106,14 +106,14 @@ class C_Tims2tahun extends CI_Controller
 			$worksheet->setCellValue('A3', 'Seksi');
 
 			
-			$periodeDate = date('d-m-Y', strtotime($periode1)).' - '.date('d-m-Y', strtotime($periode2));
+			// $periodeDate = date('d-m-Y', strtotime($periode1)).' - '.date('d-m-Y', strtotime($periode2));
 			
 			
 			
 			foreach ($rekap_all as $rekap_info) {}
 			$worksheet->setCellValue('C1', $rekap_info['tanggal_awal_rekap'].' - '.$rekap_info['tanggal_akhir_rekap'], PHPExcel_Cell_DataType::TYPE_STRING);
-			$worksheet->setCellValue('C2', 'All');
-			$worksheet->setCellValue('C3', 'All');
+			$worksheet->setCellValue('C2', "All (selain 'F','R','Q','L','Z','M')");
+			$worksheet->setCellValue('C3', "All");
 
 			$worksheet->mergeCells('A6:A7');
 			$worksheet->mergeCells('B6:B7');
@@ -135,6 +135,41 @@ class C_Tims2tahun extends CI_Controller
 
 			$col = '8';
 			
+			if (isset($detail) and !empty($detail) and $detail == 'withDetail') {
+				
+				foreach ($dataBln as $key) {
+					$T = PHPExcel_Cell::stringFromColumnIndex($col);
+					$I = PHPExcel_Cell::stringFromColumnIndex($col+1);
+					$M = PHPExcel_Cell::stringFromColumnIndex($col+2);
+					$S = PHPExcel_Cell::stringFromColumnIndex($col+3);
+					$PSP = PHPExcel_Cell::stringFromColumnIndex($col+4);
+					$IP = PHPExcel_Cell::stringFromColumnIndex($col+5);
+					$CT = PHPExcel_Cell::stringFromColumnIndex($col+6);
+					$SP = PHPExcel_Cell::stringFromColumnIndex($col+7);
+					$worksheet->getColumnDimension($T)->setWidth(3);
+					$worksheet->getColumnDimension($I)->setWidth(3);
+					$worksheet->getColumnDimension($M)->setWidth(3);
+					$worksheet->getColumnDimension($S)->setWidth(3);
+					$worksheet->getColumnDimension($PSP)->setWidth(8);
+					$worksheet->getColumnDimension($IP)->setWidth(3);
+					$worksheet->getColumnDimension($CT)->setWidth(3);
+					$worksheet->getColumnDimension($SP)->setWidth(3);
+					$head_merge = $col+7;
+					$headCol = PHPExcel_Cell::stringFromColumnIndex($head_merge);
+					$worksheet->mergeCells($T.'6:'.$headCol.'6');
+					
+					$worksheet->setCellValue($T.'6', ucwords($key['tanggal']));
+					$worksheet->setCellValue($T.'7', 'T');
+					$worksheet->setCellValue($I.'7', 'I');
+					$worksheet->setCellValue($M.'7', 'M');
+					$worksheet->setCellValue($S.'7', 'S');
+					$worksheet->setCellValue($PSP.'7', 'PSP');
+					$worksheet->setCellValue($IP.'7', 'IP');
+					$worksheet->setCellValue($CT.'7', 'CT');
+					$worksheet->setCellValue($SP.'7', 'SP');
+					$col=$col+8;
+				}
+			}
 
 			$T = PHPExcel_Cell::stringFromColumnIndex($col);
 			$I = PHPExcel_Cell::stringFromColumnIndex($col+1);
@@ -210,6 +245,63 @@ class C_Tims2tahun extends CI_Controller
 				$worksheet->setCellValue('H'.$highestRow, $rekap_data['seksi']);			
 
 				$col = 8;
+
+				if (isset($detail) and !empty($detail) and $detail == 'withDetail') {
+					$rekapDetail = $this->M_tims2tahun->getRekapDetail($rekap_data['noind'],$prd[0],$prd[1]);
+					foreach ($rekapDetail as $detailBulan) {
+							$Terlambat = $detailBulan['frekt']+$detailBulan['frekts'];
+							$IjinPribadi = $detailBulan['freki']+$detailBulan['frekis'];
+							$Mangkir = $detailBulan['frekm']+$detailBulan['frekms'];
+							$SuratKeterangan = $detailBulan['freksk']+$detailBulan['freksks'];
+							$SakitPerusahaan = $detailBulan['frekpsp']+$detailBulan['frekpsps'];
+							$IjinPerusahaan = $detailBulan['frekip']+$detailBulan['frekips'];
+							$CutiTahunan = $detailBulan['frekct']+$detailBulan['frekcts'];
+							$SuratPeringatan = $detailBulan['freksp']+$detailBulan['freksps'];
+							if ($Terlambat == '0') {
+								$Terlambat = '-';
+							}
+							if ($IjinPribadi == '0') {
+								$IjinPribadi = '-';
+							}
+							if ($Mangkir == '0') {
+								$Mangkir = '-';
+							}
+							if ($SuratKeterangan == '0') {
+								$SuratKeterangan = '-';
+							}
+							if ($SakitPerusahaan == '0') {
+								$SakitPerusahaan = '-';
+							}
+							if ($IjinPerusahaan == '0') {
+								$IjinPerusahaan = '-';
+							}
+							if ($CutiTahunan == '0') {
+								$CutiTahunan = '-';
+							}
+							if ($SuratPeringatan == '0') {
+								$SuratPeringatan = '-';
+							}
+						$T = PHPExcel_Cell::stringFromColumnIndex($col);
+						$I = PHPExcel_Cell::stringFromColumnIndex($col+1);
+						$M = PHPExcel_Cell::stringFromColumnIndex($col+2);
+						$S = PHPExcel_Cell::stringFromColumnIndex($col+3);
+						$PSP = PHPExcel_Cell::stringFromColumnIndex($col+4);
+						$IP = PHPExcel_Cell::stringFromColumnIndex($col+5);
+						$CT = PHPExcel_Cell::stringFromColumnIndex($col+6);
+						$SP = PHPExcel_Cell::stringFromColumnIndex($col+7);
+
+						$worksheet->setCellValue($T.$highestRow, $Terlambat, PHPExcel_Cell_DataType::TYPE_STRING);
+						$worksheet->setCellValue($I.$highestRow, $IjinPribadi, PHPExcel_Cell_DataType::TYPE_STRING);
+						$worksheet->setCellValue($M.$highestRow, $Mangkir, PHPExcel_Cell_DataType::TYPE_STRING);
+						$worksheet->setCellValue($S.$highestRow, $SuratKeterangan, PHPExcel_Cell_DataType::TYPE_STRING);
+						$worksheet->setCellValue($PSP.$highestRow, $SakitPerusahaan, PHPExcel_Cell_DataType::TYPE_STRING);
+						$worksheet->setCellValue($IP.$highestRow, $IjinPerusahaan, PHPExcel_Cell_DataType::TYPE_STRING);
+						$worksheet->setCellValue($CT.$highestRow, $CutiTahunan, PHPExcel_Cell_DataType::TYPE_STRING);
+						$worksheet->setCellValue($SP.$highestRow, $SuratPeringatan, PHPExcel_Cell_DataType::TYPE_STRING);
+
+						$col=$col+8;
+					}
+				}
 
 				$T = PHPExcel_Cell::stringFromColumnIndex($col);
 				$I = PHPExcel_Cell::stringFromColumnIndex($col+1);
@@ -293,7 +385,7 @@ class C_Tims2tahun extends CI_Controller
 
 			$highestColumn = $worksheet->getHighestColumn();
 			$highestRow = $worksheet->getHighestRow();
-			if ($detail == 1) {
+			if (isset($detail) and !empty($detail) and $detail == 'withDetail') {
 				$worksheet->getStyle('A6:'.$highestColumn.'7')->applyFromArray($styleArray);
 				$worksheet	->getStyle('A6:'.$highestColumn.'7')
 							->getFill()
@@ -318,12 +410,17 @@ class C_Tims2tahun extends CI_Controller
 			$worksheet->getStyle('D8:'.$highestColumn.$highestRow)->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
 
 			
-			$fileName = 'Rekap_Without_Detail';
+			if (isset($detail) and !empty($detail) and $detail == 'withDetail') {
+				$fileName = 'Rekap_With_Detail';
+			}
+			else{
+				$fileName = 'Rekap_Without_Detail';
+			}
 			
 
 			$worksheet->setTitle('Rekap TIMS');
 			$objWriter = PHPExcel_IOFactory::createWriter($objPHPExcel, 'Excel2007');
-			ob_end_clean();
+			// ob_end_clean();
 			header("Last-Modified: " . gmdate("D, d M Y H:i:s") . " GMT");
 			header("Cache-Control: no-store, no-cache, must-revalidate");
 			header("Cache-Control: post-check=0, pre-check=0", false);
