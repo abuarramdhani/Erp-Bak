@@ -33,7 +33,12 @@
 														<?php } } ?>
 													</select>
 												</div>
-												<button type="submit" class="btn btn-primary">Export</button>
+											</div>
+											<div class="form-group">
+												<div class="col-lg-8 text-right">
+													<input type="checkbox" name="txtDetailDataTIMS" value="withDetail"> Detail Data TIMS
+													<button type="submit" class="btn btn-primary">Export</button>
+												</div>
 											</div>
 										</form>
 									</div>

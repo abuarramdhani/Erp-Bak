@@ -27,4 +27,21 @@ defined('BASEPATH') or exit('No Direct Script Access Allowed');
 		$result = $this->personalia->query($sql);
  		return $result->result_array();
  	}
+
+ 	public function getRekapDetail($noind,$awal,$akhir){
+ 		$sql = "select dates, detail.*
+				from generate_series(to_char('$awal'::date,'yyyy-mm-1')::date,to_char('$akhir'::date,'yyyy-mm-1')::date,interval '1  months') as dates
+				left join \"Presensi\".trekap_tims_detail detail
+				on dates.dates = detail.tanggal_awal_rekap
+				and noind = '$noind'";
+ 		$result = $this->personalia->query($sql);
+ 		return $result->result_array();
+ 	}
+
+ 	public function getBulan($awal,$akhir){
+ 		$sql = "select to_char(dates,'mon/yyyy') tanggal
+				from generate_series(to_char('$awal'::date,'yyyy-mm-1')::date,to_char('$akhir'::date,'yyyy-mm-1')::date,interval '1  months') as dates";
+ 		$result = $this->personalia->query($sql);
+ 		return $result->result_array();
+ 	}
  } ?>
