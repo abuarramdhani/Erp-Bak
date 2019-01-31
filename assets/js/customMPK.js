@@ -1085,3 +1085,7 @@ $(function () {
 		// alert('a');
 	}
 });
+
+$(document).ready(function(){
+	$('#tbl').DataTable();
+	});
