@@ -2234,13 +2234,13 @@ $route['AccountPayables/CheckPPh/List'] = 'CheckPPH/MainMenu/C_List';
 $route['AccountPayables/CheckPPh/List/(:any)'] = 'CheckPPH/MainMenu/C_List/$1';
 
 //---------------------------------------------- Surat Perintah Lembur -------------------------------------------//
-$route['SPL'] = 'SPLSeksi/C_SPLSeksi';
-$route['SPL/InputLembur'] = 'SPLSeksi/C_SPLSeksi/new_spl';
-$route['SPL/ListLembur'] = 'SPLSeksi/C_SPLSeksi/data_spl';
-$route['SPL/RekapLembur'] = 'SPLSeksi/C_SPLSeksi/rekap_spl';
-$route['SPL/EditLembur/(:any)'] = 'SPLSeksi/C_SPLSeksi/edit_spl/$1';
-$route['SPL/HapusLembur/(:any)'] = 'SPLSeksi/C_SPLSeksi/hapus_spl/$1';
+$route['SPL'] = 'splseksi/C_splseksi';
+$route['SPL/InputLembur'] = 'splseksi/C_splseksi/new_spl';
+$route['SPL/ListLembur'] = 'splseksi/C_splseksi/data_spl';
+$route['SPL/RekapLembur'] = 'splseksi/C_splseksi/rekap_spl';
+$route['SPL/EditLembur/(:any)'] = 'splseksi/C_splseksi/edit_spl/$1';
+$route['SPL/HapusLembur/(:any)'] = 'splseksi/C_splseksi/hapus_spl/$1';
 
-$route['ALK/ListLembur'] = 'SPLSeksi/C_SPLKasie/data_spl';
-$route['ALK/ConfLembur'] = 'SPLSeksi/C_SPLKasie/confirm_spl';
-$route['ALA/ListLembur'] = 'SPLSeksi/C_SPLAsska/data_spl';
+$route['ALK/ListLembur'] = 'splseksi/C_splkasie/data_spl';
+$route['ALK/ConfLembur'] = 'splseksi/C_splkasie/confirm_spl';
+$route['ALA/ListLembur'] = 'splseksi/C_splasska/data_spl';
