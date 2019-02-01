@@ -149,7 +149,9 @@ class C_Rekap extends CI_Controller {
 
 					$worksheet->setCellValueByColumnAndRow(0,$row,$no);
 					$worksheet->setCellValueByColumnAndRow(3,$row,$key['nama']);
-					$this->excel->getActiveSheet()->setCellValueExplicit('E'.$row,number_format($total,'0',',','.'),PHPExcel_Cell_DataType::TYPE_STRING);
+					$this->excel->getActiveSheet()->getStyle('E'.$row)->getNumberFormat()->setFormatCode('#,##0');
+					// $this->excel->getActiveSheet()->getStyle('E'.$row)->getNumberFormat()->setFormatCode(PHPExcel_Style_NumberFormat::FORMAT_NUMBER_COMMA_SEPARATED1);
+					$this->excel->getActiveSheet()->setCellValueExplicit('E'.$row,$total,PHPExcel_Cell_DataType::TYPE_NUMERIC);
 					foreach ($rekap as $val) {
 						if ($key['noind'] == $val['noind']) {
 							$this->excel->getActiveSheet()->setCellValueExplicit('C'.$row,$val['no_rekening'],PHPExcel_Cell_DataType::TYPE_STRING);
@@ -199,7 +201,9 @@ class C_Rekap extends CI_Controller {
 
 					$worksheet->setCellValueByColumnAndRow(0,$row,$no);
 					$worksheet->setCellValueByColumnAndRow(3,$row,$key['nama']);
-					$this->excel->getActiveSheet()->setCellValueExplicit('E'.$row,number_format($total,'0',',','.'),PHPExcel_Cell_DataType::TYPE_STRING);
+					$this->excel->getActiveSheet()->getStyle('E'.$row)->getNumberFormat()->setFormatCode('#,##0');
+					// $this->excel->getActiveSheet()->getStyle('E'.$row)->getNumberFormat()->setFormatCode(PHPExcel_Style_NumberFormat::FORMAT_NUMBER_COMMA_SEPARATED1);
+					$this->excel->getActiveSheet()->setCellValueExplicit('E'.$row,$total,PHPExcel_Cell_DataType::TYPE_NUMERIC);
 					foreach ($rekap as $val) {
 						if ($key['noind'] == $val['noind']) {
 							$this->excel->getActiveSheet()->setCellValueExplicit('C'.$row,$val['no_rekening'],PHPExcel_Cell_DataType::TYPE_STRING);
@@ -232,7 +236,9 @@ class C_Rekap extends CI_Controller {
 			}
 
 			$worksheet->setCellValue($coorCellSave3,'TOTAL');
-			$worksheet->setCellValue($coorCellSave4,number_format($total_semua,'0',',','.'));
+			$this->excel->getActiveSheet()->getStyle($coorCellSave4)->getNumberFormat()->setFormatCode('#,##0');
+			// $this->excel->getActiveSheet()->getStyle('E'.$row)->getNumberFormat()->setFormatCode(PHPExcel_Style_NumberFormat::FORMAT_NUMBER_COMMA_SEPARATED1);
+			$worksheet->setCellValueExplicit($coorCellSave4,$total_semua,PHPExcel_Cell_DataType::TYPE_NUMERIC);
 			$ttd  = date('d');
 				$month=date('m');
 				if ($month=='01') {
