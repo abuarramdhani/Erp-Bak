@@ -2229,3 +2229,20 @@ $route['AccountPayables/CheckPPh/Upload'] = 'CheckPPH/MainMenu/C_Upload';
 $route['AccountPayables/CheckPPh/Upload/(:any)'] = 'CheckPPH/MainMenu/C_Upload/$1';
 $route['AccountPayables/CheckPPh/List'] = 'CheckPPH/MainMenu/C_List';
 $route['AccountPayables/CheckPPh/List/(:any)'] = 'CheckPPH/MainMenu/C_List/$1';
+
+//---------------------------------------------------- Booking Kendaraan --------------------------------------//
+$route['BookingKendaraan/LogPeminjaman'] = 'BookingKendaraan/C_logpeminjaman';
+$route['BookingKendaraan/LogPeminjaman/(:any)'] = 'BookingKendaraan/C_logpeminjaman/$1';
+$route['BookingKendaraan/LogPeminjaman/(:any)/(:any)'] = 'BookingKendaraan/C_logpeminjaman/$1/$2';
+
+$route['BookingKendaraan/CariMobil'] = 'BookingKendaraan/C_Carimobil';
+$route['BookingKendaraan/CariMobil/(:any)'] = 'BookingKendaraan/C_Carimobil/$1';
+$route['BookingKendaraan/CariMobil/(:any)/(:any)'] = 'BookingKendaraan/C_Carimobil/$1/$2';
+
+$route['AdminBookingKendaraan'] = 'BookingKendaraan/C_Admin';
+$route['AdminBookingKendaraan/(:any)'] = 'BookingKendaraan/C_Admin/$1';
+$route['AdminBookingKendaraan/(:any)/(:any)'] = 'BookingKendaraan/C_Admin/$1/$2';
+
+$route['AdminBookingKendaraan/RequestKendaraan'] = 'BookingKendaraan/C_AdminView';
+$route['AdminBookingKendaraan/RequestKendaraan/(:any)'] = 'BookingKendaraan/C_AdminView/$1';
+$route['AdminBookingKendaraan/RequestKendaraan/(:any)/(:any)'] = 'BookingKendaraan/C_AdminView/$1/$2';
