@@ -1,13 +1,13 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
 
-class C_SPLSeksi extends CI_Controller {
+class C_splseksi extends CI_Controller {
 	function __construct() {
         parent::__construct();
 
         $this->load->library('session');
 
-		$this->load->model('SPLSeksi/M_SPLSeksi');
+		$this->load->model('SPLSeksi/M_splseksi');
 		$this->load->model('SystemAdministration/MainMenu/M_user');
 
 		date_default_timezone_set('Asia/Jakarta');
@@ -46,7 +46,7 @@ class C_SPLSeksi extends CI_Controller {
 
 	public function data_spl(){
 		$data = $this->menu('', '', '');
-		$data['lokasi'] = $this->M_SPLSeksi->show_lokasi();
+		$data['lokasi'] = $this->M_splseksi->show_lokasi();
 
 		$this->load->view('V_Header',$data);
 		$this->load->view('V_Sidemenu',$data);
@@ -61,8 +61,8 @@ class C_SPLSeksi extends CI_Controller {
 
 		// get akses seksi
 		$akses_sie = array();
-		$akses_kue = $this->M_SPLSeksi->show_pekerja('', $user, '');
-		$akses_spl = $this->M_SPLSeksi->show_akses_seksi($user);
+		$akses_kue = $this->M_splseksi->show_pekerja('', $user, '');
+		$akses_spl = $this->M_splseksi->show_akses_seksi($user);
 		foreach($akses_kue as $ak){
 			$akses_sie[] = $this->cut_kodesie($ak['kodesie']);
 			foreach($akses_spl as $as){
@@ -70,7 +70,7 @@ class C_SPLSeksi extends CI_Controller {
 			}
 		}
 
-		$data = $this->M_SPLSeksi->show_pekerja($key, $key2, $akses_sie);
+		$data = $this->M_splseksi->show_pekerja($key, $key2, $akses_sie);
  		echo json_encode($data);
 	}
 
@@ -81,8 +81,8 @@ class C_SPLSeksi extends CI_Controller {
 
 		// get akses seksi
 		$akses_sie = array();
-		$akses_kue = $this->M_SPLSeksi->show_pekerja('', $user, '');
-		$akses_spl = $this->M_SPLSeksi->show_akses_seksi($user);
+		$akses_kue = $this->M_splseksi->show_pekerja('', $user, '');
+		$akses_spl = $this->M_splseksi->show_akses_seksi($user);
 		foreach($akses_kue as $ak){
 			$akses_sie[] = $this->cut_kodesie($ak['kodesie']);
 			foreach($akses_spl as $as){
@@ -90,7 +90,7 @@ class C_SPLSeksi extends CI_Controller {
 			}
 		}
 
-		$data = $this->M_SPLSeksi->show_seksi($key, $key2, $akses_sie);
+		$data = $this->M_splseksi->show_seksi($key, $key2, $akses_sie);
  		echo json_encode($data);
 	}
 
@@ -120,8 +120,8 @@ class C_SPLSeksi extends CI_Controller {
 
 		// get akses seksi
 		$akses_sie = array();
-		$akses_kue = $this->M_SPLSeksi->show_pekerja('', $user, '');
-		$akses_spl = $this->M_SPLSeksi->show_akses_seksi($user);
+		$akses_kue = $this->M_splseksi->show_pekerja('', $user, '');
+		$akses_spl = $this->M_splseksi->show_akses_seksi($user);
 		foreach($akses_kue as $ak){
 			$akses_sie[] = $this->cut_kodesie($ak['kodesie']);
 			foreach($akses_spl as $as){
@@ -130,7 +130,7 @@ class C_SPLSeksi extends CI_Controller {
 		}
 		
 		$data_spl = array();
-		$show_list_spl = $this->M_SPLSeksi->show_spl($dari, $sampai, $status, $lokasi, $noind, $akses_sie);
+		$show_list_spl = $this->M_splseksi->show_spl($dari, $sampai, $status, $lokasi, $noind, $akses_sie);
 		foreach($show_list_spl as $sls){
 			$index = array();
 			
@@ -173,8 +173,8 @@ class C_SPLSeksi extends CI_Controller {
 
 		// get akses seksi
 		$akses_sie = array();
-		$akses_kue = $this->M_SPLSeksi->show_pekerja('', $user, '');
-		$akses_spl = $this->M_SPLSeksi->show_akses_seksi($user);
+		$akses_kue = $this->M_splseksi->show_pekerja('', $user, '');
+		$akses_spl = $this->M_splseksi->show_akses_seksi($user);
 		foreach($akses_kue as $ak){
 			$akses_sie[] = $this->cut_kodesie($ak['kodesie']);
 			foreach($akses_spl as $as){
@@ -182,7 +182,7 @@ class C_SPLSeksi extends CI_Controller {
 			}
 		}
 		
-		$data['data_spl'] = $this->M_SPLSeksi->show_spl($dari, $sampai, $status, $lokasi, $noind, $akses_sie);
+		$data['data_spl'] = $this->M_splseksi->show_spl($dari, $sampai, $status, $lokasi, $noind, $akses_sie);
 		$filename = 'Surat Perintah Lembur.pdf';
 		$pdf = new mPDF('','A4-L', 0, '', 5, 5, 5, 5);
 		$stylesheet = file_get_contents(base_url('assets/plugins/bootstrap/3.3.7/css/bootstrap.css'));
@@ -194,14 +194,14 @@ class C_SPLSeksi extends CI_Controller {
 	}
 
 	public function hapus_spl($idspl){
-		$to_hapus = $this->M_SPLSeksi->drop_spl($idspl);
+		$to_hapus = $this->M_splseksi->drop_spl($idspl);
 		redirect(base_url('SPL/ListLembur'));
 	}
 
 	public function edit_spl($idspl){
 		$data = $this->menu('', '', '');
-		$data['jenis_lembur'] = $this->M_SPLSeksi->show_jenis_lembur();
-		$data['lembur'] = $this->M_SPLSeksi->show_current_spl('', '', '', $idspl);
+		$data['jenis_lembur'] = $this->M_splseksi->show_jenis_lembur();
+		$data['lembur'] = $this->M_splseksi->show_current_spl('', '', '', $idspl);
 		$data['result'] = $this->input->get('result');
 
 		$this->load->view('V_Header',$data);
@@ -227,10 +227,10 @@ class C_SPLSeksi extends CI_Controller {
 		$realisasi = $this->input->post("realisasi[0]");
 		$alasan = $this->input->post("alasan[0]");
 		$spl_id = $this->input->post('id_spl');
-		$old_spl = $this->M_SPLSeksi->show_current_spl('', '', '', $spl_id);
+		$old_spl = $this->M_splseksi->show_current_spl('', '', '', $spl_id);
 		
 		// Generate ID Riwayat
-		$maxid = $this->M_SPLSeksi->show_maxid("splseksi.tspl_riwayat", "ID_Riwayat");
+		$maxid = $this->M_splseksi->show_maxid("splseksi.tspl_riwayat", "ID_Riwayat");
 		if(empty($maxid)){
 			$splr_id = "0000000001";
 		}else{
@@ -255,7 +255,7 @@ class C_SPLSeksi extends CI_Controller {
 			"jenis" => "Ubah",
 			"ket" => $log_ket,
 			"noind" => $user_id);
-		$to_log = $this->M_SPLSeksi->save_log($data_log);
+		$to_log = $this->M_splseksi->save_log($data_log);
 			
 		$data_spl = array(
 			"Tgl_Berlaku" => date('Y-m-d H:i:s'),
@@ -273,7 +273,7 @@ class C_SPLSeksi extends CI_Controller {
 			"target" => $target,
 			"realisasi" => $realisasi,
 			"alasan_lembur" => $alasan);
-		$to_spl = $this->M_SPLSeksi->update_spl($data_spl, $spl_id);
+		$to_spl = $this->M_splseksi->update_spl($data_spl, $spl_id);
 			
 		$data_splr = array(
 			"ID_Riwayat" => $splr_id,
@@ -296,14 +296,14 @@ class C_SPLSeksi extends CI_Controller {
 			"target" => $target,
 			"realisasi" => $realisasi,
 			"alasan_lembur" => $alasan);
-		$to_splr = $this->M_SPLSeksi->save_splr($data_splr);
+		$to_splr = $this->M_splseksi->save_splr($data_splr);
 
 		redirect(base_url('SPL/EditLembur/'.$spl_id.'?result=1'));
 	}
 
 	public function new_spl(){
 		$data = $this->menu('', '', '');
-		$data['jenis_lembur'] = $this->M_SPLSeksi->show_jenis_lembur();
+		$data['jenis_lembur'] = $this->M_splseksi->show_jenis_lembur();
 		$data['result'] = $this->input->get('result');
 
 		$this->load->view('V_Header',$data);
@@ -321,7 +321,7 @@ class C_SPLSeksi extends CI_Controller {
 		$tanggal = $this->input->post("tanggal");
 		$tanggal = date_format(date_create($tanggal), 'Y-m-d');
 
-		$shift = $this->M_SPLSeksi->show_current_shift($tanggal, $noind);
+		$shift = $this->M_splseksi->show_current_shift($tanggal, $noind);
 		if(!empty($shift)){
 			if($lembur != "004"){
 				foreach($shift as $s){
@@ -378,7 +378,7 @@ class C_SPLSeksi extends CI_Controller {
 			}
 		}
 
-		$lembur = $this->M_SPLSeksi->show_current_spl($tanggal, $noind, $lembur, '');
+		$lembur = $this->M_splseksi->show_current_spl($tanggal, $noind, $lembur, '');
 		if(!empty($lembur)){
 			$error = "Data lembur pernah di input";
 		}
@@ -407,7 +407,7 @@ class C_SPLSeksi extends CI_Controller {
 			$alasan = $this->input->post("alasan[$x]");
 
 			// Generate ID SPL
-			$maxid = $this->M_SPLSeksi->show_maxid("splseksi.tspl", "ID_SPL");
+			$maxid = $this->M_splseksi->show_maxid("splseksi.tspl", "ID_SPL");
 			if(empty($maxid)){
 				$spl_id = "0000000001";
 			}else{
@@ -416,7 +416,7 @@ class C_SPLSeksi extends CI_Controller {
 			}
 
 			// Generate ID Riwayat
-			$maxid = $this->M_SPLSeksi->show_maxid("splseksi.tspl_riwayat", "ID_Riwayat");
+			$maxid = $this->M_splseksi->show_maxid("splseksi.tspl_riwayat", "ID_Riwayat");
 			if(empty($maxid)){
 				$splr_id = "0000000001";
 			}else{
@@ -434,7 +434,7 @@ class C_SPLSeksi extends CI_Controller {
 				"jenis" => "Tambah",
 				"ket" => $log_ket,
 				"noind" => $user_id);
-			$to_log = $this->M_SPLSeksi->save_log($data_log);
+			$to_log = $this->M_splseksi->save_log($data_log);
 			
 			$data_spl = array(
 				"ID_SPL" => $spl_id,
@@ -453,7 +453,7 @@ class C_SPLSeksi extends CI_Controller {
 				"target" => $target,
 				"realisasi" => $realisasi,
 				"alasan_lembur" => $alasan);
-			$to_spl = $this->M_SPLSeksi->save_spl($data_spl);
+			$to_spl = $this->M_splseksi->save_spl($data_spl);
 			
 			$data_splr = array(
 				"ID_Riwayat" => $splr_id,
@@ -476,7 +476,7 @@ class C_SPLSeksi extends CI_Controller {
 				"target" => $target,
 				"realisasi" => $realisasi,
 				"alasan_lembur" => $alasan);
-			$to_splr = $this->M_SPLSeksi->save_splr($data_splr);
+			$to_splr = $this->M_splseksi->save_splr($data_splr);
 
 		}
 		redirect(base_url('SPL/InputLembur?result=1'));
@@ -484,7 +484,7 @@ class C_SPLSeksi extends CI_Controller {
 
 	public function rekap_spl(){
 		$data = $this->menu('', '', '');
-		$data['noind'] = $this->M_SPLSeksi->show_noind();
+		$data['noind'] = $this->M_splseksi->show_noind();
 
 		$this->load->view('V_Header',$data);
 		$this->load->view('V_Sidemenu',$data);
@@ -503,8 +503,8 @@ class C_SPLSeksi extends CI_Controller {
 
 		// get akses seksi
 		$akses_sie = array();
-		$akses_kue = $this->M_SPLSeksi->show_pekerja('', $user, '');
-		$akses_spl = $this->M_SPLSeksi->show_akses_seksi($user);
+		$akses_kue = $this->M_splseksi->show_pekerja('', $user, '');
+		$akses_spl = $this->M_splseksi->show_akses_seksi($user);
 		foreach($akses_kue as $ak){
 			$akses_sie[] = $this->cut_kodesie($ak['kodesie']);
 			foreach($akses_spl as $as){
@@ -514,7 +514,7 @@ class C_SPLSeksi extends CI_Controller {
 		
 		$x = 1;
 		$data_spl = array();
-		$show_list_spl = $this->M_SPLSeksi->show_rekap($dari, $sampai, $noind, $akses_sie);
+		$show_list_spl = $this->M_splseksi->show_rekap($dari, $sampai, $noind, $akses_sie);
 		foreach($show_list_spl as $sls){
 			$index = array();
 			
