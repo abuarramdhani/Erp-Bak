@@ -19,7 +19,17 @@ class M_monitoring extends CI_Model
     }
 
     public function addData($start,$end,$user_id,$tgl_proses,$kat_detail,$kat,$hari,$periode,$tanggalloop){
-    	$query = $this->db->query("insert into sm.sm_jadwal (start_date,end_date,create_by,create_date,id_kategori_detail,id_kategori,index_hari,periode_jadwal,tanggal_jadwal) values ('$start','$end','$user_id','$tgl_proses','$kat_detail','$kat','$hari','$periode','$tanggalloop')");
+        if ($hari == '7') {
+            $dow = '0';
+        }else{
+            $dow = $hari;
+        }
+        $sql = "insert into sm.sm_jadwal 
+                (start_date,end_date,create_by,create_date,id_kategori_detail,id_kategori,index_hari,periode_jadwal,tanggal_jadwal)
+                select '$start','$end','$user_id','$tgl_proses','$kat_detail','$kat','$hari','$periode',case when extract(dow from '$tanggalloop'::date) != 0 then '$tanggalloop'::date + cast(abs(extract(dow from '$tanggalloop'::date) - 7) + $dow as int) else '$tanggalloop' end";
+                //query lama ....
+    	// $query = $this->db->query("insert into sm.sm_jadwal (start_date,end_date,create_by,create_date,id_kategori_detail,id_kategori,index_hari,periode_jadwal,tanggal_jadwal) values ('$start','$end','$user_id','$tgl_proses','$kat_detail','$kat','$hari','$periode','$tanggalloop')");
+        $query = $this->db->query($sql);
     	return $query;
     }
 
