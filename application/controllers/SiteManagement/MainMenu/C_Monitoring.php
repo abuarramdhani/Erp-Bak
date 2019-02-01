@@ -105,16 +105,16 @@ class C_Monitoring extends CI_Controller {
 			foreach($period as $p)
 			{
 				$tanggalloop 	=	$p->format('Y-m-d');
-				if(date('N', strtotime($tanggalloop))==$hari)
-				{
-					$DataMonitoring = $this->M_monitoring->listMonitoring($kat,$kat_detail,$hari,$periode,$tanggalloop)->num_rows();
-					if($DataMonitoring==0) {
-						$this->M_monitoring->addData($start,$end,$user_id,$tgl_proses,$kat_detail,$kat,$hari,$periode,$tanggalloop);
-					}
+				
+				$DataMonitoring = $this->M_monitoring->listMonitoring($kat,$kat_detail,$hari,$periode,$tanggalloop)->num_rows();
+				if($DataMonitoring==0) {
+					$this->M_monitoring->addData($start,$end,$user_id,$tgl_proses,$kat_detail,$kat,$hari,$periode,$tanggalloop);
+					
 				}
+				
 			}
 		}
-
+		// exit();
 		$data['rekapData'] = $this->M_monitoring->rekapData($start,$end,$kat,$kat_detail,$hari,$periode)->result_array();
 
 		$this->load->view('V_Header',$data);
