@@ -822,7 +822,7 @@ class C_Order extends CI_Controller
             $objPHPExcel->getActiveSheet()->setTitle('DAFTAR KEBUTUHAN P2K3');
  
             $objPHPExcel->setActiveSheetIndex(0);  
-            $filename = urlencode("Daftar Kebutuhan P2K3".date("Y-m-d").".ods");
+            $filename = urlencode("Daftar Kebutuhan P2K3 ".date("Y-m-d").".ods");
                
               header('Content-Type: application/vnd.ms-excel'); //mime type
               header('Content-Disposition: attachment;filename="'.$filename.'"'); //tell browser what's the file name
