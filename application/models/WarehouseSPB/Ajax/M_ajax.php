@@ -89,6 +89,17 @@ class M_ajax extends CI_Model {
 		return $query->result_array();
 	}
 
+    public function getEkspedisiList(){
+        $sql = "
+            SELECT ffvv.FLEX_VALUE_MEANING eks
+            from FND_FLEX_VALUES_VL ffvv
+            where ffvv.FLEX_VALUE_SET_ID = 1018949
+            AND ffvv.ENABLED_FLAG = 'Y'
+        ";
+        $query = $this->oracle->query($sql);
+        return $query->result_array();
+    }
+
 	public function getLastPackCode($id)
 	{
 		$sql = "

@@ -85,5 +85,57 @@ class M_undangan extends CI_Model
 		$this->db->where('id_undangan',$id);
 		$this->db->delete('pl.pl_undangan');
 	}
+
+	public function getTrainingParticipant($id){
+		$sql = "select *
+				from pl.pl_participant 
+				where scheduling_id = $id";
+		$result = $this->db->query($sql);
+		return $result->result_array();
+	}
+
+	public function getTraining($id){
+		$sql = "select * ,
+				concat(to_char(cast(\"date\" as date),'dd '),initcap(split_part(to_char(cast(\"date\" as date),'month'),' ',1)),to_char(cast(\"date\" as date),' yyyy')) tgl,
+				start_time wkt,
+				to_char(cast(\"date\" as date),'dd')tg1,
+				to_char(cast(\"date\" as date),'d')hr1,
+				to_char(cast(\"date\" as date),'mm')b1,
+				to_char(cast(\"date\" as date),'yyyy')th1,
+				to_char(current_date,'dd')tg2,
+				to_char(current_date,'mm')b2,
+				to_char(current_date,'yyyy')th2, 
+				scheduling_name acara,
+				room tempat,
+				(select case when count(*)<= 3 then
+					3
+				else
+					15
+				end keterangan
+				from pl.pl_participant where scheduling_id = pst.scheduling_id),
+				(select case when  trainer_name not like '%(%)%' then 
+				concat(split_part(trainer_name,' ',1),' ',split_part(trainer_name,' ',2),' ',left(split_part(trainer_name,' ',3),1)) 
+				else
+				trainer_name
+				end app_name
+				from pl.pl_master_trainer
+				where trainer_id = pst.trainer::int),
+				(select noind
+				from pl.pl_master_trainer
+				where trainer_id = pst.trainer::int)
+				from pl.pl_scheduling_training pst 
+				where scheduling_id = $id";
+		$result = $this->db->query($sql);
+		return $result->result_array();
+	}
+
+	public function getUndanganByTanggal($tanggal){
+		$sql = "select * from pl.pl_scheduling_training pst
+				left join pl.pl_master_trainer pmt 
+				on pmt.trainer_id = pst.trainer::int 
+				where \"date\" = '$tanggal'";
+		$result = $this->db->query($sql);
+		return $result->result_array();
+	}
 }
  ?>

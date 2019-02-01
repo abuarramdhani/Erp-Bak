@@ -256,12 +256,12 @@
                                         <table id="printPP" class="table table-bordered table-striped table-hover">
                                             <thead>
                                                 <tr class="bg-primary">
-                                                    <th width="10%"><center>Kode Barang</center></th>
+                                                    <th width="15%"><center>Kode Barang</center></th>
                                                     <th width="10%"><center>Qty</center></th>
                                                     <th width="10%"><center>Satuan</center></th>
                                                     <th width="20%"><center>Nama Barang</center></th>
-                                                    <th width="15%"><center>NBD</center></th>
-                                                    <th width="20%"><center>Keterangan</center></th>
+                                                    <th width="12%"><center>NBD</center></th>
+                                                    <th width="18%"><center>Keterangan</center></th>
                                                     <th width="10%"><center>Supplier</center></th>
                                                     <th width="5%"><center>Action</center></th>
                                                 </tr>
@@ -270,7 +270,14 @@
                                             <tbody id='printpp'>
                                             <tr class="multiRow">
                                                 <td>
-                                                    <input type="text" placeholder="Pp Kodebarang" name="txtPpKodebarangHeader[]" id="txtPpKodebarangHeader" class="form-control" />
+                                                    <select list="item" type="text" placeholder="Pp Kodebarang" name="txtPpKodebarangHeader[]" id="txtPpKodebarangHeader" class="form-control cm_select2" >
+                                                        <option></option>
+                                                    </select>
+                                                   <!--  <datalist id="item" style="height: 20px;">
+                                                        <?php foreach ($kodeItem as $key) { ?>
+                                                        <option value="<?php echo $key['kode_item']; ?>">
+                                                        <?php } ?>
+                                                    </datalist> -->
                                                 </td>
 
                                                 <td>

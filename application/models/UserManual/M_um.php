@@ -16,7 +16,7 @@ class M_um extends CI_Model
 
 	public function tabel()
 	{
-		$sql =  "select um.*, sm.* from um.um_manual um left join sys.sys_module sm on sm.module_id = um.module_id";
+		$sql =  "select um.*, sm.* from um.um_manual um left join sys.sys_user_group_menu sm on sm.user_group_menu_id = um.module_id";
 		$query = $this->db->query($sql);
 
 		return $query->result_array();
@@ -24,7 +24,7 @@ class M_um extends CI_Model
 
 	public function mylist($id, $keyword)
 	{
-		$sql = "select * from sys.sys_module where module_id::text like '%$keyword%' or module_name like '%$keyword%' order by module_id asc";
+		$sql = "select * from sys.sys_user_group_menu where user_group_menu_id::text like '%$keyword%' or upper(user_group_menu_name) like '%$keyword%' order by user_group_menu_id asc";
 		$query = $this->db->query($sql);
 
 		return $query->result_array();

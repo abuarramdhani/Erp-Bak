@@ -1859,6 +1859,9 @@ $route['SiteManagement/TransferAsset'] = 'SiteManagement/MainMenu/C_Transferasse
 $route['SiteManagement/TransferAsset/(:any)'] = 'SiteManagement/MainMenu/C_Transferasset/$1';
 $route['SiteManagement/TransferAsset/(:any)/(:any)'] = 'SiteManagement/MainMenu/C_Transferasset/$1/$2';
 
+$route['SiteManagement/DaftarAsset'] = 'SiteManagement/MainMenu/C_DaftarAsset';
+$route['SiteManagement/DaftarAsset/(:any)'] = 'SiteManagement/MainMenu/C_DaftarAsset/$1';
+
 //--------------------------------------------------- Order Site Management --------------------------------------------------//
 $route['OrderSiteManagement'] = 'OrderSiteManagement/C_OrderSiteManagement';
 $route['OrderSiteManagement/Order'] = 'OrderSiteManagement/MainMenu/C_Order';
@@ -2230,19 +2233,14 @@ $route['AccountPayables/CheckPPh/Upload/(:any)'] = 'CheckPPH/MainMenu/C_Upload/$
 $route['AccountPayables/CheckPPh/List'] = 'CheckPPH/MainMenu/C_List';
 $route['AccountPayables/CheckPPh/List/(:any)'] = 'CheckPPH/MainMenu/C_List/$1';
 
-//---------------------------------------------------- Booking Kendaraan --------------------------------------//
-$route['BookingKendaraan/LogPeminjaman'] = 'BookingKendaraan/C_logpeminjaman';
-$route['BookingKendaraan/LogPeminjaman/(:any)'] = 'BookingKendaraan/C_logpeminjaman/$1';
-$route['BookingKendaraan/LogPeminjaman/(:any)/(:any)'] = 'BookingKendaraan/C_logpeminjaman/$1/$2';
+//---------------------------------------------- Surat Perintah Lembur -------------------------------------------//
+$route['SPL'] = 'splseksi/C_splseksi';
+$route['SPL/InputLembur'] = 'splseksi/C_splseksi/new_spl';
+$route['SPL/ListLembur'] = 'splseksi/C_splseksi/data_spl';
+$route['SPL/RekapLembur'] = 'splseksi/C_splseksi/rekap_spl';
+$route['SPL/EditLembur/(:any)'] = 'splseksi/C_splseksi/edit_spl/$1';
+$route['SPL/HapusLembur/(:any)'] = 'splseksi/C_splseksi/hapus_spl/$1';
 
-$route['BookingKendaraan/CariMobil'] = 'BookingKendaraan/C_Carimobil';
-$route['BookingKendaraan/CariMobil/(:any)'] = 'BookingKendaraan/C_Carimobil/$1';
-$route['BookingKendaraan/CariMobil/(:any)/(:any)'] = 'BookingKendaraan/C_Carimobil/$1/$2';
-
-$route['AdminBookingKendaraan'] = 'BookingKendaraan/C_Admin';
-$route['AdminBookingKendaraan/(:any)'] = 'BookingKendaraan/C_Admin/$1';
-$route['AdminBookingKendaraan/(:any)/(:any)'] = 'BookingKendaraan/C_Admin/$1/$2';
-
-$route['AdminBookingKendaraan/RequestKendaraan'] = 'BookingKendaraan/C_AdminView';
-$route['AdminBookingKendaraan/RequestKendaraan/(:any)'] = 'BookingKendaraan/C_AdminView/$1';
-$route['AdminBookingKendaraan/RequestKendaraan/(:any)/(:any)'] = 'BookingKendaraan/C_AdminView/$1/$2';
+$route['ALK/ListLembur'] = 'splseksi/C_splkasie/data_spl';
+$route['ALK/ConfLembur'] = 'splseksi/C_splkasie/confirm_spl';
+$route['ALA/ListLembur'] = 'splseksi/C_splasska/data_spl';

@@ -34,12 +34,13 @@
 										<tr>
 											<th class="text-center">No.</th>
 											<th class="text-center">Action</th>
+											<th class="text-center">Titik</th>
 											<th class="text-center">SDK Server IP</th>
 											<th class="text-center">Device S/N</th>
 											<th class="text-center">Device IP</th>
 											<th class="text-center">Inisial</th>
 											<th class="text-center">ID Lokasi</th>
-											<th class="text-center">Lokasi Kerja</th>
+											<th class="text-center">Lokasi</th>
 
 										</tr>
 									</thead>
@@ -69,6 +70,7 @@
 													<span class="fa fa-pencil-square-o fa-2x"></span>
 												</a>
 											</td>
+											<td><?php echo $device['device_name'];?></td>
 											<td><?php echo $device['server_ip'].':'.$device['server_port'];?></td>
 											<td><?php echo $device['device_sn'];?></td>
 											<td><?php echo $device['device_ip'].':'.$device['device_port'];?></td>

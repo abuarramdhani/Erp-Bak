@@ -124,6 +124,16 @@ class personalia
 			}
 			$tingkat++;
 		}
+		// print_r($tembusan);
+		$tembusan = array_unique($tembusan);
+		$key = array_search('KEPALA SEKSI MADYA GENERAL AFFAIR ', $tembusan);
+		// echo 'key = '.$key;
+		if ($key) {
+    		unset($tembusan[$key]);
+    		// echo "betulanjy";
+			}else{
+				// echo "salahwoi";
+			}
 		return $tembusan;
 	}
 

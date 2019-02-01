@@ -10,7 +10,6 @@
 			<td class="text-center">Invoice Amount</td>
 			<td class="text-center" title="Nomor PO - Line Num - LPPB Num - Status LPPB">PO Detail</td>
 			<td class="text-center" title="Status Paid / Unpaid">Status</td>
-			<!-- <td class="text-center">Status</td> -->
 		</tr>
 	</thead>
 	<tbody>
@@ -30,7 +29,6 @@
 			<td><?php if($status[$i['INVOICE_ID']]){foreach ($status[$i['INVOICE_ID']] as $k) { ?>
 											<?php echo  $k ."<br>" ?>
 										<?php }} ?></td>
-			<!-- <td><?php echo $i['']?></td> -->
 			<td><?php echo $i['STATUS_PAYMENT']?></td>
 		</tr>
 		<?php $no++;}} ?>

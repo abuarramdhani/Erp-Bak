@@ -31,6 +31,7 @@ $(document).ready(function(){
     	format:'yyyy/mm/dd',
     	autoclose: true
 	});
+
 	$('.singledateADM_Range').daterangepicker({
 		"todayHighlight" : true
 	});
@@ -1886,5 +1887,83 @@ $(function(){
 
 	$('#txtPeriodePresensiHarian').on('cancel.daterangepicker', function(ev, picker) {
 		$(this).val('');
+	});
+});
+
+$(function(){
+	$('#txtTanggalPelatihanUndangan').datepicker({
+    	format:'yyyy-mm-dd',
+    	autoclose: true
+	});
+
+	$('.txtNamaPelatihanUndangan').select2({
+		dropdownParent: $('#import-Pelatihan-Create'),
+	})
+});
+
+$(document).on('ready',function(){
+	$('#txtTanggalPelatihanUndangan').on('change',function(){
+		var tanggalUndangan = $('#txtTanggalPelatihanUndangan').val();
+		
+		$.ajax({
+			data 	: {tanggal:tanggalUndangan},
+			type 	: 'POST',
+			url 	: baseurl+'ADMPelatihan/Cetak/Undangan/CariUndangan',
+			success : function(data){
+				obj = JSON.parse(data);
+				var opsi = "";
+				for (var i = 0; i <= (obj.length - 1); i++) {
+					opsi += '<option value="'+obj[i]['scheduling_id']+'">'+obj[i]['scheduling_name']+' - trainer '+obj[i]['trainer_name']+'</option>';
+				}
+				$('#txtNamaPelatihanUndangan').html(opsi);
+				$('.txtNamaPelatihanUndangan').select2({
+					dropdownParent: $('#import-Pelatihan-Create'),
+				})
+			}
+		});
+	});
+	$(document).on('click','#btnCancelPelatihanUndangan',function(e){
+	  	$('#import-Pelatihan-Create').modal("hide");
+	});
+	$('#btnSubmitImportPelatihan').on('click',function(){
+		var sched_id = $('#txtNamaPelatihanUndangan').val();
+		var tanggalUndangan = $('#txtTanggalPelatihanUndangan').val();
+
+		if (sched_id) {
+			$.ajax({
+				data 	: {schedule_id : sched_id},
+				type 	: 'POST',
+				url		: baseurl+'ADMPelatihan/Cetak/Undangan/CariUndanganLengkap',
+				success : function(data){
+					obj = JSON.parse(data);
+					$('#txtTanggalUndanganPelatihan').datepicker('update',obj[0]['tgl']);
+					$('#txtWaktuUndanganPelatihan').val(obj[0]['wkt']);
+					$('#txtTempatUndanganPelatihan').val(obj[0]['tempat']);
+					$('#txtAcaraUndanganPelatihan').val(obj[0]['scheduling_name']);
+					
+				}
+			});
+
+			$.ajax({
+				data 	: {schedule_id : sched_id},
+				type 	: 'POST',
+				url 	: baseurl+'ADMPelatihan/Cetak/Undangan/CariUndanganPeserta',
+				success : function(data){
+					obj = JSON.parse(data);
+					var opsi = "";
+					for (var i = 0; i <= obj.length - 1; i++) {
+						opsi += '<option value="'+obj[i]['noind']+'" selected>'+obj[i]['participant_name']+'</option>';
+					}
+					$('#txtPesertaUndanganPelatihan').html(opsi);
+					$('#txtPesertaUndanganPelatihan').select2();
+				}
+			})
+
+			$('#import-Pelatihan-Create').modal("hide");
+		}else{
+			alert('Gagal Mencari Pelatihan, Pastikan Nama Pelatihan Terisi !!');
+		}
+
+			
 	});
 });

@@ -74,7 +74,7 @@
 												$encripty = $this->general->enkripsi($row['id_um']); ?>
 												<tr>
 													<td><?php echo $no; ?></td>
-													<td><?php echo $row['module_name']; ?></td>
+													<td><?php echo $row['user_group_menu_name']; ?></td>
 													<td>
 														<a href="<?php $link = $row['path_file'];
 														 $link = preg_replace('/\s+/', '_', $link); 
@@ -106,7 +106,7 @@
 																						</label>
 																						<div class="col-md-12">
 																							<select style="width: 200px;" required class="form-control erp-um" name="um-select-modal" id="erp-um-modal">
-																								<option selected value="<?php echo $row['module_id'].' - '.$row['module_name']; ?>"><?php echo $row['module_id'].' - '.$row['module_name']; ?></option>
+																								<option selected value="<?php echo $row['user_group_menu_id'].' - '.$row['user_group_menu_name']; ?>"><?php echo $row['user_group_menu_id'].' - '.$row['user_group_menu_name']; ?></option>
 																								<input name="umRes" hidden value="<?php echo $row['path_file']; ?>">
 																							</select>
 																						</div>

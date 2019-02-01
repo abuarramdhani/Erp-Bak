@@ -21,7 +21,7 @@
 					<div class="col-lg-12">
 						<div class="box box-primary box-solid">
 							<div class="box-body">
-								<table id="tbListSubmit" class="table table-striped table-bordered table-hover text-center dataTable">
+								<table id="tbListSubmit" class="table table-striped table-bordered table-hover text-center tblMI">
 									<thead>
 										<tr class="bg-primary">
 											<th class="text-center">No</th>
@@ -37,11 +37,11 @@
 										<tr>
 											<td><?php echo $no ?></td>
 											<td>
-												<a href="<?php echo base_url('AccountPayables/MonitoringInvoice/InvoiceKasie/batchDetailPembelian/'.$b['BATCH_NUM'])?>">
+												<a href="<?php echo base_url('AccountPayables/MonitoringInvoice/InvoiceKasie/batchDetailPembelian/'.$b['BATCH_NUMBER'])?>">
 													<button type="button" class="btn btn-default">Detail</button>
 												</a>
 											</td>
-											<td><?php echo $b['BATCH_NUM']?></td>
+											<td><?php echo $b['BATCH_NUMBER']?></td>
 											<td><?php echo date('d-M-Y',strtotime($b['SUBMITED_DATE']))?></td>
 											<td><?php echo $b['JML_INVOICE']?></td>
 											<?php if ($b['LAST_PURCHASING_INVOICE_STATUS'] == 2 and  $b['LAST_FINANCE_INVOICE_STATUS'] == 2) {

@@ -28,14 +28,15 @@
 										<td>
 											<span><label>Invoice Number</label></span>
 										</td>
-										<td><?php echo $processed[0]['INVOICE_NUMBER']?></td>
+										<td><input  class="form-control" size="40" type="text" value="<?php echo $processed[0]['INVOICE_NUMBER']?>" readonly>
+										</td>
 									</tr>
 									<tr>
 										<td>
 											<span><label>Invoice Date</label></span>
 										</td>
 										<td>
-											<?php echo date('d-M-Y',strtotime($processed[0]['INVOICE_DATE']))?>
+											<input  class="form-control" size="40" type="text" value="<?php echo date('d-M-Y',strtotime($processed[0]['INVOICE_DATE']))?>" readonly>
 										</td>
 									</tr>
 									<tr>
@@ -43,7 +44,7 @@
 											<span><label>Invoice Amount</label></span>
 										</td>
 										<td>
-											<?php echo $processed[0]['INVOICE_AMOUNT']?>
+											<input class="form-control" size="40" type="text" value="<?php echo $processed[0]['INVOICE_AMOUNT']?>" readonly>
 										</td>
 									</tr>
 									<tr>
@@ -51,14 +52,44 @@
 											<span><label>Tax Invoice Number</label></span>
 										</td>
 										<td>
-											<?php echo $processed[0]['TAX_INVOICE_NUMBER']?>
+											<input class="form-control" size="40" type="text" value="<?php echo $processed[0]['TAX_INVOICE_NUMBER']?>" readonly>
+										</td>
+									</tr>
+									<tr>
+										<td>
+											<span><label>Invoice Category</label></span>
+										</td>
+										<td>
+		                     				<input class="form-control" size="40" type="text"  value="<?php echo $processed[0]['INVOICE_CATEGORY']?>" readonly>
+		                     			</td>
+		                     			<td>
+											<span><label>Jenis Jasa</label></span>
+										</td>
+										<td>
+		                     				<input class="form-control" size="40" type="text"  value="<?php echo $processed[0]['JENIS_JASA']?>" readonly>
+		                     			</td>
+									</tr>
+									<tr>
+										<td>
+											<span><label>Nominal DPP Faktur Pajak</label></span>
+										</td>
+										<td>
+		                     				<input class="form-control" size="40" type="text"  value="<?php echo $processed[0]['NOMINAL_DPP']?>" readonly>
+		                     			</td>
+									</tr>
+									<tr>
+										<td>
+											<span><label>Info</label></span>
+										</td>
+										<td>
+											<textarea class="form-control" size="40" type="text" readonly><?php echo $processed[0]['INFO']?></textarea>
 										</td>
 									</tr>
 								</table>
 							</form>
 						<span><b>Invoice PO Detail</b></span>
 						<div style="overflow: auto">
-						<table id="processedinvoice" class="table table-bordered table-hover table-striped text-center" style="width: 200%">
+						<table id="processedinvoice" class="table table-bordered table-hover table-striped text-center tblMI" style="width: 200%">
 							<thead>
 								<tr class="bg-primary">
 									<th class="text-center">No</th>
@@ -101,7 +132,7 @@
 							<label>Po Amount: <span><?php echo $po_amount?></span></label>
 						</div>
 						<div class="col-md-2 pull-right">
-						<a href="<?php echo base_url('AccountPayables/MonitoringInvoice/Finish/finishInvoice/'.$b['PURCHASING_BATCH_NUMBER']);?>">
+						<a href="<?php echo base_url('AccountPayables/MonitoringInvoice/Finish/finishInvoice/'.$b['BATCH_NUMBER']);?>">
 							<button type="button" class="btn btn-success pull-right" style="margin-top: 10px" >Back</button>
 						</a>
 						</div>

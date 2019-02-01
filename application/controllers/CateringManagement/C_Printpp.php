@@ -74,6 +74,7 @@ class C_Printpp extends CI_Controller
 		$data['Section'] = $this->M_printpp->getSection();
 		$data['Branch'] = $this->M_printpp->getBranch();
 		$data['CostCenter'] = $this->M_printpp->getCostCenter();
+		$data['kodeItem']	=	$this->M_printpp->kodeItem();
 		/* LINES DROPDOWN DATA */
 
 		$this->form_validation->set_rules('txtNoPpHeader', 'no proposal', 'required');
@@ -347,6 +348,74 @@ class C_Printpp extends CI_Controller
 
 	}
 
+	public function export_data_load($id)
+	{
+		$this->load->library(array('Excel','Excel/PHPExcel/IOFactory'));
+		$plaintext_string = str_replace(array('-', '_', '~'), array('+', '/', '='), $id);
+		$plaintext_string = $this->encrypt->decode($plaintext_string);
+		// echo $plaintext_string;exit();
+		$data['PrintppDetail'] = $this->M_printpp->getPrintppDetail($plaintext_string);
+		$objPHPExcel = new PHPExcel();
+
+		$objPHPExcel->getProperties()->setCreator('KHS ERP')
+             ->setTitle("Export Data Load")
+             ->setSubject("Export Data Load")
+             ->setDescription("Export Data Load")
+             ->setKeywords("Export Data Load");
+
+        for ($i=1; $i <= count($data['PrintppDetail']); $i++) { 
+        	$objPHPExcel->setActiveSheetIndex(0)->setCellValue('A'.$i, "tab");
+        	$objPHPExcel->setActiveSheetIndex(0)->setCellValue('B'.$i, "JASA");
+        	$objPHPExcel->setActiveSheetIndex(0)->setCellValue('C'.$i, "TAB");
+        	$objPHPExcel->setActiveSheetIndex(0)->setCellValue('E'.$i, "TAB");
+        	$objPHPExcel->setActiveSheetIndex(0)->setCellValue('F'.$i, "TAB");
+        	$objPHPExcel->setActiveSheetIndex(0)->setCellValue('G'.$i, "TAB");
+        	$objPHPExcel->setActiveSheetIndex(0)->setCellValue('H'.$i, "TAB");
+        	$objPHPExcel->setActiveSheetIndex(0)->setCellValue('I'.$i, "TAB");
+        	$objPHPExcel->setActiveSheetIndex(0)->setCellValue('K'.$i, "TAB");
+        	$objPHPExcel->setActiveSheetIndex(0)->setCellValue('L'.$i, "TAB");
+        	$objPHPExcel->setActiveSheetIndex(0)->setCellValue('M'.$i, "TAB");
+        	$objPHPExcel->setActiveSheetIndex(0)->setCellValue('O'.$i, "*DN");
+        }
+        $i = 1;
+        foreach ($data['PrintppDetail'] as $key) {
+        	$objPHPExcel->setActiveSheetIndex(0)->setCellValue('D'.$i, $key['pp_kode_barang']);
+        	$objPHPExcel->setActiveSheetIndex(0)->setCellValue('J'.$i, $key['pp_jumlah']);
+        	$objPHPExcel->setActiveSheetIndex(0)->setCellValue('N'.$i, $key['pp_nama_barang']);
+
+        	$i++;
+        }
+        
+
+
+      	    $objPHPExcel->getActiveSheet()->setTitle('Export Data Load');
+ 
+            $objPHPExcel->setActiveSheetIndex(0);  
+            $filename = urlencode("Export Data Load ".date("Y-m-d").".ods");
+               
+              header('Content-Type: application/vnd.ms-excel'); //mime type
+              header("Content-disposition: attachment; filename=\"".$filename."\""); //tell browser what's the file name
+              header('Cache-Control: max-age=0'); //no cache
+ 
+            $objWriter = IOFactory::createWriter($objPHPExcel, 'Excel5');                
+            $objWriter->save('php://output');
+        	
+            redirect('CateringManagement/PrintPP');
+	}
+
+	public function kodeItem2()
+	{
+		$keyword 	=	strtoupper($this->input->get('term'));
+		$kodeItem	=	$this->M_printpp->kodeItem2($keyword);
+		echo json_encode($kodeItem);
+	}
+	public function namaItem()
+	{
+		$item = $this->input->post('item');
+		$namaItem	=	$this->M_printpp->namaItem($item);
+		$data['namaBarang'] = $namaItem[0]['nama_item'];
+		echo json_encode($data);
+	}
 }
 
 /* End of file C_Printpp.php */

@@ -185,7 +185,8 @@ class C_FleetKendaraan extends CI_Controller
 
 		/* LINES DROPDOWN DATA */
 
-		$this->form_validation->set_rules('txtNomorPolisiHeader', 'NomorPolisi', 'required');
+		$this->form_validation->set_rules('txtNomorPolisiHeader', 'NomorRangka', 'required');
+		$this->form_validation->set_rules('txtNomorRangkaHeader', 'NomorPolisi', 'required');
 		$this->form_validation->set_rules('cmbJenisKendaraanIdHeader', 'JenisKendaraanId', 'required');
 		$this->form_validation->set_rules('cmbMerkKendaraanIdHeader', 'MerkKendaraanId', 'required');
 		$this->form_validation->set_rules('cmbWarnaKendaraanIdHeader', 'WarnaKendaraanId', 'required');
@@ -204,6 +205,7 @@ class C_FleetKendaraan extends CI_Controller
 			$kode_merk_kendaraan	=	$this->input->post('cmbMerkKendaraanIdHeader', TRUE);
 			$kode_warna_kendaraan	=	$this->input->post('cmbWarnaKendaraanIdHeader', TRUE);
 			$tahun_pembuatan		=	$this->input->post('cmbTahunPembuatan', TRUE);
+			$nomor_rangka			=	$this->input->post('txtNomorRangkaHeader', TRUE);
 			$usable					=	$this->input->post('usable', TRUE);
 			$pemilik_kendaraan		=	$this->input->post('kepemilikan_kendaraan', TRUE);
 
@@ -303,6 +305,7 @@ class C_FleetKendaraan extends CI_Controller
 				'merk_kendaraan_id' 	=> $kode_merk_kendaraan,
 				'warna_kendaraan_id' 	=> $kode_warna_kendaraan,
 				'tahun_pembuatan' 		=> $tahun_pembuatan,
+				'nomor_rangka' 		=> $nomor_rangka,
 				'foto_stnk' 			=> $nama_STNK,
 				'foto_bpkb'				=> $nama_BPKB,
 				'foto_kendaraan'		=> $nama_Kendaraan,				
@@ -399,6 +402,7 @@ class C_FleetKendaraan extends CI_Controller
 		/* LINES DROPDOWN DATA */
 
 		$this->form_validation->set_rules('txtNomorPolisiHeader', 'NomorPolisi', 'required');
+		$this->form_validation->set_rules('txtNomorRangkaHeader', 'NomorRangka', 'required');
 		$this->form_validation->set_rules('cmbJenisKendaraanIdHeader', 'JenisKendaraanId', 'required');
 		$this->form_validation->set_rules('cmbMerkKendaraanIdHeader', 'MerkKendaraanId', 'required');
 		$this->form_validation->set_rules('cmbWarnaKendaraanIdHeader', 'WarnaKendaraanId', 'required');
@@ -417,6 +421,7 @@ class C_FleetKendaraan extends CI_Controller
 			$kode_merk_kendaraan	=	$this->input->post('cmbMerkKendaraanIdHeader', TRUE);
 			$kode_warna_kendaraan	=	$this->input->post('cmbWarnaKendaraanIdHeader', TRUE);
 			$tahun_pembuatan		=	$this->input->post('cmbTahunPembuatan', TRUE);
+			$nomor_rangka		=	$this->input->post('txtNomorRangkaHeader', TRUE);
 			$fileSTNKawal			=	$this->input->post('FotoSTNKawal');
 			$fileBPKBawal			=	$this->input->post('FotoBPKBawal');
 			$fileKendaraanawal		=	$this->input->post('FotoKendaraanawal');
@@ -539,6 +544,7 @@ class C_FleetKendaraan extends CI_Controller
 				'merk_kendaraan_id' 	=> $kode_merk_kendaraan,
 				'warna_kendaraan_id' 	=> $kode_warna_kendaraan,
 				'tahun_pembuatan' 		=> $tahun_pembuatan,
+				'nomor_rangka' 		=> $nomor_rangka,
 				'end_date'				=> $waktu_dihapus,
 				'last_updated'			=> date('Y-m-d H:i:s'),
 				'last_updated_by'		=> $this->session->userid,

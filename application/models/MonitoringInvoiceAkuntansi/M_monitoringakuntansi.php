@@ -7,6 +7,17 @@ class M_monitoringakuntansi extends CI_Model {
 		$this->load->library('encrypt');
 	}
 
+  public function checkLoginInAkuntansi($employee_code)
+    {
+        $oracle = $this->load->database('erp_db',true);
+        $query = "select eea.employee_code, es.unit_name
+                    from er.er_employee_all eea, er.er_section es
+                    where eea.section_code = es.section_code
+                    and eea.employee_code = '$employee_code' ";
+        $runQuery = $oracle->query($query);
+        return $runQuery->result_array();
+    }
+
 	public function unprocessedInvoice($batchNumber)
 	{
 		$erp_db = $this->load->database('oracle',true);
@@ -19,7 +30,19 @@ class M_monitoringakuntansi extends CI_Model {
                 ami.last_status_finance_date last_status_finance_date,
                 ami.finance_batch_number finance_batch_number,
                 ami.last_finance_invoice_status last_finance_invoice_status,
-                ami.reason reason, aipo2.po_detail
+                ami.reason reason, aipo2.po_detail,
+                ami.info info,
+                ami.invoice_category invoice_category,
+                ami.nominal_dpp nominal_dpp,
+                ami.batch_number batch_number,
+                ami.jenis_jasa jenis_jasa,
+                (SELECT distinct poh.attribute2
+                            from PO_HEADERS_ALL POH
+                            ,PO_LINES_ALL POL
+                            ,PO_LINE_LOCATIONS_ALL PLL
+                        where poh.po_header_id(+) = pol.po_header_id
+                        AND POL.PO_LINE_ID (+) = PLL.PO_LINE_ID
+                        AND POH.SEGMENT1 = aipo2.po_detail) ppn
                FROM khs_ap_monitoring_invoice ami,
                     (SELECT   aipo.invoice_id,
                                REPLACE
@@ -41,8 +64,9 @@ class M_monitoringakuntansi extends CI_Model {
                      GROUP BY aipo.invoice_id) aipo2
               WHERE ami.invoice_id = aipo2.invoice_id
                 AND ami.last_finance_invoice_status = 1
-                AND ami.finance_batch_number = $batchNumber
-           ORDER BY vendor_name";
+                AND ami.batch_number = '$batchNumber'
+           ORDER BY vendor_name
+           ";
 		$run = $erp_db->query($sql);
 		return $run->result_array();
 	}
@@ -88,22 +112,28 @@ class M_monitoringakuntansi extends CI_Model {
                 currency currency,
                 unit_price unit_price,
                 qty_invoice qty_invoice,
-                ami.finance_batch_number  finance_batch_number
+                ami.finance_batch_number  finance_batch_number,
+                ami.info info,
+                ami.invoice_category invoice_category,
+                ami.nominal_dpp nominal_dpp,
+                ami.batch_number batch_number,
+                ami.jenis_jasa jenis_jasa
                 FROM khs_ap_monitoring_invoice ami
                 JOIN khs_ap_invoice_purchase_order aipo ON ami.invoice_id = aipo.invoice_id
-                WHERE aipo.invoice_id = $invoice_id
+                WHERE ami.batch_number = '$batch_num'
                 AND ami.last_purchasing_invoice_status = 2
-                and ami.finance_batch_number = $batch_num";
+                and ami.invoice_id = '$invoice_id'";
         $runQuery = $erp_db->query($sql);
         return $runQuery->result_array();
 	}
 
-	public function saveProses($proses,$finance_date,$id)
+	public function saveProses($proses,$finance_date,$reason,$id)
 	{
 		$erp_db = $this->load->database('oracle',true);
 		$sql = "UPDATE khs_ap_monitoring_invoice
 				SET last_finance_invoice_status = $proses,
-				last_status_finance_date = to_date('$finance_date', 'DD/MM/YYYY HH24:MI:SS')
+				last_status_finance_date = to_date('$finance_date', 'DD/MM/YYYY HH24:MI:SS'),
+        reason = '$reason'
 				WHERE invoice_id = $id";
 		$erp_db->query($sql);
 		// oci_commit($erp_db);
@@ -123,8 +153,8 @@ class M_monitoringakuntansi extends CI_Model {
     public function insertproses($invoice_id,$action_date,$finance_status)
     {
         $oracle = $this->load->database('oracle',true);
-        $sql = "INSERT INTO khs_ap_invoice_action_detail (invoice_id,action_date,finance_status)
-                VALUES($invoice_id, to_date('$action_date', 'DD/MM/YYYY HH24:MI:SS'),'$finance_status')";
+        $sql = "INSERT INTO khs_ap_invoice_action_detail (invoice_id,action_date,purchasing_status,finance_status)
+                VALUES($invoice_id, to_date('$action_date', 'DD/MM/YYYY HH24:MI:SS'),'2','$finance_status')";
         $run = $oracle->query($sql);
     }
 
@@ -141,11 +171,16 @@ class M_monitoringakuntansi extends CI_Model {
                          to_date(ami.last_status_purchasing_date) last_status_purchasing_date,
                          ami.purchasing_batch_number purchasing_batch_number,
                          to_date(ami.last_status_finance_date) last_status_finance_date,
-                         finance_batch_number finance_batch_number
+                         finance_batch_number finance_batch_number,
+                         ami.info info,
+                         ami.invoice_category invoice_category,
+                         ami.nominal_dpp nominal_dpp,
+                         ami.batch_number batch_number,
+                         ami.jenis_jasa jenis_jasa
                 FROM khs_ap_monitoring_invoice ami,
                      khs_ap_invoice_purchase_order aipo,
                      po_headers_all poh
-                WHERE finance_batch_number = '$batchNumber'
+                WHERE ami.batch_number = '$batchNumber'
                 and ami.invoice_id = aipo.invoice_id
                 and poh.segment1 = aipo.po_number
                 and last_finance_invoice_status = 2
@@ -174,7 +209,13 @@ class M_monitoringakuntansi extends CI_Model {
                 aipo.unit_price unit_price,
                 aipo.qty_invoice qty_invoice,
                 ami.invoice_id invoice_id,
-                ami.purchasing_batch_number purchasing_batch_number
+                ami.purchasing_batch_number purchasing_batch_number,
+                ami.info info,
+                ami.finance_batch_number finance_batch_number,
+                ami.invoice_category invoice_category,
+                ami.nominal_dpp nominal_dpp,
+                ami.batch_number batch_number,
+                ami.jenis_jasa jenis_jasa
                 FROM khs_ap_monitoring_invoice ami
                 ,khs_ap_invoice_purchase_order aipo
                 WHERE ami.invoice_id = aipo.invoice_id
@@ -183,12 +224,13 @@ class M_monitoringakuntansi extends CI_Model {
         return $runQuery->result_array();
 	}
 
-	public function showFinanceNumber(){
+	public function showFinanceNumber($login){
 		$erp_db = $this->load->database('oracle',true);
-        $sql = "SELECT finance_batch_number finance_batch_number, to_date(last_status_finance_date) submited_date
+        $sql = "SELECT batch_number batch_number, to_date(last_status_purchasing_date) submited_date
         FROM khs_ap_monitoring_invoice
         WHERE last_finance_invoice_status = 1
-        GROUP BY finance_batch_number, to_date(last_status_finance_date) 
+        $login
+        GROUP BY batch_number, to_date(last_status_purchasing_date) 
         ORDER BY submited_date";
 		$run = $erp_db->query($sql);
 		return $run->result_array();
@@ -196,7 +238,7 @@ class M_monitoringakuntansi extends CI_Model {
 
 	public function jumlahFinanceBatch($batch){
         $erp_db = $this->load->database('oracle',true);
-        $sql = "SELECT finance_batch_number FROM khs_ap_monitoring_invoice WHERE finance_batch_number = $batch
+        $sql = "SELECT batch_number FROM khs_ap_monitoring_invoice WHERE batch_number = $batch
         and last_purchasing_invoice_status = 2";
         $run = $erp_db->query($sql);
         return $run->num_rows();
@@ -252,10 +294,10 @@ class M_monitoringakuntansi extends CI_Model {
         return $runQuery->result_array();
     }
 
-    public function showFinishBatch(){
+    public function showFinishBatch($login){
         $erp_db = $this->load->database('oracle',true);
         $sql = "SELECT DISTINCT a.purchasing_batch_number, 
-                                a.finance_batch_number, 
+                                a.batch_number, 
                                 a.last_purchasing_invoice_status, 
                                 a.last_finance_invoice_status,
                                 (SELECT DISTINCT to_date(d.action_date)
@@ -265,10 +307,11 @@ class M_monitoringakuntansi extends CI_Model {
                                              AND d.purchasing_status = 2) submited_date,
                                 (SELECT COUNT (*)
                                    FROM khs_ap_monitoring_invoice b
-                                  WHERE b.finance_batch_number = a.finance_batch_number
+                                  WHERE b.batch_number = a.batch_number
                                   AND last_finance_invoice_status = 2)jml_invoice
                 FROM khs_ap_monitoring_invoice a
                 WHERE last_finance_invoice_status = 2
+                $login
                 ORDER BY submited_date";
         $run = $erp_db->query($sql);
         return $run->result_array();
@@ -279,7 +322,7 @@ class M_monitoringakuntansi extends CI_Model {
         $sql = "SELECT COUNT (last_finance_invoice_status) approve
                       FROM khs_ap_monitoring_invoice b
                      WHERE b.last_finance_invoice_status = 2
-                       AND b.finance_batch_number = '$batch_number'";
+                       AND b.batch_number = '$batch_number'";
         $run = $oracle->query($sql);
         return $run->result_array();
     }
@@ -288,7 +331,7 @@ class M_monitoringakuntansi extends CI_Model {
         $oracle = $this->load->database('oracle',true);
         $sql = "SELECT COUNT (last_finance_invoice_status) jumlah_invoice
                       FROM khs_ap_monitoring_invoice b
-                     WHERE b.finance_batch_number = '$batch_number'
+                     WHERE b.batch_number = '$batch_number'
                      AND last_finance_invoice_status = 1";
         $run = $oracle->query($sql);
         return $run->result_array();

@@ -330,9 +330,9 @@ class C_Mutasi extends CI_Controller
 			else
 			{
 				$kode_surat 				=	'PS/KI-M';
-				$tertanda 					= 	'Cv Karya Hidup Sentosa<br/>Departemen Personalia';
+				$tertanda 					= 	'CV Karya Hidup Sentosa<br/>Departemen Personalia';
 				$nama_tanda_tangan 			=	'Rajiwan';
-				$jabatan_tertanda 			=	'Asisten Kepala Unit Hubungan Kerja & General Affair';
+				$jabatan_tertanda 			=	'Asisten Kepala Unit General Affairs & Hubungan Kerja';
 
 				$cekPekerjaan 				=	$this->M_surat->cekPekerjaan($pekerjaan_baru);
 				$nama_pekerjaan_baru 		=	$cekPekerjaan[0]['pekerjaan'];
@@ -385,6 +385,19 @@ class C_Mutasi extends CI_Controller
 
 			$templateMutasi 			=	$templateMutasi[0]['isi_surat'];
 
+			$seksiBaru = ' ';
+			$unitBaru = ' ';
+			$deptBaru = ' ';
+			if (strlen($tseksiBaru[0]['seksi']) > 2) {
+				$seksiBaru = ' Seksi '.$tseksiBaru[0]['seksi'].', ';
+			}
+			if (strlen($tseksiBaru[0]['unit']) > 2) {
+				$unitBaru = 'Unit '.$tseksiBaru[0]['unit'].', ';
+			}
+			if (strlen($tseksiBaru[0]['dept']) > 2) {
+				$deptBaru = 'Departemen '.$tseksiBaru[0]['dept'].',';
+			}
+
 			$parameterUbah 				=	array
 			(
 				'[no_surat]',
@@ -422,9 +435,9 @@ class C_Mutasi extends CI_Controller
 				$lokasi_lama,
 				$lokasi_baru,
 				$this->personalia->konversitanggalIndonesia(date('Y-m-d', strtotime($tanggal_berlaku))),
-				$tseksiBaru[0]['seksi'],
-				$tseksiBaru[0]['unit'],
-				$tseksiBaru[0]['dept'],
+				$seksiBaru,
+				$unitBaru,
+				$deptBaru,
 				$this->personalia->konversitanggalIndonesia(date('Y-m-d', strtotime($tanggal_cetak))),
 				$tertanda,
 				$nama_tanda_tangan,
@@ -568,7 +581,7 @@ class C_Mutasi extends CI_Controller
 
 			$this->load->library('pdf');
 			$pdf 	=	$this->pdf->load();
-			$pdf 	=	new mPDF('utf-8', array(216,297), 10, "timesnewroman", 20, 20, 40, 30, 0, 0, 'P');
+			$pdf 	=	new mPDF('utf-8', array(216,297), 10, "timesnewroman", 20, 20, 50, 10, 0, 0, 'P');
 			// $pdf 	=	new mPDF();
 
 			$filename	=	'SuratMutasi-'.str_replace('/', '_', $no_surat_decode).'.pdf';
@@ -656,6 +669,7 @@ class C_Mutasi extends CI_Controller
 
 			$tanggal_berlaku 			=	$this->input->post('txtTanggalBerlaku');
 			$tanggal_cetak 				=	$this->input->post('txtTanggalCetak');
+			$tanggal_cetak_asli			=	$this->input->post('txtTanggalCetakAsli');
 
 			$nomor_surat 				=	$this->input->post('txtNomorSurat');
 			$hal_surat 					=	strtoupper($this->input->post('txtHalSurat'));
@@ -709,7 +723,7 @@ class C_Mutasi extends CI_Controller
 				'kd_pkj_baru'           =>  $kd_pkj_baru,
 				'status_staf' 			=>	$staf,
 				);
-			$this->M_surat->updateSuratMutasi($updateSuratMutasi, $nomor_surat, $kodeSurat);
+			$this->M_surat->updateSuratMutasi($updateSuratMutasi, $nomor_surat, $kodeSurat, $tanggal_cetak_asli);
 			redirect('MasterPekerja/Surat/SuratMutasi');
 		}
 

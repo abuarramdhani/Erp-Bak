@@ -20,11 +20,9 @@
 		<?php }else{ ?>
 			<select class="form-control" name="ekspedisi" id="ekspedisi" data-placeholder="Ekspedisi" onchange="enaDisItemScan()">
 				<option></option>
-				<option value="KGP">PT. KERTA GAYA PUSAKA</option>
-				<option value="SADANA">PT SADANA Combinatama Express</option>
-				<option value="ADEX">ADIKA EXPRESS</option>
-				<option value="KHS">KHS</option>
-				<option value="CUSTOMER">CUSTOMER</option>
+				<?php foreach ($listEkspedisi as $key => $value): ?>	
+					<option value="<?php echo $value['EKS']; ?>"><?php echo $value['EKS']; ?></option>
+				<?php endforeach ?>
 			</select>
 		<?php } ?>
 	</div>

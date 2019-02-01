@@ -103,7 +103,10 @@ class M_proses extends CI_Model
 		$sql = "insert into ma.ma_pending
 				(id_pekerja,pekerjaan,total_target,start_time,end_time,total_waktu,jml_dokument,id_pelaksanaan)
 				select id_pekerja,pekerjaan,total_target,start_time,end_time,total_waktu,jml_dokument,id_pelaksanaan
-				from ma.ma_pelaksanaan pk where pk.status_tercapai = '0' and pk.id_pelaksanaan = $id";
+				from ma.ma_pelaksanaan pk 
+				where pk.status_tercapai = '0' 
+				and pk.id_pelaksanaan = $id 
+				and pk.id_pelaksanaan not in(select id_pelaksanaan::int from ma.ma_pending);";
 		$this->db->query($sql);
 	}
 

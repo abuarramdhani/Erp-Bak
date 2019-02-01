@@ -13,7 +13,7 @@
 					<div class="col-lg-12">
 						<div class="text-left ">
 							<span><b>Invoice Details</b></span>
-							<input type="hidden" name="purchasing_batch_number"  value="<?php echo $invoice_detail[0]['PURCHASING_BATCH_NUMBER']?>">
+							<input type="hidden" name="purchasing_batch_number"  value="<?php echo $invoice_detail[0]['BATCH_NUMBER']?>">
 						</div>
 					</div>
 				</div>
@@ -56,11 +56,41 @@
 											<input  class="form-control" size="40" type="text" value="<?php echo $invoice_detail[0]['TAX_INVOICE_NUMBER']?>" readonly>
 										</td>
 									</tr>
+									<tr>
+										<td>
+											<span><label>Invoice Category</label></span>
+										</td>
+										<td>
+											<input  class="form-control" size="40" type="text" value="<?php echo $invoice_detail[0]['INVOICE_CATEGORY']?>" readonly>
+										</td>
+										<td>
+											<span><label>Jenis Jasa</label></span>
+										</td>
+										<td>
+											<input  class="form-control" size="40" type="text" value="<?php echo $invoice_detail[0]['JENIS_JASA']?>" readonly>
+										</td>
+									</tr>
+									<tr>
+										<td>
+											<span><label>Nominal DPP Faktur Pajak</label></span>
+										</td>
+										<td>
+											<input  class="form-control" size="40" type="text" value="<?php echo $invoice_detail[0]['NOMINAL_DPP']?>" readonly>
+										</td>
+									</tr>
+									<tr>
+										<td>
+											<span><label>Info</label></span>
+										</td>
+										<td>
+											<textarea class="form-control" size="40" type="text" readonly><?php echo $invoice_detail[0]['INFO']?></textarea>
+										</td>
+									</tr>
 								</table>
 							</form>
 						<span><b>Invoice PO Detail</b></span>
 						<div style="overflow: auto">
-						<table id="invoiceKasiePembelian" class="table table-bordered table-hover table-striped text-center" style="width: 200%">
+						<table id="invoiceKasiePembelian" class="table table-bordered table-hover table-striped text-center tblMI" style="width: 200%">
 							<thead>
 								<tr class="bg-primary">
 									<th class="text-center">No</th>

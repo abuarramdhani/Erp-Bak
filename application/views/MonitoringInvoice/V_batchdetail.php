@@ -64,13 +64,43 @@
 		                     				<input class="form-control" size="40" type="text" name="vendor_name" value="<?php echo $po_num['VENDOR_NAME']?>" readonly>
 		                     			</td>
 									</tr>
+									<tr>
+										<td>
+											<span><label>Invoice Category</label></span>
+										</td>
+										<td>
+		                     				<input class="form-control" size="40" type="text" name="invoice_category" value="<?php echo $po_num['INVOICE_CATEGORY']?>" readonly>
+		                     			</td>
+		                     			<td>
+											<span><label>Jenis Jasa</label></span>
+										</td>
+										<td>
+		                     				<input class="form-control" size="40" type="text" name="jenis_jasa" value="<?php echo $po_num['JENIS_JASA']?>" readonly>
+		                     			</td>
+									</tr>
+									<tr>
+										<td>
+											<span><label>Nominal DPP Faktur Pajak</label></span>
+										</td>
+										<td>
+		                     				<input class="form-control" size="40" type="text" name="nominal_dpp" value="<?php echo $po_num['NOMINAL_DPP']?>" readonly>
+		                     			</td>
+									</tr>
+									<tr>
+										<td>
+											<span><label>Info</label></span>
+										</td>
+										<td>
+		                     				<textarea class="form-control" size="40" name="note_admin" readonly><?php echo $po_num['INFO']?></textarea> 
+		                     			</td>
+									</tr>
 									<?php $no++;} ?>
 								</table>
 						<div class="box box-primary box-solid">
 							<div class="box-body">
 								<div class="col-md-12">
 									<div style="overflow:auto;">
-											<table id="invoice_detail" class="table table-striped table-bordered table-hover text-center dataTable" style="min-width:200%;">
+											<table id="invoice_detail" class="table table-striped table-bordered table-hover text-center tblMI" style="min-width:200%;">
 												<thead style="vertical-align: middle;"> 
 													<tr class="bg-primary">
 														<th class="text-center">No</th>

@@ -150,10 +150,15 @@
 			// return $DetailKdJabatan;
 	 	}
 
-	 	public function KdJabatan($jab, $job)
+	 	public function KdJabatan($jab, $job, $kd)
 	 	{
-	 		$DetailKdJabatan= "select ti.jabatan, (select pekerjaan from hrd_khs.tpekerjaan where kdpekerjaan = '$job') 
+	 		$DetailKdJabatan= "select ti.jabatan, (select pekerjaan from hrd_khs.tpekerjaan where kdpekerjaan = '$job'),
+	 							(select seksi from hrd_khs.tseksi where kodesie = '$kd'),
+	 							(select unit from hrd_khs.tseksi where kodesie = '$kd'),
+	 							(select bidang from hrd_khs.tseksi where kodesie = '$kd'),
+	 							(select dept from hrd_khs.tseksi where kodesie = '$kd')
 								from hrd_khs.torganisasi ti where ti.kd_jabatan = '$jab'";
+								// echo $DetailKdJabatan;
 			$query 	=	$this->personalia->query($DetailKdJabatan);
 			return $query->result_array();	
 			// return $DetailKdJabatan;
@@ -583,8 +588,9 @@
 			return $query->result_array();
 	 	}
 
-        public function updateSuratDemosi($updateSuratDemosi, $nomor_surat, $kodeSurat)
+        public function updateSuratDemosi($updateSuratDemosi, $nomor_surat, $kodeSurat, $tanggal_cetak)
 	 	{
+	 		$this->personalia->where('tanggal_cetak=', $tanggal_cetak);
 	 		$this->personalia->where('no_surat=', $nomor_surat);
 	 		$this->personalia->where('kode=', $kodeSurat);
 	 		$this->personalia->update('"Surat".tsurat_demosi', $updateSuratDemosi);

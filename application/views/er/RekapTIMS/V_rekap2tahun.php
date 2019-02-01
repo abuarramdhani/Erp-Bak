@@ -9,7 +9,7 @@
 						</div>
 						<div class="col-lg-1">
 							<div class="text-right hidden-xs hidden-sm hidden-md">
-								<a href="" class="btn btn-default btn-lg"><i class="icon-wrech icon-2x"></i></a>
+								<a href="" class="btn btn-default btn-lg"><i class="icon-wrench icon-2x"></i></a>
 							</div>
 						</div>
 					</div>
@@ -33,7 +33,12 @@
 														<?php } } ?>
 													</select>
 												</div>
-												<button type="submit" class="btn btn-primary">Export</button>
+											</div>
+											<div class="form-group">
+												<div class="col-lg-8 text-right">
+													<input type="checkbox" name="txtDetailDataTIMS" value="withDetail"> Detail Data TIMS
+													<button type="submit" class="btn btn-primary">Export</button>
+												</div>
 											</div>
 										</form>
 									</div>
