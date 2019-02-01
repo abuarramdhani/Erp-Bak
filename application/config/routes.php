@@ -1871,6 +1871,8 @@ $route['OrderSiteManagement/Order/(:any)/(:any)'] = 'OrderSiteManagement/MainMen
 $route['SiteManagement/MobileOrder/login'] = 'SiteManagement/C_index/login';
 $route['SiteManagement/MobileOrder/getlist'] = 'SiteManagement/C_index/getlist';
 $route['SiteManagement/MobileOrder/scan'] = 'SiteManagement/C_index/scan';
+$route['SiteManagement/MobileOrder/(:any)'] = 'SiteManagement/C_index/$1';
+$route['SiteManagement/MobileOrder/(:any)/(:any)'] = 'SiteManagement/C_index/$1/$2';
 
 $route['MasterPekerja/DataPekerjaKeluar'] = 'MasterPekerja/Pekerja/PekerjaKeluar/C_Index';
 $route['MasterPekerja/DataPekerjaKeluar/(:any)'] = 'MasterPekerja/Pekerja/PekerjaKeluar/C_Index/$1';
