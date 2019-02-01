@@ -2244,3 +2244,20 @@ $route['SPL/HapusLembur/(:any)'] = 'splseksi/C_splseksi/hapus_spl/$1';
 $route['ALK/ListLembur'] = 'splseksi/C_splkasie/data_spl';
 $route['ALK/ConfLembur'] = 'splseksi/C_splkasie/confirm_spl';
 $route['ALA/ListLembur'] = 'splseksi/C_splasska/data_spl';
+
+//---------------------------------------------------- Booking Kendaraan --------------------------------------//
+$route['BookingKendaraan/LogPeminjaman'] = 'BookingKendaraan/C_logpeminjaman';
+$route['BookingKendaraan/LogPeminjaman/(:any)'] = 'BookingKendaraan/C_logpeminjaman/$1';
+$route['BookingKendaraan/LogPeminjaman/(:any)/(:any)'] = 'BookingKendaraan/C_logpeminjaman/$1/$2';
+
+$route['BookingKendaraan/CariMobil'] = 'BookingKendaraan/C_Carimobil';
+$route['BookingKendaraan/CariMobil/(:any)'] = 'BookingKendaraan/C_Carimobil/$1';
+$route['BookingKendaraan/CariMobil/(:any)/(:any)'] = 'BookingKendaraan/C_Carimobil/$1/$2';
+
+$route['AdminBookingKendaraan'] = 'BookingKendaraan/C_Admin';
+$route['AdminBookingKendaraan/(:any)'] = 'BookingKendaraan/C_Admin/$1';
+$route['AdminBookingKendaraan/(:any)/(:any)'] = 'BookingKendaraan/C_Admin/$1/$2';
+
+$route['AdminBookingKendaraan/RequestKendaraan'] = 'BookingKendaraan/C_AdminView';
+$route['AdminBookingKendaraan/RequestKendaraan/(:any)'] = 'BookingKendaraan/C_AdminView/$1';
+$route['AdminBookingKendaraan/RequestKendaraan/(:any)/(:any)'] = 'BookingKendaraan/C_AdminView/$1/$2';
