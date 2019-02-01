@@ -1,13 +1,13 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
 
-class C_SPLKasie extends CI_Controller {
+class C_splkasie extends CI_Controller {
 	function __construct() {
         parent::__construct();
 
         $this->load->library('session');
 
-		$this->load->model('SPLSeksi/M_SPLSeksi');
+		$this->load->model('SPLSeksi/M_splseksi');
 		$this->load->model('SPLSeksi/M_SPLKasie');
 		$this->load->model('SystemAdministration/MainMenu/M_user');
 
@@ -52,7 +52,7 @@ class C_SPLKasie extends CI_Controller {
 
 		if(empty($data_confirm)){
 			$data = $this->menu('', '', '');
-			$data['lokasi'] = $this->M_SPLSeksi->show_lokasi();
+			$data['lokasi'] = $this->M_splseksi->show_lokasi();
 
 			$this->load->view('V_Header',$data);
 			$this->load->view('V_Sidemenu',$data);
@@ -90,8 +90,8 @@ class C_SPLKasie extends CI_Controller {
 
 		// get akses seksi
 		$akses_sie = array();
-		$akses_kue = $this->M_SPLSeksi->show_pekerja('', $user, '');
-		$akses_spl = $this->M_SPLSeksi->show_akses_seksi($user);
+		$akses_kue = $this->M_splseksi->show_pekerja('', $user, '');
+		$akses_spl = $this->M_splseksi->show_akses_seksi($user);
 		foreach($akses_kue as $ak){
 			$akses_sie[] = $this->cut_kodesie($ak['kodesie']);
 			foreach($akses_spl as $as){
@@ -190,11 +190,11 @@ class C_SPLKasie extends CI_Controller {
 		if(!empty($data_confirm)){
 			$spl_id = explode(", ", $data_confirm->spl_id);
 			foreach($spl_id as $si){
-				$data_spl = $this->M_SPLSeksi->show_current_spl('', '', '', $si);
+				$data_spl = $this->M_splseksi->show_current_spl('', '', '', $si);
 
 				foreach($data_spl as $ds){
 					// Generate ID Riwayat
-					$maxid = $this->M_SPLSeksi->show_maxid("splseksi.tspl_riwayat", "ID_Riwayat");
+					$maxid = $this->M_splseksi->show_maxid("splseksi.tspl_riwayat", "ID_Riwayat");
 					if(empty($maxid)){
 						$splr_id = "0000000001";
 					}else{
@@ -222,13 +222,13 @@ class C_SPLKasie extends CI_Controller {
 						"jenis" => $log_jenis,
 						"ket" => $log_ket,
 						"noind" => $user);
-					$to_log = $this->M_SPLSeksi->save_log($data_log);
+					$to_log = $this->M_splseksi->save_log($data_log);
 
 					$data_spl = array(
 						"Tgl_Berlaku" => date('Y-m-d H:i:s'),
 						"Status" => $status,
 						"User_" => $user);
-					$to_spl = $this->M_SPLSeksi->update_spl($data_spl, $si);
+					$to_spl = $this->M_splseksi->update_spl($data_spl, $si);
 					
 					$data_splr = array(
 						"ID_Riwayat" => $splr_id,
@@ -251,7 +251,7 @@ class C_SPLKasie extends CI_Controller {
 						"target" => $ds['target'],
 						"realisasi" => $ds['realisasi'],
 						"alasan_lembur" => $ds['alasan_lembur']);
-					$to_splr = $this->M_SPLSeksi->save_splr($data_splr);
+					$to_splr = $this->M_splseksi->save_splr($data_splr);
 				}
 			}
 
