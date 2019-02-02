@@ -303,6 +303,9 @@ $(document).on('click','#btnCloseSimple',function(e){
   
 
   $(document).on('ready',function(){
+    if (typeof idJenisLimbahSimpleDetail === 'undefined') {
+      idJenisLimbahSimpleDetail = '0';
+    }
     $('#simpleSelectAll').on('ifChecked',function(event){
       $('.simpleDetailCheck').iCheck('check');
     });
