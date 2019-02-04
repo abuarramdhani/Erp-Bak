@@ -17,7 +17,7 @@
 			<div class="panel-body" >
 				<ul class="nav nav-pills nav-justified">
 					  <li ><a href="<?php echo base_url('BookingKendaraan/CariMobil/index'); ?>">List Mobil</a></li>
-					  <li ><a href="<?php echo base_url('BookingKendaraan/CariMobil/isidata'); ?>">Isi Data</a></li>
+					  <li class="disabled"><a href="#">Isi Data</a></li>
 					  <li class="active"><a href="<?php echo base_url('BookingKendaraan/CariMobil/konfirmasi'); ?>">Konfirmasi</a></li>
 					</ul>
 					<div style="width: 100%;height: 100%; background-color: white;float: right">
