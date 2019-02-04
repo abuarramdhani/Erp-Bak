@@ -2248,6 +2248,11 @@ $route['ALK/ConfLembur'] = 'splseksi/C_splkasie/confirm_spl';
 $route['ALA/ListLembur'] = 'splseksi/C_splasska/data_spl';
 
 //---------------------------------------------------- Booking Kendaraan --------------------------------------//
+
+$route['BookingKendaraan'] = 'BookingKendaraan/C_Index';
+$route['BookingKendaraan/(:any)'] = 'BookingKendaraan/C_Index/$1';
+$route['BookingKendaraan/(:any)/(:any)'] = 'BookingKendaraan/C_Index/$1/$2';
+
 $route['BookingKendaraan/LogPeminjaman'] = 'BookingKendaraan/C_logpeminjaman';
 $route['BookingKendaraan/LogPeminjaman/(:any)'] = 'BookingKendaraan/C_logpeminjaman/$1';
 $route['BookingKendaraan/LogPeminjaman/(:any)/(:any)'] = 'BookingKendaraan/C_logpeminjaman/$1/$2';
