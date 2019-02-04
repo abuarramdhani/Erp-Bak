@@ -2247,10 +2247,6 @@ $route['ALA/ListLembur'] = 'splseksi/C_splasska/data_spl';
 
 //---------------------------------------------------- Booking Kendaraan --------------------------------------//
 
-$route['BookingKendaraan'] = 'BookingKendaraan/C_Index';
-$route['BookingKendaraan/(:any)'] = 'BookingKendaraan/C_Index/$1';
-$route['BookingKendaraan/(:any)/(:any)'] = 'BookingKendaraan/C_Index/$1/$2';
-
 $route['BookingKendaraan/LogPeminjaman'] = 'BookingKendaraan/C_logpeminjaman';
 $route['BookingKendaraan/LogPeminjaman/(:any)'] = 'BookingKendaraan/C_logpeminjaman/$1';
 $route['BookingKendaraan/LogPeminjaman/(:any)/(:any)'] = 'BookingKendaraan/C_logpeminjaman/$1/$2';
@@ -2266,3 +2262,7 @@ $route['AdminBookingKendaraan/(:any)/(:any)'] = 'BookingKendaraan/C_Admin/$1/$2'
 $route['AdminBookingKendaraan/RequestKendaraan'] = 'BookingKendaraan/C_AdminView';
 $route['AdminBookingKendaraan/RequestKendaraan/(:any)'] = 'BookingKendaraan/C_AdminView/$1';
 $route['AdminBookingKendaraan/RequestKendaraan/(:any)/(:any)'] = 'BookingKendaraan/C_AdminView/$1/$2';
+
+$route['BookingKendaraan'] = 'BookingKendaraan/C_Index';
+$route['BookingKendaraan/(:any)'] = 'BookingKendaraan/C_Index/$1';
+$route['BookingKendaraan/(:any)/(:any)'] = 'BookingKendaraan/C_Index/$1/$2';
