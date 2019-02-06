@@ -92,7 +92,7 @@ class C_Monitoring extends CI_Controller {
 	 	if ($periode==4) {
 			$interval	=	new DateInterval('P1M');
 	 	}else{
-	 		$interval	=	new DateInterval('P'.$periode.'D');
+	 		$interval	=	new DateInterval('P'.$periode.'W');
 	 	}
 
  		$CekData = $this->M_monitoring->rekapData($start,$end,$kat,$kat_detail,$hari,$periode)->num_rows();
