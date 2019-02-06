@@ -155,9 +155,10 @@ class C_Overtime extends CI_Controller
 		$worksheet->setCellValue('B1','Periode');
 		$worksheet->setCellValue('C1','Nama');
 		$worksheet->setCellValue('D1','Seksi');
-		$worksheet->setCellValue('E1','Overtime');
-		$worksheet->setCellValue('F1','Rerata');
-		$worksheet->setCellValue('G1','NET');
+		$worksheet->setCellValue('E1','Total Jam Kerja');
+		$worksheet->setCellValue('F1','Overtime');
+		$worksheet->setCellValue('G1','Rerata');
+		$worksheet->setCellValue('H1','NET');
 
 		$angka = 1;
 		$row = 2;
@@ -167,11 +168,13 @@ class C_Overtime extends CI_Controller
 			$worksheet->setCellValue('C'.$row,$key['noind']." - ".$key['nama']);
 			$worksheet->setCellValue('D'.$row,$key['seksi']);
 			$worksheet->getStyle('E'.$row)->getNumberFormat()->setFormatCode(PHPExcel_Style_NumberFormat::FORMAT_NUMBER_COMMA_SEPARATED1);
-			$worksheet->setCellValueExplicit('E'.$row,$key['overtime'],PHPExcel_Cell_DataType::TYPE_NUMERIC);
+			$worksheet->setCellValueExplicit('E'.$row,$key['jam_kerja'],PHPExcel_Cell_DataType::TYPE_NUMERIC);
 			$worksheet->getStyle('F'.$row)->getNumberFormat()->setFormatCode(PHPExcel_Style_NumberFormat::FORMAT_NUMBER_COMMA_SEPARATED1);
-			$worksheet->setCellValueExplicit('F'.$row,$key['rerata'],PHPExcel_Cell_DataType::TYPE_NUMERIC);
+			$worksheet->setCellValueExplicit('F'.$row,$key['overtime'],PHPExcel_Cell_DataType::TYPE_NUMERIC);
 			$worksheet->getStyle('G'.$row)->getNumberFormat()->setFormatCode(PHPExcel_Style_NumberFormat::FORMAT_NUMBER_COMMA_SEPARATED1);
-			$worksheet->setCellValueExplicit('G'.$row,$key['net'],PHPExcel_Cell_DataType::TYPE_NUMERIC);
+			$worksheet->setCellValueExplicit('G'.$row,$key['rerata'],PHPExcel_Cell_DataType::TYPE_NUMERIC);
+			$worksheet->getStyle('H'.$row)->getNumberFormat()->setFormatCode(PHPExcel_Style_NumberFormat::FORMAT_NUMBER_COMMA_SEPARATED1);
+			$worksheet->setCellValueExplicit('H'.$row,$key['net'],PHPExcel_Cell_DataType::TYPE_NUMERIC);
 			$row++;
 			$angka++;
 		}
