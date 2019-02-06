@@ -96,6 +96,7 @@ class C_LimbahKelola extends CI_Controller
 		$plaintext_string = $this->encrypt->decode($plaintext_string);
 
 		$berat = $this->input->post('txtberat');
+		$berat = str_replace(',', '.', $berat);
 		$this->M_limbahkelola->updateLimbahBerat($berat,$plaintext_string);
 
 		$this->M_limbahkelola->updateLimbahStatus('1',$plaintext_string);
