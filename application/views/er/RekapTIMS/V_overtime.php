@@ -100,6 +100,7 @@
 															<th>Periode</th>
 															<th>Nama</th>
 															<th>Seksi</th>
+															<th>Total Jam kerja</th>
 															<th>Overtime</th>
 															<th>Rerata</th>
 															<th>NET</th>
@@ -113,6 +114,7 @@
 																<td><?php echo ucfirst($key['periode']); ?></td>
 																<td><?php echo $key['noind'].' - '.$key['nama']; ?></td>
 																<td><?php echo $key['seksi']; ?></td>
+																<td><?php echo number_format($key['jam_kerja'],'2',',','.') ?></td>
 																<td><?php echo number_format($key['overtime'],'2',',','.') ?></td>
 																<td><?php echo number_format($key['rerata'],'2',',','.') ?></td>
 																<td><?php echo number_format($key['net'],'2',',','.') ?></td>
