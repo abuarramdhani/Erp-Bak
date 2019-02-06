@@ -109,7 +109,7 @@ class M_monitoring extends CI_Model
                                             where kg.id_kategori=x.id_kategori and kd.id_kategori_detail=x.id_kategori_detail) as kategori
                                         from sm.sm_jadwal as x
                                         where x.status=false and (x.tanggal_jadwal::date<now()::date) and x.id_kategori=1
-                                order by tanggal_jadwal");
+                                order by tanggal_jadwal desc");
         return $query->result_array();
     }
 
@@ -147,7 +147,7 @@ class M_monitoring extends CI_Model
                                             where kg.id_kategori=x.id_kategori and kd.id_kategori_detail=x.id_kategori_detail) as kategori
                                         from sm.sm_jadwal as x
                                         where x.status=false and (x.tanggal_jadwal::date<now()::date) and x.id_kategori=2
-                                order by tanggal_jadwal");
+                                order by tanggal_jadwal desc");
         return $query->result_array();
     }
 
@@ -185,7 +185,7 @@ class M_monitoring extends CI_Model
                                             where kg.id_kategori=x.id_kategori and kd.id_kategori_detail=x.id_kategori_detail) as kategori
                                         from sm.sm_jadwal as x
                                         where x.status=false and (x.tanggal_jadwal::date<now()::date) and x.id_kategori=3
-                                order by tanggal_jadwal");
+                                order by tanggal_jadwal desc");
         return $query->result_array();
     }
 
@@ -223,7 +223,7 @@ class M_monitoring extends CI_Model
                                             where kg.id_kategori=x.id_kategori and kd.id_kategori_detail=x.id_kategori_detail) as kategori
                                         from sm.sm_jadwal as x
                                         where x.status=false and (x.tanggal_jadwal::date<now()::date) and x.id_kategori=4
-                                order by tanggal_jadwal");
+                                order by tanggal_jadwal desc");
         return $query->result_array();
     }
 
@@ -261,7 +261,7 @@ class M_monitoring extends CI_Model
                                             where kg.id_kategori=x.id_kategori and kd.id_kategori_detail=x.id_kategori_detail) as kategori
                                         from sm.sm_jadwal as x
                                         where x.status=false and (x.tanggal_jadwal::date<now()::date) and x.id_kategori=5
-                                order by tanggal_jadwal");
+                                order by tanggal_jadwal desc");
         return $query->result_array();
     }
 
