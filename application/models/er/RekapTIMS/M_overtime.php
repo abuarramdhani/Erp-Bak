@@ -25,6 +25,7 @@ class M_overtime extends CI_Model
 				tp.nama,
 				ts.seksi, 
 				count(tp.nama) harikerja,
+				sum(extract(epoch from tdp.keluar::time - tdp.masuk::time)) jam_kerja,
 				sum(extract(epoch from tdp.keluar::time - tsp.jam_plg::time))/3600 overtime,
 				(sum(extract(epoch from tdp.keluar::time - tsp.jam_plg::time))/3600)/count(tp.nama) rerata,
 				(sum(extract(epoch from tdp.keluar::time - tsp.jam_plg::time)) - coalesce(sum(extract(epoch from tdt.masuk::time - tdt.keluar::time)),0))/3600 net
