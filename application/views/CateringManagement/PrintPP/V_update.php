@@ -272,7 +272,9 @@
                                             <?php if(count($PrintppDetail) == 0): ?>
                                             <tr class="multiRow">
                                                 <td>
-                                                    <input type="text" placeholder="Pp Kodebarang" name="txtPpKodebarangHeader[]" id="txtPpKodebarangHeader" class="form-control" />
+                                                    <select type="text" placeholder="Pp Kodebarang" name="txtPpKodebarangHeader[]" id="txtPpKodebarangHeader" class="form-control cm_select2" >
+                                                        <option></option>
+                                                    </select>
                                                 </td>
 
                                                 <td>
@@ -284,7 +286,7 @@
                                                 </td>
 
                                                 <td>
-                                                    <input type="text" placeholder="Pp Nama Barang" name="txtPpNamaBarangHeader[]" id="txtPpNamaBarangHeader" class="form-control" />
+                                                    <input type="text" placeholder="Pp Nama Barang" name="txtPpNamaBarangHeader[]" id="txtPpNamaBarangHeader" class="form-control cm_namaItem" />
                                                 </td>
 
                                                 <td>
@@ -314,11 +316,13 @@
                                                     <input type="hidden" name="txtPpId[]" id="txtPpId" class="form-control" value="<?php echo $id; ?>"/>
                                                 </td>
                                                 <td>
-                                                    <input type="text" placeholder="Pp Kodebarang" name="txtPpKodebarangHeader[]" id="txtPpKodebarangHeader" class="form-control" value="<?php echo $PPDetail['pp_kode_barang']; ?>"/>
+                                                    <select type="text" placeholder="Pp Kodebarang" name="txtPpKodebarangHeader[]" id="txtPpKodebarangHeader" class="form-control cm_select2" value="">
+                                                    <option selected value="<?php echo $PPDetail['pp_kode_barang']; ?>"><?php echo $PPDetail['pp_kode_barang']; ?></option>
+                                                    </select>
                                                 </td>
 
                                                 <td>
-                                                    <input type="text" placeholder="Pp Jumlah" name="txtPpJumlahHeader[]" id="txtPpJumlahHeader" class="form-control" value="<?php echo $PPDetail['pp_jumlah']; ?>"/>
+                                                    <input type="text" placeholder="Pp Jumlah" name="txtPpJumlahHeader[]" id="txtPpJumlahHeader" class="form-control " value="<?php echo $PPDetail['pp_jumlah']; ?>"/>
                                                 </td>
 
                                                 <td>

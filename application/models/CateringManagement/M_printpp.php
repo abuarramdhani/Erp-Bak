@@ -11,7 +11,9 @@ class M_printpp extends CI_Model
     public function getPrintpp($id = FALSE)
     {
     	if ($id === FALSE) {
-    		$query = $this->db->get('ga.ga_printpp');
+            $sql = "select * from ga.ga_printpp order by tgl_buat desc";
+    		// $query = $this->db->get('ga.ga_printpp');
+            $query = $this->db->query($sql);
     	} else {
     		// $query = $this->db->get_where('ga.ga_printpp', array('pp_id' => $id));
     		$query = $this->db->query("
@@ -30,7 +32,7 @@ class M_printpp extends CI_Model
 				left join er.er_employee_all er4 on er4.employee_id = cast(pp.pp_kaunit as integer)
 				left join er.er_employee_all er5 on er5.employee_id = cast(pp.pp_siepembelian as integer)
 				where
-					pp.pp_id = '".$id."'"
+					pp.pp_id = '".$id."' order by pp.tgl_buat desc"
     		);
     	}
 
@@ -121,7 +123,27 @@ class M_printpp extends CI_Model
 		return $query->result_array();
 	}
 
+    public function kodeItem()
+    {
+        $query = $this->db->get('ga.ga_master_item');
 
+        return $query->result_array();
+    }
+
+    public function kodeItem2($key)
+    {
+        $sql = "select * from ga.ga_master_item where kode_item like '%$key%'";
+        $query = $this->db->query($sql);
+
+        return $query->result_array();
+    }
+    public function namaItem($key)
+    {
+        $sql = "select * from ga.ga_master_item where kode_item = '$key'";
+        $query = $this->db->query($sql);
+
+        return $query->result_array();
+    }
 }
 
 /* End of file M_printpp.php */

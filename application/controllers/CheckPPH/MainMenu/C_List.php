@@ -140,7 +140,9 @@ class C_List extends CI_Controller
 				foreach ($value as $key2 => $value2) {
 					foreach ($value2 as $key3 => $value3) {
 						foreach ($value3 as $key4 => $value4) {
-							$datagroup3[$key][$key2][$key4] = $value4;
+							foreach ($value4 as $key5 => $value5) {
+								$datagroup3[$key][$key2][$key4][] = $value5;
+							}
 						}
 					}
 				}
@@ -382,7 +384,9 @@ class C_List extends CI_Controller
 								$v['pph'] = $$namapph;
 								$arrayNew[] = $v;
 							}
-							$datagroup3[$key][$key2][$key4] = $arrayNew;
+							foreach ($arrayNew as $keyN => $valueN) {
+								$datagroup3[$key][$key2][$key4][] = $valueN;
+							}
 
 						}
 					}
@@ -716,7 +720,9 @@ class C_List extends CI_Controller
 								$tglperiode = $v['tgl_transaksi'];
 								$arrayNew[] = $v;
 							}
-							$datagroup3[$key][$key2][$key4] = $arrayNew;
+							foreach ($arrayNew as $keyN => $valueN) {
+								$datagroup3[$key][$key2][$key4][] = $valueN;
+							}
 
 						}
 					}

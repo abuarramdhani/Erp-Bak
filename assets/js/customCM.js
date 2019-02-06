@@ -398,4 +398,45 @@ $(document).ready(function(){
 		
 	});
 
-	
+$(document).ready(function(){
+	$('.cm_select2').select2(
+	{
+		allowClear: false,
+		placeholder: "Pp Kodebarang",
+		minimumInputLength: 3,
+		ajax: 
+		{
+			url: baseurl+'CateringManagement/PrintPP/kodeItem2',
+			dataType: 'json',
+			delay: 500,
+			data: function (params){
+				return {
+					term: params.term
+				}
+			},
+			processResults: function(data) {
+				return {
+					results: $.map(data, function(obj){
+						return {id: obj.kode_item, text: obj.kode_item};
+					})
+				};
+			}
+		}
+	});
+
+	$('.cm_select2').change(function(){
+		var kode = $('.cm_select2').val();
+		$.ajax({
+							type:'POST',
+							data:{item: kode},
+							url:baseurl+"CateringManagement/PrintPP/namaItem",
+							success:function(result)
+							{
+								var result = JSON.parse(result);
+								$('.cm_namaItem').val(result['namaBarang']);
+							}
+						});
+	});
+
+	$('#tblPrintpp').DataTable();
+});

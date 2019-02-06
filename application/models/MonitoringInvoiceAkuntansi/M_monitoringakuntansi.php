@@ -300,7 +300,7 @@ class M_monitoringakuntansi extends CI_Model {
                                 a.batch_number, 
                                 a.last_purchasing_invoice_status, 
                                 a.last_finance_invoice_status,
-                                (SELECT DISTINCT to_date(d.action_date)
+                                (SELECT MAX(to_date(d.action_date))
                                             FROM khs_ap_invoice_action_detail d
                                            WHERE d.invoice_id = a.invoice_id
                                              AND d.finance_status = 2
