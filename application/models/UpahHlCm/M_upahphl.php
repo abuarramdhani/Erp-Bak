@@ -172,9 +172,9 @@ class M_upahphl extends CI_Model {
 		$data=$this->erp->query($query);
 		return $data->result_array();
 	}
-	public function cekdataAda($noind,$nama,$kdpkj,$loker)
+	public function cekdataAda($noind,$nama)
 	{
-		$query="select * from hlcm.hlcm_datapekerja where noind='$noind' and nama='$nama' and kode_pekerjaan='$kdpkj' and lokasi_kerja='$loker'";
+		$query="select * from hlcm.hlcm_datapekerja where noind='$noind' and nama='$nama'";
 		$data=$this->erp->query($query);
 		return $data->num_rows();
 	}
@@ -182,5 +182,45 @@ class M_upahphl extends CI_Model {
 	{
 		$data = $this->erp->insert('hlcm.hlcm_datapekerja',$array);
 		return;
+	}
+	public function updateDataPekerjaHlcm($noind,$nama,$data){
+		$this->erp->where('noind',$noind);
+		$this->erp->where('nama',$nama);
+		$this->erp->update('hlcm.hlcm_datapekerja',$data);
+		return;
+	}
+	public function getDatapekerjaHlcm($noind,$nama){
+		$query="select * from hlcm.hlcm_datapekerja where noind='$noind' and nama='$nama'";
+		$data=$this->erp->query($query);
+		return $data->result_array();
+	}
+
+	public function getPekerjaSearch($noind){
+		$sql = "select * 
+				from hlcm.hlcm_datapekerja dp
+				left join hlcm.hlcm_datagaji dg
+				on dg.kode_pekerjaan = dp.kode_pekerjaan
+				and dg.lokasi_kerja = dp.lokasi_kerja
+				where upper(dp.noind) like upper('$noind%')";
+		$data=$this->erp->query($sql);
+		return $data->result_array();
+	}
+
+	public function getPekerjaanSearch(){
+		$sql = "select distinct kode_pekerjaan,pekerjaan
+				from hlcm.hlcm_datagaji
+				order by kode_pekerjaan";
+		$data=$this->erp->query($sql);
+		return $data->result_array();
+	}
+
+	public function getPekerjabaruSearch($noind){
+		$sql = "select kd_pkj,tp.pekerjaan
+				from hrd_khs.tpribadi tpri
+				left join hrd_khs.tpekerjaan tp
+				on tp.kdpekerjaan = tpri.kd_pkj
+				where noind ='$noind'";
+		$result = $this->personalia->query($sql);
+		return $result->result_array();
 	}
 };
