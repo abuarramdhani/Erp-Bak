@@ -362,4 +362,65 @@ $(function () {
 });
 
 
- 
+ $(document).ready(function(){
+ 	$('#txtMulaiBerlakuPekerjaanHlcm').datepicker({
+ 		"autoclose": true,
+	    "todayHiglight": true,
+	    "autoApply": true,
+	    "format":'yyyy-mm-dd',
+ 	});
+
+ 	$('.cmbNoindHlcm').select2({
+		placeholder: "Noind",
+		searching: true,
+		minimumInputLength: 3,
+		allowClear: false,
+		ajax:
+		{
+			url		: baseurl+'HitungHlcm/UbahPekerjaan/CariPekerja',
+			dataType: 'json',
+			delay	: 500,
+			type 	: 'GET',
+			data 	: function(params){
+				return {
+					term: params.term
+				}
+			},
+			processResults: function (data){
+				return {
+					results: $.map(data, function(obj){
+						return {id: obj.noind, text: obj.noind};
+					})
+				}
+			}
+		}
+ 	});
+
+ 	$('.cmbNoindHlcm').on('change',function(){
+ 		var noind = $('.cmbNoindHlcm').find(':selected').text();
+
+ 		$.ajax({
+ 			data 	: {term :noind},
+ 			type 	: 'GET',
+ 			url		: baseurl+'HitungHlcm/UbahPekerjaan/CariPekerja',
+ 			success : function(data){
+ 				var obj = JSON.parse(data);
+ 				$('#txtNamaPekerjaHlcm').val(obj[0]['nama']);
+ 				$('#txtNamaPekerjaHlcm2').val(obj[0]['nama']);
+ 				$('#txtPekerjaanLamaHlcm').val(obj[0]['kode_pekerjaan']);
+ 				$('#txtPekerjaanLamaHlcm2').val(obj[0]['kode_pekerjaan']+' - '+obj[0]['pekerjaan']);
+ 			}
+ 		});
+
+ 		$.ajax({
+ 			data 	: {term :noind},
+ 			type 	: 'GET',
+ 			url		: baseurl+'HitungHlcm/UbahPekerjaan/CariPekerjaBaru',
+ 			success : function(data){
+ 				var obj = JSON.parse(data);
+ 				$('#txtPekerjaanBaruHlcm').val(obj[0]['kd_pkj']);
+ 				$('#txtPekerjaanBaruHlcm2').val(obj[0]['kd_pkj']+' - '+obj[0]['pekerjaan']);
+ 			}
+ 		});
+ 	});
+ });
