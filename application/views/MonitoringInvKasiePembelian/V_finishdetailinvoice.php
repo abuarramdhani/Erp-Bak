@@ -1,8 +1,8 @@
 <style type="text/css">
-	#filter tr td{padding: 5px}
-	.text-left span {
-		font-size: 36px
-	}
+#filter tr td{padding: 5px}
+.text-left span {
+	font-size: 36px
+}
 </style>
 <section class="content">
 	<div class="inner" >
@@ -37,11 +37,11 @@
 									</thead>
 									<tbody>
 										<?php $no=1; if($batch){foreach($batch as $f){?>
-										<tr>
-											<td><?php echo $no ?></td>
-											<td><?php echo $f['VENDOR_NAME']?></td>
-											<td><a href="<?php echo base_url('AccountPayables/MonitoringInvoice/InvoiceKasie/finishinvoice/'.$f['INVOICE_ID']);?>">
-												<?php echo $f['INVOICE_NUMBER']?>
+											<tr>
+												<td><?php echo $no ?></td>
+												<td><?php echo $f['VENDOR_NAME']?></td>
+												<td><a href="<?php echo base_url('AccountPayables/MonitoringInvoice/InvoiceKasie/finishinvoice/'.$f['INVOICE_ID']);?>">
+													<?php echo $f['INVOICE_NUMBER']?>
 												</a>
 											</td>
 											<td><?php echo date('d-M-Y',strtotime($f['INVOICE_DATE']))?></td>
@@ -55,17 +55,18 @@
 										<?php $no++; }} ?>
 									</tbody>
 								</table>
-								</div>
 							</div>
 						</div>
-						<div class="col-md-8 pull-right">
+					</div>
+					<div class="col-md-8 pull-right">
 						<a href="<?php echo base_url('AccountPayables/MonitoringInvoice/InvoiceKasie/finishBatch')?>">
 							<button type="button" class="btn btn-primary pull-right" style="margin-top: 10px" >Back</button>
 						</a>
-						</div>
+						<button type="button" class="btn btn-primary pull-right" onclick="submitUlangKasieGudang($(this))" value="<?php echo $batch[0]['BATCH_NUMBER']?>" style="margin-top: 10px; margin-right: 10px;" >Submit Ulang</button>
 					</div>
 				</div>
 			</div>
 		</div>
 	</div>
+</div>
 </section>

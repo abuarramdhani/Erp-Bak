@@ -323,4 +323,29 @@ class C_kasiepembelian extends CI_Controller{
 		echo ($return);
 	}
 
+	public function submitUlang(){
+		$invoice_id = $this->input->post('hasil');
+		$date = date('d-m-Y H:i:s');
+
+		$expid = explode(',', $invoice_id);
+		foreach ($expid as $ex => $value) {
+			$this->M_kasiepembelian->submitUlang($value,$date);
+			$this->M_kasiepembelian->insertSubmitUlang($value,$date);
+		}
+
+	}
+
+	public function submitUlangKasieGudang()
+	{
+		$batch_number = $this->input->post('batch_number');
+		$date = date('d-m-Y H:i:s');
+
+		$this->M_kasiepembelian->submitUlangKasieGudang($batch_number,$date);
+		$id = $this->M_kasiepembelian->ambilId($batch_number);
+		foreach ($id as $key => $value) {
+			$this->M_kasiepembelian->simpanID($value['INVOICE_ID'],$date);
+			
+		}
+	}
+
 }
