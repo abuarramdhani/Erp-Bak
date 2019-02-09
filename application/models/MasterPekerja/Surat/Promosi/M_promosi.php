@@ -646,6 +646,7 @@ where 		pri.keluar=false
 							=	
 							'$kodesie'
 						)
+						and 	trefjabatan.kd_jabatan not like '  %'
 						and 	trefjabatan.kd_jabatan::numeric
 								<
 								24

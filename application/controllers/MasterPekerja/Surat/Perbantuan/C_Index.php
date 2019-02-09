@@ -256,15 +256,15 @@ class C_Index extends CI_Controller
 			$jabatan_tertanda 			=	'Asisten Kepala Unit General Affairs & Hubungan Kerja';
 
 			$cekPekerjaan 				=	$this->M_perbantuan->cekPekerjaan($pekerjaan_baru);
-			$nama_pekerjaan_baru 		=	$cekPekerjaan[0]['pekerjaan'];
-			if(!(empty($nama_pekerjaan_baru)))
-			{
-				$nama_pekerjaan_baru 	.=	' / ';
-			}
-			else
-			{
-				$nama_pekerjaan_baru 	=	'';
-			}
+			// $nama_pekerjaan_baru 		=	$cekPekerjaan[0]['pekerjaan'];
+			// if(!(empty($nama_pekerjaan_baru)))
+			// {
+			// 	$nama_pekerjaan_baru 	.=	' / ';
+			// }
+			// else
+			// {
+			// 	$nama_pekerjaan_baru 	=	'';
+			// }
 			$posisi_baru 				=	'Seksi '.$tseksiBaru['0']['seksi'].' / '.'Unit '.$tseksiBaru[0]['unit'].' / '.'Departemen '.$tseksiBaru[0]['dept'];
 		}
 
@@ -488,7 +488,7 @@ class C_Index extends CI_Controller
 												'noind' 				=>	$nomor_induk,
 												'jenis_surat'			=>	'PERBANTUAN',
 											);
-			$this->M_Promosi->inputNomorSurat($inputNomorSurat);
+			$this->M_perbantuan->inputNomorSurat($inputNomorSurat);
 		redirect('MasterPekerja/Surat/SuratPerbantuan');
 	}
 
