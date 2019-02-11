@@ -22,8 +22,8 @@
 				<tbody>
 					<tr>
 						<td align="center" width="2%" style="height:60px;background:#DDDDDD;font-size:9px">FM</td>
-						<td align="center" width="6%" style="height:60px;background:#DDDDDD;font-size:9px">KODE JENIS TRANSAKSI</td>
-						<td align="center" width="7%" style="height:60px;background:#DDDDDD;font-size:9px">FG PENGGANTI</td>
+						<td align="center" width="4%" style="height:60px;background:#DDDDDD;font-size:9px">KODE JENIS TRANSAKSI</td>
+						<td align="center" width="4%" style="height:60px;background:#DDDDDD;font-size:9px">FG PENGGANTI</td>
 						<td align="center" width="8%" style="height:60px;background:#DDDDDD;font-size:9px">NOMOR FAKTUR</td>
 						<td align="center" width="3%" style="height:60px;background:#DDDDDD;font-size:9px">MASA PAJAK</td>
 						<td align="center" width="3%" style="height:60px;background:#DDDDDD;font-size:9px">TAHUN PAJAK</td>
@@ -37,7 +37,8 @@
 						<td align="center" width="4%" style="height:60px;background:#DDDDDD;font-size:9px">IS CREDIT ABLE</td>
 						<td align="center" width="7%" style="height:60px;background:#DDDDDD;font-size:12px">KETERANGAN</td>
 						<td align="center" width="2%" style="height:60px;background:#DDDDDD;font-size:9px">STATUS</td>
-						<td align="center" width="2%" style="height:60px;background:#DDDDDD;font-size:9px">STATUS</td>
+						<td align="center" width="4%" style="height:60px;background:#DDDDDD;font-size:9px">TYPE</td>
+						<td align="center" width="4%" style="height:60px;background:#DDDDDD;font-size:9px">NO. INVOICE</td>
 					</tr>
 					<?php
 						if(!(empty($FilteredFaktur))){
@@ -65,6 +66,7 @@
 						<td align="center" style="height:40px;font-size:11px"><?php echo $FF->DESCRIPTION?></td>
 						<td align="center" style="height:40px;font-size:11px"><?php echo $FF->STATUS?></td>
 						<td align="center" style="height:40px;font-size:11px"><?php echo $FF->FAKTUR_TYPE?></td>
+						<td align="center" style="height:40px;font-size:11px"><?php echo $FF->INVOICE_NUM?></td>
 					</tr>
 					<?php }}?>
 				</tbody>

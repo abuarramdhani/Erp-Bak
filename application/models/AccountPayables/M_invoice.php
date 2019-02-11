@@ -299,8 +299,9 @@ class M_invoice extends CI_Model{
 				,PPN
 				,PPN_BM
 				,IS_CREDITABLE_FLAG
+				,aia.INVOICE_NUM
 
-			FROM khs_faktur_web
+			FROM khs_faktur_web kfw LEFT JOIN ap_invoices_all aia ON aia.invoice_id=kfw.INVOICE_ID
 			where 
 				1=1
 				$qmonth
