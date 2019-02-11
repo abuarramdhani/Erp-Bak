@@ -495,6 +495,11 @@ $route['StockControl/stock-opname-pusat/(:any)/(:any)'] = 'StockControl/C_StockO
 $route['StockControl/stock-opname-pusat/autocomplete/(:any)'] = 'StockControl/C_StockOpnamePusat/autocomplete/$1';
 $route['StockControl/stock-opname-pusat/autocomplete/(:any)/(:any)'] = 'StockControl/C_StockOpnamePusat/autocomplete/$1/$2';
 
+//----------------------- Keluar Masuk Kendaraan -----------------------------------------------
+$route['KeluarMasukKendaraan'] = 'KeluarMasukKendaraan/C_Index';
+$route['KeluarMasukKendaraan/(:any)'] = 'KeluarMasukKendaraan/C_Index/$1';
+$route['KeluarMasukKendaraan/(:any)/(:any)'] = 'KeluarMasukKendaraan/C_Index/$1/$2';
+
 
 //------------------------------------Catering Management---------------------------------------------------
 $route['CateringManagement'] 						= 'CateringManagement/C_CateringManagement/index';
