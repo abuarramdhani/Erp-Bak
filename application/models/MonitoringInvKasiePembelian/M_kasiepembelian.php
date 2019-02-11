@@ -333,4 +333,48 @@ class M_kasiepembelian extends CI_Model {
         // oci_commit($oracle);
     }
 
+    public function submitUlang($invoice_id,$date){
+      $erp_db = $this->load->database('oracle',true);
+      $sql = "UPDATE khs_ap_monitoring_invoice
+          SET last_purchasing_invoice_status = '1',
+                last_status_purchasing_date = to_date('$date', 'DD/MM/YYYY HH24:MI:SS')
+                WHERE invoice_id = '$invoice_id'";
+      $run = $erp_db->query($sql);
+
+    }
+
+    public function insertSubmitUlang($invoice_id,$date)
+    {
+      $erp_db = $this->load->database('oracle',true);
+      $sql = "INSERT INTO khs_ap_invoice_action_detail (invoice_id,action_date,purchasing_status,finance_status)
+                VALUES('$invoice_id', to_date('$date', 'DD/MM/YYYY HH24:MI:SS'),'1','0')";
+      $run = $erp_db->query($sql);
+    }
+
+    public function submitUlangKasieGudang($batch_number,$date){
+      $erp_db = $this->load->database('oracle',true);
+      $sql = "UPDATE khs_ap_monitoring_invoice
+          SET last_purchasing_invoice_status = '1',
+                last_status_purchasing_date = to_date('$date', 'DD/MM/YYYY HH24:MI:SS'),
+                last_finance_invoice_status = '0'
+                WHERE batch_number = '$batch_number'";
+      $run = $erp_db->query($sql);
+        // oci_commit($erp_db);
+    }
+
+    public function ambilID($batch_number){
+      $erp_db = $this->load->database('oracle',true);
+      $sql = "SELECT invoice_id FROM khs_ap_monitoring_invoice WHERE batch_number = '$batch_number' ";
+      $run = $erp_db->query($sql);
+      return $run->result_array();
+    }
+
+    public function simpanID($id, $date)
+    {
+      $erp_db = $this->load->database('oracle',true);
+      $sql = "INSERT INTO khs_ap_invoice_action_detail (invoice_id,action_date,purchasing_status,finance_status)
+                VALUES('$id', to_date('$date', 'DD/MM/YYYY HH24:MI:SS'),'1','0')";
+      $run = $erp_db->query($sql);
+    }
+
 }
