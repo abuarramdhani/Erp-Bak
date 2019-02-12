@@ -45,9 +45,45 @@ class C_AdminView extends CI_Controller {
 		$data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id);
 		$data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id);
 		
+		$username = $this->session->user;
+		$nm = $this->M_carimobil->ambilNamaPic($username);
+		$nama = $nm[0]['nama'];
+		$data['data'] = $this->M_carimobil->ambilDataRequest($nama);
+		$p = $data['data'];
+		if (empty($p)) {
+			$data['pengemudi'] = "";
+			$data['pemohon'] = "";
+		}else{
+			$jml = count($p);
+			$id_pen="";
+			$id_pem="";
+			for ($i=0; $i < $jml; $i++) { 
+				if ($i == 0) {
+					if ($jml == 1) {
+						$id_pen = "'".$p[$i]['pengemudi']."'";
+						$id_pem = "'".$p[$i]['pemohon']."'";
+					}else{
+						$id_pen = "'".$p[$i]['pengemudi'];
+						$id_pem = "'".$p[$i]['pemohon'];
+					}
+				}else{
+					if ($i == $jml-1) {
+						$id_pen = $id_pen."','".$p[$i]['pengemudi']."'";
+						$id_pem = $id_pen."','".$p[$i]['pemohon']."'";
+					}else{
+						$id_pen = $id_pen."','".$p[$i]['pengemudi'];
+						$id_pem = $id_pen."','".$p[$i]['pemohon'];
+					}
+				}
+			}
+			$data['pengemudi'] = $this->M_carimobil->ambilNamaPengemudi($id_pen);
+			$data['pemohon'] = $this->M_carimobil->ambilNamaPemohon($id_pem);
+		}
+		
+
 		$this->load->view('V_Header',$data);
 		$this->load->view('V_Sidemenu',$data);
-		$this->load->view('BookingKendaraan/V_AdminView');
+		$this->load->view('BookingKendaraan/V_AdminView',$data);
 		$this->load->view('V_Footer',$data);
 	}
 
