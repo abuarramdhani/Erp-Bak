@@ -78,6 +78,11 @@ class C_Ajax extends CI_Controller {
 		$itemColy 		= $this->input->post('itemColy');
 
 		$temp = array();
+		
+		// echo "<pre>";
+		// print_r($item_id);
+		// exit();
+
 		foreach ($item_id as $key => $value){
 			if (!empty($packingqty[$key])) {
 				$dt = array(

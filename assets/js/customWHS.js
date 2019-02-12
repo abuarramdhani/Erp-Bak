@@ -189,7 +189,7 @@ function delTemp(){
 
 function updatePackingQty(event, th) {
     if (event.keyCode === 13) {
-        var value       = $(th).val();
+        var value       = $(th).val().toUpperCase();
         var qty         = Number($('#tblSPB tbody tr[data-row="'+value+'"] input[name="packingqty[]"]').val());
         var maxPack     = Number($('#tblSPB tbody tr[data-row="'+value+'"] input[name="maxPack[]"]').val());
         var maxOnhand   = Number($('#tblSPB tbody tr[data-row="'+value+'"] input[name="maxOnhand[]"]').val());
