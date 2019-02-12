@@ -28,31 +28,43 @@
 						<div class="row">
 							<div class="col-lg-3">
 								<div style="width: 183px;height: 100px;background-color: grey;margin: 30px">
-									
+									<img style="width: 183px;height: 100px;" src="<?php echo "http://erp.quick.com/assets/upload/GA/Kendaraan/".$kendaraan[0]['foto_kendaraan']; ?>">
 								</div>
 							</div>
 							<div class="col-lg-4">
 								<div style="width: 100%;margin-top: 30px;"> 
-									<label>ISUZU - Panther</label>
+									<label><?php echo $kendaraan[0]['merk_kendaraan']; ?></label>
 									<br>
-									<label>( AB XXXX BA )</label>
+									<label><?php echo $kendaraan[0]['nomor_polisi']; ?></label>
 								</div>
 							</div>
 							<div class="col-lg-4">
 								<div style="width: 100%;margin-top: 30px;"> 
-									<label>PIC : Alfian Afief Nurtamsa</label>
+									<label>PIC : <?php if ($pic != "") {
+										 echo $pic[0]['nama'];
+									}else{
+										echo "-";
+										} ?></label>
 									<br>
-									<label style="margin-left: 37px;">B0689</label>
+									<label style="margin-left: 37px;"><?php if ($pic != "") {
+										 echo $pic[0]['noind'];
+									}else{
+										echo "-";
+										} ?></label>
 									<br>
-									<label>Information & Communication Technology</label>
+									<label><?php if ($pic != "") {
+										 echo $pic[0]['seksi'];
+									}else{
+										echo "-";
+										} ?></label>
 									<br>
-									<label>Voip : 12300 (ext 3)</label>
+									<label>Voip : </label>
 								</div>
 							</div>
 						</div>
 						<br>
 						<div style="width: 100%;text-align: center;">
-							<button type="button" class="btn btn-warning">Menunggu Konfirmasi</button>
+							<label style="background-color: #ffb84d;padding: 10px; border-radius: 5px 5px;color: white">Menunggu Konfirmasi</label>
 						</div>
 						<br>
 						<br>

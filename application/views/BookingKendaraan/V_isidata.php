@@ -24,6 +24,7 @@
 					<div style="width: 60%;height: 100%; margin: 0px auto;background-color: white;padding-top: 30px;">
 						<form method="POST" action="<?php echo base_url('BookingKendaraan/CariMobil/simpanbooking'); ?>">
 						<div style="width: 100%;">
+							<input name="kendaraan_id" value="<?php echo $id; ?>" hidden></input>
 							<div class="row">
 								<div class="col-lg-6">
 									<div class="row">
@@ -31,7 +32,7 @@
 											<label style="margin-top: 8px;">Pengemudi</label>
 										</div>
 										<div class="col-lg-8">
-											<select name="pengemudi_mobil" id="pengemudi_mobil" class="form-control"></select>
+											<select name="pengemudi_mobil" id="pengemudi_mobil" class="form-control" required></select>
 										</div>
 									</div>
 									<br>
@@ -41,7 +42,7 @@
 										</div>
 										<div class="col-lg-8">
 											<label>dari :</label>
-											<input name="periode_booking1" id="periode_booking" class="form-control cal_periode_booking"></input>
+											<input name="periode_booking1" id="periode_booking" class="form-control cal_periode_booking" required></input>
 										</div>
 									</div>
 									<br>
@@ -50,7 +51,7 @@
 										</div>
 										<div class="col-lg-8">
 											<label>sampai :</label>
-											<input name="periode_booking2" id="periode_booking" class="form-control cal_periode_booking"></input>
+											<input name="periode_booking2" id="periode_booking" class="form-control cal_periode_booking" required></input>
 										</div>
 									</div>
 								</div>
@@ -60,7 +61,7 @@
 											<label style="margin-top: 8px;">Tujuan</label>
 										</div>
 										<div class="col-lg-8">
-											<textarea name="tujuan_booking" id="periode_booking" class="form-control"></textarea>
+											<textarea required name="tujuan_booking" id="periode_booking" class="form-control"></textarea>
 										</div>
 									</div>
 									<br>
@@ -69,7 +70,7 @@
 											<label style="margin-top: 8px;">Keperluan</label>
 										</div>
 										<div class="col-lg-8">
-											<textarea name="keperluan_booking" id="keperluan_booking" class="form-control"></textarea>
+											<textarea required name="keperluan_booking" id="keperluan_booking" class="form-control"></textarea>
 										</div>
 									</div>
 									<br>

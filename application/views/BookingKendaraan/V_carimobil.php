@@ -55,12 +55,12 @@
 						<div class="col-lg-3">
 							<input placeholder="Tanggal" name="tgl_caribooking" id="tgl_caribooking" class="date form-control" style="width: 90%;margin-left: 10px;">
 						</div>
-						<div class="col-lg-3">
+						<!-- <div class="col-lg-3">
 							<select name="slc_seksibooking" id="slc_seksibooking" class="form-control"></select>
 						</div>
 						<div class="col-lg-3">
 							<select name="slc_picbooking" id="slc_picbooking" class="form-control"></select>
-						</div>
+						</div> -->
 						<div class="col-lg-2">
 							<div style="margin-top: -20px;">
 								<button type="submit" class="btn btn-primary2 btn3d">Check</button>
@@ -75,7 +75,21 @@
 							</div>
 							<div class="panel-body">
 								<div style="width: 100%;">
-									<table width="100%">
+									<table width="100%" id="tbl_booking_datatable">
+										<thead>
+											<tr>
+												<th></th>
+											</tr>
+										</thead>
+										<tbody>
+										<?php
+											foreach ($mobil as $key) {
+												
+												if ($key['usable'] == 1) {
+													
+												
+											
+										?>
 										<tr>
 											<td>
 												<div style="width: 90%;margin: 0px auto;background-color: white; height: 170px;border: 1px solid #4db8ff">
@@ -88,31 +102,42 @@
 															<div class="col-lg-3">
 																<div style="width: 100%;margin-top: 13px;">
 																	<div style="width: 183px;height: 100px;background-color: grey">
-																		<img style="width: 183px;height: 100px;" src="">
+																		<img style="width: 183px;height: 100px;" src="<?php echo "http://erp.quick.com/assets/upload/GA/Kendaraan/".$key['foto_kendaraan']; ?>">
 																	</div>
 																</div>
 															</div>
 															<div class="col-lg-4">
 																<div style="margin-top: 13px;">
-																	<label>ISUZU - Panther</label>
+																	<label><?php echo $key['merk_kendaraan']; ?></label>
 																	<br>
-																	<label>( AB XXXX BA )</label>
+																	<label><?php echo $key['nomor_polisi']; ?></label>
 																</div>
 															</div>
 															<div class="col-lg-4">
 																<div style="margin-top: 13px;">
-																	<label>PIC : Alfian Afief Nurtamsa</label>
+																	<?php
+																		foreach ($pic as $row) {
+																			
+																		if ($key['user_name'] == $row['noind']) {
+																		
+																	?>
+																	<label>PIC : <?php echo $row['nama']; ?></label>
 																	<br>
-																	<label style="margin-left: 37px;">B0689</label>
+																	<label style="margin-left: 37px;"><?php echo $row['noind']; ?></label>
 																	<br>
-																	<label>Information & Communication Technology</label>
+																	<label><?php echo $row['seksi']; ?></label>
 																	<br>
-																	<label>Voip : 12300 (ext 3)</label>
+																	<label>Voip : </label>
+																	<?php
+																		}
+																		
+																	}
+																	?>
 																</div>
 															</div>
 															<div class="col-lg-1">
 																<div style="margin-top: 65px;">
-																	<a href="<?php echo base_url('BookingKendaraan/CariMobil/isidata'.'/'); ?>" class="btn btn-primary2 btn3d">Book**</a>
+																	<a href="<?php echo base_url('BookingKendaraan/CariMobil/isidata'.'/'.$key['kendaraan_id']); ?>" class="btn btn-primary2 btn3d">Book**</a>
 																</div>
 															</div>
 														</div>
@@ -121,6 +146,11 @@
 												</div>
 											</td>
 										</tr>
+										<?php
+										}
+									}
+										?>
+										</tbody>
 									</table>
 								</div>
 							</div>

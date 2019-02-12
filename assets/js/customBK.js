@@ -189,6 +189,18 @@ $(document).ready(function(){
 			allowClear: true,
 		});
 
+		$('#tbl_booking_datatable').dataTable({
+	          "paging": true,
+	          "lengthChange": false,
+	          "searching": false,
+	          "ordering": true,
+			  "info": true,
+	          "autoWidth": false,
+			  "deferRender" : true,
+			  "scroller": true,
+			  // "pageLength": 2,
+		});
+
 		$('.cal_periode_booking').daterangepicker({
 		    "timePicker": true,
 		    "timePicker24Hour": true,

@@ -57,19 +57,47 @@
 				 					</tr>
 				 				</thead>
 				 				<tbody>
+				 					<?php
+				 						$no = 1;
+				 						foreach ($log as $key) {
+				 							
+				 						
+				 					?>
 				 					<tr>
-				 						<td></td>
-				 						<td></td>
-				 						<td></td>
-				 						<td></td>
-				 						<td></td>
-				 						<td></td>
-				 						<td></td>
+				 						<td><?php echo $no;?></td>
+				 						<td><?php
+				 								$tgl = explode(" ", $key['dari']);
+				 								echo $tgl[0];
+				 							 ?>
+				 						</td>
 				 						<td>
-				 							<button type="button" class="btn btn-xs btn-warning">Waiting...</button>
-				 							<button type="button" class="btn btn-xs btn-success">Confirmed</button>
+				 							<?php
+				 								$tgl = explode(" ", $key['dari']);
+				 								echo $tgl[1];
+				 							 ?>
+				 						</td>
+				 						<td><img style="width: 183px;height: 100px;" src="<?php echo "http://erp.quick.com/assets/upload/GA/Kendaraan/".$key['foto_kendaraan']; ?>"><br><?php echo $key['merk_kendaraan']; ?> <br> <?php echo $key['nomor_polisi']; ?></td>
+				 						<td><?php echo $key['pic_kendaraan']; ?></td>
+				 						<td><?php echo $key['pic_seksi']; ?></td>
+				 						<td><?php echo $key['pic_voip']; ?></td>
+				 						<td>
+				 							<?php if ($key['confirmed'] == 0) {
+				 								?>
+				 								<button type="button" class="btn btn-xs btn-warning">Waiting...</button>
+				 								<?php
+				 							}elseif ($key['confirmed'] == 1){
+				 								?>
+				 								<button type="button" class="btn btn-xs btn-success">Confirmed</button>
+				 								<?php
+				 								} ?>
+				 							
+				 							
 				 						</td>
 				 					</tr>
+				 					<?php
+				 					$no++;
+				 						}
+				 					?>
 				 				</tbody>
 				 			</table>
 				 		</div>
