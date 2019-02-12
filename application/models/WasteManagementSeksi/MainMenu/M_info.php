@@ -46,11 +46,11 @@ class M_info extends CI_Model
 
         $awal = $tanggal['0'];
         $akhir = $tanggal['1'];
-        $query = "  select sum(cast(kirim.berat_kirim as integer)) berat,seksi.section_name 
+        $query = "  select sum(cast(kirim.berat_kirim as float)) berat,seksi.section_name 
                     from ga.ga_limbah_kirim kirim 
                     inner join er.er_section seksi on kirim.kodesie_kirim = left(seksi.section_code, 7) and section_code like '%00' 
                     where kirim.id_jenis_limbah = '$id' and kirim.tanggal_kirim between '$awal' and '$akhir' and status_kirim = '1' 
-                    group by seksi.section_name order by sum(cast(kirim.berat_kirim as integer)) desc;";
+                    group by seksi.section_name order by sum(cast(kirim.berat_kirim as float)) desc;";
         $result = $this->db->query($query);
         return $result->result_array();
     }
