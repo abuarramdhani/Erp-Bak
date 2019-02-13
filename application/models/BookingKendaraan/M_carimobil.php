@@ -88,7 +88,8 @@ class M_carimobil extends CI_Model {
                b.merk_kendaraan,
                a.foto_kendaraan,
                d.user_name,
-               a.usable 
+               a.usable,
+               c.voip_pic
             from ga.ga_fleet_kendaraan a 
             join ga.ga_fleet_merk_kendaraan b 
               on a.merk_kendaraan_id=b.merk_kendaraan_id
@@ -125,7 +126,7 @@ class M_carimobil extends CI_Model {
     public function ambilMobilBookingTidak($today)
     {
       $query="select distinct(a.kendaraan_id), b.nomor_polisi, b.foto_kendaraan, b.usable, c.merk_kendaraan, 
-                     e.user_name
+                     e.user_name,d.voip_pic
               from ga.ga_fleet_data_booking a
                 left join ga.ga_fleet_kendaraan b
                   on a.kendaraan_id=b.kendaraan_id
@@ -142,7 +143,7 @@ class M_carimobil extends CI_Model {
     {
       if ($id_ken != "") {
         $query="select distinct(a.kendaraan_id), b.nomor_polisi, b.foto_kendaraan, b.usable, c.merk_kendaraan, 
-                       e.user_name
+                       e.user_name,d.voip_pic
                 from ga.ga_fleet_data_booking a
                   left join ga.ga_fleet_kendaraan b
                     on a.kendaraan_id=b.kendaraan_id
@@ -156,7 +157,7 @@ class M_carimobil extends CI_Model {
         return $this->db->query($query)->result_array();
       }elseif ($id_ken == "") {
           $query="select distinct(a.kendaraan_id), b.nomor_polisi, b.foto_kendaraan, b.usable, c.merk_kendaraan, 
-                       e.user_name
+                       e.user_name,d.voip_pic
                 from ga.ga_fleet_data_booking a
                   left join ga.ga_fleet_kendaraan b
                     on a.kendaraan_id=b.kendaraan_id
@@ -211,6 +212,28 @@ class M_carimobil extends CI_Model {
     {
       $query = "select noind,nama from hrd_khs.tpribadi where noind in ($id_pem)";
       return $this->personalia->query($query)->result_array();
+    }
+    public function ambilDataPICVoip($noind)
+    {
+      $query = "select a.noind,a.kodesie,a.nama,b.seksi from hrd_khs.tpribadi a inner join hrd_khs.tseksi b on a.kodesie=b.kodesie where a.noind='$noind'";
+      return $this->personalia->query($query)->result_array();
+    }
+    public function ambilEmployeeId($noind)
+    {
+      $this->db->where('user_name',$noind);
+      return $this->db->get('sys.sys_user')->result_array();
+    }
+    public function updateVoipPIC($id,$array)
+    {
+      $this->db->where('employee_id',$id);
+      $this->db->update('ga.ga_fleet_pic_kendaraan',$array);
+      return;
+    }
+
+    public function ambilDataPICVoipSaved($id)
+    {
+      $this->db->where('employee_id',$id);
+      return $this->db->get('ga.ga_fleet_pic_kendaraan')->result_array();
     }
 }
 ?>

@@ -4,7 +4,7 @@
 			<h1><b>Admin Booking Kendaraan</b></h1>
 		</div>
 		<div class="col-lg-1">
-			<a href="<?php echo base_url('BookingKendaraan/AdminBookingKendaraan'); ?>" class="btn btn-lg btn-default">
+			<a href="<?php echo base_url('BookingKendaraan/RequestKendaraan'); ?>" class="btn btn-lg btn-default">
 				<i class="icon-wrench icon-2x"></i>
 			</a>
 		</div>

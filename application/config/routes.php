@@ -2259,6 +2259,10 @@ $route['AdminBookingKendaraan'] = 'BookingKendaraan/C_Admin';
 $route['AdminBookingKendaraan/(:any)'] = 'BookingKendaraan/C_Admin/$1';
 $route['AdminBookingKendaraan/(:any)/(:any)'] = 'BookingKendaraan/C_Admin/$1/$2';
 
+$route['AdminBookingKendaraan/DataKendaraan'] = 'BookingKendaraan/C_AdminData';
+$route['AdminBookingKendaraan/DataKendaraan/(:any)'] = 'BookingKendaraan/C_AdminData/$1';
+$route['AdminBookingKendaraan/DataKendaraan/(:any)/(:any)'] = 'BookingKendaraan/C_AdminData/$1/$2';
+
 $route['AdminBookingKendaraan/RequestKendaraan'] = 'BookingKendaraan/C_AdminView';
 $route['AdminBookingKendaraan/RequestKendaraan/(:any)'] = 'BookingKendaraan/C_AdminView/$1';
 $route['AdminBookingKendaraan/RequestKendaraan/(:any)/(:any)'] = 'BookingKendaraan/C_AdminView/$1/$2';
