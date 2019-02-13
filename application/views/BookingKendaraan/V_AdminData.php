@@ -43,7 +43,9 @@
 							</div>
 							<div class="col-lg-12">
 								<input class="form-control" name="voip_pic" placeholder="Masukan Nomor Voip" <?php
-									if ($voip[0]['voip_pic'] != NULL) {
+									if (empty($voip)) {
+										
+									}else{
 										?>
 										value="<?php echo $voip[0]['voip_pic']; ?>"
 										<?php
