@@ -101,8 +101,9 @@ class C_Carimobil extends CI_Controller {
 				}
 			}
 		};
-		// // echo $noind;
-		// // exit();
+		// echo "<pre>";
+		// print_r($data['mobil']);
+		// exit();
 		$data['pic'] = $this->M_carimobil->ambilPekerjaPIC($noind);
 		// $data['noind'] = $this->M_carimobil->selectNoind();
 		$this->load->view('V_Header',$data);
@@ -145,11 +146,13 @@ class C_Carimobil extends CI_Controller {
 		if ($data[0]['user_name'] == "") {
 			$pic = NULL;
 			$seksi = NULL;
+			$voip = NULL;
 		}else{
 			$noind = "'".$data[0]['user_name']."'";
 			$row = $this->M_carimobil->ambilPekerjaPIC($noind);
 			$pic = $row[0]['nama'];
 			$seksi = $row[0]['seksi'];
+			$seksi = $data[0]['voip_pic'];
 		}
 		
 
@@ -180,6 +183,7 @@ class C_Carimobil extends CI_Controller {
 							'pic_kendaraan' => $pic,
 							'pic_seksi' => $seksi,
 							'tanggal' => $tanggal,
+							'pic_voip' => $voip,
 						);
 			// echo "<pre>";
 			// print_r($data_input);
@@ -274,19 +278,7 @@ class C_Carimobil extends CI_Controller {
 		
 		$kendaraan = $this->M_carimobil->ambilKendaraan();
 
-		foreach ($kendaraan as $key) {
-			if ($key['usable'] == 1) {
-				$ken_id = $key['idken'];
-
-				$cek = $this->M_carimobil->cekIdinBooking($ken_id);
-				if ($cek == 0) {
-					$array = array(
-								'kendaraan_id' => $ken_id,
-							);
-					$this->M_carimobil->autoInsertBooking($array);
-				}
-			}
-		}
+		
 		$day = $this->input->post('tgl_caribooking');
 		$tidak = $this->M_carimobil->ambilMobilBookingTidak($day);
 		$jum = count($tidak);
@@ -312,7 +304,7 @@ class C_Carimobil extends CI_Controller {
 		// echo "<pre>";
 		// print_r($data['mobil']);
 		// exit();
-		$p =$this->M_carimobil->selectNoind();
+		$p =$this->M_carimobil->selectNoind(); 
 		$jml = count($p);
 		$noind = "";
 		for ($i=0; $i < $jml; $i++) { 
