@@ -70,12 +70,18 @@ class C_AdminData extends CI_Controller {
 		$data = $this->M_carimobil->ambilEmployeeId($noind);
 		$id = $data[0]['employee_id'];
 
-		$array = array(
-					'voip_pic' => $voip,
-				);
-		$this->M_carimobil->updateVoipPIC($id,$array);
+		if (empty($data)) {
+			redirect('AdminBookingKendaraan/DataKendaraan');
+		}else{
+			$array = array(
+						'voip_pic' => $voip,
+					);
+			$this->M_carimobil->updateVoipPIC($id,$array);
 
-		redirect('AdminBookingKendaraan/DataKendaraan');
+			redirect('AdminBookingKendaraan/DataKendaraan');
+		}
+
+		
 	}
 
 	
