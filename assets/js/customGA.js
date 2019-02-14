@@ -1058,3 +1058,30 @@ $(document).ready(function(){
   //       }
   //   });
   // });
+
+  $(document).ready(function(){
+    $('.form-kendaraaan-ga').on('submit',function(){
+      isOk = true;
+      $('input[type=file][data-max-size]').each(function(){
+        if (typeof this.files[0] !== 'undefined') {
+          var maxSize = parseInt($(this).attr('data-max-size'),10);
+          size = this.files[0].size;
+          name = this.files[0].name;
+          size = size/1024;
+          isOk = maxSize > size;
+          if (isOk == false) {
+            if (size < 1024) {
+              size = Math.round(size*100)/100;
+              alert('File '+name+'('+size+' Kb) Terlalu Besar. maksimal '+maxSize+' Kb');
+            }else{
+              size = Math.round((size/1024)*100)/100;
+              alert('File '+name+'('+size+' Mb) Terlalu Besar. maksimal '+maxSize+' Kb');
+            }
+            
+          }
+          return isOk;
+        }
+      });
+      return isOk;
+     });
+  });

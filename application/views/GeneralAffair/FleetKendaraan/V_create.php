@@ -1,7 +1,7 @@
 <section class="content">
     <div class="inner" >
         <div class="row">
-            <form method="post" action="<?php echo site_url('GeneralAffair/FleetKendaraan/create');?>" class="form-horizontal" enctype="multipart/form-data">
+            <form method="post" action="<?php echo site_url('GeneralAffair/FleetKendaraan/create');?>" class="form-horizontal form-kendaraaan-ga" enctype="multipart/form-data">
                 <div class="col-lg-12">
                     <div class="row">
                         <div class="col-lg-12">
@@ -109,21 +109,21 @@
 											<div class="form-group">
                                                 <label for="txtFotoStnkHeader" class="control-label col-lg-4">Foto STNK</label>
                                                 <div class="col-lg-4">
-                                                    <input type="file" placeholder="Foto STNK" name="FotoSTNK" id="FotoSTNK" class="form-control" />
+                                                    <input type="file" placeholder="Foto STNK" name="FotoSTNK" data-max-size='500' id="FotoSTNK" class="form-control" />
                                                 </div>
                                             </div>
 
 											<div class="form-group">
                                                 <label for="txtFotoBpkbHeader" class="control-label col-lg-4">Foto BPKB</label>
                                                 <div class="col-lg-4">
-                                                    <input type="file" placeholder="Foto BPKB" name="FotoBPKB" id="FotoBPKB" class="form-control" />
+                                                    <input type="file" placeholder="Foto BPKB" name="FotoBPKB" data-max-size='500' id="FotoBPKB" class="form-control" />
                                                 </div>
                                             </div>
 
 											<div class="form-group">
                                                 <label for="txtFotoKendaraanHeader" class="control-label col-lg-4">Foto Kendaraan</label>
                                                 <div class="col-lg-4">
-                                                    <input type="file" placeholder="Foto Kendaraan" name="FotoKendaraan" id="FotoKendaraan" class="form-control" />
+                                                    <input type="file" placeholder="Foto Kendaraan" data-max-size='500' name="FotoKendaraan" id="FotoKendaraan" class="form-control" />
                                                 </div>
                                             </div>
 
