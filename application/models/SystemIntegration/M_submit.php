@@ -80,6 +80,8 @@ class M_submit extends CI_Model
 
 	function getAtasan($noind , $jabatan){
 		$data = array();
+		$kodesie = $this->session->kodesie;
+		$kodesie_subs = substr($kodesie, 0,4);
 		$personalia = $this->load->database('personalia',true);
 		$sql1 		= "SELECT kd_jabatan FROM hrd_khs.tpribadi WHERE noind = '$noind'";
 		$query1 	= $personalia->query($sql1);
@@ -119,6 +121,16 @@ class M_submit extends CI_Model
 		$query2 = $personalia->query($sql2);
 		$result2 = $query2->result_array();
 
+		if ($jabatan == '2') {
+			if (!$result2) {
+				$sql3 = "SELECT su.user_name employee_code , su.employee_name FROM si.si_approver_khusus ak 
+							LEFT JOIN sys.vi_sys_user su ON su.user_name =  ak.no_induk
+						WHERE ak.kodesie = '$kodesie_subs' ";
+				$query3 = $this->db->query($sql3);
+				$result3 = $query3->result_array();
+				$result2 = $result3;
+			}
+		}
 		$allAtasan = $this->getAllUser();
 			foreach ($allAtasan as $key => $value) {
 				$arrayUser[] = $value['user_name'];
