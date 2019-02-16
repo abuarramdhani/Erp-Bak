@@ -67,5 +67,41 @@ class M_daftarasset extends CI_Model
 		$result = $this->db->query($sql);
 		return $result->result_array();
 	}
+
+	public function getTagNumber($tag){
+		$sql = "select pa.tag_number,
+						ia.no_pp,
+						ia.tgl_pp,
+						es.section_name,
+						pa.tgl_beli,
+						case when pa.status_retired = '0' then 
+							'Aktif'
+						when pa.status_retired = '1' then
+							'Non-Aktif Sementara'
+						else
+							'Non-Aktif Permanent'
+						end status_retired,
+						ra.created_date
+				from sm.sm_pembelian_asset pa
+				left join sm.sm_input_asset ia 
+				on ia.no_pp = pa.no_pp
+				left join er.er_section es 
+				on es.section_code = ia.seksi_pemakai
+				left join sm.sm_retirement_asset ra 
+				on ra.tag_number = pa.tag_number
+				and ra.status_aktif = '1'
+				where pa.tag_number = '$tag'";
+		$result = $this->db->query($sql);
+		return $result->result_array();
+	}
+
+	public function getTransferHistory($tag){
+		$sql = "select * 
+				from sm.sm_transfer_asset 
+				where tag_number = '$tag' 
+				order by tanggal_terima asc";
+		$result = $this->db->query($sql);
+		return $result->result_array();
+	}
 }
 ?>
