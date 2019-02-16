@@ -765,6 +765,36 @@ function gantiBarang(pos){
 	$(pos).find(':selected').val(barang);
 }
 
+$(document).on('click','#modalbtnAssetTagNumber',function(){
+	var tagnum = $(this).text();
+	$.ajax({
+		data : {tag_number : tagnum},
+		type : 'POST',
+		url : baseurl+"SiteManagement/DaftarAsset/Tag",
+		success : function(data){
+			var obj = JSON.parse(data);
+			
+			$('#modaltdAsset1').text(obj['tag_number']);
+			$('#modaltdAsset2').text(obj['no_pp']);
+			$('#modaltdAsset3').text(obj['section_name']);
+			$('#modaltdAsset4').text(obj['tgl_pp']);
+			$('#modaltdAsset5').text(obj['tgl_beli']);
+			$('#modaltdAsset6').text(obj['status_retired']);
+			$('#modaltdAsset7').text(obj['created_date']);
+		}
+	});
+
+	$.ajax({
+		data : {tag_number : tagnum},
+		type : 'POST',
+		url : baseurl+"SiteManagement/DaftarAsset/TransferHistory",
+		success : function(data){
+			$('#modalTableBodyAsset').html(data);
+		}
+	});
+	$('#modalAssetTagNumber').modal('show');
+})
+
 //------------------------------------------------
 $(function(){
 

@@ -52,5 +52,24 @@ class C_DaftarAsset extends Ci_Controller
 		$this->load->view('SiteManagement/Asset/V_indexdaftar',$data);
 		$this->load->view('V_Footer',$data);
 	}
+
+	public function Tag(){
+		$tag = $this->input->post('tag_number');
+		$data = $this->M_daftarasset->getTagNumber($tag);
+		
+		echo json_encode($data['0']);
+	}
+
+	public function TransferHistory(){
+		$tag = $this->input->post('tag_number');
+		$data = $this->M_daftarasset->getTransferHistory($tag);
+		$text = "";
+		$angka = 1;
+		foreach ($data as $key) {
+			$text .="<tr><td>$angka</td><td>".$key['seksi_awal']."</td><td>".$key['seksi_baru']."</td><td class='text-center'>".$key['tanggal_terima']."</td></tr>";
+			$angka++;
+		}
+		echo $text;
+	}
 }
 ?>
