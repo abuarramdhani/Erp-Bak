@@ -66,6 +66,7 @@ class C_AdminData extends CI_Controller {
 	{
 		$noind = $this->input->post('noind_pic');
 		$voip	= $this->input->post('voip_pic');
+		$mygrp	= $this->input->post('nomor_mygrp');
 
 		$data = $this->M_carimobil->ambilEmployeeId($noind);
 		$id = $data[0]['employee_id'];
@@ -75,6 +76,7 @@ class C_AdminData extends CI_Controller {
 		}else{
 			$array = array(
 						'voip_pic' => $voip,
+						'mygroup_pic' => $mygrp,
 					);
 			$this->M_carimobil->updateVoipPIC($id,$array);
 

@@ -43,8 +43,8 @@
 			 						</div>
 			 					</div>
 				 			</div> -->
-				 			<table width="100%" class="table table-stripped">
-				 				<thead>
+				 			<table width="100%" class="table table-stripped" id="tbl_log_booking_kendaraan">
+				 				<thead class="bg-primary">
 				 					<tr>
 				 						<th>No</th>
 				 						<th>Tgl</th>
@@ -89,6 +89,10 @@
 				 								?>
 				 								<button type="button" class="btn btn-xs btn-success">Confirmed</button>
 				 								<?php
+				 								}elseif ($key['confirmed'] == 2) {
+				 									?>
+					 								<button type="button" class="btn btn-xs btn-danger">Canceled by PIC</button>
+					 								<?php
 				 								} ?>
 				 							
 				 							

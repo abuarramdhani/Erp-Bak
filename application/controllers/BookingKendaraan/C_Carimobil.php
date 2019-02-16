@@ -152,7 +152,7 @@ class C_Carimobil extends CI_Controller {
 			$row = $this->M_carimobil->ambilPekerjaPIC($noind);
 			$pic = $row[0]['nama'];
 			$seksi = $row[0]['seksi'];
-			$seksi = $data[0]['voip_pic'];
+			$voip = $data[0]['voip_pic'];
 		}
 		
 

@@ -52,6 +52,20 @@
 									}
 								?>></input>
 							</div>
+							<div class="col-lg-8">
+								<label>Nomor MyGroup</label>
+							</div>
+							<div class="col-lg-12">
+								<input class="form-control" name="nomor_mygrp" placeholder="Masukan Nomor MyGroup" <?php
+									if (empty($voip)) {
+										
+									}else{
+										?>
+										value="<?php echo $voip[0]['mygroup_pic']; ?>"
+										<?php
+									}
+								?>></input>
+							</div>
 						</div>
 							<br>
 						<div class="row">
