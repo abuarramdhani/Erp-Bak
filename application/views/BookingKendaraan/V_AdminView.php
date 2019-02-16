@@ -4,7 +4,7 @@
 			<h1><b>Admin Booking Kendaraan</b></h1>
 		</div>
 		<div class="col-lg-1">
-			<a href="<?php echo base_url('BookingKendaraan/RequestKendaraan'); ?>" class="btn btn-lg btn-default">
+			<a href="<?php echo base_url('AdminBookingKendaraan/RequestKendaraan'); ?>" class="btn btn-lg btn-default">
 				<i class="icon-wrench icon-2x"></i>
 			</a>
 		</div>
@@ -15,9 +15,9 @@
 				
 			</div>
 			<div class="panel-body">
-				<table width="100%">
-					<thead>
-						<tr>
+				<table width="100%" class="table table-hover table-stripped " id="tbl_data_booking_admin">
+					<thead class="bg-primary">
+						<tr >
 							<th>No</th>
 							<th>Tanggal</th>
 							<th>Jam</th>
@@ -40,30 +40,34 @@
 							
 						?>
 						<tr>
-							<td><?php echo $no; ?></td>
-							<td><?php echo date('Y-m-d',strtotime($key['tanggal'])); ?></td>
-							<td><?php echo date('H:i:s',strtotime($key['dari'])); ?></td>
-							<td><img style="width: 183px;height: 100px;" src="<?php echo "http://erp.quick.com/assets/upload/GA/Kendaraan/".$key['foto_kendaraan']; ?>"><br><?php echo $key['merk_kendaraan']; ?> <br> <?php echo $key['nomor_polisi']; ?></td>
-							<td><?php foreach ($pengemudi as $pen) {
+							<td style="vertical-align: top"><?php echo $no; ?></td>
+							<td style="vertical-align: top"><?php echo date('Y-m-d',strtotime($key['tanggal'])); ?></td>
+							<td style="vertical-align: top"><?php echo date('H:i:s',strtotime($key['dari'])); ?></td>
+							<td style="text-align: center;"><img style="width: 183px;height: 100px;" src="<?php echo "http://erp.quick.com/assets/upload/GA/Kendaraan/".$key['foto_kendaraan']; ?>"><br><?php echo $key['merk_kendaraan']; ?> <br> <?php echo $key['nomor_polisi']; ?></td>
+							<td style="vertical-align: top"><?php foreach ($pengemudi as $pen) {
 								if ($pen['noind'] == $key['pengemudi']) {
 									echo $pen['nama'];
 								}
 							} ?></td>
-							<td><?php foreach ($pemohon as $pem) {
+							<td style="vertical-align: top"><?php foreach ($pemohon as $pem) {
 								if ($pem['noind'] == $key['pemohon']) {
 									echo $pem['nama'];
 								}
 							} ?></td>
-							<td><?php echo $key['tujuan']; ?></td>
-							<td><?php echo $key['keperluan']; ?></td>
-							<td><?php
+							<td style="vertical-align: top"><?php echo $key['tujuan']; ?></td>
+							<td style="vertical-align: top"><?php echo $key['keperluan']; ?></td>
+							<td style="vertical-align: top"><?php
 									if ($key['confirmed'] == 0) {
 										?>
-										<button type="submit" class="btn btn-sm btn-danger">Confirm</button>
+										<a href="<?php echo base_url('AdminBookingKendaraan/RequestKendaraan/confirm'.'/'.$key['id']); ?>" class="btn btn-sm btn-success">Confirm</a>
 										<?php
 									}elseif ($key['confirmed'] == 1){
 										?>
-										<button type="submit" class="btn btn-sm btn-success">Confirmed</button>
+										<a href="<?php echo base_url('AdminBookingKendaraan/RequestKendaraan/cancel'.'/'.$key['id']); ?>" class="btn btn-sm btn-danger">Cancel</a>
+										<?php
+									}elseif ($key['confirmed'] == 2) {
+										?>
+										<a href="<?php echo base_url('AdminBookingKendaraan/RequestKendaraan/confirm'.'/'.$key['id']); ?>" class="btn btn-sm btn-success">Confirm</a>
 										<?php
 									}
 							?>

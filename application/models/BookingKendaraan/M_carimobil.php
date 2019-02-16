@@ -7,7 +7,13 @@ class M_carimobil extends CI_Model {
         $this->load->database();
         $this->personalia = $this->load->database('personalia', true);
     }
-  
+    
+    public function updateConfirmed($id,$array)
+    {
+      $this->db->where('id',$id);
+      $this->db->update('ga.ga_fleet_data_booking',$array);
+      return;
+    }
     public function ambilNama($p)
     {
        $query = "select * from hrd_khs.pribadi where noind='$p'";
@@ -110,7 +116,8 @@ class M_carimobil extends CI_Model {
                    on a.kendaraan_id=b.kendaraan_id
                 join ga.ga_fleet_merk_kendaraan c 
                   on b.merk_kendaraan_id=c.merk_kendaraan_id
-                where a.creation_user='$username'";
+                where a.creation_user='$username'
+                order by a.tanggal desc";
       return $this->db->query($query)->result_array();
     }
     public function cekIdinBooking($ken_id)
@@ -200,8 +207,14 @@ class M_carimobil extends CI_Model {
     }
     public function ambilDataRequest($nama)
     {
-      $this->db->where('pic_kendaraan',$nama);
-      return $this->db->get('ga.ga_fleet_data_booking')->result_array();
+      $query = "select a.*,b.foto_kendaraan,c.merk_kendaraan,b.nomor_polisi from ga.ga_fleet_data_booking a 
+                  left join ga.ga_fleet_kendaraan b
+                    on a.kendaraan_id=b.kendaraan_id
+                  left join ga.ga_fleet_merk_kendaraan c
+                    on b.merk_kendaraan_id=c.merk_kendaraan_id
+                where a.pic_kendaraan='$nama'
+                order by a.tanggal desc";
+      return $this->db->query($query)->result_array();
     }
     public function ambilNamaPengemudi($id_pen)
     {

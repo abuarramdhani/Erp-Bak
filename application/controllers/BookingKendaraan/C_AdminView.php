@@ -69,10 +69,10 @@ class C_AdminView extends CI_Controller {
 				}else{
 					if ($i == $jml-1) {
 						$id_pen = $id_pen."','".$p[$i]['pengemudi']."'";
-						$id_pem = $id_pen."','".$p[$i]['pemohon']."'";
+						$id_pem = $id_pem."','".$p[$i]['pemohon']."'";
 					}else{
 						$id_pen = $id_pen."','".$p[$i]['pengemudi'];
-						$id_pem = $id_pen."','".$p[$i]['pemohon'];
+						$id_pem = $id_pem."','".$p[$i]['pemohon'];
 					}
 				}
 			}
@@ -87,6 +87,22 @@ class C_AdminView extends CI_Controller {
 		$this->load->view('V_Footer',$data);
 	}
 
-	
+	function confirm($id)
+	{
+		$array = array(
+						'confirmed' => 1,
+					);
+		$this->M_carimobil->updateConfirmed($id,$array);
+		redirect('AdminBookingKendaraan/RequestKendaraan');
+	}
+
+	function cancel($id)
+	{
+		$array = array(
+						'confirmed' => 2,
+					);
+		$this->M_carimobil->updateConfirmed($id,$array);
+		redirect('AdminBookingKendaraan/RequestKendaraan');
+	}
 	
 }

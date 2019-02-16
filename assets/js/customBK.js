@@ -201,6 +201,29 @@ $(document).ready(function(){
 			  // "pageLength": 2,
 		});
 
+		$('#tbl_log_booking_kendaraan').dataTable({
+	          "paging": true,
+	          "lengthChange": false,
+	          "searching": false,
+	          "ordering": true,
+			  "info": true,
+	          "autoWidth": false,
+			  "deferRender" : true,
+			  "scroller": true,
+			  // "pageLength": 2,
+		});
+		$('#tbl_data_booking_admin').dataTable({
+	          "paging": true,
+	          "lengthChange": false,
+	          "searching": false,
+	          "ordering": true,
+			  "info": true,
+	          "autoWidth": false,
+			  "deferRender" : true,
+			  "scroller": true,
+			  // "pageLength": 2,
+		});
+
 		$('.cal_periode_booking').daterangepicker({
 		    "timePicker": true,
 		    "timePicker24Hour": true,
