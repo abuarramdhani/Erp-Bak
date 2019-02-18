@@ -70,10 +70,12 @@
 									<td width="20" style="text-align:center;">:</td>
 									<td><?php echo $rc['receipt_from'] ?></td>
 								</tr>
-								<tr>
+								<tr style="vertical-align:top">
 									<td>Guna Pembayaran</td>
 									<td width="20" style="text-align:center;">:</td>
-									<td><?php echo $rc['type_description'].' '.$rc['catering_name'].' DARI TANGGAL '.$rc['order_start_date'].' - '.$rc['order_end_date'].' SEBANYAK '.$rc['order_qty'].' BOX/PCS @ Rp. '.number_format($rc['order_price'],0,",",".") ?></td>
+									<td><?php echo $rc['type_description'].' '.$rc['catering_name'].' DARI TANGGAL '.$rc['order_start_date'].' - '.$rc['order_end_date']
+									.' <br>DENGAN MENU '.$rc['order_description']
+									.' <br>SEBANYAK '.$rc['order_qty'].' BOX/PCS @ Rp. '.number_format($rc['order_price'],0,",",".") ?></td>
 								</tr>
 								<tr>
 									<td>Uang Sebanyak</td>
@@ -96,6 +98,11 @@
 									</tr>
 									<tr>
 										<td>Total Pesanan</td>
+										<td width="20" style="text-align:center;">:</td>
+										<td style="text-align:right;"><?php if($bonus_qty > 0){ echo $rc['order_qty']." - ".$bonus_qty."(Bonus)"; }else{ echo $rc['order_qty']; } ?></td>
+									</tr>
+									<tr>
+										<td>Total Harga</td>
 										<td width="20" style="text-align:center;">:</td>
 										<td style="text-align:right;"><?php echo "Rp. ".number_format($total, 0 , ',' , '.' ) ?></td>
 									</tr>

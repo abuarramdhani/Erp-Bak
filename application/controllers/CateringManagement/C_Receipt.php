@@ -182,19 +182,21 @@ class C_Receipt extends CI_Controller {
 		$signer		= $this->input->post('TxtSigner');
 		$ordertype	= $this->input->post('TxtOrderType');
 		$catering	= $this->input->post('TxtCatering');
+		$menu		= $this->input->post('TxtMenu');
 		
 		$Doubledate = $this->input->post('TxtOrderDate');
 		$ex_Doubledate = explode(' ', $Doubledate);
 		$startdate 	= date('Y-m-d',strtotime($ex_Doubledate[0]));
 		$enddate 	= date('Y-m-d',strtotime($ex_Doubledate[2]));
 		
+		$bonus 		= $this->input->post('TxtBonus');
 		$orderqty 	= $this->input->post('TxtOrderQty');
 		$orderprice	= $this->input->post('TxtSinglePrice');
 		$fine 		= $this->input->post('TxtFine');
 		$pph 		= $this->input->post('TxtPPH');
 		$payment	= $this->input->post('TxtTotal');
 		
-		$this->M_receipt->AddReceipt($id,$no,$date,$place,$from,$signer,$ordertype,$catering,$startdate,$enddate,$orderqty,$orderprice,$fine,$pph,$payment);
+		$this->M_receipt->AddReceipt($id,$no,$date,$place,$from,$signer,$ordertype,$catering,$startdate,$enddate,$orderqty,$orderprice,$fine,$pph,$payment,$menu,$bonus);
 		
 		$finedate = $this->input->post('TxtFineDate');
 		// $finedate=str_replace('/', '-', $finedate);
@@ -248,19 +250,21 @@ class C_Receipt extends CI_Controller {
 		$signer		= $this->input->post('TxtSigner');
 		$ordertype	= $this->input->post('TxtOrderType');
 		$catering	= $this->input->post('TxtCatering');
+		$menu		= $this->input->post('TxtMenu');
 		
 		$Doubledate = $this->input->post('TxtOrderDate');
 		$ex_Doubledate = explode(' ', $Doubledate);
 		$startdate 	= date('Y-m-d',strtotime($ex_Doubledate[0]));
 		$enddate 	= date('Y-m-d', strtotime($ex_Doubledate[2]));
 		
+		$bonus 		= $this->input->post('TxtBonus');
 		$orderqty 	= $this->input->post('TxtOrderQty');
 		$orderprice	= $this->input->post('TxtSinglePrice');
 		$fine 		= $this->input->post('TxtFine');
 		$pph 		= $this->input->post('TxtPPH');
 		$payment	= $this->input->post('TxtTotal');
 		
-		$this->M_receipt->UpdateReceipt($id,$no,$date,$place,$from,$signer,$ordertype,$catering,$startdate,$enddate,$orderqty,$orderprice,$fine,$pph,$payment);
+		$this->M_receipt->UpdateReceipt($id,$no,$date,$place,$from,$signer,$ordertype,$catering,$startdate,$enddate,$orderqty,$orderprice,$fine,$pph,$payment,$menu,$bonus);
 		
 		$this->M_receipt->DeleteReceiptFine($id);
 		
