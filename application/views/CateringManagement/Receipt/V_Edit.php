@@ -108,15 +108,6 @@
 								</div>
 							</div>
 						</div>
-						<!-- INPUT GROUP 2 ROW 1.2 -->
-						<div class="row" style="margin: 10px 10px">
-							<div class="form-group">
-								<label class="col-lg-2 control-label">Menu</label>
-								<div class="col-lg-6">
-									<input name="TxtMenu" class="form-control toupper" placeholder="Snack or Food" value="<?php echo $rc['order_description']?>">
-								</div>
-							</div>
-						</div>
 						<!-- INPUT GROUP 2 ROW 2 -->
 						<div class="row" style="margin: 10px 10px">
 							<div class="form-group">
@@ -129,18 +120,6 @@
 							</div>
 						</div>
 						
-						<!-- INPUT GROUP 2 ROW 1.2 -->
-						<div class="row" style="margin: 10px 10px">
-							<div class="form-group">
-								<label class="col-lg-2 control-label">Bonus</label>
-								<div class="col-lg-6">
-									<select class="form-control select4" id="bonus" name="TxtBonus" required>
-										<option value="1" <?php if($rc['bonus'] == 1){ echo "selected"; } ?> >Active</option>
-										<option value="0" <?php if($rc['bonus'] == 0){ echo "selected"; } ?>>Inactive</option>
-									</select>
-								</div>
-							</div>
-						</div>
 						<!-- INPUT GROUP 2 ROW 3 -->
 						<div class="row" style="margin: 10px 10px">
 							<div class="form-group">
@@ -230,15 +209,6 @@
 							</div>
 						</div>
 						
-						<!-- INPUT GROUP 3 ROW 1 -->
-						<div class="row" style="margin: 10px 10px">
-							<div class="form-group">
-								<label class="col-lg-2 control-label">Order Net</label>
-								<div class="col-lg-3">
-									<input id="ordernet" name="TxtOrderNet" class="form-control" onkeypress="return isNumberKey(event)" placeholder="Net" value="0" readonly>
-								</div>								
-							</div>
-						</div>
 						<!-- INPUT GROUP 3 ROW 1 -->
 						<div class="row" style="margin: 10px 10px">
 							<div class="form-group">
