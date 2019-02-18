@@ -1,7 +1,7 @@
 <section class="content">
     <div class="inner" >
         <div class="row">
-            <form method="post" action="<?php echo site_url('GeneralAffair/FleetKendaraan/update/'.$id);?>" class="form-horizontal" enctype="multipart/form-data">
+            <form method="post" action="<?php echo site_url('GeneralAffair/FleetKendaraan/update/'.$id);?>" class="form-horizontal form-kendaraaan-ga" enctype="multipart/form-data">
                 <div class="col-lg-12">
                     <div class="row">
                         <div class="col-lg-12">
@@ -130,7 +130,7 @@
 											<div class="form-group">
                                                 <label for="txtFotoStnkHeader" class="control-label col-lg-4">Foto STNK</label>
                                                 <div class="col-lg-4">
-                                                    <input type="file" name="FotoSTNK" id="FotoSTNK" class="form-control" placeholder="Edit File" />
+                                                    <input type="file" name="FotoSTNK" id="FotoSTNK" data-max-size='500' class="form-control" placeholder="Edit File" />
                                                     <a target="_blank" href="<?php echo base_url('assets/upload/GA/Kendaraan/'.$kendaraanEdit['foto_stnk']);?>"><?php echo $kendaraanEdit['foto_stnk'];?></a>
                                                     <input type="text" name="FotoSTNKawal" id="FotoSTNKawal" hidden="" value="<?php echo $kendaraanEdit['foto_stnk'];?>">
 
@@ -140,7 +140,7 @@
 											<div class="form-group">
                                                 <label for="txtFotoBpkbHeader" class="control-label col-lg-4">Foto BPKB</label>
                                                 <div class="col-lg-4">
-                                                    <input type="file" name="FotoBPKB" id="FotoBPKB" class="form-control" placeholder="Edit File" />
+                                                    <input type="file" name="FotoBPKB" id="FotoBPKB" class="form-control" data-max-size='500' placeholder="Edit File" />
                                                     <a target="_blank" href="<?php echo base_url('assets/upload/GA/Kendaraan/'.$kendaraanEdit['foto_bpkb']);?>"><?php echo $kendaraanEdit['foto_bpkb'];?></a>
                                                     <input type="text" name="FotoBPKBawal" id="FotoBPKBawal" hidden="" value="<?php echo $kendaraanEdit['foto_bpkb'];?>">
                                                 </div>
@@ -149,7 +149,7 @@
 											<div class="form-group">
                                                 <label for="txtFotoKendaraanHeader" class="control-label col-lg-4">Foto Kendaraan</label>
                                                 <div class="col-lg-4">
-                                                    <input type="file" name="FotoKendaraan" id="FotoKendaraan" class="form-control" placeholder="Edit File" />
+                                                    <input type="file" name="FotoKendaraan" id="FotoKendaraan" data-max-size='500' class="form-control" placeholder="Edit File" />
                                                     <a target="_blank" href="<?php echo base_url('assets/upload/GA/Kendaraan/'.$kendaraanEdit['foto_kendaraan']);?>"><?php echo $kendaraanEdit['foto_kendaraan'];?></a>
                                                     <input type="text" name="FotoKendaraanawal" id="FotoKendaraanawal" hidden="" value="<?php echo $kendaraanEdit['foto_kendaraan'];?>">
                                                 </div>
@@ -209,6 +209,7 @@
                                                     <ul class="nav nav-tabs">
                                                     </ul>
                                                     <div class="tab-content">
+                                                        <i style="color: red">maximal upload file 500 Kb</i>
                                                     </div>
                                                 </div>
                                             </div>

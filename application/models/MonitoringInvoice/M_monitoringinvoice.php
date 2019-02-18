@@ -147,22 +147,8 @@ SELECT DISTINCT pol.po_line_id line_id,
                     ('$invoice_number','$invoice_date','$invoice_amount', '$tax_invoice_number','$vendor_number','$vendor_name',to_date('$last_admin_date', 'DD/MM/YYYY HH24:MI:SS'), '$info','$invoice_category','$nominal_dpp','$source_login','$jenis_jasa')";
         $oracle->query($query);
 
-        if ($vendor_name) {
-            $qvendorname = "vendor_name = '$vendor_name'";
-        } else {
-            $qvendorname = "vendor_name is null";
-        }
-
-        if ($invoice_number) {
-            $qinvoicenum = "invoice_number = '$invoice_number'";
-        } else {
-            $qinvoicenum = "invoice_number is null";
-        }
-
-        $query2 = "SELECT invoice_id 
-                    from khs_ap_monitoring_invoice 
-                    where $qinvoicenum 
-                        and $qvendorname";
+        $query2 = "SELECT max(invoice_id) invoice_id 
+                    from khs_ap_monitoring_invoice ";
         $lastId = $oracle->query($query2);
         return $lastId->result_array();
     }

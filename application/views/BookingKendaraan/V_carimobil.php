@@ -127,7 +127,9 @@
 																	<br>
 																	<label><?php echo $row['seksi']; ?></label>
 																	<br>
-																	<label>Voip : </label>
+																	<label>Voip : <?php if ($key['voip_pic'] != NULL) {
+																		echo $key['voip_pic'];
+																	} ?></label>
 																	<?php
 																		}
 																		

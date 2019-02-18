@@ -231,6 +231,7 @@ class C_FleetKendaraan extends CI_Controller
 				$config['upload_path']          = './assets/upload/GA/Kendaraan';
 				// $config['allowed_types']        = 'jpg|png|gif|';
 				$config['allowed_types']        = '*';
+				$config['max_size']				= 500;
 	        	$config['file_name']		 	= $nama_STNK;
 	        	$config['overwrite'] 			= TRUE;
 
@@ -256,6 +257,7 @@ class C_FleetKendaraan extends CI_Controller
 				$config['upload_path']          = './assets/upload/GA/Kendaraan';
 				// $config['allowed_types']        = 'jpg|png|gif|';
 				$config['allowed_types']        = '*';
+				$config['max_size']				= 500;
 	        	$config['file_name']		 	= $nama_BPKB;
 	        	$config['overwrite'] 			= TRUE;
 	        	
@@ -282,6 +284,7 @@ class C_FleetKendaraan extends CI_Controller
 				$config['upload_path']          = './assets/upload/GA/Kendaraan';
 				// $config['allowed_types']        = 'jpg|png|gif|';
 				$config['allowed_types']        = '*';
+				$config['max_size']				= 500;
 	        	$config['file_name']		 	= $nama_Kendaraan;
 	        	$config['overwrite'] 			= TRUE;
 
@@ -456,6 +459,7 @@ class C_FleetKendaraan extends CI_Controller
 				$config['upload_path']          = './assets/upload/GA/Kendaraan';
 				// $config['allowed_types']        = 'jpg|png|gif|';
 				$config['allowed_types']        = '*';
+				$config['max_size']				= 500;
 	        	$config['file_name']		 	= $nama_STNK;
 	        	$config['overwrite'] 			= TRUE;
 
@@ -483,6 +487,7 @@ class C_FleetKendaraan extends CI_Controller
 				$config['upload_path']          = './assets/upload/GA/Kendaraan';
 				// $config['allowed_types']        = 'jpg|png|gif|';
 				$config['allowed_types']        = '*';
+				$config['max_size']				= 500;
 	        	$config['file_name']		 	= $nama_BPKB;
 	        	$config['overwrite'] 			= TRUE;
 	        	
@@ -511,6 +516,7 @@ class C_FleetKendaraan extends CI_Controller
 				$config['upload_path']          = './assets/upload/GA/Kendaraan';
 				// $config['allowed_types']        = 'jpg|png|gif|';
 				$config['allowed_types']        = '*';
+				$config['max_size']				= 500;
 	        	$config['file_name']		 	= $nama_Kendaraan;
 	        	$config['overwrite'] 			= TRUE;
 

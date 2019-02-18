@@ -58,7 +58,7 @@
 										echo "-";
 										} ?></label>
 									<br>
-									<label>Voip : </label>
+									<label>Voip : <?php echo $kendaraan[0]['voip_pic']; ?></label>
 								</div>
 							</div>
 						</div>

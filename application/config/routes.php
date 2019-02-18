@@ -2263,6 +2263,10 @@ $route['ALK/ConfLembur'] = 'splseksi/C_splkasie/confirm_spl';
 $route['ALA/ListLembur'] = 'splseksi/C_splasska/data_spl';
 
 //---------------------------------------------------- Booking Kendaraan --------------------------------------//
+// hati hati kadang any any gak bisa kepanggil
+$route['AdminBookingKendaraan/DataKendaraan'] = 'BookingKendaraan/C_AdminData';
+$route['AdminBookingKendaraan/DataKendaraan/(:any)'] = 'BookingKendaraan/C_AdminData/$1';
+$route['AdminBookingKendaraan/DataKendaraan/(:any)/(:any)'] = 'BookingKendaraan/C_AdminData/$1/$2';
 
 $route['BookingKendaraan/LogPeminjaman'] = 'BookingKendaraan/C_logpeminjaman';
 $route['BookingKendaraan/LogPeminjaman/(:any)'] = 'BookingKendaraan/C_logpeminjaman/$1';
@@ -2283,3 +2287,22 @@ $route['AdminBookingKendaraan/RequestKendaraan/(:any)/(:any)'] = 'BookingKendara
 $route['BookingKendaraan'] = 'BookingKendaraan/C_Index';
 $route['BookingKendaraan/(:any)'] = 'BookingKendaraan/C_Index/$1';
 $route['BookingKendaraan/(:any)/(:any)'] = 'BookingKendaraan/C_Index/$1/$2';
+
+//-------------------------------------------------------PNBP Administrator--------------------------------------//
+$route['PNBP'] = 'PNBPAdministrator/C_PNBPAdministrator';
+
+$route['PNBP/SetupAdmin'] = 'PNBPAdministrator/C_SetupAdmin';
+$route['PNBP/SetupAdmin/(:any)'] = 'PNBPAdministrator/C_SetupAdmin/$1';
+$route['PNBP/SetupAdmin/(:any)/(:any)'] = 'PNBPAdministrator/C_SetupAdmin/$1/$2';
+
+$route['PNBP/SetupKelompok'] = 'PNBPAdministrator/C_SetupKelompok';
+$route['PNBP/SetupKelompok/(:any)'] = 'PNBPAdministrator/C_SetupKelompok/$1';
+$route['PNBP/SetupKelompok/(:any)/(:any)'] = 'PNBPAdministrator/C_SetupKelompok/$1/$2';
+
+$route['PNBP/SetupIndikator'] = 'PNBPAdministrator/C_SetupIndikator';
+$route['PNBP/SetupIndikator/(:any)'] = 'PNBPAdministrator/C_SetupIndikator/$1';
+$route['PNBP/SetupIndikator/(:any)/(:any)'] = 'PNBPAdministrator/C_SetupIndikator/$1/$2';
+
+$route['PNBP/SetupPernyataan'] = 'PNBPAdministrator/C_SetupPernyataan';
+$route['PNBP/SetupPernyataan/(:any)'] = 'PNBPAdministrator/C_SetupPernyataan/$1';
+$route['PNBP/SetupPernyataan/(:any)/(:any)'] = 'PNBPAdministrator/C_SetupPernyataan/$1/$2';
