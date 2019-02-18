@@ -34,68 +34,23 @@
 		<tr>
 			<td style="text-align: center;background-color: #ccffcc;" colspan="8">TUKSONO</td>
 		</tr>
-		<?php
-		$total_semua = "";
-		$no=1;
-		$jmlkom=count($kom);
-		for ($u=0; $u < $jmlkom; $u++) {
-			$gpokok  = $kom[$u]['gpokok'];
-			$um		 = $kom[$u]['um'];
-			$lembur  = $kom[$u]['lembur'];
-			for ($i=0; $i < 8; $i++) { 
-				if ($kom[$u]['lokasi_kerja']==$nom[$i]['lokasi_kerja'] and $kom[$u]['kdpekerjaan']==$nom[$i]['kode_pekerjaan']) {
-					$nomgpokok = $nom[$i]['nominal'];
-				}
-				if ($kom[$u]['lokasi_kerja']==$nom[$i]['lokasi_kerja']) {
-					$nomum = $nom[$i]['uang_makan'];
-				}
-			}
-			$gajipokok = $gpokok*$nomgpokok;
-			$gajium    = $um*$nomum;
-			$gajilembur= $lembur*($nomgpokok/7);
-			$total 	   = $gajipokok+$gajilembur+$gajium;
-			$total_semua = $total_semua+$total;
-			if ($kom[$u]['lokasi_kerja'] == '02' and $no <= 37) {
-				?>
+		<?php 
+		$no = 1;
+		foreach ($res as $key) {
+			if ($key['lokasi_kerja'] == '02' and $no <= 37) { ?>
 				<tr>
-					<td style="border-top: 1px solid black;border-bottom: 1px solid black;text-align: center;"><?php echo $no;?></td>
-					<td style="border: 1px solid black; text-align: center;"><?php ?></td>
-					<td style="border: 1px solid black; text-align: center;">
-						<?php 
-							foreach ($rekap as $ker) {
-								if ($kom[$u]['noind'] == $ker['noind']) {
-									echo $ker['no_rekening'];
-								}
-							}
-						?>
-					</td>
-					<td style="border: 1px solid black;padding-left: 2px;"><?php echo $kom[$u]['nama'];?></td>
-					<td style="border: 1px solid black;padding-left: 3px;text-align: center;"><?php echo number_format($total,0,'','.');?></td>
-					<td style="border: 1px solid black;padding-left: 2px;">
-						<?php 
-							foreach ($rekap as $ker) {
-								if ($kom[$u]['noind'] == $ker['noind']) {
-									echo $ker['atas_nama'];
-								}
-							}
-						?>
-					</td>
-					<td style="border: 1px solid black; text-align: center;">
-						<?php 
-							foreach ($rekap as $ker) {
-								if ($kom[$u]['noind'] == $ker['noind']) {
-									echo $ker['bank'];
-								}
-							}
-						?>
-					</td>
+					<td style="border-top: 1px solid black;border-bottom: 1px solid black;text-align: center;"><?php echo $no; ?></td>
+					<td style="border: 1px solid black; text-align: center;"></td>
+					<td style="border: 1px solid black; text-align: center;"><?php echo $key['rekening'] ?></td>
+					<td style="border: 1px solid black;padding-left: 2px;"><?php echo $key['nama'] ?></td>
+					<td style="border: 1px solid black;padding-left: 3px;text-align: center;"><?php echo $key['total_terima'] ?></td>
+					<td style="border: 1px solid black;padding-left: 2px;"><?php echo $key['atas_nama'] ?></td>
+					<td style="border: 1px solid black; text-align: center;"><?php echo $key['bank'] ?></td>
 					<td style="border-top: 1px solid black;border-bottom: 1px solid black;"></td>
 				</tr>
-				<?php
-			$no++;
-			}
-		}
-		?>
+			<?php 
+			$no++; }
+		}	?>
 		</table>
 		<table style="width: 100%;border-collapse: collapse;font-size: 12px;margin-top: 10px; border: 1px solid black">
 		<tr style="background-color: #ccffcc;">
@@ -108,138 +63,44 @@
 			<td style="border: 1px solid black; text-align: center; width: 13%">BANK</td>
 			<td style="border-top: 1px solid black;border-bottom: 1px solid black; text-align: center;">KETERANGAN</td>
 		</tr>
-		<?php
-		$total_semua = "";
-		$no=1;
-		$jmlkom = count($kom);
-		for ($u=0; $u < $jmlkom; $u++){
-			$gpokok  = $kom[$u]['gpokok'];
-			$um		 = $kom[$u]['um'];
-			$lembur  = $kom[$u]['lembur'];
-			for ($i=0; $i < 8; $i++) { 
-				if ($kom[$u]['lokasi_kerja']==$nom[$i]['lokasi_kerja'] and $kom[$u]['kdpekerjaan']==$nom[$i]['kode_pekerjaan']) {
-					$nomgpokok = $nom[$i]['nominal'];
-				}
-				if ($kom[$u]['lokasi_kerja']==$nom[$i]['lokasi_kerja']) {
-					$nomum = $nom[$i]['uang_makan'];
-				}
-			}
-			$gajipokok = $gpokok*$nomgpokok;
-			$gajium    = $um*$nomum;
-			$gajilembur= $lembur*($nomgpokok/7);
-			$total 	   = $gajipokok+$gajilembur+$gajium;
-			$total_semua = $total_semua+$total;
-			if ($kom[$u]['lokasi_kerja'] == '02') {
-				if ($no > 37) {
+		<?php 
+		$no = 1;
+		foreach ($res as $key) {
+			if ($key['lokasi_kerja'] == '02') { 
+					if ($no > 37) {
 					?>
-					<tr>
-						<td style="border-top: 1px solid black;border-bottom: 1px solid black;text-align: center;"><?php echo $no;?></td>
-						<td style="border: 1px solid black; text-align: center;"><?php ?></td>
-						<td style="border: 1px solid black; text-align: center;">
-							<?php 
-								foreach ($rekap as $ker) {
-									if ($kom[$u]['noind'] == $ker['noind']) {
-										echo $ker['no_rekening'];
-									}
-								}
-							?>
-						</td>
-						<td style="border: 1px solid black;padding-left: 2px;"><?php echo $kom[$u]['nama'];?></td>
-						<td style="border: 1px solid black;padding-left: 3px;text-align: center;"><?php echo number_format($total,0,'','.');?></td>
-						<td style="border: 1px solid black;padding-left: 2px;">
-							<?php 
-								foreach ($rekap as $ker) {
-									if ($kom[$u]['noind'] == $ker['noind']) {
-										echo $ker['atas_nama'];
-									}
-								}
-							?>
-						</td>
-						<td style="border: 1px solid black; text-align: center;">
-							<?php 
-								foreach ($rekap as $ker) {
-									if ($kom[$u]['noind'] == $ker['noind']) {
-										echo $ker['bank'];
-									}
-								}
-							?>
-						</td>
-						<td style="border-top: 1px solid black;border-bottom: 1px solid black;"></td>
-					</tr>
-					<?php
-				}				
-			$no++;
+						<tr>
+							<td style="border-top: 1px solid black;border-bottom: 1px solid black;text-align: center;"><?php echo $no; ?></td>
+							<td style="border: 1px solid black; text-align: center;"></td>
+							<td style="border: 1px solid black; text-align: center;"><?php echo $key['rekening'] ?></td>
+							<td style="border: 1px solid black;padding-left: 2px;"><?php echo $key['nama'] ?></td>
+							<td style="border: 1px solid black;padding-left: 3px;text-align: center;"><?php echo $key['total_terima'] ?></td>
+							<td style="border: 1px solid black;padding-left: 2px;"><?php echo $key['atas_nama'] ?></td>
+							<td style="border: 1px solid black; text-align: center;"><?php echo $key['bank'] ?></td>
+							<td style="border-top: 1px solid black;border-bottom: 1px solid black;"></td>
+						</tr>
+			<?php } $no++; 
 			}
-		}
-		?>
+		}	?>
 		<tr>
 			<td style="text-align: center;background-color: #ccffcc;" colspan="8">PUSAT</td>
 		</tr>
-		<?php
-		$jml_tuk ="";
-		foreach ($kom as $op) {
-			if ($op['lokasi_kerja'] == '02') {
-				$jml_tuk = $jml_tuk+1;
-			}
-		}
-		$nomor = $jml_tuk+1;
-		foreach ($kom as $key) {
-			$gpokok  = $key['gpokok'];
-			$um		 = $key['um'];
-			$lembur  = $key['lembur'];
-			for ($i=0; $i < 8; $i++) { 
-				if ($key['lokasi_kerja']==$nom[$i]['lokasi_kerja'] and $key['kdpekerjaan']==$nom[$i]['kode_pekerjaan']) {
-					$nomgpokok = $nom[$i]['nominal'];
-				}
-				if ($key['lokasi_kerja']==$nom[$i]['lokasi_kerja']) {
-					$nomum = $nom[$i]['uang_makan'];
-				}
-			}
-			$gajipokok = $gpokok*$nomgpokok;
-			$gajium    = $um*$nomum;
-			$gajilembur= $lembur*($nomgpokok/7);
-			$total 	   = $gajipokok+$gajilembur+$gajium;
-			if ($key['lokasi_kerja'] == '01') {
-				?>
+		<?php 
+		foreach ($res as $key) {
+			if ($key['lokasi_kerja'] == '01') { ?>
 				<tr>
-					<td style="border-top: 1px solid black;border-bottom: 1px solid black;text-align: center;"><?php echo $nomor;?></td>
-					<td style="border: 1px solid black; text-align: center;"><?php ?></td>
-					<td style="border: 1px solid black; text-align: center;">
-						<?php 
-							foreach ($rekap as $ker) {
-								if ($key['noind'] == $ker['noind']) {
-									echo $ker['no_rekening'];
-								}
-							}
-						?>
-					</td>
-					<td style="border: 1px solid black;padding-left: 2px;"><?php echo $key['nama'];?></td>
-					<td style="border: 1px solid black;padding-left: 3px;text-align: center;"><?php echo number_format($total,0,'','.');?></td>
-					<td style="border: 1px solid black;padding-left: 2px;">
-						<?php 
-							foreach ($rekap as $ker) {
-								if ($key['noind'] == $ker['noind']) {
-									echo $ker['atas_nama'];
-								}
-							}
-						?>
-					</td>
-					<td style="border: 1px solid black; text-align: center;">
-						<?php 
-							foreach ($rekap as $ker) {
-								if ($key['noind'] == $ker['noind']) {
-									echo $ker['bank'];
-								}
-							}
-						?>
-					</td>
+					<td style="border-top: 1px solid black;border-bottom: 1px solid black;text-align: center;"><?php echo $no; ?></td>
+					<td style="border: 1px solid black; text-align: center;"></td>
+					<td style="border: 1px solid black; text-align: center;"><?php echo $key['rekening'] ?></td>
+					<td style="border: 1px solid black;padding-left: 2px;"><?php echo $key['nama'] ?></td>
+					<td style="border: 1px solid black;padding-left: 3px;text-align: center;"><?php echo $key['total_terima'] ?></td>
+					<td style="border: 1px solid black;padding-left: 2px;"><?php echo $key['atas_nama'] ?></td>
+					<td style="border: 1px solid black; text-align: center;"><?php echo $key['bank'] ?></td>
 					<td style="border-top: 1px solid black;border-bottom: 1px solid black;"></td>
 				</tr>
-				<?php
-			$nomor++;
-			}
-		}
-		?>
+			<?php 
+			$no++; }
+		}	?>
 		<tr>
 			<td height="20px;"></td>
 		</tr>

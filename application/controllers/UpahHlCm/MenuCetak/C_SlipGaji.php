@@ -95,6 +95,104 @@ class C_SlipGaji extends CI_Controller {
 		$data['kom'] = $this->M_prosesgaji->prosesHitung($tanggalawal,$tanggalakhir,$pnoind);
 		$data['nom'] = $this->M_prosesgaji->ambilNominalGaji();
 
+		$kom 	= $data['kom'];
+		$nom 	= $data['nom'];
+		$row 	= 0;
+		$total_semua = 0;
+		foreach ($kom as $key) {
+
+			$gpokok  = $key['gpokok'];
+			$um		 = $key['um'];
+			$lembur  = $key['lembur'];
+			$cekUbahPekerjaan = $this->M_prosesgaji->getUbahPekerjaan($key['noind'],$key['kdpekerjaan'],$tanggalawal,$tanggalakhir,'cek');
+			if ($cekUbahPekerjaan == 1) {
+				$tanggalPerubahan = $this->M_prosesgaji->getUbahPekerjaan($key['noind'],$key['kdpekerjaan'],$tanggalawal,$tanggalakhir,'tanggal');
+				
+				foreach ($tanggalPerubahan as$val) {
+					$dataPerubahanSebelum = $this->M_prosesgaji->getNominalPerubahan($tanggalawal,$val['tanggal_akhir_berlaku'],$key['noind']);
+					for ($i=0; $i < 8; $i++) { 
+						if ($val['lokasi_kerja']==$nom[$i]['lokasi_kerja'] and $val['kode_pekerjaan2']==$nom[$i]['kode_pekerjaan']) {
+							$nominalgpokok = $nom[$i]['nominal'];
+						}
+						if ($val['lokasi_kerja']==$nom[$i]['lokasi_kerja']) {
+							$nominalum = $nom[$i]['uang_makan'];
+						}
+					}
+					foreach ($dataPerubahanSebelum as $value) {
+						$gajipokok1 	= $value['gpokok']*$nominalgpokok;
+						$uangmakan1 	= $value['um']*$nominalum;
+						$gajilembur1 	= $value['lembur']*($nominalgpokok/7);
+						$total 			= $gajipokok1+$gajilembur1+$uangmakan1;
+						$data['res'][$row]['gp1'] = $value['gpokok'];
+						$data['res'][$row]['nomgp1'] = $nominalgpokok;
+						$data['res'][$row]['um1'] = $value['um'];
+						$data['res'][$row]['nomum1'] = $nominalum;
+						$data['res'][$row]['lmbr1'] = $value['lembur'];
+						$data['res'][$row]['nomlmbr1'] = $nominalgpokok/7;
+
+					}
+					$dataPerubahanSesudah = $this->M_prosesgaji->getNominalPerubahan($val['tanggal_mulai_berlaku'],$tanggalakhir,$key['noind']);
+					for ($i=0; $i < 8; $i++) { 
+						if ($val['lokasi_kerja']==$nom[$i]['lokasi_kerja'] and $val['kode_pekerjaan']==$nom[$i]['kode_pekerjaan']) {
+							$nominalgpokok = $nom[$i]['nominal'];
+						}
+						if ($val['lokasi_kerja']==$nom[$i]['lokasi_kerja']) {
+							$nominalum = $nom[$i]['uang_makan'];
+						}
+					}
+					foreach ($dataPerubahanSesudah as $value) {
+						$gajipokok2 	= $value['gpokok']*$nominalgpokok;
+						$uangmakan2 	= $value['um']*$nominalum;
+						$gajilembur2 = $value['lembur']*($nominalgpokok/7);
+						$total 		+= $gajipokok2+$gajilembur2+$uangmakan2;
+						$gajipokok 	= $gajipokok1+$gajipokok2;
+						$uangmakan 	= $uangmakan1+$uangmakan2;
+						$gajilembur = $gajilembur1+$gajilembur2;
+						$gajilembur = number_format($gajilembur,'0','.','');
+						$total 		= number_format($total,'0','.','');
+						$data['res'][$row]['gp2'] = $value['gpokok'];
+						$data['res'][$row]['nomgp2'] = $nominalgpokok;
+						$data['res'][$row]['um2'] = $value['um'];
+						$data['res'][$row]['nomum2'] = $nominalum;
+						$data['res'][$row]['lmbr2'] = $value['lembur'];
+						$data['res'][$row]['nomlmbr2'] = $nominalgpokok/7;
+					}
+				}
+			}else{
+				for ($i=0; $i < 8; $i++) { 
+					if ($key['lokasi_kerja']==$nom[$i]['lokasi_kerja'] and $key['kdpekerjaan']==$nom[$i]['kode_pekerjaan']) {
+						$nominalgpokok = $nom[$i]['nominal'];
+					}
+					if ($key['lokasi_kerja']==$nom[$i]['lokasi_kerja']) {
+						$nominalum = $nom[$i]['uang_makan'];
+					}
+				}
+
+				$gajipokok 	= $gpokok*$nominalgpokok;
+				$uangmakan 	= $um*$nominalum;
+				$gajilembur = $lembur*($nominalgpokok/7);
+				$gajilembur = number_format($gajilembur,'0','.','');
+				$total 		= $gajipokok+$gajilembur+$uangmakan;
+				$total 		= number_format($total,'0','.','');
+				$data['res'][$row]['gp'] = $gpokok;
+				$data['res'][$row]['nomgp'] = $nominalgpokok;
+				$data['res'][$row]['um'] = $um;
+				$data['res'][$row]['nomum'] = $nominalum;
+				$data['res'][$row]['lmbr'] = $lembur;
+				$data['res'][$row]['nomlmbr'] = $nominalgpokok/7;
+			}
+
+			$data['res'][$row]['lokasi_kerja'] = $key['lokasi_kerja'];
+			$data['res'][$row]['noind'] = $key['noind'];
+			$data['res'][$row]['nama'] = $key['nama'];
+			$data['res'][$row]['pekerjaan'] = $key['pekerjaan'];
+			$data['res'][$row]['total_terima'] = $total;
+			
+			$row++;
+		}
+
+		// echo "<pre>";
+		// print_r($data['res']);exit();
 		$pdf = $this->pdf->load();
 		$pdf = new mPDF('utf-8', 'A5-L', 8, '', 5, 5, 5, 15, 10, 20);
 		$filename = 'Slip_gaji-'.$tgl.'.pdf';

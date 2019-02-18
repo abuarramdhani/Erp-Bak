@@ -93,6 +93,102 @@ class C_Rekap extends CI_Controller {
 
 		$submit = $this->input->post('txtSubmit');
 		if ($submit == 'Cetak Pdf') {
+			$kom 	= $data['kom'];
+			$nom 	= $data['nom'];
+			$rekap 	= $data['rekap'];
+			$row 	= 0;
+			$total_semua = 0;
+			foreach ($kom as $key) {
+
+				$gpokok  = $key['gpokok'];
+				$um		 = $key['um'];
+				$lembur  = $key['lembur'];
+				$cekUbahPekerjaan = $this->M_prosesgaji->getUbahPekerjaan($key['noind'],$key['kdpekerjaan'],$tanggalawal,$tanggalakhir,'cek');
+				if ($cekUbahPekerjaan == 1) {
+					$tanggalPerubahan = $this->M_prosesgaji->getUbahPekerjaan($key['noind'],$key['kdpekerjaan'],$tanggalawal,$tanggalakhir,'tanggal');
+					
+					foreach ($tanggalPerubahan as$val) {
+						$dataPerubahanSebelum = $this->M_prosesgaji->getNominalPerubahan($tanggalawal,$val['tanggal_akhir_berlaku'],$key['noind']);
+						for ($i=0; $i < 8; $i++) { 
+							if ($val['lokasi_kerja']==$nom[$i]['lokasi_kerja'] and $val['kode_pekerjaan2']==$nom[$i]['kode_pekerjaan']) {
+								$nominalgpokok = $nom[$i]['nominal'];
+							}
+							if ($val['lokasi_kerja']==$nom[$i]['lokasi_kerja']) {
+								$nominalum = $nom[$i]['uang_makan'];
+							}
+						}
+						foreach ($dataPerubahanSebelum as $value) {
+							$gajipokok1 	= $value['gpokok']*$nominalgpokok;
+							$uangmakan1 	= $value['um']*$nominalum;
+							$gajilembur1 	= $value['lembur']*($nominalgpokok/7);
+							$total 			= $gajipokok1+$gajilembur1+$uangmakan1;
+							$total_semua 	+= $total;
+						}
+						$dataPerubahanSesudah = $this->M_prosesgaji->getNominalPerubahan($val['tanggal_mulai_berlaku'],$tanggalakhir,$key['noind']);
+						for ($i=0; $i < 8; $i++) { 
+							if ($val['lokasi_kerja']==$nom[$i]['lokasi_kerja'] and $val['kode_pekerjaan']==$nom[$i]['kode_pekerjaan']) {
+								$nominalgpokok = $nom[$i]['nominal'];
+							}
+							if ($val['lokasi_kerja']==$nom[$i]['lokasi_kerja']) {
+								$nominalum = $nom[$i]['uang_makan'];
+							}
+						}
+						foreach ($dataPerubahanSesudah as $value) {
+							$gajipokok2 	= $value['gpokok']*$nominalgpokok;
+							$uangmakan2 	= $value['um']*$nominalum;
+							$gajilembur2 = $value['lembur']*($nominalgpokok/7);
+							$total 		+= $gajipokok2+$gajilembur2+$uangmakan2;
+							$total_semua += $total;
+							$gajipokok 	= $gajipokok1+$gajipokok2;
+							$uangmakan 	= $uangmakan1+$uangmakan2;
+							$gajilembur = $gajilembur1+$gajilembur2;
+							$gajilembur = number_format($gajilembur,'0','.','');
+							$total 		= number_format($total,'0','.','');
+						}
+					}
+				}else{
+					for ($i=0; $i < 8; $i++) { 
+						if ($key['lokasi_kerja']==$nom[$i]['lokasi_kerja'] and $key['kdpekerjaan']==$nom[$i]['kode_pekerjaan']) {
+							$nominalgpokok = $nom[$i]['nominal'];
+						}
+						if ($key['lokasi_kerja']==$nom[$i]['lokasi_kerja']) {
+							$nominalum = $nom[$i]['uang_makan'];
+						}
+					}
+
+					$gajipokok 	= $gpokok*$nominalgpokok;
+					$uangmakan 	= $um*$nominalum;
+					$gajilembur = $lembur*($nominalgpokok/7);
+					$gajilembur = number_format($gajilembur,'0','.','');
+					$total 		= $gajipokok+$gajilembur+$uangmakan;
+					$total_semua += $total;
+					$total 		= number_format($total,'0','.','');
+				}
+
+				foreach ($rekap as $val) {
+					if ($key['noind'] == $val['noind']) {
+						$rek 	= $val['no_rekening'];
+						$an 	= $val['atas_nama'];
+						$bank 	= $val['bank'];
+					}
+				}
+				$data['res'][$row] = array(
+					'lokasi_kerja' 	=> $key['lokasi_kerja'],
+					'noind' 		=> $key['noind'],
+					'nama' 			=> $key['nama'],
+					'total_terima' 	=> $total,
+					'rekening' 		=> $rek,
+					'atas_nama' 	=> $an,
+					'bank' 			=> $bank,
+				);
+
+				$row++;
+			}
+
+			$data['total_semua'] = $total_semua;
+			// echo "<pre>";
+			// print_r($data['res']);exit();
+
 			$pdf = $this->pdf->load();
 			$pdf = new mPDF('utf-8', 'F4', 8, '', 12, 15, 15, 15, 10, 20);
 			$filename = 'Rekap-'.$tgl.'.pdf';
@@ -133,19 +229,78 @@ class C_Rekap extends CI_Controller {
 					$gpokok  = $key['gpokok'];
 					$um		 = $key['um'];
 					$lembur  = $key['lembur'];
-					for ($i=0; $i < 8; $i++) { 
-						if ($key['lokasi_kerja']==$nom[$i]['lokasi_kerja'] and $key['kdpekerjaan']==$nom[$i]['kode_pekerjaan']) {
-							$nomgpokok = $nom[$i]['nominal'];
+					// for ($i=0; $i < 8; $i++) { 
+					// 	if ($key['lokasi_kerja']==$nom[$i]['lokasi_kerja'] and $key['kdpekerjaan']==$nom[$i]['kode_pekerjaan']) {
+					// 		$nomgpokok = $nom[$i]['nominal'];
+					// 	}
+					// 	if ($key['lokasi_kerja']==$nom[$i]['lokasi_kerja']) {
+					// 		$nomum = $nom[$i]['uang_makan'];
+					// 	}
+					// }
+					// $gajipokok = $gpokok*$nomgpokok;
+					// $gajium    = $um*$nomum;
+					// $gajilembur= $lembur*($nomgpokok/7);
+					// $total 	   = $gajipokok+$gajilembur+$gajium;
+					// $total_semua = $total_semua+$total;
+
+					$cekUbahPekerjaan = $this->M_prosesgaji->getUbahPekerjaan($key['noind'],$key['kdpekerjaan'],$tanggalawal,$tanggalakhir,'cek');
+					if ($cekUbahPekerjaan == 1) {
+						$tanggalPerubahan = $this->M_prosesgaji->getUbahPekerjaan($key['noind'],$key['kdpekerjaan'],$tanggalawal,$tanggalakhir,'tanggal');
+						
+						foreach ($tanggalPerubahan as$val) {
+							$dataPerubahanSebelum = $this->M_prosesgaji->getNominalPerubahan($tanggalawal,$val['tanggal_akhir_berlaku'],$key['noind']);
+							for ($i=0; $i < 8; $i++) { 
+								if ($val['lokasi_kerja']==$nom[$i]['lokasi_kerja'] and $val['kode_pekerjaan2']==$nom[$i]['kode_pekerjaan']) {
+									$nominalgpokok = $nom[$i]['nominal'];
+								}
+								if ($val['lokasi_kerja']==$nom[$i]['lokasi_kerja']) {
+									$nominalum = $nom[$i]['uang_makan'];
+								}
+							}
+							foreach ($dataPerubahanSebelum as $value) {
+								$gajipokok1 	= $value['gpokok']*$nominalgpokok;
+								$uangmakan1 	= $value['um']*$nominalum;
+								$gajilembur1 = $value['lembur']*($nominalgpokok/7);
+								$total 		= $gajipokok1+$gajilembur1+$uangmakan1;
+							}
+							$dataPerubahanSesudah = $this->M_prosesgaji->getNominalPerubahan($val['tanggal_mulai_berlaku'],$tanggalakhir,$key['noind']);
+							for ($i=0; $i < 8; $i++) { 
+								if ($val['lokasi_kerja']==$nom[$i]['lokasi_kerja'] and $val['kode_pekerjaan']==$nom[$i]['kode_pekerjaan']) {
+									$nominalgpokok = $nom[$i]['nominal'];
+								}
+								if ($val['lokasi_kerja']==$nom[$i]['lokasi_kerja']) {
+									$nominalum = $nom[$i]['uang_makan'];
+								}
+							}
+							foreach ($dataPerubahanSesudah as $value) {
+								$gajipokok2 	= $value['gpokok']*$nominalgpokok;
+								$uangmakan2 	= $value['um']*$nominalum;
+								$gajilembur2 = $value['lembur']*($nominalgpokok/7);
+								$total 		+= $gajipokok2+$gajilembur2+$uangmakan2;
+								$gajipokok 	= $gajipokok1+$gajipokok2;
+								$uangmakan 	= $uangmakan1+$uangmakan2;
+								$gajilembur = $gajilembur1+$gajilembur2;
+								$gajilembur = number_format($gajilembur,'0','.','');
+								$total 		= number_format($total,'0','.','');
+							}
 						}
-						if ($key['lokasi_kerja']==$nom[$i]['lokasi_kerja']) {
-							$nomum = $nom[$i]['uang_makan'];
+					}else{
+						for ($i=0; $i < 8; $i++) { 
+							if ($key['lokasi_kerja']==$nom[$i]['lokasi_kerja'] and $key['kdpekerjaan']==$nom[$i]['kode_pekerjaan']) {
+								$nominalgpokok = $nom[$i]['nominal'];
+							}
+							if ($key['lokasi_kerja']==$nom[$i]['lokasi_kerja']) {
+								$nominalum = $nom[$i]['uang_makan'];
+							}
 						}
+
+						$gajipokok 	= $gpokok*$nominalgpokok;
+						$uangmakan 	= $um*$nominalum;
+						$gajilembur = $lembur*($nominalgpokok/7);
+						$gajilembur = number_format($gajilembur,'0','.','');
+						$total 		= $gajipokok+$gajilembur+$uangmakan;
+						$total 		= number_format($total,'0','.','');
 					}
-					$gajipokok = $gpokok*$nomgpokok;
-					$gajium    = $um*$nomum;
-					$gajilembur= $lembur*($nomgpokok/7);
-					$total 	   = $gajipokok+$gajilembur+$gajium;
-					$total_semua = $total_semua+$total;
 
 					$worksheet->setCellValueByColumnAndRow(0,$row,$no);
 					$worksheet->setCellValueByColumnAndRow(3,$row,$key['nama']);
@@ -185,19 +340,77 @@ class C_Rekap extends CI_Controller {
 					$gpokok  = $key['gpokok'];
 					$um		 = $key['um'];
 					$lembur  = $key['lembur'];
-					for ($i=0; $i < 8; $i++) { 
-						if ($key['lokasi_kerja']==$nom[$i]['lokasi_kerja'] and $key['kdpekerjaan']==$nom[$i]['kode_pekerjaan']) {
-							$nomgpokok = $nom[$i]['nominal'];
+					// for ($i=0; $i < 8; $i++) { 
+					// 	if ($key['lokasi_kerja']==$nom[$i]['lokasi_kerja'] and $key['kdpekerjaan']==$nom[$i]['kode_pekerjaan']) {
+					// 		$nomgpokok = $nom[$i]['nominal'];
+					// 	}
+					// 	if ($key['lokasi_kerja']==$nom[$i]['lokasi_kerja']) {
+					// 		$nomum = $nom[$i]['uang_makan'];
+					// 	}
+					// }
+					// $gajipokok = $gpokok*$nomgpokok;
+					// $gajium    = $um*$nomum;
+					// $gajilembur= $lembur*($nomgpokok/7);
+					// $total 	   = $gajipokok+$gajilembur+$gajium;
+					// $total_semua = $total_semua+$total;
+					$cekUbahPekerjaan = $this->M_prosesgaji->getUbahPekerjaan($key['noind'],$key['kdpekerjaan'],$tanggalawal,$tanggalakhir,'cek');
+					if ($cekUbahPekerjaan == 1) {
+						$tanggalPerubahan = $this->M_prosesgaji->getUbahPekerjaan($key['noind'],$key['kdpekerjaan'],$tanggalawal,$tanggalakhir,'tanggal');
+						
+						foreach ($tanggalPerubahan as$val) {
+							$dataPerubahanSebelum = $this->M_prosesgaji->getNominalPerubahan($tanggalawal,$val['tanggal_akhir_berlaku'],$key['noind']);
+							for ($i=0; $i < 8; $i++) { 
+								if ($val['lokasi_kerja']==$nom[$i]['lokasi_kerja'] and $val['kode_pekerjaan2']==$nom[$i]['kode_pekerjaan']) {
+									$nominalgpokok = $nom[$i]['nominal'];
+								}
+								if ($val['lokasi_kerja']==$nom[$i]['lokasi_kerja']) {
+									$nominalum = $nom[$i]['uang_makan'];
+								}
+							}
+							foreach ($dataPerubahanSebelum as $value) {
+								$gajipokok1 	= $value['gpokok']*$nominalgpokok;
+								$uangmakan1 	= $value['um']*$nominalum;
+								$gajilembur1 = $value['lembur']*($nominalgpokok/7);
+								$total 		= $gajipokok1+$gajilembur1+$uangmakan1;
+							}
+							$dataPerubahanSesudah = $this->M_prosesgaji->getNominalPerubahan($val['tanggal_mulai_berlaku'],$tanggalakhir,$key['noind']);
+							for ($i=0; $i < 8; $i++) { 
+								if ($val['lokasi_kerja']==$nom[$i]['lokasi_kerja'] and $val['kode_pekerjaan']==$nom[$i]['kode_pekerjaan']) {
+									$nominalgpokok = $nom[$i]['nominal'];
+								}
+								if ($val['lokasi_kerja']==$nom[$i]['lokasi_kerja']) {
+									$nominalum = $nom[$i]['uang_makan'];
+								}
+							}
+							foreach ($dataPerubahanSesudah as $value) {
+								$gajipokok2 	= $value['gpokok']*$nominalgpokok;
+								$uangmakan2 	= $value['um']*$nominalum;
+								$gajilembur2 = $value['lembur']*($nominalgpokok/7);
+								$total 		+= $gajipokok2+$gajilembur2+$uangmakan2;
+								$gajipokok 	= $gajipokok1+$gajipokok2;
+								$uangmakan 	= $uangmakan1+$uangmakan2;
+								$gajilembur = $gajilembur1+$gajilembur2;
+								$gajilembur = number_format($gajilembur,'0','.','');
+								$total 		= number_format($total,'0','.','');
+							}
 						}
-						if ($key['lokasi_kerja']==$nom[$i]['lokasi_kerja']) {
-							$nomum = $nom[$i]['uang_makan'];
+					}else{
+						for ($i=0; $i < 8; $i++) { 
+							if ($key['lokasi_kerja']==$nom[$i]['lokasi_kerja'] and $key['kdpekerjaan']==$nom[$i]['kode_pekerjaan']) {
+								$nominalgpokok = $nom[$i]['nominal'];
+							}
+							if ($key['lokasi_kerja']==$nom[$i]['lokasi_kerja']) {
+								$nominalum = $nom[$i]['uang_makan'];
+							}
 						}
+
+						$gajipokok 	= $gpokok*$nominalgpokok;
+						$uangmakan 	= $um*$nominalum;
+						$gajilembur = $lembur*($nominalgpokok/7);
+						$gajilembur = number_format($gajilembur,'0','.','');
+						$total 		= $gajipokok+$gajilembur+$uangmakan;
+						$total 		= number_format($total,'0','.','');
 					}
-					$gajipokok = $gpokok*$nomgpokok;
-					$gajium    = $um*$nomum;
-					$gajilembur= $lembur*($nomgpokok/7);
-					$total 	   = $gajipokok+$gajilembur+$gajium;
-					$total_semua = $total_semua+$total;
 
 					$worksheet->setCellValueByColumnAndRow(0,$row,$no);
 					$worksheet->setCellValueByColumnAndRow(3,$row,$key['nama']);

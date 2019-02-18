@@ -1,3 +1,14 @@
+$(document).ready(function(){
+	$('.dataTable-pnbd').DataTable({
+		retrieve : true,
+		dom: 'Bfrtip',
+	    buttons: [
+	        'excel',
+	        'pdf'
+	    ]
+	});
+});
+
 //setup kelompok start
 
 $(document).on('click','#btnCancelKelompok',function(e){
@@ -263,6 +274,11 @@ $(document).ready(function(){
 $(document).on('click','#btnSubmitPernyataanCreate',function(e){
 	var indikator = $('.selectPNBPIndikator').find(':selected').val();
 	var pernyataan = $('input[name="txtPernyataanPNBP"]').val();
+	var aktif = $('.statusAktifPernyataanPNBP').val();
+	var n1 = $('input[name="txtBobotPenilaian1PNBP"]').val();
+	var n2 = $('input[name="txtBobotPenilaian2PNBP"]').val();
+	var n3 = $('input[name="txtBobotPenilaian3PNBP"]').val();
+	var n4 = $('input[name="txtBobotPenilaian4PNBP"]').val();
 	
 	if (pernyataan == "" || indikator == "") {
 	    alert("data masih kosong !!");
@@ -270,7 +286,7 @@ $(document).on('click','#btnSubmitPernyataanCreate',function(e){
 	    $.ajax({
 	        type : 'POST',
 	        url  : baseurl+"PNBP/SetupPernyataan/Create",
-	        data : {pernyataan : pernyataan,indikator : indikator},
+	        data : {pernyataan : pernyataan,indikator : indikator, aktif : aktif, nilai1 : n1, nilai2 : n2, nilai3 : n3, nilai4 : n4},
 	        success : function(e){
 	          window.location = baseurl+"PNBP/SetupPernyataan";
 	        }
@@ -284,6 +300,11 @@ $(document).on('click','#btnEditPernyataanPNBP',function(e){
 	var pernyataan = $(this).attr('data-pernyataan');
 	var idpernyataan = $(this).attr('data-idpernyataan');
 	var idaspek = $(this).attr('data-idaspek');
+	var n1 = $(this).attr('data-n1');
+	var n2 = $(this).attr('data-n2');
+	var n3 = $(this).attr('data-n3');
+	var n4 = $(this).attr('data-n4');
+	var aktif = $(this).attr('data-aktif');
 
 	var optionSelect = "<option value = '"+idaspek+"' selected>"+kelompok+" - "+aspek+"</option>";
 	$('.selectPNBPIndikatorEdit').html(optionSelect);
@@ -315,6 +336,17 @@ $(document).on('click','#btnEditPernyataanPNBP',function(e){
 	});
 	$('input[name="txtPernyataanPNBPEdit"]').val(pernyataan);
 	$('input[name="txtIDPernyataanPNBP"]').val(idpernyataan);
+	$('input[name="txtBobotPenilaian1PNBPEdit"]').val(n1);
+	$('input[name="txtBobotPenilaian2PNBPEdit"]').val(n2);
+	$('input[name="txtBobotPenilaian3PNBPEdit"]').val(n3);
+	$('input[name="txtBobotPenilaian4PNBPEdit"]').val(n4);
+	if (aktif == 'Aktif') {
+		$('.statusAktifPernyataanPNBPEdit').html('<option value="1">Aktif</option><option value="0">Non Aktif</option>');
+		$('.statusAktifPernyataanPNBPEdit').select2();
+	}else{
+		$('.statusAktifPernyataanPNBPEdit').html('<option value="0">Non Aktif</option><option value="1">Aktif</option>');
+		$('.statusAktifPernyataanPNBPEdit').select2();
+	}
 
 	$('#PNBPPernyataan-Edit').modal('show');
 });
@@ -323,14 +355,19 @@ $(document).on('click','#btnSubmitPernyataanEdit',function(e){
 	var idaspek = $('.selectPNBPIndikatorEdit').find(':selected').val();
 	var idpernyataan = $('input[name="txtIDPernyataanPNBP"]').val();
 	var pernyataan = $('input[name="txtPernyataanPNBPEdit"]').val();
-	
+	var aktif = $('.statusAktifPernyataanPNBPEdit').val();
+	var n1 = $('input[name="txtBobotPenilaian1PNBPEdit"]').val();
+	var n2 = $('input[name="txtBobotPenilaian2PNBPEdit"]').val();
+	var n3 = $('input[name="txtBobotPenilaian3PNBPEdit"]').val();
+	var n4 = $('input[name="txtBobotPenilaian4PNBPEdit"]').val();
+
 	if (idaspek == '' || idpernyataan == '' || pernyataan == '') {
 	    alert("data masih kosong !!");
 	}else{
 	    $.ajax({
 	        type : 'POST',
 	        url  : baseurl+"PNBP/SetupPernyataan/Edit/"+idpernyataan,
-	        data : {idaspek : idaspek,pernyataan : pernyataan},
+	        data : {idaspek : idaspek, pernyataan : pernyataan, aktif : aktif, nilai1 : n1, nilai2 : n2, nilai3 : n3, nilai4 : n4},
 	        success : function(e){
 	          window.location = baseurl+"PNBP/SetupPernyataan";
 	        }

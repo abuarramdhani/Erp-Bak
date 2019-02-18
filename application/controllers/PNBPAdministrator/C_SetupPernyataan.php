@@ -61,9 +61,16 @@ class C_SetupPernyataan extends CI_Controller
 	}
 
 	public function Create(){
-		$pernyataan = $this->input->post('pernyataan');
-		$indikator = $this->input->post('indikator');
-		$this->M_setuppernyataan->insertPernyataan($pernyataan,$indikator);
+		$data = array(
+			'pernyataan' => $this->input->post('pernyataan'),
+			'id_aspek' => $this->input->post('indikator'),
+			'set_active' => $this->input->post('aktif'),
+			'nilai_pil1' => $this->input->post('nilai1'),
+			'nilai_pil2' => $this->input->post('nilai2'),
+			'nilai_pil3' => $this->input->post('nilai3'),
+			'nilai_pil4' => $this->input->post('nilai4'),
+			);
+		$this->M_setuppernyataan->insertPernyataan($data);
 		echo "Sukses";
 	}
 
@@ -71,10 +78,17 @@ class C_SetupPernyataan extends CI_Controller
 		$plaintext_string = str_replace(array('-', '_', '~'), array('+', '/', '='), $id);
 		$plaintext_string = $this->encrypt->decode($plaintext_string);
 
-		$pernyataan = $this->input->post('pernyataan');
-		$idaspek = $this->input->post('idaspek');
+		$data = array(
+			'pernyataan' => $this->input->post('pernyataan'),
+			'id_aspek' => $this->input->post('idaspek'),
+			'set_active' => $this->input->post('aktif'),
+			'nilai_pil1' => $this->input->post('nilai1'),
+			'nilai_pil2' => $this->input->post('nilai2'),
+			'nilai_pil3' => $this->input->post('nilai3'),
+			'nilai_pil4' => $this->input->post('nilai4'),
+		);
 
-		$this->M_setuppernyataan->updatePernyataan($pernyataan,$idaspek,$plaintext_string);
+		$this->M_setuppernyataan->updatePernyataan($data,$plaintext_string);
 
 		echo "sukses";
 	}
