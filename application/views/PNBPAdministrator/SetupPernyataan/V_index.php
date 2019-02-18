@@ -24,14 +24,22 @@
 								<div class="row">
 									<div class="col-lg-12">
 										<div class="table-responsive">
-											<table class="table table-striped table-bordered table-hover">
+											<table class="table table-striped table-bordered table-hover dataTable-pnbd">
 												<thead class="bg-primary">
 													<tr>
-														<th class="text-center">No</th>
-														<th class="text-center">Action</th>
-														<th class="text-center">Kelompok</th>
-														<th class="text-center">Indikator</th>
-														<th class="text-center">Pernyataan</th>
+														<th rowspan="2" class="text-center" style="vertical-align: middle;">No</th>
+														<th rowspan="2" class="text-center" style="vertical-align: middle;">Action</th>
+														<th rowspan="2" class="text-center" style="vertical-align: middle;">Kelompok</th>
+														<th rowspan="2" class="text-center" style="vertical-align: middle;">Indikator</th>
+														<th rowspan="2" class="text-center" style="vertical-align: middle;">Pernyataan</th>
+														<th colspan="4" class="text-center" style="vertical-align: middle;">Bobot Nilai</th>
+														<th rowspan="2" class="text-center" style="vertical-align: middle;">Status Aktif</th>
+													</tr>
+													<tr>
+														<th class="text-center">1</th>
+														<th class="text-center">2</th>
+														<th class="text-center">3</th>
+														<th class="text-center">4</th>
 													</tr>
 												</thead>
 												<tbody>
@@ -45,12 +53,32 @@
 																<tr>
 																	<td class="text-center"><?php echo $angka; ?></td>
 																	<td class="text-center">
-																		<a href='#' data-idpernyataan="<?php echo $encrypted_string ?>" data-idaspek="<?php echo $key['id_aspek'] ?>" data-aspek="<?php echo $key['nama_aspek'] ?>" data-pernyataan="<?php echo $key['pernyataan'] ?>" data-kelompok="<?php echo $key['kelompok'] ?>" id="btnEditPernyataanPNBP"><span data-toggle='tooltip' data-placement='bottom' data-original-title='Edit Data' class='fa fa-pencil-square-o fa-2x'></span></a>
-																		<a href='<?php echo site_url('PNBP/SetupPernyataan/Delete/'.$encrypted_string) ?>' data-toggle='tooltip' data-placement='bottom' data-original-title='Delete Data' onclick="return confirm('Anda Yakin Ingin Menghapus Data Ini ?')" style="color:red;"><span class='fa fa-trash fa-2x' title='Hapus'></span></a>
+																		<a href='#' 
+																		data-idpernyataan="<?php echo $encrypted_string ?>" 
+																		data-idaspek="<?php echo $key['id_aspek'] ?>" 
+																		data-aspek="<?php echo $key['nama_aspek'] ?>" 
+																		data-pernyataan="<?php echo $key['pernyataan'] ?>" 
+																		data-kelompok="<?php echo $key['kelompok'] ?>" 
+																		data-n1="<?php echo $key['nilai_pil1'] ?>" 
+																		data-n2="<?php echo $key['nilai_pil2'] ?>" 
+																		data-n3="<?php echo $key['nilai_pil3'] ?>" 
+																		data-n4="<?php echo $key['nilai_pil4'] ?>" 
+																		data-aktif ="<?php echo $key['set_active'] ?>"
+																		id="btnEditPernyataanPNBP">
+																			<span data-toggle='tooltip' data-placement='bottom' data-original-title='Edit Data' class='fa fa-pencil-square-o fa-2x'></span>
+																		</a>
+																		<a href='<?php echo site_url('PNBP/SetupPernyataan/Delete/'.$encrypted_string) ?>' data-toggle='tooltip' data-placement='bottom' data-original-title='Delete Data' onclick="return confirm('Anda Yakin Ingin Menghapus Data Ini ?')" style="color:red;">
+																			<span class='fa fa-trash fa-2x' title='Hapus'></span>
+																		</a>
 																	</td>
 																	<td><?php echo $key['kelompok'] ?></td>
 																	<td><?php echo $key['nama_aspek'] ?></td>
 																	<td><?php echo $key['pernyataan'] ?></td>
+																	<td><?php echo $key['nilai_pil1'] ?></td>
+																	<td><?php echo $key['nilai_pil2'] ?></td>
+																	<td><?php echo $key['nilai_pil3'] ?></td>
+																	<td><?php echo $key['nilai_pil4'] ?></td>
+																	<td><?php echo $key['set_active'] ?></td>
 																</tr>
 															<?php $angka++;
 															}
@@ -89,9 +117,45 @@
 						<div class="form-group">
 							<label class="control-label col-lg-4">Pernyataan</label>
 							<div class="col-lg-8">
-								<input type="text" name="txtPernyataanPNBP" class="form-control">
+								<input type="text" name="txtPernyataanPNBP" placeholder="Pernyatan" class="form-control">
 							</div>
 						</div>
+						<fieldset>
+							<legend>Setting Nilai <i style="font-size: 8pt;color: red">(dapat dikosongi dahulu)</i></legend>
+							<div class="form-group">
+								<label class="control-label col-lg-4">Bobot Pilihan 1</label>
+								<div class="col-lg-4">
+									<input type="text" name="txtBobotPenilaian1PNBP" placeholder="Bobot 1" class="form-control">
+								</div>
+							</div>
+							<div class="form-group">
+								<label class="control-label col-lg-4">Bobot Pilihan 2</label>
+								<div class="col-lg-4">
+									<input type="text" name="txtBobotPenilaian2PNBP" placeholder="Bobot 2" class="form-control">
+								</div>
+							</div>
+							<div class="form-group">
+								<label class="control-label col-lg-4">Bobot Pilihan 3</label>
+								<div class="col-lg-4">
+									<input type="text" name="txtBobotPenilaian3PNBP" placeholder="Bobot 3" class="form-control">
+								</div>
+							</div>
+							<div class="form-group">
+								<label class="control-label col-lg-4">Bobot Pilihan 4</label>
+								<div class="col-lg-4">
+									<input type="text" name="txtBobotPenilaian4PNBP" placeholder="Bobot 4" class="form-control">
+								</div>
+							</div>
+							<div class="form-group">
+								<label class="control-label col-lg-4">Status Aktif</label>
+								<div class="col-lg-4">
+									<select class="select select2 statusAktifPernyataanPNBP" style="width: 100%">
+										<option value="0">Non Aktif</option>
+										<option value="1">Aktif</option>
+									</select>
+								</div>
+							</div>
+						</fieldset>
 						<div class="form-group col-lg-8 text-right">
 							<button type="button" class="btn btn-primary" id="btnSubmitPernyataanCreate">Ok</button>
 							<button type="button" class="btn btn-danger" id="btnCancelPernyataan">Cancel</button>
@@ -127,6 +191,42 @@
 								<input type="hidden" name="txtIDPernyataanPNBP" class="form-control">
 							</div>
 						</div>
+						<fieldset>
+							<legend>Setting Nilai <i style="font-size: 8pt;color: red">(dapat dikosongi dahulu)</i></legend>
+							<div class="form-group">
+								<label class="control-label col-lg-4">Bobot Pilihan 1</label>
+								<div class="col-lg-4">
+									<input type="text" name="txtBobotPenilaian1PNBPEdit" placeholder="Bobot 1" class="form-control">
+								</div>
+							</div>
+							<div class="form-group">
+								<label class="control-label col-lg-4">Bobot Pilihan 2</label>
+								<div class="col-lg-4">
+									<input type="text" name="txtBobotPenilaian2PNBPEdit" placeholder="Bobot 2" class="form-control">
+								</div>
+							</div>
+							<div class="form-group">
+								<label class="control-label col-lg-4">Bobot Pilihan 3</label>
+								<div class="col-lg-4">
+									<input type="text" name="txtBobotPenilaian3PNBPEdit" placeholder="Bobot 3" class="form-control">
+								</div>
+							</div>
+							<div class="form-group">
+								<label class="control-label col-lg-4">Bobot Pilihan 4</label>
+								<div class="col-lg-4">
+									<input type="text" name="txtBobotPenilaian4PNBPEdit" placeholder="Bobot 4" class="form-control">
+								</div>
+							</div>
+							<div class="form-group">
+								<label class="control-label col-lg-4">Status Aktif</label>
+								<div class="col-lg-4">
+									<select class="select select2 statusAktifPernyataanPNBPEdit" style="width: 100%">
+										<option value="0">Non Aktif</option>
+										<option value="1">Aktif</option>
+									</select>
+								</div>
+							</div>
+						</fieldset>
 						<div class="form-group col-lg-8 text-right">
 							<button type="button" class="btn btn-primary" id="btnSubmitPernyataanEdit">Ok</button>
 							<button type="button" class="btn btn-danger" id="btnCancelPernyataan">Cancel</button>
