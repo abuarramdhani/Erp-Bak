@@ -132,36 +132,40 @@ $(document).ready(function(){
 	//MELAKUKAN KALKULASI NILAI AKHIR
 	$("#orderqty,#singleprice,#fine").keyup(checkncalc);
 	$("#orderqty,#singleprice,#fine").click(checkncalc);
-		$("#DelFine").click(checkncalc);
-		$("#ReCalculate").click(checkncalc);
-		$("#tbodyFineCatering input").keyup(checkncalc);
-		$("#tbodyFineCatering input").click(checkncalc);
-		$("#tbodyFineCatering select").change(checkncalc);
+	$("#DelFine").click(checkncalc);
+	$("#ReCalculate").click(checkncalc);
+	$("#tbodyFineCatering input").keyup(checkncalc);
+	$("#tbodyFineCatering input").click(checkncalc);
+	$("#tbodyFineCatering select").change(checkncalc);
+	$("#bonus").change(checkncalc);
 		
 	function calculation(pphstatus){
-			
-			var $qty = $('#orderqty').val();
-			var $price = $('#singleprice').val();
-			var $ordertype = $('#ordertype').val();
-			
-			if($ordertype==2){
-				var $bonus_qty = Math.floor($qty/50);
-			}
-			else {
-				var $bonus_qty = 0;
-			}
-			
-			var $calc = (($qty-$bonus_qty) * $price);
-			var $fine = $('#fine').val();
-			var $est = $calc - $fine;
-			if (pphstatus==1){
-				var $pph = Math.ceil((2 / 100) * $est);
-			} else {
-				var $pph = Math.ceil((0 / 100) * $est);
-			}
-			
-			var $total = $est - $pph;
-			
+		var $qty = $('#orderqty').val();
+		var $price = $('#singleprice').val();
+		var $ordertype = $('#ordertype').val();
+		var $bonus = $('#bonus').val();
+		
+		if($ordertype==2 && $bonus==1){
+			var $bonus_qty = Math.floor($qty/50);
+		} else {
+			var $bonus_qty = 0;
+		}
+		
+		var $net = $qty - $bonus_qty;
+		var $calc = $net * $price;
+		var $fine = $('#fine').val();
+		var $est = $calc - $fine;
+
+		if (pphstatus==1){
+			var $pph = Math.ceil((2 / 100) * $est);
+		} else {
+			var $pph = Math.ceil((0 / 100) * $est);
+		}
+		
+		var $total = $est - $pph;
+		
+		$("#orderbonus").val($bonus_qty);
+		$("#ordernet").val($net);
 		$("#calc").val($calc);
 		$("#pph").val($pph);
 		$("#total").val($total);
