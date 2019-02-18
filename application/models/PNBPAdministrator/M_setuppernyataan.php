@@ -13,7 +13,13 @@ class M_setuppernyataan extends CI_Model
 	}
 
 	public function getPernyataan(){
-		$sql = "select * from pd.pnbp_pernyataan pp 
+		$sql = "select *, 
+						case when set_active = true then 
+							'Aktif'
+						else 
+							'Non Aktif'
+						end set_active
+				from pd.pnbp_pernyataan pp 
 				left join pd.pnbp_aspek pa 
 				on pa.id_aspek = pp.id_aspek::int 
 				left join pd.pnbp_kelompok pk 
@@ -33,11 +39,8 @@ class M_setuppernyataan extends CI_Model
 		return $result->result_array();
 	}
 
-	public function insertPernyataan($per,$ind){
-		$sql = "insert into pd.pnbp_pernyataan
-				(pernyataan,id_aspek)
-				values('$per','$ind')";
-		$this->db->query($sql);
+	public function insertPernyataan($data){
+		$this->db->insert('pd.pnbp_pernyataan',$data);
 		return;
 	}
 
@@ -48,12 +51,9 @@ class M_setuppernyataan extends CI_Model
 		return ;
 	}
 
-	public function updatePernyataan($pernyataan,$id_aspek,$id_pernyataan){
-		$sql = "update pd.pnbp_pernyataan
-				set pernyataan = '$pernyataan',
-					id_aspek = '$id_aspek'
-				where id_pernyataan = $id_pernyataan";
-		$this->db->query($sql);
+	public function updatePernyataan($data,$id_pernyataan){
+		$this->db->where('id_pernyataan',$id_pernyataan);
+		$this->db->update('pd.pnbp_pernyataan',$data);
 		return ;
 	}
 }
