@@ -54,7 +54,7 @@
 					<td></td>
 					<td></td>
 					<td>Nama Assembly</td>
-					<td>: <?php  echo $value['PRODUK_DESC']?></td>
+					<td>: <?php  echo $value['PRODUK_DESC']?><br></td>
 				</tr>
 				<tr>
 					<td colspan="2"><?php echo $value['SCHEDULE'] ?></td>
@@ -63,7 +63,7 @@
 				</tr>
 	<?php } ?>
 			</table>
-			<table class="table table-bordered hor-center ver-center" >
+			<table class="table table-bordered hor-center ver-center" style="margin-top:<?= (4-$assemblyLength)*13 ?> px" >
 		
 				<tr style="background-color: #f0f0f0;" class="table-head">
 					<td rowspan="2" width="4%">No</td>
