@@ -53,26 +53,28 @@
 												</select>
 												</div>
 											</div>
-											<div class="form-group">
-												<div class="col-lg-4">
+											 <div class="form-group">
+											<!--<div class="col-lg-4">
 													<select class="select select2 col-lg-8" name="txtValueSek1" id="txtValueSek1" data-placeholder="Nama Seksi" style="width:100%;" disabled >
 														<?php foreach ($seksi as $key) {
 															$a = $key['section_code'];
 															$b = $key['section_name'];
 															if ($kodesie == $a) {
-																echo "<option value='$a' selected>$a - $b</option>";
+																// echo "<option value='$a' selected>$a - $b</option>";
 															}
 														} 
 														?>
 													</select>
-												</div>
-												<div class="col-lg-4">
-													<select class="hidden-lg hidden-md hidden-sm hidden-xs" name="txtValueSek" id="txtValueSek" data-placeholder="Nama Seksi" style="width:100%;" <?php if($kategori !== 'seksi'){echo "disabled";} ?> >
+												</div>-->
+												<div class="col-lg-4"> 
+													<select class="select select2 col-lg-8" name="txtValueSek" id="txtValueSek" data-placeholder="Nama Seksi" style="width:100%;" <?php if($kategori !== 'seksi'){echo "disabled";} ?> >
 														<?php foreach ($seksi as $key) {
 															$a = $key['section_code'];
 															$b = $key['section_name'];
 															if ($kodesie == $a) {
 																echo "<option value='$a' selected>$a - $b</option>";
+															}else{
+																echo "<option value='$a'>$a - $b</option>";
 															}
 														} 
 														?>
