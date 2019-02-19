@@ -32,6 +32,12 @@
         	"lengthChange": false,
         	"pageLength": 5
 		});
+		$('.datatable-overtime').DataTable({
+			retrieve : true,
+			"info"		: true,
+	    	"searching"	: true,
+	    	"lengthChange": true,
+		});
 	});
 	//-------------------------- Ambil Data Seksi.Rekap TIMS -----------------------------
 	//AJAX JAVASCRIPT

@@ -79,7 +79,8 @@
 		                                    <div class="panel-footer">
 		                                        <div class="row text-right">
 		                                        	<?php if (isset($export)) { ?>
-		                                        		<a target="_blank" href="<?php echo base_url('RekapTIMSPromosiPekerja/Overtime/Export/'.$export) ?>" class="btn btn-success btn-lg">Export Excel</a>
+		                                        		<a target="_blank" href="<?php echo base_url('RekapTIMSPromosiPekerja/Overtime/Export/pdf_'.$export) ?>" class="btn btn-danger btn-lg">Export Pdf</a>
+		                                        		<a target="_blank" href="<?php echo base_url('RekapTIMSPromosiPekerja/Overtime/Export/xls_'.$export) ?>" class="btn btn-success btn-lg">Export Excel</a>
 		                                        	<?php } ?>
 		                                            <button class="btn btn-info btn-lg" type="submit">
 		                                                Proses
@@ -93,7 +94,7 @@
 									<div class="col-lg-12">
 										<?php if (isset($table) and !empty($table)) { $no = 1; ?>
 											<div class="table-responsive">
-												<table class="table table-striped table-bordered tabl-hover datatable-ma">
+												<table class="table table-striped table-bordered tabl-hover datatable-overtime">
 													<thead class="bg-primary">
 														<tr>
 															<th>No</th>

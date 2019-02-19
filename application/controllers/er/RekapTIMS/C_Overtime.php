@@ -131,8 +131,9 @@ class C_Overtime extends CI_Controller
 	public function Export($data){
 		$data = str_replace("%20", " ", $data);
 		$do = explode("_", $data);
-		$kdsie = $do['0'];
-		$hubker = explode("-", $do['1']);
+		$export = $do['0'];
+		$kdsie = $do['1'];
+		$hubker = explode("-", $do['2']);
 		$hub = "";
 		foreach ($hubker as $key) {
 			if ($hub == "") {
@@ -141,7 +142,7 @@ class C_Overtime extends CI_Controller
 				$hub .= ",'".$key."'";
 			}		
 		}
-		$prd = explode(' - ', $do['2']);
+		$prd = explode(' - ', $do['3']);
 		if ($kdsie !== '0') {
 			$dataOvertime = $this->M_overtime->getData($prd[0],$prd[1],$hub,$kdsie);
 		}else{
@@ -149,48 +150,67 @@ class C_Overtime extends CI_Controller
 		}
 
 		// print_r($dataOvertime);
-		$this->load->library('excel');
-		$worksheet = $this->excel->getActiveSheet();
-		$worksheet->setCellValue('A1','No');
-		$worksheet->setCellValue('B1','Periode');
-		$worksheet->setCellValue('C1','Nama');
-		$worksheet->setCellValue('D1','Seksi');
-		$worksheet->setCellValue('E1','Total Jam Kerja');
-		$worksheet->setCellValue('F1','Overtime');
-		$worksheet->setCellValue('G1','Rerata');
-		$worksheet->setCellValue('H1','NET');
 
-		$angka = 1;
-		$row = 2;
-		foreach ($dataOvertime as $key ) {
-			$worksheet->setCellValue('A'.$row,$angka);
-			$worksheet->setCellValue('B'.$row,$key['periode']);
-			$worksheet->setCellValue('C'.$row,$key['noind']." - ".$key['nama']);
-			$worksheet->setCellValue('D'.$row,$key['seksi']);
-			$worksheet->getStyle('E'.$row)->getNumberFormat()->setFormatCode(PHPExcel_Style_NumberFormat::FORMAT_NUMBER_COMMA_SEPARATED1);
-			$worksheet->setCellValueExplicit('E'.$row,$key['jam_kerja'],PHPExcel_Cell_DataType::TYPE_NUMERIC);
-			$worksheet->getStyle('F'.$row)->getNumberFormat()->setFormatCode(PHPExcel_Style_NumberFormat::FORMAT_NUMBER_COMMA_SEPARATED1);
-			$worksheet->setCellValueExplicit('F'.$row,$key['overtime'],PHPExcel_Cell_DataType::TYPE_NUMERIC);
-			$worksheet->getStyle('G'.$row)->getNumberFormat()->setFormatCode(PHPExcel_Style_NumberFormat::FORMAT_NUMBER_COMMA_SEPARATED1);
-			$worksheet->setCellValueExplicit('G'.$row,$key['rerata'],PHPExcel_Cell_DataType::TYPE_NUMERIC);
-			$worksheet->getStyle('H'.$row)->getNumberFormat()->setFormatCode(PHPExcel_Style_NumberFormat::FORMAT_NUMBER_COMMA_SEPARATED1);
-			$worksheet->setCellValueExplicit('H'.$row,$key['net'],PHPExcel_Cell_DataType::TYPE_NUMERIC);
-			$row++;
-			$angka++;
+		if ($export == 'xls') {
+			$this->load->library('excel');
+			$worksheet = $this->excel->getActiveSheet();
+			$worksheet->setCellValue('A1','No');
+			$worksheet->setCellValue('B1','Periode');
+			$worksheet->setCellValue('C1','Nama');
+			$worksheet->setCellValue('D1','Seksi');
+			$worksheet->setCellValue('E1','Total Jam Kerja');
+			$worksheet->setCellValue('F1','Overtime');
+			$worksheet->setCellValue('G1','Rerata');
+			$worksheet->setCellValue('H1','NET');
+
+			$angka = 1;
+			$row = 2;
+			foreach ($dataOvertime as $key ) {
+				$worksheet->setCellValue('A'.$row,$angka);
+				$worksheet->setCellValue('B'.$row,$key['periode']);
+				$worksheet->setCellValue('C'.$row,$key['noind']." - ".$key['nama']);
+				$worksheet->setCellValue('D'.$row,$key['seksi']);
+				$worksheet->getStyle('E'.$row)->getNumberFormat()->setFormatCode(PHPExcel_Style_NumberFormat::FORMAT_NUMBER_COMMA_SEPARATED1);
+				$worksheet->setCellValueExplicit('E'.$row,$key['jam_kerja'],PHPExcel_Cell_DataType::TYPE_NUMERIC);
+				$worksheet->getStyle('F'.$row)->getNumberFormat()->setFormatCode(PHPExcel_Style_NumberFormat::FORMAT_NUMBER_COMMA_SEPARATED1);
+				$worksheet->setCellValueExplicit('F'.$row,$key['overtime'],PHPExcel_Cell_DataType::TYPE_NUMERIC);
+				$worksheet->getStyle('G'.$row)->getNumberFormat()->setFormatCode(PHPExcel_Style_NumberFormat::FORMAT_NUMBER_COMMA_SEPARATED1);
+				$worksheet->setCellValueExplicit('G'.$row,$key['rerata'],PHPExcel_Cell_DataType::TYPE_NUMERIC);
+				$worksheet->getStyle('H'.$row)->getNumberFormat()->setFormatCode(PHPExcel_Style_NumberFormat::FORMAT_NUMBER_COMMA_SEPARATED1);
+				$worksheet->setCellValueExplicit('H'.$row,$key['net'],PHPExcel_Cell_DataType::TYPE_NUMERIC);
+				$row++;
+				$angka++;
+			}
+
+			$worksheet->getColumnDimension('A')->setWidth('5');
+			$worksheet->getColumnDimension('B')->setWidth('10');
+			$worksheet->getColumnDimension('C')->setWidth('30');
+			$worksheet->getColumnDimension('D')->setWidth('30');
+
+			$filename ='Overtime_'.$kdsie.'.xls';
+			header('Content-Type: aplication/vnd.ms-excel');
+			header('Content-Disposition:attachment;filename="'.$filename.'"');
+			header('Cache-Control: max-age=0');
+
+			$writer = PHPExcel_IOFactory::createWriter($this->excel,'Excel5');
+			$writer->save('php://output');
+		}else{
+			// print_r($dataOvertime);exit();
+			$this->load->library('pdf');
+
+			$pdf = $this->pdf->load();
+			$pdf = new mPDF('','A4-L',0,'',10,10,10,10,10,10);
+			$filename = 'Overtime_'.$kdsie.'.pdf';
+			
+			$dataa['dataovertime'] = $dataOvertime;
+
+			$html = $this->load->view('er/RekapTIMS/V_cetak_overtime', $dataa, true);
+
+			$stylesheet1 = file_get_contents(base_url('assets/plugins/bootstrap/3.3.7/css/bootstrap.css'));
+			$pdf->WriteHTML($stylesheet1,1);
+			$pdf->WriteHTML($html, 2);
+			$pdf->Output($filename, 'I');
 		}
-
-		$worksheet->getColumnDimension('A')->setWidth('5');
-		$worksheet->getColumnDimension('B')->setWidth('10');
-		$worksheet->getColumnDimension('C')->setWidth('30');
-		$worksheet->getColumnDimension('D')->setWidth('30');
-
-		$filename ='Overtime_'.$kdsie.'.xls';
-		header('Content-Type: aplication/vnd.ms-excel');
-		header('Content-Disposition:attachment;filename="'.$filename.'"');
-		header('Cache-Control: max-age=0');
-
-		$writer = PHPExcel_IOFactory::createWriter($this->excel,'Excel5');
-		$writer->save('php://output');
 	}
 }
  ?>
