@@ -129,7 +129,7 @@
 	    	return $data->result_array();
 	    }
 
-	    public function rekapTIMS($tgl1, $tgl2, $year_month = FALSE, $noind = FALSE, $kode_status_kerja = FALSE, $dept = FALSE, $bidang = FALSE, $unit = FALSE, $seksi = FALSE)
+	    public function rekapTIMS($tgl1, $tgl2, $year_month = FALSE, $noind = FALSE, $kode_status_kerja = FALSE, $dept = FALSE, $bidang = FALSE, $unit = FALSE, $seksi = FALSE, $lokasi = FALSE)
 	    {
 	    	// print_r($kode_status_kerja);exit();
 	    	// Menentukan rekap periode bulanan atau tidak
@@ -210,22 +210,30 @@
 					$seksi = "rtrim('".$seksi ."')";
 				}
 
+				if ($lokasi !== FALSE and $lokasi !== '00') {
+		    		$loker = "and pri.lokasi_kerja = '$lokasi'";
+		    	}else{
+		    		$loker = "";
+		    	}
+
 				if ($kode_status_kerja == 'pri.kode_status_kerja') {
 	    			$parameter 	= '	pri.kode_status_kerja='.$kode_status_kerja.'
 	    						and 	rtrim(tseksi.dept)='.$dept.'
 	    						and 	rtrim(tseksi.bidang)='.$bidang.'
 	    						and 	rtrim(tseksi.unit)='.$unit.'
 	    						and 	rtrim(tseksi.seksi)='.$seksi.'
-	    						and 	pri.keluar=false';
+	    						and 	pri.keluar=false '.$loker;
 				}else{
 					$parameter 	= '	pri.kode_status_kerja in'."(".$status.")".'
 	    						and 	rtrim(tseksi.dept)='.$dept.'
 	    						and 	rtrim(tseksi.bidang)='.$bidang.'
 	    						and 	rtrim(tseksi.unit)='.$unit.'
 	    						and 	rtrim(tseksi.seksi)='.$seksi.'
-	    						and 	pri.keluar=false';
+	    						and 	pri.keluar=false '.$loker;
 				}
 	    	}
+
+	    	
 
 	    	$rekapTIMS		= "	select 		pri.noind,
 											pri.noind_baru,
