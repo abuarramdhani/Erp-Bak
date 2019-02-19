@@ -135,6 +135,28 @@
 												</div>
 											</div>
 										</div>
+										<div class="row" style="margin: 10px 10px">
+											<div class="col-md-3">
+												<label class="control-label">Lokasi Kerja</label>
+											</div>
+											<div class="col-md-8">
+												<div class="form-group">
+													<div class="input-group">
+														<div class="input-group-addon">
+															<i class="glyphicon glyphicon-briefcase"></i>
+														</div>
+														<select data-placeholder="Pilih Salah Satu!" class="form-control select2" style="width:100%" name="cmbloker" required>
+															<option value="00">SEMUA LOKASI KERJA</option>
+															<?php 
+															foreach ($loker as $lok) { ?>
+																<option value="<?php echo $lok['id_'] ?>"><?php echo $lok['id_']." - ".$lok['lokasi_kerja'] ?></option>
+															<?php }
+															?>
+														</select>
+													</div>
+												</div>
+											</div>
+										</div>
 										<div class="row" style="margin: 10px 10px;vertical-align: middle">
 											<div class="col-md-7">
 											</div>

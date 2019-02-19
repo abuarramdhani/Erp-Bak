@@ -582,6 +582,12 @@ clASs M_rekapmssql extends CI_Model {
 		return $query->result_array();
 	}
 
+	public function loker(){
+		$sql = "select * from hrd_khs.tlokasi_kerja";
+		$query = $this->personalia->query($sql);
+		return $query->result_array();
+	}
+
 	public function bidang($value)
 	{
 		if ($value == 'All') {

@@ -71,7 +71,8 @@ class C_Rekap extends CI_Controller {
 		$data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id);
 		$data['status'] = $this->M_rekapmssql->statusKerja();
 		$data['dept'] = $this->M_rekapmssql->dept();
-		
+		$data['loker'] = $this->M_rekapmssql->loker();
+
 		$this->load->view('V_Header',$data);
 		$this->load->view('V_Sidemenu',$data);
 		$this->load->view('er/RekapTIMS/V_filter',$data);
@@ -126,6 +127,8 @@ class C_Rekap extends CI_Controller {
 		$periode2	= $this->input->post('rekapEnd');
 		$status 	= $this->input->post('statushubker');
 		$statusAll 	= $this->input->post('statusAll');
+		$lokasi 	= $this->input->post('cmbloker');
+		$data['lokasi'] = $lokasi;
 		if (strlen($statusAll) < 1) {
 			$statusAll = 0;
 		}else{
@@ -208,7 +211,7 @@ class C_Rekap extends CI_Controller {
 			$data['periode2']	= $periode2;
 			/*$data['rekap_masakerja'] = $this->M_rekapmssql->data_rekap_masakerja($periode2,$status,$departemen,$bidang,$unit,$section);*/
 			/*$data['rekap'] = $this->M_rekapmssql->dataRekap($periode1,$periode2,$status,$departemen,$bidang,$unit,$section);*/
-			$data['rekap'] 		= $this->M_rekaptims->rekapTIMS($periode1, $periode2, FALSE, FALSE, $status, $departemen, $bidang, $unit, $section);
+			$data['rekap'] 		= $this->M_rekaptims->rekapTIMS($periode1, $periode2, FALSE, FALSE, $status, $departemen, $bidang, $unit, $section, $lokasi);
 			$this->load->view('er/RekapTIMS/V_rekap_table',$data);
 		}
 		else {
@@ -237,7 +240,7 @@ class C_Rekap extends CI_Controller {
 					$lastdate = date('Y-m-t 23:59:59', strtotime($perMonth));
 				}
 				/*$data['rekap_'.$monthName] = $this->M_rekapmssql->dataRekapDetail($firstdate,$lastdate,$status,$departemen,$bidang,$unit,$section,$monthName);*/
-				$data['rekap_'.$monthName] = $this->M_rekaptims->rekapTIMS($firstdate, $lastdate, $monthName, FALSE, $status, $departemen, $bidang, $unit, $section);
+				$data['rekap_'.$monthName] = $this->M_rekaptims->rekapTIMS($firstdate, $lastdate, $monthName, FALSE, $status, $departemen, $bidang, $unit, $section, $lokasi);
 			}
 			$period1 = date('Y-m-d 00:00:00', strtotime($periode1));
 			$period2 = date('Y-m-d 23:59:59', strtotime($periode2));
@@ -266,6 +269,7 @@ class C_Rekap extends CI_Controller {
 		$unit		= $this->input->post('txtUnit_export');
 		$section	= $this->input->post('txtSeksi_export');
 		$detail 	= $this->input->post('txtDetail');
+		$lokasi 	= $this->input->post('txtLokasi_export');
 
 		$this->load->library('Excel');
 		$objPHPExcel = new PHPExcel();
@@ -295,7 +299,7 @@ class C_Rekap extends CI_Controller {
 		/*$rekap_masakerja = $this->M_rekapmssql->data_rekap_masakerja($period2,$status,NULL,NULL,NULL,$section);
 		$rekap_all = $this->M_rekapmssql->ExportRekap($period1,$period2,$status,$departemen,$bidang,$unit,$section);*/
 
-		$rekap_all = $this->M_rekaptims->rekapTIMS($periode1, $periode2 , FALSE, FALSE, $status, $departemen, $bidang, $unit, $section);
+		$rekap_all = $this->M_rekaptims->rekapTIMS($periode1, $periode2 , FALSE, FALSE, $status, $departemen, $bidang, $unit, $section, $lokasi);
 
 		if ($detail == 1) {
 
@@ -328,7 +332,7 @@ class C_Rekap extends CI_Controller {
 				}
 				/*${'rekap_'.$monthName} = $this->M_rekapmssql->ExportDetail($firstdate,$lastdate,$status,$departemen,$bidang,$unit,$section,$monthName);*/
 
-				${'rekap_'.$monthName} = $this->M_rekaptims->rekapTIMS($firstdate, $lastdate, $monthName, FALSE, $status, $departemen, $bidang, $unit, $section);
+				${'rekap_'.$monthName} = $this->M_rekaptims->rekapTIMS($firstdate, $lastdate, $monthName, FALSE, $status, $departemen, $bidang, $unit, $section, $lokasi);
 			}
 		}
 
