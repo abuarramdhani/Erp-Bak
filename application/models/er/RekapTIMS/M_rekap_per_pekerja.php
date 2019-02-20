@@ -1134,7 +1134,7 @@ clASs M_rekap_per_pekerja extends CI_Model {
 											)
 									and 	tabelsp.tanggal_awal_berlaku between '$firstdate' and '$lastdate'
 									and 	tabelsp.lanjutan='STOP'
-					) as AS FrekSPs".$monthName."
+					) as FrekSPs".$monthName."
 
 				FROM hrd_khs.tpribadi a
 
