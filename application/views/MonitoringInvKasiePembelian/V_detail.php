@@ -91,10 +91,6 @@
 										<div class="pull-right">
 											<button id="btnSubmitChecking" type="button" style="margin-top: 10px; margin-right: 5px;" class="btn btn-primary" data-toggle="modal" data-target="#uwuwuuwuwu">Approve</button>
 										</div>
-									<?php }else{ ?>
-										<div class="pull-right">
-											<button id="btnSubmitChecking" type="button" style="margin-top: 10px; margin-right: 5px;" class="btn btn-primary" disabled="disabled" data-toggle="modal" data-target="#uwuwuuwuwu">Approve</button>
-										</div>
 									<?php } ?>
 									
 									<?php if($b['LAST_PURCHASING_INVOICE_STATUS'] == 1){ ?>
