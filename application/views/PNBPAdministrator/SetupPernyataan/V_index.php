@@ -24,7 +24,7 @@
 								<div class="row">
 									<div class="col-lg-12">
 										<div class="table-responsive">
-											<table class="table table-striped table-bordered table-hover dataTable-pnbd">
+											<table class="table table-striped table-bordered table-hover dataTable-pnbp">
 												<thead class="bg-primary">
 													<tr>
 														<th rowspan="2" class="text-center" style="vertical-align: middle;">No</th>

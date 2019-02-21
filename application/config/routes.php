@@ -2306,3 +2306,15 @@ $route['PNBP/SetupIndikator/(:any)/(:any)'] = 'PNBPAdministrator/C_SetupIndikato
 $route['PNBP/SetupPernyataan'] = 'PNBPAdministrator/C_SetupPernyataan';
 $route['PNBP/SetupPernyataan/(:any)'] = 'PNBPAdministrator/C_SetupPernyataan/$1';
 $route['PNBP/SetupPernyataan/(:any)/(:any)'] = 'PNBPAdministrator/C_SetupPernyataan/$1/$2';
+
+$route['PNBP/SetupQuestioner'] = 'PNBPAdministrator/C_SetupQuestioner';
+$route['PNBP/SetupQuestioner/(:any)'] = 'PNBPAdministrator/C_SetupQuestioner/$1';
+$route['PNBP/SetupQuestioner/(:any)/(:any)'] = 'PNBPAdministrator/C_SetupQuestioner/$1/$2';
+
+$route['PNBP/Questioner'] = 'PNBPAdministrator/C_Questioner';
+$route['PNBP/Questioner/(:any)'] = 'PNBPAdministrator/C_Questioner/$1';
+$route['PNBP/Questioner/(:any)/(:any)'] = 'PNBPAdministrator/C_Questioner/$1/$2';
+
+$route['PNBP/Report'] = 'PNBPAdministrator/C_Report';
+$route['PNBP/Report/(:any)'] = 'PNBPAdministrator/C_Report/$1';
+$route['PNBP/Report/(:any)'] = 'PNBPAdministrator/C_Report/$1/$2';
