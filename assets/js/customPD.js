@@ -1,5 +1,5 @@
 $(document).ready(function(){
-	$('.dataTable-pnbd').DataTable({
+	$('.dataTable-pnbp').DataTable({
 		retrieve : true,
 		dom: 'Bfrtip',
 	    buttons: [
@@ -431,3 +431,124 @@ $(document).on('click','#btnSubmitAdminCreate',function(e){
 	    });
 	}
 });
+
+// admin end
+
+
+
+
+// setup questioner start
+
+$(document).on('click','#btnCancelSetupQuestioner',function(e){
+  $('#PNBPSetupQuestioner-Create').modal("hide");
+});
+
+$(document).ready(function(){
+	$('input[name="txtPeriodeQuestioner"]').daterangepicker({
+	    "showDropdowns": true,
+	    "autoApply": true,
+	    "locale": {
+	        "format": "DD MMMM YYYY",
+	        "separator": " - ",
+	        "applyLabel": "OK",
+	        "cancelLabel": "Batal",
+	        "fromLabel": "Dari",
+	        "toLabel": "Hingga",
+	        "customRangeLabel": "Custom",
+	        "weekLabel": "W",
+	        "daysOfWeek": [
+	            "Mg",
+	            "Sn",
+	            "Sl",
+	            "Rb",
+	            "Km",
+	            "Jm",
+	            "Sa"
+	        ],
+	        "monthNames": [
+	            "Januari",
+	            "Februari",
+	            "Maret",
+	            "April",
+	            "Mei",
+	            "Juni",
+	            "Juli",
+	            "Agustus ",
+	            "September",
+	            "Oktober",
+	            "November",
+	            "Desember"
+	        ],
+	        "firstDay": 1
+	    }
+	});
+});
+
+//setup questioner end
+
+// report start
+
+function radarBarPNBP(canvas){
+	var ctx = $(canvas);
+	var radarBarPNBP = new Chart(ctx,{
+	type : 'radar',
+	data : {
+		labels :['KERJA TIM','SELALU BELAJAR DAN BERUBAH','HIDUP SEDERHANA','INTEGRITAS','UNGGUL','ORIENTASI PADA PELANGGAN','FANATIK TERHADAP DETAIL'],
+		datasets : [{
+			data : [10,40,30,12,45,5,39],
+			backgroundColor : ['#bbdefb'],
+			hoverBackgroundColor : ['#2979ff'],
+			borderColor : ['#42a5f5'],
+			label : 'Kelompok 1'
+		},
+		{
+			data : [30,20,45,15,18,13,55],
+			backgroundColor : ['#f8bbd0'],
+			hoverBackgroundColor : ['#f50057'],
+			borderColor : ['#e91e63'],
+			label : 'Kelompok 2'
+		}]
+	},
+	options : {
+		scale : {
+			display : true
+		}
+	}
+})
+}
+
+
+$(document).ready(function(){
+	$('.selectPekerjaReportPNBP').select2({
+		placeholder: "Pekerja",
+		searching: true,
+		minimumInputLength: 1,
+		allowClear: false,
+		ajax:
+		{
+			url: baseurl+'PNBP/Report/getPekerja',
+			dataType: 'json',
+			delay: 500,
+			type: 'GET',
+			data: function(params){
+				return {
+					term: params.term
+				}
+			},
+			processResults: function (data){
+				return {
+					results: $.map(data, function(obj){
+						return {id: obj.employee_code, text: obj.employee_code+" - "+obj.employee_name};
+					})
+				}
+			}
+		}
+	});
+
+	$('#btnSubmitChartPNBP').on('click',function(){
+		radarBarPNBP('#canvasReportPNBP');
+	});
+})
+
+
+// report end
