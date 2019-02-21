@@ -1,4 +1,16 @@
 $(document).ready(function(){
+	$('#presensiH-btn_v1').on('click',function(){
+		$('#form_presensiH').attr('action',baseurl+"AdmCabang/PresensiHarian/ExportPdf");
+		$('#form_presensiH').submit();
+	});
+	$('#presensiH-btn_v2').on('click',function(){
+		// alert("sukses");
+		$('#form_presensiH').attr('action',baseurl+"AdmCabang/PresensiHarian/ExportPdfv2");
+		$('#form_presensiH').submit();
+	});
+
+});
+$(document).ready(function(){
 				$('.cmdaterange').daterangepicker({
 				    "showDropdowns": true,
 				    "autoApply": true,

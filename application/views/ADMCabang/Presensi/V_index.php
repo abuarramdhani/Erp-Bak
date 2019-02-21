@@ -27,7 +27,7 @@
 							<div class="box-body">
 								<div class="row">
 									<div class="col-lg-12">
-										<form class="form-horizontal" target="_blank" method="post" action="<?php echo site_url('AdmCabang/PresensiHarian/ExportExcel') ?>">
+										<form class="form-horizontal" id="form_presensiH" target="_blank" method="post">
 											<div class="form-group">
 												<label class="control-label col-lg-4">Kodesie</label>
 												<div class="col-lg-4">
@@ -48,7 +48,8 @@
 											</div>
 											<div class="form-group">
 												<div class="col-lg-8 text-right">
-													<button class="btn btn-success">Export Excel</button>
+													<button id="presensiH-btn_v1" class="btn btn-info">Export PDF v1</button>
+													<button id="presensiH-btn_v2" class="btn btn-info">Export PDF v2</button>
 												</div>
 											</div>
 										</form>

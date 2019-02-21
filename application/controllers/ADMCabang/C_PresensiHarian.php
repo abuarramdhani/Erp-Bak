@@ -22,6 +22,7 @@ class C_PresensiHarian extends CI_Controller
 		$this->load->model('SystemAdministration/MainMenu/M_user');
 		$this->load->model('ADMCabang/M_presensiharian');
 		$this->checkSession();
+		date_default_timezone_set('Asia/Jakarta');
 	}
 
 	public function checkSession()
@@ -125,6 +126,283 @@ class C_PresensiHarian extends CI_Controller
 
 		$writer = PHPExcel_IOFactory::createWriter($this->excel,'Excel5');
 		$writer->save('php://output');
+	}
+
+	public function ExportPdf()
+	{
+		$this->load->library('pdf');
+		$pnoind = $this->session->user;
+		$nama = $this->M_presensiharian->ambilNamaPekerjaByNoind($pnoind);
+		$kodesie = $this->session->kodesie;
+		$data['kodesie'] = $kodesie;
+		$data['pekerja'] = $this->M_presensiharian->getPekerjaByKodesie($kodesie);
+		$data['seksi'] = $this->M_presensiharian->getSeksiByKodesie($kodesie);
+		$tanggal = $this->input->post('txtPeriodePresensiHarian');
+		$data['tanggal'] = $tanggal;
+		// echo "<pre>";
+		// print_r($data['pekerja']);
+		// exit();
+		$pekerja = $data['pekerja'];
+		$seksi = $data['seksi'];
+		$jmlpekerja = count($pekerja);
+		$noind = "";
+		for ($i=0; $i < $jmlpekerja; $i++) { 
+			if ($i == 0) {
+				if ($jmlpekerja == 1) {
+					$noind = "'".$pekerja[$i]['noind']."'";
+				}else{
+					$noind = "'".$pekerja[$i]['noind'];
+				}
+			}else{
+				if ($i == $jmlpekerja - 1) {
+					$noind = $noind."','".$pekerja[$i]['noind']."'";
+				}else{
+					$noind = $noind."','".$pekerja[$i]['noind'];
+				}
+			}
+		}
+		$data['shift'] = $this->M_presensiharian->getShiftArrayNoind($noind,$tanggal);
+		$data['presensi'] = $this->M_presensiharian->getPresensiArrayNoind($noind,$tanggal);
+		$data['tim'] = $this->M_presensiharian->getTIMArrayNoind($noind,$tanggal);
+		$data['ket'] = $this->M_presensiharian->getKeteranganArrayNoind($noind,$tanggal);
+
+		$angka1 = 1;
+		foreach ($pekerja as $val) {
+			$arr[$angka1] = array(
+				'noind' => $val['noind'],
+				'nama' => $val['nama'],
+				'seksi' => $seksi['0']['seksi'],
+			);
+
+			$shift = $this->M_presensiharian->getShiftByNoind($val['noind'],$tanggal);
+			$angka2 = 0;
+			$simpan = 0;
+			foreach ($shift as $key) {	
+				$presensi = $this->M_presensiharian->getPresensiByNoind($val['noind'],$key['tanggal']);
+				$tim = $this->M_presensiharian->getTIMByNoind($val['noind'],$key['tanggal']);
+				$ket = $this->M_presensiharian->getKeteranganByNoind($val['noind'],$key['tanggal']);
+				$arr[$angka1]['data'][$angka2]['tgl'] = $key['tgl'];
+				$arr[$angka1]['data'][$angka2]['shift'] = $key['shift'];
+				if (!empty($tim)) {
+					$angka3 = 0;
+					foreach ($tim as $valTim) {
+						$arr[$angka1]['data'][$angka2]['tim'][$angka3] = $valTim['point'];
+						$angka3++;
+					}
+				}
+				if (!empty($presensi)) {
+					$angka3 = 0;
+					foreach ($presensi as $waktu) {
+						$arr[$angka1]['data'][$angka2]['wkt'][$angka3] = $waktu['waktu'];
+						$angka3++;
+					}
+					if ($simpan <= ($angka3)) {
+						$simpan = $angka3;
+					}
+				}
+
+				$angka3 = 0;
+				foreach ($ket as $keterangan) {
+					$arr[$angka1]['data'][$angka2]['ket'][$angka3] = $keterangan['keterangan'];
+					$angka3++;
+				}
+				$angka2++;
+			}
+			$arr[$angka1]['max'] = $simpan;
+			$angka1++;
+		}
+		// $angka1 = 0;
+		// foreach ($data['shift'] as $key ) {
+		// 	$arr[$angka1] = array(
+		// 		'noind' => $key['noind'],
+		// 		'tgl' => $key['tanggal'],
+		// 		'shift' => $key['shift']
+		// 	);
+
+		// 	$waktu = $this->M_presensiharian->getPresensiByNoind($key['noind'],$key['tanggal']);
+		// 	$angka = 0;
+		// 	foreach ($waktu as $val) {
+		// 		$arr[$angka1]['waktu'][$angka] = $val['waktu'];
+		// 		$angka++;
+		// 	}
+		// 	$angka1++;
+		// }
+		// echo "<pre>";
+		// print_r($arr);
+		// exit();
+		$data['pekerja'] = $arr;
+		$today = date('d-m-Y H:i:s');
+		$seksi = $data['seksi'];
+
+		$tgl = explode(' - ', $tanggal);
+		$tgl1 =$tgl[0];
+		$tgl2 =$tgl[1];
+
+		$pdf = $this->pdf->load();
+		$pdf = new mPDF('utf-8', 'A4', 8, '', 5, 5, 30, 15, 10, 20);
+		$filename = 'Rekap_Presensi_v1-'.$seksi[0]['seksi'].'_'.$tanggal.'.pdf';
+
+		// $this->load->view('ADMCabang/Presensi/V_presensi1_pdf', $data);
+		// exit();
+		$html = $this->load->view('ADMCabang/Presensi/V_presensi1_pdf', $data, true);
+		$pdf->setHTMLHeader('
+				<table width="100%">
+					<tr>
+						<td width="50%"><h2><b>Data Absen Pekerja</b></h2></td>
+						<td><h4>Dicetak Oleh '.$pnoind.' - '.$nama[0]['nama'].' pada Tanggal '.$today.'</h4></td>
+					</tr>
+					<tr>
+						<td colspan="2"><h4>Seksi '.$seksi[0]['seksi'].'</h4></td>
+					</tr>
+					<tr>
+						<td colspan="2"><h4> Tanggal Absen '.$tgl1.' s.d. '.$tgl2.'</h4></td>
+					</tr>
+				</table>
+			');
+		$pdf->WriteHTML($html, 2);
+		$pdf->Output($filename, 'D');
+	}
+
+	public function ExportPdfv2()
+	{
+		$this->load->library('pdf');
+		$pnoind = $this->session->user;
+		$nama = $this->M_presensiharian->ambilNamaPekerjaByNoind($pnoind);
+		$kodesie = $this->session->kodesie;
+		$data['kodesie'] = $kodesie;
+		$data['pekerja'] = $this->M_presensiharian->getPekerjaByKodesie($kodesie);
+		$data['seksi'] = $this->M_presensiharian->getSeksiByKodesie($kodesie);
+		$tanggal = $this->input->post('txtPeriodePresensiHarian');
+		$data['tanggal'] = $tanggal;
+		// echo "<pre>";
+		// print_r($data['pekerja']);
+		// exit();
+		$pekerja = $data['pekerja'];
+		$seksi = $data['seksi'];
+		$jmlpekerja = count($pekerja);
+		$noind = "";
+		for ($i=0; $i < $jmlpekerja; $i++) { 
+			if ($i == 0) {
+				if ($jmlpekerja == 1) {
+					$noind = "'".$pekerja[$i]['noind']."'";
+				}else{
+					$noind = "'".$pekerja[$i]['noind'];
+				}
+			}else{
+				if ($i == $jmlpekerja - 1) {
+					$noind = $noind."','".$pekerja[$i]['noind']."'";
+				}else{
+					$noind = $noind."','".$pekerja[$i]['noind'];
+				}
+			}
+		}
+		$data['shift'] = $this->M_presensiharian->getShiftArrayNoind($noind,$tanggal);
+		$data['presensi'] = $this->M_presensiharian->getPresensiArrayNoind($noind,$tanggal);
+		$data['tim'] = $this->M_presensiharian->getTIMArrayNoind($noind,$tanggal);
+		$data['ket'] = $this->M_presensiharian->getKeteranganArrayNoind($noind,$tanggal);
+
+		$angka1 = 1;
+		$simpan2 = 0;
+		foreach ($pekerja as $val) {
+			$arr[$angka1] = array(
+				'noind' => $val['noind'],
+				'nama' => $val['nama'],
+				'seksi' => $seksi['0']['seksi'],
+			);
+
+			$shift = $this->M_presensiharian->getShiftByNoind($val['noind'],$tanggal);
+			$angka2 = 0;
+			$simpan = 0;
+
+			foreach ($shift as $key) {	
+				$presensi = $this->M_presensiharian->getPresensiByNoind($val['noind'],$key['tanggal']);
+				$tim = $this->M_presensiharian->getTIMByNoind($val['noind'],$key['tanggal']);
+				$ket = $this->M_presensiharian->getKeteranganByNoind($val['noind'],$key['tanggal']);
+				$arr[$angka1]['data'][$angka2]['tgl'] = $key['tgl'];
+				$arr[$angka1]['data'][$angka2]['shift'] = $key['shift'];
+				if (!empty($tim)) {
+					$angka3 = 0;
+					foreach ($tim as $valTim) {
+						$arr[$angka1]['data'][$angka2]['tim'][$angka3] = $valTim['point'];
+						$angka3++;
+					}
+				}
+				if (!empty($presensi)) {
+					$angka3 = 0;
+					foreach ($presensi as $waktu) {
+						$arr[$angka1]['data'][$angka2]['wkt'][$angka3] = $waktu['waktu'];
+						$angka3++;
+					}
+					if ($simpan <= ($angka3)) {
+						$simpan = $angka3;
+					}
+				}
+
+				$angka3 = 0;
+				foreach ($ket as $keterangan) {
+					$arr[$angka1]['data'][$angka2]['ket'][$angka3] = $keterangan['keterangan'];
+					$angka3++;
+				}
+				$angka2++;
+			}
+			$arr[$angka1]['max'] = $simpan;
+			if ($simpan2 <= $simpan) {
+				$simpan2 = $simpan;
+			}
+			$angka1++;
+		}
+
+		$data['max'] = $simpan2;
+		// $angka1 = 0;
+		// foreach ($data['shift'] as $key ) {
+		// 	$arr[$angka1] = array(
+		// 		'noind' => $key['noind'],
+		// 		'tgl' => $key['tanggal'],
+		// 		'shift' => $key['shift']
+		// 	);
+
+		// 	$waktu = $this->M_presensiharian->getPresensiByNoind($key['noind'],$key['tanggal']);
+		// 	$angka = 0;
+		// 	foreach ($waktu as $val) {
+		// 		$arr[$angka1]['waktu'][$angka] = $val['waktu'];
+		// 		$angka++;
+		// 	}
+		// 	$angka1++;
+		// }
+		// echo "<pre>";
+		// print_r($arr);
+		// exit();
+		$data['pekerja'] = $arr;
+		$today = date('d-m-Y H:i:s');
+		$seksi = $data['seksi'];
+
+		$tgl = explode(' - ', $tanggal);
+		$tgl1 =$tgl[0];
+		$tgl2 =$tgl[1];
+
+		$pdf = $this->pdf->load();
+		$pdf = new mPDF('utf-8', 'A4', 8, '', 5, 5, 30, 15, 10, 20);
+		$filename = 'Rekap_Presensi_v2-'.$seksi[0]['seksi'].'_'.$tanggal.'.pdf';
+
+		// $this->load->view('ADMCabang/Presensi/V_presensi1_pdf', $data);
+		// exit();
+		$html = $this->load->view('ADMCabang/Presensi/V_presensi1v2_pdf', $data, true);
+		$pdf->setHTMLHeader('
+				<table width="100%">
+					<tr>
+						<td width="50%"><h2><b>Data Absen Pekerja</b></h2></td>
+						<td><h4>Dicetak Oleh '.$pnoind.' - '.$nama[0]['nama'].' pada Tanggal '.$today.'</h4></td>
+					</tr>
+					<tr>
+						<td colspan="2"><h4>Seksi '.$seksi[0]['seksi'].'</h4></td>
+					</tr>
+					<tr>
+						<td colspan="2"><h4> Tanggal Absen '.$tgl1.' s.d. '.$tgl2.'</h4></td>
+					</tr>
+				</table>
+			');
+		$pdf->WriteHTML($html, 2);
+		$pdf->Output($filename, 'D');
 	}
 }
 ?>
