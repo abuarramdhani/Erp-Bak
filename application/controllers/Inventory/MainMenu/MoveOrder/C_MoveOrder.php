@@ -66,6 +66,9 @@ class C_MoveOrder extends CI_Controller
 		$datenew = $date ? $date2[1].'/'.$date2[0].'/'.$date2[2] : '';
 		$date = strtoupper(date('d-M-y', strtotime($datenew)));
 		$dataGET = $this->M_MoveOrder->search($date,$dept,$shift);
+		// echo "<pre>";
+		// print_r($dataGET);
+		// exit();
 		$array_sudah = array();
 		$array_terkelompok = array();
 		foreach ($dataGET as $key => $value) {
@@ -211,7 +214,7 @@ class C_MoveOrder extends CI_Controller
 		// ------ GENERATE PDF ------
 			$this->load->library('Pdf');
 			$pdf 				= $this->pdf->load();
-			$pdf 				= new mPDF('utf-8',array(215, 140), 0, '', 2, 2, 49.5, 21, 2, 4);
+			$pdf 				= new mPDF('utf-8',array(215, 140), 0, '', 2, 2, 59.5, 21, 2, 4);
 			// $pdf 				= new mPDF('utf-8','A5-L', 0, '', 2, 2, 18.5, 21, 2, 2);
 			$filename			= 'Picklist_'.time().'.pdf';
 			$a = 0;
