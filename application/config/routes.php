@@ -942,6 +942,10 @@ $route['PayrollManagement/Report/RincianHutang'] = 'PayrollManagement/Report/Rin
 $route['PayrollManagement/Report/RincianHutang/(:any)'] = 'PayrollManagement/Report/RincianHutang/C_RincianHutang/$1';
 $route['PayrollManagement/Report/RincianHutang/(:any)/(:any)'] = 'PayrollManagement/Report/RincianHutang/C_RincianHutang/$1/$2';
 
+$route['PayrollManagement/Report'] = 'PayrollManagement/Report/C_Report';
+$route['PayrollManagement/Report/(:any)'] = 'PayrollManagement/Report/C_Report/$1';
+$route['PayrollManagement/Report/(:any)/(:any)'] = 'PayrollManagement/Report/C_Report/$1/$2';
+
 $route['AccountPayables/KlikBCAChecking/Index'] 				= 'AccountPayables/C_KlikBCAChecking_Index';
 $route['AccountPayables/KlikBCAChecking/Index/(:any)'] 			= 'AccountPayables/C_KlikBCAChecking_Index/$1';
 $route['AccountPayables/KlikBCAChecking/Index/(:any)/(:any)'] 	= 'AccountPayables/C_KlikBCAChecking_Index/$1/$2';
