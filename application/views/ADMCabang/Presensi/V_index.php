@@ -47,9 +47,11 @@
 												</div>
 											</div>
 											<div class="form-group">
-												<div class="col-lg-8 text-right">
-													<button id="presensiH-btn_v1" class="btn btn-info">Export PDF v1</button>
-													<button id="presensiH-btn_v2" class="btn btn-info">Export PDF v2</button>
+												<div class="col-lg-10 text-right">
+													<button id="presensiH-btnExcel_v1" class="btn btn-success"><span style="font-size: 16px;" class="fa fa-file-excel-o"></span> - Template 1 </button>
+													<button id="presensiH-btnExcel_v2" class="btn btn-success"><span style="font-size: 16px;" class="fa fa-file-excel-o"></span> - Template 2</button>
+													<button id="presensiH-btnPDF_v1" class="btn btn-info"><span style="font-size: 16px;" class="fa fa-file-pdf-o"></span> - Template 1 </button>
+													<button id="presensiH-btnPDF_v2" class="btn btn-info"><span style="font-size: 16px;" class="fa fa-file-pdf-o"></span> - Template 2</button>
 												</div>
 											</div>
 										</form>
