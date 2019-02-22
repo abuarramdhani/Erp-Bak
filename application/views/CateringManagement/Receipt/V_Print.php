@@ -13,7 +13,7 @@
 		$this->load->helper('terbilang_helper');
 		foreach ($Receipt as $rc) {
 			$bonus_qty= 0; 
-			if($rc['order_type_id']==2){
+			if($rc['order_type_id']==2 && $rc['bonus']==1){
 				$bonus_qty = floor($rc['order_qty']/50);
 			}else {
 				$bonus_qty = 0;}
