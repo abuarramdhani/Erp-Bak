@@ -48,8 +48,8 @@
 							<div class="form-group">
 								<label class="col-lg-2 control-label">Receipt Date</label>
 								<div class="col-lg-3">
-									<input name="TxtReceiptDate" class="form-control singledate" placeholder="Receipt Date" required >
-									<input type="hidden" id="receipt-date" value="<?php echo $rc['receipt_date'] ?>" />
+									<input type="text" name="TxtReceiptDate" class="date form-control cmsingledate" placeholder="Receipt Date" data-date-format="dd-mm-yyyy" value="<?php echo date('d-m-Y', strtotime($rc['receipt_date']));?>" required >
+									<input type="hidden" id="receipt-date" value="<?php echo date('d-m-Y', strtotime($rc['receipt_date']));?>" />
 								</div>
 								<label class="col-lg-1 control-label" align="right">Place</label>
 								<div class="col-lg-2">
@@ -108,18 +108,39 @@
 								</div>
 							</div>
 						</div>
+						<!-- INPUT GROUP 2 ROW 1.2 -->
+						<div class="row" style="margin: 10px 10px">
+							<div class="form-group">
+								<label class="col-lg-2 control-label">Menu</label>
+								<div class="col-lg-6">
+									<input name="TxtMenu" class="form-control toupper" placeholder="Snack or Food" value="<?php echo $rc['order_description']?>">
+								</div>
+							</div>
+						</div>
 						<!-- INPUT GROUP 2 ROW 2 -->
 						<div class="row" style="margin: 10px 10px">
 							<div class="form-group">
 								<label class="col-lg-2 control-label">Order Date</label>
 								<div class="col-lg-6">
-									<input name="TxtOrderDate" class="form-control doubledate" placeholder="Order Date" required >
-									<input type="hidden" id="order-start-date" value="<?php echo $rc['order_start_date'] ?>" />
-									<input type="hidden" id="order-end-date" value="<?php echo $rc['order_end_date'] ?>" />
+									<input type="text" name="TxtOrderDate" class="form-control cmdaterange" placeholder="Order Date" value="<?php echo date('d-m-Y', strtotime($rc['order_start_date'])).' - '.date('d-m-Y', strtotime($rc['order_end_date']));?>" required >
+									<!-- <input type="hidden" id="order-start-date" value="<?php echo $rc['order_start_date'] ?>" />
+									<input type="hidden" id="order-end-date" value="<?php echo $rc['order_end_date'] ?>" /> -->
 								</div>
 							</div>
 						</div>
 						
+						<!-- INPUT GROUP 2 ROW 1.2 -->
+						<div class="row" style="margin: 10px 10px">
+							<div class="form-group">
+								<label class="col-lg-2 control-label">Bonus</label>
+								<div class="col-lg-6">
+									<select class="form-control select4" id="bonus" name="TxtBonus" required>
+										<option value="1" <?php if($rc['bonus'] == 1){ echo "selected"; } ?> >Active</option>
+										<option value="0" <?php if($rc['bonus'] == 0){ echo "selected"; } ?>>Inactive</option>
+									</select>
+								</div>
+							</div>
+						</div>
 						<!-- INPUT GROUP 2 ROW 3 -->
 						<div class="row" style="margin: 10px 10px">
 							<div class="form-group">
@@ -162,7 +183,7 @@
 													<?php foreach($ReceiptFine as $rf){ ?>
 													<tr class="clone">
 														<td>
-															<input id="finedate" name="TxtFineDate[]" class="form-control finedate" placeholder="Fine Date" value="<?php echo $rf['receipt_fine_date']?>">
+															<input type="text" id="finedate" name="TxtFineDate[]" class="date form-control finedate cmsingledate" placeholder="Fine Date" value="<?php echo date('d-m-Y', strtotime($rf['receipt_fine_date']))?>">
 														</td>
 														<td><input id="fineqty" name="TxtFineQty[]" class="form-control fineqty" onkeypress="return isNumberKey(event)" placeholder="Order Qty" value="<?php echo $rf['receipt_fine_qty']?>" ></td>
 														<td><input id="fineprice" name="TxtFinePrice[]" class="form-control fineprice" onkeypress="return isNumberKey(event)" placeholder="Order Price" value="<?php echo $rf['receipt_fine_price']?>" ></td>
@@ -182,7 +203,7 @@
 													</tr>
 													<?php } ?>
 													<tr class="clone">
-														<td><input id="finedate" name="TxtFineDate[]" class="form-control singledate finedate" placeholder="Fine Date"></td>
+														<td><input type="text" id="finedate" name="TxtFineDate[]" class="date form-control cmsingledate" placeholder="Fine Date"></td>
 														<td><input id="fineqty" name="TxtFineQty[]" class="form-control fineqty" onkeypress="return isNumberKey(event)" placeholder="Order Qty"></td>
 														<td><input id="fineprice" name="TxtFinePrice[]" class="form-control fineprice" onkeypress="return isNumberKey(event)" placeholder="Order Price"></td>
 														<td>
@@ -209,6 +230,15 @@
 							</div>
 						</div>
 						
+						<!-- INPUT GROUP 3 ROW 1 -->
+						<div class="row" style="margin: 10px 10px">
+							<div class="form-group">
+								<label class="col-lg-2 control-label">Order Net</label>
+								<div class="col-lg-3">
+									<input id="ordernet" name="TxtOrderNet" class="form-control" onkeypress="return isNumberKey(event)" placeholder="Net" value="0" readonly>
+								</div>								
+							</div>
+						</div>
 						<!-- INPUT GROUP 3 ROW 1 -->
 						<div class="row" style="margin: 10px 10px">
 							<div class="form-group">

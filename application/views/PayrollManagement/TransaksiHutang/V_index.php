@@ -20,7 +20,9 @@
 	        </div>
 	      </div>
 	      <br/>
-	      
+	      <?php
+			$this->load->view('PayrollManagement/V_alert');
+		  ?>
 	      <div class="row">
 	        <div class="col-lg-12">
 		        <div class="box box-primary box-solid">
@@ -38,38 +40,65 @@
 		              <table class="table table-striped table-bordered table-hover text-left" id="dataTables-transaksiHutang" style="font-size:12px;">
 		                <thead class="bg-primary">
 		                  <tr>
-		                    <th style="text-align:center; width:30px"><div style="width:40px"></div>NO</th>
-                            <th style='text-align:center'><div style="width:100px"></div>ACTION</th>
-							<th><div style="width:100px"></div>ID Transaksi</th>
-							<th><div style="width:100px"></div>No Hutang</th>
-							<th><div style="width:100px"></div>Tanggal Transaksi</th>
-							<th><div style="width:100px"></div>Kode Jenis Transaksi</th>
-							<th><div style="width:100px"></div>Jumlah Transaksi</th>
-							<th><div style="width:100px"></div>Lunas</th>
+		                    <th class="text-center"><div style="width:40px"></div>NO</th>
+                            <th class="text-center"><div style="width:100px"></div>ACTION</th>
+							<th class="text-center"><div style="width:100px"></div>Noind</th>
+							<th class="text-center"><div style="width:100px"></div>No Hutang</th>
+							<th class="text-center"><div style="width:100px"></div>Tanggal Transaksi</th>
+							<th class="text-center"><div style="width:100px"></div>Kode Jenis Transaksi</th>
+							<th class="text-center"><div style="width:100px"></div>Jumlah Transaksi</th>
+							<th class="text-center"><div style="width:100px"></div>Lunas</th>
 
 		                  </tr>
 		                </thead>
 		                <tbody>
-							<?php $no = 1; foreach($transaksiHutang_data as $row) { ?>
+							<?php 
+								$no = 1; 
+								$total = 0;
+								foreach($transaksiHutang_data as $row) {
+									$e_id = $this->encrypt->encode($row->no_hutang);
+									$e_id = str_replace(array('+', '/', '='), array('-', '_', '~'), $e_id);
+									if($row->status_lunas==1){
+										$status = "LUNAS";
+									}else{
+										$status = "-";
+									}
+								$total = $total + $row->total_hutang;
+								?>
 							<tr>
 							  <td align='center'><?php echo $no++;?></td>
                               <td align='center' width='200px'>
-                              	<a href="<?php echo base_url('PayrollManagement/TransaksiHutang/read/'.$row->id_transaksi_hutang.''); ?>" class="btn btn-xs btn-primary" data-toggle="tooltip" data-placement="bottom" title="Read Data"><span class="fa fa-eye"></span></a>
-                              	<a href="<?php echo base_url('PayrollManagement/TransaksiHutang/update/'.$row->id_transaksi_hutang.''); ?>" class="btn btn-xs btn-warning" data-toggle="tooltip" data-placement="bottom" title="Edit Data"><span class="fa fa-pencil-square-o"></span></a>
-                              	<a href="<?php echo base_url('PayrollManagement/TransaksiHutang/delete/'.$row->id_transaksi_hutang.''); ?>" class="btn btn-xs btn-danger" data-toggle="tooltip" data-placement="bottom" title="Hapus Data" onclick="return confirm('Are you sure you want to delete this item?');"><span class="fa fa-times"></span></a>
+                              	<a href="<?php echo base_url('PayrollManagement/TransaksiHutang/read/'.$e_id.''); ?>" class="btn btn-xs btn-primary" data-toggle="tooltip" data-placement="bottom" title="Read Data"><span class="fa fa-eye"></span></a>
+                              	<a href="<?php echo base_url('PayrollManagement/TransaksiHutang/list_/'.$e_id.''); ?>" class="btn btn-xs btn-success" data-toggle="tooltip" data-placement="bottom" title="Read Data"><span class="fa fa-list-ol"></span></a>
+                              	<a href="<?php echo base_url('PayrollManagement/TransaksiHutang/update/'.$e_id.''); ?>" class="btn btn-xs btn-warning" data-toggle="tooltip" data-placement="bottom" title="Edit Data"><span class="fa fa-pencil-square-o"></span></a>
+                              	<a href="<?php echo base_url('PayrollManagement/TransaksiHutang/delete/'.$e_id.''); ?>" class="btn btn-xs btn-danger" data-toggle="tooltip" data-placement="bottom" title="Hapus Data" onclick="return confirm('Are you sure you want to delete this item?');"><span class="fa fa-times"></span></a>
                               </td>
-							<td><?php echo $row->id_transaksi_hutang ?></td>
+							<td><?php echo $row->noind ?></td>
 							<td><?php echo $row->no_hutang ?></td>
-							<td><?php echo $row->tgl_transaksi ?></td>
-							<td><?php echo $row->jenis_transaksi ?></td>
-							<td><?php echo $row->jumlah_transaksi ?></td>
-							<td><?php echo $row->lunas ?></td>
+							<td><?php echo $row->tgl_pengajuan ?></td>
+							<td><?php echo '-'; ?></td>
+							<td><?php echo number_format((int)$row->total_hutang,0,",",".") ?></td>
+							<td><?php echo $status ?></td>
 
 							</tr>
 							<?php } ?>
-		                </tbody>                                      
+		                </tbody>
+						<tfoot>
+							<tr>
+								<th class="text-center" colspan="6">Total</th>
+								<th class="text-right"><?php echo number_format((int)$total,0,",","."); ?></th>
+								<th>&nbsp;</th>
+							</tr>
+						</tfoot>
 		              </table>
 		            </div>
+					 <div class="panel-footer">
+                                <div class="row text-right">
+                                    <a href="javascript:history.back(1)" class="btn btn-primary btn-lg btn-rect">Back</a>
+                                    &nbsp;&nbsp;
+                                    <button type="submit" class="btn btn-primary btn-lg btn-rect">Save Data</button>
+                                </div>
+                            </div>
 		          </div>
 		        </div>
 	        </div>

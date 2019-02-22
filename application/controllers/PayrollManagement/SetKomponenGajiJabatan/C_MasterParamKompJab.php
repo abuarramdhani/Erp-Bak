@@ -9,6 +9,7 @@ class C_MasterParamKompJab extends CI_Controller
         $this->load->helper('url');
         $this->load->model('SystemAdministration/MainMenu/M_user');
         $this->load->model('PayrollManagement/SetKomponenGajiJabatan/M_masterparamkompjab');
+		$this->load->library('csvimport');
         if($this->session->userdata('logged_in')!=TRUE) {
             $this->load->helper('url');
             $this->session->set_userdata('last_page', current_url());
@@ -21,8 +22,8 @@ class C_MasterParamKompJab extends CI_Controller
         $this->checkSession();
         $user_id = $this->session->userid;
         
-        $data['Menu'] = 'Payroll Management';
-        $data['SubMenuOne'] = '';
+        $data['Menu'] = 'Set Parameter';
+        $data['SubMenuOne'] = 'Set Komponen Gaji Jabatan';
         $data['SubMenuTwo'] = '';
 
         $data['UserMenu'] = $this->M_user->getUserMenu($user_id,$this->session->responsibility_id);
@@ -35,6 +36,11 @@ class C_MasterParamKompJab extends CI_Controller
         $this->load->view('V_Sidemenu',$data);
         $this->load->view('PayrollManagement/MasterParamKompJab/V_index', $data);
         $this->load->view('V_Footer',$data);
+		$this->session->unset_userdata('success_import');
+		$this->session->unset_userdata('success_delete');
+		$this->session->unset_userdata('success_update');
+		$this->session->unset_userdata('success_insert');
+		$this->session->unset_userdata('not_found');
     }
 
 	public function read($id)
@@ -45,8 +51,8 @@ class C_MasterParamKompJab extends CI_Controller
         $row = $this->M_masterparamkompjab->get_by_id($id);
         if ($row) {
             $data = array(
-            	'Menu' => 'Payroll Management',
-            	'SubMenuOne' => '',
+            	'Menu' => 'Set Parameter',
+            	'SubMenuOne' => 'Set Komponen Gaji Jabatan',
             	'SubMenuTwo' => '',
             	'UserMenu' => $this->M_user->getUserMenu($user_id,$this->session->responsibility_id),
             	'UserSubMenuOne' => $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id),
@@ -70,6 +76,10 @@ class C_MasterParamKompJab extends CI_Controller
         }
         else {
             $this->session->set_flashdata('message', 'Record Not Found');
+			$ses=array(
+					 "not_found" => 1
+				);
+			$this->session->set_userdata($ses);
             redirect(site_url('PayrollManagement/MasterParamKompJab'));
         }
     }
@@ -81,8 +91,8 @@ class C_MasterParamKompJab extends CI_Controller
         $user_id = $this->session->userid;
 
         $data = array(
-            'Menu' => 'Payroll Management',
-            'SubMenuOne' => '',
+            'Menu' => 'Set Parameter',
+            'SubMenuOne' => 'Set Komponen Gaji Jabatan',
             'SubMenuTwo' => '',
             'UserMenu' => $this->M_user->getUserMenu($user_id,$this->session->responsibility_id),
             'UserSubMenuOne' => $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id),
@@ -110,20 +120,67 @@ class C_MasterParamKompJab extends CI_Controller
     public function save()
     {
         $this->formValidation();
-		$data = array(
-			'id_komp_jab' => $this->input->post('txtIdKompJabNew',TRUE),
-			'kd_status_kerja' => $this->input->post('cmbKdStatusKerja',TRUE),
-			'kd_jabatan' => $this->input->post('cmbKdJabatan',TRUE),
-			'ip' => $this->input->post('txtIp',TRUE),
-			'ik' => $this->input->post('txtIk',TRUE),
-			'ims' => $this->input->post('txtIms',TRUE),
-			'imm' => $this->input->post('txtImm',TRUE),
-			'pot_duka' => $this->input->post('txtPotDuka',TRUE),
-			'spsi' => $this->input->post('txtSpsi',TRUE),
+		
+		$check = $this->M_masterparamkompjab->get_by_id($this->input->post('txtIdKompJabNew',TRUE));
+		if($check){
+			$data = array(
+				'kd_status_kerja' => $this->input->post('cmbKdStatusKerja',TRUE),
+				'kd_jabatan' => $this->input->post('cmbKdJabatan',TRUE),
+				'ip' => str_replace(",","",$this->input->post('txtIp',TRUE)),
+				'ik' => str_replace(",","",$this->input->post('txtIk',TRUE)),
+				'ims' => str_replace(",","",$this->input->post('txtIms',TRUE)),
+				'imm' => str_replace(",","",$this->input->post('txtImm',TRUE)),
+				'pot_duka' => str_replace(",","",$this->input->post('txtPotDuka',TRUE)),
+				'spsi' => str_replace(",","",$this->input->post('txtSpsi',TRUE)),
+			);
+			$this->M_masterparamkompjab->update($this->input->post('txtIdKompJabNew',TRUE),$data);
+		}else{
+			$data = array(
+				'id_komp_jab' => $this->input->post('txtIdKompJabNew',TRUE),
+				'kd_status_kerja' => $this->input->post('cmbKdStatusKerja',TRUE),
+				'kd_jabatan' => $this->input->post('cmbKdJabatan',TRUE),
+				'ip' => str_replace(",","",$this->input->post('txtIp',TRUE)),
+				'ik' => str_replace(",","",$this->input->post('txtIk',TRUE)),
+				'ims' => str_replace(",","",$this->input->post('txtIms',TRUE)),
+				'imm' => str_replace(",","",$this->input->post('txtImm',TRUE)),
+				'pot_duka' => str_replace(",","",$this->input->post('txtPotDuka',TRUE)),
+				'spsi' => str_replace(",","",$this->input->post('txtSpsi',TRUE)),
+			);
+			$this->M_masterparamkompjab->insert($data);
+		}
+		
+		$ru_where = array(
+			'tgl_tberlaku' => '9999-12-31',
+			'id_komp_jab' => $this->input->post('txtIdKompJabNew',TRUE),			
 		);
-
-        $this->M_masterparamkompjab->insert($data);
+		
+		$ru_data = array(
+			'tgl_tberlaku' => $this->input->post('txtPeriodeKompJabatan',TRUE),
+		);
+        
+		$ri_data = array(
+			'kd_status_kerja' => $this->input->post('cmbKdStatusKerja',TRUE),
+			'tgl_berlaku' => $this->input->post('txtPeriodeKompJabatan',TRUE),
+			'tgl_tberlaku' => '9999-12-31',
+			'id_komp_jab' => $this->input->post('txtIdKompJabNew',TRUE),
+			'kd_jabatan' => $this->input->post('cmbKdJabatan',TRUE),
+			'ip' => str_replace(",","",$this->input->post('txtIp',TRUE)),
+			'ik' => str_replace(",","",$this->input->post('txtIk',TRUE)),
+			'ims' => str_replace(",","",$this->input->post('txtIms',TRUE)),
+			'imm' => str_replace(",","",$this->input->post('txtImm',TRUE)),
+			'pot_duka' => str_replace(",","",$this->input->post('txtPotDuka',TRUE)),
+			'spsi' => str_replace(",","",$this->input->post('txtSpsi',TRUE)),
+			'kode_petugas' => $this->session->userdata('userid'),
+			'tgl_record' => date('Y-m-d H:i:s'),
+		);
+		
+		$this->M_masterparamkompjab->update_riwayat($ru_where,$ru_data);
+		$this->M_masterparamkompjab->insert_riwayat($ri_data);
         $this->session->set_flashdata('message', 'Create Record Success');
+		$ses=array(
+				 "success_insert" => 1
+			);
+		$this->session->set_userdata($ses);
         redirect(site_url('PayrollManagement/MasterParamKompJab'));
     }
 
@@ -137,8 +194,8 @@ class C_MasterParamKompJab extends CI_Controller
 
         if ($row) {
             $data = array(
-                'Menu' => 'Payroll Management',
-                'SubMenuOne' => '',
+                'Menu' => 'Set Parameter',
+                'SubMenuOne' => 'Set Komponen Gaji Jabatan',
                 'SubMenuTwo' => '',
                 'UserMenu' => $this->M_user->getUserMenu($user_id,$this->session->responsibility_id),
                 'UserSubMenuOne' => $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id),
@@ -163,6 +220,10 @@ class C_MasterParamKompJab extends CI_Controller
             $this->load->view('V_Footer',$data);
         } else {
             $this->session->set_flashdata('message', 'Record Not Found');
+			$ses=array(
+					 "not_found" => 1
+				);
+			$this->session->set_userdata($ses);
             redirect(site_url('PayrollManagement/MasterParamKompJab'));
         }
     }
@@ -184,6 +245,10 @@ class C_MasterParamKompJab extends CI_Controller
 
         $this->M_masterparamkompjab->update($this->input->post('txtIdKompJab', TRUE), $data);
         $this->session->set_flashdata('message', 'Update Record Success');
+		$ses=array(
+				 "success_update" => 1
+			);
+		$this->session->set_userdata($ses);
         redirect(site_url('PayrollManagement/MasterParamKompJab'));
     }
 
@@ -194,10 +259,79 @@ class C_MasterParamKompJab extends CI_Controller
         if ($row) {
             $this->M_masterparamkompjab->delete($id);
             $this->session->set_flashdata('message', 'Delete Record Success');
+			$ses=array(
+					 "success_delete" => 1
+				);
+			$this->session->set_userdata($ses);
             redirect(site_url('PayrollManagement/MasterParamKompJab'));
         } else {
             $this->session->set_flashdata('message', 'Record Not Found');
+			$ses=array(
+					 "not_found" => 1
+				);
+			$this->session->set_userdata($ses);
             redirect(site_url('PayrollManagement/MasterParamKompJab'));
+        }
+    }
+	
+	  public function import() {
+        $config['upload_path'] = 'assets/upload/importPR/masterparamkompjab/';
+        $config['allowed_types'] = 'csv';
+        $config['max_size'] = '1000';
+        $this->load->library('upload', $config);
+ 
+        if (!$this->upload->do_upload('importfile')) { echo $this->upload->display_errors();}
+        else {  $file_data  = $this->upload->data();
+                $filename   = $file_data['file_name'];
+                $file_path  = 'assets/upload/importPR/masterparamkompjab/'.$file_data['file_name'];
+                
+            if ($this->csvimport->get_array($file_path)) {
+                
+                $csv_array  = $this->csvimport->get_array($file_path);
+
+                foreach ($csv_array as $row) {
+					$check = $this->M_masterparamkompjab->get_by_id($row['ID_KOMP_JAB']);
+                    if($check){
+                        $data = array(
+                            'kd_status_kerja' => $row['KD_STATUS_KERJA'],
+                            'kd_jabatan' => $row['KD_JABATAN'],
+                            'ip' => $row['IP'],
+                            'ik' => $row['IK'],
+                            'ims' => $row['IMS'],
+                            'imm' => $row['IMM'],
+                            'pot_duka' => $row['POT_DUKA'],
+                            'spsi' => $row['SPSI'],
+                        );
+						// echo $row['ID_KOMP_JAB']."update";
+                        $this->M_masterparamkompjab->update($row['ID_KOMP_JAB'],$data);
+                    }else{
+                        $data = array(
+                            'id_komp_jab' => $row['ID_KOMP_JAB'],
+                            'kd_status_kerja' => $row['KD_STATUS_KERJA'],
+                            'kd_jabatan' => $row['KD_JABATAN'],
+                            'ip' => $row['IP'],
+                            'ik' => $row['IK'],
+                            'ims' => $row['IMS'],
+                            'imm' => $row['IMM'],
+                            'pot_duka' => $row['POT_DUKA'],
+                            'spsi' => $row['SPSI'],
+                        );
+						// echo $row['ID_KOMP_JAB']."insert";
+                        $this->M_masterparamkompjab->insert($data);
+                    }
+                }
+				$this->session->set_flashdata('flashSuccess', 'This is a success message.');
+				$ses=array(
+					 "success_import" => 1
+				);
+
+				$this->session->set_userdata($ses);
+                unlink($file_path);
+                redirect(base_url().'PayrollManagement/MasterParamKompJab');
+
+            } else {
+                $this->load->view('csvindex');
+            }
         }
     }
 

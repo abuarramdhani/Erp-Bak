@@ -63,11 +63,11 @@ class M_receipt extends CI_Model {
 		//Select Receipt Single
 		public function GetReceiptForEdit($id){
 			$sql = "
-			select *
-			from cm.cm_receipt a
-			left join cm.cm_type b on a.order_type_id = b.type_id
-			left join cm.cm_catering c on a.catering_id = c.catering_id
-			where a.receipt_id = $id";
+			select 	*
+			from 	cm.cm_receipt a
+			left 	join cm.cm_type b on a.order_type_id = b.type_id
+			left 	join cm.cm_catering c on a.catering_id = c.catering_id
+			where 	a.receipt_id = $id";
 			$query = $this->db->query($sql);
 			return $query->result_array();
 		}
@@ -111,11 +111,11 @@ class M_receipt extends CI_Model {
 		}
 		
 		//Create New Receipt
-		public function AddReceipt($id,$no,$date,$place,$from,$signer,$ordertype,$catering,$startdate,$enddate,$orderqty,$orderprice,$fine,$pph,$payment){
+		public function AddReceipt($id,$no,$date,$place,$from,$signer,$ordertype,$catering,$startdate,$enddate,$orderqty,$orderprice,$fine,$pph,$payment,$menu,$bonus){
 			$sql = "
 			insert into cm.cm_receipt
-			(receipt_id,receipt_no,receipt_date,receipt_place,receipt_from,receipt_signer,order_start_date,order_end_date,order_qty,order_price,fine,pph,payment,order_type_id,catering_id)values
-			('$id','$no','$date','$place','$from','$signer','$startdate','$enddate','$orderqty','$orderprice','$fine','$pph','$payment','$ordertype','$catering')";
+			(receipt_id,receipt_no,receipt_date,receipt_place,receipt_from,receipt_signer,order_start_date,order_end_date,order_qty,order_price,fine,pph,payment,order_type_id,catering_id,order_description,bonus)values
+			('$id','$no',TO_DATE('$date','YYYY-MM-DD'),'$place','$from','$signer','$startdate','$enddate','$orderqty','$orderprice','$fine','$pph','$payment','$ordertype','$catering','$menu','$bonus')";
 			$query = $this->db->query($sql);
 			return;
 		}
@@ -133,11 +133,11 @@ class M_receipt extends CI_Model {
 		}
 		
 		//Update Receipt
-		public function UpdateReceipt($id,$no,$date,$place,$from,$signer,$ordertype,$catering,$startdate,$enddate,$orderqty,$orderprice,$fine,$pph,$payment){
+		public function UpdateReceipt($id,$no,$date,$place,$from,$signer,$ordertype,$catering,$startdate,$enddate,$orderqty,$orderprice,$fine,$pph,$payment,$menu,$bonus){
 			$sql = "
 			update cm.cm_receipt set 
 				receipt_no='$no',
-				receipt_date='$date',
+				receipt_date=TO_DATE('$date','YYYY-MM-DD'),
 				receipt_place='$place',
 				receipt_from='$from',
 				receipt_signer='$signer',
@@ -149,7 +149,9 @@ class M_receipt extends CI_Model {
 				pph='$pph',
 				payment='$payment',
 				order_type_id='$ordertype',
-				catering_id='$catering'
+				catering_id='$catering',
+				order_description='$menu',
+				bonus='$bonus'
 			where receipt_id='$id'
 			";
 			$query = $this->db->query($sql);

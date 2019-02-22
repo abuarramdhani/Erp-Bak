@@ -14,13 +14,28 @@ class M_masterpekerja extends CI_Model
     }
 
     // get all data
-    function get_all()
+    function get_all($statusKerja)
     {
-    	return $this->db->order_by('noind', 'DESC')->get($this->table, 30)->result();
+		$sql = "select * from pr.pr_master_pekerja where left(noind,1) in ($statusKerja) order by noind";
+		$query	= $this->db->query($sql);
+		return $query->result();
+    }
+	
+	// get hubker
+    function get_hubker()
+    {
+    	return $this->db->order_by('kd_status_kerja', 'ASC')->get('pr.pr_master_status_kerja')->result();
     }
 
     // get data by id
     function get_by_id($id)
+    {
+        $this->db->where($this->id, $id);
+        return $this->db->get($this->table)->row();
+    }
+	
+	// check
+    function check($id)
     {
         $this->db->where($this->id, $id);
         return $this->db->get($this->table)->row();
@@ -75,6 +90,29 @@ class M_masterpekerja extends CI_Model
             {
                 return $this->db->get('pr.pr_master_jabatan')->result();
             }
+			
+			
+			 public function setMasterPekerja($data)
+			{
+				return $this->db->insert('pr.pr_master_pekerja', $data);
+			}
+
+			public function updateMasterPekerja($data, $id)
+			{
+				$this->db->where('noind', $id);
+				$this->db->update('pr.pr_master_pekerja', $data);
+			}
+
+			public function cekUpdate($dataCekUpdate){
+				$query = $this->db->get_where('pr.pr_master_pekerja', $dataCekUpdate);
+				return $query;
+			}
+//json get noind
+	public function get_noind($string){
+		$sql = "select noind,nama from pr.pr_master_pekerja where nama like '%$string%' or noind like '%$string%'";
+		$query = $this->db->query($sql);
+		return $query->result_array();
+	}
 
 }
 

@@ -21,8 +21,8 @@ class C_SetGajiUMP extends CI_Controller
         $this->checkSession();
         $user_id = $this->session->userid;
         
-        $data['Menu'] = 'Payroll Management';
-        $data['SubMenuOne'] = '';
+        $data['Menu'] = 'Set Parameter';
+        $data['SubMenuOne'] = 'Set Gaji UMP';
         $data['SubMenuTwo'] = '';
 
         $data['UserMenu'] = $this->M_user->getUserMenu($user_id,$this->session->responsibility_id);
@@ -35,6 +35,11 @@ class C_SetGajiUMP extends CI_Controller
         $this->load->view('V_Sidemenu',$data);
         $this->load->view('PayrollManagement/SetGajiUMP/V_index', $data);
         $this->load->view('V_Footer',$data);
+		$this->session->unset_userdata('success_import');
+		$this->session->unset_userdata('success_delete');
+		$this->session->unset_userdata('success_update');
+		$this->session->unset_userdata('success_insert');
+		$this->session->unset_userdata('not_found');
     }
 
 	public function read($id)
@@ -45,8 +50,8 @@ class C_SetGajiUMP extends CI_Controller
         $row = $this->M_setgajiump->get_by_id($id);
         if ($row) {
             $data = array(
-            	'Menu' => 'Payroll Management',
-            	'SubMenuOne' => '',
+            	'Menu' => 'Set Parameter',
+            	'SubMenuOne' => 'Set Tarif UMP',
             	'SubMenuTwo' => '',
             	'UserMenu' => $this->M_user->getUserMenu($user_id,$this->session->responsibility_id),
             	'UserSubMenuOne' => $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id),
@@ -63,6 +68,10 @@ class C_SetGajiUMP extends CI_Controller
         }
         else {
             $this->session->set_flashdata('message', 'Record Not Found');
+			$ses=array(
+					 "not_found" => 1
+				);
+			$this->session->set_userdata($ses);
             redirect(site_url('PayrollManagement/SetGajiUMP'));
         }
     }
@@ -74,15 +83,17 @@ class C_SetGajiUMP extends CI_Controller
         $user_id = $this->session->userid;
 
         $data = array(
-            'Menu' => 'Payroll Management',
-            'SubMenuOne' => '',
+            'Menu' => 'Set Parameter',
+            'SubMenuOne' => 'Set Tarif UMP',
             'SubMenuTwo' => '',
             'UserMenu' => $this->M_user->getUserMenu($user_id,$this->session->responsibility_id),
             'UserSubMenuOne' => $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id),
             'UserSubMenuTwo' => $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id),
             'action' => site_url('PayrollManagement/SetGajiUMP/save'),
+			'id_lokasi_kerja' => set_value('id_lokasi_kerja'),
 			'kode_ump' => set_value(''),
 			'ump' => set_value(''),
+			'pr_lokasi_kerja_data' => $this->M_setgajiump->get_lokasi_kerja(),
 		);
 
         $this->load->view('V_Header',$data);
@@ -94,12 +105,44 @@ class C_SetGajiUMP extends CI_Controller
     public function save(){
         $this->formValidation();
         $data = array(
-			'kode_ump' => $this->input->post('txtKodeUMPNew',TRUE),
-			'ump' => $this->input->post('txtUMP',TRUE),
+			'kode_ump' => date('YmdHis'),
+			'ump' => str_replace(',','',$this->input->post('txtUMP',TRUE)),
+			'id_lokasi_kerja'	=>	$this->input->post('txtLokasiKerja',TRUE),
 		);
-
+		
+		$data_riwayat = array(
+			'id_riw_gaji_ump'	=>	date('YmdHis'),
+			'id_kantor_asal'	=>	$this->input->post('txtLokasiKerja',TRUE),
+			'id_lokasi_kerja'	=>	$this->input->post('txtLokasiKerja',TRUE),
+			'ump'	=>	 str_replace(',','',$this->input->post('txtUMP',TRUE)),
+			'tgl_berlaku'	=> date('Y-m-d'),
+			'tgl_tberlaku'	=> date('9999-12-31'),
+			'kd_petugas'	=> $this->session->userdata('userid'),
+			'tgl_rec'	=> date('Y-m-d H:i:s'),
+		);
+		//MASTER DELETE
+		$dl_where = array(
+			'id_lokasi_kerja'	=>	$this->input->post('txtLokasiKerja',TRUE),
+		);
+		
+		//RIWAYAT CHANGE CURRENT
+		$ru_where = array(
+			'tgl_tberlaku' => '9999-12-31',
+			'id_lokasi_kerja'	=>	$this->input->post('txtLokasiKerja',TRUE),
+		);
+		$ru_data = array(
+			'tgl_tberlaku' 	=> date('Y-m-d'),
+		);
+		
+        $this->M_setgajiump->master_delete($dl_where);
         $this->M_setgajiump->insert($data);
+		$this->M_setgajiump->riwayat_update($ru_where,$ru_data);
+        $this->M_setgajiump->insert_riwayat($data_riwayat);
         $this->session->set_flashdata('message', 'Create Record Success');
+			$ses=array(
+					 "success_insert" => 1
+				);
+			$this->session->set_userdata($ses);
         redirect(site_url('PayrollManagement/SetGajiUMP'));
     }
 
@@ -113,15 +156,17 @@ class C_SetGajiUMP extends CI_Controller
 
         if ($row) {
             $data = array(
-                'Menu' => 'Payroll Management',
-                'SubMenuOne' => '',
+                'Menu' => 'Set Parameter',
+                'SubMenuOne' => 'Set Tarif UMP',
                 'SubMenuTwo' => '',
                 'UserMenu' => $this->M_user->getUserMenu($user_id,$this->session->responsibility_id),
                 'UserSubMenuOne' => $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id),
                 'UserSubMenuTwo' => $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id),
                 'action' => site_url('PayrollManagement/SetGajiUMP/saveUpdate'),
 				'kode_ump' => set_value('txtKdStatusKerja', $row->kode_ump),
+				'id_lokasi_kerja' => set_value('txtLokasiKerja', $row->id_lokasi_kerja),
 				'ump' => set_value('txtStatusKerja', $row->ump),
+				'pr_lokasi_kerja_data' => $this->M_setgajiump->get_lokasi_kerja(),
 				);
             $this->load->view('V_Header',$data);
             $this->load->view('V_Sidemenu',$data);
@@ -129,6 +174,10 @@ class C_SetGajiUMP extends CI_Controller
             $this->load->view('V_Footer',$data);
         } else {
             $this->session->set_flashdata('message', 'Record Not Found');
+			$ses=array(
+					 "not_found" => 1
+				);
+			$this->session->set_userdata($ses);
             redirect(site_url('PayrollManagement/SetGajiUMP'));
         }
     }
@@ -137,12 +186,26 @@ class C_SetGajiUMP extends CI_Controller
         $this->formValidation();
 
         $data = array(
-			'kode_ump' => $this->input->post('txtKodeUMPNew',TRUE),
-			'ump' => $this->input->post('txtUMP',TRUE),
+			'ump' => str_replace(',','',$this->input->post('txtUMP',TRUE)),
+		);
+		$ru_where = array(
+			'tgl_tberlaku' => '9999-12-31',
+			'id_lokasi_kerja'	=>	$this->input->post('txtLokasiKerja',TRUE),
+		);
+		$ru_data = array(
+			'tgl_berlaku' => date('Y-m-d'),
+			'ump' => str_replace(',','',$this->input->post('txtUMP',TRUE)),
+			'kd_petugas'	=> $this->session->userdata('userid'),
+			'tgl_rec'	=> date('Y-m-d H:i:s'),
 		);
 
             $this->M_setgajiump->update($this->input->post('txtKodeUMP', TRUE), $data);
+			$this->M_setgajiump->riwayat_update($ru_where,$ru_data);
             $this->session->set_flashdata('message', 'Update Record Success');
+			$ses=array(
+					 "success_update" => 1
+				);
+			$this->session->set_userdata($ses);
             redirect(site_url('PayrollManagement/SetGajiUMP'));
     }
 
@@ -153,9 +216,17 @@ class C_SetGajiUMP extends CI_Controller
         if ($row) {
             $this->M_setgajiump->delete($id);
             $this->session->set_flashdata('message', 'Delete Record Success');
+			$ses=array(
+					 "success_delete" => 1
+				);
+			$this->session->set_userdata($ses);
             redirect(site_url('PayrollManagement/SetGajiUMP'));
         } else {
             $this->session->set_flashdata('message', 'Record Not Found');
+			$ses=array(
+					 "not_found" => 1
+				);
+			$this->session->set_userdata($ses);
             redirect(site_url('PayrollManagement/SetGajiUMP'));
         }
     }

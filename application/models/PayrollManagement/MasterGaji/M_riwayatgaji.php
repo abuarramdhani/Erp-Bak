@@ -14,9 +14,14 @@ class M_riwayatgaji extends CI_Model
     }
 
     // get all data
-    function get_all()
+    function get_all($date)
     {
-    	return $this->db->get($this->table)->result();
+		$this->db->select('*');
+		$this->db->from($this->table);
+		$this->db->join('pr.pr_hub_kerja', 'pr.pr_hub_kerja.kd_hubungan_kerja = pr.pr_riwayat_gaji.kd_hubungan_kerja');
+		$this->db->where('pr.pr_riwayat_gaji.tgl_berlaku<=',$date);
+		$this->db->where('pr.pr_riwayat_gaji.tgl_tberlaku>',$date);
+		return $this->db->get()->result();
     }
 
     // get data by id
@@ -38,6 +43,14 @@ class M_riwayatgaji extends CI_Model
         $this->db->where($this->id, $id);
         $this->db->update($this->table, $data);
     }
+	
+	// update data riwayat
+    function update_riwayat($id,$date,$data_riwayat)
+    {
+        $this->db->where('noind', $id);
+        $this->db->where('tgl_tberlaku', $date);
+        $this->db->update($this->table, $data_riwayat);
+    }
 
     // delete data
     function delete($id)
@@ -47,11 +60,16 @@ class M_riwayatgaji extends CI_Model
     }
 
 // association
-            function get_pr_hub_kerja_data()
-            {
-                return $this->db->get('pr.pr_hub_kerja')->result();
-            }
+	function get_pr_hub_kerja_data()
+	{
+		return $this->db->get('pr.pr_hub_kerja')->result();
+	}
 
+	function check($id)
+    {
+        $this->db->where('noind', $id);
+        return $this->db->get($this->table)->row();
+    }
 
 
 // association

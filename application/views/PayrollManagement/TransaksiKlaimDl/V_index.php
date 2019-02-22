@@ -20,7 +20,9 @@
 	        </div>
 	      </div>
 	      <br/>
-	      
+	      <?php
+			$this->load->view('PayrollManagement/V_alert');
+		  ?>
 	      <div class="row">
 	        <div class="col-lg-12">
 		        <div class="box box-primary box-solid">
@@ -40,28 +42,38 @@
 		                  <tr>
 		                    <th style="text-align:center; width:30px">NO</th>
                             <th style='text-align:center'>ACTION</th>
-							<th>Tanggal</th>
-							<th>Noind</th>
-							<th>Klaim Dl</th>
+							<th style='text-align:center'>Tanggal</th>
+							<th style='text-align:center'>Noind</th>
+							<th style='text-align:center'>Klaim Dl</th>
 
 		                  </tr>
 		                </thead>
 		                <tbody>
-							<?php $no = 1; foreach($transaksiKlaimDl_data as $row) { ?>
+							<?php $no = 1; $total = 0; foreach($transaksiKlaimDl_data as $row) { 
+								$e_id = $this->encrypt->encode($row->id_klaim_dl);
+								$e_id = str_replace(array('+', '/', '='), array('-', '_', '~'), $e_id);
+								$total = $total + $row->klaim_dl;
+							?>
 							<tr>
 							  <td align='center'><?php echo $no++;?></td>
                               <td align='center' width='200px'>
-                              	<a href="<?php echo base_url('PayrollManagement/TransaksiKlaimDl/read/'.$row->id_klaim_dl.''); ?>" class="btn btn-xs btn-primary" data-toggle="tooltip" data-placement="bottom" title="Read Data"><span class="fa fa-eye"></span></a>
-                              	<a href="<?php echo base_url('PayrollManagement/TransaksiKlaimDl/update/'.$row->id_klaim_dl.''); ?>" class="btn btn-xs btn-warning" data-toggle="tooltip" data-placement="bottom" title="Edit Data"><span class="fa fa-pencil-square-o"></span></a>
-                              	<a href="<?php echo base_url('PayrollManagement/TransaksiKlaimDl/delete/'.$row->id_klaim_dl.''); ?>" class="btn btn-xs btn-danger" data-toggle="tooltip" data-placement="bottom" title="Hapus Data" onclick="return confirm('Are you sure you want to delete this item?');"><span class="fa fa-times"></span></a>
+                              	<a href="<?php echo base_url('PayrollManagement/TransaksiKlaimDl/read/'.$e_id.''); ?>" class="btn btn-xs btn-primary" data-toggle="tooltip" data-placement="bottom" title="Read Data"><span class="fa fa-eye"></span></a>
+                              	<a href="<?php echo base_url('PayrollManagement/TransaksiKlaimDl/update/'.$e_id.''); ?>" class="btn btn-xs btn-warning" data-toggle="tooltip" data-placement="bottom" title="Edit Data"><span class="fa fa-pencil-square-o"></span></a>
+                              	<a href="<?php echo base_url('PayrollManagement/TransaksiKlaimDl/delete/'.$e_id.''); ?>" class="btn btn-xs btn-danger" data-toggle="tooltip" data-placement="bottom" title="Hapus Data" onclick="return confirm('Are you sure you want to delete this item?');"><span class="fa fa-times"></span></a>
                               </td>
-							<td><?php echo $row->tanggal ?></td>
-							<td><?php echo $row->noind ?></td>
-							<td><?php echo $row->klaim_dl ?></td>
+							<td align='center'><?php echo $row->tanggal ?></td>
+							<td align='center'><?php echo $row->noind ?></td>
+							<td align='right'><?php echo number_format((int)$row->klaim_dl,0,",",".") ?></td>
 
 							</tr>
 							<?php } ?>
-		                </tbody>                                      
+		                </tbody>
+						<tfoot>
+							<tr>
+								<th class="text-center" colspan="4">Total</th>
+								<th class="text-right"><?php echo number_format((int)$total,0,",",".") ?></th>
+							</tr>
+						</tfoot>
 		              </table>
 		            </div>
 		          </div>

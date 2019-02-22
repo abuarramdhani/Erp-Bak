@@ -20,7 +20,9 @@
 	        </div>
 	      </div>
 	      <br/>
-	      
+	      <?php
+			$this->load->view('PayrollManagement/V_alert');
+		  ?>
 	      <div class="row">
 	        <div class="col-lg-12">
 		        <div class="box box-primary box-solid">
@@ -40,9 +42,9 @@
 		                  <tr>
 		                    <th style="text-align:center; width:30px">NO</th>
                             <th style='text-align:center'>ACTION</th>
-							<th>Periode</th>
-							<th>Status Pajak</th>
-							<th>PTKP Per Tahun</th>
+							<th style='text-align:center'>Tanggal Berlaku</th>
+							<th style='text-align:center'>Status Pajak</th>
+							<th style='text-align:center'>PTKP Per Tahun</th>
 
 		                  </tr>
 		                </thead>
@@ -53,11 +55,11 @@
                               <td align='center' width='200px'>
                               	<a href="<?php echo base_url('PayrollManagement/MasterParamPtkp/read/'.$row->id_setting.''); ?>" class="btn btn-xs btn-primary" data-toggle="tooltip" data-placement="bottom" title="Read Data"><span class="fa fa-eye"></span></a>
                               	<a href="<?php echo base_url('PayrollManagement/MasterParamPtkp/update/'.$row->id_setting.''); ?>" class="btn btn-xs btn-warning" data-toggle="tooltip" data-placement="bottom" title="Edit Data"><span class="fa fa-pencil-square-o"></span></a>
-                              	<a href="<?php echo base_url('PayrollManagement/MasterParamPtkp/delete/'.$row->id_setting.''); ?>" class="btn btn-xs btn-danger" data-toggle="tooltip" data-placement="bottom" title="Hapus Data" onclick="return confirm('Are you sure you want to delete this item?');"><span class="fa fa-times"></span></a>
+                              	<a href="<?php echo base_url('PayrollManagement/MasterParamPtkp/delete/'.$row->id_setting.''); ?>" class="btn btn-xs btn-danger" data-toggle="tooltip" data-placement="bottom" title="Hapus Data" onclick="return confirm('Are you sure you want to delete this item?');"><span class="fa fa-times"></span></a> 
                               </td>
-							<td><?php echo $row->periode ?></td>
-							<td><?php echo $row->status_pajak ?></td>
-							<td><?php echo $row->ptkp_per_tahun ?></td>
+							<td align='center'><?php echo $row->periode ?></td>
+							<td align='center'><?php echo $row->status_pajak ?></td>
+							<td align='right'><?php echo number_format((int)$row->ptkp_per_tahun) ?></td>
 
 							</tr>
 							<?php } ?>

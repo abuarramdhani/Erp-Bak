@@ -44,41 +44,21 @@
 										</tr>
 									</thead>
 									<tbody>
-										<?php
-											foreach($csvarray as $row) {
-												$ori = str_replace(str_split('.-'), '', $row['FAKTUR_PAJAK']);
-												$typ = substr($ori, 0, 2);
-												$alt = substr($ori, 2, 1);
-												$num = substr($ori, 3);
-										?>
-										<tr>
-											<!--<td><?php echo $row['FM']?></td>-->
-											<td><?php echo $typ?></td>
-											<td><?php echo $alt?></td>
-											<td><?php echo $num?></td>
-											<td><?php echo $row['BULAN_PAJAK']?></td>
-											<td><?php echo $row['TAHUN_PAJAK']?></td>
-											<!--<td><?php echo $row['FAKTUR_DATE']?></td>-->
-											<!--<td><?php echo $row['NPWP']?></td>-->
-											<!--<td><?php echo $row['NAME']?></td>-->
-											<!--<td><?php echo $row['ADDRESS']?></td>-->
-											<!--<td><?php echo $row['DPP']?></td>-->
-											<!--<td><?php echo $row['PPN']?></td>-->
-											<!--<td><?php echo $row['PPN_BM']?></td>-->
-											<!--<td><?php echo $row['IS_CREDITABLE_FLAG']?></td>-->
-											<!--<td><?php echo $row['DESCRIPTION']?></td>-->
-											<td><?php echo $row['STATUS']?></td>
-										</tr>
-										<?php }?>
+											<th>N/A</th>
+											<th>N/A</th>
+											<th>N/A</th>
+											<th>N/A</th>
+											<th>N/A</th>
+											<th>N/A</th>
 									</tbody>																			
 								</table>
 							</div>
 							<div class="row" style="margin: 10px 10px">
 								<div class="form-group">
 									<div class="col-md-offset-8 col-md-2">
-										<a href="<?php echo base_url('AccountPayables/C_Invoice/downloadfm')?>" class="btn btn-warning btn-block">Cancel</a>
+										<a href="<?php echo base_url('AccountPayables/Invoice/downloadfm')?>" class="btn btn-warning btn-block">Cancel</a>
 									</div>
-									<form method="post" action="<?php echo base_url('AccountPayables/C_Invoice/confirmfm')?>" enctype="multipart/form-data">
+									<form method="post" action="<?php echo base_url('AccountPayables/Invoice/confirmfm')?>" enctype="multipart/form-data">
 										<input type="hidden" name="TxtFileName" class="form-control" value="<?php echo $filename ?>" readonly>
 										<div class="col-md-2">
 											<button class="btn btn-success btn-block">Confirm</button>

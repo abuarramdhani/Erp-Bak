@@ -36,7 +36,7 @@ foreach ($rekapPerMonth as $rekap_data) {}
 				</table>
 			</div>
 			<div class="box-body">
-				<table id="rekap-tims" class="table table-striped table-bordered table-responsive table-hover">
+				<table id="rekap-tims-detail" class="table table-striped table-bordered table-responsive table-hover">
 					<thead class="bg-primary">
 						<tr>
 							<th rowspan="2" style="text-align: center;vertical-align:middle;">
@@ -63,7 +63,7 @@ foreach ($rekapPerMonth as $rekap_data) {}
 								foreach ($p as $d) {
 									$date = $d->format('d-m-Y');
 							?>
-							<th colspan="6" style="text-align:center;">
+							<th colspan="7" style="text-align:center;">
 								<div style="width: 200px">
 									<?php echo $date ?>
 								</div>
@@ -71,7 +71,7 @@ foreach ($rekapPerMonth as $rekap_data) {}
 							<?php
 								}
 							?>
-							<th colspan="6" style="text-align:center;">
+							<th colspan="7" style="text-align:center;">
 								<div style="width: 200px">
 									REKAP
 								</div>
@@ -108,6 +108,11 @@ foreach ($rekapPerMonth as $rekap_data) {}
 							</th>
 							<th style="text-align: center">
 								<div style="width: 20px">
+									CT
+								</div>
+							</th>
+							<th style="text-align: center">
+								<div style="width: 20px">
 									SP
 								</div>
 							</th>
@@ -137,6 +142,11 @@ foreach ($rekapPerMonth as $rekap_data) {}
 							<th style="text-align: center">
 								<div style="width: 20px">
 									IP
+								</div>
+							</th>
+							<th style="text-align: center">
+								<div style="width: 20px">
+									CT
 								</div>
 							</th>
 							<th style="text-align: center">
@@ -176,7 +186,47 @@ foreach ($rekapPerMonth as $rekap_data) {}
 							<td style="text-align:center;">
 								<div style="width: 160px">
 									<?php
-										echo $rekap_data['masa_kerja']
+										$masukkerja_s = '';
+										${'masa_kerja'.$rekap_data['nama']} = array();
+										$index_masakerja = 0;
+										$aktif=0;
+										foreach ($rekap_masakerja as $row) {
+											if ($row['nama'] == $rekap_data['nama'] AND $row['nik'] == $row['nik']) {
+												if ($row['masukkerja'] != $masukkerja_s) {
+													$masukkerja = new DateTime($row['masukkerja']);
+													$tglkeluar = new DateTime($row['tglkeluar']);
+													$masa_kerja = $masukkerja->diff($tglkeluar);
+													${'masa_kerja'.$rekap_data['nama']}[$index_masakerja] = $masa_kerja;
+													$index_masakerja++;
+												}
+												
+												if ('f' == $row['keluar'])
+													{
+														$aktif=1;
+														$amasukkerja=$row['masukkerja'];
+														$aperiode2=$ex_period2[0].' '.$ex_period2[1];
+													}
+												if(1==$index_masakerja && 1==$aktif)
+												{
+													$bmasukkerja = new DateTime($amasukkerja);
+													$bperiode2 = new DateTime($aperiode2);
+													$masa_kerja = $bmasukkerja->diff($bperiode2);		
+													${'masa_kerja'.$rekap_data['nama']}[0] = $masa_kerja;		
+												}
+
+												$masukkerja_s = $row['masukkerja'];
+											}
+										}
+
+										$e = new DateTime();
+										$f = clone $e;
+										if (!empty(${'masa_kerja'.$rekap_data['nama']}[0])) {
+											$e->add(${'masa_kerja'.$rekap_data['nama']}[0]);
+										}
+										if (!empty(${'masa_kerja'.$rekap_data['nama']}[1])) {
+											$e->add(${'masa_kerja'.$rekap_data['nama']}[1]);
+										}
+										echo $f->diff($e)->format("%Y Tahun %m Bulan %d Hari");
 									?>
 								</div>
 								
@@ -192,6 +242,7 @@ foreach ($rekapPerMonth as $rekap_data) {}
 											$Mangkir = ${'rek'.$date}['frekm'.strtolower($date)]+${'rek'.$date}['frekms'.strtolower($date)];
 											$SuratKeterangan = ${'rek'.$date}['freksk'.strtolower($date)]+${'rek'.$date}['freksks'.strtolower($date)];
 											$IjinPerusahaan = ${'rek'.$date}['frekip'.strtolower($date)]+${'rek'.$date}['frekips'.strtolower($date)];
+											$CutiTahunan = ${'rek'.$date}['frekct'.strtolower($date)]+${'rek'.$date}['frekcts'.strtolower($date)];
 											$SuratPeringatan = ${'rek'.$date}['freksp'.strtolower($date)]+${'rek'.$date}['freksps'.strtolower($date)];
 											if ($Terlambat == '0') {
 												$Terlambat = '-';
@@ -207,6 +258,9 @@ foreach ($rekapPerMonth as $rekap_data) {}
 											}
 											if ($IjinPerusahaan == '0') {
 												$IjinPerusahaan = '-';
+											}
+											if ($CutiTahunan == '0') {
+												$CutiTahunan = '-';
 											}
 											if ($SuratPeringatan == '0') {
 												$SuratPeringatan = '-';
@@ -237,6 +291,11 @@ foreach ($rekapPerMonth as $rekap_data) {}
 									<td style="text-align:center;">
 										<div style="width: 20px">
 											<?php echo $IjinPerusahaan; ?>
+										</div>
+									</td>
+									<td style="text-align:center;">
+										<div style="width: 20px">
+											<?php echo $CutiTahunan; ?>
 										</div>
 									</td>
 									<td style="text-align:center;">
@@ -274,6 +333,11 @@ foreach ($rekapPerMonth as $rekap_data) {}
 							</td>
 							<td style="text-align:center;">
 								<div style="width: 20px">
+									<?php echo $rekap_data['frekct']+$rekap_data['frekcts']; ?>
+								</div>
+							</td>
+							<td style="text-align:center;">
+								<div style="width: 20px">
 									<?php echo $rekap_data['freksp']+$rekap_data['freksps']; ?>
 								</div>
 							</td>
@@ -291,6 +355,7 @@ foreach ($rekapPerMonth as $rekap_data) {}
 						M : Mangkir&emsp;
 						S : Sakit&emsp;
 						IP : Izin Perusahaan&emsp;
+						CT : Cuti Tahunan&emsp;
 						SP : Surat Peringatan
 					</strong>
 				</p>

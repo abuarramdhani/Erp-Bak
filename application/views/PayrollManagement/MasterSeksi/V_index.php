@@ -20,7 +20,9 @@
 	        </div>
 	      </div>
 	      <br/>
-	      
+	      <?php
+			$this->load->view('PayrollManagement/V_alert');
+		  ?>
 	      <div class="row">
 	        <div class="col-lg-12">
 		        <div class="box box-primary box-solid">
@@ -52,13 +54,13 @@
 		                  <tr>
 		                    <th style="text-align:center"><div style="width:40px"></div>NO</th>
                             <th style="text-align:center"><div style="width:100px"></div>ACTION</th>
-							<th><div style="width:80px"></div>Kodesie</th>
-							<th><div style="width:80px"></div>Dept</th>
-							<th><div style="width:300px"></div>Bidang</th>
-							<th><div style="width:300px"></div>Unit</th>
-							<th><div style="width:400px"></div>Seksi</th>
-							<th><div style="width:300px"></div>Pekerjaan</th>
-							<th><div style="width:40px"></div>Golkerja</th>
+							<th style="text-align:center"><div style="width:80px"></div>Kodesie</th>
+							<th style="text-align:center"><div style="width:80px"></div>Dept</th>
+							<th style="text-align:center"><div style="width:300px"></div>Bidang</th>
+							<th style="text-align:center"><div style="width:300px"></div>Unit</th>
+							<th style="text-align:center"><div style="width:400px"></div>Seksi</th>
+							<th style="text-align:center"><div style="width:300px"></div>Pekerjaan</th>
+							<th style="text-align:center"><div style="width:40px"></div>Golkerja</th>
 
 		                  </tr>
 		                </thead>

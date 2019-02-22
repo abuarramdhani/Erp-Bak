@@ -20,7 +20,9 @@
 	        </div>
 	      </div>
 	      <br/>
-	      
+	        <?php
+			$this->load->view('PayrollManagement/V_alert');
+		  ?>
 	      <div class="row">
 	        <div class="col-lg-12">
 		        <div class="box box-primary box-solid">
@@ -40,8 +42,7 @@
 		                  <tr>
 		                    <th style="text-align:center; width:30px">NO</th>
                             <th style='text-align:center'>ACTION</th>
-							<th>Kode Standart Jam</th>
-							<th>Jumlah Standart Jam Per Bulan</th>
+							<th style='text-align:center'>Jumlah Standart Jam Per Bulan</th>
 
 		                  </tr>
 		                </thead>
@@ -54,8 +55,7 @@
                               	<a href="<?php echo base_url('PayrollManagement/StandartJamTkpw/update/'.$row->kode_standart_jam.''); ?>" class="btn btn-xs btn-warning" data-toggle="tooltip" data-placement="bottom" title="Edit Data"><span class="fa fa-pencil-square-o"></span></a>
                               	<a href="<?php echo base_url('PayrollManagement/StandartJamTkpw/delete/'.$row->kode_standart_jam.''); ?>" class="btn btn-xs btn-danger" data-toggle="tooltip" data-placement="bottom" title="Hapus Data" onclick="return confirm('Are you sure you want to delete this item?');"><span class="fa fa-times"></span></a>
                               </td>
-							<td><?php echo $row->kode_standart_jam ?></td>
-							<td><?php echo $row->jml_std_jam_per_bln ?></td>
+							<td align='center'><?php echo $row->jml_std_jam_per_bln ?></td>
 
 							</tr>
 							<?php } ?>

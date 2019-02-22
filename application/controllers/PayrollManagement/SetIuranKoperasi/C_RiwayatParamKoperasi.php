@@ -21,20 +21,25 @@ class C_RiwayatParamKoperasi extends CI_Controller
         $this->checkSession();
         $user_id = $this->session->userid;
         
-        $data['Menu'] = 'Payroll Management';
-        $data['SubMenuOne'] = '';
+        $data['Menu'] = 'Set Parameter';
+        $data['SubMenuOne'] = 'Set Iuran Koperasi';
         $data['SubMenuTwo'] = '';
 
         $data['UserMenu'] = $this->M_user->getUserMenu($user_id,$this->session->responsibility_id);
         $data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id);
         $data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id);
-        $riwayatParamKoperasi = $this->M_riwayatparamkoperasi->get_all();
+        $riwayatParamKoperasi = $this->M_riwayatparamkoperasi->get_all(date('Y-m-d'));
 
         $data['riwayatParamKoperasi_data'] = $riwayatParamKoperasi;
         $this->load->view('V_Header',$data);
         $this->load->view('V_Sidemenu',$data);
         $this->load->view('PayrollManagement/RiwayatParamKoperasi/V_index', $data);
         $this->load->view('V_Footer',$data);
+		$this->session->unset_userdata('success_import');
+		$this->session->unset_userdata('success_delete');
+		$this->session->unset_userdata('success_update');
+		$this->session->unset_userdata('success_insert');
+		$this->session->unset_userdata('not_found');
     }
 
 	public function read($id)
@@ -45,8 +50,8 @@ class C_RiwayatParamKoperasi extends CI_Controller
         $row = $this->M_riwayatparamkoperasi->get_by_id($id);
         if ($row) {
             $data = array(
-            	'Menu' => 'Payroll Management',
-            	'SubMenuOne' => '',
+            	'Menu' => 'Set Parameter',
+            	'SubMenuOne' => 'Set Iuran Koperasi',
             	'SubMenuTwo' => '',
             	'UserMenu' => $this->M_user->getUserMenu($user_id,$this->session->responsibility_id),
             	'UserSubMenuOne' => $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id),
@@ -67,6 +72,10 @@ class C_RiwayatParamKoperasi extends CI_Controller
         }
         else {
             $this->session->set_flashdata('message', 'Record Not Found');
+			$ses=array(
+					 "not_found" => 1
+				);
+			$this->session->set_userdata($ses);
             redirect(site_url('PayrollManagement/RiwayatParamKoperasi'));
         }
     }
@@ -78,8 +87,8 @@ class C_RiwayatParamKoperasi extends CI_Controller
         $user_id = $this->session->userid;
 
         $data = array(
-            'Menu' => 'Payroll Management',
-            'SubMenuOne' => '',
+            'Menu' => 'Set Parameter',
+            'SubMenuOne' => 'Set Iuran Koperasi',
             'SubMenuTwo' => '',
             'UserMenu' => $this->M_user->getUserMenu($user_id,$this->session->responsibility_id),
             'UserSubMenuOne' => $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id),
@@ -104,15 +113,25 @@ class C_RiwayatParamKoperasi extends CI_Controller
         $this->formValidation();
 
             $data = array(
+				'id_riwayat' => date('YmdHis'),
 				'tgl_berlaku' => $this->input->post('txtTglBerlaku',TRUE),
-				'tgl_tberlaku' => $this->input->post('txtTglTberlaku',TRUE),
-				'ikop' => $this->input->post('txtIkop',TRUE),
-				'kode_petugas' => $this->input->post('txtKodePetugas',TRUE),
-				'tgl_record' => $this->input->post('txtTglRecord',TRUE),
+				'tgl_tberlaku' => '9999-12-31',
+				'ikop' => str_replace(',','',$this->input->post('txtIkop',TRUE)),
+				'kode_petugas' => $this->session->userdata('userid'),
+				'tgl_record' => date('Y-m-d H:i:s'),
 			);
-
+			
+			$data_update = array(
+				'tgl_tberlaku' => $this->input->post('txtTglBerlaku',TRUE),
+			);
+			$exp = '9999-12-31';
+            $this->M_riwayatparamkoperasi->update_riwayat($exp,$data_update);
             $this->M_riwayatparamkoperasi->insert($data);
             $this->session->set_flashdata('message', 'Create Record Success');
+			$ses=array(
+					 "success_insert" => 1
+				);
+			$this->session->set_userdata($ses);
             redirect(site_url('PayrollManagement/RiwayatParamKoperasi'));
     }
 
@@ -126,8 +145,8 @@ class C_RiwayatParamKoperasi extends CI_Controller
 
         if ($row) {
             $data = array(
-                'Menu' => 'Payroll Management',
-                'SubMenuOne' => '',
+                'Menu' => 'Set Parameter',
+                'SubMenuOne' => 'Set Iuran Koperasi',
                 'SubMenuTwo' => '',
                 'UserMenu' => $this->M_user->getUserMenu($user_id,$this->session->responsibility_id),
                 'UserSubMenuOne' => $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id),
@@ -146,6 +165,10 @@ class C_RiwayatParamKoperasi extends CI_Controller
             $this->load->view('V_Footer',$data);
         } else {
             $this->session->set_flashdata('message', 'Record Not Found');
+			$ses=array(
+					 "not_found" => 1
+				);
+			$this->session->set_userdata($ses);
             redirect(site_url('PayrollManagement/RiwayatParamKoperasi'));
         }
     }
@@ -156,14 +179,18 @@ class C_RiwayatParamKoperasi extends CI_Controller
 
             $data = array(
 				'tgl_berlaku' => $this->input->post('txtTglBerlaku',TRUE),
-				'tgl_tberlaku' => $this->input->post('txtTglTberlaku',TRUE),
-				'ikop' => $this->input->post('txtIkop',TRUE),
-				'kode_petugas' => $this->input->post('txtKodePetugas',TRUE),
-				'tgl_record' => $this->input->post('txtTglRecord',TRUE),
+				'tgl_tberlaku' => '9999-12-31',
+				'ikop' => str_replace(',','',$this->input->post('txtIkop',TRUE)),
+				'kode_petugas' => $this->session->userdata('userid'),
+				'tgl_record' => date('Y-m-d H:i:s'),
 			);
 
             $this->M_riwayatparamkoperasi->update($this->input->post('txtIdRiwayat', TRUE), $data);
             $this->session->set_flashdata('message', 'Update Record Success');
+			$ses=array(
+					 "success_update" => 1
+				);
+			$this->session->set_userdata($ses);
             redirect(site_url('PayrollManagement/RiwayatParamKoperasi'));
     }
 
@@ -174,9 +201,17 @@ class C_RiwayatParamKoperasi extends CI_Controller
         if ($row) {
             $this->M_riwayatparamkoperasi->delete($id);
             $this->session->set_flashdata('message', 'Delete Record Success');
+			$ses=array(
+					 "success_delete" => 1
+				);
+			$this->session->set_userdata($ses);
             redirect(site_url('PayrollManagement/RiwayatParamKoperasi'));
         } else {
             $this->session->set_flashdata('message', 'Record Not Found');
+			$ses=array(
+					 "not_found" => 1
+				);
+			$this->session->set_userdata($ses);
             redirect(site_url('PayrollManagement/RiwayatParamKoperasi'));
         }
     }

@@ -34,9 +34,8 @@ class M_standartjamumum extends CI_Model
     }
 
     // update data
-    function update($id, $data)
+    function update($data)
     {
-        $this->db->where($this->id, $id);
         $this->db->update($this->table, $data);
     }
 
@@ -50,10 +49,9 @@ class M_standartjamumum extends CI_Model
 	//------------------------- RIWAYAT RELATION -------------------------	
 	
 	//MASTER DELETE CURRENT
-    function master_delete($md_where)
+    function master_delete()
     {
-        $this->db->where($md_where);
-        $this->db->delete($this->table);
+        $this->db->empty_table($this->table);
     }
 	
 	//RIWAYAT CHANGE CURRENT

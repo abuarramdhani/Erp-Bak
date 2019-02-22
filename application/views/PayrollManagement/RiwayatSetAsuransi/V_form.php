@@ -40,13 +40,7 @@
 									<div class="form-group">
 	                                            <label for="txtTglBerlaku" class="control-label col-lg-4">Tanggal Berlaku</label>
 	                                            <div class="col-lg-4">
-	                                                <input type="text" maxlength="10" placeholder="<?php echo date('Y-m-d')?>" name="txtTglBerlaku" value="<?php echo $tgl_berlaku ?>" class="form-control" data-date-format="yyyy-mm-dd" id="txtTglBerlaku" />
-	                                            </div>
-	                                        </div>
-									<div class="form-group">
-	                                            <label for="txtTglTberlaku" class="control-label col-lg-4">Tanggal Tberlaku</label>
-	                                            <div class="col-lg-4">
-	                                                <input type="text" maxlength="10" placeholder="<?php echo date('Y-m-d')?>" name="txtTglTberlaku" value="<?php echo $tgl_tberlaku ?>" class="form-control" data-date-format="yyyy-mm-dd" id="txtTglTberlaku" />
+	                                                <input type="text" maxlength="10" placeholder="<?php echo date('Y-m-d')?>" name="txtTglBerlaku" value="<?php echo $tgl_berlaku ?>" class="form-control class-datepicker-erp-pr" id="txtTglBerlaku" />
 	                                            </div>
 	                                        </div>
 									<div class="form-group">
@@ -56,7 +50,7 @@
                                                         <?php
                                                         foreach ($pr_master_status_kerja_data as $row) {
 															$slc='';if($row->kd_status_kerja==$kd_status_kerja){$slc='selected';}
-                                                            echo '<option '.$slc.' value="'.$row->kd_status_kerja.'">'.$row->status_kerja.'</option>';
+                                                            echo '<option '.$slc.' value="'.$row->kd_status_kerja.'">('.$row->kd_status_kerja.') '.$row->status_kerja.'</option>';
                                                         }
                                                         ?></select>
 	                                            </div>
@@ -164,12 +158,6 @@
 													<option <?php echo $not?> value="0">TIDAK</option>
 												</select>
 											</div>
-                                    </div>
-									<div class="form-group">
-                                            <label for="txtKdPetugas" class="control-label col-lg-4">Kode Petugas</label>
-                                            <div class="col-lg-4">
-                                                <input type="text" placeholder="Kd Petugas" name="txtKdPetugas" id="txtKdPetugas" class="form-control" value="<?php echo $kd_petugas; ?>" onkeypress="return isNumberKey(event)" maxlength="7" />
-                                            </div>
                                     </div>
 									<input type="hidden" name="txtTglRec" value="<?php echo $tgl_rec ?>" />
 	                                <input type="hidden" name="txtIdSetAsuransi" value="<?php echo $id_set_asuransi; ?>" />

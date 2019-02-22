@@ -20,7 +20,9 @@
 	        </div>
 	      </div>
 	      <br/>
-	      
+	      <?php
+			$this->load->view('PayrollManagement/V_alert');
+		  ?>
 	      <div class="row">
 	        <div class="col-lg-12">
 		        <div class="box box-primary box-solid">
@@ -33,18 +35,16 @@
                     <b>Master Sekolah Asal</b>
 		          </div>
 		          <div class="box-body">
-
 		            <div class="table-responsive">
 		              <table class="table table-striped table-bordered table-hover text-left" id="dataTables-masterSekolahAsal" style="font-size:12px;">
 		                <thead class="bg-primary">
 		                  <tr>
 		                    <th style="text-align:center; width:30px">NO</th>
                             <th style='text-align:center'>ACTION</th>
-							<th>Nomor Induk</th>
-							<th>Pendidikan</th>
-							<th>Sekolah</th>
-							<th>Jurusan</th>
-
+							<th style='text-align:center'>Nomor Induk</th>
+							<th style='text-align:center'>Pendidikan</th>
+							<th style='text-align:center'>Sekolah</th>
+							<th style='text-align:center'>Jurusan</th>
 		                  </tr>
 		                </thead>
 		                <tbody>
@@ -56,8 +56,8 @@
                               	<a href="<?php echo base_url('PayrollManagement/MasterSekolahAsal/update/'.$row->noind.''); ?>" class="btn btn-xs btn-warning" data-toggle="tooltip" data-placement="bottom" title="Edit Data"><span class="fa fa-pencil-square-o"></span></a>
                               	<a href="<?php echo base_url('PayrollManagement/MasterSekolahAsal/delete/'.$row->noind.''); ?>" class="btn btn-xs btn-danger" data-toggle="tooltip" data-placement="bottom" title="Hapus Data" onclick="return confirm('Are you sure you want to delete this item?');"><span class="fa fa-times"></span></a>
                               </td>
-							<td><?php echo $row->noind ?></td>
-							<td><?php echo $row->pendidikan ?></td>
+							<td align='center'><?php echo $row->noind ?></td>
+							<td align='center'><?php echo $row->pendidikan ?></td>
 							<td><?php echo $row->sekolah ?></td>
 							<td><?php echo $row->jurusan ?></td>
 

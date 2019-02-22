@@ -378,6 +378,12 @@ class C_User extends CI_Controller {
 		
 		redirect('Setting/User');
 	}
+
+	public function DeleteUserResponsibility($user_application_id)
+	{
+		$this->M_user->DeleteUserResponsbility($user_application_id);
+		echo $user_application_id;
+	}
 	
 	//Memanggil ajax optionlist user dengan select2
 	public function OptionList(){

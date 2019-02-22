@@ -20,7 +20,9 @@
 	        </div>
 	      </div>
 	      <br/>
-	      
+	       <?php
+			$this->load->view('PayrollManagement/V_alert');
+		  ?>
 	      <div class="row">
 	        <div class="col-lg-12">
 		        <div class="box box-primary box-solid">
@@ -40,11 +42,10 @@
 							<tr>
 								<th style="text-align:center; width:30px">NO</th>
 								<th style='text-align:center'>ACTION</th>
-								<th>Kode</th>
-								<th>Tingkatan</th>
-								<th>Bulan Awal</th>
-								<th>Bulan Akhir</th>
-								<th>Presentase</th>
+								<th style='text-align:center'>Tingkatan</th>
+								<th style='text-align:center'>Bulan Awal</th>
+								<th style='text-align:center'>Bulan Akhir</th>
+								<th style='text-align:center'>Presentase</th>
 							</tr>
 						
 		                </thead>
@@ -57,11 +58,10 @@
 									<a href="<?php echo base_url('PayrollManagement/SetTarifPekerjaSakit/update/'.$row->kd_tarif.''); ?>" class="btn btn-xs btn-warning" data-toggle="tooltip" data-placement="bottom" title="Edit Data"><span class="fa fa-pencil-square-o"></span></a>
 									<a href="<?php echo base_url('PayrollManagement/SetTarifPekerjaSakit/delete/'.$row->kd_tarif.''); ?>" class="btn btn-xs btn-danger" data-toggle="tooltip" data-placement="bottom" title="Hapus Data" onclick="return confirm('Are you sure you want to delete this item?');"><span class="fa fa-times"></span></a>
 								</td>
-								<td><?php echo $row->kd_tarif ?></td>
-								<td><?php echo $row->tingkatan ?></td>
-								<td><?php echo $row->bulan_awal ?></td>
-								<td><?php echo $row->bulan_akhir ?></td>
-								<td><?php echo $row->persentase ?></td>
+								<td align='center'><?php echo $row->tingkatan ?></td>
+								<td align='center'><?php echo $row->bulan_awal ?></td>
+								<td align='center'><?php echo $row->bulan_akhir ?></td>
+								<td align='center'><?php echo $row->persentase ?> %</td>
 							</tr>
 							<?php } ?>
 		                </tbody>                                      

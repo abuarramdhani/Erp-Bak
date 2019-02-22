@@ -20,7 +20,9 @@
 	        </div>
 	      </div>
 	      <br/>
-	      
+	      <?php
+			$this->load->view('PayrollManagement/V_alert');
+		  ?>
 	      <div class="row">
 	        <div class="col-lg-12">
 		        <div class="box box-primary box-solid">
@@ -40,10 +42,8 @@
 		                  <tr>
 		                    <th style="text-align:center; width:30px">NO</th>
                             <th style='text-align:center'>ACTION</th>
-							<th style='text-align:center'>Kode UMP</th>
+                            <th style='text-align:center'>Lokasi Kerja</th>
 							<th style='text-align:center'>UMP</th>
-							<th width="480px"> </th>
-
 		                  </tr>
 		                </thead>
 		                <tbody>
@@ -55,10 +55,8 @@
                               	<a href="<?php echo base_url('PayrollManagement/SetGajiUMP/update/'.$row->kode_ump.''); ?>" class="btn btn-xs btn-warning" data-toggle="tooltip" data-placement="bottom" title="Edit Data"><span class="fa fa-pencil-square-o"></span></a>
                               	<a href="<?php echo base_url('PayrollManagement/SetGajiUMP/delete/'.$row->kode_ump.''); ?>" class="btn btn-xs btn-danger" data-toggle="tooltip" data-placement="bottom" title="Hapus Data" onclick="return confirm('Are you sure you want to delete this item?');"><span class="fa fa-times"></span></a>
                               </td>
-							<td style='text-align:center'><?php echo $row->kode_ump ?></td>
-							<td style='text-align:right' ><?php echo 'Rp '.number_format($row->ump,2,",",".") ?></td>
-							<td style='text-align:center'></td>
-
+							<td style='text-align:center' ><?php echo $row->lokasi_kerja ?></td>
+							<td style='text-align:right' ><?php echo number_format((int)$row->ump) ?></td>
 							</tr>
 							<?php } ?>
 		                </tbody>                                      

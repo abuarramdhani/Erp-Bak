@@ -21,8 +21,8 @@ class C_SetPenerimaUBTHR extends CI_Controller
         $this->checkSession();
         $user_id = $this->session->userid;
         
-        $data['Menu'] = 'Payroll Management';
-        $data['SubMenuOne'] = '';
+        $data['Menu'] = 'Set Parameter';
+        $data['SubMenuOne'] = 'Set Penerima UBTHR';
         $data['SubMenuTwo'] = '';
 
         $data['UserMenu'] = $this->M_user->getUserMenu($user_id,$this->session->responsibility_id);
@@ -35,6 +35,11 @@ class C_SetPenerimaUBTHR extends CI_Controller
         $this->load->view('V_Sidemenu',$data);
         $this->load->view('PayrollManagement/SetPenerimaUBTHR/V_index', $data);
         $this->load->view('V_Footer',$data);
+		$this->session->unset_userdata('success_import');
+		$this->session->unset_userdata('success_delete');
+		$this->session->unset_userdata('success_update');
+		$this->session->unset_userdata('success_insert');
+		$this->session->unset_userdata('not_found');
     }
 
 	public function read($id)
@@ -45,8 +50,8 @@ class C_SetPenerimaUBTHR extends CI_Controller
         $row = $this->M_setpenerimaubthr->get_by_id($id);
         if ($row) {
             $data = array(
-            	'Menu' => 'Payroll Management',
-            	'SubMenuOne' => '',
+            	'Menu' => 'Set Parameter',
+            	'SubMenuOne' => 'Set Penerima UBTHR',
             	'SubMenuTwo' => '',
             	'UserMenu' => $this->M_user->getUserMenu($user_id,$this->session->responsibility_id),
             	'UserSubMenuOne' => $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id),
@@ -69,6 +74,10 @@ class C_SetPenerimaUBTHR extends CI_Controller
         }
         else {
             $this->session->set_flashdata('message', 'Record Not Found');
+			$ses=array(
+					 "not_found" => 1
+				);
+			$this->session->set_userdata($ses);
             redirect(site_url('PayrollManagement/SetPenerimaUBTHR'));
         }
     }
@@ -80,8 +89,8 @@ class C_SetPenerimaUBTHR extends CI_Controller
         $user_id = $this->session->userid;
 
         $data = array(
-            'Menu' => 'Payroll Management',
-            'SubMenuOne' => '',
+            'Menu' => 'Set Parameter',
+            'SubMenuOne' => 'Set Penerima UBTHR',
             'SubMenuTwo' => '',
             'UserMenu' => $this->M_user->getUserMenu($user_id,$this->session->responsibility_id),
             'UserSubMenuOne' => $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id),
@@ -111,16 +120,30 @@ class C_SetPenerimaUBTHR extends CI_Controller
         $data = array(
 		
 			'tgl_berlaku' => $this->input->post('txtTglBerlaku',TRUE),
-			'tgl_tberlaku' => $this->input->post('txtTglTberlaku',TRUE),
+			'tgl_tberlaku' => '9999-12-31',
 			'kd_status_kerja' => $this->input->post('cmbKdStatusKerja',TRUE),
 			'persentase_thr' => $this->input->post('txtPersentaseTHR',TRUE),
 			'persentase_ubthr' => $this->input->post('txtPersentaseUBTHR',TRUE),
-			'kd_petugas' => $this->input->post('txtKodePetugas',TRUE),
+			'kd_petugas' => $this->session->userdata('userid'),
 			'tgl_record' => date('Y-m-d H:i:s'),
 		);
+		
+		$ru_where = array(
+			'tgl_tberlaku' => '9999-12-31',
+			'kd_status_kerja' => $this->input->post('cmbKdStatusKerja',TRUE),
+		);
+		
+		$ru_data = array(
+			'tgl_tberlaku' => $this->input->post('txtTglBerlaku',TRUE),
+		);
 
+        $this->M_setpenerimaubthr->update_data($ru_where,$ru_data);
         $this->M_setpenerimaubthr->insert($data);
         $this->session->set_flashdata('message', 'Create Record Success');
+		$ses=array(
+					 "success_insert" => 1
+				);
+			$this->session->set_userdata($ses);
         redirect(site_url('PayrollManagement/SetPenerimaUBTHR'));
     }
 
@@ -134,8 +157,8 @@ class C_SetPenerimaUBTHR extends CI_Controller
 
         if ($row) {
             $data = array(
-                'Menu' => 'Payroll Management',
-                'SubMenuOne' => '',
+                'Menu' => 'Set Parameter',
+                'SubMenuOne' => 'Set Penerima UBTHR',
                 'SubMenuTwo' => '',
                 'UserMenu' => $this->M_user->getUserMenu($user_id,$this->session->responsibility_id),
                 'UserSubMenuOne' => $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id),
@@ -159,6 +182,10 @@ class C_SetPenerimaUBTHR extends CI_Controller
             $this->load->view('V_Footer',$data);
         } else {
             $this->session->set_flashdata('message', 'Record Not Found');
+			$ses=array(
+					 "not_found" => 1
+				);
+			$this->session->set_userdata($ses);
             redirect(site_url('PayrollManagement/SetPenerimaUBTHR'));
         }
     }
@@ -169,17 +196,21 @@ class C_SetPenerimaUBTHR extends CI_Controller
         $data = array(
 		
 			'tgl_berlaku' => $this->input->post('txtTglBerlaku',TRUE),
-			'tgl_tberlaku' => $this->input->post('txtTglTberlaku',TRUE),
+			'tgl_tberlaku' => '9999-12-31',
 			'kd_status_kerja' => $this->input->post('cmbKdStatusKerja',TRUE),
 			'persentase_thr' => $this->input->post('txtPersentaseTHR',TRUE),
 			'persentase_ubthr' => $this->input->post('txtPersentaseUBTHR',TRUE),
-			'kd_petugas' => $this->input->post('txtKodePetugas',TRUE),
+			'kd_petugas' => $this->session->userdata('userid'),
 			'tgl_record' => $this->input->post('txtTanggalRecord',TRUE),
 				
 		);
 
             $this->M_setpenerimaubthr->update($this->input->post('txtIdSetting', TRUE), $data);
             $this->session->set_flashdata('message', 'Update Record Success');
+			$ses=array(
+					 "success_update" => 1
+				);
+			$this->session->set_userdata($ses);
             redirect(site_url('PayrollManagement/SetPenerimaUBTHR'));
     }
 
@@ -190,9 +221,17 @@ class C_SetPenerimaUBTHR extends CI_Controller
         if ($row) {
             $this->M_setpenerimaubthr->delete($id);
             $this->session->set_flashdata('message', 'Delete Record Success');
+			$ses=array(
+					 "success_delete" => 1
+				);
+			$this->session->set_userdata($ses);
             redirect(site_url('PayrollManagement/SetPenerimaUBTHR'));
         } else {
             $this->session->set_flashdata('message', 'Record Not Found');
+			$ses=array(
+					 "not_found" => 1
+				);
+			$this->session->set_userdata($ses);
             redirect(site_url('PayrollManagement/SetPenerimaUBTHR'));
         }
     }

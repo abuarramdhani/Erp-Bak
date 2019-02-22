@@ -3,8 +3,11 @@
 class M_transaksihutang extends CI_Model
 {
 
+    public $table_data = 'pr.pr_hutang_karyawan';
     public $table = 'pr.pr_transaksi_hutang';
     public $id = 'id_transaksi_hutang';
+    public $id_data = 'no_hutang';
+    public $no = 'no_hutang';
     public $order = 'DESC';
 
     function __construct()
@@ -16,14 +19,19 @@ class M_transaksihutang extends CI_Model
     // get all data
     function get_all()
     {
+    	return $this->db->get($this->table_data)->result();
+    }
+	
+	function get_transaction_by_id($id)
+    {
     	return $this->db->get($this->table)->result();
     }
 
     // get data by id
     function get_by_id($id)
     {
-        $this->db->where($this->id, $id);
-        return $this->db->get($this->table)->row();
+        $this->db->where("no_hutang", $id);
+        return $this->db->get($this->table_data)->row();
     }
 
     // insert data
@@ -31,19 +39,31 @@ class M_transaksihutang extends CI_Model
     {
         $this->db->insert($this->table, $data);
     }
+	
+	// insert data
+    function insert_data($data)
+    {
+        $this->db->insert($this->table_data, $data);
+    }
 
     // update data
     function update($id, $data)
     {
-        $this->db->where($this->id, $id);
-        $this->db->update($this->table, $data);
+        $this->db->where($this->id_data, $id);
+        $this->db->update($this->table_data, $data);
     }
 
     // delete data
     function delete($id)
     {
-        $this->db->where($this->id, $id);
+        $this->db->where($this->id_data, $id);
         $this->db->delete($this->table);
+    }
+	
+	function delete_transaction($id)
+    {
+        $this->db->where($this->id_data, $id);
+        $this->db->delete($this->table_data);
     }
 
 // association

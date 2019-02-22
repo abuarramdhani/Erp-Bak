@@ -108,7 +108,7 @@
 							<div class="form-group">
 								<label class="col-lg-2 control-label">IP Address</label>
 								<div class="col-lg-3">
-									<input id="calc" name="txtIP" class="form-control ip_address" onkeypress="return isNumberKey(event)" placeholder="Calc" required>
+									<input id="calc" name="txtIP" class="form-control" onkeypress="return isNumberKey(event)" placeholder="Calc" required>
 								</div>								
 							</div>
 						</div>

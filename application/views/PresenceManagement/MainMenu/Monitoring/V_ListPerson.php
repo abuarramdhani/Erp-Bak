@@ -42,13 +42,10 @@
 										<th style="text-align:center;" >NO</th>
 										<th style="text-align:center;" >ID</th>
 										<th style="text-align:center;">NAME</th>
-										<th style="text-align:center;" >STAT</th>
-										<th style="text-align:center;" >DO</th>
 										<th style="text-align:center;" >SECTION</th>
-										<th style="text-align:center;" >NEW ID</th>
 										<?php
 											foreach($location as $data_location){
-												echo "<th title='".$data_location['lokasi']."' style='text-align:center;'>".strtoupper(substr($data_location['lokasi'],0,4))."</th>";
+												echo "<th title='".$data_location['lokasi']."' style='text-align:center;width:100px;'>".strtoupper(substr($data_location['lokasi'],0,25))."</th>";
 											}
 										?>
 									</tr>
@@ -63,10 +60,7 @@
 											<td align="center"><?php echo $no ?></td>
 											<td align="center"><?php echo $data_person['noind'] ?></td>
 											<td><?php echo $data_person['nama'] ?></td>
-											<td align="center"><?php echo strtoupper($data_person['keluar']) ?></td>
-											<td align="center"><?php echo date("Y-m-d", strtotime($data_person['tglkeluar'])) ?></td>
 											<td align="center"><?php echo $data_person['kodesie'] ?></td>
-											<td align="center"><?php echo $data_person['noind_baru'] ?></td>
 											<?php foreach($location as $data_location){
 												?>
 													<td style='text-align:center;'>

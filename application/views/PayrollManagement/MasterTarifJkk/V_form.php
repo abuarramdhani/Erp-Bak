@@ -37,15 +37,10 @@
                             }
                                 ?>
                                 <div class="row">
-                                    <div class="form-group">
-                                            <label for="txtIdTarifJkk" class="control-label col-lg-4">Id Tarif Jkk</label>
-                                            <div class="col-lg-4">
-                                                <input type="text"  placeholder="Id Tarif Jkk" name="txtIdTarifJkk_new" id="txtIdTarifJkk_new" class="form-control" value="<?php echo $id_tarif_jkk; ?>" /> </div>
-                                            </div>
 									<div class="form-group">
-	                                            <label for="cmbIdKantorAsal" class="control-label col-lg-4">Id Kantor Asal</label>
+	                                            <label for="cmbIdKantorAsal" class="control-label col-lg-4">Lokasi Kerja</label>
 	                                            <div class="col-lg-4">
-	                                                <select style="width:100%" id="cmbIdKantorAsal" name="cmbIdKantorAsal" class="select2" data-placeholder="Choose an option"><option value=""></option>
+	                                                <select style="width:100%" id="cmbIdKantorAsal" name="cmbIdKantorAsal" onchange="duplicateLokasiKerja()" class="select2" data-placeholder="Choose an option"><option value=""></option>
                                                         <?php
                                                         foreach ($pr_kantor_asal_data as $row) {
                                                             $slc = '';
@@ -57,23 +52,14 @@
                                                         ?></select>
 	                                            </div>
 	                                        </div>
-									<div class="form-group">
-	                                            <label for="cmbIdLokasiKerja" class="control-label col-lg-4">Id Lokasi Kerja</label>
-	                                            <div class="col-lg-4">
-	                                                <select style="width:100%" id="cmbIdLokasiKerja" name="cmbIdLokasiKerja" class="select2" data-placeholder="Choose an option"><option value=""></option>
-                                                        <?php
-                                                        foreach ($pr_lokasi_kerja_data as $row) {
-                                                            $slc='';if(rtrim($row->id_lokasi_kerja)==rtrim($id_lokasi_kerja)){$slc='selected';                                                          }
-                                                            echo '<option value="'.$row->id_lokasi_kerja.'" '.$slc.'>'.$row->lokasi_kerja.'</option>';
-                                                        }
-                                                        ?></select>
-	                                            </div>
-	                                        </div>
+	                                        <input type="hidden" style="width:100%" id="cmbIdLokasiKerja" name="cmbIdLokasiKerja" value="<?php echo $id_lokasi_kerja; ?>" class="form-control" /> 
 									<div class="form-group">
                                             <label for="txtTarifJkk" class="control-label col-lg-4">Tarif Jkk</label>
-                                            <div class="col-lg-4">
-                                                <input type="text" placeholder="Tarif Jkk" name="txtTarifJkk" id="txtTarifJkk" class="form-control" value="<?php echo $tarif_jkk; ?>"/>
+                                            <div class="col-lg-2">
+                                                <input type="text" placeholder="Tarif Jkk" name="txtTarifJkk" id="txtTarifJkk" class="form-control" value="<?php echo $tarif_jkk; ?>" maxlength="4"/>
                                             </div>
+											<label for="txtTarifJkk" class="control-label">%</label>
+											<label for="txtTarifJkk" class="control-label">(percent)</label>
                                     </div>
                                 
         <input type="hidden" name="txtIdTarifJkk" value="<?php echo $id_tarif_jkk; ?>" /> </div>

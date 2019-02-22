@@ -38,42 +38,17 @@
                                 ?>
                                 <div class="row">
 									<div class="form-group">
-                                            <label for="txtIdRiwayatNew" class="control-label col-lg-4">ID</label>
-                                            <div class="col-lg-4">
-                                                <input type="text" placeholder="Ikop" name="txtIdRiwayatNew" id="txtIdRiwayatNew" class="form-control" value="<?php echo $id_riwayat; ?>" onkeypress="return isNumberKey(event)" maxlength="8" />
-                                            </div>
-                                    </div>
-									<div class="form-group">
 	                                            <label for="txtTglBerlaku" class="control-label col-lg-4">Tanggal Berlaku</label>
 	                                            <div class="col-lg-4">
-	                                                <input type="text" maxlength="10" placeholder="<?php echo date('Y-m-d')?>" name="txtTglBerlaku" value="<?php echo $tgl_berlaku ?>" class="form-control" data-date-format="yyyy-mm-dd" id="txtTglBerlaku" />
-	                                            </div>
-	                                        </div>
-									<div class="form-group">
-	                                            <label for="txtTglTberlaku" class="control-label col-lg-4">Tanggal Tberlaku</label>
-	                                            <div class="col-lg-4">
-	                                                <input type="text" maxlength="10" placeholder="<?php echo date('Y-m-d')?>" name="txtTglTberlaku" value="<?php echo $tgl_tberlaku ?>" class="form-control" data-date-format="yyyy-mm-dd" id="txtTglTberlaku" />
+	                                                <input type="text" maxlength="10" placeholder="<?php echo date('Y-m-d')?>" name="txtTglBerlaku" value="<?php echo rtrim($tgl_berlaku) ?>" class="form-control class-datepicker-erp-pr" data-date-format="yyyy-mm-dd" id="txtTglBerlaku" />
 	                                            </div>
 	                                        </div>
 									<div class="form-group">
                                             <label for="txtIkop" class="control-label col-lg-4">Ikop</label>
                                             <div class="col-lg-4">
-                                                <input type="text" placeholder="Ikop" name="txtIkop" id="txtIkop" class="form-control" value="<?php echo $ikop; ?>" onkeypress="return isNumberKey(event)" maxlength="7" />
+                                                <input type="text" placeholder="Ikop" name="txtIkop" id="txtIkop" class="form-control money" value="<?php echo rtrim($ikop); ?>" onkeypress="return isNumberKey(event)" maxlength="7" />
                                             </div>
                                     </div>
-									<div class="form-group">
-                                            <label for="txtKodePetugas" class="control-label col-lg-4">Kode Petugas</label>
-                                            <div class="col-lg-4">
-                                                <input type="text" placeholder="Kode Petugas" name="txtKodePetugas" id="txtKodePetugas" class="form-control" value="<?php echo $kode_petugas; ?>" onkeypress="return isNumberKey(event)" maxlength="7" />
-                                            </div>
-                                    </div>
-									<div class="form-group">
-	                                            <label for="txtTglRecord" class="control-label col-lg-4">Tanggal Record</label>
-	                                            <div class="col-lg-4">
-	                                                <input type="text" maxlength="10" placeholder="<?php echo date('Y-m-d')?>" name="txtTglRecord" value="<?php echo $tgl_record ?>" class="form-control" data-date-format="yyyy-mm-dd" id="txtTglRecord" />
-	                                            </div>
-	                                        </div>
-
 									<input type="hidden" name="txtIdRiwayat" value="<?php echo $id_riwayat; ?>" />
 								</div>
                                 

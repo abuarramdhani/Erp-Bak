@@ -20,7 +20,9 @@
 	        </div>
 	      </div>
 	      <br/>
-	      
+	       <?php
+			$this->load->view('PayrollManagement/V_alert');
+		  ?>
 	      <div class="row">
 	        <div class="col-lg-12">
 		        <div class="box box-primary box-solid">
@@ -52,7 +54,13 @@
 		                  </tr>
 		                </thead>
 		                <tbody>
-							<?php $no = 1; foreach($hutangKaryawan_data as $row) { ?>
+							<?php $no = 1; foreach($hutangKaryawan_data as $row) {
+								if($row->status_lunas == 0){
+									$status = "belum lunas";
+								}else{
+									$status = "lunas";
+								}
+							?>
 							<tr>
 							  <td align='center'><?php echo $no++;?></td>
                               <td align='center' width='200px'>

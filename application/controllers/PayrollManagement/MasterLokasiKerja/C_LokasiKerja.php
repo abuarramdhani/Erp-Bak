@@ -9,6 +9,7 @@ class C_LokasiKerja extends CI_Controller
         $this->load->helper('url');
         $this->load->model('SystemAdministration/MainMenu/M_user');
         $this->load->model('PayrollManagement/MasterLokasiKerja/M_lokasikerja');
+		$this->load->library('csvimport');
         if($this->session->userdata('logged_in')!=TRUE) {
             $this->load->helper('url');
             $this->session->set_userdata('last_page', current_url());
@@ -21,8 +22,8 @@ class C_LokasiKerja extends CI_Controller
         $this->checkSession();
         $user_id = $this->session->userid;
         
-        $data['Menu'] = 'Payroll Management';
-        $data['SubMenuOne'] = '';
+        $data['Menu'] = 'Master Data';
+        $data['SubMenuOne'] = 'Master Lokasi Kerja';
         $data['SubMenuTwo'] = '';
 
         $data['UserMenu'] = $this->M_user->getUserMenu($user_id,$this->session->responsibility_id);
@@ -35,6 +36,11 @@ class C_LokasiKerja extends CI_Controller
         $this->load->view('V_Sidemenu',$data);
         $this->load->view('PayrollManagement/LokasiKerja/V_index', $data);
         $this->load->view('V_Footer',$data);
+		$this->session->unset_userdata('success_import');
+		$this->session->unset_userdata('success_delete');
+		$this->session->unset_userdata('success_update');
+		$this->session->unset_userdata('success_insert');
+		$this->session->unset_userdata('not_found');
     }
 
 	public function read($id)
@@ -45,8 +51,8 @@ class C_LokasiKerja extends CI_Controller
         $row = $this->M_lokasikerja->get_by_id($id);
         if ($row) {
             $data = array(
-            	'Menu' => 'Payroll Management',
-            	'SubMenuOne' => '',
+            	'Menu' => 'Master Data',
+            	'SubMenuOne' =>'Master Lokasi Kerja',
             	'SubMenuTwo' => '',
             	'UserMenu' => $this->M_user->getUserMenu($user_id,$this->session->responsibility_id),
             	'UserSubMenuOne' => $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id),
@@ -63,6 +69,10 @@ class C_LokasiKerja extends CI_Controller
         }
         else {
             $this->session->set_flashdata('message', 'Record Not Found');
+			$ses=array(
+					 "not_found" => 1
+				);
+			$this->session->set_userdata($ses);
             redirect(site_url('PayrollManagement/LokasiKerja'));
         }
     }
@@ -74,8 +84,8 @@ class C_LokasiKerja extends CI_Controller
         $user_id = $this->session->userid;
 
         $data = array(
-            'Menu' => 'Payroll Management',
-            'SubMenuOne' => '',
+            'Menu' => 'Master Data',
+            'SubMenuOne' =>'Master Lokasi Kerja',
             'SubMenuTwo' => '',
             'UserMenu' => $this->M_user->getUserMenu($user_id,$this->session->responsibility_id),
             'UserSubMenuOne' => $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id),
@@ -95,12 +105,16 @@ class C_LokasiKerja extends CI_Controller
         $this->formValidation();
 
 		$data = array(
-			'id_lokasi_kerja' => $this->input->post('txtIdLokasiKerjaNew',TRUE),
-			'lokasi_kerja' => $this->input->post('txtLokasiKerja',TRUE),
+			'id_lokasi_kerja' => strtoupper($this->input->post('txtIdLokasiKerjaNew',TRUE)),
+			'lokasi_kerja' => strtoupper($this->input->post('txtLokasiKerja',TRUE)),
 		);
 
         $this->M_lokasikerja->insert($data);
         $this->session->set_flashdata('message', 'Create Record Success');
+		$ses=array(
+					 "success_insert" => 1
+				);
+		$this->session->set_userdata($ses);
         redirect(site_url('PayrollManagement/LokasiKerja'));
 
     }
@@ -115,8 +129,8 @@ class C_LokasiKerja extends CI_Controller
 
         if ($row) {
             $data = array(
-                'Menu' => 'Payroll Management',
-                'SubMenuOne' => '',
+                'Menu' => 'Master Data',
+                'SubMenuOne' =>'Master Lokasi Kerja',
                 'SubMenuTwo' => '',
                 'UserMenu' => $this->M_user->getUserMenu($user_id,$this->session->responsibility_id),
                 'UserSubMenuOne' => $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id),
@@ -131,6 +145,10 @@ class C_LokasiKerja extends CI_Controller
             $this->load->view('V_Footer',$data);
         } else {
             $this->session->set_flashdata('message', 'Record Not Found');
+			$ses=array(
+					 "not_found" => 1
+				);
+			$this->session->set_userdata($ses);
             redirect(site_url('PayrollManagement/LokasiKerja'));
         }
     }
@@ -139,12 +157,16 @@ class C_LokasiKerja extends CI_Controller
         $this->formValidation();
 
 		$data = array(
-			'id_lokasi_kerja' => $this->input->post('txtIdLokasiKerjaNew',TRUE),
-			'lokasi_kerja' => $this->input->post('txtLokasiKerja',TRUE),
+			'id_lokasi_kerja' => strtoupper($this->input->post('txtIdLokasiKerjaNew',TRUE)),
+			'lokasi_kerja' => strtoupper($this->input->post('txtLokasiKerja',TRUE)),
 		);
 
-		$this->M_lokasikerja->update($this->input->post('txtIdLokasiKerja', TRUE), $data);
+		$this->M_lokasikerja->update(strtoupper($this->input->post('txtIdLokasiKerja', TRUE)), $data);
         $this->session->set_flashdata('message', 'Update Record Success');
+		$ses=array(
+				 "success_update" => 1
+			);
+		$this->session->set_userdata($ses);
         redirect(site_url('PayrollManagement/LokasiKerja'));
         
     }
@@ -156,10 +178,62 @@ class C_LokasiKerja extends CI_Controller
         if ($row) {
             $this->M_lokasikerja->delete($id);
             $this->session->set_flashdata('message', 'Delete Record Success');
+			$ses=array(
+					 "success_delete" => 1
+				);
+			$this->session->set_userdata($ses);
             redirect(site_url('PayrollManagement/LokasiKerja'));
         } else {
             $this->session->set_flashdata('message', 'Record Not Found');
+			$ses=array(
+					 "not_found" => 1
+				);
+			$this->session->set_userdata($ses);
             redirect(site_url('PayrollManagement/LokasiKerja'));
+        }
+    }
+	
+	  public function import() {
+        $config['upload_path'] = 'assets/upload/importPR/lokasikerja/';
+        $config['allowed_types'] = 'csv';
+        $config['max_size'] = '1000';
+        $this->load->library('upload', $config);
+ 
+        if (!$this->upload->do_upload('importfile')) { echo $this->upload->display_errors();}
+        else {  $file_data  = $this->upload->data();
+                $filename   = $file_data['file_name'];
+                $file_path  = 'assets/upload/importPR/lokasikerja/'.$file_data['file_name'];
+                
+            if ($this->csvimport->get_array($file_path)) {
+                
+                $csv_array  = $this->csvimport->get_array($file_path);
+
+                foreach ($csv_array as $row) {
+					$check = $this->M_lokasikerja->get_by_id($row['ID_']);
+                    if($check){ 
+                        $data = array(
+                            'lokasi_kerja'      => $row['LOKASI_KERJA'],
+                        );
+                        $this->M_lokasikerja->update($row['ID_'],$data);
+                    }else{
+                        $data = array(
+                            'id_lokasi_kerja'   => strtoupper($row['ID_']),
+                            'lokasi_kerja'      => strtoupper($row['LOKASI_KERJA']),
+                        );
+                        $this->M_lokasikerja->insert($data);
+                    }
+                }
+				$this->session->set_flashdata('message', 'Record Not Found');
+				$ses=array(
+						 "success_import" => 1
+					);
+				$this->session->set_userdata($ses);
+                unlink($file_path);
+                redirect(base_url().'PayrollManagement/LokasiKerja');
+
+            } else {
+                $this->load->view('csvindex');
+            }
         }
     }
 

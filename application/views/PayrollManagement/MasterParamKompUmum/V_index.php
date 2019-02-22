@@ -20,7 +20,9 @@
 	        </div>
 	      </div>
 	      <br/>
-	      
+	      <?php
+			$this->load->view('PayrollManagement/V_alert');
+		  ?>
 	      <div class="row">
 	        <div class="col-lg-12">
 		        <div class="box box-primary box-solid">
@@ -40,9 +42,9 @@
 		                  <tr>
 		                    <th style="text-align:center; width:30px">NO</th>
                             <th style='text-align:center'>ACTION</th>
-							<th>UM</th>
-							<th>UBT</th>
-
+							<th style='text-align:center'>UM</th>
+							<th style='text-align:center'>UBT</th>
+							<th style='text-align:center'>TGL BERLAKU</th>
 		                  </tr>
 		                </thead>
 		                <tbody>
@@ -52,11 +54,11 @@
                               <td align='center' width='200px'>
                               	<a href="<?php echo base_url('PayrollManagement/MasterParamKompUmum/read/'.$row->um.''); ?>" class="btn btn-xs btn-primary" data-toggle="tooltip" data-placement="bottom" title="Read Data"><span class="fa fa-eye"></span></a>
                               	<a href="<?php echo base_url('PayrollManagement/MasterParamKompUmum/update/'.$row->um.''); ?>" class="btn btn-xs btn-warning" data-toggle="tooltip" data-placement="bottom" title="Edit Data"><span class="fa fa-pencil-square-o"></span></a>
-                              	<a href="<?php echo base_url('PayrollManagement/MasterParamKompUmum/delete/'.$row->um.''); ?>" class="btn btn-xs btn-danger" data-toggle="tooltip" data-placement="bottom" title="Hapus Data" onclick="return confirm('Are you sure you want to delete this item?');"><span class="fa fa-times"></span></a>
+								<a href="<?php echo base_url('PayrollManagement/MasterParamKompUmum/delete/'.$row->um.''); ?>" class="btn btn-xs btn-danger" data-toggle="tooltip" data-placement="bottom" title="Hapus Data" onclick="return confirm('Are you sure you want to delete this item?');"><span class="fa fa-times"></span></a>
                               </td>
-							<td><?php echo $row->um ?></td>
-							<td><?php echo $row->ubt ?></td>
-
+							<td align='right'><?php echo number_format((int)$row->um,0,",",".");?></td>
+							<td align='right'><?php echo number_format((int)$row->ubt,0,",",".") ?></td>
+							<td align='center'><?php echo $row->tgl_berlaku ?></td>
 							</tr>
 							<?php } ?>
 		                </tbody>                                      

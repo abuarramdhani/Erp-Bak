@@ -14,8 +14,10 @@ class M_riwayatparamkoperasi extends CI_Model
     }
 
     // get all data
-    function get_all()
+    function get_all($date)
     {
+		$this->db->where('tgl_berlaku<=',$date);
+		$this->db->where('tgl_tberlaku>',$date);
     	return $this->db->get($this->table)->result();
     }
 
@@ -37,6 +39,13 @@ class M_riwayatparamkoperasi extends CI_Model
     {
         $this->db->where($this->id, $id);
         $this->db->update($this->table, $data);
+    }
+	
+	// update data riwayat
+    function update_riwayat($exp,$data_update)
+    {
+        $this->db->where('tgl_tberlaku', $exp);
+        $this->db->update($this->table, $data_update);
     }
 
     // delete data

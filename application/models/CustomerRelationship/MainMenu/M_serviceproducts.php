@@ -1,11 +1,13 @@
 <?php
 class M_serviceproducts extends CI_Model {
 
+		var $oracle;
         public function __construct()
         {
                 $this->load->database();
 				$this->load->library('encrypt');
 				$this->load->helper('url');
+        		$this->oracle = $this->load->database ( 'oracle', TRUE );
         }
 		
 		public function getActivity($id = FALSE)
@@ -104,7 +106,7 @@ class M_serviceproducts extends CI_Model {
 		public function getServiceProductLines($id = FALSE)
 		{		//$id = str_replace("~", " ", $id);
 				if ($id === FALSE)
-				{		
+				{
 						/*$this->db->select('*');
 						$this->db->from('cr.vi_cr_service_product_lines');					
 						$this->db->order_by('service_product_line_id', 'ASC');*/
@@ -126,7 +128,7 @@ class M_serviceproducts extends CI_Model {
 						ORDER BY csp.connect_id,vcspl.service_product_line_id ASC"
 						;
 				}
-							
+
 				$query = $this->db->query($sql);
 				return $query->result_array();
 		}
@@ -621,10 +623,16 @@ class M_serviceproducts extends CI_Model {
 		
 		function getLastActivityNumber($id){
 			//$sql = "select COALESCE(cch.connect_number,'1') AS connect_number from cr.cr_connect_headers cch where cch.connect_type = '$id' order by cch.connect_number desc limit 1";
-			$sql = "select COALESCE(activity.activity_number,'1') AS activity_number 
-					from (select cch.connect_number activity_number, cch.connect_type activity_type from cr.cr_connect_headers cch 
-					UNION ALL
-					select csp.service_number activity_number, csp.service_type activity_type from cr.cr_service_products csp) activity
+			$sqlDelete 	= "DELETE from cr.cr_service_product_number_temporary
+							where creation_date <= (current_timestamp - INTERVAL '1 DAY')";
+			$this->db->query($sqlDelete);
+
+			$sql = "SELECT COALESCE(activity.activity_number,'1') AS activity_number 
+					from (select cch.connect_number activity_number, cch.connect_type activity_type from cr.cr_connect_headers cch
+						UNION ALL
+						select csp.service_number activity_number, csp.service_type activity_type from cr.cr_service_products csp
+						UNION ALL
+						select cspnt.activity_number activity_number, cspnt.activity_type activity_type from cr.cr_service_product_number_temporary cspnt) activity
 					where activity.activity_type = '$id' 
 					order by activity.activity_number desc limit 1";
 			$query = $this->db->query($sql);
@@ -635,5 +643,324 @@ class M_serviceproducts extends CI_Model {
 					return 0;
 			}
 		}
+
+		function processClaimHeader($custId,$customerName,$own_address,$own_phone,$province,$City,$District,$Village,$Address,$duration,$shipped,$shipment_date,$reason,$noEvidence,$landCategory,$typeOfSoil,$landDepth,$WeedsItem,$TopographyItem,$Chronology,$created_by)
+		{
+			$sql	=	"INSERT INTO KHS_EXTERNAL_CLAIM_HEADERS
+									(CLAIM_TYPE,
+									USER_ID,
+									CUST_ACCOUNT_ID,
+									OWNER_NAME,
+									OWNER_ADDRESS,
+									OWNER_PHONE_NUMBER,
+									DURATION_OF_USE,
+									LOCATION_ADDRESS,
+									LOCATION_VILLAGE,
+									LOCATION_DISTRICT,
+									LOCATION_CITY,
+									LOCATION_PROVINCE,
+									SHIPPED,
+									SHIPMENT_DATE,
+									NOT_SHIPPED_REASON,
+									NO_EVIDENCE,
+									LAND_CATEGORY,
+									TYPE_OF_SOIL,
+									LAND_DEPTH,
+									WEEDS,
+									TOPOGRAPHY,
+									EVENT_CHRONOLOGY,
+									CREATED_BY,
+									CREATION_DATE,
+									STATUS)
+									VALUES (
+										'HARVESTER',
+										'".$created_by."',
+										'".$custId."',
+										'".$customerName."',
+										'".$own_address."',
+										'".$own_phone."',
+										'".$duration."',
+										'".$Address."',
+										'".$Village."',
+										'".$District."',
+										'".$City."',
+										'".$province."',
+										'".$shipped."',
+										TO_DATE('".$shipment_date."', 'yyyy-mm-dd HH24:MI:SS'),
+										'".$reason."',
+										'".$noEvidence."',
+										'".$landCategory."',
+										'".$typeOfSoil."',
+										'".$landDepth."',
+										'".$WeedsItem."',
+										'".$TopographyItem."',
+										'".$Chronology."',
+										'".$created_by."',
+										sysdate,
+										'APPROVED'
+									)";
+			$query = $this->oracle->query($sql);
+		}
+
+		function province()
+		{
+			$sql = "select * from sys.sys_area_province";
+			$query = $this->db->query($sql);
+			return $query->result_array();
+		}
+
+		public function cityRegency($name)
+		{
+			$sql =	"	SELECT regency_name
+						FROM sys.sys_area_city_regency
+						WHERE province_id=(SELECT province_id
+						FROM sys.sys_area_province
+						WHERE province_name='$name'
+						GROUP BY province_id)
+						GROUP BY regency_name
+						ORDER BY regency_name
+					";
+			$query = $this->db->query($sql);
+			return $query->result_array();
+		}
+			
+		public function district($name)
+		{
+			$sql =	"	SELECT district_name
+						FROM sys.sys_area_district
+						WHERE city_regency_id=(SELECT city_regency_id
+						FROM sys.sys_area_city_regency
+						WHERE regency_name='$name'
+						GROUP BY city_regency_id)
+						GROUP BY district_name
+						ORDER BY district_name
+					";
+			$query = $this->db->query($sql);
+			return $query->result_array();
+		}
+			
+		public function village($name)
+		{
+			$sql =	"	SELECT village_name
+						FROM sys.sys_area_village
+						WHERE district_id=(SELECT district_id
+						FROM sys.sys_area_district
+						WHERE district_name='$name'
+						GROUP BY district_id)
+						GROUP BY village_name
+						ORDER BY village_name
+					";
+			$query = $this->db->query($sql);
+			return $query->result_array();
+		}
+
+		public function customerDataEC($customerName)
+		{
+			$sql =	"	SELECT ct.data, cs.oracle_customer_id, cs.address
+						FROM cr.cr_customer_contacts ct, cr.cr_customers cs
+						WHERE ct.connector_id = cs.customer_id AND cs.customer_name = '".$customerName."'
+					";
+			$query = $this->db->query($sql);
+			return $query->result_array();
+		}
+
+		/*public function getDataCustOwn()
+		{
+			$sql =	"	SELECT *
+						FROM im.im_master_items
+						WHERE oracle_item_id IS NOT NULL AND segment1 = 'AFB0000BA1AZ-0'
+					";
+			$query = $this->db->query($sql);
+			return $query->result_array();
+		}*/
+
+		public function approval($plaintext_string,$serviceid,$status,$approver,$approve_date)
+		{
+			$sql =	"	UPDATE cr.cr_service_products SET
+							approval_status = '$status',
+							approved_by		= '$approver'
+						WHERE service_product_id = '$plaintext_string'
+					";
+			$query = $this->db->query($sql);
+
+			$sql =	"	INSERT INTO cr.cr_approval_history
+									(service_product_id,
+									approval_status,
+									approved_by,
+									approved_date)
+							VALUES ('".$serviceid."',
+									'$status',
+									'".$approver."',
+									'".$approve_date."')
+					";
+			$query = $this->db->query($sql);
+		}
+
+		public function noApprove($plaintext_string,$serviceid,$status,$approver,$approve_date,$reason)
+		{
+			$sql =	"	UPDATE cr.cr_service_products SET
+							approval_status 	= '$status',
+							approved_by			= '$approver',
+							reason_not_approve	= '$reason'
+						WHERE service_product_id = '$plaintext_string'
+					";
+			$query = $this->db->query($sql);
+
+			$sql =	"	INSERT INTO cr.cr_approval_history
+									(service_product_id,
+									approval_status,
+									approved_by,
+									approved_date,
+									reason_not_approve)
+							VALUES ('".$serviceid."',
+									'".$status."',
+									'".$approver."',
+									'".$approve_date."',
+									'".$reason."')
+					";
+			$query = $this->db->query($sql);
+		}
+
+		function setNewActivityNumber($activityNumber,$term,$user_id)
+		{
+			$sql 	= "INSERT 	INTO cr.cr_service_product_number_temporary
+            							(activity_number, activity_type, creation_date, created_by)
+     							VALUES 	('$activityNumber', '$term', current_timestamp, '$user_id')";
+			$query 	= $this->db->query($sql);
+		}
+
+		function setNewActivityTemp($dataTemp)
+		{
+			$save = $this->db->insert('cr.cr_service_product_number_temporary', $dataTemp);
+			$last_insert_id = $this->db->insert_id();
+			return $last_insert_id;
+		}
+
+		function updateActivityData($activityNumber,$term,$user_id,$idTemp)
+		{
+			$sql 	= "	UPDATE cr.cr_service_product_number_temporary SET
+							activity_number 	= '$activityNumber',
+							activity_type 		= '$term',
+							last_updated_by 	= '$user_id',
+							last_update_date 	= current_timestamp
+						WHERE service_number_id = '$idTemp'";
+			$query 	= $this->db->query($sql);
+		}
+
+		function getServiceLineTemp($service_number)
+		{
+			$this->db->select('service_product_image_id, image_name');
+			$this->db->from('cr.cr_service_product_images');
+			$this->db->where('service_number', $service_number);
+			$this->db->order_by('service_product_image_id', 'ASC');
+			
+			$query = $this->db->get();
+			return $query->result_array();
+		}
+
+		function deleteLineImageTemp($id)
+		{
+			$this->db->where('service_product_image_id',$id);
+			$this->db->delete('cr.cr_service_product_line_images');
+		}
+
+		function deleteImageTemp($service_number){
+			$this->db->where('service_number',$service_number);
+			$this->db->delete('cr.cr_service_product_images');
+		}
+
+		function deleteActivityTemp($id)
+		{
+			$this->db->where('service_number_id',$id);
+			$this->db->delete('cr.cr_service_product_number_temporary');
+
+			$sql 	= "DELETE from cr.cr_service_product_number_temporary where creation_date <= (current_timestamp - INTERVAL '1 DAY')";
+			$this->db->query($sql);
+		}
+
+		function getServiceNumber($id)
+		{
+			$this->db->select('*');
+			$this->db->from('cr.cr_service_product_number_temporary');
+			$this->db->where('service_number_id', $id);
+			$this->db->order_by('service_number_id', 'ASC');
+			
+			$query = $this->db->get();
+			return $query->result_array();
+		}
+		function setDataClaimImage($img)
+		{
+			$this->db->insert('cr.cr_service_product_images', $img);
+		}
+
+		public function claimImage($data)
+		{	
+			$this->db->insert('cr.cr_service_product_line_images', $data);
+		}
+
+		function updateTempCustId($data,$idTmp)
+		{		
+				$this->db->update('cr.cr_service_product_number_temporary', $data, array('service_number_id' => $idTmp));
+		}
 		
+		function getDataClaimImage($id)
+		{
+			$this->db->select('*');
+			$this->db->from('cr.cr_service_product_images');
+			$this->db->where('service_number', $id);
+			$this->db->order_by('service_product_image_id', 'ASC');
+			$query = $this->db->get();
+			return $query->result_array();
+		}
+
+		function getImageData($id)
+		{
+			$this->db->select('*');
+			$this->db->from('cr.cr_service_product_images');
+			$this->db->where('service_number', $id);
+			$query = $this->db->get();
+			return $query->result_array();
+		}
+
+		function getDataSelectedImg($image_id)
+		{
+			$this->db->select('*');
+			$this->db->from('cr.cr_service_product_images');
+			$this->db->where('service_product_image_id', $image_id);
+			$query = $this->db->get();
+			return $query->result_array();
+		}
+
+		function setImageDataLine($dataImgLine)
+		{
+			$this->db->insert('cr.cr_service_product_line_images', $dataImgLine);
+			return $this->db->insert_id();
+		}
+
+		function getImageLine($rowId,$ownerId)
+		{
+			$sql = "SELECT service_product_line_image_id
+					from cr.cr_service_product_line_images
+					where row_id = '$rowId' AND ownership_id = '$ownerId'";
+			$query = $this->db->query($sql);
+			return $query->result_array();
+		}
+
+		/*function updateImageDataLine($data, $id)
+		{
+			$this->db->update('cr.cr_service_product_line_images', $data, array('service_product_line_image_id' => $id));
+		}*/
+
+		function getImgIdSelected($id){
+			$this->db->select('service_product_image_id');
+			$this->db->from('cr.cr_service_product_line_images');
+			$this->db->where('service_product_line_image_id', $id);
+			$query = $this->db->get();
+			return $query->result_array();
+		}
+
+		function deleteImageDataLine($ownerId,$rowId){
+			$query = "delete from cr.cr_service_product_line_images where ownership_id='$ownerId' AND row_id='$rowId'";
+			$this->db->query($query);
+		}
 }

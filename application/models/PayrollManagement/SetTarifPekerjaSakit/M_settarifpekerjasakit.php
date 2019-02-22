@@ -17,6 +17,7 @@ class M_settarifpekerjasakit extends CI_Model
     // get all data
     function get_all()
     {
+		$this->db->order_by('tingkatan','asc');
     	return $this->db->get($this->table)->result();
     }
 
@@ -36,7 +37,7 @@ class M_settarifpekerjasakit extends CI_Model
     // update data
     function update($id, $data)
     {
-        $this->db->where($this->id, $id);
+        $this->db->where('tingkatan', $id);
         $this->db->update($this->table, $data);
     }
 

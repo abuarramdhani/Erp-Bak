@@ -40,13 +40,13 @@
 									<div class="form-group">
                                         <label for="txtIdLokasiKerjaNew" class="control-label col-lg-4">Id Lokasi Kerja</label>
                                         <div class="col-lg-4">
-                                            <input type="text" placeholder="Lokasi Kerja" name="txtIdLokasiKerjaNew" id="txtIdLokasiKerjaNew" class="form-control" value="<?php echo $id_lokasi_kerja; ?>" maxlength="2"/>
+                                            <input type="text" placeholder="Kode Lokasi Kerja" name="txtIdLokasiKerjaNew" id="txtIdLokasiKerjaNew" class="form-control text-uppercase" value="<?php echo $id_lokasi_kerja; ?>" maxlength="2"/>
                                         </div>
                                     </div>
 									<div class="form-group">
                                         <label for="txtLokasiKerja" class="control-label col-lg-4">Lokasi Kerja</label>
                                         <div class="col-lg-4">
-                                            <input type="text" placeholder="Lokasi Kerja" name="txtLokasiKerja" id="txtLokasiKerja" class="form-control" value="<?php echo $lokasi_kerja; ?>"  maxlength="50"/>
+                                            <input type="text" placeholder="Lokasi Kerja" name="txtLokasiKerja" id="txtLokasiKerja" class="form-control text-uppercase" value="<?php echo $lokasi_kerja; ?>"  maxlength="50"/>
                                         </div>
                                     </div>
 									<input type="hidden" name="txtIdLokasiKerja" value="<?php echo $id_lokasi_kerja; ?>" />

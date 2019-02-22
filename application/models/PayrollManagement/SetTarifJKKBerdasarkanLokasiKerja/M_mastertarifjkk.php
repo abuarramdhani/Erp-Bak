@@ -17,7 +17,10 @@ class M_mastertarifjkk extends CI_Model
     // get all data
     function get_all()
     {
-    	return $this->db->get($this->table)->result();
+		$this->db->select('a.id_tarif_jkk,a.id_lokasi_kerja,a.tarif_jkk,b.lokasi_kerja');
+		$this->db->from('pr.pr_master_tarif_jkk as a');
+		$this->db->join('pr.pr_lokasi_kerja as b','a.id_lokasi_kerja=b.id_lokasi_kerja');
+    	return $this->db->get()->result();
     }
 
     // get data by id
@@ -58,6 +61,11 @@ class M_mastertarifjkk extends CI_Model
     {
         return $this->db->get('pr.pr_lokasi_kerja')->result();
     }
+	
+	function getId(){
+		$this->db->select_max('id_tarif_jkk');
+		return $this->db->get($this->table)->row();
+	}
 	
 //------------------------- RIWAYAT RELATION -------------------------	
 	

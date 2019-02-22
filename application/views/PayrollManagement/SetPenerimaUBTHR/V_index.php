@@ -20,7 +20,9 @@
 	        </div>
 	      </div>
 	      <br/>
-	      
+	        <?php
+			$this->load->view('PayrollManagement/V_alert');
+		  ?>
 	      <div class="row">
 	        <div class="col-lg-12">
 		        <div class="box box-primary box-solid">
@@ -40,14 +42,10 @@
 							<tr>
 								<th style="text-align:center"><div style="width:40px"></div>NO</th>
 								<th style="text-align:center"><div style="width:100px"></div>ACTION</th>
-								<th><div style="width:40px"></div>ID</th>
-								<th><div style="width:120px"></div>Tanggal Berlaku</th>
-								<th><div style="width:120px"></div>Tanggal Tak Berlaku</th>
-								<th><div style="width:40px"></div>Kode Status Kerja</th>
-								<th><div style="width:60px"></div>Persentase THR</th>
-								<th><div style="width:60px"></div>Persentase UBTHR</th>
-								<th><div style="width:100px"></div>Kode Petugas</th>
-								<th><div style="width:100px"></div>Tanggal Record</th>
+								<th style="text-align:center"><div style="width:120px"></div>Tanggal Berlaku</th>
+								<th style="text-align:center"><div style="width:40px"></div>Kode Status Kerja</th>
+								<th style="text-align:center"><div style="width:60px"></div>Persentase THR</th>
+								<th style="text-align:center"><div style="width:60px"></div>Persentase UBTHR</th>
 							</tr>
 						
 		                </thead>
@@ -60,14 +58,10 @@
 									<a href="<?php echo base_url('PayrollManagement/SetPenerimaUBTHR/update/'.$row->id_setting.''); ?>" class="btn btn-xs btn-warning" data-toggle="tooltip" data-placement="bottom" title="Edit Data"><span class="fa fa-pencil-square-o"></span></a>
 									<a href="<?php echo base_url('PayrollManagement/SetPenerimaUBTHR/delete/'.$row->id_setting.''); ?>" class="btn btn-xs btn-danger" data-toggle="tooltip" data-placement="bottom" title="Hapus Data" onclick="return confirm('Are you sure you want to delete this item?');"><span class="fa fa-times"></span></a>
 								</td>
-								<td><?php echo $row->id_setting ?></td>
-								<td><?php echo $row->tgl_berlaku ?></td>
-								<td><?php echo $row->tgl_tberlaku ?></td>
-								<td><?php echo $row->kd_status_kerja ?></td>
-								<td><?php echo $row->persentase_thr ?></td>
-								<td><?php echo $row->persentase_ubthr ?></td>
-								<td><?php echo $row->kd_petugas ?></td>
-								<td><?php echo $row->tgl_record ?></td>
+								<td align='center'><?php echo $row->tgl_berlaku ?></td>
+								<td align='center'><?php echo $row->kd_status_kerja ?></td>
+								<td align='center'><?php echo $row->persentase_thr ?> %</td>
+								<td align='center'><?php echo $row->persentase_ubthr ?> %</td>
 							</tr>
 							<?php } ?>
 		                </tbody>                                      

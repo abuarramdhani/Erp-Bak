@@ -40,10 +40,10 @@
 		                  <tr>
 		                    <th style="text-align:center; width:30px">NO</th>
                             <th style='text-align:center'>ACTION</th>
-							<th>Kode PPH</th>
-							<th>Batas Bawah</th>
-							<th>Batas Atas</th>
-							<th>Persen</th>
+							<th style='text-align:center'>Tingkat PPH</th>
+							<th style='text-align:center'>Batas Bawah</th>
+							<th style='text-align:center'>Batas Atas</th>
+							<th style='text-align:center'>Persen</th>
 
 		                  </tr>
 		                </thead>
@@ -56,10 +56,10 @@
                               	<a href="<?php echo base_url('PayrollManagement/MasterParameterTarifPph/update/'.$row->kd_pph.''); ?>" class="btn btn-xs btn-warning" data-toggle="tooltip" data-placement="bottom" title="Edit Data"><span class="fa fa-pencil-square-o"></span></a>
                               	<a href="<?php echo base_url('PayrollManagement/MasterParameterTarifPph/delete/'.$row->kd_pph.''); ?>" class="btn btn-xs btn-danger" data-toggle="tooltip" data-placement="bottom" title="Hapus Data" onclick="return confirm('Are you sure you want to delete this item?');"><span class="fa fa-times"></span></a>
                               </td>
-							<td><?php echo $row->kd_pph ?></td>
-							<td><?php echo $row->batas_bawah ?></td>
-							<td><?php echo $row->batas_atas ?></td>
-							<td><?php echo $row->persen ?></td>
+							<td align='center'><?php echo $row->kd_pph ?></td>
+							<td align='right'><?php echo number_format((int)$row->batas_bawah) ?></td>
+							<td align='right'><?php echo number_format((int)$row->batas_atas) ?></td>
+							<td align='center'><?php echo $row->persen ?> %</td>
 
 							</tr>
 							<?php } ?>

@@ -21,8 +21,8 @@ class C_RiwayatPenerimaKonpensasiLembur extends CI_Controller
         $this->checkSession();
         $user_id = $this->session->userid;
         
-        $data['Menu'] = 'Payroll Management';
-        $data['SubMenuOne'] = '';
+        $data['Menu'] = 'Set Parameter';
+        $data['SubMenuOne'] = 'Set Penerima Komp Lembur';
         $data['SubMenuTwo'] = '';
 
         $data['UserMenu'] = $this->M_user->getUserMenu($user_id,$this->session->responsibility_id);
@@ -35,6 +35,11 @@ class C_RiwayatPenerimaKonpensasiLembur extends CI_Controller
         $this->load->view('V_Sidemenu',$data);
         $this->load->view('PayrollManagement/RiwayatPenerimaKonpensasiLembur/V_index', $data);
         $this->load->view('V_Footer',$data);
+		$this->session->unset_userdata('success_import');
+		$this->session->unset_userdata('success_delete');
+		$this->session->unset_userdata('success_update');
+		$this->session->unset_userdata('success_insert');
+		$this->session->unset_userdata('not_found');
     }
 
 	public function read($id)
@@ -45,8 +50,8 @@ class C_RiwayatPenerimaKonpensasiLembur extends CI_Controller
         $row = $this->M_riwayatpenerimakonpensasilembur->get_by_id($id);
         if ($row) {
             $data = array(
-            	'Menu' => 'Payroll Management',
-            	'SubMenuOne' => '',
+            	'Menu' => 'Set Parameter',
+            	'SubMenuOne' => 'Set Penerima Komp Lembur',
             	'SubMenuTwo' => '',
             	'UserMenu' => $this->M_user->getUserMenu($user_id,$this->session->responsibility_id),
             	'UserSubMenuOne' => $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id),
@@ -72,6 +77,10 @@ class C_RiwayatPenerimaKonpensasiLembur extends CI_Controller
         }
         else {
             $this->session->set_flashdata('message', 'Record Not Found');
+			$ses=array(
+					 "not_found" => 1
+				);
+			$this->session->set_userdata($ses);
             redirect(site_url('PayrollManagement/RiwayatPenerimaKonpensasiLembur'));
         }
     }
@@ -83,8 +92,8 @@ class C_RiwayatPenerimaKonpensasiLembur extends CI_Controller
         $user_id = $this->session->userid;
 
         $data = array(
-            'Menu' => 'Payroll Management',
-            'SubMenuOne' => '',
+            'Menu' => 'Set Parameter',
+            'SubMenuOne' => 'Set Penerima Komp Lembur',
             'SubMenuTwo' => '',
             'UserMenu' => $this->M_user->getUserMenu($user_id,$this->session->responsibility_id),
             'UserSubMenuOne' => $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id),
@@ -117,10 +126,6 @@ class C_RiwayatPenerimaKonpensasiLembur extends CI_Controller
     {
         $this->formValidation();
 
-        if ($this->form_validation->run() == FALSE) {
-            $this->create();
-        }
-        else{
             $data = array(
 				'id_kantor_asal' => $this->input->post('cmbIdKantorAsal',TRUE),
 				'id_lokasi_kerja' => $this->input->post('cmbIdLokasiKerja',TRUE),
@@ -129,15 +134,18 @@ class C_RiwayatPenerimaKonpensasiLembur extends CI_Controller
 				'min_masa_kerja' => $this->input->post('txtMinMasaKerja',TRUE),
 				'prosentase' => $this->input->post('txtProsentase',TRUE),
 				'tgl_berlaku' => $this->input->post('txtTglBerlaku',TRUE),
-				'tgl_tberlaku' => $this->input->post('txtTglTberlaku',TRUE),
-				'kode_petugas' => $this->input->post('txtKodePetugas',TRUE),
-				'tgl_record' => $this->input->post('txtTglRecord',TRUE),
+				'tgl_tberlaku' => '9999-12-31',
+				'kode_petugas' => $this->session->userdata('userid'),
+				'tgl_record' => date('Y-m-d H:i:s'),
 			);
 
             $this->M_riwayatpenerimakonpensasilembur->insert($data);
             $this->session->set_flashdata('message', 'Create Record Success');
+			$ses=array(
+					 "success_insert" => 1
+				);
+			$this->session->set_userdata($ses);
             redirect(site_url('PayrollManagement/RiwayatPenerimaKonpensasiLembur'));
-        }
     }
 
     public function update($id)
@@ -150,8 +158,8 @@ class C_RiwayatPenerimaKonpensasiLembur extends CI_Controller
 
         if ($row) {
             $data = array(
-                'Menu' => 'Payroll Management',
-                'SubMenuOne' => '',
+                'Menu' => 'Set Parameter',
+                'SubMenuOne' => 'Set Penerima Komp Lembur',
                 'SubMenuTwo' => '',
                 'UserMenu' => $this->M_user->getUserMenu($user_id,$this->session->responsibility_id),
                 'UserSubMenuOne' => $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id),
@@ -179,6 +187,10 @@ class C_RiwayatPenerimaKonpensasiLembur extends CI_Controller
             $this->load->view('V_Footer',$data);
         } else {
             $this->session->set_flashdata('message', 'Record Not Found');
+			$ses=array(
+					 "not_found" => 1
+				);
+			$this->session->set_userdata($ses);
             redirect(site_url('PayrollManagement/RiwayatPenerimaKonpensasiLembur'));
         }
     }
@@ -187,10 +199,6 @@ class C_RiwayatPenerimaKonpensasiLembur extends CI_Controller
     {
         $this->formValidation();
 
-        if ($this->form_validation->run() == FALSE) {
-            $this->update();
-        }
-        else{
             $data = array(
 				'id_kantor_asal' => $this->input->post('cmbIdKantorAsal',TRUE),
 				'id_lokasi_kerja' => $this->input->post('cmbIdLokasiKerja',TRUE),
@@ -199,15 +207,18 @@ class C_RiwayatPenerimaKonpensasiLembur extends CI_Controller
 				'min_masa_kerja' => $this->input->post('txtMinMasaKerja',TRUE),
 				'prosentase' => $this->input->post('txtProsentase',TRUE),
 				'tgl_berlaku' => $this->input->post('txtTglBerlaku',TRUE),
-				'tgl_tberlaku' => $this->input->post('txtTglTberlaku',TRUE),
+				'tgl_tberlaku' => '9999-12-31',
 				'kode_petugas' => $this->input->post('txtKodePetugas',TRUE),
 				'tgl_record' => $this->input->post('txtTglRecord',TRUE),
 			);
 
             $this->M_riwayatpenerimakonpensasilembur->update($this->input->post('txtIdRiwayat', TRUE), $data);
             $this->session->set_flashdata('message', 'Update Record Success');
+			$ses=array(
+					 "success_update" => 1
+				);
+			$this->session->set_userdata($ses);
             redirect(site_url('PayrollManagement/RiwayatPenerimaKonpensasiLembur'));
-        }
     }
 
     public function delete($id)
@@ -217,9 +228,17 @@ class C_RiwayatPenerimaKonpensasiLembur extends CI_Controller
         if ($row) {
             $this->M_riwayatpenerimakonpensasilembur->delete($id);
             $this->session->set_flashdata('message', 'Delete Record Success');
+			$ses=array(
+					 "success_delete" => 1
+				);
+			$this->session->set_userdata($ses);
             redirect(site_url('PayrollManagement/RiwayatPenerimaKonpensasiLembur'));
         } else {
             $this->session->set_flashdata('message', 'Record Not Found');
+			$ses=array(
+					 "not_found" => 1
+				);
+			$this->session->set_userdata($ses);
             redirect(site_url('PayrollManagement/RiwayatPenerimaKonpensasiLembur'));
         }
     }

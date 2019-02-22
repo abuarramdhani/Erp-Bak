@@ -2,6 +2,7 @@
 						<table class="table table-striped table-bordered table-hover text-left" id="tabel-retur-faktur" style="font-size:14px;">
 							<thead class="bg-primary">
 								<tr>
+									<!-- <th>INVOICE</th> -->
 									<th>FM</th>
 									<th><div style="width:120px;">KODE JENIS TRANS</div></th>
 									<th><div style="width:100px;">FG PENGGANTI</div></th>
@@ -18,6 +19,9 @@
 									<th><div style="width:100px;">IS CREDITABLE</div></th>
 									<th><div style="width:90px;">KETERANGAN</div></th>
 									<th><div style="width:100px;">STATUS FAKTUR</div></th>
+									<th><div style="width:160px;">TIPE FAKTUR</div></th>
+									<th><div style="width:160px;">NOMOR INVOICE</div></th>
+									<th><div style="width:160px;">KOMENTAR</div></th>
 								</tr>
 							</thead>
 							<tbody>
@@ -28,8 +32,15 @@
 											$typ = substr($FF->FAKTUR_PAJAK, 0, 2);
 											$alt = substr($FF->FAKTUR_PAJAK, 2, 1);
 											$num = substr($FF->FAKTUR_PAJAK, 3);
+											$dpn = substr($num, 0, 3);
+											$tgh = substr($num, 3, 2);
+											$bkg = substr($num, 5);
+											$atr5 = $typ.$alt.'.'.$dpn.'-'.$tgh.'.';
+											$atr3 = $bkg;
+											// $invcheck = $this->M_Invoice->checkInvFak($atr5, $atr3);
 								?>
 								<tr>
+									
 									<td><?php echo $FF->FM?></td>
 									<td><?php echo $typ?></td>
 									<td><?php echo $alt?></td>
@@ -46,6 +57,9 @@
 									<td><?php echo $FF->IS_CREDITABLE_FLAG?></td>
 									<td><?php echo $FF->DESCRIPTION?></td>
 									<td><?php echo $FF->STATUS?></td>
+									<td><?php echo $FF->FAKTUR_TYPE?></td>
+									<td><?php echo $FF->INVOICE_NUM?></td>
+									<td><?php echo $FF->COMMENTS?></td>
 								</tr>
 								<?php 
 										}

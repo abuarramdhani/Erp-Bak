@@ -59,6 +59,11 @@ class M_user extends CI_Model {
 
 		}
 		
+		public function DeleteUserResponsbility($user_application_id)
+		{		
+			$this->db->delete('sys.sys_user_application', array('user_application_id' => $user_application_id));
+		}
+		
 		public function getCustomerByName($id){
 			$sql="select * from cr.vi_cr_customer where upper(customer_name) like '%$id%' order by customer_name limit 50";
 			$query = $this->db->query($sql);

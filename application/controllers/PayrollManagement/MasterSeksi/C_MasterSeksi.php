@@ -22,8 +22,8 @@ class C_MasterSeksi extends CI_Controller
         $this->checkSession();
         $user_id = $this->session->userid;
         
-        $data['Menu'] = 'Payroll Management';
-        $data['SubMenuOne'] = '';
+        $data['Menu'] = 'Master Data';
+        $data['SubMenuOne'] = 'Master Seksi';
         $data['SubMenuTwo'] = '';
 
         $data['UserMenu'] = $this->M_user->getUserMenu($user_id,$this->session->responsibility_id);
@@ -36,6 +36,11 @@ class C_MasterSeksi extends CI_Controller
         $this->load->view('V_Sidemenu',$data);
         $this->load->view('PayrollManagement/MasterSeksi/V_index', $data);
         $this->load->view('V_Footer',$data);
+		$this->session->unset_userdata('success_import');
+		$this->session->unset_userdata('success_delete');
+		$this->session->unset_userdata('success_update');
+		$this->session->unset_userdata('success_insert');
+		$this->session->unset_userdata('not_found');
     }
 
 	public function read($id)
@@ -46,8 +51,8 @@ class C_MasterSeksi extends CI_Controller
         $row = $this->M_masterseksi->get_by_id($id);
         if ($row) {
             $data = array(
-            	'Menu' => 'Payroll Management',
-            	'SubMenuOne' => '',
+            	'Menu' => 'Master Data',
+            	'SubMenuOne' => 'Master Seksi',
             	'SubMenuTwo' => '',
             	'UserMenu' => $this->M_user->getUserMenu($user_id,$this->session->responsibility_id),
             	'UserSubMenuOne' => $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id),
@@ -80,8 +85,8 @@ class C_MasterSeksi extends CI_Controller
         $user_id = $this->session->userid;
 
         $data = array(
-            'Menu' => 'Payroll Management',
-            'SubMenuOne' => '',
+            'Menu' => 'Master Data',
+            'SubMenuOne' => 'Master Seksi',
             'SubMenuTwo' => '',
             'UserMenu' => $this->M_user->getUserMenu($user_id,$this->session->responsibility_id),
             'UserSubMenuOne' => $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id),
@@ -105,23 +110,26 @@ class C_MasterSeksi extends CI_Controller
     public function save(){
         $this->formValidation();
 		$data = array(
-			'kodesie' => $this->input->post('txtKodesieNew',TRUE),
-			'dept' => $this->input->post('cmbDept',TRUE),
-			'bidang' => $this->input->post('txtBidang',TRUE),
-			'unit' => $this->input->post('txtUnit',TRUE),
-			'seksi' => $this->input->post('txtSeksi',TRUE),
-			'pekerjaan' => $this->input->post('txtPekerjaan',TRUE),
-			'golkerja' => $this->input->post('txtGolkerja',TRUE),
+			'kodesie' => strtoupper($this->input->post('txtKodesieNew',TRUE)),
+			'dept' => strtoupper($this->input->post('cmbDept',TRUE)),
+			'bidang' => strtoupper($this->input->post('txtBidang',TRUE)),
+			'unit' => strtoupper($this->input->post('txtUnit',TRUE)),
+			'seksi' => strtoupper($this->input->post('txtSeksi',TRUE)),
+			'pekerjaan' => strtoupper($this->input->post('txtPekerjaan',TRUE)),
+			'golkerja' => strtoupper($this->input->post('txtGolkerja',TRUE)),
 		);
 
             $this->M_masterseksi->insert($data);
             $this->session->set_flashdata('message', 'Create Record Success');
+			$ses=array(
+					 "success_insert" => 1
+				);
+			$this->session->set_userdata($ses);
             redirect(site_url('PayrollManagement/MasterSeksi'));
     }
 
     public function update($id)
     {
-
         $this->checkSession();
         $user_id = $this->session->userid;
 
@@ -129,8 +137,8 @@ class C_MasterSeksi extends CI_Controller
 
         if ($row) {
             $data = array(
-                'Menu' => 'Payroll Management',
-                'SubMenuOne' => '',
+                'Menu' => 'Master Data',
+                'SubMenuOne' => 'Master Seksi',
                 'SubMenuTwo' => '',
                 'UserMenu' => $this->M_user->getUserMenu($user_id,$this->session->responsibility_id),
                 'UserSubMenuOne' => $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id),
@@ -150,6 +158,10 @@ class C_MasterSeksi extends CI_Controller
             $this->load->view('V_Footer',$data);
         } else {
             $this->session->set_flashdata('message', 'Record Not Found');
+			$ses=array(
+					 "not_found" => 1
+				);
+			$this->session->set_userdata($ses);
             redirect(site_url('PayrollManagement/MasterSeksi'));
         }
     }
@@ -157,17 +169,21 @@ class C_MasterSeksi extends CI_Controller
     public function saveUpdate(){
         $this->formValidation();
         $data = array(
-			'kodesie' => $this->input->post('txtKodesieNew',TRUE),
-			'dept' => $this->input->post('cmbDept',TRUE),
-			'bidang' => $this->input->post('txtBidang',TRUE),
-			'unit' => $this->input->post('txtUnit',TRUE),
-			'seksi' => $this->input->post('txtSeksi',TRUE),
-			'pekerjaan' => $this->input->post('txtPekerjaan',TRUE),
-			'golkerja' => $this->input->post('txtGolkerja',TRUE),
+			'kodesie' => strtoupper($this->input->post('txtKodesieNew',TRUE)),
+			'dept' => strtoupper($this->input->post('cmbDept',TRUE)),
+			'bidang' => strtoupper($this->input->post('txtBidang',TRUE)),
+			'unit' => strtoupper($this->input->post('txtUnit',TRUE)),
+			'seksi' => strtoupper($this->input->post('txtSeksi',TRUE)),
+			'pekerjaan' => strtoupper($this->input->post('txtPekerjaan',TRUE)),
+			'golkerja' => strtoupper($this->input->post('txtGolkerja',TRUE)),
 			);
 
-            $this->M_masterseksi->update($this->input->post('txtKodesie', TRUE), $data);
+            $this->M_masterseksi->update(strtoupper($this->input->post('txtKodesie', TRUE)), $data);
             $this->session->set_flashdata('message', 'Update Record Success');
+			$ses=array(
+					 "success_update" => 1
+				);
+			$this->session->set_userdata($ses);
             redirect(site_url('PayrollManagement/MasterSeksi'));
     }
 
@@ -178,9 +194,17 @@ class C_MasterSeksi extends CI_Controller
         if ($row) {
             $this->M_masterseksi->delete($id);
             $this->session->set_flashdata('message', 'Delete Record Success');
+			$ses=array(
+					 "success_delete" => 1
+				);
+			$this->session->set_userdata($ses);
             redirect(site_url('PayrollManagement/MasterSeksi'));
         } else {
             $this->session->set_flashdata('message', 'Record Not Found');
+			$ses=array(
+					 "not_found" => 1
+				);
+			$this->session->set_userdata($ses);
             redirect(site_url('PayrollManagement/MasterSeksi'));
         }
     }
@@ -201,9 +225,9 @@ class C_MasterSeksi extends CI_Controller
                 $csv_array  = $this->csvimport->get_array($file_path);
 
                 foreach ($csv_array as $row) {
-                    if(array_key_exists('KODESIE', $row)){ 
+					$check = $this->M_masterseksi->get_by_id($row['KODESIE']);
+                    if($check){ 
                         $data = array(
-                            'kodesie'   => $row['KODESIE'],
                             'dept'      => $row['DEPT'],
                             'bidang'    => $row['BIDANG'],
                             'unit'      => $row['UNIT'],
@@ -211,22 +235,27 @@ class C_MasterSeksi extends CI_Controller
                             'pekerjaan' => $row['PEKERJAAN'],
                             'golkerja'  => $row['GOLKERJA'],
                         );
-                        $this->M_masterseksi->insert($data);
+                        $this->M_masterseksi->update($row['KODESIE'],$data);
                     }else{
                         $data = array(
-                            'kodesie'   => $row['kodesie'],
-                            'dept'      => $row['dept'],
-                            'bidang'    => $row['bidang'],
-                            'unit'      => $row['unit'],
-                            'seksi'     => $row['seksi'],
-                            'pekerjaan' => $row['pekerjaan'],
-                            'golkerja'  => $row['golkerja'],
+                            'kodesie'   => strtoupper($row['kodesie']),
+                            'dept'      => strtoupper($row['dept']),
+                            'bidang'    => strtoupper($row['bidang']),
+                            'unit'      => strtoupper($row['unit']),
+                            'seksi'     => strtoupper($row['seksi']),
+                            'pekerjaan' => strtoupper($row['pekerjaan']),
+                            'golkerja'  => strtoupper($row['golkerja']),
                         );
                         $this->M_masterseksi->insert($data);
                     }
                 }
+				$this->session->set_flashdata('message', 'Record Not Found');
+				$ses=array(
+						 "success_import" => 1
+					);
+				$this->session->set_userdata($ses);
                 unlink($file_path);
-                redirect(base_url().'PayrollManagement/MasterJabatan');
+                redirect(base_url().'PayrollManagement/MasterSeksi');
 
             } else {
                 $this->load->view('csvindex');

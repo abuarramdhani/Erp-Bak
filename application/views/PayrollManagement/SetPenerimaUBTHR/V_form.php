@@ -40,13 +40,7 @@
 									<div class="form-group">
                                         <label for="txtTglBerlaku" class="control-label col-lg-4">Tanggal Berlaku</label>
                                         <div class="col-lg-4">
-                                            <input type="text" name="txtTglBerlaku" id="txtTglBerlaku" class="form-control" value="<?php echo $tgl_berlaku; ?>"/>
-                                        </div>
-                                    </div>
-									<div class="form-group">
-                                        <label for="txtTglTberlaku" class="control-label col-lg-4">Tanggal Tak Berlaku</label>
-                                        <div class="col-lg-4">
-                                            <input type="text" name="txtTglTberlaku" id="txtTglTberlaku" class="form-control" value="<?php echo $tgl_tberlaku; ?>"/>
+                                            <input type="text" name="txtTglBerlaku" id="txtTglBerlaku" class="form-control class-datepicker-erp-pr" value="<?php echo rtrim($tgl_berlaku); ?>"/>
                                         </div>
                                     </div>
 									<div class="form-group">
@@ -56,7 +50,7 @@
                                                 <?php
 													foreach ($pr_master_status_kerja as $row){ 
 													$slc='';if(rtrim($row->kd_status_kerja)==rtrim($kd_status_kerja)){$slc='selected';}
-                                                    echo '<option '.$slc.' value="'.$row->kd_status_kerja.'">'.$row->status_kerja.'</option>';
+                                                    echo '<option '.$slc.' value="'.$row->kd_status_kerja.'">( '.$row->kd_status_kerja.' ) '.$row->status_kerja.'</option>';
                                                     }
                                                 ?>
 											</select>
@@ -64,21 +58,19 @@
                                     </div>
 									<div class="form-group">
                                         <label for="txtPersentaseTHR" class="control-label col-lg-4">Persentase THR</label>
-                                        <div class="col-lg-4">
-                                            <input type="text" name="txtPersentaseTHR" id="txtPersentaseTHR" class="form-control" value="<?php echo $persentase_thr; ?>" maxlength="5"/>
+                                        <div class="col-lg-2">
+                                            <input type="text" name="txtPersentaseTHR" id="txtPersentaseTHR" class="form-control" onkeypress="return isNumberKeyAndDot(event)" value="<?php echo rtrim($persentase_thr); ?>" maxlength="5"/>
                                         </div>
+										<label for="txtPersentaseTHR" class="control-label">%</label>
+										<label for="txtPersentaseTHR" class="control-label">(Percent)</label>
                                     </div>
 									<div class="form-group">
                                         <label for="txtPersentaseUBTHR" class="control-label col-lg-4">Persentase UBTHR</label>
-                                        <div class="col-lg-4">
-                                            <input type="text" name="txtPersentaseUBTHR" id="txtPersentaseUBTHR" class="form-control" value="<?php echo $persentase_ubthr; ?>" maxlength="5"/>
+                                        <div class="col-lg-2">
+                                            <input type="text" name="txtPersentaseUBTHR" id="txtPersentaseUBTHR" class="form-control" onkeypress="return isNumberKeyAndDot(event)" value="<?php echo rtrim($persentase_ubthr); ?>" maxlength="5"/>
                                         </div>
-                                    </div>
-									<div class="form-group">
-                                        <label for="txtKodePetugas" class="control-label col-lg-4">Kode Petugas</label>
-                                        <div class="col-lg-4">
-                                            <input type="text" name="txtKodePetugas" id="txtKodePetugas" class="form-control" value="<?php echo $kd_petugas; ?>" maxlength="7"/>
-                                        </div>
+										<label for="txtPersentaseTHR" class="control-label">%</label>
+										<label for="txtPersentaseTHR" class="control-label">(Percent)</label>
                                     </div>
 									<input type="hidden" name="txtTanggalRecord" value="<?php echo $tgl_record; ?>" />
 									<input type="hidden" name="txtIdSetting" value="<?php echo $id_setting; ?>" />

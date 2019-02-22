@@ -20,7 +20,9 @@
 	        </div>
 	      </div>
 	      <br/>
-	      
+	      <?php
+			$this->load->view('PayrollManagement/V_alert');
+		  ?>
 	      <div class="row">
 	        <div class="col-lg-12">
 		        <div class="box box-primary box-solid">
@@ -30,7 +32,7 @@
                         <i class="icon-plus icon-2x"></i>
                       </button>
                     </a>
-                    <b>Set Tarif BBPJS</b>
+                    <b>Set Tarif BPJS</b>
 		          </div>
 		          <div class="box-body">
 
@@ -40,14 +42,13 @@
 		                  <tr>
 		                    <th style="text-align:center; width:30px">NO</th>
                             <th style='text-align:center'>ACTION</th>
-							<th>Batas Max JKN</th>
-							<th>JKN Tg Karyawan</th>
-							<th>JKN Tg Perusahaan</th>
-							<th>Batas Max JPN</th>
-							<th>JPN Tg Karyawan</th>
-							<th>JPN Tg Perusahaan</th>
-
-		                  </tr>
+							<th style='text-align:center'>Batas Max JKN</th>
+							<th style='text-align:center'>JKN Tg Karyawan</th>
+							<th style='text-align:center'>JKN Tg Perusahaan</th>
+							<th style='text-align:center'>Batas Max JPN</th>
+							<th style='text-align:center'>JPN Tg Karyawan</th>
+							<th style='text-align:center'>JPN Tg Perusahaan</th>
+						</tr>
 		                </thead>
 		                <tbody>
 							<?php $no = 1; foreach($masterParamBpjs_data as $row) { ?>
@@ -58,12 +59,12 @@
                               	<a href="<?php echo base_url('PayrollManagement/MasterParamBpjs/update/'.$row->id_setting.''); ?>" class="btn btn-xs btn-warning" data-toggle="tooltip" data-placement="bottom" title="Edit Data"><span class="fa fa-pencil-square-o"></span></a>
                               	<a href="<?php echo base_url('PayrollManagement/MasterParamBpjs/delete/'.$row->id_setting.''); ?>" class="btn btn-xs btn-danger" data-toggle="tooltip" data-placement="bottom" title="Hapus Data" onclick="return confirm('Are you sure you want to delete this item?');"><span class="fa fa-times"></span></a>
                               </td>
-							<td><?php echo $row->batas_max_jkn ?></td>
-							<td><?php echo $row->jkn_tg_kary ?></td>
-							<td><?php echo $row->jkn_tg_prshn ?></td>
-							<td><?php echo $row->batas_max_jpn ?></td>
-							<td><?php echo $row->jpn_tg_kary ?></td>
-							<td><?php echo $row->jpn_tg_prshn ?></td>
+							<td align='right'><?php echo number_format((int)$row->batas_max_jkn) ?></td>
+							<td align='center'><?php echo $row->jkn_tg_kary ?> %</td>
+							<td align='center'><?php echo $row->jkn_tg_prshn ?> %</td>
+							<td align='right'><?php echo number_format((int)$row->batas_max_jpn) ?></td>
+							<td align='center'><?php echo $row->jpn_tg_kary ?> %</td>
+							<td align='center'><?php echo $row->jpn_tg_prshn ?> %</td>
 
 							</tr>
 							<?php } ?>

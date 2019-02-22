@@ -40,13 +40,13 @@
 									<div class="form-group">
                                         <label for="txtIdKantorAsalNew" class="control-label col-lg-4">ID Kantor Asal</label>
                                         <div class="col-lg-4">
-                                            <input type="text" placeholder="Kantor Asal" name="txtIdKantorAsalNew" id="txtIdKantorAsalNew" class="form-control" value="<?php echo $id_kantor_asal; ?>" maxlength="2" />
+                                            <input type="text" placeholder="Kantor Asal" name="txtIdKantorAsalNew" id="txtIdKantorAsalNew" class="form-control  text-uppercase" value="<?php echo $id_kantor_asal; ?>" maxlength="2" />
                                         </div>
                                     </div>
 									<div class="form-group">
                                         <label for="txtKantorAsal" class="control-label col-lg-4">Kantor Asal</label>
                                         <div class="col-lg-4">
-                                            <input type="text" placeholder="Kantor Asal" name="txtKantorAsal" id="txtKantorAsal" class="form-control" value="<?php echo $kantor_asal; ?>" maxlength="50"/>
+                                            <input type="text" placeholder="Kantor Asal" name="txtKantorAsal" id="txtKantorAsal" class="form-control  text-uppercase" value="<?php echo $kantor_asal; ?>" maxlength="50"/>
                                         </div>
                                     </div>
 									<input type="hidden" name="txtIdKantorAsal" value="<?php echo $id_kantor_asal; ?>" />

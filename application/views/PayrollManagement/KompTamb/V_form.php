@@ -39,33 +39,39 @@
                                 <div class="row">
 									<div class="form-group">
                                             <label for="txtPeriode" class="control-label col-lg-4">Periode</label>
-                                            <div class="col-lg-4">
-                                                <input type="text" placeholder="Periode" name="txtPeriode" id="txtPeriode" class="form-control" value="<?php echo $periode; ?>"/>
+                                            <div class="col-lg-2">
+                                                <input type="text" placeholder="Periode" name="txtPeriode" id="txtPeriodeHitung" class="form-control" value="<?php echo $periode; ?>"/>
                                             </div>
                                     </div>
 									<div class="form-group">
 	                                            <label for="cmbNoind" class="control-label col-lg-4">Noind</label>
 	                                            <div class="col-lg-4">
-	                                                <select id="cmbNoind" name="cmbNoind" class="select2" data-placeholder="Choose an option"><option value=""></option>
-                                                        <?php
-                                                        foreach ($pr_master_pekerja_data as $row) {
-                                                            echo '<option value="'.$row->noind.'">'.$row->noind.' ( '.$row->nama.' ) </option>';
-                                                        }
-                                                        ?></select>
+													 <select style="width:100%" id="cmbNoind" name="txtNoind" class="select2-getNoind" data-placeholder="Choose an option" onchange="getMaxHutang($(this).val())">
+														<option value="<?php echo $noind ?>"><?php echo $noind ?></option>
+													</select>
 	                                            </div>
 	                                        </div>
 									<div class="form-group">
                                             <label for="txtTambahan" class="control-label col-lg-4">Tambahan</label>
                                             <div class="col-lg-4">
-                                                <input type="text" placeholder="Tambahan" name="txtTambahan" id="txtTambahan" class="form-control" value="<?php echo $tambahan; ?>"/>
+                                                <input type="text" placeholder="Tambahan" name="txtTambahan" id="txtTambahan" class="form-control number" value="<?php echo $tambahan; ?>"/>
                                             </div>
                                     </div>
 									<div class="form-group">
 	                                            <label for="cmbStat" class="control-label col-lg-4">Status Kena Pajak</label>
-	                                            <div class="col-lg-4">
-	                                                <select id="cmbStat" name="cmbStat" class="select2" data-placeholder="Choose an option"><option value=""></option>
-                                                            <option value="KP">Kena Pajak</option><option value=""></option>
-                                                            <option value="TKP">Tidak Kena Pajak</option></select>
+	                                            <div class="col-lg-2">
+	                                                <select id="cmbStat" name="cmbStat" class="form-control select2" data-placeholder="Choose an option"><option value="" style="width:100%;"></option>
+                                                            <?php
+																if($stat == "KP"){
+																	$kena = "selected";
+																	$tidak_kena = "";
+																}else{
+																	$kena = "";
+																	$tidak_kena = "selected";
+																}
+															?>
+															<option value="KP" <?php echo $kena; ?>>Kena Pajak</option>
+                                                            <option value="TKP"  <?php echo $tidak_kena; ?>>Tidak Kena Pajak</option></select>
 	                                            </div>
 	                                        </div>
 									<div class="form-group">

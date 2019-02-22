@@ -21,8 +21,8 @@ class C_RiwayatSetAsuransi extends CI_Controller
         $this->checkSession();
         $user_id = $this->session->userid;
         
-        $data['Menu'] = 'Payroll Management';
-        $data['SubMenuOne'] = '';
+        $data['Menu'] = 'Set Parameter';
+        $data['SubMenuOne'] = 'Set Penerima Asuransi';
         $data['SubMenuTwo'] = '';
 
         $data['UserMenu'] = $this->M_user->getUserMenu($user_id,$this->session->responsibility_id);
@@ -35,6 +35,11 @@ class C_RiwayatSetAsuransi extends CI_Controller
         $this->load->view('V_Sidemenu',$data);
         $this->load->view('PayrollManagement/RiwayatSetAsuransi/V_index', $data);
         $this->load->view('V_Footer',$data);
+		$this->session->unset_userdata('success_import');
+		$this->session->unset_userdata('success_delete');
+		$this->session->unset_userdata('success_update');
+		$this->session->unset_userdata('success_insert');
+		$this->session->unset_userdata('not_found');
     }
 
 	public function read($id)
@@ -45,8 +50,8 @@ class C_RiwayatSetAsuransi extends CI_Controller
         $row = $this->M_riwayatsetasuransi->get_by_id($id);
         if ($row) {
             $data = array(
-            	'Menu' => 'Payroll Management',
-            	'SubMenuOne' => '',
+            	'Menu' => 'Set Parameter',
+            	'SubMenuOne' => 'Set Penerima Asuransi',
             	'SubMenuTwo' => '',
             	'UserMenu' => $this->M_user->getUserMenu($user_id,$this->session->responsibility_id),
             	'UserSubMenuOne' => $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id),
@@ -75,6 +80,10 @@ class C_RiwayatSetAsuransi extends CI_Controller
         }
         else {
             $this->session->set_flashdata('message', 'Record Not Found');
+			$ses=array(
+					 "not_found" => 1
+				);
+			$this->session->set_userdata($ses);
             redirect(site_url('PayrollManagement/RiwayatSetAsuransi'));
         }
     }
@@ -86,8 +95,8 @@ class C_RiwayatSetAsuransi extends CI_Controller
         $user_id = $this->session->userid;
 
         $data = array(
-            'Menu' => 'Payroll Management',
-            'SubMenuOne' => '',
+            'Menu' => 'Set Parameter',
+            'SubMenuOne' => 'Set Penerima Asuransi',
             'SubMenuTwo' => '',
             'UserMenu' => $this->M_user->getUserMenu($user_id,$this->session->responsibility_id),
             'UserSubMenuOne' => $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id),
@@ -123,7 +132,7 @@ class C_RiwayatSetAsuransi extends CI_Controller
         
             $data = array(
 				'tgl_berlaku' => $this->input->post('txtTglBerlaku',TRUE),
-				'tgl_tberlaku' => $this->input->post('txtTglTberlaku',TRUE),
+				'tgl_tberlaku' => '9999-12-31',
 				'kd_status_kerja' => $this->input->post('cmbKdStatusKerja',TRUE),
 				'jkk' => $this->input->post('txtJkk',TRUE),
 				'jkm' => $this->input->post('txtJkm',TRUE),
@@ -133,14 +142,38 @@ class C_RiwayatSetAsuransi extends CI_Controller
 				'jkn_prshn' => $this->input->post('txtJknPrshn',TRUE),
 				'jpn_kary' => $this->input->post('txtJpnKary',TRUE),
 				'jpn_prshn' => $this->input->post('txtJpnPrshn',TRUE),
-				'kd_petugas' => $this->input->post('txtKdPetugas',TRUE),
-				'tgl_rec' => $this->input->post('txtTglRec',TRUE),
+				'kd_petugas' => $this->session->userdata('userid'),
+				'tgl_rec' => date('Y-m-d H:i:s'),
+			);
+			
+			$data_riwayat = array(
+				'tgl_berlaku' => $this->input->post('txtTglBerlaku',TRUE),
+				'jkk' => $this->input->post('txtJkk',TRUE),
+				'jkm' => $this->input->post('txtJkm',TRUE),
+				'jht_kary' => $this->input->post('txtJhtKary',TRUE),
+				'jht_prshn' => $this->input->post('txtJhtPrshn',TRUE),
+				'jkn_kary' => $this->input->post('txtJknKary',TRUE),
+				'jkn_prshn' => $this->input->post('txtJknPrshn',TRUE),
+				'jpn_kary' => $this->input->post('txtJpnKary',TRUE),
+				'jpn_prshn' => $this->input->post('txtJpnPrshn',TRUE),
+				'kd_petugas' => $this->session->userdata('userid'),
+				'tgl_rec' => date('Y-m-d H:i:s'),
 			);
 
-            $this->M_riwayatsetasuransi->insert($data);
+			$check = $this->M_riwayatsetasuransi->check_riwayat($this->input->post('cmbKdStatusKerja',TRUE),'9999-12-31');
+			if($check){
+				$this->M_riwayatsetasuransi->update_riwayat($this->input->post('cmbKdStatusKerja',TRUE),'9999-12-31',$data_riwayat);
+				echo "update";
+			}else{
+				echo "insert";
+				$this->M_riwayatsetasuransi->insert($data);
+            }
             $this->session->set_flashdata('message', 'Create Record Success');
+			$ses=array(
+					 "success_insert" => 1
+				);
+			$this->session->set_userdata($ses);
             redirect(site_url('PayrollManagement/RiwayatSetAsuransi'));
-        
     }
 
     public function update($id)
@@ -153,8 +186,8 @@ class C_RiwayatSetAsuransi extends CI_Controller
 
         if ($row) {
             $data = array(
-                'Menu' => 'Payroll Management',
-                'SubMenuOne' => '',
+                'Menu' => 'Set Parameter',
+                'SubMenuOne' => 'Set Penerima Asuransi',
                 'SubMenuTwo' => '',
                 'UserMenu' => $this->M_user->getUserMenu($user_id,$this->session->responsibility_id),
                 'UserSubMenuOne' => $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id),
@@ -182,6 +215,10 @@ class C_RiwayatSetAsuransi extends CI_Controller
             $this->load->view('V_Footer',$data);
         } else {
             $this->session->set_flashdata('message', 'Record Not Found');
+			$ses=array(
+					 "success_update" => 1
+				);
+			$this->session->set_userdata($ses);
             redirect(site_url('PayrollManagement/RiwayatSetAsuransi'));
         }
     }
@@ -193,7 +230,7 @@ class C_RiwayatSetAsuransi extends CI_Controller
         
             $data = array(
 				'tgl_berlaku' => $this->input->post('txtTglBerlaku',TRUE),
-				'tgl_tberlaku' => $this->input->post('txtTglTberlaku',TRUE),
+				'tgl_tberlaku' => '9999-12-31',
 				'kd_status_kerja' => $this->input->post('cmbKdStatusKerja',TRUE),
 				'jkk' => $this->input->post('txtJkk',TRUE),
 				'jkm' => $this->input->post('txtJkm',TRUE),
@@ -203,12 +240,16 @@ class C_RiwayatSetAsuransi extends CI_Controller
 				'jkn_prshn' => $this->input->post('txtJknPrshn',TRUE),
 				'jpn_kary' => $this->input->post('txtJpnKary',TRUE),
 				'jpn_prshn' => $this->input->post('txtJpnPrshn',TRUE),
-				'kd_petugas' => $this->input->post('txtKdPetugas',TRUE),
-				'tgl_rec' => $this->input->post('txtTglRec',TRUE),
+				'kd_petugas' => $this->session->userdata('userid'),
+				'tgl_rec' => date('Y-m-d H:i:s'),
 			);
 
             $this->M_riwayatsetasuransi->update($this->input->post('txtIdSetAsuransi', TRUE), $data);
             $this->session->set_flashdata('message', 'Update Record Success');
+			$ses=array(
+					 "success_update" => 1
+				);
+			$this->session->set_userdata($ses);
             redirect(site_url('PayrollManagement/RiwayatSetAsuransi'));
         
     }
@@ -220,9 +261,17 @@ class C_RiwayatSetAsuransi extends CI_Controller
         if ($row) {
             $this->M_riwayatsetasuransi->delete($id);
             $this->session->set_flashdata('message', 'Delete Record Success');
+			$ses=array(
+					 "success_delete" => 1
+				);
+			$this->session->set_userdata($ses);
             redirect(site_url('PayrollManagement/RiwayatSetAsuransi'));
         } else {
             $this->session->set_flashdata('message', 'Record Not Found');
+			$ses=array(
+					 "not_found" => 1
+				);
+			$this->session->set_userdata($ses);
             redirect(site_url('PayrollManagement/RiwayatSetAsuransi'));
         }
     }

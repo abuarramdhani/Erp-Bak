@@ -12,10 +12,11 @@ class M_masterstatuskerja extends CI_Model
         parent::__construct();
         $this->load->database();
     }
-
+	
     // get all data
     function get_all()
     {
+		$this->db->order_by('kd_status_kerja','asc');
     	return $this->db->get($this->table)->result();
     }
 

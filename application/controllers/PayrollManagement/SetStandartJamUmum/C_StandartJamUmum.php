@@ -21,8 +21,8 @@ class C_StandartJamUmum extends CI_Controller
         $this->checkSession();
         $user_id = $this->session->userid;
         
-        $data['Menu'] = 'Payroll Management';
-        $data['SubMenuOne'] = '';
+        $data['Menu'] = 'Set Parameter';
+        $data['SubMenuOne'] = 'Set Standart Jam Umum';
         $data['SubMenuTwo'] = '';
 
         $data['UserMenu'] = $this->M_user->getUserMenu($user_id,$this->session->responsibility_id);
@@ -35,6 +35,11 @@ class C_StandartJamUmum extends CI_Controller
         $this->load->view('V_Sidemenu',$data);
         $this->load->view('PayrollManagement/StandartJamUmum/V_index', $data);
         $this->load->view('V_Footer',$data);
+		$this->session->unset_userdata('success_import');
+		$this->session->unset_userdata('success_delete');
+		$this->session->unset_userdata('success_update');
+		$this->session->unset_userdata('success_insert');
+		$this->session->unset_userdata('not_found');
     }
 
 	public function read($id)
@@ -45,8 +50,8 @@ class C_StandartJamUmum extends CI_Controller
         $row = $this->M_standartjamumum->get_by_id($id);
         if ($row) {
             $data = array(
-            	'Menu' => 'Payroll Management',
-            	'SubMenuOne' => '',
+            	'Menu' => 'Set Parameter',
+            	'SubMenuOne' => 'Set Standart Jam Umum',
             	'SubMenuTwo' => '',
             	'UserMenu' => $this->M_user->getUserMenu($user_id,$this->session->responsibility_id),
             	'UserSubMenuOne' => $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id),
@@ -63,6 +68,10 @@ class C_StandartJamUmum extends CI_Controller
         }
         else {
             $this->session->set_flashdata('message', 'Record Not Found');
+			$ses=array(
+					 "not_found" => 1
+				);
+			$this->session->set_userdata($ses);
             redirect(site_url('PayrollManagement/StandartJamUmum'));
         }
     }
@@ -74,8 +83,8 @@ class C_StandartJamUmum extends CI_Controller
         $user_id = $this->session->userid;
 
         $data = array(
-            'Menu' => 'Payroll Management',
-            'SubMenuOne' => '',
+            'Menu' => 'Set Parameter',
+            'SubMenuOne' => 'Set Standart Jam Umum',
             'SubMenuTwo' => '',
             'UserMenu' => $this->M_user->getUserMenu($user_id,$this->session->responsibility_id),
             'UserSubMenuOne' => $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id),
@@ -95,20 +104,16 @@ class C_StandartJamUmum extends CI_Controller
     {
         $this->formValidation();
 
-		//MASTER DELETE CURRENT
-		$md_where = array(
-			'kode_standart_jam' 	=> $this->input->post('txtKodeStandartJamNew',TRUE),
-		);
+	
 		
 		//MASTER INSERT NEW
         $data = array(
-			'kode_standart_jam' => $this->input->post('txtKodeStandartJamNew',TRUE),
+			'kode_standart_jam' => date('YmdHis'),
 			'jml_std_jam_per_bln' => $this->input->post('txtJmlStdJamPerBln',TRUE),
 		);
 		
 		//RIWAYAT CHANGE CURRENT
 		$ru_where = array(
-			'kode_standart_jam' 	=> $this->input->post('txtKodeStandartJamNew',TRUE),
 			'tgl_tberlaku' 			=> '9999-12-31',
 		);
 		$ru_data = array(
@@ -117,11 +122,11 @@ class C_StandartJamUmum extends CI_Controller
 		
 		//RIWAYAT INSERT NEW
 		$ri_data = array(
-			'kode_standart_jam'		=> $this->input->post('txtKodeStandartJamNew',TRUE),
+			'kode_standart_jam'		=> date('YmdHis'),
 			'jml_std_jam_per_bln'	=> $this->input->post('txtJmlStdJamPerBln',TRUE),
 			'tgl_berlaku' 			=> date('Y-m-d'),
 			'tgl_tberlaku' 			=> '9999-12-31',
-			'kd_petugas' 			=> '0000001',
+			'kd_petugas' 			=> $this->session->userdata('userid'),
 			'tgl_rec' 				=> date('Y-m-d H:i:s'),
 		);
 		
@@ -131,6 +136,10 @@ class C_StandartJamUmum extends CI_Controller
 		$this->M_standartjamumum->riwayat_insert($ri_data);
 
         $this->session->set_flashdata('message', 'Create Record Success');
+		$ses=array(
+					 "success_insert" => 1
+				);
+			$this->session->set_userdata($ses);
         redirect(site_url('PayrollManagement/StandartJamUmum'));
     }
 
@@ -144,8 +153,8 @@ class C_StandartJamUmum extends CI_Controller
 
         if ($row) {
             $data = array(
-                'Menu' => 'Payroll Management',
-                'SubMenuOne' => '',
+                'Menu' => 'Set Parameter',
+                'SubMenuOne' => 'Set Standart Jam Umum',
                 'SubMenuTwo' => '',
                 'UserMenu' => $this->M_user->getUserMenu($user_id,$this->session->responsibility_id),
                 'UserSubMenuOne' => $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id),
@@ -160,6 +169,10 @@ class C_StandartJamUmum extends CI_Controller
             $this->load->view('V_Footer',$data);
         } else {
             $this->session->set_flashdata('message', 'Record Not Found');
+			$ses=array(
+					 "not_found" => 1
+				);
+			$this->session->set_userdata($ses);
             redirect(site_url('PayrollManagement/StandartJamUmum'));
         }
     }
@@ -169,12 +182,15 @@ class C_StandartJamUmum extends CI_Controller
         $this->formValidation();
 
         $data = array(
-			'kode_standart_jam' => $this->input->post('txtKodeStandartJamNew',TRUE),
 			'jml_std_jam_per_bln' => $this->input->post('txtJmlStdJamPerBln',TRUE),
 		);
 
-        $this->M_standartjamumum->update($this->input->post('txtKodeStandartJam', TRUE), $data);
+        $this->M_standartjamumum->update($data);
         $this->session->set_flashdata('message', 'Update Record Success');
+		$ses=array(
+					 "success_update" => 1
+				);
+			$this->session->set_userdata($ses);
         redirect(site_url('PayrollManagement/StandartJamUmum'));
     }
 
@@ -185,9 +201,17 @@ class C_StandartJamUmum extends CI_Controller
         if ($row) {
             $this->M_standartjamumum->delete($id);
             $this->session->set_flashdata('message', 'Delete Record Success');
+			$ses=array(
+					 "success_delete" => 1
+				);
+			$this->session->set_userdata($ses);
             redirect(site_url('PayrollManagement/StandartJamUmum'));
         } else {
             $this->session->set_flashdata('message', 'Record Not Found');
+			$ses=array(
+					 "not_found" => 1
+				);
+			$this->session->set_userdata($ses);
             redirect(site_url('PayrollManagement/StandartJamUmum'));
         }
     }

@@ -15,6 +15,7 @@ class C_TransaksiKlaimSisaCuti extends CI_Controller
             $this->session->set_userdata('last_page', current_url());
             $this->session->set_userdata('Responsbility', 'some_value');
         }
+		$this->load->library('Encrypt');
     }
 
 	public function index()
@@ -22,8 +23,8 @@ class C_TransaksiKlaimSisaCuti extends CI_Controller
         $this->checkSession();
         $user_id = $this->session->userid;
         
-        $data['Menu'] = 'Payroll Management';
-        $data['SubMenuOne'] = '';
+        $data['Menu'] = 'Komponen Penggajian';
+        $data['SubMenuOne'] = 'Klaim Sisa Cuti';
         $data['SubMenuTwo'] = '';
 
         $data['UserMenu'] = $this->M_user->getUserMenu($user_id,$this->session->responsibility_id);
@@ -36,6 +37,11 @@ class C_TransaksiKlaimSisaCuti extends CI_Controller
         $this->load->view('V_Sidemenu',$data);
         $this->load->view('PayrollManagement/TransaksiKlaimSisaCuti/V_index', $data);
         $this->load->view('V_Footer',$data);
+		$this->session->unset_userdata('success_import');
+		$this->session->unset_userdata('success_delete');
+		$this->session->unset_userdata('success_update');
+		$this->session->unset_userdata('success_insert');
+		$this->session->unset_userdata('not_found');
     }
 
 	public function read($id)
@@ -46,8 +52,8 @@ class C_TransaksiKlaimSisaCuti extends CI_Controller
         $row = $this->M_transaksiklaimsisacuti->get_by_id($id);
         if ($row) {
             $data = array(
-            	'Menu' => 'Payroll Management',
-            	'SubMenuOne' => '',
+            	'Menu' => 'Komponen Penggajian',
+            	'SubMenuOne' => 'Klaim Sisa Cuti',
             	'SubMenuTwo' => '',
             	'UserMenu' => $this->M_user->getUserMenu($user_id,$this->session->responsibility_id),
             	'UserSubMenuOne' => $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id),
@@ -70,6 +76,10 @@ class C_TransaksiKlaimSisaCuti extends CI_Controller
         }
         else {
             $this->session->set_flashdata('message', 'Record Not Found');
+			$ses=array(
+					 "not_found" => 1
+				);
+			$this->session->set_userdata($ses);
             redirect(site_url('PayrollManagement/TransaksiKlaimSisaCuti'));
         }
     }
@@ -81,8 +91,8 @@ class C_TransaksiKlaimSisaCuti extends CI_Controller
         $user_id = $this->session->userid;
 
         $data = array(
-            'Menu' => 'Payroll Management',
-            'SubMenuOne' => '',
+            'Menu' => 'Komponen Penggajian',
+            'SubMenuOne' => 'Klaim Sisa Cuti',
             'SubMenuTwo' => '',
             'UserMenu' => $this->M_user->getUserMenu($user_id,$this->session->responsibility_id),
             'UserSubMenuOne' => $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id),
@@ -112,19 +122,24 @@ class C_TransaksiKlaimSisaCuti extends CI_Controller
 			'periode' => $this->input->post('txtPeriode',TRUE),
 			'sisa_cuti' => $this->input->post('txtSisaCuti',TRUE),
 			'jumlah_klaim' => $this->input->post('txtJumlahKlaim',TRUE),
-			'kode_petugas' => $this->input->post('txtKodePetugas',TRUE),
+			'kode_petugas' => $this->session->userdata('userid'),
 			'tgl_jam_record' => date('Y-m-d H:i:s'),
 			'kd_jns_transaksi' => $this->input->post('cmbKdJnsTransaksi',TRUE),
 		);
 
             $this->M_transaksiklaimsisacuti->insert($data);
             $this->session->set_flashdata('message', 'Create Record Success');
+			$ses=array(
+					 "success_insert" => 1
+				);
+			$this->session->set_userdata($ses);
             redirect(site_url('PayrollManagement/TransaksiKlaimSisaCuti'));
     }
 
     public function update($id)
     {
-
+		$plaintext_string=str_replace(array('-', '_', '~'), array('+', '/', '='), $id);
+		$id = $this->encrypt->decode($plaintext_string);
         $this->checkSession();
         $user_id = $this->session->userid;
 
@@ -132,8 +147,8 @@ class C_TransaksiKlaimSisaCuti extends CI_Controller
 
         if ($row) {
             $data = array(
-                'Menu' => 'Payroll Management',
-                'SubMenuOne' => '',
+                'Menu' => 'Komponen Penggajian',
+                'SubMenuOne' => 'Klaim Sisa Cuti',
                 'SubMenuTwo' => '',
                 'UserMenu' => $this->M_user->getUserMenu($user_id,$this->session->responsibility_id),
                 'UserSubMenuOne' => $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id),
@@ -155,6 +170,10 @@ class C_TransaksiKlaimSisaCuti extends CI_Controller
             $this->load->view('V_Footer',$data);
         } else {
             $this->session->set_flashdata('message', 'Record Not Found');
+			$ses=array(
+					 "not_found" => 1
+				);
+			$this->session->set_userdata($ses);
             redirect(site_url('PayrollManagement/TransaksiKlaimSisaCuti'));
         }
     }
@@ -162,11 +181,6 @@ class C_TransaksiKlaimSisaCuti extends CI_Controller
     public function saveUpdate()
     {
         $this->formValidation();
-
-        if ($this->form_validation->run() == FALSE) {
-            $this->update();
-        }
-        else{
             $data = array(
 				'noind' => $this->input->post('txtNoind',TRUE),
 				'periode' => $this->input->post('txtPeriode',TRUE),
@@ -179,20 +193,33 @@ class C_TransaksiKlaimSisaCuti extends CI_Controller
 
             $this->M_transaksiklaimsisacuti->update($this->input->post('txtIdCuti', TRUE), $data);
             $this->session->set_flashdata('message', 'Update Record Success');
+			$ses=array(
+					 "success_update" => 1
+				);
+			$this->session->set_userdata($ses);
             redirect(site_url('PayrollManagement/TransaksiKlaimSisaCuti'));
-        }
     }
 
     public function delete($id)
     {
+		$plaintext_string=str_replace(array('-', '_', '~'), array('+', '/', '='), $id);
+		$id = $this->encrypt->decode($plaintext_string);
         $row = $this->M_transaksiklaimsisacuti->get_by_id($id);
 
         if ($row) {
             $this->M_transaksiklaimsisacuti->delete($id);
             $this->session->set_flashdata('message', 'Delete Record Success');
+			$ses=array(
+					 "success_delete" => 1
+				);
+			$this->session->set_userdata($ses);
             redirect(site_url('PayrollManagement/TransaksiKlaimSisaCuti'));
         } else {
             $this->session->set_flashdata('message', 'Record Not Found');
+			$ses=array(
+					 "not_found" => 1
+				);
+			$this->session->set_userdata($ses);
             redirect(site_url('PayrollManagement/TransaksiKlaimSisaCuti'));
         }
     }
@@ -214,14 +241,58 @@ class C_TransaksiKlaimSisaCuti extends CI_Controller
                 $csv_array  = $this->csvimport->get_array($file_path);
 
                 foreach ($csv_array as $row) {
-                    
-                    $data = array(
-                        'noind' => $row['noind'],
-                        'periode' => $row['periode'],
-                        'sisa_cuti' => $row['sisa_cuti'],
-                    );
-                    $this->M_transaksiklaimsisacuti->insert($data);
+					$check = $this->M_transaksiklaimsisacuti->check($row['NOIND'],$row['PERIODE']);
+					if($check){
+						$data_where = array(
+							'noind' => $row['NOIND'],
+							'tgl_tberlaku' => '9999-12-31',
+						);
+
+						$getGp = $this->M_transaksiklaimsisacuti->getGajiPokok($data_where);
+						if(empty($getGp)){
+							$sisaKlaim = '-';
+						}else{
+							$sisaKlaim = round($row['SISA_CUTI'] * ($getGp/30),0);	
+						}
+						
+						$data_update = array(
+							'sisa_cuti' => $row['SISA_CUTI'],
+							'jumlah_klaim' => $sisaKlaim,
+							'kode_petugas' => $this->session->userdata('userid'),
+							'tgl_jam_record' => date('Y-m-d H:i:s'),
+							'kd_jns_transaksi' => '6',
+						);
+						$this->M_transaksiklaimsisacuti->update_import($row['NOIND'],$row['PERIODE'],$data_update);
+					}else{
+						$data_where = array(
+							'noind' => $row['NOIND'],
+							'tgl_tberlaku' => '9999-12-31',
+						);
+
+						$getGp = $this->M_transaksiklaimsisacuti->getGajiPokok($data_where);
+						if(empty($getGp)){
+							$sisaKlaim = '-';
+						}else{
+							$sisaKlaim = round($row['SISA_CUTI'] * ($getGp/30),0);	
+						}
+						
+						$data = array(
+							'noind' => $row['NOIND'],
+							'periode' => $row['PERIODE'],
+							'sisa_cuti' => $row['SISA_CUTI'],
+							'jumlah_klaim' => $sisaKlaim,
+							'kode_petugas' => $this->session->userdata('userid'),
+							'tgl_jam_record' => date('Y-m-d H:i:s'),
+							'kd_jns_transaksi' => '6',
+						);
+						$this->M_transaksiklaimsisacuti->insert($data);
+					}
                 }
+				$this->session->set_flashdata('message', 'Success Import Data');
+				$ses=array(
+						 "success_import" => 1
+					);
+				$this->session->set_userdata($ses);
                 unlink($file_path);
                 redirect(base_url().'PayrollManagement/TransaksiKlaimSisaCuti');
 
@@ -229,6 +300,22 @@ class C_TransaksiKlaimSisaCuti extends CI_Controller
                 $this->load->view('csvindex');
             }
         }
+    }
+	
+	public function getKlaimCuti(){
+        $data_where = array(
+            'noind' => $this->input->post('noind',TRUE),
+            'tgl_tberlaku' => '9999-12-31',
+        );
+
+        $getGp = $this->M_transaksiklaimsisacuti->getGajiPokok($data_where);
+		if(empty($getGp)){
+			$sisaKlaim = '-';
+		}else{
+			$sisaKlaim = round($this->input->post('cuti',TRUE) * ($getGp->gaji_pokok/30),0);
+		}
+        
+        echo $sisaKlaim;
     }
 
     public function checkSession(){

@@ -20,7 +20,9 @@
 	        </div>
 	      </div>
 	      <br/>
-	      
+	      <?php
+			$this->load->view('PayrollManagement/V_alert');
+		  ?>
 	      <div class="row">
 	        <div class="col-lg-12">
 		        <div class="box box-primary box-solid">
@@ -40,17 +42,17 @@
 		                  <tr>
 		                    <th style="text-align:center; width:30px">NO</th>
                             <th style='text-align:center'>ACTION</th>
-							<th>Jkk</th>
-							<th>Jht Karyawan</th>
-							<th>Jht Perusahaan</th>
-							<th>Jkm</th>
-							<th>Jpk Lajang</th>
-							<th>Jpk Nikah</th>
-							<th>Batas Jpk</th>
-
-		                  </tr>
-		                </thead>
-		                <tbody>
+							<th style='text-align:center'>Jkk</th>
+							<th style='text-align:center'>Jht Karyawan</th>
+							<th style='text-align:center'>Jht Perusahaan</th>
+							<th style='text-align:center'>Jkm</th>
+							<th style='text-align:center'>Jpk Karyawan</th>
+							<th style='text-align:center'>Jpk Perusahaan</th>
+							<th style='text-align:center'>Batas Umur Jpk</th>
+							<th style='text-align:center'>Batas Jpk</th>
+						</tr>
+		               </thead>
+		               <tbody>
 							<?php $no = 1; foreach($masterParamTarifJamsostek_data as $row) { ?>
 							<tr>
 							  <td align='center'><?php echo $no++;?></td>
@@ -59,15 +61,15 @@
                               	<a href="<?php echo base_url('PayrollManagement/MasterParamTarifJamsostek/update/'.$row->periode_jst.''); ?>" class="btn btn-xs btn-warning" data-toggle="tooltip" data-placement="bottom" title="Edit Data"><span class="fa fa-pencil-square-o"></span></a>
                               	<a href="<?php echo base_url('PayrollManagement/MasterParamTarifJamsostek/delete/'.$row->periode_jst.''); ?>" class="btn btn-xs btn-danger" data-toggle="tooltip" data-placement="bottom" title="Hapus Data" onclick="return confirm('Are you sure you want to delete this item?');"><span class="fa fa-times"></span></a>
                               </td>
-							<td><?php echo $row->jkk ?></td>
-							<td><?php echo $row->jht_karyawan ?></td>
-							<td><?php echo $row->jht_perusahaan ?></td>
-							<td><?php echo $row->jkm ?></td>
-							<td><?php echo $row->jpk_lajang ?></td>
-							<td><?php echo $row->jpk_nikah ?></td>
-							<td><?php echo $row->batas_jpk ?></td>
-
-							</tr>
+							<td align='center'><?php echo $row->jkk ?> %</td>
+							<td align='center'><?php echo $row->jht_karyawan ?> %</td>
+							<td align='center'><?php echo $row->jht_perusahaan ?> %</td>
+							<td align='center'><?php echo $row->jkm ?> %</td>
+							<td align='center'><?php echo $row->jpk_karyawan ?> %</td>
+							<td align='center'><?php echo $row->jpk_perusahaan ?> %</td>
+							<td align='center'><?php echo $row->batas_umur_jpk ?></td>
+							<td align='center'><?php echo $row->batas_jpk ?></td>
+						</tr>
 							<?php } ?>
 		                </tbody>                                      
 		              </table>

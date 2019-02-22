@@ -16,6 +16,7 @@ class M_lokasikerja extends CI_Model
     // get all data
     function get_all()
     {
+		$this->db->order_by('id_lokasi_kerja','asc');
     	return $this->db->get($this->table)->result();
     }
 

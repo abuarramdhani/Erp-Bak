@@ -5,7 +5,6 @@ class C_MasterParamPtkp extends CI_Controller
     function __construct()
     {
         parent::__construct();
-        $this->load->library('session');
         $this->load->helper('url');
         $this->load->model('SystemAdministration/MainMenu/M_user');
         $this->load->model('PayrollManagement/SetTarifPTKP/M_masterparamptkp');
@@ -21,8 +20,8 @@ class C_MasterParamPtkp extends CI_Controller
         $this->checkSession();
         $user_id = $this->session->userid;
         
-        $data['Menu'] = 'Payroll Management';
-        $data['SubMenuOne'] = '';
+        $data['Menu'] = 'Set Parameter';
+        $data['SubMenuOne'] = 'Set Tarif PTKP';
         $data['SubMenuTwo'] = '';
 
         $data['UserMenu'] = $this->M_user->getUserMenu($user_id,$this->session->responsibility_id);
@@ -35,6 +34,11 @@ class C_MasterParamPtkp extends CI_Controller
         $this->load->view('V_Sidemenu',$data);
         $this->load->view('PayrollManagement/MasterParamPtkp/V_index', $data);
         $this->load->view('V_Footer',$data);
+		$this->session->unset_userdata('success_import');
+		$this->session->unset_userdata('success_delete');
+		$this->session->unset_userdata('success_update');
+		$this->session->unset_userdata('success_insert');
+		$this->session->unset_userdata('not_found');
     }
 
 	public function read($id)
@@ -45,8 +49,8 @@ class C_MasterParamPtkp extends CI_Controller
         $row = $this->M_masterparamptkp->get_by_id($id);
         if ($row) {
             $data = array(
-            	'Menu' => 'Payroll Management',
-            	'SubMenuOne' => '',
+            	'Menu' => 'Set Parameter',
+            	'SubMenuOne' => 'Set Tarif PTKP',
             	'SubMenuTwo' => '',
             	'UserMenu' => $this->M_user->getUserMenu($user_id,$this->session->responsibility_id),
             	'UserSubMenuOne' => $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id),
@@ -65,6 +69,10 @@ class C_MasterParamPtkp extends CI_Controller
         }
         else {
             $this->session->set_flashdata('message', 'Record Not Found');
+			$ses=array(
+					 "not_found" => 1
+				);
+			$this->session->set_userdata($ses);
             redirect(site_url('PayrollManagement/MasterParamPtkp'));
         }
     }
@@ -76,14 +84,14 @@ class C_MasterParamPtkp extends CI_Controller
         $user_id = $this->session->userid;
 
         $data = array(
-            'Menu' => 'Payroll Management',
-            'SubMenuOne' => '',
+            'Menu' => 'Set Parameter',
+            'SubMenuOne' => 'Set Tarif PTKP',
             'SubMenuTwo' => '',
             'UserMenu' => $this->M_user->getUserMenu($user_id,$this->session->responsibility_id),
             'UserSubMenuOne' => $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id),
             'UserSubMenuTwo' => $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id),
             'action' => site_url('PayrollManagement/MasterParamPtkp/save'),
-				'id_setting' => set_value(''),
+			'id_setting' => set_value(''),
 			'periode' => set_value('periode'),
 			'status_pajak' => set_value('status_pajak'),
 			'ptkp_per_tahun' => set_value('ptkp_per_tahun'),
@@ -98,48 +106,50 @@ class C_MasterParamPtkp extends CI_Controller
     public function save()
     {
         $this->formValidation();
-		$status_pajak 	= $this->input->post('txtStatusPajak');
-		$periode 		= $this->input->post('txtPeriode');
-		
+		$status_pajak 	= strtoupper($this->input->post('txtStatusPajak'));
+		$periode 		= str_replace('-','',$this->input->post('txtTglBerlakuPtkp'));
 		//MASTER DELETE CURRENT
 		$md_where = array(
-			'status_pajak' => $this->input->post('txtStatusPajak',TRUE),
+			'status_pajak' => strtoupper($this->input->post('txtStatusPajak',TRUE)),
 		);
 		
 		//MASTER INSERT NEW
 		$data = array(
-			'periode' => $this->input->post('txtPeriode',TRUE),
-			'status_pajak' => $this->input->post('txtStatusPajak',TRUE),
-			'ptkp_per_tahun' => $this->input->post('txtPtkpPerTahun',TRUE),
+			'periode' => $this->input->post('txtTglBerlakuPtkp',TRUE),
+			'status_pajak' => strtoupper($this->input->post('txtStatusPajak',TRUE)),
+			'ptkp_per_tahun' => str_replace(',','',$this->input->post('txtPtkpPerTahun',TRUE)),
 		);
 		
 		//RIWAYAT CHANGE CURRENT
 		$ru_where = array(
-			'status_pajak' => $this->input->post('txtStatusPajak',TRUE),
+			'status_pajak' => strtoupper($this->input->post('txtStatusPajak',TRUE)),
 			'tgl_tberlaku' => '9999-12-31',
 		);
 		$ru_data = array(
 			'tgl_tberlaku' 	=> date('Y-m-d'),
 		);
-		
+		$time	= date('His');
 		//RIWAYAT INSERT NEW
 		$ri_data = array(
-			'id_riwayat_ptkp'		=> $status_pajak.$periode,
-			'periode'				=> $this->input->post('txtPeriode',TRUE),
-			'status_pajak' 			=> $this->input->post('txtStatusPajak',TRUE),
-			'ptkp_per_tahun' 		=> $this->input->post('txtPtkpPerTahun',TRUE),
+			'id_riwayat_ptkp'		=> $status_pajak.$periode.$time,
+			'periode'				=> $this->input->post('txtTglBerlakuPtkp',TRUE),
+			'status_pajak' 			=> strtoupper($this->input->post('txtStatusPajak',TRUE)),
+			'ptkp_per_tahun' 		=> str_replace(',','',$this->input->post('txtPtkpPerTahun',TRUE)),
 			'tgl_berlaku' 			=> date('Y-m-d'),
 			'tgl_tberlaku' 			=> '9999-12-31',
-			'kode_petugas' 			=> '0000001',
+			'kode_petugas' 			=> $this->session->userdata('userid'),
 			'tgl_record' 			=> date('Y-m-d H:i:s'),
 		);
-		
 		$this->M_masterparamptkp->master_delete($md_where);
 		$this->M_masterparamptkp->insert($data);
 		$this->M_masterparamptkp->riwayat_update($ru_where,$ru_data);
 		$this->M_masterparamptkp->riwayat_insert($ri_data);
         
 		$this->session->set_flashdata('message', 'Create Record Success');
+		$ses=array(
+			 "success_insert" => 1
+		);
+			$this->session->set_userdata($ses);
         redirect(site_url('PayrollManagement/MasterParamPtkp'));
 
     }
@@ -154,8 +164,8 @@ class C_MasterParamPtkp extends CI_Controller
 
         if ($row) {
             $data = array(
-                'Menu' => 'Payroll Management',
-                'SubMenuOne' => '',
+                'Menu' => 'Set Parameter',
+                'SubMenuOne' => 'Set Tarif PTKP',
                 'SubMenuTwo' => '',
                 'UserMenu' => $this->M_user->getUserMenu($user_id,$this->session->responsibility_id),
                 'UserSubMenuOne' => $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id),
@@ -172,6 +182,10 @@ class C_MasterParamPtkp extends CI_Controller
             $this->load->view('V_Footer',$data);
         } else {
             $this->session->set_flashdata('message', 'Record Not Found');
+			$ses=array(
+					 "not_found" => 1
+				);
+			$this->session->set_userdata($ses);
             redirect(site_url('PayrollManagement/MasterParamPtkp'));
         }
     }
@@ -185,13 +199,27 @@ class C_MasterParamPtkp extends CI_Controller
         }
         else{
             $data = array(
-				'periode' => $this->input->post('txtPeriode',TRUE),
-				'status_pajak' => $this->input->post('txtStatusPajak',TRUE),
-				'ptkp_per_tahun' => $this->input->post('txtPtkpPerTahun',TRUE),
+				'periode' => $this->input->post('txtTglBerlakuPtkp',TRUE),
+				'status_pajak' => strtoupper($this->input->post('txtStatusPajak',TRUE)),
+				'ptkp_per_tahun' => str_replace(',','',$this->input->post('txtPtkpPerTahun',TRUE)),
+			);
+			
+			$data_riwayat = array(
+				'periode' => $this->input->post('txtTglBerlakuPtkp',TRUE),
+				'tgl_berlaku' => date('Y-m-d'),
+				'ptkp_per_tahun' => str_replace(',','',$this->input->post('txtPtkpPerTahun',TRUE)),
+				'tgl_berlaku' 			=> date('Y-m-d'),
+				'kode_petugas' 			=> $this->session->userdata('userid'),
+				'tgl_record' 			=> date('Y-m-d H:i:s'),
 			);
 
             $this->M_masterparamptkp->update($this->input->post('txtIdSetting', TRUE), $data);
+            $this->M_masterparamptkp->update_riwayat(strtoupper($this->input->post('txtStatusPajak',TRUE)), $data_riwayat);
             $this->session->set_flashdata('message', 'Update Record Success');
+			$ses=array(
+					 "success_update" => 1
+				);
+			$this->session->set_userdata($ses);
             redirect(site_url('PayrollManagement/MasterParamPtkp'));
         }
     }
@@ -199,13 +227,20 @@ class C_MasterParamPtkp extends CI_Controller
     public function delete($id)
     {
         $row = $this->M_masterparamptkp->get_by_id($id);
-
         if ($row) {
             $this->M_masterparamptkp->delete($id);
             $this->session->set_flashdata('message', 'Delete Record Success');
+			$ses=array(
+					 "success_delete" => 1
+				);
+			$this->session->set_userdata($ses);
             redirect(site_url('PayrollManagement/MasterParamPtkp'));
         } else {
             $this->session->set_flashdata('message', 'Record Not Found');
+			$ses=array(
+					 "not_found" => 1
+				);
+			$this->session->set_userdata($ses);
             redirect(site_url('PayrollManagement/MasterParamPtkp'));
         }
     }

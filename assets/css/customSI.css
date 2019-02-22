@@ -1,0 +1,17 @@
+table tr td {
+	padding: 7px;
+}
+
+strong {
+	font-weight: 600;
+}
+
+.box-report table{
+	font-size: 11px;
+}
+
+
+.img-responsive{
+	height: auto !important; 
+	width: 226px !important;
+}

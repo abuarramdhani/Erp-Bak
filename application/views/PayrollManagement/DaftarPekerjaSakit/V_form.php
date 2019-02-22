@@ -38,20 +38,22 @@
                                 ?>
                                 <div class="row">
 									<div class="form-group">
-	                                    <label for="txtTanggal" class="control-label col-lg-4">Tanggal</label>
+	                                    <label for="txtTglTransaksi" class="control-label col-lg-4">Tanggal Transaksi</label>
 	                                    <div class="col-lg-4">
-	                                        <input type="text" maxlength="10" placeholder="<?php echo date('Y-m-d')?>" name="txtTanggal" value="<?php echo $tanggal ?>" class="form-control" data-date-format="yyyy-mm-dd" id="txtTanggal" />
+											<input type="text" maxlength="10" placeholder="<?php echo date('d/m/Y')?>" name="txtTglTransaksi" value="<?php echo $tanggal; ?>" class="form-control datepicker-erp-pr" data-date-format="dd/mm/yyyy" id="txtTglTransaksi" />
 	                                    </div>
 	                                </div>
 									<div class="form-group">
                                         <label for="txtNoind" class="control-label col-lg-4">No induk</label>
                                         <div class="col-lg-4">
-                                            <input type="text" placeholder="Noind" name="txtNoind" id="txtNoind" class="form-control" value="<?php echo $noind; ?>" onkeypress="return isNumberKey(event)" maxlength="7"/>
+                                             <select style="width:100%" id="cmbNoind" name="txtNoind" class="select2-getNoind" data-placeholder="Choose an option" onchange="getMaxHutang($(this).val())">
+													<option value="<?php echo $noind ?>"><?php echo $noind ?></option>
+												</select>
                                         </div>
                                     </div>
 									<div class="form-group">
                                         <label for="txtBulanSakit" class="control-label col-lg-4">Bulan Sakit</label>
-                                        <div class="col-lg-4">
+                                        <div class="col-lg-2">
                                             <input type="text" placeholder="Bulan Sakit" name="txtBulanSakit" id="txtBulanSakit" class="form-control" value="<?php echo $bulan_sakit; ?>" onkeypress="return isNumberKey(event)" maxlength="2"/>
                                         </div>
                                     </div>

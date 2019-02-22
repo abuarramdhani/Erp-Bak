@@ -38,28 +38,23 @@
                                 ?>
                                 <div class="row">
 									<div class="form-group">
-                                            <label for="txtNoHutangNew" class="control-label col-lg-4">Nomor Hutang</label>
-                                            <div class="col-lg-4">
-                                                <input type="text" placeholder="Nomor Hutang" name="txtNoHutangNew" id="txtNoHutangNew" class="form-control" value="<?php echo $no_hutang; ?>" onkeypress="return isNumberKey(event)" maxlength="11" />
-                                            </div>
-                                    </div>
-									<div class="form-group">
                                             <label for="txtNoind" class="control-label col-lg-4">No Induk</label>
                                             <div class="col-lg-4">
-                                                <select style="width:100%" id="cmbNoind" name="txtNoind" class="select2" data-placeholder="Choose an option" onchange="getMaxHutang($(this).val())"><option value=""></option>
+                                                <select style="width:100%" id="cmbNoind" name="txtNoind" class="select2-getNoind" data-placeholder="Choose an option" onchange="getMaxHutang($(this).val())" >
+													<option value="<?php echo $noind ?>"><?php echo $noind ?></option>
                                                 </select>
                                             </div>
                                     </div>
 									<div class="form-group">
 	                                            <label for="txtTglPengajuan" class="control-label col-lg-4">Tanggal Pengajuan</label>
 	                                            <div class="col-lg-4">
-	                                                <input type="text" maxlength="10" placeholder="<?php echo date('Y-m-d')?>" name="txtTglPengajuan" value="<?php echo $tgl_pengajuan ?>" class="form-control" data-date-format="yyyy-mm-dd" id="txtTglPengajuan" />
+	                                                <input type="text" maxlength="10" placeholder="<?php echo date('Y-m-d')?>" name="txtTglPengajuan" value="<?php echo $tgl_pengajuan ?>" class="form-control" data-date-format="yyyy-mm-dd" id="txtTglPengajuan" required />
 	                                            </div>
 	                                        </div>
 									<div class="form-group">
                                             <label for="txtTotalHutang" class="control-label col-lg-4">Total Hutang</label>
                                             <div class="col-lg-4">
-                                                <input type="number" placeholder="Total Hutang" name="txtTotalHutang" id="txtTotalHutang" class="form-control" value="<?php echo $total_hutang; ?>" onkeypress="return isNumberKey(event)" maxlength="10" />
+                                                <input type="text" placeholder="Total Hutang" name="txtTotalHutang" id="txtTotalHutang" class="form-control" value="<?php echo $total_hutang; ?>" onkeypress="return isNumberKey(event)" maxlength="10" required />
                                             </div>
                                             <div class="col-lg-3" style="padding-top: 0.5em; padding-left: 0">
                                                 <i id="max-hutang">* Max 2x Gaji Pokok ()</i>
@@ -67,9 +62,10 @@
                                     </div>
 									<div class="form-group">
                                             <label for="txtJmlCicilan" class="control-label col-lg-4">Jumlah Cicilan</label>
-                                            <div class="col-lg-4">
-                                                <input type="text" placeholder="Jml Cicilan" name="txtJmlCicilan" id="txtJmlCicilan" class="form-control" value="<?php echo $jml_cicilan; ?>" onkeypress="return isNumberKey(event)" maxlength="2" />
+                                            <div class="col-lg-2">
+                                                <input type="text" placeholder="Jml Cicilan" name="txtJmlCicilan" id="txtJmlCicilan" class="form-control" value="<?php echo $jml_cicilan; ?>" onkeypress="return isNumberKey(event)" maxlength="2" required />
                                             </div>
+											  <label for="txtJmlCicilan" class="control-label">Bulan</label>
                                     </div>
 									<div class="form-group">
 	                                            <label for="cmbStatusLunas" class="control-label col-lg-4">Status Lunas</label>
@@ -83,18 +79,6 @@
                                                         <option <?php echo $sdh ?> value="1">LUNAS</option></select>
 	                                            </div>
 	                                        </div>
-									<div class="form-group">
-                                            <label for="txtKodePetugas" class="control-label col-lg-4">Kode Petugas</label>
-                                            <div class="col-lg-4">
-                                                <input type="text" placeholder="Kode Petugas" name="txtKodePetugas" id="txtKodePetugas" class="form-control" value="<?php echo $kode_petugas; ?>"/>
-                                            </div>
-                                    </div>
-									<div class="form-group">
-	                                            <label for="txtTglRecord" class="control-label col-lg-4">Tanggal Record</label>
-	                                            <div class="col-lg-4">
-	                                                <input type="text" maxlength="10" placeholder="<?php echo date('Y-m-d')?>" name="txtTglRecord" value="<?php echo $tgl_record ?>" class="form-control" data-date-format="yyyy-mm-dd" id="txtTglRecord" />
-	                                            </div>
-	                                        </div>
 
 	    <input type="hidden" name="txtNoHutang" value="<?php echo $no_hutang; ?>" /> </div>
                                 
@@ -103,7 +87,7 @@
                                 <div class="row text-right">
                                     <a href="javascript:history.back(1)" class="btn btn-primary btn-lg btn-rect">Back</a>
                                     &nbsp;&nbsp;
-                                    <button type="submit" class="btn btn-primary btn-lg btn-rect">Save Data</button>
+                                    <button type="submit" class="btn btn-primary btn-lg btn-rect" id="save_hutang">Save Data</button>
                                 </div>
                             </div>
                         </div>

@@ -21,8 +21,8 @@ class C_MasterParamBpjs extends CI_Controller
         $this->checkSession();
         $user_id = $this->session->userid;
         
-        $data['Menu'] = 'Payroll Management';
-        $data['SubMenuOne'] = '';
+        $data['Menu'] = 'Set Parameter';
+        $data['SubMenuOne'] = 'Set Tarif BPJS';
         $data['SubMenuTwo'] = '';
 
         $data['UserMenu'] = $this->M_user->getUserMenu($user_id,$this->session->responsibility_id);
@@ -35,6 +35,11 @@ class C_MasterParamBpjs extends CI_Controller
         $this->load->view('V_Sidemenu',$data);
         $this->load->view('PayrollManagement/MasterParamBpjs/V_index', $data);
         $this->load->view('V_Footer',$data);
+		$this->session->unset_userdata('success_import');
+		$this->session->unset_userdata('success_delete');
+		$this->session->unset_userdata('success_update');
+		$this->session->unset_userdata('success_insert');
+		$this->session->unset_userdata('not_found');
     }
 
 	public function read($id)
@@ -45,8 +50,8 @@ class C_MasterParamBpjs extends CI_Controller
         $row = $this->M_masterparambpjs->get_by_id($id);
         if ($row) {
             $data = array(
-            	'Menu' => 'Payroll Management',
-            	'SubMenuOne' => '',
+            	'Menu' => 'Set Parameter',
+            	'SubMenuOne' => 'Set Tarif BPJS',
             	'SubMenuTwo' => '',
             	'UserMenu' => $this->M_user->getUserMenu($user_id,$this->session->responsibility_id),
             	'UserSubMenuOne' => $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id),
@@ -68,6 +73,10 @@ class C_MasterParamBpjs extends CI_Controller
         }
         else {
             $this->session->set_flashdata('message', 'Record Not Found');
+			$ses=array(
+					 "not_found" => 1
+				);
+			$this->session->set_userdata($ses);
             redirect(site_url('PayrollManagement/MasterParamBpjs'));
         }
     }
@@ -79,8 +88,8 @@ class C_MasterParamBpjs extends CI_Controller
         $user_id = $this->session->userid;
 
         $data = array(
-            'Menu' => 'Payroll Management',
-            'SubMenuOne' => '',
+            'Menu' => 'Set Parameter',
+            'SubMenuOne' => 'Set Tarif BPJS',
             'SubMenuTwo' => '',
             'UserMenu' => $this->M_user->getUserMenu($user_id,$this->session->responsibility_id),
             'UserSubMenuOne' => $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id),
@@ -104,14 +113,12 @@ class C_MasterParamBpjs extends CI_Controller
     public function save(){
         $this->formValidation();
 		
-		
-		
 		//MASTER INSERT NEW
 		$data = array(
-			'batas_max_jkn' => $this->input->post('txtBatasMaxJkn',TRUE),
+			'batas_max_jkn' => str_replace(',','',$this->input->post('txtBatasMaxJkn',TRUE)),
 			'jkn_tg_kary' => $this->input->post('txtJknTgKary',TRUE),
 			'jkn_tg_prshn' => $this->input->post('txtJknTgPrshn',TRUE),
-			'batas_max_jpn' => $this->input->post('txtBatasMaxJpn',TRUE),
+			'batas_max_jpn' => str_replace(',','',$this->input->post('txtBatasMaxJpn',TRUE)),
 			'jpn_tg_kary' => $this->input->post('txtJpnTgKary',TRUE),
 			'jpn_tg_prshn' => $this->input->post('txtJpnTgPrshn',TRUE),
 		);
@@ -128,13 +135,13 @@ class C_MasterParamBpjs extends CI_Controller
 		$ri_data = array(
 			'tgl_berlaku' 	=> date('Y-m-d'),
 			'tgl_tberlaku' 	=> '9999-12-31',
-			'batas_max_jkn' => $this->input->post('txtBatasMaxJkn',TRUE),
+			'batas_max_jkn' => str_replace(',','',$this->input->post('txtBatasMaxJkn',TRUE)),
 			'jkn_tg_kary' 	=> $this->input->post('txtJknTgKary',TRUE),
 			'jkn_tg_prshn' 	=> $this->input->post('txtJknTgPrshn',TRUE),
-			'batas_max_jpn' => $this->input->post('txtBatasMaxJpn',TRUE),
+			'batas_max_jpn' => str_replace(',','',$this->input->post('txtBatasMaxJpn',TRUE)),
 			'jpn_tg_kary' 	=> $this->input->post('txtJpnTgKary',TRUE),
 			'jpn_tg_prshn' 	=> $this->input->post('txtJpnTgPrshn',TRUE),
-			'kode_petugas' 	=> '0001225',
+			'kode_petugas' 	=> $this->session->userdata('userid'),
 			'tgl_record' 	=> date('Y-m-d H:i:s'),
 		);
 
@@ -144,6 +151,10 @@ class C_MasterParamBpjs extends CI_Controller
 		$this->M_masterparambpjs->riwayat_insert($ri_data);
 		
         $this->session->set_flashdata('message', 'Create Record Success');
+			$ses=array(
+					 "success_insert" => 1
+				);
+			$this->session->set_userdata($ses);
         redirect(site_url('PayrollManagement/MasterParamBpjs'));
 
     }
@@ -158,8 +169,8 @@ class C_MasterParamBpjs extends CI_Controller
 
         if ($row) {
             $data = array(
-                'Menu' => 'Payroll Management',
-                'SubMenuOne' => '',
+                'Menu' => 'Set Parameter',
+                'SubMenuOne' => 'Set Tarif BPJS',
                 'SubMenuTwo' => '',
                 'UserMenu' => $this->M_user->getUserMenu($user_id,$this->session->responsibility_id),
                 'UserSubMenuOne' => $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id),
@@ -179,6 +190,10 @@ class C_MasterParamBpjs extends CI_Controller
             $this->load->view('V_Footer',$data);
         } else {
             $this->session->set_flashdata('message', 'Record Not Found');
+			$ses=array(
+					 "not_found" => 1
+				);
+			$this->session->set_userdata($ses);
             redirect(site_url('PayrollManagement/MasterParamBpjs'));
         }
     }
@@ -192,16 +207,34 @@ class C_MasterParamBpjs extends CI_Controller
         }
         else{
             $data = array(
-				'batas_max_jkn' => $this->input->post('txtBatasMaxJkn',TRUE),
+				'batas_max_jkn' => str_replace(',','',$this->input->post('txtBatasMaxJkn',TRUE)),
 				'jkn_tg_kary' => $this->input->post('txtJknTgKary',TRUE),
 				'jkn_tg_prshn' => $this->input->post('txtJknTgPrshn',TRUE),
-				'batas_max_jpn' => $this->input->post('txtBatasMaxJpn',TRUE),
+				'batas_max_jpn' => str_replace(',','',$this->input->post('txtBatasMaxJpn',TRUE)),
 				'jpn_tg_kary' => $this->input->post('txtJpnTgKary',TRUE),
 				'jpn_tg_prshn' => $this->input->post('txtJpnTgPrshn',TRUE),
 			);
-
+		$ru_where = array(
+			'tgl_tberlaku' => '9999-12-31',
+		);
+		$ru_data = array(
+			'batas_max_jkn' => str_replace(',','',$this->input->post('txtBatasMaxJkn',TRUE)),
+			'jkn_tg_kary' => $this->input->post('txtJknTgKary',TRUE),
+			'jkn_tg_prshn' => $this->input->post('txtJknTgPrshn',TRUE),
+			'batas_max_jpn' => str_replace(',','',$this->input->post('txtBatasMaxJpn',TRUE)),
+			'jpn_tg_kary' => $this->input->post('txtJpnTgKary',TRUE),
+			'jpn_tg_prshn' => $this->input->post('txtJpnTgPrshn',TRUE),
+			'tgl_tberlaku' 	=> date('Y-m-d'),
+			'kode_petugas' 	=> $this->session->userdata('userid'),
+		);
+		
             $this->M_masterparambpjs->update($this->input->post('txtIdSetting', TRUE), $data);
+			$this->M_masterparambpjs->riwayat_update($ru_where,$ru_data);
             $this->session->set_flashdata('message', 'Update Record Success');
+			$ses=array(
+					 "success_update" => 1
+				);
+			$this->session->set_userdata($ses);
             redirect(site_url('PayrollManagement/MasterParamBpjs'));
         }
     }
@@ -213,9 +246,17 @@ class C_MasterParamBpjs extends CI_Controller
         if ($row) {
             $this->M_masterparambpjs->delete($id);
             $this->session->set_flashdata('message', 'Delete Record Success');
+			$ses=array(
+					 "success_delete" => 1
+				);
+			$this->session->set_userdata($ses);
             redirect(site_url('PayrollManagement/MasterParamBpjs'));
         } else {
             $this->session->set_flashdata('message', 'Record Not Found');
+			$ses=array(
+					 "not_found" => 1
+				);
+			$this->session->set_userdata($ses);
             redirect(site_url('PayrollManagement/MasterParamBpjs'));
         }
     }

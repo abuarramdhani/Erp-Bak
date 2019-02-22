@@ -40,38 +40,46 @@
 									<div class="form-group">
 	                                            <label for="txtBatasMaxJkn" class="control-label col-lg-4">Batas Max JKN</label>
 	                                            <div class="col-lg-4">
-	                                                <input type="text" placeholder="Batas Max JKN" name="txtBatasMaxJkn" id="txtBatasMaxJkn" class="form-control" value="<?php echo $batas_max_jkn ?>" maxlength="10" />
+	                                                <input type="text" placeholder="Batas Max JKN" name="txtBatasMaxJkn" id="txtBatasMaxJkn" class="form-control money" onkeypress="return isNumberKeyAndDot(event)" value="<?php echo rtrim($batas_max_jkn); ?>" maxlength="10" />
 	                                            </div>
 	                                        </div>
 									<div class="form-group">
                                             <label for="txtJknTgKary" class="control-label col-lg-4">JKN Tg Karyawan</label>
-                                            <div class="col-lg-4">
-                                                <input type="text" placeholder="Jkn Tg Kary" name="txtJknTgKary" id="txtJknTgKary" class="form-control" value="<?php echo $jkn_tg_kary; ?>" maxlength="5"/>
+                                            <div class="col-lg-2">
+                                                <input type="text" placeholder="Jkn Tg Kary" name="txtJknTgKary" id="txtJknTgKary" class="form-control" onkeypress="return isNumberKeyAndDot(event)" value="<?php echo rtrim($jkn_tg_kary); ?>" maxlength="5"/>
                                             </div>
+											<label for="txtJpnTgPrshn" class="control-label">%</label>
+											<label for="txtJpnTgPrshn" class="control-label">(Percent)</label>
                                     </div>
 									<div class="form-group">
                                             <label for="txtJknTgPrshn" class="control-label col-lg-4">JKN Tg Perusahaan</label>
-                                            <div class="col-lg-4">
-                                                <input type="text" placeholder="Jkn Tg Prshn" name="txtJknTgPrshn" id="txtJknTgPrshn" class="form-control" value="<?php echo $jkn_tg_prshn; ?>"  maxlength="5"/>
+                                            <div class="col-lg-2">
+                                                <input type="text" placeholder="Jkn Tg Prshn" name="txtJknTgPrshn" id="txtJknTgPrshn" class="form-control" onkeypress="return isNumberKeyAndDot(event)" value="<?php echo rtrim($jkn_tg_prshn); ?>"  maxlength="5"/>
                                             </div>
+											<label for="txtJpnTgPrshn" class="control-label">%</label>
+											<label for="txtJpnTgPrshn" class="control-label">(Percent)</label>
                                     </div>
 									<div class="form-group">
 	                                            <label for="txtBatasMaxJpn" class="control-label col-lg-4">Batas Max JPN</label>
 	                                            <div class="col-lg-4">
-	                                                <input type="text" placeholder="Batas Max JPN" name="txtBatasMaxJpn" id="txtBatasMaxJpn" class="form-control" value="<?php echo $batas_max_jpn ?>" maxlength="10"/>
+	                                                <input type="text" placeholder="Batas Max JPN" name="txtBatasMaxJpn" id="txtBatasMaxJpn" onkeypress="return isNumberKeyAndDot(event)" class="form-control money" value="<?php echo rtrim($batas_max_jpn); ?>" maxlength="10"/>
 	                                            </div>
 	                                        </div>
 									<div class="form-group">
                                             <label for="txtJpnTgKary" class="control-label col-lg-4">JPN Tg Karyawan</label>
-                                            <div class="col-lg-4">
-                                                <input type="text" placeholder="Jpn Tg Kary" name="txtJpnTgKary" id="txtJpnTgKary" class="form-control" value="<?php echo $jpn_tg_kary; ?>"  maxlength="5"/>
+                                            <div class="col-lg-2">
+                                                <input type="text" placeholder="Jpn Tg Kary" name="txtJpnTgKary" id="txtJpnTgKary" class="form-control" onkeypress="return isNumberKeyAndDot(event)" value="<?php echo rtrim($jpn_tg_kary); ?>"  maxlength="5"/>
                                             </div>
+											<label for="txtJpnTgPrshn" class="control-label">%</label>
+											<label for="txtJpnTgPrshn" class="control-label">(Percent)</label>
                                     </div>
 									<div class="form-group">
                                             <label for="txtJpnTgPrshn" class="control-label col-lg-4">JPN Tg Perusahaan</label>
-                                            <div class="col-lg-4">
-                                                <input type="text" placeholder="Jpn Tg Prshn" name="txtJpnTgPrshn" id="txtJpnTgPrshn" class="form-control" value="<?php echo $jpn_tg_prshn; ?>"  maxlength="5"/>
+                                            <div class="col-lg-2">
+                                                <input type="text" placeholder="Jpn Tg Prshn" name="txtJpnTgPrshn" id="txtJpnTgPrshn" class="form-control" onkeypress="return isNumberKeyAndDot(event)" value="<?php echo rtrim($jpn_tg_prshn); ?>"  maxlength="5"/>
                                             </div>
+											<label for="txtJpnTgPrshn" class="control-label">%</label>
+											<label for="txtJpnTgPrshn" class="control-label">(Percent)</label>
                                     </div>
 
 	    <input type="hidden" name="txtIdSetting" value="<?php echo $id_setting; ?>" /> </div>

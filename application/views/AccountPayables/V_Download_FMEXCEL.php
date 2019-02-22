@@ -6,7 +6,7 @@
 ?>
 
 <table>
-	<tr><th colspan="16"><h3><b>"FAKTUR MASUKAN"</b></h3></th></tr>
+	<tr><th colspan="17"><h3><b>"FAKTUR MASUKAN"</b></h3></th></tr>
 	<tr><td colspan="2">Diunduh pada : <?php echo date("d/m/Y")?></td></tr>
 	<tr><td></td></tr>
 </table>
@@ -30,6 +30,7 @@
 			<td align="center">IS CREDIT ABLE</td>
 			<td align="center">KETERANGAN</td>
 			<td align="center">STATUS</td>
+			<td align="center">NOMOR INVOICE</td>
 		</tr>
 		<?php
 			if(!(empty($FilteredFaktur))){
@@ -56,6 +57,7 @@
 			<td align="center"><?php echo $FF->IS_CREDITABLE_FLAG?></td>
 			<td align="center"><?php echo $FF->DESCRIPTION?></td>
 			<td align="center"><?php echo $FF->STATUS?></td>
+			<td align="center"><?php echo $FF->INVOICE_NUM?></td>
 		</tr>
 		<?php }}?>
 	</tbody>

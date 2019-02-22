@@ -1,34 +1,114 @@
 $(document).ready(function(){
-	
+				$('.cmdaterange').daterangepicker({
+				    "showDropdowns": true,
+				    "autoApply": true,
+				    "locale": {
+				        "format": "DD-MM-YYYY",
+				        "separator": " - ",
+				        "applyLabel": "OK",
+				        "cancelLabel": "Batal",
+				        "fromLabel": "Dari",
+				        "toLabel": "Hingga",
+				        "customRangeLabel": "Custom",
+				        "weekLabel": "W",
+				        "daysOfWeek": [
+				            "Mg",
+				            "Sn",
+				            "Sl",
+				            "Rb",
+				            "Km",
+				            "Jm",
+				            "Sa"
+				        ],
+				        "monthNames": [
+				            "Januari",
+				            "Februari",
+				            "Maret",
+				            "April",
+				            "Mei",
+				            "Juni",
+				            "Juli",
+				            "Agustus ",
+				            "September",
+				            "Oktober",
+				            "November",
+				            "Desember"
+				        ],
+				        "firstDay": 1
+				    }
+				}, function(start, end, label) {
+				  console.log("New date range selected: ' + start.format('DD-MM-YYYY H:i:s') + ' to ' + end.format('DD-MM-YYYY H:i:s') + ' (predefined range: ' + label + ')");
+				});
+				$('.cmsingledate').daterangepicker({
+				    "singleDatePicker": true,
+				    "showDropdowns": true,
+				    "autoApply": true,
+				    "locale": {
+				        "format": "DD-MM-YYYY",
+				        "separator": " - ",
+				        "applyLabel": "OK",
+				        "cancelLabel": "Batal",
+				        "fromLabel": "Dari",
+				        "toLabel": "Hingga",
+				        "customRangeLabel": "Custom",
+				        "weekLabel": "W",
+				        "daysOfWeek": [
+				            "Mg",
+				            "Sn",
+				            "Sl",
+				            "Rb",
+				            "Km",
+				            "Jm",
+				            "Sa"
+				        ],
+				        "monthNames": [
+				            "Januari",
+				            "Februari",
+				            "Maret",
+				            "April",
+				            "Mei",
+				            "Juni",
+				            "Juli",
+				            "Agustus ",
+				            "September",
+				            "Oktober",
+				            "November",
+				            "Desember"
+				        ],
+				        "firstDay": 1
+				    }
+				}, function(start, end, label) {
+				  console.log("New date range selected: ' + start.format('DD-MM-YYYY H:i:s') + ' to ' + end.format('DD-MM-YYYY H:i:s') + ' (predefined range: ' + label + ')");
+				});				
 	// DATE RANGE PICKER UNTUK 'RECEIPT DATE'
-	$('.singledate').daterangepicker({
-		"singleDatePicker": true,
-		"timePicker": false,
-		"timePicker24Hour": true,
-		"showDropdowns": false,
-		locale: {
-			format: 'YYYY-MM-DD'
-		},
-	});
-	if (typeof $('#receipt-date').val() !== 'undefined'){
-	var startDate = $('#receipt-date').val()
-	$(".singledate").data('daterangepicker').setStartDate(startDate);
-	$(".singledate").data('daterangepicker').setEndDate(startDate)};
+	// $('.singledate').daterangepicker({
+	// 	"singleDatePicker": true,
+	// 	"timePicker": false,
+	// 	"timePicker24Hour": true,
+	// 	"showDropdowns": false,
+	// 	locale: {
+	// 		format: 'YYYY-MM-DD'
+	// 	},
+	// });
+	// if (typeof $('#receipt-date').val() !== 'undefined'){
+	// var startDate = $('#receipt-date').val()
+	// $(".singledate").data('daterangepicker').setStartDate(startDate);
+	// $(".singledate").data('daterangepicker').setEndDate(startDate)};
 	
-	// DATE RANGE PICKER UNTUK 'ORDER DATE'
-	$('.doubledate').daterangepicker({
-		"timePicker": false,
-		"timePicker24Hour": true,
-		"showDropdowns": false,
-		locale: {
-			format: 'YYYY-MM-DD'
-		},
-	});
-	if (typeof $('#order-start-date').val() !== 'undefined'){
-	var startDate = $('#order-start-date').val()
-	var endDate = $('#order-end-date').val()
-	$(".doubledate").data('daterangepicker').setStartDate(startDate);
-	$(".doubledate").data('daterangepicker').setEndDate(endDate)};
+	// // DATE RANGE PICKER UNTUK 'ORDER DATE'
+	// $('.doubledate').daterangepicker({
+	// 	"timePicker": false,
+	// 	"timePicker24Hour": true,
+	// 	"showDropdowns": false,
+	// 	locale: {
+	// 		format: 'YYYY-MM-DD'
+	// 	},
+	// });
+	// if (typeof $('#order-start-date').val() !== 'undefined'){
+	// var startDate = $('#order-start-date').val()
+	// var endDate = $('#order-end-date').val()
+	// $(".doubledate").data('daterangepicker').setStartDate(startDate);
+	// $(".doubledate").data('daterangepicker').setEndDate(endDate)};
 	
 	$("#catering").change(cekpph);
 	$("#pphverify").click(cekpph);
@@ -52,36 +132,40 @@ $(document).ready(function(){
 	//MELAKUKAN KALKULASI NILAI AKHIR
 	$("#orderqty,#singleprice,#fine").keyup(checkncalc);
 	$("#orderqty,#singleprice,#fine").click(checkncalc);
-		$("#DelFine").click(checkncalc);
-		$("#ReCalculate").click(checkncalc);
-		$("#tbodyFineCatering input").keyup(checkncalc);
-		$("#tbodyFineCatering input").click(checkncalc);
-		$("#tbodyFineCatering select").change(checkncalc);
+	$("#DelFine").click(checkncalc);
+	$("#ReCalculate").click(checkncalc);
+	$("#tbodyFineCatering input").keyup(checkncalc);
+	$("#tbodyFineCatering input").click(checkncalc);
+	$("#tbodyFineCatering select").change(checkncalc);
+	$("#bonus").change(checkncalc);
 		
 	function calculation(pphstatus){
-			
-			var $qty = $('#orderqty').val();
-			var $price = $('#singleprice').val();
-			var $ordertype = $('#ordertype').val();
-			
-			if($ordertype==2){
-				var $bonus_qty = Math.floor($qty/50);
-			}
-			else {
-				var $bonus_qty = 0;
-			}
-			
-			var $calc = (($qty-$bonus_qty) * $price);
-			var $fine = $('#fine').val();
-			var $est = $calc - $fine;
-			if (pphstatus==1){
-				var $pph = Math.ceil((2 / 100) * $est);
-			} else {
-				var $pph = Math.ceil((0 / 100) * $est);
-			}
-			
-			var $total = $est - $pph;
-			
+		var $qty = $('#orderqty').val();
+		var $price = $('#singleprice').val();
+		var $ordertype = $('#ordertype').val();
+		var $bonus = $('#bonus').val();
+		
+		if($ordertype==2 && $bonus==1){
+			var $bonus_qty = Math.floor($qty/50);
+		} else {
+			var $bonus_qty = 0;
+		}
+		
+		var $net = $qty - $bonus_qty;
+		var $calc = $net * $price;
+		var $fine = $('#fine').val();
+		var $est = $calc - $fine;
+
+		if (pphstatus==1){
+			var $pph = Math.ceil((2 / 100) * $est);
+		} else {
+			var $pph = Math.ceil((0 / 100) * $est);
+		}
+		
+		var $total = $est - $pph;
+		
+		$("#orderbonus").val($bonus_qty);
+		$("#ordernet").val($net);
 		$("#calc").val($calc);
 		$("#pph").val($pph);
 		$("#total").val($total);
@@ -113,6 +197,48 @@ $(document).ready(function(){
 			allowClear : true,
 		});
 		
+			$('.cmsingledate').daterangepicker({
+				    "singleDatePicker": true,
+				    "showDropdowns": true,
+				    "autoApply": true,
+				    "locale": {
+				        "format": "DD-MM-YYYY",
+				        "separator": " - ",
+				        "applyLabel": "OK",
+				        "cancelLabel": "Batal",
+				        "fromLabel": "Dari",
+				        "toLabel": "Hingga",
+				        "customRangeLabel": "Custom",
+				        "weekLabel": "W",
+				        "daysOfWeek": [
+				            "Mg",
+				            "Sn",
+				            "Sl",
+				            "Rb",
+				            "Km",
+				            "Jm",
+				            "Sa"
+				        ],
+				        "monthNames": [
+				            "Januari",
+				            "Februari",
+				            "Maret",
+				            "April",
+				            "Mei",
+				            "Juni",
+				            "Juli",
+				            "Agustus ",
+				            "September",
+				            "Oktober",
+				            "November",
+				            "Desember"
+				        ],
+				        "firstDay": 1
+				    }
+				}, function(start, end, label) {
+				  console.log("New date range selected: ' + start.format('DD-MM-YYYY H:i:s') + ' to ' + end.format('DD-MM-YYYY H:i:s') + ' (predefined range: ' + label + ')");
+				});	
+						
 		$("select#finetype:last").val("").change();
 		$("input#fineprice:last").val("").change();
 		$("input#fineqty:last").val("").change();
@@ -199,20 +325,20 @@ $(document).ready(function(){
 			calculationalias();
 		}
 		
-		$('.singledate:last').daterangepicker({
-			"singleDatePicker": true,
-			"timePicker": false,
-			"timePicker24Hour": true,
-			"showDropdowns": false,
-			locale: {
-				format: 'YYYY-MM-DD'
-			},
-		});
+		// $('.singledate:last').daterangepicker({
+		// 	"singleDatePicker": true,
+		// 	"timePicker": false,
+		// 	"timePicker24Hour": true,
+		// 	"showDropdowns": false,
+		// 	locale: {
+		// 		format: 'YYYY-MM-DD'
+		// 	},
+		// });
 		
-		if (typeof $('#receipt-date').val() !== 'undefined'){
-		var startDate = $('#receipt-date').val()
-		$(".singledate:last").data('daterangepicker').setStartDate(startDate);
-		$(".singledate:last").data('daterangepicker').setEndDate(startDate)};
+		// if (typeof $('#receipt-date').val() !== 'undefined'){
+		// var startDate = $('#receipt-date').val()
+		// $(".singledate:last").data('daterangepicker').setStartDate(startDate);
+		// $(".singledate:last").data('daterangepicker').setEndDate(startDate)};
 	}
 
 	//RECEIPT MANAGEMENT AUTO-ADD-REMOVE ROW
@@ -228,3 +354,93 @@ $(document).ready(function(){
 		  $('#ReCalculate').click();
 		},15);
 	});
+
+
+	//Setup
+
+	$(function(){
+		$('#txtAkhirJamDatang').timepicker({
+	  		maxHours:24,
+	  		showMeridian:false,
+	  	});
+		$('#txtAwalJamDatang').timepicker({
+	  		maxHours:24,
+	  		showMeridian:false,
+	  	});
+	  	$('#txtJamDatang').timepicker({
+	  		maxHours:24,
+	  		showMeridian:false,
+	  	});
+	  	$('#txtJamPesan').timepicker({
+	  		maxHours:24,
+	  		showMeridian:false,
+	  	});
+	  	$('.dataTable-TmpMakan').DataTable( {
+	      	dom: 'frtp',
+	    });
+	});
+
+	//Penjadwalan
+
+	$(function(){
+		$('#txtperiodePenjadwalanCatering').datepicker({
+		      "autoclose": true,
+		      "todayHiglight": true,
+		      "format":'MM yyyy',
+		      "viewMode":'months',
+		      "minViewMode":'months'
+		});
+		$('#txtperiodePengajuanLibur').datepicker({
+		      "autoclose": true,
+		      "todayHiglight": true,
+		      "format":'MM yyyy',
+		      "viewMode":'months',
+		      "minViewMode":'months'
+		});
+
+		
+		
+	});
+
+$(document).ready(function(){
+	$('.cm_select2').select2(
+	{
+		allowClear: false,
+		placeholder: "Pp Kodebarang",
+		minimumInputLength: 3,
+		ajax: 
+		{
+			url: baseurl+'CateringManagement/PrintPP/kodeItem2',
+			dataType: 'json',
+			delay: 500,
+			data: function (params){
+				return {
+					term: params.term
+				}
+			},
+			processResults: function(data) {
+				return {
+					results: $.map(data, function(obj){
+						return {id: obj.kode_item, text: obj.kode_item};
+					})
+				};
+			}
+		}
+	});
+
+	$('.cm_select2').change(function(){
+		var kode = $('.cm_select2').val();
+		$.ajax({
+							type:'POST',
+							data:{item: kode},
+							url:baseurl+"CateringManagement/PrintPP/namaItem",
+							success:function(result)
+							{
+								var result = JSON.parse(result);
+								$('.cm_namaItem').val(result['namaBarang']);
+							}
+						});
+	});
+
+	$('#tblPrintpp').DataTable();
+});

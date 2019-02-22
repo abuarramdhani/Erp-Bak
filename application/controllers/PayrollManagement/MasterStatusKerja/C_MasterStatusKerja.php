@@ -22,8 +22,8 @@ class C_MasterStatusKerja extends CI_Controller
         $this->checkSession();
         $user_id = $this->session->userid;
         
-        $data['Menu'] = 'Payroll Management';
-        $data['SubMenuOne'] = '';
+        $data['Menu'] = 'Master Data';
+        $data['SubMenuOne'] = 'Master Status Kerja';
         $data['SubMenuTwo'] = '';
 
         $data['UserMenu'] = $this->M_user->getUserMenu($user_id,$this->session->responsibility_id);
@@ -36,6 +36,11 @@ class C_MasterStatusKerja extends CI_Controller
         $this->load->view('V_Sidemenu',$data);
         $this->load->view('PayrollManagement/MasterStatusKerja/V_index', $data);
         $this->load->view('V_Footer',$data);
+		$this->session->unset_userdata('success_import');
+		$this->session->unset_userdata('success_delete');
+		$this->session->unset_userdata('success_update');
+		$this->session->unset_userdata('success_insert');
+		$this->session->unset_userdata('not_found');
     }
 
 	public function read($id)
@@ -76,8 +81,8 @@ class C_MasterStatusKerja extends CI_Controller
         $user_id = $this->session->userid;
 
         $data = array(
-            'Menu' => 'Payroll Management',
-            'SubMenuOne' => '',
+            'Menu' => 'Master Data',
+            'SubMenuOne' => 'Master Status Kerja',
             'SubMenuTwo' => '',
             'UserMenu' => $this->M_user->getUserMenu($user_id,$this->session->responsibility_id),
             'UserSubMenuOne' => $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id),
@@ -99,13 +104,17 @@ class C_MasterStatusKerja extends CI_Controller
         $this->formValidation();
 
             $data = array(
-				'kd_status_kerja' => $this->input->post('txtKdStatusKerjaNew',TRUE),
-				'status_kerja' => $this->input->post('txtStatusKerja',TRUE),
-				'status_kerja_singkat' => $this->input->post('txtStatusKerjaSingkat',TRUE),
+				'kd_status_kerja' => strtoupper($this->input->post('txtKdStatusKerjaNew',TRUE)),
+				'status_kerja' => strtoupper($this->input->post('txtStatusKerja',TRUE)),
+				'status_kerja_singkat' => strtoupper($this->input->post('txtStatusKerjaSingkat',TRUE)),
 			);
 
             $this->M_masterstatuskerja->insert($data);
             $this->session->set_flashdata('message', 'Create Record Success');
+			$ses=array(
+					 "success_insert" => 1
+				);
+			$this->session->set_userdata($ses);
             redirect(site_url('PayrollManagement/MasterStatusKerja'));
     }
 
@@ -119,8 +128,8 @@ class C_MasterStatusKerja extends CI_Controller
 
         if ($row) {
             $data = array(
-                'Menu' => 'Payroll Management',
-                'SubMenuOne' => '',
+                'Menu' => 'Master Data',
+                'SubMenuOne' => 'Master Status Kerja',
                 'SubMenuTwo' => '',
                 'UserMenu' => $this->M_user->getUserMenu($user_id,$this->session->responsibility_id),
                 'UserSubMenuOne' => $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id),
@@ -136,6 +145,10 @@ class C_MasterStatusKerja extends CI_Controller
             $this->load->view('V_Footer',$data);
         } else {
             $this->session->set_flashdata('message', 'Record Not Found');
+			$ses=array(
+					 "not_found" => 1
+				);
+			$this->session->set_userdata($ses);
             redirect(site_url('PayrollManagement/MasterStatusKerja'));
         }
     }
@@ -144,13 +157,17 @@ class C_MasterStatusKerja extends CI_Controller
         $this->formValidation();
 
             $data = array(
-				'kd_status_kerja' => $this->input->post('txtKdStatusKerjaNew',TRUE),
-				'status_kerja' => $this->input->post('txtStatusKerja',TRUE),
-				'status_kerja_singkat' => $this->input->post('txtStatusKerjaSingkat',TRUE),
+				'kd_status_kerja' => strtoupper($this->input->post('txtKdStatusKerjaNew',TRUE)),
+				'status_kerja' => strtoupper($this->input->post('txtStatusKerja',TRUE)),
+				'status_kerja_singkat' => strtoupper($this->input->post('txtStatusKerjaSingkat',TRUE)),
 			);
 
-            $this->M_masterstatuskerja->update($this->input->post('txtKdStatusKerja', TRUE), $data);
+            $this->M_masterstatuskerja->update(strtoupper($this->input->post('txtKdStatusKerja', TRUE)), $data);
             $this->session->set_flashdata('message', 'Update Record Success');
+			$ses=array(
+					 "success_update" => 1
+				);
+			$this->session->set_userdata($ses);
             redirect(site_url('PayrollManagement/MasterStatusKerja'));
     }
 
@@ -161,9 +178,17 @@ class C_MasterStatusKerja extends CI_Controller
         if ($row) {
             $this->M_masterstatuskerja->delete($id);
             $this->session->set_flashdata('message', 'Delete Record Success');
+			$ses=array(
+					 "success_delete" => 1
+				);
+			$this->session->set_userdata($ses);
             redirect(site_url('PayrollManagement/MasterStatusKerja'));
         } else {
             $this->session->set_flashdata('message', 'Record Not Found');
+			$ses=array(
+					 "not_found" => 1
+				);
+			$this->session->set_userdata($ses);
             redirect(site_url('PayrollManagement/MasterStatusKerja'));
         }
     }
@@ -185,20 +210,26 @@ class C_MasterStatusKerja extends CI_Controller
                 $csv_array  = $this->csvimport->get_array($file_path);
 
                 foreach ($csv_array as $row) {
-                    if(array_key_exists('KODE_STATU', $row)){
+					$check = $this->M_masterstatuskerja->get_by_id($row['KD_STAT']);
+                    if($check){
                         $data = array(
-                            'kd_status_kerja' => $row['KODE_STATU'],
-                            'status_kerja' => $row['NAMA_STATU'],
+                            'status_kerja' => $row['STAT_KER'],
                         );
-                        $this->M_masterstatuskerja->insert($data);
+                        $this->M_masterstatuskerja->update($row['KD_STAT'],$data);
                     }else{
                         $data = array(
-                            'kd_status_kerja' => $row['kd_status_kerja'],
-                            'status_kerja' => $row['status_kerja'],
+                            'kd_status_kerja' => strtoupper($row['KD_STAT']),
+                            'status_kerja' => strtoupper($row['STAT_KER']),
                         );
                         $this->M_masterstatuskerja->insert($data);
                     }
                 }
+				$this->session->set_flashdata('flashSuccess', 'This is a success message.');
+				$ses=array(
+					 "success_import" => 1
+				);
+
+				$this->session->set_userdata($ses);
                 unlink($file_path);
                 redirect(base_url().'PayrollManagement/MasterStatusKerja');
 

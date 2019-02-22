@@ -4,6 +4,7 @@ class M_transaksiklaimsisacuti extends CI_Model
 {
 
     public $table = 'pr.pr_transaksi_klaim_sisa_cuti';
+	public $table_gaji = 'pr.pr_riwayat_gaji';
     public $id = 'id_cuti';
     public $order = 'DESC';
 
@@ -18,7 +19,25 @@ class M_transaksiklaimsisacuti extends CI_Model
     {
     	return $this->db->get($this->table)->result();
     }
+	
+	function getGajiPokok($data_where)
+    {
+		$this->db->where($data_where);
+        return $this->db->get($this->table_gaji)->row();
+    }
 
+	function check($id,$periode){
+		 $this->db->where('noind', $id);
+		 $this->db->where('periode', $periode);
+        return $this->db->get($this->table)->row();
+	}
+	
+	function update_import($noind,$periode,$data_update){
+		$this->db->where('noind', $noind);
+		$this->db->where('periode', $periode);
+        return $this->db->update($this->table,$data_update);
+	}
+	
     // get data by id
     function get_by_id($id)
     {

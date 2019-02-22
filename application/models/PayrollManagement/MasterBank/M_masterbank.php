@@ -81,6 +81,11 @@ class M_masterbank extends CI_Model
     {
         $this->db->insert($this->table_riwayat, $ri_data);
     }
+	
+	function get_kode_bank(){
+		$this->db->select_max('kd_bank');
+		return $this->db->get($this->table)->row()->kd_bank;
+	}
 
 }
 

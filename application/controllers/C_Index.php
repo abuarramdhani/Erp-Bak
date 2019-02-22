@@ -47,7 +47,7 @@ class C_Index extends CI_Controller {
 			$user_id = $this->session->userid;
 			//$data['user'] = $usr;
 			$data['Menu'] = 'dashboard';
-			
+
 			$data['UserResponsibility'] = $this->M_user->getUserResponsibility($user_id);
 			
 			$this->load->view('V_Header',$data);
@@ -148,13 +148,19 @@ class C_Index extends CI_Controller {
 			$user = $this->M_Index->getDetail($username);
 			
 			foreach($user as $user_item){
-				$iduser = $user_item->user_id;
-				$password_default = $user_item->password_default;
+				$iduser 			= $user_item->user_id;
+				$password_default 	= $user_item->password_default;
+				$kodesie			= $user_item->section_code;
+				$employee_name 		= $user_item->employee_name; 
+				$kode_lokasi_kerja 	= $user_item->location_code;
 			}
 			$ses = array(
-							'is_logged' => 1,
-							'userid' 	=> $iduser,
-							'user' 		=> $username
+							'is_logged' 		=> 1,
+							'userid' 			=> $iduser,
+							'user' 				=> $username,
+							'employee'  		=> $employee_name,
+							'kodesie' 			=> $kodesie,
+							'kode_lokasi_kerja'	=> $kode_lokasi_kerja,
 						);
 			$this->session->set_userdata($ses);
 			

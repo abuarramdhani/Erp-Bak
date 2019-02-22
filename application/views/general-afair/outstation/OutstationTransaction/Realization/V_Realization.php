@@ -25,10 +25,9 @@
 								<table id="data_table" class="table table-bordered table-striped table-hover">
 									<thead>
 										<tr class="bg-primary" style="text-align: center">
-											<th width="5%" style="text-align: center">No</th>
+											<th width="3%" style="text-align: center">No</th>
 											<th style="text-align: center">Employee</th>
 											<th style="text-align: center">Destination</th>
-											<th width="10%" style="text-align: center">City Type</th>
 											<th style="text-align: center">Depart</th>
 											<th style="text-align: center">Return</th>
 											<th style="text-align: center">BON</th>
@@ -43,8 +42,7 @@
 										<tr>
 											<td style="text-align: center"><?php echo $no++?></td>
 											<td><?php echo $dre['employee_name']?></td>
-											<td><?php echo $dre['area_name']?></td>
-											<td><?php echo $dre['city_type_name']?></td>
+											<td><?php echo $dre['city_province'].' - '.$dre['city_name'] ?></td>
 											<td><?php echo $dre['depart_time']?></td>
 											<td><?php echo $dre['return_time']?></td>
 											<td><?php echo $dre['bon_nominal']?></td>
@@ -69,6 +67,9 @@
 														</div>
 													</div>
 												<a class="btn btn-primary" href="<?php echo base_url('Outstation/realization/print/'.$dre['realization_id'])?>"><i class="fa fa-print"></i> Print</a>
+												<a class="btn bg-maroon" href="<?php echo base_url('Outstation/realization/download/'.$dre['realization_id'])?>" title="Download File"><i class="fa fa-download"></i></a>
+												<a href="<?php echo base_url('Outstation/realization/mail/'.$dre['realization_id'])?>" id="mail_button"  class="btn btn-info"><i class="fa  fa-envelope-o"></i> Mail</a>
+												<a class="btn btn-success" href="<?php echo base_url('Outstation/realization/upload/')?>" title="Upload File"><i class="fa fa-upload"></i> </a>
 											</td>
 										</tr>
 										<?php }?>

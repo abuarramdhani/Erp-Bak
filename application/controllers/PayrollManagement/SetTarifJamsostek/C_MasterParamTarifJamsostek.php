@@ -36,6 +36,11 @@ class C_MasterParamTarifJamsostek extends CI_Controller
         $this->load->view('V_Sidemenu',$data);
         $this->load->view('PayrollManagement/MasterParamTarifJamsostek/V_index', $data);
         $this->load->view('V_Footer',$data);
+		$this->session->unset_userdata('success_import');
+		$this->session->unset_userdata('success_delete');
+		$this->session->unset_userdata('success_update');
+		$this->session->unset_userdata('success_insert');
+		$this->session->unset_userdata('not_found');
     }
 
 	public function read($id)
@@ -58,9 +63,10 @@ class C_MasterParamTarifJamsostek extends CI_Controller
 				'jht_karyawan' => $row->jht_karyawan,
 				'jht_perusahaan' => $row->jht_perusahaan,
 				'jkm' => $row->jkm,
-				'jpk_lajang' => $row->jpk_lajang,
-				'jpk_nikah' => $row->jpk_nikah,
+				'jpk_karyawan' => $row->jpk_karyawan,
+				'jpk_perusahaan' => $row->jpk_perusahaan,
 				'batas_jpk' => $row->batas_jpk,
+				'batas_umur_jpk' => $row->batas_umur_jpk,
 			);
 
             $this->load->view('V_Header',$data);
@@ -70,6 +76,10 @@ class C_MasterParamTarifJamsostek extends CI_Controller
         }
         else {
             $this->session->set_flashdata('message', 'Record Not Found');
+			$ses=array(
+					 "not_found" => 1
+				);
+			$this->session->set_userdata($ses);
             redirect(site_url('PayrollManagement/MasterParamTarifJamsostek'));
         }
     }
@@ -93,9 +103,10 @@ class C_MasterParamTarifJamsostek extends CI_Controller
 			'jht_karyawan' => set_value('jht_karyawan'),
 			'jht_perusahaan' => set_value('jht_perusahaan'),
 			'jkm' => set_value('jkm'),
-			'jpk_lajang' => set_value('jpk_lajang'),
-			'jpk_nikah' => set_value('jpk_nikah'),
+			'jpk_karyawan' => set_value('jpk_karyawan'),
+			'jpk_perusahaan' => set_value('jpk_perusahaan'),
 			'batas_jpk' => set_value('batas_jpk'),
+			'batas_umur_jpk' => set_value('batas_umur_jpk'),
 		);
 
         $this->load->view('V_Header',$data);
@@ -115,9 +126,10 @@ class C_MasterParamTarifJamsostek extends CI_Controller
 			'jht_karyawan' => $this->input->post('txtJhtKaryawan',TRUE),
 			'jht_perusahaan' => $this->input->post('txtJhtPerusahaan',TRUE),
 			'jkm' => $this->input->post('txtJkm',TRUE),
-			'jpk_lajang' => $this->input->post('txtJpkLajang',TRUE),
-			'jpk_nikah' => $this->input->post('txtJpkNikah',TRUE),
-			'batas_jpk' => $this->input->post('txtBatasJpk',TRUE),
+			'jpk_karyawan' => $this->input->post('txtJpkLajang',TRUE),
+			'jpk_perusahaan' => $this->input->post('txtJpkNikah',TRUE),
+			'batas_jpk' => str_replace(',','',$this->input->post('txtBatasJpk',TRUE)),
+			'batas_umur_jpk' => str_replace(',','',$this->input->post('txtBatasUmurJpk',TRUE)),
 		);
 		
 		//RIWAYAT CHANGE CURRENT
@@ -134,9 +146,10 @@ class C_MasterParamTarifJamsostek extends CI_Controller
 			'jht_karyawan'			=> $this->input->post('txtJhtKaryawan',TRUE),
 			'jht_perusahaan' 		=> $this->input->post('txtJhtPerusahaan',TRUE),
 			'jkm' 					=> $this->input->post('txtJkm',TRUE),
-			'jpk_lajang' 			=> $this->input->post('txtJpkLajang',TRUE),
-			'jpk_nikah' 			=> $this->input->post('txtJpkNikah',TRUE),
-			'batas_jpk' 			=> $this->input->post('txtBatasJpk',TRUE),		
+			'jpk_karyawan' 			=> $this->input->post('txtJpkLajang',TRUE),
+			'jpk_perusahaan' 			=> $this->input->post('txtJpkNikah',TRUE),
+			'batas_jpk' 			=> str_replace(',','',$this->input->post('txtBatasJpk',TRUE)),		
+			'batas_umur_jpk' 			=> str_replace(',','',$this->input->post('txtBatasUmurJpk',TRUE)),		
 			'tgl_berlaku' 			=> date('Y-m-d'),
 			'tgl_tberlaku' 			=> '9999-12-31',
 			'kode_petugas' 			=> '0000001',
@@ -149,6 +162,10 @@ class C_MasterParamTarifJamsostek extends CI_Controller
 		$this->M_masterparamtarifjamsostek->riwayat_insert($ri_data);
 		
         $this->session->set_flashdata('message', 'Create Record Success');
+			$ses=array(
+					 "success_insert" => 1
+				);
+			$this->session->set_userdata($ses);
         redirect(site_url('PayrollManagement/MasterParamTarifJamsostek'));
         
     }
@@ -176,9 +193,10 @@ class C_MasterParamTarifJamsostek extends CI_Controller
 				'jht_karyawan' => set_value('txtJhtKaryawan', $row->jht_karyawan),
 				'jht_perusahaan' => set_value('txtJhtPerusahaan', $row->jht_perusahaan),
 				'jkm' => set_value('txtJkm', $row->jkm),
-				'jpk_lajang' => set_value('txtJpkLajang', $row->jpk_lajang),
-				'jpk_nikah' => set_value('txtJpkNikah', $row->jpk_nikah),
+				'jpk_karyawan' => set_value('txtJpkLajang', $row->jpk_lajang),
+				'jpk_perusahaan' => set_value('txtJpkNikah', $row->jpk_nikah),
 				'batas_jpk' => set_value('txtBatasJpk', $row->batas_jpk),
+				'batas_umur_jpk' => set_value('txtBatasUmurJpk', $row->batas_umur_jpk),
 				);
             $this->load->view('V_Header',$data);
             $this->load->view('V_Sidemenu',$data);
@@ -186,6 +204,10 @@ class C_MasterParamTarifJamsostek extends CI_Controller
             $this->load->view('V_Footer',$data);
         } else {
             $this->session->set_flashdata('message', 'Record Not Found');
+			$ses=array(
+					 "not_found" => 1
+				);
+			$this->session->set_userdata($ses);
             redirect(site_url('PayrollManagement/MasterParamTarifJamsostek'));
         }
     }
@@ -203,11 +225,16 @@ class C_MasterParamTarifJamsostek extends CI_Controller
 				'jkm' => $this->input->post('txtJkm',TRUE),
 				'jpk_lajang' => $this->input->post('txtJpkLajang',TRUE),
 				'jpk_nikah' => $this->input->post('txtJpkNikah',TRUE),
-				'batas_jpk' => $this->input->post('txtBatasJpk',TRUE),
+				'batas_jpk' => str_replace(',','',$this->input->post('txtBatasJpk',TRUE)),
+				'batas_umur_jpk' => str_replace(',','',$this->input->post('txtBatasUmurJpk',TRUE)),
 			);
 
             $this->M_masterparamtarifjamsostek->update($this->input->post('txtPeriodeJst', TRUE), $data);
             $this->session->set_flashdata('message', 'Update Record Success');
+			$ses=array(
+					 "success_update" => 1
+				);
+			$this->session->set_userdata($ses);
             redirect(site_url('PayrollManagement/MasterParamTarifJamsostek'));
         
     }
@@ -219,9 +246,17 @@ class C_MasterParamTarifJamsostek extends CI_Controller
         if ($row) {
             $this->M_masterparamtarifjamsostek->delete($id);
             $this->session->set_flashdata('message', 'Delete Record Success');
+			$ses=array(
+					 "success_delete" => 1
+				);
+			$this->session->set_userdata($ses);
             redirect(site_url('PayrollManagement/MasterParamTarifJamsostek'));
         } else {
             $this->session->set_flashdata('message', 'Record Not Found');
+			$ses=array(
+					 "not_found" => 1
+				);
+			$this->session->set_userdata($ses);
             redirect(site_url('PayrollManagement/MasterParamTarifJamsostek'));
         }
     }

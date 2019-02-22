@@ -4,6 +4,7 @@ class M_riwayatpotdanapensiun extends CI_Model
 {
 
     public $table = 'pr.pr_riwayat_pot_dana_pensiun';
+    public $table_master = 'pr.pr_master_pot_dana_pensiun';
     public $id = 'id_riw_pens';
     public $order = 'DESC';
 
@@ -14,10 +15,17 @@ class M_riwayatpotdanapensiun extends CI_Model
     }
 
     // get all data
-    function get_all()
+    function get_all($date)
     {
+		$this->db->where('tgl_berlaku<=',$date);
+		$this->db->where('tgl_tberlaku>',$date);
     	return $this->db->get($this->table)->result();
     }
+	
+	function checkExist($id){
+		$this->db->where('noind=',$id);
+		return $this->db->get($this->table_master)->row();
+	}
 
     // get data by id
     function get_by_id($id)
@@ -31,12 +39,45 @@ class M_riwayatpotdanapensiun extends CI_Model
     {
         $this->db->insert($this->table, $data);
     }
+	
+	// insert data
+    function insert_master($data)
+    {
+        $this->db->insert($this->table_master, $data);
+    }
+	
+	function check($id)
+    {
+        $this->db->where('noind', $id);
+        return $this->db->get($this->table)->row();
+    }
+	
+	function check_master($id)
+    {
+        $this->db->where('noind', $id);
+        return $this->db->get($this->table_master)->row();
+    }
+	
+	// update data riwayat
+	function update_riwayat($id,$date,$data_riwayat)
+	{
+		$this->db->where('noind', $id);
+		$this->db->where('tgl_tberlaku', $date);
+		$this->db->update($this->table,$data_riwayat);
+	}
 
     // update data
     function update($id, $data)
     {
         $this->db->where($this->id, $id);
         $this->db->update($this->table, $data);
+    }
+
+	// update data
+    function update_master($id,$data_update_master)
+    {
+        $this->db->where('noind', $id);
+        $this->db->update($this->table_master, $data_update_master);
     }
 
     // delete data

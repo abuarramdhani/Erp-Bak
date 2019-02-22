@@ -64,7 +64,7 @@ $query_builder = TRUE;
 
 $db['default'] = array(
 	'dsn'	=> '',
-	'hostname' => 'dev.quick.com',
+	'hostname' => 'database.quick.com',
 	'username' => 'postgres',
 	'password' => 'password',
 	'database' => 'erp',
@@ -87,10 +87,10 @@ $db['default'] = array(
 
 $db['oracle'] = array(
 	'dsn'	=> '',
-	'hostname' => '192.168.7.1:1521/PROD',
+	'hostname' => '192.168.7.1:1521/PROD', //192.168.7.3:1522/DEV
 	'username' => 'apps',
 	'password' => 'apps',
-	'database' => 'KHS_PROD',
+	'database' => 'KHS_PROD',//KHS_DEV
 	'dbdriver' => 'oci8',
 	'dbprefix' => '',
 	'pconnect' => FALSE,
@@ -107,31 +107,55 @@ $db['oracle'] = array(
 	'save_queries' => TRUE
 );
 
-$db['mssql'] = array(
-	'dsn'	=> '',
-	'hostname' => '192.168.168.33:1433',
-	'username' => 'sa',
-	'password' => 'sa',
-	'database' => '',
-	'dbdriver' => 'mssql',
-	'dbprefix' => '',
-	'pconnect' => FALSE,
-	'db_debug' => TRUE,
-	'cache_on' => FALSE,
-	'cachedir' => '',
-	'char_set' => 'utf8',
-	'dbcollat' => 'utf8_general_ci',
-	'swap_pre' => '',
-	'encrypt' => FALSE,
-	'compress' => FALSE,
-	'stricton' => FALSE,
-	'failover' => array(),
-	'save_queries' => TRUE
-);
+// tidak lagi digunakan
+// $db['mssql'] = array(
+// 	'dsn'	=> '',
+// 	'hostname' => '192.168.6.20:1433',
+// 	'username' => 'sa',
+// 	'password' => 'sa',
+// 	'database' => '',
+// 	'dbdriver' => 'mssql',
+// 	'dbprefix' => '',
+// 	'pconnect' => FALSE,
+// 	'db_debug' => TRUE,
+// 	'cache_on' => FALSE,
+// 	'cachedir' => '',
+// 	'char_set' => 'utf8',
+// 	'dbcollat' => 'utf8_general_ci',
+// 	'swap_pre' => '',
+// 	'encrypt' => FALSE,
+// 	'compress' => FALSE,
+// 	'stricton' => FALSE,
+// 	'failover' => array(),
+// 	'save_queries' => TRUE
+// );
+
+// $db['personalia'] = array(
+// 	'dsn'	=> '',
+// 	'hostname' => 'db.quick.com',
+// 	'username' => 'postgres',
+// 	'password' => 'password',
+// 	'database' => 'Personalia',
+// 	'dbdriver' => 'postgre',
+// 	'dbprefix' => '',
+// 	'pconnect' => FALSE,
+// 	'db_debug' => TRUE,
+// 	'cache_on' => FALSE,
+// 	'cachedir' => '',
+// 	'char_set' => 'utf8',
+// 	'dbcollat' => 'utf8_general_ci',
+// 	'swap_pre' => '',
+// 	'encrypt' => FALSE,
+// 	'compress' => FALSE,
+// 	'stricton' => FALSE,
+// 	'failover' => array(),
+// 	'save_queries' => TRUE,
+// 	'port' => 5432
+// );
 
 $db['personalia'] = array(
 	'dsn'	=> '',
-	'hostname' => 'db.quick.com',
+	'hostname' => 'database.quick.com',
 	'username' => 'postgres',
 	'password' => 'password',
 	'database' => 'Personalia',
@@ -154,9 +178,9 @@ $db['personalia'] = array(
 
 $db['quickcom'] = array(
 	'dsn'	=> '',
-	'hostname' => 'quick.com',
-	'username' => 'amri',
-	'password' => 'amri',
+	'hostname' => 'database.quick.com',
+	'username' => 'erp',
+	'password' => 'qu1ck1953',
 	'database' => 'fp_distribusi',
 	'dbdriver' => 'mysqli',
 	'dbprefix' => '',
@@ -174,3 +198,388 @@ $db['quickcom'] = array(
 	'save_queries' => TRUE,
 	'port' => 3306
 );
+
+$db['quick'] = array(
+	'dsn'	=> '',
+	'hostname' => 'database.quick.com',
+	'username' => 'erp',
+	'password' => 'qu1ck1953',
+	'database' => '',
+	'dbdriver' => 'mysqli',
+	'dbprefix' => '',
+	'pconnect' => FALSE,
+	'db_debug' => TRUE,
+	'cache_on' => FALSE,
+	'cachedir' => '',
+	'char_set' => 'utf8',
+	'dbcollat' => 'utf8_general_ci',
+	'swap_pre' => '',
+	'encrypt' => FALSE,
+	'compress' => FALSE,
+	'stricton' => FALSE,
+	'failover' => array(),
+	'save_queries' => TRUE,
+	'port' => 3306
+);
+
+
+$db['kaizen'] = array(
+	'dsn'	=> '',
+	'hostname' => 'database.quick.com',
+	'username' => 'erp',
+	'password' => 'qu1ck1953',
+	'database' => 'kaizen',
+	'dbdriver' => 'mysqli',
+	'dbprefix' => '',
+	'pconnect' => FALSE,
+	'db_debug' => TRUE,
+	'cache_on' => FALSE,
+	'cachedir' => '',
+	'char_set' => 'utf8',
+	'dbcollat' => 'utf8_general_ci',
+	'swap_pre' => '',
+	'encrypt' => FALSE,
+	'compress' => FALSE,
+	'stricton' => FALSE,
+	'failover' => array(),
+	'save_queries' => TRUE,
+	'port' => 3306
+);
+
+$db['ticket'] = array(
+	'dsn'	=> '',
+	'hostname' => 'ictsupport.quick.com',
+	'username' => 'admin',
+	'password' => '123456',
+	'database' => 'ticket1',
+	'dbdriver' => 'mysqli',
+	'dbprefix' => '',
+	'pconnect' => TRUE,
+	'db_debug' => TRUE,
+	'cache_on' => FALSE,
+	'cachedir' => '',
+	'char_set' => 'utf8',
+	'dbcollat' => 'utf8_general_ci',
+	'swap_pre' => '',
+	'encrypt'  => FALSE,
+	'compress' => FALSE,
+	'stricton' => FALSE,
+	'failover' => array(),
+	'save_queries' => TRUE
+);
+
+$db['oracle_dev'] = array(
+	'dsn'	=> '',
+	'hostname' => '192.168.7.3:1522/DEV',
+	'username' => 'apps',
+	'password' => 'apps',
+	'database' => 'KHS_DEV',
+	'dbdriver' => 'oci8',
+	'dbprefix' => '',
+	'pconnect' => FALSE,
+	'db_debug' => TRUE,
+	'cache_on' => FALSE,
+	'cachedir' => '',
+	'char_set' => 'utf8',
+	'dbcollat' => 'utf8_general_ci',
+	'swap_pre' => '',
+	'encrypt'  => FALSE,
+	'compress' => FALSE,
+	'stricton' => FALSE,
+	'failover' => array(),
+	'save_queries' => TRUE
+);
+
+// $db['dinas_luar'] = array(
+// 	'dsn'	=> '',
+// 	'hostname' => 'dl.quick.com',
+// 	'username' => 'quickc01_dlo',
+// 	'password' => '{#QE.k.WxaZG',
+// 	'database' => 'quickc01_dinas_luar_online',
+// 	'dbdriver' => 'mysqli',
+// 	'dbprefix' => '',
+// 	'pconnect' => FALSE,
+// 	'db_debug' => TRUE,
+// 	'cache_on' => FALSE,
+// 	'cachedir' => '',
+// 	'char_set' => 'utf8',
+// 	'dbcollat' => 'utf8_general_ci',
+// 	'swap_pre' => '',
+// 	'encrypt' => FALSE,
+// 	'compress' => FALSE,
+// 	'stricton' => FALSE,
+// 	'failover' => array(),
+// 	'save_queries' => TRUE,
+// 	'port' => 3306
+// );
+
+$db['dinas_luar'] = array(
+	'dsn'	=> '',
+	'hostname' => 'dev.quick.com',
+	'username' => 'amri',
+	'password' => 'amri',
+	'database' => 'quickc01_dinas_luar_online',
+	'dbdriver' => 'mysqli',
+	'dbprefix' => '',
+	'pconnect' => FALSE,
+	'db_debug' => TRUE,
+	'cache_on' => FALSE,
+	'cachedir' => '',
+	'char_set' => 'utf8',
+	'dbcollat' => 'utf8_general_ci',
+	'swap_pre' => '',
+	'encrypt' => FALSE,
+	'compress' => FALSE,
+	'stricton' => FALSE,
+	'failover' => array(),
+	'save_queries' => TRUE,
+	'port' => 3306
+);
+
+$db['daerah'] = array(
+	'dsn'	=> '',
+	'hostname' => 'database.quick.com',
+	'username' => 'root',
+	'password' => 'password',
+	'database' => 'db_daerah',
+	'dbdriver' => 'mysqli',
+	'dbprefix' => '',
+	'pconnect' => TRUE,
+	'db_debug' => TRUE,
+	'cache_on' => FALSE,
+	'cachedir' => '',
+	'char_set' => 'utf8',
+	'dbcollat' => 'utf8_general_ci',
+	'swap_pre' => '',
+	'encrypt'  => FALSE,
+	'compress' => FALSE,
+	'stricton' => FALSE,
+	'failover' => array(),
+	'save_queries' => TRUE
+);
+
+$db['erp_db'] = array(
+	'dsn'	=> '',
+	'hostname' => 'database.quick.com',
+	'username' => 'postgres',
+	'password' => 'password',
+	'database' => 'erp',
+	'dbdriver' => 'postgre',
+	'dbprefix' => '',
+	'pconnect' => TRUE,
+	'db_debug' => TRUE,
+	'cache_on' => FALSE,
+	'cachedir' => '',
+	'char_set' => 'utf8',
+	'dbcollat' => 'utf8_general_ci',
+	'swap_pre' => '',
+	'encrypt'  => FALSE,
+	'compress' => FALSE,
+	'stricton' => FALSE,
+	'failover' => array(),
+	'save_queries' => TRUE
+);
+
+$db['spl_db'] = array(
+	'dsn'	=> '',
+	'hostname' => 'database.quick.com',
+	'username' => 'spl',
+	'password' => '123321',
+	'database' => 'splseksi',
+	'dbdriver' => 'mysqli',
+	'dbprefix' => '',
+	'pconnect' => TRUE,
+	'db_debug' => TRUE,
+	'cache_on' => FALSE,
+	'cachedir' => '',
+	'char_set' => 'utf8',
+	'dbcollat' => 'utf8_general_ci',
+	'swap_pre' => '',
+	'encrypt'  => FALSE,
+	'compress' => FALSE,
+	'stricton' => FALSE,
+	'failover' => array(),
+	'save_queries' => TRUE
+);
+
+$efg="";
+		$data = explode('.',$_SERVER['SERVER_NAME']);
+		if (!empty($data[0])) {
+			$efg = $data[0];
+		}
+		$dsn = 'mysql:dbname=fp_distribusi;host=database.quick.com';
+		$user = 'erp';
+		$password = 'qu1ck1953';
+
+		try {
+			$dbh = new PDO($dsn, $user, $password);
+		} catch (PDOException $e) {
+			echo 'Connection failed: ' . $e->getMessage();
+		}
+
+		$sql = "SELECT a.id_lokasi,a.lokasi,a.lokasi_kerja,b.host,b.user,b.pass,b.db FROM fp_distribusi.tb_lokasi AS a
+					LEFT JOIN fp_distribusi.tb_mysql AS b ON a.id_lokasi=b.id_lokasi 
+					WHERE a.status_ = '1'";
+
+		$sth = $dbh->prepare($sql);
+		$sth->execute(array($efg));
+		$d_result= $sth->fetchAll(PDO::FETCH_ASSOC);
+		foreach( $d_result as $row ) {
+			$db['my_'.$row['id_lokasi'].'']['hostname'] = ''.$row['host'].'';
+			$db['my_'.$row['id_lokasi'].'']['username'] = ''.$row['user'].'';
+			$db['my_'.$row['id_lokasi'].'']['password'] = ''.$row['pass'].'';
+			$db['my_'.$row['id_lokasi'].'']['database'] = ''.$row['db'].'';
+			$db['my_'.$row['id_lokasi'].'']['dbdriver'] = 'mysqli';
+			$db['my_'.$row['id_lokasi'].'']['dbprefix'] = '';
+			$db['my_'.$row['id_lokasi'].'']['pconnect'] = FALSE;
+			$db['my_'.$row['id_lokasi'].'']['db_debug'] = FALSE;
+			$db['my_'.$row['id_lokasi'].'']['cache_on'] = FALSE;
+			$db['my_'.$row['id_lokasi'].'']['cachedir'] = '';
+			$db['my_'.$row['id_lokasi'].'']['char_set'] = 'utf8';
+			$db['my_'.$row['id_lokasi'].'']['dbcollat'] = 'utf8_general_ci';
+			$db['my_'.$row['id_lokasi'].'']['swap_pre'] = '';
+			$db['my_'.$row['id_lokasi'].'']['autoinit'] = TRUE;
+			$db['my_'.$row['id_lokasi'].'']['stricton'] = FALSE;
+			$db['my_'.$row['id_lokasi'].'']['encrypt'] = FALSE;
+			$db['my_'.$row['id_lokasi'].'']['compress'] = FALSE;
+			$db['my_'.$row['id_lokasi'].'']['failover'] = array();
+			$db['my_'.$row['id_lokasi'].'']['save_queries'] = TRUE;
+			$db['my_'.$row['id_lokasi'].'']['port'] = 3306;
+			$db['my_'.$row['id_lokasi'].'']['options'] = array(PDO::ATTR_TIMEOUT => 5);
+		}
+		
+		$efg="";
+		$data = explode('.',$_SERVER['SERVER_NAME']);
+		if (!empty($data[0])) {
+			$efg = $data[0];
+		}
+		$dsn = 'mysql:dbname=fp_distribusi;host=database.quick.com';
+		$user = 'erp';
+		$password = 'qu1ck1953';
+
+		try {
+			$dbh = new PDO($dsn, $user, $password);
+		} catch (PDOException $e) {
+			echo 'Connection failed: ' . $e->getMessage();
+		}
+
+		$sql = "SELECT a.id_lokasi,a.lokasi,a.lokasi_kerja,b.host,b.user,b.pass,b.db FROM fp_distribusi.tb_lokasi AS a
+					LEFT JOIN fp_distribusi.tb_postgres AS b ON a.id_lokasi=b.id_lokasi 
+					WHERE a.status_ = '1'";
+
+		$sth = $dbh->prepare($sql);
+		$sth->execute(array($efg));
+		$d_result= $sth->fetchAll(PDO::FETCH_ASSOC);
+		foreach( $d_result as $row ) {
+			$db['pg_'.$row['id_lokasi'].'']['hostname'] = ''.$row['host'].'';
+			$db['pg_'.$row['id_lokasi'].'']['username'] = ''.$row['user'].'';
+			$db['pg_'.$row['id_lokasi'].'']['password'] = ''.$row['pass'].'';
+			$db['pg_'.$row['id_lokasi'].'']['database'] = ''.$row['db'].'';
+			$db['pg_'.$row['id_lokasi'].'']['dbdriver'] = 'postgre';
+			$db['pg_'.$row['id_lokasi'].'']['dbprefix'] = '';
+			$db['pg_'.$row['id_lokasi'].'']['pconnect'] = FALSE;
+			$db['pg_'.$row['id_lokasi'].'']['db_debug'] = FALSE;
+			$db['pg_'.$row['id_lokasi'].'']['cache_on'] = FALSE;
+			$db['pg_'.$row['id_lokasi'].'']['cachedir'] = '';
+			$db['pg_'.$row['id_lokasi'].'']['char_set'] = 'utf8';
+			$db['pg_'.$row['id_lokasi'].'']['dbcollat'] = 'utf8_general_ci';
+			$db['pg_'.$row['id_lokasi'].'']['swap_pre'] = '';
+			$db['pg_'.$row['id_lokasi'].'']['autoinit'] = TRUE;
+			$db['pg_'.$row['id_lokasi'].'']['stricton'] = FALSE;
+			$db['pg_'.$row['id_lokasi'].'']['encrypt'] = FALSE;
+			$db['pg_'.$row['id_lokasi'].'']['compress'] = FALSE;
+			$db['pg_'.$row['id_lokasi'].'']['failover'] = array();
+			$db['pg_'.$row['id_lokasi'].'']['save_queries'] = TRUE;
+			$db['pg_'.$row['id_lokasi'].'']['port'] = 5432;
+			$db['pg_'.$row['id_lokasi'].'']['options'] = array(PDO::ATTR_TIMEOUT => 5);
+		}
+		
+		$db['quickcom_orientasi'] = array(
+			'dsn'				=> '',
+			'hostname' 			=> 'database.quick.com',
+			'username' 			=> 'erp',
+			'password' 			=> 'qu1ck1953',
+			'database' 			=> 'db_orientasi',
+			'dbdriver' 			=> 'mysqli',
+			'dbprefix' 			=> '',
+			'pconnect' 			=> FALSE,
+			'db_debug' 			=> TRUE,
+			'cache_on' 			=> FALSE,
+			'cachedir' 			=> '',
+			'char_set' 			=> 'utf8',
+			'dbcollat' 			=> 'utf8_general_ci',
+			'swap_pre' 			=> '',
+			'encrypt' 			=> FALSE,
+			'compress' 			=> FALSE,
+			'stricton' 			=> FALSE,
+			'failover' 			=> array(),
+			'save_queries'		=> TRUE,
+			'port' 				=> 3306
+		);
+		$db['quickcom_hrd_khs'] = array(
+			'dsn'				=> '',
+			'hostname' 			=> 'database.quick.com',
+			'username' 			=> 'erp',
+			'password' 			=> 'qu1ck1953',
+			'database' 			=> 'hrd_khs',
+			'dbdriver' 			=> 'mysqli',
+			'dbprefix' 			=> '',
+			'pconnect' 			=> FALSE,
+			'db_debug' 			=> TRUE,
+			'cache_on' 			=> FALSE,
+			'cachedir' 			=> '',
+			'char_set' 			=> 'utf8',
+			'dbcollat' 			=> 'utf8_general_ci',
+			'swap_pre' 			=> '',
+			'encrypt' 			=> FALSE,
+			'compress' 			=> FALSE,
+			'stricton' 			=> FALSE,
+			'failover' 			=> array(),
+			'save_queries'		=> TRUE,
+			'port' 				=> 3306
+		);
+
+		$db['db_fingerspot'] = array(
+			'dsn'				=> '',
+			'hostname' 			=> '192.168.168.50',
+			'username' 			=> 'root',
+			'password' 			=> '123456',
+			'database' 			=> 'fin_pro',
+			'dbdriver' 			=> 'mysqli',
+			'dbprefix' 			=> '',
+			'pconnect' 			=> FALSE,
+			'db_debug' 			=> TRUE,
+			'cache_on' 			=> FALSE,
+			'cachedir' 			=> '',
+			'char_set' 			=> 'utf8',
+			'dbcollat' 			=> 'utf8_general_ci',
+			'swap_pre' 			=> '',
+			'encrypt' 			=> FALSE,
+			'compress' 			=> FALSE,
+			'stricton' 			=> FALSE,
+			'failover' 			=> array(),
+			'save_queries'		=> TRUE,
+			'port' 				=> 3306
+		);
+		$db['dl_153'] = array(
+			'dsn'				=> '',
+			'hostname' 			=> '192.168.168.153',
+			'username' 			=> 'amri',
+			'password' 			=> 'amri',
+			'database' 			=> 'quickc01_dinas_luar_online',
+			'dbdriver' 			=> 'mysqli',
+			'dbprefix' 			=> '',
+			'pconnect' 			=> FALSE,
+			'db_debug' 			=> TRUE,
+			'cache_on' 			=> FALSE,
+			'cachedir' 			=> '',
+			'char_set' 			=> 'utf8',
+			'dbcollat' 			=> 'utf8_general_ci',
+			'swap_pre' 			=> '',
+			'encrypt' 			=> FALSE,
+			'compress' 			=> FALSE,
+			'stricton' 			=> FALSE,
+			'failover' 			=> array(),
+			'save_queries'		=> TRUE,
+			'port' 				=> 3306
+		);

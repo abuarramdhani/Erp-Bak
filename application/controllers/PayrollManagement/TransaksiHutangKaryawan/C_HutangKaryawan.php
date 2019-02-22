@@ -35,6 +35,11 @@ class C_HutangKaryawan extends CI_Controller
         $this->load->view('V_Sidemenu',$data);
         $this->load->view('PayrollManagement/HutangKaryawan/V_index', $data);
         $this->load->view('V_Footer',$data);
+		$this->session->unset_userdata('success_import');
+		$this->session->unset_userdata('success_delete');
+		$this->session->unset_userdata('success_update');
+		$this->session->unset_userdata('success_insert');
+		$this->session->unset_userdata('not_found');
     }
 
 	public function read($id)
@@ -69,6 +74,10 @@ class C_HutangKaryawan extends CI_Controller
         }
         else {
             $this->session->set_flashdata('message', 'Record Not Found');
+			$ses=array(
+					 "not_found" => 1
+				);
+			$this->session->set_userdata($ses);
             redirect(site_url('PayrollManagement/HutangKaryawan'));
         }
     }
@@ -108,18 +117,27 @@ class C_HutangKaryawan extends CI_Controller
         $this->formValidation();
 
 		$data = array(
-			'no_hutang' => $this->input->post('txtNoHutangNew',TRUE),
+			'no_hutang' => str_replace(' ','',$this->input->post('txtNoind',TRUE).date('Ymd')),
 			'noind' => $this->input->post('txtNoind',TRUE),
 			'tgl_pengajuan' => $this->input->post('txtTglPengajuan',TRUE),
 			'total_hutang' => $this->input->post('txtTotalHutang',TRUE),
 			'jml_cicilan' => $this->input->post('txtJmlCicilan',TRUE),
 			'status_lunas' => $this->input->post('cmbStatusLunas',TRUE),
-			'kode_petugas' => $this->input->post('txtKodePetugas',TRUE),
+			'kode_petugas' => $this->session->userdata('userid'),
 			'tgl_record' => date('Y-m-d H:i:s'),
 		);
 
         $this->M_hutangkaryawan->insert($data);
+		$jml_cicilan	= $this->input->post('txtJmlCicilan',TRUE);
+		$ttl_hutang		= $this->input->post('txtTotalHutang',TRUE);
+		
+		$this->insert_transac($jml_cicilan,$ttl_hutang);
+		
         $this->session->set_flashdata('message', 'Create Record Success');
+			$ses=array(
+					 "success_insert" => 1
+				);
+			$this->session->set_userdata($ses);
         redirect(site_url('PayrollManagement/HutangKaryawan'));
     }
 
@@ -155,6 +173,10 @@ class C_HutangKaryawan extends CI_Controller
             $this->load->view('V_Footer',$data);
         } else {
             $this->session->set_flashdata('message', 'Record Not Found');
+			$ses=array(
+					 "not_found" => 1
+				);
+			$this->session->set_userdata($ses);
             redirect(site_url('PayrollManagement/HutangKaryawan'));
         }
     }
@@ -164,7 +186,7 @@ class C_HutangKaryawan extends CI_Controller
         $this->formValidation();
 
         $data = array(
-			'no_hutang' => $this->input->post('txtNoHutangNew',TRUE),
+			'no_hutang' => $this->input->post('txtNoHutang',TRUE),
 			'noind' => $this->input->post('txtNoind',TRUE),
 			'tgl_pengajuan' => $this->input->post('txtTglPengajuan',TRUE),
 			'total_hutang' => $this->input->post('txtTotalHutang',TRUE),
@@ -175,10 +197,37 @@ class C_HutangKaryawan extends CI_Controller
 		);
 
         $this->M_hutangkaryawan->update($this->input->post('txtNoHutang', TRUE), $data);
-        $this->session->set_flashdata('message', 'Update Record Success');
+		$this->M_hutangkaryawan->delete_transac($this->input->post('txtNoHutang', TRUE));
+		$jml_cicilan	= $this->input->post('txtJmlCicilan',TRUE);
+		$ttl_hutang		= $this->input->post('txtTotalHutang',TRUE);
+		
+		$this->insert_transac($jml_cicilan,$ttl_hutang);
+        
+		$this->session->set_flashdata('message', 'Update Record Success');
+			$ses=array(
+					 "success_update" => 1
+				);
+			$this->session->set_userdata($ses);
         redirect(site_url('PayrollManagement/HutangKaryawan'));
         
     }
+	
+	private function insert_transac($jml_cicilan,$ttl_hutang){
+		$cicilan = round($ttl_hutang/ $jml_cicilan,0);
+		$no_id= 1;
+		for($i=0;$i<$jml_cicilan;$i++){
+			$data_transaksi = array(
+				'id_transaksi_hutang'		=> str_replace(' ','',$this->input->post('txtNoind',TRUE).date('Ymd')).sprintf('%03s',$no_id),
+				'no_hutang'					=> str_replace(' ','',$this->input->post('txtNoind',TRUE).date('Ymd')),
+				'tgl_transaksi'				=> date("Y-m-d", strtotime("+".$no_id." month", strtotime($this->input->post('txtTglPengajuan',TRUE)))),
+				'jenis_transaksi'			=> '1',
+				'jumlah_transaksi'			=> $cicilan,
+				'lunas'						=> $this->input->post('cmbStatusLunas',TRUE),
+			);
+			$this->M_hutangkaryawan->insert_transaksi($data_transaksi);
+			$no_id++;
+		}
+	}
 
     public function delete($id)
     {
@@ -186,10 +235,19 @@ class C_HutangKaryawan extends CI_Controller
 
         if ($row) {
             $this->M_hutangkaryawan->delete($id);
+            $this->M_hutangkaryawan->delete_transac($id);
             $this->session->set_flashdata('message', 'Delete Record Success');
+			$ses=array(
+					 "success_delete" => 1
+				);
+			$this->session->set_userdata($ses);
             redirect(site_url('PayrollManagement/HutangKaryawan'));
         } else {
             $this->session->set_flashdata('message', 'Record Not Found');
+			$ses=array(
+					 "not_found" => 1
+				);
+			$this->session->set_userdata($ses);
             redirect(site_url('PayrollManagement/HutangKaryawan'));
         }
     }
@@ -200,8 +258,14 @@ class C_HutangKaryawan extends CI_Controller
             'tgl_tberlaku' => '9999-12-31',
         );
 
-        $maxHutang = $this->M_hutangkaryawan->getMaxHutang($data_where);
-        $maxHutang = 2 * $maxHutang;
+        $row = $this->M_hutangkaryawan->getMaxHutang($data_where);
+		if(empty($row)){
+			$maxHutang = 0;
+		}else{
+			foreach($row as $rw){
+				$maxHutang = ($rw->gaji_pokok) * 2;
+			}
+		}
         
         echo $maxHutang;
     }
@@ -214,10 +278,16 @@ class C_HutangKaryawan extends CI_Controller
         }
     }
 
-    public function formValidation()
+    public function getNoind()
     {
+        $term = strtoupper($this->input->get('term',TRUE));
+		$result = $this->M_hutangkaryawan->getNoind($term);
+		echo json_encode($result);
 	}
 
+	public function formValidation()
+    {
+	}
 }
 
 /* End of file C_HutangKaryawan.php */

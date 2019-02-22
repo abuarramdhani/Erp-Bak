@@ -11,6 +11,7 @@ class M_masterjabatanupah extends CI_Model
     /* GET HEADER DATA */
     function get_header()
     {
+		$this->db->order_by("kd_jabatan_upah", "asc"); 
         return $this->db->get('pr.pr_master_jabatan_upah')->result_array();
     }
 
@@ -27,6 +28,12 @@ class M_masterjabatanupah extends CI_Model
         return $this->db->insert('pr.pr_master_jabatan_upah', $data);
     }
 
+	function check($id)
+    {
+        $this->db->where('kd_jabatan_upah', $id);
+        return $this->db->get('pr.pr_master_jabatan_upah')->row();
+    }
+	
     /* UPDATE HEADER DATA */
     function update_header($id, $data)
     {

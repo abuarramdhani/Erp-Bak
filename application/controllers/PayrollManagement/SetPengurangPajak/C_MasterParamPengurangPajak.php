@@ -21,8 +21,8 @@ class C_MasterParamPengurangPajak extends CI_Controller
         $this->checkSession();
         $user_id = $this->session->userid;
         
-        $data['Menu'] = 'Payroll Management';
-        $data['SubMenuOne'] = '';
+        $data['Menu'] = 'Set Parameter';
+        $data['SubMenuOne'] = 'Set Pengurang Pajak';
         $data['SubMenuTwo'] = '';
 
         $data['UserMenu'] = $this->M_user->getUserMenu($user_id,$this->session->responsibility_id);
@@ -35,6 +35,11 @@ class C_MasterParamPengurangPajak extends CI_Controller
         $this->load->view('V_Sidemenu',$data);
         $this->load->view('PayrollManagement/MasterParamPengurangPajak/V_index', $data);
         $this->load->view('V_Footer',$data);
+		$this->session->unset_userdata('success_import');
+		$this->session->unset_userdata('success_delete');
+		$this->session->unset_userdata('success_update');
+		$this->session->unset_userdata('success_insert');
+		$this->session->unset_userdata('not_found');
     }
 
 	public function read($id)
@@ -45,13 +50,12 @@ class C_MasterParamPengurangPajak extends CI_Controller
         $row = $this->M_masterparampengurangpajak->get_by_id($id);
         if ($row) {
             $data = array(
-            	'Menu' => 'Payroll Management',
-            	'SubMenuOne' => '',
+            	'Menu' => 'Set Parameter',
+            	'SubMenuOne' => 'Set Pengurang Pajak',
             	'SubMenuTwo' => '',
             	'UserMenu' => $this->M_user->getUserMenu($user_id,$this->session->responsibility_id),
             	'UserSubMenuOne' => $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id),
             	'UserSubMenuTwo' => $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id),
-            
 				'id_setting' => $row->id_setting,
 				'periode_pengurang_pajak' => $row->periode_pengurang_pajak,
 				'max_jab' => $row->max_jab,
@@ -67,6 +71,10 @@ class C_MasterParamPengurangPajak extends CI_Controller
         }
         else {
             $this->session->set_flashdata('message', 'Record Not Found');
+			$ses=array(
+					 "not_found" => 1
+				);
+			$this->session->set_userdata($ses);
             redirect(site_url('PayrollManagement/MasterParamPengurangPajak'));
         }
     }
@@ -78,8 +86,8 @@ class C_MasterParamPengurangPajak extends CI_Controller
         $user_id = $this->session->userid;
 
         $data = array(
-            'Menu' => 'Payroll Management',
-            'SubMenuOne' => '',
+            'Menu' => 'Set Parameter',
+            'SubMenuOne' => 'Set Pengurang Pajak',
             'SubMenuTwo' => '',
             'UserMenu' => $this->M_user->getUserMenu($user_id,$this->session->responsibility_id),
             'UserSubMenuOne' => $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id),
@@ -106,9 +114,9 @@ class C_MasterParamPengurangPajak extends CI_Controller
 		//MASTER INSERT NEW
 		$data = array(
 			'periode_pengurang_pajak' => $this->input->post('txtPeriodePengurangPajak',TRUE),
-			'max_jab' => $this->input->post('txtMaxJab',TRUE),
+			'max_jab' => str_replace(',','',$this->input->post('txtMaxJab',TRUE)),
 			'persentase_jab' => $this->input->post('txtPersentaseJab',TRUE),
-			'max_pensiun' => $this->input->post('txtMaxPensiun',TRUE),
+			'max_pensiun' => str_replace(',','',$this->input->post('txtMaxPensiun',TRUE)),
 			'persentase_pensiun' => $this->input->post('txtPersentasePensiun',TRUE),
 		);
 		
@@ -117,18 +125,18 @@ class C_MasterParamPengurangPajak extends CI_Controller
 			'tgl_tberlaku' => '9999-12-31',
 		);
 		$ru_data = array(
-			'tgl_tberlaku' 	=> date('Y-m-d'),
+			'tgl_tberlaku' 	=> $this->input->post('txtPeriodePengurangPajak',TRUE),
 		);
 		
 		//RIWAYAT INSERT NEW
 		$ri_data = array(
-			'tgl_berlaku' 				=> date('Y-m-d'),
+			'tgl_berlaku' 				=> $this->input->post('txtPeriodePengurangPajak',TRUE),
 			'tgl_tberlaku' 				=> '9999-12-31',
-			'max_jab' 					=> $this->input->post('txtMaxJab',TRUE),
+			'max_jab' 					=> str_replace(',','',$this->input->post('txtMaxJab',TRUE)),
 			'persentase_jab' 			=> $this->input->post('txtPersentaseJab',TRUE),
-			'max_pensiun' 				=> $this->input->post('txtMaxPensiun',TRUE),
+			'max_pensiun' 				=> str_replace(',','',$this->input->post('txtMaxPensiun',TRUE)),
 			'persentase_pensiun' 		=> $this->input->post('txtPersentasePensiun',TRUE),
-			'kode_petugas' 				=> '0000001',
+			'kode_petugas' 				=> $this->session->userdata('userid'),
 			'tgl_record' 				=> date('Y-m-d H:i:s'),
 		);
 
@@ -138,6 +146,10 @@ class C_MasterParamPengurangPajak extends CI_Controller
 		$this->M_masterparampengurangpajak->riwayat_insert($ri_data);
 		
         $this->session->set_flashdata('message', 'Create Record Success');
+			$ses=array(
+					 "success_insert" => 1
+				);
+			$this->session->set_userdata($ses);
         redirect(site_url('PayrollManagement/MasterParamPengurangPajak'));
     }
 
@@ -151,8 +163,8 @@ class C_MasterParamPengurangPajak extends CI_Controller
 
         if ($row) {
             $data = array(
-                'Menu' => 'Payroll Management',
-                'SubMenuOne' => '',
+                'Menu' => 'Set Parameter',
+                'SubMenuOne' => 'Set Pengurang Pajak',
                 'SubMenuTwo' => '',
                 'UserMenu' => $this->M_user->getUserMenu($user_id,$this->session->responsibility_id),
                 'UserSubMenuOne' => $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id),
@@ -171,6 +183,10 @@ class C_MasterParamPengurangPajak extends CI_Controller
             $this->load->view('V_Footer',$data);
         } else {
             $this->session->set_flashdata('message', 'Record Not Found');
+			$ses=array(
+					 "not_found" => 1
+				);
+			$this->session->set_userdata($ses);
             redirect(site_url('PayrollManagement/MasterParamPengurangPajak'));
         }
     }
@@ -181,14 +197,32 @@ class C_MasterParamPengurangPajak extends CI_Controller
 
         $data = array(
 				'periode_pengurang_pajak' => $this->input->post('txtPeriodePengurangPajak',TRUE),
-				'max_jab' => $this->input->post('txtMaxJab',TRUE),
+				'max_jab' => str_replace(',','',$this->input->post('txtMaxJab',TRUE)),
 				'persentase_jab' => $this->input->post('txtPersentaseJab',TRUE),
-				'max_pensiun' => $this->input->post('txtMaxPensiun',TRUE),
+				'max_pensiun' => str_replace(',','',$this->input->post('txtMaxPensiun',TRUE)),
 				'persentase_pensiun' => $this->input->post('txtPersentasePensiun',TRUE),
 			);
-
+			
+			$data_riwayat = array(
+				'tgl_berlaku' => $this->input->post('txtPeriodePengurangPajak',TRUE),
+				'max_jab' => str_replace(',','',$this->input->post('txtMaxJab',TRUE)),
+				'persentase_jab' => $this->input->post('txtPersentaseJab',TRUE),
+				'max_pensiun' => str_replace(',','',$this->input->post('txtMaxPensiun',TRUE)),
+				'persentase_pensiun' => $this->input->post('txtPersentasePensiun',TRUE),
+				'kode_petugas' 				=> $this->session->userdata('userid'),
+				'tgl_record' 				=> date('Y-m-d H:i:s'),
+			);
+			
+			$ru_where = array(
+				'tgl_tberlaku' => '9999-12-31',
+			);
             $this->M_masterparampengurangpajak->update($this->input->post('txtIdSetting', TRUE), $data);
+            $this->M_masterparampengurangpajak->riwayat_update($ru_where, $data_riwayat);
             $this->session->set_flashdata('message', 'Update Record Success');
+			$ses=array(
+					 "success_update" => 1
+				);
+			$this->session->set_userdata($ses);
             redirect(site_url('PayrollManagement/MasterParamPengurangPajak'));
         
     }
@@ -200,9 +234,17 @@ class C_MasterParamPengurangPajak extends CI_Controller
         if ($row) {
             $this->M_masterparampengurangpajak->delete($id);
             $this->session->set_flashdata('message', 'Delete Record Success');
+			$ses=array(
+					 "success_delete" => 1
+				);
+			$this->session->set_userdata($ses);
             redirect(site_url('PayrollManagement/MasterParamPengurangPajak'));
         } else {
             $this->session->set_flashdata('message', 'Record Not Found');
+			$ses=array(
+					 "not_found" => 1
+				);
+			$this->session->set_userdata($ses);
             redirect(site_url('PayrollManagement/MasterParamPengurangPajak'));
         }
     }

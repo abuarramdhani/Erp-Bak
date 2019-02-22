@@ -42,6 +42,7 @@
 											<tr class="bg-primary">
 												<th width="5%"><center>No</center></th>
 												<th width="20%"><center>User Name</center></th>
+												<th width="20%"><center>Pengguna</center></th>
 												<th width="10%"><center>Action</center></th>
 											</tr>
 										</thead>
@@ -55,6 +56,7 @@
 												<tr>
 													<td align="center"><?php echo $num?></td>
 													<td><?php echo strtoupper($AllUser_item['user_name']) ?></td>
+													<td><?php echo strtoupper($AllUser_item['employee_code']." - ".$AllUser_item['employee_name']) ?></td>
 													<td align="center">
 													<a href="<?php echo base_url('SystemAdministration/User/UpdateUser/')."/".$encrypted_string ?>"><img src="<?php echo base_url('assets/img/edit.png');?>" title="Update <?php echo strtoupper($AllUser_item['user_name']) ?>"></a>
 													

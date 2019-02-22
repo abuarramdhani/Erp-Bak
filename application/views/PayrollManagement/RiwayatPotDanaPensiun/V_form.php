@@ -40,40 +40,23 @@
 									<div class="form-group">
 	                                            <label for="txtTglBerlaku" class="control-label col-lg-4">Tgl Berlaku</label>
 	                                            <div class="col-lg-4">
-	                                                <input type="text" maxlength="10" placeholder="<?php echo date('Y-m-d')?>" name="txtTglBerlaku" value="<?php echo $tgl_berlaku ?>" class="form-control" data-date-format="yyyy-mm-dd" id="txtTglBerlaku" />
-	                                            </div>
-	                                        </div>
-									<div class="form-group">
-	                                            <label for="txtTglTberlaku" class="control-label col-lg-4">Tgl Tberlaku</label>
-	                                            <div class="col-lg-4">
-	                                                <input type="text" maxlength="10" placeholder="<?php echo date('Y-m-d')?>" name="txtTglTberlaku" value="<?php echo $tgl_tberlaku ?>" class="form-control" data-date-format="yyyy-mm-dd" id="txtTglTberlaku" />
+	                                                <input type="text" maxlength="10" placeholder="<?php echo date('Y-m-d')?>" name="txtTglBerlaku" value="<?php echo rtrim($tgl_berlaku) ?>" class="form-control" data-date-format="yyyy-mm-dd" id="txtTglBerlaku" />
 	                                            </div>
 	                                        </div>
 									<div class="form-group">
                                             <label for="txtNoind" class="control-label col-lg-4">Noind</label>
                                             <div class="col-lg-4">
-                                                <input type="text" placeholder="Noind" name="txtNoind" id="txtNoind" class="form-control" value="<?php echo $noind; ?>"/>
+												<select class="form-control select2-getNoind" id="txtNoind" name="txtNoind" style="width:100%;" required>
+														<option value=""></option>
+												</select>
                                             </div>
                                     </div>
 									<div class="form-group">
                                             <label for="txtPotPensiun" class="control-label col-lg-4">Pot Pensiun</label>
                                             <div class="col-lg-4">
-                                                <input type="text" placeholder="Pot Pensiun" name="txtPotPensiun" id="txtPotPensiun" class="form-control" value="<?php echo $pot_pensiun; ?>"/>
+                                                <input type="text" placeholder="Pot Pensiun" name="txtPotPensiun" id="txtPotPensiun" class="form-control money" value="<?php echo rtrim($pot_pensiun); ?>"/>
                                             </div>
                                     </div>
-									<div class="form-group">
-                                            <label for="txtKdPetugas" class="control-label col-lg-4">Kd Petugas</label>
-                                            <div class="col-lg-4">
-                                                <input type="text" placeholder="Kd Petugas" name="txtKdPetugas" id="txtKdPetugas" class="form-control" value="<?php echo $kd_petugas; ?>"/>
-                                            </div>
-                                    </div>
-									<div class="form-group">
-	                                            <label for="txtTglJamRecord" class="control-label col-lg-4">Tgl Jam Record</label>
-	                                            <div class="col-lg-4">
-	                                                <input type="text" maxlength="10" placeholder="<?php echo date('Y-m-d')?>" name="txtTglJamRecord" value="<?php echo $tgl_jam_record ?>" class="form-control" data-date-format="yyyy-mm-dd" id="txtTglJamRecord" />
-	                                            </div>
-	                                        </div>
-
 	    <input type="hidden" name="txtIdRiwPens" value="<?php echo $id_riw_pens; ?>" /> </div>
                                 
                             </div>

@@ -38,34 +38,30 @@
                                 ?>
                                 <div class="row">
 									<div class="form-group">
-                                        <label for="txtKdTarifNew" class="control-label col-lg-4">Kode Tarif</label>
-                                        <div class="col-lg-4">
-                                            <input type="text" name="txtKdTarifNew" id="txtKdTarifNew" class="form-control" value="<?php echo $kd_tarif; ?>" maxlength="2"/>
-                                        </div>
-                                    </div>
-									<div class="form-group">
                                         <label for="txtTingkatan" class="control-label col-lg-4">Tingkatan</label>
-                                        <div class="col-lg-4">
-                                            <input type="text" name="txtTingkatan" id="txtTingkatan" class="form-control" value="<?php echo $tingkatan; ?>" maxlength="2"/>
+                                        <div class="col-lg-1">
+                                            <input type="text" name="txtTingkatan" id="txtTingkatan" onkeypress="return isNumberKey(event)" class="form-control" value="<?php echo rtrim($tingkatan); ?>" maxlength="2"/>
                                         </div>
                                     </div>
 									<div class="form-group">
                                         <label for="txtBulanAwal" class="control-label col-lg-4">Bulan Awal</label>
-                                        <div class="col-lg-4">
-                                            <input type="text" name="txtBulanAwal" id="txtBulanAwal" class="form-control" value="<?php echo $bulan_awal; ?>" maxlength="2"/>
+                                        <div class="col-lg-2">
+                                            <input type="text" name="txtBulanAwal" id="txtBulanAwal" onkeypress="return isNumberKey(event)" class="form-control" value="<?php echo rtrim($bulan_awal); ?>" maxlength="2"/>
                                         </div>
                                     </div>
 									<div class="form-group">
                                         <label for="txtBulanAkhir" class="control-label col-lg-4">Bulan Akhir</label>
-                                        <div class="col-lg-4">
-                                            <input type="text" name="txtBulanAkhir" id="txtBulanAkhir" class="form-control" value="<?php echo $bulan_akhir; ?>" maxlength="2"/>
+                                        <div class="col-lg-2">
+                                            <input type="text" name="txtBulanAkhir" id="txtBulanAkhir" onkeypress="return isNumberKey(event)" class="form-control" value="<?php echo rtrim($bulan_akhir); ?>" maxlength="2"/>
                                         </div>
                                     </div>
 									<div class="form-group">
                                         <label for="txtPersentase" class="control-label col-lg-4">Persentase</label>
-                                        <div class="col-lg-4">
-                                            <input type="text" name="txtPersentase" id="txtPersentase" class="form-control" value="<?php echo $persentase; ?>" maxlength="5"/>
+                                        <div class="col-lg-2">
+                                            <input type="text" name="txtPersentase" id="txtPersentase" class="form-control" onkeypress="return isNumberKeyAndDot(event)" value="<?php echo rtrim($persentase); ?>" maxlength="5"/>
                                         </div>
+										 <label for="txtPersentase" class="control-label">%</label>
+										 <label for="txtPersentase" class="control-label">(Percent)</label>
                                     </div>
 									<input type="hidden" name="txtKdTarif" value="<?php echo $kd_tarif; ?>" />
 								</div>

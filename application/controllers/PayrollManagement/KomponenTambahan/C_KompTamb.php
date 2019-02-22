@@ -14,6 +14,7 @@ class C_KompTamb extends CI_Controller
             $this->session->set_userdata('last_page', current_url());
             $this->session->set_userdata('Responsbility', 'some_value');
         }
+		$this->load->library('Encrypt');
     }
 
 	public function index()
@@ -21,8 +22,8 @@ class C_KompTamb extends CI_Controller
         $this->checkSession();
         $user_id = $this->session->userid;
         
-        $data['Menu'] = 'Payroll Management';
-        $data['SubMenuOne'] = '';
+        $data['Menu'] = 'Komponen Penggajian';
+        $data['SubMenuOne'] = 'Komp. Kena/Tdk Kena Pajak';
         $data['SubMenuTwo'] = '';
 
         $data['UserMenu'] = $this->M_user->getUserMenu($user_id,$this->session->responsibility_id);
@@ -35,18 +36,24 @@ class C_KompTamb extends CI_Controller
         $this->load->view('V_Sidemenu',$data);
         $this->load->view('PayrollManagement/KompTamb/V_index', $data);
         $this->load->view('V_Footer',$data);
+		$this->session->unset_userdata('success_import');
+		$this->session->unset_userdata('success_delete');
+		$this->session->unset_userdata('success_update');
+		$this->session->unset_userdata('success_insert');
+		$this->session->unset_userdata('not_found');
     }
 
 	public function read($id)
     {
         $this->checkSession();
         $user_id = $this->session->userid;
-        
+        $plaintext_string=str_replace(array('-', '_', '~'), array('+', '/', '='), $id);
+		$id = $this->encrypt->decode($plaintext_string);
         $row = $this->M_komptamb->get_by_id($id);
         if ($row) {
             $data = array(
-            	'Menu' => 'Payroll Management',
-            	'SubMenuOne' => '',
+            	'Menu' => 'Komponen Penggajian',
+            	'SubMenuOne' => 'Komp. Kena/Tdk Kena Pajak',
             	'SubMenuTwo' => '',
             	'UserMenu' => $this->M_user->getUserMenu($user_id,$this->session->responsibility_id),
             	'UserSubMenuOne' => $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id),
@@ -67,6 +74,10 @@ class C_KompTamb extends CI_Controller
         }
         else {
             $this->session->set_flashdata('message', 'Record Not Found');
+			$ses=array(
+					 "not_found" => 1
+				);
+			$this->session->set_userdata($ses);
             redirect(site_url('PayrollManagement/KompTamb'));
         }
     }
@@ -78,8 +89,8 @@ class C_KompTamb extends CI_Controller
         $user_id = $this->session->userid;
 
         $data = array(
-            'Menu' => 'Payroll Management',
-            'SubMenuOne' => '',
+            'Menu' => 'Komponen Penggajian',
+            'SubMenuOne' => 'Komp. Kena/Tdk Kena Pajak',
             'SubMenuTwo' => '',
             'UserMenu' => $this->M_user->getUserMenu($user_id,$this->session->responsibility_id),
             'UserSubMenuOne' => $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id),
@@ -103,23 +114,23 @@ class C_KompTamb extends CI_Controller
     public function save()
     {
         $this->formValidation();
-
-        if ($this->form_validation->run() == FALSE) {
-            $this->create();
-        }
-        else{
+		$dt = explode("/",$this->input->post('txtPeriode',TRUE));
+		$tgl_transaksi = $dt[1]."-".$dt[0];
             $data = array(
-				'periode' => $this->input->post('txtPeriode',TRUE),
-				'noind' => $this->input->post('cmbNoind',TRUE),
-				'tambahan' => $this->input->post('txtTambahan',TRUE),
+				'periode' => $tgl_transaksi,
+				'noind' => $this->input->post('txtNoind',TRUE),
+				'tambahan' => str_replace('.','',$this->input->post('txtTambahan',TRUE)),
 				'stat' => $this->input->post('cmbStat',TRUE),
 				'desc_' => $this->input->post('txtDesc',TRUE),
 			);
 
             $this->M_komptamb->insert($data);
             $this->session->set_flashdata('message', 'Create Record Success');
+			$ses=array(
+					 "success_insert" => 1
+				);
+			$this->session->set_userdata($ses);
             redirect(site_url('PayrollManagement/KompTamb'));
-        }
     }
 
     public function update($id)
@@ -127,22 +138,23 @@ class C_KompTamb extends CI_Controller
 
         $this->checkSession();
         $user_id = $this->session->userid;
-
-        $row = $this->M_komptamb->get_by_id($id);
+		$plaintext_string=str_replace(array('-', '_', '~'), array('+', '/', '='), $id);
+		$id_e = $this->encrypt->decode($plaintext_string);
+        $row = $this->M_komptamb->get_by_id($id_e);
 
         if ($row) {
             $data = array(
-                'Menu' => 'Payroll Management',
-                'SubMenuOne' => '',
+                'Menu' => 'Komponen Penggajian',
+                'SubMenuOne' => 'Komp. Kena/Tdk Kena Pajak',
                 'SubMenuTwo' => '',
                 'UserMenu' => $this->M_user->getUserMenu($user_id,$this->session->responsibility_id),
                 'UserSubMenuOne' => $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id),
                 'UserSubMenuTwo' => $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id),
-                'action' => site_url('PayrollManagement/KompTamb/saveUpdate'),
+                'action' => site_url('PayrollManagement/KompTamb/saveUpdate/'.$id),
 				'id' => set_value('txtId', $row->id),
-				'periode' => set_value('txtPeriode', $row->periode),
+				'periode' => set_value('txtPeriode', date("m/Y",strtotime($row->periode))),
 				'noind' => set_value('txtNoind', $row->noind),
-				'tambahan' => set_value('txtTambahan', $row->tambahan),
+				'tambahan' => set_value('txtTambahan', number_format((int)$row->tambahan,0,",",".")),
 				'stat' => set_value('txtStat', $row->stat),
 				'desc_' => set_value('txtDesc', $row->desc_),
 				);
@@ -152,42 +164,55 @@ class C_KompTamb extends CI_Controller
             $this->load->view('V_Footer',$data);
         } else {
             $this->session->set_flashdata('message', 'Record Not Found');
+			$ses=array(
+					 "not_found" => 1
+				);
+			$this->session->set_userdata($ses);
             redirect(site_url('PayrollManagement/KompTamb'));
         }
     }
 
-    public function saveUpdate()
+    public function saveUpdate($id)
     {
         $this->formValidation();
-
-        if ($this->form_validation->run() == FALSE) {
-            $this->update();
-        }
-        else{
-            $data = array(
-				'periode' => $this->input->post('txtPeriode',TRUE),
-				'noind' => $this->input->post('cmbNoind',TRUE),
-				'tambahan' => $this->input->post('txtTambahan',TRUE),
+			$dt = explode("/",$this->input->post('txtPeriode',TRUE));
+			$tgl_transaksi = $dt[1]."-".$dt[0];
+			$data = array(
+				'periode' => $tgl_transaksi,
+				'noind' => $this->input->post('txtNoind',TRUE),
+				'tambahan' => str_replace('.','',$this->input->post('txtTambahan',TRUE)),
 				'stat' => $this->input->post('cmbStat',TRUE),
 				'desc_' => $this->input->post('txtDesc',TRUE),
 			);
 
             $this->M_komptamb->update($this->input->post('txtId', TRUE), $data);
             $this->session->set_flashdata('message', 'Update Record Success');
+			$ses=array(
+					 "success_update" => 1
+				);
+			$this->session->set_userdata($ses);
             redirect(site_url('PayrollManagement/KompTamb'));
-        }
     }
 
     public function delete($id)
     {
+		$plaintext_string=str_replace(array('-', '_', '~'), array('+', '/', '='), $id);
+		$id = $this->encrypt->decode($plaintext_string);
         $row = $this->M_komptamb->get_by_id($id);
-
         if ($row) {
             $this->M_komptamb->delete($id);
             $this->session->set_flashdata('message', 'Delete Record Success');
+			$ses=array(
+					 "success_delete" => 1
+				);
+			$this->session->set_userdata($ses);
             redirect(site_url('PayrollManagement/KompTamb'));
         } else {
             $this->session->set_flashdata('message', 'Record Not Found');
+			$ses=array(
+					 "not_found" => 1
+				);
+			$this->session->set_userdata($ses);
             redirect(site_url('PayrollManagement/KompTamb'));
         }
     }
@@ -202,8 +227,8 @@ class C_KompTamb extends CI_Controller
 
     public function formValidation()
     {
-		$this->form_validation->set_rules('txtTambahan', 'Tambahan', 'integer');
-		$this->form_validation->set_rules('txtDesc', 'Desc ', 'max_length[30]');
+		// $this->form_validation->set_rules('txtTambahan', 'Tambahan', 'integer');
+		// $this->form_validation->set_rules('txtDesc', 'Desc ', 'max_length[30]');
 	}
 
 }

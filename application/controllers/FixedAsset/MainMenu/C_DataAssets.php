@@ -73,25 +73,15 @@ class C_DataAssets extends CI_Controller {
 		// The `db` parameter represents the column name in the database, while the `dt`
 		// parameter represents the DataTables column identifier. In this case simple
 		// indexes
-		$columns = array(
+		if ($this->session->user == 'B0269' || $this->session->user == 'P0255') {
+			$columns = array(
 			
 			array( 
             'db' => 'asset_data_id', 
             'dt' => 0,
             'formatter' => function( $d, $row ) {
-                $buttons='<a style="margin-right:8px;margin-left:4px;" href="'.site_url("FixedAsset/DataAssets/DeleteData/".$row['asset_data_id']).'"alt="Delete" title="Delete" data-confirm="Are you sure to delete this item?" class="confirm">
-							<i class="fa fa-trash fa-2x"></i>
-						</a>
-						<a style="margin-right:8px;" href="'.site_url("FixedAsset/DataAssets/Update/".$row['asset_data_id']).'"  alt="Update" title="Update" >
-							<i class="fa fa-pencil-square-o fa-2x"></i>
-						</a>
-						<a style="margin-right:8px;" href="'.site_url("FixedAsset/DataAssets/Copy/".$row['asset_data_id']).'"  alt="Copy" title="Copy">
-							<i class="fa fa-files-o fa-2x"></i>
-						</a>
-						<input type="hidden" id="txtAssetid" name="txtAssetid[]" value="'.$row['asset_data_id'].'"  form="frmDeleteAsset"/>
-						<input type="hidden" id="txtAssetid" name="txtAssetid[]" value="'.$row['asset_data_id'].'"  form="frmUpdateAsset"/>';
-                return $buttons;
-				}
+                	return '<p style="text-align:center;">-</p>';
+            	},
 			),
 			array( 'db' => 'asset_data_id', 	'dt' => 1 ),
 			array( 'db' => 'tag_number', 		'dt' => 2 ),
@@ -221,13 +211,163 @@ class C_DataAssets extends CI_Controller {
 			array( 'db' => 'asset_group',     	'dt' => 34 ),
 			
 		);
+		} else {
+			$columns = array(
+			
+			array( 
+            'db' => 'asset_data_id', 
+            'dt' => 0,
+            'formatter' => function( $d, $row ) {
+	        		$buttons='<a style="margin-right:8px;margin-left:4px;" name="btnDelConf" href="'.site_url("FixedAsset/DataAssets/DeleteData/".$row['asset_data_id']).'"alt="Delete" title="Delete" data-confirm="Are you sure to delete this item?">
+						<i class="fa fa-trash fa-2x"></i>
+					</a>
+					<a style="margin-right:8px;" href="'.site_url("FixedAsset/DataAssets/Update/".$row['asset_data_id']).'"  alt="Update" title="Update" >
+						<i class="fa fa-pencil-square-o fa-2x"></i>
+					</a>
+					<a style="margin-right:8px;" href="'.site_url("FixedAsset/DataAssets/Copy/".$row['asset_data_id']).'"  alt="Copy" title="Copy">
+						<i class="fa fa-files-o fa-2x"></i>
+					</a>
+					<input type="hidden" id="txtAssetid" name="txtAssetid[]" value="'.$row['asset_data_id'].'"  form="frmDeleteAsset"/>
+					<input type="hidden" id="txtAssetid" name="txtAssetid[]" value="'.$row['asset_data_id'].'"  form="frmUpdateAsset"/>';
+	        		return $buttons;
+	        	},
+			),
+			array( 'db' => 'asset_data_id', 	'dt' => 1 ),
+			array( 'db' => 'tag_number', 		'dt' => 2 ),
+			array( 'db' => 'location',  		'dt' => 3 ),
+			array( 'db' => 'asset_category',   	'dt' => 4 ),
+			array( 'db' => 'item_code',     	'dt' => 5 ),
+			array( 'db' => 'specification',     'dt' => 6 ),
+			array( 'db' => 'serial_number',     'dt' => 7 ),
+			array( 'db' => 'power',     		'dt' => 8 ),
+			array( 'db' => 'old_number',     	'dt' => 9 ),
+			array(
+				'db'        => 'ownership_date',
+				'dt'        => 10,
+				'formatter' => function( $d, $row ) {
+					if(isset($d)){
+						return date( 'd-M-Y', strtotime($d));
+					}else{
+						return '';
+					}
+				}
+			),
+			array( 'db' => 'person_in_charge',  'dt' => 11 ),
+			array( 'db' => 'bppba_number',     	'dt' => 12 ),
+			array(
+				'db'        => 'bppba_date',
+				'dt'        => 13,
+				'formatter' => function( $d, $row ) {
+					if(isset($d)){
+						return date( 'd-M-Y', strtotime($d));
+					}else{
+						return '';
+					}
+					
+				}
+			),
+			array( 'db' => 'lpa_number',     	'dt' => 14),
+			array(
+				'db'        => 'lpa_date',
+				'dt'        => 15,
+				'formatter' => function( $d, $row ) {
+					if(isset($d)){
+						return date( 'd-M-Y', strtotime($d));
+					}else{
+						return '';
+					}
+				}
+			),
+			array( 'db' => 'transfer_number',    'dt' => 16 ),
+			array(
+				'db'        => 'transfer_date',
+				'dt'        => 17,
+				'formatter' => function( $d, $row ) {
+					if(isset($d)){
+						return date( 'd-M-Y', strtotime($d));
+					}else{
+						return '';
+					}
+				}
+			),
+			array( 'db' => 'retirement_number', 'dt' => 18 ),
+			array(
+				'db'        => 'retirement_date',
+				'dt'        => 19,
+				'formatter' => function( $d, $row ) {
+					if(isset($d)){
+						return date( 'd-M-Y', strtotime($d));
+					}else{
+						return '';
+					}
+				}
+			),
+			array( 'db' => 'pp_number',     	'dt' => 20 ),
+			array( 'db' => 'po_number',     	'dt' => 21 ),
+			array( 'db' => 'pr_number',     	'dt' => 22 ),
+			array( 'db' => 'add_by',     		'dt' => 23 ),
+			array(
+				'db'        => 'add_by_date',
+				'dt'        => 24,
+				'formatter' => function( $d, $row ) {
+					if(isset($d)){
+						return strtoupper(date( 'd-M-Y', strtotime($d)));
+					}else{
+						return '';
+					}
+				}
+			),
+			array( 'db' => 'upload_oracle',     'dt' => 25),
+			array(
+				'db'        => 'upload_oracle_date',
+				'dt'        => 26,
+				'formatter' => function( $d, $row ) {
+					if(isset($d)){
+						return date( 'd-M-Y', strtotime($d));
+					}else{
+						return '';
+					}
+				}
+			),
+			array( 'db' => 'description',     	'dt' => 27 ),
+			array( 'db' => 'insurance',     	'dt' => 28 ),
+			array( 'db' => 'appraisal',     	'dt' => 29 ),
+			array( 'db' => 'stock_opname',      'dt' => 30 ),
+			array( 'db' => 'sticker',     		'dt' => 31 ),
+			array(
+				'db'        => 'asset_value',
+				'dt'        => 32,
+				'formatter' => function( $d, $row ) {
+					if(isset($d)){
+						return number_format($d);
+					}else{
+						return '';
+					}
+					
+				}
+			),
+			array(
+				'db'        => 'asset_age',
+				'dt'        => 33,
+				'formatter' => function( $d, $row ) {
+					if(isset($d)){
+						return number_format($d);
+					}else{
+						return '';
+					}
+				}
+			),
+			array( 'db' => 'asset_group',     	'dt' => 34 ),
+			
+		);
+		}
 		 
 		// SQL server connection information
 		$sql_details = array(
 			'user' => 'postgres',
 			'pass' => 'password',
 			'db'   => 'erp',
-			'host' => 'db.quick.com'
+			'host' => 'database.quick.com'
 		);
 		 
 		 
@@ -1113,5 +1253,110 @@ class C_DataAssets extends CI_Controller {
 		}
 		echo $result;
 	}
+
+	public function assetBon ()
+	{	$user_id = $this->session->userid;
 	
+		$data['UserMenu'] = $this->M_user->getUserMenu($user_id,$this->session->responsibility_id);
+		$data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id);
+		$data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id);
+		
+		$data['assets'] = $this->M_dataassets->getassetBon();
+
+		$data['Menu'] = 'Data Asset';
+		$data['SubMenuOne'] = '';
+		$this->load->view('V_Header',$data);
+		$this->load->view('V_Sidemenu',$data);
+		$this->load->view('FixedAsset/MainMenu/DataAssets/V_assetBon',$data);
+		$this->load->view('V_Footer',$data);
+	}
+
+	public function addtag ()
+	{	$user_id = $this->session->userid;
+	
+		$data['UserMenu'] = $this->M_user->getUserMenu($user_id,$this->session->responsibility_id);
+		$data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id);
+		$data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id);
+		
+		$id = $this->input->post('asset_id');
+		$data['assets'] = $this->M_dataassets->getassetId($id);
+
+		$data['Menu'] = 'Data Asset';
+		$data['SubMenuOne'] = '';
+
+		$this->load->view('V_Header',$data);
+		$this->load->view('V_Sidemenu',$data);
+		$this->load->view('FixedAsset/MainMenu/DataAssets/V_addtag',$data);
+		$this->load->view('V_Footer',$data);
+	}
+	
+	public function inputTagNumber ()
+	{
+		$user_id = $this->session->userid;
+
+		$id_assets = $this->input->post('asset_id');
+		$tag_num = $this->input->post('txtTag');
+		$cost_cen = $this->input->post('txtCost');
+		$umur_tek = $this->input->post('txtUmur');
+		$location = $this->input->post('txtSeksi');
+
+		$kode = $this->input->post('txtKode');
+		$item = $this->input->post('txtNama');
+		$item_code = $kode.' : '.$item;
+
+		$specification = $this->input->post('txaSpek');
+		$description = $this->input->post('txaInfo');
+		$pp_num = $this->input->post('txtPpBppbg');
+		$add_by = $this->session->user;
+		$add_by_date = date("Y-m-d");
+		$own_date = $this->input->post('dpDigunakan');
+
+		$query = $this->M_dataassets->checkTagNum($tag_num);
+		if ($query[0]['count'] > 0) {
+			echo"
+				<script>
+				alert('Tag Number Sudah Dipakai');
+				window.location.assign('".base_url()."FixedAsset/DataAssets/assetBon');
+				</script>
+			";
+			// redirect('FixedAsset/DataAssets/assetBon');
+		} else {
+			$sql=$this->M_dataassets->setTagNumber($tag_num, $cost_cen, $umur_tek, $location, $item_code, $specification, $description, $pp_num, $add_by, $add_by_date, $own_date);
+			if($sql){
+				$this->M_dataassets->deleteWithoutTag($id_assets);
+				echo"
+					<script>
+					alert('Input Berhasil');
+					window.location.assign('".base_url()."FixedAsset/DataAssets');
+					</script>
+				";
+				// redirect('FixedAsset/DataAssets');
+			}else{
+				echo"
+					<script>
+					alert('Input Gagal');
+					window.location.assign('".base_url()."FixedAsset/DataAssets/assetBon');
+					</script>
+				";
+				// redirect('FixedAsset/DataAssets/assetBon');
+			}
+		}
+
+		echo $tag_num.'<br>'.$location.'<br>'.$item_code.'<br>'.$specification.'<br>'.$description.'<br>'.$pp_num.'<br>'.$add_by.'<br>'.$add_by_date.'<br>'.$own_date;
+
+	}
+
+	public function DeleteANT($astId){
+		$khueri = $this->M_dataassets->deleteWithoutTag($astId);
+		return $khueri;
+	}
+
+	// public function testChamber(){
+
+	// 	$tag_num = $this->input->post('txtTag');
+	// 	$query = $this->M_dataassets->checkTagNum($tag_num);
+	// 	echo $query[0]['count'];
+
+	// }
+
 }

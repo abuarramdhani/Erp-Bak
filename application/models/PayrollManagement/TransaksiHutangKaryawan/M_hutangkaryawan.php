@@ -5,6 +5,7 @@ class M_hutangkaryawan extends CI_Model
 
     public $table = 'pr.pr_hutang_karyawan';
     public $table_gaji = 'pr.pr_riwayat_gaji';
+    public $table_transaksi = 'pr.pr_transaksi_hutang';
     public $id = 'no_hutang';
     public $order = 'DESC';
 
@@ -39,6 +40,10 @@ class M_hutangkaryawan extends CI_Model
         $this->db->where($this->id, $id);
         $this->db->update($this->table, $data);
     }
+	
+	function insert_transaksi($data_transaksi){
+		$this->db->insert($this->table_transaksi, $data_transaksi);
+	}
 
     // delete data
     function delete($id)
@@ -46,12 +51,25 @@ class M_hutangkaryawan extends CI_Model
         $this->db->where($this->id, $id);
         $this->db->delete($this->table);
     }
+	
+	// delete data
+    function delete_transac($id)
+    {
+        $this->db->where('no_hutang', $id);
+        $this->db->delete($this->table_transaksi);
+    }
 
     function getMaxHutang($data_where)
     {
         $this->db->where($data_where);
-        return $this->db->get($this->table_gaji)->row()->gaji_pokok;
+        return $this->db->get($this->table_gaji)->result();
     }
+	
+	function getNoind($term){
+			$sql		= "select noind,nama from pr.pr_master_pekerja where nama like '%$term%' or noind like '%$term%'";
+			$query		= $this->db->query($sql);
+			return $query->result_array();
+	}
 }
 
 /* End of file M_hutangkaryawan.php */

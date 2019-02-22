@@ -22,20 +22,25 @@ class C_RiwayatGaji extends CI_Controller
         $this->checkSession();
         $user_id = $this->session->userid;
         
-        $data['Menu'] = 'Payroll Management';
-        $data['SubMenuOne'] = '';
+        $data['Menu'] = 'Master Pekerja';
+        $data['SubMenuOne'] = 'Master Gaji';
         $data['SubMenuTwo'] = '';
 
         $data['UserMenu'] = $this->M_user->getUserMenu($user_id,$this->session->responsibility_id);
         $data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id);
         $data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id);
-        $riwayatGaji = $this->M_riwayatgaji->get_all();
+        $riwayatGaji = $this->M_riwayatgaji->get_all(date('Y-m-d'));
 
         $data['riwayatGaji_data'] = $riwayatGaji;
         $this->load->view('V_Header',$data);
         $this->load->view('V_Sidemenu',$data);
         $this->load->view('PayrollManagement/RiwayatGaji/V_index', $data);
         $this->load->view('V_Footer',$data);
+		$this->session->unset_userdata('success_import');
+		$this->session->unset_userdata('success_delete');
+		$this->session->unset_userdata('success_update');
+		$this->session->unset_userdata('success_insert');
+		$this->session->unset_userdata('not_found');
     }
 
 	public function read($id)
@@ -46,8 +51,8 @@ class C_RiwayatGaji extends CI_Controller
         $row = $this->M_riwayatgaji->get_by_id($id);
         if ($row) {
             $data = array(
-            	'Menu' => 'Payroll Management',
-            	'SubMenuOne' => '',
+            	'Menu' => 'Master Pekerja',
+            	'SubMenuOne' => 'Master Gaji',
             	'SubMenuTwo' => '',
             	'UserMenu' => $this->M_user->getUserMenu($user_id,$this->session->responsibility_id),
             	'UserSubMenuOne' => $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id),
@@ -73,6 +78,10 @@ class C_RiwayatGaji extends CI_Controller
         }
         else {
             $this->session->set_flashdata('message', 'Record Not Found');
+			$ses=array(
+					 "not_found" => 1
+				);
+			$this->session->set_userdata($ses);
             redirect(site_url('PayrollManagement/RiwayatGaji'));
         }
     }
@@ -84,8 +93,8 @@ class C_RiwayatGaji extends CI_Controller
         $user_id = $this->session->userid;
 
         $data = array(
-            'Menu' => 'Payroll Management',
-            'SubMenuOne' => '',
+            'Menu' => 'Master Pekerja',
+            'SubMenuOne' => 'Master Gaji',
             'SubMenuTwo' => '',
             'UserMenu' => $this->M_user->getUserMenu($user_id,$this->session->responsibility_id),
             'UserSubMenuOne' => $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id),
@@ -120,19 +129,27 @@ class C_RiwayatGaji extends CI_Controller
         
             $data = array(
 				'tgl_berlaku' => $this->input->post('txtTglBerlaku',TRUE),
-				'tgl_tberlaku' => $this->input->post('txtTglTberlaku',TRUE),
+				'tgl_tberlaku' => '9999-12-31',
 				'noind' => $this->input->post('txtNoind',TRUE),
 				'kd_hubungan_kerja' => $this->input->post('cmbKdHubunganKerja',TRUE),
 				'kd_status_kerja' => $this->input->post('cmbKdStatusKerja',TRUE),
 				'kd_jabatan' => $this->input->post('cmbKdJabatan',TRUE),
-				'gaji_pokok' => $this->input->post('txtGajiPokok',TRUE),
-				'i_f' => $this->input->post('txtIF',TRUE),
-				'kd_petugas' => $this->input->post('txtKdPetugas',TRUE),
-				'tgl_record' => $this->input->post('txtTglRecord',TRUE),
+				'gaji_pokok' => str_replace(',','',$this->input->post('txtGajiPokok',TRUE)),
+				'i_f' => str_replace(',','',$this->input->post('txtIF',TRUE)),
+				'kd_petugas' => $this->session->userdata('userid'),
+				'tgl_record' => date('Y-m-d H:i:s'),
 			);
-
+			$data_riwayat = array (
+				'tgl_tberlaku' => $this->input->post('txtTglBerlaku',TRUE),
+			);
+			
+            $this->M_riwayatgaji->update_riwayat($this->input->post('txtNoind',TRUE),'9999-12-31',$data_riwayat);
             $this->M_riwayatgaji->insert($data);
             $this->session->set_flashdata('message', 'Create Record Success');
+			$ses=array(
+					 "success_insert" => 1
+				);
+			$this->session->set_userdata($ses);
             redirect(site_url('PayrollManagement/RiwayatGaji'));
         
     }
@@ -147,8 +164,8 @@ class C_RiwayatGaji extends CI_Controller
 
         if ($row) {
             $data = array(
-                'Menu' => 'Payroll Management',
-                'SubMenuOne' => '',
+                'Menu' => 'Master Pekerja',
+                'SubMenuOne' => 'Master Gaji',
                 'SubMenuTwo' => '',
                 'UserMenu' => $this->M_user->getUserMenu($user_id,$this->session->responsibility_id),
                 'UserSubMenuOne' => $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id),
@@ -175,6 +192,10 @@ class C_RiwayatGaji extends CI_Controller
             $this->load->view('V_Footer',$data);
         } else {
             $this->session->set_flashdata('message', 'Record Not Found');
+			$ses=array(
+					 "not_found" => 1
+				);
+			$this->session->set_userdata($ses);
             redirect(site_url('PayrollManagement/RiwayatGaji'));
         }
     }
@@ -186,19 +207,23 @@ class C_RiwayatGaji extends CI_Controller
         
             $data = array(
 				'tgl_berlaku' => $this->input->post('txtTglBerlaku',TRUE),
-				'tgl_tberlaku' => $this->input->post('txtTglTberlaku',TRUE),
+				'tgl_tberlaku' => '9999-12-31',
 				'noind' => $this->input->post('txtNoind',TRUE),
 				'kd_hubungan_kerja' => $this->input->post('cmbKdHubunganKerja',TRUE),
 				'kd_status_kerja' => $this->input->post('cmbKdStatusKerja',TRUE),
 				'kd_jabatan' => $this->input->post('cmbKdJabatan',TRUE),
-				'gaji_pokok' => $this->input->post('txtGajiPokok',TRUE),
-				'i_f' => $this->input->post('txtIF',TRUE),
-				'kd_petugas' => $this->input->post('txtKdPetugas',TRUE),
-				'tgl_record' => $this->input->post('txtTglRecord',TRUE),
+				'gaji_pokok' => str_replace(',','',$this->input->post('txtGajiPokok',TRUE)),
+				'i_f' => str_replace(',','',$this->input->post('txtIF',TRUE)),
+				'kd_petugas' => $this->session->userdata('userid'),
+				'tgl_record' => date('Y-m-d H:i:s'),
 			);
 
             $this->M_riwayatgaji->update($this->input->post('txtIdRiwGaji', TRUE), $data);
             $this->session->set_flashdata('message', 'Update Record Success');
+			$ses=array(
+					 "success_update" => 1
+				);
+			$this->session->set_userdata($ses);
             redirect(site_url('PayrollManagement/RiwayatGaji'));
         
     }
@@ -210,34 +235,128 @@ class C_RiwayatGaji extends CI_Controller
         if ($row) {
             $this->M_riwayatgaji->delete($id);
             $this->session->set_flashdata('message', 'Delete Record Success');
+			$ses=array(
+					 "success_delete" => 1
+				);
+			$this->session->set_userdata($ses);
             redirect(site_url('PayrollManagement/RiwayatGaji'));
         } else {
             $this->session->set_flashdata('message', 'Record Not Found');
+			$ses=array(
+					 "not_found" => 1
+				);
+			$this->session->set_userdata($ses);
             redirect(site_url('PayrollManagement/RiwayatGaji'));
         }
     }
 
-    public function import($data = array(), $filename = ''){
+ public function import() {
+       
+        $config['upload_path'] = 'assets/upload/importPR/mastergaji/';
+        $config['allowed_types'] = 'csv';
+        $config['max_size'] = '6000';
+        $this->load->library('upload', $config);
+ 
+        if (!$this->upload->do_upload('importfile')) { echo $this->upload->display_errors();}
+        else {  $file_data  = $this->upload->data();
+                $filename   = $file_data['file_name'];
+                $file_path  = 'assets/upload/importPR/mastergaji/'.$file_data['file_name'];
+                
+            if ($this->csvimport->get_array($file_path)) {
+                
+                $csv_array  = $this->csvimport->get_array($file_path);
+                $data_exist = array();
+                $i = 0;
+                foreach ($csv_array as $row) {
+                    if(array_key_exists('KD_HUB_KER', $row)){
+                    	
+ 						//ROW DATA
+	                    $data = array(
+	                    	'tgl_berlaku' => date("Y-m-d",strtotime($row['TGL_BERLAKU'])),
+							'tgl_tberlaku' => '9999-12-31',
+							'noind' => $row['NOIND'],
+							'kd_hubungan_kerja' => $row['KD_HUBKER'],
+							'kd_status_kerja' => $row['KD_STATUS_KER'],
+							'kd_jabatan' => $row['KD_JABATAN'],
+							'gaji_pokok' => $row['GAJI_POKOK'],
+							'i_f' => $row['I_F'],
+							'kd_petugas' => $this->session->userdata('userid'),
+							'tgl_record' => date('Y-m-d H:i:s'),
+	                    );
 
-        $this->checkSession();
-        $user_id = $this->session->userid;
+                    	//CHECK IF EXIST
+                    	$noind = $row['NOIND'];
+	                   	$check = $this->M_riwayatgaji->check($noind);
 
-        $data = array(
-            'Menu' => 'Payroll Management',
-            'SubMenuOne' => '',
-            'SubMenuTwo' => '',
-            'UserMenu' => $this->M_user->getUserMenu($user_id,$this->session->responsibility_id),
-            'UserSubMenuOne' => $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id),
-            'UserSubMenuTwo' => $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id),
-            'action' => site_url('PayrollManagement/RiwayatGaji/import'),
-            'data' => $data,
-            'filename' => $filename,
-        );
+	                    if($check){
+	                    	$data_exist[$i] = $data;
+	                    	$i++;
+							$data_update = array(
+								'tgl_tberlaku'	=> date("Y-m-d",strtotime($row['TGL_BERLAKU'])),
+							);
+							$this->M_riwayatgaji->update_riwayat($row['NOIND'],'9999-12-31',$data_update);
+							$this->M_riwayatgaji->insert($data);
+	                    }else{
+	                    	$this->M_riwayatgaji->insert($data);
+	                    }
 
-        $this->load->view('V_Header',$data);
-        $this->load->view('V_Sidemenu',$data);
-        $this->load->view('PayrollManagement/RiwayatGaji/V_import', $data);
-        $this->load->view('V_Footer',$data);
+                	}else{
+                		//ROW DATA
+                		$data = array(
+	                    	'tgl_berlaku' => date("Y-m-d",strtotime($row['TGL_BERLAKU'])),
+							'tgl_tberlaku' => '9999-12-31',
+							'noind' => $row['NOIND'],
+							'kd_hubungan_kerja' => $row['KD_HUBKER'],
+							'kd_status_kerja' => $row['KD_STATUS_KER'],
+							'kd_jabatan' => $row['KD_JABATAN'],
+							'gaji_pokok' => $row['GAJI_POKOK'],
+							'i_f' => $row['I_F'],
+							'kd_petugas' => $this->session->userdata('userid'),
+							'tgl_record' => date('Y-m-d H:i:s'),
+	                    );
+
+	                    //CHECK IF EXIST
+                    	$noind = $row['NOIND'];
+	                   	$check = $this->M_riwayatgaji->check($noind);
+
+	                    if($check){
+	                    	$data_exist[$i] = $data;
+	                    	$i++;
+							$data_update = array(
+								'tgl_tberlaku'	=> date("Y-m-d",strtotime($row['TGL_BERLAKU'])),
+							);
+							$this->M_riwayatgaji->update_riwayat($row['NOIND'],'9999-12-31',$data_update);
+							$this->M_riwayatgaji->insert($data);
+	                    }else{
+	                    	$this->M_riwayatgaji->insert($data);
+	                    }
+	                    
+                	}
+                }
+
+                //LOAD EXIST DATA VERIFICATION PAGE
+                $this->checkSession();
+        		$user_id = $this->session->userid;
+        
+        		$data['Menu'] = 'Master Pekerja';
+        		$data['SubMenuOne'] = '';
+        		$data['SubMenuTwo'] = '';
+
+		        $data['UserMenu'] = $this->M_user->getUserMenu($user_id,$this->session->responsibility_id);
+        		$data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id);
+        		$data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id);
+		        $data['data_exist'] = $data_exist;
+				$this->session->set_flashdata('message', 'Create Record Success');
+				$ses=array(
+						 "success_import" => 1
+					);
+				$this->session->set_userdata($ses);
+				unlink($file_path);
+				redirect(site_url('PayrollManagement/RiwayatGaji'));
+                } else {
+                $this->load->view('csvindex');
+            }
+        }
     }
 
     public function upload() {
@@ -273,21 +392,25 @@ class C_RiwayatGaji extends CI_Controller
 
         foreach ($importData as $row) {
             $data = array(
-                'tgl_berlaku' => $row['tgl_berlaku'],
-                'tgl_tberlaku' => $row['tgl_tberlaku'],
-                'noind' => $row['noind'],
-                'kd_hubungan_kerja' => $row['kd_hubungan_kerja'],
-                'kd_status_kerja' => $row['kd_status_kerja'],
-                'kd_jabatan' => $row['kd_jabatan'],
-                'gaji_pokok' => $row['gaji_pokok'],
-                'i_f' => $row['i_f'],
-                'kd_petugas' => $row['kd_petugas'],
-                'tgl_record' => $row['tgl_record'],
+               'tgl_berlaku' => $row['TGL_BERLAKU'],
+				'tgl_tberlaku' => '9999-12-31',
+				'noind' => $row['NOIND'],
+				'kd_hubungan_kerja' => $row['KD_HUBKER'],
+				'kd_status_kerja' => $row['KD_STATUS_KER'],
+				'kd_jabatan' => $row['KD_JABATAN'],
+				'gaji_pokok' => $row['GAJI_POKOK'],
+				'i_f' => $row['I_F'],
+				'kd_petugas' => $this->session->userdata('userid'),
+				'tgl_record' => date('Y-m-d H:i:s'),
             );
             $this->M_riwayatgaji->insert($data);
         }
 
         $this->session->set_flashdata('message', 'Create Record Success');
+			$ses=array(
+					 "success_import" => 1
+				);
+			$this->session->set_userdata($ses);
         redirect(site_url('PayrollManagement/RiwayatGaji'));
     }
 

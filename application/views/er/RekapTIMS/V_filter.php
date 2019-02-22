@@ -22,7 +22,7 @@
 													<div class="input-group-addon">
 														From
 													</div>
-												<input type="text" id="rekapBegin" class="form-control" name="rekapBegin" required>
+													<input type="text" id="rekapBegin" class="form-control" name="rekapBegin" required>
 												</div>
 											</div>
 										</div>
@@ -32,7 +32,7 @@
 													<div class="input-group-addon">
 														To
 													</div>
-												<input type="text" id="rekapEnd" class="form-control" name="rekapEnd" required>
+													<input type="text" id="rekapEnd" class="form-control" name="rekapEnd" required>
 												</div>
 											</div>
 										</div>
@@ -41,129 +41,149 @@
 										<div class="col-md-3">
 											<label class="control-label">Status Hubungan Kerja</label>
 										</div>
-										<div class="col-md-8">
+										<div class="col-md-7">
 											<div class="form-group">
 												<div class="input-group">
 													<div class="input-group-addon">
 														<i class="glyphicon glyphicon-briefcase"></i>
 													</div>
-													<select data-placeholder="Pilih Salah Satu!" class="form-control select2" style="width:100%" name ="statushubker" required>
+													<select id="er-status" data-placeholder="Pilih Salah Satu!" class="form-control select2" style="width:100%" name ="statushubker[]" required multiple="multiple">
 														<option value=""><option>
-														<?php foreach ($status as $status_item){
-														?>
-															<option value="<?php echo $status_item['fs_noind'];?>"><?php echo $status_item['fs_noind'].' - '.$status_item['fs_ket'];?></option>
-													<?php } ?>
-													</select>
+															<!-- <option value="All">ALL</option> -->
+															<?php foreach ($status as $status_item){
+																?>
+																<option value="<?php echo $status_item['fs_noind'];?>"><?php echo $status_item['fs_noind'].' - '.$status_item['fs_ket'];?></option>
+																<?php } ?>
+															</select>
+														</div>
+													</div>
+												</div>
+												<div class="col-md-1">
+													<label style="margin-top: 5px" class="pull-center">
+														<input class="azek" type="checkbox" id="er_all" class="form-control" name="statusAll" value="1">
+														ALL
+													</label>
 												</div>
 											</div>
-										</div>
-									</div>
-									<div class="row" style="margin: 10px 10px">
-										<div class="col-md-3">
-											<label class="control-label">Departemen</label>
-										</div>
-										<div class="col-md-8">
-											<div class="form-group">
-												<div class="input-group">
-													<div class="input-group-addon">
-														<i class="glyphicon glyphicon-user"></i>
-													</div>
-													<select id="departemen_select" data-placeholder="Pilih Salah Satu!" class="form-control select2" style="width:100%" name="departemen" required>
-														<option value=""></option>
+											<div class="row" style="margin: 10px 10px">
+												<div class="col-md-3">
+													<label class="control-label">Departemen</label>
+												</div>
+												<div class="col-md-8">
+													<div class="form-group">
+														<div class="input-group">
+															<div class="input-group-addon">
+																<i class="glyphicon glyphicon-user"></i>
+															</div>
+															<select data-placeholder="Pilih Salah Satu!" class="form-control select2 RekapAbsensi-cmbDepartemen" style="width:100%" name="cmbDepartemen" required>
+														<!-- <option value=""></option>
 														<option value="All">ALL</option>
 														<?php foreach ($dept as $dept_item){
 														?>
 															<option value="<?php echo $dept_item['dept'];?>"><?php echo $dept_item['dept'];?></option>
-													<?php } ?>
-													</select>
-												</div>
-											</div>
-										</div>
-									</div>
-									<div class="row" style="margin: 10px 10px">
-										<div class="col-md-3">
-											<label class="control-label">Bidang</label>
-										</div>
-										<div class="col-md-8">
-											<div class="form-group">
-												<div class="input-group">
-													<div class="input-group-addon">
-														<i class="glyphicon glyphicon-user"></i>
+															<?php } ?> -->
+														</select>
 													</div>
-													<select id="bidang_select" data-placeholder="Pilih Salah Satu!" class="form-control select2" style="width:100%" name="bidang" required disabled>
-														<option value=""></option>
-														
-
-													</select>
 												</div>
 											</div>
 										</div>
-									</div>
-									<div class="row" style="margin: 10px 10px">
-										<div class="col-md-3">
-											<label class="control-label">Unit</label>
-										</div>
-										<div class="col-md-8">
-											<div class="form-group">
-												<div class="input-group">
-													<div class="input-group-addon">
-														<i class="glyphicon glyphicon-user"></i>
+										<div class="row" style="margin: 10px 10px">
+											<div class="col-md-3">
+												<label class="control-label">Bidang</label>
+											</div>
+											<div class="col-md-8">
+												<div class="form-group">
+													<div class="input-group">
+														<div class="input-group-addon">
+															<i class="glyphicon glyphicon-user"></i>
+														</div>
+														<select data-placeholder="Pilih Salah Satu!" class="form-control select2 RekapAbsensi-cmbBidang" style="width:100%" name="cmbBidang" required>
+														</select>
 													</div>
-													<select id="unit_select" data-placeholder="Pilih Salah Satu!" class="form-control select2" style="width:100%" name="unit" required disabled>
-														<option value=""></option>
-														
-													</select>
 												</div>
 											</div>
 										</div>
-									</div>
-									<div class="row" style="margin: 10px 10px">
-										<div class="col-md-3">
-											<label class="control-label">Seksi</label>
-										</div>
-										<div class="col-md-8">
-											<div class="form-group">
-												<div class="input-group">
-													<div class="input-group-addon">
-														<i class="glyphicon glyphicon-user"></i>
+										<div class="row" style="margin: 10px 10px">
+											<div class="col-md-3">
+												<label class="control-label">Unit</label>
+											</div>
+											<div class="col-md-8">
+												<div class="form-group">
+													<div class="input-group">
+														<div class="input-group-addon">
+															<i class="glyphicon glyphicon-user"></i>
+														</div>
+														<select data-placeholder="Pilih Salah Satu!" class="form-control select2 RekapAbsensi-cmbUnit" style="width:100%" name="cmbUnit" required>
+														</select>
 													</div>
-													<select id="section_select" data-placeholder="Pilih Salah Satu!" class="form-control select2" style="width:100%" name="section" required disabled>
-														<option value=""></option>
-														<option value="0" disabled>Pilih Unit terlebih dahulu</option>
-														
-													</select>
 												</div>
 											</div>
 										</div>
-									</div>
-									<div class="row" style="margin: 10px 10px;vertical-align: middle">
-										<div class="col-md-7">
-										</div>
-										<div class="col-md-3">
-											<div class="form-group" style="vertical-align: middle">
-												<div class="checkbox">
-													<label>
-														<input id="toggle_button" name="detail" type="checkbox" value="1">
-														Tampilkan Detail Data TIMS
-													</label>
+										<div class="row" style="margin: 10px 10px">
+											<div class="col-md-3">
+												<label class="control-label">Seksi</label>
+											</div>
+											<div class="col-md-8">
+												<div class="form-group">
+													<div class="input-group">
+														<div class="input-group-addon">
+															<i class="glyphicon glyphicon-user"></i>
+														</div>
+														<select data-placeholder="Pilih Salah Satu!" class="form-control select2 RekapAbsensi-cmbSeksi" style="width:100%" name="cmbSeksi" required>
+														</select>
+													</div>
 												</div>
 											</div>
 										</div>
-										<div class="col-md-1">
-											<span id="submit-filter-rekap" class="btn btn-primary pull-right" style="vertical-align: middle">
-												PROSES
-											</span>
+										<div class="row" style="margin: 10px 10px">
+											<div class="col-md-3">
+												<label class="control-label">Lokasi Kerja</label>
+											</div>
+											<div class="col-md-8">
+												<div class="form-group">
+													<div class="input-group">
+														<div class="input-group-addon">
+															<i class="glyphicon glyphicon-briefcase"></i>
+														</div>
+														<select data-placeholder="Pilih Salah Satu!" class="form-control select2" style="width:100%" name="cmbloker" required>
+															<option value="00">SEMUA LOKASI KERJA</option>
+															<?php 
+															foreach ($loker as $lok) { ?>
+																<option value="<?php echo $lok['id_'] ?>"><?php echo $lok['id_']." - ".$lok['lokasi_kerja'] ?></option>
+															<?php }
+															?>
+														</select>
+													</div>
+												</div>
+											</div>
+										</div>
+										<div class="row" style="margin: 10px 10px;vertical-align: middle">
+											<div class="col-md-7">
+											</div>
+											<div class="col-md-3">
+												<div class="form-group" style="vertical-align: middle">
+													<div class="checkbox">
+														<label>
+															<input id="toggle_button" name="detail" type="checkbox" value="1">
+															Tampilkan Detail Data TIMS
+														</label>
+													</div>
+												</div>
+											</div>
+											<div class="col-md-1">
+												<span id="submit-filter-rekap" class="btn btn-primary pull-right" style="vertical-align: middle">
+													PROSES
+												</span>
+											</div>
 										</div>
 									</div>
+								</form>
+								<div id="table-div">
 								</div>
-							</form>
-							<div id="table-div">
-								
 							</div>
-						</div>
-					</fieldset>
+						</fieldset>
+					</div>
 				</div>
 			</div>
 		</div>
-	</div>
-</section>
+	</section>
