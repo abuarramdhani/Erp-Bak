@@ -2,7 +2,7 @@
 
 Defined('BASEPATH') or exit('No direct script access allowed');
 
-class C_PNBPAdministrator extends CI_Controller
+class C_Report extends CI_Controller
 {
 	
 	public function __construct()
@@ -16,26 +16,9 @@ class C_PNBPAdministrator extends CI_Controller
 		$this->load->library('session');
 		$this->load->model('M_Index');
 		$this->load->model('SystemAdministration/MainMenu/M_user');
+		$this->load->model('PNBPAdministrator/M_report');
 		  
-	}
-
-	public function index(){
-
-		$this->checksession();
-		$user_id = $this->session->userid;
-
-		$data['Menu'] = 'PNBP Administrator';
-		$data['SubMenuOne'] = '';
-		$data['SubMenuTwo'] = '';
-		
-		$data['UserMenu'] = $this->M_user->getUserMenu($user_id,$this->session->responsibility_id);
-		$data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id);
-		$data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id);
-
-		$this->load->view('V_Header',$data);
-		$this->load->view('V_Sidemenu',$data);
-		$this->load->view('PNBPAdministrator/V_index',$data);
-		$this->load->view('V_Footer',$data);
+		$this->checkSession();
 	}
 
 	public function checkSession(){
@@ -44,6 +27,32 @@ class C_PNBPAdministrator extends CI_Controller
 		}else{
 			redirect('');
 		}
+	}
+
+	public function index(){
+		$user_id = $this->session->userid;
+
+		$data['Title'] = 'Report Data';
+		$data['Menu'] = 'Report';
+		$data['SubMenuOne'] = '';
+		$data['SubMenuTwo'] = '';
+		
+		$data['UserMenu'] = $this->M_user->getUserMenu($user_id,$this->session->responsibility_id);
+		$data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id);
+		$data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id);
+
+		$data['periode'] = $this->M_report->getPeriode();
+
+		$this->load->view('V_Header',$data);
+		$this->load->view('V_Sidemenu',$data);
+		$this->load->view('PNBPAdministrator/Report/V_index',$data);
+		$this->load->view('V_Footer',$data);
+	}
+
+	public function getPekerja(){
+		$text = $this->input->get('term');
+		$data = $this->M_report->getPekerjaHasHasil($text);
+		echo json_encode($data);
 	}
 }
 

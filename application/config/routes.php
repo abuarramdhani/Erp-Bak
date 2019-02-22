@@ -942,6 +942,10 @@ $route['PayrollManagement/Report/RincianHutang'] = 'PayrollManagement/Report/Rin
 $route['PayrollManagement/Report/RincianHutang/(:any)'] = 'PayrollManagement/Report/RincianHutang/C_RincianHutang/$1';
 $route['PayrollManagement/Report/RincianHutang/(:any)/(:any)'] = 'PayrollManagement/Report/RincianHutang/C_RincianHutang/$1/$2';
 
+$route['PayrollManagement/Report'] = 'PayrollManagement/Report/C_Report';
+$route['PayrollManagement/Report/(:any)'] = 'PayrollManagement/Report/C_Report/$1';
+$route['PayrollManagement/Report/(:any)/(:any)'] = 'PayrollManagement/Report/C_Report/$1/$2';
+
 $route['AccountPayables/KlikBCAChecking/Index'] 				= 'AccountPayables/C_KlikBCAChecking_Index';
 $route['AccountPayables/KlikBCAChecking/Index/(:any)'] 			= 'AccountPayables/C_KlikBCAChecking_Index/$1';
 $route['AccountPayables/KlikBCAChecking/Index/(:any)/(:any)'] 	= 'AccountPayables/C_KlikBCAChecking_Index/$1/$2';
@@ -2306,3 +2310,15 @@ $route['PNBP/SetupIndikator/(:any)/(:any)'] = 'PNBPAdministrator/C_SetupIndikato
 $route['PNBP/SetupPernyataan'] = 'PNBPAdministrator/C_SetupPernyataan';
 $route['PNBP/SetupPernyataan/(:any)'] = 'PNBPAdministrator/C_SetupPernyataan/$1';
 $route['PNBP/SetupPernyataan/(:any)/(:any)'] = 'PNBPAdministrator/C_SetupPernyataan/$1/$2';
+
+$route['PNBP/SetupQuestioner'] = 'PNBPAdministrator/C_SetupQuestioner';
+$route['PNBP/SetupQuestioner/(:any)'] = 'PNBPAdministrator/C_SetupQuestioner/$1';
+$route['PNBP/SetupQuestioner/(:any)/(:any)'] = 'PNBPAdministrator/C_SetupQuestioner/$1/$2';
+
+$route['PNBP/Questioner'] = 'PNBPAdministrator/C_Questioner';
+$route['PNBP/Questioner/(:any)'] = 'PNBPAdministrator/C_Questioner/$1';
+$route['PNBP/Questioner/(:any)/(:any)'] = 'PNBPAdministrator/C_Questioner/$1/$2';
+
+$route['PNBP/Report'] = 'PNBPAdministrator/C_Report';
+$route['PNBP/Report/(:any)'] = 'PNBPAdministrator/C_Report/$1';
+$route['PNBP/Report/(:any)'] = 'PNBPAdministrator/C_Report/$1/$2';

@@ -79,7 +79,8 @@
 		                                    <div class="panel-footer">
 		                                        <div class="row text-right">
 		                                        	<?php if (isset($export)) { ?>
-		                                        		<a target="_blank" href="<?php echo base_url('RekapTIMSPromosiPekerja/Overtime/Export/'.$export) ?>" class="btn btn-success btn-lg">Export Excel</a>
+		                                        		<a target="_blank" href="<?php echo base_url('RekapTIMSPromosiPekerja/Overtime/Export/pdf_'.$export) ?>" class="btn btn-danger btn-lg">Export Pdf</a>
+		                                        		<a target="_blank" href="<?php echo base_url('RekapTIMSPromosiPekerja/Overtime/Export/xls_'.$export) ?>" class="btn btn-success btn-lg">Export Excel</a>
 		                                        	<?php } ?>
 		                                            <button class="btn btn-info btn-lg" type="submit">
 		                                                Proses
@@ -93,7 +94,7 @@
 									<div class="col-lg-12">
 										<?php if (isset($table) and !empty($table)) { $no = 1; ?>
 											<div class="table-responsive">
-												<table class="table table-striped table-bordered tabl-hover datatable-ma">
+												<table class="table table-striped table-bordered tabl-hover datatable-overtime">
 													<thead class="bg-primary">
 														<tr>
 															<th>No</th>
@@ -101,9 +102,10 @@
 															<th>Nama</th>
 															<th>Seksi</th>
 															<th>Total Jam kerja</th>
+															<th>Total Hari kerja</th>
 															<th>Overtime</th>
-															<th>Rerata</th>
 															<th>NET</th>
+															<th>Rerata Net/Hari</th>
 														</tr>
 													</thead>
 													<tbody>
@@ -115,9 +117,10 @@
 																<td><?php echo $key['noind'].' - '.$key['nama']; ?></td>
 																<td><?php echo $key['seksi']; ?></td>
 																<td><?php echo number_format($key['jam_kerja'],'2',',','.') ?></td>
+																<td><?php echo number_format($key['hari_kerja'],'0',',','.') ?></td>
 																<td><?php echo number_format($key['overtime'],'2',',','.') ?></td>
-																<td><?php echo number_format($key['rerata'],'2',',','.') ?></td>
 																<td><?php echo number_format($key['net'],'2',',','.') ?></td>
+																<td><?php echo number_format($key['rerata_net'],'2',',','.') ?></td>
 															</tr>
 														<?php $no++; } ?>
 													</tbody>

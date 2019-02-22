@@ -24,11 +24,12 @@ class M_overtime extends CI_Model
 				tdp.noind,
 				tp.nama,
 				ts.seksi, 
-				count(tp.nama) harikerja,
-				sum(extract(epoch from tdp.keluar::time - tdp.masuk::time))/3600 jam_kerja,
+				count(tp.nama) hari_kerja,
+				sum(extract(epoch from tdp.keluar::time - tsp.jam_msk::time))/3600 jam_kerja,
 				sum(extract(epoch from tdp.keluar::time - tsp.jam_plg::time))/3600 overtime,
 				(sum(extract(epoch from tdp.keluar::time - tsp.jam_plg::time))/3600)/count(tp.nama) rerata,
-				(sum(extract(epoch from tdp.keluar::time - tsp.jam_plg::time)) - coalesce(sum(extract(epoch from tdt.masuk::time - tdt.keluar::time)),0))/3600 net
+				(sum(extract(epoch from tdp.keluar::time - tsp.jam_plg::time)) - coalesce(sum(extract(epoch from tdt.masuk::time - tdt.keluar::time)),0))/3600 net,
+				(sum(extract(epoch from tdp.keluar::time - tsp.jam_msk::time))/3600)/count(tp.nama) rerata_net
 				from \"Presensi\".tdatapresensi  tdp
 				inner join \"Presensi\".tshiftpekerja tsp
 				on tsp.noind = tdp.noind 
@@ -41,6 +42,7 @@ class M_overtime extends CI_Model
 				left join \"Presensi\".tdatatim tdt
 				on tdt.tanggal = tdp.tanggal
 				and tdt.noind = tdp.noind
+				and tdt.kd_ket = 'TIK'
 				where tdp.tanggal between '$periode1' and '$periode2'
 				$kd
 				and tdp.kd_ket = 'PKJ'

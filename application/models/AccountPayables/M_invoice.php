@@ -238,35 +238,35 @@ class M_invoice extends CI_Model{
 		$qname 		= "AND name = '$name'"; if($name==""){$qname="";}
 		
 		$qket		= "";
-						if($ket1=="yes" && $ket2=="no"){$qket="and description = 'REPORTED'";}
-						else if($ket1=="no" && $ket2=="yes"){$qket="and description = 'UNREPORTED'";}
+						if($ket1=="yes" && $ket2=="no"){$qket="and kfw.description = 'REPORTED'";}
+						else if($ket1=="no" && $ket2=="yes"){$qket="and kfw.description = 'UNREPORTED'";}
 						else{$qket="";}
 		
 		$qsta		= "";
 						if($sta1=="yes"){
 							if($sta2=="yes"){
 								if($sta3=="yes"){
-									$qsta="and (status = 'NORMAL' or 'PENGGANTI' or 'DIGANTI')"; //semua
+									$qsta="and (kfw.status = 'NORMAL' or 'PENGGANTI' or 'DIGANTI')"; //semua
 								} else {
-									$qsta="and (status = 'NORMAL' or 'PENGGANTI')"; // A dan B
+									$qsta="and (kfw.status = 'NORMAL' or 'PENGGANTI')"; // A dan B
 								}
 							} else {
 								if($sta3=="yes"){
-									$qsta="and (status = 'NORMAL' or 'DIGANTI')"; // A dan C
+									$qsta="and (kfw.status = 'NORMAL' or 'DIGANTI')"; // A dan C
 								} else {
-									$qsta="and (status = 'NORMAL')"; // A
+									$qsta="and (kfw.status = 'NORMAL')"; // A
 								}
 							}
 						} else {
 							if($sta2=="yes"){
 								if($sta3=="yes"){
-									$qsta="and (status = 'PENGGANTI' or 'DIGANTI')"; // B dan C
+									$qsta="and (kfw.status = 'PENGGANTI' or 'DIGANTI')"; // B dan C
 								} else {
-									$qsta="and (status = 'PENGGANTI')"; // B
+									$qsta="and (kfw.status = 'PENGGANTI')"; // B
 								}
 							} else {
 								if($sta3=="yes"){
-									$qsta="and (status = 'DIGANTI')"; // C
+									$qsta="and (kfw.status = 'DIGANTI')"; // C
 								} else {
 									$qsta=""; //semua
 								}
@@ -274,31 +274,31 @@ class M_invoice extends CI_Model{
 						}
 
 		$qtyp		= "";
-						if($typ1=="yes" && $typ2=="no"){$qtyp="and faktur_type = 'Y'";}
-						else if($typ1=="no" && $typ2=="yes"){$qtyp="and faktur_type = 'N'";}
+						if($typ1=="yes" && $typ2=="no"){$qtyp="and kfw.faktur_type = 'Y'";}
+						else if($typ1=="no" && $typ2=="yes"){$qtyp="and kfw.faktur_type = 'N'";}
 						else if($typ1=="yes" && $typ2=="yes"){$qtyp="";}
 						
 		$this->load->dbutil();
 		
 		$oracle = $this->load->database("oracle",true);
 		$q=$oracle->query("
-			SELECT FM
-				,SUBSTR(FAKTUR_PAJAK,0,2) AS KODE_JENIS_TRANS
-				,SUBSTR(FAKTUR_PAJAK,3,1) AS FG_PENGGANTI
-				,SUBSTR(FAKTUR_PAJAK,4) AS NOMOR_FAKTUR
-				,MONTH AS MASA_PAJAK
-				,YEAR AS TAHUN_PAJAK
-				,case when faktur_date
+			SELECT kfw.FM
+				,SUBSTR(kfw.FAKTUR_PAJAK,0,2) AS KODE_JENIS_TRANS
+				,SUBSTR(kfw.FAKTUR_PAJAK,3,1) AS FG_PENGGANTI
+				,SUBSTR(kfw.FAKTUR_PAJAK,4) AS NOMOR_FAKTUR
+				,kfw.MONTH AS MASA_PAJAK
+				,kfw.YEAR AS TAHUN_PAJAK
+				,case when kfw.faktur_date
 					is NULL then null 	
-					else to_char(faktur_date, 'DD/MM/YYYY')
+					else to_char(kfw.faktur_date, 'DD/MM/YYYY')
 					end as TANGGAL_FAKTUR
-				,NPWP
-				,NAME AS NAMA
-				,ADDRESS AS ALAMAT_LENGKAP
-				,DPP
-				,PPN
-				,PPN_BM
-				,IS_CREDITABLE_FLAG
+				,kfw.NPWP
+				,kfw.NAME AS NAMA
+				,kfw.ADDRESS AS ALAMAT_LENGKAP
+				,kfw.DPP
+				,kfw.PPN
+				,kfw.PPN_BM
+				,kfw.IS_CREDITABLE_FLAG
 				,aia.INVOICE_NUM
 
 			FROM khs_faktur_web kfw LEFT JOIN ap_invoices_all aia ON aia.invoice_id=kfw.INVOICE_ID

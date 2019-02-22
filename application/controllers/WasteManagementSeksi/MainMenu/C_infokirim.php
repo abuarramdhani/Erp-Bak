@@ -72,8 +72,9 @@ class C_infokirim extends CI_Controller
 
 		$data['seksi'] = $this->M_info->getSeksi();
 		$data['limbah'] = $this->M_info->getLimbah();
-		$data['kodesie'] = $kodesie;
+		
 		if (!empty($_POST)) {
+			$data['kodesie'] = $this->input->post('txtValueSek');
 			$data['periode'] = $this->input->post('txtPeriodeInfo');
 			$data['kategori'] = $this->input->post('txtPilihKat');
 			$data['text'] = $this->input->post('txtHiddenValue');
