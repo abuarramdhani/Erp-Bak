@@ -40,10 +40,10 @@
 			if ($key['lokasi_kerja'] == '02' and $no <= 37) { ?>
 				<tr>
 					<td style="border-top: 1px solid black;border-bottom: 1px solid black;text-align: center;"><?php echo $no; ?></td>
-					<td style="border: 1px solid black; text-align: center;"></td>
+					<td style="border: 1px solid black; text-align: center;"><?php echo $tglterima; ?></td>
 					<td style="border: 1px solid black; text-align: center;"><?php echo $key['rekening'] ?></td>
 					<td style="border: 1px solid black;padding-left: 2px;"><?php echo $key['nama'] ?></td>
-					<td style="border: 1px solid black;padding-left: 3px;text-align: center;"><?php echo $key['total_terima'] ?></td>
+					<td style="border: 1px solid black;padding-left: 3px;text-align: center;"><?php echo number_format($key['total_terima'],0,'','.') ?></td>
 					<td style="border: 1px solid black;padding-left: 2px;"><?php echo $key['atas_nama'] ?></td>
 					<td style="border: 1px solid black; text-align: center;"><?php echo $key['bank'] ?></td>
 					<td style="border-top: 1px solid black;border-bottom: 1px solid black;"></td>
@@ -71,10 +71,10 @@
 					?>
 						<tr>
 							<td style="border-top: 1px solid black;border-bottom: 1px solid black;text-align: center;"><?php echo $no; ?></td>
-							<td style="border: 1px solid black; text-align: center;"></td>
+							<td style="border: 1px solid black; text-align: center;"><?php echo $tglterima; ?></td>
 							<td style="border: 1px solid black; text-align: center;"><?php echo $key['rekening'] ?></td>
 							<td style="border: 1px solid black;padding-left: 2px;"><?php echo $key['nama'] ?></td>
-							<td style="border: 1px solid black;padding-left: 3px;text-align: center;"><?php echo $key['total_terima'] ?></td>
+							<td style="border: 1px solid black;padding-left: 3px;text-align: center;"><?php echo number_format($key['total_terima'],0,'','.') ?></td>
 							<td style="border: 1px solid black;padding-left: 2px;"><?php echo $key['atas_nama'] ?></td>
 							<td style="border: 1px solid black; text-align: center;"><?php echo $key['bank'] ?></td>
 							<td style="border-top: 1px solid black;border-bottom: 1px solid black;"></td>
@@ -90,10 +90,10 @@
 			if ($key['lokasi_kerja'] == '01') { ?>
 				<tr>
 					<td style="border-top: 1px solid black;border-bottom: 1px solid black;text-align: center;"><?php echo $no; ?></td>
-					<td style="border: 1px solid black; text-align: center;"></td>
+					<td style="border: 1px solid black; text-align: center;"><?php echo $tglterima; ?></td>
 					<td style="border: 1px solid black; text-align: center;"><?php echo $key['rekening'] ?></td>
 					<td style="border: 1px solid black;padding-left: 2px;"><?php echo $key['nama'] ?></td>
-					<td style="border: 1px solid black;padding-left: 3px;text-align: center;"><?php echo $key['total_terima'] ?></td>
+					<td style="border: 1px solid black;padding-left: 3px;text-align: center;"><?php echo number_format($key['total_terima'],0,'','.') ?></td>
 					<td style="border: 1px solid black;padding-left: 2px;"><?php echo $key['atas_nama'] ?></td>
 					<td style="border: 1px solid black; text-align: center;"><?php echo $key['bank'] ?></td>
 					<td style="border-top: 1px solid black;border-bottom: 1px solid black;"></td>
@@ -108,8 +108,7 @@
 			<td colspan="3"></td>
 			<td style="border: 1px solid black;"><b>TOTAL</b></td>
 			<td style="border: 1px solid black;text-align: center;"><?php echo number_format($total_semua,0,'','.');?></td>
-			<td></td>
-			<td colspan="2">Yogyakarta, <?php 
+			<td colspan="3" style="text-align: center;">Yogyakarta, <?php 
 				echo date('d');
 				$month=date('m');
 				if ($month=='01') {
@@ -144,12 +143,12 @@
 			<td height="50px"></td>
 		</tr>
 		<tr>
-			<td colspan="6"></td>			
-			<td colspan="2"><u>Eko Prasetyo Adhi</u></td>
+			<td colspan="5"></td>			
+			<td colspan="3" style="text-align: center;"><u>Taufiq Giri Ichwanusofa</u></td>
 		</tr>
 		<tr style="margin-top: 10px;">
-			<td colspan="6"></td>			
-			<td colspan="2">Kepala Seksi Civil Maintenance</td>
+			<td colspan="5"></td>			
+			<td colspan="3" style="text-align: center;">Kepala Seksi Electronic Data Processing</td>
 		</tr>
 	</table>
 

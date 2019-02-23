@@ -18,7 +18,7 @@
 			</td>
 		</tr>
 		<tr>
-			<td><b>SEKSI CIVIL MAINTENANCE</b></td>
+			<td><b>SEKSI ELECTRONIC DATA PROCESSING</b></td>
 		</tr>
 		<tr>
 			<td><b>CV. KARYA HIDUP SENTOSA</b></td>
@@ -67,31 +67,31 @@
 	<table style="margin-left: 60px;font-size: 13px;margin-top: 10px;border-collapse: collapse;">
 		<tr>
 			<td style="border: 1px solid black;width: 140px;">KEPALA TUKANG</td>
-			<td style="border: 1px solid black;width: 160px;">Rp <?php echo number_format($total['t_ktukang'],2,',','.')?></td>
+			<td style="border: 1px solid black;width: 160px;">Rp <?php echo number_format(ceil($total['t_ktukang']),2,',','.')?></td>
 			<td style="width: 20px"></td>
 			<td style="border: 1px solid black;width: 150px;">KEPALA TUKANG</td>
-			<td style="border: 1px solid black;width: 160px;">Rp <?php echo number_format($total['p_ktukang'],2,',','.') ?></td>
+			<td style="border: 1px solid black;width: 160px;">Rp <?php echo number_format(ceil($total['p_ktukang']),2,',','.') ?></td>
 		</tr>
 		<tr>
 			<td style="border: 1px solid black;">TUKANG</td>
-			<td style="border: 1px solid black;">Rp <?php echo number_format($total['t_tukang'],2,',','.') ?></td>
+			<td style="border: 1px solid black;">Rp <?php echo number_format(ceil($total['t_tukang']),2,',','.') ?></td>
 			<td></td>
 			<td style="border: 1px solid black;">TUKANG</td>
-			<td style="border: 1px solid black;">Rp <?php echo number_format($total['p_tukang'],2,',','.') ?></td>
+			<td style="border: 1px solid black;">Rp <?php echo number_format(ceil($total['p_tukang']),2,',','.') ?></td>
 		</tr>
 		<tr>
 			<td style="border: 1px solid black;">SERABUTAN</td>
-			<td style="border: 1px solid black;">Rp <?php echo number_format($total['t_serabutan'],2,',','.') ?></td>
+			<td style="border: 1px solid black;">Rp <?php echo number_format(ceil($total['t_serabutan']),2,',','.') ?></td>
 			<td></td>
 			<td style="border: 1px solid black;">SERABUTAN</td>
-			<td style="border: 1px solid black;">Rp <?php echo number_format($total['p_serabutan'],2,',','.') ?></td>
+			<td style="border: 1px solid black;">Rp <?php echo number_format(ceil($total['p_serabutan']),2,',','.') ?></td>
 		</tr>
 		<tr>
 			<td style="border: 1px solid black;">TENAGA</td>
-			<td style="border: 1px solid black;">Rp <?php echo number_format($total['t_tenaga'],2,',','.') ?></td>
+			<td style="border: 1px solid black;">Rp <?php echo number_format(ceil($total['t_tenaga']),2,',','.') ?></td>
 			<td></td>
 			<td style="border: 1px solid black;">TENAGA</td>
-			<td style="border: 1px solid black;">Rp <?php echo number_format($total['p_tenaga'],2,',','.') ?></td>
+			<td style="border: 1px solid black;">Rp <?php echo number_format(ceil($total['p_tenaga']),2,',','.') ?></td>
 		</tr>
 		<tr>
 			<td height="20px;"></td>
@@ -102,10 +102,10 @@
 		</tr>
 		<tr>
 			<td style="border: 1px solid black;">TOTAL TUKSONO</td>
-			<td style="border: 1px solid black;">Rp <?php echo number_format($total['total_t'],2,',','.') ?></td>
+			<td style="border: 1px solid black;">Rp <?php echo number_format(ceil($total['total_t']),2,',','.') ?></td>
 			<td></td>
 			<td style="border: 1px solid black;">TOTAL KHS PUSAT</td>
-			<td style="border: 1px solid black;">Rp <?php echo number_format($total['total_p'],2,',','.') ?></td>
+			<td style="border: 1px solid black;">Rp <?php echo number_format(ceil($total['total_p']),2,',','.') ?></td>
 		</tr>
 		<tr>
 			<td height="20px;"></td>
@@ -116,7 +116,7 @@
 		</tr>
 		<tr>
 			<td style="border: 1px solid black;">TOTAL SEMUA</td>
-			<td style="border: 1px solid black;">Rp <?php echo number_format($total['total_semua'],2,',','.') ?></td>
+			<td style="border: 1px solid black;">Rp <?php echo number_format(ceil($total['total_semua']),2,',','.') ?></td>
 			<td></td>
 			<td></td>
 			<td></td>
@@ -170,11 +170,11 @@
 	<table style="width: 100%;font-size: 15px;text-align: center; margin-top: 55px;">
 		<tr>
 			<td><u>Bambang Yudhosuseno</u></td>
-			<td><u>Eko Prasetyo A</u></td>
+			<td><u>Taufiq Giri Ichwanusofa</u></td>
 		</tr>
 		<tr>
 			<td>Ass.Ka Dept.Personalia</td>
-			<td>Kepala Seksi Civil Maintenance</td>
+			<td>Kepala Seksi Electronic Data Processing</td>
 		</tr>
 	</table>
 </div>

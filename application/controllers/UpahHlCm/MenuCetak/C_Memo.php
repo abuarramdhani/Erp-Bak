@@ -176,11 +176,10 @@ class C_Memo extends CI_Controller {
 			$pdf->Output($filename, 'D');
 		}else{
 			$this->load->library('excel');
-
 			$worksheet = $this->excel->getActiveSheet();
 
 			$worksheet->setCellValue('B1','MEMO');
-			$worksheet->setCellValue('B2','SEKSI CIVIL MAINTENANCE');
+			$worksheet->setCellValue('B2','SEKSI ELECTRONIC DATA PROCESSING');
 			$worksheet->setCellValue('B3','CV. KARYA HIDUP SENTOSA');
 			$worksheet->setCellValue('B4','JL. MAGELANG NO. 144 YOGYAKARTA');
 			$worksheet->mergeCells('B1:F1');
@@ -214,32 +213,32 @@ class C_Memo extends CI_Controller {
 			$worksheet->setCellValue('B17','SERABUTAN');
 			$worksheet->setCellValue('B18','TENAGA');
 
-			$worksheet->setCellValue('C15',$total_t_ktukang);
-			$worksheet->setCellValue('C16',$total_t_ktukang);
-			$worksheet->setCellValue('C17',$total_t_serabutan);
-			$worksheet->setCellValue('C18',$total_t_tenaga);
+			$worksheet->setCellValue('C15',"Rp ".number_format(ceil($total_t_ktukang),2,',','.'));
+			$worksheet->setCellValue('C16',"Rp ".number_format(ceil($total_t_tukang),2,',','.'));
+			$worksheet->setCellValue('C17',"Rp ".number_format(ceil($total_t_serabutan),2,',','.'));
+			$worksheet->setCellValue('C18',"Rp ".number_format(ceil($total_t_tenaga),2,',','.'));
 
 			$worksheet->setCellValue('E15','KEPALA TUKANG');
 			$worksheet->setCellValue('E16','TUKANG');
 			$worksheet->setCellValue('E17','SERABUTAN');
 			$worksheet->setCellValue('E18','TENAGA');
 
-			$worksheet->setCellValue('F15',$total_p_ktukang);
-			$worksheet->setCellValue('F16',$total_p_tukang);
-			$worksheet->setCellValue('F17',$total_p_serabutan);
-			$worksheet->setCellValue('F18',$total_p_tenaga);
+			$worksheet->setCellValue('F15',"Rp ".number_format(ceil($total_p_ktukang),2,',','.'));
+			$worksheet->setCellValue('F16',"Rp ".number_format(ceil($total_p_tukang),2,',','.'));
+			$worksheet->setCellValue('F17',"Rp ".number_format(ceil($total_p_serabutan),2,',','.'));
+			$worksheet->setCellValue('F18',"Rp ".number_format(ceil($total_p_tenaga),2,',','.'));
 
 			$worksheet->setCellValue('B20','TOTAL TUKSONO');
 
-			$worksheet->setCellValue('C20',$total_tuksono);
+			$worksheet->setCellValue('C20',"Rp ".number_format(ceil($total_tuksono),2,',','.'));
 
 			$worksheet->setCellValue('E20','TOTAL KHS PUSAT');
 
-			$worksheet->setCellValue('F20',$total_pusat);
+			$worksheet->setCellValue('F20',"Rp ".number_format(ceil($total_pusat),2,',','.'));
 
 			$worksheet->setCellValue('B22','TOTAL SEMUA');
 
-			$worksheet->setCellValue('C22',$totalsemua);
+			$worksheet->setCellValue('C22',"Rp ".number_format(ceil($totalsemua),2,',','.'));
 
 			$worksheet->setCellValue('A24','Demikian memo ini kami sampaikan. Atas perhatian dan kerjasamanya kami sampaikan banyak terimakasih.');
 			$worksheet->mergeCells('A24:G24');
@@ -285,8 +284,8 @@ class C_Memo extends CI_Controller {
 			$worksheet->mergeCells('B32:C32');
 			$worksheet->getStyle('B31')->getFont()->setUnderline(true);
 
-			$worksheet->setCellValue('E31','Eko Prasetyo A');
-			$worksheet->setCellValue('E32','Kepala Seksi Civil Maintenance');
+			$worksheet->setCellValue('E31','Taufiq Giri Ichwanusofa');
+			$worksheet->setCellValue('E32','Kepala Seksi Electronic Data Processing');
 			$worksheet->mergeCells('E31:F31');
 			$worksheet->mergeCells('E32:F32');
 			$worksheet->getStyle('E31')->getFont()->setUnderline(true);

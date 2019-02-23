@@ -76,6 +76,8 @@ class C_Rekap extends CI_Controller {
 		$this->load->library('pdf');
 
 		$data['periode'] = $this->input->post('periode');
+		$data['tglterima'] = $this->input->post('tgl_terima');
+		$tglterima = $data['tglterima'];
 		$periodew = explode(' - ', $data['periode']);
 		$tanggalawal = date('Y-m-d',strtotime($periodew[0]));
 		$tanggalakhir = date('Y-m-d',strtotime($periodew[1]));
@@ -222,7 +224,7 @@ class C_Rekap extends CI_Controller {
 			$worksheet->setCellValue('A4','TUKSONO');
 			$worksheet->mergeCells('A4:H4');
 			$row = 5;
-			$total_semua = "";
+			$total_semua = 0;
 			$no = 1;
 			foreach ($kom as $key) {
 				if ($key['lokasi_kerja'] == '02') {
@@ -262,6 +264,7 @@ class C_Rekap extends CI_Controller {
 								$uangmakan1 	= $value['um']*$nominalum;
 								$gajilembur1 = $value['lembur']*($nominalgpokok/7);
 								$total 		= $gajipokok1+$gajilembur1+$uangmakan1;
+								$total_semua 	+= $total;
 							}
 							$dataPerubahanSesudah = $this->M_prosesgaji->getNominalPerubahan($val['tanggal_mulai_berlaku'],$tanggalakhir,$key['noind']);
 							for ($i=0; $i < 8; $i++) { 
@@ -277,6 +280,7 @@ class C_Rekap extends CI_Controller {
 								$uangmakan2 	= $value['um']*$nominalum;
 								$gajilembur2 = $value['lembur']*($nominalgpokok/7);
 								$total 		+= $gajipokok2+$gajilembur2+$uangmakan2;
+								$total_semua 	+= $total;
 								$gajipokok 	= $gajipokok1+$gajipokok2;
 								$uangmakan 	= $uangmakan1+$uangmakan2;
 								$gajilembur = $gajilembur1+$gajilembur2;
@@ -299,10 +303,12 @@ class C_Rekap extends CI_Controller {
 						$gajilembur = $lembur*($nominalgpokok/7);
 						$gajilembur = number_format($gajilembur,'0','.','');
 						$total 		= $gajipokok+$gajilembur+$uangmakan;
+						$total_semua += $total;
 						$total 		= number_format($total,'0','.','');
 					}
 
 					$worksheet->setCellValueByColumnAndRow(0,$row,$no);
+					$worksheet->setCellValueByColumnAndRow(1,$row,$tglterima);
 					$worksheet->setCellValueByColumnAndRow(3,$row,$key['nama']);
 					$this->excel->getActiveSheet()->getStyle('E'.$row)->getNumberFormat()->setFormatCode('#,##0');
 					// $this->excel->getActiveSheet()->getStyle('E'.$row)->getNumberFormat()->setFormatCode(PHPExcel_Style_NumberFormat::FORMAT_NUMBER_COMMA_SEPARATED1);
@@ -372,6 +378,7 @@ class C_Rekap extends CI_Controller {
 								$uangmakan1 	= $value['um']*$nominalum;
 								$gajilembur1 = $value['lembur']*($nominalgpokok/7);
 								$total 		= $gajipokok1+$gajilembur1+$uangmakan1;
+								$total_semua += $total;
 							}
 							$dataPerubahanSesudah = $this->M_prosesgaji->getNominalPerubahan($val['tanggal_mulai_berlaku'],$tanggalakhir,$key['noind']);
 							for ($i=0; $i < 8; $i++) { 
@@ -387,6 +394,7 @@ class C_Rekap extends CI_Controller {
 								$uangmakan2 	= $value['um']*$nominalum;
 								$gajilembur2 = $value['lembur']*($nominalgpokok/7);
 								$total 		+= $gajipokok2+$gajilembur2+$uangmakan2;
+								$total_semua += $total;
 								$gajipokok 	= $gajipokok1+$gajipokok2;
 								$uangmakan 	= $uangmakan1+$uangmakan2;
 								$gajilembur = $gajilembur1+$gajilembur2;
@@ -409,10 +417,12 @@ class C_Rekap extends CI_Controller {
 						$gajilembur = $lembur*($nominalgpokok/7);
 						$gajilembur = number_format($gajilembur,'0','.','');
 						$total 		= $gajipokok+$gajilembur+$uangmakan;
+						$total_semua += $total;
 						$total 		= number_format($total,'0','.','');
 					}
 
 					$worksheet->setCellValueByColumnAndRow(0,$row,$no);
+					$worksheet->setCellValueByColumnAndRow(1,$row,$tglterima);
 					$worksheet->setCellValueByColumnAndRow(3,$row,$key['nama']);
 					$this->excel->getActiveSheet()->getStyle('E'.$row)->getNumberFormat()->setFormatCode('#,##0');
 					// $this->excel->getActiveSheet()->getStyle('E'.$row)->getNumberFormat()->setFormatCode(PHPExcel_Style_NumberFormat::FORMAT_NUMBER_COMMA_SEPARATED1);
@@ -481,8 +491,8 @@ class C_Rekap extends CI_Controller {
 				};
 				$ttd .= date('Y');
 			$worksheet->setCellValue($coorCellSave5,'Yogyakarta, '.$ttd);
-			$worksheet->setCellValue($coorCellSave6,'Eko Prasetyo Adhi');
-			$worksheet->setCellValue($coorCellSave7,'Kepala Seksi Civil Maintenance');
+			$worksheet->setCellValue($coorCellSave6,'Taufiq Giri Ichwanusofa');
+			$worksheet->setCellValue($coorCellSave7,'Kepala Seksi Electronic Data Processing');
 			$worksheet->getStyle($coorCellSave6)->getFont()->setUnderline(true);
 
 			$this->excel->getActiveSheet()->getColumnDimension('A')->setWidth('5');
