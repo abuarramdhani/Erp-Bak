@@ -10,11 +10,22 @@
 				<form target="_blank" style="margin-left: 200px" method="POST" action="<?php echo base_url('HitungHlcm/Rekap/cetakpdf');?>">
 					<div class="row">
 						<div class="form-group">
-							<div class="col-lg-1">
+							<div class="col-lg-2 text-right">
 								<label class="control-label">Periode</label>
 							</div>
 							<div class="col-lg-3">
 								<input name="periode" class="prosesgaji-daterangepicker form-control"></input>
+							</div>
+						</div>
+					</div>
+					<br>
+					<div class="row">
+						<div class="form-group">
+							<div class="col-lg-2 text-right">
+								<label class="control-label">Tanggal Terima</label>
+							</div>
+							<div class="col-lg-3">
+								<input name="tgl_terima" class="prosesgaji-daterangepickersingledate form-control"></input>
 							</div>
 						</div>
 					</div>
