@@ -48,7 +48,7 @@ for ($i=0; $i < 2; $i++) {
 		echo date('Y',strtotime($period[0]));
 		echo " - ";
 		echo date('d',strtotime($period[1]));
-		if ($month1=='01') {
+		if ($month2=='01') {
 					echo " Januari ";
 				}elseif ($month2=='02') {
 					echo " Februari ";

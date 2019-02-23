@@ -169,7 +169,7 @@
 	</table>
 	<table style="width: 100%;font-size: 15px;text-align: center; margin-top: 55px;">
 		<tr>
-			<td><u>Bambang Yudhosuseno</u></td>
+			<td width="45%"><u>Bambang Yudhosuseno</u></td>
 			<td><u>Taufiq Giri Ichwanusofa</u></td>
 		</tr>
 		<tr>
