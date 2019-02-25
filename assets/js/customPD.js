@@ -488,30 +488,20 @@ $(document).ready(function(){
 
 // report start
 
-function radarBarPNBP(canvas){
+function radarBarPNBP(canvas,label,hasil,maks){
 	var ctx = $(canvas);
 	var radarBarPNBP = new Chart(ctx,{
 	type : 'radar',
 	data : {
-		labels :['KERJA TIM','SELALU BELAJAR DAN BERUBAH','HIDUP SEDERHANA','INTEGRITAS','UNGGUL','ORIENTASI PADA PELANGGAN','FANATIK TERHADAP DETAIL'],
-		datasets : [{
-			data : [10,40,30,12,45,5,39],
-			backgroundColor : ['#bbdefb'],
-			hoverBackgroundColor : ['#2979ff'],
-			borderColor : ['#42a5f5'],
-			label : 'Kelompok 1'
-		},
-		{
-			data : [30,20,45,15,18,13,55],
-			backgroundColor : ['#f8bbd0'],
-			hoverBackgroundColor : ['#f50057'],
-			borderColor : ['#e91e63'],
-			label : 'Kelompok 2'
-		}]
+		labels : label,
+		datasets : hasil
 	},
 	options : {
 		scale : {
-			display : true
+			display : true,
+			ticks : {
+				max : maks
+			}
 		}
 	}
 })
@@ -522,7 +512,7 @@ $(document).ready(function(){
 	$('.selectPekerjaReportPNBP').select2({
 		placeholder: "Pekerja",
 		searching: true,
-		minimumInputLength: 1,
+		minimumInputLength: 3,
 		allowClear: false,
 		ajax:
 		{
@@ -532,7 +522,8 @@ $(document).ready(function(){
 			type: 'GET',
 			data: function(params){
 				return {
-					term: params.term
+					term: params.term,
+					periode: $('.selectPeriodeQuestionerPNBP').find(':selected').val()
 				}
 			},
 			processResults: function (data){
@@ -546,7 +537,147 @@ $(document).ready(function(){
 	});
 
 	$('#btnSubmitChartPNBP').on('click',function(){
-		radarBarPNBP('#canvasReportPNBP');
+		var periode = $('.selectPeriodeQuestionerPNBP').find(':selected').val();
+		var noind 	= $('.selectPekerjaReportPNBP').find(':selected').val();
+		if (periode == "" || noind =="") {
+			alert('Data Masih Kosong');
+		}else{
+			$('#chartBig').html('');
+			$('#chartBig').html('<canvas id="canvasReportPNBP"></canvas>');
+			$('#chartSmall1').html('');
+			$('#chartSmall1').html('<canvas id="canvasReportPNBP1"></canvas>');
+			$('#chartSmall2').html('');
+			$('#chartSmall2').html('<canvas id="canvasReportPNBP2"></canvas>');
+			$.ajax({
+				type 	: 'POST',
+				data 	: {periode : periode, noind : noind},
+				url 	: baseurl+'PNBP/Report/getData',
+				success : function(data){
+					var obj = JSON.parse(data);
+					var aspek = [];
+					var ds = [];
+					ds = [{
+						data : [],
+						borderColor : '#42a5f5',
+						backgroundColor : 'transparent',
+						pointBackgroundColor : '#2979ff' ,
+						label : 'Kelompok 1'
+					},
+					{
+						data : [],
+						borderColor : '#e91e63',
+						backgroundColor : 'transparent',
+						pointBackgroundColor : '#f50057',
+						label : 'Kelompok 2'
+					}];
+					for (var i = 0; i < obj.length; i++) {
+						for (var j = 0; j < obj[i]['data'].length; j++) {
+							ds[i]['data'].push(obj[i]['data'][j]);
+							ds[i]['label'] = obj[i]['label'];
+							ds[i]['borderColor'] = obj[i]['borderColor'];
+							ds[i]['pointBackgroundColor'] = obj[i]['pointBackgroundColor'];
+							ds[i]['backgroundColor'] = obj[i]['backgroundColor'];
+							if (i == 0) {
+								aspek.push(obj[i]['notes'][j]);
+							}
+						}
+					}
+					radarBarPNBP('#canvasReportPNBP',aspek,ds,100);
+					
+				}
+			});
+			$.ajax({
+				type 	: 'POST',
+				data 	: {periode : periode, noind : noind},
+				url 	: baseurl+'PNBP/Report/getData1',
+				success : function(data){
+					var obj = JSON.parse(data);
+					var aspek = [];
+					var ds = [];
+					ds = [{
+						data : [],
+						borderColor : '#42a5f5',
+						backgroundColor : 'transparent',
+						pointBackgroundColor : '#2979ff' ,
+						label : 'Kelompok 1'
+					},
+					{
+						data : [],
+						borderColor : '#e91e63',
+						backgroundColor : 'transparent',
+						pointBackgroundColor : '#f50057',
+						label : 'Kelompok 2'
+					}];
+					for (var i = 0; i < obj.length; i++) {
+						for (var j = 0; j < obj[i]['data'].length; j++) {
+							ds[i]['data'].push(obj[i]['data'][j]);
+							ds[i]['label'] = obj[i]['label'];
+							ds[i]['borderColor'] = obj[i]['borderColor'];
+							ds[i]['pointBackgroundColor'] = obj[i]['pointBackgroundColor'];
+							ds[i]['backgroundColor'] = obj[i]['backgroundColor'];
+							if (i == 0) {
+								aspek.push(obj[i]['notes'][j]);
+							}
+						}
+					}
+					radarBarPNBP('#canvasReportPNBP1',aspek,ds,15);
+					
+				}
+			});
+			$.ajax({
+				type 	: 'POST',
+				data 	: {periode : periode, noind : noind},
+				url 	: baseurl+'PNBP/Report/getData2',
+				success : function(data){
+					var obj = JSON.parse(data);
+					var aspek = [];
+					var ds = [];
+					ds = [{
+						data : [],
+						borderColor : '#42a5f5',
+						backgroundColor : 'transparent',
+						pointBackgroundColor : '#2979ff',
+						label : 'Kelompok 1'
+					}];
+					for (var i = 0; i < obj.length; i++) {
+						for (var j = 0; j < obj[i]['data'].length; j++) {
+							ds[i]['data'].push(obj[i]['data'][j]);
+							ds[i]['label'] = obj[i]['label'];
+							ds[i]['borderColor'] = obj[i]['borderColor'];
+							ds[i]['pointBackgroundColor'] = obj[i]['pointBackgroundColor'];
+							ds[i]['backgroundColor'] = obj[i]['backgroundColor'];
+							if (i == 0) {
+								aspek.push(obj[i]['notes'][j]);
+							}
+						}
+					}
+					radarBarPNBP('#canvasReportPNBP2',aspek,ds,15);
+					
+				}
+			});
+			$.ajax({
+				type 	: 'POST',
+				data 	: {periode : periode, noind : noind},
+				url 	: baseurl+'PNBP/Report/getNama',
+				success : function(data){
+					dat = JSON.parse(data);
+					identity = dat[0];
+					$('#labelPNBPReportNoind').text(identity['noind']);
+					$('#labelPNBPReportNama').text(identity['nama']);
+					$('#labelPNBPReportUsia').text(identity['usia']);
+					$('#labelPNBPReportJenkel').text(identity['jenkel']);
+					$('#labelPNBPReportSuku').text(identity['nama_suku']);
+					$('#labelPNBPReportPendidikan').text(identity['pendidikan']);
+					$('#labelPNBPReportDept').text(identity['department_name']);
+					$('#labelPNBPReportSeksi').text(identity['section_name']);
+					$('#labelPNBPReportStatus').text(identity['status_kerja']);
+					$('#labelPNBPReportMasaKerja').text(identity['masa_kerja']);
+					$('#labelPNBPReportKepuasan').text(identity['kepuasan']);
+					$('#identitasPNBPReport').removeClass('hidden');
+				}
+			});
+		}
+		
 	});
 })
 

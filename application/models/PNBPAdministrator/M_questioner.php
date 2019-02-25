@@ -157,12 +157,13 @@ class M_questioner extends CI_Model
 		return ;
 	}
 
-	public function gethasilPeriodeIni(){
+	public function gethasilPeriodeIni($noind){
 		$sql = "select *
 				from pd.pnbp_hasil ph
 				inner join pd.pnbp_periode pp
 				on ph.id_periode::int = pp.id_periode
-				where current_date between pp.periode_awal and pp.periode_akhir";
+				where current_date between pp.periode_awal and pp.periode_akhir
+				and ph.noind = '$noind'";
 		$result = $this->db->query($sql);
 		return $result->num_rows();
 	}
