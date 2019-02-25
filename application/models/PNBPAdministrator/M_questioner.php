@@ -27,15 +27,7 @@ class M_questioner extends CI_Model
 							tsek.seksi
 						end seksi,
 						tsek.dept,
-						(
-						select 
-							tstatjab.nama_jabatan 
-						from hrd_khs.tb_status_jabatan tstatjab 
-						where tpri.noind = tstatjab.noind 
-						and tstatjab.status_data = '01' 
-						order by tstatjab.tgl_berlaku desc 
-						limit 1
-						)		
+						tpri.jabatan nama_jabatan		
 				from hrd_khs.tpribadi tpri
 				left join hrd_khs.tseksi tsek
 				on tsek.kodesie = tpri.kodesie
