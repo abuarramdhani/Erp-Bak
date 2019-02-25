@@ -86,49 +86,65 @@ class C_LimbahRekap extends CI_Controller
 			$seksi = "and limkir.kodesie_kirim in($seksi)";
 		}
 
-		$data = $this->M_limbahrekap->getDataExport($tglAwal,$tglAkhir,$limbah,$seksi);
+		$data = $this->M_limbahrekap->getExportAll($tglAwal,$tglAkhir,$limbah,$seksi);
 
 		$this->load->library('excel');
+		
+		$this->excel->setActiveSheetIndex(0);
 
-		$this->excel->getActiveSheet()->setCellValue('A1','No');
-		$this->excel->getActiveSheet()->setCellValue('B1','Jenis Limbah');
-		$this->excel->getActiveSheet()->setCellValue('C1','Tanggal Kirim');
-		$this->excel->getActiveSheet()->setCellValue('D1','Waktu Kirim');
-		$this->excel->getActiveSheet()->setCellValue('E1','Pengirim');
-		$this->excel->getActiveSheet()->setCellValue('F1','Seksi Asal Limbah');
-		$this->excel->getActiveSheet()->setCellValue('G1','Bocor');
-		$this->excel->getActiveSheet()->setCellValue('H1','Jumlah');
-		$this->excel->getActiveSheet()->setCellValue('I1','Berat(Kg)');
-		$this->excel->getActiveSheet()->setCellValue('J1','keterangan');
+		$this->excel->getActiveSheet()->setTitle('Simple');
+		$this->excel->getActiveSheet()->setCellValue('A1', 'Kode Limbah');
+		$this->excel->getActiveSheet()->setCellValue('B1', 'Tanggal Dihasilkan/Dikirim');
+		$this->excel->getActiveSheet()->setCellValue('C1', 'Masa Simpan (Hari)');
+		$this->excel->getActiveSheet()->setCellValue('D1', 'TPS');
+		$this->excel->getActiveSheet()->setCellValue('E1', 'Sumber Limbah');
+		$this->excel->getActiveSheet()->setCellValue('F1', 'Kode Manifest');
+		$this->excel->getActiveSheet()->setCellValue('G1', 'Nama Penghasil/Pengirim');
+		$this->excel->getActiveSheet()->setCellValue('H1', 'Jumlah (TON)');
+		$this->excel->getActiveSheet()->setCellValue('I1', 'Catatan');
 
-		$angka = 1;
-		foreach ($data as $key) {
-			$this->excel->getActiveSheet()->setCellValue('A'.($angka+1),$angka);
-			$this->excel->getActiveSheet()->setCellValue('B'.($angka+1),$key['jenis']);
-			$this->excel->getActiveSheet()->setCellValue('C'.($angka+1),$key['tanggal']);
-			$this->excel->getActiveSheet()->setCellValue('D'.($angka+1),$key['waktu']);
-			$this->excel->getActiveSheet()->setCellValue('E'.($angka+1),$key['pengirim']);
-			$this->excel->getActiveSheet()->setCellValue('F'.($angka+1),$key['section_name']);
-			$this->excel->getActiveSheet()->setCellValue('G'.($angka+1),$key['bocor']);
-			$this->excel->getActiveSheet()->setCellValue('H'.($angka+1),$key['jumlah']);
-			$this->excel->getActiveSheet()->setCellValue('I'.($angka+1),$key['berat']);
-			$this->excel->getActiveSheet()->setCellValue('J'.($angka+1),$key['keterangan']);
+		$this->excel->getActiveSheet()->getColumnDimension('A')->setWidth(20);
+		$this->excel->getActiveSheet()->getColumnDimension('B')->setWidth(30);
+		$this->excel->getActiveSheet()->getColumnDimension('C')->setWidth(20);
+		$this->excel->getActiveSheet()->getColumnDimension('D')->setWidth(30);
+		$this->excel->getActiveSheet()->getColumnDimension('E')->setWidth(20);
+		$this->excel->getActiveSheet()->getColumnDimension('F')->setWidth(20);
+		$this->excel->getActiveSheet()->getColumnDimension('G')->setWidth(30);
+		$this->excel->getActiveSheet()->getColumnDimension('H')->setWidth(20);
+		$this->excel->getActiveSheet()->getColumnDimension('I')->setWidth(20);
 
-			$angka++;
+		$this->excel->getActiveSheet()->getDefaultRowDimension()->setRowHeight(-1);
+		$style = array(
+			'alignment' => array(
+				'horizontal' => PHPExcel_Style_Alignment::HORIZONTAL_CENTER
+			)
+		);
+		$border = array(
+			'borders' => array(
+				'allborders' => array(
+					'style' => PHPExcel_style_border::BORDER_THIN
+				)
+			)
+		);
+		$this->excel->getActiveSheet()->getStyle('A1:I1')->getFont()->setBold(true);
+		$this->excel->getActiveSheet()->getStyle('A1:I1')->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
+		$this->excel->getDefaultStyle()->applyFromArray($style);
+		$a = 2;
+		foreach ($data as $row) {
+			$this->excel->getActiveSheet()->setCellValue('A'.$a, $row['kode_limbah']);
+			$this->excel->getActiveSheet()->setCellValue('B'.$a, $row['tanggal_dihasilkan']);
+			$this->excel->getActiveSheet()->setCellValue('C'.$a, $row['masa_simpan']);
+			$this->excel->getActiveSheet()->setCellValue('D'.$a, $row['tps']);
+			$this->excel->getActiveSheet()->setCellValue('E'.$a, $row['sumber']);
+			$this->excel->getActiveSheet()->setCellValue('F'.$a, $row['kode_manifest']);
+			$this->excel->getActiveSheet()->setCellValue('G'.$a, $row['pengirim_nama']);
+			$this->excel->getActiveSheet()->setCellValue('H'.$a, $row['jumlah']);
+			$this->excel->getActiveSheet()->setCellValue('I'.$a, $row['catatan']);
+			$a++;
 		}
-
-		$this->excel->getActiveSheet()->getColumnDimension('A')->setWidth('5');
-		$this->excel->getActiveSheet()->getColumnDimension('B')->setWidth('20');
-		$this->excel->getActiveSheet()->getColumnDimension('C')->setWidth('20');
-		$this->excel->getActiveSheet()->getColumnDimension('D')->setWidth('20');
-		$this->excel->getActiveSheet()->getColumnDimension('E')->setWidth('40');
-		$this->excel->getActiveSheet()->getColumnDimension('F')->setWidth('40');
-		$this->excel->getActiveSheet()->getColumnDimension('G')->setWidth('10');
-		$this->excel->getActiveSheet()->getColumnDimension('H')->setWidth('10');
-		$this->excel->getActiveSheet()->getColumnDimension('I')->setWidth('10');
-		$this->excel->getActiveSheet()->getColumnDimension('J')->setWidth('50');
-
-		$filename ='Limbah'.$periode.'.xls';
+		$a -= 1;
+		$this->excel->getActiveSheet()->getStyle('A1:I'.$a)->applyFromArray($border);
+		$filename ='SIMPLE.xls';
 		header('Content-Type: aplication/vnd.ms-excel');
 		header('Content-Disposition:attachment;filename="'.$filename.'"');
 		header('Cache-Control: max-age=0');

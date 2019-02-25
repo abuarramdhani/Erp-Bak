@@ -65,5 +65,27 @@ class M_limbahrekap extends CI_Model
 		$result = $this->db->query($sql);
 		return $result->result_array();
 	}
+
+	public function getExportAll($tgl_awal,$tgl_akhir,$id_limbah,$kd_sie){
+		$query = "	select 	limjen.kode_limbah,
+							cast(limkir.tanggal_kirim as date) tanggal_dihasilkan, 
+							'90' masa_simpan,
+							'MASUK KE TPS INTERNAL' tps,
+							'TPS INTERNAL' sumber,
+							'' kode_manifest,
+							'CV. Karya Hidup Sentosa' pengirim_nama,
+							cast(limkir.berat_kirim as float)/1000 jumlah,
+							'' catatan
+					from ga.ga_limbah_kirim limkir
+					inner join ga.ga_limbah_jenis limjen
+						on limjen.id_jenis_limbah = limkir.id_jenis_limbah
+					where tanggal_kirim between '$tgl_awal' and '$tgl_akhir'
+					and limkir.status_kirim = '1'
+					$id_limbah
+					$kd_sie
+					order by tanggal_kirim desc";
+		$result = $this->db->query($query);
+		return $result->result_array();
+	}
 }
 ?>
