@@ -330,3 +330,22 @@ $(document).on('click','#btnCloseSimple',function(e){
       ],
     });
   });
+
+  $(document).ready(function(){
+    // $('.dataTable-limbahKelola').DataTable();
+    $('.dataTable-limbahKelola tfoot th').each(function(){
+      var title = $(this).text();
+      $(this).html('<input type="text" placeholder="search '+title+'"></input>');
+    });
+      var tableLimbahKelola = $('.dataTable-limbahKelola').DataTable();
+      tableLimbahKelola.columns().every(function(){
+        var that = this;
+        $('input',this.footer()).on('keyup change',function(){
+          that
+              .search(this.value,true,false)
+              .draw();
+        });
+      });
+    
+   
+  });
