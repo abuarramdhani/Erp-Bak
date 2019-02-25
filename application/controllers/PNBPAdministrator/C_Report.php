@@ -12,7 +12,6 @@ class C_Report extends CI_Controller
         $this->load->helper('url');
         $this->load->helper('html');
         $this->load->library('form_validation');
-          //load the login model
 		$this->load->library('session');
 		$this->load->model('M_Index');
 		$this->load->model('SystemAdministration/MainMenu/M_user');
@@ -50,8 +49,188 @@ class C_Report extends CI_Controller
 	}
 
 	public function getPekerja(){
-		$text = $this->input->get('term');
-		$data = $this->M_report->getPekerjaHasHasil($text);
+		$noind = $this->input->get('term');
+		$prd = $this->input->get('periode');
+		$data = $this->M_report->getPekerjaHasHasil($noind,$prd);
+		echo json_encode($data);
+	}
+
+	public function getData(){
+		$noind = $this->input->post('noind');
+		$periode = $this->input->post('periode');
+
+		$data = $this->M_report->getData($noind,$periode);
+		$label = $this->M_report->getLabel();
+		$array = array();
+		$i = 0;
+		$j = 0;
+		$kelompok = "";
+
+		$warna = array('rgba(255,23,68,1)','rgba(3,163,244,1)','rgba(118,255,3,1)','rgba(255,235,3,1)','rgba(255,235,59,1)','rgba(121,85,72,1)','rgba(124,77,255,1)');
+		$warna2 = array('rgba(255,23,68,0.1)','rgba(3,163,244,0.1)','rgba(118,255,3,0.1)','rgba(255,235,3,0.1)','rgba(255,235,59,0.1)','rgba(121,85,72,0.1)','rgba(124,77,255,0.1)');
+
+		foreach ($data as $key) {
+			if ($key['kelompok'] !== $kelompok) {
+				if ($kelompok == "") {
+					$i = 0;
+				}else{
+					$i++;
+				}
+				
+				$array[$i]['label'] = $key['kelompok'];
+				$array[$i]['borderColor'] = $warna[$i];
+				$array[$i]['backgroundColor'] = $warna2[$i];
+				$array[$i]['pointBackgroundColor'] = $warna[$i] ;
+				$j = 0;
+				foreach ($label as $lbl) {
+					if (!isset($array[$i]['notes'][$j]) or empty($array[$i]['notes'][$j])) {
+						$array[$i]['data'][$j] = "0";
+					}
+					if ($lbl['nama_aspek'] == $key['nama_aspek']) {
+						$array[$i]['notes'][$j] = $key['nama_aspek'];
+						$array[$i]['data'][$j] = number_format($key['nilai'],2);
+					}
+					$j++;
+				}
+				
+			}else{
+				$j = 0;
+				foreach ($label as $lbl) {
+					if (!isset($array[$i]['notes'][$j]) or empty($array[$i]['notes'][$j])) {
+						$array[$i]['data'][$j] = "0";
+					}
+					if ($lbl['nama_aspek'] == $key['nama_aspek']) {
+						$array[$i]['notes'][$j] = $key['nama_aspek'];
+						$array[$i]['data'][$j] = number_format($key['nilai'],2);
+					}
+					$j++;
+				}
+			}
+			$kelompok = $key['kelompok'];
+		}
+
+		echo json_encode($array);
+	}
+
+	public function getData1(){
+		$noind = $this->input->post('noind');
+		$periode = $this->input->post('periode');
+
+		$data = $this->M_report->getDataKecil1($noind,$periode);
+		$label = $this->M_report->getLabel();
+		$array = array();
+		$i = 0;
+		$j = 0;
+		$kelompok = "";
+
+		$warna = array('rgba(255,23,68,1)','rgba(3,163,244,1)','rgba(118,255,3,1)','rgba(255,235,3,1)','rgba(255,235,59,1)','rgba(121,85,72,1)','rgba(124,77,255,1)');
+		$warna2 = array('rgba(255,23,68,0.1)','rgba(3,163,244,0.1)','rgba(118,255,3,0.1)','rgba(255,235,3,0.1)','rgba(255,235,59,0.1)','rgba(121,85,72,0.1)','rgba(124,77,255,0.1)');
+
+		foreach ($data as $key) {
+			if ($key['kelompok'] !== $kelompok) {
+				if ($kelompok == "") {
+					$i = 0;
+				}else{
+					$i++;
+				}
+				
+				$array[$i]['label'] = $key['kelompok'];
+				$array[$i]['borderColor'] = $warna[$i];
+				$array[$i]['backgroundColor'] = $warna2[$i];
+				$array[$i]['pointBackgroundColor'] = $warna[$i] ;
+				$j = 0;
+				foreach ($label as $lbl) {
+					if (!isset($array[$i]['notes'][$j]) or empty($array[$i]['notes'][$j])) {
+						$array[$i]['data'][$j] = "0";
+					}
+					if ($lbl['nama_aspek'] == $key['nama_aspek']) {
+						$array[$i]['notes'][$j] = $key['nama_aspek'];
+						$array[$i]['data'][$j] = number_format($key['nilai'],2);
+					}
+					$j++;
+				}
+				
+			}else{
+				$j = 0;
+				foreach ($label as $lbl) {
+					if (!isset($array[$i]['notes'][$j]) or empty($array[$i]['notes'][$j])) {
+						$array[$i]['data'][$j] = "0";
+					}
+					if ($lbl['nama_aspek'] == $key['nama_aspek']) {
+						$array[$i]['notes'][$j] = $key['nama_aspek'];
+						$array[$i]['data'][$j] = number_format($key['nilai'],2);
+					}
+					$j++;
+				}
+			}
+			$kelompok = $key['kelompok'];
+		}
+
+		echo json_encode($array);
+	}
+
+	public function getData2(){
+		$noind = $this->input->post('noind');
+		$periode = $this->input->post('periode');
+
+		$data = $this->M_report->getDataKecil2($noind,$periode);
+		$label = $this->M_report->getLabel();
+		$array = array();
+		$i = 0;
+		$j = 0;
+		$kelompok = "";
+
+		$warna = array('rgba(118,255,3,1)','rgba(255,235,3,1)','rgba(255,235,59,1)','rgba(121,85,72,1)','rgba(124,77,255,1)','rgba(255,23,68,1)','rgba(3,163,244,1)');
+		$warna2 = array('rgba(118,255,3,0.1)','rgba(255,235,3,0.1)','rgba(255,235,59,0.1)','rgba(121,85,72,0.1)','rgba(124,77,255,0.1)','rgba(255,23,68,0.1)','rgba(3,163,244,0.1)');
+
+		foreach ($data as $key) {
+			if ($key['kelompok'] !== $kelompok) {
+				if ($kelompok == "") {
+					$i = 0;
+				}else{
+					$i++;
+				}
+				
+				$array[$i]['label'] = $key['kelompok'];
+				$array[$i]['borderColor'] = $warna[$i];
+				$array[$i]['backgroundColor'] = $warna2[$i];
+				$array[$i]['pointBackgroundColor'] = $warna[$i] ;
+				$j = 0;
+				foreach ($label as $lbl) {
+					if (!isset($array[$i]['notes'][$j]) or empty($array[$i]['notes'][$j])) {
+						$array[$i]['data'][$j] = "0";
+					}
+					if ($lbl['nama_aspek'] == $key['nama_aspek']) {
+						$array[$i]['notes'][$j] = $key['nama_aspek'];
+						$array[$i]['data'][$j] = number_format($key['nilai'],2);
+					}
+					$j++;
+				}
+				
+			}else{
+				$j = 0;
+				foreach ($label as $lbl) {
+					if (!isset($array[$i]['notes'][$j]) or empty($array[$i]['notes'][$j])) {
+						$array[$i]['data'][$j] = "0";
+					}
+					if ($lbl['nama_aspek'] == $key['nama_aspek']) {
+						$array[$i]['notes'][$j] = $key['nama_aspek'];
+						$array[$i]['data'][$j] = number_format($key['nilai'],2);
+					}
+					$j++;
+				}
+			}
+			$kelompok = $key['kelompok'];
+		}
+
+		echo json_encode($array);
+	}
+
+	public function getNama(){
+		$noind = $this->input->post('noind');
+		$periode = $this->input->post('periode');
+
+		$data = $this->M_report->getDemografi($noind,$periode);
 		echo json_encode($data);
 	}
 }
