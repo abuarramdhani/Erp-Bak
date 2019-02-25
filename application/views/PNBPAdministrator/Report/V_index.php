@@ -74,7 +74,7 @@
 																		</div>
 																	</div>
 																	<div class="form-group">
-																		<label class="control-label col-lg-4" style="padding-top: 0px">Golongan Usia :</label>
+																		<label class="control-label col-lg-4" style="padding-top: 0px">Gol. Usia :</label>
 																		<div class="col-lg-8">
 																			<label id="labelPNBPReportUsia"></label>
 																		</div>
@@ -116,7 +116,7 @@
 																		</div>
 																	</div>
 																	<div class="form-group">
-																		<label class="control-label col-lg-4" style="padding-top: 0px">Golongan Masa Kerja :</label>
+																		<label class="control-label col-lg-4" style="padding-top: 0px">Gol. Masa Kerja :</label>
 																		<div class="col-lg-8">
 																			<label id="labelPNBPReportMasaKerja"></label>
 																		</div>

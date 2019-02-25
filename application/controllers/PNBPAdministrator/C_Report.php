@@ -87,7 +87,8 @@ class C_Report extends CI_Controller
 						$array[$i]['data'][$j] = "0";
 					}
 					if ($lbl['nama_aspek'] == $key['nama_aspek']) {
-						$array[$i]['notes'][$j] = $key['nama_aspek'];
+						$aspek = explode(" ", $key['nama_aspek']);
+						$array[$i]['notes'][$j] = $aspek;
 						$array[$i]['data'][$j] = number_format($key['nilai'],2);
 					}
 					$j++;
@@ -100,7 +101,8 @@ class C_Report extends CI_Controller
 						$array[$i]['data'][$j] = "0";
 					}
 					if ($lbl['nama_aspek'] == $key['nama_aspek']) {
-						$array[$i]['notes'][$j] = $key['nama_aspek'];
+						$aspek = explode(" ", $key['nama_aspek']);
+						$array[$i]['notes'][$j] = $aspek;
 						$array[$i]['data'][$j] = number_format($key['nilai'],2);
 					}
 					$j++;
@@ -144,7 +146,8 @@ class C_Report extends CI_Controller
 						$array[$i]['data'][$j] = "0";
 					}
 					if ($lbl['nama_aspek'] == $key['nama_aspek']) {
-						$array[$i]['notes'][$j] = $key['nama_aspek'];
+						$aspek = explode(" ", $key['nama_aspek']);
+						$array[$i]['notes'][$j] = $aspek;
 						$array[$i]['data'][$j] = number_format($key['nilai'],2);
 					}
 					$j++;
@@ -157,7 +160,8 @@ class C_Report extends CI_Controller
 						$array[$i]['data'][$j] = "0";
 					}
 					if ($lbl['nama_aspek'] == $key['nama_aspek']) {
-						$array[$i]['notes'][$j] = $key['nama_aspek'];
+						$aspek = explode(" ", $key['nama_aspek']);
+						$array[$i]['notes'][$j] = $aspek;
 						$array[$i]['data'][$j] = number_format($key['nilai'],2);
 					}
 					$j++;
@@ -201,7 +205,8 @@ class C_Report extends CI_Controller
 						$array[$i]['data'][$j] = "0";
 					}
 					if ($lbl['nama_aspek'] == $key['nama_aspek']) {
-						$array[$i]['notes'][$j] = $key['nama_aspek'];
+						$aspek = explode(" ", $key['nama_aspek']);
+						$array[$i]['notes'][$j] = $aspek;
 						$array[$i]['data'][$j] = number_format($key['nilai'],2);
 					}
 					$j++;
@@ -214,7 +219,8 @@ class C_Report extends CI_Controller
 						$array[$i]['data'][$j] = "0";
 					}
 					if ($lbl['nama_aspek'] == $key['nama_aspek']) {
-						$array[$i]['notes'][$j] = $key['nama_aspek'];
+						$aspek = explode(" ", $key['nama_aspek']);
+						$array[$i]['notes'][$j] = $aspek;
 						$array[$i]['data'][$j] = number_format($key['nilai'],2);
 					}
 					$j++;
