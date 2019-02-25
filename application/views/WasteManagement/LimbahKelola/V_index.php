@@ -20,7 +20,7 @@
 							</div>
 							<div class="box-body">
 								<div class="table-responsive">
-									<table class="datatable table table-striped table-bordered table-hover text-left dataTable-limbah" style="font-size:12px;">
+									<table class="datatable table table-striped table-bordered table-hover text-left dataTable-limbahKelola" style="font-size:12px;">
 										<thead class="bg-primary">
 											<tr>
 												<th>No</th>
@@ -91,6 +91,20 @@
 													$a++;
 											} ?>
 										</tbody>
+										<tfoot>
+											<tr>
+												<th>No</th>
+												<th>Action</th>
+												<th>Seksi Asal Limbah</th>
+												<th>Pekerja Pengirim</th>
+												<th>Tanggal Kirim</th>
+												<th>Waktu Kirim</th>
+												<th>jenis Limbah</th>
+												<th>Jumlah</th>
+												<th>Berat (Kg)</th>
+												<th>Status</th>
+											</tr>
+										</tfoot>
 									</table>
 								</div>
 							</div>
