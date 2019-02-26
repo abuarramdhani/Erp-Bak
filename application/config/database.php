@@ -583,25 +583,3 @@ $efg="";
 			'save_queries'		=> TRUE,
 			'port' 				=> 3306
 		);
-		$db['db_dev'] = array(
-			'dsn'				=> '',
-			'hostname' 			=> 'dev.quick.com',
-			'username' 			=> 'postgres',
-			'password' 			=> 'password',
-			'database' 			=> 'Personalia',
-			'dbdriver' 			=> 'postgre',
-			'dbprefix' 			=> '',
-			'pconnect' 			=> FALSE,
-			'db_debug' 			=> TRUE,
-			'cache_on' 			=> FALSE,
-			'cachedir' 			=> '',
-			'char_set' 			=> 'utf8',
-			'dbcollat' 			=> 'utf8_general_ci',
-			'swap_pre' 			=> '',
-			'encrypt' 			=> FALSE,
-			'compress' 			=> FALSE,
-			'stricton' 			=> FALSE,
-			'failover' 			=> array(),
-			'save_queries'		=> TRUE,
-			'port' 				=> 5432
-		);
