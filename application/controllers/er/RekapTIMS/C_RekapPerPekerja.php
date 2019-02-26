@@ -670,7 +670,7 @@ class C_RekapPerPekerja extends CI_Controller {
 		$filename = 'rekapTims.pdf';
 		
 
-		$html = $this->load->view('er/RekapTims/V_cetak_tims_per_pekerja', $data, true);
+		$html = $this->load->view('er/RekapTIMS/V_cetak_tims_per_pekerja', $data, true);
 
 		$stylesheet1 = file_get_contents(base_url('assets/plugins/bootstrap/3.3.7/css/bootstrap.css'));
 		$pdf->WriteHTML($stylesheet1,1);
