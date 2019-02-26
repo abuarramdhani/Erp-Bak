@@ -197,7 +197,6 @@
 																on 	pri.noind=tmutasi.noind
 											$parameterCari
 											order by 	tmutasi.tglberlaku::date desc";
-											// echo $ambilRiwayatMutasi;exit();
 			$queryAmbilRiwayatMutasi 	=	$this->personalia->query($ambilRiwayatMutasi);
 			return $queryAmbilRiwayatMutasi->result_array();
 		} 
