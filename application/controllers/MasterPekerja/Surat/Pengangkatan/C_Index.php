@@ -234,22 +234,22 @@ class C_Index extends CI_Controller
 		{
 			if($cekStaf[0]['status']=='STAF')
 			{
-				$kode_surat 	=	'DU/KI-C';
+				$kode_surat 	=	'DU/KI-A';
 			}
 			else
 			{
-				$kode_surat 	=	'PS/KI-N';
+				$kode_surat 	=	'PS/KI-0';
 			}
 		}
 		else
 		{
 			if($cekStaf[0]['status']=='STAF')
 			{
-				$kode_surat 	=	'DU/KI-C';
+				$kode_surat 	=	'DU/KI-A';
 			}
 			else
 			{
-				$kode_surat 	=	'PS/KI-N';
+				$kode_surat 	=	'PS/KI-0';
 			}
 			$kode_surat 	=	$kode_surat;
 		}

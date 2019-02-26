@@ -272,12 +272,14 @@ class C_Index extends CI_Controller
 		if($edit == '1')
 			{
 				$nomor_surat 	=	$nomor_surat;
+
 			}
 			else
 			{
 				$nomorSuratTerakhir 	= 	$this->M_perbantuan->ambilNomorSuratTerakhir($parameterTahun, $parameterBulan, $kode_surat);
 			// print_r($nomorSuratTerakhir);
 				$nomorSuratTerakhir 	=	$nomorSuratTerakhir[0]['jumlah'];
+				// print_r($nomorSuratTerakhir);
 				$nomorSuratTerakhir 	=	$nomorSuratTerakhir+1;
 
 				if($nomorSuratTerakhir<1000)
@@ -289,7 +291,9 @@ class C_Index extends CI_Controller
 				}
 
 				$nomor_surat 	=	$nomorSuratTerakhir;
+
 			}
+
 		// echo $parameterTahunBulan;
 
 		$tembusan 	=	$this->personalia->tembusanDuaPihak($kd_jabatan_lama, $seksi_lama, $kd_lokasi_lama, $kd_jabatan_baru, $seksi_baru, $kd_lokasi_baru);
