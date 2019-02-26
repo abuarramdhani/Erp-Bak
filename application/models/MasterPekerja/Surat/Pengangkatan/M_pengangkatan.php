@@ -259,9 +259,7 @@
 
 	 	public function ambilNomorSuratTerakhir($tahun, $bulan, $kodeSurat)
 	 	{
-	 		$ambilNomorSuratRotasiTerakhir 		= "	select max(no_surat) jumlah from \"Surat\".tsurat_demosi where kode = '$kodeSurat'
-											 		and extract(year from tanggal_cetak) = '$tahun'
-											 		and extract(month from tanggal_cetak) = '$bulan'";
+	 		$ambilNomorSuratRotasiTerakhir 		= "	select max(nomor_surat) jumlah from \"Surat\".t_arsip_nomor_surat where kode_surat = '$kodeSurat' and tahun_surat = '$tahun' and bulan_surat = '$bulan'";
 			// echo $ambilNomorSuratRotasiTerakhir;
 			$query 		= 	$this->personalia->query($ambilNomorSuratRotasiTerakhir);
 			return $query->result_array();

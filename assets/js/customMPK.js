@@ -360,7 +360,7 @@ $(function()
 
 						$('#MasterPekerja-SuratMutasi-DaftarPekerjaan').select2(
 						{
-							allowClear: false,
+							allowClear: true,
 							placeholder: "Pilih Pekerjaan",
 							ajax: 
 							{
@@ -463,7 +463,7 @@ $(function()
 
 					$('.MasterPekerja-SuratMutasi-DaftarPekerjaan').select2(
 					{
-						allowClear: false,
+						allowClear: true,
 						placeholder: "Pilih Pekerjaan",
 						minimumInputLength: 3,
 						ajax: 
