@@ -138,6 +138,7 @@
  	<script src="<?php echo base_url('assets/js/customBK.js');?>" type="text/javascript"></script>
  	<script src="<?php echo base_url('assets/js/customKMK.js');?>" type="text/javascript"></script>
  	<script src="<?php echo base_url('assets/js/customPD.js');?>" type="text/javascript"></script>
+ 	<script src="<?php echo base_url('assets/js/customMPO.js');?>" type="text/javascript"></script>
 	<script type="text/javascript">
 		if(counter_row <= 0){
 			var counter_row = 0;
