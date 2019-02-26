@@ -92,16 +92,16 @@ class C_LimbahRekap extends CI_Controller
 		
 		$this->excel->setActiveSheetIndex(0);
 
-		$this->excel->getActiveSheet()->setTitle('Simple');
-		$this->excel->getActiveSheet()->setCellValue('A1', 'Kode Limbah');
-		$this->excel->getActiveSheet()->setCellValue('B1', 'Tanggal Dihasilkan/Dikirim');
-		$this->excel->getActiveSheet()->setCellValue('C1', 'Masa Simpan (Hari)');
+		$this->excel->getActiveSheet()->setTitle('REKAP');
+		$this->excel->getActiveSheet()->setCellValue('A1', 'KODE LIMBAH');
+		$this->excel->getActiveSheet()->setCellValue('B1', 'TANGGAL DIHASILKAN/DITERIMA');
+		$this->excel->getActiveSheet()->setCellValue('C1', 'MASA SIMPAN (HARI)');
 		$this->excel->getActiveSheet()->setCellValue('D1', 'TPS');
-		$this->excel->getActiveSheet()->setCellValue('E1', 'Sumber Limbah');
-		$this->excel->getActiveSheet()->setCellValue('F1', 'Kode Manifest');
-		$this->excel->getActiveSheet()->setCellValue('G1', 'Nama Penghasil/Pengirim');
-		$this->excel->getActiveSheet()->setCellValue('H1', 'Jumlah (TON)');
-		$this->excel->getActiveSheet()->setCellValue('I1', 'Catatan');
+		$this->excel->getActiveSheet()->setCellValue('E1', 'SUMBER LIMBAH');
+		$this->excel->getActiveSheet()->setCellValue('F1', 'KODE MANIFEST');
+		$this->excel->getActiveSheet()->setCellValue('G1', 'NAMA PENGHASIL/PENGIRIM');
+		$this->excel->getActiveSheet()->setCellValue('H1', 'JUMLAH (TON)');
+		$this->excel->getActiveSheet()->setCellValue('I1', 'CATATAN');
 
 		$this->excel->getActiveSheet()->getColumnDimension('A')->setWidth(20);
 		$this->excel->getActiveSheet()->getColumnDimension('B')->setWidth(30);

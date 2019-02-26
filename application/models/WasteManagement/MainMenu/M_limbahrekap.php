@@ -73,7 +73,7 @@ class M_limbahrekap extends CI_Model
 							'MASUK KE TPS INTERNAL' tps,
 							'TPS INTERNAL' sumber,
 							'' kode_manifest,
-							'CV. Karya Hidup Sentosa' pengirim_nama,
+							'CV. CV. KARYA HIDUP SENTOSA' pengirim_nama,
 							cast(limkir.berat_kirim as float)/1000 jumlah,
 							'' catatan
 					from ga.ga_limbah_kirim limkir
