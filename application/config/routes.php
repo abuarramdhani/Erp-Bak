@@ -2322,3 +2322,18 @@ $route['PNBP/Questioner/(:any)/(:any)'] = 'PNBPAdministrator/C_Questioner/$1/$2'
 $route['PNBP/Report'] = 'PNBPAdministrator/C_Report';
 $route['PNBP/Report/(:any)'] = 'PNBPAdministrator/C_Report/$1';
 $route['PNBP/Report/(:any)'] = 'PNBPAdministrator/C_Report/$1/$2';
+
+
+ //----------------------------------- Monitoring Barang Gudang ------------------------------------------------//
+
+$route['MonitoringBarangGudang'] = 'WarehouseMPO/C_Index';
+
+$route['MonitoringBarangGudang/Pengeluaran'] = 'WarehouseMPO/C_OutPart';
+$route['MonitoringBarangGudang/Pengeluaran/Filter'] = 'WarehouseMPO/C_OutPart/filterOut';
+$route['MonitoringBarangGudang/Pengeluaran/Filter/(:any)'] = 'WarehouseMPO/C_OutPart/filterOut/$1';
+$route['MonitoringBarangGudang/Pengeluaran/(:any)'] = 'WarehouseMPO/C_OutPart/filterByGudang/$1';
+
+$route['MonitoringBarangGudang/SparePart'] = 'WarehouseMPO/C_SparePart';
+$route['MonitoringBarangGudang/SparePart/(:any)'] = 'WarehouseMPO/C_SparePart/$1';
+$route['MonitoringBarangGudang/SparePart/(:any)/(:any)'] = 'WarehouseMPO/C_SparePart/$1/$2';
+$route['MonitoringBarangGudang/SparePart/Filter'] = 'WarehouseMPO/C_SparePart/filterSpare';
