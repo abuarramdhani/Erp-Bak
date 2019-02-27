@@ -7,7 +7,6 @@ class M_surat extends CI_Model
 	{
 		parent::__construct();
 		$this->personalia 	= 	$this->load->database('personalia', TRUE);
-		$this->dev 			=	$this->load->database('db_dev', TRUE);
 	}
 
 	public function kode_surat( $jenis_surat = FALSE, $status_staf = FALSE )
