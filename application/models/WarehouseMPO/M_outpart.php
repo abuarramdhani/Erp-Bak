@@ -581,7 +581,7 @@ SELECT   pov.vendor_name nama_subkon,
          (SELECT DISTINCT fcr.argument1 spbs_dari, fcr.argument2 spbs_sampai,
                           fcr.argument3 no_po
                      FROM fnd_concurrent_requests fcr
-                    WHERE fcr.concurrent_program_id = 142629) komb,
+                    WHERE fcr.concurrent_program_id in (142629,434696)) komb,
          (SELECT NVL (kmgk.no_spbs, kmtb.no_spbs) no_spbs, kmgk.line_id,
                  kmgk.no_mobil, kmgk.inventory_item_id, kmgk.tgl_mulai,
                  kmgk.tgl_selesai, kmgk.qty_kirim, kmgk.subinv,
@@ -663,7 +663,7 @@ SELECT   pov.vendor_name nama_subkon,
          (SELECT DISTINCT fcr.argument1 spbs_dari, fcr.argument2 spbs_sampai,
                           fcr.argument3 no_po
                      FROM fnd_concurrent_requests fcr
-                    WHERE fcr.concurrent_program_id = 142629) komb,
+                    WHERE fcr.concurrent_program_id in (142629,434696)) komb,
          (SELECT NVL (kmgk.no_spbs, kmtb.no_spbs) no_spbs, kmgk.line_id,
                  kmgk.no_mobil, kmgk.inventory_item_id, kmgk.tgl_mulai,
                  kmgk.tgl_selesai, kmgk.qty_kirim, kmgk.subinv,
