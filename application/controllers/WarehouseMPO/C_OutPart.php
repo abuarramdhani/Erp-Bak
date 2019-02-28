@@ -87,6 +87,7 @@ class C_OutPart extends CI_Controller {
 		$this->checkSession();
 		$user_id = $this->session->userid;
 
+		
 		// $compile = $this->input->post('compile');
 
 		$data['compile'] = $compile;
@@ -109,6 +110,9 @@ class C_OutPart extends CI_Controller {
 			$data['outpartAll'] = $this->M_outpart->indexWarehouse($compile);
 		}
 
+		$data['warehouse'] = $this->M_outpart->getWarehouse();
+		$data['subkont'] = $this->M_outpart->getSubkont();
+
 		// echo "<pre>";
 		// print_r($data);
 		// exit();
@@ -124,6 +128,9 @@ class C_OutPart extends CI_Controller {
 	{
 		$this->checkSession();
 		$user_id = $this->session->userid;
+
+
+		
 
 	//----------------------------------------------------------------//
 		$spbs_awal = $this->input->post('txtSpbsAwal');
@@ -176,6 +183,11 @@ class C_OutPart extends CI_Controller {
 		$data['UserMenu'] = $this->M_user->getUserMenu($user_id,$this->session->responsibility_id);
 		$data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id);
 		$data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id);
+
+		$data['warehouse'] = $this->M_outpart->getWarehouse();
+		$data['subkont'] = $this->M_outpart->getSubkont();
+
+
 
 		$data['outpartAll'] = $this->M_outpart->allPengeluaran($spbs_awal,$spbs_akhir,$kirim_awal,$kirim_akhir,$spbs_num,$subname,$job);
 
