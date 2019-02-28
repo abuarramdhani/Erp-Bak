@@ -94,7 +94,15 @@
 															$b = $key['jenis_limbah'];
 															$c = $key['kode_limbah'];
 															if ($a !== '26' and $a !== '27' and $a !== '28') {
-																echo "<option value='$a'>$c - $b</option>";
+
+																if ($c == 'B323-2') {
+																	if ($this->session->user == 'B0791') {
+																		echo "<option value='$a'>$c - $b</option>";
+																	}
+																}else{
+																	echo "<option value='$a'>$c - $b</option>";
+																}
+																
 															}
 															
 														}
