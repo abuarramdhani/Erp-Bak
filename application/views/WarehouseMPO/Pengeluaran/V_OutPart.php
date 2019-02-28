@@ -69,12 +69,12 @@
                                         </div>
                                         <div class="col-md-3">
                                             <div class="form-group">
-                                                <input type="text" value="" name="txtSpbsAwal" id="tanggal_spbs_1" class="form-control datepicker" style="padding-left: 12px;width: 300px" placeholder="Pilih Tanggal Awal"  />
+<input type="text" value="<?php echo isset($spbs_awal) ? $spbs_awal : ''; ?>" name="txtSpbsAwal" id="tanggal_spbs_1" class="form-control datepicker" style="padding-left: 12px;width: 300px" placeholder="Pilih Tanggal Awal"  />
                                             </div>
                                         </div>
                                         <div class="col-md-4">
                                             <div class="form-group" style="padding-left: 40px">
-                                            <input type="text" value=""  name="txtSpbsAkhir" id="tanggal_spbs_2" class="form-control datepicker" style="padding-left: 12px;width: 300px;" placeholder="Pilih Tanggal Akhir" >
+<input type="text" value="<?php echo isset($spbs_akhir) ? $spbs_akhir : ''; ?>"  name="txtSpbsAkhir" id="tanggal_spbs_2" class="form-control datepicker" style="padding-left: 12px;width: 300px;" placeholder="Pilih Tanggal Akhir" >
                                             </div>
                                         </div>
                                     </div>
@@ -84,12 +84,12 @@
                                         </div>
                                         <div class="col-md-3">
                                             <div class="form-group">
-                                                <input type="text" value=""  name="txtKirimAwal" id="tanggal_kirim_1" class="form-control datepicker" style="padding-left: 12px;width: 300px" placeholder="Pilih Tanggal Awal"  />
+<input type="text" value="<?php echo isset($kirim_awal) ? $kirim_awal : ''; ?>"  name="txtKirimAwal" id="tanggal_kirim_1" class="form-control datepicker" style="padding-left: 12px;width: 300px" placeholder="Pilih Tanggal Awal"  />
                                             </div>
                                         </div>
                                         <div class="col-md-4">
                                             <div class="form-group" style="padding-left: 40px">
-                                            <input type="text" value=""  name="txtKirimAkhir" id="tanggal_kirim_2" class="form-control datepicker" style="padding-left: 12px;width: 300px;" placeholder="Pilih Tanggal Akhir" >
+<input type="text" value="<?php echo isset($kirim_akhir) ? $kirim_akhir : ''; ?>"  name="txtKirimAkhir" id="tanggal_kirim_2" class="form-control datepicker" style="padding-left: 12px;width: 300px;" placeholder="Pilih Tanggal Akhir" >
                                             </div>
                                         </div>
                                     </div>
@@ -99,7 +99,7 @@
                                         </div>
                                         <div class="col-md-3">
                                             <div class="form-group">
-                                                <input type="text" name="txtSpbsNum" id="spbs_number" class="form-control" style="width: 300px" placeholder="Input Nomor SPBS"  />
+ <input type="text" name="txtSpbsNum" id="spbs_number" class="form-control" style="width: 300px" placeholder="Input Nomor SPBS" value="<?php echo isset($spbs_num) ? $spbs_num : ''; ?>" />
                                             </div>
                                         </div>
                                     </div>
@@ -124,7 +124,7 @@
                                         </div>
                                         <div class="col-md-3">
                                             <div class="form-group">
-                                                <input type="text" name="txtJob" id="job_spbs" class="form-control" style="width: 300px" placeholder="Input Job"  />
+ <input type="text" value="<?php echo isset($job) ? $job : ''; ?>" name="txtJob" id="job_spbs" class="form-control" style="width: 300px" placeholder="Input Job"  />
                                             </div>
                                         </div>
                                     </div>
