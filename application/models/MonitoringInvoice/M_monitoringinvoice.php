@@ -856,7 +856,7 @@ SELECT DISTINCT pol.po_line_id line_id,
                                                                       )
                                                             || '@'
                                                            )
-                                               ).EXTRACT ('//text()').getclobval(),,
+                                               ).EXTRACT ('//text()').getclobval(),
                                         '@'
                                        )
                                    ),
