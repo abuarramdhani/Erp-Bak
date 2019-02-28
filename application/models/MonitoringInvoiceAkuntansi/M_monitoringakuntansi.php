@@ -18,6 +18,14 @@ class M_monitoringakuntansi extends CI_Model {
         return $runQuery->result_array();
     }
 
+
+    function get_ora_blob_value($value)
+    {
+        $size = $value->size();
+        $result = $value->read($size);
+        return ($result)?$result:NULL;
+    }
+
 	public function unprocessedInvoice($batchNumber)
 	{
 		$erp_db = $this->load->database('oracle',true);
@@ -52,7 +60,7 @@ class M_monitoringakuntansi extends CI_Model {
                                                                       (aipo.po_number)
                                                             || '@'
                                                            )
-                                               ).EXTRACT ('//text()'),
+                                               ).EXTRACT ('//text()').getclobval(),
                                         '@'
                                        )
                                    ),
@@ -67,8 +75,13 @@ class M_monitoringakuntansi extends CI_Model {
                 AND ami.batch_number = '$batchNumber'
            ORDER BY vendor_name
            ";
-		$run = $erp_db->query($sql);
-		return $run->result_array();
+		    $run = $erp_db->query($sql);
+        $arr = $run->result_array();
+        foreach ($arr as $key => $value) {
+          $arr[$key]['PO_DETAIL'] = $this->get_ora_blob_value($arr[$key]['PO_DETAIL']);
+        }
+       
+        return $arr;
 	}
 
 	public function poAmount($id)

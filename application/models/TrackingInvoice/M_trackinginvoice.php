@@ -16,6 +16,13 @@ class M_trackingInvoice extends CI_Model {
         return $run->result_array();
     }
 
+    function get_ora_blob_value($value)
+    {
+        $size = $value->size();
+        $result = $value->read($size);
+        return ($result)?$result:NULL;
+    }
+
     public function searchMonitoringInvoice($parameter_invoice,$parameter_akses){
         $db = $this->load->database('oracle',true);
         $query = "SELECT ami.vendor_name vendor_name, ami.invoice_number invoice_number,
@@ -43,7 +50,7 @@ class M_trackingInvoice extends CI_Model {
                                                                           )
                                                                 || '@'
                                                                )
-                                                   ).EXTRACT ('//text()'),
+                                                   ).EXTRACT ('//text()').getclobval(),
                                             '@'
                                            )
                                        ),
@@ -60,7 +67,12 @@ class M_trackingInvoice extends CI_Model {
                 ORDER BY ami.last_admin_date";
 
         $run = $db->query($query);
-        return $run->result_array();
+        $arr = $run->result_array();
+        foreach ($arr as $key => $value) {
+          $arr[$key]['PO_DETAIL'] = $this->get_ora_blob_value($arr[$key]['PO_DETAIL']);
+        }
+       
+        return $arr;
     }
 
     public function checkStatusLPPB($po_number,$line_num)
