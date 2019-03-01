@@ -981,3 +981,44 @@ $(document).ready(function(){
 		
 	});
 });
+
+$(document).ready(function(){
+
+	$('#txtUsernameSys').on('keyup',function(){
+		var user = $('#txtUsernameSys').val();
+
+		$.ajax({
+			data : {text : user},
+			type : 'POST',
+			url : baseurl+'SystemAdministration/User/getCheckUser',
+			success : function(data){
+				obj = JSON.parse(data);
+				if (obj.length > 0) {
+					$('#txtUsernameSysExist').html('Username sudah di daftarkan <a href="'+obj['0']['user_id']+'">Click Here</a>');
+					$('#txtUsernameSysExistCollapse').collapse('show');
+				}else{
+					$('#txtUsernameSysExistCollapse').collapse('hide');
+				}
+			}
+		})
+	});
+
+	$('#slcEmployeeSys').on('change',function(){
+		var employee = $('#slcEmployeeSys').find(':selected').text();
+		var employee = employee.substr(0,5);
+		$.ajax({
+			data : {text : employee},
+			type : 'POST',
+			url : baseurl+'SystemAdministration/User/getCheckEmployee',
+			success : function(data){
+				obj = JSON.parse(data);
+				if (obj.length > 0) {
+					$('#slcEmployeeExist').html('Employee sudah di daftarkan <a href="'+obj['0']['user_id']+'">Click Here</a>');
+					$('#slcEmployeeExistCollapse').collapse('show');
+				}else{
+					$('#slcEmployeeExistCollapse').collapse('hide');
+				}
+			}
+		})
+	});
+})

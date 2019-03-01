@@ -34,6 +34,20 @@ class M_user extends CI_Model {
 			return $query->result_array();
 				
 		}
+
+		public function getCheckUser($text)
+		{
+			$sql = "select * from sys.vi_sys_user where user_name = '$text'";
+			$query = $this->db->query($sql);
+			return $query->result_array();
+		}
+		
+		public function getCheckEmployee($text)
+		{
+			$sql = "select * from sys.vi_sys_user where employee_code = '$text'";
+			$query = $this->db->query($sql);
+			return $query->result_array();
+		}
 		 
 		public function setUser($data)
 		{

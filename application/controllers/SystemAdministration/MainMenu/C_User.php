@@ -550,5 +550,31 @@ class C_User extends CI_Controller {
 		echo $area1;
 		
 	}
+
+	public function getCheckUser(){
+		$text = $this->input->post('text');
+		$data = $this->M_user->getCheckUser($text);
+		$angka = 0;
+		foreach ($data as $key) {
+			$encrypted_string = $this->encrypt->encode($key['user_id']);
+			$encrypted_string = str_replace(array('+', '/', '='), array('-', '_', '~'), $encrypted_string);
+			$data[$angka]['user_id'] = base_url('SystemAdministration/User/UpdateUser/'.$encrypted_string);
+			$angka++;
+		}
+		echo json_encode($data);
+	}
+	
+	public function getCheckEmployee(){
+		$text = $this->input->post('text');
+		$data = $this->M_user->getCheckEmployee($text);
+		$angka = 0;
+		foreach ($data as $key) {
+			$encrypted_string = $this->encrypt->encode($key['user_id']);
+			$encrypted_string = str_replace(array('+', '/', '='), array('-', '_', '~'), $encrypted_string);
+			$data[$angka]['user_id'] = base_url('SystemAdministration/User/UpdateUser/'.$encrypted_string);
+			$angka++;
+		}
+		echo json_encode($data);
+	}
 	
 }
