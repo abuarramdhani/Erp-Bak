@@ -20,7 +20,7 @@ class M_presensibulanan extends Ci_Model
 	}
 
 	public function getPekerjaByKodesie($kd){
-	    if('306030'==left('$kd',6))
+	    if('306030'==left($kd,6))
 	    {
 	    $sql = "select noind,nama 
 				from hrd_khs.tpribadi 
