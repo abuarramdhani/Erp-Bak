@@ -28,7 +28,7 @@ class M_presensiharian extends Ci_Model
 	public function getPekerjaByKodesie($kd){
 		$sql = "select noind,nama 
 				from hrd_khs.tpribadi 
-				where left(kodesie,7) = left('$kd',7) 
+				where left(kodesie,6) = left('$kd',6) 
 				and keluar = false
 				order by noind;";
 		$result = $this->personalia->query($sql);
