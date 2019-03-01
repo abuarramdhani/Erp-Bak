@@ -40,8 +40,11 @@
 									<div class="form-group">
 											<label for="norm" class="control-label col-lg-4">UserName</label>
 											<div class="col-lg-4">
-												<input type="text" placeholder="Username" name="txtUsername" class="form-control toupper" required/>
+												<input type="text" placeholder="Username" name="txtUsername" class="form-control toupper" id="txtUsernameSys" required/>
 											</div>
+									</div>
+									<div class="form-group collapse" id="txtUsernameSysExistCollapse">
+										<label class="col-lg-4 col-lg-offset-4" id="txtUsernameSysExist" style="color: red"></label>
 									</div>
 									<div class="form-group">
 											<label for="norm" class="control-label col-lg-4">Password</label>
@@ -58,10 +61,13 @@
 									<div class="form-group">
 											<label for="norm" class="control-label col-lg-4">Employee</label>
 											<div class="col-lg-4">
-												<select class="form-control employee-data" name="slcEmployee" data-placeholder="All Employee" style="width:100%;">
+												<select class="form-control employee-data" name="slcEmployee" id="slcEmployeeSys" data-placeholder="All Employee" style="width:100%;">
 													<option value=""></option>
 												</select>
 											</div>
+									</div>
+									<div class="form-group collapse" id="slcEmployeeExistCollapse">
+										<label class="col-lg-4 col-lg-offset-4" id="slcEmployeeExist" style="color: red"></label>
 									</div>
 								</div>
 								<div class="row">
