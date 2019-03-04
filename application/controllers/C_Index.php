@@ -157,7 +157,7 @@ class C_Index extends CI_Controller {
 			$ses = array(
 							'is_logged' 		=> 1,
 							'userid' 			=> $iduser,
-							'user' 				=> $username,
+							'user' 				=> strtoupper($username),
 							'employee'  		=> $employee_name,
 							'kodesie' 			=> $kodesie,
 							'kode_lokasi_kerja'	=> $kode_lokasi_kerja,
