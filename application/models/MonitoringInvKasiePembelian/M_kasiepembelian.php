@@ -217,7 +217,8 @@ class M_kasiepembelian extends CI_Model {
                                   WHERE b.batch_number = a.batch_number)jml_invoice
                 FROM khs_ap_monitoring_invoice a
                 WHERE a.batch_number IS NOT NULL
-                AND (a.last_finance_invoice_status = 1 and a.last_purchasing_invoice_status = 2)
+                AND a.last_finance_invoice_status = 1
+                AND (a.last_purchasing_invoice_status = 2 OR a.last_purchasing_invoice_status = 3)
                 $login
                 ORDER BY submited_date";
         $run = $erp_db->query($sql);
