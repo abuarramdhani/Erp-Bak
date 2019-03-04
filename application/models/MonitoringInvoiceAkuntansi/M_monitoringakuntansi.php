@@ -29,7 +29,7 @@ class M_monitoringakuntansi extends CI_Model {
 	public function unprocessedInvoice($batchNumber)
 	{
 		$erp_db = $this->load->database('oracle',true);
-		$sql = "SELECT DISTINCT ami.invoice_id, ami.vendor_name vendor_name,
+		$sql = "SELECT  ami.invoice_id, ami.vendor_name vendor_name,
                 ami.invoice_number invoice_number,
                 ami.invoice_date invoice_date,
                 ami.tax_invoice_number tax_invoice_number,
@@ -38,49 +38,51 @@ class M_monitoringakuntansi extends CI_Model {
                 ami.last_status_finance_date last_status_finance_date,
                 ami.finance_batch_number finance_batch_number,
                 ami.last_finance_invoice_status last_finance_invoice_status,
-                ami.reason reason, aipo2.po_detail,
+                ami.reason reason, 
+                aipo2.po_detail po_detail,
                 ami.info info,
                 ami.invoice_category invoice_category,
                 ami.nominal_dpp nominal_dpp,
                 ami.batch_number batch_number,
                 ami.jenis_jasa jenis_jasa,
+                ami.source SOURCE,
+                aipo2.po_number,
                 (SELECT distinct poh.attribute2
                             from PO_HEADERS_ALL POH
                             ,PO_LINES_ALL POL
                             ,PO_LINE_LOCATIONS_ALL PLL
                         where poh.po_header_id(+) = pol.po_header_id
                         AND POL.PO_LINE_ID (+) = PLL.PO_LINE_ID
-                        AND POH.SEGMENT1 = aipo2.po_detail) ppn
-               FROM khs_ap_monitoring_invoice ami,
-                    (SELECT   aipo.invoice_id,
+                        AND POH.SEGMENT1 = aipo2.po_number) ppn
+                FROM khs_ap_monitoring_invoice ami,
+                     (SELECT   aipo.invoice_id, aipo.po_number,
                                REPLACE
                                   ((RTRIM
                                        (XMLAGG (XMLELEMENT (e,
-                                                               TO_CHAR
+                                                               TO_CHAR 
                                                                       (aipo.po_number)
                                                             || '@'
                                                            )
-                                               ).EXTRACT ('//text()').getclobval(),
+                                               ).EXTRACT('//text()').getclobval(),
                                         '@'
                                        )
                                    ),
                                    '@',
                                    '<br>'
-                                  ) po_detail
-                         FROM (SELECT DISTINCT invoice_id, po_number
-                                          FROM khs_ap_invoice_purchase_order) aipo
-                     GROUP BY aipo.invoice_id) aipo2
-              WHERE ami.invoice_id = aipo2.invoice_id
+                                  ) AS po_detail
+                          FROM (SELECT DISTINCT invoice_id, po_number, line_number, lppb_number
+                                                      FROM khs_ap_invoice_purchase_order) aipo
+                      GROUP BY aipo.invoice_id, aipo.po_number) aipo2
+               WHERE ami.invoice_id = aipo2.invoice_id
                 AND ami.last_finance_invoice_status = 1
                 AND ami.batch_number = '$batchNumber'
-           ORDER BY vendor_name
+            ORDER BY ami.last_admin_date DESC
            ";
 		    $run = $erp_db->query($sql);
         $arr = $run->result_array();
         foreach ($arr as $key => $value) {
           $arr[$key]['PO_DETAIL'] = $this->get_ora_blob_value($arr[$key]['PO_DETAIL']);
         }
-       
         return $arr;
 	}
 
@@ -130,7 +132,8 @@ class M_monitoringakuntansi extends CI_Model {
                 ami.invoice_category invoice_category,
                 ami.nominal_dpp nominal_dpp,
                 ami.batch_number batch_number,
-                ami.jenis_jasa jenis_jasa
+                ami.jenis_jasa jenis_jasa,
+                ami.source source
                 FROM khs_ap_monitoring_invoice ami
                 JOIN khs_ap_invoice_purchase_order aipo ON ami.invoice_id = aipo.invoice_id
                 WHERE ami.batch_number = '$batch_num'
@@ -189,7 +192,8 @@ class M_monitoringakuntansi extends CI_Model {
                          ami.invoice_category invoice_category,
                          ami.nominal_dpp nominal_dpp,
                          ami.batch_number batch_number,
-                         ami.jenis_jasa jenis_jasa
+                         ami.jenis_jasa jenis_jasa,
+                         ami.source source
                 FROM khs_ap_monitoring_invoice ami,
                      khs_ap_invoice_purchase_order aipo,
                      po_headers_all poh
@@ -239,11 +243,11 @@ class M_monitoringakuntansi extends CI_Model {
 
 	public function showFinanceNumber($login){
 		$erp_db = $this->load->database('oracle',true);
-        $sql = "SELECT batch_number batch_number, to_date(last_status_purchasing_date) submited_date
+        $sql = "SELECT batch_number batch_number, to_date(last_status_purchasing_date) submited_date, source
         FROM khs_ap_monitoring_invoice
         WHERE last_finance_invoice_status = 1
         $login
-        GROUP BY batch_number, to_date(last_status_purchasing_date) 
+        GROUP BY batch_number, to_date(last_status_purchasing_date), source
         ORDER BY submited_date";
 		$run = $erp_db->query($sql);
 		return $run->result_array();
@@ -313,6 +317,7 @@ class M_monitoringakuntansi extends CI_Model {
                                 a.batch_number, 
                                 a.last_purchasing_invoice_status, 
                                 a.last_finance_invoice_status,
+                                a.source,
                                 (SELECT MAX(to_date(d.action_date))
                                             FROM khs_ap_invoice_action_detail d
                                            WHERE d.invoice_id = a.invoice_id

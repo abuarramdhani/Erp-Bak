@@ -57,6 +57,7 @@ class C_monitoringinvoice extends CI_Controller{
 		}
 
 		$invoice = $this->M_monitoringinvoice->showInvoice($source_login);
+
 		$no = 0;
 		$keputusan = array();
 		foreach ($invoice as $inv ) {

@@ -35,6 +35,7 @@
 											<th class="text-center">Purchasing Submit Date</th>
 											<th class="text-center">Finance Process Date</th>
 											<th class="text-center">Batch Number</th>
+											<th class="text-center">PIC</th>
 										</tr>
 									</thead>
 									<tbody>
@@ -55,6 +56,7 @@
 											<td><?php echo $f['LAST_STATUS_PURCHASING_DATE']?></td>
 											<td><?php echo $f['LAST_STATUS_FINANCE_DATE']?></td>
 											<td><?php echo $f['BATCH_NUMBER']?></td>
+											<td><?php echo $f['SOURCE']?></td>
 										</tr>
 										<?php $no++; }} ?>
 									</tbody>

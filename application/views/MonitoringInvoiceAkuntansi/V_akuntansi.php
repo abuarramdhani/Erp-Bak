@@ -29,6 +29,7 @@
 											<th class="text-center">Batch Number</th>
 											<th class="text-center">Submited Date</th>
 											<th class="text-center">Invoices</th>
+											<th class="text-center">PIC</th>
 										</tr>
 									</thead>
 									<tbody>
@@ -43,6 +44,7 @@
 											<td><?php echo $b['BATCH_NUMBER']?></td>
 											<td><?php echo date('d-M-Y',strtotime($b['SUBMITED_DATE']))?></td>
 											<td><?php echo $b['jml_invoice']?></td>
+											<td><?php echo $b['SOURCE']?></td>
 										</tr>
 										<?php $no++; }} ?>
 									</tbody>

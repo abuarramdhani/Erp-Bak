@@ -38,6 +38,7 @@
 											<th class="text-center">PO Number</th>
 											<th class="text-center">Purchasing Submit Date</th>
 											<th class="text-center">Alasan</th>
+											<th class="text-center">PIC</th>
 										</tr>
 									</thead>
 									<tbody>
@@ -67,6 +68,7 @@
 											<td>
 												 <input type="text" style="display: none" name="reason_finance[]" class="reason_finance_class"> <input type="hidden" name="id_reason[]" value="<?php echo $u['INVOICE_ID']?>">
 											</td>
+											<td><?php echo $u['SOURCE']?></td>
 										</tr>
 										<?php $no++; } ?>
 									</tbody>
