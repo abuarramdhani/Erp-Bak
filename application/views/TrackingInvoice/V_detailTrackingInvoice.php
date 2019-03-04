@@ -89,6 +89,14 @@
 											<input class="form-control" size="40" type="text" name="info" value="<?php echo $po_num['INFO']?>" readonly>
 										</td>
 									</tr>
+									<tr>
+										<td>
+											<span><label>PIC</label></span>
+										</td>
+										<td>
+											<input class="form-control" size="40" type="text" name="info" value="<?php echo $po_num['SOURCE']?>" readonly>
+										</td>
+									</tr>
 									<?php $no++; break;} ?>
 								</table>
 								</div><div class="col-md-6">

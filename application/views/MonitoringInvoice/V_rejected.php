@@ -38,6 +38,7 @@
 											<th class="text-center">Reject Date</th>
 											<th class="text-center">Reason</th>
 											<th class="text-center">Batch Number</th>
+											<th class="text-center">PIC</th>
 										</tr>
 									</thead>
 									<tbody>
@@ -77,6 +78,7 @@
 											<td><?php echo $f['REJECT_DATE']?></td>
 											<td><?php echo $f['REASON']?></td>
 											<td><?php echo $f['BATCH_NUMBER']?></td>
+											<td><?php echo $f['SOURCE']?></td>
 										</tr>
 										<?php $no++; }} ?>
 									</tbody>

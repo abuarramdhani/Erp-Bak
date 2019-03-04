@@ -87,12 +87,9 @@
 											<button type="submit" id="btnToFinance" name="submit_finance" class="btn btn-success pull-right" style="margin-top: 10px" value="1">Submit To Finance</button>
 										<?php } ?>
 									</div>
-									<?php if ($b['LAST_PURCHASING_INVOICE_STATUS'] == 1) { ?>
 										<div class="pull-right">
 											<button id="btnSubmitChecking" type="button" style="margin-top: 10px; margin-right: 5px;" class="btn btn-primary" data-toggle="modal" data-target="#uwuwuuwuwu">Approve</button>
-										</div>
-									<?php } ?>
-									
+										</div>									
 									<?php if($b['LAST_PURCHASING_INVOICE_STATUS'] == 1){ ?>
 										<div class="pull-right">
 											<button onclick="submitUlang($(this))" type="button" style="margin-top: 10px; margin-right: 5px;" class="btn btn-primary" disabled="disabled">Submit Ulang</button>

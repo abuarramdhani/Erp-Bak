@@ -213,7 +213,8 @@ SELECT DISTINCT pol.po_line_id line_id,
                          ami.last_admin_date last_admin_date, ami.vendor_name vendor_name,
                          ami.info info,
                          ami.invoice_category invoice_category,
-                         ami.jenis_jasa jenis_jasa
+                         ami.jenis_jasa jenis_jasa,
+                         ami.source source
                 FROM khs_ap_monitoring_invoice ami,
                      (SELECT   aipo.invoice_id,
                                REPLACE
@@ -241,7 +242,7 @@ SELECT DISTINCT pol.po_line_id line_id,
                WHERE aaipo.invoice_id = ami.invoice_id
                  AND ami.batch_number IS NULL
                  $source
-            ORDER BY ami.last_admin_date
+            ORDER BY ami.last_admin_date DESC
                 ";
         $runQuery = $oracle->query($query);
         $arr = $runQuery->result_array();
@@ -416,13 +417,13 @@ SELECT DISTINCT pol.po_line_id line_id,
 
     public function showListSubmitted($source){
         $oracle = $this->load->database('oracle',true);
-        $sql = "SELECT distinct batch_number batch_number, to_date(last_status_purchasing_date) submited_date, last_purchasing_invoice_status last_purchasing_invoice_status, last_finance_invoice_status last_finance_invoice_status
+        $sql = "SELECT distinct batch_number batch_number, to_date(last_status_purchasing_date) submited_date, last_purchasing_invoice_status last_purchasing_invoice_status, last_finance_invoice_status last_finance_invoice_status, source, last_admin_date
                 FROM khs_ap_monitoring_invoice
                 WHERE batch_number is not null
                 and (last_purchasing_invoice_status in(1,2)
                 or last_finance_invoice_status = 2)
                 $source
-                ORDER BY batch_number desc";
+                ORDER BY last_admin_date DESC";
         $query = $oracle->query($sql);
         return $query->result_array();
     }
@@ -457,7 +458,8 @@ SELECT DISTINCT pol.po_line_id line_id,
                          ami.info info,
                          ami.nominal_dpp nominal_dpp,
                          ami.invoice_category invoice_category,
-                         ami.jenis_jasa jenis_jasa
+                         ami.jenis_jasa jenis_jasa,
+                         ami.source source
                 FROM khs_ap_monitoring_invoice ami,
                      khs_ap_invoice_purchase_order aipo,
                      po_headers_all poh
@@ -837,6 +839,7 @@ SELECT DISTINCT pol.po_line_id line_id,
                      ami.last_finance_invoice_status last_finance_invoice_status,
                      aaipo.po_detail po_detail, ami.vendor_name vendor_name,
                      ami.info info,
+                     ami.source source,
                      (SELECT MAX(action_date)
                                                FROM khs_ap_invoice_action_detail aiac
                                               WHERE ((purchasing_status = 3 and finance_status = 0)

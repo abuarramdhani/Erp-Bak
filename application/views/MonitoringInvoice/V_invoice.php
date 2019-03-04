@@ -27,7 +27,7 @@
 							<div class="box-body">
 								<div class="row" style="margin-bottom: 10px">
 									<div class="col-md-6">
-										<button type="button" class="btn btn-primary pull-left" id="btnSubmitChecking" data-toggle="modal" data-target="#mdlChecking">Submit for Checking</button>
+										<button type="button" class="btn btn-primary pull-left" id="btnSubmitChecking" data-target="#mdlChecking" data-toggle="modal">Submit for Checking</button>
 										<?php 
 											$err = validation_errors();
 											if(isset($err) && !empty($err)):
@@ -56,6 +56,7 @@
 											<th class="text-center">Po Amount</th>
 											<th width="20%" class="text-center" title="No PO - Line Number - LPPB Number - LPPB Status">Po Detail</th>
 											<th width="5%"class="text-center">Status</th>
+											<th width="5%"class="text-center">PIC</th>
 										</tr>
 									</thead>
 									<tbody>
@@ -99,6 +100,7 @@
 											$stat = 'Rejected by Kasie Purc';
 										} ?> 
 										<td><?php echo $stat?></td>
+										<td><?php echo $inv['SOURCE']?></td>
 									</tr>
 									<?php $no++; }}?>
 								</tbody>
@@ -129,7 +131,7 @@
 		  </div>
 		  <div class="modal-footer">
 		    <button type="button" class="btn btn-default" data-dismiss="modal">No</button>
-		    <button type="submit" class="btn btn-primary" name="status_purchase" value="1">Yes</button>
+		    <button type="submit" id="btnYes" class="btn btn-primary" name="status_purchase" value="1">Yes</button>
 		  </div>
 		</div>
  	</div>

@@ -30,6 +30,7 @@
 											<th class="text-center">Submited Date</th>
 											<th class="text-center">Total Invoice</th>
 											<th class="text-center">Detail</th>
+											<th class="text-center">PIC</th>
 										</tr>
 									</thead>
 									<tbody>
@@ -50,6 +51,7 @@
 											<td><?php echo $tanggal; ?></td>
 											<td><?php echo $b['JML_INVOICE']?></td>
 											<td><?php echo $b['approved']; ?>
+											<td><?php echo $b['SOURCE']; ?>
 											</td>
 										</tr>
 										<?php $no++; }} ?>
