@@ -10,6 +10,7 @@
 			<td class="text-center">Invoice Amount</td>
 			<td class="text-center" title="Nomor PO - Line Num - LPPB Num - Status LPPB">PO Detail</td>
 			<td class="text-center" title="Status Paid / Unpaid">Status</td>
+			<td class="text-center" title="Status Paid / Unpaid">PIC</td>
 		</tr>
 	</thead>
 	<tbody>
@@ -30,6 +31,7 @@
 											<?php echo  $k ."<br>" ?>
 										<?php }} ?></td>
 			<td><?php echo $i['STATUS_PAYMENT']?></td>
+			<td><?php echo $i['SOURCE']?></td>
 		</tr>
 		<?php $no++;}} ?>
 	</tbody>

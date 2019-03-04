@@ -35,7 +35,8 @@ class M_trackingInvoice extends CI_Model {
                          WHEN 'N' THEN 'Non Paid'
                          ELSE 'Inprocess Vouching'
                          END
-                         FROM  ap_invoices_all aia  WHERE aia.INVOICE_NUM=ami.INVOICE_NUMBER AND aia.VENDOR_ID=ami.VENDOR_NUMBER ),'Blank') AS status_payment
+                         FROM  ap_invoices_all aia  WHERE aia.INVOICE_NUM=ami.INVOICE_NUMBER AND aia.VENDOR_ID=ami.VENDOR_NUMBER ),'Blank') AS status_payment,
+                         ami.source source
                     FROM khs_ap_monitoring_invoice ami,
                          (SELECT   aipo.invoice_id,
                                    REPLACE
@@ -137,7 +138,8 @@ class M_trackingInvoice extends CI_Model {
                 aipo.qty_invoice,
                 ami.invoice_category,
                 ami.info,
-                ami.nominal_dpp
+                ami.nominal_dpp,
+                ami.source
            FROM khs_ap_monitoring_invoice ami,
                 khs_ap_invoice_purchase_order aipo,
                 po_headers_all poh
