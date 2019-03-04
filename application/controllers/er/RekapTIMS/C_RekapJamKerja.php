@@ -66,7 +66,9 @@ class C_RekapJamKerja extends CI_Controller
 			$lokasiKerja 	=	$this->input->post('cmbLokasiKerja', TRUE);
 			$tambahLembur	= 	$this->input->post('chkDenganLembur', TRUE);
 
-
+			// echo $lokasiKerja." - ".$tanggalRekap." - ".$tambahLembur;
+			// exit();
+		
 			if($tambahLembur!='1')
 			{
 				$tambahLembur 	= 	0;
@@ -82,6 +84,7 @@ class C_RekapJamKerja extends CI_Controller
 
 			$this->benchmark->mark('mulai_rekap');
 			$data['rekapJamKerja'] 			=	$this->M_rekapjamkerja->prosesRekapJamKerja($tanggalAwalRekap, $tanggalAkhirRekap, $lokasiKerja, $tambahLembur);
+			
 			$this->benchmark->mark('selesai_rekap');
 
 			$data['tanggalAwalRekap'] 		=	$tanggalAwalRekap;
