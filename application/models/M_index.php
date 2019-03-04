@@ -9,7 +9,7 @@ class M_index extends CI_Model {
 		
 		 function login($usr, $pwd)
 		{
-          $sql = "select * from sys.sys_user where user_name = '" . $usr . "' and user_password = '" . $pwd . "'";
+          $sql = "select * from sys.sys_user where user_name = UPPER('" . $usr . "') and user_password = '" . $pwd . "'";
           $query = $this->db->query($sql);
           $row = $query->num_rows();
 		  if($row == 1){
@@ -28,7 +28,7 @@ class M_index extends CI_Model {
           	 		from 	sys.sys_user as su
 							join 	er.er_employee_all as er
 									on 	er.employee_id=su.employee_id
-					where 	user_name = '" . $usr . "'";
+					where 	user_name = UPPER('" . $usr . "')";
           $query = $this->db->query($sql);
 		  return $query->result();
 		}
