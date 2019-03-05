@@ -21,58 +21,39 @@
 							<div class="box-body">
 								<div class="row">
 									<div class="col-lg-12">
-										<?php if (!isset($periode) or empty($periode)) { ?>
-											<div class="col-lg-12 text-center">
-												<?php if(isset($ada) and $ada == '1'){ ?>
-														<p style="font-size: 20pt;color: red">Anda Sudah Mengisi Questioner Periode Sekarang.</p>
-												<?php }else{ ?>
-														<p style="font-size: 20pt;color: red">Bukan Periode Pengisian Questioner</p>
-												<?php } ?>
-												
-											</div>
-										<?php }else{ ?> 
-										<form class="form-horizontal" method="POST" action="<?php echo site_url('PNBP/Questioner') ?>">
-											<?php if (isset($data) and !empty($data)) { 
-												foreach ($data as $key) { ?>
+										<form class="form-horizontal" method="POST" action="<?php echo site_url('PNBP/QuestionerAdmin') ?>">
 											<div class="form-group">
-												<label class="control-label col-lg-3">No. Induk</label>
+												<label class="control-label col-lg-3">Departemen</label>
 												<div class="col-lg-6">
-													<input type="text" name="txtNoindUser" class="form-control" value="<?php echo $key['noind'] ?>" required>
-												</div>
-											</div>
-											<div class="form-group">
-												<label class="control-label col-lg-3">Nama</label>
-												<div class="col-lg-6">
-													<input type="text" name="txtNamaUser" class="form-control" value="<?php echo $key['nama'] ?>" required>
+													<select class="select select2 selectPNBPDept" name="txtDepartmentUser" style="width: 100%">
+														<?php 
+															foreach ($dept as $dpt) { ?>
+																<option value="<?php echo $dpt['kd_dept'] ?>"><?php echo $dpt['dept'] ?></option>
+															<?php }
+														?>
+													</select>
 												</div>
 											</div>
 											<div class="form-group">
 												<label class="control-label col-lg-3">Seksi / Unit</label>
 												<div class="col-lg-6">
-													<input type="text" name="txtSeksiUser" class="form-control" value="<?php echo $key['seksi'] ?>" required>
-													<input type="hidden" name="txtKodesie" value="<?php echo $key['kodesie'] ?>">
-												</div>
-											</div>
-											<div class="form-group">
-												<label class="control-label col-lg-3">Departemen</label>
-												<div class="col-lg-6">
-													<input type="text" name="txtDepartmentUser" class="form-control" value="<?php echo $key['dept'] ?>" required>
+													<select class="selectPNBPSeksi" name="txtSeksiUser" style="width: 100%"></select>
 												</div>
 											</div>
 											<div class="form-group">
 												<label class="control-label col-lg-3">Masa Kerja</label>
 												<div class="col-lg-6">
 													<div class="col-lg-3">
-														<input type="radio" name="txtMasaKerja" value="1" <?php if (intval($key['masa_kerja']) < 1) { echo "checked";} ?>> < 1 Tahun
+														<input type="radio" name="txtMasaKerja" value="1" id="txtMasaKerjaOpt1"> < 1 Tahun
 													</div>
 													<div class="col-lg-3">
-														<input type="radio" name="txtMasaKerja" value="2" <?php if (intval($key['masa_kerja']) >= 1 and intval($key['masa_kerja']) <= 3 ) { echo "checked";} ?>> 1 - 3 Tahun
+														<input type="radio" name="txtMasaKerja" value="2" id="txtMasaKerjaOpt2"> 1 - 3 Tahun
 													</div>
 													<div class="col-lg-3">
-														<input type="radio" name="txtMasaKerja" value="3" <?php if (intval($key['masa_kerja']) >=4 and intval($key['masa_kerja']) <= 6) { echo "checked";} ?>> 4 - 6 Tahun
+														<input type="radio" name="txtMasaKerja" value="3" id="txtMasaKerjaOpt3"> 4 - 6 Tahun
 													</div>
 													<div class="col-lg-3">
-														<input type="radio" name="txtMasaKerja" value="4" <?php if (intval($key['masa_kerja']) > 6) { echo "checked";} ?>> > 6 Tahun
+														<input type="radio" name="txtMasaKerja" value="4" id="txtMasaKerjaOpt4"> > 6 Tahun
 													</div>
 												</div>
 											</div>
@@ -80,10 +61,10 @@
 												<label class="control-label col-lg-3">Jenis Kelamin</label>
 												<div class="col-lg-6">
 													<div class="col-lg-6">
-														<input type="radio" name="txtJenKel" value="L" <?php if ($key['jenkel'] == 'L') { echo "checked"; }  ?>> Laki - Laki
+														<input type="radio" name="txtJenKel" value="L" id="txtJenKelOpt1"> Laki - Laki
 													</div>
 													<div class="col-lg-6">
-														<input type="radio" name="txtJenKel" value="P" <?php if ($key['jenkel'] == 'P') { echo "checked"; }  ?>> Perempuan
+														<input type="radio" name="txtJenKel" value="P" id="txtJenKelOpt2"> Perempuan
 													</div>
 												</div>
 											</div>
@@ -91,16 +72,16 @@
 												<label class="control-label col-lg-3">Usia</label>
 												<div class="col-lg-6">
 													<div class="col-lg-3">
-														<input type="radio" name="txtUsia" value="1" <?php if (intval($key['umur']) < 20) { echo "checked";} ?>> < 20 Tahun
+														<input type="radio" name="txtUsia" value="1" id="txtUsiaOpt1"> < 20 Tahun
 													</div>
 													<div class="col-lg-3">
-														<input type="radio" name="txtUsia" value="2" <?php if (intval($key['umur']) > 20 and intval($key['umur']) < 29) { echo "checked";} ?>> 20-29 Tahun
+														<input type="radio" name="txtUsia" value="2" id="txtUsiaOpt2"> 20-29 Tahun
 													</div>
 													<div class="col-lg-3">
-														<input type="radio" name="txtUsia" value="3" <?php if (intval($key['umur']) > 30 and intval($key['umur']) < 39) { echo "checked";} ?>> 30-39 Tahun
+														<input type="radio" name="txtUsia" value="3" id="txtUsiaOpt3"> 30-39 Tahun
 													</div>
 													<div class="col-lg-3">
-														<input type="radio" name="txtUsia" value="4" <?php if (intval($key['umur']) >= 40) { echo "checked";} ?>> ≥ 40 Tahun
+														<input type="radio" name="txtUsia" value="4" id="txtUsiaOpt4"> ≥ 40 Tahun
 													</div>
 												</div>
 											</div>
@@ -120,7 +101,7 @@
 											<div class="form-group">
 												<label class="control-label col-lg-3">Status Kerja</label>
 												<div class="col-lg-6">
-													<input type="text" name="txtJabatanUser" class="form-control" value="<?php echo $key['nama_jabatan'] ?>" required>
+													<select class="selectStatusJabatan" name="txtJabatanUser" style="width: 100%"></select>
 												</div>
 											</div>
 											<div class="form-group">
@@ -141,17 +122,10 @@
 													<i style="color: red">Lengkapi data yang kosong dan pastikan semua terisi</i>
 												</div>
 												<div class="col-lg-2 text-right">
-													<?php if (!empty($key['nama_jabatan']) or $key['noind'] == 'F2228') { ?>
-														<button class="btn btn-success" type="submit">Lanjut</button>
-													<?php }else{ ?>
-														<button class="btn btn-danger" type="button" disabled>Data Tidak Lengkap</button>
-													<?php } ?>
-													
+													<button class="btn btn-success" type="submit">Lanjut</button>
 												</div>
 											</div>
-											<?php } } ?>
 										</form>
-										<?php } ?>
 									</div>
 								</div>
 							</div>

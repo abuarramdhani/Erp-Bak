@@ -2,7 +2,7 @@
 
 Defined('BASEPATH') or exit('No direct script access allowed');
 
-class C_Questioner extends CI_Controller
+class C_QuestionerAdministrator extends CI_Controller
 {
 	
 	public function __construct()
@@ -34,11 +34,12 @@ class C_Questioner extends CI_Controller
 	}
 
 	public function index(){
+		// echo "<pre>";print_r($_SESSION);exit();
 		$user_id = $this->session->userid;
 		$user = $this->session->user;
 
 		$data['Title'] = 'Demografi';
-		$data['Menu'] = 'Questioner';
+		$data['Menu'] = 'Questioner Admin';
 		$data['SubMenuOne'] = '';
 		$data['SubMenuTwo'] = '';
 
@@ -46,21 +47,12 @@ class C_Questioner extends CI_Controller
 		$data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id);
 		$data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id);
 
-		$cek = $this->M_questioner->gethasilPeriodeIni($user);
-		if ($cek == 0) {
-			$data['data'] = $this->M_questioner->getWorker($user);
-			$data['suku'] = $this->M_questioner->getSuku();
-			$data['pendidikan'] = $this->M_questioner->getPendidikan();
+		$data['suku'] = $this->M_questioner->getSuku();
+		$data['pendidikan'] = $this->M_questioner->getPendidikan();
+		$data['periode'] = $this->M_questioner->getPeriodePengisian();
+		$data['dept'] = $this->M_questioner->getDept();
 
-			$data['periode'] = $this->M_questioner->getPeriodePengisian();
-		}else{
-			$data['ada'] = '1';
-		}
-
-		$this->form_validation->set_rules('txtNoindUser', 'Noind', 'required');
-		$this->form_validation->set_rules('txtNamaUser', 'Nama', 'required');
 		$this->form_validation->set_rules('txtSeksiUser', 'Seksi', 'required');
-		$this->form_validation->set_rules('txtKodesie', 'Kodesie', 'required');
 		$this->form_validation->set_rules('txtDepartmentUser', 'Departemen', 'required');
 		$this->form_validation->set_rules('txtMasaKerja', 'MasaKerja', 'required');
 		$this->form_validation->set_rules('txtJenKel', 'JenisKelamin', 'required');
@@ -73,13 +65,10 @@ class C_Questioner extends CI_Controller
 			
 			$this->load->view('V_Header',$data);
 			$this->load->view('V_Sidemenu',$data);
-			$this->load->view('PNBPAdministrator/Questioner/V_index.php',$data);
+			$this->load->view('PNBPAdministrator/QuestionerAdministrator/V_index.php',$data);
 			$this->load->view('V_Footer',$data);
 		}else{
-			$noind = $this->input->post('txtNoindUser');
-			$nama = $this->input->post('txtNamaUser');
 			$seksi = $this->input->post('txtSeksiUser');
-			$kodesie = $this->input->post('txtKodesie');
 			$departemen = $this->input->post('txtDepartmentUser');
 			$masakerja = $this->input->post('txtMasaKerja');
 			$jenkel = $this->input->post('txtJenKel');
@@ -89,11 +78,12 @@ class C_Questioner extends CI_Controller
 			$pendidikan = $this->input->post('txtPendidikanAkhir');
 			$id_periode = $data['periode']['0']['id_periode'];
 
-			$cek = $this->M_questioner->checkDemografi($noind,$id_periode);
+			$lastID = $this->M_questioner->getLastIDDemografi();
+			$noind = intval($lastID['0']['akhir'])+1;
 			$arrInsert = array(
 				'noind'					=> $noind,
-				'nama'					=> $nama,
-				'kodesie'				=> $kodesie,
+				'nama'					=> 'anonim',
+				'kodesie'				=> $seksi,
 				'masa_kerja'			=> $masakerja,
 				'jk'					=> $jenkel,
 				'usia'					=> $usia,
@@ -103,17 +93,14 @@ class C_Questioner extends CI_Controller
 				'id_periode' 			=> $id_periode,
 				'created_date'			=> date('Y-m-d H:i:s')
 			);
-			if ($cek > 0) {
-				$this->M_questioner->updateDemografi($arrInsert,$noind,$id_periode);
-			}else{
-				$this->M_questioner->insertDemografi($arrInsert);
-			}
+			$this->M_questioner->insertDemografi($arrInsert);
+			
 			
 			$arrayKelompok = $this->M_questioner->getKelompokNext('0');
-			$encrypted_id_kelompok = $this->encrypt->encode($arrayKelompok['0']['id_kelompok']);
+			$encrypted_id_kelompok = $this->encrypt->encode($arrayKelompok['0']['id_kelompok']." - ".$noind);
             $encrypted_id_kelompok = str_replace(array('+', '/', '='), array('-', '_', '~'), $encrypted_id_kelompok);
 			
-			redirect(site_url('PNBP/Questioner/Quest/'.$encrypted_id_kelompok));
+			redirect(site_url('PNBP/QuestionerAdmin/Quest/'.$encrypted_id_kelompok));
 		}
 		
 	}
@@ -122,11 +109,13 @@ class C_Questioner extends CI_Controller
 		$plaintext_string = str_replace(array('-', '_', '~'), array('+', '/', '='), $id);
 		$plaintext_string = $this->encrypt->decode($plaintext_string);
 		// echo $plaintext_string;exit();
+		$text = explode(" - ", $plaintext_string);
 		$user_id = $this->session->userid;
-		$user = $this->session->user;
+		$plaintext_string = $text['0'];
+		$user = $text['1'];
 
 		$data['Title'] = 'Questioner';
-		$data['Menu'] = 'Questioner';
+		$data['Menu'] = 'Questioner Admin';
 		$data['SubMenuOne'] = '';
 		$data['SubMenuTwo'] = '';
 
@@ -170,33 +159,35 @@ class C_Questioner extends CI_Controller
 			$data['kelompok'] = $kelompok_aktif;
 			$data['id_kelompok'] = $id_kelompok_next;
 			$data['question'] = $this->M_questioner->getQuestioner($plaintext_string);
-
+			$data['noind'] = $user;
 			
 		}else{
 			$data['selesai'] = 'selesai';
+			$data['noind'] = $user;
 		}
 
 		$this->load->view('V_Header',$data);
 		$this->load->view('V_Sidemenu',$data);
-		$this->load->view('PNBPAdministrator/Questioner/V_quest.php',$data);
+		$this->load->view('PNBPAdministrator/QuestionerAdministrator/V_quest.php',$data);
 		$this->load->view('V_Footer',$data);	
 			
 	}
 
 	public function Save(){
-		$noind = $this->session->user;
+		$noind = $this->input->post('txtPNBPNoind');
 		$hasil = $this->M_questioner->getHasilSementara($noind);
 		$this->M_questioner->updateDemografiStatusIsi($noind);
 		foreach ($hasil as $key) {
 			$cek = $this->M_questioner->getPerbandinganHasil($key['noind'],$key['id_pernyataan'],$key['id_periode']);
 			if ($cek == 0) {
 				$this->M_questioner->saveHasil($key);
+				$this->M_questioner->deleteHasil($key['noind'],$key['id_pernyataan'],$key['id_periode']);
 			}
 		}
 		
 		$user_id = $this->session->userid;
 		$data['Title'] = 'Questioner';
-		$data['Menu'] = 'Questioner';
+		$data['Menu'] = 'Questioner Admin';
 		$data['SubMenuOne'] = '';
 		$data['SubMenuTwo'] = '';
 
@@ -206,9 +197,35 @@ class C_Questioner extends CI_Controller
 
 		$this->load->view('V_Header',$data);
 		$this->load->view('V_Sidemenu',$data);
-		$this->load->view('PNBPAdministrator/Questioner/V_quest.php',$data);
+		$this->load->view('PNBPAdministrator/QuestionerAdministrator/V_quest.php',$data);
 		$this->load->view('V_Footer',$data);
 	}
+
+	public function getPekerja(){
+		$noind = $this->input->get('term');
+		$data = $this->M_questioner->getPekerja($noind);
+		echo json_encode($data);
+	}
+
+	public function getDataPekerja(){
+		$noind = $this->input->post('noind');
+		$data = $this->M_questioner->getWorker($noind);
+		echo json_encode($data);
+	}
+
+	public function getSection(){
+		$kd = $this->input->get('kd');
+		$name = $this->input->get('term');
+		$data = $this->M_questioner->getSection($kd,$name);
+		echo json_encode($data);
+	}
+
+	public function getStatusKerja(){
+		$text = $this->input->get('term');
+		$data = $this->M_questioner->getStatusKerja($text);
+		echo json_encode($data);
+	}
+
 }
 
 ?>
