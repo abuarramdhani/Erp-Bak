@@ -2319,6 +2319,10 @@ $route['PNBP/Questioner'] = 'PNBPAdministrator/C_Questioner';
 $route['PNBP/Questioner/(:any)'] = 'PNBPAdministrator/C_Questioner/$1';
 $route['PNBP/Questioner/(:any)/(:any)'] = 'PNBPAdministrator/C_Questioner/$1/$2';
 
+$route['PNBP/QuestionerAdmin'] = 'PNBPAdministrator/C_QuestionerAdministrator';
+$route['PNBP/QuestionerAdmin/(:any)'] = 'PNBPAdministrator/C_QuestionerAdministrator/$1';
+$route['PNBP/QuestionerAdmin/(:any)/(:any)'] = 'PNBPAdministrator/C_QuestionerAdministrator/$1/$2';
+
 $route['PNBP/Report'] = 'PNBPAdministrator/C_Report';
 $route['PNBP/Report/(:any)'] = 'PNBPAdministrator/C_Report/$1';
 $route['PNBP/Report/(:any)'] = 'PNBPAdministrator/C_Report/$1/$2';
