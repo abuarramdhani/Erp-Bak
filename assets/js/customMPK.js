@@ -218,6 +218,72 @@ $(function()
 						console.log("New date range selected: ' + start.format('YYYY-MM-DD H:i:s') + ' to ' + end.format('YYYY-MM-DD H:i:s') + ' (predefined range: ' + label + ')");
 					});
 				//	}
+				//  select3
+				    $('.MasterPekerja-PerhitunganPesangon-DaftarPekerja').select2(
+					{
+						allowClear: false,
+						placeholder: "Pilih Pekerja",
+						minimumInputLength: 3,
+						ajax: 
+						{
+							url: baseurl+'MasterPekerja/PerhitunganPesangon/daftar_pekerja_aktif',
+							dataType: 'json',
+							delay: 500,
+							data: function (params){
+								return {
+									term: params.term
+								}
+							},
+							processResults: function(data) {
+								return {
+									results: $.map(data, function(obj){
+										return {id: obj.noind, text: obj.pekerja};
+									})
+								};
+							}
+						}
+					});
+
+					$('#MasterPekerja-PerhitunganPesangon-DaftarPekerja').change(function(){
+						var noind = $('#MasterPekerja-PerhitunganPesangon-DaftarPekerja').val();
+						if(noind)
+						{
+							$.ajax({
+								type:'POST',
+								data:{noind: noind},
+								url:baseurl+"MasterPekerja/PerhitunganPesangon/detailPekerja",
+								success:function(result)
+								{
+									var res = JSON.parse(result);
+									$('#txtSeksi').val(res[0]['seksi']);
+									$('#txtUnit').val(res[0]['unit']);
+									$('#txtDepartemen').val(res[0]['departemen']);
+									$('#txtLokasi').val(res[0]['lokasi_kerja']);
+									$('#txtJabatan').val(res[0]['pekerjaan']);
+									$('#txtDiangkat').val(res[0]['diangkat']);
+									$('#txtAlamat').val(res[0]['alamat']);
+									$('#txtLahir').val(res[0]['tempat']);
+									$('#txtMasaKerja').val(res[0]['masakerja']);
+									$('#txtSisaCuti').val(res[0]['sisacuti']);
+									$('#txtProses').val(res[0]['metu']);
+									$('#txtStatus').val(res[0]['alasan']);
+									$('#txtUangPesangon').val(res[0]['pengali']);
+									$('#txtUangUMPK').val(res[0]['upmk']);
+									$('#txtSisaCutiHari').val(res[0]['sisacutihari']);
+									$('#txtUangGantiRugi').val(res[0]['gantirugi']);
+									$('#txtTahun').val(res[0]['masakerja_tahun']);
+									$('#txtBulan').val(res[0]['masakerja_bulan']);
+									$('#txtHari').val(res[0]['masakerja_hari']);
+									$('#txtPasal').val(res[0]['pasal']);
+									$('#txtPesangon').val(res[0]['pesangon']);
+									$('#txtUPMK').val(res[0]['up']);
+									$('#txtCuti').val(res[0]['cuti']);
+									$('#txtRugi').val(res[0]['rugi']);
+									
+								}
+							});
+						}
+					});
 
 				//	Select2
 				//	{
