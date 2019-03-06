@@ -69,7 +69,7 @@ class C_OutPart extends CI_Controller {
 		$data['warehouse'] = $this->M_outpart->getWarehouse();
 		$data['subkont'] = $this->M_outpart->getSubkont();
 
-		$data['outpartAll'] = $this->M_outpart->allPengeluaran($spbs_awal,$spbs_akhir,$kirim_awal,$kirim_akhir,$spbs_num,$subname,$job);
+		$data['outpartAll'] = array();
 
 		// echo "<pre>";
 		// print_r($data);
@@ -104,7 +104,7 @@ class C_OutPart extends CI_Controller {
 		$data['warehouse'] = $this->M_outpart->getWarehouse();
 		$data['subkont'] = $this->M_outpart->getSubkont();
 
-		if ($compile == FALSE) {
+		if ($compile == 'SEMUA') {
 			$data['outpartAll'] = $this->M_outpart->indexOut();
 		}else{
 			$data['outpartAll'] = $this->M_outpart->indexWarehouse($compile);
@@ -191,9 +191,7 @@ class C_OutPart extends CI_Controller {
 
 		$data['outpartAll'] = $this->M_outpart->allPengeluaran($spbs_awal,$spbs_akhir,$kirim_awal,$kirim_akhir,$spbs_num,$subname,$job);
 
-		// echo "<pre>";
-		// print_r($data);
-		// exit();
+	
 
 		$this->load->view('V_Header',$data);
 		$this->load->view('V_Sidemenu',$data);
