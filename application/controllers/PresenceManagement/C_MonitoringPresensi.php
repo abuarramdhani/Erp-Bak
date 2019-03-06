@@ -30,8 +30,28 @@
 			$this->checkSession();
 			$data 	=	$this->general->loadHeaderandSidemenu('Monitoring Presensi - Quick ERP', 'Monitoring Presensi', 'Monitoring Presensi', 'Monitoring Presensi');
 
-			$data['device_fingerprint']		=	$this->M_monitoringpresensi->device_fingerprint();
+			$device		=	$this->M_monitoringpresensi->device_fingerprint();
+			$angka = 0;
+			foreach ($device as $dev) {
+				$hasil = $this->M_monitoringpresensi->getCateringFrontPresensi($dev['inisial_lokasi']);
+				if (!empty($hasil)) {
+					$device[$angka]['catering'] = $hasil[0]['catering'];
+					$device[$angka]['frontpresensi'] = $hasil[0]['frontpresensi'];
+					if ($device[$angka]['catering'] == $device[$angka]['frontpresensi']) {
+						$device[$angka]['status'] = "<label class='label label-success'>OK</label>";
+					}else{
+						$device[$angka]['status'] = "<label class='label label-danger'>NOT OK</label>";
+					}
+					
+				}else{
+					$device[$angka]['catering'] = '0';
+					$device[$angka]['frontpresensi'] = '0';
+					$device[$angka]['status'] = "<label class='label label-danger'>NOT OK</label>";
+				}
+				$angka++;
+			}
 
+			$data['device_fingerprint'] = $device;
 			$this->load->view('V_Header',$data);
 			$this->load->view('V_Sidemenu',$data);
 			$this->load->view('PresenceManagement/MonitoringPresensi/V_MonitoringPresensi_Index',$data);

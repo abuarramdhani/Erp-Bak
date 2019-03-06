@@ -643,7 +643,25 @@ function InsertLokasiFinger(th) {
 
 		//	DataTables
 		//	{
-				$('#PresenceManagement-daftarPerangkat').DataTable({
+				// $('#PresenceManagement-daftarPerangkat').DataTable({
+				// });
+
+				$(document).ready(function(){
+					var table = $('#PresenceManagement-daftarPerangkat').DataTable({
+									scrollX : true,
+								});
+					$('a.toggle-vis').on('click',function(e){
+						e.preventDefault();
+						var column = table.column($(this).attr('data-column'));
+						if (column.visible()) {
+							$(this).addClass('btn-default');
+							$(this).removeClass('btn-primary');
+						}else{
+							$(this).addClass('btn-primary');
+							$(this).removeClass('btn-default');
+						}
+						column.visible(!column.visible());
+					});
 				});
 
 				$('#PresenceManagement-daftarUser').DataTable({
