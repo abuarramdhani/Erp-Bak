@@ -138,7 +138,20 @@ class C_CreateKIB extends CI_Controller
 		}
 	}
 
-	public function pdf($status,$no_batch,$kib){
+	public function pdf($status,$no_batch,$kib)
+	{
+		$org = 'opm';
+		$this->printpdf($org,$status,$no_batch,$kib);
+	}
+
+	public function pdf2($status,$no_batch,$kib)
+	{
+		$org = 'odm';
+		$this->printpdf($org,$status,$no_batch,$kib);
+	}
+
+
+	public function printpdf($org,$status,$no_batch,$kib){
 		$this->load->library('ciqrcode');
 		$this->load->library('Pdf');
 		$pdf 			= $this->pdf->load();
@@ -159,8 +172,11 @@ class C_CreateKIB extends CI_Controller
 
 		$dataKIBKelompok  =array();
 		$arrayREQNUM = array();
-		$dataKIB = $this->M_createkib->getKIB($status,$no_batch,$kib);
-		if (!$dataKIB) { $dataKIB = $this->M_createkib->getKIB2($status,$no_batch,$kib);}
+		if ($org == 'opm') {
+			$dataKIB = $this->M_createkib->getKIB2($status,$no_batch,$kib);
+		}elseif ($org == 'odm') {
+			$dataKIB = $this->M_createkib->getKIB22($status,$no_batch,$kib);
+		}
 		// echo "<pre>";
 		// print_r($dataKIB);
 		// exit();
@@ -190,7 +206,7 @@ class C_CreateKIB extends CI_Controller
 				$dataKIBKelompok[$indexnya]['PLAN_QTY'] = $value['PLAN_QTY'];
 				$dataKIBKelompok[$indexnya]['ACTUAL_QTY'] = $value['ACTUAL_QTY'];
 				$dataKIBKelompok[$indexnya]['QUANTITY'] = $value['QUANTITY'] ;
-				$dataKIBKelompok[$indexnya]['HANDLING_QTY'] = $value['HANDLING_QTY'] ? $value['HANDLING_QTY'] : $dataKIB[0]['QUANTITY'];
+				$dataKIBKelompok[$indexnya]['HANDLING_QTY'] = $value['HANDLING_QTY'];
 				$dataKIBKelompok[$indexnya]['STATUS'] = $value['STATUS'];
 				$dataKIBKelompok[$indexnya]['REQUEST_NUMBER'] = $value['REQUEST_NUMBER'];
 				$dataKIBKelompok[$indexnya]['BATCH_NUMBER'] = $value['BATCH_NUMBER'];
