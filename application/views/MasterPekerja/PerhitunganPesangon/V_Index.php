@@ -42,7 +42,6 @@
                                                 <th style="text-align:center;">U.UPMK</th>
                                                 <th style="text-align:center;">Sisa Cuti</th>
                                                 <th style="text-align:center;">U.Ganti Rugi</th>
-                                                <th style="text-align:center;">Potongan</th>
                                                 <th style="text-align:center;">Htg Koperasi</th>
                                                 <th style="text-align:center;">Htg Perusahaan</th>
                                                 <th style="text-align:center;">Lain lain</th>
@@ -70,7 +69,6 @@
                                                 <td><?php echo $pesangon['jml_upmk'];?></td>
                                                 <td><?php echo $pesangon['jml_cuti'];?></td>
                                                 <td><?php echo $pesangon['uang_ganti_kerugian'];?></td>
-                                                <td><?php echo $pesangon['potongan'];?></td>
                                                 <td><?php echo $pesangon['hutang_koperasi'];?></td>
                                                 <td><?php echo $pesangon['hutang_perusahaan'];?></td>
                                                 <td><?php echo $pesangon['lain_lain'];?></td>
