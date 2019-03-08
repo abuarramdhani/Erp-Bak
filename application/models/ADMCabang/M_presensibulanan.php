@@ -20,11 +20,38 @@ class M_presensibulanan extends Ci_Model
 	}
 
 	public function getPekerjaByKodesie($kd){
-		$sql = "select noind,nama 
+	    $noind = $this->session->user;
+	    if ($noind == 'B0380') {
+	    	 $sql = "select noind,nama 
+	    		from hrd_khs.tpribadi 
+	    		where (left(kodesie,6) = left('$kd',6) or noind in ('J1171','J7004'))
+	    		and keluar = false
+	    		order by kodesie,noind;";    
+	    }elseif($noind == 'B0370'){
+			 $sql = "select noind,nama 
 				from hrd_khs.tpribadi 
-				where left(kodesie,7) = left('$kd',7) 
+				where (left(kodesie,6) = left('$kd',6) or noind in ('D1535','P0426'))
 				and keluar = false
-				order by noind;";
+				order by kodesie,noind;";
+		}else{
+
+		    if('306030'==substr($kd,6))
+		    {
+		    $sql = "select noind,nama 
+					from hrd_khs.tpribadi 
+					where left(kodesie,6) = left('$kd',6) 
+					and keluar = false
+					order by noind;";    
+		    }
+		    else
+		    {
+			$sql = "select noind,nama 
+					from hrd_khs.tpribadi 
+					where left(kodesie,7) = left('$kd',7) 
+					and keluar = false
+					order by noind;";
+		    }
+		}
 		$result = $this->personalia->query($sql);
 		return $result->result_array();
 	}
