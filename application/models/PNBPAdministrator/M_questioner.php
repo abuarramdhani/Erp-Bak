@@ -27,15 +27,7 @@ class M_questioner extends CI_Model
 							tsek.seksi
 						end seksi,
 						tsek.dept,
-						(
-						select 
-							tstatjab.nama_jabatan 
-						from hrd_khs.tb_status_jabatan tstatjab 
-						where tpri.noind = tstatjab.noind 
-						and tstatjab.status_data = '01' 
-						order by tstatjab.tgl_berlaku desc 
-						limit 1
-						)		
+						tpri.jabatan nama_jabatan		
 				from hrd_khs.tpribadi tpri
 				left join hrd_khs.tseksi tsek
 				on tsek.kodesie = tpri.kodesie
@@ -157,12 +149,13 @@ class M_questioner extends CI_Model
 		return ;
 	}
 
-	public function gethasilPeriodeIni(){
+	public function gethasilPeriodeIni($noind){
 		$sql = "select *
 				from pd.pnbp_hasil ph
 				inner join pd.pnbp_periode pp
 				on ph.id_periode::int = pp.id_periode
-				where current_date between pp.periode_awal and pp.periode_akhir";
+				where current_date between pp.periode_awal and pp.periode_akhir
+				and ph.noind = '$noind'";
 		$result = $this->db->query($sql);
 		return $result->num_rows();
 	}
@@ -190,6 +183,89 @@ class M_questioner extends CI_Model
 	public function saveHasil($data){
 		$this->db->insert('pd.pnbp_hasil',$data);
 		return ;
+	}
+
+	public function deleteHasil($noind,$id_pernyataan,$id_periode){
+		$sql = "delete from pd.pnbp_hasil_sementara
+				where noind = '$noind'
+				and id_pernyataan = '$id_pernyataan'
+				and id_periode = '$id_periode'";
+		$this->db->query($sql);
+	}
+
+	public function getPekerja($noind){
+		$sql = "select * 
+				from er.er_employee_all 
+				where 
+				(
+				employee_code like upper('$noind%') 
+				or employee_name like upper('%$noind%')
+				)
+				and resign = '0'
+				and employee_code not in
+				(
+				select distinct ph.noind
+				from pd.pnbp_hasil ph
+				inner join pd.pnbp_periode pp
+				on ph.id_periode::int = pp.id_periode
+				where current_date between pp.periode_awal and pp.periode_akhir
+				)";
+		$result = $this->db->query($sql);
+		return $result->result_array();
+	}
+
+	public function getLastIDDemografi(){
+		$sql = "select max(id_demografi) akhir
+				from pd.pnbp_demografi";
+		$result = $this->db->query($sql);
+		return $result->result_array();
+	}
+
+	public function getDept(){
+		$sql = "select distinct left(section_code,1)::int kd_dept,department_name dept
+				from er.er_section 
+				where left(section_code,1) != '-'
+				order by left(section_code,1)::int";
+		$result = $this->db->query($sql);
+		return $result->result_array();
+	}
+
+	public function getSection($kd_dept,$sec_name){
+		$sql = "select 	section_code,
+						section_name,
+						unit_name
+				from er.er_section
+				where right(section_code,2) = '00'
+				and left(section_name,1) != '-'
+				and left(section_code,1) = '$kd_dept'
+				and (	
+						section_name like upper('%$sec_name%') 
+						or unit_name like upper('%$sec_name%')
+					)
+				order by section_code::int";
+		$result = $this->db->query($sql);
+		return $result->result_array();
+	}
+
+	public function getStatusKerja($text){
+		$sql = "select distinct rtrim(jabatan) jabatan 
+				from hrd_khs.tpribadi  
+				where rtrim(jabatan) not in ('','-')
+				and jabatan like upper('%$text%');";
+		$result = $this->personalia->query($sql);
+		return $result->result_array();
+	}
+
+	public function updateDemografiStatusIsi($noind){
+		$sql = "update pd.pnbp_demografi set status_isi = '1'
+				where noind = '$noind' 
+				and id_periode::int = (
+					select id_periode 
+					from pd.pnbp_periode where current_date between periode_awal and periode_akhir
+				)";
+		$this->db->query($sql);
+		return ;
+
 	}
 }
 ?>

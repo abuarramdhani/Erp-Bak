@@ -414,7 +414,7 @@ class C_Index extends CI_Controller
 		$tseksiBaru 				=	$this->M_surat->cariTSeksi($seksi_baru);
 		if($cekStaf[0]['status']=='STAF')
 			{
-				// $kode_surat 				=	'DU/KI-C';
+				$kode_surat 				=	'DU/KI-C';
 				$tertanda 					= 	'CV Karya Hidup Sentosa';
 				$nama_tanda_tangan 			=	'Drs. Hendro Wijayanto, Akt';
 				$jabatan_tertanda 			=	'Direktur Utama';
@@ -422,7 +422,7 @@ class C_Index extends CI_Controller
 			}
 			else
 			{
-				// $kode_surat 				=	'PS/KI-M';
+				$kode_surat 				=	'PS/KI-N';
 				$tertanda 					= 	'Cv Karya Hidup Sentosa<br/>Departemen Personalia';
 				$nama_tanda_tangan 			=	'Rajiwan';
 				$jabatan_tertanda 			=	'Asisten Kepala Unit Hubungan Kerja & General Affair';

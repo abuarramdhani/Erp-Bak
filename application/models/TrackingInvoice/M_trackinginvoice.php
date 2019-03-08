@@ -16,6 +16,13 @@ class M_trackingInvoice extends CI_Model {
         return $run->result_array();
     }
 
+    function get_ora_blob_value($value)
+    {
+        $size = $value->size();
+        $result = $value->read($size);
+        return ($result)?$result:NULL;
+    }
+
     public function searchMonitoringInvoice($parameter_invoice,$parameter_akses){
         $db = $this->load->database('oracle',true);
         $query = "SELECT ami.vendor_name vendor_name, ami.invoice_number invoice_number,
@@ -28,7 +35,8 @@ class M_trackingInvoice extends CI_Model {
                          WHEN 'N' THEN 'Non Paid'
                          ELSE 'Inprocess Vouching'
                          END
-                         FROM  ap_invoices_all aia  WHERE aia.INVOICE_NUM=ami.INVOICE_NUMBER AND aia.VENDOR_ID=ami.VENDOR_NUMBER ),'Blank') AS status_payment
+                         FROM  ap_invoices_all aia  WHERE aia.INVOICE_NUM=ami.INVOICE_NUMBER AND aia.VENDOR_ID=ami.VENDOR_NUMBER ),'Blank') AS status_payment,
+                         ami.source source
                     FROM khs_ap_monitoring_invoice ami,
                          (SELECT   aipo.invoice_id,
                                    REPLACE
@@ -43,7 +51,7 @@ class M_trackingInvoice extends CI_Model {
                                                                           )
                                                                 || '@'
                                                                )
-                                                   ).EXTRACT ('//text()'),
+                                                   ).EXTRACT ('//text()').getclobval(),
                                             '@'
                                            )
                                        ),
@@ -60,7 +68,12 @@ class M_trackingInvoice extends CI_Model {
                 ORDER BY ami.last_admin_date";
 
         $run = $db->query($query);
-        return $run->result_array();
+        $arr = $run->result_array();
+        foreach ($arr as $key => $value) {
+          $arr[$key]['PO_DETAIL'] = $this->get_ora_blob_value($arr[$key]['PO_DETAIL']);
+        }
+       
+        return $arr;
     }
 
     public function checkStatusLPPB($po_number,$line_num)
@@ -125,7 +138,8 @@ class M_trackingInvoice extends CI_Model {
                 aipo.qty_invoice,
                 ami.invoice_category,
                 ami.info,
-                ami.nominal_dpp
+                ami.nominal_dpp,
+                ami.source
            FROM khs_ap_monitoring_invoice ami,
                 khs_ap_invoice_purchase_order aipo,
                 po_headers_all poh

@@ -30,6 +30,7 @@
 											<th class="text-center">Submited Date</th>
 											<th class="text-center">Total Invoice</th>
 											<th class="text-center">Detail</th>
+											<th class="text-center">PIC</th>
 										</tr>
 									</thead>
 									<tbody>
@@ -55,6 +56,7 @@
 												<br/>
 												<?php echo $b['submited']; ?>
 											</td>
+											<td><?php echo $b['SOURCE']?></td>
 										</tr>
 										<?php $no++; }} ?>
 									</tbody>

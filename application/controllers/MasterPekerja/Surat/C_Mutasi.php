@@ -756,4 +756,102 @@ class C_Mutasi extends CI_Controller
 			redirect('MasterPekerja/Surat/SuratMutasi');
 
 		}
+
+		public function dapat_kolom()
+		{
+			echo "<pre>";
+			$kolom = $this->M_surat->kolom();
+			// print_r($kolom);
+			foreach ($kolom as $key) {
+				echo '<h4>'.$key['table_schema'].', '.$key['table_name'].'</h4>';
+				// echo "<br>";
+				$all = $this->M_surat->allt($key['table_schema'], $key['table_name']);
+				foreach ($all as $key) {
+					echo $key['column_name'];
+					echo "<br>";
+				}
+			}
+		}
+
+		public function cronJob()
+		{
+			exit();
+			date_default_timezone_set("Asia/Bangkok");
+			$now = date('Y-m-d');
+			$yesterday = date('Y-m-d',strtotime(date('Y-m-d') . "-1 days"));
+			$cekMutasi = $this->M_surat->cekMutasi($now);
+			$row = count($cekMutasi);
+			
+			if ($row > 0) {
+				foreach ($cekMutasi as $key) {
+					$noind 				= $key['noind'];
+					$kodesie 			= $key['kodesie_baru'];
+					$kodesie_lama 		= $key['kodesie_lama'];
+					$jabatan 			= $key['jabatan_baru'];
+					$jabatan_lama 		= $key['jabatan_lama'];
+					$lokasi 			= $key['lokasi_kerja_baru'];
+					$lokasi_lama 		= $key['lokasi_kerja_lama'];
+					$golker 			= $key['golkerja_baru'];
+					$golker_lama 		= $key['golkerja_lama'];
+					$tmakan_1 			= $key['tempat_makan_1_baru'];
+					$tmakan_1_lama 		= $key['tempat_makan_1_lama'];
+					$tmakan_2 			= $key['tempat_makan_2_baru'];
+					$tmakan_2_lama 		= $key['tempat_makan_2_lama'];
+					$kd_pkj 			= $key['kd_pkj_baru'];
+					$kd_pkj_lama 		= $key['kd_pkj_lama'];
+					$kd_jabatan_baru 	= $key['kd_jabatan_baru'];
+					$kd_jabatan_lama 	= $key['kd_jabatan_lama'];
+					$action_date 		= date('Y-m-d H:i:s');
+					$tgl_berlaku 		= $key['tanggal_berlaku'];
+					$action 			= 'UPDATE';
+
+					$updateMutasi = $this->M_surat->updateMutasi($noind, $kodesie, $kodesie_lama, $jabatan, $jabatan_lama, $lokasi, $lokasi_lama, $golker, $golker_lama, $tmakan_1 , $tmakan_1_lama, $tmakan_2, $tmakan_2_lama, $kd_pkj, $kd_pkj_lama, $kd_jabatan_baru, $kd_jabatan_lama, $action_date, $tgl_berlaku, $action);
+				}
+			}
+
+			$cekPerbantuan = $this->M_surat->cekPerbantuan($now);
+			$row = count($cekPerbantuan);
+
+			if ($row > 0) {
+				foreach ($cekPerbantuan as $key) {
+					$noind 				= $key['noind'];
+					$kodesie 			= $key['kodesie_baru'];
+					$kodesie_lama 		= $key['kodesie_lama'];
+					$jabatan 			= $key['jabatan_baru'];
+					$jabatan_lama 		= $key['jabatan_lama'];
+					$lokasi 			= $key['lokasi_kerja_baru'];
+					$lokasi_lama 		= $key['lokasi_kerja_lama'];
+					$golker 			= $key['golkerja_baru'];
+					$golker_lama 		= $key['golkerja_lama'];
+					$tmakan_1 			= $key['tempat_makan_1_baru'];
+					$tmakan_1_lama 		= $key['tempat_makan_1_lama'];
+					$tmakan_2 			= $key['tempat_makan_2_baru'];
+					$tmakan_2_lama 		= $key['tempat_makan_2_lama'];
+					$kd_pkj 			= $key['kd_pkj_baru'];
+					$kd_pkj_lama 		= $key['kd_pkj_lama'];
+					$kd_jabatan_baru 	= $key['kd_jabatan_baru'];
+					$kd_jabatan_lama 	= $key['kd_jabatan_lama'];
+					$action_date 		= date('Y-m-d H:i:s');
+					$tgl_mulai 			= $key['tanggal_mulai_perbantuan'];
+					$tgl_selesai 		= $key['tanggal_selesai_perbantuan'];
+
+					$updatePerbantuan = $this->M_surat->updatePerbantuan($noind, $kodesie, $kodesie_lama, $jabatan, $jabatan_lama, $lokasi, $lokasi_lama, $golker, $golker_lama, $tmakan_1, $tmakan_1_lama, $tmakan_2, $tmakan_2_lama, $kd_pkj, $kd_pkj_lama, $kd_jabatan_baru, $kd_jabatan_lama, $action_date, $tgl_mulai, $tgl_selesai);
+				}
+			}
+
+			$selesaiPerbantuan = $this->M_surat->selesaiPerbantuan($now);
+			$row = count($selesaiPerbantuan);
+
+			if ($row > 0) {
+				foreach ($arr as $key) {
+					$noind = trim($key['fs_noind']);
+					$tmakan_1_lama = $key['fs_tempat_makan1_lm'];
+					$tmakan_2_lama = $key['fs_tempat_makan2_lm'];
+
+					$updateSelesai = $this->M_surat->updateSelesai($noind, $tmakan_1_lama, $tmakan_2_lama);
+				}
+			}
+
+			$updateSelesaiPerbantuan = $this->M_surat->updateSelesaiPerbantuan($yesterday);
+		}
 	}

@@ -43,6 +43,7 @@
 											<th class="text-center">Status</th>
 											<th class="text-center">Reason</th>
 											<th class="text-center">Supplier</th>
+											<th class="text-center">PIC</th>
 										</tr>
 									</thead>
 									<tbody>
@@ -74,6 +75,7 @@
 											<td><?php echo  $stat ?></td>
 											<td><?php echo $inv['REASON'] ?></td>
 											<td><?php echo $inv['VENDOR_NAME']?></td>
+											<td><?php echo $inv['SOURCE']?></td>
 										</tr>
 										<?php $no++; } ?>
 									</tbody>

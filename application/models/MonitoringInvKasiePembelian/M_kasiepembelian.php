@@ -21,7 +21,7 @@ class M_kasiepembelian extends CI_Model {
 	public function showListSubmittedForChecking($login){
 		$erp_db = $this->load->database('oracle',true);
 		$sql = "SELECT distinct batch_number batch_number, to_date(last_status_purchasing_date) submited_date,
-                last_purchasing_invoice_status, last_finance_invoice_status
+                last_purchasing_invoice_status, last_finance_invoice_status, source
                 FROM khs_ap_monitoring_invoice 
                 WHERE (last_purchasing_invoice_status = 1
                 OR last_purchasing_invoice_status = 2)
@@ -206,6 +206,7 @@ class M_kasiepembelian extends CI_Model {
                                 a.finance_batch_number, 
                                 a.last_purchasing_invoice_status, 
                                 a.last_finance_invoice_status,
+                                a.source,
                                 (SELECT DISTINCT to_date(d.action_date)
                                             FROM khs_ap_invoice_action_detail d
                                            WHERE d.invoice_id = a.invoice_id
@@ -216,7 +217,8 @@ class M_kasiepembelian extends CI_Model {
                                   WHERE b.batch_number = a.batch_number)jml_invoice
                 FROM khs_ap_monitoring_invoice a
                 WHERE a.batch_number IS NOT NULL
-                AND (a.last_finance_invoice_status = 1 and a.last_purchasing_invoice_status = 2)
+                AND a.last_finance_invoice_status = 1
+                AND (a.last_purchasing_invoice_status = 2 OR a.last_purchasing_invoice_status = 3)
                 $login
                 ORDER BY submited_date";
         $run = $erp_db->query($sql);

@@ -5,6 +5,7 @@ class M_monitoringinvoice extends CI_Model {
 	{
 		$this->load->database();
 		$this->load->library('encrypt');
+
 	}
 
     public function checkSourceLogin($employee_code)
@@ -137,6 +138,9 @@ SELECT DISTINCT pol.po_line_id line_id,
                     VALUES 
                     ('$line_number','$po_number',$lppb_number, '$shipment_number', $received_date, '$item_description', '$item_code',$qty_receipt, $qty_reject, '$currency', '$unit_price', '$qty_invoice', $inv_id)";
         $oracle->query($query);
+        // echo "<pre>";
+        // echo "query dari tabel kedua";
+        // print_r($query);
     }
 
     public function savePoNumber2($invoice_number,$invoice_date,$invoice_amount,$tax_invoice_number,$vendor_number,$vendor_name,$last_admin_date,$info,$invoice_category,$nominal_dpp,$source_login,$jenis_jasa){
@@ -146,9 +150,12 @@ SELECT DISTINCT pol.po_line_id line_id,
                     VALUES 
                     ('$invoice_number','$invoice_date','$invoice_amount', '$tax_invoice_number','$vendor_number','$vendor_name',to_date('$last_admin_date', 'DD/MM/YYYY HH24:MI:SS'), '$info','$invoice_category','$nominal_dpp','$source_login','$jenis_jasa')";
         $oracle->query($query);
+        // echo "<pre>";
+        // echo "query dari tabel pertama";
+        // print_r($query);
 
-        $query2 = "SELECT max(invoice_id) invoice_id 
-                    from khs_ap_monitoring_invoice ";
+        $query2 = "SELECT max(invoice_id) invoice_id
+                    from khs_ap_monitoring_invoice";
         $lastId = $oracle->query($query2);
         return $lastId->result_array();
     }
@@ -159,8 +166,11 @@ SELECT DISTINCT pol.po_line_id line_id,
         $query = "INSERT INTO khs_ap_invoice_action_detail (invoice_id, action_date)
                 VALUES ($invoice_id,to_date('$action_date', 'DD/MM/YYYY HH24:MI:SS'))";
         $oracle->query($query);
+        // echo "<pre>";
+        // echo "tabel ketiga";
+        // print_r($query);
 
-        $query2 = "SELECT MAX(invoice_id)
+        $query2 = "SELECT MAX(invoice_id) invoice_id
                     from khs_ap_monitoring_invoice ";
         $last_id = $oracle->query($query2);
         return $last_id->result_array();
@@ -185,6 +195,12 @@ SELECT DISTINCT pol.po_line_id line_id,
  
     }
 
+    function get_ora_blob_value($value)
+    {
+        $size = $value->size();
+        $result = $value->read($size);
+        return ($result)?$result:NULL;
+    }
 
     public function showInvoice($source){
         $oracle = $this->load->database('oracle', true);
@@ -197,7 +213,8 @@ SELECT DISTINCT pol.po_line_id line_id,
                          ami.last_admin_date last_admin_date, ami.vendor_name vendor_name,
                          ami.info info,
                          ami.invoice_category invoice_category,
-                         ami.jenis_jasa jenis_jasa
+                         ami.jenis_jasa jenis_jasa,
+                         ami.source source
                 FROM khs_ap_monitoring_invoice ami,
                      (SELECT   aipo.invoice_id,
                                REPLACE
@@ -212,7 +229,7 @@ SELECT DISTINCT pol.po_line_id line_id,
                                                                       )
                                                             || '@'
                                                            )
-                                               ).EXTRACT ('//text()'),
+                                               ).EXTRACT ('//text()').getclobval(),
                                         '@'
                                        )
                                    ),
@@ -225,10 +242,15 @@ SELECT DISTINCT pol.po_line_id line_id,
                WHERE aaipo.invoice_id = ami.invoice_id
                  AND ami.batch_number IS NULL
                  $source
-            ORDER BY ami.last_admin_date
+            ORDER BY ami.last_admin_date DESC
                 ";
         $runQuery = $oracle->query($query);
-        return $runQuery->result_array();
+        $arr = $runQuery->result_array();
+        foreach ($arr as $key => $value) {
+          $arr[$key]['PO_DETAIL'] = $this->get_ora_blob_value($arr[$key]['PO_DETAIL']);
+        }
+       
+        return $arr;
     }
 
     public function getUnitPrice($invoice_id){
@@ -395,13 +417,13 @@ SELECT DISTINCT pol.po_line_id line_id,
 
     public function showListSubmitted($source){
         $oracle = $this->load->database('oracle',true);
-        $sql = "SELECT distinct batch_number batch_number, to_date(last_status_purchasing_date) submited_date, last_purchasing_invoice_status last_purchasing_invoice_status, last_finance_invoice_status last_finance_invoice_status
+        $sql = "SELECT distinct batch_number batch_number, to_date(last_status_purchasing_date) submited_date, last_purchasing_invoice_status last_purchasing_invoice_status, last_finance_invoice_status last_finance_invoice_status, source, last_admin_date
                 FROM khs_ap_monitoring_invoice
                 WHERE batch_number is not null
                 and (last_purchasing_invoice_status in(1,2)
                 or last_finance_invoice_status = 2)
                 $source
-                ORDER BY batch_number desc";
+                ORDER BY last_admin_date DESC";
         $query = $oracle->query($sql);
         return $query->result_array();
     }
@@ -436,7 +458,8 @@ SELECT DISTINCT pol.po_line_id line_id,
                          ami.info info,
                          ami.nominal_dpp nominal_dpp,
                          ami.invoice_category invoice_category,
-                         ami.jenis_jasa jenis_jasa
+                         ami.jenis_jasa jenis_jasa,
+                         ami.source source
                 FROM khs_ap_monitoring_invoice ami,
                      khs_ap_invoice_purchase_order aipo,
                      po_headers_all poh
@@ -816,6 +839,7 @@ SELECT DISTINCT pol.po_line_id line_id,
                      ami.last_finance_invoice_status last_finance_invoice_status,
                      aaipo.po_detail po_detail, ami.vendor_name vendor_name,
                      ami.info info,
+                     ami.source source,
                      (SELECT MAX(action_date)
                                                FROM khs_ap_invoice_action_detail aiac
                                               WHERE ((purchasing_status = 3 and finance_status = 0)
@@ -835,7 +859,7 @@ SELECT DISTINCT pol.po_line_id line_id,
                                                                       )
                                                             || '@'
                                                            )
-                                               ).EXTRACT ('//text()'),
+                                               ).EXTRACT ('//text()').getclobval(),
                                         '@'
                                        )
                                    ),
@@ -852,7 +876,12 @@ SELECT DISTINCT pol.po_line_id line_id,
                      $source_login
             ORDER BY last_status_purchasing_date";
         $run = $oracle->query($query);
-        return $run->result_array();
+        $arr = $run->result_array();
+        foreach ($arr as $key => $value) {
+          $arr[$key]['PO_DETAIL'] = $this->get_ora_blob_value($arr[$key]['PO_DETAIL']);
+        }
+       
+        return $arr;
     }
 
     public function deletePOLine($invoice_po_id){

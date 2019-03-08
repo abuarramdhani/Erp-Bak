@@ -30,6 +30,7 @@
 											<th class="text-center">Submited Date</th>
 											<th class="text-center">Invoices</th>
 											<th class="text-center">Status Invoice</th>
+											<th class="text-center">PIC</th>
 										</tr>
 									</thead>
 									<tbody>
@@ -54,6 +55,7 @@
 													$stat = 'Submit to Kasie Purchasing';
 												} ?>
 											<td><?php echo $stat; ?></td>
+											<td><?php echo $inv['SOURCE'] ?></td>
 										</tr>
 										<?php $no++; } ?>
 									</tbody>

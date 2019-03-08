@@ -46,7 +46,7 @@ class C_Questioner extends CI_Controller
 		$data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id);
 		$data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id);
 
-		$cek = $this->M_questioner->gethasilPeriodeIni();
+		$cek = $this->M_questioner->gethasilPeriodeIni($user);
 		if ($cek == 0) {
 			$data['data'] = $this->M_questioner->getWorker($user);
 			$data['suku'] = $this->M_questioner->getSuku();
@@ -186,6 +186,7 @@ class C_Questioner extends CI_Controller
 	public function Save(){
 		$noind = $this->session->user;
 		$hasil = $this->M_questioner->getHasilSementara($noind);
+		$this->M_questioner->updateDemografiStatusIsi($noind);
 		foreach ($hasil as $key) {
 			$cek = $this->M_questioner->getPerbandinganHasil($key['noind'],$key['id_pernyataan'],$key['id_periode']);
 			if ($cek == 0) {

@@ -2319,6 +2319,30 @@ $route['PNBP/Questioner'] = 'PNBPAdministrator/C_Questioner';
 $route['PNBP/Questioner/(:any)'] = 'PNBPAdministrator/C_Questioner/$1';
 $route['PNBP/Questioner/(:any)/(:any)'] = 'PNBPAdministrator/C_Questioner/$1/$2';
 
+$route['PNBP/QuestionerAdmin'] = 'PNBPAdministrator/C_QuestionerAdministrator';
+$route['PNBP/QuestionerAdmin/(:any)'] = 'PNBPAdministrator/C_QuestionerAdministrator/$1';
+$route['PNBP/QuestionerAdmin/(:any)/(:any)'] = 'PNBPAdministrator/C_QuestionerAdministrator/$1/$2';
+
 $route['PNBP/Report'] = 'PNBPAdministrator/C_Report';
 $route['PNBP/Report/(:any)'] = 'PNBPAdministrator/C_Report/$1';
 $route['PNBP/Report/(:any)'] = 'PNBPAdministrator/C_Report/$1/$2';
+
+
+ //----------------------------------- Monitoring Barang Gudang ------------------------------------------------//
+
+$route['MonitoringBarangGudang'] = 'WarehouseMPO/C_Index';
+
+$route['MonitoringBarangGudang/Pengeluaran'] = 'WarehouseMPO/C_OutPart';
+$route['MonitoringBarangGudang/Pengeluaran/Filter'] = 'WarehouseMPO/C_OutPart/filterOut';
+$route['MonitoringBarangGudang/Pengeluaran/Filter/(:any)'] = 'WarehouseMPO/C_OutPart/filterOut/$1';
+$route['MonitoringBarangGudang/Pengeluaran/(:any)'] = 'WarehouseMPO/C_OutPart/filterByGudang/$1';
+
+$route['MonitoringBarangGudang/SparePart'] = 'WarehouseMPO/C_SparePart';
+$route['MonitoringBarangGudang/SparePart/(:any)'] = 'WarehouseMPO/C_SparePart/$1';
+$route['MonitoringBarangGudang/SparePart/(:any)/(:any)'] = 'WarehouseMPO/C_SparePart/$1/$2';
+$route['MonitoringBarangGudang/SparePart/Filter'] = 'WarehouseMPO/C_SparePart/filterSpare';
+
+//--------------------------------------------------- Cetak Perhitungan Pesangon -----------------------------------//
+$route['MasterPekerja/PerhitunganPesangon'] 		= 'MasterPekerja/PerhitunganPesangon/C_Index';
+$route['MasterPekerja/PerhitunganPesangon/(:any)'] = 'MasterPekerja/PerhitunganPesangon/C_Index/$1';
+$route['MasterPekerja/PerhitunganPesangon/(:any)/(:any)'] = 'MasterPekerja/PerhitunganPesangon/C_Index/$1/$2';

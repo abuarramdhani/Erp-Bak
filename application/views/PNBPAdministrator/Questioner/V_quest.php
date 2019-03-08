@@ -33,12 +33,12 @@
 													<table class="table table-striped table-bordered table-hover">
 														<thead class="bg-primary">
 															<tr>
-																<th class="text-center">No</th>
-																<th class="text-center">Pernyataan</th>
-																<th class="text-center">STS</th>
-																<th class="text-center">TS</th>
-																<th class="text-center">S</th>
-																<th class="text-center">SS</th>
+																<th class="text-center" style="width: 5%">No</th>
+																<th class="text-center" style="width: 63%">Pernyataan</th>
+																<th class="text-center" style="width: 8%">STS</th>
+																<th class="text-center" style="width: 8%">TS</th>
+																<th class="text-center" style="width: 8%">S</th>
+																<th class="text-center" style="width: 8%">SS</th>
 															</tr>
 														</thead>
 														<tbody>
@@ -49,7 +49,7 @@
 																		?>
 																		<tr>
 																			<td class="text-center"><?php echo $angka; ?></td>
-																			<td class="text-center">
+																			<td>
 																				<?php echo $key['pernyataan'] ?>
 																				<input type="hidden" value="<?php echo $key['id_pernyataan'] ?>" name="question[<?php echo $angka; ?>][id_pernyataan]">
 																				<input type="hidden" value="<?php echo $key['id_periode'] ?>" name="question[<?php echo $angka; ?>][id_periode]">

@@ -77,6 +77,9 @@
 	<script src="<?php echo base_url('assets/plugins/redactor/plugins/imagemanager.min.js');?>"></script> -->
 	<script src="<?php echo base_url('assets/plugins/mdtimepicker/mdtimepicker.js');?>"></script>
 
+	<!-- html2canvas -->
+	<script src="<?php echo base_url('assets/plugins/html2canvas/html2canvas.min.js') ?>" type="text/javascript"></script>	
+	
 	<!-- Custom Javascript -->
     <script src="<?php echo base_url('assets/js/custom.js');?>" type="text/javascript"></script>
 	<script src="<?php echo base_url('assets/js/customFA.js');?>" type="text/javascript"></script>
@@ -138,6 +141,7 @@
  	<script src="<?php echo base_url('assets/js/customBK.js');?>" type="text/javascript"></script>
  	<script src="<?php echo base_url('assets/js/customKMK.js');?>" type="text/javascript"></script>
  	<script src="<?php echo base_url('assets/js/customPD.js');?>" type="text/javascript"></script>
+ 	<script src="<?php echo base_url('assets/js/customMPO.js');?>" type="text/javascript"></script>
 	<script type="text/javascript">
 		if(counter_row <= 0){
 			var counter_row = 0;
