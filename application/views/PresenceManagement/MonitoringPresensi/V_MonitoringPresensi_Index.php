@@ -46,6 +46,7 @@
 									<thead>
 										<tr>
 											<th class="text-center">No.</th>
+											<th class="text-center" style="width: 200px">Action</th>
 											<th class="text-center">ID Lokasi</th>
 											<th class="text-center">Server IP Address</th>
 											<th class="text-center">Device IP Address</th>
@@ -56,7 +57,6 @@
 											<th class="text-center">Frontpresensi</th>
 											<th class="text-center">Catering</th>
 											<th class="text-center">Status Catering</th>
-											<th class="text-center" style="width: 200px">Action</th>
 
 										</tr>
 									</thead>
@@ -69,17 +69,6 @@
 										?>
 										<tr>
 											<td class="text-center"><?php echo $no;?></td>
-											<td><?php echo $device['id_lokasi'];?></td>
-											<td><?php echo $device['server_ip'];?></td>
-											<td class="text-center"><?php echo $device['device_ip'].':'.$device['device_port'];?></td>
-											<td><?php echo $device['device_sn'];?></td>
-											<td><?php echo $device['device_name'];?></td>
-											<td><?php echo $device['lokasi_kerja'];?></td>
-											<td><?php $output= array();exec("ping -c 1 ".$device['device_ip']." && exit",$output,$returnval);if($returnval != 0){echo "<label class='label label-danger'>Disconnected</label>";}else{ if(count(preg_grep("/Destination host unreachable/i", $output)) == 0){echo "<label class='label label-success'>Connected</label>";}else{ echo "<label class='label label-danger'>Disconnected</label>";}} ?>
-											</td>
-											<td><?php echo $device['frontpresensi'] ?></td>
-											<td><?php echo $device['catering'] ?></td>
-											<td><?php echo $device['status'] ?></td>
 											<td class="text-center">
 												<a type="button" class="btn btn-info btn-sm" href="<?php echo base_url('PresenceManagement/MonitoringPresensi/device_user_list'.'/'.$encrypted_string);?>" data-toggle="tooltip" title="User List">
 													<i class="fa fa-users"></i>
@@ -94,6 +83,17 @@
 				                                    <i class="fa fa-cloud-download"></i> <i class="fa fa-database"></i>
 				                                </a>
 											</td>
+											<td><?php echo $device['id_lokasi'];?></td>
+											<td><?php echo $device['server_ip'];?></td>
+											<td class="text-center"><?php echo $device['device_ip'].':'.$device['device_port'];?></td>
+											<td><?php echo $device['device_sn'];?></td>
+											<td><?php echo $device['device_name'];?></td>
+											<td><?php echo $device['lokasi_kerja'];?></td>
+											<td><?php $output= array();exec("ping -c 1 ".$device['device_ip']." && exit",$output,$returnval);if($returnval != 0){echo "<label class='label label-danger'>Disconnected</label>";}else{ if(count(preg_grep("/Destination host unreachable/i", $output)) == 0){echo "<label class='label label-success'>Connected</label>";}else{ echo "<label class='label label-danger'>Disconnected</label>";}} ?>
+											</td>
+											<td><?php echo $device['frontpresensi'] ?></td>
+											<td><?php echo $device['catering'] ?></td>
+											<td><?php echo $device['status'] ?></td>
 										</tr>
 										<?php
 												$no++;
