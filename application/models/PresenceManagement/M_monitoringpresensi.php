@@ -446,4 +446,29 @@
 	    	$query = $this->quick->get();
 	    	return $query->num_rows();
 	    }
+
+	    public function getCateringFrontPresensi($inisial){
+	    	$sql = "select 	user_,
+							(
+								select count(*) 
+								from \"Catering\".tpresensi
+								where tanggal = tbl.tanggal
+								and user_ = tbl.user_
+							) catering,
+							(
+								select count(*) 
+								from \"FrontPresensi\".tpresensi
+								where tanggal = tbl.tanggal
+								and user_ = tbl.user_
+							) frontpresensi
+					from 
+					( 
+						select distinct user_,tanggal
+						from \"FrontPresensi\".tpresensi
+						where tanggal = current_date
+						and user_ = '$inisial'
+					) tbl";
+	    	$result = $this->personalia->query($sql);
+	    	return $result->result_array();
+	    }
  	}
