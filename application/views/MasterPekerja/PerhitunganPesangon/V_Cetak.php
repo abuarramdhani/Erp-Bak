@@ -116,6 +116,12 @@
 			<td style="border-right: 1px solid black;border-left: 1px solid black;border-bottom: 1px solid black;width: 10%;padding-left: 20px"></td>
 		</tr>
 		<tr>
+		    <td style="border-left: 1px solid black;border-bottom: 1px solid black;width: 29%;padding-left: 20px">TANGGAL AKHIR KERJA</td>
+			<td style="border-bottom: 1px solid black;width: 1%;padding-left: 20px">:</td>
+			<td style="border-bottom: 1px solid black;width: 60%;padding-left: 20px"><?php echo $data['0']['akhir']?></td>
+			<td style="border-right: 1px solid black;border-left: 1px solid black;border-bottom: 1px solid black;width: 10%;padding-left: 20px"></td>
+		</tr>
+		<tr>
 		    <td style="border-left: 1px solid black;border-bottom: 1px solid black;width: 29%;padding-left: 20px">PROSES PHK</td>
 			<td style="border-bottom: 1px solid black;width: 1%;padding-left: 20px">:</td>
 			<td style="border-bottom: 1px solid black;width: 60%;padding-left: 20px"><?php echo $data['0']['metu']?></td>

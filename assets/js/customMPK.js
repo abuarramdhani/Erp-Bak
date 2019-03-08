@@ -279,6 +279,7 @@ $(function()
 									$('#txtUPMK').val(res[0]['up']);
 									$('#txtCuti').val(res[0]['cuti']);
 									$('#txtRugi').val(res[0]['rugi']);
+									$('#txtAkhir').val(res[0]['akhir']);
 									
 								}
 							});

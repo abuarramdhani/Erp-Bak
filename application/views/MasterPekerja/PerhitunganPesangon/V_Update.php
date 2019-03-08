@@ -110,14 +110,24 @@
                                                 </div>
                                             </div>
                                              <div class="row">
-                                                <div class="col-lg-12">
+                                                <div class="col-lg-6">
                                                     <div class="form-group">
-                                                        <label for="txtAlamat" class="col-lg-2 control-label ">Alamat
+                                                        <label for="txtAlamat" class="col-lg-4 control-label ">Alamat
                                                         </label>
-                                                        <div class="col-lg-4">
+                                                        <div class="col-lg-8">
                                                             <input type="text" name="txtAlamat" class="form-control" id="txtAlamat" value ="<?php echo $edit['alamat']; ?>">
                                                         </div>
                                                     </div>
+                                                </div>
+                                           
+                                            <div class="col-lg-6">
+                                                    <div class="form-group">
+                                                        <label for="txtProses" class="col-lg-4 control-label">Tgl Akhir Kerja
+                                                        </label>
+                                                        <div class="col-lg-8">
+                                                            <input type="text" name="txtAlamat" class="form-control" id="txtAlamat" readonly="" value ="<?php echo $edit['akhir']; ?>">
+                                                        </div>
+                                                     </div>   
                                                 </div>
                                             </div>
                                             <div class="row">
@@ -195,7 +205,7 @@
                                                     <div class="form-group">
                                                         <label for="txtPotongan" class="col-lg-4 control-label">Potongan
                                                         </label>
-                                                        <div class="col-lg-8">
+                                                        <div class="col-lg-8" hidden>
                                                             <input type="text" name="txtPotongan" class="form-control" id="txtPotongan"   value ="<?php echo $edit['potongan']; ?>">  
                                                         </div>
                                                      </div>   

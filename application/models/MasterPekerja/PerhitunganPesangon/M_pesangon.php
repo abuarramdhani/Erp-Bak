@@ -61,6 +61,31 @@ class M_pesangon extends CI_Model {
 			else
 				concat(extract(day from pri.tglkeluar),' Desember ',extract(year from pri.tglkeluar))
 			end metu,alasan.alasan_tampil as alasan,
+			case when extract(month from pri.akhkontrak) = 1 then
+				concat(extract(day from pri.akhkontrak),' Januari ',extract(year from pri.akhkontrak))
+			 when extract(month from pri.akhkontrak) = 2 then
+				concat(extract(day from pri.akhkontrak),' Februari ',extract(year from pri.akhkontrak))
+			 when extract(month from pri.akhkontrak) = 3 then
+				concat(extract(day from pri.akhkontrak),' Maret ',extract(year from pri.akhkontrak))
+			 when extract(month from pri.akhkontrak) = 4 then
+				concat(extract(day from pri.akhkontrak),' April ',extract(year from pri.akhkontrak))
+			 when extract(month from pri.akhkontrak) = 5 then
+				concat(extract(day from pri.akhkontrak),' Mei ',extract(year from pri.akhkontrak))
+			 when extract(month from pri.akhkontrak) = 6 then
+				concat(extract(day from pri.akhkontrak),' Juni ',extract(year from pri.akhkontrak))
+			 when extract(month from pri.akhkontrak) = 7 then
+				concat(extract(day from pri.akhkontrak),' Juli ',extract(year from pri.akhkontrak))
+			 when extract(month from pri.akhkontrak) = 8 then
+				concat(extract(day from pri.akhkontrak),' Agustus ',extract(year from pri.akhkontrak))
+			 when extract(month from pri.akhkontrak) = 9 then
+				concat(extract(day from pri.akhkontrak),' September ',extract(year from pri.akhkontrak))
+			 when extract(month from pri.akhkontrak) = 10 then
+				concat(extract(day from pri.akhkontrak),' Oktober ',extract(year from pri.akhkontrak))
+			when extract(month from pri.akhkontrak) = 11 then
+				concat(extract(day from pri.akhkontrak),' November ',extract(year from pri.akhkontrak))
+			else
+				concat(extract(day from pri.akhkontrak),' Desember ',extract(year from pri.akhkontrak))
+			end akhir,
 			pesangon.pasal_pengali_pesangon as pasal,
 			pesangon.uang_pesangon as pesangon,
 			pesangon.upmk as up,
@@ -114,18 +139,18 @@ class M_pesangon extends CI_Model {
 		 	return $query->result_array();
 		 }
 
-	public function penerima()
+	public function penerima($id)
 		{
 		 	$lihat = "select pri.nama as penerima from hrd_khs.t_pesangon as hit
-		 			join 		hrd_khs.tpribadi as pri on hit.penerima=pri.noind";
+		 			join 		hrd_khs.tpribadi as pri on hit.penerima=pri.noind where hit.id_pesangon='$id'";
 		 	$query = $this->personalia->query($lihat);
 		 	return $query->result_array();
 		 }
 
-	public function pengirim()
+	public function pengirim($id)
 		{
 		 	$lihat = "select pri.nama as pengirim from hrd_khs.t_pesangon as hit
-		 			join 		hrd_khs.tpribadi as pri on hit.pengirim=pri.noind";
+		 			join 		hrd_khs.tpribadi as pri on hit.pengirim=pri.noind where hit.id_pesangon='$id'";
 		 	$query = $this->personalia->query($lihat);
 		 	return $query->result_array();
 		 }
@@ -197,6 +222,31 @@ class M_pesangon extends CI_Model {
 			else
 				concat(extract(day from pri.tglkeluar),' Desember ',extract(year from pri.tglkeluar))
 			end metu,alasan.alasan_tampil as alasan,
+			case when extract(month from pri.akhkontrak) = 1 then
+				concat(extract(day from pri.akhkontrak),' Januari ',extract(year from pri.akhkontrak))
+			 when extract(month from pri.akhkontrak) = 2 then
+				concat(extract(day from pri.akhkontrak),' Februari ',extract(year from pri.akhkontrak))
+			 when extract(month from pri.akhkontrak) = 3 then
+				concat(extract(day from pri.akhkontrak),' Maret ',extract(year from pri.akhkontrak))
+			 when extract(month from pri.akhkontrak) = 4 then
+				concat(extract(day from pri.akhkontrak),' April ',extract(year from pri.akhkontrak))
+			 when extract(month from pri.akhkontrak) = 5 then
+				concat(extract(day from pri.akhkontrak),' Mei ',extract(year from pri.akhkontrak))
+			 when extract(month from pri.akhkontrak) = 6 then
+				concat(extract(day from pri.akhkontrak),' Juni ',extract(year from pri.akhkontrak))
+			 when extract(month from pri.akhkontrak) = 7 then
+				concat(extract(day from pri.akhkontrak),' Juli ',extract(year from pri.akhkontrak))
+			 when extract(month from pri.akhkontrak) = 8 then
+				concat(extract(day from pri.akhkontrak),' Agustus ',extract(year from pri.akhkontrak))
+			 when extract(month from pri.akhkontrak) = 9 then
+				concat(extract(day from pri.akhkontrak),' September ',extract(year from pri.akhkontrak))
+			 when extract(month from pri.akhkontrak) = 10 then
+				concat(extract(day from pri.akhkontrak),' Oktober ',extract(year from pri.akhkontrak))
+			when extract(month from pri.akhkontrak) = 11 then
+				concat(extract(day from pri.akhkontrak),' November ',extract(year from pri.akhkontrak))
+			else
+				concat(extract(day from pri.akhkontrak),' Desember ',extract(year from pri.akhkontrak))
+			end akhir,
 			pesangon.pasal_pengali_pesangon as pasal,
 			pesangon.uang_pesangon as pesangon,
 			pesangon.upmk as up,
@@ -289,6 +339,31 @@ class M_pesangon extends CI_Model {
 			else
 				concat(extract(day from pri.tglkeluar),' Desember ',extract(year from pri.tglkeluar))
 			end metu,alasan.alasan_tampil as alasan,
+			case when extract(month from pri.akhkontrak) = 1 then
+				concat(extract(day from pri.akhkontrak),' Januari ',extract(year from pri.akhkontrak))
+			 when extract(month from pri.akhkontrak) = 2 then
+				concat(extract(day from pri.akhkontrak),' Februari ',extract(year from pri.akhkontrak))
+			 when extract(month from pri.akhkontrak) = 3 then
+				concat(extract(day from pri.akhkontrak),' Maret ',extract(year from pri.akhkontrak))
+			 when extract(month from pri.akhkontrak) = 4 then
+				concat(extract(day from pri.akhkontrak),' April ',extract(year from pri.akhkontrak))
+			 when extract(month from pri.akhkontrak) = 5 then
+				concat(extract(day from pri.akhkontrak),' Mei ',extract(year from pri.akhkontrak))
+			 when extract(month from pri.akhkontrak) = 6 then
+				concat(extract(day from pri.akhkontrak),' Juni ',extract(year from pri.akhkontrak))
+			 when extract(month from pri.akhkontrak) = 7 then
+				concat(extract(day from pri.akhkontrak),' Juli ',extract(year from pri.akhkontrak))
+			 when extract(month from pri.akhkontrak) = 8 then
+				concat(extract(day from pri.akhkontrak),' Agustus ',extract(year from pri.akhkontrak))
+			 when extract(month from pri.akhkontrak) = 9 then
+				concat(extract(day from pri.akhkontrak),' September ',extract(year from pri.akhkontrak))
+			 when extract(month from pri.akhkontrak) = 10 then
+				concat(extract(day from pri.akhkontrak),' Oktober ',extract(year from pri.akhkontrak))
+			when extract(month from pri.akhkontrak) = 11 then
+				concat(extract(day from pri.akhkontrak),' November ',extract(year from pri.akhkontrak))
+			else
+				concat(extract(day from pri.akhkontrak),' Desember ',extract(year from pri.akhkontrak))
+			end akhir,
 			pesangon.pasal_pengali_pesangon as pasal,
 			pesangon.uang_pesangon as pesangon,
 			pesangon.upmk as up,

@@ -107,14 +107,24 @@
                                                 </div>
                                             </div>
                                              <div class="row">
-                                                <div class="col-lg-12">
+                                                <div class="col-lg-6">
                                                     <div class="form-group">
-                                                        <label for="txtAlamat" class="col-lg-2 control-label ">Alamat
+                                                        <label for="txtAlamat" class="col-lg-4 control-label ">Alamat
                                                         </label>
-                                                        <div class="col-lg-4">
+                                                        <div class="col-lg-8">
                                                             <input type="text" name="txtAlamat" class="form-control" id="txtAlamat" readonly="">
                                                         </div>
                                                     </div>
+                                                </div>
+                                                <div class="col-lg-6">
+                                                    <div class="form-group">
+                                                        <label for="txtProses" class="col-lg-4 control-label">Tgl Akhir Kerja
+                                                        </label>
+                                                        <div class="col-lg-8">
+                                                            <input type="text" name="txtAkhir" class="form-control" id="txtAkhir" 
+                                                          readonly="" >  
+                                                        </div>
+                                                     </div>   
                                                 </div>
                                             </div>
                                             <div class="row">
@@ -192,8 +202,8 @@
                                                     <div class="form-group">
                                                         <label for="txtPotongan" class="col-lg-4 control-label">Potongan
                                                         </label>
-                                                        <div class="col-lg-8">
-                                                            <input type="text" name="txtPotongan" class="form-control" id="txtPotongan" >
+                                                        <div class="col-lg-8" hidden="">
+                                                            <input type="text" name="txtPotongan" class="form-control" id="txtPotongan" value="0">
                                                         </div>
                                                      </div>   
                                                 </div>

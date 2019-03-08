@@ -205,8 +205,7 @@ class C_Index extends CI_Controller {
 		$bank 						=	$this->input->post('txtBank');
 		$edit_by                    =	$this->session->user;
 		$edit_date                  =	date(' M,d,y');
-		$penerima 				    =	$this->input->post('txtPenerima');
-		$pengirim 					=	$this->input->post('txtPengirim');
+
 
 
 
@@ -223,9 +222,8 @@ class C_Index extends CI_Controller {
 										    'nama_rekening'			=>  $nama_rekening,
 										    'bank'                  =>  $bank,
 										    'edit_by'               =>  $edit_by,
-										    'edit_date'             =>  $edit_date,
-										    'penerima'              =>  $penerima,
-										    'pengirim'              =>  $pengirim
+										    'edit_date'             =>  $edit_date
+	
 
 										    
 										);
@@ -254,8 +252,8 @@ class C_Index extends CI_Controller {
          $data['id']			=	$encrypt_id;
 
 		 $data['data'] = $this->M_pesangon->cetak($id);
-		 $data['penerima'] = $this->M_pesangon->penerima();
-         $data['pengirim'] = $this->M_pesangon->pengirim();
+		 $data['penerima'] = $this->M_pesangon->penerima($id);
+         $data['pengirim'] = $this->M_pesangon->pengirim($id);
 		  
                                                 
          // print_r($data['penerima']);exit();
