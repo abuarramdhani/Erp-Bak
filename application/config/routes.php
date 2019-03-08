@@ -2007,6 +2007,7 @@ $route['InventoryManagement/CreateKIB/search/(:any)'] = 'InventoryKIB/MainMenu/C
 $route['InventoryManagement/CreateKIB/getSubInv'] = 'InventoryKIB/MainMenu/CreateKIB/C_CreateKIB/getSubInv';
 $route['InventoryManagement/CreateKIB/submitpdf'] = 'InventoryKIB/MainMenu/CreateKIB/C_CreateKIB/submitpdf';
 $route['InventoryManagement/CreateKIB/pdf/(:any)/(:any)/(:any)'] = 'InventoryKIB/MainMenu/CreateKIB/C_CreateKIB/pdf/$1/$2/$3';
+$route['InventoryManagement/CreateKIB/pdf2/(:any)/(:any)/(:any)'] = 'InventoryKIB/MainMenu/CreateKIB/C_CreateKIB/pdf2/$1/$2/$3';
 
 
 
