@@ -33,13 +33,13 @@ class M_presensiharian extends Ci_Model
 				where (left(kodesie,6) = left('$kd',6) or noind in ('J1171','J7004'))
 				and keluar = false
 				order by kodesie,noind;";    
-		}elseif($noind == 'B0370'){
+		}elseif ($noind == 'B0370') {
 			 $sql = "select noind,nama 
 				from hrd_khs.tpribadi 
 				where (left(kodesie,6) = left('$kd',6) or noind in ('D1535','P0426'))
 				and keluar = false
-				order by kodesie,noind;";
-		}else{
+				order by kodesie,noind;";    
+		} else{
 			    if('306030'==substr($kd,0,6))
 			    {
 			    $sql = "select noind,nama 
