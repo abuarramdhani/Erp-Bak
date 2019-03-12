@@ -429,6 +429,7 @@ ORDER BY 3, 4 ASC";
      AND poh.vendor_id = pov.vendor_id
      AND knm.vendor_id = poh.vendor_id
      AND (mmt.transaction_quantity IS NULL OR mmt.transaction_quantity < 0)
+     AND NVL (mmtt.subinventory_code, mmt.subinventory_code) = '$compile'
 UNION
 SELECT   pov.vendor_name nama_subkon, 
          knm.no_mobil,
@@ -501,6 +502,7 @@ SELECT   pov.vendor_name nama_subkon,
      AND poh.vendor_id = pov.vendor_id
      AND knm.vendor_id = poh.vendor_id
      AND (mmt.transaction_quantity IS NULL OR mmt.transaction_quantity < 0)
+     AND NVL (mmtt.subinventory_code, mmt.subinventory_code) = '$compile'
 UNION
 SELECT   pov.vendor_name nama_subkon, 
          knm.no_mobil,
@@ -578,6 +580,7 @@ SELECT   pov.vendor_name nama_subkon,
      AND poh.vendor_id = pov.vendor_id
      AND knm.vendor_id = poh.vendor_id
      AND (mmt.transaction_quantity IS NULL OR mmt.transaction_quantity < 0)
+     AND NVL (mmtt.subinventory_code, mmt.subinventory_code) = '$compile'
 UNION
 SELECT   pov.vendor_name nama_subkon, 
          knm.no_mobil,
@@ -665,7 +668,7 @@ ORDER BY 3, 4 ASC";
 
     }
 
-    public function allPengeluaran($spbs_awal = false,$spbs_akhir = false ,$kirim_awal = false ,$kirim_akhir = false ,$spbs_num = false,$subname = false,$job = false)
+    public function allPengeluaran($spbs_awal = false,$spbs_akhir = false ,$kirim_awal = false ,$kirim_akhir = false ,$spbs_num = false,$subname = false,$job = false,$compile = false)
     {
         
         if ($spbs_awal==FALSE && $spbs_akhir==FALSE) {
@@ -700,7 +703,11 @@ ORDER BY 3, 4 ASC";
           $w_job_2 = "AND we.wip_entity_name LIKE '%$job%'";
         }
 
-                
+        if($compile == FALSE){
+            $compile = "";
+        }else{
+            $compile = "AND NVL (mmtt.subinventory_code, mmt.subinventory_code) LIKE '%$compile%'";
+        }
 
 
 
@@ -780,6 +787,7 @@ ORDER BY 3, 4 ASC";
      $no_spbs --
      $subkon --
      $w_job_1 --
+     $compile --
 UNION
 SELECT   pov.vendor_name nama_subkon, 
          knm.no_mobil,
@@ -857,6 +865,7 @@ SELECT   pov.vendor_name nama_subkon,
      $no_spbs --
      $subkon --
      $w_job_2 --
+     $compile --
 UNION
 SELECT   pov.vendor_name nama_subkon, 
          knm.no_mobil,
@@ -939,6 +948,7 @@ SELECT   pov.vendor_name nama_subkon,
      $no_spbs --
      $subkon --
      $w_job_1 --
+     $compile --
 UNION
 SELECT   pov.vendor_name nama_subkon, 
          knm.no_mobil,
@@ -1023,6 +1033,7 @@ SELECT   pov.vendor_name nama_subkon,
      $no_spbs --
      $subkon --
      $w_job_2 --
+     $compile --
 ORDER BY 3, 4 ASC";
 
 
