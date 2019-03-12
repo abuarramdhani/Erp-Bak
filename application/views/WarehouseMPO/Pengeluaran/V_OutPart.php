@@ -30,7 +30,9 @@
                            Monitoring
                        </div>
                        <div class="box-body">
-                        <form class="form-horizontal" action="<?php echo base_url('MonitoringBarangGudang/Pengeluaran/Filter'); ?>" method="post">
+                        <form class="form-horizontal" action="<?php 
+echo isset($compile) ? base_url('MonitoringBarangGudang/Pengeluaran/Filter/'.$compile) : base_url('MonitoringBarangGudang/Pengeluaran/Filter');
+                                            ?>" method="post">
                             <div class="row">
                                 <div class="col-md-12" style="padding-top: 10px">
                                     <div class="row">
