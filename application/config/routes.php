@@ -2042,6 +2042,9 @@ $route['HitungHlcm/Approval/(:any)/(:any)'] 	= 'UpahHlCm/MasterData/C_Approval/$
 $route['HitungHlcm/UbahPekerjaan'] = 'UpahHlCm/MasterData/C_UbahPekerjaan';
 $route['HitungHlcm/UbahPekerjaan/(:any)'] = 'UpahHlCm/MasterData/C_UbahPekerjaan/$1';
 $route['HitungHlcm/UbahPekerjaan/(:any)/(:any)'] = 'UpahHlCm/MasterData/C_UbahPekerjaan/$1/$2';
+$route['HitungHlcm/DataOvertimePHL'] = 'UpahHlCm/MasterData/C_Overtime';
+$route['HitungHlcm/DataOvertimePHL/(:any)'] = 'UpahHlCm/MasterData/C_Overtime/$1';
+$route['HitungHlcm/DataOvertimePHL/(:any)/(:any)'] = 'UpahHlCm/MasterData/C_Overtime/$1/$2';
 
 $route['HitungHlcm/HitungGaji'] 	= 'UpahHlCm/ProsesGaji/C_ProsesGaji';
 $route['HitungHlcm/HitungGaji/(:any)'] 	= 'UpahHlCm/ProsesGaji/C_ProsesGaji/$1';
