@@ -2,7 +2,7 @@
     <div class="inner" >
         <div class="row">
 
-            <form method="post" class="form-horizontal" action="<?php echo site_url('P2K3/Order/save_data');?>">
+            <form method="post" class="form-horizontal" action="<?php echo site_url('P2K3/Order/save_data');?>" enctype="multipart/form-data">
                 <div class="col-lg-12">
                     <div class="col-lg-11">
                         <div class="text-right">
@@ -44,6 +44,16 @@
                                             <div class="col-md-3">
                                                 <div class="input-group">
                                                     <input readonly class="form-control"  autocomplete="off" type="text" name="k3_periode" id="" style="width: 200px" placeholder="Masukkan Periode" value="<?php echo date('Y-m-d'); ?>"/>
+                                                </div>
+                                            </div>
+
+                                            <div class="col-md-2" align="right">
+                                                <label for="lb_approval" class="control-label">Document Approval : </label>
+                                            </div>
+                                        
+                                            <div class="col-md-3">
+                                                <div class="input-group">
+                                                    <input type="file" name="k3_approval" class="form-control" required />
                                                 </div>
                                             </div>
                                         </div>

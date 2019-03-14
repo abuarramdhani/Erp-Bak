@@ -22,14 +22,15 @@
                             <div class="text-right"><h1><b></b></h1></div>
                         </div>
 
-                         <div class="panel panel-primary" style="height: 110px;">
+                         <div class="panel panel-primary">
                             <div class="panel-body">
                                 <div class="row">
-                                    <div class="col-lg-1">
+                                    <div class="col-lg-3">
                                         <div class="form-group">
                                             <label class="control-label">Departement</label> <br>
                                             <label class="control-label">Bidang</label> <br>
                                             <label class="control-label">Unit</label> <br>
+                                            <label class="control-label">Document Approval</label> <br>
                                         </div>
                                     </div>
                                     <div class="col-lg-5">
@@ -37,6 +38,20 @@
                                             <label class="control-label">: <?php echo $seksi[0]["dept"] ?></label> <br>
                                             <label class="control-label">: <?php echo $seksi[0]["bidang"] ?></label> <br>
                                             <label class="control-label">: <?php echo $seksi[0]["unit"] ?></label> <br>
+                                            <?php 
+                                            $tampung_approval = array();
+                                            if (isset($tampil_data) and !empty($tampil_data)) {
+                                               foreach ($tampil_data as $tp_dt) {
+                                                    if (!in_array($tp_dt['document_approval'], $tampung_approval)) {
+                                                        echo '<label class="control-label">: <a target="_blank" href="'.base_url('assets/upload/P2K3DocumentApproval/'.$tp_dt['document_approval']).'">'.$tp_dt['document_approval'].'</a></label><br>';
+                                                        array_push($tampung_approval, $tp_dt['document_approval']);
+                                                    }
+                                                   
+                                                }
+                                            }else{
+                                                echo '<label class="control-label">: - </label><br>';
+                                            }
+                                            ?>
                                         </div>
                                     </div>
                                     

@@ -60,8 +60,60 @@
                             </div>
 
                             <div class="box-body">
-                                <div class="row text-right" style="margin-right: 3px;">
-                                    <a class="btn btn-primary" id="bt_export" href="<?php echo site_url('P2K3/Order/export')?>">Export &nbsp<span class="glyphicon glyphicon-arrow-up"></a>
+                                <div class="row" style="margin-right: 3px;">
+                                    <div class="col-lg-6">
+                                         <form class="form-horizontal" method="POST" style="border:1px solid #3c8dbc;border-radius: 3px;padding-top: 10px" enctype="multipart/form-data" action="<?php echo base_url('P2K3/Order/UploadApproval'); ?>">
+                                            <div class="form-group">
+                                                <label class="form-label text-center col-lg-12">Upload Document Approval</label>
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="lb_approval" class="control-label col-lg-4">Document Approval : </label>
+                                                <div class="input-group col-lg-7">
+                                                    <input type="file" name="k3_approval" class="form-control" required />
+                                                </div>
+                                            </div>
+                                            <div class="form-group text-right">
+                                                <div class="col-lg-8">
+                                                    <button type="submit" class="btn btn-primary">Upload Approval</button>
+                                                </div>
+                                            </div>
+                                        </form>
+                                    </div>
+                                    <div class="col-lg-6 text-right">
+                                        <div class="row">
+                                            <a target="_blank" href="<?php echo site_url('P2K3/Order/approval')?>" class="btn btn-danger ">
+                                                Document Approval &nbsp<span class="fa fa-file-pdf-o"></span>
+                                            </a>
+                                            <a class="btn btn-primary" id="bt_export" href="<?php echo site_url('P2K3/Order/export')?>">
+                                                Export &nbsp<span class="glyphicon glyphicon-arrow-up"></span>
+                                            </a>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-lg-4">
+                                                <label>Document Approval : </label>
+                                            </div>
+                                            <div class="col-lg-8">
+                                                <?php 
+                                                    $tampung_approval = array();
+                                                    if (isset($tampil_data) and !empty($tampil_data)) {
+                                                       foreach ($tampil_data as $tp_dt) {
+                                                            if (!in_array($tp_dt['document_approval'], $tampung_approval)) {
+                                                                echo '<label class="control-label"><a target="_blank" href="'.base_url('assets/upload/P2K3DocumentApproval/'.$tp_dt['document_approval']).'">'.$tp_dt['document_approval'].'</a></label><br>';
+                                                                array_push($tampung_approval, $tp_dt['document_approval']);
+                                                            }
+                                                           
+                                                        }
+                                                    }else{
+                                                        echo '<label class="control-label"> - </label><br>';
+                                                    }
+                                                ?>
+                                            </div>
+                                             
+                                        </div>
+                                            
+                                    </div>
+                                       
+                                    
                                 </div>
                                 <br>
                                     <div class="table-responsive">
@@ -106,12 +158,22 @@
                                                 ?>
                                                     <td style="text-align: center;">
                                                     <?php 
-                                                        $jumlah = explode(',',$row['jml']); print_r($jumlah[$jmlh]); 
+                                                        $jumlah = explode(',',$row['jml']); 
+                                                        if (isset($jumlah[$jmlh]) and !empty($jumlah[$jmlh])) {
+                                                            print_r($jumlah[$jmlh]); 
+                                                        }else{
+                                                            echo "0";
+                                                        }
                                                     ?>
                                                     </td>
                                                     <td style="text-align: center;">
                                                     <?php 
-                                                        $jumlah = explode(',',$row['jml_pkj']); print_r($jumlah[$jmlh]); 
+                                                        $jumlah = explode(',',$row['jml_pkj']); 
+                                                        if (isset($jumlah[$jmlh]) and !empty($jumlah[$jmlh])) {
+                                                            print_r($jumlah[$jmlh]); 
+                                                        }else{
+                                                            echo "0";
+                                                        } 
                                                     ?>
                                                     </td>
                                                 <?php 
