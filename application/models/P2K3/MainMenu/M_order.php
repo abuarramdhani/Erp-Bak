@@ -17,7 +17,8 @@ class M_Order extends CI_Model
                                             es.section_code,
                                             es.department_name as dept,
                                             es.field_name as bidang,
-                                            es.unit_name as unit
+                                            es.unit_name as unit,
+                                            es.section_name as section
                                     from er.er_employee_all as el
                                     left join er.er_section as es
                                     on el.section_code=es.section_code
@@ -94,6 +95,18 @@ class M_Order extends CI_Model
         // $this->db->order_by('kp.id_kebutuhan_detail'); 
         // $query = $this->db->get('k3.k3_kebutuhan_detail kd');
         // return $query->result_array();
+    }
+
+    public function tampil_data_2($kodesie,$m,$y){
+        $sql = "select * from k3.k3_kebutuhan_detail tb1 join k3.k3_kebutuhan tb2 on
+                                    tb1.id_kebutuhan = tb2.id_kebutuhan join k3.k3_kebutuhan_pekerja tb3 on
+                                    tb1.id_kebutuhan_detail = tb3.id_kebutuhan_detail 
+                                    where extract(month from tb2.create_timestamp) = '$m'::int 
+                                    and extract (year from tb2.create_timestamp) = '$y'::int
+                                    and left(tb2.kodesie,7) = left('$kodesie',7)
+                                    order by tb1.status_updated desc";
+        $result = $this->db->query($sql);
+        return $result->result_array();
     }
 
     public function join_3($id_kebutuhan_detail)
@@ -251,5 +264,11 @@ class M_Order extends CI_Model
                                     tb1.id_kebutuhan_detail = tb3.id_kebutuhan_detail where tb2.kodesie = '$kode_seksi'
                                     order by tb1.status_updated desc");
         return $query->result_array();
+    }
+
+    public function updateDocumentApproval($nama_file,$id_kebutuhan){
+        $sql = "update k3.k3_kebutuhan set document_approval = '$nama_file' where id_kebutuhan = $id_kebutuhan";
+        $this->db->query($sql);
+        return ;
     }
 }
