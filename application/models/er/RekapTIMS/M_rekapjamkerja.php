@@ -14,8 +14,8 @@
 													rtrim(lokker.lokasi_kerja) as nama_lokasi_kerja
 										from 		hrd_khs.tlokasi_kerja as lokker
 										where 		(
-														lokker.id_ like '$keyword%'
-														or 	lokker.lokasi_kerja like '$keyword%'
+														lokker.id_ like '%$keyword%'
+														or 	lokker.lokasi_kerja like '%$keyword%'
 													)
 										order by 	id_::numeric";
 			$queryAmbilLokasiKerja 	= 	$this->personalia->query($ambilLokasiKerja);
@@ -24,7 +24,222 @@
 
 	    public function prosesRekapJamKerja($tanggalAwalRekap, $tanggalAkhirRekap, $lokasiKerja, $tambahLembur)
 	    {
+	    	if ($lokasiKerja == "all") {
+	    		$lokasiKerja = "";
+	    	}
+	    	if ($tambahLembur == "hanya") {
+	    		$prosesRekapJamKerja = "
+	    								select 		tseksi.kodesie as kode_seksi,
+	    								tseksi.dept as nama_departemen,
+	    								tseksi.bidang as nama_bidang,
+	    								tseksi.unit as nama_unit,
+	    								tseksi.seksi as nama_seksi,
+	    								coalesce(round((a.jam_kerja_seksi/3600)::numeric, 3), 0) as \"A\",
+	    								coalesce(round((b.jam_kerja_seksi/3600)::numeric, 3), 0) as \"B\",
+	    								coalesce(round((c.jam_kerja_seksi/3600)::numeric, 3), 0) as \"C\",
+	    								coalesce(round((d.jam_kerja_seksi/3600)::numeric, 3), 0) as \"D\",
+	    								coalesce(round((e.jam_kerja_seksi/3600)::numeric, 3), 0) as \"E\",
+	    								coalesce(round((f.jam_kerja_seksi/3600)::numeric, 3), 0) as \"F\",
+	    								coalesce(round((g.jam_kerja_seksi/3600)::numeric, 3), 0) as \"G\",
+	    								coalesce(round((h.jam_kerja_seksi/3600)::numeric, 3), 0) as \"H\",
+	    								coalesce(round((j.jam_kerja_seksi/3600)::numeric, 3), 0) as \"J\",
+	    								coalesce(round((kp.jam_kerja_seksi/3600)::numeric, 3), 0) as \"K-P\",
+	    								coalesce(round((q.jam_kerja_seksi/3600)::numeric, 3), 0) as \"Q\"
+	    								from (	select substring(tseksi.kodesie, 1, 7) as kodesie,
+	    																										rtrim(tseksi.dept) as dept,
+	    									rtrim(tseksi.bidang) as bidang,
+	    									rtrim(tseksi.unit) as unit,
+	    									rtrim(tseksi.seksi) as seksi
+	    									from hrd_khs.tseksi as tseksi
+	    									where trim(tseksi.kodesie)!='-' and right(trim(tseksi.kodesie), 2)='00'
+	    								) as tseksi
+
+	    								left join
+	    								(select substring(pkj.kodesie,1,7) as kode_seksi,
+	    								                 sum (pkj.lembur) as jam_kerja_seksi
+	    								from
+
+	    								(select tdtp.*, (select	(coalesce(sum(tlembur.jml_lembur), 0) * 60)
+	    								from	\"Presensi\".tlembur as tlembur
+	    								                         join hrd_khs.tpribadi tpribadi on tpribadi.noind=tlembur.noind
+	    								where 	(tlembur.tanggal=tdtp.tanggal and tpribadi.lokasi_kerja like '%$lokasiKerja%' and tlembur.noind like 'A%')
+	    										and 	tlembur.noind=tdtp.noind ) as lembur
+	    								from \"Presensi\".tdatapresensi tdtp where tdtp.tanggal between '$tanggalAwalRekap' and '$tanggalAkhirRekap') as pkj
+
+	    								group by substring(pkj.kodesie,1,7) 
+	    								order by substring(pkj.kodesie,1,7) ) as a on a.kode_seksi=tseksi.kodesie
+
+	    								left join 
+	    								(select substring(pkj.kodesie,1,7) as kode_seksi,
+	    								                 sum (pkj.lembur) as jam_kerja_seksi
+	    								from
+
+	    								(select tdtp.*, (select	(coalesce(sum(tlembur.jml_lembur), 0) * 60)
+	    								from	\"Presensi\".tlembur as tlembur
+	    											 join hrd_khs.tpribadi tpribadi on tpribadi.noind=tlembur.noind
+	    								where 	(tlembur.tanggal=tdtp.tanggal and tpribadi.lokasi_kerja like '%$lokasiKerja%' and tlembur.noind like 'B%')
+	    											and 	tlembur.noind=tdtp.noind ) as lembur
+	    								from \"Presensi\".tdatapresensi tdtp where tdtp.tanggal between '$tanggalAwalRekap' and '$tanggalAkhirRekap') as pkj
+
+	    								group by substring(pkj.kodesie,1,7) 
+	    								order by substring(pkj.kodesie,1,7) ) as b on b.kode_seksi=tseksi.kodesie
+
+	    								left join 
+	    								(select substring(pkj.kodesie,1,7) as kode_seksi,
+	    								                 sum (pkj.lembur) as jam_kerja_seksi
+	    								from
+
+	    								(select tdtp.*, (select	(coalesce(sum(tlembur.jml_lembur), 0) * 60)
+	    								from	\"Presensi\".tlembur as tlembur
+	    											 join hrd_khs.tpribadi tpribadi on tpribadi.noind=tlembur.noind
+	    								where 	(tlembur.tanggal=tdtp.tanggal and tpribadi.lokasi_kerja like '%$lokasiKerja%' and tlembur.noind like 'C%')
+	    											and 	tlembur.noind=tdtp.noind ) as lembur
+	    								from \"Presensi\".tdatapresensi tdtp where tdtp.tanggal between '$tanggalAwalRekap' and '$tanggalAkhirRekap') as pkj
+
+	    								group by substring(pkj.kodesie,1,7) 
+	    								order by substring(pkj.kodesie,1,7) ) as c on c.kode_seksi=tseksi.kodesie
+
+	    								left join 
+	    								(select substring(pkj.kodesie,1,7) as kode_seksi,
+	    								                 sum (pkj.lembur) as jam_kerja_seksi
+	    								from
+
+	    								(select tdtp.*, (select	(coalesce(sum(tlembur.jml_lembur), 0) * 60)
+	    								from	\"Presensi\".tlembur as tlembur
+	    											 join hrd_khs.tpribadi tpribadi on tpribadi.noind=tlembur.noind
+	    								where 	(tlembur.tanggal=tdtp.tanggal and tpribadi.lokasi_kerja like '%$lokasiKerja%' and tlembur.noind like 'D%')
+	    											and 	tlembur.noind=tdtp.noind ) as lembur
+	    								from \"Presensi\".tdatapresensi tdtp where tdtp.tanggal between '$tanggalAwalRekap' and '$tanggalAkhirRekap') as pkj
+
+	    								group by substring(pkj.kodesie,1,7) 
+	    								order by substring(pkj.kodesie,1,7) ) as d on d.kode_seksi=tseksi.kodesie
+
+	    								left join 
+	    								(select substring(pkj.kodesie,1,7) as kode_seksi,
+	    								                 sum (pkj.lembur) as jam_kerja_seksi
+	    								from
+
+	    								(select tdtp.*, (select	(coalesce(sum(tlembur.jml_lembur), 0) * 60)
+	    								from	\"Presensi\".tlembur as tlembur
+	    											 join hrd_khs.tpribadi tpribadi on tpribadi.noind=tlembur.noind
+	    								where 	(tlembur.tanggal=tdtp.tanggal and tpribadi.lokasi_kerja like '%$lokasiKerja%' and tlembur.noind like 'E%')
+	    											and 	tlembur.noind=tdtp.noind ) as lembur
+	    								from \"Presensi\".tdatapresensi tdtp where tdtp.tanggal between '$tanggalAwalRekap' and '$tanggalAkhirRekap') as pkj
+
+	    								group by substring(pkj.kodesie,1,7) 
+	    								order by substring(pkj.kodesie,1,7) ) as e on e.kode_seksi=tseksi.kodesie
+
+	    								left join 
+	    								(select substring(pkj.kodesie,1,7) as kode_seksi,
+	    								                 sum (pkj.lembur) as jam_kerja_seksi
+	    								from
+
+	    								(select tdtp.*, (select	(coalesce(sum(tlembur.jml_lembur), 0) * 60)
+	    									from	\"Presensi\".tlembur as tlembur
+	    											 join hrd_khs.tpribadi tpribadi on tpribadi.noind=tlembur.noind
+	    									where 	(tlembur.tanggal=tdtp.tanggal and tpribadi.lokasi_kerja like '%$lokasiKerja%' and tlembur.noind like 'F%')
+	    											and 	tlembur.noind=tdtp.noind ) as lembur
+	    								from \"Presensi\".tdatapresensi tdtp where tdtp.tanggal between '$tanggalAwalRekap' and '$tanggalAkhirRekap') as pkj
+
+	    								group by substring(pkj.kodesie,1,7) 
+	    								order by substring(pkj.kodesie,1,7) ) as f on f.kode_seksi=tseksi.kodesie
+
+	    								left join 
+	    								(select substring(pkj.kodesie,1,7) as kode_seksi,
+	    								                 sum (pkj.lembur) as jam_kerja_seksi
+	    								from
+
+	    								(select tdtp.*, (select	(coalesce(sum(tlembur.jml_lembur), 0) * 60)
+	    										from	\"Presensi\".tlembur as tlembur
+	    											 join hrd_khs.tpribadi tpribadi on tpribadi.noind=tlembur.noind
+	    										where 	(tlembur.tanggal=tdtp.tanggal and tpribadi.lokasi_kerja like '%$lokasiKerja%'  and tlembur.noind like 'G%')
+	    												and 	tlembur.noind=tdtp.noind ) as lembur
+	    								from \"Presensi\".tdatapresensi tdtp where tdtp.tanggal between '$tanggalAwalRekap' and '$tanggalAkhirRekap') as pkj
+
+	    								group by substring(pkj.kodesie,1,7) 
+	    								order by substring(pkj.kodesie,1,7) ) as g on g.kode_seksi=tseksi.kodesie
+
+	    								left join 
+	    								(select substring(pkj.kodesie,1,7) as kode_seksi,
+	    								                 sum (pkj.lembur) as jam_kerja_seksi
+	    								from
+
+	    								(select tdtp.*, (select	(coalesce(sum(tlembur.jml_lembur), 0) * 60)
+	    											from	\"Presensi\".tlembur as tlembur
+	    											 join hrd_khs.tpribadi tpribadi on tpribadi.noind=tlembur.noind
+	    											where 	(tlembur.tanggal=tdtp.tanggal and tpribadi.lokasi_kerja like '%$lokasiKerja%' and tlembur.noind like 'H%')
+	    												and 	tlembur.noind=tdtp.noind ) as lembur
+	    								from \"Presensi\".tdatapresensi tdtp where tdtp.tanggal between '$tanggalAwalRekap' and '$tanggalAkhirRekap') as pkj
+
+	    								group by substring(pkj.kodesie,1,7) 
+	    								order by substring(pkj.kodesie,1,7) ) as h on h.kode_seksi=tseksi.kodesie
+
+	    								left join 
+	    								(select substring(pkj.kodesie,1,7) as kode_seksi,
+	    								                 sum (pkj.lembur) as jam_kerja_seksi
+	    								from
+
+	    								(select tdtp.*, (select	(coalesce(sum(tlembur.jml_lembur), 0) * 60)
+	    								from	\"Presensi\".tlembur as tlembur
+	    											 join hrd_khs.tpribadi tpribadi on tpribadi.noind=tlembur.noind
+	    								where 	(tlembur.tanggal=tdtp.tanggal and tpribadi.lokasi_kerja like '%$lokasiKerja%' and tlembur.noind like 'J%')
+	    											and 	tlembur.noind=tdtp.noind ) as lembur
+	    								from \"Presensi\".tdatapresensi tdtp where tdtp.tanggal between '$tanggalAwalRekap' and '$tanggalAkhirRekap') as pkj
+
+	    								group by substring(pkj.kodesie,1,7) 
+	    								order by substring(pkj.kodesie,1,7) ) as j on j.kode_seksi=tseksi.kodesie
+
+	    								left join 
+	    								(select substring(pkj.kodesie,1,7) as kode_seksi,
+	    								                 sum (pkj.lembur) as jam_kerja_seksi
+	    								from
+
+	    								(select tdtp.*, (select	(coalesce(sum(tlembur.jml_lembur), 0) * 60)
+	    								from	\"Presensi\".tlembur as tlembur
+	    											 join hrd_khs.tpribadi tpribadi on tpribadi.noind=tlembur.noind
+	    								where 	(tlembur.tanggal=tdtp.tanggal and tpribadi.lokasi_kerja like '%$lokasiKerja%' and (tlembur.noind like 'K%' or tlembur.noind like 'P%'))
+	    										and 	tlembur.noind=tdtp.noind ) as lembur
+	    								from \"Presensi\".tdatapresensi tdtp where tdtp.tanggal between '$tanggalAwalRekap' and '$tanggalAkhirRekap') as pkj
+
+	    								group by substring(pkj.kodesie,1,7) 
+	    								order by substring(pkj.kodesie,1,7) ) as kp on kp.kode_seksi=tseksi.kodesie
+
+	    								left join 
+	    								(select substring(pkj.kodesie,1,7) as kode_seksi,
+	    								                 sum (pkj.lembur) as jam_kerja_seksi
+	    								from
+
+	    								(select tdtp.*, (select	(coalesce(sum(tlembur.jml_lembur), 0) * 60)
+	    									from	\"Presensi\".tlembur as tlembur
+	    									join hrd_khs.tpribadi tpribadi on tpribadi.noind=tlembur.noind
+	    									where 	(tlembur.tanggal=tdtp.tanggal and tpribadi.lokasi_kerja like '%$lokasiKerja%'  and tlembur.noind like 'Q%')
+	    											and 	tlembur.noind=tdtp.noind ) as lembur
+	    								from \"Presensi\".tdatapresensi tdtp where tdtp.tanggal between '$tanggalAwalRekap' and '$tanggalAkhirRekap') as pkj
+
+	    								group by substring(pkj.kodesie,1,7) 
+	    								order by substring(pkj.kodesie,1,7) ) as q on q.kode_seksi=tseksi.kodesie
+	    								group by 	tseksi.kodesie,
+	    											tseksi.dept,
+	    											tseksi.bidang,
+	    											tseksi.unit,
+	    											tseksi.seksi,
+	    											\"A\",
+	    											\"B\",
+	    											\"C\",
+	    											\"D\",
+	    											\"E\",
+	    											\"F\",
+	    											\"G\",
+	    											\"H\",
+	    											\"J\",
+	    											\"K-P\",
+	    											\"Q\"
+	    								order by 	kode_seksi
+	    								";
+	    	}else 
+	    	{
 	    	$prosesRekapJamKerja 		= "	--explain 	analyze
+	    									
 											select utama.kode_seksi,
 												   utama.nama_departemen,
 												   utama.nama_bidang,
@@ -70,9 +285,9 @@
 												          then (utama.\"K-P\" + libur.\"K-P\")
 												          else (utama.\"K-P\")
 												    end) as \"K-P\",
-												(case when '$tambahLembur' = '1'
+													(case when '$tambahLembur' = '1'
 												          then (utama.\"Q\" + libur.\"Q\")
-												          else (utama.\"Q\")
+												          else (utama.\"Q\")	    
 												    end) as \"Q\"
 
 															  
@@ -1806,7 +2021,7 @@
 																																					noind,
 																																					kd_shift
 																																	) as tshiftpekerja
-																														where 		tshiftpekerja.lokasi_kerja='$lokasiKerja'
+																														where 		tshiftpekerja.lokasi_kerja like '%$lokasiKerja%'
 																														order by 	tshiftpekerja.kodesie,
 																																	tshiftpekerja.noind,
 																																	tshiftpekerja.tanggal
@@ -3525,7 +3740,7 @@
 																																					noind,
 																																					kd_shift
 																																	) as tshiftpekerja
-																														where 		tshiftpekerja.lokasi_kerja='$lokasiKerja'
+																														where 		tshiftpekerja.lokasi_kerja like '%$lokasiKerja%'
 																														order by 	tshiftpekerja.kodesie,
 																																	tshiftpekerja.noind,
 																																	tshiftpekerja.tanggal
@@ -5244,7 +5459,7 @@
 																																					noind,
 																																					kd_shift
 																																	) as tshiftpekerja
-																														where 		tshiftpekerja.lokasi_kerja='$lokasiKerja'
+																														where 		tshiftpekerja.lokasi_kerja like '%$lokasiKerja%'
 																														order by 	tshiftpekerja.kodesie,
 																																	tshiftpekerja.noind,
 																																	tshiftpekerja.tanggal
@@ -6963,7 +7178,7 @@
 																																					noind,
 																																					kd_shift
 																																	) as tshiftpekerja
-																														where 		tshiftpekerja.lokasi_kerja='$lokasiKerja'
+																														where 		tshiftpekerja.lokasi_kerja like '%$lokasiKerja%'
 																														order by 	tshiftpekerja.kodesie,
 																																	tshiftpekerja.noind,
 																																	tshiftpekerja.tanggal
@@ -8682,7 +8897,7 @@
 																																					noind,
 																																					kd_shift
 																																	) as tshiftpekerja
-																														where 		tshiftpekerja.lokasi_kerja='$lokasiKerja'
+																														where 		tshiftpekerja.lokasi_kerja like '%$lokasiKerja%'
 																														order by 	tshiftpekerja.kodesie,
 																																	tshiftpekerja.noind,
 																																	tshiftpekerja.tanggal
@@ -10401,7 +10616,7 @@
 																																					noind,
 																																					kd_shift
 																																	) as tshiftpekerja
-																														where 		tshiftpekerja.lokasi_kerja='$lokasiKerja'
+																														where 		tshiftpekerja.lokasi_kerja like '%$lokasiKerja%'
 																														order by 	tshiftpekerja.kodesie,
 																																	tshiftpekerja.noind,
 																																	tshiftpekerja.tanggal
@@ -12120,7 +12335,7 @@
 																																					noind,
 																																					kd_shift
 																																	) as tshiftpekerja
-																														where 		tshiftpekerja.lokasi_kerja='$lokasiKerja'
+																														where 		tshiftpekerja.lokasi_kerja like '%$lokasiKerja%'
 																														order by 	tshiftpekerja.kodesie,
 																																	tshiftpekerja.noind,
 																																	tshiftpekerja.tanggal
@@ -13839,7 +14054,7 @@
 																																					noind,
 																																					kd_shift
 																																	) as tshiftpekerja
-																														where 		tshiftpekerja.lokasi_kerja='$lokasiKerja'
+																														where 		tshiftpekerja.lokasi_kerja like '%$lokasiKerja%'
 																														order by 	tshiftpekerja.kodesie,
 																																	tshiftpekerja.noind,
 																																	tshiftpekerja.tanggal
@@ -15558,7 +15773,7 @@
 																																					noind,
 																																					kd_shift
 																																	) as tshiftpekerja
-																														where 		tshiftpekerja.lokasi_kerja='$lokasiKerja'
+																														where 		tshiftpekerja.lokasi_kerja like '%$lokasiKerja%'
 																														order by 	tshiftpekerja.kodesie,
 																																	tshiftpekerja.noind,
 																																	tshiftpekerja.tanggal
@@ -17280,7 +17495,7 @@
 																																					noind,
 																																					kd_shift
 																																	) as tshiftpekerja
-																														where 		tshiftpekerja.lokasi_kerja='$lokasiKerja'
+																														where 		tshiftpekerja.lokasi_kerja like '%$lokasiKerja%'
 																														order by 	tshiftpekerja.kodesie,
 																																	tshiftpekerja.noind,
 																																	tshiftpekerja.tanggal
@@ -18999,7 +19214,7 @@
 																																					noind,
 																																					kd_shift
 																																	) as tshiftpekerja
-																														where 		tshiftpekerja.lokasi_kerja='$lokasiKerja'
+																														where 		tshiftpekerja.lokasi_kerja like '%$lokasiKerja%'
 																														order by 	tshiftpekerja.kodesie,
 																																	tshiftpekerja.noind,
 																																	tshiftpekerja.tanggal
@@ -19072,7 +19287,7 @@
 						(select tdtp.*, (select	(coalesce(sum(tlembur.jml_lembur), 0) * 60)
 						from	\"Presensi\".tlembur as tlembur
 						                         join hrd_khs.tpribadi tpribadi on tpribadi.noind=tlembur.noind
-						where 	(tlembur.tanggal=tdtp.tanggal and tpribadi.lokasi_kerja='$lokasiKerja' and tlembur.kd_lembur='004' and tlembur.noind like 'A%')
+						where 	(tlembur.tanggal=tdtp.tanggal and tpribadi.lokasi_kerja like '%$lokasiKerja%' and tlembur.kd_lembur='004' and tlembur.noind like 'A%')
 								and 	tlembur.noind=tdtp.noind ) as lembur
 						from \"Presensi\".tdatapresensi tdtp where tdtp.tanggal between '$tanggalAwalRekap' and '$tanggalAkhirRekap') as pkj
 
@@ -19087,7 +19302,7 @@
 						(select tdtp.*, (select	(coalesce(sum(tlembur.jml_lembur), 0) * 60)
 						from	\"Presensi\".tlembur as tlembur
 									 join hrd_khs.tpribadi tpribadi on tpribadi.noind=tlembur.noind
-						where 	(tlembur.tanggal=tdtp.tanggal and tpribadi.lokasi_kerja='$lokasiKerja' and tlembur.kd_lembur='004' and tlembur.noind like 'B%')
+						where 	(tlembur.tanggal=tdtp.tanggal and tpribadi.lokasi_kerja like '%$lokasiKerja%' and tlembur.kd_lembur='004' and tlembur.noind like 'B%')
 									and 	tlembur.noind=tdtp.noind ) as lembur
 						from \"Presensi\".tdatapresensi tdtp where tdtp.tanggal between '$tanggalAwalRekap' and '$tanggalAkhirRekap') as pkj
 
@@ -19102,7 +19317,7 @@
 						(select tdtp.*, (select	(coalesce(sum(tlembur.jml_lembur), 0) * 60)
 						from	\"Presensi\".tlembur as tlembur
 									 join hrd_khs.tpribadi tpribadi on tpribadi.noind=tlembur.noind
-						where 	(tlembur.tanggal=tdtp.tanggal and tpribadi.lokasi_kerja='$lokasiKerja' and tlembur.kd_lembur='004' and tlembur.noind like 'C%')
+						where 	(tlembur.tanggal=tdtp.tanggal and tpribadi.lokasi_kerja like '%$lokasiKerja%' and tlembur.kd_lembur='004' and tlembur.noind like 'C%')
 									and 	tlembur.noind=tdtp.noind ) as lembur
 						from \"Presensi\".tdatapresensi tdtp where tdtp.tanggal between '$tanggalAwalRekap' and '$tanggalAkhirRekap') as pkj
 
@@ -19117,7 +19332,7 @@
 						(select tdtp.*, (select	(coalesce(sum(tlembur.jml_lembur), 0) * 60)
 						from	\"Presensi\".tlembur as tlembur
 									 join hrd_khs.tpribadi tpribadi on tpribadi.noind=tlembur.noind
-						where 	(tlembur.tanggal=tdtp.tanggal and tpribadi.lokasi_kerja='$lokasiKerja' and tlembur.kd_lembur='004' and tlembur.noind like 'D%')
+						where 	(tlembur.tanggal=tdtp.tanggal and tpribadi.lokasi_kerja like '%$lokasiKerja%' and tlembur.kd_lembur='004' and tlembur.noind like 'D%')
 									and 	tlembur.noind=tdtp.noind ) as lembur
 						from \"Presensi\".tdatapresensi tdtp where tdtp.tanggal between '$tanggalAwalRekap' and '$tanggalAkhirRekap') as pkj
 
@@ -19132,7 +19347,7 @@
 						(select tdtp.*, (select	(coalesce(sum(tlembur.jml_lembur), 0) * 60)
 						from	\"Presensi\".tlembur as tlembur
 									 join hrd_khs.tpribadi tpribadi on tpribadi.noind=tlembur.noind
-						where 	(tlembur.tanggal=tdtp.tanggal and tpribadi.lokasi_kerja='$lokasiKerja' and tlembur.kd_lembur='004' and tlembur.noind like 'E%')
+						where 	(tlembur.tanggal=tdtp.tanggal and tpribadi.lokasi_kerja like '%$lokasiKerja%' and tlembur.kd_lembur='004' and tlembur.noind like 'E%')
 									and 	tlembur.noind=tdtp.noind ) as lembur
 						from \"Presensi\".tdatapresensi tdtp where tdtp.tanggal between '$tanggalAwalRekap' and '$tanggalAkhirRekap') as pkj
 
@@ -19147,7 +19362,7 @@
 						(select tdtp.*, (select	(coalesce(sum(tlembur.jml_lembur), 0) * 60)
 							from	\"Presensi\".tlembur as tlembur
 									 join hrd_khs.tpribadi tpribadi on tpribadi.noind=tlembur.noind
-							where 	(tlembur.tanggal=tdtp.tanggal and tpribadi.lokasi_kerja='$lokasiKerja' and tlembur.kd_lembur='004' and tlembur.noind like 'F%')
+							where 	(tlembur.tanggal=tdtp.tanggal and tpribadi.lokasi_kerja like '%$lokasiKerja%' and tlembur.kd_lembur='004' and tlembur.noind like 'F%')
 									and 	tlembur.noind=tdtp.noind ) as lembur
 						from \"Presensi\".tdatapresensi tdtp where tdtp.tanggal between '$tanggalAwalRekap' and '$tanggalAkhirRekap') as pkj
 
@@ -19162,7 +19377,7 @@
 						(select tdtp.*, (select	(coalesce(sum(tlembur.jml_lembur), 0) * 60)
 								from	\"Presensi\".tlembur as tlembur
 									 join hrd_khs.tpribadi tpribadi on tpribadi.noind=tlembur.noind
-								where 	(tlembur.tanggal=tdtp.tanggal and tpribadi.lokasi_kerja='$lokasiKerja' and tlembur.kd_lembur='004' and tlembur.noind like 'G%')
+								where 	(tlembur.tanggal=tdtp.tanggal and tpribadi.lokasi_kerja like '%$lokasiKerja%' and tlembur.kd_lembur='004' and tlembur.noind like 'G%')
 										and 	tlembur.noind=tdtp.noind ) as lembur
 						from \"Presensi\".tdatapresensi tdtp where tdtp.tanggal between '$tanggalAwalRekap' and '$tanggalAkhirRekap') as pkj
 
@@ -19177,7 +19392,7 @@
 						(select tdtp.*, (select	(coalesce(sum(tlembur.jml_lembur), 0) * 60)
 									from	\"Presensi\".tlembur as tlembur
 									 join hrd_khs.tpribadi tpribadi on tpribadi.noind=tlembur.noind
-									where 	(tlembur.tanggal=tdtp.tanggal and tpribadi.lokasi_kerja='$lokasiKerja' and tlembur.kd_lembur='004' and tlembur.noind like 'H%')
+									where 	(tlembur.tanggal=tdtp.tanggal and tpribadi.lokasi_kerja like '%$lokasiKerja%' and tlembur.kd_lembur='004' and tlembur.noind like 'H%')
 										and 	tlembur.noind=tdtp.noind ) as lembur
 						from \"Presensi\".tdatapresensi tdtp where tdtp.tanggal between '$tanggalAwalRekap' and '$tanggalAkhirRekap') as pkj
 
@@ -19192,7 +19407,7 @@
 						(select tdtp.*, (select	(coalesce(sum(tlembur.jml_lembur), 0) * 60)
 						from	\"Presensi\".tlembur as tlembur
 									 join hrd_khs.tpribadi tpribadi on tpribadi.noind=tlembur.noind
-						where 	(tlembur.tanggal=tdtp.tanggal and tpribadi.lokasi_kerja='$lokasiKerja' and tlembur.kd_lembur='004' and tlembur.noind like 'J%')
+						where 	(tlembur.tanggal=tdtp.tanggal and tpribadi.lokasi_kerja like '%$lokasiKerja%' and tlembur.kd_lembur='004' and tlembur.noind like 'J%')
 									and 	tlembur.noind=tdtp.noind ) as lembur
 						from \"Presensi\".tdatapresensi tdtp where tdtp.tanggal between '$tanggalAwalRekap' and '$tanggalAkhirRekap') as pkj
 
@@ -19207,7 +19422,7 @@
 						(select tdtp.*, (select	(coalesce(sum(tlembur.jml_lembur), 0) * 60)
 						from	\"Presensi\".tlembur as tlembur
 									 join hrd_khs.tpribadi tpribadi on tpribadi.noind=tlembur.noind
-						where 	(tlembur.tanggal=tdtp.tanggal and tpribadi.lokasi_kerja='$lokasiKerja' and tlembur.kd_lembur='004' and (tlembur.noind like 'K%' or tlembur.noind like 'P%'))
+						where 	(tlembur.tanggal=tdtp.tanggal and tpribadi.lokasi_kerja like '%$lokasiKerja%' and tlembur.kd_lembur='004' and (tlembur.noind like 'K%' or tlembur.noind like 'P%'))
 								and 	tlembur.noind=tdtp.noind ) as lembur
 						from \"Presensi\".tdatapresensi tdtp where tdtp.tanggal between '$tanggalAwalRekap' and '$tanggalAkhirRekap') as pkj
 
@@ -19222,14 +19437,32 @@
 						(select tdtp.*, (select	(coalesce(sum(tlembur.jml_lembur), 0) * 60)
 							from	\"Presensi\".tlembur as tlembur
 							join hrd_khs.tpribadi tpribadi on tpribadi.noind=tlembur.noind
-							where 	(tlembur.tanggal=tdtp.tanggal and tpribadi.lokasi_kerja='$lokasiKerja' and tlembur.kd_lembur='004' and tlembur.noind like 'Q%')
+							where 	(tlembur.tanggal=tdtp.tanggal and tpribadi.lokasi_kerja like '%$lokasiKerja%' and tlembur.kd_lembur='004' and tlembur.noind like 'Q%')
 									and 	tlembur.noind=tdtp.noind ) as lembur
 						from \"Presensi\".tdatapresensi tdtp where tdtp.tanggal between '$tanggalAwalRekap' and '$tanggalAkhirRekap') as pkj
 
 						group by substring(pkj.kodesie,1,7) 
 						order by substring(pkj.kodesie,1,7) ) as q on q.kode_seksi=tseksi.kodesie
-						) as libur on utama.kode_seksi=libur.kode_seksi";
 
+						group by 	tseksi.kodesie,
+									tseksi.dept,
+									tseksi.bidang,
+									tseksi.unit,
+									tseksi.seksi,
+									\"A\",
+									\"B\",
+									\"C\",
+									\"D\",
+									\"E\",
+									\"F\",
+									\"G\",
+									\"H\",
+									\"J\",
+									\"K-P\",
+									\"Q\"
+						order by 	kode_seksi
+						) as libur on utama.kode_seksi=libur.kode_seksi";
+					}
 			$queryProsesRekapJamKerja 	=	$this->personalia->query($prosesRekapJamKerja);
 			return $queryProsesRekapJamKerja->result_array();
 	    }

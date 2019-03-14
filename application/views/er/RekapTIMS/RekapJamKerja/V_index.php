@@ -20,10 +20,10 @@
                                 </div>
                             </div>
                             <div class="box-body">
-                                <form method="post" action="<?php echo base_url('RekapTIMSPromosiPekerja/RekapJamKerja');?>" class="form-horizontal" enctype="multipart/form-data">
+                                <form method="post" action="<?php echo base_url('RekapTIMSPromosiPekerja/RekapJamKerja/search');?>" class="form-horizontal" enctype="multipart/form-data">
                                     <div class="panel-body">
                                         <div class="row">
-                                            <div class="col-lg-6">
+                                            <div class="col-lg-4">
                                                 <div class="form-group text-center">
                                                     <label for="txtTanggalRekap" class="control-label col-lg-12">Tanggal Rekap</label>
                                                     <div class="col-lg-12">
@@ -35,16 +35,23 @@
                                                 <div class="form-group text-center">
                                                     <label for="cmbLokasiKerja" class="control-label col-lg-12">Lokasi Kerja</label>
                                                     <div class="col-lg-12">
-                                                        <select name="cmbLokasiKerja" class="select2 RekapJamKerja-cmbLokasiKerja" style="width: 100%" required="">
+                                                        <select name="cmbLokasiKerja" class="select2 RekapJamKerja-cmbLokasiKerja" style="width: 100%">
                                                         </select>
+                                                        <span style="font-size: 13px;">*kosongi untuk data di semua lokasi kerja</span>
                                                     </div>
                                                 </div>
                                             </div>
-                                            <div class="col-lg-2">
+                                            <div class="col-lg-4">
                                                 <div class="form-group text-center">
-                                                    <label for="chkDenganLembur" class="control-label col-lg-12">Dengan Lembur</label>
+                                                    <label for="chkDenganLembur" class="control-label col-lg-12">Kategori</label>
                                                     <div class="col-lg-12 text-center">
-                                                        <input type="checkbox" name="chkDenganLembur" value="1" />
+                                                        <!-- <input type="checkbox" name="chkDenganLembur" value="1" /> -->
+                                                        <select name="slc_lembur" class="form-control" required="">
+                                                            <option selected disabled></option>
+                                                            <option value="0">Tanpa Lembur</option>
+                                                            <option value="1">Dengan Lembur</option>
+                                                            <option value="hanya">Hanya Lembur</option>
+                                                        </select>
                                                     </div>
                                                 </div>
                                             </div>
