@@ -47,7 +47,7 @@ class C_Overtime extends CI_Controller
 
 		$this->load->view('V_Header',$data);
 		$this->load->view('V_Sidemenu',$data);
-		$this->load->view('UpahHlcm/MasterData/V_overtime',$data);
+		$this->load->view('UpahHlCm/MasterData/V_overtime',$data);
 		$this->load->view('V_Footer',$data);
 	}
 
@@ -99,7 +99,7 @@ class C_Overtime extends CI_Controller
 		$data['linkExport'] = base_url('HitungHlcm/DataOvertimePHL/Excel/'.$periode);
 		$this->load->view('V_Header',$data);
 		$this->load->view('V_Sidemenu',$data);
-		$this->load->view('UpahHlcm/MasterData/V_overtime',$data);
+		$this->load->view('UpahHlCm/MasterData/V_overtime',$data);
 		$this->load->view('V_Footer',$data);
 	}
 
