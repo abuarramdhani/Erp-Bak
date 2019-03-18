@@ -67,12 +67,11 @@
                                             <th style="text-align: center; vertical-align: middle; white-space: nowrap;">No.</th>
                                             <th style="text-align: center; vertical-align: middle; white-space: nowrap;">Tanggal Shift</th>
                                             <th style="text-align: center; vertical-align: middle; white-space: nowrap;">Pekerja</th>
-                                            <th style="text-align: center; vertical-align: middle; white-space: nowrap;">Waktu Masuk</th>
-                                            <th style="text-align: center; vertical-align: middle; white-space: nowrap;">Waktu Keluar</th>
                                             <th style="text-align: center; vertical-align: middle; white-space: nowrap;">Keterangan</th>
                                             <th style="text-align: center; vertical-align: middle; white-space: nowrap;">User Input</th>
                                             <th style="text-align: center; vertical-align: middle; white-space: nowrap;">Waktu Input</th>
                                             <th style="text-align: center; vertical-align: middle; white-space: nowrap;">Susulan</th>
+                                             <th style="text-align: center; vertical-align: middle; white-space: nowrap;">Alasan</th>
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -92,12 +91,6 @@
                                                 <?php echo $rekap['noind'];?> - <?php echo $rekap['nama'];?>
                                             </td>
                                             <td style="white-space: nowrap; text-align: center; vertical-align: middle;">
-                                                <?php echo $rekap['masuk'];?>
-                                            </td>
-                                            <td style="white-space: nowrap; text-align: center; vertical-align: middle;">
-                                                <?php echo $rekap['keluar'];?>
-                                            </td>
-                                            <td style="white-space: nowrap; text-align: center; vertical-align: middle;">
                                                 <?php echo $rekap['nama_keterangan'];?>
                                             </td>
                                             <td style="white-space: nowrap; text-align: center; vertical-align: middle;">
@@ -113,6 +106,9 @@
                                             </td>
                                             <td style="white-space: nowrap; text-align: center; vertical-align: middle;">
                                                 <?php echo $rekap['susulan'];?>
+                                            </td>
+                                            <td style="white-space: nowrap; text-align: center; vertical-align: middle;">
+                                                <?php echo $rekap['alasan'];?>
                                             </td>
                                         </tr>
                                         <?php
