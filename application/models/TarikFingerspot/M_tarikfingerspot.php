@@ -87,4 +87,10 @@ class M_tarikfingerspot extends CI_MODEL
 	public function insert_presensi($table_schema, $table_name, $insert){
     	$this->personalia->insert($table_schema.".".$table_name, $insert);
     }
+
+    public function getDevice(){
+    	$sql = "select device_name,inisial_lokasi, 0 jumlah from db_datapresensi.tb_device";
+    	$result = $this->quick->query($sql);
+		return $result->result_array();
+    }
 }
