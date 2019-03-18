@@ -60,12 +60,17 @@
 
 		public function daftar_keterangan_presensi($keyword)
 		{
-			$this->personalia->select('*');
+			/*$this->personalia->select('*');
 			$this->personalia->from('"Presensi".tketerangan');
 			$this->personalia->like('kd_ket', $keyword);
 			$this->personalia->or_like('upper(keterangan)', $keyword);
-
 			return $this->personalia->get()->result_array();
+        */
+			$daftar_keterangan_presensi="select * from \"Presensi\".tketerangan where kd_ket not in ('TT','TM','TIK')and (kd_ket like'%$keyword%' or upper(keterangan) like'%$keyword%')";
+            
+            $daftar_keterangan_presensi 	=	$this->personalia->query($daftar_keterangan_presensi);
+			return $daftar_keterangan_presensi->result_array();
+
 		}
 
 		public function pekerja($keyword)
