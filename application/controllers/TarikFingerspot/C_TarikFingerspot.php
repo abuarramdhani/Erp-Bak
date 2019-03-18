@@ -153,5 +153,71 @@ class C_TarikFingerspot extends CI_Controller
 		}
 		
 	}
+
+	public function TransferPresensi(){
+		date_default_timezone_set('Asia/Jakarta');
+		$plaintext_string = Date('Y-m-d');
+		
+		$log = $this->M_tarikfingerspot->getAttLog($plaintext_string);
+		$no = 0;
+		$insert = array();
+		foreach ($log as $key) {
+
+			$data_presensi = array(
+				'tanggal' => $key['tanggal'],
+				'waktu' => $key['waktu'],
+				'noind' => $key['noind'],
+				'kodesie' => $key['kodesie'],
+				'noind_baru' => $key['noind_baru'],
+				'user_' => $key['user_']
+			);
+
+			if (substr($key['noind'], 0,1) == 'L') {
+				$cek = $this->M_tarikfingerspot->cekPresensiL($data_presensi);
+			}else{
+				$cek = $this->M_tarikfingerspot->cekPresensi($data_presensi);
+			}
+			
+			
+			if ($cek == '0') {
+
+				if (substr($key['noind'], 0,1) == 'L') {
+					//	Kirim ke Presensi.tprs_shift2
+					//	{
+		 					$data_presensi['transfer']	=	FALSE;
+		 					// $data_presensi['user_']		=	'CRON';
+		 					$this->M_tarikfingerspot->insert_presensi('"Presensi"', 'tprs_shift2', $data_presensi);
+					//	}
+				}else{
+					//	Kirim ke FrontPresensi.tpresensi
+					//	{
+							$data_presensi['transfer']	=	TRUE;
+		 					$this->M_tarikfingerspot->insert_presensi('"FrontPresensi"', 'tpresensi', $data_presensi);
+					//	}
+
+					//	Kirim ke Catering.tpresensi
+					//	{
+		 					$data_presensi['transfer']	=	FALSE;
+		 					$this->M_tarikfingerspot->insert_presensi('"Catering"', 'tpresensi', $data_presensi);
+					//	}
+
+					//	Kirim ke Presensi.tprs_shift
+					//	{
+		 					$data_presensi['transfer']	=	FALSE;
+		 					// $data_presensi['user_']		=	'CRON';
+		 					$this->M_tarikfingerspot->insert_presensi('"Presensi"', 'tprs_shift', $data_presensi);
+					//	}
+				}
+
+					
+	 			$insert[$no] = $key;
+	 			$no++;
+			}	
+		}
+		echo "Data Diinsert : ".$no."<br><br>";
+		foreach ($insert as $key) {
+			print_r($key);echo "<br>";
+		}
+	}
 }
 ?>
