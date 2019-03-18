@@ -110,7 +110,7 @@ class C_TarikFingerspot extends CI_Controller
 							//	Kirim ke Presensi.tprs_shift2
 							//	{
 				 					$data_presensi['transfer']	=	FALSE;
-				 					$data_presensi['user_']		=	'CRON';
+				 					// $data_presensi['user_']		=	'CRON';
 				 					$this->M_tarikfingerspot->insert_presensi('"Presensi"', 'tprs_shift2', $data_presensi);
 							//	}
 						}else{
@@ -129,7 +129,7 @@ class C_TarikFingerspot extends CI_Controller
 							//	Kirim ke Presensi.tprs_shift
 							//	{
 				 					$data_presensi['transfer']	=	FALSE;
-				 					$data_presensi['user_']		=	'CRON';
+				 					// $data_presensi['user_']		=	'CRON';
 				 					$this->M_tarikfingerspot->insert_presensi('"Presensi"', 'tprs_shift', $data_presensi);
 							//	}
 						}
