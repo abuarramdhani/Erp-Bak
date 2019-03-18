@@ -9,17 +9,18 @@ class M_tarikfingerspot extends CI_MODEL
 	function __construct()
 	{
 		parent::__construct();
-		$this->finger = $this->load->database('db_fingerspot',TRUE);
+		// $this->finger = $this->load->database('db_fingerspot',TRUE);
 		$this->personalia = $this->load->database('personalia',TRUE);
+		$this->quick = $this->load->database('quick', TRUE);
 	}
 
 	public function getAttLog($periode){
 		$data = array();
-		$sql = "select cast(scan_date as date) tanggal, pin noind_baru,cast(scan_date as time) waktu 
+		$sql = "select cast(scan_date as date) tanggal, pin noind_baru,cast(scan_date as time) waktu, sn 
 		from fin_pro.att_log 
 		where cast(scan_date as date) = cast('$periode' as date)
 		order by scan_date,pin";
-		$resultFinger = $this->finger->query($sql);
+		$resultFinger = $this->quick->query($sql);
 		$resFinger = $resultFinger->result_array();
 		if (!empty($resFinger)) {
 			$a = 0;
@@ -38,12 +39,24 @@ class M_tarikfingerspot extends CI_MODEL
 							'waktu' => $key['waktu'],
 							'noind' => $value['noind'],
 							'kodesie' => $value['kodesie'],
-							'noind_baru' => $value['noind_baru'],
-							'user_' => 'MNL'
+							'noind_baru' => $value['noind_baru']
 						);
-						$a++;
+						
 					}
 				}
+
+				$sql = "select * 
+						from db_datapresensi.tb_device 
+						where device_sn = '".$key['sn']."' ";
+				$resultDev = $this->quick->query($sql);
+				$resDev = $resultDev->result_array();
+				if (!empty($resDev)) {
+					$data[$a]['user_'] = $resDev['0']['inisial_lokasi'];
+				}else{
+					$data[$a]['user_'] = 'MNL';
+				}
+
+				$a++;
 			}
 		}
 		return $data;
