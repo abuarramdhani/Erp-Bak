@@ -16,7 +16,7 @@ class C_Monitoring extends CI_Controller
 			$this->load->library('session');
 			$this->load->model('M_Index');
 			$this->load->model('SystemAdministration/MainMenu/M_user');
-			$this->load->model('MonitoringPembelian/Monitoring/m_monitoring');
+			$this->load->model('MonitoringPembelian/Monitoring/M_monitoring');
 			  
 			if($this->session->userdata('logged_in')!=TRUE) {
 				$this->load->helper('url');
@@ -40,8 +40,8 @@ class C_Monitoring extends CI_Controller
 		$data['UserMenu'] = $this->M_user->getUserMenu($user_id,$this->session->responsibility_id);
 		$data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id);
 		$data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id);
-		$data['EmailPembelian'] = $this->m_monitoring->getdataEmailPembelian();
-		$data['EmailPE'] = $this->m_monitoring->getdataEmailPE();
+		$data['EmailPembelian'] = $this->M_monitoring->getdataEmailPembelian();
+		$data['EmailPE'] = $this->M_monitoring->getdataEmailPE();
 		$data['Monitoring']  = array();
 	
 		$this->load->view('V_Header',$data);
@@ -148,7 +148,7 @@ class C_Monitoring extends CI_Controller
 		// print_r($email);
 		// exit();
 
-		$this->m_monitoring->savePerubahan($semua);
+		$this->M_monitoring->savePerubahan($semua);
 		redirect('MonitoringPembelian/Monitoring');
 	}
 
@@ -252,7 +252,7 @@ class C_Monitoring extends CI_Controller
 		// print_r($email);
 		// exit();
 
-		$this->m_monitoring->savePerubahan($semua);
+		$this->M_monitoring->savePerubahan($semua);
 		redirect('MonitoringPembelian/Monitoring');
 	}
 
@@ -261,7 +261,7 @@ class C_Monitoring extends CI_Controller
 	   
 	   $term = $this->input->get('term',TRUE);
 	   $term = strtoupper($term);
-	   $data = $this->m_monitoring->searchItem($term);
+	   $data = $this->M_monitoring->searchItem($term);
 	   echo json_encode($data);
 	}
 
@@ -269,24 +269,24 @@ class C_Monitoring extends CI_Controller
 		$param = $this->input->post('params');
 		// baris 
 		$last = end($param);
-		$data = $this->m_monitoring->searchItem($last);
+		$data = $this->M_monitoring->searchItem($last);
 		
 		// select aprover
 		$html_select = '';
-		$Approver = $this->m_monitoring->getApprover();
-		$ApproverN = $this->m_monitoring->getApproverN();
-		$ApproverQ = $this->m_monitoring->getApproverQ();
-		$ApproverG = $this->m_monitoring->getApproverG();
-		$ApproverH = $this->m_monitoring->getApproverH();
-		$ApproverI = $this->m_monitoring->getApproverI();
-		$ApproverL = $this->m_monitoring->getApproverL();
-		$ApproverP = $this->m_monitoring->getApproverP();
-		$ApproverS = $this->m_monitoring->getApproverS();
-		$ApproverR = $this->m_monitoring->getApproverR();
-		$ApproverJ = $this->m_monitoring->getApproverJ();
-		$ApproverJASA01 = $this->m_monitoring->getApproverJASA01();
-		$ApproverJANG = $this->m_monitoring->getApproverJANG();
-		$Approverlain = $this->m_monitoring->getApproverlain();
+		$Approver = $this->M_monitoring->getApprover();
+		$ApproverN = $this->M_monitoring->getApproverN();
+		$ApproverQ = $this->M_monitoring->getApproverQ();
+		$ApproverG = $this->M_monitoring->getApproverG();
+		$ApproverH = $this->M_monitoring->getApproverH();
+		$ApproverI = $this->M_monitoring->getApproverI();
+		$ApproverL = $this->M_monitoring->getApproverL();
+		$ApproverP = $this->M_monitoring->getApproverP();
+		$ApproverS = $this->M_monitoring->getApproverS();
+		$ApproverR = $this->M_monitoring->getApproverR();
+		$ApproverJ = $this->M_monitoring->getApproverJ();
+		$ApproverJASA01 = $this->M_monitoring->getApproverJASA01();
+		$ApproverJANG = $this->M_monitoring->getApproverJANG();
+		$Approverlain = $this->M_monitoring->getApproverlain();
 		// echo "<pre>";
 		// print_r($Approver);
 		// exit();
@@ -326,7 +326,7 @@ class C_Monitoring extends CI_Controller
 		  // exit();
 		  $data[0]['select'] = $html_select;
 		  $html_select_buyer = '';
-		  $buyer = $this->m_monitoring->getBuyer();
+		  $buyer = $this->M_monitoring->getBuyer();
 
 		  foreach($buyer as $b) {
 		  	$html_select_buyer .= '<option value="'.$b['FULL_NAME'].'">'.$b['FULL_NAME'].'</option>';
@@ -341,7 +341,7 @@ class C_Monitoring extends CI_Controller
 		check:
 
 		$num = str_pad($back, 4, "0", STR_PAD_LEFT);
-		$check = $this->m_monitoring->cekNomor($num);
+		$check = $this->M_monitoring->cekNomor($num);
 
 		if (!empty($check)) {
 			$back++;
@@ -356,7 +356,7 @@ class C_Monitoring extends CI_Controller
 	 header("Content-Disposition: attachment; filename=$filename"); 
 	 header("Content-Type: application/csv; ");	 
 	 // get data 
-	 $usersData = $this->m_monitoring->getDataCsv();
+	 $usersData = $this->M_monitoring->getDataCsv();
 	 // file creation 
 	 $file = fopen('php://output', 'w');
 	 $header = array("ITEM CODE","ITEM DESCRIPTION","UOM1","UOM2","BUYER","PRE-PROCESSING LEAD TIME","PREPARATION PO","DELIVERY","POST-PROCESSING LEAD TIME","MOQ","FLM","NAMA APPROVER PO","KETERANGAN"); 
@@ -370,7 +370,7 @@ class C_Monitoring extends CI_Controller
 
 	// Import data from CSV
 	function load_data() {
-	  $result = $this->m_monitoring->getDataCsv();
+	  $result = $this->M_monitoring->getDataCsv();
 	 }
 
 	function import(){
@@ -382,8 +382,8 @@ class C_Monitoring extends CI_Controller
 		$data['UserMenu'] = $this->M_user->getUserMenu($user_id,$this->session->responsibility_id);
 		$data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id);
 		$data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id);
-		$data['EmailPembelian'] = $this->m_monitoring->getdataEmailPembelian();
-		$data['EmailPE'] = $this->m_monitoring->getdataEmailPE();
+		$data['EmailPembelian'] = $this->M_monitoring->getdataEmailPembelian();
+		$data['EmailPE'] = $this->M_monitoring->getdataEmailPE();
 		$data['MonitoringUpdate']  = array();
 		
 		$file_data = $this->csvimport->get_array($_FILES["csv_file"]["tmp_name"]);
@@ -420,7 +420,7 @@ class C_Monitoring extends CI_Controller
 		$data['UserMenu'] = $this->M_user->getUserMenu($user_id,$this->session->responsibility_id);
 		$data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id);
 		$data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id);
-		$data['EmailPembelian'] = $this->m_monitoring->getdataEmailPembelian();
+		$data['EmailPembelian'] = $this->M_monitoring->getdataEmailPembelian();
 
 		$this->load->view('V_Header',$data);
 		$this->load->view('V_Sidemenu',$data);
@@ -430,14 +430,14 @@ class C_Monitoring extends CI_Controller
 
 	public function SaveEmailPembelian(){
 		$email = $this->input->post('txtEmail');
-		$this->m_monitoring->UpdateEmailPembelian($email);
+		$this->M_monitoring->UpdateEmailPembelian($email);
 		redirect('MonitoringPembelian/EditData/SettingEmailPembelian');
 	}
 
 	public function DeleteEmailPembelian($email){
 		$plaintext_string=str_replace(array('-', '_', '~'), array('+', '/', '='), $email);
 		$plaintext_string = $this->encrypt->decode($plaintext_string);
-		$this->m_monitoring->HapusEmailPembelian($plaintext_string);
+		$this->M_monitoring->HapusEmailPembelian($plaintext_string);
 		redirect('MonitoringPembelian/EditData/SettingEmailPembelian');
 	}
 
@@ -449,11 +449,11 @@ class C_Monitoring extends CI_Controller
 	
 		$noDok = $this->input->post('nodok');
 
-		$result = $this->m_monitoring->getdataPDF($noDok);
+		$result = $this->M_monitoring->getdataPDF($noDok);
 
 		if ( !empty($result)) {
 		
-		$this->m_monitoring->setCetak($noDok);
+		$this->M_monitoring->setCetak($noDok);
 		
 		$total_page = ceil(sizeof($result)/$max_data);
 		$size = sizeof($result);

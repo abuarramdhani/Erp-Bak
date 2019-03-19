@@ -14,7 +14,7 @@ class C_Input extends CI_Controller
 			$this->load->library('session');
 			$this->load->model('M_Index');
 			$this->load->model('SystemAdministration/MainMenu/M_user');
-			$this->load->model('MonitoringPembelian/Monitoring/m_input');
+			$this->load->model('MonitoringPembelian/Monitoring/M_input');
 			  
 			if($this->session->userdata('logged_in')!=TRUE) {
 				$this->load->helper('url');
@@ -39,7 +39,7 @@ class C_Input extends CI_Controller
 		$data['UserMenu'] = $this->M_user->getUserMenu($user_id,$this->session->responsibility_id);
 		$data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id);
 		$data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id);
-		$data['Input']  = $this->m_input->getData();
+		$data['Input']  = $this->M_input->getData();
 			
 		$this->load->view('V_Header',$data);
 		$this->load->view('V_Sidemenu',$data);

@@ -1,5 +1,5 @@
 <?php 
-class m_monitoringpe extends CI_Model
+class M_monitoringpe extends CI_Model
 {
 	
 	public function __construct()
