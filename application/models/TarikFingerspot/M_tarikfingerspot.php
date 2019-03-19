@@ -45,6 +45,29 @@ class M_tarikfingerspot extends CI_MODEL
 						
 					}
 				}
+				else
+				{
+				    //tarik data pekerja yang sudah keluar dengan menggunakan data nomor induk terakhir.
+				   $sql = "select noind,noind_baru,kodesie 
+						from hrd_khs.tpribadi 
+						where noind_baru not like '  %'
+						and cast(noind_baru as integer) = ".$key['noind_baru']." 
+						order by tglkeluar desc limit 1
+					"; 
+					$resultHrdkeluar = $this->personalia->query($sql);
+			    	$resHrdkeluar = $resultHrdkeluar->result_array();
+			    	foreach ($resHrdkeluar as $value) {
+						$data[$a] = array(
+							'tanggal' => $key['tanggal'],
+							'waktu' => $key['waktu'],
+							'noind' => $value['noind'],
+							'kodesie' => $value['kodesie'],
+							'noind_baru' => $value['noind_baru']
+						);
+						
+					}
+				    
+				}
 
 				$sql = "select * 
 						from db_datapresensi.tb_device 
