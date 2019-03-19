@@ -29,7 +29,7 @@ class M_tarikfingerspot extends CI_MODEL
 						from hrd_khs.tpribadi 
 						where noind_baru not like '  %'
 						and cast(noind_baru as integer) = ".$key['noind_baru']." 
-						and keluar = '0'";
+					";
 				$resultHrd = $this->personalia->query($sql);
 				$resHrd = $resultHrd->result_array();
 				if (!empty($resHrd)) {
