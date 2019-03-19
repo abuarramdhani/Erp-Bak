@@ -8,7 +8,7 @@ class M_index extends CI_Model
 	function __construct()
 	{
 		parent::__construct();
-	    $this->personalia 	= 	$this->load->database('db_dev', TRUE);
+	    $this->personalia 	= 	$this->load->database('personalia', TRUE);
 	}
 
 	public function banyak($now)
