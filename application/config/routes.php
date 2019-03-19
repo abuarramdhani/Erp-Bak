@@ -1232,6 +1232,8 @@ $route['MonitoringKomponen/MonitoringSeksi/(:any)/(:any)'] = 'MonitoringKomponen
 //Grapic
 $route['SDM/Grapic'] = 'Grapic/C_Index';
 $route['SDM/grapicTabs'] = 'Grapic/C_Index/grapicTabs';
+$route['SDM/getData'] = 'Grapic/C_Index/getData';
+$route['SDM/input'] = 'Grapic/C_Index/input';
 $route['SDM/(:any)'] = 'Grapic/C_Index/$1';
 $route['SDM/openPDF'] = 'Grapic/C_Index/openPDF';
 
