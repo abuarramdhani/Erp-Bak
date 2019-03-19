@@ -1,5 +1,5 @@
 <?php 
-class m_input extends CI_Model
+class M_input extends CI_Model
 {
 	
 	public function __construct()

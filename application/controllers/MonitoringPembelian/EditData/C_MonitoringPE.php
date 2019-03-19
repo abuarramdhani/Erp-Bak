@@ -15,7 +15,7 @@ class C_MonitoringPE extends CI_Controller
 			$this->load->library('session');
 			$this->load->model('M_Index');
 			$this->load->model('SystemAdministration/MainMenu/M_user');
-			$this->load->model('MonitoringPembelian/Monitoring/m_monitoringpe');
+			$this->load->model('MonitoringPembelian/Monitoring/M_monitoringpe');
 			  
 			if($this->session->userdata('logged_in')!=TRUE) {
 				$this->load->helper('url');
@@ -39,9 +39,9 @@ class C_MonitoringPE extends CI_Controller
 		$data['UserMenu'] = $this->M_user->getUserMenu($user_id,$this->session->responsibility_id);
 		$data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id);
 		$data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id);
-		$data['MonitoringPE']  = $this->m_monitoringpe->getData();
-		$data['EmailPembelian'] = $this->m_monitoringpe->getdataEmailPembelian();
-		$data['EmailPE'] = $this->m_monitoringpe->getdataEmailPE();	
+		$data['MonitoringPE']  = $this->M_monitoringpe->getData();
+		$data['EmailPembelian'] = $this->M_monitoringpe->getdataEmailPembelian();
+		$data['EmailPE'] = $this->M_monitoringpe->getdataEmailPE();	
 
 		$this->load->view('V_Header',$data);
 		$this->load->view('V_Sidemenu',$data);
@@ -139,7 +139,7 @@ class C_MonitoringPE extends CI_Controller
 			// print_r($semua);
 			// exit();
 	
-		$this->m_monitoringpe->UpdatePembelianPE($semua);
+		$this->M_monitoringpe->UpdatePembelianPE($semua);
 		redirect('MonitoringPembelian/HistoryRequest');
 	}
 
@@ -151,7 +151,7 @@ class C_MonitoringPE extends CI_Controller
 		$data['UserMenu'] = $this->M_user->getUserMenu($user_id,$this->session->responsibility_id);
 		$data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id);
 		$data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id);
-		$data['EmailPE'] = $this->m_monitoringpe->getdataEmailPE();
+		$data['EmailPE'] = $this->M_monitoringpe->getdataEmailPE();
 
 			
 		$this->load->view('V_Header',$data);
@@ -162,14 +162,14 @@ class C_MonitoringPE extends CI_Controller
 		}	
 	public function SaveEmailPE(){
 		$email = $this->input->post('txtEmail');
-		$this->m_monitoringpe->UpdateEmailPE($email);
+		$this->M_monitoringpe->UpdateEmailPE($email);
 		redirect('MonitoringPembelian/MonitoringPE/SettingEmailPE');
 	}
 
 	public function DeleteEmailPE($email){
 		$plaintext_string=str_replace(array('-', '_', '~'), array('+', '/', '='), $email);
 		$plaintext_string = $this->encrypt->decode($plaintext_string);
-		$this->m_monitoringpe->HapusEmailPE($plaintext_string);
+		$this->M_monitoringpe->HapusEmailPE($plaintext_string);
 		redirect('MonitoringPembelian/MonitoringPE/SettingEmailPE');
 	}
 }
