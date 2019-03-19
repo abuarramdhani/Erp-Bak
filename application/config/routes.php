@@ -1228,6 +1228,13 @@ $route['MonitoringKomponen/MonitoringSeksi'] = 'MonitoringKomponen/MainMenu/C_Mo
 $route['MonitoringKomponen/MonitoringSeksi/(:any)'] = 'MonitoringKomponen/MainMenu/C_Monitoring_Seksi/$1';
 $route['MonitoringKomponen/MonitoringSeksi/(:any)/(:any)'] = 'MonitoringKomponen/MainMenu/C_Monitoring_Seksi/$1/$2';
 
+
+//Grapic
+$route['SDM/Grapic'] = 'Grapic/C_Index';
+$route['SDM/grapicTabs'] = 'Grapic/C_Index/grapicTabs';
+$route['SDM/(:any)'] = 'Grapic/C_Index/$1';
+$route['SDM/openPDF'] = 'Grapic/C_Index/openPDF';
+
 //------------------------------------ Management Kebutuhan Pekerja ----------------------------------------
 $route['ItemManagement'] = 'ItemManagement/C_Index/index';
 $route['ItemManagement/MasterItem']  = 'ItemManagement/Admin/C_MasterItem/index';
