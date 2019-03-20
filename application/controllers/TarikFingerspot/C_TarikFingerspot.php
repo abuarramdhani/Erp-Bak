@@ -22,7 +22,7 @@ class C_TarikFingerspot extends CI_Controller
 		$this->load->model('SystemAdministration/MainMenu/M_user');
 		$this->load->model('TarikFingerspot/M_tarikfingerspot');
 
-		$this->checkSession();
+		//$this->checkSession();
 	}
 
 	public function checkSession()
