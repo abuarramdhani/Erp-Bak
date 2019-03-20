@@ -30,7 +30,7 @@ class M_presensiharian extends Ci_Model
 		if ($noind == 'B0380') {
 			 $sql = "select noind,nama 
 				from hrd_khs.tpribadi 
-				where (left(kodesie,7) = left('$kd',7) or noind in ('J1171','J7004'))
+				where (left(kodesie,7) = left('$kd',7) or noind in ('J1171','J7004','L8001'))
 				and keluar = false
 				order by kodesie,noind;";    
 		}elseif ($noind == 'B0370') {
@@ -63,11 +63,22 @@ class M_presensiharian extends Ci_Model
 	}
 
 	public function getPresensiByNoind($noind,$tgl){
-		$sql = "select waktu
+		if($noind=='L8001')
+		{
+			$sql = "select waktu
+				from \"Presensi\".tprs_shift2 tp
+				where tp.noind = '$noind' 
+				and tp.tanggal = '$tgl'
+				order by tp.waktu";
+		}
+		else
+		{
+			$sql = "select waktu
 				from \"FrontPresensi\".tpresensi tp
 				where tp.noind = '$noind' 
 				and tp.tanggal = '$tgl'
 				order by tp.waktu";
+		}		
 		$result = $this->personalia->query($sql);
 		return $result->result_array();
 	}
