@@ -20,8 +20,8 @@ class M_kasiepembelian extends CI_Model {
 
 	public function showListSubmittedForChecking($login){
 		$erp_db = $this->load->database('oracle',true);
-		$sql = "SELECT distinct batch_number batch_number, to_date(last_status_purchasing_date) submited_date,
-                last_purchasing_invoice_status, last_finance_invoice_status, source
+		$sql = "SELECT distinct batch_number batch_number, to_date(last_admin_date) submited_date,
+                last_finance_invoice_status, source
                 FROM khs_ap_monitoring_invoice 
                 WHERE (last_purchasing_invoice_status = 1
                 OR last_purchasing_invoice_status = 2)
@@ -88,7 +88,6 @@ class M_kasiepembelian extends CI_Model {
                 last_status_purchasing_date = to_date('$last_status_purchasing_date', 'DD/MM/YYYY HH24:MI:SS')
                 WHERE invoice_id = $id";
     	$run = $erp_db->query($sql);
-        // oci_commit($erp_db);
     }
 
     public function rejectbykasiepurchasing($id,$status,$last_status_purchasing_date,$reason){
@@ -99,7 +98,16 @@ class M_kasiepembelian extends CI_Model {
                 reason = '$reason'
                 WHERE invoice_id = $id";
         $run = $erp_db->query($sql);
-        // oci_commit($erp_db);
+    }
+
+    public function approveInvoice($id,$status,$last_status_purchasing_date){
+      $erp_db = $this->load->database('oracle',true);
+      $sql = "UPDATE khs_ap_monitoring_invoice
+          SET last_purchasing_invoice_status = '$status',
+                last_status_purchasing_date = to_date('$last_status_purchasing_date', 'DD/MM/YYYY HH24:MI:SS'),
+                reason = ''
+                WHERE invoice_id = $id";
+      $run = $erp_db->query($sql);
     }
 
     public function inputstatuspurchasing($invoice_id,$action_date,$purchasing_status)
@@ -118,7 +126,6 @@ class M_kasiepembelian extends CI_Model {
                 WHERE invoice_id = $id
                 and last_purchasing_invoice_status = 2";
         $run = $erp_db->query($sql);
-        // oci_commit($erp_db);
     }
 
     public function insertstatusfinance($invoice_id,$action_date,$finance_status)
@@ -284,7 +291,7 @@ class M_kasiepembelian extends CI_Model {
 
     public function checkApprove($invoice_id){
         $oracle = $this->load->database('oracle',true);
-        $sql = "SELECT last_purchasing_invoice_status 
+        $sql = "SELECT last_purchasing_invoice_status, last_finance_invoice_status
                 FROM khs_ap_monitoring_invoice
                 WHERE invoice_id = $invoice_id";
         $run = $oracle->query($sql);

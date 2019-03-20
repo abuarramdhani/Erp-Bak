@@ -417,13 +417,13 @@ SELECT DISTINCT pol.po_line_id line_id,
 
     public function showListSubmitted($source){
         $oracle = $this->load->database('oracle',true);
-        $sql = "SELECT distinct batch_number batch_number, to_date(last_status_purchasing_date) submited_date, last_purchasing_invoice_status last_purchasing_invoice_status, last_finance_invoice_status last_finance_invoice_status, source, last_admin_date
+        $sql = "SELECT distinct batch_number batch_number, to_date(last_status_purchasing_date) submited_date, last_purchasing_invoice_status last_purchasing_invoice_status, last_finance_invoice_status last_finance_invoice_status, source
                 FROM khs_ap_monitoring_invoice
                 WHERE batch_number is not null
                 and (last_purchasing_invoice_status in(1,2)
                 or last_finance_invoice_status = 2)
                 $source
-                ORDER BY last_admin_date DESC";
+                ORDER BY submited_date DESC";
         $query = $oracle->query($sql);
         return $query->result_array();
     }

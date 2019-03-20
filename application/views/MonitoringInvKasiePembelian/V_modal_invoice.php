@@ -8,8 +8,8 @@
 									<td>
 										<span><label>Invoice Number</label></span>
 									</td>
-									<td><input  class="form-control" style="margin-bottom: 10px;" size="40" type="text" name="invoice_number" value="<?php echo $invoice[0]['INVOICE_NUMBER']?>">
-										<input type="hidden" name="invoice_id" value="<?php echo $invoice[0]['INVOICE_ID']?>">
+									<td><input  class="form-control" style="margin-bottom: 10px;" size="40" type="text" name="invoice_number" id="invoice_number" value="<?php echo $invoice[0]['INVOICE_NUMBER']?>">
+										<input type="hidden" name="invoice_id" id="invoice_id" value="<?php echo $invoice[0]['INVOICE_ID']?>">
 									</td>
 								</tr>
 								<tr>
@@ -17,7 +17,7 @@
 										<span><label>Invoice Date</label></span>
 									</td>
 									<td>
-										<input  class="form-control" style="margin-bottom: 10px;" size="40" type="text" value="<?php echo $invoice[0]['INVOICE_DATE']?>" name="invoice_date">
+										<input  class="form-control" style="margin-bottom: 10px;" size="40" type="text" value="<?php echo $invoice[0]['INVOICE_DATE']?>" name="invoice_date" id="invoice_date">
 									</td>
 								</tr>
 								<tr>
@@ -25,7 +25,7 @@
 										<span><label>Invoice Amount</label></span>
 									</td>
 									<td >
-										<input class="form-control" style="margin-bottom: 10px;" size="40" type="text" value="<?php echo $invoice[0]['INVOICE_AMOUNT']?>" name="invoice_amount">
+										<input class="form-control" style="margin-bottom: 10px;" size="40" type="text" value="<?php echo $invoice[0]['INVOICE_AMOUNT']?>" name="invoice_amount" id="invoice_amountt">
 									</td>
 								</tr>
 								<tr>
@@ -33,7 +33,7 @@
 										<span><label>Tax Invoice Number</label></span>
 									</td>
 									<td>
-										<input  class="form-control" style="margin-bottom: 10px;"  size="40" type="text" value="<?php echo $invoice[0]['TAX_INVOICE_NUMBER']?>" name="tax_invoice_number">
+										<input  class="form-control" style="margin-bottom: 10px;"  size="40" type="text" value="<?php echo $invoice[0]['TAX_INVOICE_NUMBER']?>" name="tax_invoice_number" id="tax_invoice_number">
 									</td>
 								</tr>
 								<tr>
@@ -63,7 +63,7 @@
 										<span><label>Nominal DPP Faktur Pajak</label></span>
 									</td>
 									<td>
-										<input  class="form-control" style="margin-bottom: 10px; margin-top: 10px"  size="40" type="text" value="<?php echo $invoice[0]['NOMINAL_DPP']?>" name="nominal_dpp">
+										<input  class="form-control" style="margin-bottom: 10px; margin-top: 10px"  size="40" type="text" value="<?php echo $invoice[0]['NOMINAL_DPP']?>" name="nominal_dpp" id="nominal_dpp">
 									</td>
 								</tr>
 								<tr>
@@ -71,7 +71,7 @@
 										<span><label>Info</label></span>
 									</td>
 									<td>
-										<textarea class="form-control" size="40" name="info" type="text"><?php echo $invoice[0]['INFO']?></textarea>
+										<textarea class="form-control" size="40" name="info" id="info" type="text"><?php echo $invoice[0]['INFO']?></textarea>
 									</td>
 								</tr>
 							</table>
@@ -119,11 +119,11 @@
 		<div class="pull-left" style="margin-top: 10px">
 			<label>Po Amount : </label><span><?php echo $po_amount ?></span>
 		</div>
-		<!-- <div class="pull-right" style="margin-top: 10px">
-			<button type="submit" class="btn btn-primary">Save Edit</button>
-		</div> -->
 		</div>
 	</div>
 </div>
+</div>
+<div class="pull-right" style="margin-top: 30px; margin-left: 10px;">
+	<button type="button" class="btn btn-primary" value="2" batch-num="<?php echo $invoice[0]['BATCH_NUMBER']?>" onclick="approveInvoice($(this))">Approve</button>
 </div>
 <!-- </form> -->

@@ -113,13 +113,15 @@ class C_kasiepembelian extends CI_Controller{
 	public function submittofinance(){
 		$finance = $this->input->post('submit_finance');
 		$saveDate = date('d-m-Y H:i:s');
-		$invoice_id = $this->input->post('invoice_id[]');
+		$invoice_id = $this->input->post('invoice_id');
 
-		foreach ($invoice_id as $id => $value) {
-			$inv_id = $value;
+		$exp_invoice_id = explode(',', $invoice_id);
+		foreach ($exp_invoice_id as $id => $value) {
+			$inv_id = $exp_invoice_id[$id];
 
 			$checkStatus = $this->M_kasiepembelian->checkApprove($inv_id);
-			if ($checkStatus[0]['LAST_PURCHASING_INVOICE_STATUS'] == 2) {
+			if ($checkStatus[0]['LAST_PURCHASING_INVOICE_STATUS'] == 2 and $checkStatus[0]['LAST_FINANCE_INVOICE_STATUS'] == 0) {
+			// print_r($checkStatus);
 				$this->M_kasiepembelian->btnSubmitToFinance($inv_id,$finance,$saveDate);
 				$getStatus = $this->M_kasiepembelian->getLastStatusActionDetail($inv_id);
 				$statuslama = ($getStatus) ? $getStatus[0]['PURCHASING_STATUS'] : '';
@@ -132,8 +134,6 @@ class C_kasiepembelian extends CI_Controller{
 				
 			}
 		}
-
-		redirect('AccountPayables/MonitoringInvoice/InvoiceKasie/finishBatch');
 	}
 
 	public function approvedbykasiepurchasing(){
@@ -163,6 +163,26 @@ class C_kasiepembelian extends CI_Controller{
 		$this->M_kasiepembelian->rejectbykasiepurchasing($invoice_id, $rejected, $saveDate, $alasan_reject);
 		$this->M_kasiepembelian->inputstatuspurchasing($invoice_id,$saveDate,$rejected);
 		redirect('AccountPayables/MonitoringInvoice/InvoiceKasie/batchDetailPembelian/'.$nomorbatch);
+	}
+
+	public function approveInvoice(){
+		$saveDate = date('d-m-Y H:i:s');
+		$invoice_id = $this->input->post('invoice_id');
+		$status = $this->input->post('status');
+		$invoice_number = $this->input->post('invoice_number');
+		$invoice_date = $this->input->post('invoice_date');
+		$invoice_amount = $this->input->post('invoice_amount');
+		$tax_invoice_number = $this->input->post('tax_invoice_number');
+		$invoice_category = $this->input->post('invoice_category');
+		$nominal_dpp = $this->input->post('nominal_dpp');
+		$info = $this->input->post('info');
+		$jenis_jasa = $this->input->post('jenis_jasa');
+		$nomorbatch = $this->input->post('nomor_batch');
+
+		$this->M_kasiepembelian->approveInvoice($invoice_id,$status,$saveDate);
+		$this->M_kasiepembelian->editInvoiceKasiePurc($invoice_id,$invoice_number,$invoice_date,$invoice_amount,$tax_invoice_number,$info,$nominal_dpp,$invoice_category,$jenis_jasa);
+		$this->M_kasiepembelian->inputstatuspurchasing($invoice_id,$saveDate,$status);
+
 	}
 
 	public function saveInvoicebyKasiePurchasing(){

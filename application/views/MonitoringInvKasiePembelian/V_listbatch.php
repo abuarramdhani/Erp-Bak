@@ -45,15 +45,12 @@
 											<td><?php echo $b['BATCH_NUMBER']?></td>
 											<td><?php echo date('d-M-Y',strtotime($b['SUBMITED_DATE']))?></td>
 											<td><?php echo $b['JML_INVOICE']?></td>
-											<?php if ($b['LAST_PURCHASING_INVOICE_STATUS'] == 2 and  $b['LAST_FINANCE_INVOICE_STATUS'] == 2) {
-												$stat = 'Approved by Kasie Finance';
-												} elseif($b['LAST_PURCHASING_INVOICE_STATUS'] == 2){
-													$stat = 'Approved By Kasie Purc';
-												} elseif($b['LAST_PURCHASING_INVOICE_STATUS'] == 0 or $b['LAST_PURCHASING_INVOICE_STATUS'] == null ){
-													$stat = 'New/Draf';
-												} elseif($b['LAST_PURCHASING_INVOICE_STATUS'] == 1 ){
-													$stat = 'Submit to Kasie Purchasing';
-												} ?>
+											<?php if($b['LAST_FINANCE_INVOICE_STATUS'] == 0){
+												$stat = 'Submit to Kasie Purchasing';
+											}
+											if($b['LAST_FINANCE_INVOICE_STATUS'] == 1){
+												$stat = 'Submit to Finance';
+											}?>
 											<td><?php echo $stat; ?></td>
 											<td><?php echo $b['SOURCE'] ?></td>
 										</tr>
