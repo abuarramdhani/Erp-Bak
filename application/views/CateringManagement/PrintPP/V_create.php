@@ -270,38 +270,33 @@
                                             <tbody id='printpp'>
                                             <tr class="multiRow">
                                                 <td>
-                                                    <select list="item" type="text" placeholder="Pp Kodebarang" name="txtPpKodebarangHeader[]" id="txtPpKodebarangHeader" class="form-control cm_select2" >
+                                                    <select type="text" placeholder="Pp Kodebarang" name="txtPpKodebarangHeader[]" id="txtPpKodebarangHeader" class="form-control cm_select2" >
                                                         <option></option>
                                                     </select>
-                                                   <!--  <datalist id="item" style="height: 20px;">
-                                                        <?php foreach ($kodeItem as $key) { ?>
-                                                        <option value="<?php echo $key['kode_item']; ?>">
-                                                        <?php } ?>
-                                                    </datalist> -->
                                                 </td>
 
                                                 <td>
-                                                    <input type="text" placeholder="Pp Jumlah" name="txtPpJumlahHeader[]" id="txtPpJumlahHeader" class="form-control" />
+                                                    <input type="text" placeholder="Pp Jumlah" name="txtPpJumlahHeader[]" id="txtPpJumlahHeader" class="form-control hapusaja" />
                                                 </td>
 
                                                 <td>
-                                                    <input type="text" placeholder="Pp Satuan" name="txtPpSatuanHeader[]" id="txtPpSatuanHeader" class="form-control" />
+                                                    <input type="text" placeholder="Pp Satuan" name="txtPpSatuanHeader[]" id="txtPpSatuanHeader" class="form-control hapusaja"  />
                                                 </td>
 
                                                 <td>
-                                                    <input type="text" placeholder="Pp Nama Barang" name="txtPpNamaBarangHeader[]" id="txtPpNamaBarangHeader" class="form-control" />
+                                                    <input type="text" placeholder="Pp Nama Barang" name="txtPpNamaBarangHeader[]" id="txtPpNamaBarangHeader" class="form-control cm_namaItem" />
                                                 </td>
 
                                                 <td>
-                                                    <input type="text" maxlength="10" placeholder="<?php echo date('d M Y')?>" name="txtPpNbdHeader[]" class="pp-date date form-control" data-date-format="yyyy-mm-dd" id="txtPpNbdHeader" />
+                                                    <input type="text" maxlength="10" placeholder="<?php echo date('d M Y')?>" name="txtPpNbdHeader[]" class="pp-date date form-control hapusaja" data-date-format="yyyy-mm-dd" id="txtPpNbdHeader" />
                                                 </td>
 
                                                 <td>
-                                                    <input type="text" placeholder="Pp Keterangan" name="txtPpKeteranganHeader[]" id="txtPpKeteranganHeader" class="form-control" />
+                                                    <input type="text" placeholder="Pp Keterangan" name="txtPpKeteranganHeader[]" id="txtPpKeteranganHeader" class="form-control hapusaja" />
                                                 </td>
 
                                                 <td>
-                                                    <input type="text" placeholder="Pp Supplier" name="txtPpSupplierHeader[]" id="txtPpSupplierHeader" class="form-control" />
+                                                    <input type="text" placeholder="Pp Supplier" name="txtPpSupplierHeader[]" id="txtPpSupplierHeader" class="form-control hapusaja" />
                                                 </td>
                                                 <td><a href='' class="btn btn-primary btn-sm delete-row-printpp"><i class="fa fa-minus"></i></a></td>
                                             </tr>
