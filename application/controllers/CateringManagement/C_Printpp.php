@@ -113,7 +113,9 @@ class C_Printpp extends CI_Controller
 			$header_id = $this->db->insert_id();
 
 			$kodeBarang = $this->input->post('txtPpKodebarangHeader', true);
-
+			// echo "<pre>";
+			// print_r($kodeBarang);
+			// exit();
 			foreach ($kodeBarang as $key => $value) {
 				$kodebarang = $this->input->post('txtPpKodebarangHeader');
 				$jumlahpp = $this->input->post('txtPpJumlahHeader');
@@ -124,7 +126,7 @@ class C_Printpp extends CI_Controller
 				$supplier = $this->input->post('txtPpSupplierHeader');
 				$lines = array(
 					'pp_id' => $header_id,
-					'pp_kode_barang' => $kodebarang[$key],
+					'pp_kode_barang' => $kodebarang[0],
 					'pp_jumlah' => $jumlahpp[$key],
 					'pp_satuan' => $satuan[$key],
 					'pp_nama_barang' => $namabarang[$key],
@@ -132,9 +134,11 @@ class C_Printpp extends CI_Controller
 					'pp_keterangan' => $keterangan[$key],
 					'pp_supplier' => $supplier[$key],
 	    		);
+	    		// echo "<pre>";
+	    		// print_r($lines);
 				$this->M_printpp->createPrintppDetail($lines);
 			}
-
+			// exit();
 			redirect(site_url('CateringManagement/PrintPP'));
 		}
 	}

@@ -428,8 +428,9 @@ $(document).ready(function(){
 		}
 	});
 
-	$('.cm_select2').change(function(){
+	$('.cm_select2').on('change',function(){
 		var kode = $('.cm_select2').val();
+		// alert(kode);
 		$.ajax({
 							type:'POST',
 							data:{item: kode},
@@ -437,7 +438,7 @@ $(document).ready(function(){
 							success:function(result)
 							{
 								var result = JSON.parse(result);
-								$('.cm_namaItem').val(result['namaBarang']);
+								$('#txtPpNamaBarangHeader').val(result['namaBarang']);
 							}
 						});
 	});
