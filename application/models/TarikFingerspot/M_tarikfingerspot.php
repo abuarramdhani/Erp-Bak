@@ -18,7 +18,7 @@ class M_tarikfingerspot extends CI_MODEL
 		$data = array();
 		$sql = "select cast(scan_date as date) tanggal, pin noind_baru,cast(scan_date as time) waktu, sn 
 		from fin_pro.att_log 
-		where cast(scan_date as date) = cast('$periode' as date)
+		where cast(scan_date as date) >= cast('$periode' as date)
 		order by scan_date,pin";
 		$resultFinger = $this->quick->query($sql);
 		$resFinger = $resultFinger->result_array();
