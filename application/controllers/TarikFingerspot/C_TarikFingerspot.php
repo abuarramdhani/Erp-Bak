@@ -157,7 +157,7 @@ class C_TarikFingerspot extends CI_Controller
 	public function TransferPresensi(){
 		$waktuAwal = date('Y-m-d H:i:s');
 		date_default_timezone_set('Asia/Jakarta');
-		$plaintext_string = Date('Y-m-d');
+		$plaintext_string = Date('Y-m-d',strtotime("-1 days"));
 		
 		$log = $this->M_tarikfingerspot->getAttLog($plaintext_string);
 		$device = $this->M_tarikfingerspot->getDevice();
