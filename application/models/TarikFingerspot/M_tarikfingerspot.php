@@ -14,12 +14,24 @@ class M_tarikfingerspot extends CI_MODEL
 		$this->quick = $this->load->database('quick', TRUE);
 	}
 
-	public function getAttLog($periode){
+	public function getAttLog($periode, $status){
+
 		$data = array();
-		$sql = "select cast(scan_date as date) tanggal, pin noind_baru,cast(scan_date as time) waktu, sn 
+		if ('Transfer'==$status)
+		{
+			$sql = "select cast(scan_date as date) tanggal, pin noind_baru,cast(scan_date as time) waktu, sn 
 		from fin_pro.att_log 
 		where cast(scan_date as date) >= cast('$periode' as date)
 		order by scan_date,pin";
+		}
+		else
+		{
+			$sql = "select cast(scan_date as date) tanggal, pin noind_baru,cast(scan_date as time) waktu, sn 
+		from fin_pro.att_log 
+		where cast(scan_date as date) = cast('$periode' as date)
+		order by scan_date,pin";
+		}
+		
 		$resultFinger = $this->quick->query($sql);
 		$resFinger = $resultFinger->result_array();
 		if (!empty($resFinger)) {

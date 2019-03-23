@@ -68,7 +68,7 @@ class C_TarikFingerspot extends CI_Controller
 		if($this->form_validation->run() === TRUE){
 
 			$tanggal = $this->input->post('txtTanggalTarikFinger');
-			$data['table'] = $this->M_tarikfingerspot->getAttLog($tanggal);
+			$data['table'] = $this->M_tarikfingerspot->getAttLog($tanggal,'');
 			$encrypted_string = $this->encrypt->encode($tanggal);
             $encrypted_string = str_replace(array('+', '/', '='), array('-', '_', '~'), $encrypted_string);
 			$data['tanggal'] = $encrypted_string;
@@ -83,7 +83,7 @@ class C_TarikFingerspot extends CI_Controller
 				$plaintext_string = str_replace(array('-', '_', '~'), array('+', '/', '='), $tanggal);
 				$plaintext_string = $this->encrypt->decode($plaintext_string);
 
-				$log = $this->M_tarikfingerspot->getAttLog($plaintext_string);
+				$log = $this->M_tarikfingerspot->getAttLog($plaintext_string,'');
 				$no = 0;
 				$insert = array();
 				foreach ($log as $key) {
@@ -159,7 +159,7 @@ class C_TarikFingerspot extends CI_Controller
 		date_default_timezone_set('Asia/Jakarta');
 		$plaintext_string = Date('Y-m-d',strtotime("-1 days"));
 		
-		$log = $this->M_tarikfingerspot->getAttLog($plaintext_string);
+		$log = $this->M_tarikfingerspot->getAttLog($plaintext_string,'Transfer');
 		$device = $this->M_tarikfingerspot->getDevice();
 		$no = 0;
 		$num = 0;
