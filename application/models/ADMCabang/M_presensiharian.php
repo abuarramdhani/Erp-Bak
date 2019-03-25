@@ -27,20 +27,26 @@ class M_presensiharian extends Ci_Model
 
 	public function getPekerjaByKodesie($kd){
 		$noind = $this->session->user;
-		if ($noind == 'B0380') {
+		if ($noind == 'B0380') { // ada di ticket
 			 $sql = "select noind,nama 
 				from hrd_khs.tpribadi 
 				where (left(kodesie,7) = left('$kd',7) or noind in ('J1171','J7004','L8001'))
 				and keluar = false
 				order by kodesie,noind;";    
-		}elseif ($noind == 'B0370') {
+		}elseif ($noind == 'B0370') { //ada di ticket
 			 $sql = "select noind,nama 
 				from hrd_khs.tpribadi 
 				where (left(kodesie,7) = left('$kd',7) or noind in ('D1535','P0426'))
 				and keluar = false
 				order by kodesie,noind;";    
-		} else{
-			    if('306030'==substr($kd,0,6))
+		}elseif ($noind == 'H7726') { //Order #972784 (PENAMBAHAN AKSES BUKA PRESENSI DI PROGRAM ERP)
+	    	 $sql = "select noind,nama 
+	    		from hrd_khs.tpribadi 
+	    		where left(kodesie,6) = left('$kd',6)
+	    		and keluar = false
+	    		order by noind;";    
+	    }  else{
+			    if('306030'==substr($kd,0,6)) //ada diticket
 			    {
 			    $sql = "select noind,nama 
 						from hrd_khs.tpribadi 
