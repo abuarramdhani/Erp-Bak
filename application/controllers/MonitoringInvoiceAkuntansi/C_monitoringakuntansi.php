@@ -91,10 +91,13 @@ class C_monitoringakuntansi extends CI_Controller{
 		}
 
 		$no = 0;
-		foreach ($unprocess as $inv ) {
+		foreach ($unprocess as $inv => $value) {
 
-			$invoice_id = $inv['INVOICE_ID'];
-			$string_id = $inv['PO_DETAIL'];
+			$invoice_id = $unprocess[$inv]['INVOICE_ID'];
+			// $string_id = $inv['PO_DETAIL'];
+			// echo "<pre>";
+			// print_r($unprocess);
+			// print_r($invoice_id);
 			
 			$po_amount = 0;
 			$unit = $this->M_monitoringakuntansi->poAmount($invoice_id);
@@ -107,25 +110,34 @@ class C_monitoringakuntansi extends CI_Controller{
 
 			$unprocess[$no]['PO_AMOUNT'] = $po_amount;
 
-			if ($string_id) {
-				$explodeId = explode('<br>', $string_id);
-				if (!$explodeId) {
-					$explodeId = $string_id;
-				}
-
-				// foreach ($explodeId as $exp => $value) {
-				// 	$cekPPN = $this->M_monitoringakuntansi->checkPPN($value);
-				// 	foreach ($cekPPN as $key => $value2) {
-				// 		foreach ($value2 as $va2 => $value3) {
-				// 			$ppn = $value3;
-				// 		}
-				// 	}
-				// }
+			$po_numberr = $this->M_monitoringakuntansi->po_numberr($invoice_id);
+			// echo"<pre>";
+			// print_r($po_numberr);
+			$unprocess[$inv]['PO_NUMBER'] = '';
+			$unprocess[$inv]['PPN'] = '';
+			foreach ($po_numberr as $key => $value) {
+				$unprocess[$inv]['PO_NUMBER'] .= $value['PO_NUMBER'].'<br>';
+				$unprocess[$inv]['PPN'] .= $value['PPN'].'<br>';
 			}
+
+			// if ($string_id) {
+			// 	$explodeId = explode('<br>', $string_id);
+			// 	if (!$explodeId) {
+			// 		$explodeId = $string_id;
+			// 	}
+
+			// 	// foreach ($explodeId as $exp => $value) {
+			// 	// 	$cekPPN = $this->M_monitoringakuntansi->checkPPN($value);
+			// 	// 	foreach ($cekPPN as $key => $value2) {
+			// 	// 		foreach ($value2 as $va2 => $value3) {
+			// 	// 			$ppn = $value3;
+			// 	// 		}
+			// 	// 	}
+			// 	// }
+			// }
 			
 			$no++;
 		}
-
 		$data['unprocess'] =$unprocess;
 		$data['batch_num'] =$batch;
 		// $data['ppn'] = $ppn;
