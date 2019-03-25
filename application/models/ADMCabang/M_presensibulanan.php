@@ -36,7 +36,7 @@ class M_presensibulanan extends Ci_Model
 	    }elseif ($noind == 'H7726') {
 	    	 $sql = "select noind,nama 
 	    		from hrd_khs.tpribadi 
-	    		where left(kodesie,6) = left('$kd',6)
+	    		where left(kodesie,5) = left('$kd',5)
 	    		and keluar = false
 	    		order by kodesie,noind;";    
 	    } else{

@@ -42,7 +42,7 @@ class M_presensiharian extends Ci_Model
 		}elseif ($noind == 'H7726') { //Order #972784 (PENAMBAHAN AKSES BUKA PRESENSI DI PROGRAM ERP)
 	    	 $sql = "select noind,nama 
 	    		from hrd_khs.tpribadi 
-	    		where left(kodesie,6) = left('$kd',6)
+	    		where left(kodesie,5) = left('$kd',5)
 	    		and keluar = false
 	    		order by noind;";    
 	    }  else{
