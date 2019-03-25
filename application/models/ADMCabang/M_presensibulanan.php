@@ -21,43 +21,49 @@ class M_presensibulanan extends Ci_Model
 
 	public function getPekerjaByKodesie($kd){
 	    $noind = $this->session->user;
-	    if ($noind == 'B0380') {
-	    	 $sql = "select noind,nama 
-	    		from hrd_khs.tpribadi 
-	    		where (left(kodesie,7) = left('$kd',7) or noind in ('J1171','J7004','L8001'))
-	    		and keluar = false
-	    		order by kodesie,noind;";    
-	    }elseif ($noind == 'B0370') {
-	    	 $sql = "select noind,nama 
-	    		from hrd_khs.tpribadi 
-	    		where (left(kodesie,7) = left('$kd',7) or noind in ('D1535','P0426'))
-	    		and keluar = false
-	    		order by kodesie,noind;";    
-	    }elseif ($noind == 'H7726') {
-	    	 $sql = "select noind,nama 
-	    		from hrd_khs.tpribadi 
-	    		where left(kodesie,5) = left('$kd',5)
-	    		and keluar = false
-	    		order by kodesie,noind;";    
-	    } else{
-
-		    if('306030'==substr($kd,6))
-		    {
-		    $sql = "select noind,nama 
-					from hrd_khs.tpribadi 
-					where left(kodesie,6) = left('$kd',6) 
-					and keluar = false
-					order by noind;";    
-		    }
-		    else
-		    {
-			$sql = "select noind,nama 
-					from hrd_khs.tpribadi 
-					where left(kodesie,7) = left('$kd',7) 
-					and keluar = false
-					order by noind;";
-		    }
+	    
+	    if ($noind == 'B0380') { // ada di ticket
+			 $sql = "select a.noind,a.nama, b.seksi 
+				from hrd_khs.tpribadi a
+				left join hrd_khs.tseksi b on a.kodesie=b.kodesie
+				where (left(a.kodesie,7) = left('$kd',7) or a.noind in ('J1171','J7004','L8001'))
+				and a.keluar = false
+				order by a.kodesie,a.noind;";    
+		}elseif ($noind == 'B0370') { //ada di ticket
+			 $sql = "select a.noind,a.nama, b.seksi 
+				from hrd_khs.tpribadi a
+				left join hrd_khs.tseksi b on a.kodesie=b.kodesie
+				where (left(a.kodesie,7) = left('$kd',7) or a.noind in ('D1535','P0426'))
+				and a.keluar = false
+				order by a.kodesie,a.noind;";    
+		}elseif ($noind == 'H7726') { //Order #972784 (PENAMBAHAN AKSES BUKA PRESENSI DI PROGRAM ERP)
+	    	 $sql = "select a.noind,a.nama, b.seksi 
+				from hrd_khs.tpribadi a
+				left join hrd_khs.tseksi b on a.kodesie=b.kodesie
+	    		where left(a.kodesie,5) = left('$kd',5)
+	    		and a.keluar = false
+				order by a.kodesie,a.noind;";    
+	    }  else{
+			    if('306030'==substr($kd,0,6)) //ada diticket
+			    {
+			    $sql = "select a.noind,a.nama, b.seksi 
+				from hrd_khs.tpribadi a
+				left join hrd_khs.tseksi b on a.kodesie=b.kodesie
+						where left(a.kodesie,6) = left('$kd',6) 
+						and a.keluar = false
+						order by a.kodesie,a.noind;";    
+			    }
+			    else
+			    {
+				$sql = "select a.noind,a.nama, b.seksi 
+				from hrd_khs.tpribadi a
+				left join hrd_khs.tseksi b on a.kodesie=b.kodesie
+						where left(a.kodesie,7) = left('$kd',7) 
+						and a.keluar = false
+						order by a.kodesie,a.noind;";
+			    }
 		}
+		
 		$result = $this->personalia->query($sql);
 		return $result->result_array();
 	}
