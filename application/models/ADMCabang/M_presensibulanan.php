@@ -24,13 +24,19 @@ class M_presensibulanan extends Ci_Model
 	    if ($noind == 'B0380') {
 	    	 $sql = "select noind,nama 
 	    		from hrd_khs.tpribadi 
-	    		where (left(kodesie,7) = left('$kd',7) or noind in ('J1171','J7004'))
+	    		where (left(kodesie,7) = left('$kd',7) or noind in ('J1171','J7004','L8001'))
 	    		and keluar = false
 	    		order by kodesie,noind;";    
 	    }elseif ($noind == 'B0370') {
 	    	 $sql = "select noind,nama 
 	    		from hrd_khs.tpribadi 
 	    		where (left(kodesie,7) = left('$kd',7) or noind in ('D1535','P0426'))
+	    		and keluar = false
+	    		order by kodesie,noind;";    
+	    }elseif ($noind == 'H7726') {
+	    	 $sql = "select noind,nama 
+	    		from hrd_khs.tpribadi 
+	    		where left(kodesie,6) = left('$kd',6)
 	    		and keluar = false
 	    		order by kodesie,noind;";    
 	    } else{
