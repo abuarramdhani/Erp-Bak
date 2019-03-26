@@ -66,7 +66,7 @@
                                   <thead>
                                     <th class="text-center">No</th>
                                     <th class="text-center">Noind</th>
-                                    <th class="text-center">Kodesie</th>
+                                    <!-- <th class="text-center">Kodesie</th> -->
                                     <th class="text-center">SPDL</th>
                                     <th class="text-center">Tanggal Scan</th>
                                     <th class="text-center">Tanggal Realisasi</th>
@@ -83,7 +83,7 @@
                                             <tr>
                                                 <td class='text-center'>".$no."</td>
                                                 <td class='text-center'>".$item['noind']."</td>
-                                                <td class='text-center'>".$item['kodesie']."</td>
+                                                <!-- <td class='text-center'>".$item['kodesie']."</td> -->
                                                 <td class='text-center'>".$item['spdl_id']."</td>
                                                 <td class='text-left'>".$item['tanggal']."</td>
                                                 <td class='text-left'>".$item['tanggal_realisasi']."</td>
