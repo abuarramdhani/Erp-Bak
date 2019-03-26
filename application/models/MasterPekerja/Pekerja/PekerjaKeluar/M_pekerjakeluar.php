@@ -46,6 +46,11 @@ class M_pekerjakeluar extends CI_Model {
 		$this->personalia->insert('hrd_khs.tpribadi_log', $history);
 		return;
 	}
+	public function historyTlog($tlog)
+	{
+		$this->personalia->insert('hrd_khs.tlog', $tlog);
+		return;
+	}
 	public function getProvinsi($provinsi)
 	{
 		$this->daerah->like('nama', $provinsi);

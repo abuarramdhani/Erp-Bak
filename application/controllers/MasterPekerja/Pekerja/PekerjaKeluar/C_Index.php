@@ -181,6 +181,17 @@ class C_Index extends CI_Controller {
 							'last_updated_by'=> $this->session->user,
 						);
 		$this->M_pekerjakeluar->historyUpdatePekerja($history);
+		$tlog 	= array(
+							'wkt'			=> date('Y-m-d H:i:s'),
+							'menu'			=> 'MASTER PEKERJA -> EDIT DATA PEKERJA',
+							'ket'			=> 'NO IND->'.$this->input->post('txt_noindukLama'),
+							'noind'			=> $this->session->user,
+							'jenis' 		=> 'EDIT -> DATA PEKERJA',
+							'program'		=> 'ERP',
+							'noind_baru'	=> 'NULL',
+
+						);
+		$this->M_pekerjakeluar->historyTlog($tlog);
 		print "<script type='text/javascript'>alert('Data telah berhasil diubah. Mohon cek kembali');</script>";
 		if (print "<script type='text/javascript'>alert('Data telah berhasil diubah. Mohon cek kembali');</script>" != null) 
 			{
@@ -228,6 +239,17 @@ class C_Index extends CI_Controller {
 							'last_updated_by'=> $this->session->user,
 						);
 		$this->M_pekerjakeluar->historyUpdatePekerja($history);
+		$tlog 	= array(
+							'wkt'			=> date('Y-m-d H:i:s'),
+							'menu'			=> 'MASTER PEKERJA -> EDIT DATA PEKERJA',
+							'ket'			=> 'NO IND->'.$this->input->post('txt_noindukLama'),
+							'noind'			=> $this->session->user,
+							'jenis' 		=> 'EDIT -> DATA PEKERJA',
+							'program'		=> 'ERP',
+							'noind_baru'	=> 'NULL',
+
+						);
+		$this->M_pekerjakeluar->historyTlog($tlog);
 		print "<script type='text/javascript'>alert('Data telah berhasil diubah. Mohon cek kembali');</script>";
 		if (print "<script type='text/javascript'>alert('Data telah berhasil diubah. Mohon cek kembali');</script>" != null) 
 			{
