@@ -1,4 +1,5 @@
 var no = 1;
+var id = 1;
 
 $(document).ready(function(){
 	$(".preloader").fadeOut();
@@ -270,7 +271,7 @@ $("#search").change(function () {
 					}
 
 					today = dd + '-' + mmm + '-' + yyyy;
-                html +=  '<tr row-id="1">'+
+                html +=  '<tr row-id="'+ (id++) +'">'+
 							'<td>'+ (no++) +'</td>'+
 							'<input type="hidden" name="date[]" id="date" value="'+ today +'">'+
 							'<input type="hidden" name="stat[]" id="stat" value="UNAPPROVED">'+
@@ -290,6 +291,9 @@ $("#search").change(function () {
 							'<td><input type="number" style="background-color: bisque;" class="form-control-plaintext" name="flm[]" id="flm" value="'+ data.FIXED_LOT_MULTIPLIER +'" ></td>'+
 							'<td><select style="background-color: bisque;" name="attr18[]" id="attr18">'+ data.select +'</select></td>'+
 							'<td><input type="text" style="background-color: bisque;" class="form-control-plaintext" name="keterangan[]" id="keterangan"></td>'+
+							'<td><center><button type="button" onclick="deleteRowThisHehe(this)" class="btn btn-danger btn-xs hapus'+id+'" title="Delete" >'+
+							'<span class="icon-trash"> Delete</span>'
+							'</button></center></td>'+
 						'</tr>';
             });
             console.log(html);
@@ -302,3 +306,8 @@ $("#search").change(function () {
         }
     });
 });
+
+
+function deleteRowThisHehe(th){
+	$(th).parents("tr").remove();
+}

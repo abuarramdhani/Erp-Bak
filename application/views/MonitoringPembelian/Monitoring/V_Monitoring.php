@@ -78,6 +78,7 @@
 														<th><center>FLM</center></th>
 														<th><center>NAMA APPROVER PO</center></th>
 														<th><center>KETERANGAN</center></th>
+														<th><center>ACTION</center></th>
 													</tr>
 												</thead>
 												<tbody id="body-file">
