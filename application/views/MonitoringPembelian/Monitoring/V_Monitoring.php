@@ -140,9 +140,108 @@
 									</table>
 									</center>
 								</div>
+							</div>	
+						</div>
+						<div class="box box-primary box-solid">
+							<div class="box-body">
+								<table style="font-size: 10px;" width="100%">
+									<tr>
+										<td width="60%">
+											<b><u>Notes</u></b>
+											<div>1. Coret salah satu</div>
+											<div>2. Dokumen atau data yang digunakan sebagai dasar penentuan lead time</div>
+											<div>3. Lead time dari PP create sampai dengan PR Approved (standar 2 hari kerja)</div>
+											<div>4. Lead time pemrosesan di pembelian (preparation lead time+delivery lead time)</div>
+											<div>5. Lead time dari PR approved - PO approved (by system)</div>
+											<div>6. Lead time dari PO approved sampai barang diterima PBB</div>
+											   <div style="padding-left: 1.5em">*) Khusus untuk item subkontraktor (Outside processing type), Delivery PO lead time memuat std. post processing lead time,</div> 
+											   <div style="padding-left: 1.5em">karena adanya kendala pada proses  auto create PR dari job jika field Post Processing Lead time pada master item terisi</div>
+											<div>7. Lead time dari barang diterma PBB sampai barang diproses deliver (deliver ke seksi pemesan jika expense, deliver ke gudang jika item stock)</div>
+											   <div style="padding-left: 1.5em">*) Perhitungan lead time merujuk pada ES-PBB-01-01 dan ES-QCT-01-43</div>
+											   <div style="padding-left: 1.5em">*) Khusus untuk item subkontraktor (Outside processing type), Std. post processing digabungkan ke dalam Delivery PO lead time</div>
+											<div>8. Total lead time = Preprocessing lead time + total processing lead time + post processing lead time</div>
+											<div>9. Penentuan Nama Approver PO sesuai tabel pengelompokan approver</div> 
+										</td>
+										<td width="40%" style="padding-left: 5px;">
+											<b>Tabel Pengelompokan Approver</b>
+											<div>
+												<table class="kelompok" width="100%">
+													<tr>
+														<td style="border: 1px solid black; background-color: gold;"><center><b>DASAR PENGELOMPOKAN</b></center></td>
+														<td style="border: 1px solid black; background-color: gold;"><center><b>KELOMPOK BARANG</b></center></td>
+														<td style="border: 1px solid black; background-color: gold;"><center><b>APPROVER PO</b></center></td>
+													</tr>
+													<tr>
+														<td style="border: 1px solid black; padding-left: 3px;">Kode awal : N--</td>
+														<td style="border: 1px solid black; padding-left: 3px;">ASET</td>
+														<td style="border: 1px solid black; padding-left: 3px;">DRS. HENDRO WIJAYANTO</td>
+													</tr>
+													<tr>
+														<td style="border: 1px solid black; padding-left: 3px;">Kode awal : Q--</td>
+														<td style="border: 1px solid black; padding-left: 3px;">PROMOSI</td>
+														<td style="border: 1px solid black; padding-left: 3px;">DRS. HENDRO WIJAYANTO</td>
+													</tr>
+													<tr>
+														<td style="border: 1px solid black; padding-left: 3px;">Kode awal : G--</td>
+														<td style="border: 1px solid black; padding-left: 3px;">BDL</td>
+														<td style="border: 1px solid black; padding-left: 3px;">HARUN ALRASYID</td>
+													</tr>
+													<tr>
+														<td style="border: 1px solid black; padding-left: 3px;">Kode awal : H--</td>
+														<td style="border: 1px solid black; padding-left: 3px;">BDL</td>
+														<td style="border: 1px solid black; padding-left: 3px;">HARUN ALRASYID</td>
+													</tr>
+													<tr>
+														<td style="border: 1px solid black; padding-left: 3px;">Kode awal : I--</td>
+														<td style="border: 1px solid black; padding-left: 3px;">BDL</td>
+														<td style="border: 1px solid black; padding-left: 3px;">HARUN ALRASYID</td>
+													</tr>
+													<tr>
+														<td style="border: 1px solid black; padding-left: 3px;">Kode awal : L--</td>
+														<td style="border: 1px solid black; padding-left: 3px;">MATERIAL</td>
+														<td style="border: 1px solid black; padding-left: 3px;">RIA CAHYANI</td>
+													</tr>
+													<tr>
+														<td style="border: 1px solid black; padding-left: 3px;">Kode awal : P--</td>
+														<td style="border: 1px solid black; padding-left: 3px;">OFFICE SUPPLIES</td>
+														<td style="border: 1px solid black; padding-left: 3px;">RIA CAHYANI</td>
+													</tr>
+													<tr>
+														<td style="border: 1px solid black; padding-left: 3px;">Kode awal : S--</td>
+														<td style="border: 1px solid black; padding-left: 3px;">BANGUNAN</td>
+														<td style="border: 1px solid black; padding-left: 3px;">RIA CAHYANI</td>
+													</tr>
+													<tr>
+														<td style="border: 1px solid black; padding-left: 3px;">Kode jasa non JASA01, non JANG--</td>
+														<td style="border: 1px solid black; padding-left: 3px;">JASA LAIN-LAIN</td>
+														<td style="border: 1px solid black; padding-left: 3px;">RIA CAHYANI</td>
+													</tr>
+													<tr>
+														<td style="border: 1px solid black; padding-left: 3px;">Kode awal : JANG--</td>
+														<td style="border: 1px solid black; padding-left: 3px;">EKSPEDISI</td>
+														<td style="border: 1px solid black; padding-left: 3px;">HARUN ALRASYID</td>
+													</tr>
+													<tr>
+														<td style="border: 1px solid black; padding-left: 3px;">Kode awal : JASA01</td>
+														<td style="border: 1px solid black; padding-left: 3px;">EKSPEDISI</td>
+														<td style="border: 1px solid black; padding-left: 3px;">HARUN ALRASYID</td>
+													</tr>
+													<tr>
+														<td style="border: 1px solid black; padding-left: 3px;">Kode awal : R--</td>
+														<td style="border: 1px solid black; padding-left: 3px;">MAINTENANCE</td>
+														<td style="border: 1px solid black; padding-left: 3px;">SUGENG SUTANTO</td>
+													</tr>
+													<tr>
+														<td style="border: 1px solid black; padding-left: 3px;">Kode selain di atas</td>
+														<td style="border: 1px solid black; padding-left: 3px;">NON MATERIAL</td>
+														<td style="border: 1px solid black; padding-left: 3px;">SUGENG SUTANTO</td>
+													</tr>
+												</table>
+											</div>
+										</td>
+									</tr>
+								</table>
 							</div>
-
-							
 						</div>
 					</div>
 				</div>
