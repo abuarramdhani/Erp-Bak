@@ -2375,3 +2375,8 @@ $route['MonitoringPembelian/MonitoringPE/(:any)'] = 'MonitoringPembelian/EditDat
 $route['MonitoringPembelian/MonitoringPE/(:any)/(:any)'] = 'MonitoringPembelian/EditData/C_MonitoringPE/$1/$2';
 
 $route['MonitoringPembelian/HistoryRequest'] = 'MonitoringPembelian/Input/C_History/index';
+
+//----------------Resource Opname------------------
+$route['OpnameResource']			= 'OpnameResource/MainMenu/C_TarikData';
+$route['OpnameResource/TarikData']  = 'OpnameResource/MainMenu/C_TarikData/TarikData';
+$route['OpnameResource/Export']  = 'OpnameResource/MainMenu/C_TarikData/Export';
