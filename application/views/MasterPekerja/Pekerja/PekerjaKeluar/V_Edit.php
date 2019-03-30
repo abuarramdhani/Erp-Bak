@@ -155,6 +155,30 @@
 								<input type="text" name="txt_nohpPekerja" id="PK_txt_nohpPekerja" class="form-control" value="<?php echo $data['nohp'] ?>">
 							</div>
 						</div>
+						<div class="row" style="margin-top: 10px;">
+							<div class="col-lg-2">
+								<label for="PK_txt_ukuranbaju">Ukuran Baju </label>
+							</div>
+							<div class="col-lg-5">
+								<input type="text" name="txt_ukuranbaju" id="PK_txt_ukuranbaju" class="form-control" value="<?php echo $data['uk_baju'] ?>">
+							</div>
+						</div>
+						<div class="row" style="margin-top: 10px;">
+							<div class="col-lg-2">
+								<label for="PK_txt_ukurancelana">Ukuran Celana </label>
+							</div>
+							<div class="col-lg-5">
+								<input type="text" name="txt_ukurancelana" id="PK_txt_ukurancelana" class="form-control" value="<?php echo $data['uk_celana'] ?>">
+							</div>
+						</div>
+						<div class="row" style="margin-top: 10px;">
+							<div class="col-lg-2">
+								<label for="PK_txt_ukuransepatu">Ukuran Sepatu </label>
+							</div>
+							<div class="col-lg-5">
+								<input type="text" name="txt_ukuransepatu" id="PK_txt_ukuransepatu" class="form-control" value="<?php echo $data['uk_sepatu'] ?>">
+							</div>
+						</div>
 					</div>
 				</div>
 			</div>

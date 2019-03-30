@@ -99,7 +99,11 @@ class C_Index extends CI_Controller {
 									'dept' 		=> $seksi[0]['dept'],
 									'tglkeluar' => $pekerja[0]['tglkeluar'],
 									'sebabklr' 	=> $pekerja[0]['sebabklr'],
+									'uk_baju' 	=> $pekerja[0]['uk_baju'],
+									'uk_celana' => $pekerja[0]['uk_celana'],
+									'uk_sepatu' => $pekerja[0]['uk_sepatu']
 								);
+
 			
 			$data['Menu'] = 'Dashboard';
 			$data['SubMenuOne'] = '';
@@ -169,10 +173,13 @@ class C_Index extends CI_Controller {
 								'jabatan' 	=> $this->input->post('txt_jabatanPekerja'),
 								'tglkeluar' => $this->input->post('txt_tglkeluar'),
 								'sebabklr' 	=> $this->input->post('txt_sebabkeluar'),
+								'uk_baju' 	=> $this->input->post('txt_ukuranbaju'),
+								'uk_celana' => $this->input->post('txt_ukurancelana'),
+								'uk_sepatu' => $this->input->post('txt_ukuransepatu')
 							);
-		// echo "<pre>";
-		// print_r($data);
-		// exit();
+		 //echo "<pre>";
+		//print_r($data);
+		 //exit();
 		$this->M_pekerjakeluar->updateDataPekerja($data,$noind);
 		$history 	= array(
 							'noind' 		=> $this->input->post('txt_noindukLama'),
@@ -227,6 +234,9 @@ class C_Index extends CI_Controller {
 								'jabatan' 	=> $this->input->post('txt_jabatanPekerja'),
 								'tglkeluar' => $this->input->post('txt_tglkeluar'),
 								'sebabklr' 	=> $this->input->post('txt_sebabkeluar'),
+								'uk_baju' 	=> $this->input->post('txt_ukuranbaju'),
+								'uk_celana' => $this->input->post('txt_ukurancelana'),
+								'uk_sepatu' => $this->input->post('txt_ukuransepatu')
 							);
 		// echo "<pre>";
 		// print_r($data);
