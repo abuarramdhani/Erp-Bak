@@ -24,15 +24,15 @@ class M_pesangon extends CI_Model {
 				end
 			) as pekerjaan,
 			to_char(pri.diangkat,'DD/MM/YYYY') as diangkat,
-			date_part('year', age(akhkontrak::date,  diangkat::date )) || ' tahun ' ||
-             date_part('month', age(akhkontrak::date,  diangkat::date )) || ' bulan ' ||
-           date_part('day', age(akhkontrak::date,  diangkat::date )) || ' hari 'as 
+			date_part('year', age(tglkeluar::date,  diangkat::date )) || ' tahun ' ||
+             date_part('month', age(tglkeluar::date,  diangkat::date )) || ' bulan ' ||
+           date_part('day', age(tglkeluar::date,  diangkat::date )) || ' hari 'as 
 			 masakerja,
-			 date_part('year', age(akhkontrak::date,  diangkat::date ))  as
+			 date_part('year', age(tglkeluar::date,  diangkat::date ))  as
 			 masakerja_tahun,
-			 date_part('month', age(akhkontrak::date,  diangkat::date ))  as
+			 date_part('month', age(tglkeluar::date,  diangkat::date ))  as
 			 masakerja_bulan,
-			 date_part('day', age(akhkontrak::date,  diangkat::date ))  as
+			 date_part('day', age(tglkeluar::date,  diangkat::date ))  as
 			 masakerja_hari,
 			pri.templahir  || '  ' ||  to_char(pri.tgllahir,'DD/MM/YYYY') as tempat,
 			rtrim(pri.alamat)|| ',' ||  pri.kec || ',' ||  pri.kab || ',' ||  pri.prop as alamat,
@@ -102,8 +102,8 @@ class M_pesangon extends CI_Model {
 							left join    \"Presensi\".tdatacuti as cuti on pri.noind=cuti.noind
 							left join 	hrd_khs.tpekerjaan as tpekerjaan on tpekerjaan.kdpekerjaan=pri.kd_pkj
 							join hrd_khs.t_master_pesangon as pesangon on pesangon.alasan_keluar=pri.sebabklr 
-							and (extract(year from pri.tglkeluar) - extract(year from pri.diangkat)) >= pesangon.batas_tahun_kerja_awal 
-							and (extract(year from pri.tglkeluar) - extract(year from pri.diangkat)) < pesangon.batas_tahun_kerja_akhir
+							and date_part('year', age(tglkeluar::date,  diangkat::date ))>= pesangon.batas_tahun_kerja_awal 
+							and date_part('year', age(tglkeluar::date,  diangkat::date ))< pesangon.batas_tahun_kerja_akhir
 							join 	hrd_khs.tlokasi_kerja as lokker on 	lokker.id_=pri.lokasi_kerja
 							where 		pri.noind='$noind' and cuti.periode=extract(year from current_date)::varchar";
 										
@@ -185,15 +185,15 @@ class M_pesangon extends CI_Model {
 			tpes.hutang_perusahaan as hutang_perusahaan,
 			tpes.lain_lain as lain_lain,
 			to_char(pri.diangkat,'DD/MM/YYYY') as diangkat,
-			date_part('year', age(akhkontrak::date,  diangkat::date )) || ' tahun ' ||
-             date_part('month', age(akhkontrak::date,  diangkat::date )) || ' bulan ' ||
-           date_part('day', age(akhkontrak::date,  diangkat::date )) || ' hari 'as 
+			date_part('year', age(tglkeluar::date,  diangkat::date )) || ' tahun ' ||
+             date_part('month', age(tglkeluar::date,  diangkat::date )) || ' bulan ' ||
+           date_part('day', age(tglkeluar::date,  diangkat::date )) || ' hari 'as 
 			 masakerja,
-			 date_part('year', age(akhkontrak::date,  diangkat::date ))  as
+			 date_part('year', age(tglkeluar::date,  diangkat::date ))  as
 			 masakerja_tahun,
-			 date_part('month', age(akhkontrak::date,  diangkat::date ))  as
+			 date_part('month', age(tglkeluar::date,  diangkat::date ))  as
 			 masakerja_bulan,
-			 date_part('day', age(akhkontrak::date,  diangkat::date ))  as
+			 date_part('day', age(tglkeluar::date,  diangkat::date ))  as
 			 masakerja_hari,
 			pri.templahir  || '  ' ||  to_char(pri.tgllahir,'DD/MM/YYYY') as tempat,
 			rtrim(pri.alamat)|| ',' ||  pri.kec || ',' ||  pri.kab || ',' ||  pri.prop as alamat,
@@ -264,8 +264,8 @@ class M_pesangon extends CI_Model {
 							left join    \"Presensi\".tdatacuti as cuti on pri.noind=cuti.noind
 							left join 	hrd_khs.tpekerjaan as tpekerjaan on tpekerjaan.kdpekerjaan=pri.kd_pkj
 							join hrd_khs.t_master_pesangon as pesangon on pesangon.alasan_keluar=pri.sebabklr 
-							and (extract(year from pri.tglkeluar) - extract(year from pri.diangkat)) >= pesangon.batas_tahun_kerja_awal 
-							and (extract(year from pri.tglkeluar) - extract(year from pri.diangkat)) < pesangon.batas_tahun_kerja_akhir
+							and date_part('year', age(tglkeluar::date,  diangkat::date )) >= pesangon.batas_tahun_kerja_awal 
+							and date_part('year', age(tglkeluar::date,  diangkat::date )) < pesangon.batas_tahun_kerja_akhir
 							join 	hrd_khs.tlokasi_kerja as lokker on 	lokker.id_=pri.lokasi_kerja
 							where 		tpes.id_pesangon='$id' and cuti.periode=extract(year from current_date)::varchar";
 	 		$query 	=	$this->personalia->query($editHitungPesangon);
@@ -302,15 +302,15 @@ class M_pesangon extends CI_Model {
 			tpes.hutang_perusahaan as hutang_perusahaan,
 			tpes.lain_lain as lain_lain,
 			to_char(pri.diangkat,'DD/MM/YYYY') as diangkat,
-			date_part('year', age(akhkontrak::date,  diangkat::date )) || ' tahun ' ||
-             date_part('month', age(akhkontrak::date,  diangkat::date )) || ' bulan ' ||
-           date_part('day', age(akhkontrak::date,  diangkat::date )) || ' hari 'as 
+			date_part('year', age(tglkeluar::date,  diangkat::date )) || ' tahun ' ||
+             date_part('month', age(tglkeluar::date,  diangkat::date )) || ' bulan ' ||
+           date_part('day', age(tglkeluar::date,  diangkat::date )) || ' hari 'as 
 			 masakerja,
-			 date_part('year', age(akhkontrak::date,  diangkat::date ))  as
+			 date_part('year', age(tglkeluar::date,  diangkat::date ))  as
 			 masakerja_tahun,
-			 date_part('month', age(akhkontrak::date,  diangkat::date ))  as
+			 date_part('month', age(tglkeluar::date,  diangkat::date ))  as
 			 masakerja_bulan,
-			 date_part('day', age(akhkontrak::date,  diangkat::date ))  as
+			 date_part('day', age(tglkeluar::date,  diangkat::date ))  as
 			 masakerja_hari,
 			pri.templahir  || '  ' ||  to_char(pri.tgllahir,'DD/MM/YYYY') as tempat,
 			rtrim(pri.alamat)|| ',' ||  pri.kec || ',' ||  pri.kab || ',' ||  pri.prop as alamat,
@@ -381,11 +381,14 @@ class M_pesangon extends CI_Model {
 							left join    \"Presensi\".tdatacuti as cuti on pri.noind=cuti.noind
 							left join 	hrd_khs.tpekerjaan as tpekerjaan on tpekerjaan.kdpekerjaan=pri.kd_pkj
 							join hrd_khs.t_master_pesangon as pesangon on pesangon.alasan_keluar=pri.sebabklr 
-							and (extract(year from pri.tglkeluar) - extract(year from pri.diangkat)) >= pesangon.batas_tahun_kerja_awal 
-							and (extract(year from pri.tglkeluar) - extract(year from pri.diangkat)) < pesangon.batas_tahun_kerja_akhir
+							and date_part('year', age(tglkeluar::date,  diangkat::date )) >= pesangon.batas_tahun_kerja_awal 
+							and date_part('year', age(tglkeluar::date,  diangkat::date )) < pesangon.batas_tahun_kerja_akhir
 							join 	hrd_khs.tlokasi_kerja as lokker on 	lokker.id_=pri.lokasi_kerja
 							where 		tpes.id_pesangon='$id' and cuti.periode=extract(year from current_date)::varchar";
 	 		$query 	=	$this->personalia->query($cetak);
 			return $query->result_array();
         }
 };
+
+
+
