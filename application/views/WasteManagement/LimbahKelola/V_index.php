@@ -1,3 +1,8 @@
+<style type="text/css">
+	.dataTables_filter{
+		display: none;
+	}
+	</style>
 <section class="content">
 	<div class="inner">
 		<div class="row">
