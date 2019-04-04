@@ -563,9 +563,9 @@ $efg="";
 		);
 		$db['dl_153'] = array(
 			'dsn'				=> '',
-			'hostname' 			=> '192.168.168.153',
-			'username' 			=> 'amri',
-			'password' 			=> 'amri',
+			'hostname' 			=> '192.168.168.142',
+			'username' 			=> 'dl',
+			'password' 			=> 'qu1ck',
 			'database' 			=> 'quickc01_dinas_luar_online',
 			'dbdriver' 			=> 'mysqli',
 			'dbprefix' 			=> '',
