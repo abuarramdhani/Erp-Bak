@@ -315,9 +315,9 @@ $db['oracle_dev'] = array(
 
 $db['dinas_luar'] = array(
 	'dsn'	=> '',
-	'hostname' => 'dev.quick.com',
-	'username' => 'amri',
-	'password' => 'amri',
+	'hostname' => 'dl.quick.com',
+	'username' => 'dl',
+	'password' => 'qu1ck',
 	'database' => 'quickc01_dinas_luar_online',
 	'dbdriver' => 'mysqli',
 	'dbprefix' => '',
