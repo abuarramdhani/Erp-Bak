@@ -244,7 +244,7 @@
 																	$trgaku2 = 0;
 																	for ($i=0; $i < 17 ; $i++) { 
 																		echo '<td>'.$trgaku = ($trgaku+${$var2}).'</td>';
-																		echo '<td>'.$trgaku2 = round(($trgaku/${$var1}[0]*100)).'%</td>';
+																		echo '<td>'.$trgaku2 = round(($trgaku/${$var1}[0]*100),1).'%</td>';
 														// echo '<td>'.${$var1}[0].'%</td>';
 																	} ?>
 																	<script>
@@ -258,7 +258,7 @@
 																			}
 																		}
 																		?>];
-																	</script>
+																	</script>asdas
 																</tr>
 																<tr>
 																	<td>Jml Turun Akumulasi</td>
@@ -431,7 +431,7 @@
 																		$trgaku2 = 0;
 																		for ($i=0; $i < 17 ; $i++) { 
 																			echo '<td>'.$trgaku = ($trgaku+${$var2}).'</td>';
-																			echo '<td>'.$trgaku2 = round(($trgaku/${$var1}[0]*100)).'%</td>';
+																			echo '<td>'.$trgaku2 = round(($trgaku/${$var1}[0]*100),1).'%</td>';
 														// echo '<td>'.${$var1}[0].'%</td>';
 																		} ?>
 																		<script>
@@ -622,8 +622,7 @@
 																					$trgaku2 = 0;
 																					for ($i=0; $i < 17 ; $i++) { 
 																						echo '<td>'.$trgaku = ($trgaku+${$var2}).'</td>';
-																						echo '<td>'.$trgaku2 = round(($trgaku/${$var1}[0]*100)).'%</td>';
-														// echo '<td>'.${$var1}[0].'%</td>';
+																						echo '<td>'.$trgaku2 = round($trgaku/${$var1}[0]*100,1).'%</td>';
 																					} ?>
 																					<script>
 																						trgAkumulasi[<?= ($y+1) ?>] = ["0", <?php 
