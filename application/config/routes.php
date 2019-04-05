@@ -2380,3 +2380,13 @@ $route['MonitoringPembelian/HistoryRequest'] = 'MonitoringPembelian/Input/C_Hist
 $route['OpnameResource']			= 'OpnameResource/MainMenu/C_TarikData';
 $route['OpnameResource/TarikData']  = 'OpnameResource/MainMenu/C_TarikData/TarikData';
 $route['OpnameResource/Export']  = 'OpnameResource/MainMenu/C_TarikData/Export';
+
+
+
+
+//---------------------------Setting Min Max OPM-------------------------------//
+$route['SettingMinMaxOPM'] = 'SettingMinMaxOPM/C_settingMinMaxOPM/index';
+$route['SettingMinMaxOPM/Edit'] = 'SettingMinMaxOPM/C_settingMinMaxOPM/Edit';
+$route['SettingMinMaxOPM/EditbyRoute'] = 'SettingMinMaxOPM/C_settingMinMaxOPM/EditbyRoute';
+$route['SettingMinMaxOPM/EditbyRoute/EditItem/(:any)/(:any)'] = 'SettingMinMaxOPM/C_settingMinMaxOPM/EditItem/$1/$2';
+$route['SettingMinMaxOPM/SaveMinMax'] = 'SettingMinMaxOPM/C_settingMinMaxOPM/SaveMinMax';
