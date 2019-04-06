@@ -50,6 +50,7 @@ class M_moveorder extends CI_Model
 						and wo.ORGANIZATION_ID = we.ORGANIZATION_ID
 						and wo.DEPARTMENT_ID = bd.DEPARTMENT_ID
 						and khs_shift(wdj.SCHEDULED_START_DATE) = bcs.SHIFT_NUM
+						and wdj.status_type in (1,3)
 						AND trunc(wdj.SCHEDULED_START_DATE) = '$date' --'12-NOV-18'    --parameter
 						and bcs.SHIFT_NUM = '$shift'       --parameter
 						and bd.DEPARTMENT_CLASS_CODE = '$dept'         --parameter
@@ -104,6 +105,7 @@ class M_moveorder extends CI_Model
 					and wo.DEPARTMENT_ID = bd.DEPARTMENT_ID
 					and khs_shift(wdj.SCHEDULED_START_DATE) = bcs.SHIFT_NUM
 					and bic.ATTRIBUTE1 is not null
+					and wdj.status_type in (1,3)
 					and we.WIP_ENTITY_NAME = '$job_no'
 					group by we.WIP_ENTITY_ID,  we.WIP_ENTITY_NAME ,msib2.SEGMENT1, msib2.DESCRIPTION, msib2.inventory_item_id
                     ,wro.REQUIRED_QUANTITY,msib2.PRIMARY_UOM_CODE, bic.ATTRIBUTE1, mil.SEGMENT1
@@ -215,6 +217,7 @@ class M_moveorder extends CI_Model
                  AND bst.SHIFT_NUM = khs_shift(wdj.scheduled_start_date) 
                  AND bst.calendar_code = bcs.calendar_code 
                  AND bcs.shift_num = bst.shift_num --hard_code 
+				 and wdj.status_type in (1,3)
                  AND mtrh.request_number = '$moveOrderAwal'
 --                 AND mmtt.SUBINVENTORY_CODE NOT LIKE 'INT%' 
                  GROUP BY msib_produk.segment1, 
@@ -382,6 +385,7 @@ class M_moveorder extends CI_Model
 				and bst.SHIFT_NUM = khs_shift(wdj.SCHEDULED_START_DATE)
 				and bst.CALENDAR_CODE = bcs.CALENDAR_CODE
 				and bcs.SHIFT_NUM = bst.SHIFT_NUM --hard_code
+				and wdj.status_type in (1,3)
 				and mtrh.request_number = '$moveOrderAwal'
 				and mtrl.FROM_SUBINVENTORY_CODE not like 'INT%'
 				and wro.INVENTORY_ITEM_ID = mtrl.INVENTORY_ITEM_ID
@@ -572,6 +576,7 @@ class M_moveorder extends CI_Model
 					and wo.DEPARTMENT_ID = bd.DEPARTMENT_ID
 					and khs_shift(wdj.SCHEDULED_START_DATE) = bcs.SHIFT_NUM
 					and bic.ATTRIBUTE1 is not null
+					and wdj.status_type in (1,3)
 					and we.WIP_ENTITY_NAME = '$job'
 					group by we.WIP_ENTITY_ID,  we.WIP_ENTITY_NAME ,msib2.SEGMENT1, msib2.DESCRIPTION, msib2.inventory_item_id
                     ,wro.REQUIRED_QUANTITY,msib2.PRIMARY_UOM_CODE, bic.ATTRIBUTE1, mil.SEGMENT1
