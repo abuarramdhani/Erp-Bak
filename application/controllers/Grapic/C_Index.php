@@ -1277,7 +1277,7 @@ class C_Index extends CI_Controller
 			$data['submit'] = $submit;
 			$nama =  'SEMUA, Dept. Produksi, Dept. Personalia, Dept. Keuangan, Dept. Pemasaran, Dept. Produksi - Pusat, Dept. Produksi - Tuksono, Dept. Pemasaran - Pusat, Dept. Pemasaran - Cabang / Showroom / POS, Akuntansi, ICT, IA, Pengembangan Sistem, Purchasing, Semua Data, CABANG PERWAKILAN JAKARTA, CABANG PERWAKILAN MEDAN, CABANG PERWAKILAN TANJUNG KARANG, CABANG PERWAKILAN YOGYAKARTA, PEMASARAN 2, PEMASARAN 6';
 			if ($val == '0') {
-				$all = array('1','2','3','4','5','6','7','8','9','10','11','12','13','14','15','16','17','18','19','20');
+				$all = array('1','2','3','4','5','6','7','8','9','10','11','12','13','14','15','16','17','18');
 			}else{
 				$all[] = $val;
 			}
@@ -1363,7 +1363,7 @@ class C_Index extends CI_Controller
 
 					$hasil[$x][] = $banyak[0]['count'];
 				}
-				$min =  round((1.3*$hasil[$x][0]/100),0);
+				$min =  round((1.3*$hasil[$x][0]/100),2);
 				$data['min'.$x] = $min;
 				$data['target'.$x] = $hasil[$x];
 

@@ -196,7 +196,7 @@
 																<?php
 																for ($i=0; $i < 17; $i++) { ?>
 																<td><?php echo ${$var2}; ?></td>
-																<td>1,3%</td>
+																<td><?php echo round(${$var2}/${$var1}[0]*100,2) ?>%</td>
 																<?php } ?>
 																<script>
 																	trgTurunBln[<?= ($y+1) ?>] = ["0", <?php 
@@ -258,7 +258,7 @@
 																			}
 																		}
 																		?>];
-																	</script>asdas
+																	</script>
 																</tr>
 																<tr>
 																	<td>Jml Turun Akumulasi</td>
@@ -383,7 +383,7 @@
 																	<?php
 																	for ($i=0; $i < 17; $i++) { ?>
 																	<td><?php echo ${$var2}; ?></td>
-																	<td>1,3%</td>
+																	<td><?php echo round(${$var2}/${$var1}[0]*100,2) ?>%</td>
 																	<?php } ?>
 																	<script>
 																		trgTurunBln[<?= ($y+1) ?>] = ["0", <?php 
@@ -574,7 +574,7 @@
 																				<?php
 																				for ($i=0; $i < 17; $i++) { ?>
 																				<td><?php echo ${$var2}; ?></td>
-																				<td>1,3%</td>
+																				<td><?php echo round(${$var2}/${$var1}[0]*100,2) ?>%</td>
 																				<?php } ?>
 																				<script>
 																					trgTurunBln[<?= ($y+1) ?>] = ["0", <?php 
