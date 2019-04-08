@@ -42,6 +42,8 @@ class M_Order extends CI_Model
         $this->personalia->select('*');
         $this->personalia->from('hrd_khs.tpekerjaan');
         $this->personalia->where('substring(kdpekerjaan, 1, 7) =', substr($kodesie, 0, 7));
+        $this->personalia->order_by('kdpekerjaan ASC');
+
 
         return $this->personalia->get()->result_array();
     }
@@ -84,10 +86,12 @@ class M_Order extends CI_Model
 
     public function tampil_data($kodesie)
     {
-               $query = $this ->db->query("select * from k3.k3_kebutuhan_detail tb1 join k3.k3_kebutuhan tb2 on
+        $sql = "select * from k3.k3_kebutuhan_detail tb1 join k3.k3_kebutuhan tb2 on
                                     tb1.id_kebutuhan = tb2.id_kebutuhan join k3.k3_kebutuhan_pekerja tb3 on
                                     tb1.id_kebutuhan_detail = tb3.id_kebutuhan_detail where tb2.kodesie = '$kodesie'
-                                    order by tb1.status_updated desc");
+                                    order by tb1.status_updated desc";
+                                    // echo $sql;exit();
+               $query = $this ->db->query($sql);
         return $query->result_array();
         
         // $this->db->select('*');
