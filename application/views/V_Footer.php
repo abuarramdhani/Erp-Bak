@@ -234,6 +234,8 @@
 	<script src="<?php echo base_url('assets/plugins/qtip/jquery.qtip.js');?>" type="text/javascript"></script>
 	<script src="<?php echo base_url('assets/plugins/jasny-bootstrap.min.js');?>" type="text/javascript"></script>
 	<script src="<?php echo base_url('assets/plugins/inputmask/inputmask.bundle.js');?>" type="text/javascript"></script>
+
+	<script src="<?php echo base_url('assets/plugins/sweetAlert/sweetalert.js');?>" type="text/javascript"></script>
     <script>
        $(function () { formInit(); });
 		
