@@ -82,7 +82,7 @@
 								$pd2++;
 							} 
 							if ($pd2 !== $pd1) {
-								for ($i=0; $i < abs($pd1 - $pd2); $i++) { 
+								for ($i=0; $i <= abs($pd1 - $pd2); $i++) { 
 									echo '<td style="text-align: center;">0</td>';
 								}
 							}
