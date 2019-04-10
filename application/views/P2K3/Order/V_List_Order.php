@@ -72,22 +72,41 @@
                                                     <input type="file" name="k3_approval" class="form-control" required />
                                                 </div>
                                             </div>
-                                            <div class="form-group text-right">
-                                                <div class="col-lg-8">
+                                            <div class="form-group">
+                                                <div class="col-lg-12 text-center">
                                                     <button type="submit" class="btn btn-primary">Upload Approval</button>
                                                 </div>
                                             </div>
                                         </form>
                                     </div>
-                                    <div class="col-lg-6 text-right">
-                                        <div class="row">
-                                            <a target="_blank" href="<?php echo site_url('P2K3/Order/approval')?>" class="btn btn-danger ">
-                                                Document Approval &nbsp<span class="fa fa-file-pdf-o"></span>
-                                            </a>
-                                            <a class="btn btn-primary" id="bt_export" href="<?php echo site_url('P2K3/Order/export')?>">
-                                                Export &nbsp<span class="glyphicon glyphicon-arrow-up"></span>
-                                            </a>
-                                        </div>
+                                    <div class="col-lg-6">
+                                        <form class="form-horizontal" method="POST" target="_blank"  style="border:1px solid #dd4b39;border-radius: 3px;padding-top: 10px" action="<?php echo site_url('P2K3/Order/approval')?>">
+                                            <div class="form-group">
+                                                <label class="form-label text-center col-lg-12">Download Document Approval</label>
+                                            </div>
+                                            <div class="form-group">
+                                                <label class="control-label col-lg-4">Bulan : </label>
+                                                <div class="col-lg-7">
+                                                    <input type="text" class="date form-control" name="txtBulanTahun" id="txtBulanTahunP2K3" required>
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <div class="col-lg-12 text-center">
+                                                    <button class="btn btn-danger">Document Approval &nbsp <span class="fa fa-file-pdf-o"></span></button>
+                                                </div>
+                                                
+                                            </div>
+                                        </form>
+                                    </div>
+                                </div>
+                                <br> 
+                                <div class="row">
+                                    <div class="col-lg-2">
+                                        <a class="btn btn-primary" id="bt_export" href="<?php echo site_url('P2K3/Order/export')?>">
+                                            Export &nbsp<span class="glyphicon glyphicon-arrow-up"></span>
+                                        </a>
+                                    </div>
+                                    <div class="col-lg-10">
                                         <div class="row">
                                             <div class="col-lg-4">
                                                 <label>Document Approval : </label>
@@ -108,131 +127,127 @@
                                                     }
                                                 ?>
                                             </div>
-                                             
                                         </div>
-                                            
                                     </div>
-                                       
-                                    
-                                </div>
+                                </div>   
                                 <br>
-                                    <div class="table-responsive">
-                                        <table id="tb_p2k3" class="datatable table table-striped table-bordered table-hover text-left" style="font-size:12px;">
-                                            <thead class="bg-primary">
-                                                <tr>
-                                                    <th width="5%" style="text-align: center; vertical-align: middle;">NO</th>
-                                                    <th width="10%" style="text-align: center; vertical-align: middle;">APD</th>
-                                                    <th style="text-align: center; width: 105px; vertical-align: middle;">KODE ITEM</th>
-                                                    <?php
-                                                          foreach ($daftar_pekerjaan as $pekerjaan)
-                                                         {
-                                                    ?>
-                                                        <th style="text-align:center; width: 80px; vertical-align: middle;"><?php echo $pekerjaan['pekerjaan'];?> <p><small>(Kebutuhan per pekerja)</small></p></th>
-                                                        <th style="text-align:center; width: 80px; vertical-align: middle;">Jumlah Pekerja (<?php echo $pekerjaan['pekerjaan'];?>)</th>
-                                                     <?php
-                                                         }
-                                                    ?>
-                                                    <th style="text-align: center; vertical-align: middle; width: 75px;">KEBUTUHAN UMUM</th>
-                                                    <th style="text-align: center; vertical-align: middle;">TOTAL ORDER</th>
-                                                    <th style="text-align: center; vertical-align: middle; width: 80px;">TOTAL PEMAKAIAN</th>
-                                                    <th style="text-align: center; vertical-align: middle;" hidden>SISA</th>
-                                                    <th style="text-align: center; vertical-align: middle;">KETERANGAN</th>
-                                                    <th style="text-align: center; vertical-align: middle;">STATUS</th>
-                                                    <th style="text-align: center; vertical-align: middle; width: 7%">ACTION</th>
-                                                </tr>
-                                            </thead>
-                                            <tbody>
-                                            <?php 
-                                                $no=1;
-                                                foreach ($tampil_data as $row) {
-                                                    $id_kebutuhan_detail = $row['id_kebutuhan_detail'];
-                                            ?>
+                                <div class="table-responsive">
+                                    <table id="tb_p2k3" class="datatable table table-striped table-bordered table-hover text-left" style="font-size:12px;">
+                                        <thead class="bg-primary">
                                             <tr>
-                                                <td style="text-align: center;"><?php echo $no; ?></td>
-                                                <td style="text-align: center;"><?php echo $row['item']; ?></td>
-                                                <td style="text-align: center;"><?php echo $row['kode_item']; ?></td>
-                                                <?php 
-                                                    $jmlh=0;
-                                                    foreach ($daftar_pekerjaan as $pekerjaan) 
-                                                    {
+                                                <th width="5%" style="text-align: center; vertical-align: middle;">NO</th>
+                                                <th width="10%" style="text-align: center; vertical-align: middle;">APD</th>
+                                                <th style="text-align: center; width: 105px; vertical-align: middle;">KODE ITEM</th>
+                                                <?php
+                                                      foreach ($daftar_pekerjaan as $pekerjaan)
+                                                     {
                                                 ?>
-                                                    <td style="text-align: center;">
-                                                    <?php 
-                                                        $jumlah = explode(',',$row['jml']); 
-                                                        if (isset($jumlah[$jmlh]) and !empty($jumlah[$jmlh])) {
-                                                            print_r($jumlah[$jmlh]); 
-                                                        }else{
-                                                            echo "0";
-                                                        }
-                                                    ?>
-                                                    </td>
-                                                    <td style="text-align: center;">
-                                                    <?php 
-                                                        $jumlah = explode(',',$row['jml_pkj']); 
-                                                        if (isset($jumlah[$jmlh]) and !empty($jumlah[$jmlh])) {
-                                                            print_r($jumlah[$jmlh]); 
-                                                        }else{
-                                                            echo "0";
-                                                        } 
-                                                    ?>
-                                                    </td>
+                                                    <th style="text-align:center; width: 80px; vertical-align: middle;"><?php echo $pekerjaan['pekerjaan'];?> <p><small>(Kebutuhan per pekerja)</small></p></th>
+                                                    <th style="text-align:center; width: 80px; vertical-align: middle;">Jumlah Pekerja (<?php echo $pekerjaan['pekerjaan'];?>)</th>
+                                                 <?php
+                                                     }
+                                                ?>
+                                                <th style="text-align: center; vertical-align: middle; width: 75px;">KEBUTUHAN UMUM</th>
+                                                <th style="text-align: center; vertical-align: middle;">TOTAL ORDER</th>
+                                                <th style="text-align: center; vertical-align: middle; width: 80px;">TOTAL PEMAKAIAN</th>
+                                                <th style="text-align: center; vertical-align: middle;" hidden>SISA</th>
+                                                <th style="text-align: center; vertical-align: middle;">KETERANGAN</th>
+                                                <th style="text-align: center; vertical-align: middle;">STATUS</th>
+                                                <th style="text-align: center; vertical-align: middle; width: 7%">ACTION</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                        <?php 
+                                            $no=1;
+                                            foreach ($tampil_data as $row) {
+                                                $id_kebutuhan_detail = $row['id_kebutuhan_detail'];
+                                        ?>
+                                        <tr>
+                                            <td style="text-align: center;"><?php echo $no; ?></td>
+                                            <td style="text-align: center;"><?php echo $row['item']; ?></td>
+                                            <td style="text-align: center;"><?php echo $row['kode_item']; ?></td>
+                                            <?php 
+                                                $jmlh=0;
+                                                foreach ($daftar_pekerjaan as $pekerjaan) 
+                                                {
+                                            ?>
+                                                <td style="text-align: center;">
                                                 <?php 
-                                                    $jmlh++;
+                                                    $jumlah = explode(',',$row['jml']); 
+                                                    if (isset($jumlah[$jmlh]) and !empty($jumlah[$jmlh])) {
+                                                        print_r($jumlah[$jmlh]); 
+                                                    }else{
+                                                        echo "0";
                                                     }
                                                 ?>
-                                                <td style="text-align: center;"><?php echo $row['jml_umum']; ?></td>
-                                                <td style="text-align: center;"><?php echo $row['ttl_order']; ?></td>
-                                                <td style="text-align: center;"></td>
-                                                <td style="text-align: center;" hidden></td>
-                                                <td style="text-align: center;"><?php echo $row['desc'];?></td>
+                                                </td>
                                                 <td style="text-align: center;">
-                                                    <?php if ($row['status'] == '0'){
-                                                        echo "Pending";
-                                                    } else if ($row['status'] == '1'){
-                                                        echo "Approved";
-                                                    } else {
-                                                        echo "Rejected";
-                                                    }?>
+                                                <?php 
+                                                    $jumlah = explode(',',$row['jml_pkj']); 
+                                                    if (isset($jumlah[$jmlh]) and !empty($jumlah[$jmlh])) {
+                                                        print_r($jumlah[$jmlh]); 
+                                                    }else{
+                                                        echo "0";
+                                                    } 
+                                                ?>
                                                 </td>
-                                                <td style="text-align: center;" align="center">
-                                                        <a data-toggle="tooltip" data-placement="left" title="Edit" href="<?php echo site_url('P2K3/Order/edit'.'/'.$id_kebutuhan_detail) ?>">
-                                                            <button type="button" class="btn btn-info btn-xs">
-                                                                <span class="glyphicon glyphicon-edit"></span>
-                                                            </button>
-                                                        </a>
-                                                        <a data-toggle="tooltip" data-placement="left" title="Delete" href="<?php echo site_url('P2K3/Order/delete_apd'.'/'.$id_kebutuhan_detail) ?>">
-                                                            <button style="margin-left: 3px" type="button" class="btn btn-danger btn-xs">
-                                                                <span class="glyphicon glyphicon-trash"></span>
-                                                            </button>
-                                                        </a>
-                                                        <br>
-                                                        <?php 
-                                                            if ($approve[0]['p2k3_approver'] == 't') { 
-                                                        ?>
-                                                    
-                                                         <a href="<?php echo site_url('P2K3/Order/approve'.'/'.$row['id_kebutuhan'].'/'.$row['id_kebutuhan_detail']);?>">
-                                                            <button type="button" class="btn btn-success" style="margin: 10px 0 10px 0; padding: 5px 10px" >
-                                                                <span class="glyphicon glyphicon-ok"></span>Approve
-                                                            </button>
-                                                        </a> 
-                                                        <a href="<?php echo site_url('P2K3/Order/reject'.'/'.$row['id_kebutuhan_detail']);?>">
-                                                            <button type="button" class="btn btn-danger" style="padding: 5px 15px">
-                                                                <i class="glyphicon glyphicon-remove"></i>Reject
-                                                            </button>
-                                                        </a>
-                                                        <?php 
-                                                        } ?>
-                                                </td>
-                                            </tr>
-
-                                            <?php
-                                                $no++;
+                                            <?php 
+                                                $jmlh++;
                                                 }
-                                            ?>                                                
-                                            </tbody> 
+                                            ?>
+                                            <td style="text-align: center;"><?php echo $row['jml_umum']; ?></td>
+                                            <td style="text-align: center;"><?php echo $row['ttl_order']; ?></td>
+                                            <td style="text-align: center;"></td>
+                                            <td style="text-align: center;" hidden></td>
+                                            <td style="text-align: center;"><?php echo $row['desc'];?></td>
+                                            <td style="text-align: center;">
+                                                <?php if ($row['status'] == '0'){
+                                                    echo "Pending";
+                                                } else if ($row['status'] == '1'){
+                                                    echo "Approved";
+                                                } else {
+                                                    echo "Rejected";
+                                                }?>
+                                            </td>
+                                            <td style="text-align: center;" align="center">
+                                                    <a data-toggle="tooltip" data-placement="left" title="Edit" href="<?php echo site_url('P2K3/Order/edit'.'/'.$id_kebutuhan_detail) ?>">
+                                                        <button type="button" class="btn btn-info btn-xs">
+                                                            <span class="glyphicon glyphicon-edit"></span>
+                                                        </button>
+                                                    </a>
+                                                    <a data-toggle="tooltip" data-placement="left" title="Delete" href="<?php echo site_url('P2K3/Order/delete_apd'.'/'.$id_kebutuhan_detail) ?>">
+                                                        <button style="margin-left: 3px" type="button" class="btn btn-danger btn-xs">
+                                                            <span class="glyphicon glyphicon-trash"></span>
+                                                        </button>
+                                                    </a>
+                                                    <br>
+                                                    <?php 
+                                                        if ($approve[0]['p2k3_approver'] == 't') { 
+                                                    ?>
+                                                
+                                                     <a href="<?php echo site_url('P2K3/Order/approve'.'/'.$row['id_kebutuhan'].'/'.$row['id_kebutuhan_detail']);?>">
+                                                        <button type="button" class="btn btn-success" style="margin: 10px 0 10px 0; padding: 5px 10px" >
+                                                            <span class="glyphicon glyphicon-ok"></span>Approve
+                                                        </button>
+                                                    </a> 
+                                                    <a href="<?php echo site_url('P2K3/Order/reject'.'/'.$row['id_kebutuhan_detail']);?>">
+                                                        <button type="button" class="btn btn-danger" style="padding: 5px 15px">
+                                                            <i class="glyphicon glyphicon-remove"></i>Reject
+                                                        </button>
+                                                    </a>
+                                                    <?php 
+                                                    } ?>
+                                            </td>
+                                        </tr>
 
-                                        </table>
-                                    </div>
+                                        <?php
+                                            $no++;
+                                            }
+                                        ?>                                                
+                                        </tbody> 
+
+                                    </table>
+                                </div>
                             </div>
                         </div>
                     </div>

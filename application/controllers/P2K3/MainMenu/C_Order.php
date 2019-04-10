@@ -967,9 +967,13 @@ class C_Order extends CI_Controller
 	public function approval(){
 		$kodesie = $this->session->kodesie;
 		$noind = $this->session->user;
+		$tanggal = $this->input->post('txtBulanTahun');
+		$tgl = explode(' ', $tanggal);
+		$month = $tgl['0'];
+		$year = $tgl['1'];
 		$data['seksi'] 		= $this->M_order->getSeksi($noind);
 		$data['pekerjaan']	= $this->M_order->daftar_pekerjaan($kodesie);
-		$data['data']	 	= $this->M_order->tampil_data($kodesie);
+		$data['data']	 	= $this->M_order->tampil_data_2($kodesie,$month,$year);
 		// echo "<pre>";
 		// print_r($data);
 		// exit();
