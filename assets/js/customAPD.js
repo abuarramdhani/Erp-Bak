@@ -316,7 +316,7 @@ $(document).ready(function() {
     });
 
     $(function(){
-      $('#txtBulanTahunP2K3').datepicker({
+      $('.txtBulanTahunP2K3').datepicker({
       "autoclose": true,
       "todayHiglight": true,
       "format":'mm yyyy',

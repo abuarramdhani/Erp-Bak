@@ -67,10 +67,19 @@
                                                 <label class="form-label text-center col-lg-12">Upload Document Approval</label>
                                             </div>
                                             <div class="form-group">
-                                                <label for="lb_approval" class="control-label col-lg-4">Document Approval : </label>
-                                                <div class="input-group col-lg-7">
-                                                    <input type="file" name="k3_approval" class="form-control" required />
+                                                <label class="control-label col-lg-4">Bulan : </label>
+                                                <div class="col-lg-7">
+                                                    <input type="text" class="date form-control txtBulanTahunP2K3" name="txtBulanTahun" required>
                                                 </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="lb_approval" class="control-label col-lg-4">Document Approval : </label>
+                                                <div class="col-lg-7">
+                                                    <div class="input-group ">
+                                                        <input type="file" name="k3_approval" class="form-control" required/>
+                                                    </div>
+                                                </div>
+                                                    
                                             </div>
                                             <div class="form-group">
                                                 <div class="col-lg-12 text-center">
@@ -87,7 +96,7 @@
                                             <div class="form-group">
                                                 <label class="control-label col-lg-4">Bulan : </label>
                                                 <div class="col-lg-7">
-                                                    <input type="text" class="date form-control" name="txtBulanTahun" id="txtBulanTahunP2K3" required>
+                                                    <input type="text" class="date form-control txtBulanTahunP2K3" name="txtBulanTahun" required>
                                                 </div>
                                             </div>
                                             <div class="form-group">
