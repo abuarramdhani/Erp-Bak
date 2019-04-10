@@ -47,15 +47,7 @@
                                                 </div>
                                             </div>
 
-                                            <div class="col-md-2" align="right">
-                                                <label for="lb_approval" class="control-label">Document Approval : </label>
-                                            </div>
-                                        
-                                            <div class="col-md-3">
-                                                <div class="input-group">
-                                                    <input type="file" name="k3_approval" class="form-control" required />
-                                                </div>
-                                            </div>
+                                            
                                         </div>
 
                                         <div class="col-lg-12">
