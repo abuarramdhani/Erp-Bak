@@ -994,13 +994,17 @@ class C_Order extends CI_Controller
 
 	public function UploadApproval(){
 		$kodesie = $this->session->kodesie;
-		$data	 	= $this->M_order->tampil_data($kodesie);
+		$tanggal = $this->input->post('txtBulanTahun');
+		$tgl = explode(' ', $tanggal);
+		$month = $tgl['0'];
+		$year = $tgl['1'];
+		$data	 	= $this->M_order->tampil_data_2($kodesie,$month,$year);
 		date_default_timezone_set('Asia/Jakarta');
 		if(!empty($_FILES['k3_approval']['name']))
 		{
 				$direktori_file						= $_FILES['k3_approval']['name'];
 				$ekstensi_file						= pathinfo($direktori_file,PATHINFO_EXTENSION);
-				$nama_file						= "P2K3-Order-Approval-".str_replace(' ', '_', date('Y-m-d_His')).".".$ekstensi_file;
+				$nama_file						= "P2K3-Order-Approval-".$kodesie."-".$year."_".$month."-".str_replace(' ', '_', date('Y-m-d_His')).".".$ekstensi_file;
 				// $nama_BPKB							= filter_var($_FILES['FotoBPKB']['name'],  FILTER_SANITIZE_URL, FILTER_SANITIZE_EMAIL);
 
 				$config['upload_path']          = './assets/upload/P2K3DocumentApproval';
