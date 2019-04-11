@@ -581,7 +581,7 @@ class C_FleetKendaraan extends CI_Controller
 			}
 			
 			$user_ya= $this->session->user;
-			$lokasi = $this->input->post('lokasi_kerja_k',TRUE)
+			$lokasi = $this->input->post('lokasi_kerja_k',TRUE);
 			if ($user_ya == "J1231") {
 				$data = array(
 					'nomor_polisi' 			=> strtoupper($nomor_polisi_pendek),
