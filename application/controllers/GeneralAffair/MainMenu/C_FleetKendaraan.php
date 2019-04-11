@@ -182,6 +182,7 @@ class C_FleetKendaraan extends CI_Controller
 		$data['FleetJenisKendaraan'] = $this->M_fleetkendaraan->getFleetJenisKendaraan();
 		$data['FleetMerkKendaraan'] = $this->M_fleetkendaraan->getFleetMerkKendaraan();
 		$data['FleetWarnaKendaraan'] = $this->M_fleetkendaraan->getFleetWarnaKendaraan();
+		$data['FleetLokasiKerja'] = $this->M_fleetkendaraan->FleetLokasiKerja();
 
 		/* LINES DROPDOWN DATA */
 
@@ -192,6 +193,7 @@ class C_FleetKendaraan extends CI_Controller
 		$this->form_validation->set_rules('cmbWarnaKendaraanIdHeader', 'WarnaKendaraanId', 'required');
 		$this->form_validation->set_rules('cmbTahunPembuatan', 'TahunPembuatan', 'required');
 
+		$data['user_login'] = $this->session->user;
 		if ($this->form_validation->run() === FALSE) {
 			$this->load->view('V_Header',$data);
 			$this->load->view('V_Sidemenu',$data);
@@ -208,6 +210,7 @@ class C_FleetKendaraan extends CI_Controller
 			$nomor_rangka			=	$this->input->post('txtNomorRangkaHeader', TRUE);
 			$usable					=	$this->input->post('usable', TRUE);
 			$pemilik_kendaraan		=	$this->input->post('kepemilikan_kendaraan', TRUE);
+			$lokasikerja			=	$this->input->post('lokasi_kerja_k', TRUE);
 
 			// $start_date 			= 	date('Y-m-d H:i:s', strtotime($this->input->post('txtStartDateHeader')));
 			// $end_date 				=	date('Y-m-d H:i:s', strtotime($this->input->post('txtEndDateHeader')));
@@ -301,27 +304,50 @@ class C_FleetKendaraan extends CI_Controller
         			$errorinfo = $this->upload->display_errors();
         		}
         	}
-
-    		$data = array(
-				'nomor_polisi' 			=> strtoupper($nomor_polisi_pendek),
-				'jenis_kendaraan_id' 	=> $kode_jenis_kendaraan,
-				'merk_kendaraan_id' 	=> $kode_merk_kendaraan,
-				'warna_kendaraan_id' 	=> $kode_warna_kendaraan,
-				'tahun_pembuatan' 		=> $tahun_pembuatan,
-				'nomor_rangka' 		=> $nomor_rangka,
-				'foto_stnk' 			=> $nama_STNK,
-				'foto_bpkb'				=> $nama_BPKB,
-				'foto_kendaraan'		=> $nama_Kendaraan,				
-				'start_date' 			=> date('Y-m-d H:i:s'),
-				'end_date'				=> '9999-12-12 00:00:00',
-				'creation_date' 		=> date('Y-m-d H:i:s'),
-				'created_by' 			=> $this->session->userid,
-				'kode_lokasi_kerja'		=> $lokasi,
-				'usable'				=> $usable,
-				'hak_milik'				=> $pemilik_kendaraan,
-    		);
-
-
+        	$user_ya = $this->session->user;
+        	if ($user_ya == "J1231") {
+        		$data = array(
+					'nomor_polisi' 			=> strtoupper($nomor_polisi_pendek),
+					'jenis_kendaraan_id' 	=> $kode_jenis_kendaraan,
+					'merk_kendaraan_id' 	=> $kode_merk_kendaraan,
+					'warna_kendaraan_id' 	=> $kode_warna_kendaraan,
+					'tahun_pembuatan' 		=> $tahun_pembuatan,
+					'nomor_rangka' 		=> $nomor_rangka,
+					'foto_stnk' 			=> $nama_STNK,
+					'foto_bpkb'				=> $nama_BPKB,
+					'foto_kendaraan'		=> $nama_Kendaraan,				
+					'start_date' 			=> date('Y-m-d H:i:s'),
+					'end_date'				=> '9999-12-12 00:00:00',
+					'creation_date' 		=> date('Y-m-d H:i:s'),
+					'created_by' 			=> $this->session->userid,
+					'kode_lokasi_kerja'		=> $lokasikerja,
+					'usable'				=> $usable,
+					'hak_milik'				=> $pemilik_kendaraan,
+    			);
+        	}else{
+        		$data = array(
+					'nomor_polisi' 			=> strtoupper($nomor_polisi_pendek),
+					'jenis_kendaraan_id' 	=> $kode_jenis_kendaraan,
+					'merk_kendaraan_id' 	=> $kode_merk_kendaraan,
+					'warna_kendaraan_id' 	=> $kode_warna_kendaraan,
+					'tahun_pembuatan' 		=> $tahun_pembuatan,
+					'nomor_rangka' 		=> $nomor_rangka,
+					'foto_stnk' 			=> $nama_STNK,
+					'foto_bpkb'				=> $nama_BPKB,
+					'foto_kendaraan'		=> $nama_Kendaraan,				
+					'start_date' 			=> date('Y-m-d H:i:s'),
+					'end_date'				=> '9999-12-12 00:00:00',
+					'creation_date' 		=> date('Y-m-d H:i:s'),
+					'created_by' 			=> $this->session->userid,
+					'kode_lokasi_kerja'		=> $lokasi,
+					'usable'				=> $usable,
+					'hak_milik'				=> $pemilik_kendaraan,
+    			);
+        	}
+    		
+    		// echo "<pre>";
+    		// print_r($data);
+    		// exit();
 			$this->M_fleetkendaraan->setFleetKendaraan($data);
 			$header_id = $this->db->insert_id();
 
@@ -395,12 +421,21 @@ class C_FleetKendaraan extends CI_Controller
 		/* HEADER DATA */
 		$data['FleetKendaraan'] = $this->M_fleetkendaraan->getFleetKendaraan($plaintext_string);
 
+		// echo "<pre>";
+		// print_r($data['FleetKendaraan']);
+		// exit();
+
 		/* LINES DATA */
 
 		/* HEADER DROPDOWN DATA */
 		$data['FleetJenisKendaraan'] = $this->M_fleetkendaraan->getFleetJenisKendaraan();
 		$data['FleetMerkKendaraan'] = $this->M_fleetkendaraan->getFleetMerkKendaraan();
 		$data['FleetWarnaKendaraan'] = $this->M_fleetkendaraan->getFleetWarnaKendaraan();
+		$data['FleetLokasiKerja'] = $this->M_fleetkendaraan->FleetLokasiKerja();
+
+		// echo "<pre>";
+		// print_r($data['FleetLokasiKerja']);
+		// exit();
 
 		/* LINES DROPDOWN DATA */
 
@@ -411,6 +446,7 @@ class C_FleetKendaraan extends CI_Controller
 		$this->form_validation->set_rules('cmbWarnaKendaraanIdHeader', 'WarnaKendaraanId', 'required');
 		$this->form_validation->set_rules('cmbTahunPembuatan', 'TahunPembuatan', 'required');
 
+		$data['user_login'] = $this->session->user;
 		if ($this->form_validation->run() === FALSE) {
 			$this->load->view('V_Header',$data);
 			$this->load->view('V_Sidemenu',$data);
@@ -544,20 +580,41 @@ class C_FleetKendaraan extends CI_Controller
 				$waktu_dihapus = $waktu_eksekusi;
 			}
 			
-    		$data = array(
-				'nomor_polisi' 			=> strtoupper($nomor_polisi_pendek),
-				'jenis_kendaraan_id' 	=> $kode_jenis_kendaraan,
-				'merk_kendaraan_id' 	=> $kode_merk_kendaraan,
-				'warna_kendaraan_id' 	=> $kode_warna_kendaraan,
-				'tahun_pembuatan' 		=> $tahun_pembuatan,
-				'nomor_rangka' 		=> $nomor_rangka,
-				'end_date'				=> $waktu_dihapus,
-				'last_updated'			=> date('Y-m-d H:i:s'),
-				'last_updated_by'		=> $this->session->userid,
-				'created_by' 			=> $this->session->userid,
-				'usable' 				=> $usable,
-				'hak_milik' 			=> $hak_milik,
-    		);
+			$user_ya= $this->session->user;
+			$lokasi = $this->input->post('lokasi_kerja_k',TRUE)
+			if ($user_ya == "J1231") {
+				$data = array(
+					'nomor_polisi' 			=> strtoupper($nomor_polisi_pendek),
+					'jenis_kendaraan_id' 	=> $kode_jenis_kendaraan,
+					'merk_kendaraan_id' 	=> $kode_merk_kendaraan,
+					'warna_kendaraan_id' 	=> $kode_warna_kendaraan,
+					'tahun_pembuatan' 		=> $tahun_pembuatan,
+					'nomor_rangka' 		=> $nomor_rangka,
+					'kode_lokasi_kerja'		=> $lokasi,
+					'end_date'				=> $waktu_dihapus,
+					'last_updated'			=> date('Y-m-d H:i:s'),
+					'last_updated_by'		=> $this->session->userid,
+					'created_by' 			=> $this->session->userid,
+					'usable' 				=> $usable,
+					'hak_milik' 			=> $hak_milik,
+	    		);
+			}else{
+	    		$data = array(
+					'nomor_polisi' 			=> strtoupper($nomor_polisi_pendek),
+					'jenis_kendaraan_id' 	=> $kode_jenis_kendaraan,
+					'merk_kendaraan_id' 	=> $kode_merk_kendaraan,
+					'warna_kendaraan_id' 	=> $kode_warna_kendaraan,
+					'tahun_pembuatan' 		=> $tahun_pembuatan,
+					'nomor_rangka' 		=> $nomor_rangka,
+					'end_date'				=> $waktu_dihapus,
+					'last_updated'			=> date('Y-m-d H:i:s'),
+					'last_updated_by'		=> $this->session->userid,
+					'created_by' 			=> $this->session->userid,
+					'usable' 				=> $usable,
+					'hak_milik' 			=> $hak_milik,
+	    		);
+			}
+    		
 
 
 			$this->M_fleetkendaraan->updateFleetKendaraan($data, $plaintext_string);
