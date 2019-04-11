@@ -50,7 +50,7 @@ class M_presensibulanan extends Ci_Model
 	    		where left(a.kodesie,5) in ('10101','10102')
 	    		and a.keluar = false
 				order by a.kodesie,a.noind;";    
-	    }    else{
+	    }else{
 			    if('306030'==substr($kd,0,6)) //ada diticket
 			    {
 			    $sql = "select a.noind,a.nama, b.seksi 
@@ -122,11 +122,33 @@ class M_presensibulanan extends Ci_Model
 		return $result->result_array();
 	}
 
-	public function rekapTIMS($tgl, $kodesie)
+	public function rekapTIMS($tgl, $kd)
 	    {	
 	    	$tanggal = explode(" - ", $tgl);
 			$tgl1 = $tanggal[0];
 			$tgl2 = $tanggal[1];
+			$noind = $this->session->user;
+			
+			$param = "";
+			// left(pri.kodesie,7) = left('$kodesie',7)
+			if ($noind == 'B0380') { // ada di ticket
+			 $param = "(left(pri.kodesie,7) = left('$kd',7) or pri.noind in ('J1171','J7004','L8001'))";    
+		}elseif ($noind == 'B0370') { //ada di ticket
+			 $param = "(left(pri.kodesie,7) = left('$kd',7) or pri.noind in ('D1535','P0426'))";    
+		}elseif ($noind == 'H7726') { //Order #972784 (PENAMBAHAN AKSES BUKA PRESENSI DI PROGRAM ERP)
+	    	 $param = "left(pri.kodesie,5) = left('$kd',5)";    
+	    }elseif ($noind == 'J1378') { //Order #112817 (Pembuatan Login ERP)
+	    	 $param = "left(pri.kodesie,5) in ('10101','10102')";    
+	    }else{
+			    if('306030'==substr($kd,0,6)) //ada diticket
+			    {
+			    $param = "left(pri.kodesie,6) = left('$kd',6)";    
+			    }
+			    else
+			    {
+				$param = "left(pri.kodesie,7) = left('$kd',7)";
+			    }
+		}
 
 	    	$rekapTIMS		= "	select 		pri.noind,
 											pri.noind_baru,
@@ -604,7 +626,7 @@ class M_presensibulanan extends Ci_Model
 								 									'$tgl2'::date as tgl2
 								 						) as param
 								 						on 	param.tgl1=param.tgl1
-								where 		left(pri.kodesie,7) = left('$kodesie',7)
+								where 		$param
 								order by 	tseksi.kodesie,
 											pri.kd_jabatan,
 											pri.noind";
