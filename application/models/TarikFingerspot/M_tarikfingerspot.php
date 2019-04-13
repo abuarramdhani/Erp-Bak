@@ -9,7 +9,7 @@ class M_tarikfingerspot extends CI_MODEL
 	function __construct()
 	{
 		parent::__construct();
-		// $this->finger = $this->load->database('db_fingerspot',TRUE);
+		$this->finger = $this->load->database('db_fingerspot',TRUE);
 		$this->personalia = $this->load->database('personalia',TRUE);
 		$this->quick = $this->load->database('quick', TRUE);
 	}
@@ -32,7 +32,7 @@ class M_tarikfingerspot extends CI_MODEL
 		order by scan_date,pin";
 		}
 		
-		$resultFinger = $this->quick->query($sql);
+		$resultFinger = $this->finger->query($sql);
 		$resFinger = $resultFinger->result_array();
 		if (!empty($resFinger)) {
 			$a = 0;
