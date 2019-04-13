@@ -78,3 +78,4 @@ class M_settingminmaxopm extends CI_Model {
   }
 
 
+}
