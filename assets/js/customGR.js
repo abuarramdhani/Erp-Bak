@@ -219,7 +219,7 @@ $(document).ready(function(){
 			var number6 = window[arrayname6][i];
 
 			var chartt = "myChart"+(i-1);
-			var chartt2 = "myChartbar"+(i-1);
+			var chartt2 = "myChartbar1"+(i-1);
 			var chartt3 = "myChartbar2"+(i-1);
 			// alert(i);
 
@@ -258,7 +258,7 @@ $(document).ready(function(){
 					}
 				}
 			});
-
+			// alert(number4);
 			var ctb = document.getElementById(chartt2).getContext('2d');
 			var myChartBar = new Chart(ctb, {
 				type: 'bar',
@@ -320,39 +320,49 @@ $(document).ready(function(){
 	}
 
 	$('#btnExportSDM').click(function(){
-		html2canvas(document.getElementById("myChart0"),{scale : 2}).then(function(canvas){
-			var imgData = canvas.toDataURL('image/jpg',1.0);
-			$('input[name="imyChart"]').val(imgData);
-		});
-		html2canvas(document.getElementById("myChartbar0"),{scale : 2}).then(function(canvas){
-			var imgData2 = canvas.toDataURL('image/png',1.0);
-			$('input[name="imyChartbar"]').val(imgData2);
-		});
-		html2canvas(document.getElementById("myChartbar20"),{scale : 2}).then(function(canvas){
-			var imgData3 = canvas.toDataURL('image/png',1.0);
-			$('input[name="imyChartbar2"]').val(imgData3);
-		});
-		html2canvas(document.getElementById("SDMdivToCan"),{scale : 2}).then(function(canvas){
-			var imgData4 = canvas.toDataURL('image/jpg',1.0);
-			$('input[name="SDMdiv"]').val(imgData4);
-		});
+		// $("select#grapicID option").each(function(){
+		// 	alert($(this).val());
+		// });
+		var angka = ["13", "0", "1","2","3","4","5","6","7","8","9","10", "11", "12","14","15","16","17"];
 		
-		setTimeout(function () {
-			// alert($('input[name="imyChart13"]').val());
-			$('#btSDMexport').click();
-		}, 6000);
-	});	
-
-	$('.btSDMdl').click(function(){
-		var aa = '';
-		$.ajax({
-			type: "POST",
-			url: baseurl+"SDM/getData",
-			data: {
-			},
-			success: function (response) {
-				aa.fileContents = response;
-			}
+		var tampungan1 = [];
+		var tampungan2 = [];
+		var tampungan3 = [];
+		var tampungan4 = [];
+		angka.forEach(function(item) {
+			var chartt = "myChart"+(item);
+			var chartt2 = "myChartbar"+(item);
+			var chartt3 = "myChartbar2"+(item);
+			var tabel = "SDMdivToCan"+(item);
+			alert(tabel);
+			var canvas1 = document.getElementById(chartt);
+			var imgData1 = canvas1.toDataURL('image/jpg',1.0);
+			var canvas2 = document.getElementById(chartt2);
+			var imgData2 = canvas2.toDataURL('image/jpg',1.0);
+			var canvas3 = document.getElementById(chartt3);
+			var imgData3 = canvas3.toDataURL('image/jpg',1.0);
+			html2canvas(document.getElementById(tabel),{scale : 2}).then(function(canvas){
+				var imgData4 = canvas.toDataURL('image/png',1.0);
+				alert(imgData4);
+			});
+			tampungan1.push(imgData1);
+			tampungan2.push(imgData2);
+			tampungan3.push(imgData3);
+			// alert(chartt);
 		});
-	});
+			// alert(tampungan.length);
+			$.ajax({
+				type: "POST",
+				url: baseurl+"SDM/exportGambar",
+				data: {
+					data1:tampungan1,
+					data2:tampungan2,
+					data3:tampungan3,
+					data4:tampungan4,
+				},
+				success: function (response) {
+					alert(angka);
+				}
+			});
+		});	
 });

@@ -34,7 +34,7 @@
 												<div class="col-lg-4">
 													<!-- <p style="margin-right: 50px;" class="btSDMdl btn btn-primary">Download</p> -->
 													<a target="_blank" style="margin-right: 50px;" href="<?php echo base_url('SDM/getData');?>" class="btSDMdl btn btn-primary">Download</a>
-													<button type="button" data-toggle="modal" data-target="#myModalSDM" class="btn btn-primary">Upload</button>
+													<button disabled="" title="fitur masih tahap pengembangan" type="button" data-toggle="modal" data-target="#myModalSDM" class="btn btn-primary">Upload</button>
 												</div>
 												<div class="col-lg-2"></div>
 											</div>
@@ -42,7 +42,7 @@
 											<div hidden="" class="form-group">
 												<label for="cmbDepartemen" class="control-label col-lg-4">Data</label>
 												<div class="col-lg-4">
-													<select name="txtData" class="form-control" style="width: 100%" required="">
+													<select id="grapicID" name="txtData" class="form-control" style="width: 100%" required="">
 														<option value="0">Tampilkan Semua Data</option>
 														<option value="14">Semua Data</option>
 														<option value="1">Departemen Produksi</option>
@@ -127,7 +127,7 @@
 														var inde = 14 ;
 													</script>
 													<h3><?php $name = 'nama'.$y; echo ${$name}; ?></h3>
-													<table id="SDMdivToCan" style="overflow-x: scroll; width: 100%; display: block;" class="table table-bordered table-hover text-center">
+													<table id="<?php echo 'SDMdivToCan'.$y; ?>" style="overflow-x: scroll; width: 100%; display: block;" class="table table-bordered table-hover text-center">
 														<thead style="border-color: black">
 															<tr>
 																<td style="background-color: #00b300; color: white;">Ket</td>
@@ -245,7 +245,7 @@
 																	for ($i=0; $i < 17 ; $i++) { 
 																		echo '<td>'.$trgaku = ($trgaku+${$var2}).'</td>';
 																		echo '<td>'.$trgaku2 = round(($trgaku/${$var1}[0]*100),1).'%</td>';
-														// echo '<td>'.${$var1}[0].'%</td>';
+																		// echo '<td>'.${$var1}[0].'%</td>';
 																	} ?>
 																	<script>
 																		trgAkumulasi[<?= ($y+1) ?>] = ["0", <?php 
@@ -291,7 +291,7 @@
 															<canvas id="<?php echo 'myChart'.$y; ?>" class="wadaw" width="400" height="150" value="1"></canvas>
 															<div class="col-md-12">
 																<div class="col-md-6">
-																	<canvas id="<?php echo 'myChartbar'.$y; ?>" width="100" height="50"></canvas>
+																	<canvas id="<?php echo 'myChartbar1'.$y; ?>" width="100" height="50"></canvas>
 																</div>
 																<div class="col-md-6">
 																	<canvas id="<?php echo 'myChartbar2'.$y; ?>" width="100" height="50"></canvas>
@@ -314,7 +314,7 @@
 															var inde = <?= 4 ?> ;
 														</script>
 														<h3><?php $name = 'nama'.$y; echo ${$name}; ?></h3>
-														<table id="" style="overflow-x: scroll; width: 100%; display: block;" class="table table-bordered table-hover text-center">
+														<table id="<?php echo 'SDMdivToCan'.$y; ?>" style="overflow-x: scroll; width: 100%; display: block;" class="table table-bordered table-hover text-center">
 															<thead style="border-color: black">
 																<tr>
 																	<td style="background-color: #00b300; color: white;">Ket</td>
@@ -478,7 +478,7 @@
 																<canvas id="<?php echo 'myChart'.$y; ?>" width="400" height="150"></canvas>
 																<div class="col-md-12">
 																	<div class="col-md-6">
-																		<canvas id="<?php echo 'myChartbar'.$y; ?>" width="100" height="50"></canvas>
+																		<canvas id="<?php echo 'myChartbar1'.$y; ?>" width="100" height="50"></canvas>
 																	</div>
 																	<div class="col-md-6">
 																		<canvas id="<?php echo 'myChartbar2'.$y; ?>" width="100" height="50"></canvas>
@@ -505,7 +505,7 @@
 																		var inde = <?= $hitung ?> ;
 																	</script>
 																	<h3><?php $name = 'nama'.$y; echo ${$name}; ?></h3>
-																	<table id="" style="overflow-x: scroll; width: 100%; display: block;" class="table table-bordered table-hover text-center">
+																	<table id="<?php echo 'SDMdivToCan'.$y; ?>" style="overflow-x: scroll; width: 100%; display: block;" class="table table-bordered table-hover text-center">
 																		<thead style="border-color: black">
 																			<tr>
 																				<td style="background-color: #00b300; color: white;">Ket</td>
@@ -668,18 +668,15 @@
 																			<canvas id="<?php echo 'myChart'.$y; ?>" width="400" height="150"></canvas>
 																			<div class="col-md-12">
 																				<div class="col-md-6">
-																					<canvas id="<?php echo 'myChartbar'.$y; ?>" width="100" height="50"></canvas>
+																					<canvas id="<?php echo 'myChartbar1'.$y; ?>" width="100" height="50"></canvas>
 																				</div>
 																				<div class="col-md-6">
 																					<canvas id="<?php echo 'myChartbar2'.$y; ?>" width="100" height="50"></canvas>
 																				</div>
 																			</div>
-
 																			<input name="imyChart" type="hidden">
 																			<input name="imyChartbar" type="hidden">
 																			<input name="imyChartbar2" type="hidden">
-																			
-
 																			<?php } ?>
 																			
 																		</div>
