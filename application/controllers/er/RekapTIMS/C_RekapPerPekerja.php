@@ -525,7 +525,7 @@ class C_RekapPerPekerja extends CI_Controller {
 												)
 											)
 											/
-											($rekap_data['totalhk']+$rekap_data['totalhks'])
+											(($rekap_data['totalhk']+$rekap_data['totalhks']) - ($rekap_data['frekct']+$rekap_data['frekcts']))
 										)
 										*100
 									),
@@ -659,7 +659,7 @@ class C_RekapPerPekerja extends CI_Controller {
 				$angka++;
 			}
 		}
-		// print_r($data['periode']);
+		// echo "<pre>";print_r($data['detail']);
 		// exit();
 		// $this->load->view('er/RekapTims/V_cetak_tims_per_pekerja', $data);
 		// exit();

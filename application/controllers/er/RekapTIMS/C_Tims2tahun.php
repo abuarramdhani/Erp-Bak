@@ -368,7 +368,7 @@ class C_Tims2tahun extends CI_Controller
 															)
 														)
 														/
-														($rekap_data['totalhk']+$rekap_data['totalhks'])
+														(($rekap_data['totalhk']+$rekap_data['totalhks']) - ($rekap_data['frekct']+$rekap_data['frekcts']))
 													)
 													*100
 												),

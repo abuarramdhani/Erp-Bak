@@ -32,6 +32,7 @@ foreach ($rekap as $rekap_data) {}
 								<input type="hidden" name="txtBidang_export" value="<?php echo $bidang ?>">
 								<input type="hidden" name="txtUnit_export" value="<?php echo $unit ?>">
 								<input type="hidden" name="txtSeksi_export" value="<?php echo $section ?>">
+								<input type="hidden" name="txtLokasi_export" value="<?php echo $lokasi ?>">
 								<button class="btn btn-default pull-right">
 									<span class="glyphicon glyphicon-pencil" aria-hidden="true"></span> EXPORT EXCEL
 								</button>
@@ -460,7 +461,7 @@ foreach ($rekap as $rekap_data) {}
 																				)
 																			)
 																			/
-																			($rekap_data['totalhk']+$rekap_data['totalhks'])
+																			(($rekap_data['totalhk']+$rekap_data['totalhks']) - ($rekap_data['frekct']+$rekap_data['frekcts']))
 																		)
 																		*100
 																	),
