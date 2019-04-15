@@ -2279,6 +2279,7 @@ $route['SPL/HapusLembur/(:any)'] = 'splseksi/C_splseksi/hapus_spl/$1';
 $route['ALK/ListLembur'] = 'splseksi/C_splkasie/data_spl';
 $route['ALK/ConfLembur'] = 'splseksi/C_splkasie/confirm_spl';
 $route['ALA/ListLembur'] = 'splseksi/C_splasska/data_spl';
+$route['ALA/ConfLembur'] = 'splseksi/C_splasska/confirm_spl';
 
 //---------------------------------------------------- Booking Kendaraan --------------------------------------//
 // hati hati kadang any any gak bisa kepanggil
