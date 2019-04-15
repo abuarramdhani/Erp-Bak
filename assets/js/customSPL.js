@@ -229,33 +229,41 @@ $(function () {
 
   });
 
-  $('#spl-approval').on('click', function(e) {
-    e.preventDefault();
-    var table = $('#example1').DataTable();
-    var alamate = baseurl+"SPLSeksi/C_SPLKasie/data_spl_filter";
+  for(x=0; x<2; x++){
+    $('#spl-approval-'+x).on('click', {id: x}, function(e) {
+      e.preventDefault();
+      var id = e.data.id;
+      var table = $('#example1').DataTable();
 
-    table.clear().draw();
-    $.ajax({
-      url: alamate,
-      type: "POST",
-      data: {
-        dari:$('#tgl_mulai').val(), 
-        sampai:$('#tgl_selesai').val(), 
-        status:$('#status').val(), 
-        lokasi:$('#lokasi').val(),
-        noind:$('#noind').val(),
-        kodesie:$('#kodesie').val()},
-      success: function(data) {
-        if(data != "[]"){
-          var send = $.parseJSON(data);
-          table.rows.add(send);
-          table.draw();
-        }else{
-          // alert('Data tidak di temukan');
-        }
+      if(id == 0){
+        var alamate = baseurl+"SPLSeksi/C_SPLKasie/data_spl_filter";
+      }else{
+        var alamate = baseurl+"SPLSeksi/C_splasska/data_spl_filter";
       }
-    }); 
-  });
 
+      table.clear().draw();
+      $.ajax({
+        url: alamate,
+        type: "POST",
+        data: {
+          dari:$('#tgl_mulai').val(), 
+          sampai:$('#tgl_selesai').val(), 
+          status:$('#status').val(), 
+          lokasi:$('#lokasi').val(),
+          noind:$('#noind').val(),
+          kodesie:$('#kodesie').val()},
+        success: function(data) {
+          if(data != "[]"){
+            var send = $.parseJSON(data);
+            table.rows.add(send);
+            table.draw();
+          }else{
+            // alert('Data tidak di temukan');
+          }
+        }
+      }); 
+    });
+
+  }
 
 });
