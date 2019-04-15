@@ -18,7 +18,8 @@ $banyak3 = 0;
 $simpan1 = 0;
 $simpan2 = 0;
 $simpan3 = 0;
-for ($i=0; $i <= $jml/3; $i++) { ?>
+$simpanNoind = "";
+for ($i=0; $i < $jml/3; $i++) { ?>
 <table style="border-collapse: collapse;width: 100%;font-size: 8pt">
 	<thead>
 		<tr style="background-color: #00b0ff;">
@@ -73,10 +74,16 @@ for ($i=0; $i <= $jml/3; $i++) { ?>
 					<?php 
 					if (isset($detail) and !empty($detail)) {
 						$loop = 1;
+						if ($all['noind'] !== $simpanNoind) {
+							$banyak3 = 3*($i);
+							$simpan3 = $banyak3;
+						}
+						
 						foreach ($periode as $prd) { 
 							if($banyak3 < (3*($i+1)) and $loop > $simpan3){
 								foreach ($detail['rekap_'.$prd['2']] as $dtl) {
 									if ($all['noind'] == $dtl['noind']) {
+										// echo "<td>$banyak3 $loop $simpan3</td>";
 					?>
 					<td style="text-align: center">
 						<?php if(intval($dtl['frekt'.strtolower($prd['2'])])+intval($dtl['frekts'.strtolower($prd['2'])]) == 0){
@@ -141,6 +148,7 @@ for ($i=0; $i <= $jml/3; $i++) { ?>
 							$simpan3 = $loop;
 						 	}
 						 	$loop++;
+						 	$simpanNoind = $all['noind'];
 						}
 					} 
 					?>
@@ -161,27 +169,28 @@ for ($i=0; $i <= $jml/3; $i++) { ?>
 			<th rowspan="2" style="width: 7%;text-align: center;color: white">NIK</th>
 			<th rowspan="2" style="width: 20%;text-align: center;color: white">NAMA</th>
 			<th rowspan="2" style="width: 13%;text-align: center;color: white">MASA KERJA</th>
-			<th colspan="8" style="text-align: center;color: white">REKAP</th>
-			<th rowspan="2" style="width: 10%;text-align: center;color: white">TOTAL HARI KERJA</th>
-			<th colspan="8" style="text-align: center;color: white">PRESENTASE</th>
+			<th colspan="8" style="text-align: center;color: white;width: 16%">REKAP</th>
+			<th rowspan="2" style="width: 8%;text-align: center;color: white">TOTAL HARI KERJA</th>
+			<th colspan="8" style="text-align: center;color: white;width: 28%">PRESENTASE</th>
+			<th rowspan="2" style="text-align: center;color: white;width: 5%">TOTAL</th>
 		</tr>
 		<tr style="background-color: #00b0ff;"> 
-			<th style="text-align: center;color: white">T</th>
-			<th style="text-align: center;color: white">I</th>
-			<th style="text-align: center;color: white">M</th>
-			<th style="text-align: center;color: white">S</th>
-			<th style="text-align: center;color: white">PSP</th>
-			<th style="text-align: center;color: white">IP</th>
-			<th style="text-align: center;color: white">CT</th>
-			<th style="text-align: center;color: white">SP</th>
-			<th style="text-align: center;color: white">T</th>
-			<th style="text-align: center;color: white">I</th>
-			<th style="text-align: center;color: white">M</th>
-			<th style="text-align: center;color: white">S</th>
-			<th style="text-align: center;color: white">PSP</th>
-			<th style="text-align: center;color: white">IP</th>
-			<th style="text-align: center;color: white">CT</th>
-			<th style="text-align: center;color: white">SP</th>
+			<th style="text-align: center;color: white;width: 2%">T</th>
+			<th style="text-align: center;color: white;width: 2%">I</th>
+			<th style="text-align: center;color: white;width: 2%">M</th>
+			<th style="text-align: center;color: white;width: 2%">S</th>
+			<th style="text-align: center;color: white;width: 2%">PSP</th>
+			<th style="text-align: center;color: white;width: 2%">IP</th>
+			<th style="text-align: center;color: white;width: 2%">CT</th>
+			<th style="text-align: center;color: white;width: 2%">SP</th>
+			<th style="text-align: center;color: white;width: 3.5%">T</th>
+			<th style="text-align: center;color: white;width: 3.5%">I</th>
+			<th style="text-align: center;color: white;width: 3.5%">M</th>
+			<th style="text-align: center;color: white;width: 3.5%">S</th>
+			<th style="text-align: center;color: white;width: 3.5%">PSP</th>
+			<th style="text-align: center;color: white;width: 3.5%">IP</th>
+			<th style="text-align: center;color: white;width: 3.5%">CT</th>
+			<th style="text-align: center;color: white;width: 3.5%">SP</th>
 		</tr>
 	</thead>
 	<tbody>
@@ -263,6 +272,30 @@ for ($i=0; $i <= $jml/3; $i++) { ?>
 					<td style="text-align: center"><?php echo number_format((intval($all['frekct'])+intval($all['frekcts']))/ (intval($all['totalhk'])+intval($all['totalhks'])) * 100,'2',',','.'); ?>%</td>
 					<td style="text-align: center"><?php echo number_format((intval($all['freksp'])+intval($all['freksps']))/ (intval($all['totalhk'])+intval($all['totalhks'])) * 100,'2',',','.'); ?>%</td>
 					<!-- presentase -->
+					<!-- total -->
+					<td style="text-align: center">
+						<?php 
+							$totalRekap = (
+								(	
+									($all['totalhk']+$all['totalhks']) -
+									(
+										($all['freki']+$all['frekis']) +
+										($all['frekm']+$all['frekms']) +
+										($all['freksk']+$all['freksks']) +
+										($all['frekpsp']+$all['frekpsps']) +
+										($all['frekip']+$all['frekips']) +
+										($all['frekct']+$all['frekcts'])
+									)
+								) / 
+								(
+									($all['totalhk']+$all['totalhks']) -
+									($all['frekct']+$all['frekcts'])
+								) * 100
+							);
+							echo number_format($totalRekap,2).'%';
+						?>
+					</td>
+					<!-- total -->
 				</tr>
 			<?php $nomor ++;
 			}
