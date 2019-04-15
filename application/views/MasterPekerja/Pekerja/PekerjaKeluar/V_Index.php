@@ -188,6 +188,16 @@
 						</div>
 						<div class="row" style="margin-top: 10px;">
 							<div class="col-lg-2">
+
+							</div>
+							<div class="col-lg-6">
+                            <label style="padding-left: 0px;" class="radio-inline"><input type="radio" name="rd_diangkat" value="false"> Belum Diangkat</label>
+        					<label class="radio-inline"><input type="radio" name="rd_diangkat" value="true"> Sudah Diangkat</label>
+							</div>
+
+						</div>
+						<div class="row" style="margin-top: 10px;">
+							<div class="col-lg-2">
 								<label for="PK_txt_lamaKontrak">Lama Kontrak </label>
 							</div>
 							<div class="col-lg-3">
