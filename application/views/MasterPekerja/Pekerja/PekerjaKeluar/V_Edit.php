@@ -191,14 +191,35 @@
 								<label for="PK_txt_tglDiangkat">Tgl diangkat </label>
 							</div>
 							<div class="col-lg-3">
-								<input type="text" name="txt_tglDiangkat" id="PK_txt_tglDiangkat" class="form-control" value="<?php echo $data['diangkat'] ?>" readonly="">
+								<input type="text" name="txt_tglDiangkat" id="PK_txt_tglDiangkat" class="form-control" value="<?php echo substr($data['diangkat'], 0,10); ?>" readonly="">
 							</div>
 							<div class="col-lg-3" >
 								<label for="PK_txt_tglMasukKerja">Tgl Masuk Kerja </label>
 							</div>
 							<div class="col-lg-3">
-								<input type="text" name="txt_tglMasukKerja" id="PK_txt_tglMasukKerja" class="form-control" value="<?php echo $data['masukkerja'] ?>" readonly="">
+								<input type="text" name="txt_tglMasukKerja" id="PK_txt_tglMasukKerja" class="form-control" value="<?php echo substr($data['masukkerja'], 0,10); ?>" readonly="">
 							</div>
+						</div>
+						<div class="row" style="margin-top: 10px;">
+							<div class="col-lg-2">
+
+							</div>
+							<div class="col-lg-6">
+                            <label style="padding-left: 0px;" class="radio-inline"><input <?php if ($check !== '') {
+									echo '';
+								}else{
+									echo 'checked';
+									} ?> type="radio" name="rd_diangkat" value="false"> Belum Diangkat</label>
+        					<label class="radio-inline"><input <?php if ($check == '') {
+									echo '';
+								}else{
+									echo 'checked';
+									} ?> type="radio" name="rd_diangkat" value="true"> Sudah Diangkat</label>
+                           
+
+							</div>
+
+
 						</div>
 						<div class="row" style="margin-top: 10px;">
 							<div class="col-lg-2">
@@ -211,7 +232,7 @@
 								<label for="PK_txt_akhirKontrak">Berakhirnya Kontrak </label>
 							</div>
 							<div class="col-lg-3">
-								<input type="text" name="txt_akhirKontrak" id="PK_txt_akhirKontrak" class="form-control" value="<?php echo $data['akhkontrak'] ?>" readonly="">
+								<input type="text" name="txt_akhirKontrak" id="PK_txt_akhirKontrak" class="form-control" value="<?php echo substr($data['akhkontrak'], 0,10); ?>" readonly="">
 							</div>							
 						</div>
 						<div class="row" style="margin-top: 10px;">
@@ -259,7 +280,8 @@
 								<label for="PK_txt_tglkeluar">Tanggal Keluar </label>
 							</div>
 							<div class="col-lg-3">
-								<input type="text" name="txt_tglkeluar" id="PK_txt_tglkeluar" class="form-control" value="<?php echo $data['tglkeluar'] ?>" readonly="">
+								<input type="text" name="txt_tglkeluar" id="PK_txt_tglkeluar" class="form-control" value="<?php 
+								echo substr($data['tglkeluar'], 0,10); ?>" readonly="">
 							</div>													
 						</div>
 						<div class="row" style="margin-top: 10px;">
