@@ -236,10 +236,10 @@ class C_TarikFingerspot extends CI_Controller
 		$table = "";
 		foreach ($device as $dvc) {
 			$table .= "	<tr>
-							<td style='width:250px;text-align:left;'>
+							<td style='width:400px;text-align:left;'>
 								".$dvc['device_name']."
 							</td>
-							<td style='width:150px;text-align:left;'>
+							<td style='width:100px;text-align:left;'>
 								".$dvc['inisial_lokasi']."
 							</td>
 							<td style='width:100px;'>
@@ -247,7 +247,8 @@ class C_TarikFingerspot extends CI_Controller
 							</td>
 						</tr>";
 		}
-		$text = "jumlah data hari ini : ".($num - 1)." , sudah terinput semua di database..";
+		$text = "jumlah data yang telah proses hari ini dan kemarin : ".($num - 1).".<br>
+				Apabila Ada hari kemarin yang baru masuk, maka harus menjalankan distribusi ulang (Sehingga Point dan sebaran pekerja Benar).";
 		
 		$waktuAkhir = date('Y-m-d H:i:s');
 		$message = '	<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://wwwhtml4/loose.dtd">
@@ -265,10 +266,10 @@ class C_TarikFingerspot extends CI_Controller
 			  	</style>
 				</head>
 				<body>
-						<h3 style="text-decoration: underline;">ICT - HRD Presensi</h3>
+						<h3 style="text-decoration: underline;">Report Proses Transfer</h3>
+						<p>Dari : 192.168.168.50 (Finpro) ke database.quick.com (Frontpresensi & Presensi)</p>
 					<hr/>
-					<h4></h4><br>
-					<p>  <br>Telah Selesai Dijalankannya Cronjob TransferPresensi ('.$waktuAwal.' s/d '.$waktuAkhir.'), Dengan detail data per Lokasi sebagai berikut :
+					<p>Telah Selesai Dijalankannya Cronjob TransferPresensi ('.$waktuAwal.' s/d '.$waktuAkhir.'), Dengan detail data per Lokasi sebagai berikut :
 					</p>
 						<table id="main">
 						'.$table.'
