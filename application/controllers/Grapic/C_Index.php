@@ -1348,21 +1348,21 @@ class C_Index extends CI_Controller
 					}else if ($val == '14'){
 						$banyak = $this->M_index->semuaData($now, $sqlPKL);
 					}else if ($val == '15'){
-						$kodeUnit = 'CABANG PERWAKILAN JAKARTA';
-						$banyak = $this->M_index->pekerjaPasar($now, $sqlPKL, $kodeUnit);
+						$kodeUnit = 'JAKARTA';
+						$banyak = $this->M_index->pekerjacabang($now, $sqlPKL, $kodeUnit);
 						// print_r($banyak);exit();
 					}else if ($val == '16'){
-						$kodeUnit = 'CABANG PERWAKILAN MEDAN';
-						$banyak = $this->M_index->pekerjaPasar($now, $sqlPKL, $kodeUnit);
+						$kodeUnit = 'MEDAN';
+						$banyak = $this->M_index->pekerjacabang($now, $sqlPKL, $kodeUnit);
 					}else if ($val == '17'){
-						$kodeUnit = 'CABANG PERWAKILAN TANJUNG KARANG';
-						$banyak = $this->M_index->pekerjaPasar($now, $sqlPKL, $kodeUnit);
+						$kodeUnit = 'TANJUNG KARANG';
+						$banyak = $this->M_index->pekerjacabang($now, $sqlPKL, $kodeUnit);
 					}else if ($val == '18'){
-						$kodeUnit = 'CABANG PERWAKILAN YOGYAKARTA';
-						$banyak = $this->M_index->pekerjaPasar($now, $sqlPKL, $kodeUnit);
+						$kodeUnit = 'YOGYAKARTA';
+						$banyak = $this->M_index->pekerjacabang($now, $sqlPKL, $kodeUnit);
 					}
 					else if ($val == '19'){
-						$kodeUnit = 'CABANG PERWAKILAN SURABAYA';
+						$kodeUnit = 'SURABAYA';
 						$banyak = $this->M_index->pekerjacabang($now, $sqlPKL, $kodeUnit);
 					}else if ($val == '20'){
 						$kodeUnit = 'POS SAMARINDA';
