@@ -104,6 +104,8 @@ class C_kasiepembelian extends CI_Controller{
 		$data['batch_number'] = $batchNumber;
 		$data['batch'] =$batch;
 
+		// exit();
+
 		$this->load->view('V_Header',$data);
 		$this->load->view('V_Sidemenu',$data);
 		$this->load->view('MonitoringInvKasiePembelian/V_detail',$data);
