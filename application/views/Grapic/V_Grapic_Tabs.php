@@ -595,7 +595,12 @@
 																				<?php for ($i=0; $i < count(${$var1})-1; $i++) { 
 																					$turun = (${$var1}[$i+1]-${$var1}[$i]); ?>
 																					<td><?php echo abs($turun); ?></td>
-																					<td><?php echo abs(round(($turun/${$var1}[$i]*100),1)); ?>%</td>
+																					<td><?php if (${$var1}[$i] == '0') {
+																						echo '0';
+																					}else{
+																						echo abs(round(($turun/${$var1}[$i]*100),1));
+																						} 
+																						?>%</td>
 																					<?php } ?>
 																					<?php for ($i=count(${$var1}); $i <=17 ; $i++) { ?>
 																					<td></td>

@@ -85,7 +85,7 @@ class M_index extends CI_Model
 		$sql = "select rtrim(b.seksi), count(a.noind) 
 		from hrd_khs.tpribadi a left join hrd_khs.tseksi b on a.kodesie=b.kodesie 
 		where (keluar = '0' or (tglkeluar >= '2019-$now' and keluar = '1')) 
-		and b.unit != '-' and (masukkerja >= '1990-01-01') and rtrim(b.unit) = '$kodeUnit' 
+		and b.unit != '-' and (masukkerja >= '1990-01-01') and rtrim(b.seksi) = '$kodeUnit' 
 		and rtrim(b.bidang) = 'PEMASARAN 6' $sqlPKL
 		group by rtrim(b.seksi) order by 1;";
 				// echo $sql;exit();
@@ -95,12 +95,12 @@ class M_index extends CI_Model
 
 	public function pekerjacabang($now, $sqlPKL, $kodeUnit)
 	{
-		$sql = "select rtrim(b.seksi), count(a.noind) 
+		$sql = "select count(a.noind) 
 		from hrd_khs.tpribadi a left join hrd_khs.tseksi b on a.kodesie=b.kodesie 
 		where (keluar = '0' or (tglkeluar >= '2019-$now' and keluar = '1')) 
-		and b.unit != '-' and (masukkerja >= '1990-01-01') and rtrim(b.seksi) = '$kodeUnit' 
+		and b.unit != '-' and (masukkerja >= '1990-01-01') and rtrim(b.seksi) like '%$kodeUnit%' 
 		$sqlPKL
-		group by rtrim(b.seksi) order by 1;";
+		 order by 1;";
 				// echo $sql;exit();
 		$query = $this->personalia->query($sql);
 		return $query->result_array();
