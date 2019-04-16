@@ -20,6 +20,24 @@ $(document).ready(function(){
 		}
 	})
 
+	$(document).on('ifChanged','.submit_checking_all', function() {
+		if ($('.submit_checking_all').iCheck('update')[0].checked) {
+			$('.chckInvoice').each(function () {
+				var a = $(this).parent().parent().closest('tr').find('input[class~="chckInvoice"]');
+				if (a) {
+					$(this).iCheck('check');
+				}
+				// $(this).prop('checked',true);
+			});
+		}else{
+			$('.chckInvoice').each(function () {
+				// $(this).prop('checked',false);
+				$(this).iCheck('uncheck');
+			});
+		};
+
+	})
+
 	$('#btnSubmitChecking').click(function(){
 		var jml = 0;
 		var arrId = [];
@@ -294,24 +312,7 @@ $(document).ready(function(){
 	});
 
 	// new edit icheck testing chamber
-	$(document).on('ifChanged','.submit_checking_all', function() {
-		if ($('.submit_checking_all').iCheck('update')[0].checked) {
-			// alert('satu');
-			$('.chckInvoice').each(function () {
-				var a = $(this).parent().parent().closest('tr').find('button[name="checkbtndisable[]"]').attr('kedisable');
-				if (a == '0') {
-					$(this).iCheck('check');
-				}
-				// $(this).prop('checked',true);
-			});
-		}else{
-			$('.chckInvoice').each(function () {
-				// $(this).prop('checked',false);
-				$(this).iCheck('uncheck');
-			});
-		};
-
-	})
+	
 	
 	$('#invoice_category').on('change', function(){
 		var jasa = $(this).val();

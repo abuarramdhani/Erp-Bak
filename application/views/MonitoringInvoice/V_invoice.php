@@ -39,55 +39,54 @@
 										<span class="btn btn-warning pull-right" style="cursor: none"><i class="fa fa-exclamation-triangle"></i> Submit hanya berdasarkan kategori invoice yang sama</span>
 									</div>
 								</div>
-								<table id="tabel_invoice" class="table text-center tblMI">
+								<table id="tabel_invoice" class="text-center tblMI" style="width: 100%">
 									<thead>
 										<tr class="bg-primary">
-											<th width="5%" class="text-center">No</th>
-											<th width="5%" class="text-center"><input type="checkbox" class="submit_checking_all" onclick="chkSubmitChecking($(this));"></th>
-											<th width="10%" class="text-center">Action</th>
-											<th width="10%" class="text-center">Invoice Category</th>
-											<th width="10%" class="text-center">Jasa</th>
-											<th width="5%"class="text-center">Supplier</th>
+											<th class="text-center">No</th>
+											<th class="text-center"><input type="checkbox" class="submit_checking_all" onclick="chkSubmitChecking($(this));"></th>
+											<th class="text-center">Action</th>
+											<th class="text-center">Invoice Category</th>
+											<th class="text-center">Jasa</th>
+											<th class="text-center">Supplier</th>
 											<th class="text-center">Invoice Number</th>
 											<th class="text-center">Invoice Date</th>
-											<th width="5%"class="text-center">PPN</th>
+											<th class="text-center">PPN</th>
 											<th class="text-center">Tax Invoice Number</th>
 											<th class="text-center">Invoice Amount</th>
 											<th class="text-center">Po Amount</th>
-											<th width="20%" class="text-center" title="No PO - Line Number - LPPB Number - LPPB Status">Po Detail</th>
-											<th width="5%"class="text-center">Status</th>
-											<th width="5%"class="text-center">PIC</th>
+											<th class="text-center" title="No PO - Line Number - LPPB Number - LPPB Status"> Po Detail</th>
+											<th class="text-center">Status</th>
+											<th class="text-center">PIC</th>
 										</tr>
 									</thead>
 									<tbody>
 									<?php $no=1; if ($invoice) { foreach($invoice as $inv){ ?>
 									<tr id="<?php echo $no; ?>">
-										<td><?php echo $no ?></td>
-										<td>
+										<td style="width: 3%"><?php echo $no ?></td>
+										<td style="width: 5%">
 											<input  type="checkbox" class="chckInvoice" name="mi-check-list[]" value="<?php echo $inv['INVOICE_ID']?>" inv-cat="<?php echo $inv['INVOICE_CATEGORY']?>">
 										</td>
-										<td>
-											<a href="<?php echo base_url('AccountPayables/MonitoringInvoice/Invoice/editListInv/'.$inv['INVOICE_ID'])?>">
-											<button type="button" class="btn btn-success"><i class="fa fa-pencil-square-o" style="width: 12px; height: 12px" ></i></button>
+										<td style="width: 8%">
+											<a href="<?php echo base_url('AccountPayables/MonitoringInvoice/Invoice/editListInv/'.$inv['INVOICE_ID'])?>" title="Detail invoice ..." class="btn btn-success btn-xs"><i class="fa fa-pencil-square-o" ></i>
 											</a>
-											<a href="<?php echo base_url('AccountPayables/MonitoringInvoice/Invoice/deleteInvoice/'.$inv['INVOICE_ID'])?>">
-											<button type="button" onclick="return confirm('Yakin untuk menghapusnya?')" class="btn btn-danger"><i class='fa fa-trash' style="width: 12px; height: 12px"></i></button>
+											<a href="<?php echo base_url('AccountPayables/MonitoringInvoice/Invoice/deleteInvoice/'.$inv['INVOICE_ID'])?>" title="Delete invoice ..." onclick="return confirm('Yakin untuk menghapusnya?')" class="btn btn-danger btn-xs"><i class='fa fa-trash'></i>
 											</a>
 										</td>
-										<td><?php echo $inv['INVOICE_CATEGORY']?></td>
-										<td>
+										<td style="width: 7%"><?php echo $inv['INVOICE_CATEGORY']?></td>
+										<td style="width: 7%">
 											<?php echo $inv['JENIS_JASA'] ?>
 										</td>
-										<td><?php echo $inv['VENDOR_NAME']?></td>
-										<td><?php echo  $inv['INVOICE_NUMBER'] ?></td>
-										<td> <?php echo date('d-M-Y',strtotime($inv['INVOICE_DATE'])) ?></td>
-										<td><?php echo  $inv['PPN']?></td>
-										<td> <input type="hidden" name="id" class="text_invoice_id" value="<?php echo $inv['INVOICE_ID']?>"> <input type="text" name="tax_input" class="tax_id" value="<?php echo $inv['TAX_INVOICE_NUMBER']?>" > 
+										<td style="width: 7%"><?php echo $inv['VENDOR_NAME']?></td>
+										<td style="width: 5%"><?php echo  $inv['INVOICE_NUMBER'] ?></td>
+										<td style="width: 5%"> <?php echo date('d-M-Y',strtotime($inv['INVOICE_DATE'])) ?></td>
+										<td style="width: 5%"><?php echo  $inv['PPN']?></td>
+										<!-- <td> <input type="hidden" name="id" class="text_invoice_id" value="<?php echo $inv['INVOICE_ID']?>"> <input type="text" name="tax_input" class="tax_id" value="<?php echo $inv['TAX_INVOICE_NUMBER']?>" > 
 											<button type="button" class=" btn btn-sm btn-primary saveTaxInvoice" id="saveTaxInvoice"><i class="fa fa-check-square"></i>
-											</button></td>
-										<td class="inv_amount"><?php echo $inv['INVOICE_AMOUNT']?></td>
-										<td class="po_amount"><?php echo $inv['PO_AMOUNT']?></td>
-										<td><?php if($keputusan[$inv['INVOICE_ID']]){foreach ($keputusan[$inv['INVOICE_ID']] as $k) { ?>
+											</button></td> -->
+										<td style="width: 8%" ><?php echo $inv['TAX_INVOICE_NUMBER']?></td>
+										<td style="width: 5%" class="inv_amount"><?php echo $inv['INVOICE_AMOUNT']?></td>
+										<td style="width: 5%" class="po_amount"><?php echo $inv['PO_AMOUNT']?></td>
+										<td style="width: 60%"><?php if($keputusan[$inv['INVOICE_ID']]){foreach ($keputusan[$inv['INVOICE_ID']] as $k) { ?>
 											<?php echo  $k ."<br>" ?>
 										<?php }} ?></td>
 										<?php if ( $inv['STATUS'] == 0) {
@@ -99,8 +98,8 @@
 										}elseif ($inv['STATUS'] == 3) {
 											$stat = 'Rejected by Kasie Purc';
 										} ?> 
-										<td><?php echo $stat?></td>
-										<td><?php echo $inv['SOURCE']?></td>
+										<td style="width: 10%"><?php echo $stat?></td>
+										<td style="width: 10%"><?php echo $inv['SOURCE']?></td>
 									</tr>
 									<?php $no++; }}?>
 								</tbody>
