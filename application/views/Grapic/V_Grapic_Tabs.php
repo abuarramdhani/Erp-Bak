@@ -34,7 +34,10 @@
 												<div class="col-lg-4">
 													<!-- <p style="margin-right: 50px;" class="btSDMdl btn btn-primary">Download</p> -->
 													<a target="_blank" style="margin-right: 50px;" href="<?php echo base_url('SDM/getData');?>" class="btSDMdl btn btn-primary">Download</a>
-													<button disabled="" title="fitur masih tahap pengembangan" type="button" data-toggle="modal" data-target="#myModalSDM" class="btn btn-primary">Upload</button>
+													<?php $a =  substr(base_url(), 7,13); ?>
+													<button <?php if ($a == 'erp.quick.com') {
+														echo "disabled";
+													} ?> title="fitur masih tahap pengembangan" type="button" data-toggle="modal" data-target="#myModalSDM" class="btn btn-primary">Upload</button>
 												</div>
 												<div class="col-lg-2"></div>
 											</div>
