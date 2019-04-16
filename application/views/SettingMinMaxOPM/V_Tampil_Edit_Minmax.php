@@ -1,6 +1,6 @@
 <?php
 // echo "<pre>";
-// print_r($routeaktif);
+// print_r($No_induk);
 // exit();
 ?>
 
@@ -13,6 +13,7 @@
 			<div class="box-body">
 			<center><form method="post" action="<?php echo base_url('SettingMinMaxOPM/SaveMinMax')?>">
 				<input type="hidden" name="route" value="<?php echo $routeaktif ?>">
+				<input type="hidden" name="induk" class="induk" value="<?php echo $No_induk ?>">
 				<div class="row">
 					<div class="col-md-2 col-md-offset-2" style="text-align: right;">
 							<label>ITEM CODE</label>

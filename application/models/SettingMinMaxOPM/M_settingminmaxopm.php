@@ -67,12 +67,14 @@ class M_settingminmaxopm extends CI_Model {
       return $query->result_array();
   }
 
-  public function save($itemcode, $min, $max, $rop)
+  public function save($itemcode, $min, $max, $rop, $induk)
   {
       $sql = "UPDATE mtl_system_items_b msib
         set msib.MIN_MINMAX_QUANTITY = '$min',
         msib.MAX_MINMAX_QUANTITY = '$max',
-        msib.ATTRIBUTE9 = '$rop'
+        msib.ATTRIBUTE9 = '$rop',
+        msib.ATTRIBUTE10 = '$induk',
+        msib.ATTRIBUTE11 = TO_CHAR(sysdate, 'DD-MON-YYYY HH24:MI:SS')
         where msib.SEGMENT1 = '$itemcode'";
       $query = $this->oracle->query($sql);
   }
