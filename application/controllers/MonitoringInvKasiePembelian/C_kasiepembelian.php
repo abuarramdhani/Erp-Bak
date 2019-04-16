@@ -90,6 +90,25 @@ class C_kasiepembelian extends CI_Controller{
 		$no = 0;
 		foreach ($batch as $bl => $value) {
 			$invoice_id = $value['INVOICE_ID'];
+			$po_detail = $value['PO_DETAIL'];
+
+			if ($po_detail) {
+				$expPoDetail = explode('<br>', $po_detail);
+				if (!$expPoDetail) {
+					$expPoDetail = $po_detail;
+				}
+
+					
+				$n=0;
+				$podetail = array();
+				foreach ($expPoDetail as $ep => $value) {
+					$exp_lagi = explode('-', $value);
+
+					$po_number_explode = $exp_lagi[0];
+				}
+
+				$n++;
+			}
 
 			$po_amount = 0;
 			$modal = $this->M_kasiepembelian->getUnitPrice($invoice_id);
@@ -99,12 +118,12 @@ class C_kasiepembelian extends CI_Controller{
 				$po_amount = $po_amount + $total;
 			}
 			$batch[$no]['PO_AMOUNT'] = $po_amount;
+			$cekPPN = $this->M_kasiepembelian->checkPPN($po_number_explode);
+			$batch[$no]['PPN'] = $cekPPN[0]['PPN'];
 			$no++;
 		}
 		$data['batch_number'] = $batchNumber;
 		$data['batch'] =$batch;
-
-		// exit();
 
 		$this->load->view('V_Header',$data);
 		$this->load->view('V_Sidemenu',$data);
