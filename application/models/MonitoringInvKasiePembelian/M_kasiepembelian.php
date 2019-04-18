@@ -266,7 +266,7 @@ class M_kasiepembelian extends CI_Model {
 
     public function finish_detail($batchNumber){
         $oracle = $this->load->database('oracle',true);
-        $sql = "SELECT distinct ami.invoice_id invoice_id,
+        $sql = "SELECT ami.invoice_id invoice_id,
                          ami.vendor_name vendor_name,
                          ami.invoice_number invoice_number, 
                          ami.invoice_date invoice_date, 
@@ -281,7 +281,9 @@ class M_kasiepembelian extends CI_Model {
                          ami.info info,
                          ami.invoice_category invoice_category,
                          ami.nominal_dpp nominal_dpp,
-                         ami.jenis_jasa jenis_jasa
+                         ami.jenis_jasa jenis_jasa,
+                         aaipo.po_detail po_detail,
+                         ami.last_status_purchasing_date last_status_purchasing_date
                 FROM khs_ap_monitoring_invoice ami,
                      (SELECT   aipo.invoice_id,
                                REPLACE
