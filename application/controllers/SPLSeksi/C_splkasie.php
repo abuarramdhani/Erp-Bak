@@ -8,7 +8,7 @@ class C_splkasie extends CI_Controller {
         $this->load->library('session');
 
 		$this->load->model('SPLSeksi/M_splseksi');
-		$this->load->model('SPLSeksi/M_SPLKasie');
+		$this->load->model('SPLSeksi/M_splkasie');
 		$this->load->model('SystemAdministration/MainMenu/M_user');
 
 		date_default_timezone_set('Asia/Jakarta');
@@ -48,7 +48,7 @@ class C_splkasie extends CI_Controller {
 	public function data_spl(){
 		$user = $this->session->user;
 		$filter = array("username" => $user);
-		$data_confirm = $this->M_SPLKasie->show_confirm($filter);
+		$data_confirm = $this->M_splkasie->show_confirm($filter);
 
 		if(empty($data_confirm)){
 			$data = $this->menu('', '', '');
@@ -100,7 +100,7 @@ class C_splkasie extends CI_Controller {
 		}
 		
 		$data_spl = array();
-		$show_list_spl = $this->M_SPLKasie->show_spl($dari, $sampai, $status, $lokasi, $noind, $akses_sie, $kodesie);
+		$show_list_spl = $this->M_splkasie->show_spl($dari, $sampai, $status, $lokasi, $noind, $akses_sie, $kodesie);
 		foreach($show_list_spl as $sls){
 			$index = array();
 			
@@ -145,7 +145,7 @@ class C_splkasie extends CI_Controller {
 			}
 			$pass = uniqid();
 
-			$data_email = $this->M_SPLKasie->show_email_addres($user);
+			$data_email = $this->M_splkasie->show_email_addres($user);
 			if(!empty($data_email)){
 				$addres = $data_email->address;
 				$this->send_email($addres, $namae, $pass);
@@ -155,7 +155,7 @@ class C_splkasie extends CI_Controller {
 				"username" => $user,
 				"password" => $pass,
 				"spl_id" => $splid);
-			$to_splr = $this->M_SPLKasie->save_confirm($data_splr);
+			$to_splr = $this->M_splkasie->save_confirm($data_splr);
 
 			redirect(base_url('ALK/ConfLembur'));
 		}else{
@@ -185,7 +185,7 @@ class C_splkasie extends CI_Controller {
 		$keterangan = $this->input->post('keterangan');
 
 		$filter = array("username" => $user, "password" => $pass);
-		$data_confirm = $this->M_SPLKasie->show_confirm($filter);
+		$data_confirm = $this->M_splkasie->show_confirm($filter);
 
 		if(!empty($data_confirm)){
 			$spl_id = explode(", ", $data_confirm->spl_id);
@@ -255,7 +255,7 @@ class C_splkasie extends CI_Controller {
 				}
 			}
 
-			$drop_confirm = $this->M_SPLKasie->drop_confirm($user);
+			$drop_confirm = $this->M_splkasie->drop_confirm($user);
 			redirect(base_url('ALK/ConfLembur?result=1'));
 		}else{
 			redirect(base_url('ALK/ConfLembur?result=0'));

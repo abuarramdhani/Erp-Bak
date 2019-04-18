@@ -21,7 +21,7 @@
 
 		<div class="row">
 			<section class="col-lg-12 connectedSortable">
-				<form class="form-horizontal" action="<?php echo site_URL('SPLSeksi/C_SPLKasie/data_spl_submit'); ?>" method="post" enctype="multipart/form-data">
+				<form class="form-horizontal" action="<?php echo site_URL('SPLSeksi/C_splkasie/data_spl_submit'); ?>" method="post" enctype="multipart/form-data">
 					<div class="box box-primary">
 						<div class="box-header">
 							<div class="row">
