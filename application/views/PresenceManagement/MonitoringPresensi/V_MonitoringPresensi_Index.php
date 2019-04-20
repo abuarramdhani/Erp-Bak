@@ -46,7 +46,7 @@
 								<table class="table table-bordered" id="PresenceManagement-daftarPerangkat">
 									<thead>
 										<tr>
-											<th class="text-center">Nos.</th>
+											<th class="text-center">No.</th>
 											<th class="text-center" style="width: 200px">Action</th>
 											<th class="text-center">ID Lokasi</th>
 											<th class="text-center">Server IP Address</th>
