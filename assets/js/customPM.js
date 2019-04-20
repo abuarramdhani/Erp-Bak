@@ -743,9 +743,11 @@ function InsertLokasiFinger(th) {
 					inisial_lokasi,
 					id_lokasi,
 					kode_lokasi_kerja,
-					nama_lokasi_kerja
+					nama_lokasi_kerja,
+					voip
 			) 
 			{
+				// alert(voip);
 				$('#PresenceManagement-MonitoringPresensi-PengaturanEdit-txtIDLokasi').val(id_lokasi);
 				$('#PresenceManagement-MonitoringPresensi-PengaturanEdit-txtIPServerSDK').val(server_ip);
 				$('#PresenceManagement-MonitoringPresensi-PengaturanEdit-txtPortServerSDK').val(server_port);
@@ -754,6 +756,7 @@ function InsertLokasiFinger(th) {
 				$('#PresenceManagement-MonitoringPresensi-PengaturanEdit-txtPortDevice').val(device_port);
 				$('#PresenceManagement-MonitoringPresensi-PengaturanEdit-txtInisialLokasi').val(inisial_lokasi);
 				$('#PresenceManagement-MonitoringPresensi-PengaturanEdit-cmbLokasiKerja').select2('data', {id: kode_lokasi_kerja, a_key: kode_lokasi_kerja + ' - ' + nama_lokasi_kerja});
+				$('#PresenceManagement-MonitoringPresensi-PengaturanEdit-txtVoipPS').val(voip);
 				$('#deviceUpdate').modal("show");
 			}
 

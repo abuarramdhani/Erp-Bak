@@ -41,7 +41,7 @@
 											<th class="text-center">Inisial</th>
 											<th class="text-center">ID Lokasi</th>
 											<th class="text-center">Lokasi</th>
-
+											<th class="text-center">Voip</th>
 										</tr>
 									</thead>
 									<tbody>
@@ -64,7 +64,8 @@
 													<?php echo "'".$device['inisial_lokasi']."'";?>,
 													<?php echo "'".$device['id_lokasi']."'";?>,
 													<?php echo "'".$device['office']."'";?>,
-													<?php echo "'".$device['lokasi_kerja']."'";?>
+													<?php echo "'".$device['lokasi_kerja']."'";?>,
+													<?php echo "'".$device['voip']."'";?>
 													)"
 													data-placement="bottom" title="Edit Format">
 													<span class="fa fa-pencil-square-o fa-2x"></span>
@@ -77,6 +78,7 @@
 											<td><?php echo $device['inisial_lokasi'];?></td>
 											<td><?php echo $device['id_lokasi'];?></td>
 											<td><?php echo $device['office'];?></td>
+											<td><?php echo $device['voip'];?></td>
 										</tr>
 										<?php
 												$no++;
@@ -170,8 +172,14 @@
 						<div class="form-group">
 							<label for="PresenceManagement-MonitoringPresensi-Pengaturan-cmbLokasiKerja" class="control-label col-lg-4">Lokasi Kerja</label>
 							<div class="col-lg-4">
-								<select style="width: 100%" name="cmbLokasiKerja" id="PresenceManagement-MonitoringPresensi-Pengaturan-cmbLokasiKerja">
+								<select required="" style="width: 100%" name="cmbLokasiKerja" id="PresenceManagement-MonitoringPresensi-Pengaturan-cmbLokasiKerja">
 								</select>
+							</div>
+						</div>
+						<div class="form-group">
+							<label for="PresenceManagement-MonitoringPresensi-Pengaturan-txtInisialLokasi" class="control-label col-lg-4">Voip</label>
+							<div class="col-lg-4">
+								<input type="text" class="form-control" id="PresenceManagement-MonitoringPresensi-Pengaturan-txtVoipPS" name="txtVoipPs" maxlength="5" />
 							</div>
 						</div>
 					</div>
@@ -238,8 +246,14 @@
 						<div class="form-group">
 							<label for="PresenceManagement-MonitoringPresensi-PengaturanEdit-cmbLokasiKerja" class="control-label col-lg-4">Lokasi Kerja</label>
 							<div class="col-lg-4">
-								<select style="width: 100%" name="cmbLokasiKerja" id="PresenceManagement-MonitoringPresensi-PengaturanEdit-cmbLokasiKerja">
+								<select required="" style="width: 100%" name="cmbLokasiKerja" id="PresenceManagement-MonitoringPresensi-PengaturanEdit-cmbLokasiKerja">
 								</select>
+							</div>
+						</div>
+						<div class="form-group">
+							<label for="PresenceManagement-MonitoringPresensi-Pengaturan-txtInisialLokasi" class="control-label col-lg-4">Voip</label>
+							<div class="col-lg-4">
+								<input type="text" class="form-control" id="PresenceManagement-MonitoringPresensi-PengaturanEdit-txtVoipPS" name="txtVoipPs" maxlength="5" />
 							</div>
 						</div>
 					</div>
