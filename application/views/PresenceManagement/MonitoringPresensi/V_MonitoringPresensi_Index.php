@@ -29,23 +29,24 @@
 								<div>
 									show column :
 									<a class="toggle-vis btn btn-primary btn-sm" data-column="0">No.</a>
-									<a class="toggle-vis btn btn-primary btn-sm" data-column="1">ID Lokasi</a>
-									<a class="toggle-vis btn btn-primary btn-sm" data-column="2">Server IP Address</a>
-									<a class="toggle-vis btn btn-primary btn-sm" data-column="3">Device IP Address</a>
-									<a class="toggle-vis btn btn-primary btn-sm" data-column="4">Device S/N</a>
-									<a class="toggle-vis btn btn-primary btn-sm" data-column="5">Device Name</a>
-									<a class="toggle-vis btn btn-primary btn-sm" data-column="6">Lokasi</a>
-									<a class="toggle-vis btn btn-primary btn-sm" data-column="7">Status Ping</a>
-									<a class="toggle-vis btn btn-primary btn-sm" data-column="8">Frontpresensi</a>
-									<a class="toggle-vis btn btn-primary btn-sm" data-column="9">Catering</a>
-									<a class="toggle-vis btn btn-primary btn-sm" data-column="10">Status Catering</a>
-									<a class="toggle-vis btn btn-primary btn-sm" data-column="11">Action</a>
+									<a class="toggle-vis btn btn-primary btn-sm" data-column="1">Action</a>
+									<a class="toggle-vis btn btn-primary btn-sm" data-column="2">ID Lokasi</a>
+									<a class="toggle-vis btn btn-primary btn-sm" data-column="3">Server IP Address</a>
+									<a class="toggle-vis btn btn-primary btn-sm" data-column="4">Device IP Address</a>
+									<a class="toggle-vis btn btn-primary btn-sm" data-column="5">Device S/N</a>
+									<a class="toggle-vis btn btn-primary btn-sm" data-column="6">Device Name</a>
+									<a class="toggle-vis btn btn-primary btn-sm" data-column="7">Lokasi</a>
+									<a class="toggle-vis btn btn-primary btn-sm" data-column="8">Voip</a>
+									<a class="toggle-vis btn btn-primary btn-sm" data-column="9">Status Ping</a>
+									<a class="toggle-vis btn btn-primary btn-sm" data-column="10">Frontpresensi</a>
+									<a class="toggle-vis btn btn-primary btn-sm" data-column="11">Catering</a>
+									<a class="toggle-vis btn btn-primary btn-sm" data-column="12">Status Catering</a>
 								</div>
 								<br>
 								<table class="table table-bordered" id="PresenceManagement-daftarPerangkat">
 									<thead>
 										<tr>
-											<th class="text-center">No.</th>
+											<th class="text-center">Nos.</th>
 											<th class="text-center" style="width: 200px">Action</th>
 											<th class="text-center">ID Lokasi</th>
 											<th class="text-center">Server IP Address</th>
@@ -53,6 +54,7 @@
 											<th class="text-center">Device S/N</th>
 											<th class="text-center">Device Name</th>
 											<th class="text-center">Lokasi</th>
+											<th class="text-center">Voip</th>
 											<th class="text-center">Status Ping</th>
 											<th class="text-center">Frontpresensi</th>
 											<th class="text-center">Catering</th>
@@ -89,6 +91,7 @@
 											<td><?php echo $device['device_sn'];?></td>
 											<td><?php echo $device['device_name'];?></td>
 											<td><?php echo $device['lokasi_kerja'];?></td>
+											<td><?php echo $device['voip'];?></td>
 											<td><?php $output= array();exec("ping -c 1 ".$device['device_ip']." && exit",$output,$returnval);if($returnval != 0){echo "<label class='label label-danger'>Disconnected</label>";}else{ if(count(preg_grep("/Destination host unreachable/i", $output)) == 0){echo "<label class='label label-success'>Connected</label>";}else{ echo "<label class='label label-danger'>Disconnected</label>";}} ?>
 											</td>
 											<td><?php echo $device['frontpresensi'] ?></td>
