@@ -77,6 +77,7 @@ class C_MonitoringPresensiPengaturan extends CI_Controller
 				$device_name 	=	$this->input->post('txtNameDevice', TRUE);
 				$inisial_lokasi =	$this->input->post('txtInisialLokasi', TRUE);
 				$office 		=	$this->input->post('cmbLokasiKerja');
+				$voip 		=	$this->input->post('txtVoipPs');
 
 				$id_lokasi_baru		=	'';
 				$id_lokasi_terakhir	=	$this->M_monitoringpresensi->id_lokasi_terakhir();
@@ -103,6 +104,7 @@ class C_MonitoringPresensiPengaturan extends CI_Controller
 										'office'				=>	$office,
 										'create_timestamp'		=>	$this->general->ambilWaktuEksekusi(),
 										'create_user'			=>	$this->session->user,
+										'voip'					=>	$voip,
 									);
 				$id_device	=	$this->M_monitoringpresensi->device_create($device_create);
 				$this->lib_monitoringpresensi->history('db_datapresensi', 'tb_device', array('id_device' => $id_device), 'CREATE');
@@ -119,6 +121,7 @@ class C_MonitoringPresensiPengaturan extends CI_Controller
 				$device_port 	=	$this->input->post('txtPortDevice', TRUE);
 				$inisial_lokasi =	$this->input->post('txtInisialLokasi', TRUE);
 				$office 		=	$this->input->post('cmbLokasiKerja');
+				$voip 		=	$this->input->post('txtVoipPs');
 
 				$device_update 	=	array
 									(
@@ -131,6 +134,7 @@ class C_MonitoringPresensiPengaturan extends CI_Controller
 										'office'				=>	$office,
 										'last_update_timestamp'	=>	$this->general->ambilWaktuEksekusi(),
 										'last_update_user'		=>	$this->session->user,
+										'voip'					=>	$voip,
 									);
 				$this->M_monitoringpresensi->device_update($device_update, $id_lokasi);
 				$this->lib_monitoringpresensi->history('db_datapresensi', 'tb_device', array('id_lokasi' => $id_lokasi), 'UPDATE');
