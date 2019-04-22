@@ -1,16 +1,14 @@
 <?php if (!defined('BASEPATH')) exit('No direct script access allowed');
+ini_set('memory_limit', '-1');
 
-/**
-* 
-*/
 class C_Index extends CI_Controller
 {
 	
 	function __construct()
 	{
 		parent::__construct();
-		$this->load->helper('form');
 		$this->load->helper('url');
+		$this->load->helper('form');
 		$this->load->helper('html');
 
 		$this->load->library('form_validation');
@@ -1204,10 +1202,9 @@ class C_Index extends CI_Controller
 
 	public function input()
 	{
-		ini_set('memory_limit', '-1');
 		$this->load->library('upload');
 		$nama_materi = $this->input->post('fileToUpload');
-		print_r($_FILES['fileToUpload']['name']);
+		// print_r($_FILES['fileToUpload']['name']);
 		$filee = $_FILES['fileToUpload']['tmp_name'];
 		$nama = $_FILES['fileToUpload']['name'];
 		
@@ -1228,15 +1225,39 @@ class C_Index extends CI_Controller
 			echo $errorinfo;
 		}
 		$dataSql = file_get_contents('./assets/upload/SDM/'.$nama);
-		// $ex = explode('; ', $dataSql);
-		// print_r($ex);exit();
-		$kosongkan = $this->M_index->kosongkan();
-		$addData = $this->M_index->addData($dataSql);
-		if ($addData) {
-			echo "Data berhasil di Transfer";
-		}else{
-			echo "Error Muncul";
+		$ex = explode(';', $dataSql);
+		$i = count($ex);
+		$x = 1;
+		$daftarNoind = '';
+		// echo count($ex); exit();
+		foreach ($ex as $key) {
+			if ($x == 1) {
+				$noind = substr($key, 834, 5);
+			}else{
+				$noind = substr($key, 838, 5);
+			}
+			$noind = "'".$noind."'";
+			$daftarNoind[] = $noind;
+			// if ($x == $i) {
+			// 	$daftarNoind .= "'".$noind."'";
+			// }else{
+			// 	$daftarNoind .= "'".$noind."', ";
+			// }
+			// echo $key;
+			// echo strpos($key,"('");
+			// echo substr($key, 834, 5);
+			// exit();
+			$x++;
 		}
+			array_pop($daftarNoind);
+			// echo $daftarNoind[3288];exit();
+			$listNoind = implode(', ', $daftarNoind);
+			// echo $listNoind.'<br>';
+			$deletList = $this->M_index->hapusList($listNoind);
+			// print_r($daftarNoind);
+			// $delet = $this->M_index->hapus($noind);
+			$addData = $this->M_index->addData($dataSql);
+			echo "Data berhasil di Transfer";
 		// if (is_null($addData[0]['denahrumah'])) {
 		// 	echo 'asa';
 		// }
@@ -1425,7 +1446,7 @@ class C_Index extends CI_Controller
 					}else{
 						$isi = $banyak[0]['count'];
 					}
-						$hasil[$x][] = $isi;
+					$hasil[$x][] = $isi;
 
 				}
 				$min =  round((1.3*$hasil[$x][0]/100),2);
@@ -1454,6 +1475,93 @@ class C_Index extends CI_Controller
 			$this->load->view('Grapic/V_Grapic_Tabs',$data);
 			$this->load->view('V_Footer',$data);
 		}
+
+	}
+
+	public function getDatav2()
+	{
+		$selet = $this->M_index->getDatav2();
+		$i = count($selet);
+		$x = 1;
+		$myfile = fopen("testfile.txt", "w");
+		foreach ($selet as $key) {
+			if ($x == $i) {
+				$txt = $key['noind'].'/'.$key['kodesie'].'/'.$key['tglkeluar'].'/'.$key['keluar'];
+			}else{
+				$txt = $key['noind'].'/'.$key['kodesie'].'/'.$key['tglkeluar'].'/'.$key['keluar'].',';
+			}
+			$x++;
+			fwrite($myfile, $txt);
+		}
+		// echo "<pre>";
+		// print_r($selet);
+
+		fclose($myfile);
+		$wkt = date('Y-m-d');
+		// echo $wkt;
+		$wkt2 = date('H:i:s');
+		// exit();
+
+		header("Cache-Control: public");
+		header("Content-Description: File Transfer");
+		header("Content-Disposition: attachment; filename=DataSql_".$wkt."_".$wkt2.".txt");
+		header("Content-Type: application/txt");
+		header("Content-Transfer-Encoding: binary");
+		header('Content-Length: ' . filesize('testfile.txt'));
+		readfile('testfile.txt');
+	}
+
+	public function inputv2()
+	{
+		$this->load->library('upload');
+		$nama_materi = $this->input->post('fileToUpload');
+		// print_r($_FILES['fileToUpload']['name']);
+		$filee = $_FILES['fileToUpload']['tmp_name'];
+		$nama = $_FILES['fileToUpload']['name'];
+		
+		//upload an image options
+		$config = array();
+		$config['upload_path'] 	 = 'assets/upload/SDM';
+		$config['allowed_types'] = 'txt';
+		$config['max_size']      = '50000';
+		$config['file_name']     = $nama_materi;
+		$config['overwrite'] 	 = TRUE;			
+
+		if (!file_exists('./assets/upload/SDM')) {
+			mkdir('./assets/upload/SDM', 0777, true);
+		}
+
+		$this->upload->initialize($config);
+		if ($this->upload->do_upload('fileToUpload')) {
+			$this->upload->data();
+			chmod('./assets/upload/SDM/'.$nama, 0777);
+		} else {
+			$errorinfo = $this->upload->display_errors();
+			echo $errorinfo;
+		}
+		// exit();
+		$dataSql = file_get_contents('./assets/upload/SDM/'.$nama);
+		$line= explode(',', $dataSql);
+		// print_r($ex);exit();
+		foreach ($line as $key) {
+			$val = explode('/', $key);
+			$cekNoind = $this->M_index->cekNoind($val[0]);
+			if ($cekNoind == '1') {
+				$updateData = $this->M_index->updateData($val[0],$val[1],$val[2],$val[3]);
+			}else{
+
+			}
+		exit();
+		}
+		$addData = $this->M_index->addData($dataSql);
+		if ($addData) {
+			echo "Data berhasil di Transfer";
+		}else{
+			echo "Error Muncul";
+		}
+		// if (is_null($addData[0]['denahrumah'])) {
+		// 	echo 'asa';
+		// }
 
 	}
 }

@@ -32,7 +32,6 @@
 											<div class="form-group text-center">
 												<label for="txtTanggalRekap" class="control-label col-lg-4">Fungsi</label>
 												<div class="col-lg-4">
-													<!-- <p style="margin-right: 50px;" class="btSDMdl btn btn-primary">Download</p> -->
 													<a target="_blank" style="margin-right: 50px;" href="<?php echo base_url('SDM/getData');?>" class="btSDMdl btn btn-primary">Download</a>
 													<?php $a =  substr(base_url(), 7,13); ?>
 													<button <?php if ($a == 'erp.quick.com') {
@@ -712,7 +711,7 @@
 										<div class="modal-body text-center">
 											<p>File type : .txt</p>
 											<form target="_blank" method="POST" action="<?php echo base_url('SDM/input');?>" class="form-horizontal" enctype="multipart/form-data">
-												<input name="fileToUpload" type="file">
+												<input required="" name="fileToUpload" type="file">
 												<button class="btn btn-primary" type="submit">Submit</button>
 											</form>
 										</div>
