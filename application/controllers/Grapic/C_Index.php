@@ -1322,6 +1322,7 @@ class C_Index extends CI_Controller
 			$begin = new DateTime('2019-01-01');
 			$date = date('Y-m-d');
 			$end = new DateTime($date);
+			$end->setTime(0,0,1);
 			$daterange = new DatePeriod($begin, new DateInterval('P14D'), $end);
 			for ($x=0; $x < $hitungAll; $x++) { 
 				$val = $all[$x];
