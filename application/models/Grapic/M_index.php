@@ -134,16 +134,24 @@ class M_index extends CI_Model
 
 	public function getData()
 	{
-		$sql = "select * from hrd_khs.tpribadi";
+		$sql = "select * from hrd_khs.tpribadi where tglkeluar >= '2019-01-01' or masukkerja >= '2018-01-01'";
+		// $sql = "select * from hrd_khs.tpribadi where tglkeluar >= '2019-01-01'";
 		// echo $sql;
 		// exit();
 		$query = $this->personalia->query($sql);
 		return $query->result_array();
 	}
 
+	public function getDatav2()
+	{
+		$sql = "select noind, kodesie, tglkeluar, keluar from hrd_khs.tpribadi where tglkeluar >= '2019-01-01' and keluar = '0';";
+		$query = $this->personalia->query($sql);
+		return $query->result_array();
+	}
+
 	public function kosongkan()
 	{
-		$sql = "TRUNCATE table hrd_khs.tpribadi";
+		// $sql = "TRUNCATE table hrd_khs.tpribadi";
 		// $query = $this->personalia->query($sql);
 	}
 
@@ -166,5 +174,26 @@ class M_index extends CI_Model
 		}else{
 			return false;
 		}
+	}
+
+	public function cekNoind($val)
+	{
+		$sql = "select * from hrd_khs.tpribadi where noind = '$val'";
+		$query = $this->personalia->query($sql);
+		return $query->num_rows();
+	}
+
+	public function hapus($noind)
+	{
+		$sql = "delete from hrd_khs.tpribadi where noind = '$noind'";
+		// echo $sql;exit();
+		$query = $this->personalia->query($sql);
+	}
+
+	public function hapusList($noindList)
+	{
+		$sql = "delete from hrd_khs.tpribadi where noind in ($noindList)";
+		// echo $sql;exit();
+		$query = $this->personalia->query($sql);
 	}
 }
