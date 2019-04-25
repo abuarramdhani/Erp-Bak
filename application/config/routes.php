@@ -1228,6 +1228,15 @@ $route['MonitoringKomponen/MonitoringSeksi'] = 'MonitoringKomponen/MainMenu/C_Mo
 $route['MonitoringKomponen/MonitoringSeksi/(:any)'] = 'MonitoringKomponen/MainMenu/C_Monitoring_Seksi/$1';
 $route['MonitoringKomponen/MonitoringSeksi/(:any)/(:any)'] = 'MonitoringKomponen/MainMenu/C_Monitoring_Seksi/$1/$2';
 
+
+//Grapic
+$route['SDM/Grapic'] = 'Grapic/C_Index';
+$route['SDM/grapicTabs'] = 'Grapic/C_Index/grapicTabs';
+$route['SDM/getData'] = 'Grapic/C_Index/getData';
+$route['SDM/input'] = 'Grapic/C_Index/input';
+$route['SDM/(:any)'] = 'Grapic/C_Index/$1';
+$route['SDM/openPDF'] = 'Grapic/C_Index/openPDF';
+
 //------------------------------------ Management Kebutuhan Pekerja ----------------------------------------
 $route['ItemManagement'] = 'ItemManagement/C_Index/index';
 $route['ItemManagement/MasterItem']  = 'ItemManagement/Admin/C_MasterItem/index';
@@ -2042,6 +2051,9 @@ $route['HitungHlcm/Approval/(:any)/(:any)'] 	= 'UpahHlCm/MasterData/C_Approval/$
 $route['HitungHlcm/UbahPekerjaan'] = 'UpahHlCm/MasterData/C_UbahPekerjaan';
 $route['HitungHlcm/UbahPekerjaan/(:any)'] = 'UpahHlCm/MasterData/C_UbahPekerjaan/$1';
 $route['HitungHlcm/UbahPekerjaan/(:any)/(:any)'] = 'UpahHlCm/MasterData/C_UbahPekerjaan/$1/$2';
+$route['HitungHlcm/DataOvertimePHL'] = 'UpahHlCm/MasterData/C_Overtime';
+$route['HitungHlcm/DataOvertimePHL/(:any)'] = 'UpahHlCm/MasterData/C_Overtime/$1';
+$route['HitungHlcm/DataOvertimePHL/(:any)/(:any)'] = 'UpahHlCm/MasterData/C_Overtime/$1/$2';
 
 $route['HitungHlcm/HitungGaji'] 	= 'UpahHlCm/ProsesGaji/C_ProsesGaji';
 $route['HitungHlcm/HitungGaji/(:any)'] 	= 'UpahHlCm/ProsesGaji/C_ProsesGaji/$1';
@@ -2078,6 +2090,7 @@ $route['InventoryManagement/CreateKIB/search/(:any)'] = 'InventoryKIB/MainMenu/C
 $route['InventoryManagement/CreateKIB/getSubInv'] = 'InventoryKIB/MainMenu/CreateKIB/C_CreateKIB/getSubInv';
 $route['InventoryManagement/CreateKIB/submitpdf'] = 'InventoryKIB/MainMenu/CreateKIB/C_CreateKIB/submitpdf';
 $route['InventoryManagement/CreateKIB/pdf/(:any)/(:any)/(:any)'] = 'InventoryKIB/MainMenu/CreateKIB/C_CreateKIB/pdf/$1/$2/$3';
+$route['InventoryManagement/CreateKIB/pdf2/(:any)/(:any)/(:any)'] = 'InventoryKIB/MainMenu/CreateKIB/C_CreateKIB/pdf2/$1/$2/$3';
 
 
 
@@ -2247,6 +2260,7 @@ $route['Monitoring/TrackingInvoice/(:any)/(:any)'] = 'TrackingInvoice/C_tracking
 $route['TarikFingerspot'] = 'TarikFingerspot/C_TarikFingerspot';
 $route['TarikFingerspot/TarikData'] = 'TarikFingerspot/C_TarikFingerspot/TarikData';
 $route['TarikFingerspot/TarikData/(:any)'] = 'TarikFingerspot/C_TarikFingerspot/TarikData/$1';
+$route['TarikFingerspot/TransferPresensi'] = 'TarikFingerspot/C_TarikFingerspot/TransferPresensi';
 
 //--------------------------------------------------- Check PPh --------------------------------------------------//
 $route['AccountPayables/CheckPPh/Upload'] = 'CheckPPH/MainMenu/C_Upload';
@@ -2255,16 +2269,17 @@ $route['AccountPayables/CheckPPh/List'] = 'CheckPPH/MainMenu/C_List';
 $route['AccountPayables/CheckPPh/List/(:any)'] = 'CheckPPH/MainMenu/C_List/$1';
 
 //---------------------------------------------- Surat Perintah Lembur -------------------------------------------//
-$route['SPL'] = 'splseksi/C_splseksi';
-$route['SPL/InputLembur'] = 'splseksi/C_splseksi/new_spl';
-$route['SPL/ListLembur'] = 'splseksi/C_splseksi/data_spl';
-$route['SPL/RekapLembur'] = 'splseksi/C_splseksi/rekap_spl';
-$route['SPL/EditLembur/(:any)'] = 'splseksi/C_splseksi/edit_spl/$1';
-$route['SPL/HapusLembur/(:any)'] = 'splseksi/C_splseksi/hapus_spl/$1';
+$route['SPL'] = 'SPLSeksi/C_splseksi';
+$route['SPL/InputLembur'] = 'SPLSeksi/C_splseksi/new_spl';
+$route['SPL/ListLembur'] = 'SPLSeksi/C_splseksi/data_spl';
+$route['SPL/RekapLembur'] = 'SPLSeksi/C_splseksi/rekap_spl';
+$route['SPL/EditLembur/(:any)'] = 'SPLSeksi/C_splseksi/edit_spl/$1';
+$route['SPL/HapusLembur/(:any)'] = 'SPLSeksi/C_splseksi/hapus_spl/$1';
 
-$route['ALK/ListLembur'] = 'splseksi/C_splkasie/data_spl';
-$route['ALK/ConfLembur'] = 'splseksi/C_splkasie/confirm_spl';
-$route['ALA/ListLembur'] = 'splseksi/C_splasska/data_spl';
+$route['ALK/ListLembur'] = 'SPLSeksi/C_splkasie/data_spl';
+$route['ALK/ConfLembur'] = 'SPLSeksi/C_splkasie/confirm_spl';
+$route['ALA/ListLembur'] = 'SPLSeksi/C_splasska/data_spl';
+$route['ALA/ConfLembur'] = 'SPLSeksi/C_splasska/confirm_spl';
 
 //---------------------------------------------------- Booking Kendaraan --------------------------------------//
 // hati hati kadang any any gak bisa kepanggil
@@ -2319,6 +2334,10 @@ $route['PNBP/Questioner'] = 'PNBPAdministrator/C_Questioner';
 $route['PNBP/Questioner/(:any)'] = 'PNBPAdministrator/C_Questioner/$1';
 $route['PNBP/Questioner/(:any)/(:any)'] = 'PNBPAdministrator/C_Questioner/$1/$2';
 
+$route['PNBP/QuestionerAdmin'] = 'PNBPAdministrator/C_QuestionerAdministrator';
+$route['PNBP/QuestionerAdmin/(:any)'] = 'PNBPAdministrator/C_QuestionerAdministrator/$1';
+$route['PNBP/QuestionerAdmin/(:any)/(:any)'] = 'PNBPAdministrator/C_QuestionerAdministrator/$1/$2';
+
 $route['PNBP/Report'] = 'PNBPAdministrator/C_Report';
 $route['PNBP/Report/(:any)'] = 'PNBPAdministrator/C_Report/$1';
 $route['PNBP/Report/(:any)'] = 'PNBPAdministrator/C_Report/$1/$2';
@@ -2337,6 +2356,42 @@ $route['MonitoringBarangGudang/SparePart'] = 'WarehouseMPO/C_SparePart';
 $route['MonitoringBarangGudang/SparePart/(:any)'] = 'WarehouseMPO/C_SparePart/$1';
 $route['MonitoringBarangGudang/SparePart/(:any)/(:any)'] = 'WarehouseMPO/C_SparePart/$1/$2';
 $route['MonitoringBarangGudang/SparePart/Filter'] = 'WarehouseMPO/C_SparePart/filterSpare';
+
+//--------------------------------------------------- Cetak Perhitungan Pesangon -----------------------------------//
+$route['MasterPekerja/PerhitunganPesangon'] 		= 'MasterPekerja/PerhitunganPesangon/C_Index';
+$route['MasterPekerja/PerhitunganPesangon/(:any)'] = 'MasterPekerja/PerhitunganPesangon/C_Index/$1';
+$route['MasterPekerja/PerhitunganPesangon/(:any)/(:any)'] = 'MasterPekerja/PerhitunganPesangon/C_Index/$1/$2';
+
+//----------------MonitoringPembelian------------------
+$route['MonitoringPembelian'] = 'MonitoringPembelian/C_Index/index';
+$route['MonitoringPembelian/EditData'] = 'MonitoringPembelian/EditData/C_Monitoring/index';
+$route['MonitoringPembelian/EditData/(:any)'] = 'MonitoringPembelian/EditData/C_Monitoring/$1';
+$route['MonitoringPembelian/EditData/(:any)/(:any)'] = 'MonitoringPembelian/EditData/C_Monitoring/$1/$2';
+
+$route['MonitoringPembelian/Monitoring'] = 'MonitoringPembelian/Input/C_Input/index';
+$route['MonitoringPembelian/Monitoring/(:any)'] = 'MonitoringPembelian/Input/C_Input/$1';
+
+$route['MonitoringPembelian/MonitoringPE'] = 'MonitoringPembelian/EditData/C_MonitoringPE/index';
+$route['MonitoringPembelian/MonitoringPE/(:any)'] = 'MonitoringPembelian/EditData/C_MonitoringPE/$1';
+$route['MonitoringPembelian/MonitoringPE/(:any)/(:any)'] = 'MonitoringPembelian/EditData/C_MonitoringPE/$1/$2';
+
+$route['MonitoringPembelian/HistoryRequest'] = 'MonitoringPembelian/Input/C_History/index';
+
+//----------------Resource Opname------------------
+$route['OpnameResource']			= 'OpnameResource/MainMenu/C_TarikData';
+$route['OpnameResource/TarikData']  = 'OpnameResource/MainMenu/C_TarikData/TarikData';
+$route['OpnameResource/Export']  = 'OpnameResource/MainMenu/C_TarikData/Export';
+
+
+
+
+//---------------------------Setting Min Max OPM-------------------------------//
+$route['SettingMinMax'] = 'SettingMinMaxOPM/C_settingMinMaxOPM/index';
+$route['SettingMinMax/Edit'] = 'SettingMinMaxOPM/C_settingMinMaxOPM/Edit';
+$route['SettingMinMax/EditbyRoute'] = 'SettingMinMaxOPM/C_settingMinMaxOPM/EditbyRoute';
+$route['SettingMinMax/EditbyRoute/EditItem/(:any)/(:any)'] = 'SettingMinMaxOPM/C_settingMinMaxOPM/EditItem/$1/$2';
+$route['SettingMinMax/EditbyRoute/EditItem/(:any)/(:any)/(:any)'] = 'SettingMinMaxOPM/C_settingMinMaxOPM/EditItem/$1/$2/$3';
+$route['SettingMinMax/SaveMinMax'] = 'SettingMinMaxOPM/C_settingMinMaxOPM/SaveMinMax';
 
  //----------------------------------- Internal Audit ------------------------------------------------//
 
