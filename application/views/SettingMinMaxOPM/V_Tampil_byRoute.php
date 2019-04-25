@@ -1,6 +1,6 @@
 <?php 
 	// echo "<pre>";
-	// print_r($routeaktif);
+	// print_r($org);
 	// exit();
 ?>
 
@@ -37,7 +37,8 @@
 						<td style="text-align:center"><?php echo $mm['MAX']; ?></td>
 						<td style="text-align:center"><?php echo $mm['ROP']; ?></td>
 						<td style="text-align:center">
-							<a class="btn btn-warning btn-xs" title="Edit" href="<?php echo base_url(); ?>SettingMinMaxOPM/EditbyRoute<?php echo '/EditItem/'.$routeaktif.'/'.$mm['SEGMENT1'] ?>"><span class="icon-edit"></span> Edit</a>
+
+							<a class="btn btn-warning btn-xs" title="Edit" href="<?php echo base_url(); ?>SettingMinMax/EditbyRoute<?php echo '/EditItem/'.$org.'/'.$routeaktif.'/'.$mm['SEGMENT1'] ?>"><span class="icon-edit"></span> Edit</a>
 						</td>
 					</tr>
 					<?php } ?>
@@ -46,7 +47,7 @@
 		</div>
 		<div class="box box-info">
 			<div style="padding-top: 10px; padding-bottom: 10px;">
-				<center></span><a href="<?php echo base_url('SettingMinMaxOPM/Edit')?>" class="btn btn-success"><span class="fa fa-check-square"> SELESAI</a></center>
+				<center></span><a href="<?php echo base_url('SettingMinMax/Edit')?>" class="btn btn-success"><span class="fa fa-check-square"> SELESAI</a></center>
 			</div>
 		</div>
 	</div>

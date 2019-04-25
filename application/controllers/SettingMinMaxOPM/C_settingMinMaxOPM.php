@@ -51,6 +51,23 @@ class C_settingMinMaxOPM extends CI_Controller {
 		$this->load->view('V_Footer',$data);
 	}
 
+	public function getRouteODM()
+	{
+		$data = $this->M_settingminmaxopm->TampilRoutingClassODM();
+		echo '<option></option>';
+		foreach ($data as $route) {
+			echo '<option>'.$route['ROUTING_CLASS'].'</option>';
+		}
+	}
+	public function getRouteOPM()
+	{
+		$data = $this->M_settingminmaxopm->TampilRoutingClass();
+		echo '<option></option>';
+		foreach ($data as $route) {
+			echo '<option>'.$route['ROUTING_CLASS'].'</option>';
+		}
+	}
+
 	public function Edit()
 	{
 
@@ -64,7 +81,7 @@ class C_settingMinMaxOPM extends CI_Controller {
 		$data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id);
 		$data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id);
 
-		$data['route'] = $this->M_settingminmaxopm->TampilRoutingClass();
+		// $data['route'] = $this->M_settingminmaxopm->TampilRoutingClass();
 
 		$this->load->view('V_Header',$data);
 		$this->load->view('V_Sidemenu',$data);
@@ -85,20 +102,29 @@ class C_settingMinMaxOPM extends CI_Controller {
 		$data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id);
 		if ($this->session->flashdata('route') == null) 
 		{
+			$org = $this->input->post('org');
 			$route = $this->input->post('routing_class');
 		} 
 		elseif ($this->session->flashdata('route') != null)
 		{
+			$org = $this->session->flashdata('org');
 			$route = $this->session->flashdata('route');
 		}
+
 		
+
 		$data['route'] = $this->M_settingminmaxopm->TampilRoutingClass();
-		$data['minmax'] = $this->M_settingminmaxopm->TampilDataMinMax($route);
+		if ($org == 'OPM') {
+			$data['minmax'] = $this->M_settingminmaxopm->TampilDataMinMax($route);
+		} elseif ($org == 'ODM') {
+			$data['minmax'] = $this->M_settingminmaxopm->TampilDataMinMaxODM($route);
+		}
+		$data['org'] = $org;
 		$data['routeaktif'] = $route;
 
 		if ($data['minmax'] == null) {
-			$this->session->set_flashdata('kosong', 'Data Kosong, Mohon Untuk Memilih Ulang Routing Class');
-			redirect(base_url('SettingMinMaxOPM/Edit/'));
+			$this->session->set_flashdata('kosong', 'Mohon Untuk Input Ulang');
+			redirect(base_url('SettingMinMax/Edit/'));
 		}
 
 		$this->load->view('V_Header',$data);
@@ -107,7 +133,7 @@ class C_settingMinMaxOPM extends CI_Controller {
 		$this->load->view('V_Footer',$data);
 	}
 
-	public function EditItem($route, $itemcode)
+	public function EditItem($org, $route, $itemcode)
 	{
 		$this->checkSession();
 		$user_id = $this->session->userid;
@@ -120,7 +146,12 @@ class C_settingMinMaxOPM extends CI_Controller {
 		$data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id);
 
 		$data['routeaktif'] = $route;
-		$data['item_minmax'] = $this->M_settingminmaxopm->TampilDataItemMinMax($route,$itemcode);
+		if ($org == 'ODM') {
+			$data['item_minmax'] = $this->M_settingminmaxopm->TampilDataItemMinMaxODM($route,$itemcode);
+		} elseif ($org == 'OPM') {
+			$data['item_minmax'] = $this->M_settingminmaxopm->TampilDataItemMinMax($route,$itemcode);
+		}
+		$data['org'] = $org;
 		$data['No_induk'] = $this->session->user;;
 
 		$this->load->view('V_Header',$data);
@@ -131,6 +162,7 @@ class C_settingMinMaxOPM extends CI_Controller {
 
 	public function SaveMinMax()
 	{	
+		$org = $this->input->post('org');
 		$induk = $this->input->post('induk');
 		$route = $this->input->post('route');
 		$itemcode = $this->input->post('segment1');
@@ -140,7 +172,8 @@ class C_settingMinMaxOPM extends CI_Controller {
 		
 		$data =$this->M_settingminmaxopm->save($itemcode, $min, $max, $rop, $induk);
 
+		$this->session->set_flashdata('org', $org);
 		$this->session->set_flashdata('route', $route);
-		redirect(base_url('SettingMinMaxOPM/EditbyRoute/'));
+		redirect(base_url('SettingMinMax/EditbyRoute/'));
 	}
 }
