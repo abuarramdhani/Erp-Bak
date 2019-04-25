@@ -2,7 +2,7 @@
 		$succ =  $this->session->flashdata('kosong');
 
 		if ($succ != null) {
-			echo '<section class="notif" style="background-color: #fff; min-height: 30px;
+			echo '<section class="notif  alert fade in" style="background-color: #fff; min-height: 30px;
 				    padding: 15px;
 				    margin-right: 15px;
 				    margin-left: 15px;
@@ -30,19 +30,28 @@
 				<h2><b><center>SORTIR DATA MIN MAX</center></b></h2>
 			</div>
 			<div class="box-body">
-			<center><form method="post" action="<?php echo base_url('SettingMinMaxOPM/EditbyRoute')?>">
+			<center><form method="post" action="<?php echo base_url('SettingMinMax/EditbyRoute')?>">
+				<div class="row">
+					<div class="col-md-2 col-md-offset-2" style="text-align: right;">
+							<label>ORGANIZATION</label>
+					</div>
+					<div class="col-md-5">
+						<div class="form-group">
+							<select class="form-control" name="org" id="org" style="width: 400px" />
+								<option></option>
+								<option value="ODM">ODM</option>
+								<option value="OPM">OPM</option>
+							</select>
+						</div>
+					</div>
+				</div>
 				<div class="row">
 					<div class="col-md-2 col-md-offset-2" style="text-align: right;">
 							<label>ROUTING CLASS</label>
 					</div>
 					<div class="col-md-5">
 						<div class="form-group">
-							<select class="form-control" name="routing_class" style="width: 400px" />
-								<option></option>
-							<?php foreach ($route as $cb) { ?>
-									<option value="<?php echo $cb['ROUTING_CLASS']?>"><?php echo $cb['ROUTING_CLASS'] ?></option>
-								
-							<?php } ?>
+							<select class="form-control" name="routing_class" id="routing_class" style="width: 400px" />
 							</select>
 						</div>
 					</div>

@@ -2386,8 +2386,9 @@ $route['OpnameResource/Export']  = 'OpnameResource/MainMenu/C_TarikData/Export';
 
 
 //---------------------------Setting Min Max OPM-------------------------------//
-$route['SettingMinMaxOPM'] = 'SettingMinMaxOPM/C_settingMinMaxOPM/index';
-$route['SettingMinMaxOPM/Edit'] = 'SettingMinMaxOPM/C_settingMinMaxOPM/Edit';
-$route['SettingMinMaxOPM/EditbyRoute'] = 'SettingMinMaxOPM/C_settingMinMaxOPM/EditbyRoute';
-$route['SettingMinMaxOPM/EditbyRoute/EditItem/(:any)/(:any)'] = 'SettingMinMaxOPM/C_settingMinMaxOPM/EditItem/$1/$2';
-$route['SettingMinMaxOPM/SaveMinMax'] = 'SettingMinMaxOPM/C_settingMinMaxOPM/SaveMinMax';
+$route['SettingMinMax'] = 'SettingMinMaxOPM/C_settingMinMaxOPM/index';
+$route['SettingMinMax/Edit'] = 'SettingMinMaxOPM/C_settingMinMaxOPM/Edit';
+$route['SettingMinMax/EditbyRoute'] = 'SettingMinMaxOPM/C_settingMinMaxOPM/EditbyRoute';
+$route['SettingMinMax/EditbyRoute/EditItem/(:any)/(:any)'] = 'SettingMinMaxOPM/C_settingMinMaxOPM/EditItem/$1/$2';
+$route['SettingMinMax/EditbyRoute/EditItem/(:any)/(:any)/(:any)'] = 'SettingMinMaxOPM/C_settingMinMaxOPM/EditItem/$1/$2/$3';
+$route['SettingMinMax/SaveMinMax'] = 'SettingMinMaxOPM/C_settingMinMaxOPM/SaveMinMax';
