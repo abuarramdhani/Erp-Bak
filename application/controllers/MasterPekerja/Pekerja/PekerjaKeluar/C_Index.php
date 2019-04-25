@@ -73,6 +73,15 @@ class C_Index extends CI_Controller {
 			$kodesie 		= $pekerja[0]['kodesie'];
 			$seksi 			= $this->M_pekerjakeluar->dataSeksi($kodesie);
 
+			$check = '';
+			if ($pekerja[0]['status_diangkat'] =="t") {
+				$check = 'checked';
+			}
+			// echo $pekerja[0]['status_diangkat'];
+			// exit();
+
+			$data['check'] = $check;
+
 			$data['data'] 	= array(
 									'photo' 	=> $pekerja[0]['photo'],
 									'noind' 	=> $pekerja[0]['noind'],
@@ -99,7 +108,12 @@ class C_Index extends CI_Controller {
 									'dept' 		=> $seksi[0]['dept'],
 									'tglkeluar' => $pekerja[0]['tglkeluar'],
 									'sebabklr' 	=> $pekerja[0]['sebabklr'],
+									'uk_baju' 	=> $pekerja[0]['uk_baju'],
+									'uk_celana' => $pekerja[0]['uk_celana'],
+									'uk_sepatu' => $pekerja[0]['uk_sepatu'],
+									'status_diangkat' => $pekerja[0]['status_diangkat']
 								);
+
 			
 			$data['Menu'] = 'Dashboard';
 			$data['SubMenuOne'] = '';
@@ -169,10 +183,14 @@ class C_Index extends CI_Controller {
 								'jabatan' 	=> $this->input->post('txt_jabatanPekerja'),
 								'tglkeluar' => $this->input->post('txt_tglkeluar'),
 								'sebabklr' 	=> $this->input->post('txt_sebabkeluar'),
+								'uk_baju' 	=> $this->input->post('txt_ukuranbaju'),
+								'uk_celana' => $this->input->post('txt_ukurancelana'),
+								'uk_sepatu' => $this->input->post('txt_ukuransepatu'),
+								'status_diangkat'=>$this->input->post('rd_diangkat')
 							);
-		// echo "<pre>";
+		//  echo "<pre>";
 		// print_r($data);
-		// exit();
+		//  exit();
 		$this->M_pekerjakeluar->updateDataPekerja($data,$noind);
 		$history 	= array(
 							'noind' 		=> $this->input->post('txt_noindukLama'),
@@ -181,6 +199,17 @@ class C_Index extends CI_Controller {
 							'last_updated_by'=> $this->session->user,
 						);
 		$this->M_pekerjakeluar->historyUpdatePekerja($history);
+		$tlog 	= array(
+							'wkt'			=> date('Y-m-d H:i:s'),
+							'menu'			=> 'MASTER PEKERJA -> EDIT DATA PEKERJA',
+							'ket'			=> 'NO IND->'.$this->input->post('txt_noindukLama'),
+							'noind'			=> $this->session->user,
+							'jenis' 		=> 'EDIT -> DATA PEKERJA',
+							'program'		=> 'ERP',
+							'noind_baru'	=> 'NULL',
+
+						);
+		$this->M_pekerjakeluar->historyTlog($tlog);
 		print "<script type='text/javascript'>alert('Data telah berhasil diubah. Mohon cek kembali');</script>";
 		if (print "<script type='text/javascript'>alert('Data telah berhasil diubah. Mohon cek kembali');</script>" != null) 
 			{
@@ -216,6 +245,10 @@ class C_Index extends CI_Controller {
 								'jabatan' 	=> $this->input->post('txt_jabatanPekerja'),
 								'tglkeluar' => $this->input->post('txt_tglkeluar'),
 								'sebabklr' 	=> $this->input->post('txt_sebabkeluar'),
+								'uk_baju' 	=> $this->input->post('txt_ukuranbaju'),
+								'uk_celana' => $this->input->post('txt_ukurancelana'),
+								'uk_sepatu' => $this->input->post('txt_ukuransepatu'),
+								'status_diangkat'=>$this->input->post('rd_diangkat')
 							);
 		// echo "<pre>";
 		// print_r($data);
@@ -228,6 +261,17 @@ class C_Index extends CI_Controller {
 							'last_updated_by'=> $this->session->user,
 						);
 		$this->M_pekerjakeluar->historyUpdatePekerja($history);
+		$tlog 	= array(
+							'wkt'			=> date('Y-m-d H:i:s'),
+							'menu'			=> 'MASTER PEKERJA -> EDIT DATA PEKERJA',
+							'ket'			=> 'NO IND->'.$this->input->post('txt_noindukLama'),
+							'noind'			=> $this->session->user,
+							'jenis' 		=> 'EDIT -> DATA PEKERJA',
+							'program'		=> 'ERP',
+							'noind_baru'	=> 'NULL',
+
+						);
+		$this->M_pekerjakeluar->historyTlog($tlog);
 		print "<script type='text/javascript'>alert('Data telah berhasil diubah. Mohon cek kembali');</script>";
 		if (print "<script type='text/javascript'>alert('Data telah berhasil diubah. Mohon cek kembali');</script>" != null) 
 			{

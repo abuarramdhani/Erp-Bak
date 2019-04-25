@@ -623,12 +623,13 @@ function rekap_datatable_detail() {
 
 					$('.RekapJamKerja-cmbLokasiKerja').select2(
 					{
-						minimumResultsForSearch: -1,
+						minimumResultsForSearch: 0,
 						allowClear: false,
 						ajax:
 						{
 							url: baseurl+'RekapTIMSPromosiPekerja/RekapJamKerja/daftarLokasiKerja',
 							dataType: 'json',
+							type: "GET",
 							data: function(params){
 								return {
 									term: params.term

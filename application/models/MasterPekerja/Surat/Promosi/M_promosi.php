@@ -655,9 +655,7 @@ where 		pri.keluar=false
 						and 	trefjabatan.kd_jabatan::numeric
 								<
 								'$kd_jabatan'
-						and 	pri.lokasi_kerja
-								=
-								'$lokasi_kerja'
+						and 	(pri.lokasi_kerja ='$lokasi_kerja' or pri.lokasi_kerja = '01')
 					)
 group by 	trefjabatan.kd_jabatan,
 			rtrim(torg.jabatan),

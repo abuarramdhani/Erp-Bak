@@ -98,7 +98,28 @@
                                                     </select>
                                                 </div>
                                             </div>
-
+                                            <?php 
+                                            if ($user_login == "J1231") {
+                                                ?>
+                                                <div class="form-group">
+                                                    <label for="txtLokasiKerjaHeader" class="control-label col-lg-4">Lokasi Kerja</label>
+                                                    <div class="col-lg-6">
+                                                        <select id="txtLokasiKerjaHeader" name="lokasi_kerja_k" class="select2" data-placeholder="Pilih" style="width: 50%" required="">
+                                                            <option value=""></option>
+                                                            <?php
+                                                            foreach ($FleetLokasiKerja as $loker) {
+                                                                echo '  <option value="'.$loker["location_code"].'" >'
+                                                                            .$loker["location_name"].'
+                                                                        </option>';
+                                                            }
+                                                            ?>
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                                <?php
+                                            }
+                                            
+                                            ?>
                                             <div class="form-group">
                                                 <label for="txtNomorPolisiHeader" class="control-label col-lg-4">Nomor Rangka</label>
                                                 <div class="col-lg-4">

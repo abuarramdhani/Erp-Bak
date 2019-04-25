@@ -9,6 +9,11 @@ class M_fleetkendaraan extends CI_Model
         date_default_timezone_set('Asia/Jakarta');
     }
 
+    public function FleetLokasiKerja()
+    {
+        $query = "select * from er.er_location";
+        return $this->db->query($query)->result_array();
+    }
     public function getFleetKendaraan($id = FALSE)
     {
         if ($id === FALSE) {

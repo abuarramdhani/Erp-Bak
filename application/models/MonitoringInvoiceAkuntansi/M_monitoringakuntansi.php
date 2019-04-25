@@ -39,51 +39,19 @@ class M_monitoringakuntansi extends CI_Model {
                 ami.finance_batch_number finance_batch_number,
                 ami.last_finance_invoice_status last_finance_invoice_status,
                 ami.reason reason, 
-                aipo2.po_detail po_detail,
                 ami.info info,
                 ami.invoice_category invoice_category,
                 ami.nominal_dpp nominal_dpp,
                 ami.batch_number batch_number,
                 ami.jenis_jasa jenis_jasa,
-                ami.source SOURCE,
-                aipo2.po_number,
-                (SELECT distinct poh.attribute2
-                            from PO_HEADERS_ALL POH
-                            ,PO_LINES_ALL POL
-                            ,PO_LINE_LOCATIONS_ALL PLL
-                        where poh.po_header_id(+) = pol.po_header_id
-                        AND POL.PO_LINE_ID (+) = PLL.PO_LINE_ID
-                        AND POH.SEGMENT1 = aipo2.po_number) ppn
-                FROM khs_ap_monitoring_invoice ami,
-                     (SELECT   aipo.invoice_id, aipo.po_number,
-                               REPLACE
-                                  ((RTRIM
-                                       (XMLAGG (XMLELEMENT (e,
-                                                               TO_CHAR 
-                                                                      (aipo.po_number)
-                                                            || '@'
-                                                           )
-                                               ).EXTRACT('//text()').getclobval(),
-                                        '@'
-                                       )
-                                   ),
-                                   '@',
-                                   '<br>'
-                                  ) AS po_detail
-                          FROM (SELECT DISTINCT invoice_id, po_number, line_number, lppb_number
-                                                      FROM khs_ap_invoice_purchase_order) aipo
-                      GROUP BY aipo.invoice_id, aipo.po_number) aipo2
-               WHERE ami.invoice_id = aipo2.invoice_id
-                AND ami.last_finance_invoice_status = 1
-                AND ami.batch_number = '$batchNumber'
+                ami.source SOURCE
+            FROM khs_ap_monitoring_invoice ami
+            WHERE ami.last_finance_invoice_status = 1 
+            AND ami.batch_number= '$batchNumber'
             ORDER BY ami.last_admin_date DESC
            ";
-		    $run = $erp_db->query($sql);
-        $arr = $run->result_array();
-        foreach ($arr as $key => $value) {
-          $arr[$key]['PO_DETAIL'] = $this->get_ora_blob_value($arr[$key]['PO_DETAIL']);
-        }
-        return $arr;
+		   $run = $erp_db->query($sql);
+    return $run->result_array();
 	}
 
 	public function poAmount($id)
@@ -243,11 +211,11 @@ class M_monitoringakuntansi extends CI_Model {
 
 	public function showFinanceNumber($login){
 		$erp_db = $this->load->database('oracle',true);
-        $sql = "SELECT batch_number batch_number, to_date(last_status_purchasing_date) submited_date, source
+        $sql = "SELECT batch_number batch_number, to_date(last_status_finance_date) submited_date, source
         FROM khs_ap_monitoring_invoice
         WHERE last_finance_invoice_status = 1
         $login
-        GROUP BY batch_number, to_date(last_status_purchasing_date), source
+        GROUP BY batch_number, to_date(last_status_finance_date), source
         ORDER BY submited_date";
 		$run = $erp_db->query($sql);
 		return $run->result_array();
@@ -364,6 +332,16 @@ class M_monitoringakuntansi extends CI_Model {
                         where poh.po_header_id(+) = pol.po_header_id
                         AND POL.PO_LINE_ID (+) = PLL.PO_LINE_ID
                         AND POH.SEGMENT1 = '$po_numberInv' ";
+        $runQuery = $oracle->query($query);
+        return $runQuery->result_array();
+    }
+
+    public function po_numberr($invoice_id){
+        $oracle = $this->load->database("oracle",TRUE);
+        $query = "SELECT DISTINCT aipo.po_number, aipo.invoice_id, poh.attribute2 ppn
+                  FROM khs_ap_invoice_purchase_order aipo, po_headers_all poh
+                  WHERE invoice_id = '$invoice_id'
+                  AND aipo.po_number = poh.segment1 ";
         $runQuery = $oracle->query($query);
         return $runQuery->result_array();
     }

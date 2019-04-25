@@ -13,6 +13,7 @@ class C_Order extends CI_Controller
 		$this->load->library('session');
 		$this->load->library('encrypt');
 		$this->load->library('ciqrcode');
+		$this->load->library('upload');
 
 		$this->load->model('SystemAdministration/MainMenu/M_user');
 		$this->load->model('P2K3/MainMenu/M_order');
@@ -961,6 +962,80 @@ class C_Order extends CI_Controller
 
 	public function error_found(){
 	  echo "Error Mas";
+	}
+
+	public function approval(){
+		$kodesie = $this->session->kodesie;
+		$noind = $this->session->user;
+		$tanggal = $this->input->post('txtBulanTahun');
+		$tgl = explode(' ', $tanggal);
+		$month = $tgl['0'];
+		$year = $tgl['1'];
+		$data['seksi'] 		= $this->M_order->getSeksi($noind);
+		$data['pekerjaan']	= $this->M_order->daftar_pekerjaan($kodesie);
+		$data['data']	 	= $this->M_order->tampil_data_2($kodesie,$month,$year);
+		// echo "<pre>";
+		// print_r($data);
+		// exit();
+		// $this->load->view('P2K3/Order/V_approval', $data);
+		$this->load->library('pdf');
+
+		$pdf = $this->pdf->load();
+		$pdf = new mPDF('','F4-L',0,'',10,10,10,10,10,10);
+		$filename = 'P2K3Seksi.pdf';
+
+		$html = $this->load->view('P2K3/Order/V_approval', $data, true);
+
+		$stylesheet1 = file_get_contents(base_url('assets/plugins/bootstrap/3.3.7/css/bootstrap.css'));
+		$pdf->WriteHTML($stylesheet1,1);
+		$pdf->WriteHTML($html, 2);
+		$pdf->Output($filename, 'I');
+	}
+
+	public function UploadApproval(){
+		$kodesie = $this->session->kodesie;
+		$tanggal = $this->input->post('txtBulanTahun');
+		$tgl = explode(' ', $tanggal);
+		$month = $tgl['0'];
+		$year = $tgl['1'];
+		$data	 	= $this->M_order->tampil_data_2($kodesie,$month,$year);
+		date_default_timezone_set('Asia/Jakarta');
+		if(!empty($_FILES['k3_approval']['name']))
+		{
+				$direktori_file						= $_FILES['k3_approval']['name'];
+				$ekstensi_file						= pathinfo($direktori_file,PATHINFO_EXTENSION);
+				$nama_file						= "P2K3-Order-Approval-".$kodesie."-".$year."_".$month."-".str_replace(' ', '_', date('Y-m-d_His')).".".$ekstensi_file;
+				// $nama_BPKB							= filter_var($_FILES['FotoBPKB']['name'],  FILTER_SANITIZE_URL, FILTER_SANITIZE_EMAIL);
+
+				$config['upload_path']          = './assets/upload/P2K3DocumentApproval';
+				// $config['allowed_types']        = 'jpg|png|gif|';
+				$config['allowed_types']        = '*';
+				$config['max_size']				= 50000;
+	        	$config['file_name']		 	= $nama_file;
+	        	$config['overwrite'] 			= TRUE;
+	        	
+
+	        	$this->upload->initialize($config);
+
+	    		if ($this->upload->do_upload('k3_approval')) 
+	    		{
+	        		$this->upload->data();
+	    		} 
+	    		else 
+	    		{
+
+	    			$errorinfo = $this->upload->display_errors();
+	    			echo $errorinfo;exit();
+	    		}
+
+    			foreach ($data as $key) {
+    				$this->M_order->updateDocumentApproval($nama_file,$key['id_kebutuhan']);
+    				// echo $key['id_kebutuhan'];
+    			}
+    			// echo $nama_file;exit();
+    			redirect(base_url('P2K3/Order/list_order'));
+    	}
+
 	}
 }
 

@@ -59,7 +59,7 @@ class M_presensi_dl extends CI_Model
             $tanggal=date('Y-m-d');
         }
         $sqlserver = $this->load->database('personalia',true);
-        $sql = $sqlserver->query("SELECT td.spdl_id,td.noind,td.kodesie,
+        $sql = $sqlserver->query("SELECT td.spdl_id,td.noind,'' as kodesie, -- td.kodesie,
     (case
         when
             count(td.spdl_id)=2
@@ -259,7 +259,7 @@ class M_presensi_dl extends CI_Model
     ) as point_
 FROM 
 (SELECT * FROM \"Presensi\".tpresensi_dl $where) as td
-group by td.spdl_id,td.noind,td.kodesie");
+group by td.spdl_id,td.noind");
         return $sql->result_array();
     }
 

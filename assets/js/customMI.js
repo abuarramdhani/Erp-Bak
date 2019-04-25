@@ -6,6 +6,38 @@ $(document).ready(function(){
 		"info":     false
 	});
 
+	$('span[class~="statusInvoice"]').each(function(){
+	var status = $(this).attr('value');
+		if(status == 2){
+			$(this).parent().parent().closest('tr').find('input[class~="chckInvoice"]').iCheck('check');
+		}
+		if(status == 1){
+			$(this).parent().parent().closest('tr').find('input[class~="chckInvoice"]').iCheck('uncheck');
+		}
+		if(status == 3){
+			$(this).parent().parent().closest('tr').find('input[class~="chckInvoice"]').iCheck('disable');
+			$(this).parent().parent().closest('tr').find('button[name="checkbtndisable[]"]').toggleClass('btn-primary btn-info');
+		}
+	})
+
+	$(document).on('ifChanged','.submit_checking_all', function() {
+		if ($('.submit_checking_all').iCheck('update')[0].checked) {
+			$('.chckInvoice').each(function () {
+				var a = $(this).parent().parent().closest('tr').find('input[class~="chckInvoice"]');
+				if (a) {
+					$(this).iCheck('check');
+				}
+				// $(this).prop('checked',true);
+			});
+		}else{
+			$('.chckInvoice').each(function () {
+				// $(this).prop('checked',false);
+				$(this).iCheck('uncheck');
+			});
+		};
+
+	})
+
 	$('#btnSubmitChecking').click(function(){
 		var jml = 0;
 		var arrId = [];
@@ -252,25 +284,35 @@ $(document).ready(function(){
 	});
 
 	$('#btnToFinance').click(function(){
-		alert('Invoice akan di submit ke finance');
+		var status = $('.statusInvoice').attr('value');
+		var arrId = [];
+		$('input[name="mi-check-list[]"]').each(function(){
+			valueId = $(this).attr('value');
+			arrId.push(valueId);
+			invoice_id = arrId.join();	
+		});
+		var submit_finance = $(this).val();
+		// alert(status);
+		if (status == 1 > 0) {
+			alert('Mohon pengecekan ulang. Ada line yang belum di approve/reject');
+		}else{
+			alert('Invoice akan di submit ke finance');
+			$.ajax({
+				url: baseurl+'AccountPayables/MonitoringInvoice/InvoiceKasie/submittofinance',
+				data: {
+					invoice_id : invoice_id,
+					submit_finance: submit_finance
+				},
+				type: 'POST',
+				success: function(response){
+					window.location.replace(baseurl+"AccountPayables/MonitoringInvoice/InvoiceKasie/finishBatch");
+				}
+			})
+		}
 	});
 
 	// new edit icheck testing chamber
-	$(document).on('ifChanged','.submit_checking_all', function() {
-		if ($('.submit_checking_all').iCheck('update')[0].checked) {
-			// alert('satu');
-			$('.chckInvoice').each(function () {
-				// $(this).prop('checked',true);
-				$(this).iCheck('check');
-			});
-		}else{
-			$('.chckInvoice').each(function () {
-				// $(this).prop('checked',false);
-				$(this).iCheck('uncheck');
-			});
-			// alert('dua');
-		};
-	})
+	
 	
 	$('#invoice_category').on('change', function(){
 		var jasa = $(this).val();
@@ -279,6 +321,8 @@ $(document).ready(function(){
 		}
 
 	})
+
+	
 
 });
 
@@ -393,6 +437,42 @@ function submitUlangKasieGudang(th) {
 		},
 		success: function(response){
 			window.location.href = baseurl+"AccountPayables/MonitoringInvoice/InvoiceKasie";
+		}
+	})
+}
+
+function approveInvoice(th) {
+	var invoice_id = $('#invoice_id').val();
+	var status = th.attr('value');
+	var batch_number = th.attr('batch-num');
+	var invoice_number = $('#invoice_number').val();
+	var invoice_date = $('#invoice_date').val();
+	var invoice_amount = $('#invoice_amountt').val();
+	var tax_invoice_number = $('#tax_invoice_number').val();
+	var invoice_category = $('#invoice_categorySlc').val();
+	var jenis_jasa = $('#jenis_jasaSlc').val();
+	var nominal_dpp = $('#nominal_dpp').val();
+	var info = $('#info').val();
+
+	$.ajax({
+		type: "POST",
+		url: baseurl+"AccountPayables/MonitoringInvoice/InvoiceKasie/approveInvoice",
+		data:{
+			invoice_id: invoice_id,
+			status: status,
+			invoice_number: invoice_number,
+			invoice_date: invoice_date,
+			invoice_amount: invoice_amount,
+			tax_invoice_number: tax_invoice_number,
+			invoice_category: invoice_category,
+			jenis_jasa: jenis_jasa,
+			nominal_dpp: nominal_dpp,
+			info: info
+		},
+		success: function(response){
+			// console.log(invoice_id,invoice_number,invoice_date,invoice_amount,tax_invoice_number,invoice_category
+				// ,jenis_jasa,nominal_dpp,info,status);
+			window.location.href = baseurl+"AccountPayables/MonitoringInvoice/InvoiceKasie/batchDetailPembelian/"+batch_number;
 		}
 	})
 }

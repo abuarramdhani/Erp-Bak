@@ -2,7 +2,7 @@
     <div class="inner" >
         <div class="row">
 
-            <form method="post" action="<?php echo site_url('P2K3/Order/save_data');?>" class="form-horizontal">
+            <form method="post" action="<?php echo site_url('P2K3/Order/save_data');?>" class="form-horizontal" enctype="multipart/form-data">
                 <div class="col-lg-12">
                     <div class="col-lg-11">
                         <div class="text-right">

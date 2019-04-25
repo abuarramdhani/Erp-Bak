@@ -186,6 +186,7 @@ class C_Questioner extends CI_Controller
 	public function Save(){
 		$noind = $this->session->user;
 		$hasil = $this->M_questioner->getHasilSementara($noind);
+		$this->M_questioner->updateDemografiStatusIsi($noind);
 		foreach ($hasil as $key) {
 			$cek = $this->M_questioner->getPerbandinganHasil($key['noind'],$key['id_pernyataan'],$key['id_periode']);
 			if ($cek == 0) {

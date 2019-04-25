@@ -116,6 +116,7 @@ class C_Memo extends CI_Controller {
 			$uangmakan = $um*$nominalum;
 			$gajilembur = $lembur*($nominalgpokok/7);
 			$total = $gajipokok+$gajilembur+$uangmakan;
+			$total =  round($total);
 			if ($key['lokasi_kerja'] == '01') {
 				if ($key['pekerjaan'] == 'KEPALA TUKANG') {
 					$total_p_ktukang = $total_p_ktukang+$total;
@@ -284,7 +285,7 @@ class C_Memo extends CI_Controller {
 			$worksheet->mergeCells('B32:C32');
 			$worksheet->getStyle('B31')->getFont()->setUnderline(true);
 
-			$worksheet->setCellValue('E31','Taufiq Giri Ichwanusofa');
+			$worksheet->setCellValue('E31','Anis Ulfah Mustaqim');
 			$worksheet->setCellValue('E32','Kepala Seksi Electronic Data Processing');
 			$worksheet->mergeCells('E31:F31');
 			$worksheet->mergeCells('E32:F32');
@@ -297,7 +298,7 @@ class C_Memo extends CI_Controller {
 			$imagestr->setCoordinates('A1');
 			$imagestr->setResizeProportional(false);
 			$imagestr->setWidth(80);
-			$imagestr->setHeight(110);
+			$imagestr->setHeight(85);
 			$imagestr->setWorksheet($this->excel->getActiveSheet());
 
 

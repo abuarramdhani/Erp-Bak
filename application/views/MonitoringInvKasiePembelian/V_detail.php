@@ -4,7 +4,7 @@
 	font-size: 36px
 }
 </style>
-<form method="post" action="<?php echo base_url('AccountPayables/MonitoringInvoice/InvoiceKasie/submittofinance') ?>">
+<!-- <form method="post" action="<?php echo base_url('AccountPayables/MonitoringInvoice/InvoiceKasie/submittofinance') ?>"> -->
 	<input type="hidden" name="nomor_batch" value="<?= $batch_number; ?>">
 	<section class="content">
 		<div class="inner" >
@@ -27,7 +27,9 @@
 											<tr class="bg-primary">
 												<th class="text-center">No</th>
 												<th class="text-center">Action</th>
-												<th class="text-center"><input type="checkbox" class="checkbox submit_checking_all" name=""></th>
+												<th class="text-center">
+													<!-- <input type="checkbox" class="checkbox submit_checking_all" name=""> -->
+												</th>
 												<th width="20%" class="text-center">Vendor Name</th>
 												<th class="text-center">Invoice Number</th>
 												<th class="text-center">Invoice Date</th>
@@ -44,11 +46,8 @@
 											<?php $no=1; foreach($batch as $b){ ?>
 												<tr>
 													<td><?php echo $no ?></td>
-													<td><?php if ($b['LAST_PURCHASING_INVOICE_STATUS'] == 2 OR $b['LAST_PURCHASING_INVOICE_STATUS'] == 3){ ?>
-														<button class="btn btn-primary" disabled="disabled"><i class="fa fa-plus"></i></button>
-													<?php }else{ ?>
-														<button inv="<?= $b['INVOICE_ID'] ?>" class="btn btn-primary" type="button" onclick="bukaMOdal($(this))"><i class="fa fa-plus"></i></button>
-													<?php } ?>
+													<td>
+														<button kedisable="0" inv="<?= $b['INVOICE_ID'] ?>" class="btn btn-primary" type="button" name="checkbtndisable[]" onclick="bukaMOdal($(this))"><i class="fa fa-plus"></i></button>
 												</td>
 												<td><input type="checkbox" name="mi-check-list[]" class="checkbox chckInvoice" value="<?php echo $b['INVOICE_ID']?>"></td>
 												<td>
@@ -74,31 +73,26 @@
 												}elseif ($b['STATUS'] == 1) {
 													$status = 'Submit';
 												} ?>
-												<td><?php echo $status?></td>
+												<td><span class="statusInvoice" value="<?php echo $b['STATUS']?>"><?php echo $status?></span></td>
 												<td><input type="hidden" name="invoice_id[]" value="<?php echo $b['INVOICE_ID']?>"></td>
 											</tr>
 											<?php $no++; } ?>
 										</tbody>
 									</table>
 									<div class="pull-right">
-										<?php if($b['LAST_PURCHASING_INVOICE_STATUS'] == 1){?>
-											<button disabled="disabled" type="button" class="btn btn-success pull-right" style="margin-top: 10px" value="1">Submit To Finance</button>
-										<?php }else{ ?>
 											<button type="submit" id="btnToFinance" name="submit_finance" class="btn btn-success pull-right" style="margin-top: 10px" value="1">Submit To Finance</button>
-										<?php } ?>
 									</div>
-										<div class="pull-right">
+									<div class="pull-right">
+										<a href="<?php echo base_url('AccountPayables/MonitoringInvoice/InvoiceKasie')?>">
+											<button type="button" class="btn btn-primary pull-right" style="margin-top: 10px; margin-right: 10px;" >Back</button>
+										</a>
+									</div>
+										<!-- <div class="pull-right">
 											<button id="btnSubmitChecking" type="button" style="margin-top: 10px; margin-right: 5px;" class="btn btn-primary" data-toggle="modal" data-target="#uwuwuuwuwu">Approve</button>
-										</div>									
-									<?php if($b['LAST_PURCHASING_INVOICE_STATUS'] == 1){ ?>
-										<div class="pull-right">
-											<button onclick="submitUlang($(this))" type="button" style="margin-top: 10px; margin-right: 5px;" class="btn btn-primary" disabled="disabled">Submit Ulang</button>
-										</div>
-									<?php }else{ ?>
-										<div class="pull-right">
+										</div> -->
+										<!-- <div class="pull-right">
 											<button onclick="submitUlang($(this))" type="button" style="margin-top: 10px; margin-right: 5px;" class="btn btn-primary">Submit Ulang</button>
-										</div>
-									<?php }?>
+										</div> -->
 								</div>
 							</div>
 						</div>
@@ -108,9 +102,9 @@
 		</div>
 	</div>
 </section>
-</form>
+<!-- </form> -->
 <!-- Modal Submit For Edit/Reject Invoice -->
-<form method="post" action="<?php echo base_url('AccountPayables/MonitoringInvoice/InvoiceKasie/saveInvoicebyKasiePurchasing')?>">
+<!-- <form method="post" action="<?php echo base_url('AccountPayables/MonitoringInvoice/InvoiceKasie/saveInvoicebyKasiePurchasing')?>"> -->
 	<div class="modal fade bd-example-modal-lg" id="modal-invoice" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
 		<div class="modal-dialog modal-lg" role="document">
 			<div class="modal-content">
@@ -124,15 +118,16 @@
 
 				</div>
 				<div class="modal-footer">
-					<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+					<button type="button" class="btn btn-default pull-left" data-dismiss="modal">Close</button>
 					<input type="hidden" name="nomor_batch" value="<?php echo $batch[0]['BATCH_NUMBER']?>">
-					<button type="submit" class="btn btn-success">Save Edit</button>
+					<!-- <button type="submit" class="btn btn-success">Save Edit</button> -->
+					<!-- <button type="button" class="btn btn-primary" onclick="approveInvoice($(this))">Approve</button> -->
 					<button type="button" class="btn btn-danger" data-toggle="modal" data-target="#mdlreject">Reject</button>
 				</div>
 			</div>
 		</div>
 	</div>
-</form>
+<!-- </form> -->
 
 <!-- Modal Submit For Reject Invoice -->
 <form method="post" action="<?php echo base_url('AccountPayables/MonitoringInvoice/InvoiceKasie/rejectbykasiepurchasing')?>">

@@ -141,6 +141,30 @@
 								<input type="text" name="txt_nohpPekerja" id="PK_txt_nohpPekerja" class="form-control">
 							</div>
 						</div>
+						<div class="row" style="margin-top: 10px;">
+							<div class="col-lg-2">
+								<label for="PK_txt_ukuranbaju">Ukuran Baju </label>
+							</div>
+							<div class="col-lg-5">
+								<input type="text" name="txt_ukuranbaju" id="PK_txt_ukuranbaju" class="form-control">
+							</div>
+						</div>
+						<div class="row" style="margin-top: 10px;">
+							<div class="col-lg-2">
+								<label for="PK_txt_ukurancelana">Ukuran Celana </label>
+							</div>
+							<div class="col-lg-5">
+								<input type="text" name="txt_ukurancelana" id="PK_txt_ukurancelana" class="form-control">
+							</div>
+						</div>
+						<div class="row" style="margin-top: 10px;">
+							<div class="col-lg-2">
+								<label for="PK_txt_ukuransepatu">Ukuran Sepatu </label>
+							</div>
+							<div class="col-lg-5">
+								<input type="text" name="txt_ukuransepatu" id="PK_txt_ukuransepatu" class="form-control">
+							</div>
+						</div>
 					</div>
 				</div>
 			</div>
@@ -161,6 +185,16 @@
 							<div class="col-lg-3">
 								<input type="text" name="txt_tglMasukKerja" id="PK_txt_tglMasukKerja" class="form-control">
 							</div>
+						</div>
+						<div class="row" style="margin-top: 10px;">
+							<div class="col-lg-2">
+
+							</div>
+							<div class="col-lg-6">
+                            <label style="padding-left: 0px;" class="radio-inline"><input type="radio" name="rd_diangkat" value="false"> Belum Diangkat</label>
+        					<label class="radio-inline"><input type="radio" name="rd_diangkat" value="true"> Sudah Diangkat</label>
+							</div>
+
 						</div>
 						<div class="row" style="margin-top: 10px;">
 							<div class="col-lg-2">

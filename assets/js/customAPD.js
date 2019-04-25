@@ -314,3 +314,13 @@ $(document).ready(function() {
             of: $(this)
         });
     });
+
+    $(function(){
+      $('.txtBulanTahunP2K3').datepicker({
+      "autoclose": true,
+      "todayHiglight": true,
+      "format":'mm yyyy',
+      "viewMode":'months',
+      "minViewMode":'months'
+    });
+    });

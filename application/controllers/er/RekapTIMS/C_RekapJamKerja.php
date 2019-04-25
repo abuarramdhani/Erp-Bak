@@ -22,8 +22,8 @@ class C_RekapJamKerja extends CI_Controller
 			$this->session->set_userdata('last_page', current_url());
 			// $this->session->set_userdata('Responsibility', 'some_value');
 		}
-
 		$this->checkSession();
+		date_default_timezone_set('Asia/Jakarta');
     }
 	
 	public function checkSession()
@@ -52,55 +52,71 @@ class C_RekapJamKerja extends CI_Controller
 		$this->form_validation->set_rules('txtTanggalRekap', 'Tanggal Rekap', 'required');
 		$this->form_validation->set_rules('cmbLokasiKerja', 'Tanggal Rekap', 'required');		
 
-		if($this->form_validation->run() === FALSE)
-		{
 			$data['Header'] 	=	'Rekap Jam Kerja - Quick ERP';
 			$this->load->view('V_Header',$data);
 			$this->load->view('V_Sidemenu',$data);
 			$this->load->view('er/RekapTIMS/RekapJamKerja/V_index',$data);
 			$this->load->view('V_Footer',$data);
-		}
-		else
-		{
-			$tanggalRekap 	=	$this->input->post('txtTanggalRekap', TRUE);
-			$lokasiKerja 	=	$this->input->post('cmbLokasiKerja', TRUE);
-			$tambahLembur	= 	$this->input->post('chkDenganLembur', TRUE);
-
-
-			if($tambahLembur!='1')
-			{
-				$tambahLembur 	= 	0;
-			}
-			else
-			{
-				$tambahLembur 	= 	1;
-			}
-
-			$tanggalRekap 		=	explode(' - ', $tanggalRekap);
-			$tanggalAwalRekap	=	$tanggalRekap[0];
-			$tanggalAkhirRekap	=	$tanggalRekap[1];
-
-			$this->benchmark->mark('mulai_rekap');
-			$data['rekapJamKerja'] 			=	$this->M_rekapjamkerja->prosesRekapJamKerja($tanggalAwalRekap, $tanggalAkhirRekap, $lokasiKerja, $tambahLembur);
-			$this->benchmark->mark('selesai_rekap');
-
-			$data['tanggalAwalRekap'] 		=	$tanggalAwalRekap;
-			$data['tanggalAkhirRekap']		=	$tanggalAkhirRekap;
-			$data['waktuEksekusiRekap'] 	= 	$this->benchmark->elapsed_time('mulai_rekap', 'selesai_rekap');
-
-			$data['Header'] 	=	'Rekap Jam Kerja - '.date('Ymd', strtotime($tanggalAwalRekap)).'-'.date('Ymd', strtotime($tanggalAkhirRekap)).' - '.$lokasiKerja.' - Quick ERP';
-
-			$this->load->view('V_Header', $data);
-			$this->load->view('V_Sidemenu',$data);
-			$this->load->view('er/RekapTIMS/RekapJamKerja/V_index',$data);
-			$this->load->view('V_Footer',$data);
-		}
+		
 		
 	}
+	public function search()
+	{
+		$user_id = $this->session->userid;
+		
+		$data['Title'] = 'Rekap Jam Kerja';
+		$data['Menu'] = 'Rekap Jam Kerja';
+		$data['SubMenuOne'] = 'Rekap Jam Kerja';
+		
+		$data['UserMenu'] = $this->M_user->getUserMenu($user_id,$this->session->responsibility_id);
+		$data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id);
+		$data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id);
 
+		$this->form_validation->set_rules('txtTanggalRekap', 'Tanggal Rekap', 'required');
+		$this->form_validation->set_rules('cmbLokasiKerja', 'Tanggal Rekap', 'required');		
+		
+		$tanggalRekap 	=	$this->input->post('txtTanggalRekap', TRUE);
+		$lokasiKerja 	=	$this->input->post('cmbLokasiKerja', TRUE);
+		$lembur			= 	$this->input->post('slc_lembur', TRUE);
+
+		// echo $lokasiKerja." - ".$tanggalRekap." - ".$tambahLembur;
+		// exit();
+		
+		// if($tambahLembur!='1')
+		// {
+		// 	$tambahLembur 	= 	0;
+		// }
+		// else
+		// {
+		// 	$tambahLembur 	= 	1;
+		// }
+		if ($lokasiKerja == "") {
+			$lokasiKerja = "all";
+		}
+		// exit();
+		$tanggalRekap 		=	explode(' - ', $tanggalRekap);
+		$tanggalAwalRekap	=	$tanggalRekap[0];
+		$tanggalAkhirRekap	=	$tanggalRekap[1];
+
+		$this->benchmark->mark('mulai_rekap');
+		$data['rekapJamKerja'] 			=	$this->M_rekapjamkerja->prosesRekapJamKerja($tanggalAwalRekap, $tanggalAkhirRekap, $lokasiKerja, $lembur);
+		
+		$this->benchmark->mark('selesai_rekap');
+
+		$data['tanggalAwalRekap'] 		=	$tanggalAwalRekap;
+		$data['tanggalAkhirRekap']		=	$tanggalAkhirRekap;
+		$data['waktuEksekusiRekap'] 	= 	$this->benchmark->elapsed_time('mulai_rekap', 'selesai_rekap');
+
+		$data['Header'] 	=	'Rekap Jam Kerja - '.date('Ymd', strtotime($tanggalAwalRekap)).'-'.date('Ymd', strtotime($tanggalAkhirRekap)).' - '.$lokasiKerja.' - Quick ERP';
+
+		$this->load->view('V_Header', $data);
+		$this->load->view('V_Sidemenu',$data);
+		$this->load->view('er/RekapTIMS/RekapJamKerja/V_index',$data);
+		$this->load->view('V_Footer',$data);
+	}
 	public function daftarLokasiKerja()
 	{
-		$keyword 			=	$this->input->get('keyword');
+		$keyword 			=	strtoupper($this->input->get('term'));
 
 		$resultLokasiKerja 	=	$this->M_rekapjamkerja->ambilLokasiKerja($keyword);
 		echo json_encode($resultLokasiKerja);

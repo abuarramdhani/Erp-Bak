@@ -62,7 +62,7 @@
 						<a href="<?php echo base_url('AccountPayables/MonitoringInvoice/InvoiceKasie/finishBatch')?>">
 							<button type="button" class="btn btn-primary pull-right" style="margin-top: 10px" >Back</button>
 						</a>
-						<button type="button" class="btn btn-primary pull-right" onclick="submitUlangKasieGudang($(this))" value="<?php echo $batch[0]['BATCH_NUMBER']?>" style="margin-top: 10px; margin-right: 10px;" >Submit Ulang</button>
+						<!-- <button type="button" class="btn btn-primary pull-right" onclick="submitUlangKasieGudang($(this))" value="<?php echo $batch[0]['BATCH_NUMBER']?>" style="margin-top: 10px; margin-right: 10px;" >Submit Ulang</button> -->
 					</div>
 				</div>
 			</div>

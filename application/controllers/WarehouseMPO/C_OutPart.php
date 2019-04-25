@@ -69,7 +69,7 @@ class C_OutPart extends CI_Controller {
 		$data['warehouse'] = $this->M_outpart->getWarehouse();
 		$data['subkont'] = $this->M_outpart->getSubkont();
 
-		$data['outpartAll'] = $this->M_outpart->allPengeluaran($spbs_awal,$spbs_akhir,$kirim_awal,$kirim_akhir,$spbs_num,$subname,$job);
+		$data['outpartAll'] = array();
 
 		// echo "<pre>";
 		// print_r($data);
@@ -104,7 +104,7 @@ class C_OutPart extends CI_Controller {
 		$data['warehouse'] = $this->M_outpart->getWarehouse();
 		$data['subkont'] = $this->M_outpart->getSubkont();
 
-		if ($compile == FALSE) {
+		if ($compile == 'SEMUA') {
 			$data['outpartAll'] = $this->M_outpart->indexOut();
 		}else{
 			$data['outpartAll'] = $this->M_outpart->indexWarehouse($compile);
@@ -130,32 +130,36 @@ class C_OutPart extends CI_Controller {
 		$user_id = $this->session->userid;
 
 
-		
+		$spbs_awal_y = '';
+		$spbs_akhir_y = '';
+		$kirim_awal_y = '';
+		$kirim_akhir_y = '';
+
 
 	//----------------------------------------------------------------//
 		$spbs_awal = $this->input->post('txtSpbsAwal');
 		if($spbs_awal){
-			$spbs_awal = date_format(date_create($spbs_awal),'d/M/Y');
+			$spbs_awal_y = date_format(date_create($spbs_awal),'d/M/Y');
 		}
 
 	//----------------------------------------------------------------//
 		$spbs_akhir = $this->input->post('txtSpbsAkhir');
 		if($spbs_akhir){
-			$spbs_akhir = date_format(date_create($spbs_akhir),'d/M/Y');
+			$spbs_akhir_y = date_format(date_create($spbs_akhir),'d/M/Y');
 		}
 
 
 	//----------------------------------------------------------------//
 		$kirim_awal = $this->input->post('txtKirimAwal');
 		if($kirim_awal){
-			$kirim_awal = date_format(date_create($kirim_awal),'d/M/Y');
+			$kirim_awal_y = date_format(date_create($kirim_awal),'d/M/Y');
 		}
 		
 
 	//----------------------------------------------------------------//
 		$kirim_akhir = $this->input->post('txtKirimAkhir');
 		if($kirim_akhir){
-			$kirim_akhir = date_format(date_create($kirim_akhir),'d/M/Y');
+			$kirim_akhir_y = date_format(date_create($kirim_akhir),'d/M/Y');
 		}
 
 	//----------------------------------------------------------------//
@@ -167,6 +171,11 @@ class C_OutPart extends CI_Controller {
 	//----------------------------------------------------------------//
 		$job = $this->input->post('txtJob');
 
+		// $compile = $this->input->post('compile');
+
+		// if($compile == 'SEMUA'){
+		// 	$compile = false;
+		// }
 
 		$data['spbs_awal'] = $spbs_awal;
 		$data['spbs_akhir'] = $spbs_akhir;
@@ -175,6 +184,7 @@ class C_OutPart extends CI_Controller {
 		$data['spbs_num'] = $spbs_num;
 		$data['subname'] = $subname;
 		$data['job'] = $job;
+		$data['compile'] = $compile;
 
 		$data['Menu'] = 'Dashboard';
 		$data['SubMenuOne'] = '';
@@ -189,11 +199,10 @@ class C_OutPart extends CI_Controller {
 
 
 
-		$data['outpartAll'] = $this->M_outpart->allPengeluaran($spbs_awal,$spbs_akhir,$kirim_awal,$kirim_akhir,$spbs_num,$subname,$job);
 
-		// echo "<pre>";
-		// print_r($data);
-		// exit();
+		$data['outpartAll'] = $this->M_outpart->allPengeluaran($spbs_awal_y,$spbs_akhir_y,$kirim_awal_y,$kirim_akhir_y,$spbs_num,$subname,$job,$compile);
+
+	
 
 		$this->load->view('V_Header',$data);
 		$this->load->view('V_Sidemenu',$data);

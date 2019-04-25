@@ -319,11 +319,143 @@ class C_DataMasuk extends CI_Controller
        //  	$horizontal++;
        //  }
 
-
         $objPHPExcel->getActiveSheet()->setTitle('DAFTAR KEBUTUHAN P2K3');
 
+        $d = 0;
+        foreach ($daftar_seksi as $otherSheet) {
+         $phpExcelSheet = $objPHPExcel->createSheet();
+
+         
+
+         //content
+
+          $phpExcelSheet->setCellValue('A1', "DAFTAR KEBUTUHAN SARANA P2K3 ".$otherSheet['seksi']);
+          $phpExcelSheet->mergeCells('A1:O2');
+          $phpExcelSheet->getStyle('A1')->getFont()->setBold(TRUE); // Set bold kolom A1
+          $phpExcelSheet->getStyle('A1')->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
+          $phpExcelSheet->getStyle('A1')->getAlignment()->setVertical(PHPExcel_Style_Alignment::VERTICAL_CENTER);
+
+          $phpExcelSheet->setCellValue('A3', "No");
+          $phpExcelSheet->setCellValue('B3', "Sarana APD");
+          $phpExcelSheet->setCellValue('C3', "Kode Item");
+          $phpExcelSheet->setCellValue('D3', "Durasi");
+          $phpExcelSheet->setCellValue('E3', "Total APD");
+          $phpExcelSheet->setCellValue('F3', "Kebutuhan Umum");
+          $phpExcelSheet->mergeCells('A3:A5');
+          $phpExcelSheet->mergeCells('B3:B5');
+          $phpExcelSheet->mergeCells('C3:C5');
+          $phpExcelSheet->mergeCells('D3:D5');
+          $phpExcelSheet->mergeCells('E3:E5');
+          $phpExcelSheet->mergeCells('F3:F5');
+          $phpExcelSheet->getStyle('A3:A5')->getFont()->setBold(TRUE)->setSize(9); // Set bold kolom A1
+          $phpExcelSheet->getStyle('A3:A5')->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
+          $phpExcelSheet->getStyle('A3:A5')->getAlignment()->setVertical(PHPExcel_Style_Alignment::VERTICAL_CENTER);
+          $phpExcelSheet->getStyle('B3:B5')->getFont()->setBold(TRUE)->setSize(9); // Set bold kolom A1
+          $phpExcelSheet->getStyle('B3:B5')->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
+          $phpExcelSheet->getStyle('B3:B5')->getAlignment()->setVertical(PHPExcel_Style_Alignment::VERTICAL_CENTER);
+          $phpExcelSheet->getStyle('C3:C5')->getFont()->setBold(TRUE)->setSize(9); // Set bold kolom A1
+          $phpExcelSheet->getStyle('C3:C5')->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
+          $phpExcelSheet->getStyle('C3:C5')->getAlignment()->setVertical(PHPExcel_Style_Alignment::VERTICAL_CENTER);
+          $phpExcelSheet->getStyle('D3:D5')->getFont()->setBold(TRUE)->setSize(9); // Set bold kolom A1
+          $phpExcelSheet->getStyle('D3:D5')->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
+          $phpExcelSheet->getStyle('D3:D5')->getAlignment()->setVertical(PHPExcel_Style_Alignment::VERTICAL_CENTER);
+          $phpExcelSheet->getStyle('E3:E5')->getFont()->setBold(TRUE)->setSize(9); // Set bold kolom A1
+          $phpExcelSheet->getStyle('E3:E5')->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
+          $phpExcelSheet->getStyle('E3:E5')->getAlignment()->setVertical(PHPExcel_Style_Alignment::VERTICAL_CENTER);
+          $phpExcelSheet->getStyle('F3:F5')->getFont()->setBold(TRUE)->setSize(9); // Set bold kolom A1
+          $phpExcelSheet->getStyle('F3:F5')->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
+          $phpExcelSheet->getStyle('F3:F5')->getAlignment()->setVertical(PHPExcel_Style_Alignment::VERTICAL_CENTER);
+          $phpExcelSheet->getStyle('A3:A5')->applyFromArray($style_heading);
+          $phpExcelSheet->getStyle('B3:B5')->applyFromArray($style_heading);
+          $phpExcelSheet->getStyle('C3:C5')->applyFromArray($style_heading);
+          $phpExcelSheet->getStyle('D3:D5')->applyFromArray($style_heading);
+          $phpExcelSheet->getStyle('E3:E5')->applyFromArray($style_heading);
+          $phpExcelSheet->getStyle('F3:F5')->applyFromArray($style_heading);
+
+          $pekerjaan = $this->M_order->daftar_pekerjaan($otherSheet['kodesie']);
+          $no_naker = 6;
+          foreach ($pekerjaan as $column) {
+            PHPExcel_Shared_Font::setAutoSizeMethod(PHPExcel_Shared_Font::AUTOSIZE_METHOD_EXACT);
+            $kolom_new = PHPExcel_Cell::stringFromColumnIndex($no_naker);
+            $phpExcelSheet->setCellValue($kolom_new.'4', $column['pekerjaan']);
+            $phpExcelSheet->getStyle($kolom_new.'4')->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
+            $phpExcelSheet->getStyle($kolom_new.'4')->getAlignment()->setVertical(PHPExcel_Style_Alignment::VERTICAL_CENTER);
+            $phpExcelSheet->getStyle($kolom_new.'4')->applyFromArray($style_col_rev);
+            $phpExcelSheet->getStyle($kolom_new.'4')->getFont()->setBold(false)->setSize(9); // Set bold kolom A1
+            $phpExcelSheet->setCellValue($kolom_new.'5', $column['kdpekerjaan']);
+            $phpExcelSheet->getStyle($kolom_new.'5')->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
+            $phpExcelSheet->getStyle($kolom_new.'5')->getAlignment()->setVertical(PHPExcel_Style_Alignment::VERTICAL_CENTER);
+            $phpExcelSheet->getStyle($kolom_new.'5')->applyFromArray($style_col_rev);
+            $phpExcelSheet->getStyle($kolom_new.'5')->getFont()->setBold(false)->setSize(9); // Set bold kolom A1
+            $no_naker++;
+          }
+   
+          $a = count($pekerjaan);
+          $horizontal = 5 + $a;
+          $kolom_new = PHPExcel_Cell::stringFromColumnIndex($horizontal);
+          $phpExcelSheet->mergeCells('G3:'.$kolom_new.'3');
+          $phpExcelSheet->setCellValue('G3', 'Seksi');
+          $phpExcelSheet->getStyle('G3:G3')->getAlignment()->setVertical(PHPExcel_Style_Alignment::VERTICAL_CENTER);
+          $phpExcelSheet->getStyle('G3')->getAlignment()->applyFromArray(
+          array('horizontal' => PHPExcel_Style_Alignment::HORIZONTAL_CENTER,) );
+
+          $num = 1;
+          $data_perseksi = $this->M_order->tampil_data_2($otherSheet['kodesie'],$tgl,$tahun);
+          foreach ($data_perseksi as $datasie) {
+            $phpExcelSheet->setCellValue('A'.($num+5),$num);
+            $phpExcelSheet->setCellValue('B'.($num+5),$datasie['item']);
+            $phpExcelSheet->setCellValue('C'.($num+5),$datasie['kode_item']);
+            $phpExcelSheet->setCellValue('E'.($num+5),$datasie['ttl_order']);
+            $phpExcelSheet->setCellValue('F'.($num+5),$datasie['jml_umum']);
+
+            $data_jml_pkj = explode(",", $datasie['jml_pkj']);
+            $data_jumlah = explode(",", $datasie['jml']);
+            $data_kdpekerjaan = explode(",", $datasie['kd_pekerjaan']);
+            $loop = 0;
+            foreach ($data_kdpekerjaan as $dt_pkj) {
+              $no_naker = 6;
+              foreach ($pekerjaan as $bandingKerja) {
+               if ($bandingKerja['kdpekerjaan'] == $dt_pkj) {
+                PHPExcel_Shared_Font::setAutoSizeMethod(PHPExcel_Shared_Font::AUTOSIZE_METHOD_EXACT);
+                $kolom_new = PHPExcel_Cell::stringFromColumnIndex($no_naker);
+                $phpExcelSheet->setCellValue($kolom_new.($num+5), intval($data_jumlah[$loop])*intval($data_jml_pkj[$loop]));
+                $objPHPExcel->getActiveSheet()->getStyle($kolom_new.$vertical)->applyFromArray($style_row);
+                $objPHPExcel->getActiveSheet()->getStyle($kolom_new.$vertical)->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
+               }
+               $no_naker++;
+              }
+              $loop++;
+            }
+
+            $num++;
+          }
+          //content
+
+          //title
+          if (strlen($otherSheet['seksi']) > 30) {
+            $titleSheetx = explode(" - ", $otherSheet['seksi']);
+            if (isset($titleSheetx['1'])) {
+              $titleSheety = strlen($titleSheetx['1']);
+              $panjang = 27 - $titleSheety;
+            }else{
+              $titleSheetx['1'] = "";
+              $panjang = 27;
+            }
+           
+            $titleSheet = substr($otherSheet['seksi'],0,$panjang)."...".$titleSheetx['1'];
+           }else{
+            $titleSheet = $otherSheet['seksi'];
+           }
+
+         $phpExcelSheet->setTitle($titleSheet);
+         $d++;
+        }
+
+
+        
+
         $objPHPExcel->setActiveSheetIndex(0);  
-        $filename = urlencode("Daftar Kebutuhan P2K3".date("Y-m-d").".ods");
+        $filename = urlencode("Daftar Kebutuhan P2K3".date("Y-m-d").".xls");
            
           header('Content-Type: application/vnd.ms-excel'); //mime type
           header('Content-Disposition: attachment;filename="'.$filename.'"'); //tell browser what's the file name

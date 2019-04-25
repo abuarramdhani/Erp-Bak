@@ -11,14 +11,27 @@ class M_tarikfingerspot extends CI_MODEL
 		parent::__construct();
 		$this->finger = $this->load->database('db_fingerspot',TRUE);
 		$this->personalia = $this->load->database('personalia',TRUE);
+		$this->quick = $this->load->database('quick', TRUE);
 	}
 
-	public function getAttLog($periode){
+	public function getAttLog($periode, $status){
+
 		$data = array();
-		$sql = "select cast(scan_date as date) tanggal, pin noind_baru,cast(scan_date as time) waktu 
+		if ('Transfer'==$status)
+		{
+			$sql = "select cast(scan_date as date) tanggal, pin noind_baru,cast(scan_date as time) waktu, sn 
+		from fin_pro.att_log 
+		where cast(scan_date as date) >= cast('$periode' as date)
+		order by scan_date,pin";
+		}
+		else
+		{
+			$sql = "select cast(scan_date as date) tanggal, pin noind_baru,cast(scan_date as time) waktu, sn 
 		from fin_pro.att_log 
 		where cast(scan_date as date) = cast('$periode' as date)
 		order by scan_date,pin";
+		}
+		
 		$resultFinger = $this->finger->query($sql);
 		$resFinger = $resultFinger->result_array();
 		if (!empty($resFinger)) {
@@ -28,7 +41,8 @@ class M_tarikfingerspot extends CI_MODEL
 						from hrd_khs.tpribadi 
 						where noind_baru not like '  %'
 						and cast(noind_baru as integer) = ".$key['noind_baru']." 
-						and keluar = '0'";
+						and keluar='0'
+					";
 				$resultHrd = $this->personalia->query($sql);
 				$resHrd = $resultHrd->result_array();
 				if (!empty($resHrd)) {
@@ -38,12 +52,47 @@ class M_tarikfingerspot extends CI_MODEL
 							'waktu' => $key['waktu'],
 							'noind' => $value['noind'],
 							'kodesie' => $value['kodesie'],
-							'noind_baru' => $value['noind_baru'],
-							'user_' => 'MNL'
+							'noind_baru' => $value['noind_baru']
 						);
-						$a++;
+						
 					}
 				}
+				else
+				{
+				    //tarik data pekerja yang sudah keluar dengan menggunakan data nomor induk terakhir.
+				   $sql = "select noind,noind_baru,kodesie 
+						from hrd_khs.tpribadi 
+						where noind_baru not like '  %'
+						and cast(noind_baru as integer) = ".$key['noind_baru']." 
+						order by tglkeluar desc limit 1
+					"; 
+					$resultHrdkeluar = $this->personalia->query($sql);
+			    	$resHrdkeluar = $resultHrdkeluar->result_array();
+			    	foreach ($resHrdkeluar as $value) {
+						$data[$a] = array(
+							'tanggal' => $key['tanggal'],
+							'waktu' => $key['waktu'],
+							'noind' => $value['noind'],
+							'kodesie' => $value['kodesie'],
+							'noind_baru' => $value['noind_baru']
+						);
+						
+					}
+				    
+				}
+
+				$sql = "select * 
+						from db_datapresensi.tb_device 
+						where device_sn = '".$key['sn']."' ";
+				$resultDev = $this->quick->query($sql);
+				$resDev = $resultDev->result_array();
+				if (!empty($resDev)) {
+					$data[$a]['user_'] = $resDev['0']['inisial_lokasi'];
+				}else{
+					$data[$a]['user_'] = 'MNL';
+				}
+
+				$a++;
 			}
 		}
 		return $data;
@@ -73,5 +122,11 @@ class M_tarikfingerspot extends CI_MODEL
 
 	public function insert_presensi($table_schema, $table_name, $insert){
     	$this->personalia->insert($table_schema.".".$table_name, $insert);
+    }
+
+    public function getDevice(){
+    	$sql = "select device_name,inisial_lokasi, 0 jumlah from db_datapresensi.tb_device order by 1";
+    	$result = $this->quick->query($sql);
+		return $result->result_array();
     }
 }

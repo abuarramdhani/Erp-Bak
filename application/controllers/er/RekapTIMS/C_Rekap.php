@@ -247,7 +247,7 @@ class C_Rekap extends CI_Controller {
 			$data['periode1']	= $period1;
 			$data['periode2']	= $period2;
 			/*$data['rekap'] = $this->M_rekapmssql->dataRekap($period1,$period2,$status,$departemen,$bidang,$unit,$section);*/
-			$data['rekap'] 		= $this->M_rekaptims->rekapTIMS($periode1, $periode2, FALSE, FALSE, $status, $departemen, $bidang, $unit, $section);
+			$data['rekap'] 		= $this->M_rekaptims->rekapTIMS($periode1, $periode2, FALSE, FALSE, $status, $departemen, $bidang, $unit, $section, $lokasi);
 			/*$data['rekap_masakerja'] = $this->M_rekapmssql->data_rekap_masakerja($period2,$status,$departemen,$bidang,$unit,$section);*/
 			$this->load->view('er/RekapTIMS/V_detail_rekap_table',$data);
 		}
@@ -630,7 +630,7 @@ class C_Rekap extends CI_Controller {
 														)
 													)
 													/
-													($rekap_data['totalhk']+$rekap_data['totalhks'])
+													(($rekap_data['totalhk']+$rekap_data['totalhks']) - ($rekap_data['frekct']+$rekap_data['frekcts']))
 												)
 												*100
 											),

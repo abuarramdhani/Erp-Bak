@@ -170,7 +170,7 @@
 	<table style="width: 100%;font-size: 15px;text-align: center; margin-top: 55px;">
 		<tr>
 			<td width="45%"><u>Bambang Yudhosuseno</u></td>
-			<td><u>Taufiq Giri Ichwanusofa</u></td>
+			<td><u>Anis Ulfah Mustaqim</u></td>
 		</tr>
 		<tr>
 			<td>Ass.Ka Dept.Personalia</td>

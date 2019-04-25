@@ -94,7 +94,9 @@ class C_List extends CI_Controller
 	private function create_subtotal($no)
 	{
 		$this->load->library('Excel');
-		$data = $this->M_uploadpph->getDataBatch($no);
+		$data = $this->M_uploadpph->getDataBatchSubtotal($no);
+		// echo'<pre>';
+		// print_r($data);exit;
 		$arraySpezial = array('CABANG_LAIN','TUKSONO','YOGYAKARTA');
 		$arrayJenis = array('PPH21PES','PPH21','PPH23','PPH4KON','PPH4SE','PPH4UN','0');
 		$datagroup = array();
@@ -227,18 +229,19 @@ class C_List extends CI_Controller
 			            $object->setActiveSheetIndex(0)
 			                    ->setCellValue('A'.$row,'Jenis Pph')
 			                    ->setCellValue('B'.$row,'Tarif Pph')
-			                    ->setCellValue('C'.$row,'Nama Vendor')
-			                    ->setCellValue('D'.$row,'No Invoice')
-			                    ->setCellValue('E'.$row,'Tgl Transaksi')
-			                    ->setCellValue('F'.$row,'Bank')
-			                    ->setCellValue('G'.$row,'Currency')
-			                    ->setCellValue('H'.$row,'DPP')
-			                    ->setCellValue('I'.$row,'PPH')
-			                    ->setCellValue('J'.$row,'Jenis Jasa')
-			                    ->setCellValue('K'.$row,'Lokasi')
-			                    ->setCellValue('L'.$row,'Tgl Invoice');
-			            $object->getActiveSheet()->getStyle('A'.$row.':L'.$row)->applyFromArray($Font10Bold);
-			            $object->getActiveSheet()->getStyle('A'.$row.':L'.$row)->applyFromArray($aligncenter);
+								->setCellValue('C'.$row,'Nama Vendor')
+								->setCellValue('D'.$row,'No NPWP')
+			                    ->setCellValue('E'.$row,'No Invoice')
+			                    ->setCellValue('F'.$row,'Tgl Transaksi')
+			                    ->setCellValue('G'.$row,'Bank')
+			                    ->setCellValue('H'.$row,'Currency')
+			                    ->setCellValue('I'.$row,'DPP')
+			                    ->setCellValue('J'.$row,'PPH')
+			                    ->setCellValue('K'.$row,'Jenis Jasa')
+			                    ->setCellValue('L'.$row,'Lokasi')
+			                    ->setCellValue('M'.$row,'Tgl Invoice');
+			            $object->getActiveSheet()->getStyle('A'.$row.':M'.$row)->applyFromArray($Font10Bold);
+			            $object->getActiveSheet()->getStyle('A'.$row.':M'.$row)->applyFromArray($aligncenter);
 			            $row++;
 		            	foreach ($value as $key2 => $value2) {
 			            	$totdpp = 0;
@@ -247,23 +250,25 @@ class C_List extends CI_Controller
 			            		$object->setActiveSheetIndex(0)
 					                    ->setCellValue('A'.$row,$value3['jenis_pph'])
 					                    ->setCellValue('B'.$row,$value3['tarif_pph'])
-					                    ->setCellValue('C'.$row,$value3['nama_vendor'])
-					                    ->setCellValue('D'.$row,$value3['no_invoice'])
-					                    ->setCellValue('E'.$row,strtoupper(date('d-M-y', strtotime($value3['tgl_transaksi']))))
-					                    ->setCellValue('F'.$row,$value3['bank'])
-					                    ->setCellValue('G'.$row,$value3['currency'])
-					                    ->setCellValue('H'.$row,$value3['dpp'])
-					                    ->setCellValue('I'.$row,$value3['pph'])
-					                    ->setCellValue('J'.$row,$value3['jenis_jasa'])
-					                    ->setCellValue('K'.$row,$value3['lokasi'])
-					                    ->setCellValue('L'.$row,strtoupper(date('d-M-y', strtotime($value3['tgl_invoice']))));
+										->setCellValue('C'.$row,$value3['nama_vendor'])
+										->setCellValue('D'.$row,$value3['no_npwp'])
+					                    ->setCellValue('E'.$row,$value3['no_invoice'])
+					                    ->setCellValue('F'.$row,strtoupper(date('d-M-y', strtotime($value3['tgl_transaksi']))))
+					                    ->setCellValue('G'.$row,$value3['bank'])
+					                    ->setCellValue('H'.$row,$value3['currency'])
+					                    ->setCellValue('I'.$row,$value3['dpp'])
+					                    ->setCellValue('J'.$row,$value3['pph'])
+					                    ->setCellValue('K'.$row,$value3['jenis_jasa'])
+					                    ->setCellValue('L'.$row,$value3['lokasi'])
+					                    ->setCellValue('M'.$row,strtoupper(date('d-M-y', strtotime($value3['tgl_invoice']))));
 					            $object->getActiveSheet()->getStyle('A'.$row.':L'.$row)->applyFromArray($FontFam);
 					            $object->getActiveSheet()->getStyle('B'.$row)->applyFromArray($aligncenter);
 					            $object->getActiveSheet()->getStyle('D'.$row)->applyFromArray($aligncenter);
 					            $object->getActiveSheet()->getStyle('E'.$row)->applyFromArray($aligncenter);
-					            $object->getActiveSheet()->getStyle('G'.$row)->applyFromArray($aligncenter);
-					            $object->getActiveSheet()->getStyle('J'.$row.':L'.$row)->applyFromArray($aligncenter);
-					            $object->getActiveSheet()->getStyle('H'.$row.':I'.$row)->getNumberFormat()->setFormatCode('#,##0;[Red]-#,##0');
+								$object->getActiveSheet()->getStyle('G'.$row)->applyFromArray($aligncenter);
+								$object->getActiveSheet()->getStyle('H'.$row)->applyFromArray($aligncenter);
+					            $object->getActiveSheet()->getStyle('K'.$row.':M'.$row)->applyFromArray($aligncenter);
+					            $object->getActiveSheet()->getStyle('I'.$row.':J'.$row)->getNumberFormat()->setFormatCode('#,##0;[Red]-#,##0');
 					            $totdpp += $value3['dpp'];
 					            $totpph += $value3['pph'];
 					            $vendor = $value3['nama_vendor'];
@@ -271,21 +276,21 @@ class C_List extends CI_Controller
 			            	}
 				            	$object->setActiveSheetIndex(0)
 					                    ->setCellValue('C'.$row,$vendor.' Result')
-					                    ->setCellValue('H'.$row,$totdpp)
-					                    ->setCellValue('I'.$row,$totpph);
-					            $object->getActiveSheet()->getStyle('C'.$row.':I'.$row)->applyFromArray($Font10BoldUI);
-					            $object->getActiveSheet()->getStyle('H'.$row.':I'.$row)->getNumberFormat()->setFormatCode('#,##0;[Red]-#,##0');
+					                    ->setCellValue('I'.$row,$totdpp)
+					                    ->setCellValue('J'.$row,$totpph);
+					            $object->getActiveSheet()->getStyle('C'.$row.':J'.$row)->applyFromArray($Font10BoldUI);
+					            $object->getActiveSheet()->getStyle('I'.$row.':J'.$row)->getNumberFormat()->setFormatCode('#,##0;[Red]-#,##0');
 					            $gandtotdpp += $totdpp;
 								$grandtotpph += $totpph;
 					            $row++;
 		            	}
 				            $object->setActiveSheetIndex(0)
 				                    ->setCellValue('C'.$row,'Grand Total')
-				                    ->setCellValue('H'.$row,$gandtotdpp)
-				                    ->setCellValue('I'.$row,$grandtotpph);
+				                    ->setCellValue('I'.$row,$gandtotdpp)
+				                    ->setCellValue('J'.$row,$grandtotpph);
 
-				            $object->getActiveSheet()->getStyle('C'.$row.':I'.$row)->applyFromArray($Font10BoldUI);
-				            $object->getActiveSheet()->getStyle('H'.$row.':I'.$row)->getNumberFormat()->setFormatCode('#,##0;[Red]-#,##0');
+				            $object->getActiveSheet()->getStyle('C'.$row.':J'.$row)->applyFromArray($Font10BoldUI);
+				            $object->getActiveSheet()->getStyle('I'.$row.':J'.$row)->getNumberFormat()->setFormatCode('#,##0;[Red]-#,##0');
 			            	
 			            	$row+=2;
 		            }
@@ -305,6 +310,221 @@ class C_List extends CI_Controller
             $objWriter->save('php://output');
 		
 	}
+
+	// private function create_subtotal($no)
+	// {
+	// 	$this->load->library('Excel');
+	// 	$data = $this->M_uploadpph->getDataBatch($no);
+	// 	$arraySpezial = array('CABANG_LAIN','TUKSONO','YOGYAKARTA');
+	// 	$arrayJenis = array('PPH21PES','PPH21','PPH23','PPH4KON','PPH4SE','PPH4UN','0');
+	// 	$datagroup = array();
+	// 		foreach ($data as $key2 => $value2) {
+	// 			$jenispajak = strtoupper(str_replace(' ','', $value2['jenis_pph']));
+	// 			if (strpos($jenispajak,'PPH21') !== false) {
+	// 				if (strpos($jenispajak,'PPH21PES')  !== false) {
+	// 					$code_jenis = 'PPH21PES';
+	// 				}else{
+	// 					$code_jenis = 'PPH21';
+	// 				}
+	// 			}elseif(strpos($jenispajak,'PPH23') !== false) {
+	// 				$code_jenis = 'PPH23';
+	// 			}elseif(strpos($jenispajak,'PPH4KON') !== false) {
+	// 				$code_jenis = 'PPH4KON';
+	// 			}elseif(strpos($jenispajak,'PPH4SE') !== false) {
+	// 				$code_jenis = 'PPH4SE';
+	// 			}elseif(strpos($jenispajak,'PPH4UN') !== false) {
+	// 				$code_jenis = 'PPH4UN';
+	// 			}else{
+	// 				$code_jenis = '0';
+	// 			}
+	// 			$datagroup[$code_jenis][$value2['jenis_pph'].'<>'.$value2['lokasi']][$value2['nama_vendor']][] = $data[$key2];
+
+	// 		}
+
+	// 		foreach ($arrayJenis as $kJ => $vJ) {
+	// 			if (isset($datagroup[$vJ])) {
+	// 				foreach ($datagroup[$vJ] as $key => $value) {
+	// 					// $datagroup2[$key] = $value;
+	// 					$namex = explode('<>', $key);
+	// 					$nameindex = $namex[1];
+	// 					if (in_array(strtoupper($nameindex), $arraySpezial)) {
+	// 						$datagroup2[strtoupper($nameindex)][$vJ][$key] = $value;
+	// 					}else{
+	// 						$datagroup2['CABANG_LAIN'][$vJ][$key] = $value;
+	// 					}
+	// 				}
+	// 			}
+	// 		}
+
+	// 		foreach ($datagroup2 as $key => $value) {
+	// 			foreach ($value as $key2 => $value2) {
+	// 				foreach ($value2 as $key3 => $value3) {
+	// 					foreach ($value3 as $key4 => $value4) {
+	// 						foreach ($value4 as $key5 => $value5) {
+	// 							$datagroup3[$key][$key2][$key4][] = $value5;
+	// 						}
+	// 					}
+	// 				}
+	// 			}
+	// 		}
+
+
+	// 	//mulai
+    //         $object = new PHPExcel();
+    //         $object->getProperties()->setCreator("Quick")
+    //             ->setLastModifiedBy("Quick");
+
+    //         $object->getActiveSheet()->getPageSetup()
+    //             ->setOrientation(PHPExcel_Worksheet_PageSetup::ORIENTATION_PORTRAIT);
+    //         $object->getActiveSheet()->getPageSetup()
+    //             ->setPaperSize(PHPExcel_Worksheet_PageSetup::PAPERSIZE_LETTER);
+
+    //         //font style
+    //         $FontFam        = array('font'  => array( 'size' => 10,'bold'  => false,'name' => 'Arial'));
+    //         $Font10Reg      = array('font'  => array( 'size' => 10,'bold'  => false,'name' => 'Arial'));
+    //         $Font10Bold     = array('font'  => array( 'size' => 10,'bold'  => true,'name' => 'Arial'));
+    //         $Font10BoldI    = array('font'  => array( 'size' => 10,'bold'  => true,'italic' => true,'name' => 'Arial'));
+    //         $Font10BoldU    = array('font'  => array( 'size' => 10,'bold'  => true,'underline' => true,'name' => 'Arial'));
+    //         $Font10BoldUI   = array('font'  => array( 'size' => 10,'bold'  => true,'underline' => true,'italic' => true,'name' => 'Arial'));
+
+	// 		//align
+    //         $aligncenter = array(
+    //            'alignment' => array(
+    //               'horizontal' => PHPExcel_Style_Alignment::HORIZONTAL_CENTER,
+    //               'vertical'   => PHPExcel_Style_Alignment::VERTICAL_CENTER, ));
+    //         $alignleft = array(
+    //            'alignment' => array(
+    //               'horizontal' => PHPExcel_Style_Alignment::HORIZONTAL_LEFT,
+    //               'vertical'   => PHPExcel_Style_Alignment::VERTICAL_CENTER, ));
+    //         $alignright = array(
+    //            'alignment' => array(
+    //               'horizontal' => PHPExcel_Style_Alignment::HORIZONTAL_RIGHT,
+    //               'vertical'   => PHPExcel_Style_Alignment::VERTICAL_CENTER, ));
+
+
+    //         //width
+    //         $object->getActiveSheet()->getColumnDimension('A')->setWidth(21);
+    //         $object->getActiveSheet()->getColumnDimension('B')->setWidth(12);
+    //         $object->getActiveSheet()->getColumnDimension('C')->setWidth(38);
+    //         $object->getActiveSheet()->getColumnDimension('D')->setWidth(32);
+    //         $object->getActiveSheet()->getColumnDimension('E')->setWidth(18);
+    //         $object->getActiveSheet()->getColumnDimension('F')->setWidth(18);
+    //         $object->getActiveSheet()->getColumnDimension('G')->setWidth(12);
+    //         $object->getActiveSheet()->getColumnDimension('H')->setWidth(12);
+    //         $object->getActiveSheet()->getColumnDimension('I')->setWidth(12);
+    //         $object->getActiveSheet()->getColumnDimension('J')->setWidth(22);
+    //         $object->getActiveSheet()->getColumnDimension('K')->setWidth(12);
+    //         $object->getActiveSheet()->getColumnDimension('L')->setWidth(12);
+
+    //         //height
+    //         $object->getActiveSheet()->getRowDimension('1')->setRowHeight(12);
+    //         $object->getActiveSheet()->getRowDimension('2')->setRowHeight(12);
+    //         $object->getActiveSheet()->getRowDimension('3')->setRowHeight(12);
+
+    //         $object->getActiveSheet()->setTitle('SUBTOTAL PPH');
+    //         $object->setActiveSheetIndex(0);
+
+    //         //header
+    //         $object->getActiveSheet()->mergeCells('A1:L1');
+    //         $object->setActiveSheetIndex(0)
+    //                 ->setCellValue('A1','LAPORAN SUBTOTAL PPH')
+    //                 ->setCellValue('A2','PPH');
+    //         $object->getActiveSheet()->getStyle('A1')->applyFromArray($Font10BoldU);
+    //         $object->getActiveSheet()->getStyle('A1')->applyFromArray($aligncenter);
+    //         $object->getActiveSheet()->getStyle('A2')->applyFromArray($Font10Bold);
+
+    //         //isi
+    //         $row = 4;
+    //         foreach ($arraySpezial as $kSp => $vSp) {
+    //         	if (isset($datagroup3[$vSp])) {
+	//             	$object->setActiveSheetIndex(0)
+	// 	                    ->setCellValue('A'.$row, $vSp);
+	// 	            $object->getActiveSheet()->getStyle('A'.$row)->applyFromArray($Font10Bold);
+	// 	            $row++;
+	// 	            foreach ($datagroup3[$vSp] as $key => $value) {
+	// 	            	$gandtotdpp = 0;
+	// 					$grandtotpph = 0;
+	// 		            $object->setActiveSheetIndex(0)
+	// 		                    ->setCellValue('A'.$row,'Jenis Pph')
+	// 		                    ->setCellValue('B'.$row,'Tarif Pph')
+	// 		                    ->setCellValue('C'.$row,'Nama Vendor')
+	// 		                    ->setCellValue('D'.$row,'No Invoice')
+	// 		                    ->setCellValue('E'.$row,'Tgl Transaksi')
+	// 		                    ->setCellValue('F'.$row,'Bank')
+	// 		                    ->setCellValue('G'.$row,'Currency')
+	// 		                    ->setCellValue('H'.$row,'DPP')
+	// 		                    ->setCellValue('I'.$row,'PPH')
+	// 		                    ->setCellValue('J'.$row,'Jenis Jasa')
+	// 		                    ->setCellValue('K'.$row,'Lokasi')
+	// 		                    ->setCellValue('L'.$row,'Tgl Invoice');
+	// 		            $object->getActiveSheet()->getStyle('A'.$row.':L'.$row)->applyFromArray($Font10Bold);
+	// 		            $object->getActiveSheet()->getStyle('A'.$row.':L'.$row)->applyFromArray($aligncenter);
+	// 		            $row++;
+	// 	            	foreach ($value as $key2 => $value2) {
+	// 		            	$totdpp = 0;
+	// 						$totpph = 0;
+	// 		            	foreach ($value2 as $key3 => $value3) {
+	// 		            		$object->setActiveSheetIndex(0)
+	// 				                    ->setCellValue('A'.$row,$value3['jenis_pph'])
+	// 				                    ->setCellValue('B'.$row,$value3['tarif_pph'])
+	// 				                    ->setCellValue('C'.$row,$value3['nama_vendor'])
+	// 				                    ->setCellValue('D'.$row,$value3['no_invoice'])
+	// 				                    ->setCellValue('E'.$row,strtoupper(date('d-M-y', strtotime($value3['tgl_transaksi']))))
+	// 				                    ->setCellValue('F'.$row,$value3['bank'])
+	// 				                    ->setCellValue('G'.$row,$value3['currency'])
+	// 				                    ->setCellValue('H'.$row,$value3['dpp'])
+	// 				                    ->setCellValue('I'.$row,$value3['pph'])
+	// 				                    ->setCellValue('J'.$row,$value3['jenis_jasa'])
+	// 				                    ->setCellValue('K'.$row,$value3['lokasi'])
+	// 				                    ->setCellValue('L'.$row,strtoupper(date('d-M-y', strtotime($value3['tgl_invoice']))));
+	// 				            $object->getActiveSheet()->getStyle('A'.$row.':L'.$row)->applyFromArray($FontFam);
+	// 				            $object->getActiveSheet()->getStyle('B'.$row)->applyFromArray($aligncenter);
+	// 				            $object->getActiveSheet()->getStyle('D'.$row)->applyFromArray($aligncenter);
+	// 				            $object->getActiveSheet()->getStyle('E'.$row)->applyFromArray($aligncenter);
+	// 				            $object->getActiveSheet()->getStyle('G'.$row)->applyFromArray($aligncenter);
+	// 				            $object->getActiveSheet()->getStyle('J'.$row.':L'.$row)->applyFromArray($aligncenter);
+	// 				            $object->getActiveSheet()->getStyle('H'.$row.':I'.$row)->getNumberFormat()->setFormatCode('#,##0;[Red]-#,##0');
+	// 				            $totdpp += $value3['dpp'];
+	// 				            $totpph += $value3['pph'];
+	// 				            $vendor = $value3['nama_vendor'];
+	// 				            $row++;
+	// 		            	}
+	// 			            	$object->setActiveSheetIndex(0)
+	// 				                    ->setCellValue('C'.$row,$vendor.' Result')
+	// 				                    ->setCellValue('H'.$row,$totdpp)
+	// 				                    ->setCellValue('I'.$row,$totpph);
+	// 				            $object->getActiveSheet()->getStyle('C'.$row.':I'.$row)->applyFromArray($Font10BoldUI);
+	// 				            $object->getActiveSheet()->getStyle('H'.$row.':I'.$row)->getNumberFormat()->setFormatCode('#,##0;[Red]-#,##0');
+	// 				            $gandtotdpp += $totdpp;
+	// 							$grandtotpph += $totpph;
+	// 				            $row++;
+	// 	            	}
+	// 			            $object->setActiveSheetIndex(0)
+	// 			                    ->setCellValue('C'.$row,'Grand Total')
+	// 			                    ->setCellValue('H'.$row,$gandtotdpp)
+	// 			                    ->setCellValue('I'.$row,$grandtotpph);
+
+	// 			            $object->getActiveSheet()->getStyle('C'.$row.':I'.$row)->applyFromArray($Font10BoldUI);
+	// 			            $object->getActiveSheet()->getStyle('H'.$row.':I'.$row)->getNumberFormat()->setFormatCode('#,##0;[Red]-#,##0');
+			            	
+	// 		            	$row+=2;
+	// 	            }
+    //         	}
+	//          }
+
+
+    //         // wraptext dan set print area
+    //         $object->getActiveSheet()->getStyle('A1:E'.$object->getActiveSheet()->getHighestRow())->getAlignment()->setWrapText(true);
+    //         // $object->getActiveSheet()->getPageSetup()->setPrintArea('A1:L'.$object->getActiveSheet()->getHighestRow());
+
+    //         header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
+    //         header('Content-Disposition: attachment;filename="SUBTOTAL PPH - '.$no.'.xlsx"');
+    //         header('Cache-Control: max-age=0');
+    //         $objWriter = PHPExcel_IOFactory::createWriter($object, 'Excel2007');
+    //         ob_clean();
+    //         $objWriter->save('php://output');
+		
+	// }
 
 	private function create_summary($no)
 	{

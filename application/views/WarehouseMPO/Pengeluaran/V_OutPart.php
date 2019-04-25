@@ -30,7 +30,9 @@
                            Monitoring
                        </div>
                        <div class="box-body">
-                        <form class="form-horizontal" action="<?php echo base_url('MonitoringBarangGudang/Pengeluaran/Filter'); ?>" method="post">
+                        <form class="form-horizontal" action="<?php 
+echo isset($compile) ? base_url('MonitoringBarangGudang/Pengeluaran/Filter/'.$compile) : base_url('MonitoringBarangGudang/Pengeluaran/Filter');
+                                            ?>" method="post">
                             <div class="row">
                                 <div class="col-md-12" style="padding-top: 10px">
                                     <div class="row">
@@ -41,7 +43,7 @@
                                             <div class="form-group">
                                                 <select  name="compile" id="compileOutPart" class="form-control select4" style="width: 150px" data-placeholder="Pilih Gudang" id="routing_class"  onchange="location=this.value;">
                                                      <option><?php echo isset($compile) ? $compile : ''; ?></option>
-                                                     <option value="<?php echo base_url('MonitoringBarangGudang/Pengeluaran/'); ?>">Pilih Semua</option>
+                                                     <option value="<?php echo base_url('MonitoringBarangGudang/Pengeluaran/SEMUA'); ?>">Pilih Semua</option>
                                                       <?php foreach($warehouse as $value): ?>
                                                          <option value="<?php echo base_url('MonitoringBarangGudang/Pengeluaran/'.$value['SUBINV']); ?>">
                                                           <?php echo $value['SUBINV']; ?>
@@ -176,6 +178,7 @@
                                                             $lama = 0;
 
                                                             $subinv = '';
+                                                            $no_spbs = 0;
 
                                                             $no = 1; foreach($outpartAll as $all){
 
@@ -191,10 +194,15 @@
                                                                     $style = 'background-color:#51f922 ;color:black';
                                                                 }
 
-                                                                if($subinv != $all['SUBINV']){
+                                                                if($all['KETERANGAN'] == 'B'){
+                                                                    $style = 'background-color:#f39c12 ;color:black';
+                                                                }
+
+                                                    if($subinv != $all['SUBINV'] && $no_spbs != $all['NO_SPBS']){
                                                                     $lama += $all['LAMA'];
                                                                     $subinv = $all['SUBINV'];
-                                                                }
+                                                                    $no_spbs = $all['NO_SPBS'];
+                                                    }
 
                                                         ?>
                                                         <tbody>
@@ -215,7 +223,7 @@
                                                                 <td><?php echo $all['SUBINV']; ?> </td>
                                                                 <td><?php echo $all['JAM_MULAI']; ?></td>
                                                                 <td><?php echo $all['JAM_SELESAI']; ?></td>
-                                                                <td><?php echo $all['LAMA']; ?></td>
+    <td><?php echo sprintf('%02d:%02d', (int) $all['LAMA'], fmod($all['LAMA'], 1) * 60); ?></td>
     <!-- <td><?php echo empty($all['TRANSACTION_DATE']) ? '' : date_format(date_create($all['TRANSACTION_DATE']),'M-d-Y h:i:s'); ?></td> -->
                                                                 <td><?php echo $all['TRANSACTION_DATE']; ?></td>
                                                             </tr>
@@ -224,12 +232,12 @@
                                                     </table>
                                                     <table class="table text-center" style="width: 1700px;padding: 0">
                                                             <tr class="bg-default">
-                                                                <td width="1100px"></td>
-                                                                <td width="500px" style="text-align: left;"><b>TOTAL</b></td>
+                                                                <td width="1200px"></td>
+                                                                <td width="750px" style="text-align: left;"><b>TOTAL</b></td>
                                                                 <td width="75px"><b><?php echo $qty_minta; ?></b></td>
                                                                 <td width="75px"><b><?php echo $qty_kirim; ?></b></td>
                                                                 <td width="400px"></td>
-                                                                <td width="60px"><b><?php echo gmdate('i:s', $lama); ?></b></td>
+                                                                <td width="60px"><b><?php echo sprintf('%02d:%02d', (int) $lama, fmod($lama, 1) * 60); ?></b></td>
                                                             </tr>
                                                     </table>
                                                 </div>

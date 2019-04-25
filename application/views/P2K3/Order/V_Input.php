@@ -2,7 +2,7 @@
     <div class="inner" >
         <div class="row">
 
-            <form method="post" class="form-horizontal" action="<?php echo site_url('P2K3/Order/save_data');?>">
+            <form method="post" class="form-horizontal" action="<?php echo site_url('P2K3/Order/save_data');?>" enctype="multipart/form-data">
                 <div class="col-lg-12">
                     <div class="col-lg-11">
                         <div class="text-right">
@@ -46,6 +46,8 @@
                                                     <input readonly class="form-control"  autocomplete="off" type="text" name="k3_periode" id="" style="width: 200px" placeholder="Masukkan Periode" value="<?php echo date('Y-m-d'); ?>"/>
                                                 </div>
                                             </div>
+
+                                            
                                         </div>
 
                                         <div class="col-lg-12">
@@ -133,14 +135,22 @@
                                                                                     <td>
                                                                                         <div class="form-group">
                                                                                             <div class="col-xs-12">
-                                                                                            <input required type="number" name="numJumlah[<?php echo $i;?>][]" id="numJumlah<?php echo $i;?>[]" class="form-control" min="0" step="0" value="<?php $jumlah = explode(',',$key['jml']); print_r($jumlah[$i]);?>" required/>
+                                                                                            <input required type="number" name="numJumlah[<?php echo $i;?>][]" id="numJumlah<?php echo $i;?>[]" class="form-control" min="0" step="0" value="<?php $jumlah = explode(',',$key['jml']);
+                                                                                            if(empty($jumlah[$i])){
+                                                                                                echo '0'; }else{
+                                                                                                    print_r($jumlah[$i]);
+                                                                                                    } ?>" required/>
                                                                                             </div>
                                                                                         </div>
                                                                                     </td>
                                                                                     <td>
                                                                                         <div class="form-group">
                                                                                             <div class="col-xs-12">
-                                                                                            <input required type="number" name="pkjJumlah[<?php echo $i;?>][]" id="pkjJumlah<?php echo $i;?>[]" class="form-control" min="0" step="0" value="<?php $jumlah = explode(',',$key['jml_pkj']); print_r($jumlah[$i]);?>" required/>
+                                                                                            <input required type="number" name="pkjJumlah[<?php echo $i;?>][]" id="pkjJumlah<?php echo $i;?>[]" class="form-control" min="0" step="0" value="<?php $jumlah = explode(',',$key['jml_pkj']);  
+                                                                                            if(empty($jumlah[$i])){
+                                                                                                echo '0'; }else{
+                                                                                                    print_r($jumlah[$i]);
+                                                                                                    } ?>" required/>
                                                                                             </div>
                                                                                         </div>
                                                                                     </td>

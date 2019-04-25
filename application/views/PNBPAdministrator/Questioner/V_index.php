@@ -100,7 +100,7 @@
 														<input type="radio" name="txtUsia" value="3" <?php if (intval($key['umur']) > 30 and intval($key['umur']) < 39) { echo "checked";} ?>> 30-39 Tahun
 													</div>
 													<div class="col-lg-3">
-														<input type="radio" name="txtUsia" value="4" <?php if (intval($key['umur']) >= 20) { echo "checked";} ?>> ≥ 40 Tahun
+														<input type="radio" name="txtUsia" value="4" <?php if (intval($key['umur']) >= 40) { echo "checked";} ?>> ≥ 40 Tahun
 													</div>
 												</div>
 											</div>

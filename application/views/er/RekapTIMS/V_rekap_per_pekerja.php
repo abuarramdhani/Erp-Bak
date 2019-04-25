@@ -47,7 +47,8 @@ foreach ($rekap as $rekap_data) {}
 										<th rowspan="2" style="text-align: center;vertical-align:middle;font-size:20px">MASA KERJA</th>
 										<th colspan="8" style="text-align: center">REKAP</th>
 										<th rowspan="2" style="text-align: center;vertical-align:middle;font-size:20px">TOTAL HARI KERJA<br>(Periode)</th>
-										<th colspan="7" style="text-align: center">PERSENTASE</th>
+										<th colspan="8" style="text-align: center">PERSENTASE</th>
+										
 									</tr>
 									<tr class="bg-primary">
 										<th style="text-align: center">T</th>
@@ -65,6 +66,7 @@ foreach ($rekap as $rekap_data) {}
 										<th style="text-align: center">PSP</th>
 										<th style="text-align: center">IP</th>
 										<th style="text-align: center">CT</th>
+										<th style="text-align: center">TOTAL</th>
 									</tr>
 								</thead>
 								<tbody>
@@ -102,6 +104,29 @@ foreach ($rekap as $rekap_data) {}
 											<td style="text-align:center;"><?php echo ((($rekap_data['totalhk']+$rekap_data['totalhks']) == 0 ) ? "-" : sprintf("%.2f%%", (($rekap_data['frekpsp']+$rekap_data['frekpsps']) / ($rekap_data['totalhk']+$rekap_data['totalhks']) * 100))) ?></td>
 											<td style="text-align:center;"><?php echo ((($rekap_data['totalhk']+$rekap_data['totalhks']) == 0 ) ? "-" : sprintf("%.2f%%", (($rekap_data['frekip']+$rekap_data['frekips']) / ($rekap_data['totalhk']+$rekap_data['totalhks']) * 100))) ?></td>
 											<td style="text-align:center;"><?php echo ((($rekap_data['totalhk']+$rekap_data['totalhks']) == 0 ) ? "-" : sprintf("%.2f%%", (($rekap_data['frekct']+$rekap_data['frekcts']) / ($rekap_data['totalhk']+$rekap_data['totalhks']) * 100))) ?></td>
+											<td style="text-align:center;">
+												<?php 
+													$totalRekap = (
+														(	
+															($rekap_data['totalhk']+$rekap_data['totalhks']) -
+															(
+																($rekap_data['freki']+$rekap_data['frekis']) +
+																($rekap_data['frekm']+$rekap_data['frekms']) +
+																($rekap_data['freksk']+$rekap_data['freksks']) +
+																($rekap_data['frekpsp']+$rekap_data['frekpsps']) +
+																($rekap_data['frekip']+$rekap_data['frekips']) +
+																($rekap_data['frekct']+$rekap_data['frekcts'])
+															)
+														) / 
+														(
+															($rekap_data['totalhk']+$rekap_data['totalhks']) -
+															($rekap_data['frekct']+$rekap_data['frekcts'])
+														) * 100
+													);
+													echo number_format($totalRekap,2).'%';
+
+												?>
+											</td>
 										</tr>
 									<?php } ?>
 								</tbody>

@@ -79,7 +79,7 @@ class C_PresensiHarian extends CI_Controller
 			$this->excel->getActiveSheet()->setCellValueByColumnAndRow(0,$i+1,'Nama');
 			$this->excel->getActiveSheet()->setCellValueByColumnAndRow(1,$i+1,$val['nama']);
 			$this->excel->getActiveSheet()->setCellValueByColumnAndRow(0,$i+2,'seksi');
-			$this->excel->getActiveSheet()->setCellValueByColumnAndRow(1,$i+2,$seksi['0']['seksi']);
+			$this->excel->getActiveSheet()->setCellValueByColumnAndRow(1,$i+2,$val['seksi']);
 			$this->excel->getActiveSheet()->setCellValueByColumnAndRow(0,$i+3,'Tanggal');
 			$this->excel->getActiveSheet()->setCellValueByColumnAndRow(1,$i+3,'Shift');
 			$this->excel->getActiveSheet()->setCellValueByColumnAndRow(2,$i+3,'Point');
@@ -242,7 +242,7 @@ class C_PresensiHarian extends CI_Controller
 			$arr[$angka1] = array(
 				'noind' => $val['noind'],
 				'nama' => $val['nama'],
-				'seksi' => $seksi['0']['seksi'],
+				'seksi' => $val['seksi'],
 			);
 
 			$shift = $this->M_presensiharian->getShiftByNoind($val['noind'],$tanggal);
@@ -378,7 +378,7 @@ class C_PresensiHarian extends CI_Controller
 			$arr[$angka1] = array(
 				'noind' => $val['noind'],
 				'nama' => $val['nama'],
-				'seksi' => $seksi['0']['seksi'],
+				'seksi' => $val['seksi'],
 			);
 
 			$shift = $this->M_presensiharian->getShiftByNoind($val['noind'],$tanggal);
