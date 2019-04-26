@@ -13,7 +13,7 @@ class M_menugroup extends CI_Model {
 		{	if($menu_group_id === FALSE){
 				$sql = "select *, 
 						(select count(*) from  sys.sys_menu_group_list smgl where smg.group_menu_id = smgl.group_menu_id) menu
-						from sys.sys_menu_group smg order by coalesce(last_update_date,creation_date) desc nulls last";
+						from sys.sys_menu_group smg order by smgl.menu_sequence";
 			}else{
 				$sql = "select * from sys.sys_menu_group  where group_menu_id=$menu_group_id";
 			}						
@@ -31,10 +31,10 @@ class M_menugroup extends CI_Model {
 			}
 			if($menu_group_id === FALSE){
 				$sql = "select * from sys.sys_menu_group_list where 1=1 $and1 
-						order by coalesce(last_update_date,creation_date) desc nulls last";
+						order by menu_sequence";
 			}else{
 				$sql = "select * from sys.sys_menu_group_list  where group_menu_id=$menu_group_id
-						and menu_level=1 $and1";
+						and menu_level=1 $and1 order by menu_sequence";
 			}						
 			
 			$query = $this->db->query($sql);
@@ -49,10 +49,10 @@ class M_menugroup extends CI_Model {
 				$and1 = "AND group_menu_list_id = $sub_menu_group_list_id";
 			}
 			if($menu_group_list_id === FALSE){
-				$sql = "select * from sys.sys_menu_group_list order by coalesce(last_update_date,creation_date) desc nulls last";
+				$sql = "select * from sys.sys_menu_group_list order by menu_sequence";
 			}else{
 				$sql = "select * from sys.sys_menu_group_list  where root_id=$menu_group_list_id
-						$and1";
+						$and1 order by menu_sequence";
 			}						
 			
 			$query = $this->db->query($sql);
