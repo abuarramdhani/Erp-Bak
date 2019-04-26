@@ -12,7 +12,7 @@ class M_menugroup extends CI_Model {
 		public function getMenuGroup($menu_group_id=FALSE)
 		{	if($menu_group_id === FALSE){
 				$sql = "select *, 
-						(select count(*) from  sys.sys_menu_group_list smgl where smg.group_menu_id = smgl.group_menu_id order by smg.menu_sequence) menu
+						(select count(*) from  sys.sys_menu_group_list smgl where smg.group_menu_id = smgl.group_menu_id order by smgl.menu_sequence) menu
 						from sys.sys_menu_group smg";
 			}else{
 				$sql = "select * from sys.sys_menu_group  where group_menu_id=$menu_group_id";
