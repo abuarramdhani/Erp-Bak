@@ -165,10 +165,23 @@
                               }
                             ?>
                               <div class="checkbox">
-                                  <label class="control-label">
-                                    <input <?= (in_array($value['id_kecelakaan_detail'],$kece)) ? 'checked' : '' ?> type="checkbox" value="<?php echo $value['id_kecelakaan_detail'] ?>" 
-                                    name="desc<?= $i; ?>[]"> <?php echo $value['desc'] ?></input>
-                                  </label>
+                                 
+                                    <?php if (empty($kece)) {
+                                        ?>
+                                        <label class="control-label">
+                                          <input type="checkbox" value="<?php echo $value['id_kecelakaan_detail'] ?>" 
+                                          name="desc<?= $i; ?>[]"> <?php echo $value['desc'] ?></input>
+                                        </label>
+                                        <?php
+                                    }else{
+                                        ?>
+                                        <label class="control-label">
+                                          <input <?= (in_array($value['id_kecelakaan_detail'],$kece)) ? 'checked' : '' ?> type="checkbox" value="<?php echo $value['id_kecelakaan_detail'] ?>" 
+                                          name="desc<?= $i; ?>[]"> <?php echo $value['desc'] ?></input>
+                                        </label>
+                                        <?php
+                                      } ?>
+                                    
                               </div>    
                             <?php
                                 if ( $indeks % 4 == 0 OR $indeks == $jumlah_kecelakaan_detail )
