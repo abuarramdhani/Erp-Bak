@@ -14,6 +14,10 @@ class M_fleetkir extends CI_Model
     {
     	if ($id === FALSE) {
             $ambilKIR       = " select  kir.kir_id as kode_kir,
+                                        kir.periode_akhir_kir,
+                                        (case when kir.periode_akhir_kir >= current_date
+                                        then (select cast((extract(epoch from kir.periode_akhir_kir::timestamp - current_timestamp)) as int)/86400)+1
+                                        end) as tgltunggu,
                                         kdrn.nomor_polisi as nomor_polisi,
                                         kir.kendaraan_id as kode_kendaraan,
                                         (select location_name from er.er_location where location_code = kdrn.kode_lokasi_kerja) lokasi,
@@ -26,11 +30,15 @@ class M_fleetkir extends CI_Model
                                         join    ga.ga_fleet_kendaraan as kdrn
                                             on  kdrn.kendaraan_id=kir.kendaraan_id
                                 where   kir.end_date='9999-12-12 00:00:00'
-                                order by kir.tanggal_kir desc;";
+                                order by tgltunggu,kir.tanggal_kir desc;";
 
     		$query = $this->db->query($ambilKIR);
     	} else {
             $ambilKIR       = " select  kir.kir_id as kode_kir,
+                                        kir.periode_akhir_kir,
+                                        (case when kir.periode_akhir_kir >= current_date
+                                        then (select cast((extract(epoch from kir.periode_akhir_kir::timestamp - current_timestamp)) as int)/86400)+1
+                                        end) as tgltunggu,
                                         kdrn.nomor_polisi as nomor_polisi,
                                         kir.kendaraan_id as kode_kendaraan,
                                         (select location_name from er.er_location where location_code = kdrn.kode_lokasi_kerja) lokasi,
@@ -53,6 +61,10 @@ class M_fleetkir extends CI_Model
     public function getFleetKirCabang($lokasi)
     {
         $query = $this->db->query("select  kir.kir_id as kode_kir,
+                                         kir.periode_akhir_kir,
+                                        (case when kir.periode_akhir_kir >= current_date
+                                        then (select cast((extract(epoch from kir.periode_akhir_kir::timestamp - current_timestamp)) as int)/86400)+1
+                                        end) as tgltunggu,
                                         kdrn.nomor_polisi as nomor_polisi,
                                         kir.kendaraan_id as kode_kendaraan,
                                         (select location_name from er.er_location where location_code = kdrn.kode_lokasi_kerja) lokasi,
@@ -65,13 +77,18 @@ class M_fleetkir extends CI_Model
                                         join    ga.ga_fleet_kendaraan as kdrn
                                             on  kdrn.kendaraan_id=kir.kendaraan_id
                                 where   kir.kode_lokasi_kerja='$lokasi'
-                                        and kir.end_date='9999-12-12 00:00:00'");
+                                        and kir.end_date='9999-12-12 00:00:00'
+                                order by tgltunggu");
         return $query->result_array();
     }
 
     public function getFleetKirDeleted()
     {
         $ambilKIRDeleted    = " select  kir.kir_id as kode_kir,
+                                         kir.periode_akhir_kir,
+                                        (case when kir.periode_akhir_kir >= current_date
+                                        then (select cast((extract(epoch from kir.periode_akhir_kir::timestamp - current_timestamp)) as int)/86400)+1
+                                        end) as tgltunggu,
                                         kdrn.nomor_polisi as nomor_polisi,
                                         kir.kendaraan_id as kode_kendaraan,
                                         (select location_name from er.er_location where location_code = kdrn.kode_lokasi_kerja) lokasi,

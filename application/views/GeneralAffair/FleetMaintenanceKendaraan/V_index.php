@@ -48,6 +48,7 @@
                                                     <tr>
                                                         <th style="text-align:center; width:30px">No</th>
                                                         <th style="text-align:center; min-width:80px">Action</th>
+                                                        <th>Pengingat</th>
                                                         <th>Kendaraan</th>
                                                         <th>Lokasi Kerja</th>
                                                         <th>Tanggal Maintenance</th>
@@ -64,13 +65,21 @@
                                                        $encrypted_string = $this->encrypt->encode($row['kode_maintenance_kendaraan']);
                                                         $encrypted_string = str_replace(array('+', '/', '='), array('-', '_', '~'), $encrypted_string);
                                                      ?>   
-                                                    <tr>
+                                                    <tr <?php
+                                                     if ($row['tgltunggu'] <= 14 && $row['tgltunggu'] != NULL) {
+                                                         ?>
+                                                         style="background-color: #ffe6e6"
+                                                         <?php
+                                                      } ?>>
                                                         <td align='center'><?php echo $no++;?></td>
                                                         <td align='center'>
                                                            <a style="margin-right:4px" href="<?php echo base_url('GeneralAffair/FleetMaintenanceKendaraan/read/'.$encrypted_string.''); ?>" data-toggle="tooltip" data-placement="bottom" title="Read Data"><span class="fa fa-list-alt fa-2x"></span></a>
                                                            <a style="margin-right:4px" href="<?php echo base_url('GeneralAffair/FleetMaintenanceKendaraan/update/'.$encrypted_string.''); ?>" data-toggle="tooltip" data-placement="bottom" title="Edit Data"><span class="fa fa-pencil-square-o fa-2x"></span></a>
                                                            <a href="<?php echo base_url('GeneralAffair/FleetMaintenanceKendaraan/delete/'.$encrypted_string.''); ?>" data-toggle="tooltip" data-placement="bottom" title="Hapus Data" onclick="return confirm('Apakah Anda ingin menghapus data ini?');"><span class="fa fa-trash fa-2x"></span></a>
                                                         </td>
+                                                        <td style="text-align: center;"><?php if ($row['tgltunggu'] == NULL) {
+                                                            echo "-";
+                                                        }else{ echo $row['tgltunggu']." Hari Lagi"; } ?></td>
                                                         <td><?php echo $row['nomor_polisi'] ?></td>
                                                         <td><?php echo $row['lokasi'] ?></td>
                                                         <td><?php echo $row['tanggal_maintenance'] ?></td>
