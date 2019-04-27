@@ -42,12 +42,33 @@
                                 <div class="tab-content">
                                     <div id="active" class="tab-pane fade in active">
                                         <br/>
+                                       <!--  <?php
+                                            foreach ($FleetPajak as $pjk) {
+                                                $encrypted_string = $this->encrypt->encode($pjk['kode_pajak']);
+                                                $encrypted_string = str_replace(array('+', '/', '='), array('-', '_', '~'), $encrypted_string);
+                                               if ($pjk['tgltunggu'] < 7 AND $pjk['tgltunggu']!=NULL) {
+                                                   ?>
+                                                   <div style="width: 50%;height: 50px; background-color: #ff9999;border: 1px dotted red;">
+                                                       <span><marquee><b>Peringatan!!! Ingat Tinggal <?php echo $pjk['tgltunggu'] + 1; ?> Hari Lagi</b></marquee></span>
+                                                       <p style="text-align: center;">Pembayaran Pajak untuk Kendaraan <a style="color: black;text-decoration: underline;" href="<?php echo base_url('GeneralAffair/FleetPajak/read/'.$encrypted_string.''); ?>"><?php echo $pjk['nomor_polisi']; ?></a></p>
+                                                       <br>
+                                                       <?php
+
+                                                       ?>
+                                                   </div>
+                                                   <br>
+                                                   <?php
+                                               }
+                                            }
+                                        ?> -->
+                                        
                                         <div>
                                             <table class="datatable table table-striped table-bordered table-hover text-left" id="dataTables-fleetPajak" style="font-size:12px;">
                                                 <thead class="bg-primary">
                                                     <tr>
                                                         <th style="text-align:center; width:30px">No</th>
                                                         <th style="text-align:center; min-width:80px">Action</th>
+                                                        <th style="text-align: center;">Pengingat</th>
                                                         <th>Kendaraan</th>
                                                         <th>Lokasi Kerja</th>
                                                         <th>Tanggal Pajak</th>
@@ -63,13 +84,20 @@
                                                        $encrypted_string = $this->encrypt->encode($row['kode_pajak']);
                                                         $encrypted_string = str_replace(array('+', '/', '='), array('-', '_', '~'), $encrypted_string);
                                                      ?>
-                                                <tr>
+                                                <tr <?php if ($row['tgltunggu'] <= 14 && $row['tgltunggu'] != NULL) {
+                                                    ?>
+                                                    style="background-color: #ffe6e6"
+                                                    <?php
+                                                } ?>>
                                                         <td align='center'><?php echo $no++;?></td>
                                                         <td align='center'>
                                                            <a style="margin-right:4px" href="<?php echo base_url('GeneralAffair/FleetPajak/read/'.$encrypted_string.''); ?>" data-toggle="tooltip" data-placement="bottom" title="Read Data"><span class="fa fa-list-alt fa-2x"></span></a>
                                                            <a style="margin-right:4px" href="<?php echo base_url('GeneralAffair/FleetPajak/update/'.$encrypted_string.''); ?>" data-toggle="tooltip" data-placement="bottom" title="Edit Data"><span class="fa fa-pencil-square-o fa-2x"></span></a>
                                                            <a href="<?php echo base_url('GeneralAffair/FleetPajak/delete/'.$encrypted_string.''); ?>" data-toggle="tooltip" data-placement="bottom" title="Hapus Data" onclick="return confirm('Apakah Anda ingin menghapus data ini?');"><span class="fa fa-trash fa-2x"></span></a>
                                                         </td>
+                                                        <td style="text-align: center;"><?php if ($row['tgltunggu'] == NULL) {
+                                                            echo "-";
+                                                        }else{ echo $row['tgltunggu']." Hari Lagi"; }?></td>
                                                         <td><?php echo $row['nomor_polisi'] ?></td>
                                                         <td><?php echo $row['lokasi'] ?></td>
                                                         <td><?php echo $row['tanggal_pajak'];?></td>
