@@ -154,13 +154,43 @@ class C_TarikFingerspot extends CI_Controller
 		
 	}
 
-	public function TransferPresensi(){
+	public function TransferPresensi($server){
 		$waktuAwal = date('Y-m-d H:i:s');
 		date_default_timezone_set('Asia/Jakarta');
 		$plaintext_string = Date('Y-m-d',strtotime("-1 days"));
-		
+		if (!isset($server)) {
+			$server='';
+		}
+		if('192.168.168.50'==$server)
+		{
 		$log = $this->M_tarikfingerspot->getAttLog($plaintext_string,'Transfer');
 		$device = $this->M_tarikfingerspot->getDevice();
+		}
+		else
+		if('192.168.168.178'==$server)
+		{
+		$log = $this->M_tarikfingerspot->getAttLog($plaintext_string,'Transfer178');
+		$device = $this->M_tarikfingerspot->getDevice();
+		}
+		else
+		if('192.168.168.179'==$server)
+		{
+		$log = $this->M_tarikfingerspot->getAttLog($plaintext_string,'Transfer179');
+		$device = $this->M_tarikfingerspot->getDevice();
+		}
+		else
+		if('192.168.168.207'==$server)
+		{
+		$log = $this->M_tarikfingerspot->getAttLog($plaintext_string,'Transfer207');
+		$device = $this->M_tarikfingerspot->getDevice();
+		}
+		else
+		{	
+		$log = $this->M_tarikfingerspot->getAttLog($plaintext_string,'');
+		$device = $this->M_tarikfingerspot->getDevice();
+		}
+
+
 		$no = 0;
 		$num = 0;
 		$insert = array();
@@ -251,6 +281,14 @@ class C_TarikFingerspot extends CI_Controller
 				Apabila Ada hari kemarin yang baru masuk, maka harus menjalankan distribusi ulang (Sehingga Point dan sebaran pekerja Benar).";
 		
 		$waktuAkhir = date('Y-m-d H:i:s');
+		if(''==$server){
+			$namaserver='Semua Server';
+		}
+		else
+		{
+			$namaserver=$server;
+		}
+
 		$message = '	<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://wwwhtml4/loose.dtd">
 				<html>
 				<head>
@@ -267,7 +305,7 @@ class C_TarikFingerspot extends CI_Controller
 				</head>
 				<body>
 						<h3 style="text-decoration: underline;">Report Proses Transfer</h3>
-						<p>Dari : 192.168.168.50 (Finpro) ke database.quick.com (Frontpresensi & Presensi)</p>
+						<p>Dari : '.$namaserver.' ke database.quick.com (Frontpresensi & Presensi)</p>
 					<hr/>
 					<p>Telah Selesai Dijalankannya Cronjob TransferPresensi ('.$waktuAwal.' s/d '.$waktuAkhir.'), Dengan detail data per Lokasi sebagai berikut :
 					</p>
@@ -315,7 +353,27 @@ class C_TarikFingerspot extends CI_Controller
         foreach ($email as $key) {
         	$mail->addAddress($key['email_kirim'],$key['nama_kirim']);
         }
-        $mail->Subject = 'Laporan Tarik Absensi Pekerja';
+
+        if('192.168.168.50'==$server)
+        {
+        	$mail->Subject = 'Laporan Tarik Absensi Server 168.50';
+        } else if('192.168.168.178'==$server)
+        {
+        	$mail->Subject = 'Laporan Tarik Absensi Server 168.178';
+        } else if('192.168.168.179'==$server)
+        {
+        	$mail->Subject = 'Laporan Tarik Absensi Server 168.179';
+        } else if('192.168.168.207'==$server)
+        {
+        	$mail->Subject = 'Laporan Tarik Absensi Server 168.207';
+        }
+        else
+        {
+       		$mail->Subject = 'Laporan Tarik Absensi Pekerja Semua Titik';
+        }
+
+		
+
 		$mail->msgHTML($message);
 
 		if (!$mail->send()) {
