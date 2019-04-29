@@ -7,61 +7,218 @@ class M_monitoringlppbadmin extends CI_Model {
 		$this->load->library('encrypt');
 	}
 
-    public function searchNumberLppb($lppb_number)
+  public function checkSourceLogin($employee_code)
+    {
+        $oracle = $this->load->database('erp_db',true);
+        $query = "select eea.employee_code, es.section_name
+                    from er.er_employee_all eea, er.er_section es
+                    where eea.section_code = es.section_code
+                    and eea.employee_code = '$employee_code' ";
+        $runQuery = $oracle->query($query);
+        return $runQuery->result_array();
+    }
+
+    public function  checkSectionName($id){
+        $oracle = $this->load->database('oracle',true);
+        $query = "SELECT a.section_id, a.section_name, a.section_keyword 
+                  FROM KHS_LPPB_SECTION a
+                  WHERE a.section_id = '$id' ";
+        $runQuery = $oracle->query($query);
+        return $runQuery->result_array();
+    }
+
+    public function  checkGroupBatch($group_batch,$length){
+        $oracle = $this->load->database('oracle',true);
+        $query = "SELECT COUNT(GROUP_batch) BATCH
+                  FROM khs_lppb_batch
+                  WHERE GROUP_BATCH = (CASE WHEN GROUP_BATCH LIKE '%$group_batch%' THEN SUBSTR(group_batch, 1, '$length') END)";
+        $runQuery = $oracle->query($query);
+        return $runQuery->result_array();
+    }
+
+    public function  checkLengthBatch($group_batch){
+        $oracle = $this->load->database('oracle',true);
+        $query = "SELECT DISTINCT length(GROUP_BATCH) length
+                  FROM khs_lppb_batch
+                  WHERE GROUP_BATCH = '$group_batch'";
+        $runQuery = $oracle->query($query);
+        return $runQuery->result_array();
+    }
+
+    public function searchNumberLppb($lppb_numberFrom,$lppb_numberTo,$io)
     {
         $oracle = $this->load->database('oracle',true);
-        $query = "SELECT DISTINCT rsh.receipt_num lppb_number, poh.segment1 po_number,
-                pov.vendor_name vendor_name, rsh.creation_date tanggal_lppb
-           FROM rcv_shipment_headers rsh,
-                rcv_shipment_lines rsl,
-                po_vendors pov,
-                po_headers_all poh,
-                po_lines_all pol,
-                po_line_locations_all pll,
-                rcv_transactions rt
-          WHERE rsh.shipment_header_id = rsl.shipment_header_id
-            AND rsh.shipment_header_id = rt.shipment_header_id
-            AND rsl.shipment_line_id = rt.shipment_line_id
-            AND pov.vendor_id = rt.vendor_id
-            AND poh.po_header_id = rt.po_header_id
-            AND pol.po_line_id = rt.po_line_id
-            AND poh.po_header_id(+) = pol.po_header_id
-            AND pov.vendor_id(+) = poh.vendor_id
-            AND pol.po_line_id(+) = pll.po_line_id
-            AND rsh.receipt_num = '$lppb_number'";
+        $query = "SELECT DISTINCT rsh.receipt_num lppb_number,
+                poh.segment1 po_number,
+                pov.vendor_name vendor_name, rsh.creation_date tanggal_lppb,
+                MP.ORGANIZATION_CODE, 
+                MP.ORGANIZATION_ID,
+                rt.transaction_type status_lppb,
+                poh.po_header_id
+                   FROM rcv_shipment_headers rsh,
+                        rcv_shipment_lines rsl,
+                        po_vendors pov,
+                        po_headers_all poh,
+                        po_lines_all pol,
+                        po_line_locations_all pll,
+                        rcv_transactions rt,
+                        MTL_PARAMETERS MP
+                  WHERE rsh.shipment_header_id = rsl.shipment_header_id
+                    AND rsh.shipment_header_id = rt.shipment_header_id
+                    AND rsl.shipment_line_id = rt.shipment_line_id
+                    AND pov.vendor_id = rt.vendor_id
+                    AND poh.po_header_id = rt.po_header_id
+                    AND pol.po_line_id = rt.po_line_id
+                    AND poh.po_header_id(+) = pol.po_header_id
+                    AND pov.vendor_id(+) = poh.vendor_id
+                    AND pol.po_line_id(+) = pll.po_line_id
+                    AND RSH.RECEIPT_NUM between $lppb_numberFrom and $lppb_numberTo
+                    AND RSH.SHIP_TO_ORG_ID(+) = MP.ORGANIZATION_ID
+                    AND rt.transaction_id =
+                           (SELECT MAX (rts.transaction_id)
+                              FROM rcv_transactions rts
+                             WHERE rt.shipment_header_id = rts.shipment_header_id
+                               AND rts.po_line_id = pol.po_line_id) 
+                    $io
+                    ORDER BY rsh.receipt_num";
         $run = $oracle->query($query);
         return $run->result_array();
     }
 
-    public function saveLppbNumber($create_date,$lppb_info)
+    public function lppbBatchDetail($batch_number,$lppb_number)
+    {
+        $oracle = $this->load->database('oracle',TRUE);
+        $query = "SELECT DISTINCT rsh.receipt_num lppb_number,
+                poh.segment1 po_number,
+                pov.vendor_name vendor_name, rsh.creation_date tanggal_lppb,
+                MP.ORGANIZATION_CODE, 
+                MP.ORGANIZATION_ID,
+                rt.transaction_type status_lppb,
+                a.batch_number, 
+                a.batch_detail_id, 
+                a.lppb_info,
+                a.status,
+                a.status_date,
+                a.source,
+                a.group_batch
+                   FROM rcv_shipment_headers rsh,
+                        rcv_shipment_lines rsl,
+                        po_vendors pov,
+                        po_headers_all poh,
+                        po_lines_all pol,
+                        po_line_locations_all pll,
+                        rcv_transactions rt,
+                        MTL_PARAMETERS MP,
+                        (SELECT klb.batch_number
+                        , klbd.po_header_id
+                        , klb.lppb_info
+                        , klbd.batch_detail_id
+                        , klbd.status
+                        , klbd.status_date
+                        , klb.source
+                        , klb.group_batch
+                        , klbd.lppb_number
+                        FROM khs_lppb_batch klb, khs_lppb_batch_detail klbd, khs_lppb_action_detail klad
+                        WHERE klb.batch_number = klbd.batch_number
+                        AND klbd.batch_detail_id = klad.batch_detail_id
+                        AND klb.batch_number = '$batch_number') a
+                  WHERE rsh.shipment_header_id = rsl.shipment_header_id
+                    AND rsh.shipment_header_id = rt.shipment_header_id
+                    AND rsl.shipment_line_id = rt.shipment_line_id
+                    AND pov.vendor_id = rt.vendor_id
+                    AND poh.po_header_id = rt.po_header_id
+                    AND pol.po_line_id = rt.po_line_id
+                    AND poh.po_header_id(+) = pol.po_header_id
+                    AND pov.vendor_id(+) = poh.vendor_id
+                    AND pol.po_line_id(+) = pll.po_line_id
+                    AND RSH.SHIP_TO_ORG_ID(+) = MP.ORGANIZATION_ID
+                    AND rt.transaction_id =
+                           (SELECT MAX (rts.transaction_id)
+                              FROM rcv_transactions rts
+                             WHERE rt.shipment_header_id = rts.shipment_header_id
+                               AND rts.po_line_id = pol.po_line_id)
+                    AND a.po_header_id = poh.po_header_id
+                    AND a.lppb_number = rsh.receipt_num
+                    $lppb_number";
+        $run = $oracle->query($query);
+        // echo "<pre>";
+        // print_r($query);
+        return $run->result_array();
+    }
+
+    public function getInventory(){
+      $oracle = $this->load->database("oracle",true);
+      $query = "SELECT 
+                    MP.ORGANIZATION_CODE, 
+                    MP.ORGANIZATION_ID
+                  FROM 
+                    MTL_PARAMETERS MP
+                  ORDER BY
+                    MP.ORGANIZATION_CODE";
+      $run = $oracle->query($query);
+      return $run->result_array();
+    }
+
+    public function getOpsiGudang($section_name){
+      $oracle = $this->load->database("oracle",true);
+      $query = "SELECT * FROM KHS_LPPB_SECTION WHERE SECTION_ID NOT IN 18 AND SECTION_NAME = '$section_name' ";
+      $run = $oracle->query($query);
+      // print_r($query);exit();
+      return $run->result_array();
+    }
+
+    public function getOpsiGudang2(){
+      $oracle = $this->load->database("oracle",true);
+      $query = "SELECT * FROM KHS_LPPB_SECTION WHERE SECTION_ID NOT IN 18 ";
+      $run = $oracle->query($query);
+      return $run->result_array();
+    }
+
+    public function getOpsiGudangById($id){
+      $oracle = $this->load->database("oracle",true);
+      $query = "SELECT * FROM KHS_LPPB_SECTION WHERE SECTION_ID NOT IN 18 AND SECTION_ID = '$id'";
+      $run = $oracle->query($query);
+      return $run->result_array();
+    }
+
+    public function saveLppbNumber($create_date,$lppb_info,$source,$group_batch,$id_gudang)
     {
         $oracle = $this->load->database('oracle',true);
         $query = "INSERT INTO khs_lppb_batch
-                      (create_date, lppb_info) values (to_date('$create_date', 'DD/MM/YYYY HH24:MI:SS'), '$lppb_info')";
+                      (create_date, lppb_info, source, group_batch, id_gudang) values (to_date('$create_date', 'DD/MM/YYYY HH24:MI:SS'), '$lppb_info', '$source', '$group_batch', '$id_gudang')";
         $oracle->query($query);
 
-        $ssql = "select batch_number from khs_lppb_batch where create_date = to_date('$create_date', 'DD/MM/YYYY HH24:MI:SS') and lppb_info = '$lppb_info' ";
+        $ssql = "select max(batch_number) batch_number from khs_lppb_batch";
         $data = $oracle->query($ssql);
 
         return $data->result_array();
-
-        // print_r($aa);exit();
-        // return  $oracle->insert_id();
     }
 
-    public function saveLppbNumber2($batch_number,$lppb_number,$status_date)
+    public function saveLppbNumber2($batch_number,$lppb_number,$status_date, $io_id, $po_number,$po_header_id)
     {
         $oracle = $this->load->database('oracle',true);
         $query = "INSERT INTO khs_lppb_batch_detail
-                      (batch_number, lppb_number, status, status_date) values ('$batch_number', '$lppb_number', '0', to_date('$status_date', 'DD/MM/YYYY HH24:MI:SS'))";
-        $oracle->query($query); 
+                      (batch_number, lppb_number, status, status_date, io_id, po_number, po_header_id) values ('$batch_number', '$lppb_number', '0', to_date('$status_date', 'DD/MM/YYYY HH24:MI:SS'), '$io_id', '$po_number', '$po_header_id')";
+        $run = $oracle->query($query); 
+    }
 
-        $sql = "select batch_detail_id from khs_lppb_batch_detail where batch_number='$batch_number' and lppb_number ='$lppb_number' and status=0 order by batch_detail_id desc ";
+    public function batch_detail_id($batch_number)
+    {
+        $oracle = $this->load->database('oracle',true);
+        $sql = "select batch_detail_id from khs_lppb_batch_detail WHERE batch_number = '$batch_number' ORDER BY BATCH_DETAIL_ID";
         $run = $oracle->query($sql);
         return $run->result_array();
+    }
 
-        // print_r($hasil);exit(); 
-        // return  $oracle->insert_id();
+    public function limitBatchDetId($batch_number,$limit)
+    {
+        $oracle = $this->load->database('oracle',true);
+        $sql = "SELECT batch_detail_id FROM
+                 (SELECT batch_detail_id FROM khs_lppb_batch_detail
+                ORDER BY batch_detail_id DESC)
+                WHERE ROWNUM <= 1";
+        $run = $oracle->query($sql);
+        return $run->result_array();
     }
 
     public function saveLppbNumber3($batch_detail_id,$action_date)
@@ -72,10 +229,10 @@ class M_monitoringlppbadmin extends CI_Model {
         $oracle->query($query);
     }
 
-    public function showKhsLppbBatch()
+    public function showKhsLppbBatch($id)
     {
         $oracle = $this->load->database('oracle',true);
-        $query = "SELECT DISTINCT a.batch_number, a.lppb_info, a.create_date,
+        $query = "SELECT DISTINCT a.batch_number, a.lppb_info, a.create_date, a.group_batch,
                         (SELECT COUNT (lppb_number)
                            FROM khs_lppb_batch_detail c
                            WHERE c.batch_number = a.batch_number) jumlah_lppb,
@@ -113,18 +270,12 @@ class M_monitoringlppbadmin extends CI_Model {
                            FROM khs_lppb_batch_detail i
                           WHERE i.status = 7
                             AND a.batch_number = i.batch_number) akuntansi_reject
-                   FROM khs_lppb_batch a
+                   FROM khs_lppb_batch a,
+                        khs_lppb_batch_detail b
+                   WHERE a.batch_number = b.batch_number
+                   AND b.status in (0,1)
+                   AND a.id_gudang = '$id'
                ORDER BY a.batch_number DESC";
-        $run = $oracle->query($query);
-        return $run->result_array();
-    }
-
-    public function showLppbNumberDetail($id){
-        $oracle = $this->load->database('oracle',true);
-        $query = "SELECT DISTINCT *
-                  FROM khs_lppb_batch a, khs_lppb_batch_detail b
-                  WHERE a.batch_number = b.batch_number
-                  AND a.batch_number = '$id'";
         $run = $oracle->query($query);
         return $run->result_array();
     }
@@ -163,38 +314,30 @@ class M_monitoringlppbadmin extends CI_Model {
     public function getBatchDetailId($batch_number)
     {
         $oracle = $this->load->database('oracle',true);
-        $query = "SELECT b.BATCH_DETAIL_ID BATCH_DETAIL_ID
+        $query = "SELECT b.BATCH_DETAIL_ID BATCH_DETAIL_ID, b.lppb_number
                     FROM KHS_LPPB_BATCH_DETAIL b,
                     KHS_LPPB_BATCH a
-                    WHERE a.BATCH_NUMBER = '$batch_number'
-                    AND a.batch_number = b.batch_number";
+                    WHERE a.batch_number = '$batch_number'
+                    AND a.batch_number = b.batch_number
+                    ORDER BY b.lppb_number";
         $run = $oracle->query($query);
         return $run->result_array();
     }
 
-    public function saveEditLppbNumber($lppb_info)
+    public function saveEditLppbNumber($batch_number)
     {
         $oracle = $this->load->database('oracle',true);
-        $query = "INSERT INTO khs_lppb_batch
-                      (lppb_info) values ('$lppb_info')";
-        $oracle->query($query);
-
-        $ssql = "select batch_number from khs_lppb_batch where create_date = to_date('$create_date', 'DD/MM/YYYY HH24:MI:SS') and lppb_info = '$lppb_info' ";
-        $data = $oracle->query($ssql);
-
-        return $data->result_array();
+        $query = "SELECT BATCH_NUMBER FROM KHS_LPPB_BATCH WHERE BATCH_NUMBER = '$batch_number'";
+        $run = $oracle->query($query);
+        return $run->result_array();
     }
 
-    public function saveEditLppbNumber2($batch_number,$lppb_number,$status_date)
+    public function saveEditLppbNumber2($batch_number,$lppb_number,$status_date,$io_id,$po_number,$po_header_id)
     {
         $oracle = $this->load->database('oracle',true);
         $query = "INSERT INTO khs_lppb_batch_detail
-                      (batch_number, lppb_number, status, status_date) values ('$batch_number', '$lppb_number', '1', to_date('$status_date', 'DD/MM/YYYY HH24:MI:SS'))";
-        $oracle->query($query); 
-
-        $sql = "select batch_detail_id from khs_lppb_batch_detail where batch_number='$batch_number' and lppb_number ='$lppb_number' and status=1 order by batch_detail_id desc ";
-        $run = $oracle->query($sql);
-        return $run->result_array();
+                      (batch_number, lppb_number, status, status_date, io_id,po_number,po_header_id) values ('$batch_number', '$lppb_number', '1', to_date('$status_date', 'DD/MM/YYYY HH24:MI:SS'),'$io_id','$po_number','$po_header_id')";
+        $oracle->query($query);
     }
 
     public function saveEditLppbNumber3($batch_detail_id,$action_date)
@@ -207,12 +350,12 @@ class M_monitoringlppbadmin extends CI_Model {
 
     public function delBatchDetailId($batch_detail_id)
     {
-        $conn = $this->load->database('oracle',true);
+        $oracle = $this->load->database('oracle',true);
         $query2 = "DELETE 
                     FROM khs_lppb_batch_detail
                     WHERE batch_detail_id = '$batch_detail_id' ";
-        $run = $conn->query($query2);
-        oci_commit($conn);
+        $run = $oracle->query($query2);
+        oci_commit($oracle);
     }
 
     public function editableLppbNumber($lppb_number,$date,$batch_detail_id){
@@ -223,6 +366,253 @@ class M_monitoringlppbadmin extends CI_Model {
                     status_date = to_date('$status_date', 'DD/MM/YYYY HH24:MI:SS')
                     WHERE batch_detail_id = '$batch_detail_id'";
         $run = $oracle->query($query);
+    }
+
+    public function showRejectLppb(){
+        $oracle = $this->load->database('oracle',true);
+        $query = "SELECT DISTINCT a.batch_number, a.lppb_info, a.create_date, a.group_batch,
+                        (SELECT COUNT (lppb_number)
+                           FROM khs_lppb_batch_detail c
+                           WHERE c.batch_number = a.batch_number
+                           AND c.status in (4,7)) jumlah_lppb,
+                         (SELECT COUNT (lppb_number)
+                           FROM khs_lppb_batch_detail b
+                          WHERE b.status = 0
+                            AND a.batch_number = b.batch_number) new_draf,
+                            (SELECT COUNT (lppb_number)
+                           FROM khs_lppb_batch_detail c
+                          WHERE c.status = 1
+                            AND a.batch_number = c.batch_number) admin_edit,
+                        (SELECT COUNT (lppb_number)
+                           FROM khs_lppb_batch_detail d
+                          WHERE d.status = 2
+                            AND a.batch_number = d.batch_number)
+                                                                checking_kasie_gudang,
+                        (SELECT COUNT (lppb_number)
+                           FROM khs_lppb_batch_detail f
+                          WHERE f.status = 4
+                            AND a.batch_number = f.batch_number) kasie_gudang_reject,
+                        (SELECT COUNT (lppb_number)
+                           FROM khs_lppb_batch_detail g
+                          WHERE g.status = 5
+                            AND a.batch_number = g.batch_number) checking_akuntansi,
+                        (SELECT COUNT (lppb_number)
+                           FROM khs_lppb_batch_detail h
+                          WHERE h.status = 6
+                            AND a.batch_number = h.batch_number) akuntansi_approved,
+                        (SELECT COUNT (lppb_number)
+                           FROM khs_lppb_batch_detail i
+                          WHERE i.status = 7
+                            AND a.batch_number = i.batch_number) akuntansi_reject
+                   FROM khs_lppb_batch a,
+                        khs_lppb_batch_detail b
+                   WHERE a.batch_number = b.batch_number
+                   AND (b.status = 4
+                   OR b.status = 7)
+               ORDER BY a.batch_number DESC";
+        $run = $oracle->query($query);
+        return $run->result_array();
+    }
+
+    public function showRejectDetail($batch_number,$lppb_number)
+    {
+        $oracle = $this->load->database('oracle',TRUE);
+        $query = "SELECT DISTINCT rsh.receipt_num lppb_number,
+                poh.segment1 po_number,
+                pov.vendor_name vendor_name, rsh.creation_date tanggal_lppb,
+                MP.ORGANIZATION_CODE, 
+                MP.ORGANIZATION_ID,
+                rt.transaction_type status_lppb,
+                a.batch_number, 
+                a.batch_detail_id, 
+                a.lppb_info,
+                a.status,
+                a.status_date,
+                a.source,
+                a.group_batch,
+                a.reason
+                   FROM rcv_shipment_headers rsh,
+                        rcv_shipment_lines rsl,
+                        po_vendors pov,
+                        po_headers_all poh,
+                        po_lines_all pol,
+                        po_line_locations_all pll,
+                        rcv_transactions rt,
+                        MTL_PARAMETERS MP,
+                        (SELECT klb.batch_number
+                        , klbd.po_header_id
+                        , klb.lppb_info
+                        , klbd.batch_detail_id
+                        , klbd.status
+                        , klbd.status_date
+                        , klb.source
+                        , klb.group_batch
+                        , klbd.lppb_number
+                        , klad.reason
+                        FROM khs_lppb_batch klb, khs_lppb_batch_detail klbd, khs_lppb_action_detail klad
+                        WHERE klb.batch_number = klbd.batch_number
+                        AND klbd.batch_detail_id = klad.batch_detail_id
+                        AND klb.batch_number = '$batch_number'
+                        AND klbd.status in (4,7)
+                        AND klad.reason is not null) a
+                  WHERE rsh.shipment_header_id = rsl.shipment_header_id
+                    AND rsh.shipment_header_id = rt.shipment_header_id
+                    AND rsl.shipment_line_id = rt.shipment_line_id
+                    AND pov.vendor_id = rt.vendor_id
+                    AND poh.po_header_id = rt.po_header_id
+                    AND pol.po_line_id = rt.po_line_id
+                    AND poh.po_header_id(+) = pol.po_header_id
+                    AND pov.vendor_id(+) = poh.vendor_id
+                    AND pol.po_line_id(+) = pll.po_line_id
+                    AND RSH.SHIP_TO_ORG_ID(+) = MP.ORGANIZATION_ID
+                    AND rt.transaction_id =
+                           (SELECT MAX (rts.transaction_id)
+                              FROM rcv_transactions rts
+                             WHERE rt.shipment_header_id = rts.shipment_header_id
+                               AND rts.po_line_id = pol.po_line_id)
+                    AND a.po_header_id = poh.po_header_id
+                    AND a.lppb_number = rsh.receipt_num
+                    $lppb_number";
+        $run = $oracle->query($query);
+        return $run->result_array();
+    }
+
+    public function finishLppbKasie()
+    {
+        $oracle = $this->load->database('oracle',true);
+        $query = "SELECT DISTINCT a.batch_number, a.lppb_info, a.create_date, a.group_batch,
+                        (SELECT COUNT (lppb_number)
+                           FROM khs_lppb_batch_detail c
+                           WHERE c.batch_number = a.batch_number
+                           AND c.status not in (4,7)) jumlah_lppb,
+                         (SELECT COUNT (lppb_number)
+                           FROM khs_lppb_batch_detail b
+                          WHERE b.status = 0
+                            AND a.batch_number = b.batch_number) new_draf,
+                            (SELECT COUNT (lppb_number)
+                           FROM khs_lppb_batch_detail c
+                          WHERE c.status = 1
+                            AND a.batch_number = c.batch_number) admin_edit,
+                        (SELECT COUNT (lppb_number)
+                           FROM khs_lppb_batch_detail d
+                          WHERE d.status = 2
+                            AND a.batch_number = d.batch_number)
+                                                                checking_kasie_gudang,
+                        (SELECT COUNT (lppb_number)
+                           FROM khs_lppb_batch_detail e
+                          WHERE e.status = 3
+                            AND a.batch_number = e.batch_number)
+                                                                kasie_gudang_approved,
+                        (SELECT COUNT (lppb_number)
+                           FROM khs_lppb_batch_detail f
+                          WHERE f.status = 4
+                            AND a.batch_number = f.batch_number) kasie_gudang_reject,
+                        (SELECT COUNT (lppb_number)
+                           FROM khs_lppb_batch_detail g
+                          WHERE g.status = 5
+                            AND a.batch_number = g.batch_number) checking_akuntansi,
+                        (SELECT COUNT (lppb_number)
+                           FROM khs_lppb_batch_detail h
+                          WHERE h.status = 6
+                            AND a.batch_number = h.batch_number) akuntansi_approved,
+                        (SELECT COUNT (lppb_number)
+                           FROM khs_lppb_batch_detail i
+                          WHERE i.status = 7
+                            AND a.batch_number = i.batch_number) akuntansi_reject
+                   FROM khs_lppb_batch a, KHS_LPPB_BATCH_DETAIL B, khs_lppb_action_detail c
+               WHERE a.BATCH_NUMBER = b.BATCH_NUMBER
+               AND b.batch_detail_id = c.batch_detail_id
+               AND c.status = 2
+               AND b.status not in (4,7)
+               ORDER BY a.batch_number DESC";
+        $run = $oracle->query($query);
+        return $run->result_array();
+    }
+
+    public function finishdetail($batch_number,$lppb_number){
+        $oracle = $this->load->database('oracle',true);
+        $query = "SELECT DISTINCT poh.po_header_id,
+                a.lppb_number,
+                poh.segment1 po_number,
+                pov.vendor_name vendor_name, rsh.creation_date tanggal_lppb,
+                MP.ORGANIZATION_CODE, 
+                MP.ORGANIZATION_ID,
+                rt.transaction_type status_lppb,
+                a.batch_number, 
+                a.batch_detail_id, 
+                a.lppb_info,
+                a.status,
+                a.status_date,
+                a.source,
+                a.group_batch
+                   FROM rcv_shipment_headers rsh,
+                        rcv_shipment_lines rsl,
+                        po_vendors pov,
+                        po_headers_all poh,
+                        po_lines_all pol,
+                        rcv_transactions rt,
+                        MTL_PARAMETERS MP,
+                        (SELECT klb.batch_number
+                        , klbd.po_header_id
+                        , klb.lppb_info
+                        , klbd.batch_detail_id
+                        , klbd.status
+                        , klbd.status_date
+                        , klb.source
+                        , klb.group_batch
+                        , klbd.lppb_number
+                        FROM khs_lppb_batch klb, khs_lppb_batch_detail klbd, khs_lppb_action_detail klad
+                        WHERE klb.batch_number = klbd.batch_number
+                        AND klbd.batch_detail_id = klad.batch_detail_id
+                        AND klb.batch_number = '$batch_number'
+                        AND klbd.status in (2,3,5,6)) a
+                  WHERE rsh.shipment_header_id = rsl.shipment_header_id
+                    AND rsh.shipment_header_id = rt.shipment_header_id
+                    AND rsl.shipment_line_id = rt.shipment_line_id
+                    AND pov.vendor_id = rt.vendor_id
+                    AND poh.po_header_id = rt.po_header_id
+                    AND pol.po_line_id = rt.po_line_id
+                    AND poh.po_header_id(+) = pol.po_header_id
+                    AND pov.vendor_id(+) = poh.vendor_id
+                    AND RSH.SHIP_TO_ORG_ID(+) = MP.ORGANIZATION_ID
+                    AND rt.transaction_id =
+                           (SELECT MAX (rts.transaction_id)
+                              FROM rcv_transactions rts
+                             WHERE rt.shipment_header_id = rts.shipment_header_id
+                               AND rts.po_header_id = pol.po_header_id)
+                    AND a.po_header_id = poh.po_header_id
+                    AND a.lppb_number = rsh.receipt_num
+                    $lppb_number ";
+        $run = $oracle->query($query);
+        return $run->result_array();
+    }
+
+    public function deleteAllRows($batch_number)
+    {
+        $oracle = $this->load->database('oracle',true);
+        $query2 = "DELETE 
+                    FROM khs_lppb_batch_detail
+                    WHERE batch_number = '$batch_number' ";
+        $runQuery2 = $oracle->query($query2);
+        oci_commit($oracle);
+    }
+
+    public function cekSessionGudang(){
+        $oracle = $this->load->database('oracle',true);
+        $query2 = "SELECT * FROM KHS_LPPB_BATCH WHERE BATCH_NUMBER IN (SELECT MAX(BATCH_NUMBER) FROM KHS_LPPB_BATCH) ";
+        $run = $oracle->query($query2);
+        return $run->result_array();
+    }
+
+    public function cekJumlahData($batch_number,$status){
+        $oracle = $this->load->database('oracle',true);
+        $query2 = "SELECT DISTINCT COUNT(klbd.batch_detail_id) jumlah_data
+                    FROM khs_lppb_batch klb, khs_lppb_batch_detail klbd
+                    WHERE klb.batch_number = klbd.batch_number
+                    AND klbd.batch_number = '$batch_number'
+                    $status ";
+        $run = $oracle->query($query2);
+        return $run->result_array();
     }
 
 }
