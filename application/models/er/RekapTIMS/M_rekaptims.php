@@ -538,7 +538,7 @@
 																from 		\"Surat\".v_surat_tsp_rekap as tabelmaster
 															) as tabelsp
 												where 		tabelsp.noind=pri.noind
-															and 	((param.tgl1 between tabelsp.tanggal_awal_berlaku and tabelsp.tanggal_akhir_berlaku) or (param.tgl2 between tabelsp.tanggal_awal_berlaku and tabelsp.tanggal_akhir_berlaku))
+															and 	((param.tgl1 >= tabelsp.tanggal_awal_berlaku and param.tgl1 < tabelsp.tanggal_akhir_berlaku) or (param.tgl2 >= tabelsp.tanggal_awal_berlaku and param.tgl2 < tabelsp.tanggal_akhir_berlaku))
 															and 	tabelsp.lanjutan='STOP'
 											) as freksp".$year_month.",
 											/*Surat Peringatan - Status Pekerja Nonaktif*/
@@ -571,7 +571,7 @@
 																			) as lanjutan
 																from 		\"Surat\".v_surat_tsp_rekap as tabelmaster
 															) as tabelsp
-												where 		((param.tgl1 between tabelsp.tanggal_awal_berlaku and tabelsp.tanggal_akhir_berlaku) or (param.tgl2 between tabelsp.tanggal_awal_berlaku and tabelsp.tanggal_akhir_berlaku))
+												where 		((param.tgl1 >= tabelsp.tanggal_awal_berlaku and param.tgl1 < tabelsp.tanggal_akhir_berlaku) or (param.tgl2 >= tabelsp.tanggal_awal_berlaku and param.tgl2 < tabelsp.tanggal_akhir_berlaku))
 															and 	tabelsp.lanjutan='STOP'
 															and 	tabelsp.noind
 																	in
