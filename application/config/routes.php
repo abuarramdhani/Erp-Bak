@@ -2261,6 +2261,7 @@ $route['TarikFingerspot'] = 'TarikFingerspot/C_TarikFingerspot';
 $route['TarikFingerspot/TarikData'] = 'TarikFingerspot/C_TarikFingerspot/TarikData';
 $route['TarikFingerspot/TarikData/(:any)'] = 'TarikFingerspot/C_TarikFingerspot/TarikData/$1';
 $route['TarikFingerspot/TransferPresensi'] = 'TarikFingerspot/C_TarikFingerspot/TransferPresensi';
+$route['TarikFingerspot/TransferPresensi/(:any)'] = 'TarikFingerspot/C_TarikFingerspot/TransferPresensi/$1';
 
 //--------------------------------------------------- Check PPh --------------------------------------------------//
 $route['AccountPayables/CheckPPh/Upload'] = 'CheckPPH/MainMenu/C_Upload';
