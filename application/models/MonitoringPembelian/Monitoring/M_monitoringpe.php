@@ -9,9 +9,10 @@ class M_monitoringpe extends CI_Model
 			$this->oracle = $this->load->database('oracle',true);
 		}
 	public function getData(){
-		$sql = "SELECT kmpt.UPDATE_ID,kmpt.UPDATE_DATE, kmpt.SEGMENT1, kmpt.DESCRIPTION, kmpt.PRIMARY_UOM_CODE, kmpt.SECONDARY_UOM_CODE, kmpt.FULL_NAME, kmpt.PREPROCESSING_LEAD_TIME, kmpt.PREPARATION_PO, kmpt.DELIVERY, kmpt.FULL_LEAD_TIME, kmpt.POSTPROCESSING_LEAD_TIME, kmpt.TOTAL_LEADTIME, kmpt.MINIMUM_ORDER_QUANTITY, kmpt.FIXED_LOT_MULTIPLIER, kmpt.ATTRIBUTE18, kmpt.STATUS, kmpt.KETERANGAN  
-			FROM KHS_MONITORING_PEMBELIAN_TEMP kmpt
-			WHERE STATUS  = 'UNAPPROVED'";
+		$sql = "SELECT distinct ppf.PERSON_ID, kmpt.UPDATE_ID,kmpt.UPDATE_DATE, kmpt.SEGMENT1, kmpt.DESCRIPTION, kmpt.PRIMARY_UOM_CODE, kmpt.SECONDARY_UOM_CODE, kmpt.FULL_NAME, kmpt.PREPROCESSING_LEAD_TIME, kmpt.PREPARATION_PO, kmpt.DELIVERY, kmpt.FULL_LEAD_TIME, kmpt.POSTPROCESSING_LEAD_TIME, kmpt.TOTAL_LEADTIME, kmpt.MINIMUM_ORDER_QUANTITY, kmpt.FIXED_LOT_MULTIPLIER, kmpt.ATTRIBUTE18, kmpt.STATUS, kmpt.KETERANGAN  
+			FROM KHS_MONITORING_PEMBELIAN_TEMP kmpt, per_people_f ppf
+			WHERE kmpt.STATUS  = 'UNAPPROVED'
+			AND kmpt.FULL_NAME = ppf.FULL_NAME";
 		$query = $this->oracle->query($sql);
 		return $query->result_array();
 	}
@@ -48,6 +49,7 @@ class M_monitoringpe extends CI_Model
 					$this->oracle->where('SEGMENT1', $data[$j]['SEGMENT1']);
 					$this->oracle->where('UPDATE_ID', $data[$j]['UPDATE_ID']);
 					$this->oracle->update('KHS_MONITORING_PEMBELIAN_TEMP');
+
 					$this->oracle->set('PREPROCESSING_LEAD_TIME',$data[$j]['PREPROCESSING_LEAD_TIME']);
 					$this->oracle->set('ATTRIBUTE6',$data[$j]['PREPARATION_PO']);
 					$this->oracle->set('ATTRIBUTE8',$data[$j]['DELIVERY']);
@@ -56,8 +58,10 @@ class M_monitoringpe extends CI_Model
 					$this->oracle->set('MINIMUM_ORDER_QUANTITY',$data[$j]['MINIMUM_ORDER_QUANTITY']);
 					$this->oracle->set('FIXED_LOT_MULTIPLIER',$data[$j]['FIXED_LOT_MULTIPLIER']);
 					$this->oracle->set('ATTRIBUTE18',$data[$j]['ATTRIBUTE18']);
+					$this->oracle->set('BUYER_ID', $data[$j]['BUYER_ID']);
 					$this->oracle->where('SEGMENT1', $data[$j]['SEGMENT1']);
 					$this->oracle->update('MTL_SYSTEM_ITEMS_B');
+
 
 				} elseif ($data[$j]['STATUS'] == 'UNAPPROVED') {
 
