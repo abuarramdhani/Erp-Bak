@@ -65,10 +65,13 @@ class C_MonitoringPE extends CI_Controller
 			$attr18 = $this->input->post('attr18');
 		$status = $this->input->post('stat');
 		$email = $this->input->post('EmailPembelian[]');
+		$fullname = $this->input->post('fullname');
 		
 		$semua  = array();
 		for ($i=0; $i < sizeof($itemCode) ; $i++) {
+			
 			$data = array(
+					'BUYER_ID' 	=> $fullname[$i],
 					'UPDATE_ID' 	=> $id[$i],
 					'SEGMENT1' 	=> $itemCode[$i],
 					'DESCRIPTION' => $desc[$i],
