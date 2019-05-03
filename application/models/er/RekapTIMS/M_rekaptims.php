@@ -538,7 +538,7 @@
 																from 		\"Surat\".v_surat_tsp_rekap as tabelmaster
 															) as tabelsp
 												where 		tabelsp.noind=pri.noind
-															and 	((param.tgl1 >= tabelsp.tanggal_awal_berlaku and param.tgl1 < tabelsp.tanggal_akhir_berlaku) or (param.tgl2 >= tabelsp.tanggal_awal_berlaku and param.tgl2 < tabelsp.tanggal_akhir_berlaku))
+															and 	 ((param.tgl1 >= tabelsp.tanggal_awal_berlaku and param.tgl1 < tabelsp.tanggal_akhir_berlaku) or (param.tgl2 >= tabelsp.tanggal_awal_berlaku and param.tgl2 < tabelsp.tanggal_akhir_berlaku))
 															and 	tabelsp.lanjutan='STOP'
 											) as freksp".$year_month.",
 											/*Surat Peringatan - Status Pekerja Nonaktif*/
@@ -584,6 +584,10 @@
 																					and 	pri2.keluar=true
 																	)
 											) as freksps".$year_month.",
+											(select count(surat.no_surat) 
+											from \"Surat\".v_surat_tsp_rekap surat 
+											where ((surat.tanggal_awal_berlaku between param.tgl1 and param.tgl2) or (surat.tanggal_akhir_berlaku between param.tgl1 and param.tgl2))
+											      and surat.noind=pri.noind) as total_jmlsp,
 											/*Hari Kerja - Aktif*/
 											(
 												select 		count(*)
