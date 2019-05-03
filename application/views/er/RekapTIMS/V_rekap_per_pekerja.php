@@ -92,7 +92,7 @@ foreach ($rekap as $rekap_data) {}
 											<td style="text-align:center;"><?php echo $rekap_data['frekpsp']+$rekap_data['frekpsps']; ?></td>
 											<td style="text-align:center;"><?php echo $rekap_data['frekip']+$rekap_data['frekips'] ?></td>
 											<td style="text-align:center;"><?php echo $rekap_data['frekct']+$rekap_data['frekcts'] ?></td>
-											<td style="text-align:center;"><?php echo $rekap_data['freksp']+$rekap_data['freksps'] ?></td>
+											<td style="text-align:center;"><?php echo $rekap_data['total_jmlsp']; ?></td>
 											<td style="text-align:center;"><?php
 											 echo ((($rekap_data['totalhk']+$rekap_data['totalhks']) == 0 ) ? "-" : ($rekap_data['totalhk']+$rekap_data['totalhks'])) ?></td>
 											<td style="text-align:center;"><?php echo ((($rekap_data['totalhk']+$rekap_data['totalhks']) == 0 ) ? "-" : sprintf("%.2f%%", (($rekap_data['frekt']+$rekap_data['frekts']) / ($rekap_data['totalhk']+$rekap_data['totalhks']) * 100))) ?></td>
