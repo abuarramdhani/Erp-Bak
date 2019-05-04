@@ -30,8 +30,9 @@
 						<div class="col-lg-3" style="float:left; height: 100%; font-size: 13px; padding: 10px 8px 10px 14px; background: #fff; border: 1px solid #ccc; border-radius: 6px;  position: relative; overflow:hidden">
 							<div id="filterid" style="vertical-align: middle;"></div>
 						</div>
-						<div class="col-lg-3"></div>
-						<div class="col-lg-3"></div>
+						<div class="col-lg-2"></div>
+						<div class="col-lg-2"><span class="btn btn-info btn-sm" style="margin-top: 7px;" id="ApprAll">Set all this page APPROVED</span></div>
+						<div class="col-lg-2"><span class="btn btn-danger btn-sm" style="margin-top: 7px;" id="RejAll">Set all this page REJECTED</span></div>
 					</div>
 				</div>
 				<br />

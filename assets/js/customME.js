@@ -311,3 +311,15 @@ $("#search").change(function () {
 function deleteRowThisHehe(th){
 	$(th).parents("tr").remove();
 }
+
+$("#ApprAll").click(function () {
+		
+	$(".stat").val("APPROVED");
+
+});
+
+$("#RejAll").click(function () {
+		
+	$(".stat").val("REJECTED");
+
+});
