@@ -265,6 +265,8 @@ class C_TarikFingerspot extends CI_Controller
 		
 		$table = "";
 		foreach ($device as $dvc) {
+			if($dvc['server_ip']==$server or '' == $server)
+			{
 			$table .= "	<tr>
 							<td style='width:400px;text-align:left;'>
 								".$dvc['device_name']."
@@ -276,6 +278,8 @@ class C_TarikFingerspot extends CI_Controller
 								".$dvc['jumlah']."
 							</td>
 						</tr>";
+			}
+
 		}
 		$text = "jumlah data yang telah proses hari ini dan kemarin : ".($num - 1).".<br>
 				Apabila Ada hari kemarin yang baru masuk, maka harus menjalankan distribusi ulang (Sehingga Point dan sebaran pekerja Benar).";
