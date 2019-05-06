@@ -73,7 +73,7 @@
                                         <input type="submit" class="btn btn-primary" id="idSubmit_prs" value="Update" style="width: 100%"></input>
                                       </div>
                                       <div class="col-sm-2">
-                                        <a class="btn btn-warning" target="blank_" href="http://personalia.quick.com/cronjob/postgres/dinas-luar-online/cronjob.dinas.luar.online.realisasi_manual.php?spdl=<?php echo $spdl; ?>&id=<?php echo $item_pekerja->noind; ?>" style="width: 100%">Transfer</a>
+                                        <a class="btn btn-warning" target="blank_" href="http://personalia.quick.com/cronjob/postgres_database.quick.com_mysql_dl.quick.com_dl.online.realisasi.manual.php?spdl=<?php echo $spdl; ?>&id=<?php echo $item_pekerja->noind; ?>" style="width: 100%">Transfer</a>
                                       </div>
                                     </div> 
                                 </div>
