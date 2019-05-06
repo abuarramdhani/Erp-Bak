@@ -265,7 +265,7 @@ class C_TarikFingerspot extends CI_Controller
 		
 		$table = "";
 		foreach ($device as $dvc) {
-			if($dvc['server_ip']==$server or '' == $server)
+			if($dvc['lokasi_server_tarik_data']==$server or '' == $server)
 			{
 			$table .= "	<tr>
 							<td style='width:400px;text-align:left;'>
