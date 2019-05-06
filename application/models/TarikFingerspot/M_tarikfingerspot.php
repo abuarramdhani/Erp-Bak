@@ -159,7 +159,7 @@ class M_tarikfingerspot extends CI_MODEL
     }
 
     public function getDevice(){
-    	$sql = "select device_name,inisial_lokasi, 0 jumlah, server_ip from db_datapresensi.tb_device order by 1";
+    	$sql = "select device_name,inisial_lokasi, 0 jumlah, server_ip,lokasi_server_tarik_data from db_datapresensi.tb_device order by 1";
     	$result = $this->quick->query($sql);
 		return $result->result_array();
     }

@@ -265,7 +265,7 @@ class C_TarikFingerspot extends CI_Controller
 		
 		$table = "";
 		foreach ($device as $dvc) {
-			if($dvc['server_ip']==$server or '' == $server)
+			if($dvc['lokasi_server_tarik_data']==$server or '' == $server)
 			{
 			$table .= "	<tr>
 							<td style='width:400px;text-align:left;'>
@@ -346,13 +346,18 @@ class C_TarikFingerspot extends CI_Controller
         $mail->Password = '123456';
         $mail->WordWrap = 50;
         $mail->setFrom('noreply@quick.com', 'Email Sistem');
-        // $email['0'] = array(
-        // 	'email_kirim' => 'aji_kurniawan@quick.com',
-        // 	'nama_kirim' => 'Aji Kurniawan'
-        // );
+
         $email['0'] = array(
         	'email_kirim' => 'kasie_ict_hrd@quick.com',
         	'nama_kirim' => 'Kasie ICT HRD'
+        );
+        $email['1'] = array(
+        	'email_kirim' => 'edp@quick.com',
+        	'nama_kirim' => 'EDP'
+        );        
+        $email['2'] = array(
+        	'email_kirim' => 'hbk@quick.com',
+        	'nama_kirim' => 'Hubungan Kerja'
         );
         foreach ($email as $key) {
         	$mail->addAddress($key['email_kirim'],$key['nama_kirim']);
