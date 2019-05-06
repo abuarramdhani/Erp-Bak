@@ -11,7 +11,21 @@
 	        $this->quick 	=	$this->load->database('quick', TRUE);
 	        $this->personalia 	=	$this->load->database('personalia', TRUE);
 	    }
-
+	   
+	    public function ambilNoindBaru($noind)
+	    {
+	    	$sql = "Select noind,nama,noind_baru from hrd_khs.tpribadi where noind_baru='$noind'";
+	    	return $this->personalia->query($sql)->result_array();
+	    }
+	    public function ambilfinger($noind)
+	    {
+	    	$sql = "select a.*,b.nama_jari
+	    			from db_datapresensi.tb_jari a 
+	    			inner join db_datapresensi.tb_jari_ref b
+	    			 	on a.kode_finger=b.kode_finger
+	    			where a.noind_baru='$noind'";
+	    	return $this->quick->query($sql)->result_array();
+	    }
 	    public function history($schema_name, $table_name, $history)
  		{
  			$this->quick->insert($schema_name.".".$table_name."_history", $history);

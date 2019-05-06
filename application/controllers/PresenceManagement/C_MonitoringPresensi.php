@@ -58,6 +58,25 @@
 			$this->load->view('V_Footer',$data);
 		}
 
+		public function Show($noind){
+
+			$this->checkSession();
+			$data 	=	$this->general->loadHeaderandSidemenu('Monitoring Presensi - Quick ERP', 'Monitoring Presensi', 'Monitoring Presensi', 'Monitoring Presensi');
+
+			$noind = sprintf("%07d", $noind);
+			$data['pekerja'] = $this->M_monitoringpresensi->ambilNoindBaru($noind);
+
+			$data['finger'] = $this->M_monitoringpresensi->ambilfinger($noind);
+
+			$this->load->view('V_Header',$data);
+			$this->load->view('V_Sidemenu',$data);
+			$this->load->view('PresenceManagement/MonitoringPresensi/V_Finger',$data);
+			$this->load->view('V_Footer',$data);
+		}
+		public function Delete_Finger($id)
+		{
+			echo $id;
+		}
 		public function time_sync($id_lokasi = FALSE)
 		{
 			$id_lokasi_decode;
@@ -519,6 +538,8 @@
 					$data['device_user_list']		=	$this->M_monitoringpresensi->device_user_list($id_lokasi_decode);
 
 					$data['id_lokasi_encode'] 		=	$id_lokasi;
+
+					
 
 					$this->load->view('V_Header',$data);
 					$this->load->view('V_Sidemenu',$data);

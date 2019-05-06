@@ -90,6 +90,7 @@
 											<td><?php echo $user_access['keluar'];?></td>
 											<td><?php echo $user_access['nama_lokasi_kerja'];?></td>
 											<td class="text-center">
+												<a title="Check Data Fingercode" class="modalcheckfinger btn btn-info btn-sm"  href="<?php echo site_URL('PresenceManagement/MonitoringPresensi/Show/'.$user_access['noind_baru']) ?>"><i class="fa fa-hand-paper-o"></i> </a> 
 												<a type="button" class="btn btn-success btn-sm" href="<?php echo base_url('PresenceManagement/MonitoringPresensi/device_user_list'.'/'.$encrypted_string);?>" data-toggle="tooltip" title="Finger List">
 													<i class="fa fa-hand-pointer-o"></i>
 												</a>
