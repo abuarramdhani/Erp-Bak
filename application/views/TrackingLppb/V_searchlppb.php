@@ -27,7 +27,7 @@
 														<tr>
 															<td><label>Nama Vendor</label></td>
 															<td>
-																<select id="nama_vendor"  name="nama_vendor" class="form-control select2" style="width: 100%">
+																<select id="nama_vendor"  name="nama_vendor" class="form-control select2" size="40">
 																<option></option>
 																<?php foreach ($vendor_name as $name) { ?>
 																<option><?php echo $name['VENDOR_NAME'] ?></option>
@@ -38,17 +38,34 @@
 														<tr>
 															<td><label>Nomor LPPB</label></td>
 															<td>
-																<input type="text" class="form-control" name="nomor_lppb" id="nomor_lppb" style="margin: 5px" size="30" value="%">
+																<input type="text" class="form-control" name="nomor_lppb" id="nomor_lppb" style="margin-top: 10px; width:100%"  value="%">
 															</td>
 														</tr>
 														<tr>
 															<td><label>Tanggal LPPB</label></td>
 															<td>
-																<input type="text" class="form-control dateFromAndTo" name="dateFrom" id="dateFrom" style="margin: 5px" size="30">
+																<input type="text" class="form-control dateFromAndTo" name="dateFrom" id="dateFromUw" style="margin-top: 10px; margin-bottom: 10px; width:100%" >
 															</td>
 															<td>&nbsp; &nbsp; s/d</td>
 															<td>
-																<input type="text" class="form-control dateFromAndTo" name="dateTo" id="dateTo" style="margin: 5px" size="30">
+																<input type="text" class="form-control dateFromAndTo" name="dateTo" id="dateToUw" style="margin-top: 10px; margin-bottom: 10px; width:100%" >
+															</td>
+														</tr>
+														<tr>
+															<td><label>Nomor PO</label></td>
+															<td>
+																<input type="text" class="form-control" name="nomor_po" id="nomor_po" style="margin-top: 10px; margin-bottom: 10px; width:100%"  value="%">
+															</td>
+														</tr>
+														<tr>
+															<td><label>Inventory Organization</label></td>
+															<td>
+																<select id="inventory" name="inventory" class="form-control select2 select2-hidden-accessible" style="margin-top: 10px; width:100%;">
+																<option value="" ></option>
+																<?php foreach ($inventory as $io) { ?>
+																<option value="<?php echo $io['ORGANIZATION_ID'] ?>"><?php echo $io['ORGANIZATION_CODE'] ?></option>
+																<?php } ?>
+																</select>
 															</td>
 														</tr>
 													</table>
@@ -71,3 +88,8 @@
 	</div>
 </section>
 </form>
+
+
+<script type="text/javascript">
+	var id_gd;
+</script>

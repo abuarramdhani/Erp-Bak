@@ -45,6 +45,7 @@ class C_trackinglppb extends CI_Controller{
 		$data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id);
 
 		$data['vendor_name'] = $this->M_trackinglppb->getVendorName();
+		$data['inventory'] = $this->M_trackinglppb->getInventory();
 
 
 		$this->load->view('V_Header',$data);
@@ -58,6 +59,8 @@ class C_trackinglppb extends CI_Controller{
 		$nomor_lppb = $this->input->post('nomor_lppb');
 		$dateFrom = $this->input->post('dateFrom');
 		$dateTo = $this->input->post('dateTo');
+		$nomor_po = $this->input->post('nomor_po');
+		$inventory = $this->input->post('inventory');
 
 		$parameter = '';
 
@@ -68,12 +71,22 @@ class C_trackinglppb extends CI_Controller{
 
 		if ($nomor_lppb != '' OR $nomor_lppb != NULL) {
 			if ($parameter=='') {$parameter.='AND (';} else{$parameter.=' AND ';}
-			$parameter .= "rsh.receipt_num LIKE '$nomor_lppb'";
+			$parameter .= "klbd.lppb_number LIKE '$nomor_lppb'";
 		}
 
 		if ($dateFrom != '' OR $dateFrom != NULL) {
 			if ($parameter=='') {$parameter.='AND (';} else{$parameter.=' AND ';}
-			$parameter .= "trunc(rsh.creation_date) BETWEEN to_date('$dateFrom','dd/mm/yyyy') and to_date('$dateTo', 'dd/mm/yyyy')";
+			$parameter .= "trunc(klb.create_date) BETWEEN to_date('$dateFrom','dd/mm/yyyy') and to_date('$dateTo', 'dd/mm/yyyy')";
+		}
+
+		if ($nomor_po != '' OR $nomor_po != NULL) {
+			if ($parameter=='') {$parameter.='AND (';} else{$parameter.=' AND ';}
+			$parameter .= "poh.segment1 LIKE '$nomor_po'";
+		}
+
+		if ($inventory != '' OR $inventory != NULL) {
+			if ($parameter=='') {$parameter.='AND (';} else{$parameter.=' AND ';}
+			$parameter .= "klbd.io_id LIKE '$inventory'";
 		}
 
 		if ($parameter!='') {$parameter.=') ';}	
@@ -84,6 +97,27 @@ class C_trackinglppb extends CI_Controller{
 		$return = $this->load->view('TrackingLppb/V_table',$data,TRUE);
 		
 		echo ($return);
+	}
+
+	public function detail($batch_detail_id)
+	{
+		$this->checkSession();
+		$user_id = $this->session->userid;
+		
+		$data['Menu'] = 'Dashboard';
+		$data['SubMenuOne'] = '';
+		
+		$data['UserMenu'] = $this->M_user->getUserMenu($user_id,$this->session->responsibility_id);
+		$data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id);
+		$data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id);
+
+		$data['lppb'] = $this->M_trackinglppb->detail($batch_detail_id);
+		// $data['historylppb'] = $this->M_trackinglppb->historylppb($batch_number);
+
+		$this->load->view('V_Header',$data);
+		$this->load->view('V_Sidemenu',$data);
+		$this->load->view('TrackingLppb/V_detail.php',$data);
+		$this->load->view('V_Footer',$data);
 	}
 
 }
