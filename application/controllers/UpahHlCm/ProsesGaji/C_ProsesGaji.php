@@ -57,7 +57,7 @@ class C_ProsesGaji extends CI_Controller {
 		$data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id);
 
 		$data['periodeGaji'] = $this->M_prosesgaji->getCutOffGaji();
-		$data['data'] = array();
+		$data['hasil'] = array();
 		
 		$this->load->view('V_Header',$data);
 		$this->load->view('V_Sidemenu',$data);
@@ -84,6 +84,10 @@ class C_ProsesGaji extends CI_Controller {
 		$tanggalawal = date('Y-m-d',strtotime($periode[0]));
 		$tanggalakhir = date('Y-m-d',strtotime($periode[1]));
 		$loker = $this->input->post('lokasi_kerja');
+		$puasa = $this->input->post('puasa');
+		if ($puasa == 'on' || $puasa == 'true' || $puasa == 't') {
+			$periode_puasa = $this->input->post('periodePuasa');
+		}
 		if ($loker == null or $loker == "") {
 			$lokasi_kerja = "";
 		}else {
@@ -106,7 +110,15 @@ class C_ProsesGaji extends CI_Controller {
 		$data['periodeGaji'] = $this->M_prosesgaji->getCutOffGaji();
 		$data['periodeGajiSelected'] = $this->input->post('periodeData');
 		$data['gaji']	= $this->M_prosesgaji->ambilNominalGaji();
-		$data['data'] 	= $this->M_prosesgaji->prosesHitung($tanggalawal,$tanggalakhir,$lokasi_kerja);
+		if ($puasa == 'on' || $puasa == 'true' || $puasa == 't') {
+			$data['data'] 	= $this->M_prosesgaji->prosesHitung($tanggalawal,$tanggalakhir,$lokasi_kerja,$periode_puasa);
+		}else{
+			$data['data'] 	= $this->M_prosesgaji->prosesHitung($tanggalawal,$tanggalakhir,$lokasi_kerja);
+		}
+
+		// echo "<pre>";print_r($data['data']);
+		// exit();
+		
 		$data['valLink'] = $link;
 		
 		$arrData = array();
@@ -114,9 +126,10 @@ class C_ProsesGaji extends CI_Controller {
 		
 		foreach ($data['data'] as $key) {
 			$gpokok = $key['gpokok'];
-			$um = $key['um'];
+			$um = ($key['um'] - $key['ump']);
 			$lembur = $key['lembur'];
-			
+			$ump = $key['ump'];
+			$puasa = $key['puasa'];
 			$thnbln 	= '';
 			$tglawal 	= '';
 			$tglakhir 	= '';
@@ -140,11 +153,18 @@ class C_ProsesGaji extends CI_Controller {
 						}
 						if ($val['lokasi_kerja']==$data['gaji'][$i]['lokasi_kerja']) {
 							$nominalum = $data['gaji'][$i]['uang_makan'];
+							$nominalump = $data['gaji'][$i]['uang_makan_puasa'];
 						}
 					}
 					foreach ($dataPerubahanSebelum as $value) {
 						$gajipokok1 	= $value['gpokok']*$nominalgpokok;
-						$uangmakan1 	= $value['um']*$nominalum;
+						if ($puasa == 't' or $puasa == 'true') {
+							$uangmakanpuasa1 = $value['ump']*$nominalump;
+						}else{
+							$uangmakanpuasa1 = $value['ump']*$nominalum;
+						}
+						$uangmakan1 	= ($value['um'] - $value['ump'])*$nominalum;
+						
 						$gajilembur1 = $value['lembur']*($nominalgpokok/7);
 						$total 		= $gajipokok1+$gajilembur1+$uangmakan1;
 					}
@@ -155,21 +175,28 @@ class C_ProsesGaji extends CI_Controller {
 						}
 						if ($val['lokasi_kerja']==$data['gaji'][$i]['lokasi_kerja']) {
 							$nominalum = $data['gaji'][$i]['uang_makan'];
+							$nominalump = $data['gaji'][$i]['uang_makan_puasa'];
 						}
 					}
 					foreach ($dataPerubahanSesudah as $value) {
 						$gajipokok2 	= $value['gpokok']*$nominalgpokok;
-						$uangmakan2 	= $value['um']*$nominalum;
+						$uangmakan2 	= ($value['um'] - $value['ump'])*$nominalum;
+						if ($puasa == 't' or $puasa == 'true') {
+							$uangmakanpuasa2 = $value['ump']*$nominalump;
+						}else{
+							$uangmakanpuasa2 = $value['ump']*$nominalum;
+						}
+						
 						$gajilembur2 = $value['lembur']*($nominalgpokok/7);
 						$total 		+= $gajipokok2+$gajilembur2+$uangmakan2;
 						$gajipokok 	= $gajipokok1+$gajipokok2;
-						$uangmakan 	= $uangmakan1+$uangmakan2;
+						$uangmakan 	= $uangmakan1+$uangmakan2+$uangmakanpuasa1+$uangmakanpuasa2;
 						$gajilembur = $gajilembur1+$gajilembur2;
 						$gajilembur = number_format($gajilembur,'0','.','');
 						$total 		= number_format($total,'0','.','');
-						echo $gajipokok1."-".$gajipokok2."<br>";
-						echo $uangmakan1."-".$uangmakan2."<br>";
-						echo $gajilembur1."-".$gajilembur2."<br>";
+						// echo $gajipokok1."-".$gajipokok2."<br>";
+						// echo $uangmakan1."-".$uangmakan2."<br>";
+						// echo $gajilembur1."-".$gajilembur2."<br>";
 					}
 				}
 			}else{
@@ -179,11 +206,17 @@ class C_ProsesGaji extends CI_Controller {
 					}
 					if ($key['lokasi_kerja']==$data['gaji'][$i]['lokasi_kerja']) {
 						$nominalum = $data['gaji'][$i]['uang_makan'];
+							$nominalump = $data['gaji'][$i]['uang_makan_puasa'];
 					}
 				}
 
 				$gajipokok 	= $gpokok*$nominalgpokok;
-				$uangmakan 	= $um*$nominalum;
+				if ($puasa == 't' or $puasa == 'true') {
+					$uangmakan 	= ($um*$nominalum) + ($ump*$nominalump);
+				}else{
+					$uangmakan 	= ($um*$nominalum) + ($ump*$nominalum);
+				}
+				
 				$gajilembur = $lembur*($nominalgpokok/7);
 				$gajilembur = number_format($gajilembur,'0','.','');
 				$total 		= $gajipokok+$gajilembur+$uangmakan;
@@ -199,7 +232,7 @@ class C_ProsesGaji extends CI_Controller {
 				'periode' 			=> $thnbln,
 				'jml_gp' 			=> $gpokok,
 				'gp' 				=> $gajipokok,
-				'jml_um' 			=> $um,
+				'jml_um' 			=> $um + $ump,
 				'um' 				=> $uangmakan,
 				'jml_lbr' 			=> $lembur,
 				'lmbr' 				=> $gajilembur,
@@ -217,11 +250,15 @@ class C_ProsesGaji extends CI_Controller {
 			}else{
 				$this->M_prosesgaji->insertHlcmProses($arrData[$angka]);
 			}
-
+			$arrData[$angka]['nama'] = $key['nama'];
+			$arrData[$angka]['pekerjaan'] = $key['pekerjaan'];
+			// echo $puasa."<p style='color: red;'>".$key['noind']."</p><br>";
 			$angka++;
 		}
 		// echo "<pre>";
-		// print_r($arrData);exit();
+		// print_r($arrData);
+		// exit();
+		$data['hasil'] = $arrData;
 
 		$this->load->view('V_Header',$data);
 		$this->load->view('V_Sidemenu',$data);

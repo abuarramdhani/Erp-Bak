@@ -52,6 +52,12 @@ class M_upahphl extends CI_Model {
 		$this->erp->update('hlcm.hlcm_datagaji',$uangmakan);
 		return;
 	}
+	public function updateUangMakanPuasa($lokasi_kerja,$uangmakanpuasa)
+	{
+		$this->erp->where('lokasi_kerja',$lokasi_kerja);
+		$this->erp->update('hlcm.hlcm_datagaji',$uangmakanpuasa);
+		return;
+	}
 	public function getDataPekerja($lokasi_kerja)
 	{
 		$query = "select dp.*,(select b.nama_bank from hlcm.hlcm_bank b where b.code_bank=dp.bank) as nama_bank from hlcm.hlcm_datapekerja dp where dp.lokasi_kerja='$lokasi_kerja' order by dp.last_updated,dp.noind";
@@ -162,7 +168,7 @@ class M_upahphl extends CI_Model {
 	}
 	public function ambilPekerjaHL()
 	{
-		$query="select tp.nama,tp.noind,tp.lokasi_kerja, (select tpk.kdpekerjaan from hrd_khs.tpekerjaan tpk where tp.kd_pkj=tpk.kdpekerjaan) as kdpekerjaan from hrd_khs.tpribadi tp where left(tp.noind,1)='R' and keluar='0' order by tp.noind";
+		$query="select tp.nama,tp.noind,tp.lokasi_kerja, (select tpk.kdpekerjaan from hrd_khs.tpekerjaan tpk where tp.kd_pkj=tpk.kdpekerjaan) as kdpekerjaan,tp.puasa from hrd_khs.tpribadi tp where left(tp.noind,1)='R' and keluar='0' order by tp.noind";
 		$data=$this->personalia->query($query);
 		return $data->result_array();
 	}

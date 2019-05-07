@@ -57,6 +57,12 @@ class C_DataPekerja extends CI_Controller {
 			$nama  = $key['nama'];
 			$kdpkj = $key['kdpekerjaan'];
 			$loker = $key['lokasi_kerja'];
+			$puasa = $key['puasa'];
+			if ($puasa == 't' or $puasa == 'true' or$puasa == '1') {
+				$puasa = 'true';
+			}else{
+				$puasa = 'false';
+			}
 
 			$cek = $this->M_upahphl->cekdataAda($noind,$nama,$kdpkj,$loker);
 			if ($cek=='0') {
@@ -65,10 +71,22 @@ class C_DataPekerja extends CI_Controller {
 								'nama' => $nama,
 								'kode_pekerjaan' => $kdpkj,
 								'lokasi_kerja' => $loker,
+								'puasa'	=> $puasa
 							);
 				$this->M_upahphl->insertDataPekerja($array);
+			}else{
+				$array = array(
+								'noind' => $noind,
+								'nama' => $nama,
+								'kode_pekerjaan' => $kdpkj,
+								'lokasi_kerja' => $loker,
+								'puasa'	=> $puasa
+							);
+				$this->M_upahphl->updateDataPekerjaHlcm($noind,$nama,$array);
 			}
 		}
+
+		// exit();
 
 		$data['Menu'] = 'Dashboard';
 		$data['SubMenuOne'] = '';
@@ -101,6 +119,7 @@ class C_DataPekerja extends CI_Controller {
 		$no = 1;
 		$tr = "";
 		$pekerja ="";
+		$puasa = "";
 	
 		foreach ($data as $key) {
 			$id = $key['id_pekerja'];
@@ -113,6 +132,12 @@ class C_DataPekerja extends CI_Controller {
 			}elseif ($key['kode_pekerjaan'] == '405010113') {
 				$pekerja = "TENAGA";
 			}
+
+			if ($key['puasa'] == 't' or $key['puasa'] == '0' or $key['puasa'] == 'true') {
+				$puasa = "Ya";
+			}else{
+				$puasa = "Tidak";
+			}
 			$tr = $tr."<tr>
 			<td>".$no."</td>
 			<td>".$key['noind']."</td>
@@ -122,6 +147,7 @@ class C_DataPekerja extends CI_Controller {
 			<td>".$key['atas_nama']."</td>
 			<td>".$key['nama_bank']."</td>
 			<td>".$key['cabang']."</td>
+			<td>".$puasa."</td>
 			<td style='text-align:center;'><a href='".base_url('HitungHlcm/DataPekerja/editData'.'/'.$id)."'><span class='glyphicon glyphicon-edit'></span></a>
 			<a style='margin-left:5px;' href='".base_url('HitungHlcm/DataPekerja/deleteData'.'/'.$id)."'><span class='glyphicon glyphicon-trash'></span></a>
 			</td>
