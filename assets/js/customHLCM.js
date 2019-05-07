@@ -22,6 +22,7 @@ $(function () {
           $('#serabutan').val(result['serabutan']);
           $('#tenaga').val(result['tenaga']);
           $('#uangmakan').val(result['uangmakan']);
+          $('#uangmakanpuasa').val(result['uangmakanpuasa']);
         }
 
       		});
@@ -59,6 +60,7 @@ $(function () {
 		   $('#serabutan').prop("readonly", false);
 		   $('#tenaga').prop("readonly", false);
 		   $('#uangmakan').prop("readonly", false);
+		   $('#uangmakanpuasa').prop("readonly", false);
 		   $("#button_edit").attr("data","0");
 
    		} else if(data == '0'){
@@ -68,6 +70,7 @@ $(function () {
 		   $('#serabutan').prop("readonly", true);
 		   $('#tenaga').prop("readonly", true);
 		   $('#uangmakan').prop("readonly", true);
+		   $('#uangmakanpuasa').prop("readonly", true);
 		   $("#button_edit").attr('data','1');
    		}
 	});
