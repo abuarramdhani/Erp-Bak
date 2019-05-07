@@ -83,7 +83,7 @@
                                                         <td><?php echo $Kendaraan['nomor_polisi'] ?></td>
                                                         <td><?php echo $Kendaraan['jenis_kendaraan'] ?></td>
                                                         <td><?php echo $Kendaraan['merk_kendaraan'] ?></td>
-                                                        <td><?php echo $Kendaraan['pic'] ?></td>
+                                                        <td><?php echo $Kendaraan['pic_kendaraan'] ?></td>
                                                         <td><?php echo $Kendaraan['lokasi'] ?></td>
                                                         <td><?php echo $Kendaraan['warna_kendaraan'] ?></td>
                                                         <td><?php echo $Kendaraan['tahun_pembuatan'] ?></td>
@@ -175,7 +175,7 @@
                                                         <td><?php echo $KendaraanDeleted['nomor_polisi'] ?></td>
                                                         <td><?php echo $KendaraanDeleted['jenis_kendaraan'] ?></td>
                                                         <td><?php echo $KendaraanDeleted['merk_kendaraan'] ?></td>
-                                                        <td><?php echo $KendaraanDeleted['pic'] ?></td>
+                                                        <td><?php echo $KendaraanDeleted['pic_kendaraan'] ?></td>
                                                         <td><?php echo $KendaraanDeleted['warna_kendaraan'] ?></td>
                                                         <td><?php echo $KendaraanDeleted['tahun_pembuatan'] ?></td>
                                                         <td><?php if ($Kendaraan['hak_milik'] == "1") {
