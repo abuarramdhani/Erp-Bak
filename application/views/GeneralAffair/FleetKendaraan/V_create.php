@@ -121,6 +121,15 @@
                                             
                                             ?>
                                             <div class="form-group">
+                                                <label for="txtPICHeader" class="control-label col-lg-4">PIC</label>
+                                                <div class="col-lg-4">
+                                                  <select id="slc_pic_kendaraan" name="pic_kendaraan" class="form-control">
+                                                  </select>
+                                                </div>
+                                            </div>
+
+
+                                            <div class="form-group">
                                                 <label for="txtNomorPolisiHeader" class="control-label col-lg-4">Nomor Rangka</label>
                                                 <div class="col-lg-4">
                                                     <input type="text" placeholder="Nomor Rangka (contoh : NHKP3CA1JFK089113)" name="txtNomorRangkaHeader" id="txtNomorRangkaHeader" class="form-control" maxlength="30" />

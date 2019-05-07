@@ -139,7 +139,7 @@
                                                                             .$loker["location_name"].'
                                                                         </option>';
                                                             }
-                                                            ?>
+                                                             ?>
                                                         </select>
                                                     </div>
                                                 </div>
@@ -147,6 +147,18 @@
                                             }
                                             
                                             ?>
+                                            <div class="form-group">
+                                                <label for="txtPICHeader" class="control-label col-lg-4">PIC</label>
+                                                <div class="col-lg-4">
+                                                  <select id="slc_pic_kendaraan" name="pic_kendaraan" class="form-control">
+                                                  <?php
+
+                                                   echo '<option value="'.$kendaraanEdit['pic_kendaraan'].'" selected="selected">'.$kendaraanEdit['pic_kendaraan'].'</option>';
+                                                  ?>
+
+                                                  </select>
+                                                </div>
+                                            </div>
 
                                             <div class="form-group">
                                                 <label for="txtNomorPolisiHeader" class="control-label col-lg-4">Nomor Rangka</label>
