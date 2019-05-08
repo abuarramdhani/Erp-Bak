@@ -65,15 +65,32 @@ class M_prosesgaji extends CI_Model {
 		$result = $this->erp->query($sql);
 		return $result->num_rows();
 	}
+	
+	public function getHlcmProsesDetail($periode,$noind,$kode_pekerjaan){
+		$sql = "select * from hlcm.hlcm_proses_detail where noind = '$noind' and periode = '$periode' and kode_pekerjaan = '$kode_pekerjaan'";
+		$result = $this->erp->query($sql);
+		return $result->num_rows();
+	}
 
 	public function insertHlcmProses($data){
 		$this->erp->insert('hlcm.hlcm_proses',$data);
+	}
+
+	public function insertHlcmProsesDetail($data){
+		$this->erp->insert('hlcm.hlcm_proses_detail',$data);
 	}
 
 	public function updateHlcmproses($data){
 		$this->erp->where('noind',$data['noind']);
 		$this->erp->where('periode',$data['periode']);
 		$this->erp->update('hlcm.hlcm_proses',$data);
+	}
+	
+	public function updateHlcmprosesDetail($data){
+		$this->erp->where('noind',$data['noind']);
+		$this->erp->where('periode',$data['periode']);
+		$this->erp->where('kode_pekerjaan',$data['kode_pekerjaan']);
+		$this->erp->update('hlcm.hlcm_proses_detail',$data);
 	}
 
 	public function getHlcmProsesPrint($tglBln,$lokasi = FALSE){
@@ -95,6 +112,34 @@ class M_prosesgaji extends CI_Model {
 				order by prs.kode_pekerjaan";
 		$result = $this->erp->query($sql);
 		return $result->result_array();
+	}
+
+	public function getHlcmSlipGajiPrint($tgl_awal,$tgl_akhir,$noind){
+		$no_induk = '';
+		if (isset($noind) and !empty($noind)) {
+			$no_induk = " and prs.noind = '$noind' ";
+		}
+		$sql = "select prs.* ,
+					(	select pekerjaan 
+						from hlcm.hlcm_datagaji 
+						where prs.kode_pekerjaan = kode_pekerjaan 
+						and prs.lokasi_kerja = lokasi_kerja) pekerjaan,
+					employee_name nama
+				from hlcm.hlcm_proses prs
+				inner join er.er_employee_all eall
+					on prs.noind = eall.employee_code
+				where prs.tgl_awal_periode = '$tgl_awal'
+				and prs.tgl_akhir_periode = '$tgl_akhir'
+				$no_induk
+				order by prs.kode_pekerjaan";
+		$result = $this->erp->query($sql);
+		return $result->result_array();
+	}
+
+	public function cekPuasa($noind){
+		$sql = "select puasa from hrd_khs.tpribadi where noind = '$noind' and puasa = '1'";
+		$result = $this->personalia->query($sql);
+		return $result->num_rows();
 	}
 	
 	public function prosesHitung($tanggalawal,$tanggalakhir,$lokasi_kerja,$puasa = FALSE)

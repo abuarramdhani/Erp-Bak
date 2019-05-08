@@ -14,7 +14,14 @@
 								<label class="control-label">Periode</label>
 							</div>
 							<div class="col-lg-3">
-								<input name="periode" class="prosesgaji-daterangepicker form-control"></input>
+								<select class="select select2" data-placeholder="Bulan" name="periode" style="width: 100%">
+									<option></option>
+									<?php if (isset($periodeGaji) and !empty($periodeGaji)) {
+										foreach ($periodeGaji as $key) {
+											echo '<option value="'.$key['rangetanggal'].'" >'.$key['bulan']." ".$key['tahun'].'</option>';
+										}
+									} ?>
+								</select>
 							</div>
 						</div>
 					</div>
