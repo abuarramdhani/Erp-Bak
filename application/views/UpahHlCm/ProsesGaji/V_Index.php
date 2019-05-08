@@ -67,16 +67,18 @@
 							<th style="text-align: center; vertical-align: middle;" rowspan="2">No</th>
 							<th style="text-align: center; vertical-align: middle;" rowspan="2">Nama</th>
 							<th style="text-align: center; vertical-align: middle;" rowspan="2">Status</th>
-							<th style="text-align: center;" colspan="3">Komponen</th>
-							<th style="text-align: center;" colspan="3">Nominal</th>
+							<th style="text-align: center;" colspan="4">Komponen</th>
+							<th style="text-align: center;" colspan="4">Nominal</th>
 							<th style="text-align: center; vertical-align: middle;" rowspan="2">Total Gaji</th>
 						</tr>
 						<tr style="background-color: #00ccff;">
 							<th style="text-align: center;">Gaji Pokok</th>
 							<th style="text-align: center;">Uang Makan</th>
+							<th style="text-align: center;">Uang Makan Puasa</th>
 							<th style="text-align: center;">Lembur</th>
 							<th style="text-align: center;">Gaji Pokok</th>
 							<th style="text-align: center;">Uang Makan</th>
+							<th style="text-align: center;">Uang Makan Puasa</th>
 							<th style="text-align: center;">Lembur</th>
 						</tr>
 					</thead>
@@ -91,9 +93,11 @@
 								<td style="text-align: center;"><?php echo $key['pekerjaan'];?></td>
 								<td style="text-align: center;"><?php echo $key['jml_gp'];?></td>
 								<td style="text-align: center;"><?php echo $key['jml_um'];?></td>
+								<td style="text-align: center;"><?php echo $key['jml_ump'];?></td>
 								<td style="text-align: center;"><?php echo $key['jml_lbr'];?></td>
 								<td style="text-align: center;"><?php echo $key['gp'];?></td>
 								<td style="text-align: center;"><?php echo $key['um'];?></td>
+								<td style="text-align: center;"><?php echo $key['ump'];?></td>
 								<td style="text-align: center;"><?php echo $key['lmbr'];?></td>
 								<td style="text-align: center;"><?php echo $key['total_bayar'];?></td>
 							</tr>

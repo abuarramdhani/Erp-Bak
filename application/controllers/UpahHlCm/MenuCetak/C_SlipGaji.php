@@ -55,7 +55,9 @@ class C_SlipGaji extends CI_Controller {
 		$data['UserMenu'] = $this->M_user->getUserMenu($user_id,$this->session->responsibility_id);
 		$data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id);
 		$data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id);
-		
+
+		$data['periodeGaji'] = $this->M_prosesgaji->getCutOffGaji();
+
 		$this->load->view('V_Header',$data);
 		$this->load->view('V_Sidemenu',$data);
 		$this->load->view('UpahHlCm/MenuCetak/V_SlipGaji',$data);
@@ -86,13 +88,10 @@ class C_SlipGaji extends CI_Controller {
 		$tanggalawal = date('Y-m-d',strtotime($periodew[0]));
 		$tanggalakhir = date('Y-m-d',strtotime($periodew[1]));
 		$noind = $this->input->post('noindPekerja');
-		if ($noind == null) {
-			$pnoind = "";
-		}else{
-			$pnoind = "AND tp.noind='$noind'";
-		};
+		
 		$tgl = date('F-Y',strtotime($periodew[0]));
-		$data['kom'] = $this->M_prosesgaji->prosesHitung($tanggalawal,$tanggalakhir,$pnoind);
+		$data['kom'] = $this->M_prosesgaji->getHlcmSlipGajiPrint($tanggalawal,$tanggalakhir,$noind);
+		// echo "<pre>";print_r($data['kom']);exit();
 		$data['nom'] = $this->M_prosesgaji->ambilNominalGaji();
 
 		$kom 	= $data['kom'];
@@ -100,85 +99,56 @@ class C_SlipGaji extends CI_Controller {
 		$row 	= 0;
 		$total_semua = 0;
 		foreach ($kom as $key) {
-
-			$gpokok  = $key['gpokok'];
-			$um		 = $key['um'];
-			$lembur  = $key['lembur'];
-			$cekUbahPekerjaan = $this->M_prosesgaji->getUbahPekerjaan($key['noind'],$key['kdpekerjaan'],$tanggalawal,$tanggalakhir,'cek');
-			if ($cekUbahPekerjaan == 1) {
-				$tanggalPerubahan = $this->M_prosesgaji->getUbahPekerjaan($key['noind'],$key['kdpekerjaan'],$tanggalawal,$tanggalakhir,'tanggal');
-				
-				foreach ($tanggalPerubahan as$val) {
-					$dataPerubahanSebelum = $this->M_prosesgaji->getNominalPerubahan($tanggalawal,$val['tanggal_akhir_berlaku'],$key['noind']);
+			$cek_puasa = $this->M_prosesgaji->cekPuasa($key['noind']);
+			if ($key['status_perubahan'] == 't' or $key['status_perubahan'] == 'true') {
+				$data_detail = $this->M_prosesgaji->getProsesDetail($key['periode'],$key['noind']);
+				$xx = 1;
+				foreach ($data_detail as$val) {
 					for ($i=0; $i < 8; $i++) { 
-						if ($val['lokasi_kerja']==$nom[$i]['lokasi_kerja'] and $val['kode_pekerjaan2']==$nom[$i]['kode_pekerjaan']) {
+						if ($key['lokasi_kerja']==$nom[$i]['lokasi_kerja'] and $key['kode_pekerjaan']==$nom[$i]['kode_pekerjaan']) {
 							$nominalgpokok = $nom[$i]['nominal'];
 						}
-						if ($val['lokasi_kerja']==$nom[$i]['lokasi_kerja']) {
+						if ($key['lokasi_kerja']==$nom[$i]['lokasi_kerja']) {
 							$nominalum = $nom[$i]['uang_makan'];
+							$nominalump = $nom[$i]['uang_makan_puasa'];
 						}
 					}
-					foreach ($dataPerubahanSebelum as $value) {
-						$gajipokok1 	= $value['gpokok']*$nominalgpokok;
-						$uangmakan1 	= $value['um']*$nominalum;
-						$gajilembur1 	= $value['lembur']*($nominalgpokok/7);
-						$total 			= $gajipokok1+$gajilembur1+$uangmakan1;
-						$data['res'][$row]['gp1'] = $value['gpokok'];
-						$data['res'][$row]['nomgp1'] = $nominalgpokok;
-						$data['res'][$row]['um1'] = $value['um'];
-						$data['res'][$row]['nomum1'] = $nominalum;
-						$data['res'][$row]['lmbr1'] = $value['lembur'];
-						$data['res'][$row]['nomlmbr1'] = $nominalgpokok/7;
-
+					$data['res'][$row]['gp'.$xx] = $val['jml_gp'];
+					$data['res'][$row]['nomgp'.$xx] = $nominalgpokok;
+					$data['res'][$row]['um'.$xx] = $val['jml_um'];
+					$data['res'][$row]['nomum'.$xx] = $nominalum;
+					$data['res'][$row]['ump'.$xx] = $val['jml_ump'];
+					if ($cek_puasa > 0) {
+						$data['res'][$row]['nomump'.$xx] = $nominalump;
+					}else{
+						$data['res'][$row]['nomump'.$xx] = $nominalum;
 					}
-					$dataPerubahanSesudah = $this->M_prosesgaji->getNominalPerubahan($val['tanggal_mulai_berlaku'],$tanggalakhir,$key['noind']);
-					for ($i=0; $i < 8; $i++) { 
-						if ($val['lokasi_kerja']==$nom[$i]['lokasi_kerja'] and $val['kode_pekerjaan']==$nom[$i]['kode_pekerjaan']) {
-							$nominalgpokok = $nom[$i]['nominal'];
-						}
-						if ($val['lokasi_kerja']==$nom[$i]['lokasi_kerja']) {
-							$nominalum = $nom[$i]['uang_makan'];
-						}
-					}
-					foreach ($dataPerubahanSesudah as $value) {
-						$gajipokok2 	= $value['gpokok']*$nominalgpokok;
-						$uangmakan2 	= $value['um']*$nominalum;
-						$gajilembur2 = $value['lembur']*($nominalgpokok/7);
-						$total 		+= $gajipokok2+$gajilembur2+$uangmakan2;
-						$gajipokok 	= $gajipokok1+$gajipokok2;
-						$uangmakan 	= $uangmakan1+$uangmakan2;
-						$gajilembur = $gajilembur1+$gajilembur2;
-						$gajilembur = number_format($gajilembur,'0','.','');
-						$total 		= number_format($total,'0','.','');
-						$data['res'][$row]['gp2'] = $value['gpokok'];
-						$data['res'][$row]['nomgp2'] = $nominalgpokok;
-						$data['res'][$row]['um2'] = $value['um'];
-						$data['res'][$row]['nomum2'] = $nominalum;
-						$data['res'][$row]['lmbr2'] = $value['lembur'];
-						$data['res'][$row]['nomlmbr2'] = $nominalgpokok/7;
-					}
+					$data['res'][$row]['lmbr'.$xx] = $val['jml_lbr'];
+					$data['res'][$row]['nomlmbr'.$xx] = $nominalgpokok/7;
+					$xx++;
 				}
 			}else{
 				for ($i=0; $i < 8; $i++) { 
-					if ($key['lokasi_kerja']==$nom[$i]['lokasi_kerja'] and $key['kdpekerjaan']==$nom[$i]['kode_pekerjaan']) {
+					if ($key['lokasi_kerja']==$nom[$i]['lokasi_kerja'] and $key['kode_pekerjaan']==$nom[$i]['kode_pekerjaan']) {
 						$nominalgpokok = $nom[$i]['nominal'];
 					}
 					if ($key['lokasi_kerja']==$nom[$i]['lokasi_kerja']) {
 						$nominalum = $nom[$i]['uang_makan'];
+						$nominalump = $nom[$i]['uang_makan_puasa'];
 					}
 				}
 
-				$gajipokok 	= $gpokok*$nominalgpokok;
-				$uangmakan 	= $um*$nominalum;
-				$gajilembur = $lembur*($nominalgpokok/7);
-				$gajilembur = number_format($gajilembur,'0','.','');
-				$total 		= $gajipokok+$gajilembur+$uangmakan;
-				$total 		= number_format($total,'0','.','');
-				$data['res'][$row]['gp'] = $gpokok;
+				$data['res'][$row]['gp'] = $key['jml_gp'];
 				$data['res'][$row]['nomgp'] = $nominalgpokok;
-				$data['res'][$row]['um'] = $um;
+				$data['res'][$row]['um'] = $key['jml_um'];
 				$data['res'][$row]['nomum'] = $nominalum;
-				$data['res'][$row]['lmbr'] = $lembur;
+				$data['res'][$row]['ump'] = $key['jml_ump'];
+				if ($cek_puasa > 0) {
+					$data['res'][$row]['nomump'] = $nominalump;
+				}else{
+					$data['res'][$row]['nomump'] = $nominalum;
+				}
+				$data['res'][$row]['lmbr'] = $key['jml_lbr'];
 				$data['res'][$row]['nomlmbr'] = $nominalgpokok/7;
 			}
 
@@ -186,7 +156,7 @@ class C_SlipGaji extends CI_Controller {
 			$data['res'][$row]['noind'] = $key['noind'];
 			$data['res'][$row]['nama'] = $key['nama'];
 			$data['res'][$row]['pekerjaan'] = $key['pekerjaan'];
-			$data['res'][$row]['total_terima'] = $total;
+			$data['res'][$row]['total_terima'] = $key['total_bayar'];
 			
 			$row++;
 		}
