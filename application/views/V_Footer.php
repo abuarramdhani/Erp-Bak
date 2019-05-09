@@ -258,8 +258,10 @@
     		"format": 'dd M yyyy'
       	});			
 	</script>
-
-
+	
+	<script type="text/javascript">
+		var id_gd;
+	</script>
 
 	<?php
 	if (empty($alert)) {
