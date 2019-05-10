@@ -11,7 +11,7 @@
               <label class=""> Inputkan Job Number:</label>
             </div>
             <div class="col-md-6">
-            <input class="form-control" type="number" id="NoJob" name="txtNoJob" placeholder="Masukkan Job Number..">
+            <input class="form-control" type="text" id="NoJob" name="txtNoJob" placeholder="Masukkan Job Number..">
             </div>
             <div class="col-md-6">
             <button class="btn btn-primary" type="submit" onclick="getDetailJobInv(this)" ><i class="fa fa-search"></i> FIND </button>
