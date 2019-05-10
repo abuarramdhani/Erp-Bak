@@ -257,6 +257,12 @@
     		"format": 'dd M yyyy'
       	});			
 	</script>
+
+
+	<script type="text/javascript">
+		var id_gd;
+	</script>
+
  	<script src="<?php echo base_url('assets/js/customML.js');?>" type="text/javascript"></script>
 
 
