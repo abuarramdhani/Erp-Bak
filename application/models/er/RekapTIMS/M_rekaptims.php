@@ -584,10 +584,27 @@
 																					and 	pri2.keluar=true
 																	)
 											) as freksps".$year_month.",
-											(select count(surat.no_surat) 
-											from \"Surat\".v_surat_tsp_rekap surat 
-											where ((surat.tanggal_awal_berlaku between param.tgl1 and param.tgl2) or (surat.tanggal_akhir_berlaku between param.tgl1 and param.tgl2))
-											      and surat.noind=pri.noind) as total_jmlsp,
+											/*Rekap Surat Peringatan - Status Pekerja Aktif*/
+											(
+												select	count(*)	from \"Surat\".v_surat_tsp_rekap as tabelsp
+												where 		tabelsp.noind=pri.noind
+															and 	 (tabelsp.tanggal_awal_berlaku between param.tgl1 - interval '6 month' + interval '1 day' and param.tgl2)
+											) as total_jmlsp".$year_month.",
+											/*Rekap Surat Peringatan - Status Pekerja Nonaktif*/
+											(
+												select	count(*)	from \"Surat\".v_surat_tsp_rekap as tabelsp
+												where 		(tabelsp.tanggal_awal_berlaku between param.tgl1 - interval '6 month' + interval '1 day' and param.tgl2)
+															and 	tabelsp.noind
+																	in
+																	(
+																		select 		noind
+																		from 		hrd_khs.v_hrd_khs_tpribadi as pri2
+																		where 		pri2.nik=pri.nik
+																					and 	pri2.tgllahir=pri.tgllahir
+																					and 	pri2.noind!=pri.noind
+																					and 	pri2.keluar=true
+																	)
+											) as total_jmlsps".$year_month.",
 											/*Hari Kerja - Aktif*/
 											(
 												select 		count(*)
