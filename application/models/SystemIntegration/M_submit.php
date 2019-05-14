@@ -263,4 +263,8 @@ class M_submit extends CI_Model
 		return $jabatan2;
 	}
 
+	function getEmployeeName($employee_code) {
+		$name = $this->db->select('employee_name')->where('employee_code', $employee_code)->get('er.er_employee_all');
+		return($name->row()) ? $name->row()->employee_name : '';
+	}
 }
