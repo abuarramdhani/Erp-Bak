@@ -580,6 +580,20 @@ $route['CateringManagement/PenjadwalanCatering'] = 'Cateringmanagement/Penjadwal
 $route['CateringManagement/PenjadwalanCatering/Create/(:any)/(:any)'] = 'Cateringmanagement/Penjadwalan/C_PenjadwalanCatering/Create/$1/$2';
 $route['CateringManagement/PenjadwalanCatering/Edit/(:any)/(:any)'] = 'Cateringmanagement/Penjadwalan/C_PenjadwalanCatering/Edit/$1/$2';
 $route['CateringManagement/PenjadwalanCatering/Delete/(:any)/(:any)'] = 'Cateringmanagement/Penjadwalan/C_PenjadwalanCatering/Delete/$1/$2';
+
+//-----------------------------------Catering Management -Pesanan-----------------------------------------------//
+$route['CateringManagement/DataPesanan'] = 'CateringManagement/Pesanan/C_Pesanan';
+$route['CateringManagement/DataPesanan/(:any)'] = 'CateringManagement/Pesanan/C_Pesanan/$1';
+$route['CateringManagement/DataPesanan/(:any)/(:any)'] = 'CateringManagement/Pesanan/C_Pesanan/$1/$2';
+
+$route['CateringManagement/PesananTambahan'] = 'CateringManagement/Pesanan/C_Tambahan';
+$route['CateringManagement/PesananTambahan/(:any)'] = 'CateringManagement/Pesanan/C_Tambahan/$1';
+$route['CateringManagement/PesananTambahan/(:any)/(:any)'] = 'CateringManagement/Pesanan/C_Tambahan/$1/$2';
+
+$route['CateringManagement/Plotting'] = 'CateringManagement/Pesanan/C_Plotting';
+$route['CateringManagement/Plotting/(:any)'] = 'CateringManagement/Pesanan/C_Plotting/$1';
+$route['CateringManagement/Plotting/(:any)/(:any)'] = 'CateringManagement/Pesanan/C_Plotting/$1/$2';
+
 //------------------------------------Management Presensi---------------------------------------------------
 $route['PresenceManagement'] 						= 'PresenceManagement/C_Index/index';
 
