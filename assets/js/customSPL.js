@@ -266,4 +266,25 @@ $(function () {
 
   }
 
+  function spl_load_data(){
+    usr = $('#txt_ses').val();
+    ket = $('#spl_tex_proses').val();
+    tmp = "finspot:FingerspotVer;"+btoa(baseurl+'SPL/Fp/fp_proces?userid='+usr);
+    chk = "";
+    $('.spl-chk-data').each(function(){
+      if(this.checked) {chk += '.'+$(this).val();}
+    });
+
+    $('#spl_proses_reject').attr('href', tmp+btoa('&stat=31&data='+chk+'&ket='+ket));
+    $('#spl_proses_approve').attr('href', tmp+btoa('&stat=21&data='+chk+'&ket='+ket));
+  }
+
+  $(document).on('click', '.spl-chk-data', function(e){
+    spl_load_data();
+  });
+
+  $(document).on('input', '#spl_tex_proses', function(e){
+    spl_load_data();
+  });
+
 });
