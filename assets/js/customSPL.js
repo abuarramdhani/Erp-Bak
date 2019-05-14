@@ -267,16 +267,28 @@ $(function () {
   }
 
   function spl_load_data(){
+    url = window.location.pathname;
     usr = $('#txt_ses').val();
     ket = $('#spl_tex_proses').val();
-    tmp = "finspot:FingerspotVer;"+btoa(baseurl+'SPL/Fp/fp_proces?userid='+usr);
+
+    if(url.indexOf('ALK') >= 0){
+      tmp = "finspot:FingerspotVer;"+btoa(baseurl+'ALK/Approve/fp_proces?userid='+usr);
+    }else{
+      tmp = "finspot:FingerspotVer;"+btoa(baseurl+'ALA/Approve/fp_proces?userid='+usr);
+    }
+    
     chk = "";
     $('.spl-chk-data').each(function(){
       if(this.checked) {chk += '.'+$(this).val();}
     });
 
-    $('#spl_proses_reject').attr('href', tmp+btoa('&stat=31&data='+chk+'&ket='+ket));
-    $('#spl_proses_approve').attr('href', tmp+btoa('&stat=21&data='+chk+'&ket='+ket));
+    if(url.indexOf('ALK') >= 0){
+      $('#spl_proses_reject').attr('href', tmp+btoa('&stat=31&data='+chk+'&ket='+ket));
+      $('#spl_proses_approve').attr('href', tmp+btoa('&stat=21&data='+chk+'&ket='+ket));
+    }else{
+      $('#spl_proses_reject').attr('href', tmp+btoa('&stat=35&data='+chk+'&ket='+ket));
+      $('#spl_proses_approve').attr('href', tmp+btoa('&stat=25&data='+chk+'&ket='+ket));
+    }
   }
 
   $(document).on('click', '.spl-chk-data', function(e){

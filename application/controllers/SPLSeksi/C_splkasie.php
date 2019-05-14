@@ -294,7 +294,7 @@ class C_splkasie extends CI_Controller {
 		$spl_id = $this->input->get('data');
 
 		echo "
-		$user_id;".$finger->finger_data.";SecurityKey;".$time_limit_ver.";".site_url("SPL/Fp/fp_verification?status=$status&spl_id=$spl_id&ket=$ket").";".site_url("SPL/Fp/fp_activation").";extraParams";
+		$user_id;".$finger->finger_data.";SecurityKey;".$time_limit_ver.";".site_url("ALK/Approve/fp_verification?status=$status&spl_id=$spl_id&ket=$ket").";".site_url("ALK/Approve/fp_activation").";extraParams";
 		// variabel yang di tmpilkan belum bisa di ubah
 	}
 
@@ -322,7 +322,7 @@ class C_splkasie extends CI_Controller {
 			$spl_id = $_GET['spl_id'];
 			$ket = $_GET['ket'];
 
-			echo site_url("SPL/Fp/fp_succes?status=$status&spl_id=$spl_id&ket=$ket");
+			echo site_url("ALK/Approve/fp_succes?status=$status&spl_id=$spl_id&ket=$ket");
 		}else{
 			echo "Parameter invalid..";
 		}

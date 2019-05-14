@@ -156,8 +156,8 @@
 									<textarea class="form-control" style="min-width: 75%" id="spl_tex_proses"></textarea>
 								</div>
 								<div class="modal-footer">
-									<a href="finspot:FingerspotVer;<?php echo base64_encode(base_url().'SPL/Fp/fp_proces?userid='.$this->session->userid.'&stat=31&data=&ket='); ?>" type="submit" id="spl_proses_reject" class="btn btn-danger"><i class="fa fa-exclamation-circle"></i> Reject</a>
-									<a href="finspot:FingerspotVer;<?php echo base64_encode(base_url().'SPL/Fp/fp_proces?userid='.$this->session->userid.'&stat=21&data=&ket='); ?>" type="submit" id="spl_proses_approve" class="btn btn-success"><i class="fa fa-check-square"></i> Approve</a>
+									<a href="finspot:FingerspotVer;<?php echo base64_encode(base_url().'ALK/Approve/fp_proces?userid='.$this->session->userid.'&stat=31&data=&ket='); ?>" type="submit" id="spl_proses_reject" class="btn btn-danger"><i class="fa fa-exclamation-circle"></i> Reject</a>
+									<a href="finspot:FingerspotVer;<?php echo base64_encode(base_url().'ALK/Approve/fp_proces?userid='.$this->session->userid.'&stat=21&data=&ket='); ?>" type="submit" id="spl_proses_approve" class="btn btn-success"><i class="fa fa-check-square"></i> Approve</a>
 								</div>
 							</div>
 						</div>							
