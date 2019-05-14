@@ -2414,3 +2414,15 @@ $route['InternalAudit/MonitoringImprovement/(:any)/(:any)'] = 'InternalAudit/Mai
 $route['InternalAudit/MonitoringImprovementAuditee'] = 'InternalAudit/MainMenu/Auditee/MonitoringImprovement/C_MonitoringImprovement';
 $route['InternalAudit/MonitoringImprovementAuditee/(:any)'] = 'InternalAudit/MainMenu/Auditee/MonitoringImprovement/C_MonitoringImprovement/$1';
 $route['InternalAudit/MonitoringImprovementAuditee/(:any)/(:any)'] = 'InternalAudit/MainMenu/Auditee/MonitoringImprovement/C_MonitoringImprovement/$1/$2';
+
+$route['CateringManagement/DataPesanan'] = 'CateringManagement/Pesanan/C_Pesanan';
+$route['CateringManagement/DataPesanan/(:any)'] = 'CateringManagement/Pesanan/C_Pesanan/$1';
+$route['CateringManagement/DataPesanan/(:any)/(:any)'] = 'CateringManagement/Pesanan/C_Pesanan/$1/$2';
+
+$route['CateringManagement/PesananTambahan'] = 'CateringManagement/Pesanan/C_Tambahan';
+$route['CateringManagement/PesananTambahan/(:any)'] = 'CateringManagement/Pesanan/C_Tambahan/$1';
+$route['CateringManagement/PesananTambahan/(:any)/(:any)'] = 'CateringManagement/Pesanan/C_Tambahan/$1/$2';
+
+$route['CateringManagement/Plotting'] = 'CateringManagement/Pesanan/C_Plotting';
+$route['CateringManagement/Plotting/(:any)'] = 'CateringManagement/Pesanan/C_Plotting/$1';
+$route['CateringManagement/Plotting/(:any)/(:any)'] = 'CateringManagement/Pesanan/C_Plotting/$1/$2';
