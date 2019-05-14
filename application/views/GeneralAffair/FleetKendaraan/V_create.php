@@ -121,6 +121,15 @@
                                             
                                             ?>
                                             <div class="form-group">
+                                                <label for="txtPICHeader" class="control-label col-lg-4">PIC</label>
+                                                <div class="col-lg-4">
+                                                  <select id="slc_pic_kendaraan" name="pic_kendaraan" class="form-control">
+                                                  </select>
+                                                </div>
+                                            </div>
+
+
+                                            <div class="form-group">
                                                 <label for="txtNomorPolisiHeader" class="control-label col-lg-4">Nomor Rangka</label>
                                                 <div class="col-lg-4">
                                                     <input type="text" placeholder="Nomor Rangka (contoh : NHKP3CA1JFK089113)" name="txtNomorRangkaHeader" id="txtNomorRangkaHeader" class="form-control" maxlength="30" />
@@ -148,13 +157,13 @@
                                                 </div>
                                             </div>
 
-                                            <div class="form-group">
+                                            <!-- <div class="form-group">
                                                 <label class="control-label col-lg-4">Usable</label>
                                                 <div class="col-lg-4" style="padding-top: 6px;">
                                                     <label><input type="radio" name="usable" id="usable" class="form-control" value="1" /> Ya</label>
                                                     <label style="margin-left: 30px;"><input type="radio" name="usable" id="usable" class="form-control" value="0" /> Tidak</label>
                                                 </div>
-                                            </div>
+                                            </div> -->
 
                                             <div class="form-group">
                                                 <label class="control-label col-lg-4">Kepemilikan Kendaraan</label>

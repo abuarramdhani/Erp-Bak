@@ -103,6 +103,7 @@ class C_DataGaji extends CI_Controller {
 							'serabutan' => $data[2]['nominal'],
 							'tenaga' => $data[3]['nominal'],
 							'uangmakan' => $data[0]['uang_makan'],
+							'uangmakanpuasa' => $data[0]['uang_makan_puasa']
 						);
 		} else if ($data[0]['pekerjaan'] == 'TUKANG') {
 			$array = array(
@@ -111,6 +112,7 @@ class C_DataGaji extends CI_Controller {
 							'serabutan' => $data[1]['nominal'],
 							'tenaga' => $data[2]['nominal'],
 							'uangmakan' => $data[0]['uang_makan'],
+							'uangmakanpuasa' => $data[0]['uang_makan_puasa']
 						);
 		}else if ($data[0]['pekerjaan'] == 'SERABUTAN') {
 			$array = array(
@@ -119,6 +121,7 @@ class C_DataGaji extends CI_Controller {
 							'serabutan' => $data[0]['nominal'],
 							'tenaga' => $data[1]['nominal'],
 							'uangmakan' => $data[0]['uang_makan'],
+							'uangmakanpuasa' => $data[0]['uang_makan_puasa']
 						);
 		}else if ($data[0]['pekerjaan'] == 'TENAGA') {
 			$array = array(
@@ -127,6 +130,7 @@ class C_DataGaji extends CI_Controller {
 							'serabutan' => $data[3]['nominal'],
 							'tenaga' => $data[0]['nominal'],
 							'uangmakan' => $data[0]['uang_makan'],
+							'uangmakanpuasa' => $data[0]['uang_makan_puasa']
 						);
 		}
 		echo json_encode($array);
@@ -139,18 +143,21 @@ class C_DataGaji extends CI_Controller {
 		$serabutan= $this->input->post('serabutan');
 		$tenaga= $this->input->post('tenaga');
 		$uang_makan= $this->input->post('uang_makan');
+		$uang_makan_puasa = $this->input->post('uang_makan_puasa');
 
 		$nomkepala = array('nominal' => $kepalatukang);
 		$nomtukang = array('nominal' => $tukang);
 		$nomserabutan = array('nominal' => $serabutan);
 		$nomtenaga = array('nominal' => $tenaga);
 		$uangmakan = array('uang_makan' => $uang_makan);
+		$uangmakanpuasa = array('uang_makan_puasa' => $uang_makan_puasa);
 
 		$data = $this->M_upahphl->updateKepalaTukang($lokasi_kerja,$nomkepala);
 		$data = $this->M_upahphl->updateTukang($lokasi_kerja,$nomtukang);
 		$data = $this->M_upahphl->updateSerabutan($lokasi_kerja,$nomserabutan);
 		$data = $this->M_upahphl->updateTenaga($lokasi_kerja,$nomtenaga);
 		$data = $this->M_upahphl->updateUangMakan($lokasi_kerja,$uangmakan);
+		$data = $this->M_upahphl->updateUangMakanPuasa($lokasi_kerja,$uangmakanpuasa);
 
 		redirect('HitungHlcm/DataGaji');
 	}

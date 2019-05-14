@@ -6,7 +6,13 @@ class M_fleetkendaraan extends CI_Model
     {
         parent::__construct();
         $this->load->database(); 
+        $this->p = $this->load->database('personalia',TRUE);
         date_default_timezone_set('Asia/Jakarta');
+    }
+    public function pic_kendaraan($p)
+    {
+        $query = "select noind,nama from hrd_khs.tpribadi where keluar='0' and (nama like '%$p%' or noind like '%$p%')";
+        return $this->p->query($query)->result_array();
     }
 
     public function FleetLokasiKerja()
@@ -27,17 +33,14 @@ class M_fleetkendaraan extends CI_Model
                                                 warnakdrn.warna_kendaraan_id as kode_warna_kendaraan,
                                                 warnakdrn.warna_kendaraan as warna_kendaraan,
                                                 kdrn.tahun_pembuatan as tahun_pembuatan,
-                                                 case    when        pic.employee_id is null and pic.pic_kodesie is not null 
-                                                        then    concat_ws('<br/>', seksi.unit_name, seksi.section_name)
-                                                    when    pic.employee_id is not null and pic.pic_kodesie is null 
-                                                        then    concat_ws('<br/>', er.employee_code, er.employee_name)
-                                            end as pic,
+                                                kdrn.pic_kendaraan,
                                                 kdrn.foto_stnk as foto_stnk,
                                                 kdrn.foto_bpkb as foto_bpkb,
                                                 kdrn.usable,
                                                 kdrn.hak_milik,
                                                 kdrn.foto_kendaraan as foto_kendaraan,
-                                                to_char(kdrn.start_date, 'DD-MM-YYYY HH24:MI:SS') as waktu_dibuat
+                                                to_char(kdrn.start_date, 'DD-MM-YYYY HH24:MI:SS') as waktu_dibuat,
+                                                to_char(kdrn.end_date, 'DD-MM-YYYY HH24:MI:SS') as waktu_dihapus
                                     from        ga.ga_fleet_kendaraan as kdrn
                                                 join    ga.ga_fleet_jenis_kendaraan as jeniskdrn
                                                     on  jeniskdrn.jenis_kendaraan_id=kdrn.jenis_kendaraan_id
@@ -45,13 +48,8 @@ class M_fleetkendaraan extends CI_Model
                                                     on  merkkdrn.merk_kendaraan_id=kdrn.merk_kendaraan_id
                                                 join    ga.ga_fleet_warna_kendaraan as warnakdrn
                                                     on  warnakdrn.warna_kendaraan_id=kdrn.warna_kendaraan_id
-                                                join    ga.ga_fleet_pic_kendaraan as pic 
-                                                    on  pic.kendaraan_id=kdrn.kendaraan_id
-                                                left join   er.er_employee_all as er
-                                                    on  er.employee_id=pic.employee_id
-                                                left join   er.er_section as seksi
-                                                    on      seksi.section_code=pic.pic_kodesie::varchar
-                                    where       kdrn.end_date = '9999-12-12 00:00:00' and pic.end_date='9999-12-12 00:00:00'
+                               
+                                    where       kdrn.end_date = '9999-12-12 00:00:00'
                                     order by    kdrn.kendaraan_id;";
 
             $query = $this->db->query($ambilKendaraan);
@@ -66,14 +64,14 @@ class M_fleetkendaraan extends CI_Model
                                                 warnakdrn.warna_kendaraan_id as kode_warna_kendaraan,
                                                 warnakdrn.warna_kendaraan as warna_kendaraan,
                                                 kdrn.tahun_pembuatan as tahun_pembuatan,
+                                                kdrn.pic_kendaraan,
                                                 kdrn.foto_stnk as foto_stnk,
                                                 kdrn.foto_bpkb as foto_bpkb,
                                                 kdrn.usable,
                                                 kdrn.hak_milik,
                                                 kdrn.foto_kendaraan as foto_kendaraan,
                                                 to_char(kdrn.start_date, 'DD-MM-YYYY HH24:MI:SS') as waktu_dibuat,
-                                                to_char(kdrn.end_date, 'DD-MM-YYYY HH24:MI:SS') as waktu_dihapus,
-                                                concat_ws('<br/>sampai dengan<br/>', to_char(kdrn.start_date, 'DD-MM-YYYY HH24:MI:SS'), to_char(kdrn.end_date, 'DD-MM-YYYY HH24:MI:SS')) as masa
+                                                to_char(kdrn.end_date, 'DD-MM-YYYY HH24:MI:SS') as waktu_dihapus
                                     from        ga.ga_fleet_kendaraan as kdrn
                                                 join    ga.ga_fleet_jenis_kendaraan as jeniskdrn
                                                     on  jeniskdrn.jenis_kendaraan_id=kdrn.jenis_kendaraan_id
@@ -81,8 +79,9 @@ class M_fleetkendaraan extends CI_Model
                                                     on  merkkdrn.merk_kendaraan_id=kdrn.merk_kendaraan_id
                                                 join    ga.ga_fleet_warna_kendaraan as warnakdrn
                                                     on  warnakdrn.warna_kendaraan_id=kdrn.warna_kendaraan_id
+                               
                                     where       kdrn.kendaraan_id=$id
-                                    order by    kdrn.kendaraan_id";
+                                    order by    kdrn.kendaraan_id;";
             $query              =   $this->db->query($ambilKendaraan);
     		// $query = $this->db->get_where('ga.ga_fleet_kendaraan', array('kendaraan_id' => $id));
     	}
@@ -102,11 +101,7 @@ class M_fleetkendaraan extends CI_Model
                                                 warnakdrn.warna_kendaraan_id as kode_warna_kendaraan,
                                                 warnakdrn.warna_kendaraan as warna_kendaraan,
                                                 kdrn.tahun_pembuatan as tahun_pembuatan,
-                                                case    when        pic.employee_id is null and pic.pic_kodesie is not null 
-                                                        then    concat_ws('<br/>', seksi.unit_name, seksi.section_name)
-                                                    when    pic.employee_id is not null and pic.pic_kodesie is null 
-                                                        then    concat_ws('<br/>', er.employee_code, er.employee_name)
-                                            end as pic,
+                                                kdrn.pic_kendaraan,
                                                 kdrn.foto_stnk as foto_stnk,
                                                 kdrn.foto_bpkb as foto_bpkb,
                                                 kdrn.usable,
@@ -122,13 +117,7 @@ class M_fleetkendaraan extends CI_Model
                                                     on  merkkdrn.merk_kendaraan_id=kdrn.merk_kendaraan_id
                                                 join    ga.ga_fleet_warna_kendaraan as warnakdrn
                                                     on  warnakdrn.warna_kendaraan_id=kdrn.warna_kendaraan_id
-                                                join    ga.ga_fleet_pic_kendaraan as pic 
-                                                    on  pic.kendaraan_id=kdrn.kendaraan_id
-                                                left join   er.er_employee_all as er
-                                                    on  er.employee_id=pic.employee_id
-                                                left join   er.er_section as seksi
-                                                    on      seksi.section_code=pic.pic_kodesie::varchar
-                                    where       kdrn.end_date = '9999-12-12 00:00:00' and pic.end_date='9999-12-12 00:00:00' and kdrn.kode_lokasi_kerja='$lokasi'
+                                    where       kdrn.end_date = '9999-12-12 00:00:00' and kdrn.kode_lokasi_kerja='$lokasi'
                                     order by    kdrn.kendaraan_id");
         
         return $query->result_array();
@@ -147,11 +136,7 @@ class M_fleetkendaraan extends CI_Model
                                                 warnakdrn.warna_kendaraan_id as kode_warna_kendaraan,
                                                 warnakdrn.warna_kendaraan as warna_kendaraan,
                                                 kdrn.tahun_pembuatan as tahun_pembuatan,
-                                                 case    when        pic.employee_id is null and pic.pic_kodesie is not null 
-                                                        then    concat_ws('<br/>', seksi.unit_name, seksi.section_name)
-                                                    when    pic.employee_id is not null and pic.pic_kodesie is null 
-                                                        then    concat_ws('<br/>', er.employee_code, er.employee_name)
-                                            end as pic,
+                                                kdrn.pic_kendaraan,
                                                 kdrn.foto_stnk as foto_stnk,
                                                 kdrn.foto_bpkb as foto_bpkb,
                                                 kdrn.foto_kendaraan as foto_kendaraan,
@@ -165,13 +150,8 @@ class M_fleetkendaraan extends CI_Model
                                                     on  merkkdrn.merk_kendaraan_id=kdrn.merk_kendaraan_id
                                                 join    ga.ga_fleet_warna_kendaraan as warnakdrn
                                                     on  warnakdrn.warna_kendaraan_id=kdrn.warna_kendaraan_id
-                                                join    ga.ga_fleet_pic_kendaraan as pic 
-                                                    on  pic.kendaraan_id=kdrn.kendaraan_id
-                                                left join   er.er_employee_all as er
-                                                    on  er.employee_id=pic.employee_id
-                                                left join   er.er_section as seksi
-                                                    on      seksi.section_code=pic.pic_kodesie::varchar
-                                    where       kdrn.end_date = '9999-12-12 00:00:00' and pic.end_date='9999-12-12 00:00:00'
+                                             
+                                    where       kdrn.end_date = '9999-12-12 00:00:00'
                                     order by    kdrn.kendaraan_id;";
 
             $query = $this->db->query($ambilKendaraan);

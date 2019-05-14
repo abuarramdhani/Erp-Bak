@@ -213,6 +213,6 @@ class C_MonitoringPresensiPengaturan extends CI_Controller
 	//	}
 
 		public function CronUser(){
-			redirect('http://personalia.quick.com/cronjob/mysql/cronjob.user_finger.php','refresh');
+			redirect('http://personalia.quick.com/cronjob/postgres_database.quick.com_mysql_database.quick.com_fingerspotbnc.update.user.finger.php','refresh');
 		}
 }

@@ -1085,3 +1085,30 @@ $(document).ready(function(){
       return isOk;
      });
   });
+
+  $(document).ready(function(){
+    $('#slc_pic_kendaraan').select2({
+          minimumInputLength: 3,
+          allowClear: true,
+          placeholder: 'Pilih PIC',
+          ajax: {
+            url: baseurl+"GeneralAffair/FleetKendaraan/pic_kendaraan",
+            dataType:'json',
+            type: "GET",
+            data: function (params) {
+              return {term: params.term};
+            },
+            processResults: function (data) {
+              return {
+                results: $.map(data, function (item) {
+                  return {
+                    id: item.noind+' - '+item.nama,
+                    text: item.noind+' - '+item.nama
+                  };
+                })
+                
+              };
+            },
+          },
+    });
+  });

@@ -12,20 +12,10 @@
 					<div class="col-lg-1">
 						<label class="control-label">Periode</label>		
 					</div>
-					<!-- <div class="col-lg-3">
-						<div class="input-group">
-							<span class="input-group-addon">
-								<span class="glyphicon glyphicon-calendar">
-									
-								</span>
-							</span>
-							<input id="periodeGaji" name="periodeData" class="prosesgaji-daterangepicker form-control" placeholder="Periode"></input>		
-						</div>
-					</div> -->
 					<div class="col-lg-2">
 						<input type="text" class="form-control" value="<?php if (isset($periodeGaji) and !empty($periodeGaji)) { echo $periodeGaji['0']['tahun'];} ?>" name="" disabled>
 					</div>
-					<div class="col-lg-3">
+					<div class="col-lg-2">
 						<select class="select select2" data-placeholder="Bulan" name="periodeData" style="width: 100%">
 							<option></option>
 							<?php if (isset($periodeGaji) and !empty($periodeGaji)) {
@@ -39,14 +29,29 @@
 							} ?>
 						</select>
 					</div>
-					<div class="col-lg-3">
+					<div class="col-lg-2">
 						<select name="lokasi_kerja" class="form-control">
 							<option disabled="disabled" selected="selected"><i>Lokasi Kerja</i></option>
 							<option value="01">Jogja</option>
 							<option value="02">Tuksono</option>
 						</select>
 					</div>
-					<div class="col-lg-3">
+					<div class="col-lg-4">
+						<div class="col-lg-3" style="padding-right: 0px;padding-left: 0px">
+						<input type="checkbox" name="puasa"> Puasa
+						</div>
+						<div class="col-lg-9">
+							<div class="input-group">
+								<span class="input-group-addon">
+									<span class="glyphicon glyphicon-calendar">
+										
+									</span>
+								</span>
+								<input id="periodeGaji" name="periodePuasa" class="prosesgaji-daterangepicker form-control" placeholder="Periode"></input>		
+							</div>
+						</div>
+					</div>
+					<div class="col-lg-1">
 						<button type="submit" class="btn btn-primary">Proses</button>
 						<?php if (isset($valLink)): ?>
 							<a target="_blank" href="<?php echo site_url('HitungHlcm/HitungGaji/printProses/xls/'.$valLink); ?>" class="btn btn-success">Excel</a>
@@ -62,53 +67,39 @@
 							<th style="text-align: center; vertical-align: middle;" rowspan="2">No</th>
 							<th style="text-align: center; vertical-align: middle;" rowspan="2">Nama</th>
 							<th style="text-align: center; vertical-align: middle;" rowspan="2">Status</th>
-							<th style="text-align: center;" colspan="3">Komponen</th>
-							<th style="text-align: center;" colspan="3">Nominal</th>
+							<th style="text-align: center;" colspan="4">Komponen</th>
+							<th style="text-align: center;" colspan="4">Nominal</th>
 							<th style="text-align: center; vertical-align: middle;" rowspan="2">Total Gaji</th>
 						</tr>
 						<tr style="background-color: #00ccff;">
 							<th style="text-align: center;">Gaji Pokok</th>
 							<th style="text-align: center;">Uang Makan</th>
+							<th style="text-align: center;">Uang Makan Puasa</th>
 							<th style="text-align: center;">Lembur</th>
 							<th style="text-align: center;">Gaji Pokok</th>
 							<th style="text-align: center;">Uang Makan</th>
+							<th style="text-align: center;">Uang Makan Puasa</th>
 							<th style="text-align: center;">Lembur</th>
 						</tr>
 					</thead>
 					<tbody>
 						<?php
 						$no=1;
-						foreach ($data as $key) {
-							$gpokok = $key['gpokok'];
-							$um = $key['um'];
-							$lembur = $key['lembur'];
-							for ($i=0; $i < 8; $i++) { 
-								if ($key['lokasi_kerja']==$gaji[$i]['lokasi_kerja'] and $key['kdpekerjaan']==$gaji[$i]['kode_pekerjaan']) {
-									$nominalgpokok = $gaji[$i]['nominal'];
-								}
-								if ($key['lokasi_kerja']==$gaji[$i]['lokasi_kerja']) {
-									$nominalum = $gaji[$i]['uang_makan'];
-								}
-							}
-							
-							$gajipokok = $gpokok*$nominalgpokok;
-							$uangmakan = $um*$nominalum;
-							$gajilembur = $lembur*($nominalgpokok/7);
-							$gajilembur = number_format($gajilembur,'0','.','');
-							$total = $gajipokok+$gajilembur+$uangmakan;
-							$total = number_format($total,'0','.','');
+						foreach ($hasil as $key) {
 							?>
 							<tr>
 								<td style="text-align: center;"><?php echo $no;?></td>
 								<td><?php echo $key['nama'];?></td>
 								<td style="text-align: center;"><?php echo $key['pekerjaan'];?></td>
-								<td style="text-align: center;"><?php echo $gpokok;?></td>
-								<td style="text-align: center;"><?php echo $um;?></td>
-								<td style="text-align: center;"><?php echo $lembur;?></td>
-								<td style="text-align: center;"><?php echo $gajipokok;?></td>
-								<td style="text-align: center;"><?php echo $uangmakan;?></td>
-								<td style="text-align: center;"><?php echo $gajilembur;?></td>
-								<td style="text-align: center;"><?php echo $total;?></td>
+								<td style="text-align: center;"><?php echo $key['jml_gp'];?></td>
+								<td style="text-align: center;"><?php echo $key['jml_um'];?></td>
+								<td style="text-align: center;"><?php echo $key['jml_ump'];?></td>
+								<td style="text-align: center;"><?php echo $key['jml_lbr'];?></td>
+								<td style="text-align: center;"><?php echo $key['gp'];?></td>
+								<td style="text-align: center;"><?php echo $key['um'];?></td>
+								<td style="text-align: center;"><?php echo $key['ump'];?></td>
+								<td style="text-align: center;"><?php echo $key['lmbr'];?></td>
+								<td style="text-align: center;"><?php echo $key['total_bayar'];?></td>
 							</tr>
 							<?php
 							$no++;

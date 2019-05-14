@@ -58,7 +58,7 @@
                                                         <th>Tahun Pembuatan</th>
                                                         <th>Nomor Rangka</th>
                                                         <th>Status Kepemilikan</th>
-                                                        <th>Usable</th>
+                                                       <!--  <th>Usable</th> -->
                                                         <th>QR CODE</th>
                                                         <th>Foto STNK</th>
                                                         <th>Foto BPKB</th>
@@ -83,7 +83,7 @@
                                                         <td><?php echo $Kendaraan['nomor_polisi'] ?></td>
                                                         <td><?php echo $Kendaraan['jenis_kendaraan'] ?></td>
                                                         <td><?php echo $Kendaraan['merk_kendaraan'] ?></td>
-                                                        <td><?php echo $Kendaraan['pic'] ?></td>
+                                                        <td><?php echo $Kendaraan['pic_kendaraan'] ?></td>
                                                         <td><?php echo $Kendaraan['lokasi'] ?></td>
                                                         <td><?php echo $Kendaraan['warna_kendaraan'] ?></td>
                                                         <td><?php echo $Kendaraan['tahun_pembuatan'] ?></td>
@@ -91,7 +91,7 @@
                                                         <td><?php if ($Kendaraan['hak_milik'] == "1") {
                                                             echo "Perusahaan";
                                                         }elseif ($Kendaraan['hak_milik'] == "0"){echo "Rental";} ; ?></td>
-                                                        <td style="text-align: center;"> <?php if ($Kendaraan['usable'] == "1") {
+                                                        <!-- <td style="text-align: center;"> <?php if ($Kendaraan['usable'] == "1") {
                                                             ?>
                                                             <span style="color: #00e600;font-size: 22px;" class="glyphicon glyphicon-ok"></span>
                                                             <?php
@@ -101,7 +101,7 @@
                                                             <?php
                                                             } ?>
                                                             
-                                                        </td>
+                                                        </td> -->
                                                         <td>
                                                             <img src="<?php echo base_url('assets/upload/qrcodeGA/'.$Kendaraan['nomor_polisi'].'.png') ?>" style="width:50px;height:50px;"/>
                                                             <a href="<?php echo site_url('GeneralAffair/FleetKendaraan/export_qr/'.$encrypted_string.'');?>" target="_blank">Download</a>
@@ -150,7 +150,7 @@
                                                         <th>Warna Kendaraan</th>
                                                         <th>Tahun Pembuatan</th>
                                                         <th>Status Kepemilikan</th>
-                                                        <th>Usable</th>
+                                                        <!-- <th>Usable</th> -->
 												        <th>Foto STNK</th>
 												        <th>Foto BPKB</th>
 												        <th>Foto Kendaraan</th>
@@ -175,13 +175,13 @@
                                                         <td><?php echo $KendaraanDeleted['nomor_polisi'] ?></td>
                                                         <td><?php echo $KendaraanDeleted['jenis_kendaraan'] ?></td>
                                                         <td><?php echo $KendaraanDeleted['merk_kendaraan'] ?></td>
-                                                        <td><?php echo $KendaraanDeleted['pic'] ?></td>
+                                                        <td><?php echo $KendaraanDeleted['pic_kendaraan'] ?></td>
                                                         <td><?php echo $KendaraanDeleted['warna_kendaraan'] ?></td>
                                                         <td><?php echo $KendaraanDeleted['tahun_pembuatan'] ?></td>
                                                         <td><?php if ($Kendaraan['hak_milik'] == "1") {
                                                             echo "Perusahaan";
                                                         }elseif ($Kendaraan['hak_milik'] == "0"){echo "Rental";} ; ?></td>
-                                                         <td style="text-align: center;"> <?php if ($Kendaraan['usable'] == "1") {
+                                                        <!--  <td style="text-align: center;"> <?php if ($Kendaraan['usable'] == "1") {
                                                             ?>
                                                             <span style="color: #00e600;font-size: 22px;" class="glyphicon glyphicon-ok"></span>
                                                             <?php
@@ -191,7 +191,7 @@
                                                             <?php
                                                             } ?>
                                                             
-                                                        </td>
+                                                        </td> -->
 												        <td>
                                                             <?php if (empty($Kendaraan['foto_kendaraan'])) { ?>
                                                                 <label>Belum Ada Foto, Silahkan Upload</label>
