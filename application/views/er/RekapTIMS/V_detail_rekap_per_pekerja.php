@@ -408,7 +408,7 @@ foreach ($rekap as $rekap_data) {}
 												</td>
 												<td style="text-align:center;">
 													<div style="width: 20px">
-														<?php echo $rekap_data['total_jmlsp']; ?>
+														<?php echo $rekap_data['total_jmlsp']+$rekap_data['total_jmlsps']; ?>
 													</div>
 												</td>
 												<td style="text-align:center;">

@@ -80,6 +80,48 @@ $(document).ready(function(){
 				}, function(start, end, label) {
 				  console.log("New date range selected: ' + start.format('DD-MM-YYYY H:i:s') + ' to ' + end.format('DD-MM-YYYY H:i:s') + ' (predefined range: ' + label + ')");
 				});				
+
+				$('.cmsingledate-mycustom').daterangepicker({
+				    "singleDatePicker": true,
+				    "showDropdowns": true,
+				    "autoApply": true,
+				    "locale": {
+				        "format": "YYYY-MM-DD",
+				        "separator": " - ",
+				        "applyLabel": "OK",
+				        "cancelLabel": "Batal",
+				        "fromLabel": "Dari",
+				        "toLabel": "Hingga",
+				        "customRangeLabel": "Custom",
+				        "weekLabel": "W",
+				        "daysOfWeek": [
+				            "Mg",
+				            "Sn",
+				            "Sl",
+				            "Rb",
+				            "Km",
+				            "Jm",
+				            "Sa"
+				        ],
+				        "monthNames": [
+				            "Januari",
+				            "Februari",
+				            "Maret",
+				            "April",
+				            "Mei",
+				            "Juni",
+				            "Juli",
+				            "Agustus ",
+				            "September",
+				            "Oktober",
+				            "November",
+				            "Desember"
+				        ],
+				        "firstDay": 1
+				    }
+				}, function(start, end, label) {
+				  console.log("New date range selected: ' + start.format('YYYY-MM-DD H:i:s') + ' to ' + end.format('YYYY-MM-DD H:i:s') + ' (predefined range: ' + label + ')");
+				});				
 	// DATE RANGE PICKER UNTUK 'RECEIPT DATE'
 	// $('.singledate').daterangepicker({
 	// 	"singleDatePicker": true,
@@ -444,4 +486,111 @@ $(document).ready(function(){
 	});
 
 	$('#tblPrintpp').DataTable();
+	$('#tblDataPesanan').DataTable({
+		"lengthMenu" : [20],
+		 "paging": true,
+          "lengthChange": false,
+          "searching": false,
+          "ordering": true,
+		  "info": true,
+          "autoWidth": false,
+		  "deferRender" : true,
+		  "scroller": true,
+	});
+
+	$('.tblDataPesanan').DataTable({
+		"lengthMenu" : [20],
+		 "paging": true,
+          "lengthChange": false,
+          "searching": false,
+          "ordering": true,
+		  "info": true,
+          "autoWidth": false,
+		  "deferRender" : true,
+		  "scroller": true,
+	});
+
+	$('#btn_pesanan_lihat').on('click',function(){
+		$('#frm_pesanan').attr('action',baseurl+"CateringManagement/DataPesanan/lihat");
+		$('#frm_pesanan').submit();
+	});
+	$('#btn_pesanan_refresh').on('click',function(){
+		$('#frm_pesanan').attr('action',baseurl+"CateringManagement/DataPesanan/refresh");
+		$('#frm_pesanan').submit();
+	});
+
+	$('#slc_tempat_makan').select2({
+		minimumInputLength: 1,
+		allowClear: true,
+		placeholder: "Tempat Makan",
+		ajax: {
+			url: baseurl+'CateringManagement/PesananTambahan/tempatMakan',
+			dataType:'json',
+			type: "GET",
+			data: function (params) {
+				return {term: params.term};
+			},
+			processResults: function (data) {
+				return {
+					results: $.map(data, function (item) {
+						return {
+							id: item.nama,
+							text: item.nama
+						};
+					})
+					
+				};
+			},
+		},
+	});
+
+	$('#Tranfer_modal').on('show.bs.modal', function (event) {
+	    var button = $(event.relatedTarget) // Button that triggered the modal
+	    var recipient = button.data('whatever') // Extract info from data-* attributes
+	    // If necessary, you could initiate an AJAX request here (and then do the updating in a callback).
+	    // Update the modal's content. We'll use jQuery here, but you could use a data binding library or other methods instead.
+	    var modal = $(this)
+	    modal.find('.modal-title').text('New message to ' + recipient)
+	    modal.find('.modal-body input').val(recipient)
+
+	    var tgl = $(event.relatedTarget).data('tgl');
+	    var shift = $(event.relatedTarget).data('shift');
+	    var lokasi = $(event.relatedTarget).data('loker');
+	    var tempat_makan = $(event.relatedTarget).data('tempat-makan');
+	    var jml = $(event.relatedTarget).data('jml');
+	    $('#modal-tanggal_katering').val(tgl);
+	    $('#modal-Shift_pesan').val(shift);
+	    $('#modal-tanggal_katering').val(tgl);
+	    $('#modal-lokasi_kerja').val(lokasi);
+	    $('#modal-tempat_makan').val(tempat_makan);
+	    $('#modal-jml_total').val(jml);
+	    $('#modal-select2_katering').select2({
+	    	minimumInputLength: 0,
+	    	allowClear: true,
+	    	placeholder: "Tempat Pesan",
+	    	ajax: {
+	    		url: baseurl+'CateringManagement/DataPesanan/tempatPesan',
+	    		dataType:'json',
+	    		type: "GET",
+	    		data: function (params) {
+	    			return {term: params.term,
+	    					tgl: tgl,
+	    					shift: shift,
+	    					lokasi:lokasi};
+	    		},
+	    		processResults: function (data) {
+	    			return {
+	    				results: $.map(data, function (item) {
+	    					return {
+	    						id: item.fs_kd_katering,
+	    						text: item.fs_nama_katering
+	    					};
+	    				})
+	    				
+	    			};
+	    		},
+	    	},
+	    });
+	    
+	  });
 });

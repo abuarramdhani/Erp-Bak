@@ -157,13 +157,13 @@
                                                 </div>
                                             </div>
 
-                                            <div class="form-group">
+                                            <!-- <div class="form-group">
                                                 <label class="control-label col-lg-4">Usable</label>
                                                 <div class="col-lg-4" style="padding-top: 6px;">
                                                     <label><input type="radio" name="usable" id="usable" class="form-control" value="1" /> Ya</label>
                                                     <label style="margin-left: 30px;"><input type="radio" name="usable" id="usable" class="form-control" value="0" /> Tidak</label>
                                                 </div>
-                                            </div>
+                                            </div> -->
 
                                             <div class="form-group">
                                                 <label class="control-label col-lg-4">Kepemilikan Kendaraan</label>

@@ -1782,14 +1782,20 @@ clASs M_rekap_per_pekerja extends CI_Model {
 			SELECT a.noind, a.no_surat, a.tgl_cetak, a.sp_ke, a.nT, a.nIK, a.nM, a.bobot, 'Absensi' as Status FROM \"Surat\".tsp a
 			left join hrd_khs.TPribadi b on a.noind = b.noind
 			where b.nik = '$nik'
-			AND (a.tgl_cetak <= '$periode1' OR a.tgl_cetak <= '$periode2') AND ((tgl_cetak + interval '5 month') >= '$periode1' OR (tgl_cetak + interval '5 month') >= '$periode2')
+			AND to_date(concat(\"substring\"(btrim(a.berlaku::text), 1, 4), 
+    		\"substring\"(btrim(a.berlaku::text), 5, 2), a.tglberlaku), 'YYYYMMDD'::text) between '$periode1'::date - interval '6 month' + interval '1 day'
+			and '$periode2'::date
 			union all
 			SELECT a.noind, a.no_surat, a.tgl_cetak, a.sp_ke, NULL as nT, NULL as nIK, NULL as nM, NULL as bobot, 'Non Absensi' as Status FROM \"Surat\".tsp_nonabsen a
 			left join hrd_khs.TPribadi b on a.noind = b.noind
 			where b.nik = '$nik'
-			AND (a.tgl_cetak <= '$periode1' OR a.tgl_cetak <= '$periode2') AND ((tgl_cetak + interval '5 month') >= '$periode1' OR (tgl_cetak + interval '5 month') >= '$periode2')
+			AND 
+			to_date(concat(\"substring\"(btrim(a.berlaku::text), 1, 4), 
+    		\"substring\"(btrim(a.berlaku::text), 5, 2), a.tglberlaku), 'YYYYMMDD'::text) between '$periode1'::date - interval '6 month' + interval '1 day'
+			and '$periode2'::date
 			order by tgl_cetak DESC
 		";
+		// echo $sql;exit();
 		$query = $this->personalia->query($sql);
 		return $query->result_array();
 	}
