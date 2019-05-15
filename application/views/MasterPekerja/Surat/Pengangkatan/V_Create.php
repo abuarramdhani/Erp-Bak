@@ -35,7 +35,7 @@
                                                     <div class="form-group">
                                                         <label for="cmbNoind" class="col-lg-4 control-label">Nomor Induk</label>
                                                         <div class="col-lg-8">
-                                                            <select class="select2 MasterPekerja-Surat-DaftarPekerja-staf noind" name="txtNoind" id="" style="width: 100%">
+                                                            <select class="select2 MasterPekerja-Surat-DaftarPekerja-staf-pengangkatan noind" name="txtNoind" id="" style="width: 100%">
                                                                 <option></option>
                                                             </select>
                                                         </div>
@@ -212,6 +212,22 @@
                                                         <label for="txtTanggalBerlaku" class="col-lg-4 control-label">Tanggal Berlaku</label>
                                                         <div class="col-lg-8">
                                                             <input type="text" name="txtTanggalBerlaku" class="form-control MasterPekerja-daterangepickersingledate">
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-lg-6">
+                                                    <div class="form-group">
+                                                        <label for="txtStatusStaf" class="col-lg-4 control-label">Jabatan DL Lama</label>
+                                                        <div class="col-lg-8">
+                                                            <input type="text" name="txtjabatanDlLama" class="form-control MasterPekerja-txtjabatanDlLama" readonly="">
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-lg-6">
+                                                    <div class="form-group">
+                                                        <label for="txtStatusStaf" class="col-lg-4 control-label">Jabatan DL Baru</label>
+                                                        <div class="col-lg-8">
+                                                            <input onkeyup="this.value = this.value.toUpperCase();" type="text" name="txtJabatanDl" class="form-control">
                                                         </div>
                                                     </div>
                                                 </div>

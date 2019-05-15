@@ -75,7 +75,7 @@
                                                     <div class="form-group">
                                                         <label for="txtPekerjaanLama" class="col-lg-4 control-label">Pekerjaan</label>
                                                         <div class="col-lg-8">
-                                                            <input type="text" name="txtPekerjaanLama" class="form-control" id="MasterPekerja-txtPekerjaanLama" readonly="" value="<?php echo $edit['pekerjaan_lama'];?>">
+                                                            <input type="text" name="txtPekerjaanLama" class="form-control" id="MasterPekerja-txtPekerjaanLama" readonly="" value="<?php echo $edit['kd_pkj_lama'].' - '.$edit['pekerjaan_lama'];?>">
                                                         </div>
                                                     </div>
                                                     <div class="form-group">
@@ -249,6 +249,22 @@
                                                         <label for="txtTanggalBerlaku" class="col-lg-4 control-label">Tanggal Berlaku</label>
                                                         <div class="col-lg-8">
                                                             <input type="text" name="txtTanggalBerlaku" class="form-control MasterPekerja-daterangepickersingledate" value="<?php echo $edit['tanggal_berlaku'];?>">
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-lg-6">
+                                                    <div class="form-group">
+                                                        <label for="txtStatusStaf" class="col-lg-4 control-label">Jabatan DL Lama</label>
+                                                        <div class="col-lg-8">
+                                                            <input type="text" name="txtjabatanDlLama" class="form-control MasterPekerja-txtjabatanDlLama" readonly="" value="<?php echo $edit['jbt_dl_lama'];?>">
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-lg-6">
+                                                    <div class="form-group">
+                                                        <label for="txtStatusStaf" class="col-lg-4 control-label">Jabatan DL Baru</label>
+                                                        <div class="col-lg-8">
+                                                            <input onkeyup="this.value = this.value.toUpperCase();" type="text" name="txtJabatanDl" class="form-control" value="<?php echo $edit['jbt_dl_baru'];?>">
                                                         </div>
                                                     </div>
                                                 </div>
