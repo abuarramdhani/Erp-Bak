@@ -580,6 +580,39 @@ $route['CateringManagement/PenjadwalanCatering'] = 'Cateringmanagement/Penjadwal
 $route['CateringManagement/PenjadwalanCatering/Create/(:any)/(:any)'] = 'Cateringmanagement/Penjadwalan/C_PenjadwalanCatering/Create/$1/$2';
 $route['CateringManagement/PenjadwalanCatering/Edit/(:any)/(:any)'] = 'Cateringmanagement/Penjadwalan/C_PenjadwalanCatering/Edit/$1/$2';
 $route['CateringManagement/PenjadwalanCatering/Delete/(:any)/(:any)'] = 'Cateringmanagement/Penjadwalan/C_PenjadwalanCatering/Delete/$1/$2';
+
+//------------------------------------CateringManagement - Puasa------------------------------------------------------------//
+$route['CateringManagement/Puasa/Transfer'] = 'CateringManagement/Puasa/C_TransferPuasa';
+$route['CateringManagement/Puasa/Transfer/Transfer'] = 'CateringManagement/Puasa/C_TransferPuasa/Transfer';
+$route['CateringManagement/Puasa/Transfer/Batal'] = 'CateringManagement/Puasa/C_TransferPuasa/Batal';
+
+$route['CateringManagement/Puasa/Pengurangan'] = 'CateringManagement/Puasa/C_PenguranganPuasa';
+$route['CateringManagement/Puasa/Pengurangan/Read'] = 'CateringManagement/Puasa/C_PenguranganPuasa/Read';
+$route['CateringManagement/Puasa/Pengurangan/Read/(:any)'] = 'CateringManagement/Puasa/C_PenguranganPuasa/Read/$1';
+
+//------------------------------------CateringManagement - Cetak------------------------------------------------------------//
+$route['CateringManagement/Cetak/JadwalLayanan'] = 'CateringManagement/Cetak/C_JadwalLayanan';
+$route['CateringManagement/Cetak/JadwalLayanan/Read'] = 'CateringManagement/Cetak/C_JadwalLayanan/Read';
+$route['CateringManagement/Cetak/JadwalLayanan/Cetak'] = 'CateringManagement/Cetak/C_JadwalLayanan/Cetak';
+
+$route['CateringManagement/Cetak/JadwalPengiriman'] = 'CateringManagement/Cetak/C_JadwalPengiriman';
+$route['CateringManagement/Cetak/JadwalPengiriman/Read'] = 'CateringManagement/Cetak/C_JadwalPengiriman/Read';
+$route['CateringManagement/Cetak/JadwalPengiriman/Cetak'] = 'CateringManagement/Cetak/C_JadwalPengiriman/Cetak';
+$route['CateringManagement/Cetak/JadwalPengiriman/Save'] = 'CateringManagement/Cetak/C_JadwalPengiriman/Save';
+
+//------------------------------------CateringManagement - Pesanan----------------------------------------------------------//
+$route['CateringManagement/DataPesanan'] = 'CateringManagement/Pesanan/C_Pesanan';
+$route['CateringManagement/DataPesanan/(:any)'] = 'CateringManagement/Pesanan/C_Pesanan/$1';
+$route['CateringManagement/DataPesanan/(:any)/(:any)'] = 'CateringManagement/Pesanan/C_Pesanan/$1/$2';
+
+$route['CateringManagement/PesananTambahan'] = 'CateringManagement/Pesanan/C_Tambahan';
+$route['CateringManagement/PesananTambahan/(:any)'] = 'CateringManagement/Pesanan/C_Tambahan/$1';
+$route['CateringManagement/PesananTambahan/(:any)/(:any)'] = 'CateringManagement/Pesanan/C_Tambahan/$1/$2';
+
+$route['CateringManagement/Plotting'] = 'CateringManagement/Pesanan/C_Plotting';
+$route['CateringManagement/Plotting/(:any)'] = 'CateringManagement/Pesanan/C_Plotting/$1';
+$route['CateringManagement/Plotting/(:any)/(:any)'] = 'CateringManagement/Pesanan/C_Plotting/$1/$2';
+
 //------------------------------------Management Presensi---------------------------------------------------
 $route['PresenceManagement'] 						= 'PresenceManagement/C_Index/index';
 
