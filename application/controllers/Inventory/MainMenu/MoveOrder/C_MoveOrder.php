@@ -173,10 +173,14 @@ class C_MoveOrder extends CI_Controller
 			$subinv_from 	  = $this->input->post('subinvfrom');
 			$locator_from 	  = $this->input->post('locatorfrom');
 
-
-
 			//CHECK QTY VS ATR
-			$getQuantityActual = $this->M_MoveOrder->getQuantityActual($job);
+			if ($departement == 'SUBKT') {
+					$atr = ",khs_inv_qty_att(wdj.ORGANIZATION_ID,wro.INVENTORY_ITEM_ID,bic.ATTRIBUTE1,bic.ATTRIBUTE2,'') atr";	
+					$getQuantityActual = $this->M_MoveOrder->getQuantityActual($job,$atr);	
+			}else {
+					$atr = ",khs_inv_qty_atr(wdj.ORGANIZATION_ID,wro.INVENTORY_ITEM_ID,bic.ATTRIBUTE1,bic.ATTRIBUTE2,'') atr";	
+					$getQuantityActual = $this->M_MoveOrder->getQuantityActual($job,$atr);	
+			}
 			// echo "<pre>";
 			// echo("MASUK SINI");
 			// print_r($getQuantityActual);
@@ -236,10 +240,10 @@ class C_MoveOrder extends CI_Controller
 						array_push($array_mo, $no_mo);
 					}
 			}
-			// echo "<pre>";
-			// print_r($array_mo);
-			// exit();
-			//pdfoutput
+			echo "<pre>";
+			print_r($array_mo);
+			exit();
+
 			if ($array_mo) {
 				$this->pdf($array_mo, $nama_satu, $nama_dua);
 			}else{

@@ -145,7 +145,7 @@
 				}
 			}else{
 				$penanda = 'bg-success';
-				$penandabutton = 1; //-----------------> harusnya 1
+				$penandabutton = 0; //-----------------> harusnya 1
 				$text_button = '<b>Print Picklist</b>';
 			}
 

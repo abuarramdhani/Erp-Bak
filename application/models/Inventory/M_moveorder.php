@@ -515,8 +515,8 @@ class M_moveorder extends CI_Model
 		// echo ':P_PARAM7 = '.$jan.'<br>';
 		// echo ':P_PARAM8 = '.$job_id.'<br>';
 		// exit();
-		$conn = oci_connect('APPS', 'APPS', '192.168.7.3:1522/DEV');
-		//$conn = oci_connect('APPS', 'APPS', '192.168.7.1:1521/PROD');
+		// $conn = oci_connect('APPS', 'APPS', '192.168.7.3:1522/DEV');
+		$conn = oci_connect('APPS', 'APPS', '192.168.7.1:1521/PROD');
 			if (!$conn) {
 	   			 $e = oci_error();
 	    		trigger_error(htmlentities($e['message'], ENT_QUOTES), E_USER_ERROR);
@@ -554,10 +554,10 @@ class M_moveorder extends CI_Model
 		oci_execute($cursor);
 	}
 
-	function getQuantityActual($job)
+	function getQuantityActual($job,$atr)
 	{
 		$oracle = $this->load->database('oracle',TRUE);
-		$sql = "SELECT wro.REQUIRED_QUANTITY req,khs_inv_qty_atr(wdj.ORGANIZATION_ID,wro.INVENTORY_ITEM_ID,bic.ATTRIBUTE1,bic.ATTRIBUTE2,'') atr
+		$sql = "SELECT wro.REQUIRED_QUANTITY req $atr
 					 FROM wip_entities we
 					,wip_discrete_jobs wdj
 					,mtl_system_items_b msib
