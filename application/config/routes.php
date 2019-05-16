@@ -581,6 +581,8 @@ $route['CateringManagement/PenjadwalanCatering/Create/(:any)/(:any)'] = 'Caterin
 $route['CateringManagement/PenjadwalanCatering/Edit/(:any)/(:any)'] = 'Cateringmanagement/Penjadwalan/C_PenjadwalanCatering/Edit/$1/$2';
 $route['CateringManagement/PenjadwalanCatering/Delete/(:any)/(:any)'] = 'Cateringmanagement/Penjadwalan/C_PenjadwalanCatering/Delete/$1/$2';
 
+
+
 //------------------------------------CateringManagement - Puasa------------------------------------------------------------//
 $route['CateringManagement/Puasa/Transfer'] = 'CateringManagement/Puasa/C_TransferPuasa';
 $route['CateringManagement/Puasa/Transfer/Transfer'] = 'CateringManagement/Puasa/C_TransferPuasa/Transfer';
@@ -1260,6 +1262,15 @@ $route['MonitoringKomponen/Monitoring/(:any)/(:any)'] = 'MonitoringKomponen/Main
 $route['MonitoringKomponen/MonitoringSeksi'] = 'MonitoringKomponen/MainMenu/C_Monitoring_Seksi';
 $route['MonitoringKomponen/MonitoringSeksi/(:any)'] = 'MonitoringKomponen/MainMenu/C_Monitoring_Seksi/$1';
 $route['MonitoringKomponen/MonitoringSeksi/(:any)/(:any)'] = 'MonitoringKomponen/MainMenu/C_Monitoring_Seksi/$1/$2';
+
+//Grapic
+ $route['SDM/Grapic'] = 'Grapic/C_Index';
+ $route['SDM/grapicTabs'] = 'Grapic/C_Index/grapicTabs';
+ $route['SDM/getData'] = 'Grapic/C_Index/getData';
+ $route['SDM/input'] = 'Grapic/C_Index/input';
+ $route['SDM/(:any)'] = 'Grapic/C_Index/$1';
+ $route['SDM/openPDF'] = 'Grapic/C_Index/openPDF';
+ 
 
 //------------------------------------ Management Kebutuhan Pekerja ----------------------------------------
 $route['ItemManagement'] = 'ItemManagement/C_Index/index';
@@ -2075,6 +2086,9 @@ $route['HitungHlcm/Approval/(:any)/(:any)'] 	= 'UpahHlCm/MasterData/C_Approval/$
 $route['HitungHlcm/UbahPekerjaan'] = 'UpahHlCm/MasterData/C_UbahPekerjaan';
 $route['HitungHlcm/UbahPekerjaan/(:any)'] = 'UpahHlCm/MasterData/C_UbahPekerjaan/$1';
 $route['HitungHlcm/UbahPekerjaan/(:any)/(:any)'] = 'UpahHlCm/MasterData/C_UbahPekerjaan/$1/$2';
+$route['HitungHlcm/DataOvertimePHL'] = 'UpahHlCm/MasterData/C_Overtime';
+$route['HitungHlcm/DataOvertimePHL/(:any)'] = 'UpahHlCm/MasterData/C_Overtime/$1';
+$route['HitungHlcm/DataOvertimePHL/(:any)/(:any)'] = 'UpahHlCm/MasterData/C_Overtime/$1/$2';
 
 $route['HitungHlcm/HitungGaji'] 	= 'UpahHlCm/ProsesGaji/C_ProsesGaji';
 $route['HitungHlcm/HitungGaji/(:any)'] 	= 'UpahHlCm/ProsesGaji/C_ProsesGaji/$1';
@@ -2281,6 +2295,8 @@ $route['Monitoring/TrackingInvoice/(:any)/(:any)'] = 'TrackingInvoice/C_tracking
 $route['TarikFingerspot'] = 'TarikFingerspot/C_TarikFingerspot';
 $route['TarikFingerspot/TarikData'] = 'TarikFingerspot/C_TarikFingerspot/TarikData';
 $route['TarikFingerspot/TarikData/(:any)'] = 'TarikFingerspot/C_TarikFingerspot/TarikData/$1';
+$route['TarikFingerspot/TransferPresensi'] = 'TarikFingerspot/C_TarikFingerspot/TransferPresensi';
+$route['TarikFingerspot/TransferPresensi/(:any)'] = 'TarikFingerspot/C_TarikFingerspot/TransferPresensi/$1';
 
 //--------------------------------------------------- Check PPh --------------------------------------------------//
 $route['AccountPayables/CheckPPh/Upload'] = 'CheckPPH/MainMenu/C_Upload';
@@ -2381,6 +2397,98 @@ $route['MonitoringBarangGudang/SparePart/Filter'] = 'WarehouseMPO/C_SparePart/fi
 $route['MasterPekerja/PerhitunganPesangon'] 		= 'MasterPekerja/PerhitunganPesangon/C_Index';
 $route['MasterPekerja/PerhitunganPesangon/(:any)'] = 'MasterPekerja/PerhitunganPesangon/C_Index/$1';
 $route['MasterPekerja/PerhitunganPesangon/(:any)/(:any)'] = 'MasterPekerja/PerhitunganPesangon/C_Index/$1/$2';
+
+//----------------MonitoringPembelian------------------
+ $route['MonitoringPembelian'] = 'MonitoringPembelian/C_Index/index';
+ $route['MonitoringPembelian/EditData'] = 'MonitoringPembelian/EditData/C_Monitoring/index';
+ $route['MonitoringPembelian/EditData/(:any)'] = 'MonitoringPembelian/EditData/C_Monitoring/$1';
+ $route['MonitoringPembelian/EditData/(:any)/(:any)'] = 'MonitoringPembelian/EditData/C_Monitoring/$1/$2';
+ 
+ $route['MonitoringPembelian/Monitoring'] = 'MonitoringPembelian/Input/C_Input/index';
+ $route['MonitoringPembelian/Monitoring/(:any)'] = 'MonitoringPembelian/Input/C_Input/$1';
+ 
+ $route['MonitoringPembelian/MonitoringPE'] = 'MonitoringPembelian/EditData/C_MonitoringPE/index';
+ $route['MonitoringPembelian/MonitoringPE/(:any)'] = 'MonitoringPembelian/EditData/C_MonitoringPE/$1';
+ $route['MonitoringPembelian/MonitoringPE/(:any)/(:any)'] = 'MonitoringPembelian/EditData/C_MonitoringPE/$1/$2';
+ 
+ $route['MonitoringPembelian/HistoryRequest'] = 'MonitoringPembelian/Input/C_History/index';
+ 
+ //----------------Resource Opname------------------
+ $route['OpnameResource']			= 'OpnameResource/MainMenu/C_TarikData';
+ $route['OpnameResource/TarikData']  = 'OpnameResource/MainMenu/C_TarikData/TarikData';
+ $route['OpnameResource/Export']  = 'OpnameResource/MainMenu/C_TarikData/Export';
+ 
+ 
+ 
+ 
+ //---------------------------Setting Min Max OPM-------------------------------//
+ $route['SettingMinMax'] = 'SettingMinMaxOPM/C_settingMinMaxOPM/index';
+ $route['SettingMinMax/Edit'] = 'SettingMinMaxOPM/C_settingMinMaxOPM/Edit';
+ $route['SettingMinMax/EditbyRoute'] = 'SettingMinMaxOPM/C_settingMinMaxOPM/EditbyRoute';
+ $route['SettingMinMax/EditbyRoute/EditItem/(:any)/(:any)'] = 'SettingMinMaxOPM/C_settingMinMaxOPM/EditItem/$1/$2';
+ $route['SettingMinMax/EditbyRoute/EditItem/(:any)/(:any)/(:any)'] = 'SettingMinMaxOPM/C_settingMinMaxOPM/EditItem/$1/$2/$3';
+ $route['SettingMinMax/SaveMinMax'] = 'SettingMinMaxOPM/C_settingMinMaxOPM/SaveMinMax';
+ 
+  //----------------------------------- Internal Audit ------------------------------------------------//
+ 
+ $route['InternalAudit'] = 'InternalAudit/C_Index';
+ $route['InternalAudit/CreateImprovement'] = 'InternalAudit/MainMenu/CreateImprovement/C_CreateImprovement';
+ $route['InternalAudit/CreateImprovement/(:any)'] = 'InternalAudit/MainMenu/CreateImprovement/C_CreateImprovement/$1';
+ 
+ $route['InternalAudit/SettingAccount/AuditObject'] = 'InternalAudit/MainMenu/SettingAccount/C_AuditObject';
+ $route['InternalAudit/SettingAccount/AuditObject/(:any)'] = 'InternalAudit/MainMenu/SettingAccount/C_AuditObject/$1';
+ $route['InternalAudit/SettingAccount/AuditObject/(:any)/(:any)'] = 'InternalAudit/MainMenu/SettingAccount/C_AuditObject/$1/$2';
+ $route['InternalAudit/SettingAccount/User'] = 'InternalAudit/MainMenu/SettingAccount/C_SettingUser';
+ $route['InternalAudit/SettingAccount/User/(:any)'] = 'InternalAudit/MainMenu/SettingAccount/C_SettingUser/$1';
+ $route['InternalAudit/SettingAccount/User/(:any)/(:any)'] = 'InternalAudit/MainMenu/SettingAccount/C_SettingUser/$1/$2';
+ 
+ $route['InternalAudit/MonitoringImprovement'] = 'InternalAudit/MainMenu/MonitoringImprovement/C_MonitoringImprovement';
+ $route['InternalAudit/MonitoringImprovement/(:any)'] = 'InternalAudit/MainMenu/MonitoringImprovement/C_MonitoringImprovement/$1';
+ $route['InternalAudit/MonitoringImprovement/(:any)/(:any)'] = 'InternalAudit/MainMenu/MonitoringImprovement/C_MonitoringImprovement/$1/$2';
+ 
+ $route['InternalAudit/MonitoringImprovementAuditee'] = 'InternalAudit/MainMenu/Auditee/MonitoringImprovement/C_MonitoringImprovement';
+ $route['InternalAudit/MonitoringImprovementAuditee/(:any)'] = 'InternalAudit/MainMenu/Auditee/MonitoringImprovement/C_MonitoringImprovement/$1';
+ $route['InternalAudit/MonitoringImprovementAuditee/(:any)/(:any)'] = 'InternalAudit/MainMenu/Auditee/MonitoringImprovement/C_MonitoringImprovement/$1/$2';
+ 
+ //------------------------------------ MONITORING LPPB ----------------------------
+ $route['MonitoringLppb'] = 'MonitoringLppbAdmin/C_monitoringlppbadmin';
+ $route['MonitoringLPPB/SubmitLppb'] = 'MonitoringLppbAdmin/C_monitoringlppbadmin/newLppbNumber';
+ $route['MonitoringLPPB/NewDrafLppb'] = 'MonitoringLppbAdmin/C_monitoringlppbadmin/showLppbBatchAdmin';
+ $route['MonitoringLPPB/RejectLppb'] = 'MonitoringLppbAdmin/C_monitoringlppbadmin/showRejectLppb';
+ $route['MonitoringLPPB/RejectLppb/(:any)'] = 'MonitoringLppbAdmin/C_monitoringlppbadmin/$1';
+ $route['MonitoringLPPB/RejectLppb/(:any)/(:any)'] = 'MonitoringLppbAdmin/C_monitoringlppbadmin/$1/$2';
+ $route['MonitoringLPPB/ListBatch/(:any)'] = 'MonitoringLppbAdmin/C_monitoringlppbadmin/$1';
+ $route['MonitoringLPPB/ListBatch/(:any)/(:any)'] = 'MonitoringLppbAdmin/C_monitoringlppbadmin/$1/$2';
+ $route['MonitoringLPPB/Finish'] = 'MonitoringLppbAdmin/C_monitoringlppbadmin/Finish';
+ $route['MonitoringLPPB/Finish/(:any)/(:any)'] = 'MonitoringLppbAdmin/C_monitoringlppbadmin/$1/$2';
+ 
+ //------------------------------------ MONITORING LPPB Kasie Gudang ----------------------------
+ $route['MonitoringLppbKasiesGudang'] = 'MonitoringLppbKasieGudang/C_monitoringlppbkasiegudang';
+ $route['MonitoringLppbKasieGudang/Unprocess'] = 'MonitoringLppbKasieGudang/C_monitoringlppbkasiegudang/index';
+ $route['MonitoringLppbKasieGudang/Unprocess/(:any)'] = 'MonitoringLppbKasieGudang/C_monitoringlppbkasiegudang/$1';
+ $route['MonitoringLppbKasieGudang/Unprocess/(:any)/(:any)'] = 'MonitoringLppbKasieGudang/C_monitoringlppbkasiegudang/$1/$2';
+ $route['MonitoringLppbKasieGudang/Reject'] = 'MonitoringLppbKasieGudang/C_monitoringlppbkasiegudang/Reject';
+ $route['MonitoringLppbKasieGudang/Reject/(:any)/(:any)'] = 'MonitoringLppbKasieGudang/C_monitoringlppbkasiegudang/$1/$2';
+ 
+ $route['MonitoringLppbKasieGudang/Finish'] = 'MonitoringLppbKasieGudang/C_monitoringlppbkasiegudang/Finish';
+ $route['MonitoringLppbKasieGudang/Finish/(:any)/(:any)'] = 'MonitoringLppbKasieGudang/C_monitoringlppbkasiegudang/$1/$2';
+ 
+ //------------------------------------ MONITORING LPPB KASIE AKUNTANSI ----------------------------
+ $route['MonitoringLppbAkuntansi'] = 'MonitoringLppbAkuntansi/C_monitoringlppbakuntansi';
+ $route['MonitoringLppbAkuntansi/Unprocess'] = 'MonitoringLppbAkuntansi/C_monitoringlppbakuntansi/index';
+ $route['MonitoringLppbAkuntansi/Unprocess/(:any)'] = 'MonitoringLppbAkuntansi/C_monitoringlppbakuntansi/$1';
+ $route['MonitoringLppbAkuntansi/Unprocess/(:any)/(:any)'] = 'MonitoringLppbAkuntansi/C_monitoringlppbakuntansi/$1/$2';
+ 
+ $route['MonitoringLppbAkuntansi/Reject'] = 'MonitoringLppbAkuntansi/C_monitoringlppbakuntansi/Reject';
+ $route['MonitoringLppbAkuntansi/Reject/(:any)/(:any)'] = 'MonitoringLppbAkuntansi/C_monitoringlppbakuntansi/$1/$2';
+ 
+ $route['MonitoringLppbAkuntansi/Finish'] = 'MonitoringLppbAkuntansi/C_monitoringlppbakuntansi/Finish';
+ $route['MonitoringLppbAkuntansi/Finish/(:any)/(:any)'] = 'MonitoringLppbAkuntansi/C_monitoringlppbakuntansi/$1/$2';
+ 
+ //------------------------------------ TRACKING LPPB ----------------------------
+ $route['TrackingLppb'] = 'TrackingLppb/C_trackinglppb';
+ $route['TrackingLppb/Tracking/(:any)'] = 'TrackingLppb/C_trackinglppb/$1';
+ $route['TrackingLppb/Tracking/(:any)/(:any)'] = 'TrackingLppb/C_trackinglppb/$1/$2';
 
 
 // ------------------------------------------------- Order Sharpening ---------------------------------------------//
