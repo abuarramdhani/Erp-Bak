@@ -60,6 +60,16 @@
 				$('input[name="selectedPicklistIMO"]').val(val);
 			}
 		});
+
+		
+
+		function myFunction() {
+		  alert("Kondisi True");
+		}
+		function myFunction2() {
+		  alert("Yang ini Kondisi False");
+		}
+
 	</script>
 	
  <style type="text/css">
@@ -116,10 +126,17 @@
 				if($v['REQUIRED_QUANTITY'] > $v['ATR']) { array_push($arrErr, $v['REQUIRED_QUANTITY']); }
 			}
 
+			if ($value['header']['DEPT_CLASS'] == 'SUBKT') {
+				$divisi = 1;
+			} else {
+				$divisi = 0;
+			}
+
+
 			if($value['header']['KET'] == 0){
 				if(count($arrErr) > 0){
 					$penanda = 'bg-danger';
-					$penandabutton = 1;
+					$penandabutton = 1; //-----------------> harusnya 1
 					$text_button = '<b>Create Picklist</b>';
 				}else{
 					$penanda = '';
@@ -128,7 +145,7 @@
 				}
 			}else{
 				$penanda = 'bg-success';
-				$penandabutton = 0;
+				$penandabutton = 1; //-----------------> harusnya 1
 				$text_button = '<b>Print Picklist</b>';
 			}
 
@@ -141,7 +158,7 @@
 					<b style="color: #c1c1c1"> <?= $no++; ?></b> <br>
 						<input type="checkbox"  class="ch_komp_imo" onclick="return false;"
 							value="<?= $value['header']['WIP_ENTITY_NAME'].'+'; ?>">
-				<?php } else{ ?>
+				<?php } else { ?>
 						<b <?= ($value['body']) ? '' : 'style="color: #c1c1c1"' ?>><?= $no++; ?></b> <br>
 						<input type="checkbox"  class="ch_komp_imo" <?= ($value['body']) ? ' name="ch_komp[]"' : 'onclick="return false;"' ?>
 							value="<?= $value['header']['WIP_ENTITY_NAME'].'+'; ?>">
@@ -155,20 +172,44 @@
 			<td class="<?= $penanda ?>" ><?= $value['header']['DEPT_CLASS'] ?></td>
 			<td class="<?= $penanda ?>" ><?= $value['header']['DESCRIPTION'] ?></td>
 			<td class="<?= $penanda ?>" ><?= ($value['header']['KET'] == 1) ? '<b>Sudah Dibuat Picklist</b>' : 'Belum Dibuat Picklist' ?>
-				
 			</td>
-			<td class="<?= $penanda ?>">
+<!-- YANG INI BENAR -->
+			<!--td class="<?= $penanda ?>">
 				<?php if ($penandabutton == 1) { ?>
 				<button class="btn btn-sm  disabled btn-default " target="_blank" >
 						 <?= $text_button; ?> 
 				</button>
-				<?php } else{ ?>
+				<?php } else { ?>
 				<button class="btn btn-sm  <?= ($value['body']) ? 'btn-success' : 'disabled btn-default' ?>" target="_blank"
 						 <?= ($value['body']) ? "onclick=document.getElementById('form".$value['header']['WIP_ENTITY_NAME']."').submit();" :'' ?>>
 						 <?= $text_button; ?> 
 				</button>
 				<?php } ?>
-			</td>
+			</td--> 
+			<!-- BENARNYA SAMPAI DISINI -->
+
+<!-- YANG INI EDITAN UNTUK TEST CETAK REPORT -->
+			<td class="<?= $penanda ?>">
+				<?php if ($penandabutton == 1) { ?>
+				<button class="btn btn-sm  disabled btn-default " target="_blank" >
+						 <?= $text_button; ?> 
+				</button>
+				<?php } else { ?>
+					<?php if ($divisi == 1) { ?>
+						<button data-toggle="modal" data-target="#formModal<?= $value['header']['WIP_ENTITY_NAME']; ?>" class="btn btn-sm  <?= ($value['body']) ? 'btn-success' : 'disabled btn-default' ?>" target="_blank">
+								 <?= $text_button; ?> 
+						</button>
+					<?php } else { ?>
+						<button class="btn btn-sm  <?= ($value['body']) ? 'btn-success' : 'disabled btn-default' ?>" target="_blank"
+								 <?= ($value['body']) ? "onclick=document.getElementById('form".$value['header']['WIP_ENTITY_NAME']."').submit();" :'' ?>>
+								 <?= $text_button; ?> 
+						</button>
+					<?php } ?>
+				<?php } ?>
+
+			</td> 
+			<!-- EDITANNYA SAMPAI SINI -->
+
 		</tr>
 		<tr>
 			<td colspan="8"  class="<?= $penanda ?>" ><span onclick="seeDetailIMO(this,'<?= $key ?>')" class="btn btn-xs btn-primary"> see detail >> </span>
@@ -202,6 +243,7 @@
 								<input type="hidden" name="subinvfrom[]" value="<?= $vulue['GUDANG_ASAL'] ?>">
 								<input type="hidden" name="locatorto[]" value="<?= $vulue['LOCATOR_TUJUAN_ID'] ?>">
 								<input type="hidden" name="locatorfrom[]" value="<?= $vulue['LOCATOR_ASAL'] ?>">
+								<input type="hidden" name="departement" value="NONE">
 							</td>
 							<td><?= $vulue['KOMPONEN'] ?></td>
 							<td><?= $vulue['KOMP_DESC'] ?></td>
@@ -258,9 +300,65 @@
 		<input type="hidden" name="subinvfrom[]" value="<?= implode('<>', $allSubFrom[$key]) ?>">
 		<input type="hidden" name="locatorto[]" value="<?= implode('<>', $allLocatorTo[$key]) ?>">
 		<input type="hidden" name="locatorfrom[]" value="<?= implode('<>', $allLocatorFrom[$key]) ?>">
+		<input type="hidden" name="departement" value="NONE">
 		<?php } ?>
 	<button type="submit" class="btn btn-success pull-right" disabled="disabled" id="btnSelectedIMO"><b> CREATE PICKLIST SELECTED </b><b id="jmlSlcIMO"></b></button>
 	<?php } ?>
 	</form>
 </div>
 
+
+<?php foreach ($requirement as $key => $value) : ?>
+<!---- MODAL --->
+<div class="modal fade" id="formModal<?= $value['header']['WIP_ENTITY_NAME']; ?>" tabindex="1" role="dialog" aria-labelledby="judulModal" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="formModalLabel">Masukan Nama</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      
+      <div class="modal-body">
+        <form action="<?= base_url('InventoryManagement/CreateMoveOrder/create') ?>" id="form-modal<?= $value['header']['WIP_ENTITY_NAME']; ?>"
+         method="post" target="_blank">
+        	
+        	<?php foreach ($value['body'] as $kut => $vulue) : ?>
+
+			<input type="hidden" name="no_job" value="<?= $vulue['WIP_ENTITY_NAME'] ?>">
+			<input type="hidden" name="invID[]" value="<?= $vulue['INVENTORY_ITEM_ID'] ?>">
+			<input type="hidden" name="qty[]" value="<?= $vulue['REQUIRED_QUANTITY'] ?>">
+			<input type="hidden" name="uom[]" value="<?= $vulue['PRIMARY_UOM_CODE'] ?>">
+			<input type="hidden" name="job_id[]" value="<?= $vulue['JOB_ID'] ?>">
+			<input type="hidden" name="subinvto[]" value="<?= $vulue['GUDANG_TUJUAN'] ?>">
+			<input type="hidden" name="subinvfrom[]" value="<?= $vulue['GUDANG_ASAL'] ?>">
+			<input type="hidden" name="locatorto[]" value="<?= $vulue['LOCATOR_TUJUAN_ID'] ?>">
+			<input type="hidden" name="locatorfrom[]" value="<?= $vulue['LOCATOR_ASAL'] ?>">
+			<input type="hidden" name="departement" value="SUBKT">
+
+			<?php endforeach;?>
+
+            <div class="form-group">
+                <label for="namaSatu">Nama Satu</label>
+                <input type="text" class="form-control" id="namaSatu" name="namaSatu" placeholder="Masukan Nama Satu">
+            </div>
+            <div class="form-group">
+                <label for="namaDua">Nama Dua</label>
+                <input type="text" class="form-control" id="namaDua" name="namaDua" placeholder="Masukan Nama Satu">
+            </div>
+           
+        </div>
+
+      <div class="modal-footer">
+        <button class="btn btn-sm  <?= ($value['body']) ? 'btn-success' : 'disabled btn-default' ?>" target="_blank"
+				 <?= ($value['body']) ? "onclick=document.getElementById('form-modal".$value['header']['WIP_ENTITY_NAME']."').submit();" :'' ?>>
+				 <?= $text_button; ?> 
+		</button>
+      </div>
+    </form>
+    </div>
+  </div>
+</div>
+<?php endforeach;?>
+<!--- Modal -->

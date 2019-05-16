@@ -50,18 +50,20 @@ class M_moveorder extends CI_Model
 						and wo.ORGANIZATION_ID = we.ORGANIZATION_ID
 						and wo.DEPARTMENT_ID = bd.DEPARTMENT_ID
 						and khs_shift(wdj.SCHEDULED_START_DATE) = bcs.SHIFT_NUM
-						and wdj.status_type in (1,3)
 						AND trunc(wdj.SCHEDULED_START_DATE) = '$date' --'12-NOV-18'    --parameter
-						and bcs.SHIFT_NUM = '$shift'       --parameter
+						$shift       --parameter
 						and bd.DEPARTMENT_CLASS_CODE = '$dept'         --parameter
 						--and we.WIP_ENTITY_NAME between 'D181100010' and 'D181100013'
 					";
+		// echo "<pre>";
+		// print_r($sql);
+		// exit();			
 		$query = $oracle->query($sql);
 		return $query->result_array();
 	}
 
 
-	function getBody($job_no)
+	function getBody($job_no) //----------------->>
 	{
 		$oracle = $this->load->database('oracle',TRUE);
 		$sql = "
@@ -73,7 +75,7 @@ class M_moveorder extends CI_Model
 					 FROM wip_entities we
 					,wip_discrete_jobs wdj
 					,mtl_system_items_b msib
-					,wip_requirement_operations wro
+					,wip_requirement_operations wro 
 					,mtl_system_items_b msib2
 					,bom_bill_of_materials bom
 					,bom_inventory_components bic
@@ -104,8 +106,9 @@ class M_moveorder extends CI_Model
 					and wo.ORGANIZATION_ID = we.ORGANIZATION_ID
 					and wo.DEPARTMENT_ID = bd.DEPARTMENT_ID
 					and khs_shift(wdj.SCHEDULED_START_DATE) = bcs.SHIFT_NUM
+					-- INT THE TRUTH IT WILL USED --
 					and bic.ATTRIBUTE1 is not null
-					and wdj.status_type in (1,3)
+					-- INT THE TRUTH ABOVE IT WILL USED --
 					and we.WIP_ENTITY_NAME = '$job_no'
 					group by we.WIP_ENTITY_ID,  we.WIP_ENTITY_NAME ,msib2.SEGMENT1, msib2.DESCRIPTION, msib2.inventory_item_id
                     ,wro.REQUIRED_QUANTITY,msib2.PRIMARY_UOM_CODE, bic.ATTRIBUTE1, mil.SEGMENT1
@@ -159,9 +162,11 @@ class M_moveorder extends CI_Model
 				    where mtrh.ATTRIBUTE1 = we.WIP_ENTITY_ID
 				    and mtrh.ORGANIZATION_ID = we.ORGANIZATION_ID
 				and we.WIP_ENTITY_NAME = '$no'";
+		
 		// echo "<pre>";
 		// echo $sql;
 		// exit();
+
 		$query = $oracle->query($sql);
 		return $query->result_array();
 	}
@@ -187,7 +192,7 @@ class M_moveorder extends CI_Model
                  wdj.start_quantity, 
                  mtrh.FROM_SUBINVENTORY_CODE lokasi, 
                  bcs.DESCRIPTION || '(' || TO_CHAR( TO_DATE( bst.FROM_TIME, 'SSSSS' ), 'HH24:MI:SS' )|| ' s/d ' || TO_CHAR( TO_DATE( bst.to_TIME, 'SSSSS' ), 'HH24:MI:SS' )|| ')' SCHEDULE, 
-                 mtrh.request_number move_order_no 
+                 mtrh.request_number move_order_no
                  FROM mtl_txn_request_headers mtrh, --mtl_txn_request_lines mtrl, --MTL_MATERIAL_TRANSACTIONS_TEMP mmtt, --blm transact 
                  mtl_system_items_b msib_compnt, --JOB
                  wip_entities we, wip_discrete_jobs wdj, 
@@ -217,7 +222,6 @@ class M_moveorder extends CI_Model
                  AND bst.SHIFT_NUM = khs_shift(wdj.scheduled_start_date) 
                  AND bst.calendar_code = bcs.calendar_code 
                  AND bcs.shift_num = bst.shift_num --hard_code 
-				 and wdj.status_type in (1,3)
                  AND mtrh.request_number = '$moveOrderAwal'
 --                 AND mmtt.SUBINVENTORY_CODE NOT LIKE 'INT%' 
                  GROUP BY msib_produk.segment1, 
@@ -233,6 +237,11 @@ class M_moveorder extends CI_Model
                      mtrh.request_number ,wdj.DATE_RELEASED,wdj.SCHEDULED_START_DATE 
                  ORDER BY we.WIP_ENTITY_NAME --mmtt.SUBINVENTORY_CODE
 		";
+
+		// echo "<pre>";
+		// echo "header";
+		// echo $sql;
+		// exit();
 
 		$query = $oracle->query($sql);
 		return $query->result_array();
@@ -385,7 +394,6 @@ class M_moveorder extends CI_Model
 				and bst.SHIFT_NUM = khs_shift(wdj.SCHEDULED_START_DATE)
 				and bst.CALENDAR_CODE = bcs.CALENDAR_CODE
 				and bcs.SHIFT_NUM = bst.SHIFT_NUM --hard_code
-				and wdj.status_type in (1,3)
 				and mtrh.request_number = '$moveOrderAwal'
 				and mtrl.FROM_SUBINVENTORY_CODE not like 'INT%'
 				and wro.INVENTORY_ITEM_ID = mtrl.INVENTORY_ITEM_ID
@@ -406,6 +414,38 @@ class M_moveorder extends CI_Model
 		$oracle = $this->load->database('oracle',TRUE);
 		$sql = "SELECT we.WIP_ENTITY_ID from wip_entities we	
 				where we.WIP_ENTITY_NAME = '$job'";
+		$query = $oracle->query($sql);
+		return $query->result_array();
+	}
+
+	function getAlamat($no_mo)
+	{
+		$oracle = $this->load->database('oracle',TRUE);
+		$sql = 	"SELECT poh.SEGMENT1, pvs.ADDRESS_LINE1, pvs.VENDOR_SITE_CODE , hp.PARTY_NAME, hp.CITY 
+				FROM wip_entities we, po_requisition_lines_all prl, po_req_distributions_all pord, po_distributions_all pod, po_headers_all poh, ap_suppliers pav,
+					ap_supplier_sites_all pvs, hz_parties hp 
+		        where we.WIP_ENTITY_ID = (SELECT we.WIP_ENTITY_ID from wip_entities we    
+		        where we.WIP_ENTITY_NAME = '$no_mo')
+		        and prl.WIP_ENTITY_ID = we.WIP_ENTITY_ID
+		        and prl.REQUISITION_LINE_ID(+) = pord.REQUISITION_LINE_ID
+		        and pord.DISTRIBUTION_ID(+) = pod.REQ_DISTRIBUTION_ID
+		        and pod.PO_HEADER_ID(+) = poh.PO_HEADER_ID
+		        and poh.VENDOR_ID = pav.VENDOR_ID
+		        and pav.VENDOR_ID = pvs.VENDOR_ID
+		        and pav.PARTY_ID = hp.PARTY_ID";
+
+		$query = $oracle->query($sql);
+		return $query->result_array();
+	}
+
+	function getNomorHeader($no_mo)
+	{
+		$oracle = $this->load->database('oracle',TRUE);
+		$sql = "SELECT DISTINCT mtrh.HEADER_ID from mtl_txn_request_headers mtrh, wip_entities we, mtl_txn_request_lines mtrl
+                    where mtrh.ATTRIBUTE1 = we.WIP_ENTITY_ID
+                    and mtrh.ORGANIZATION_ID = we.ORGANIZATION_ID
+                    and mtrl.HEADER_ID = mtrh.HEADER_ID
+                and we.WIP_ENTITY_NAME = '$no_mo'";
 		$query = $oracle->query($sql);
 		return $query->result_array();
 	}
@@ -462,28 +502,6 @@ class M_moveorder extends CI_Model
 		$jan = 137;
 		$job_id = (int) $job_id;
 
-		// var_dump($subInvFrom);
-		// echo "<br>";
-		// var_dump($locatorFrom);
-		// echo "<br>";
-		// var_dump($subInv);
-		// echo "<br>";
-		// var_dump($locator);
-		// echo "<br>";
-		// var_dump($username);
-		// echo "<br>";
-		// var_dump($ip_address);
-		// echo "<br>";
-		// var_dump($jan);
-		// echo "<br>";
-		// var_dump($job_id);
-		// echo "<br>";
-		// var_dump($nour);
-		// echo "<br>";
-		// var_dump($status);
-		
-		// exit();
-
 		$status = null;
 		// echo "<pre>";
 		// echo ':P_PARAM1 = '.$subInvFrom.'<br>'; 
@@ -494,11 +512,9 @@ class M_moveorder extends CI_Model
 		// echo ':P_PARAM6 = '.$ip_address.'<br>';
 		// echo ':P_PARAM7 = '.$jan.'<br>';
 		// echo ':P_PARAM8 = '.$job_id.'<br>';
-		// echo ':P_PARAM9 = '.$nour.'<br>';
-		// echo ':P_PARAM10 = '.$status.'<br>';
 		// exit();
-		// $conn = oci_connect('APPS', 'APPS', '192.168.7.3:1522/DEV');
-		$conn = oci_connect('APPS', 'APPS', '192.168.7.1:1521/PROD');
+		$conn = oci_connect('APPS', 'APPS', '192.168.7.3:1522/DEV');
+		//$conn = oci_connect('APPS', 'APPS', '192.168.7.1:1521/PROD');
 			if (!$conn) {
 	   			 $e = oci_error();
 	    		trigger_error(htmlentities($e['message'], ENT_QUOTES), E_USER_ERROR);
@@ -525,8 +541,7 @@ class M_moveorder extends CI_Model
   //   			$e = oci_error($conn);  // For oci_parse errors pass the connection handle
   //   			trigger_error(htmlentities($e['message']), E_USER_ERROR);
 		// }
-
-
+		
 		// But BEFORE statement, Create your cursor
 		$cursor = oci_new_cursor($conn);
 		
@@ -575,8 +590,9 @@ class M_moveorder extends CI_Model
 					and wo.ORGANIZATION_ID = we.ORGANIZATION_ID
 					and wo.DEPARTMENT_ID = bd.DEPARTMENT_ID
 					and khs_shift(wdj.SCHEDULED_START_DATE) = bcs.SHIFT_NUM
+					-- INT THE TRUTH IT WILL USED --
 					and bic.ATTRIBUTE1 is not null
-					and wdj.status_type in (1,3)
+					-- INT THE TRUTH ABOVE IT WILL USED --
 					and we.WIP_ENTITY_NAME = '$job'
 					group by we.WIP_ENTITY_ID,  we.WIP_ENTITY_NAME ,msib2.SEGMENT1, msib2.DESCRIPTION, msib2.inventory_item_id
                     ,wro.REQUIRED_QUANTITY,msib2.PRIMARY_UOM_CODE, bic.ATTRIBUTE1, mil.SEGMENT1
@@ -586,6 +602,59 @@ class M_moveorder extends CI_Model
                     order by bic.ATTRIBUTE1, bic.ATTRIBUTE2";
 		$query = $oracle->query($sql);
 		return $query->result_array();
+	}
+
+
+	function checkDepartement($param)
+	{
+		$oracle = $this->load->database('oracle',TRUE);
+		$sql ="SELECT bd.DEPARTMENT_CLASS_CODE department
+                 FROM mtl_txn_request_headers mtrh, --mtl_txn_request_lines mtrl, --MTL_MATERIAL_TRANSACTIONS_TEMP mmtt, --blm transact 
+                 mtl_system_items_b msib_compnt, --JOB
+                 wip_entities we, wip_discrete_jobs wdj, 
+                 wip_requirement_operations wro, 
+                 wip_operations wo, 
+                 BOM_DEPARTMENTS bd, -- produk 
+                 mtl_system_items_b msib_produk, --shift 
+                 BOM_SHIFT_TIMES bst, 
+                 BOM_CALENDAR_SHIFTS bcs 
+                 WHERE 
+--                 mtrh.header_id = mtrl.header_id
+--                 AND mtrl.line_id = mmtt.MOVE_ORDER_LINE_ID 
+--                 AND mmtt.INVENTORY_ITEM_ID = msib_compnt.INVENTORY_ITEM_ID 
+--                 AND mmtt.ORGANIZATION_ID = msib_compnt.organization_id -- job 
+                 mtrh.ATTRIBUTE1 = we.WIP_ENTITY_ID 
+                 AND we.WIP_ENTITY_ID = wdj.WIP_ENTITY_ID 
+                 AND wdj.primary_item_id = msib_produk.INVENTORY_ITEM_ID 
+                 AND wdj.ORGANIZATION_ID = msib_produk.ORGANIZATION_ID -- wro 
+                 AND msib_compnt.inventory_item_id = wro.INVENTORY_ITEM_ID 
+                 AND msib_compnt.organization_id = wro.organization_id 
+                 AND wro.WIP_ENTITY_ID = wdj.WIP_ENTITY_ID 
+                 AND wro.organization_id = wdj.organization_id 
+                 AND wro.wip_entity_id = wo.WIP_ENTITY_ID 
+                 AND wro.OPERATION_SEQ_NUM = wo.OPERATION_SEQ_NUM 
+                 AND wo.DEPARTMENT_ID = bd.DEPARTMENT_ID -- shift 
+                 AND bst.CALENDAR_CODE = 'KHS_CAL' 
+                 AND bst.SHIFT_NUM = khs_shift(wdj.scheduled_start_date) 
+                 AND bst.calendar_code = bcs.calendar_code 
+                 AND bcs.shift_num = bst.shift_num --hard_code 
+                 AND mtrh.request_number = '$param'
+--                 AND mmtt.SUBINVENTORY_CODE NOT LIKE 'INT%' 
+                 GROUP BY msib_produk.segment1, 
+                     msib_produk.description, 
+                     msib_produk.inventory_item_id, 
+                     msib_produk.organization_id, 
+                     mtrh.DATE_REQUIRED , 
+                     bd.DEPARTMENT_CLASS_CODE, 
+                     we.WIP_ENTITY_NAME, 
+                     wdj.start_quantity, 
+                     mtrh.FROM_SUBINVENTORY_CODE , 
+                     bcs.DESCRIPTION,bst.FROM_TIME,bst.to_TIME, 
+                     mtrh.request_number ,wdj.DATE_RELEASED,wdj.SCHEDULED_START_DATE 
+                 ORDER BY we.WIP_ENTITY_NAME";
+		$query = $oracle->query($sql);
+		return $query->result_array();
+		// return $sql;
 	}
 
 }
