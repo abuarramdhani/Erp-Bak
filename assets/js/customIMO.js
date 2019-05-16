@@ -17,12 +17,23 @@ $('.dateIMO').datepicker({
 		todayHighlight: true,
 	});
 
+$('.shiftForm').hide();
 
 });
 
+$('#selectDept').change(function(){
+	jQuery('DIV.ResultJob').html('');
+	var dept = $('select[name="slcDeptIMO"]').val();
+	if(dept == 'SUBKT') {
+		$('.shiftForm').hide();
+	} else {
+		$('.shiftForm').show();
+	}
+});
 
 $('#txtTanggalIMO').change(function(){
 	var date = $('input[name="txtTanggalIMO"]').val();
+	var dept = $('select[name="slcDeptIMO"]').val();
 	var html = '<option></option>';
 	$.ajax({
 			url : baseurl+('InventoryManagement/CreateMoveOrder/getShift'),
@@ -47,7 +58,7 @@ function getRequirementMO(th){
 	var dept = $('select[name="slcDeptIMO"]').val();
 	var date = $('input[name="txtTanggalIMO"]').val();
 	var shift = $('select[name="slcShiftIMO"]').val();
-
+	
 	// if (nojob != "") {
 		// $('#NoJob').css("border-color","#d2d6de");
 	var request = $.ajax({

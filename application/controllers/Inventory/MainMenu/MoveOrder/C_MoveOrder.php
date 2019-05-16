@@ -1,4 +1,4 @@
- <?php defined('BASEPATH') OR die('No direct script access allowed');
+ <?php defined('BASEPATH') ;
 class C_MoveOrder extends CI_Controller
 {
 	
@@ -61,14 +61,27 @@ class C_MoveOrder extends CI_Controller
 	public function search(){
 		$date = $this->input->post('date');
 		$dept = $this->input->post('dept');
-		$shift = $this->input->post('shift');
+		if ($dept == 'SUBKT') {
+			$shift = '';
+		} else {
+			$shift = "and bcs.SHIFT_NUM = '".$this->input->post('shift')."'";	
+		}
 		$date2 = explode('/', $date);
 		$datenew = $date ? $date2[1].'/'.$date2[0].'/'.$date2[2] : '';
 		$date = strtoupper(date('d-M-y', strtotime($datenew)));
+
 		$dataGET = $this->M_MoveOrder->search($date,$dept,$shift);
+		
 		// echo "<pre>";
-		// print_r($dataGET);
+		// print_r($date);
+		// echo "<br>";
+		// print_r($dept);
+		// echo "<br>";
+		// print_r($shift);		
+		// echo "<br>";
+		// print_r($dataGET);		
 		// exit();
+		
 		$array_sudah = array();
 		$array_terkelompok = array();
 		foreach ($dataGET as $key => $value) {
@@ -82,38 +95,65 @@ class C_MoveOrder extends CI_Controller
 			}
 
 		}
+
+		// echo "<pre>";
+		// print_r($array_sudah);
+		// print_r($array_terkelompok);
+		// exit();
+
 		foreach ($array_terkelompok as $key => $value) {
+			// echo "<pre>";
+			// print_r($value);
+			// exit();
 		 	$checkPicklist = $this->M_MoveOrder->checkPicklist($key);
-		 	if (count($checkPicklist) > 0) {
+		 	if ($checkPicklist) {
 				$array_terkelompok[$key]['header']['KET'] = 1 ;
 		 	}else{
 				$array_terkelompok[$key]['header']['KET'] = 0 ;
 		 	}
-		 } 
+		 }
+
 
 		$data['requirement'] = $array_terkelompok;
 
 		// echo "<pre>";
-		// print_r($array_terkelompok);
+		// print_r($data['requirement']);
 		// exit();
 
 		$this->load->view('Inventory/MainMenu/MoveOrder/V_Result',$data);
 	}
 
 	public function create(){
+		// echo "<pre>";
+		// print_r($_POST);
+		// exit();
+		
 		$ip_address =  $this->input->ip_address();
 		$job = $this->input->post('no_job');
 		$err = $this->input->post('error_exist');
+		
+		$departement = $this->input->post('departement');
+		if ($departement == 'SUBKT') {
+			$nama_satu = $this->input->post('namaSatu');
+			$nama_dua = $this->input->post('namaDua');
+		} else {
+			$nama_satu = '';
+			$nama_dua = '';
+		}
+
 		$checkPicklist = $this->M_MoveOrder->checkPicklist($job);
 		$array_mo = array();
 		// echo "<pre>";
+		// print_r($checkPicklist);
+		// exit();
 		if (count($checkPicklist) > 0) {
 			foreach ($checkPicklist as $key => $value) {
 				$no_mo = $value['REQUEST_NUMBER'];
 				array_push($array_mo, $no_mo);
+				//tinggal cetak jika sudah ada mo
 			}
 		// 	//pdfoutput
-			$this->pdf($array_mo);
+			$this->pdf($array_mo, $nama_satu, $nama_dua);
 		} else {
 			$qty 	  = $this->input->post('qty');
 			$invID = $this->input->post('invID');
@@ -124,9 +164,16 @@ class C_MoveOrder extends CI_Controller
 			$subinv_from 	  = $this->input->post('subinvfrom');
 			$locator_from 	  = $this->input->post('locatorfrom');
 
+
+
 			//CHECK QTY VS ATR
 			$getQuantityActual = $this->M_MoveOrder->getQuantityActual($job);
+			// echo "<pre>";
+			// echo("MASUK SINI");
+			// print_r($getQuantityActual);
+			// exit();
 			$errQty = array();
+
 			foreach ($getQuantityActual as $kQty => $vQty) {
 				if ($vQty['REQ'] > $vQty['ATR']){
 					$err = 1;
@@ -135,7 +182,12 @@ class C_MoveOrder extends CI_Controller
 				}
 				$errQty[] = $err;
 			}
+			// echo "<pre>";
+			// print_r($errQty);
+			// print_r($invID);
+			// exit();
 
+			//Seharusnya (!in_array(1,$errQty))
 			if (!in_array(1, $errQty)) {
 					foreach ($invID as $key => $value) {
 						$data[$subinv_from[$key]][] = array('NO_URUT' => '',
@@ -147,6 +199,9 @@ class C_MoveOrder extends CI_Controller
 						$data2[$subinv_from[$key]] = $locator_from[$key];
 
 					}
+					// echo "<pre>";
+					// print_r($data);
+					// exit();
 					
 					foreach ($data as $key => $value) {
 						$i = 1; 
@@ -157,6 +212,7 @@ class C_MoveOrder extends CI_Controller
 							//create TEMP
 							$this->M_MoveOrder->createTemp($dataNew);
 							$i++;
+
 						}
 							//create MO         
 							$this->M_MoveOrder->createMO($ip_address,$job_id[0],$subinv_to[0],$locator_to[0],$key,$data2[$key]);
@@ -171,9 +227,12 @@ class C_MoveOrder extends CI_Controller
 						array_push($array_mo, $no_mo);
 					}
 			}
+			// echo "<pre>";
+			// print_r($array_mo);
+			// exit();
 			//pdfoutput
 			if ($array_mo) {
-				$this->pdf($array_mo);
+				$this->pdf($array_mo, $nama_satu, $nama_dua);
 			}else{
 				exit('Terjadi Kesalahan :(');
 			}
@@ -182,13 +241,21 @@ class C_MoveOrder extends CI_Controller
 		}
 	}
 
-	public function pdf($array_mo){
+	public function pdf($array_mo,$nama_satu, $nama_dua){
 		// ------ GET DATA ------
+		// print_r($array_mo);
+
 			$temp_filename = array();
 			foreach ($array_mo as $key => $mo) {
+
 				$moveOrderAwal = $moveOrderAkhir = $mo;
 				$mentahHead	= $this->M_MoveOrder->getHeader($moveOrderAwal, $moveOrderAkhir);
 				$mentahLine	= $this->M_MoveOrder->getDetail($moveOrderAwal, $moveOrderAkhir);
+
+				// echo "<pre>";
+				// print_r($mentahHead);
+				// exit();
+				
 
 
 		// ------ GENERATE QRCODE ------
@@ -199,22 +266,48 @@ class C_MoveOrder extends CI_Controller
 				}
 
 				foreach ($mentahHead as $mh) {
-					$params['data']		= $mh['MOVE_ORDER_NO'];
-					$params['level']	= 'H';
-					$params['size']		= 3;
-					$config['black']	= array(224,255,255);
-					$config['white']	= array(70,130,180);
-					$params['savename'] = './assets/img/'.$mh['MOVE_ORDER_NO'].'.png';
-					$this->ciqrcode->generate($params);
-					array_push($temp_filename, $params['savename']);
+					if ($mh['DEPARTMENT'] == 'SUBKT') {
+
+						$headerTemp = $this->M_MoveOrder->getNomorHeader($mh['JOB_NO']);
+						// echo "<pre>";
+						// print_r($headerTemp);
+						// exit();
+						$params['data']		= $mh['MOVE_ORDER_NO'];
+						$params['level']	= 'H';
+						$params['size']		= 3;
+						$config['black']	= array(224,255,255);
+						$config['white']	= array(70,130,180);
+						$params['savename'] = './assets/img/'.$mh['MOVE_ORDER_NO'].'.png';
+						$this->ciqrcode->generate($params);
+						array_push($temp_filename, $params['savename']);
+					} else {
+						$params['data']		= $mh['MOVE_ORDER_NO'];
+						$params['level']	= 'H';
+						$params['size']		= 3;
+						$config['black']	= array(224,255,255);
+						$config['white']	= array(70,130,180);
+						$params['savename'] = './assets/img/'.$mh['MOVE_ORDER_NO'].'.png';
+						$this->ciqrcode->generate($params);
+						array_push($temp_filename, $params['savename']);
+					}
 				}
 			}
+			// exit();
+
+			//-------------------------------------------------------------------------------generate pdf by departement
+
+		$kodeDepartement = $this->M_MoveOrder->checkDepartement($array_mo[0]);
 
 
 		// ------ GENERATE PDF ------
 			$this->load->library('Pdf');
 			$pdf 				= $this->pdf->load();
-			$pdf 				= new mPDF('utf-8',array(215, 140), 0, '', 2, 2, 59.5, 21, 2, 4);
+			if (in_array('SUBKT', $kodeDepartement[0])) {
+				$pdf 				= new mPDF('utf-8',array(215,140), 0, '', 2, 2, 2,0);
+			} else {
+				$pdf 				= new mPDF('utf-8',array(215, 140), 0, '', 2, 2, 49.5, 25, 2, 4);	
+			}
+			
 			// $pdf 				= new mPDF('utf-8','A5-L', 0, '', 2, 2, 18.5, 21, 2, 2);
 			$filename			= 'Picklist_'.time().'.pdf';
 			$a = 0;
@@ -224,10 +317,8 @@ class C_MoveOrder extends CI_Controller
 				$dataall[$a]['line']	= $this->M_MoveOrder->getDetail($moveOrderAwal, $moveOrderAkhir);
 				$a++;
 			}
-			echo "<pre>";
 
-			// print_r($dataall);
-			// exit();
+			// echo "<pre>";
 
 			$head		= array();
 			$jobNo		= array();
@@ -235,7 +326,6 @@ class C_MoveOrder extends CI_Controller
 			$line		= array();
 			$pdf->SetTitle('Picklist_'.date('d/m/Y H/i/s').'.pdf');
 			foreach ($dataall as $key => $value) {
-				// print_r($value);
 				$pdf->AliasNbPageGroups('[pagetotal]');
 					foreach ($value['head'] as $key2 => $value2) {
 						$judulAssembly = strlen($value2['PRODUK_DESC']);
@@ -244,14 +334,33 @@ class C_MoveOrder extends CI_Controller
 				$data['assemblyLength'] = $assemblyLength;
 				$data['dataall'] = $value;
 				$data['urut'] = $key;
-				$head = $this->load->view('Inventory/MainMenu/MoveOrder/V_Head', $data, TRUE);
-				$line = $this->load->view('Inventory/MainMenu/MoveOrder/V_Index', $data, TRUE);
-				$foot = $this->load->view('Inventory/MainMenu/MoveOrder/V_Foot', $data, TRUE);
-				$pdf->SetHTMLHeader($head);
-				$pdf->SetHTMLFooter($foot);
-				$pdf->WriteHTML($line,0);
+				// echo "<pre>";
+
+				if ($value['head'][0]['DEPARTMENT'] == 'SUBKT') {
+
+					//$data['dataall']['head'][0]['ALAMAT'] = 'Belum terdefinisi'; 
+					$data['dataall']['head'][0]['NAMA_SATU'] = $nama_satu;
+					$data['dataall']['head'][0]['NAMA_DUA'] = $nama_dua;
+					$data['dataall']['head'][0]['ALAMAT'] = $this->M_MoveOrder->getAlamat($value['head'][0]['JOB_NO']); //--->> ALAMAT CALLING
+					$data['dataall']['head'][0]['HEADER_NO'] = $this->M_MoveOrder->getNomorHeader($value['head'][0]['JOB_NO']);
+					// echo "<pre>";
+		
+					// $head = $this->load->view('Inventory/MainMenu/MoveOrder/V_Head2', $data, TRUE);
+					$line = $this->load->view('Inventory/MainMenu/MoveOrder/V_Content', $data, TRUE);
+					$pdf->WriteHTML($line);
+					// break;
+				} else {
+					
+					$head = $this->load->view('Inventory/MainMenu/MoveOrder/V_Head', $data, TRUE);
+					$line = $this->load->view('Inventory/MainMenu/MoveOrder/V_Index', $data, TRUE);
+					$foot = $this->load->view('Inventory/MainMenu/MoveOrder/V_Foot', $data, TRUE);
+					$pdf->SetHTMLHeader($head);
+					$pdf->SetHTMLFooter($foot);
+					$pdf->WriteHTML($line,0);
+					// break;
+				}
+				//$pdf->WriteHTML($line,0);
 			}
-			// exit();
 			$pdf->Output($filename, 'I');
 
 			if (!empty($temp_filename)) {
@@ -264,6 +373,8 @@ class C_MoveOrder extends CI_Controller
 	}
 
 	public function createall(){
+		$nama_satu = '';
+		$nama_dua = '';
 		$ip_address =  $this->input->ip_address();
 		$no_job 	= $this->input->post('no_job');
 		$qty 	  = $this->input->post('qty');
@@ -311,7 +422,7 @@ class C_MoveOrder extends CI_Controller
 							$errQty[] = $err;
 						}
 
-						if (!in_array(1, $errQty)) {
+						if (in_array(1, $errQty)) {
 							// START
 								foreach ($no_job2 as $k => $v) {
 									$data[$subinv_from2[$k]][] = array('NO_URUT' => '',
@@ -380,6 +491,8 @@ class C_MoveOrder extends CI_Controller
 									'JOB_ID' => $job_id[$key]);
 							// $data2[$subinv_from2[$k]] = $locator_from2[$k];
 							//create TEMP
+
+
 							$this->M_MoveOrder->createTemp($data);
 
 							//create MO
@@ -399,8 +512,12 @@ class C_MoveOrder extends CI_Controller
 			}
 		}
 
+		// echo "<pre>";
+		// print_r($array_mo);
+		// exit();
+
 		if ($array_mo) {
-			$this->pdf($array_mo);
+			$this->pdf($array_mo,$nama_satu,$nama_dua);
 		}else{
 			exit('Terjadi Kesalahan :(');
 		}

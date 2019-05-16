@@ -360,69 +360,70 @@
   </div>
 </section>
 
-<?php if ( in_array($kaizen[0]['status'], $needthisform = array(0,1,6)) ) { ?>
-<div class="modal fade"  id="req<?= $kaizen[0]['kaizen_id'] ?>" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-                          <div class="modal-dialog" style="min-width:800px;">
-                            <div class="modal-content">
-                              <div class="modal-header">
-                                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                                <h4 class="modal-title" id="myModalLabel">Request Approve</h4>
-                              </div>
-                                <form action="<?= base_url('SystemIntegration/KaizenGenerator/MyKaizen/SaveApprover'); ?>" method="POST">
-                                <input type="hidden" name="typeApp" value="<?= $kaizen[0]['status'] != 6 ? '1' : '2' ?>">
-                              <div class="modal-body" >
-                                <div class="row">
-
-
-                                <?php 
-                                $arrayTerisi = array();
-                                foreach ($form_approval as $kuy => $frmapp) { ?>
-                                  <div class="col-lg-12" style="margin: 5px; text-align: left;">
-                                    <div class="form-group">
-                                        <label for="norm" class="control-label col-lg-4"><?= $frmapp['title'] ?></label>
-                                        <div class="col-lg-8 sel1">
-                                          <input type="hidden" name="kaizen_id" value="<?= $kaizen[0]['kaizen_id']; ?>">
-                                          <input type="hidden" name="approval_level[]" value="<?= $frmapp['level']?>">
-                                          <select data-placeholder="Pilih Atasan.. " class="form-control select4 siSlcTgr" style="width: 100%" name="<?= $frmapp['namefrm'] ?>">
-                                              <option></option>
-                                            <?php foreach ($frmapp['option'] as $key => $value) { ?>
-                                              <option <?= ($frmapp['level'] != 6 && $kaizen[0]['status_app']) ? (($kaizen[0]['status_app'][$frmapp['level']]['staff_code'] == $value['employee_code'] ) ? 'selected' : '' ) : ''; ?>
-                                               value="<?= $value['employee_code'] ?>"><?= $value['employee_code'].' - '.$value['employee_name']; ?></option>
-                                            <?php } ?>
-                                          </select>
-                                        </div>
-                                    </div>
-                                  </div>
-                                 <?php  
-                                 if ($kaizen[0]['status_app']) {
-                                      if (isset($kaizen[0]['status_app'][$frmapp['level']]['staff_code'])) {
-                                        $terisi = ($kaizen[0]['status_app'][$frmapp['level']]['staff_code']) ? $kaizen[0]['status_app'][$frmapp['level']]['staff_code'] : 0;
-                                        array_push($arrayTerisi, $terisi); 
-                                      }
-                                     } 
-                                 }
-                               ?>
-
-                                </div>
-                              </div>
-                              <div class="modal-footer">
-                                <?php 
-                                  $filled = 0;
-                                  if ($arrayTerisi):
-                                  if (in_array('0', $arrayTerisi)) {
-                                    $filled = 0;
-                                  }else{
-                                    $filled = 1;
-                                  }
-                                  endif;
-                                ?>
-                                <button type="submit" class="btn btn-success " <?= $filled == 0 ? 'disabled' :'' ?> id="subApprSI" >Submit</button>
-                                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                              </div>
-                                </form>
-                            </div>
-                          </div>
-                        </div>
+<?php 
+if ( in_array($kaizen[0]['status'], $needthisform = array(0,1,6)) ) { ?>
+  <div class="modal fade"  id="req<?= $kaizen[0]['kaizen_id'] ?>" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog" style="min-width: 800px;">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+          <h4 class="modal-title" id="myModalLabel">Request Approve</h4>
+        </div>
+        <form action="<?= base_url('SystemIntegration/KaizenGenerator/MyKaizen/SaveApprover'); ?>" method="POST">
+          <input type="hidden" name="typeApp" value="<?= $kaizen[0]['status'] != 6 ? '1' : '2' ?>"/>
+          <div class="modal-body">
+            <div class="row">
+              <?php 
+              $arrayTerisi = array();
+              // loop input
+              foreach ($form_approval as $key => $frmapp) { ?>
+                <div class="col-lg-12" style="margin: 5px; text-align: left;">
+                  <div class="form-group">
+                    <label for="norm" class="control-label col-lg-4"><?= $frmapp['title'] ?></label>
+                      <div class="col-lg-8 sel1">
+                        <input type="hidden" name="kaizen_id" value="<?= $kaizen[0]['kaizen_id']; ?>"/>
+                        <input type="hidden" name="approval_level[]" value="<?= $frmapp['level']?>"/>
+                        <select data-placeholder="Pilih Atasan" class="form-control select4 siSlcTgr" style="width: 100%" name="<?= $frmapp['namefrm'] ?>">
+                          <option></option>
+                          <!-- loop input option -->
+                          <?php foreach ($frmapp['option'] as $key => $value) { ?>
+                            <option <?= ($frmapp['level'] != 6 && $kaizen[0]['status_app']) ? (($kaizen[0]['status_app'][$frmapp['level']]['staff_code'] == $value['employee_code'] ) ? 'selected' : '' ) : ''; ?>
+                            value="<?= $value['employee_code'] ?>"><?= $value['employee_code'].' - '.$value['employee_name']; ?>
+                            </option>
+                          <?php } ?>
+                        </select>
+                      </div>
+                    </div>
+                  </div>
+                  <?php
+                  if ($kaizen[0]['status_app']) {
+                    if (isset($kaizen[0]['status_app'][$frmapp['level']]['staff_code'])) {
+                      $terisi = ($kaizen[0]['status_app'][$frmapp['level']]['staff_code']) ? $kaizen[0]['status_app'][$frmapp['level']]['staff_code'] : 0;
+                      array_push($arrayTerisi, $terisi);
+                    }
+                  }
+                }
+                ?>
+                </div>
+              </div>
+              <div class="modal-footer">
+                <?php
+                $filled = 0;
+                if ($arrayTerisi):
+                  if (in_array('0', $arrayTerisi)) {
+                    $filled = 0;
+                  } else {
+                    $filled = 1;
+                  }
+                endif;
+                ?>
+                <button type="submit" class="btn btn-success " <?= $filled == 0 ? 'disabled' :'' ?> id="subApprSI" >Submit</button>
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
 <?php } ?>
 
 
