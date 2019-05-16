@@ -46,21 +46,13 @@ class C_splkasie extends CI_Controller {
 	}
 
 	public function data_spl(){
-		$user = $this->session->user;
-		$filter = array("username" => $user);
-		$data_confirm = $this->M_splkasie->show_confirm($filter);
+		$data = $this->menu('', '', '');
+		$data['lokasi'] = $this->M_splseksi->show_lokasi();
 
-		if(empty($data_confirm)){
-			$data = $this->menu('', '', '');
-			$data['lokasi'] = $this->M_splseksi->show_lokasi();
-
-			$this->load->view('V_Header',$data);
-			$this->load->view('V_Sidemenu',$data);
-			$this->load->view('SPLSeksi/Kasie/V_data_spl',$data);
-			$this->load->view('V_Footer',$data);
-		}else{
-			$this->confirm_spl();
-		}
+		$this->load->view('V_Header',$data);
+		$this->load->view('V_Sidemenu',$data);
+		$this->load->view('SPLSeksi/Kasie/V_data_spl',$data);
+		$this->load->view('V_Footer',$data);
 	}
 
 	public function cut_kodesie($id){
@@ -105,7 +97,7 @@ class C_splkasie extends CI_Controller {
 			$index = array();
 			
 			if($sls['Status'] == "01"){
-				$index[] = '<input type="checkbox" name="splid[]" 
+				$index[] = '<input type="checkbox" name="splid[]" class="spl-chk-data" 
 					value="'.$sls['ID_SPL'].'" style="width:20px; height:20px; vertical-align:bottom;">';
 			}else{
 				$index[] = "";
@@ -133,185 +125,221 @@ class C_splkasie extends CI_Controller {
 		echo json_encode($data_spl);
 	}
 
-	public function data_spl_submit(){
+	public function data_spl_approv($id, $stat, $ket){
 		$user = $this->session->user;
-		$namae = $this->session->employee;
-		$id = $this->input->post('splid');
+		$data_spl = $this->M_splseksi->show_current_spl('', '', '', $id);
 
-		if(!empty($id)){
-			$splid = "";
-			foreach($id as $id){
-				$splid .= $id.", ";
-			}
-			$pass = uniqid();
-
-			$data_email = $this->M_splkasie->show_email_addres($user);
-			if(!empty($data_email)){
-				$addres = $data_email->address;
-				$this->send_email($addres, $namae, $pass);
+		foreach($data_spl as $ds){
+			// Generate ID Riwayat
+			$maxid = $this->M_splseksi->show_maxid("splseksi.tspl_riwayat", "ID_Riwayat");
+			if(empty($maxid)){
+				$splr_id = "0000000001";
+			}else{
+				$splr_id = $maxid->id;	
+				$splr_id = substr("0000000000", 0, 10-strlen($splr_id)).$splr_id;
 			}
 
+			// Approv or Cancel
+			if($stat == "21"){
+				$log_jenis = "Approve";
+				$spl_ket = $ket." (Approve By Kasie)";
+			}else{
+				$log_jenis = "Cancel";
+				$spl_ket = $ket." (Cancel By Kasie)";
+			}
+
+			// Insert data
+			$log_ket = "Noind:".$ds['Noind']." Tgl:".$ds['Tgl_Lembur']." Kd:".$ds['Kd_Lembur'].
+				" Jam:".$ds['Jam_Mulai_Lembur']."-".$ds['Jam_Akhir_Lembur']." Break:".$ds['Break'].
+				" Ist:".$ds['Istirahat']." Pek:".$ds['Pekerjaan']."<br />";
+
+			$data_log = array(
+				"wkt" => date('Y-m-d H:i:s'),
+				"menu" => "Kasie",
+				"jenis" => $log_jenis,
+				"ket" => $log_ket,
+				"noind" => $user);
+			$to_log = $this->M_splseksi->save_log($data_log);
+
+			$data_spl = array(
+				"Tgl_Berlaku" => date('Y-m-d H:i:s'),
+				"Status" => $stat,
+				"User_" => $user);
+			$to_spl = $this->M_splseksi->update_spl($data_spl, $id);
+			
 			$data_splr = array(
-				"username" => $user,
-				"password" => $pass,
-				"spl_id" => $splid);
-			$to_splr = $this->M_splkasie->save_confirm($data_splr);
-
-			redirect(base_url('ALK/ConfLembur'));
-		}else{
-			redirect(base_url('ALK/ListLembur'));
+				"ID_Riwayat" => $splr_id,
+				"ID_SPL" => $id,
+				"Tgl_Berlaku" => date('Y-m-d H:i:s'),
+				"Tgl_Tdk_Berlaku" => date('Y-m-d H:i:s'),
+				"Tgl_Lembur" => $ds['Tgl_Lembur'],
+				"Noind" => $ds['Noind'],
+				"Noind_Baru" => "0000000",
+				"Kd_Lembur" => $ds['Kd_Lembur'],
+				"Jam_Mulai_Lembur" => $ds['Jam_Mulai_Lembur'],
+				"Jam_Akhir_Lembur" => $ds['Jam_Akhir_Lembur'],
+				"Break" => $ds['Break'],
+				"Istirahat" => $ds['Istirahat'],
+				"Pekerjaan" => $ds['Pekerjaan'],
+				"Status" => $stat,
+				"User_" => $user,
+				"Revisi" => "0",
+				"Keterangan" => $spl_ket,
+				"target" => $ds['target'],
+				"realisasi" => $ds['realisasi'],
+				"alasan_lembur" => $ds['alasan_lembur']);
+			$to_splr = $this->M_splseksi->save_splr($data_splr);
 		}
 	}
 
-	public function confirm_spl(){
-		$data = $this->menu('', '', '');
-		$result = $this->input->get('result');
-		if(!empty($result) && $result==1){
-			$data['result'] = array("callout-success", "Succes!", "Data berhasil di proses");
-		}elseif(!empty($result) && $result==0){
-			$data['result'] = array("callout-warning", "Error!", "Pastikan data yang anda masukkan benar");
-		}
-
-		$this->load->view('V_Header',$data);
-		$this->load->view('V_Sidemenu',$data);
-		$this->load->view('SPLSeksi/Kasie/V_confirm_spl',$data);
-		$this->load->view('V_Footer',$data);
-	}
-
-	public function confirm_spl_submit(){
+	public function send_email() {
+		$akses_sie = array();
 		$user = $this->session->user;
-		$pass = $this->input->post('passcode');
-		$status = $this->input->post('approve');
-		$keterangan = $this->input->post('keterangan');
+		$akses_kue = $this->M_splseksi->show_pekerja('', $user, '');
+		$akses_spl = $this->M_splseksi->show_akses_seksi($user);
+		foreach($akses_kue as $ak){
+			$akses_sie[] = substr($this->cut_kodesie($ak['kodesie']), 0, 5);
 
-		$filter = array("username" => $user, "password" => $pass);
-		$data_confirm = $this->M_splkasie->show_confirm($filter);
-
-		if(!empty($data_confirm)){
-			$spl_id = explode(", ", $data_confirm->spl_id);
-			foreach($spl_id as $si){
-				$data_spl = $this->M_splseksi->show_current_spl('', '', '', $si);
-
-				foreach($data_spl as $ds){
-					// Generate ID Riwayat
-					$maxid = $this->M_splseksi->show_maxid("splseksi.tspl_riwayat", "ID_Riwayat");
-					if(empty($maxid)){
-						$splr_id = "0000000001";
-					}else{
-						$splr_id = $maxid->id;	
-						$splr_id = substr("0000000000", 0, 10-strlen($splr_id)).$splr_id;
-					}
-
-					// Approv or Cancel
-					if($status == "21"){
-						$log_jenis = "Approve";
-						$spl_ket = $keterangan." (Approve By Kasie)";
-					}else{
-						$log_jenis = "Cancel";
-						$spl_ket = $keterangan." (Cancel By Kasie)";
-					}
-
-					// Insert data
-					$log_ket = "Noind:".$ds['Noind']." Tgl:".$ds['Tgl_Lembur']." Kd:".$ds['Kd_Lembur'].
-						" Jam:".$ds['Jam_Mulai_Lembur']."-".$ds['Jam_Akhir_Lembur']." Break:".$ds['Break'].
-						" Ist:".$ds['Istirahat']." Pek:".$ds['Pekerjaan']."<br />";
-
-					$data_log = array(
-						"wkt" => date('Y-m-d H:i:s'),
-						"menu" => "Kasie",
-						"jenis" => $log_jenis,
-						"ket" => $log_ket,
-						"noind" => $user);
-					$to_log = $this->M_splseksi->save_log($data_log);
-
-					$data_spl = array(
-						"Tgl_Berlaku" => date('Y-m-d H:i:s'),
-						"Status" => $status,
-						"User_" => $user);
-					$to_spl = $this->M_splseksi->update_spl($data_spl, $si);
-					
-					$data_splr = array(
-						"ID_Riwayat" => $splr_id,
-						"ID_SPL" => $si,
-						"Tgl_Berlaku" => date('Y-m-d H:i:s'),
-						"Tgl_Tdk_Berlaku" => date('Y-m-d H:i:s'),
-						"Tgl_Lembur" => $ds['Tgl_Lembur'],
-						"Noind" => $ds['Noind'],
-						"Noind_Baru" => "0000000",
-						"Kd_Lembur" => $ds['Kd_Lembur'],
-						"Jam_Mulai_Lembur" => $ds['Jam_Mulai_Lembur'],
-						"Jam_Akhir_Lembur" => $ds['Jam_Akhir_Lembur'],
-						"Break" => $ds['Break'],
-						"Istirahat" => $ds['Istirahat'],
-						"Pekerjaan" => $ds['Pekerjaan'],
-						"Status" => $status,
-						"User_" => $user,
-						"Revisi" => "0",
-						"Keterangan" => $spl_ket,
-						"target" => $ds['target'],
-						"realisasi" => $ds['realisasi'],
-						"alasan_lembur" => $ds['alasan_lembur']);
-					$to_splr = $this->M_splseksi->save_splr($data_splr);
-				}
+			foreach($akses_spl as $as){
+				$akses_sie[] = substr($this->cut_kodesie($as['kodesie']), 0, 5);
 			}
+		}
 
-			$drop_confirm = $this->M_splkasie->drop_confirm($user);
-			redirect(base_url('ALK/ConfLembur?result=1'));
-		}else{
-			redirect(base_url('ALK/ConfLembur?result=0'));
+		$data[] = "email atasan ???";
+		foreach($akses_sie as $as){
+			$e_asska = $this->M_splkasie->show_email_addres($as);
+			foreach($e_asska as $ea){
+				$data[] = $ea['internal_mail'];
+			}
+		}
+
+		$email[] = array(
+			"actn" => "offline",
+			"host" => "m.quick.com", 
+			"port" => 465, 
+			"user" => "no-reply", 
+			"pass" => "123456",
+			"from" => "no-reply@quick.com",
+			"adrs" => "");
+		
+		foreach($email as $e){
+			$this->load->library('PHPMailerAutoload');
+			$mail = new PHPMailer;
+			//Tell PHPMailer to use SMTP
+			$mail->isSMTP();
+			//Enable SMTP debugging
+			// 0 = off (for production use)
+			// 1 = client messages
+			// 2 = client and server messages
+			$mail->SMTPDebug = 0;
+			//Ask for HTML-friendly debug output
+			$mail->Debugoutput = 'html';
+			//Set the hostname of the mail server
+			$mail->Host = $e['host'];
+			//Set the SMTP port number - likely to be 25, 465 or 587
+			$mail->Port = $e['port'];
+			//Whether to use SMTP authentication
+			$mail->SMTPAuth = true;
+			$mail->SMTPSecure = 'ssl';
+			$mail->SMTPOptions = array(
+					'ssl' => array(
+					'verify_peer' => false,
+					'verify_peer_name' => false,
+					'allow_self_signed' => true
+					));
+			//Username to use for SMTP authentication
+			$mail->Username = $e['user'];
+			//Password to use for SMTP authentication
+			$mail->Password = $e['pass'];
+			//Set who the message is to be sent from
+			$mail->setFrom($e['from'], 'Email Sistem');
+			//Set an alternative reply-to address
+			// $mail->addReplyTo('it.sec3@quick.com', 'Khoerul Amri');
+			//Set who the message is to be sent to
+			$mail->addAddress($e['adrs'], 'Monitoring Transaction');
+			foreach($data as $d){
+				$mail->addAddress($d, 'Lembur (Approve Asska)');
+			}
+			//Set the subject line
+			$mail->Subject = 'Anda mungkin telah menerima permintaan approval spl';
+			//convert HTML into a basic plain-text alternative body
+			$mail->msgHTML("
+			<h4>Lembur (Appove Asska)</h4><hr>
+			Kepada Yth Bapak/Ibu<br><br>
+			
+			Kami informasikan bahwa mungkin saja anda telah menerima permintaan<br>
+			approval untuk keperluan lembur pekerja<br><br>
+
+			Anda dapat melakukan pengecekan di link berikut :<br>
+			- http://erp.quick.com atau klik <a href='http://erp.quick.com'>disini</a><br><br>
+
+			<small>Email ini digenerate melalui sistem erp.quick.com pada ".date('d-m-Y H:i:s').".<br>
+			Apabila anda mengalami kendala dapat menghubungi Seksi ICT (12300)</small>");
+			//send the message, check for errors
+			if (!$mail->send()) {
+				echo "Mailer Error: " . $mail->ErrorInfo;
+			} else {
+				echo "Message sent!";
+			}
 		}
 	}
 
-	public function send_email($addres, $user, $subjec) {
-		$this->load->library('PHPMailerAutoload');
-		
-		$mail = new PHPMailer();
-        $mail->SMTPDebug = 0;
-        $mail->Debugoutput = 'html';
-		
-        // set smtp
-        $mail->isSMTP();
-        $mail->Host = 'm.quick.com';
-        $mail->Port = 465;
-        $mail->SMTPAuth = true;
-		$mail->SMTPSecure = 'ssl';
-		$mail->SMTPOptions = array(
-			'ssl' => array(
-			'verify_peer' => false,
-			'verify_peer_name' => false,
-			'allow_self_signed' => true));
-        $mail->Username = 'no-reply@quick.com';
-        $mail->Password = '123456';
-        $mail->WordWrap = 50;
-		
-        // set email content
-        $mail->setFrom('no-reply@quick.com', 'Email Sistem');
-        $mail->addAddress($addres);
-        $mail->Subject = "Approval Lembur Kasie";
+	function fp_proces(){
+		$time_limit_ver = "10";
+		$user_id = $this->input->get('userid');
+		$finger	= $this->M_splkasie->show_finger_user(array('user_id' => $user_id));
 
-		$mail->msgHTML('
-			<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://wwwhtml4/loose.dtd"> 				
-			<html>
-				<head> 			 	
-					<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1"> 			  	
-					<title>Mail Generated By System</title>
-				</head> 				
-				<body>
-					Kepada Yth Bpk/Ibu '.$user.'<br><br>
+		$status = $this->input->get('stat');
+		$ket = $this->input->get('ket');
+		$spl_id = $this->input->get('data');
 
-					Passcode verifikasi approval lembur anda adalah <b> '.$subjec.' </b><br/><br/>
+		echo "
+		$user_id;".$finger->finger_data.";SecurityKey;".$time_limit_ver.";".site_url("ALK/Approve/fp_verification?status=$status&spl_id=$spl_id&ket=$ket").";".site_url("ALK/Approve/fp_activation").";extraParams";
+		// variabel yang di tmpilkan belum bisa di ubah
+	}
 
-					Terimakasih, <br/><br/><br/>
-					<b style="text-decoration: underline;">Pengelola</b>
-					<h6><i>(Pesan ini dibentuk otomatis oleh System.)</i></h6>
-				</body> 				
-			</html>');
+	function fp_activation(){
+		$filter = array("Verification_Code" => $_GET['vc']);
+		$data = $this->M_splkasie->show_finger_activation($filter);
+		echo $data->Activation_Code.$data->SN;
+	}
+
+	function fp_verification(){
+		$data = explode(";",$_POST['VerPas']);
+		$user_id = $data[0];
+		$vStamp = $data[1];
+		$time = $data[2];
+		$sn = $data[3];
 		
-		if(!$mail->send()){
-			echo "Mailer Error: " . $mail->ErrorInfo;
+		$filter 	= array("SN" => $sn);
+		$fingerData = $this->M_splkasie->show_finger_user(array('user_id' => $user_id));
+		$device 	= $this->M_splkasie->show_finger_activation($filter);
+		
+		$salt = md5($sn.$fingerData->finger_data.$device->Verification_Code.$time.$user_id.$device->VKEY);
+		
+		if (strtoupper($vStamp) == strtoupper($salt)) {
+			$status = $_GET['status'];
+			$spl_id = $_GET['spl_id'];
+			$ket = $_GET['ket'];
+
+			echo site_url("ALK/Approve/fp_succes?status=$status&spl_id=$spl_id&ket=$ket");
 		}else{
-			//echo "Message sent!";
+			echo "Parameter invalid..";
 		}
+	}
+
+	function fp_succes(){
+		$status = $_GET['status'];
+		$spl_id = $_GET['spl_id'];
+		$ket = $_GET['ket'];
+
+		foreach(explode('.', $spl_id) as $si){
+			$this->data_spl_approv($si, $status, $ket);
+		}
+
+		$this->send_email();
+		echo "Memproses data lembur<br>";
+		echo "<script>window.close();</script>";
 	}
 
 

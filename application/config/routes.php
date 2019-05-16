@@ -2255,16 +2255,17 @@ $route['AccountPayables/CheckPPh/List'] = 'CheckPPH/MainMenu/C_List';
 $route['AccountPayables/CheckPPh/List/(:any)'] = 'CheckPPH/MainMenu/C_List/$1';
 
 //---------------------------------------------- Surat Perintah Lembur -------------------------------------------//
-$route['SPL'] = 'splseksi/C_splseksi';
-$route['SPL/InputLembur'] = 'splseksi/C_splseksi/new_spl';
-$route['SPL/ListLembur'] = 'splseksi/C_splseksi/data_spl';
-$route['SPL/RekapLembur'] = 'splseksi/C_splseksi/rekap_spl';
-$route['SPL/EditLembur/(:any)'] = 'splseksi/C_splseksi/edit_spl/$1';
-$route['SPL/HapusLembur/(:any)'] = 'splseksi/C_splseksi/hapus_spl/$1';
+$route['SPL'] = 'SPLSeksi/C_splseksi';
+$route['SPL/InputLembur'] = 'SPLSeksi/C_splseksi/new_spl';
+$route['SPL/ListLembur'] = 'SPLSeksi/C_splseksi/data_spl';
+$route['SPL/RekapLembur'] = 'SPLSeksi/C_splseksi/rekap_spl';
+$route['SPL/EditLembur/(:any)'] = 'SPLSeksi/C_splseksi/edit_spl/$1';
+$route['SPL/HapusLembur/(:any)'] = 'SPLSeksi/C_splseksi/hapus_spl/$1';
 
-$route['ALK/ListLembur'] = 'splseksi/C_splkasie/data_spl';
-$route['ALK/ConfLembur'] = 'splseksi/C_splkasie/confirm_spl';
-$route['ALA/ListLembur'] = 'splseksi/C_splasska/data_spl';
+$route['ALK/ListLembur'] = 'SPLSeksi/C_splkasie/data_spl';
+$route['ALK/Approve/(:any)'] = 'SPLSeksi/C_splkasie/$1';
+$route['ALA/ListLembur'] = 'SPLSeksi/C_splasska/data_spl';
+$route['ALA/Approve/(:any)'] = 'SPLSeksi/C_splasska/$1';
 
 //---------------------------------------------------- Booking Kendaraan --------------------------------------//
 // hati hati kadang any any gak bisa kepanggil
@@ -2372,6 +2373,5 @@ $route['HiwingMonitoring/Pengiriman/getPenerima'] = 'HiwingMonitoring/C_Pengirim
 $route['HiwingMonitoring/Monitoring/getDetail'] = 'HiwingMonitoring/C_Monitoring/getDetail';
 $route['HiwingMonitoring/Monitoring/getDetail/(:any)'] = 'HiwingMonitoring/C_Monitoring/getDetail/$1';
 $route['HiwingMonitoring/Monitoring/showDetail'] ='HiwingMonitoring/C_Monitoring/showDetail';
-
 
 

@@ -479,6 +479,8 @@ class C_splseksi extends CI_Controller {
 			$to_splr = $this->M_splseksi->save_splr($data_splr);
 
 		}
+
+		$this->send_email();
 		redirect(base_url('SPL/InputLembur?result=1'));
 	}
 
@@ -531,6 +533,98 @@ class C_splseksi extends CI_Controller {
 			$data_spl[] = $index;
 		}
 		echo json_encode($data_spl);
+	}
+
+	public function send_email() {
+		$akses_sie = array();
+		$user = $this->session->user;
+		$akses_kue = $this->M_splseksi->show_pekerja('', $user, '');
+		$akses_spl = $this->M_splseksi->show_akses_seksi($user);
+		foreach($akses_kue as $ak){
+			$akses_sie[] = substr($this->cut_kodesie($ak['kodesie']), 0, 7);
+
+			foreach($akses_spl as $as){
+				$akses_sie[] = substr($this->cut_kodesie($as['kodesie']), 0, 7);
+			}
+		}
+
+		$data[] = "email atasan ???";
+		foreach($akses_sie as $as){
+			$e_asska = $this->M_splseksi->show_email_addres($as);
+			foreach($e_asska as $ea){
+				$data[] = $ea['internal_mail'];
+			}
+		}
+
+		$email[] = array(
+			"actn" => "offline",
+			"host" => "m.quick.com", 
+			"port" => 465, 
+			"user" => "no-reply", 
+			"pass" => "123456",
+			"from" => "no-reply@quick.com",
+			"adrs" => "");
+		
+		foreach($email as $e){
+			$this->load->library('PHPMailerAutoload');
+			$mail = new PHPMailer;
+			//Tell PHPMailer to use SMTP
+			$mail->isSMTP();
+			//Enable SMTP debugging
+			// 0 = off (for production use)
+			// 1 = client messages
+			// 2 = client and server messages
+			$mail->SMTPDebug = 0;
+			//Ask for HTML-friendly debug output
+			$mail->Debugoutput = 'html';
+			//Set the hostname of the mail server
+			$mail->Host = $e['host'];
+			//Set the SMTP port number - likely to be 25, 465 or 587
+			$mail->Port = $e['port'];
+			//Whether to use SMTP authentication
+			$mail->SMTPAuth = true;
+			$mail->SMTPSecure = 'ssl';
+			$mail->SMTPOptions = array(
+					'ssl' => array(
+					'verify_peer' => false,
+					'verify_peer_name' => false,
+					'allow_self_signed' => true
+					));
+			//Username to use for SMTP authentication
+			$mail->Username = $e['user'];
+			//Password to use for SMTP authentication
+			$mail->Password = $e['pass'];
+			//Set who the message is to be sent from
+			$mail->setFrom($e['from'], 'Email Sistem');
+			//Set an alternative reply-to address
+			// $mail->addReplyTo('it.sec3@quick.com', 'Khoerul Amri');
+			//Set who the message is to be sent to
+			$mail->addAddress($e['adrs'], 'Monitoring Transaction');
+			foreach($data as $d){
+				$mail->addAddress($d, 'Lembur (Approve Kasie)');
+			}
+			//Set the subject line
+			$mail->Subject = 'Anda mungkin telah menerima permintaan approval spl';
+			//convert HTML into a basic plain-text alternative body
+			$mail->msgHTML("
+			<h4>Lembur (Appove Kasie)</h4><hr>
+			Kepada Yth Bapak/Ibu<br><br>
+			
+			Kami informasikan bahwa mungkin saja anda telah menerima permintaan<br>
+			approval untuk keperluan lembur pekerja<br><br>
+
+			Anda dapat melakukan pengecekan di link berikut :<br>
+			- http://erp.quick.com atau klik <a href='http://erp.quick.com'>disini</a><br><br>
+
+			<small>Email ini digenerate melalui sistem erp.quick.com pada ".date('d-m-Y H:i:s').".<br>
+			Apabila anda mengalami kendala dapat menghubungi Seksi ICT (12300)</small>");
+			//send the message, check for errors
+			if (!$mail->send()) {
+				echo "Mailer Error: " . $mail->ErrorInfo;
+			} else {
+				echo "Message sent!";
+			}
+		}
 	}
 	
 }
