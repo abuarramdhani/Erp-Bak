@@ -43,6 +43,7 @@ class C_MoveOrder extends CI_Controller
 		$data['dept'] = $this->M_MoveOrder->getDept();
 		$data['shift'] = $this->M_MoveOrder->getShift(FALSE);
 
+
 		$this->load->view('V_Header',$data);
 		$this->load->view('V_Sidemenu',$data);
 		$this->load->view('Inventory/MainMenu/MoveOrder/V_MoveOrder',$data);
@@ -63,14 +64,16 @@ class C_MoveOrder extends CI_Controller
 		$dept = $this->input->post('dept');
 		if ($dept == 'SUBKT') {
 			$shift = '';
+			$atr = ",khs_inv_qty_att(wdj.ORGANIZATION_ID,wro.INVENTORY_ITEM_ID,bic.ATTRIBUTE1,bic.ATTRIBUTE2,'') atr";
 		} else {
-			$shift = "and bcs.SHIFT_NUM = '".$this->input->post('shift')."'";	
+			$shift = "and bcs.SHIFT_NUM = '".$this->input->post('shift')."'";
+			$atr = ",khs_inv_qty_atr(wdj.ORGANIZATION_ID,wro.INVENTORY_ITEM_ID,bic.ATTRIBUTE1,bic.ATTRIBUTE2,'') atr";	
 		}
 		$date2 = explode('/', $date);
 		$datenew = $date ? $date2[1].'/'.$date2[0].'/'.$date2[2] : '';
 		$date = strtoupper(date('d-M-y', strtotime($datenew)));
 
-		$dataGET = $this->M_MoveOrder->search($date,$dept,$shift);
+		$dataGET = $this->M_MoveOrder->search($date,$dept,$shift,$atr);
 		
 		// echo "<pre>";
 		// print_r($date);
@@ -89,7 +92,13 @@ class C_MoveOrder extends CI_Controller
 				
 			}else{
 				array_push($array_sudah, $value['WIP_ENTITY_NAME']);
-				$getBody = $this->M_MoveOrder->getBody($value['WIP_ENTITY_NAME']);
+				if ($dept == 'SUBKT') {
+					$atr = ",khs_inv_qty_att(wdj.ORGANIZATION_ID,wro.INVENTORY_ITEM_ID,bic.ATTRIBUTE1,bic.ATTRIBUTE2,'') atr";
+					$getBody = $this->M_MoveOrder->getBody($value['WIP_ENTITY_NAME'],$atr);
+				}else {
+					$atr = ",khs_inv_qty_atr(wdj.ORGANIZATION_ID,wro.INVENTORY_ITEM_ID,bic.ATTRIBUTE1,bic.ATTRIBUTE2,'') atr";	
+					$getBody = $this->M_MoveOrder->getBody($value['WIP_ENTITY_NAME'],$atr);	
+				}
 				$array_terkelompok[$value['WIP_ENTITY_NAME']]['header'] = $value; 
 				$array_terkelompok[$value['WIP_ENTITY_NAME']]['body'] = $getBody; 
 			}
