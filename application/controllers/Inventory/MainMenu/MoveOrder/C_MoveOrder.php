@@ -240,9 +240,9 @@ class C_MoveOrder extends CI_Controller
 						array_push($array_mo, $no_mo);
 					}
 			}
-			echo "<pre>";
-			print_r($array_mo);
-			exit();
+			// echo "<pre>";
+			// print_r($array_mo);
+			// exit();
 
 			if ($array_mo) {
 				$this->pdf($array_mo, $nama_satu, $nama_dua);
