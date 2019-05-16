@@ -34,6 +34,7 @@
 												<td>Waktu Kirim</td>
 												<td>Pengirim</td>
 												<td>Seksi Asal Limbah</td>
+												<td>Lokasi Kerja</td>
 												<td>Bocor</td>
 												<td>Jumlah</td>
 												<td>Berat (Kg)</td>
@@ -62,6 +63,7 @@
 															<td><?php echo $key['waktu']; ?></td>
 															<td><?php echo $key['noind_pengirim']; ?></td>
 															<td><?php echo $key['section_name']; ?></td>
+															<td><?php echo $key['noind_location']; ?></td>
 															<td><?php echo $bocor; ?></td>
 															<td><?php echo $key['jumlah_kirim']." ".$key['satuan']; ?></td>
 															<td><?php echo $key['berat_kirim']; ?></td>
