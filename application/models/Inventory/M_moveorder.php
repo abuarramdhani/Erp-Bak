@@ -7,14 +7,14 @@ class M_moveorder extends CI_Model
 		parent::__construct();
 	}
 
-	function search($date,$dept,$shift)
+	function search($date,$dept,$shift,$atr)
 	{
 		$oracle = $this->load->database('oracle',TRUE);
 		$sql = "SELECT we.WIP_ENTITY_ID job_id ,we.WIP_ENTITY_NAME, msib.SEGMENT1 item_code, msib.DESCRIPTION item_desc, wdj.start_quantity,
 						msib2.INVENTORY_ITEM_ID, msib2.SEGMENT1 komponen, msib2.DESCRIPTION komp_desc
 						,wro.REQUIRED_QUANTITY,msib2.PRIMARY_UOM_CODE, bic.ATTRIBUTE1 gudang_asal, mil.SEGMENT1 locator_asal
 						,bic.SUPPLY_SUBINVENTORY gudang_tujuan,bic.SUPPLY_LOCATOR_ID locator_tujuan_id ,mil2.SEGMENT1 locator_tujuan
-						,khs_inv_qty_atr(wdj.ORGANIZATION_ID,wro.INVENTORY_ITEM_ID,bic.ATTRIBUTE1,bic.ATTRIBUTE2,'') atr
+						$atr
 						,bd.DEPARTMENT_CLASS_CODE dept_class, bcs.DESCRIPTION
 						 FROM wip_entities we
 						,wip_discrete_jobs wdj
@@ -60,17 +60,18 @@ class M_moveorder extends CI_Model
 		// exit();			
 		$query = $oracle->query($sql);
 		return $query->result_array();
+		// return $sql;
 	}
 
 
-	function getBody($job_no) //----------------->>
+	function getBody($job_no,$atr) //----------------->>
 	{
 		$oracle = $this->load->database('oracle',TRUE);
 		$sql = "
 				SELECT we.WIP_ENTITY_ID job_id,  we.WIP_ENTITY_NAME ,msib2.SEGMENT1 komponen, msib2.DESCRIPTION komp_desc, msib2.inventory_item_id
 					,wro.REQUIRED_QUANTITY,msib2.PRIMARY_UOM_CODE, bic.ATTRIBUTE1 gudang_asal, mil.SEGMENT1 locator_asal
 					,bic.SUPPLY_SUBINVENTORY gudang_tujuan,bic.SUPPLY_LOCATOR_ID locator_tujuan_id ,mil2.SEGMENT1 locator_tujuan
-					,khs_inv_qty_atr(wdj.ORGANIZATION_ID,wro.INVENTORY_ITEM_ID,bic.ATTRIBUTE1,bic.ATTRIBUTE2,'') atr
+					$atr
 					,bd.DEPARTMENT_CLASS_CODE dept_class, bcs.DESCRIPTION, wdj.SCHEDULED_START_DATE 
 					 FROM wip_entities we
 					,wip_discrete_jobs wdj
@@ -117,6 +118,7 @@ class M_moveorder extends CI_Model
                     ,bd.DEPARTMENT_CLASS_CODE, bcs.DESCRIPTION, wdj.SCHEDULED_START_DATE
                     order by bic.ATTRIBUTE1, bic.ATTRIBUTE2
 		 		";
+		// return $sql;
 		$query = $oracle->query($sql);
 		return $query->result_array();
 	}
