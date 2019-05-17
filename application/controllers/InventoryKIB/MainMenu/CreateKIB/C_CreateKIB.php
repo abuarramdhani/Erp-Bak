@@ -242,7 +242,6 @@ class C_CreateKIB extends CI_Controller
 			}
 		endif;
 		
-		exit();
 
 		$filename			= 'KIB_'.time().'.pdf';
 		$html = $this->load->view('InventoryKIB/MainMenu/CreateKIB/V_Pdf',$data,true);
