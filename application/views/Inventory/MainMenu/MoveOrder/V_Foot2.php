@@ -30,8 +30,8 @@ $newDate = date("d-m-Y", strtotime($date));
 	<tr>
 		<td style="text-align: left;padding-bottom: 5px;"></td>
 		<td style="text-align: right;"></td>
-		<td width="12%" style="text-align: right;padding-right: 10px;font-size: 12px;"><?=$dataall['head'][0]['NAMA_SATU']?></td>
-		<td width="12%" style="text-align: right;padding-right: 15px;font-size: 12px;"><?=$dataall['head'][0]['NAMA_DUA']?></td>
+		<td width="12%" style="text-align: left;font-size: 12px;"><?=$dataall['head'][0]['NAMA_SATU']?></td>
+		<td width="12%" style="text-align: center;font-size: 12px;"><?=$dataall['head'][0]['NAMA_DUA']?></td>
 	</tr>
 
 </table>
