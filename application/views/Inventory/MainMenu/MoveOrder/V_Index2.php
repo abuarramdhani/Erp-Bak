@@ -52,9 +52,9 @@
                             <td style="" width="7%">....</td>
                             <td style="" width="5%"><?php echo $ln['UOM']; ?></td>
                             <td style="text-align: left;" width="15%"><?php echo $ln['KODE_KOMPONEN']; ?></td>
-                            <td style="text-align: left;" width="30%"><?php echo $ln['KODE_DESC']; ?></td>
-                            <td style="text-align: left;" width="5%">K</td>
-                            <td style=""></td>
+                            <td style="text-align: left;" width="40%"><?php echo $ln['KODE_DESC']; ?></td>
+                            <td colspan="2" style="text-align: left;" width="5%">K</td>
+                        
                         </tr> 
 
     <?php } ?>

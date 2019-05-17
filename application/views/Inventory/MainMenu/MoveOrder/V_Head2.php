@@ -15,7 +15,7 @@
 		</td>
 		<td width="15%" rowspan="3" style="text-align: right;">PROSES <br><?=$value['LOKASI']?></td>
 		<td width="15%" rowspan="3" style="text-align: right;padding-right: 5px;vertical-align: top;">
-			<img style="width: 60px; height: auto" src="<?php echo base_url('assets/img/'.$value['MOVE_ORDER_NO'].'.png') ?>">
+			<img style="width: 55px; height: auto" src="<?php echo base_url('assets/img/'.$value['MOVE_ORDER_NO'].'.png') ?>">
 						<?php 
 							if (strlen($value['MOVE_ORDER_NO'])>11) {
 								$no_mo = substr_replace($value['MOVE_ORDER_NO'], '<br>', 12, 0);
@@ -24,16 +24,13 @@
 							}
 						?>
 		</td>
-		<td style="text-align: right;padding-right: 10px;padding-top: 10px ;font-weight: bold;font-size: 11PX;"><?=$value['MOVE_ORDER_NO']?></td>
+		<td style="text-align: right;padding-right: 30px;font-weight: bold;font-size: 11PX;padding-top: 0;height: 7px;padding-top: 8px;"><?=$value['MOVE_ORDER_NO']?></td>
 	</tr>
 	<?php 
 		$date = str_replace('/', '-', $value['DATE_REQUIRED']);
 	?>
 	<tr>
-		<td style="text-align: right;padding-right: 60px; vertical-align: bottom; "><?=$value['ALAMAT'][0]['SEGMENT1']?></td>
-	</tr>
-	<tr>
-		<td style="padding-right: 40px;text-align: right;vertical-align: middle;"><?=$date?></td>
+		<td rowspan = "2" style="text-align: center;padding-right: 0px; padding-top: 10px;vertical-align: top;font-size: 11px;"><?=$value['ALAMAT'][0]['SEGMENT1']?><br><?=$date;?></td>
 	</tr>
 	<?php } ?>
 
