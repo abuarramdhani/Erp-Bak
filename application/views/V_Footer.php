@@ -143,6 +143,10 @@
  	<script src="<?php echo base_url('assets/js/customPD.js');?>" type="text/javascript"></script>
  	<script src="<?php echo base_url('assets/js/customMPO.js');?>" type="text/javascript"></script>
  	<script src="<?php echo base_url('assets/js/customSMM.js');?>" type="text/javascript"></script>
+ 	<script src="<?php echo base_url('assets/js/customME.js');?>" type="text/javascript"></script>
+ 	<script src="<?php echo base_url('assets/js/customOR.js');?>" type="text/javascript"></script>
+
+ 	
 <!--  	<script src="<?php echo base_url('assets/js/customOSP.js');?>" type="text/javascript"></script>
  	<script src="<?php echo base_url('assets/js/customHWM.js');?>" type="text/javascript"></script> -->
 	<script type="text/javascript">
@@ -234,6 +238,7 @@
 	<script src="<?php echo base_url('assets/plugins/qtip/jquery.qtip.js');?>" type="text/javascript"></script>
 	<script src="<?php echo base_url('assets/plugins/jasny-bootstrap.min.js');?>" type="text/javascript"></script>
 	<script src="<?php echo base_url('assets/plugins/inputmask/inputmask.bundle.js');?>" type="text/javascript"></script>
+	<script src="<?php echo base_url('assets/plugins/sweetAlert/sweetalert.js');?>" type="text/javascript"></script>
     <script>
        $(function () { formInit(); });
 		
@@ -255,6 +260,11 @@
     		"format": 'dd M yyyy'
       	});			
 	</script>
+
+	<script type="text/javascript">
+		var id_gd;
+	</script>
+	<script src="<?php echo base_url('assets/js/customML.js');?>" type="text/javascript"></script>
 
 
 
