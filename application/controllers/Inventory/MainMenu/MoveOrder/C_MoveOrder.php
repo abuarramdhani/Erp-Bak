@@ -316,7 +316,8 @@ class C_MoveOrder extends CI_Controller
 			$this->load->library('Pdf');
 			$pdf 				= $this->pdf->load();
 			if (in_array('SUBKT', $kodeDepartement[0])) {
-				$pdf 				= new mPDF('utf-8',array(215,140), 0, '', 2, 2, 2,0);
+				// $pdf 				= new mPDF('utf-8',array(215,140), 0, '', 2, 2, 2,0);
+				$pdf 				= new mPDF('utf-8',array(215, 140), 0, '', 2, 2, 55.5, 35, 2, 4);
 			} else {
 				$pdf 				= new mPDF('utf-8',array(215, 140), 0, '', 2, 2, 49.5, 25, 2, 4);	
 			}
@@ -359,8 +360,12 @@ class C_MoveOrder extends CI_Controller
 					// echo "<pre>";
 		
 					// $head = $this->load->view('Inventory/MainMenu/MoveOrder/V_Head2', $data, TRUE);
-					$line = $this->load->view('Inventory/MainMenu/MoveOrder/V_Content', $data, TRUE);
-					$pdf->WriteHTML($line);
+					$head = $this->load->view('Inventory/MainMenu/MoveOrder/V_Head2', $data, TRUE);
+					$line = $this->load->view('Inventory/MainMenu/MoveOrder/V_Index2', $data, TRUE);
+					$foot = $this->load->view('Inventory/MainMenu/MoveOrder/V_Foot2', $data, TRUE);
+					$pdf->SetHTMLHeader($head);
+					$pdf->SetHTMLFooter($foot);
+					$pdf->WriteHTML($line,0);
 					// break;
 				} else {
 					

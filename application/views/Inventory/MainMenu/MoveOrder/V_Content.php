@@ -118,26 +118,33 @@
         	</tr>
         	<?php $p=1;
              $no=1;
+             $x = sizeof($dataall['line']);
             foreach ($dataall['line'] as $k => $ln) { 
               $height = 7.5;
+              if ($p < 12) {
         	?>
         	<tr>
         		<td style="border-bottom: 0px solid black;border-right: 0px solid black;font-size: 12px; text-align: center;"><?php echo $no++; ?></td>
         		<td style="border-bottom: 0px solid black;border-right: 0px solid black;font-size: 12px; text-align: center;"><?php echo $ln['QTY_MINTA']; ?></td>
-        		<td style="border-bottom: 0px solid black;border-right: 0px solid black;font-size: 12px;text-align: center;">......</td>
+        		<td style="border-bottom: 0px solid black;border-right: 0px solid black;font-size: 12px;text-align: center;"><?php echo $p;?></td>
         		<td style="border-bottom: 0px solid black;border-right: 0px solid black;font-size: 12px;text-align: center;"><?php echo $ln['UOM']; ?></td>
         		<td style="border-bottom: 0px solid black;border-right: 0px solid black;font-size: 12px;text-align: center;"><?php echo $ln['KODE_KOMPONEN']; ?></td>
         		<td style="border-bottom: 0px solid black;border-right: 0px solid black;font-size: 12px"><?php echo $ln['KODE_DESC']; ?></td>
         		<td style="border-bottom: 0px solid black;font-size: 12px">K</td>
         	</tr>
         	<?php
-
+                } else {
+                $p=1;
+            ?>
+                  <tr><td style="border:0px solid black;padding-top:190px;"></td></tr>  
+            <?php    }
+                        $p++;
                         $height += 0.8;
              }
-                    $loop = 12 - $p;
-                    for($l = 0; $l < 0;$l++){
+                $loop = 14 - $p;
+                for($l = 0; $l < $loop;$l++){
                 ?>
-                    <tr><td style="border:0px solid black;padding:<?php echo $height; ?>px;"></td></tr>
+                    <tr><td style="border-bottom: 0px solid black;border-right: 0px solid black;font-size: 12px;text-align: center;"></td></tr>
 
                 <?php
                     }
