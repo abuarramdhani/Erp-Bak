@@ -440,7 +440,7 @@ class C_ApprovalKaizen extends CI_Controller
 				
 				//set email content
 				$mail->setFrom('no-reply@quick.com', 'Email Sistem');
-				$mail->addAddress('kasie_ict@quick.com');
+				$mail->addAddress('semua_ict@quick.com');
 				$mail->Subject = $subject;
 				$mail->msgHTML($body);
 				
