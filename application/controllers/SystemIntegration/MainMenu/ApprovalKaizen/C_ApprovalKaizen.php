@@ -241,7 +241,8 @@ class C_ApprovalKaizen extends CI_Controller
 				}
 				$getname = $this->M_approvalkaizen->getName($approver);
 				$name= $getname[0]['employee_name'];
-				$this->EmailAlert($approver,$kaizen_id);
+				// $status = trim($status);
+				// $this->EmailAlert($kaizen_id, $status);
 				$this->section_user($approver,$kaizen_id);
 
 				//log thread
@@ -263,18 +264,14 @@ class C_ApprovalKaizen extends CI_Controller
 			$status = trim($status);
 			if ($status) {
 				if ($level == 1 && (array_key_exists(2, $NoindApprover) === true)) {
-					$this->EmailAlert($NoindApprover[2], $kaizen_id, $status);
-					$this->sendPidgin($NoindApprover[2], $kaizen_id, $status);
 					$updateReady = $this->M_approvalkaizen->updateReady(2, $kaizen_id, 1);
 				} else if ($level == 2 && (array_key_exists(3, $NoindApprover) === true)) {
-					$this->EmailAlert($NoindApprover[3], $kaizen_id, $status);
-					$this->sendPidgin($NoindApprover[3], $kaizen_id, $status);
 					$updateReady = $this->M_approvalkaizen->updateReady(3, $kaizen_id, 1);
 				} else if ($level == 3 && (array_key_exists(4, $NoindApprover) === true)) {
-					$this->EmailAlert($NoindApprover[4], $kaizen_id, $status);
-					$this->sendPidgin($NoindApprover[4], $kaizen_id, $status);
 					$updateReady = $this->M_approvalkaizen->updateReady(4, $kaizen_id, 1);
 				}
+				$this->EmailAlert($kaizen_id, $status);
+				$this->sendPidgin($kaizen_id, $status);
 			}
 			redirect(base_url('SystemIntegration/KaizenGenerator/ApprovalKaizen/index'));
 		}
@@ -313,10 +310,11 @@ class C_ApprovalKaizen extends CI_Controller
 					'waktu' => date('Y-m-d h:i:s'),
 				 );
 			$this->M_log->save_log($datalog);
+			$this->EmailBroadcastKaizen($kaizen_id);
 			redirect(base_url('SystemIntegration/KaizenGenerator/ApprovalKaizen/index'));
 		}
 
-		private function EmailAlert($approverId, $kaizen_id, $mailStatus) {
+		private function EmailAlert($kaizen_id, $mailStatus) {
 			//get Rincian Kaizen
 			$getKaizen = $this->M_submit->getKaizen($kaizen_id, FALSE);
 			if($getKaizen) {
@@ -326,7 +324,7 @@ class C_ApprovalKaizen extends CI_Controller
 			}
 			if ($emailUser) {
 				//get approver name
-				$approverName = $this->M_submit->getEmployeeName($approverId);
+				$approverName = $this->M_submit->getEmployeeName($this->session->user);
 
 				//get template
 				$link = base_url("SystemIntegration/KaizenGenerator/View/$kaizen_id");
@@ -386,7 +384,76 @@ class C_ApprovalKaizen extends CI_Controller
 			}
 		}
 
-		private function sendPidgin($approverId, $kaizen_id, $mailStatus) {
+		private function EmailBroadcastKaizen($kaizen_id) {
+			//get Rincian Kaizen
+			$getKaizen = $this->M_submit->getKaizen($kaizen_id, FALSE);
+			if ($getKaizen) {
+				//get kaizen approver
+				$getApprover = $this->M_submit->getKaizenAprrover($kaizen_id, 3);
+				$approver = '';
+				for($i = 0; $i < sizeof($getApprover); $i++) {
+					if($i < (sizeof($getApprover) - 1)) {
+						$approver .= trim($this->M_submit->getEmployeeName($getApprover[$i]['approver'])) . ', ';
+					} else {
+						$approver .= trim($this->M_submit->getEmployeeName($getApprover[$i]['approver'])) . '.';
+					}
+				}
+
+				//get template
+				$getEmailTemplate = $this->M_submit->getEmailTemplate(11);
+				$subject = $getEmailTemplate[0]['subject'];
+				$body = sprintf(
+					$getEmailTemplate[0]['body'],
+					$getKaizen[0]['pencetus'],
+					$getKaizen[0]['judul'],
+					$getKaizen[0]['kondisi_awal'],
+					$getKaizen[0]['usulan_kaizen'],
+					$getKaizen[0]['pertimbangan'],
+					$getKaizen[0]['kondisi_akhir'],
+					$getKaizen[0]['standarisasi_kaizen'],
+					$approver,
+					$getKaizen[0]['pencetus']
+				);
+
+				//send Email
+				$this->load->library('PHPMailerAutoload');
+				$mail = new PHPMailer();
+				$mail->SMTPDebug = 0;
+				$mail->Debugoutput = 'html';
+				
+				// set smtp
+				$mail->isSMTP();
+				$mail->Host = 'm.quick.com';
+				$mail->Port = 465;
+				$mail->SMTPAuth = true;
+				$mail->SMTPSecure = 'ssl';
+				$mail->SMTPOptions = array(
+					'ssl' => array(
+					'verify_peer' => false,
+					'verify_peer_name' => false,
+					'allow_self_signed' => true
+					)
+				);
+				$mail->Username = 'no-reply';
+				$mail->Password = '123456';
+				$mail->WordWrap = 50;
+				
+				//set email content
+				$mail->setFrom('no-reply@quick.com', 'Email Sistem');
+				$mail->addAddress('kasie_ict@quick.com');
+				$mail->Subject = $subject;
+				$mail->msgHTML($body);
+				
+				if ($mail->send()) {
+					echo "Message sent!";
+				} else {
+					echo "Mailer Error: ".$mail->ErrorInfo;
+					exit();
+				}
+			}
+		}
+
+		private function sendPidgin($kaizen_id, $mailStatus) {
 			//get Rincian Kaizen
 			$getKaizen = $this->M_submit->getKaizen($kaizen_id, FALSE);
 			if($getKaizen) {
@@ -398,25 +465,25 @@ class C_ApprovalKaizen extends CI_Controller
 				$userAccount = $getEmail[0]['pidgin_account'];
 				
 				//get approver name
-				$approverName = $this->M_submit->getEmployeeName($approverId);
+				$approverName = $this->M_submit->getEmployeeName($this->session->userid);
 
 				//get template
 				$link = base_url("SystemIntegration/KaizenGenerator/ApprovalKaizen/View/$kaizen_id");
 				switch($mailStatus) {
 					case 3:
-						$mailStatus = 5;
+						$mailStatus = 6;
 						break;
 					case 4:
-						$mailStatus = 9;
+						$mailStatus = 10;
 						break;
 					case 5:
-						$mailStatus = 7;
+						$mailStatus = 8;
 						break;
 					default:
-						$mailStatus = 7;
+						$mailStatus = 8;
 						break;
 				}
-				$getEmailTemplate = $this->M_submit->getEmailTemplate($mailStatus);
+				$getEmailTemplate = $this->M_submit->getPidginTemplate($mailStatus);
 				$subject = $getEmailTemplate[0]['subject'];
 				$body = sprintf($getEmailTemplate[0]['body'], $getKaizen[0]['pencetus'],  $approverName, $getKaizen[0]['judul'], $link);
 				$body = str_replace('<br/>', "\n", $body);
