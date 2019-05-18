@@ -273,7 +273,84 @@
 		$alert = '';
 	};
 	echo $alert; ?>
-     <!--END MAIN WRAPPER -->
-</body>
-     <!-- END BODY -->
+
+	<?php
+		echo '<script type="text/javascript">';
+		if($this->session->flashdata('delete-menu-respond')) {
+			switch($this->session->flashdata('delete-menu-respond')) {
+				case 1:
+					if($this->session->flashdata('delete-menu-name')) {
+						echo "
+							Swal.fire({
+								text: 'Terjadi kesalahan saat menghapus menu ' + '".$this->session->flashdata('delete-menu-name')."',
+								confirmButtonText: 'Tutup',
+								type: 'error'
+							});
+						";
+					}
+					break;
+				case 2:
+					if($this->session->flashdata('delete-menu-name')) {
+						echo "
+							Swal.fire({
+								text: 'Menu ' + '".$this->session->flashdata('delete-menu-name')."' + ' berhasil dihapus',
+								confirmButtonText: 'Tutup',
+								type: 'success'
+							});
+						";
+					}
+					break;
+			}
+		}
+		if($this->session->flashdata('delete-menu-list-respond')) {
+			switch($this->session->flashdata('delete-menu-list-respond')) {
+				case 1:
+					if($this->session->flashdata('delete-menu-list-name')) {
+						echo "
+							Swal.fire({
+								text: 'Terjadi kesalahan saat menghapus menu list ' + '".$this->session->flashdata('delete-menu-list-name')."',
+								confirmButtonText: 'Tutup',
+								type: 'error'
+							});
+						";
+					}
+					break;
+				case 2:
+					if($this->session->flashdata('delete-menu-list-name')) {
+						echo "
+							Swal.fire({
+								text: 'Menu list ' + '".$this->session->flashdata('delete-menu-list-name')."' + ' berhasil dihapus',
+								confirmButtonText: 'Tutup',
+								type: 'success'
+							});
+						";
+					}
+					break;
+			}
+		}
+		if($this->session->flashdata('delete-sub-menu-respond')) {
+			switch($this->session->flashdata('delete-sub-menu-respond')) {
+				case 1:
+					echo "
+						Swal.fire({
+							text: 'Terjadi kesalahan saat menghapus sub menu',
+							confirmButtonText: 'Tutup',
+							type: 'error'
+						});
+					";
+					break;
+				case 2:
+					echo "
+						Swal.fire({
+							text: 'Sub menu berhasil dihapus',
+							confirmButtonText: 'Tutup',
+							type: 'success'
+						});
+					";
+					break;
+			}
+		}
+		echo '</script>';
+		?>
+	</body>
 </html>

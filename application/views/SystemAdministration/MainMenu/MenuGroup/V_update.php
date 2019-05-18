@@ -20,9 +20,6 @@
 										<i class="icon-wrench icon-2x"></i>
 										<span ><br /></span>
 									</a>
-									
-
-									
 								</div>
 							</div>
 						</div>
@@ -54,9 +51,9 @@
 
 													<div class="panel panel-default">
 														<div class="panel-heading text-right">
-															<a href="javascript:void(0);" id="addMenu" title="Tambah Baris" onclick="addRowMenu('<?php echo base_url(); ?>')"><img src="<?php echo base_url('assets/img/row_add2.png');?>" title="Add Row" alt="Add Row" ></a>
+															<a href="javascript:void(0);" id="addMenu" title="Tambah Baris" onclick="addRowMenu('<?php echo base_url(); ?>')" class="btn btn-primary"><i class="fa fa-plus"></i></a>
 															&nbsp;&nbsp;&nbsp;
-															<a href="javascript:void(0);" id="delMenu" title="Hapus Baris" onclick="deleteRow('tblMenuGroup')"><img src="<?php echo base_url('assets/img/row_delete.png');?>" style="pointer-events:none;cursor: default" title="Delete Row" alt="Delete Row" ></a>
+															<!-- <a href="javascript:void(0);" id="delMenu" title="Hapus Baris" onclick="deleteRow('tblMenuGroup')"><img src="<?php echo base_url('assets/img/row_delete.png');?>" style="pointer-events:none;cursor: default" title="Delete Row" alt="Delete Row" ></a> -->
 														</div>
 														<div class="panel-body">
 															<div class="table-responsive" >
@@ -95,12 +92,13 @@
 																				<input type="text" placeholder="Menu Prompt" name="txtMenuPrompt[]" id="txtMenuPrompt" value="<?=$MenuGroupList_item['prompt']?>" class="form-control" />
 																			</td>
 																			<td>
-																				<a href="<?php echo base_url('SystemAdministration/MenuGroup/UpdateMenuGroup/')."/".$id."/".$encrypted_string ?>"><img src="<?php echo base_url('assets/img/edit.png');?>" title="Add SubMenu <?php echo strtoupper($MenuGroupList_item['prompt']) ?>"></a>
+																				<a id="btn-edit-row" class="btn btn-success" href="<?= base_url('SystemAdministration/MenuGroup/UpdateMenuGroup/').'/'.$id.'/'.$encrypted_string ?>" title="Update SubMenu <?= strtoupper($MenuGroupList_item['prompt']) ?>" style="margin-right: 6px;"><i class="fa fa-edit"></i></a>
+																				<a id="btn-delete-row" class="btn btn-danger" href="#!" onclick="javascript:deleteSubMenuGroup('<?= $id ?>', '<?= $encrypted_string ?>');" title="Delete SubMenu <?= strtoupper($MenuGroupList_item['prompt']) ?>"><i class="fa fa-trash"></i></a>
 																			</td>
 																		</tr>
-																		<?php	} 
-																			}else{
-																				
+																		<?php
+																		} 
+																	} else {
 																		?>
 																		<tr  class="clone">
 																			<td>
@@ -120,7 +118,7 @@
 																				<input type="text" placeholder="Menu Prompt" name="txtMenuPrompt[]" id="txtMenuPrompt" class="form-control" />
 																			</td>
 																		</tr>
-																			<?php } ?>
+																		<?php } ?>
 																	</tbody>
 																</table>
 															</div>
@@ -130,7 +128,6 @@
 												</div>
 											</div>
 										</div>
-												
 									</div>
 								</div>
 								<div class="panel-footer">
@@ -150,3 +147,21 @@
 		</div>
 	</div>
 </section>
+<script type="text/javascript">
+		function deleteSubMenuGroup(id, group_id) {
+			if(id) {
+				Swal.fire({
+					text: "Anda yakin ingin menghapus sub menu?",
+					showCancelButton: true,
+					confirmButtonText: 'Ya',
+					cancelButtonText: 'Batal'
+				}).then((result) => {
+					if (result.value) {
+						window.location.href = '<?php echo base_url('SystemAdministration/MenuGroup/DeleteSubMenu/').'/' ?>' + id + '/' + group_id;
+					}
+				});
+			} else {
+				deleteRow('tblMenuGroup');
+			}
+		}
+</script>
