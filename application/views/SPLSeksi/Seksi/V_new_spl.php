@@ -28,7 +28,7 @@
 					</div>
 				<?php } ?>
 
-				<form class="form-horizontal" action="<?php echo site_URL('SPLSeksi/C_SPLSeksi/new_spl_submit'); ?>" method="post" enctype="multipart/form-data">
+				<form class="form-horizontal" action="<?php echo site_URL('SPLSeksi/C_splseksi/new_spl_submit'); ?>" method="post" enctype="multipart/form-data">
 					<div class="box box-primary">
 						<div class="box-header">
 							<div class="row">
