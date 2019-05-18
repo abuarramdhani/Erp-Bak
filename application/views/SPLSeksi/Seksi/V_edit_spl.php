@@ -30,7 +30,7 @@
 
 				<?php if(!empty($lembur)){ foreach($lembur as $l){ ?>
 
-				<form class="form-horizontal" action="<?php echo site_URL('SPLSeksi/C_SPLSeksi/edit_spl_submit'); ?>" method="post" enctype="multipart/form-data">
+				<form class="form-horizontal" action="<?php echo site_URL('SPLSeksi/C_splseksi/edit_spl_submit'); ?>" method="post" enctype="multipart/form-data">
 
 					<!-- ID DPL DI EDIT -->
 					<input type="text" class="hidden" name="id_spl" value="<?php echo $l['ID_SPL']; ?>">
