@@ -28,6 +28,13 @@ $(function () {
     }
   });
 
+  $(".spl-time").timepicker({
+      defaultTime: 'value',
+      minuteStep: 1,
+      showMeridian:false,
+      format: 'HH:mm:ss'
+  });
+
   // Some Function
   /////////////////////////////////////////////////////////////////////////////////
   $('.spl-pkj-select2').select2({
