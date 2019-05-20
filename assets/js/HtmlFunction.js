@@ -361,16 +361,21 @@ function addRowMenu(base){
 		placeholder: "",
 			allowClear : true,
 	});
-	
 	$("select#slcMenu:last").select2({
 		placeholder: "",
 			allowClear : true,
 	});
-	
 	$("select#slcMenu:last").val("").change();
 	$("input#txtMenuSequence:last").val("");
 	$("input#txtMenuPrompt:last").val("");
 	$("input#hdnMenuGroupListId:last").val("");
+	$("input#hdnMenuGroupListId:last").val("");
+	$("a#btn-edit-row:last").css("display", "none");
+	$("a#btn-delete-row:last").attr("onclick", "");
+	$("a#btn-delete-row:last").off('click').click(function() {
+		deleteSubMenuGroup('', '');
+	});
+	console.log('test');
 }
 
 function addRowReport(base){
