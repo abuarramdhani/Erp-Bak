@@ -119,7 +119,7 @@
                       <td class="text-center">
                          <?php if ($kaizen_item['status'] == 7) { ?>
                           <!-- <a href="" > -->
-                          <span data-id="<?= $kaizen_item['kaizen_id'] ?>" id="SIlaporkanKai" class="label label-primary btn-real-ena faa-flash faa-slow animated">Laporkan <b class="fa fa-arrow-right"></b></span>
+                          <span data-id="<?= $kaizen_item['kaizen_id'] ?>" class="SIlaporkanKai label label-primary btn-real-ena faa-flash faa-slow animated">Laporkan <b class="fa fa-arrow-right"></b></span>
                           <!-- </a> -->
                         <?php }elseif ($kaizen_item['status'] == 9) { ?>
                           <span style="background-color: #f8f9fa" class="label btn-light btn-real-dis" >Laporkan <i class="fa fa-check-circle text-info"></i>
