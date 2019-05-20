@@ -111,34 +111,34 @@ class M_monitoringakuntansi extends CI_Model {
         return $runQuery->result_array();
 	}
 
-	public function saveProses($proses,$finance_date,$reason,$id)
+	public function saveProsesTerimaAkuntansi($finance_date,$id)
 	{
 		$erp_db = $this->load->database('oracle',true);
 		$sql = "UPDATE khs_ap_monitoring_invoice
-				SET last_finance_invoice_status = $proses,
-				last_status_finance_date = to_date('$finance_date', 'DD/MM/YYYY HH24:MI:SS'),
-        reason = '$reason'
+				SET last_finance_invoice_status = 2,
+				last_status_finance_date = to_date('$finance_date', 'DD/MM/YYYY HH24:MI:SS')
 				WHERE invoice_id = $id";
 		$erp_db->query($sql);
 		// oci_commit($erp_db);
 	}
 
-	public function saveProses2($id,$finance_status,$action_date)
-	{
-		$erp_db = $this->load->database('oracle',true);
-        $sql = "UPDATE khs_ap_invoice_action_detail
-				SET finance_status = $finance_status,
-				action_date = to_date('$action_date', 'DD/MM/YYYY HH24:MI:SS')
-				WHERE action_id = $id";
+	public function saveProsesTolakAkuntansi($finance_date,$id,$reason)
+    {
+        $erp_db = $this->load->database('oracle',true);
+        $sql = "UPDATE khs_ap_monitoring_invoice
+                SET last_finance_invoice_status = 3,
+                last_status_finance_date = to_date('$finance_date', 'DD/MM/YYYY HH24:MI:SS'),
+                reason = '$reason'
+                WHERE invoice_id = $id";
         $erp_db->query($sql);
         // oci_commit($erp_db);
-	}
+    }
 
-    public function insertproses($invoice_id,$action_date,$finance_status)
+    public function insertprosesAkuntansi($invoice_id,$action_date)
     {
         $oracle = $this->load->database('oracle',true);
         $sql = "INSERT INTO khs_ap_invoice_action_detail (invoice_id,action_date,purchasing_status,finance_status)
-                VALUES($invoice_id, to_date('$action_date', 'DD/MM/YYYY HH24:MI:SS'),'2','$finance_status')";
+                VALUES($invoice_id, to_date('$action_date', 'DD/MM/YYYY HH24:MI:SS'),'2','2')";
         $run = $oracle->query($sql);
     }
 
