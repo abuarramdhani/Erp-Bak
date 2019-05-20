@@ -23,6 +23,15 @@ class M_limbahrekap extends CI_Model
 		$result = $this->db->query($sql);
 		return $result->result_array();
 	}
+	public function getLokasi(){
+		$query2 = "select location_code,location_name
+                    from er.er_location 
+                    where location_code = '01' or location_code = '02' 
+                    order by location_code";
+
+		$result = $this->db->query($query2);
+		return $result->result_array();
+	}
 
 	public function getLimbah(){
 		$sql = "select id_jenis_limbah,jenis_limbah,kode_limbah 
@@ -33,7 +42,7 @@ class M_limbahrekap extends CI_Model
 		return $result->result_array();
 	}
 
-	public function getDataExport($aw,$ak,$li,$se){
+	public function getDataExport($aw,$ak,$li,$se,$loc){
 		$sql = "select limjen.jenis_limbah jenis,
 				limkir.tanggal_kirim::date tanggal, 
 				tanggal_kirim::time waktu, 
@@ -59,14 +68,15 @@ class M_limbahrekap extends CI_Model
 				where tanggal_kirim between '$aw' and '$ak' 
 				and status_kirim = '1'
 				$li
-				$se 
+				$se
+				$loc 
 				order by tanggal_kirim desc";
 
 		$result = $this->db->query($sql);
 		return $result->result_array();
 	}
 
-	public function getExportAll($tgl_awal,$tgl_akhir,$id_limbah,$kd_sie){
+	public function getExportAll($tgl_awal,$tgl_akhir,$id_limbah,$kd_sie,$loc){
 		$query = "	select 	limjen.kode_limbah,
 							cast(limkir.tanggal_kirim as date) tanggal_dihasilkan, 
 							'90' masa_simpan,
@@ -75,7 +85,8 @@ class M_limbahrekap extends CI_Model
 							'' kode_manifest,
 							'CV. KARYA HIDUP SENTOSA' pengirim_nama,
 							cast(limkir.berat_kirim as float)/1000 jumlah,
-							'' catatan
+							'' catatan,
+							(select concat(location_code,' - ',location_name) from er.er_location where location_code = limkir.lokasi_kerja) noind_location
 					from ga.ga_limbah_kirim limkir
 					inner join ga.ga_limbah_jenis limjen
 						on limjen.id_jenis_limbah = limkir.id_jenis_limbah
@@ -83,6 +94,7 @@ class M_limbahrekap extends CI_Model
 					and limkir.status_kirim = '1'
 					$id_limbah
 					$kd_sie
+					$loc
 					order by tanggal_kirim desc";
 		$result = $this->db->query($query);
 		return $result->result_array();

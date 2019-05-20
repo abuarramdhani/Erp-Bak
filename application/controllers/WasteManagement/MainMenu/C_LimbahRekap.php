@@ -47,6 +47,8 @@ class C_LimbahRekap extends CI_Controller
 
 		$data['seksi'] = $this->M_limbahrekap->getSeksi();
 		$data['limbah'] = $this->M_limbahrekap->getLimbah();
+		$data['loc'] = $this->M_limbahrekap->getLokasi();
+		
 		
 		$this->load->view('V_Header',$data);
 		$this->load->view('V_Sidemenu',$data);
@@ -59,6 +61,7 @@ class C_LimbahRekap extends CI_Controller
 		$periode = $this->input->post('txtPeriodeRekap');
 		$jenisLimbah = $this->input->post('slcJenisLimbahRekap');
 		$kodeSeksi = $this->input->post('slcSeksiAsalLimbahRekap');
+		$lokasi = $this->input->post('slclokasiLimbahRekap');
 
 		$prd = explode(" - ", $periode);
 		$tglAwal = $prd[0];
@@ -74,6 +77,17 @@ class C_LimbahRekap extends CI_Controller
 			}
 			$limbah = "and limkir.id_jenis_limbah in($limbah)";
 		}
+		$loc = "";
+		if (isset($lokasi) and !empty($lokasi)) {
+			foreach ($lokasi as $key) {
+				if ($loc == "") {
+					$loc = "'".$key."'";
+				}else{
+					$loc .= ",'".$key."'";
+				}
+			}
+			$loc = "and limkir.lokasi_kerja in($loc)";
+		}
 		$seksi = "";
 		if (isset($kodeSeksi) and !empty($kodeSeksi)) {
 			foreach ($kodeSeksi as $key) {
@@ -86,7 +100,7 @@ class C_LimbahRekap extends CI_Controller
 			$seksi = "and limkir.kodesie_kirim in($seksi)";
 		}
 
-		$data = $this->M_limbahrekap->getExportAll($tglAwal,$tglAkhir,$limbah,$seksi);
+		$data = $this->M_limbahrekap->getExportAll($tglAwal,$tglAkhir,$limbah,$seksi,$loc);
 
 		$this->load->library('excel');
 		
@@ -102,6 +116,7 @@ class C_LimbahRekap extends CI_Controller
 		$this->excel->getActiveSheet()->setCellValue('G1', 'NAMA PENGHASIL/PENGIRIM');
 		$this->excel->getActiveSheet()->setCellValue('H1', 'JUMLAH (TON)');
 		$this->excel->getActiveSheet()->setCellValue('I1', 'CATATAN');
+		$this->excel->getActiveSheet()->setCellValue('J1', 'LOKASI KERJA');
 
 		$this->excel->getActiveSheet()->getColumnDimension('A')->setWidth(20);
 		$this->excel->getActiveSheet()->getColumnDimension('B')->setWidth(30);
@@ -112,6 +127,8 @@ class C_LimbahRekap extends CI_Controller
 		$this->excel->getActiveSheet()->getColumnDimension('G')->setWidth(30);
 		$this->excel->getActiveSheet()->getColumnDimension('H')->setWidth(20);
 		$this->excel->getActiveSheet()->getColumnDimension('I')->setWidth(20);
+		$this->excel->getActiveSheet()->getColumnDimension('J')->setWidth(25);
+
 
 		$this->excel->getActiveSheet()->getDefaultRowDimension()->setRowHeight(-1);
 		$style = array(
@@ -126,8 +143,8 @@ class C_LimbahRekap extends CI_Controller
 				)
 			)
 		);
-		$this->excel->getActiveSheet()->getStyle('A1:I1')->getFont()->setBold(true);
-		$this->excel->getActiveSheet()->getStyle('A1:I1')->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
+		$this->excel->getActiveSheet()->getStyle('A1:J1')->getFont()->setBold(true);
+		$this->excel->getActiveSheet()->getStyle('A1:J1')->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
 		$this->excel->getDefaultStyle()->applyFromArray($style);
 		$a = 2;
 		foreach ($data as $row) {
@@ -140,10 +157,11 @@ class C_LimbahRekap extends CI_Controller
 			$this->excel->getActiveSheet()->setCellValue('G'.$a, $row['pengirim_nama']);
 			$this->excel->getActiveSheet()->setCellValue('H'.$a, $row['jumlah']);
 			$this->excel->getActiveSheet()->setCellValue('I'.$a, $row['catatan']);
+			$this->excel->getActiveSheet()->setCellValue('J'.$a, $row['noind_location']);
 			$a++;
 		}
 		$a -= 1;
-		$this->excel->getActiveSheet()->getStyle('A1:I'.$a)->applyFromArray($border);
+		$this->excel->getActiveSheet()->getStyle('A1:J'.$a)->applyFromArray($border);
 		$filename ='SIMPLE.xls';
 		header('Content-Type: aplication/vnd.ms-excel');
 		header('Content-Disposition:attachment;filename="'.$filename.'"');

@@ -75,8 +75,8 @@
 												<label for="txtLokasi" class="control-label col-lg-4">Lokasi Kerja</label>
 												<div class="col-lg-4">
 													<div class="col-lg-12">
-														<select class="select select2" id="txtLokasi" name="txtLokasi" style="width: 100%">
-															<option><?php echo $KirimLimbah['0']['noind_location'] ?></option>
+														<select class="select select2" id="txtLokasi" name="txtLokasi" style="width: 100%" required>
+															<option value="<?php echo $KirimLimbah['0']['lokasi_kerja'] ?>"><?php echo $KirimLimbah['0']['noind_location'] ?></option>
 															<option></option>
 															<?php foreach ($Lokasi as $key) { ?>
 																<option value="<?php echo $key['location_code'] ?>"><?php echo $key['location_code']." - ".$key['location_name']  ?></option>
