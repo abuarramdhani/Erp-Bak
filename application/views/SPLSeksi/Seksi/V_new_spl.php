@@ -49,19 +49,23 @@
 									<div class="form-group">
 										<label class="col-sm-2 control-label">Waktu</label>
 										<div class="col-sm-5">
-											<div class="input-group">
-												<div class="input-group-addon">
-													<i class="fa fa-clock-o"></i>
+											<div class="bootstrap-timepicker">
+												<div class="input-group">
+													<div class="input-group-addon">
+														<i class="fa fa-clock-o"></i>
+													</div>
+													<input type="text" class="form-control spl-time" name="waktu_0" required>
 												</div>
-												<input type="time" class="form-control timepicker" name="waktu_0" required>
 											</div>
 										</div>
 										<div class="col-sm-5">
-											<div class="input-group">
-												<div class="input-group-addon">
-													<i class="fa fa-clock-o"></i>
+											<div class="bootstrap-timepicker">
+												<div class="input-group">
+													<div class="input-group-addon">
+														<i class="fa fa-clock-o"></i>
+													</div>
+													<input type="text" class="form-control spl-time" name="waktu_1" required>
 												</div>
-												<input type="time" class="form-control timepicker" name="waktu_1" required>
 											</div>
 										</div>
 									</div>
