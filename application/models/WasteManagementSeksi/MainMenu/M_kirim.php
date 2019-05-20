@@ -47,9 +47,9 @@ class M_kirim extends Ci_Model
     }
 
     public function getLokasi(){
-        $query3 = "select location_code, 
-                    location_name 
-                    from er.er_location
+        $query3 = "select location_code,location_name
+                    from er.er_location 
+                    where location_code = '01' or location_code = '02' 
                     order by location_code ";       
         $result = $this->db->query($query3);
         return $result->result_array();
