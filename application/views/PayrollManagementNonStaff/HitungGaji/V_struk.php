@@ -1,68 +1,56 @@
+<head>
+    <link rel="stylesheet" href="<?php echo base_url('assets/plugins/bootstrap/3.3.6/css/bootstrap.css');?>" />
+    <style>
+        table, tr, td{
+            font-size: 11px;
+        }
+    </style>
+</head>
+
 <?php
-    
     foreach ($strukData as $row) {
 ?>
+
+<body>
     <div style="margin-left:20px;margin-right:20px;padding-top:10px;">
+        <!--- etc -->
         <div class="row" style="margin-left:3px;margin-right:3px;padding-top:10px;">
-            <table style="margin: 0 auto;width: 100%">
-                <tr>
-                    <td style="width: 5%"><img src="<?php echo base_url('assets/img/logo.png')?>" style="width:60px;"></td>
-                    <td style="width: 1%">&nbsp;&nbsp;</td>
-                    <td style="width: 44%">
-                        <h3><b>CV. KARYA HIDUP SENTOSA</b><br>
-                        <small style="font-size:12px;">Jl. Magelang No. 144 Yogyakarta 55241</small><br>
-                        <small style="font-size:12px;">Telp: (0274)512095,563217 Fax: (0274) 563523</small>
-                        </h3>
-                    </td>
-                    <td align="right">
-                        <span style="color: #fff; background-color: #000; padding: 10px;">PRIBADI DAN RAHASIA</span>
-                        <br>
-                        <br>
-                        <small style="font-size:12px;">YANG BERHAK MEMBUKA HANYA YANG NAMANYA TERCANTUM PADA SLIP INI</small>
-                    </td>
-                </tr>
-            </table>
-        </div>
-        <br>
-        <div class="row" style="margin-left:3px;margin-right:3px;padding-top:10px;">
-            <table style="margin: 0 auto;width: 100%;">
+            <table style="margin: 0 auto;width: 100%;" border="0">
                 <tbody>
                     <tr>
-                        <td colspan="5" rowspan="3"></td>
-                        <td colspan="2">Tgl. Pembayaran</td>
-                        <td colspan="4">: <?php echo date('d-m-Y', strtotime($row['tgl_pembayaran']));?></td>
-                        <td>Via</td>
-                        <td style="width: 1%">:</td>
-                        <td>-</td>
-                        <td colspan="2">Dept</td>
-                        <td colspan="2">: <?php echo $row['department_name'];?></td>
+                        <td style="width: 50%" rowspan="3">&nbsp;</td>
+                        <td>Tgl. Pembayaran</td><td style="width: 1%">:</td>
+                        <td><?php echo date('d-m-Y', strtotime($row['tgl_pembayaran']));?></td>
+                        <td>Via</td><td style="width: 1%">:</td>
+                        <td> - </td>
+                        <td>Dept</td><td style="width: 1%">:</td>
+                        <td><?php echo $row['department_name'];?></td>
                     </tr>
                     <tr>
-                        <td colspan="2">Nama</td>
-                        <td colspan="7">: <?php echo $row['noind'].' - '.$row['employee_name'];?></td>
-                        <td colspan="2">Unit</td>
-                        <td colspan="2">: <?php echo $row['unit_name'];?></td>
+                        <td>Nama</td><td style="width: 1%">:</td>
+                        <td colspan="4"><?php echo $row['noind'].' - '.$row['employee_name'];?></td>
+                        <td>Unit</td><td style="width: 1%">:</td>
+                        <td><?php echo $row['unit_name'];?></td>
                     </tr>
                     <tr>
-                        <td colspan="2">Sub.Seksi</td>
-                        <td colspan="7">: -</td>
-                        <td colspan="2">Seksi</td>
-                        <td colspan="2">: <?php echo $row['section_name'];?></td>
+                        <td>Sub.Seksi</td><td style="width: 1%">:</td>
+                        <td colspan="4"> - </td>
+                        <td>Seksi</td><td style="width: 1%">:</td>
+                        <td><?php echo $row['section_name'];?></td>
                     </tr>
-                    <tr>
-                        <td colspan="4"></td>
-                        <td colspan="2">&nbsp;</td>
-                        <td colspan="10"></td>
-                        <td colspan="2"></td>
-                    </tr>
+                </tbody>
+            </table><br><br>
+            
+            <table style="margin: 0 auto;width: 100%;" border="0">
+                <tbody>
                     <tr>
                         <td style="vertical-align: top;width: 3%">1.</td>
-                        <td style="vertical-align: top;width: 15%">Gaji Pokok</td>
+                        <td style="vertical-align: top;width: 13%">Gaji Pokok</td>
                         <td style="vertical-align: top;width: 1%">:</td>
                         <td style="vertical-align: top;width: 15%"><?php echo number_format($row['gaji_pokok'], 0, '', '.');?></td>
                         <td style="vertical-align: top;width: 1%">:</td>
-                        <td style="vertical-align: top;width: 15%">
-                            <table width="100%">
+                        <td style="vertical-align: top;width: 17%">
+                            <table width="100%" border="0">
                                 <tr>
                                     <td align="left">Rp.</td>
                                     <td style="padding-right: 50px" align="right">
@@ -93,11 +81,11 @@
                             </table>
                         </td>
                         <td style="vertical-align: top;width: 3%">15.</td>
-                        <td style="vertical-align: top;width: 15%" colspan="3">Denda Ins. Kond.</td>
+                        <td style="vertical-align: top;width: 13%" colspan="3">Denda Ins. Kond.</td>
                         <td style="vertical-align: top;width: 1%">:</td>
                         <td style="vertical-align: top;width: 15%" colspan="5">-</td>
                         <td style="vertical-align: top;width: 1%">:</td>
-                        <td style="vertical-align: top;width: 15%">-</td>
+                        <td style="vertical-align: top;width: 17%">-</td>
                     </tr>
                     <tr>
                         <td style="vertical-align: top;">3.</td>
@@ -517,6 +505,7 @@
             </table>
         </div>
     </div>
+</body>
     <pagebreak>
 <?php
 

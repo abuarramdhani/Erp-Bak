@@ -79,6 +79,12 @@
 
 	<!-- html2canvas -->
 	<script src="<?php echo base_url('assets/plugins/html2canvas/html2canvas.min.js') ?>" type="text/javascript"></script>	
+
+	<!-- Highchart.js charts -->
+	<script src="<?php echo base_url('assets/plugins/highchart/highcharts.js');?>"></script>
+	<script src="<?php echo base_url('assets/plugins/highchart/exporting.js');?>"></script>
+	<script src="<?php echo base_url('assets/plugins/highchart/offline-exporting.js');?>"></script>
+
 	
 	<!-- Custom Javascript -->
     <script src="<?php echo base_url('assets/js/custom.js');?>" type="text/javascript"></script>

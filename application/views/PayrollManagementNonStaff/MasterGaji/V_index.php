@@ -23,11 +23,17 @@
                     <div class="col-lg-12">
                         <div class="box box-primary box-solid">
                             <div class="box-header with-border">
+                                <a href="<?php echo site_url('PayrollManagementNonStaff/MasterData/DataGaji/doClearData/') ?>" data-toggle="tooltip" data-placement="left" style="float:right;margin-right:1%;margin-top:-0.5%;" alt="Empty Data" title="Empty Data" onclick="return confirm('Apakah anda yakin ingin menkosongkan data ini ?')">
+                                    <button type="button" class="btn btn-default btn-sm"><i class="fa fa-trash fa-2x"></i></button>
+                                </a>
                                 <a href="<?php echo site_url('PayrollManagementNonStaff/MasterData/DataGaji/create/') ?>" style="float:right;margin-right:1%;margin-top:-0.5%;" alt="Add Data" title="Add Data" data-toggle="tooltip" data-placement="left" >
                                     <button type="button" class="btn btn-default btn-sm"><i class="icon-plus icon-2x"></i></button>
                                 </a>
                                 <a href="<?php echo site_url('PayrollManagementNonStaff/MasterData/DataGaji/import_data/') ?>" style="float:right;margin-right:1%;margin-top:-0.5%;" alt="Import Data" title="Import Data" data-toggle="tooltip" data-placement="left">
                                     <button type="button" class="btn btn-default btn-sm"><i class="fa fa-upload fa-2x"></i></button>
+                                </a>
+                                <a href="<?php echo site_url('PayrollManagementNonStaff/MasterData/DataGaji/doExport/') ?>" style="float:right;margin-right:1%;margin-top:-0.5%;" alt="Export Data" title="Export Data" data-toggle="tooltip" data-placement="left">
+                                    <button type="button" class="btn btn-default btn-sm"><i class="fa fa-download fa-2x"></i></button>
                                 </a>
                             </div>
                             <div class="box-body">
