@@ -221,6 +221,13 @@ class C_MasterGaji extends CI_Controller
 		redirect(site_url('PayrollManagementNonStaff/MasterData/DataGaji'));
     }
 
+    public function doClearData()
+    {
+		$this->M_mastergaji->clearData();
+
+		redirect(site_url('PayrollManagementNonStaff/MasterData/DataGaji'));
+	}
+
     public function import_data(){
     	$user_id = $this->session->userid;
 
@@ -263,8 +270,8 @@ class C_MasterGaji extends CI_Controller
 				$db_record = dbase_get_record_with_names($db, $i);
 
 				$data = array(
-					'noind' => utf8_encode($db_record['NOIND']),
-					'kodesie' => utf8_encode($db_record['KODESIE']),
+					'noind' => utf8_encode(trim($db_record['NOIND'])),
+					'kodesie' => utf8_encode(trim($db_record['KODESIE'])),
 					'kelas' => utf8_encode($db_record['KELAS']),
 					'gaji_pokok' => utf8_encode($db_record['GAJIP']),
 					'insentif_prestasi' => utf8_encode($db_record['IP']),
@@ -295,6 +302,47 @@ class C_MasterGaji extends CI_Controller
 		else{
 			echo $this->upload->display_errors();
 		}
+	}
+
+	public function doExport(){
+		$data['MasterGaji'] = $this->M_mastergaji->getMasterGaji();
+
+		$inputFileName = 'assets/download/MasterGaji-temp.dbf';
+		$db = dbase_open($inputFileName, 2);
+
+		$db_rows = dbase_numrecords($db);
+		for ($i=1; $i <= $db_rows; $i++) {
+			$db_empty = dbase_delete_record($db, $i);
+		}
+		$db_empty = dbase_pack($db);
+
+		foreach($data['MasterGaji'] as $mg){
+			
+			$data = array(
+					$mg['noind'],
+					$mg['kodesie'],
+					$mg['kelas'],
+					$mg['gaji_pokok'],
+					$mg['insentif_prestasi'],
+					$mg['insentif_masuk_sore'],
+					$mg['insentif_masuk_malam'],
+					$mg['ubt'],
+					$mg['upamk'],
+					$mg['bank_code'],
+					$mg['status_pajak'],
+					$mg['tanggungan_pajak'],
+					$mg['ptkp'],
+					$mg['bulan_kerja'],
+					$mg['potongan_dplk'],
+					$mg['potongan_spsi'],
+					$mg['kpph']);
+
+			$db_insert = dbase_add_record($db, $data);
+
+		}
+
+		dbase_close($db);
+		redirect(site_url('PayrollManagementNonStaff/MasterData/DataGaji'));
 	}
 
 	public function showList(){
@@ -361,6 +409,52 @@ class C_MasterGaji extends CI_Controller
 		$json .= ']}';
 
 		echo $json;
+	}
+
+	public function downloadExcel()
+    {
+		$filter = $this->input->get('filter');
+		$column_table = array('', 'noind', 'employee_name', 'kodesie', 'unit_name', 'kelas', 'gaji_pokok', 'insentif_prestasi', 
+			'insentif_masuk_sore', 'insentif_masuk_malam', 'ubt', 'upamk', 'bank_code');
+		$column_view = array('No', 'Noind', 'Nama', 'Kodesie', 'Unit Name', 'Kelas', 'Gaji Pokok', 'Insentif Prestasi', 
+			'Insentif Masuk Sore', 'Insentif Masuk Malam', 'Ubt', 'Upamk', 'Bank Code');
+		$data_table = $this->M_mastergaji->getMasterGajiSearch($filter)->result_array();
+
+		$this->load->library("Excel");
+		$objPHPExcel = new PHPExcel();
+		$objPHPExcel->setActiveSheetIndex(0);
+		$column = 0;
+
+		foreach($column_view as $cv){
+			$objPHPExcel->getActiveSheet()->setCellValueByColumnAndRow($column, 1, $cv);
+			$column++;
+		}
+
+		$excel_row = 2;
+		foreach($data_table as $dt){
+			$excel_col = 0;
+			foreach($column_table as $ct){
+				if($ct == ''){
+					$objPHPExcel->getActiveSheet()->setCellValueByColumnAndRow($excel_col, $excel_row, $excel_row-1);
+				}else{
+					$objPHPExcel->getActiveSheet()->setCellValueByColumnAndRow($excel_col, $excel_row, $dt[$ct]);
+				}
+				$excel_col++;
+			}
+			$excel_row++;
+		}
+		
+		$objPHPExcel->getActiveSheet()->setTitle('Quick ERP');      
+		$objWriter = PHPExcel_IOFactory::createWriter($objPHPExcel, 'Excel2007');
+ 
+		header("Last-Modified: " . gmdate("D, d M Y H:i:s") . " GMT");
+		header("Cache-Control: no-store, no-cache, must-revalidate");
+		header("Cache-Control: post-check=0, pre-check=0", false);
+		header("Pragma: no-cache");
+		header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
+
+		header('Content-Disposition: attachment;filename="MasterGaji.xlsx"');
+		$objWriter->save("php://output");
 	}
 
 }

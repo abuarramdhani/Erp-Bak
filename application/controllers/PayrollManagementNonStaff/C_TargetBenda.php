@@ -206,6 +206,13 @@ class C_TargetBenda extends CI_Controller
 		redirect(site_url('PayrollManagementNonStaff/MasterData/TargetBenda'));
     }
 
+    public function doClearData()
+    {
+		$this->M_targetbenda->clearData();
+
+		redirect(site_url('PayrollManagementNonStaff/MasterData/TargetBenda'));
+	}
+
     public function import_data(){
 		$user = $this->session->username;
 
@@ -342,6 +349,55 @@ class C_TargetBenda extends CI_Controller
 		$json .= ']}';
 
 		echo $json;
+	}
+
+	public function downloadExcel()
+    {
+		$filter = $this->input->get('filter');
+		$column_table = array('', 'kodesie', 'unit_name', 'kode_barang', 'nama_barang', 'kode_proses', 'nama_proses', 
+			'jumlah_operator', 'target_utama_senin_kamis', 'target_utama_senin_kamis_4', 'target_sementara_senin_kamis', 
+			'target_utama_jumat_sabtu', 'target_utama_jumat_sabtu_4', 'target_sementara_jumat_sabtu', 'waktu_setting', 
+			'tgl_berlaku', 'tgl_input');
+		$column_view = array('No','Kodesie','Nama Unit','Kode Barang','Nama Barang','Kode Proses','Nama Proses','Jumlah Operator',
+			'Target Utama Senin Kamis','Target Utama Senin Kamis 4','Target Sementara Senin Kamis','Target Utama Jumat Sabtu',
+			'Target Utama Jumat Sabtu 4','Target Sementara Jumat Sabtu','Waktu Setting','Tgl Berlaku','Tgl Input');
+		$data_table = $this->M_targetbenda->getTargetBendaSearch($filter)->result_array();
+
+		$this->load->library("Excel");
+		$objPHPExcel = new PHPExcel();
+		$objPHPExcel->setActiveSheetIndex(0);
+		$column = 0;
+
+		foreach($column_view as $cv){
+			$objPHPExcel->getActiveSheet()->setCellValueByColumnAndRow($column, 1, $cv);
+			$column++;
+		}
+
+		$excel_row = 2;
+		foreach($data_table as $dt){
+			$excel_col = 0;
+			foreach($column_table as $ct){
+				if($ct == ''){
+					$objPHPExcel->getActiveSheet()->setCellValueByColumnAndRow($excel_col, $excel_row, $excel_row-1);
+				}else{
+					$objPHPExcel->getActiveSheet()->setCellValueByColumnAndRow($excel_col, $excel_row, $dt[$ct]);
+				}
+				$excel_col++;
+			}
+			$excel_row++;
+		}
+		
+		$objPHPExcel->getActiveSheet()->setTitle('Quick ERP');      
+		$objWriter = PHPExcel_IOFactory::createWriter($objPHPExcel, 'Excel2007');
+ 
+		header("Last-Modified: " . gmdate("D, d M Y H:i:s") . " GMT");
+		header("Cache-Control: no-store, no-cache, must-revalidate");
+		header("Cache-Control: post-check=0, pre-check=0", false);
+		header("Pragma: no-cache");
+		header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
+
+		header('Content-Disposition: attachment;filename="TargetBenda.xlsx"');
+		$objWriter->save("php://output");
 	}
 
 }

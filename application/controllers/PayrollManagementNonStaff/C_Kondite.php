@@ -363,7 +363,7 @@ class C_Kondite extends CI_Controller
 	public function getPekerja(){
 		$kodesie = $this->input->post('kodesie');
 		$date = $this->input->post('date');
-		
+		echo $kodesie."-".$date;
 		$data = $this->M_kondite->getPekerja($kodesie,$date);
 
 		if (count($data) > 0) {
@@ -371,8 +371,8 @@ class C_Kondite extends CI_Controller
 				echo '
 					<tr>
 						   <td width="30%">
-						   		'.$data['noind'].' - '.$data['nama'].'
-								  <input type="hidden" class="form-control" name="txtNoindHeader[]" value="'.$data['noind'].'" required>
+						   		'.$data['employee_code'].' - '.$data['employee_name'].'
+								  <input type="hidden" class="form-control" name="txtNoindHeader[]" value="'.$data['employee_code'].'" required>
 						   </td>
 						   <td width="7%"><input type="text" class="form-control text-center" name="txtMKHeader[]" placeholder="MK" maxlength="1" required></td>
 						   <td width="7%"><input type="text" class="form-control text-center" name="txtBKIHeader[]" placeholder="BKI" maxlength="1" required></td>
@@ -495,6 +495,50 @@ class C_Kondite extends CI_Controller
 		$json .= ']}';
 
 		echo $json;
+	}
+
+	public function downloadExcel()
+    {
+		$filter = $this->input->get('filter');
+		$column_table = array('', 'noind', 'employee_name', 'kodesie', 'unit_name', 'tanggal', 'MK', 'BKI', 'BKP', 'TKP', 'KB', 'KK', 'KS');
+		$column_view = array('No', 'Noind', 'Nama', 'Kodesie', 'Nama Unit', 'Tanggal', 'MK', 'BKI', 'BKP', 'TKP', 'KB', 'KK', 'KS');
+		$data_table = $this->M_kondite->getKonditeSearch($filter)->result_array();
+
+		$this->load->library("Excel");
+		$objPHPExcel = new PHPExcel();
+		$objPHPExcel->setActiveSheetIndex(0);
+		$column = 0;
+
+		foreach($column_view as $cv){
+			$objPHPExcel->getActiveSheet()->setCellValueByColumnAndRow($column, 1, $cv);
+			$column++;
+		}
+
+		$excel_row = 2;
+		foreach($data_table as $dt){
+			$excel_col = 0;
+			foreach($column_table as $ct){
+				if($ct == ''){
+					$objPHPExcel->getActiveSheet()->setCellValueByColumnAndRow($excel_col, $excel_row, $excel_row-1);
+				}else{
+					$objPHPExcel->getActiveSheet()->setCellValueByColumnAndRow($excel_col, $excel_row, $dt[$ct]);
+				}
+				$excel_col++;
+			}
+			$excel_row++;
+		}
+		
+		$objPHPExcel->getActiveSheet()->setTitle('Quick ERP');      
+		$objWriter = PHPExcel_IOFactory::createWriter($objPHPExcel, 'Excel2007');
+ 
+		header("Last-Modified: " . gmdate("D, d M Y H:i:s") . " GMT");
+		header("Cache-Control: no-store, no-cache, must-revalidate");
+		header("Cache-Control: post-check=0, pre-check=0", false);
+		header("Pragma: no-cache");
+		header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
+
+		header('Content-Disposition: attachment;filename="Kondite.xlsx"');
+		$objWriter->save("php://output");
 	}
 
 }

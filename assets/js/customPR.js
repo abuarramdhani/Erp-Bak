@@ -1,701 +1,4 @@
 $(document).ready(function() {
-  $('#txtPeriodeCheck').datepicker({
-    autoclose: true,
-    format: "yyyy",
-    viewMode: "years", 
-    minViewMode: "years"
-  });
-  
-	//DATEPICKER CHECK DATA
-	$('.periode_mutasi').daterangepicker({
-		"singleDatePicker": true,
-		"timePicker": false,
-		"timePicker24Hour": true,
-		"showDropdowns": false,
-		autoUpdateInput: false,
-		locale: {
-			cancelLabel: 'Clear'
-		}
-	});
-
-	$('.periode_mutasi').on('apply.daterangepicker', function(ev, picker) {
-		$(this).val(picker.startDate.format('MM/DD/YYYY'));
-	});
-
-	$('.periode_mutasi').on('cancel.daterangepicker', function(ev, picker) {
-		$(this).val('');
-	});
-
-  $('#txtPeriodeHitung').datepicker({
-    autoclose: true,
-    format: "mm/yyyy",
-    viewMode: "months", 
-    minViewMode: "months"
-  });
-  
-  $('#txtPeriodeSearch').datepicker({
-    autoclose: true,
-    format: "mm/yyyy",
-    viewMode: "months", 
-    minViewMode: "months"
-  });
-
-  $('#txtPeriodeTahun').datepicker({
-    autoclose: true,
-    format: "yyyy",
-    viewMode: "years", 
-    minViewMode: "years"
-  });
-
-  $('#txtTglBerlakuPtkp').datepicker({ 
-	autoclose: true,
-	format: "yyyy-mm-dd",
- });
- $('#txtPeriodePengurangPajak').datepicker({ 
-	autoclose: true,
-	format: "yyyy-mm-dd",
- });
- $('#txtTglPengajuan').datepicker({ 
-	autoclose: true,
-	format: "yyyy-mm-dd",
- });
- $('.datepicker-erp-pr').datepicker({ 
-	autoclose: true,
-	format: "dd/mm/yyyy",
- });
- $('.class-datepicker-erp-pr').datepicker({ 
-	autoclose: true,
-	format: "yyyy-mm-dd",
- });
-  $('#txtPeriodeJst_new').datepicker({ 
-	autoclose: true,
-	format: "yyyy-mm-dd",
- });
- 
-   $('#txtPotTambLain').datepicker({ 
-	autoclose: true,
-	format: "yyyy-mm-dd",
- });
-  $('#cmbKdBank').select2();
-  $('.select2-txtDept').select2();
-  $('.select2-txtBank').select2();
-  $('#txtKodeStatusKerja').select2();
-  $('#cmbKdHubunganKerja').select2();
-  $('#cmbKdStatusKerja').select2();
-  $('#cmbKdJabatan').select2();
-  $('#cmbStat').select2({
-	 minimumResultsForSearch: -1
-  });
-  $('.select2-getNoind').select2({
-    placeholder: "No Induk",
-    allowClear: true,
-    minimumInputLength: 2,
-    ajax: {   
-      url:baseurl+"PayrollManagement/HutangKaryawan/getNoind",
-      dataType: 'json',
-      type: "GET",
-      data: function (params) {
-        var queryParameters = {
-          term: params.term
-        }
-        return queryParameters;
-      },
-      processResults: function (data) {
-        return {
-          results: $.map(data, function(obj) {
-            return { id:obj.noind, text:obj.noind+' - '+obj.nama};
-          })
-        };
-      }
-    }
-  });
-  
-  $('.money').mask('000,000,000,000,000', {reverse: true});
-  
-  $(".cmbNoindHeader").select2({
-      minimumInputLength: 3,
-      ajax: {   
-        url:baseurl+"PayrollManagement/MasterPekerja/getNoind",
-        dataType: 'json',
-        type: "GET",
-		placeholder: "[ Noind Pekerja ]",
-        data: function (params) {
-          var queryParameters = {
-            term: params.term,
-          }
-          return queryParameters;
-        },
-        processResults: function (data) {
-          return {
-            results: $.map(data, function(obj) {
-              return { id:obj.noind, text:obj.noind+' - '+obj.nama};
-            })
-          };
-        }
-      } 
-    });
-});
-
-	var base = window.location.origin;
-	var path = window.location.pathname.split( '/' );
-	var baseURL = base+"/"+path[1]+"/";
-	var ses_id = $('#txtSessionId').text();
-	var timer;
-
-    // $(document).ready(function(){
-			// $.ajax({url: baseURL+"PayrollManagement/process"});
-			// timer = window.setInterval(function(){refreshProgress()}, 1000);
-    // });
-	
-    // function refreshProgress() {
-      // $.ajax({
-        // url: baseURL+"PayrollManagement/check?file="+ses_id,
-		// dataType: 'json',
-        // success:function(data){
-			// console.log(data);
-          // $("#progress").html('<div class="bar" style="width:'+data.percent+'%">'+data.message+'</div>');
-		  // console.log(data.percent);
-          // if (data.percent == 100) {
-            // window.clearInterval(timer);
-            // timer = window.setInterval(function(){completed()}, 1000);
-          // }
-        // }
-      // });
-    // }
-
-    // function completed() {
-      // $(".bar").html("Completed");
-      // window.clearInterval(timer);
-    // }
-
-//INCREMENT FORM
-	$('.increment-form').TouchSpin({
-      verticalbuttons: true,
-      verticalupclass: 'glyphicon glyphicon-plus',
-      verticaldownclass: 'glyphicon glyphicon-minus'
-    });
-
-  $('#dataTables-masterStatusKerja').DataTable( {
-	  "destroy": true,
-      dom: 'Bfrtip',
-      buttons: [
-        'excel'
-      ]
-    });
-	
-	$('#dataTables-masterTarifJkk').DataTable( {
-	  "destroy": true,
-      dom: 'Bfrtip',
-      buttons: [
-        'excel'
-      ]
-    });
-	
-	$('#dataTables-riwayatPotDanaPensiun').DataTable( {
-	  "destroy": true,
-      dom: 'Bfrtip',
-      buttons: [
-        'excel'
-      ]
-    });
-	
-	$('#dataTables-riwayatUpamk').DataTable( {
-	  "destroy": true,
-      dom: 'Bfrtip',
-      buttons: [
-        'excel'
-      ]
-    });
-	
-	$('#dataTables-riwayatInsentifKemahalan').DataTable( {
-	  "destroy": true,
-      dom: 'Bfrtip',
-      buttons: [
-        'excel'
-      ]
-    });
-	
-$('#dataTables-MasterJabatanUpah').DataTable( {
-	  "destroy": true,
-      dom: 'Bfrtip',
-      buttons: [
-        'excel'
-      ]
-    });
-	
-$('#dataTables-KlaimGajiIndividual').DataTable( {
-	  "destroy": true,
-      dom: 'Bfrtip',
-	  "scrollX": true,
-      buttons: [
-        'excel'
-      ]
-    });
-	
-$('#dataTables-masterJabatan').DataTable( {
-	  "destroy": true,
-      dom: 'Bfrtip',
-      buttons: [
-        'excel'
-      ]
-    });  
-
-	$('#dataTables-masterSeksi').DataTable( {
-	  "destroy": true,
-	  "scrollX": true,
-      dom: 'Bfrtip',
-      buttons: [
-        'excel'
-      ]
-    });
-$('#dataTables-kantorAsal').DataTable( {
-	  "destroy": true,
-      dom: 'Bfrtip',
-      buttons: [
-        'excel'
-      ]
-    });
-	$('#dataTables-riwayatGaji').DataTable( {
-	  "destroy": true,
-      dom: 'Bfrtip',
-      buttons: [
-        'excel'
-      ]
-    });
-$('#dataTables-lokasiKerja').DataTable( {
-	  "destroy": true,
-      dom: 'Bfrtip',
-      buttons: [
-        'excel'
-      ]
-    });
-$('#dataTables-masterBankInduk').DataTable( {
-	  "destroy": true,
-      dom: 'Bfrtip',
-      buttons: [
-        'excel'
-      ]
-    });
-$('#dataTables-masterBank').DataTable({
-	  "destroy": true,
-	  dom: 'Bfrtip',
-      buttons: [
-        'excel'
-      ],
-	  "columnDefs": [
-							{ className: "text-center", "targets": [ 0 ] },
-							{ className: "text-center", "targets": [ 1 ] },
-							{ className: "text-center", "targets": [ 2 ] },
-							{ className: "text-center", "targets": [ 3 ] },
-							{ className: "text-center", "targets": [ 4 ] },
-							{ className: "text-right", "targets": [ 5 ] },
-							{ className: "text-right", "targets": [ 6 ] }
-							
-						]
-	});
-$('#dataTables-masterSekolahAsal').DataTable( {
-	  "destroy": true,
-      dom: 'Bfrtip',
-      buttons: [
-        'excel'
-      ]
-    });
-	
-$('#dataTables-setgajiump').DataTable( {
-	  "destroy": true,
-      dom: 'Bfrtip',
-      buttons: [
-        'excel'
-      ]
-    });
-$('#dataTables-settarifpekerjasakit').DataTable( {
-	  "destroy": true,
-      dom: 'Bfrtip',
-      buttons: [
-        'excel'
-      ]
-    });
-	
-$('#dataTables-standartJamTkpw').DataTable( {
-	  "destroy": true,
-      dom: 'Bfrtip',
-      buttons: [
-        'excel'
-      ]
-    });
-$('#dataTables-standartJamUmum').DataTable( {
-	  "destroy": true,
-      dom: 'Bfrtip',
-      buttons: [
-        'excel'
-      ]
-    });
-
-$('#dataTables-masterParamBpjs').DataTable( {
-	  "destroy": true,
-      dom: 'Bfrtip',
-      buttons: [
-        'excel'
-      ]
-    });
-$('#dataTables-masterParamBpjsKes').DataTable( {
-    "destroy": true,
-      dom: 'Bfrtip',
-      buttons: [
-        'excel'
-      ]
-    });
-$('#dataTables-masterParamPtkp').DataTable( {
-	  "destroy": true,
-      dom: 'Bfrtip',
-      buttons: [
-        'excel'
-      ]
-    });
-	
-$('#dataTables-masterParameterTarifPph').DataTable( {
-	  "destroy": true,
-      dom: 'Bfrtip',
-      buttons: [
-        'excel'
-      ]
-    });
-	
-
-$('#dataTables-riwayatPenerimaKonpensasiLembur').DataTable( {
-	  "destroy": true,
-	  "scrollX": true,
-      dom: 'Bfrtip',
-      buttons: [
-        'excel'
-      ]
-    });
-	
-$('#dataTables-masterParamKompJab').DataTable( {
-	  "destroy": true,
-      dom: 'Bfrtip',
-      buttons: [
-        'excel'
-      ]
-    });
-	
-$('#dataTables-riwayatRekeningPekerja').DataTable( {
-	  "destroy": true,
-  dom: 'Bfrtip',
-  buttons: [
-	'excel'
-  ]
-});
-
-$('#dataTables-masterParamPengurangPajak').DataTable( {
-	  "destroy": true,
-      dom: 'Bfrtip',
-      buttons: [
-        'excel'
-      ]
-    });
-	
-$('#dataTables-transaksiPenggajian').DataTable( {
-	  "destroy": true,
-	  "scrollX": true,
-  dom: 'Bfrtip',
-  "autoWidth": true,
-  buttons: [
-	'excel'
-  ]
-});
-
-$('#dataTables-konpensasiLembur').DataTable( {
-	  "destroy": true,
-	  "scrollX": true,
-  dom: 'Bfrtip',
-  "autoWidth": true,
-  buttons: [
-	'excel'
-  ]
-});
-	
-	
-$('#dataTables-masterPekerja').DataTable( {
-	  "destroy": true,
-	  "scrollX": true,
-      dom: 'Bfrtip',
-      buttons: [
-        'excel'
-      ],
-	  "fixedColumns" : true,
-	  "fixedColumns" : {
-			"leftColumns" : 3
-		}, 
-    });
-
-$('#dataTables-riwayatSetAsuransi').DataTable( {
-	  "destroy": true,
-	  "scrollX": true,
-      dom: 'Bfrtip',
-      buttons: [
-        'excel'
-      ]
-    });	
-
-$('#dataTables-masterParamKompUmum').DataTable( {
-	  "destroy": true,
-      dom: 'Bfrtip',
-      buttons: [
-        'excel'
-      ]
-    });
-
-$('#dataTables-riwayatParamKoperasi').DataTable( {
-	  "destroy": true,
-      dom: 'Bfrtip',
-      buttons: [
-        'excel'
-      ]
-    });
-	
-$('#dataTables-transaksiKlaimSisaCuti').DataTable( {
-	  "destroy": true,
-      dom: 'Bfrtip',
-      buttons: [
-        'excel'
-      ]
-    });
-
-$('#dataTables-transaksiHitungThr').DataTable( {
-	  "destroy": true,
-      dom: 'Bfrtip',
-	  "autoWidth": true,
-      "scrollX": true,
-      buttons: [
-        'excel'
-      ]
-    });
-
-$('#dataTables-transaksiHitungThrImport').DataTable( {
-	  "destroy": true,
-      dom: 'Bfrtip',
-      buttons: [
-        'excel'
-      ]
-    });
-
-$('#dataTables-kompTamb-lain').DataTable( {
-	  "destroy": true,
-      dom: 'Bfrtip',
-      buttons: [
-        'excel'
-      ],
-	  "columnDefs": [
-							{ className: "text-center", "targets": [ 0 ] },
-							{ className: "text-center", "targets": [ 1 ] },
-							{ className: "text-center", "targets": [ 2 ] },
-							{ className: "text-center", "targets": [ 3 ] },
-							{ className: "text-right", "targets": [ 4 ] },
-							{ className: "text-right", "targets": [ 5 ] }
-							
-						]
-    });
-	
-$('#dataTables-kompTamb').DataTable( {
-	  "destroy": true,
-      dom: 'Bfrtip',
-      buttons: [
-        'excel'
-      ],
-	  "columnDefs": [
-							{ className: "text-center", "targets": [ 0 ] },
-							{ className: "text-center", "targets": [ 1 ] },
-							{ className: "text-center", "targets": [ 2 ] },
-							{ className: "text-center", "targets": [ 3 ] },
-							{ className: "text-right", "targets": [ 4 ] },
-							{ className: "text-center", "targets": [ 5 ] }
-							
-						]
-    });
-	
-$('#dataTables-transaksiHutang').DataTable( {
-	  "destroy": true,
-      dom: 'Bfrtip',
-      buttons: [
-        'excel'
-      ],
-	  "columnDefs": [
-							{ className: "text-center", "targets": [ 0 ] },
-							{ className: "text-center", "targets": [ 1 ] },
-							{ className: "text-center", "targets": [ 2 ] },
-							{ className: "text-center", "targets": [ 3 ] },
-							{ className: "text-center", "targets": [ 4 ] },
-							{ className: "text-center", "targets": [ 5 ] },
-							{ className: "text-right", "targets": [ 6 ] },
-							{ className: "text-center", "targets": [ 7 ] }
-							
-						]
-    });
-	
-$('#dataTables-transaksiHutang-list').DataTable( {
-	  "destroy": true,
-      dom: 'Bfrtip',
-      buttons: [
-        'excel'
-      ],
-	  "columnDefs": [
-							{ className: "text-center", "targets": [ 0 ] },
-							{ className: "text-center", "targets": [ 1 ] },
-							{ className: "text-center", "targets": [ 2 ] },
-							{ className: "text-right", "targets": [ 3 ] },
-							{ className: "text-center", "targets": [ 4 ] }
-							
-						]
-    });
-
-$('#dataTables-daftarPekerjaSakit').DataTable( {
-	  "destroy": true,
-      dom: 'Bfrtip',
-      buttons: [
-        'excel'
-      ]
-    });
-
-$('#dataTables-dataGajianPersonalia').DataTable( {
-	  "destroy": true,
-	  "scrollX" : true,
-      dom: 'Bfrtip',
-      buttons: [
-        'excel','pdf'
-      ]
-    });
-
-$('#dataTables-transaksiKlaimDl').DataTable( {
-	  "destroy": true,
-      dom: 'Bfrtip',
-      buttons: [
-        'excel'
-      ]
-    });
-
-$('#dataTables-hutangKaryawan').DataTable( {
-	  "destroy": true,
-      dom: 'Bfrtip',
-      buttons: [
-        'excel'
-      ]
-    });
-
-$('#dataTables-reportMasterGaji').DataTable( {
-	  "destroy": true,
-	  "scrollX": true,
-      dom: 'Bfrtip',
-      buttons: [
-        'excel'
-      ]
-    });
-
-$('#dataTables-reportDanaPensiun').DataTable( {
-    "scrollX": true,
-      dom: 'Bfrtip',
-      buttons: [
-        'excel'
-      ]
-    });
-
-$('#dataTables-reportPotonganKoperasi').DataTable( {
-    "scrollX": true,
-      dom: 'Bfrtip',
-      buttons: [
-        'excel'
-      ]
-    });
-
-$('#dataTables-reportPotonganSPSI').DataTable( {
-    "scrollX": true,
-      dom: 'Bfrtip',
-      buttons: [
-        'excel'
-      ]
-    });
-
-$('#dataTables-reportRiwayatMutasi').DataTable( {
-    "scrollX": true,
-	"bRetrieve": true,
-      dom: 'Bfrtip',
-      buttons: [
-        'excel'
-      ]
-    });
-
-function change_komp_jab(){
-	var stat_krj = $('#cmbKdStatusKerja option:selected').attr('value'),
-		kd_jab = $('#cmbKdJabatan option:selected').attr('value'),
-		str = stat_krj+kd_jab
-		id_kom_jab = str.replace(" ", "");
-	$('#txtIdKompJabNew').val(id_kom_jab);
-}
-	
-function getMaxHutang(noind){
-  $.ajax({
-    type:'POST',
-    data:{noind: noind},
-    url:baseurl+"PayrollManagement/HutangKaryawan/getMaxHutang",
-    success:function(result)
-    {
-      $('#txtTotalHutang').attr("placeholder",result);
-      $('#txtTotalHutang').attr("max",result);
-      $('#max-hutang').text("* Max 2x Gaji Pokok ("+result+")");
-	  
-	  if(result == 0){
-		  $('#save_hutang').attr('disabled','disabled');
-	  }else{
-		  $('#save_hutang').removeattr('disabled','disabled');
-	  }
-    }
-  });
-}
-
-function getKlaimCuti(){
-	var noind	= $("#txtNoind option:selected").val();
-	var period	= $("#txtPeriodeHitung").val();
-	var cuti	    = $("#txtSisaCuti").val();
-	if(noind.length > 0 && period.length > 0 && cuti.length > 0){
-		 $.ajax({
-			type:'POST',
-			data:{noind: noind, period:period, cuti:cuti},
-			url:baseurl+"PayrollManagement/TransaksiKlaimSisaCuti/getKlaimCuti",
-			success:function(result)
-			{
-			  $('#txtJumlahKlaim').val(result);
-			}
-		  });
-	}
-}
-
-function duplicateLokasiKerja(){
-	var cmdKantorAsal = $('#cmbIdKantorAsal').val();
-	$('#cmbIdLokasiKerja').val(cmdKantorAsal);
-}
-
-$('input.number').keyup(function(event) {
-		  // format number
-  $(this).val(function(index, value) {
-	return value
-	.replace(/\D/g, "")
-	.replace(/\B(?=(\d{3})+(?!\d))/g, ".")
-	;
-  });
-});
-
-$('.currency').onload(function(event) {
-		  // format number
-  $(this).val(function(index, value) {
-	return value
-	.replace(/\D/g, "")
-	.replace(/\B(?=(\d{3})+(?!\d))/g, ".")
-	;
-  });
-});
-		
-		
-$(document).ready(function() {
   // alert('working');
   $('.datatables').DataTable( {
         dom: 'Bfrtip',
@@ -703,19 +6,29 @@ $(document).ready(function() {
           'excel'
         ],
         "scrollX": true,
-        responsive: false,
+        responsive: true,
       });
 
 
   $('#tblKondite').DataTable( {
         dom: 'Bfrtip',
-        buttons: [
-          'excel'
-        ],
+        buttons: {
+          buttons: [{
+            text: 'Excel',
+            action: function ( e, dt, node, config ) {
+              if($('label input').val() != '' || $('label input').val() != null){
+                filter = $('label input').val();
+              }else{
+                filter = '';
+              }
+              window.location = baseurl+"PayrollManagementNonStaff/ProsesGaji/Kondite/downloadExcel?filter="+filter;
+            }
+          }]
+        },
         "processing": true,
         "serverSide": true,
         "scrollX": true,
-        responsive: false,
+        responsive: true,
         "ajax":{
           url : baseurl+"PayrollManagementNonStaff/ProsesGaji/Kondite/showList",
           type: "post",
@@ -728,13 +41,23 @@ $(document).ready(function() {
 
   $('#tblDataAbsensi').DataTable( {
         dom: 'Bfrtip',
-        buttons: [
-          'excel'
-        ],
+        buttons: {
+          buttons: [{
+            text: 'Excel',
+            action: function ( e, dt, node, config ) {
+              if($('label input').val() != '' || $('label input').val() != null){
+                filter = $('label input').val();
+              }else{
+                filter = '';
+              }
+              window.location = baseurl+"PayrollManagementNonStaff/ProsesGaji/DataAbsensi/downloadExcel?filter="+filter;
+            }
+          }]
+        },
         "processing": true,
         "serverSide": true,
         "scrollX": true,
-        responsive: false,
+        responsive: true,
         "ajax":{
           url : baseurl+"PayrollManagementNonStaff/ProsesGaji/DataAbsensi/showList",
           type: "post",
@@ -747,13 +70,23 @@ $(document).ready(function() {
 
   $('#tblDataLKHSeksi').DataTable( {
         dom: 'Bfrtip',
-        buttons: [
-          'excel'
-        ],
+        buttons: {
+          buttons: [{
+            text: 'Excel',
+            action: function ( e, dt, node, config ) {
+              if($('label input').val() != '' || $('label input').val() != null){
+                filter = $('label input').val();
+              }else{
+                filter = '';
+              }
+              window.location = baseurl+"PayrollManagementNonStaff/ProsesGaji/DataLKHSeksi/downloadExcel?filter="+filter;
+            }
+          }]
+        },
         "processing": true,
         "serverSide": true,
         "scrollX": true,
-        responsive: false,
+        responsive: true,
         "ajax":{
           url : baseurl+"PayrollManagementNonStaff/ProsesGaji/DataLKHSeksi/showList",
           type: "post",
@@ -766,13 +99,23 @@ $(document).ready(function() {
 
   $('#tblTambahan').DataTable( {
         dom: 'Bfrtip',
-        buttons: [
-          'excel'
-        ],
+        buttons: {
+          buttons: [{
+            text: 'Excel',
+            action: function ( e, dt, node, config ) {
+              if($('label input').val() != '' || $('label input').val() != null){
+                filter = $('label input').val();
+              }else{
+                filter = '';
+              }
+              window.location = baseurl+"PayrollManagementNonStaff/ProsesGaji/Tambahan/downloadExcel?filter="+filter;
+            }
+          }]
+        },
         "processing": true,
         "serverSide": true,
         "scrollX": true,
-        responsive: false,
+        responsive: true,
         "ajax":{
           url : baseurl+"PayrollManagementNonStaff/ProsesGaji/Tambahan/showList",
           type: "post",
@@ -785,13 +128,23 @@ $(document).ready(function() {
 
   $('#tblPotongan').DataTable( {
         dom: 'Bfrtip',
-        buttons: [
-          'excel'
-        ],
+        buttons: {
+          buttons: [{
+            text: 'Excel',
+            action: function ( e, dt, node, config ) {
+              if($('label input').val() != '' || $('label input').val() != null){
+                filter = $('label input').val();
+              }else{
+                filter = '';
+              }
+              window.location = baseurl+"PayrollManagementNonStaff/ProsesGaji/Potongan/downloadExcel?filter="+filter;
+            }
+          }]
+        },
         "processing": true,
         "serverSide": true,
         "scrollX": true,
-        responsive: false,
+        responsive: true,
         "ajax":{
           url : baseurl+"PayrollManagementNonStaff/ProsesGaji/Potongan/showList",
           type: "post",
@@ -804,13 +157,23 @@ $(document).ready(function() {
 
   $('#tblTargetBenda').DataTable( {
         dom: 'Bfrtip',
-        buttons: [
-          'excel'
-        ],
+        buttons: {
+          buttons: [{
+            text: 'Excel',
+            action: function ( e, dt, node, config ) {
+              if($('label input').val() != '' || $('label input').val() != null){
+                filter = $('label input').val();
+              }else{
+                filter = '';
+              }
+              window.location = baseurl+"PayrollManagementNonStaff/MasterData/TargetBenda/downloadExcel?filter="+filter;
+            }
+          }]
+        },
         "processing": true,
         "serverSide": true,
         "scrollX": true,
-        responsive: false,
+        responsive: true,
         "ajax":{
           url : baseurl+"PayrollManagementNonStaff/MasterData/TargetBenda/showList",
           type: "post",
@@ -823,13 +186,23 @@ $(document).ready(function() {
 
   $('#tblMasterPekerja').DataTable( {
         dom: 'Bfrtip',
-        buttons: [
-          'excel'
-        ],
+        buttons: {
+          buttons: [{
+            text: 'Excel',
+            action: function ( e, dt, node, config ) {
+              if($('label input').val() != '' || $('label input').val() != null){
+                filter = $('label input').val();
+              }else{
+                filter = '';
+              }
+              window.location = baseurl+"PayrollManagementNonStaff/MasterData/MasterPekerja/downloadExcel?filter="+filter;
+            }
+          }]
+        },
         "processing": true,
         "serverSide": true,
         "scrollX": true,
-        responsive: false,
+        responsive: true,
         "ajax":{
           url : baseurl+"PayrollManagementNonStaff/MasterData/MasterPekerja/showList",
           type: "post",
@@ -842,13 +215,23 @@ $(document).ready(function() {
 
   $('#tblMasterGaji').DataTable( {
         dom: 'Bfrtip',
-        buttons: [
-          'excel'
-        ],
+        buttons: {
+          buttons: [{
+            text: 'Excel',
+            action: function ( e, dt, node, config ) {
+              if($('label input').val() != '' || $('label input').val() != null){
+                filter = $('label input').val();
+              }else{
+                filter = '';
+              }
+              window.location = baseurl+"PayrollManagementNonStaff/MasterData/DataGaji/downloadExcel?filter="+filter;
+            }
+          }]
+        },
         "processing": true,
         "serverSide": true,
         "scrollX": true,
-        responsive: false,
+        responsive: true,
         "ajax":{
           url : baseurl+"PayrollManagementNonStaff/MasterData/DataGaji/showList",
           type: "post",
@@ -861,16 +244,26 @@ $(document).ready(function() {
 
   $('#tblHasilGaji').DataTable( {
         dom: 'Bfrtip',
-        buttons: [
-          'excel'
-        ],
+        buttons: {
+          buttons: [{
+            text: 'Excel',
+            action: function ( e, dt, node, config ) {
+              if($('label input').val() != '' || $('label input').val() != null){
+                filter = $('label input').val();
+              }else{
+                filter = '';
+              }
+              window.location = baseurl+"PayrollManagementNonStaff/ProsesGaji/HitungGaji/downloadExcel?filter="+filter;
+            }
+          }]
+        },
         fixedColumns:{
             leftColumns: 5
         },
         "processing": true,
         "serverSide": true,
         "scrollX": true,
-        responsive: false,
+        responsive: true,
         "ajax":{
           url : baseurl+"PayrollManagementNonStaff/ProsesGaji/HitungGaji/showList",
           type: "post",
@@ -931,7 +324,32 @@ $(document).ready(function() {
         },
     });
   }
-  
+
+  cmbNoind();
+  function cmbNoind(){
+    $(".cmbNoindHeader").select2({
+      minimumInputLength: 3,
+      ajax: {   
+        url:baseurl+"PayrollManagementNonStaff/getNoind",
+        dataType: 'json',
+        type: "GET",
+        data: function (params) {
+          var queryParameters = {
+            term: params.term,
+          }
+          return queryParameters;
+        },
+        processResults: function (data) {
+          return {
+            results: $.map(data, function(obj) {
+              return { id:obj.NoInduk+' - '+obj.Kodesie, text:obj.NoInduk+' - '+obj.Nama};
+            })
+          };
+        }
+      } 
+    });
+  }
+
   cmbKodesie();
   function cmbKodesie(){
     $(".cmbKodesie").select2({
@@ -1024,7 +442,9 @@ $(document).ready(function() {
         $(this).closest('tr').find('.approval-date').prop('readonly', true);
         $(this).closest('tr').find('.approval-by').prop('readonly', true);
       }
-    });
+    })
+
+    cmbNoind();
 
   })
 
@@ -1613,6 +1033,103 @@ $(document).ready(function() {
         },
         contentType: false,
         processData: false
+      });
+    }
+  });
+
+  function setChartImg(canvas) {
+    // Get the cart's SVG code
+    var svg = $(canvas).highcharts().getSVG({
+        exporting: {
+            sourceWidth: $(canvas).highcharts().chartWidth,
+            sourceHeight: $(canvas).highcharts().chartHeight
+        }
+    });
+    svg = 'data:image/svg+xml;base64,' + window.btoa(unescape(encodeURIComponent(svg)));
+
+    //alert(svg);
+    return svg;
+  }
+
+  $('#btn_cek_OTT_pdf').click(function(){
+    grapic_1 = setChartImg('#GJPO');
+    grapic_2 = setChartImg('#PJKO');
+    grapic_3 = setChartImg('#JKOPS');
+    grapic_4 = setChartImg('#JKOPS2');
+    grapic_5 = setChartImg('#DKO');
+
+    $('#grapic_1').val(grapic_1);
+    $('#grapic_2').val(grapic_2);
+    $('#grapic_3').val(grapic_3);
+    $('#grapic_4').val(grapic_4);
+    $('#grapic_5').val(grapic_5);
+    $('#btn_prt_OTT_pdf').prop('disabled',false);
+
+  });
+
+  cek_LKH_Table();
+  function cek_LKH_Table() {
+    $('#tblCek_LKH').DataTable( {
+          dom: 'Bfrtip',
+          buttons: [
+            'excel'
+          ],
+          "scrollX": true,
+          "paging": true
+        });
+  }
+
+  $('#btnCekDataLKH').click(function(){
+    var loading_full =  '<div class="pace pace-active">'+
+                        ' <div class="pace-progress" style="height:100px;width:80px" data-progress="100">'+
+                        '  <div class="pace-progress-inner">'+
+                        '  </div>'+
+                        ' </div>'+
+                        ' <div class="pace-activity">'+
+                        ' </div>'+
+                        '</div>';
+
+    var Opsi = $('select[name="slcJenis"]').val();
+    var bulan = $('select[name="slcBulan"]').val();
+    var tahun = $('input[name="txtTahun"]').val();
+
+    $('#errorProsesGaji').html('');
+    $('#btnCekDataLKH').prop('disabled', true);
+
+    if (Opsi == '' || bulan == '' || tahun == '') {
+      $('#errorCek_LKH').html('<b style="color: red">Data belum lengkap</b>');
+      $('#btnCekDataLKH').prop('disabled', false);
+    }else{
+      $('body').addClass('noscroll');
+      $('#loadingAjax').addClass('overlay_loading');
+      $('#loadingAjax').html(loading_full);
+
+      //Cek Request
+      $.ajax({
+        type:'POST',
+        data:$('#CekDataLKH').serialize(),
+        url:$('#CekDataLKH').attr('action'),
+        success:function(result)
+        {
+          $('#errorCek_LKH').html('<b style="color: #3c8dbc">Succes</b>');
+          $('#tblCek_LKH').DataTable().destroy();
+          $('#prosesCek').html(result);
+          cek_LKH_Table();
+          $('#btnCekDataLKH').prop('disabled', false);
+
+          $('body').removeClass('noscroll');
+          $('#loadingAjax').html('');
+          $('#loadingAjax').removeClass('overlay_loading');
+        },
+        error:function()
+        {
+          $('#errorCek_LKH').html('<b style="color: red">Error !</b>');
+          $('#btnCekDataLKH').prop('disabled', false);
+
+          $('body').removeClass('noscroll');
+          $('#loadingAjax').html('');
+          $('#loadingAjax').removeClass('overlay_loading');
+        }
       });
     }
   });
