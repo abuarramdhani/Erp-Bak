@@ -51,6 +51,7 @@
                                                         <th>Model Kendaraan</th>
                                                         <th>Jenis Bahan Bakar</th>
                                                         <th>Rasio Penggunaan BBM</th>
+                                                        <th>Kapasitas Bahan Bakar</th>
                                                         <th>Waktu Dibuat</th>
                                                      </tr>
                                                 </thead>
@@ -77,6 +78,7 @@
                                                                     $jarak = substr($row['rasio_bahanbakar'], 1);
                                                                     echo $jarak." Km";
                                                                 }  ?></td>
+                                                        <td><?php echo $row['kapasitas_bahanbakar']." liter"; ?></td>
                                                         <td><?php echo $row['waktu_dibuat'] ?></td>
                                                  </tr>
                                                     <?php endforeach; ?>
@@ -95,6 +97,7 @@
 												        <th>Model Kendaraan</th>
                                                         <th>Jenis Bahan Bakar</th>
                                                         <th>Rasio Penggunaan BBM</th>
+                                                        <th>Kapasitas Bahan Bakar</th>
 												        <th>Waktu Dibuat</th>
                                                         <th>Waktu Dihapus</th>
 											         </tr>
@@ -121,6 +124,7 @@
                                                                     $jarak = substr($row['rasio_bahanbakar'], 1);
                                                                     echo $jarak." Km";
                                                                 }  ?></td>
+                                                        <td><?php echo $row['kapasitas_bahanbakar']." liter"; ?></td>
 												        <td><?php echo $row['waktu_dibuat'] ?></td>
                                                         <td><?php echo $row['waktu_dihapus'];?></td>
 											     </tr>
