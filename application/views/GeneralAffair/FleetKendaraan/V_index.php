@@ -52,6 +52,7 @@
                                                         <th>Nomor Polisi</th>
                                                         <th>Jenis Kendaraan</th>
                                                         <th>Merk Kendaraan</th>
+                                                        <th>Kapasitas Bahan Bakar</th>
                                                         <th>PIC</th>
                                                         <th>Lokasi Kerja</th>
                                                         <th>Warna Kendaraan</th>
@@ -83,6 +84,7 @@
                                                         <td><?php echo $Kendaraan['nomor_polisi'] ?></td>
                                                         <td><?php echo $Kendaraan['jenis_kendaraan'] ?></td>
                                                         <td><?php echo $Kendaraan['merk_kendaraan'] ?></td>
+                                                        <td><?php echo $Kendaraan['kapasitas_bahanbakar']." liter"; ?></td>
                                                         <td><?php echo $Kendaraan['pic_kendaraan'] ?></td>
                                                         <td><?php echo $Kendaraan['lokasi'] ?></td>
                                                         <td><?php echo $Kendaraan['warna_kendaraan'] ?></td>
@@ -146,6 +148,7 @@
                                                         <th>Nomor Polisi</th>
                                                         <th>Jenis Kendaraan</th>
                                                         <th>Merk Kendaraan</th>
+                                                        <th>Kapasitas Bahan Bakar</th>
                                                         <th>PIC</th>
                                                         <th>Warna Kendaraan</th>
                                                         <th>Tahun Pembuatan</th>
@@ -175,6 +178,7 @@
                                                         <td><?php echo $KendaraanDeleted['nomor_polisi'] ?></td>
                                                         <td><?php echo $KendaraanDeleted['jenis_kendaraan'] ?></td>
                                                         <td><?php echo $KendaraanDeleted['merk_kendaraan'] ?></td>
+                                                        <td><?php echo $KendaraanDeleted['kapasitas_bahanbakar']." liter"; ?></td>
                                                         <td><?php echo $KendaraanDeleted['pic_kendaraan'] ?></td>
                                                         <td><?php echo $KendaraanDeleted['warna_kendaraan'] ?></td>
                                                         <td><?php echo $KendaraanDeleted['tahun_pembuatan'] ?></td>
