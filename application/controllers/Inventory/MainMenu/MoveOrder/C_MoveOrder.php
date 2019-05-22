@@ -67,7 +67,8 @@ class C_MoveOrder extends CI_Controller
 			$atr = ",khs_inv_qty_att(wdj.ORGANIZATION_ID,wro.INVENTORY_ITEM_ID,bic.ATTRIBUTE1,bic.ATTRIBUTE2,'') atr";
 		} else {
 			$shift = "and bcs.SHIFT_NUM = '".$this->input->post('shift')."'";
-			$atr = ",khs_inv_qty_atr(wdj.ORGANIZATION_ID,wro.INVENTORY_ITEM_ID,bic.ATTRIBUTE1,bic.ATTRIBUTE2,'') atr";	
+			// EDIT LUTFI
+			$atr = ",khs_inv_qty_att(wdj.ORGANIZATION_ID,wro.INVENTORY_ITEM_ID,bic.ATTRIBUTE1,bic.ATTRIBUTE2,'') atr";	
 		}
 		$date2 = explode('/', $date);
 		$datenew = $date ? $date2[1].'/'.$date2[0].'/'.$date2[2] : '';
@@ -96,7 +97,8 @@ class C_MoveOrder extends CI_Controller
 					$atr = ",khs_inv_qty_att(wdj.ORGANIZATION_ID,wro.INVENTORY_ITEM_ID,bic.ATTRIBUTE1,bic.ATTRIBUTE2,'') atr";
 					$getBody = $this->M_MoveOrder->getBody($value['WIP_ENTITY_NAME'],$atr);
 				}else {
-					$atr = ",khs_inv_qty_atr(wdj.ORGANIZATION_ID,wro.INVENTORY_ITEM_ID,bic.ATTRIBUTE1,bic.ATTRIBUTE2,'') atr";	
+					// EDIT LUTFI
+					$atr = ",khs_inv_qty_att(wdj.ORGANIZATION_ID,wro.INVENTORY_ITEM_ID,bic.ATTRIBUTE1,bic.ATTRIBUTE2,'') atr";	
 					$getBody = $this->M_MoveOrder->getBody($value['WIP_ENTITY_NAME'],$atr);	
 				}
 				$array_terkelompok[$value['WIP_ENTITY_NAME']]['header'] = $value; 

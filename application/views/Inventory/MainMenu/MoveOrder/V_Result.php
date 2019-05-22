@@ -224,7 +224,8 @@
 							<th>Gudang Asal</th>
 							<th>Unit</th>
 							<th>Jumlah Dibutuhkan</th>
-							<th>Jumlah ATR</th>
+							<!-- EDIT LUTFI -->
+							<th>Jumlah ATT</th>
 						</tr>
 					</thead>
 					<tbody>
