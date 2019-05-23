@@ -151,7 +151,8 @@
  	<script src="<?php echo base_url('assets/js/customSMM.js');?>" type="text/javascript"></script>
  	<script src="<?php echo base_url('assets/js/customME.js');?>" type="text/javascript"></script>
  	<script src="<?php echo base_url('assets/js/customOR.js');?>" type="text/javascript"></script>
-
+	<script src="<?php echo base_url('assets/js/customMOA.js');?>" type="text/javascript"></script>
+	 
  	
 <!--  	<script src="<?php echo base_url('assets/js/customOSP.js');?>" type="text/javascript"></script>
  	<script src="<?php echo base_url('assets/js/customHWM.js');?>" type="text/javascript"></script> -->
