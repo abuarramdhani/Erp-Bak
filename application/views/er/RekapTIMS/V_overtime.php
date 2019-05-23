@@ -73,16 +73,28 @@
 		                                                    </select>
 		                                                </div>
 		                                            </div>
-
+																								<div class="row" style="margin: 10px 10px;vertical-align: middle">
+																									<div class="col-md-7"></div>
+																										<div class="col-md-3">
+																											<div class="form-group" style="vertical-align: middle">
+																												<div class="checkbox">
+																													<label>
+																														<input id="toggle_button" name="detail" type="checkbox" value="1">
+																														Tampilkan Detail Data Overtime
+																													</label>
+																												</div>
+																											</div>
+																										</div>
+																								</div>
 		                                        </div>
 		                                    </div>
 		                                    <div class="panel-footer">
 		                                        <div class="row text-right">
 		                                        	<?php if (isset($export)) { ?>
-		                                        		<a target="_blank" href="<?php echo base_url('RekapTIMSPromosiPekerja/Overtime/Export/pdf_'.$export) ?>" class="btn btn-danger btn-lg">Export Pdf</a>
-		                                        		<a target="_blank" href="<?php echo base_url('RekapTIMSPromosiPekerja/Overtime/Export/xls_'.$export) ?>" class="btn btn-success btn-lg">Export Excel</a>
+		                                        		<a target="_blank" href="<?php echo base_url('RekapTIMSPromosiPekerja/Overtime/ExportPdf/pdf_'.$export) ?>" class="btn btn-danger btn-lg fa fa-file-pdf-o fa-2">Export Pdf</a>
+		                                        		<a target="_blank" href="<?php echo base_url('RekapTIMSPromosiPekerja/Overtime/ExportExcel/xls_'.$export) ?>" class="btn btn-success btn-lg fa fa-file-excel-o fa-2">Export Excel</a>
 		                                        	<?php } ?>
-		                                            <button class="btn btn-info btn-lg" type="submit">
+		                                            <button class="btn btn-info btn-md" type="submit">
 		                                                Proses
 		                                            </button>
 		                                        </div>
@@ -109,11 +121,15 @@
 														</tr>
 													</thead>
 													<tbody>
-														<?php foreach ($table as $key) { 
+														<?php foreach ($table as $key) {
 															?>
 															<tr>
 																<td><?php echo $no; ?></td>
-																<td><?php echo ucfirst($key['periode']); ?></td>
+																<td><?php if ($detail == 0) {
+																	echo $periodeM;}
+																	else {
+																		echo ucfirst($key['periode']);
+																	} ?></td>
 																<td><?php echo $key['noind'].' - '.$key['nama']; ?></td>
 																<td><?php echo $key['seksi']; ?></td>
 																<td><?php echo number_format($key['jam_kerja'],'2',',','.') ?></td>
@@ -130,7 +146,7 @@
 									</div>
 								</div>
 							</div>
-						</div>	
+						</div>
 					</div>
 				</div>
 			</div>
