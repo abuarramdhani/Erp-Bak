@@ -2516,4 +2516,9 @@ $route['HiwingMonitoring/Monitoring/getDetail'] = 'HiwingMonitoring/C_Monitoring
 $route['HiwingMonitoring/Monitoring/getDetail/(:any)'] = 'HiwingMonitoring/C_Monitoring/getDetail/$1';
 $route['HiwingMonitoring/Monitoring/showDetail'] ='HiwingMonitoring/C_Monitoring/showDetail';
 
+// ------------------------------------------------- Monitoring Omset Akuntansi ---------------------------------------------//
+$route['MonitoringOmsetAkuntansi'] = 'MonitoringOmsetAkuntansi/C_MonitoringOmsetAkuntansi';
+$route['MonitoringOmsetAkuntansi/Monitoring/(:any)'] = 'MonitoringOmsetAkuntansi/C_MonitoringOmsetAkuntansi/$1';
+$route['MonitoringOmsetAkuntansi/Monitoring/(:any)/(:any)'] = 'MonitoringOmsetAkuntansi/C_MonitoringOmsetAkuntansi/$1/$2';
+
 
