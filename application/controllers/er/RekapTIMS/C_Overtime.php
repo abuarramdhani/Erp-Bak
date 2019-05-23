@@ -62,7 +62,6 @@ class C_Overtime extends CI_Controller
 		$hubker = $this->input->post('statushubker');
 		$all = $this->input->post('statusAll');
 		$detail = $this->input->post('detail');
-		$data['detail'] = $detail;
 
 		$date = explode(' - ', $periode);
 		$tgl1 = date('M',strtotime($date[0]));
@@ -75,11 +74,11 @@ class C_Overtime extends CI_Controller
 				$shk = $this->M_rekapmssql->statusKerja();
 				foreach ($shk as $key) {
 					if ($hub == "") {
-						$hub = "'".$key['fs_noind']."'";
-						$exhub = $key['fs_noind'];
+							$hub = "'".$key['fs_noind']."'";
+							$exhub = $key['fs_noind'];
 					}else{
-						$hub .= ",'".$key['fs_noind']."'";
-						$exhub .= "-".$key['fs_noind'];
+							$hub .= ",'".$key['fs_noind']."'";
+							$exhub .= "-".$key['fs_noind'];
 					}
 				}
 			}else{
@@ -91,7 +90,6 @@ class C_Overtime extends CI_Controller
 						$hub .= ",'".$key."'";
 						$exhub .= "-".$key;
 					}
-
 				}
 			}
 
@@ -108,15 +106,13 @@ class C_Overtime extends CI_Controller
 				$kdsie = $seksi;
 			}
 			// echo $kdsie;exit();
+			$data['detail'] = $detail;
 			$prd = explode(' - ', $periode);
-			if ($kdsie !== '0') {
-				$dataOvertime = $this->M_overtime->getData($prd[0],$prd[1],$hub,$kdsie,$detail);
+			if ($kdsie == '0') {
+				$dataOvertime = $this->M_overtime->getData($prd[0],$prd[1],$hub,$kdsie=false,$detail);
 			}else{
-				$dataOvertime = $this->M_overtime->getData($prd[0],$prd[1],$hub,$detail);
+				$dataOvertime = $this->M_overtime->getData($prd[0],$prd[1],$hub,$kdsie,$detail);
 			}
-
-
-
 		// echo "<pre>";
 		// print_r($dataOvertime);
 		$user_id = $this->session->userid;
@@ -131,8 +127,6 @@ class C_Overtime extends CI_Controller
 		$data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id);
 		$data['status'] = $this->M_rekapmssql->statusKerja();
 		$data['table'] = $dataOvertime;
-
-
 		$data['export'] = $kdsie.'_'.$exhub.'_'.$periode.'_'.$detail;
 		$this->load->view('V_Header',$data);
 		$this->load->view('V_Sidemenu',$data);
@@ -167,11 +161,6 @@ class C_Overtime extends CI_Controller
 		$tgl1 = date('M',strtotime($prd[0]));
 		$tgl2 = date('M Y',strtotime($prd[1]));
 		$periodeM = $tgl1." - ".$tgl2;
-
-		// print_r($dataOvertime);
-		// print_r($tgl1);
-		// print_r($periodea);
-		// exit();
 
 			$this->load->library('excel');
 			$worksheet = $this->excel->getActiveSheet();
