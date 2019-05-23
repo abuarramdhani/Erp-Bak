@@ -14,7 +14,7 @@ class C_MonitoringOmsetAkuntansi extends CI_Controller {
 		$this->load->library('session');
 		$this->load->model('M_Index');
 		$this->load->model('SystemAdministration/MainMenu/M_user');
-        $this->load->model('MonitoringOmsetAkuntansi/M_MonitoringOmsetAkuntansi');
+        $this->load->model('MonitoringOmsetAkuntansi/M_moa');
         	  
 		 if($this->session->userdata('logged_in')!=TRUE) {
 			$this->load->helper('url');
@@ -36,7 +36,7 @@ class C_MonitoringOmsetAkuntansi extends CI_Controller {
 		$data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id);
         $data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id);
         
-        $data['query'] = $this->M_MonitoringOmsetAkuntansi->mntrgomst();
+        $data['query'] = $this->M_moa->mntrgomst();
         $user = $this->input->get('usr');
 
         $order = array();
@@ -68,7 +68,7 @@ class C_MonitoringOmsetAkuntansi extends CI_Controller {
     {
         $this->checkSession();
 
-        $data['query'] = $this->M_MonitoringOmsetAkuntansi->mntrgomst();
+        $data['query'] = $this->M_moa->mntrgomst();
         $order = array();
         foreach ($data['query'] as $key => $q) {
         if (!array_key_exists($q['ORDER_NUMBER'],$order)) {
@@ -90,10 +90,10 @@ class C_MonitoringOmsetAkuntansi extends CI_Controller {
 
         if ($start=='' && $end=='' )
         {
-            $data['query'] = $this->M_MonitoringOmsetAkuntansi->mntrgomst();
+            $data['query'] = $this->M_moa->mntrgomst();
         }
         else {
-            $data['query'] = $this->M_MonitoringOmsetAkuntansi->mntrgomst_fltr($start,$end);
+            $data['query'] = $this->M_moa->mntrgomst_fltr($start,$end);
         }
 
         $order = array();

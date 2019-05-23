@@ -2,7 +2,7 @@
 Defined('BASEPATH') or exit('No Direct Script Access Allowed');
 
 
-class M_MonitoringOmsetAkuntansi extends CI_Model
+class M_moa extends CI_Model
 {
     function __construct()
     {
