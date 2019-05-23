@@ -1,11 +1,11 @@
 <?php
 Defined('BASEPATH') or exit('No DIrect Script Access Allowed');
 /**
- * 
+ *
  */
 class C_Overtime extends CI_Controller
 {
-	
+
 	function __construct()
 	{
 		parent::__construct();
@@ -61,52 +61,62 @@ class C_Overtime extends CI_Controller
 		$seksi = $this->input->post('cmbSeksi');
 		$hubker = $this->input->post('statushubker');
 		$all = $this->input->post('statusAll');
+		$detail = $this->input->post('detail');
+		$data['detail'] = $detail;
 
-		$hub = "";
-		$exhub = "";
-		if (isset($all) and !empty($all) and $all == '1') {
-			$shk = $this->M_rekapmssql->statusKerja();
-			foreach ($shk as $key) {
-				if ($hub == "") {
-					$hub = "'".$key['fs_noind']."'";
-					$exhub = $key['fs_noind'];
-				}else{
-					$hub .= ",'".$key['fs_noind']."'";
-					$exhub .= "-".$key['fs_noind'];
+		$date = explode(' - ', $periode);
+		$tgl1 = date('M',strtotime($date[0]));
+		$tgl2 = date('M Y',strtotime($date[1]));
+		$data['periodeM'] = $tgl1." - ".$tgl2;
+
+			$hub = "";
+			$exhub = "";
+			if (isset($all) and !empty($all) and $all == '1') {
+				$shk = $this->M_rekapmssql->statusKerja();
+				foreach ($shk as $key) {
+					if ($hub == "") {
+						$hub = "'".$key['fs_noind']."'";
+						$exhub = $key['fs_noind'];
+					}else{
+						$hub .= ",'".$key['fs_noind']."'";
+						$exhub .= "-".$key['fs_noind'];
+					}
+				}
+			}else{
+				foreach ($hubker as $key) {
+					if ($hub == "") {
+						$hub = "'".$key."'";
+						$exhub = $key;
+					}else{
+						$hub .= ",'".$key."'";
+						$exhub .= "-".$key;
+					}
+
 				}
 			}
-		}else{
-			foreach ($hubker as $key) {
-				if ($hub == "") {
-					$hub = "'".$key."'";
-					$exhub = $key;
-				}else{
-					$hub .= ",'".$key."'";
-					$exhub .= "-".$key;
-				}
-				
+
+			$kdsie = $dept;
+			if (isset($bid) and !empty($bid) and substr($bid, -2) !== '00') {
+				$kdsie = $bid;
 			}
-		}
 
-		$kdsie = $dept;
-		if (isset($bid) and !empty($bid) and substr($bid, -2) !== '00') {
-			$kdsie = $bid;
-		}
+			if (isset($unit) and !empty($unit) and substr($unit, -2) !== '00') {
+				$kdsie = $unit;
+			}
 
-		if (isset($unit) and !empty($unit) and substr($unit, -2) !== '00') {
-			$kdsie = $unit;
-		}
+			if (isset($seksi) and !empty($seksi) and substr($seksi, -2) !== '00') {
+				$kdsie = $seksi;
+			}
+			// echo $kdsie;exit();
+			$prd = explode(' - ', $periode);
+			if ($kdsie !== '0') {
+				$dataOvertime = $this->M_overtime->getData($prd[0],$prd[1],$hub,$kdsie,$detail);
+			}else{
+				$dataOvertime = $this->M_overtime->getData($prd[0],$prd[1],$hub,$detail);
+			}
 
-		if (isset($seksi) and !empty($seksi) and substr($seksi, -2) !== '00') {
-			$kdsie = $seksi;
-		}
-		// echo $kdsie;exit();
-		$prd = explode(' - ', $periode);
-		if ($kdsie !== '0') {
-			$dataOvertime = $this->M_overtime->getData($prd[0],$prd[1],$hub,$kdsie);
-		}else{
-			$dataOvertime = $this->M_overtime->getData($prd[0],$prd[1],$hub);
-		}
+
+
 		// echo "<pre>";
 		// print_r($dataOvertime);
 		$user_id = $this->session->userid;
@@ -121,14 +131,18 @@ class C_Overtime extends CI_Controller
 		$data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id);
 		$data['status'] = $this->M_rekapmssql->statusKerja();
 		$data['table'] = $dataOvertime;
-		$data['export'] = $kdsie.'_'.$exhub.'_'.$periode;
+
+
+		$data['export'] = $kdsie.'_'.$exhub.'_'.$periode.'_'.$detail;
 		$this->load->view('V_Header',$data);
 		$this->load->view('V_Sidemenu',$data);
 		$this->load->view('er/RekapTIMS/V_overtime',$data);
 		$this->load->view('V_Footer',$data);
 	}
 
-	public function Export($data){
+	public function ExportExcel($data){
+		// print_r($data);
+		// exit();
 		$data = str_replace("%20", " ", $data);
 		$do = explode("_", $data);
 		$export = $do['0'];
@@ -140,18 +154,25 @@ class C_Overtime extends CI_Controller
 				$hub = "'".$key."'";
 			}else{
 				$hub .= ",'".$key."'";
-			}		
+			}
 		}
 		$prd = explode(' - ', $do['3']);
+		$detail = $do['4'];
 		if ($kdsie !== '0') {
-			$dataOvertime = $this->M_overtime->getData($prd[0],$prd[1],$hub,$kdsie);
+			$dataOvertime = $this->M_overtime->getData($prd[0],$prd[1],$hub,$kdsie,$detail);
 		}else{
-			$dataOvertime = $this->M_overtime->getData($prd[0],$prd[1],$hub);
+			$dataOvertime = $this->M_overtime->getData($prd[0],$prd[1],$hub,$detail);
 		}
 
-		// print_r($dataOvertime);
+		$tgl1 = date('M',strtotime($prd[0]));
+		$tgl2 = date('M Y',strtotime($prd[1]));
+		$periodeM = $tgl1." - ".$tgl2;
 
-		if ($export == 'xls') {
+		// print_r($dataOvertime);
+		// print_r($tgl1);
+		// print_r($periodea);
+		// exit();
+
 			$this->load->library('excel');
 			$worksheet = $this->excel->getActiveSheet();
 			$worksheet->setCellValue('A1','No');
@@ -168,7 +189,12 @@ class C_Overtime extends CI_Controller
 			$row = 2;
 			foreach ($dataOvertime as $key ) {
 				$worksheet->setCellValue('A'.$row,$angka);
-				$worksheet->setCellValue('B'.$row,$key['periode']);
+				if ($detail == 1){
+					$worksheet->setCellValue('B'.$row,$key['periode']);
+				}
+				else {
+					$worksheet->setCellValue('B'.$row,$periodeM);
+				}
 				$worksheet->setCellValue('C'.$row,$key['noind']." - ".$key['nama']);
 				$worksheet->setCellValue('D'.$row,$key['seksi']);
 				$worksheet->getStyle('E'.$row)->getNumberFormat()->setFormatCode(PHPExcel_Style_NumberFormat::FORMAT_NUMBER_COMMA_SEPARATED1);
@@ -186,34 +212,60 @@ class C_Overtime extends CI_Controller
 			}
 
 			$worksheet->getColumnDimension('A')->setWidth('5');
-			$worksheet->getColumnDimension('B')->setWidth('10');
+			$worksheet->getColumnDimension('B')->setWidth('15');
 			$worksheet->getColumnDimension('C')->setWidth('30');
 			$worksheet->getColumnDimension('D')->setWidth('30');
 
-			$filename ='Overtime_'.$kdsie.'.xls';
+			$filename ='Rekap_Overtime_'.$kdsie.'.xls';
 			header('Content-Type: aplication/vnd.ms-excel');
 			header('Content-Disposition:attachment;filename="'.$filename.'"');
 			header('Cache-Control: max-age=0');
 
 			$writer = PHPExcel_IOFactory::createWriter($this->excel,'Excel5');
 			$writer->save('php://output');
-		}else{
-			// print_r($dataOvertime);exit();
-			$this->load->library('pdf');
-
-			$pdf = $this->pdf->load();
-			$pdf = new mPDF('','A4-L',0,'',10,10,10,10,10,10);
-			$filename = 'Overtime_'.$kdsie.'.pdf';
-			
-			$dataa['dataovertime'] = $dataOvertime;
-
-			$html = $this->load->view('er/RekapTIMS/V_cetak_overtime', $dataa, true);
-
-			$stylesheet1 = file_get_contents(base_url('assets/plugins/bootstrap/3.3.7/css/bootstrap.css'));
-			$pdf->WriteHTML($stylesheet1,1);
-			$pdf->WriteHTML($html, 2);
-			$pdf->Output($filename, 'I');
 		}
-	}
-}
+
+			public function ExportPdf($data){
+				$data = str_replace("%20", " ", $data);
+				$do = explode("_", $data);
+				$export = $do['0'];
+				$kdsie = $do['1'];
+				$hubker = explode("-", $do['2']);
+				$hub = "";
+				foreach ($hubker as $key) {
+					if ($hub == "") {
+						$hub = "'".$key."'";
+					}else{
+						$hub .= ",'".$key."'";
+					}
+				}
+				$prd = explode(' - ', $do['3']);
+				$detail = $do['4'];
+				if ($kdsie !== '0') {
+					$dataOvertime = $this->M_overtime->getData($prd[0],$prd[1],$hub,$kdsie,$detail);
+				}else{
+					$dataOvertime = $this->M_overtime->getData($prd[0],$prd[1],$hub,$detail);
+				}
+
+				$tgl1 = date('M',strtotime($prd[0]));
+				$tgl2 = date('M Y',strtotime($prd[1]));
+				$periodeM = $tgl1." - ".$tgl2;
+
+				$this->load->library('pdf');
+
+				$pdf = $this->pdf->load();
+				$pdf = new mPDF('','A4-L',0,'',10,10,10,10,10,10);
+				$filename = 'Rekap_Overtime_'.$kdsie.'.pdf';
+
+				$dataa['detail'] = $detail;
+				$dataa['periodeM'] = $periodeM;
+				$dataa['dataovertime'] = $dataOvertime;
+				$html = $this->load->view('er/RekapTIMS/V_cetak_overtime', $dataa, true);
+
+				$stylesheet1 = file_get_contents(base_url('assets/plugins/bootstrap/3.3.7/css/bootstrap.css'));
+				$pdf->WriteHTML($stylesheet1,1);
+				$pdf->WriteHTML($html, 2);
+				$pdf->Output($filename, 'I');
+			}
+		}
  ?>
