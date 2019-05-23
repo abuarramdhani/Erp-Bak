@@ -418,9 +418,26 @@ $(document).ready(function(){
 	  		showMeridian:false,
 	  	});
 	  	$('.dataTable-TmpMakan').DataTable( {
-	      	dom: 'frtp',
+	  		dom:'frtp',
+	  	});
+	  	$('.dataTable-Tmp').DataTable( {
+	      	dom: 'Brtip',
+        	buttons: [
+            { extend: 
+            	'pdfHtml5',
+            	 pageSize:'A4',
+            	 orientation:'landscape',
+            	 text: 'Export Pdf',
+            	 title: 'DATA_PEKERJA_ABSEN_BERDASARKAN_TEMPAT_MAKAN',
+            	 filename : 'Data_Pekerja_Absen',
+            	 className: 'btn btn-danger btn-lg fa fa-file-pdf-o', 
+        		init: function(api, node, config) {
+       			$(node).removeClass('dt-button')
+       			}
+       		}]
 	    });
 	});
+
 
 	//Penjadwalan
 
