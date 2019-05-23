@@ -88,7 +88,11 @@
 								</table>
 							</div>
 						</div>
-
+						<style type="text/css">
+							table.dataTable tbody td.dt-body-center {
+							  text-align: center;
+							}
+						</style>
 						<div class="box box-primary box-solid">
 							<div class="box-header with-border">
 								<h3 class="box-title">User List</h3>
@@ -99,12 +103,14 @@
 							</div>
 							<div class="box-body">
 								<table class="table table-bordered" id="PresenceManagement-daftarUser-ServerSide">
-									<thead>
+									<thead class="bg-primary">
 										<tr>
 											<th class="text-center">No.</th>
 											<th class="text-center">Noind Baru</th>
 											<th class="text-center">Noind</th>
 											<th class="text-center">Nama</th>
+											<th class="text-center">Status</th>
+											<th class="text-center">Action</th>
 										</tr>
 									</thead>
 									<tbody>

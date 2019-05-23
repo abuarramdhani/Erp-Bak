@@ -485,4 +485,11 @@
 	    	$result = $this->personalia->query($sql);
 	    	return $result->result_array();
 	    }
+
+	    public function updatePrivilegeuser($noind_baru,$status){
+	    	$sql = "update db_datapresensi.tb_user set privilege = $status where noind_baru = $noind_baru";
+	    	
+	    	$this->quick->query($sql);
+	    	return 1;
+	    }
  	}
