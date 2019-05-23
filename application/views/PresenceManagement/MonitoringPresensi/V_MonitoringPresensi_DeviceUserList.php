@@ -70,6 +70,7 @@
 											<th class="text-center" style="width: 20%">Seksi</th>
 											<th class="text-center" style="width: 5%">Keluar</th>
 											<th class="text-center" style="width: 10%">Lokasi Kerja</th>
+											<th class="text-center" style="width: 10%">Privilege</th>
 											<th class="text-center" style="width: 10%">Action</th>
 										</tr>
 									</thead>
@@ -89,11 +90,21 @@
 											<td><?php echo $user_access['seksi'];?></td>
 											<td><?php echo $user_access['keluar'];?></td>
 											<td><?php echo $user_access['nama_lokasi_kerja'];?></td>
+											<td><?php if ($user_access['privilege'] == '0') {
+												echo "User";
+											}elseif($user_access['privilege'] == '3'){
+												echo "Admin";
+											}else{
+												echo "Kosong";
+											}; ?></td>
 											<td class="text-center">
 												<a title="Check Data Fingercode" class="modalcheckfinger btn btn-info btn-sm"  href="<?php echo site_URL('PresenceManagement/MonitoringPresensi/Show/'.$user_access['noind_baru']) ?>"><i class="fa fa-hand-paper-o"></i> </a> 
 												<!-- <a type="button" class="btn btn-success btn-sm" href="<?php echo base_url('PresenceManagement/MonitoringPresensi/device_user_list'.'/'.$encrypted_string);?>" data-toggle="tooltip" title="Finger List">
 													<i class="fa fa-hand-pointer-o"></i>
 												</a> -->
+												<a type="button" class="btn btn-warning btn-sm" href="<?php echo base_url('PresenceManagement/MonitoringPresensi/device_user_change_status'.'/'.$encrypted_string);?>" data-toggle="tooltip" title="Ganti Status User">
+													<i class="fa fa-wrench"></i>
+												</a>
 												<a type="button" class="btn btn-danger btn-sm" href="<?php echo base_url('PresenceManagement/MonitoringPresensi/device_user_delete'.'/'.$encrypted_string);?>" data-toggle="tooltip" title="Delete User From This Device" onclick="return confirm('Apakah Anda ingin menghapus akses presensi <?php echo $user_access['nama'].' ('.$user_access['noind'].')';?> di lokasi ini?');">
 													<i class="fa fa-times"></i>
 												</a>
