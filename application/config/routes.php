@@ -556,6 +556,7 @@ $route['CateringManagement/DetailUrutanJdwl'] 	= 'CateringManagement/Setup/C_Det
 $route['CateringManagement/DetailUrutanJdwl/Create'] 	= 'CateringManagement/Setup/C_DetailUrutanJdwl/Create';
 $route['CateringManagement/DetailUrutanJdwl/Edit/(:any)/(:any)'] 	= 'CateringManagement/Setup/C_DetailUrutanJdwl/Edit/$1/$2';
 $route['CateringManagement/DetailUrutanJdwl/Delete/(:any)/(:any)'] 	= 'CateringManagement/Setup/C_DetailUrutanJdwl/Delete/$1/$2';
+
 //-----------------------------------Catering Management -Penjadwalan-----------------------------------------------//
 $route['CateringManagement/PenjadwalanCatering'] = 'CateringManagement/Penjadwalan/C_PenjadwalanCatering';
 $route['CateringManagement/PenjadwalanCatering/Create/(:any)/(:any)'] = 'CateringManagement/Penjadwalan/C_PenjadwalanCatering/Create/$1/$2';
@@ -601,6 +602,15 @@ $route['CateringManagement/Cetak/JadwalPengiriman'] = 'CateringManagement/Cetak/
 $route['CateringManagement/Cetak/JadwalPengiriman/Read'] = 'CateringManagement/Cetak/C_JadwalPengiriman/Read';
 $route['CateringManagement/Cetak/JadwalPengiriman/Cetak'] = 'CateringManagement/Cetak/C_JadwalPengiriman/Cetak';
 $route['CateringManagement/Cetak/JadwalPengiriman/Save'] = 'CateringManagement/Cetak/C_JadwalPengiriman/Save';
+
+//------------------------------------CateringManagement - Extra----------------------------------------------------------//
+$route['CateringManagement/Extra/LihatAbsen'] = 'CateringManagement/Extra/C_RekapAbsen';
+$route['CateringManagement/Extra/LihatAbsen/(:any)'] = 'CateringManagement/Extra/C_RekapAbsen/$1';
+$route['CateringManagement/Extra/LihatAbsen/(:any)/(:any)'] = 'CateringManagement/Extra/C_RekapAbsen/$1/$2';
+
+$route['CateringManagement/Extra/EditTempatMakan'] = 'CateringManagement/Extra/C_EditTempatMakan';
+$route['CateringManagement/Extra/EditTempatMakan/(:any)'] = 'CateringManagement/Extra/C_EditTempatMakan/$1';
+$route['CateringManagement/Extra/EditTempatMakan/(:any)/(:any)'] = 'CateringManagement/Extra/C_EditTempatMakan/$1/$2';
 
 //------------------------------------CateringManagement - Pesanan----------------------------------------------------------//
 $route['CateringManagement/DataPesanan'] = 'CateringManagement/Pesanan/C_Pesanan';
