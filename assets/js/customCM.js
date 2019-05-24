@@ -421,7 +421,7 @@ $(document).ready(function(){
 	  		dom:'frtp',
 	  	});
 	  	$('.dataTable-Tmp').DataTable( {
-	      	dom: 'Brtip',
+	      	dom: 'Blrtip',
         	buttons: [
             { extend: 
             	'pdfHtml5',

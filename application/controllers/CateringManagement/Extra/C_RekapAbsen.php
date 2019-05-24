@@ -58,6 +58,10 @@ class C_RekapAbsen extends CI_Controller
 
 		$user_id = $this->session->userid;
 
+		// $date = explode( ' - ' , $tanggal);
+		$tgl1 = date('d/M/Y',strtotime($tanggal));
+		$data['tanggalm'] = $tgl1;
+
 		$data['Title'] = 'Rekap Absen';
 		$data['Menu'] = 'Extra';
 		$data['SubMenuOne'] = 'Rekap Absen';
