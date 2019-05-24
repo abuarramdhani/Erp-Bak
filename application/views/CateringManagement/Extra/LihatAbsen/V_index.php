@@ -111,7 +111,7 @@
                                         ?>
                                         <tr>
                                           <td><?php echo $no; ?></td>
-                                          <td><?php echo $key['tanggal']?></td>
+                                          <td><?php echo $tanggalm ?></td>
                                           <td><?php echo $key['noind']; ?></td>
                                           <td><?php echo $key['nama']; ?></td>
                                           <td><?php echo $key['wkt1']; ?></td>
