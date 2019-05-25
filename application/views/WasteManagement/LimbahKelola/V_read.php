@@ -75,9 +75,9 @@
 													</div>
 												</div>
 												<div class="form-group">
-													<label for="txtKet" class="form-label col-lg-12">Keterangan</label>
+													<label for="txtLokasi" class="form-label col-lg-12">Lokasi Kerja</label>
 													<div class="col-lg-12">
-														<textarea name="txtKet" class="form-control" disabled><?php echo $LimbahKirim['0']['ket_kirim']; ?></textarea>
+														<input type="text" name="txtlokasi" value="<?php echo $LimbahKirim['0']['noind_location']; ?>" class="form-control" disabled>
 													</div>
 												</div>
 												<div class="form-group">
@@ -88,6 +88,12 @@
 												</div>
 											</div>
 										</div>
+												<div class="form-group">
+													<label for="txtKet" class="form-label col-lg-12">Keterangan</label>
+													<div class="col-lg-12">
+														<textarea name="txtKet" class="form-control" disabled><?php echo $LimbahKirim['0']['ket_kirim']; ?></textarea>
+													</div>
+												</div>
 										<div class="row">
 											<div class="col-lg-12 text-right">
 												<?php 

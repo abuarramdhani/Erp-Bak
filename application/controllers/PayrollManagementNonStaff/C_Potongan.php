@@ -345,6 +345,52 @@ class C_Potongan extends CI_Controller
 		echo $json;
 	}
 
+	public function downloadExcel()
+    {
+		$filter = $this->input->get('filter');
+		$column_table = array('', 'noind', 'employee_name', 'bulan_gaji', 'tahun_gaji', 'pot_lebih_bayar', 'pot_gp', 'pot_dl', 
+			'pot_duka', 'pot_koperasi', 'pot_hutang_lain', 'pot_tkp');
+		$column_view = array('No', 'Noind', 'Nama', 'Bulan Gaji', 'Tahun Gaji', 'Pot Lebih Bayar', 'Pot Gp', 'Pot Dl', 
+			'Pot Duka', 'Pot Koperasi', 'Pot Hutang Lain', 'Pot Thp');
+		$data_table = $this->M_potongan->getPotonganSearch($filter)->result_array();
+
+		$this->load->library("Excel");
+		$objPHPExcel = new PHPExcel();
+		$objPHPExcel->setActiveSheetIndex(0);
+		$column = 0;
+
+		foreach($column_view as $cv){
+			$objPHPExcel->getActiveSheet()->setCellValueByColumnAndRow($column, 1, $cv);
+			$column++;
+		}
+
+		$excel_row = 2;
+		foreach($data_table as $dt){
+			$excel_col = 0;
+			foreach($column_table as $ct){
+				if($ct == ''){
+					$objPHPExcel->getActiveSheet()->setCellValueByColumnAndRow($excel_col, $excel_row, $excel_row-1);
+				}else{
+					$objPHPExcel->getActiveSheet()->setCellValueByColumnAndRow($excel_col, $excel_row, $dt[$ct]);
+				}
+				$excel_col++;
+			}
+			$excel_row++;
+		}
+		
+		$objPHPExcel->getActiveSheet()->setTitle('Quick ERP');      
+		$objWriter = PHPExcel_IOFactory::createWriter($objPHPExcel, 'Excel2007');
+ 
+		header("Last-Modified: " . gmdate("D, d M Y H:i:s") . " GMT");
+		header("Cache-Control: no-store, no-cache, must-revalidate");
+		header("Cache-Control: post-check=0, pre-check=0", false);
+		header("Pragma: no-cache");
+		header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
+
+		header('Content-Disposition: attachment;filename="Potongan.xlsx"');
+		$objWriter->save("php://output");
+	}
+
 }
 
 /* End of file C_Potongan.php */

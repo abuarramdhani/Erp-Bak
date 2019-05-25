@@ -39,9 +39,16 @@ class M_kasiepembelian extends CI_Model {
         return $run->num_rows();
     }
 
+  function get_ora_blob_value($value)
+      {
+          $size = $value->size();
+          $result = $value->read($size);
+          return ($result)?$result:NULL;
+      }
+
     public function showDetailPerBatch($batchNumber){
         $oracle = $this->load->database('oracle',true);
-        $sql = "SELECT distinct ami.invoice_id invoice_id,
+        $sql = "SELECT ami.invoice_id invoice_id,
                          ami.vendor_name vendor_name,
                          ami.invoice_number invoice_number, 
                          ami.invoice_date invoice_date, 
@@ -50,26 +57,51 @@ class M_kasiepembelian extends CI_Model {
                          ami.last_purchasing_invoice_status status, 
                          ami.reason reason, 
                          ami.last_finance_invoice_status finance_status,
-                         --aipo.po_number po_number,
-                         poh.attribute2 ppn,
                          aiac2.action_date action_date,
                          ami.batch_number batch_number,
                          ami.last_purchasing_invoice_status last_purchasing_invoice_status,
                          ami.info info,
                          ami.invoice_category invoice_category,
                          ami.nominal_dpp nominal_dpp,
-                         ami.jenis_jasa jenis_jasa
+                         ami.jenis_jasa jenis_jasa,
+                         aaipo.po_detail po_detail
                 FROM khs_ap_monitoring_invoice ami,
-                     khs_ap_invoice_purchase_order aipo,
-                     po_headers_all poh,
-                     (select distinct min(action_date) over (partition by invoice_id) action_date, invoice_id from khs_ap_invoice_action_detail aiac) aiac2
-                WHERE batch_number = '$batchNumber'
-                and ami.invoice_id = aipo.invoice_id
-                and poh.segment1 = aipo.po_number
-                and aiac2.invoice_id = ami.invoice_id
-                ORDER BY vendor_name, invoice_number";
+                     (SELECT   aipo.invoice_id,
+                               REPLACE
+                                  ((RTRIM
+                                       (XMLAGG (XMLELEMENT (e,
+                                                               TO_CHAR
+                                                                      (   aipo.po_number
+                                                                       || '-'
+                                                                       || aipo.line_number
+                                                                       || '-'
+                                                                       || aipo.lppb_number
+                                                                      )
+                                                            || '@'
+                                                           )
+                                               ).EXTRACT ('//text()').getclobval(),
+                                        '@'
+                                       )
+                                   ),
+                                   '@',
+                                   '<br>'
+                                  ) po_detail
+                          FROM (SELECT DISTINCT invoice_id, po_number, line_number, lppb_number
+                                                      FROM khs_ap_invoice_purchase_order) aipo
+                      GROUP BY aipo.invoice_id) aaipo,
+                      (select distinct min(action_date) over (partition by invoice_id) action_date, invoice_id 
+                      from khs_ap_invoice_action_detail aiac) aiac2
+               WHERE aaipo.invoice_id = ami.invoice_id
+                 AND ami.batch_number = '$batchNumber'
+                 and aiac2.invoice_id = ami.invoice_id
+            ORDER BY vendor_name, invoice_number";
         $query = $oracle->query($sql);
-        return $query->result_array();
+        $arr = $query->result_array();
+        foreach ($arr as $key => $value) {
+          $arr[$key]['PO_DETAIL'] = $this->get_ora_blob_value($arr[$key]['PO_DETAIL']);
+        }
+       
+        return $arr;
     }
 
     public function getUnitPrice($invoice_id){
@@ -234,28 +266,61 @@ class M_kasiepembelian extends CI_Model {
 
     public function finish_detail($batchNumber){
         $oracle = $this->load->database('oracle',true);
-        $sql = "SELECT distinct ami.invoice_id invoice_id,
+        $sql = "SELECT ami.invoice_id invoice_id,
                          ami.vendor_name vendor_name,
                          ami.invoice_number invoice_number, 
                          ami.invoice_date invoice_date, 
                          ami.tax_invoice_number tax_invoice_number,
                          ami.invoice_amount invoice_amount, 
-                         poh.attribute2 ppn,
-                         ami.last_status_purchasing_date last_status_purchasing_date,
+                         ami.last_purchasing_invoice_status status, 
+                         ami.reason reason, 
+                         ami.last_finance_invoice_status finance_status,
+                         aiac2.action_date action_date,
                          ami.batch_number batch_number,
+                         ami.last_purchasing_invoice_status last_purchasing_invoice_status,
                          ami.info info,
                          ami.invoice_category invoice_category,
                          ami.nominal_dpp nominal_dpp,
-                         ami.jenis_jasa jenis_jasa
+                         ami.jenis_jasa jenis_jasa,
+                         aaipo.po_detail po_detail,
+                         ami.last_status_purchasing_date last_status_purchasing_date
                 FROM khs_ap_monitoring_invoice ami,
-                     khs_ap_invoice_purchase_order aipo,
-                     po_headers_all poh
-                WHERE ami.batch_number = '$batchNumber'
-                and ami.invoice_id = aipo.invoice_id
-                and poh.segment1 = aipo.po_number
-                ORDER BY vendor_name, invoice_number";
+                     (SELECT   aipo.invoice_id,
+                               REPLACE
+                                  ((RTRIM
+                                       (XMLAGG (XMLELEMENT (e,
+                                                               TO_CHAR
+                                                                      (   aipo.po_number
+                                                                       || '-'
+                                                                       || aipo.line_number
+                                                                       || '-'
+                                                                       || aipo.lppb_number
+                                                                      )
+                                                            || '@'
+                                                           )
+                                               ).EXTRACT ('//text()').getclobval(),
+                                        '@'
+                                       )
+                                   ),
+                                   '@',
+                                   '<br>'
+                                  ) po_detail
+                          FROM (SELECT DISTINCT invoice_id, po_number, line_number, lppb_number
+                                                      FROM khs_ap_invoice_purchase_order) aipo
+                      GROUP BY aipo.invoice_id) aaipo,
+                      (select distinct min(action_date) over (partition by invoice_id) action_date, invoice_id 
+                      from khs_ap_invoice_action_detail aiac) aiac2
+               WHERE aaipo.invoice_id = ami.invoice_id
+                 AND ami.batch_number = '$batchNumber'
+                 and aiac2.invoice_id = ami.invoice_id
+            ORDER BY vendor_name, invoice_number";
         $query = $oracle->query($sql);
-        return $query->result_array();
+        $arr = $query->result_array();
+        foreach ($arr as $key => $value) {
+          $arr[$key]['PO_DETAIL'] = $this->get_ora_blob_value($arr[$key]['PO_DETAIL']);
+        }
+       
+        return $arr;
     }
 
     public function finish_detail_invoice($invoice_id)
@@ -384,6 +449,19 @@ class M_kasiepembelian extends CI_Model {
       $sql = "INSERT INTO khs_ap_invoice_action_detail (invoice_id,action_date,purchasing_status,finance_status)
                 VALUES('$id', to_date('$date', 'DD/MM/YYYY HH24:MI:SS'),'1','0')";
       $run = $erp_db->query($sql);
+    }
+
+    public function checkPPN($po_numberInv){
+        $oracle = $this->load->database("oracle",TRUE);
+        $query = "SELECT distinct poh.attribute2 ppn
+                            from PO_HEADERS_ALL POH
+                            ,PO_LINES_ALL POL
+                            ,PO_LINE_LOCATIONS_ALL PLL
+                        where poh.po_header_id(+) = pol.po_header_id
+                        AND POL.PO_LINE_ID (+) = PLL.PO_LINE_ID
+                        AND POH.SEGMENT1 = '$po_numberInv' ";
+        $runQuery = $oracle->query($query);
+        return $runQuery->result_array();
     }
 
 }

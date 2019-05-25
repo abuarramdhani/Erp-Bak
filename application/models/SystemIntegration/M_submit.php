@@ -161,7 +161,12 @@ class M_submit extends CI_Model
 	}
 
 	function getEmailTemplate($id){
-		$query = $this->db->get_where('si.si_email_template',array('status' => $id));
+		$query = $this->db->get_where('si.si_email_template',array('status' => $id, 'platform' => 1));
+		return $query->result_array();
+	}
+
+	function getPidginTemplate($id){
+		$query = $this->db->get_where('si.si_email_template',array('status' => $id, 'platform' => 2));
 		return $query->result_array();
 	}
 
@@ -263,4 +268,22 @@ class M_submit extends CI_Model
 		return $jabatan2;
 	}
 
+	function getEmployeeName($employee_code) {
+		$name = $this->db->select('employee_name')->where('employee_code', $employee_code)->get('er.er_employee_all');
+		return($name->row()) ? $name->row()->employee_name : '';
+	}
+
+	function getKaizenAprrover($kaizen_id, $status) {
+		$query = $this->db->where('kaizen_id', $kaizen_id)->where('status', $status)->get('si.si_approval');
+		return ($query->result_array()) ? $query->result_array() : '';
+	}
+
+	function getSessionEmployeeName($user_id) {
+		$employee_code = $this->db->select('user_name')->where('user_id', $user_id)->get('sys.sys_user')->row()->user_name;
+		if($employee_code) {
+			$employee_name = $this->db->select('employee_name')->where('employee_code', $employee_code)->get('er.er_employee_all')->row()->employee_name;
+			return ($employee_name) ? $employee_name : '';
+		}
+		return '';
+	}
 }

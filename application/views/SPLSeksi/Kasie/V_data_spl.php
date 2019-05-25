@@ -21,7 +21,7 @@
 
 		<div class="row">
 			<section class="col-lg-12 connectedSortable">
-				<form class="form-horizontal" action="<?php echo site_URL('SPLSeksi/C_SPLKasie/data_spl_submit'); ?>" method="post" enctype="multipart/form-data">
+				<form class="form-horizontal" action="" method="post" enctype="multipart/form-data">
 					<div class="box box-primary">
 						<div class="box-header">
 							<div class="row">
@@ -102,13 +102,14 @@
 									
 									<div class="form-group">
 										<div class="col-sm-12">
-											<button type="submit" class="btn btn-primary pull-right"> <i class="fa fa-save"></i> Proses</button>
-											<button type="button" id="spl-approval" style="margin-right:3px" class="btn btn-primary pull-right"> <i class="fa fa-search"></i> Cari</button>
+											<!-- <button type="submit" class="btn btn-primary pull-right"> <i class="fa fa-save"></i> Proses</button> -->
+											<input type="text" id="txt_ses" value="<?php echo $this->session->userid; ?>" hidden>
+											<button type="button" class="btn btn-primary pull-right" data-toggle="modal" data-target="#ProsesDialog"><i class="fa fa-save"></i> Proses</button>
+											<button type="button" id="spl-approval-0" style="margin-right:3px" class="btn btn-primary pull-right"> <i class="fa fa-search"></i> Cari</button>
 											<button type="reset" style="margin-right:3px" class="btn btn-primary pull-right" onclick="location.reload()"> <i class="fa fa-refresh"></i> Reset</button>
 											<img src="<?php echo base_url('assets/img/gif/loading6.gif') ?>" class="pull-right spl-loading hidden" width="33px" height="33px" style="margin-right:3px">
 										</div>
 									</div>
-									
 								</div>
 								
 							</div>
@@ -142,6 +143,34 @@
 							</table>
 						</div>
 					</div>
+
+					<div id="ProsesDialog" class="modal fade" role="dialog">
+						<div class="modal-dialog">
+							<div class="modal-content">
+								<div class="modal-header">
+									<button type="button" class="close" data-dismiss="modal">&times;</button>
+									<h4 class="modal-title">Proses SPL</h4>
+								</div>
+								<div class="modal-body">
+									Berikan alasan anda :
+									<textarea class="form-control" style="min-width: 75%" id="spl_tex_proses"></textarea>
+								</div>
+								<div class="modal-footer">
+									<a href="finspot:FingerspotVer;<?php echo base64_encode(base_url().'ALK/Approve/fp_proces?userid='.$this->session->userid.'&stat=31&data=&ket='); ?>" type="submit" id="spl_proses_reject" class="btn btn-danger"><i class="fa fa-exclamation-circle"></i> Reject</a>
+									<a href="finspot:FingerspotVer;<?php echo base64_encode(base_url().'ALK/Approve/fp_proces?userid='.$this->session->userid.'&stat=21&data=&ket='); ?>" type="submit" id="spl_proses_approve" class="btn btn-success"><i class="fa fa-check-square"></i> Approve</a>
+								</div>
+							</div>
+						</div>							
+					</div>
+
+					<script>
+						// need some idea
+						window.onfocus = function() {
+						  console.log('Got focus');
+						  window.location.reload();
+						}
+					</script>
+
 				</form>
 			</section>
 		</div>

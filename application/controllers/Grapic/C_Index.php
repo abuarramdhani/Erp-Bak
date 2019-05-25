@@ -1202,6 +1202,7 @@ class C_Index extends CI_Controller
 
 	public function input()
 	{
+	    set_time_limit(0);
 		$this->load->library('upload');
 		$nama_materi = $this->input->post('fileToUpload');
 		// print_r($_FILES['fileToUpload']['name']);

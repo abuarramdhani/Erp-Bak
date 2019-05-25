@@ -30,8 +30,9 @@
 						<div class="col-lg-3" style="float:left; height: 100%; font-size: 13px; padding: 10px 8px 10px 14px; background: #fff; border: 1px solid #ccc; border-radius: 6px;  position: relative; overflow:hidden">
 							<div id="filterid" style="vertical-align: middle;"></div>
 						</div>
-						<div class="col-lg-3"></div>
-						<div class="col-lg-3"></div>
+						<div class="col-lg-2"></div>
+						<div class="col-lg-2"><span class="btn btn-info btn-sm" style="margin-top: 7px;" id="ApprAll">Set all this page APPROVED</span></div>
+						<div class="col-lg-2"><span class="btn btn-danger btn-sm" style="margin-top: 7px;" id="RejAll">Set all this page REJECTED</span></div>
 					</div>
 				</div>
 				<br />
@@ -84,7 +85,7 @@
 														<td><input type="hidden" name="desc[]" id="desc" value="<?php echo $row['DESCRIPTION']?>"><?php echo $row['DESCRIPTION']?></td>
 														<td><?php echo $row['PRIMARY_UOM_CODE']?></td>
 														<td><?php echo $row['SECONDARY_UOM_CODE']?></td>
-														<td><?php echo $row['FULL_NAME']?></td>
+														<td><input type="hidden" name="fullname[]" id="fullname" value="<?php echo $row['PERSON_ID']?>"><?php echo $row['FULL_NAME']?></td>
 														<td><input type="hidden" name="preproc[]" id="preproc" value="<?php echo $row['PREPROCESSING_LEAD_TIME']?>"><?php echo $row['PREPROCESSING_LEAD_TIME']?></td>
 														<td><input type="hidden" name="ppo[]" id="ppo" value="<?php echo $row['PREPARATION_PO']?>"><?php echo $row['PREPARATION_PO']?></td>
 														<td><input type="hidden" name="deliver[]" id="deliver" value="<?php echo $row['DELIVERY']?>"><?php echo $row['DELIVERY']?></td>

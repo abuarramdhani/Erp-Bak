@@ -86,6 +86,7 @@ class M_targetbenda extends CI_Model
 
             ";
         }
+
         $sql="
             SELECT * FROM pr.pr_target_benda ptb
             LEFT JOIN (SELECT distinct substring(section_code, 0, 7) as section_code, rtrim(unit_name) FROM er.er_section WHERE unit_name != '-') as t(section_code_substr, unit_name) ON section_code_substr = ptb.kodesie
@@ -114,6 +115,12 @@ class M_targetbenda extends CI_Model
         $this->db->where('target_benda_id', $id);
         $this->db->delete('pr.pr_target_benda');
     }
+
+    public function clearData()
+    {
+        $this->db->empty_table('pr.pr_target_benda');
+    }
+
 }
 
 /* End of file M_targetbenda.php */

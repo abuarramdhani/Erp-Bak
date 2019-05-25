@@ -51,6 +51,16 @@ class M_uploadpph extends CI_Model
 		return $query->result_array();
 	}
 
+	function getDataBatchSubtotal($batch)
+	{
+		$sql = "SELECT jenis_pph, tarif_pph, nama_vendor, no_npwp, no_invoice, max(tgl_transaksi) tgl_transaksi, bank, currency,SUM(dpp) dpp, SUM(pph) pph, jenis_jasa, lokasi, max(tgl_invoice) tgl_invoice
+			FROM ap.ap_tax_data WHERE batch_num = '$batch' 
+			group by jenis_pph, tarif_pph, nama_vendor, no_npwp, no_invoice, bank, currency,jenis_jasa, lokasi, no_urut
+			order by no_urut";
+		$query = $this->db->query($sql);
+		return $query->result_array();
+	}
+
 	function getMaxNumb($param,$lokasi)
 	{
 		$sql = "SELECT MAX(no_urut) nomor

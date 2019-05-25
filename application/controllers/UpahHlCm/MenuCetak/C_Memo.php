@@ -56,6 +56,8 @@ class C_Memo extends CI_Controller {
 		$data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id);
 		$data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id);
 		
+		$data['periodeGaji'] = $this->M_prosesgaji->getCutOffGaji();
+
 		$this->load->view('V_Header',$data);
 		$this->load->view('V_Sidemenu',$data);
 		$this->load->view('UpahHlCm/MenuCetak/V_Memo',$data);
@@ -84,7 +86,7 @@ class C_Memo extends CI_Controller {
 		$tgl = date('F-Y',strtotime($tanggalawal));
 		$noind = "";
 
-		$kom = $this->M_prosesgaji->prosesHitung($tanggalawal,$tanggalakhir,$noind);
+		$kom = $this->M_prosesgaji->getHlcmSlipGajiPrint($tanggalawal,$tanggalakhir,$noind);
 		$nom = $this->M_prosesgaji->ambilNominalGaji();
 
 		
@@ -100,49 +102,32 @@ class C_Memo extends CI_Controller {
 		$total_t_serabutan ="";
 		$total_t_tenaga ="";
 		foreach ($kom as $key) {
-			$gpokok = $key['gpokok'];
-			$um = $key['um'];
-			$lembur = $key['lembur'];
-			for ($i=0; $i < 8; $i++) { 
-				if ($key['lokasi_kerja']==$nom[$i]['lokasi_kerja'] and $key['kdpekerjaan']==$nom[$i]['kode_pekerjaan']) {
-					$nominalgpokok = $nom[$i]['nominal'];
-				}
-				if ($key['lokasi_kerja']==$nom[$i]['lokasi_kerja']) {
-					$nominalum = $nom[$i]['uang_makan'];
-				}
-			}
-			
-			$gajipokok = $gpokok*$nominalgpokok;
-			$uangmakan = $um*$nominalum;
-			$gajilembur = $lembur*($nominalgpokok/7);
-			$total = $gajipokok+$gajilembur+$uangmakan;
-			$total =  round($total);
 			if ($key['lokasi_kerja'] == '01') {
 				if ($key['pekerjaan'] == 'KEPALA TUKANG') {
-					$total_p_ktukang = $total_p_ktukang+$total;
+					$total_p_ktukang += $key['total_bayar'];
 				}
 				if ($key['pekerjaan'] == 'TUKANG') {
-					$total_p_tukang = $total_p_tukang+$total;
+					$total_p_tukang += $key['total_bayar'];
 				}
 				if ($key['pekerjaan'] == 'SERABUTAN') {
-					$total_p_serabutan = $total_p_serabutan+$total;
+					$total_p_serabutan += $key['total_bayar'];
 				}
 				if ($key['pekerjaan'] == 'TENAGA') {
-					$total_p_tenaga = $total_p_tenaga+$total;
+					$total_p_tenaga += $key['total_bayar'];
 				}
 			}
 			if ($key['lokasi_kerja'] == '02') {
 				if ($key['pekerjaan'] == 'KEPALA TUKANG') {
-					$total_t_ktukang = $total_t_ktukang+$total;
+					$total_t_ktukang += $key['total_bayar'];
 				}
 				if ($key['pekerjaan'] == 'TUKANG') {
-					$total_t_tukang = $total_t_tukang+$total;
+					$total_t_tukang += $key['total_bayar'];
 				}
 				if ($key['pekerjaan'] == 'SERABUTAN') {
-					$total_t_serabutan = $total_t_serabutan+$total;
+					$total_t_serabutan += $key['total_bayar'];
 				}
 				if ($key['pekerjaan'] == 'TENAGA') {
-					$total_t_tenaga = $total_t_tenaga+$total;
+					$total_t_tenaga += $key['total_bayar'];
 				}
 			}
 		}

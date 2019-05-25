@@ -35,6 +35,12 @@
                                 <a href="<?php echo site_url('PayrollManagementNonStaff/ProsesGaji/DataLKHSeksi/download_data/') ?>" data-toggle="tooltip" data-placement="left" style="float:right;margin-right:1%;margin-top:-0.5%;" alt="Download Data From Database" title="Download Data From Database" >
                                     <button type="button" class="btn btn-default btn-sm"><i class="fa fa-database fa-2x"></i></button>
                                 </a>
+                                <a href="<?php echo site_url('PayrollManagementNonStaff/ProsesGaji/DataLKHSeksi/chart_ott/') ?>" data-toggle="tooltip" data-placement="left" style="float:right;margin-right:1%;margin-top:-0.5%;" alt="Download Data as Graph" title="Download Grafik Ott" >
+                                    <button type="button" class="btn btn-default btn-sm"><i class="fa fa-file-pdf-o fa-2x"></i></button>
+                                </a>
+                                <a href="<?php echo site_url('PayrollManagementNonStaff/ProsesGaji/DataLKHSeksi/cek_data_lkh/') ?>" data-toggle="tooltip" data-placement="left" style="float:right;margin-right:1%;margin-top:-0.5%;" alt="Cek Data LKH" title="Cek Data LKH" >
+                                    <button type="button" class="btn btn-default btn-sm"><i class="fa fa-adjust fa-2x"></i></button>
+                                </a>
                             </div>
                             <div class="box-body">
                                 <div class="table-responsive">
@@ -57,12 +63,6 @@
                                                 <th class="text-center" width="100px">Status</th>
                                                 <th class="text-center" width="200px">Kode Barang Target Sementara</th>
                                                 <th class="text-center" width="200px">Kode Proses Target Sementara</th>
-                                                <th class="text-center" width="200px">Dies</th>
-                                                <th class="text-center" width="200px">Non Dies</th>
-                                                <th class="text-center" width="200px">Stopper</th>
-                                                <th class="text-center" width="200px">Pisau</th>
-                                                <th class="text-center" width="200px">Lain-Lain</th>
-                                                <th class="text-center" width="200px">Non Setting</th>
 											</tr>
                                         </thead>
                                     </table>

@@ -38,9 +38,22 @@
 	</style>
 
 <body>
-	
 <?= $urut != '0' ? '<pagebreak resetpagenum="1" />' : '' ?>
 	<table class="table table-bordered hor-center ver-top" >
+	<tr style="background-color: #f0f0f0;vertical-align: middle;" class="table-head">
+				<td style="vertical-align: middle;" rowspan="2" width="4%">No</td>
+				<td style="vertical-align: middle;" rowspan="2" width="16%">Kode Part</td>
+				<td style="vertical-align: middle;" rowspan="2" width="37%">Nama Part</td>
+				<td style="vertical-align: middle;" rowspan="2" width="5%">UOM</td>
+				<td style="vertical-align: middle;" rowspan="2" width="5%">QTY / Unit</td>
+				<td style="vertical-align: middle;" colspan="2">Total Qty</td>
+				<td style="vertical-align: middle;" rowspan="2" width="7%">TTD</td>
+				<td style="vertical-align: middle;" rowspan="2" width="14%">Lokasi</td>
+			</tr>
+			<tr style="background-color: #f0f0f0;" class="table-head">
+				<td width="6%">Minta</td>
+				<td width="6%">Serah</td>
+			</tr>
 	<?php 
 	$no=1;
 	foreach ($dataall['line'] as $k => $ln) {

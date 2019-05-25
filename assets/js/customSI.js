@@ -310,26 +310,22 @@ $('input#checkKaizenKomp').on('ifChecked',function(){
   }
 });
 
-$('#SIlaporkanKai').click(function(){
+$('.SIlaporkanKai').off('click').click(function() {
   var kaizen_id = $(this).attr('data-id');
   var request = $.ajax ({
-        url : baseurl+"SystemIntegration/KaizenGenerator/MyKaizen/report",
-        data : {
-            id: kaizen_id
-        },
-        type : "POST",
-        dataType: "html"
-    });
-    $(this).parent().html('<img id="dingdingload" src="'+baseurl+'assets/img/gif/spinner.gif">');
-
-    request.done(function(output) {
-       $('#dingdingload').parent().html(' <span style="background-color: #f8f9fa" class="label btn-light btn-real-dis" >Laporkan <b class="fa fa-check-circle text-info"></b>'+
-                          '</span><br>('+output+')');     
-       $('#SIpdf').removeClass('btn-default disabled');          
-       $('#SIpdf').addClass('btn-info');          
-
-               
-    });
+      url : baseurl+"SystemIntegration/KaizenGenerator/MyKaizen/report",
+      data : {
+          id: kaizen_id
+      },
+      type : "POST",
+      dataType: "html"
+  });
+  $(this).parent().html('<img id="dingdingload" src="'+baseurl+'assets/img/gif/spinner.gif">');
+  request.done(function(output) {
+      $('#dingdingload').parent().html(' <span style="background-color: #f8f9fa" class="label btn-light btn-real-dis" >Laporkan <b class="fa fa-check-circle text-info"></b>'+'</span><br>('+output+')');     
+      $('#SIpdf').removeClass('btn-default disabled');          
+      $('#SIpdf').addClass('btn-info');
+  });
 });
 
 $(document).ready(function(){

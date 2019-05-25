@@ -30,7 +30,7 @@
 
 				<?php if(!empty($lembur)){ foreach($lembur as $l){ ?>
 
-				<form class="form-horizontal" action="<?php echo site_URL('SPLSeksi/C_SPLSeksi/edit_spl_submit'); ?>" method="post" enctype="multipart/form-data">
+				<form class="form-horizontal" action="<?php echo site_URL('SPLSeksi/C_splseksi/edit_spl_submit'); ?>" method="post" enctype="multipart/form-data">
 
 					<!-- ID DPL DI EDIT -->
 					<input type="text" class="hidden" name="id_spl" value="<?php echo $l['ID_SPL']; ?>">
@@ -57,21 +57,25 @@
 									<div class="form-group">
 										<label class="col-sm-2 control-label">Waktu</label>
 										<div class="col-sm-5">
-											<div class="input-group">
-												<div class="input-group-addon">
-													<i class="fa fa-clock-o"></i>
+											<div class="bootstrap-timepicker">
+												<div class="input-group">
+													<div class="input-group-addon">
+														<i class="fa fa-clock-o"></i>
+													</div>
+													<input type="text" class="form-control spl-time" name="waktu_0" 
+														value="<?php echo $l['Jam_Mulai_Lembur']; ?>" required>
 												</div>
-												<input type="time" class="form-control timepicker" name="waktu_0" 
-													value="<?php echo $l['Jam_Mulai_Lembur']; ?>">
 											</div>
 										</div>
 										<div class="col-sm-5">
-											<div class="input-group">
-												<div class="input-group-addon">
-													<i class="fa fa-clock-o"></i>
+											<div class="bootstrap-timepicker">
+												<div class="input-group">
+													<div class="input-group-addon">
+														<i class="fa fa-clock-o"></i>
+													</div>
+													<input type="text" class="form-control spl-time" name="waktu_1" 
+														value="<?php echo $l['Jam_Akhir_Lembur']; ?>" required>
 												</div>
-												<input type="time" class="form-control timepicker" name="waktu_1" 
-													value="<?php echo $l['Jam_Akhir_Lembur']; ?>">
 											</div>
 										</div>
 									</div>

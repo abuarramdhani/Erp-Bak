@@ -33,6 +33,7 @@
 							<th>Atas Nama</th>
 							<th>Bank</th>
 							<th>Cabang</th>
+							<th>Puasa</th>
 							<th>Option</th>
 						</tr>
 					</thead>

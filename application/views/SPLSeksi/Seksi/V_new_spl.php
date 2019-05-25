@@ -28,7 +28,7 @@
 					</div>
 				<?php } ?>
 
-				<form class="form-horizontal" action="<?php echo site_URL('SPLSeksi/C_SPLSeksi/new_spl_submit'); ?>" method="post" enctype="multipart/form-data">
+				<form class="form-horizontal" action="<?php echo site_URL('SPLSeksi/C_splseksi/new_spl_submit'); ?>" method="post" enctype="multipart/form-data">
 					<div class="box box-primary">
 						<div class="box-header">
 							<div class="row">
@@ -49,19 +49,23 @@
 									<div class="form-group">
 										<label class="col-sm-2 control-label">Waktu</label>
 										<div class="col-sm-5">
-											<div class="input-group">
-												<div class="input-group-addon">
-													<i class="fa fa-clock-o"></i>
+											<div class="bootstrap-timepicker">
+												<div class="input-group">
+													<div class="input-group-addon">
+														<i class="fa fa-clock-o"></i>
+													</div>
+													<input type="text" class="form-control spl-time" name="waktu_0" required>
 												</div>
-												<input type="time" class="form-control timepicker" name="waktu_0" required>
 											</div>
 										</div>
 										<div class="col-sm-5">
-											<div class="input-group">
-												<div class="input-group-addon">
-													<i class="fa fa-clock-o"></i>
+											<div class="bootstrap-timepicker">
+												<div class="input-group">
+													<div class="input-group-addon">
+														<i class="fa fa-clock-o"></i>
+													</div>
+													<input type="text" class="form-control spl-time" name="waktu_1" required>
 												</div>
-												<input type="time" class="form-control timepicker" name="waktu_1" required>
 											</div>
 										</div>
 									</div>

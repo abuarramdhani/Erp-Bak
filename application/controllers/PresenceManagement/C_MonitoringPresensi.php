@@ -58,6 +58,25 @@
 			$this->load->view('V_Footer',$data);
 		}
 
+		public function Show($noind){
+
+			$this->checkSession();
+			$data 	=	$this->general->loadHeaderandSidemenu('Monitoring Presensi - Quick ERP', 'Monitoring Presensi', 'Monitoring Presensi', 'Monitoring Presensi');
+
+			$noind = sprintf("%07d", $noind);
+			$data['pekerja'] = $this->M_monitoringpresensi->ambilNoindBaru($noind);
+
+			$data['finger'] = $this->M_monitoringpresensi->ambilfinger($noind);
+
+			$this->load->view('V_Header',$data);
+			$this->load->view('V_Sidemenu',$data);
+			$this->load->view('PresenceManagement/MonitoringPresensi/V_Finger',$data);
+			$this->load->view('V_Footer',$data);
+		}
+		public function Delete_Finger($id)
+		{
+			echo $id;
+		}
 		public function time_sync($id_lokasi = FALSE)
 		{
 			$id_lokasi_decode;
@@ -520,6 +539,8 @@
 
 					$data['id_lokasi_encode'] 		=	$id_lokasi;
 
+					
+
 					$this->load->view('V_Header',$data);
 					$this->load->view('V_Sidemenu',$data);
 					$this->load->view('PresenceManagement/MonitoringPresensi/V_MonitoringPresensi_DeviceUserList',$data);
@@ -593,6 +614,7 @@
 															'id_lokasi'			=>	$id_lokasi,
 															'noind_baru'		=>	$user['noind_baru'],
 															'noind'				=>	$user['noind'],
+															'privilege'			=>	$user_priv,
 															'create_timestamp'	=>	date('Y-m-d H:i:s'),
 															'create_user'		=>	$this->session->user,
 														);
@@ -604,6 +626,7 @@
 							$user_access_update 	=	array
 														(
 															'noind'					=>	$user['noind'],
+															'privilege'			=>	$user_priv,
 															'last_update_timestamp'	=>	date('Y-m-d H:i:s'),
 															'last_update_user'		=>	$this->session->user,
 														);
@@ -794,4 +817,136 @@
 					echo json_encode($finger_reference);
 				}
 		//	}
+
+		public function device_user_change_status($id_user_access){
+			$id_user_access_decode 	=	$this->general->dekripsi($id_user_access);
+			
+			$user = $this->M_monitoringpresensi->user_access_get($id_user_access_decode);
+
+			$id_lokasi 		=	"";
+			$noind_baru 	=	"";
+			foreach ($user as $usr) {
+				$id_lokasi 		=	$usr['id_lokasi'];
+				$noind_baru 	=	$usr['noind_baru'];
+				$privileges		=	$usr['privilege'];
+			}
+
+			$tb_user 	=	$this->M_monitoringpresensi->user_list($noind_baru);
+			$tb_device 	=	$this->M_monitoringpresensi->device_fingerprint($id_lokasi);
+			foreach ($tb_user as $user)
+			{
+				$user_noind_baru 	=	"";
+				$user_nama 			=	"";
+				$user_pwd 			=	"";
+				$user_rfid 			=	"";
+				$user_priv 			=	"";
+				$device_sn 			=	"";
+				$device_server_ip 	=	"";
+				$device_server_port	=	"";
+				$parameter 			=	"";
+
+				$user_template_jari =	$this->lib_monitoringpresensi->get_finger_template_json($user['noind_baru'], 'DEFAULT');
+				
+				$user_noind_baru 	=	$user['noind_baru'];
+				$user_nama 			=	$user['noind']."-".substr($user['nama'], 0, 14);
+				$user_pwd 			=	$user['pwd'];
+				$user_rfid 			=	$user['rfid'];
+				$user_priv 			=	$privileges;
+
+				if ($user_priv == '0') {
+					$user_priv = '3';
+				}else{
+					$user_priv = '0';
+				}
+
+				
+
+				foreach ($tb_device as $device)
+				{
+					$device_sn 			=	$device['device_sn'];
+					$device_server_ip	=	$device['server_ip'];
+					$device_server_port =	$device['server_port'];
+				}
+
+				$parameter 		.=	"sn=".$device_sn;
+				$parameter 		.=	"&pin=".$user_noind_baru;
+				$parameter 		.=	"&nama=".$user_nama;
+				$parameter 		.=	"&pwd=".$user_pwd;
+				$parameter 		.=	"&rfid=".$user_rfid;
+				$parameter 		.=	"&priv=".$user_priv;
+				$parameter 		.=	"&tmp=".$user_template_jari;
+
+				$url 			=	$device_server_ip."/user/set";
+				$server_output	=	$this->lib_monitoringpresensi->send_to_sdk_server($device_server_port, $url, $parameter);
+
+				if ( strpos($server_output, "Error") !== FALSE )
+				{
+					echo $server_output;
+					exit();
+				}
+
+				$user_access_exist_check	=	$this->M_monitoringpresensi->user_access_exist_check($user['noind_baru'], $id_lokasi);
+				if ( $user_access_exist_check == 0 )
+				{
+					$user_access_insert 	=	array
+												(
+													'id_lokasi'			=>	$id_lokasi,
+													'noind_baru'		=>	$user['noind_baru'],
+													'noind'				=>	$user['noind'],
+													'privilege'			=>	$user_priv,
+													'create_timestamp'	=>	date('Y-m-d H:i:s'),
+													'create_user'		=>	$this->session->user,
+												);
+					$id_user_access 		=	$this->M_monitoringpresensi->user_access_insert($user_access_insert);
+					$this->lib_monitoringpresensi->history('db_datapresensi', 'tb_user_access', array('id_user_access' => $id_user_access), 'CREATE');
+				}
+				else
+				{
+					$user_access_update 	=	array
+												(
+													'noind'					=>	$user['noind'],
+													'privilege'				=>	$user_priv,
+													'last_update_timestamp'	=>	date('Y-m-d H:i:s'),
+													'last_update_user'		=>	$this->session->user,
+												);
+					$this->M_monitoringpresensi->user_access_update($user_access_update, array('noind_baru' => $user['noind_baru'], 'id_lokasi' => $id_lokasi));
+					$this->lib_monitoringpresensi->history('db_datapresensi', 'tb_user_access', array('noind_baru' => $user['noind_baru'], 'id_lokasi' => $id_lokasi), 'UPDATE');
+				}
+
+				$user_access 			=	$this->M_monitoringpresensi->user_access_get(FALSE, (array('user_access.noind_baru' => $user['noind_baru'], 'user_access.id_lokasi' => $id_lokasi)));
+				$id_user_access 		=	$user_access[0]['id_user_access'];
+
+				$kode_finger 	= array(
+											0,
+											1,
+											2,
+											3
+										);
+				
+
+				foreach ($kode_finger as $kode)
+				{
+					$jari_check_exist 	= 	$this->M_monitoringpresensi->jari_cek($user['noind_baru'], $kode);
+					if ( $jari_check_exist == 1 )
+					{
+						$user_access_jari_ref_check_exist 	=	$this->M_monitoringpresensi->user_access_jari_ref_check_exist($id_user_access, $kode);
+						if ( $user_access_jari_ref_check_exist == 0 )
+						{
+							$user_access_jari_ref_insert 	=	array
+																(
+																	'id_user_access'	=>	$id_user_access,
+																	'kode_finger' 		=>	$kode,
+																	'create_timestamp'	=>	date('Y-m-d H:i:s'),
+																	'create_user'		=>	$this->session->user,
+																);
+
+							$id_user_access_jari_ref 	=	$this->M_monitoringpresensi->user_access_jari_ref_insert($user_access_jari_ref_insert);
+							$this->lib_monitoringpresensi->history('db_datapresensi', 'tb_user_access_jari_ref', array('id_user_access_jari_ref' => $id_user_access_jari_ref), 'CREATE');
+						}
+					}
+				}
+			}
+
+			redirect(base_url('PresenceManagement/MonitoringPresensi/device_user_list'.'/'.$this->general->enkripsi($id_lokasi)));
+		}
 	}

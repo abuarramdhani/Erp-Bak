@@ -87,7 +87,7 @@ class M_hitunggaji extends CI_Model
                 pr.pr_master_gaji 
 
             WHERE
-                noind ILIKE '$noind%'
+                noind LIKE '$noind%'
         ";
 
         $query = $this->db->query($sql);
@@ -235,9 +235,7 @@ SELECT count(tgl) FROM
                             rtrim(pls.kode_barang_target_sementara) = ''
                         OR  rtrim(pls.kode_proses_target_sementara) = ''
                     )
-
                 UNION
-
                     (
                     SELECT
                         *,
@@ -263,57 +261,21 @@ SELECT count(tgl) FROM
                         OR  rtrim(pls.kode_proses_target_sementara) != ''
                     )
             )
-
             AS
-
             t(lkhSeksi)
-
             WHERE
                     \"nomor_induk\" = '$noind'
                 AND \"tanggal_lkh\" = tlkhseksi.tgl
-
  group by tgl
             ORDER BY
                 tgl asc
-
 ) as jml_pengerjaan
-
-
-
             FROM
             (select * from
             (
                     (
                     SELECT
-                        pls.*,
-                        ptb.target_benda_id, 
-                        ptb.kodesie, 
-                        ptb.kode_barang, 
-                        ptb.nama_barang, 
-                        ptb.kode_proses, 
-                        ptb.nama_proses, 
-                        ptb.jumlah_operator, 
-                        ptb.target_utama, 
-                        ptb.target_sementara, 
-                        coalesce(((select waktu from pr.pr_target_waktu_setting where pr_target_waktu_setting_id=left(pls.dies,4))),0) +
-                        coalesce(((select waktu from pr.pr_target_waktu_setting where pr_target_waktu_setting_id=left(pls.non_dies,4))),0) +
-                        coalesce(((select waktu from pr.pr_target_waktu_setting where pr_target_waktu_setting_id=left(pls.stopper,4))),0) +
-                        coalesce(((select waktu from pr.pr_target_waktu_setting where pr_target_waktu_setting_id=left(pls.pisau,4))),0) +
-                        coalesce(((select waktu from pr.pr_target_waktu_setting where pr_target_waktu_setting_id=left(pls.lain_lain,4))),0) +
-                        coalesce(((select waktu from pr.pr_target_waktu_setting where pr_target_waktu_setting_id=left(pls.non_sett,4))),0) as waktu_setting                 
-                        , 
-                        ptb.tgl_berlaku, 
-                        ptb.tgl_input, 
-                        ptb.learning_periode, 
-                        ptb.target_utama_senin_kamis, 
-                        ptb.target_sementara_senin_kamis, 
-                        ptb.target_utama_jumat_sabtu, 
-                        ptb.target_sementara_jumat_sabtu, 
-                        ptb.target_utama_senin_kamis_4, 
-                        ptb.target_utama_jumat_sabtu_4
-                        ,
-                        pmg.*,
-                        
+                        *,
                         pls.noind as nomor_induk,
                         pls.tgl as tanggal_lkh,
                         rtrim(pls.kode_barang) as kd_brg,
@@ -346,40 +308,10 @@ SELECT count(tgl) FROM
                             rtrim(pls.kode_barang_target_sementara) = ''
                         OR  rtrim(pls.kode_proses_target_sementara) = ''
                     )
-
                 UNION
-
                     (
                     SELECT
-                        pls.*,
-                        ptb.target_benda_id, 
-                        ptb.kodesie, 
-                        ptb.kode_barang, 
-                        ptb.nama_barang, 
-                        ptb.kode_proses, 
-                        ptb.nama_proses, 
-                        ptb.jumlah_operator, 
-                        ptb.target_utama, 
-                        ptb.target_sementara, 
-                        coalesce(((select waktu from pr.pr_target_waktu_setting where pr_target_waktu_setting_id=left(pls.dies,4))),0) +
-                        coalesce(((select waktu from pr.pr_target_waktu_setting where pr_target_waktu_setting_id=left(pls.non_dies,4))),0) +
-                        coalesce(((select waktu from pr.pr_target_waktu_setting where pr_target_waktu_setting_id=left(pls.stopper,4))),0) +
-                        coalesce(((select waktu from pr.pr_target_waktu_setting where pr_target_waktu_setting_id=left(pls.pisau,4))),0) +
-                        coalesce(((select waktu from pr.pr_target_waktu_setting where pr_target_waktu_setting_id=left(pls.lain_lain,4))),0) +
-                        coalesce(((select waktu from pr.pr_target_waktu_setting where pr_target_waktu_setting_id=left(pls.non_sett,4))),0) as waktu_setting                 
-                        , 
-                        ptb.tgl_berlaku, 
-                        ptb.tgl_input, 
-                        ptb.learning_periode, 
-                        ptb.target_utama_senin_kamis, 
-                        ptb.target_sementara_senin_kamis, 
-                        ptb.target_utama_jumat_sabtu, 
-                        ptb.target_sementara_jumat_sabtu, 
-                        ptb.target_utama_senin_kamis_4, 
-                        ptb.target_utama_jumat_sabtu_4
-                        ,
-                        pmg.*,
-                        
+                        *,
                         pls.noind as nomor_induk,
                         pls.tgl as tanggal_lkh,
                         rtrim(pls.kode_barang) as kd_brg,
@@ -401,15 +333,11 @@ SELECT count(tgl) FROM
                         OR  rtrim(pls.kode_proses_target_sementara) != ''
                     )
             )
-
             AS
-
             t(lkhSeksi)
-
             WHERE
                     \"nomor_induk\" = '$noind'
                 AND \"tanggal_lkh\" BETWEEN '$firstdate' AND '$lastdate'
-
             ORDER BY
                 tgl ASC
 ) as tlkhseksi
@@ -417,6 +345,7 @@ SELECT count(tgl) FROM
 
         $query = $this->db->query($sql);
         return $query->result_array();
+        // return $sql;
     }
 
     public function cekTglDiangkat($noind,$date)
@@ -441,23 +370,20 @@ SELECT count(tgl) FROM
 
         $sql = "
             SELECT
-
                 *
-
             FROM
                 pr.pr_kondite pko
-
             WHERE
                     pko.\"noind\" = '$noind'
                 AND (pko.\"kodesie\" = '$kodesie' OR '$kodesie' = '')
                 AND pko.\"tanggal\" BETWEEN '$firstdate' AND '$lastdate'
-
             ORDER BY
                 pko.\"tanggal\"
         ";
 
         $query = $this->db->query($sql);
         return $query->result_array();
+        // return $sql;
     }
 
     public function deleteHasilHitung($data){

@@ -23,6 +23,9 @@
                     <div class="col-lg-12">
                         <div class="box box-primary box-solid">
                             <div class="box-header with-border">
+                                <a href="<?php echo site_url('PayrollManagementNonStaff/MasterData/TargetBenda/doClearData/') ?>" data-toggle="tooltip" data-placement="left" style="float:right;margin-right:1%;margin-top:-0.5%;" alt="Empty Data" title="Empty Data" onclick="return confirm('Apakah anda yakin ingin mengkosongkan data ini ?')">
+                                    <button type="button" class="btn btn-default btn-sm"><i class="fa fa-trash fa-2x"></i></button>
+                                </a>
                                 <a href="<?php echo site_url('PayrollManagementNonStaff/MasterData/TargetBenda/create/') ?>" data-toggle="tooltip" data-placement="left" style="float:right;margin-right:1%;margin-top:-0.5%;" alt="Add New Data" title="Add New Data" >
                                     <button type="button" class="btn btn-default btn-sm"><i class="icon-plus icon-2x"></i></button>
                                 </a>

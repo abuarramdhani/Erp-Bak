@@ -186,6 +186,41 @@ foreach ($res as $key) {
 						?>
 					</td>
 				</tr>
+				<tr>
+					<td style="text-align: center;">4</td>
+					<td>Uang Makan Puasa</td>
+					<td>
+						<?php 
+						if ($key['ump'] != null) {
+							echo $key['ump'];						
+						}else{
+							echo "...";
+						}
+						?>
+					</td>
+					<td>hari</td>
+					<td>x</td>
+					<td>Rp</td>
+					<td>
+						<?php 
+						if ($key['nomump'] != null) {
+							echo number_format($key['nomump'],'0',',','.');						
+						}else{
+							echo "...";
+						}
+						?>
+					</td>
+					<td>Rp</td>
+					<td style="text-align: center;">
+						<?php 
+						if ($key['ump'] != null and $key['nomump'] != null) {
+							echo number_format($key['ump']*$key['nomump'],'0',',','.');						
+						}else{
+							echo "...";
+						}
+						?>
+					</td>
+				</tr>
 			<?php }else{ ?>
 				<tr>
 					<td style="width: 10px;text-align: center;">1</td>
@@ -397,10 +432,80 @@ foreach ($res as $key) {
 						?>
 					</td>
 				</tr>
+				<tr>
+					<td style="text-align: center;">4</td>
+					<td>Uang Makan Puasa</td>
+					<td>
+						<?php 
+						if ($key['ump1'] != null) {
+							echo $key['ump1'];						
+						}else{
+							echo "...";
+						}
+						?>
+					</td>
+					<td>hari</td>
+					<td>x</td>
+					<td>Rp</td>
+					<td>
+						<?php 
+						if ($key['nomump1'] != null) {
+							echo number_format($key['nomump1'],'0',',','.');						
+						}else{
+							echo "...";
+						}
+						?>
+					</td>
+					<td>Rp</td>
+					<td style="text-align: center;">
+						<?php 
+						if ($key['ump1'] != null and $key['nomump1'] != null) {
+							echo number_format($key['ump1']*$key['nomump1'],'0',',','.');						
+						}else{
+							echo "...";
+						}
+						?>
+					</td>
+				</tr>
+				<tr>
+					<td style="text-align: center;"></td>
+					<td>Uang Makan Puasa</td>
+					<td>
+						<?php 
+						if ($key['ump2'] != null) {
+							echo $key['ump2'];						
+						}else{
+							echo "...";
+						}
+						?>
+					</td>
+					<td>hari</td>
+					<td>x</td>
+					<td>Rp</td>
+					<td>
+						<?php 
+						if ($key['nomump2'] != null) {
+							echo number_format($key['nomump2'],'0',',','.');						
+						}else{
+							echo "...";
+						}
+						?>
+					</td>
+					<td>Rp</td>
+					<td style="text-align: center;">
+						<?php 
+						if ($key['ump2'] != null and $key['nomump2'] != null) {
+							echo number_format($key['ump2']*$key['nomump2'],'0',',','.');						
+						}else{
+							echo "...";
+						}
+						?>
+					</td>
+				</tr>
 			<?php } ?>
 				
 			<tr>
-				<td style="text-align: center;">4</td>
+				<td style="text-align: center;">5</td>
 				<td>Lain-lain</td>
 				<td>
 					<?php 
@@ -442,17 +547,17 @@ foreach ($res as $key) {
 			</tr>
 	</table>
 	<?php if (isset($key['gp'])) { ?>
-		<div style="margin-top: 50px;margin-left: 440px;font-size: 14px;">
+		<div style="margin-top: 15px;margin-left: 440px;font-size: 14px;">
 			<label>Yogyakarta, <?php echo date('d F Y');?></label>
 		</div>
-		<div style="margin-top: 70px; margin-left: 230px; font-size: 14px;">
+		<div style="margin-top: 40px; margin-left: 230px; font-size: 14px;">
 			<label><i><b>GAJIKU BERASAL DARI UANG PELANGGAN</b></i></label>
 		</div>
 	<?php }else{ ?>
 		<div style="margin-top: 10px;margin-left: 440px;font-size: 14px;">
 			<label>Yogyakarta, <?php echo date('d F Y');?></label>
 		</div>
-		<div style="margin-top: 30px; margin-left: 230px; font-size: 14px;">
+		<div style="margin-top: 20px; margin-left: 230px; font-size: 14px;">
 			<label><i><b>GAJIKU BERASAL DARI UANG PELANGGAN</b></i></label>
 		</div>
 	<?php } ?>

@@ -24,7 +24,9 @@ class M_setelan extends CI_Model
         if ($id === FALSE) {
             $query = $this->db->get('pr.pr_setelan');
         } else {
-            $query = $this->db->get_where('pr.pr_setelan', array('setelan_name' => $id));
+            //$query = $this->db->get_where('pr.pr_setelan', array('setelan_name' => $id));
+            $query = $this->db->where('setelan_id', $id);
+            $query = $this->db->get('pr.pr_setelan');
         }
 
         return $query->result_array();

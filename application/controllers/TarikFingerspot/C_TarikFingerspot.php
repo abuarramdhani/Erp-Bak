@@ -154,13 +154,43 @@ class C_TarikFingerspot extends CI_Controller
 		
 	}
 
-	public function TransferPresensi(){
+	public function TransferPresensi($server){
 		$waktuAwal = date('Y-m-d H:i:s');
 		date_default_timezone_set('Asia/Jakarta');
 		$plaintext_string = Date('Y-m-d',strtotime("-1 days"));
-		
+		if (!isset($server)) {
+			$server='';
+		}
+		if('192.168.168.50'==$server)
+		{
 		$log = $this->M_tarikfingerspot->getAttLog($plaintext_string,'Transfer');
 		$device = $this->M_tarikfingerspot->getDevice();
+		}
+		else
+		if('192.168.168.178'==$server)
+		{
+		$log = $this->M_tarikfingerspot->getAttLog($plaintext_string,'Transfer178');
+		$device = $this->M_tarikfingerspot->getDevice();
+		}
+		else
+		if('192.168.168.179'==$server)
+		{
+		$log = $this->M_tarikfingerspot->getAttLog($plaintext_string,'Transfer179');
+		$device = $this->M_tarikfingerspot->getDevice();
+		}
+		else
+		if('192.168.168.207'==$server)
+		{
+		$log = $this->M_tarikfingerspot->getAttLog($plaintext_string,'Transfer207');
+		$device = $this->M_tarikfingerspot->getDevice();
+		}
+		else
+		{	
+		$log = $this->M_tarikfingerspot->getAttLog($plaintext_string,'');
+		$device = $this->M_tarikfingerspot->getDevice();
+		}
+
+
 		$no = 0;
 		$num = 0;
 		$insert = array();
@@ -235,21 +265,34 @@ class C_TarikFingerspot extends CI_Controller
 		
 		$table = "";
 		foreach ($device as $dvc) {
+			if($dvc['lokasi_server_tarik_data']==$server or '' == $server)
+			{
 			$table .= "	<tr>
-							<td style='width:250px;text-align:left;'>
+							<td style='width:400px;text-align:left;'>
 								".$dvc['device_name']."
 							</td>
-							<td style='width:150px;text-align:left;'>
+							<td style='width:100px;text-align:left;'>
 								".$dvc['inisial_lokasi']."
 							</td>
 							<td style='width:100px;'>
 								".$dvc['jumlah']."
 							</td>
 						</tr>";
+			}
+
 		}
-		$text = "jumlah data hari ini : ".($num - 1)." , sudah terinput semua di database..";
+		$text = "jumlah data yang telah proses hari ini dan kemarin : ".($num - 1).".<br>
+				Apabila Ada hari kemarin yang baru masuk, maka harus menjalankan distribusi ulang (Sehingga Point dan sebaran pekerja Benar).";
 		
 		$waktuAkhir = date('Y-m-d H:i:s');
+		if(''==$server){
+			$namaserver='Semua Server';
+		}
+		else
+		{
+			$namaserver=$server;
+		}
+
 		$message = '	<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://wwwhtml4/loose.dtd">
 				<html>
 				<head>
@@ -265,10 +308,10 @@ class C_TarikFingerspot extends CI_Controller
 			  	</style>
 				</head>
 				<body>
-						<h3 style="text-decoration: underline;">ICT - HRD Presensi</h3>
+						<h3 style="text-decoration: underline;">Report Proses Transfer</h3>
+						<p>Dari : '.$namaserver.' ke database.quick.com (Frontpresensi & Presensi)</p>
 					<hr/>
-					<h4></h4><br>
-					<p>  <br>Telah Selesai Dijalankannya Cronjob TransferPresensi ('.$waktuAwal.' s/d '.$waktuAkhir.'), Dengan detail data per Lokasi sebagai berikut :
+					<p>Telah Selesai Dijalankannya Cronjob TransferPresensi ('.$waktuAwal.' s/d '.$waktuAkhir.'), Dengan detail data per Lokasi sebagai berikut :
 					</p>
 						<table id="main">
 						'.$table.'
@@ -303,18 +346,43 @@ class C_TarikFingerspot extends CI_Controller
         $mail->Password = '123456';
         $mail->WordWrap = 50;
         $mail->setFrom('noreply@quick.com', 'Email Sistem');
-        // $email['0'] = array(
-        // 	'email_kirim' => 'aji_kurniawan@quick.com',
-        // 	'nama_kirim' => 'Aji Kurniawan'
-        // );
+
         $email['0'] = array(
         	'email_kirim' => 'kasie_ict_hrd@quick.com',
         	'nama_kirim' => 'Kasie ICT HRD'
         );
+        $email['1'] = array(
+        	'email_kirim' => 'edp@quick.com',
+        	'nama_kirim' => 'EDP'
+        );        
+        $email['2'] = array(
+        	'email_kirim' => 'hbk@quick.com',
+        	'nama_kirim' => 'Hubungan Kerja'
+        );
         foreach ($email as $key) {
         	$mail->addAddress($key['email_kirim'],$key['nama_kirim']);
         }
-        $mail->Subject = 'Laporan Tarik Absensi Pekerja';
+
+        if('192.168.168.50'==$server)
+        {
+        	$mail->Subject = 'Laporan Tarik Absensi Server 168.50';
+        } else if('192.168.168.178'==$server)
+        {
+        	$mail->Subject = 'Laporan Tarik Absensi Server 168.178';
+        } else if('192.168.168.179'==$server)
+        {
+        	$mail->Subject = 'Laporan Tarik Absensi Server 168.179';
+        } else if('192.168.168.207'==$server)
+        {
+        	$mail->Subject = 'Laporan Tarik Absensi Server 168.207';
+        }
+        else
+        {
+       		$mail->Subject = 'Laporan Tarik Absensi Pekerja Semua Titik';
+        }
+
+		
+
 		$mail->msgHTML($message);
 
 		if (!$mail->send()) {

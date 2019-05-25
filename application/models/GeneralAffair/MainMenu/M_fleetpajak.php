@@ -14,6 +14,10 @@ class M_fleetpajak extends CI_Model
     {
     	if ($id === FALSE) {
             $ambilPajak     = " select  pjk.pajak_id as kode_pajak,
+                                        pjk.periode_akhir_pajak,
+                                        (case when pjk.periode_akhir_pajak >= current_date
+                                        then (select cast((extract(epoch from pjk.periode_akhir_pajak::timestamp - current_timestamp)) as int)/86400)+1
+                                        end) as tgltunggu,
                                         kdrn.nomor_polisi as nomor_polisi,
                                         (select location_name from er.er_location where location_code = kdrn.kode_lokasi_kerja) lokasi,
                                         pjk.kendaraan_id as kode_kendaraan,
@@ -26,11 +30,15 @@ class M_fleetpajak extends CI_Model
                                         join    ga.ga_fleet_kendaraan as kdrn
                                             on  kdrn.kendaraan_id=pjk.kendaraan_id
                                 where   pjk.end_date='9999-12-12 00:00:00'
-                                order by pjk.tanggal_pajak desc;";
+                                order by tgltunggu,pjk.tanggal_pajak desc;";
 
     		$query = $this->db->query($ambilPajak);
     	} else { 
             $ambilPajak     = " select  pjk.pajak_id as kode_pajak,
+                                        pjk.periode_akhir_pajak,
+                                        (case when pjk.periode_akhir_pajak >= current_date
+                                        then (select cast((extract(epoch from pjk.periode_akhir_pajak::timestamp - current_timestamp)) as int)/86400)+1
+                                        end) as tgltunggu,
                                         kdrn.nomor_polisi as nomor_polisi,
                                         pjk.kendaraan_id as kode_kendaraan,
                                         (select location_name from er.er_location where location_code = kdrn.kode_lokasi_kerja) lokasi,
@@ -53,6 +61,10 @@ class M_fleetpajak extends CI_Model
     public function getFleetPajakCabang($lokasi)
     {
         $query = $this->db->query("select  pjk.pajak_id as kode_pajak,
+                                        pjk.periode_akhir_pajak,
+                                        (case when pjk.periode_akhir_pajak >= current_date
+                                        then (select cast((extract(epoch from pjk.periode_akhir_pajak::timestamp - current_timestamp)) as int)/86400)+1
+                                        end) as tgltunggu,
                                         kdrn.nomor_polisi as nomor_polisi,
                                         pjk.kendaraan_id as kode_kendaraan,
                                         (select location_name from er.er_location where location_code = kdrn.kode_lokasi_kerja) lokasi,
@@ -65,13 +77,18 @@ class M_fleetpajak extends CI_Model
                                         join    ga.ga_fleet_kendaraan as kdrn
                                             on  kdrn.kendaraan_id=pjk.kendaraan_id
                                 where   pjk.kode_lokasi_kerja='$lokasi'
-                                        and pjk.end_date='9999-12-12 00:00:00'");
+                                        and pjk.end_date='9999-12-12 00:00:00'
+                                order by tgltunggu");
         return $query->result_array();
     }
 
     public function getFleetPajakDeleted()
     {
         $ambilPajakDeleted  = " select  pjk.pajak_id as kode_pajak,
+                                        pjk.periode_akhir_pajak,
+                                        (case when pjk.periode_akhir_pajak >= current_date
+                                        then (select cast((extract(epoch from pjk.periode_akhir_pajak::timestamp - current_timestamp)) as int)/86400)+1
+                                        end) as tgltunggu,
                                         kdrn.nomor_polisi as nomor_polisi,
                                         pjk.kendaraan_id as kode_kendaraan,
                                         (select location_name from er.er_location where location_code = kdrn.kode_lokasi_kerja) lokasi,
@@ -84,7 +101,7 @@ class M_fleetpajak extends CI_Model
                                         join    ga.ga_fleet_kendaraan as kdrn
                                             on  kdrn.kendaraan_id=pjk.kendaraan_id
                                 where   pjk.end_date!='9999-12-12 00:00:00'
-                                order by pjk.tanggal_pajak desc;";
+                                order by tgltunggu,pjk.tanggal_pajak desc;";
         $query              =   $this->db->query($ambilPajakDeleted);
         return $query->result_array();
     }

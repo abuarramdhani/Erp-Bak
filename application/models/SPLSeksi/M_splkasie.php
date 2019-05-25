@@ -10,13 +10,18 @@ class M_splkasie extends CI_Model{
 
 	public function show_spl($dari, $sampai, $status, $lokasi, $noind, $akses_sie, $kodesie){
 		$x = 0;
-		foreach($akses_sie as $as){
-			if($x == 0){
-				$akses = "b.kodesie like '$as%'";
-			}else{
-				$akses .= " or b.kodesie like '$as%'";
+		if(!empty($akses_sie)){
+			foreach($akses_sie as $as){
+				if($x == 0){
+					$akses = "b.kodesie like '$as%'";
+				}else{
+					$akses .= " or b.kodesie like '$as%'";
+				}
+				$x++;
 			}
-			$x++;
+			$akses = "and ($akses)";
+		}else{
+			$akses = "";
 		}
 
 		if(!empty($dari) || !empty($sampai)){
@@ -32,33 +37,34 @@ class M_splkasie extends CI_Model{
 			inner join splseksi.tstatus_spl c ON a.status = c.id_status 
 			inner join hrd_khs.tseksi d ON b.kodesie = d.kodesie 
 			where a.status like '%$status%' $periode
-				and a.perbantuan='N' and ($akses) and d.kodesie like '$kodesie%' 
+				and a.perbantuan='N' and d.kodesie like '$kodesie%' $akses
 				and b.noind like '$noind%' and b.lokasi_kerja like '%$lokasi%'
 			order by a.tgl_lembur, d.seksi, a.kd_lembur, b.nama, a.jam_mulai_lembur, a.Jam_Akhir_Lembur";
 		$query = $this->spl->query($sql);
 		return $query->result_array();
 	}
 
-	public function save_confirm($data){
-		$this->spl->insert('splseksi.tapp_confirm',$data);
-		return;
+	public function show_email_addres($sie){
+		$sql = "select eea.employee_code, eea.internal_mail, sugm.user_group_menu_name 
+			from er.er_employee_all eea
+			inner join sys.sys_user su on eea.employee_id=su.employee_id
+			inner join sys.sys_user_application sua on su.user_id = sua.user_id
+			inner join sys.sys_user_group_menu sugm on sua.user_group_menu_id = sugm.user_group_menu_id
+			where eea.resign='0' and eea.section_code like '$sie%' and lower(sugm.user_group_menu_name) like '%lembur%asska%' 
+				and su.user_name='J1255'";
+		$query = $this->db->query($sql);
+		return $query->result_array();
 	}
 
-	public function drop_confirm($filter){
-		$this->spl->where('username', $filter);
-		$this->spl->delete('splseksi.tapp_confirm');
-		return;
-	}
-
-	public function show_confirm($filter){
-		$this->spl->where($filter);
-		$query = $this->spl->get('splseksi.tapp_confirm');
+	public function show_finger_user($fill){
+		$this->spl->where($fill);
+		$query = $this->spl->get('splseksi.tfinger_php');
 		return $query->row();
 	}
 
-	public function show_email_addres($filter){
-		$this->db->where('employee_code', $filter);
-		$query = $this->db->get('er.er_employee_all');
+	public function show_finger_activation($filter){
+		$this->spl->where($filter);
+		$query = $this->spl->get('splseksi.tcode_fingerprint');
 		return $query->row();
 	}
 

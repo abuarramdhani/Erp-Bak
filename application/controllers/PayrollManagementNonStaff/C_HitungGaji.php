@@ -883,14 +883,12 @@ class C_HitungGaji extends CI_Controller
 		$this->load->library('pdf');
 		$pdf = $this->pdf->load();
 
-		$pdf = new mPDF('utf-8', array(320,200), 0, '', 3, 3, 3, 3);
-
+		$pdf = new mPDF('utf-8', array(215,140), 0, '', 3, 3, 3, 3);
 		$filename = 'Struk_Gaji'.time();
+		//$stylesheet = file_get_contents(base_url('assets/plugins/bootstrap/3.3.6/css/bootstrap.css'));
+		//$pdf->WriteHTML($stylesheet);
+		$pdf->WriteHTML($html);
 
-		$stylesheet = file_get_contents(base_url('assets/plugins/bootstrap/3.3.6/css/bootstrap.css'));
-
-		$pdf->WriteHTML($stylesheet,1);
-		$pdf->WriteHTML($html,2);
 		$pdf->Output($filename, 'I');
 	}
 
@@ -1371,7 +1369,7 @@ class C_HitungGaji extends CI_Controller
 		//ambil data kelas
 		$kls=$this->M_hitunggaji->getDetailMasterGaji($noind);
 		foreach ($kls as $d) {
-			$klsv=$this->M_setelan->getSetelanName('kelas'.$d['kelas']);
+			$klsv=$this->M_setelan->getSetelanName($d['kelas']);
 			foreach ( $klsv as $klsas) {
 			$data['kelas']=$klsas['setelan_value'];
 			}
@@ -1386,6 +1384,8 @@ class C_HitungGaji extends CI_Controller
 		$data['getDetailPekerja'] = $this->M_hitunggaji->getHitungGaji($noind, $kodesie = '', $bln_gaji, $thn_gaji);
 		$data['getDetailLKHSeksi'] = $this->M_hitunggaji->getLKHSeksi($noind, $firstdate, $lastdate);
 		$data['getDetailKondite'] = $this->M_hitunggaji->getInsentifKondite($noind, $kodesie = '', $firstdate, $lastdate);
+
+		// print_r($data['getDetailKondite']); exit;
 
 		$data['pembagi_lembur'] = $this->M_hitunggaji->getSetelan('pembagi_lembur');
 		$data['pembagi_gp_bulanan'] = $this->M_hitunggaji->getSetelan('pembagi_gp');
@@ -1412,15 +1412,68 @@ class C_HitungGaji extends CI_Controller
 		$pdf->SetTitle('CrossCheck '.$noind.' - '.$data['namapkj'].' - '.$bln_gaji.' - '.$thn_gaji.' - '.time().'.pdf');
 		$filename = 'CrossCheck '.$noind.' - '.$data['namapkj'].' - '.$bln_gaji.' - '.$thn_gaji.' - '.time().'.pdf';
 
-		$stylesheet = file_get_contents(base_url('assets/plugins/bootstrap/3.3.6/css/bootstrap.css'));
+		// $stylesheet = file_get_contents(base_url('assets/plugins/bootstrap/3.3.6/css/bootstrap.css'));
 		//$pdf->setFooter('{PAGENO}');
 		
-		$pdf->setFooter("dicetak : {DATE j-m-Y} -".$noind." ".$data['namapkj']."- Hal : {PAGENO} ");
+		$pdf->setFooter("dicetak : {DATE j-m-Y}  ---  Hal : {PAGENO} ");
 		$pdf->use_kwt = true;
 		$pdf->shrink_tables_to_fit=1;
-		$pdf->WriteHTML($stylesheet,1);
-		$pdf->WriteHTML($html,2);
+		// $pdf->WriteHTML($stylesheet,1);
+		$pdf->WriteHTML($html);
 		$pdf->Output($filename, 'I');
+	}
+
+	public function downloadExcel()
+    {
+		$filter = $this->input->get('filter');
+		$column_table = array('', 'tgl_pembayaran', 'noind', 'employee_name', 'section_code', 'section_name', 'bln_gaji', 
+			'thn_gaji', 'gaji_pokok', 'insentif_prestasi', 'insentif_kelebihan', 'insentif_kondite', 'insentif_masuk_sore', 
+			'insentif_masuk_malam', 'ubt', 'upamk', 'uang_lembur', 'tambah_kurang_bayar', 'tambah_lain', 'uang_dl', 
+			'tambah_pajak', 'denda_insentif_kondite', 'pot_htm', 'pot_lebih_bayar', 'pot_gp', 'pot_uang_dl', 'jht', 'jkn', 'jp', 
+			'spsi', 'duka', 'pot_koperasi', 'pot_hutang_lain', 'pot_dplk', 'tkp');
+		$column_view = array('No', 'Tanggal Pembayaran', 'No Induk', 'Nama', 'Kodesie', 'Nama Seksi', 'Bulan Gaji', 'Tahun Gaji', 
+			'Gaji Pokok', 'Insentif Prestasi', 'Insentif Kelebihan', 'Insentif Kondite', 'Insentif Masuk Sore', 
+			'Insentif Masuk Malam', 'UBT', 'UPAMK', 'Uang Lembur', 'Tambah Kurang Bayar', 'Tambah Lain', 'Uang DL', 
+			'Tambah Pajak', 'Denda Insentif Kondite', 'Potongan HTM', 'Potongan Lebih Bayar', 'Potongan Gaji Pokok', 
+			'Potongan Uang DL', 'JHT', 'JKN', 'JP', 'SPSI', 'Duka', 'Potongan Koperasi', 'Potongan Hutang Lain', 
+			'Potongan DPLK', 'TKP');
+		$data_table = $this->M_hitunggaji->getHasilHitungSearch($filter)->result_array();
+
+		$this->load->library("Excel");
+		$objPHPExcel = new PHPExcel();
+		$objPHPExcel->setActiveSheetIndex(0);
+		$column = 0;
+
+		foreach($column_view as $cv){
+			$objPHPExcel->getActiveSheet()->setCellValueByColumnAndRow($column, 1, $cv);
+			$column++;
+		}
+
+		$excel_row = 2;
+		foreach($data_table as $dt){
+			$excel_col = 0;
+			foreach($column_table as $ct){
+				if($ct == ''){
+					$objPHPExcel->getActiveSheet()->setCellValueByColumnAndRow($excel_col, $excel_row, $excel_row-1);
+				}else{
+					$objPHPExcel->getActiveSheet()->setCellValueByColumnAndRow($excel_col, $excel_row, $dt[$ct]);
+				}
+				$excel_col++;
+			}
+			$excel_row++;
+		}
+		
+		$objPHPExcel->getActiveSheet()->setTitle('Quick ERP');      
+		$objWriter = PHPExcel_IOFactory::createWriter($objPHPExcel, 'Excel2007');
+ 
+		header("Last-Modified: " . gmdate("D, d M Y H:i:s") . " GMT");
+		header("Cache-Control: no-store, no-cache, must-revalidate");
+		header("Cache-Control: post-check=0, pre-check=0", false);
+		header("Pragma: no-cache");
+		header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
+
+		header('Content-Disposition: attachment;filename="HitungGaji.xlsx"');
+		$objWriter->save("php://output");
 	}
 
 }

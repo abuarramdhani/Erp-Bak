@@ -1,6 +1,6 @@
 <?php
 // echo "<pre>";
-// print_r($routeaktif);
+// print_r($No_induk);
 // exit();
 ?>
 
@@ -11,8 +11,10 @@
 				<h2><b><center>EDIT DATA MIN MAX</center></b></h2>
 			</div>
 			<div class="box-body">
-			<center><form method="post" action="<?php echo base_url('SettingMinMaxOPM/SaveMinMax')?>">
+			<center><form method="post" action="<?php echo base_url('SettingMinMax/SaveMinMax')?>">
+				<input type="hidden" name="org" value="<?php echo $org ?>">
 				<input type="hidden" name="route" value="<?php echo $routeaktif ?>">
+				<input type="hidden" name="induk" class="induk" value="<?php echo $No_induk ?>">
 				<div class="row">
 					<div class="col-md-2 col-md-offset-2" style="text-align: right;">
 							<label>ITEM CODE</label>
@@ -75,8 +77,9 @@
 				</div>
 				<div class="row">
 					<center>
-						<form action="<?php echo base_url('SettingMinMaxOPM/EditbyRoute')?>">
+						<form action="<?php echo base_url('SettingMinMax/EditbyRoute')?>">
 							<input type="hidden" name="routing_class" value="<?php echo $routeaktif ?>">
+							<input type="hidden" name="org" value="<?php echo $org?>">
 							<button class="btn btn-danger btn-lg" type="submit"><span class="fa fa-remove"></span> CANCEL</button>
 						</form>
 						<button class="btn btn-success btn-lg" type="submit"><span class="fa fa-save"></span> SAVE</button>

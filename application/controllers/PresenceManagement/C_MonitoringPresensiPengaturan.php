@@ -51,6 +51,7 @@ class C_MonitoringPresensiPengaturan extends CI_Controller
 			$row[] = $key->noind_baru;
 			$row[] = $key->noind;
 			$row[] = $key->nama;
+			$row[] = $key->privilege;
 
 			$data[] = $row;
 		}
@@ -77,6 +78,7 @@ class C_MonitoringPresensiPengaturan extends CI_Controller
 				$device_name 	=	$this->input->post('txtNameDevice', TRUE);
 				$inisial_lokasi =	$this->input->post('txtInisialLokasi', TRUE);
 				$office 		=	$this->input->post('cmbLokasiKerja');
+				$voip 		=	$this->input->post('txtVoipPs');
 
 				$id_lokasi_baru		=	'';
 				$id_lokasi_terakhir	=	$this->M_monitoringpresensi->id_lokasi_terakhir();
@@ -103,6 +105,7 @@ class C_MonitoringPresensiPengaturan extends CI_Controller
 										'office'				=>	$office,
 										'create_timestamp'		=>	$this->general->ambilWaktuEksekusi(),
 										'create_user'			=>	$this->session->user,
+										'voip'					=>	$voip,
 									);
 				$id_device	=	$this->M_monitoringpresensi->device_create($device_create);
 				$this->lib_monitoringpresensi->history('db_datapresensi', 'tb_device', array('id_device' => $id_device), 'CREATE');
@@ -119,6 +122,7 @@ class C_MonitoringPresensiPengaturan extends CI_Controller
 				$device_port 	=	$this->input->post('txtPortDevice', TRUE);
 				$inisial_lokasi =	$this->input->post('txtInisialLokasi', TRUE);
 				$office 		=	$this->input->post('cmbLokasiKerja');
+				$voip 		=	$this->input->post('txtVoipPs');
 
 				$device_update 	=	array
 									(
@@ -131,6 +135,7 @@ class C_MonitoringPresensiPengaturan extends CI_Controller
 										'office'				=>	$office,
 										'last_update_timestamp'	=>	$this->general->ambilWaktuEksekusi(),
 										'last_update_user'		=>	$this->session->user,
+										'voip'					=>	$voip,
 									);
 				$this->M_monitoringpresensi->device_update($device_update, $id_lokasi);
 				$this->lib_monitoringpresensi->history('db_datapresensi', 'tb_device', array('id_lokasi' => $id_lokasi), 'UPDATE');
@@ -209,6 +214,21 @@ class C_MonitoringPresensiPengaturan extends CI_Controller
 	//	}
 
 		public function CronUser(){
-			redirect('http://personalia.quick.com/cronjob/mysql/cronjob.user_finger.php','refresh');
+			redirect('http://personalia.quick.com/cronjob/postgres_database.quick.com_mysql_database.quick.com_fingerspotbnc.update.user.finger.php','refresh');
 		}
+
+	public function ChangeStatus($noindbaru_status){
+		$ex = explode('_', $noindbaru_status);
+		$noind_baru = $ex['0'];
+		$status = $ex['1'];
+		if ($status == '0') {
+			$status = '3';
+		}elseif ($status == '3') {
+			$status = '0';
+		}else{
+			exit();echo "Salah Status";
+		}
+		$this->M_monitoringpresensi->updatePrivilegeuser($noind_baru,$status);
+		redirect(site_url('PresenceManagement/MonitoringPresensiPengaturan'));
+	}
 }

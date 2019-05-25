@@ -138,7 +138,7 @@
                                                                                     <td width="100px">
                                                                                         <div class="form-group">
                                                                                             <div class="col-lg-12">
-                                                                                            <input type="number" placeholder="Jumlah" name="txtJumlahLine1[]" id="txtJumlahLine1" class="form-control input_money" value="1" />
+                                                                                            <input type="text" placeholder="Jumlah" name="txtJumlahLine1[]" id="" class="form-control" value="1" />
                                                                                             </div>
                                                                                         </div>
                                                                                     </td>

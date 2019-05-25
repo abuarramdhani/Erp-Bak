@@ -183,7 +183,7 @@
                                                                                     <td>
 																						<div class="form-group">
                                                                                             <div class="col-lg-12">
-                                                                                            <input type="number" placeholder="Jenis Maintenance" name="txtJumlahLine1[]" id="txtJumlahLine1" class="form-control" value="<?php echo $lines1_row['jumlah_item']; ?>"/>
+                                                                                            <input type="text"  name="txtJumlahLine1[]" id="txtJumlahLine1" class="form-control" value="<?php echo $lines1_row['jumlah_item']; ?>"/>
                                                                                             </div>
                                                                                         </div>
                                                                                     </td>

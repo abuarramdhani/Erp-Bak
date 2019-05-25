@@ -63,9 +63,6 @@ class M_monitoring extends CI_Model
 		return $query->result_array();
 	}
 	public function savePerubahan($data){
-		// echo "<pre>";
-		// print_r($data);
-		// exit();
 			for ($j = 0 ; $j < sizeof($data) ; $j++) { 
 				$this->oracle->insert('KHS_MONITORING_PEMBELIAN_TEMP', $data[$j]);
 			}

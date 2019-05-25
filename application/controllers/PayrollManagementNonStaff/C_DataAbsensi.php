@@ -424,6 +424,62 @@ class C_DataAbsensi extends CI_Controller
 		echo $json;
 	}
 
+	public function downloadExcel()
+    {
+		$filter = $this->input->get('filter');
+		$column_table = array('', 'noind', 'employee_name', 'kodesie', 'unit_name', 'bln_gaji', 'thn_gaji', 'HM01', 'HM02', 'HM03', 
+			'HM04', 'HM05', 'HM06', 'HM07', 'HM08', 'HM09', 'HM10', 'HM11', 'HM12', 'HM13', 'HM14', 'HM15', 'HM16', 'HM17', 'HM18', 'HM19', 
+			'HM20', 'HM21', 'HM22', 'HM23', 'HM24', 'HM25', 'HM26', 'HM27', 'HM28', 'HM29', 'HM30', 'HM31', 'jam_lembur', 'HMP', 
+			'HMU', 'HMS', 'HMM', 'HM', 'UBT', 'HUPAMK', 'IK', 'IKSKP', 'IKSKU', 'IKSKS', 'IKSKM', 'IKJSP', 'IKJSU', 'IKJSS', 
+			'IKJSM', 'ABS', 'T', 'SKD', 'cuti', 'HL', 'PT', 'PI', 'PM', 'DL', 'tambahan', 'duka', 'potongan', 'HC', 'jml_UM', 
+			'cicil', 'potongan_koperasi', 'UBS', 'UM_puasa', 'SK_CT', 'POT_2', 'TAMB_2', 'kode_lokasi', 'jml_izin', 
+			'jml_mangkir', 'bhmp', 'bhms', 'bhmm');
+		$column_view = array('No', 'No Induk', 'Nama', 'Kodesie', 'Nama Unit', 'Bulan Gaji', 'Tahun Gaji', 'HM01', 'HM02', 'HM03', 'HM04', 
+			'HM05', 'HM06', 'HM07', 'HM08', 'HM09', 'HM10', 'HM11', 'HM12', 'HM13', 'HM14', 'HM15', 'HM16', 'HM17', 
+			'HM18', 'HM19', 'HM20', 'HM21', 'HM22', 'HM23', 'HM24', 'HM25', 'HM26', 'HM27', 'HM28', 'HM29', 'HM30', 
+			'HM31', 'Jam Lembur', 'HMP', 'HMU', 'HMS', 'HMM', 'HM', 'UBT', 'HUPAMK', 'IK', 'IKSKP', 'IKSKU', 
+			'IKSKS', 'IKSKM', 'IKJSP', 'IKJSU', 'IKJSS', 'IKJSM', 'ABS', 'T', 'SKD', 'cuti', 'HL', 'PT', 'PI', 
+			'PM', 'DL', 'Tambahan', 'Duka', 'Potongan', 'HC', 'Jumlah UM', 'Cicil', 'Potongan Koperasi', 'UBS', 
+			'UM Puasa', 'SK CT', 'POT 2', 'TAMB 2', 'Kode Lokasi', 'Jml Izin', 'Jml Mangkir', 'BHMP', 'BHMS', 'BHMM');
+		$data_table = $this->M_dataabsensi->getAbsensiSearch($filter)->result_array();
+
+		$this->load->library("Excel");
+		$objPHPExcel = new PHPExcel();
+		$objPHPExcel->setActiveSheetIndex(0);
+		$column = 0;
+
+		foreach($column_view as $cv){
+			$objPHPExcel->getActiveSheet()->setCellValueByColumnAndRow($column, 1, $cv);
+			$column++;
+		}
+
+		$excel_row = 2;
+		foreach($data_table as $dt){
+			$excel_col = 0;
+			foreach($column_table as $ct){
+				if($ct == ''){
+					$objPHPExcel->getActiveSheet()->setCellValueByColumnAndRow($excel_col, $excel_row, $excel_row-1);
+				}else{
+					$objPHPExcel->getActiveSheet()->setCellValueByColumnAndRow($excel_col, $excel_row, $dt[$ct]);
+				}
+				$excel_col++;
+			}
+			$excel_row++;
+		}
+		
+		$objPHPExcel->getActiveSheet()->setTitle('Quick ERP');      
+		$objWriter = PHPExcel_IOFactory::createWriter($objPHPExcel, 'Excel2007');
+ 
+		header("Last-Modified: " . gmdate("D, d M Y H:i:s") . " GMT");
+		header("Cache-Control: no-store, no-cache, must-revalidate");
+		header("Cache-Control: post-check=0, pre-check=0", false);
+		header("Pragma: no-cache");
+		header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
+
+		header('Content-Disposition: attachment;filename="DataAbsensi.xlsx"');
+		$objWriter->save("php://output");
+	}
+
 }
 
 /* End of file C_Kondite.php */

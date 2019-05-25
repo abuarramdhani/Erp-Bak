@@ -73,6 +73,16 @@
 						</div>
 					</div>
 				</div>
+				<div class="row" style="margin-top: 5px;">
+					<div class="form-group">
+						<div class="col-lg-2" align="right">
+							<label class="control-label">Uang Makan Puasa</label>
+						</div>
+						<div class="col-lg-3">
+							<input name="uang_makan_puasa" id="uangmakanpuasa" type="text" class="form-control" readonly="readonly"></input>
+						</div>
+					</div>
+				</div>
 				<div class="row" style="margin-top: 10px;">
 					<div class="col-lg-3">
 						<button type="button" id="button_edit" class="btn btn-warning pull-right" data="1">Edit</button>

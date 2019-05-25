@@ -20,6 +20,24 @@ $(document).ready(function(){
 		}
 	})
 
+	$(document).on('ifChanged','.submit_checking_all', function() {
+		if ($('.submit_checking_all').iCheck('update')[0].checked) {
+			$('.chckInvoice').each(function () {
+				var a = $(this).parent().parent().closest('tr').find('input[class~="chckInvoice"]');
+				if (a) {
+					$(this).iCheck('check');
+				}
+				// $(this).prop('checked',true);
+			});
+		}else{
+			$('.chckInvoice').each(function () {
+				// $(this).prop('checked',false);
+				$(this).iCheck('uncheck');
+			});
+		};
+
+	})
+
 	$('#btnSubmitChecking').click(function(){
 		var jml = 0;
 		var arrId = [];
@@ -294,24 +312,7 @@ $(document).ready(function(){
 	});
 
 	// new edit icheck testing chamber
-	$(document).on('ifChanged','.submit_checking_all', function() {
-		if ($('.submit_checking_all').iCheck('update')[0].checked) {
-			// alert('satu');
-			$('.chckInvoice').each(function () {
-				var a = $(this).parent().parent().closest('tr').find('button[name="checkbtndisable[]"]').attr('kedisable');
-				if (a == '0') {
-					$(this).iCheck('check');
-				}
-				// $(this).prop('checked',true);
-			});
-		}else{
-			$('.chckInvoice').each(function () {
-				// $(this).prop('checked',false);
-				$(this).iCheck('uncheck');
-			});
-		};
-
-	})
+	
 	
 	$('#invoice_category').on('change', function(){
 		var jasa = $(this).val();
@@ -325,21 +326,37 @@ $(document).ready(function(){
 
 });
 
+var simpanHtml = new Array();
 function prosesInvMI(th){
 	var invoice_id = $(th).attr('data-id');
 	var proses = $(th).attr('value');
 	var prnt = $(th).parent();
 
-	prnt.html('<img src="'+baseurl+'assets/img/gif/loading5.gif" id="gambarloading">');
+	// prnt.html('<img src="'+baseurl+'assets/img/gif/loading5.gif" id="gambarloading">');
+
+	simpanHtml[invoice_id]= $('.ganti_'+invoice_id+'').html();
 
 	if (proses == 2) {
-		prnt.html('<span class="btn btn-success" style="cursor: none;font-size: 10pt;" >Diterima<input type="hidden" name="hdnProses[]" class="hdnProses" value="2"></span>');
+		prnt.html('<span class="btn btn-success" style="cursor: none;font-size: 10pt;" >Diterima<input type="hidden" name="hdnTerima[]" class="hdnProses" value="'+invoice_id+'"></span><a class="btn btn-sm btn-primary" onclick="reloadTerima($(this));"><i class="fa fa-refresh"></i></a>');
 	} else {
-		prnt.html('<span class="btn btn-danger" style="font-size: 8pt ;cursor: none;">Ditolak (Isikan Alasan)<input type="hidden" name="hdnProses[]" class="hdnProses" value="3"></span>');
-		prnt.siblings('td').children('.reason_finance_class').show();
-		prnt.siblings('td').children('.reason_finance_class').attr('required',true);
+		prnt.html('<span class="btn btn-danger" style="font-size: 8pt ;cursor: none;">Ditolak (Isikan Alasan)<input type="hidden" name="hdnTolak[]" class="hdnProses" value="'+invoice_id+'"></span><a class="btn btn-sm btn-primary" onclick="reloadTolak($(this));"><i class="fa fa-refresh"></i></a>');
+		prnt.siblings('td').children('.reason_finance_class'+invoice_id+'').show();
+		prnt.siblings('td').children('.reason_finance_class'+invoice_id+'').attr('required',true);
 		alert('Alasan harus diisi');
 	}
+}
+
+function reloadTerima(th) {
+	var id = $(th).parent().attr('data-id');
+	if (id) {
+		$('.ganti_'+id+'').html(simpanHtml[id]);
+	}
+}
+
+function reloadTolak(th) {
+	var id = $(th).parent().attr('data-id');
+	$('.ganti_'+id+'').html(simpanHtml[id]);
+	$('.reason_finance_class'+id+'').remove();
 }
 
 function deleteLinePO(th){

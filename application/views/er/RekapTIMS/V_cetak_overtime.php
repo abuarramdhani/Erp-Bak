@@ -21,10 +21,16 @@
 	<tbody>
 		<?php if (isset($dataovertime) and !empty($dataovertime)) {
 			$angka = 1;
-			foreach ($dataovertime as $key) { ?>
+			foreach ($dataovertime as $key) {
+				?>
 				<tr>
 					<td style="text-align: center"><?php echo $angka ?></td>
-					<td style="text-align: center"><?php echo $key['periode'] ?></td>
+					<td style="text-align: center">
+						<?php if ($detail == 1) {
+							echo $key['periode'];
+						}else { echo $periodeM;
+						} ?>
+					</td>
 					<td><?php echo $key['noind']." - ".$key['nama'] ?></td>
 					<td><?php echo $key['seksi'] ?></td>
 					<td style="text-align: center"><?php echo number_format($key['jam_kerja'],'2',',','.') ?></td>

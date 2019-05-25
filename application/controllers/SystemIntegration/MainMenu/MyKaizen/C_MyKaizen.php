@@ -163,11 +163,10 @@ class C_MyKaizen extends CI_Controller
 			$level3 = $this->input->post('SlcAtasanDepartment');
 			$approval_level = $this->input->post('approval_level');
 			$typeApproval = $this->input->post('typeApp');
-			$approverExist = array();
 			$approverPertama = "";
 			if ($typeApproval == 1){
 			foreach ($approval_level as $key => $value) {
-				$approvernya = $value == '1' ? $level1 : $level2;
+				$approvernya = ($value == '1') ? $level1 : $level2;
 				$data = array('approver' =>  $approvernya,
 								  'level' => $value,
 								  'kaizen_id' => $kaizen_id);
@@ -185,7 +184,6 @@ class C_MyKaizen extends CI_Controller
 
 					$approverExist[] = $approvernya;
 			}
-
 			if (!$level1 && !$level2 && !$level3) {
 				$this->M_submit->DeleteApprover($kaizen_id);
 			}else{
@@ -277,7 +275,6 @@ class C_MyKaizen extends CI_Controller
 				$body = sprintf($getEmailTemplate[0]['body'], $getKaizen[0]['pencetus'],$getKaizen[0]['judul'],$link);
 
 				//send Email
-
 				$this->load->library('PHPMailerAutoload');
 				$mail = new PHPMailer();
 		        $mail->SMTPDebug = 0;

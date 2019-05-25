@@ -15,6 +15,9 @@ class M_fleetmaintenancekendaraan extends CI_Model
     	if ($id === FALSE) {
             $ambilMaintenanceKendaraan  =   "   select  mtckendaraan.maintenance_kendaraan_id as kode_maintenance_kendaraan,
                                                         mtckendaraan.maintenance_kategori_id as kode_kategori_kendaraan,
+                                                        (case when mtckendaraan.tanggal_maintenance >= current_date
+                                                        then (select cast((extract(epoch from mtckendaraan.tanggal_maintenance::timestamp - current_timestamp)) as int)/86400)
+                                                        end) as tgltunggu,
                                                         mtckendaraan.kendaraan_id as kode_kendaraan,
                                                         kdrn.nomor_polisi as nomor_polisi,
                                                         (select location_name from er.er_location where location_code = kdrn.kode_lokasi_kerja) lokasi,
@@ -31,12 +34,15 @@ class M_fleetmaintenancekendaraan extends CI_Model
                                                         join    ga.ga_fleet_maintenance_kategori as mtckategori
                                                             on  mtckategori.maintenance_kategori_id=mtckendaraan.maintenance_kategori_id
                                                 where   mtckendaraan.end_date='9999-12-12 00:00:00'
-                                                order by mtckendaraan.tanggal_maintenance desc;";
+                                                order by tgltunggu,mtckendaraan.tanggal_maintenance desc;";
 
     		$query = $this->db->query($ambilMaintenanceKendaraan);
     	} else {
             $ambilMaintenanceKendaraan  =   "   select  mtckendaraan.maintenance_kendaraan_id as kode_maintenance_kendaraan,
                                                         mtckendaraan.maintenance_kategori_id as kode_kategori_kendaraan,
+                                                        (case when mtckendaraan.tanggal_maintenance >= current_date
+                                                        then (select cast((extract(epoch from mtckendaraan.tanggal_maintenance::timestamp - current_timestamp)) as int)/86400)
+                                                        end) as tgltunggu,
                                                         mtckendaraan.kendaraan_id as kode_kendaraan,
                                                         kdrn.nomor_polisi as nomor_polisi,
                                                         (select location_name from er.er_location where location_code = kdrn.kode_lokasi_kerja) lokasi,
@@ -64,6 +70,9 @@ class M_fleetmaintenancekendaraan extends CI_Model
     {
         $query = $this->db->query("select  mtckendaraan.maintenance_kendaraan_id as kode_maintenance_kendaraan,
                                                         mtckendaraan.maintenance_kategori_id as kode_kategori_kendaraan,
+                                                        (case when mtckendaraan.tanggal_maintenance >= current_date
+                                                        then (select cast((extract(epoch from mtckendaraan.tanggal_maintenance::timestamp - current_timestamp)) as int)/86400)
+                                                        end) as tgltunggu,
                                                         mtckendaraan.kendaraan_id as kode_kendaraan,
                                                         kdrn.nomor_polisi as nomor_polisi,
                                                         (select location_name from er.er_location where location_code = kdrn.kode_lokasi_kerja) lokasi,
@@ -80,7 +89,8 @@ class M_fleetmaintenancekendaraan extends CI_Model
                                                         join    ga.ga_fleet_maintenance_kategori as mtckategori
                                                             on  mtckategori.maintenance_kategori_id=mtckendaraan.maintenance_kategori_id
                                                 where   mtckendaraan.kode_lokasi_kerja='$lokasi'
-                                                        and mtckendaraan.end_date='9999-12-12 00:00:00'");
+                                                        and mtckendaraan.end_date='9999-12-12 00:00:00'
+                                                order by tgltunggu");
         return $query->result_array();
     }
 

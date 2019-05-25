@@ -211,13 +211,15 @@ class C_FleetKendaraan extends CI_Controller
 			$usable					=	$this->input->post('usable', TRUE);
 			$pemilik_kendaraan		=	$this->input->post('kepemilikan_kendaraan', TRUE);
 			$lokasikerja			=	$this->input->post('lokasi_kerja_k', TRUE);
+			$pic	        		=	$this->input->post('pic_kendaraan', TRUE);
 
 			// $start_date 			= 	date('Y-m-d H:i:s', strtotime($this->input->post('txtStartDateHeader')));
 			// $end_date 				=	date('Y-m-d H:i:s', strtotime($this->input->post('txtEndDateHeader')));
 
-			$nama_STNK;
-			$nama_BPKB;
-			$nama_Kendaraan;
+
+			$nama_STNK ="";
+			$nama_BPKB ="";
+			$nama_Kendaraan ="";
 
     		$this->load->library('upload');
 
@@ -323,6 +325,7 @@ class C_FleetKendaraan extends CI_Controller
 					'kode_lokasi_kerja'		=> $lokasikerja,
 					'usable'				=> $usable,
 					'hak_milik'				=> $pemilik_kendaraan,
+					'pic_kendaraan'				=> $pic,
     			);
         	}else{
         		$data = array(
@@ -342,6 +345,7 @@ class C_FleetKendaraan extends CI_Controller
 					'kode_lokasi_kerja'		=> $lokasi,
 					'usable'				=> $usable,
 					'hak_milik'				=> $pemilik_kendaraan,
+					'pic_kendaraan'				=> $pic,
     			);
         	}
     		
@@ -469,8 +473,10 @@ class C_FleetKendaraan extends CI_Controller
 			$WaktuDihapus 			=	$this->input->post('WaktuDihapus');
 			$usable 			=	$this->input->post('usable');
 			$hak_milik 			=	$this->input->post('kepemilikan_kendaraan');
+			$pic_kendaraan 			=	$this->input->post('pic_kendaraan');
 
-
+			// echo $pic_kendaraan;
+			// exit();
 			// $tanggalNonaktif		=	$this->input->post('txtTanggalNonaktif');
 
 			// $start_date 			= 	date('Y-m-d H:i:s', strtotime($this->input->post('txtStartDateHeader')));
@@ -597,6 +603,7 @@ class C_FleetKendaraan extends CI_Controller
 					'created_by' 			=> $this->session->userid,
 					'usable' 				=> $usable,
 					'hak_milik' 			=> $hak_milik,
+					'pic_kendaraan' 			=> $pic_kendaraan,
 	    		);
 			}else{
 	    		$data = array(
@@ -612,6 +619,7 @@ class C_FleetKendaraan extends CI_Controller
 					'created_by' 			=> $this->session->userid,
 					'usable' 				=> $usable,
 					'hak_milik' 			=> $hak_milik,
+					'pic_kendaraan' 			=> $pic_kendaraan,
 	    		);
 			}
     		
@@ -739,8 +747,17 @@ class C_FleetKendaraan extends CI_Controller
 		$pdf->WriteHTML($html);
 		$pdf->Output($filename, 'I');
     }
+
+    public function pic_kendaraan(){
+    	$p = strtoupper($this->input->get('term'));
+
+    	$data = $this->M_fleetkendaraan->pic_kendaraan($p);
+
+    	echo json_encode($data);
+    }
  
 }
+
 
 /* End of file C_FleetKendaraan.php */
 /* Location: ./application/controllers/GeneralAffair/MainMenu/C_FleetKendaraan.php */

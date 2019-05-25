@@ -139,7 +139,7 @@
                                                                             .$loker["location_name"].'
                                                                         </option>';
                                                             }
-                                                            ?>
+                                                             ?>
                                                         </select>
                                                     </div>
                                                 </div>
@@ -147,6 +147,18 @@
                                             }
                                             
                                             ?>
+                                            <div class="form-group">
+                                                <label for="txtPICHeader" class="control-label col-lg-4">PIC</label>
+                                                <div class="col-lg-4">
+                                                  <select id="slc_pic_kendaraan" name="pic_kendaraan" class="form-control">
+                                                  <?php
+
+                                                   echo '<option value="'.$kendaraanEdit['pic_kendaraan'].'" selected="selected">'.$kendaraanEdit['pic_kendaraan'].'</option>';
+                                                  ?>
+
+                                                  </select>
+                                                </div>
+                                            </div>
 
                                             <div class="form-group">
                                                 <label for="txtNomorPolisiHeader" class="control-label col-lg-4">Nomor Rangka</label>
@@ -183,7 +195,7 @@
                                                 </div>
                                             </div>
 
-                                            <div class="form-group">
+                                           <!--  <div class="form-group">
                                                 <label class="control-label col-lg-4">Usable</label>
                                                 <div class="col-lg-4" style="padding-top: 6px;">
                                                     <label><input <?php if ($kendaraanEdit['usable'] == "1") {
@@ -193,7 +205,7 @@
                                                        echo " checked ";
                                                     } ?> type="radio" name="usable" id="usable" class="form-control" value="0" /> Tidak</label>
                                                 </div>
-                                            </div>
+                                            </div> -->
 
                                             <div class="form-group">
                                                 <label class="control-label col-lg-4">Kepemilikan Kendaraan</label>
