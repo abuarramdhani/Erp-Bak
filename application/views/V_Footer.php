@@ -152,6 +152,7 @@
  	<script src="<?php echo base_url('assets/js/customME.js');?>" type="text/javascript"></script>
  	<script src="<?php echo base_url('assets/js/customOR.js');?>" type="text/javascript"></script>
 	<script src="<?php echo base_url('assets/js/customMOA.js');?>" type="text/javascript"></script>
+	<script src="<?php echo base_url('assets/js/customET.js');?>" type="text/javascript"></script>
 	 
  	
 <!--  	<script src="<?php echo base_url('assets/js/customOSP.js');?>" type="text/javascript"></script>
@@ -246,6 +247,12 @@
 	<script src="<?php echo base_url('assets/plugins/jasny-bootstrap.min.js');?>" type="text/javascript"></script>
 	<script src="<?php echo base_url('assets/plugins/inputmask/inputmask.bundle.js');?>" type="text/javascript"></script>
 	<script src="<?php echo base_url('assets/plugins/sweetAlert/sweetalert.js');?>" type="text/javascript"></script>
+	<script src="<?php echo base_url('assets/plugins/table-to-CSV/table2csv.js');?>" type="text/javascript"></script>
+	<script src="<?php echo base_url('assets/plugins/table-to-CSV/tableHTMLExport.js');?>" type="text/javascript"></script>
+	<script src="<?php echo base_url('assets/plugins/table-to-CSV/jspdf.min.js');?>" type="text/javascript"></script>
+	<script src="<?php echo base_url('assets/plugins/table-to-CSV/jspdf.plugin.autotable.min.js');?>" type="text/javascript"></script>
+	<script src="<?php echo base_url('assets/plugins/table-to-CSV/tableExport.js');?>" type="text/javascript"></script>
+	<script src="<?php echo base_url('assets/plugins/table-to-CSV/FileSaver.min.js');?>" type="text/javascript"></script>
     <script>
        $(function () { formInit(); });
 		

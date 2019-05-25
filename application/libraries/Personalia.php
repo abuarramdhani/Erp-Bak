@@ -94,13 +94,10 @@ class personalia
 			{
 				$ambilTembusan1 		=	$this->CI->M_Promosi->ambilTembusan($kodeTingkatan_1, $kd_jabatan_i_1, $kd_jabatan_1, $lokasi_kerja_1);
 				$ambilTembusan2 		=	$this->CI->M_Promosi->ambilTembusan($kodeTingkatan_2, $kd_jabatan_i_2, $kd_jabatan_2, $lokasi_kerja_2);
-				// echo '1='.$kd_jabatan_1.'<br/>';
-				// echo '2='.$kd_jabatan_2.'<br/>';
-				// echo "t1<br/>";
+				// echo "<pre>";
 				// print_r($ambilTembusan1);
-				// echo $kd_jabatan_i_1."|string//<br/>t2<br/>";
-				// print_r($ambilTembusan2);
-				// echo "<br/>";
+				// echo '1='.$kodeTingkatan_1.'<|='.$kd_jabatan_1.'<br>';
+				// echo '2='.$kodeTingkatan_2.'<|='.$kd_jabatan_2;
 				for ($i = 0; $i < 14; $i++) 
 				{ 
 					if(isset($ambilTembusan1[$i]))
@@ -124,6 +121,7 @@ class personalia
 			}
 			$tingkat++;
 		}
+		// echo "<pre>";
 		// print_r($tembusan);
 		$tembusan = array_unique($tembusan);
 		$key = array_search('KEPALA SEKSI MADYA GENERAL AFFAIR ', $tembusan);

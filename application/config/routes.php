@@ -581,9 +581,6 @@ $route['CateringManagement/PenjadwalanCatering'] = 'Cateringmanagement/Penjadwal
 $route['CateringManagement/PenjadwalanCatering/Create/(:any)/(:any)'] = 'Cateringmanagement/Penjadwalan/C_PenjadwalanCatering/Create/$1/$2';
 $route['CateringManagement/PenjadwalanCatering/Edit/(:any)/(:any)'] = 'Cateringmanagement/Penjadwalan/C_PenjadwalanCatering/Edit/$1/$2';
 $route['CateringManagement/PenjadwalanCatering/Delete/(:any)/(:any)'] = 'Cateringmanagement/Penjadwalan/C_PenjadwalanCatering/Delete/$1/$2';
-
-
-
 //------------------------------------CateringManagement - Puasa------------------------------------------------------------//
 $route['CateringManagement/Puasa/Transfer'] = 'CateringManagement/Puasa/C_TransferPuasa';
 $route['CateringManagement/Puasa/Transfer/Transfer'] = 'CateringManagement/Puasa/C_TransferPuasa/Transfer';
@@ -1272,14 +1269,16 @@ $route['MonitoringKomponen/Monitoring/(:any)/(:any)'] = 'MonitoringKomponen/Main
 $route['MonitoringKomponen/MonitoringSeksi'] = 'MonitoringKomponen/MainMenu/C_Monitoring_Seksi';
 $route['MonitoringKomponen/MonitoringSeksi/(:any)'] = 'MonitoringKomponen/MainMenu/C_Monitoring_Seksi/$1';
 $route['MonitoringKomponen/MonitoringSeksi/(:any)/(:any)'] = 'MonitoringKomponen/MainMenu/C_Monitoring_Seksi/$1/$2';
-
-//Grapic
- $route['SDM/Grapic'] = 'Grapic/C_Index';
- $route['SDM/grapicTabs'] = 'Grapic/C_Index/grapicTabs';
- $route['SDM/getData'] = 'Grapic/C_Index/getData';
- $route['SDM/input'] = 'Grapic/C_Index/input';
- $route['SDM/(:any)'] = 'Grapic/C_Index/$1';
- $route['SDM/openPDF'] = 'Grapic/C_Index/openPDF';
+//------------------------------------ Grapic ----------------------------------------
+$route['SDM/(:any)'] = 'Grapic/C_Index/$1';
+$route['SDM/(:any)/(:any)'] = 'Grapic/C_Index/$1/$2';
+$route['SDM/Grapic'] = 'Grapic/C_Index';
+$route['SDM/grapicTabs'] = 'Grapic/C_Index/grapicTabs';
+$route['SDM/getData'] = 'Grapic/C_Index/getData';
+$route['SDM/getDatav2'] = 'Grapic/C_Index/getDatav2';
+$route['SDM/input'] = 'Grapic/C_Index/input';
+$route['SDM/inputv2'] = 'Grapic/C_Index/inputv2';
+$route['SDM/openPDF'] = 'Grapic/C_Index/openPDF';
  
 
 //------------------------------------ Management Kebutuhan Pekerja ----------------------------------------
@@ -1980,6 +1979,13 @@ $route['WarehouseSPB/Ajax/(:any)']		 				= 'WarehouseSPB/Ajax/C_Ajax/$1';
  $route['P2K3/Order/(:any)/(:any)'] = 'P2K3/MainMenu/C_Order/$1/$2';
  $route['P2K3/Order/(:any)/(:any)/(:any)'] = 'P2K3/MainMenu/C_Order/$1/$2/$3';
  // $route['P2K3/Order/list_all'] = 'P2K3/MainMenu/C_Order/listAll';
+   //---------------------------------------------------------- P2K3 V2 -----------------------------------------------------------//
+ $route['P2K3_V2'] = 'P2K3V2/C_P2K3';
+ $route['P2K3_V2/Order'] = 'P2K3V2/MainMenu/C_Order';
+ $route['P2K3_V2/Order/(:any)'] = 'P2K3V2/MainMenu/C_Order/$1';
+ $route['P2K3_V2/Order/(:any)/(:any)'] = 'P2K3V2/MainMenu/C_Order/$1/$2';
+ $route['P2K3_V2/Order/(:any)/(:any)/(:any)'] = 'P2K3V2/MainMenu/C_Order/$1/$2/$3';
+
 //------------------------------------------------Waste Management Seksi------------------------------------------------//
 $route['WasteManagementSeksi'] 	= 'WasteManagementSeksi/C_WasteManagementSeksi';
 $route['WasteManagementSeksi/InputKirimLimbah'] = 'WasteManagementSeksi/MainMenu/C_inputkirim';
@@ -2012,6 +2018,19 @@ $route['p2k3adm/datamasuk'] = 'P2K3/P2K3Admin/MainMenu/C_DataMasuk';
 $route['p2k3adm/datamasuk/(:any)'] = 'P2K3/P2K3Admin/MainMenu/C_DataMasuk/$1';
 $route['p2k3adm/datamasuk/(:any)/(:any)'] = 'P2K3/P2K3Admin/MainMenu/C_DataMasuk/$1/$2';
 $route['p2k3adm/datamasuk/(:any)/(:any)/(:any)'] = 'P2K3/P2K3Admin/MainMenu/C_DataMasuk/$1/$2/$3';
+$route['p2k3adm/Admin/(:any)'] = 'P2K3/P2K3Admin/MainMenu/C_Index/$1';
+$route['p2k3adm/Admin/(:any)/(:any)'] = 'P2K3/P2K3Admin/MainMenu/C_Index/$1/$2';
+
+//---------------------------------------------------------- P2K3adm V2 -----------------------------------------------------------//
+$route['p2k3adm_V2'] = 'P2K3V2/P2K3Admin/C_P2K3Admin';
+$route['p2k3adm_V2/datamasuk'] = 'P2K3V2/P2K3Admin/MainMenu/C_DataMasuk';
+$route['p2k3adm_V2/datamasuk/(:any)'] = 'P2K3V2/P2K3Admin/MainMenu/C_DataMasuk/$1';
+$route['p2k3adm_V2/datamasuk/(:any)/(:any)'] = 'P2K3V2/P2K3Admin/MainMenu/C_DataMasuk/$1/$2';
+$route['p2k3adm_V2/datamasuk/(:any)/(:any)/(:any)'] = 'P2K3V2/P2K3Admin/MainMenu/C_DataMasuk/$1/$2/$3';
+$route['p2k3adm_V2/Admin/(:any)'] = 'P2K3V2/P2K3Admin/MainMenu/C_Index/$1';
+$route['p2k3adm_V2/Admin/(:any)/(:any)'] = 'P2K3V2/P2K3Admin/MainMenu/C_Index/$1/$2';
+$route['p2k3adm_V2/Admin/(:any)/(:any)/(:any)'] = 'P2K3V2/P2K3Admin/MainMenu/C_Index/$1/$2/$3';
+
 
 //--------------------------------------------------- Monitoring Invoice Admin Pembelian --------------------------------------------------//
 $route['AccountPayables/MonitoringInvoice/Invoice'] = 'MonitoringInvoice/C_monitoringinvoice';
@@ -2530,5 +2549,14 @@ $route['HiwingMonitoring/Monitoring/showDetail'] ='HiwingMonitoring/C_Monitoring
 $route['MonitoringOmsetAkuntansi'] = 'MonitoringOmsetAkuntansi/C_MonitoringOmsetAkuntansi';
 $route['MonitoringOmsetAkuntansi/Monitoring/(:any)'] = 'MonitoringOmsetAkuntansi/C_MonitoringOmsetAkuntansi/$1';
 $route['MonitoringOmsetAkuntansi/Monitoring/(:any)/(:any)'] = 'MonitoringOmsetAkuntansi/C_MonitoringOmsetAkuntansi/$1/$2';
-
-
+//-------------------------Evaluasi TIMS------------------------------------------------------//
+$route['EvaluasiTIMS'] = 'EvaluasiTIMS/C_Index/index';
+$route['EvaluasiTIMS/Harian'] = 'EvaluasiTIMS/C_Index/Harian';
+$route['EvaluasiTIMS/Harian/(:any)'] = 'EvaluasiTIMS/C_Index/$1';
+$route['EvaluasiTIMS/Harian/(:any)/(:any)'] = 'EvaluasiTIMS/C_Index/$1/$2';
+$route['EvaluasiTIMS/Harian/(:any)/(:any)/(:any)'] = 'EvaluasiTIMS/C_Index/$1/$2/$3';
+$route['EvaluasiTIMS/Bulanan'] = 'EvaluasiTIMS/C_Index/Bulanan';
+$route['EvaluasiTIMS/Bulanan/(:any)'] = 'EvaluasiTIMS/C_Index/$1';
+$route['EvaluasiTIMS'] = 'EvaluasiTIMS/C_Index/index';
+$route['EvaluasiTIMS/Setup/(:any)'] = 'EvaluasiTIMS/C_Index/$1';
+$route['EvaluasiTIMS/Setup/(:any)/(:any)'] = 'EvaluasiTIMS/C_Index/$1/$2';

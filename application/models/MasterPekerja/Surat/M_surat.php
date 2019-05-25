@@ -147,6 +147,7 @@ class M_surat extends CI_Model
 		pri.nama as nama,
 		pri.kodesie as kodesie,
 		pri.jabatan as nama_jabatan,
+		pri.kd_jbt_dl as jabatan_dl,
 		tseksi.dept,
 		tseksi.bidang,
 		tseksi.unit,
@@ -204,7 +205,7 @@ class M_surat extends CI_Model
 		left join 	hrd_khs.tlokasi_kerja as tlokasi_kerja
 		on 	tlokasi_kerja.id_=pri.lokasi_kerja
 		where 		pri.noind='$noind';";
-		// echo $detail_pekerja;
+		// echo $detail_pekerja;exit();
 		$query 				=	$this->personalia->query($detail_pekerja);
 		return $query->result_array();
 	}
