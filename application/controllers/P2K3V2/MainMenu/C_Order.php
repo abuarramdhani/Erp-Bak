@@ -1608,8 +1608,6 @@ class C_Order extends CI_Controller
   			'kocab' => $kode_cabang,
   			'data_body' => $data_array_2,
   			);
-		// echo $max;
-		// echo $y;
   		$y = $y + 10;
   		$k++;
   	}
