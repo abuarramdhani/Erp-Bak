@@ -79,6 +79,12 @@
 
 	<!-- html2canvas -->
 	<script src="<?php echo base_url('assets/plugins/html2canvas/html2canvas.min.js') ?>" type="text/javascript"></script>	
+
+	<!-- Highchart.js charts -->
+	<script src="<?php echo base_url('assets/plugins/highchart/highcharts.js');?>"></script>
+	<script src="<?php echo base_url('assets/plugins/highchart/exporting.js');?>"></script>
+	<script src="<?php echo base_url('assets/plugins/highchart/offline-exporting.js');?>"></script>
+
 	
 	<!-- Custom Javascript -->
     <script src="<?php echo base_url('assets/js/custom.js');?>" type="text/javascript"></script>
@@ -142,9 +148,15 @@
  	<script src="<?php echo base_url('assets/js/customKMK.js');?>" type="text/javascript"></script>
  	<script src="<?php echo base_url('assets/js/customPD.js');?>" type="text/javascript"></script>
  	<script src="<?php echo base_url('assets/js/customMPO.js');?>" type="text/javascript"></script>
+ 	<script src="<?php echo base_url('assets/js/customSMM.js');?>" type="text/javascript"></script>
  	<script src="<?php echo base_url('assets/js/customME.js');?>" type="text/javascript"></script>
  	<script src="<?php echo base_url('assets/js/customOR.js');?>" type="text/javascript"></script>
- 	<script src="<?php echo base_url('assets/js/customSMM.js');?>" type="text/javascript"></script>
+	<script src="<?php echo base_url('assets/js/customMOA.js');?>" type="text/javascript"></script>
+	<script src="<?php echo base_url('assets/js/customET.js');?>" type="text/javascript"></script>
+	 
+ 	
+<!--  	<script src="<?php echo base_url('assets/js/customOSP.js');?>" type="text/javascript"></script>
+ 	<script src="<?php echo base_url('assets/js/customHWM.js');?>" type="text/javascript"></script> -->
 	<script type="text/javascript">
 		if(counter_row <= 0){
 			var counter_row = 0;
@@ -234,8 +246,13 @@
 	<script src="<?php echo base_url('assets/plugins/qtip/jquery.qtip.js');?>" type="text/javascript"></script>
 	<script src="<?php echo base_url('assets/plugins/jasny-bootstrap.min.js');?>" type="text/javascript"></script>
 	<script src="<?php echo base_url('assets/plugins/inputmask/inputmask.bundle.js');?>" type="text/javascript"></script>
-
 	<script src="<?php echo base_url('assets/plugins/sweetAlert/sweetalert.js');?>" type="text/javascript"></script>
+	<script src="<?php echo base_url('assets/plugins/table-to-CSV/table2csv.js');?>" type="text/javascript"></script>
+	<script src="<?php echo base_url('assets/plugins/table-to-CSV/tableHTMLExport.js');?>" type="text/javascript"></script>
+	<script src="<?php echo base_url('assets/plugins/table-to-CSV/jspdf.min.js');?>" type="text/javascript"></script>
+	<script src="<?php echo base_url('assets/plugins/table-to-CSV/jspdf.plugin.autotable.min.js');?>" type="text/javascript"></script>
+	<script src="<?php echo base_url('assets/plugins/table-to-CSV/tableExport.js');?>" type="text/javascript"></script>
+	<script src="<?php echo base_url('assets/plugins/table-to-CSV/FileSaver.min.js');?>" type="text/javascript"></script>
     <script>
        $(function () { formInit(); });
 		
@@ -258,6 +275,11 @@
       	});			
 	</script>
 
+	<script type="text/javascript">
+		var id_gd;
+	</script>
+	<script src="<?php echo base_url('assets/js/customML.js');?>" type="text/javascript"></script>
+
 
 
 	<?php
@@ -265,7 +287,84 @@
 		$alert = '';
 	};
 	echo $alert; ?>
-     <!--END MAIN WRAPPER -->
-</body>
-     <!-- END BODY -->
+
+	<?php
+		echo '<script type="text/javascript">';
+		if($this->session->flashdata('delete-menu-respond')) {
+			switch($this->session->flashdata('delete-menu-respond')) {
+				case 1:
+					if($this->session->flashdata('delete-menu-name')) {
+						echo "
+							Swal.fire({
+								text: 'Terjadi kesalahan saat menghapus menu ' + '".$this->session->flashdata('delete-menu-name')."',
+								confirmButtonText: 'Tutup',
+								type: 'error'
+							});
+						";
+					}
+					break;
+				case 2:
+					if($this->session->flashdata('delete-menu-name')) {
+						echo "
+							Swal.fire({
+								text: 'Menu ' + '".$this->session->flashdata('delete-menu-name')."' + ' berhasil dihapus',
+								confirmButtonText: 'Tutup',
+								type: 'success'
+							});
+						";
+					}
+					break;
+			}
+		}
+		if($this->session->flashdata('delete-menu-list-respond')) {
+			switch($this->session->flashdata('delete-menu-list-respond')) {
+				case 1:
+					if($this->session->flashdata('delete-menu-list-name')) {
+						echo "
+							Swal.fire({
+								text: 'Terjadi kesalahan saat menghapus menu list ' + '".$this->session->flashdata('delete-menu-list-name')."',
+								confirmButtonText: 'Tutup',
+								type: 'error'
+							});
+						";
+					}
+					break;
+				case 2:
+					if($this->session->flashdata('delete-menu-list-name')) {
+						echo "
+							Swal.fire({
+								text: 'Menu list ' + '".$this->session->flashdata('delete-menu-list-name')."' + ' berhasil dihapus',
+								confirmButtonText: 'Tutup',
+								type: 'success'
+							});
+						";
+					}
+					break;
+			}
+		}
+		if($this->session->flashdata('delete-sub-menu-respond')) {
+			switch($this->session->flashdata('delete-sub-menu-respond')) {
+				case 1:
+					echo "
+						Swal.fire({
+							text: 'Terjadi kesalahan saat menghapus sub menu',
+							confirmButtonText: 'Tutup',
+							type: 'error'
+						});
+					";
+					break;
+				case 2:
+					echo "
+						Swal.fire({
+							text: 'Sub menu berhasil dihapus',
+							confirmButtonText: 'Tutup',
+							type: 'success'
+						});
+					";
+					break;
+			}
+		}
+		echo '</script>';
+		?>
+	</body>
 </html>

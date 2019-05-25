@@ -169,13 +169,15 @@
 					$data['tempat_makan1'] 				= 	$detail_pekerja[0]['tempat_makan1'];
 					$data['tempat_makan2'] 				= 	$detail_pekerja[0]['tempat_makan2'];
 					$data['status_staf'] 				= 	$detail_pekerja[0]['status_staf'];
+					$data['jabatan_dl'] 				= 	$detail_pekerja[0]['jabatan_dl'];
 
 					if ( empty($data['kode_pekerjaan']) && empty($data['nama_pekerjaan']) )
 					{
 						$data['kode_pekerjaan'] 			= 	'';
 						$data['nama_pekerjaan'] 			= 	'';
 					}
-
+					// echo "<pre>";
+					// print_r($data);exit();
 					echo json_encode($data);
 				}
 
