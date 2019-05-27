@@ -363,7 +363,7 @@ $(document).ready(function() {
   $('.k3_admin_standar').select2({
     ajax:
     {
-      url: baseurl+'/p2k3adm_V2/Admin/getSeksiAprove',
+      url: baseurl+'p2k3adm_V2/Admin/getSeksiAprove',
       dataType: 'json',
       type: 'get',
       data: function (params) {
