@@ -203,6 +203,7 @@ SELECT DISTINCT pol.po_line_id line_id,
     }
 
     public function showInvoice($source){
+      $this->db->cache_on();
         $oracle = $this->load->database('oracle', true);
         $query = "SELECT   ami.invoice_number invoice_number, ami.invoice_date invoice_date,
                          ami.tax_invoice_number tax_invoice_number,
@@ -443,6 +444,7 @@ SELECT DISTINCT pol.po_line_id line_id,
     }
 
     public function showDetailPerBatch($batch){
+        $this->db->cache_on();
         $oracle = $this->load->database('oracle',true);
         $sql = "SELECT distinct ami.invoice_id invoice_id,
                          ami.invoice_number invoice_number, 
@@ -539,7 +541,7 @@ SELECT DISTINCT pol.po_line_id line_id,
 
 
      public function checkStatus($po_number,$line_num)
-    {
+    {   $this->db->cache_on();
         $oracle = $this->load->database('oracle',TRUE);
         $query = "SELECT distinct
                             rt.transaction_type status
@@ -623,7 +625,7 @@ SELECT DISTINCT pol.po_line_id line_id,
     }
 
     public function podetails($po_number,$lppb_number,$line_number){
-       
+       $this->db->cache_on();
        $oracle = $this->load->database('oracle',TRUE);
         $query = "SELECT * FROM(SELECT distinct
                             pol.line_num line_num,
@@ -733,6 +735,7 @@ SELECT DISTINCT pol.po_line_id line_id,
 
 
     public function cekpo_number($po_number,$line_number){
+        $this->db->cache_on();
         $oracle = $this->load->database("oracle",TRUE);
         $query = $oracle->query("SELECT distinct
                                     pol.po_line_id line_id,
@@ -826,7 +829,7 @@ SELECT DISTINCT pol.po_line_id line_id,
     }
 
    public function invoicereject($source_login)
-    {
+    {   $this->db->cache_on();
         $oracle = $this->load->database("oracle",TRUE);
         $query = "SELECT   ami.invoice_number invoice_number, ami.invoice_date invoice_date,
                      ami.tax_invoice_number tax_invoice_number,
@@ -915,6 +918,13 @@ SELECT DISTINCT pol.po_line_id line_id,
                  WHERE invoice_id = $invoice_id ";
         $runQuery2 = $oracle->query($query2);
         // oci_commit($oracle);
+    }
+    public function SusulFakturPajak()
+    {
+       $oracle = $this->load->database("oracle",TRUE);
+        $query = "SELECT ";
+        $run = $oracle->query($query);
+        $arr = $run->result_array();
     }
 
 }

@@ -126,6 +126,7 @@ class C_monitoringinvoice extends CI_Controller{
 		$this->load->view('V_Sidemenu',$data);
 		$this->load->view('MonitoringInvoice/V_invoice',$data);
 		$this->load->view('V_Footer',$data);
+		$this->output->cache(1);
 	}
 
 
@@ -168,7 +169,7 @@ class C_monitoringinvoice extends CI_Controller{
 		$this->load->view('V_Sidemenu',$data);
 		$this->load->view('MonitoringInvoice/V_listsubmit',$data);
 		$this->load->view('V_Footer',$data);
-
+		$this->output->cache(1);
 		
 	}
 
@@ -193,7 +194,7 @@ class C_monitoringinvoice extends CI_Controller{
 		$this->load->view('V_Sidemenu',$data);
 		$this->load->view('MonitoringInvoice/V_addinvoice',$data);
 		$this->load->view('V_Footer',$data);
-
+		$this->output->cache(1);
 	}
 
 	public function batchDetail($batch){
@@ -232,6 +233,7 @@ class C_monitoringinvoice extends CI_Controller{
 		$this->load->view('V_Sidemenu',$data);
 		$this->load->view('MonitoringInvoice/V_batch',$data);
 		$this->load->view('V_Footer',$data);
+		$this->output->cache(1);
 	}
 
 	public function getPoNumber($no_po)
@@ -242,6 +244,7 @@ class C_monitoringinvoice extends CI_Controller{
 		
 		echo ($returnView);
 	} 
+	// ini fungsi untuk menginput data dari addinvoice
 
 	public function addPoNumber(){
 		$invoice_number = $this->input->post('invoice_number');
@@ -268,6 +271,7 @@ class C_monitoringinvoice extends CI_Controller{
 		$invoice_category = $this->input->post('invoice_category');
 		$nominal_dpp = $this->input->post('nominal_dpp');
 		$jenis_jasa = $this->input->post('jenis_jasa');
+		// ini fungsi login, hak ases
 
 		$noinduk = $this->session->userdata['user'];
 		$cek_login = $this->M_monitoringinvoice->checkSourceLogin($noinduk);
@@ -281,12 +285,13 @@ class C_monitoringinvoice extends CI_Controller{
 		} elseif ($cek_login[0]['unit_name'] == 'INFORMATION & COMMUNICATION TECHNOLOGY') {
 			$source_login = 'INFORMATION & COMMUNICATION TECHNOLOGY';
 		}
+		// tentang separator
 
-		//$amount = str_replace(',', '', $invoice_amount);
+		$amount = str_replace(',', '', $invoice_amount); //478636
 		$vendor = str_replace("'", "", $vendor_name);
 		$item_desc = str_replace("'", "", $item_description);
-		
-		$add2['invoice'] = $this->M_monitoringinvoice->savePoNumber2($invoice_number, $invoice_date, $invoice_amount, $tax_invoice_number,$vendor_number,$vendor[0],$last_admin_date,$note_admin,$invoice_category,$nominal_dpp,$source_login,$jenis_jasa);
+
+		$add2['invoice'] = $this->M_monitoringinvoice->savePoNumber2($invoice_number, $invoice_date, $amount, $tax_invoice_number,$vendor_number,$vendor[0],$last_admin_date,$note_admin,$invoice_category,$nominal_dpp,$source_login,$jenis_jasa);
 		
 		foreach ($po_number as $key => $value) {
 
@@ -340,6 +345,7 @@ class C_monitoringinvoice extends CI_Controller{
 		$this->load->view('V_Sidemenu',$data);
 		$this->load->view('MonitoringInvoice/V_editinvoice',$data);
 		$this->load->view('V_Footer',$data);
+		$this->output->cache(1);
 
 	}
 
@@ -461,6 +467,7 @@ class C_monitoringinvoice extends CI_Controller{
 		$this->load->view('V_Sidemenu',$data);
 		$this->load->view('MonitoringInvoice/V_batchdetail',$data);
 		$this->load->view('V_Footer',$data);
+		$this->output->cache(1);
 	}
 
 	public function GenerateInvoice(){
@@ -659,6 +666,7 @@ class C_monitoringinvoice extends CI_Controller{
 		$this->load->view('V_Sidemenu',$data);
 		$this->load->view('MonitoringInvoice/V_addponumber',$data);
 		$this->load->view('V_Footer',$data);
+		$this->output->cache(1);
 
 	}
 
@@ -818,6 +826,7 @@ class C_monitoringinvoice extends CI_Controller{
 		$this->load->view('V_Sidemenu',$data);
 		$this->load->view('MonitoringInvoice/V_rejected',$data);
 		$this->load->view('V_Footer',$data);
+		$this->output->cache(1);
 	}
 
 	public function Detail($invoice_id){
@@ -839,6 +848,7 @@ class C_monitoringinvoice extends CI_Controller{
 		$this->load->view('V_Sidemenu',$data);
 		$this->load->view('MonitoringInvoice/V_rejecteddetail',$data);
 		$this->load->view('V_Footer',$data);
+		$this->output->cache(1);
 	}
 
 	public function deletePOLine(){
@@ -880,6 +890,7 @@ class C_monitoringinvoice extends CI_Controller{
 		$this->load->view('V_Sidemenu',$data);
 		$this->load->view('MonitoringInvoice/V_editReject',$data);
 		$this->load->view('V_Footer',$data);
+		$this->output->cache(1);
 
 	}
 
@@ -920,6 +931,27 @@ class C_monitoringinvoice extends CI_Controller{
 
 		$this->M_monitoringinvoice->saveEditInvoice3($invoice_id,$action_date);
 		redirect('AccountPayables/MonitoringInvoice/Invoice');
+	}
+
+	public function SusulFakturPajak()
+	{
+		$this->checkSession();
+		$user_id = $this->session->userid;
+		
+		$data['Menu'] = 'Dashboard';
+		$data['SubMenuOne'] = '';
+		
+		$data['UserMenu'] = $this->M_user->getUserMenu($user_id,$this->session->responsibility_id);
+		$data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id);
+		$data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id);
+
+		$invoice = $this->M_monitoringinvoice->showInvoice($source_login);
+
+		$this->load->view('V_Header',$data);
+		$this->load->view('V_Sidemenu',$data);
+		$this->load->view('MonitoringInvoice/V_fakturPajak',$data);
+		$this->load->view('V_Footer',$data);
+		$this->output->cache(1);
 	}
 
 }

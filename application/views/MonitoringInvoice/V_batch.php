@@ -59,8 +59,20 @@
 											<td><?php echo date('d-M-Y',strtotime($inv['INVOICE_DATE'])) ?></td>
 											<td><?php echo $inv['PPN']?></td>
 											<td><?php echo $inv['TAX_INVOICE_NUMBER'] ?></td>
-											<td class="inv_amount" ><?php echo $inv['INVOICE_AMOUNT'] ?></td>
-											<td class="po_amount"><?php echo $inv['PO_AMOUNT'] ?></td>
+											<td class="inv_amount" >
+											<?php if($inv['INVOICE_AMOUNT']==NULL) {
+								          	 echo 'Rp.'.' ,-';
+								          	}else{
+								          	 echo 'Rp. '. number_format($inv['INVOICE_AMOUNT'],0,'.','.').',00-';
+								          	};?>
+								          	</td>
+											<td class="po_amount">
+											<?php if($inv['PO_AMOUNT']==NULL) {
+								          	 echo 'Rp.'.' ,-';
+								          	}else{
+								          	 echo 'Rp. '. number_format(round($inv['PO_AMOUNT']),0,'.','.').',00-';
+								          	};?>
+								          	</td>
 											<?php if ($inv['LAST_FINANCE_INVOICE_STATUS'] == 2 && $inv['STATUS'] = 2) {
 												$stat = 'Approved by Kasie Finance';
 												}elseif ($inv['STATUS'] == 1) {

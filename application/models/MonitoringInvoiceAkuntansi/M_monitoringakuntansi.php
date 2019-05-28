@@ -27,7 +27,7 @@ class M_monitoringakuntansi extends CI_Model {
     }
 
 	public function unprocessedInvoice($batchNumber)
-	{
+	{   $this->db->cache_on();
 		$erp_db = $this->load->database('oracle',true);
 		$sql = "SELECT  ami.invoice_id, ami.vendor_name vendor_name,
                 ami.invoice_number invoice_number,
@@ -76,7 +76,7 @@ class M_monitoringakuntansi extends CI_Model {
 	}
 
 	public function DetailUnprocess($batch_num,$invoice_id)
-	{
+	{   $this->db->cache_on();
 		$erp_db = $this->load->database('oracle',true);
         $sql = "SELECT aipo.invoice_id invoice_id, 
         		invoice_number invoice_number,
@@ -143,7 +143,7 @@ class M_monitoringakuntansi extends CI_Model {
     }
 
 	public function processedInvoice($batchNumber)
-	{
+	{   $this->db->cache_on();
 		$erp_db = $this->load->database('oracle',true);
 		$sql = "SELECT distinct ami.invoice_id invoice_id,
                          ami.vendor_name vendor_name,
@@ -175,7 +175,7 @@ class M_monitoringakuntansi extends CI_Model {
 	}
 
 	public function DetailProcess($invoice_id)
-	{
+	{    $this->db->cache_on();
 		$erp_db = $this->load->database('oracle',true);
         $sql = "SELECT ami.invoice_number invoice_number,
                 ami.invoice_date invoice_date,

@@ -1,4 +1,4 @@
-<form method="post" action="<?php echo base_url('Monitoring/TrackingInvoice/btn_search') ?>">
+<form method="post" action="<?php echo base_url('Monitoring/TrackingInvoice/PoNumberMonitoring') ?>">
 <section class="content">
 	<div class="inner" >
 		<div class="row">
@@ -66,9 +66,12 @@
 													</table>
 													<div class="pull-left">
 														* Dalam Pengembangan<br>
-														** Gunakan <strong>%</strong> untuk pencarian wildcard
+														** Gunakan <strong>% di belakang no.PO </strong>untuk pencarian wildcard
 													</div><div class="pull-right">
-														<button type="button" class="btn btn-primary" id="btn_search_invoice">Search</button>
+														<button type="button" class="btn btn-primary" id="btn_search_invoice" style="margin-top: 10px; margin-right: 10px;">Search</button>
+														<div class="pull-right">
+														<button type="reset" class="btn btn-success" id="btn_clear_invoice" style="margin-top: 10px; margin-right: 10px;">Clear</button>
+														</div>
 													</div>
 												</div>
 											</div>

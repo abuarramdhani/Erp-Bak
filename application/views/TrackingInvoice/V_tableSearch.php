@@ -18,7 +18,7 @@
 			foreach($invoice as $i) { ?>
 		<tr>
 			<td><?php echo $no?></td>
-			<td><a class="btn btn-success" href="<?php echo base_url('Monitoring/TrackingInvoice/DetailInvoice/'.$i['INVOICE_ID'])?>">
+			<td><a class="btn btn-success" onclick="btn_cari($(this))" invoice="<?php echo $i['INVOICE_ID']?>">
 				 Detail
 				</a>
 			</td>
@@ -26,7 +26,8 @@
 			<td><?php echo $i['INVOICE_NUMBER']?></td>
 			<td><?php echo $i['INVOICE_DATE']?></td>
 			<td><?php echo $i['TAX_INVOICE_NUMBER']?></td>
-			<td><?php echo $i['INVOICE_AMOUNT']?></td>
+			<td><?php echo 'Rp. '. number_format(round($i['INVOICE_AMOUNT']),0,'.','.').',00-';
+			?></td>
 			<td><?php if($status[$i['INVOICE_ID']]){foreach ($status[$i['INVOICE_ID']] as $k) { ?>
 											<?php echo  $k ."<br>" ?>
 										<?php }} ?></td>
