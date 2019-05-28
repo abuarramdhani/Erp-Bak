@@ -609,6 +609,10 @@ $route['CateringManagement/Extra/EditTempatMakan'] = 'CateringManagement/Extra/C
 $route['CateringManagement/Extra/EditTempatMakan/(:any)'] = 'CateringManagement/Extra/C_EditTempatMakan/$1';
 $route['CateringManagement/Extra/EditTempatMakan/(:any)/(:any)'] = 'CateringManagement/Extra/C_EditTempatMakan/$1/$2';
 
+$route['CateringManagement/Extra/PesananManual'] = 'CateringManagement/Extra/C_PesananManual';
+$route['CateringManagement/Extra/PesananManual/(:any)'] = 'CateringManagement/Extra/C_PesananManual/$1';
+$route['CateringManagement/Extra/PesananManual/(:any)/(:any)'] = 'CateringManagement/Extra/C_PesananManual/$1/$2';
+
 //------------------------------------CateringManagement - Pesanan----------------------------------------------------------//
 $route['CateringManagement/DataPesanan'] = 'CateringManagement/Pesanan/C_Pesanan';
 $route['CateringManagement/DataPesanan/(:any)'] = 'CateringManagement/Pesanan/C_Pesanan/$1';

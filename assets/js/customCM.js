@@ -797,3 +797,47 @@ function batalPilihPuasa(){
 	$('#formDeleteReadPuasaCatering').hide();
 	$('#btnSubmitReadPuasaCatering').hide();
 }
+
+$(document).ready(function(){
+	$('.tabel_pesan_manual').DataTable();
+});
+
+function modalDelete(id) {
+	// alert(id);
+Swal.fire({
+  title: 'Apakah Anda Yakin?',
+  text: "Mengapus data ini secara permanent !",
+  type: 'warning',
+  showCancelButton: true,
+  confirmButtonColor: '#3085d6',
+  cancelButtonColor: '#d33',
+  confirmButtonText: 'Yes, delete it!'
+}).then((result) => {
+  if (result.value) {
+  	window.location.href = baseurl+"CateringManagement/Extra/PesananManual/hapus/"+id;
+  }
+});
+return false;
+}
+$(document).ready(function(){
+	$('#cm_btn_submit').click(function(){
+		// alert(id);
+	 Swal.fire({
+	  title: 'Apakah Anda Yakin?',
+	  text: "Menyimpan Perubahan Pada Data Ini !",
+	  type: 'warning',
+	  showCancelButton: true,
+	  confirmButtonColor: '#3085d6',
+	  cancelButtonColor: '#d33',
+	  confirmButtonText: 'Ya, Saya Yakin!'
+	}).then((result) => {
+	  if (result.value) {
+	  	// window.location.href = baseurl+"CateringManagement/Extra/PesananManual/Update/"+id;
+	  	// $('form#cm_submit').submit();
+	  	$('#cm_btn_submit2').click();
+	  	return true;
+	  }
+	});
+	return false;
+	});
+});
