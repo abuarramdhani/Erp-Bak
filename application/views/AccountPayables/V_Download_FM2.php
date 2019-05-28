@@ -22,6 +22,7 @@
 									<th><div style="width:160px;">TIPE FAKTUR</div></th>
 									<th><div style="width:160px;">NOMOR INVOICE</div></th>
 									<th><div style="width:160px;">KOMENTAR</div></th>
+									<th><div style="width:160px;">PAYMENT DATE</div></th>
 								</tr>
 							</thead>
 							<tbody>
@@ -60,6 +61,7 @@
 									<td><?php echo $FF->FAKTUR_TYPE?></td>
 									<td><?php echo $FF->INVOICE_NUM?></td>
 									<td><?php echo $FF->COMMENTS?></td>
+									<td><?php echo $FF->PAYMENT_DATE?></td>
 								</tr>
 								<?php 
 										}

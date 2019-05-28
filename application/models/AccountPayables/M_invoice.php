@@ -211,7 +211,11 @@ class M_invoice extends CI_Model{
 				,kfw.COMMENTS
 				,decode(kfw.FAKTUR_TYPE,'N','WITHOUT INVOICE','WITH INVOICE')  FAKTUR_TYPE
 				,aia.INVOICE_NUM
-			FROM khs_faktur_web kfw LEFT JOIN ap_invoices_all aia ON aia.invoice_id=kfw.INVOICE_ID
+				,max(aca.CHECK_DATE) PAYMENT_DATE
+			FROM khs_faktur_web kfw 
+			,ap_invoices_all aia
+			,ap_invoice_payments_all aip
+			,ap_checks_all aca
 			where 
 				1=1
 				$qmonth
@@ -221,8 +225,30 @@ class M_invoice extends CI_Model{
 				$qket
 				$qsta
 				$qtyp
-				and kfw.faktur_date BETWEEN TO_DATE('$tanggal_awal','DD-MM-YYYY') AND TO_DATE('$tanggal_akhir','DD-MM-YYYY')
-				and kfw.NPWP IS NOT NULL
+				and aia.INVOICE_ID(+) = kfw.INVOICE_ID
+				and aia.INVOICE_ID = aip.INVOICE_ID(+)
+				and aip.CHECK_ID = aca.CHECK_ID(+)
+				and faktur_date BETWEEN TO_DATE('$tanggal_awal','DD-MM-YYYY') AND TO_DATE('$tanggal_akhir','DD-MM-YYYY')
+				and NPWP IS NOT NULL
+			group by 
+				kfw.FAKTUR_WEB_ID
+				,kfw.FAKTUR_PAJAK
+				,kfw.MONTH
+				,kfw.YEAR
+				,kfw.faktur_date
+				,kfw.NPWP
+				,kfw.NAME
+				,kfw.ADDRESS
+				,kfw.DPP
+				,kfw.PPN
+				,kfw.PPN_BM
+				,kfw.IS_CREDITABLE_FLAG
+				,kfw.DESCRIPTION
+				,kfw.STATUS
+				,kfw.FM
+				,kfw.COMMENTS
+				,kfw.FAKTUR_TYPE
+				,aia.INVOICE_NUM
 		");
 		
 		return $query->result();
