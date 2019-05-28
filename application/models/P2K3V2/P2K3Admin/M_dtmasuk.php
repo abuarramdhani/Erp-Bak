@@ -55,9 +55,9 @@ class M_Dtmasuk extends CI_Model
 
         public function getSeksiApprove($item)
     {
-        $sql = "select section_name, substring(section_code,0,9) section_code from er.er_section 
+        $sql = "select section_name, substring(section_code,0,8) section_code from er.er_section 
         where section_code like '%$item%' or section_name like '%$item%'
-        group by section_name, substring(section_code,0,9) ";
+        group by section_name, substring(section_code,0,8) ";
         // echo $sql;exit();
         $query = $this->erp->query($sql);
 
@@ -66,9 +66,9 @@ class M_Dtmasuk extends CI_Model
 
     public function getSeksiApprove2($item)
     {
-        $sql = "select substring(section_code,0,9), section_name from er.er_section
+        $sql = "select substring(section_code,0,8), section_name from er.er_section
                 where section_name not in('-', '')
-                group by section_name, substring(section_code,0,9)
+                group by section_name, substring(section_code,0,8)
                 order by section_name";
         // echo $sql;exit();
         $query = $this->erp->query($sql);
@@ -106,9 +106,9 @@ class M_Dtmasuk extends CI_Model
 
     public function cekseksi($ks)
     {
-    	$sql = "select section_name from er.er_section where section_code like '%$ks%' limit 1";
+    	$sql = "select section_name from er.er_section where section_code like '$ks%' limit 1";
     	$query = $this->erp->query($sql);
-
+        // echo $sql;exit();
         return $query->result_array();
     }
 
@@ -251,12 +251,12 @@ class M_Dtmasuk extends CI_Model
                 where status = 1
                 and kodesie like '$ks%'
                 and periode = '$pr') ko,
-                k3.k3n_standar_kebutuhan ks inner join (select substring(ks2.kodesie,1,8), ks2.kode_item, max(ks2.tgl_approve_tim) maks
-                from k3.k3n_standar_kebutuhan ks2 group by ks2.kode_item, substring(ks2.kodesie,1,8)) kz on ks.kode_item = kz.kode_item and ks.tgl_approve_tim = kz.maks
+                k3.k3n_standar_kebutuhan ks inner join (select substring(ks2.kodesie,0,8), ks2.kode_item, max(ks2.tgl_approve_tim) maks
+                from k3.k3n_standar_kebutuhan ks2 group by ks2.kode_item, substring(ks2.kodesie,0,8)) kz on ks.kode_item = kz.kode_item and ks.tgl_approve_tim = kz.maks
                 where km.kode_item = ks.kode_item
                 and ks.status = 3 
                 and ks.kodesie like '$ks%'
-                and substring(ks.kodesie,1,8) = substring(ko.kodesie,1,8)
+                and substring(ks.kodesie,0,8) = substring(ko.kodesie,0,8)
                 order by 3";
                 // echo $sql;exit();
         $query = $this->erp->query($sql);
@@ -326,17 +326,17 @@ class M_Dtmasuk extends CI_Model
                     ttl.*
                 from
                     (
-                        select distinct substring(ks.kodesie, 1, 8) kodesie,
+                        select distinct substring(ks.kodesie, 0, 8) kodesie,
                         es.section_name seksi
                     from
                         k3.k3n_standar_kebutuhan ks,
                         er.er_section es
                     where
-                        substring(ks.kodesie, 1, 8) = substring(es.section_code, 1, 8)) ttl
+                        substring(ks.kodesie, 0, 8) = substring(es.section_code, 0, 8)) ttl
                 where
                     ttl.kodesie not in (
                     select
-                        substring(ko.kodesie, 1, 8)
+                        substring(ko.kodesie, 0, 8)
                     from
                         k3.k3n_order ko
                     where
@@ -381,6 +381,7 @@ class M_Dtmasuk extends CI_Model
                 order by
                     1,
                     3";
+                    // echo $sql;exit();
         $query = $this->erp->query($sql);
         return $query->result_array();
     }

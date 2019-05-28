@@ -240,10 +240,10 @@ class M_Order extends CI_Model
 
     public function getNamaSeksi()
     {
-        $sql = "select substring(cast(tgl_input as varchar),0,8) periode, substring(kodesie,0,9) kodesie, er.section_name
-                from k3.k3n_standar_kebutuhan ks left join er.er_section er on er.section_code = ks.kodesie
+        $sql = "select substring(cast(tgl_input as varchar),0,8) periode, substring(kodesie,0,8) kodesie, er.section_name
+                from k3.k3n_standar_kebutuhan ks left join er.er_section er on substring(er.section_code,0,8) = substring(ks.kodesie,0,8)
                 where status = '1'
-                group by substring(cast(tgl_input as varchar),0,8), substring(kodesie,0,9), er.section_name
+                group by substring(cast(tgl_input as varchar),0,8), substring(kodesie,0,8), er.section_name
                 order by er.section_name asc";
        $query = $this->db->query($sql);
         return $query->result_array();
@@ -297,7 +297,7 @@ class M_Order extends CI_Model
 
     public function getInputstd2($tgl, $kodesie)
     {
-        $kodesie = substr($kodesie, 0,8);
+        $kodesie = substr($kodesie, 0,7);
         $sql = "select ks.jml_kebutuhan_umum, ks.jml_kebutuhan_staff, ks.id, ks.kode_item, ks.jml_item, km.item from k3.k3n_standar_kebutuhan ks
         left join k3.k3_master_item km on km.kode_item = ks.kode_item
         where status = '0' and ks.kodesie like '$kodesie%' order by tgl_input desc";
@@ -309,7 +309,7 @@ class M_Order extends CI_Model
 
     public function getInputOrder($kodesie)
     {
-        $kodesie = substr($kodesie, 0,8);
+        $kodesie = substr($kodesie, 0,7);
         $sql = "select * from k3.k3n_order
         where status = '0' and kodesie like '$kodesie%' order by tgl_input desc";
         // echo $sql;exit();
@@ -352,7 +352,7 @@ class M_Order extends CI_Model
 
     public function listmonitor($ks, $pr)
     {
-        $ks = substr($ks, 0,8);
+        $ks = substr($ks, 0,7);
         $sql = "select
                     a.*,
                     b.jml_pekerja,

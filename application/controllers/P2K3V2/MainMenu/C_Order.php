@@ -1241,7 +1241,8 @@ class C_Order extends CI_Controller
       	$staff = $this->input->post('txtkebStaff');
       	$jumlah = $this->input->post('p2k3_isk_standar');
       	$tgl_input = date('Y-m-d H:i:s');
-      	$ks = substr($kodesie, 0,8);
+      	$ks = substr($kodesie, 0,7);
+      	// echo $ks;exit();
 		// implode kdpekerjaan
       	foreach ($daftar_pekerjaan as $key) {
       		$kd[] = $key['kdpekerjaan'];
@@ -1293,8 +1294,8 @@ class C_Order extends CI_Controller
       	$kd_pkj = implode(',', $kd);
       	$jml_pkj = implode(',', $jml);
       	$tgl_input = date('Y-m-d H:i:s');
-      	$ks = substr($kodesie, 0,8);
-      	// echo $jml_pkj;
+      	$ks = substr($kodesie, 0,7);
+      	// echo $ks;exit();
       	$data = array(
       		'kd_pekerjaan'	=> $kd_pkj,
       		'jml_pekerja'	=>	$jml_pkj,
@@ -1467,7 +1468,7 @@ class C_Order extends CI_Controller
 
   public function SubmitInputBon()
   {
-  	echo "<pre>";
+  	// echo "<pre>";
   	// print_r($_POST);
   	// exit();
 
@@ -1480,7 +1481,7 @@ class C_Order extends CI_Controller
   	$bon = $this->input->post('p2k3_jmlBon');
   	$pr = $this->input->post('p2k3_pr');
   	$ks = $this->input->post('p2k3_ks');
-  	$ks = substr($ks, 0,8);
+  	$ks = substr($ks, 0,7);
 		// echo $ks;exit();
   	$jml_k = $this->input->post('p2k3_jmlKebutuhan');
   	$sisa_saldo = $this->input->post('p2k3_sisaSaldo');
