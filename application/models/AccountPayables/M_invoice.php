@@ -315,7 +315,7 @@ class M_invoice extends CI_Model{
 				,kfw.MONTH AS MASA_PAJAK
 				,kfw.YEAR AS TAHUN_PAJAK
 				,case when kfw.faktur_date
-					is NULL then null 	
+					is NULL then null     
 					else to_char(kfw.faktur_date, 'DD/MM/YYYY')
 					end as TANGGAL_FAKTUR
 				,kfw.NPWP
@@ -326,8 +326,11 @@ class M_invoice extends CI_Model{
 				,kfw.PPN_BM
 				,kfw.IS_CREDITABLE_FLAG
 				,aia.INVOICE_NUM
-
-			FROM khs_faktur_web kfw LEFT JOIN ap_invoices_all aia ON aia.invoice_id=kfw.INVOICE_ID
+				,max(aca.CHECK_DATE) PAYMENT_DATE
+			FROM khs_faktur_web kfw 
+			,ap_invoices_all aia
+			,ap_invoice_payments_all aip
+			,ap_checks_all aca
 			where 
 				1=1
 				$qmonth
@@ -337,8 +340,25 @@ class M_invoice extends CI_Model{
 				$qket
 				$qsta
 				$qtyp
+				and aia.INVOICE_ID(+) = kfw.INVOICE_ID
+				and aia.INVOICE_ID = aip.INVOICE_ID(+)
+				and aip.CHECK_ID = aca.CHECK_ID(+)
 				and faktur_date BETWEEN TO_DATE('$tanggal_awal','DD-MM-YYYY') AND TO_DATE('$tanggal_akhir','DD-MM-YYYY')
 				and NPWP IS NOT NULL
+				group by 
+				kfw.FM
+				,kfw.FAKTUR_PAJAK
+				,kfw.MONTH
+				,kfw.YEAR
+				,kfw.faktur_date
+				,kfw.NPWP
+				,kfw.NAME
+				,kfw.ADDRESS
+				,kfw.DPP
+				,kfw.PPN
+				,kfw.PPN_BM
+				,kfw.IS_CREDITABLE_FLAG
+				,aia.INVOICE_NUM
 		"
 		);
 		$delimiter = ",";
