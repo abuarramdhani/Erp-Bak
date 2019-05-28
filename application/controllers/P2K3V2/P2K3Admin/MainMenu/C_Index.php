@@ -493,8 +493,8 @@ class C_Index extends CI_Controller
 				'approve_tim_by'	=>	$noind,
 				);
 			$a += count($daftar_pekerjaan);
-			echo "<pre>";
-			print_r($data);
+			// echo "<pre>";
+			// print_r($data);
 			// echo "<br>";exit();
 			$input = $this->M_order->save_standar($data);
 		}

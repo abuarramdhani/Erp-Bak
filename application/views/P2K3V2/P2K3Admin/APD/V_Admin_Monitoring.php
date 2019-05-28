@@ -35,7 +35,13 @@
                                     </form>
                                     <?php if ($sub == '1'): ?>
                                     <table style="margin-top: 50px;" id="tb_InputKebutuhanAPDs" class="table table-striped table-bordered table-hover text-center">
-                                        <caption style="color: #000; font-weight: bold;"><?php echo $jumlahDepan.' dari '.$jumlah[0]['count'].' seksi yang telah input Order ('.number_format(($jumlahDepan/$jumlah[0]['count']*100), 2).'%)'; ?>
+                                        <caption style="color: #000; font-weight: bold;"><?php 
+                                        if ($jumlah[0]['count'] == '0') {
+                                            $persen = '0.00';
+                                        }else{
+                                            $persen = number_format(($jumlahDepan/$jumlah[0]['count']*100), 2);
+                                        }
+                                         echo $jumlahDepan.' dari '.$jumlah[0]['count'].' seksi yang telah input Order ('.$persen.'%)'; ?>
                                             <button <?php if (strlen($pr) < 1){echo "disabled";} ?> class="btn btn-xs p2k3_btn_sSeksi">Detail</button>
                                         </caption>
                                         <thead>
