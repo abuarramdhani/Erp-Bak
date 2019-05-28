@@ -578,9 +578,9 @@ $route['CateringManagement/PengajuanLibur/Edit/(:any)/(:any)'] = 'CateringManage
 $route['CateringManagement/PengajuanLibur/Delete/(:any)/(:any)'] = 'CateringManagement/Penjadwalan/C_PengajuanLibur/Delete/$1/$2';
 
 $route['CateringManagement/PenjadwalanCatering'] = 'Cateringmanagement/Penjadwalan/C_PenjadwalanCatering';
-$route['CateringManagement/PenjadwalanCatering/Create/(:any)/(:any)'] = 'Cateringmanagement/Penjadwalan/C_PenjadwalanCatering/Create/$1/$2';
-$route['CateringManagement/PenjadwalanCatering/Edit/(:any)/(:any)'] = 'Cateringmanagement/Penjadwalan/C_PenjadwalanCatering/Edit/$1/$2';
-$route['CateringManagement/PenjadwalanCatering/Delete/(:any)/(:any)'] = 'Cateringmanagement/Penjadwalan/C_PenjadwalanCatering/Delete/$1/$2';
+$route['CateringManagement/PenjadwalanCatering/Create/(:any)/(:any)'] = 'CateringManagement/Penjadwalan/C_PenjadwalanCatering/Create/$1/$2';
+$route['CateringManagement/PenjadwalanCatering/Edit/(:any)/(:any)'] = 'CateringManagement/Penjadwalan/C_PenjadwalanCatering/Edit/$1/$2';
+$route['CateringManagement/PenjadwalanCatering/Delete/(:any)/(:any)'] = 'CateringManagement/Penjadwalan/C_PenjadwalanCatering/Delete/$1/$2';
 //------------------------------------CateringManagement - Puasa------------------------------------------------------------//
 $route['CateringManagement/Puasa/Transfer'] = 'CateringManagement/Puasa/C_TransferPuasa';
 $route['CateringManagement/Puasa/Transfer/Transfer'] = 'CateringManagement/Puasa/C_TransferPuasa/Transfer';
