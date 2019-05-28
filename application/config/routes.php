@@ -577,7 +577,7 @@ $route['CateringManagement/PengajuanLibur/Read/(:any)'] = 'CateringManagement/Pe
 $route['CateringManagement/PengajuanLibur/Edit/(:any)/(:any)'] = 'CateringManagement/Penjadwalan/C_PengajuanLibur/Edit/$1/$2';
 $route['CateringManagement/PengajuanLibur/Delete/(:any)/(:any)'] = 'CateringManagement/Penjadwalan/C_PengajuanLibur/Delete/$1/$2';
 
-$route['CateringManagement/PenjadwalanCatering'] = 'Cateringmanagement/Penjadwalan/C_PenjadwalanCatering';
+$route['CateringManagement/PenjadwalanCatering'] = 'CateringManagement/Penjadwalan/C_PenjadwalanCatering';
 $route['CateringManagement/PenjadwalanCatering/Create/(:any)/(:any)'] = 'CateringManagement/Penjadwalan/C_PenjadwalanCatering/Create/$1/$2';
 $route['CateringManagement/PenjadwalanCatering/Edit/(:any)/(:any)'] = 'CateringManagement/Penjadwalan/C_PenjadwalanCatering/Edit/$1/$2';
 $route['CateringManagement/PenjadwalanCatering/Delete/(:any)/(:any)'] = 'CateringManagement/Penjadwalan/C_PenjadwalanCatering/Delete/$1/$2';
