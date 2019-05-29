@@ -200,8 +200,13 @@ class C_kasiepembelian extends CI_Controller{
 		$jenis_jasa = $this->input->post('jenis_jasa');
 		$nomorbatch = $this->input->post('nomor_batch');
 
+		$amount = preg_replace("/[^0-9]/" , "", $invoice_amount );
+		$str_amount = substr($amount, 0, -2);
+		$pajak = preg_replace("/[^0-9]/" , "", $nominal_dpp );
+		$str_pajak = substr($pajak, 0, -2);
+
 		$this->M_kasiepembelian->approveInvoice($invoice_id,$status,$saveDate);
-		$this->M_kasiepembelian->editInvoiceKasiePurc($invoice_id,$invoice_number,$invoice_date,$invoice_amount,$tax_invoice_number,$info,$nominal_dpp,$invoice_category,$jenis_jasa);
+		$this->M_kasiepembelian->editInvoiceKasiePurc($invoice_id,$invoice_number,$invoice_date,$str_amount,$tax_invoice_number,$info,$str_pajak,$invoice_category,$jenis_jasa);
 		$this->M_kasiepembelian->inputstatuspurchasing($invoice_id,$saveDate,$status);
 
 	}
@@ -218,7 +223,12 @@ class C_kasiepembelian extends CI_Controller{
 		$jenis_jasa = $this->input->post('jenis_jasa');
 		$nomorbatch = $this->input->post('nomor_batch');
 
-		$this->M_kasiepembelian->editInvoiceKasiePurc($invoice_id,$invoice_number,$invoice_date,$invoice_amount,$tax_invoice_number,$info,$nominal_dpp,$invoice_category,$jenis_jasa);
+		$amount = preg_replace("/[^0-9]/" , "", $invoice_amount );
+		$str_amount = substr($amount, 0, -2);
+		$pajak = preg_replace("/[^0-9]/" , "", $nominal_dpp );
+		$str_pajak = substr($pajak, 0, -2);
+
+		$this->M_kasiepembelian->editInvoiceKasiePurc($invoice_id,$invoice_number,$invoice_date,$str_amount,$tax_invoice_number,$info,$str_pajak,$invoice_category,$jenis_jasa);
 		redirect('AccountPayables/MonitoringInvoice/InvoiceKasie/batchDetailPembelian/'.$nomorbatch);
 	}
 

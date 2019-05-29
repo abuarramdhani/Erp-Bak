@@ -376,9 +376,13 @@ class C_monitoringinvoice extends CI_Controller{
 
 		// $amount = str_replace(',', '', $invoice_amount);
 		$item_desc = str_replace("'", "", $item_description);
+		$amount = preg_replace("/[^0-9]/" , "", $invoice_amount );
+		$str_amount = substr($amount, 0, -2);
+		$pajak = preg_replace("/[^0-9]/" , "", $nominal_dpp );
+		$str_pajak = substr($pajak, 0, -2);
 
 
-		$data['invoice2'] = $this->M_monitoringinvoice->saveEditInvoice2($invoice_id,$invoice_number,$invoice_date,$invoice_amount,$tax_invoice_number,$note_admin,$nominal_dpp,$invoice_category,$jenis_jasa);
+		$data['invoice2'] = $this->M_monitoringinvoice->saveEditInvoice2($invoice_id,$invoice_number,$invoice_date,$str_amount,$tax_invoice_number,$note_admin,$str_pajak,$invoice_category,$jenis_jasa);
 
 		foreach ($po_number as $key => $value) {
 			$add['invoice'] = $this->M_monitoringinvoice->saveEditInvoice1($invoice_po_id[$key],$po_number[$key],$lppb_number[$key],$shipment_number[$key],$receive_date[$key],$item_desc[$key],$item_code[$key],$qty_receipt[$key],$qty_reject[$key],$currency[$key],$unit_price[$key],$qty_invoice[$key]);
@@ -693,9 +697,10 @@ class C_monitoringinvoice extends CI_Controller{
 		$nominal_dpp = $this->input->post('nominal_dpp');
 		$note_admin = $this->input->post('note_admin');
 		
-		// $amount2 = str_replace(',', '', $invoice_amount);
+		$amount2 = str_replace(',', '', $invoice_amount);
 		$vendor = str_replace("'", "", $vendor_name);
 		$item_desc = str_replace("'", "", $item_description);
+
 
 		$invoice = $this->M_monitoringinvoice->getInvoiceById($id);
 		$no = 0;
@@ -714,7 +719,7 @@ class C_monitoringinvoice extends CI_Controller{
 		}
 		
 
-		$amount = $this->M_monitoringinvoice->saveInvoiveAmount($invoice_number,$invoice_date,$invoice_amount,$tax_invoice_number,$vendor,$invoice_category,$nominal_dpp,$note_admin,$id);
+		$amount = $this->M_monitoringinvoice->saveInvoiveAmount($invoice_number,$invoice_date,$amount2,$tax_invoice_number,$vendor,$invoice_category,$nominal_dpp,$note_admin,$id);
 
 		
 		foreach ($po_number as $key => $value) {
