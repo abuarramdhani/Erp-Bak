@@ -496,8 +496,7 @@ class M_monitoringlppbadmin extends CI_Model {
                         (SELECT COUNT (lppb_number)
                            FROM khs_lppb_batch_detail d
                           WHERE d.status = 2
-                            AND a.batch_number = d.batch_number)
-                                                                checking_kasie_gudang,
+                            AND a.batch_number = d.batch_number) checking_kasie_gudang,
                         (SELECT COUNT (lppb_number)
                            FROM khs_lppb_batch_detail e
                           WHERE e.status = 3

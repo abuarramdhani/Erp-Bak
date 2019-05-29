@@ -1,6 +1,5 @@
 <?php 
 defined('BASEPATH') OR exit('No direct script access allowed');
-
 class C_monitoringlppbadmin extends CI_Controller{
 
 	public function __construct()
@@ -22,6 +21,7 @@ class C_monitoringlppbadmin extends CI_Controller{
 			$this->session->set_userdata('last_page', current_url());
 			$this->session->set_userdata('Responsbility', 'some_value');
 		}
+
     }
 
     public function checkSession(){
@@ -48,6 +48,7 @@ class C_monitoringlppbadmin extends CI_Controller{
 		$this->load->view('V_Sidemenu',$data);
 		$this->load->view('V_Index',$data);
 		$this->load->view('V_Footer',$data);
+
 	}
 
 	public function showLppbBatchAdmin()
@@ -70,8 +71,6 @@ class C_monitoringlppbadmin extends CI_Controller{
 		}else{
 			$data['gudang'] = $this->M_monitoringlppbadmin->getOpsiGudang2();
 		}
-
-		// print_r($data['gudang']);exit;
 
 		$this->load->view('V_Header',$data);
 		$this->load->view('V_Sidemenu',$data);
@@ -128,13 +127,11 @@ class C_monitoringlppbadmin extends CI_Controller{
 		$data['lppb'] = $searchNumberLppb;
 
 		if ($searchNumberLppb) {
-			// echo json_encode($searchNumberLppb);
 			$returnView = $this->load->view('MonitoringLppbAdmin/V_showtablelppb',$data,TRUE);
-			echo ($returnView);
 		}else{
-			// echo json_encode(false);
-			echo "Data tidak ditemukan ... ";
+			$returnView = "Data tidak ditemukan ... ";
 		}
+		echo $returnView;
 
 	}
 
@@ -148,10 +145,10 @@ class C_monitoringlppbadmin extends CI_Controller{
 		$id_gudang = $this->input->post('id_gudang');
 		$po_number = $this->input->post('po_number');
 		$po_header_id = $this->input->post('po_header_id');
-		// $line_num = $this->input->post('line_num');
-
 		$cek_section = $this->M_monitoringlppbadmin->checkSectionName($id_gudang);
+
 		// echo "<pre>";
+		// print_r($_POST);
 
 		$tanggal = strtoupper(date('dMY'));
 		$batch = $cek_section[0]['SECTION_KEYWORD'].'-'.$tanggal;
@@ -163,8 +160,6 @@ class C_monitoringlppbadmin extends CI_Controller{
 		}else{
 			$group_batch = $cek_section[0]['SECTION_KEYWORD'].'-'.$tanggal.'-'.$running_number[0]['BATCH']; 
 		}
-		// print_r($group_batch);
-		// exit();
 
 		$dataid = $this->M_monitoringlppbadmin->saveLppbNumber($date,$lppb_info,$cek_section[0]['SECTION_NAME'],$group_batch,$id_gudang);
 
@@ -175,8 +170,7 @@ class C_monitoringlppbadmin extends CI_Controller{
 			$no=0;
 			$exp_org_id = explode(',', $organization_id);
 			$exp_po_num = explode(',',$po_number);
-			$exp_header_id = explode(',',$po_header_id);
-			// $exp_line_num = explode(',',$line_num);
+			$exp_header_id = explode(' , ',$po_header_id);
 			$id2 = $this->M_monitoringlppbadmin->saveLppbNumber2($id,$exp_lppb_num[$ln],$date,$exp_org_id[$ln],$exp_po_num[$ln],$exp_header_id[$ln]);
 			$id3 = $this->M_monitoringlppbadmin->batch_detail_id($id);
 			$this->M_monitoringlppbadmin->saveLppbNumber3($id3[$ln]['BATCH_DETAIL_ID'],$date);
@@ -210,15 +204,11 @@ class C_monitoringlppbadmin extends CI_Controller{
 		$data['lppb'] = $searchLppb;
 		$data['jml'] = $jumlahData;
 
-		// echo "<pre>";
-		// print_r($searchLppb);
-		// exit();
-
-
 		$this->load->view('V_Header',$data);
 		$this->load->view('V_Sidemenu',$data);
 		$this->load->view('MonitoringLppbAdmin/V_detaillppbnumber',$data);
 		$this->load->view('V_Footer',$data);
+		$this->output->cache(1);
 	}
 
 	public function deleteNumberBatch(){
@@ -390,5 +380,5 @@ class C_monitoringlppbadmin extends CI_Controller{
 		$batch_number = $this->input->post('batch_number');
 		$this->M_monitoringlppbadmin->deleteAllRows($batch_number);
 	}
-
 }
+?>
