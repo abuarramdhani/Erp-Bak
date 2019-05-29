@@ -61,8 +61,18 @@
 											</td>
 											<td style="width:6%;"><?php echo date('d-M-Y',strtotime($f['INVOICE_DATE']))?></td>
 											<td style="width:7%;"><?php echo $f['TAX_INVOICE_NUMBER']?></td>
-											<td style="width:6%;" class="inv_amount"><?php echo $f['INVOICE_AMOUNT']?></td>
-											<td class="po_amount"><?php echo $f['PO_AMOUNT']?></td>
+											<td style="width:6%;" class="inv_amount"><?php if($f['INVOICE_AMOUNT']==NULL) {
+								          	 echo 'Rp.'.' ,-';
+								          	}else{
+								          	 echo 'Rp. '. number_format($f['INVOICE_AMOUNT'],0,'.','.').',00-';
+								          	};?>
+								          	</td>
+											<td class="po_amount"><?php if($f['PO_AMOUNT']==NULL) {
+								          	 echo 'Rp.'.' ,-';
+								          	}else{
+								          	 echo 'Rp. '. number_format(round($f['PO_AMOUNT']),0,'.','.').',00-';
+								          	};?>
+								          	</td>
 											<td style="width:30%;" ><?php if($keputusan[$f['INVOICE_ID']]){foreach ($keputusan[$f['INVOICE_ID']] as $k) { ?>
 												<?php echo  $k ."<br>" ?>
 											<?php }} ?></td>

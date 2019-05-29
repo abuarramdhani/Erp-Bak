@@ -68,6 +68,7 @@ class C_monitoringakuntansi extends CI_Controller{
 		$this->load->view('V_Sidemenu',$data);
 		$this->load->view('MonitoringInvoiceAkuntansi/V_akuntansi',$data);
 		$this->load->view('V_Footer',$data);
+		$this->output->cache(1);
 	}
 
 	public function unprocess($batchNumber)
@@ -146,6 +147,7 @@ class C_monitoringakuntansi extends CI_Controller{
 		$this->load->view('V_Sidemenu',$data);
 		$this->load->view('MonitoringInvoiceAkuntansi/V_unprocessakuntansi',$data);
 		$this->load->view('V_Footer',$data);
+		$this->output->cache(1);
 	}
 
 	public function DetailUnprocess($batch_num,$invoice_id)
@@ -183,6 +185,7 @@ class C_monitoringakuntansi extends CI_Controller{
 		$this->load->view('V_Sidemenu',$data);
 		$this->load->view('MonitoringInvoiceAkuntansi/V_detailunprocess',$data);
 		$this->load->view('V_Footer',$data);
+		$this->output->cache(1);
 	}
 
 	public function prosesAkuntansi($id){
@@ -229,6 +232,7 @@ class C_monitoringakuntansi extends CI_Controller{
 		$this->load->view('V_Sidemenu',$data);
 		$this->load->view('MonitoringInvoiceAkuntansi/V_finishinvoiceakuntansi',$data);
 		$this->load->view('V_Footer',$data);
+		$this->output->cache(1);
 	}
 
 	public function DetailProcessed($invoice_id)
@@ -266,6 +270,7 @@ class C_monitoringakuntansi extends CI_Controller{
 		$this->load->view('V_Sidemenu',$data);
 		$this->load->view('MonitoringInvoiceAkuntansi/V_processed',$data);
 		$this->load->view('V_Footer',$data);
+		$this->output->cache(1);
 	}
 
 	public function saveActionAkuntansi(){
@@ -331,6 +336,7 @@ class C_monitoringakuntansi extends CI_Controller{
 		$this->load->view('V_Sidemenu',$data);
 		$this->load->view('MonitoringInvoiceAkuntansi/V_finishBatchAkt',$data);
 		$this->load->view('V_Footer',$data);
+		$this->output->cache(1);
 	}
 
 }

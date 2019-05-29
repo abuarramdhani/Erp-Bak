@@ -54,7 +54,8 @@
 											<span><label>Invoice Amount</label></span>
 										</td>
 										<td>
-											<input class="form-control" size="40" type="text" name="invoice_amount" value="<?php echo $po_num['INVOICE_AMOUNT']?>" readonly>
+											<input class="form-control" size="40" type="text" name="invoice_amount" value="<?php echo 'Rp. '. number_format(round($po_num['NOMINAL_DPP']),0,'.','.').',00-';
+								          	?>" readonly>
 										</td>
 									</tr>
 									<tr>
@@ -78,7 +79,8 @@
 											<span><label>Nominal DPP</label></span>
 										</td>
 										<td>
-											<input class="form-control" size="40" type="text" name="nominal_dpp" value="<?php echo $po_num['NOMINAL_DPP']?>" readonly>
+											<input class="form-control" size="40" type="text" name="nominal_dpp" value="<?php echo 'Rp. '. number_format(round($po_num['NOMINAL_DPP']),0,'.','.').',00-';
+								          	?>" readonly>
 										</td>
 									</tr>
 									<tr>
@@ -174,7 +176,8 @@
 														<td class="text-center">
 															<?php echo $p['CURRENCY']?> 
 														</td>
-														<td class="text-center" id="unit_price"> <?php echo $p['UNIT_PRICE']?> 
+														<td class="text-center" id="unit_price"> <?php echo 'Rp. '. number_format(round($p['UNIT_PRICE']),0,'.','.').',00-';
+								          			  	?> 
 														 </td> 
 														<td class="text-center"><?php echo $p['QTY_INVOICE']?> 
 														</td> 
@@ -182,9 +185,13 @@
 												<?php $no++; $po_amount=$po_amount+($p['UNIT_PRICE'] * $p['QTY_INVOICE'] );} ?>
 											</tbody>
 										</table>
+											<!-- <a href="http://localhost/monitoringinvoice/Monitoring/TrackingInvoice">
+											<button type="input" class="btn btn-info"> Back </button>
+										</a> -->
 									</div>
 									<div class="col-md-4 pull-left">
-										<label>Po Amount : </label><span><?php echo $po_amount ?></span>
+										<label>Po Amount : </label><span><?php echo 'Rp. '. number_format(round($po_amount),0,'.','.').',00-';
+								          ?></span>
 									</div>
 								</div>
 							</div>

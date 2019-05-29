@@ -1,7 +1,14 @@
 $(document).ready(function(){
+	//mengatur semua tabel
+	$('#btn_clear_invoice').click(function() {
+		$('#nama_vendor').val('').trigger('change')
+	})
+	$('#btnMICancel').click(function() {
+		$('#poLinesTable').remove()
+	})
 
 	$('.tblMI').DataTable({
-		"paging":   false,
+		"paging":   true,
 		"ordering": true,
 		"info":     false
 	});
@@ -60,6 +67,7 @@ $(document).ready(function(){
 	// $('.inv_amount').moneyFormat();
 	// $('.po_amount').moneyFormat();
 
+	//formatting input di tax invoice number
 	$("input[name='tax_invoice_number']").attr({ maxLength : 19 }).keyup(function() {
 		$(this).val($(this).val().replace(/^(\d{3})(\d{3})(\d{2})(\d)+$/, "$1.$2-$3.$4"));
 	});
@@ -78,10 +86,20 @@ $(document).ready(function(){
 		}
 	});
 
-	// $("input[id='invoice_amounttttt']").keyup(function() {
- //    	var invAmount = $(this).val($(this).val().replace( /[^0-9]+/g, "").replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,'));
+	//Untuk fungsi separator ribuan.
+	$("input[id='invoice_amounttttt']").keyup(function() {
+    	var invAmount = $(this).val($(this).val().replace( /[^0-9]+/g, "").replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,'));
+	});
+
+	$("input[id='nominalDpp']").keyup(function() {
+    	var NomDpp = $(this).val($(this).val().replace( /[^0-9]+/g, "").replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,'));
+	});
+
+	// $("input[id='AmountOtomatis']").keyup(function() {
+ //    	var AmountOto = $(this).val($(this).val().replace( /[^0-9]+/g, "").replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,'));
 	// });
 
+	//untuk total po amount di halaman add invoice
 	$(document).on('input click', '.qty_invoice, .del_row, input[id="invoice_amounttttt"]', function(){
 		var total=0;
 		var invAmount = $("input[id='invoice_amounttttt']").val(); //.replace( /[^0-9]+/g, "");
@@ -90,9 +108,9 @@ $(document).ready(function(){
 			var rownum = $(this).attr('row-num')
 			var price = $('.unit_price[row-num="'+rownum+'"]').val();
 			var rowtotal = qty*price;
-			total+=Number(rowtotal);
+			total+=Number(Math.round(rowtotal));
 		});	
-		$('#AmountOtomatis').html(total);
+		$('#AmountOtomatis').html(total).moneyFormat();
 		//$('#AmountOtomatis').html($('#AmountOtomatis').html().replace( /[^0-9]+/g, "").replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,'));
 
 		if (total == invAmount) {
@@ -130,7 +148,7 @@ $(document).ready(function(){
 					"ordering": true,
 					"info":     false	
 				});
-
+				//button Add menuju Invoice PO Detail (checkbox)
 				$('#btnAddPoNumber').on('click', function(){
 					var inputName = ['line_num','vendor_name','po_number','lppb_number','status','shipment_number',
 					'received_date','item_id','item_description','qty_receipt','quantity_billed','qty_reject','currency','unit_price']
@@ -159,6 +177,7 @@ $(document).ready(function(){
 							$('#tbodyPoDetailAll').append(html);
 						}
 					});
+					//untuk menghapus baris di halaman add invoice
 					$('.del_row').click(function(){
 						var cnf = confirm('Yakin untuk menghapusnya ?');
 						var ths = $(this);
@@ -175,7 +194,7 @@ $(document).ready(function(){
 		});
 	});
 	
-
+	//formatting tanggal
 	$('.idDateInvoice').datepicker({
 		format: 'dd-M-yyyy',
 		autoclose: true,
@@ -202,7 +221,7 @@ $(document).ready(function(){
 
 	$('table#tbInvoiceEdit tbody tr, #editlinespo tbody tr, #tbInvoiceKasie tbody tr, #invoiceKasiePembelian tbody tr, #filInvoice tbody tr, #detailUnprocessed tbody tr, #processedinvoice tbody tr').each(function(){
 		var po_amount = $('.po_amount').text();
-		var inv_amount = $('#invoice_amount').text().replace( /[^0-9]+/g, "");
+		var inv_amount = $('#invoice_amount').text();
 
 		if (po_amount == inv_amount) {
 			$('.po_amount').css("background-color","white");
@@ -228,7 +247,7 @@ $(document).ready(function(){
 
 	$('table#tbInvoiceEdit tbody tr, #editlinespo tbody tr').each(function(){
 		var po_amount = $('.po_amount').text();
-		var inv_amount = $('#invoice_amount').val().replace( /[^0-9]+/g, "");
+		var inv_amount = $('#invoice_amount').val();
 
 		if (po_amount == inv_amount) {
 			$('.po_amount').css("background-color","white").css("color","black");
@@ -286,13 +305,14 @@ $(document).ready(function(){
 	$('#btnToFinance').click(function(){
 		var status = $('.statusInvoice').attr('value');
 		var arrId = [];
-		$('input[name="mi-check-list[]"]').each(function(){
-			valueId = $(this).attr('value');
+		$('button.statusInvoice').each(function(){
+			if ($(this).hasClass('checked')) {
+			var valueId = $(this).attr('inv-id');
 			arrId.push(valueId);
-			invoice_id = arrId.join();	
+			}
 		});
+		var invoice_id = arrId.join();
 		var submit_finance = $(this).val();
-		// alert(status);
 		if (status == 1 > 0) {
 			alert('Mohon pengecekan ulang. Ada line yang belum di approve/reject');
 		}else{
@@ -305,6 +325,7 @@ $(document).ready(function(){
 				},
 				type: 'POST',
 				success: function(response){
+					// console.log(invoice_id);
 					window.location.replace(baseurl+"AccountPayables/MonitoringInvoice/InvoiceKasie/finishBatch");
 				}
 			})
@@ -416,31 +437,6 @@ function rejectAction(th){
 
 }
 
-function submitUlang(th){
-	var jml = 0;
-	var arrId = [];
-	var hasil = '';
-
-	$('input[name="mi-check-list[]"]').each(function(){
-		if ($(this).parent().hasClass('checked')) {
-			valueId = $(this).attr('value');
-			arrId.push(valueId);
-			hasil = arrId.join();	
-		}
-	});
-
-	$.ajax({
-		type: "POST",
-		url: baseurl+"AccountPayables/MonitoringInvoice/InvoiceKasie/submitUlang",
-		data:{
-			hasil: hasil
-		},
-		success: function(response){
-			//alert(hasil);
-			window.location.reload();
-		}
-	});
-}
 
 function submitUlangKasieGudang(th) {
 	var batch_number = th.attr('value');
@@ -487,8 +483,49 @@ function approveInvoice(th) {
 		},
 		success: function(response){
 			// console.log(invoice_id,invoice_number,invoice_date,invoice_amount,tax_invoice_number,invoice_category
-				// ,jenis_jasa,nominal_dpp,info,status);
+			// 	,jenis_jasa,nominal_dpp,info,status);
 			window.location.href = baseurl+"AccountPayables/MonitoringInvoice/InvoiceKasie/batchDetailPembelian/"+batch_number;
 		}
 	})
+} 
+
+
+function btnApproveNew(th){		
+	var btn = th.parent().parent().closest('tr').find('button.statusInvoice');
+	var isChecked = btn.html();
+	var invoice_id = th.attr('inv-id');
+        if(isChecked == 'Approve'){
+          	btn.attr('value','1').removeClass('checked').toggleClass('btn-info').toggleClass('btn-success').html('Submit');
+			var status = btn.attr('value');
+	        $.ajax({
+			type: "POST",
+			url: baseurl+"AccountPayables/MonitoringInvoice/InvoiceKasie/approveInvoice2",
+			data:{
+				invoice_id: invoice_id,
+				status: status,
+				 },
+	    	})
+        }
+        if(isChecked == 'Submit'){
+			btn.attr('value','2').addClass('checked').toggleClass('btn-success').toggleClass('btn-info').html('Approve');
+			var status = btn.attr('value');
+			$.ajax({
+			type: "POST",
+			url: baseurl+"AccountPayables/MonitoringInvoice/InvoiceKasie/approveInvoice2",
+			data:{
+				invoice_id: invoice_id,
+				status: status,
+				},
+	    	})
+		}	  
 }
+
+
+function btn_cari(th) {
+	var id = th.attr('invoice');
+	var win = window.open(baseurl+'Monitoring/TrackingInvoice/DetailInvoice/'+id);
+}
+
+// function btn_back(th) {
+// 	var win = window.open(baseurl+'Monitoring/TrackingInvoice');
+// }

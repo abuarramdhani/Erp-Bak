@@ -61,8 +61,20 @@
 											<td><?php echo date('d-M-Y',strtotime($u['INVOICE_DATE']))?></td>
 											<td><?php echo $u['PPN'] ?></td>
 											<td><?php echo $u['TAX_INVOICE_NUMBER']?></td>
-											<td class="inv_amount" id="invoice_amount"><?php echo $u['INVOICE_AMOUNT']?></td>
-											<td class="po_amount"><?php echo $u['PO_AMOUNT']?></td>
+											<td class="inv_amount" >
+											<?php if($u['INVOICE_AMOUNT']==NULL) {
+								          	 echo 'Rp.'.' ,-';
+								          	}else{
+								          	 echo 'Rp. '. number_format($u['INVOICE_AMOUNT'],0,'.','.').',00-';
+								          	};?>
+								          	</td>
+											<td class="po_amount">
+											<?php if($u['PO_AMOUNT']==NULL) {
+								          	 echo 'Rp.'.' ,-';
+								          	}else{
+								          	 echo 'Rp. '. number_format(round($u['PO_AMOUNT']),0,'.','.').',00-';
+								          	};?>
+								          	</td>
 											<td><?php echo $u['PO_NUMBER']?></td>
 											<td><?php echo $u['LAST_STATUS_PURCHASING_DATE']?></td>
 											<td>

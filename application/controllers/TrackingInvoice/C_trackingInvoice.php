@@ -84,6 +84,8 @@ class C_trackingInvoice extends CI_Controller{
 		$this->load->view('V_Sidemenu',$data);
 		$this->load->view('TrackingInvoice/V_searchInvoice',$data);
 		$this->load->view('V_Footer',$data);
+
+		$this->output->cache(1);
 	}
 
 	public function btn_search(){
@@ -107,7 +109,7 @@ class C_trackingInvoice extends CI_Controller{
 
 		if ($invoice_number != '' OR $invoice_number != NULL) {
 			if ($param_inv=='') {$param_inv.='AND (';} else{$param_inv.=' AND ';}
-			$param_inv .= "ami.invoice_number LIKE '$invoice_number'";
+			$param_inv .= "ami.invoice_number LIKE '%$invoice_number%'";
 		}
 
 		if ($invoice_date != '' OR $invoice_date != NULL) {
@@ -137,7 +139,7 @@ class C_trackingInvoice extends CI_Controller{
 			$tabel = $this->M_trackingInvoice->searchMonitoringInvoice($param_inv,$param_akses);
 		}
 
-
+		// print_r($tabel);exit;
 		$status = array();
 		foreach ($tabel as $tb => $value) {
 			$po_detail = $value['PO_DETAIL'];
@@ -177,11 +179,12 @@ class C_trackingInvoice extends CI_Controller{
 		$data['invoice'] = $tabel;
 		$data['status'] = $status;
 		$return = $this->load->view('TrackingInvoice/V_tableSearch',$data,TRUE);
+		$this->output->cache(1);
 		
 		echo ($return);
 	}
 
-	public function DetailInvoice($invoice_id){
+	public function DetailInvoice($invoice_id){ 
 
 		$this->checkSession();
 		$user_id = $this->session->userid;
@@ -200,6 +203,8 @@ class C_trackingInvoice extends CI_Controller{
 		$this->load->view('V_Sidemenu',$data);
 		$this->load->view('TrackingInvoice/V_detailTrackingInvoice',$data);
 		$this->load->view('V_Footer',$data);
+
+		$this->output->cache(1);
 	}
 
 }
