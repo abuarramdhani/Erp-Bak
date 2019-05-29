@@ -290,9 +290,10 @@ class C_monitoringinvoice extends CI_Controller{
 		$amount = str_replace(',', '', $invoice_amount); //478636
 		$vendor = str_replace("'", "", $vendor_name);
 		$item_desc = str_replace("'", "", $item_description);
+		$pajak = str_replace(",", "", $nominal_dpp);
 
 
-		$add2['invoice'] = $this->M_monitoringinvoice->savePoNumber2($invoice_number, $invoice_date, $amount, $tax_invoice_number,$vendor_number,$vendor[0],$last_admin_date,$note_admin,$invoice_category,$nominal_dpp,$source_login,$jenis_jasa);
+		$add2['invoice'] = $this->M_monitoringinvoice->savePoNumber2($invoice_number, $invoice_date, $amount, $tax_invoice_number,$vendor_number,$vendor[0],$last_admin_date,$note_admin,$invoice_category,$pajak,$source_login,$jenis_jasa);
 		
 		foreach ($po_number as $key => $value) {
 
