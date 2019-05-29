@@ -291,6 +291,7 @@ class C_monitoringinvoice extends CI_Controller{
 		$vendor = str_replace("'", "", $vendor_name);
 		$item_desc = str_replace("'", "", $item_description);
 
+
 		$add2['invoice'] = $this->M_monitoringinvoice->savePoNumber2($invoice_number, $invoice_date, $amount, $tax_invoice_number,$vendor_number,$vendor[0],$last_admin_date,$note_admin,$invoice_category,$nominal_dpp,$source_login,$jenis_jasa);
 		
 		foreach ($po_number as $key => $value) {
@@ -920,9 +921,17 @@ class C_monitoringinvoice extends CI_Controller{
 
 		// $amount = str_replace(',', '', $invoice_amount);
 		$item_desc = str_replace("'", "", $item_description);
+		$amount = preg_replace("/[^0-9]/" , "", $invoice_amount );
+		$str_amount = substr($amount, 0, -2);
+		$pajak = preg_replace("/[^0-9]/" , "", $nominal_dpp );
+		$str_pajak = substr($pajak, 0, -2);
 
+		// echo "<pre>";
+		// print_r($str);
+		// exit();
 
-		$data['invoice2'] = $this->M_monitoringinvoice->saveReject($invoice_id,$invoice_number,$invoice_date,$invoice_amount,$tax_invoice_number,$status,$note_admin,$invoice_category,$nominal_dpp,$jenis_jasa);
+ 
+		$data['invoice2'] = $this->M_monitoringinvoice->saveReject($invoice_id,$invoice_number,$invoice_date,$str_amount,$tax_invoice_number,$status,$note_admin,$invoice_category,$str_pajak,$jenis_jasa);
 
 		foreach ($po_number as $key => $value) {
 			$add['invoice'] = $this->M_monitoringinvoice->saveEditInvoice1($invoice_po_id[$key],$po_number[$key],$lppb_number[$key],$shipment_number[$key],$receive_date[$key],$item_desc[$key],$item_code[$key],$qty_receipt[$key],$qty_reject[$key],$currency[$key],$unit_price[$key],$qty_invoice[$key]);

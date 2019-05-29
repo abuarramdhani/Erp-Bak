@@ -182,9 +182,9 @@
 						<!-- <label>Po Amount : </label><span><?php echo 'Rp. '. number_format(round($po_amount),0,'.','.').',00-';
 								          ?></span> -->
 						<div class="col-md-2 pull-right">
-							<a href="<?php echo base_url('AccountPayables/MonitoringInvoice/Invoice')?>">
-							<button type="button" id="btnMICancel" class="btn btn-danger" style="margin-top: 10px">Cancel</button>
-							</a>
+							<!-- <a href="<?php echo base_url('AccountPayables/MonitoringInvoice/Invoice')?>"> -->
+							<button type="reset" id="btnMICancel" class="btn btn-danger" style="margin-top: 10px">Clear</button>
+							<!-- </a> -->
 							<button id="btnMISave" class="btn btn-success pull-right" style="margin-top: 10px" >Save</button>
 						</div>
 					</div>

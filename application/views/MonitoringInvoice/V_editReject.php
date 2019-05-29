@@ -83,7 +83,8 @@
 											<span><label>Nominal DPP Faktur Pajak</label></span>
 										</td>
 										<td>
-		                     				<input class="form-control" size="40" type="text" name="nominal_dpp" value="<?php echo $invoice[0]['NOMINAL_DPP']?>">
+		                     				<input class="form-control" size="40" type="text" name="nominal_dpp" value="<?php echo 'Rp. '. number_format($invoice[0]['NOMINAL_DPP'],0,'.','.').',00-';
+								          	?>">
 		                     			</td>
 									</tr>
 									<tr>
@@ -188,8 +189,8 @@
 							</div>
 						</div>
 						<div class="col-md-2 pull-right">
-							<a href="<?php echo base_url('AccountPayables/MonitoringInvoice/Invoice')?>">
-							<button type="button" id="btnMICancel" class="btn btn-danger" style="margin-top: 10px">Cancel</button>
+							<a href="<?php echo base_url('AccountPayables/MonitoringInvoice/Invoice/Rejected')?>">
+							<button type="button" id="btnMICancel" class="btn btn-primary" style="margin-top: 10px">Back</button>
 							</a>
 							<a href="<?php echo base_url('AccountPayables/MonitoringInvoice/Invoice/saveEditReject')?>">
 							<button type="submit" name="saveReject" class="btn btn-success pull-right" style="margin-top: 10px" value="0" >Save</button>

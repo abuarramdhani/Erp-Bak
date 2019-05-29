@@ -3,6 +3,9 @@ $(document).ready(function(){
 	$('#btn_clear_invoice').click(function() {
 		$('#nama_vendor').val('').trigger('change')
 	})
+	$('#btnMICancel').click(function() {
+		$('#poLinesTable').remove()
+	})
 
 	$('.tblMI').DataTable({
 		"paging":   true,
