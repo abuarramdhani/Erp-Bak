@@ -114,6 +114,9 @@
 								<div class="col-md-2 pull-right">
 									<button onclick="saveLPPBNumber($(this));" type="button" name="batch_number" class="btn btn-primary pull-right" style="margin-top: 10px" >Save</button>
 								</div>
+								<!-- <div class="col-md-2 pull-left">
+									<label> Total LPPB Submitted : </label><span id="jml_LPPB"></span>
+								</div> -->
 							</div>
 						</div>
 					</div>
