@@ -50,7 +50,7 @@
                                                                 <div class="tab-pane active">
                                                                     <div class="panel panel-default">
                                                                         <div class="panel-heading" style="height: 55px;">Lines of Input Order
-                                                                            <a href="javascript:void(0);" id="group_add" title="Tambah Baris">
+                                                                            <a href="javascript:void(0);" id="group_add2" title="Tambah Baris">
                                                                                 <button type="button" class="btn btn-success pull-right" style="margin-bottom:10px; margin-right: 10px;"><i class="fa fa-fw fa-plus"></i>Add New</button>
                                                                             </a>
                                                                         </div>

@@ -1,7 +1,69 @@
 $("#group_add").click(function(e){
   var d = new Date();
   var n = d.getDate();
-  if (n > 30) {
+  if (n > 10) {
+    alert('Anda Terlambat Order');
+    // Swal.fire(
+    //   'Error',
+    //   'Anda Terlambat Order!',
+    //   'error',
+    //   )
+  }else{
+    e.preventDefault();
+    $('.apd-select2').last().select2("destroy");
+    $('.multiinput').last().clone().appendTo('#tb_InputKebutuhanAPD tbody');
+    $("tr:last .form-control").val("").end();
+  // var idsekarang = Number($('tr:last input#txtKodeItem').attr('data-id'));
+  var nomorr = Number($('#tb_InputKebutuhanAPD tr:last').find('input#txtKodeItem').attr('data-id'));
+  // var tez = $('tr:last input#txtKodeItem').attr('data-id');
+
+  nomorr = nomorr+1;
+  // alert(nomorr);
+  // alert(tez);
+  $('#tb_InputKebutuhanAPD tr:last td#nomor').html(nomorr);
+  $('#tb_InputKebutuhanAPD tr:last input#txtKodeItem').attr('data-id', nomorr);
+  $('.apd-select2').select2({
+    ajax:
+    {
+      url: baseurl+'P2K3_V2/Order/getItem',
+      dataType: 'json',
+      type: 'get',
+      data: function (params) {
+        return {s: params.term};
+      },
+      processResults: function (data) {
+        return {
+          results: $.map(data, function (item) {
+            return {
+              id: item.kode_item,
+              text: item.item,
+            }
+          })
+        };
+      },
+      cache: true
+    },
+    minimumInputLength: 2,
+    placeholder: 'Select Item',
+    allowClear: true,
+  });
+}
+});
+
+
+$(document).on('click', '.group_rem', function(e){
+  e.preventDefault();
+  if($('.multiinput').size()>1){
+    $(this).closest('tr').remove();
+  }else{
+    alert('Minimal harus ada satu baris tersisa');
+  }
+});
+
+$("#group_add2").click(function(e){
+  var d = new Date();
+  var n = d.getDate();
+  if (n > 300) {
     alert('Anda Terlambat Order');
     // Swal.fire(
     //   'Error',
