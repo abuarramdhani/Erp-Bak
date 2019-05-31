@@ -3,7 +3,7 @@
     <div class="box-header with-border">
       <h3 class="box-title"><i class="fa fa-plus"></i> Create Kaizen</h3>
     </div>
-    <form method="post" action="<?php echo base_url('SystemIntegration/KaizenGenerator/Submit/create'); ?>" id="add-kaizen" role="form">
+    <form method="post" action="<?php echo base_url('SystemIntegration/KaizenGenerator/Submit/create'); ?>" id="add-kaizen" autocomplete="off" role="form">
       <div class="box-body">
         <div class="col-lg-6">
           <div class="form-group">
