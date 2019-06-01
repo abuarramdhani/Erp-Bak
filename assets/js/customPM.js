@@ -692,8 +692,29 @@ function InsertLokasiFinger(th) {
 						"columnDefs" : [
 						{
 							"targets":[0],
-							"orderable":false
+							"orderable":false,
+							"className": 'dt-body-center'
 						},
+						{
+							"targets": -1,
+							"data": function(row, type, val, meta){
+								var f_noindbaru = row[1];
+								return "<a class='btn btn-info' href='"+baseurl+'PresenceManagement/MonitoringPresensiPengaturan/ChangeStatus/'+f_noindbaru+"_"+row[4]+"'>Change Status</a>";
+							},
+							"className": 'dt-body-center'
+						},
+						{
+							"targets": [4],
+							"data": function(row, type, val, meta){
+								// return row[4];
+								if (row[4] == 0) {
+									return 'User';
+								}else{
+									return 'Admin';
+								}
+							},
+							"className": 'dt-body-center'
+						}
 						],
 					});
 				});

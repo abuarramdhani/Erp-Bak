@@ -28,6 +28,13 @@ $(function () {
     }
   });
 
+  $(".spl-time").timepicker({
+      defaultTime: 'value',
+      minuteStep: 1,
+      showMeridian:false,
+      format: 'HH:mm:ss'
+  });
+
   // Some Function
   /////////////////////////////////////////////////////////////////////////////////
   $('.spl-pkj-select2').select2({
@@ -265,5 +272,38 @@ $(function () {
     });
 
   }
+
+  function spl_load_data(){
+    url = window.location.pathname;
+    usr = $('#txt_ses').val();
+    ket = $('#spl_tex_proses').val();
+
+    if(url.indexOf('ALK') >= 0){
+      tmp = "finspot:FingerspotVer;"+btoa(baseurl+'ALK/Approve/fp_proces?userid='+usr);
+    }else{
+      tmp = "finspot:FingerspotVer;"+btoa(baseurl+'ALA/Approve/fp_proces?userid='+usr);
+    }
+    
+    chk = "";
+    $('.spl-chk-data').each(function(){
+      if(this.checked) {chk += '.'+$(this).val();}
+    });
+
+    if(url.indexOf('ALK') >= 0){
+      $('#spl_proses_reject').attr('href', tmp+btoa('&stat=31&data='+chk+'&ket='+ket));
+      $('#spl_proses_approve').attr('href', tmp+btoa('&stat=21&data='+chk+'&ket='+ket));
+    }else{
+      $('#spl_proses_reject').attr('href', tmp+btoa('&stat=35&data='+chk+'&ket='+ket));
+      $('#spl_proses_approve').attr('href', tmp+btoa('&stat=25&data='+chk+'&ket='+ket));
+    }
+  }
+
+  $(document).on('click', '.spl-chk-data', function(e){
+    spl_load_data();
+  });
+
+  $(document).on('input', '#spl_tex_proses', function(e){
+    spl_load_data();
+  });
 
 });

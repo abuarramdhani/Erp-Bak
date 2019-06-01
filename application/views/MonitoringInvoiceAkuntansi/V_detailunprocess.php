@@ -44,7 +44,7 @@
 											<span><label>Invoice Amount</label></span>
 										</td>
 										<td>
-											<input  class="form-control" size="40" type="text" value="<?php echo $detail[0]['INVOICE_AMOUNT']?>" readonly>
+											<input  class="form-control" size="40" type="text" value="<?php echo 'Rp. '. number_format($detail[0]['INVOICE_AMOUNT'],0,'.','.').',00-';?>" readonly>
 										</td>
 									</tr>
 									<tr>
@@ -129,7 +129,7 @@
 						</table>
 						</div>
 						<div class="col-md-4 pull-left">
-							<label>Po Amount: <span><?php echo $po_amount ?></span></label>
+							<label>Po Amount: <span><?php echo 'Rp. '. number_format(round($po_amount),0,'.','.').',00-';?></span></label>
 						</div>
 						<div class="col-md-2 pull-right">
 						<a href="<?php echo base_url('AccountPayables/MonitoringInvoice/Unprocess/unprocess/'.$batch_num);?>">

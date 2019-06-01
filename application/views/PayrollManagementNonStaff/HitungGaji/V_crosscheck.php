@@ -1,29 +1,35 @@
 <head>
+  <link rel="stylesheet" href="<?php echo base_url('assets/plugins/bootstrap/3.3.6/css/bootstrap.css'); ?>" />
   <title><?php echo $unit_name.' - '.$noinduk.' - '.$namapkj;?></title>
+  <style>
+    table, thead, tbody {
+        font-size :11px;
+    }
+  </style>
 </head>
-    <div style="margin-left:20px;margin-right:20px; ">
+    <div style="margin-left:20px;margin-right:20px;">
         <div class="row" style="margin-left:3px;margin-right:3px;">
             <table style="margin: 0 auto;width: 100%">
                 <tr>
                     <td colspan='11' align="left">
-                        <span style="padding: 10px; font-family: Tahoma,Verdana,Segoe,sans-serif; font-size: 8px; font-style: normal;">LAPORAN PRODUKSI <?php echo $unit_name;?></span><br>
+                        <span style="padding: 10px;">LAPORAN PRODUKSI <?php echo $unit_name;?></span><br>
                     </td>
                 </tr>
                 <tr>
                     <td colspan='4' align="left">
-                        <span style="padding: 10px;font-family: Tahoma,Verdana,Segoe,sans-serif; font-size: 8px; font-style: normal;">Nama Opr : <?php echo $namapkj;?></span>
+                        <span style="padding: 10px;">Nama Opr : <?php echo $namapkj;?></span>
                     </td>
                     <td colspan='4' align="left">
-                        <span style="padding: 10px;font-family: Tahoma,Verdana,Segoe,sans-serif; font-size: 8px; font-style: normal;">No. Induk : <?php echo $noinduk;?></span>
+                        <span style="padding: 10px;">No. Induk : <?php echo $noinduk;?></span>
                     </td>
                     <td colspan='4' align="left">
-                        <span style="padding: 10px;font-family: Tahoma,Verdana,Segoe,sans-serif; font-size: 8px; font-style: normal;">Kelas : <?php echo $kelas;?></span>
+                        <span style="padding: 10px;">Kelas : <?php echo $kelas;?></span>
                     </td>
                 </tr>
             </table>
         </div>
         <div class="row" style="margin-left:3px;margin-right:3px;" border="1">
-            <table style="margin: 0 auto;width: 100%;border: 1px solid black; font-family: Tahoma,Verdana,Segoe,sans-serif; font-size: 8px; font-style: normal;" border="1">
+            <table style="margin: 0 auto;width: 100%;border: 1px solid black;" border="1">
                 <thead>
                     <tr >
                         <th  class="text-center" width="17%">
@@ -250,15 +256,15 @@
                                         <td style='border-top: none;border-bottom: none; border-right: 1px solid #000; padding-left: 10px;' >
                                         <?php
                                         foreach ($getDetailKondite as $dataKondite) {
+                                            $MK = $dataKondite['MK'];
+                                            $BKI = $dataKondite['BKI'];
+                                            $BKP = $dataKondite['BKP'];
+                                            $TKP = $dataKondite['TKP'];
+                                            $KB = $dataKondite['KB'];
+                                            $KK = $dataKondite['KK'];
+                                            $KS = $dataKondite['KS'];
                                         }
 
-                                        $MK = $dataKondite['MK'];
-                                        $BKI = $dataKondite['BKI'];
-                                        $BKP = $dataKondite['BKP'];
-                                        $TKP = $dataKondite['TKP'];
-                                        $KB = $dataKondite['KB'];
-                                        $KK = $dataKondite['KK'];
-                                        $KS = $dataKondite['KS'];
                                         $PK_p= $nilaiPK;
 
                                             if ($MK == 'A') {$MK_p = 8; }elseif ($MK == 'B') {$MK_p = 4; }else{$MK_p = 0; }

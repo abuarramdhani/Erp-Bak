@@ -51,6 +51,7 @@ class C_MonitoringPresensiPengaturan extends CI_Controller
 			$row[] = $key->noind_baru;
 			$row[] = $key->noind;
 			$row[] = $key->nama;
+			$row[] = $key->privilege;
 
 			$data[] = $row;
 		}
@@ -215,4 +216,19 @@ class C_MonitoringPresensiPengaturan extends CI_Controller
 		public function CronUser(){
 			redirect('http://personalia.quick.com/cronjob/postgres_database.quick.com_mysql_database.quick.com_fingerspotbnc.update.user.finger.php','refresh');
 		}
+
+	public function ChangeStatus($noindbaru_status){
+		$ex = explode('_', $noindbaru_status);
+		$noind_baru = $ex['0'];
+		$status = $ex['1'];
+		if ($status == '0') {
+			$status = '3';
+		}elseif ($status == '3') {
+			$status = '0';
+		}else{
+			exit();echo "Salah Status";
+		}
+		$this->M_monitoringpresensi->updatePrivilegeuser($noind_baru,$status);
+		redirect(site_url('PresenceManagement/MonitoringPresensiPengaturan'));
+	}
 }

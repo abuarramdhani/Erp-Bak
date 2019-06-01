@@ -80,12 +80,19 @@
 										<td style="width: 5%"><?php echo  $inv['INVOICE_NUMBER'] ?></td>
 										<td style="width: 5%"> <?php echo date('d-M-Y',strtotime($inv['INVOICE_DATE'])) ?></td>
 										<td style="width: 5%"><?php echo  $inv['PPN']?></td>
-										<!-- <td> <input type="hidden" name="id" class="text_invoice_id" value="<?php echo $inv['INVOICE_ID']?>"> <input type="text" name="tax_input" class="tax_id" value="<?php echo $inv['TAX_INVOICE_NUMBER']?>" > 
-											<button type="button" class=" btn btn-sm btn-primary saveTaxInvoice" id="saveTaxInvoice"><i class="fa fa-check-square"></i>
-											</button></td> -->
 										<td style="width: 8%" ><?php echo $inv['TAX_INVOICE_NUMBER']?></td>
-										<td style="width: 5%" class="inv_amount"><?php echo $inv['INVOICE_AMOUNT']?></td>
-										<td style="width: 5%" class="po_amount"><?php echo $inv['PO_AMOUNT']?></td>
+										<td style="width: 5%" class="inv_amount"><?php if($inv['INVOICE_AMOUNT']==NULL) {
+								          	 echo 'Rp.'.' ,-';
+								          	}else{
+								          	 echo 'Rp. '. number_format($inv['INVOICE_AMOUNT'],0,'.','.').',00-';
+								          	};?>
+								        </td>
+										<td style="width: 5%" class="po_amount"><?php if($inv['PO_AMOUNT']==NULL) {
+								          	 echo 'Rp.'.' ,-';
+								          	}else{
+								          	 echo 'Rp. '. number_format(round($inv['PO_AMOUNT']),0,'.','.').',00-';
+								          	};?>
+								        </td>
 										<td style="width: 60%"><?php if($keputusan[$inv['INVOICE_ID']]){foreach ($keputusan[$inv['INVOICE_ID']] as $k) { ?>
 											<?php echo  $k ."<br>" ?>
 										<?php }} ?></td>

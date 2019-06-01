@@ -65,7 +65,7 @@
             <div class="row left" style="padding:1%;margin-left:-5%;">
 				<div class="col-md-12">
 					<div style="float:left;">
-					<img src="<?php echo base_url('assets/plugins/cm/img/logo4.png');?>" style="max-width:500px;" />
+					<img src="<?php echo base_url('assets/plugins/cm/img/logo4.png');?>" style="max-width:100%;" />
 					
 					</div>
 				</div>

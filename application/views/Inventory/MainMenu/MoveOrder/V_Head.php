@@ -63,20 +63,4 @@
 				</tr>
 	<?php } ?>
 			</table>
-			<table class="table table-bordered hor-center ver-center" style="margin-top:<?= (4-$assemblyLength)*13 ?> px" >
-		
-				<tr style="background-color: #f0f0f0;" class="table-head">
-					<td rowspan="2" width="4%">No</td>
-					<td rowspan="2" width="16%">Kode Part</td>
-					<td rowspan="2" width="37%">Nama Part</td>
-					<td rowspan="2" width="5%">UOM</td>
-					<td rowspan="2" width="5%">QTY / Unit</td>
-					<td colspan="2">Total Qty</td>
-					<td rowspan="2" width="7%">TTD</td>
-					<td rowspan="2" width="14%">Lokasi</td>
-				</tr>
-				<tr style="background-color: #f0f0f0;" class="table-head">
-					<td width="6%">Minta</td>
-					<td width="6%">Serah</td>
-				</tr>
-	</table>
+			

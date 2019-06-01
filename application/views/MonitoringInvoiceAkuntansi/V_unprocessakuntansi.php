@@ -47,7 +47,7 @@
 											<td><?php echo $no ?></td>
 											<td><?php echo $u['VENDOR_NAME']?></td>
 											<td><strong><?php echo $u['INVOICE_NUMBER']?></strong></td>
-											<td>
+											<td data-id="<?= $u['INVOICE_ID'] ?>" batch_number="<?= $u['BATCH_NUMBER'] ?>" class="ganti_<?= $u['INVOICE_ID'] ?>">
 												<a title="Detail..." href="<?php echo base_url('AccountPayables/MonitoringInvoice/Unprocess/DetailUnprocess/'.$u['BATCH_NUMBER'].'/'.$u['INVOICE_ID']);?>" class="btn btn-info btn-sm"><i class="fa fa-file-text-o"></i>
 												</a>
 											<?php if($u['LAST_FINANCE_INVOICE_STATUS'] == 1){ ?>
@@ -61,12 +61,24 @@
 											<td><?php echo date('d-M-Y',strtotime($u['INVOICE_DATE']))?></td>
 											<td><?php echo $u['PPN'] ?></td>
 											<td><?php echo $u['TAX_INVOICE_NUMBER']?></td>
-											<td class="inv_amount" id="invoice_amount"><?php echo $u['INVOICE_AMOUNT']?></td>
-											<td class="po_amount"><?php echo $u['PO_AMOUNT']?></td>
+											<td class="inv_amount" >
+											<?php if($u['INVOICE_AMOUNT']==NULL) {
+								          	 echo 'Rp.'.' ,-';
+								          	}else{
+								          	 echo 'Rp. '. number_format($u['INVOICE_AMOUNT'],0,'.','.').',00-';
+								          	};?>
+								          	</td>
+											<td class="po_amount">
+											<?php if($u['PO_AMOUNT']==NULL) {
+								          	 echo 'Rp.'.' ,-';
+								          	}else{
+								          	 echo 'Rp. '. number_format(round($u['PO_AMOUNT']),0,'.','.').',00-';
+								          	};?>
+								          	</td>
 											<td><?php echo $u['PO_NUMBER']?></td>
 											<td><?php echo $u['LAST_STATUS_PURCHASING_DATE']?></td>
 											<td>
-												 <input type="text" style="display: none" name="reason_finance[]" class="reason_finance_class"> <input type="hidden" name="id_reason[]" value="<?php echo $u['INVOICE_ID']?>">
+												 <input type="text" style="display: none" name="reason_finance[]" class="reason_finance_class<?= $u['INVOICE_ID'] ?>"> <input type="hidden" name="id_reason[]" value="<?php echo $u['INVOICE_ID']?>">
 											</td>
 											<td><?php echo $u['SOURCE']?></td>
 										</tr>
@@ -74,7 +86,7 @@
 									</tbody>
 								</table>
 								<div class="col-md-2 pull-right">
-									<button type="submit" class="btn btn-primary pull-right" style="margin-top: 10px" >Submit</button>
+									<button type="submit" class="btn btn-primary pull-right" style="margin-top: 10px">Submit</button>
 								</div>
 							</div>
 						</div>

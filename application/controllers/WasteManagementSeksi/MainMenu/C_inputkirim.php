@@ -75,6 +75,7 @@ class C_inputkirim extends CI_Controller
 		$data['JenisLimbah'] = $this->M_kirim->getLimJenis();
 		$data['Seksi'] = $this->M_kirim->getSekNamaByKodesie($kodesie);
 		$data['Seksi2'] = $this->M_kirim->getSekNama();
+		$data['Lokasi'] = $this->M_kirim->getLokasi();
 
 		if (empty($_POST)) {
 			$this->load->view('V_Header',$data);
@@ -91,7 +92,8 @@ class C_inputkirim extends CI_Controller
 				'tanggal' => $this->input->post('txtTanggalKirimLimbah'), 
 				'waktu' => $this->input->post('txtWaktuKirimLimbah'), 
 				'jenis_limbah' => $this->input->post('txtJenisLimbah'),
-				'pengirim' => $this->input->post('txtPengirimLimbah'), 
+				'pengirim' => $this->input->post('txtPengirimLimbah'),
+				'lokasi_kerja' => $this->input->post('txtLokasi'),
 				'kondisi' => $this->input->post('txtKondisi'), 
 				'jumlah' => $this->input->post('txtJumlah'), 
 				'keterangan' => $this->input->post('txtKeterangan'), 
@@ -129,6 +131,7 @@ class C_inputkirim extends CI_Controller
 		$data['JenisLimbah'] = $this->M_kirim->getLimJenis();
 		$data['Seksi'] = $this->M_kirim->getSekNamaByKodesie($kodesie);
 		$data['KirimLimbah'] = $this->M_kirim->getLimKirim($plaintext_string);
+		$data['Lokasi'] = $this->M_kirim->getLokasi();
 
 		if (empty($_POST)) {
 			$this->load->view('V_Header',$data);
@@ -140,7 +143,8 @@ class C_inputkirim extends CI_Controller
 				'id_kirim' => $plaintext_string,
 				'tanggal' => $this->input->post('txtTanggalKirimLimbah'), 
 				'waktu' => $this->input->post('txtWaktuKirimLimbah'), 
-				'jenis_limbah' => $this->input->post('txtJenisLimbah'), 
+				'jenis_limbah' => $this->input->post('txtJenisLimbah'),
+				'lokasi_kerja' => $this->input->post('txtLokasi'),
 				'kondisi' => $this->input->post('txtKondisi'), 
 				'jumlah' => $this->input->post('txtJumlah'), 
 				'keterangan' => $this->input->post('txtKeterangan'), 

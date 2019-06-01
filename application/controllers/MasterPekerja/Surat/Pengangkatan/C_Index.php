@@ -263,6 +263,7 @@ class C_Index extends CI_Controller
 		$tseksiLama 				=	$this->M_pengangkatan->cariTSeksi($seksi_lama);
 		$tseksiBaru 				=	$this->M_pengangkatan->cariTSeksi($seksi_baru);
 		$pekerjaan_baru 			=	$this->M_pengangkatan->cariPekerjaan('', $pekerjaan_baru);
+		// print_r($nama_pekerja);exit();
 
 		$nama_pekerjaan_baru 		=	$pekerjaan_baru[0]['pekerjaan'];
 
@@ -373,6 +374,7 @@ class C_Index extends CI_Controller
 
 	public function add()
 	{
+		// print_r($_POST);exit();
 		$nomor_induk 				=	$this->input->post('txtNoind');
 		$nomor_induk_baru			=	$this->input->post('txtNoindBaru');
 		$seksi_lama 				=	substr($this->input->post('txtKodesieLama'), 0, 9);
@@ -403,6 +405,8 @@ class C_Index extends CI_Controller
 
 		$isi_surat 					=	$this->input->post('txaPreview');
 		$kode					 	=   $this->input->post('txtstafStatus');
+		$dl_baru					=   $this->input->post('txtJabatanDl');
+		$dl_lama					=   $this->input->post('txtjabatanDlLama');
 
 		$getNamaNoindBaru 			=	$this->M_pengangkatan->getNamaNoindBaru($nomor_induk);
 
@@ -451,6 +455,8 @@ class C_Index extends CI_Controller
 											'kd_pkj_baru'           =>  $kd_pkj_baru,
 											'status_staf' 			=>	$staf,
 											'nomor_induk_baru'		=>	$nomor_induk_baru,
+											'jbt_dl_baru'			=>	$dl_baru,
+											'jbt_dl_lama'			=>	$dl_lama,
 										);
 		$this->M_pengangkatan->inputSuratPengangkatan($inputSuratPengangkatan);
 
@@ -545,7 +551,7 @@ class C_Index extends CI_Controller
 		$pekerjaan_lama             =   $this->input->post('txtPekerjaanLama');
 
 		$seksi_baru 				=	$this->input->post('txtKodesieBaru');
-		$golongan_pekerjaan_baru	=	$this->input->post('txtGolonganPekerjaanLama');
+		$golongan_pekerjaan_baru	=	$this->input->post('txtGolonganPekerjaanBaru');
 		$kd_jabatan_baru 			=	$this->input->post('txtKdJabatanBaru');
 		$jabatan_baru 				=	$this->input->post('txtJabatanBaru');
 		$lokasi_kerja_baru          =   $this->input->post('txtLokasiKerjaBaru');

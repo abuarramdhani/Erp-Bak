@@ -408,23 +408,24 @@ class C_ApprovalKaizen extends CI_Controller {
 					'verify_peer' => false,
 					'verify_peer_name' => false,
 					'allow_self_signed' => true
-				)
-			);
-			$mail->Username = 'no-reply';
-			$mail->Password = '123456';
-			$mail->WordWrap = 50;
-			
-			//set email content
-			$mail->setFrom('no-reply@quick.com', 'Email Sistem');
-			$mail->addAddress('kasie_ict@quick.com');
-			$mail->Subject = $subject;
-			$mail->msgHTML($body);
-			
-			if ($mail->send()) {
-				echo "Message sent!";
-			} else {
-				echo "Mailer Error: ".$mail->ErrorInfo;
-				exit();
+					)
+				);
+				$mail->Username = 'no-reply';
+				$mail->Password = '123456';
+				$mail->WordWrap = 50;
+				
+				//set email content
+				$mail->setFrom('no-reply@quick.com', 'Email Sistem');
+				$mail->addAddress('semua_ict@quick.com');
+				$mail->Subject = $subject;
+				$mail->msgHTML($body);
+				
+				if ($mail->send()) {
+					echo "Message sent!";
+				} else {
+					echo "Mailer Error: ".$mail->ErrorInfo;
+					exit();
+				}
 			}
 		}
 	}

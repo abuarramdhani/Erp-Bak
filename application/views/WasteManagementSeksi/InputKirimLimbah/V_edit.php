@@ -22,7 +22,6 @@
 						<div class="col-lg-12">
 							<div class="box box-primary box-solid">
 								<div class="box-header">
-									
 								</div>
 								<div class="box-body">
 									<div class="panel-body">
@@ -52,6 +51,20 @@
 																	echo "<option value='".$key['id_jenis_limbah']."' data-satuan='".$key['satuan']."'>".$key['kode_limbah']."-".$key['jenis_limbah']."</option>";
 																}
 															?>
+														</select>
+													</div>
+												</div>
+											</div>
+											<div class="form-group">
+												<label for="txtLokasi" class="control-label col-lg-4">Lokasi Kerja</label>
+												<div class="col-lg-4">
+													<div class="col-lg-12">
+														<select class="select select2" id="txtLokasi" name="txtLokasi" style="width: 100%" required>
+															<option value="<?php echo $KirimLimbah['0']['lokasi_kerja'] ?>"><?php echo $KirimLimbah['0']['noind_location'] ?></option>
+															<option></option>
+															<?php foreach ($Lokasi as $key) { ?>
+																<option value="<?php echo $key['location_code'] ?>"><?php echo $key['location_code']." - ".$key['location_name']  ?></option>
+															<?php } ?>
 														</select>
 													</div>
 												</div>
@@ -105,7 +118,7 @@
 										</div>
 									</div>
 									<div class="panel-footer">
-										<button type="button" class="btn btn-primary" >Back</button>
+										<a href="javascript:history.back(1);" class="btn btn-primary" >Back</a>
 										<button type="submit" class="btn btn-primary">Submit</button>
 									</div>
 								</div>

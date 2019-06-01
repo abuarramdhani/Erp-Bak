@@ -484,7 +484,7 @@ class M_monitoringlppbadmin extends CI_Model {
                         (SELECT COUNT (lppb_number)
                            FROM khs_lppb_batch_detail c
                            WHERE c.batch_number = a.batch_number
-                           AND c.status not in (4,7)) jumlah_lppb,
+                           AND c.status not in 7) jumlah_lppb,
                          (SELECT COUNT (lppb_number)
                            FROM khs_lppb_batch_detail b
                           WHERE b.status = 0
@@ -496,8 +496,7 @@ class M_monitoringlppbadmin extends CI_Model {
                         (SELECT COUNT (lppb_number)
                            FROM khs_lppb_batch_detail d
                           WHERE d.status = 2
-                            AND a.batch_number = d.batch_number)
-                                                                checking_kasie_gudang,
+                            AND a.batch_number = d.batch_number) checking_kasie_gudang,
                         (SELECT COUNT (lppb_number)
                            FROM khs_lppb_batch_detail e
                           WHERE e.status = 3
@@ -523,7 +522,7 @@ class M_monitoringlppbadmin extends CI_Model {
                WHERE a.BATCH_NUMBER = b.BATCH_NUMBER
                AND b.batch_detail_id = c.batch_detail_id
                AND c.status = 2
-               AND b.status not in (4,7)
+               AND b.status not in 7
                ORDER BY a.batch_number DESC";
         $run = $oracle->query($query);
         return $run->result_array();
@@ -565,7 +564,7 @@ class M_monitoringlppbadmin extends CI_Model {
                         WHERE klb.batch_number = klbd.batch_number
                         AND klbd.batch_detail_id = klad.batch_detail_id
                         AND klb.batch_number = '$batch_number'
-                        AND klbd.status in (2,3,5,6)) a
+                        AND klbd.status in (2,3,4,5,6)) a
                   WHERE rsh.shipment_header_id = rsl.shipment_header_id
                     AND rsh.shipment_header_id = rt.shipment_header_id
                     AND rsl.shipment_line_id = rt.shipment_line_id
@@ -584,6 +583,9 @@ class M_monitoringlppbadmin extends CI_Model {
                     AND a.lppb_number = rsh.receipt_num
                     $lppb_number ";
         $run = $oracle->query($query);
+        // echo "<pre>";
+        // print_r($query);
+        // exit();
         return $run->result_array();
     }
 

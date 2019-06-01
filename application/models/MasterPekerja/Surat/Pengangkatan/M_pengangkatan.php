@@ -177,6 +177,7 @@
 															or 	noind 	like '%$keywordPencarianPekerja%'
 														)
 									order by 	noind;";
+									// echo $cariPekerja;exit();
 			$query 			=	$this->personalia->query($cariPekerja);
 			return $query->result_array();
 	 	}
@@ -446,6 +447,8 @@
 													pengangkatan.noind,
 													pengangkatan.kodesie_lama,
 													pengangkatan.kodesie_baru,
+													pengangkatan.jbt_dl_baru,
+													pengangkatan.jbt_dl_lama,
 															concat_ws
 																									(
 																										' - ',

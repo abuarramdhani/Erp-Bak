@@ -39,26 +39,15 @@ class M_splasska extends CI_Model{
 		return $query->result_array();
 	}
 
-	public function save_confirm($data){
-		$this->spl->insert('splseksi.tapp_confirm',$data);
-		return;
-	}
-
-	public function drop_confirm($filter){
-		$this->spl->where('username', $filter);
-		$this->spl->delete('splseksi.tapp_confirm');
-		return;
-	}
-
-	public function show_confirm($filter){
-		$this->spl->where($filter);
-		$query = $this->spl->get('splseksi.tapp_confirm');
+	public function show_finger_user($fill){
+		$this->spl->where($fill);
+		$query = $this->spl->get('splseksi.tfinger_php');
 		return $query->row();
 	}
 
-	public function show_email_addres($filter){
-		$this->db->where('employee_code', $filter);
-		$query = $this->db->get('er.er_employee_all');
+	public function show_finger_activation($filter){
+		$this->spl->where($filter);
+		$query = $this->spl->get('splseksi.tcode_fingerprint');
 		return $query->row();
 	}
 

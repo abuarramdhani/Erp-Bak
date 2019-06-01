@@ -418,9 +418,26 @@ $(document).ready(function(){
 	  		showMeridian:false,
 	  	});
 	  	$('.dataTable-TmpMakan').DataTable( {
-	      	dom: 'frtp',
+	  		dom:'frtp',
+	  	});
+	  	$('.dataTable-Tmp').DataTable( {
+	      	dom: 'Blrtip',
+        	buttons: [
+            { extend: 
+            	'pdfHtml5',
+            	 pageSize:'A4',
+            	 orientation:'landscape',
+            	 text: 'Export Pdf',
+            	 title: 'DATA_PEKERJA_ABSEN_BERDASARKAN_TEMPAT_MAKAN',
+            	 filename : 'Data_Pekerja_Absen',
+            	 className: 'btn btn-danger btn-lg fa fa-file-pdf-o', 
+        		init: function(api, node, config) {
+       			$(node).removeClass('dt-button')
+       			}
+       		}]
 	    });
 	});
+
 
 	//Penjadwalan
 
@@ -593,4 +610,234 @@ $(document).ready(function(){
 	    });
 	    
 	  });
+});
+
+
+//Cetak
+
+	$(function(){
+		
+		$('#txtTanggalJadwalLayanan').datepicker({
+		      "autoclose": true,
+		      "todayHiglight": true,
+		      "format":'dd MM yyyy'
+		});
+
+		$('#txtPeriodeJadwalLayanan').datepicker({
+		      "autoclose": true,
+		      "todayHiglight": true,
+		      "format":'MM yyyy',
+		      "viewMode":'months',
+		      "minViewMode":'months'
+		});
+
+		$('#txtPeriodeJadwalPengiriman').datepicker({
+		      "autoclose": true,
+		      "todayHiglight": true,
+		      "format":'MM yyyy',
+		      "viewMode":'months',
+		      "minViewMode":'months'
+		});
+
+		$('#txtTanggalPembuatanJadwalPengiriman').datepicker({
+		      "autoclose": true,
+		      "todayHiglight": true,
+		      "format":'dd MM yyyy'
+		});
+	});
+
+function saveKeterangan(ket,tgl,kd_kat,shift){
+	var val = $(ket).closest('tr').eq(0).find('input').val();
+	$.ajax({
+		type : 'POST',
+		url : baseurl+'CateringManagement/Cetak/JadwalPengiriman/Save',
+		data : {keterangan:val,tanggal:tgl,catering:kd_kat,shift:shift},
+		success: function(data){
+			alert("success");
+		}
+	});
+}
+
+//Puasa
+$(document).ready(function(){
+	$('#txtNoindPenguranganPuasa').on('change',function(){
+		var kodesie = $(this).find(':selected').attr('data-kodesie');
+		var seksi = $(this).find(':selected').attr('data-seksi');
+		var nama = $(this).find(':selected').attr('data-nama');
+		$('#txtKodesieTransferPuasa').val(kodesie);
+		$('#txtSeksiTransferPuasa').val(seksi);
+		$('#txtNamaTransferPuasa').val(nama);
+	});
+	$('.cmpuasadaterange').daterangepicker({
+				    "autoApply": true,
+				    "locale": {
+				        "format": "DD MMMM YYYY",
+				        "separator": " - ",
+				        "applyLabel": "OK",
+				        "cancelLabel": "Batal",
+				        "fromLabel": "Dari",
+				        "toLabel": "Hingga",
+				        "customRangeLabel": "Custom",
+				        "weekLabel": "W",
+				        "daysOfWeek": [
+				            "Mg",
+				            "Sn",
+				            "Sl",
+				            "Rb",
+				            "Km",
+				            "Jm",
+				            "Sa"
+				        ],
+				        "monthNames": [
+				            "Januari",
+				            "Februari",
+				            "Maret",
+				            "April",
+				            "Mei",
+				            "Juni",
+				            "Juli",
+				            "Agustus ",
+				            "September",
+				            "Oktober",
+				            "November",
+				            "Desember"
+				        ],
+				        "firstDay": 1
+				    }
+	});
+});
+
+function transferPuasa(banyak,tglsmtr){
+	var valtgl = $('#txtPeriodeTranferPuasa').val();
+	var tgl = valtgl.split(" - ");
+	var tgl1 = tgl[0].split(" ");
+	var tglawal = tgl1[0];
+	var blnthn = tgl1[1]+" "+tgl1[2];
+	var tgl2 = tgl[1].split(" ");
+	var tglakhir = tgl2[0];
+	var blnthn2 = tgl2[1]+" "+tgl2[2];
+
+	if (tglsmtr !== 0) {
+		var tglarray = tglsmtr.split(" - ");
+		var tglsementara = tglarray[1].split(" ");
+		var periode = tglarray[0].split(" ");
+		var tglnow = parseInt(tglsementara[0])+" "+tglsementara[1]+" "+tglsementara[2];
+		var persentaseprogress = ((parseInt(periode[0])+1)/parseInt(periode[1]))*100;
+	}else{
+		var tglnow = parseInt(tglawal)+banyak;
+		tglnow = tglnow+" "+blnthn;
+		if (tgl[0] == tgl[1]) {
+			var persentaseprogress = 100;
+		}else{
+			var persentaseprogress = ((parseInt(tglnow)-parseInt(tglawal))/(parseInt(tglakhir)-parseInt(tglawal)))*100;
+		}
+		
+	}
+	
+	$.ajax({
+		type 	: 'POST',
+		url		: baseurl+'CateringManagement/Puasa/Transfer/Transfer',
+		data 	: {tanggal : tglnow,periode : valtgl},
+		success	: function(data){
+			$('#progressTransferPuasa').attr('style','width: '+persentaseprogress+"%;");
+			$('#progressTransferPuasa').text(Math.round(persentaseprogress)+" %");
+			console.log(persentaseprogress+"% ,tanggal : "+tglnow+" && "+data);
+			if ((parseInt(tglakhir)+" "+blnthn2).toLowerCase() !== tglnow.toLowerCase()) {
+				transferPuasa(banyak+1,data);
+			}else{
+				alert("Sukses Mentransfer Puasa");
+				setTimeout(function(){
+					$('#progressTransferPuasa').attr('style','width: 0%;');
+					$('#progressTransferPuasa').text("");
+				},2000);
+			}
+		}
+	});
+	
+};
+
+
+function batalTransferPuasa(){
+	var valtgl = $('#txtPeriodeTranferPuasa').val();
+	$('#TransferProgress2').show();
+	$('#TransferProgress1').hide();
+		
+	$.ajax({
+		type 	: 'POST',
+		url		: baseurl+'CateringManagement/Puasa/Transfer/Batal',
+		data 	: {tanggal : valtgl},
+		success	: function(data){
+			alert(data);
+			$('#TransferProgress2').hide();
+			$('#TransferProgress1').show();
+		}
+	});
+};
+
+function pilihDeletePuasa(){
+	$('#formEditReadPuasaCatering').hide();
+	$('#formStatusReadPuasaCatering').hide();
+	$('#btnPilihReadPuasaCatering').hide();
+	$('#formDeleteReadPuasaCatering').show();
+	$('#btnSubmitReadPuasaCatering').show();
+}
+
+function pilihEditPuasa(){
+	$('#formEditReadPuasaCatering').show();
+	$('#formStatusReadPuasaCatering').show();
+	$('#btnPilihReadPuasaCatering').hide();
+	$('#formDeleteReadPuasaCatering').hide();
+	$('#btnSubmitReadPuasaCatering').show();
+}
+
+function batalPilihPuasa(){
+	$('#formEditReadPuasaCatering').hide();
+	$('#formStatusReadPuasaCatering').hide();
+	$('#btnPilihReadPuasaCatering').show();
+	$('#formDeleteReadPuasaCatering').hide();
+	$('#btnSubmitReadPuasaCatering').hide();
+}
+
+$(document).ready(function(){
+	$('.tabel_pesan_manual').DataTable();
+});
+
+function modalDelete(id) {
+	// alert(id);
+Swal.fire({
+  title: 'Apakah Anda Yakin?',
+  text: "Mengapus data ini secara permanent !",
+  type: 'warning',
+  showCancelButton: true,
+  confirmButtonColor: '#3085d6',
+  cancelButtonColor: '#d33',
+  confirmButtonText: 'Yes, delete it!'
+}).then((result) => {
+  if (result.value) {
+  	window.location.href = baseurl+"CateringManagement/Extra/PesananManual/hapus/"+id;
+  }
+});
+return false;
+}
+$(document).ready(function(){
+	$('#cm_btn_submit').click(function(){
+		// alert(id);
+	 Swal.fire({
+	  title: 'Apakah Anda Yakin?',
+	  text: "Menyimpan Perubahan Pada Data Ini !",
+	  type: 'warning',
+	  showCancelButton: true,
+	  confirmButtonColor: '#3085d6',
+	  cancelButtonColor: '#d33',
+	  confirmButtonText: 'Ya, Saya Yakin!'
+	}).then((result) => {
+	  if (result.value) {
+	  	// window.location.href = baseurl+"CateringManagement/Extra/PesananManual/Update/"+id;
+	  	// $('form#cm_submit').submit();
+	  	$('#cm_btn_submit2').click();
+	  	return true;
+	  }
+	});
+	return false;
+	});
 });

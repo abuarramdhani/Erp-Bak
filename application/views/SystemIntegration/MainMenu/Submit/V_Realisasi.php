@@ -16,7 +16,7 @@
     <div class="box-header with-border">
       <h3 class="box-title"><i class="fa fa-pencil "></i> Submit Realisasi Kaizen</h3>
     </div>
-    <form method="post" action="<?php echo base_url('SystemIntegration/KaizenGenerator/SubmitRealisasi/'.$kaizen[0]['kaizen_id']); ?>" id="update-kaizen" role="form">
+    <form method="post" action="<?php echo base_url('SystemIntegration/KaizenGenerator/SubmitRealisasi/'.$kaizen[0]['kaizen_id']); ?>" id="update-kaizen" autocomplete="off" role="form">
       <div class="box-body">
         <div class="col-lg-6">
           <div class="form-group">

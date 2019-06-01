@@ -42,6 +42,17 @@
 												</div>
 											</div>
 											<div class="form-group">
+												<label class="control-label col-lg-4">Lokasi kerja<sup style="color: red">*</sup></label>
+												<div class="col-lg-4">
+													<select class="select select2" name="slclokasiLimbahRekap[]" multiple="multiple" style="width: 100%" data-placeholder="Lokasi kerja">
+														<option></option>
+														<?php foreach ($loc as $key) {
+															echo "<option value='".$key['location_code']."'>".$key['location_code']." - ".$key['location_name']."</option>";
+														} ?>
+													</select>
+												</div>
+											</div>
+											<div class="form-group">
 												<label class="control-label col-lg-4">Seksi Asal Limbah<sup style="color: red">*</sup></label>
 												<div class="col-lg-4">
 													<select class="select select2" name="slcSeksiAsalLimbahRekap[]" multiple="multiple" style="width: 100%" data-placeholder="Seksi Asal Limbah">

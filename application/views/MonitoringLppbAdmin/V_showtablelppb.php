@@ -1,7 +1,6 @@
 </style>
 		<?php foreach ($lppb as $lp) { ?>
 		<input type="hidden" value="<?php echo $lp['PO_HEADER_ID']?>" name="po_header_id">
-		<!-- <input type="hidden" value="<?php echo $lp['LINE_NUM']?>" name="line_num"> -->
 		<input type="hidden" value="<?php echo $lp['PO_NUMBER']?>" name="po_number">
 		<input type="hidden" value="<?php echo $lp['ORGANIZATION_ID']?>" name="organization_id">
 		<input type="hidden" value="<?php echo $lp['ORGANIZATION_CODE']?>" name="organization_code">
@@ -16,7 +15,6 @@
 				<tr class="bg-primary">
 					<th class="text-center"><input type="checkbox" class="chkAllLppb" onclick="chkAllLppb();"></th>
 					<th class="text-center" style="display: none">Po Header Id</th>
-					<!-- <th class="text-center">Line Number</th> -->
 					<th class="text-center" style="display: none">Organization Id</th>
 					<th class="text-center">Organization Code</th>
 					<th class="text-center">Lppb Number</th>
@@ -33,7 +31,6 @@
 						<input class="checkbox chkAllLppbNumber" value="<?php echo $no; ?>" type="checkbox" name="inputInvoice" data-id="<?php $lp['PO_HEADER_ID']?>">
 					</td> 
 					<td class="text-center" style="display: none"> <?php echo $lp['PO_HEADER_ID']?> </td>
-					<!-- <td class="text-center"> <?php echo $lp['LINE_NUM']?> </td> -->
 					<td class="text-center" style="display: none"> <?php echo $lp['ORGANIZATION_ID']?> </td>
 					<td class="text-center"> <?php echo $lp['ORGANIZATION_CODE']?> </td>
 					<td class="text-center"> <?php echo $lp['LPPB_NUMBER']?> </td>

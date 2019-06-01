@@ -179,5 +179,17 @@ class M_splseksi extends CI_Model{
 		$query = $this->spl->query($sql);
 		return $query->result_array();
 	}
+
+	public function show_email_addres($sie){
+		$sql = "select eea.employee_code, eea.internal_mail, sugm.user_group_menu_name 
+			from er.er_employee_all eea
+			inner join sys.sys_user su on eea.employee_id=su.employee_id
+			inner join sys.sys_user_application sua on su.user_id = sua.user_id
+			inner join sys.sys_user_group_menu sugm on sua.user_group_menu_id = sugm.user_group_menu_id
+			where eea.resign='0' and eea.section_code like '$sie%' and lower(sugm.user_group_menu_name) like '%lembur%kasie%' 
+				and su.user_name='J1255'";
+		$query = $this->db->query($sql);
+		return $query->result_array();
+	}
 	
 }

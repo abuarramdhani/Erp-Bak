@@ -152,13 +152,13 @@
 
 	 	public function KdJabatan($jab, $job, $kd)
 	 	{
-	 		$DetailKdJabatan= "select ti.jabatan, (select pekerjaan from hrd_khs.tpekerjaan where kdpekerjaan = '$job'),
-	 							(select seksi from hrd_khs.tseksi where kodesie = '$kd'),
-	 							(select unit from hrd_khs.tseksi where kodesie = '$kd'),
-	 							(select bidang from hrd_khs.tseksi where kodesie = '$kd'),
-	 							(select dept from hrd_khs.tseksi where kodesie = '$kd')
+	 		$DetailKdJabatan= "select ti.jabatan, (select pekerjaan from hrd_khs.tpekerjaan where kdpekerjaan = '$job') pekerjaan,
+	 							(select seksi from hrd_khs.tseksi where kodesie = '$kd') seksi,
+	 							(select unit from hrd_khs.tseksi where kodesie = '$kd') unit,
+	 							(select bidang from hrd_khs.tseksi where kodesie = '$kd') bidang,
+	 							(select dept from hrd_khs.tseksi where kodesie = '$kd') dept
 								from hrd_khs.torganisasi ti where ti.kd_jabatan = '$jab'";
-								// echo $DetailKdJabatan;
+								// echo $DetailKdJabatan;exit();
 			$query 	=	$this->personalia->query($DetailKdJabatan);
 			return $query->result_array();	
 			// return $DetailKdJabatan;

@@ -135,13 +135,17 @@ class M_mastergaji extends CI_Model
 		return $query->result_array();
 	}
 
-
 	public function getSection()
 	{
 		$query = $this->db->get('er.er_section');
 
 		return $query->result_array();
 	}
+
+    public function clearData()
+    {
+        $this->db->empty_table('pr.pr_master_gaji');
+    }
 
 }
 

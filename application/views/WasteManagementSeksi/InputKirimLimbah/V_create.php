@@ -71,6 +71,19 @@
 												</div>
 											</div>
 											<div class="form-group">
+												<label for="txtLokasi" class="control-label col-lg-4">Lokasi Kerja</label>
+												<div class="col-lg-4">
+													<div class="col-lg-12">
+														<select class="select select2" id="txtLokasi" name="txtLokasi" data-placeholder="Lokasi Kerja" style="width: 100%">
+															<option></option>
+															<?php foreach ($Lokasi as $key) { ?>
+																<option value="<?php echo $key['location_code'] ?>"><?php echo $key['location_code']." - ".$key['location_name']  ?></option>
+															<?php } ?>
+														</select>
+													</div>
+												</div>
+											</div>
+											<div class="form-group">
 												<label for="txtSeksi" class="control-label col-lg-4">Seksi Pengirim</label>
 												<div class="col-lg-4">
 													<div class="col-lg-12">

@@ -13,7 +13,7 @@
                   <label> Piih Department </label>
                 </div>
                 <div class="col-md-4">
-                  <select class="select4 form-control" style="width: 100%" name="slcDeptIMO">
+                  <select class="select4 form-control" style="width: 100%" name="slcDeptIMO" id="selectDept">
                     <option></option>
                     <?php foreach ($dept as $key => $value) { ?>
                     <option value="<?= $value['DEPT'] ?>"><?= $value['DEPT'].' - '.$value['DESCRIPTION'] ?></option>
@@ -32,7 +32,7 @@
                   </div>
                 </div>
               </div>
-              <div class="form-group">
+              <div class="form-group shiftForm">
                 <div class="col-md-12">
                   <label> Pilih Shift </label>
                 </div>
@@ -40,7 +40,7 @@
                   <select class="select4 form-control inputShiftIMO" name="slcShiftIMO" disabled="disabled" style="width: 100%">
                     <option></option>
                     <?php foreach ($shift as $key => $value) { ?>
-                    <option value="<?= $value['SHIFT_NUM'] ?>"><?= $value['DESCRIPTION'] ?></option>
+                    <option value="<?= $value['SHIFT_NUM'] ?>"></option>
                     <?php } ?>
                   </select>
                 </div>
@@ -58,7 +58,7 @@
           <div class="row">
               <div class="col-md-12">
                  <div class="form-group">
-                  <div class="col-md-12"  id="ResultJob"> </div>
+                  <div class="col-md-12 ResultJob"  id="ResultJob"> </div>
                  </div>
               </div>
           </div>

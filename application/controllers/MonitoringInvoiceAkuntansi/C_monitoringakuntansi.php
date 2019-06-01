@@ -68,6 +68,7 @@ class C_monitoringakuntansi extends CI_Controller{
 		$this->load->view('V_Sidemenu',$data);
 		$this->load->view('MonitoringInvoiceAkuntansi/V_akuntansi',$data);
 		$this->load->view('V_Footer',$data);
+		$this->output->cache(1);
 	}
 
 	public function unprocess($batchNumber)
@@ -146,6 +147,7 @@ class C_monitoringakuntansi extends CI_Controller{
 		$this->load->view('V_Sidemenu',$data);
 		$this->load->view('MonitoringInvoiceAkuntansi/V_unprocessakuntansi',$data);
 		$this->load->view('V_Footer',$data);
+		$this->output->cache(1);
 	}
 
 	public function DetailUnprocess($batch_num,$invoice_id)
@@ -183,6 +185,7 @@ class C_monitoringakuntansi extends CI_Controller{
 		$this->load->view('V_Sidemenu',$data);
 		$this->load->view('MonitoringInvoiceAkuntansi/V_detailunprocess',$data);
 		$this->load->view('V_Footer',$data);
+		$this->output->cache(1);
 	}
 
 	public function prosesAkuntansi($id){
@@ -229,6 +232,7 @@ class C_monitoringakuntansi extends CI_Controller{
 		$this->load->view('V_Sidemenu',$data);
 		$this->load->view('MonitoringInvoiceAkuntansi/V_finishinvoiceakuntansi',$data);
 		$this->load->view('V_Footer',$data);
+		$this->output->cache(1);
 	}
 
 	public function DetailProcessed($invoice_id)
@@ -266,18 +270,32 @@ class C_monitoringakuntansi extends CI_Controller{
 		$this->load->view('V_Sidemenu',$data);
 		$this->load->view('MonitoringInvoiceAkuntansi/V_processed',$data);
 		$this->load->view('V_Footer',$data);
+		$this->output->cache(1);
 	}
 
 	public function saveActionAkuntansi(){
 		$alasan = $this->input->post('reason_finance[]');
 		$id = $this->input->post('id_reason[]');
-		$proses = $this->input->post('hdnProses[]');
+		$prosesTerima = $this->input->post('hdnTerima[]');
+		$prosesTolak = $this->input->post('hdnTolak[]');
 		$saveDate = date('d-m-Y H:i:s');
 
-		foreach ($proses as $p => $value) {
-			$this->M_monitoringakuntansi->saveProses($proses[$p],$saveDate,$alasan[$p],$id[$p]);
-			$this->M_monitoringakuntansi->insertproses($id[$p],$saveDate,$proses[$p]);
+		if ($prosesTerima=='') {
+			$prosesTerima=array();
 		}
+
+		if ($prosesTolak=='') {
+			$prosesTolak=array();
+		}
+
+			foreach ($prosesTerima as $p => $value) {
+				$this->M_monitoringakuntansi->saveProsesTerimaAkuntansi($saveDate,$prosesTerima[$p]);
+				$this->M_monitoringakuntansi->insertprosesAkuntansi($prosesTerima[$p],$saveDate);
+			}
+			foreach ($prosesTolak as $p => $value) {
+				$this->M_monitoringakuntansi->saveProsesTolakAkuntansi($saveDate,$prosesTolak[$p],$alasan[$p]);
+				$this->M_monitoringakuntansi->insertprosesAkuntansi($prosesTolak[$p],$saveDate);
+			}
 
 		redirect('AccountPayables/MonitoringInvoice/Finish');
 	}
@@ -318,6 +336,7 @@ class C_monitoringakuntansi extends CI_Controller{
 		$this->load->view('V_Sidemenu',$data);
 		$this->load->view('MonitoringInvoiceAkuntansi/V_finishBatchAkt',$data);
 		$this->load->view('V_Footer',$data);
+		$this->output->cache(1);
 	}
 
 }

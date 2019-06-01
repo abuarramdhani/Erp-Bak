@@ -45,7 +45,7 @@
 											<span><label>Invoice Amount</label></span>
 										</td>
 										<td >
-											<input class="form-control" size="40" type="text" value="<?php echo $invoice_detail[0]['INVOICE_AMOUNT']?>" readonly>
+											<input class="form-control" size="40" type="text" value="<?php echo 'Rp. '. number_format($invoice_detail[0]['INVOICE_AMOUNT'],0,'.','.').',00-';?>" readonly>
 										</td>
 									</tr>
 									<tr>
@@ -75,7 +75,7 @@
 											<span><label>Nominal DPP Faktur Pajak</label></span>
 										</td>
 										<td>
-											<input  class="form-control" size="40" type="text" value="<?php echo $invoice_detail[0]['NOMINAL_DPP']?>" readonly>
+											<input  class="form-control" size="40" type="text" value="<?php echo 'Rp. '. number_format($invoice_detail[0]['NOMINAL_DPP'],0,'.','.').',00-';?>" readonly>
 										</td>
 									</tr>
 									<tr>
@@ -130,7 +130,7 @@
 						</table>
 						</div>
 						<div class="pull-left">
-							<label>Po Amount : </label><span><?php echo $po_amount ?></span>
+							<label>Po Amount : </label><span><?php echo 'Rp. '. number_format(round($po_amount),0,'.','.').',00-';?></span>
 						</div>
 						<div class="col-md-12">
 						<a href="<?php echo base_url('AccountPayables/MonitoringInvoice/InvoiceKasie/batchDetailPembelian/'.$batch_number)?>">
