@@ -79,7 +79,7 @@ $(document).ready(function(){
 				    }
 				}, function(start, end, label) {
 				  console.log("New date range selected: ' + start.format('DD-MM-YYYY H:i:s') + ' to ' + end.format('DD-MM-YYYY H:i:s') + ' (predefined range: ' + label + ')");
-				});				
+				});
 
 				$('.cmsingledate-mycustom').daterangepicker({
 				    "singleDatePicker": true,
@@ -121,7 +121,7 @@ $(document).ready(function(){
 				    }
 				}, function(start, end, label) {
 				  console.log("New date range selected: ' + start.format('YYYY-MM-DD H:i:s') + ' to ' + end.format('YYYY-MM-DD H:i:s') + ' (predefined range: ' + label + ')");
-				});				
+				});
 	// DATE RANGE PICKER UNTUK 'RECEIPT DATE'
 	// $('.singledate').daterangepicker({
 	// 	"singleDatePicker": true,
@@ -136,7 +136,7 @@ $(document).ready(function(){
 	// var startDate = $('#receipt-date').val()
 	// $(".singledate").data('daterangepicker').setStartDate(startDate);
 	// $(".singledate").data('daterangepicker').setEndDate(startDate)};
-	
+
 	// // DATE RANGE PICKER UNTUK 'ORDER DATE'
 	// $('.doubledate').daterangepicker({
 	// 	"timePicker": false,
@@ -151,10 +151,10 @@ $(document).ready(function(){
 	// var endDate = $('#order-end-date').val()
 	// $(".doubledate").data('daterangepicker').setStartDate(startDate);
 	// $(".doubledate").data('daterangepicker').setEndDate(endDate)};
-	
+
 	$("#catering").change(cekpph);
 	$("#pphverify").click(cekpph);
-	
+
 	//CEK STATUS PPH PADA CATERING YANG DIPILIH
 	function cekpph(){
 		$.ajax({
@@ -170,7 +170,7 @@ $(document).ready(function(){
 			}
 		});
 	};
-	
+
 	//MELAKUKAN KALKULASI NILAI AKHIR
 	$("#orderqty,#singleprice,#fine").keyup(checkncalc);
 	$("#orderqty,#singleprice,#fine").click(checkncalc);
@@ -180,19 +180,19 @@ $(document).ready(function(){
 	$("#tbodyFineCatering input").click(checkncalc);
 	$("#tbodyFineCatering select").change(checkncalc);
 	$("#bonus").change(checkncalc);
-		
+
 	function calculation(pphstatus){
 		var $qty = $('#orderqty').val();
 		var $price = $('#singleprice').val();
 		var $ordertype = $('#ordertype').val();
 		var $bonus = $('#bonus').val();
-		
+
 		if($ordertype==2 && $bonus==1){
 			var $bonus_qty = Math.floor($qty/50);
 		} else {
 			var $bonus_qty = 0;
 		}
-		
+
 		var $net = $qty - $bonus_qty;
 		var $calc = $net * $price;
 		var $fine = $('#fine').val();
@@ -203,16 +203,16 @@ $(document).ready(function(){
 		} else {
 			var $pph = Math.ceil((0 / 100) * $est);
 		}
-		
+
 		var $total = $est - $pph;
-		
+
 		$("#orderbonus").val($bonus_qty);
 		$("#ordernet").val($net);
 		$("#calc").val($calc);
 		$("#pph").val($pph);
 		$("#total").val($total);
 	};
-		
+
 	//MELAKUKAN CEK PPH SEKALIGUS KALKULASI NILAI AKHIR
 	function checkncalc(){
 		cekpph();
@@ -226,19 +226,19 @@ $(document).ready(function(){
 		var e = jQuery.Event( "click" );
 		e.preventDefault();
 		$("select#finetype:last").select2("destroy");
-		
+
 		$('.clone').last().clone().appendTo(newgroup).appendTo('#tbodyFineCatering');
 
 		$("select#finetype").select2({
 			placeholder: "",
 			allowClear : true,
 		});
-		
+
 		$("select#finetype:last").select2({
 			placeholder: "",
 			allowClear : true,
 		});
-		
+
 			$('.cmsingledate').daterangepicker({
 				    "singleDatePicker": true,
 				    "showDropdowns": true,
@@ -279,17 +279,17 @@ $(document).ready(function(){
 				    }
 				}, function(start, end, label) {
 				  console.log("New date range selected: ' + start.format('DD-MM-YYYY H:i:s') + ' to ' + end.format('DD-MM-YYYY H:i:s') + ' (predefined range: ' + label + ')");
-				});	
-						
+				});
+
 		$("select#finetype:last").val("").change();
 		$("input#fineprice:last").val("").change();
 		$("input#fineqty:last").val("").change();
-		
+
 		$("#DelFine").click(multInputs);
 		$("#tbodyFineCatering input").keyup(finerowall);
 		$("#tbodyFineCatering input").click(finerowall);
 		$("#tbodyFineCatering select").change(finerowall);
-		
+
 		// Function 1 : CALCULATE FINE PER ROW
 		function multInputs() {
 
@@ -303,16 +303,16 @@ $(document).ready(function(){
 				var total = Math.ceil((qty-bonus_qty)*price*percentage/100);
 				$("#finenominal", this).val(total);
 			});
-			
+
 			var item = document.getElementsByClassName("finenominal");
 			var itemCount = item.length;
 			var total = 0;
 			for(var i = 0; i < itemCount; i++){
 				total = total +  parseInt(item[i].value);
 			}
-			document.getElementById('fine').value = total;	
+			document.getElementById('fine').value = total;
 		}
-		
+
 		// Function 2 : CHECK PPH (COPY)
 		function cekpphalias(){
 			$.ajax({
@@ -328,21 +328,21 @@ $(document).ready(function(){
 				}
 			});
 		};
-		
+
 		//FUNCTION 3 : FINAL CALCULATION (COPY)
 		function calculationalias(pphstatus){
-				
+
 			var $qty = $('#orderqty').val();
 			var $price = $('#singleprice').val();
 			var $ordertype = $('#ordertype').val();
-				
+
 			if($ordertype==2){
 				var $bonus_qty = Math.floor($qty/50);
 			}
 			else {
 				var $bonus_qty = 0;
 			}
-				
+
 			var $calc = (($qty-$bonus_qty) * $price);
 			var $fine = $('#fine').val();
 			var $est = $calc - $fine;
@@ -351,22 +351,22 @@ $(document).ready(function(){
 			} else {
 				var $pph = Math.ceil((0 / 100) * $est);
 			}
-				
+
 			var $total = $est - $pph;
-				
+
 			$("#calc").val($calc);
 			$("#pph").val($pph);
 			$("#total").val($total);
-			
+
 		};
-		
+
 		//FUNCTION 4 : RUN ALL FUNCTION
 		function finerowall(){
 			multInputs();
 			cekpphalias();
 			calculationalias();
 		}
-		
+
 		// $('.singledate:last').daterangepicker({
 		// 	"singleDatePicker": true,
 		// 	"timePicker": false,
@@ -376,7 +376,7 @@ $(document).ready(function(){
 		// 		format: 'YYYY-MM-DD'
 		// 	},
 		// });
-		
+
 		// if (typeof $('#receipt-date').val() !== 'undefined'){
 		// var startDate = $('#receipt-date').val()
 		// $(".singledate:last").data('daterangepicker').setStartDate(startDate);
@@ -384,7 +384,7 @@ $(document).ready(function(){
 	}
 
 	//RECEIPT MANAGEMENT AUTO-ADD-REMOVE ROW
-	
+
 	$(function(){
 		setTimeout(function(){
 		  $('#AddFine').click();
@@ -420,17 +420,20 @@ $(document).ready(function(){
 	  	$('.dataTable-TmpMakan').DataTable( {
 	  		dom:'frtp',
 	  	});
+			$('.dataTable-EditTmp').DataTable( {
+	  		dom:'flrtp',
+	  	});
 	  	$('.dataTable-Tmp').DataTable( {
 	      	dom: 'Blrtip',
         	buttons: [
-            { extend: 
+            { extend:
             	'pdfHtml5',
             	 pageSize:'A4',
             	 orientation:'landscape',
             	 text: 'Export Pdf',
             	 title: 'DATA_PEKERJA_ABSEN_BERDASARKAN_TEMPAT_MAKAN',
             	 filename : 'Data_Pekerja_Absen',
-            	 className: 'btn btn-danger btn-lg fa fa-file-pdf-o', 
+            	 className: 'btn btn-danger btn-lg fa fa-file-pdf-o',
         		init: function(api, node, config) {
        			$(node).removeClass('dt-button')
        			}
@@ -457,8 +460,8 @@ $(document).ready(function(){
 		      "minViewMode":'months'
 		});
 
-		
-		
+
+
 	});
 
 $(document).ready(function(){
@@ -467,7 +470,7 @@ $(document).ready(function(){
 		allowClear: false,
 		placeholder: "Pp Kodebarang",
 		minimumInputLength: 3,
-		ajax: 
+		ajax:
 		{
 			url: baseurl+'CateringManagement/PrintPP/kodeItem2',
 			dataType: 'json',
@@ -555,7 +558,7 @@ $(document).ready(function(){
 							text: item.nama
 						};
 					})
-					
+
 				};
 			},
 		},
@@ -603,12 +606,12 @@ $(document).ready(function(){
 	    						text: item.fs_nama_katering
 	    					};
 	    				})
-	    				
+
 	    			};
 	    		},
 	    	},
 	    });
-	    
+
 	  });
 });
 
@@ -616,7 +619,7 @@ $(document).ready(function(){
 //Cetak
 
 	$(function(){
-		
+
 		$('#txtTanggalJadwalLayanan').datepicker({
 		      "autoclose": true,
 		      "todayHiglight": true,
@@ -731,9 +734,9 @@ function transferPuasa(banyak,tglsmtr){
 		}else{
 			var persentaseprogress = ((parseInt(tglnow)-parseInt(tglawal))/(parseInt(tglakhir)-parseInt(tglawal)))*100;
 		}
-		
+
 	}
-	
+
 	$.ajax({
 		type 	: 'POST',
 		url		: baseurl+'CateringManagement/Puasa/Transfer/Transfer',
@@ -753,7 +756,7 @@ function transferPuasa(banyak,tglsmtr){
 			}
 		}
 	});
-	
+
 };
 
 
@@ -761,7 +764,7 @@ function batalTransferPuasa(){
 	var valtgl = $('#txtPeriodeTranferPuasa').val();
 	$('#TransferProgress2').show();
 	$('#TransferProgress1').hide();
-		
+
 	$.ajax({
 		type 	: 'POST',
 		url		: baseurl+'CateringManagement/Puasa/Transfer/Batal',
@@ -841,3 +844,209 @@ $(document).ready(function(){
 	return false;
 	});
 });
+
+$(document).ready(function() {
+	$('#txtSeksiEdit').on('change',function() {
+
+		var seksi = $('#txtSeksiEdit').val();
+		$.ajax({
+			 type:'POST',
+			 data:{seksi:seksi},
+			 url:baseurl+"CateringManagement/Extra/EditTempatMakan/getKirimID",
+			 success:function(result)
+			 {
+				var result = JSON.parse(result);
+				 $('#txtDepartmenEditMakan').val(result['dept']);
+				 $('#txtEditBidangMakan').val(result['bidang']);
+				 $('#txtEditUnitMakan').val(result['unit']);
+				 $('#txtEditSeksiMakan').val(result['seksi']);
+				 $('#txtEditPekerjaanMakan').val(result['pekerjaan']);
+				 $('#makan1').val(result['tempat_makan']);
+				 $('#makan1').select2().trigger('change');
+			 }
+
+				 });
+	})
+})
+
+$(document).ready(function() {
+		$('#kirim').click(function() {
+			Swal.fire({
+		  title: 'Apakah Anda Yakin ?',
+		  text: "Menyimpan Perubahan Pada Data Ini",
+		  type: 'warning',
+		  showCancelButton: true,
+		  confirmButtonColor: '#3085d6',
+		  cancelButtonColor: '#d33',
+		  confirmButtonText: 'Yes'
+		}).then((result) => {
+		  if (result.value) {
+				$('#kirim2').click();
+				return true;
+		  }
+		});
+	return false;
+	})
+})
+
+function simpansemua(){
+	text = $('.edit_tempat_makan_semua').text();
+	if (text == 'Edit Semua') {
+		$('#makan1').prop('disabled',false);
+		$('#makan2').prop('disabled',false);
+		$('#kirimStaff').prop('disabled',true);
+		$('#kirimNonStaff').prop('disabled',true);
+		$('.edit_tempat_makan_semua').text('Simpan Semua');
+		document.getElementById("kirimAll").classList.remove('btn-primary');
+		document.getElementById("kirimAll").classList.add('btn-success');
+		var x = document.getElementById("batal1");
+		  if (x.style.display === "none") {
+		    x.style.display = "";
+		  } else {
+		    x.style.display = "none";
+		  }
+	}else{
+		tmp_makan1 = $('#makan1').val();
+		tmp_makan2 = $('#makan2').val();
+		kodesie = $('#txtSeksiEdit').val();
+		Swal.fire({
+		title: 'Apakah Anda Yakin ?',
+		text: "Menyimpan Perubahan Pada Data Ini",
+		type: 'warning',
+		showCancelButton: true,
+		confirmButtonColor: '#3085d6',
+		cancelButtonColor: '#d33',
+		confirmButtonText: 'Yes'
+	}).then((result) => {
+		if (result.value) {
+			$.ajax({
+				 type:'POST',
+				 data:{makan1: tmp_makan1, makan2: tmp_makan2, kodesie: kodesie},
+				 url:baseurl+"CateringManagement/Extra/EditTempatMakan/updateAll",
+				 success:function(result){
+					 window.location.reload();
+				 }
+		});
+			return true;
+		}
+	});
+}
+}
+
+function simpanstaff(){
+	text = $('.edit_tempat_makan_staff').text();
+	if (text == 'Edit Staff') {
+		$('#makan1').prop('disabled',false);
+		$('#makan2').prop('disabled',false);
+		$('#kirimAll').prop('disabled',true);
+		$('#kirimNonStaff').prop('disabled',true);
+		$('.edit_tempat_makan_staff').text('Simpan Staff');
+		document.getElementById("kirimStaff").classList.remove('btn-primary');
+		document.getElementById("kirimStaff").classList.add('btn-success');
+		var x = document.getElementById("batal1");
+		  if (x.style.display === "none") {
+		    x.style.display = "";
+		  } else {
+		    x.style.display = "none";
+		  }
+	}else{
+		tmp_makan1 = $('#makan1').val();
+		tmp_makan2 = $('#makan2').val();
+		kodesie = $('#txtSeksiEdit').val();
+		Swal.fire({
+		title: 'Apakah Anda Yakin ?',
+		text: "Menyimpan Perubahan Pada Data Ini",
+		type: 'warning',
+		showCancelButton: true,
+		confirmButtonColor: '#3085d6',
+		cancelButtonColor: '#d33',
+		confirmButtonText: 'Yes'
+	}).then((result) => {
+		if (result.value) {
+			$.ajax({
+				 type:'POST',
+				 data:{makan1: tmp_makan1, makan2: tmp_makan2, kodesie: kodesie},
+				 url:baseurl+"CateringManagement/Extra/EditTempatMakan/updateStaff",
+				 success:function(result){
+					 window.location.reload();
+				 }
+		});
+			return true;
+		}
+	});
+}
+}
+
+function simpannonstaff(){
+	text = $('.edit_tempat_makan_nonstaff').text();
+	if (text == 'Edit NonStaff') {
+		$('#makan1').prop('disabled',false);
+		$('#makan2').prop('disabled',false);
+		$('#kirimAll').prop('disabled',true);
+		$('#kirimStaff').prop('disabled',true);
+		$('.edit_tempat_makan_nonstaff').text('Simpan NonStaff');
+		document.getElementById("kirimNonStaff").classList.remove('btn-primary');
+		document.getElementById("kirimNonStaff").classList.add('btn-success');
+		var x = document.getElementById("batal1");
+		  if (x.style.display === "none") {
+		    x.style.display = "";
+		  } else {
+		    x.style.display = "none";
+		  }
+	}else{
+		tmp_makan1 = $('#makan1').val();
+		tmp_makan2 = $('#makan2').val();
+		kodesie = $('#txtSeksiEdit').val();
+		Swal.fire({
+		title: 'Apakah Anda Yakin ?',
+		text: "Menyimpan Perubahan Pada Data Ini",
+		type: 'warning',
+		showCancelButton: true,
+		confirmButtonColor: '#3085d6',
+		cancelButtonColor: '#d33',
+		confirmButtonText: 'Yes'
+	}).then((result) => {
+		if (result.value) {
+			$.ajax({
+				 type:'POST',
+				 data:{makan1: tmp_makan1, makan2: tmp_makan2, kodesie: kodesie},
+				 url:baseurl+"CateringManagement/Extra/EditTempatMakan/updateNonStaff",
+				 success:function(result){
+					 window.location.reload();
+				 }
+		});
+			return true;
+		}
+	});
+}
+}
+
+function batal(){
+		$('#makan1').prop('disabled',true);
+		$('#makan2').prop('disabled',true);
+		$('#kirimAll').prop('disabled',false);
+		$('#kirimStaff').prop('disabled',false);
+		$('#kirimNonStaff').prop('disabled',false);
+		$('.edit_tempat_makan_semua').text('Edit Semua');
+		$('.edit_tempat_makan_staff').text('Edit Staff');
+		$('.edit_tempat_makan_nonstaff').text('Edit NonStaff');
+		document.getElementById("kirimAll").classList.remove('btn-success');
+		document.getElementById("kirimStaff").classList.remove('btn-success');
+		document.getElementById("kirimNonStaff").classList.remove('btn-success');
+		document.getElementById("kirimAll").classList.add('btn-primary');
+		document.getElementById("kirimStaff").classList.add('btn-primary');
+		document.getElementById("kirimNonStaff").classList.add('btn-primary');
+
+		var x = document.getElementById("batal1");
+		  if (x.style.display === "") {
+		    x.style.display = "none";
+		  } else {
+		    x.style.display = "none";
+		  }
+}
+
+function reseta(){
+	$('#makan1').select2('val', '');
+	$('#makan2').select2('val', '');
+	$('#txtSeksiEdit').select2('val', '');
+}
