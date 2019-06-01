@@ -192,7 +192,7 @@
 		$.ajax({
 			type:'POST',
 			data:{pemakai_1:value},
-			url:baseurl+'/P2K3_V2/Order/searchOracle',
+			url:baseurl+'P2K3_V2/Order/searchOracle',
 			success:function(result)
 			{
 				$("#pemakai_2").html(result);
