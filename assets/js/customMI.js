@@ -86,9 +86,11 @@ $(document).ready(function(){
 		}
 	});
 
-	//Untuk fungsi separator ribuan.
-	$("input[id='invoice_amounttttt']").keyup(function() {
-    	var invAmount = $(this).val($(this).val().replace( /[^0-9]+/g, "").replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,'));
+	//Untuk fungsi separator ribuan.hhhhhhhhhhhhhhhhh
+	$("input[id='invoice_amounttttt']").change(function() {
+    	var invAmount = $(this).moneyFormat();
+    	// var invAmount = $(this).val($(this).val().moneyFormat());
+    	// var invAmount = $(this).val($(this).val().replace( /[^0-9]+/g, "").replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,'));
 	});
 
 	$("input[id='nominalDpp']").keyup(function() {
@@ -111,7 +113,7 @@ $(document).ready(function(){
 			total+=Number(Math.round(rowtotal));
 		});	
 		$('#AmountOtomatis').html(total).moneyFormat();
-		//$('#AmountOtomatis').html($('#AmountOtomatis').html().replace( /[^0-9]+/g, "").replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,'));
+		 // $('#AmountOtomatis').html(total).replace( /[^0-9]+/g, "").replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,');
 
 		if (total == invAmount) {
 			$('#invoice_amounttttt, #AmountOtomatis').css("background-color","white");
