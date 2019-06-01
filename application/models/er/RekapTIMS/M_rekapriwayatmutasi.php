@@ -25,7 +25,7 @@
 																																					pri.nama=tabelpkj.nama
 																																					and 	pri.templahir=tabelpkj.templahir
 																																					and 	pri.tgllahir=tabelpkj.tgllahir
-																																				)	
+																																				)
 																																		)
 																																		and 	pri.keluar=false
 																														)
@@ -116,7 +116,7 @@
 														and 	substring(tseksi.kodesie,1,3)='$bidang'
 									union
 									select 				concat('$bidang', '00') as kode_unit,
-														'-' as nama_bidang					
+														'-' as nama_bidang
 									order by 			kode_unit;";
 			$queryAmbilUnit 	=	$this->personalia->query($ambilUnit);
 			return $queryAmbilUnit->result_array();
@@ -132,7 +132,7 @@
 														and 	substring(tseksi.kodesie,1,5)='$unit'
 									union
 									select 				concat('$unit', '00') as kode_seksi,
-														'-' as nama_bidang					
+														'-' as nama_bidang
 									order by 			kode_seksi;";
 			$queryAmbilSeksi	=	$this->personalia->query($ambilSeksi);
 			return $queryAmbilSeksi->result_array();
@@ -140,8 +140,8 @@
 
 		public function ambilRiwayatMutasi($parameterCari)
 		{
-		    $ambilRiwayatMutasi			= "	select 		tmutasi.tglberlaku::date,
-														concat_ws(' - ', pri.noind, pri.nama) as pekerja,
+			$ambilRiwayatMutasi			= "	select distinct	concat_ws(' - ', pri.noind, pri.nama) as pekerja,
+														tmutasi.tglberlaku::date,
 														(
 															select		(
 																			case 	when 	rtrim(tseksi.seksi)='-'
@@ -199,7 +199,7 @@
 											order by 	tmutasi.tglberlaku::date desc";
 			$queryAmbilRiwayatMutasi 	=	$this->personalia->query($ambilRiwayatMutasi);
 			return $queryAmbilRiwayatMutasi->result_array();
-		} 
+		}
 
 		public function ambilRiwayatPekerja($nomorInduk)
 		{
@@ -233,6 +233,6 @@
 																		)";
 			$queryAmbilRiwayatPekerja	=	$this->personalia->query($ambilRiwayatPekerja);
 			return $queryAmbilRiwayatPekerja->result_array();
-		}  
+		}
 	}
 ?>
