@@ -5,8 +5,6 @@
 // });
 
 $("#formPackingList").ready(function() {
-  console.log('ini lo udah ke load');
-  
   $.ajax({
     url: baseurl + "WarehouseSPB/Ajax/checkSPB",
     type: 'POST',

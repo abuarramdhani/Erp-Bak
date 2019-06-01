@@ -745,24 +745,24 @@ $(document).ready(function() {
         }
       });
 
-  $('#tblDataLKHSeksi').DataTable( {
-        dom: 'Bfrtip',
-        buttons: [
-          'excel'
-        ],
-        "processing": true,
-        "serverSide": true,
-        "scrollX": true,
-        responsive: false,
-        "ajax":{
-          url : baseurl+"PayrollManagementNonStaff/ProsesGaji/DataLKHSeksi/showList",
-          type: "post",
-          error: function(){
-            //$("#tblDataLKHSeksi").append('<tbody class="text-center"><tr><th colspan="6">No data found in the server</th></tr></tbody>');
-            //$("#tblDataLKHSeksi_processing").css("display","none");
-          }
-        }
-      });
+	$('#tblDataLKHSeksi').DataTable( {
+		dom: 'Bfrtip',
+		buttons: [
+			'excel'
+		],
+		"processing": true,
+		"serverSide": true,
+		"scrollX": true,
+		responsive: false,
+		"ajax":{
+			url : baseurl+"PayrollManagementNonStaff/ProsesGaji/DataLKHSeksi/showList",
+			type: "post",
+			error: function(){
+			//$("#tblDataLKHSeksi").append('<tbody class="text-center"><tr><th colspan="6">No data found in the server</th></tr></tbody>');
+			//$("#tblDataLKHSeksi_processing").css("display","none");
+			}
+		}
+	});
 
   $('#tblTambahan').DataTable( {
         dom: 'Bfrtip',
