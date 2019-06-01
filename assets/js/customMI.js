@@ -86,7 +86,7 @@ $(document).ready(function(){
 		}
 	});
 
-	//Untuk fungsi separator ribuan.
+	//Untuk fungsi separator ribuan.hhhhhhhhhhhhhhhhh
 	$("input[id='invoice_amounttttt']").change(function() {
     	var invAmount = $(this).moneyFormat();
     	// var invAmount = $(this).val($(this).val().moneyFormat());
