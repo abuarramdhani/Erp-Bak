@@ -71,8 +71,59 @@
 										?>
 										<tr>
 											<td class="text-center"><?php echo $no;?></td>
+
+									<?php
+											$time = date('H:i:s');
+											$var = '';
+												if ($time > '23:35:00' && $time < '23:40:00') {
+													$var = '1';
+												}elseif ($time > '23:15:00' && $time < '23:20:00') {
+													$var = '1';
+												} elseif ($time > '22:35:00' && $time < '22:40:00') {
+													$var = '1';
+												} elseif ($time > '21:05:00' && $time < '21:10:00') {
+													$var = '1';
+												} elseif ($time > '20:05:00' && $time < '20:10:00') {
+													$var = '1';
+												} elseif ($time > '19:31:00' && $time < '19:36:00') {
+													$var = '1';
+												} elseif ($time > '19:05:00' && $time < '19:10:00') {
+													$var = '1';
+												} elseif ($time > '14:46:00' && $time < '14:51:00') {
+													$var = '1';
+												} elseif ($time > '14:11:00' && $time < '14:16:00') {
+													$var = '1';
+												} elseif ($time > '12:31:00' && $time < '12:36:00') {
+													$var = '1';
+												} elseif ($time > '07:31:00' && $time < '07:36:00') {
+													$var = '1';
+												} elseif ($time > '06:31:00' && $time < '06:36:00') {
+													$var = '1';
+												} elseif ($time > '05:31:00' && $time < '05:36:00') {
+													$var = '1';
+												} else {
+													$var = '2';
+												}
+												?>
+										<?php if ($var =='1'): ?>
 											<td class="text-center">
-												<a type="button" class="btn btn-info btn-sm" href="<?php echo base_url('PresenceManagement/MonitoringPresensi/device_user_list'.'/'.$encrypted_string);?>" data-toggle="tooltip" title="User List">
+												<a type="button" class="btn btn-info btn-sm disabled " href="<?php echo base_url('PresenceManagement/MonitoringPresensi/device_user_list'.'/'.$encrypted_string);?>" data-toggle="tooltip" title="User List" >
+													<i class="fa fa-users"></i>
+												</a>
+												<a type="button" class="btn btn-success btn-sm  disabled" href="<?php echo base_url('PresenceManagement/MonitoringPresensi/time_sync'.'/'.$encrypted_string);?>" data-toggle="tooltip" title="Time Syncronization" disabled >
+													<i class="fa fa-clock-o"></i>
+												</a>
+												<a type="button" href="<?php echo site_url('PresenceManagement/MonitoringPresensi/finger_data_get'.'/'.$encrypted_string) ?>" class="btn btn-success btn-sm  disabled" data-toggle="tooltip" alt="Get Finger Data From This Device" title="Get Finger Data From This Device" disabled >
+				                                    <i class="fa fa-cloud-download"></i> <i class="fa fa-hand-pointer-o"></i>
+				                                </a>
+				                               <!-- <a type="button" target="_blank" href="<?php //echo site_url('PresenceManagement/MonitoringPresensi/get_scanlog'.'/'.$encrypted_string) ?>" class="btn btn-success btn-sm" data-toggle="tooltip" alt="Get Scanlog" title="Get Scanlog" >
+				                                    <i class="fa fa-cloud-download"></i> <i class="fa fa-database"></i>
+				                                </a> -->
+											</td>
+										<?php endif ?>
+										<?php if ($var =='2'): ?>
+											<td class="text-center">
+												<a type="button" class="btn btn-info btn-sm" href="<?php echo base_url('PresenceManagement/MonitoringPresensi/device_user_list'.'/'.$encrypted_string);?>" data-toggle="tooltip" title="User List" >
 													<i class="fa fa-users"></i>
 												</a>
 												<a type="button" class="btn btn-success btn-sm" href="<?php echo base_url('PresenceManagement/MonitoringPresensi/time_sync'.'/'.$encrypted_string);?>" data-toggle="tooltip" title="Time Syncronization">
@@ -85,6 +136,7 @@
 				                                    <i class="fa fa-cloud-download"></i> <i class="fa fa-database"></i>
 				                                </a> -->
 											</td>
+										<?php endif ?>
 											<td><?php echo $device['id_lokasi'];?></td>
 											<td><?php echo $device['server_ip'];?></td>
 											<td class="text-center"><?php echo $device['device_ip'].':'.$device['device_port'];?></td>
@@ -118,5 +170,5 @@
 			},60000);
 			
 		});
-	</script>
+	</script>  
 </section>
