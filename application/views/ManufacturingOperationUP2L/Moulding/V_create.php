@@ -12,8 +12,7 @@
                                 <div class="text-right hidden-md hidden-sm hidden-xs">
                                     <a class="btn btn-default btn-lg" href="<?php echo site_url('ManufacturingOperationUP2L/Moulding/');?>">
                                         <i class="icon-wrench icon-2x"></i>
-                                        <span ><br /></span>
-                                    </a>                             
+                                        <span ><br /></span>                                    </a>                             
                                 </div>
                             </div>
                         </div>
@@ -52,7 +51,7 @@
                                             <div class="form-group">
                                                 <label class="control-label col-md-4">Production Date</label>
                                                 <div class="col-md-6">
-                                                    <input type="text" name="production_date" class="form-control time-form ajaxOnChange" required="" placeholder="Production Date">
+                                                    <input type="text" name="production_date" class="form-control time-form1 ajaxOnChange" required="" placeholder="Production Date">
                                                 </div>
                                             </div>
                                             <div class="form-group">
@@ -61,6 +60,15 @@
                                                     <div class="col-md-6">
                                                         <small>-- Select production date to generate print code --</small>
                                                     </div>
+                                                </div>
+                                            </div>
+
+                                            <div class="form-group">
+                                                <label for="txtShift" class="control-label col-lg-4">Shift</label>
+                                                <div class="col-lg-6">
+                                                <select class="form-control slcShift select2" id="txtShift" name="txtShift">
+                                                        <!-- <option value=""></option> -->
+                                                </select>    
                                                 </div>
                                             </div>
 
@@ -115,7 +123,7 @@
                                                     <div class="row" style="padding:17px;">
                                                         <label for="txtNilaiOTT" class="control-label col-lg-4">Nilai OTT</label>
                                                         <div class="col-lg-2">
-                                                            <input class="form-control toupper" id="txtNilaiOTT" name="txt_ott[]"  placeholder="Nilai OTT" >
+                                                            <input class="form-control toupper" id="txtNilaiOTT" name="txt_ott[]" placeholder="Nilai OTT">
                                                         </div>
                                                         <label for="txtMouldingQuantityHeader" class="control-label col-lg-2">Lembur</label>
                                                         <div class="col-lg-2">

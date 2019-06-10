@@ -91,6 +91,7 @@ class C_Moulding extends CI_Controller
 				'component_description' => $this->input->post('component_description'),
 				'production_date' => $this->input->post('production_date'),
 				'moulding_quantity' => $this->input->post('txtMouldingQuantityHeader'),
+				'shift' => $this->input->post('txtShift'),
 				'keterangan' => $this->input->post('textarea_ket'),
 				'print_code' => $this->input->post('print_code')
     		);

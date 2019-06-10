@@ -95,9 +95,10 @@ class C_Core extends CI_Controller
 			$data = array(
 				'component_code'		=> $component_code[0],
 				'component_description' => $this->input->post('component_description'),
-				'production_date'		=> date('Y-m-d H:i:s', strtotime($this->input->post('production_date'))),
+				'production_date'		=> $this->input->post('production_date'),
 				'core_quantity'			=> $this->input->post('core_quantity'),
 				'print_code'			=> $this->input->post('print_code'),
+				'shift' 				=> $this->input->post('txtShift'),
 				'employee_id'			=> $employee_id,
 				'created_by'			=> $user_id,
 				'created_date'			=> date('Y-m-d H:i:s')

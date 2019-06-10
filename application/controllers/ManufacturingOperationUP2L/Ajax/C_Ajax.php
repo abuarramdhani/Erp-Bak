@@ -150,6 +150,13 @@ class C_Ajax extends CI_Controller
             </div>';
 	}
 
+	public function getShift()
+	{
+		$tanggal = $_POST['tanggal'];
+		$data = $this->M_ajax->getShift($tanggal);
+		echo json_encode($data);
+	}
+
 	public function getJobData()
 	{
 		$jobCode	= $this->input->post('jobCode');

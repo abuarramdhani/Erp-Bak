@@ -229,4 +229,23 @@ class M_ajax extends CI_Model
       $query = $this->db->get();
       return $query->result_array();
     }
+
+    public function getShift($tanggal)
+    {
+      $query = $this->oracle->query("
+        select BCS.DESCRIPTION
+        from BOM_SHIFT_TIMES bst,
+        BOM_CALENDAR_SHIFTS bcs,
+        bom_shift_dates bsd
+        where bst.CALENDAR_CODE = bcs.CALENDAR_CODE
+        and bst.SHIFT_NUM = bcs.SHIFT_NUM
+        and bcs.CALENDAR_CODE='KHS_CAL'
+        and bst.shift_num = bsd.shift_num
+        and bst.calendar_code=bsd.calendar_code
+        and bsd.SEQ_NUM is not null
+        and bsd.shift_date=trunc(to_date('$tanggal','YYYY/MM/DD'))
+        ORDER BY BCS.SHIFT_NUM asc
+      ");
+      return $query->result_array();
+    }
 }

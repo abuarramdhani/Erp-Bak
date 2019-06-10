@@ -88,9 +88,12 @@ class C_Selep extends CI_Controller
 				'selep_date' => $this->input->post('txtSelepDateHeader'),
 				'component_code' => $this->input->post('txtComponentCodeHeader'),
 				'component_description' => $this->input->post('component_description'),
+				'shift' => $this->input->post('txtShift'),
 				'selep_quantity' => $this->input->post('txtSelepQuantityHeader'),
 				'job_id' => $this->input->post('txtJobIdHeader'),
 				'created_by' => $this->session->userid,
+				'scrap_quantity' => $this->input->post('txtScrapQuantityHeader'),
+				'keterangan' => $this->input->post('txtKeterangan'),
     		);
     		
 			$this->M_selep->setSelep($data);
@@ -167,6 +170,9 @@ class C_Selep extends CI_Controller
 				'selep_quantity' => $this->input->post('txtSelepQuantityHeader',TRUE),
 				'job_id' => $this->input->post('txtJobIdHeader',TRUE),
 				'last_updated_by' => $this->session->userid,
+				'scrap_quantity' => $this->input->post('txtScrapQuantityHeader',TRUE),
+				'keterangan' => $this->input->post('txtKeterangan',TRUE),
+				'shift' => $this->input->post('txtShift', TRUE),
     			);
 
 
@@ -215,8 +221,8 @@ class C_Selep extends CI_Controller
 		$this->M_selep->deleteSelep($plaintext_string);
 
 		redirect(site_url('ManufacturingOperationUP2L/Selep'));
-    }
-
+	}
+	
 
 
 }

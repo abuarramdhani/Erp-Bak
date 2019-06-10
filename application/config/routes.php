@@ -2153,6 +2153,9 @@ $route['ManufacturingOperationUP2L/MasterPersonal/(:any)/(:any)']	= 'Manufacturi
 $route['ManufacturingOperationUP2L/QualityControl']					= 'ManufacturingOperationUP2L/MainMenu/C_QualityControl';
 $route['ManufacturingOperationUP2L/QualityControl/(:any)']			= 'ManufacturingOperationUP2L/MainMenu/C_QualityControl/$1';
 $route['ManufacturingOperationUP2L/QualityControl/(:any)/(:any)']	= 'ManufacturingOperationUP2L/MainMenu/C_QualityControl/$1/$2';
+$route['ManufacturingOperationUP2L/XFIN']							= 'ManufacturingOperationUP2L/MainMenu/C_XFIN';
+$route['ManufacturingOperationUP2L/XFIN/(:any)']					= 'ManufacturingOperationUP2L/MainMenu/C_XFIN/$1';
+$route['ManufacturingOperationUP2L/XFIN/(:any)/(:any)']				= 'ManufacturingOperationUP2L/MainMenu/C_XFIN/$1/$2';
 
 $route['ManufacturingOperationUP2L/Report']							= 'ManufacturingOperationUP2L/MainMenu/C_Report';
 $route['ManufacturingOperationUP2L/Report/(:any)']					= 'ManufacturingOperationUP2L/MainMenu/C_Report/$1';
