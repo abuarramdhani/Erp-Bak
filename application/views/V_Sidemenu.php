@@ -52,7 +52,7 @@
 						foreach($UserResponsibility as $UserResponsibility_item){
 					?>
 						<li class="treeview">
-							<a href="<?= site_url('Responsibility/'.$UserResponsibility_item['user_group_menu_id'])?>"><?= $UserResponsibility_item['user_group_menu_name']?></a>
+							<a href="<?= site_url('Responsibility/'.$UserResponsibility_item['user_group_menu_id'])?>"><i class="fa <?= $UserResponsibility_item['module_image']?>"></i><?= $UserResponsibility_item['user_group_menu_name']?></a>
 						</li>
 					<?php
 						}
