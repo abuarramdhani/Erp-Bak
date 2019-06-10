@@ -50,6 +50,7 @@ class M_moveorder extends CI_Model
 						and wo.ORGANIZATION_ID = we.ORGANIZATION_ID
 						and wo.DEPARTMENT_ID = bd.DEPARTMENT_ID
 						and khs_shift(wdj.SCHEDULED_START_DATE) = bcs.SHIFT_NUM
+						and wdj.status_type = 3
 						AND trunc(wdj.SCHEDULED_START_DATE) = '$date' --'12-NOV-18'    --parameter
 						$shift       --parameter
 						and bd.DEPARTMENT_CLASS_CODE = '$dept'         --parameter
