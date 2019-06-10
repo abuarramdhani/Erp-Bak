@@ -94,25 +94,25 @@
                 ?>
 
             <tr class="<?php echo $class ?>" style="color: <?php echo $color ?>; ">
-                <td>
+                <td title="No">
                     <?php echo $num ?>
                 </td>
-                <td>
+                <td title="ID">
                     <?php echo $q['HEADER_ID'] ?>
                 </td>
-                <td>
+                <td title="Order Number">
                     <?php echo $q['ORDER_NUMBER'] ?> 
                 </td>
-                <td>
+                <td title="DPP">
                     <?php echo $q['DPP'] ?> 
                 </td>
-                <td>
+                <td title="Max Amount">
                     <?php echo $q['MAX_AMOUNT'] ?> 
                 </td>
-                <td style="font-weight: <?php echo $fontstat ?>;text-align:center;">
+                <td title="Selisih" style="font-weight: <?php echo $fontstat ?>;text-align:center;">
                     <?php echo $selisih ?>
                 </td>
-                <td align="center" >
+                <td  title="Keterangan" align="center" >
                     <button type="button" class="btn <?php echo $button ?>" 
                         style="font-weight: <?php echo $fontstat ?>;"
                         data-toggle="modal" 
