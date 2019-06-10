@@ -94,7 +94,7 @@
 	<script src="<?php echo base_url('assets/js/customAPD.js');?>" type="text/javascript"></script>
 	<script src="<?php echo base_url('assets/js/customAR.js');?>" type="text/javascript"></script>
 	<script src="<?php echo base_url('assets/js/customCR.js');?>" type="text/javascript"></script>
-	<script src="<?php echo base_url('assets/js/customMO.js');?>" type="text/javascript"></script>
+	<!-- <script src="<?php echo base_url('assets/js/customMO.js');?>" type="text/javascript"></script> -->
 	<script src="<?php echo base_url('assets/js/customPM.js');?>" type="text/javascript"></script>
 	<script src="<?php echo base_url('assets/js/customMK.js');?>" type="text/javascript"></script>
 	<script src="<?php echo base_url('assets/js/customPRS.js');?>" type="text/javascript"></script>

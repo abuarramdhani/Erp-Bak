@@ -53,10 +53,22 @@ function getCompDescMO(th) {
   $('input[name="component_description"]').val(desc);
 }
 
+function kurang(){
+        var qtyScrap = Number($('#txtScrapQuantityHeader').val());
+        var qtySelep = Number($('#txtSelepQuantityHeader').val());
+        if (qtySelep < qtyScrap) {
+            alert("Warning!", "Nilai Selep lebih kecil", "warning");
+            $('#txtScrapQuantityHeader').val('').trigger('change');
+            $('#txtSelepQuantityHeader').val('').trigger('change');
+        }
+}
 
 
 $(window).load(function() {
 
+    $('.slcShift').select2({
+        placeholder:"Shift",
+    });
 
     $('.jsSlcComp').select2({
         allowClear: true,
@@ -194,28 +206,62 @@ $(window).load(function() {
                 }
             });
 
-    $('.time-form.ajaxOnChange').on('apply.daterangepicker', function(ev, picker) {
+    $('.time-form1.ajaxOnChange').datepicker({
+        autoclose: true,
+        format:'yyyy/mm/dd' 
+        
+    });
+
+    $('.time-form1.ajaxOnChange').on('change', function(ev, picker) {
+        $('.slcShift').val('').trigger('change');
+        if ($('.time-form1').val() == '' || $('.time-form1').val() == null) {
+            $('div#print_code_area').html('<div class="col-md-6">'
+            +'<small>-- Select production date to generate print code --</small>'
+            +'</div>');
+        }
+        else{
+            $.ajax({
+                url:baseurl+'ManufacturingOperationUP2L/Ajax/getPrintCode',
+                type:'post',
+                data:{
+                    tanggal: $('.time-form1.ajaxOnChange').val()
+                },
+                beforeSend: function() {
+                    $('div#print_code_area').html('<img src="'+baseurl+'assets/img/gif/loading5.gif" style="width: auto; padding-left: 25px;">');
+                },
+                success:function(results){
+                    $('div#print_code_area').html(results);
+                },
+                error:function(XMLHttpRequest, textStatus, errorThrown){
+                    $.toaster(textStatus+' | '+errorThrown, name, 'danger');
+                }
+            });
+        }
+
+        //SHIFT
         $.ajax({
-            url:baseurl+'ManufacturingOperationUP2L/Ajax/getPrintCode',
-            type:'post',
-            data:{
-                tanggal: picker.startDate.format('YYYY/MM/DD')
+            type: "POST",
+            url: baseurl+'ManufacturingOperationUP2L/Ajax/getShift',
+            data: {
+                tanggal : $('.time-form1.ajaxOnChange').val()
             },
-            beforeSend: function() {
-                $('div#print_code_area').html('<img src="'+baseurl+'assets/img/gif/loading5.gif" style="width: auto; padding-left: 25px;">');
-            },
-            success:function(results){
-                $('div#print_code_area').html(results);
-            },
-            error:function(XMLHttpRequest, textStatus, errorThrown){
-                $.toaster(textStatus+' | '+errorThrown, name, 'danger');
+            dataType: "JSON",
+            success: function (response) {
+                //console.log(response);
+                var html = '';
+                html += '<option></option>';
+                for (var i = 0; i < response.length; i++) {
+                    if (i == 0) {
+                        html += '<option value="'+response[i]['DESCRIPTION']+'">'+response[i]['DESCRIPTION']+'</option>';
+                    }
+                    else{
+                        html += '<option value="'+response[i]['DESCRIPTION']+'">'+response[i]['DESCRIPTION']+'</option>';
+                    }
+                }
+                $('.slcShift').html(html);
             }
         });
-    });
-    $('.time-form.ajaxOnChange').on('cancel.daterangepicker', function(ev, picker) {
-        $('div#print_code_area').html('<div class="col-md-6">'
-            +'<small>-- Select production date to generate print code --</small>'
-        +'</div>');
+        
     });
 });
 

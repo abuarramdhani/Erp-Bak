@@ -152,6 +152,7 @@ class C_Mixing extends CI_Controller
 				'component_code' => $this->input->post('cmbComponentCodeHeader',TRUE),
 				'component_description' => $this->input->post('txtComponentDescriptionHeader',TRUE),
 				'production_date' => $this->input->post('txtProductionDateHeader',TRUE),
+				'shift' => $this->input->post('txtShift'),
 				'mixing_quantity' => $this->input->post('txtMixingQuantityHeader',TRUE),
 				'job_id' => $this->input->post('txtJobIdHeader',TRUE),
 				'last_updated_by' => $this->session->userid,
