@@ -109,15 +109,16 @@
 				$org_id = $UserMenu[0]['org_id'];
 			}
 		?>
-		
-		
 		<header class="main-header" style="box-shadow: 0 4px 9px -3px #367da6;">
 		<input type="hidden" value="<?=$org_id ?>" name="txtOrgId" id="txtOrgId"/>
 			<!-- Logo -->
-			<a href="<?php echo site_url();?>" class="logo hidden-xs hidden-sm">
-                    <!--<img src="<?php echo base_url('assets/img/header3.png');?>"   class="imgheader" alt="" />-->
-					 <span class="logo-lg" ><i class="fa fa-building-o" aria-hidden="true"></i> <b>QUICK ERP</b></span>
-			</a>
+
+			<a href="<?php echo site_url();?>" class="logo">
+		      <!-- mini logo for sidebar mini 50x50 pixels -->
+		      <span class="logo-mini"><b>Q</b>ERP</span>
+		      <!-- logo for regular state and mobile devices -->
+		      <span class="logo-lg"><b>Quick</b>ERP</span>
+		    </a>
 			<!-- Header Navbar: style can be found in header.less -->
 			  <!-- Sidebar toggle button-->
 			<nav class="navbar navbar-static-top" role="navigation">
@@ -135,6 +136,57 @@
                     <!--ALERTS SECTION -->
                     
                     <!-- END ALERTS SECTION -->
+
+                    <li class="dropdown user user-menu">
+			            <a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
+			            	<?php
+							$file 			= 	"http://quick.com/aplikasi/photo/".$this->session->user.'.'.'jpg';
+							$file_headers 	= 	@get_headers($file);
+							if(!$file_headers || substr($file_headers[0], strpos($file_headers[0], 'Not Found'), 9) == 'Not Found'){
+								$file 			= 	"http://quick.com/aplikasi/photo/".$this->session->user.'.'.'JPG';
+								$file_headers 	= 	@get_headers($file);
+								if(!$file_headers || substr($file_headers[0], strpos($file_headers[0], 'Not Found'), 9) == 'Not Found'){
+									$ekstensi 	= 	'Not Found';
+								}else{
+									$ekstensi 	= 	'JPG';
+								}
+							}else{
+								$ekstensi 	= 	"jpg";
+							}
+
+							if($ekstensi=='jpg' || $ekstensi=='JPG'){
+							 $lokasifoto="http://quick.com/aplikasi/photo/".$this->session->user.".".$ekstensi;
+							}else{
+							 $lokasifoto=base_url('assets/theme/img/user.png');
+							}
+			              	?>
+			              <img src="<?php echo $lokasifoto;?>" class="user-image" alt="User Image">
+			              <span class="hidden-xs"><?php echo $this->session->employee;?></span>
+			            </a>
+			            <ul class="dropdown-menu">
+			              <!-- User image -->
+			              <li class="user-header">
+			                <img src="<?php echo $lokasifoto;?>" class="img-circle" style="height: auto;" alt="User Image">
+
+			                <p>
+			                  <?php echo $this->session->user." - ".$this->session->employee;?>
+			                </p>
+			              </li>
+			              <!-- Menu Body -->
+			              <!-- Menu Footer-->
+			              <li class="user-footer">
+			                <div class="pull-left">
+			                  <a href="<?php echo base_url('ChangePassword');?>" class="btn btn-default btn-flat">Chg Password</a>
+			                </div>
+			                <div class="pull-left">
+			                  <a href="#" class="btn btn-default btn-flat"  data-toggle="tooltip" data-placement="top" title="Menu Dalam Tahap Pengembangan">Profile</a>
+			                </div>
+			                <div class="pull-left">
+			                  <a href="<?php echo site_url('logout');?>" class="btn btn-default btn-flat">Log out</a>
+			                </div>
+			              </li>
+			            </ul>
+			          </li>
 
                     <!--ADMIN SETTINGS SECTIONS -->
 					<?php	$actual_link = "http://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]";
