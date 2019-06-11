@@ -51,7 +51,7 @@ class C_Order extends CI_Controller {
 		$data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id);
 
 		$data['regen'] = $this->regen();
-		$data['item'] = $this->M_Order->getItem();
+		$data['item'] = $this->M_order->getItem();
 		$data['reffBuilder'] = $this->reffBuilder();
 
 
@@ -65,7 +65,7 @@ class C_Order extends CI_Controller {
 	public function getDeskripsi()
 	{
     	$param = $this->input->post('param');
-    	$data = $this->M_Order->getDeskripsi($param);
+    	$data = $this->M_order->getDeskripsi($param);
     	echo json_encode($data[0]['DESCRIPTION']);
 	}
 
@@ -80,7 +80,7 @@ class C_Order extends CI_Controller {
 		$hari = date('d');
 
 		$no_order = $tahun.$bulan.$hari.str_pad($back, 3, "0", STR_PAD_LEFT);
-		$check = $this->M_Order->cekNomor($no_order);
+		$check = $this->M_order->cekNomor($no_order);
 		
 		if (!empty($check)) {
 			$back++;
@@ -102,7 +102,7 @@ class C_Order extends CI_Controller {
 		$hari = date('d');
 
 		$reff_number = $bulan.$hari.$tahun.str_pad($back, 3, "1", STR_PAD_LEFT); 
-		$check = $this->M_Order->cekOrderNumber($reff_number);
+		$check = $this->M_order->cekOrderNumber($reff_number);
 		
 		if (!empty($check)) {
 			$back++;
@@ -123,23 +123,23 @@ class C_Order extends CI_Controller {
 
 		//$getQuantityActual = $this->M_Order->getQuantityActual($item,$qty);
 		
-		$getAvailability = $this->M_Order->getAvailability($no_order);
+		$getAvailability = $this->M_order->getAvailability($no_order);
 
 		//$data = $this->M_Order->Insert($no_order,$item,$deskripsi,$qty,$tgl_order,$reff_number);
 
 		if ($getAvailability > 0) {
 			redirect(base_url('OrderSharpening/Order/'));
 		} else {
-			$data = $this->M_Order->Insert($no_order,$item,$deskripsi,$qty,$tgl_order,$reff_number);
+			$data = $this->M_order->Insert($no_order,$item,$deskripsi,$qty,$tgl_order,$reff_number);
 		};
 
 		//$data = $this->M_Order->Insert($no_order,$item,$deskripsi,$qty,$tgl_order,$reff_number);
 
 		//-----------------------START CODE----------------------------------------
 
-		$invID1 	= $this->M_Order->getInventoryID($item); 	//------------ GET INVENTORY ITEM ID
+		$invID1 	= $this->M_order->getInventoryID($item); 	//------------ GET INVENTORY ITEM ID
 		$invID = $invID1['INVENTORY_ITEM_ID'];
-		$uom1 = $this->M_Order->getUom($item); 					//------------ GET UOM
+		$uom1 = $this->M_order->getUom($item); 					//------------ GET UOM
 		$uom = $uom1['PRIMARY_UOM_CODE'];
 		$ip_address =  $this->input->ip_address(); 				//------------ GET IP ADDRESS
 
@@ -163,10 +163,10 @@ class C_Order extends CI_Controller {
 		//-------> Bisa pakai if atau Value		
 
 		//-------> Harus pakai createTemp, soalnya dipakai di API nya
-		$this->M_Order->createTemp($data);											//-------> create TEMP
+		$this->M_order->createTemp($data);											//-------> create TEMP
 		$i++;
-		$this->M_Order->createMO($username,$ip_address,$transTypeID,$reff_number);	//-------> createMo
-		$this->M_Order->deleteTemp($ip_address,$reff_number);						//-------> deleteMO
+		$this->M_order->createMO($username,$ip_address,$transTypeID,$reff_number);	//-------> createMo
+		$this->M_order->deleteTemp($ip_address,$reff_number);						//-------> deleteMO
 
 		//$req_number = $this->M_Order->getRequestNumber($reff_number);
 		// echo "<pre>"; print_r($data); print_r($req_number); exit();
@@ -188,8 +188,8 @@ class C_Order extends CI_Controller {
 		//$param = $this->input->post('no_order');
 		// $data = $this->M_Order->getReffNumber($nomor);
 		// $dataGet = $data['reff_number'];
-		$transNumber = $this->M_Order->getTranNumber($nomor);
-		$status = $this->M_Order->getStatusTran($transNumber['REQUEST_NUMBER']);
+		$transNumber = $this->M_order->getTranNumber($nomor);
+		$status = $this->M_order->getStatusTran($transNumber['REQUEST_NUMBER']);
 		$updateStatus = array();
 
 		switch ($status['LINE_STATUS']) {
@@ -210,7 +210,7 @@ class C_Order extends CI_Controller {
 	
 	public function Report($no_order)
 	{
-    	$data['show'] = $this->M_Order->cekNomor($no_order);			//-----> get value from postgree by no_order
+    	$data['show'] = $this->M_order->cekNomor($no_order);			//-----> get value from postgree by no_order
     	$data['show'][0]['REQUEST_NUMBER'] = $this->getTranNumber($data['show'][0]['reff_number']);
 
     	$tanggal = date_format(date_create(date('d-M-y')),'l, d F Y');
@@ -253,7 +253,7 @@ class C_Order extends CI_Controller {
 
 	public function getAllData()
 	{
-		$data = $this->M_Order->getAllData();
+		$data = $this->M_order->getAllData();
 		$result = array();
 
 		//Menampilkan Array dalam Format JSON
@@ -262,24 +262,24 @@ class C_Order extends CI_Controller {
 
 	public function getDetailData($no_order)
 	{
-		$data = $this->M_Order->cekNomor($no_order);
+		$data = $this->M_order->cekNomor($no_order);
 		echo json_encode(array('result'=>$data));
 	}
 
 	public function transactMo($nomor) //-------------------> Masih Beta 
 	{
-		$transact = $this->M_Order->getTransact($nomor);
+		$transact = $this->M_order->getTransact($nomor);
 		$data = array();
 		foreach ($transact as $key) {
 			$data['REQUEST_NUMBER'] = $key['REQUEST_NUMBER']; 
 			$data['INVENTORY_ITEM_ID'] = $key['INVENTORY_ITEM_ID']; 
 		};
 
-		$status = $this->M_Order->getStatusTran($data['REQUEST_NUMBER']);
+		$status = $this->M_order->getStatusTran($data['REQUEST_NUMBER']);
 		if ($status['LINE_STATUS'] == 5) {
 			$message = "Move Order selesai ditransact";
 		} else {
-			$this->M_Order->transactMO($data['REQUEST_NUMBER'],$data['INVENTORY_ITEM_ID']);
+			$this->M_order->transactMO($data['REQUEST_NUMBER'],$data['INVENTORY_ITEM_ID']);
 			$message = "Move Order selesai ditransact";
 		}
 		
@@ -290,7 +290,7 @@ class C_Order extends CI_Controller {
 
 	public function hapusData($no_order)
 	{
-		$data = $this->M_Order->hapusData($no_order);
+		$data = $this->M_order->hapusData($no_order);
 		if($data){
 			echo "sukses dihapus";
 		} else {
