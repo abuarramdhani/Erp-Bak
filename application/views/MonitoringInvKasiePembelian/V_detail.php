@@ -77,9 +77,7 @@
 									          	</td>
 												<td><?php echo date('d-M-Y',strtotime($b['ACTION_DATE'])) ?></td>
 												<td>
-												<?php if($b['FINANCE_STATUS'] == 1 and $b['STATUS'] == 2){?>
-													<button class="statusInvoice btn btn-xs btn-success" style="cursor: none" value="<?php echo $b['STATUS']?>" inv-id="<?php echo $b['INVOICE_ID']?>">Done</button>
-												<?php }elseif($b['STATUS'] == 2){ ?>
+												<?php if($b['STATUS'] == 2){ ?>
 													<button class="statusInvoice checked btn btn-xs btn-success" style="cursor: none" value="<?php echo $b['STATUS']?>" inv-id="<?php echo $b['INVOICE_ID']?>">Approve</button>
 												<?php }elseif($b['STATUS'] == 3){ ?>
 													<button class="statusInvoice checked btn btn-xs btn-danger" style="cursor: none" value="<?php echo $b['STATUS']?>" inv-id="<?php echo $b['INVOICE_ID']?>">Reject - <?php $b['REASON']?></button>
