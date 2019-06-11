@@ -2535,6 +2535,11 @@ $route['OrderSharpening/Order/(:any)/(:any)'] 		= 'OrderSharpening/C_Order/$1/$2
 $route['OrderSharpening/Order/Insert'] 		= 'OrderSharpening/C_Order/Insert';
 $route['OrderSharpening/Order/getDeskripsi'] 		= 'OrderSharpening/C_Order/getDeskripsi';
 $route['OrderSharpening/Report/(:any)'] 		= 'OrderSharpening/C_Order/Report/$1';
+// ------------------------------------------------- Order Sharpening Android---------------------------------------------//
+$route['OrderSharpening/Order/getAllData'] 		= 'OrderSharpening/C_Order/getAllData';
+$route['OrderSharpening/Order/getDetailData/(:any)'] 		= 'OrderSharpening/C_Order/getDetailData/$1';
+$route['OrderSharpening/transactMo/(:any)'] 		= 'OrderSharpening/C_Order/transactMo/$1';
+$route['OrderSharpening/Order/hapusData/(:any)'] 		= 'OrderSharpening/C_Order/hapusData/$1';
 
 // ------------------------------------------------- Aplikasi Hiwing Monitoring ---------------------------------------------//
 $route['HiwingMonitoring'] 		= 'HiwingMonitoring/C_Index';
