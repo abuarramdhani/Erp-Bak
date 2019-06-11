@@ -24,8 +24,7 @@ class M_kasiepembelian extends CI_Model {
 		$sql = "SELECT distinct batch_number batch_number, MAX (to_date(last_admin_date)) submited_date,
                 last_finance_invoice_status, source
                 FROM khs_ap_monitoring_invoice 
-                WHERE (last_purchasing_invoice_status = 1
-                OR last_purchasing_invoice_status = 2)
+                WHERE last_purchasing_invoice_status = 1
                 AND LAST_FINANCE_INVOICE_STATUS=0
                 $login
                 GROUP BY batch_number, last_finance_invoice_status, source
