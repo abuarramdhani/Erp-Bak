@@ -21,15 +21,18 @@ class M_kasiepembelian extends CI_Model {
 	public function showListSubmittedForChecking($login){
     $this->db->cache_on();
 		$erp_db = $this->load->database('oracle',true);
-		$sql = "SELECT distinct batch_number batch_number, to_date(last_admin_date) submited_date,
+		$sql = "SELECT distinct batch_number batch_number, MAX (to_date(last_admin_date)) submited_date,
                 last_finance_invoice_status, source
                 FROM khs_ap_monitoring_invoice 
                 WHERE (last_purchasing_invoice_status = 1
                 OR last_purchasing_invoice_status = 2)
                 AND LAST_FINANCE_INVOICE_STATUS=0
                 $login
+                GROUP BY batch_number, last_finance_invoice_status, source
                 ORDER BY submited_date";
 		$run = $erp_db->query($sql);
+    // echo $sql;
+    // exit();
 		return $run->result_array();
 	}
 
@@ -265,6 +268,9 @@ class M_kasiepembelian extends CI_Model {
                 $login
                 ORDER BY submited_date";
         $run = $erp_db->query($sql);
+        // echo "<pre>";
+        // print_r($sql);
+        // exit();
         return $run->result_array();
     }
 
