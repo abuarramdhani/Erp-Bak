@@ -2,11 +2,11 @@
 Defined('BASEPATH') or exit('No direct script access allowed');
 
 /**
- * 
+ *
  */
 class M_limbahkelola extends CI_Model
 {
-	
+
 	public function __construct()
 	{
 		parent::__construct();
@@ -19,8 +19,8 @@ class M_limbahkelola extends CI_Model
                         cast(limkir.tanggal_kirim as time) waktu,
                         limjen.jenis_limbah,
                         (select sect.section_name from er.er_section sect where left(sect.section_code,7) = limkir.kodesie_kirim and sect.section_code like '%00') seksi,
-                        concat(limkir.jumlah_kirim, ' ',(select limbah_satuan 
-                        from ga.ga_limbah_satuan limsat 
+                        concat(limkir.jumlah_kirim, ' ',(select limbah_satuan
+                        from ga.ga_limbah_satuan limsat
                         where limsat.id_jenis_limbah = limjen.id_jenis_limbah)) jumlah,
                         limkir.lokasi_kerja,
                         limkir.berat_kirim,
@@ -41,8 +41,8 @@ class M_limbahkelola extends CI_Model
                         cast(limkir.tanggal_kirim as time) waktu,
                         limjen.jenis_limbah,
                         (select sect.section_name from er.er_section sect where left(sect.section_code,7) = limkir.kodesie_kirim and sect.section_code like '%00') seksi,
-                        concat(limkir.jumlah_kirim, ' ',(select limbah_satuan 
-                        from ga.ga_limbah_satuan limsat 
+                        concat(limkir.jumlah_kirim, ' ',(select limbah_satuan
+                        from ga.ga_limbah_satuan limsat
                         where limsat.id_jenis_limbah = limjen.id_jenis_limbah)) jumlah,
                         limkir.lokasi_kerja,
                         limkir.berat_kirim,
@@ -88,8 +88,8 @@ class M_limbahkelola extends CI_Model
         $hasil = $this->db->query($query);
         $userseksi = $hasil->result_array();
         $user = $userseksi['0']['created_by'];
-        
-        $query = "select email_kirim,seksi_kirim from ga.ga_limbah_kirim_email where user_seksi = '$user'"; 
+
+        $query = "select email_kirim,seksi_kirim from ga.ga_limbah_kirim_email where user_seksi = '$user'";
         $result = $this->db->query($query);
 
         return $result->result_array();
@@ -98,13 +98,13 @@ class M_limbahkelola extends CI_Model
     public function getLimKirimMin($id){
         $query = "select limjen.jenis_limbah,
                     cast(limkir.tanggal_kirim as date) tanggal,
-                    (select sect.section_name from er.er_section sect where left(sect.section_code,7) = limkir.kodesie_kirim and sect.section_code like '%00') seksi
+                    (select sect.section_name from er.er_section sect where left(sect.section_code,7) = limkir.kodesie_kirim and sect.section_code like '%00') seksi,
                     (select concat(location_code,' - ',location_name) from er.er_location where location_code = limkir.lokasi_kerja) noind_location,
                     concat(limkir.jumlah_kirim,' ',limsat.limbah_satuan) jumlah,
                     limkir.lokasi_kerja,
-                    limkir.berat_kirim berat 
+                    limkir.berat_kirim berat
                     from ga.ga_limbah_kirim limkir
-                    inner join ga.ga_limbah_jenis limjen on limjen.id_jenis_limbah = limkir.id_jenis_limbah 
+                    inner join ga.ga_limbah_jenis limjen on limjen.id_jenis_limbah = limkir.id_jenis_limbah
                     inner join ga.ga_limbah_satuan limsat on limsat.id_jenis_limbah = limjen.id_jenis_limbah
                     where id_kirim = '$id';";
         $result = $this->db->query($query);
