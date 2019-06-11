@@ -12,7 +12,7 @@ class C_Order extends CI_Controller {
 		$this->load->library('session');
 		//module from CI
 		$this->load->model('M_index');
-		$this->load->model('OrderSharpening/M_Order');
+		$this->load->model('OrderSharpening/M_order');
 		$this->load->model('SystemAdministration/MainMenu/M_user');
 		$this->load->library('form_validation');
 		  
