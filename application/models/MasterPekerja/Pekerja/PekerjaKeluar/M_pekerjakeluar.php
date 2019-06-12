@@ -22,6 +22,15 @@ class M_pekerjakeluar extends CI_Model {
 		$query = $this->personalia->query($data);
 		return $query->result_array();
 	}
+
+	public function getKontakPekerja($kontak)
+	{
+		$data = "select internal_mail,telkomsel_mygroup,external_mail,pidgin_account from er.er_employee_all";
+		$query = $this->erp->query($data);
+		return $query->result_array();
+
+	}
+
 	public function dataPekerja($noind,$keluar)
 	{
 		$this->personalia->where('noind', $noind);
@@ -29,6 +38,14 @@ class M_pekerjakeluar extends CI_Model {
 		$query = $this->personalia->get('hrd_khs.tpribadi');
 		return $query->result_array();
 	}
+
+	public function kontakPekerja($noind)
+	{
+		$this->erp->where('employee_code', $noind);
+		$query = $this->erp->get('er.er_employee_all');
+		return $query->result_array();
+	}
+
 	public function dataSeksi($kodesie)
 	{
 		$this->personalia->where('kodesie', $kodesie);
@@ -41,6 +58,14 @@ class M_pekerjakeluar extends CI_Model {
 		$this->personalia->update('hrd_khs.tpribadi',$data);
 		return;
 	}
+
+	public function updateDataPekerjaa($mail,$noind)
+	{
+		$this->erp->where('employee_code', $noind);
+		$this->erp->update('er.er_employee_all',$mail);
+		return;
+	}
+
 	public function historyUpdatePekerja($history)
 	{
 		$this->personalia->insert('hrd_khs.tpribadi_log', $history);

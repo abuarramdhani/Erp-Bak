@@ -275,6 +275,40 @@
 								<input type="text" name="txt_departemenPekerja" id="PK_txt_departemenPekerja" class="form-control" value="<?php echo $data['dept'] ?>" readonly="">
 							</div>													
 						</div>
+						
+						<div class="row" style="margin-top: 10px;">
+							<div class="col-lg-2">
+								<label for="PK_txt_internalmail">Internal Mail</label>
+							</div>
+							<div class="col-lg-10">
+								<input type="text" name="txt_internalmail" id="PK_txt_internalmail" class="form-control" 
+								value="<?php echo $data['internal_mail'] ?>" >
+							</div>													
+						</div>
+						<div class="row" style="margin-top: 10px;">
+							<div class="col-lg-2">
+								<label for="PK_txt_externalmail">External Mail </label>
+							</div>
+							<div class="col-lg-10">
+								<input type="text" name="txt_externalmail" id="PK_txt_externalmail" class="form-control" value="<?php echo $data['external_mail'] ?>">
+							</div>													
+						</div>
+						<div class="row" style="margin-top: 10px;">
+							<div class="col-lg-2">
+								<label for="PK_txt_telkomselmygroup">Telkomsel Mygroup </label>
+							</div>
+							<div class="col-lg-10">
+								<input type="text" name="txt_telkomselmygroup" id="PK_txt_telkomselmygroup" class="form-control" value="<?php echo $data['telkomsel_mygroup'] ?>">
+							</div>													
+						</div>
+						<div class="row" style="margin-top: 10px;">
+							<div class="col-lg-2">
+								<label for="PK_txt_pidginaccount">Pidgin Account </label>
+							</div>
+							<div class="col-lg-10">
+								<input type="text" name="txt_pidginaccount" id="PK_txt_pidginaccount" class="form-control" value="<?php echo $data['pidgin_account'] ?>">
+							</div>													
+						</div>
 						<div class="row" style="margin-top: 10px;">
 							<div class="col-lg-2">
 								<label for="PK_txt_tglkeluar">Tanggal Keluar </label>
