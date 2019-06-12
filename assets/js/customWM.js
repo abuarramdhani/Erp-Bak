@@ -1,6 +1,6 @@
 //limbah B3
 
-$(function() { 
+$(function() {
 	$('.dataTable-limbah').DataTable( {
       dom: 'frtp',
     });
@@ -23,7 +23,7 @@ $(function() {
 		"autoclose": true,
 		"todayHiglight": true,
 		"format": 'dd M yyyy'
-  	});	
+  	});
 
   	$('#txtTanggalTransaksiHeader').datepicker({
 		"autoclose": true,
@@ -51,7 +51,7 @@ $(function() {
       "format":'dd MM yyyy'
     });
 
-  	$("#periode").daterangepicker({  
+  	$("#periode").daterangepicker({
       		"autoclose": true,
     		"todayHiglight": true,
     		locale: {
@@ -121,7 +121,7 @@ $('#cmbJenisLimbahKeluarHeader').change(function(){
 //date interval for maks penyimpanan
 $(document).on('change', '#txtTanggalTransaksiHeader', function(){
   var tgl = $(this).val();
-  
+
   if (tgl) {
     var date = new Date(tgl);
     var newdate = new Date(date);
@@ -292,7 +292,7 @@ $(document).on('click','#btnCloseSimple',function(e){
 //       }), 100 ;
 // });
 
-  $('#ProsesSimpleExport').submit(function(e){ 
+  $('#ProsesSimpleExport').submit(function(e){
     e.preventDefault();
     this.submit()
     setTimeout(function(){
@@ -300,7 +300,7 @@ $(document).on('click','#btnCloseSimple',function(e){
     }), 500 ;
   });
 
-  
+
 
   $(document).on('ready',function(){
     if (typeof idJenisLimbahSimpleDetail === 'undefined') {
@@ -335,7 +335,7 @@ $(document).on('click','#btnCloseSimple',function(e){
     // $('.dataTable-limbahKelola').DataTable();
     $('.dataTable-limbahKelola tfoot th').each(function(){
       var title = $(this).text();
-      $(this).html('<input type="text" placeholder="search '+title+'"></input>');
+      $(this).html('<input type="text" style="width:100%;" placeholder="search '+title+'"></input>');
     });
       var tableLimbahKelola = $('.dataTable-limbahKelola').DataTable();
       tableLimbahKelola.columns().every(function(){
@@ -346,6 +346,6 @@ $(document).on('click','#btnCloseSimple',function(e){
               .draw();
         });
       });
-    
-   
+
+
   });
