@@ -332,10 +332,14 @@ $(document).on('click','#btnCloseSimple',function(e){
   });
 
   $(document).ready(function(){
+		$('.dataTable-limbahKelola').DataTable({
+			"scrollX": false,
+		});
+
     // $('.dataTable-limbahKelola').DataTable();
     $('.dataTable-limbahKelola tfoot th').each(function(){
       var title = $(this).text();
-      $(this).html('<input type="text" style="width:100%;" placeholder="search '+title+'"></input>');
+      $(this).html('<input type="text" placeholder="search '+title+'" style="width:100%;"></input>');
     });
       var tableLimbahKelola = $('.dataTable-limbahKelola').DataTable();
       tableLimbahKelola.columns().every(function(){
