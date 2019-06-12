@@ -25,7 +25,7 @@
 												<div class="col-md-6">
 													<table>
 														<tr>
-															<td><label>Nama Vendor</label></td>
+															<td><br><label>Nama Vendor </label></td>
 															<td>
 																<select id="nama_vendor"  name="nama_vendor" class="form-control select2" style="width: 100%">
 																<option></option>
@@ -58,9 +58,17 @@
 															</td>
 														</tr>
 														<tr>
-															<td><label>Tanggal Invoice</label></td>
+															<td><label>Tanggal Awal</label></td>
 															<td>
-																<input type="text" class="form-control invoice_date" name="invoice_date" id="invoice_date" style="margin: 5px" size="30">
+																<!-- tambahkan id sesuai ajax -->
+																<input type="text" class="form-control invoice_date" name="invoice_date_from"  id="invoice_date_from" style="margin: 5px" size="15">
+															</td>
+														</tr>
+														<tr>
+															<td><label>Tanggal Akhir</label></td>
+															<td>
+																<!-- tambahkan id sesuai ajax -->
+																<input type="text" class="form-control invoice_date" name="invoice_date_to" id="invoice_date_to" style="margin: 5px" size="15">
 															</td>
 														</tr>
 													</table>

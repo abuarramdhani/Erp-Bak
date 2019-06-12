@@ -93,7 +93,10 @@ class C_trackingInvoice extends CI_Controller{
 		$po_number = $this->input->post('po_number');
 		$any_keyword = $this->input->post('any_keyword');
 		$invoice_number = $this->input->post('invoice_number');
-		$invoice_date = $this->input->post('invoice_date');
+		$invoice_date_to = $this->input->post('invoice_date_to');
+		$invoice_date_from = $this->input->post('invoice_date_from');
+		$action_date = $this->input->post('action_date');
+		// $action_status = $this->input->post('')
 
 		$param_inv = '';
 
@@ -111,10 +114,15 @@ class C_trackingInvoice extends CI_Controller{
 			if ($param_inv=='') {$param_inv.='AND (';} else{$param_inv.=' AND ';}
 			$param_inv .= "ami.invoice_number LIKE '%$invoice_number%'";
 		}
-
-		if ($invoice_date != '' OR $invoice_date != NULL) {
+		// (fitur search tanggal) awal-tanggal akhir
+		if (($invoice_date_from != '' OR $invoice_date_from != NULL) && ($invoice_date_to != '' OR $invoice_date_to != NULL)){    
+			if ($param_inv=='') {$param_inv.='AND (';} else{$param_inv.=' AND ';}    
+			$param_inv .= "trunc(ami.invoice_date) BETWEEN to_date('$invoice_date_from','dd/mm/yyyy') and to_date('$invoice_date_to', 'dd/mm/yyyy')";
+		} 
+		
+		if ($action_date != '' OR $action_date != NULL) {
 			if ($param_inv=='') {$param_inv.='AND (';} else{$param_inv.=' AND ';}
-			$param_inv .= "ami.invoice_date LIKE to_date('$invoice_date','dd/mm/yyyy')";
+			$param_inv .= "khs.action_date LIKE '%$action_date%'";
 		}
 
 		if ($any_keyword != '' OR $any_keyword != NULL) {
@@ -139,7 +147,7 @@ class C_trackingInvoice extends CI_Controller{
 			$tabel = $this->M_trackingInvoice->searchMonitoringInvoice($param_inv,$param_akses);
 		}
 
-		// print_r($tabel);exit;
+		//print_r($tabel);exit;
 		$status = array();
 		foreach ($tabel as $tb => $value) {
 			$po_detail = $value['PO_DETAIL'];
@@ -175,11 +183,12 @@ class C_trackingInvoice extends CI_Controller{
 
 			}	
 		}
-
+		
+		// $data['historyinvoice'] = $this->M_trackingInvoice->detailHistoryInvoice($invoice_id);
 		$data['invoice'] = $tabel;
 		$data['status'] = $status;
+
 		$return = $this->load->view('TrackingInvoice/V_tableSearch',$data,TRUE);
-		$this->output->cache(1);
 		
 		echo ($return);
 	}

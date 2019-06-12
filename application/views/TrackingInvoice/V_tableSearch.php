@@ -6,6 +6,8 @@
 			<td class="text-center">Vendor name</td>
 			<td class="text-center">Invoice Number</td>
 			<td class="text-center">Invoice Date</td>
+			<td class="text-center">Action Date</td>
+			<td class="text-center">Action Status</td>
 			<td class="text-center">Tax Invoice Number</td>
 			<td class="text-center">Invoice Amount</td>
 			<td class="text-center" title="Nomor PO - Line Num - LPPB Num - Status LPPB">PO Detail</td>
@@ -25,6 +27,8 @@
 			<td><?php echo $i['VENDOR_NAME']?></td>
 			<td><?php echo $i['INVOICE_NUMBER']?></td>
 			<td><?php echo $i['INVOICE_DATE']?></td>
+			<td><?php echo $i['ACTION_DATE']?></td>
+			<td><?php echo $i['STATUS']?></td>
 			<td><?php echo $i['TAX_INVOICE_NUMBER']?></td>
 			<td><?php echo 'Rp. '. number_format(round($i['INVOICE_AMOUNT']),0,'.','.').',00-';
 			?></td>
@@ -35,5 +39,10 @@
 			<td><?php echo $i['SOURCE']?></td>
 		</tr>
 		<?php $no++;}} ?>
+		<!-- <?php 
+		echo "<pre>";
+		print_r($invoice);
+		exit();
+		?> -->
 	</tbody>
 </table>

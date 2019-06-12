@@ -7,7 +7,11 @@ $(document).ready(function(){
 		var po_number = $('#po_number').val();
 		var any_keyword = $('#any_keyword').val();
 		var invoice_number = $('#invoice_number').val();
-		var invoice_date = $('#invoice_date').val();
+		// tambahkan id dalam ajax
+		var invoice_date_to = $('#invoice_date_to').val(); 
+		var invoice_date_from = $('#invoice_date_from').val();
+		// until here
+		var action_date = $('#action_date').val();
 		$.ajax({
 			type: "POST",
 			url: baseurl+"Monitoring/TrackingInvoice/btn_search",
@@ -16,7 +20,10 @@ $(document).ready(function(){
 				po_number: po_number,
 				any_keyword: any_keyword,
 				invoice_number: invoice_number,
-				invoice_date: invoice_date,
+				// id data
+				invoice_date_to: invoice_date_to,
+				invoice_date_from: invoice_date_from,
+				action_date: action_date
 			},
 			success: function (response) {
 				$('#loading_invoice').html(response);

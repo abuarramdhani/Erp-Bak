@@ -24,15 +24,29 @@ class M_trackingInvoice extends CI_Model {
     }
 
     public function searchMonitoringInvoice($parameter_invoice,$parameter_akses){
-      // print_r($parameter_invoice);
-      // print_r($parameter_akses);
-        $this->db->cache_on();
+     
         $db = $this->load->database('oracle',true);
-        $query= "SELECT ami.vendor_name vendor_name, ami.invoice_number invoice_number,
+        $query= "SELECT xx.*,
+                 CASE
+                 WHEN xx.PURCHASING_STATUS='0' AND xx.FINANCE_STATUS ='0' THEN 'Input by Admin Purcashing'
+                 WHEN xx.PURCHASING_STATUS='1' AND xx.FINANCE_STATUS ='0' THEN 'Submit For Checking to Kasie Purchasing'
+                 WHEN xx.PURCHASING_STATUS='2' AND xx.FINANCE_STATUS ='0' THEN 'Approved By Kasie Purchasing'
+                 WHEN xx.PURCHASING_STATUS='3' AND xx.FINANCE_STATUS ='0' THEN 'Rejected By Kasie Purchasing'
+                 WHEN xx.PURCHASING_STATUS='2' AND xx.FINANCE_STATUS ='1' THEN 'Submit to Akuntansi'
+                 WHEN xx.PURCHASING_STATUS='2' AND xx.FINANCE_STATUS ='2' THEN 'Received by Akuntansi'
+                 WHEN xx.PURCHASING_STATUS='2' AND xx.FINANCE_STATUS ='3' THEN 'Rejected by Akuntansi'
+                 ELSE 'Unknown'
+                 END AS status
+                 FROM(SELECT ami.vendor_name vendor_name, 
+                         ami.invoice_number invoice_number,
                          ami.invoice_date invoice_date,
+                         khs.action_date action_date,
                          ami.tax_invoice_number tax_invoice_number,
-                         ami.invoice_amount invoice_amount, aaipo.po_detail po_detail,
+                         ami.invoice_amount invoice_amount, 
+                         aaipo.po_detail po_detail,
                          ami.invoice_id invoice_id,
+                         khs.PURCHASING_STATUS,
+                         khs.FINANCE_STATUS,
                          COALESCE((SELECT CASE payment_status_flag
                          WHEN 'Y' THEN 'Paid'
                          WHEN 'N' THEN 'Non Paid'
@@ -40,7 +54,7 @@ class M_trackingInvoice extends CI_Model {
                          END
                          FROM  ap_invoices_all aia  WHERE aia.INVOICE_NUM=ami.INVOICE_NUMBER AND aia.VENDOR_ID=ami.VENDOR_NUMBER ),'Blank') AS status_payment,
                          ami.source source
-                    FROM khs_ap_monitoring_invoice ami,
+                        FROM khs_ap_monitoring_invoice ami, KHS_AP_INVOICE_ACTION_DETAIL khs,
                          (SELECT   aipo.invoice_id,
                                    REPLACE
                                       ((RTRIM
@@ -59,64 +73,25 @@ class M_trackingInvoice extends CI_Model {
                                            )
                                        ),
                                        '@',
-                                       '<br>'
+                                       '
+                                '
                                       ) po_detail
                               FROM (SELECT DISTINCT invoice_id, po_number, line_number,
                                                     lppb_number
                                                FROM khs_ap_invoice_purchase_order) aipo
                           GROUP BY aipo.invoice_id) aaipo
-                   WHERE aaipo.invoice_id = ami.invoice_id
-                   $parameter_akses
-                   $parameter_invoice
-                ORDER BY ami.last_admin_date";
-        // $query = "SELECT ami.vendor_name vendor_name, ami.invoice_number invoice_number,
-        //                  ami.invoice_date invoice_date,
-        //                  ami.tax_invoice_number tax_invoice_number,
-        //                  ami.invoice_amount invoice_amount, aaipo.po_detail po_detail,
-        //                  ami.invoice_id invoice_id,
-        //                  COALESCE((SELECT CASE payment_status_flag
-        //                  WHEN 'Y' THEN 'Paid'
-        //                  WHEN 'N' THEN 'Non Paid'
-        //                  ELSE 'Inprocess Vouching'
-        //                  END
-        //                  FROM  ap_invoices_all aia  WHERE aia.INVOICE_NUM=ami.INVOICE_NUMBER AND aia.VENDOR_ID=ami.VENDOR_NUMBER ),'Blank') AS status_payment,
-        //                  ami.source source
-        //             FROM khs_ap_monitoring_invoice ami,
-        //                  (SELECT   aipo.invoice_id,
-        //                            REPLACE
-        //                               ((RTRIM
-        //                                    (XMLAGG (XMLELEMENT (e,
-        //                                                            TO_CHAR
-        //                                                                   (   aipo.po_number
-        //                                                                    || '-'
-        //                                                                    || aipo.line_number
-        //                                                                    || '-'
-        //                                                                    || aipo.lppb_number
-        //                                                                   )
-        //                                                         || '@'
-        //                                                        )
-        //                                            ).EXTRACT ('//text()').getclobval(),
-        //                                     '@'
-        //                                    )
-        //                                ),
-        //                                '@',
-        //                                '<br>'
-        //                               ) po_detail
-        //                       FROM (SELECT DISTINCT invoice_id, po_number, line_number,
-        //                                             lppb_number
-        //                                        FROM khs_ap_invoice_purchase_order) aipo
-        //                   GROUP BY aipo.invoice_id) aaipo
-        //            WHERE aaipo.invoice_id = ami.invoice_id
-        //            $parameter_invoice
-        //            $parameter_akses
-        //         ORDER BY ami.last_admin_date";
-        // return $query;
-        $run = $db->query($query);
-        $arr = $run->result_array();
-        foreach ($arr as $key => $value) {
-          $arr[$key]['PO_DETAIL'] = $this->get_ora_blob_value($arr[$key]['PO_DETAIL']);
-        }
-        return $arr;
+                          WHERE aaipo.invoice_id = ami.invoice_id  
+                          AND ami.INVOICE_ID = khs.INVOICE_ID
+                          $parameter_akses
+                          $parameter_invoice) xx"; 
+        //                ORDER BY ami.last_admin_date"; 
+                    //return $query;
+                    $run = $db->query($query);
+                    $arr = $run->result_array();
+                    foreach ($arr as $key => $value) {
+                      $arr[$key]['PO_DETAIL'] = $this->get_ora_blob_value($arr[$key]['PO_DETAIL']);
+                    }
+                    return $arr;
     }
 
     public function checkStatusLPPB($po_number,$line_num)
