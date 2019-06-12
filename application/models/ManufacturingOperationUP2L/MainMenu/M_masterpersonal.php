@@ -24,22 +24,23 @@ class M_masterpersonal extends CI_Model
 		return $query->result_array();
     }
 
-    public function updateMasterPerson($nama,$noInduk,$user_id,$id)
+    public function updateMasterPerson($nama,$noInduk,$tgl,$user_id,$id)
     {
-        $sql = "
-            update mo.mo_master_personal
-            SET nama ='$nama', no_induk= '$noInduk', created_by=$user_id, creation_date=current_date
+        // $sql = "
+        //     update mo.mo_master_personal
+        //     SET nama ='$nama', no_induk= '$noInduk', created_by=$user_id, creation_date=current_date
+        //     WHERE id =$id";
+        $sql = "update mo.mo_master_personal
+            SET nama ='$nama', no_induk= '$noInduk', creation_date ='$tgl', created_by ='$user_id'
             WHERE id =$id";
         $query = $this->db->query($sql);
     }
 
-    public function insertMasPer($nama,$noInduk,$userid)
+    public function insertMasPer($nama,$noInduk,$tgl,$userid)
     {
-        $sql = "
-            insert into mo.mo_master_personal 
-           (nama, no_induk, created_by) 
-           values ('$nama', '$noInduk', '$userid')
-          ";
+        $sql = " insert into mo.mo_master_personal 
+                (nama, no_induk, creation_date, created_by) 
+                values ('$nama', '$noInduk', '$tgl' ,'$userid')";
         $query = $this->db->query($sql);
     }
 
