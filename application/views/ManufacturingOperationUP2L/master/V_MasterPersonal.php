@@ -92,7 +92,7 @@
                                         <div class="row">
                                             <div class="col-md-12 text-right">
                                                 <a class="btn btn-default" href="<?php echo site_url('ManufacturingOperationUP2L/MasterPersonal');?>">CANCEL</a>
-                                                <a class="btn btn-warning" href="<?php echo base_url('assets/upload/ManufacturingOperationUP2L/masterPersonal/example(input-person).xlsx');?>">
+                                                <a class="btn btn-warning" href="<?php echo base_url('assets/download/ManufacturingOperationUP2L/masterPersonal/example(input-person).xlsx');?>">
                                                     <i aria-hidden="true" class="fa fa-download"></i> 
                                                 DOWNLOAD SAMPLE
                                                 </a>
