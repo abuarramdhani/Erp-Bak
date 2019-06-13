@@ -81,7 +81,7 @@ class C_MasterPersonal extends CI_Controller
 		$user_id  = $this->session->userid;
 
 		$fileName 				= time().'-'.$_FILES['Item']['name'];
-	    $config['upload_path']	= 'assets/upload/ManufacturingOperationUP2L/masterPersonal/';
+	    $config['upload_path']	= 'assets/download/ManufacturingOperationUP2L/masterPersonal/';
 	    $config['file_name']	= $fileName;
 	    $config['allowed_types']= '*';
 	    $config['max_size']		= 2048;
@@ -112,7 +112,7 @@ class C_MasterPersonal extends CI_Controller
 			$this->Create($msg);
 	    }else{
 	        $media			= $this->upload->data();
-	        $inputFileName 	= 'assets/upload/ManufacturingOperationUP2L/masterPersonal/'.$media['file_name'];
+	        $inputFileName 	= 'assets/download/ManufacturingOperationUP2L/masterPersonal/'.$media['file_name'];
     		// $section 		= $this->M_dataplan->getSection();
 
             try{
