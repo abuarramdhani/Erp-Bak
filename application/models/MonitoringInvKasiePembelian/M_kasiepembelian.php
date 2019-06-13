@@ -30,8 +30,8 @@ class M_kasiepembelian extends CI_Model {
                 GROUP BY batch_number, last_finance_invoice_status, source
                 ORDER BY submited_date";
 		$run = $erp_db->query($sql);
-    echo $sql;
-    exit();
+    // echo $sql;
+    // exit();
 		return $run->result_array();
 	}
 
