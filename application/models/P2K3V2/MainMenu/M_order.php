@@ -40,12 +40,28 @@ class M_Order extends CI_Model
 
     public function daftar_pekerjaan($kodesie)
     {
-        $this->personalia->select('*');
-        $this->personalia->from('hrd_khs.tpekerjaan');
-        $this->personalia->where('substring(kdpekerjaan, 1, 7) =', substr($kodesie, 0, 7));
-        $this->personalia->order_by('kdpekerjaan ASC');
+        $kodesie = substr($kodesie, 0,7);
+        // $this->personalia->select('*');
+        // $this->personalia->from('hrd_khs.tpekerjaan');
+        // $this->personalia->where('substring(kdpekerjaan, 1, 7) =', substr($kodesie, 0, 7));
+        // $this->personalia->order_by('kdpekerjaan ASC');
 
-        return $this->personalia->get()->result_array();
+        // return $this->personalia->get()->result_array();
+        $sql = "select
+                    tn.*,
+                    (select count(kd_pkj)
+                    from
+                        hrd_khs.tpribadi ti
+                    where
+                        ti.kd_pkj = tn.kdpekerjaan
+                        and ti.keluar = '0') jumlah
+                from
+                    hrd_khs.tpekerjaan tn
+                where
+                    substring(kdpekerjaan, 1, 7) = '$kodesie'";
+        $query = $this->personalia->query($sql);
+        return $query->result_array();
+
     }
 
     public function kode_pekerjaan($kodesie)
@@ -86,7 +102,7 @@ class M_Order extends CI_Model
 
     public function tampil_data($kodesie)
     {
-        $kd = substr($kodesie, 0,8);
+        $kd = substr($kodesie, 0,7);
         $sql = "select * from k3.k3n_order where kodesie like '$kd%'";
                                     // echo $sql;exit();
                $query = $this ->db->query($sql);
@@ -282,9 +298,9 @@ class M_Order extends CI_Model
         return $query->num_rows();
     }
 
-    public function getInputstd($tgl, $kodesie)
+    public function getInputstd($kodesie)
     {
-        $kodesie = substr($kodesie, 0,8);
+        $kodesie = substr($kodesie, 0,7);
         // echo $kodesie;exit();
         $sql = "select ks.*, km.item from k3.k3n_standar_kebutuhan ks
         left join k3.k3_master_item km on km.kode_item = ks.kode_item
@@ -340,7 +356,7 @@ class M_Order extends CI_Model
 
     public function ceklineOrder($ks)
     {
-        $kodesie = substr($ks, 0,8);
+        $kodesie = substr($ks, 0,7);
         $pr = date('Y-m');
         $pr = date('Y-m',strtotime($pr . "+1 month"));
         $sql = "select * from k3.k3n_order where kodesie like '$kodesie%' and periode = '$pr'";
@@ -536,5 +552,14 @@ class M_Order extends CI_Model
         $query = $this->oracle->query($sql);
         // echo $sql;
         return $query->row()->ACCOUNT_NUMBER;
+    }
+
+    public function cekOrder($ks, $pr)
+    {
+        $ks = substr($ks, 0,7);
+        $sql = "select * from k3.k3n_order where kodesie like '$ks%' and periode = '$pr' and status = '1';";
+                                    // echo $sql;exit();
+        $query = $this ->db->query($sql);
+        return $query->num_rows();
     }
 }

@@ -26,8 +26,8 @@
                                         </div>
                                         <div class="col-md-4">
                                             <div class="input-group col-md-12">
-                                                <select required class="form-control k3_admin_standar" name="k3_adm_ks">
-                                                    <option></option>
+                                                <select disabled="" required class="form-control k3_admin_monitorbon" name="k3_adm_ks">
+                                                    <option value="semua">SEMUA SEKSI</option>
                                                 </select>
                                             </div>
                                         </div>
@@ -44,25 +44,37 @@
                                         </div>
                                     </form>
                                     <table style="margin-top: 50px;" id="tb_InputKebutuhanAPD" class="table table-striped table-bordered table-hover text-center">
-                                    <caption style="color: #000; font-weight: bold;"><?php echo $seksi[0]['section_name']; ?></caption>
+                                        <caption style="color: #000; font-weight: bold;"><?php echo $seksi[0]['section_name']; ?></caption>
                                         <thead>
                                             <tr class="bg-info">
                                                 <th>No</th>
                                                 <th>APD</th>
+                                                <th>Kode Barang</th>
                                                 <th>Jumlah Kebutuhan</th>
+                                                <th>Jumlah Bon</th>
+                                                <th>Sisa Saldo</th>
                                             </tr>
                                         </thead>
                                         <tbody id="DetailInputKebutuhanAPD">
                                             <?php $a=1; foreach ($listtobon as $key): ?>
-                                                <tr style="color: #000;" class="multiinput">
-                                                    <td id="nomor"><?php echo $a; ?></td>
-                                                    <td>
-                                                        <?php echo $key['item']; ?>
-                                                    </td>
-                                                    <td>
-                                                        <?php echo $key['0']; ?>
-                                                    </td>
-                                                </tr>
+                                            <tr style="color: #000;" class="multiinput">
+                                                <td id="nomor"><?php echo $a; ?></td>
+                                                <td>
+                                                    <?php echo $key['item']; ?>
+                                                </td>
+                                                <td>
+                                                <?php echo $key['item_kode']; ?>
+                                                </td>
+                                                <td>
+                                                    <?php echo $key['jml_kebutuhan']; ?>
+                                                </td>
+                                                <td>
+                                                    <?php echo $key['ttl_bon']; ?>
+                                                </td>
+                                                <td>
+                                                    <?php echo $key['sisa_saldo']; ?>
+                                                </td>
+                                            </tr>
                                             <?php $a++; endforeach ?>
                                         </tbody>
                                     </table>
@@ -75,3 +87,17 @@
         </div>
     </div>
 </section>
+<script>
+    $(document).ready(function(){
+        $.ajax({
+          type:'POST',
+          data:{lokasi_id:'value'},
+          url:baseurl+'p2k3adm_V2/Admin/getSeksiAprove2',
+          success:function(result)
+          {
+            $(".k3_admin_monitorbon").prop("disabled",false).html(result);
+            $('#surat-loading').attr('hidden', true);
+        }
+    });
+    });
+</script>

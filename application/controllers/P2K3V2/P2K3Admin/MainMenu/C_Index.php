@@ -36,9 +36,9 @@ class C_Index extends CI_Controller
 		$user_id = $this->session->userid;
 		$kodesie = $this->session->kodesie;
 
-		$data['Title'] = 'Order';
-		$data['Menu'] = 'Input Order';
-		$data['SubMenuOne'] = '';
+		$data['Title'] = 'Kebutuhan APD';
+		$data['Menu'] = 'Kebutuhan APD';
+		$data['SubMenuOne'] = 'Standar';
 		$data['SubMenuTwo'] = '';
 
 		$data['UserMenu'] = $this->M_user->getUserMenu($user_id,$this->session->responsibility_id);
@@ -96,37 +96,46 @@ class C_Index extends CI_Controller
 			$ks = $kodesie;
 		}
 		$data['pr'] = $periode;
+		if ($ks == 'semua') {
+			$ks = '';
+		}
 
-
-		$data['listtobon'] = $this->M_dtmasuk->listtobon($ks, $pr);
+		
+			$data['listtobon'] = $this->M_dtmasuk->listtobon2($ks, $pr);
 		$jml = '';
 		// echo "<pre>";
 		// print_r($data['listtobon']);exit();
-		foreach ($data['listtobon'] as $key) {
-			$a = $key['jml_item'];
-			$b = $key['jml_pekerja'];
-			$c = $key['jml_kebutuhan_umum'];
-			$d = $key['jml_kebutuhan_staff'];
-			$e = $key['jml_pekerja_staff'];
-			$a = explode(',', $a);
-			$b = explode(',', $b);
-			$hit = count($a);
-			for ($i=0; $i < $hit; $i++) { 
-				$jml += ($a[$i]*$b[$i]); 
-			}
-			$jml = $jml+$c+($d*$e);
-			$push = array("total"=> $jml);
-			array_splice($key,4,1,$push);
-			$new[] = $key;
-			$data['listtobon'] = $new;
-			$jml = 0;
-		}
+		// foreach ($data['listtobon'] as $key) {
+		// 	$a = $key['jml_item'];
+		// 	$b = $key['jml_pekerja'];
+		// 	$c = $key['jml_kebutuhan_umum'];
+		// 	$d = $key['jml_kebutuhan_staff'];
+		// 	$e = $key['jml_pekerja_staff'];
+		// 	$a = explode(',', $a);
+		// 	print_r($a);
+		// 	$b = explode(',', $b);
+		// 	$hit = count($a);
+		// 	for ($i=0; $i < $hit; $i++) { 
+		// 		$jml += ($a[$i]*$b[$i]); 
+		// 	}
+		// 	$jml = $jml+$c+($d*$e);
+		// 	$push = array("total"=> $jml);
+		// 	array_splice($key,4,1,$push);
+		// 	$new[] = $key;
+		// 	$data['listtobon'] = $new;
+		// 	$jml = 0;
+		// }
 		// echo "<pre>";
 		$data['seksi'] = $this->M_dtmasuk->cekseksi($ks);
 		if (empty($data['seksi'])) {
 			$data['seksi'] = array('section_name' 	=>	'');
+			$data['seksi'] = array('0' 	=>	$data['seksi']);
 		}
-		// print_r($data['seksi']);exit();
+		if ($ks == '') {
+			$data['seksi'] = array('section_name' 	=>	'SEMUA SEKSI');
+			$data['seksi'] = array('0' 	=>	$data['seksi']);
+		}
+		// print_r($data['listtobon']);exit();
 
 		$this->load->view('V_Header',$data);
 		$this->load->view('V_Sidemenu',$data);
@@ -189,8 +198,8 @@ class C_Index extends CI_Controller
 		$user1 = $this->session->user;
 		$user_id = $this->session->userid;
 
-		$data['Title'] = 'Order';
-		$data['Menu'] = 'Input Order';
+		$data['Title'] = 'Monitoring APD';
+		$data['Menu'] = 'Monitoring APD';
 		$data['SubMenuOne'] = '';
 		$data['SubMenuTwo'] = '';
 
@@ -302,8 +311,8 @@ class C_Index extends CI_Controller
 		$item = strtoupper($item);
 		$data = $this->M_dtmasuk->getSeksiApprove2($item);
 		// echo json_encode($data);
-		echo '<option></option>';
-		echo '<option value="semua">SEMUA SEKSI</option>';
+		// echo '<option></option>';
+		echo '<option selected value="semua">SEMUA SEKSI</option>';
 		foreach ($data as $key) {
 			echo '<option value="'.$key['substring'].'">'.$key['substring'].' - '.$key['section_name'].'</option>';
 		}
@@ -424,8 +433,8 @@ class C_Index extends CI_Controller
 		$kodesie = $this->session->kodesie;
 		$noind = $this->session->user;
 
-		$data['Title'] = 'Input Standar TIM';
-		$data['Menu'] = 'Input Standar TIM';
+		$data['Title'] = 'Input Standar Kebutuhan Seksi';
+		$data['Menu'] = 'Input Standar Kebutuhan Seksi';
 		$data['SubMenuOne'] = '';
 		$data['SubMenuTwo'] = '';
 
@@ -449,6 +458,43 @@ class C_Index extends CI_Controller
 		$this->load->view('V_Header',$data);
 		$this->load->view('V_Sidemenu',$data);
 		$this->load->view('P2K3V2/P2K3Admin/APD/V_Admin_Input_Standar_TIM', $data);
+		$this->load->view('V_Footer',$data);
+	}
+
+	public function inputOrderTIM()
+	{
+		// print_r($_POST);exit();
+		$user_id = $this->session->userid;
+		$kodesie = $this->session->kodesie;
+		$noind = $this->session->user;
+
+		$data['Title'] = 'Input Order Seksi';
+		$data['Menu'] = 'Input Order Seksi';
+		$data['SubMenuOne'] = '';
+		$data['SubMenuTwo'] = '';
+
+		$data['UserMenu'] = $this->M_user->getUserMenu($user_id,$this->session->responsibility_id);
+		$data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id);
+		$data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id);
+		$act = '0';
+		$ks = $this->input->post('k3_adm_ks');
+		if (!empty($ks)) {
+			$act = '1';
+			$pr = date("Y-m", strtotime(" +1 months"));
+			$cek = $this->M_order->cekOrder($ks, $pr);
+			if ($cek > 0) {
+				$act = '2';
+			}
+		}
+		$data['daftar_pekerjaan']	= $this->M_order->daftar_pekerjaan($ks);
+		$data['act'] = $act;
+		$data['seksi'] = $this->M_dtmasuk->cekseksi($ks);
+		$data['kodesie'] = $ks;
+		// print_r($data['seksi']);exit();
+
+		$this->load->view('V_Header',$data);
+		$this->load->view('V_Sidemenu',$data);
+		$this->load->view('P2K3V2/P2K3Admin/APD/V_Admin_Input_Order_TIM', $data);
 		$this->load->view('V_Footer',$data);
 	}
 
@@ -490,7 +536,6 @@ class C_Index extends CI_Controller
 				'approve_tim_by'	=>	$noind,
 				'jml_kebutuhan_umum'	=>	$umum[$i],
 				'jml_kebutuhan_staff'	=>	$staff[$i],
-				'approve_tim_by'	=>	$noind,
 				);
 			$a += count($daftar_pekerjaan);
 			// echo "<pre>";
@@ -499,6 +544,39 @@ class C_Index extends CI_Controller
 			$input = $this->M_order->save_standar($data);
 		}
 		redirect('p2k3adm_V2/Admin/inputStandarTIM');
+	}
+
+	public function saveInputOrder()
+	{
+		$noind = $this->session->user;
+		$kodesie  = $this->input->post('p2k3_adm_kodesie');
+		$daftar_pekerjaan	= $this->M_order->daftar_pekerjaan($kodesie);
+      	$jml = $this->input->post('pkjJumlah');
+      	$staff = $this->input->post('staffJumlah');
+      	$periode = $this->input->post('k3_periode');
+		// print_r($_POST); print_r($daftar_pekerjaan);exit();
+
+      	foreach ($daftar_pekerjaan as $key) {
+      		$kd[] = $key['kdpekerjaan'];
+      	}
+      	$kd_pkj = implode(',', $kd);
+      	$jml_pkj = implode(',', $jml);
+      	$tgl_input = date('Y-m-d H:i:s');
+      	$ks = substr($kodesie, 0,7);
+      	// echo $ks;exit();
+      	$data = array(
+      		'kd_pekerjaan'	=> $kd_pkj,
+      		'jml_pekerja'	=>	$jml_pkj,
+      		'jml_pekerja_staff'	=>	$staff,
+      		'kodesie'	=>	$ks,
+      		'tgl_input'	=>	$tgl_input,
+      		'status'	=>	'1',
+      		'periode'	=>	$periode,
+      		'tgl_approve'	=>	date('Y-m-d H:i:s'),
+      		'approve_by'	=>	$noind,
+      		);
+      	$inputPkj = $this->M_order->inputPkj($data);
+      	redirect('p2k3adm_V2/Admin/inputOrderTIM');
 	}
 
 	public function detail_seksi()
@@ -598,5 +676,118 @@ public function ajaxRow($ks, $pr)
 		// $tes[] = array_values($datha);
 	// echo "<pre>"; print_r($tes);exit();
 	echo json_encode(array('data'=>$datha));
+}
+
+public function RiwayatKebutuhan()
+{
+	$user1 = $this->session->user;
+	$user_id = $this->session->userid;
+	$kodesie = $this->session->kodesie;
+
+	$data['Title'] = 'Riwayat';
+	$data['Menu'] = 'Riwayat';
+	$data['SubMenuOne'] = 'Standar Kebutuhan';
+	$data['SubMenuTwo'] = '';
+
+	$data['UserMenu'] = $this->M_user->getUserMenu($user_id,$this->session->responsibility_id);
+	$data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id);
+	$data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id);
+
+	$ks = $this->input->post('k3_adm_ks');
+	if (empty($ks)) {
+		$ks = $kodesie;
+	}
+	$baru = '1999-01-01 01:10:10';
+	$cek_terbaru = $this->M_dtmasuk->cek_terbaru($ks);
+	if (!isset($cek_terbaru) || !empty($cek_terbaru)) {
+		$baru = $cek_terbaru[0]['tgl_approve_tim'];
+	}
+	// $data['list'] = $this->M_dtmasuk->getListAprove($ks, $baru);
+	$data['inputStandar'] = $this->M_order->getInputstd($ks);
+	$data['daftar_pekerjaan']	= $this->M_order->daftar_pekerjaan($ks);
+	$data['seksi'] = '';
+	$data['seksi'] = $this->M_dtmasuk->cekseksi($ks);
+
+
+	$this->load->view('V_Header',$data);
+	$this->load->view('V_Sidemenu',$data);
+	$this->load->view('P2K3V2/P2K3Admin/APD/V_Admin_Riwayat_Kebutuhan', $data);
+	$this->load->view('V_Footer',$data);
+}
+
+public function RiwayatOrder()
+{
+	$user1 = $this->session->user;
+	$user_id = $this->session->userid;
+	$kodesie = $this->session->kodesie;
+
+	$data['Title'] = 'Riwayat';
+	$data['Menu'] = 'Riwayat';
+	$data['SubMenuOne'] = 'Order';
+	$data['SubMenuTwo'] = '';
+
+	$data['UserMenu'] = $this->M_user->getUserMenu($user_id,$this->session->responsibility_id);
+	$data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id);
+	$data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id);
+
+	$ks = $this->input->post('k3_adm_ks');
+	if (empty($ks)) {
+		$ks = $kodesie;
+	}
+	$baru = '1999-01-01 01:10:10';
+	$cek_terbaru = $this->M_dtmasuk->cek_terbaru($ks);
+	if (!isset($cek_terbaru) || !empty($cek_terbaru)) {
+		$baru = $cek_terbaru[0]['tgl_approve_tim'];
+	}
+	$data['tampil_data'] 		= $this->M_order->tampil_data($ks);
+	$data['daftar_pekerjaan']	= $this->M_order->daftar_pekerjaan($ks);
+	$data['seksi'] = '';
+	$data['seksi'] = $this->M_dtmasuk->cekseksi($ks);
+
+	$this->load->view('V_Header',$data);
+	$this->load->view('V_Sidemenu',$data);
+	$this->load->view('P2K3V2/P2K3Admin/APD/V_Admin_Riwayat_Order', $data);
+	$this->load->view('V_Footer',$data);
+}
+
+public function Email()
+{
+	$user1 = $this->session->user;
+	$user_id = $this->session->userid;
+	$kodesie = $this->session->kodesie;
+
+	$data['Title'] = 'Setup';
+	$data['Menu'] = 'Setup';
+	$data['SubMenuOne'] = 'Email';
+	$data['SubMenuTwo'] = '';
+
+	$data['UserMenu'] = $this->M_user->getUserMenu($user_id,$this->session->responsibility_id);
+	$data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id);
+	$data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id);
+
+	$data['email'] = $this->M_dtmasuk->getEmail();
+
+	$this->load->view('V_Header',$data);
+	$this->load->view('V_Sidemenu',$data);
+	$this->load->view('P2K3V2/P2K3Admin/APD/V_Admin_Setup_Email', $data);
+	$this->load->view('V_Footer',$data);
+}
+
+public function addEmail()
+{
+	$email = $this->input->post('email');
+	$addEmail = $this->M_dtmasuk->addEmail($email);
+}
+public function editEmail()
+{
+	$email = $this->input->post('email');
+	$id = $this->input->post('id');
+	$addEmail = $this->M_dtmasuk->editEmail($id,$email);
+}
+
+public function hapusEmail()
+{
+	$id = $this->input->post('id');
+	$addEmail = $this->M_dtmasuk->hapusEmail($id);
 }
 }
