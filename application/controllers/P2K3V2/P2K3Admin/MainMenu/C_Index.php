@@ -150,8 +150,8 @@ class C_Index extends CI_Controller
 		$user1 = $this->session->user;
 		$user_id = $this->session->userid;
 
-		$data['Title'] = 'Order';
-		$data['Menu'] = 'Input Order';
+		$data['Title'] = 'Perhitungan APD';
+		$data['Menu'] = 'Perhitungan APD';
 		$data['SubMenuOne'] = '';
 		$data['SubMenuTwo'] = '';
 
