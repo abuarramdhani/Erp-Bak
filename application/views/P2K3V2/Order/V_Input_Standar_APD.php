@@ -99,7 +99,7 @@
                                                 <?php 
                                                 $h = date('d');
                                                 $d = '';
-                                                if ($h > '100') {
+                                                if ($h > '10') {
                                                     $d = 'disabled';
                                                 }
                                                 ?>

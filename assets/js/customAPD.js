@@ -2,12 +2,17 @@ $("#group_add").click(function(e){
   var d = new Date();
   var n = d.getDate();
   if (n > 10) {
-    alert('Anda Terlambat Order');
-    // Swal.fire(
-    //   'Error',
-    //   'Anda Terlambat Order!',
-    //   'error',
-    //   )
+    // alert('Anda Terlambat Order');
+    Swal.fire({
+        type: 'error',
+        title: 'Anda Terlambat Order!',
+        text: 'Order dapat Dilakukan di Tanggal 1 - 10',
+        animation: false,
+          // showCancelButton: true,
+          customClass: {
+            popup: 'animated tada'
+          }
+        });
   }else{
     e.preventDefault();
     $('.apd-select2').last().select2("destroy");
@@ -111,17 +116,6 @@ $("#group_add2").click(function(e){
   });
 }
 });
-
-
-$(document).on('click', '.group_rem', function(e){
-  e.preventDefault();
-  if($('.multiinput').size()>1){
-    $(this).closest('tr').remove();
-  }else{
-    alert('Minimal harus ada satu baris tersisa');
-  }
-});
-
 
 $(function()
 {
@@ -471,7 +465,7 @@ $(document).ready(function() {
       $('.modal-title').text('Anda Sudah Order!');
       $('#p2k3_mb').text('Order hanya dapat dilakukan sekali dalam satu periode!');
       $('#p2k3_modal').modal('show');
-    }else if (n > 100) {
+    }else if (n > 10) {
       // Swal.fire({
       //   type: 'error',
       //   title: 'Anda Terlambat Order!',
@@ -493,7 +487,7 @@ $(document).ready(function() {
   $('#pemakai_2s').select2({
     ajax:
     {
-      url: baseurl+'/P2K3_V2/Order/searchOracle',
+      url: baseurl+'P2K3_V2/Order/searchOracle',
       dataType: 'json',
       type: 'get',
       data: function (params) {
@@ -523,7 +517,7 @@ $(document).ready(function() {
     $.ajax({
       type:'POST',
       data:{pemakai_2:value},
-      url:baseurl+"/P2K3_V2/Order/pemakai_2",
+      url:baseurl+"P2K3_V2/Order/pemakai_2",
       success:function(result)
       { 
         a = result.split('|');
@@ -543,7 +537,7 @@ $(document).ready(function() {
     $.ajax({
       type:'POST',
       data:{lokasi_id:value},
-      url:baseurl+"/P2K3_V2/Order/gudang",
+      url:baseurl+"P2K3_V2/Order/gudang",
       success:function(result)
       {
         $('#surat-loading').attr('hidden', true);
@@ -569,7 +563,7 @@ $(document).ready(function() {
     $.ajax({
       type:'POST',
       data:{gudang_id:value},
-      url:baseurl+"/P2K3_V2/Order/lokator",
+      url:baseurl+"P2K3_V2/Order/lokator",
       success:function(result)
       {
         $('#surat-loading').attr('hidden', true);
@@ -709,78 +703,78 @@ function format ( d ) {
       }
     });
 
-    $('.et_add_email').click(function(){
-      star();
-      async function star(){
-        const {value: email} = await Swal.fire({
-          title: 'Input email address',
-          input: 'email',
-          inputPlaceholder: 'Enter your email address',
-        })
+  //   $('.et_add_email').click(function(){
+  //     star();
+  //     async function star(){
+  //       const {value: email} = await Swal.fire({
+  //         title: 'Input email address',
+  //         input: 'email',
+  //         inputPlaceholder: 'Enter your email address',
+  //       })
 
-        if (email) {
-          $('#surat-loading').attr('hidden', false);
-          $.ajax({
-            type: 'POST',
-            url: baseurl+'p2k3adm_V2/Admin/addEmail',
-            data: {email:email},
-            success: function(response){
-              location.reload();
-            }
-          });
-        }
-      }
-    });
+  //       if (email) {
+  //         $('#surat-loading').attr('hidden', false);
+  //         $.ajax({
+  //           type: 'POST',
+  //           url: baseurl+'p2k3adm_V2/Admin/addEmail',
+  //           data: {email:email},
+  //           success: function(response){
+  //             location.reload();
+  //           }
+  //         });
+  //       }
+  //     }
+  //   });
 
-    $('.et_edit_email').click(function(){
-      var em = $(this).closest('tr').find('td.et_em').text();
-      var id = $(this).closest('tr').find('input').val();
-      star();
-      async function star(){
-        const {value: email} = await Swal.fire({
-          title: 'Edit email address',
-          input: 'email',
-          inputPlaceholder: 'Enter your email address',
-          inputValue: em,
-        })
+  //   $('.et_edit_email').click(function(){
+  //     var em = $(this).closest('tr').find('td.et_em').text();
+  //     var id = $(this).closest('tr').find('input').val();
+  //     star();
+  //     async function star(){
+  //       const {value: email} = await Swal.fire({
+  //         title: 'Edit email address',
+  //         input: 'email',
+  //         inputPlaceholder: 'Enter your email address',
+  //         inputValue: em,
+  //       })
 
-        if (email) {
-          $('#surat-loading').attr('hidden', false);
-          $.ajax({
-            type: 'POST',
-            url: baseurl+'p2k3adm_V2/Admin/editEmail',
-            data: {email:email, id:id},
-            success: function(response){
-              location.reload();
-            }
-          });
-        }
-      }
-    });
+  //       if (email) {
+  //         $('#surat-loading').attr('hidden', false);
+  //         $.ajax({
+  //           type: 'POST',
+  //           url: baseurl+'p2k3adm_V2/Admin/editEmail',
+  //           data: {email:email, id:id},
+  //           success: function(response){
+  //             location.reload();
+  //           }
+  //         });
+  //       }
+  //     }
+  //   });
 
-    $('.et_del_email').click(function(){
-      var em = $(this).closest('tr').find('td.et_em').text();
-      var id = $(this).closest('tr').find('input').val();
-      Swal.fire({
-        title: em,
-        text: "Apa anda yakin ingin Menghapus Email Ini?",
-        type: 'warning',
-        showCancelButton: true,
-        confirmButtonColor: '#3085d6',
-        cancelButtonColor: '#d33',
-        confirmButtonText: 'Yes, delete it!'
-      }).then((result) => {
-        if (result.value) {
-          $('#surat-loading').attr('hidden', false);
-          $.ajax({
-            type: 'POST',
-            url: baseurl+'p2k3adm_V2/Admin/hapusEmail',
-            data: {id:id},
-            success: function(response){
-              location.reload();
-            }
-          });
-        }
-      })
-    });
+  //   $('.et_del_email').click(function(){
+  //     var em = $(this).closest('tr').find('td.et_em').text();
+  //     var id = $(this).closest('tr').find('input').val();
+  //     Swal.fire({
+  //       title: em,
+  //       text: "Apa anda yakin ingin Menghapus Email Ini?",
+  //       type: 'warning',
+  //       showCancelButton: true,
+  //       confirmButtonColor: '#3085d6',
+  //       cancelButtonColor: '#d33',
+  //       confirmButtonText: 'Yes, delete it!'
+  //     }).then((result) => {
+  //       if (result.value) {
+  //         $('#surat-loading').attr('hidden', false);
+  //         $.ajax({
+  //           type: 'POST',
+  //           url: baseurl+'p2k3adm_V2/Admin/hapusEmail',
+  //           data: {id:id},
+  //           success: function(response){
+  //             location.reload();
+  //           }
+  //         });
+  //       }
+  //     })
+  //   });
   });
