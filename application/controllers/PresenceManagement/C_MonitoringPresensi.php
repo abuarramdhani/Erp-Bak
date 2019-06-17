@@ -631,7 +631,7 @@
 															'last_update_user'		=>	$this->session->user,
 														);
 							$this->M_monitoringpresensi->user_access_update($user_access_update, array('noind_baru' => $user['noind_baru'], 'id_lokasi' => $id_lokasi));
-							$this->lib_monitoringpresensi->history('db_datapresensi', 'tb_user_access', array('noind_baru' => $info['noind_baru'], 'id_lokasi' => $id_lokasi), 'UPDATE');
+							$this->lib_monitoringpresensi->history('db_datapresensi', 'tb_user_access', array('noind_baru' => $user['noind_baru'], 'id_lokasi' => $id_lokasi), 'UPDATE');
 						}
 
 						$user_access 			=	$this->M_monitoringpresensi->user_access_get(FALSE, (array('user_access.noind_baru' => $user['noind_baru'], 'user_access.id_lokasi' => $id_lokasi)));
