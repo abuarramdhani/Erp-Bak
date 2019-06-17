@@ -47,9 +47,9 @@
                                                     <th>Nama APD</th>
                                                     <th>Kode Barang</th>
                                                     <th>Kebutuhan Umum</th>
-                                                    <th>Kebutuhan per Pekrja (Staff)</th>
+                                                    <th>Staff</th>
                                                     <?php foreach ($daftar_pekerjaan as $key) { ?>
-                                                    <th>Kebutuhan per Pekerja (<?php echo $key['pekerjaan'];?>)</th>
+                                                    <th><?php echo $key['pekerjaan'];?></th>
                                                     <?php } ?>
                                                 </tr>
                                             </thead>

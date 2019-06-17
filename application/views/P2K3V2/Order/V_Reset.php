@@ -68,7 +68,7 @@
                                                                         <tbody id="DetailInputKebutuhanAPD">
                                                                             <tr row-id="1" class="multiinput">
                                                                                 <td id="nomor">1</td>
-                                                                                <td><input required type="number" name="staffJumlah" class="form-control"/></td>
+                                                                                <td><input required type="number" name="staffJumlah" class="form-control" min="0" /></td>
                                                                                 <?php
                                                                                 $i = 0;
                                                                                 foreach ($daftar_pekerjaan as $pekerjaan)
@@ -76,7 +76,7 @@
                                                                                 <td>
                                                                                     <div class="form-group">
                                                                                         <div class="col-lg-12">
-                                                                                            <input required type="number" name="pkjJumlah[]" class="form-control"/>
+                                                                                            <input required type="number" name="pkjJumlah[]" class="form-control" min="0"  />
                                                                                         </div>
                                                                                     </div>
                                                                                 </td>

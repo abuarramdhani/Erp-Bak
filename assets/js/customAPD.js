@@ -708,4 +708,79 @@ function format ( d ) {
         return false;
       }
     });
+
+    $('.et_add_email').click(function(){
+      star();
+      async function star(){
+        const {value: email} = await Swal.fire({
+          title: 'Input email address',
+          input: 'email',
+          inputPlaceholder: 'Enter your email address',
+        })
+
+        if (email) {
+          $('#surat-loading').attr('hidden', false);
+          $.ajax({
+            type: 'POST',
+            url: baseurl+'p2k3adm_V2/Admin/addEmail',
+            data: {email:email},
+            success: function(response){
+              location.reload();
+            }
+          });
+        }
+      }
+    });
+
+    $('.et_edit_email').click(function(){
+      var em = $(this).closest('tr').find('td.et_em').text();
+      var id = $(this).closest('tr').find('input').val();
+      star();
+      async function star(){
+        const {value: email} = await Swal.fire({
+          title: 'Edit email address',
+          input: 'email',
+          inputPlaceholder: 'Enter your email address',
+          inputValue: em,
+        })
+
+        if (email) {
+          $('#surat-loading').attr('hidden', false);
+          $.ajax({
+            type: 'POST',
+            url: baseurl+'p2k3adm_V2/Admin/editEmail',
+            data: {email:email, id:id},
+            success: function(response){
+              location.reload();
+            }
+          });
+        }
+      }
+    });
+
+    $('.et_del_email').click(function(){
+      var em = $(this).closest('tr').find('td.et_em').text();
+      var id = $(this).closest('tr').find('input').val();
+      Swal.fire({
+        title: em,
+        text: "Apa anda yakin ingin Menghapus Email Ini?",
+        type: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Yes, delete it!'
+      }).then((result) => {
+        if (result.value) {
+          $('#surat-loading').attr('hidden', false);
+          $.ajax({
+            type: 'POST',
+            url: baseurl+'p2k3adm_V2/Admin/hapusEmail',
+            data: {id:id},
+            success: function(response){
+              location.reload();
+            }
+          });
+        }
+      })
+    });
   });
