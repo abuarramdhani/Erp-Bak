@@ -989,7 +989,7 @@ class M_surat extends CI_Model
 		tseksi.bidang,
 		tseksi.unit,
 		tseksi.seksi,
-		tseksi.pekerjaan,
+		tpekerjaan.pekerjaan,
 		(
 		case 	when 	tseksi.seksi='-'
 		then 	(
@@ -1021,6 +1021,7 @@ class M_surat extends CI_Model
 		on 	tlokasi_kerja.id_=pri.lokasi_kerja
 		where 		pri.noind='$nomor_induk'
 		) as master;";
+		// echo $ambilPosisi;exit();
 		$query 			=	$this->personalia->query($ambilPosisi);
 		return $query->result_array();
 	}
