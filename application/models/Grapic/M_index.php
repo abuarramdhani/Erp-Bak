@@ -124,6 +124,24 @@ class M_index extends CI_Model
 		return $query->result_array();
 	}
 
+	public function pekerjaOperatorAll($now, $sqlPKL, $kode)
+	{
+		$sql = "select
+		count(noind)
+		from
+		hrd_khs.tpribadi a 
+		left join hrd_khs.tpekerjaan b on a.kd_pkj=b.kdpekerjaan
+		where
+		(keluar = '0' or (tglkeluar >= '2019-$now' and keluar = '1'))
+		and (masukkerja <= '2019-01-26' $sqlPKL)
+		$kode
+		and left(a.noind,1) in ('H','P','K')
+		order by 1;";
+				// echo $sql;exit();
+		$query = $this->personalia->query($sql);
+		return $query->result_array();
+	}
+
 	public function semuaData($now, $sqlPKL)
 	{
 		$sql = "select count(noind) from hrd_khs.tpribadi where (keluar = '0' or (tglkeluar >= '2019-$now' and keluar = '1')) and (masukkerja >= '1990-01-01') $sqlPKL order by 1";
