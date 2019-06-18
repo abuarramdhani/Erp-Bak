@@ -155,13 +155,13 @@
 																$var2 = 'min'.$y;
 																$trgt = ${$var1}[0]+${$var2};
 																$trgtjav = ${$var1}[0]+${$var2};
-																for ($i=0; $i < 18; $i++) { ?>
+																for ($i=0; $i < 26; $i++) { ?>
 																<td colspan="2"><?php echo $trgt = $trgt-${$var2}; ?></td>
 																<?php } ?>
 																<script>
 																	targetKaryawan[<?= ($y+1) ?>] = [<?php 
-																	for($j=0;$j<18;$j++){
-																		if($j == 17) {
+																	for($j=0;$j<26;$j++){
+																		if($j == 25) {
 																			echo '"'.$trgtjav = ($trgtjav-${$var2}).'"';
 																		}else{
 																			echo '"'.$trgtjav = ($trgtjav-${$var2}).'", ';
@@ -176,7 +176,7 @@
 																<td colspan="2"><?php echo $value; ?></td>
 																<?php } ?>
 																<!-- jika kolom ada yang kosong -->
-																<?php for ($i=count(${$var1}); $i <18 ; $i++) { ?>
+																<?php for ($i=count(${$var1}); $i <26 ; $i++) { ?>
 																<td colspan="2"></td>
 																<?php } ?>
 																<script>
@@ -196,14 +196,14 @@
 																<td>0</td>
 																<td>0%</td>
 																<?php
-																for ($i=0; $i < 17; $i++) { ?>
+																for ($i=0; $i < 25; $i++) { ?>
 																<td><?php echo ${$var2}; ?></td>
 																<td><?php echo round(${$var2}/${$var1}[0]*100,2) ?>%</td>
 																<?php } ?>
 																<script>
 																	trgTurunBln[<?= ($y+1) ?>] = ["0", <?php 
-																	for($j=0;$j<17;$j++){
-																		if($j == 16) {
+																	for($j=0;$j<25;$j++){
+																		if($j == 24) {
 																			echo '"'.${$var2}.'"';
 																		}else{
 																			echo '"'.${$var2}.'", ';
@@ -221,7 +221,7 @@
 																	<td><?php echo abs($turun); ?></td>
 																	<td><?php echo abs(round(($turun/${$var1}[$i]*100),1)); ?>%</td>
 																	<?php } ?>
-																	<?php for ($i=count(${$var1}); $i <=17 ; $i++) { ?>
+																	<?php for ($i=count(${$var1}); $i <=25 ; $i++) { ?>
 																	<td></td>
 																	<td></td>
 																	<?php } ?>
@@ -244,7 +244,7 @@
 																	<td>0%</td>
 																	<?php $trgaku = 0;
 																	$trgaku2 = 0;
-																	for ($i=0; $i < 17 ; $i++) { 
+																	for ($i=0; $i < 25 ; $i++) { 
 																		echo '<td>'.$trgaku = ($trgaku+${$var2}).'</td>';
 																		echo '<td>'.$trgaku2 = round(($trgaku/${$var1}[0]*100),1).'%</td>';
 																		// echo '<td>'.${$var1}[0].'%</td>';
@@ -252,8 +252,8 @@
 																	<script>
 																		trgAkumulasi[<?= ($y+1) ?>] = ["0", <?php 
 																		$trgakumulasi = 0;
-																		for($j=0;$j<17;$j++){
-																			if($j == 16) {
+																		for($j=0;$j<25;$j++){
+																			if($j == 24) {
 																				echo '"'.$trgakumulasi = ($trgakumulasi+${$var2}).'"';
 																			}else{
 																				echo '"'.$trgakumulasi = ($trgakumulasi+${$var2}).'", ';
@@ -271,7 +271,7 @@
 																		<td><?php echo abs($turun); ?></td>
 																		<td><?php echo abs(round(($turun/${$var1}[0]*100),1)); ?>%</td>
 																		<?php } ?>
-																		<?php for ($i=count(${$var1}); $i <=17 ; $i++) { ?>
+																		<?php for ($i=count(${$var1}); $i <=25 ; $i++) { ?>
 																		<td></td>
 																		<td></td>
 																		<?php } ?>
@@ -342,13 +342,13 @@
 																	$var2 = 'min'.$y;
 																	$trgt = ${$var1}[0]+${$var2};
 																	$trgtjav = ${$var1}[0]+${$var2};
-																	for ($i=0; $i < 18; $i++) { ?>
+																	for ($i=0; $i < 26; $i++) { ?>
 																	<td colspan="2"><?php echo $trgt = $trgt-${$var2}; ?></td>
 																	<?php } ?>
 																	<script>
 																		targetKaryawan[<?= ($y+1) ?>] = [<?php 
-																		for($j=0;$j<18;$j++){
-																			if($j == 17) {
+																		for($j=0;$j<26;$j++){
+																			if($j == 25) {
 																				echo '"'.$trgtjav = ($trgtjav-${$var2}).'"';
 																			}else{
 																				echo '"'.$trgtjav = ($trgtjav-${$var2}).'", ';
@@ -363,7 +363,7 @@
 																	<td colspan="2"><?php echo $value; ?></td>
 																	<?php } ?>
 																	<!-- jika kolom ada yang kosong -->
-																	<?php for ($i=count(${$var1}); $i <18 ; $i++) { ?>
+																	<?php for ($i=count(${$var1}); $i <25 ; $i++) { ?>
 																	<td colspan="2"></td>
 																	<?php } ?>
 																	<script>
@@ -383,14 +383,14 @@
 																	<td>0</td>
 																	<td>0%</td>
 																	<?php
-																	for ($i=0; $i < 17; $i++) { ?>
+																	for ($i=0; $i < 25; $i++) { ?>
 																	<td><?php echo ${$var2}; ?></td>
 																	<td><?php echo round(${$var2}/${$var1}[0]*100,2) ?>%</td>
 																	<?php } ?>
 																	<script>
 																		trgTurunBln[<?= ($y+1) ?>] = ["0", <?php 
-																		for($j=0;$j<17;$j++){
-																			if($j == 16) {
+																		for($j=0;$j<25;$j++){
+																			if($j == 24) {
 																				echo '"'.${$var2}.'"';
 																			}else{
 																				echo '"'.${$var2}.'", ';
@@ -408,7 +408,7 @@
 																		<td><?php echo abs($turun); ?></td>
 																		<td><?php echo abs(round(($turun/${$var1}[$i]*100),1)); ?>%</td>
 																		<?php } ?>
-																		<?php for ($i=count(${$var1}); $i <=17 ; $i++) { ?>
+																		<?php for ($i=count(${$var1}); $i <=25 ; $i++) { ?>
 																		<td></td>
 																		<td></td>
 																		<?php } ?>
@@ -431,7 +431,7 @@
 																		<td>0%</td>
 																		<?php $trgaku = 0;
 																		$trgaku2 = 0;
-																		for ($i=0; $i < 17 ; $i++) { 
+																		for ($i=0; $i < 25 ; $i++) { 
 																			echo '<td>'.$trgaku = ($trgaku+${$var2}).'</td>';
 																			echo '<td>'.$trgaku2 = round(($trgaku/${$var1}[0]*100),1).'%</td>';
 														// echo '<td>'.${$var1}[0].'%</td>';
@@ -439,8 +439,8 @@
 																		<script>
 																			trgAkumulasi[<?= ($y+1) ?>] = ["0", <?php 
 																			$trgakumulasi = 0;
-																			for($j=0;$j<17;$j++){
-																				if($j == 16) {
+																			for($j=0;$j<25;$j++){
+																				if($j == 24) {
 																					echo '"'.$trgakumulasi = ($trgakumulasi+${$var2}).'"';
 																				}else{
 																					echo '"'.$trgakumulasi = ($trgakumulasi+${$var2}).'", ';
@@ -458,7 +458,7 @@
 																			<td><?php echo abs($turun); ?></td>
 																			<td><?php echo abs(round(($turun/${$var1}[0]*100),1)); ?>%</td>
 																			<?php } ?>
-																			<?php for ($i=count(${$var1}); $i <=17 ; $i++) { ?>
+																			<?php for ($i=count(${$var1}); $i <=25 ; $i++) { ?>
 																			<td></td>
 																			<td></td>
 																			<?php } ?>
@@ -533,13 +533,13 @@
 																				$var2 = 'min'.$y;
 																				$trgt = ${$var1}[0]+${$var2};
 																				$trgtjav = ${$var1}[0]+${$var2};
-																				for ($i=0; $i < 18; $i++) { ?>
+																				for ($i=0; $i < 26; $i++) { ?>
 																				<td colspan="2"><?php echo $trgt = $trgt-${$var2}; ?></td>
 																				<?php } ?>
 																				<script>
 																					targetKaryawan[<?= ($y+1) ?>] = [<?php 
-																					for($j=0;$j<18;$j++){
-																						if($j == 17) {
+																					for($j=0;$j<26;$j++){
+																						if($j == 25) {
 																							echo '"'.$trgtjav = ($trgtjav-${$var2}).'"';
 																						}else{
 																							echo '"'.$trgtjav = ($trgtjav-${$var2}).'", ';
@@ -554,7 +554,7 @@
 																				<td colspan="2"><?php echo $value; ?></td>
 																				<?php } ?>
 																				<!-- jika kolom ada yang kosong -->
-																				<?php for ($i=count(${$var1}); $i <18 ; $i++) { ?>
+																				<?php for ($i=count(${$var1}); $i <25 ; $i++) { ?>
 																				<td colspan="2"></td>
 																				<?php } ?>
 																				<script>
@@ -574,14 +574,20 @@
 																				<td>0</td>
 																				<td>0%</td>
 																				<?php
-																				for ($i=0; $i < 17; $i++) { ?>
+																				for ($i=0; $i < 25; $i++) { ?>
 																				<td><?php echo ${$var2}; ?></td>
+																				<?php if(0!=${$var1}[0]) 
+																				{
+																					?>
 																				<td><?php echo round(${$var2}/${$var1}[0]*100,2) ?>%</td>
+																				<?php 
+																				} else { echo "<td>0%</td>";} ?>
+
 																				<?php } ?>
 																				<script>
 																					trgTurunBln[<?= ($y+1) ?>] = ["0", <?php 
-																					for($j=0;$j<17;$j++){
-																						if($j == 16) {
+																					for($j=0;$j<25;$j++){
+																						if($j == 24) {
 																							echo '"'.${$var2}.'"';
 																						}else{
 																							echo '"'.${$var2}.'", ';
@@ -604,7 +610,7 @@
 																						} 
 																						?>%</td>
 																					<?php } ?>
-																					<?php for ($i=count(${$var1}); $i <=17 ; $i++) { ?>
+																					<?php for ($i=count(${$var1}); $i <=25 ; $i++) { ?>
 																					<td></td>
 																					<td></td>
 																					<?php } ?>
@@ -627,15 +633,24 @@
 																					<td>0%</td>
 																					<?php $trgaku = 0;
 																					$trgaku2 = 0;
-																					for ($i=0; $i < 17 ; $i++) { 
+																					for ($i=0; $i < 25 ; $i++) { 
 																						echo '<td>'.$trgaku = ($trgaku+${$var2}).'</td>';
+																						if(0!=${$var1}[0])
+																						{
+
 																						echo '<td>'.$trgaku2 = round($trgaku/${$var1}[0]*100,1).'%</td>';
+																						}
+																						else
+																						{
+																						echo '<td>0%</td>';
+																						}
+
 																					} ?>
 																					<script>
 																						trgAkumulasi[<?= ($y+1) ?>] = ["0", <?php 
 																						$trgakumulasi = 0;
-																						for($j=0;$j<17;$j++){
-																							if($j == 16) {
+																						for($j=0;$j<25;$j++){
+																							if($j == 24) {
 																								echo '"'.$trgakumulasi = ($trgakumulasi+${$var2}).'"';
 																							}else{
 																								echo '"'.$trgakumulasi = ($trgakumulasi+${$var2}).'", ';
@@ -651,9 +666,11 @@
 																					<?php for ($i=0; $i < count(${$var1})-1; $i++) { 
 																						$turun = (${$var1}[$i+1]-${$var1}[0]); ?>
 																						<td><?php echo abs($turun); ?></td>
+																						<?php if(0!=${$var1}[0]) { ?>
 																						<td><?php echo abs(round(($turun/${$var1}[0]*100),1)); ?>%</td>
+																					<?php } else { echo "<td>0%</td>";}?>
 																						<?php } ?>
-																						<?php for ($i=count(${$var1}); $i <=17 ; $i++) { ?>
+																						<?php for ($i=count(${$var1}); $i <=25 ; $i++) { ?>
 																						<td></td>
 																						<td></td>
 																						<?php } ?>

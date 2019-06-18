@@ -1312,12 +1312,12 @@ class C_Index extends CI_Controller
 			// print_r($all);exit();
 			$hitungAll = count($all);
 			$data['hitung'] = $hitungAll;
-			$bulan = array('Januari','Februari','Maret','April','Mei','Juni','Juli','Agustus');
-			$jumlah = array('6','4','4','4','4','4','6','4');
+			$bulan = array('Januari','Februari','Maret','April','Mei','Juni','Juli','Agustus','September','Oktober','November','Desember');
+			$jumlah = array('6','4','4','4','4','4','6','4','4','4','4','4');
 			$data['akhir'] = array_combine($bulan, $jumlah);
 
 			$begin = new DateTime('2019-01-01');
-			$end = new DateTime('2019-08-28');
+			$end = new DateTime('2019-12-31');
 			$data['tgl'] = new DatePeriod($begin, new DateInterval('P14D'), $end);
 
 			$begin = new DateTime('2019-01-01');
@@ -1451,7 +1451,131 @@ class C_Index extends CI_Controller
 					$hasil[$x][] = $isi;
 
 				}
-				$min =  round((1.3*$hasil[$x][0]/100),2);
+
+				if ($val >= '1' && $val <= '4' ) {
+						//$dept = 'PRODUKSI, PERSONALIA, KEUANGAN, PEMASARAN';
+						//$dept = explode(', ', $dept);
+						//$kodeDept = $dept[$val-1];
+
+						//$banyak = $this->M_index->pekerjaDepartemen($now, $kodeDept, $sqlPKL, $lokasi_kerja);
+
+						$min =  round((1.15*$hasil[$x][0]/100),2);
+					}else if ($val == '5'){
+
+						//$lokasi_kerja = "and lokasi_kerja = '01'";
+						//$kodeDept = 'PRODUKSI';
+						//$banyak = $this->M_index->pekerjaDepartemen($now, $kodeDept, $sqlPKL, $lokasi_kerja);
+
+						$min =  round((1.15*$hasil[$x][0]/100),2);
+					}else if ($val == '6'){
+						// $lokasi_kerja = "and lokasi_kerja = '02'";
+						// $kodeDept = 'PRODUKSI';
+						$min =  round((1.15*$hasil[$x][0]/100),2);
+					}else if ($val == '7'){
+						// $lokasi_kerja = "and lokasi_kerja = '01'";
+						// $kodeDept = 'PEMASARAN';
+						$min =  round((1.15*$hasil[$x][0]/100),2);
+
+					}else if ($val == '8'){
+						// $lokasi_kerja = "and lokasi_kerja not in('01','02','03')";
+						// $kodeDept = 'PEMASARAN';
+						$min =  round((1.15*$hasil[$x][0]/100),2);
+
+					}else if ($val == '9'){
+						// $kodeUnit = 'AKUNTANSI';
+						$min =  round((1.15*$hasil[$x][0]/100),2);
+					}else if ($val == '10'){
+						// $kodeUnit = 'INFORMATION & COMMUNICATION TECHNOLOGY';
+						$min =  round((1.15*$hasil[$x][0]/100),2);
+						// print_r($banyak);exit();
+					}else if ($val == '11'){
+						// $kodeUnit = 'INTERNAL AUDIT';
+						$min =  round((1.15*$hasil[$x][0]/100),2);
+					}else if ($val == '12'){
+						// $kodeUnit = 'PENGEMBANGAN SISTEM';
+						$min =  round((1.15*$hasil[$x][0]/100),2);
+					}else if ($val == '13'){
+						// $kodeUnit = 'PEMBELIAN';
+						$min =  round((1.15*$hasil[$x][0]/100),2);
+					}else if ($val == '14'){
+						$$min =  round((1.15*$hasil[$x][0]/100),2);
+					}else if ($val == '15'){
+						// $kodeUnit = 'JAKARTA';
+						$min =  round((1.15*$hasil[$x][0]/100),2);
+						// print_r($banyak);exit();
+					}else if ($val == '16'){
+						// $kodeUnit = 'MEDAN';
+						$min =  round((1.15*$hasil[$x][0]/100),2);
+					}else if ($val == '17'){
+						// $kodeUnit = 'TANJUNG KARANG';
+						$min =  round((1.15*$hasil[$x][0]/100),2);
+					}else if ($val == '18'){
+						// $kodeUnit = 'YOGYAKARTA';
+						$min =  round((1.15*$hasil[$x][0]/100),2);
+					}
+					else if ($val == '19'){
+						// $kodeUnit = 'SURABAYA';
+						$min =  round((1.15*$hasil[$x][0]/100),2);
+					}else if ($val == '20'){
+						// $kodeUnit = 'POS SAMARINDA';
+						$min =  round((1.15*$hasil[$x][0]/100),2);
+					}else if ($val == '21'){
+						// $kodeUnit = 'POS SAMPIT';
+						$min =  round((1.15*$hasil[$x][0]/100),2);
+					}else if ($val == '22'){
+						// $kodeUnit = 'SATGAS DEMO';
+						$min =  round((1.15*$hasil[$x][0]/100),2);
+					}else if ($val == '23'){
+						// $kodeUnit = 'SHOWROOM BANJARMASIN';
+						$min =  round((1.15*$hasil[$x][0]/100),2);
+					}else if ($val == '24'){
+						// $kodeUnit = 'SHOWROOM JAMBI';
+						$min =  round((1.15*$hasil[$x][0]/100),2);
+					}else if ($val == '25'){
+						// $kodeUnit = 'SHOWROOM NGANJUK';
+						$min =  round((1.15*$hasil[$x][0]/100),2);
+					}else if ($val == '26'){
+						//$kodeUnit = 'SHOWROOM PADANG';
+						$min =  round((1.15*$hasil[$x][0]/100),2);
+						// print_r($banyak);exit();
+					}else if ($val == '27'){
+						//$kodeUnit = 'SHOWROOM PALU';
+						$min =  round((1.15*$hasil[$x][0]/100),2);
+					}else if ($val == '28'){
+						//$kodeUnit = 'SHOWROOM PEKANBARU';
+						$min =  round((1.15*$hasil[$x][0]/100),2);
+					}else if ($val == '29'){
+						//$kodeUnit = 'SHOWROOM PONTIANAK';
+						$min =  round((1.15*$hasil[$x][0]/100),2);
+					}else if ($val == '30'){
+						//$kodeUnit = 'SHOWROOM SIDRAP';
+						$min =  round((1.15*$hasil[$x][0]/100),2);
+					}else if ($val == '31'){
+						//$kodeUnit = 'SHOWROOM TUGUMULYO';
+						$min =  round((1.15*$hasil[$x][0]/100),2);
+					}else if ($val == '32'){
+						//$kodeUnit = 'MAKASSAR';
+						$min =  round((1.15*$hasil[$x][0]/100),2);
+						// print_r($banyak);exit();
+					}else if ($val == '33'){
+						// Direct Labour
+					$min =  round((1.25*$hasil[$x][0]/100),2);
+					}else if ($val == '34'){
+						// InDirect Labour
+					$min =  round((1.15*$hasil[$x][0]/100),2);	
+					}else if ($val == '35'){
+
+					// 'CIVIL MAINTENANCE'; // bukan cabang tapi pakai query ini juga bisa
+					$min =  round((1.15*$hasil[$x][0]/100),2);
+					}else
+					{
+					$min =  round((1.3*$hasil[$x][0]/100),2);
+					}
+
+
+				
+				
+
 				$data['min'.$x] = $min;
 				$data['target'.$x] = $hasil[$x];
 
