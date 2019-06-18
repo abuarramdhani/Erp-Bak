@@ -740,7 +740,7 @@
 							</div>
 							<script>
 								var tgl = [<?php 
-								$jum2 = 18;
+								$jum2 = 26;
 								$a = 0;
 								foreach ($tgl as $key => $date) {
 									if(++$a === $jum2) {
