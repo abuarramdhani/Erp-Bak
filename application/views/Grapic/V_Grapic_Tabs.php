@@ -308,7 +308,7 @@
 															<?php } ?>
 
 
-															<?php for ($y=36; $y <= 37; $y++) { ?>
+															<?php for ($y=32; $y <= 33; $y++) { ?>
 													<script>
 														var inde = <?php echo $y; ?>;
 													</script>
@@ -683,7 +683,7 @@
 															<!-- div 3 -->
 															<div class="tab-pane" id="3">
 																
-																<?php for ($y=4; $y < $hitung; $y++) { 
+																<?php for ($y=4; $y < 32; $y++) { 
 																	if ($y == 13) {
 																		$y++;
 																	}
