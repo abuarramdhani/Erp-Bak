@@ -431,7 +431,7 @@ class C_Index extends CI_Controller
 		$sqlPKL = '';
 		if ($pkl) {
 			$sqlPKL = "and left(noind,1) not in('L','Z','M')";
-			$data['pkl'] = 'dengan PKL';
+			$data['pkl'] = 'Dengan PKL, Magang & TKPW';
 			$data['truePKL'] = 'true';
 		}else{
 			$sqlPKL = "and left(noind,1) not in('F','G','L','N','Q','L','Z','M')";
@@ -554,7 +554,7 @@ class C_Index extends CI_Controller
 		// $sqlPKL = '';
 		if ($pkl == 'true') {
 			$sqlPKL = "and left(noind,1) not in('L','Z','M')";
-			$data['pkl'] = 'dengan PKL';
+			$data['pkl'] = 'Dengan PKL, Magang & TKPW';
 		}else{
 			$sqlPKL = "and left(noind,1) not in('F','G','L','N','Q','L','Z','M')";
 			$data['pkl'] = '';
@@ -1289,7 +1289,7 @@ class C_Index extends CI_Controller
 		$sqlPKL = '';
 		if ($pkl) {
 			$sqlPKL = "and left(noind,1) not in('L','Z','M')";
-			$data['pkl'] = 'dengan PKL';
+			$data['pkl'] = 'Dengan PKL, Magang & TKPW';
 			$data['truePKL'] = 'true';
 		}else{
 			$sqlPKL = "and left(noind,1) not in('F','G','L','N','Q','L','Z','M')";
@@ -1302,7 +1302,7 @@ class C_Index extends CI_Controller
 		$data['submit'] = 'false';
 		if ($submit == 'true') {
 			$data['submit'] = $submit;
-			$nama =  'SEMUA, Dept. Produksi, Dept. Personalia, Dept. Keuangan, Dept. Pemasaran, Dept. Produksi - Pusat, Dept. Produksi - Tuksono, Dept. Pemasaran - Pusat, Dept. Pemasaran - Cabang / Showroom / POS, Akuntansi, ICT, IA, Pengembangan Sistem, Purchasing, Semua Data, CABANG PERWAKILAN JAKARTA, CABANG PERWAKILAN MEDAN, CABANG PERWAKILAN TANJUNG KARANG, CABANG PERWAKILAN YOGYAKARTA, CABANG PERWAKILAN SURABAYA, POS SAMARINDA, POS SAMPIT, SATGAS DEMO, SHOWROOM BANJARMASIN, SHOWROOM JAMBI, SHOWROOM NGANJUK, SHOWROOM PADANG, SHOWROOM PALU, SHOWROOM PEKANBARU, SHOWROOM PONTIANAK, SHOWROOM SIDRAP, SHOWROOM TUGUMULYO, CABANG MAKASSAR, Dept. Produksi - Operator Penunjang, Dept. Produksi - Operator Non Penunjang, Civil Maintenance, Semua Penunjang, Semua Non Penunjang';
+			$nama =  'SEMUA, Dept. Produksi, Dept. Personalia, Dept. Keuangan, Dept. Pemasaran, Dept. Produksi - Pusat, Dept. Produksi - Tuksono, Dept. Pemasaran - Pusat, Dept. Pemasaran - Cabang / Showroom / POS, Akuntansi, ICT, IA, Pengembangan Sistem, Purchasing, Semua Data, CABANG PERWAKILAN JAKARTA, CABANG PERWAKILAN MEDAN, CABANG PERWAKILAN TANJUNG KARANG, CABANG PERWAKILAN YOGYAKARTA, CABANG PERWAKILAN SURABAYA, POS SAMARINDA, POS SAMPIT, SATGAS DEMO, SHOWROOM BANJARMASIN, SHOWROOM JAMBI, SHOWROOM NGANJUK, SHOWROOM PADANG, SHOWROOM PALU, SHOWROOM PEKANBARU, SHOWROOM PONTIANAK, SHOWROOM SIDRAP, SHOWROOM TUGUMULYO, CABANG MAKASSAR, Dept. Produksi - Operator Penunjang / Direct Labour, Dept. Produksi - Operator Non Penunjang / inDirect Labour, Civil Maintenance, Semua Penunjang / Direct Labour, Semua Non Penunjang / inDirect Labour';
 			if ($val == '0') {
 				$all = array('1','2','3','4','5','6','7','8','9','10','11','12','13','14','15','16','17','18', '19', '20', '21', '23', '24', '27', '28', '29', '30', '31', '32', '33', '34', '35', '36', '37');
 					// , '26', '27', '28', '29', '30', '31', '32');
@@ -1429,18 +1429,22 @@ class C_Index extends CI_Controller
 						$banyak = $this->M_index->pekerjacabang($now, $sqlPKL, $kodeUnit);
 						// print_r($banyak);exit();
 					}else if ($val == '33'){
+						//non penunjang atau direct
 						$kode = 'and (b.jenispekerjaan=true or b.kdpekerjaan=null)';
 						$banyak = $this->M_index->pekerjaOperator($now, $sqlPKL, $kode);
 					}else if ($val == '34'){
+						//penunjang atau in-direct
 						$kode = 'and (b.jenispekerjaan=false)';
 						$banyak = $this->M_index->pekerjaOperator($now, $sqlPKL, $kode);
 					}else if ($val == '35'){
 						$kodeUnit = 'CIVIL MAINTENANCE'; // bukan cabang tapi pakai query ini juga bisa
 						$banyak = $this->M_index->pekerjacabang($now, $sqlPKL, $kodeUnit);
 					}else if ($val == '36'){
+						//non penunjang atau direct
 						$kode = 'and (b.jenispekerjaan=true or b.kdpekerjaan=null)';
 						$banyak = $this->M_index->pekerjaOperatorAll($now, $sqlPKL, $kode);
 					}else if ($val == '37'){
+						//penunjang atau in-direct
 						$kode = 'and (b.jenispekerjaan=false)';
 						$banyak = $this->M_index->pekerjaOperatorAll($now, $sqlPKL, $kode);
 					}

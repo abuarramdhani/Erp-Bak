@@ -112,6 +112,11 @@ $(document).ready(function(){
 	// 			$('#bt_export').click();
  //    	}, 5000);
 	// });	
+	$(function(){
+	    $('#divselector').change(function(){
+	      $('html,body').animate({scrollTop:$('#'+$('#divselector').val()).offset().top}, 'slow'); 
+	     })
+	});
 
 	$('.grData').change(function(){
 		var angka = $('.grData').val();

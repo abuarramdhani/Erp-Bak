@@ -65,7 +65,7 @@
 											</div>
 											<br/>
 											<div class="form-group">
-												<label for="cmbBidang" class="control-label col-lg-4">Dengan PKL</label>
+												<label for="cmbBidang" class="control-label col-lg-4">Hitung Dengan PKL, Magang & TKPW</label>
 												<div class="col-lg-4">
 													<input name="pkl" type="checkbox" class="form-control">
 												</div>
@@ -102,10 +102,13 @@
 								</div>
 								<div class="box-body">
 									<div class="container">
+										<div class="text-center">
 										<h2 style="margin-top: 10px;" class="box-title">Rekap Efisiensi SDM <?php echo $pkl; ?></h2>
+										</div>
+										
 									</div>
 									<div id="exTab2" class="container col-md-12">	
-										<ul class="nav nav-tabs text-center">
+										<!--<ul class="nav nav-tabs text-center">
 											<li class="active col-md-4">
 												<a  href="#1" data-toggle="tab">Semua Data</a>
 											</li>
@@ -115,10 +118,52 @@
 											<li class="col-md-4">
 												<a href="#3" data-toggle="tab">Detail</a>
 											</li>
-										</ul>
-										<div class="tab-content" style="width: 100%">
+										</ul>-->
+										<div class="form-group">
+										<label for="cmbPilihData" class="control-label col-lg-4 text-right">Pilih Data : </label> 
+											<div class="col-lg-6">
+											<select id="divselector" class="form-control" >
+												<option value="1"><strong>Semua Data</strong></option>
+												<option value="32">--Semua Penunjang / Direct Labour</option>
+												<option value="33">--Semua Non Penunjang / inDirect Labour</option>
+												<option value="0">Dept. Produksi</option>
+												<option value="4">--Dept. Produksi - Pusat</option>
+												<option value="5">--Dept. Produksi - Tuksono</option>
+												<option value="29">--Dept. Produksi - Operator Penunjang / Direct Labour</option>
+												<option value="30">--Dept. Produksi - Operator Non Penunjang / inDirect Labour</option>
+												<option value="1">Dept. Personalia</option>
+												<option value="31">--Civil Maintenance</option>
+												<option value="2">Dept. Keuangan</option>
+												<option value="8">--Akuntansi</option>
+												<option value="9">--ICT</option>
+												<option value="11">--Pengembangan Sistem</option>
+												<option value="12">--Purchasing</option>
+												<option value="3">Dept. Pemasaran</option>
+												<option value="6">--Dept. Pemasaran - Pusat</option>
+												<option value="7">--Dept. Pemasaran - Cabang / Showroom / POS</option>
+												<option value="14">----Jakarta</option>
+												<option value="15">----Medan</option>
+												<option value="16">----Tanjung Karang</option>
+												<option value="17">----Yogyakarta</option>
+												<option value="18">----Surabaya</option>
+												<option value="19">----Samarinda</option>
+												<option value="20">----Sampit</option>
+												<option value="21">----Banjarmasin</option>
+												<option value="22">----Jambi</option>
+												<option value="23">----Palu</option>
+												<option value="24">----Pekanbaru</option>
+												<option value="25">----Pontianak</option>
+												<option value="26">----Sidrap</option>
+												<option value="27">----Tugumulyo</option>
+												<option value="28">----Makassar</option>
+												<option value="10">Internal Audit</option>
+											</select>
+											</div>
+										</div>
+									<br>
+										<div class="container" style="width: 100%">
 											<!-- div 1 -->
-											<div class="tab-pane active" id="1">
+											<!--<div class="tab-pane active" id="1">-->
 												<form target="_blank" method="post" action="<?php echo base_url('SDM/exportGambar'); ?>">
 													<input name="SDMloop" hidden="" type="text" value="<?php echo ($hitung); ?>">
 													<input name="SDMpkl" hidden="" type="text" value="<?php echo $truePKL; ?>">
@@ -128,6 +173,7 @@
 													<script>
 														var inde = 14 ;
 													</script>
+													<div id="<?php echo $y; ?>">
 													<h3><?php $name = 'nama'.$y; echo ${$name}; ?></h3>
 													<table id="<?php echo 'SDMdivToCan'.$y; ?>" style="overflow-x: scroll; width: 100%; display: block;" class="table table-bordered table-hover text-center">
 														<thead style="border-color: black">
@@ -304,7 +350,7 @@
 															<input name="imyChartbar14" type="hidden">
 															<input name="imyChartbar214" type="hidden">
 															<button hidden type="submit" id="btSDMexport">simpan</button>
-
+															</div>										
 															<?php } ?>
 
 
@@ -312,6 +358,7 @@
 													<script>
 														var inde = <?php echo $y; ?>;
 													</script>
+													<div id="<?php echo $y; ?>">
 													<h3><?php $name = 'nama'.$y; echo ${$name}; ?></h3>
 													<table id="<?php echo 'SDMdivToCan'.$y; ?>" style="overflow-x: scroll; width: 100%; display: block;" class="table table-bordered table-hover text-center">
 														<thead style="border-color: black">
@@ -488,18 +535,19 @@
 															<input name="imyChartbar" type="hidden">
 															<input name="imyChartbar2" type="hidden">
 															<button hidden type="submit" id="btSDMexport">simpan</button>
-
+															</div>															
 															<?php } ?>
 
 														</form>
-													</div>
+													<!--</div>-->
 													<!-- div 2 -->
-													<div class="tab-pane" id="2">
+													<!--<div class="tab-pane" id="2">-->
 														
 														<?php for ($y=0; $y < 4; $y++) { ?>
 														<script>
 															var inde = <?= 4 ?> ;
 														</script>
+														<div id="<?php echo $y; ?>">	
 														<h3><?php $name = 'nama'.$y; echo ${$name}; ?></h3>
 														<table id="<?php echo 'SDMdivToCan'.$y; ?>" style="overflow-x: scroll; width: 100%; display: block;" class="table table-bordered table-hover text-center">
 															<thead style="border-color: black">
@@ -675,13 +723,13 @@
 																<input name="imyChart" type="hidden">
 																<input name="imyChartbar" type="hidden">
 																<input name="imyChartbar2" type="hidden">
-																
+																</div>
 
 																<?php } ?>
 																
-															</div>
+															<!--</div>-->
 															<!-- div 3 -->
-															<div class="tab-pane" id="3">
+															<!--<div class="tab-pane" id="3">-->
 																
 																<?php for ($y=4; $y < 32; $y++) { 
 																	if ($y == 13) {
@@ -691,6 +739,7 @@
 																	<script>
 																		var inde = <?= $hitung ?> ;
 																	</script>
+																	<div id="<?php echo $y; ?>">
 																	<h3><?php $name = 'nama'.$y; echo ${$name}; ?></h3>
 																	<table id="<?php echo 'SDMdivToCan'.$y; ?>" style="overflow-x: scroll; width: 100%; display: block;" class="table table-bordered table-hover text-center">
 																		<thead style="border-color: black">
@@ -886,6 +935,7 @@
 																			<input name="imyChart" type="hidden">
 																			<input name="imyChartbar" type="hidden">
 																			<input name="imyChartbar2" type="hidden">
+																			</div>
 																			<?php } ?>
 																			
 																		</div>
@@ -893,7 +943,7 @@
 																</div>
 																<?php } ?>
 															</form>
-														</div>
+														<!--</div> end div tab-->
 													</div>
 												</div>
 											</div>
@@ -934,6 +984,25 @@
 										echo '"'.$date->format("m.d").'", ';
 									}
 								} ?>];
+							</script>
+							<button onclick="topFunction()" id="myBtn" style="display: none;  position: fixed;  bottom: 20px;  right: 30px;  z-index: 99;  font-size: 18px;  border: none; outline: none; background-color: red;  color: white; cursor: pointer; padding: 15px; border-radius: 4px;" title="Go to top">Click Go To Top</button>
+							<script>
+							// When the user scrolls down 20px from the top of the document, show the button
+							window.onscroll = function() {scrollFunction()};
+
+							function scrollFunction() {
+							  if (document.body.scrollTop > 20 || document.documentElement.scrollTop > 20) {
+							    document.getElementById("myBtn").style.display = "block";
+							  } else {
+							    document.getElementById("myBtn").style.display = "none";
+							  }
+							}
+
+							// When the user clicks on the button, scroll to the top of the document
+							function topFunction() {
+							  document.body.scrollTop = 0;
+							  document.documentElement.scrollTop = 0;
+							}
 							</script>
 							<script src="<?php echo base_url('assets/plugins/html2canvas/html2canvas.min.js');?>"></script>
 							<script type="text/javascript" src="<?php echo base_url('assets/js/customGR.js');?>"></script>
