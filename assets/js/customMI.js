@@ -6,13 +6,11 @@ $(document).ready(function(){
 	$('#btnMICancel').click(function() {
 		$('#poLinesTable').remove()
 	})
-
 	$('.tblMI').DataTable({
 		"paging":   true,
 		"ordering": true,
 		"info":     false
 	});
-
 	$('span[class~="statusInvoice"]').each(function(){
 	var status = $(this).attr('value');
 		if(status == 2){
@@ -26,7 +24,6 @@ $(document).ready(function(){
 			$(this).parent().parent().closest('tr').find('button[name="checkbtndisable[]"]').toggleClass('btn-primary btn-info');
 		}
 	})
-
 	$(document).on('ifChanged','.submit_checking_all', function() {
 		if ($('.submit_checking_all').iCheck('update')[0].checked) {
 			$('.chckInvoice').each(function () {
@@ -42,9 +39,7 @@ $(document).ready(function(){
 				$(this).iCheck('uncheck');
 			});
 		};
-
 	})
-
 	$('#btnSubmitChecking').click(function(){
 		var jml = 0;
 		var arrId = [];
@@ -63,18 +58,14 @@ $(document).ready(function(){
 		// $('#content1').slideDown();
 		// $('#content2').slideUp();
 	});
-
 	// $('.inv_amount').moneyFormat();
 	// $('.po_amount').moneyFormat();
-
 	//formatting input di tax invoice number
 	$("input[name='tax_invoice_number']").attr({ maxLength : 19 }).keyup(function() {
 		$(this).val($(this).val().replace(/^(\d{3})(\d{3})(\d{2})(\d)+$/, "$1.$2-$3.$4"));
 	});
-
 	$('#slcVendor').val($('#slcVendor').attr('value')).trigger('change');
 	
-
 	var $po_num_btn = $('#slcPoNumberMonitoring');
 	$('.btn_search').on('mousedown', function () {
 		$(this).data('inputFocused', $po_num_btn.is(":focus"));
@@ -85,22 +76,18 @@ $(document).ready(function(){
 			$po_num_btn.focus();
 		}
 	});
-
 	//Untuk fungsi separator ribuan.
 	$("input[id='invoice_amounttttt']").change(function() {
     	var invAmount = $(this).moneyFormat();
     	// var invAmount = $(this).val($(this).val().moneyFormat());
     	// var invAmount = $(this).val($(this).val().replace( /[^0-9]+/g, "").replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,'));
 	});
-
 	$("input[id='nominalDpp']").keyup(function() {
     	var NomDpp = $(this).val($(this).val().replace( /[^0-9]+/g, "").replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,'));
 	});
-
 	// $("input[id='AmountOtomatis']").keyup(function() {
  //    	var AmountOto = $(this).val($(this).val().replace( /[^0-9]+/g, "").replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,'));
 	// });
-
 	//untuk total po amount di halaman add invoice
 	$(document).on('input click', '.qty_invoice, .del_row, input[id="invoice_amounttttt"]', function(){
 		var total=0;
@@ -114,28 +101,22 @@ $(document).ready(function(){
 		});	
 		$('#AmountOtomatis').html(total).moneyFormat();
 		 // $('#AmountOtomatis').html(total).replace( /[^0-9]+/g, "").replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,');
-
 		if (total == invAmount) {
 			$('#invoice_amounttttt, #AmountOtomatis').css("background-color","white");
 		}else{
 			$('#invoice_amounttttt, #AmountOtomatis').css("background-color","red");
 		}
 	});
-
 	
 	var num=0;
 	$('#btnSearchPoNumber').click(function(){
 		$('#tablePoLines').html("<center><img id='loading12' style='margin-top: 2%;' src='"+baseurl+"assets/img/gif/loading12.gif'/><br /><p style='color:#575555;'>Searching Data</p></center><br />");
-
 		var po_no = $('#slcPoNumberMonitoring').val();
-
 		var line_number_sent = '0';
-
 		$('.line_number').each(function(){
 			var linenumval = $(this).val();
 			line_number_sent += (', '+linenumval);
 		});
-
 		$.ajax({
 			type: "POST",
 			url: baseurl+"AccountPayables/MonitoringInvoice/Invoice/getPoNumber/"+po_no,
@@ -158,7 +139,6 @@ $(document).ready(function(){
 						var html ='';
 						if (this.checked) {
 							var id_num = $(this).val();
-
 							html += '<tr id="row-1">';
 							$('tr#'+id_num).each(function(){
 								num++;
@@ -201,16 +181,12 @@ $(document).ready(function(){
 		format: 'dd-M-yyyy',
 		autoclose: true,
 	});
-
 	$('#btnHapus').click(function(){
 		alert('Yakin untuk menghapusnya ?');
 	});
-
 	$('table#tbListInvoice tbody tr, #tabel_detail_purchasing tbody tr, #finishInvoice tbody tr, #tabel_invoice tbody tr, #unprocessTabel tbody tr, #rejectinvoice tbody tr').each(function(){
 		var po_amount = $(this).find('.po_amount').text();
 		var inv_amount = $(this).find('.inv_amount').text();
-
-
 		if (po_amount == inv_amount) {
 			$(this).find('.po_amount').css("background-color","white");
 			$(this).find('.inv_amount').css("background-color","white");
@@ -219,12 +195,9 @@ $(document).ready(function(){
 			$(this).find('.inv_amount').css("background-color","red").css("color","white");
 		}
 	})
-
-
 	$('table#tbInvoiceEdit tbody tr, #editlinespo tbody tr, #tbInvoiceKasie tbody tr, #invoiceKasiePembelian tbody tr, #filInvoice tbody tr, #detailUnprocessed tbody tr, #processedinvoice tbody tr').each(function(){
 		var po_amount = $('.po_amount').text();
 		var inv_amount = $('#invoice_amount').text();
-
 		if (po_amount == inv_amount) {
 			$('.po_amount').css("background-color","white");
 			$('#invoice_amount').css("background-color","white");
@@ -233,11 +206,9 @@ $(document).ready(function(){
 			$('#invoice_amount').css("background-color","red").css("color","white");
 		}
 	});
-
 	$('table#tbInvoice tbody tr, #rejectdetail tbody tr').each(function(){
 		var po_amount = $('.po_amount').text();
 		var inv_amount = $('#invoice_amount').text();
-
 		if (po_amount == inv_amount) {
 			$('.po_amount').css("background-color","white");
 			$('#invoice_amount').css("background-color","white");
@@ -246,11 +217,9 @@ $(document).ready(function(){
 			$('#invoice_amount').css("background-color","red").css("color","white");
 		}
 	});
-
 	$('table#tbInvoiceEdit tbody tr, #editlinespo tbody tr').each(function(){
 		var po_amount = $('.po_amount').text();
 		var inv_amount = $('#invoice_amount').val();
-
 		if (po_amount == inv_amount) {
 			$('.po_amount').css("background-color","white").css("color","black");
 			$('#invoice_amount').css("background-color","white").css("color","black");
@@ -259,12 +228,9 @@ $(document).ready(function(){
 			$('#invoice_amount').css("background-color","red").css("color","white");
 		}
 	});
-
 	
-
 	$('#btnGenerate').click(function(){
 		var invoice_date = $('#invoice_dateid').val();
-
 		$.ajax({
 			type: 'POST',
 			url: baseurl+"AccountPayables/MonitoringInvoice/Invoice/GenerateInvoice/",
@@ -277,20 +243,15 @@ $(document).ready(function(){
 			}
 		});
 	});
-
-
 	$('.RejectByKasiePurc').click(function(){
 		alert('NOT OK = ALASAN HARUS DI ISI');
 	});
-
 	$("input[name='tax_input']").attr({ maxLength : 19 }).keyup(function() {
 		$(this).val($(this).val().replace(/^(\d{3})(\d{3})(\d{2})(\d)+$/, "$1.$2-$3.$4"));
 	});
-
 	$('.saveTaxInvoice').click(function(){
 		var tax_invoice_number = $(this).siblings('.tax_id').val();
 		var id = $(this).siblings('.text_invoice_id').val();
-
 		$.ajax({
 			type: 'POST',
 			url: baseurl+"AccountPayables/MonitoringInvoice/Invoice/tax_invoice_number/",
@@ -303,7 +264,6 @@ $(document).ready(function(){
 			}
 		});
 	});
-
 	$('#btnToFinance').click(function(){
 		var status = $('.statusInvoice').attr('value');
 		var arrId = [];
@@ -333,7 +293,6 @@ $(document).ready(function(){
 			})
 		}
 	});
-
 	// new edit icheck testing chamber
 	
 	
@@ -342,23 +301,16 @@ $(document).ready(function(){
 		if (jasa == 'JASA NON EKSPEDISI TRAKTOR' || jasa == 'JASA EKSPEDISI TRAKTOR') {
 			$('#jenis_jasa').show();
 		}
-
 	})
-
 	
-
 });
-
 var simpanHtml = new Array();
 function prosesInvMI(th){
 	var invoice_id = $(th).attr('data-id');
 	var proses = $(th).attr('value');
 	var prnt = $(th).parent();
-
 	// prnt.html('<img src="'+baseurl+'assets/img/gif/loading5.gif" id="gambarloading">');
-
 	simpanHtml[invoice_id]= $('.ganti_'+invoice_id+'').html();
-
 	if (proses == 2) {
 		prnt.html('<span class="btn btn-success" style="cursor: none;font-size: 10pt;" >Diterima<input type="hidden" name="hdnTerima[]" class="hdnProses" value="'+invoice_id+'"></span><a class="btn btn-sm btn-primary" onclick="reloadTerima($(this));"><i class="fa fa-refresh"></i></a>');
 	} else {
@@ -368,24 +320,19 @@ function prosesInvMI(th){
 		alert('Alasan harus diisi');
 	}
 }
-
 function reloadTerima(th) {
 	var id = $(th).parent().attr('data-id');
 	if (id) {
 		$('.ganti_'+id+'').html(simpanHtml[id]);
 	}
 }
-
 function reloadTolak(th) {
 	var id = $(th).parent().attr('data-id');
 	$('.ganti_'+id+'').html(simpanHtml[id]);
 	$('.reason_finance_class'+id+'').remove();
 }
-
 function deleteLinePO(th){
-
 	var id = $(th).attr('data-id');
-
 	$.ajax({
 		url: baseurl+'AccountPayables/MonitoringInvoice/Invoice/deletePOLine/'+id,
 		data: {
@@ -398,7 +345,6 @@ function deleteLinePO(th){
 		}
 	});
 }
-
 function chkAllAddMonitoringInvoice() {
 	if ($('.chkAllAddMonitoringInvoice').is(':checked')) {
 		$('.addMonitoringInvoice').each(function () {
@@ -410,7 +356,6 @@ function chkAllAddMonitoringInvoice() {
 		});
 	};
 }
-
 function bukaMOdal(elm){
 	var id = $(elm).attr('inv');
 	$.ajax({
@@ -428,21 +373,15 @@ function bukaMOdal(elm){
 		}
 	});
 }
-
 function PresTab(th)
 {
 	$(th).parent().parent().next().find('.qty_invoice').focus();
 }
-
 function rejectAction(th){
 	var invoice_id = $(th).attr('data-id');
-
 }
-
-
 function submitUlangKasieGudang(th) {
 	var batch_number = th.attr('value');
-
 	$.ajax({
 		type: "POST",
 		url: baseurl+"AccountPayables/MonitoringInvoice/InvoiceKasie/submitUlangKasieGudang",
@@ -454,7 +393,6 @@ function submitUlangKasieGudang(th) {
 		}
 	})
 }
-
 function approveInvoice(th) {
 	var invoice_id = $('#invoice_id').val();
 	var status = th.attr('value');
@@ -467,7 +405,6 @@ function approveInvoice(th) {
 	var jenis_jasa = $('#jenis_jasaSlc').val();
 	var nominal_dpp = $('#nominal_dpp').val();
 	var info = $('#info').val();
-
 	$.ajax({
 		type: "POST",
 		url: baseurl+"AccountPayables/MonitoringInvoice/InvoiceKasie/approveInvoice",
@@ -490,8 +427,6 @@ function approveInvoice(th) {
 		}
 	})
 } 
-
-
 function btnApproveNew(th){		
 	var btn = th.parent().parent().closest('tr').find('button.statusInvoice');
 	var isChecked = btn.html();
@@ -521,13 +456,10 @@ function btnApproveNew(th){
 	    	})
 		}	  
 }
-
-
 function btn_cari(th) {
 	var id = th.attr('invoice');
 	var win = window.open(baseurl+'Monitoring/TrackingInvoice/DetailInvoice/'+id);
 }
-
 // function btn_back(th) {
 // 	var win = window.open(baseurl+'Monitoring/TrackingInvoice');
 // }
