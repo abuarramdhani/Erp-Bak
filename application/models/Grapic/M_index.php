@@ -106,6 +106,19 @@ class M_index extends CI_Model
 		return $query->result_array();
 	}
 
+	public function pekerjanoncivil($now, $sqlPKL, $kodeUnit)
+	{
+		$sql = "select count(a.noind) 
+		from hrd_khs.tpribadi a left join hrd_khs.tseksi b on a.kodesie=b.kodesie 
+		where (keluar = '0' or (tglkeluar >= '2019-$now' and keluar = '1')) 
+		and b.unit != '-' and (masukkerja >= '1990-01-01') and left(b.kodesie,1)='4' and rtrim(b.seksi) not like '%$kodeUnit%' 
+		$sqlPKL
+		 order by 1;";
+				// echo $sql;exit();
+		$query = $this->personalia->query($sql);
+		return $query->result_array();
+	}
+
 	public function pekerjaOperator($now, $sqlPKL, $kode)
 	{
 		$sql = "select
