@@ -120,6 +120,7 @@ class C_MonitoringPresensiPengaturan extends CI_Controller
 				$device_sn 		=	$this->input->post('txtDeviceSN', TRUE);
 				$device_ip 		=	$this->input->post('txtIPDevice', TRUE);
 				$device_port 	=	$this->input->post('txtPortDevice', TRUE);
+				$device_name 	=	$this->input->post('txtNameDevice', TRUE);
 				$inisial_lokasi =	$this->input->post('txtInisialLokasi', TRUE);
 				$office 		=	$this->input->post('cmbLokasiKerja');
 				$voip 		=	$this->input->post('txtVoipPs');
@@ -131,6 +132,7 @@ class C_MonitoringPresensiPengaturan extends CI_Controller
 										'device_sn'				=>	$device_sn,
 										'device_ip'				=>	$device_ip,
 										'device_port'			=>	$device_port,
+										'device_name'			=>	$device_name,
 										'inisial_lokasi'		=>	$inisial_lokasi,
 										'office'				=>	$office,
 										'last_update_timestamp'	=>	$this->general->ambilWaktuEksekusi(),
