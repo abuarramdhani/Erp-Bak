@@ -59,7 +59,25 @@
 	    								                 sum (pkj.lembur) as jam_kerja_seksi
 	    								from
 
-	    								(select tdtp.*, (select	(coalesce(sum(tlembur.jml_lembur), 0) * 60)
+	    								(select tdtp.tanggal,
+												tdtp.noind,
+												tdtp.masuk,
+												tdtp.keluar,
+												tdtp.kd_ket,
+												tdtp.total_lembur,
+												case when (select count(*) from hrd_khs.tmutasi tmut where tmut.noind=tdtp.noind)> 0 then
+													(select case when tdtp.tanggal::date < tmut.tglberlaku then
+														kodesielm
+													else
+														kodesiebr
+													end
+											from hrd_khs.tmutasi tmut
+											where tmut.noind=tdtp.noind
+											and tmut.tglberlaku >= '$tanggalAwalRekap'
+											order by tglberlaku limit 1) 
+											else
+												tdtp.kodesie
+											end as kodesie, (select	(coalesce(sum(tlembur.jml_lembur), 0) * 60)
 	    								from	\"Presensi\".tlembur as tlembur
 	    								                         join hrd_khs.tpribadi tpribadi on tpribadi.noind=tlembur.noind
 	    								where 	(tlembur.tanggal=tdtp.tanggal and tpribadi.lokasi_kerja like '%$lokasiKerja%' and tlembur.noind like 'A%')
@@ -74,7 +92,25 @@
 	    								                 sum (pkj.lembur) as jam_kerja_seksi
 	    								from
 
-	    								(select tdtp.*, (select	(coalesce(sum(tlembur.jml_lembur), 0) * 60)
+	    								(select tdtp.tanggal,
+												tdtp.noind,
+												tdtp.masuk,
+												tdtp.keluar,
+												tdtp.kd_ket,
+												tdtp.total_lembur,
+												case when (select count(*) from hrd_khs.tmutasi tmut where tmut.noind=tdtp.noind)> 0 then
+													(select case when tdtp.tanggal::date < tmut.tglberlaku then
+														kodesielm
+													else
+														kodesiebr
+													end
+											from hrd_khs.tmutasi tmut
+											where tmut.noind=tdtp.noind
+											and tmut.tglberlaku >= '$tanggalAwalRekap'
+											order by tglberlaku limit 1) 
+											else
+												tdtp.kodesie
+											end as kodesie, (select	(coalesce(sum(tlembur.jml_lembur), 0) * 60)
 	    								from	\"Presensi\".tlembur as tlembur
 	    											 join hrd_khs.tpribadi tpribadi on tpribadi.noind=tlembur.noind
 	    								where 	(tlembur.tanggal=tdtp.tanggal and tpribadi.lokasi_kerja like '%$lokasiKerja%' and tlembur.noind like 'B%')
@@ -89,7 +125,25 @@
 	    								                 sum (pkj.lembur) as jam_kerja_seksi
 	    								from
 
-	    								(select tdtp.*, (select	(coalesce(sum(tlembur.jml_lembur), 0) * 60)
+	    								(select tdtp.tanggal,
+												tdtp.noind,
+												tdtp.masuk,
+												tdtp.keluar,
+												tdtp.kd_ket,
+												tdtp.total_lembur,
+												case when (select count(*) from hrd_khs.tmutasi tmut where tmut.noind=tdtp.noind)> 0 then
+													(select case when tdtp.tanggal::date < tmut.tglberlaku then
+														kodesielm
+													else
+														kodesiebr
+													end
+											from hrd_khs.tmutasi tmut
+											where tmut.noind=tdtp.noind
+											and tmut.tglberlaku >= '$tanggalAwalRekap'
+											order by tglberlaku limit 1) 
+											else
+												tdtp.kodesie
+											end as kodesie, (select	(coalesce(sum(tlembur.jml_lembur), 0) * 60)
 	    								from	\"Presensi\".tlembur as tlembur
 	    											 join hrd_khs.tpribadi tpribadi on tpribadi.noind=tlembur.noind
 	    								where 	(tlembur.tanggal=tdtp.tanggal and tpribadi.lokasi_kerja like '%$lokasiKerja%' and tlembur.noind like 'C%')
@@ -104,7 +158,25 @@
 	    								                 sum (pkj.lembur) as jam_kerja_seksi
 	    								from
 
-	    								(select tdtp.*, (select	(coalesce(sum(tlembur.jml_lembur), 0) * 60)
+	    								(select tdtp.tanggal,
+												tdtp.noind,
+												tdtp.masuk,
+												tdtp.keluar,
+												tdtp.kd_ket,
+												tdtp.total_lembur,
+												case when (select count(*) from hrd_khs.tmutasi tmut where tmut.noind=tdtp.noind)> 0 then
+													(select case when tdtp.tanggal::date < tmut.tglberlaku then
+														kodesielm
+													else
+														kodesiebr
+													end
+											from hrd_khs.tmutasi tmut
+											where tmut.noind=tdtp.noind
+											and tmut.tglberlaku >= '$tanggalAwalRekap'
+											order by tglberlaku limit 1) 
+											else
+												tdtp.kodesie
+											end as kodesie, (select	(coalesce(sum(tlembur.jml_lembur), 0) * 60)
 	    								from	\"Presensi\".tlembur as tlembur
 	    											 join hrd_khs.tpribadi tpribadi on tpribadi.noind=tlembur.noind
 	    								where 	(tlembur.tanggal=tdtp.tanggal and tpribadi.lokasi_kerja like '%$lokasiKerja%' and tlembur.noind like 'D%')
@@ -119,7 +191,25 @@
 	    								                 sum (pkj.lembur) as jam_kerja_seksi
 	    								from
 
-	    								(select tdtp.*, (select	(coalesce(sum(tlembur.jml_lembur), 0) * 60)
+	    								(select tdtp.tanggal,
+												tdtp.noind,
+												tdtp.masuk,
+												tdtp.keluar,
+												tdtp.kd_ket,
+												tdtp.total_lembur,
+												case when (select count(*) from hrd_khs.tmutasi tmut where tmut.noind=tdtp.noind)> 0 then
+													(select case when tdtp.tanggal::date < tmut.tglberlaku then
+														kodesielm
+													else
+														kodesiebr
+													end
+											from hrd_khs.tmutasi tmut
+											where tmut.noind=tdtp.noind
+											and tmut.tglberlaku >= '$tanggalAwalRekap'
+											order by tglberlaku limit 1) 
+											else
+												tdtp.kodesie
+											end as kodesie, (select	(coalesce(sum(tlembur.jml_lembur), 0) * 60)
 	    								from	\"Presensi\".tlembur as tlembur
 	    											 join hrd_khs.tpribadi tpribadi on tpribadi.noind=tlembur.noind
 	    								where 	(tlembur.tanggal=tdtp.tanggal and tpribadi.lokasi_kerja like '%$lokasiKerja%' and tlembur.noind like 'E%')
@@ -134,7 +224,25 @@
 	    								                 sum (pkj.lembur) as jam_kerja_seksi
 	    								from
 
-	    								(select tdtp.*, (select	(coalesce(sum(tlembur.jml_lembur), 0) * 60)
+	    								(select tdtp.tanggal,
+												tdtp.noind,
+												tdtp.masuk,
+												tdtp.keluar,
+												tdtp.kd_ket,
+												tdtp.total_lembur,
+												case when (select count(*) from hrd_khs.tmutasi tmut where tmut.noind=tdtp.noind)> 0 then
+													(select case when tdtp.tanggal::date < tmut.tglberlaku then
+														kodesielm
+													else
+														kodesiebr
+													end
+											from hrd_khs.tmutasi tmut
+											where tmut.noind=tdtp.noind
+											and tmut.tglberlaku >= '$tanggalAwalRekap'
+											order by tglberlaku limit 1) 
+											else
+												tdtp.kodesie
+											end as kodesie, (select	(coalesce(sum(tlembur.jml_lembur), 0) * 60)
 	    									from	\"Presensi\".tlembur as tlembur
 	    											 join hrd_khs.tpribadi tpribadi on tpribadi.noind=tlembur.noind
 	    									where 	(tlembur.tanggal=tdtp.tanggal and tpribadi.lokasi_kerja like '%$lokasiKerja%' and tlembur.noind like 'F%')
@@ -149,7 +257,25 @@
 	    								                 sum (pkj.lembur) as jam_kerja_seksi
 	    								from
 
-	    								(select tdtp.*, (select	(coalesce(sum(tlembur.jml_lembur), 0) * 60)
+	    								(select tdtp.tanggal,
+												tdtp.noind,
+												tdtp.masuk,
+												tdtp.keluar,
+												tdtp.kd_ket,
+												tdtp.total_lembur,
+												case when (select count(*) from hrd_khs.tmutasi tmut where tmut.noind=tdtp.noind)> 0 then
+													(select case when tdtp.tanggal::date < tmut.tglberlaku then
+														kodesielm
+													else
+														kodesiebr
+													end
+											from hrd_khs.tmutasi tmut
+											where tmut.noind=tdtp.noind
+											and tmut.tglberlaku >= '$tanggalAwalRekap'
+											order by tglberlaku limit 1) 
+											else
+												tdtp.kodesie
+											end as kodesie, (select	(coalesce(sum(tlembur.jml_lembur), 0) * 60)
 	    										from	\"Presensi\".tlembur as tlembur
 	    											 join hrd_khs.tpribadi tpribadi on tpribadi.noind=tlembur.noind
 	    										where 	(tlembur.tanggal=tdtp.tanggal and tpribadi.lokasi_kerja like '%$lokasiKerja%'  and tlembur.noind like 'G%')
@@ -164,7 +290,25 @@
 	    								                 sum (pkj.lembur) as jam_kerja_seksi
 	    								from
 
-	    								(select tdtp.*, (select	(coalesce(sum(tlembur.jml_lembur), 0) * 60)
+	    								(select tdtp.tanggal,
+												tdtp.noind,
+												tdtp.masuk,
+												tdtp.keluar,
+												tdtp.kd_ket,
+												tdtp.total_lembur,
+												case when (select count(*) from hrd_khs.tmutasi tmut where tmut.noind=tdtp.noind)> 0 then
+													(select case when tdtp.tanggal::date < tmut.tglberlaku then
+														kodesielm
+													else
+														kodesiebr
+													end
+											from hrd_khs.tmutasi tmut
+											where tmut.noind=tdtp.noind
+											and tmut.tglberlaku >= '$tanggalAwalRekap'
+											order by tglberlaku limit 1) 
+											else
+												tdtp.kodesie
+											end as kodesie, (select	(coalesce(sum(tlembur.jml_lembur), 0) * 60)
 	    											from	\"Presensi\".tlembur as tlembur
 	    											 join hrd_khs.tpribadi tpribadi on tpribadi.noind=tlembur.noind
 	    											where 	(tlembur.tanggal=tdtp.tanggal and tpribadi.lokasi_kerja like '%$lokasiKerja%' and tlembur.noind like 'H%')
@@ -179,7 +323,25 @@
 	    								                 sum (pkj.lembur) as jam_kerja_seksi
 	    								from
 
-	    								(select tdtp.*, (select	(coalesce(sum(tlembur.jml_lembur), 0) * 60)
+	    								(select tdtp.tanggal,
+												tdtp.noind,
+												tdtp.masuk,
+												tdtp.keluar,
+												tdtp.kd_ket,
+												tdtp.total_lembur,
+												case when (select count(*) from hrd_khs.tmutasi tmut where tmut.noind=tdtp.noind)> 0 then
+													(select case when tdtp.tanggal::date < tmut.tglberlaku then
+														kodesielm
+													else
+														kodesiebr
+													end
+											from hrd_khs.tmutasi tmut
+											where tmut.noind=tdtp.noind
+											and tmut.tglberlaku >= '$tanggalAwalRekap'
+											order by tglberlaku limit 1) 
+											else
+												tdtp.kodesie
+											end as kodesie, (select	(coalesce(sum(tlembur.jml_lembur), 0) * 60)
 	    								from	\"Presensi\".tlembur as tlembur
 	    											 join hrd_khs.tpribadi tpribadi on tpribadi.noind=tlembur.noind
 	    								where 	(tlembur.tanggal=tdtp.tanggal and tpribadi.lokasi_kerja like '%$lokasiKerja%' and tlembur.noind like 'J%')
@@ -194,7 +356,25 @@
 	    								                 sum (pkj.lembur) as jam_kerja_seksi
 	    								from
 
-	    								(select tdtp.*, (select	(coalesce(sum(tlembur.jml_lembur), 0) * 60)
+	    								(select tdtp.tanggal,
+												tdtp.noind,
+												tdtp.masuk,
+												tdtp.keluar,
+												tdtp.kd_ket,
+												tdtp.total_lembur,
+												case when (select count(*) from hrd_khs.tmutasi tmut where tmut.noind=tdtp.noind)> 0 then
+													(select case when tdtp.tanggal::date < tmut.tglberlaku then
+														kodesielm
+													else
+														kodesiebr
+													end
+											from hrd_khs.tmutasi tmut
+											where tmut.noind=tdtp.noind
+											and tmut.tglberlaku >= '$tanggalAwalRekap'
+											order by tglberlaku limit 1) 
+											else
+												tdtp.kodesie
+											end as kodesie, (select	(coalesce(sum(tlembur.jml_lembur), 0) * 60)
 	    								from	\"Presensi\".tlembur as tlembur
 	    											 join hrd_khs.tpribadi tpribadi on tpribadi.noind=tlembur.noind
 	    								where 	(tlembur.tanggal=tdtp.tanggal and tpribadi.lokasi_kerja like '%$lokasiKerja%' and (tlembur.noind like 'K%' or tlembur.noind like 'P%'))
@@ -209,7 +389,25 @@
 	    								                 sum (pkj.lembur) as jam_kerja_seksi
 	    								from
 
-	    								(select tdtp.*, (select	(coalesce(sum(tlembur.jml_lembur), 0) * 60)
+	    								(select tdtp.tanggal,
+												tdtp.noind,
+												tdtp.masuk,
+												tdtp.keluar,
+												tdtp.kd_ket,
+												tdtp.total_lembur,
+												case when (select count(*) from hrd_khs.tmutasi tmut where tmut.noind=tdtp.noind)> 0 then
+													(select case when tdtp.tanggal::date < tmut.tglberlaku then
+														kodesielm
+													else
+														kodesiebr
+													end
+											from hrd_khs.tmutasi tmut
+											where tmut.noind=tdtp.noind
+											and tmut.tglberlaku >= '$tanggalAwalRekap'
+											order by tglberlaku limit 1) 
+											else
+												tdtp.kodesie
+											end as kodesie, (select	(coalesce(sum(tlembur.jml_lembur), 0) * 60)
 	    									from	\"Presensi\".tlembur as tlembur
 	    									join hrd_khs.tpribadi tpribadi on tpribadi.noind=tlembur.noind
 	    									where 	(tlembur.tanggal=tdtp.tanggal and tpribadi.lokasi_kerja like '%$lokasiKerja%'  and tlembur.noind like 'Q%')
@@ -19284,7 +19482,25 @@
 						                 sum (pkj.lembur) as jam_kerja_seksi
 						from
 
-						(select tdtp.*, (select	(coalesce(sum(tlembur.jml_lembur), 0) * 60)
+						(select tdtp.tanggal,
+												tdtp.noind,
+												tdtp.masuk,
+												tdtp.keluar,
+												tdtp.kd_ket,
+												tdtp.total_lembur,
+												case when (select count(*) from hrd_khs.tmutasi tmut where tmut.noind=tdtp.noind)> 0 then
+													(select case when tdtp.tanggal::date < tmut.tglberlaku then
+														kodesielm
+													else
+														kodesiebr
+													end
+											from hrd_khs.tmutasi tmut
+											where tmut.noind=tdtp.noind
+											and tmut.tglberlaku >= '$tanggalAwalRekap'
+											order by tglberlaku limit 1) 
+											else
+												tdtp.kodesie
+											end as kodesie, (select	(coalesce(sum(tlembur.jml_lembur), 0) * 60)
 						from	\"Presensi\".tlembur as tlembur
 						                         join hrd_khs.tpribadi tpribadi on tpribadi.noind=tlembur.noind
 						where 	(tlembur.tanggal=tdtp.tanggal and tpribadi.lokasi_kerja like '%$lokasiKerja%' and tlembur.kd_lembur='004' and tlembur.noind like 'A%')
@@ -19299,7 +19515,25 @@
 						                 sum (pkj.lembur) as jam_kerja_seksi
 						from
 
-						(select tdtp.*, (select	(coalesce(sum(tlembur.jml_lembur), 0) * 60)
+						(select tdtp.tanggal,
+												tdtp.noind,
+												tdtp.masuk,
+												tdtp.keluar,
+												tdtp.kd_ket,
+												tdtp.total_lembur,
+												case when (select count(*) from hrd_khs.tmutasi tmut where tmut.noind=tdtp.noind)> 0 then
+													(select case when tdtp.tanggal::date < tmut.tglberlaku then
+														kodesielm
+													else
+														kodesiebr
+													end
+											from hrd_khs.tmutasi tmut
+											where tmut.noind=tdtp.noind
+											and tmut.tglberlaku >= '$tanggalAwalRekap'
+											order by tglberlaku limit 1) 
+											else
+												tdtp.kodesie
+											end as kodesie, (select	(coalesce(sum(tlembur.jml_lembur), 0) * 60)
 						from	\"Presensi\".tlembur as tlembur
 									 join hrd_khs.tpribadi tpribadi on tpribadi.noind=tlembur.noind
 						where 	(tlembur.tanggal=tdtp.tanggal and tpribadi.lokasi_kerja like '%$lokasiKerja%' and tlembur.kd_lembur='004' and tlembur.noind like 'B%')
@@ -19314,7 +19548,25 @@
 						                 sum (pkj.lembur) as jam_kerja_seksi
 						from
 
-						(select tdtp.*, (select	(coalesce(sum(tlembur.jml_lembur), 0) * 60)
+						(select tdtp.tanggal,
+												tdtp.noind,
+												tdtp.masuk,
+												tdtp.keluar,
+												tdtp.kd_ket,
+												tdtp.total_lembur,
+												case when (select count(*) from hrd_khs.tmutasi tmut where tmut.noind=tdtp.noind)> 0 then
+													(select case when tdtp.tanggal::date < tmut.tglberlaku then
+														kodesielm
+													else
+														kodesiebr
+													end
+											from hrd_khs.tmutasi tmut
+											where tmut.noind=tdtp.noind
+											and tmut.tglberlaku >= '$tanggalAwalRekap'
+											order by tglberlaku limit 1) 
+											else
+												tdtp.kodesie
+											end as kodesie, (select	(coalesce(sum(tlembur.jml_lembur), 0) * 60)
 						from	\"Presensi\".tlembur as tlembur
 									 join hrd_khs.tpribadi tpribadi on tpribadi.noind=tlembur.noind
 						where 	(tlembur.tanggal=tdtp.tanggal and tpribadi.lokasi_kerja like '%$lokasiKerja%' and tlembur.kd_lembur='004' and tlembur.noind like 'C%')
@@ -19329,7 +19581,25 @@
 						                 sum (pkj.lembur) as jam_kerja_seksi
 						from
 
-						(select tdtp.*, (select	(coalesce(sum(tlembur.jml_lembur), 0) * 60)
+						(select tdtp.tanggal,
+												tdtp.noind,
+												tdtp.masuk,
+												tdtp.keluar,
+												tdtp.kd_ket,
+												tdtp.total_lembur,
+												case when (select count(*) from hrd_khs.tmutasi tmut where tmut.noind=tdtp.noind)> 0 then
+													(select case when tdtp.tanggal::date < tmut.tglberlaku then
+														kodesielm
+													else
+														kodesiebr
+													end
+											from hrd_khs.tmutasi tmut
+											where tmut.noind=tdtp.noind
+											and tmut.tglberlaku >= '$tanggalAwalRekap'
+											order by tglberlaku limit 1) 
+											else
+												tdtp.kodesie
+											end as kodesie, (select	(coalesce(sum(tlembur.jml_lembur), 0) * 60)
 						from	\"Presensi\".tlembur as tlembur
 									 join hrd_khs.tpribadi tpribadi on tpribadi.noind=tlembur.noind
 						where 	(tlembur.tanggal=tdtp.tanggal and tpribadi.lokasi_kerja like '%$lokasiKerja%' and tlembur.kd_lembur='004' and tlembur.noind like 'D%')
@@ -19344,7 +19614,25 @@
 						                 sum (pkj.lembur) as jam_kerja_seksi
 						from
 
-						(select tdtp.*, (select	(coalesce(sum(tlembur.jml_lembur), 0) * 60)
+						(select tdtp.tanggal,
+												tdtp.noind,
+												tdtp.masuk,
+												tdtp.keluar,
+												tdtp.kd_ket,
+												tdtp.total_lembur,
+												case when (select count(*) from hrd_khs.tmutasi tmut where tmut.noind=tdtp.noind)> 0 then
+													(select case when tdtp.tanggal::date < tmut.tglberlaku then
+														kodesielm
+													else
+														kodesiebr
+													end
+											from hrd_khs.tmutasi tmut
+											where tmut.noind=tdtp.noind
+											and tmut.tglberlaku >= '$tanggalAwalRekap'
+											order by tglberlaku limit 1) 
+											else
+												tdtp.kodesie
+											end as kodesie, (select	(coalesce(sum(tlembur.jml_lembur), 0) * 60)
 						from	\"Presensi\".tlembur as tlembur
 									 join hrd_khs.tpribadi tpribadi on tpribadi.noind=tlembur.noind
 						where 	(tlembur.tanggal=tdtp.tanggal and tpribadi.lokasi_kerja like '%$lokasiKerja%' and tlembur.kd_lembur='004' and tlembur.noind like 'E%')
@@ -19359,7 +19647,25 @@
 						                 sum (pkj.lembur) as jam_kerja_seksi
 						from
 
-						(select tdtp.*, (select	(coalesce(sum(tlembur.jml_lembur), 0) * 60)
+						(select tdtp.tanggal,
+												tdtp.noind,
+												tdtp.masuk,
+												tdtp.keluar,
+												tdtp.kd_ket,
+												tdtp.total_lembur,
+												case when (select count(*) from hrd_khs.tmutasi tmut where tmut.noind=tdtp.noind)> 0 then
+													(select case when tdtp.tanggal::date < tmut.tglberlaku then
+														kodesielm
+													else
+														kodesiebr
+													end
+											from hrd_khs.tmutasi tmut
+											where tmut.noind=tdtp.noind
+											and tmut.tglberlaku >= '$tanggalAwalRekap'
+											order by tglberlaku limit 1) 
+											else
+												tdtp.kodesie
+											end as kodesie, (select	(coalesce(sum(tlembur.jml_lembur), 0) * 60)
 							from	\"Presensi\".tlembur as tlembur
 									 join hrd_khs.tpribadi tpribadi on tpribadi.noind=tlembur.noind
 							where 	(tlembur.tanggal=tdtp.tanggal and tpribadi.lokasi_kerja like '%$lokasiKerja%' and tlembur.kd_lembur='004' and tlembur.noind like 'F%')
@@ -19374,7 +19680,25 @@
 						                 sum (pkj.lembur) as jam_kerja_seksi
 						from
 
-						(select tdtp.*, (select	(coalesce(sum(tlembur.jml_lembur), 0) * 60)
+						(select tdtp.tanggal,
+												tdtp.noind,
+												tdtp.masuk,
+												tdtp.keluar,
+												tdtp.kd_ket,
+												tdtp.total_lembur,
+												case when (select count(*) from hrd_khs.tmutasi tmut where tmut.noind=tdtp.noind)> 0 then
+													(select case when tdtp.tanggal::date < tmut.tglberlaku then
+														kodesielm
+													else
+														kodesiebr
+													end
+											from hrd_khs.tmutasi tmut
+											where tmut.noind=tdtp.noind
+											and tmut.tglberlaku >= '$tanggalAwalRekap'
+											order by tglberlaku limit 1) 
+											else
+												tdtp.kodesie
+											end as kodesie, (select	(coalesce(sum(tlembur.jml_lembur), 0) * 60)
 								from	\"Presensi\".tlembur as tlembur
 									 join hrd_khs.tpribadi tpribadi on tpribadi.noind=tlembur.noind
 								where 	(tlembur.tanggal=tdtp.tanggal and tpribadi.lokasi_kerja like '%$lokasiKerja%' and tlembur.kd_lembur='004' and tlembur.noind like 'G%')
@@ -19389,7 +19713,25 @@
 						                 sum (pkj.lembur) as jam_kerja_seksi
 						from
 
-						(select tdtp.*, (select	(coalesce(sum(tlembur.jml_lembur), 0) * 60)
+						(select tdtp.tanggal,
+												tdtp.noind,
+												tdtp.masuk,
+												tdtp.keluar,
+												tdtp.kd_ket,
+												tdtp.total_lembur,
+												case when (select count(*) from hrd_khs.tmutasi tmut where tmut.noind=tdtp.noind)> 0 then
+													(select case when tdtp.tanggal::date < tmut.tglberlaku then
+														kodesielm
+													else
+														kodesiebr
+													end
+											from hrd_khs.tmutasi tmut
+											where tmut.noind=tdtp.noind
+											and tmut.tglberlaku >= '$tanggalAwalRekap'
+											order by tglberlaku limit 1) 
+											else
+												tdtp.kodesie
+											end as kodesie, (select	(coalesce(sum(tlembur.jml_lembur), 0) * 60)
 									from	\"Presensi\".tlembur as tlembur
 									 join hrd_khs.tpribadi tpribadi on tpribadi.noind=tlembur.noind
 									where 	(tlembur.tanggal=tdtp.tanggal and tpribadi.lokasi_kerja like '%$lokasiKerja%' and tlembur.kd_lembur='004' and tlembur.noind like 'H%')
@@ -19404,7 +19746,25 @@
 						                 sum (pkj.lembur) as jam_kerja_seksi
 						from
 
-						(select tdtp.*, (select	(coalesce(sum(tlembur.jml_lembur), 0) * 60)
+						(select tdtp.tanggal,
+												tdtp.noind,
+												tdtp.masuk,
+												tdtp.keluar,
+												tdtp.kd_ket,
+												tdtp.total_lembur,
+												case when (select count(*) from hrd_khs.tmutasi tmut where tmut.noind=tdtp.noind)> 0 then
+													(select case when tdtp.tanggal::date < tmut.tglberlaku then
+														kodesielm
+													else
+														kodesiebr
+													end
+											from hrd_khs.tmutasi tmut
+											where tmut.noind=tdtp.noind
+											and tmut.tglberlaku >= '$tanggalAwalRekap'
+											order by tglberlaku limit 1) 
+											else
+												tdtp.kodesie
+											end as kodesie, (select	(coalesce(sum(tlembur.jml_lembur), 0) * 60)
 						from	\"Presensi\".tlembur as tlembur
 									 join hrd_khs.tpribadi tpribadi on tpribadi.noind=tlembur.noind
 						where 	(tlembur.tanggal=tdtp.tanggal and tpribadi.lokasi_kerja like '%$lokasiKerja%' and tlembur.kd_lembur='004' and tlembur.noind like 'J%')
@@ -19419,7 +19779,25 @@
 						                 sum (pkj.lembur) as jam_kerja_seksi
 						from
 
-						(select tdtp.*, (select	(coalesce(sum(tlembur.jml_lembur), 0) * 60)
+						(select tdtp.tanggal,
+												tdtp.noind,
+												tdtp.masuk,
+												tdtp.keluar,
+												tdtp.kd_ket,
+												tdtp.total_lembur,
+												case when (select count(*) from hrd_khs.tmutasi tmut where tmut.noind=tdtp.noind)> 0 then
+													(select case when tdtp.tanggal::date < tmut.tglberlaku then
+														kodesielm
+													else
+														kodesiebr
+													end
+											from hrd_khs.tmutasi tmut
+											where tmut.noind=tdtp.noind
+											and tmut.tglberlaku >= '$tanggalAwalRekap'
+											order by tglberlaku limit 1) 
+											else
+												tdtp.kodesie
+											end as kodesie, (select	(coalesce(sum(tlembur.jml_lembur), 0) * 60)
 						from	\"Presensi\".tlembur as tlembur
 									 join hrd_khs.tpribadi tpribadi on tpribadi.noind=tlembur.noind
 						where 	(tlembur.tanggal=tdtp.tanggal and tpribadi.lokasi_kerja like '%$lokasiKerja%' and tlembur.kd_lembur='004' and (tlembur.noind like 'K%' or tlembur.noind like 'P%'))
@@ -19434,7 +19812,25 @@
 						                 sum (pkj.lembur) as jam_kerja_seksi
 						from
 
-						(select tdtp.*, (select	(coalesce(sum(tlembur.jml_lembur), 0) * 60)
+						(select tdtp.tanggal,
+												tdtp.noind,
+												tdtp.masuk,
+												tdtp.keluar,
+												tdtp.kd_ket,
+												tdtp.total_lembur,
+												case when (select count(*) from hrd_khs.tmutasi tmut where tmut.noind=tdtp.noind)> 0 then
+													(select case when tdtp.tanggal::date < tmut.tglberlaku then
+														kodesielm
+													else
+														kodesiebr
+													end
+											from hrd_khs.tmutasi tmut
+											where tmut.noind=tdtp.noind
+											and tmut.tglberlaku >= '$tanggalAwalRekap'
+											order by tglberlaku limit 1) 
+											else
+												tdtp.kodesie
+											end as kodesie, (select	(coalesce(sum(tlembur.jml_lembur), 0) * 60)
 							from	\"Presensi\".tlembur as tlembur
 							join hrd_khs.tpribadi tpribadi on tpribadi.noind=tlembur.noind
 							where 	(tlembur.tanggal=tdtp.tanggal and tpribadi.lokasi_kerja like '%$lokasiKerja%' and tlembur.kd_lembur='004' and tlembur.noind like 'Q%')
