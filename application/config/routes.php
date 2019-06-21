@@ -2520,6 +2520,26 @@ $route['MasterPekerja/PerhitunganPesangon/(:any)/(:any)'] = 'MasterPekerja/Perhi
  
  $route['MonitoringLppbAkuntansi/Finish'] = 'MonitoringLppbAkuntansi/C_monitoringlppbakuntansi/Finish';
  $route['MonitoringLppbAkuntansi/Finish/(:any)/(:any)'] = 'MonitoringLppbAkuntansi/C_monitoringlppbakuntansi/$1/$2';
+
+ // ------------------------------------------------- Monitoring LPPB Penerimaan ---------------------------------------------//
+$route['MonitoringLppbPenerimaan'] 								= 'MonitoringLppbPenerimaan/C_Index';
+
+$route['MonitoringLppbPenerimaan/Umum'] 						= 'MonitoringLppbPenerimaan/MainMenu/C_Umum';
+$route['MonitoringLppbPenerimaan/Umum/(:any)'] 					= 'MonitoringLppbPenerimaan/MainMenu/C_Umum/$1';
+$route['MonitoringLppbPenerimaan/Umum/(:any)/(:any)'] 			= 'MonitoringLppbPenerimaan/MainMenu/C_Umum/$1/$2';
+
+$route['MonitoringLppbPenerimaan/Khusus'] 						= 'MonitoringLppbPenerimaan/MainMenu/C_Khusus';
+$route['MonitoringLppbPenerimaan/Khusus/(:any)'] 				= 'MonitoringLppbPenerimaan/MainMenu/C_Khusus/$1';
+$route['MonitoringLppbPenerimaan/Khusus/(:any)/(:any)'] 		= 'MonitoringLppbPenerimaan/MainMenu/C_Khusus/$1/$2';
+
+$route['MonitoringLppbPenerimaan/KhususImport'] 				= 'MonitoringLppbPenerimaan/MainMenu/C_KhususImport';
+$route['MonitoringLppbPenerimaan/KhususImport/(:any)'] 			= 'MonitoringLppbPenerimaan/MainMenu/C_KhususImport/$1';
+$route['MonitoringLppbPenerimaan/KhususImport/(:any)/(:any)'] 	= 'MonitoringLppbPenerimaan/MainMenu/C_KhususImport/$1/$2';
+
+$route['MonitoringLppbPenerimaan/Import'] 						= 'MonitoringLppbPenerimaan/MainMenu/C_Import';
+$route['MonitoringLppbPenerimaan/Import/(:any)'] 				= 'MonitoringLppbPenerimaan/MainMenu/C_Import/$1';
+$route['MonitoringLppbPenerimaan/Import/(:any)/(:any)'] 		= 'MonitoringLppbPenerimaan/MainMenu/C_Import/$1/$2';
+
  
  //------------------------------------ TRACKING LPPB ----------------------------
  $route['TrackingLppb'] = 'TrackingLppb/C_trackinglppb';
