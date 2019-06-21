@@ -61,6 +61,7 @@
 													<?php echo "'".$device['device_sn']."'";?>,
 													<?php echo "'".$device['device_ip']."'";?>,
 													<?php echo "'".$device['device_port']."'";?>,
+													<?php echo "'".$device['device_name']."'";?>,
 													<?php echo "'".$device['inisial_lokasi']."'";?>,
 													<?php echo "'".$device['id_lokasi']."'";?>,
 													<?php echo "'".$device['office']."'";?>,
@@ -241,6 +242,12 @@
 							<label for="PresenceManagement-MonitoringPresensi-PengaturanEdit-txtPortDevice" class="control-label col-lg-4">Device Port</label>
 							<div class="col-lg-4">
 								<input type="number" class="form-control" id="PresenceManagement-MonitoringPresensi-PengaturanEdit-txtPortDevice" name="txtPortDevice" value="5005" />
+							</div>
+						</div>
+						<div class="form-group">
+							<label for="PresenceManagement-MonitoringPresensi-PengaturanEdit-txtNameDevice" class="control-label col-lg-4">Device Name</label>
+							<div class="col-lg-4">
+								<input type="text" class="form-control" id="PresenceManagement-MonitoringPresensi-PengaturanEdit-txtNameDevice" name="txtNameDevice" />
 							</div>
 						</div>
 						<div class="form-group">
