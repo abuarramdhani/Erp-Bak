@@ -189,9 +189,7 @@ function searchNumberLppb(th){
 				var num = 0;
 				$('#addLppbNumber').click(function(){
 					var inputLppb = ['po_header_id[]','organization_id[]','organization_code[]', 'lppb_number[]', 'vendor_name[]', 'tanggal_lppb[]', 'po_number[]','status_lppb[]'];
-					// var ct = $('#tabelNomorLPPB').children('tr').length;
-					// var row='';
-					// var td = '';
+					
 					if (response != false) {
 						$('.chkAllLppbNumber').each(function(){
 							var html = '';
@@ -446,7 +444,6 @@ function saveLPPBNumber(th){
 		arry.push(lppb_number);
 	});
 	str_arry = arry.join();
-	// console.log(str_arry);
 
 	var arry2 = [];
 	$('input[class~="organization_id[]').each(function(){
@@ -462,19 +459,14 @@ function saveLPPBNumber(th){
 	})
 	str_arry3 = arry3.join();
 
-	// var arry4 = [];
-	// $('input[class~="line_num[]').each(function(){
-	// 	var line_num = $(this).val();
-	// 	arry4.push(line_num);
-	// })
-	// str_arry4 = arry4.join();
-
 	var arry5 = [];
 	$('input[class~="po_header_id[]').each(function(){
 		var po_header_id = $(this).val();
 		arry5.push(po_header_id);
 	})
 	str_arry5 = arry5.join();
+
+	// console.log(str_arry5);
 
 	$.ajax({
 		type: "post",
@@ -485,12 +477,11 @@ function saveLPPBNumber(th){
 			lppb_number: str_arry,
 			organization_id: str_arry2,
 			po_number: str_arry3,
-			// line_num: str_arry4,
 			po_header_id: str_arry5
 		},
 		// dataType: "json",
 		success: function(response){
-			// console.log(lppb_info,id_gudang,lppb_number,organization_id,po_number,po_header_id);
+			// console.log(lppb_info,id_gudang,str_arry,str_arry2,str_arry3,str_arry5);
 			window.location.reload();
 			alert('Data sudah ditambahkan');
 		}
@@ -552,6 +543,7 @@ function saveEditLPPBNumber(th){
 		},
 		success: function(response){
 			window.location.reload();
+			alert('Data sudah disimpan');
 			// console.log(lppb_number,organization_id,po_number,po_header_id,batch_number,id_lppb);
 		}
 	})
@@ -578,7 +570,6 @@ function searchLppb(th){
 					"info":     false	
 				});
 			var id_lppb = $('.lppb_id').length;
-			// console.log(id_lppb);
 			var num = id_lppb;
 
 			$('#addLppbNumber').click(function(){
