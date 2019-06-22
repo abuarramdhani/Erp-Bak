@@ -1,4 +1,4 @@
-<form method="post" action="<?php echo base_url('Monitoring/TrackingInvoice/PoNumberMonitoring') ?>">
+<form action="<?php echo base_url('Monitoring/TrackingInvoice/exportExcelTrackingInvoice') ?>" method="post">
 <section class="content">
 	<div class="inner" >
 		<div class="row">
@@ -9,6 +9,9 @@
 							<span><b>Tracking Invoice</b></span>
 						</div>
 					</div>
+								<div class="col-lg-12">
+									<button type="submit" class="btn btn-success pull-right" id="btnExport">Export Excel</button>
+								</div>
 				</div>
 				<br />
 				<div class="row">

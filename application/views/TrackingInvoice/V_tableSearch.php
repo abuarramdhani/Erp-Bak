@@ -40,9 +40,9 @@
 		</tr>
 		<?php $no++;}} ?>
 		<!-- <?php 
-		echo "<pre>";
-		print_r($invoice);
-		exit();
+		// echo "<pre>";
+		// print_r($invoice);
+		// exit();
 		?> -->
 	</tbody>
 </table>
