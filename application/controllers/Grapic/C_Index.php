@@ -1302,9 +1302,9 @@ class C_Index extends CI_Controller
 		$data['submit'] = 'false';
 		if ($submit == 'true') {
 			$data['submit'] = $submit;
-			$nama =  'SEMUA, Dept. Produksi, Dept. Personalia, Dept. Keuangan, Dept. Pemasaran, Dept. Produksi - Pusat, Dept. Produksi - Tuksono, Dept. Pemasaran - Pusat, Dept. Pemasaran - Cabang / Showroom / POS, Akuntansi, ICT, IA, Pengembangan Sistem, Purchasing, Semua Data, CABANG PERWAKILAN JAKARTA, CABANG PERWAKILAN MEDAN, CABANG PERWAKILAN TANJUNG KARANG, CABANG PERWAKILAN YOGYAKARTA, CABANG PERWAKILAN SURABAYA, POS SAMARINDA, POS SAMPIT, SATGAS DEMO, SHOWROOM BANJARMASIN, SHOWROOM JAMBI, SHOWROOM NGANJUK, SHOWROOM PADANG, SHOWROOM PALU, SHOWROOM PEKANBARU, SHOWROOM PONTIANAK, SHOWROOM SIDRAP, SHOWROOM TUGUMULYO, CABANG MAKASSAR, Dept. Produksi - Operator Penunjang / Direct Labour, Dept. Produksi - Operator Non Penunjang / inDirect Labour, Civil Maintenance, Semua Penunjang / Direct Labour, Semua Non Penunjang / inDirect Labour';
+			$nama =  'SEMUA, Dept. Produksi, Dept. Personalia, Dept. Keuangan, Dept. Pemasaran, Dept. Produksi - Pusat, Dept. Produksi - Tuksono, Dept. Pemasaran - Pusat, Dept. Pemasaran - Cabang / Showroom / POS, Akuntansi, ICT, IA, Pengembangan Sistem, Purchasing, Semua Data, CABANG PERWAKILAN JAKARTA, CABANG PERWAKILAN MEDAN, CABANG PERWAKILAN TANJUNG KARANG, CABANG PERWAKILAN YOGYAKARTA, CABANG PERWAKILAN SURABAYA, POS SAMARINDA, POS SAMPIT, SATGAS DEMO, SHOWROOM BANJARMASIN, SHOWROOM JAMBI, SHOWROOM NGANJUK, SHOWROOM PADANG, SHOWROOM PALU, SHOWROOM PEKANBARU, SHOWROOM PONTIANAK, SHOWROOM SIDRAP, SHOWROOM TUGUMULYO, CABANG MAKASSAR, Dept. Produksi - Operator Penunjang / Direct Labour, Dept. Produksi - Operator Non Penunjang / inDirect Labour, Civil Maintenance, Semua Penunjang / Direct Labour, Semua Non Penunjang / inDirect Labour, Dept. Personalia Non Civil Maintenance';
 			if ($val == '0') {
-				$all = array('1','2','3','4','5','6','7','8','9','10','11','12','13','14','15','16','17','18', '19', '20', '21', '23', '24', '27', '28', '29', '30', '31', '32', '33', '34', '35', '36', '37');
+				$all = array('1','2','3','4','5','6','7','8','9','10','11','12','13','14','15','16','17','18', '19', '20', '21', '23', '24', '27', '28', '29', '30', '31', '32', '33', '34', '35', '36', '37','38');
 					// , '26', '27', '28', '29', '30', '31', '32');
 			}else{
 				$all[] = $val;
@@ -1447,6 +1447,10 @@ class C_Index extends CI_Controller
 						//penunjang atau in-direct
 						$kode = 'and (b.jenispekerjaan=false)';
 						$banyak = $this->M_index->pekerjaOperatorAll($now, $sqlPKL, $kode);
+					}else if ($val == '38'){
+						//non civil maintenance
+						$kodeUnit = 'CIVIL MAINTENANCE'; // bukan cabang tapi pakai query ini juga bisa
+						$banyak = $this->M_index->pekerjanoncivil($now, $sqlPKL, $kodeUnit);
 					}
 
 					$isi = '0';
@@ -1582,6 +1586,9 @@ class C_Index extends CI_Controller
 					// Semua Penunjang
 					$min =  round((1.25*$hasil[$x][0]/100),2);
 					}else if ($val == '37'){
+					// Semua Non Penunjang
+					$min =  round((1.15*$hasil[$x][0]/100),2);
+					}else if ($val == '38'){
 					// Semua Non Penunjang
 					$min =  round((1.15*$hasil[$x][0]/100),2);
 					}else
