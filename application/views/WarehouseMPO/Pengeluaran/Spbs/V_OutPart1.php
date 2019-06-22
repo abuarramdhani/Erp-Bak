@@ -1,33 +1,3 @@
-<script type="text/javascript">
-function getNomorCar(){
-    console.log('Deskripsi Error');
-    $.ajax({
-        url: baseurl + "MonitoringBarangGudang/Pengeluaran/Car",
-        dataType:'json',
-        beforeSend: function(){
-
-        },
-        success: function(result){
-            console.log(result);
-
-            $('#"nomorMobil').val(result);
-        },
-        error: function(XMLHttpRequest, textStatus, errorThrown) {
-            $.toaster(textStatus + ' | ' + errorThrown, name, 'danger');
-        }
-    });
-}
-</script>
-
-<style type="text/css">
-body { height: 1000px; }
-#header-fixed { 
-    position: fixed; 
-    padding-top: 0px; display:none;
-    background-color:white;
-}
-
-</style>
 <section class="content">
     <div class="inner">
         <div class="row">
@@ -174,37 +144,36 @@ echo isset($compile) ? base_url('MonitoringBarangGudang/Pengeluaran/Filter/'.$co
                                     <div class="table">
                                         <div class="panel panel-default">
                                             <div class="panel-body">
-                                                <div class="table" style="overflow-x:scroll;max-width:100%;max-height: 80vh;">
+                                                <div class="table" style="overflow-x:scroll;">
                                                     <table class="table table-bordered table-hover text-center"  style="width: 1900px;padding-bottom: 0" name="tblOutPart1" id="tblOutPart1">
-                                                       <thead style="position:sticky;top:0;">
+                                                       <thead>
                                                             <tr class="bg-primary">
-                                                                <th  class="bg-primary" style="position:sticky;top:0;" width="30px" rowspan="2">No</th>
-                                                                <th  class="bg-primary" style="position:sticky;top:0;" width="50px" rowspan="2">Edit</th>
-                                                                <th  class="bg-primary" style="position:sticky;top:0;" width="250px" rowspan="2">Nama Subkont</th>
-                                                                <th  class="bg-primary" style="position:sticky;top:0;" width="100px" rowspan="2">No Mobil</th>
-                                                                <th  class="bg-primary" style="position:sticky;top:0;" width="70px" rowspan="2">No SPBS</th>
-                                                                <th  class="bg-primary" style="position:sticky;top:0;" width="100px" rowspan="2">No Job</th>
-                                                                <th  class="bg-primary" style="position:sticky;top:0;" width="100px" rowspan="2">Tgl SPBS Dibuat</th>
-                                                                <th  class="bg-primary" style="position:sticky;top:0;" width="100px" rowspan="2">Tgl Diterima PPB</th>
-                                                                <th  class="bg-primary" style="position:sticky;top:0;" width="100px" rowspan="2">Tgl Kirim</th>
-                                                                <th  class="bg-primary" style="position:sticky;top:0;" width="150px" rowspan="2">Kode Komponen</th>
-                                                                <th  class="bg-primary" style="position:sticky;top:0;" width="300px" rowspan="2">Nama Komponen</th>
-                                                                <th  class="bg-primary" style="position:sticky;top:0;" width="100px" colspan="2">QTY</th>
-                                                                <th  class="bg-primary" style="position:sticky;top:0;" width="40px" rowspan="2">UOM</th>
-                                                                <th  class="bg-primary" style="position:sticky;top:0;" width="100px" rowspan="2">Subinventory</th>
-                                                                <th  class="bg-primary" style="position:sticky;top:0;" width="100px" colspan="2">Jam</th>
-                                                                <th  class="bg-primary" style="position:sticky;top:0;" width="60px" rowspan="2">Lama (m : s)</th>
-                                                                <th  class="bg-primary" style="position:sticky;top:0;" width="200px" rowspan="2">Tanggal Transact</th>
-                                                                <th  class="bg-primary" style="position:sticky;top:0;" width="200px" rowspan="2">Keterangan</th>
+                                                                <th width="30px" rowspan="2">No</th>
+                                                                <th width="50px" rowspan="2">Edit</th>
+                                                                <th width="250px" rowspan="2">Nama Subkont</th>
+                                                                <th width="100px" rowspan="2">No Mobil</th>
+                                                                <th width="70px" rowspan="2">No SPBS</th>
+                                                                <th width="100px" rowspan="2">No Job</th>
+                                                                <th width="100px" rowspan="2">Tgl SPBS Dibuat</th>
+                                                                <th width="100px" rowspan="2">Tgl Diterima PPB</th>
+                                                                <th width="100px" rowspan="2">Tgl Kirim</th>
+                                                                <th width="150px" rowspan="2">Kode Komponen</th>
+                                                                <th width="300px" rowspan="2">Nama Komponen</th>
+                                                                <th width="100px" colspan="2">QTY</th>
+                                                                <th width="40px" rowspan="2">UOM</th>
+                                                                <th width="100px" rowspan="2">Subinventory</th>
+                                                                <th width="100px" colspan="2">Jam</th>
+                                                                <th width="60px" rowspan="2">Lama (m : s)</th>
+                                                                <th width="200px" rowspan="2">Tanggal Transact</th>
+                                                                <th width="200px" rowspan="2">Keterangan</th>
                                                             </tr>
                                                             <tr class="bg-primary">
-                                                                <th class="bg-primary" style="position:sticky;top:38.5px;border-top: 1px solid red;">Minta</th>
-                                                                <th class="bg-primary" style="position:sticky;top:38.5px;border-top: 1px solid red;">Kirim</th>
-                                                                <th class="bg-primary" style="position:sticky;top:38.5px;border-top: 1px solid red;">Mulai</th>
-                                                                <th class="bg-primary" style="position:sticky;top:38.5px;border-top: 1px solid red;">Selesai</th>
+                                                                <th>Minta</th>
+                                                                <th>Kirim</th>
+                                                                <th>Mulai</th>
+                                                                <th>Selesai</th>
                                                             </tr>
                                                         </thead>
-                                                        <tbody>
                                                         <?php
                                                             $qty_kirim = 0;
                                                             $qty_minta = 0;
@@ -219,10 +188,12 @@ echo isset($compile) ? base_url('MonitoringBarangGudang/Pengeluaran/Filter/'.$co
 
                                                                 $qty_minta += $all['QTY_DIMINTA'];
 
+                                                                
+
                                                                 if (empty($all['TRANSACTION_DATE'])) {
-                                                                    $style = 'background-color:#c1382e;color:white';
+                                                                    $style = 'background-color:#f71c0c;color:white';
                                                                 }else{
-                                                                    $style = 'background-color:#69dd49 ;color:black';
+                                                                    $style = 'background-color:#51f922 ;color:black';
                                                                 }
 
                                                                 if($all['KETERANGAN'] == 'B'){
@@ -236,9 +207,10 @@ echo isset($compile) ? base_url('MonitoringBarangGudang/Pengeluaran/Filter/'.$co
                                                     }
 
                                                         ?>
+                                                        <tbody>
                                                             <tr style="<?php echo $style; ?>">
                                                                 <td><?php echo $no++; ?></td>
-                                                                <td><button type="button" class="btn btn-info btn-sm" data-toggle="modal" data-target="#Modalku<?php echo $all['NO_SPBS']; ?>">Edit</button></td>
+<td><a href="<?php echo base_url('MonitoringBarangGudang/Pengeluaran/Edit/'); ?>" class="btn btn-sm btn-success">Edit</a></td>
                                                                 <td style="text-align: left;"><?php echo $all['NAMA_SUBKON']; ?></td>
                                                                 <td><?php echo $all['NO_MOBIL']; ?></td>
                                                                 <td><?php echo $all['NO_SPBS']; ?></td>
@@ -259,8 +231,8 @@ echo isset($compile) ? base_url('MonitoringBarangGudang/Pengeluaran/Filter/'.$co
                                                                 <td><?php echo $all['TRANSACTION_DATE']; ?></td>
                                                                 <td><?php echo $all['KETERANGAN']; ?></td>
                                                             </tr>
-                                                        <?php } ?>
                                                         </tbody>
+                                                        <?php } ?>
                                                     </table>
                                                     <table class="table text-center" style="width: 1700px;padding: 0">
                                                             <tr class="bg-default">
@@ -271,8 +243,6 @@ echo isset($compile) ? base_url('MonitoringBarangGudang/Pengeluaran/Filter/'.$co
                                                                 <td width="400px"></td>
                                                                 <!-- <td width="60px"><b><?php echo sprintf('%02d:%02d', (int) $lama, fmod($lama, 1) * 60); ?></b></td> -->
                                                             </tr>
-                                                    </table>
-                                                    <table class="table text-center" style="width: 1700px;padding: 0">
                                                             <tr class="bg-default">
                                                                 <td width="1200px"></td>
                                                                 <td width="750px" style="text-align: left;"><b>RERATA</b></td>
@@ -282,8 +252,6 @@ echo isset($compile) ? base_url('MonitoringBarangGudang/Pengeluaran/Filter/'.$co
                                                                 <!-- <td width="60px"><b><?php echo sprintf('%02d:%02d', (int) $lama, fmod($lama, 1) * 60); ?></b></td> -->
                                                             </tr>
                                                     </table>
-
-                                              
                                                 </div>
                                             </div>
                                         </div>
@@ -298,60 +266,5 @@ echo isset($compile) ? base_url('MonitoringBarangGudang/Pengeluaran/Filter/'.$co
             </div>
         </div>
     </div>
-
-<!-- Modal -->
-<?php foreach ($outpartAll as $all) : ?>
-<div class="modal fade" id="Modalku<?php echo $all['NO_SPBS']; ?>" tabindex="1" role="dialog" aria-labelledby="judulModal" aria-hidden="true">
-  <div class="modal-dialog" role="document">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h3 class="box-header with border" id="formModalLabel">Ubah Data</h3>
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-          <span aria-hidden="true">&times;</span>
-        </button>
-      </div>
-      
-      <div class="modal-body">
-       <!-- <form action="<?=base_url('MonitoringBarangGudang/Pengeluaran/Update')?>" method="post"> -->
-        <form action="<?=base_url('MonitoringBarangGudang/Pengeluaran/insertData')?>" method="post">
-            <input type="hidden" name="spbs" id="spbs" value="<?= $all['NO_SPBS']?>">
-            <div class="form-group">
-                <label for="kirimDate">Tangal Kirim</label>
-                <input type="date" class="form-control" id="kirimDate" name="kirimDate" placeholder="<?php echo $all['TGL_KIRIM']; ?>">
-            </div>
-            <div class="form-group">
-                <label for="nomorMobil">Nomor Mobil</label>
-                <select>
-                    <?php foreach ($NO_MOBIL as $key => $nm) { ?>
-                         <option><?=$nm['NO_MOBIL']?></option>
-                    <?php } ?>
-                   
-                </select>
-                <!-- <option id="nomorMobil" name="nomorMobil" onchange="getNomorCar();"></option> -->
-                <!--input type="text" class="form-control" id="nomorMobil" name="nomorMobil" placeholder="<?php echo $all['NO_MOBIL']; ?>"-->
-
-            </div>
-            <div class="form-group">
-                <label for="jamMulai">Jam Mulai</label>
-                <input type="number" class="form-control" id="jamMulai" name="jamMulai" placeholder="<?php echo $all['JAM_MULAI']; ?>">
-            </div>
-            <div class="form-group">
-                <label for="jamAkhir">Jam Selesai</label>
-                <input type="number" class="form-control" id="jamAkhir" name="jamAkhir" placeholder="<?php echo $all['JAM_SELESAI']; ?>">
-            </div>
-        </div>
-
-      <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-        <button type="submit" class="btn btn-primary">Ubah Data</button>
-      </div>
-    </form>
-    </div>
-  </div>
-</div>
-<?php endforeach;?>
-
-
-
 </div>
 </section>

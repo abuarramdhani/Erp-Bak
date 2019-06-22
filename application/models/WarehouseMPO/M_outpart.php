@@ -10,6 +10,28 @@ class M_outpart extends CI_Model {
         $this->oracle = $this->load->database('oracle', true);
     }
 
+    function gantiData($NO_SPBS, $INVENTORY_ITEM_ID) {
+      $NO_SPBS = $this->input->post('no_spbs');
+      $INVENTORY_ITEM_ID = $this->input->post('inventory_item_id');
+      $TGL_MULAI = $this->input->post('tgl_mulai');
+      $TGL_SELESAI = $this->input->post('tgl_selesai');
+      $NO_MOBIL = $this->input->post('no_mobil');
+      $data = array(
+         'no_spbs'=>$NO_SPBS,
+         'inventory_item_id'=>$INVENTORY_ITEM_ID,
+         'tgl_mulai'=>$TGL_MULAI,
+         'tgl_selesai'=>$TGL_SELESAI,
+         'no_mobil'=>$NO_MOBIL
+      );
+      print_r($data); exit();
+      $this->db->where('NO_SPBS', $NO_SPBS)->where('INVENTORY_ITEM_ID', $INVENTORY_ITEM_ID)->update('khs_mon_gdg_keluar', $data);
+      if($this->db->affected_rows() != 1) {
+         return false;
+      } else {
+         return true;
+      }
+   }
+
     public function getWarehouse()
     {
       $sql = "SELECT distinct msi.SECONDARY_INVENTORY_NAME subinv
@@ -28,7 +50,7 @@ class M_outpart extends CI_Model {
                 FROM po_requisition_headers_all prh,
                      po_requisition_lines_all prl,
                      po_headers_all pha,
-                     po_distributions_all pod,
+                     po_distributions_all pod,  
                      po_req_distributions_all pord,
                      po_vendors pov
                WHERE prh.interface_source_code = 'WIP'
@@ -1045,5 +1067,24 @@ ORDER BY 3, 4 ASC";
         return $query->result_array();
     }
 
+    public function updateData($NO_SPBS,$TGL_KIRIM,$NO_MOBIL,$MULAI,$AKHIR) {
+    $sql = "INSERT INTO osp.osp_testing_mpo (spbs, no_mobil, jam_mulai, jam_akhir, tgl_kirim) 
+            VALUES ('$NO_SPBS','$NO_MOBIL','$MULAI','$AKHIR','$TGL_KIRIM')";
+
+    $query = $this->db->query($sql);
+
+    }
+
+public function getNomorCar() {
+    $sql = "SELECT knm.* FROM khs_no_mobil knm";
+    $query = $this->oracle->query($sql);
+    return $query->result_array();
 }
+
+}
+
+
+
+
+
 ?>
