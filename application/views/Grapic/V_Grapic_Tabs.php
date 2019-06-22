@@ -941,7 +941,7 @@
 
 																			<?php for ($y=34; $y <= 34; $y++) { ?>
 													<script>
-														var inde = <?php echo $y; ?>;
+														var inde = <?= $hitung ?> ;
 													</script>
 													<div id="<?php echo $y; ?>">
 													<h3><?php $name = 'nama'.$y; echo ${$name}; ?></h3>
