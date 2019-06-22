@@ -12,8 +12,8 @@
 					<div class="row">
 						<div class="col-lg-12">
 							<div class="text-left ">
-								<span><b>Lppb Number Details</b></span>
-								<input type="hidden" name="batch_number" id="batch_number" value="<?php echo $lppb[0]['BATCH_NUMBER']?>">
+								<span ><b>Lppb Number Details</b></span>
+								<input name="batch_number" id="batch_number" value="<?php echo $lppb[0]['BATCH_NUMBER']?>">
 							</div>
 						</div>
 					</div>
@@ -49,9 +49,16 @@
 															</td>
 															<td>
 																<select id="inventory" name="inventory" class="form-control select2 select2-hidden-accessible" style="width:100%;">
+																	<!-- ngeluarin data dari option pake foreach -->
 																	<option value="" > Inventory Organization </option>
-																	<?php foreach ($inventory as $io) { ?>
-																		<option value="<?php echo $io['ORGANIZATION_ID'] ?>"><?php echo $io['ORGANIZATION_CODE'] ?></option>
+																	<?php foreach ($inventory as $io) { 
+																		$s='';
+																		if ($io['ORGANIZATION_ID']==$lppb[0]['ORGANIZATION_ID']) {
+																			$s='selected';
+																		}
+																		?>
+																		<option value="<?php echo $io['ORGANIZATION_ID'] ?>" <?php echo $s ?>>
+																			<?php echo $io['ORGANIZATION_CODE'] ?></option>
 																	<?php } ?>
 																</select>
 															</td>
@@ -116,6 +123,7 @@
 										<tr class="bg-primary">
 											<td class="text-center">No</td>
 											<td class="text-center">IO</td>
+											<td class="text-center">Action Date</td>
 											<td class="text-center">Nomor LPPB</td>
 											<td class="text-center">Vendor name</td>
 											<td class="text-center">Tanggal LPPB</td>
@@ -129,6 +137,7 @@
 											<tr class="lppb_id" id="<?php echo $no; ?>">
 												<td><?php echo $no ?></td>
 												<td><?php echo $p['ORGANIZATION_CODE']?></td>
+												<td><?php echo $p['ACTION_DATE']?></td>
 												<td><?php echo $p['LPPB_NUMBER']?></td>
 												<td><?php echo $p['VENDOR_NAME']?></td>
 												<td><?php echo $p['TANGGAL_LPPB']?></td>
