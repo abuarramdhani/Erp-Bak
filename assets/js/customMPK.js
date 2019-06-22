@@ -1,5 +1,9 @@
 $(document).ready(function(){
 
+	$('#dataTable-MasterLokasi').DataTable( {
+	  		dom:'flrtp',
+	});
+
 	$('.select-nama').select2({
 		ajax: {
 			url: baseurl+"MasterPekerja/Other/pekerja",
@@ -35,7 +39,7 @@ $(document).ready(function(){
 		var val = $('#NamaPekerja').val();
 		if (val) {
 			$('#CariPekerja').removeAttr('disabled', 'disabled');
-			$('#CariPekerja').removeClass('disabled'); 
+			$('#CariPekerja').removeClass('disabled');
 		}else{
 			$('#CariPekerja').attr('disabled', 'disabled');
 			$('#CariPekerja').addClass('disabled', 'disabled');
@@ -224,7 +228,7 @@ $(function()
 					allowClear: false,
 					placeholder: "Pilih Pekerja",
 					minimumInputLength: 3,
-					ajax: 
+					ajax:
 					{
 						url: baseurl+'MasterPekerja/PerhitunganPesangon/daftar_pekerja_aktif',
 						dataType: 'json',
@@ -293,7 +297,7 @@ $(function()
 						allowClear: false,
 						placeholder: "Pilih Pekerja",
 						minimumInputLength: 3,
-						ajax: 
+						ajax:
 						{
 							url: baseurl+'MasterPekerja/Surat/daftar_pekerja_aktif',
 							dataType: 'json',
@@ -318,7 +322,7 @@ $(function()
 						allowClear: false,
 						placeholder: "Pilih Pekerja",
 						minimumInputLength: 3,
-						ajax: 
+						ajax:
 						{
 							url: baseurl+'MasterPekerja/Surat/daftar_pekerja_aktif',
 							dataType: 'json',
@@ -343,7 +347,7 @@ $(function()
 						allowClear: false,
 						placeholder: "Pilih Seksi",
 						minimumInputLength: 3,
-						ajax: 
+						ajax:
 						{
 							url: baseurl+'MasterPekerja/Surat/daftar_seksi',
 							dataType: 'json',
@@ -372,7 +376,7 @@ $(function()
 						{
 							allowClear: false,
 							placeholder: "Pilih Pekerjaan",
-							ajax: 
+							ajax:
 							{
 								url: baseurl+'MasterPekerja/Surat/daftar_pekerjaan',
 								dataType: 'json',
@@ -400,7 +404,7 @@ $(function()
 						allowClear: false,
 						placeholder: "Pilih Seksi",
 						minimumInputLength: 3,
-						ajax: 
+						ajax:
 						{
 							url: baseurl+'MasterPekerja/Surat/daftar_seksi',
 							dataType: 'json',
@@ -429,7 +433,7 @@ $(function()
 						{
 							allowClear: true,
 							placeholder: "Pilih Pekerjaan",
-							ajax: 
+							ajax:
 							{
 								url: baseurl+'MasterPekerja/Surat/daftar_pekerjaan',
 								dataType: 'json',
@@ -507,7 +511,7 @@ $(function()
 					{
 						allowClear: false,
 						placeholder: "Pilih Pekerjaan",
-						ajax: 
+						ajax:
 						{
 							url: baseurl+'MasterPekerja/Surat/daftar_pekerjaan',
 							dataType: 'json',
@@ -533,7 +537,7 @@ $(function()
 						allowClear: true,
 						placeholder: "Pilih Pekerjaan",
 						minimumInputLength: 3,
-						ajax: 
+						ajax:
 						{
 							url: baseurl+'MasterPekerja/Surat/daftar_pekerjaan',
 							dataType: 'json',
@@ -558,7 +562,7 @@ $(function()
 						allowClear: false,
 						placeholder: "Pilih Kode Jabatan",
 						minimumInputLength: 1,
-						ajax: 
+						ajax:
 						{
 							url: baseurl+'MasterPekerja/Surat/daftar_kode_jabatan_kerja',
 							dataType: 'json',
@@ -582,7 +586,7 @@ $(function()
 						allowClear: false,
 						placeholder: "Pilih Kode Jabatan",
 						minimumInputLength: 1,
-						ajax: 
+						ajax:
 						{
 							url: baseurl+'MasterPekerja/Surat/daftar_kode_jabatan_kerja',
 							dataType: 'json',
@@ -605,7 +609,7 @@ $(function()
 					$('#MasterPekerja-DaftarLokasiKerja').select2({
 						allowClear: false,
 						placeholder: "Pilih Lokasi Kerja",
-						ajax: 
+						ajax:
 						{
 							url: baseurl+'MasterPekerja/Surat/daftar_lokasi_kerja',
 							dataType: 'json',
@@ -628,7 +632,7 @@ $(function()
 					$('.MasterPekerja-DaftarLokasiKerja').select2({
 						allowClear: false,
 						placeholder: "Pilih Lokasi Kerja",
-						ajax: 
+						ajax:
 						{
 							url: baseurl+'MasterPekerja/Surat/daftar_lokasi_kerja',
 							dataType: 'json',
@@ -651,7 +655,7 @@ $(function()
 					$('.MasterPekerja-DaftarTempatMakan').select2({
 						allowClear: false,
 						placeholder: "Pilih Tempat Makan",
-						ajax: 
+						ajax:
 						{
 							url: baseurl+'MasterPekerja/Surat/daftar_tempat_makan',
 							dataType: 'json',
@@ -742,8 +746,8 @@ $(function()
 								}
 							}
 						});
-					} 
-					else 
+					}
+					else
 					{
 						$('#kodesieLama').select2();
 						$('#MasterPekerja-DaftarGolonganPekerjaan').select2('val', '');
@@ -797,8 +801,8 @@ $(function()
 								}
 							}
 						});
-					} 
-					else 
+					}
+					else
 					{
 						$('#kodesieLama').select2();
 						$('.MasterPekerja-SuratMutasi-DaftarGolongan').select2('val', '');
@@ -806,7 +810,7 @@ $(function()
 				});
 
 
-				$('#MasterPekerja-Surat-btnPreview').click(function(){ 
+				$('#MasterPekerja-Surat-btnPreview').click(function(){
 					// alert($('#MasterPekerja-txtLokasiKerjaLama').val());
 					$('#surat-loading').attr('hidden', false);
 					$(document).ajaxStop(function(){
@@ -950,7 +954,7 @@ $(function()
 				    			$('.MasterPekerja-SuratMutasi-txtKodeSurat').val(result['kodeSurat']);
 				    		}
 				    	});
-				    	
+
 				    });
 
 					$('#MasterPekerja-SuratPengangkatanStaf-btnPreview').click(function(){
@@ -979,7 +983,7 @@ $(function()
 
 			//	}
 
-	// 	}	
+	// 	}
 // 	-------Master Pekerja----------------------------------------------end
 
 // alert(top.location.pathname);
@@ -1036,7 +1040,7 @@ $(document).ready(function(){
 		allowClear: false,
 		placeholder: "Pilih Pekerja",
 		minimumInputLength: 3,
-		ajax: 
+		ajax:
 		{
 			url: baseurl+'MasterPekerja/Surat/'+st,
 			dataType: 'json',
@@ -1061,7 +1065,7 @@ $(document).ready(function(){
 		allowClear: false,
 		placeholder: "Pilih Pekerja",
 		minimumInputLength: 3,
-		ajax: 
+		ajax:
 		{
 			url: baseurl+'MasterPekerja/Surat/'+st,
 			dataType: 'json',
@@ -1128,8 +1132,8 @@ $('.MasterPekerja-Surat-DaftarPekerja-staf').change(function(){
 				}
 			}
 		});
-	} 
-	else 
+	}
+	else
 	{
 		$('#kodesieLama').select2();
 		$('.MasterPekerja-SuratMutasi-DaftarGolongan').select2('val', '');
@@ -1186,8 +1190,8 @@ $('.MasterPekerja-Surat-DaftarPekerja-staf-pengangkatan').change(function(){
 				}
 			}
 		});
-	} 
-	else 
+	}
+	else
 	{
 		$('#kodesieLama').select2();
 		$('.MasterPekerja-SuratMutasi-DaftarGolongan').select2('val', '');
