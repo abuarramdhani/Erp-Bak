@@ -36,10 +36,23 @@ $(document).ready(function(){
 		"pageLength": 10,
         "paging": true,
         "searching": true,
+        "buttons" : [
+            'excel'
+        ]
 	});
 
 	$('.invoice_date').datepicker({
 		format: 'd/m/yyyy',
 		autoclose: true,
 	});
+
+	// $('#btnExport').click(function(){
+	// 	$('.tabel_search_tracking_invoice').table2excel({
+	// 		name : "Test",
+	// 		filename : "Test.xlsx"
+	// 	}
+		
+	// 	});
+
+	
 })
