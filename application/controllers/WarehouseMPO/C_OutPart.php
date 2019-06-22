@@ -59,6 +59,7 @@ class C_OutPart extends CI_Controller {
 		$data['UserMenu'] = $this->M_user->getUserMenu($user_id,$this->session->responsibility_id);
 		$data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id);
 		$data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id);
+		$data['NO_MOBIL'] = $this->M_outpart->getNomorCar();
 
 		// if (empty($compile)) {
 		// 	$data['outpartAll'] = $this->M_outpart->indexOut();
@@ -103,6 +104,7 @@ class C_OutPart extends CI_Controller {
 		// $data['outpartAll'] = $this->M_outpart->indexOut();
 		$data['warehouse'] = $this->M_outpart->getWarehouse();
 		$data['subkont'] = $this->M_outpart->getSubkont();
+		$data['NO_MOBIL'] = $this->M_outpart->getNomorCar();
 
 		if ($compile == 'SEMUA') {
 			$data['outpartAll'] = $this->M_outpart->indexOut();
@@ -114,7 +116,8 @@ class C_OutPart extends CI_Controller {
 		$data['subkont'] = $this->M_outpart->getSubkont();
 
 		// echo "<pre>";
-		// print_r($data);
+		// print_r($compile);
+		// print_r($data['outpartAll']);
 		// exit();
 		
 		$this->load->view('V_Header',$data);
@@ -210,6 +213,23 @@ class C_OutPart extends CI_Controller {
 		$this->load->view('V_Footer',$data);
 
 		//redirect(base_url('MonitoringBarangGudang/Pengeluaran'));
+	}
+
+	public function update() 
+	{
+		$NO_SPBS = $this->input->post('spbs');
+		$TGL_KIRIM = $this->input->post('kirimDate');
+		$NO_MOBIL = $this->input->post('nomorMobil');
+		$MULAI = $this->input->post('jamMulai');
+		$AKHIR = $this->input->post('jamAkhir');
+		$this->M_outpart->updateData($NO_SPBS,$TGL_KIRIM,$NO_MOBIL,$MULAI,$AKHIR);
+		redirect(base_url('MonitoringBarangGudang/Pengeluaran'));
+	}
+
+	public function getNomorCar()
+	{
+    	$data = $this->M_Order->getNomorCar();
+    	echo json_encode($data['NO_MOBIL']);
 	}
 
 }

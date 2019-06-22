@@ -1,33 +1,120 @@
-<script type="text/javascript">
-function getNomorCar(){
-    console.log('Deskripsi Error');
-    $.ajax({
-        url: baseurl + "MonitoringBarangGudang/Pengeluaran/Car",
-        dataType:'json',
-        beforeSend: function(){
-
-        },
-        success: function(result){
-            console.log(result);
-
-            $('#"nomorMobil').val(result);
-        },
-        error: function(XMLHttpRequest, textStatus, errorThrown) {
-            $.toaster(textStatus + ' | ' + errorThrown, name, 'danger');
-        }
-    });
-}
-</script>
 
 <style type="text/css">
-body { height: 1000px; }
-#header-fixed { 
-    position: fixed; 
-    padding-top: 0px; display:none;
-    background-color:white;
+ .table .fixed_header{
+    width: 400px;
+    table-layout: fixed;
+    border-collapse: collapse;
+}
+
+.fixed_header tbody{
+  display:block;
+  width: 100%;
+  overflow: auto;
+  height: 500px;
+}
+
+
+.fixed_header thead {
+  background: black;
+  color:#fff;
+  display: block;
+}
+
+.fixed_header th, .fixed_header td {
+  text-align: left;
+}
+
+#navbar {
+  overflow: hidden;
+  background-color: #333;
+  width: 1900px;
+}
+
+#navbar a {
+  float: left;
+  display: block;
+  color: #f2f2f2;
+  text-align: center;
+  padding: 14px 16px;
+  text-decoration: none;
+  font-size: 17px;
+}
+
+#navbar a:hover {
+  background-color: #ddd;
+  color: black;
+}
+
+#navbar a.active {
+  background-color: #4CAF50;
+  color: white;
+}
+
+.content {
+  padding: 16px;
+}
+
+.sticky {
+  position: fixed;
+  top: 0;
+  width: 100%;
+}
+
+.sticky + .content {
+  padding-top: 60px;
 }
 
 </style>
+
+<style>
+body {
+  margin: 0;
+  background-color: #f1f1f1;
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+#navbar {
+  background-color: #333;
+  position: fixed;
+  top: 50px;
+  width: 100%;
+  display: block;
+  transition: top 0.3s;
+  z-index: 1;
+}
+
+#navbar a {
+  float: left;
+  display: block;
+  color: #f2f2f2;
+  text-align: center;
+  padding: 15px;
+  text-decoration: none;
+  font-size: 17px;
+}
+
+#navbar a:hover {
+  background-color: #ddd;
+  color: black;
+}
+</style>
+</head>
+
+<body>
+
+<script>
+// When the user scrolls down 20px from the top of the document, slide down the navbar
+window.onscroll = function() {scrollFunction()};
+
+function scrollFunction() {
+  if (document.body.scrollTop > 20 || document.documentElement.scrollTop > 500) {
+    document.getElementById("navbar").style.top = "50px";
+  } else {
+    document.getElementById("navbar").style.top = "-50px";
+  }
+}
+</script>
+
 <section class="content">
     <div class="inner">
         <div class="row">
@@ -169,127 +256,135 @@ echo isset($compile) ? base_url('MonitoringBarangGudang/Pengeluaran/Filter/'.$co
                                     <span style="height: 50px"></span>
                                 </p>
                             </div>
-                            <div class="row">
+
                                 <div class="col-md-12" >
                                     <div class="table">
                                         <div class="panel panel-default">
                                             <div class="panel-body">
-                                                <div class="table" style="overflow-x:scroll;max-width:100%;max-height: 80vh;">
-                                                    <table class="table table-bordered table-hover text-center"  style="width: 1900px;padding-bottom: 0" name="tblOutPart1" id="tblOutPart1">
-                                                       <thead style="position:sticky;top:0;">
-                                                            <tr class="bg-primary">
-                                                                <th  class="bg-primary" style="position:sticky;top:0;" width="30px" rowspan="2">No</th>
-                                                                <th  class="bg-primary" style="position:sticky;top:0;" width="50px" rowspan="2">Edit</th>
-                                                                <th  class="bg-primary" style="position:sticky;top:0;" width="250px" rowspan="2">Nama Subkont</th>
-                                                                <th  class="bg-primary" style="position:sticky;top:0;" width="100px" rowspan="2">No Mobil</th>
-                                                                <th  class="bg-primary" style="position:sticky;top:0;" width="70px" rowspan="2">No SPBS</th>
-                                                                <th  class="bg-primary" style="position:sticky;top:0;" width="100px" rowspan="2">No Job</th>
-                                                                <th  class="bg-primary" style="position:sticky;top:0;" width="100px" rowspan="2">Tgl SPBS Dibuat</th>
-                                                                <th  class="bg-primary" style="position:sticky;top:0;" width="100px" rowspan="2">Tgl Diterima PPB</th>
-                                                                <th  class="bg-primary" style="position:sticky;top:0;" width="100px" rowspan="2">Tgl Kirim</th>
-                                                                <th  class="bg-primary" style="position:sticky;top:0;" width="150px" rowspan="2">Kode Komponen</th>
-                                                                <th  class="bg-primary" style="position:sticky;top:0;" width="300px" rowspan="2">Nama Komponen</th>
-                                                                <th  class="bg-primary" style="position:sticky;top:0;" width="100px" colspan="2">QTY</th>
-                                                                <th  class="bg-primary" style="position:sticky;top:0;" width="40px" rowspan="2">UOM</th>
-                                                                <th  class="bg-primary" style="position:sticky;top:0;" width="100px" rowspan="2">Subinventory</th>
-                                                                <th  class="bg-primary" style="position:sticky;top:0;" width="100px" colspan="2">Jam</th>
-                                                                <th  class="bg-primary" style="position:sticky;top:0;" width="60px" rowspan="2">Lama (m : s)</th>
-                                                                <th  class="bg-primary" style="position:sticky;top:0;" width="200px" rowspan="2">Tanggal Transact</th>
-                                                                <th  class="bg-primary" style="position:sticky;top:0;" width="200px" rowspan="2">Keterangan</th>
-                                                            </tr>
-                                                            <tr class="bg-primary">
-                                                                <th class="bg-primary" style="position:sticky;top:38.5px;border-top: 1px solid red;">Minta</th>
-                                                                <th class="bg-primary" style="position:sticky;top:38.5px;border-top: 1px solid red;">Kirim</th>
-                                                                <th class="bg-primary" style="position:sticky;top:38.5px;border-top: 1px solid red;">Mulai</th>
-                                                                <th class="bg-primary" style="position:sticky;top:38.5px;border-top: 1px solid red;">Selesai</th>
-                                                            </tr>
-                                                        </thead>
-                                                        <tbody>
-                                                        <?php
-                                                            $qty_kirim = 0;
-                                                            $qty_minta = 0;
-                                                            $lama = 0;
+                                            <div class="row">
+                                              <div class="table" style="overflow-x: scroll;">
+                            <!--   <div id="navbar">
+                                <a href="#home">Home</a>
+                                <a href="#news">News</a>
+                                <a href="#contact">Contact</a>
+                             </div> -->
+                                                <table class="table fixed_header table-bordered text-center fixed_headers" style="width: 1900px;padding-bottom: 0;" name="tblOutPart1" id="tblOutPart1">
+                                                  <thead >
+                                                    <tr  class="bg-primary">
+                                                     <th width="30px" rowspan="2">No</th>
+                                                      <th width="50px" rowspan="2">Edit</th>
+                                                      <th width="250px" rowspan="2">Nama Subkont</th>
+                                                      <th width="100px" rowspan="2">No Mobil</th>
+                                                      <th width="70px" rowspan="2">No SPBS</th>
+                                                      <th width="100px" rowspan="2">No Job</th>
+                                                      <th width="100px" rowspan="2">Tgl SPBS Dibuat</th>
+                                                      <th width="100px" rowspan="2">Tgl Diterima PPB</th>
+                                                      <th width="100px" rowspan="2">Tgl Kirim</th>
+                                                      <th width="150px" rowspan="2">Kode Komponen</th>
+                                                      <th width="300px" rowspan="2">Nama Komponen</th>
+                                                      <th width="100px" colspan="2">QTY</th>
+                                                      <th width="30px" rowspan="2">UOM</th>
+                                                      <th width="90px" rowspan="2">Subinventory</th>
+                                                      <th width="100px" colspan="2">Jam</th>
+                                                      <th width="60px" rowspan="2">Lama (m : s)</th>
+                                                      <th width="200px" rowspan="2">Tanggal Transact</th>
+                                                      <th width="200px" rowspan="2">Keterangan</th>
+                                                    </tr>
+                                                    <tr class="bg-primary">
+                                                      <th>Minta</th>
+                                                      <th>Kirim</th>
+                                                      <th>Mulai</th>
+                                                      <th>Selesai</th>
+                                                    </tr>
+                                                  </thead>
+                                                  
+                                                  <tbody>
+                                                    <?php
+                                                      $qty_kirim = 0;
+                                                      $qty_minta = 0;
+                                                      $lama = 0;
+                                                      $subinv = '';
+                                                      $no_spbs = 0;
+                                                      $no = 1;
+                                                      $time = 0;
+                                                      foreach ($outpartAll as $all) { 
+                                                        $qty_kirim += $all['QTY_KIRIM'];
+                                                        $qty_minta += $all['QTY_DIMINTA'];
+                                                        $time += $all['LAMA'];
 
-                                                            $subinv = '';
-                                                            $no_spbs = 0;
-
-                                                            $no = 1; foreach($outpartAll as $all){
-
-                                                                $qty_kirim += $all['QTY_KIRIM'];
-
-                                                                $qty_minta += $all['QTY_DIMINTA'];
-
-                                                                if (empty($all['TRANSACTION_DATE'])) {
-                                                                    $style = 'background-color:#c1382e;color:white';
-                                                                }else{
-                                                                    $style = 'background-color:#69dd49 ;color:black';
-                                                                }
-
-                                                                if($all['KETERANGAN'] == 'B'){
-                                                                    $style = 'background-color:#f39c12 ;color:black';
-                                                                }
-
-                                                    if($subinv != $all['SUBINV'] && $no_spbs != $all['NO_SPBS']){
+                                                        if (empty($all['TRANSACTION_DATE'])) {
+                                                            $style = 'background-color:#fc766c;color:white';
+                                                        }else{
+                                                            $style = 'background-color:#7cce65 ;color:black';
+                                                        }
+                                                        if($all['KETERANGAN'] == 'B'){
+                                                            $style = 'background-color:#f39c12 ;color:black';
+                                                        }
+                                                        if($subinv != $all['SUBINV'] && $no_spbs != $all['NO_SPBS']){
                                                                     $lama += $all['LAMA'];
                                                                     $subinv = $all['SUBINV'];
                                                                     $no_spbs = $all['NO_SPBS'];
-                                                    }
-
-                                                        ?>
-                                                            <tr style="<?php echo $style; ?>">
-                                                                <td><?php echo $no++; ?></td>
+                                                        }
+                                                      ?>
+                                                      <tr style="<?php echo $style; ?>">
+                                                                <td width="30px"><?php echo $no++; ?></td>
                                                                 <td><button type="button" class="btn btn-info btn-sm" data-toggle="modal" data-target="#Modalku<?php echo $all['NO_SPBS']; ?>">Edit</button></td>
-                                                                <td style="text-align: left;"><?php echo $all['NAMA_SUBKON']; ?></td>
-                                                                <td><?php echo $all['NO_MOBIL']; ?></td>
-                                                                <td><?php echo $all['NO_SPBS']; ?></td>
-                                                                <td><?php echo $all['NO_JOB']; ?></td>
-                                                                <td><?php echo $all['TGL_SPBS']; ?></td>
-                                                                <td><?php echo $all['TGL_TERIMA']; ?></td>
-                                                                <td><?php echo $all['TGL_KIRIM']; ?></td>
-                                                                <td><?php echo $all['ITEM_CODE']; ?></td>
-                                                                <td style="text-align: left;"><?php echo $all['ITEM_DESC']; ?></td>
-                                                                <td><?php echo $all['QTY_DIMINTA']; ?></td>
-                                                                <td><?php echo $all['QTY_KIRIM']; ?></td>
-                                                                <td><?php echo $all['UOM']; ?></td>
-                                                                <td><?php echo $all['SUBINV']; ?> </td>
-                                                                <td><?php echo $all['JAM_MULAI']; ?></td>
-                                                                <td><?php echo $all['JAM_SELESAI']; ?></td>
-    <td><?php echo sprintf('%02d:%02d', (int) $all['LAMA'], fmod($all['LAMA'], 1) * 60); ?></td>
+                                                                <td width="250px" style="text-align: left;"><?php echo $all['NAMA_SUBKON']; ?></td>
+                                                                <td width="100px"><?php echo $all['NO_MOBIL']; ?></td>
+                                                                <td width="70px"><?php echo $all['NO_SPBS']; ?></td>
+                                                                <td width="100px"><?php echo $all['NO_JOB']; ?></td>
+                                                                <td width="100px"><?php echo $all['TGL_SPBS']; ?></td>
+                                                                <td width="100px"><?php echo $all['TGL_TERIMA']; ?></td>
+                                                                <td width="100px"><?php echo $all['TGL_KIRIM']; ?></td>
+                                                                <td width="150px"><?php echo $all['ITEM_CODE']; ?></td>
+                                                                <td width="300px" style="text-align: left;"><?php echo $all['ITEM_DESC']; ?></td>
+                                                                <td width="50px"><?php echo $all['QTY_DIMINTA']; ?></td>
+                                                                <td width="50px"><?php echo $all['QTY_KIRIM']; ?></td>
+                                                                <td width="30px"><?php echo $all['UOM']; ?></td>
+                                                                <td width="100px"><?php echo $all['SUBINV']; ?> </td>
+                                                                <td width="50px"><?php echo $all['JAM_MULAI']; ?></td>
+                                                                <td width="50px"><?php echo $all['JAM_SELESAI']; ?></td>
+    <td width="60px" id="lama"><?php echo sprintf('%02d:%02d', (int) $all['LAMA'], fmod($all['LAMA'], 1) * 60); ?></td>
     <!-- <td><?php echo empty($all['TRANSACTION_DATE']) ? '' : date_format(date_create($all['TRANSACTION_DATE']),'M-d-Y h:i:s'); ?></td> -->
-                                                                <td><?php echo $all['TRANSACTION_DATE']; ?></td>
-                                                                <td><?php echo $all['KETERANGAN']; ?></td>
-                                                            </tr>
-                                                        <?php } ?>
-                                                        </tbody>
-                                                    </table>
-                                                    <table class="table text-center" style="width: 1700px;padding: 0">
-                                                            <tr class="bg-default">
-                                                                <td width="1200px"></td>
-                                                                <td width="750px" style="text-align: left;"><b>TOTAL</b></td>
-                                                                <td width="75px"><b><?php echo $qty_minta; ?></b></td>
-                                                                <td width="75px"><b><?php echo $qty_kirim; ?></b></td>
-                                                                <td width="400px"></td>
-                                                                <!-- <td width="60px"><b><?php echo sprintf('%02d:%02d', (int) $lama, fmod($lama, 1) * 60); ?></b></td> -->
-                                                            </tr>
-                                                    </table>
-                                                    <table class="table text-center" style="width: 1700px;padding: 0">
-                                                            <tr class="bg-default">
-                                                                <td width="1200px"></td>
-                                                                <td width="750px" style="text-align: left;"><b>RERATA</b></td>
-                                                                <!-- <td width="75px"><b><?php echo $qty_minta; ?></b></td>
-                                                                <td width="75px"><b><?php echo $qty_kirim; ?></b></td> -->
-                                                                <td width="400px"></td>
-                                                                <!-- <td width="60px"><b><?php echo sprintf('%02d:%02d', (int) $lama, fmod($lama, 1) * 60); ?></b></td> -->
-                                                            </tr>
-                                                    </table>
+                                                                <td width="185px"><?php echo $all['TRANSACTION_DATE']; ?></td>
+                                                                <td width="100px"><?php echo $all['KETERANGAN']; ?></td>
+                                                            </tr>   
+                                                      <?php
+                                                  
+                                                      } ?>
+                                   
+                                                  </tbody>
+                                                </table>
+                                                <table class="table text-center" style="width: 1700px;padding: 0">
+                                                        <tr class="bg-default">
+                                                            <td width="1280px"></td>
+                                                            <td width="500px" style="text-align: left;"><b>TOTAL</b></td>
+                                                            <td width="75px"><b><?php echo $qty_minta; ?></b></td>
+                                                            <td width="75px"><b><?php echo $qty_kirim; ?></b></td>
+                                                            <td width="375px"></td>
+                                                            <!-- <td width="60px"><b><?php echo fmod($time, $no)?></b></td> -->
+                                                        </tr>
+                                                </table>
+                                                <table class="table text-center" style="width: 1700px;padding: 0">
+                                                        <tr class="bg-default">
+                                                            <td width="1280px"></td>
+                                                            <td width="500px" style="text-align: left;"><b>RERATA</b></td>
+                                                            <!-- <td width="75px"><b><?php echo $qty_minta; ?></b></td>
+                                                            <td width="75px"><b><?php echo $qty_kirim; ?></b></td> -->
+                                                            <td width="375px"></td>
+                                                            <!-- <td width="60px"><b><?php echo fmod($time, $no)?></b></td> -->
+                                                        </tr>
+                                                </table>
 
-                                              
-                                                </div>
+
+                                              </div>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
                             </div>
+
+
                         </div>
                             </form>
                         </div>
@@ -298,6 +393,8 @@ echo isset($compile) ? base_url('MonitoringBarangGudang/Pengeluaran/Filter/'.$co
             </div>
         </div>
     </div>
+
+
 
 <!-- Modal -->
 <?php foreach ($outpartAll as $all) : ?>
@@ -312,24 +409,16 @@ echo isset($compile) ? base_url('MonitoringBarangGudang/Pengeluaran/Filter/'.$co
       </div>
       
       <div class="modal-body">
-       <!-- <form action="<?=base_url('MonitoringBarangGudang/Pengeluaran/Update')?>" method="post"> -->
-        <form action="<?=base_url('MonitoringBarangGudang/Pengeluaran/insertData')?>" method="post">
-            <input type="hidden" name="spbs" id="spbs" value="<?= $all['NO_SPBS']?>">
+        <form action="" method="post">
+        
+            <input type="hidden" name="id" id="id">
             <div class="form-group">
-                <label for="kirimDate">Tangal Kirim</label>
+                <label for="kirimDate">Tanggal Kirim</label>
                 <input type="date" class="form-control" id="kirimDate" name="kirimDate" placeholder="<?php echo $all['TGL_KIRIM']; ?>">
             </div>
             <div class="form-group">
                 <label for="nomorMobil">Nomor Mobil</label>
-                <select>
-                    <?php foreach ($NO_MOBIL as $key => $nm) { ?>
-                         <option><?=$nm['NO_MOBIL']?></option>
-                    <?php } ?>
-                   
-                </select>
-                <!-- <option id="nomorMobil" name="nomorMobil" onchange="getNomorCar();"></option> -->
-                <!--input type="text" class="form-control" id="nomorMobil" name="nomorMobil" placeholder="<?php echo $all['NO_MOBIL']; ?>"-->
-
+                <input type="text" class="form-control" id="nomorMobil" name="nomorMobil" placeholder="<?php echo $all['NO_MOBIL']; ?>">
             </div>
             <div class="form-group">
                 <label for="jamMulai">Jam Mulai</label>
@@ -351,7 +440,6 @@ echo isset($compile) ? base_url('MonitoringBarangGudang/Pengeluaran/Filter/'.$co
 </div>
 <?php endforeach;?>
 
-
-
-</div>
+  </div>
 </section>
+

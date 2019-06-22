@@ -3,22 +3,22 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 class C_SparePart extends CI_Controller {
 
-  public function __construct()
+    public function __construct()
     {
         parent::__construct();
       
         $this->load->helper('url');
         $this->load->helper('html');
-    $this->load->library('session');
-    $this->load->model('M_index');
-    $this->load->model('WarehouseMPO/M_sparepart');
-    $this->load->model('SystemAdministration/MainMenu/M_user');
+        $this->load->library('session');
+        $this->load->model('M_index');
+        $this->load->model('WarehouseMPO/M_sparepart');
+        $this->load->model('SystemAdministration/MainMenu/M_user');
       
-    if($this->session->userdata('logged_in')!=TRUE) {
-      $this->load->helper('url');
-      $this->session->set_userdata('last_page', current_url());
-      $this->session->set_userdata('Responsbility', 'some_value');
-    }
+        if($this->session->userdata('logged_in')!=TRUE) {
+          $this->load->helper('url');
+          $this->session->set_userdata('last_page', current_url());
+          $this->session->set_userdata('Responsbility', 'some_value');
+        }
     }
   
   public function checkSession(){
@@ -42,8 +42,8 @@ class C_SparePart extends CI_Controller {
     $data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id);
     $data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id);
 
-    $data['show'] = $this->M_sparepart->allSpare();
     $data['line'] = $this->M_sparepart->lineSpare();
+    $data['show'] = $this->M_sparepart->allSpare();
     
     // echo "<pre>";
     // print_r($data);
