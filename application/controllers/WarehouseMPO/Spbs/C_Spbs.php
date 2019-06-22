@@ -11,7 +11,7 @@ class C_Spbs extends CI_Controller
 		$this->load->library('session');
 		$this->load->model('M_index');
 		$this->load->model('SystemAdministration/MainMenu/M_user');
-		$this->load->model('WarehouseMPO/Spbs/M_Spbs','M_Spbs'); //Model
+		$this->load->model('WarehouseMPO/Spbs/M_spbs','M_spbs'); //Model
 		  
 		if($this->session->userdata('logged_in')!=TRUE) {
 			$this->load->helper('url');
@@ -39,8 +39,8 @@ class C_Spbs extends CI_Controller
 		$data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id);
 		$data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id);
 
-		$data['warehouse'] = $this->M_Spbs->getWarehouse();
-		$data['SUBKONT'] = $this->M_Spbs->getSubkont();
+		$data['warehouse'] = $this->M_spbs->getWarehouse();
+		$data['SUBKONT'] = $this->M_spbs->getSubkont();
 
 		
 		$this->load->view('V_Header',$data);
@@ -52,7 +52,7 @@ class C_Spbs extends CI_Controller
 	public function search()
 	{
 
-		$data['NO_MOBIL'] = $this->M_Spbs->getNomorCar();
+		$data['NO_MOBIL'] = $this->M_spbs->getNomorCar();
 
 		$warehouse = '';
 		$spbsAwal = '';
@@ -141,13 +141,13 @@ class C_Spbs extends CI_Controller
         //-----------------------FINAL QUERY ----------------------//
         if ($spbsQ || $kirimQ || $nomorSpbsQ || $namaSubQ || $queryJob1 || $queryJob2 || $komponenQ) {
 			//disinikan jalanin model filterSearch yang tanpa Distinct
-			$outpartAll = $this->M_Spbs->filterSearch($warehouseQ, $spbsQ, $kirimQ, $nomorSpbsQ, $namaSubQ, $queryJob1, $queryJob2, $komponenQ);
+			$outpartAll = $this->M_spbs->filterSearch($warehouseQ, $spbsQ, $kirimQ, $nomorSpbsQ, $namaSubQ, $queryJob1, $queryJob2, $komponenQ);
 			
 			//disini juga jalanin model filterSearchDistinct
-			// $outpartAll = $this->M_Spbs->filterSearchDistinct($warehouseQ, $spbsQ, $kirimQ, $nomorSpbsQ, $namaSubQ, $queryJob1, $queryJob2, $komponenQ);
+			// $outpartAll = $this->M_spbs->filterSearchDistinct($warehouseQ, $spbsQ, $kirimQ, $nomorSpbsQ, $namaSubQ, $queryJob1, $queryJob2, $komponenQ);
         } else {
 			//disini jalanin model search tanpa distinct
-			$outpartAll = $this->M_Spbs->search($warehouseQ);
+			$outpartAll = $this->M_spbs->search($warehouseQ);
 			
 			//disini jalanin model searchDistinct
 		}
@@ -296,7 +296,7 @@ class C_Spbs extends CI_Controller
 
 		$JAM_MULAI = str_replace('-', ':', $JAM_MULAI);
 		$JAM_SELESAI = str_replace('-', ':', $JAM_SELESAI);
-		//$this->M_Spbs->insertData($NO_SPBS, $INVENTORY_ITEM_ID, $TGL_MULAI.' '.$JAM_MULAI, $TGL_SELESAI.' '.$JAM_SELESAI, $NO_MOBIL);
+		//$this->M_spbs->insertData($NO_SPBS, $INVENTORY_ITEM_ID, $TGL_MULAI.' '.$JAM_MULAI, $TGL_SELESAI.' '.$JAM_SELESAI, $NO_MOBIL);
 		redirect();
 	}
 
@@ -376,16 +376,16 @@ class C_Spbs extends CI_Controller
 		// 	 'NO_MOBIL'=>$NO_MOBIL
 		// );
 
-		// if($this->M_Spbs->updateData($NO_SPBS,$INVENTORY_ITEM_ID,$NO_MOBIL,$date_start,$date_end,$QTY_KIRIM,$KETERANGAN)
+		// if($this->M_spbs->updateData($NO_SPBS,$INVENTORY_ITEM_ID,$NO_MOBIL,$date_start,$date_end,$QTY_KIRIM,$KETERANGAN)
 		// ) {
-		// $this->M_Spbs->updateDataKet($KETERANGAN,$NO_SPBS,$INVENTORY_ITEM_ID);
+		// $this->M_spbs->updateDataKet($KETERANGAN,$NO_SPBS,$INVENTORY_ITEM_ID);
 		// $this->load->view('V_Resultspbs');
 		// } else {
 		// 	$this->output->append_output('GAGAL');
 		// }
 		// $this->load->view('V_Resultspbs');
-		$this->M_Spbs->updateData($NO_SPBS,$INVENTORY_ITEM_ID,$NO_MOBIL,$date_start,$date_end,$QTY_KIRIM,$KETERANGAN);
-		$this->M_Spbs->updateDataKet($KETERANGAN,$NO_SPBS,$INVENTORY_ITEM_ID);
+		$this->M_spbs->updateData($NO_SPBS,$INVENTORY_ITEM_ID,$NO_MOBIL,$date_start,$date_end,$QTY_KIRIM,$KETERANGAN);
+		$this->M_spbs->updateDataKet($KETERANGAN,$NO_SPBS,$INVENTORY_ITEM_ID);
 
 		redirect("MonitoringBarangGudang/Pengeluaran/");
 	} 

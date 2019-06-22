@@ -45,7 +45,7 @@ class M_Spbs extends CI_Model
 //       $oracle->query($sql);
 
       // $conn = oci_connect('APPS', 'APPS', '192.168.7.3:1522/DEV');
-
+//
 // echo "<pre>";
 // print_r($KETERANGAN);
 // exit();
