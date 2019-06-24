@@ -16,7 +16,7 @@ class C_StockGudangAlat extends CI_Controller
 		$this->load->library('personalia');
 
 		$this->load->model('SystemAdministration/MainMenu/M_user');
-		$this->load->model('StockGudangAlat/M_stockGudangAlat');
+		$this->load->model('StockGudangAlat/M_stockgudangalat');
 
 		$this->checkSession();
 	}
@@ -42,7 +42,7 @@ class C_StockGudangAlat extends CI_Controller
 		$data['SubMenuOne'] = '';
 		$data['SubMenuTwo'] = '';
 
-		$data['lihat_stok'] = $this->M_stockGudangAlat->insertTable();
+		$data['lihat_stok'] = $this->M_stockgudangalat->insertTable();
 
 		$this->load->view('V_Header',$data);
 		$this->load->view('V_Sidemenu',$data);
@@ -66,7 +66,7 @@ class C_StockGudangAlat extends CI_Controller
 		// echo $pilihan;
 		// exit();
 
-		$this->M_stockGudangAlat->insertData($tag,$nama,$merk,$qty,$pilihan); 
+		$this->M_stockgudangalat->insertData($tag,$nama,$merk,$qty,$pilihan); 
 
 		redirect("StockGudangAlat/");
 	}

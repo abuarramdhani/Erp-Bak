@@ -1,6 +1,6 @@
 <?php defined('BASEPATH') OR die('No direct script access allowed');
 
-class M_stockGudangAlat extends CI_Model
+class M_stockgudangalat extends CI_Model
 {
 	var $oracle;
 	function __construct()
@@ -18,7 +18,7 @@ class M_stockGudangAlat extends CI_Model
 		VALUES ('$tag', '$nama', '$merk', '$qty', '$pilihan')";
       $query = $this->db->query($sql);
       // echo $sql.'<br>';
-      // exit();
+      // exit();//
       // return $sql;
    }
 
