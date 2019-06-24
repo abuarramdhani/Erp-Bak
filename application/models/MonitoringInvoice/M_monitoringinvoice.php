@@ -1,13 +1,10 @@
 <?php
 class M_monitoringinvoice extends CI_Model {
-
-	public function __construct()
-	{
-		$this->load->database();
-		$this->load->library('encrypt');
-
-	}
-
+  public function __construct()
+  {
+    $this->load->database();
+    $this->load->library('encrypt');
+  }
     public function checkSourceLogin($employee_code)
     {
         $oracle = $this->load->database('erp_db',true);
@@ -18,10 +15,9 @@ class M_monitoringinvoice extends CI_Model {
         $runQuery = $oracle->query($query);
         return $runQuery->result_array();
     }
-
-	public function getInvNumber($po_numberInv){
-		$oracle = $this->load->database("oracle",TRUE);
-		$query = $oracle->query("SELECT DISTINCT 
+  public function getInvNumber($po_numberInv){
+    $oracle = $this->load->database("oracle",TRUE);
+    $query = $oracle->query("SELECT DISTINCT 
                 pol.po_line_id line_id, 
                 pol.line_num line_num,
                 poh.segment1 no_po, 
@@ -100,10 +96,8 @@ SELECT DISTINCT pol.po_line_id line_id,
                    SELECT rt.po_line_id
                      FROM rcv_transactions rt
                     WHERE pol.po_line_id = rt.po_line_id)");
-		return $query->result_array();
-	}
-
-
+    return $query->result_array();
+  }
     public function getInvoiceById($id)
     {
         $oracle = $this->load->database('oracle',true);
@@ -111,20 +105,17 @@ SELECT DISTINCT pol.po_line_id line_id,
         $runQuery = $oracle->query($query);
         return $runQuery->result_array();
     }
-
     public function savePoNumber($line_number,$po_number,$lppb_number, $shipment_number,$received_date,$item_description,$item_code,  $qty_receipt, $qty_reject, $currency, $unit_price, $qty_invoice,$inv_id){
             if ($received_date == '' || $received_date == '  ' || $received_date == NULL || !$received_date) {
                 $received_date = 'NULL';
             }else{
                 $received_date = "'".$received_date."'";
             }
-
             if ($qty_receipt == '' || $qty_receipt == '  ' || $qty_receipt == NULL || !$qty_receipt) {
                 $qty_receipt = 0;
             } else {
                 $qty_receipt = $qty_receipt;
             }
-
             if ($lppb_number == '' || $lppb_number == '  ' || $lppb_number == NULL || !$lppb_number) {
                 $lppb_number = 0;
             } else {
@@ -138,11 +129,8 @@ SELECT DISTINCT pol.po_line_id line_id,
                     VALUES 
                     ('$line_number','$po_number',$lppb_number, '$shipment_number', $received_date, '$item_description', '$item_code',$qty_receipt, $qty_reject, '$currency', '$unit_price', '$qty_invoice', $inv_id)";
         $oracle->query($query);
-        // echo "<pre>";
-        // echo "query dari tabel kedua";
-        // print_r($query);
+        
     }
-
     public function savePoNumber2($invoice_number,$invoice_date,$invoice_amount,$tax_invoice_number,$vendor_number,$vendor_name,$last_admin_date,$info,$invoice_category,$nominal_dpp,$source_login,$jenis_jasa){
         $oracle = $this->load->database('oracle',true);
         $query = "INSERT INTO khs_ap_monitoring_invoice
@@ -150,32 +138,22 @@ SELECT DISTINCT pol.po_line_id line_id,
                     VALUES 
                     ('$invoice_number','$invoice_date','$invoice_amount', '$tax_invoice_number','$vendor_number','$vendor_name',to_date('$last_admin_date', 'DD/MM/YYYY HH24:MI:SS'), '$info','$invoice_category','$nominal_dpp','$source_login','$jenis_jasa')";
         $oracle->query($query);
-        // echo "<pre>";
-        // echo "query dari tabel pertama";
-        // print_r($query);
-
         $query2 = "SELECT max(invoice_id) invoice_id
                     from khs_ap_monitoring_invoice";
         $lastId = $oracle->query($query2);
         return $lastId->result_array();
     }
-
     public function savePoNumber3($invoice_id,$action_date)
     {
         $oracle = $this->load->database('oracle',true);
         $query = "INSERT INTO khs_ap_invoice_action_detail (invoice_id, action_date)
                 VALUES ($invoice_id,to_date('$action_date', 'DD/MM/YYYY HH24:MI:SS'))";
         $oracle->query($query);
-        // echo "<pre>";
-        // echo "tabel ketiga";
-        // print_r($query);
-
         $query2 = "SELECT MAX(invoice_id) invoice_id
                     from khs_ap_monitoring_invoice ";
         $last_id = $oracle->query($query2);
         return $last_id->result_array();
     }
-
     public function getVendorName(){
         $oracle = $this->load->database('oracle', true);
         $query = "SELECT *
@@ -184,7 +162,6 @@ SELECT DISTINCT pol.po_line_id line_id,
         return $runQuery->result_array();
  
     }
-
     public function namavendor($vendor_number){
         $oracle = $this->load->database('oracle', true);
         $query = "SELECT pov.vendor_name,pov.vendor_id
@@ -194,14 +171,12 @@ SELECT DISTINCT pol.po_line_id line_id,
         return $runQuery->result_array();
  
     }
-
     function get_ora_blob_value($value)
     {
         $size = $value->size();
         $result = $value->read($size);
         return ($result)?$result:NULL;
     }
-
     public function showInvoice($source){
       $this->db->cache_on();
         $oracle = $this->load->database('oracle', true);
@@ -253,7 +228,6 @@ SELECT DISTINCT pol.po_line_id line_id,
        
         return $arr;
     }
-
     public function getUnitPrice($invoice_id){
         $oracle = $this->load->database('oracle',true);
         $query = "SELECT unit_price , qty_invoice 
@@ -262,21 +236,18 @@ SELECT DISTINCT pol.po_line_id line_id,
         $runQuery = $oracle->query($query);
         return $runQuery->result_array();
     }
-
     public function deleteInvoice($invoice_id){
         $oracle = $this->load->database('oracle',true);
         $query1 = "DELETE 
                     FROM khs_ap_invoice_purchase_order
                     WHERE invoice_id = '$invoice_id' ";
         $runQuery1 = $oracle->query($query1);
-
         $query2 = "DELETE 
                     FROM khs_ap_monitoring_invoice
                     WHERE invoice_id = '$invoice_id' ";
         $runQuery2 = $oracle->query($query2);
         oci_commit($oracle);
     }
-
     public function showEditList1($invoice_id){
         $oracle = $this->load->database('oracle',true);
         $query = "SELECT invoice_id invoice_id, 
@@ -296,7 +267,6 @@ SELECT DISTINCT pol.po_line_id line_id,
         $runQuery = $oracle->query($query);
         return $runQuery->result_array();
     }
-
     public function showEditList2($invoice_id){
         $oracle = $this->load->database('oracle', true);
         $query = "SELECT invoice_id invoice_id,
@@ -314,26 +284,22 @@ SELECT DISTINCT pol.po_line_id line_id,
         $runQuery = $oracle->query($query);
         return $runQuery->result_array();
     }
-
     public function saveEditInvoice1($invoice_po_id,$po_number,$lppb_number,$shipment_number,$received_date,$item_description,$item_code,$qty_receipt,$qty_reject,$currency,$unit_price,$qty_invoice){
         if ($received_date == '' || $received_date == '  ' || $received_date == NULL || !$received_date) {
                 $received_date = NULL;
             }else{
                 $received_date = "".$received_date."";
             }
-
             if ($qty_receipt == '' || $qty_receipt == '  ' || $qty_receipt == NULL || !$qty_receipt) {
                 $qty_receipt = 0;
             } else {
                 $qty_receipt = $qty_receipt;
             }
-
             if ($lppb_number == '' || $lppb_number == '  ' || $lppb_number == NULL || !$lppb_number) {
                 $lppb_number = 0;
             } else {
                 $lppb_number = $lppb_number;
             }
-
         $oracle = $this->load->database('oracle',true);
         $query = "UPDATE khs_ap_invoice_purchase_order 
         SET po_number = '$po_number',
@@ -352,7 +318,6 @@ SELECT DISTINCT pol.po_line_id line_id,
         //oci_commit($oracle);
         
     }
-
     public function saveEditInvoice2($invoice_id,$invoice_number,$invoice_date,$invoice_amount,$tax_invoice_number,$info,$nominal_dpp,$invoice_category,$jenis_jasa)
     {
        $oracle = $this->load->database('oracle',true);
@@ -369,7 +334,6 @@ SELECT DISTINCT pol.po_line_id line_id,
         $runQuery2 = $oracle->query($query2);
         // oci_commit($oracle);
     }
-
     public function saveEditInvoice3($invoice_id,$action_date)
     {
         $oracle = $this->load->database('oracle',true);
@@ -377,7 +341,6 @@ SELECT DISTINCT pol.po_line_id line_id,
                 VALUES($invoice_id, to_date('$action_date', 'DD/MM/YYYY HH24:MI:SS'))";
         $run = $oracle->query($sql);
     }
-
     public function saveBatchNumberById($id, $batch_number, $date, $status){
         $oracle = $this->load->database('oracle',true);
         $query = "UPDATE khs_ap_monitoring_invoice
@@ -388,7 +351,6 @@ SELECT DISTINCT pol.po_line_id line_id,
         $oracle->query($query);
         // oci_commit($oracle);
     }
-
      public function saveBatchNumberById2($invoice_id,$action_date,$status)
     {
         $oracle = $this->load->database('oracle',true);
@@ -396,7 +358,6 @@ SELECT DISTINCT pol.po_line_id line_id,
                 VALUES($invoice_id, to_date('$action_date', 'DD/MM/YYYY HH24:MI:SS'), '$status')";
         $run = $oracle->query($sql);
     }
-
     public function checkNumBatchExist()
     {
         $oracle = $this->load->database('oracle',true);
@@ -406,7 +367,6 @@ SELECT DISTINCT pol.po_line_id line_id,
         $query = $oracle->query($sql);
         return $query->result_array();
     }
-
     public function checkBatchNumbercount($batch_number){
         $erp_db = $this->load->database('oracle',true);
         $sql = "SELECT batch_number batch_number
@@ -415,34 +375,35 @@ SELECT DISTINCT pol.po_line_id line_id,
         $runQuery = $erp_db->query($sql);
         return $runQuery->result_array();
     }
-
     public function showListSubmitted($source){
         $oracle = $this->load->database('oracle',true);
-        $sql = "SELECT distinct batch_number batch_number, to_date(last_status_purchasing_date) submited_date, last_purchasing_invoice_status last_purchasing_invoice_status, last_finance_invoice_status last_finance_invoice_status, source
+        $sql = "SELECT distinct 
+                batch_number batch_number, 
+                to_date(last_status_purchasing_date) submited_date, 
+                last_purchasing_invoice_status last_purchasing_invoice_status, 
+                last_finance_invoice_status last_finance_invoice_status, 
+                source
                 FROM khs_ap_monitoring_invoice
                 WHERE batch_number is not null
-                and (last_purchasing_invoice_status in(1,2)
+                and (last_purchasing_invoice_status = 1
                 or last_finance_invoice_status = 2)
                 $source
                 ORDER BY submited_date DESC";
         $query = $oracle->query($sql);
         return $query->result_array();
     }
-
     public function getJmlInvPerBatch($batch){
         $oracle = $this->load->database('oracle',true);
         $sql = "SELECT  batch_number FROM khs_ap_monitoring_invoice WHERE batch_number = '$batch'";
         $query = $oracle->query($sql);
         return $query->num_rows();
     }
-
      public function batch_number($batch){
         $oracle = $this->load->database('oracle',true);
         $sql = "SELECT  batch_number FROM khs_ap_monitoring_invoice WHERE batch_number = '$batch'";
         $query = $oracle->query($sql);
         return $query->result_array();
     }
-
     public function showDetailPerBatch($batch){
         $this->db->cache_on();
         $oracle = $this->load->database('oracle',true);
@@ -471,7 +432,6 @@ SELECT DISTINCT pol.po_line_id line_id,
         $query = $oracle->query($sql);
         return $query->result_array();
     }
-
     public function showInvoiceInDetail($invoice_id){
         $oracle = $this->load->database('oracle', true);
         $query = "SELECT distinct invoice_id invoice_id,
@@ -491,7 +451,6 @@ SELECT DISTINCT pol.po_line_id line_id,
         $runQuery = $oracle->query($query);
         return $runQuery->result_array();
     }
-
     public function showInvoiceInDetail2($invoice_id){
         $oracle = $this->load->database('oracle', true);
         $query = "SELECT invoice_id invoice_id,
@@ -511,7 +470,6 @@ SELECT DISTINCT pol.po_line_id line_id,
         $runQuery = $oracle->query($query);
         return $runQuery->result_array();
     }
-
     public function getNamaVendor($vendor_id){
         $oracle = $this->load->database('oracle',true);
         $sql = "SELECT vendor_name , vendor_id
@@ -520,7 +478,6 @@ SELECT DISTINCT pol.po_line_id line_id,
         $runQuery = $oracle->query($sql);
         return $runQuery->result_array();
     }
-
     public function checkInvoiceDate($uw){ 
     $erp_db = $this->load->database('oracle',true); 
     $sql = "SELECT invoice_date FROM
@@ -529,7 +486,6 @@ SELECT DISTINCT pol.po_line_id line_id,
             $runQuery = $erp_db->query($sql); 
     return $runQuery->result_array(); 
     }
-
     public function checkInvoiceDatecount($uw){
         $erp_db = $this->load->database('oracle',true);
         $sql = "SELECT invoice_date
@@ -538,8 +494,6 @@ SELECT DISTINCT pol.po_line_id line_id,
         $runQuery = $erp_db->query($sql);
         return $runQuery->result_array();
     }
-
-
      public function checkStatus($po_number,$line_num)
     {   $this->db->cache_on();
         $oracle = $this->load->database('oracle',TRUE);
@@ -588,7 +542,6 @@ SELECT DISTINCT pol.po_line_id line_id,
         $runQuery = $oracle->query($query);
         return $runQuery->result_array();
     }
-
     public function exportExcelMonitoringInvoice($batch_num){
         $oracle = $this->load->database('oracle', true);
         $query = "SELECT distinct ami.invoice_number invoice_number, 
@@ -623,7 +576,6 @@ SELECT DISTINCT pol.po_line_id line_id,
         $runQuery = $oracle->query($query);
         return $runQuery->result_array();
     }
-
     public function podetails($po_number,$lppb_number,$line_number){
        $this->db->cache_on();
        $oracle = $this->load->database('oracle',TRUE);
@@ -663,26 +615,22 @@ SELECT DISTINCT pol.po_line_id line_id,
         $runQuery = $oracle->query($query);
         return $runQuery->result_array();
     }
-
     public function savePoNumberNew($line_number,$po_number,$lppb_number, $shipment_number,$received_date,$item_description,$item_code,  $qty_receipt, $qty_reject, $currency, $unit_price, $qty_invoice,$id){
         if ($received_date == '' || $received_date == '  ' || $received_date == NULL || !$received_date) {
                 $received_date = NULL;
             }else{
                 $received_date = "".$received_date."";
             }
-
             if ($qty_receipt == '' || $qty_receipt == '  ' || $qty_receipt == NULL || !$qty_receipt) {
                 $qty_receipt = 0;
             } else {
                 $qty_receipt = $qty_receipt;
             }
-
             if ($lppb_number == '' || $lppb_number == '  ' || $lppb_number == NULL || !$lppb_number) {
                 $lppb_number = 0;
             } else {
                 $lppb_number = $lppb_number;
             }
-
         $oracle = $this->load->database('oracle',true);
         $query = "INSERT INTO khs_ap_invoice_purchase_order
                     (line_number,po_number, lppb_number, shipment_number,
@@ -692,7 +640,6 @@ SELECT DISTINCT pol.po_line_id line_id,
         $oracle->query($query);
         // oci_commit($oracle);
     }
-
     public function saveInvoiveAmount($invoice_number,$invoice_date,$invoice_amount,$tax_invoice_number,$vendor_name,$invoice_category,$nominal_dpp,$info,$id)
     {
        $oracle = $this->load->database('oracle',true);
@@ -709,7 +656,6 @@ SELECT DISTINCT pol.po_line_id line_id,
         $runQuery2 = $oracle->query($query2);
         // oci_commit($oracle);
     }
-
     public function checkPPN($po_numberInv){
         $oracle = $this->load->database("oracle",TRUE);
         $query = "SELECT distinct poh.attribute2 ppn
@@ -722,7 +668,6 @@ SELECT DISTINCT pol.po_line_id line_id,
         $runQuery = $oracle->query($query);
         return $runQuery->result_array();
     }
-
     public function tax_invoice_number($invoice_id,$tax_invoice_number)
     {
        $oracle = $this->load->database('oracle',true);
@@ -732,8 +677,6 @@ SELECT DISTINCT pol.po_line_id line_id,
         $runQuery2 = $oracle->query($query2);
         // oci_commit($oracle);
     }
-
-
     public function cekpo_number($po_number,$line_number){
         $this->db->cache_on();
         $oracle = $this->load->database("oracle",TRUE);
@@ -827,7 +770,6 @@ SELECT DISTINCT pol.po_line_id line_id,
                                 WHERE pol.po_line_id = rt.po_line_id)");
         return $query->result_array();
     }
-
    public function invoicereject($source_login)
     {   $this->db->cache_on();
         $oracle = $this->load->database("oracle",TRUE);
@@ -886,7 +828,6 @@ SELECT DISTINCT pol.po_line_id line_id,
        
         return $arr;
     }
-
     public function deletePOLine($invoice_po_id){
         $oracle = $this->load->database('oracle',true);
         $query1 = "DELETE 
@@ -895,7 +836,6 @@ SELECT DISTINCT pol.po_line_id line_id,
         $runQuery1 = $oracle->query($query1);      
         oci_commit($oracle);
     }
-
     public function saveReject($invoice_id,$invoice_number,$invoice_date,$invoice_amount,$tax_invoice_number,$last_purchasing_invoice_status,$info,$invoice_category,$nominal_dpp,$jenis_jasa)
     {
        $oracle = $this->load->database('oracle',true);
@@ -926,5 +866,4 @@ SELECT DISTINCT pol.po_line_id line_id,
         $run = $oracle->query($query);
         $arr = $run->result_array();
     }
-
 }
