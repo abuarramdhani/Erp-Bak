@@ -124,13 +124,13 @@
 											<div class="col-lg-6">
 											<select id="divselector" class="form-control" >
 												<option value="1"><strong>Semua Data</strong></option>
-												<option value="32">--Semua Penunjang / Direct Labour</option>
-												<option value="33">--Semua Non Penunjang / inDirect Labour</option>
+												<option value="32">--Semua Penunjang / InDirect Labour</option>
+												<option value="33">--Semua Non Penunjang / Direct Labour</option>
 												<option value="0">Dept. Produksi</option>
 												<option value="4">--Dept. Produksi - Pusat</option>
 												<option value="5">--Dept. Produksi - Tuksono</option>
-												<option value="29">--Dept. Produksi - Operator Penunjang / Direct Labour</option>
-												<option value="30">--Dept. Produksi - Operator Non Penunjang / inDirect Labour</option>
+												<option value="29">--Dept. Produksi - Operator Penunjang / InDirect Labour</option>
+												<option value="30">--Dept. Produksi - Operator Non Penunjang / Direct Labour</option>
 												<option value="1">Dept. Personalia</option>
 												<option value="31">--Civil Maintenance</option>
 												<option value="34">--Non Civil Maintenance</option>
