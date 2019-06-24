@@ -117,7 +117,8 @@ class C_monitoringlppbkasiegudang extends CI_Controller{
 			$this->M_monitoringlppbkasiegudang->saveProsesLppbNumber2($proses[$p],$alasan[$p],$date[$p],$id[$p]);
 		}
 
-		redirect('MonitoringLppbKasieGudang/Unprocess');
+		redirect('MonitoringLppbKasieGudang/Unprocess')
+		;
 	}
 
 	public function SubmitKeAKuntansi(){

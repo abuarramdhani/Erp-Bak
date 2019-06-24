@@ -1,12 +1,10 @@
 <?php
 class M_monitoringlppbkasiegudang extends CI_Model {
-
-	public function __construct()
-	{
-		$this->load->database();
-		$this->load->library('encrypt');
-	}
-
+  public function __construct()
+  {
+    $this->load->database();
+    $this->load->library('encrypt');
+  }
     public function showLppbKasieGudang($id)
     {
         $oracle = $this->load->database('oracle',true);
@@ -61,7 +59,6 @@ class M_monitoringlppbkasiegudang extends CI_Model {
         $run = $oracle->query($query);
         return $run->result_array();
     }
-
     public function lppbDetailKasieGudang($id){
         $oracle = $this->load->database('oracle',true);
         $query = "SELECT DISTINCT a.*,b.*,(SELECT C.REASON 
@@ -75,7 +72,6 @@ class M_monitoringlppbkasiegudang extends CI_Model {
         $run = $oracle->query($query);
         return $run->result_array();
     }
-
     public function detailUnprocess($batch_number)
     {
         $oracle = $this->load->database('oracle',true);
@@ -137,24 +133,23 @@ class M_monitoringlppbkasiegudang extends CI_Model {
         // print_r($query);
         return $run->result_array();
     }
-
-    public function saveProsesLppbNumber($status_date,$batch_number,$batch_detail_id){
+    public function saveProsesLppbNumber($status,$status_date,$batch_number,$batch_detail_id){
         $oracle = $this->load->database('oracle',true);
         $query = "UPDATE khs_lppb_batch_detail
-                    SET status = '3',
+                    SET status = '$status',
                     status_date = to_date('$status_date', 'DD/MM/YYYY HH24:MI:SS')
                     WHERE batch_number = '$batch_number'
                     AND batch_detail_id = '$batch_detail_id'";
+        // echo $query;
+        // exit();
         $run = $oracle->query($query);
     }
-
     public function saveProsesLppbNumber2($status,$reason,$action_date,$batch_detail_id){
         $oracle = $this->load->database('oracle',true);
         $query = "INSERT INTO khs_lppb_action_detail_1 (status, reason, action_date, batch_detail_id)
                     VALUES ('$status', '$reason',to_date('$action_date', 'DD/MM/YYYY HH24:MI:SS'), '$batch_detail_id')";
         $run = $oracle->query($query);
     }
-
     public function inputAlasan($batch_detail_id,$reason)
     {
        $oracle = $this->load->database('oracle',true);
@@ -164,7 +159,6 @@ class M_monitoringlppbkasiegudang extends CI_Model {
                  AND status = '4' ";
         $runQuery2 = $oracle->query($query2);
     }
-
     public function showReason($batch_detail_id)
     {
         $oracle = $this->load->database('oracle',true);
@@ -174,7 +168,6 @@ class M_monitoringlppbkasiegudang extends CI_Model {
                     AND status = '4' ";
         $run = $oracle->query($query);
     }
-
      public function submitToKasieAkuntansi($status_date,$batch_number){
         $oracle = $this->load->database('oracle',true);
         $query = "UPDATE khs_lppb_batch_detail
@@ -183,14 +176,12 @@ class M_monitoringlppbkasiegudang extends CI_Model {
                     WHERE batch_number = '$batch_number'";
         $run = $oracle->query($query);
     }
-
     public function submitToKasieAkuntansi2($action_date,$batch_detail_id){
         $oracle = $this->load->database('oracle',true);
         $query = "INSERT INTO khs_lppb_action_detail_1 (status, action_date, batch_detail_id)
                     VALUES ('5', to_date('$action_date', 'DD/MM/YYYY HH24:MI:SS'), '$batch_detail_id')";
         $run = $oracle->query($query);
     }
-
     public function getBatchDetailId($batch_number)
     {
         $oracle = $this->load->database('oracle',true);
@@ -203,7 +194,6 @@ class M_monitoringlppbkasiegudang extends CI_Model {
         $run = $oracle->query($query);
         return $run->result_array();
     }
-
     public function finishLppbKasie()
     {
         $oracle = $this->load->database('oracle',true);
@@ -254,7 +244,6 @@ class M_monitoringlppbkasiegudang extends CI_Model {
         $run = $oracle->query($query);
         return $run->result_array();
     }
-
     public function finishdetail($batch_number){
         $oracle = $this->load->database('oracle',true);
         $query = "SELECT DISTINCT rsh.receipt_num lppb_number,
@@ -315,7 +304,6 @@ class M_monitoringlppbkasiegudang extends CI_Model {
         $run = $oracle->query($query);
         return $run->result_array();
     }
-
     public function rejectlppbkasie()
     {
         $oracle = $this->load->database('oracle',true);
@@ -367,7 +355,6 @@ class M_monitoringlppbkasiegudang extends CI_Model {
         $run = $oracle->query($query);
         return $run->result_array();
     }
-
     public function rejectdetail($batch_number,$lppb_number){
         $oracle = $this->load->database('oracle',true);
         $query = "SELECT DISTINCT rsh.receipt_num lppb_number,
@@ -429,35 +416,30 @@ class M_monitoringlppbkasiegudang extends CI_Model {
         $run = $oracle->query($query);
         return $run->result_array();
     }
-
     public function getOpsiGudang2(){
       $oracle = $this->load->database("oracle",true);
       $query = "SELECT * FROM KHS_LPPB_SECTION WHERE SECTION_ID NOT IN 18";
       $run = $oracle->query($query);
       return $run->result_array();
     }
-
     public function getOpsiGudangById($id){
       $oracle = $this->load->database("oracle",true);
       $query = "SELECT * FROM KHS_LPPB_SECTION WHERE SECTION_ID NOT IN 18 AND SECTION_ID = '$id'";
       $run = $oracle->query($query);
       return $run->result_array();
     }
-
     public function getOpsiGudang($section_name){
       $oracle = $this->load->database("oracle",true);
       $query = "SELECT * FROM KHS_LPPB_SECTION WHERE SECTION_ID NOT IN 18 AND SECTION_NAME = '$section_name' ";
       $run = $oracle->query($query);
       return $run->result_array();
     }
-
     public function cekSessionGudang(){
         $oracle = $this->load->database('oracle',true);
         $query2 = "SELECT * FROM KHS_LPPB_BATCH WHERE BATCH_NUMBER IN (SELECT MAX(BATCH_NUMBER) FROM KHS_LPPB_BATCH) ";
         $run = $oracle->query($query2);
         return $run->result_array();
     }
-
     public function cekJumlahData($batch_number,$status){
         $oracle = $this->load->database('oracle',true);
         $query2 = "SELECT DISTINCT COUNT(klbd.batch_detail_id) jumlah_data
@@ -468,5 +450,4 @@ class M_monitoringlppbkasiegudang extends CI_Model {
         $run = $oracle->query($query2);
         return $run->result_array();
     }
-
 }
