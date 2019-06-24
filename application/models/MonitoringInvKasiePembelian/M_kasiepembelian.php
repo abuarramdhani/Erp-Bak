@@ -24,7 +24,7 @@ class M_kasiepembelian extends CI_Model {
 		$sql = "SELECT distinct batch_number batch_number, MAX (to_date(last_admin_date)) submited_date,
                 last_finance_invoice_status, source
                 FROM khs_ap_monitoring_invoice 
-                WHERE last_purchasing_invoice_status = 1
+                WHERE (last_purchasing_invoice_status = 1 OR last_purchasing_invoice_status = 2)
                 AND LAST_FINANCE_INVOICE_STATUS=0
                 $login
                 GROUP BY batch_number, last_finance_invoice_status, source
@@ -271,13 +271,17 @@ class M_kasiepembelian extends CI_Model {
                                   WHERE b.batch_number = a.batch_number)jml_invoice
                 FROM khs_ap_monitoring_invoice a
                 WHERE a.batch_number IS NOT NULL
-                AND a.last_finance_invoice_status = 2
+                AND a.last_finance_invoice_status = 1
                 AND (a.last_purchasing_invoice_status = 2 OR a.last_purchasing_invoice_status = 3)
                 $login) tabel
                 WHERE 
                 to_char(tabel.submited_date, 'MONTH')=to_char(sysdate, 'MONTH')";
+                
+                $run = $erp_db->query($sql);
+                return $run->result_array();
+
                 // -------untuk menampilkan seluruh data -----
-                // // $sql = "SELECT DISTINCT a.batch_number, 
+                // $sql = "SELECT DISTINCT a.batch_number, 
                 //                         a.finance_batch_number, 
                 //                         a.last_purchasing_invoice_status, 
                 //                         a.last_finance_invoice_status,
@@ -296,11 +300,7 @@ class M_kasiepembelian extends CI_Model {
                 //         AND (a.last_purchasing_invoice_status = 2 OR a.last_purchasing_invoice_status = 3)
                 //         $login
                 //         ORDER BY submited_date desc";
-        $run = $erp_db->query($sql);
-        // echo "<pre>";
-        // print_r($sql);
-        // exit();
-        return $run->result_array();
+        
     }
 
     public function finish_detail($batchNumber){

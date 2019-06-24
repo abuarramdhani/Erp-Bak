@@ -50,8 +50,8 @@ class M_monitoringakuntansi extends CI_Model {
             AND ami.batch_number= '$batchNumber'
             ORDER BY ami.last_admin_date DESC
            ";
-		   $run = $erp_db->query($sql);
-    return $run->result_array();
+		    $run = $erp_db->query($sql);
+            return $run->result_array();
 	}
 
 	public function poAmount($id)
@@ -107,6 +107,8 @@ class M_monitoringakuntansi extends CI_Model {
                 WHERE ami.batch_number = '$batch_num'
                 AND ami.last_purchasing_invoice_status = 2
                 and ami.invoice_id = '$invoice_id'";
+        echo $sql;
+           exit();
         $runQuery = $erp_db->query($sql);
         return $runQuery->result_array();
 	}
@@ -298,7 +300,7 @@ class M_monitoringakuntansi extends CI_Model {
                 FROM khs_ap_monitoring_invoice a
                 WHERE last_finance_invoice_status = 2
                 $login
-                ORDER BY submited_date";
+                ORDER BY submited_date desc";
         $run = $erp_db->query($sql);
         return $run->result_array();
     }
