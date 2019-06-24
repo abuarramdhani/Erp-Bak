@@ -13,8 +13,8 @@
 				<div class="row">
 					<div class="col-lg-12">
 						<div class="text-left ">
-							<span><b>Detail Batch <?php echo $lppb[0]['GROUP_BATCH']?></b></span>
-							<input type="hidden" name="batch_number" value="<?php echo $lppb[0]['BATCH_NUMBER']?>">
+							<span><b>Detail Batch </b></span>
+							<!-- <input type="hidden" id="batch_number" value="<?php echo $lppb[0]['BATCH_NUMBER']?>"> -->
 						</div>
 					</div>
 				</div>
