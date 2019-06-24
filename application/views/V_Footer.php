@@ -154,6 +154,7 @@
 	<script src="<?php echo base_url('assets/js/customMOA.js');?>" type="text/javascript"></script>
 	<script src="<?php echo base_url('assets/js/customET.js');?>" type="text/javascript"></script>
 	<script src="<?php echo base_url('assets/js/customMLP.js');?>" type="text/javascript"></script>
+	<script src="<?php echo base_url('assets/js/customSGA.js');?>" type="text/javascript"></script>
 	 
  	
 <!--  	<script src="<?php echo base_url('assets/js/customOSP.js');?>" type="text/javascript"></script>
