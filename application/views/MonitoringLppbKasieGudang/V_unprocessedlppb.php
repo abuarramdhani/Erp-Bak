@@ -17,7 +17,7 @@
 					</div>
 					<div class="col-md-4" style="margin-bottom: 20px">
 					  	<select id="id_gudang" name="id_gudang" onchange="getOptionKasieGudang($(this))" class="form-control select2 select2-hidden-accessible" style="width:100%;">
-							<option value="<?php echo $gudang[0]['SECTION_ID']?>"> <?php echo $gudang[0]['SECTION_NAME'] ?></option>
+							<!-- <option value="<?php echo $gudang[0]['SECTION_ID']?>"> <?php echo $gudang[0]['SECTION_NAME'] ?></option> -->
 							<?php foreach ($gudang as $gd) { ?>
 							<option value="<?php echo $gd['SECTION_ID'] ?>" ><?php echo $gd['SECTION_NAME'] ?></option>
 							<?php } ?>
