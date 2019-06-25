@@ -17,6 +17,9 @@
 	</thead>
 	<tbody>
 		<?php $no=1; if ($invoice) {
+			// echo "<pre>";
+			// print_r($status);
+			// exit();
 			foreach($invoice as $i) { ?>
 		<tr>
 			<td><?php echo $no?></td>
