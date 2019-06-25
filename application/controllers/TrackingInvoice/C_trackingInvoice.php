@@ -385,7 +385,10 @@ class C_trackingInvoice extends CI_Controller{
             $objPHPExcel->setActiveSheetIndex(0)->setCellValue('F'.$numrow, $data['STATUS']);
             $objPHPExcel->setActiveSheetIndex(0)->setCellValue('G'.$numrow, $data['TAX_INVOICE_NUMBER']);
             $objPHPExcel->setActiveSheetIndex(0)->setCellValue('H'.$numrow, $data['INVOICE_AMOUNT']);
-            $objPHPExcel->setActiveSheetIndex(0)->setCellValue('I'.$numrow, $data['INVOICE_ID']);
+            foreach ($status[$data["INVOICE_ID"]] as $i) {
+            	$objPHPExcel->setActiveSheetIndex(0)->setCellValue('I'.$numrow, $i);
+            }
+
             $objPHPExcel->setActiveSheetIndex(0)->setCellValue('J'.$numrow, $data['STATUS_PAYMENT']);
             $objPHPExcel->setActiveSheetIndex(0)->setCellValue('K'.$numrow, $data['SOURCE']);
             
