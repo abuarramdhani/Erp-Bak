@@ -89,7 +89,7 @@ class C_Index extends CI_Controller
 		$res = $res[0];
 		// echo $res;exit();
 		$file = $this->input->post('um-input');
-		$file = preg_replace('/\s+/', '_', $file);
+		$file = preg_replace('/[\.\s]+/', '_', $file);
 		$user = $this->session->user;
 
 		$config = array();
