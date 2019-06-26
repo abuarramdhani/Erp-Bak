@@ -228,6 +228,14 @@
 						</div>
 						<div class="row" style="margin-top: 10px;">
 							<div class="col-lg-2">
+								<label for="PK_txt_pekerjaanPekerja">Pekerjaan </label>
+							</div>
+							<div class="col-lg-10">
+								<input type="text" name="txt_pekerjaanPekerja" id="PK_txt_pekerjaanPekerja" class="form-control">
+							</div>													
+						</div>
+						<div class="row" style="margin-top: 10px;">
+							<div class="col-lg-2">
 								<label for="PK_txt_unitPekerja">Unit </label>
 							</div>
 							<div class="col-lg-10">
