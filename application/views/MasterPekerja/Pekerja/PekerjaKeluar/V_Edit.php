@@ -253,6 +253,18 @@
 						</div>
 						<div class="row" style="margin-top: 10px;">
 							<div class="col-lg-2">
+								<label for="PK_txt_pekerjaanPekerja">Pekerjaan </label>
+							</div>
+							<div class="col-lg-10">
+								<input type="text" hidden="" value="<?php echo $data['kd_pekerjaan'] ?>" id="txt_kdPekerjaan">
+								<!-- <input type="text" name="txt_pekerjaanPekerja" id="PK_txt_pekerjaanPekerja" class="form-control" value="<?php echo $data['pekerjaan'] ?>" readonly=""> -->
+								<select name="txt_pekerjaanPekerja" id="PK_txt_pekerjaanPekerja" class="form-control">
+									<option value="<?php echo $data['kd_pekerjaan'] ?>" selected=""><?php echo $data['pekerjaan'] ?></option>
+								</select>
+							</div>													
+						</div>
+						<div class="row" style="margin-top: 10px;">
+							<div class="col-lg-2">
 								<label for="PK_txt_unitPekerja">Unit </label>
 							</div>
 							<div class="col-lg-10">

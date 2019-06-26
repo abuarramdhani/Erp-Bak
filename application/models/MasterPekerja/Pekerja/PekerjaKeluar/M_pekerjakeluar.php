@@ -31,6 +31,40 @@ class M_pekerjakeluar extends CI_Model {
 
 	}
 
+	public function getPekerjaan($noind)
+	 	{
+	 		$data= "select (case 	when 	pri.kd_pkj is not null
+ 								then 	pri.kd_pkj || ' - ' || rtrim(tpekerjaan.pekerjaan)
+								end
+								) as pekerjaan
+								from hrd_khs.tpribadi as pri
+								left join hrd_khs.tpekerjaan as tpekerjaan
+								on 	tpekerjaan.kdpekerjaan=pri.kd_pkj
+								where pri.noind='$noind'";
+   			$query 	=	$this->personalia->query($data);
+			return $query->result_array();	
+			 // return $data;
+	 	}
+
+	 public function getkdPekerja($pekerja,$kd_pekerjaan)
+	 {
+	 	$kd_pekerjaan = substr($kd_pekerjaan, 0,7);
+	 	$sql = "select distinct(case 	when 	pri.kd_pkj is not null
+					then 	pri.kd_pkj || ' - ' || rtrim(tpekerjaan.pekerjaan)
+				end
+				) as pekerjaan,pri.kd_pkj
+				from hrd_khs.tpribadi as pri
+				left join hrd_khs.tpekerjaan as tpekerjaan
+				on 	tpekerjaan.kdpekerjaan=pri.kd_pkj
+				where left(pri.kodesie,7) like '$kd_pekerjaan%' and upper(pekerjaan) like upper('%$pekerja%') order by pri.kd_pkj asc";
+				// echo $sql;exit();
+		$query 	=	$this->personalia->query($sql);
+			return $query->result_array();	
+			 // return $data;
+
+	 }
+
+
 	public function dataPekerja($noind,$keluar)
 	{
 		$this->personalia->where('noind', $noind);

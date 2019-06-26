@@ -61,6 +61,16 @@ class C_Index extends CI_Controller {
 		echo json_encode($data);
 	}
 
+	public function data_pekerjaan()
+	{
+		$pekerja 	= strtoupper($this->input->get('term'));
+		$kd_pekerjaan = $this->input->get('kd_pekerjaan');
+		// print_r($_GET);exit();
+		$data = $this->M_pekerjakeluar->getkdPekerja($pekerja,$kd_pekerjaan);
+		// print_r($data);exit();
+		echo json_encode($data);
+	}
+
 	public function viewEdit()
 	{
 		$this->checkSession();
@@ -75,6 +85,7 @@ class C_Index extends CI_Controller {
 
 		$pekerja 		= $this->M_pekerjakeluar->dataPekerja($noind,$keluar);
 		$kontak 		= $this->M_pekerjakeluar->kontakPekerja($noind);
+		$pekerjaan      =$this->M_pekerjakeluar->getPekerjaan($noind);
 
 		if ($pekerja != null) {
 			$kodesie 		= $pekerja[0]['kodesie'];
@@ -109,6 +120,10 @@ class C_Index extends CI_Controller {
 									'lmkontrak' => $pekerja[0]['lmkontrak'],
 									'akhkontrak'=> $pekerja[0]['akhkontrak'],
 									'jabatan' 	=> $pekerja[0]['jabatan'],
+  									
+  									'pekerjaan'=> $pekerjaan[0]['pekerjaan'],
+  									'kd_pekerjaan'=> substr($pekerjaan[0]['pekerjaan'], 0,9),
+
 									'seksi' 	=> $seksi[0]['seksi'],
 									'unit' 		=> $seksi[0]['unit'],
 									'bidang' 	=> $seksi[0]['bidang'],
@@ -201,6 +216,7 @@ class C_Index extends CI_Controller {
 								'uk_baju' 	=> $this->input->post('txt_ukuranbaju'),
 								'uk_celana' => $this->input->post('txt_ukurancelana'),
 								'uk_sepatu' => $this->input->post('txt_ukuransepatu'),
+  								'kd_pkj' => $this->input->post('txt_pekerjaanPekerja'),
 								'status_diangkat'=>$this->input->post('rd_diangkat')
 							);
 
@@ -272,6 +288,7 @@ class C_Index extends CI_Controller {
 								'uk_baju' 	=> $this->input->post('txt_ukuranbaju'),
 								'uk_celana' => $this->input->post('txt_ukurancelana'),
 								'uk_sepatu' => $this->input->post('txt_ukuransepatu'),
+								'kd_pkj' => $this->input->post('txt_pekerjaanPekerja'),
 								'status_diangkat'=>$this->input->post('rd_diangkat')
 							);
 
