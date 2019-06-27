@@ -1,7 +1,7 @@
 $("#group_add").click(function(e){
   var d = new Date();
   var n = d.getDate();
-  if (n > 10) {
+  if (n > 40) {
     // alert('Anda Terlambat Order');
     Swal.fire({
       type: 'error',
@@ -776,26 +776,28 @@ function format ( d ) {
           });
         }
       });
-      // swal({
-      //   title: em,
-      //   text: "Apa anda yakin ingin Menghapus Email Ini?",
-      //   type: 'warning',
-      //   showCancelButton: true,
-      //   confirmButtonColor: '#3085d6',
-      //   cancelButtonColor: '#d33',
-      //   confirmButtonText: 'Yes, delete it!'
-      // }).then(function(result) {
-      //   if (result) {
-      //     $('#surat-loading').attr('hidden', false);
-      //     $.ajax({
-      //       type: 'POST',
-      //       url: baseurl+'p2k3adm_V2/Admin/hapusEmail',
-      //       data: {id:id},
-      //       success: function(response){
-      //         location.reload();
-      //       }
-      //     });
-      //   }
-      // });
     });
+
   });
+    function p2k3_val(){
+      var max = $('#pw2k3_maxpkj').val();
+      var staf = $("input[name='staffJumlah']").val();
+      var values = $("input[name='pkjJumlah\\[\\]']")
+              .map(function(){return $(this).val();}).get();
+      var jumlah = Number(staf);
+
+      for (var i = 0; i < values.length; i++) {
+        jumlah += Number(values[i]);
+      }
+      // alert(jumlah);
+      if (jumlah > Number(max)) {
+        Swal.fire({
+          type: 'error',
+          title: 'Jumlah Pekerja Melebihi Batas',
+          text: 'Maksimal Jumlah Pekerja adalah '+max,
+        });
+        return false;
+      }else{
+        return true;
+      }
+    }

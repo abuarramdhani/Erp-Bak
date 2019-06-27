@@ -490,7 +490,8 @@ class C_Index extends CI_Controller
 		$data['act'] = $act;
 		$data['seksi'] = $this->M_dtmasuk->cekseksi($ks);
 		$data['kodesie'] = $ks;
-		// print_r($data['seksi']);exit();
+		$data['max_pekerja']	= 	count($this->M_order->maxPekerja($ks));
+		// print_r($data['max_pekerja']);exit();
 
 		$this->load->view('V_Header',$data);
 		$this->load->view('V_Sidemenu',$data);

@@ -559,7 +559,17 @@ class M_Order extends CI_Model
         $ks = substr($ks, 0,7);
         $sql = "select * from k3.k3n_order where kodesie like '$ks%' and periode = '$pr' and status = '1';";
                                     // echo $sql;exit();
-        $query = $this ->db->query($sql);
+        $query = $this->db->query($sql);
         return $query->num_rows();
+    }
+
+    public function maxPekerja($kodesie)
+    {
+        $ks = substr($kodesie, 0,7);
+        $sql = "select * from hrd_khs.tpribadi
+                where keluar = '0'
+                and kodesie like '$ks%'";
+        $query = $this->personalia->query($sql);
+        return $query->result_array();
     }
 }
