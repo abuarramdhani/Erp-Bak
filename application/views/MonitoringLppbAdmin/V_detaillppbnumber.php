@@ -13,7 +13,7 @@
 						<div class="col-lg-12">
 							<div class="text-left ">
 								<span ><b>Lppb Number Details</b></span>
-								<input name="batch_number" id="batch_number" value="<?php echo $lppb[0]['BATCH_NUMBER']?>">
+								<input name="batch_number" id="batch_number" value="<?php echo $lppb[0]['BATCH_NUMBER']?>" type="hidden">
 							</div>
 						</div>
 					</div>
@@ -68,7 +68,7 @@
 																<span class="text-center"><label>Nomor LPPB</label></span>
 															</td>
 															<td>
-																<input name="lppb_numberFrom" id="lppb_numberFrom" class="form-control" style="width:100%; margin-top: 10px">
+																<input name="lppb_numberFrom" id="lppb_number" class="form-control" style="width:100%; margin-top: 10px">
 															</input>
 														</td>
 														<td>
@@ -133,15 +133,16 @@
 										</tr>
 									</thead>
 									<tbody id="tabelNomorLPPB">
-										<?php $no=1; foreach($lppb as $key => $p) { ?>
+										<?php $no=1; 
+										 foreach($lppb as $key => $p) { ?>
 											<tr class="lppb_id" id="<?php echo $no; ?>">
 												<td><?php echo $no ?></td>
-												<td><?php echo $p['ORGANIZATION_CODE']?></td>
-												<td><?php echo $p['ACTION_DATE']?></td>
-												<td><?php echo $p['LPPB_NUMBER']?></td>
+												<td><?php echo $p['ORGANIZATION_CODE']?><input type="hidden" name="org_id" value="<?=$p['ORGANIZATION_ID']?>"></td>
+												<td><?php echo $p['ACTION_DATE']?><input type="hidden" name="po_header_id" value="<?=$p['PO_HEADER_ID']?>"></td>
+												<td class="lppb_number"><?php echo $p['LPPB_NUMBER']?></td>
 												<td><?php echo $p['VENDOR_NAME']?></td>
 												<td><?php echo $p['TANGGAL_LPPB']?></td>
-												<td><?php echo $p['PO_NUMBER']?></td>
+												<td class="po_number"><?php echo $p['PO_NUMBER']?></td>
 												<?php if($p['STATUS'] == 0){
 													$status = '<span class="label label-default">New/Draf &nbsp;<br></span>';
 												}elseif ($p['STATUS'] == 1) {
@@ -153,7 +154,7 @@
 												}elseif ($p['STATUS'] == 4) {
 													$status = '<span class="label label-danger">Kasie Gudang Reject &nbsp;<br></span>';
 												}elseif ($p['STATUS'] == 5) {
-													$status = '<span class="label label-info">Checking Akuntansi (Sumbit ke Akuntansi) &nbsp;<br></span>';
+													$status = '<span class="label label-info">Checking Akuntansi (Submit ke Akuntansi) &nbsp;<br></span>';
 												}elseif ($p['STATUS'] == 6) {
 													$status = '<span class="label label-success">Akuntansi Approve &nbsp;<br></span>';
 												}elseif ($p['STATUS'] == 7) {
@@ -179,11 +180,11 @@
 									</table>
 								</div>
 								<div class="col-md-2 pull-right">
-									<?php if ($lppb[0]['STATUS'] == 0 OR $lppb[0]['STATUS'] == 1) { ?>
+									<?php if ($lppb[0]['STATUS'] == 0 ) { ?>
 										<a href="<?php echo base_url('MonitoringLPPB/NewDrafLppb')?>">
 											<button type="button" class="btn btn-primary" style="margin-top: 10px">Back</button>
 										</a>
-										<button id="save_lppb" type="" name="save_lppb" onclick="saveEditLPPBNumber($(this))" class="btn btn-success pull-right" style="margin-top: 10px;">Save</button>
+										<button id="save_lppb" type="Submit" name="save_lppb" onclick="saveEditLPPBNumber($(this))" class="btn btn-success pull-right" style="margin-top: 10px;">Save</button>
 									<?php }else{ ?>
 										<a href="<?php echo base_url('MonitoringLPPB/NewDrafLppb')?>">
 											<button type="button" class="btn btn-primary pull-right" style="margin-top: 10px">Back</button>

@@ -172,9 +172,9 @@ class C_monitoringlppbadmin extends CI_Controller{
 		foreach ($match as $key => $value) {
 			$lppb_number2 = $match[$key]['LPPB_NUMBER'];
 		}
-		$rangeLppb = "AND rsh.receipt_num between $lppb_number1 and $lppb_number2";
+		// $rangeLppb = "AND rsh.receipt_num between $lppb_number1 and $lppb_number2";
 		$kondisi = "";
-		$searchLppb = $this->M_monitoringlppbadmin->lppbBatchDetail($id,$rangeLppb);
+		$searchLppb = $this->M_monitoringlppbadmin->lppbBatchDetail($id);
 		$jumlahData = $this->M_monitoringlppbadmin->cekJumlahData($id,$kondisi);
 		$data['lppb'] = $searchLppb;
 		$data['jml'] = $jumlahData;
@@ -201,12 +201,16 @@ class C_monitoringlppbadmin extends CI_Controller{
 	}
 	public function saveEditLppbNumber()
 	{
+		// print_r($_POST);
+		// exit();
 		$lppb_number = str_replace(' ', '', $this->input->post('lppb_number'));
 		$date = date('d-m-Y H:i:s');
 		$batch_number = $this->input->post('batch_number');
 		$organization_id = $this->input->post('organization_id');
 		$po_number = $this->input->post('po_number');
 		$po_header_id = $this->input->post('po_header_id');
+		$batch_detail_id = $this->input->post('batch_detail_id');
+
 		// $po_line_id = $this->input->post('po_line_id');
 		$id_lppb = $this->input->post('id_lppb');
 		$dataid = $this->M_monitoringlppbadmin->saveEditLppbNumber($batch_number);
@@ -215,6 +219,9 @@ class C_monitoringlppbadmin extends CI_Controller{
 		// print_r($id);
 		// exit();
 		$expLppb = explode(',', $lppb_number);
+		$expBatch = explode(',', $batch_detail_id);
+		// print_r($expBatch);exit();
+		$i = 0;
 		foreach ($expLppb as $ln => $val) {
 			$exp_org_id = explode(',', $organization_id);
 			$exp_po_num = explode(',',$po_number);
@@ -222,7 +229,9 @@ class C_monitoringlppbadmin extends CI_Controller{
 			// $exp_po_line_id = explode(',',$po_line_id);
 			$id2 = $this->M_monitoringlppbadmin->saveEditLppbNumber2($batch_number,$expLppb[$ln],$date,$exp_org_id[$ln],$exp_po_num[$ln],$exp_po_header[$ln]);
 			$id3 = $this->M_monitoringlppbadmin->limitBatchDetId($id,$id_lppb);
-			$this->M_monitoringlppbadmin->saveEditLppbNumber3($id3[$ln]['BATCH_DETAIL_ID'],$date);
+			$this->M_monitoringlppbadmin->saveEditLppbNumber3($expBatch[$i],$date);
+			$i++;
+			
 		}
 	}
 	public function deleteLppbNumber(){
@@ -318,7 +327,9 @@ class C_monitoringlppbadmin extends CI_Controller{
 		}
 		$rangeLppb = "AND rsh.receipt_num between '$lppb_number1' and '$lppb_number2'";
 		$kondisi = "AND klbd.status in (2,3,5,6)";
-		$searchLppb = $this->M_monitoringlppbadmin->finishdetail($batch_number,$rangeLppb);
+		$searchLppb = $this->M_monitoringlppbadmin->finishdetail($batch_number);
+		// print_r($searchLppb);
+		// exit();
 		$jumlahData = $this->M_monitoringlppbadmin->cekJumlahData($batch_number,$kondisi);
 		$data['lppb'] = $searchLppb;
 		$data['jml'] = $jumlahData;

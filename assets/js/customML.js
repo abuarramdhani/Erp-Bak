@@ -26,7 +26,6 @@ $(document).ready(function(){
 			});
 		}
 	})
-
 	//autoload gudang di kasie gudang
 	$.ajax({
 		type: "post",
@@ -39,24 +38,19 @@ $(document).ready(function(){
 			$('#showLppbKasieGudang').html(response);
 		}
 	})
-
 	
-
 	$('#lppb_number').on("keypress",function(e){
 		if (e.keyCode == 13) {
 			searchNumberLppb(this);
 		}
 	})
-
 	$('#lppb_numberTo').on("keypress",function(e){
 		if (e.keyCode == 13) {
 			searchLppb(this);
 		}
 	})
-
 	$('#btn_search_lppb').click(function(){
 		$('#loading_lppb').html("<center><img id='loading12' style='margin-top: 2%;' src='"+baseurl+"assets/img/gif/loading2.gif'/><br /></center><br />");
-
 		var nama_vendor = $('#nama_vendor').val();
 		var nomor_lppb = $('#nomor_lppb').val();
 		var dateFrom = $('#dateFromUw').val();
@@ -86,29 +80,24 @@ $(document).ready(function(){
 			}
 		});
 	})
-
 	$('#table_tracking_lppb').DataTable({
 		"pageLength": 10,
 		"paging": true,
 		"searching": true,
 	});
-
 	$('.dateFromAndTo').datepicker({
 		format: 'dd/mm/yyyy',
 		autoclose: true,
 	});
-
 	$(document).on('click', 'td', function(){
 		$(this).find("span[class~='editable']").hide();
 		$(this).find("input[class~='editor']").fadeIn().focus();
 	});
-
 	$(document).on("keypress",".editor",function(e){
 		if(e.keyCode == 13){
 			var target = $(e.target);
 			var lppb_number = target.val();
 			var batch_detail_id = target.attr('data-id');
-
 			$.ajax({
 				type: "POST",
 				url:baseurl+"MonitoringLPPB/ListBatch/editable",
@@ -124,15 +113,12 @@ $(document).ready(function(){
 						$('.editable').fadeIn();
 						$('.editor').hide();
 					});
-
 				}
 			})
 		}
 	});
-
 	$('#deleteAllRows').click(function(){
 		var batch_number = $(this).val();
-
 		$.ajax({
 			type: "POST",
 			url: baseurl+"MonitoringLPPB/RejectLppb/deleteAllRows",
@@ -144,7 +130,6 @@ $(document).ready(function(){
 			}
 		})
 	})
-
 	$(document).on('ifChanged', '.chkAllLppb', function(event) {
 		if ($('.chkAllLppb').iCheck('update')[0].checked) {
 			// alert('satu');
@@ -160,15 +145,12 @@ $(document).ready(function(){
 			// alert('dua');
 		};
 	})
-
 });
-
 function searchNumberLppb(th){
 	$('#loading_search').html("<center><img id='loading12' style='margin-top: 2%;' src='"+baseurl+"assets/img/gif/loading3.gif'/><br /></center><br />");
 	var lppb_number =  $('#lppb_number').val();
 	var lppb_numberFrom =  $('#lppb_numberFrom').val();
 	var inventory_organization = $('#inventory').val();
-
 	$.ajax({
 		type: "POST",
 		url : baseurl+"MonitoringLPPB/ListBatch/addNomorLPPB",
@@ -185,7 +167,6 @@ function searchNumberLppb(th){
 					"ordering": true,
 					"info":     false	
 				});
-
 				var num = 0;
 				$('#addLppbNumber').click(function(){
 					var inputLppb = ['po_header_id[]','organization_id[]','organization_code[]', 'lppb_number[]', 'vendor_name[]', 'tanggal_lppb[]', 'po_number[]','status_lppb[]'];
@@ -195,7 +176,6 @@ function searchNumberLppb(th){
 							var html = '';
 							if (this.checked) {
 								var id_num = $(this).val();
-
 								html += '<tr id="row-1">';
 								$('tr#'+id_num).each(function(){
 									num++;
@@ -229,20 +209,16 @@ function searchNumberLppb(th){
 							alert('Hapus dibatalkan');
 						}
 					});
-
 				})
 			}
 		});
 };
-
 function actionLppbKasieGudang(th){
 	var batch_detail_id = $(th).attr('data-id');
 	var proses = $(th).attr('value');
 	var prnt = $(th).parent();
 	var tanggal = moment().format('DD/MM/YYYY hh:mm:ss'); 
-
 	prnt.html('<img src="'+baseurl+'assets/img/gif/loading5.gif" id="gambarloading">');
-
 	if (proses == 3) {
 		prnt.html('<span class="btn btn-primary" style="cursor: none;font-size: 10pt;" >Approve<input type="hidden" name="hdnProses[]" class="hdnProses" value="3"></span>');
 		prnt.siblings('td').children('.tglTerimaTolak').html('<input type="text" style="display:none" name="tglTerimaTolak[]" value="'+tanggal+'"><span>'+tanggal+'</span>');
@@ -252,17 +228,14 @@ function actionLppbKasieGudang(th){
 		prnt.siblings('td').children('.txtAlasan').show().attr('required', true);
 	}
 }
-
 function actionLppbNumber(th){
 	var batch_detail_id = $(th).attr('data-id');
 	var proses = $(th).attr('value');
 	var prnt = $(th).parent();
 	var tanggal = moment().format('DD/MM/YYYY hh:mm:ss'); 
-
 	// alert(tanggal);
 	
 	prnt.html('<img src="'+baseurl+'assets/img/gif/loading5.gif" id="gambarloading">');
-
 	if (proses == 6) {
 		prnt.html('<span class="btn btn-primary" style="cursor: none;font-size: 10pt;" >Diterima<input type="hidden" name="hdnProses[]" class="hdnProses" value="6"></span>');
 		prnt.siblings('td').children('.tglTerimaTolak').html('<input type="text" style="display:none" name="tglTerimaTolak[]" value="'+tanggal+'"><span>'+tanggal+'</span>');
@@ -272,13 +245,11 @@ function actionLppbNumber(th){
 		prnt.siblings('td').children('.txtAlasan').show().attr('required', true);
 	}
 }
-
 function btnDeleteLppb(th){
 	var num = th.attr('rownum');
 	var batch_detail_id = $('.batch_detail_id_'+num).val();
 	var conf = confirm('Yakin untuk menghapusnya?');
 	// alert(num);
-
 	if (conf == true) {
 		$.ajax({
 			type: "POST",
@@ -296,7 +267,6 @@ function btnDeleteLppb(th){
 		return false;
 	}
 }
-
 function del_batch_number(th){
 	var num = th.attr('row_id');
 	var batch_number = $('.batch_number_'+num).val();
@@ -317,7 +287,6 @@ function del_batch_number(th){
 		return false;
 	}
 }
-
 function getBtch(th) {
 	var batch_number = $(th).attr('data-id');	
 	var group_batch = $(th).attr('data-batch');
@@ -343,13 +312,11 @@ function getBtch(th) {
 	})
 	
 }
-
 function submitToKasie(th){
 	var batch_number = $(th).attr('data-id');
 	var group_batch = $(th).attr('data-batch');
 	$('#group_batch').text(group_batch);
 	$('#mdlSubmitToKasieAkuntansi').modal('show');
-
 	$('#mdlYesAkt').click(function(){
 		$.ajax({
 			type: "post",
@@ -363,10 +330,8 @@ function submitToKasie(th){
 		})
 	})
 }
-
 function getOptionGudang(th){
 	var id_gudang = $(th).val();
-
 	$.ajax({
 		type: "post",
 		url: baseurl+"MonitoringLPPB/ListBatch/showGudang",
@@ -386,10 +351,8 @@ function getOptionGudang(th){
 		}
 	})
 }
-
 function getOptionKasieGudang(th){
 	var id_gudang = $(th).val();
-
 	$.ajax({
 		type: "post",
 		url: baseurl+"MonitoringLppbKasieGudang/Unprocess/showGudangByKasie",
@@ -409,10 +372,8 @@ function getOptionKasieGudang(th){
 		}
 	})
 }
-
 function getOptionKasieAkt(th){
 	var id_gudang = $(th).val();
-
 	$.ajax({
 		type: "post",
 		url: baseurl+"MonitoringLppbAkuntansi/Unprocess/showGudangByAkuntansi",
@@ -432,11 +393,9 @@ function getOptionKasieAkt(th){
 		}
 	})
 }
-
 function saveLPPBNumber(th){
 	var lppb_info = $('#lppb_info').val();
 	var id_gudang = $('#id_gudang').val();
-
 	//array
 	var arry = [];
 	$('input[class~="lppb_number[]"]').each(function(){
@@ -444,30 +403,25 @@ function saveLPPBNumber(th){
 		arry.push(lppb_number);
 	});
 	str_arry = arry.join();
-
 	var arry2 = [];
 	$('input[class~="organization_id[]').each(function(){
 		var organization_id = $(this).val();
 		arry2.push(organization_id);
 	});
 	str_arry2 = arry2.join();
-
 	var arry3 = [];
 	$('input[class~="po_number[]').each(function(){
 		var po_number = $(this).val();
 		arry3.push(po_number);
 	})
 	str_arry3 = arry3.join();
-
 	var arry5 = [];
 	$('input[class~="po_header_id[]').each(function(){
 		var po_header_id = $(this).val();
 		arry5.push(po_header_id);
 	})
 	str_arry5 = arry5.join();
-
 	// console.log(str_arry5);
-
 	$.ajax({
 		type: "post",
 		url: baseurl+"MonitoringLPPB/ListBatch/saveLppbNumber",
@@ -488,32 +442,37 @@ function saveLPPBNumber(th){
 	})
 	
 }
-
 function saveEditLPPBNumber(th){
 	var batch_number = $('#batch_number').val();
 	var id_lppb = $('.row-id').length;
 	// console.log(id_lppb);
+	// var coba = $('td.lppb_number').text();
+	// console.log("coba", coba);
+
 	//array
 	var arry = [];
-	$('input[class~="lppb_number[]"]').each(function(){
-		var lppb_number = $(this).val();
+	$('td[class~="lppb_number"]').each(function(){
+		var lppb_number = $(this).text();
 		arry.push(lppb_number);
 	});
+	console.log("lppb_number", arry);
 	str_arry = arry.join();
-	// console.log(str_arry);
+	// console.log("coba string", str_arry);
 
 	var arry2 = [];
-	$('input[class~="organization_id[]').each(function(){
+	$('input[name~="org_id').each(function(){
 		var organization_id = $(this).val();
 		arry2.push(organization_id);
 	});
+	console.log("oi", arry2);
 	str_arry2 = arry2.join();
 
 	var arry3 = [];
-	$('input[class~="po_number[]').each(function(){
-		var po_number = $(this).val();
+	$('td[class~="po_number').each(function(){
+		var po_number = $(this).html();
 		arry3.push(po_number);
-	})
+	});
+	console.log("po-num", arry3);
 	str_arry3 = arry3.join();
 
 	// var arry4 = [];
@@ -522,13 +481,21 @@ function saveEditLPPBNumber(th){
 	// 	arry4.push(line_num);
 	// })
 	// str_arry4 = arry4.join();
-
 	var arry5 = [];
-	$('input[class~="po_header_id[]').each(function(){
+	$('input[name~="po_header_id').each(function(){
 		var po_header_id = $(this).val();
 		arry5.push(po_header_id);
-	})
+	});
+	console.log("po-head", arry5);
 	str_arry5 = arry5.join();
+
+	var arry6 = [];
+	$('input[name~="batch_detail_id').each(function(){
+		var batch_detail_id = $(this).val();
+		arry6.push(batch_detail_id);
+	});
+	console.log("batch", arry6);
+	str_arry6 = arry6.join();
 
 	$.ajax({
 		type: "post",
@@ -538,17 +505,17 @@ function saveEditLPPBNumber(th){
 			organization_id: str_arry2,
 			po_number: str_arry3,
 			po_header_id: str_arry5,
+			batch_detail_id: str_arry6,
 			batch_number: batch_number,
 			id_lppb: id_lppb
 		},
 		success: function(response){
 			window.location.reload();
 			alert('Data sudah disimpan');
-			// console.log(lppb_number,organization_id,po_number,po_header_id,batch_number,id_lppb);
+			console.log(lppb_number,organization_id,po_number,po_header_id,batch_number,id_lppb);
 		}
 	})
 }
-
 function searchLppb(th){
 	$('#loading_search').html("<center><img id='loading12' style='margin-top: 2%;' src='"+baseurl+"assets/img/gif/loading3.gif'/><br /></center><br />");
 	var lppb_numberFrom =  $('#lppb_numberFrom').val();
@@ -571,7 +538,6 @@ function searchLppb(th){
 				});
 			var id_lppb = $('.lppb_id').length;
 			var num = id_lppb;
-
 			$('#addLppbNumber').click(function(){
 					var inputLppb = ['po_header_id[]','organization_id[]','organization_code[]', 'lppb_number[]', 'vendor_name[]', 'tanggal_lppb[]', 'po_number[]','status_lppb[]'];
 					// var ct = $('#tabelNomorLPPB').children('tr').length;
@@ -582,7 +548,6 @@ function searchLppb(th){
 							var html = '';
 							if (this.checked) {
 								var id_num = $(this).val();
-
 								html += '<tr class="row-id" id="row-1">';
 								$('tr#'+id_num).each(function(){
 									num++;
@@ -616,12 +581,10 @@ function searchLppb(th){
 							alert('Hapus dibatalkan');
 						}
 					});
-
 				})
 			}
 		});
 };
-
 function chkAllLppb() {
 	if ($('.chkAllLppb').is(':checked')) {
 		$('.chkAllLppbNumber').each(function () {
@@ -633,7 +596,6 @@ function chkAllLppb() {
 		});
 	};
 }
-
 function approveLppbByKasie(th) {
 	var jml = 0;
 	var arrId = [];

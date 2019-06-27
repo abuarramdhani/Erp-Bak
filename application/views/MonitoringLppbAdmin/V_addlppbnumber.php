@@ -13,7 +13,8 @@
 				<div class="row">
 					<div class="col-lg-12">
 						<div class="text-left ">
-							<span><b>Add LPPB Number</b></span>
+							<span><b>Add LPPB Number </b></span>
+							<!-- <input type="hidden" id="batch_number" value="<?php echo $lppb[0]['BATCH_NUMBER']?>"> -->
 						</div>
 					</div>
 				</div>
@@ -112,7 +113,7 @@
 									</table>
 								</div>
 								<div class="col-md-2 pull-right">
-									<button onclick="saveLPPBNumber($(this));" type="button" name="batch_number" class="btn btn-primary pull-right" style="margin-top: 10px" >Save</button>
+									<button onclick="saveLPPBNumber($(this));" type="button"class="btn btn-primary pull-right" style="margin-top: 10px" >Save</button>
 								</div>
 								<!-- <div class="col-md-2 pull-left">
 									<label> Total LPPB Submitted : </label><span id="jml_LPPB"></span>
