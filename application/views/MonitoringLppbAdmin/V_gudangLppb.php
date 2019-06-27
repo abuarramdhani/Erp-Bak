@@ -19,13 +19,17 @@
 						<td><?php echo $no?></td>
 						<td>
 							<a title="Detail Lppb ..." href="<?php echo base_url('MonitoringLPPB/ListBatch/detailLppb/'.$lb['BATCH_NUMBER'])?>" class="btn btn-default btn-xs"><i class="fa fa-file-text-o"></i></a>
-							<?php if($lb['NEW_DRAF'] > 0 and $lb['ADMIN_EDIT'] > 0 or $lb['NEW_DRAF'] > 0){ ?>
+
+						<?php if($lb['NEW_DRAF'] > 0 and $lb['ADMIN_EDIT'] > 0 or $lb['NEW_DRAF'] > 0){ ?>
 							<a title="Submit to Kasie Gudang" id="btnSubmitChecking" data-id="<?= $lb['BATCH_NUMBER'] ?>" data-batch="<?php echo $lb['GROUP_BATCH']?>" onclick="getBtch(this)" class="btn btn-primary btn-xs"><i class="fa fa-paper-plane"></i>
 							</a>
 							<a title="Delete" onclick="del_batch_number($(this))" row_id="<?php echo $no?>" class="btn btn-danger btn-xs"><i class="fa fa-trash"></i>
 									<input type="hidden" name="batch_number" class="batch_number_<?php echo $no?>" value="<?php echo $lb['BATCH_NUMBER']?>"></a>
-							<?php }else{ ?>
-								<a title="Submit to Kasie Gudang" id="btnSubmitChecking" data-toggle="modal" data-target="#mdlSubmitToKasieGudang" class="btn btn-primary btn-xs"  style="display: none;"><i class="fa fa-paper-plane"></i></a>
+							<?php }
+							else{ ?>
+								<a title="Submit to Kasie Gudang" id="btnSubmitChecking" data-id="<?= $lb['BATCH_NUMBER'] ?>" data-batch="<?php echo $lb['GROUP_BATCH']?>" onclick="getBtch(this)" class="btn btn-primary btn-xs"><i class="fa fa-paper-plane"></i></a>
+								<a title="Delete" onclick="del_batch_number($(this))" row_id="<?php echo $no?>" class="btn btn-danger btn-xs"><i class="fa fa-trash"></i>
+									<input type="hidden" name="batch_number" class="batch_number_<?php echo $no?>" value="<?php echo $lb['BATCH_NUMBER']?>"></a>
 							<?php } ?>
 						</td>
 						<td><?php echo $lb['GROUP_BATCH']?></td>

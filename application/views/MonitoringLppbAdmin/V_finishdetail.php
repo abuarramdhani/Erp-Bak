@@ -12,7 +12,7 @@
 				<div class="row">
 					<div class="col-lg-12">
 						<div class="text-left ">
-							<span><b>Detail Batch <?php echo $lppb[0]['GROUP_BATCH']?></b></span>
+							<span><b>Detail Batch </b></span>
 						</div>
 					</div>
 				</div>
@@ -29,10 +29,10 @@
 											<td>
 												<span><label>LPPB Info</label></span>
 											</td>
-											<td>
-												<input type="text" name="lppb_info" class="form-control" style="width:100%;margin-bottom: 10px" value="<?php echo $lppb[0]['LPPB_INFO']?>" readonly >
-											</td>
-										</tr>
+												<td>
+													<input type="text" name="" value="<?php echo $lppb[0]['LPPB_INFO']?>" class="form-control" style="width:100%;margin-bottom: 10px" readonly >
+												</td>
+											</tr>
 										<tr>
 										<td>
 											<span><label>Gudang</label></span>

@@ -75,10 +75,13 @@ class M_monitoringlppbadmin extends CI_Model {
                                AND rts.po_line_id = pol.po_line_id) 
                     $io
                     ORDER BY rsh.receipt_num";
+        // echo"<pre>";
+        // print_r($query);
+        // exit();
         $run = $oracle->query($query);
         return $run->result_array();
     }
-    public function lppbBatchDetail($batch_number,$lppb_number)
+    public function lppbBatchDetail($batch_number)
     {
         $oracle = $this->load->database('oracle',TRUE);
         $query ="SELECT DISTINCT 
@@ -89,7 +92,8 @@ class M_monitoringlppbadmin extends CI_Model {
                 rsh.creation_date tanggal_lppb, 
                 MP.ORGANIZATION_CODE, 
                 MP.ORGANIZATION_ID, 
-                rt.transaction_type status_lppb, 
+                rt.transaction_type status_lppb,
+                a.po_header_id, 
                 a.batch_number, 
                 a.batch_detail_id, 
                 a.lppb_info, 
@@ -134,7 +138,7 @@ class M_monitoringlppbadmin extends CI_Model {
                     AND rts.po_line_id = pol.po_line_id) 
                 AND a.po_header_id = poh.po_header_id 
                 AND a.lppb_number = rsh.receipt_num 
-                $lppb_number";
+               ";
 
         $run = $oracle->query($query);
         return $run->result_array();
@@ -312,15 +316,30 @@ class M_monitoringlppbadmin extends CI_Model {
     public function saveEditLppbNumber2($batch_number,$lppb_number,$status_date,$io_id,$po_number,$po_header_id)
     {
         $oracle = $this->load->database('oracle',true);
-        $query = "INSERT INTO khs_lppb_batch_detail
-                      (batch_number, lppb_number, status, status_date, io_id,po_number,po_header_id) values ('$batch_number', '$lppb_number', '1', to_date('$status_date', 'DD/MM/YYYY HH24:MI:SS'),'$io_id','$po_number','$po_header_id')";
+        $query = "UPDATE khs_lppb_batch_detail 
+                        SET batch_number = '$batch_number',
+                            lppb_number = '$lppb_number',
+                            status = '1',
+                            status_date = to_date('$status_date', 'DD/MM/YYYY HH24:MI:SS'),
+                            io_id = '$io_id',
+                            po_number = '$po_number',
+                            po_header_id = '$po_header_id'
+                            where batch_number='$batch_number'";
+        // echo "<pre>";
+        // print_r($query);
+        // exit();
         $oracle->query($query);
     }
     public function saveEditLppbNumber3($batch_detail_id,$action_date)
     {
         $oracle = $this->load->database('oracle', true);
-        $query = "INSERT INTO khs_lppb_action_detail_1
-                    (batch_detail_id,status,action_date) VALUES ('$batch_detail_id', '1', to_date('$action_date', 'DD/MM/YYYY HH24:MI:SS'))";
+        $query = "UPDATE khs_lppb_action_detail_1
+                    set batch_detail_id='$batch_detail_id',
+                    status='1',
+                    action_date=to_date('$action_date', 'DD/MM/YYYY HH24:MI:SS')
+                    where batch_detail_id='$batch_detail_id' ";
+        // echo $query;
+        // exit();
         $oracle->query($query);
     }
     public function delBatchDetailId($batch_detail_id)
@@ -497,7 +516,7 @@ class M_monitoringlppbadmin extends CI_Model {
         $run = $oracle->query($query);
         return $run->result_array();
     }
-    public function finishdetail($batch_number,$lppb_number){
+    public function finishdetail($batch_number){
         $oracle = $this->load->database('oracle',true);
         $query = "SELECT DISTINCT poh.po_header_id,
                 a.lppb_number,
@@ -550,7 +569,7 @@ class M_monitoringlppbadmin extends CI_Model {
                                AND rts.po_header_id = pol.po_header_id)
                     AND a.po_header_id = poh.po_header_id
                     AND a.lppb_number = rsh.receipt_num
-                    $lppb_number ";
+                    ";
         $run = $oracle->query($query);
         // echo "<pre>";
         // print_r($query);

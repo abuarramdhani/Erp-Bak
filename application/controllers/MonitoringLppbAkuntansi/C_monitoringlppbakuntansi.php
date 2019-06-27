@@ -66,6 +66,8 @@ class C_monitoringlppbakuntansi extends CI_Controller{
 	
 	public function detailLppbAkuntansi($batch_number)
 	{
+		// print_r($_POST);
+		// exit();
 		$this->checkSession();
 		$user_id = $this->session->userid;
 		
@@ -77,13 +79,17 @@ class C_monitoringlppbakuntansi extends CI_Controller{
 		$data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id);
 
 		$detailLppb = $this->M_monitoringlppbakuntansi->getBatchDetailId($batch_number);
+		// print_r($detailLppb);exit();
+		
 		$lppb_number1 = $detailLppb[0]['LPPB_NUMBER'];
+		// print_r($lppb_number1) ;
+		// exit();
 		foreach ($detailLppb as $key => $value) {
 			$lppb_number2 = $detailLppb[$key]['LPPB_NUMBER'];
 		}
-		$rangeLppb = "AND rsh.receipt_num between $lppb_number1 and $lppb_number2";
+		// $rangeLppb = "AND rsh.receipt_num between $lppb_number1 and $lppb_number2";
 		$kondisi = "AND klbd.status = 5";
-		$searchLppb = $this->M_monitoringlppbakuntansi->detailLppbAkuntansi($batch_number,$rangeLppb);
+		$searchLppb = $this->M_monitoringlppbakuntansi->detailLppbAkuntansi($batch_number);
 		$jumlahData = $this->M_monitoringlppbakuntansi->cekJumlahData($batch_number,$kondisi);
 		$data['detailLppb'] = $searchLppb;
 		$data['jml'] = $jumlahData;
