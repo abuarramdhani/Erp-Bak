@@ -1,7 +1,7 @@
 <section class="content">
     <div class="inner" >
         <div class="row">
-            <form method="post" action="<?php echo site_url('P2K3_V2/Order/save_pekerja');?>" class="form-horizontal" enctype="multipart/form-data">
+            <form onsubmit="return p2k3_val()" method="post" action="<?php echo site_url('P2K3_V2/Order/save_pekerja');?>" class="form-horizontal" enctype="multipart/form-data">
                 <div class="col-lg-12">
                     <div class="col-lg-11">
                         <div class="text-right">
@@ -95,6 +95,7 @@
                                             </div>
                                         </div>
                                     </div>
+                                    <input hidden="" value="<?php echo $max_pekerja; ?>" id="pw2k3_maxpkj">
                                     <div class="panel-footer">
                                         <div class="row text-right" style="margin-right: 12px">
                                             <?php 
@@ -106,7 +107,7 @@
                                             ?>
                                             <a href="<?php echo base_url('P2K3_V2/Order/list_order'); ?>" class="btn btn-primary btn-lg btn-rect">Back</a>
                                             &nbsp;&nbsp;
-                                            <button <?php echo $d; ?> type="submit" class="btn btn-primary btn-lg btn-rect" onclick="test()">Tambah Data</button>
+                                            <button <?php echo $d; ?> type="submit" class="btn btn-primary btn-lg btn-rect">Tambah Data</button>
                                         </div>
                                     </div>
                                 </div>

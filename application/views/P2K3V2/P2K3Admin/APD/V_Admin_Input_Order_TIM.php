@@ -55,7 +55,7 @@
                                         <div class="col-lg-12">
                                             <div class="row">
                                                 <?php if ($act == '1' or $act =='2'): ?>
-                                                    <form method="post" class="form-horizontal" action="<?php echo site_url('p2k3adm_V2/Admin/saveInputOrder');?>" enctype="multipart/form-data">
+                                                    <form onsubmit="return p2k3_val()" method="post" class="form-horizontal" action="<?php echo site_url('p2k3adm_V2/Admin/saveInputOrder');?>" enctype="multipart/form-data">
                                                         <div class="nav-tabs-custom">
                                                             <div class="tab-content">
                                                                 <div class="tab-pane active">
@@ -122,6 +122,7 @@
                                         </div>
                                     </div>
                                 </div>
+                                <input hidden="" value="<?php echo $max_pekerja; ?>" id="pw2k3_maxpkj">
                                 <div class="panel-footer" style="margin-top: 20px;">
                                 </div>
                             </div>

@@ -444,7 +444,7 @@ class C_Order extends CI_Controller
 	public function reset()
 	{
 		$user = $this->session->username;
-
+		$kodesie 					= $this->session->kodesie;
 		$user_id = $this->session->userid;
 
 		$data['Title'] = 'Order';
@@ -456,8 +456,9 @@ class C_Order extends CI_Controller
 		$data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id);
 		$data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id);
 
-		$kodesie 					= $this->session->kodesie;
 		$data['daftar_pekerjaan']	= $this->M_order->daftar_pekerjaan($kodesie);
+		$data['max_pekerja']	= 	count($this->M_order->maxPekerja($kodesie));
+		// echo $data['max_pekerja'];exit();
 
 		$this->load->view('V_Header',$data);
 		$this->load->view('V_Sidemenu',$data);

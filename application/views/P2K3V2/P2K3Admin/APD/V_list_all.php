@@ -7,14 +7,6 @@
                         <h1><b>Data Masuk</b></h1>
                     </div>
                 </div>
-                <div class="col-lg-1">
-                    <div class="text-right hidden-md hidden-sm hidden-xs">
-                        <a class="btn btn-default btn-lg" href="#">
-                            <i class="icon-wrench icon-2x"></i>
-                            <span><br/></span>  
-                        </a>
-                    </div>
-                </div>
                 <div class="row">
                     <div class="col-lg-12">
                         <div class="box box-primary box-solid">

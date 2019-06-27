@@ -28,7 +28,7 @@
             <div class="col-lg-12">
                 <div class="col-lg-11">
                     <div class="text-right">
-                        <h1><b>Kebutuhan Order</b></h1>
+                        <h1><b>Monitoring Bon</b></h1>
                     </div>
                 </div>
                 <div class="row">
