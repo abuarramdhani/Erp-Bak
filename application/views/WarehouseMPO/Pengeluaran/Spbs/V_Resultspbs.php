@@ -129,6 +129,7 @@
                             </thead>
                             <tbody>
                             <?php
+                                $totalSemua = array();
                                 $qty_kirim = 0;
                                 $qty_minta = 0;
                                 $lama = 0;
@@ -225,10 +226,14 @@
                         <table class="table text-center" style="width: 1700px;padding: 0">
                         <?php 
                             $lamaAll = 0;
-                            foreach ($totalSemua as $key => $v) {
-                                $lamaAll = $v['RATA']+$lamaAll;
+                            if (!$totalSemua){
+                               $rataAll = 0;
+                            }else{
+                                foreach ($totalSemua as $key => $v) {
+                                    $lamaAll = $v['RATA']+$lamaAll;
+                                }
+                                    $rataAll = $lamaAll/count($totalSemua);
                             }
-                            $rataAll = $lamaAll/count($totalSemua);
                         ?>
                                 <tr class="bg-default">
                                     <td width="1200px"></td>
