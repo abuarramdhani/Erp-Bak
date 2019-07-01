@@ -44,8 +44,12 @@ class C_Report extends CI_Controller
 			$data['complexTextAreaCKEditor']	=	FALSE;
 			$getMember = $this->M_report->getMember($this->session->kodesie);
 			$sectionName = $getMember[0]['seksi'];
-			$data['data_seksi'] = $getMember;
-			$data['seksi'] = $sectionName;		
+			$data['seksi'] = $sectionName;
+			$getseksi = $this->M_report->getseksi($this->session->kodesie);
+			$getpekerja = $this->M_report->getpekerja($this->session->kodesie);
+			// print_r($getseksi); exit();
+			$data['data_seksi'] = $getseksi;
+			$data['data_pekerja'] = $getpekerja;				
 			$this->load->view('V_Header',$data);
 			$this->load->view('V_Sidemenu',$data);
 			$this->load->view('SystemIntegration/MainMenu/Report/V_Index',$data);
