@@ -244,7 +244,7 @@ class C_Index extends CI_Controller
 		$data['Menu'] = 'TIMS Harian';
 		$data['SubMenuOne'] = '';
 		$data['SubMenuTwo'] = '';
-		// echo $a;exit();
+		// echo $b;exit();
 		$vali = $this->M_index->getVal2($a);
 		if ($b == '1') {
 			$b = 'KEUANGAN';
@@ -267,7 +267,8 @@ class C_Index extends CI_Controller
 			$data['listLt'] = $this->M_index->listLt2($b, $t, $tim, $tims, $vali);
 		}
 		$data['jp'] = $jp[0]['jenis_penilaian'];
-		$data['dept'] = $b;
+		$data['jpi'] = $a;
+		$data['dept'] = 'Departemen '.$b;
 		
 		$this->load->view('V_Header',$data);
 		$this->load->view('V_Sidemenu',$data);
@@ -428,15 +429,17 @@ class C_Index extends CI_Controller
 
 	public function previewcetak($no_surat)
 	{
-
+		// exit();
 		$this->load->library('pdf');
 		$pdf 	=	$this->pdf->load();
 		$pdf 	=	new mPDF('utf-8', array(216,330), 10, "timesnewroman", 10, 10, 55, 30, 0, 0, 'P');
 		// $pdf 	=	new mPDF();
 		$isi = $this->M_index->getMemo($no_surat);
+		$judul = $this->M_index->getMemo2($no_surat);
 		$filename	=	'EvaluasiTIMS-'.str_replace('/', '_', 'Memo').'.pdf';
 
 		$pdf->AddPage();
+		$pdf->SetTitle($judul[0]['nomor_surat']);
 		$pdf->WriteHTML($isi);
 
 		$pdf->Output($filename, 'I');
@@ -653,15 +656,17 @@ class C_Index extends CI_Controller
 		header('Content-type: application/pdf');
 		header('Content-Disposition: attachment; filename="filename.pdf"');
 		$data = $this->input->post('data');
+		$no = $this->input->post('no');
 		$this->load->library('pdf');
 		$pdf 	=	$this->pdf->load();
 		$pdf 	=	new mPDF('utf-8', array(216,330), 10, "timesnewroman", 10, 10, 55, 30, 0, 0, 'P');
 		// $pdf 	=	new mPDF();
 		$data = str_replace('<ol>', '<ol style="text-align: justify;">', $data);
 		$isi = $data;
-		$filename	=	'EvaluasiTIMS-'.str_replace('/', '_', 'Memo').'.pdf';
+		$filename	=	'Preview Memo.pdf';
 
 		$pdf->AddPage();
+		$pdf->SetTitle('Preview');
 		$pdf->WriteHTML($isi);
 
 		$data['pdf'] = $pdf->Output($filename, 'I');
@@ -671,11 +676,13 @@ class C_Index extends CI_Controller
 
 	public function exportBulanan()
 	{
+		// print_r($_POST);exit();
 		$jenisPenilaian = $this->input->post('jp');
 		$tanggal = $this->input->post('tgl');
 		$nama = $this->input->post('nama');
 		$s = $this->input->post('ess');
 		$data['nama'] = $nama;
+		$data['jenis'] = 'bulanan';
 
 		$jp = $this->M_index->listJp3($jenisPenilaian);
 		// echo $jenisPenilaian;exit();
@@ -708,13 +715,61 @@ class C_Index extends CI_Controller
 		$pdf 	=	$this->pdf->load();
 		$pdf 	=	new mPDF('utf-8', array(216,330), 10, "timesnewroman", 10, 10, 10, 10, 0, 0, 'L');
 		// $pdf 	=	new mPDF();
-		$filename	=	'EvaluasiTIMS-'.str_replace('/', '_', 'Memo').'.pdf';
+		$filename	=	'Evaluasi TIMS Bulanan '.$jp[0]['jenis_penilaian'].' '.$this->input->post('tgl').'.pdf';
 		if ($jenisPenilaian == '1') {
 			$html = $this->load->view('EvaluasiTIMS/V_Export_Php',$data, true);
 		}elseif ($jenisPenilaian == '2') {
 			$html = $this->load->view('EvaluasiTIMS/V_Export_Php2',$data, true);
 		}
 		$pdf->AddPage();
+		$pdf->SetTitle('Evaluasi TIMS Bulanan '.$jp[0]['jenis_penilaian'].' '.$this->input->post('tgl'));
+		$pdf->WriteHTML($html, 2);
+
+		$data['pdf'] = $pdf->Output($filename, 'I');
+	}
+
+	public function exportHarian()
+	{
+		// print_r($_POST);exit();
+		$jenisPenilaian = $this->input->post('jp');
+		$tanggal = $this->input->post('tgl');
+		$nama = $this->input->post('nama');
+		$data['nama'] = $nama;
+		$b = substr($nama, 11);
+
+		$vali = $this->M_index->getVal2($jenisPenilaian);
+		$data['jenis'] = 'harian';
+		$jp = $this->M_index->listJp3($jenisPenilaian);
+		$t = $jp[0]['std_m'];
+		$tim = $jp[0]['std_tim'];
+		$tims = $jp[0]['std_tims'];
+		$data['tims'] = array(
+			$t,$tim,$tims
+			);
+
+		// print_r($b);exit();
+		if ($jenisPenilaian == '1') {
+			$getlist = $this->M_index->listLt($b, $t, $tim, $tims, $vali);
+		}elseif ($jenisPenilaian == '2') {
+			$getlist = $this->M_index->listLt2($b, $t, $tim, $tims, $vali);
+		}
+		// echo "<pre>"; print_r($getlist);exit();
+		$data['tgl2'] = $this->personalia->konversitanggalIndonesia(date('Y-m-d'));
+		$data['listLt'] = $getlist;
+		header('Content-type: application/pdf');
+		header('Content-Disposition: attachment; filename="filename.pdf"');
+		$this->load->library('pdf');
+		$pdf 	=	$this->pdf->load();
+		$pdf 	=	new mPDF('utf-8', array(216,330), 10, "timesnewroman", 10, 10, 10, 10, 0, 0, 'L');
+		// $pdf 	=	new mPDF();
+		$filename	=	'Evaluasi TIMS Harian '.$jp[0]['jenis_penilaian'].' '.$tanggal.'.pdf';
+		if ($jenisPenilaian == '1') {
+			$html = $this->load->view('EvaluasiTIMS/V_Export_Php',$data, true);
+		}elseif ($jenisPenilaian == '2') {
+			$html = $this->load->view('EvaluasiTIMS/V_Export_Php2',$data, true);
+		}
+		$pdf->AddPage();
+		$pdf->SetTitle('Evaluasi TIMS Harian '.$jp[0]['jenis_penilaian'].' '.$tanggal);
 		$pdf->WriteHTML($html, 2);
 
 		$data['pdf'] = $pdf->Output($filename, 'I');

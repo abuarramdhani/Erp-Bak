@@ -144,6 +144,7 @@
                             </form>
                             <form target="_blank" method="post" action="<?php echo site_url('EvaluasiTIMS/Setup/testPreview');?>">
                                 <input hidden="" name="data" id="evt_inp_hidden">
+                                <input hidden="" name="no" id="evt_hidden_no_surat">
                                 <button type="submit" hidden="" class="evt_btn_hidden"></button>
                             </form>
                         </div>

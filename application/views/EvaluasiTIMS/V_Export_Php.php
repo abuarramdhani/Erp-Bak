@@ -31,7 +31,7 @@
 					<th>Prediksi TIM</th>
 					<th>Prediksi TIMS</th>
 					<th>Prediksi Lolos</th>
-					<th>Prediksi Keterangan</th>
+					<th>Keterangan</th>
 				</tr>
 			</thead>
 			<tbody>
@@ -62,12 +62,16 @@
 						echo 'style="color:#ff0000;"';
 					} ?>
 					><?php echo $key['pred_lolos']; ?></td>
-					><?php echo $key['ket']; ?></td>
+					<td><?php echo $key['ket']; ?></td>
 				</tr>
 				<?php $a++; endforeach ?>
 			</tbody>
 		</table>
-		<p>Data diambil sampai dengan tanggal <?php echo $tgl2; ?></p>
+		<?php if ($jenis == 'harian'): ?>
+			<p>Data diambil pada tanggal <?php echo $tgl2; ?></p>
+		<?php else: ?>
+			<p>Data diambil sampai dengan tanggal <?php echo $tgl2; ?></p>
+		<?php endif ?>
 		<b>Keterangan</b>
 		<table border="0">
 			<tr>

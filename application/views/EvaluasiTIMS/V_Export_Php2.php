@@ -61,12 +61,17 @@
 					<?php if ($key['pred_lolos'] == 'TIDAK LOLOS') {
 						echo 'style="color:#ff0000;"';
 					} ?>
-					><?php echo $key['ket']; ?></td>
+					><?php echo $key['pred_lolos']; ?></td>
+					<td><?php echo $key['ket']; ?></td>
 				</tr>
 				<?php $a++; endforeach ?>
 			</tbody>
 		</table>
-		<p>Data diambil sampai dengan tanggal <?php echo $tgl2; ?></p>
+		<?php if ($jenis == 'harian'): ?>
+			<p>Data diambil pada tanggal <?php echo $tgl2; ?></p>
+		<?php else: ?>
+			<p>Data diambil sampai dengan tanggal <?php echo $tgl2; ?></p>
+		<?php endif ?>
 		<b>Keterangan</b>
 		<table border="0">
 			<tr>
@@ -88,7 +93,7 @@
 			<tr>
 				<td width="40%" style="padding: 10px;" colspan="2" valign="top">
 					<ul>
-						<li>Standar kelolosan frekuensi TIMS staf selama 6 bulan*):</li>
+						<li>Standar kelolosan frekuensi TIMS staf selama 2 Tahun*):</li>
 					</ul>
 				</td>
 				<td style="padding: 10px;">
