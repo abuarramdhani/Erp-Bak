@@ -51,51 +51,6 @@
         <div class="table">
             <div class="panel panel-default">
                 <div class="panel-body">
-                    <!-- <div class="zui-wrapper">
-                        <div class="zui-scroller">
-                            <table class="zui-table" style="overflow-x:scroll;max-width:100%;max-height: 80vh;">
-                                <thead>
-                                     <tr class="bg-primary">
-                                        <th class="zui-sticky-col" class="bg-primary" style="position:sticky;top:0;" width="30px" rowspan="2">No</th>
-                                        <th class="bg-primary" style="position:sticky;top:0;" width="50px" rowspan="2">Edit</th>
-                                        <th class="bg-primary" style="position:sticky;top:0;" width="250px" rowspan="2">Nama Subkont</th>
-                                        <th class="bg-primary" style="position:sticky;top:0;" width="100px" rowspan="2">No Mobil</th>
-                                        <th class="bg-primary" style="position:sticky;top:0;" width="70px" rowspan="2">No SPBS</th>
-                                        <th class="bg-primary" style="position:sticky;top:0;" width="100px" rowspan="2">No Job</th>
-                                        <th  class="bg-primary" style="position:sticky;top:0;" width="100px" rowspan="2">Tgl SPBS Dibuat</th>
-                                        <th  class="bg-primary" style="position:sticky;top:0;" width="100px" rowspan="2">Tgl Diterima PPB</th>
-                                        <th  class="bg-primary" style="position:sticky;top:0;" width="100px" rowspan="2">Tgl Kirim</th>
-                                        <th  class="bg-primary" style="position:sticky;top:0;" width="150px" rowspan="2">Kode Komponen</th>
-                                        <th  class="bg-primary" style="position:sticky;top:0;" width="300px" rowspan="2">Nama Komponen</th>
-                                        <th  class="bg-primary" style="position:sticky;top:0;" width="100px" colspan="2">QTY</th>
-                                        <th  class="bg-primary" style="position:sticky;top:0;" width="40px" rowspan="2">UOM</th>
-                                        <th  class="bg-primary" style="position:sticky;top:0;" width="100px" rowspan="2">Subinventory</th>
-                                        <th  class="bg-primary" style="position:sticky;top:0;" width="100px" colspan="2">Jam</th>
-                                        <th  class="bg-primary" style="position:sticky;top:0;" width="60px" rowspan="2">Lama (m : s)</th>
-                                        <th  class="bg-primary" style="position:sticky;top:0;" width="200px" rowspan="2">Tanggal Transact</th>
-                                        <th  class="bg-primary" style="position:sticky;top:0;" width="200px" rowspan="2">Keterangan</th>
-                                    </tr>
-                                    <tr class="bg-primary">
-                                        <th class="bg-primary" style="position:sticky;top:38.5px;border-top: 1px solid red;">Minta</th>
-                                        <th class="bg-primary" style="position:sticky;top:38.5px;border-top: 1px solid red;">Kirim</th>
-                                        <th class="bg-primary" style="position:sticky;top:38.5px;border-top: 1px solid red;">Mulai</th>
-                                        <th class="bg-primary" style="position:sticky;top:38.5px;border-top: 1px solid red;">Selesai</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <tr>
-                                        <td class="zui-sticky-col">DeMarcus Cousins</td>
-                                        <td>15</td>
-                                        <td>C</td>
-                                        <td>6'11"</td>
-                                        <td>08-13-1990</td>
-                                        <td>$4,917,000</td>
-                                        <td>Kentucky/USA</td>
-                                    </tr>
-                                </tbody>
-                            </table>
-                        </div>
-                    </div> -->
                     <div class="table" style="overflow-x:scroll;max-width:100%;max-height: 80vh;">
                         <div class="table-wrap">
                             <table class="table table-bordered table-hover text-center main-table"  style="width: 1900px;padding-bottom: 0" name="tblOutPart1" id="tblOutPart1">
@@ -129,6 +84,7 @@
                             </thead>
                             <tbody>
                             <?php
+                                $totalSemua = array();
                                 $qty_kirim = 0;
                                 $qty_minta = 0;
                                 $lama = 0;
@@ -225,10 +181,14 @@
                         <table class="table text-center" style="width: 1700px;padding: 0">
                         <?php 
                             $lamaAll = 0;
-                            foreach ($totalSemua as $key => $v) {
-                                $lamaAll = $v['RATA']+$lamaAll;
+                            if (!$totalSemua){
+                               $rataAll = 0;
+                            }else{
+                                foreach ($totalSemua as $key => $v) {
+                                    $lamaAll = $v['RATA']+$lamaAll;
+                                }
+                                    $rataAll = $lamaAll/count($totalSemua);
                             }
-                            $rataAll = $lamaAll/count($totalSemua);
                         ?>
                                 <tr class="bg-default">
                                     <td width="1200px"></td>
