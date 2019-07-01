@@ -1,11 +1,11 @@
 $(document).ready(function(){
 	var tableJp = $('.et_jenis_penilaian').DataTable();
 
-	var tabela = $('.tbl_et_rekap').DataTable({
-		"scrollX": true,
-		fixedColumns: true
-		// responsive: true
-	});
+	// var tabela = $('.tbl_et_rekap').DataTable({
+	// 	"scrollX": true,
+	// 	fixedColumns: true
+	// 	// responsive: true
+	// });
 	// tabela.columns.adjust().draw();
 
 	$('.et_select_jp').select2({
@@ -202,7 +202,9 @@ $(document).ready(function(){
 	$('.evt_btn_view').click(function(e){
 		e.preventDefault();
 		var data = $('#evt_result').val();
+		var no = $('#evt_no_surat').val();
 		$('#evt_inp_hidden').attr('value', data);
+		$('#evt_hidden_no_surat').attr('value', no);
 		$('.evt_btn_hidden').click();
 	});
 
