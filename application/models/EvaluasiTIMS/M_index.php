@@ -2009,7 +2009,7 @@ class M_Index extends CI_Model
 						and ts.bidang like '-%'
 						and ts.dept like '%$s%'
 					order by
-						tp.kd_jabatan;";
+						ts.dept;";
     	}elseif ($id == '2') {
     		$sel = "ts.bidang";
     		$and = "and ts.bidang not like '-%' and ts.unit like '-%'";
@@ -2027,7 +2027,7 @@ class M_Index extends CI_Model
 						and ts.unit like '-%'
 						and ts.bidang like '%$s%'
 					order by
-						tp.kd_jabatan;";
+						ts.bidang;";
     	}else{
     		$sel = "ts.unit";
     		$and = "and ts.unit not like '-%'";
@@ -2044,7 +2044,7 @@ class M_Index extends CI_Model
 						and ts.unit not like '-%'
 						and ts.unit like '%$s%'
 					order by
-						tp.kd_jabatan";
+						ts.unit";
     	}
 				// echo $sql;exit();
 		$query = $this->personalia->query($sql);
@@ -2075,7 +2075,7 @@ class M_Index extends CI_Model
 						and ts.bidang like '-%'
 						and ts.dept like '%$text%'
 					order by
-						tp.kd_jabatan;";
+						ts.dept;";
     	}elseif ($id == '2') {
     		$sel = "ts.bidang";
     		$and = "and ts.bidang not like '-%' and ts.unit like '-%'";
@@ -2098,7 +2098,7 @@ class M_Index extends CI_Model
 						and ts.unit like '-%'
 						and ts.bidang like '%$text%'
 					order by
-						tp.kd_jabatan;";
+						ts.bidang;";
     	}else{
     		$sel = "ts.unit";
     		$and = "and ts.unit not like '-%'";
@@ -2120,7 +2120,7 @@ class M_Index extends CI_Model
 						and ts.unit not like '-%'
 						and ts.unit like '%$text%'
 					order by
-						tp.kd_jabatan";
+						ts.unit;";
     	}
 				// echo $sql;exit();
 		$query = $this->personalia->query($sql);
@@ -2152,6 +2152,14 @@ class M_Index extends CI_Model
 		$query = $this->erp->query($sql);
 
 		return $query->row()->memo;
+    }
+
+    public function getMemo2($id)
+    {
+    	$sql = "select * from et.et_memo where id = '$id'";
+		$query = $this->erp->query($sql);
+
+		return $query->result_array();
     }
 
     public function getRowMemo($id)

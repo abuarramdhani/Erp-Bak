@@ -33,6 +33,10 @@
                                             </h3>
                                         </div>
                                     </form>
+                                    <script>
+                                        var jp = '<?php echo $jp; ?>';
+                                        var pr = "<?php echo date('Y-m-d'); ?>";
+                                    </script>
                                     <table style="" class="table table-striped table-bordered table-hover text-center tbl_et_rekap">
                                         <thead>
                                             <tr class="bg-primary">
@@ -89,6 +93,12 @@
                                             <?php $a++; endforeach ?>
                                         </tbody>
                                     </table>
+                                    <form target="_blank" method="post" action="<?php echo site_url('EvaluasiTIMS/Bulanan/exportHarian'); ?>">
+                                        <input hidden="" value="<?php echo date('Y-m-d'); ?>" name="tgl">
+                                        <input hidden="" value="<?php echo $jpi; ?>" name="jp">
+                                        <input hidden="" value="<?php echo $dept; ?>" name="nama">
+                                        <button type="submit" class="dt-buttons" style="width: 53px; height: 31px;">PDF</button>
+                                    </form>
                                 </div>
                             </div>
                         </div>
@@ -99,3 +109,25 @@
     </div>
 </div>
 </section>
+<script>
+    $(document).ready(function(){
+        var judul = 'Evaluasi TIMS Bulanan - '+jp+' '+pr;
+        // alert(judul);
+
+        var tabell = $('.tbl_et_rekap').DataTable({
+            scrollX: true,
+            dom: 'lfrtpB',
+            responsive: true,
+            buttons: [
+            {
+                extend: 'excelHtml5',
+                title:  judul,
+                exportOptions: {
+                    columns: ':visible'
+                }
+            },
+            ]
+        });
+        tabell.columns.adjust().draw();
+    });
+</script>
