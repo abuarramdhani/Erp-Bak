@@ -28,25 +28,25 @@ class M_trackingInvoice extends CI_Model {
         $db = $this->load->database('oracle',true);
         $query = "SELECT xx.*,
                  CASE
-                 WHEN xx.PURCHASING_STATUS='0' AND xx.FINANCE_STATUS ='0' THEN 'Input by Admin Purcashing'
-                 WHEN xx.PURCHASING_STATUS='1' AND xx.FINANCE_STATUS ='0' THEN 'Submit For Checking to Kasie Purchasing'
-                 WHEN xx.PURCHASING_STATUS='2' AND xx.FINANCE_STATUS ='0' THEN 'Approved By Kasie Purchasing'
-                 WHEN xx.PURCHASING_STATUS='3' AND xx.FINANCE_STATUS ='0' THEN 'Rejected By Kasie Purchasing'
-                 WHEN xx.PURCHASING_STATUS='2' AND xx.FINANCE_STATUS ='1' THEN 'Submit to Akuntansi'
-                 WHEN xx.PURCHASING_STATUS='2' AND xx.FINANCE_STATUS ='2' THEN 'Received by Akuntansi'
-                 WHEN xx.PURCHASING_STATUS='2' AND xx.FINANCE_STATUS ='3' THEN 'Rejected by Akuntansi'
+                 WHEN xx.LAST_PURCHASING_INVOICE_STATUS='0' AND xx.LAST_FINANCE_INVOICE_STATUS ='0' THEN 'Input by Admin Purcashing'
+                 WHEN xx.LAST_PURCHASING_INVOICE_STATUS='1' AND xx.LAST_FINANCE_INVOICE_STATUS ='0' THEN 'Submit For Checking to Kasie Purchasing'
+                 WHEN xx.LAST_PURCHASING_INVOICE_STATUS='2' AND xx.LAST_FINANCE_INVOICE_STATUS ='0' THEN 'Approved By Kasie Purchasing'
+                 WHEN xx.LAST_PURCHASING_INVOICE_STATUS='3' AND xx.LAST_FINANCE_INVOICE_STATUS ='0' THEN 'Rejected By Kasie Purchasing'
+                 WHEN xx.LAST_PURCHASING_INVOICE_STATUS='2' AND xx.LAST_FINANCE_INVOICE_STATUS ='1' THEN 'Submit to Akuntansi'
+                 WHEN xx.LAST_PURCHASING_INVOICE_STATUS='2' AND xx.LAST_FINANCE_INVOICE_STATUS ='2' THEN 'Received by Akuntansi'
+                 WHEN xx.LAST_PURCHASING_INVOICE_STATUS='2' AND xx.LAST_FINANCE_INVOICE_STATUS ='3' THEN 'Rejected by Akuntansi'
                  ELSE 'Unknown'
                  END AS status
                  FROM(SELECT ami.vendor_name vendor_name, 
                          ami.invoice_number invoice_number,
                          ami.invoice_date invoice_date,
-                         khs.action_date action_date,
+                         (SELECT max (khs.action_date) FROM KHS_AP_INVOICE_ACTION_DETAIL khs  WHERE khs.invoice_id = ami.invoice_id ) action_date,
                          ami.tax_invoice_number tax_invoice_number,
                          ami.invoice_amount invoice_amount, 
                          aaipo.po_detail po_detail,
                          ami.invoice_id invoice_id,
-                         khs.PURCHASING_STATUS,
-                         khs.FINANCE_STATUS,
+                         ami.LAST_PURCHASING_INVOICE_STATUS,
+                         ami.LAST_FINANCE_INVOICE_STATUS,
                          COALESCE((SELECT CASE payment_status_flag
                          WHEN 'Y' THEN 'Paid'
                          WHEN 'N' THEN 'Non Paid'
@@ -54,7 +54,7 @@ class M_trackingInvoice extends CI_Model {
                          END
                          FROM  ap_invoices_all aia  WHERE aia.INVOICE_NUM=ami.INVOICE_NUMBER AND aia.VENDOR_ID=ami.VENDOR_NUMBER ),'Blank') AS status_payment,
                          ami.source source
-                        FROM khs_ap_monitoring_invoice ami, KHS_AP_INVOICE_ACTION_DETAIL khs,
+                        FROM khs_ap_monitoring_invoice ami, 
                          (SELECT   aipo.invoice_id,
                                    REPLACE
                                       ((RTRIM
@@ -80,12 +80,14 @@ class M_trackingInvoice extends CI_Model {
                                                     lppb_number
                                                FROM khs_ap_invoice_purchase_order) aipo
                     GROUP BY aipo.invoice_id) aaipo
-                    WHERE aaipo.invoice_id = ami.invoice_id
-                    AND khs.finance_status IN (2,3)
-                    AND ami.INVOICE_ID = khs.INVOICE_ID
-                    $parameter_akses
-                    $parameter_invoice) xx";
-                    
+                    WHERE aaipo.invoice_id = ami.invoice_id (+)
+                    $parameter_invoice
+                    $parameter_akses )  xx";
+        
+        // return $query;exit(); 
+        // echo "<pre>";
+        // print_r($query);
+        // exit();           
         $run = $db->query($query);
         $arr = $run->result_array();
         foreach ($arr as $key => $value) {
