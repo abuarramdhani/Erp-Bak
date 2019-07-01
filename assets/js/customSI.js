@@ -2,6 +2,9 @@ $(document).ready(function(){
   
   $('.dataTable-pekerja').DataTable( {
         });
+  // $('.dataTable-pekerja').DataTable( {
+  //       });
+
 
     $('.textareaKaizen').redactor({
         imageUpload: baseurl+'SystemIntegration/KaizenGenerator/Submit/upload',

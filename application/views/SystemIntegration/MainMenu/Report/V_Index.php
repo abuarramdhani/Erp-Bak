@@ -140,6 +140,7 @@
           </table>
         </div>
       </div>
+      <!-- <div> -->
       <div id="pekerja" style="display:block; padding: 15px">
       <h3>Data Jumlah Kaizen Per Pekerja </h3>
            <table class="datatable table dataTable-pekerja table-striped table-bordered table-hover text-center" style="font-size:12px; width: 100%">

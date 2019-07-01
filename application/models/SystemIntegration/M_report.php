@@ -96,6 +96,7 @@ class M_report extends CI_Model
 				where eel.section_code like '$id%' and eel.resign='0' 
 				order by sk.kelompok,eel.employee_code";
 				// echo $sql; exit();
+				// print_r(expression)
 		$query = $this->db->query($sql);
 		return $query->result_array();
 

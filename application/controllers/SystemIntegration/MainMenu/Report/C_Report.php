@@ -48,6 +48,7 @@ class C_Report extends CI_Controller
 			$getseksi = $this->M_report->getseksi($this->session->kodesie);
 			$getpekerja = $this->M_report->getpekerja($this->session->kodesie);
 			// print_r($getseksi); exit();
+			// print_r($getpekerja); exit();
 			$data['data_seksi'] = $getseksi;
 			$data['data_pekerja'] = $getpekerja;				
 			$this->load->view('V_Header',$data);
