@@ -4,7 +4,7 @@
             <div class="col-lg-12">
                 <div class="col-lg-11">
                     <div class="text-right">
-                        <h1><b>Create Memo</b></h1>
+                        <h1><b>Edit Memo</b></h1>
                     </div>
                 </div>
                 <div class="col-lg-1">
@@ -62,13 +62,25 @@
                                         <div class="col-md-2">
                                             <div class="form-group">
                                                 <label for="no_surat">Lampiran (angka):</label>
-                                                <input name="evt_lampiran_angka" type="number" class="form-control" id="evt_lampiran_angka" value="<?php echo $memo[0]['lampiran']; ?>">
+                                                <select name="evt_lampiran_angka" type="number" class="form-control" id="evt_lampiran_angka">
+                                                    <option id="evt_0" disabled="" selected="">Pilih Salah Satu</option>
+                                                    <option id="evt_1" value="1">1</option>
+                                                    <option id="evt_2" value="2">2</option>
+                                                    <option id="evt_3" value="3">3</option>
+                                                    <option id="evt_4" value="4">4</option>
+                                                    <option id="evt_5" value="5">5</option>
+                                                    <option id="evt_6" value="6">6</option>
+                                                    <option id="evt_7" value="7">7</option>
+                                                    <option id="evt_8" value="8">8</option>
+                                                    <option id="evt_9" value="9">9</option>
+                                                    <option id="evt_10" value="10">10</option>
+                                                </select>
                                             </div>
                                         </div>
                                         <div class="col-md-2">
                                             <div class="form-group">
                                                 <label for="no_surat">Lampiran (satuan):</label>
-                                                <input name="evt_lampiran_satuan" type="text" class="form-control" id="evt_lampiran_satuan" value="<?php echo $memo[0]['lampiran_satuan']; ?>">
+                                                <input name="evt_lampiran_satuan" type="text" class="form-control" id="evt_lampiran_satuan" readonly="" value="<?php echo $memo[0]['lampiran_satuan']; ?>">
                                             </div>
                                         </div>
                                         <div class="col-md-4">
@@ -145,3 +157,9 @@
     <img src="http://erp.quick.com/assets/img/gif/loadingtwo.gif" style="position: fixed; top: 0;left: 0;right: 0;bottom: 0; margin: auto; width: 40%;">
 </div>
 </section>
+<script>
+    $(document).ready(function(){
+        var isi = '<?php echo $memo[0]['lampiran']; ?>';
+        $('#evt_'+isi).attr('selected', true);
+    });
+</script>
