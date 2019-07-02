@@ -178,7 +178,7 @@ SELECT DISTINCT pol.po_line_id line_id,
         return ($result)?$result:NULL;
     }
     public function showInvoice($source){
-      $this->db->cache_on();
+      // $this->db->cache_on();
         $oracle = $this->load->database('oracle', true);
         $query = "SELECT   ami.invoice_number invoice_number, ami.invoice_date invoice_date,
                          ami.tax_invoice_number tax_invoice_number,
@@ -405,7 +405,7 @@ SELECT DISTINCT pol.po_line_id line_id,
         return $query->result_array();
     }
     public function showDetailPerBatch($batch){
-        $this->db->cache_on();
+        // $this->db->cache_on();
         $oracle = $this->load->database('oracle',true);
         $sql = "SELECT distinct ami.invoice_id invoice_id,
                          ami.invoice_number invoice_number, 
@@ -495,7 +495,8 @@ SELECT DISTINCT pol.po_line_id line_id,
         return $runQuery->result_array();
     }
      public function checkStatus($po_number,$line_num)
-    {   $this->db->cache_on();
+    {   
+        // $this->db->cache_on(); 
         $oracle = $this->load->database('oracle',TRUE);
         $query = "SELECT distinct
                             rt.transaction_type status
@@ -577,7 +578,7 @@ SELECT DISTINCT pol.po_line_id line_id,
         return $runQuery->result_array();
     }
     public function podetails($po_number,$lppb_number,$line_number){
-       $this->db->cache_on();
+       // $this->db->cache_on();
        $oracle = $this->load->database('oracle',TRUE);
         $query = "SELECT * FROM(SELECT distinct
                             pol.line_num line_num,
@@ -678,7 +679,7 @@ SELECT DISTINCT pol.po_line_id line_id,
         // oci_commit($oracle);
     }
     public function cekpo_number($po_number,$line_number){
-        $this->db->cache_on();
+        // $this->db->cache_on();
         $oracle = $this->load->database("oracle",TRUE);
         $query = $oracle->query("SELECT distinct
                                     pol.po_line_id line_id,
@@ -771,7 +772,8 @@ SELECT DISTINCT pol.po_line_id line_id,
         return $query->result_array();
     }
    public function invoicereject($source_login)
-    {   $this->db->cache_on();
+    {   
+        // $this->db->cache_on();
         $oracle = $this->load->database("oracle",TRUE);
         $query = "SELECT   ami.invoice_number invoice_number, ami.invoice_date invoice_date,
                      ami.tax_invoice_number tax_invoice_number,

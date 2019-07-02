@@ -100,7 +100,7 @@ class C_monitoringinvoice extends CI_Controller{
 		$this->load->view('V_Sidemenu',$data);
 		$this->load->view('MonitoringInvoice/V_invoice',$data);
 		$this->load->view('V_Footer',$data);
-		$this->output->cache(1);
+		// $this->output->cache(1);
 	}
 	public function listSubmited()
 	{
@@ -133,11 +133,12 @@ class C_monitoringinvoice extends CI_Controller{
 			$no++;
 		}
 		$data['invoice'] = $listBatch;
+		// print_r($data);exit();
 		$this->load->view('V_Header',$data);
 		$this->load->view('V_Sidemenu',$data);
 		$this->load->view('MonitoringInvoice/V_listsubmit',$data);
 		$this->load->view('V_Footer',$data);
-		$this->output->cache(1);
+		// $this->output->cache(1);
 		
 	}
 	public function addListInv(){
@@ -160,7 +161,9 @@ class C_monitoringinvoice extends CI_Controller{
 		$this->load->view('V_Sidemenu',$data);
 		$this->load->view('MonitoringInvoice/V_addinvoice',$data);
 		$this->load->view('V_Footer',$data);
-		$this->output->cache(1);
+		// $this->output->cache(1);
+
+
 	}
 	public function batchDetail($batch){
 		$batch = str_replace('%20', ' ', $batch);
@@ -192,7 +195,7 @@ class C_monitoringinvoice extends CI_Controller{
 		$this->load->view('V_Sidemenu',$data);
 		$this->load->view('MonitoringInvoice/V_batch',$data);
 		$this->load->view('V_Footer',$data);
-		$this->output->cache(1);
+		// $this->output->cache(1);
 	}
 	public function getPoNumber($no_po)
 	{
@@ -288,7 +291,7 @@ class C_monitoringinvoice extends CI_Controller{
 		$this->load->view('V_Sidemenu',$data);
 		$this->load->view('MonitoringInvoice/V_editinvoice',$data);
 		$this->load->view('V_Footer',$data);
-		$this->output->cache(1);
+		// $this->output->cache(1);
 	}
 	public function saveEditInvoice($invoice_id){
 		$invoice_number = $this->input->post('invoice_number');
@@ -391,7 +394,7 @@ class C_monitoringinvoice extends CI_Controller{
 		$this->load->view('V_Sidemenu',$data);
 		$this->load->view('MonitoringInvoice/V_batchdetail',$data);
 		$this->load->view('V_Footer',$data);
-		$this->output->cache(1);
+		// $this->output->cache(1);
 	}
 	public function GenerateInvoice(){
 		$date = $this->input->post('invoice_date');
@@ -567,7 +570,7 @@ class C_monitoringinvoice extends CI_Controller{
 		$this->load->view('V_Sidemenu',$data);
 		$this->load->view('MonitoringInvoice/V_addponumber',$data);
 		$this->load->view('V_Footer',$data);
-		$this->output->cache(1);
+		// $this->output->cache(1);
 	}
 	public function addPoNumber2($id){
 		$invoice_number = $this->input->post('invoice_number');
@@ -694,7 +697,7 @@ class C_monitoringinvoice extends CI_Controller{
 		$this->load->view('V_Sidemenu',$data);
 		$this->load->view('MonitoringInvoice/V_rejected',$data);
 		$this->load->view('V_Footer',$data);
-		$this->output->cache(1);
+		// $this->output->cache(1);
 	}
 	public function Detail($invoice_id){
 		$this->checkSession();
@@ -712,7 +715,7 @@ class C_monitoringinvoice extends CI_Controller{
 		$this->load->view('V_Sidemenu',$data);
 		$this->load->view('MonitoringInvoice/V_rejecteddetail',$data);
 		$this->load->view('V_Footer',$data);
-		$this->output->cache(1);
+		// $this->output->cache(1);
 	}
 	public function deletePOLine(){
 		$invoice_po_id = $this->input->post('invoice_po_id');
@@ -747,7 +750,7 @@ class C_monitoringinvoice extends CI_Controller{
 		$this->load->view('V_Sidemenu',$data);
 		$this->load->view('MonitoringInvoice/V_editReject',$data);
 		$this->load->view('V_Footer',$data);
-		$this->output->cache(1);
+		// $this->output->cache(1);
 	}
 	public function saveEditReject($invoice_id){
 		$invoice_number = $this->input->post('invoice_number');
@@ -806,6 +809,122 @@ class C_monitoringinvoice extends CI_Controller{
 		$this->load->view('V_Sidemenu',$data);
 		$this->load->view('MonitoringInvoice/V_fakturPajak',$data);
 		$this->load->view('V_Footer',$data);
-		$this->output->cache(1);
+		// $this->output->cache(1);
+	}
+
+	public function loadMasterItem()
+	
+	{
+		$user_id = $this->session->userid;			
+/*
+		 * DataTables example server-side processing script.
+		 *
+		 * Please note that this script is intentionally extremely simply to show how
+		 * server-side processing can be implemented, and probably shouldn't be used as
+		 * the basis for a large complex system. It is suitable for simple use cases as
+		 * for learning.
+		 *
+		 * See http://datatables.net/usage/server-side for full details on the server-
+		 * side processing requirements of DataTables.
+		 *
+		 * @license MIT - http://datatables.net/license_mit
+		 */
+		 
+		/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+		 * Easy set variables
+ 		*/
+ 
+		// DB table to use
+		$table = 'khs_ap_monitoring_invoice';
+ 
+		// Table's primary key
+		$primaryKey = 'master_item_id';
+ 
+		// Array of database columns which should be read and sent back to DataTables.
+		// The `db` parameter represents the column name in the database, while the `dt`
+		// parameter represents the DataTables column identifier. In this case simple
+		// indexes
+		$columns = array(
+					array( 'db' => 'master_item_id', 'dt' => 0 ),
+					array( 'db' => 'pengelola_id', 
+								'dt' => 1,
+								'formatter'=> function($d, $row){
+									$pengelola_id = $row['pengelola_id'];
+									if ($pengelola_id !='') {
+										$pengelola = $this->M_purchasesetting->getDetailPengelola($pengelola_id);
+
+										return $pengelola[0]['pengelola'];
+									}else{
+										return '';
+									}
+								}
+							),
+					array( 
+						'db' => 'asset_kategori_id',   
+							'dt' => 2,
+							'formatter' => function($d, $row){
+								$kategori_id = $row['asset_kategori_id'];
+								if ($kategori_id!='') {
+									$kategoriAset = $this->M_purchasesetting->getDetailKategoriAsset($kategori_id);
+
+									return $kategoriAset[0]['kategori_asset'];
+								}else {
+									return '';
+								}
+							}
+						),
+					array( 
+						'db' => 'approval_dirut',     
+							'dt' => 3,
+							'formatter' => function($d, $row) {
+								if($row['approval_dirut']==1)
+									return 'YES';
+								else
+									return 'NO'; 
+							} ),
+						array( 
+							'db' => 'editable_status',     
+							'dt' => 4,
+							'formatter' => function($d, $row) {
+								if($row['editable_status']==1)
+									return 'YES';
+								else
+									return 'NO';
+							} ),
+						array(
+						'db'        => 'master_item_id',
+						'dt'        => 5,
+						'formatter' => function( $d, $row ) {
+							$buttons='<a style="margin-right:8px;margin-left:4px;" onclick="deleteMasterItem(\''.$row['master_item_id'].'\')" href="#" name="btnDel" alt="Delete" title="Delete" data-confirm="Are you sure to delete this item?"><i class="fa fa-trash fa-2x"></i></a>
+									
+							<a style="margin-right:8px;" onclick="editMasterItem(\''.$row['master_item_id'].'\')" href="#" alt="Edit" title="Edit"><i class="fa fa-pencil-square-o fa-2x"></i>';
+									return $buttons;
+						},
+					),
+		);
+ 
+		// SQL server connection information
+		$sql_details = array(
+  	  'user' => 'postgres',
+  	  'pass' => 'password',
+  	  'db'   => 'erp',
+  	  'host' => 'dev.quick.com'
+		);
+ 
+ 
+		/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+ 		* If you just want to use the basic configuration for DataTables with PHP
+ 		* server-side, there is no need to edit below this line.
+ 		*/
+ 
+		$conditions = '1=1'; 
+		 
+			$this->load->library('Ssp');
+		
+			$SSP = new SSP;
+ 
+		echo json_encode(
+    	SSP::simple( $_GET, $sql_details, $table, $primaryKey, $columns )
+		);
 	}
 }
