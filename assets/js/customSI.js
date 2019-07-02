@@ -1,4 +1,10 @@
 $(document).ready(function(){
+  
+  $('.dataTable-pekerja').DataTable( {
+        });
+  // $('.dataTable-pekerja').DataTable( {
+  //       });
+
 
     $('.textareaKaizen').redactor({
         imageUpload: baseurl+'SystemIntegration/KaizenGenerator/Submit/upload',
@@ -337,6 +343,7 @@ $(document).ready(function(){
 })
 
 function openTabSI(th, tab){
+  // $('#chartContainer').attr('hidden', false);
   $('.tabcontent').hide();
   $('.tablinks').removeClass('active');
   $('#'+tab).show();
