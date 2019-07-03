@@ -142,7 +142,7 @@
 					$penanda = '';
 					$penandabutton = 0;
 					$text_button = '<b>Create Picklist</b>';
-					$text_button2 = '<b>Dummy Button</b>';
+					$text_button2 = '<b>Create PL Header</b>';
 				}
 			}else{
 				$penanda = 'bg-success';
