@@ -81,39 +81,32 @@ class M_report extends CI_Model
 			return $query->result_array();
 		}
 
-	function getpekerja($id){
+	function getpekerja($id, $start, $end){
 
 		$id = substr($id, 0, 5);
-		$date =  date('m');
-		$date2 =  date('Y');
-		$date3 = date('Y-m-10');
 		$sql = "SELECT eel.employee_code,eel.employee_name, sk.kelompok, 
-				(select count(*) from si.si_kaizen ssk where ssk.noinduk=eel.employee_code and extract (month from status_date) in ($date) and extract (year from status_date)='$date2' AND status <> '8' and status <> '9') as jml_ide,
-				(select count(*) from si.si_kaizen ssk where ssk.noinduk=eel.employee_code and extract (month from status_date) in ($date) and extract (year from status_date)='$date2' AND status in ('1','2','3','4','5','6')) as inproses,
-				(select count(*) from si.si_kaizen ssk where ssk.noinduk=eel.employee_code and extract (month from status_date) in ($date) and extract (year from status_date)='$date2' AND (status_date > '$date3' or status_date=null) and status in ('7','9')) as done
+				(select count(*) from si.si_kaizen ssk where ssk.noinduk=eel.employee_code and extract (month from status_date) in (".substr($start, 5,2).",".substr($end, 5,2).") and extract (year from status_date)='".substr($start, 0,4)."' AND status <> '8' and status <> '9') as jml_ide,
+				(select count(*) from si.si_kaizen ssk where ssk.noinduk=eel.employee_code and extract (month from status_date) in (".substr($start, 5,2).",".substr($end, 5,2).") and extract (year from status_date)='".substr($start, 0,4)."' AND status in ('1','2','3','4','5','6')) as inproses,
+				(select count(*) from si.si_kaizen ssk where ssk.noinduk=eel.employee_code and extract (month from status_date) in (".substr($start, 5,2).",".substr($end, 5,2).") and extract (year from status_date)='".substr($start, 0,4)."' AND (status_date > '$start' or status_date=null) and status in ('7','9')) as done
 				from er.er_employee_all eel
 				left join si.si_kelompok sk on sk.noind=eel.employee_code
 				where eel.section_code like '$id%' and eel.resign='0' 
 				order by sk.kelompok,eel.employee_code";
 				// echo $sql; exit();
-				// print_r(expression)
 		$query = $this->db->query($sql);
 		return $query->result_array();
 
 	}
 
-	function getseksi($id){
+	function getseksi($id , $start, $end){
 
 		$id = substr($id, 0, 5);
-		$date =  date('m');
-		$date2 =  date('Y');
-		$date3 = date('Y-m-10');
 		$sql = " SELECT kelompok, count(*) as target, sum(jml_ide) as jml_ide, sum(inproses) as inproses, sum(done) as done
 				from (
 				SELECT eel.employee_code,eel.employee_name, sk.kelompok, 
-				(select count(*) from si.si_kaizen ssk where ssk.noinduk=eel.employee_code and extract (month from status_date) in ($date) and extract (year from status_date)='$date2' AND status <> '8' and status <> '9') as jml_ide,
-				(select count(*) from si.si_kaizen ssk where ssk.noinduk=eel.employee_code and extract (month from status_date) in ($date) and extract (year from status_date)='$date2' AND status in ('1','2','3','4','5','6')) as inproses,
-				(select count(*) from si.si_kaizen ssk where ssk.noinduk=eel.employee_code and extract (month from status_date) in ($date) and extract (year from status_date)='$date2' AND (status_date > '$date3' or status_date=null) and status in ('7','9')) as done
+				(select count(*) from si.si_kaizen ssk where ssk.noinduk=eel.employee_code and extract (month from status_date) in (".substr($start, 5,2).",".substr($end, 5,2).") and extract (year from status_date)='".substr($start, 0,4)."' AND status <> '8' and status <> '9') as jml_ide,
+				(select count(*) from si.si_kaizen ssk where ssk.noinduk=eel.employee_code and extract (month from status_date) in (".substr($start, 5,2).",".substr($end, 5,2).") and extract (year from status_date)='".substr($start, 0,4)."' AND status in ('1','2','3','4','5','6')) as inproses,
+				(select count(*) from si.si_kaizen ssk where ssk.noinduk=eel.employee_code and extract (month from status_date) in (".substr($start, 5,2).",".substr($end, 5,2).") and extract (year from status_date)='".substr($start, 0,4)."' AND (status_date > '$start' or status_date=null) and status in ('7','9')) as done
 				from er.er_employee_all eel
 				left join si.si_kelompok sk on sk.noind=eel.employee_code
 				where eel.section_code like '$id%' and eel.resign='0' 
