@@ -252,10 +252,10 @@ class C_Order extends CI_Controller {
 
 			$this->load->library('ciqrcode');
 			// ------ create directory temporary qrcode ------
-			if(!is_dir('./assets/img'))
+			if(!is_dir('./img'))
 			{
-				mkdir('./assets/img', 0777, true);
-				chmod('./assets/img', 0777);
+				mkdir('./img', 0777, true);
+				chmod('./img', 0777);
 			}
 			
 			foreach ($dataArray as $show) {
