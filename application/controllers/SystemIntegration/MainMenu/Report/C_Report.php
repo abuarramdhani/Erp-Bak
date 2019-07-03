@@ -5,6 +5,7 @@ class C_Report extends CI_Controller
 	function __construct()
 		{
 			parent::__construct();
+			date_default_timezone_set("Asia/Jakarta");
 			$this->load->helper('form');
 	        $this->load->helper('url');
 	        $this->load->helper('html');
@@ -41,12 +42,30 @@ class C_Report extends CI_Controller
 			$data['UserMenu'] = $this->M_user->getUserMenu($user_id,$this->session->responsibility_id);
 			$data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id);
 			$data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id);
+
+			
+			$start = $this->input->post('start');
+			$end   = $this->input->post('end');
+			if (empty($start)) {
+				$start = date('Y-m-10');
+				$end   = date("Y-m-10",strtotime("+1 month"));
+			}
+			// echo $end; exit();
+
+			$getpekerja = $this->M_report->getpekerja($this->session->kodesie, $start, $end);
+			$getseksi = $this->M_report->getseksi($this->session->kodesie, $start, $end);
+
+			
+			$data['start'] = $start;
+			$data['end'] = $end;
+
 			$data['complexTextAreaCKEditor']	=	FALSE;
+
 			$getMember = $this->M_report->getMember($this->session->kodesie);
 			$sectionName = $getMember[0]['seksi'];
 			$data['seksi'] = $sectionName;
-			$getseksi = $this->M_report->getseksi($this->session->kodesie);
-			$getpekerja = $this->M_report->getpekerja($this->session->kodesie);
+
+			// $getpekerja = $this->M_report->getpekerja($this->session->kodesie);
 			// print_r($getseksi); exit();
 			// print_r($getpekerja); exit();
 			$data['data_seksi'] = $getseksi;
