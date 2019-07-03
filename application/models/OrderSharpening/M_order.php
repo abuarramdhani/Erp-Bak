@@ -8,7 +8,7 @@ class M_order extends CI_Model {
         $this->load->database();
         $this->load->library('encrypt');
         $this->oracle = $this->load->database('oracle', true);
-        // $this->oracle_dev = $this->load->database('oracle_dev',TRUE);
+        $this->oracle_dev = $this->load->database('oracle_dev',TRUE);
     }
 
     public function getItem()
@@ -46,6 +46,26 @@ class M_order extends CI_Model {
       return $query->result_array();
     }
 
+    public function cekId ($idunix)
+    {
+      $sql = "SELECT * 
+                FROM osp.osp_order_sharpening_dev
+               WHERE idunix = '$idunix'";
+
+      $query = $this->db->query($sql);
+      return $query->result_array();
+    }
+
+    public function getNomorOrder($idunix)
+    {
+      $sql = "SELECT *
+              FROM osp.osp_order_sharpening_dev
+              WHERE idunix = '$idunix'";
+      $query = $this->db->query($sql);
+      return $query->result_array();
+
+    }
+
     public function cekOrderNumber($reff_number)
     {
       $sql = "SELECT * 
@@ -56,47 +76,48 @@ class M_order extends CI_Model {
       return $query->result_array();
     }
 
-    public function Insert($no_order,$item,$deskripsi,$qty,$tgl_order,$reff_number)
+    public function Insert($no_order,$item,$deskripsi,$qty,$tgl_order,$reff_number,$idunix)
+    
     {
-      $sql = "INSERT INTO osp.osp_order_sharpening_dev (no_order,kode_barang,deskripsi_barang,qty,tgl_order,reff_number)
-          VALUES ('$no_order','$item','$deskripsi','$qty','$tgl_order','$reff_number')";
+      $sql = "INSERT INTO osp.osp_order_sharpening_dev (no_order,kode_barang,deskripsi_barang,qty,tgl_order,reff_number,idunix)
+          VALUES ('$no_order','$item','$deskripsi','$qty','$tgl_order','$reff_number','$idunix')";
       $query = $this->db->query($sql);
     }
 
 //-----------------------ANDROID START CODE----------------------------------------
 
-public function getAllData()
-{
-  $sql = "SELECT * FROM osp.osp_order_sharpening_dev";
-  $query = $this->db->query($sql);
-  return $query->result_array();
-}
+    public function getAllData()
+    {
+      $sql = "SELECT * FROM osp.osp_order_sharpening_dev";
+      $query = $this->db->query($sql);
+      return $query->result_array();
+    }
 
-public function hapusData($no_order) //-------------------------> Tidak Terpakai dalam Program
-{
-  $sql = "DELETE FROM osp.osp_order_sharpening_dev WHERE no_order = '$no_order' ";
-  $query = $this->db->query($sql);
-  return $this->db->affected_rows();
-}
+    public function hapusData($no_order) //-------------------------> Tidak Terpakai dalam Program
+    {
+      $sql = "DELETE FROM osp.osp_order_sharpening_dev WHERE no_order = '$no_order' ";
+      $query = $this->db->query($sql);
+      return $this->db->affected_rows();
+    }
 
-public function injectData() //--------------------------------> Masih Alfa. Kelak dipakai, kayaknya
-{
-  $sql = "INSERT INTO osp.osp_order_sharpening_dev (no_order,reff_number,kode_barang,qty) VALUES ('$no_order','$reff_number','$kode_barang','$qty')";
-    $query = $this->db->query($sql);
-    return $this->db->affected_rows();
-}
+    public function injectData() //--------------------------------> Masih Alfa. Kelak dipakai, kayaknya
+    {
+      $sql = "INSERT INTO osp.osp_order_sharpening_dev (no_order,reff_number,kode_barang,qty) VALUES ('$no_order','$reff_number','$kode_barang','$qty')";
+        $query = $this->db->query($sql);
+        return $this->db->affected_rows();
+    }
 
-public function getInfo($param)
-{
-  $sql = "SELECT msib.SEGMENT1, msib.DESCRIPTION, mtrl.QUANTITY, mtrl.LINE_STATUS 
-          FROM mtl_txn_request_headers mtrh, mtl_txn_request_lines mtrl, mtl_system_items_b msib
-          WHERE mtrh.HEADER_ID= mtrl.HEADER_ID 
-          AND mtrh.REQUEST_NUMBER = '$param'
-          AND mtrl.INVENTORY_ITEM_ID = msib.INVENTORY_ITEM_ID
-          AND msib.ORGANIZATION_ID = mtrh.ORGANIZATION_ID";
-  $query = $this->oracle->query($sql);
-  return $query->result_array();
-}
+    public function getInfo($param)
+    {
+      $sql = "SELECT msib.SEGMENT1, msib.DESCRIPTION, mtrl.QUANTITY, mtrl.LINE_STATUS 
+              FROM mtl_txn_request_headers mtrh, mtl_txn_request_lines mtrl, mtl_system_items_b msib
+              WHERE mtrh.HEADER_ID= mtrl.HEADER_ID 
+              AND mtrh.REQUEST_NUMBER = '$param'
+              AND mtrl.INVENTORY_ITEM_ID = msib.INVENTORY_ITEM_ID
+              AND msib.ORGANIZATION_ID = mtrh.ORGANIZATION_ID";
+      $query = $this->oracle->query($sql);
+      return $query->result_array();
+    }
 
 //-----------------------START CODE----------------------------------------
 
@@ -143,10 +164,11 @@ public function getInfo($param)
     public function getTranNumber($param)
     {
       $sql = "SELECT mtrh.REQUEST_NUMBER from mtl_txn_request_headers mtrh
-              WHERE mtrh.ATTRIBUTE1 = '$param'";
+              WHERE mtrh.ATTRIBUTE1 = $param";
 
-      $query = $this->oracle->query($sql);
+      $query = $this->oracle_dev->query($sql);
       return $query->row_array();
+      // return $sql;
     }
 
     public function getTransact($param)
@@ -189,12 +211,11 @@ public function getInfo($param)
       return $query->row_array();
     }
 
-
     //-----> Main Function of Move Order
 
     public  function createTemp($data)
     {
-      $oracle = $this->load->database('oracle',TRUE);
+      $oracle = $this->load->database('oracle_dev',TRUE);
       $oracle->trans_start();
       $oracle->insert('CREATE_MO_ORDER_TR_TEMP',$data);
       $oracle->trans_complete();
@@ -207,7 +228,7 @@ public function getInfo($param)
 
     function deleteTemp($ip, $reff_number)
     {
-      $oracle = $this->load->database('oracle',TRUE);
+      $oracle = $this->load->database('oracle_dev',TRUE);
       $sql = "DELETE FROM CREATE_MO_ORDER_TR_TEMP where IP_ADDRESS = '$ip' and  ORDER_NUMBER = $reff_number ";
       $oracle->trans_start();
       $oracle->query($sql);
@@ -220,8 +241,8 @@ public function getInfo($param)
       $username = 'AA TECH TSR 01';
       $jan = 137;
 
-      // $conn = oci_connect('APPS', 'APPS', '192.168.7.3:1522/DEV');
-      $conn = oci_connect('APPS', 'APPS', '192.168.7.1:1521/PROD');
+      $conn = oci_connect('APPS', 'APPS', '192.168.7.3:1522/DEV');
+      // $conn = oci_connect('APPS', 'APPS', '192.168.7.1:1521/PROD');
         if (!$conn) {
              $e = oci_error();
             trigger_error(htmlentities($e['message'], ENT_QUOTES), E_USER_ERROR);

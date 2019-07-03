@@ -53,8 +53,7 @@ class C_Order extends CI_Controller {
 		$data['regen'] = $this->regen();
 		$data['item'] = $this->M_order->getItem();
 		$data['reffBuilder'] = $this->reffBuilder();
-
-
+		
 		$this->load->view('V_Header',$data);
 		$this->load->view('V_Sidemenu',$data);
 		$this->load->view('OrderSharpening/V_Order',$data);
@@ -90,6 +89,26 @@ class C_Order extends CI_Controller {
 		return $no_order;
 	}
 
+	public function makeID()
+	{
+		$back = 1;
+
+		check:
+
+		$tahun = date('y');
+		$bulan = date('m');
+
+		$idunix = $tahun.$bulan.str_pad($back, 2, "0", STR_PAD_LEFT);
+		$check = $this->M_order->cekId($idunix);
+		
+		if (!empty($check)) {
+			$back++;
+			GOTO check;
+		}
+
+		return $idunix;
+	}
+
 	public function reffBuilder()
 	{
 		$back = 0;
@@ -101,8 +120,10 @@ class C_Order extends CI_Controller {
 		$bulan = (int)$bulan1;
 		$hari = date('d');
 
-		$reff_number = $bulan.$hari.$tahun.str_pad($back, 3, "1", STR_PAD_LEFT); 
-		$check = $this->M_order->cekOrderNumber($reff_number);
+		$reff_number = $bulan.$tahun.$hari.str_pad($back, 3, "1", STR_PAD_LEFT);
+		$reff_numberx = $reff_number."1";
+
+		$check = $this->M_order->cekOrderNumber($reff_numberx);
 		
 		if (!empty($check)) {
 			$back++;
@@ -112,69 +133,58 @@ class C_Order extends CI_Controller {
 		return $reff_number;
 	}
 
-	public function Insert()
-	{
-	   	$no_order = $this->input->post('no_order');
-		$reff_number = $this->input->post('reff_number');
-		$item = $this->input->post('txtItem');
-		$deskripsi = $this->input->post('txtDesc');
-		$qty = $this->input->post('txtQty');
+	public function Insert() {
+		$ip_address =  $this->input->ip_address();
+	   	$no_order = $this->input->post('noOrder');
+		$reff_number = $this->input->post('reffNumber');
+		$item = $this->input->post('kodeBarang');
+		$deskripsi = $this->input->post('deskBarang');
+		$qty = $this->input->post('quantity');
 		$tgl_order = $this->input->post('dateOrder');
+		$tgl = date('Y-m-d', strtotime($tgl_order));
+		$idunix = $this->makeID();
 
-		//$getQuantityActual = $this->M_Order->getQuantityActual($item,$qty);
-		
-		$getAvailability = $this->M_order->getAvailability($no_order);
+		$i = 0;
+		$o = 1;
+		foreach ($no_order as $noOrder) {
+			$getAvailability = $this->M_order->getAvailability($noOrder);
+			$this->M_order->Insert($noOrder,$item[$i],$deskripsi[$i],$qty[$i],$tgl,$reff_number[$i],$idunix);
+			$invID1 	= $this->M_order->getInventoryID($item[$i]); 	//------------ GET INVENTORY ITEM ID
+			$invID = $invID1['INVENTORY_ITEM_ID'];
+			$uom1 = $this->M_order->getUom($item[$i]); 					//------------ GET UOM
+			$uom = $uom1['PRIMARY_UOM_CODE'];	
+		 				//------------ GET IP ADDRESS
+			$locatorIDTo = ''; 										//------------ Locator  Tujuan
+			$username = '';											//------------ Username
+			$transTypeID = 137;	
 
-		//$data = $this->M_Order->Insert($no_order,$item,$deskripsi,$qty,$tgl_order,$reff_number);
-
-		if ($getAvailability > 0) {
-			redirect(base_url('OrderSharpening/Order/'));
-		} else {
-			$data = $this->M_order->Insert($no_order,$item,$deskripsi,$qty,$tgl_order,$reff_number);
-		};
-
-		//$data = $this->M_Order->Insert($no_order,$item,$deskripsi,$qty,$tgl_order,$reff_number);
-
-		//-----------------------START CODE----------------------------------------
-
-		$invID1 	= $this->M_order->getInventoryID($item); 	//------------ GET INVENTORY ITEM ID
-		$invID = $invID1['INVENTORY_ITEM_ID'];
-		$uom1 = $this->M_order->getUom($item); 					//------------ GET UOM
-		$uom = $uom1['PRIMARY_UOM_CODE'];
-		$ip_address =  $this->input->ip_address(); 				//------------ GET IP ADDRESS
-
-		$locatorIDTo = ''; 										//------------ Locator  Tujuan
-		$username = '';											//------------ Username
-		$transTypeID = 137;										//------------ Move Order Antar Gudang Satu Area
-
-		$i = 1;
-		$data = array('NO_URUT' => $i,
+			$data[] = array('NO_URUT' => $o,
 					'INVENTORY_ITEM_ID' => $invID,
-					'QUANTITY' => $qty,
+					'QUANTITY' => $qty[$i],
 					'UOM' => $uom,
 					'IP_ADDRESS' => $ip_address,
-					'ORDER_NUMBER' => $reff_number);
-		// echo 	"<pre>";
-		// print_r($data);
-		// exit();
+					'ORDER_NUMBER' => $reff_number[$i]);
+			
+		$this->M_order->createTemp($data[$i]);
 
-		//-------> Untuk MO dari ToolMaking ke ToolRoom tidak mencetak slip
-		//-------> slip Menggunakan yang sebelumnya, jadi diperlukan perkondisian
-		//-------> Bisa pakai if atau Value		
-
-		//-------> Harus pakai createTemp, soalnya dipakai di API nya
-		$this->M_order->createTemp($data);											//-------> create TEMP
 		$i++;
-		$this->M_order->createMO($username,$ip_address,$transTypeID,$reff_number);	//-------> createMo
-		$this->M_order->deleteTemp($ip_address,$reff_number);						//-------> deleteMO
+		$o++;	
+		}
 
-		//$req_number = $this->M_Order->getRequestNumber($reff_number);
-		// echo "<pre>"; print_r($data); print_r($req_number); exit();
+		foreach ($data as $key => $value) {
+			$locatorIDTo = ''; 										//------------ Locator  Tujuan
+			$username = '';											//------------ Username
+			$transTypeID = 137;
+			$this->M_order->createMO($username,$ip_address,$transTypeID,$value['ORDER_NUMBER']);	//-------> createMo
+		}
 
-		redirect(base_url('OrderSharpening/Report/'.$no_order));
-		//-----------------------END CODE----------------------------------------
+		foreach ($data as $key => $value) {
+			$this->M_order->deleteTemp($ip_address, $value['ORDER_NUMBER']);//-------> createMo
+		}
+
+		redirect(base_url('OrderSharpening/Report/'.$idunix));
+	//-----------------------END CODE----------------------------------------
 	} 
-
 
 	//---------->FOR ANDROID---------------->dapat no_order melalui scan
 	//---------->dari nomor order mendapat nomor reff -------------->
@@ -185,9 +195,6 @@ class C_Order extends CI_Controller {
 
 	public function getTranNumber($nomor)
 	{
-		//$param = $this->input->post('no_order');
-		// $data = $this->M_Order->getReffNumber($nomor);
-		// $dataGet = $data['reff_number'];
 		$transNumber = $this->M_order->getTranNumber($nomor);
 		$status = $this->M_order->getStatusTran($transNumber['REQUEST_NUMBER']);
 		$updateStatus = array();
@@ -202,49 +209,76 @@ class C_Order extends CI_Controller {
 		    default:
 		        $message = "Menunggu persetujuan untuk ditransact";
 		}
-		// echo "<pre>";
-		// print_r($message);
-		// exit();
+
 		return $transNumber['REQUEST_NUMBER'];
 	}
 	
-	public function Report($no_order)
+	public function Report($idunix)
 	{
-    	$data['show'] = $this->M_order->cekNomor($no_order);			//-----> get value from postgree by no_order
-    	$data['show'][0]['REQUEST_NUMBER'] = $this->getTranNumber($data['show'][0]['reff_number']);
+		$no_order = $this->M_order->getNomorOrder($idunix);
 
-    	$tanggal = date_format(date_create(date('d-M-y')),'l, d F Y');
+		$dataArray = array();
+		foreach ($no_order as $noOrder => $key) {
 
-		
-		// ------ GENERATE QRCODE ------
+			$getAvailability = $this->M_order->getAvailability($key['no_order']);
+			$invID1 	= $this->M_order->getInventoryID($key['kode_barang']); 	//------- GET INVENTORY ITM ID
+			echo "$key[kode_barang]";
+			$invID = $invID1['INVENTORY_ITEM_ID'];
+			$uom1 = $this->M_order->getUom($key['kode_barang']); 					//------------ GET UOM
+			$uom = $uom1['PRIMARY_UOM_CODE'];
+			
+		 				//------------ GET IP ADDRESS
+			$locatorIDTo = ''; 										//------------ Locator  Tujuan
+			$username = '';											//------------ Username
+			$transTypeID = 137;	
+
+			$dataArray[] = array(
+				"no_order" => $key['no_order'],
+				"kode_barang" => $key['kode_barang'],
+				"deskripsi_barang" => $key['deskripsi_barang'],
+				"qty" => $key['qty'],
+				"reff_number" => $key['reff_number'],
+				"tgl_order" => $key['tgl_order'],
+				"idunix" => $key['idunix']
+			);
+		}
+
+		foreach ($dataArray as $key => $vlue) {
+			$x = $this->M_order->getTranNumber($vlue['reff_number']);
+			$dataArray[$key]['REQUEST_NUMBER'] = $x['REQUEST_NUMBER'];
+		}
+
+		ob_start();
+
 			$this->load->library('ciqrcode');
 			// ------ create directory temporary qrcode ------
-				if(!is_dir('./img'))
-				{
-					mkdir('./img', 0777, true);
-					chmod('./img', 0777);
-				}
-			$params['data']		= ($data['show'][0]['reff_number']);
-			$params['level']	= 'H';
-			$params['size']		= 10;
-			$params['black']	= array(255,255,255);
-			$params['white']	= array(0,0,0);
-			$params['savename'] = './img/'.($data['no_order']).'.png';
-			$this->ciqrcode->generate($params);
+			if(!is_dir('./img'))
+			{
+				mkdir('./img', 0777, true);
+				chmod('./img', 0777);
+			}
+			
+			foreach ($dataArray as $show) {
+				$params['data']		= ($show['reff_number']);
+				$params['level']	= 'H';
+				$params['size']		= 10;
+				$params['black']	= array(255,255,255);
+				$params['white']	= array(0,0,0);
+				$params['savename'] = './img/'.($show['no_order']).'.png';
+				$this->ciqrcode->generate($params);
 
+			}
 		// -----------------------------------------------------
-
+		$data['show'] = $dataArray;
 
     	$this->load->library('pdf');
-
     	$pdf = $this->pdf->load();
-    	$pdf = new mPDF('utf-8',array(210,80), 0, '', 3, 3, 3, 3, 3, 3); //----- A5-L
-
-		ob_end_clean() ;
-
-    	$filename = 'OrderSharpening_'.$data['show'][0]['no_order'].'.pdf';
+    	$pdf = new mPDF('utf-8',array(210,83), 0, '', 3, 3, 3, 3, 3, 3); //----- A5-L
+		$tglNama = date("d/m/Y-H:i:s");
+    	$filename = 'OrderSharpening_'.$tglNama.'.pdf';
     	$html = $this->load->view('OrderSharpening/V_Report', $data, true);		//-----> Fungsi Cetak PDF
-    	$pdf->WriteHTML($html, 2);												//-----> Pakai Library MPDF
+		ob_end_clean();
+    	$pdf->WriteHTML($html);												//-----> Pakai Library MPDF
     	$pdf->Output($filename, 'I');
 	}
 
@@ -255,7 +289,6 @@ class C_Order extends CI_Controller {
 	{
 		$data = $this->M_order->getAllData();
 		$result = array();
-
 		//Menampilkan Array dalam Format JSON
 		echo json_encode(array('result'=>$data));
 	}
@@ -302,12 +335,9 @@ class C_Order extends CI_Controller {
 	{
 		$data = $this->input->post();
 		if($data){
-			echo "sukses ditambahlan";
+			echo "sukses ditambahkan";
 		} else {
 			echo "gagal ditambahkan";
 		}	
 	}
-
-
-
 }
