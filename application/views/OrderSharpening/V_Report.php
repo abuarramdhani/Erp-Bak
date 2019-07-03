@@ -32,7 +32,7 @@ foreach($show as $a){
     <tr style="border: 1px solid black">
       <td colspan="2" rowspan="3" width="10%" style="font-size: 12px;text-align: center;border: 1px solid black;">
           <center>
-              <img style="height: 100px; width: 100px" src="<?php echo base_url('/assets/img/'.$a['no_order'].'.png'); ?>" />
+              <img style="height: 100px; width: 100px" src="<?php echo base_url('/img/'.$a['no_order'].'.png'); ?>" />
           </center>
       </td>
       <td rowspan="2" colspan="2" width="10%" style="font-size: 12px;text-align: center;padding: 0;border: 1px solid black;">
