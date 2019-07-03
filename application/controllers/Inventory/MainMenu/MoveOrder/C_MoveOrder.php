@@ -331,12 +331,14 @@ class C_MoveOrder extends CI_Controller
 			foreach ($array_mo as $key => $mo) {
 				$moveOrderAwal = $moveOrderAkhir = $mo;
 				$dataall[$a]['head']	= $this->M_MoveOrder->getHeader($moveOrderAwal, $moveOrderAkhir);
-				$dataall[$a]['head'][$a]['piklis'] = $piklis;
+				$dataall[$a]['head'][0]['piklis'] = $piklis;
 				$dataall[$a]['line']	= $this->M_MoveOrder->getDetail($moveOrderAwal, $moveOrderAkhir);
 				$a++;
 			}
 
 			// echo "<pre>";
+			// print_r($dataall);
+			// exit();
 
 			$head		= array();
 			$jobNo		= array();
@@ -415,6 +417,7 @@ class C_MoveOrder extends CI_Controller
 		$subinv_from 	  = $this->input->post('subinvfrom');
 		$locator_from 	  = $this->input->post('locatorfrom');
 		$selected = $this->input->post('selectedPicklistIMO');
+		$piklis = $this->input->post('piklis');
 		$arraySelected = explode('+', $selected);
 		$array_mo = array();
 
@@ -548,7 +551,7 @@ class C_MoveOrder extends CI_Controller
 		// exit();
 
 		if ($array_mo) {
-			$this->pdf($array_mo,$nama_satu,$nama_dua);
+			$this->pdf($array_mo,$nama_satu,$nama_dua,$piklis);
 		}else{
 			exit('Terjadi Kesalahan :(');
 		}

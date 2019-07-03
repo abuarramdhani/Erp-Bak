@@ -19,10 +19,16 @@
 			if (a == 0) {
 				$('#btnSelectedIMO').attr("disabled","disabled");
 				$('#jmlSlcIMO').text('');
+				$('#jmlSlcIMO2').text('');
+				$('#btnSelectedIMO2').attr("disabled","disabled");
+				
 			}else{
 				$('#btnSelectedIMO').removeAttr("disabled");
 				$('#jmlSlcIMO').text('('+jml+')');
+				$('#jmlSlcIMO2').text('('+jml+')');
 				$('input[name="selectedPicklistIMO"]').val(val);
+				$('#btnSelectedIMO2').removeAttr("disabled");
+				
 			}
 
 		});
@@ -53,10 +59,14 @@
 			});
 			if (a == 0) {
 				$('#btnSelectedIMO').attr("disabled","disabled");
+				$('#btnSelectedIMO2').attr("disabled","disabled");
 				$('#jmlSlcIMO').text('');
+				$('#jmlSlcIMO2').text('');
 			}else{
 				$('#btnSelectedIMO').removeAttr("disabled");
+				$('#btnSelectedIMO2').removeAttr("disabled");
 				$('#jmlSlcIMO').text('('+jml+')');
+				$('#jmlSlcIMO2').text('('+jml+')');
 				$('input[name="selectedPicklistIMO"]').val(val);
 			}
 		});
@@ -351,10 +361,29 @@
 		<input type="hidden" name="locatorto[]" value="<?= implode('<>', $allLocatorTo[$key]) ?>">
 		<input type="hidden" name="locatorfrom[]" value="<?= implode('<>', $allLocatorFrom[$key]) ?>">
 		<input type="hidden" name="departement" value="NONE">
+		<input type="hidden" name="piklis" value="1">
 		<?php } ?>
 	<button type="submit" class="btn btn-success pull-right" disabled="disabled" id="btnSelectedIMO"><b> CREATE PICKLIST SELECTED </b><b id="jmlSlcIMO"></b></button>
-	<?php } ?>
 	</form>
+	<br><br>
+	<form method="post" target="_blank" action="<?php echo base_url('InventoryManagement/CreateMoveOrder/createall'); ?>">
+		<input type="hidden" name="selectedPicklistIMO" value="">
+		<?php foreach ($allInvID as $key => $value) { ?>
+		<input type="hidden" name="no_job[]" value="<?= implode('<>', $allNojob[$key]) ?>">
+		<input type="hidden" name="invID[]" value="<?= implode('<>', $allInvID[$key]) ?>">
+		<input type="hidden" name="qty[]" value="<?= implode('<>', $allQty[$key]) ?>">
+		<input type="hidden" name="uom[]" value="<?= implode('<>', $allUom[$key]) ?>">
+		<input type="hidden" name="job_id[]" value="<?= implode('<>', $allJobID[$key]) ?>">
+		<input type="hidden" name="subinvto[]" value="<?= implode('<>', $allSubInvTo[$key]) ?>">
+		<input type="hidden" name="subinvfrom[]" value="<?= implode('<>', $allSubFrom[$key]) ?>">
+		<input type="hidden" name="locatorto[]" value="<?= implode('<>', $allLocatorTo[$key]) ?>">
+		<input type="hidden" name="locatorfrom[]" value="<?= implode('<>', $allLocatorFrom[$key]) ?>">
+		<input type="hidden" name="departement" value="NONE">
+		<input type="hidden" name="piklis" value="2">
+		<?php } ?>
+	<button type="submit" class="btn btn-success pull-right" disabled="disabled" id="btnSelectedIMO2"><b> CREATE PL HEADER SELECTED </b><b id="jmlSlcIMO2"></b></button>
+	</form>
+	<?php } ?>
 </div>
 
 
