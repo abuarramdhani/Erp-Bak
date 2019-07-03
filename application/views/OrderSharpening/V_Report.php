@@ -1,3 +1,8 @@
+<?php   
+foreach($show as $a){ 
+
+ ?>
+
 <table class="table1" style="width:100%;border: 1px solid black; padding: 0px; border-collapse: collapse;">
     <tr>
           <td rowspan="2" width="5%" style="font-size: 12px; text-align: center;">
@@ -14,28 +19,24 @@
           </td>
           <td height="30px" width="9%" style="font-size: 12px;padding-left: 10px">Tanggal Order</td>
           <td height="30px" width="3%" style="font-size: 12px;text-align: left;">:</td>
-          <td height="30px" width="8%" style="font-size: 12px"><?php echo $show[0]['tgl_order']; ?></td>
+          <td height="30px" width="8%" style="font-size: 12px"><?php echo $a['tgl_order']; ?></td>
     </tr>
       <tr style="height: 10%;">
             <td height="30px" width="9%" style="font-size: 12px;padding-left: 10px; 
             border-top: 1px solid black">Nomor Order</td>
             <td height="30px" width="3%" style="font-size: 12px;border-top: 1px solid black;text-align: left;">:</td>
-            <td height="30px" width="8%" style="font-size: 12px;border-top: 1px solid black"><?= $show[0]['REQUEST_NUMBER']; ?></td>
+            <td height="30px" width="8%" style="font-size: 12px;border-top: 1px solid black"><?= $a['REQUEST_NUMBER']; ?></td>
       </tr>
   </table>
   <table class="table2" style="margin-top: 5px;width:100%;border: 1px solid black; padding: 0px;border-collapse: collapse;">
     <tr style="border: 1px solid black">
       <td colspan="2" rowspan="3" width="10%" style="font-size: 12px;text-align: center;border: 1px solid black;">
-      <?php foreach ($show as $a) {
-                $order = $a[0]['no_order'];
-              ?>
-            <center>
-                <img style="height: 100px; width: 100px" src="<?php echo base_url('img/'.$order.'.png'); ?>" />
-            </center>
-            <?php  } ?>
+          <center>
+              <img style="height: 100px; width: 100px" src="<?php echo base_url('img/'.$a['no_order'].'.png'); ?>" />
+          </center>
       </td>
       <td rowspan="2" colspan="2" width="10%" style="font-size: 12px;text-align: center;padding: 0;border: 1px solid black;">
-        <?php echo $show[0]['kode_barang']; ?>
+        <?php echo $a['kode_barang']; ?>
       </td>
       <!-- <td rowspan="2" width="5%" style="font-size: 4px; 
       text-align: center;"> </td> -->
@@ -59,10 +60,10 @@
     </tr>
     <tr style="border: 1px solid black;">
       <td colspan="2" width="10%" style="font-size: 12px;  
-      text-align: center; padding-top: 15px; padding-bottom: 15px;border: 1px solid black;"><?php echo $show[0]['deskripsi_barang']; ?>
+      text-align: center; padding-top: 15px; padding-bottom: 15px;border: 1px solid black;"><?php echo $a['deskripsi_barang']; ?>
       </td>
       <td width="10%" style="font-size: 12px; text-align: center;border: 1px solid black;">PCS</td>
-      <td style="font-size: 12px; text-align: center;border: 1px solid black;"><?php echo $show[0]['qty']; ?></td>
+      <td style="font-size: 12px; text-align: center;border: 1px solid black;"><?php echo $a['qty']; ?></td>
       <td style="font-size: 12px;border: 1px solid black;"> </td>
       <td style="font-size: 12px;border: 1px solid black;"> </td>
       <td style="font-size: 12px;border: 1px solid black;"> </td>
@@ -95,3 +96,10 @@
       text-align: center;border: 1px solid black;"> </td>
     </tr>
 </table>
+<table style="margin-top: 1px;width:100%;">    
+    <tr style="border: 1px solid black;">
+    <tr>
+      <td style="font-size: 8px"><?php echo $a['idunix']; ?></td>
+    </tr>
+</table>
+<?php }?>

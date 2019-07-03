@@ -1,6 +1,7 @@
 function getDeskripsi(th){
 	console.log('Deskripsi Error');
 	var param = $(th).val();
+
 	$.ajax({
 		url: baseurl + "OrderSharpening/Order/getDeskripsi",
 		type: 'POST',
@@ -22,9 +23,9 @@ function getDeskripsi(th){
 
 function validasi()                                    
 { 
-    var item = document.forms["Orderform"]["txtItem"];               
-    var desc = document.forms["Orderform"]["txtDesc"];    
-    var qty = document.forms["Orderform"]["txtQty"];  
+    var item = document.forms["Orderform"]["item_sharp"];               
+    var desc = document.forms["Orderform"]["desc_sharp"];    
+    var qty = document.forms["Orderform"]["qty_sharp"];  
 
     if (item.value == "")                                  
     { 
@@ -54,22 +55,64 @@ function validasi()
     return true; 
 } 
 
+var i = 1;
+function addRowOrderSharpening(){
+    var noOrder = $('#no_order').val();
+    var reffNumber = $('#reff_number').val();
+    var kodeBarang = $('#item_sharp').val();
+    var deskBarang = $('#desc_sharp').val();
+    var quantity = $('#qty_sharp').val();
 
-/// function klir(th) {
+    var tambahan = '';
 
-// 	var formkuh = document.getElementById("formkuh");
-// 		console.log
-//         if (formkuh.value == "") {
-//             //If the "Please Select" option is selected display error.
-//             alert("Please select an option!");
-//           	return false;
-//         } else
-//         {
-//         	$('#formkuh').submit();
-//         	$('input, select').val('');
-// 			$('#item_sharp').val(null).trigger('change');
-// 			return true;
-//         }
+    $('#tbodyUserResponsibility').append('<tr class="clone"><td><input type="hidden" name="reffNumber[]" value="'+reffNumber+i+'" readonly><input type="hidden" name="noOrder[]" value="'+noOrder+i+'" readonly><input type="text" name="kodeBarang[]" value="'+kodeBarang+'" readonly class="form-control"></td><td><input type="text" name="deskBarang[]" value="'+deskBarang+'" readonly class="form-control"></td><td><input type="text" name="quantity[]" value="'+quantity+'" readonly class="form-control"></td><td><button type="button" class="btn btn-md btn-danger btnRemoveUserResponsibility"><i class="fa fa-close"></i></button></td></tr>');
+    i++;
+    
+}
 
+function insertOrderSharpening(){
+    var noOrder = [];
+    var reffNumber = [];
+    var kodeBarang = [];
+    var deskBarang = [];
+    var quantity = [];
+    var date = $('input[name~=dateOrder]').val();
 
-// }
+    $('#tbodyUserResponsibility input[name~=noOrder]').each(function(){
+        noOrder.push($(this).val());
+    });
+    $('#tbodyUserResponsibility input[name~=reffNumber]').each(function(){
+        reffNumber.push($(this).val());
+    });
+    $('#tbodyUserResponsibility input[name~=kodeBarang]').each(function(){
+        kodeBarang.push($(this).val());
+    });
+    $('#tbodyUserResponsibility input[name~=deskBarang]').each(function(){
+        deskBarang.push($(this).val());
+    });
+    $('#tbodyUserResponsibility input[name~=quantity]').each(function(){
+        quantity.push($(this).val());
+    });
+
+    $.ajax({
+        url: baseurl + "OrderSharpening/Order/Insert",
+        async: true,
+        type: 'POST',
+        dataType: 'JSON',
+        data: {
+            'noOrder': noOrder,
+            'reffNumber': reffNumber,
+            'kodeBarang': kodeBarang,
+            'deskBarang': deskBarang,
+            'quantity': quantity,
+            'date': date
+        },
+        success: function(response) {
+            alert('success');
+        },
+        error: function(response) {
+            alert('error');
+            console.log(response.status);
+        }
+    });
+}
