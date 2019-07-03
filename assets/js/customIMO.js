@@ -239,10 +239,14 @@ $('.checkedAllIMO, .ch_komp_imo').on('click',function(){
 	});
 	if (a == 0) {
 		$('#btnSelectedIMO').attr("disabled","disabled");
+		$('#btnSelectedIMO2').attr("disabled","disabled");
 		$('#jmlSlcIMO').text('');
+		$('#jmlSlcIMO2').text('');
 	}else{
 		$('#btnSelectedIMO').removeAttr("disabled");
+		$('#btnSelectedIMO2').removeAttr("disabled");
 		$('#jmlSlcIMO').text('('+jml+')');
+		$('#jmlSlcIMO2').text('('+jml+')');
 		$('input[name="selectedPicklistIMO"]').val(val);
 	}
 
