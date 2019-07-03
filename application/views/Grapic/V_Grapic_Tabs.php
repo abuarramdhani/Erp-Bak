@@ -200,10 +200,15 @@
 																<td>Target Karyawan</td>
 																<?php $var1 = 'target'.$y;
 																$var2 = 'min'.$y;
-																$trgt = ${$var1}[0]+${$var2};
-																$trgtjav = ${$var1}[0]+${$var2};
+																$varAg = 'minAg'.$y;
+																$trgt = ${$var1}[0]+${$varAg};
+																$trgtjav = ${$var1}[0]+${$varAg};
 																for ($i=0; $i < 26; $i++) { ?>
-																<td colspan="2"><?php echo $trgt = $trgt-${$var2}; ?></td>
+																<?php if ($i > 17): ?>
+																	<td colspan="2"><?php echo $trgt = $trgt-${$var2}; ?></td>
+																<?php else: ?>
+																	<td colspan="2"><?php echo $trgt = $trgt-${$varAg}; ?></td>
+																<?php endif ?>
 																<?php } ?>
 																<script>
 																	targetKaryawan[<?= ($y+1) ?>] = [<?php 
@@ -211,7 +216,11 @@
 																		if($j == 25) {
 																			echo '"'.$trgtjav = ($trgtjav-${$var2}).'"';
 																		}else{
-																			echo '"'.$trgtjav = ($trgtjav-${$var2}).'", ';
+																			if ($j > 17) {
+																				echo '"'.$trgtjav = ($trgtjav-${$var2}).'", ';
+																			}else{
+																				echo '"'.$trgtjav = ($trgtjav-${$varAg}).'", ';
+																			}
 																		}
 																	}
 																	?>];
@@ -244,8 +253,13 @@
 																<td>0%</td>
 																<?php
 																for ($i=0; $i < 25; $i++) { ?>
-																<td><?php echo ${$var2}; ?></td>
-																<td><?php echo round(${$var2}/${$var1}[0]*100,2) ?>%</td>
+																<?php if ($i > 16): ?>
+																	<td><?php echo ${$var2}; ?></td>
+																	<td><?php echo round(${$var2}/${$var1}[0]*100,1) ?>%</td>
+																<?php else: ?>
+																	<td><?php echo ${$varAg}; ?></td>
+																	<td><?php echo round(${$varAg}/${$var1}[0]*100,1) ?>%</td>
+																<?php endif ?>
 																<?php } ?>
 																<script>
 																	trgTurunBln[<?= ($y+1) ?>] = ["0", <?php 
@@ -253,7 +267,11 @@
 																		if($j == 24) {
 																			echo '"'.${$var2}.'"';
 																		}else{
-																			echo '"'.${$var2}.'", ';
+																			if ($j > 16) {
+																				echo '"'.${$var2}.'", ';
+																			}else{
+																				echo '"'.${$varAg}.'", ';
+																			}
 																		}
 																	}
 																	?>];
@@ -292,9 +310,13 @@
 																	<?php $trgaku = 0;
 																	$trgaku2 = 0;
 																	for ($i=0; $i < 25 ; $i++) { 
-																		echo '<td>'.$trgaku = ($trgaku+${$var2}).'</td>';
-																		echo '<td>'.$trgaku2 = round(($trgaku/${$var1}[0]*100),1).'%</td>';
-																		// echo '<td>'.${$var1}[0].'%</td>';
+																		if ($i > 16) {
+																			echo '<td>'.$trgaku = ($trgaku+${$var2}).'</td>';
+																			echo '<td>'.$trgaku2 = round(($trgaku/${$var1}[0]*100),1).'%</td>';
+																		}else{
+																			echo '<td>'.$trgaku = ($trgaku+${$varAg}).'</td>';
+																			echo '<td>'.$trgaku2 = round(($trgaku/${$var1}[0]*100),1).'%</td>';
+																		}
 																	} ?>
 																	<script>
 																		trgAkumulasi[<?= ($y+1) ?>] = ["0", <?php 
@@ -303,7 +325,11 @@
 																			if($j == 24) {
 																				echo '"'.$trgakumulasi = ($trgakumulasi+${$var2}).'"';
 																			}else{
-																				echo '"'.$trgakumulasi = ($trgakumulasi+${$var2}).'", ';
+																				if ($j > 16) {
+																					echo '"'.$trgakumulasi = ($trgakumulasi+${$var2}).'", ';
+																				}else{
+																					echo '"'.$trgakumulasi = ($trgakumulasi+${$varAg}).'", ';
+																				}
 																			}
 																		}
 																		?>];
@@ -385,10 +411,15 @@
 																<td>Target Karyawan</td>
 																<?php $var1 = 'target'.$y;
 																$var2 = 'min'.$y;
-																$trgt = ${$var1}[0]+${$var2};
-																$trgtjav = ${$var1}[0]+${$var2};
+																$varAg = 'minAg'.$y;
+																$trgt = ${$var1}[0]+${$varAg};
+																$trgtjav = ${$var1}[0]+${$varAg};
 																for ($i=0; $i < 26; $i++) { ?>
-																<td colspan="2"><?php echo $trgt = $trgt-${$var2}; ?></td>
+																<?php if ($i > 17): ?>
+																	<td colspan="2"><?php echo $trgt = $trgt-${$var2}; ?></td>
+																<?php else: ?>
+																	<td colspan="2"><?php echo $trgt = $trgt-${$varAg}; ?></td>
+																<?php endif ?>
 																<?php } ?>
 																<script>
 																	targetKaryawan[<?= ($y+1) ?>] = [<?php 
@@ -396,7 +427,11 @@
 																		if($j == 25) {
 																			echo '"'.$trgtjav = ($trgtjav-${$var2}).'"';
 																		}else{
-																			echo '"'.$trgtjav = ($trgtjav-${$var2}).'", ';
+																			if ($j > 17) {
+																				echo '"'.$trgtjav = ($trgtjav-${$var2}).'", ';
+																			}else{
+																				echo '"'.$trgtjav = ($trgtjav-${$varAg}).'", ';
+																			}
 																		}
 																	}
 																	?>];
@@ -429,8 +464,13 @@
 																<td>0%</td>
 																<?php
 																for ($i=0; $i < 25; $i++) { ?>
-																<td><?php echo ${$var2}; ?></td>
-																<td><?php echo round(${$var2}/${$var1}[0]*100,2) ?>%</td>
+																<?php if ($i > 16): ?>
+																	<td><?php echo ${$var2}; ?></td>
+																	<td><?php echo round(${$var2}/${$var1}[0]*100,1) ?>%</td>
+																<?php else: ?>
+																	<td><?php echo ${$varAg}; ?></td>
+																	<td><?php echo round(${$varAg}/${$var1}[0]*100,1) ?>%</td>
+																<?php endif ?>
 																<?php } ?>
 																<script>
 																	trgTurunBln[<?= ($y+1) ?>] = ["0", <?php 
@@ -438,7 +478,11 @@
 																		if($j == 24) {
 																			echo '"'.${$var2}.'"';
 																		}else{
-																			echo '"'.${$var2}.'", ';
+																			if ($j > 16) {
+																				echo '"'.${$var2}.'", ';
+																			}else{
+																				echo '"'.${$varAg}.'", ';
+																			}
 																		}
 																	}
 																	?>];
@@ -477,9 +521,13 @@
 																	<?php $trgaku = 0;
 																	$trgaku2 = 0;
 																	for ($i=0; $i < 25 ; $i++) { 
-																		echo '<td>'.$trgaku = ($trgaku+${$var2}).'</td>';
-																		echo '<td>'.$trgaku2 = round(($trgaku/${$var1}[0]*100),1).'%</td>';
-																		// echo '<td>'.${$var1}[0].'%</td>';
+																		if ($i > 16) {
+																			echo '<td>'.$trgaku = ($trgaku+${$var2}).'</td>';
+																			echo '<td>'.$trgaku2 = round(($trgaku/${$var1}[0]*100),1).'%</td>';
+																		}else{
+																			echo '<td>'.$trgaku = ($trgaku+${$varAg}).'</td>';
+																			echo '<td>'.$trgaku2 = round(($trgaku/${$var1}[0]*100),1).'%</td>';
+																		}
 																	} ?>
 																	<script>
 																		trgAkumulasi[<?= ($y+1) ?>] = ["0", <?php 
@@ -488,7 +536,11 @@
 																			if($j == 24) {
 																				echo '"'.$trgakumulasi = ($trgakumulasi+${$var2}).'"';
 																			}else{
-																				echo '"'.$trgakumulasi = ($trgakumulasi+${$var2}).'", ';
+																				if ($j > 16) {
+																					echo '"'.$trgakumulasi = ($trgakumulasi+${$var2}).'", ';
+																				}else{
+																					echo '"'.$trgakumulasi = ($trgakumulasi+${$varAg}).'", ';
+																				}
 																			}
 																		}
 																		?>];
@@ -574,10 +626,15 @@
 																	<td>Target Karyawan</td>
 																	<?php $var1 = 'target'.$y;
 																	$var2 = 'min'.$y;
-																	$trgt = ${$var1}[0]+${$var2};
-																	$trgtjav = ${$var1}[0]+${$var2};
+																	$varAg = 'minAg'.$y;
+																	$trgt = ${$var1}[0]+${$varAg};
+																	$trgtjav = ${$var1}[0]+${$varAg};
 																	for ($i=0; $i < 26; $i++) { ?>
-																	<td colspan="2"><?php echo $trgt = $trgt-${$var2}; ?></td>
+																	<?php if ($i > 17): ?>
+																		<td colspan="2"><?php echo $trgt = $trgt-${$var2}; ?></td>
+																	<?php else: ?>
+																		<td colspan="2"><?php echo $trgt = $trgt-${$varAg}; ?></td>
+																	<?php endif ?>
 																	<?php } ?>
 																	<script>
 																		targetKaryawan[<?= ($y+1) ?>] = [<?php 
@@ -585,7 +642,11 @@
 																			if($j == 25) {
 																				echo '"'.$trgtjav = ($trgtjav-${$var2}).'"';
 																			}else{
-																				echo '"'.$trgtjav = ($trgtjav-${$var2}).'", ';
+																				if ($j > 17) {
+																					echo '"'.$trgtjav = ($trgtjav-${$var2}).'", ';
+																				}else{
+																					echo '"'.$trgtjav = ($trgtjav-${$varAg}).'", ';
+																				}
 																			}
 																		}
 																		?>];
@@ -618,8 +679,13 @@
 																	<td>0%</td>
 																	<?php
 																	for ($i=0; $i < 25; $i++) { ?>
-																	<td><?php echo ${$var2}; ?></td>
-																	<td><?php echo round(${$var2}/${$var1}[0]*100,2) ?>%</td>
+																	<?php if ($i > 16): ?>
+																		<td><?php echo ${$var2}; ?></td>
+																		<td><?php echo round(${$var2}/${$var1}[0]*100,1) ?>%</td>
+																	<?php else: ?>
+																		<td><?php echo ${$varAg}; ?></td>
+																		<td><?php echo round(${$varAg}/${$var1}[0]*100,1) ?>%</td>
+																	<?php endif ?>
 																	<?php } ?>
 																	<script>
 																		trgTurunBln[<?= ($y+1) ?>] = ["0", <?php 
@@ -627,7 +693,11 @@
 																			if($j == 24) {
 																				echo '"'.${$var2}.'"';
 																			}else{
-																				echo '"'.${$var2}.'", ';
+																				if ($j > 16) {
+																					echo '"'.${$var2}.'", ';
+																				}else{
+																					echo '"'.${$varAg}.'", ';
+																				}
 																			}
 																		}
 																		?>];
@@ -666,9 +736,13 @@
 																		<?php $trgaku = 0;
 																		$trgaku2 = 0;
 																		for ($i=0; $i < 25 ; $i++) { 
-																			echo '<td>'.$trgaku = ($trgaku+${$var2}).'</td>';
-																			echo '<td>'.$trgaku2 = round(($trgaku/${$var1}[0]*100),1).'%</td>';
-														// echo '<td>'.${$var1}[0].'%</td>';
+																			if ($i > 16) {
+																				echo '<td>'.$trgaku = ($trgaku+${$var2}).'</td>';
+																				echo '<td>'.$trgaku2 = round(($trgaku/${$var1}[0]*100),1).'%</td>';
+																			}else{
+																				echo '<td>'.$trgaku = ($trgaku+${$varAg}).'</td>';
+																				echo '<td>'.$trgaku2 = round(($trgaku/${$var1}[0]*100),1).'%</td>';
+																			}
 																		} ?>
 																		<script>
 																			trgAkumulasi[<?= ($y+1) ?>] = ["0", <?php 
@@ -677,7 +751,11 @@
 																				if($j == 24) {
 																					echo '"'.$trgakumulasi = ($trgakumulasi+${$var2}).'"';
 																				}else{
+																					if ($j > 16) {
 																					echo '"'.$trgakumulasi = ($trgakumulasi+${$var2}).'", ';
+																					}else{
+																						echo '"'.$trgakumulasi = ($trgakumulasi+${$varAg}).'", ';
+																					}
 																				}
 																			}
 																			?>];
@@ -766,10 +844,15 @@
 																				<td>Target Karyawan</td>
 																				<?php $var1 = 'target'.$y;
 																				$var2 = 'min'.$y;
-																				$trgt = ${$var1}[0]+${$var2};
-																				$trgtjav = ${$var1}[0]+${$var2};
+																				$varAg = 'minAg'.$y;
+																				$trgt = ${$var1}[0]+${$varAg};
+																				$trgtjav = ${$var1}[0]+${$varAg};
 																				for ($i=0; $i < 26; $i++) { ?>
-																				<td colspan="2"><?php echo $trgt = $trgt-${$var2}; ?></td>
+																				<?php if ($i > 17): ?>
+																					<td colspan="2"><?php echo $trgt = $trgt-${$var2}; ?></td>
+																				<?php else: ?>
+																					<td colspan="2"><?php echo $trgt = $trgt-${$varAg}; ?></td>
+																				<?php endif ?>
 																				<?php } ?>
 																				<script>
 																					targetKaryawan[<?= ($y+1) ?>] = [<?php 
@@ -777,7 +860,11 @@
 																						if($j == 25) {
 																							echo '"'.$trgtjav = ($trgtjav-${$var2}).'"';
 																						}else{
-																							echo '"'.$trgtjav = ($trgtjav-${$var2}).'", ';
+																							if ($j > 17) {
+																								echo '"'.$trgtjav = ($trgtjav-${$var2}).'", ';
+																							}else{
+																								echo '"'.$trgtjav = ($trgtjav-${$varAg}).'", ';
+																							}
 																						}
 																					}
 																					?>];
@@ -810,11 +897,15 @@
 																				<td>0%</td>
 																				<?php
 																				for ($i=0; $i < 25; $i++) { ?>
-																				<td><?php echo ${$var2}; ?></td>
+																				<td><?php echo ${$varAg}; ?></td>
 																				<?php if(0!=${$var1}[0]) 
 																				{
 																					?>
-																				<td><?php echo round(${$var2}/${$var1}[0]*100,2) ?>%</td>
+																				<?php if ($i > 16): ?>
+																					<td><?php echo round(${$var2}/${$var1}[0]*100,1) ?>%</td>
+																				<?php else: ?>
+																					<td><?php echo round(${$varAg}/${$var1}[0]*100,1) ?>%</td>
+																				<?php endif ?>
 																				<?php 
 																				} else { echo "<td>0%</td>";} ?>
 
@@ -825,7 +916,11 @@
 																						if($j == 24) {
 																							echo '"'.${$var2}.'"';
 																						}else{
-																							echo '"'.${$var2}.'", ';
+																							if ($j > 16) {
+																								echo '"'.${$var2}.'", ';
+																							}else{
+																								echo '"'.${$varAg}.'", ';
+																							}
 																						}
 																					}
 																					?>];
@@ -869,17 +964,19 @@
 																					<?php $trgaku = 0;
 																					$trgaku2 = 0;
 																					for ($i=0; $i < 25 ; $i++) { 
-																						echo '<td>'.$trgaku = ($trgaku+${$var2}).'</td>';
+																						if ($i > 16) {
+																							echo '<td>'.$trgaku = ($trgaku+${$var2}).'</td>';
+																						}else{
+																							echo '<td>'.$trgaku = ($trgaku+${$varAg}).'</td>';
+																						}
 																						if(0!=${$var1}[0])
 																						{
-
 																						echo '<td>'.$trgaku2 = round($trgaku/${$var1}[0]*100,1).'%</td>';
 																						}
 																						else
 																						{
 																						echo '<td>0%</td>';
 																						}
-
 																					} ?>
 																					<script>
 																						trgAkumulasi[<?= ($y+1) ?>] = ["0", <?php 
@@ -888,7 +985,11 @@
 																							if($j == 24) {
 																								echo '"'.$trgakumulasi = ($trgakumulasi+${$var2}).'"';
 																							}else{
+																								if ($j > 16) {
 																								echo '"'.$trgakumulasi = ($trgakumulasi+${$var2}).'", ';
+																								}else{
+																									echo '"'.$trgakumulasi = ($trgakumulasi+${$varAg}).'", ';
+																								}
 																							}
 																						}
 																						?>];
@@ -969,10 +1070,15 @@
 																<td>Target Karyawan</td>
 																<?php $var1 = 'target'.$y;
 																$var2 = 'min'.$y;
-																$trgt = ${$var1}[0]+${$var2};
-																$trgtjav = ${$var1}[0]+${$var2};
+																$varAg = 'minAg'.$y;
+																$trgt = ${$var1}[0]+${$varAg};
+																$trgtjav = ${$var1}[0]+${$varAg};
 																for ($i=0; $i < 26; $i++) { ?>
-																<td colspan="2"><?php echo $trgt = $trgt-${$var2}; ?></td>
+																<?php if ($i > 17): ?>
+																	<td colspan="2"><?php echo $trgt = $trgt-${$var2}; ?></td>
+																<?php else: ?>
+																	<td colspan="2"><?php echo $trgt = $trgt-${$varAg}; ?></td>
+																<?php endif ?>
 																<?php } ?>
 																<script>
 																	targetKaryawan[<?= ($y+1) ?>] = [<?php 
@@ -980,7 +1086,11 @@
 																		if($j == 25) {
 																			echo '"'.$trgtjav = ($trgtjav-${$var2}).'"';
 																		}else{
-																			echo '"'.$trgtjav = ($trgtjav-${$var2}).'", ';
+																			if ($j > 17) {
+																				echo '"'.$trgtjav = ($trgtjav-${$var2}).'", ';
+																			}else{
+																				echo '"'.$trgtjav = ($trgtjav-${$varAg}).'", ';
+																			}
 																		}
 																	}
 																	?>];
@@ -1013,8 +1123,13 @@
 																<td>0%</td>
 																<?php
 																for ($i=0; $i < 25; $i++) { ?>
-																<td><?php echo ${$var2}; ?></td>
-																<td><?php echo round(${$var2}/${$var1}[0]*100,2) ?>%</td>
+																<?php if ($i > 16): ?>
+																	<td><?php echo ${$var2}; ?></td>
+																	<td><?php echo round(${$var2}/${$var1}[0]*100,1) ?>%</td>
+																<?php else: ?>
+																	<td><?php echo ${$varAg}; ?></td>
+																	<td><?php echo round(${$varAg}/${$var1}[0]*100,1) ?>%</td>
+																<?php endif ?>
 																<?php } ?>
 																<script>
 																	trgTurunBln[<?= ($y+1) ?>] = ["0", <?php 
@@ -1022,7 +1137,11 @@
 																		if($j == 24) {
 																			echo '"'.${$var2}.'"';
 																		}else{
-																			echo '"'.${$var2}.'", ';
+																			if ($j > 16) {
+																				echo '"'.${$var2}.'", ';
+																			}else{
+																				echo '"'.${$varAg}.'", ';
+																			}
 																		}
 																	}
 																	?>];
@@ -1061,9 +1180,13 @@
 																	<?php $trgaku = 0;
 																	$trgaku2 = 0;
 																	for ($i=0; $i < 25 ; $i++) { 
-																		echo '<td>'.$trgaku = ($trgaku+${$var2}).'</td>';
-																		echo '<td>'.$trgaku2 = round(($trgaku/${$var1}[0]*100),1).'%</td>';
-																		// echo '<td>'.${$var1}[0].'%</td>';
+																		if ($i > 16) {
+																			echo '<td>'.$trgaku = ($trgaku+${$var2}).'</td>';
+																			echo '<td>'.$trgaku2 = round(($trgaku/${$var1}[0]*100),1).'%</td>';
+																		}else{
+																			echo '<td>'.$trgaku = ($trgaku+${$varAg}).'</td>';
+																			echo '<td>'.$trgaku2 = round(($trgaku/${$var1}[0]*100),1).'%</td>';
+																		}
 																	} ?>
 																	<script>
 																		trgAkumulasi[<?= ($y+1) ?>] = ["0", <?php 
@@ -1072,7 +1195,11 @@
 																			if($j == 24) {
 																				echo '"'.$trgakumulasi = ($trgakumulasi+${$var2}).'"';
 																			}else{
-																				echo '"'.$trgakumulasi = ($trgakumulasi+${$var2}).'", ';
+																				if ($j > 16) {
+																					echo '"'.$trgakumulasi = ($trgakumulasi+${$var2}).'", ';
+																				}else{
+																					echo '"'.$trgakumulasi = ($trgakumulasi+${$varAg}).'", ';
+																				}
 																			}
 																		}
 																		?>];

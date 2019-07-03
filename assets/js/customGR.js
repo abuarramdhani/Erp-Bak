@@ -230,6 +230,14 @@ $(document).ready(function(){
 
 			// alert(targetKaryawan[i]);
 			var ctx = document.getElementById(chartt).getContext('2d');
+			var maxValueInArray = Math.max.apply(Math, number);
+			var xx = '';
+			if (Number(maxValueInArray) < 10) {
+				xx = 'stepSize: 1';
+				// alert(number);
+			}else{
+				xx = '';
+			}
 
 			var myChart = new Chart(ctx, {
 				type: 'line',
@@ -257,7 +265,8 @@ $(document).ready(function(){
 					scales: {
 						yAxes: [{
 							ticks: {
-								beginAtZero:true
+								beginAtZero:true,xx,
+								suggestedMax: 10
 							}
 						}]
 					}
