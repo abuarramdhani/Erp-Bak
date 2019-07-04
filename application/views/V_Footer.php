@@ -257,6 +257,7 @@
 	<script src="<?php echo base_url('assets/plugins/table-to-CSV/FileSaver.min.js');?>" type="text/javascript"></script>
 	<script src="<?php echo base_url('assets/js/customMPBG.js');?>" type="text/javascript"></script>
 	<script src="<?php echo base_url('assets/js/customOSP.js');?>" type="text/javascript"></script>
+	<script src="<?php echo base_url('assets/js/customTB.js');?>" type="text/javascript"></script>
     <script>
        $(function () { formInit(); });
 		
