@@ -263,7 +263,7 @@ class M_Transact extends CI_Model
       // echo $sql;
       // print_r($ip_address);exit;
       // $oracle->trans_start();
-      // $oracle->query($sql);
+      // //$oracle->query($sql);
       // $oracle->trans_complete();
 
       $this->oracle->query($sql);
