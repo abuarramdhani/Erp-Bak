@@ -2595,3 +2595,11 @@ $route['StockGudangAlat'] = 'StockGudangAlat/C_StockGudangAlat';
 $route['StockGudangAlat/Stock/(:any)'] = 'StockGudangAlat/C_StockGudangAlat/$1';
 $route['StockGudangAlat/Stock/(:any)/(:any)'] = 'StockGudangAlat/C_StockGudangAlat/$1/$2';
 $route['StockGudangAlat/Stock/(:any)/(:any)/(:any)'] = 'StockGudangAlat/C_StockGudangAlat/$1/$2/$3';
+
+//-----------------------------------------------------Transact Bon------------------------------------------------------------//
+$route['TransactBon'] = 'TransactBon/C_Transact';
+$route['TransactBon/Transact/(:any)'] = 'TransactBon/C_Transact/$1';
+$route['TransactBon/Transact/(:any)/(:any)'] = 'TransactBon/C_Transact/$1/$2';
+$route['TransactBon/Transact/(:any)/(:any)/(:any)'] = 'TransactBon/C_Transact/$1/$2/$3';
+$route['TransactBon/Transact/(:any)/(:any)/(:any)/(:any)'] = 'TransactBon/C_Transact/$1/$2/$3/$4';
+
