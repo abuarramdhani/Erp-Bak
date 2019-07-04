@@ -11,7 +11,7 @@ class C_Transact extends CI_Controller
 		$this->load->library('session');
 		$this->load->model('M_index');
 		$this->load->model('SystemAdministration/MainMenu/M_user');
-		$this->load->model('TransactBon/M_Transact'); 
+		$this->load->model('TransactBon/M_transact'); 
 		  
 		if($this->session->userdata('logged_in')!=TRUE) {
 			$this->load->helper('url');
@@ -39,7 +39,7 @@ class C_Transact extends CI_Controller
 		$data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id);
 		$data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id);
 
-		$val = $this->M_Transact->getNoind();
+		$val = $this->M_transact->getNoind();
 		$list = array_column($val, 'NOMOR_INDUK');
 		$find = in_array($noind, $list);
 		// echo $find;
@@ -75,7 +75,7 @@ class C_Transact extends CI_Controller
 		$data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id);
 		$data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id);
 
-		$val = $this->M_Transact->getNoind();
+		$val = $this->M_transact->getNoind();
 		$list = array_column($val, 'NOMOR_INDUK');
 		$find = in_array($noind, $list);
 
@@ -106,7 +106,7 @@ class C_Transact extends CI_Controller
 		$data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id);
 		$data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id);
 
-		$val = $this->M_Transact->getNoind();
+		$val = $this->M_transact->getNoind();
 		$list = array_column($val, 'NOMOR_INDUK');
 		$find = in_array($noind, $list);
 		// echo $find;
@@ -128,8 +128,8 @@ class C_Transact extends CI_Controller
 	{
 		$noind = $this->session->user;
 		$tampilTB = $this->input->post('slcNoBon');
-		$data['datatabel']=$this->M_Transact->search($tampilTB);
-		$data['usr_id'] = $this->M_Transact->usrID($noind);
+		$data['datatabel']=$this->M_transact->search($tampilTB);
+		$data['usr_id'] = $this->M_transact->usrID($noind);
 			// print_r($data['usr_id']);exit;
 		echo $this->load->view('TransactBon/V_Table', $data, TRUE);
 	}
@@ -142,20 +142,20 @@ class C_Transact extends CI_Controller
 		// $sub_inv = $this->input->post('tsc_tjnGudang');
 		$tampilTB = $this->input->post('slcNoBon');
 		
-		$data['datatabel']=$this->M_Transact->searchBSTBP($tampilTB);
+		$data['datatabel']=$this->M_transact->searchBSTBP($tampilTB);
 		// $tujuan_gudang = $this->M_Transact->searchBSTBP($tampilTB);
 		
 		// echo "<pre>";
 		// print_r($data['datatabel']);
 		// echo "</pre>";
 		// exit();
-		$data['usr_id'] = $this->M_Transact->usrID($noind);
+		$data['usr_id'] = $this->M_transact->usrID($noind);
 		$i = 0;
 		
 		foreach ($data['datatabel'] as $sub_inv) {
 			
 			if(!empty($sub_inv['tujuan_gudang'])){
-				$org_id = $this->M_Transact->orgID($sub_inv['tujuan_gudang']);
+				$org_id = $this->M_transact->orgID($sub_inv['tujuan_gudang']);
 				foreach($org_id as $org){
 					$org_id_array[] = $org['ORGANIZATION_ID'];
 				}
@@ -175,7 +175,7 @@ class C_Transact extends CI_Controller
 		$no_id =$this->input->post('no_id');
 		// echo $serah;
 		// exit();
-		$this->M_Transact->updatePostgre($serah, $no_id); 
+		$this->M_transact->updatePostgre($serah, $no_id); 
 	}
 
 	public function insertOracle(){
@@ -210,7 +210,7 @@ class C_Transact extends CI_Controller
 		// exit();
 	// echo count($account);
 		for ($i = 0; $i < count($account); $i++){
-			$this->M_Transact->insertData($account[$i],$kode_barang[$i],$serah[$i],$no_urut[$i],
+			$this->M_transact->insertData($account[$i],$kode_barang[$i],$serah[$i],$no_urut[$i],
 			$tujuan_gudang[$i],$lokator[$i],$ip_address,$produk[$i],$keterangan[$i],$satuan[$i],
 			$kode_cabang[$i]);
 			// $this->M_Transact->updatePostgre($serah[$i], $no_id[$i]);
@@ -219,16 +219,16 @@ class C_Transact extends CI_Controller
 			}else{
 				$flag = 'N';
 			} //echo $flag;
-			$this->M_Transact->updateFlag($no_bon[$i],$no_id[$i], $flag);
+			$this->M_transact->updateFlag($no_bon[$i],$no_id[$i], $flag);
 			
 		}	
 			// echo "user id ".$usr_id." nobon ".$no_bon[$i]." account ".$account[$i]." cost ".$cost_center." sub inv ".$sub_inv[$i]."<br>";	
 		// exit();
 			// $this->M_Transact->runAPI($usr_id,$no_bon,$account,$cost_center,$sub_inv);
 			
-			$this->M_Transact->runAPI($usr_id,$no_bon[0],$account[0],$cost_center,$sub_inv[0]);
-			$this->M_Transact->delete($ip_address);	
-			$this->M_Transact->Fnd($usr_id);
+			$this->M_transact->runAPI($usr_id,$no_bon[0],$account[0],$cost_center,$sub_inv[0]);
+			$this->M_transact->delete($ip_address);	
+			$this->M_transact->Fnd($usr_id);
 
 		redirect("TransactBon/Transact/Transaksi");
 		// exit();
@@ -265,18 +265,18 @@ class C_Transact extends CI_Controller
 		// print_r($ip_address);exit();
 
 		for ($i = 0; $i < count($account); $i++){
-			$this->M_Transact->insertData2($account[$i],$kode_barang[$i],$serah[$i],$no_urut[$i],$tujuan_gudang[$i],$lokator[$i],$ip_address,$produk[$i],$keterangan[$i],$satuan[$i],$kode_cabang[$i]);
+			$this->M_transact->insertData2($account[$i],$kode_barang[$i],$serah[$i],$no_urut[$i],$tujuan_gudang[$i],$lokator[$i],$ip_address,$produk[$i],$keterangan[$i],$satuan[$i],$kode_cabang[$i]);
 			// $this->M_Transact->updatePostgre($serah[$i], $no_id[$i]);
 			if($a == $b){
 				$flag = 'Y';
 			}else{
 				$flag = 'N';
 			} //echo $flag;
-			$this->M_Transact->updateFlag($no_bon[$i],$no_id[$i], $flag);
+			$this->M_transact->updateFlag($no_bon[$i],$no_id[$i], $flag);
 		}
-			$this->M_Transact->runAPI2($usr_id,$no_bon[0],$account[0],$cost_center,$ip_address,$org_id_array[0],$sub_inv[0],$lokator[0]);
-			$this->M_Transact->delete($ip_address[0]);
-			$this->M_Transact->Fnd($usr_id);
+			$this->M_transact->runAPI2($usr_id,$no_bon[0],$account[0],$cost_center,$ip_address,$org_id_array[0],$sub_inv[0],$lokator[0]);
+			$this->M_transact->delete($ip_address[0]);
+			$this->M_transact->Fnd($usr_id);
 
 		redirect("TransactBon/Transact/Transaksi2");
 		// exit();
