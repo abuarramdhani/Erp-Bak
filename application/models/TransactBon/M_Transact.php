@@ -1,6 +1,6 @@
 <?php defined('BASEPATH') OR die('No direct script access allowed');
 
-class M_Transact extends CI_Model
+class M_transact extends CI_Model
 {
 	var $oracle;
 	function __construct()
