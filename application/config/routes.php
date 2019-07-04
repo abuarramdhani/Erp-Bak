@@ -2451,6 +2451,11 @@ $route['MasterPekerja/PerhitunganPesangon'] 		= 'MasterPekerja/PerhitunganPesang
 $route['MasterPekerja/PerhitunganPesangon/(:any)'] = 'MasterPekerja/PerhitunganPesangon/C_Index/$1';
 $route['MasterPekerja/PerhitunganPesangon/(:any)/(:any)'] = 'MasterPekerja/PerhitunganPesangon/C_Index/$1/$2';
 
+//--------------------------------------------------- Setup Pekerjaan -----------------------------------//
+$route['MasterPekerja/SetupPekerjaan'] 		= 'MasterPekerja/SetupPekerjaan/C_Index';
+$route['MasterPekerja/SetupPekerjaan/(:any)'] = 'MasterPekerja/SetupPekerjaan/C_Index/$1';
+$route['MasterPekerja/SetupPekerjaan/(:any)/(:any)'] = 'MasterPekerja/SetupPekerjaan/C_Index/$1/$2';
+
 //----------------MonitoringPembelian------------------
  $route['MonitoringPembelian'] = 'MonitoringPembelian/C_Index/index';
  $route['MonitoringPembelian/EditData'] = 'MonitoringPembelian/EditData/C_Monitoring/index';
