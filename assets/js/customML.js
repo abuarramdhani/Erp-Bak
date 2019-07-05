@@ -6,6 +6,8 @@ $(document).ready(function(){
 			"zeroRecords": " "             
 		}
 	})
+
+
 	
 	//autoload gudang di admin gudang
 	$.ajax({
@@ -57,6 +59,8 @@ $(document).ready(function(){
 		var dateTo = $('#dateToUw').val();
 		var nomor_po = $('#nomor_po').val();
 		var inventory = $('#inventory').val();
+		// var status = $('#status_lppb').val();
+		// console.log(status);
 		$.ajax({
 			type: "POST",
 			url: baseurl+"TrackingLppb/Tracking/btn_search",
@@ -66,7 +70,8 @@ $(document).ready(function(){
 				dateFrom: dateFrom,
 				dateTo: dateTo,
 				nomor_po: nomor_po,
-				inventory: inventory
+				inventory: inventory,
+				// status: status
 			},
 			success: function (response) {
 				$('#loading_lppb').html(response);
@@ -151,23 +156,27 @@ function searchNumberLppb(th){
 	var lppb_number =  $('#lppb_number').val();
 	var lppb_numberFrom =  $('#lppb_numberFrom').val();
 	var inventory_organization = $('#inventory').val();
+	var status = $('#status_lppb').val();
+	console.log('searchNumberLppb');
 	$.ajax({
 		type: "POST",
 		url : baseurl+"MonitoringLPPB/ListBatch/addNomorLPPB",
 		data : {
 			lppb_number : lppb_number,
 			lppb_numberFrom : lppb_numberFrom,
-			inventory_organization : inventory_organization
+			inventory_organization : inventory_organization,
+			status_lppb : status
 		},
 			// dataType:'json',
 			success: function(response){
 				$('#loading_search').html(response);
 				$('#showTableLppb').DataTable({
-					"paging":   false,
+					"paging":   true,
 					"ordering": true,
 					"info":     false	
 				});
 				var num = 0;
+
 				$('#addLppbNumber').click(function(){
 					var inputLppb = ['po_header_id[]','organization_id[]','organization_code[]', 'lppb_number[]', 'vendor_name[]', 'tanggal_lppb[]', 'po_number[]','status_lppb[]'];
 					
@@ -175,41 +184,57 @@ function searchNumberLppb(th){
 						$('.chkAllLppbNumber').each(function(){
 							var html = '';
 							if (this.checked) {
-								var id_num = $(this).val();
-								html += '<tr id="row-1">';
-								$('tr#'+id_num).each(function(){
-									num++;
-									var col=0;
-									$(this).find('td').each(function(){
-										col++;
-										if (col==1) {
-											html+='<td>'+num+'</td>';
-										}else{
-											html+='<td><input style="width: 100%" name="'+inputLppb[(col-2)]+'" type="hidden" class="form-control '+inputLppb[(col-2)]+'" value="'+$(this).text()+'" row-num="'+num+'" readonly>';
-											html+='<span>'+$(this).text()+'</span></td>';
-										}
-									});
-								})
-								html+='<td><button type="button" class="btnDeleteRow btn btn-danger"><i class="glyphicon glyphicon-trash"></i></button></td>'; 
-								html+='</tr>'; 
-								$('#tabelNomorLPPB').append(html);
-								$('[name="po_header_id[]"],[name="organization_id[]"]').parent('td').hide();
+								var id_num = $(this).val(); 
+								$(this).prop('checked', false); 
+								$(this).attr("disabled", true);
+								$(this).parent('td').parent('tr').css('background-color','#ffccf9');
+
+								
+									html += '<tr id="row-1">';
+									$('tr#'+id_num).each(function(){
+										num++;
+										var col=0;
+										$(this).find('td').each(function(){
+											col++;
+											if (col==1) {
+												html+='<td>'+num+'<input class="LppbInput" type="hidden" value="'+id_num+'"</td>';
+											}else{
+												html+='<td><input style="width: 100%" name="'+inputLppb[(col-2)]+'" type="hidden" class="form-control '+inputLppb[(col-2)]+'" value="'+$(this).text()+'" row-num="'+num+'" readonly>';
+												html+='<span>'+$(this).text()+'</span></td>';
+											}
+										});
+									})
+									html+='<td><button type="button" class="btnDeleteRow btn btn-danger"><i class="glyphicon glyphicon-trash"></i></button></td>'; 
+									html+='</tr>'; 
+									$('#tabelNomorLPPB').append(html);
+									$('[name="po_header_id[]"],[name="organization_id[]"]').parent('td').hide();
+									 
+								
 							}
 						})
+
 					}else{
 						alert('Nomor LPPB '+lppb_number+' tidak ditemukan');
 					}
-					
-					$('.btnDeleteRow').on('click', function(){
-						var cfrm = confirm('Yakin menghapusnya?');
+
+					$('.btnDeleteRow').click(function(){
+						// var cfrm = confirm('Yakin menghapusnya?');
 						var th = $(this);
-						if (cfrm) {
+						var inputan = $('td .LppbInput').val();
+						console.log(inputan);
 							th.parent('td').parent('tr').remove();
-						}else{
-							alert('Hapus dibatalkan');
-						}
+								$('tr#'+inputan+' .chkAllLppbNumber').attr("disabled", false);
+								$('tr#'+inputan+' .chkAllLppbNumber').parent('td').parent('tr').css('background-color','#FFF');
+						// if (cfrm) {
+
+						// }else{
+						// 	alert('Hapus dibatalkan');
+						// }
+						// console.log(th);
 					});
+					
 				})
+
 			}
 		});
 };
@@ -444,12 +469,9 @@ function saveLPPBNumber(th){
 }
 function saveEditLPPBNumber(th){
 	var batch_number = $('#batch_number').val();
+	var batch_detail_id = $('#batch_detail_id').val();
 	var id_lppb = $('.row-id').length;
-	// console.log(id_lppb);
-	// var coba = $('td.lppb_number').text();
-	// console.log("coba", coba);
-
-	//array
+	
 	var arry = [];
 	$('td[class~="lppb_number"]').each(function(){
 		var lppb_number = $(this).text();
@@ -457,11 +479,11 @@ function saveEditLPPBNumber(th){
 	});
 	console.log("lppb_number", arry);
 	str_arry = arry.join();
-	// console.log("coba string", str_arry);
+	
 
 	var arry2 = [];
-	$('input[name~="org_id').each(function(){
-		var organization_id = $(this).val();
+	$('td[class~="organization_id').each(function(){
+		var organization_id = $(this).text(); 
 		arry2.push(organization_id);
 	});
 	console.log("oi", arry2);
@@ -469,99 +491,195 @@ function saveEditLPPBNumber(th){
 
 	var arry3 = [];
 	$('td[class~="po_number').each(function(){
-		var po_number = $(this).html();
+		var po_number = $(this).text();
 		arry3.push(po_number);
 	});
-	console.log("po-num", arry3);
 	str_arry3 = arry3.join();
 
-	// var arry4 = [];
-	// $('input[class~="line_num[]').each(function(){
-	// 	var line_num = $(this).val();
-	// 	arry4.push(line_num);
-	// })
-	// str_arry4 = arry4.join();
 	var arry5 = [];
-	$('input[name~="po_header_id').each(function(){
-		var po_header_id = $(this).val();
+	$('td[class~="po_header_id').each(function(){
+		var po_header_id = $(this).text();
 		arry5.push(po_header_id);
 	});
-	console.log("po-head", arry5);
 	str_arry5 = arry5.join();
 
-	var arry6 = [];
-	$('input[name~="batch_detail_id').each(function(){
-		var batch_detail_id = $(this).val();
-		arry6.push(batch_detail_id);
+	//ini yang insert
+
+		var arry6 = [];
+	$('td[class~="lppb_numberNew"]').each(function(){
+		var lppb_numberNew = $(this).text();
+		arry6.push(lppb_numberNew);
 	});
-	console.log("batch", arry6);
+	console.log("lppb_numberNew", arry);
 	str_arry6 = arry6.join();
+	
+
+	var arry7 = [];
+	$('td[class~="organization_idNew').each(function(){
+		var organization_idNew = $(this).text(); 
+		arry7.push(organization_idNew);
+	});
+	console.log("organization_idNew", arry7);
+	str_arry7 = arry7.join();
+
+	var arry8 = [];
+	$('td[class~="po_numberNew').each(function(){
+		var po_numberNew = $(this).text();
+		arry8.push(po_numberNew);
+	});
+	str_arry8 = arry8.join();
+
+	var arry9 = [];
+	$('td[class~="po_header_idNew').each(function(){
+		var po_header_idNew = $(this).text();
+		arry9.push(po_header_idNew);
+	});
+	str_arry9 = arry9.join();
+	
+
+
 
 	$.ajax({
 		type: "post",
 		url: baseurl+"MonitoringLPPB/ListBatch/saveEditLppbNumber" ,
 		data:{
 			lppb_number: str_arry,
-			organization_id: str_arry2,
+			organization_id: str_arry2, 
 			po_number: str_arry3,
 			po_header_id: str_arry5,
-			batch_detail_id: str_arry6,
+			batch_detail_id: batch_detail_id,
 			batch_number: batch_number,
-			id_lppb: id_lppb
+			id_lppb: id_lppb,
+			lppb_numberNew: str_arry6,
+			organization_idNew: str_arry7, 
+			po_numberNew: str_arry8,
+			po_header_idNew: str_arry9
+
 		},
 		success: function(response){
 			window.location.reload();
 			alert('Data sudah disimpan');
-			console.log(lppb_number,organization_id,po_number,po_header_id,batch_number,id_lppb);
+		// 	console.log(lppb_number,organization_id,po_number,po_header_id,batch_number,id_lppb);
 		}
 	})
 }
-function searchLppb(th){
+function searchLppb(th){ //ini fungsi add bawah detail
 	$('#loading_search').html("<center><img id='loading12' style='margin-top: 2%;' src='"+baseurl+"assets/img/gif/loading3.gif'/><br /></center><br />");
 	var lppb_numberFrom =  $('#lppb_numberFrom').val();
-	var lppb_number =  $('#lppb_number').val();
+	var lppb_number =  $('#lppb_numberTo').val();
 	var inventory_organization = $('#inventory').val();
+	// console.log('searchLppb');
 	$.ajax({
 		type: "POST",
-		url : baseurl+"MonitoringLPPB/ListBatch/addNomorLPPB",
+		url : baseurl+"MonitoringLPPB/ListBatch/addDetailNomorLPPB",
 		data : {
 			lppb_numberFrom : lppb_numberFrom,
 			lppb_number : lppb_number,
 			inventory_organization : inventory_organization
 		},
 		success: function(response){
-			$('#loading_search').html(response);
-				$('#showTableLppb').DataTable({
-					"paging":   false,
-					"ordering": true,
-					"info":     false	
-				});
-			var id_lppb = $('.lppb_id').length;
-			var num = id_lppb;
-			$('#addLppbNumber').click(function(){
-					var inputLppb = ['po_header_id[]','organization_id[]','organization_code[]', 'lppb_number[]', 'vendor_name[]', 'tanggal_lppb[]', 'po_number[]','status_lppb[]'];
-					// var ct = $('#tabelNomorLPPB').children('tr').length;
-					// var row='';
-					// var td = '';
+				$('#loading_search').html(response);
+					$('#showTableLppb').DataTable({
+						"paging":   true,
+						"ordering": true,
+						"info":     false	
+					});
+					var id_lppb = $('.lppb_id').length;
+					var num = id_lppb;
+			$('#addDetailLppbNumber').click(function(){ //button dari add detail
+					var organization_id ='';
+					var organization_code = '';
+					var po_header_id = '';
+					var lppb_number = '';
+					var vendor_name ='';
+					var tanggal_lppb = '';
+					var po_number='';
+					var status='';
+					var d = new Date();
+					// console.log("d", d);
+					var month = new Array();
+						  month[0] = "JAN";
+						  month[1] = "FEB";
+						  month[2] = "MAR";
+						  month[3] = "APR";
+						  month[4] = "MAY";
+						  month[5] = "JUN";
+						  month[6] = "JUL";
+						  month[7] = "AUG";
+						  month[8] = "SEP";
+						  month[9] = "OCT";
+						  month[10] = "NOV";
+						  month[11] = "DEC";
+					// console.log("bulan",month);
+					var get_month = d.getMonth();
+					var res_month = month[get_month];
+					var day = d.getDate();
+					var year = d.getFullYear();
+					year = year.toString().substr(-2);
+					// console.log("hari",day);
+					var output =  (day<10 ? '0' : '')+day + '-' + res_month + '-'
+					     + year;
+					 // console.log(output, 'total');
+
 					if (response != false) {
 						$('.chkAllLppbNumber').each(function(){
 							var html = '';
 							if (this.checked) {
 								var id_num = $(this).val();
+								// console.log(id_num,'ini data');
 								html += '<tr class="row-id" id="row-1">';
 								$('tr#'+id_num).each(function(){
 									num++;
 									var col=0;
+					 				// console.log(inputLppb,'di dalam each tr#');
+
 									$(this).find('td').each(function(){
+										// console.log(inputLppb,'di dalam find td');
 										col++;
 										if (col==1) {
 											html+='<td>'+num+'</td>';
-										}else{
-											html+='<td><input style="width: 100%" name="'+inputLppb[(col-2)]+'" type="hidden" class="form-control '+inputLppb[(col-2)]+'" value="'+$(this).text()+'" row-num="'+num+'" readonly>';
-											html+='<span>'+$(this).text()+'</span></td>';
+											// organization_code = $(this).text();
+										}else if (col==2) {
+											html+='<td class="organization_idNew">'+$(this).text()+'</td>';
+											
 										}
+										else if (col==3){
+
+											html+='<td class="organization_codeNew">'+$(this).text()+'</td>';
+											
+										}
+										else if (col==4){
+											html+='<td>'+output+'</td>';
+											lppb_number = $(this).text();
+										}
+										else if (col==5){
+											html+='<td class="lppb_numberNew">'+lppb_number+'</td>';
+											vendor_name = $(this).text();
+										}
+										else if (col==6){
+											html+='<td class="vendor_nameNew">'+vendor_name+' </td>';
+											tanggal_lppb = $(this).text();
+										}
+										else if (col==7){
+											html+='<td class="tanggal_lppbNew">'+tanggal_lppb+' </td>';
+											
+										}
+										else if (col==8){
+											html+='<td class="po_header_idNew">'+$(this).text()+'</td>';
+										}
+										else if (col==9){
+											html+='<td class="po_numberNew">'+$(this).text()+'</td>';
+											
+										}
+										
+										
 									});
 								})
+								if (batch_number >= 0) {
+									html+='<td> <span class="label label-default"> New/Draf &nbsp;<br></span></td>';
+								}else {
+									html+='<td> <span class="label label-warning"> Admin Edit &nbsp;<br></span></td>';
+								}
 								html+='<td><button type="button" class="btnDeleteRow btn btn-danger"><i class="glyphicon glyphicon-trash"></i></button></td>'; 
 								html+='</tr>'; 
 								$('#tabelNomorLPPB').append(html);
@@ -626,3 +744,13 @@ function approveLppbByKasie(th) {
 		}
 	}
 }
+
+// function DetailLppb(th) {
+// 	var id = $('.batch_number').val();
+// 	console.log(id);
+// 	var win = window.open(baseurl+'MonitoringLPPB/ListBatch/detailLppb/'+id);
+// }
+
+// function DetailLppb(th) {
+// 	var win = window.open(baseurl+'MonitoringLPPB/ListBatch/detailLppb/'+batches);
+// }

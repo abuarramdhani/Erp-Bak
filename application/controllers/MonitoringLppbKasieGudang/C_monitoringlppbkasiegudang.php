@@ -87,17 +87,12 @@ class C_monitoringlppbkasiegudang extends CI_Controller{
 		foreach ($match as $key => $value) {
 			$lppb_number2 = $match[$key]['LPPB_NUMBER'];
 		}
-		// $rangeLppb = "AND rsh.receipt_num between $lppb_number1 and $lppb_number2";
+		$rangeLppb = "AND rsh.receipt_num between $lppb_number1 and $lppb_number2";
 		$kondisi = "";
 		$searchLppb = $this->M_monitoringlppbkasiegudang->detailUnprocess($batch_number);
 		$jumlahData = $this->M_monitoringlppbkasiegudang->cekJumlahData($batch_number,$kondisi);
 		$data['lppb'] = $searchLppb;
 		$data['jml'] = $jumlahData;
-
-		// echo "<pre>";
-		// print_r($searchLppb);
-		// exit();
-		
 		$this->load->view('V_Header',$data);
 		$this->load->view('V_Sidemenu',$data);
 		$this->load->view('MonitoringLppbKasieGudang/V_detaillppbkasiegudang',$data);
@@ -172,11 +167,8 @@ class C_monitoringlppbkasiegudang extends CI_Controller{
 		foreach ($match as $key => $value) {
 			$lppb_number2 = $match[$key]['LPPB_NUMBER'];
 		}
-		// $rangeLppb = "AND rsh.receipt_num between $lppb_number1 and $lppb_number2";
 		$kondisi = "AND klbd.status in (3,6,5)";
 		$searchLppb = $this->M_monitoringlppbkasiegudang->finishdetail($batch_number);
-		// print_r($searchLppb);
-		// exit();
 		$jumlahData = $this->M_monitoringlppbkasiegudang->cekJumlahData($batch_number,$kondisi);
 		$data['lppb'] = $searchLppb;
 		$data['jml'] = $jumlahData;

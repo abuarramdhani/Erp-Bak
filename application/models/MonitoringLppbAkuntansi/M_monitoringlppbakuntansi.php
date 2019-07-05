@@ -134,7 +134,6 @@ class M_monitoringlppbakuntansi extends CI_Model {
                     AND a.lppb_number = rsh.receipt_num
                     ";
 
-        // print_r($query);exit();
         $run = $oracle->query($query);
         return $run->result_array();
     }
@@ -164,7 +163,6 @@ class M_monitoringlppbakuntansi extends CI_Model {
                  WHERE batch_detail_id = '$batch_detail_id'
                  AND status = '4' ";
         $runQuery2 = $oracle->query($query2);
-        // oci_commit($oracle);
     }
 
     public function showReason($batch_detail_id)
@@ -186,7 +184,6 @@ class M_monitoringlppbakuntansi extends CI_Model {
                     WHERE a.BATCH_NUMBER = '$batch_number'
                     AND a.batch_number = b.batch_number
                     ORDER BY b.lppb_number";
-        // return $query; exit();
         $run = $oracle->query($query);
         return $run->result_array();
     }
