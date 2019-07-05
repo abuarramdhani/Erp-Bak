@@ -47,13 +47,9 @@ class M_monitoringlppbkasiegudang extends CI_Model {
                            FROM khs_lppb_batch_detail i
                           WHERE i.status = 7
                             AND a.batch_number = i.batch_number) akuntansi_reject
-                   FROM khs_lppb_batch a, KHS_LPPB_BATCH_DETAIL B
+                   FROM khs_lppb_batch a, KHS_LPPB_BATCH_DETAIL B, khs_lppb_action_detail_1 c
                WHERE a.BATCH_NUMBER = b.BATCH_NUMBER
-               AND B.STATUS IN (2,3)
-               AND (SELECT COUNT (lppb_number)
-                           FROM khs_lppb_batch_detail f
-                          WHERE f.status = 4
-                            AND a.batch_number = f.batch_number) = 0
+               AND c.STATUS IN (2,3)
                AND A.ID_GUDANG = '$id'
                ORDER BY a.batch_number DESC";
         $run = $oracle->query($query);
@@ -129,8 +125,6 @@ class M_monitoringlppbkasiegudang extends CI_Model {
                     AND a.po_header_id = poh.po_header_id
                     AND a.lppb_number = rsh.receipt_num";
         $run = $oracle->query($query);
-        // echo "<pre>";
-        // print_r($query);
         return $run->result_array();
     }
     public function saveProsesLppbNumber($status,$status_date,$batch_number,$batch_detail_id){
@@ -140,8 +134,6 @@ class M_monitoringlppbkasiegudang extends CI_Model {
                     status_date = to_date('$status_date', 'DD/MM/YYYY HH24:MI:SS')
                     WHERE batch_number = '$batch_number'
                     AND batch_detail_id = '$batch_detail_id'";
-        // echo $query;
-        // exit();
         $run = $oracle->query($query);
     }
     public function saveProsesLppbNumber2($status,$reason,$action_date,$batch_detail_id){
@@ -201,7 +193,7 @@ class M_monitoringlppbkasiegudang extends CI_Model {
                         (SELECT COUNT (lppb_number)
                            FROM khs_lppb_batch_detail c
                            WHERE c.batch_number = a.batch_number
-                           AND c.status in (3,5,6)) jumlah_lppb,
+                           AND c.status in (3,4,5,6)) jumlah_lppb,
                          (SELECT COUNT (lppb_number)
                            FROM khs_lppb_batch_detail b
                           WHERE b.status = 0
@@ -239,7 +231,7 @@ class M_monitoringlppbkasiegudang extends CI_Model {
                    FROM khs_lppb_batch a, KHS_LPPB_BATCH_DETAIL B, khs_lppb_action_detail_1 c
                WHERE a.BATCH_NUMBER = b.BATCH_NUMBER
                AND b.batch_detail_id = c.batch_detail_id
-               AND c.status in (3,5,6)
+               AND c.status in (5,6)
                ORDER BY a.batch_number DESC";
         $run = $oracle->query($query);
         return $run->result_array();

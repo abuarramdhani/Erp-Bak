@@ -62,6 +62,19 @@
 													</td>
 												</tr>
 												<tr>
+													<td>
+														<span><label>Status Detail</label></span>
+													</td>
+													<td>
+														<select id="status_lppb" name="status_lppb" class="form-control select2 select2-hidden-accessible" style="width:100%;">
+															<option value="" > Pilih Status </option>
+															<?php foreach ($status as $st) { ?>
+															<option value="<?php echo $st['STATUS_LPPB'] ?>"><?php echo $st['STATUS_LPPB'] ?></option>
+															<?php } ?>
+														</select>
+													</td>
+												</tr>
+												<tr>
 												<td>
 													<span class="text-center"><label>Nomor LPPB</label></span>
 												</td>
@@ -76,6 +89,7 @@
 													<input name="lppb_number" id="lppb_number" class="form-control" style="width:100%;">
 													</input>
 												</td>
+												
 												<td>
 													<div><button class="btn btn-md btn-success pull-left" type="button" onclick="searchNumberLppb($(this))">Search</button>
 													</div>
