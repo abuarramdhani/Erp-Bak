@@ -76,7 +76,7 @@ $(document).ready(function(){
 			success: function (response) {
 				$('#loading_lppb').html(response);
 				$('#tabel_search_tracking_lppb').DataTable({
-					"paging": false,
+					"paging": true,
 					"info":     false,
 					"language" : {
 						"zeroRecords": " "             
