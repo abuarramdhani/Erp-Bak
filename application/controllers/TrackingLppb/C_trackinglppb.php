@@ -55,6 +55,7 @@ class C_trackinglppb extends CI_Controller{
 	}
 
 	public function btn_search(){
+		// print_r($_POST);
 		$nama_vendor = $this->input->post('nama_vendor');
 		$nomor_lppb = $this->input->post('nomor_lppb');
 		$dateFrom = $this->input->post('dateFrom');
@@ -71,7 +72,7 @@ class C_trackinglppb extends CI_Controller{
 
 		if ($nomor_lppb != '' OR $nomor_lppb != NULL) {
 			if ($parameter=='') {$parameter.='AND (';} else{$parameter.=' AND ';}
-			$parameter .= "klbd.lppb_number LIKE '$nomor_lppb'";
+			$parameter .= "rsh.receipt_num LIKE '$nomor_lppb'"; 
 		}
 
 		if ($dateFrom != '' OR $dateFrom != NULL) {
