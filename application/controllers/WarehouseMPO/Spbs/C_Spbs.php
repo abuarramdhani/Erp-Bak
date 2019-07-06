@@ -142,12 +142,14 @@ class C_Spbs extends CI_Controller
         if ($spbsQ || $kirimQ || $nomorSpbsQ || $namaSubQ || $queryJob1 || $queryJob2 || $komponenQ) {
 			//disinikan jalanin model filterSearch yang tanpa Distinct
 			$outpartAll = $this->M_spbs->filterSearch($warehouseQ, $spbsQ, $kirimQ, $nomorSpbsQ, $namaSubQ, $queryJob1, $queryJob2, $komponenQ);
+			// exit();
 			
 			//disini juga jalanin model filterSearchDistinct
 			// $outpartAll = $this->M_spbs->filterSearchDistinct($warehouseQ, $spbsQ, $kirimQ, $nomorSpbsQ, $namaSubQ, $queryJob1, $queryJob2, $komponenQ);
         } else {
 			//disini jalanin model search tanpa distinct
 			$outpartAll = $this->M_spbs->search($warehouseQ);
+			// exit();
 			
 			//disini jalanin model searchDistinct
 		}

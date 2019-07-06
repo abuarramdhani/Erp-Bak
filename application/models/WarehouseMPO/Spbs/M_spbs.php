@@ -506,8 +506,8 @@ ORDER BY 6 DESC";
          kmgk.tgl_selesai, kmgk.qty_kirim, kmgk.subinv,
          kmtb.tgl_terima, kmgx.KETERANGAN ktr, kmgk.no_mobil plat
     FROM khs_mon_terima_barang kmtb, khs_mon_gdg_keluar kmgk, khs_mon_gdg_keluar_ext kmgx
-   WHERE kmtb.no_spbs = kmgk.no_spbs(+)
-   AND kmgx.NO_SPBS = kmgk.NO_SPBS
+   WHERE kmtb.no_spbs(+) = kmgk.no_spbs
+   AND kmgx.NO_SPBS(+) = kmgk.NO_SPBS
   UNION
   SELECT NVL (kmgk.no_spbs, kmtb.no_spbs), kmgk.line_id,
          kmgk.no_mobil, kmgk.inventory_item_id, kmgk.tgl_mulai,
@@ -531,6 +531,13 @@ ORDER BY 6 DESC";
    AND poh.vendor_id = pov.vendor_id
    AND knm.vendor_id = poh.vendor_id
    AND (mmt.transaction_quantity IS NULL OR mmt.transaction_quantity < 0)
+--   AND TRUNC(mtrh.creation_date) between :P_DATE and :P_DATE2 --
+    --
+    --
+    --
+    --
+   -- AND NVL (mmtt.subinventory_code, mmt.subinventory_code) = 'KOM1-DM' --
+    --
    $spbsQ --
    $kirimQ --
    $nomorSpbsQ --
@@ -598,7 +605,7 @@ SELECT   pov.vendor_name nama_subkon,
          kmtb.tgl_terima, kmgx.KETERANGAN ktr, kmgk.no_mobil plat
     FROM khs_mon_terima_barang kmtb, khs_mon_gdg_keluar kmgk, khs_mon_gdg_keluar_ext kmgx
    WHERE kmtb.no_spbs(+) = kmgk.no_spbs
-   AND kmgx.NO_SPBS = kmgk.NO_SPBS) tmp
+   AND kmgx.NO_SPBS(+) = kmgk.NO_SPBS) tmp
  WHERE mtrh.header_id = mtrl.header_id
    AND mtrl.line_id = mmtt.move_order_line_id(+)
    AND mtrl.line_id = mmt.move_order_line_id(+)
@@ -614,6 +621,13 @@ SELECT   pov.vendor_name nama_subkon,
    AND poh.vendor_id = pov.vendor_id
    AND knm.vendor_id = poh.vendor_id
    AND (mmt.transaction_quantity IS NULL OR mmt.transaction_quantity < 0)
+--   AND TRUNC(mtrh.creation_date) between :P_DATE and :P_DATE2 --
+    --
+    --
+    --
+    --
+   -- AND NVL (mmtt.subinventory_code, mmt.subinventory_code) = 'KOM1-DM' --
+    --
    $spbsQ --
    $kirimQ --
    $nomorSpbsQ --
@@ -685,7 +699,7 @@ SELECT   pov.vendor_name nama_subkon,
          kmtb.tgl_terima, kmgx.KETERANGAN ktr, kmgk.NO_MOBIL plat
     FROM khs_mon_terima_barang kmtb, khs_mon_gdg_keluar kmgk, khs_mon_gdg_keluar_ext kmgx
    WHERE kmtb.no_spbs(+) = kmgk.no_spbs
-   AND kmgx.NO_SPBS = kmgk.NO_SPBS) tmp
+   AND kmgx.NO_SPBS(+) = kmgk.NO_SPBS) tmp
  WHERE mtrh.header_id = mtrl.header_id
    AND mtrh.request_number BETWEEN komb.spbs_dari AND komb.spbs_sampai
    AND mtrl.line_id = mmtt.move_order_line_id(+)
@@ -702,6 +716,13 @@ SELECT   pov.vendor_name nama_subkon,
    AND poh.vendor_id = pov.vendor_id
    AND knm.vendor_id = poh.vendor_id
    AND (mmt.transaction_quantity IS NULL OR mmt.transaction_quantity < 0)
+--   AND TRUNC(mtrh.creation_date) between :P_DATE and :P_DATE2 --
+    --
+    --
+    --
+    --
+   -- AND NVL (mmtt.subinventory_code, mmt.subinventory_code) = 'KOM1-DM' --
+    --
    $spbsQ --
    $kirimQ --
    $nomorSpbsQ --
@@ -774,7 +795,7 @@ SELECT   pov.vendor_name nama_subkon,
          kmtb.tgl_terima, kmgx.KETERANGAN ktr, kmgk.NO_MOBIL plat
     FROM khs_mon_terima_barang kmtb, khs_mon_gdg_keluar kmgk, khs_mon_gdg_keluar_ext kmgx
    WHERE kmtb.no_spbs(+) = kmgk.no_spbs
-   AND kmgx.NO_SPBS = kmgk.NO_SPBS) tmp
+   AND kmgx.NO_SPBS(+) = kmgk.NO_SPBS) tmp
  WHERE mtrh.header_id = mtrl.header_id
    AND mtrh.request_number BETWEEN komb.spbs_dari AND komb.spbs_sampai
    AND mtrl.line_id = mmtt.move_order_line_id(+)
@@ -799,22 +820,22 @@ SELECT   pov.vendor_name nama_subkon,
    $queryJob2 --
    $warehouseQ --
    $komponenQ --
+--   AND TRUNC(mtrh.creation_date) between :P_DATE and :P_DATE2 --
+    --
+    --
+    --
+    --
+   --  AND NVL (mmtt.subinventory_code, mmt.subinventory_code) = 'KOM1-DM' --
 
---part lima (insert query)
-
-
-ORDER BY 6 DESC";
+    ORDER BY 6 DESC";
+    
     $query = $oracle->query($sql);
     return $query->result_array();
    //  return $sql;
+   // echo $sql;
+   // exit();
     }
 
-   //  function gabunganData(){
-   //    $oracle = $this->load->database('oracle',TRUE);
-   //    $sql ="SELECT DISTINCT * FROM KHS_MON_GDG_KELUAR"
-   //    // $query = $oracle->query($sql);
-   //    return $query->result_array();
-   //  }
  // tutup class
    }
 ?>
