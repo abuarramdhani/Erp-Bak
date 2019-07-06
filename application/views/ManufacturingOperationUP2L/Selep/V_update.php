@@ -37,20 +37,21 @@
                                                 </div>
                                                 
                                             </div>
-
+                                            <?php $exCompDes = explode("|", $headerRow['component_code']);?>
 											<div class="form-group">
                                                 <label for="txtComponentCodeHeader" class="control-label col-lg-4">Component Code</label>
                                                 <div class="col-lg-4">
-                                                   <select class="form-control jsSlcComp toupper" id="txtComponentCodeHeader" name="component_description" required data-placeholder="Component Code" onchange="getCompDescMO(this)">
+                                                   <select class="form-control jsSlcComp toupper" id="txtComponentCodeHeader" name="txtComponentCodeHeader" required data-placeholder="Component Code" onchange="getCompDescMO(this)">
+                                                    <option selected value="<?= $exCompDes[0]?>"><?= $exCompDes[0]?></option>
                                                     <option><?php echo $headerRow['component_code']; ?></option>
                                                     </select>
                                                 </div>
                                             </div>
-
+                                        
 											<div class="form-group">
                                                 <label for="txtComponentDescriptionHeader" class="control-label col-lg-4">Component Description</label>
                                                 <div class="col-lg-4">
-                                                    <input type="text" placeholder="Component Description" name="txtComponentDescriptionHeader" id="txtComponentDescriptionHeader" class="form-control" value="<?php echo $headerRow['component_description']; ?>"/>
+                                                    <input type="text" placeholder="Component Description" name="component_description" id="component_description" class="form-control" value="<?= $headerRow['component_description'];?>">
                                                 </div>
                                             </div>
 

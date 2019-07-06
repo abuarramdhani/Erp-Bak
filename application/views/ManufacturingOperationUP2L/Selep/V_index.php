@@ -38,6 +38,7 @@
 												<th>Component Code</th>
 												<th>Component Description</th>
 												<th>Selep Quantity</th>
+                                                <th>Shift</th>
 												<th>Employee</th>
 											</tr>
                                         </thead>
@@ -52,13 +53,14 @@
                                                 <td align='center'><?php echo $no++;?></td>
                                                 <td align='center'>
                                                 	<a style="margin-right:4px" href="<?php echo base_url('ManufacturingOperationUP2L/Selep/read/'.$encrypted_string.''); ?>" data-toggle="tooltip" data-placement="bottom" title="Read Data"><span class="fa fa-list-alt fa-2x"></span></a>
-                                                	<a style="margin-right:4px" href="<?php echo base_url('ManufacturingOperationUP2L/Selep/update/'.$encrypted_string.''); ?>" data-toggle="tooltip" data-placement="bottom" title="Edit Data"><span class="fa fa-pencil-square-o fa-2x"></span></a>
+                                                	<a style="margin-right:4px" href="<?php echo base_url('ManufacturingOperationUP2L/Selep/edit/'.$encrypted_string.''); ?>" data-toggle="tooltip" data-placement="bottom" title="Edit Data"><span class="fa fa-pencil-square-o fa-2x"></span></a>
                                                 	<a href="<?php echo base_url('ManufacturingOperationUP2L/Selep/delete/'.$encrypted_string.''); ?>" data-toggle="tooltip" data-placement="bottom" title="Hapus Data" onclick="return confirm('Are you sure you want to delete this item?');"><span class="fa fa-trash fa-2x"></span></a>
                                                 </td>
 												<td><?php echo $row['selep_date'] ?></td>
 												<td><?php echo $row['component_code'] ?></td>
 												<td><?php echo $row['component_description'] ?></td>
 												<td><?php echo $row['selep_quantity'] ?></td>
+                                                <td><?php echo $row['shift'] ?></td>
 												<td><?php echo $row['job_id'] ?></td>
 											</tr>
                                             <?php endforeach; ?>
