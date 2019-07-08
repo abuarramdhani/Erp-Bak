@@ -2,7 +2,6 @@
 foreach($show as $a){ 
 
  ?>
-
 <table class="table1" style="width:100%;border: 1px solid black; padding: 0px; border-collapse: collapse;">
     <tr>
           <td rowspan="2" width="5%" style="font-size: 12px; text-align: center;">
@@ -32,7 +31,7 @@ foreach($show as $a){
     <tr style="border: 1px solid black">
       <td colspan="2" rowspan="3" width="10%" style="font-size: 12px;text-align: center;border: 1px solid black;">
           <center>
-              <img style="height: 100px; width: 100px" src="<?php echo base_url('/img/'.$a['no_order'].'.png'); ?>" />
+              <img style="height: 100px; width: 100px" src="<?php echo base_url('img/'.$a['no_order'].'.png'); ?>" />
           </center>
       </td>
       <td rowspan="2" colspan="2" width="10%" style="font-size: 12px;text-align: center;padding: 0;border: 1px solid black;">
@@ -96,10 +95,12 @@ foreach($show as $a){
       text-align: center;border: 1px solid black;"> </td>
     </tr>
 </table>
-<table style="margin-top: 1px;width:100%;">    
+<table style="margin-top: 1px;width:100%;margin-bottom: 20px">    
     <tr style="border: 1px solid black;">
     <tr>
       <td style="font-size: 8px"><?php echo $a['idunix']; ?></td>
     </tr>
+    </tr>
 </table>
+
 <?php }?>

@@ -273,7 +273,7 @@ class C_Order extends CI_Controller {
 
     	$this->load->library('pdf');
     	$pdf = $this->pdf->load();
-    	$pdf = new mPDF('utf-8',array(210,83), 0, '', 3, 3, 3, 3, 3, 3); //----- A5-L
+    	$pdf = new mPDF('utf-8',array(210,297), 0, '', 3, 3, 3, 3, 3, 3); //----- A5-L
 		$tglNama = date("d/m/Y-H:i:s");
     	$filename = 'OrderSharpening_'.$tglNama.'.pdf';
     	$html = $this->load->view('OrderSharpening/V_Report', $data, true);		//-----> Fungsi Cetak PDF
