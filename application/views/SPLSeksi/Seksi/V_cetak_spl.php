@@ -84,7 +84,7 @@ foreach($data_spl as $d){
 								if($ds['Tgl_Lembur'] == $d['Tgl_Lembur']){
 						?>
 						<tr><td style="padding:3px; font-size:12px; text-align:center"><?php echo $x; ?></td>
-							<td style="padding:3px; font-size:12px; text-align:center"><?php echo $ds['nama']; ?></td>
+							<td style="padding:3px; font-size:12px; text-align:left"><?php echo $ds['nama']; ?></td>
 							<td style="padding:3px; font-size:12px; text-align:center"><?php echo $ds['Noind']; ?></td>
 							<td style="padding:3px; font-size:12px; text-align:center"><?php echo "-"; ?></td>
 							<td style="padding:3px; font-size:12px; text-align:center"><?php echo "-"; ?></td>
@@ -93,7 +93,7 @@ foreach($data_spl as $d){
 							<td style="padding:3px; font-size:12px; text-align:center"><?php echo $ds['Jam_Mulai_Lembur']." - ".$ds['Jam_Akhir_Lembur']; ?></td>
 							<td style="padding:3px; font-size:12px; text-align:center"><?php echo $ds['Break']; ?></td>
 							<td style="padding:3px; font-size:12px; text-align:center"><?php echo $ds['Istirahat']; ?></td>
-							<td style="padding:3px; font-size:12px; text-align:center"><?php echo $ds['alasan_lembur']; ?></td></tr>
+							<td style="padding:3px; font-size:12px; text-align:left"><?php echo $ds['alasan_lembur']; ?></td></tr>
 						<?php 
 									$tmp_tgl = $ds['Tgl_Lembur'];
 									$lst_tgl = $ds['Tgl_Lembur'];

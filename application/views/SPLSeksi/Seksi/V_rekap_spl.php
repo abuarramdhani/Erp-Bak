@@ -79,7 +79,7 @@
 			
 				<div class="box box-primary">
 					<div class="box-body">
-						<table id="example1" class="table table-bordered table-striped spl-table">
+						<table id="example11" class="table table-bordered table-striped spl-table">
 							<thead style="background:#3c8dbc; color:#fff">
 								<tr>
 								<th width="5%">No.</th>
@@ -98,3 +98,41 @@
 			</section>
 		</div>
 	</div>
+	<script type="text/javascript">
+		// need some idea
+		window.onfocus = function() {
+		  console.log('Got focus');
+		  window.location.reload();
+		}
+		
+		var timeoutInMiliseconds = 120000;
+		var timeoutId; 
+		  
+		function startTimer() { 
+		    // window.setTimeout returns an Id that can be used to start and stop a timer
+		    timeoutId = window.setTimeout(doInactive, timeoutInMiliseconds)
+		}
+		  
+		function doInactive() {
+		    // does whatever you need it to actually do - probably signs them out or stops polling the server for info
+		    window.location.reload();
+		}
+
+		function resetTimer() { 
+		    window.clearTimeout(timeoutId)
+		    startTimer();
+		}
+		 
+		function setupTimers () {
+		    document.addEventListener("mousemove", resetTimer(), false);
+		    document.addEventListener("mousedown", resetTimer(), false);
+		    document.addEventListener("keypress", resetTimer(), false);
+		    document.addEventListener("touchmove", resetTimer(), false);
+		     
+		    startTimer();
+		}
+		 
+		document.addEventListener("DOMContentLoaded",function(e){
+			setupTimers();
+		});
+	</script>

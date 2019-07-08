@@ -1,6 +1,6 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
-
+set_time_limit(0);
 class C_splasska extends CI_Controller {
 	function __construct() {
         parent::__construct();
@@ -9,6 +9,7 @@ class C_splasska extends CI_Controller {
 
 		$this->load->model('SPLSeksi/M_splseksi');
 		$this->load->model('SPLSeksi/M_splasska');
+		$this->load->model('SPLSeksi/M_splkasie');
 		$this->load->model('SystemAdministration/MainMenu/M_user');
 
 		date_default_timezone_set('Asia/Jakarta');
@@ -46,9 +47,54 @@ class C_splasska extends CI_Controller {
 	}
 
 	public function data_spl(){
+		$wkt_validasi = $this->session->spl_validasi_waktu_asska;
+		if (time() - $wkt_validasi > 120) {
+			$this->session->spl_validasi_asska = FALSE;
+			redirect(site_url('SPL'));
+		}
+		$this->session->spl_validasi_waktu_asska = time();
 		$data = $this->menu('', '', '');
 		$data['lokasi'] = $this->M_splseksi->show_lokasi();
-
+		$data['jari'] = $this->M_splseksi->getJari($this->session->userid);
+		if ($this->input->get('stat')) {
+			$status = $this->input->get('stat');
+			$data_spl = array();
+			if ($status == 'Baru') {
+				$show_list_spl = $this->M_splseksi->show_spl2('0%',$this->session->user,'5');
+			}elseif ($status == 'Tolak') {
+				$show_list_spl = $this->M_splseksi->show_spl2('2%',$this->session->user,'5');
+			}else{
+				$show_list_spl = $this->M_splseksi->show_spl2('%',$this->session->user,'5');
+			}
+			foreach($show_list_spl as $sls){
+				$index = array();
+				$btn_hapus = "";
+				if ($sls['Status'] == '01' or $sls['Status'] == '31' or $sls['Status'] == '35') {
+					$btn_hapus = "<a href='".site_url('SPL/HapusLembur/'.$sls['ID_SPL'])."' title='Hapus'><i class='fa fa-fw fa-trash'></i></a>";
+				}
+				$index[] = "<a href='".site_url('SPL/EditLembur/'.$sls['ID_SPL'])."' title='Detail'><i class='fa fa-fw fa-search'></i></a>
+					$btn_hapus";
+				$index[] = $sls['Deskripsi']." ".$sls['User_']." (".$sls['user_approve'].")";
+				$index[] = $sls['Tgl_Lembur'];
+				$index[] = $sls['Noind'];
+				$index[] = $sls['nama'];
+				// $index[] = $sls['kodesie'];
+				// $index[] = $sls['seksi'];
+				$index[] = $sls['Pekerjaan'];
+				$index[] = $sls['nama_lembur'];
+				$index[] = $sls['Jam_Mulai_Lembur'];
+				$index[] = $sls['Jam_Akhir_Lembur'];
+				$index[] = $sls['Break'];
+				$index[] = $sls['Istirahat'];
+				$index[] = $sls['target'];
+				$index[] = $sls['realisasi'];
+				$index[] = $sls['alasan_lembur'];
+				$index[] = $sls['Tgl_Berlaku'];
+				
+				$data_spl[] = $index;
+			}
+			$data['data'] = $data_spl;
+		}
 		$this->load->view('V_Header',$data);
 		$this->load->view('V_Sidemenu',$data);
 		$this->load->view('SPLSeksi/AssKa/V_data_spl',$data);
@@ -70,6 +116,7 @@ class C_splasska extends CI_Controller {
 	}
 
 	public function data_spl_filter(){
+		$this->session->spl_validasi_waktu_asska = time();
 		$user = $this->session->user;
 		$dari = $this->input->post('dari');
 		$dari = date_format(date_create($dari), "Y-m-d");
@@ -126,6 +173,7 @@ class C_splasska extends CI_Controller {
 	}
 
 	public function data_spl_approv($id, $stat, $ket){
+		$this->session->spl_validasi_waktu_asska = time();
 		$user = $this->session->user;
 		$data_spl = $this->M_splseksi->show_current_spl('', '', '', $id);
 
@@ -192,17 +240,187 @@ class C_splasska extends CI_Controller {
 		}
 	}
 
+	public function send_email_2($status,$spl_id,$ket){
+		$this->session->spl_validasi_waktu_asska = time();
+		$user = $this->session->user;
+		$spl_id = explode('.', $spl_id);
+		$idspl = "";
+		foreach ($spl_id as $id) {
+			if ($idspl == "") {
+				$idspl .= "'".$id."'";
+			}else{
+				$idspl .= ",'".$id."'";
+			}
+		}
+		$pesan = $this->M_splkasie->show_spl_byid_2($idspl);
+		$tgl_lembur = "";
+		$pkj_lembur = "";
+		$brk_lembur = "";
+		$ist_lembur	= "";
+		$jns_lembur = "";
+		$no = 1;
+		$data = array();
+		$number = 0;
+		$op_spl = "";
+		foreach ($pesan as $key) {
+			if ($op_spl !== $key['user_']) {
+				if ($number !== 0) {
+					$data[$number]['isiPesan'] .= "</table>";
+				}
+				$number++;
+				$data[$number]['user'] = $key['user_'];
+				$data[$number]['isiPesan'] = "<table style='border-collapse: collapse;width: 100%'>";
+				$data[$number]['email'] = $this->M_splkasie->getEmailAddress($key['user_']);
+			}else{
+
+			}
+			if ($tgl_lembur !== $key['tgl_lembur'] or $pkj_lembur !== $key['Pekerjaan'] or $brk_lembur !== $key['Break'] or $ist_lembur !== $key['Istirahat'] or $jns_lembur !== $key['Kd_Lembur']) {
+				$no = 1;
+				$data[$number]['isiPesan'] .= "	<tr><td>&nbsp;</td></tr>
+								<tr><td>Tanggal</td><td colspan='7'> : ".$key['tgl_lembur']."</td></tr>
+								<tr><td>Waktu</td><td colspan='7'> : ".$key['jam_mulai_lembur']." - ".$key['Jam_Akhir_Lembur']."</td></tr>
+								<tr><td>jenis</td><td colspan='7'> : ".$key['nama_lembur']."</td></tr>
+								<tr><td>Istirahat</td><td colspan='7'> : ".$key['Istirahat']."</td></tr>
+								<tr><td>Break</td><td colspan='7'> : ".$key['Break']."</td></tr>
+								<tr><td>Pekerjaan</td><td colspan='7'> : ".$key['Pekerjaan']."</td></tr>
+								<tr>
+									<td style='border: 1px solid black'>No</td>
+									<td style='border: 1px solid black'>Pekerja</td>
+									<td style='border: 1px solid black'>Kodesie</td>
+									<td style='border: 1px solid black'>Seksi</td>
+									<td style='border: 1px solid black'>Unit</td>
+									<td style='border: 1px solid black'>Waktu Lembur</td>
+									<td style='border: 1px solid black'>Target</td>
+									<td style='border: 1px solid black'>Realisasi</td>
+									<td style='border: 1px solid black'>Alasan</td>
+								</tr>";
+			}
+			$data[$number]['isiPesan'] .= "<tr>
+											<td style='border: 1px solid black;text-align: center'>$no</td>
+											<td style='border: 1px solid black'>".$key['Noind']." ".$key['nama']."</td>
+											<td style='border: 1px solid black;text-align: center'>".$key['kodesie']."</td>
+											<td style='border: 1px solid black'>".$key['seksi']."</td>
+											<td style='border: 1px solid black'>".$key['unit']."</td>
+											<td style='border: 1px solid black'>".$key['jam_mulai_lembur']." - ".$key['Jam_Akhir_Lembur']."</td>
+											<td style='border: 1px solid black;text-align: center'>".$key['target']."</td>
+											<td style='border: 1px solid black;text-align: center'>".$key['realisasi']."</td>
+											<td style='border: 1px solid black'>".$key['alasan_lembur']."</td>
+										</tr>";
+			$no++;
+			$tgl_lembur = $key['tgl_lembur'] ;  
+			$pkj_lembur = $key['Pekerjaan'] ;
+			$brk_lembur = $key['Break'] ;
+			$ist_lembur = $key['Istirahat'] ;
+			$jns_lembur = $key['Kd_Lembur'] ;
+			$op_spl = $key['user_'];
+		}
+		$data[$number]['isiPesan'] .= "</table>";
+		// print_r($data);exit();
+		$this->load->library('PHPMailerAutoload');
+		if ($status == '25' or $status == '21') {
+			//approve
+			foreach ($data as $dt) {
+				$message = "<h4>Lembur</h4><hr>
+							Kepada Yth Bapak/Ibu<br><br>
+							
+							Kami informasikan bahwa SPL yang anda inputkan<br>
+							telah di <b>Approve</b> oleh Ass. Ka. Unit.<br>
+							Berikut ini daftar yang telah di Approve oleh : <b>$user</b><br>
+							dengan keterangan : <b>$ket</b><br><br>
+							".$dt['isiPesan']."
+							<br>
+							Anda dapat melakukan pengecekan di link berikut :<br>
+							- http://erp.quick.com atau klik <a href='http://erp.quick.com'>disini</a><br><br>
+
+							<small>Email ini digenerate melalui sistem erp.quick.com pada ".date('d-m-Y H:i:s').".<br>
+							Apabila anda mengalami kendala dapat menghubungi Seksi ICT (12300)</small>";
+				$mail = new PHPMailer;
+				$mail->isSMTP();
+				$mail->SMTPDebug = 0;
+				$mail->Debugoutput = 'html';
+				$mail->Host = "m.quick.com";
+				$mail->Port = 465;
+				$mail->SMTPAuth = true;
+				$mail->SMTPSecure = 'ssl';
+				$mail->SMTPOptions = array(
+						'ssl' => array(
+						'verify_peer' => false,
+						'verify_peer_name' => false,
+						'allow_self_signed' => true
+						));
+				$mail->Username = "no-reply";
+				$mail->Password = "123456";
+				$mail->setFrom("no-reply@quick.com", 'Email Sistem');
+				$mail->addAddress("", 'Monitoring Transaction');
+				$mail->addAddress($dt['email'], 'Lembur (Approve Asska)');
+				$mail->Subject = ' TRIAL SPL SPL Anda telah di Approve';
+				$mail->msgHTML($message);
+				if (!$mail->send()) {
+					echo "Mailer Error: " . $mail->ErrorInfo;
+				} else {
+					echo "Message sent!";
+				}
+			}
+		}else{
+			//reject
+			foreach ($data as $dt) {
+				$message = "<h4>Lembur</h4><hr>
+							Kepada Yth Bapak/Ibu<br><br>
+							
+							Kami informasikan bahwa SPL yang anda inputkan<br>
+							telah di <b>Reject</b> oleh Ass. Ka. Unit.<br>
+							Berikut ini daftar yang telah di Reject oleh : <b>$user</b><br>
+							dengan keterangan : <b>$ket</b><br><br>
+							".$dt['isiPesan']."
+							<br>
+							Anda dapat melakukan pengecekan di link berikut :<br>
+							- http://erp.quick.com atau klik <a href='http://erp.quick.com'>disini</a><br><br>
+
+							<small>Email ini digenerate melalui sistem erp.quick.com pada ".date('d-m-Y H:i:s').".<br>
+							Apabila anda mengalami kendala dapat menghubungi Seksi ICT (12300)</small>";
+							
+				$mail = new PHPMailer;
+				$mail->isSMTP();
+				$mail->SMTPDebug = 0;
+				$mail->Debugoutput = 'html';
+				$mail->Host = "m.quick.com";
+				$mail->Port = 465;
+				$mail->SMTPAuth = true;
+				$mail->SMTPSecure = 'ssl';
+				$mail->SMTPOptions = array(
+						'ssl' => array(
+						'verify_peer' => false,
+						'verify_peer_name' => false,
+						'allow_self_signed' => true
+						));
+				$mail->Username = "no-reply";
+				$mail->Password = "123456";
+				$mail->setFrom("no-reply@quick.com", 'Email Sistem');
+				$mail->addAddress("", 'Monitoring Transaction');
+				$mail->addAddress($dt['email'], 'Lembur (Approve Asska)');
+				$mail->Subject = ' TRIAL SPL SPL Anda telah di Reject';
+				$mail->msgHTML($message);
+				if (!$mail->send()) {
+					echo "Mailer Error: " . $mail->ErrorInfo;
+				} else {
+					echo "Message sent!";
+				}
+			}
+		}
+	}
+
 	function fp_proces(){
 		$time_limit_ver = "10";
 		$user_id = $this->input->get('userid');
-		$finger	= $this->M_splasska->show_finger_user(array('user_id' => $user_id));
+		$kd_finger = $this->input->get('finger_id');
+		$finger	= $this->M_splasska->show_finger_user(array('user_id' => $user_id, 'kd_finger' => $kd_finger));
 
 		$status = $this->input->get('stat');
 		$ket = $this->input->get('ket');
 		$spl_id = $this->input->get('data');
 
 		echo "
-		$user_id;".$finger->finger_data.";SecurityKey;".$time_limit_ver.";".site_url("ALA/Approve/fp_verification?status=$status&spl_id=$spl_id&ket=$ket").";".site_url("ALA/Approve/fp_activation").";extraParams";
+		$user_id;".$finger->finger_data.";SecurityKey;".$time_limit_ver.";".site_url("ALA/Approve/fp_verification?status=$status&spl_id=$spl_id&ket=$ket&finger_id=$kd_finger").";".site_url("ALA/Approve/fp_activation").";extraParams";
 		// variabel yang di tmpilkan belum bisa di ubah
 	}
 
@@ -220,7 +438,8 @@ class C_splasska extends CI_Controller {
 		$sn = $data[3];
 		
 		$filter 	= array("SN" => $sn);
-		$fingerData = $this->M_splasska->show_finger_user(array('user_id' => $user_id));
+		$kd_finger = $this->input->get('finger_id');
+		$fingerData = $this->M_splasska->show_finger_user(array('user_id' => $user_id, 'kd_finger' => $kd_finger));
 		$device 	= $this->M_splasska->show_finger_activation($filter);
 		
 		$salt = md5($sn.$fingerData->finger_data.$device->Verification_Code.$time.$user_id.$device->VKEY);
@@ -244,9 +463,13 @@ class C_splasska extends CI_Controller {
 		foreach(explode('.', $spl_id) as $si){
 			$this->data_spl_approv($si, $status, $ket);
 		}
+		
+		$this->send_email_2($status,$spl_id,$ket);
+
+		$this->session->spl_validasi_waktu_asska = time();
 
 		echo "Memproses data lembur<br>";
-		echo "<script>window.close();</script>";
+		// echo "<script>window.close();</script>";
 	}
 
 }

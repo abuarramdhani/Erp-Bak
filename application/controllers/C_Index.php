@@ -235,6 +235,16 @@ class C_Index extends CI_Controller {
 		if($this->session->gagal){
 			$this->session->unset_userdata('gagal');
 		}
+
+		//variabel session spl (surat perintah lembur) HR awal
+		if ($this->session->spl_validasi_asska) {
+			$this->session->unset_userdata('spl_validasi_asska');
+		}
+		if ($this->session->spl_validasi_kasie) {
+			$this->session->unset_userdata('spl_validasi_kasie');
+		}
+		//variabel session spl (surat perintah lembur) HR akhir
+
 		redirect('index');
 	}
 	

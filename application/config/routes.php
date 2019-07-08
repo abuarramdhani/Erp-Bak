@@ -2353,6 +2353,11 @@ $route['ALK/Approve/(:any)'] = 'SPLSeksi/C_splkasie/$1';
 $route['ALA/ListLembur'] = 'SPLSeksi/C_splasska/data_spl';
 $route['ALA/Approve/(:any)'] = 'SPLSeksi/C_splasska/$1';
 
+$route['SPL/Daftarjari'] = 'SPLSeksi/C_splpersonalia/finger';
+$route['SPL/Daftarjari/(:any)'] = 'SPLSeksi/C_splpersonalia/$1';
+$route['SPL/DaftarFingerspot'] = 'SPLSeksi/C_splpersonalia/fingerspot';
+$route['SPL/DaftarFingerspot/(:any)'] = 'SPLSeksi/C_splpersonalia/$1';
+
 //---------------------------------------------------- Booking Kendaraan --------------------------------------//
 // hati hati kadang any any gak bisa kepanggil
 $route['AdminBookingKendaraan/DataKendaraan'] = 'BookingKendaraan/C_AdminData';

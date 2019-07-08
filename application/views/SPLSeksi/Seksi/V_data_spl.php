@@ -62,7 +62,7 @@
 										</div>
 									</div>
 
-									<div class="form-group">
+									<!-- <div class="form-group">
 										<label class="col-sm-2 control-label">Lokasi</label>
 										<div class="col-sm-10">
 											<select class="form-control select2" name="lokasi" id="lokasi">
@@ -72,7 +72,7 @@
 												<?php } ?>
 											</select>
 										</div>
-									</div>
+									</div> -->
 
 									<div class="form-group">
 										<label class="col-sm-2 control-label">Pekerja</label>
@@ -99,31 +99,80 @@
 			
 				<div class="box box-primary">
 					<div class="box-body">
-						<table id="example1" class="table table-bordered table-striped spl-table">
-							<thead style="background:#3c8dbc; color:#fff">
+						<table id="example11" class="table table-bordered table-striped spl-table">
+							<thead style="background:#3c8dbc; color:#fff;">
 								<tr>
-								<th width="10%">Action</th>
-								<th width="2%">Tgl. Lembur</th>
-								<th width="2%">Noind</th>
-								<th width="2%">Nama</th>
-								<th width="2%">Kodesie</th>
-								<th width="30%">Seksi/Unit</th>
-								<th width="20%">Pekerjaan</th>
-								<th width="20%">Jenis Lembur</th>
-								<th width="20%">Mulai</th>
-								<th width="20%">Selesai</th>
-								<th width="20%">Break</th>
-								<th width="20%">Istirahat</th>
-								<th width="20%">Target(%)</th>
-								<th width="20%">Realisasi(%)</th>
-								<th width="20%">Alasan Lembur</th>
-								<th width="20%">Status</th>
-								<th width="20%">Tanggal Proses</th>
+								<th width="10%" style="vertical-align: middle;text-align: center">Action</th>
+								<th width="20%" style="vertical-align: middle;text-align: center">Status</th>
+								<th width="20%" style="vertical-align: middle;text-align: center">Tgl. Lembur</th>
+								<th width="2%" style="vertical-align: middle;text-align: center">Noind</th>
+								<th width="20%" style="vertical-align: middle;text-align: center">Nama</th>
+								<!-- <th width="2%" style="vertical-align: middle;text-align: center">Kodesie</th>
+								<th width="30%" style="vertical-align: middle;text-align: center">Seksi/Unit</th> -->
+								<th width="20%" style="vertical-align: middle;text-align: center">Pekerjaan</th>
+								<th width="20%" style="vertical-align: middle;text-align: center">Jenis Lembur</th>
+								<th width="20%" style="vertical-align: middle;text-align: center">Mulai</th>
+								<th width="20%" style="vertical-align: middle;text-align: center">Selesai</th>
+								<th width="20%" style="vertical-align: middle;text-align: center">Break</th>
+								<th width="20%" style="vertical-align: middle;text-align: center">Istirahat</th>
+								<th width="20%" style="vertical-align: middle;text-align: center">Target/Pcs/%</th>
+								<th width="20%" style="vertical-align: middle;text-align: center">Realisasi/Pcs/%</th>
+								<th width="20%" style="vertical-align: middle;text-align: center">Alasan Lembur</th>
+								<th width="20%" style="vertical-align: middle;text-align: center">Tanggal Proses</th>
 								</tr>
 							</thead>
+							<?php if (isset($data) and !empty($data)) { ?>
+								<tbody>
+									<?php foreach ($data as $key) {
+										echo "<tr>";
+										foreach ($key as $val) {
+											echo "<td>".$val."</td>";
+										}
+										echo "</tr>";
+									} ?>
+								</tbody>
+							<?php } ?>
 						</table>
 					</div>
 				</div>
 			</section>
 		</div>
 	</div>
+	<script type="text/javascript">
+		// need some idea
+		window.onfocus = function() {
+		  console.log('Got focus');
+		  window.location.reload();
+		}
+		
+		var timeoutInMiliseconds = 120000;
+		var timeoutId; 
+		  
+		function startTimer() { 
+		    // window.setTimeout returns an Id that can be used to start and stop a timer
+		    timeoutId = window.setTimeout(doInactive, timeoutInMiliseconds)
+		}
+		  
+		function doInactive() {
+		    // does whatever you need it to actually do - probably signs them out or stops polling the server for info
+		    window.location.reload();
+		}
+
+		function resetTimer() { 
+		    window.clearTimeout(timeoutId)
+		    startTimer();
+		}
+		 
+		function setupTimers () {
+		    document.addEventListener("mousemove", resetTimer(), false);
+		    document.addEventListener("mousedown", resetTimer(), false);
+		    document.addEventListener("keypress", resetTimer(), false);
+		    document.addEventListener("touchmove", resetTimer(), false);
+		     
+		    startTimer();
+		}
+		 
+		document.addEventListener("DOMContentLoaded",function(e){
+			setupTimers();
+		});
+	</script>

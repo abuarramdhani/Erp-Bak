@@ -44,14 +44,95 @@ class M_splkasie extends CI_Model{
 		return $query->result_array();
 	}
 
+	public function show_spl_byid($id){
+		$sql = "select 	a.tgl_lembur, 
+						a.jam_mulai_lembur, 
+						a.Jam_Akhir_Lembur,
+						a.Kd_Lembur, 
+						a.Pekerjaan,
+						a.Break,
+						a.Istirahat,
+						b.Noind,
+						b.nama, 
+						d.kodesie, 
+						d.seksi, 
+						d.unit, 
+						d.dept, 
+						e.nama_lembur,
+						a.alasan_lembur,
+						a.target,
+						a.realisasi
+				from splseksi.tspl a
+				inner join hrd_khs.tpribadi b 
+					ON a.noind = b.noind 
+				inner join splseksi.tjenislembur e 
+					ON a.kd_lembur = e.kd_lembur 
+				inner join hrd_khs.tseksi d 
+					ON b.kodesie = d.kodesie 
+				where a.ID_SPL in ($id)
+				order by 	a.tgl_lembur, 
+							a.jam_mulai_lembur, 
+							a.Jam_Akhir_Lembur,
+							a.Kd_Lembur, 
+							a.Pekerjaan,
+							a.Break,
+							a.Istirahat,
+							b.nama
+				";
+		$query = $this->spl->query($sql);
+		return $query->result_array();
+	}
+
+	public function show_spl_byid_2($id){
+		$sql = "select 	a.user_,
+						a.tgl_lembur, 
+						a.jam_mulai_lembur, 
+						a.Jam_Akhir_Lembur,
+						a.Kd_Lembur, 
+						a.Pekerjaan,
+						a.Break,
+						a.Istirahat,
+						b.Noind,
+						b.nama, 
+						d.kodesie, 
+						d.seksi, 
+						d.unit, 
+						d.dept, 
+						e.nama_lembur,
+						a.alasan_lembur,
+						a.target,
+						a.realisasi
+				from splseksi.tspl a
+				inner join hrd_khs.tpribadi b 
+					ON a.noind = b.noind 
+				inner join splseksi.tjenislembur e 
+					ON a.kd_lembur = e.kd_lembur 
+				inner join hrd_khs.tseksi d 
+					ON b.kodesie = d.kodesie 
+				where a.ID_SPL in ($id)
+				order by 	a.user_,
+							a.tgl_lembur, 
+							a.jam_mulai_lembur, 
+							a.Jam_Akhir_Lembur,
+							a.Kd_Lembur, 
+							a.Pekerjaan,
+							a.Break,
+							a.Istirahat,
+							b.nama
+				";
+		$query = $this->spl->query($sql);
+		return $query->result_array();
+	}
+
 	public function show_email_addres($sie){
+		$user = $this->session->user; //untuk trial
 		$sql = "select eea.employee_code, eea.internal_mail, sugm.user_group_menu_name 
 			from er.er_employee_all eea
 			inner join sys.sys_user su on eea.employee_id=su.employee_id
 			inner join sys.sys_user_application sua on su.user_id = sua.user_id
 			inner join sys.sys_user_group_menu sugm on sua.user_group_menu_id = sugm.user_group_menu_id
-			where eea.resign='0' and eea.section_code like '$sie%' and lower(sugm.user_group_menu_name) like '%lembur%asska%' 
-				and su.user_name='J1255'";
+			where eea.resign='0' and eea.section_code like '$sie%' and lower(sugm.user_group_menu_name) like '%lembur%asska%' ";
+				// and su.user_name='$user'"; //untuk trial
 		$query = $this->db->query($sql);
 		return $query->result_array();
 	}
@@ -66,6 +147,20 @@ class M_splkasie extends CI_Model{
 		$this->spl->where($filter);
 		$query = $this->spl->get('splseksi.tcode_fingerprint');
 		return $query->row();
+	}
+
+	public function getEmailAddress($noind){
+		$sql = "select ea.internal_mail as mail 
+				from er.er_employee_all ea
+				where employee_code = '$noind'";
+		$query = $this->db->query($sql);
+		return $query->row()->mail;
+	}
+
+	public function getFingerName($jari){
+		$sql = "select jari from fp_distribusi.tb_jari where id_finger = '$jari'";
+		$query = $this->spl->query($sql);
+		return $query->row()->jari;
 	}
 
 }
