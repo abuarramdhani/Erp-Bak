@@ -263,11 +263,11 @@ class C_Index extends CI_Controller {
 
 										//echo "<pre>";print_r($data);exit();
 
-	
-			$this->M_pekerjaan->update($id,$data);
-			$this->M_pekerjaan->tlogEdit($kdpekerjaan,$user);
+	        $this->M_pekerjaan->tlogEdit($kdpekerjaan,$user);
 			$this->M_pekerjaan->updatepribadi($kdpekerjaan,$id);
 		
+			$this->M_pekerjaan->update($id,$data);
+			
 		
 	
 

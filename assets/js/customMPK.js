@@ -35,6 +35,21 @@ $(document).ready(function(){
 		});
 	});
 
+	$('#tbl').DataTable({
+						dom: 'Bfrtip',
+						buttons: [
+							'excel',
+							{
+								extend: 'pdfHtml5',
+								orientation: 'landscape',
+								pageSize: 'A4',
+							}
+						],
+						scrollX: true,
+						// scrollY: 400,
+						lengthMenu: [ [10, 25, 50, 100, -1], [10, 25, 50, 100, "All"] ],
+					});
+
 	function SelectNama(){
 		var val = $('#NamaPekerja').val();
 		if (val) {

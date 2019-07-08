@@ -67,8 +67,10 @@ class M_pekerjaan extends CI_Model {
 
 	     public function updatepribadi($kdpekerjaan1,$kdpekerjaan2)
 	    {
-			$sql = "update hrd_khs.tpribadi set kd_pkj =$kdpekerjaan1 where keluar='f'and kd_pkj =(select kdpekerjaan from hrd_khs.tpekerjaan where id_kdpekerjaan = $kdpekerjaan2)";
+			$sql = "update hrd_khs.tpribadi set kd_pkj =$kdpekerjaan1 where kd_pkj =(select kdpekerjaan from hrd_khs.tpekerjaan where id_kdpekerjaan = $kdpekerjaan2)";
 		$result = $this->personalia->query($sql);
+
+		return $sql;
 		
 
 	    }
