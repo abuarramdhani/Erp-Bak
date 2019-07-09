@@ -154,14 +154,4 @@ class C_Menu extends CI_Controller {
 		}
 		redirect(base_url('SystemAdministration/Menu'), 'refresh');
 	}
-
-	// $qty = $this->Model_M->getQty();
-	// if($qty) {
-	// 	$totalQty = 0;
-	// 	foreach($qty as $i) {
-	// 		$totalQty += $i;
-	// 	}
-	// 	$qty = $qty / 3 / 25;
-	// 	$data['qty'] = $qty;
-	// }
 }
