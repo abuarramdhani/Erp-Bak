@@ -53,18 +53,18 @@
 														<td><?php echo $p['VENDOR_NAME']?></td>
 														<td><?php echo $p['TANGGAL_LPPB']?></td>
 														<td><?php echo $p['PO_NUMBER']?></td>
-														<td>
+														<td data="<?= $p['BATCH_DETAIL_ID']?>">
 															<?php if ($p['STATUS'] == 3 OR $p['STATUS'] == 6) { ?>
 																<button class="btn btn-success" disabled="disabled">Approved</button>
 															<?php }elseif ($p['STATUS'] == 4 OR $p['STATUS'] == 7) { ?>
 																<button class="btn btn-danger" disabled="disabled">Rejected</button>
 															<?php }else{ ?>
-																<button class="btn btn-primary" onclick="actionLppbNumber(this);<?php echo $removeDesable; ?>" value="6" name="proses" data-id="<?= $p['BATCH_DETAIL_ID']?>">Ok</button>
-																<button class="btn btn-danger" onclick="actionLppbNumber(this);<?php echo $removeDesable; ?>" value="7" name="proses" data-id="<?= $p['BATCH_DETAIL_ID']?>">Not Ok</button>
+																<button id="btnAkt_<?php echo $p['BATCH_DETAIL_ID'] ?>" class="btn btn-primary" onclick="actionLppbNumber(this);<?php echo $removeDesable; ?>" value="6" name="proses" data-id="<?= $p['BATCH_DETAIL_ID']?>">TERIMA</button>
+																<button id="btnAkt_<?php echo $p['BATCH_DETAIL_ID'] ?>" class="btn btn-danger" onclick="actionLppbNumber(this);<?php echo $removeDesable; ?>" value="7" name="proses" data-id="<?= $p['BATCH_DETAIL_ID']?>">TOLAK</button>
 															<?php } ?>
 														</td>
 														<td><span class="tglTerimaTolak"></span></td>
-														<td><input type="text" value="<?php echo $p['REASON']?>" style="display: none;" class="form-control txtAlasan" name="alasan_reject[]">
+														<td><input id="txtTolak_<?php echo $p['BATCH_DETAIL_ID'] ?>" type="text" value="<?php echo $p['REASON']?>" style="display: none;" class="form-control txtAlasan" name="alasan_reject[]">
 															<input type="hidden" name="id[]" value="<?php echo $p['BATCH_DETAIL_ID']?>"></td>
 													</tr>
 												<?php $no++; } ?>
@@ -89,4 +89,5 @@
 </form>
 <script type="text/javascript">
 	var id_gd;
+	var txtTolak = "txtTolak_<?php echo $p['BATCH_DETAIL_ID']?>";
 </script>
