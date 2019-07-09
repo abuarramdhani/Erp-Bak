@@ -18,7 +18,7 @@
 					<tr>
 						<td><?php echo $no?></td>
 						<td>
-							<a title="Detail Lppb" href="<?php echo base_url('MonitoringLppbKasieGudang/Unprocess/detailLppbKasieGudang/'.$lb['BATCH_NUMBER'])?>" class="btn btn-default btn-xs"><i class="fa fa-file-text-o"></i></a>
+							<a title="Detail Lppb" target="_blank" href="<?php echo base_url('MonitoringLppbKasieGudang/Unprocess/detailLppbKasieGudang/'.$lb['BATCH_NUMBER'])?>" class="btn btn-default btn-xs"><i class="fa fa-file-text-o"></i></a>
 							<?php if ($lb['KASIE_GUDANG_APPROVED'] >= 0 and $lb['KASIE_GUDANG_REJECT'] >= 0 AND $lb['CHECKING_KASIE_GUDANG'] >= 0 and $lb['CHECKING_AKUNTANSI'] >= 0) { ?>
 							<a title="Submit to Kasie Akuntansi" id="btnSubmitCheckingToAkuntansi" onclick="submitToKasie(this)" data-id="<?php echo $lb['BATCH_NUMBER']?>" data-batch="<?php echo $lb['GROUP_BATCH']?>" class="btn btn-primary btn-xs"><i class="fa fa-paper-plane"></i></a>
 							<?php } ?>

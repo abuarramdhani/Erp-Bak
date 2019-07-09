@@ -6,8 +6,6 @@ $(document).ready(function(){
 			"zeroRecords": " "             
 		}
 	})
-
-
 	
 	//autoload gudang di admin gudang
 	$.ajax({
@@ -176,7 +174,6 @@ function searchNumberLppb(th){
 					"info":     false	
 				});
 				var num = 0;
-
 				$('#addLppbNumber').click(function(){
 					var inputLppb = ['po_header_id[]','organization_id[]','organization_code[]', 'lppb_number[]', 'vendor_name[]', 'tanggal_lppb[]', 'po_number[]','status_lppb[]'];
 					
@@ -188,7 +185,6 @@ function searchNumberLppb(th){
 								$(this).prop('checked', false); 
 								$(this).attr("disabled", true);
 								$(this).parent('td').parent('tr').css('background-color','#ffccf9');
-
 								
 									html += '<tr id="row-1">';
 									$('tr#'+id_num).each(function(){
@@ -212,11 +208,9 @@ function searchNumberLppb(th){
 								
 							}
 						})
-
 					}else{
 						alert('Nomor LPPB '+lppb_number+' tidak ditemukan');
 					}
-
 					$('.btnDeleteRow').click(function(){
 						// var cfrm = confirm('Yakin menghapusnya?');
 						var th = $(this);
@@ -226,7 +220,6 @@ function searchNumberLppb(th){
 								$('tr#'+inputan+' .chkAllLppbNumber').attr("disabled", false);
 								$('tr#'+inputan+' .chkAllLppbNumber').parent('td').parent('tr').css('background-color','#FFF');
 						// if (cfrm) {
-
 						// }else{
 						// 	alert('Hapus dibatalkan');
 						// }
@@ -234,7 +227,6 @@ function searchNumberLppb(th){
 					});
 					
 				})
-
 			}
 		});
 };
@@ -253,22 +245,59 @@ function actionLppbKasieGudang(th){
 		prnt.siblings('td').children('.txtAlasan').show().attr('required', true);
 	}
 }
+var prnt = "";
+var reload = "";
 function actionLppbNumber(th){
 	var batch_detail_id = $(th).attr('data-id');
 	var proses = $(th).attr('value');
-	var prnt = $(th).parent();
+	prnt = $(th).parent();
+
+
 	var tanggal = moment().format('DD/MM/YYYY hh:mm:ss'); 
+	console.log("atas", prnt);
 	// alert(tanggal);
 	
 	prnt.html('<img src="'+baseurl+'assets/img/gif/loading5.gif" id="gambarloading">');
 	if (proses == 6) {
-		prnt.html('<span class="btn btn-primary" style="cursor: none;font-size: 10pt;" >Diterima<input type="hidden" name="hdnProses[]" class="hdnProses" value="6"></span>');
-		prnt.siblings('td').children('.tglTerimaTolak').html('<input type="text" style="display:none" name="tglTerimaTolak[]" value="'+tanggal+'"><span>'+tanggal+'</span>');
+		prnt.html('<span id="btn_'+batch_detail_id+'" class="btn btn-primary" style="cursor: none;font-size: 10pt;" >Diterima<input type="hidden" name="hdnProses[]" class="hdnProses" value="6"></span> <a id="reload_'+batch_detail_id+'" class="btn btn-sm btn-primary" onclick="reloadAktTerima('+batch_detail_id+');"><i class="fa fa-refresh"></i></a>');
+		prnt.siblings('td').children('.tglTerimaTolak').html('<input id="tgl_'+batch_detail_id+'" type="text" style="display:none" name="tglTerimaTolak[]" value="'+tanggal+'"><span id="span_'+batch_detail_id+'">'+tanggal+'</span>');
 	} else {
-		prnt.html('<span class="btn btn-danger" style="font-size: 8pt ;cursor: none;">Ditolak (Isikan Alasan)<input type="hidden" name="hdnProses[]" class="hdnProses" value="7"></span>');
-		prnt.siblings('td').children('.tglTerimaTolak').html('<input type="text" style="display:none" name="tglTerimaTolak[]" value="'+tanggal+'"><span>'+tanggal+'</span>');
+		prnt.html('<span id="btntlk_'+batch_detail_id+'"class="btn btn-danger" style="font-size: 8pt ;cursor: none;">Ditolak (Isikan Alasan)<input type="hidden" name="hdnProses[]" class="hdnProses" value="7"></span><br><a id="reload_'+batch_detail_id+'" class="btn btn-sm btn-primary" onclick="reloadAktTolak('+batch_detail_id+');"><i class="fa fa-refresh"></i></a>');
+		prnt.siblings('td').children('.tglTerimaTolak').html('<input id="tgltlk_'+batch_detail_id+'"type="text" style="display:none" name="tglTerimaTolak[]" value="'+tanggal+'"><span id="spantlk_'+batch_detail_id+'">'+tanggal+'</span>');
 		prnt.siblings('td').children('.txtAlasan').show().attr('required', true);
 	}
+}
+function reloadAktTerima (th) {
+	// prnt = $(th).parent();
+	// console.log("bawah" ) 
+	$('#btn_'+th).remove();
+	$('#tgl_'+th).remove();
+	$('#span_'+th).remove();
+	$('#reload_'+th).remove();
+	$('#txtTolak_'+th).hide();
+
+	var btn = '<button id="btnAkt_'+th+'" class="btn btn-primary" onclick="actionLppbNumber(this)" value="6" name="proses" data-id="'+th+'">TERIMA</button> ';
+	btn += '<button id="btnAkt_'+th+'" class="btn btn-danger" onclick="actionLppbNumber(this)" value="7" name="proses" data-id="'+th+'">TOLAK</button>';
+	$('td[data = "'+th+'"]').html(btn);
+
+	// $('td[data = "'+th+'"]').html("sadasdas")
+	// $(th).remove();
+}
+
+function reloadAktTolak(th) {
+	// txtTolak = "txtTolak_"+th;
+	$('#btntlk_'+th).remove();
+	$('#tgltlk_'+th).remove();
+	$('#spantlk_'+th).remove();
+	$('#reloadtlk_'+th).remove();
+	$('#txtTolak_'+th).hide();
+
+	var btn = '<button id="btnAkt_'+th+'" class="btn btn-primary" onclick="actionLppbNumber(this)" value="6" name="proses" data-id="'+th+'">TERIMA</button> ';
+	btn += '<button id="btnAkt_'+th+'" class="btn btn-danger" onclick="actionLppbNumber(this);" value="7" name="proses" data-id="'+th+'">TOLAK</button>';
+	$('td[data = "'+th+'"]').html(btn);
+	// $('td.batchdid_'+ th).children('.txtAlasan').show().attr('required', true);
+	// console.log(th);
+	// console.log("reload : " + th);
 }
 function btnDeleteLppb(th){
 	var num = th.attr('rownum');
@@ -461,8 +490,8 @@ function saveLPPBNumber(th){
 		// dataType: "json",
 		success: function(response){
 			// console.log(lppb_info,id_gudang,str_arry,str_arry2,str_arry3,str_arry5);
-			window.location.reload();
-			alert('Data sudah ditambahkan');
+			// window.location.reload();
+			// alert('Data sudah ditambahkan');
 		}
 	})
 	
@@ -480,7 +509,6 @@ function saveEditLPPBNumber(th){
 	console.log("lppb_number", arry);
 	str_arry = arry.join();
 	
-
 	var arry2 = [];
 	$('td[class~="organization_id').each(function(){
 		var organization_id = $(this).text(); 
@@ -488,23 +516,19 @@ function saveEditLPPBNumber(th){
 	});
 	console.log("oi", arry2);
 	str_arry2 = arry2.join();
-
 	var arry3 = [];
 	$('td[class~="po_number').each(function(){
 		var po_number = $(this).text();
 		arry3.push(po_number);
 	});
 	str_arry3 = arry3.join();
-
 	var arry5 = [];
 	$('td[class~="po_header_id').each(function(){
 		var po_header_id = $(this).text();
 		arry5.push(po_header_id);
 	});
 	str_arry5 = arry5.join();
-
 	//ini yang insert
-
 		var arry6 = [];
 	$('td[class~="lppb_numberNew"]').each(function(){
 		var lppb_numberNew = $(this).text();
@@ -513,7 +537,6 @@ function saveEditLPPBNumber(th){
 	console.log("lppb_numberNew", arry);
 	str_arry6 = arry6.join();
 	
-
 	var arry7 = [];
 	$('td[class~="organization_idNew').each(function(){
 		var organization_idNew = $(this).text(); 
@@ -521,14 +544,12 @@ function saveEditLPPBNumber(th){
 	});
 	console.log("organization_idNew", arry7);
 	str_arry7 = arry7.join();
-
 	var arry8 = [];
 	$('td[class~="po_numberNew').each(function(){
 		var po_numberNew = $(this).text();
 		arry8.push(po_numberNew);
 	});
 	str_arry8 = arry8.join();
-
 	var arry9 = [];
 	$('td[class~="po_header_idNew').each(function(){
 		var po_header_idNew = $(this).text();
@@ -536,9 +557,6 @@ function saveEditLPPBNumber(th){
 	});
 	str_arry9 = arry9.join();
 	
-
-
-
 	$.ajax({
 		type: "post",
 		url: baseurl+"MonitoringLPPB/ListBatch/saveEditLppbNumber" ,
@@ -554,7 +572,6 @@ function saveEditLPPBNumber(th){
 			organization_idNew: str_arry7, 
 			po_numberNew: str_arry8,
 			po_header_idNew: str_arry9
-
 		},
 		success: function(response){
 			window.location.reload();
@@ -620,7 +637,6 @@ function searchLppb(th){ //ini fungsi add bawah detail
 					var output =  (day<10 ? '0' : '')+day + '-' + res_month + '-'
 					     + year;
 					 // console.log(output, 'total');
-
 					if (response != false) {
 						$('.chkAllLppbNumber').each(function(){
 							var html = '';
@@ -632,7 +648,6 @@ function searchLppb(th){ //ini fungsi add bawah detail
 									num++;
 									var col=0;
 					 				// console.log(inputLppb,'di dalam each tr#');
-
 									$(this).find('td').each(function(){
 										// console.log(inputLppb,'di dalam find td');
 										col++;
@@ -644,7 +659,6 @@ function searchLppb(th){ //ini fungsi add bawah detail
 											
 										}
 										else if (col==3){
-
 											html+='<td class="organization_codeNew">'+$(this).text()+'</td>';
 											
 										}
@@ -714,6 +728,7 @@ function chkAllLppb() {
 		});
 	};
 }
+var valueId = "";
 function approveLppbByKasie(th) {
 	var jml = 0;
 	var arrId = [];
@@ -723,8 +738,10 @@ function approveLppbByKasie(th) {
 			valueId = $(this).attr('value');
 			arrId.push(valueId);
 		}
+
 	});
 	hasil = arrId.join();
+	console.log(hasil)
 	var status = th.attr('value');
 	// console.log(status);
 	var tanggal = moment().format('DD/MM/YYYY hh:mm:ss');
@@ -733,24 +750,45 @@ function approveLppbByKasie(th) {
 		hasilsplit[i]
 	
 		if (status == 3) {
-			$('td.batchdid_'+hasilsplit[i]).children('.btnApproveReject').html('<span class="btn btn-primary" style="cursor: none;font-size: 10pt; value="3" >Diterima<input type="hidden" name="hdnProses[]" class="hdnProses" value="3"></span>');
-			$('td.batchdid_'+hasilsplit[i]).children('.tglTerimaTolak').html('<input type="text" style="display:none" name="tglTerimaTolak[]" value="'+tanggal+'"><span>'+tanggal+'</span>');
+			$('td.batchdid_'+hasilsplit[i]).children('.btnApproveReject').html('<span class="btn btn-primary" id="btn_'+hasilsplit[i]+'" style="cursor: none;font-size: 10pt; value="3" >Diterima<input type="hidden" name="hdnProses[]" class="hdnProses" value="3"></span><a id="reload_'+hasilsplit[i]+'" class="btn btn-sm btn-primary" onclick="reloadTerima('+hasilsplit[i]+');"><i class="fa fa-refresh"></i></a>');
+			$('td.batchdid_'+hasilsplit[i]).children('.tglTerimaTolak').html('<input type="text" id="tgl_'+hasilsplit[i]+'" style="display:none" name="tglTerimaTolak[]" value="'+tanggal+'"><span id="span_'+hasilsplit[i]+'">'+tanggal+'</span>');
 			$('.chkAllLppbNumber').iCheck('uncheck');
 		} else {
-			$('td.batchdid_'+hasilsplit[i]).children('.btnApproveReject').html('<span class="btn btn-danger" style="font-size: 8pt ;cursor: none;" value="4">Ditolak<input type="hidden" name="hdnProses[]" class="hdnProses" value="4"></span>');
-			$('td.batchdid_'+hasilsplit[i]).children('.tglTerimaTolak').html('<input type="text" style="display:none" name="tglTerimaTolak[]" value="'+tanggal+'"><span>'+tanggal+'</span>');
+			$('td.batchdid_'+hasilsplit[i]).children('.btnApproveReject').html('<span class="btn btn-danger" id="btntlk_'+hasilsplit[i]+'" style="font-size: 8pt ;cursor: none;" value="4">Ditolak<input type="hidden" name="hdnProses[]" class="hdnProses" value="4"></span><a id="reloadtlk_'+hasilsplit[i]+'" class="btn btn-sm btn-primary" onclick="reloadTolak('+hasilsplit[i]+');"><i class="fa fa-refresh"></i></a>');
+			$('td.batchdid_'+hasilsplit[i]).children('.tglTerimaTolak').html('<input type="text" style="display:none"  id="tgltlk_'+hasilsplit[i]+'" name="tglTerimaTolak[]" value="'+tanggal+'"><span id="spantlk_'+hasilsplit[i]+'">'+tanggal+'</span>');
 			$('td.batchdid_'+hasilsplit[i]).children('.txtAlasan').show().attr('required', true);
 			$('.chkAllLppbNumber').iCheck('uncheck');
+			// console.log("check : "+hasilsplit[i]);
 		}
 	}
 }
+function reloadTerima (th) {
 
+	$('#btn_'+th).remove();
+	$('#tgl_'+th).remove();
+	$('#span_'+th).remove();
+	$('#reload_'+th).remove();
+	$('#txtTolak_'+th).remove();
+
+	// $(th).remove();
+}
+
+function reloadTolak(th) {
+	// txtTolak = "txtTolak_"+th;
+	$('#btntlk_'+th).remove();
+	$('#tgltlk_'+th).remove();
+	$('#spantlk_'+th).remove();
+	$('#reloadtlk_'+th).remove();
+	$('#txtTolak_'+th).hide();
+	// $('td.batchdid_'+ th).children('.txtAlasan').show().attr('required', true);
+	// console.log(th);
+	// console.log("reload : " + th);
+}
 // function DetailLppb(th) {
 // 	var id = $('.batch_number').val();
 // 	console.log(id);
 // 	var win = window.open(baseurl+'MonitoringLPPB/ListBatch/detailLppb/'+id);
 // }
-
 // function DetailLppb(th) {
 // 	var win = window.open(baseurl+'MonitoringLPPB/ListBatch/detailLppb/'+batches);
 // }
