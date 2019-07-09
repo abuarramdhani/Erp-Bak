@@ -161,6 +161,7 @@ $route['SystemAdministration/User/(:any)/(:any)'] = 'SystemAdministration/MainMe
 $route['SystemAdministration/Menu'] = 'SystemAdministration/MainMenu/C_Menu/index';
 $route['SystemAdministration/Menu/(:any)'] = 'SystemAdministration/MainMenu/C_Menu/$1';
 $route['SystemAdministration/Menu/(:any)/(:any)'] = 'SystemAdministration/MainMenu/C_Menu/$1/$2';
+$route['SystemAdministration/Menu/(:any)/(:any)/(:any)'] = 'SystemAdministration/MainMenu/C_Menu/$1/$2/$3';
 $route['SystemAdministration/MenuGroup'] = 'SystemAdministration/MainMenu/C_MenuGroup/index';
 $route['SystemAdministration/MenuGroup/(:any)'] = 'SystemAdministration/MainMenu/C_MenuGroup/$1';
 $route['SystemAdministration/MenuGroup/(:any)/(:any)'] = 'SystemAdministration/MainMenu/C_MenuGroup/$1/$2';
