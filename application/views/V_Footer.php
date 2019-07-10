@@ -87,77 +87,77 @@
 		<script type="text/javascript" src="<?= base_url('assets/js/jquery-maskmoney.js') ?>"></script>
 
 		<!-- CUSTOM JAVASCRIPT FOR APPLICATION | DO NOT EDIT!! -->
-		<script type="text/javascript" async defer src="<?= base_url('assets/js/custom.js') ?>"></script>
-		<script type="text/javascript" async defer src="<?= base_url('assets/js/customFA.js') ?>"></script>
-		<script type="text/javascript" async defer src="<?= base_url('assets/js/customCM.js') ?>"></script>
-		<script type="text/javascript" async defer src="<?= base_url('assets/js/customAP.js') ?>"></script>
-		<script type="text/javascript" async defer src="<?= base_url('assets/js/customAPD.js') ?>"></script>
-		<script type="text/javascript" async defer src="<?= base_url('assets/js/customAR.js') ?>"></script>
-		<script type="text/javascript" async defer src="<?= base_url('assets/js/customCR.js') ?>"></script>
-		<!-- <script type="text/javascript" async defer src="<?= base_url('assets/js/customMO.js') ?>"></script> -->
-		<script type="text/javascript" async defer src="<?= base_url('assets/js/customPM.js') ?>"></script>
-		<script type="text/javascript" async defer src="<?= base_url('assets/js/customMK.js') ?>"></script>
-		<script type="text/javascript" async defer src="<?= base_url('assets/js/customPRS.js') ?>"></script>
-		<script type="text/javascript" async defer src="<?= base_url('assets/js/customKL.js') ?>"></script>
-		<script type="text/javascript" async defer src="<?= base_url('assets/js/customTIMS.js') ?>"></script>
-		<script type="text/javascript" async defer src="<?= base_url('assets/js/customDC.js') ?>"></script>
-		<script type="text/javascript" async defer src="<?= base_url('assets/js/customPL.js') ?>"></script>
-		<script type="text/javascript" async defer src="<?= base_url('assets/js/customDC.js') ?>"></script>
-		<script type="text/javascript" async defer src="<?= base_url('assets/js/customTR.js') ?>"></script>
-		<script type="text/javascript" async defer src="<?= base_url('assets/js/customWM.js') ?>"></script>
-		<script type="text/javascript" async defer src="<?= base_url('assets/js/customSL.js') ?>"></script>
-		<!-- <script type="text/javascript" async defer src="<?= base_url('assets/js/customPR.js') ?>"></script>-->
-		<script type="text/javascript" async defer src="<?= base_url('assets/js/customGA.js') ?>"></script>
-		<script type="text/javascript" async defer src="<?= base_url('assets/js/customLKH.js') ?>"></script>
-		<script type="text/javascript" async defer src="<?= base_url('assets/js/customOC.js') ?>"></script>
-		<script type="text/javascript" async defer src="<?= base_url('assets/js/customOJT.js') ?>"></script>
-		<script type="text/javascript" async defer src="<?= base_url('assets/js/customDS.js') ?>"></script>
-		<script type="text/javascript" async defer src="<?= base_url('assets/js/customPP.js') ?>"></script>
-		<script type="text/javascript" async defer src="<?= base_url('assets/js/customICT.js') ?>"></script>
-		<script type="text/javascript" async defer src="<?= base_url('assets/js/customWR.js') ?>"></script>
-		<script type="text/javascript" async defer src="<?= base_url('assets/js/customMP.js') ?>"></script>
-		<script type="text/javascript" async defer src="<?= base_url('assets/js/customMPK.js') ?>"></script>
-		<script type="text/javascript" async defer src="<?= base_url('assets/js/customPPO.js') ?>"></script>
-		<script type="text/javascript" async defer src="<?= base_url('assets/js/customPC.js') ?>"></script>
-		<script type="text/javascript" async defer src="<?= base_url('assets/js/customPOB.js') ?>"></script>
-		<script type="text/javascript" async defer src="<?= base_url('assets/js/customMC.js') ?>"></script>
-		<script type="text/javascript" async defer src="<?= base_url('assets/js/customSM.js') ?>"></script>
-		<script type="text/javascript" async defer src="<?= base_url('assets/js/customPKEL.js') ?>"></script>
-		<script type="text/javascript" async defer src="<?= base_url('assets/js/customECM.js') ?>"></script>
-		<script type="text/javascript" async defer src="<?= base_url('assets/js/customLKKK.js') ?>"></script>
-		<script type="text/javascript" async defer src="<?= base_url('assets/js/customWH.js') ?>"></script>
-		<script type="text/javascript" async defer src="<?= base_url('assets/js/customWMS.js') ?>"></script>
-		<script type="text/javascript" async defer src="<?= base_url('assets/js/customMI.js') ?>"></script>
-		<script type="text/javascript" async defer src="<?= base_url('assets/js/customUM.js') ?>"></script>
-		<script type="text/javascript" async defer src="<?= base_url('assets/js/customHLCM.js') ?>"></script>
-		<script type="text/javascript" async defer src="<?= base_url('assets/js/customMA.js') ?>"></script>
-		<script type="text/javascript" async defer src="<?= base_url('assets/js/customSI.js') ?>"></script>
-		<script type="text/javascript" async defer src="<?= base_url('assets/js/customIMO.js') ?>"></script>
-		<script type="text/javascript" async defer src="<?= base_url('assets/js/customMO.js') ?>"></script>
-		<script type="text/javascript" async defer src="<?= base_url('assets/js/customERC.js') ?>"></script>
-		<script type="text/javascript" async defer src="<?= base_url('assets/js/customBI.js') ?>"></script>
-		<script type="text/javascript" async defer src="<?= base_url('assets/js/customMA.js') ?>"></script>
-		<script type="text/javascript" async defer src="<?= base_url('assets/js/customTI.js') ?>"></script>
-		<script type="text/javascript" async defer src="<?= base_url('assets/js/customTF.js') ?>"></script>
-		<script type="text/javascript" async defer src="<?= base_url('assets/js/customPPH.js') ?>"></script>
-		<script type="text/javascript" async defer src="<?= base_url('assets/js/customSPL.js') ?>"></script>
-		<script type="text/javascript" async defer src="<?= base_url('assets/js/customWHS.js') ?>"></script>
-		<script type="text/javascript" async defer src="<?= base_url('assets/js/customBK.js') ?>"></script>
-		<script type="text/javascript" async defer src="<?= base_url('assets/js/customKMK.js') ?>"></script>
-		<script type="text/javascript" async defer src="<?= base_url('assets/js/customPD.js') ?>"></script>
-		<script type="text/javascript" async defer src="<?= base_url('assets/js/customMPO.js') ?>"></script>
-		<script type="text/javascript" async defer src="<?= base_url('assets/js/customSMM.js') ?>"></script>
-		<script type="text/javascript" async defer src="<?= base_url('assets/js/customME.js') ?>"></script>
-		<script type="text/javascript" async defer src="<?= base_url('assets/js/customOR.js') ?>"></script>
-		<script type="text/javascript" async defer src="<?= base_url('assets/js/customMOA.js') ?>"></script>
-		<script type="text/javascript" async defer src="<?= base_url('assets/js/customET.js') ?>"></script>
-		<script type="text/javascript" async defer src="<?= base_url('assets/js/customOSP.js') ?>"></script>
-		<script type="text/javascript" async defer src="<?= base_url('assets/js/customML.js') ?>"></script>
-		<script type="text/javascript" async defer src="<?= base_url('assets/js/customMPBG.js') ?>"></script>
-		<script type="text/javascript" async defer src="<?= base_url('assets/js/customSGA.js') ?>"></script>
-		<script type="text/javascript" async defer src="<?= base_url('assets/js/customTB.js') ?>"></script>
-		<!--<script type="text/javascript" async defer src="<?= base_url('assets/js/customOSP.js') ?>"></script>-->
-		<!--<script type="text/javascript" async defer src="<?= base_url('assets/js/customHWM.js') ?>"></script>-->
+		<script type="text/javascript" src="<?= base_url('assets/js/custom.js') ?>"></script>
+		<script type="text/javascript" src="<?= base_url('assets/js/customFA.js') ?>"></script>
+		<script type="text/javascript" src="<?= base_url('assets/js/customCM.js') ?>"></script>
+		<script type="text/javascript" src="<?= base_url('assets/js/customAP.js') ?>"></script>
+		<script type="text/javascript" src="<?= base_url('assets/js/customAPD.js') ?>"></script>
+		<script type="text/javascript" src="<?= base_url('assets/js/customAR.js') ?>"></script>
+		<script type="text/javascript" src="<?= base_url('assets/js/customCR.js') ?>"></script>
+		<!-- <script type="text/javascript" src="<?= base_url('assets/js/customMO.js') ?>"></script> -->
+		<script type="text/javascript" src="<?= base_url('assets/js/customPM.js') ?>"></script>
+		<script type="text/javascript" src="<?= base_url('assets/js/customMK.js') ?>"></script>
+		<script type="text/javascript" src="<?= base_url('assets/js/customPRS.js') ?>"></script>
+		<script type="text/javascript" src="<?= base_url('assets/js/customKL.js') ?>"></script>
+		<script type="text/javascript" src="<?= base_url('assets/js/customTIMS.js') ?>"></script>
+		<script type="text/javascript" src="<?= base_url('assets/js/customDC.js') ?>"></script>
+		<script type="text/javascript" src="<?= base_url('assets/js/customPL.js') ?>"></script>
+		<script type="text/javascript" src="<?= base_url('assets/js/customDC.js') ?>"></script>
+		<script type="text/javascript" src="<?= base_url('assets/js/customTR.js') ?>"></script>
+		<script type="text/javascript" src="<?= base_url('assets/js/customWM.js') ?>"></script>
+		<script type="text/javascript" src="<?= base_url('assets/js/customSL.js') ?>"></script>
+		<!-- <script type="text/javascript" src="<?= base_url('assets/js/customPR.js') ?>"></script>-->
+		<script type="text/javascript" src="<?= base_url('assets/js/customGA.js') ?>"></script>
+		<script type="text/javascript" src="<?= base_url('assets/js/customLKH.js') ?>"></script>
+		<script type="text/javascript" src="<?= base_url('assets/js/customOC.js') ?>"></script>
+		<script type="text/javascript" src="<?= base_url('assets/js/customOJT.js') ?>"></script>
+		<script type="text/javascript" src="<?= base_url('assets/js/customDS.js') ?>"></script>
+		<script type="text/javascript" src="<?= base_url('assets/js/customPP.js') ?>"></script>
+		<script type="text/javascript" src="<?= base_url('assets/js/customICT.js') ?>"></script>
+		<script type="text/javascript" src="<?= base_url('assets/js/customWR.js') ?>"></script>
+		<script type="text/javascript" src="<?= base_url('assets/js/customMP.js') ?>"></script>
+		<script type="text/javascript" src="<?= base_url('assets/js/customMPK.js') ?>"></script>
+		<script type="text/javascript" src="<?= base_url('assets/js/customPPO.js') ?>"></script>
+		<script type="text/javascript" src="<?= base_url('assets/js/customPC.js') ?>"></script>
+		<script type="text/javascript" src="<?= base_url('assets/js/customPOB.js') ?>"></script>
+		<script type="text/javascript" src="<?= base_url('assets/js/customMC.js') ?>"></script>
+		<script type="text/javascript" src="<?= base_url('assets/js/customSM.js') ?>"></script>
+		<script type="text/javascript" src="<?= base_url('assets/js/customPKEL.js') ?>"></script>
+		<script type="text/javascript" src="<?= base_url('assets/js/customECM.js') ?>"></script>
+		<script type="text/javascript" src="<?= base_url('assets/js/customLKKK.js') ?>"></script>
+		<script type="text/javascript" src="<?= base_url('assets/js/customWH.js') ?>"></script>
+		<script type="text/javascript" src="<?= base_url('assets/js/customWMS.js') ?>"></script>
+		<script type="text/javascript" src="<?= base_url('assets/js/customMI.js') ?>"></script>
+		<script type="text/javascript" src="<?= base_url('assets/js/customUM.js') ?>"></script>
+		<script type="text/javascript" src="<?= base_url('assets/js/customHLCM.js') ?>"></script>
+		<script type="text/javascript" src="<?= base_url('assets/js/customMA.js') ?>"></script>
+		<script type="text/javascript" src="<?= base_url('assets/js/customSI.js') ?>"></script>
+		<script type="text/javascript" src="<?= base_url('assets/js/customIMO.js') ?>"></script>
+		<script type="text/javascript" src="<?= base_url('assets/js/customMO.js') ?>"></script>
+		<script type="text/javascript" src="<?= base_url('assets/js/customERC.js') ?>"></script>
+		<script type="text/javascript" src="<?= base_url('assets/js/customBI.js') ?>"></script>
+		<script type="text/javascript" src="<?= base_url('assets/js/customMA.js') ?>"></script>
+		<script type="text/javascript" src="<?= base_url('assets/js/customTI.js') ?>"></script>
+		<script type="text/javascript" src="<?= base_url('assets/js/customTF.js') ?>"></script>
+		<script type="text/javascript" src="<?= base_url('assets/js/customPPH.js') ?>"></script>
+		<script type="text/javascript" src="<?= base_url('assets/js/customSPL.js') ?>"></script>
+		<script type="text/javascript" src="<?= base_url('assets/js/customWHS.js') ?>"></script>
+		<script type="text/javascript" src="<?= base_url('assets/js/customBK.js') ?>"></script>
+		<script type="text/javascript" src="<?= base_url('assets/js/customKMK.js') ?>"></script>
+		<script type="text/javascript" src="<?= base_url('assets/js/customPD.js') ?>"></script>
+		<script type="text/javascript" src="<?= base_url('assets/js/customMPO.js') ?>"></script>
+		<script type="text/javascript" src="<?= base_url('assets/js/customSMM.js') ?>"></script>
+		<script type="text/javascript" src="<?= base_url('assets/js/customME.js') ?>"></script>
+		<script type="text/javascript" src="<?= base_url('assets/js/customOR.js') ?>"></script>
+		<script type="text/javascript" src="<?= base_url('assets/js/customMOA.js') ?>"></script>
+		<script type="text/javascript" src="<?= base_url('assets/js/customET.js') ?>"></script>
+		<script type="text/javascript" src="<?= base_url('assets/js/customOSP.js') ?>"></script>
+		<script type="text/javascript" src="<?= base_url('assets/js/customML.js') ?>"></script>
+		<script type="text/javascript" src="<?= base_url('assets/js/customMPBG.js') ?>"></script>
+		<script type="text/javascript" src="<?= base_url('assets/js/customSGA.js') ?>"></script>
+		<script type="text/javascript" src="<?= base_url('assets/js/customTB.js') ?>"></script>
+		<!--<script type="text/javascript" src="<?= base_url('assets/js/customOSP.js') ?>"></script>-->
+		<!--<script type="text/javascript" src="<?= base_url('assets/js/customHWM.js') ?>"></script>-->
 		<!-- END OF CUSTOM JAVASCRIPT | DO NOT EDIT!! -->
 
 		<script type="text/javascript">
