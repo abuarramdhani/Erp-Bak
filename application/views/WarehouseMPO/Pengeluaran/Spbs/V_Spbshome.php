@@ -10,7 +10,7 @@
                   <label> Piih Gudang </label>
                 </div>
                 <div class="col-md-4">
-                  <select class="select4 form-control" style="width: 100%" name="slcWarehouse" id="selectWare">
+                  <select class="select2 form-control" style="width: 100%" name="slcWarehouse" id="selectWare">
                     <option></option>
                     <?php foreach ($warehouse as $key => $value) { ?>
                     <option value="<?= $value['SUBINV'] ?>"><?= $value['SUBINV'] ?></option>
@@ -71,7 +71,7 @@
                   </div>
                   <div class="col-md-3">
                       <div class="form-group">
-                          <select class="form-control select4" style="width: 300px" name="txtSubName" id="nama_sub_spbs" data-placeholder="Pilih Gudang">
+                          <select class="form-control select2" style="width: 300px" name="txtSubName" id="nama_sub_spbs" data-placeholder="Pilih Gudang">
                               <option></option>
                               <?php foreach ($SUBKONT as $SUBKONT) { ?>
                               <option><?php echo $SUBKONT['VENDOR_NAME']; ?></option>
