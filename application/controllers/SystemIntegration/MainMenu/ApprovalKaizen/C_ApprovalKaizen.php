@@ -4,6 +4,7 @@ class C_ApprovalKaizen extends CI_Controller {
 	
 	function __construct() {
 		parent::__construct();
+		date_default_timezone_set('Asia/Jakarta');
 		$this->load->helper('form');
 		$this->load->helper('url');
 		$this->load->helper('html');
@@ -63,6 +64,7 @@ class C_ApprovalKaizen extends CI_Controller {
 		$atasan1 = $this->M_submit->getAtasan($employee_code, 2);
 		$atasan2 = $this->M_submit->getAtasan($employee_code, 2);
 		$data['option_atasan'] = $this->M_submit->getAtasan($employee_code, 3);
+		// print_r($data['option_atasan']);exit();
 		$data['option_atasan2'] = $this->M_submit->getAtasan($employee_code, 4);
 		$data['kaizen'][0]['employee_code'] = '';
 		if($data['kaizen'][0]['komponen']) {
@@ -80,6 +82,7 @@ class C_ApprovalKaizen extends CI_Controller {
 		$reason_app = array();
 		$reason_rev = array();
 		$reason_rej = array();
+		// print_r($data['option_atasan2']); exit();
 		$getAllApprover = $this->M_approvalkaizen->getApprover($data['kaizen'][0]['kaizen_id'],FALSE);
 		$a = 0;
 		foreach ($getAllApprover as $key => $value) {
@@ -440,5 +443,23 @@ class C_ApprovalKaizen extends CI_Controller {
 			$pidgin = new Sendmessage;
 			@($pidgin->send($userAccount," \n ".$subject." \n ".$body));
 		}
+	}
+
+	public function upload() {
+	   $config = array('upload_path' => './assets/upload_kaizen/',
+	                'upload_url' => base_url()  . './assets/upload_kaizen/',
+	                'allowed_types' => 'jpg|gif|png',
+	                'overwrite' => false,         
+	    );
+	    $this->load->library('upload', $config);
+	    if ($this->upload->do_upload('file')) {
+	        $data = $this->upload->data();
+	        $array = array(
+	            'filelink' => $config['upload_url'] . $data['file_name']
+	        );            
+	        echo stripslashes(json_encode($array));
+	    } else {
+	        echo json_encode(array('error' => $this->upload->display_errors('', '')));
+	    }
 	}
 }

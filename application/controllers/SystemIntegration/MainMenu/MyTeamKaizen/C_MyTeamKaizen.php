@@ -5,6 +5,7 @@ class C_MyTeamKaizen extends CI_Controller
 	function __construct()
 		{
 			parent::__construct();
+			date_default_timezone_set('Asia/Jakarta');
 			$this->load->helper('form');
 	        $this->load->helper('url');
 	        $this->load->helper('html');

@@ -2100,13 +2100,15 @@ $route['SystemIntegration/KaizenGenerator/MyTeamKaizen/index'] = 'SystemIntegrat
 //Report
 $route['SystemIntegration/KaizenGenerator/Report/index'] = 'SystemIntegration/MainMenu/Report/C_Report/index';
 $route['SystemIntegration/KaizenGenerator/Report/findexport'] = 'SystemIntegration/MainMenu/Report/C_Report/findexport';
-$route['SystemIntegration/KaizenGenerator/Report/export'] = 'SystemIntegration/MainMenu/Report/C_Report/export';
+$route['SystemIntegration/KaizenGenerator/Report/exportExcelKaizen'] = 'SystemIntegration/MainMenu/Report/C_Report/exportExcelKaizen';
 $route['SystemIntegration/KaizenGenerator/Report/exportKaizen'] = 'SystemIntegration/MainMenu/Report/C_Report/exportKaizen';
 
 //Approval Kaizen
 $route['SystemIntegration/KaizenGenerator/ApprovalKaizen/index'] = 'SystemIntegration/MainMenu/ApprovalKaizen/C_ApprovalKaizen/index';
 $route['SystemIntegration/KaizenGenerator/ApprovalKaizen/result/(:any)'] = 'SystemIntegration/MainMenu/ApprovalKaizen/C_ApprovalKaizen/result/$1';
 $route['SystemIntegration/KaizenGenerator/ApprovalKaizen/View/(:any)'] = 'SystemIntegration/MainMenu/ApprovalKaizen/C_ApprovalKaizen/view/$1';
+$route['SystemIntegration/KaizenGenerator/ApprovalKaizen/(:any)'] = 'SystemIntegration/MainMenu/ApprovalKaizen/C_ApprovalKaizen/$1';
+$route['SystemIntegration/KaizenGenerator/ApprovalKaizen/(:any)/(:any)'] = 'SystemIntegration/MainMenu/ApprovalKaizen/C_ApprovalKaizen/$1/$2';
 
 //All Kaizen
 $route['SystemIntegration/KaizenGenerator/AllKaizen/index'] = 'SystemIntegration/MainMenu/AllKaizen/C_AllKaizen/index';

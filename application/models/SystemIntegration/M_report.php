@@ -19,6 +19,8 @@ class M_report extends CI_Model
 								LEFT JOIN er.er_section section ON employee.section_code = section.section_code
 							WHERE kaizen.created_date >= '$start' AND kaizen.created_date <= '$end' 
 							and kaizen.status <> 8";
+		// print_r('<pre>'); print_r($sql); exit();
+
 			$query = $this->db->query($sql);
 			return $query->result_array();
 		}
@@ -33,6 +35,7 @@ class M_report extends CI_Model
 								LEFT JOIN er.er_employee_all employee ON employee.employee_code = kaizen.noinduk
 								LEFT JOIN er.er_section section ON employee.section_code = section.section_code
 							WHERE kaizen.no_kaizen = '$no' and kaizen.status <> 8";
+		// print_r('<pre>'); print_r($sql); exit();
 			$query = $this->db->query($sql);
 			return $query->result_array();
 		}
@@ -76,7 +79,8 @@ class M_report extends CI_Model
 				FROM sys.vi_sys_user_data visu 
 				INNER JOIN er.er_employee_all emp ON emp.employee_code = visu.user_name
 				WHERE emp.section_code like '$id%' AND emp.resign = 0";
-				// echo $sql; exit();
+		// print_r('<pre>'); print_r($sql); exit();
+				
 			$query = $this->db->query($sql);
 			return $query->result_array();
 		}
