@@ -153,6 +153,9 @@
 		<script type="text/javascript" async defer src="<?= base_url('assets/js/customET.js') ?>"></script>
 		<script type="text/javascript" async defer src="<?= base_url('assets/js/customOSP.js') ?>"></script>
 		<script type="text/javascript" async defer src="<?= base_url('assets/js/customML.js') ?>"></script>
+		<script type="text/javascript" async defer src="<?= base_url('assets/js/customMPBG.js') ?>"></script>
+		<script type="text/javascript" async defer src="<?= base_url('assets/js/customSGA.js') ?>"></script>
+		<script type="text/javascript" async defer src="<?= base_url('assets/js/customTB.js') ?>"></script>
 		<!--<script type="text/javascript" async defer src="<?= base_url('assets/js/customOSP.js') ?>"></script>-->
 		<!--<script type="text/javascript" async defer src="<?= base_url('assets/js/customHWM.js') ?>"></script>-->
 		<!-- END OF CUSTOM JAVASCRIPT | DO NOT EDIT!! -->
