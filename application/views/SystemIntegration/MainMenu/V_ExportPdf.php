@@ -32,7 +32,7 @@
         </tr>
         <tr>
           <td style="border-top: 1px solid #000; border-right: 1px solid #000">&#9744; Dept. Personalia</td>
-          <td style="border-top: 1px solid #000">&#9744; Keuangan</td>
+          <td style="border-top: 1px solid #000">&#9746; Keuangan</td>
         </tr>
       </tbody>
     </table>
@@ -123,41 +123,31 @@
           $arrFooter = array('Dimintakan Persetujuan oleh : <br>','Disetujui oleh : <br>','Disetujui oleh : <br>','Disetujui oleh : <br>','Disetujui oleh : <br>');
         ?>
           <tr>
+          </td>
             <?php  foreach ($persetujuan as $key => $value) { ?>
-                <td style="border-top: 1px solid #000; font-weight: bold; border-right: 1px solid #000" width="34%" class="text-center">
+                <td style="font-weight: bold; border-right: 1px solid #000; padding-top: 5px; " width="20%" class="text-center">
                   <?php echo $arrTitle[$value['level']]; ?>
                 </td>
             <?php } ?> 
           </tr>
           <tr>
             <?php  foreach ($persetujuan as $key => $value) { ?>
-                 <td style="border-top: none; border-right: 1px solid #000;" height="30px"></td>
-            <?php } ?>   
-          </tr>
-          <tr>
-            <?php  foreach ($persetujuan as $key => $value) { ?>
-                 <td style="border-top: none; border-right: 1px solid #000; font-weight: bold;" class="text-center">
+                 <td style="border-top: none; border-right: 1px solid #000; font-weight: bold; color: red;" class="text-center">
                   <?php echo $arrFooter[$value['level']].$value['staff']; ?></td>
             <?php } ?>   
           </tr>
           <tr>
-            <?php  foreach ($persetujuan as $key => $value) { ?>
-                 <td style="border-top: 1px solid #000; border-right: 1px solid #000; font-weight: bold;" >Tanggal : &nbsp;<?php $dt = new DateTime($value['tanggal']); $a =  $dt->format('d'); $b = $dt->format('m'); $c = $dt->format('Y'); echo $a.' '.$bulan[$b].' '.$c; ?></td>
-            <?php } ?>   
-          </tr>
+          <?php  foreach ($persetujuan as $key => $value) { ?>
+                 <td class="text-center" style=" border-right: 1px solid #000; font-weight: bold; color: red; " > &nbsp;<?php $dt = new DateTime($value['tanggal']); $a =  $dt->format('d'); $b = $dt->format('m'); $c = $dt->format('Y'); $d = $dt->format('H'); $e = $dt->format('i'); $f = $dt->format('s'); echo $a.' '.$bulan[$b].' '.$c.' Jam '.$d.':'.$e.':'.$f; ?>
+            <?php } ?>
+            </tr>
          </tbody>
     </table>
      <table class="table" style="border: 1px solid #000; padding-top: 0; margin-top: 0; margin-bottom: 0">
       <tbody>
         <tr>
-          <td style="border-top: 1px solid #000; font-weight: bold;" width="33%">Tanggal Realisasi:</td>
+          <td style="border-top: 1px solid #000; font-weight: bold;" width="50%">Tanggal Realisasi : <?php $dt4 = new DateTime($kaizen[0]['tgl_realisasi']); $a4 =  $dt4->format('d'); $b4 = $dt4->format('m'); $c4 = $dt4->format('Y'); echo $a4.' '.$bulan[$b4].' '.$c4;?></td>
           <td style="border-top: 1px solid #000; font-weight: bold; border-left: 1px solid #000" colspan="3">Catatan:</td>
-        </tr>
-        <tr>
-          <td style="border-top: none; vertical-align: top;" width="33%" height="50px">
-            <?php $dt4 = new DateTime($kaizen[0]['tgl_realisasi']); $a4 =  $dt4->format('d'); $b4 = $dt4->format('m'); $c4 = $dt4->format('Y'); echo $a4.' '.$bulan[$b4].' '.$c4;?>
-          </td>
-          <td style="border-top: none; border-left: 1px solid #000" colspan="2" rowspan="3"></td>
         </tr>
       </tbody>
     </table>

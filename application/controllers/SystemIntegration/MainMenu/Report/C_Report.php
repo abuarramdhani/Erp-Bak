@@ -119,85 +119,187 @@ class C_Report extends CI_Controller
 			$this->load->view('V_Footer',$data);
 		}
 
-	public function export()
-	{
+	// public function export()
+	// {
+	// 	$start = date("Y-m-d", strtotime($this->input->post('txtStartDate')));
+	// 	$end   = date("Y-m-d", strtotime($this->input->post('txtEndDate')));
+		
+	// 	// $realisasi=$this->input->post('txtRealisasi');
+	// 	$data = $this->M_report->getKaizenExport($start, $end);
+
+	// 	$objPHPExcel = new PHPExcel();
+
+	// 	$objPHPExcel->getProperties()->setCreator("CV. KHS")->setTitle("QUICK");
+ 
+	// 	$objset = $objPHPExcel->setActiveSheetIndex(0);
+	// 	$objget = $objPHPExcel->getActiveSheet();
+	// 	$objget->setTitle('Sample Sheet');
+	// 	$objget->getStyle("A1:I1")->applyFromArray(
+	// 		array(
+	// 			'fill' => array(
+	// 				'type' => PHPExcel_Style_Fill::FILL_SOLID,
+	// 				'color' => array('rgb' => '92d050')
+	// 			),
+	// 			'font' => array(
+	// 				'color' => array('rgb' => '000000'),
+	// 				'bold'  => true,
+	// 			)
+	// 		)
+	// 	);
+
+	// 	$cols = array("A", "B", "C", "D", "E", "F", "G", "H", "I");
+	// 	$val = array("No", "No Kaizen" , "Judul", "Kondisi Awal", "Kondisi Setelah Kaizen", "Pertimbangan", "PIC", "Departemen" , "Tanggal Lapor");
+
+	// 	for ($a=0;$a<9; $a++) {
+	// 		$objset->setCellValue($cols[$a].'1', $val[$a]);
+
+	// 		$objPHPExcel->getActiveSheet()->getColumnDimension('A')->setWidth(5);
+	// 		$objPHPExcel->getActiveSheet()->getColumnDimension('B')->setWidth(30);
+	// 		$objPHPExcel->getActiveSheet()->getColumnDimension('C')->setWidth(40);
+	// 		$objPHPExcel->getActiveSheet()->getColumnDimension('D')->setWidth(40);
+	// 		$objPHPExcel->getActiveSheet()->getColumnDimension('E')->setWidth(40);
+	// 		$objPHPExcel->getActiveSheet()->getColumnDimension('F')->setWidth(30);
+	// 		$objPHPExcel->getActiveSheet()->getColumnDimension('G')->setWidth(15);
+	// 		$objPHPExcel->getActiveSheet()->getColumnDimension('H')->setWidth(20);
+	// 		$objPHPExcel->getActiveSheet()->getColumnDimension('I')->setWidth(20);
+
+	// 		$style = array(
+	// 			'alignment' => array(
+	// 				'horizontal' => PHPExcel_Style_Alignment::VERTICAL_CENTER,
+	// 			)
+	// 		);
+	// 		$objPHPExcel->getActiveSheet()->getStyle($cols[$a].'1')->applyFromArray($style);
+	// 	}
+
+	// 	$baris  = 2;
+	// 	$no = 1;
+	// 	foreach ($data as $frow) {
+	// 		$objset->setCellValue("A".$baris, $no);
+	// 		$objset->setCellValue("B".$baris, $frow['no_kaizen']);
+	// 		$objset->setCellValue("C".$baris, $frow['judul']);
+	// 		$objset->setCellValue("D".$baris, strip_tags($frow['kondisi_awal']));
+	// 		$objset->setCellValue("E".$baris, strip_tags($frow['usulan_kaizen']));
+	// 		$objset->setCellValue("F".$baris, $frow['pertimbangan']);
+	// 		$objset->setCellValue("G".$baris, $frow['pencetus']);
+	// 		$objset->setCellValue("H".$baris, $frow['department_name']);
+	// 		$objset->setCellValue("I".$baris, '');
+
+	// 		$no++;
+	// 		$baris++;
+	// 	}
+
+	// 	$objPHPExcel->getActiveSheet()->setTitle('Data Export');
+
+	// 	$objPHPExcel->setActiveSheetIndex(0);  
+	// 	$filename = urlencode("Kaizen.xls");
+
+	// 	header('Content-Type: application/vnd.ms-excel');
+	// 	header('Content-Disposition: attachment;filename="'.$filename.'"');
+	// 	header('Cache-Control: max-age=0');
+
+	// 	$objWriter = IOFactory::createWriter($objPHPExcel, 'Excel5');                
+	// 	$objWriter->save('php://output');
+	// }
+
+	public function exportExcelKaizen(){
+
+		$this->load->library('Excel');
+		$tglAwal = $this->input->post('txtStartDate');
+		$tglAkhir= $this->input->post('txtEndDate');
 		$start = date("Y-m-d", strtotime($this->input->post('txtStartDate')));
 		$end   = date("Y-m-d", strtotime($this->input->post('txtEndDate')));
-		
-		// $realisasi=$this->input->post('txtRealisasi');
-		$data = $this->M_report->getKaizenExport($start, $end);
+		// $action_status = $this->input->post('')
 
 		$objPHPExcel = new PHPExcel();
 
-		$objPHPExcel->getProperties()->setCreator("CV. KHS")->setTitle("QUICK");
- 
-		$objset = $objPHPExcel->setActiveSheetIndex(0);
-		$objget = $objPHPExcel->getActiveSheet();
-		$objget->setTitle('Sample Sheet');
-		$objget->getStyle("A1:I1")->applyFromArray(
-			array(
-				'fill' => array(
-					'type' => PHPExcel_Style_Fill::FILL_SOLID,
-					'color' => array('rgb' => '92d050')
-				),
-				'font' => array(
-					'color' => array('rgb' => '000000'),
-					'bold'  => true,
-				)
-			)
-		);
+		$style_col = array(
+          'font' => array('bold' => true),
+          'alignment' => array(
+            'horizontal' => PHPExcel_Style_Alignment::HORIZONTAL_CENTER,
+            'vertical' => PHPExcel_Style_Alignment::VERTICAL_CENTER 
+          ),
+          'borders' => array(
+            'top' => array('style'  => PHPExcel_Style_Border::BORDER_THIN),
+            'right' => array('style'  => PHPExcel_Style_Border::BORDER_THIN),
+            'bottom' => array('style'  => PHPExcel_Style_Border::BORDER_THIN),
+            'left' => array('style'  => PHPExcel_Style_Border::BORDER_THIN)
+          )
+        );
 
-		$cols = array("A", "B", "C", "D", "E", "F", "G", "H", "I");
-		$val = array("No", "No Kaizen" , "Judul", "Kondisi Awal", "Kondisi Setelah Kaizen", "Pertimbangan", "PIC", "Departemen" , "Tanggal Lapor");
+        $style_row = array(
+          'alignment' => array(
+            'vertical' => PHPExcel_Style_Alignment::VERTICAL_CENTER 
+          ),
+          'borders' => array(
+            'top' => array('style'  => PHPExcel_Style_Border::BORDER_THIN), 
+            'right' => array('style'  => PHPExcel_Style_Border::BORDER_THIN), 
+            'bottom' => array('style'  => PHPExcel_Style_Border::BORDER_THIN), 
+            'left' => array('style'  => PHPExcel_Style_Border::BORDER_THIN) 
+          )
+        );
 
-		for ($a=0;$a<9; $a++) {
-			$objset->setCellValue($cols[$a].'1', $val[$a]);
+		$objPHPExcel->setActiveSheetIndex(0)->setCellValue('A1', "REPORT REKAP KAIZEN");
+        $objPHPExcel->getActiveSheet()->mergeCells('A1:J2');
+        $objPHPExcel->getActiveSheet()->getStyle('A1')->getFont()->setBold(TRUE);
+        $objPHPExcel->getActiveSheet()->getStyle('A1')->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
+        $objPHPExcel->getActiveSheet()->getStyle('A1')->getAlignment()->setVertical(PHPExcel_Style_Alignment::VERTICAL_CENTER);
+        // $objPHPExcel->setActiveSheetIndex(0)->setCellValue('A3', "Date : ".$dateTarikFrom.' s/d '.$dateTarikTo);
+        $objPHPExcel->setActiveSheetIndex(0)->setCellValue('A4', "No");
+        $objPHPExcel->setActiveSheetIndex(0)->setCellValue('B4', "Nomor Kaizen");
+        $objPHPExcel->setActiveSheetIndex(0)->setCellValue('C4', "Judul Kaizen");
+        $objPHPExcel->setActiveSheetIndex(0)->setCellValue('D4', "Kondisi Awal Kaizen");
+        $objPHPExcel->setActiveSheetIndex(0)->setCellValue('E4', "Kondisi Akhir Kaizen");
+        $objPHPExcel->setActiveSheetIndex(0)->setCellValue('F4', "Pencetus Kaizen");
 
-			$objPHPExcel->getActiveSheet()->getColumnDimension('A')->setWidth(5);
-			$objPHPExcel->getActiveSheet()->getColumnDimension('B')->setWidth(30);
-			$objPHPExcel->getActiveSheet()->getColumnDimension('C')->setWidth(40);
-			$objPHPExcel->getActiveSheet()->getColumnDimension('D')->setWidth(40);
-			$objPHPExcel->getActiveSheet()->getColumnDimension('E')->setWidth(40);
-			$objPHPExcel->getActiveSheet()->getColumnDimension('F')->setWidth(30);
-			$objPHPExcel->getActiveSheet()->getColumnDimension('G')->setWidth(15);
-			$objPHPExcel->getActiveSheet()->getColumnDimension('H')->setWidth(20);
-			$objPHPExcel->getActiveSheet()->getColumnDimension('I')->setWidth(20);
+        $objPHPExcel->getActiveSheet()->getColumnDimension('A')->setWidth(2);
+        $objPHPExcel->getActiveSheet()->getStyle('A4')->applyFromArray($style_col);
 
-			$style = array(
-				'alignment' => array(
-					'horizontal' => PHPExcel_Style_Alignment::VERTICAL_CENTER,
-				)
-			);
-			$objPHPExcel->getActiveSheet()->getStyle($cols[$a].'1')->applyFromArray($style);
-		}
+        foreach(range('B','F') as $columnID) {
+            $objPHPExcel->getActiveSheet()->getColumnDimension($columnID)
+                ->setAutoSize(true);
+            $objPHPExcel->getActiveSheet()->getStyle($columnID.'4')->applyFromArray($style_col);
+        }
 
-		$baris  = 2;
-		$no = 1;
-		foreach ($data as $frow) {
-			$objset->setCellValue("A".$baris, $no);
-			$objset->setCellValue("B".$baris, $frow['no_kaizen']);
-			$objset->setCellValue("C".$baris, $frow['judul']);
-			$objset->setCellValue("D".$baris, strip_tags($frow['kondisi_awal']));
-			$objset->setCellValue("E".$baris, strip_tags($frow['usulan_kaizen']));
-			$objset->setCellValue("F".$baris, $frow['pertimbangan']);
-			$objset->setCellValue("G".$baris, $frow['pencetus']);
-			$objset->setCellValue("H".$baris, $frow['department_name']);
-			$objset->setCellValue("I".$baris, '');
+        foreach(range('A','B') as $columnID) {
+            $objPHPExcel->getActiveSheet()->getStyle($columnID)->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
+        }
 
-			$no++;
-			$baris++;
-		}
+        $fetch = $this->M_report->getKaizenExport($start,$end);
 
-		$objPHPExcel->getActiveSheet()->setTitle('Data Export');
+        $no = 1;
+        $numrow = 5;
+        foreach($fetch as $data){
+            $objPHPExcel->setActiveSheetIndex(0)->setCellValue('A'.$numrow, $no);
+            $objPHPExcel->setActiveSheetIndex(0)->setCellValue('B'.$numrow, $data['no_kaizen']);
+            $objPHPExcel->setActiveSheetIndex(0)->setCellValue('C'.$numrow, $data['judul']);
+            $objPHPExcel->setActiveSheetIndex(0)->setCellValue('D'.$numrow, $data['kondisi_awal']);
+            $objPHPExcel->setActiveSheetIndex(0)->setCellValue('E'.$numrow, $data['kondisi_akhir']);
+            $objPHPExcel->setActiveSheetIndex(0)->setCellValue('F'.$numrow, $data['pencetus']);
+            
+            $objPHPExcel->getActiveSheet()->getStyle('A'.$numrow)->applyFromArray($style_row);
+            $objPHPExcel->getActiveSheet()->getStyle('B'.$numrow)->applyFromArray($style_row);
+            $objPHPExcel->getActiveSheet()->getStyle('C'.$numrow)->applyFromArray($style_row);
+            $objPHPExcel->getActiveSheet()->getStyle('D'.$numrow)->applyFromArray($style_row);
+            $objPHPExcel->getActiveSheet()->getStyle('E'.$numrow)->applyFromArray($style_row);
+            $objPHPExcel->getActiveSheet()->getStyle('F'.$numrow)->applyFromArray($style_row);
+            
+            $no++;
+            $numrow++;
+        }
 
-		$objPHPExcel->setActiveSheetIndex(0);  
-		$filename = urlencode("Kaizen.xls");
+        $objPHPExcel->getActiveSheet()->getDefaultRowDimension()->setRowHeight(20);
+        $objPHPExcel->getActiveSheet()->getColumnDimension('A')->setWidth(15);
 
-		header('Content-Type: application/vnd.ms-excel');
-		header('Content-Disposition: attachment;filename="'.$filename.'"');
-		header('Cache-Control: max-age=0');
+		$objPHPExcel->setActiveSheetIndex(0);
+		$objPHPExcel->getActiveSheet()->setTitle('Report Rekap Kaizen');
+		$objWriter = PHPExcel_IOFactory::createWriter($objPHPExcel, 'Excel5');
+		header("Last-Modified: " . gmdate("D, d M Y H:i:s") . " GMT");
+		header("Cache-Control: no-store, no-cache, must-revalidate");
+		header("Cache-Control: post-check=0, pre-check=0", false);
+		header("Pragma: no-cache");
+		header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
+		header('Content-Disposition: attachment;filename="Report_Rekap_Kaizen.xlsx"');
+		$objWriter->save("php://output");
 
-		$objWriter = IOFactory::createWriter($objPHPExcel, 'Excel5');                
-		$objWriter->save('php://output');
 	}
 }

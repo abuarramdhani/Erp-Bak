@@ -1,7 +1,44 @@
 $(document).ready(function(){
-  
-  $('.dataTable-pekerja').DataTable( {
-        });
+
+      $('#myCheck').on('ifChanged', function(event){
+        if(event.target.checked && $('#youCheck').prop('checked') && $('#Check').prop('checked') && $('#tglCheck').prop('checked')) {
+          $('#btnAprroveOkSI').prop('disabled', false);
+          $('#textcheckbox').hide();
+        } else {
+          $('#btnAprroveOkSI').prop('disabled', true);
+          $('#textcheckbox').show();
+        }
+      });
+      $('#youCheck').on('ifChanged', function(event){
+        if(event.target.checked && $('#myCheck').prop('checked') && $('#Check').prop('checked') && $('#tglCheck').prop('checked')) {
+          $('#btnAprroveOkSI').prop('disabled', false);
+          $('#textcheckbox').hide();
+        } else {
+          $('#btnAprroveOkSI').prop('disabled', true);
+          $('#textcheckbox').show();
+        }
+      });
+      $('#Check').on('ifChanged', function(event){
+        if(event.target.checked && $('#myCheck').prop('checked') && $('#youCheck').prop('checked') && $('#tglCheck').prop('checked')) {
+          $('#btnAprroveOkSI').prop('disabled', false);
+          $('#textcheckbox').hide();
+        } else {
+          $('#btnAprroveOkSI').prop('disabled', true);
+          $('#textcheckbox').show();
+        }
+      });
+      $('#tglCheck').on('ifChanged', function(event){
+        if(event.target.checked && $('#myCheck').prop('checked') && $('#youCheck').prop('checked') && $('#Check').prop('checked')) {
+          $('#btnAprroveOkSI').prop('disabled', false);
+          $('#textcheckbox').hide();
+        } else {
+          $('#btnAprroveOkSI').prop('disabled', true);
+          $('#textcheckbox').show();
+        }
+      });
+
+
+      $('.dataTable-pekerja').DataTable({});
   // $('.dataTable-pekerja').DataTable( {
   //       });
 
@@ -14,6 +51,16 @@ $(document).ready(function(){
             alert(json.error);
         }          
     }); 
+
+    $('.textareaKaizenAprove').redactor({
+        imageUpload: baseurl+'SystemIntegration/KaizenGenerator/ApprovalKaizen/upload',
+
+        imageUploadErrorCallback: function(json)
+        {
+            alert(json.error);
+        }          
+    }); 
+
 $('#txtPertimbangan').redactor({
         imageUpload: baseurl+'SystemIntegration/KaizenGenerator/Submit/upload',
 
@@ -93,7 +140,7 @@ $('input#checkNextApprover').on('ifUnchecked',function(event){
 
     $('.select2si').select2({
      allowClear : true,
-     tabindex : false
+     tabindex : true
     });
 
 
@@ -234,7 +281,7 @@ $('.siSlcTgr').change(function(){
   var type = $('input[name="typeApp"]').val();
   var a = $('select[name="SlcAtasanLangsung"]').val();
   var b = $('select[name="SlcAtasanAtasanLangsung"]').val();
-  // var c = $('select[name="SlcAtasanDepartment"]').val();
+  var c = $('select[name="SlcAtasanDepartment"]').val();
   var value = [a,b];
 
   var checkFill = function(val){

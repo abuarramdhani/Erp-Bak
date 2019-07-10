@@ -1,5 +1,5 @@
 /*
-	Icon font
+  Icon font
 */
 @font-face {
   font-family: 'RedactorFont';
@@ -26,7 +26,7 @@
   background: transparent;
 }
 /*
-	BOX
+  BOX
 */
 .redactor_box {
   position: relative;
@@ -68,10 +68,10 @@
 #redactor_modal_overlay,
 #redactor_modal,
 .redactor_dropdown {
-  z-index: 100 !important;
+  z-index: 1051 !important;
 }
 /*
-	AIR
+  AIR
 
 */
 body .redactor_air {
@@ -79,7 +79,7 @@ body .redactor_air {
   z-index: 502;
 }
 /*
-	FULLSCREEN
+  FULLSCREEN
 */
 body .redactor_box_fullscreen {
   position: fixed;
@@ -88,7 +88,7 @@ body .redactor_box_fullscreen {
   width: 100%;
 }
 /*
-	LINK TOOLTIP
+  LINK TOOLTIP
 */
 .redactor-link-tooltip {
   position: absolute;
@@ -113,7 +113,7 @@ body .redactor_box_fullscreen {
   color: #fff;
 }
 /*
-	IMAGE BOX
+  IMAGE BOX
 */
 #redactor-image-box img {
   width: 100%;
@@ -174,7 +174,7 @@ body .redactor_box_fullscreen {
   display: block !important;
 }
 /*
-	TYPOGRAPHY
+  TYPOGRAPHY
 */
 .redactor_editor object,
 .redactor_editor embed,
@@ -266,7 +266,7 @@ body .redactor_box_fullscreen {
   border-top: 1px solid #ccc;
 }
 /*
-	HEADERS
+  HEADERS
 */
 .redactor_editor h1,
 .redactor_editor h2,
@@ -312,7 +312,7 @@ body .redactor_box_fullscreen {
   margin-bottom: .3em !important;
 }
 /*
-	TOOLBAR
+  TOOLBAR
 */
 .redactor_toolbar {
   position: relative;
@@ -535,7 +535,7 @@ body .redactor_air .redactor_toolbar {
   content: "\e61f";
 }
 /*
-	Toolbar classes
+  Toolbar classes
 */
 .redactor_format_blockquote {
   padding-left: 10px;
@@ -585,7 +585,7 @@ body .redactor_air .redactor_toolbar {
   font-size: .85em;
 }
 /*
-	Typewriter
+  Typewriter
 */
 .redactor_editor.redactor-editor-typewriter {
   background: #f5f5f5 !important;
@@ -626,7 +626,7 @@ body .redactor_air .redactor_toolbar {
   text-decoration: underline !important;
 }
 /*
-	WYM
+  WYM
 */
 .redactor_editor.redactor_editor_wym {
   padding: 10px 7px 0 7px !important;
@@ -678,7 +678,7 @@ body .redactor_air .redactor_toolbar {
   border: none !important;
 }
 /*
-	DROPDOWN
+  DROPDOWN
 */
 .redactor_dropdown {
   position: absolute;
@@ -714,7 +714,7 @@ body .redactor_air .redactor_toolbar {
   text-decoration: none;
 }
 /*
-	MODAL
+  MODAL
 */
 #redactor_modal_overlay {
   position: fixed;
