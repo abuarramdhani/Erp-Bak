@@ -35,7 +35,7 @@
 								<div class="col-lg-6">
 
 									<div class="form-group">
-										<label class="col-sm-2 control-label">Tanggal</label>
+										<label class="col-sm-2 control-label">Tanggal Bekerja</label>
 										<div class="col-sm-10">
 											<div class="input-group">
 												<div class="input-group-addon">
@@ -47,14 +47,14 @@
 									</div>
 
 									<div class="form-group">
-										<label class="col-sm-2 control-label">Waktu</label>
+										<label class="col-sm-2 control-label">Waktu Lembur</label>
 										<div class="col-sm-5">
 											<div class="bootstrap-timepicker">
 												<div class="input-group">
 													<div class="input-group-addon">
 														<i class="fa fa-clock-o"></i>
 													</div>
-													<input type="text" class="form-control spl-time" name="waktu_0" required>
+													<input type="text" class="form-control spl-time-mask" name="waktu_0" required>
 												</div>
 											</div>
 										</div>
@@ -64,7 +64,7 @@
 													<div class="input-group-addon">
 														<i class="fa fa-clock-o"></i>
 													</div>
-													<input type="text" class="form-control spl-time" name="waktu_1" required>
+													<input type="text" class="form-control spl-time-mask" name="waktu_1" required>
 												</div>
 											</div>
 										</div>
@@ -113,16 +113,17 @@
 							</div>
 							<div class="row">
 								<div class="col-lg-12">
-
 									<div class="form-group">
 										<label class="col-sm-1 control-label">Pekerja</label>
-										<div class="col-sm-10">
-											<table id="example1" class="table table-bordered table-striped text-center">
+										<div class="col-sm-12">
+											<table id="example11" class="table table-bordered table-striped text-center">
 												<thead style="background:#3c8dbc; color:#fff">
 													<th width="5%">No.</th>
 													<th width="40%">Pekerja</th>
-													<th width="5%">Target/Pcs</th>
-													<th width="5%">Realisasi/Pcs</th>
+													<th width="10%">Awal Lembur Aktual</th>
+													<th width="10%">Akhir Lembur Aktual</th>
+													<th width="5%">Target/Pcs/%</th>
+													<th width="5%">Realisasi/Pcs/%</th>
 													<th width="40%">Alasan Lembur</th>
 													<th width="5%">
 														<i id="spl_pkj_add" class="fa fa-fw fa-plus-square-o"></i>
@@ -131,8 +132,16 @@
 												<tbody>
 													<tr class="multiinput"><td>-</td>
 														<td style="">
-															<select class="form-control spl-pkj-select2 spl-cek" name="noind[]" required>
+															<select class="spl-new-pkj-select2 spl-cek" name="noind[]" style="width: 100%" required>
 															</select>
+														</td>
+														<td>
+															<input type="text" class="form-control" name="lbrawal[]" disabled>
+															<input type="hidden" class="form-control" name="lembur_awal[]" >
+														</td>
+														<td>
+															<input type="text" class="form-control" name="lbrakhir[]" disabled>
+															<input type="hidden" class="form-control" name="lembur_akhir[]" >
 														</td>
 														<td><input type="number" class="form-control" name="target[]"></td>
 														<td><input type="number" class="form-control" name="realisasi[]"></td>
@@ -159,3 +168,41 @@
 			</section>
 		</div>
 	</div>
+	<script type="text/javascript">
+		// need some idea
+		// window.onfocus = function() {
+		//   console.log('Got focus');
+		//   window.location.reload();
+		// }
+		
+		var timeoutInMiliseconds = 120000;
+		var timeoutId; 
+		  
+		function startTimer() { 
+		    // window.setTimeout returns an Id that can be used to start and stop a timer
+		    timeoutId = window.setTimeout(doInactive, timeoutInMiliseconds)
+		}
+		  
+		function doInactive() {
+		    // does whatever you need it to actually do - probably signs them out or stops polling the server for info
+		    window.location.reload();
+		}
+
+		function resetTimer() { 
+		    window.clearTimeout(timeoutId)
+		    startTimer();
+		}
+		 
+		function setupTimers () {
+		    document.addEventListener("mousemove", resetTimer(), false);
+		    document.addEventListener("mousedown", resetTimer(), false);
+		    document.addEventListener("keypress", resetTimer(), false);
+		    document.addEventListener("touchmove", resetTimer(), false);
+		     
+		    startTimer();
+		}
+		 
+		// document.addEventListener("DOMContentLoaded",function(e){
+		// 	setupTimers();
+		// });
+	</script>
