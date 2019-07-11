@@ -85,7 +85,7 @@ class C_trackingInvoice extends CI_Controller{
 		$this->load->view('TrackingInvoice/V_searchInvoice',$data);
 		$this->load->view('V_Footer',$data);
 
-		$this->output->cache(1);
+		// $this->output->cache(1);
 	}
 
 	public function btn_search(){
@@ -213,7 +213,7 @@ class C_trackingInvoice extends CI_Controller{
 		$this->load->view('TrackingInvoice/V_detailTrackingInvoice',$data);
 		$this->load->view('V_Footer',$data);
 
-		$this->output->cache(1);
+		// $this->output->cache(1);
 	}
 
 	public function exportExcelTrackingInvoice(){
