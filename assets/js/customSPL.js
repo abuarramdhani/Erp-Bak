@@ -234,11 +234,16 @@ $(function () {
     }); 
   });
 
+  $('#example11').on('click','.spl-pkj-del',function(){
+    $(this).closest('tr').remove();
+  });
+
   $("#spl_pkj_add").click(function(e){
     e.preventDefault();
     $('.multiinput select[name*=noind]').last().select2("destroy");
     $('.multiinput').last().clone().appendTo('#example11 tbody');
     $(".multiinput:last .form-control").val("").change();
+    $(".multiinput:last td:first").html("<button type='button' class='btn btn-danger spl-pkj-del'><span class='fa fa-trash'></span></button>");
     $(".multiinput:last select").val("").change();
     $(".multiinput:last .spl-new-error").remove();
     $(".multiinput:last select").closest("td").css("background", "#ffffff");

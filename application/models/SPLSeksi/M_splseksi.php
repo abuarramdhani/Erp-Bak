@@ -273,6 +273,15 @@ class M_splseksi extends CI_Model{
 		return $this->spl->query($sql)->result_array();
 	}
 
+	public function getTim($noind, $tanggal){
+		$sql = "select tdt.point as point
+				from \"Presensi\".tdatatim tdt
+				where tdt.noind = '$noind' 
+				and tdt.tanggal = '$tanggal'
+				and trim(tdt.kd_ket) = 'TM'";
+		return $this->prs->query($sql)->result_array();
+	}
+
 	public function getPresensi($noind,$tanggal){
 		$sql = "select 	tdp.noind,
 						tdp.tanggal::date,
@@ -305,7 +314,7 @@ class M_splseksi extends CI_Model{
 				and tsp.noind = tdp.noind 
 				where tdp.noind = '$noind' 
 				and tdp.tanggal = '$tanggal'
-				and tdp.kd_ket = 'PKJ'";
+				and trim(tdp.kd_ket) in ('PKJ','PID')";
 		return $this->prs->query($sql)->result_array();
 	}
 
