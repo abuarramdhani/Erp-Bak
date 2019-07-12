@@ -17,7 +17,7 @@ class M_report extends CI_Model
 							FROM si.si_kaizen kaizen
 								LEFT JOIN er.er_employee_all employee ON employee.employee_code = kaizen.noinduk
 								LEFT JOIN er.er_section section ON employee.section_code = section.section_code
-							WHERE kaizen.status_date >= '$start' AND kaizen.created_date <= '$end' 
+							WHERE kaizen.status_date >= '$start' AND kaizen.status_date <= '$end' 
 							and kaizen.status IN (7,9)";
 							
 			$query = $this->db->query($sql);
