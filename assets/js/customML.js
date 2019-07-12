@@ -251,8 +251,6 @@ function actionLppbNumber(th){
 	var batch_detail_id = $(th).attr('data-id');
 	var proses = $(th).attr('value');
 	prnt = $(th).parent();
-
-
 	var tanggal = moment().format('DD/MM/YYYY hh:mm:ss'); 
 	console.log("atas", prnt);
 	// alert(tanggal);
@@ -275,15 +273,12 @@ function reloadAktTerima (th) {
 	$('#span_'+th).remove();
 	$('#reload_'+th).remove();
 	$('#txtTolak_'+th).hide();
-
 	var btn = '<button id="btnAkt_'+th+'" class="btn btn-primary" onclick="actionLppbNumber(this)" value="6" name="proses" data-id="'+th+'">OK</button> ';
 	btn += '<button id="btnAkt_'+th+'" class="btn btn-danger" onclick="actionLppbNumber(this)" value="7" name="proses" data-id="'+th+'">NOT OK</button>';
 	$('td[data = "'+th+'"]').html(btn);
-
 	// $('td[data = "'+th+'"]').html("sadasdas")
 	// $(th).remove();
 }
-
 function reloadAktTolak(th) {
 	// txtTolak = "txtTolak_"+th;
 	$('#btntlk_'+th).remove();
@@ -291,7 +286,6 @@ function reloadAktTolak(th) {
 	$('#spantlk_'+th).remove();
 	$('#reloadtlk_'+th).remove();
 	$('#txtTolak_'+th).hide();
-
 	var btn = '<button id="btnAkt_'+th+'" class="btn btn-primary" onclick="actionLppbNumber(this)" value="6" name="proses" data-id="'+th+'">OK</button> ';
 	btn += '<button id="btnAkt_'+th+'" class="btn btn-danger" onclick="actionLppbNumber(this);" value="7" name="proses" data-id="'+th+'">NOT OK</button>';
 	$('td[data = "'+th+'"]').html(btn);
@@ -542,7 +536,6 @@ function saveEditLPPBNumber(th){
 	});
 	// console.log("organization_idNew", arry7);
 	str_arry7 = arry7.join();
-
 	var arry8 = [];
 	$('td[class~="po_numberNew').each(function(){
 		var po_numberNew = $(this).text();
@@ -550,14 +543,12 @@ function saveEditLPPBNumber(th){
 	})
 	// str_arry8 = arry8.join();
 	console.log("po_numberNew", arry8);
-
 	var arry9 = [];
 	$('td[class~="po_header_idNew').each(function(){
 		var po_header_idNew = $(this).text();
 		arry9.push(po_header_idNew);
 	})
 	console.log("po_header_idNew", arry9);
-
 	$.ajax({
 		type: "post",
 		url: baseurl+"MonitoringLPPB/ListBatch/saveEditLppbNumber" ,
@@ -586,14 +577,15 @@ function searchLppb(th){ //ini fungsi add bawah detail
 	var lppb_numberFrom =  $('#lppb_numberFrom').val();
 	var lppb_number =  $('#lppb_numberTo').val();
 	var inventory_organization = $('#inventory').val();
-	// console.log('searchLppb');
+	var status = $('#status_lppb').val();
 	$.ajax({
 		type: "POST",
 		url : baseurl+"MonitoringLPPB/ListBatch/addDetailNomorLPPB",
 		data : {
 			lppb_numberFrom : lppb_numberFrom,
 			lppb_number : lppb_number,
-			inventory_organization : inventory_organization
+			inventory_organization : inventory_organization,
+			status_lppb : status
 		},
 		success: function(response){
 				$('#loading_search').html(response);
@@ -739,7 +731,6 @@ function approveLppbByKasie(th) {
 			valueId = $(this).attr('value');
 			arrId.push(valueId);
 		}
-
 	});
 	hasil = arrId.join();
 	console.log(hasil)
@@ -764,16 +755,13 @@ function approveLppbByKasie(th) {
 	}
 }
 function reloadTerima (th) {
-
 	$('#btn_'+th).remove();
 	$('#tgl_'+th).remove();
 	$('#span_'+th).remove();
 	$('#reload_'+th).remove();
 	$('#txtTolak_'+th).hide();
-
 	// $(th).remove();
 }
-
 function reloadTolak(th) {
 	// txtTolak = "txtTolak_"+th;
 	$('#btntlk_'+th).remove();
