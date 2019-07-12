@@ -97,6 +97,7 @@ class C_monitoringlppbadmin extends CI_Controller{
 	}
 
 	public function addNomorLPPB(){ //FUNGSI SEARCH DI SUBMIT LPPB
+		// print_r($_POST);
 		$lppb_info = $this->input->post('info_lppb');
 		$lppb_numberFrom = $this->input->post('lppb_numberFrom');
 		$lppb_number = $this->input->post('lppb_number');
@@ -119,6 +120,7 @@ class C_monitoringlppbadmin extends CI_Controller{
 
 		$searchNumberLppb = $this->M_monitoringlppbadmin->searchNumberLppb($lppb_numberFrom,$lppb_number,$query, $queryStatus);
 		$data['lppb'] = $searchNumberLppb;
+		// print_r($data);exit();
 		if ($searchNumberLppb) {
 			$returnView = $this->load->view('MonitoringLppbAdmin/V_showtablelppb',$data,TRUE);
 		}else{
@@ -159,6 +161,7 @@ class C_monitoringlppbadmin extends CI_Controller{
 
 	public function saveLppbNumber() //FUNGSI SAVE DI SUBMIT LPPB
 	{
+		// print_r($_POST);exit();
 		$lppb_number = str_replace(' ', '', $this->input->post('lppb_number'));
 		$status = $this->input->post('status');
 		$lppb_info = $this->input->post('lppb_info');
@@ -170,7 +173,9 @@ class C_monitoringlppbadmin extends CI_Controller{
 		$cek_section = $this->M_monitoringlppbadmin->checkSectionName($id_gudang);
 		$tanggal = strtoupper(date('dMY'));
 		$batch = $cek_section[0]['SECTION_KEYWORD'].'-'.$tanggal;
+		// print_r($batch);
 		$checkLengthBatch = $this->M_monitoringlppbadmin->checkLengthBatch($batch);
+		// print_r($checkLengthBatch);exit();
 		$running_number = $this->M_monitoringlppbadmin->checkGroupBatch($batch,$checkLengthBatch[0]['LENGTH']);
 		if ($running_number[0]['BATCH'] == 0) {
 			$group_batch = $cek_section[0]['SECTION_KEYWORD'].'-'.$tanggal; 
@@ -179,15 +184,30 @@ class C_monitoringlppbadmin extends CI_Controller{
 		}
 		$dataid = $this->M_monitoringlppbadmin->saveLppbNumber($date,$lppb_info,$batch,$group_batch,$id_gudang);
 		$id = $dataid[0]['BATCH_NUMBER'];
+
 		$exp_lppb_num = explode(',', $lppb_number);
-		foreach ($exp_lppb_num as $ln => $val) {
-			$exp_org_id = explode(',', $organization_id);
-			$exp_po_num = explode(',',$po_number);
-			$exp_header_id = explode(' , ',$po_header_id);
-			$id2 = $this->M_monitoringlppbadmin->saveLppbNumber2($id,$exp_lppb_num[$ln],$date,$exp_org_id[$ln],$exp_po_num[$ln],$exp_header_id[$ln]);
-			$id3 = $this->M_monitoringlppbadmin->batch_detail_id($id);
-			$this->M_monitoringlppbadmin->saveLppbNumber3($id3[$ln]['BATCH_DETAIL_ID'],$date);
+		$exp_org_id = explode(',', $organization_id);
+		// $exp_po_num = explode(',',$po_number);
+		// $exp_header_id = explode(',',$po_header_id);
+
+		foreach ($exp_lppb_num as $key => $value) {
+			$ponumb[] = explode(',', $po_number[$key]);
+			$poheadid[] = explode(',', $po_header_id[$key]);
+			foreach ($ponumb[$key] as $k => $data) {
+				$id2 = $this->M_monitoringlppbadmin->saveLppbNumber2($id,$value,$date,$exp_org_id[$key],$data,$poheadid[$key][$k]);
+				$id3 = $this->M_monitoringlppbadmin->batch_detail_id($id);
+				$this->M_monitoringlppbadmin->saveLppbNumber3($id3[$key]['BATCH_DETAIL_ID'],$date);
+			}
 		}
+		// echo "<pre>";
+		// print_r($ponumb);
+
+		// foreach ($exp_lppb_num as $ln => $val) {
+			
+			// $id2 = $this->M_monitoringlppbadmin->saveLppbNumber2($id,$exp_lppb_num[$ln],$date,$exp_org_id[$ln],$exp_po_num[$ln],$exp_header_id[$ln]);
+			// $id3 = $this->M_monitoringlppbadmin->batch_detail_id($id);
+			// $this->M_monitoringlppbadmin->saveLppbNumber3($id3[$ln]['BATCH_DETAIL_ID'],$date);
+		// }
 	}
 
 
@@ -239,6 +259,7 @@ class C_monitoringlppbadmin extends CI_Controller{
 	}
 	public function saveEditLppbNumber(){ //FUNGSI SAVE DI BAGIAN EDIT
 
+		// print_r($_POST);exit();
 		$lppb_number = str_replace(' ', '', $this->input->post('lppb_number'));
 		$date = date('d-m-Y H:i:s');
 		$batch_number = $this->input->post('batch_number');
@@ -252,6 +273,7 @@ class C_monitoringlppbadmin extends CI_Controller{
 		$po_header_idNew = $this->input->post('po_header_idNew');
 		$id_lppb = $this->input->post('id_lppb');
 		$dataid = $this->M_monitoringlppbadmin->saveEditLppbNumber($batch_number);
+		// print_r($dataid);exit();
 		$id = $dataid[0]['BATCH_NUMBER'];
 		$expLppb = explode(',', $lppb_number);
 		$expIo = explode(',', $organization_id);
@@ -259,8 +281,8 @@ class C_monitoringlppbadmin extends CI_Controller{
 		$expIoNew = explode(',', $organization_idNew);
 		$exp_po_num = explode(',',$po_number);
 		$exp_po_header = explode(',',$po_header_id);
-		$exp_po_numNew = explode(',',$po_numberNew);
-		$exp_po_headerNew = explode(',',$po_header_idNew);
+		// $exp_po_numNew = explode(',',$po_numberNew);
+		// $exp_po_headerNew = explode(',',$po_header_idNew);
 
 		$i = 0;
 		foreach ($expLppb as $ln => $val) {
@@ -270,13 +292,16 @@ class C_monitoringlppbadmin extends CI_Controller{
 			$i++;
 			
 		}
-		$n = 0;
-		foreach ($expLppbNew as $ln => $val) {
 
-			$this->M_monitoringlppbadmin->saveEditLppbNumber2($batch_number,$expLppbNew[$ln],$date,$expIoNew[$ln],$exp_po_numNew[$ln],$exp_po_headerNew[$ln]);
-			$this->M_monitoringlppbadmin->saveEditLppbNumber3($batch_detail_id,$date);
-			$n++;
-			
+		foreach ($expLppbNew as $key => $value) {
+			$ponumb[] = explode(',', $po_numberNew[$key]);
+			$poheadid[] = explode(',', $po_header_idNew[$key]);
+			foreach ($ponumb[$key] as $k => $data) {
+				$id2 = $this->M_monitoringlppbadmin->saveEditLppbNumber2($id,$value,$date,$expIoNew[$key],$data,$poheadid[$key][$k]);
+				$id3 = $this->M_monitoringlppbadmin->batch_detail_id($id);
+
+				$this->M_monitoringlppbadmin->saveEditLppbNumber3($id3[$key]['BATCH_DETAIL_ID'],$date);
+			}
 		}
 		
 	}

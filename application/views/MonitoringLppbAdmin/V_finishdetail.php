@@ -78,7 +78,7 @@
 														}elseif ($p['STATUS'] == 4) {
 															$status = '<span class="label label-danger">Kasie Gudang Reject &nbsp;<br></span>';
 														}elseif ($p['STATUS'] == 5) {
-															$status = '<span class="label label-info">Checking Akuntansi (Sumbit ke Akuntansi) &nbsp;<br></span>';
+															$status = '<span class="label label-info">Checking Akuntansi (submit ke Akuntansi) &nbsp;<br></span>';
 														}elseif ($p['STATUS'] == 6) {
 															$status = '<span class="label label-success">Akuntansi Approve &nbsp;<br></span>';
 														}elseif ($p['STATUS'] == 7) {
