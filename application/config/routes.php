@@ -1279,6 +1279,8 @@ $route['SDM/(:any)'] = 'Grapic/C_Index/$1';
 $route['SDM/(:any)/(:any)'] = 'Grapic/C_Index/$1/$2';
 $route['SDM/Grapic'] = 'Grapic/C_Index';
 $route['SDM/grapicTabs'] = 'Grapic/C_Index/grapicTabs';
+$route['Sdm/Grafik/(:any)'] = 'Grapic/C_Index/$1';
+$route['Sdm/Grafik/(:any)/(:any)'] = 'Grapic/C_Index/$1/$2';
 $route['SDM/getData'] = 'Grapic/C_Index/getData';
 $route['SDM/getDatav2'] = 'Grapic/C_Index/getDatav2';
 $route['SDM/input'] = 'Grapic/C_Index/input';
@@ -2363,6 +2365,11 @@ $route['ALK/ListLembur'] = 'SPLSeksi/C_splkasie/data_spl';
 $route['ALK/Approve/(:any)'] = 'SPLSeksi/C_splkasie/$1';
 $route['ALA/ListLembur'] = 'SPLSeksi/C_splasska/data_spl';
 $route['ALA/Approve/(:any)'] = 'SPLSeksi/C_splasska/$1';
+
+$route['SPL/Daftarjari'] = 'SPLSeksi/C_splpersonalia/finger';
+$route['SPL/Daftarjari/(:any)'] = 'SPLSeksi/C_splpersonalia/$1';
+$route['SPL/DaftarFingerspot'] = 'SPLSeksi/C_splpersonalia/fingerspot';
+$route['SPL/DaftarFingerspot/(:any)'] = 'SPLSeksi/C_splpersonalia/$1';
 
 //---------------------------------------------------- Booking Kendaraan --------------------------------------//
 // hati hati kadang any any gak bisa kepanggil

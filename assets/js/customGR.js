@@ -113,9 +113,9 @@ $(document).ready(function(){
  //    	}, 5000);
 	// });	
 	$(function(){
-	    $('#divselector').change(function(){
-	      $('html,body').animate({scrollTop:$('#'+$('#divselector').val()).offset().top}, 'slow'); 
-	     })
+		$('#divselector').change(function(){
+			$('html,body').animate({scrollTop:$('#'+$('#divselector').val()).offset().top}, 'slow'); 
+		})
 	});
 
 	$('.grData').change(function(){
@@ -379,4 +379,12 @@ $(document).ready(function(){
 				}
 			});
 		});	
+
+	$('#sdm_select_tahun').select2({
+		allowClear: true,
+		placeholder: "Pilih Tahun",
+		minimumInputLength: 1,
+		tags:true,
+		minimumResultsForSearch: -1,
+	});
 });
