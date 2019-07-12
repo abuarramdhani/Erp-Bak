@@ -23,9 +23,12 @@ $(function () {
     "initComplete": function(){
       if ($('#btn-ProsesSPL').attr('id') == undefined) {
         $('#example11_wrapper').find('a.dt-button:last').hide();
+        $('#example11_wrapper').find('button.dt-button:last').hide();
       };
       $('#example11_wrapper').find('a.dt-button').removeClass('dt-button');
+      $('#example11_wrapper').find('button.dt-button').removeClass('dt-button');
       $('#example11_wrapper').find('a.btn').css("margin-right","10px");
+      $('#example11_wrapper').find('button.btn').css("margin-right","10px");
     }
   });
 
@@ -473,11 +476,15 @@ $(function () {
     $('.spl-chk-data').each(function(){
       if(this.checked) {chk += '.'+$(this).val();}
     });
-
+    console.log(chk);
     if (chk == "") {
       $('#example11_wrapper').find('a.btn-primary').addClass("disabled");
+      $('#example11_wrapper').find('button.btn-primary').addClass("disabled");
+      console.log("tidak ada");
     }else{
       $('#example11_wrapper').find('a.btn-primary').removeClass("disabled");
+      $('#example11_wrapper').find('button.btn-primary').removeClass("disabled");
+      console.log("ada");
     };
 
     if(url.indexOf('ALK') >= 0){
