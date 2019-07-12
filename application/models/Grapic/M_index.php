@@ -255,4 +255,145 @@ class M_index extends CI_Model
 		// echo $sql;exit();
 		$query = $this->personalia->query($sql);
 	}
+
+	public function getTrend($tahun, $pkl)
+	{
+		$sql = "
+		select 1 as urut,'Januari' as Bulan, 
+(select count(*)	from 
+	(
+	select distinct nama as nama ,dept,bidang,unit,seksi 
+	from
+	(select a.noind,nama,masukkerja,tglkeluar,keluar,b.*
+	from hrd_khs.tpribadi a left join hrd_khs.tseksi b on a.kodesie=b.kodesie 
+	where ((keluar = '0' and masukkerja<='$tahun-01-01') or (tglkeluar >= '$tahun-01-01' and keluar = '1'))
+	and (masukkerja >= '1990-01-01') $pkl order by 5
+	 ) tabel ) tabel) as tahun
+union
+select 2 as urut,'Februari' as Bulan, 
+(select count(*)	from 
+	(
+	select distinct nama as nama ,dept,bidang,unit,seksi 
+	from
+	(select a.noind,nama,masukkerja,tglkeluar,keluar,b.*
+	from hrd_khs.tpribadi a left join hrd_khs.tseksi b on a.kodesie=b.kodesie 
+	where ((keluar = '0' and masukkerja<='$tahun-02-01') or (tglkeluar >= '$tahun-02-01' and keluar = '1'))
+	and (masukkerja >= '1990-01-01') $pkl order by 5
+	 ) tabel ) tabel) as tahun
+union
+select 3 as urut,'Maret' as Bulan, 
+(select count(*)	from 
+	(
+	select distinct nama as nama ,dept,bidang,unit,seksi 
+	from
+	(select a.noind,nama,masukkerja,tglkeluar,keluar,b.*
+	from hrd_khs.tpribadi a left join hrd_khs.tseksi b on a.kodesie=b.kodesie 
+	where ((keluar = '0' and masukkerja<='$tahun-03-01') or (tglkeluar >= '$tahun-03-01' and keluar = '1'))
+	and (masukkerja >= '1990-01-01') $pkl order by 5
+	 ) tabel ) tabel) as tahun
+union
+select 4 as urut,'April' as Bulan, 
+(select count(*)	from 
+	(
+	select distinct nama as nama ,dept,bidang,unit,seksi 
+	from
+	(select a.noind,nama,masukkerja,tglkeluar,keluar,b.*
+	from hrd_khs.tpribadi a left join hrd_khs.tseksi b on a.kodesie=b.kodesie 
+	where ((keluar = '0' and masukkerja<='$tahun-04-01') or (tglkeluar >= '$tahun-04-01' and keluar = '1'))
+	and (masukkerja >= '1990-01-01') $pkl order by 5
+	 ) tabel ) tabel) as tahun
+union
+select 5 as urut,'Mei' as Bulan, 
+(select count(*)	from 
+	(
+	select distinct nama as nama ,dept,bidang,unit,seksi 
+	from
+	(select a.noind,nama,masukkerja,tglkeluar,keluar,b.*
+	from hrd_khs.tpribadi a left join hrd_khs.tseksi b on a.kodesie=b.kodesie 
+	where ((keluar = '0' and masukkerja<='$tahun-05-01') or (tglkeluar >= '$tahun-05-01' and keluar = '1'))
+	and (masukkerja >= '1990-01-01') $pkl order by 5
+	 ) tabel ) tabel) as tahun
+union
+select 6 as urut,'Juni' as Bulan, 
+(select count(*)	from 
+	(
+	select distinct nama as nama ,dept,bidang,unit,seksi 
+	from
+	(select a.noind,nama,masukkerja,tglkeluar,keluar,b.*
+	from hrd_khs.tpribadi a left join hrd_khs.tseksi b on a.kodesie=b.kodesie 
+	where ((keluar = '0' and masukkerja<='$tahun-06-01') or (tglkeluar >= '$tahun-06-01' and keluar = '1'))
+	and (masukkerja >= '1990-01-01') $pkl order by 5
+	 ) tabel ) tabel) as tahun
+union
+select 7 as urut,'Juli' as Bulan, 
+(select count(*)	from 
+	(
+	select distinct nama as nama ,dept,bidang,unit,seksi 
+	from
+	(select a.noind,nama,masukkerja,tglkeluar,keluar,b.*
+	from hrd_khs.tpribadi a left join hrd_khs.tseksi b on a.kodesie=b.kodesie 
+	where ((keluar = '0' and masukkerja<='$tahun-07-01') or (tglkeluar >= '$tahun-07-01' and keluar = '1'))
+	and (masukkerja >= '1990-01-01') $pkl order by 5
+	 ) tabel ) tabel) as tahun
+union
+select 8 as urut,'Agustus' as Bulan, 
+(select count(*)	from 
+	(
+	select distinct nama as nama ,dept,bidang,unit,seksi 
+	from
+	(select a.noind,nama,masukkerja,tglkeluar,keluar,b.*
+	from hrd_khs.tpribadi a left join hrd_khs.tseksi b on a.kodesie=b.kodesie 
+	where ((keluar = '0' and masukkerja<='$tahun-08-01') or (tglkeluar >= '$tahun-08-01' and keluar = '1'))
+	and (masukkerja >= '1990-01-01') $pkl order by 5
+	 ) tabel ) tabel) as tahun
+union
+select 9 as urut,'September' as Bulan, 
+(select count(*)	from 
+	(
+	select distinct nama as nama ,dept,bidang,unit,seksi 
+	from
+	(select a.noind,nama,masukkerja,tglkeluar,keluar,b.*
+	from hrd_khs.tpribadi a left join hrd_khs.tseksi b on a.kodesie=b.kodesie 
+	where ((keluar = '0' and masukkerja<='$tahun-09-01') or (tglkeluar >= '$tahun-09-01' and keluar = '1'))
+	and (masukkerja >= '1990-01-01') $pkl  order by 5
+	 ) tabel ) tabel) as tahun
+union
+select 10 as urut,'Oktober' as Bulan, 
+(select count(*)	from 
+	(
+	select distinct nama as nama ,dept,bidang,unit,seksi 
+	from
+	(select a.noind,nama,masukkerja,tglkeluar,keluar,b.*
+	from hrd_khs.tpribadi a left join hrd_khs.tseksi b on a.kodesie=b.kodesie 
+	where ((keluar = '0' and masukkerja<='$tahun-10-01') or (tglkeluar >= '$tahun-10-01' and keluar = '1'))
+	and (masukkerja >= '1990-01-01') $pkl order by 5
+	 ) tabel ) tabel) as tahun
+union
+select 11 as urut,'November' as Bulan, 
+(select count(*)	from 
+	(
+	select distinct nama as nama ,dept,bidang,unit,seksi 
+	from
+	(select a.noind,nama,masukkerja,tglkeluar,keluar,b.*
+	from hrd_khs.tpribadi a left join hrd_khs.tseksi b on a.kodesie=b.kodesie 
+	where ((keluar = '0' and masukkerja<='$tahun-11-01') or (tglkeluar >= '$tahun-11-01' and keluar = '1'))
+	and (masukkerja >= '1990-01-01') $pkl order by 5
+	 ) tabel ) tabel) as tahun
+union
+select 12 as urut,'Desember' as Bulan, 
+(select count(*)	from 
+	(
+	select distinct nama as nama ,dept,bidang,unit,seksi 
+	from
+	(select a.noind,nama,masukkerja,tglkeluar,keluar,b.*
+	from hrd_khs.tpribadi a left join hrd_khs.tseksi b on a.kodesie=b.kodesie 
+	where ((keluar = '0' and masukkerja<='$tahun-12-01') or (tglkeluar >= '$tahun-12-01' and keluar = '1'))
+	and (masukkerja >= '1990-01-01') $pkl order by 5
+	 ) tabel ) tabel) as tahun
+order by 1
+		";
+		$query = $this->personalia->query($sql);
+		return $query->result_array();
+	}
+
 }

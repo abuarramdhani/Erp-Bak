@@ -1783,6 +1783,16 @@ class C_Index extends CI_Controller
 
 		}
 
+		$data['tabel2016']=$this->M_index->getTrend('2016',"and left(noind,1) not in('F','G','L','N','Q','L','Z','M')");
+		$data['tabel2017']=$this->M_index->getTrend('2017',"and left(noind,1) not in('F','G','L','N','Q','L','Z','M')");
+		$data['tabel2018']=$this->M_index->getTrend('2018',"and left(noind,1) not in('F','G','L','N','Q','L','Z','M')");
+		$data['tabel2019']=$this->M_index->getTrend('2019',"and left(noind,1) not in('F','G','L','N','Q','L','Z','M')");
+		
+		$data['tabel2016pkl']=$this->M_index->getTrend('2016',"and left(noind,1) not in('L','Z','M')");
+		$data['tabel2017pkl']=$this->M_index->getTrend('2017',"and left(noind,1) not in('L','Z','M')");
+		$data['tabel2018pkl']=$this->M_index->getTrend('2018',"and left(noind,1) not in('L','Z','M')");
+		$data['tabel2019pkl']=$this->M_index->getTrend('2019',"and left(noind,1) not in('L','Z','M')");
+
 		$this->load->view('V_Header',$data);
 		$this->load->view('V_Sidemenu',$data);
 		$this->load->view('Grapic/V_Trend_Pekerja',$data);
