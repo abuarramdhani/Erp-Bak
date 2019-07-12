@@ -55,7 +55,7 @@
 								<span class="label label-danger"><?php echo $lb['KASIE_GUDANG_REJECT']." Kasie Gudang Reject &nbsp;"."<br>"?></span>
 							<?php }
 							if ($lb['CHECKING_AKUNTANSI']>0) { ?>
-								<span class="label label-info"><?php echo $lb['CHECKING_AKUNTANSI']." Checking Akuntansi (Sumbit ke Akuntansi) &nbsp;"."<br>"?></span>
+								<span class="label label-info"><?php echo $lb['CHECKING_AKUNTANSI']." Checking Akuntansi (submit ke Akuntansi) &nbsp;"."<br>"?></span>
 							<?php }
 							if ($lb['AKUNTANSI_APPROVED']>0) { ?>
 								<span class="label label-success"><?php echo $lb['AKUNTANSI_APPROVED']." Akuntansi Approve"."<br>"?></span>

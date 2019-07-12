@@ -276,8 +276,8 @@ function reloadAktTerima (th) {
 	$('#reload_'+th).remove();
 	$('#txtTolak_'+th).hide();
 
-	var btn = '<button id="btnAkt_'+th+'" class="btn btn-primary" onclick="actionLppbNumber(this)" value="6" name="proses" data-id="'+th+'">TERIMA</button> ';
-	btn += '<button id="btnAkt_'+th+'" class="btn btn-danger" onclick="actionLppbNumber(this)" value="7" name="proses" data-id="'+th+'">TOLAK</button>';
+	var btn = '<button id="btnAkt_'+th+'" class="btn btn-primary" onclick="actionLppbNumber(this)" value="6" name="proses" data-id="'+th+'">OK</button> ';
+	btn += '<button id="btnAkt_'+th+'" class="btn btn-danger" onclick="actionLppbNumber(this)" value="7" name="proses" data-id="'+th+'">NOT OK</button>';
 	$('td[data = "'+th+'"]').html(btn);
 
 	// $('td[data = "'+th+'"]').html("sadasdas")
@@ -292,8 +292,8 @@ function reloadAktTolak(th) {
 	$('#reloadtlk_'+th).remove();
 	$('#txtTolak_'+th).hide();
 
-	var btn = '<button id="btnAkt_'+th+'" class="btn btn-primary" onclick="actionLppbNumber(this)" value="6" name="proses" data-id="'+th+'">TERIMA</button> ';
-	btn += '<button id="btnAkt_'+th+'" class="btn btn-danger" onclick="actionLppbNumber(this);" value="7" name="proses" data-id="'+th+'">TOLAK</button>';
+	var btn = '<button id="btnAkt_'+th+'" class="btn btn-primary" onclick="actionLppbNumber(this)" value="6" name="proses" data-id="'+th+'">OK</button> ';
+	btn += '<button id="btnAkt_'+th+'" class="btn btn-danger" onclick="actionLppbNumber(this);" value="7" name="proses" data-id="'+th+'">NOT OK</button>';
 	$('td[data = "'+th+'"]').html(btn);
 	// $('td.batchdid_'+ th).children('.txtAlasan').show().attr('required', true);
 	// console.log(th);
@@ -468,14 +468,12 @@ function saveLPPBNumber(th){
 		var po_number = $(this).val();
 		arry3.push(po_number);
 	})
-	str_arry3 = arry3.join();
 	var arry5 = [];
 	$('input[class~="po_header_id[]').each(function(){
 		var po_header_id = $(this).val();
 		arry5.push(po_header_id);
 	})
-	str_arry5 = arry5.join();
-	// console.log(str_arry5);
+	// console.log(arry5);
 	$.ajax({
 		type: "post",
 		url: baseurl+"MonitoringLPPB/ListBatch/saveLppbNumber",
@@ -484,14 +482,14 @@ function saveLPPBNumber(th){
 			id_gudang: id_gudang,
 			lppb_number: str_arry,
 			organization_id: str_arry2,
-			po_number: str_arry3,
-			po_header_id: str_arry5
+			po_number: arry3,
+			po_header_id: arry5
 		},
 		// dataType: "json",
 		success: function(response){
 			// console.log(lppb_info,id_gudang,str_arry,str_arry2,str_arry3,str_arry5);
-			// window.location.reload();
-			// alert('Data sudah ditambahkan');
+			window.location.reload();
+			alert('Data sudah ditambahkan');
 		}
 	})
 	
@@ -506,7 +504,7 @@ function saveEditLPPBNumber(th){
 		var lppb_number = $(this).text();
 		arry.push(lppb_number);
 	});
-	console.log("lppb_number", arry);
+	// console.log("lppb_number", arry);
 	str_arry = arry.join();
 	
 	var arry2 = [];
@@ -514,7 +512,7 @@ function saveEditLPPBNumber(th){
 		var organization_id = $(this).text(); 
 		arry2.push(organization_id);
 	});
-	console.log("oi", arry2);
+	// console.log("oi", arry2);
 	str_arry2 = arry2.join();
 	var arry3 = [];
 	$('td[class~="po_number').each(function(){
@@ -534,7 +532,7 @@ function saveEditLPPBNumber(th){
 		var lppb_numberNew = $(this).text();
 		arry6.push(lppb_numberNew);
 	});
-	console.log("lppb_numberNew", arry);
+	// console.log("lppb_numberNew", arry);
 	str_arry6 = arry6.join();
 	
 	var arry7 = [];
@@ -542,21 +540,24 @@ function saveEditLPPBNumber(th){
 		var organization_idNew = $(this).text(); 
 		arry7.push(organization_idNew);
 	});
-	console.log("organization_idNew", arry7);
+	// console.log("organization_idNew", arry7);
 	str_arry7 = arry7.join();
+
 	var arry8 = [];
 	$('td[class~="po_numberNew').each(function(){
 		var po_numberNew = $(this).text();
 		arry8.push(po_numberNew);
-	});
-	str_arry8 = arry8.join();
+	})
+	// str_arry8 = arry8.join();
+	console.log("po_numberNew", arry8);
+
 	var arry9 = [];
 	$('td[class~="po_header_idNew').each(function(){
 		var po_header_idNew = $(this).text();
 		arry9.push(po_header_idNew);
-	});
-	str_arry9 = arry9.join();
-	
+	})
+	console.log("po_header_idNew", arry9);
+
 	$.ajax({
 		type: "post",
 		url: baseurl+"MonitoringLPPB/ListBatch/saveEditLppbNumber" ,
@@ -570,8 +571,8 @@ function saveEditLPPBNumber(th){
 			id_lppb: id_lppb,
 			lppb_numberNew: str_arry6,
 			organization_idNew: str_arry7, 
-			po_numberNew: str_arry8,
-			po_header_idNew: str_arry9
+			po_numberNew: arry8,
+			po_header_idNew: arry9
 		},
 		success: function(response){
 			window.location.reload();
@@ -768,7 +769,7 @@ function reloadTerima (th) {
 	$('#tgl_'+th).remove();
 	$('#span_'+th).remove();
 	$('#reload_'+th).remove();
-	$('#txtTolak_'+th).remove();
+	$('#txtTolak_'+th).hide();
 
 	// $(th).remove();
 }
