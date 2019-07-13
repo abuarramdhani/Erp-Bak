@@ -51,10 +51,12 @@
 										<div class="form-inline">
 											<div class="form-group col-md-12">
 												<h2>Grafik Jumlah Pekerja 2018 vs 2019 <small>TANPA PKL, Magang & TKPW</small></h2>
+												<small>Data Per Tanggal 1 Setiap bulannya.</small>
 												<canvas id="chartjs-0"></canvas>	
 											</div>
 											<div class="form-group col-md-12">
 												<h2>Grafik Jumlah Pekerja 2018 vs 2019 <small>TERMASUK PKL, Magang & TKPW</small></h2>
+												<small>Data Per Tanggal 1 Setiap bulannya.</small>
 												<canvas id="chartjs-1"></canvas>	
 											</div>
 										</div>
