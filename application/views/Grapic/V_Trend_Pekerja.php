@@ -88,8 +88,8 @@ new Chart(document.getElementById("chartjs-0"),
 		{	"label":"Tahun 2019",
 			"data":[<?php 
 
-				$bln=1;
-				foreach($tabel2019pkl as $tb){
+				$bln=1; 
+				foreach($tabel2019 as $tb){
 				if(date("n")>=$bln)
 				{
 				echo '"'.$tb['tahun'].'",';	
