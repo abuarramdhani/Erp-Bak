@@ -108,6 +108,7 @@
 		<script type="text/javascript" src="<?= base_url('assets/js/customSL.js') ?>"></script>
 		<!-- <script type="text/javascript" src="<?= base_url('assets/js/customPR.js') ?>"></script>-->
 		<script type="text/javascript" src="<?= base_url('assets/js/customGA.js') ?>"></script>
+		<script type="text/javascript" src="<?= base_url('assets/js/customGRR.js') ?>"></script>
 		<script type="text/javascript" src="<?= base_url('assets/js/customLKH.js') ?>"></script>
 		<script type="text/javascript" src="<?= base_url('assets/js/customOC.js') ?>"></script>
 		<script type="text/javascript" src="<?= base_url('assets/js/customOJT.js') ?>"></script>
