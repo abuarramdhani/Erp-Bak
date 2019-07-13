@@ -86,9 +86,20 @@ new Chart(document.getElementById("chartjs-0"),
 			"lineTension":0.1
 		},
 		{	"label":"Tahun 2019",
-			"data":[<?php foreach($tabel2019 as $tb){
-				echo '"'.$tb['tahun'].'",';
-				
+			"data":[<?php 
+
+				$bln=1;
+				foreach($tabel2019pkl as $tb){
+				if(date("n")>=$bln)
+				{
+				echo '"'.$tb['tahun'].'",';	
+				}
+				else
+				{
+				echo '"0",';		
+				}
+				$bln++;
+								
 	}
 		?>],
 			"fill":false,
@@ -146,10 +157,20 @@ new Chart(document.getElementById("chartjs-1"),
 			"lineTension":0.1
 		},
 		{	"label":"Tahun 2019",
-			"data":[<?php foreach($tabel2019pkl as $tb){
-				echo '"'.$tb['tahun'].'",';
+			"data":[<?php 
+				$bln=1;
+				foreach($tabel2019pkl as $tb){
+				if(date("n")>=$bln)
+				{
+				echo '"'.$tb['tahun'].'",';	
+				}
+				else
+				{
+				echo '"0",';		
+				}
+				$bln++;
 				
-	}
+				}
 		?>],
 			"fill":false,
 			"backgroundColor:":"rgb(255, 99, 132)",
