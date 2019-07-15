@@ -1408,6 +1408,13 @@ $route['WasteManagement/RekapLimbah/(:any)'] = 'WasteManagement/MainMenu/C_Limba
 $route['WasteManagement/RekapLimbah/(:any)/(:any)'] = 'WasteManagement/MainMenu/C_LimbahRekap/$1/$2';
 $route['WasteManagement/RekapLimbah/(:any)/(:any)/(:any)'] = 'WasteManagement/MainMenu/C_LimbahRekap/$1/$2/$3';
 
+//-----------------------------------------Waste Management - Rekap Logbook Harian Limbah ---------------------------------//
+
+$route['WasteManagement/LogbookHarianLimbah'] = 'WasteManagement/MainMenu/C_LogbookHarian';
+$route['WasteManagement/LogbookHarianLimbah/(:any)'] = 'WasteManagement/MainMenu/C_LogbookHarian/$1';
+$route['WasteManagement/LogbookHarianLimbah/(:any)/(:any)'] = 'WasteManagement/MainMenu/C_LogbookHarian/$1/$2';
+$route['WasteManagement/LogbookHarianLimbah/(:any)/(:any)/(:any)'] = 'WasteManagement/MainMenu/C_LogbookHarian/$1/$2/$3';
+
 //------------------------------------ Calibration Report ----------------------------
 $route['CalibrationReport'] = 'CalibrationReport/C_Index';
 $route['CalibrationReport/Calibration'] = 'CalibrationReport/MainMenu/C_Component';
@@ -2439,7 +2446,7 @@ $route['PNBP/Report/(:any)'] = 'PNBPAdministrator/C_Report/$1/$2';
 
  $route['MonitoringBarangGudang/Pengeluaran'] = 'WarehouseMPO/Spbs/C_Spbs';
  $route['MonitoringBarangGudang/Pengeluaran/Search'] = 'WarehouseMPO/Spbs/C_Spbs/search';
- 
+
  $route['MonitoringBarangGudang/Pengeluaran/Filter'] = 'WarehouseMPO/C_OutPart/filterOut';
  $route['MonitoringBarangGudang/Pengeluaran/Filter/(:any)'] = 'WarehouseMPO/C_OutPart/filterOut/$1';
  $route['MonitoringBarangGudang/Pengeluaran/(:any)'] = 'WarehouseMPO/C_OutPart/filterByGudang/$1';
@@ -2447,12 +2454,12 @@ $route['PNBP/Report/(:any)'] = 'PNBPAdministrator/C_Report/$1/$2';
  //$route['MonitoringBarangGudang/Pengeluaran/(:any)/(:any)/(:any)'] = 'WarehouseMPO/C_OutPart/filterByGudang/$1/$2/$3';
  $route['MonitoringBarangGudang/Pengeluaran/Update'] = 'WarehouseMPO/C_OutPart/Update';
  $route['MonitoringBarangGudang/Pengeluaran/Car'] = 'WarehouseMPO/C_OutPart/getNomorCar';
- 
+
  $route['MonitoringBarangGudang/SparePart'] = 'WarehouseMPO/C_SparePart';
  $route['MonitoringBarangGudang/SparePart/(:any)'] = 'WarehouseMPO/C_SparePart/$1';
  $route['MonitoringBarangGudang/SparePart/(:any)/(:any)'] = 'WarehouseMPO/C_SparePart/$1/$2';
  $route['MonitoringBarangGudang/SparePart/Filter'] = 'WarehouseMPO/C_SparePart/filterSpare';
- 
+
  $route['MonitoringBarangGudang/Pengeluaran/insertData'] = 'WarehouseMPO/Spbs/C_Spbs/insertData';
  $route['MonitoringBarangGudang/Pengeluaran/updateData'] = 'WarehouseMPO/Spbs/C_Spbs/updateData';
 
