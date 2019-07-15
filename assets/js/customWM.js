@@ -68,6 +68,40 @@ $(function() {
 		$(this).val('');
 	});
 
+$("#periode1").daterangepicker({
+      		"autoclose": true,
+    		"todayHiglight": true,
+    		locale: {
+    			cancelLabel: 'Clear'
+    		},
+    		autoUpdateInput: false,
+    });
+
+    $('input[id="periode1"]').on('apply.daterangepicker', function(ev, picker) {
+		$(this).val(picker.startDate.format('DD/MM/YYYY') + ' - ' + picker.endDate.format('DD/MM/YYYY'));
+	});
+
+	$('input[id="periode1"]').on('cancel.daterangepicker', function(ev, picker) {
+		$(this).val('');
+	});
+
+  	$("#periode2").daterangepicker({
+      		"autoclose": true,
+    		"todayHiglight": true,
+    		locale: {
+    			cancelLabel: 'Clear'
+    		},
+    		autoUpdateInput: false,
+    });
+
+    $('input[id="periode2"]').on('apply.daterangepicker', function(ev, picker) {
+		$(this).val(picker.startDate.format('DD/MM/YYYY') + ' - ' + picker.endDate.format('DD/MM/YYYY'));
+	});
+
+	$('input[id="periode2"]').on('cancel.daterangepicker', function(ev, picker) {
+		$(this).val('');
+	});
+
 });
 
 
