@@ -490,7 +490,7 @@ function saveLPPBNumber(th){
 }
 function saveEditLPPBNumber(th){
 	var batch_number = $('#batch_number').val();
-	var batch_detail_id = $('#batch_detail_id').val();
+	// var batch_detail_id = $('#batch_detail_id').val();
 	var id_lppb = $('.row-id').length;
 	
 	var arry = [];
@@ -542,13 +542,27 @@ function saveEditLPPBNumber(th){
 		arry8.push(po_numberNew);
 	})
 	// str_arry8 = arry8.join();
-	console.log("po_numberNew", arry8);
+	// console.log("po_numberNew", arry8);
 	var arry9 = [];
 	$('td[class~="po_header_idNew').each(function(){
 		var po_header_idNew = $(this).text();
 		arry9.push(po_header_idNew);
 	})
-	console.log("po_header_idNew", arry9);
+	// console.log("po_header_idNew", arry9);
+
+	var arry10 = [];
+	$('td[class~="batch_detail_id').each(function(){
+		var batch_detail_id = $(this).text();
+		arry10.push(batch_detail_id);
+	})
+	console.log("batch_detail_id", arry10);
+
+	// var arry11 = [];
+	// $('td[class~="batch_detail_idNew').each(function(){
+	// 	var batch_detail_idNew = $(this).text();
+	// 	arry11.push(batch_detail_idNew);
+	// })
+	// console.log("batch_detail_idNew", arry11);
 	$.ajax({
 		type: "post",
 		url: baseurl+"MonitoringLPPB/ListBatch/saveEditLppbNumber" ,
@@ -557,13 +571,15 @@ function saveEditLPPBNumber(th){
 			organization_id: str_arry2, 
 			po_number: str_arry3,
 			po_header_id: str_arry5,
-			batch_detail_id: batch_detail_id,
+			// batch_detail_id: batch_detail_id,
 			batch_number: batch_number,
 			id_lppb: id_lppb,
 			lppb_numberNew: str_arry6,
 			organization_idNew: str_arry7, 
 			po_numberNew: arry8,
-			po_header_idNew: arry9
+			po_header_idNew: arry9,
+			batch_detail_id: arry10,
+			// batch_detail_idNew: arry11
 		},
 		success: function(response){
 			window.location.reload();
@@ -676,8 +692,10 @@ function searchLppb(th){ //ini fungsi add bawah detail
 										}
 										else if (col==9){
 											html+='<td class="po_numberNew">'+$(this).text()+'</td>';
-											
 										}
+										// else if (col==10){
+										// 	html+='<td class="batch_detail_idNew">'+$(this).text()+'</td>';
+										// }
 										
 										
 									});

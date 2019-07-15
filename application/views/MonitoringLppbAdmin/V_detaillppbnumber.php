@@ -14,7 +14,7 @@
 							<div class="text-left ">
 								<span ><b>Lppb Number Details</b></span>
 								<input name="batch_number" id="batch_number" value="<?php echo $lppb[0]['BATCH_NUMBER']?>" type="hidden">
-								<input id="batch_detail_id" value="<?php echo $lppb[0]['BATCH_DETAIL_ID']?>" type="hidden">
+								
 							</div>
 						</div>
 					</div>
@@ -64,7 +64,6 @@
 															</select>
 														</td>
 													</tr>
-
 													<tr>
 														<td >
 															<span><label>Status Detail</label></span>
@@ -78,7 +77,6 @@
 														</select>
 													</td>
 													</tr>
-
 														<tr>
 															<td>
 																<span class="text-center"><label>Nomor LPPB</label></span>
@@ -129,7 +127,6 @@
 						<div class="col-md-12">
 							<div class="box-body">
 								<div id="loading_search">
-
 								</div>
 							</div>
 							<span>Jumlah Data : <b><?php echo $jml[0]['JUMLAH_DATA']?></b></span>
@@ -148,6 +145,7 @@
 											<td class="text-center">Nomor PO</td>
 											<td class="text-center">Status Detail</td>
 											<td class="text-center">Action</td>
+											<td class="text-center" style="display: none;">Batch detail id</td>
 										</tr>
 									</thead>
 									<tbody id="tabelNomorLPPB">
@@ -194,6 +192,7 @@
 														</a>
 													<?php } ?>
 												</td>
+												<td class="batch_detail_id" style="display: none;"><?php echo $p['BATCH_DETAIL_ID']?></td>
 											</tr>
 											<?php $no++; } ?>
 										</tbody>

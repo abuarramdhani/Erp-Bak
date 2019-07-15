@@ -42,7 +42,7 @@ class M_monitoringlppbadmin extends CI_Model {
     public function searchNumberLppb($lppb_numberFrom,$lppb_numberTo,$io,$queryStatus)
     {
         $oracle = $this->load->database('oracle',true);
-        $query = "SELECT   aa.lppb_number,
+        $query = " SELECT   aa.lppb_number,
                          REPLACE
                             ((RTRIM
                                  (XMLAGG (XMLELEMENT (e, TO_CHAR (aa.po_number) || '@')).EXTRACT
@@ -111,9 +111,10 @@ class M_monitoringlppbadmin extends CI_Model {
         foreach ($arr as $key => $value) {
           $arr[$key]['PO_NUMBER'] = $this->get_ora_blob_value($arr[$key]['PO_NUMBER']);
           $arr[$key]['PO_HEADER_ID'] = $this->get_ora_blob_value($arr[$key]['PO_HEADER_ID']);
+          // $arr[$key]['BATCH_DETAIL_ID'] = $this->get_ora_blob_value2($arr[$key]['BATCH_DETAIL_ID']);
         }
         return $arr;
-    }
+}
 
     function get_ora_blob_value($value)
     {
@@ -121,6 +122,13 @@ class M_monitoringlppbadmin extends CI_Model {
         $result = $value->read($size);
         return ($result)?$result:NULL;
     }
+
+    // function get_ora_blob_value2($value)
+    // {
+    //     $size = $value->size();
+    //     $result = $value->read($size);
+    //     return ($result)?$result:NULL;
+    // }
 
     public function lppbBatchDetail($batch_number,$lppb_number)
     {
@@ -179,7 +187,8 @@ class M_monitoringlppbadmin extends CI_Model {
                     AND rts.po_line_id = pol.po_line_id) 
                 AND a.po_header_id = poh.po_header_id 
                 AND a.lppb_number = rsh.receipt_num 
-                $lppb_number";
+                $lppb_number
+                order by a.batch_detail_id";
 
         $run = $oracle->query($query);
         return $run->result_array();
@@ -231,7 +240,8 @@ class M_monitoringlppbadmin extends CI_Model {
         $oracle = $this->load->database('oracle',true);
         $query = "INSERT INTO khs_lppb_batch
                       (create_date, lppb_info, source, group_batch, id_gudang) values (to_date('$create_date', 'DD/MM/YYYY HH24:MI:SS'), '$lppb_info', '$source', '$group_batch', '$id_gudang')";
-
+       //  echo "<pre>";
+       // print_r($query);               
         $oracle->query($query);
         $ssql = "select max(batch_number) batch_number from khs_lppb_batch";
         $data = $oracle->query($ssql);
@@ -242,7 +252,8 @@ class M_monitoringlppbadmin extends CI_Model {
         $oracle = $this->load->database('oracle',true);
         $query = "INSERT INTO khs_lppb_batch_detail
                       (batch_number, lppb_number, status, status_date, io_id, po_number, po_header_id) values ('$batch_number', '$lppb_number', '0', to_date('$status_date', 'DD/MM/YYYY HH24:MI:SS'), '$io_id', '$po_number', '$po_header_id')";
-   
+       //  echo "<pre>";
+       // print_r($query);
         $run = $oracle->query($query); 
     }
     public function batch_detail_id($batch_number)
@@ -252,11 +263,12 @@ class M_monitoringlppbadmin extends CI_Model {
         $run = $oracle->query(  $sql);
         return $run->result_array();
     }
-    public function limitBatchDetId($batch_number,$limit)
+    public function limitBatchDetId($batch_number)
     {
         $oracle = $this->load->database('oracle',true);
         $sql = "SELECT batch_detail_id FROM
-                 (SELECT batch_detail_id FROM khs_lppb_batch_detail
+                 (SELECT batch_detail_id FROM khs_lppb_batch_detail 
+                 where batch_number = $batch_number
                 ORDER BY batch_detail_id DESC)
                 WHERE ROWNUM <= 1";
         $run = $oracle->query($sql);
@@ -267,7 +279,8 @@ class M_monitoringlppbadmin extends CI_Model {
         $oracle = $this->load->database('oracle', true);
         $query = "INSERT INTO khs_lppb_action_detail_1
                     (batch_detail_id,status,action_date) VALUES ('$batch_detail_id', '0', to_date('$action_date', 'DD/MM/YYYY HH24:MI:SS'))";
-       
+       // echo "<pre>";
+       // print_r($query);
         $oracle->query($query);
         
     }
@@ -332,7 +345,7 @@ class M_monitoringlppbadmin extends CI_Model {
                     FROM khs_lppb_batch_detail
                     WHERE batch_number = '$batch_number' ";
         $runQuery2 = $oracle->query($query2);
-        oci_commit($oracle);
+        // oci_commit($oracle);
     }
     public function submitToKasieGudang($status_date,$batch_number){
         $oracle = $this->load->database('oracle',true);
@@ -366,6 +379,8 @@ class M_monitoringlppbadmin extends CI_Model {
     {
         $oracle = $this->load->database('oracle',true);
         $query = "SELECT BATCH_NUMBER FROM KHS_LPPB_BATCH WHERE BATCH_NUMBER = '$batch_number'";
+        // echo "<pre>";
+        // print_r($query);
         $run = $oracle->query($query);
         return $run->result_array();
     }
@@ -375,7 +390,8 @@ class M_monitoringlppbadmin extends CI_Model {
         $oracle = $this->load->database('oracle',true);
         $query = "INSERT INTO khs_lppb_batch_detail
                       (batch_number, lppb_number, status, status_date, io_id, po_number, po_header_id) values ('$batch_number', '$lppb_number', '1', to_date('$status_date', 'DD/MM/YYYY HH24:MI:SS'), '$io_id', '$po_number', '$po_header_id')";
-       
+       // echo "<pre>";
+       // print_r($query);
         $run = $oracle->query($query); 
     }
 
@@ -385,7 +401,8 @@ class M_monitoringlppbadmin extends CI_Model {
         $oracle = $this->load->database('oracle', true);
         $query = "INSERT INTO khs_lppb_action_detail_1
                     (batch_detail_id, status, action_date) VALUES ('$batch_detail_id', '1', to_date('$action_date', 'DD/MM/YYYY HH24:MI:SS'))";
-      
+      // echo "<pre>";
+      //  print_r($query);
         $oracle->query($query);
         
     }
@@ -402,6 +419,8 @@ class M_monitoringlppbadmin extends CI_Model {
                             po_number = '$po_number',
                             po_header_id = '$po_header_id'
                             where batch_number='$batch_number'";
+       // echo "<pre>";
+       // print_r($query);
         $oracle->query($query);
     }
     public function saveEditLppbNumber3Update($batch_detail_id,$action_date)
@@ -412,6 +431,8 @@ class M_monitoringlppbadmin extends CI_Model {
                     status='1',
                     action_date=to_date('$action_date', 'DD/MM/YYYY HH24:MI:SS')
                     where batch_detail_id='$batch_detail_id' ";
+       //  echo "<pre>";
+       // print_r($query);            
         $oracle->query($query);
     }
   

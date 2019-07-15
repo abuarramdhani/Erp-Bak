@@ -45,7 +45,7 @@
 									<tr>
 										<td><?php echo $no?></td>
 										<td>
-											<a title="Detail Lppb" href="<?php echo base_url('MonitoringLppbAkuntansi/Unprocess/detailLppbAkuntansi/'.$lb['BATCH_NUMBER'])?>" class="btn btn-default btn-xs"><i class="fa fa-file-text-o"></i></a>
+											<a title="Detail Lppb" href="<?php echo base_url('MonitoringLppbAkuntansi/Unprocess/detailLppbAkuntansi/'.$lb['BATCH_NUMBER'])?>" target="_blank" class="btn btn-default btn-xs"><i class="fa fa-file-text-o"></i></a>
 										</td>
 										<td><?php echo $lb['GROUP_BATCH']?></td>
 										<td><?php echo $lb['CREATE_DATE']?></td>
