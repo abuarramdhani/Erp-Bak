@@ -171,7 +171,8 @@
 				$('#dataTables-customer').dataTable({
 					"bSort" : false,
 					"searching": false,
-					"bLengthChange": false
+					"bLengthChange": false,
+					"bDestroy": true
 				});
 				$(".textarea").wysihtml5();
 				$('.pp-date').datepicker({
