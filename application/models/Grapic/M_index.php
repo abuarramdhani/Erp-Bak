@@ -97,6 +97,29 @@ class M_index extends CI_Model
 		return $query->result_array();
 	}
 
+	public function pekerjaSeksi($now, $kodeSeksi, $sqlPKL)
+	{
+		$sql = "
+		select rtrim(seksi),count(*)	from 
+				(
+				select distinct nik, nama ,dept,bidang,unit,seksi 
+				from
+				(select a.noind,nik,nama,masukkerja,tglkeluar,keluar,b.*
+				from hrd_khs.tpribadi a left join hrd_khs.tseksi b on a.kodesie=b.kodesie 
+				where ((keluar = '0' and masukkerja<='2019-$now'))
+				and (masukkerja >= '1990-01-01') and rtrim(b.seksi) = '$kodeSeksi' $sqlPKL 
+				union 
+				select a.noind,nik,nama,masukkerja,tglkeluar,keluar,b.*
+				from hrd_khs.tpribadi a left join hrd_khs.tseksi b on a.kodesie=b.kodesie 
+				where ((masukkerja<='2019-$now') and (tglkeluar >= '2019-$now' and keluar = '1'))
+				and (masukkerja >= '1990-01-01') and rtrim(b.seksi) = '$kodeSeksi' $sqlPKL
+				 order by 5
+				 ) tabel ) tabel group by rtrim(seksi)";
+				// echo $sql;exit();
+		$query = $this->personalia->query($sql);
+		return $query->result_array();
+	}
+
 	public function pekerjaPasar($now, $sqlPKL, $kodeUnit)
 	{
 		$sql = "select rtrim(b.seksi), count(a.noind) 

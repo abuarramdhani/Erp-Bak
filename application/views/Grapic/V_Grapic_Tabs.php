@@ -124,13 +124,96 @@
 											<div class="col-lg-6">
 											<select id="divselector" class="form-control" >
 												<option value="1"><strong>Semua Data</strong></option>
-												<option value="32">--Semua Penunjang / InDirect Labour</option>
-												<option value="33">--Semua Non Penunjang / Direct Labour</option>
+												<option value="32">--Semua Penunjang / InDirect Labour (H,P,K,T,A)</option>
+												<option value="33">--Semua Non Penunjang / Direct Labour (H,P,K,T,A)</option>
 												<option value="0">Dept. Produksi</option>
 												<option value="4">--Dept. Produksi - Pusat</option>
 												<option value="5">--Dept. Produksi - Tuksono</option>
-												<option value="29">--Dept. Produksi - Operator Penunjang / InDirect Labour</option>
-												<option value="30">--Dept. Produksi - Operator Non Penunjang / Direct Labour</option>
+												<option value="35">--Dept. Produksi - Melati</option>
+												<option value="29">--Dept. Produksi - Operator Penunjang / InDirect Labour (H,P,K,T,A)</option>
+												<option value="30">--Dept. Produksi - Operator Non Penunjang / Direct Labour (H,P,K,T,A)</option>
+												<option value="36">--Dept. Produksi - Seksi Administrasi Desain</option>
+												<option value="37">--Dept. Produksi - Seksi Assembly</option>
+												<option value="38">--Dept. Produksi - Seksi Assembly Gear Trans</option>
+												<option value="39">--Dept. Produksi - Seksi Assembly-TKS</option>
+												<option value="40">--Dept. Produksi - Seksi Cetakan, Pasir Cetak & Inti Cor, Peleburan-Penuangan</option>
+												<option value="41">--Dept. Produksi - Seksi Cetakan, Pasir Cetak & Inti Cor, Pel&Pen-TKS</option>
+												<option value="42">--Dept. Produksi - Seksi Desain A</option>
+												<option value="43">--Dept. Produksi - Seksi Desain B</option>
+												<option value="44">--Dept. Produksi - Seksi Desain C</option>
+												<option value="45">--Dept. Produksi - Seksi DOJO Desain</option>
+												<option value="46">--Dept. Produksi - Seksi DOJO Foundry</option>
+												<option value="47">--Dept. Produksi - Seksi DOJO Machining</option>
+												<option value="48">--Dept. Produksi - Seksi Finishing</option>
+												<option value="49">--Dept. Produksi - Seksi Finishing-TKS</option>
+												<option value="50">--Dept. Produksi - Seksi Gudang Blank Material-TKS</option>
+												<option value="51">--Dept. Produksi - Seksi Gudang D & E</option>
+												<option value="52">--Dept. Produksi - Seksi Gudang Komponen</option>
+												<option value="53">--Dept. Produksi - Seksi Gudang Material Dan Bahan Penolong</option>
+												<option value="54">--Dept. Produksi - Seksi Gudang Pengadaan dan Blank Material</option>
+												<option value="55">--Dept. Produksi - Seksi Gudang Produksi Dan Ekpedisi</option>
+												<option value="56">--Dept. Produksi - Seksi Gudang Produksi Dan Ekpedisi-TKS</option>
+												<option value="57">--Dept. Produksi - Seksi Heat Treatmen-TKS</option>
+												<option value="58">--Dept. Produksi - Seksi Lab. Kimia dan Pasir Cetak</option>
+												<option value="59">--Dept. Produksi - Seksi Machining 1</option>
+												<option value="60">--Dept. Produksi - Seksi Machining A-TKS</option>
+												<option value="61">--Dept. Produksi - Seksi Machining B</option>
+												<option value="62">--Dept. Produksi - Seksi Machining B-TKS</option>
+												<option value="63">--Dept. Produksi - Seksi Machining C</option>
+												<option value="64">--Dept. Produksi - Seksi Machining C-TKS</option>
+												<option value="65">--Dept. Produksi - Seksi Machining D</option>
+												<option value="66">--Dept. Produksi - Seksi Machining D-TKS</option>
+												<option value="67">--Dept. Produksi - Seksi Machining E</option>
+												<option value="68">--Dept. Produksi - Seksi Machining Prototype</option>
+												<option value="69">--Dept. Produksi - Seksi Maintenace</option>
+												<option value="70">--Dept. Produksi - Seksi Maintenace-TKS</option>
+												<option value="71">--Dept. Produksi - Seksi Maintenace Dan Pengembangan Alat</option>
+												<option value="72">--Dept. Produksi - Seksi Maintenace Dan Pengembangan Alat-TKS</option>
+												<option value="73">--Dept. Produksi - Seksi Painting Dan Packaging</option>
+												<option value="74">--Dept. Produksi - Seksi Painting Dan Packaging-TKS</option>
+												<option value="75">--Dept. Produksi - Seksi Penerimaan Barang Gudang</option>
+												<option value="76">--Dept. Produksi - Seksi Penerimaan Barang Gudang-TKS</option>
+												<option value="77">--Dept. Produksi - Seksi Pengeluaran Barang Gudang</option>
+												<option value="78">--Dept. Produksi - Seksi Pengeluaran Barang Gudang-TKS</option>
+												<option value="79">--Dept. Produksi - Seksi Pengembangan Prototype A</option>
+												<option value="80">--Dept. Produksi - Seksi Pengembangan Prototype B</option>
+												<option value="81">--Dept. Produksi - Seksi Pola</option>
+												<option value="82">--Dept. Produksi - Seksi Pola/Pattern-TKS</option>
+												<option value="83">--Dept. Produksi - Seksi Potong AS</option>
+												<option value="84">--Dept. Produksi - Seksi PPC , Gudang dan Administrasi</option>
+												<option value="85">--Dept. Produksi - Seksi PPC Tool Making</option>
+												<option value="86">--Dept. Produksi - Seksi PPIC</option>
+												<option value="87">--Dept. Produksi - Seksi PPIC-TKS</option>
+												<option value="88">--Dept. Produksi - Seksi PPIC, Gudang Dan Administrasi-TKS</option>
+												<option value="89">--Dept. Produksi - Seksi PPIC Prototype Desain</option>
+												<option value="90">--Dept. Produksi - Seksi Production And Inventory ERP Application</option>
+												<option value="91">--Dept. Produksi - Seksi Production Engineering</option>
+												<option value="92">--Dept. Produksi - Seksi Production Engineering-DOJO</option>
+												<!-- besok lanjut mulai dari ini -->
+												<option value="93">--Dept. Produksi - Seksi QC Desain, Riset Dan Testing</option>
+												<option value="94">--Dept. Produksi - Seksi Quality Assurance</option>
+												<option value="95">--Dept. Produksi - Seksi Quality Control</option>
+												<option value="96">--Dept. Produksi - Seksi Quality Control-TKS</option>
+												<option value="97">--Dept. Produksi - Seksi Quality Engineering</option>
+												<option value="98">--Dept. Produksi - Seksi Quality - TKS</option>
+												<option value="99">--Dept. Produksi - Seksi Rekayasa Dan Rebuilding Mensin</option>
+												<option value="100">--Dept. Produksi - Seksi Riset Dan Testing Alat Uji</option>
+												<option value="101">--Dept. Produksi - Seksi Riset Dan Testing Cultivator</option>
+												<option value="102">--Dept. Produksi - Seksi Riset Dan Testing Harvester</option>
+												<option value="103">--Dept. Produksi - Seksi Riset Dan Testing Pengembangan</option>
+												<option value="104">--Dept. Produksi - Seksi Riset Dan Testing PPIC</option>
+												<option value="105">--Dept. Produksi - Seksi Riset Dan Testing Quick Truck</option>
+												<option value="106">--Dept. Produksi - Seksi Riset Dan Testing Traktor 2W</option>
+												<option value="107">--Dept. Produksi - Seksi Riset Dan Testing Traktor 4W</option>
+												<option value="108">--Dept. Produksi - Seksi Sheet Metal-TKS</option>
+												<option value="109">--Dept. Produksi - Seksi Tool Making 1</option>
+												<option value="110">--Dept. Produksi - Seksi Tool Making A</option>
+												<option value="111">--Dept. Produksi - Seksi Tool Making B</option>
+												<option value="112">--Dept. Produksi - Seksi Tool Warehouse</option>
+												<option value="113">--Dept. Produksi - Seksi Tool Warehouse-TKS</option>
+												<option value="114">--Dept. Produksi - Seksi Welding A</option>
+												<option value="115">--Dept. Produksi - Seksi Welding B</option>
+												<option value="116">--Dept. Produksi - Seksi Welding-TKS</option>
 												<option value="1">Dept. Personalia</option>
 												<option value="31">--Civil Maintenance</option>
 												<option value="34">--Non Civil Maintenance</option>
@@ -142,21 +225,21 @@
 												<option value="3">Dept. Pemasaran</option>
 												<option value="6">--Dept. Pemasaran - Pusat</option>
 												<option value="7">--Dept. Pemasaran - Cabang / Showroom / POS</option>
-												<option value="14">----Jakarta</option>
-												<option value="15">----Medan</option>
-												<option value="16">----Tanjung Karang</option>
-												<option value="17">----Yogyakarta</option>
-												<option value="18">----Surabaya</option>
-												<option value="19">----Samarinda</option>
-												<option value="20">----Sampit</option>
-												<option value="21">----Banjarmasin</option>
-												<option value="22">----Jambi</option>
-												<option value="23">----Palu</option>
-												<option value="24">----Pekanbaru</option>
-												<option value="25">----Pontianak</option>
-												<option value="26">----Sidrap</option>
-												<option value="27">----Tugumulyo</option>
-												<option value="28">----Makassar</option>
+												<option value="14">---Jakarta</option>
+												<option value="15">---Medan</option>
+												<option value="16">---Tanjung Karang</option>
+												<option value="17">---Yogyakarta</option>
+												<option value="18">---Surabaya</option>
+												<option value="19">---Samarinda</option>
+												<option value="20">---Sampit</option>
+												<option value="21">---Banjarmasin</option>
+												<option value="22">---Jambi</option>
+												<option value="23">---Palu</option>
+												<option value="24">---Pekanbaru</option>
+												<option value="25">---Pontianak</option>
+												<option value="26">---Sidrap</option>
+												<option value="27">---Tugumulyo</option>
+												<option value="28">---Makassar</option>
 												<option value="10">Internal Audit</option>
 											</select>
 											</div>
@@ -1040,7 +1123,7 @@
 																			</div>
 																			<?php } ?>
 
-																			<?php for ($y=34; $y <= 34; $y++) { ?>
+																			<?php for ($y=34; $y <= 116; $y++) { ?>
 													<script>
 														var inde = <?= $hitung ?> ;
 													</script>
