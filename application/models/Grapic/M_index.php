@@ -183,16 +183,16 @@ class M_index extends CI_Model
 				from hrd_khs.tpribadi a left join hrd_khs.tseksi c on a.kodesie=c.kodesie 
 				left join hrd_khs.tpekerjaan b on a.kd_pkj=b.kdpekerjaan
 				where ((keluar = '0' and masukkerja<='2019-$now'))
-				and (masukkerja >= '1990-01-01') $sqlPKL and c.kodesie LIKE '3%' $kode and left(a.noind,1) in ('H','P','K','T','A')
+				and (masukkerja >= '1990-01-01') $sqlPKL and c.kodesie LIKE '3%' $kode 
 				union 
 				select a.noind,nik,nama,masukkerja,tglkeluar,keluar,c.*
 				from hrd_khs.tpribadi a left join hrd_khs.tseksi c on a.kodesie=c.kodesie 
 				left join hrd_khs.tpekerjaan b on a.kd_pkj=b.kdpekerjaan
 				where ((masukkerja<='2019-$now') and (tglkeluar >= '2019-$now' and keluar = '1'))
-				and (masukkerja >= '1990-01-01') $sqlPKL and c.kodesie LIKE '3%' $kode and left(a.noind,1) in ('H','P','K','T','A')
+				and (masukkerja >= '1990-01-01') $sqlPKL and c.kodesie LIKE '3%' $kode 
 				 order by 5
 				 ) tabel ) tabel";
-				// echo $sql;exit();
+				// echo $sql;
 		$query = $this->personalia->query($sql);
 		return $query->result_array();
 	}
@@ -208,13 +208,13 @@ class M_index extends CI_Model
 				from hrd_khs.tpribadi a left join hrd_khs.tseksi c on a.kodesie=c.kodesie 
 				left join hrd_khs.tpekerjaan b on a.kd_pkj=b.kdpekerjaan
 				where ((keluar = '0' and masukkerja<='2019-$now'))
-				and (masukkerja >= '1990-01-01') $sqlPKL $kode and left(a.noind,1) in ('H','P','K','T','A')
+				and (masukkerja >= '1990-01-01') $sqlPKL $kode 
 				union
 				select a.noind,nik,nama,masukkerja,tglkeluar,keluar,c.*
 				from hrd_khs.tpribadi a left join hrd_khs.tseksi c on a.kodesie=c.kodesie 
 				left join hrd_khs.tpekerjaan b on a.kd_pkj=b.kdpekerjaan
 				where ((masukkerja<='2019-$now') and (tglkeluar >= '2019-$now' and keluar = '1'))
-				and (masukkerja >= '1990-01-01') $sqlPKL $kode and left(a.noind,1) in ('H','P','K','T','A')
+				and (masukkerja >= '1990-01-01') $sqlPKL $kode 
 				 order by 5
 				 ) tabel ) tabel";
 				// echo $sql;exit();
