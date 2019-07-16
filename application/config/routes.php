@@ -1279,6 +1279,11 @@ $route['SDM/(:any)'] = 'Grapic/C_Index/$1';
 $route['SDM/(:any)/(:any)'] = 'Grapic/C_Index/$1/$2';
 $route['SDM/Grapic'] = 'Grapic/C_Index';
 $route['SDM/grapicTabs'] = 'Grapic/C_Index/grapicTabs';
+
+$route['SDM/grapicProduksi'] = 'Grapic/C_Produksi/grapicTabs';
+$route['SDM/(:any)'] = 'Grapic/C_Produksi/$1';
+$route['SDM/(:any)/(:any)'] = 'Grapic/C_Produksi/$1/$2';
+
 $route['Sdm/Grafik/(:any)'] = 'Grapic/C_Index/$1';
 $route['Sdm/Grafik/(:any)/(:any)'] = 'Grapic/C_Index/$1/$2';
 $route['SDM/getData'] = 'Grapic/C_Index/getData';
