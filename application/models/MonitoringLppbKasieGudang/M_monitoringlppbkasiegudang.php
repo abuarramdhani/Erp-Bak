@@ -370,7 +370,7 @@ class M_monitoringlppbkasiegudang extends CI_Model {
         $run = $oracle->query($query);
         return $run->result_array();
     }
-    public function rejectdetail($batch_number,$lppb_number){
+    public function rejectdetail($batch_number){
         $oracle = $this->load->database('oracle',true);
         $query = "SELECT DISTINCT klb.batch_number batch_number,
         rsh.receipt_num lppb_number,
@@ -409,7 +409,7 @@ class M_monitoringlppbkasiegudang extends CI_Model {
                         FROM khs_lppb_batch klb, khs_lppb_batch_detail klbd, khs_lppb_action_detail_1 klad
                         WHERE klb.batch_number = klbd.batch_number
                         AND klbd.batch_detail_id = klad.batch_detail_id
-                        AND klbd.status in (4,7)
+                        AND klbd.status IN (4,7)
                         AND klad.reason is not null) a
                   WHERE rsh.shipment_header_id = rsl.shipment_header_id
                     AND rsh.shipment_header_id = rt.shipment_header_id
@@ -417,6 +417,7 @@ class M_monitoringlppbkasiegudang extends CI_Model {
                     AND pov.vendor_id = rt.vendor_id
                     AND poh.po_header_id = rt.po_header_id
                     AND pol.po_line_id = rt.po_line_id
+                    AND klb.batch_number = '$batch_number'
                     AND poh.po_header_id(+) = pol.po_header_id
                     AND pov.vendor_id(+) = poh.vendor_id
                     AND pol.po_line_id(+) = pll.po_line_id
@@ -428,8 +429,7 @@ class M_monitoringlppbkasiegudang extends CI_Model {
                                AND rts.po_line_id = pol.po_line_id)
                     AND a.po_header_id = poh.po_header_id
                     AND a.lppb_number = rsh.receipt_num
-                    AND klb.batch_number = '$batch_number'
-                    $lppb_number
+                    AND a.batch_number = $batch_number
                     ORDER BY klb.batch_number desc";
         // echo "<pre>";
         // print_r($query);
@@ -468,6 +468,7 @@ class M_monitoringlppbkasiegudang extends CI_Model {
                     WHERE klb.batch_number = klbd.batch_number
                     AND klbd.batch_number = '$batch_number'
                     $status ";
+        // echo "<pre>"; print_r($query2);exit();
         $run = $oracle->query($query2);
         return $run->result_array();
     }
