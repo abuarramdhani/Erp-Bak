@@ -124,14 +124,17 @@
 											<div class="col-lg-6">
 											<select id="divselector" class="form-control" >
 												<option value="1"><strong>Semua Data</strong></option>
-												<option value="32">--Semua Penunjang / InDirect Labour (H,P,K,T,A)</option>
-												<option value="33">--Semua Non Penunjang / Direct Labour (H,P,K,T,A)</option>
+												<option value="32">--Semua Pekerja Tidak Langsung / InDirect Labour</option>
+												<option value="33">--Semua Pekerja Langsung / Direct Labour</option>
+												<option disabled="">==========================Dept. Produksi==========================</option>
 												<option value="0">Dept. Produksi</option>
 												<option value="4">--Dept. Produksi - Pusat</option>
 												<option value="5">--Dept. Produksi - Tuksono</option>
 												<option value="35">--Dept. Produksi - Melati</option>
-												<option value="29">--Dept. Produksi - Operator Penunjang / InDirect Labour (H,P,K,T,A)</option>
-												<option value="30">--Dept. Produksi - Operator Non Penunjang / Direct Labour (H,P,K,T,A)</option>
+												<option disabled="">=============Dept. Produksi (Pekerja Direct/Indirect Labour=============</option>
+												<option value="29">--Dept. Produksi - Pekerja Tidak Langsung / InDirect Labour</option>
+												<option value="30">--Dept. Produksi - Pekerja Langsung / Direct Labour</option>
+												<option disabled="">======================Dept. Produksi Per Seksi======================</option>
 												<option value="36">--Dept. Produksi - Seksi Administrasi Desain</option>
 												<option value="37">--Dept. Produksi - Seksi Assembly</option>
 												<option value="38">--Dept. Produksi - Seksi Assembly Gear Trans</option>
@@ -214,14 +217,17 @@
 												<option value="114">--Dept. Produksi - Seksi Welding A</option>
 												<option value="115">--Dept. Produksi - Seksi Welding B</option>
 												<option value="116">--Dept. Produksi - Seksi Welding-TKS</option>
+												<option disabled="">==========================Dept. Personalia==========================</option>
 												<option value="1">Dept. Personalia</option>
 												<option value="31">--Civil Maintenance</option>
 												<option value="34">--Non Civil Maintenance</option>
+												<option disabled="">==========================Dept. Keuangan==========================</option>
 												<option value="2">Dept. Keuangan</option>
 												<option value="8">--Akuntansi</option>
 												<option value="9">--ICT</option>
 												<option value="11">--Pengembangan Sistem</option>
 												<option value="12">--Purchasing</option>
+												<option disabled="">==========================Dept. Pemasaran==========================</option>
 												<option value="3">Dept. Pemasaran</option>
 												<option value="6">--Dept. Pemasaran - Pusat</option>
 												<option value="7">--Dept. Pemasaran - Cabang / Showroom / POS</option>
