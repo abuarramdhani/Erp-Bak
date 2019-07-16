@@ -85,7 +85,7 @@
 
 														<td class="batchdid_<?php echo $p['BATCH_DETAIL_ID']?>">
 															<?php echo $p['REASON']?>
-														<input type="text" value="<?php echo $p['REASON']?>" style="display: none; width: 100px" class="form-control txtAlasan" name="alasan_reject[]" id="txtTolak_<?php echo $p['BATCH_DETAIL_ID']?>">
+														<input type="text" value="<?php echo $p['REASON']?>" style="display: none; width: 100px" class="form-control txtAlasan" name="alasan_reject" id="txtTolak_<?php echo $p['BATCH_DETAIL_ID']?>">
 															<input type="hidden" name="id[]" value="<?php echo $p['BATCH_DETAIL_ID']?>"></td>
 													</tr>
 												<?php $no++; } ?>
