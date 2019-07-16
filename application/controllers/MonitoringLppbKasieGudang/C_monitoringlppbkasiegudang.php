@@ -93,6 +93,7 @@ class C_monitoringlppbkasiegudang extends CI_Controller{
 		$jumlahData = $this->M_monitoringlppbkasiegudang->cekJumlahData($batch_number,$kondisi);
 		$data['lppb'] = $searchLppb;
 		$data['jml'] = $jumlahData;
+
 		$this->load->view('V_Header',$data);
 		$this->load->view('V_Sidemenu',$data);
 		$this->load->view('MonitoringLppbKasieGudang/V_detaillppbkasiegudang',$data);
@@ -100,23 +101,33 @@ class C_monitoringlppbkasiegudang extends CI_Controller{
 	}
 
 	public function saveActionLppbNumber(){
+		// echo"<pre>";
+		// print_r($_POST);
+		
 		$proses = $this->input->post('hdnProses[]');
-		$alasan = $this->input->post('alasan_reject[]');
+		$alasan = $this->input->post('alasan_reject');
+		// print_r()
+		// echo"<pre>"; print_r($_POST);
 		$id = $this->input->post('id[]');
 		$date = $this->input->post('tglTerimaTolak[]');
 		$batch_number = $this->input->post('batch_number');
+		$batch_detail_id = $this->input->post('batch_detail_id');
 
 		foreach ($proses as $p => $value) {
-			
+			if (empty($alasan[$p])) {
+				
 			$this->M_monitoringlppbkasiegudang->saveProsesLppbNumber($proses[$p],$date[$p],$batch_number,$id[$p]);
+			}else{
 			$this->M_monitoringlppbkasiegudang->saveProsesLppbNumber2($proses[$p],$alasan[$p],$date[$p],$id[$p]);
+			$this->M_monitoringlppbkasiegudang->saveProsesLppbNumber3($batch_number,$id[$p],$date[$p]);
+			}
 		}
 
-		redirect('MonitoringLppbKasieGudang/Unprocess')
-		;
+		redirect('MonitoringLppbKasieGudang/Unprocess');
 	}
 
 	public function SubmitKeAKuntansi(){
+		// print_r($_POST);exit();
 		$date = date('d-m-Y H:i:s');
 		$batch_number = $this->input->post('batch_number');
 
@@ -220,6 +231,7 @@ class C_monitoringlppbkasiegudang extends CI_Controller{
 			$searchLppb = $this->M_monitoringlppbkasiegudang->rejectdetail($batch_number,$rangeLppb);
 			$jumlahData = $this->M_monitoringlppbkasiegudang->cekJumlahData($batch_number,$kondisi);
 		$data['lppb'] = $searchLppb;
+		// print_r($searchLppb);exit();
 		$data['jml'] = $jumlahData;
 
 		$this->load->view('V_Header',$data);

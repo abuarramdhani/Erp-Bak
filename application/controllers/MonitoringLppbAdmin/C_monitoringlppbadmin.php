@@ -95,7 +95,6 @@ class C_monitoringlppbadmin extends CI_Controller{
 		$this->load->view('MonitoringLppbAdmin/V_addlppbnumber',$data);
 		$this->load->view('V_Footer',$data);
 	}
-
 	public function addNomorLPPB(){ //FUNGSI SEARCH DI SUBMIT LPPB
 		// print_r($_POST);
 		$lppb_info = $this->input->post('info_lppb');
@@ -110,14 +109,12 @@ class C_monitoringlppbadmin extends CI_Controller{
 		}else{
 			$query .= "";
 		}
-
 		$queryStatus = '';
 		if ($status != '' or $status != null) {
 			$queryStatus .= "AND rt.transaction_type LIKE '$status'";
 		}else{
 			$queryStatus .= "";
 		}
-
 		$searchNumberLppb = $this->M_monitoringlppbadmin->searchNumberLppb($lppb_numberFrom,$lppb_number,$query, $queryStatus);
 		$data['lppb'] = $searchNumberLppb;
 		// print_r($data);exit();
@@ -128,14 +125,15 @@ class C_monitoringlppbadmin extends CI_Controller{
 		}
 		echo $returnView;
 	}
-
-	public function addDetailNomorLPPB() //FUNGSI SEARCH DI DRAFT > DETAIL > ADD LPPB
-	{
+	public function addDetailNomorLPPB(){
+		// echo "<pre>";print_r($_POST);
 		$lppb_info = $this->input->post('info_lppb');
 		$lppb_numberFrom = $this->input->post('lppb_numberFrom');
 		$lppb_number = $this->input->post('lppb_number');
 		$io = $this->input->post('inventory_organization');
 		$status = $this->input->post('status_lppb');
+		// $batch_number = $this->input->post('batch_number');
+
 		$query = '';
 		if ($io !=  '' or $io != null) {
 			$query .= "AND mp.organization_id LIKE '$io'";
@@ -149,8 +147,12 @@ class C_monitoringlppbadmin extends CI_Controller{
 		}else{
 			$queryStatus .= "";
 		}
+
 		$searchNumberLppb = $this->M_monitoringlppbadmin->searchNumberLppb($lppb_numberFrom, $lppb_number, $query, $queryStatus);
+		// $batch_detail_id = $this->M_monitoringlppbadmin->batch_detail_id($batch_number);
 		$data['lppb'] = $searchNumberLppb;
+		// $data['bdi'] = $batch_detail_id;
+
 		if ($searchNumberLppb) {
 			$returnView = $this->load->view('MonitoringLppbAdmin/V_detailshowtable',$data,TRUE);
 		}else{
@@ -158,10 +160,9 @@ class C_monitoringlppbadmin extends CI_Controller{
 		}
 		echo $returnView;
 	}
-
 	public function saveLppbNumber() //FUNGSI SAVE DI SUBMIT LPPB
 	{
-		// print_r($_POST);exit();
+		// echo"<pre>";print_r($_POST);
 		$lppb_number = str_replace(' ', '', $this->input->post('lppb_number'));
 		$status = $this->input->post('status');
 		$lppb_info = $this->input->post('lppb_info');
@@ -184,12 +185,10 @@ class C_monitoringlppbadmin extends CI_Controller{
 		}
 		$dataid = $this->M_monitoringlppbadmin->saveLppbNumber($date,$lppb_info,$batch,$group_batch,$id_gudang);
 		$id = $dataid[0]['BATCH_NUMBER'];
-
 		$exp_lppb_num = explode(',', $lppb_number);
 		$exp_org_id = explode(',', $organization_id);
 		// $exp_po_num = explode(',',$po_number);
 		// $exp_header_id = explode(',',$po_header_id);
-
 		foreach ($exp_lppb_num as $key => $value) {
 			$ponumb[] = explode(',', $po_number[$key]);
 			$poheadid[] = explode(',', $po_header_id[$key]);
@@ -201,7 +200,6 @@ class C_monitoringlppbadmin extends CI_Controller{
 		}
 		// echo "<pre>";
 		// print_r($ponumb);
-
 		// foreach ($exp_lppb_num as $ln => $val) {
 			
 			// $id2 = $this->M_monitoringlppbadmin->saveLppbNumber2($id,$exp_lppb_num[$ln],$date,$exp_org_id[$ln],$exp_po_num[$ln],$exp_header_id[$ln]);
@@ -209,8 +207,6 @@ class C_monitoringlppbadmin extends CI_Controller{
 			// $this->M_monitoringlppbadmin->saveLppbNumber3($id3[$ln]['BATCH_DETAIL_ID'],$date);
 		// }
 	}
-
-
 	public function detailLppb($id) //FUNGSI UNTUK VIEW DETAIL HASIL DARI MENU DRAFT
 	{
 		$this->checkSession();
@@ -224,14 +220,12 @@ class C_monitoringlppbadmin extends CI_Controller{
 		$data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id);
 		$data['inventory'] = $this->M_monitoringlppbadmin->getInventory();
 		$data['status'] = $this->M_monitoringlppbadmin->getStatus();
-
 		$match = $this->M_monitoringlppbadmin->getBatchDetailId($id);
 		$lppb_number1 = $match[0]['LPPB_NUMBER'];
 		foreach ($match as $key => $value) {
 			$lppb_number2 = $match[$key]['LPPB_NUMBER'];
 		}
 		$rangeLppb = "AND rsh.receipt_num between '".$lppb_number1."' and '".$lppb_number2."'";
-
 		$kondisi = "";
 		$searchLppb = $this->M_monitoringlppbadmin->lppbBatchDetail($id,$rangeLppb);
 		$jumlahData = $this->M_monitoringlppbadmin->cekJumlahData($id,$kondisi);
@@ -242,7 +236,6 @@ class C_monitoringlppbadmin extends CI_Controller{
 		$this->load->view('MonitoringLppbAdmin/V_detaillppbnumber',$data);
 		$this->load->view('V_Footer',$data);
 	}
-
 	public function deleteNumberBatch(){ //DELETE BATCH
 		$batch_number = $this->input->post('batch_number');
 		$this->M_monitoringlppbadmin->deleteNumberBatch($batch_number);
@@ -258,8 +251,7 @@ class C_monitoringlppbadmin extends CI_Controller{
 		}
 	}
 	public function saveEditLppbNumber(){ //FUNGSI SAVE DI BAGIAN EDIT
-
-		// print_r($_POST);exit();
+		echo"<pre>";print_r($_POST);
 		$lppb_number = str_replace(' ', '', $this->input->post('lppb_number'));
 		$date = date('d-m-Y H:i:s');
 		$batch_number = $this->input->post('batch_number');
@@ -267,14 +259,15 @@ class C_monitoringlppbadmin extends CI_Controller{
 		$po_number = $this->input->post('po_number');
 		$po_header_id = $this->input->post('po_header_id');
 		$batch_detail_id = $this->input->post('batch_detail_id');
+		// $batch_detail_idNew = $this->input->post('batch_detail_idNew');
 		$lppb_numberNew = str_replace(' ', '', $this->input->post('lppb_numberNew'));
 		$organization_idNew = $this->input->post('organization_idNew');
 		$po_numberNew = $this->input->post('po_numberNew');
 		$po_header_idNew = $this->input->post('po_header_idNew');
 		$id_lppb = $this->input->post('id_lppb');
-		$dataid = $this->M_monitoringlppbadmin->saveEditLppbNumber($batch_number);
+		// $dataid = $this->M_monitoringlppbadmin->saveEditLppbNumber($batch_number);
 		// print_r($dataid);exit();
-		$id = $dataid[0]['BATCH_NUMBER'];
+		// $id = $dataid[0]['BATCH_NUMBER'];
 		$expLppb = explode(',', $lppb_number);
 		$expIo = explode(',', $organization_id);
 		$expLppbNew = explode(',', $lppb_numberNew);
@@ -283,24 +276,22 @@ class C_monitoringlppbadmin extends CI_Controller{
 		$exp_po_header = explode(',',$po_header_id);
 		// $exp_po_numNew = explode(',',$po_numberNew);
 		// $exp_po_headerNew = explode(',',$po_header_idNew);
-
 		$i = 0;
 		foreach ($expLppb as $ln => $val) {
-
 			$this->M_monitoringlppbadmin->saveEditLppbNumber2Update($batch_number,$expLppb[$ln],$date,$expIo[$ln],$exp_po_num[$ln],$exp_po_header[$ln]);
-			$this->M_monitoringlppbadmin->saveEditLppbNumber3Update($batch_detail_id,$date);
+			$this->M_monitoringlppbadmin->saveEditLppbNumber3Update($batch_detail_id[$ln],$date);
 			$i++;
 			
 		}
-
+		echo"<pre>";
 		foreach ($expLppbNew as $key => $value) {
 			$ponumb[] = explode(',', $po_numberNew[$key]);
 			$poheadid[] = explode(',', $po_header_idNew[$key]);
 			foreach ($ponumb[$key] as $k => $data) {
-				$id2 = $this->M_monitoringlppbadmin->saveEditLppbNumber2($id,$value,$date,$expIoNew[$key],$data,$poheadid[$key][$k]);
-				$id3 = $this->M_monitoringlppbadmin->batch_detail_id($id);
-
-				$this->M_monitoringlppbadmin->saveEditLppbNumber3($id3[$key]['BATCH_DETAIL_ID'],$date);
+				$id2 = $this->M_monitoringlppbadmin->saveEditLppbNumber2($batch_number,$value,$date,$expIoNew[$key],$data,$poheadid[$key][$k]);
+				$id3 = $this->M_monitoringlppbadmin->limitBatchDetId($batch_number);
+				print_r($id3);
+				$this->M_monitoringlppbadmin->saveEditLppbNumber3($id3[0]['BATCH_DETAIL_ID'],$date);
 			}
 		}
 		

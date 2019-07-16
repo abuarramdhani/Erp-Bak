@@ -27,19 +27,19 @@
 							<div class="box-body">
 								<div class="col-md-12">
 									<span>Jumlah Data : <b><?php echo $jml[0]['JUMLAH_DATA']?></b></span>
-									<div>
-											<table class="table table-striped table-bordered table-hover text-center dtTableMl">
+									<div ><!-- //class="table-responsive text-nowrap" -->
+											<table style="overflow:auto;" class="table table-striped table-bordered table-hover text-center dtTableMl dataTable no-footer">
 												<thead style="vertical-align: middle;"> 
 													<tr class="bg-primary">
 														<td class="text-center">No</td>
 														<td class="text-center">IO</td>
 														<td class="text-center">Nomor LPPB</td>
-														<td class="text-center">Vendor name</td>
+														<td class="text-center" style="width:10%;">Vendor name</td>
 														<td class="text-center">Tanggal LPPB</td>
 														<td class="text-center">Nomor PO</td>
 														<td class="text-center">Action</td>
-														<td class="text-center">Tanggal Diterima/Ditolak</td>
-														<td class="text-center">Alasan</td>
+														<td class="text-center" style="width:10%;">Tanggal Diterima/Ditolak</td>
+														<td class="text-center" style="width:30%;">Alasan</td>
 													</tr>
 												</thead>
 												<tbody>
@@ -59,12 +59,12 @@
 															<?php }elseif ($p['STATUS'] == 4 OR $p['STATUS'] == 7) { ?>
 																<button class="btn btn-danger" disabled="disabled">Rejected</button>
 															<?php }else{ ?>
-																<button id="btnAkt_<?php echo $p['BATCH_DETAIL_ID'] ?>" class="btn btn-primary" onclick="actionLppbNumber(this);<?php echo $removeDesable; ?>" value="6" name="proses" data-id="<?= $p['BATCH_DETAIL_ID']?>">TERIMA</button>
-																<button id="btnAkt_<?php echo $p['BATCH_DETAIL_ID'] ?>" class="btn btn-danger" onclick="actionLppbNumber(this);<?php echo $removeDesable; ?>" value="7" name="proses" data-id="<?= $p['BATCH_DETAIL_ID']?>">TOLAK</button>
+																<button id="btnAkt_<?php echo $p['BATCH_DETAIL_ID'] ?>" class="btn btn-primary" onclick="actionLppbNumber(this);<?php echo $removeDesable; ?>" value="6" name="proses" data-id="<?= $p['BATCH_DETAIL_ID']?>">OK</button>
+																<button id="btnAkt_<?php echo $p['BATCH_DETAIL_ID'] ?>" class="btn btn-danger" onclick="actionLppbNumber(this);<?php echo $removeDesable; ?>" value="7" name="proses" data-id="<?= $p['BATCH_DETAIL_ID']?>">NOT OK</button>
 															<?php } ?>
 														</td>
 														<td><span class="tglTerimaTolak"></span></td>
-														<td><input id="txtTolak_<?php echo $p['BATCH_DETAIL_ID'] ?>" type="text" value="<?php echo $p['REASON']?>" style="display: none;" class="form-control txtAlasan" name="alasan_reject[]">
+														<td><input id="txtTolak_<?php echo $p['BATCH_DETAIL_ID'] ?>" type="text" value="<?php echo $p['REASON']?>" style="display: none;width: %;"  class="form-control txtAlasan" name="alasan_reject[]">
 															<input type="hidden" name="id[]" value="<?php echo $p['BATCH_DETAIL_ID']?>"></td>
 													</tr>
 												<?php $no++; } ?>
