@@ -55,6 +55,7 @@
                                                 <?php } ?>
                                                 <th width="15%">Tanggal Input</th>
                                                 <th>Status</th>
+                                                <th>Action</th>
                                             </tr>
                                         </thead>
                                         <tbody>
@@ -84,6 +85,11 @@
                                                 <?php  } ?>
                                                 <td><?php echo $key['tgl_input']; ?></td>
                                                 <td><?php echo $status; ?></td>
+                                                <td>
+                                                <a style="margin-right:4px" href="<?php echo site_url('p2k3adm_V2/Admin/editRiwayatKebutuhan/'.$key['id'].'/'.$key['kodesie']); ?>" data-toggle="tooltip" data-placement="bottom" title="" data-original-title="Edit">
+                                                        <span class="fa fa-edit fa-2x"></span>
+                                                    </a>
+                                                </td>
                                             </tr>
                                             <?php $a++; } ?>
                                         </tbody>

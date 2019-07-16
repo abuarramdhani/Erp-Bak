@@ -497,4 +497,12 @@ class M_Dtmasuk extends CI_Model
         return true;
     }
 
+    public function updateRiwayat($id, $jmlUmum, $staffJumlah,$pkj)
+    {
+        $sql = "update k3.k3n_standar_kebutuhan set jml_item = '$pkj', jml_kebutuhan_umum = '$jmlUmum', jml_kebutuhan_staff = '$staffJumlah' where id = '$id';";
+        // echo $sql;exit();
+        $query = $this->erp->query($sql);
+        return true;
+    }
+
 }
