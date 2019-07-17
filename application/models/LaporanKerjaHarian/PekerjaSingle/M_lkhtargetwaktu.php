@@ -44,45 +44,20 @@ class M_lkhtargetwaktu extends CI_Model {
 		$this->getListQuery();
 		if($_POST['length'] != -1) {
 			if($type == 'listdata') {
-				if(empty($pekerja)) {
-					$query = $this->erp
-									->where('resign', 0)
-									->where_in('worker_status_code', array('H', 'A', 'P', 'K'))
-									->like('section_code', $this->getSessionKodeSie(), 'after')
-									->where('extract(month from periode) = \''.$periode[0].'\' and extract(year from periode) = \''.$periode[1].'\'')
-									->limit($_POST['length'], $_POST['start'])
-									->get();
-				} else {
-					$query = $this->erp
-									->where_in('employee_code', $pekerja)
-									->where('resign', 0)
-									->where_in('worker_status_code', array('H', 'A', 'P', 'K'))
-									->like('section_code', $this->getSessionKodeSie(), 'after')
-									->where('extract(month from periode) = \''.$periode[0].'\' and extract(year from periode) = \''.$periode[1].'\'')
-									->limit($_POST['length'], $_POST['start'])
-									->get();
-				}
+                $query = $this->erp
+                                ->where('resign', 0)
+                                ->where('employee_code', $this->session->user)
+                                ->where('extract(month from periode) = \''.$periode[0].'\' and extract(year from periode) = \''.$periode[1].'\'')
+                                ->limit($_POST['length'], $_POST['start'])
+                                ->get();
 			} else {
-				if(empty($pekerja)) {
-					$query = $this->erp
-									->where('resign', 0)
-									->where_in('worker_status_code', array('H', 'A', 'P', 'K'))
-									->like('section_code', $this->getSessionKodeSie(), 'after')
-									->where('extract(month from periode) = \''.$periode[0].'\' and extract(year from periode) = \''.$periode[1].'\'')
-									->where('lower(status) = \''.$type.'\'')
-									->limit($_POST['length'], $_POST['start'])
-									->get();
-				} else {
-					$query = $this->erp
-									->where_in('employee_code', $pekerja)
-									->where('resign', 0)
-									->where_in('worker_status_code', array('H', 'A', 'P', 'K'))
-									->like('section_code', $this->getSessionKodeSie(), 'after')
-									->where('extract(month from periode) = \''.$periode[0].'\' and extract(year from periode) = \''.$periode[1].'\'')
-									->where('lower(status) = \''.$type.'\'')
-									->limit($_POST['length'], $_POST['start'])
-									->get();
-				}
+                $query = $this->erp
+                                ->where('resign', 0)
+                                ->where('employee_code', $this->session->user)
+                                ->where('extract(month from periode) = \''.$periode[0].'\' and extract(year from periode) = \''.$periode[1].'\'')
+                                ->where('lower(status) = \''.$type.'\'')
+                                ->limit($_POST['length'], $_POST['start'])
+                                ->get();
 			}
 			return $query->result();
 		}
@@ -91,93 +66,41 @@ class M_lkhtargetwaktu extends CI_Model {
 	public function getListCountFiltered($periode, $pekerja, $type) {
 		$this->getListQuery();
 		if($type == 'listdata') {
-			if(empty($pekerja)) {
-				return $this->erp
-							->where('resign', 0)
-							->where_in('worker_status_code', array('H', 'A', 'P', 'K'))
-							->like('section_code', $this->getSessionKodeSie(), 'after')
-							->where('extract(month from periode) = \''.$periode[0].'\' and extract(year from periode) = \''.$periode[1].'\'')
-							->get()
-							->num_rows();
-			} else {
-				return $this->erp
-							->where_in('employee_code', $pekerja)
-							->where('resign', 0)
-							->where_in('worker_status_code', array('H', 'A', 'P', 'K'))
-							->like('section_code', $this->getSessionKodeSie(), 'after')
-							->where('extract(month from periode) = \''.$periode[0].'\' and extract(year from periode) = \''.$periode[1].'\'')
-							->get()
-							->num_rows();
-			}
+            return $this->erp
+                            ->where('resign', 0)
+                            ->where('employee_code', $this->session->user)
+                            ->where('extract(month from periode) = \''.$periode[0].'\' and extract(year from periode) = \''.$periode[1].'\'')
+                            ->get()
+                            ->num_rows();
 		} else {
-			if(empty($pekerja)) {
-				return $this->erp
-							->where('resign', 0)
-							->where_in('worker_status_code', array('H', 'A', 'P', 'K'))
-							->like('section_code', $this->getSessionKodeSie(), 'after')
-							->where('extract(month from periode) = \''.$periode[0].'\' and extract(year from periode) = \''.$periode[1].'\'')
-							->where('lower(status) = \''.$type.'\'')
-							->get()
-							->num_rows();
-			} else {
-				return $this->erp
-							->where_in('employee_code', $pekerja)
-							->where('resign', 0)
-							->where_in('worker_status_code', array('H', 'A', 'P', 'K'))
-							->like('section_code', $this->getSessionKodeSie(), 'after')
-							->where('extract(month from periode) = \''.$periode[0].'\' and extract(year from periode) = \''.$periode[1].'\'')
-							->where('lower(status) = \''.$type.'\'')
-							->get()
-							->num_rows();
-			}
+            return $this->erp
+                            ->where('resign', 0)
+                            ->where('employee_code', $this->session->user)
+                            ->where('extract(month from periode) = \''.$periode[0].'\' and extract(year from periode) = \''.$periode[1].'\'')
+                            ->where('lower(status) = \''.$type.'\'')
+                            ->get()
+                            ->num_rows();
 		}
 	}
 
 	public function getListCountAll($periode, $pekerja, $type) {
 		if($type == 'listdata') {
-			if(empty($pekerja)) {
-				return $this->erp
-							->from($this->table)
-							->where('resign', 0)
-							->like('section_code', $this->getSessionKodeSie(), 'after')
-							->where_in('worker_status_code', array('H', 'A', 'P', 'K'))
-							->where('extract(month from periode) = \''.$periode[0].'\' and extract(year from periode) = \''.$periode[1].'\'')
-							->get()
-							->num_rows();
-			} else {
-				return $this->erp
-							->from($this->table)
-							->where_in('employee_code', $pekerja)
-							->where('resign', 0)
-							->where_in('worker_status_code', array('H', 'A', 'P', 'K'))
-							->like('section_code', $this->getSessionKodeSie(), 'after')
-							->where('extract(month from periode) = \''.$periode[0].'\' and extract(year from periode) = \''.$periode[1].'\'')
-							->get()
-							->num_rows();
-			}
+            return $this->erp
+                            ->from($this->table)
+                            ->where('resign', 0)
+                            ->where('employee_code', $this->session->user)
+                            ->where('extract(month from periode) = \''.$periode[0].'\' and extract(year from periode) = \''.$periode[1].'\'')
+                            ->get()
+                            ->num_rows();
 		} else {
-			if(empty($pekerja)) {
-				return $this->erp
-							->from($this->table)
-							->where('resign', 0)
-							->like('section_code', $this->getSessionKodeSie(), 'after')
-							->where_in('worker_status_code', array('H', 'A', 'P', 'K'))
-							->where('extract(month from periode) = \''.$periode[0].'\' and extract(year from periode) = \''.$periode[1].'\'')
-							->where('lower(status) = \''.$type.'\'')
-							->get()
-							->num_rows();
-			} else {
-				return $this->erp
-							->from($this->table)
-							->where_in('employee_code', $pekerja)
-							->where('resign', 0)
-							->where_in('worker_status_code', array('H', 'A', 'P', 'K'))
-							->like('section_code', $this->getSessionKodeSie(), 'after')
-							->where('extract(month from periode) = \''.$periode[0].'\' and extract(year from periode) = \''.$periode[1].'\'')
-							->where('lower(status) = \''.$type.'\'')
-							->get()
-							->num_rows();
-			}
+            return $this->erp
+                            ->from($this->table)
+                            ->where('resign', 0)
+                            ->where('employee_code', $this->session->user)
+                            ->where('extract(month from periode) = \''.$periode[0].'\' and extract(year from periode) = \''.$periode[1].'\'')
+                            ->where('lower(status) = \''.$type.'\'')
+                            ->get()
+                            ->num_rows();
 		}
 	}
 

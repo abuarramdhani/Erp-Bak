@@ -128,7 +128,7 @@
                                         </div>
                                     </div>
                                     <div class="col-md-1">
-                                        <form id="formFilterLkhPekerja" action="<?= base_url('LkhPekerjaBatch/TargetWaktu/'.$type); ?>" method="POST">
+                                        <form id="formFilterLkhPekerja" action="<?= base_url('LkhPekerjaSingle/TargetWaktu/'.$type); ?>" method="POST">
                                             <input id="currentLkhPekerjaData1" value="<?= $filterPeriode; ?>" hidden/>
                                             <input id="currentLkhPekerjaData2" value="<?= (empty($filterPekerja)) ? '' : implode(',', $filterPekerja);; ?>" hidden/>
                                             <input name="filterPeriode" id="formFilterLkhPekerjaData1" hidden/>
@@ -201,7 +201,7 @@
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-default" data-dismiss="modal">Batal</button>
-                <button type="button" class="btn btn-danger" id="btnConfirmDeleteBatch">Hapus</button>
+                <button type="button" class="btn btn-danger" btn="btnConfirmDeleteBatch">Hapus</button>
             </div>
         </div>
     </div>
@@ -226,6 +226,30 @@
 <script type="text/javascript">
     var table;
     $(function() {
+        <?php
+            if($this->session->flashdata('delete-lkh-pekerja-respond')) {
+                switch($this->session->flashdata('delete-lkh-pekerja-respond')) {
+                    case 1:
+                        echo "
+                            Swal.fire({
+                                text: 'Terjadi kesalahan saat menghapus data LKH pekerja',
+                                confirmButtonText: 'Tutup',
+                                type: 'error'
+                            });
+                        ";
+                        break;
+                    case 2:
+                        echo "
+                            Swal.fire({
+                                text: 'Data LKH pekerja telah dihapus',
+                                confirmButtonText: 'Tutup',
+                                type: 'success'
+                            });
+                        ";
+                        break;
+                }
+            }
+        ?>
         table = $('#tblLkhPekerjaListData').DataTable({
             dom: '<"dataTable_Button"B><"dataTable_Filter"f>rt<"dataTable_Information"i><"dataTable_Pagination"p>',
             buttons: [
@@ -365,7 +389,7 @@
                 [3, "asc"]
             ],
             ajax: {
-                url : "<?= base_url('LkhPekerjaBatch/TargetWaktu/getList'); ?>",
+                url : "<?= base_url('LkhPekerjaSingle/TargetWaktu/getList'); ?>",
                 type: "POST",
                 data: {
                     type: '<?= $type ?>',
@@ -411,7 +435,7 @@
         }
         if(employee_code && periode && approver1 && approver2) {
             $.ajax({
-                url: '<?= base_url("LkhPekerjaBatch/TargetWaktu/kirimApproval"); ?>',
+                url: '<?= base_url("LkhPekerjaSingle/TargetWaktu/kirimApproval"); ?>',
                 type: 'POST',
                 dataType: 'json',
                 async: true,
@@ -480,7 +504,7 @@
         }
         if(employee_code && periode) {
             $.ajax({
-                url: '<?= base_url("LkhPekerjaBatch/TargetWaktu/deleteDataKegiatanBatch"); ?>',
+                url: '<?= base_url("LkhPekerjaSingle/TargetWaktu/deleteDataKegiatanBatch"); ?>',
                 type: 'POST',
                 dataType: 'json',
                 async: true,
@@ -524,7 +548,7 @@
         $('#btnDeleteData').attr('disabled', true);
         if(row && id) {
             $.ajax({
-                url: '<?= base_url("LkhPekerjaBatch/TargetWaktu/deleteDataKegiatan"); ?>',
+                url: '<?= base_url("LkhPekerjaSingle/TargetWaktu/deleteDataKegiatan"); ?>',
                 type: 'POST',
                 dataType: 'json',
                 async: true,

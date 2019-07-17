@@ -2631,16 +2631,40 @@ $route['TransactBon/Transact/(:any)/(:any)/(:any)'] = 'TransactBon/C_Transact/$1
 $route['TransactBon/Transact/(:any)/(:any)/(:any)/(:any)'] = 'TransactBon/C_Transact/$1/$2/$3/$4';
 
 // ------------------------------------- Laporan Kerja Harian ---------------------------------------------//
+// LKH Target Waktu Pekerja Single
+$route['LkhPekerjaSingle'] = 'LaporanKerjaHarian/PekerjaSingle/C_Index';
+$route['LkhPekerjaSingle/TargetWaktu'] = 'LaporanKerjaHarian/PekerjaSingle/TargetWaktu/C_ListData/index';
+$route['LkhPekerjaSingle/TargetWaktu/getList'] = 'LaporanKerjaHarian/PekerjaSingle/TargetWaktu/C_ListData/getList';
+$route['LkhPekerjaSingle/TargetWaktu/kirimApproval'] = 'LaporanKerjaHarian/PekerjaSingle/TargetWaktu/C_ListData/kirimApproval';
+$route['LkhPekerjaSingle/TargetWaktu/deleteDataKegiatanBatch'] = 'LaporanKerjaHarian/PekerjaSingle/TargetWaktu/C_ListData/deleteDataKegiatanBatch';
+$route['LkhPekerjaSingle/TargetWaktu/deleteDataKegiatan'] = 'LaporanKerjaHarian/PekerjaSingle/TargetWaktu/C_ListData/deleteDataKegiatan';
+$route['LkhPekerjaSingle/TargetWaktu/getApprover'] = 'LaporanKerjaHarian/PekerjaSingle/TargetWaktu/C_ListData/getApprover';
+
+$route['LkhPekerjaSingle/TargetWaktu/Detail'] = 'LaporanKerjaHarian/PekerjaSingle/TargetWaktu/C_Detail';
+$route['LkhPekerjaSingle/TargetWaktu/Detail/(:any)'] = 'LaporanKerjaHarian/PekerjaSingle/TargetWaktu/C_Detail/$1';
+$route['LkhPekerjaSingle/TargetWaktu/Detail/(:any)/(:any)'] = 'LaporanKerjaHarian/PekerjaSingle/TargetWaktu/C_Detail/$1/$2';
+
+$route['LkhPekerjaSingle/TargetWaktu/Draft'] = 'LaporanKerjaHarian/PekerjaSingle/TargetWaktu/C_ListData/index/Draft';
+$route['LkhPekerjaSingle/TargetWaktu/Unapproved'] = 'LaporanKerjaHarian/PekerjaSingle/TargetWaktu/C_ListData/index/Unapproved';
+$route['LkhPekerjaSingle/TargetWaktu/Rejected'] = 'LaporanKerjaHarian/PekerjaSingle/TargetWaktu/C_ListData/index/Rejected';
+$route['LkhPekerjaSingle/TargetWaktu/Approved'] = 'LaporanKerjaHarian/PekerjaSingle/TargetWaktu/C_ListData/index/Approved';
+$route['LkhPekerjaSingle/TargetWaktu/ListData'] = 'LaporanKerjaHarian/PekerjaSingle/TargetWaktu/C_ListData/index/ListData';
+
+// LKH Target Waktu Pekerja Batch
 $route['LkhPekerjaBatch'] = 'LaporanKerjaHarian/PekerjaBatch/C_Index';
 $route['LkhPekerjaBatch/TargetWaktu'] = 'LaporanKerjaHarian/PekerjaBatch/TargetWaktu/C_ListData/index';
 $route['LkhPekerjaBatch/TargetWaktu/getList'] = 'LaporanKerjaHarian/PekerjaBatch/TargetWaktu/C_ListData/getList';
+$route['LkhPekerjaBatch/TargetWaktu/kirimApproval'] = 'LaporanKerjaHarian/PekerjaBatch/TargetWaktu/C_ListData/kirimApproval';
+$route['LkhPekerjaBatch/TargetWaktu/deleteDataKegiatanBatch'] = 'LaporanKerjaHarian/PekerjaBatch/TargetWaktu/C_ListData/deleteDataKegiatanBatch';
+$route['LkhPekerjaBatch/TargetWaktu/deleteDataKegiatan'] = 'LaporanKerjaHarian/PekerjaBatch/TargetWaktu/C_ListData/deleteDataKegiatan';
+$route['LkhPekerjaBatch/TargetWaktu/getApprover'] = 'LaporanKerjaHarian/PekerjaBatch/TargetWaktu/C_ListData/getApprover';
 
 $route['LkhPekerjaBatch/TargetWaktu/Detail'] = 'LaporanKerjaHarian/PekerjaBatch/TargetWaktu/C_Detail';
 $route['LkhPekerjaBatch/TargetWaktu/Detail/(:any)'] = 'LaporanKerjaHarian/PekerjaBatch/TargetWaktu/C_Detail/$1';
 $route['LkhPekerjaBatch/TargetWaktu/Detail/(:any)/(:any)'] = 'LaporanKerjaHarian/PekerjaBatch/TargetWaktu/C_Detail/$1/$2';
 
-$route['LkhPekerjaBatch/TargetWaktu/Draft'] = 'LaporanKerjaHarian/PekerjaBatch/TargetWaktu/C_ListData/index/draft';
-$route['LkhPekerjaBatch/TargetWaktu/Unapproved'] = 'LaporanKerjaHarian/PekerjaBatch/TargetWaktu/C_ListData/index/unapproved';
-$route['LkhPekerjaBatch/TargetWaktu/Rejected'] = 'LaporanKerjaHarian/PekerjaBatch/TargetWaktu/C_ListData/index/rejected';
-$route['LkhPekerjaBatch/TargetWaktu/Approved'] = 'LaporanKerjaHarian/PekerjaBatch/TargetWaktu/C_ListData/index/approved';
-$route['LkhPekerjaBatch/TargetWaktu/ListData'] = 'LaporanKerjaHarian/PekerjaBatch/TargetWaktu/C_ListData/index/listdata';
+$route['LkhPekerjaBatch/TargetWaktu/Draft'] = 'LaporanKerjaHarian/PekerjaBatch/TargetWaktu/C_ListData/index/Draft';
+$route['LkhPekerjaBatch/TargetWaktu/Unapproved'] = 'LaporanKerjaHarian/PekerjaBatch/TargetWaktu/C_ListData/index/Unapproved';
+$route['LkhPekerjaBatch/TargetWaktu/Rejected'] = 'LaporanKerjaHarian/PekerjaBatch/TargetWaktu/C_ListData/index/Rejected';
+$route['LkhPekerjaBatch/TargetWaktu/Approved'] = 'LaporanKerjaHarian/PekerjaBatch/TargetWaktu/C_ListData/index/Approved';
+$route['LkhPekerjaBatch/TargetWaktu/ListData'] = 'LaporanKerjaHarian/PekerjaBatch/TargetWaktu/C_ListData/index/ListData';

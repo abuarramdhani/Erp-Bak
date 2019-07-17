@@ -10,12 +10,12 @@ class C_ListData extends CI_Controller {
         $this->load->library('form_validation');
 		$this->load->library('session');
 		$this->load->model('SystemAdministration/MainMenu/M_user');
-		$this->load->model('LaporanKerjaHarian/PekerjaBatch/M_lkhtargetwaktu');
+		$this->load->model('LaporanKerjaHarian/PekerjaSingle/M_lkhtargetwaktu');
 	}
 
 	public function index($type) {
 		if(!$this->session->is_logged) { redirect(base_url()); }
-		if(empty($type)) { redirect(base_url('LkhPekerjaBatch/TargetWaktu/ListData')); }
+		if(empty($type)) { redirect(base_url('LkhPekerjaSingle/TargetWaktu/ListData')); }
 		$user_id = $this->session->userid;
 		$data['filterPeriode'] = (empty($this->input->post('filterPeriode'))) ? date('m/Y') : $this->input->post('filterPeriode');
 		$data['filterPekerja'] = (empty($this->input->post('filterPekerja'))) ? '' : explode(',', $this->input->post('filterPekerja'));
@@ -53,7 +53,7 @@ class C_ListData extends CI_Controller {
 				break;
 		}
 		$this->load->view('V_Sidemenu', $data);
-		$this->load->view('LaporanKerjaHarian/PekerjaBatch/TargetWaktu/V_ListData', $data);
+		$this->load->view('LaporanKerjaHarian/PekerjaSingle/TargetWaktu/V_ListData', $data);
 		$this->load->view('V_Footer', $data);
 	}
 
@@ -76,7 +76,7 @@ class C_ListData extends CI_Controller {
 			$row = array();
 			$row[] = $counter.'.';
 			$row[] = "<div style='text-align: center;'><input type='checkbox' name='checkBoxDataList[]' id='checkbox-row-".$counter."' class='checkBoxDataList' ".(($key->record_pekerjaan == '-' || $key->record_kondite == '-' || $key->status != 'Draft') ? 'disabled' : '')."/></div>";
-			$row[] = "<div style='text-align: center;'><form action='".base_url('LkhPekerjaBatch/TargetWaktu/Detail')."' method='POST'><input name='filterPekerja' id='employee-code-row-".$counter."' type='text' value='".$key->employee_code."' hidden/><input name='filterPeriode' id='periode-row-".$counter."' type='text' value='".$periodeRaw."' hidden/><input name='type' type='text' value='".$key->status."' hidden/><button type='submit' class='btn btn-primary' style='margin-right: 6px;'><i class='fa fa-info-circle'></i></button><button ".(($key->record_pekerjaan == '-' || $key->record_kondite == '-' || $key->status != 'Draft') ? 'disabled' : '')." type='button' onclick='javascript:openDeleteDataModal(\"".$counter."\", \"".$key->employee_code."\");' class='btn btn-danger'><i class='fa fa-trash'></i></button></form></div>";
+			$row[] = "<div style='text-align: center;'><form action='".base_url('LkhPekerjaSingle/TargetWaktu/Detail')."' method='POST'><input name='filterPekerja' id='employee-code-row-".$counter."' type='text' value='".$key->employee_code."' hidden/><input name='filterPeriode' id='periode-row-".$counter."' type='text' value='".$periodeRaw."' hidden/><input name='type' type='text' value='".$key->status."' hidden/><button type='submit' class='btn btn-primary' style='margin-right: 6px;'><i class='fa fa-info-circle'></i></button><button ".(($key->record_pekerjaan == '-' || $key->record_kondite == '-' || $key->status != 'Draft') ? 'disabled' : '')." type='button' onclick='javascript:openDeleteDataModal(\"".$counter."\", \"".$key->employee_code."\");' class='btn btn-danger'><i class='fa fa-trash'></i></button></form></div>";
 			$row[] = '<span id="employee-name-row-'.$counter.'">'.$key->pekerja.'</span>';
 			$row[] = '<div style="text-align: center" id="employee-record-pekerjaan-row-'.$counter.'">'.$key->record_pekerjaan.'</div>';
 			$row[] = '<div style="text-align: center" id="employee-record-kondite-row-'.$counter.'">'.$key->record_kondite.'</div>';

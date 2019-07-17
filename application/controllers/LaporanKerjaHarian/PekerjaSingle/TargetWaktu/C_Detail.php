@@ -10,7 +10,7 @@ class C_Detail extends CI_Controller {
         $this->load->library('form_validation');
 		$this->load->library('session');
 		$this->load->model('SystemAdministration/MainMenu/M_user');
-		$this->load->model('LaporanKerjaHarian/PekerjaBatch/M_lkhtargetwaktu');
+		$this->load->model('LaporanKerjaHarian/PekerjaSingle/M_lkhtargetwaktu');
 		if($this->session->userdata('logged_in') != TRUE) {
 			$this->load->helper('url');
 			$this->session->set_userdata('last_page', current_url());
@@ -44,7 +44,7 @@ class C_Detail extends CI_Controller {
 		$data['warningSP'] = $this->calculateWarningSP($data['dataList']);
 		$this->load->view('V_Header', $data);
 		$this->load->view('V_Sidemenu', $data);
-		$this->load->view('LaporanKerjaHarian/PekerjaBatch/TargetWaktu/V_Detail', $data);
+		$this->load->view('LaporanKerjaHarian/PekerjaSingle/TargetWaktu/V_Detail', $data);
 		$this->load->view('V_Footer', $data);
 	}
 
