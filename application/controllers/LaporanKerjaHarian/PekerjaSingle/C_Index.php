@@ -19,16 +19,16 @@ class C_Index extends CI_Controller {
 	public function index() {
 		if(!$this->session->is_logged) { redirect(''); }
 		$user_id = $this->session->userid;
-		$data['UserMenu'] = $this->M_user->getUserMenu($user_id,$this->session->responsibility_id);
-		$data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id);
-		$data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id);
+		$data['UserMenu'] = $this->M_user->getUserMenu($user_id, $this->session->responsibility_id);
+		$data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id, $this->session->responsibility_id);
+		$data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id, $this->session->responsibility_id);
 		$data['Title'] = $data['UserMenu'][0]['user_group_menu_name'];
 		$data['Menu'] = '';
 		$data['SubMenuOne'] = '';
 		$data['SubMenuTwo'] = '';
 		$this->load->view('V_Header',$data);
 		$this->load->view('V_Sidemenu',$data);
-		$this->load->view('LaporanKerjaHarian/PekerjaBatch/V_Index',$data);
+		$this->load->view('LaporanKerjaHarian/PekerjaSingle/V_Index',$data);
 		$this->load->view('V_Footer',$data);
 	}
 }
