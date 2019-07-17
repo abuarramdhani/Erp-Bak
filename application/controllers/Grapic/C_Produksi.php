@@ -1729,7 +1729,249 @@ class C_Produksi extends CI_Controller
 					$minAg =  round((1.3*$hasil[$x][0]/100),2);	
 				
 				}else if ($val == '6'){
-					//melati
+					$min =  round((1.15*$hasil[$x][0]/100),2);
+					$minAg =  round((1.3*$hasil[$x][0]/100),2);
+				}else if ($val == '7'){
+					$min =  round((1.15*$hasil[$x][0]/100),2);
+					$minAg =  round((1.3*$hasil[$x][0]/100),2);
+				}else if ($val == '8'){
+					$min =  round((1.15*$hasil[$x][0]/100),2);
+					$minAg =  round((1.3*$hasil[$x][0]/100),2);
+				}else if ($val == '9'){
+					$min =  round((1.15*$hasil[$x][0]/100),2);
+					$minAg =  round((1.3*$hasil[$x][0]/100),2);
+				}else if ($val == '10'){
+					$min =  round((1.15*$hasil[$x][0]/100),2);
+					$minAg =  round((1.3*$hasil[$x][0]/100),2);
+				}else if ($val == '11'){
+					$min =  round((1.15*$hasil[$x][0]/100),2);
+					$minAg =  round((1.3*$hasil[$x][0]/100),2);
+				}else if ($val == '12'){
+					$min =  round((1.15*$hasil[$x][0]/100),2);
+					$minAg =  round((1.3*$hasil[$x][0]/100),2);
+				}else if ($val == '13'){
+					$min =  round((1.15*$hasil[$x][0]/100),2);
+					$minAg =  round((1.3*$hasil[$x][0]/100),2);
+				}else if ($val == '14'){
+					$min =  round((1.15*$hasil[$x][0]/100),2);
+					$minAg =  round((1.3*$hasil[$x][0]/100),2);
+				}else if ($val == '15'){
+					$min =  round((1.15*$hasil[$x][0]/100),2);
+					$minAg =  round((1.3*$hasil[$x][0]/100),2);
+				}else if ($val == '16'){
+					$min =  round((1.15*$hasil[$x][0]/100),2);
+					$minAg =  round((1.3*$hasil[$x][0]/100),2);
+				}else if ($val == '17'){
+					$min =  round((1.15*$hasil[$x][0]/100),2);
+					$minAg =  round((1.3*$hasil[$x][0]/100),2);
+				}else if ($val == '18'){
+					$min =  round((1.15*$hasil[$x][0]/100),2);
+					$minAg =  round((1.3*$hasil[$x][0]/100),2);
+				}else if ($val == '19'){
+					$min =  round((1.15*$hasil[$x][0]/100),2);
+					$minAg =  round((1.3*$hasil[$x][0]/100),2);
+				}else if ($val == '20'){
+					$min =  round((1.15*$hasil[$x][0]/100),2);
+					$minAg =  round((1.3*$hasil[$x][0]/100),2);
+				}else if ($val == '21'){
+					$min =  round((1.15*$hasil[$x][0]/100),2);
+					$minAg =  round((1.3*$hasil[$x][0]/100),2);
+				}else if ($val == '22'){
+					$min =  round((1.15*$hasil[$x][0]/100),2);
+					$minAg =  round((1.3*$hasil[$x][0]/100),2);
+				}else if ($val == '23'){
+					$min =  round((1.15*$hasil[$x][0]/100),2);
+					$minAg =  round((1.3*$hasil[$x][0]/100),2);
+				}else if ($val == '24'){
+					$min =  round((1.15*$hasil[$x][0]/100),2);
+					$minAg =  round((1.3*$hasil[$x][0]/100),2);
+				}else if ($val == '25'){
+					$min =  round((1.15*$hasil[$x][0]/100),2);
+					$minAg =  round((1.3*$hasil[$x][0]/100),2);
+				}else if ($val == '26'){
+					$min =  round((1.15*$hasil[$x][0]/100),2);
+					$minAg =  round((1.3*$hasil[$x][0]/100),2);
+				}else if ($val == '27'){
+					$min =  round((1.15*$hasil[$x][0]/100),2);
+					$minAg =  round((1.3*$hasil[$x][0]/100),2);
+				}else if ($val == '28'){
+					$min =  round((1.15*$hasil[$x][0]/100),2);
+					$minAg =  round((1.3*$hasil[$x][0]/100),2);
+				}else if ($val == '29'){
+					$min =  round((1.15*$hasil[$x][0]/100),2);
+					$minAg =  round((1.3*$hasil[$x][0]/100),2);
+				}else if ($val == '30'){
+					$min =  round((1.15*$hasil[$x][0]/100),2);
+					$minAg =  round((1.3*$hasil[$x][0]/100),2);
+				}else if ($val == '31'){
+					$min =  round((1.15*$hasil[$x][0]/100),2);
+					$minAg =  round((1.3*$hasil[$x][0]/100),2);
+				}else if ($val == '32'){
+					$min =  round((1.15*$hasil[$x][0]/100),2);
+					$minAg =  round((1.3*$hasil[$x][0]/100),2);
+				}else if ($val == '33'){
+					$min =  round((1.15*$hasil[$x][0]/100),2);
+					$minAg =  round((1.3*$hasil[$x][0]/100),2);
+				}else if ($val == '34'){
+					$min =  round((1.15*$hasil[$x][0]/100),2);
+					$minAg =  round((1.3*$hasil[$x][0]/100),2);
+				}else if ($val == '35'){
+					$min =  round((1.15*$hasil[$x][0]/100),2);
+					$minAg =  round((1.3*$hasil[$x][0]/100),2);
+				}else if ($val == '36'){
+					$min =  round((1.15*$hasil[$x][0]/100),2);
+					$minAg =  round((1.3*$hasil[$x][0]/100),2);
+				}else if ($val == '37'){
+					$min =  round((1.15*$hasil[$x][0]/100),2);
+					$minAg =  round((1.3*$hasil[$x][0]/100),2);
+				}else if ($val == '38'){
+					$min =  round((1.15*$hasil[$x][0]/100),2);
+					$minAg =  round((1.3*$hasil[$x][0]/100),2);
+				}else if ($val == '39'){
+					$min =  round((1.15*$hasil[$x][0]/100),2);
+					$minAg =  round((1.3*$hasil[$x][0]/100),2);
+				}else if ($val == '40'){
+					$min =  round((1.15*$hasil[$x][0]/100),2);
+					$minAg =  round((1.3*$hasil[$x][0]/100),2);
+				}else if ($val == '41'){
+					$min =  round((1.15*$hasil[$x][0]/100),2);
+					$minAg =  round((1.3*$hasil[$x][0]/100),2);
+				}else if ($val == '42'){
+					$min =  round((1.15*$hasil[$x][0]/100),2);
+					$minAg =  round((1.3*$hasil[$x][0]/100),2);
+				}else if ($val == '42'){
+					$min =  round((1.15*$hasil[$x][0]/100),2);
+					$minAg =  round((1.3*$hasil[$x][0]/100),2);
+				}else if ($val == '44'){
+					$min =  round((1.15*$hasil[$x][0]/100),2);
+					$minAg =  round((1.3*$hasil[$x][0]/100),2);
+				}else if ($val == '45'){
+					$min =  round((1.15*$hasil[$x][0]/100),2);
+					$minAg =  round((1.3*$hasil[$x][0]/100),2);
+				}else if ($val == '46'){
+					$min =  round((1.15*$hasil[$x][0]/100),2);
+					$minAg =  round((1.3*$hasil[$x][0]/100),2);
+				}else if ($val == '47'){
+					$min =  round((1.15*$hasil[$x][0]/100),2);
+					$minAg =  round((1.3*$hasil[$x][0]/100),2);
+				}else if ($val == '48'){
+					$min =  round((1.15*$hasil[$x][0]/100),2);
+					$minAg =  round((1.3*$hasil[$x][0]/100),2);
+				}else if ($val == '49'){
+					$min =  round((1.15*$hasil[$x][0]/100),2);
+					$minAg =  round((1.3*$hasil[$x][0]/100),2);
+				}else if ($val == '50'){
+					$min =  round((1.15*$hasil[$x][0]/100),2);
+					$minAg =  round((1.3*$hasil[$x][0]/100),2);
+				}else if ($val == '51'){
+					$min =  round((1.15*$hasil[$x][0]/100),2);
+					$minAg =  round((1.3*$hasil[$x][0]/100),2);
+				}else if ($val == '52'){
+					$min =  round((1.15*$hasil[$x][0]/100),2);
+					$minAg =  round((1.3*$hasil[$x][0]/100),2);
+				}else if ($val == '53'){
+					$min =  round((1.15*$hasil[$x][0]/100),2);
+					$minAg =  round((1.3*$hasil[$x][0]/100),2);
+				}else if ($val == '54'){
+					$min =  round((1.15*$hasil[$x][0]/100),2);
+					$minAg =  round((1.3*$hasil[$x][0]/100),2);
+				}else if ($val == '55'){
+					$min =  round((1.15*$hasil[$x][0]/100),2);
+					$minAg =  round((1.3*$hasil[$x][0]/100),2);
+				}else if ($val == '56'){
+					$min =  round((1.15*$hasil[$x][0]/100),2);
+					$minAg =  round((1.3*$hasil[$x][0]/100),2);
+				}else if ($val == '57'){
+					$min =  round((1.15*$hasil[$x][0]/100),2);
+					$minAg =  round((1.3*$hasil[$x][0]/100),2);
+				}else if ($val == '58'){
+					$min =  round((1.15*$hasil[$x][0]/100),2);
+					$minAg =  round((1.3*$hasil[$x][0]/100),2);
+				}else if ($val == '59'){
+					$min =  round((1.15*$hasil[$x][0]/100),2);
+					$minAg =  round((1.3*$hasil[$x][0]/100),2);
+				}else if ($val == '60'){
+					$min =  round((1.15*$hasil[$x][0]/100),2);
+					$minAg =  round((1.3*$hasil[$x][0]/100),2);
+				}else if ($val == '61'){
+					$min =  round((1.15*$hasil[$x][0]/100),2);
+					$minAg =  round((1.3*$hasil[$x][0]/100),2);
+				}else if ($val == '62'){
+					$min =  round((1.15*$hasil[$x][0]/100),2);
+					$minAg =  round((1.3*$hasil[$x][0]/100),2);
+				}else if ($val == '63'){
+					$min =  round((1.15*$hasil[$x][0]/100),2);
+					$minAg =  round((1.3*$hasil[$x][0]/100),2);
+				}else if ($val == '64'){
+					$min =  round((1.15*$hasil[$x][0]/100),2);
+					$minAg =  round((1.3*$hasil[$x][0]/100),2);
+				}else if ($val == '65'){
+					$min =  round((1.15*$hasil[$x][0]/100),2);
+					$minAg =  round((1.3*$hasil[$x][0]/100),2);
+				}else if ($val == '66'){
+					$min =  round((1.15*$hasil[$x][0]/100),2);
+					$minAg =  round((1.3*$hasil[$x][0]/100),2);
+				}else if ($val == '67'){
+					$min =  round((1.15*$hasil[$x][0]/100),2);
+					$minAg =  round((1.3*$hasil[$x][0]/100),2);
+				}else if ($val == '68'){
+					$min =  round((1.15*$hasil[$x][0]/100),2);
+					$minAg =  round((1.3*$hasil[$x][0]/100),2);
+				}else if ($val == '69'){
+					$min =  round((1.15*$hasil[$x][0]/100),2);
+					$minAg =  round((1.3*$hasil[$x][0]/100),2);
+				}else if ($val == '70'){
+					$min =  round((1.15*$hasil[$x][0]/100),2);
+					$minAg =  round((1.3*$hasil[$x][0]/100),2);
+				}else if ($val == '71'){
+					$min =  round((1.15*$hasil[$x][0]/100),2);
+					$minAg =  round((1.3*$hasil[$x][0]/100),2);
+				}else if ($val == '71'){
+					$min =  round((1.15*$hasil[$x][0]/100),2);
+					$minAg =  round((1.3*$hasil[$x][0]/100),2);
+				}else if ($val == '73'){
+					$min =  round((1.15*$hasil[$x][0]/100),2);
+					$minAg =  round((1.3*$hasil[$x][0]/100),2);
+				}else if ($val == '74'){
+					$min =  round((1.15*$hasil[$x][0]/100),2);
+					$minAg =  round((1.3*$hasil[$x][0]/100),2);
+				}else if ($val == '75'){
+					$min =  round((1.15*$hasil[$x][0]/100),2);
+					$minAg =  round((1.3*$hasil[$x][0]/100),2);
+				}else if ($val == '76'){
+					$min =  round((1.15*$hasil[$x][0]/100),2);
+					$minAg =  round((1.3*$hasil[$x][0]/100),2);
+				}else if ($val == '77'){
+					$min =  round((1.15*$hasil[$x][0]/100),2);
+					$minAg =  round((1.3*$hasil[$x][0]/100),2);
+				}else if ($val == '78'){
+					$min =  round((1.15*$hasil[$x][0]/100),2);
+					$minAg =  round((1.3*$hasil[$x][0]/100),2);
+				}else if ($val == '79'){
+					$min =  round((1.15*$hasil[$x][0]/100),2);
+					$minAg =  round((1.3*$hasil[$x][0]/100),2);
+				}else if ($val == '80'){
+					$min =  round((1.15*$hasil[$x][0]/100),2);
+					$minAg =  round((1.3*$hasil[$x][0]/100),2);
+				}else if ($val == '81'){
+					$min =  round((1.15*$hasil[$x][0]/100),2);
+					$minAg =  round((1.3*$hasil[$x][0]/100),2);
+				}else if ($val == '82'){
+					$min =  round((1.15*$hasil[$x][0]/100),2);
+					$minAg =  round((1.3*$hasil[$x][0]/100),2);
+				}else if ($val == '83'){
+					$min =  round((1.15*$hasil[$x][0]/100),2);
+					$minAg =  round((1.3*$hasil[$x][0]/100),2);
+				}else if ($val == '84'){
+					$min =  round((1.15*$hasil[$x][0]/100),2);
+					$minAg =  round((1.3*$hasil[$x][0]/100),2);
+				}else if ($val == '85'){
+					$min =  round((1.15*$hasil[$x][0]/100),2);
+					$minAg =  round((1.3*$hasil[$x][0]/100),2);
+				}else if ($val == '86'){
+					$min =  round((1.15*$hasil[$x][0]/100),2);
+					$minAg =  round((1.3*$hasil[$x][0]/100),2);
+				}else if ($val == '87'){
 					$min =  round((1.15*$hasil[$x][0]/100),2);
 					$minAg =  round((1.3*$hasil[$x][0]/100),2);
 				}else{
