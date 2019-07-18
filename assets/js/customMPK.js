@@ -1,5 +1,9 @@
 $(document).ready(function(){
 
+	$('#dataTable-MasterLokasi').DataTable( {
+	  		dom:'flrtp',
+	});
+
 	$('.select-nama').select2({
 		ajax: {
 			url: baseurl+"MasterPekerja/Other/pekerja",
@@ -31,11 +35,26 @@ $(document).ready(function(){
 		});
 	});
 
+	$('#tbl').DataTable({
+						dom: 'Bfrtip',
+						buttons: [
+							'excel',
+							{
+								extend: 'pdfHtml5',
+								orientation: 'landscape',
+								pageSize: 'A4',
+							}
+						],
+						scrollX: true,
+						// scrollY: 400,
+						lengthMenu: [ [10, 25, 50, 100, -1], [10, 25, 50, 100, "All"] ],
+					});
+
 	function SelectNama(){
 		var val = $('#NamaPekerja').val();
 		if (val) {
 			$('#CariPekerja').removeAttr('disabled', 'disabled');
-			$('#CariPekerja').removeClass('disabled'); 
+			$('#CariPekerja').removeClass('disabled');
 		}else{
 			$('#CariPekerja').attr('disabled', 'disabled');
 			$('#CariPekerja').addClass('disabled', 'disabled');
@@ -224,7 +243,7 @@ $(function()
 					allowClear: false,
 					placeholder: "Pilih Pekerja",
 					minimumInputLength: 3,
-					ajax: 
+					ajax:
 					{
 						url: baseurl+'MasterPekerja/PerhitunganPesangon/daftar_pekerja_aktif',
 						dataType: 'json',
@@ -293,7 +312,7 @@ $(function()
 						allowClear: false,
 						placeholder: "Pilih Pekerja",
 						minimumInputLength: 3,
-						ajax: 
+						ajax:
 						{
 							url: baseurl+'MasterPekerja/Surat/daftar_pekerja_aktif',
 							dataType: 'json',
@@ -318,7 +337,7 @@ $(function()
 						allowClear: false,
 						placeholder: "Pilih Pekerja",
 						minimumInputLength: 3,
-						ajax: 
+						ajax:
 						{
 							url: baseurl+'MasterPekerja/Surat/daftar_pekerja_aktif',
 							dataType: 'json',
@@ -343,7 +362,7 @@ $(function()
 						allowClear: false,
 						placeholder: "Pilih Seksi",
 						minimumInputLength: 3,
-						ajax: 
+						ajax:
 						{
 							url: baseurl+'MasterPekerja/Surat/daftar_seksi',
 							dataType: 'json',
@@ -372,7 +391,7 @@ $(function()
 						{
 							allowClear: false,
 							placeholder: "Pilih Pekerjaan",
-							ajax: 
+							ajax:
 							{
 								url: baseurl+'MasterPekerja/Surat/daftar_pekerjaan',
 								dataType: 'json',
@@ -400,7 +419,7 @@ $(function()
 						allowClear: false,
 						placeholder: "Pilih Seksi",
 						minimumInputLength: 3,
-						ajax: 
+						ajax:
 						{
 							url: baseurl+'MasterPekerja/Surat/daftar_seksi',
 							dataType: 'json',
@@ -429,7 +448,7 @@ $(function()
 						{
 							allowClear: true,
 							placeholder: "Pilih Pekerjaan",
-							ajax: 
+							ajax:
 							{
 								url: baseurl+'MasterPekerja/Surat/daftar_pekerjaan',
 								dataType: 'json',
@@ -507,7 +526,7 @@ $(function()
 					{
 						allowClear: false,
 						placeholder: "Pilih Pekerjaan",
-						ajax: 
+						ajax:
 						{
 							url: baseurl+'MasterPekerja/Surat/daftar_pekerjaan',
 							dataType: 'json',
@@ -533,7 +552,7 @@ $(function()
 						allowClear: true,
 						placeholder: "Pilih Pekerjaan",
 						minimumInputLength: 3,
-						ajax: 
+						ajax:
 						{
 							url: baseurl+'MasterPekerja/Surat/daftar_pekerjaan',
 							dataType: 'json',
@@ -558,7 +577,7 @@ $(function()
 						allowClear: false,
 						placeholder: "Pilih Kode Jabatan",
 						minimumInputLength: 1,
-						ajax: 
+						ajax:
 						{
 							url: baseurl+'MasterPekerja/Surat/daftar_kode_jabatan_kerja',
 							dataType: 'json',
@@ -582,7 +601,7 @@ $(function()
 						allowClear: false,
 						placeholder: "Pilih Kode Jabatan",
 						minimumInputLength: 1,
-						ajax: 
+						ajax:
 						{
 							url: baseurl+'MasterPekerja/Surat/daftar_kode_jabatan_kerja',
 							dataType: 'json',
@@ -605,7 +624,7 @@ $(function()
 					$('#MasterPekerja-DaftarLokasiKerja').select2({
 						allowClear: false,
 						placeholder: "Pilih Lokasi Kerja",
-						ajax: 
+						ajax:
 						{
 							url: baseurl+'MasterPekerja/Surat/daftar_lokasi_kerja',
 							dataType: 'json',
@@ -628,7 +647,7 @@ $(function()
 					$('.MasterPekerja-DaftarLokasiKerja').select2({
 						allowClear: false,
 						placeholder: "Pilih Lokasi Kerja",
-						ajax: 
+						ajax:
 						{
 							url: baseurl+'MasterPekerja/Surat/daftar_lokasi_kerja',
 							dataType: 'json',
@@ -651,7 +670,7 @@ $(function()
 					$('.MasterPekerja-DaftarTempatMakan').select2({
 						allowClear: false,
 						placeholder: "Pilih Tempat Makan",
-						ajax: 
+						ajax:
 						{
 							url: baseurl+'MasterPekerja/Surat/daftar_tempat_makan',
 							dataType: 'json',
@@ -742,8 +761,8 @@ $(function()
 								}
 							}
 						});
-					} 
-					else 
+					}
+					else
 					{
 						$('#kodesieLama').select2();
 						$('#MasterPekerja-DaftarGolonganPekerjaan').select2('val', '');
@@ -797,8 +816,8 @@ $(function()
 								}
 							}
 						});
-					} 
-					else 
+					}
+					else
 					{
 						$('#kodesieLama').select2();
 						$('.MasterPekerja-SuratMutasi-DaftarGolongan').select2('val', '');
@@ -806,7 +825,7 @@ $(function()
 				});
 
 
-				$('#MasterPekerja-Surat-btnPreview').click(function(){ 
+				$('#MasterPekerja-Surat-btnPreview').click(function(){
 					// alert($('#MasterPekerja-txtLokasiKerjaLama').val());
 					$('#surat-loading').attr('hidden', false);
 					$(document).ajaxStop(function(){
@@ -950,7 +969,7 @@ $(function()
 				    			$('.MasterPekerja-SuratMutasi-txtKodeSurat').val(result['kodeSurat']);
 				    		}
 				    	});
-				    	
+
 				    });
 
 					$('#MasterPekerja-SuratPengangkatanStaf-btnPreview').click(function(){
@@ -979,7 +998,7 @@ $(function()
 
 			//	}
 
-	// 	}	
+	// 	}
 // 	-------Master Pekerja----------------------------------------------end
 
 // alert(top.location.pathname);
@@ -1036,7 +1055,7 @@ $(document).ready(function(){
 		allowClear: false,
 		placeholder: "Pilih Pekerja",
 		minimumInputLength: 3,
-		ajax: 
+		ajax:
 		{
 			url: baseurl+'MasterPekerja/Surat/'+st,
 			dataType: 'json',
@@ -1061,7 +1080,7 @@ $(document).ready(function(){
 		allowClear: false,
 		placeholder: "Pilih Pekerja",
 		minimumInputLength: 3,
-		ajax: 
+		ajax:
 		{
 			url: baseurl+'MasterPekerja/Surat/'+st,
 			dataType: 'json',
@@ -1128,8 +1147,8 @@ $('.MasterPekerja-Surat-DaftarPekerja-staf').change(function(){
 				}
 			}
 		});
-	} 
-	else 
+	}
+	else
 	{
 		$('#kodesieLama').select2();
 		$('.MasterPekerja-SuratMutasi-DaftarGolongan').select2('val', '');
@@ -1186,8 +1205,8 @@ $('.MasterPekerja-Surat-DaftarPekerja-staf-pengangkatan').change(function(){
 				}
 			}
 		});
-	} 
-	else 
+	}
+	else
 	{
 		$('#kodesieLama').select2();
 		$('.MasterPekerja-SuratMutasi-DaftarGolongan').select2('val', '');
@@ -1239,3 +1258,227 @@ $(function () {
 $(document).ready(function(){
 	$('#tbl').DataTable();
 });
+
+$(document).on('ready',function(){
+	$('.setupPekerjaan-cmbDepartemen').select2(
+	{
+		minimumResultsForSearch: -1,
+		allowClear: false,
+		ajax:
+		{
+			url: baseurl+'MasterPekerja/SetupPekerjaan/daftarDepartemen',
+			dataType: 'json',
+			data: function(params){
+				return {
+					term: params.term
+				}
+			},
+			processResults: function(data) {
+				return {
+					results: $.map(data, function(obj){
+						// if (obj.kode_departemen == '2') {
+						// 	return {id: obj.kode_departemen, text: obj.nama_departemen, disabled: true};
+						// }
+						return {id: obj.kode_departemen, text: obj.nama_departemen};
+					})
+				}
+			}
+		}
+	});
+
+    $(document).on('change', '.setupPekerjaan-cmbDepartemen', function(){
+        var departemen =    $(this).val();
+        // alert(departemen);
+        if(departemen=='0')
+        {
+            $('.setupPekerjaan-cmbBidang').each(function () { //added a each loop here
+                $(this).select2('destroy').val("").select2();
+            });
+            $('.setupPekerjaan-cmbUnit').each(function () { //added a each loop here
+                $(this).select2('destroy').val("").select2();
+            });
+            $('.setupPekerjaan-cmbSeksi').each(function () { //added a each loop here
+                $(this).select2('destroy').val("").select2();
+            });
+
+            $('.setupPekerjaan-cmbBidang').attr('disabled', 'true');
+            $('.setupPekerjaan-cmbUnit').attr('disabled','true');
+            $('.setupPekerjaan-cmbSeksi').attr('disabled','true');                            
+        }
+        else
+        {
+            $('.setupPekerjaan-cmbBidang').each(function () { //added a each loop here
+                $(this).select2('destroy').val("").select2();
+            });
+            $('.setupPekerjaan-cmbUnit').each(function () { //added a each loop here
+                $(this).select2('destroy').val("").select2();
+            });
+            $('.setupPekerjaan-cmbSeksi').each(function () { //added a each loop here
+                $(this).select2('destroy').val("").select2();
+            });
+
+            $('.setupPekerjaan-cmbBidang').removeAttr('disabled');
+            $('.setupPekerjaan-cmbUnit').removeAttr('disabled');
+            $('.setupPekerjaan-cmbSeksi').removeAttr('disabled');                             
+
+            $('.setupPekerjaan-cmbBidang').select2(
+            {
+                minimumResultsForSearch: -1,
+                ajax:
+                {
+                    url: baseurl+'MasterPekerja/SetupPekerjaan/daftarBidang',
+                    dataType: 'json',
+                    data: function(params){
+                        return {
+                            term: params.term,
+                            departemen: departemen
+                        }
+                    },
+                    processResults: function (data){
+                        return {
+                            results: $.map(data, function(obj){
+                                return {id: obj.kode_bidang, text: obj.nama_bidang};
+                            })
+                        }
+                    }
+                }
+            });   
+            $.ajax({
+            	data : {kodesie : departemen},
+            	url : baseurl+'MasterPekerja/SetupPekerjaan/getKodePekerjaan',
+            	type : 'POST',
+            	success: function(data){
+            		$('#txtKodeUrut').val(data);
+            	}
+            });                      
+        }
+    });
+
+    $(document).on('change', '.setupPekerjaan-cmbBidang', function(){
+        var bidang =    $(this).val();
+
+        if(bidang.substr(bidang.length - 2) == '00')
+        {
+            $('.setupPekerjaan-cmbUnit').each(function () { //added a each loop here
+                $(this).select2('destroy').val("").select2();
+            });
+            $('.setupPekerjaan-cmbSeksi').each(function () { //added a each loop here
+                $(this).select2('destroy').val("").select2();
+            });
+
+            $('.setupPekerjaan-cmbUnit').attr('disabled','true');
+            $('.setupPekerjaan-cmbSeksi').attr('disabled','true');
+        }
+        else
+        {
+            $('.setupPekerjaan-cmbUnit').each(function () { //added a each loop here
+                $(this).select2('destroy').val("").select2();
+            });
+            $('.setupPekerjaan-cmbSeksi').each(function () { //added a each loop here
+                $(this).select2('destroy').val("").select2();
+            });
+
+            $('.setupPekerjaan-cmbUnit').removeAttr('disabled');
+            $('.setupPekerjaan-cmbSeksi').removeAttr('disabled');
+
+            $('.setupPekerjaan-cmbUnit').select2(
+            {
+                minimumResultsForSearch: -1,
+                ajax:
+                {
+                    url: baseurl+'MasterPekerja/SetupPekerjaan/daftarUnit',
+                    dataType: 'json',
+                    data: function(params){
+                        return {
+                            term: params.term,
+                            bidang: bidang
+                        }
+                    },
+                    processResults: function (data){
+                        return {
+                            results: $.map(data, function(obj){
+                                return {id: obj.kode_unit, text: obj.nama_unit};
+                            })
+                        }
+                    }
+                }
+            });    
+            $.ajax({
+            	data : {kodesie : bidang},
+            	url : baseurl+'MasterPekerja/SetupPekerjaan/getKodePekerjaan',
+            	type : 'POST',
+            	success: function(data){
+            		$('#txtKodeUrut').val(data);
+            	}
+            });                                         
+        }
+    });
+
+    $(document).on('change', '.setupPekerjaan-cmbUnit', function(){
+        var unit =  $(this).val();
+
+        if(unit.substr(unit.length - 2) == '00')
+        {
+            $('.setupPekerjaan-cmbSeksi').each(function () { //added a each loop here
+                $(this).select2('destroy').val("").select2();
+            });
+            
+            $('.setupPekerjaan-cmbSeksi').attr('disabled','true');
+        }
+        else
+        {
+            $('.setupPekerjaan-cmbSeksi').each(function () { //added a each loop here
+                $(this).select2('destroy').val("").select2();
+            });
+
+            $('.setupPekerjaan-cmbSeksi').removeAttr('disabled');                         
+
+            $('.setupPekerjaan-cmbSeksi').select2(
+            {
+                minimumResultsForSearch: -1,
+                ajax:
+                {
+                    url: baseurl+'MasterPekerja/SetupPekerjaan/daftarSeksi',
+                    dataType: 'json',
+                    data: function(params){
+                        return {
+                            term: params.term,
+                            unit: unit
+                        }
+                    },
+                    processResults: function (data){
+                        return {
+                            results: $.map(data, function(obj){
+                            	
+                                return {id: obj.kode_seksi, text: obj.nama_seksi};
+                            })
+                        }
+                    }
+                }
+            });
+
+            $.ajax({
+            	data : {kodesie : unit},
+            	url : baseurl+'MasterPekerja/SetupPekerjaan/getKodePekerjaan',
+            	type : 'POST',
+            	success: function(data){
+            		$('#txtKodeUrut').val(data);
+            	}
+            });
+        }
+    });
+
+    $(document).on('change', '.setupPekerjaan-cmbSeksi', function(){
+        var unit =  $(this).val();
+        $.ajax({
+        	data : {kodesie : unit},
+        	url : baseurl+'MasterPekerja/SetupPekerjaan/getKodePekerjaan',
+        	type : 'POST',
+        	success: function(data){
+        		$('#txtKodeUrut').val(data);
+        	}
+        });
+	});
+
+
+})

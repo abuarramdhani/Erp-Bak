@@ -1,7 +1,7 @@
 <?php
 	class M_rekapjamkerja extends CI_Model
 	{
-		
+
 		public function __construct()
 	    {
 	        parent::__construct();
@@ -10,7 +10,7 @@
 
 	    public function ambilLokasiKerja($keyword)
 	    {
-	    	$ambilLokasiKerja 		= "	select 		trim(lokker.id_) as kode_lokasi_kerja, 
+	    	$ambilLokasiKerja 		= "	select 		trim(lokker.id_) as kode_lokasi_kerja,
 													rtrim(lokker.lokasi_kerja) as nama_lokasi_kerja
 										from 		hrd_khs.tlokasi_kerja as lokker
 										where 		(
@@ -44,7 +44,8 @@
 	    								coalesce(round((h.jam_kerja_seksi/3600)::numeric, 3), 0) as \"H\",
 	    								coalesce(round((j.jam_kerja_seksi/3600)::numeric, 3), 0) as \"J\",
 	    								coalesce(round((kp.jam_kerja_seksi/3600)::numeric, 3), 0) as \"K-P\",
-	    								coalesce(round((q.jam_kerja_seksi/3600)::numeric, 3), 0) as \"Q\"
+	    								coalesce(round((q.jam_kerja_seksi/3600)::numeric, 3), 0) as \"Q\",
+	    								coalesce(round((t.jam_kerja_seksi/3600)::numeric, 3), 0) as \"T\"
 	    								from (	select substring(tseksi.kodesie, 1, 7) as kodesie,
 	    																										rtrim(tseksi.dept) as dept,
 	    									rtrim(tseksi.bidang) as bidang,
@@ -59,165 +60,397 @@
 	    								                 sum (pkj.lembur) as jam_kerja_seksi
 	    								from
 
-	    								(select tdtp.*, (select	(coalesce(sum(tlembur.jml_lembur), 0) * 60)
+	    								(select tdtp.tanggal,
+												tdtp.noind,
+												tdtp.masuk,
+												tdtp.keluar,
+												tdtp.kd_ket,
+												tdtp.total_lembur,
+												case when (select count(*) from hrd_khs.tmutasi tmut where tmut.noind=tdtp.noind)> 0 then
+													(select case when tdtp.tanggal::date < tmut.tglberlaku then
+														kodesielm
+													else
+														kodesiebr
+													end
+											from hrd_khs.tmutasi tmut
+											where tmut.noind=tdtp.noind
+											and tmut.tglberlaku >= '$tanggalAwalRekap'
+											order by tglberlaku limit 1)
+											else
+												tdtp.kodesie
+											end as kodesie, (select	(coalesce(sum(tlembur.jml_lembur), 0) * 60)
 	    								from	\"Presensi\".tlembur as tlembur
 	    								                         join hrd_khs.tpribadi tpribadi on tpribadi.noind=tlembur.noind
 	    								where 	(tlembur.tanggal=tdtp.tanggal and tpribadi.lokasi_kerja like '%$lokasiKerja%' and tlembur.noind like 'A%')
 	    										and 	tlembur.noind=tdtp.noind ) as lembur
 	    								from \"Presensi\".tdatapresensi tdtp where tdtp.tanggal between '$tanggalAwalRekap' and '$tanggalAkhirRekap') as pkj
 
-	    								group by substring(pkj.kodesie,1,7) 
+	    								group by substring(pkj.kodesie,1,7)
 	    								order by substring(pkj.kodesie,1,7) ) as a on a.kode_seksi=tseksi.kodesie
 
-	    								left join 
+	    								left join
 	    								(select substring(pkj.kodesie,1,7) as kode_seksi,
 	    								                 sum (pkj.lembur) as jam_kerja_seksi
 	    								from
 
-	    								(select tdtp.*, (select	(coalesce(sum(tlembur.jml_lembur), 0) * 60)
+	    								(select tdtp.tanggal,
+												tdtp.noind,
+												tdtp.masuk,
+												tdtp.keluar,
+												tdtp.kd_ket,
+												tdtp.total_lembur,
+												case when (select count(*) from hrd_khs.tmutasi tmut where tmut.noind=tdtp.noind)> 0 then
+													(select case when tdtp.tanggal::date < tmut.tglberlaku then
+														kodesielm
+													else
+														kodesiebr
+													end
+											from hrd_khs.tmutasi tmut
+											where tmut.noind=tdtp.noind
+											and tmut.tglberlaku >= '$tanggalAwalRekap'
+											order by tglberlaku limit 1)
+											else
+												tdtp.kodesie
+											end as kodesie, (select	(coalesce(sum(tlembur.jml_lembur), 0) * 60)
 	    								from	\"Presensi\".tlembur as tlembur
 	    											 join hrd_khs.tpribadi tpribadi on tpribadi.noind=tlembur.noind
 	    								where 	(tlembur.tanggal=tdtp.tanggal and tpribadi.lokasi_kerja like '%$lokasiKerja%' and tlembur.noind like 'B%')
 	    											and 	tlembur.noind=tdtp.noind ) as lembur
 	    								from \"Presensi\".tdatapresensi tdtp where tdtp.tanggal between '$tanggalAwalRekap' and '$tanggalAkhirRekap') as pkj
 
-	    								group by substring(pkj.kodesie,1,7) 
+	    								group by substring(pkj.kodesie,1,7)
 	    								order by substring(pkj.kodesie,1,7) ) as b on b.kode_seksi=tseksi.kodesie
 
-	    								left join 
+	    								left join
 	    								(select substring(pkj.kodesie,1,7) as kode_seksi,
 	    								                 sum (pkj.lembur) as jam_kerja_seksi
 	    								from
 
-	    								(select tdtp.*, (select	(coalesce(sum(tlembur.jml_lembur), 0) * 60)
+	    								(select tdtp.tanggal,
+												tdtp.noind,
+												tdtp.masuk,
+												tdtp.keluar,
+												tdtp.kd_ket,
+												tdtp.total_lembur,
+												case when (select count(*) from hrd_khs.tmutasi tmut where tmut.noind=tdtp.noind)> 0 then
+													(select case when tdtp.tanggal::date < tmut.tglberlaku then
+														kodesielm
+													else
+														kodesiebr
+													end
+											from hrd_khs.tmutasi tmut
+											where tmut.noind=tdtp.noind
+											and tmut.tglberlaku >= '$tanggalAwalRekap'
+											order by tglberlaku limit 1)
+											else
+												tdtp.kodesie
+											end as kodesie, (select	(coalesce(sum(tlembur.jml_lembur), 0) * 60)
 	    								from	\"Presensi\".tlembur as tlembur
 	    											 join hrd_khs.tpribadi tpribadi on tpribadi.noind=tlembur.noind
 	    								where 	(tlembur.tanggal=tdtp.tanggal and tpribadi.lokasi_kerja like '%$lokasiKerja%' and tlembur.noind like 'C%')
 	    											and 	tlembur.noind=tdtp.noind ) as lembur
 	    								from \"Presensi\".tdatapresensi tdtp where tdtp.tanggal between '$tanggalAwalRekap' and '$tanggalAkhirRekap') as pkj
 
-	    								group by substring(pkj.kodesie,1,7) 
+	    								group by substring(pkj.kodesie,1,7)
 	    								order by substring(pkj.kodesie,1,7) ) as c on c.kode_seksi=tseksi.kodesie
 
-	    								left join 
+	    								left join
 	    								(select substring(pkj.kodesie,1,7) as kode_seksi,
 	    								                 sum (pkj.lembur) as jam_kerja_seksi
 	    								from
 
-	    								(select tdtp.*, (select	(coalesce(sum(tlembur.jml_lembur), 0) * 60)
+	    								(select tdtp.tanggal,
+												tdtp.noind,
+												tdtp.masuk,
+												tdtp.keluar,
+												tdtp.kd_ket,
+												tdtp.total_lembur,
+												case when (select count(*) from hrd_khs.tmutasi tmut where tmut.noind=tdtp.noind)> 0 then
+													(select case when tdtp.tanggal::date < tmut.tglberlaku then
+														kodesielm
+													else
+														kodesiebr
+													end
+											from hrd_khs.tmutasi tmut
+											where tmut.noind=tdtp.noind
+											and tmut.tglberlaku >= '$tanggalAwalRekap'
+											order by tglberlaku limit 1)
+											else
+												tdtp.kodesie
+											end as kodesie, (select	(coalesce(sum(tlembur.jml_lembur), 0) * 60)
 	    								from	\"Presensi\".tlembur as tlembur
 	    											 join hrd_khs.tpribadi tpribadi on tpribadi.noind=tlembur.noind
 	    								where 	(tlembur.tanggal=tdtp.tanggal and tpribadi.lokasi_kerja like '%$lokasiKerja%' and tlembur.noind like 'D%')
 	    											and 	tlembur.noind=tdtp.noind ) as lembur
 	    								from \"Presensi\".tdatapresensi tdtp where tdtp.tanggal between '$tanggalAwalRekap' and '$tanggalAkhirRekap') as pkj
 
-	    								group by substring(pkj.kodesie,1,7) 
+	    								group by substring(pkj.kodesie,1,7)
 	    								order by substring(pkj.kodesie,1,7) ) as d on d.kode_seksi=tseksi.kodesie
 
-	    								left join 
+	    								left join
 	    								(select substring(pkj.kodesie,1,7) as kode_seksi,
 	    								                 sum (pkj.lembur) as jam_kerja_seksi
 	    								from
 
-	    								(select tdtp.*, (select	(coalesce(sum(tlembur.jml_lembur), 0) * 60)
+	    								(select tdtp.tanggal,
+												tdtp.noind,
+												tdtp.masuk,
+												tdtp.keluar,
+												tdtp.kd_ket,
+												tdtp.total_lembur,
+												case when (select count(*) from hrd_khs.tmutasi tmut where tmut.noind=tdtp.noind)> 0 then
+													(select case when tdtp.tanggal::date < tmut.tglberlaku then
+														kodesielm
+													else
+														kodesiebr
+													end
+											from hrd_khs.tmutasi tmut
+											where tmut.noind=tdtp.noind
+											and tmut.tglberlaku >= '$tanggalAwalRekap'
+											order by tglberlaku limit 1)
+											else
+												tdtp.kodesie
+											end as kodesie, (select	(coalesce(sum(tlembur.jml_lembur), 0) * 60)
 	    								from	\"Presensi\".tlembur as tlembur
 	    											 join hrd_khs.tpribadi tpribadi on tpribadi.noind=tlembur.noind
 	    								where 	(tlembur.tanggal=tdtp.tanggal and tpribadi.lokasi_kerja like '%$lokasiKerja%' and tlembur.noind like 'E%')
 	    											and 	tlembur.noind=tdtp.noind ) as lembur
 	    								from \"Presensi\".tdatapresensi tdtp where tdtp.tanggal between '$tanggalAwalRekap' and '$tanggalAkhirRekap') as pkj
 
-	    								group by substring(pkj.kodesie,1,7) 
+	    								group by substring(pkj.kodesie,1,7)
 	    								order by substring(pkj.kodesie,1,7) ) as e on e.kode_seksi=tseksi.kodesie
 
-	    								left join 
+	    								left join
 	    								(select substring(pkj.kodesie,1,7) as kode_seksi,
 	    								                 sum (pkj.lembur) as jam_kerja_seksi
 	    								from
 
-	    								(select tdtp.*, (select	(coalesce(sum(tlembur.jml_lembur), 0) * 60)
+	    								(select tdtp.tanggal,
+												tdtp.noind,
+												tdtp.masuk,
+												tdtp.keluar,
+												tdtp.kd_ket,
+												tdtp.total_lembur,
+												case when (select count(*) from hrd_khs.tmutasi tmut where tmut.noind=tdtp.noind)> 0 then
+													(select case when tdtp.tanggal::date < tmut.tglberlaku then
+														kodesielm
+													else
+														kodesiebr
+													end
+											from hrd_khs.tmutasi tmut
+											where tmut.noind=tdtp.noind
+											and tmut.tglberlaku >= '$tanggalAwalRekap'
+											order by tglberlaku limit 1)
+											else
+												tdtp.kodesie
+											end as kodesie, (select	(coalesce(sum(tlembur.jml_lembur), 0) * 60)
 	    									from	\"Presensi\".tlembur as tlembur
 	    											 join hrd_khs.tpribadi tpribadi on tpribadi.noind=tlembur.noind
 	    									where 	(tlembur.tanggal=tdtp.tanggal and tpribadi.lokasi_kerja like '%$lokasiKerja%' and tlembur.noind like 'F%')
 	    											and 	tlembur.noind=tdtp.noind ) as lembur
 	    								from \"Presensi\".tdatapresensi tdtp where tdtp.tanggal between '$tanggalAwalRekap' and '$tanggalAkhirRekap') as pkj
 
-	    								group by substring(pkj.kodesie,1,7) 
+	    								group by substring(pkj.kodesie,1,7)
 	    								order by substring(pkj.kodesie,1,7) ) as f on f.kode_seksi=tseksi.kodesie
 
-	    								left join 
+	    								left join
 	    								(select substring(pkj.kodesie,1,7) as kode_seksi,
 	    								                 sum (pkj.lembur) as jam_kerja_seksi
 	    								from
 
-	    								(select tdtp.*, (select	(coalesce(sum(tlembur.jml_lembur), 0) * 60)
+	    								(select tdtp.tanggal,
+												tdtp.noind,
+												tdtp.masuk,
+												tdtp.keluar,
+												tdtp.kd_ket,
+												tdtp.total_lembur,
+												case when (select count(*) from hrd_khs.tmutasi tmut where tmut.noind=tdtp.noind)> 0 then
+													(select case when tdtp.tanggal::date < tmut.tglberlaku then
+														kodesielm
+													else
+														kodesiebr
+													end
+											from hrd_khs.tmutasi tmut
+											where tmut.noind=tdtp.noind
+											and tmut.tglberlaku >= '$tanggalAwalRekap'
+											order by tglberlaku limit 1)
+											else
+												tdtp.kodesie
+											end as kodesie, (select	(coalesce(sum(tlembur.jml_lembur), 0) * 60)
 	    										from	\"Presensi\".tlembur as tlembur
 	    											 join hrd_khs.tpribadi tpribadi on tpribadi.noind=tlembur.noind
 	    										where 	(tlembur.tanggal=tdtp.tanggal and tpribadi.lokasi_kerja like '%$lokasiKerja%'  and tlembur.noind like 'G%')
 	    												and 	tlembur.noind=tdtp.noind ) as lembur
 	    								from \"Presensi\".tdatapresensi tdtp where tdtp.tanggal between '$tanggalAwalRekap' and '$tanggalAkhirRekap') as pkj
 
-	    								group by substring(pkj.kodesie,1,7) 
+	    								group by substring(pkj.kodesie,1,7)
 	    								order by substring(pkj.kodesie,1,7) ) as g on g.kode_seksi=tseksi.kodesie
 
-	    								left join 
+	    								left join
 	    								(select substring(pkj.kodesie,1,7) as kode_seksi,
 	    								                 sum (pkj.lembur) as jam_kerja_seksi
 	    								from
 
-	    								(select tdtp.*, (select	(coalesce(sum(tlembur.jml_lembur), 0) * 60)
+	    								(select tdtp.tanggal,
+												tdtp.noind,
+												tdtp.masuk,
+												tdtp.keluar,
+												tdtp.kd_ket,
+												tdtp.total_lembur,
+												case when (select count(*) from hrd_khs.tmutasi tmut where tmut.noind=tdtp.noind)> 0 then
+													(select case when tdtp.tanggal::date < tmut.tglberlaku then
+														kodesielm
+													else
+														kodesiebr
+													end
+											from hrd_khs.tmutasi tmut
+											where tmut.noind=tdtp.noind
+											and tmut.tglberlaku >= '$tanggalAwalRekap'
+											order by tglberlaku limit 1)
+											else
+												tdtp.kodesie
+											end as kodesie, (select	(coalesce(sum(tlembur.jml_lembur), 0) * 60)
 	    											from	\"Presensi\".tlembur as tlembur
 	    											 join hrd_khs.tpribadi tpribadi on tpribadi.noind=tlembur.noind
 	    											where 	(tlembur.tanggal=tdtp.tanggal and tpribadi.lokasi_kerja like '%$lokasiKerja%' and tlembur.noind like 'H%')
 	    												and 	tlembur.noind=tdtp.noind ) as lembur
 	    								from \"Presensi\".tdatapresensi tdtp where tdtp.tanggal between '$tanggalAwalRekap' and '$tanggalAkhirRekap') as pkj
 
-	    								group by substring(pkj.kodesie,1,7) 
+	    								group by substring(pkj.kodesie,1,7)
 	    								order by substring(pkj.kodesie,1,7) ) as h on h.kode_seksi=tseksi.kodesie
 
-	    								left join 
+	    								left join
 	    								(select substring(pkj.kodesie,1,7) as kode_seksi,
 	    								                 sum (pkj.lembur) as jam_kerja_seksi
 	    								from
 
-	    								(select tdtp.*, (select	(coalesce(sum(tlembur.jml_lembur), 0) * 60)
+	    								(select tdtp.tanggal,
+												tdtp.noind,
+												tdtp.masuk,
+												tdtp.keluar,
+												tdtp.kd_ket,
+												tdtp.total_lembur,
+												case when (select count(*) from hrd_khs.tmutasi tmut where tmut.noind=tdtp.noind)> 0 then
+													(select case when tdtp.tanggal::date < tmut.tglberlaku then
+														kodesielm
+													else
+														kodesiebr
+													end
+											from hrd_khs.tmutasi tmut
+											where tmut.noind=tdtp.noind
+											and tmut.tglberlaku >= '$tanggalAwalRekap'
+											order by tglberlaku limit 1)
+											else
+												tdtp.kodesie
+											end as kodesie, (select	(coalesce(sum(tlembur.jml_lembur), 0) * 60)
 	    								from	\"Presensi\".tlembur as tlembur
 	    											 join hrd_khs.tpribadi tpribadi on tpribadi.noind=tlembur.noind
 	    								where 	(tlembur.tanggal=tdtp.tanggal and tpribadi.lokasi_kerja like '%$lokasiKerja%' and tlembur.noind like 'J%')
 	    											and 	tlembur.noind=tdtp.noind ) as lembur
 	    								from \"Presensi\".tdatapresensi tdtp where tdtp.tanggal between '$tanggalAwalRekap' and '$tanggalAkhirRekap') as pkj
 
-	    								group by substring(pkj.kodesie,1,7) 
+	    								group by substring(pkj.kodesie,1,7)
 	    								order by substring(pkj.kodesie,1,7) ) as j on j.kode_seksi=tseksi.kodesie
 
-	    								left join 
+	    								left join
 	    								(select substring(pkj.kodesie,1,7) as kode_seksi,
 	    								                 sum (pkj.lembur) as jam_kerja_seksi
 	    								from
 
-	    								(select tdtp.*, (select	(coalesce(sum(tlembur.jml_lembur), 0) * 60)
+	    								(select tdtp.tanggal,
+												tdtp.noind,
+												tdtp.masuk,
+												tdtp.keluar,
+												tdtp.kd_ket,
+												tdtp.total_lembur,
+												case when (select count(*) from hrd_khs.tmutasi tmut where tmut.noind=tdtp.noind)> 0 then
+													(select case when tdtp.tanggal::date < tmut.tglberlaku then
+														kodesielm
+													else
+														kodesiebr
+													end
+											from hrd_khs.tmutasi tmut
+											where tmut.noind=tdtp.noind
+											and tmut.tglberlaku >= '$tanggalAwalRekap'
+											order by tglberlaku limit 1)
+											else
+												tdtp.kodesie
+											end as kodesie, (select	(coalesce(sum(tlembur.jml_lembur), 0) * 60)
 	    								from	\"Presensi\".tlembur as tlembur
 	    											 join hrd_khs.tpribadi tpribadi on tpribadi.noind=tlembur.noind
 	    								where 	(tlembur.tanggal=tdtp.tanggal and tpribadi.lokasi_kerja like '%$lokasiKerja%' and (tlembur.noind like 'K%' or tlembur.noind like 'P%'))
 	    										and 	tlembur.noind=tdtp.noind ) as lembur
 	    								from \"Presensi\".tdatapresensi tdtp where tdtp.tanggal between '$tanggalAwalRekap' and '$tanggalAkhirRekap') as pkj
 
-	    								group by substring(pkj.kodesie,1,7) 
+	    								group by substring(pkj.kodesie,1,7)
 	    								order by substring(pkj.kodesie,1,7) ) as kp on kp.kode_seksi=tseksi.kodesie
 
-	    								left join 
+	    								left join
 	    								(select substring(pkj.kodesie,1,7) as kode_seksi,
 	    								                 sum (pkj.lembur) as jam_kerja_seksi
 	    								from
 
-	    								(select tdtp.*, (select	(coalesce(sum(tlembur.jml_lembur), 0) * 60)
+	    								(select tdtp.tanggal,
+												tdtp.noind,
+												tdtp.masuk,
+												tdtp.keluar,
+												tdtp.kd_ket,
+												tdtp.total_lembur,
+												case when (select count(*) from hrd_khs.tmutasi tmut where tmut.noind=tdtp.noind)> 0 then
+													(select case when tdtp.tanggal::date < tmut.tglberlaku then
+														kodesielm
+													else
+														kodesiebr
+													end
+											from hrd_khs.tmutasi tmut
+											where tmut.noind=tdtp.noind
+											and tmut.tglberlaku >= '$tanggalAwalRekap'
+											order by tglberlaku limit 1)
+											else
+												tdtp.kodesie
+											end as kodesie, (select	(coalesce(sum(tlembur.jml_lembur), 0) * 60)
 	    									from	\"Presensi\".tlembur as tlembur
 	    									join hrd_khs.tpribadi tpribadi on tpribadi.noind=tlembur.noind
 	    									where 	(tlembur.tanggal=tdtp.tanggal and tpribadi.lokasi_kerja like '%$lokasiKerja%'  and tlembur.noind like 'Q%')
 	    											and 	tlembur.noind=tdtp.noind ) as lembur
 	    								from \"Presensi\".tdatapresensi tdtp where tdtp.tanggal between '$tanggalAwalRekap' and '$tanggalAkhirRekap') as pkj
 
-	    								group by substring(pkj.kodesie,1,7) 
+	    								group by substring(pkj.kodesie,1,7)
 	    								order by substring(pkj.kodesie,1,7) ) as q on q.kode_seksi=tseksi.kodesie
+
+	    								left join
+	    								(select substring(pkj.kodesie,1,7) as kode_seksi,
+	    								                 sum (pkj.lembur) as jam_kerja_seksi
+	    								from
+
+	    								(select tdtp.tanggal,
+												tdtp.noind,
+												tdtp.masuk,
+												tdtp.keluar,
+												tdtp.kd_ket,
+												tdtp.total_lembur,
+												case when (select count(*) from hrd_khs.tmutasi tmut where tmut.noind=tdtp.noind)> 0 then
+													(select case when tdtp.tanggal::date < tmut.tglberlaku then
+														kodesielm
+													else
+														kodesiebr
+													end
+											from hrd_khs.tmutasi tmut
+											where tmut.noind=tdtp.noind
+											and tmut.tglberlaku >= '$tanggalAwalRekap'
+											order by tglberlaku limit 1)
+											else
+												tdtp.kodesie
+											end as kodesie, (select	(coalesce(sum(tlembur.jml_lembur), 0) * 60)
+	    									from	\"Presensi\".tlembur as tlembur
+	    									join hrd_khs.tpribadi tpribadi on tpribadi.noind=tlembur.noind
+	    									where 	(tlembur.tanggal=tdtp.tanggal and tpribadi.lokasi_kerja like '%$lokasiKerja%'  and tlembur.noind like 'T%')
+	    											and 	tlembur.noind=tdtp.noind ) as lembur
+	    								from \"Presensi\".tdatapresensi tdtp where tdtp.tanggal between '$tanggalAwalRekap' and '$tanggalAkhirRekap') as pkj
+
+	    								group by substring(pkj.kodesie,1,7)
+	    								order by substring(pkj.kodesie,1,7) ) as t on t.kode_seksi=tseksi.kodesie
+
 	    								group by 	tseksi.kodesie,
 	    											tseksi.dept,
 	    											tseksi.bidang,
@@ -233,13 +466,14 @@
 	    											\"H\",
 	    											\"J\",
 	    											\"K-P\",
-	    											\"Q\"
+	    											\"Q\",
+	    											\"T\"
 	    								order by 	kode_seksi
 	    								";
-	    	}else 
+	    	}else
 	    	{
 	    	$prosesRekapJamKerja 		= "	--explain 	analyze
-	    									
+
 											select utama.kode_seksi,
 												   utama.nama_departemen,
 												   utama.nama_bidang,
@@ -287,11 +521,15 @@
 												    end) as \"K-P\",
 													(case when '$tambahLembur' = '1'
 												          then (utama.\"Q\" + libur.\"Q\")
-												          else (utama.\"Q\")	    
-												    end) as \"Q\"
+												          else (utama.\"Q\")
+												    end) as \"Q\",
+													(case when '$tambahLembur' = '1'
+												          then (utama.\"T\" + libur.\"T\")
+												          else (utama.\"T\")
+												    end) as \"T\"
 
-															  
-											from 
+
+											from
 
 											(select 		tseksi.kodesie as kode_seksi,
 														tseksi.dept as nama_departemen,
@@ -308,7 +546,8 @@
 														coalesce(round((h.jam_kerja_seksi/3600)::numeric, 3), 0) as \"H\",
 														coalesce(round((j.jam_kerja_seksi/3600)::numeric, 3), 0) as \"J\",
 														coalesce(round((kp.jam_kerja_seksi/3600)::numeric, 3), 0) as \"K-P\",
-														coalesce(round((q.jam_kerja_seksi/3600)::numeric, 3), 0) as \"Q\"
+														coalesce(round((q.jam_kerja_seksi/3600)::numeric, 3), 0) as \"Q\",
+														coalesce(round((t.jam_kerja_seksi/3600)::numeric, 3), 0) as \"T\"
 											from 		(
 															select 		substring(tseksi.kodesie, 1, 7) as kodesie,
 																		rtrim(tseksi.dept) as dept,
@@ -430,8 +669,8 @@
 																																													(
 																																														concat_ws
 																																														(
-																																															' ', 
-																																															(tanggal + interval '1 day')::date, 
+																																															' ',
+																																															(tanggal + interval '1 day')::date,
 																																															(
 																																																case 	when 	(
 																																																					keluar='0'
@@ -470,8 +709,8 @@
 																																													(
 																																														concat_ws
 																																														(
-																																															' ', 
-																																															tanggal::date, 
+																																															' ',
+																																															tanggal::date,
 																																															(
 																																																case 	when 	(
 																																																					keluar='0'
@@ -551,8 +790,8 @@
 																																													(
 																																														concat_ws
 																																														(
-																																															' ', 
-																																															(tanggal + interval '1 day')::date, 
+																																															' ',
+																																															(tanggal + interval '1 day')::date,
 																																															(
 																																																case 	when 	(
 																																																					keluar='0'
@@ -591,8 +830,8 @@
 																																													(
 																																														concat_ws
 																																														(
-																																															' ', 
-																																															tanggal::date, 
+																																															' ',
+																																															tanggal::date,
 																																															(
 																																																case 	when 	(
 																																																					keluar='0'
@@ -639,7 +878,7 @@
 																													) as pengurang_psp,
 																													(
 																														case 	when 	'$tambahLembur'='1'
-																																		then 	
+																																		then
 
 																																				(
 																																					select	coalesce(sum(tlembur.jml_lembur), 0) * 60
@@ -1200,7 +1439,7 @@
 																																																								else 	0
 																																																						end
 																																																					)
-																																																	end			
+																																																	end
 																																																) as waktu_ikp
 																																													from 		(
 																																																	select 		tim.tanggal::date as tanggal,
@@ -1240,7 +1479,7 @@
 																																												) as ikp
 																																								)
 																																				else 	0
-																																		end			
+																																		end
 																																	) as pengurang_ikp,
 																																	(
 																																		case 	when 	(
@@ -1789,7 +2028,7 @@
 																																																								else 	0
 																																																						end
 																																																					)
-																																																	end	
+																																																	end
 																																																) as waktu_psp
 																																													from 		(
 																																																	select 		datapres.tanggal::date as tanggal,
@@ -1822,7 +2061,7 @@
 																																																														)
 																																																														then 	to_timestamp(concat_ws(' ', (datapres.tanggal + interval '1 day')::date, datapres.masuk::time), 'YYYY-MM-DD HH24:MI:SS')
 																																																												else 	to_timestamp(concat_ws(' ', datapres.tanggal::date, datapres.masuk::time), 'YYYY-MM-DD HH24:MI:SS')
-																																																										end			
+																																																										end
 																																																									)
 																																																					end
 																																																				) as masuk,
@@ -1856,33 +2095,33 @@
 																																													case 	when 	sftpkj.tanggal
 																																																	<
 																																																	(
-																																																		select 		tglberlaku 
-																																													           			from 		hrd_khs.tmutasi 
+																																																		select 		tglberlaku
+																																													           			from 		hrd_khs.tmutasi
 																																													           			where  		noind=pri.noind
-																																													           			order by 	tglberlaku asc 
+																																													           			order by 	tglberlaku asc
 																																													           			limit 		1
 																																																	)
 																																																	then	(
-																																																				select 		kodesielm 
-																																													             				from 		hrd_khs.tmutasi 
-																																													             				where  		noind=pri.noind 
-																																													             				order by 	tglberlaku asc 
+																																																				select 		kodesielm
+																																													             				from 		hrd_khs.tmutasi
+																																													             				where  		noind=pri.noind
+																																													             				order by 	tglberlaku asc
 																																													             				limit 		1
 																																																			)
 																																															when 	sftpkj.tanggal
 																																																	<
 																																																	(
-																																																		select 		tglberlaku 
-																																													             		from 		hrd_khs.tmutasi 
+																																																		select 		tglberlaku
+																																													             		from 		hrd_khs.tmutasi
 																																													             		where  		noind=pri.noind
-																																													             		order by 	tglberlaku desc 
+																																													             		order by 	tglberlaku desc
 																																													             		limit 		1
 																																																	)
 																																																	then	(
 																																																				select 		kodesielm
-																																													             				from 		hrd_khs.tmutasi 
-																																													             				where  		noind=pri.noind 
-																																													             				order by 	tglberlaku desc 
+																																													             				from 		hrd_khs.tmutasi
+																																													             				where  		noind=pri.noind
+																																													             				order by 	tglberlaku desc
 																																													             				limit 		1
 																																																			)
 																																															else 	sftpkj.kodesie
@@ -1903,41 +2142,41 @@
 																																													case 	when 	sftpkj.tanggal
 																																																	<
 																																																	(
-																																																		select 		tglberlaku 
-																																													           			from 		hrd_khs.tmutasi 
+																																																		select 		tglberlaku
+																																													           			from 		hrd_khs.tmutasi
 																																													           			where  		noind=pri.noind
 																																													           						and 	(
 																																													           									lokasilm is not null
 																																													           									and 	lokasibr is not null
 																																													           								)
-																																													           			order by 	tglberlaku asc 
+																																													           			order by 	tglberlaku asc
 																																													           			limit 		1
 																																																	)
 																																																	then	(
-																																																				select 		lokasilm 
-																																													             				from 		hrd_khs.tmutasi 
-																																													             				where  		noind=pri.noind 
-																																													             				order by 	tglberlaku asc 
+																																																				select 		lokasilm
+																																													             				from 		hrd_khs.tmutasi
+																																													             				where  		noind=pri.noind
+																																													             				order by 	tglberlaku asc
 																																													             				limit 		1
 																																																			)
 																																															when 	sftpkj.tanggal
 																																																	<
 																																																	(
-																																																		select 		tglberlaku 
-																																													             		from 		hrd_khs.tmutasi 
+																																																		select 		tglberlaku
+																																													             		from 		hrd_khs.tmutasi
 																																													             		where  		noind=pri.noind
 																																													             					and 	(
 																																													           									lokasilm is not null
 																																													           									and 	lokasibr is not null
 																																													           								)
-																																													             		order by 	tglberlaku desc 
+																																													             		order by 	tglberlaku desc
 																																													             		limit 		1
 																																																	)
 																																																	then	(
 																																																				select 		lokasilm
-																																													             				from 		hrd_khs.tmutasi 
-																																													             				where  		noind=pri.noind 
-																																													             				order by 	tglberlaku desc 
+																																													             				from 		hrd_khs.tmutasi
+																																													             				where  		noind=pri.noind
+																																													             				order by 	tglberlaku desc
 																																													             				limit 		1
 																																																			)
 																																															else 	(
@@ -1952,7 +2191,7 @@
 																																											from 		hrd_khs.tpribadi
 																																											where 		noind=pri.noind
 																																										)
-																																						end					
+																																						end
 																																					) as lokasi_kerja,
 																																					sftpkj.tukar,
 																																					(
@@ -2151,8 +2390,8 @@
 																																													(
 																																														concat_ws
 																																														(
-																																															' ', 
-																																															(tanggal + interval '1 day')::date, 
+																																															' ',
+																																															(tanggal + interval '1 day')::date,
 																																															(
 																																																case 	when 	(
 																																																					keluar='0'
@@ -2191,8 +2430,8 @@
 																																													(
 																																														concat_ws
 																																														(
-																																															' ', 
-																																															tanggal::date, 
+																																															' ',
+																																															tanggal::date,
 																																															(
 																																																case 	when 	(
 																																																					keluar='0'
@@ -2272,8 +2511,8 @@
 																																													(
 																																														concat_ws
 																																														(
-																																															' ', 
-																																															(tanggal + interval '1 day')::date, 
+																																															' ',
+																																															(tanggal + interval '1 day')::date,
 																																															(
 																																																case 	when 	(
 																																																					keluar='0'
@@ -2312,8 +2551,8 @@
 																																													(
 																																														concat_ws
 																																														(
-																																															' ', 
-																																															tanggal::date, 
+																																															' ',
+																																															tanggal::date,
 																																															(
 																																																case 	when 	(
 																																																					keluar='0'
@@ -2919,7 +3158,7 @@
 																																																								else 	0
 																																																						end
 																																																					)
-																																																	end			
+																																																	end
 																																																) as waktu_ikp
 																																													from 		(
 																																																	select 		tim.tanggal::date as tanggal,
@@ -2959,7 +3198,7 @@
 																																												) as ikp
 																																								)
 																																				else 	0
-																																		end			
+																																		end
 																																	) as pengurang_ikp,
 																																	(
 																																		case 	when 	(
@@ -3508,7 +3747,7 @@
 																																																								else 	0
 																																																						end
 																																																					)
-																																																	end	
+																																																	end
 																																																) as waktu_psp
 																																													from 		(
 																																																	select 		datapres.tanggal::date as tanggal,
@@ -3541,7 +3780,7 @@
 																																																														)
 																																																														then 	to_timestamp(concat_ws(' ', (datapres.tanggal + interval '1 day')::date, datapres.masuk::time), 'YYYY-MM-DD HH24:MI:SS')
 																																																												else 	to_timestamp(concat_ws(' ', datapres.tanggal::date, datapres.masuk::time), 'YYYY-MM-DD HH24:MI:SS')
-																																																										end			
+																																																										end
 																																																									)
 																																																					end
 																																																				) as masuk,
@@ -3575,33 +3814,33 @@
 																																													case 	when 	sftpkj.tanggal
 																																																	<
 																																																	(
-																																																		select 		tglberlaku 
-																																													           			from 		hrd_khs.tmutasi 
+																																																		select 		tglberlaku
+																																													           			from 		hrd_khs.tmutasi
 																																													           			where  		noind=pri.noind
-																																													           			order by 	tglberlaku asc 
+																																													           			order by 	tglberlaku asc
 																																													           			limit 		1
 																																																	)
 																																																	then	(
-																																																				select 		kodesielm 
-																																													             				from 		hrd_khs.tmutasi 
-																																													             				where  		noind=pri.noind 
-																																													             				order by 	tglberlaku asc 
+																																																				select 		kodesielm
+																																													             				from 		hrd_khs.tmutasi
+																																													             				where  		noind=pri.noind
+																																													             				order by 	tglberlaku asc
 																																													             				limit 		1
 																																																			)
 																																															when 	sftpkj.tanggal
 																																																	<
 																																																	(
-																																																		select 		tglberlaku 
-																																													             		from 		hrd_khs.tmutasi 
+																																																		select 		tglberlaku
+																																													             		from 		hrd_khs.tmutasi
 																																													             		where  		noind=pri.noind
-																																													             		order by 	tglberlaku desc 
+																																													             		order by 	tglberlaku desc
 																																													             		limit 		1
 																																																	)
 																																																	then	(
 																																																				select 		kodesielm
-																																													             				from 		hrd_khs.tmutasi 
-																																													             				where  		noind=pri.noind 
-																																													             				order by 	tglberlaku desc 
+																																													             				from 		hrd_khs.tmutasi
+																																													             				where  		noind=pri.noind
+																																													             				order by 	tglberlaku desc
 																																													             				limit 		1
 																																																			)
 																																															else 	sftpkj.kodesie
@@ -3622,41 +3861,41 @@
 																																													case 	when 	sftpkj.tanggal
 																																																	<
 																																																	(
-																																																		select 		tglberlaku 
-																																													           			from 		hrd_khs.tmutasi 
+																																																		select 		tglberlaku
+																																													           			from 		hrd_khs.tmutasi
 																																													           			where  		noind=pri.noind
 																																													           						and 	(
 																																													           									lokasilm is not null
 																																													           									and 	lokasibr is not null
 																																													           								)
-																																													           			order by 	tglberlaku asc 
+																																													           			order by 	tglberlaku asc
 																																													           			limit 		1
 																																																	)
 																																																	then	(
-																																																				select 		lokasilm 
-																																													             				from 		hrd_khs.tmutasi 
-																																													             				where  		noind=pri.noind 
-																																													             				order by 	tglberlaku asc 
+																																																				select 		lokasilm
+																																													             				from 		hrd_khs.tmutasi
+																																													             				where  		noind=pri.noind
+																																													             				order by 	tglberlaku asc
 																																													             				limit 		1
 																																																			)
 																																															when 	sftpkj.tanggal
 																																																	<
 																																																	(
-																																																		select 		tglberlaku 
-																																													             		from 		hrd_khs.tmutasi 
+																																																		select 		tglberlaku
+																																													             		from 		hrd_khs.tmutasi
 																																													             		where  		noind=pri.noind
 																																													             					and 	(
 																																													           									lokasilm is not null
 																																													           									and 	lokasibr is not null
 																																													           								)
-																																													             		order by 	tglberlaku desc 
+																																													             		order by 	tglberlaku desc
 																																													             		limit 		1
 																																																	)
 																																																	then	(
 																																																				select 		lokasilm
-																																													             				from 		hrd_khs.tmutasi 
-																																													             				where  		noind=pri.noind 
-																																													             				order by 	tglberlaku desc 
+																																													             				from 		hrd_khs.tmutasi
+																																													             				where  		noind=pri.noind
+																																													             				order by 	tglberlaku desc
 																																													             				limit 		1
 																																																			)
 																																															else 	(
@@ -3671,7 +3910,7 @@
 																																											from 		hrd_khs.tpribadi
 																																											where 		noind=pri.noind
 																																										)
-																																						end					
+																																						end
 																																					) as lokasi_kerja,
 																																					sftpkj.tukar,
 																																					(
@@ -3870,8 +4109,8 @@
 																																													(
 																																														concat_ws
 																																														(
-																																															' ', 
-																																															(tanggal + interval '1 day')::date, 
+																																															' ',
+																																															(tanggal + interval '1 day')::date,
 																																															(
 																																																case 	when 	(
 																																																					keluar='0'
@@ -3910,8 +4149,8 @@
 																																													(
 																																														concat_ws
 																																														(
-																																															' ', 
-																																															tanggal::date, 
+																																															' ',
+																																															tanggal::date,
 																																															(
 																																																case 	when 	(
 																																																					keluar='0'
@@ -3991,8 +4230,8 @@
 																																													(
 																																														concat_ws
 																																														(
-																																															' ', 
-																																															(tanggal + interval '1 day')::date, 
+																																															' ',
+																																															(tanggal + interval '1 day')::date,
 																																															(
 																																																case 	when 	(
 																																																					keluar='0'
@@ -4031,8 +4270,8 @@
 																																													(
 																																														concat_ws
 																																														(
-																																															' ', 
-																																															tanggal::date, 
+																																															' ',
+																																															tanggal::date,
 																																															(
 																																																case 	when 	(
 																																																					keluar='0'
@@ -4638,7 +4877,7 @@
 																																																								else 	0
 																																																						end
 																																																					)
-																																																	end			
+																																																	end
 																																																) as waktu_ikp
 																																													from 		(
 																																																	select 		tim.tanggal::date as tanggal,
@@ -4678,7 +4917,7 @@
 																																												) as ikp
 																																								)
 																																				else 	0
-																																		end			
+																																		end
 																																	) as pengurang_ikp,
 																																	(
 																																		case 	when 	(
@@ -5227,7 +5466,7 @@
 																																																								else 	0
 																																																						end
 																																																					)
-																																																	end	
+																																																	end
 																																																) as waktu_psp
 																																													from 		(
 																																																	select 		datapres.tanggal::date as tanggal,
@@ -5260,7 +5499,7 @@
 																																																														)
 																																																														then 	to_timestamp(concat_ws(' ', (datapres.tanggal + interval '1 day')::date, datapres.masuk::time), 'YYYY-MM-DD HH24:MI:SS')
 																																																												else 	to_timestamp(concat_ws(' ', datapres.tanggal::date, datapres.masuk::time), 'YYYY-MM-DD HH24:MI:SS')
-																																																										end			
+																																																										end
 																																																									)
 																																																					end
 																																																				) as masuk,
@@ -5294,33 +5533,33 @@
 																																													case 	when 	sftpkj.tanggal
 																																																	<
 																																																	(
-																																																		select 		tglberlaku 
-																																													           			from 		hrd_khs.tmutasi 
+																																																		select 		tglberlaku
+																																													           			from 		hrd_khs.tmutasi
 																																													           			where  		noind=pri.noind
-																																													           			order by 	tglberlaku asc 
+																																													           			order by 	tglberlaku asc
 																																													           			limit 		1
 																																																	)
 																																																	then	(
-																																																				select 		kodesielm 
-																																													             				from 		hrd_khs.tmutasi 
-																																													             				where  		noind=pri.noind 
-																																													             				order by 	tglberlaku asc 
+																																																				select 		kodesielm
+																																													             				from 		hrd_khs.tmutasi
+																																													             				where  		noind=pri.noind
+																																													             				order by 	tglberlaku asc
 																																													             				limit 		1
 																																																			)
 																																															when 	sftpkj.tanggal
 																																																	<
 																																																	(
-																																																		select 		tglberlaku 
-																																													             		from 		hrd_khs.tmutasi 
+																																																		select 		tglberlaku
+																																													             		from 		hrd_khs.tmutasi
 																																													             		where  		noind=pri.noind
-																																													             		order by 	tglberlaku desc 
+																																													             		order by 	tglberlaku desc
 																																													             		limit 		1
 																																																	)
 																																																	then	(
 																																																				select 		kodesielm
-																																													             				from 		hrd_khs.tmutasi 
-																																													             				where  		noind=pri.noind 
-																																													             				order by 	tglberlaku desc 
+																																													             				from 		hrd_khs.tmutasi
+																																													             				where  		noind=pri.noind
+																																													             				order by 	tglberlaku desc
 																																													             				limit 		1
 																																																			)
 																																															else 	sftpkj.kodesie
@@ -5341,41 +5580,41 @@
 																																													case 	when 	sftpkj.tanggal
 																																																	<
 																																																	(
-																																																		select 		tglberlaku 
-																																													           			from 		hrd_khs.tmutasi 
+																																																		select 		tglberlaku
+																																													           			from 		hrd_khs.tmutasi
 																																													           			where  		noind=pri.noind
 																																													           						and 	(
 																																													           									lokasilm is not null
 																																													           									and 	lokasibr is not null
 																																													           								)
-																																													           			order by 	tglberlaku asc 
+																																													           			order by 	tglberlaku asc
 																																													           			limit 		1
 																																																	)
 																																																	then	(
-																																																				select 		lokasilm 
-																																													             				from 		hrd_khs.tmutasi 
-																																													             				where  		noind=pri.noind 
-																																													             				order by 	tglberlaku asc 
+																																																				select 		lokasilm
+																																													             				from 		hrd_khs.tmutasi
+																																													             				where  		noind=pri.noind
+																																													             				order by 	tglberlaku asc
 																																													             				limit 		1
 																																																			)
 																																															when 	sftpkj.tanggal
 																																																	<
 																																																	(
-																																																		select 		tglberlaku 
-																																													             		from 		hrd_khs.tmutasi 
+																																																		select 		tglberlaku
+																																													             		from 		hrd_khs.tmutasi
 																																													             		where  		noind=pri.noind
 																																													             					and 	(
 																																													           									lokasilm is not null
 																																													           									and 	lokasibr is not null
 																																													           								)
-																																													             		order by 	tglberlaku desc 
+																																													             		order by 	tglberlaku desc
 																																													             		limit 		1
 																																																	)
 																																																	then	(
 																																																				select 		lokasilm
-																																													             				from 		hrd_khs.tmutasi 
-																																													             				where  		noind=pri.noind 
-																																													             				order by 	tglberlaku desc 
+																																													             				from 		hrd_khs.tmutasi
+																																													             				where  		noind=pri.noind
+																																													             				order by 	tglberlaku desc
 																																													             				limit 		1
 																																																			)
 																																															else 	(
@@ -5390,7 +5629,7 @@
 																																											from 		hrd_khs.tpribadi
 																																											where 		noind=pri.noind
 																																										)
-																																						end					
+																																						end
 																																					) as lokasi_kerja,
 																																					sftpkj.tukar,
 																																					(
@@ -5589,8 +5828,8 @@
 																																													(
 																																														concat_ws
 																																														(
-																																															' ', 
-																																															(tanggal + interval '1 day')::date, 
+																																															' ',
+																																															(tanggal + interval '1 day')::date,
 																																															(
 																																																case 	when 	(
 																																																					keluar='0'
@@ -5629,8 +5868,8 @@
 																																													(
 																																														concat_ws
 																																														(
-																																															' ', 
-																																															tanggal::date, 
+																																															' ',
+																																															tanggal::date,
 																																															(
 																																																case 	when 	(
 																																																					keluar='0'
@@ -5710,8 +5949,8 @@
 																																													(
 																																														concat_ws
 																																														(
-																																															' ', 
-																																															(tanggal + interval '1 day')::date, 
+																																															' ',
+																																															(tanggal + interval '1 day')::date,
 																																															(
 																																																case 	when 	(
 																																																					keluar='0'
@@ -5750,8 +5989,8 @@
 																																													(
 																																														concat_ws
 																																														(
-																																															' ', 
-																																															tanggal::date, 
+																																															' ',
+																																															tanggal::date,
 																																															(
 																																																case 	when 	(
 																																																					keluar='0'
@@ -6357,7 +6596,7 @@
 																																																								else 	0
 																																																						end
 																																																					)
-																																																	end			
+																																																	end
 																																																) as waktu_ikp
 																																													from 		(
 																																																	select 		tim.tanggal::date as tanggal,
@@ -6397,7 +6636,7 @@
 																																												) as ikp
 																																								)
 																																				else 	0
-																																		end			
+																																		end
 																																	) as pengurang_ikp,
 																																	(
 																																		case 	when 	(
@@ -6946,7 +7185,7 @@
 																																																								else 	0
 																																																						end
 																																																					)
-																																																	end	
+																																																	end
 																																																) as waktu_psp
 																																													from 		(
 																																																	select 		datapres.tanggal::date as tanggal,
@@ -6979,7 +7218,7 @@
 																																																														)
 																																																														then 	to_timestamp(concat_ws(' ', (datapres.tanggal + interval '1 day')::date, datapres.masuk::time), 'YYYY-MM-DD HH24:MI:SS')
 																																																												else 	to_timestamp(concat_ws(' ', datapres.tanggal::date, datapres.masuk::time), 'YYYY-MM-DD HH24:MI:SS')
-																																																										end			
+																																																										end
 																																																									)
 																																																					end
 																																																				) as masuk,
@@ -7013,33 +7252,33 @@
 																																													case 	when 	sftpkj.tanggal
 																																																	<
 																																																	(
-																																																		select 		tglberlaku 
-																																													           			from 		hrd_khs.tmutasi 
+																																																		select 		tglberlaku
+																																													           			from 		hrd_khs.tmutasi
 																																													           			where  		noind=pri.noind
-																																													           			order by 	tglberlaku asc 
+																																													           			order by 	tglberlaku asc
 																																													           			limit 		1
 																																																	)
 																																																	then	(
-																																																				select 		kodesielm 
-																																													             				from 		hrd_khs.tmutasi 
-																																													             				where  		noind=pri.noind 
-																																													             				order by 	tglberlaku asc 
+																																																				select 		kodesielm
+																																													             				from 		hrd_khs.tmutasi
+																																													             				where  		noind=pri.noind
+																																													             				order by 	tglberlaku asc
 																																													             				limit 		1
 																																																			)
 																																															when 	sftpkj.tanggal
 																																																	<
 																																																	(
-																																																		select 		tglberlaku 
-																																													             		from 		hrd_khs.tmutasi 
+																																																		select 		tglberlaku
+																																													             		from 		hrd_khs.tmutasi
 																																													             		where  		noind=pri.noind
-																																													             		order by 	tglberlaku desc 
+																																													             		order by 	tglberlaku desc
 																																													             		limit 		1
 																																																	)
 																																																	then	(
 																																																				select 		kodesielm
-																																													             				from 		hrd_khs.tmutasi 
-																																													             				where  		noind=pri.noind 
-																																													             				order by 	tglberlaku desc 
+																																													             				from 		hrd_khs.tmutasi
+																																													             				where  		noind=pri.noind
+																																													             				order by 	tglberlaku desc
 																																													             				limit 		1
 																																																			)
 																																															else 	sftpkj.kodesie
@@ -7060,41 +7299,41 @@
 																																													case 	when 	sftpkj.tanggal
 																																																	<
 																																																	(
-																																																		select 		tglberlaku 
-																																													           			from 		hrd_khs.tmutasi 
+																																																		select 		tglberlaku
+																																													           			from 		hrd_khs.tmutasi
 																																													           			where  		noind=pri.noind
 																																													           						and 	(
 																																													           									lokasilm is not null
 																																													           									and 	lokasibr is not null
 																																													           								)
-																																													           			order by 	tglberlaku asc 
+																																													           			order by 	tglberlaku asc
 																																													           			limit 		1
 																																																	)
 																																																	then	(
-																																																				select 		lokasilm 
-																																													             				from 		hrd_khs.tmutasi 
-																																													             				where  		noind=pri.noind 
-																																													             				order by 	tglberlaku asc 
+																																																				select 		lokasilm
+																																													             				from 		hrd_khs.tmutasi
+																																													             				where  		noind=pri.noind
+																																													             				order by 	tglberlaku asc
 																																													             				limit 		1
 																																																			)
 																																															when 	sftpkj.tanggal
 																																																	<
 																																																	(
-																																																		select 		tglberlaku 
-																																													             		from 		hrd_khs.tmutasi 
+																																																		select 		tglberlaku
+																																													             		from 		hrd_khs.tmutasi
 																																													             		where  		noind=pri.noind
 																																													             					and 	(
 																																													           									lokasilm is not null
 																																													           									and 	lokasibr is not null
 																																													           								)
-																																													             		order by 	tglberlaku desc 
+																																													             		order by 	tglberlaku desc
 																																													             		limit 		1
 																																																	)
 																																																	then	(
 																																																				select 		lokasilm
-																																													             				from 		hrd_khs.tmutasi 
-																																													             				where  		noind=pri.noind 
-																																													             				order by 	tglberlaku desc 
+																																													             				from 		hrd_khs.tmutasi
+																																													             				where  		noind=pri.noind
+																																													             				order by 	tglberlaku desc
 																																													             				limit 		1
 																																																			)
 																																															else 	(
@@ -7109,7 +7348,7 @@
 																																											from 		hrd_khs.tpribadi
 																																											where 		noind=pri.noind
 																																										)
-																																						end					
+																																						end
 																																					) as lokasi_kerja,
 																																					sftpkj.tukar,
 																																					(
@@ -7308,8 +7547,8 @@
 																																													(
 																																														concat_ws
 																																														(
-																																															' ', 
-																																															(tanggal + interval '1 day')::date, 
+																																															' ',
+																																															(tanggal + interval '1 day')::date,
 																																															(
 																																																case 	when 	(
 																																																					keluar='0'
@@ -7348,8 +7587,8 @@
 																																													(
 																																														concat_ws
 																																														(
-																																															' ', 
-																																															tanggal::date, 
+																																															' ',
+																																															tanggal::date,
 																																															(
 																																																case 	when 	(
 																																																					keluar='0'
@@ -7429,8 +7668,8 @@
 																																													(
 																																														concat_ws
 																																														(
-																																															' ', 
-																																															(tanggal + interval '1 day')::date, 
+																																															' ',
+																																															(tanggal + interval '1 day')::date,
 																																															(
 																																																case 	when 	(
 																																																					keluar='0'
@@ -7469,8 +7708,8 @@
 																																													(
 																																														concat_ws
 																																														(
-																																															' ', 
-																																															tanggal::date, 
+																																															' ',
+																																															tanggal::date,
 																																															(
 																																																case 	when 	(
 																																																					keluar='0'
@@ -8076,7 +8315,7 @@
 																																																								else 	0
 																																																						end
 																																																					)
-																																																	end			
+																																																	end
 																																																) as waktu_ikp
 																																													from 		(
 																																																	select 		tim.tanggal::date as tanggal,
@@ -8116,7 +8355,7 @@
 																																												) as ikp
 																																								)
 																																				else 	0
-																																		end			
+																																		end
 																																	) as pengurang_ikp,
 																																	(
 																																		case 	when 	(
@@ -8665,7 +8904,7 @@
 																																																								else 	0
 																																																						end
 																																																					)
-																																																	end	
+																																																	end
 																																																) as waktu_psp
 																																													from 		(
 																																																	select 		datapres.tanggal::date as tanggal,
@@ -8698,7 +8937,7 @@
 																																																														)
 																																																														then 	to_timestamp(concat_ws(' ', (datapres.tanggal + interval '1 day')::date, datapres.masuk::time), 'YYYY-MM-DD HH24:MI:SS')
 																																																												else 	to_timestamp(concat_ws(' ', datapres.tanggal::date, datapres.masuk::time), 'YYYY-MM-DD HH24:MI:SS')
-																																																										end			
+																																																										end
 																																																									)
 																																																					end
 																																																				) as masuk,
@@ -8732,33 +8971,33 @@
 																																													case 	when 	sftpkj.tanggal
 																																																	<
 																																																	(
-																																																		select 		tglberlaku 
-																																													           			from 		hrd_khs.tmutasi 
+																																																		select 		tglberlaku
+																																													           			from 		hrd_khs.tmutasi
 																																													           			where  		noind=pri.noind
-																																													           			order by 	tglberlaku asc 
+																																													           			order by 	tglberlaku asc
 																																													           			limit 		1
 																																																	)
 																																																	then	(
-																																																				select 		kodesielm 
-																																													             				from 		hrd_khs.tmutasi 
-																																													             				where  		noind=pri.noind 
-																																													             				order by 	tglberlaku asc 
+																																																				select 		kodesielm
+																																													             				from 		hrd_khs.tmutasi
+																																													             				where  		noind=pri.noind
+																																													             				order by 	tglberlaku asc
 																																													             				limit 		1
 																																																			)
 																																															when 	sftpkj.tanggal
 																																																	<
 																																																	(
-																																																		select 		tglberlaku 
-																																													             		from 		hrd_khs.tmutasi 
+																																																		select 		tglberlaku
+																																													             		from 		hrd_khs.tmutasi
 																																													             		where  		noind=pri.noind
-																																													             		order by 	tglberlaku desc 
+																																													             		order by 	tglberlaku desc
 																																													             		limit 		1
 																																																	)
 																																																	then	(
 																																																				select 		kodesielm
-																																													             				from 		hrd_khs.tmutasi 
-																																													             				where  		noind=pri.noind 
-																																													             				order by 	tglberlaku desc 
+																																													             				from 		hrd_khs.tmutasi
+																																													             				where  		noind=pri.noind
+																																													             				order by 	tglberlaku desc
 																																													             				limit 		1
 																																																			)
 																																															else 	sftpkj.kodesie
@@ -8779,41 +9018,41 @@
 																																													case 	when 	sftpkj.tanggal
 																																																	<
 																																																	(
-																																																		select 		tglberlaku 
-																																													           			from 		hrd_khs.tmutasi 
+																																																		select 		tglberlaku
+																																													           			from 		hrd_khs.tmutasi
 																																													           			where  		noind=pri.noind
 																																													           						and 	(
 																																													           									lokasilm is not null
 																																													           									and 	lokasibr is not null
 																																													           								)
-																																													           			order by 	tglberlaku asc 
+																																													           			order by 	tglberlaku asc
 																																													           			limit 		1
 																																																	)
 																																																	then	(
-																																																				select 		lokasilm 
-																																													             				from 		hrd_khs.tmutasi 
-																																													             				where  		noind=pri.noind 
-																																													             				order by 	tglberlaku asc 
+																																																				select 		lokasilm
+																																													             				from 		hrd_khs.tmutasi
+																																													             				where  		noind=pri.noind
+																																													             				order by 	tglberlaku asc
 																																													             				limit 		1
 																																																			)
 																																															when 	sftpkj.tanggal
 																																																	<
 																																																	(
-																																																		select 		tglberlaku 
-																																													             		from 		hrd_khs.tmutasi 
+																																																		select 		tglberlaku
+																																													             		from 		hrd_khs.tmutasi
 																																													             		where  		noind=pri.noind
 																																													             					and 	(
 																																													           									lokasilm is not null
 																																													           									and 	lokasibr is not null
 																																													           								)
-																																													             		order by 	tglberlaku desc 
+																																													             		order by 	tglberlaku desc
 																																													             		limit 		1
 																																																	)
 																																																	then	(
 																																																				select 		lokasilm
-																																													             				from 		hrd_khs.tmutasi 
-																																													             				where  		noind=pri.noind 
-																																													             				order by 	tglberlaku desc 
+																																													             				from 		hrd_khs.tmutasi
+																																													             				where  		noind=pri.noind
+																																													             				order by 	tglberlaku desc
 																																													             				limit 		1
 																																																			)
 																																															else 	(
@@ -8828,7 +9067,7 @@
 																																											from 		hrd_khs.tpribadi
 																																											where 		noind=pri.noind
 																																										)
-																																						end					
+																																						end
 																																					) as lokasi_kerja,
 																																					sftpkj.tukar,
 																																					(
@@ -9027,8 +9266,8 @@
 																																													(
 																																														concat_ws
 																																														(
-																																															' ', 
-																																															(tanggal + interval '1 day')::date, 
+																																															' ',
+																																															(tanggal + interval '1 day')::date,
 																																															(
 																																																case 	when 	(
 																																																					keluar='0'
@@ -9067,8 +9306,8 @@
 																																													(
 																																														concat_ws
 																																														(
-																																															' ', 
-																																															tanggal::date, 
+																																															' ',
+																																															tanggal::date,
 																																															(
 																																																case 	when 	(
 																																																					keluar='0'
@@ -9148,8 +9387,8 @@
 																																													(
 																																														concat_ws
 																																														(
-																																															' ', 
-																																															(tanggal + interval '1 day')::date, 
+																																															' ',
+																																															(tanggal + interval '1 day')::date,
 																																															(
 																																																case 	when 	(
 																																																					keluar='0'
@@ -9188,8 +9427,8 @@
 																																													(
 																																														concat_ws
 																																														(
-																																															' ', 
-																																															tanggal::date, 
+																																															' ',
+																																															tanggal::date,
 																																															(
 																																																case 	when 	(
 																																																					keluar='0'
@@ -9795,7 +10034,7 @@
 																																																								else 	0
 																																																						end
 																																																					)
-																																																	end			
+																																																	end
 																																																) as waktu_ikp
 																																													from 		(
 																																																	select 		tim.tanggal::date as tanggal,
@@ -9835,7 +10074,7 @@
 																																												) as ikp
 																																								)
 																																				else 	0
-																																		end			
+																																		end
 																																	) as pengurang_ikp,
 																																	(
 																																		case 	when 	(
@@ -10384,7 +10623,7 @@
 																																																								else 	0
 																																																						end
 																																																					)
-																																																	end	
+																																																	end
 																																																) as waktu_psp
 																																													from 		(
 																																																	select 		datapres.tanggal::date as tanggal,
@@ -10417,7 +10656,7 @@
 																																																														)
 																																																														then 	to_timestamp(concat_ws(' ', (datapres.tanggal + interval '1 day')::date, datapres.masuk::time), 'YYYY-MM-DD HH24:MI:SS')
 																																																												else 	to_timestamp(concat_ws(' ', datapres.tanggal::date, datapres.masuk::time), 'YYYY-MM-DD HH24:MI:SS')
-																																																										end			
+																																																										end
 																																																									)
 																																																					end
 																																																				) as masuk,
@@ -10451,33 +10690,33 @@
 																																													case 	when 	sftpkj.tanggal
 																																																	<
 																																																	(
-																																																		select 		tglberlaku 
-																																													           			from 		hrd_khs.tmutasi 
+																																																		select 		tglberlaku
+																																													           			from 		hrd_khs.tmutasi
 																																													           			where  		noind=pri.noind
-																																													           			order by 	tglberlaku asc 
+																																													           			order by 	tglberlaku asc
 																																													           			limit 		1
 																																																	)
 																																																	then	(
-																																																				select 		kodesielm 
-																																													             				from 		hrd_khs.tmutasi 
-																																													             				where  		noind=pri.noind 
-																																													             				order by 	tglberlaku asc 
+																																																				select 		kodesielm
+																																													             				from 		hrd_khs.tmutasi
+																																													             				where  		noind=pri.noind
+																																													             				order by 	tglberlaku asc
 																																													             				limit 		1
 																																																			)
 																																															when 	sftpkj.tanggal
 																																																	<
 																																																	(
-																																																		select 		tglberlaku 
-																																													             		from 		hrd_khs.tmutasi 
+																																																		select 		tglberlaku
+																																													             		from 		hrd_khs.tmutasi
 																																													             		where  		noind=pri.noind
-																																													             		order by 	tglberlaku desc 
+																																													             		order by 	tglberlaku desc
 																																													             		limit 		1
 																																																	)
 																																																	then	(
 																																																				select 		kodesielm
-																																													             				from 		hrd_khs.tmutasi 
-																																													             				where  		noind=pri.noind 
-																																													             				order by 	tglberlaku desc 
+																																													             				from 		hrd_khs.tmutasi
+																																													             				where  		noind=pri.noind
+																																													             				order by 	tglberlaku desc
 																																													             				limit 		1
 																																																			)
 																																															else 	sftpkj.kodesie
@@ -10498,41 +10737,41 @@
 																																													case 	when 	sftpkj.tanggal
 																																																	<
 																																																	(
-																																																		select 		tglberlaku 
-																																													           			from 		hrd_khs.tmutasi 
+																																																		select 		tglberlaku
+																																													           			from 		hrd_khs.tmutasi
 																																													           			where  		noind=pri.noind
 																																													           						and 	(
 																																													           									lokasilm is not null
 																																													           									and 	lokasibr is not null
 																																													           								)
-																																													           			order by 	tglberlaku asc 
+																																													           			order by 	tglberlaku asc
 																																													           			limit 		1
 																																																	)
 																																																	then	(
-																																																				select 		lokasilm 
-																																													             				from 		hrd_khs.tmutasi 
-																																													             				where  		noind=pri.noind 
-																																													             				order by 	tglberlaku asc 
+																																																				select 		lokasilm
+																																													             				from 		hrd_khs.tmutasi
+																																													             				where  		noind=pri.noind
+																																													             				order by 	tglberlaku asc
 																																													             				limit 		1
 																																																			)
 																																															when 	sftpkj.tanggal
 																																																	<
 																																																	(
-																																																		select 		tglberlaku 
-																																													             		from 		hrd_khs.tmutasi 
+																																																		select 		tglberlaku
+																																													             		from 		hrd_khs.tmutasi
 																																													             		where  		noind=pri.noind
 																																													             					and 	(
 																																													           									lokasilm is not null
 																																													           									and 	lokasibr is not null
 																																													           								)
-																																													             		order by 	tglberlaku desc 
+																																													             		order by 	tglberlaku desc
 																																													             		limit 		1
 																																																	)
 																																																	then	(
 																																																				select 		lokasilm
-																																													             				from 		hrd_khs.tmutasi 
-																																													             				where  		noind=pri.noind 
-																																													             				order by 	tglberlaku desc 
+																																													             				from 		hrd_khs.tmutasi
+																																													             				where  		noind=pri.noind
+																																													             				order by 	tglberlaku desc
 																																													             				limit 		1
 																																																			)
 																																															else 	(
@@ -10547,7 +10786,7 @@
 																																											from 		hrd_khs.tpribadi
 																																											where 		noind=pri.noind
 																																										)
-																																						end					
+																																						end
 																																					) as lokasi_kerja,
 																																					sftpkj.tukar,
 																																					(
@@ -10746,8 +10985,8 @@
 																																													(
 																																														concat_ws
 																																														(
-																																															' ', 
-																																															(tanggal + interval '1 day')::date, 
+																																															' ',
+																																															(tanggal + interval '1 day')::date,
 																																															(
 																																																case 	when 	(
 																																																					keluar='0'
@@ -10786,8 +11025,8 @@
 																																													(
 																																														concat_ws
 																																														(
-																																															' ', 
-																																															tanggal::date, 
+																																															' ',
+																																															tanggal::date,
 																																															(
 																																																case 	when 	(
 																																																					keluar='0'
@@ -10867,8 +11106,8 @@
 																																													(
 																																														concat_ws
 																																														(
-																																															' ', 
-																																															(tanggal + interval '1 day')::date, 
+																																															' ',
+																																															(tanggal + interval '1 day')::date,
 																																															(
 																																																case 	when 	(
 																																																					keluar='0'
@@ -10907,8 +11146,8 @@
 																																													(
 																																														concat_ws
 																																														(
-																																															' ', 
-																																															tanggal::date, 
+																																															' ',
+																																															tanggal::date,
 																																															(
 																																																case 	when 	(
 																																																					keluar='0'
@@ -11514,7 +11753,7 @@
 																																																								else 	0
 																																																						end
 																																																					)
-																																																	end			
+																																																	end
 																																																) as waktu_ikp
 																																													from 		(
 																																																	select 		tim.tanggal::date as tanggal,
@@ -11554,7 +11793,7 @@
 																																												) as ikp
 																																								)
 																																				else 	0
-																																		end			
+																																		end
 																																	) as pengurang_ikp,
 																																	(
 																																		case 	when 	(
@@ -12103,7 +12342,7 @@
 																																																								else 	0
 																																																						end
 																																																					)
-																																																	end	
+																																																	end
 																																																) as waktu_psp
 																																													from 		(
 																																																	select 		datapres.tanggal::date as tanggal,
@@ -12136,7 +12375,7 @@
 																																																														)
 																																																														then 	to_timestamp(concat_ws(' ', (datapres.tanggal + interval '1 day')::date, datapres.masuk::time), 'YYYY-MM-DD HH24:MI:SS')
 																																																												else 	to_timestamp(concat_ws(' ', datapres.tanggal::date, datapres.masuk::time), 'YYYY-MM-DD HH24:MI:SS')
-																																																										end			
+																																																										end
 																																																									)
 																																																					end
 																																																				) as masuk,
@@ -12170,33 +12409,33 @@
 																																													case 	when 	sftpkj.tanggal
 																																																	<
 																																																	(
-																																																		select 		tglberlaku 
-																																													           			from 		hrd_khs.tmutasi 
+																																																		select 		tglberlaku
+																																													           			from 		hrd_khs.tmutasi
 																																													           			where  		noind=pri.noind
-																																													           			order by 	tglberlaku asc 
+																																													           			order by 	tglberlaku asc
 																																													           			limit 		1
 																																																	)
 																																																	then	(
-																																																				select 		kodesielm 
-																																													             				from 		hrd_khs.tmutasi 
-																																													             				where  		noind=pri.noind 
-																																													             				order by 	tglberlaku asc 
+																																																				select 		kodesielm
+																																													             				from 		hrd_khs.tmutasi
+																																													             				where  		noind=pri.noind
+																																													             				order by 	tglberlaku asc
 																																													             				limit 		1
 																																																			)
 																																															when 	sftpkj.tanggal
 																																																	<
 																																																	(
-																																																		select 		tglberlaku 
-																																													             		from 		hrd_khs.tmutasi 
+																																																		select 		tglberlaku
+																																													             		from 		hrd_khs.tmutasi
 																																													             		where  		noind=pri.noind
-																																													             		order by 	tglberlaku desc 
+																																													             		order by 	tglberlaku desc
 																																													             		limit 		1
 																																																	)
 																																																	then	(
 																																																				select 		kodesielm
-																																													             				from 		hrd_khs.tmutasi 
-																																													             				where  		noind=pri.noind 
-																																													             				order by 	tglberlaku desc 
+																																													             				from 		hrd_khs.tmutasi
+																																													             				where  		noind=pri.noind
+																																													             				order by 	tglberlaku desc
 																																													             				limit 		1
 																																																			)
 																																															else 	sftpkj.kodesie
@@ -12217,41 +12456,41 @@
 																																													case 	when 	sftpkj.tanggal
 																																																	<
 																																																	(
-																																																		select 		tglberlaku 
-																																													           			from 		hrd_khs.tmutasi 
+																																																		select 		tglberlaku
+																																													           			from 		hrd_khs.tmutasi
 																																													           			where  		noind=pri.noind
 																																													           						and 	(
 																																													           									lokasilm is not null
 																																													           									and 	lokasibr is not null
 																																													           								)
-																																													           			order by 	tglberlaku asc 
+																																													           			order by 	tglberlaku asc
 																																													           			limit 		1
 																																																	)
 																																																	then	(
-																																																				select 		lokasilm 
-																																													             				from 		hrd_khs.tmutasi 
-																																													             				where  		noind=pri.noind 
-																																													             				order by 	tglberlaku asc 
+																																																				select 		lokasilm
+																																													             				from 		hrd_khs.tmutasi
+																																													             				where  		noind=pri.noind
+																																													             				order by 	tglberlaku asc
 																																													             				limit 		1
 																																																			)
 																																															when 	sftpkj.tanggal
 																																																	<
 																																																	(
-																																																		select 		tglberlaku 
-																																													             		from 		hrd_khs.tmutasi 
+																																																		select 		tglberlaku
+																																													             		from 		hrd_khs.tmutasi
 																																													             		where  		noind=pri.noind
 																																													             					and 	(
 																																													           									lokasilm is not null
 																																													           									and 	lokasibr is not null
 																																													           								)
-																																													             		order by 	tglberlaku desc 
+																																													             		order by 	tglberlaku desc
 																																													             		limit 		1
 																																																	)
 																																																	then	(
 																																																				select 		lokasilm
-																																													             				from 		hrd_khs.tmutasi 
-																																													             				where  		noind=pri.noind 
-																																													             				order by 	tglberlaku desc 
+																																													             				from 		hrd_khs.tmutasi
+																																													             				where  		noind=pri.noind
+																																													             				order by 	tglberlaku desc
 																																													             				limit 		1
 																																																			)
 																																															else 	(
@@ -12266,7 +12505,7 @@
 																																											from 		hrd_khs.tpribadi
 																																											where 		noind=pri.noind
 																																										)
-																																						end					
+																																						end
 																																					) as lokasi_kerja,
 																																					sftpkj.tukar,
 																																					(
@@ -12465,8 +12704,8 @@
 																																													(
 																																														concat_ws
 																																														(
-																																															' ', 
-																																															(tanggal + interval '1 day')::date, 
+																																															' ',
+																																															(tanggal + interval '1 day')::date,
 																																															(
 																																																case 	when 	(
 																																																					keluar='0'
@@ -12505,8 +12744,8 @@
 																																													(
 																																														concat_ws
 																																														(
-																																															' ', 
-																																															tanggal::date, 
+																																															' ',
+																																															tanggal::date,
 																																															(
 																																																case 	when 	(
 																																																					keluar='0'
@@ -12586,8 +12825,8 @@
 																																													(
 																																														concat_ws
 																																														(
-																																															' ', 
-																																															(tanggal + interval '1 day')::date, 
+																																															' ',
+																																															(tanggal + interval '1 day')::date,
 																																															(
 																																																case 	when 	(
 																																																					keluar='0'
@@ -12626,8 +12865,8 @@
 																																													(
 																																														concat_ws
 																																														(
-																																															' ', 
-																																															tanggal::date, 
+																																															' ',
+																																															tanggal::date,
 																																															(
 																																																case 	when 	(
 																																																					keluar='0'
@@ -13233,7 +13472,7 @@
 																																																								else 	0
 																																																						end
 																																																					)
-																																																	end			
+																																																	end
 																																																) as waktu_ikp
 																																													from 		(
 																																																	select 		tim.tanggal::date as tanggal,
@@ -13273,7 +13512,7 @@
 																																												) as ikp
 																																								)
 																																				else 	0
-																																		end			
+																																		end
 																																	) as pengurang_ikp,
 																																	(
 																																		case 	when 	(
@@ -13822,7 +14061,7 @@
 																																																								else 	0
 																																																						end
 																																																					)
-																																																	end	
+																																																	end
 																																																) as waktu_psp
 																																													from 		(
 																																																	select 		datapres.tanggal::date as tanggal,
@@ -13855,7 +14094,7 @@
 																																																														)
 																																																														then 	to_timestamp(concat_ws(' ', (datapres.tanggal + interval '1 day')::date, datapres.masuk::time), 'YYYY-MM-DD HH24:MI:SS')
 																																																												else 	to_timestamp(concat_ws(' ', datapres.tanggal::date, datapres.masuk::time), 'YYYY-MM-DD HH24:MI:SS')
-																																																										end			
+																																																										end
 																																																									)
 																																																					end
 																																																				) as masuk,
@@ -13889,33 +14128,33 @@
 																																													case 	when 	sftpkj.tanggal
 																																																	<
 																																																	(
-																																																		select 		tglberlaku 
-																																													           			from 		hrd_khs.tmutasi 
+																																																		select 		tglberlaku
+																																													           			from 		hrd_khs.tmutasi
 																																													           			where  		noind=pri.noind
-																																													           			order by 	tglberlaku asc 
+																																													           			order by 	tglberlaku asc
 																																													           			limit 		1
 																																																	)
 																																																	then	(
-																																																				select 		kodesielm 
-																																													             				from 		hrd_khs.tmutasi 
-																																													             				where  		noind=pri.noind 
-																																													             				order by 	tglberlaku asc 
+																																																				select 		kodesielm
+																																													             				from 		hrd_khs.tmutasi
+																																													             				where  		noind=pri.noind
+																																													             				order by 	tglberlaku asc
 																																													             				limit 		1
 																																																			)
 																																															when 	sftpkj.tanggal
 																																																	<
 																																																	(
-																																																		select 		tglberlaku 
-																																													             		from 		hrd_khs.tmutasi 
+																																																		select 		tglberlaku
+																																													             		from 		hrd_khs.tmutasi
 																																													             		where  		noind=pri.noind
-																																													             		order by 	tglberlaku desc 
+																																													             		order by 	tglberlaku desc
 																																													             		limit 		1
 																																																	)
 																																																	then	(
 																																																				select 		kodesielm
-																																													             				from 		hrd_khs.tmutasi 
-																																													             				where  		noind=pri.noind 
-																																													             				order by 	tglberlaku desc 
+																																													             				from 		hrd_khs.tmutasi
+																																													             				where  		noind=pri.noind
+																																													             				order by 	tglberlaku desc
 																																													             				limit 		1
 																																																			)
 																																															else 	sftpkj.kodesie
@@ -13936,41 +14175,41 @@
 																																													case 	when 	sftpkj.tanggal
 																																																	<
 																																																	(
-																																																		select 		tglberlaku 
-																																													           			from 		hrd_khs.tmutasi 
+																																																		select 		tglberlaku
+																																													           			from 		hrd_khs.tmutasi
 																																													           			where  		noind=pri.noind
 																																													           						and 	(
 																																													           									lokasilm is not null
 																																													           									and 	lokasibr is not null
 																																													           								)
-																																													           			order by 	tglberlaku asc 
+																																													           			order by 	tglberlaku asc
 																																													           			limit 		1
 																																																	)
 																																																	then	(
-																																																				select 		lokasilm 
-																																													             				from 		hrd_khs.tmutasi 
-																																													             				where  		noind=pri.noind 
-																																													             				order by 	tglberlaku asc 
+																																																				select 		lokasilm
+																																													             				from 		hrd_khs.tmutasi
+																																													             				where  		noind=pri.noind
+																																													             				order by 	tglberlaku asc
 																																													             				limit 		1
 																																																			)
 																																															when 	sftpkj.tanggal
 																																																	<
 																																																	(
-																																																		select 		tglberlaku 
-																																													             		from 		hrd_khs.tmutasi 
+																																																		select 		tglberlaku
+																																													             		from 		hrd_khs.tmutasi
 																																													             		where  		noind=pri.noind
 																																													             					and 	(
 																																													           									lokasilm is not null
 																																													           									and 	lokasibr is not null
 																																													           								)
-																																													             		order by 	tglberlaku desc 
+																																													             		order by 	tglberlaku desc
 																																													             		limit 		1
 																																																	)
 																																																	then	(
 																																																				select 		lokasilm
-																																													             				from 		hrd_khs.tmutasi 
-																																													             				where  		noind=pri.noind 
-																																													             				order by 	tglberlaku desc 
+																																													             				from 		hrd_khs.tmutasi
+																																													             				where  		noind=pri.noind
+																																													             				order by 	tglberlaku desc
 																																													             				limit 		1
 																																																			)
 																																															else 	(
@@ -13985,7 +14224,7 @@
 																																											from 		hrd_khs.tpribadi
 																																											where 		noind=pri.noind
 																																										)
-																																						end					
+																																						end
 																																					) as lokasi_kerja,
 																																					sftpkj.tukar,
 																																					(
@@ -14184,8 +14423,8 @@
 																																													(
 																																														concat_ws
 																																														(
-																																															' ', 
-																																															(tanggal + interval '1 day')::date, 
+																																															' ',
+																																															(tanggal + interval '1 day')::date,
 																																															(
 																																																case 	when 	(
 																																																					keluar='0'
@@ -14224,8 +14463,8 @@
 																																													(
 																																														concat_ws
 																																														(
-																																															' ', 
-																																															tanggal::date, 
+																																															' ',
+																																															tanggal::date,
 																																															(
 																																																case 	when 	(
 																																																					keluar='0'
@@ -14305,8 +14544,8 @@
 																																													(
 																																														concat_ws
 																																														(
-																																															' ', 
-																																															(tanggal + interval '1 day')::date, 
+																																															' ',
+																																															(tanggal + interval '1 day')::date,
 																																															(
 																																																case 	when 	(
 																																																					keluar='0'
@@ -14345,8 +14584,8 @@
 																																													(
 																																														concat_ws
 																																														(
-																																															' ', 
-																																															tanggal::date, 
+																																															' ',
+																																															tanggal::date,
 																																															(
 																																																case 	when 	(
 																																																					keluar='0'
@@ -14952,7 +15191,7 @@
 																																																								else 	0
 																																																						end
 																																																					)
-																																																	end			
+																																																	end
 																																																) as waktu_ikp
 																																													from 		(
 																																																	select 		tim.tanggal::date as tanggal,
@@ -14992,7 +15231,7 @@
 																																												) as ikp
 																																								)
 																																				else 	0
-																																		end			
+																																		end
 																																	) as pengurang_ikp,
 																																	(
 																																		case 	when 	(
@@ -15541,7 +15780,7 @@
 																																																								else 	0
 																																																						end
 																																																					)
-																																																	end	
+																																																	end
 																																																) as waktu_psp
 																																													from 		(
 																																																	select 		datapres.tanggal::date as tanggal,
@@ -15574,7 +15813,7 @@
 																																																														)
 																																																														then 	to_timestamp(concat_ws(' ', (datapres.tanggal + interval '1 day')::date, datapres.masuk::time), 'YYYY-MM-DD HH24:MI:SS')
 																																																												else 	to_timestamp(concat_ws(' ', datapres.tanggal::date, datapres.masuk::time), 'YYYY-MM-DD HH24:MI:SS')
-																																																										end			
+																																																										end
 																																																									)
 																																																					end
 																																																				) as masuk,
@@ -15608,33 +15847,33 @@
 																																													case 	when 	sftpkj.tanggal
 																																																	<
 																																																	(
-																																																		select 		tglberlaku 
-																																													           			from 		hrd_khs.tmutasi 
+																																																		select 		tglberlaku
+																																													           			from 		hrd_khs.tmutasi
 																																													           			where  		noind=pri.noind
-																																													           			order by 	tglberlaku asc 
+																																													           			order by 	tglberlaku asc
 																																													           			limit 		1
 																																																	)
 																																																	then	(
-																																																				select 		kodesielm 
-																																													             				from 		hrd_khs.tmutasi 
-																																													             				where  		noind=pri.noind 
-																																													             				order by 	tglberlaku asc 
+																																																				select 		kodesielm
+																																													             				from 		hrd_khs.tmutasi
+																																													             				where  		noind=pri.noind
+																																													             				order by 	tglberlaku asc
 																																													             				limit 		1
 																																																			)
 																																															when 	sftpkj.tanggal
 																																																	<
 																																																	(
-																																																		select 		tglberlaku 
-																																													             		from 		hrd_khs.tmutasi 
+																																																		select 		tglberlaku
+																																													             		from 		hrd_khs.tmutasi
 																																													             		where  		noind=pri.noind
-																																													             		order by 	tglberlaku desc 
+																																													             		order by 	tglberlaku desc
 																																													             		limit 		1
 																																																	)
 																																																	then	(
 																																																				select 		kodesielm
-																																													             				from 		hrd_khs.tmutasi 
-																																													             				where  		noind=pri.noind 
-																																													             				order by 	tglberlaku desc 
+																																													             				from 		hrd_khs.tmutasi
+																																													             				where  		noind=pri.noind
+																																													             				order by 	tglberlaku desc
 																																													             				limit 		1
 																																																			)
 																																															else 	sftpkj.kodesie
@@ -15655,41 +15894,41 @@
 																																													case 	when 	sftpkj.tanggal
 																																																	<
 																																																	(
-																																																		select 		tglberlaku 
-																																													           			from 		hrd_khs.tmutasi 
+																																																		select 		tglberlaku
+																																													           			from 		hrd_khs.tmutasi
 																																													           			where  		noind=pri.noind
 																																													           						and 	(
 																																													           									lokasilm is not null
 																																													           									and 	lokasibr is not null
 																																													           								)
-																																													           			order by 	tglberlaku asc 
+																																													           			order by 	tglberlaku asc
 																																													           			limit 		1
 																																																	)
 																																																	then	(
-																																																				select 		lokasilm 
-																																													             				from 		hrd_khs.tmutasi 
-																																													             				where  		noind=pri.noind 
-																																													             				order by 	tglberlaku asc 
+																																																				select 		lokasilm
+																																													             				from 		hrd_khs.tmutasi
+																																													             				where  		noind=pri.noind
+																																													             				order by 	tglberlaku asc
 																																													             				limit 		1
 																																																			)
 																																															when 	sftpkj.tanggal
 																																																	<
 																																																	(
-																																																		select 		tglberlaku 
-																																													             		from 		hrd_khs.tmutasi 
+																																																		select 		tglberlaku
+																																													             		from 		hrd_khs.tmutasi
 																																													             		where  		noind=pri.noind
 																																													             					and 	(
 																																													           									lokasilm is not null
 																																													           									and 	lokasibr is not null
 																																													           								)
-																																													             		order by 	tglberlaku desc 
+																																													             		order by 	tglberlaku desc
 																																													             		limit 		1
 																																																	)
 																																																	then	(
 																																																				select 		lokasilm
-																																													             				from 		hrd_khs.tmutasi 
-																																													             				where  		noind=pri.noind 
-																																													             				order by 	tglberlaku desc 
+																																													             				from 		hrd_khs.tmutasi
+																																													             				where  		noind=pri.noind
+																																													             				order by 	tglberlaku desc
 																																													             				limit 		1
 																																																			)
 																																															else 	(
@@ -15704,7 +15943,7 @@
 																																											from 		hrd_khs.tpribadi
 																																											where 		noind=pri.noind
 																																										)
-																																						end					
+																																						end
 																																					) as lokasi_kerja,
 																																					sftpkj.tukar,
 																																					(
@@ -15903,8 +16142,8 @@
 																																													(
 																																														concat_ws
 																																														(
-																																															' ', 
-																																															(tanggal + interval '1 day')::date, 
+																																															' ',
+																																															(tanggal + interval '1 day')::date,
 																																															(
 																																																case 	when 	(
 																																																					keluar='0'
@@ -15943,8 +16182,8 @@
 																																													(
 																																														concat_ws
 																																														(
-																																															' ', 
-																																															tanggal::date, 
+																																															' ',
+																																															tanggal::date,
 																																															(
 																																																case 	when 	(
 																																																					keluar='0'
@@ -16024,8 +16263,8 @@
 																																													(
 																																														concat_ws
 																																														(
-																																															' ', 
-																																															(tanggal + interval '1 day')::date, 
+																																															' ',
+																																															(tanggal + interval '1 day')::date,
 																																															(
 																																																case 	when 	(
 																																																					keluar='0'
@@ -16064,8 +16303,8 @@
 																																													(
 																																														concat_ws
 																																														(
-																																															' ', 
-																																															tanggal::date, 
+																																															' ',
+																																															tanggal::date,
 																																															(
 																																																case 	when 	(
 																																																					keluar='0'
@@ -16671,7 +16910,7 @@
 																																																								else 	0
 																																																						end
 																																																					)
-																																																	end			
+																																																	end
 																																																) as waktu_ikp
 																																													from 		(
 																																																	select 		tim.tanggal::date as tanggal,
@@ -16711,7 +16950,7 @@
 																																												) as ikp
 																																								)
 																																				else 	0
-																																		end			
+																																		end
 																																	) as pengurang_ikp,
 																																	(
 																																		case 	when 	(
@@ -17260,7 +17499,7 @@
 																																																								else 	0
 																																																						end
 																																																					)
-																																																	end	
+																																																	end
 																																																) as waktu_psp
 																																													from 		(
 																																																	select 		datapres.tanggal::date as tanggal,
@@ -17293,7 +17532,7 @@
 																																																														)
 																																																														then 	to_timestamp(concat_ws(' ', (datapres.tanggal + interval '1 day')::date, datapres.masuk::time), 'YYYY-MM-DD HH24:MI:SS')
 																																																												else 	to_timestamp(concat_ws(' ', datapres.tanggal::date, datapres.masuk::time), 'YYYY-MM-DD HH24:MI:SS')
-																																																										end			
+																																																										end
 																																																									)
 																																																					end
 																																																				) as masuk,
@@ -17327,33 +17566,33 @@
 																																													case 	when 	sftpkj.tanggal
 																																																	<
 																																																	(
-																																																		select 		tglberlaku 
-																																													           			from 		hrd_khs.tmutasi 
+																																																		select 		tglberlaku
+																																													           			from 		hrd_khs.tmutasi
 																																													           			where  		noind=pri.noind
-																																													           			order by 	tglberlaku asc 
+																																													           			order by 	tglberlaku asc
 																																													           			limit 		1
 																																																	)
 																																																	then	(
-																																																				select 		kodesielm 
-																																													             				from 		hrd_khs.tmutasi 
-																																													             				where  		noind=pri.noind 
-																																													             				order by 	tglberlaku asc 
+																																																				select 		kodesielm
+																																													             				from 		hrd_khs.tmutasi
+																																													             				where  		noind=pri.noind
+																																													             				order by 	tglberlaku asc
 																																													             				limit 		1
 																																																			)
 																																															when 	sftpkj.tanggal
 																																																	<
 																																																	(
-																																																		select 		tglberlaku 
-																																													             		from 		hrd_khs.tmutasi 
+																																																		select 		tglberlaku
+																																													             		from 		hrd_khs.tmutasi
 																																													             		where  		noind=pri.noind
-																																													             		order by 	tglberlaku desc 
+																																													             		order by 	tglberlaku desc
 																																													             		limit 		1
 																																																	)
 																																																	then	(
 																																																				select 		kodesielm
-																																													             				from 		hrd_khs.tmutasi 
-																																													             				where  		noind=pri.noind 
-																																													             				order by 	tglberlaku desc 
+																																													             				from 		hrd_khs.tmutasi
+																																													             				where  		noind=pri.noind
+																																													             				order by 	tglberlaku desc
 																																													             				limit 		1
 																																																			)
 																																															else 	sftpkj.kodesie
@@ -17374,41 +17613,41 @@
 																																													case 	when 	sftpkj.tanggal
 																																																	<
 																																																	(
-																																																		select 		tglberlaku 
-																																													           			from 		hrd_khs.tmutasi 
+																																																		select 		tglberlaku
+																																													           			from 		hrd_khs.tmutasi
 																																													           			where  		noind=pri.noind
 																																													           						and 	(
 																																													           									lokasilm is not null
 																																													           									and 	lokasibr is not null
 																																													           								)
-																																													           			order by 	tglberlaku asc 
+																																													           			order by 	tglberlaku asc
 																																													           			limit 		1
 																																																	)
 																																																	then	(
-																																																				select 		lokasilm 
-																																													             				from 		hrd_khs.tmutasi 
-																																													             				where  		noind=pri.noind 
-																																													             				order by 	tglberlaku asc 
+																																																				select 		lokasilm
+																																													             				from 		hrd_khs.tmutasi
+																																													             				where  		noind=pri.noind
+																																													             				order by 	tglberlaku asc
 																																													             				limit 		1
 																																																			)
 																																															when 	sftpkj.tanggal
 																																																	<
 																																																	(
-																																																		select 		tglberlaku 
-																																													             		from 		hrd_khs.tmutasi 
+																																																		select 		tglberlaku
+																																													             		from 		hrd_khs.tmutasi
 																																													             		where  		noind=pri.noind
 																																													             					and 	(
 																																													           									lokasilm is not null
 																																													           									and 	lokasibr is not null
 																																													           								)
-																																													             		order by 	tglberlaku desc 
+																																													             		order by 	tglberlaku desc
 																																													             		limit 		1
 																																																	)
 																																																	then	(
 																																																				select 		lokasilm
-																																													             				from 		hrd_khs.tmutasi 
-																																													             				where  		noind=pri.noind 
-																																													             				order by 	tglberlaku desc 
+																																													             				from 		hrd_khs.tmutasi
+																																													             				where  		noind=pri.noind
+																																													             				order by 	tglberlaku desc
 																																													             				limit 		1
 																																																			)
 																																															else 	(
@@ -17423,7 +17662,7 @@
 																																											from 		hrd_khs.tpribadi
 																																											where 		noind=pri.noind
 																																										)
-																																						end					
+																																						end
 																																					) as lokasi_kerja,
 																																					sftpkj.tukar,
 																																					(
@@ -17625,8 +17864,8 @@
 																																													(
 																																														concat_ws
 																																														(
-																																															' ', 
-																																															(tanggal + interval '1 day')::date, 
+																																															' ',
+																																															(tanggal + interval '1 day')::date,
 																																															(
 																																																case 	when 	(
 																																																					keluar='0'
@@ -17665,8 +17904,8 @@
 																																													(
 																																														concat_ws
 																																														(
-																																															' ', 
-																																															tanggal::date, 
+																																															' ',
+																																															tanggal::date,
 																																															(
 																																																case 	when 	(
 																																																					keluar='0'
@@ -17746,8 +17985,8 @@
 																																													(
 																																														concat_ws
 																																														(
-																																															' ', 
-																																															(tanggal + interval '1 day')::date, 
+																																															' ',
+																																															(tanggal + interval '1 day')::date,
 																																															(
 																																																case 	when 	(
 																																																					keluar='0'
@@ -17786,8 +18025,8 @@
 																																													(
 																																														concat_ws
 																																														(
-																																															' ', 
-																																															tanggal::date, 
+																																															' ',
+																																															tanggal::date,
 																																															(
 																																																case 	when 	(
 																																																					keluar='0'
@@ -18393,7 +18632,7 @@
 																																																								else 	0
 																																																						end
 																																																					)
-																																																	end			
+																																																	end
 																																																) as waktu_ikp
 																																													from 		(
 																																																	select 		tim.tanggal::date as tanggal,
@@ -18433,7 +18672,7 @@
 																																												) as ikp
 																																								)
 																																				else 	0
-																																		end			
+																																		end
 																																	) as pengurang_ikp,
 																																	(
 																																		case 	when 	(
@@ -18982,7 +19221,7 @@
 																																																								else 	0
 																																																						end
 																																																					)
-																																																	end	
+																																																	end
 																																																) as waktu_psp
 																																													from 		(
 																																																	select 		datapres.tanggal::date as tanggal,
@@ -19015,7 +19254,7 @@
 																																																														)
 																																																														then 	to_timestamp(concat_ws(' ', (datapres.tanggal + interval '1 day')::date, datapres.masuk::time), 'YYYY-MM-DD HH24:MI:SS')
 																																																												else 	to_timestamp(concat_ws(' ', datapres.tanggal::date, datapres.masuk::time), 'YYYY-MM-DD HH24:MI:SS')
-																																																										end			
+																																																										end
 																																																									)
 																																																					end
 																																																				) as masuk,
@@ -19049,33 +19288,33 @@
 																																													case 	when 	sftpkj.tanggal
 																																																	<
 																																																	(
-																																																		select 		tglberlaku 
-																																													           			from 		hrd_khs.tmutasi 
+																																																		select 		tglberlaku
+																																													           			from 		hrd_khs.tmutasi
 																																													           			where  		noind=pri.noind
-																																													           			order by 	tglberlaku asc 
+																																													           			order by 	tglberlaku asc
 																																													           			limit 		1
 																																																	)
 																																																	then	(
-																																																				select 		kodesielm 
-																																													             				from 		hrd_khs.tmutasi 
-																																													             				where  		noind=pri.noind 
-																																													             				order by 	tglberlaku asc 
+																																																				select 		kodesielm
+																																													             				from 		hrd_khs.tmutasi
+																																													             				where  		noind=pri.noind
+																																													             				order by 	tglberlaku asc
 																																													             				limit 		1
 																																																			)
 																																															when 	sftpkj.tanggal
 																																																	<
 																																																	(
-																																																		select 		tglberlaku 
-																																													             		from 		hrd_khs.tmutasi 
+																																																		select 		tglberlaku
+																																													             		from 		hrd_khs.tmutasi
 																																													             		where  		noind=pri.noind
-																																													             		order by 	tglberlaku desc 
+																																													             		order by 	tglberlaku desc
 																																													             		limit 		1
 																																																	)
 																																																	then	(
 																																																				select 		kodesielm
-																																													             				from 		hrd_khs.tmutasi 
-																																													             				where  		noind=pri.noind 
-																																													             				order by 	tglberlaku desc 
+																																													             				from 		hrd_khs.tmutasi
+																																													             				where  		noind=pri.noind
+																																													             				order by 	tglberlaku desc
 																																													             				limit 		1
 																																																			)
 																																															else 	sftpkj.kodesie
@@ -19096,41 +19335,41 @@
 																																													case 	when 	sftpkj.tanggal
 																																																	<
 																																																	(
-																																																		select 		tglberlaku 
-																																													           			from 		hrd_khs.tmutasi 
+																																																		select 		tglberlaku
+																																													           			from 		hrd_khs.tmutasi
 																																													           			where  		noind=pri.noind
 																																													           						and 	(
 																																													           									lokasilm is not null
 																																													           									and 	lokasibr is not null
 																																													           								)
-																																													           			order by 	tglberlaku asc 
+																																													           			order by 	tglberlaku asc
 																																													           			limit 		1
 																																																	)
 																																																	then	(
-																																																				select 		lokasilm 
-																																													             				from 		hrd_khs.tmutasi 
-																																													             				where  		noind=pri.noind 
-																																													             				order by 	tglberlaku asc 
+																																																				select 		lokasilm
+																																													             				from 		hrd_khs.tmutasi
+																																													             				where  		noind=pri.noind
+																																													             				order by 	tglberlaku asc
 																																													             				limit 		1
 																																																			)
 																																															when 	sftpkj.tanggal
 																																																	<
 																																																	(
-																																																		select 		tglberlaku 
-																																													             		from 		hrd_khs.tmutasi 
+																																																		select 		tglberlaku
+																																													             		from 		hrd_khs.tmutasi
 																																													             		where  		noind=pri.noind
 																																													             					and 	(
 																																													           									lokasilm is not null
 																																													           									and 	lokasibr is not null
 																																													           								)
-																																													             		order by 	tglberlaku desc 
+																																													             		order by 	tglberlaku desc
 																																													             		limit 		1
 																																																	)
 																																																	then	(
 																																																				select 		lokasilm
-																																													             				from 		hrd_khs.tmutasi 
-																																													             				where  		noind=pri.noind 
-																																													             				order by 	tglberlaku desc 
+																																													             				from 		hrd_khs.tmutasi
+																																													             				where  		noind=pri.noind
+																																													             				order by 	tglberlaku desc
 																																													             				limit 		1
 																																																			)
 																																															else 	(
@@ -19145,7 +19384,7 @@
 																																											from 		hrd_khs.tpribadi
 																																											where 		noind=pri.noind
 																																										)
-																																						end					
+																																						end
 																																					) as lokasi_kerja,
 																																					sftpkj.tukar,
 																																					(
@@ -19233,6 +19472,1725 @@
 																		group by 	substring(hasilpernoind.kodesie, 1, 7)
 																	) as q
 																	on	q.kode_seksi=tseksi.kodesie
+																	left join 	(
+																					select		substring(hasilpernoind.kodesie, 1, 7) as kode_seksi,
+																								sum
+																								(
+																									hasilpernoind.jam_kerja_hasil
+																								) as jam_kerja_seksi
+																					from 		(
+																									select		hasilpertanggalshift.noind,
+																												hasilpertanggalshift.kodesie,
+																												sum
+																												(
+																													hasilpertanggalshift.jam_kerja_pokok*3600
+																													-
+																													(hasilpertanggalshift.pengurang_cuti*hasilpertanggalshift.jam_kerja_pokok*3600)
+																													-
+																													(hasilpertanggalshift.pengurang_tidak_hadir*hasilpertanggalshift.jam_kerja_pokok*3600)
+																													-
+																													(hasilpertanggalshift.pengurang_mangkir*hasilpertanggalshift.jam_kerja_pokok*3600)
+																													-
+																													(hasilpertanggalshift.pengurang_ikp)
+																													-
+																													(hasilpertanggalshift.pengurang_psp)
+																													+
+																													(hasilpertanggalshift.lembur)
+																												) as jam_kerja_hasil
+																									from 		(
+																													select		tshiftpekerja.tanggal,
+																																tshiftpekerja.noind,
+																																tshiftpekerja.noind_baru,
+																																tshiftpekerja.kodesie as kodesie,
+																																sum
+																																(
+																																	extract
+																																	(
+																																		epoch
+																																		from
+																																		(
+																																			(
+																																				tshiftpekerja.jam_plg
+																																				-
+																																				tshiftpekerja.jam_msk
+																																			)
+																																			-
+																																			(
+																																				tshiftpekerja.ist_selesai
+																																				-
+																																				tshiftpekerja.ist_mulai
+																																			)
+																																			-
+																																			(
+																																				tshiftpekerja.break_selesai
+																																				-
+																																				tshiftpekerja.break_mulai
+																																			)
+																																		)
+																																	)
+																																	/3600
+																																)::numeric as jam_kerja_pokok,
+																																(
+																																	(
+																																		select 		count(datapres.*)
+																																		from 		(
+																																						select 		tanggal::date as tanggal,
+																																									trim(noind) as noind,
+																																									trim(noind_baru) as noind_baru,
+																																									trim(kodesie) as kodesie,
+																																									to_timestamp
+																																									(
+																																										concat_ws
+																																										(
+																																											' ',
+																																											tanggal::date,
+																																											(
+																																												case 	when 	(
+																																																	masuk='0'
+																																																	or 	masuk=''
+																																																	or 	masuk='__:__:__'
+																																																)
+																																																then 	'00:00:00'::time
+																																														else 	masuk::time
+																																												end
+																																											)
+																																										),
+																																										'YYYY-MM-DD HH24:MI:SS'
+																																									) as masuk,
+																																									(
+																																										case 	when 	(
+																																															case 	when 	(
+																																																				keluar='0'
+																																																				or 	keluar=''
+																																																				or 	keluar='__:__:__'
+																																																			)
+																																																			then 	'00:00:00'::time
+																																																	else 	keluar::time
+																																															end
+																																														)
+																																														<
+																																														(
+																																															case 	when 	(
+																																																				masuk='0'
+																																																				or 	masuk=''
+																																																				or 	masuk='__:__:__'
+																																																			)
+																																																			then 	'00:00:00'::time
+																																																	else 	masuk::time
+																																															end
+																																														)
+																																														then 	to_timestamp
+																																																(
+																																																	concat_ws
+																																																	(
+																																																		' ',
+																																																		(tanggal + interval '1 day')::date,
+																																																		(
+																																																			case 	when 	(
+																																																								keluar='0'
+																																																								or 	keluar=''
+																																																								or 	keluar='__:__:__'
+																																																							)
+																																																							then 	'00:00:00'::time
+																																																					else 	keluar::time
+																																																			end
+																																																		)
+																																																	),
+																																																	'YYYY-MM-DD HH24:MI:SS'
+																																																)
+																																												when 	(
+																																															case 	when 	(
+																																																				keluar='0'
+																																																				or 	keluar=''
+																																																				or 	keluar='__:__:__'
+																																																			)
+																																																			then 	'00:00:00'::time
+																																																	else 	keluar::time
+																																															end
+																																														)
+																																														>
+																																														(
+																																															case 	when 	(
+																																																				masuk='0'
+																																																				or 	masuk=''
+																																																				or 	masuk='__:__:__'
+																																																			)
+																																																			then 	'00:00:00'::time
+																																																	else 	masuk::time
+																																															end
+																																														)
+																																														then 	to_timestamp
+																																																(
+																																																	concat_ws
+																																																	(
+																																																		' ',
+																																																		tanggal::date,
+																																																		(
+																																																			case 	when 	(
+																																																								keluar='0'
+																																																								or 	keluar=''
+																																																								or 	keluar='__:__:__'
+																																																							)
+																																																							then 	'00:00:00'::time
+																																																					else 	keluar::time
+																																																			end
+																																																		)
+																																																	),
+																																																	'YYYY-MM-DD HH24:MI:SS'
+																																																)
+																																										end
+																																									) as keluar,
+																																									trim(kd_ket) as kd_ket
+																																						from 		\"Presensi\".tdatapresensi
+																																						where 		tanggal=tshiftpekerja.tanggal
+																																									and 	noind=tshiftpekerja.noind
+																																									and 	(
+																																												substring(kd_ket, 1, 1)='C'
+																																												or 	kd_ket='PCZ'
+																																											)
+																																					) as datapres
+																																	)
+																																) as pengurang_cuti,
+																																(
+																																	(
+																																		select 		count(datapres.*)
+																																		from 		(
+																																						select 		tanggal::date as tanggal,
+																																									trim(noind) as noind,
+																																									trim(noind_baru) as noind_baru,
+																																									trim(kodesie) as kodesie,
+																																									to_timestamp
+																																									(
+																																										concat_ws
+																																										(
+																																											' ',
+																																											tanggal::date,
+																																											(
+																																												case 	when 	(
+																																																	masuk='0'
+																																																	or 	masuk=''
+																																																	or 	masuk='__:__:__'
+																																																)
+																																																then 	'00:00:00'::time
+																																														else 	masuk::time
+																																												end
+																																											)
+																																										),
+																																										'YYYY-MM-DD HH24:MI:SS'
+																																									) as masuk,
+																																									(
+																																										case 	when 	(
+																																															case 	when 	(
+																																																				keluar='0'
+																																																				or 	keluar=''
+																																																				or 	keluar='__:__:__'
+																																																			)
+																																																			then 	'00:00:00'::time
+																																																	else 	keluar::time
+																																															end
+																																														)
+																																														<
+																																														(
+																																															case 	when 	(
+																																																				masuk='0'
+																																																				or 	masuk=''
+																																																				or 	masuk='__:__:__'
+																																																			)
+																																																			then 	'00:00:00'::time
+																																																	else 	masuk::time
+																																															end
+																																														)
+																																														then 	to_timestamp
+																																																(
+																																																	concat_ws
+																																																	(
+																																																		' ',
+																																																		(tanggal + interval '1 day')::date,
+																																																		(
+																																																			case 	when 	(
+																																																								keluar='0'
+																																																								or 	keluar=''
+																																																								or 	keluar='__:__:__'
+																																																							)
+																																																							then 	'00:00:00'::time
+																																																					else 	keluar::time
+																																																			end
+																																																		)
+																																																	),
+																																																	'YYYY-MM-DD HH24:MI:SS'
+																																																)
+																																												when 	(
+																																															case 	when 	(
+																																																				keluar='0'
+																																																				or 	keluar=''
+																																																				or 	keluar='__:__:__'
+																																																			)
+																																																			then 	'00:00:00'::time
+																																																	else 	keluar::time
+																																															end
+																																														)
+																																														>
+																																														(
+																																															case 	when 	(
+																																																				masuk='0'
+																																																				or 	masuk=''
+																																																				or 	masuk='__:__:__'
+																																																			)
+																																																			then 	'00:00:00'::time
+																																																	else 	masuk::time
+																																															end
+																																														)
+																																														then 	to_timestamp
+																																																(
+																																																	concat_ws
+																																																	(
+																																																		' ',
+																																																		tanggal::date,
+																																																		(
+																																																			case 	when 	(
+																																																								keluar='0'
+																																																								or 	keluar=''
+																																																								or 	keluar='__:__:__'
+																																																							)
+																																																							then 	'00:00:00'::time
+																																																					else 	keluar::time
+																																																			end
+																																																		)
+																																																	),
+																																																	'YYYY-MM-DD HH24:MI:SS'
+																																																)
+																																										end
+																																									) as keluar,
+																																									trim(kd_ket) as kd_ket
+																																						from 		\"Presensi\".tdatapresensi
+																																						where 		tanggal=tshiftpekerja.tanggal
+																																									and 	noind=tshiftpekerja.noind
+																																									and 	(
+																																												kd_ket='PIP'
+																																												or 	kd_ket='PKK'
+																																												or 	kd_ket='PRM'
+																																												or 	kd_ket='PSK'
+																																											)
+																																					) as datapres
+																																	)
+																																) as pengurang_tidak_hadir,
+																																(
+																																	select	count(*)
+																																	from 	\"Presensi\".tdatatim as tim
+																																	where 	tim.tanggal=tshiftpekerja.tanggal
+																																			and 	tim.noind=tshiftpekerja.noind
+																																			and 	tim.kd_ket='TM'
+																																			and 	tim.point!=0
+																																) as pengurang_mangkir,
+																																sum
+																																(
+																																	tshiftpekerja.pengurang_ikp
+																																) as pengurang_ikp,
+																																sum
+																																(
+																																	tshiftpekerja.pengurang_psp
+																																) as pengurang_psp,
+																																(
+																																	case 	when 	'$tambahLembur'='1'
+																																					then 	(
+																																								select	coalesce(sum(tlembur.jml_lembur), 0) * 60
+																																								from	\"Presensi\".tlembur as tlembur
+																																								where 	(tlembur.tanggal=tshiftpekerja.tanggal)
+																																										and 	tlembur.noind=tshiftpekerja.noind
+																																							)
+																																			else 	0
+																																	end
+																																) as lembur
+																													from 		(
+																																	select		tshiftpekerja.*,
+																																				(
+																																					case  	when 	(
+																																										select 		count(*)
+																																										from 		\"Presensi\".tdatatim as tim
+																																										where 		tim.tanggal=tshiftpekerja.tanggal
+																																													and 	tim.noind=tshiftpekerja.noind
+																																													and 	tim.kd_ket='TIK'
+																																													and 	(
+																																																case 	when 	tim.kd_ket='TIK'
+																																																				then 	to_timestamp(concat_ws(' ', tim.tanggal::date, tim.keluar::time), 'YYYY-MM-DD HH24:MI:SS')
+																																																		when 	tim.kd_ket='TM'
+																																																				then 	to_timestamp(concat_ws(' ', tim.tanggal::date, '00:00:00'::time), 'YYYY-MM-DD HH24:MI:SS')
+																																																		when 	tim.kd_ket='TT'
+																																																				then 	to_timestamp(concat_ws(' ', tim.tanggal::date, tim.keluar::time), 'YYYY-MM-DD HH24:MI:SS')
+																																																end
+																																															) between tshiftpekerja.jam_msk and tshiftpekerja.jam_plg
+																																									)>0
+																																									then 	(
+																																												select		coalesce(sum(ikp.waktu_ikp), 0)
+																																												from 		(
+																																																select		(
+																																																				case 	when 	tshiftpekerja.ist_mulai>tshiftpekerja.break_mulai
+																																																								then 	(
+																																																											case 	when 	tim.keluar 	between 	tshiftpekerja.jam_msk and (tshiftpekerja.break_mulai - interval '1 second')
+																																																															then	(
+																																																																				--	1:2
+																																																																		case	when 	tim.masuk 	between 	tshiftpekerja.jam_msk and (tshiftpekerja.break_mulai - interval '1 second')
+																																																																						then 	extract(epoch from (tim.masuk-tim.keluar))::numeric
+																																																																				-- 	1:3
+																																																																				when 	tim.masuk 	between 	tshiftpekerja.break_mulai and (tshiftpekerja.break_selesai - interval '1 second')
+																																																																						then 	extract
+																																																																								(
+																																																																									epoch
+																																																																									from
+																																																																									(
+																																																																										(
+																																																																											tim.masuk
+																																																																											-
+																																																																											tim.keluar
+																																																																										)
+																																																																										-
+																																																																										(
+																																																																											tim.masuk
+																																																																											-
+																																																																											tshiftpekerja.break_mulai
+																																																																										)
+																																																																									)
+																																																																								)
+																																																																				-- 	1:4
+																																																																				when 	tim.masuk 	between 	tshiftpekerja.break_selesai and (tshiftpekerja.ist_mulai - interval '1 second')
+																																																																						then 	extract
+																																																																								(
+																																																																									epoch
+																																																																									from
+																																																																									(
+																																																																										(
+																																																																											tim.masuk
+																																																																											-
+																																																																											tim.keluar
+																																																																										)
+																																																																										-
+																																																																										(
+																																																																											tshiftpekerja.break_selesai
+																																																																											-
+																																																																											tshiftpekerja.break_mulai
+																																																																										)
+																																																																									)
+																																																																								)
+																																																																				-- 	1:5
+																																																																				when 	tim.masuk 	between 	tshiftpekerja.ist_mulai and (tshiftpekerja.ist_selesai - interval '1 second')
+																																																																						then 	extract
+																																																																								(
+																																																																									epoch
+																																																																									from
+																																																																									(
+																																																																										(
+																																																																											tim.masuk
+																																																																											-
+																																																																											tim.keluar
+																																																																										)
+																																																																										-
+																																																																										(
+																																																																											tim.masuk
+																																																																											-
+																																																																											tshiftpekerja.ist_mulai
+																																																																										)
+																																																																										-
+																																																																										(
+																																																																											tshiftpekerja.break_selesai
+																																																																											-
+																																																																											tshiftpekerja.break_mulai
+																																																																										)
+																																																																									)
+																																																																								)
+																																																																				-- 	1:6
+																																																																				when	tim.masuk 	between 	tshiftpekerja.ist_selesai and tshiftpekerja.jam_plg
+																																																																						then 	extract
+																																																																								(
+																																																																									epoch
+																																																																									from
+																																																																									(
+																																																																										(
+																																																																											tim.masuk
+																																																																											-
+																																																																											tim.keluar
+																																																																										)
+																																																																										-
+																																																																										(
+																																																																											tshiftpekerja.ist_selesai
+																																																																											-
+																																																																											tshiftpekerja.ist_mulai
+																																																																										)
+																																																																										-
+																																																																										(
+																																																																											tshiftpekerja.break_selesai
+																																																																											-
+																																																																											tshiftpekerja.break_mulai
+																																																																										)
+																																																																									)
+																																																																								)
+																																																																		end
+																																																																	)
+																																																													when 	tim.keluar 	between 	tshiftpekerja.break_mulai and (tshiftpekerja.break_selesai - interval '1 second')
+																																																															then	(
+																																																																				--	2:3
+																																																																		case 	when	tim.masuk between 	tshiftpekerja.break_mulai and (tshiftpekerja.break_selesai - interval '1 second')
+																																																																						then 	0
+																																																																				--	2:4
+																																																																				when 	tim.masuk between 	tshiftpekerja.break_selesai and (tshiftpekerja.ist_mulai - interval '1 second')
+																																																																						then 	extract
+																																																																								(
+																																																																									epoch
+																																																																									from
+																																																																									(
+																																																																										(
+																																																																											tim.masuk
+																																																																											-
+																																																																											tim.keluar
+																																																																										)
+																																																																										-
+																																																																										(
+																																																																											tshiftpekerja.break_selesai
+																																																																											-
+																																																																											tim.keluar
+																																																																										)
+																																																																									)
+																																																																								)
+																																																																				-- 	2:5
+																																																																				when 	tim.masuk between 	tshiftpekerja.ist_mulai and (tshiftpekerja.ist_selesai - interval '1 second')
+																																																																						then 	extract
+																																																																								(
+																																																																									epoch
+																																																																									from
+																																																																									(
+																																																																										(
+																																																																											tim.masuk
+																																																																											-
+																																																																											tim.keluar
+																																																																										)
+																																																																										-
+																																																																										(
+																																																																											tim.masuk
+																																																																											-
+																																																																											tshiftpekerja.ist_mulai
+																																																																										)
+																																																																										-
+																																																																										(
+																																																																											tshiftpekerja.break_selesai
+																																																																											-
+																																																																											tim.keluar
+																																																																										)
+																																																																									)
+																																																																								)
+																																																																				--	2:6
+																																																																				when 	tim.masuk between 	tshiftpekerja.ist_selesai and tshiftpekerja.jam_plg
+																																																																						then 	extract
+																																																																								(
+																																																																									epoch
+																																																																									from
+																																																																									(
+																																																																										(
+																																																																											tim.masuk
+																																																																											-
+																																																																											tim.keluar
+																																																																										)
+																																																																										-
+																																																																										(
+																																																																											tshiftpekerja.ist_selesai
+																																																																											-
+																																																																											tshiftpekerja.ist_mulai
+																																																																										)
+																																																																										-
+																																																																										(
+																																																																											tshiftpekerja.break_selesai
+																																																																											-
+																																																																											tim.keluar
+																																																																										)
+																																																																									)
+																																																																								)
+																																																																		end
+																																																																	)
+																																																													when 	tim.keluar 	between 	tshiftpekerja.break_selesai and (tshiftpekerja.ist_mulai - interval '1 second')
+																																																															then	(
+																																																																				-- 	3:4
+																																																																		case 	when 	tim.masuk 	between 	tshiftpekerja.break_selesai and (tshiftpekerja.ist_mulai - interval '1 second')
+																																																																						then 	extract(epoch from (tim.masuk-tim.keluar))::numeric
+																																																																				--	3:5
+																																																																				when 	tim.masuk 	between 	tshiftpekerja.ist_mulai and (tshiftpekerja.ist_selesai - interval '1 second')
+																																																																						then 	extract
+																																																																								(
+																																																																									epoch
+																																																																									from
+																																																																									(
+																																																																										(
+																																																																											tim.masuk
+																																																																											-
+																																																																											tim.keluar
+																																																																										)
+																																																																										-
+																																																																										(
+																																																																											tim.masuk
+																																																																											-
+																																																																											tshiftpekerja.ist_mulai
+																																																																										)
+																																																																									)
+																																																																								)
+																																																																				-- 	3:6
+																																																																				when 	tim.masuk 	between 	tshiftpekerja.ist_selesai and tshiftpekerja.jam_plg
+																																																																						then 	extract
+																																																																								(
+																																																																									epoch
+																																																																									from
+																																																																									(
+																																																																										(
+																																																																											tim.masuk
+																																																																											-
+																																																																											tim.keluar
+																																																																										)
+																																																																										-
+																																																																										(
+																																																																											tshiftpekerja.ist_selesai
+																																																																											-
+																																																																											tshiftpekerja.ist_mulai
+																																																																										)
+																																																																									)
+																																																																								)
+																																																																		end
+																																																																	)
+																																																													when 	tim.keluar 	between 	tshiftpekerja.ist_mulai and (tshiftpekerja.ist_selesai - interval '1 second')
+																																																															then 	(
+																																																																				--	4:5
+																																																																		case 	when 	tim.masuk 	between 	tshiftpekerja.ist_mulai and (tshiftpekerja.ist_selesai - interval '1 second')
+																																																																						then 	0
+																																																																				--	4:6
+																																																																				when 	tim.masuk 	between 	tshiftpekerja.ist_selesai and tshiftpekerja.jam_plg
+																																																																						then 	extract
+																																																																								(
+																																																																									epoch
+																																																																									from
+																																																																									(
+																																																																										(
+																																																																											tim.masuk
+																																																																											-
+																																																																											tim.keluar
+																																																																										)
+																																																																										-
+																																																																										(
+																																																																											tshiftpekerja.ist_selesai
+																																																																											-
+																																																																											tim.keluar
+																																																																										)
+																																																																									)
+																																																																								)
+																																																																		end
+																																																																	)
+																																																													when 	tim.keluar 	between 	tshiftpekerja.ist_selesai and tshiftpekerja.jam_plg
+																																																															then 	(
+																																																																				-- 	5:6
+																																																																		case 	when 	tim.masuk 	between 	tshiftpekerja.ist_selesai and tshiftpekerja.jam_plg
+																																																																						then 	extract(epoch from (tim.masuk-tim.keluar))::numeric
+																																																																		end
+																																																																	)
+																																																													else 	0
+																																																											end
+																																																										)
+																																																						else 	(
+																																																									case 	when 	tim.keluar 	between 	tshiftpekerja.jam_msk and (tshiftpekerja.ist_mulai - interval '1 second')
+																																																													then	(
+																																																																		--	1:2
+																																																																case	when 	tim.masuk 	between 	tshiftpekerja.jam_msk and (tshiftpekerja.ist_mulai - interval '1 second')
+																																																																				then 	extract(epoch from (tim.masuk-tim.keluar))::numeric
+																																																																		-- 	1:3
+																																																																		when 	tim.masuk 	between 	tshiftpekerja.ist_mulai and (tshiftpekerja.ist_selesai - interval '1 second')
+																																																																				then 	extract
+																																																																						(
+																																																																							epoch
+																																																																							from
+																																																																							(
+																																																																								(
+																																																																									tim.masuk
+																																																																									-
+																																																																									tim.keluar
+																																																																								)
+																																																																								-
+																																																																								(
+																																																																									tim.masuk
+																																																																									-
+																																																																									tshiftpekerja.ist_mulai
+																																																																								)
+																																																																							)
+																																																																						)
+																																																																		-- 	1:4
+																																																																		when 	tim.masuk 	between 	tshiftpekerja.ist_selesai and (tshiftpekerja.break_mulai - interval '1 second')
+																																																																				then 	extract
+																																																																						(
+																																																																							epoch
+																																																																							from
+																																																																							(
+																																																																								(
+																																																																									tim.masuk
+																																																																									-
+																																																																									tim.keluar
+																																																																								)
+																																																																								-
+																																																																								(
+																																																																									tshiftpekerja.ist_selesai
+																																																																									-
+																																																																									tshiftpekerja.ist_mulai
+																																																																								)
+																																																																							)
+																																																																						)
+																																																																		-- 	1:5
+																																																																		when 	tim.masuk 	between 	tshiftpekerja.break_mulai and (tshiftpekerja.break_selesai - interval '1 second')
+																																																																				then 	extract
+																																																																						(
+																																																																							epoch
+																																																																							from
+																																																																							(
+																																																																								(
+																																																																									tim.masuk
+																																																																									-
+																																																																									tim.keluar
+																																																																								)
+																																																																								-
+																																																																								(
+																																																																									tim.masuk
+																																																																									-
+																																																																									tshiftpekerja.break_mulai
+																																																																								)
+																																																																								-
+																																																																								(
+																																																																									tshiftpekerja.ist_selesai
+																																																																									-
+																																																																									tshiftpekerja.ist_mulai
+																																																																								)
+																																																																							)
+																																																																						)
+																																																																		-- 	1:6
+																																																																		when	tim.masuk 	between 	tshiftpekerja.break_selesai and tshiftpekerja.jam_plg
+																																																																				then 	extract
+																																																																						(
+																																																																							epoch
+																																																																							from
+																																																																							(
+																																																																								(
+																																																																									tim.masuk
+																																																																									-
+																																																																									tim.keluar
+																																																																								)
+																																																																								-
+																																																																								(
+																																																																									tshiftpekerja.ist_selesai
+																																																																									-
+																																																																									tshiftpekerja.ist_mulai
+																																																																								)
+																																																																								-
+																																																																								(
+																																																																									tshiftpekerja.break_selesai
+																																																																									-
+																																																																									tshiftpekerja.break_mulai
+																																																																								)
+																																																																							)
+																																																																						)
+																																																																end
+																																																															)
+																																																											when 	tim.keluar 	between 	tshiftpekerja.ist_mulai and (tshiftpekerja.ist_selesai - interval '1 second')
+																																																													then	(
+																																																																		--	2:3
+																																																																case 	when	tim.masuk between 	tshiftpekerja.ist_mulai and (tshiftpekerja.ist_selesai - interval '1 second')
+																																																																				then 	0
+																																																																		--	2:4
+																																																																		when 	tim.masuk between 	tshiftpekerja.ist_selesai and (tshiftpekerja.break_mulai - interval '1 second')
+																																																																				then 	extract
+																																																																						(
+																																																																							epoch
+																																																																							from
+																																																																							(
+																																																																								(
+																																																																									tim.masuk
+																																																																									-
+																																																																									tim.keluar
+																																																																								)
+																																																																								-
+																																																																								(
+																																																																									tshiftpekerja.ist_selesai
+																																																																									-
+																																																																									tim.keluar
+																																																																								)
+																																																																							)
+																																																																						)
+																																																																		-- 	2:5
+																																																																		when 	tim.masuk between 	tshiftpekerja.break_mulai and (tshiftpekerja.break_selesai - interval '1 second')
+																																																																				then 	extract
+																																																																						(
+																																																																							epoch
+																																																																							from
+																																																																							(
+																																																																								(
+																																																																									tim.masuk
+																																																																									-
+																																																																									tim.keluar
+																																																																								)
+																																																																								-
+																																																																								(
+																																																																									tim.masuk
+																																																																									-
+																																																																									tshiftpekerja.break_mulai
+																																																																								)
+																																																																								-
+																																																																								(
+																																																																									tshiftpekerja.ist_selesai
+																																																																									-
+																																																																									tim.keluar
+																																																																								)
+																																																																							)
+																																																																						)
+																																																																		--	2:6
+																																																																		when 	tim.masuk between 	tshiftpekerja.break_selesai and tshiftpekerja.jam_plg
+																																																																				then 	extract
+																																																																						(
+																																																																							epoch
+																																																																							from
+																																																																							(
+																																																																								(
+																																																																									tim.masuk
+																																																																									-
+																																																																									tim.keluar
+																																																																								)
+																																																																								-
+																																																																								(
+																																																																									tshiftpekerja.break_selesai
+																																																																									-
+																																																																									tshiftpekerja.break_mulai
+																																																																								)
+																																																																								-
+																																																																								(
+																																																																									tshiftpekerja.ist_selesai
+																																																																									-
+																																																																									tim.keluar
+																																																																								)
+																																																																							)
+																																																																						)
+																																																																end
+																																																															)
+																																																											when 	tim.keluar 	between 	tshiftpekerja.ist_selesai and (tshiftpekerja.break_mulai - interval '1 second')
+																																																													then	(
+																																																																		-- 	3:4
+																																																																case 	when 	tim.masuk 	between 	tshiftpekerja.ist_selesai and (tshiftpekerja.break_mulai - interval '1 second')
+																																																																				then 	extract(epoch from (tim.masuk-tim.keluar))::numeric
+																																																																		--	3:5
+																																																																		when 	tim.masuk 	between 	tshiftpekerja.break_mulai and (tshiftpekerja.break_selesai - interval '1 second')
+																																																																				then 	extract
+																																																																						(
+																																																																							epoch
+																																																																							from
+																																																																							(
+																																																																								(
+																																																																									tim.masuk
+																																																																									-
+																																																																									tim.keluar
+																																																																								)
+																																																																								-
+																																																																								(
+																																																																									tim.masuk
+																																																																									-
+																																																																									tshiftpekerja.break_mulai
+																																																																								)
+																																																																							)
+																																																																						)
+																																																																		-- 	3:6
+																																																																		when 	tim.masuk 	between 	tshiftpekerja.break_selesai and tshiftpekerja.jam_plg
+																																																																				then 	extract
+																																																																						(
+																																																																							epoch
+																																																																							from
+																																																																							(
+																																																																								(
+																																																																									tim.masuk
+																																																																									-
+																																																																									tim.keluar
+																																																																								)
+																																																																								-
+																																																																								(
+																																																																									tshiftpekerja.break_selesai
+																																																																									-
+																																																																									tshiftpekerja.break_mulai
+																																																																								)
+																																																																							)
+																																																																						)
+																																																																end
+																																																															)
+																																																											when 	tim.keluar 	between 	tshiftpekerja.break_mulai and (tshiftpekerja.break_selesai - interval '1 second')
+																																																													then 	(
+																																																																		--	4:5
+																																																																case 	when 	tim.masuk 	between 	tshiftpekerja.break_mulai and (tshiftpekerja.break_selesai - interval '1 second')
+																																																																				then 	0
+																																																																		--	4:6
+																																																																		when 	tim.masuk 	between 	tshiftpekerja.break_selesai and tshiftpekerja.jam_plg
+																																																																				then 	extract
+																																																																						(
+																																																																							epoch
+																																																																							from
+																																																																							(
+																																																																								(
+																																																																									tim.masuk
+																																																																									-
+																																																																									tim.keluar
+																																																																								)
+																																																																								-
+																																																																								(
+																																																																									tshiftpekerja.break_selesai
+																																																																									-
+																																																																									tim.keluar
+																																																																								)
+																																																																							)
+																																																																						)
+																																																																end
+																																																															)
+																																																											when 	tim.keluar 	between 	tshiftpekerja.break_selesai and tshiftpekerja.jam_plg
+																																																													then 	(
+																																																																		-- 	5:6
+																																																																case 	when 	tim.masuk 	between 	tshiftpekerja.ist_selesai and tshiftpekerja.jam_plg
+																																																																				then 	extract(epoch from (tim.masuk-tim.keluar))::numeric
+																																																																end
+																																																															)
+																																																											else 	0
+																																																									end
+																																																								)
+																																																				end
+																																																			) as waktu_ikp
+																																																from 		(
+																																																				select 		tim.tanggal::date as tanggal,
+																																																							trim(tim.noind) as noind,
+																																																							trim(tim.kodesie) as kodesie,
+																																																							trim(tim.kd_ket) as kd_ket,
+																																																							tim.point,
+																																																							(
+																																																								case 	when 	tim.kd_ket='TIK'
+																																																												then 	to_timestamp(concat_ws(' ', tim.tanggal::date, tim.keluar::time), 'YYYY-MM-DD HH24:MI:SS')
+																																																										when 	tim.kd_ket='TM'
+																																																												then 	to_timestamp(concat_ws(' ', tim.tanggal::date, '00:00:00'::time), 'YYYY-MM-DD HH24:MI:SS')
+																																																										when 	tim.kd_ket='TT'
+																																																												then 	to_timestamp(concat_ws(' ', tim.tanggal::date, tim.keluar::time), 'YYYY-MM-DD HH24:MI:SS')
+																																																								end
+																																																							) as keluar,
+																																																							(
+																																																								case 	when 	tim.kd_ket='TIK'
+																																																												then 	(
+																																																															case 	when 	tim.masuk::time<tim.keluar::time
+																																																																			then 	to_timestamp(concat_ws(' ', (tim.tanggal + interval '1 day')::date, tim.masuk::time), 'YYYY-MM-DD HH24:MI:SS')
+																																																																	else 	to_timestamp(concat_ws(' ', tim.tanggal::date, tim.masuk::time), 'YYYY-MM-DD HH24:MI:SS')
+																																																															end
+																																																														)
+																																																										when 	tim.kd_ket='TM'
+																																																												then 	to_timestamp(concat_ws(' ', tim.tanggal::date, '00:00:00'::time), 'YYYY-MM-DD HH24:MI:SS')
+																																																										when 	tim.kd_ket='TT'
+																																																												then 	to_timestamp(concat_ws(' ', tim.tanggal::date, tim.masuk::time), 'YYYY-MM-DD HH24:MI:SS')
+																																																								end
+																																																							) as masuk
+																																																				from 		\"Presensi\".tdatatim as tim
+																																																				where 		tim.tanggal=tshiftpekerja.tanggal
+																																																							and 	tim.noind=tshiftpekerja.noind
+																																																							and 	tim.kd_ket='TIK'
+																																																			) tim
+																																																where 		tim.keluar between tshiftpekerja.jam_msk and tshiftpekerja.jam_plg
+																																															) as ikp
+																																											)
+																																							else 	0
+																																					end
+																																				) as pengurang_ikp,
+																																				(
+																																					case 	when 	(
+																																										select 		count(*)
+																																										from 		\"Presensi\".tdatapresensi as datapres
+																																										where		datapres.kd_ket='PSP'
+																																													and 	datapres.tanggal=tshiftpekerja.tanggal
+																																													and 	datapres.noind=tshiftpekerja.noind
+																																													and 	(
+																																																case 	when 	datapres.keluar=''
+																																																				or 	datapres.keluar='0'
+																																																				or 	datapres.masuk='__:__:__'
+																																																				then 	to_timestamp(concat_ws(' ', datapres.tanggal::date, '00:00:00'::time), 'YYYY-MM-DD HH24:MI:SS')
+																																																		else 	to_timestamp(concat_ws(' ', datapres.tanggal::date, datapres.keluar::time), 'YYYY-MM-DD HH24:MI:SS')
+																																																end
+																																															) between tshiftpekerja.jam_msk and tshiftpekerja.jam_plg
+																																									)>0
+																																									then 	(
+																																												select 		coalesce(sum(psp.waktu_psp), 0)
+																																												from 		(
+																																																select 		(
+																																																				case 	when 	tshiftpekerja.ist_mulai>tshiftpekerja.break_mulai
+																																																								then 	(
+																																																											case 	when 	datapres.keluar 	between 	tshiftpekerja.jam_msk and (tshiftpekerja.break_mulai - interval '1 second')
+																																																															then	(
+																																																																				--	1:2
+																																																																		case	when 	datapres.masuk 	between 	tshiftpekerja.jam_msk and (tshiftpekerja.break_mulai - interval '1 second')
+																																																																						then 	extract(epoch from (datapres.masuk-datapres.keluar))::numeric
+																																																																				-- 	1:3
+																																																																				when 	datapres.masuk 	between 	tshiftpekerja.break_mulai and (tshiftpekerja.break_selesai - interval '1 second')
+																																																																						then 	extract
+																																																																								(
+																																																																									epoch
+																																																																									from
+																																																																									(
+																																																																										(
+																																																																											datapres.masuk
+																																																																											-
+																																																																											datapres.keluar
+																																																																										)
+																																																																										-
+																																																																										(
+																																																																											datapres.masuk
+																																																																											-
+																																																																											tshiftpekerja.break_mulai
+																																																																										)
+																																																																									)
+																																																																								)
+																																																																				-- 	1:4
+																																																																				when 	datapres.masuk 	between 	tshiftpekerja.break_selesai and (tshiftpekerja.ist_mulai - interval '1 second')
+																																																																						then 	extract
+																																																																								(
+																																																																									epoch
+																																																																									from
+																																																																									(
+																																																																										(
+																																																																											datapres.masuk
+																																																																											-
+																																																																											datapres.keluar
+																																																																										)
+																																																																										-
+																																																																										(
+																																																																											tshiftpekerja.break_selesai
+																																																																											-
+																																																																											tshiftpekerja.break_mulai
+																																																																										)
+																																																																									)
+																																																																								)
+																																																																				-- 	1:5
+																																																																				when 	datapres.masuk 	between 	tshiftpekerja.ist_mulai and (tshiftpekerja.ist_selesai - interval '1 second')
+																																																																						then 	extract
+																																																																								(
+																																																																									epoch
+																																																																									from
+																																																																									(
+																																																																										(
+																																																																											datapres.masuk
+																																																																											-
+																																																																											datapres.keluar
+																																																																										)
+																																																																										-
+																																																																										(
+																																																																											datapres.masuk
+																																																																											-
+																																																																											tshiftpekerja.ist_mulai
+																																																																										)
+																																																																										-
+																																																																										(
+																																																																											tshiftpekerja.break_selesai
+																																																																											-
+																																																																											tshiftpekerja.break_mulai
+																																																																										)
+																																																																									)
+																																																																								)
+																																																																				-- 	1:6
+																																																																				when	datapres.masuk 	between 	tshiftpekerja.ist_selesai and tshiftpekerja.jam_plg
+																																																																						then 	extract
+																																																																								(
+																																																																									epoch
+																																																																									from
+																																																																									(
+																																																																										(
+																																																																											datapres.masuk
+																																																																											-
+																																																																											datapres.keluar
+																																																																										)
+																																																																										-
+																																																																										(
+																																																																											tshiftpekerja.ist_selesai
+																																																																											-
+																																																																											tshiftpekerja.ist_mulai
+																																																																										)
+																																																																										-
+																																																																										(
+																																																																											tshiftpekerja.break_selesai
+																																																																											-
+																																																																											tshiftpekerja.break_mulai
+																																																																										)
+																																																																									)
+																																																																								)
+																																																																		end
+																																																																	)
+																																																													when 	datapres.keluar 	between 	tshiftpekerja.break_mulai and (tshiftpekerja.break_selesai - interval '1 second')
+																																																															then	(
+																																																																				--	2:3
+																																																																		case 	when	datapres.masuk between 	tshiftpekerja.break_mulai and (tshiftpekerja.break_selesai - interval '1 second')
+																																																																						then 	0
+																																																																				--	2:4
+																																																																				when 	datapres.masuk between 	tshiftpekerja.break_selesai and (tshiftpekerja.ist_mulai - interval '1 second')
+																																																																						then 	extract
+																																																																								(
+																																																																									epoch
+																																																																									from
+																																																																									(
+																																																																										(
+																																																																											datapres.masuk
+																																																																											-
+																																																																											datapres.keluar
+																																																																										)
+																																																																										-
+																																																																										(
+																																																																											tshiftpekerja.break_selesai
+																																																																											-
+																																																																											datapres.keluar
+																																																																										)
+																																																																									)
+																																																																								)
+																																																																				-- 	2:5
+																																																																				when 	datapres.masuk between 	tshiftpekerja.ist_mulai and (tshiftpekerja.ist_selesai - interval '1 second')
+																																																																						then 	extract
+																																																																								(
+																																																																									epoch
+																																																																									from
+																																																																									(
+																																																																										(
+																																																																											datapres.masuk
+																																																																											-
+																																																																											datapres.keluar
+																																																																										)
+																																																																										-
+																																																																										(
+																																																																											datapres.masuk
+																																																																											-
+																																																																											tshiftpekerja.ist_mulai
+																																																																										)
+																																																																										-
+																																																																										(
+																																																																											tshiftpekerja.break_selesai
+																																																																											-
+																																																																											datapres.keluar
+																																																																										)
+																																																																									)
+																																																																								)
+																																																																				--	2:6
+																																																																				when 	datapres.masuk between 	tshiftpekerja.ist_selesai and tshiftpekerja.jam_plg
+																																																																						then 	extract
+																																																																								(
+																																																																									epoch
+																																																																									from
+																																																																									(
+																																																																										(
+																																																																											datapres.masuk
+																																																																											-
+																																																																											datapres.keluar
+																																																																										)
+																																																																										-
+																																																																										(
+																																																																											tshiftpekerja.ist_selesai
+																																																																											-
+																																																																											tshiftpekerja.ist_mulai
+																																																																										)
+																																																																										-
+																																																																										(
+																																																																											tshiftpekerja.break_selesai
+																																																																											-
+																																																																											datapres.keluar
+																																																																										)
+																																																																									)
+																																																																								)
+																																																																		end
+																																																																	)
+																																																													when 	datapres.keluar 	between 	tshiftpekerja.break_selesai and (tshiftpekerja.ist_mulai - interval '1 second')
+																																																															then	(
+																																																																				-- 	3:4
+																																																																		case 	when 	datapres.masuk 	between 	tshiftpekerja.break_selesai and (tshiftpekerja.ist_mulai - interval '1 second')
+																																																																						then 	extract(epoch from (datapres.masuk-datapres.keluar))::numeric
+																																																																				--	3:5
+																																																																				when 	datapres.masuk 	between 	tshiftpekerja.ist_mulai and (tshiftpekerja.ist_selesai - interval '1 second')
+																																																																						then 	extract
+																																																																								(
+																																																																									epoch
+																																																																									from
+																																																																									(
+																																																																										(
+																																																																											datapres.masuk
+																																																																											-
+																																																																											datapres.keluar
+																																																																										)
+																																																																										-
+																																																																										(
+																																																																											datapres.masuk
+																																																																											-
+																																																																											tshiftpekerja.ist_mulai
+																																																																										)
+																																																																									)
+																																																																								)
+																																																																				-- 	3:6
+																																																																				when 	datapres.masuk 	between 	tshiftpekerja.ist_selesai and tshiftpekerja.jam_plg
+																																																																						then 	extract
+																																																																								(
+																																																																									epoch
+																																																																									from
+																																																																									(
+																																																																										(
+																																																																											datapres.masuk
+																																																																											-
+																																																																											datapres.keluar
+																																																																										)
+																																																																										-
+																																																																										(
+																																																																											tshiftpekerja.ist_selesai
+																																																																											-
+																																																																											tshiftpekerja.ist_mulai
+																																																																										)
+																																																																									)
+																																																																								)
+																																																																		end
+																																																																	)
+																																																													when 	datapres.keluar 	between 	tshiftpekerja.ist_mulai and (tshiftpekerja.ist_selesai - interval '1 second')
+																																																															then 	(
+																																																																				--	4:5
+																																																																		case 	when 	datapres.masuk 	between 	tshiftpekerja.ist_mulai and (tshiftpekerja.ist_selesai - interval '1 second')
+																																																																						then 	0
+																																																																				--	4:6
+																																																																				when 	datapres.masuk 	between 	tshiftpekerja.ist_selesai and tshiftpekerja.jam_plg
+																																																																						then 	extract
+																																																																								(
+																																																																									epoch
+																																																																									from
+																																																																									(
+																																																																										(
+																																																																											datapres.masuk
+																																																																											-
+																																																																											datapres.keluar
+																																																																										)
+																																																																										-
+																																																																										(
+																																																																											tshiftpekerja.ist_selesai
+																																																																											-
+																																																																											datapres.keluar
+																																																																										)
+																																																																									)
+																																																																								)
+																																																																		end
+																																																																	)
+																																																													when 	datapres.keluar 	between 	tshiftpekerja.ist_selesai and tshiftpekerja.jam_plg
+																																																															then 	(
+																																																																				-- 	5:6
+																																																																		case 	when 	datapres.masuk 	between 	tshiftpekerja.ist_selesai and tshiftpekerja.jam_plg
+																																																																						then 	extract(epoch from (datapres.masuk-datapres.keluar))::numeric
+																																																																		end
+																																																																	)
+																																																													else 	0
+																																																											end
+																																																										)
+																																																						else 	(
+																																																									case 	when 	datapres.keluar 	between 	tshiftpekerja.jam_msk and (tshiftpekerja.ist_mulai - interval '1 second')
+																																																													then	(
+																																																																		--	1:2
+																																																																case	when 	datapres.masuk 	between 	tshiftpekerja.jam_msk and (tshiftpekerja.ist_mulai - interval '1 second')
+																																																																				then 	extract(epoch from (datapres.masuk-datapres.keluar))::numeric
+																																																																		-- 	1:3
+																																																																		when 	datapres.masuk 	between 	tshiftpekerja.ist_mulai and (tshiftpekerja.ist_selesai - interval '1 second')
+																																																																				then 	extract
+																																																																						(
+																																																																							epoch
+																																																																							from
+																																																																							(
+																																																																								(
+																																																																									datapres.masuk
+																																																																									-
+																																																																									datapres.keluar
+																																																																								)
+																																																																								-
+																																																																								(
+																																																																									datapres.masuk
+																																																																									-
+																																																																									tshiftpekerja.ist_mulai
+																																																																								)
+																																																																							)
+																																																																						)
+																																																																		-- 	1:4
+																																																																		when 	datapres.masuk 	between 	tshiftpekerja.ist_selesai and (tshiftpekerja.break_mulai - interval '1 second')
+																																																																				then 	extract
+																																																																						(
+																																																																							epoch
+																																																																							from
+																																																																							(
+																																																																								(
+																																																																									datapres.masuk
+																																																																									-
+																																																																									datapres.keluar
+																																																																								)
+																																																																								-
+																																																																								(
+																																																																									tshiftpekerja.ist_selesai
+																																																																									-
+																																																																									tshiftpekerja.ist_mulai
+																																																																								)
+																																																																							)
+																																																																						)
+																																																																		-- 	1:5
+																																																																		when 	datapres.masuk 	between 	tshiftpekerja.break_mulai and (tshiftpekerja.break_selesai - interval '1 second')
+																																																																				then 	extract
+																																																																						(
+																																																																							epoch
+																																																																							from
+																																																																							(
+																																																																								(
+																																																																									datapres.masuk
+																																																																									-
+																																																																									datapres.keluar
+																																																																								)
+																																																																								-
+																																																																								(
+																																																																									datapres.masuk
+																																																																									-
+																																																																									tshiftpekerja.break_selesai
+																																																																								)
+																																																																								-
+																																																																								(
+																																																																									tshiftpekerja.ist_selesai
+																																																																									-
+																																																																									tshiftpekerja.ist_mulai
+																																																																								)
+																																																																							)
+																																																																						)
+																																																																		-- 	1:6
+																																																																		when	datapres.masuk 	between 	tshiftpekerja.ist_selesai and tshiftpekerja.jam_plg
+																																																																				then 	extract
+																																																																						(
+																																																																							epoch
+																																																																							from
+																																																																							(
+																																																																								(
+																																																																									datapres.masuk
+																																																																									-
+																																																																									datapres.keluar
+																																																																								)
+																																																																								-
+																																																																								(
+																																																																									tshiftpekerja.break_selesai
+																																																																									-
+																																																																									tshiftpekerja.break_mulai
+																																																																								)
+																																																																								-
+																																																																								(
+																																																																									tshiftpekerja.ist_selesai
+																																																																									-
+																																																																									tshiftpekerja.ist_mulai
+																																																																								)
+																																																																							)
+																																																																						)
+																																																																end
+																																																															)
+																																																											when 	datapres.keluar 	between 	tshiftpekerja.ist_mulai and (tshiftpekerja.ist_selesai - interval '1 second')
+																																																													then	(
+																																																																		--	2:3
+																																																																case 	when	datapres.masuk between 	tshiftpekerja.ist_mulai and (tshiftpekerja.ist_selesai - interval '1 second')
+																																																																				then 	0
+																																																																		--	2:4
+																																																																		when 	datapres.masuk between 	tshiftpekerja.ist_selesai and (tshiftpekerja.break_mulai - interval '1 second')
+																																																																				then 	extract
+																																																																						(
+																																																																							epoch
+																																																																							from
+																																																																							(
+																																																																								(
+																																																																									datapres.masuk
+																																																																									-
+																																																																									datapres.keluar
+																																																																								)
+																																																																								-
+																																																																								(
+																																																																									tshiftpekerja.ist_selesai
+																																																																									-
+																																																																									datapres.keluar
+																																																																								)
+																																																																							)
+																																																																						)
+																																																																		-- 	2:5
+																																																																		when 	datapres.masuk between 	tshiftpekerja.break_mulai and (tshiftpekerja.break_selesai - interval '1 second')
+																																																																				then 	extract
+																																																																						(
+																																																																							epoch
+																																																																							from
+																																																																							(
+																																																																								(
+																																																																									datapres.masuk
+																																																																									-
+																																																																									datapres.keluar
+																																																																								)
+																																																																								-
+																																																																								(
+																																																																									datapres.masuk
+																																																																									-
+																																																																									tshiftpekerja.break_mulai
+																																																																								)
+																																																																								-
+																																																																								(
+																																																																									tshiftpekerja.ist_selesai
+																																																																									-
+																																																																									datapres.keluar
+																																																																								)
+																																																																							)
+																																																																						)
+																																																																		--	2:6
+																																																																		when 	datapres.masuk between 	tshiftpekerja.break_selesai and tshiftpekerja.jam_plg
+																																																																				then 	extract
+																																																																						(
+																																																																							epoch
+																																																																							from
+																																																																							(
+																																																																								(
+																																																																									datapres.masuk
+																																																																									-
+																																																																									datapres.keluar
+																																																																								)
+																																																																								-
+																																																																								(
+																																																																									tshiftpekerja.break_selesai
+																																																																									-
+																																																																									tshiftpekerja.break_mulai
+																																																																								)
+																																																																								-
+																																																																								(
+																																																																									tshiftpekerja.ist_selesai
+																																																																									-
+																																																																									datapres.keluar
+																																																																								)
+																																																																							)
+																																																																						)
+																																																																end
+																																																															)
+																																																											when 	datapres.keluar 	between 	tshiftpekerja.ist_selesai and (tshiftpekerja.break_mulai - interval '1 second')
+																																																													then	(
+																																																																		-- 	3:4
+																																																																case 	when 	datapres.masuk 	between 	tshiftpekerja.ist_selesai and (tshiftpekerja.break_mulai - interval '1 second')
+																																																																				then 	extract(epoch from (datapres.masuk-datapres.keluar))::numeric
+																																																																		--	3:5
+																																																																		when 	datapres.masuk 	between 	tshiftpekerja.break_mulai and (tshiftpekerja.break_selesai - interval '1 second')
+																																																																				then 	extract
+																																																																						(
+																																																																							epoch
+																																																																							from
+																																																																							(
+																																																																								(
+																																																																									datapres.masuk
+																																																																									-
+																																																																									datapres.keluar
+																																																																								)
+																																																																								-
+																																																																								(
+																																																																									datapres.masuk
+																																																																									-
+																																																																									tshiftpekerja.break_mulai
+																																																																								)
+																																																																							)
+																																																																						)
+																																																																		-- 	3:6
+																																																																		when 	datapres.masuk 	between 	tshiftpekerja.ist_selesai and tshiftpekerja.jam_plg
+																																																																				then 	extract
+																																																																						(
+																																																																							epoch
+																																																																							from
+																																																																							(
+																																																																								(
+																																																																									datapres.masuk
+																																																																									-
+																																																																									datapres.keluar
+																																																																								)
+																																																																								-
+																																																																								(
+																																																																									tshiftpekerja.break_selesai
+																																																																									-
+																																																																									tshiftpekerja.break_mulai
+																																																																								)
+																																																																							)
+																																																																						)
+																																																																end
+																																																															)
+																																																											when 	datapres.keluar 	between 	tshiftpekerja.break_mulai and (tshiftpekerja.break_selesai - interval '1 second')
+																																																													then 	(
+																																																																		--	4:5
+																																																																case 	when 	datapres.masuk 	between 	tshiftpekerja.break_mulai and (tshiftpekerja.break_selesai - interval '1 second')
+																																																																				then 	0
+																																																																		--	4:6
+																																																																		when 	datapres.masuk 	between 	tshiftpekerja.break_selesai and tshiftpekerja.jam_plg
+																																																																				then 	extract
+																																																																						(
+																																																																							epoch
+																																																																							from
+																																																																							(
+																																																																								(
+																																																																									datapres.masuk
+																																																																									-
+																																																																									datapres.keluar
+																																																																								)
+																																																																								-
+																																																																								(
+																																																																									tshiftpekerja.break_selesai
+																																																																									-
+																																																																									datapres.keluar
+																																																																								)
+																																																																							)
+																																																																						)
+																																																																end
+																																																															)
+																																																											when 	datapres.keluar 	between 	tshiftpekerja.break_selesai and tshiftpekerja.jam_plg
+																																																													then 	(
+																																																																		-- 	5:6
+																																																																case 	when 	datapres.masuk 	between 	tshiftpekerja.break_selesai and tshiftpekerja.jam_plg
+																																																																				then 	extract(epoch from (datapres.masuk-datapres.keluar))::numeric
+																																																																end
+																																																															)
+																																																											else 	0
+																																																									end
+																																																								)
+																																																				end
+																																																			) as waktu_psp
+																																																from 		(
+																																																				select 		datapres.tanggal::date as tanggal,
+																																																							trim(datapres.noind) as noind,
+																																																							trim(datapres.kodesie) as kodesie,
+																																																							trim(datapres.kd_ket) as kd_ket,
+																																																							(
+																																																								case 	when 	datapres.keluar=''
+																																																												or 	datapres.keluar='0'
+																																																												or 	datapres.masuk='__:__:__'
+																																																												then 	to_timestamp(concat_ws(' ', datapres.tanggal::date, '00:00:00'::time), 'YYYY-MM-DD HH24:MI:SS')
+																																																										else 	to_timestamp(concat_ws(' ', datapres.tanggal::date, datapres.keluar::time), 'YYYY-MM-DD HH24:MI:SS')
+																																																								end
+																																																							) as keluar,
+																																																							(
+																																																								case	when 	datapres.masuk=''
+																																																												or 	datapres.masuk='0'
+																																																												or 	datapres.masuk='__:__:__'
+																																																												then 	to_timestamp(concat_ws(' ', datapres.tanggal::date, '00:00:00'::time), 'YYYY-MM-DD HH24:MI:SS')
+																																																										else 	(
+																																																													case 	when 	to_timestamp(concat_ws(' ', datapres.tanggal::date, datapres.masuk::time), 'YYYY-MM-DD HH24:MI:SS')
+																																																																	<
+																																																																	(
+																																																																		case 	when 	datapres.keluar=''
+																																																																						or 	datapres.keluar='0'
+																																																																						or 	datapres.masuk='__:__:__'
+																																																																						then 	to_timestamp(concat_ws(' ', datapres.tanggal::date, '00:00:00'::time), 'YYYY-MM-DD HH24:MI:SS')
+																																																																				else 	to_timestamp(concat_ws(' ', datapres.tanggal::date, datapres.keluar::time), 'YYYY-MM-DD HH24:MI:SS')
+																																																																		end
+																																																																	)
+																																																																	then 	to_timestamp(concat_ws(' ', (datapres.tanggal + interval '1 day')::date, datapres.masuk::time), 'YYYY-MM-DD HH24:MI:SS')
+																																																															else 	to_timestamp(concat_ws(' ', datapres.tanggal::date, datapres.masuk::time), 'YYYY-MM-DD HH24:MI:SS')
+																																																													end
+																																																												)
+																																																								end
+																																																							) as masuk,
+																																																							datapres.total_lembur,
+																																																							trim(datapres.ket) as ket
+																																																				from 		\"Presensi\".tdatapresensi as datapres
+																																																				where 		datapres.kd_ket='PSP'
+																																																							and 	datapres.tanggal::date=tshiftpekerja.tanggal
+																																																							and 	datapres.noind=tshiftpekerja.noind
+																																																			) as datapres
+																																																where 		datapres.keluar between 	tshiftpekerja.jam_msk and tshiftpekerja.jam_plg
+																																															) as psp
+																																											)
+																																							else 	0
+																																					end
+																																				) as pengurang_psp
+																																	from		(
+																																					select 		sftpkj.tanggal::date as tanggal,
+																																								trim(sftpkj.noind) as noind,
+																																								trim(sftpkj.noind_baru) as noind_baru,
+																																								trim(sftpkj.kd_shift) as kd_shift,
+																																								(
+																																									case 	when 	(
+																																														select 		count(*)
+																																														from 		hrd_khs.tmutasi as tmutasi
+																																														where 		tmutasi.noind=pri.noind
+																																													)
+																																													>
+																																													0
+																																													then 	(
+																																																case 	when 	sftpkj.tanggal
+																																																				<
+																																																				(
+																																																					select 		tglberlaku
+																																																								from 		hrd_khs.tmutasi
+																																																								where  		noind=pri.noind
+																																																								order by 	tglberlaku asc
+																																																								limit 		1
+																																																				)
+																																																				then	(
+																																																							select 		kodesielm
+																																																										from 		hrd_khs.tmutasi
+																																																										where  		noind=pri.noind
+																																																										order by 	tglberlaku asc
+																																																										limit 		1
+																																																						)
+																																																		when 	sftpkj.tanggal
+																																																				<
+																																																				(
+																																																					select 		tglberlaku
+																																																								from 		hrd_khs.tmutasi
+																																																								where  		noind=pri.noind
+																																																								order by 	tglberlaku desc
+																																																								limit 		1
+																																																				)
+																																																				then	(
+																																																							select 		kodesielm
+																																																										from 		hrd_khs.tmutasi
+																																																										where  		noind=pri.noind
+																																																										order by 	tglberlaku desc
+																																																										limit 		1
+																																																						)
+																																																		else 	sftpkj.kodesie
+																																																end
+																																															)
+																																											else 	sftpkj.kodesie
+																																									end
+																																								) as kodesie,
+																																								(
+																																									case 	when 	(
+																																														select 		count(*)
+																																														from 		hrd_khs.tmutasi as tmutasi
+																																														where 		tmutasi.noind=pri.noind
+																																													)
+																																													>
+																																													0
+																																													then 	(
+																																																case 	when 	sftpkj.tanggal
+																																																				<
+																																																				(
+																																																					select 		tglberlaku
+																																																								from 		hrd_khs.tmutasi
+																																																								where  		noind=pri.noind
+																																																											and 	(
+																																																														lokasilm is not null
+																																																														and 	lokasibr is not null
+																																																													)
+																																																								order by 	tglberlaku asc
+																																																								limit 		1
+																																																				)
+																																																				then	(
+																																																							select 		lokasilm
+																																																										from 		hrd_khs.tmutasi
+																																																										where  		noind=pri.noind
+																																																										order by 	tglberlaku asc
+																																																										limit 		1
+																																																						)
+																																																		when 	sftpkj.tanggal
+																																																				<
+																																																				(
+																																																					select 		tglberlaku
+																																																								from 		hrd_khs.tmutasi
+																																																								where  		noind=pri.noind
+																																																											and 	(
+																																																														lokasilm is not null
+																																																														and 	lokasibr is not null
+																																																													)
+																																																								order by 	tglberlaku desc
+																																																								limit 		1
+																																																				)
+																																																				then	(
+																																																							select 		lokasilm
+																																																										from 		hrd_khs.tmutasi
+																																																										where  		noind=pri.noind
+																																																										order by 	tglberlaku desc
+																																																										limit 		1
+																																																						)
+																																																		else 	(
+																																																					select 		lokasi_kerja
+																																																					from 		hrd_khs.tpribadi
+																																																					where 		noind=pri.noind
+																																																				)
+																																																end
+																																															)
+																																											else 	(
+																																														select 		lokasi_kerja
+																																														from 		hrd_khs.tpribadi
+																																														where 		noind=pri.noind
+																																													)
+																																									end
+																																								) as lokasi_kerja,
+																																								sftpkj.tukar,
+																																								(
+																																									to_timestamp(concat_ws(' ', sftpkj.tanggal::date, sftpkj.jam_msk::time), 'YYYY-MM-DD HH24:MI:SS')
+																																								) as jam_msk,
+																																								(
+																																									to_timestamp(concat_ws(' ', sftpkj.tanggal::date, sftpkj.jam_akhmsk::time), 'YYYY-MM-DD HH24:MI:SS')
+																																								) as jam_akhmsk,
+																																								(
+																																									(
+																																										case 	when 	to_timestamp(concat_ws(' ', sftpkj.tanggal::date, sftpkj.jam_plg::time), 'YYYY-MM-DD HH24:MI:SS')
+																																														<
+																																														to_timestamp(concat_ws(' ', sftpkj.tanggal::date, sftpkj.jam_msk::time), 'YYYY-MM-DD HH24:MI:SS')
+																																														then	to_timestamp(concat_ws(' ', (sftpkj.tanggal + interval '1 day')::date, sftpkj.jam_plg::time), 'YYYY-MM-DD HH24:MI:SS')
+																																												else 	to_timestamp(concat_ws(' ', sftpkj.tanggal::date, sftpkj.jam_plg::time), 'YYYY-MM-DD HH24:MI:SS')
+																																										end
+																																									)
+																																								) as jam_plg,
+																																								(
+																																									(
+																																										case 	when 	to_timestamp(concat_ws(' ', sftpkj.tanggal::date, replace(sftpkj.break_mulai, '_', '0')::time), 'YYYY-MM-DD HH24:MI:SS')
+																																														<
+																																														to_timestamp(concat_ws(' ', sftpkj.tanggal::date, sftpkj.jam_msk::time), 'YYYY-MM-DD HH24:MI:SS')
+																																														then	to_timestamp(concat_ws(' ', (sftpkj.tanggal + interval '1 day')::date, replace(sftpkj.break_mulai, '_', '0')::time), 'YYYY-MM-DD HH24:MI:SS')
+																																												else 	to_timestamp(concat_ws(' ', sftpkj.tanggal::date, replace(sftpkj.break_mulai, '_', '0')::time), 'YYYY-MM-DD HH24:MI:SS')
+																																										end
+																																									)
+																																								) as break_mulai,
+																																								(
+																																									(
+																																										case 	when 	to_timestamp(concat_ws(' ', sftpkj.tanggal::date, replace(sftpkj.break_selesai, '_', '0')::time), 'YYYY-MM-DD HH24:MI:SS')
+																																														<
+																																														to_timestamp(concat_ws(' ', sftpkj.tanggal::date, sftpkj.jam_msk::time), 'YYYY-MM-DD HH24:MI:SS')
+																																														then	to_timestamp(concat_ws(' ', (sftpkj.tanggal + interval '1 day')::date, replace(sftpkj.break_selesai, '_', '0')::time), 'YYYY-MM-DD HH24:MI:SS')
+																																												else 	to_timestamp(concat_ws(' ', sftpkj.tanggal::date, replace(sftpkj.break_selesai, '_', '0')::time), 'YYYY-MM-DD HH24:MI:SS')
+																																										end
+																																									)
+																																								) as break_selesai,
+																																								(
+																																									(
+																																										case 	when 	to_timestamp(concat_ws(' ', sftpkj.tanggal::date, sftpkj.ist_mulai::time), 'YYYY-MM-DD HH24:MI:SS')
+																																														<
+																																														to_timestamp(concat_ws(' ', sftpkj.tanggal::date, sftpkj.jam_msk::time), 'YYYY-MM-DD HH24:MI:SS')
+																																														then	to_timestamp(concat_ws(' ', (sftpkj.tanggal + interval '1 day')::date, sftpkj.ist_mulai::time), 'YYYY-MM-DD HH24:MI:SS')
+																																												else 	to_timestamp(concat_ws(' ', sftpkj.tanggal::date, sftpkj.ist_mulai::time), 'YYYY-MM-DD HH24:MI:SS')
+																																										end
+																																									)
+																																								) as ist_mulai,
+																																								(
+																																									(
+																																										case 	when 	to_timestamp(concat_ws(' ', sftpkj.tanggal::date, sftpkj.ist_selesai::time), 'YYYY-MM-DD HH24:MI:SS')
+																																														<
+																																														to_timestamp(concat_ws(' ', sftpkj.tanggal::date, sftpkj.jam_msk::time), 'YYYY-MM-DD HH24:MI:SS')
+																																														then	to_timestamp(concat_ws(' ', (sftpkj.tanggal + interval '1 day')::date, sftpkj.ist_selesai::time), 'YYYY-MM-DD HH24:MI:SS')
+																																												else 	to_timestamp(concat_ws(' ', sftpkj.tanggal::date, sftpkj.ist_selesai::time), 'YYYY-MM-DD HH24:MI:SS')
+																																										end
+																																									)
+																																								) as ist_selesai
+																																					from 		\"Presensi\".tshiftpekerja as sftpkj
+																																								join 	hrd_khs.tpribadi as pri
+																																										on 	pri.noind=sftpkj.noind
+																																					where 		sftpkj.tanggal between '$tanggalAwalRekap' and '$tanggalAkhirRekap'
+																																								and pri.kode_status_kerja='T'
+																																					order by 	tanggal,
+																																								kodesie,
+																																								noind,
+																																								kd_shift
+																																				) as tshiftpekerja
+																																	where 		tshiftpekerja.lokasi_kerja like '%$lokasiKerja%'
+																																	order by 	tshiftpekerja.kodesie,
+																																				tshiftpekerja.noind,
+																																				tshiftpekerja.tanggal
+																																) as tshiftpekerja
+																													group by 	tanggal,
+																																noind,
+																																noind_baru,
+																																kodesie
+																													order by 	kodesie,
+																																noind,
+																																tanggal
+																												) as hasilpertanggalshift
+																									group by 	hasilpertanggalshift.noind,
+																												hasilpertanggalshift.kodesie
+																								) as hasilpernoind
+																					group by 	substring(hasilpernoind.kodesie, 1, 7)
+																				) as t
+																				on	t.kode_seksi=tseksi.kodesie
 											group by 	tseksi.kodesie,
 														tseksi.dept,
 														tseksi.bidang,
@@ -19248,10 +21206,11 @@
 														\"H\",
 														\"J\",
 														\"K-P\",
-														\"Q\"
+														\"Q\",
+														\"T\"
 											order by 	kode_seksi) as utama
 
-						join 
+						join
 
 						(
 						select 		tseksi.kodesie as kode_seksi,
@@ -19269,7 +21228,8 @@
 						coalesce(round((h.jam_kerja_seksi/3600)::numeric, 3), 0) as \"H\",
 						coalesce(round((j.jam_kerja_seksi/3600)::numeric, 3), 0) as \"J\",
 						coalesce(round((kp.jam_kerja_seksi/3600)::numeric, 3), 0) as \"K-P\",
-						coalesce(round((q.jam_kerja_seksi/3600)::numeric, 3), 0) as \"Q\"
+						coalesce(round((q.jam_kerja_seksi/3600)::numeric, 3), 0) as \"Q\",
+						coalesce(round((t.jam_kerja_seksi/3600)::numeric, 3), 0) as \"T\"
 						from (	select substring(tseksi.kodesie, 1, 7) as kodesie,
 																								rtrim(tseksi.dept) as dept,
 							rtrim(tseksi.bidang) as bidang,
@@ -19284,165 +21244,396 @@
 						                 sum (pkj.lembur) as jam_kerja_seksi
 						from
 
-						(select tdtp.*, (select	(coalesce(sum(tlembur.jml_lembur), 0) * 60)
+						(select tdtp.tanggal,
+												tdtp.noind,
+												tdtp.masuk,
+												tdtp.keluar,
+												tdtp.kd_ket,
+												tdtp.total_lembur,
+												case when (select count(*) from hrd_khs.tmutasi tmut where tmut.noind=tdtp.noind)> 0 then
+													(select case when tdtp.tanggal::date < tmut.tglberlaku then
+														kodesielm
+													else
+														kodesiebr
+													end
+											from hrd_khs.tmutasi tmut
+											where tmut.noind=tdtp.noind
+											and tmut.tglberlaku >= '$tanggalAwalRekap'
+											order by tglberlaku limit 1)
+											else
+												tdtp.kodesie
+											end as kodesie, (select	(coalesce(sum(tlembur.jml_lembur), 0) * 60)
 						from	\"Presensi\".tlembur as tlembur
 						                         join hrd_khs.tpribadi tpribadi on tpribadi.noind=tlembur.noind
 						where 	(tlembur.tanggal=tdtp.tanggal and tpribadi.lokasi_kerja like '%$lokasiKerja%' and tlembur.kd_lembur='004' and tlembur.noind like 'A%')
 								and 	tlembur.noind=tdtp.noind ) as lembur
 						from \"Presensi\".tdatapresensi tdtp where tdtp.tanggal between '$tanggalAwalRekap' and '$tanggalAkhirRekap') as pkj
 
-						group by substring(pkj.kodesie,1,7) 
+						group by substring(pkj.kodesie,1,7)
 						order by substring(pkj.kodesie,1,7) ) as a on a.kode_seksi=tseksi.kodesie
 
-						left join 
+						left join
 						(select substring(pkj.kodesie,1,7) as kode_seksi,
 						                 sum (pkj.lembur) as jam_kerja_seksi
 						from
 
-						(select tdtp.*, (select	(coalesce(sum(tlembur.jml_lembur), 0) * 60)
+						(select tdtp.tanggal,
+												tdtp.noind,
+												tdtp.masuk,
+												tdtp.keluar,
+												tdtp.kd_ket,
+												tdtp.total_lembur,
+												case when (select count(*) from hrd_khs.tmutasi tmut where tmut.noind=tdtp.noind)> 0 then
+													(select case when tdtp.tanggal::date < tmut.tglberlaku then
+														kodesielm
+													else
+														kodesiebr
+													end
+											from hrd_khs.tmutasi tmut
+											where tmut.noind=tdtp.noind
+											and tmut.tglberlaku >= '$tanggalAwalRekap'
+											order by tglberlaku limit 1)
+											else
+												tdtp.kodesie
+											end as kodesie, (select	(coalesce(sum(tlembur.jml_lembur), 0) * 60)
 						from	\"Presensi\".tlembur as tlembur
 									 join hrd_khs.tpribadi tpribadi on tpribadi.noind=tlembur.noind
 						where 	(tlembur.tanggal=tdtp.tanggal and tpribadi.lokasi_kerja like '%$lokasiKerja%' and tlembur.kd_lembur='004' and tlembur.noind like 'B%')
 									and 	tlembur.noind=tdtp.noind ) as lembur
 						from \"Presensi\".tdatapresensi tdtp where tdtp.tanggal between '$tanggalAwalRekap' and '$tanggalAkhirRekap') as pkj
 
-						group by substring(pkj.kodesie,1,7) 
+						group by substring(pkj.kodesie,1,7)
 						order by substring(pkj.kodesie,1,7) ) as b on b.kode_seksi=tseksi.kodesie
 
-						left join 
+						left join
 						(select substring(pkj.kodesie,1,7) as kode_seksi,
 						                 sum (pkj.lembur) as jam_kerja_seksi
 						from
 
-						(select tdtp.*, (select	(coalesce(sum(tlembur.jml_lembur), 0) * 60)
+						(select tdtp.tanggal,
+												tdtp.noind,
+												tdtp.masuk,
+												tdtp.keluar,
+												tdtp.kd_ket,
+												tdtp.total_lembur,
+												case when (select count(*) from hrd_khs.tmutasi tmut where tmut.noind=tdtp.noind)> 0 then
+													(select case when tdtp.tanggal::date < tmut.tglberlaku then
+														kodesielm
+													else
+														kodesiebr
+													end
+											from hrd_khs.tmutasi tmut
+											where tmut.noind=tdtp.noind
+											and tmut.tglberlaku >= '$tanggalAwalRekap'
+											order by tglberlaku limit 1)
+											else
+												tdtp.kodesie
+											end as kodesie, (select	(coalesce(sum(tlembur.jml_lembur), 0) * 60)
 						from	\"Presensi\".tlembur as tlembur
 									 join hrd_khs.tpribadi tpribadi on tpribadi.noind=tlembur.noind
 						where 	(tlembur.tanggal=tdtp.tanggal and tpribadi.lokasi_kerja like '%$lokasiKerja%' and tlembur.kd_lembur='004' and tlembur.noind like 'C%')
 									and 	tlembur.noind=tdtp.noind ) as lembur
 						from \"Presensi\".tdatapresensi tdtp where tdtp.tanggal between '$tanggalAwalRekap' and '$tanggalAkhirRekap') as pkj
 
-						group by substring(pkj.kodesie,1,7) 
+						group by substring(pkj.kodesie,1,7)
 						order by substring(pkj.kodesie,1,7) ) as c on c.kode_seksi=tseksi.kodesie
 
-						left join 
+						left join
 						(select substring(pkj.kodesie,1,7) as kode_seksi,
 						                 sum (pkj.lembur) as jam_kerja_seksi
 						from
 
-						(select tdtp.*, (select	(coalesce(sum(tlembur.jml_lembur), 0) * 60)
+						(select tdtp.tanggal,
+												tdtp.noind,
+												tdtp.masuk,
+												tdtp.keluar,
+												tdtp.kd_ket,
+												tdtp.total_lembur,
+												case when (select count(*) from hrd_khs.tmutasi tmut where tmut.noind=tdtp.noind)> 0 then
+													(select case when tdtp.tanggal::date < tmut.tglberlaku then
+														kodesielm
+													else
+														kodesiebr
+													end
+											from hrd_khs.tmutasi tmut
+											where tmut.noind=tdtp.noind
+											and tmut.tglberlaku >= '$tanggalAwalRekap'
+											order by tglberlaku limit 1)
+											else
+												tdtp.kodesie
+											end as kodesie, (select	(coalesce(sum(tlembur.jml_lembur), 0) * 60)
 						from	\"Presensi\".tlembur as tlembur
 									 join hrd_khs.tpribadi tpribadi on tpribadi.noind=tlembur.noind
 						where 	(tlembur.tanggal=tdtp.tanggal and tpribadi.lokasi_kerja like '%$lokasiKerja%' and tlembur.kd_lembur='004' and tlembur.noind like 'D%')
 									and 	tlembur.noind=tdtp.noind ) as lembur
 						from \"Presensi\".tdatapresensi tdtp where tdtp.tanggal between '$tanggalAwalRekap' and '$tanggalAkhirRekap') as pkj
 
-						group by substring(pkj.kodesie,1,7) 
+						group by substring(pkj.kodesie,1,7)
 						order by substring(pkj.kodesie,1,7) ) as d on d.kode_seksi=tseksi.kodesie
 
-						left join 
+						left join
 						(select substring(pkj.kodesie,1,7) as kode_seksi,
 						                 sum (pkj.lembur) as jam_kerja_seksi
 						from
 
-						(select tdtp.*, (select	(coalesce(sum(tlembur.jml_lembur), 0) * 60)
+						(select tdtp.tanggal,
+												tdtp.noind,
+												tdtp.masuk,
+												tdtp.keluar,
+												tdtp.kd_ket,
+												tdtp.total_lembur,
+												case when (select count(*) from hrd_khs.tmutasi tmut where tmut.noind=tdtp.noind)> 0 then
+													(select case when tdtp.tanggal::date < tmut.tglberlaku then
+														kodesielm
+													else
+														kodesiebr
+													end
+											from hrd_khs.tmutasi tmut
+											where tmut.noind=tdtp.noind
+											and tmut.tglberlaku >= '$tanggalAwalRekap'
+											order by tglberlaku limit 1)
+											else
+												tdtp.kodesie
+											end as kodesie, (select	(coalesce(sum(tlembur.jml_lembur), 0) * 60)
 						from	\"Presensi\".tlembur as tlembur
 									 join hrd_khs.tpribadi tpribadi on tpribadi.noind=tlembur.noind
 						where 	(tlembur.tanggal=tdtp.tanggal and tpribadi.lokasi_kerja like '%$lokasiKerja%' and tlembur.kd_lembur='004' and tlembur.noind like 'E%')
 									and 	tlembur.noind=tdtp.noind ) as lembur
 						from \"Presensi\".tdatapresensi tdtp where tdtp.tanggal between '$tanggalAwalRekap' and '$tanggalAkhirRekap') as pkj
 
-						group by substring(pkj.kodesie,1,7) 
+						group by substring(pkj.kodesie,1,7)
 						order by substring(pkj.kodesie,1,7) ) as e on e.kode_seksi=tseksi.kodesie
 
-						left join 
+						left join
 						(select substring(pkj.kodesie,1,7) as kode_seksi,
 						                 sum (pkj.lembur) as jam_kerja_seksi
 						from
 
-						(select tdtp.*, (select	(coalesce(sum(tlembur.jml_lembur), 0) * 60)
+						(select tdtp.tanggal,
+												tdtp.noind,
+												tdtp.masuk,
+												tdtp.keluar,
+												tdtp.kd_ket,
+												tdtp.total_lembur,
+												case when (select count(*) from hrd_khs.tmutasi tmut where tmut.noind=tdtp.noind)> 0 then
+													(select case when tdtp.tanggal::date < tmut.tglberlaku then
+														kodesielm
+													else
+														kodesiebr
+													end
+											from hrd_khs.tmutasi tmut
+											where tmut.noind=tdtp.noind
+											and tmut.tglberlaku >= '$tanggalAwalRekap'
+											order by tglberlaku limit 1)
+											else
+												tdtp.kodesie
+											end as kodesie, (select	(coalesce(sum(tlembur.jml_lembur), 0) * 60)
 							from	\"Presensi\".tlembur as tlembur
 									 join hrd_khs.tpribadi tpribadi on tpribadi.noind=tlembur.noind
 							where 	(tlembur.tanggal=tdtp.tanggal and tpribadi.lokasi_kerja like '%$lokasiKerja%' and tlembur.kd_lembur='004' and tlembur.noind like 'F%')
 									and 	tlembur.noind=tdtp.noind ) as lembur
 						from \"Presensi\".tdatapresensi tdtp where tdtp.tanggal between '$tanggalAwalRekap' and '$tanggalAkhirRekap') as pkj
 
-						group by substring(pkj.kodesie,1,7) 
+						group by substring(pkj.kodesie,1,7)
 						order by substring(pkj.kodesie,1,7) ) as f on f.kode_seksi=tseksi.kodesie
 
-						left join 
+						left join
 						(select substring(pkj.kodesie,1,7) as kode_seksi,
 						                 sum (pkj.lembur) as jam_kerja_seksi
 						from
 
-						(select tdtp.*, (select	(coalesce(sum(tlembur.jml_lembur), 0) * 60)
+						(select tdtp.tanggal,
+												tdtp.noind,
+												tdtp.masuk,
+												tdtp.keluar,
+												tdtp.kd_ket,
+												tdtp.total_lembur,
+												case when (select count(*) from hrd_khs.tmutasi tmut where tmut.noind=tdtp.noind)> 0 then
+													(select case when tdtp.tanggal::date < tmut.tglberlaku then
+														kodesielm
+													else
+														kodesiebr
+													end
+											from hrd_khs.tmutasi tmut
+											where tmut.noind=tdtp.noind
+											and tmut.tglberlaku >= '$tanggalAwalRekap'
+											order by tglberlaku limit 1)
+											else
+												tdtp.kodesie
+											end as kodesie, (select	(coalesce(sum(tlembur.jml_lembur), 0) * 60)
 								from	\"Presensi\".tlembur as tlembur
 									 join hrd_khs.tpribadi tpribadi on tpribadi.noind=tlembur.noind
 								where 	(tlembur.tanggal=tdtp.tanggal and tpribadi.lokasi_kerja like '%$lokasiKerja%' and tlembur.kd_lembur='004' and tlembur.noind like 'G%')
 										and 	tlembur.noind=tdtp.noind ) as lembur
 						from \"Presensi\".tdatapresensi tdtp where tdtp.tanggal between '$tanggalAwalRekap' and '$tanggalAkhirRekap') as pkj
 
-						group by substring(pkj.kodesie,1,7) 
+						group by substring(pkj.kodesie,1,7)
 						order by substring(pkj.kodesie,1,7) ) as g on g.kode_seksi=tseksi.kodesie
 
-						left join 
+						left join
 						(select substring(pkj.kodesie,1,7) as kode_seksi,
 						                 sum (pkj.lembur) as jam_kerja_seksi
 						from
 
-						(select tdtp.*, (select	(coalesce(sum(tlembur.jml_lembur), 0) * 60)
+						(select tdtp.tanggal,
+												tdtp.noind,
+												tdtp.masuk,
+												tdtp.keluar,
+												tdtp.kd_ket,
+												tdtp.total_lembur,
+												case when (select count(*) from hrd_khs.tmutasi tmut where tmut.noind=tdtp.noind)> 0 then
+													(select case when tdtp.tanggal::date < tmut.tglberlaku then
+														kodesielm
+													else
+														kodesiebr
+													end
+											from hrd_khs.tmutasi tmut
+											where tmut.noind=tdtp.noind
+											and tmut.tglberlaku >= '$tanggalAwalRekap'
+											order by tglberlaku limit 1)
+											else
+												tdtp.kodesie
+											end as kodesie, (select	(coalesce(sum(tlembur.jml_lembur), 0) * 60)
 									from	\"Presensi\".tlembur as tlembur
 									 join hrd_khs.tpribadi tpribadi on tpribadi.noind=tlembur.noind
 									where 	(tlembur.tanggal=tdtp.tanggal and tpribadi.lokasi_kerja like '%$lokasiKerja%' and tlembur.kd_lembur='004' and tlembur.noind like 'H%')
 										and 	tlembur.noind=tdtp.noind ) as lembur
 						from \"Presensi\".tdatapresensi tdtp where tdtp.tanggal between '$tanggalAwalRekap' and '$tanggalAkhirRekap') as pkj
 
-						group by substring(pkj.kodesie,1,7) 
+						group by substring(pkj.kodesie,1,7)
 						order by substring(pkj.kodesie,1,7) ) as h on h.kode_seksi=tseksi.kodesie
 
-						left join 
+						left join
 						(select substring(pkj.kodesie,1,7) as kode_seksi,
 						                 sum (pkj.lembur) as jam_kerja_seksi
 						from
 
-						(select tdtp.*, (select	(coalesce(sum(tlembur.jml_lembur), 0) * 60)
+						(select tdtp.tanggal,
+												tdtp.noind,
+												tdtp.masuk,
+												tdtp.keluar,
+												tdtp.kd_ket,
+												tdtp.total_lembur,
+												case when (select count(*) from hrd_khs.tmutasi tmut where tmut.noind=tdtp.noind)> 0 then
+													(select case when tdtp.tanggal::date < tmut.tglberlaku then
+														kodesielm
+													else
+														kodesiebr
+													end
+											from hrd_khs.tmutasi tmut
+											where tmut.noind=tdtp.noind
+											and tmut.tglberlaku >= '$tanggalAwalRekap'
+											order by tglberlaku limit 1)
+											else
+												tdtp.kodesie
+											end as kodesie, (select	(coalesce(sum(tlembur.jml_lembur), 0) * 60)
 						from	\"Presensi\".tlembur as tlembur
 									 join hrd_khs.tpribadi tpribadi on tpribadi.noind=tlembur.noind
 						where 	(tlembur.tanggal=tdtp.tanggal and tpribadi.lokasi_kerja like '%$lokasiKerja%' and tlembur.kd_lembur='004' and tlembur.noind like 'J%')
 									and 	tlembur.noind=tdtp.noind ) as lembur
 						from \"Presensi\".tdatapresensi tdtp where tdtp.tanggal between '$tanggalAwalRekap' and '$tanggalAkhirRekap') as pkj
 
-						group by substring(pkj.kodesie,1,7) 
+						group by substring(pkj.kodesie,1,7)
 						order by substring(pkj.kodesie,1,7) ) as j on j.kode_seksi=tseksi.kodesie
 
-						left join 
+						left join
 						(select substring(pkj.kodesie,1,7) as kode_seksi,
 						                 sum (pkj.lembur) as jam_kerja_seksi
 						from
 
-						(select tdtp.*, (select	(coalesce(sum(tlembur.jml_lembur), 0) * 60)
+						(select tdtp.tanggal,
+												tdtp.noind,
+												tdtp.masuk,
+												tdtp.keluar,
+												tdtp.kd_ket,
+												tdtp.total_lembur,
+												case when (select count(*) from hrd_khs.tmutasi tmut where tmut.noind=tdtp.noind)> 0 then
+													(select case when tdtp.tanggal::date < tmut.tglberlaku then
+														kodesielm
+													else
+														kodesiebr
+													end
+											from hrd_khs.tmutasi tmut
+											where tmut.noind=tdtp.noind
+											and tmut.tglberlaku >= '$tanggalAwalRekap'
+											order by tglberlaku limit 1)
+											else
+												tdtp.kodesie
+											end as kodesie, (select	(coalesce(sum(tlembur.jml_lembur), 0) * 60)
 						from	\"Presensi\".tlembur as tlembur
 									 join hrd_khs.tpribadi tpribadi on tpribadi.noind=tlembur.noind
 						where 	(tlembur.tanggal=tdtp.tanggal and tpribadi.lokasi_kerja like '%$lokasiKerja%' and tlembur.kd_lembur='004' and (tlembur.noind like 'K%' or tlembur.noind like 'P%'))
 								and 	tlembur.noind=tdtp.noind ) as lembur
 						from \"Presensi\".tdatapresensi tdtp where tdtp.tanggal between '$tanggalAwalRekap' and '$tanggalAkhirRekap') as pkj
 
-						group by substring(pkj.kodesie,1,7) 
+						group by substring(pkj.kodesie,1,7)
 						order by substring(pkj.kodesie,1,7) ) as kp on kp.kode_seksi=tseksi.kodesie
 
-						left join 
+						left join
 						(select substring(pkj.kodesie,1,7) as kode_seksi,
 						                 sum (pkj.lembur) as jam_kerja_seksi
 						from
 
-						(select tdtp.*, (select	(coalesce(sum(tlembur.jml_lembur), 0) * 60)
+						(select tdtp.tanggal,
+												tdtp.noind,
+												tdtp.masuk,
+												tdtp.keluar,
+												tdtp.kd_ket,
+												tdtp.total_lembur,
+												case when (select count(*) from hrd_khs.tmutasi tmut where tmut.noind=tdtp.noind)> 0 then
+													(select case when tdtp.tanggal::date < tmut.tglberlaku then
+														kodesielm
+													else
+														kodesiebr
+													end
+											from hrd_khs.tmutasi tmut
+											where tmut.noind=tdtp.noind
+											and tmut.tglberlaku >= '$tanggalAwalRekap'
+											order by tglberlaku limit 1)
+											else
+												tdtp.kodesie
+											end as kodesie, (select	(coalesce(sum(tlembur.jml_lembur), 0) * 60)
 							from	\"Presensi\".tlembur as tlembur
 							join hrd_khs.tpribadi tpribadi on tpribadi.noind=tlembur.noind
 							where 	(tlembur.tanggal=tdtp.tanggal and tpribadi.lokasi_kerja like '%$lokasiKerja%' and tlembur.kd_lembur='004' and tlembur.noind like 'Q%')
 									and 	tlembur.noind=tdtp.noind ) as lembur
 						from \"Presensi\".tdatapresensi tdtp where tdtp.tanggal between '$tanggalAwalRekap' and '$tanggalAkhirRekap') as pkj
 
-						group by substring(pkj.kodesie,1,7) 
+						group by substring(pkj.kodesie,1,7)
 						order by substring(pkj.kodesie,1,7) ) as q on q.kode_seksi=tseksi.kodesie
+
+						left join
+						(select substring(pkj.kodesie,1,7) as kode_seksi,
+						                 sum (pkj.lembur) as jam_kerja_seksi
+						from
+
+						(select tdtp.tanggal,
+												tdtp.noind,
+												tdtp.masuk,
+												tdtp.keluar,
+												tdtp.kd_ket,
+												tdtp.total_lembur,
+												case when (select count(*) from hrd_khs.tmutasi tmut where tmut.noind=tdtp.noind)> 0 then
+													(select case when tdtp.tanggal::date < tmut.tglberlaku then
+														kodesielm
+													else
+														kodesiebr
+													end
+											from hrd_khs.tmutasi tmut
+											where tmut.noind=tdtp.noind
+											and tmut.tglberlaku >= '$tanggalAwalRekap'
+											order by tglberlaku limit 1)
+											else
+												tdtp.kodesie
+											end as kodesie, (select	(coalesce(sum(tlembur.jml_lembur), 0) * 60)
+							from	\"Presensi\".tlembur as tlembur
+							join hrd_khs.tpribadi tpribadi on tpribadi.noind=tlembur.noind
+							where 	(tlembur.tanggal=tdtp.tanggal and tpribadi.lokasi_kerja like '%$lokasiKerja%' and tlembur.kd_lembur='004' and tlembur.noind like 'T%')
+									and 	tlembur.noind=tdtp.noind ) as lembur
+						from \"Presensi\".tdatapresensi tdtp where tdtp.tanggal between '$tanggalAwalRekap' and '$tanggalAkhirRekap') as pkj
+
+						group by substring(pkj.kodesie,1,7)
+						order by substring(pkj.kodesie,1,7) ) as t on t.kode_seksi=tseksi.kodesie
 
 						group by 	tseksi.kodesie,
 									tseksi.dept,
@@ -19459,7 +21650,8 @@
 									\"H\",
 									\"J\",
 									\"K-P\",
-									\"Q\"
+									\"Q\",
+									\"T\"
 						order by 	kode_seksi
 						) as libur on utama.kode_seksi=libur.kode_seksi";
 					}

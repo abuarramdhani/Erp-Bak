@@ -52,7 +52,7 @@
                                                         </tr>
 														<tr>
                                                             <td class="col-lg-5" style="border: 0"><strong>Keterangan</strong></td>
-                                                            <td style="border: 0"><?php echo $headerRow['keterangan']; ?></td>
+                                                            <td style="border: 0">: <?php echo $headerRow['keterangan']; ?></td>
                                                         </tr>
 													<?php endforeach; ?>
                                                     </table>

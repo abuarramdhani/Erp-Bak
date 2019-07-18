@@ -19,16 +19,19 @@ class M_kasiepembelian extends CI_Model {
     }
 
 	public function showListSubmittedForChecking($login){
+    $this->db->cache_on();
 		$erp_db = $this->load->database('oracle',true);
-		$sql = "SELECT distinct batch_number batch_number, to_date(last_admin_date) submited_date,
+		$sql = "SELECT distinct batch_number batch_number, MAX (to_date(last_admin_date)) submited_date,
                 last_finance_invoice_status, source
                 FROM khs_ap_monitoring_invoice 
-                WHERE (last_purchasing_invoice_status = 1
-                OR last_purchasing_invoice_status = 2)
+                WHERE (last_purchasing_invoice_status = 1 OR last_purchasing_invoice_status = 2)
                 AND LAST_FINANCE_INVOICE_STATUS=0
                 $login
+                GROUP BY batch_number, last_finance_invoice_status, source
                 ORDER BY submited_date";
 		$run = $erp_db->query($sql);
+    // echo $sql;
+    // exit();
 		return $run->result_array();
 	}
 
@@ -47,6 +50,7 @@ class M_kasiepembelian extends CI_Model {
       }
 
     public function showDetailPerBatch($batchNumber){
+        $this->db->cache_on();
         $oracle = $this->load->database('oracle',true);
         $sql = "SELECT ami.invoice_id invoice_id,
                          ami.vendor_name vendor_name,
@@ -188,6 +192,7 @@ class M_kasiepembelian extends CI_Model {
     }
 
     public function invoiceDetail($invoice_id){
+        $this->db->cache_on();
         $oracle = $this->load->database('oracle',true);
         $sql = "SELECT ami.invoice_number invoice_number,
                 ami.invoice_date invoice_date,
@@ -240,8 +245,18 @@ class M_kasiepembelian extends CI_Model {
     }
 
     public function showFinishBatch($login){
+        $this->db->cache_on();
         $erp_db = $this->load->database('oracle',true);
-        $sql = "SELECT DISTINCT a.batch_number, 
+        $sql = "SELECT to_char(tabel.submited_date, 'MONTH'),
+                tabel.batch_number,
+                tabel.finance_batch_number,
+                tabel.last_purchasing_invoice_status,
+                tabel.last_finance_invoice_status,
+                tabel.SOURCE,
+                tabel.submited_date,
+                tabel.jml_invoice
+                FROM 
+                (SELECT DISTINCT a.batch_number, 
                                 a.finance_batch_number, 
                                 a.last_purchasing_invoice_status, 
                                 a.last_finance_invoice_status,
@@ -258,13 +273,38 @@ class M_kasiepembelian extends CI_Model {
                 WHERE a.batch_number IS NOT NULL
                 AND a.last_finance_invoice_status = 1
                 AND (a.last_purchasing_invoice_status = 2 OR a.last_purchasing_invoice_status = 3)
-                $login
-                ORDER BY submited_date";
-        $run = $erp_db->query($sql);
-        return $run->result_array();
+                $login) tabel
+                WHERE 
+                to_char(tabel.submited_date, 'MONTH')=to_char(sysdate, 'MONTH')";
+                
+                $run = $erp_db->query($sql);
+                return $run->result_array();
+
+                // -------untuk menampilkan seluruh data -----
+                // $sql = "SELECT DISTINCT a.batch_number, 
+                //                         a.finance_batch_number, 
+                //                         a.last_purchasing_invoice_status, 
+                //                         a.last_finance_invoice_status,
+                //                         a.source,
+                //                         (SELECT DISTINCT to_date(d.action_date)
+                //                                     FROM khs_ap_invoice_action_detail d
+                //                                    WHERE d.invoice_id = a.invoice_id
+                //                                      AND d.finance_status = 1
+                //                                      AND d.purchasing_status = 2 AND rownum = 1) submited_date,
+                //                         (SELECT COUNT (*)
+                //                            FROM khs_ap_monitoring_invoice b
+                //                           WHERE b.batch_number = a.batch_number)jml_invoice
+                //         FROM khs_ap_monitoring_invoice a
+                //         WHERE a.batch_number IS NOT NULL
+                //         AND a.last_finance_invoice_status = 2
+                //         AND (a.last_purchasing_invoice_status = 2 OR a.last_purchasing_invoice_status = 3)
+                //         $login
+                //         ORDER BY submited_date desc";
+        
     }
 
     public function finish_detail($batchNumber){
+        $this->db->cache_on();
         $oracle = $this->load->database('oracle',true);
         $sql = "SELECT ami.invoice_id invoice_id,
                          ami.vendor_name vendor_name,
@@ -325,6 +365,7 @@ class M_kasiepembelian extends CI_Model {
 
     public function finish_detail_invoice($invoice_id)
     {
+        $this->db->cache_on();
         $erp_db = $this->load->database('oracle',true);
         $sql = "SELECT aipo.invoice_id invoice_id, 
                 invoice_number invoice_number,
@@ -373,6 +414,7 @@ class M_kasiepembelian extends CI_Model {
     }
 
      public function detailBatch($batch_number){
+        $this->db->cache_on();
         $oracle = $this->load->database('oracle',true);
         $sql = "SELECT distinct (SELECT COUNT (last_purchasing_invoice_status)
                       FROM khs_ap_monitoring_invoice b

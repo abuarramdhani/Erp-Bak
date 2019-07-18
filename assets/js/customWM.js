@@ -1,6 +1,6 @@
 //limbah B3
 
-$(function() { 
+$(function() {
 	$('.dataTable-limbah').DataTable( {
       dom: 'frtp',
     });
@@ -23,7 +23,7 @@ $(function() {
 		"autoclose": true,
 		"todayHiglight": true,
 		"format": 'dd M yyyy'
-  	});	
+  	});
 
   	$('#txtTanggalTransaksiHeader').datepicker({
 		"autoclose": true,
@@ -51,7 +51,7 @@ $(function() {
       "format":'dd MM yyyy'
     });
 
-  	$("#periode").daterangepicker({  
+  	$("#periode").daterangepicker({
       		"autoclose": true,
     		"todayHiglight": true,
     		locale: {
@@ -65,6 +65,40 @@ $(function() {
 	});
 
 	$('input[id="periode"]').on('cancel.daterangepicker', function(ev, picker) {
+		$(this).val('');
+	});
+
+$("#periode1").daterangepicker({
+      		"autoclose": true,
+    		"todayHiglight": true,
+    		locale: {
+    			cancelLabel: 'Clear'
+    		},
+    		autoUpdateInput: false,
+    });
+
+    $('input[id="periode1"]').on('apply.daterangepicker', function(ev, picker) {
+		$(this).val(picker.startDate.format('DD/MM/YYYY') + ' - ' + picker.endDate.format('DD/MM/YYYY'));
+	});
+
+	$('input[id="periode1"]').on('cancel.daterangepicker', function(ev, picker) {
+		$(this).val('');
+	});
+
+  	$("#periode2").daterangepicker({
+      		"autoclose": true,
+    		"todayHiglight": true,
+    		locale: {
+    			cancelLabel: 'Clear'
+    		},
+    		autoUpdateInput: false,
+    });
+
+    $('input[id="periode2"]').on('apply.daterangepicker', function(ev, picker) {
+		$(this).val(picker.startDate.format('DD/MM/YYYY') + ' - ' + picker.endDate.format('DD/MM/YYYY'));
+	});
+
+	$('input[id="periode2"]').on('cancel.daterangepicker', function(ev, picker) {
 		$(this).val('');
 	});
 
@@ -121,7 +155,7 @@ $('#cmbJenisLimbahKeluarHeader').change(function(){
 //date interval for maks penyimpanan
 $(document).on('change', '#txtTanggalTransaksiHeader', function(){
   var tgl = $(this).val();
-  
+
   if (tgl) {
     var date = new Date(tgl);
     var newdate = new Date(date);
@@ -292,7 +326,7 @@ $(document).on('click','#btnCloseSimple',function(e){
 //       }), 100 ;
 // });
 
-  $('#ProsesSimpleExport').submit(function(e){ 
+  $('#ProsesSimpleExport').submit(function(e){
     e.preventDefault();
     this.submit()
     setTimeout(function(){
@@ -300,7 +334,7 @@ $(document).on('click','#btnCloseSimple',function(e){
     }), 500 ;
   });
 
-  
+
 
   $(document).on('ready',function(){
     if (typeof idJenisLimbahSimpleDetail === 'undefined') {
@@ -332,10 +366,14 @@ $(document).on('click','#btnCloseSimple',function(e){
   });
 
   $(document).ready(function(){
+		$('.dataTable-limbahKelola').DataTable({
+			"scrollX": false,
+		});
+
     // $('.dataTable-limbahKelola').DataTable();
     $('.dataTable-limbahKelola tfoot th').each(function(){
       var title = $(this).text();
-      $(this).html('<input type="text" placeholder="search '+title+'"></input>');
+      $(this).html('<input type="text" placeholder="search '+title+'" style="width:100%;"></input>');
     });
       var tableLimbahKelola = $('.dataTable-limbahKelola').DataTable();
       tableLimbahKelola.columns().every(function(){
@@ -346,6 +384,6 @@ $(document).on('click','#btnCloseSimple',function(e){
               .draw();
         });
       });
-    
-   
+
+
   });

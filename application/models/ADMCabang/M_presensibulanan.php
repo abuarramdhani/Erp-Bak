@@ -1,11 +1,11 @@
 <?php
 Defined('BASEPATH') or exit('No Direct Script Access Allowed');
 /**
- * 
+ *
  */
 class M_presensibulanan extends Ci_Model
 {
-	
+
 	function __construct()
 	{
 		parent::__construct();
@@ -21,56 +21,63 @@ class M_presensibulanan extends Ci_Model
 
 	public function getPekerjaByKodesie($kd){
 	    $noind = $this->session->user;
-	    
+
 	    if ($noind == 'B0380') { // ada di ticket
-			 $sql = "select a.noind,a.nama, b.seksi 
+			 $sql = "select a.noind,a.nama, b.seksi
 				from hrd_khs.tpribadi a
 				left join hrd_khs.tseksi b on a.kodesie=b.kodesie
 				where (left(a.kodesie,7) = left('$kd',7) or a.noind in ('J1171','J7004','L8001'))
 				and a.keluar = false
-				order by a.kodesie,a.noind;";    
+				order by a.kodesie,a.noind;";
 		}elseif ($noind == 'B0370') { //ada di ticket
-			 $sql = "select a.noind,a.nama, b.seksi 
+			 $sql = "select a.noind,a.nama, b.seksi
 				from hrd_khs.tpribadi a
 				left join hrd_khs.tseksi b on a.kodesie=b.kodesie
 				where (left(a.kodesie,7) = left('$kd',7) or a.noind in ('D1535','P0426'))
 				and a.keluar = false
-				order by a.kodesie,a.noind;";    
+				order by a.kodesie,a.noind;";
 		}elseif ($noind == 'H7726') { //Order #972784 (PENAMBAHAN AKSES BUKA PRESENSI DI PROGRAM ERP)
-	    	 $sql = "select a.noind,a.nama, b.seksi 
+	    	 $sql = "select a.noind,a.nama, b.seksi
 				from hrd_khs.tpribadi a
 				left join hrd_khs.tseksi b on a.kodesie=b.kodesie
 	    		where left(a.kodesie,5) = left('$kd',5)
 	    		and a.keluar = false
-				order by a.kodesie,a.noind;";    
+				order by a.kodesie,a.noind;";
+		}elseif ($noind == 'B0717') { //Order ##954281 (PERMOHONAN HAK AKSES DI PROGRAM ERP)
+	    	 $sql = "select a.noind,a.nama, b.seksi
+				from hrd_khs.tpribadi a
+				left join hrd_khs.tseksi b on a.kodesie=b.kodesie
+	    		where left(a.kodesie,7) in ('3070103','3070104')
+	    		and a.keluar = false
+				order by a.kodesie,a.noind;";
 	    }elseif ($noind == 'J1378') { //Order #112817 (Pembuatan Login ERP)
-	    	 $sql = "select a.noind,a.nama, b.seksi 
+	    	 $sql = "select a.noind,a.nama, b.seksi
 				from hrd_khs.tpribadi a
 				left join hrd_khs.tseksi b on a.kodesie=b.kodesie
 	    		where left(a.kodesie,5) in ('10101','10102')
 	    		and a.keluar = false
-				order by a.kodesie,a.noind;";    
+				order by a.kodesie,a.noind;";
 	    }else{
 			    if('306030'==substr($kd,0,6)) //ada diticket
 			    {
-			    $sql = "select a.noind,a.nama, b.seksi 
+			    $sql = "select a.noind,a.nama, b.seksi
 				from hrd_khs.tpribadi a
 				left join hrd_khs.tseksi b on a.kodesie=b.kodesie
-						where left(a.kodesie,6) = left('$kd',6) 
+						where left(a.kodesie,6) = left('$kd',6)
 						and a.keluar = false
-						order by a.kodesie,a.noind;";    
+						order by a.kodesie,a.noind;";
 			    }
 			    else
 			    {
-				$sql = "select a.noind,a.nama, b.seksi 
+				$sql = "select a.noind,a.nama, b.seksi
 				from hrd_khs.tpribadi a
 				left join hrd_khs.tseksi b on a.kodesie=b.kodesie
-						where left(a.kodesie,7) = left('$kd',7) 
+						where left(a.kodesie,7) = left('$kd',7)
 						and a.keluar = false
 						order by a.kodesie,a.noind;";
 			    }
 		}
-		
+
 		$result = $this->personalia->query($sql);
 		return $result->result_array();
 	}
@@ -78,35 +85,35 @@ class M_presensibulanan extends Ci_Model
 	public function getPresensiByNoind($noind,$tgl){
 		$sql = "select 	case when kd_ket in ('PKJ','PLB') then
 							case when 	(
-											select count(*) 
+											select count(*)
 											from \"Presensi\".tdatapresensi
-											where noind = '$noind' 
-											and tanggal = '$tgl' 
+											where noind = '$noind'
+											and tanggal = '$tgl'
 											and kd_ket not in ('PKJ','PLB')
 										) > 0 then
 								(	select kd_ket
 									from \"Presensi\".tdatapresensi
-									where noind = '$noind' 
-									and tanggal = '$tgl' 
-									and kd_ket not in ('PKJ','PLB') limit 1 
+									where noind = '$noind'
+									and tanggal = '$tgl'
+									and kd_ket not in ('PKJ','PLB') limit 1
 								)
 							else
 							'/'
 							end
-						else 
+						else
 							kd_ket
 						end
 				from \"Presensi\".tdatapresensi tp
 				inner join \"Presensi\".tshiftpekerja ts
 				on ts.noind = tp.noind and ts.tanggal = tp.tanggal
-				where tp.noind = '$noind' 
+				where tp.noind = '$noind'
 				and tp.tanggal = '$tgl'
 				union
 				select kd_ket
 				from \"Presensi\".tdatatim tt
 				inner join \"Presensi\".tshiftpekerja ts
 				on ts.noind = tt.noind and ts.tanggal = tt.tanggal
-				where tt.noind = '$noind' 
+				where tt.noind = '$noind'
 				and tt.tanggal = '$tgl'";
 		$result = $this->personalia->query($sql);
 		return $result->result_array();
@@ -123,26 +130,28 @@ class M_presensibulanan extends Ci_Model
 	}
 
 	public function rekapTIMS($tgl, $kd)
-	    {	
+	    {
 	    	$tanggal = explode(" - ", $tgl);
 			$tgl1 = $tanggal[0];
 			$tgl2 = $tanggal[1];
 			$noind = $this->session->user;
-			
+
 			$param = "";
 			// left(pri.kodesie,7) = left('$kodesie',7)
 			if ($noind == 'B0380') { // ada di ticket
-			 $param = "(left(pri.kodesie,7) = left('$kd',7) or pri.noind in ('J1171','J7004','L8001'))";    
+			 $param = "(left(pri.kodesie,7) = left('$kd',7) or pri.noind in ('J1171','J7004','L8001'))";
 		}elseif ($noind == 'B0370') { //ada di ticket
-			 $param = "(left(pri.kodesie,7) = left('$kd',7) or pri.noind in ('D1535','P0426'))";    
+			 $param = "(left(pri.kodesie,7) = left('$kd',7) or pri.noind in ('D1535','P0426'))";
 		}elseif ($noind == 'H7726') { //Order #972784 (PENAMBAHAN AKSES BUKA PRESENSI DI PROGRAM ERP)
-	    	 $param = "left(pri.kodesie,5) = left('$kd',5)";    
+	    	 $param = "left(pri.kodesie,5) = left('$kd',5)";
+		}elseif ($noind == 'B0717') { //Order ##954281 (PERMOHONAN HAK AKSES DI PROGRAM ERP)
+	    	 $param = "left(pri.kodesie,7) in ('3070103','3070104')";
 	    }elseif ($noind == 'J1378') { //Order #112817 (Pembuatan Login ERP)
-	    	 $param = "left(pri.kodesie,5) in ('10101','10102')";    
+	    	 $param = "left(pri.kodesie,5) in ('10101','10102')";
 	    }else{
 			    if('306030'==substr($kd,0,6)) //ada diticket
 			    {
-			    $param = "left(pri.kodesie,6) = left('$kd',6)";    
+			    $param = "left(pri.kodesie,6) = left('$kd',6)";
 			    }
 			    else
 			    {
@@ -434,7 +443,7 @@ class M_presensibulanan extends Ci_Model
 																									from 		\"Surat\".v_surat_tsp_rekap as sp
 																									where 		rtrim(sp.sp_sebelum)=tabelmaster.no_surat_lengkap
 																												and 	sp.tanggal_awal_berlaku < param.tgl2
-																								)>0	
+																								)>0
 																								then 	(
 																											case	when 	(
 																																select 		count(*)
@@ -468,7 +477,7 @@ class M_presensibulanan extends Ci_Model
 																									from 		\"Surat\".v_surat_tsp_rekap as sp
 																									where 		rtrim(sp.sp_sebelum)=tabelmaster.no_surat_lengkap
 																												and 	sp.tanggal_awal_berlaku < param.tgl2
-																								)>0	
+																								)>0
 																								then 	(
 																											case	when 	(
 																																select 		count(*)

@@ -8,7 +8,7 @@
 			<td class="text-center">Nama Vendor</td>
 			<td class="text-center">Tanggal LPPB</td>
 			<td class="text-center">Nomor PO</td>
-			<td class="text-center">Gudang</td>
+			<td class="text-center">Batch Number</td>
 			<td class="text-center">Gudang Input</td>
 			<td class="text-center">Gudang Kirim</td>
 			<td class="text-center">Akuntansi Terima</td>
@@ -23,7 +23,7 @@
 				<?php echo $no ?>
 			</td> 
 			<td>
-				<a class="btn btn-primary btn-xs" href="<?php echo base_url('TrackingLppb/Tracking/detail/'.$i['BATCH_DETAIL_ID'])?>">
+				<a class="btn btn-primary" href="<?php echo base_url('TrackingLppb/Tracking/detail/'.$i['BATCH_DETAIL_ID'])?>" target="_blank">
 					Detail
 				</a>
 			</td>

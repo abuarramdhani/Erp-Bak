@@ -1,13 +1,18 @@
 $("#group_add").click(function(e){
   var d = new Date();
   var n = d.getDate();
-  if (n > 30) {
-    alert('Anda Terlambat Order');
-    // Swal.fire(
-    //   'Error',
-    //   'Anda Terlambat Order!',
-    //   'error',
-    //   )
+  if (n > 40) {
+    // alert('Anda Terlambat Order');
+    Swal.fire({
+      type: 'error',
+      title: 'Anda Terlambat Order!',
+      text: 'Order dapat Dilakukan di Tanggal 1 - 10',
+      animation: false,
+          // showCancelButton: true,
+          customClass: {
+            popup: 'animated tada'
+          }
+        });
   }else{
     e.preventDefault();
     $('.apd-select2').last().select2("destroy");
@@ -60,6 +65,57 @@ $(document).on('click', '.group_rem', function(e){
   }
 });
 
+$("#group_add2").click(function(e){
+  var d = new Date();
+  var n = d.getDate();
+  if (n > 300) {
+    alert('Anda Terlambat Order');
+    // Swal.fire(
+    //   'Error',
+    //   'Anda Terlambat Order!',
+    //   'error',
+    //   )
+  }else{
+    e.preventDefault();
+    $('.apd-select2').last().select2("destroy");
+    $('.multiinput').last().clone().appendTo('#tb_InputKebutuhanAPD tbody');
+    $("tr:last .form-control").val("").end();
+  // var idsekarang = Number($('tr:last input#txtKodeItem').attr('data-id'));
+  var nomorr = Number($('#tb_InputKebutuhanAPD tr:last').find('input#txtKodeItem').attr('data-id'));
+  // var tez = $('tr:last input#txtKodeItem').attr('data-id');
+
+  nomorr = nomorr+1;
+  // alert(nomorr);
+  // alert(tez);
+  $('#tb_InputKebutuhanAPD tr:last td#nomor').html(nomorr);
+  $('#tb_InputKebutuhanAPD tr:last input#txtKodeItem').attr('data-id', nomorr);
+  $('.apd-select2').select2({
+    ajax:
+    {
+      url: baseurl+'P2K3_V2/Order/getItem',
+      dataType: 'json',
+      type: 'get',
+      data: function (params) {
+        return {s: params.term};
+      },
+      processResults: function (data) {
+        return {
+          results: $.map(data, function (item) {
+            return {
+              id: item.kode_item,
+              text: item.item,
+            }
+          })
+        };
+      },
+      cache: true
+    },
+    minimumInputLength: 2,
+    placeholder: 'Select Item',
+    allowClear: true,
+  });
+}
+});
 
 $(function()
 {
@@ -409,7 +465,7 @@ $(document).ready(function() {
       $('.modal-title').text('Anda Sudah Order!');
       $('#p2k3_mb').text('Order hanya dapat dilakukan sekali dalam satu periode!');
       $('#p2k3_modal').modal('show');
-    }else if (n > 100) {
+    }else if (n > 10) {
       // Swal.fire({
       //   type: 'error',
       //   title: 'Anda Terlambat Order!',
@@ -431,7 +487,7 @@ $(document).ready(function() {
   $('#pemakai_2s').select2({
     ajax:
     {
-      url: baseurl+'/P2K3_V2/Order/searchOracle',
+      url: baseurl+'P2K3_V2/Order/searchOracle',
       dataType: 'json',
       type: 'get',
       data: function (params) {
@@ -461,7 +517,7 @@ $(document).ready(function() {
     $.ajax({
       type:'POST',
       data:{pemakai_2:value},
-      url:baseurl+"/P2K3_V2/Order/pemakai_2",
+      url:baseurl+"P2K3_V2/Order/pemakai_2",
       success:function(result)
       { 
         a = result.split('|');
@@ -481,7 +537,7 @@ $(document).ready(function() {
     $.ajax({
       type:'POST',
       data:{lokasi_id:value},
-      url:baseurl+"/P2K3_V2/Order/gudang",
+      url:baseurl+"P2K3_V2/Order/gudang",
       success:function(result)
       {
         $('#surat-loading').attr('hidden', true);
@@ -507,7 +563,7 @@ $(document).ready(function() {
     $.ajax({
       type:'POST',
       data:{gudang_id:value},
-      url:baseurl+"/P2K3_V2/Order/lokator",
+      url:baseurl+"P2K3_V2/Order/lokator",
       success:function(result)
       {
         $('#surat-loading').attr('hidden', true);
@@ -646,4 +702,102 @@ function format ( d ) {
         return false;
       }
     });
+
+    $('.et_add_email').click(function(){
+      Swal.fire({
+        title: 'Input email address',
+        input: 'email',
+        allowOutsideClick: false,
+        allowEscapeKey: false,
+        showCancelButton: true,
+        inputPlaceholder: 'Enter your email address'
+      }).then(function(result) {
+        if (result.value) {
+         $('#surat-loading').attr('hidden', false);
+          $.ajax({
+            type: 'POST',
+            url: baseurl+'p2k3adm_V2/Admin/addEmail',
+            data: {email:result.value},
+            success: function(response){
+              location.reload();
+            }
+          });
+        }
+      });
+    });
+
+    $('.et_edit_email').click(function(){
+      var em = $(this).closest('tr').find('td.et_em').text();
+      var id = $(this).closest('tr').find('input').val();
+      Swal.fire({
+        title: 'Input email address',
+        input: 'email',
+        allowOutsideClick: false,
+        allowEscapeKey: false,
+        showCancelButton: true,
+        inputValue: em,
+        inputPlaceholder: 'Enter your email address'
+      }).then(function(result) {
+        if (result.value) {
+         $('#surat-loading').attr('hidden', false);
+          $.ajax({
+            type: 'POST',
+            url: baseurl+'p2k3adm_V2/Admin/editEmail',
+            data: {email:result.value, id:id},
+            success: function(response){
+              location.reload();
+            }
+          });
+        }
+      });
+    });
+
+    $('.et_del_email').click(function(){
+      var em = $(this).closest('tr').find('td.et_em').text();
+      var id = $(this).closest('tr').find('input').val();
+      Swal.fire({
+        allowOutsideClick: false,
+        allowEscapeKey: false,
+        showCancelButton: true,
+        title: em,
+        text: "Apa anda yakin ingin Menghapus Email Ini?",
+        type: 'warning',
+        focusCancel: true
+      }).then(function(result) {
+        if (result.value) {
+         $('#surat-loading').attr('hidden', false);
+          $.ajax({
+            type: 'POST',
+            url: baseurl+'p2k3adm_V2/Admin/hapusEmail',
+            data: {id:id},
+            success: function(response){
+              location.reload();
+            }
+          });
+        }
+      });
+    });
+
   });
+    function p2k3_val(){
+      var max = $('#pw2k3_maxpkj').val();
+      var staf = $("input[name='staffJumlah']").val();
+      var values = $("input[name='pkjJumlah\\[\\]']")
+              .map(function(){return $(this).val();}).get();
+      var jumlah = Number(staf);
+
+      for (var i = 0; i < values.length; i++) {
+        jumlah += Number(values[i]);
+      }
+      // alert(jumlah);
+      if (jumlah > Number(max)) {
+        Swal.fire({
+          type: 'error',
+          title: 'Jumlah Pekerja Melebihi Batas',
+          text: 'Maksimal Jumlah Pekerja adalah '+max,
+        });
+        return false;
+      }else{
+        return true;
+      }
+    }

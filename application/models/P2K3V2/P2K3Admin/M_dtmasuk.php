@@ -78,7 +78,7 @@ class M_Dtmasuk extends CI_Model
 
     public function getListAprove($ks, $baru)
     {
-    	$ks = substr($ks, 0,8);
+    	$ks = substr($ks, 0,7);
         // $sql = "select ks.id, ks.kode_item, ks.jml_item, km.item from k3.k3n_standar_kebutuhan ks
         // left join k3.k3_master_item km on km.kode_item = ks.kode_item
         // where status = '3' and ks.kodesie like '$ks%' and tgl_approve_tim = '$baru' order by tgl_input desc";
@@ -162,7 +162,44 @@ class M_Dtmasuk extends CI_Model
 
     public function listtobon($ks, $pr)
     {
-        $ks = substr($ks, 0,8);
+        $ks = substr($ks, 0,7);
+        // $sql = "select
+        //             mon.periode ,
+        //             mon.item_kode ,
+        //             mon.item ,
+        //             sum(to_number(mon.jml_kebutuhan, '999G999D9S')) jml_kebutuhan ,
+        //             sum(mon.ttl_bon) ttl_bon ,
+        //             sum(mon.sisa_saldo) sisa_saldo
+        //         from
+        //             (
+        //                 select kh.*,
+        //                 km.item,
+        //                 coalesce(bon.ttl_bon, 0) ttl_bon,
+        //                 to_number(kh.jml_kebutuhan, '999G999D9S')-coalesce(bon.ttl_bon, 0) sisa_saldo
+        //             from
+        //                 k3.k3_master_item km,
+        //                 k3.k3n_hitung kh
+        //             left join (
+        //                 select
+        //                     kb.periode,
+        //                     kb.item_code,
+        //                     sum(to_number(kb.jml_bon, '999G999D9S')) ttl_bon
+        //                 from
+        //                     k3.k3n_bon kb
+        //                 where
+        //                     kb.periode = '$pr'
+        //                 group by
+        //                     kb.periode,
+        //                     kb.item_code) bon on
+        //                 kh.item_kode = bon.item_code
+        //             where
+        //                 km.kode_item = kh.item_kode
+        //                 and kh.periode = '$pr'
+        //                 and kh.kodesie like '$ks%') mon
+        //         group by
+        //             mon.periode ,
+        //             mon.item_kode ,
+        //             mon.item";
         $sql = "select
                     a.*,
                     b.jml_pekerja,
@@ -202,7 +239,7 @@ class M_Dtmasuk extends CI_Model
                 left join (
                         select kb.periode,
                         kb.item_code,
-                        sum(to_number(kb.jml_bon, '99G999D9S')) ttl_bon
+                        sum(to_number(kb.jml_bon, '999G999D9S')) ttl_bon
                     from
                         k3.k3n_bon kb
                     where
@@ -227,6 +264,51 @@ class M_Dtmasuk extends CI_Model
                         and periode = '$pr') b
                 order by
                     1";
+                // echo $sql;exit();
+        $query = $this->erp->query($sql);
+        return $query->result_array();
+    }
+
+     public function listtobon2($ks, $pr)
+    {
+        $ks = substr($ks, 0,7);
+        $sql = "select
+                    mon.periode ,
+                    mon.item_kode ,
+                    mon.item ,
+                    sum(to_number(mon.jml_kebutuhan, '999G999D9S')) jml_kebutuhan ,
+                    sum(mon.ttl_bon) ttl_bon ,
+                    sum(mon.sisa_saldo) sisa_saldo
+                from
+                    (
+                        select kh.*,
+                        km.item,
+                        coalesce(bon.ttl_bon, 0) ttl_bon,
+                        to_number(kh.jml_kebutuhan, '999G999D9S')-coalesce(bon.ttl_bon, 0) sisa_saldo
+                    from
+                        k3.k3_master_item km,
+                        k3.k3n_hitung kh
+                    left join (
+                        select
+                            kb.periode,
+                            kb.item_code,
+                            sum(to_number(kb.jml_bon, '999G999D9S')) ttl_bon
+                        from
+                            k3.k3n_bon kb
+                        where
+                            kb.periode = '$pr'
+                        group by
+                            kb.periode,
+                            kb.item_code) bon on
+                        kh.item_kode = bon.item_code
+                    where
+                        km.kode_item = kh.item_kode
+                        and kh.periode = '$pr'
+                        and kh.kodesie like '$ks%') mon
+                group by
+                    mon.periode ,
+                    mon.item_kode ,
+                    mon.item";
                 // echo $sql;exit();
         $query = $this->erp->query($sql);
         return $query->result_array();
@@ -282,15 +364,16 @@ class M_Dtmasuk extends CI_Model
 
     public function toHitung($pr)
     {
-        $sql = "SELECT kh.periode, km.item, kh.item_kode, sum(to_number(kh.jml_kebutuhan,'99G999D9S')) ttl_kebutuhan, coalesce(kb.ttl_bon, '0')
+        $sql = "SELECT kh.periode, km.item, kh.item_kode, sum(to_number(kh.jml_kebutuhan,'999G999D9S')) ttl_kebutuhan, coalesce(kb.ttl_bon, '0')
                 ttl_bon
-                FROM k3.k3n_hitung kh left join (select periode, item_code, sum(to_number(jml_bon,'99G999D9S')) ttl_bon
+                FROM k3.k3n_hitung kh left join (select periode, item_code, sum(to_number(jml_bon,'999G999D9S')) ttl_bon
                 from k3.k3n_bon
                 group by item_code, periode) kb on kh.item_kode = kb.item_code and kh.periode = kb.periode
                 left join k3.k3_master_item km on km.kode_item = kh.item_kode 
                 where kh.periode = '$pr'
                 group by kh.periode, kh.item_kode, kb.ttl_bon, km.item
                 order by 2";
+                // echo $sql;exit();
         $query = $this->erp->query($sql);
         return $query->result_array();
     }
@@ -384,6 +467,42 @@ class M_Dtmasuk extends CI_Model
                     // echo $sql;exit();
         $query = $this->erp->query($sql);
         return $query->result_array();
+    }
+
+    public function getEmail()
+    {
+        $sql = "select * from k3.k3n_email order by email asc";
+        $query = $this->erp->query($sql);
+        return $query->result_array();
+    }
+
+    public function addEmail($email)
+    {
+        $sql = "insert into k3.k3n_email (email) values ('$email');";
+        $query = $this->erp->query($sql);
+        return true;
+    }
+
+    public function editEmail($id,$email)
+    {
+        $sql = "update k3.k3n_email set email = '$email' where id = '$id';";
+        $query = $this->erp->query($sql);
+        return true;
+    }
+
+    public function hapusEmail($id)
+    {
+        $sql = "delete from k3.k3n_email where id = '$id';";
+        $query = $this->erp->query($sql);
+        return true;
+    }
+
+    public function updateRiwayat($id, $jmlUmum, $staffJumlah,$pkj)
+    {
+        $sql = "update k3.k3n_standar_kebutuhan set jml_item = '$pkj', jml_kebutuhan_umum = '$jmlUmum', jml_kebutuhan_staff = '$staffJumlah' where id = '$id';";
+        // echo $sql;exit();
+        $query = $this->erp->query($sql);
+        return true;
     }
 
 }

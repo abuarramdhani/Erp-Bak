@@ -5,6 +5,7 @@ class C_Submit extends CI_Controller
 	function __construct()
 		{
 			parent::__construct();
+			date_default_timezone_set('Asia/Jakarta');
 			$this->load->helper('form');
 	        $this->load->helper('url');
 	        $this->load->helper('html');
@@ -389,6 +390,9 @@ class C_Submit extends CI_Controller
 
 				$data['kaizen'][0]['komponen'] = $komponen;
 			}
+
+		
+		$data['kaizen_id'] =$this->M_submit->getKaizen($id, FALSE);
 		$data['section_user'] = $this->M_approvalkaizen->getSectAll($data['kaizen'][0]['noinduk']);
 		$data['set_approve'] = $this->M_log->ShowLogByTitle($id,'(Set Approver)');
 		$getAllApprover = $this->M_approvalkaizen->getApprover($data['kaizen'][0]['kaizen_id'],FALSE);
@@ -437,6 +441,8 @@ class C_Submit extends CI_Controller
 		$pencetus = ucwords($pencetus);
 		$pencetus = str_replace(' ', '_', $pencetus);
 		$filename = 'Kaizen-'.$pencetus.'-'.$data['kaizen'][0]['judul'].'.pdf';
+		$today = date('d-M-Y H:i:s');
+		$kaizen_id = $data['kaizen_id'][0]['kaizen_id'];
 
 		$data['title'] = 'Update Kaizen';
 		$data['breadcrumb'] = 'Kaizen';
@@ -446,6 +452,13 @@ class C_Submit extends CI_Controller
 		$stylesheet = file_get_contents(base_url('assets/css/customSI.css'));
 		$stylesheet1 = file_get_contents(base_url('assets/plugins/bootstrap/3.3.7/css/bootstrap.min.css'));
 		$html = $this->load->view('SystemIntegration/MainMenu/V_ExportPdf', $data, true);
+		$pdf->setHTMLFooter('
+				<table width="100%">
+					<tr>
+						<td style="font-size: 12px ; padding: 2px">Halaman ini di cetak melalui QuickERP - Kaizen Generator, Pada tanggal: '.$today.' ID Kaizen : '.$kaizen_id .'</td>
+					</tr>
+				</table>
+			');
 		$pdf->SetTitle($filename);
 		$pdf->WriteHTML($stylesheet, 1);
 		$pdf->WriteHTML($stylesheet1, 1);

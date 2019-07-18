@@ -105,8 +105,9 @@
             var ob = $(this).find('input.p2k3_ob').val();
             var keb = $(this).find('input.p2k3_kebutuhan').val();
             var hit = (Number(keb) * 1.1) + Number(ob) - 0 - 0;
-            $(this).find('input.p2k3_ijpp').val(hit.toFixed(2));
-            $(this).find('p.p2k3_pjpp').text(hit.toFixed(2));
+            var up = Math.ceil(hit);
+            $(this).find('input.p2k3_ijpp').val(up);
+            $(this).find('p.p2k3_pjpp').text(up);
         })
         var table_p2k3 = $('.p2k3_perhitungan').DataTable( {
             "paging":   false,
@@ -139,10 +140,10 @@
             if (Number(cal1) < 0) {
                 cal1 = 0;
             }else{
-
+                cal1 = Math.ceil(cal1);
             }
-            $(this).closest('tr').find('input.p2k3_ijpp').val(cal1.toFixed(2));
-            $(this).closest('tr').find('p.p2k3_pjpp').text(cal1.toFixed(2));
+            $(this).closest('tr').find('input.p2k3_ijpp').val(cal1);
+            $(this).closest('tr').find('p.p2k3_pjpp').text(cal1);
             $(this).closest('tr').find('p.p2k3_pstok').text($(this).val());
             table_p2k3.cells().invalidate('dom');
         });
@@ -155,10 +156,10 @@
             if (Number(cal1) < 0) {
                 cal1 = 0;
             }else{
-                
+                cal1 = Math.ceil(cal1);
             }
-            $(this).closest('tr').find('input.p2k3_ijpp').val(cal1.toFixed(2));
-            $(this).closest('tr').find('p.p2k3_pjpp').text(cal1.toFixed(2));
+            $(this).closest('tr').find('input.p2k3_ijpp').val(cal1);
+            $(this).closest('tr').find('p.p2k3_pjpp').text(cal1);
             $(this).closest('tr').find('p.p2k3_popp').text($(this).val());
             table_p2k3.cells().invalidate('dom');
         });

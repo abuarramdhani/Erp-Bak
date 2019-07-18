@@ -25,53 +25,61 @@
 												<div class="col-md-8">
 													<table>
 														<tr>
-															<td><label>Nama Vendor</label></td>
+															<td style="padding: 0 50px 0 0"><label style="width: 100px">Nama Vendor</label></td>
 															<td>
-																<select id="nama_vendor"  name="nama_vendor" class="form-control select2" size="40">
-																<option></option>
+																<select id="nama_vendor"  name="nama_vendor" class="form-control select2" style="margin-top: 10px; width:300px;">
+																	<option value=""> Pilih Vendor </option>
 																<?php foreach ($vendor_name as $name) { ?>
-																<option><?php echo $name['VENDOR_NAME'] ?></option>
+																<option value="<?php echo $name['VENDOR_NAME'] ?>"><?php echo $name['VENDOR_NAME'] ?></option>
 																<?php } ?>
 																</select>
 															</td>
 														</tr>
 														<tr>
-															<td><label>Nomor LPPB</label></td>
+															<td style="padding: 0 50px 0 0"><label style="width: 100px">Nomor LPPB</label></td>
 															<td>
-																<input type="text" class="form-control" name="nomor_lppb" id="nomor_lppb" style="margin-top: 10px; width:100%"  value="%">
+																<input type="text" class="form-control" name="nomor_lppb" id="nomor_lppb" style="margin-top: 10px; width:300px"  value="%">
 															</td>
 														</tr>
 														<tr>
-															<td><label>Tanggal LPPB</label></td>
+															<td style="padding: 0 50px 0 0"><label style="width: 100px">Tanggal LPPB</label></td>
 															<td>
-																<input type="text" class="form-control dateFromAndTo" name="dateFrom" id="dateFromUw" style="margin-top: 10px; margin-bottom: 10px; width:100%" >
+																<input type="text" class="form-control dateFromAndTo" name="dateFrom" id="dateFromUw" style="margin-top: 10px; margin-bottom: 10px; width:300px" >
 															</td>
-															<td>&nbsp; &nbsp; s/d</td>
-															<td>
-																<input type="text" class="form-control dateFromAndTo" name="dateTo" id="dateToUw" style="margin-top: 10px; margin-bottom: 10px; width:100%" >
-															</td>
-														</tr>
-														<tr>
-															<td><label>Nomor PO</label></td>
-															<td>
-																<input type="text" class="form-control" name="nomor_po" id="nomor_po" style="margin-top: 10px; margin-bottom: 10px; width:100%"  value="%">
+															<td>&nbsp;s/d</td>
+															<br>
+															<td style="padding: 0 0 0 5px">
+																<input type="text" class="form-control dateFromAndTo" name="dateTo" id="dateToUw" style="margin-top: 10px; margin-bottom: 10px; width:300px" >
 															</td>
 														</tr>
 														<tr>
-															<td><label>Inventory Organization</label></td>
+															<td style="padding: 0 50px 0 0"><label style="width: 100px">Nomor PO</label></td>
 															<td>
-																<select id="inventory" name="inventory" class="form-control select2 select2-hidden-accessible" style="margin-top: 10px; width:100%;">
-																<option value="" ></option>
+																<input type="text" class="form-control" name="nomor_po" id="nomor_po" style="margin-top: 10px; margin-bottom: 10px; width:300px"  value="%">
+															</td>
+														</tr>
+														<tr>
+															<td style="padding: 0 50px 0 0"><label style="width: 100px">Inventory Organization</label></td>
+															<td>
+																<select id="inventory" name="inventory" class="form-control select2 select2-hidden-accessible" style="margin-top: 10px; width:300px;">
+																<option value="" >Pilih Gudang</option>
 																<?php foreach ($inventory as $io) { ?>
 																<option value="<?php echo $io['ORGANIZATION_ID'] ?>"><?php echo $io['ORGANIZATION_CODE'] ?></option>
 																<?php } ?>
 																</select>
 															</td>
+																<td>
+																</td>
+																<td>
+																</td>
+															<td>
+															<div class="pull-right" style="padding: 0 0 0 50px">
+														<button type="button" class="btn btn-primary" id="btn_search_lppb">Search</button>
+															</div>
+														</td>
 														</tr>
 													</table>
-													<div class="col-md-3 pull-right">
-														<button type="button" class="btn btn-primary" id="btn_search_lppb">Search</button>
-													</div>
+													
 												</div>
 											</div>
 										</div>

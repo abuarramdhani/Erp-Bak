@@ -81,9 +81,9 @@ class C_MasterPersonal extends CI_Controller
 		$user_id  = $this->session->userid;
 
 		$fileName 				= time().'-'.$_FILES['Item']['name'];
-	    $config['upload_path']	= 'assets/upload/ManufacturingOperationUP2L/masterPersonal/';
+	    $config['upload_path']	= 'assets/download/ManufacturingOperationUP2L/masterPersonal/';
 	    $config['file_name']	= $fileName;
-	    $config['allowed_types']= 'xls|xlsx|csv';
+	    $config['allowed_types']= '*';
 	    $config['max_size']		= 2048;
 	    $this->upload->initialize($config);
 
@@ -112,7 +112,7 @@ class C_MasterPersonal extends CI_Controller
 			$this->Create($msg);
 	    }else{
 	        $media			= $this->upload->data();
-	        $inputFileName 	= 'assets/upload/ManufacturingOperationUP2L/masterPersonal/'.$media['file_name'];
+	        $inputFileName 	= 'assets/download/ManufacturingOperationUP2L/masterPersonal/'.$media['file_name'];
     		// $section 		= $this->M_dataplan->getSection();
 
             try{
@@ -133,7 +133,7 @@ class C_MasterPersonal extends CI_Controller
             // exit();
 
 
-            for ($row = 5; $row <= $highestRow; $row++){
+            for ($row = 3; $row <= $highestRow; $row++){
             	$rowData = $sheet->rangeToArray('A' . $row . ':' . $highestColumn . $row, NULL, TRUE, FALSE);
 
             	if ($rowData[0][0] != null) {
@@ -240,25 +240,27 @@ class C_MasterPersonal extends CI_Controller
 
 	public function updateMasPer()
 	{
+		$tgl = date('Y-m-d');
 		$user_id = $this->session->userid;
 		$nama = $this->input->post('tNama');
 		$noInduk = $this->input->post('tNoInduk');
 		$id = $this->input->post('txtId');
 		
 
-		$data = $this->M_masterpersonal->updateMasterPerson($nama,$noInduk,$user_id,$id);
+		$data = $this->M_masterpersonal->updateMasterPerson($nama,$noInduk,$tgl,$user_id,$id);
 		redirect(base_url('ManufacturingOperationUP2L/MasterPersonal'));
 
 	}
 
 	public function insertMasPer()
 	{
+		$tgl = date('Y-m-d');
 		$user_id = $this->session->userid;
 		$nama = $this->input->post('tNama');
 		$noInduk = $this->input->post('tNoInduk');
 		// $creation_date = date('d/m/y');
 
-		$data = $this->M_masterpersonal->insertMasPer($nama,$noInduk,$user_id);
+		$data = $this->M_masterpersonal->insertMasPer($nama,$noInduk,$tgl,$user_id);
 		redirect(base_url('ManufacturingOperationUP2L/MasterPersonal'));
 
 	}

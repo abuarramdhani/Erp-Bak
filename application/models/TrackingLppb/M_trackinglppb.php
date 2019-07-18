@@ -68,8 +68,8 @@ class M_trackinglppb extends CI_Model {
                 rt.transaction_type status_lppb,
                 klb.SOURCE,
                 klb.create_date,
-                klbd.status,(SELECT MAX(a.action_date) FROM khs_lppb_action_detail a WHERE a.status = 5 AND a.batch_detail_id = klad.batch_detail_id) GUDANG_KIRIM,
-                (SELECT MAX(a.action_date) FROM khs_lppb_action_detail a WHERE a.status = 6 AND a.batch_detail_id = klad.batch_detail_id ) AKUNTANSI_TERIMA, klbd.batch_number, klbd.batch_detail_id
+                klbd.status,(SELECT MAX(a.action_date) FROM khs_lppb_action_detail_1 a WHERE a.status = 5 AND a.batch_detail_id = klad.batch_detail_id) GUDANG_KIRIM,
+                (SELECT MAX(a.action_date) FROM khs_lppb_action_detail_1 a WHERE a.status = 6 AND a.batch_detail_id = klad.batch_detail_id ) AKUNTANSI_TERIMA, klbd.batch_number, klbd.batch_detail_id
             FROM rcv_shipment_headers rsh,
                         rcv_shipment_lines rsl,
                         po_vendors pov,
@@ -80,7 +80,7 @@ class M_trackinglppb extends CI_Model {
                         MTL_PARAMETERS MP,
                         khs_lppb_batch klb,
                         khs_lppb_batch_detail klbd,
-                        khs_lppb_action_detail klad
+                        khs_lppb_action_detail_1 klad
             WHERE rsh.shipment_header_id = rsl.shipment_header_id
                     AND rsh.shipment_header_id = rt.shipment_header_id
                     AND rsl.shipment_line_id = rt.shipment_line_id
@@ -104,6 +104,9 @@ class M_trackinglppb extends CI_Model {
                     AND klbd.io_id = MP.ORGANIZATION_ID
                     AND klbd.po_header_id = poh.po_header_id
                     $kriteria";
+    // echo "<pre>";
+    // print_r($query);
+    // exit();             
     $run = $oracle->query($query);
     return $run->result_array();
   }
@@ -165,7 +168,7 @@ class M_trackinglppb extends CI_Model {
                 WHEN STATUS = '7' THEN 'AKUNTANSI REJECT'
                 ELSE 'Unknown'
                 END AS status
-                FROM khs_lppb_action_detail
+                FROM khs_lppb_action_detail_1
                 WHERE batch_number = '$batch_number' 
                 ORDER BY ACTION_DATE DESC";
       $run = $oracle->query($query);

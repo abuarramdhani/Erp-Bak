@@ -30,7 +30,7 @@
                                          <div class="form-group">
                                             <label for="txtSelepDateHeader" class="control-label col-lg-4">Selep Date</label>
                                             <div class="col-lg-4">
-                                                <input type="text" name="txtSelepDateHeader" class="form-control time-form ajaxOnChange" required="" placeholder="Selep Date">
+                                                <input type="text" name="txtSelepDateHeader" class="form-control time-form1 ajaxOnChange" required="" placeholder="Selep Date">
                                             </div>
                                         </div>
 
@@ -51,11 +51,35 @@
                                     </div>
 
                                     <div class="form-group">
-                                        <label for="txtSelepQuantityHeader" class="control-label col-lg-4">Selep Quantity</label>
+                                        <label for="txtShift" class="control-label col-lg-4">Shift</label>
                                         <div class="col-lg-4">
-                                            <input type="text" placeholder="Selep Quantity" name="txtSelepQuantityHeader" id="txtSelepQuantityHeader" class="form-control" />
+                                        <select class="form-control slcShift" id="txtShift" name="txtShift">
+                                            <!-- <option value=""></option> -->
+                                        </select>    
                                         </div>
                                     </div>
+                                    
+                                    <div class="form-group">
+                                        <label for="txtSelepQuantityHeader" class="control-label col-lg-4">Selep Quantity</label>
+                                        <div class="col-lg-4">
+                                            <input type="number" placeholder="Selep Quantity" name="txtSelepQuantityHeader" id="txtSelepQuantityHeader" class="form-control"/>
+                                        </div>
+                                    </div>
+                                    <!-- edit -->
+                                    <div class="form-group">
+                                                <label for="txtScrapQuantityHeader" class="control-label col-lg-4">Scrap Quantity</label>
+                                                <div class="col-lg-4">
+                                                    <input type="number" placeholder="Scrap Quantity" name="txtScrapQuantityHeader" id="txtScrapQuantityHeader" class="form-control" onblur="kurang()"/>
+                                                </div>
+                                            </div>
+                                            
+                                            <div class="form-group">
+                                                <label for="txtKeterangan" class="control-label col-lg-4">Keterangan</label>
+                                                <div class="col-lg-4">
+                                                    <input type="text" placeholder="Keterangan" name="txtKeterangan" id="txtKeterangan" class="form-control"/>
+                                                </div>
+
+                                            </div>
                                     <div class="panel panel-default">
                                         <div class="panel-heading">Employee</div>
                                         <div class="panel-body" id="container-employee">
@@ -90,7 +114,7 @@
                                             <div class="row" style="padding:17px;">
                                                 <label for="txtNilaiOTT" class="control-label col-lg-4">Nilai OTT</label>
                                                 <div class="col-lg-2">
-                                                    <input class="form-control toupper" id="txtNilaiOTT" name="txt_ott"  placeholder="Nilai OTT" >
+                                                    <input class="form-control toupper" id="txtNilaiOTT" name="txt_ott" placeholder="Nilai OTT" >
                                                 </div>
                                                 <label for="txtMouldingQuantityHeader" class="control-label col-lg-2">Lembur</label>
                                                 <div class="col-lg-2">

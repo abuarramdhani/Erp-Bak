@@ -761,6 +761,7 @@ function InsertLokasiFinger(th) {
 					device_sn,
 					device_ip,
 					device_port,
+					device_name,
 					inisial_lokasi,
 					id_lokasi,
 					kode_lokasi_kerja,
@@ -775,6 +776,7 @@ function InsertLokasiFinger(th) {
 				$('#PresenceManagement-MonitoringPresensi-PengaturanEdit-txtDeviceSN').val(device_sn);
 				$('#PresenceManagement-MonitoringPresensi-PengaturanEdit-txtIPDevice').val(device_ip);
 				$('#PresenceManagement-MonitoringPresensi-PengaturanEdit-txtPortDevice').val(device_port);
+				$('#PresenceManagement-MonitoringPresensi-PengaturanEdit-txtNameDevice').val(device_name);
 				$('#PresenceManagement-MonitoringPresensi-PengaturanEdit-txtInisialLokasi').val(inisial_lokasi);
 				$('#PresenceManagement-MonitoringPresensi-PengaturanEdit-cmbLokasiKerja').select2('data', {id: kode_lokasi_kerja, a_key: kode_lokasi_kerja + ' - ' + nama_lokasi_kerja});
 				$('#PresenceManagement-MonitoringPresensi-PengaturanEdit-txtVoipPS').val(voip);

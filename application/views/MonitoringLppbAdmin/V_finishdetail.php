@@ -12,7 +12,7 @@
 				<div class="row">
 					<div class="col-lg-12">
 						<div class="text-left ">
-							<span><b>Detail Batch <?php echo $lppb[0]['GROUP_BATCH']?></b></span>
+							<span><b>Detail Batch </b></span>
 						</div>
 					</div>
 				</div>
@@ -29,10 +29,10 @@
 											<td>
 												<span><label>LPPB Info</label></span>
 											</td>
-											<td>
-												<input type="text" name="lppb_info" class="form-control" style="width:100%;margin-bottom: 10px" value="<?php echo $lppb[0]['LPPB_INFO']?>" readonly >
-											</td>
-										</tr>
+												<td>
+													<input type="text" name="" value="<?php echo $lppb[0]['LPPB_INFO']?>" class="form-control" style="width:100%;margin-bottom: 10px" readonly >
+												</td>
+											</tr>
 										<tr>
 										<td>
 											<span><label>Gudang</label></span>
@@ -78,7 +78,7 @@
 														}elseif ($p['STATUS'] == 4) {
 															$status = '<span class="label label-danger">Kasie Gudang Reject &nbsp;<br></span>';
 														}elseif ($p['STATUS'] == 5) {
-															$status = '<span class="label label-info">Checking Akuntansi (Sumbit ke Akuntansi) &nbsp;<br></span>';
+															$status = '<span class="label label-info">Checking Akuntansi (submit ke Akuntansi) &nbsp;<br></span>';
 														}elseif ($p['STATUS'] == 6) {
 															$status = '<span class="label label-success">Akuntansi Approve &nbsp;<br></span>';
 														}elseif ($p['STATUS'] == 7) {

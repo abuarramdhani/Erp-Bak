@@ -260,7 +260,7 @@ class C_Rekap extends CI_Controller {
 		$status 	= $this->input->post('txtStatus_export');
 		if (strpos($status, ',') !== false) {
 			$status = explode(',', $status);
-			print_r($status); exit();
+			//print_r($status); exit();
 		}elseif (strlen($status) < 2) {
 			$status = str_split($status);
 		}

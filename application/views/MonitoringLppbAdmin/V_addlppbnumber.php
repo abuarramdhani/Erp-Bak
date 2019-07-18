@@ -13,7 +13,8 @@
 				<div class="row">
 					<div class="col-lg-12">
 						<div class="text-left ">
-							<span><b>Add LPPB Number</b></span>
+							<span><b>Add LPPB Number </b></span>
+							<!-- <input type="hidden" id="batch_number" value="<?php echo $lppb[0]['BATCH_NUMBER']?>"> -->
 						</div>
 					</div>
 				</div>
@@ -61,6 +62,19 @@
 													</td>
 												</tr>
 												<tr>
+													<td>
+														<span><label>Status Detail</label></span>
+													</td>
+													<td>
+														<select id="status_lppb" name="status_lppb" class="form-control select2 select2-hidden-accessible" style="width:100%;">
+															<option value="" > Pilih Status </option>
+															<?php foreach ($status as $st) { ?>
+															<option value="<?php echo $st['STATUS_LPPB'] ?>"><?php echo $st['STATUS_LPPB'] ?></option>
+															<?php } ?>
+														</select>
+													</td>
+												</tr>
+												<tr>
 												<td>
 													<span class="text-center"><label>Nomor LPPB</label></span>
 												</td>
@@ -75,6 +89,7 @@
 													<input name="lppb_number" id="lppb_number" class="form-control" style="width:100%;">
 													</input>
 												</td>
+												
 												<td>
 													<div><button class="btn btn-md btn-success pull-left" type="button" onclick="searchNumberLppb($(this))">Search</button>
 													</div>
@@ -112,8 +127,11 @@
 									</table>
 								</div>
 								<div class="col-md-2 pull-right">
-									<button onclick="saveLPPBNumber($(this));" type="button" name="batch_number" class="btn btn-primary pull-right" style="margin-top: 10px" >Save</button>
+									<button onclick="saveLPPBNumber($(this));" type="button"class="btn btn-primary pull-right" style="margin-top: 10px" >Save</button>
 								</div>
+								<!-- <div class="col-md-2 pull-left">
+									<label> Total LPPB Submitted : </label><span id="jml_LPPB"></span>
+								</div> -->
 							</div>
 						</div>
 					</div>

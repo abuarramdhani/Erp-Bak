@@ -12,7 +12,7 @@
 				<div class="row">
 					<div class="col-lg-12">
 						<div class="text-left ">
-							<span><b>Detail Batch <?php echo $lppb[0]['GROUP_BATCH']?></b></span>
+							<span><b>Detail Batch</b></span>
 						</div>
 					</div>
 				</div>
@@ -71,10 +71,12 @@
 														<td><?php echo $p['TANGGAL_LPPB']?></td>
 														<td><?php echo $p['PO_NUMBER']?></td>
 														<td><?php echo $p['STATUS_DATE']?></td>
-														<?php if ($p['STATUS'] == 3) {
+														<?php if ($p['STATUS'] == 2) {
+															$status = '<span class="label label-primary">Proses Approve Kasie Gudang &nbsp;<br></span>';
+														}elseif($p['STATUS'] == 3) {
 															$status = '<span class="label label-primary">Kasie Gudang Approve &nbsp;<br></span>';
 														}elseif ($p['STATUS'] == 5) {
-															$status = '<span class="label label-info">Checking Akuntansi (Sumbit ke Akuntansi) &nbsp;<br></span>';
+															$status = '<span class="label label-info">Checking Akuntansi (Submit ke Akuntansi) &nbsp;<br></span>';
 														}elseif ($p['STATUS'] == 6) {
 															$status = '<span class="label label-success">Akuntansi Approve &nbsp;<br></span>';
 														}?>	

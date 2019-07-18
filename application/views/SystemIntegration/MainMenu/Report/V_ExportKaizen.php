@@ -49,7 +49,7 @@
 </form>
 <div class="col-md-12" style="margin-top: 20px">
 <?php if (isset($find)) { ?>
-  <table class="table table-bordered table-striped" id="tblKaizen">
+  <table class="table table-bordered table-striped dataTable-pekerja" id="tblKaizen">
     <thead>
       <tr class="bg-blue">
         <th width="5%">No.</th>
@@ -79,7 +79,7 @@
       <?php } ?>
     </tbody>
   </table>
-<form method="POST" action="<?= base_url('SystemIntegration/KaizenGenerator/Report/export') ?>">
+<form method="POST" action="<?= base_url('SystemIntegration/KaizenGenerator/Report/exportExcelKaizen') ?>">
   <input type="hidden" name="txtStartDate" value="<?= $start ?>">
   <input type="hidden" name="txtEndDate" value="<?= $end ?>">
   <button style="margin-bottom: 20px" class="btn btn-success "> <i class="fa fa-file-excel-o"></i> Export</button>

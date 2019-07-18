@@ -50,13 +50,13 @@
                                                                 <div class="tab-pane active">
                                                                     <div class="panel panel-default">
                                                                         <div class="panel-heading" style="height: 55px;">Lines of Input Order
-                                                                            <a href="javascript:void(0);" id="group_add" title="Tambah Baris">
+                                                                            <a href="javascript:void(0);" id="group_add2" title="Tambah Baris">
                                                                                 <button type="button" class="btn btn-success pull-right" style="margin-bottom:10px; margin-right: 10px;"><i class="fa fa-fw fa-plus"></i>Add New</button>
                                                                             </a>
                                                                         </div>
                                                                         <div class="panel-body table-responsive" style="overflow-x: auto;">
                                                                             <table id="tb_InputKebutuhanAPD" class="table table-striped table-bordered table-hover text-center">
-                                                                                <caption style="color: #000"><?php echo $seksi[0]['section_name']; ?>
+                                                                                <caption style="color: #000;font-weight: bold;font-size: 18px; padding-left: 0px;"><?php echo $seksi[0]['section_name']; ?>
                                                                                 </caption>
                                                                                 <thead>
                                                                                     <tr class="bg-primary">
@@ -64,9 +64,9 @@
                                                                                         <th nowrap="">Nama APD</th>
                                                                                         <th>Kode Barang</th>
                                                                                         <th>Kebutuhan Umum</th>
-                                                                                        <th>Kebutuhan per Pekerja (STAFF)</th>
+                                                                                        <th>STAFF</th>
                                                                                         <?php foreach ($daftar_pekerjaan as $key) { ?>
-                                                                                        <th>Kebutuhan per Pekerja (<?php echo $key['pekerjaan'];?>)</th>
+                                                                                        <th><?php echo $key['pekerjaan'];?></th>
                                                                                         <?php } ?>
                                                                                         <th>Action</th>
                                                                                     </tr>

@@ -99,7 +99,7 @@
 											<span><label>Nominal DPP Faktur Pajak</label></span>
 										</td>
 										<td>
-											<input class="form-control" size="40" type="text" name="nominal_dpp" placeholder="Nominal DPP Faktur Pajak" >
+											<input class="form-control" size="40" id="nominalDpp" type="text" name="nominal_dpp" placeholder="Nominal DPP Faktur Pajak" >
 										</td>
 									</tr>
 									<tr>
@@ -177,12 +177,14 @@
 							</table>
 						</div>
 						<div class="col-md-4 pull-left">
-							<label>Po Amount : </label><span id="AmountOtomatis"></span><span id="currency"></span>
+							<label>Po Amount : </label><span id="AmountOtomatis" ></span><span id="currency"></span>
 						</div>
+						<!-- <label>Po Amount : </label><span><?php echo 'Rp. '. number_format(round($po_amount),0,'.','.').',00-';
+								          ?></span> -->
 						<div class="col-md-2 pull-right">
-							<a href="<?php echo base_url('AccountPayables/MonitoringInvoice/Invoice')?>">
-							<button type="button" id="btnMICancel" class="btn btn-danger" style="margin-top: 10px">Cancel</button>
-							</a>
+							<!-- <a href="<?php echo base_url('AccountPayables/MonitoringInvoice/Invoice')?>"> -->
+							<button type="reset" id="btnMICancel" class="btn btn-danger" style="margin-top: 10px">Clear</button>
+							<!-- </a> -->
 							<button id="btnMISave" class="btn btn-success pull-right" style="margin-top: 10px" >Save</button>
 						</div>
 					</div>

@@ -51,8 +51,20 @@
 											<td><?php echo $f['PPN']?></td>
 											<td><?php echo $f['TAX_INVOICE_NUMBER']?></td>
 											<td><?php echo $f['NOMINAL_DPP']?></td>
-											<td class="inv_amount" id="invoice_amount"><?php echo $f['INVOICE_AMOUNT']?></td>
-											<td class="po_amount"><?php echo $f['PO_AMOUNT']?></td>
+											<td class="inv_amount" >
+											<?php if($f['INVOICE_AMOUNT']==NULL) {
+								          	 echo 'Rp.'.' ,-';
+								          	}else{
+								          	 echo 'Rp. '. number_format($f['INVOICE_AMOUNT'],0,'.','.').',00-';
+								          	};?>
+								          	</td>
+											<td class="po_amount">
+											<?php if($f['PO_AMOUNT']==NULL) {
+								          	 echo 'Rp.'.' ,-';
+								          	}else{
+								          	 echo 'Rp. '. number_format(round($f['PO_AMOUNT']),0,'.','.').',00-';
+								          	};?>
+								          	</td>
 											<td><?php echo $f['LAST_STATUS_PURCHASING_DATE']?></td>
 											<td><?php echo $f['LAST_STATUS_FINANCE_DATE']?></td>
 											<td><?php echo $f['BATCH_NUMBER']?></td>

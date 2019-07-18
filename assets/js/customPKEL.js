@@ -33,6 +33,32 @@ $(function () {
 		},
 	});
 
+	$('#PK_txt_pekerjaanPekerja').select2({ 
+		allowClear: true,
+		placeholder: '',
+		ajax: {
+			url: baseurl+"MasterPekerja/DataPekerjaKeluar/data_pekerjaan",
+			dataType:'json',
+			type: "GET",
+			data: function (params) {
+				return {term: params.term,
+						kd_pekerjaan: $('#txt_kdPekerjaan').val()
+						};
+			},
+			processResults: function (data) {
+				return {
+					results: $.map(data, function (item) {
+						return {
+							id: item.kd_pkj,
+							text: item.pekerjaan
+						};
+					})
+					
+				};
+			},
+		},
+	});
+
 	$('#PK-slc_provinsi_pekerja').select2({ 
     	minimumInputLength: 2,
 		allowClear: true, 

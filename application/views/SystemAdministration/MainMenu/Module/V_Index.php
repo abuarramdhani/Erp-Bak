@@ -41,6 +41,7 @@
 												<th width="20%"><center>Module Name</center></th>
 												<th width="20%"><center>Module Link</center></th>
 												<th width="20%"><center>Module Shortname</center></th>
+												<th width="20%"><center>Module Image</center></th>
 												<th width="10%"><center>Action</center></th>
 											</tr>
 										</thead>
@@ -56,6 +57,7 @@
 													<td><?php echo $Module['module_name'] ?></td>
 													<td><?php echo $Module['module_link'] ?></td>
 													<td><?php echo $Module['module_shortname'] ?></td>
+													<td><?php echo $Module['module_image'] ?> | <i class="fa <?php echo $Module['module_image'] ?>" </i></td>
 													<td align="center">
 													<a href="<?php echo base_url('SystemAdministration/Module/UpdateModule/')."/".$encrypted_string ?>"><img src="<?php echo base_url('assets/img/edit.png');?>" title="Update <?php echo strtoupper($Module['module_name']) ?>"></a>
 													

@@ -28,7 +28,7 @@
             <div class="col-lg-12">
                 <div class="col-lg-11">
                     <div class="text-right">
-                        <h1><b>Kebutuhan Order</b></h1>
+                        <h1><b>Monitoring Bon</b></h1>
                     </div>
                 </div>
                 <div class="row">
@@ -51,7 +51,7 @@
                                         <div class="col-md-4">
                                             <div class="input-group col-md-12">
                                                 <select required class="form-control k3_admin_monitorbon" name="k3_adm_ks">
-                                                    <!-- <option value="semua">SEMUA SEKSI</option> -->
+                                                    <option value="semua" selected="">SEMUA SEKSI</option>
                                                     <!-- <option value="semua">SEMUA SEKSI</option> -->
                                                 </select>
                                             </div>

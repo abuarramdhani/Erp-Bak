@@ -142,6 +142,7 @@ class C_MoveOrder extends CI_Controller
 		$ip_address =  $this->input->ip_address();
 		$job = $this->input->post('no_job');
 		$err = $this->input->post('error_exist');
+		$piklis = $this->input->post('piklis');
 		
 		$departement = $this->input->post('departement');
 		if ($departement == 'SUBKT') {
@@ -164,7 +165,7 @@ class C_MoveOrder extends CI_Controller
 				//tinggal cetak jika sudah ada mo
 			}
 		// 	//pdfoutput
-			$this->pdf($array_mo, $nama_satu, $nama_dua);
+			$this->pdf($array_mo, $nama_satu, $nama_dua,$piklis);
 		} else {
 			$qty 	  = $this->input->post('qty');
 			$invID = $this->input->post('invID');
@@ -247,7 +248,7 @@ class C_MoveOrder extends CI_Controller
 			// exit();
 
 			if ($array_mo) {
-				$this->pdf($array_mo, $nama_satu, $nama_dua);
+				$this->pdf($array_mo, $nama_satu, $nama_dua,$piklis);
 			}else{
 				exit('Terjadi Kesalahan :(');
 			}
@@ -256,7 +257,7 @@ class C_MoveOrder extends CI_Controller
 		}
 	}
 
-	public function pdf($array_mo,$nama_satu, $nama_dua){
+	public function pdf($array_mo,$nama_satu, $nama_dua, $piklis){
 		// ------ GET DATA ------
 		// print_r($array_mo);
 
@@ -330,11 +331,14 @@ class C_MoveOrder extends CI_Controller
 			foreach ($array_mo as $key => $mo) {
 				$moveOrderAwal = $moveOrderAkhir = $mo;
 				$dataall[$a]['head']	= $this->M_MoveOrder->getHeader($moveOrderAwal, $moveOrderAkhir);
+				$dataall[$a]['head'][0]['piklis'] = $piklis;
 				$dataall[$a]['line']	= $this->M_MoveOrder->getDetail($moveOrderAwal, $moveOrderAkhir);
 				$a++;
 			}
 
 			// echo "<pre>";
+			// print_r($dataall);
+			// exit();
 
 			$head		= array();
 			$jobNo		= array();
@@ -369,15 +373,22 @@ class C_MoveOrder extends CI_Controller
 					$pdf->SetHTMLFooter($foot);
 					$pdf->WriteHTML($line,0);
 					// break;
-				} else {
+				} else if ($value['head'][0]['piklis'] == '2') {
 					
+					$head = $this->load->view('Inventory/MainMenu/MoveOrder/V_Head3', $data, TRUE);
+					$line = $this->load->view('Inventory/MainMenu/MoveOrder/V_Index3', $data, TRUE);
+					$foot = $this->load->view('Inventory/MainMenu/MoveOrder/V_Foot', $data, TRUE);
+					$pdf->SetHTMLHeader($head);
+					$pdf->SetHTMLFooter($foot);
+					$pdf->WriteHTML($line,0);
+					// break;
+				} else {
 					$head = $this->load->view('Inventory/MainMenu/MoveOrder/V_Head', $data, TRUE);
 					$line = $this->load->view('Inventory/MainMenu/MoveOrder/V_Index', $data, TRUE);
 					$foot = $this->load->view('Inventory/MainMenu/MoveOrder/V_Foot', $data, TRUE);
 					$pdf->SetHTMLHeader($head);
 					$pdf->SetHTMLFooter($foot);
 					$pdf->WriteHTML($line,0);
-					// break;
 				}
 				//$pdf->WriteHTML($line,0);
 			}
@@ -406,6 +417,7 @@ class C_MoveOrder extends CI_Controller
 		$subinv_from 	  = $this->input->post('subinvfrom');
 		$locator_from 	  = $this->input->post('locatorfrom');
 		$selected = $this->input->post('selectedPicklistIMO');
+		$piklis = $this->input->post('piklis');
 		$arraySelected = explode('+', $selected);
 		$array_mo = array();
 
@@ -539,7 +551,7 @@ class C_MoveOrder extends CI_Controller
 		// exit();
 
 		if ($array_mo) {
-			$this->pdf($array_mo,$nama_satu,$nama_dua);
+			$this->pdf($array_mo,$nama_satu,$nama_dua,$piklis);
 		}else{
 			exit('Terjadi Kesalahan :(');
 		}

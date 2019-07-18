@@ -125,6 +125,33 @@
 					};
 				}
 			}	
+		});
+
+		$(".slcNoInduk_listLkhPekerja").select2({
+			placeholder: "No Induk",
+			minimumInputLength: 3,
+			ajax: {		
+				url:baseurl+"RekapTIMSPromosiPekerja/GetNoInduk",
+				dataType: 'json',
+				type: "GET",
+				delay: 500,
+				data: function (params) {
+					var queryParameters = {
+						term: params.term,
+						type: $('select#slcNoInduk_listLkhPekerja').val(),
+						stat: 0
+					}
+					return queryParameters;
+				},
+				processResults: function (data) {
+					return {
+						results: $.map(data, function(obj) {
+							console.log({id:obj.NoInduk, text:obj.NoInduk+' - '+obj.Nama});
+							return {id:obj.NoInduk, text:obj.NoInduk+' - '+obj.Nama};
+						})
+					};
+				}
+			}	
 		});	
 			
 		$('#submit-filter-no-induk').click(function(){

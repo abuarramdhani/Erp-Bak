@@ -105,12 +105,13 @@
                                                     <th style="text-align: center; vertical-align: middle;">J</th>
                                                     <th style="text-align: center; vertical-align: middle;">K/P</th>
                                                     <th style="text-align: center; vertical-align: middle;">Q</th>
+                                                    <th style="text-align: center; vertical-align: middle;">T</th>
                                                 </tr>
                                             </thead>
                                             <tbody>
                                                 <?php
                                                     $no     =   1;
-                                                    foreach ($rekapJamKerja as $hasil) 
+                                                    foreach ($rekapJamKerja as $hasil)
                                                     {
                                                 ?>
                                                 <tr>
@@ -131,6 +132,7 @@
                                                      <td style="white-space: nowrap; text-align: center; vertical-align: middle;"><?php echo round($hasil['J'], 3);?></td>
                                                      <td style="white-space: nowrap; text-align: center; vertical-align: middle;"><?php echo round($hasil['K-P'], 3);?></td>
                                                      <td style="white-space: nowrap; text-align: center; vertical-align: middle;"><?php echo round($hasil['Q'], 3);?></td>
+                                                     <td style="white-space: nowrap; text-align: center; vertical-align: middle;"><?php echo round($hasil['T'], 3);?></td>
 
                                                 </tr>
                                                 <?php

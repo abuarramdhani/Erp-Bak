@@ -50,6 +50,9 @@
 											if ($lb['KASIE_GUDANG_APPROVED']>0) { ?>
 												<span class="label label-primary"><?php echo $lb['KASIE_GUDANG_APPROVED']." Kasie Gudang Approve &nbsp;"."<br>"?></span>
 											<?php }
+											if ($lb['KASIE_GUDANG_REJECT']>0) { ?>
+												<span class="label label-danger"><?php echo $lb['KASIE_GUDANG_REJECT']." Kasie Gudang Rejected &nbsp;"."<br> "?></span>
+											<?php }
 											if ($lb['CHECKING_AKUNTANSI']>0) { ?>
 												<span class="label label-default"><?php echo $lb['CHECKING_AKUNTANSI']." Checking Akuntansi &nbsp;"."<br>"?></span>
 											<?php }

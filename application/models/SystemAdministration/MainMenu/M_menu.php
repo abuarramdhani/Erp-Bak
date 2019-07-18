@@ -34,9 +34,4 @@ class M_menu extends CI_Model {
 			$this->db->where('menu_id', $menu_id)->delete('sys.sys_menu');
 			return ($this->db->affected_rows() != 1) ? false : true;
 		}
-
-		// public function getQty() {
-		// 	$qty = $this->db->select('QTY')->get('tabel');
-		// 	return ($qty->result_array()) ? $qty->result_array() : '';
-		// }
 }

@@ -19,10 +19,16 @@
 			if (a == 0) {
 				$('#btnSelectedIMO').attr("disabled","disabled");
 				$('#jmlSlcIMO').text('');
+				$('#jmlSlcIMO2').text('');
+				$('#btnSelectedIMO2').attr("disabled","disabled");
+				
 			}else{
 				$('#btnSelectedIMO').removeAttr("disabled");
 				$('#jmlSlcIMO').text('('+jml+')');
+				$('#jmlSlcIMO2').text('('+jml+')');
 				$('input[name="selectedPicklistIMO"]').val(val);
+				$('#btnSelectedIMO2').removeAttr("disabled");
+				
 			}
 
 		});
@@ -53,10 +59,14 @@
 			});
 			if (a == 0) {
 				$('#btnSelectedIMO').attr("disabled","disabled");
+				$('#btnSelectedIMO2').attr("disabled","disabled");
 				$('#jmlSlcIMO').text('');
+				$('#jmlSlcIMO2').text('');
 			}else{
 				$('#btnSelectedIMO').removeAttr("disabled");
+				$('#btnSelectedIMO2').removeAttr("disabled");
 				$('#jmlSlcIMO').text('('+jml+')');
+				$('#jmlSlcIMO2').text('('+jml+')');
 				$('input[name="selectedPicklistIMO"]').val(val);
 			}
 		});
@@ -142,11 +152,13 @@
 					$penanda = '';
 					$penandabutton = 0;
 					$text_button = '<b>Create Picklist</b>';
+					$text_button2 = '<b>Create PL Header</b>';
 				}
 			}else{
 				$penanda = 'bg-success';
 				$penandabutton = 0; //-----------------> harusnya 1
 				$text_button = '<b>Print Picklist</b>';
+				$text_button2 = '<b>Print PL Header</b>';
 			}
 
 
@@ -193,7 +205,7 @@
 				<?php if ($penandabutton == 1) { ?>
 				<button class="btn btn-sm  disabled btn-default " target="_blank" >
 						 <?= $text_button; ?> 
-				</button>
+				</button><br><br>
 				<?php } else { ?>
 					<?php if ($divisi == 1) { ?>
 						<button data-toggle="modal" data-target="#formModal<?= $value['header']['WIP_ENTITY_NAME']; ?>" class="btn btn-sm  <?= ($value['body']) ? 'btn-success' : 'disabled btn-default' ?>" target="_blank">
@@ -203,6 +215,10 @@
 						<button class="btn btn-sm  <?= ($value['body']) ? 'btn-success' : 'disabled btn-default' ?>" target="_blank"
 								 <?= ($value['body']) ? "onclick=document.getElementById('form".$value['header']['WIP_ENTITY_NAME']."').submit();" :'' ?>>
 								 <?= $text_button; ?> 
+						</button><br><br>
+						<button class="btn btn-sm  <?= ($value['body']) ? 'btn-success' : 'disabled btn-default' ?>" target="_blank"
+								 <?= ($value['body']) ? "onclick=document.getElementById('form2".$value['header']['WIP_ENTITY_NAME']."').submit();" :'' ?>>
+								 <?= $text_button2; ?> 
 						</button>
 					<?php } ?>
 				<?php } ?>
@@ -245,6 +261,7 @@
 								<input type="hidden" name="locatorto[]" value="<?= $vulue['LOCATOR_TUJUAN_ID'] ?>">
 								<input type="hidden" name="locatorfrom[]" value="<?= $vulue['LOCATOR_ASAL'] ?>">
 								<input type="hidden" name="departement" value="NONE">
+								<input type="hidden" name="piklis" value="1">
 							</td>
 							<td><?= $vulue['KOMPONEN'] ?></td>
 							<td><?= $vulue['KOMP_DESC'] ?></td>
@@ -275,7 +292,49 @@
 						 ?>
 					</tbody>
 				</table>
-							</form>
+			</form>
+<!---- FORM KE 2 --------------------------------------------------->
+			<form method="post" target="_blank" id="form2<?= $value['header']['WIP_ENTITY_NAME']; ?>" action="<?= base_url('InventoryManagement/CreateMoveOrder/create') ?>" >
+						<?php 
+						$no2 = 1;
+						if ($value['body']):
+						foreach ($value['body'] as $kut => $vulue) { ?>
+						
+							<?php $no2++; ?>
+								<input type="hidden" name="no_job" value="<?= $vulue['WIP_ENTITY_NAME'] ?>">
+								<input type="hidden" name="invID[]" value="<?= $vulue['INVENTORY_ITEM_ID'] ?>">
+								<input type="hidden" name="qty[]" value="<?= $vulue['REQUIRED_QUANTITY'] ?>">
+								<input type="hidden" name="uom[]" value="<?= $vulue['PRIMARY_UOM_CODE'] ?>">
+								<input type="hidden" name="job_id[]" value="<?= $vulue['JOB_ID'] ?>">
+								<input type="hidden" name="subinvto[]" value="<?= $vulue['GUDANG_TUJUAN'] ?>">
+								<input type="hidden" name="subinvfrom[]" value="<?= $vulue['GUDANG_ASAL'] ?>">
+								<input type="hidden" name="locatorto[]" value="<?= $vulue['LOCATOR_TUJUAN_ID'] ?>">
+								<input type="hidden" name="locatorfrom[]" value="<?= $vulue['LOCATOR_ASAL'] ?>">
+								<input type="hidden" name="departement" value="NONE">
+								<input type="hidden" name="piklis" value="2">
+						<?php 
+							$allNojob[$no][] =  $vulue['WIP_ENTITY_NAME'];
+							$allInvID[$no][] =  $vulue['INVENTORY_ITEM_ID'];
+							$allQty[$no][] =  $vulue['REQUIRED_QUANTITY'];
+							$allUom[$no][] =  $vulue['PRIMARY_UOM_CODE'];
+							$allJobID[$no][] =  $vulue['JOB_ID'];
+							$allSubInvTo[$no][] =  $vulue['GUDANG_TUJUAN'];
+							$allSubFrom[$no][] =  $vulue['GUDANG_ASAL'];
+							$allLocatorTo[$no][] =  $vulue['LOCATOR_TUJUAN_ID'];
+							$allLocatorFrom[$no][] =  $vulue['LOCATOR_ASAL'];
+						?>
+						<?php }
+						else:?>
+							<tr>
+								<td colspan="9">
+									Tidak ada komponen..
+								</td>
+							</tr>
+						<?php endif;
+						 ?>
+			</form>
+
+
 				</div>
 			</td>
 		</tr>
@@ -302,10 +361,29 @@
 		<input type="hidden" name="locatorto[]" value="<?= implode('<>', $allLocatorTo[$key]) ?>">
 		<input type="hidden" name="locatorfrom[]" value="<?= implode('<>', $allLocatorFrom[$key]) ?>">
 		<input type="hidden" name="departement" value="NONE">
+		<input type="hidden" name="piklis" value="1">
 		<?php } ?>
 	<button type="submit" class="btn btn-success pull-right" disabled="disabled" id="btnSelectedIMO"><b> CREATE PICKLIST SELECTED </b><b id="jmlSlcIMO"></b></button>
-	<?php } ?>
 	</form>
+	<br><br>
+	<form method="post" target="_blank" action="<?php echo base_url('InventoryManagement/CreateMoveOrder/createall'); ?>">
+		<input type="hidden" name="selectedPicklistIMO" value="">
+		<?php foreach ($allInvID as $key => $value) { ?>
+		<input type="hidden" name="no_job[]" value="<?= implode('<>', $allNojob[$key]) ?>">
+		<input type="hidden" name="invID[]" value="<?= implode('<>', $allInvID[$key]) ?>">
+		<input type="hidden" name="qty[]" value="<?= implode('<>', $allQty[$key]) ?>">
+		<input type="hidden" name="uom[]" value="<?= implode('<>', $allUom[$key]) ?>">
+		<input type="hidden" name="job_id[]" value="<?= implode('<>', $allJobID[$key]) ?>">
+		<input type="hidden" name="subinvto[]" value="<?= implode('<>', $allSubInvTo[$key]) ?>">
+		<input type="hidden" name="subinvfrom[]" value="<?= implode('<>', $allSubFrom[$key]) ?>">
+		<input type="hidden" name="locatorto[]" value="<?= implode('<>', $allLocatorTo[$key]) ?>">
+		<input type="hidden" name="locatorfrom[]" value="<?= implode('<>', $allLocatorFrom[$key]) ?>">
+		<input type="hidden" name="departement" value="NONE">
+		<input type="hidden" name="piklis" value="2">
+		<?php } ?>
+	<button type="submit" class="btn btn-success pull-right" disabled="disabled" id="btnSelectedIMO2"><b> CREATE PL HEADER SELECTED </b><b id="jmlSlcIMO2"></b></button>
+	</form>
+	<?php } ?>
 </div>
 
 

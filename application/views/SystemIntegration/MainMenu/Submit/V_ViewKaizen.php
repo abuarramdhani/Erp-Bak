@@ -52,11 +52,14 @@
 <section class="content">
   <div class="box box-default color-palette-box">
     <div class="box-header with-border">
-      <h3 class="box-title"><i class="fa fa-dashboard"></i> <b>Lihat Kaizen</b></h3>
-      <div class="pull-right">
         <?php $arrKaiDone = array('3','6','7','9') ?>
         <?php $arrAppDone = array('3','4','5','6','7','9') ?>
         <?php $arrKaiReal = array('6','7','9') ?>
+      <h3 class="box-title"><i class="fa fa-dashboard"></i> <b>Lihat Kaizen</b></h3>
+        <?php  if($kaizen[0]['employee_code'] == $this->session->user): ?>
+          <h5 id="textcheckbox" <?= in_array($kaizen[0]['status'], $arrAppDone) ? 'hidden' : ($statusku == 3 ? 'hidden' : '') ?> class="text-right"><b>Lengkapi checkbox untuk Melakukan Approval</b></h5>
+        <?php endif; ?>
+      <div class="pull-right">
         <!-- BUTTON FOR USER-->
         <?php if($kaizen[0]['user_id'] == $this->session->userid): ?>
           <!-- Button Request Realisasi -->
@@ -108,13 +111,13 @@
           </span>
         <?php } ?>
           <button id="btnAprroveOkSI" <?= in_array($kaizen[0]['status'], $arrAppDone) ? 'disabled' : ($statusku == 3 ? 'disabled' : '') ?> class="btn btn-sm btn-success" 
-            data-id="<?= $kaizen[0]['kaizen_id'] ?>" data-approve="3" data-level=<?= $levelku; ?>> Approve
+            data-id="<?= $kaizen[0]['kaizen_id'] ?>" data-approve="3" data-level=<?= $levelku; ?> disabled > Approve
           </button>
           <button id="btnAprroveRevSI" <?= in_array($kaizen[0]['status'], $arrAppDone) ? 'disabled' : ($statusku == 3 ? 'disabled' : '') ?> class="btn btn-sm btn-warning text-warning" 
-            data-id="<?= $kaizen[0]['kaizen_id'] ?>" data-approve="4" data-level=<?= $levelku; ?>> Revisi
+            data-id="<?= $kaizen[0]['kaizen_id'] ?>" data-approve="4" data-level=<?= $levelku; ?>  > Revisi
           </button>
           <button id="btnAprroveNotSI" <?= in_array($kaizen[0]['status'], $arrAppDone) ? 'disabled' : ($statusku == 3 ? 'disabled' : '') ?> class="btn btn-sm btn-danger" 
-            data-id="<?= $kaizen[0]['kaizen_id'] ?>" data-approve="5" data-level=<?= $levelku; ?>> Reject
+            data-id="<?= $kaizen[0]['kaizen_id'] ?>" data-approve="5" data-level=<?= $levelku; ?>  > Reject
           </button>
         <?php  endif; ?>
         <!-- END OF BUTTON -->
@@ -289,13 +292,24 @@
               <td style="border-top: 1px solid #000" colspan="3">4.</td>
             <tr>
             <tr>
-              <td style="border-top: 1px solid #000; border-right: 1px solid #000" colspan="3" class="text-center"><b>Kondisi saat ini(Uraian/gambar/Sket/Foto)</b></td>
+              <td style="border-top: 1px solid #000; border-right: 1px solid #000" colspan="3" class="text-center"><b>Kondisi saat ini(Uraian/gambar/Sket/Foto)</b>
+              <?php  if($kaizen[0]['employee_code'] == $this->session->user): { ?>
+              <br>
+              <input class="text-right"  <?= in_array($kaizen[0]['status'], $arrAppDone) ? 'disabled' : ($statusku == 3 ? 'disabled' : '') ?>  type="checkbox" id="myCheck"></br>
+              <?php } ?>
+              <?php  endif; ?>
+              </td>
               <td style="border-top: 1px solid #000" colspan="3" class="text-center">
                 <?php if (in_array($kaizen[0]['status'], $arrKaiReal)) { ?>
                 <b>Kondisi Akhir(Uraian/gambar/Sket/Foto)</b>
                 <?php }else{ ?>
                 <b>Usulan Kaizen(Uraian/gambar/Sket/Foto)</b>
                 <?php } ?>
+                 <?php  if($kaizen[0]['employee_code'] == $this->session->user): { ?>
+                  <br>
+                  <input class="text-right" <?= in_array($kaizen[0]['status'], $arrAppDone) ? 'disabled' : ($statusku == 3 ? 'disabled' : '') ?>  type="checkbox" id="youCheck"  onclick="myFunction()"></br>
+                  <?php } ?>
+                <?php  endif; ?>
               </td>
             <tr>
             <tr>
@@ -303,13 +317,24 @@
               <td style="border-right: 1px solid #000"colspan="3"><?= (in_array($kaizen[0]['status'], $arrKaiReal)) ? $kaizen[0]['kondisi_akhir'] : $kaizen[0]['usulan_kaizen'] ?></td>
             <tr>
             <tr>
-              <td style="border-top: 1px solid #000; border-right: 1px solid #000" colspan="3" class="text-center"><b>Pertimbangan Usulan Kaizen</b></td>
+              <td style="border-top: 1px solid #000; border-right: 1px solid #000" colspan="3" class="text-center"><b>Pertimbangan Usulan Kaizen</b>
+              <?php  if($kaizen[0]['employee_code'] == $this->session->user): { ?>
+                <br>
+                <input class="text-right" <?= in_array($kaizen[0]['status'], $arrAppDone) ? 'disabled' : ($statusku == 3 ? 'disabled' : '') ?>  type="checkbox" id="Check"  onclick="myFunction()"></br>
+                <?php } ?>
+              <?php  endif; ?>
+              </td>
               <td style="border-top: 1px solid #000" colspan="3" class="text-center">
                 <?php if (in_array($kaizen[0]['status'], $arrKaiReal)) { ?>
                 <b>Tanggal Realisasi</b>
                 <?php }else{ ?>
                 <b>Rencana Realisasi</b>
                 <?php } ?>
+              <?php  if($kaizen[0]['employee_code'] == $this->session->user): { ?>
+                <br>
+                <input class="text-right" <?= in_array($kaizen[0]['status'], $arrAppDone) ? 'disabled' : ($statusku == 3 ? 'disabled' : '') ?>  type="checkbox" id="tglCheck"  onclick="myFunction()"></br>
+                <?php } ?>
+              <?php  endif; ?>
               </td>
             <tr>
             <tr>
@@ -440,7 +465,7 @@ if ( in_array($kaizen[0]['status'], $needthisform = array(0,1,6)) ) { ?>
           <input type="hidden" name="hdnStatus" id="hdnStatus">
           <input type="hidden" name="levelApproval" id="levelApproval" value="<?= $kaizen[0]['kaizen_id'] == 6 ? '6' : $levelku;  ?>">
           <div class="form-group" id="formReasonApprover">
-            <textarea class="textareakaizen" name="txtReason" id="txtReason" placeholder="Masukkan keterangan" style="width: 100%; height: 200px; font-size: 14px; line-height: 18px; border: 1px solid #dddddd; padding: 10px;"></textarea>
+            <textarea class="textareaKaizenAprove" name="txtReason" id="txtReason" placeholder="Masukkan keterangan" style="width: 100%; height: 200px; font-size: 14px; line-height: 18px; border: 1px solid #dddddd; padding: 10px;"></textarea>
           </div>
         <?php  if ($levelku == 2 || $levelku  == 3) { $next_level = $levelku == 2 ? 'level Departemen' : 'Direktur Utama'?>
           <div class="form-group" id= "formNextApprover" style="display: none">
@@ -457,14 +482,19 @@ if ( in_array($kaizen[0]['status'], $needthisform = array(0,1,6)) ) { ?>
             <input type="hidden" name="levelnext" value="<?= $levelku == 2 ? '3' : ($levelku == 3 ? '4' : '') ?>">
             <select class="form-control select2si" style="width: 100%" data-placeholder="Select Employee" id="slcApprover" name="slcApprover" disabled>
               <option></option>
-              <?php 
-              $name_array = $next_level = $levelku == 2 ? 'option_atasan' : 'option_atasan2';
-              foreach ($$name_array as $key => $value) { ?>
-                <option value="<?= $value['employee_code'] ?>"><?= $value['employee_name'] ?></option>
-              <?php } ?>
+              <?php if($next_level == 'level Departemen'){
+                      foreach($option_atasan as $key => $value){ ?>
+                         <option value="<?= $value['employee_code'] ?>"><?= $value['employee_code'].' - '.$value['employee_name']; ?></option>
+                     <?php }
+                    }else{
+                      foreach($option_atasan2 as $key => $value){ ?>
+                        <option value="<?= $value['employee_code'] ?>"><?= $value['employee_code'].' - '.$value['employee_name']; ?></option>
+                      <?php }
+                    } 
+              ?>
             </select>
           </div>
-        <?php  }else{ ?>
+        <?php  }else{ ?> 
         <?php  } ?>
         </div>
         <div class="modal-footer">
@@ -476,9 +506,29 @@ if ( in_array($kaizen[0]['status'], $needthisform = array(0,1,6)) ) { ?>
     </div>
   </div>
 </div>
-
+ 
 <script src="<?php echo base_url('assets/plugins/ckeditor/ckeditor.js');?>"></script>
 <script type="text/javascript">
 
  CKEDITOR.disableAutoInline = true;
 </script>
+
+  <button onclick="topFunction()" id="myBtn" class="fa fa-arrow-up" style="display: none;  position: fixed;  bottom: 48px;  right: 26px;  z-index: 99;  font-size: 18px;  border: none; outline: none; background-color: red;  color: white; cursor: pointer; padding: 15px; border-radius: 4px;" title="Go to top"></button>
+  <script>
+      // When the user scrolls down 20px from the top of the document, show the button
+      window.onscroll = function() {scrollFunction()};
+
+      function scrollFunction() {
+        if (document.body.scrollTop > 20 || document.documentElement.scrollTop > 20) {
+            document.getElementById("myBtn").style.display = "block";
+        } else {
+            document.getElementById("myBtn").style.display = "none";
+        }
+      }
+
+        // When the user clicks on the button, scroll to the top of the document
+      function topFunction() {
+      document.body.scrollTop = 0;
+      document.documentElement.scrollTop = 0;
+      }
+  </script>

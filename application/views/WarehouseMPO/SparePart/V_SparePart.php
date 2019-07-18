@@ -113,17 +113,16 @@
                                                     $jml_item = 0;
                                                     $jml_diminta = 0;
                                                     $jml_dikirim = 0;
-                                                ?>
-                                                    <?php foreach ($line as $key => $valoe): ?>
-                                                        <?php if($valoe['NO_SPB'] == $value['NO_SPB']): ?>
-                                                            <?php  
+                                                 foreach ($line as $valoe){ 
+                                                       if($valoe['NO_SPB'] == $value['NO_SPB']){   
                                                                 $jml_item++;
                                                                 $jml_diminta += $valoe['QTY_DIMINTA'];
                                                                 $jml_dikirim += $valoe['QTY_DIKIRIM'];
-                                                             ?>
-                                                        <?php endif ?>
-                                                    <?php endforeach ?>
-                                                
+                                                            
+                                                        }
+                                                    }
+                                                ?>
+
                                                     <tr class="text-center">
                                                         <td><?php echo $no; ?></td>
                                                         <td><?php echo $value['NO_SPB']; ?></td>
@@ -157,7 +156,7 @@
                         </tr>
                     </thead>
                     <tbody>
-                    <?php foreach ($line as $key => $valoe): ?>
+                   <?php foreach ($line as $key => $valoe): ?>
                         <?php if($valoe['NO_SPB'] == $value['NO_SPB']): ?>
                         <tr>
                             <td><?php echo $valoe['LINE_NUMBER']; ?></td>
@@ -176,7 +175,7 @@
                 </tr>
                                         <?php 
                                             $no++;
-                                            endforeach 
+                                            endforeach; 
                                         ?>
                                                         </tbody>
                                                     </table>

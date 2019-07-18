@@ -112,6 +112,11 @@ $(document).ready(function(){
 	// 			$('#bt_export').click();
  //    	}, 5000);
 	// });	
+	$(function(){
+		$('#divselector').change(function(){
+			$('html,body').animate({scrollTop:$('#'+$('#divselector').val()).offset().top}, 'slow'); 
+		})
+	});
 
 	$('.grData').change(function(){
 		var angka = $('.grData').val();
@@ -225,6 +230,14 @@ $(document).ready(function(){
 
 			// alert(targetKaryawan[i]);
 			var ctx = document.getElementById(chartt).getContext('2d');
+			var maxValueInArray = Math.max.apply(Math, number);
+			var xx = '';
+			if (Number(maxValueInArray) < 10) {
+				xx = 'stepSize: 1';
+				// alert(number);
+			}else{
+				xx = '';
+			}
 
 			var myChart = new Chart(ctx, {
 				type: 'line',
@@ -252,7 +265,8 @@ $(document).ready(function(){
 					scales: {
 						yAxes: [{
 							ticks: {
-								beginAtZero:true
+								beginAtZero:true,xx,
+								suggestedMax: 10
 							}
 						}]
 					}
@@ -365,4 +379,12 @@ $(document).ready(function(){
 				}
 			});
 		});	
+
+	$('#sdm_select_tahun').select2({
+		allowClear: true,
+		placeholder: "Pilih Tahun",
+		minimumInputLength: 1,
+		tags:true,
+		minimumResultsForSearch: -1,
+	});
 });

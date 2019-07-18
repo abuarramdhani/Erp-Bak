@@ -22,11 +22,11 @@
 						<div class="col-lg-12">
 							<div class="box box-primary box-solid">
 								<div class="box-body">
-									<table id="tabel_detail_purchasing" class="table text-center tblMI" style="width: 100%">
+									<table id="tabel_detail_purchasing" class="table text-center" style="width: 100%">
 										<thead>
 											<tr class="bg-primary">
 												<th class="text-center">No</th>
-												<th class="text-center">Action</th>
+												<th class="text-center" width="10%;">Action</th>
 												<th class="text-center">
 													<!-- <input type="checkbox" class="checkbox submit_checking_all" name=""> -->
 												</th>
@@ -39,7 +39,6 @@
 												<th class="text-center">Po Amount</th>
 												<th class="text-center">Created Date</th>
 												<th class="text-center">Info Status</th>
-												<th class="text-center" style="display: none;">Invoice_id</th>
 											</tr>
 										</thead>
 										<tbody>
@@ -47,9 +46,10 @@
 												<tr>
 													<td><?php echo $no ?></td>
 													<td>
-														<button kedisable="0" inv="<?= $b['INVOICE_ID'] ?>" class="btn btn-primary" type="button" name="checkbtndisable[]" onclick="bukaMOdal($(this))"><i class="fa fa-plus"></i></button>
+														<button kedisable="0" inv="<?= $b['INVOICE_ID'] ?>" class="btn btn-xs btn-primary" type="button" name="checkbtndisable[]" onclick="bukaMOdal($(this))"><i class="fa fa-plus"></i></button>
+														<button class="btn btn-xs btn-success" type="button" inv-id="<?php echo $b['INVOICE_ID']?>" onclick="btnApproveNew($(this))"><i class="fa fa-check"></i></button>
 												</td>
-												<td><input type="checkbox" name="mi-check-list[]" class="checkbox chckInvoice" value="<?php echo $b['INVOICE_ID']?>"></td>
+												<td><input type="hidden" name="mi-check-list[]" class="chckInvoice" value="<?php echo $b['INVOICE_ID']?>"></td>
 												<td>
 													<?php echo $b['VENDOR_NAME']?>
 												</td>
@@ -61,20 +61,30 @@
 												<td><?php echo date('d-M-Y',strtotime($b['INVOICE_DATE']))?></td>
 												<td><?php echo $b['PPN']?></td>
 												<td><?php echo $b['TAX_INVOICE_NUMBER']?></td>
-												<td class="inv_amount" id="invoice_amount"><?php echo $b['INVOICE_AMOUNT']?></td>
-												<td class="po_amount"><?php echo $b['PO_AMOUNT']?></td>
+												<td class="inv_amount" >
+												<?php if($b['INVOICE_AMOUNT']==NULL) {
+									          	 echo 'Rp.'.' ,-';
+									          	}else{
+									          	 echo 'Rp. '. number_format($b['INVOICE_AMOUNT'],0,'.','.').',00-';
+									          	};?>
+									          	</td>
+												<td class="po_amount">
+												<?php if($b['PO_AMOUNT']==NULL) {
+									          	 echo 'Rp.'.' ,-';
+									          	}else{
+									          	 echo 'Rp. '. number_format(round($b['PO_AMOUNT']),0,'.','.').',00-';
+									          	};?>
+									          	</td>
 												<td><?php echo date('d-M-Y',strtotime($b['ACTION_DATE'])) ?></td>
-												<?php if($b['FINANCE_STATUS'] == 1 and $b['STATUS'] == 2){
-													$status = 'Done';
-												}elseif($b['STATUS'] == 2){
-													$status = 'Approve';
-												}elseif($b['STATUS'] == 3){
-													$status = 'Reject'.' - '.$b['REASON'];
-												}elseif ($b['STATUS'] == 1) {
-													$status = 'Submit';
-												} ?>
-												<td><span class="statusInvoice" value="<?php echo $b['STATUS']?>"><?php echo $status?></span></td>
-												<td><input type="hidden" name="invoice_id[]" value="<?php echo $b['INVOICE_ID']?>"></td>
+												<td>
+												<?php if($b['STATUS'] == 2){ ?>
+													<button class="statusInvoice checked btn btn-xs btn-success" style="cursor: none" value="<?php echo $b['STATUS']?>" inv-id="<?php echo $b['INVOICE_ID']?>">Approve</button>
+												<?php }elseif($b['STATUS'] == 3){ ?>
+													<button class="statusInvoice checked btn btn-xs btn-danger" style="cursor: none" value="<?php echo $b['STATUS']?>" inv-id="<?php echo $b['INVOICE_ID']?>">Reject - <?php $b['REASON']?></button>
+												<?php }elseif ($b['STATUS'] == 1) { ?>
+													<button class="statusInvoice btn btn-xs btn-info" style="cursor: none" value="<?php echo $b['STATUS']?>" inv-id="<?php echo $b['INVOICE_ID']?>">Submit</button>
+												<?php } ?>
+												</td>
 											</tr>
 											<?php $no++; } ?>
 										</tbody>

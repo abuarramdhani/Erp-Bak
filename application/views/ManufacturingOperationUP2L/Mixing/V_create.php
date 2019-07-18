@@ -53,12 +53,26 @@
                                                     <input class="form-control" id="txtComponentDescriptionHeader" name="component_description" placeholder="Component Description" type="text"     />
                                                 </div>
                                             </div>
-                                            <div class="form-group">
+                                            <!-- <div class="form-group">
                                                 <label class="control-label col-lg-4" for="txtProductionDateHeader">
                                                     Production Date
                                                 </label>
                                                 <div class="col-lg-4">
                                                     <input class="datetime form-control time-form" data-date-format="yyyy-mm-dd hh:ii:ss" id="txtProductionDateHeader" name="txtProductionDateHeader" placeholder="<?php echo date('Y-m-d h:i:s')?>" type="text"/>
+                                                </div>
+                                            </div> -->
+                                            <div class="form-group">
+                                                <label class="control-label col-md-4">Production Date</label>
+                                                <div class="col-md-4">
+                                                    <input type="text" id="txtProductionDateHeader" name="txtProductionDateHeader" class="form-control time-form1 ajaxOnChange" required="" placeholder="Production Date">
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="txtShift" class="control-label col-lg-4">Shift</label>
+                                                <div class="col-lg-4">
+                                                <select class="form-control slcShift" id="txtShift" name="txtShift">
+                                                        <!-- <option value=""></option> -->
+                                                </select>    
                                                 </div>
                                             </div>
                                             <div class="form-group">
@@ -103,7 +117,7 @@
                                                     <div class="row" style="padding:17px;">
                                                         <label for="txtNilaiOTT" class="control-label col-lg-4">Nilai OTT</label>
                                                         <div class="col-lg-2">
-                                                            <input class="form-control toupper" id="txtNilaiOTT" name="txt_ott"  placeholder="Nilai OTT" >
+                                                            <input class="form-control toupper" id="txtNilaiOTT" name="txt_ott" placeholder="Nilai OTT" >
                                                         </div>
                                                         <label for="txtMouldingQuantityHeader" class="control-label col-lg-2">Lembur</label>
                                                         <div class="col-lg-2">

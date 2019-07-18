@@ -88,9 +88,12 @@ class C_Selep extends CI_Controller
 				'selep_date' => $this->input->post('txtSelepDateHeader'),
 				'component_code' => $this->input->post('txtComponentCodeHeader'),
 				'component_description' => $this->input->post('component_description'),
+				'shift' => $this->input->post('txtShift'),
 				'selep_quantity' => $this->input->post('txtSelepQuantityHeader'),
 				'job_id' => $this->input->post('txtJobIdHeader'),
 				'created_by' => $this->session->userid,
+				'scrap_quantity' => $this->input->post('txtScrapQuantityHeader'),
+				'keterangan' => $this->input->post('txtKeterangan'),
     		);
     		
 			$this->M_selep->setSelep($data);
@@ -122,7 +125,7 @@ class C_Selep extends CI_Controller
 	}
 
 	/* UPDATE DATA */
-	public function update($id)
+	public function edit($id)
 	{
 		$user_id = $this->session->userid;
 
@@ -137,44 +140,42 @@ class C_Selep extends CI_Controller
 
 		$plaintext_string = str_replace(array('-', '_', '~'), array('+', '/', '='), $id);
 		$plaintext_string = $this->encrypt->decode($plaintext_string);
-
+		
 		$data['id'] = $id;
 
 		/* HEADER DATA */
 		$data['Selep'] = $this->M_selep->getSelep($plaintext_string);
 
+		
+		$this->load->view('V_Header',$data);
+		$this->load->view('V_Sidemenu',$data);
+		$this->load->view('ManufacturingOperationUP2L/Selep/V_update', $data);
+		$this->load->view('V_Footer',$data);
+	}
 
-		/* LINES DATA */
 
-		/* HEADER DROPDOWN DATA */
-
-		/* LINES DROPDOWN DATA */
-		$this->form_validation->set_rules('txtSelepDateHeader', 'SelepDate', 'required');
-		$this->form_validation->set_rules('txtComponentCodeHeader', 'ComponentCode', 'required');
-		$this->form_validation->set_rules('component_description', 'ComponentDescription', 'required');
-		$this->form_validation->set_rules('txtSelepQuantityHeader', 'SelepQuantity', 'required');
-
-		if ($this->form_validation->run() === FALSE) {
-			$this->load->view('V_Header',$data);
-			$this->load->view('V_Sidemenu',$data);
-			$this->load->view('ManufacturingOperationUP2L/Selep/V_update', $data);
-			$this->load->view('V_Footer',$data);	
-		} else {
-			$data = array(
+	public function update($id)
+	{
+		$plaintext_string = str_replace(array('-', '_', '~'), array('+', '/', '='), $id);
+		$plaintext_string = $this->encrypt->decode($plaintext_string);
+		$data = array(
 				'selep_date' => $this->input->post('txtSelepDateHeader',TRUE),
 				'component_code' => $this->input->post('txtComponentCodeHeader',TRUE),
 				'component_description' => $this->input->post('component_description',TRUE),
 				'selep_quantity' => $this->input->post('txtSelepQuantityHeader',TRUE),
 				'job_id' => $this->input->post('txtJobIdHeader',TRUE),
 				'last_updated_by' => $this->session->userid,
-    			);
-
-
+				'scrap_quantity' => $this->input->post('txtScrapQuantityHeader',TRUE),
+				'keterangan' => $this->input->post('txtKeterangan',TRUE),
+				'shift' => $this->input->post('txtShift', TRUE),
+				);
+				
+				
 			$this->M_selep->updateSelep($data, $plaintext_string);
 
 			redirect(site_url('ManufacturingOperationUP2L/Selep'));
-		}
 	}
+
 
 	/* READ DATA */
 	public function read($id)
@@ -215,8 +216,8 @@ class C_Selep extends CI_Controller
 		$this->M_selep->deleteSelep($plaintext_string);
 
 		redirect(site_url('ManufacturingOperationUP2L/Selep'));
-    }
-
+	}
+	
 
 
 }

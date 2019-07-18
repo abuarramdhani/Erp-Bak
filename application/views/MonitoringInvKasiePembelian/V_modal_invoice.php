@@ -25,7 +25,7 @@
 										<span><label>Invoice Amount</label></span>
 									</td>
 									<td >
-										<input class="form-control" style="margin-bottom: 10px;" size="40" type="text" value="<?php echo $invoice[0]['INVOICE_AMOUNT']?>" name="invoice_amount" id="invoice_amountt">
+										<input class="form-control" style="margin-bottom: 10px;" size="40" type="text" value="<?php echo 'Rp. '. number_format($invoice[0]['INVOICE_AMOUNT'],0,'.','.').',00-';?>" name="invoice_amount" id="invoice_amountt">
 									</td>
 								</tr>
 								<tr>
@@ -63,7 +63,7 @@
 										<span><label>Nominal DPP Faktur Pajak</label></span>
 									</td>
 									<td>
-										<input  class="form-control" style="margin-bottom: 10px; margin-top: 10px"  size="40" type="text" value="<?php echo $invoice[0]['NOMINAL_DPP']?>" name="nominal_dpp" id="nominal_dpp">
+										<input  class="form-control" style="margin-bottom: 10px; margin-top: 10px"  size="40" type="text" value="<?php echo 'Rp. '. number_format($invoice[0]['NOMINAL_DPP'],0,'.','.').',00-';?>" name="nominal_dpp" id="nominal_dpp">
 									</td>
 								</tr>
 								<tr>
@@ -117,7 +117,7 @@
 							</table>
 							</div>
 		<div class="pull-left" style="margin-top: 10px">
-			<label>Po Amount : </label><span><?php echo $po_amount ?></span>
+			<label>Po Amount : </label><span><?php echo 'Rp. '. number_format(round($po_amount),0,'.','.').',00-';?></span>
 		</div>
 		</div>
 	</div>

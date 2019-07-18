@@ -4,7 +4,7 @@
 				<div class="row">
 					<div class="col-lg-11">
 						<div class="text-right">
-							<h1><b>Approv Lembur</b></h1>
+							<h1><b>Approve Lembur</b></h1>
 						</div>
 					</div>
 					<div class="col-lg-1">
@@ -104,7 +104,7 @@
 										<div class="col-sm-12">
 											<!-- <button type="submit" class="btn btn-primary pull-right"> <i class="fa fa-save"></i> Proses</button> -->
 											<input type="text" id="txt_ses" value="<?php echo $this->session->userid; ?>" hidden>
-											<button type="button" class="btn btn-primary pull-right" data-toggle="modal" data-target="#ProsesDialog"><i class="fa fa-save"></i> Proses</button>
+											<button type="button" hidden data-toggle="modal" data-target="#ProsesDialog" id="btn-ProsesSPL"><i class="fa fa-save"></i> Proses</button>
 											<button type="button" id="spl-approval-0" style="margin-right:3px" class="btn btn-primary pull-right"> <i class="fa fa-search"></i> Cari</button>
 											<button type="reset" style="margin-right:3px" class="btn btn-primary pull-right" onclick="location.reload()"> <i class="fa fa-refresh"></i> Reset</button>
 											<img src="<?php echo base_url('assets/img/gif/loading6.gif') ?>" class="pull-right spl-loading hidden" width="33px" height="33px" style="margin-right:3px">
@@ -118,7 +118,7 @@
 			
 					<div class="box box-primary">
 						<div class="box-body">
-							<table id="example1" class="table table-bordered table-striped spl-table">
+							<table id="example11" class="table table-bordered table-striped spl-table">
 								<thead style="background:#3c8dbc; color:#fff">
 									<tr>
 									<th width="10%">Action</th>
@@ -140,6 +140,17 @@
 									<th width="20%">Tanggal Proses</th>
 									</tr>
 								</thead>
+								<?php if (isset($data) and !empty($data)) { ?>
+									<tbody>
+										<?php foreach ($data as $key) {
+											echo "<tr>";
+											foreach ($key as $val) {
+												echo "<td>".$val."</td>";
+											}
+											echo "</tr>";
+										} ?>
+									</tbody>
+								<?php } ?>
 							</table>
 						</div>
 					</div>
@@ -156,8 +167,52 @@
 									<textarea class="form-control" style="min-width: 75%" id="spl_tex_proses"></textarea>
 								</div>
 								<div class="modal-footer">
-									<a href="finspot:FingerspotVer;<?php echo base64_encode(base_url().'ALK/Approve/fp_proces?userid='.$this->session->userid.'&stat=31&data=&ket='); ?>" type="submit" id="spl_proses_reject" class="btn btn-danger"><i class="fa fa-exclamation-circle"></i> Reject</a>
-									<a href="finspot:FingerspotVer;<?php echo base64_encode(base_url().'ALK/Approve/fp_proces?userid='.$this->session->userid.'&stat=21&data=&ket='); ?>" type="submit" id="spl_proses_approve" class="btn btn-success"><i class="fa fa-check-square"></i> Approve</a>
+									<a href="finspot:FingerspotVer;<?php echo base64_encode(base_url().'ALK/Approve/fp_proces?userid='.$this->session->userid.'&stat=31&data=&ket='); ?>" type="submit" id="spl_proses_reject" class="hidden"><i class="fa fa-exclamation-circle"></i> Reject</a>
+									<a href="finspot:FingerspotVer;<?php echo base64_encode(base_url().'ALK/Approve/fp_proces?userid='.$this->session->userid.'&stat=21&data=&ket='); ?>" type="submit" id="spl_proses_approve" class="hidden"><i class="fa fa-check-square"></i> Approve</a>
+									<button class="btn btn-danger" type="button" data-toggle="modal" data-target="#FingerDialogReject">
+										<i class="fa fa-exclamation-circle"></i> 
+										Reject
+									</button>
+									<button class="btn btn-primary" type="button" data-toggle="modal" data-target="#FingerDialogApprove">
+										<i class="fa fa-check-square"></i> 
+										Approve
+									</button>
+								</div>
+							</div>
+						</div>							
+					</div>
+
+					<div id="FingerDialogApprove" class="modal fade" role="dialog">
+						<div class="modal-dialog">
+							<div class="modal-content">
+								<div class="modal-header">
+									<button type="button" class="close" data-dismiss="modal">&times;</button>
+									<h4 class="modal-title">Pilih Jari untuk Approve</h4>
+								</div>
+								<div class="modal-body">
+									<?php if (isset($jari) and !empty($jari)) {
+										foreach ($jari as $val) { ?>
+											<button type="button" class="btn btn-primary spl_finger_proses" data="<?php echo $val['kd_finger'] ?>"><?php echo $val['jari'] ?></button>
+										<?php }
+									} ?>
+								</div>
+							</div>
+						</div>							
+					</div>
+
+					<div id="FingerDialogReject" class="modal fade" role="dialog">
+						<div class="modal-dialog">
+							<div class="modal-content">
+								<div class="modal-header">
+									<button type="button" class="close" data-dismiss="modal">&times;</button>
+									<h4 class="modal-title">Pilih Jari untuk Reject</h4>
+								</div>
+								<div class="modal-body">
+									<?php if (isset($jari) and !empty($jari)) {
+										foreach ($jari as $val) { ?>
+											<button type="button" class="btn btn-danger spl_finger_proses" data="<?php echo $val['kd_finger'] ?>"><?php echo $val['jari'] ?></button>
+										<?php }
+									} ?>
 								</div>
 							</div>
 						</div>							
@@ -169,6 +224,37 @@
 						  console.log('Got focus');
 						  window.location.reload();
 						}
+
+						var timeoutInMiliseconds = 120000;
+						var timeoutId; 
+						  
+						function startTimer() { 
+						    // window.setTimeout returns an Id that can be used to start and stop a timer
+						    timeoutId = window.setTimeout(doInactive, timeoutInMiliseconds)
+						}
+						  
+						function doInactive() {
+						    // does whatever you need it to actually do - probably signs them out or stops polling the server for info
+						    window.location.reload();
+						}
+
+						function resetTimer() { 
+						    window.clearTimeout(timeoutId)
+						    startTimer();
+						}
+						 
+						function setupTimers () {
+						    document.addEventListener("mousemove", resetTimer(), false);
+						    document.addEventListener("mousedown", resetTimer(), false);
+						    document.addEventListener("keypress", resetTimer(), false);
+						    document.addEventListener("touchmove", resetTimer(), false);
+						     
+						    startTimer();
+						}
+						 
+						document.addEventListener("DOMContentLoaded",function(e){
+							setupTimers();
+						});
 					</script>
 
 				</form>

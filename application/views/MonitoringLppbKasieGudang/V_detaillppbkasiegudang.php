@@ -13,8 +13,9 @@
 				<div class="row">
 					<div class="col-lg-12">
 						<div class="text-left ">
-							<span><b>Detail Batch <?php echo $lppb[0]['GROUP_BATCH']?></b></span>
+							<span><b>Detail Batch </b></span>
 							<input type="hidden" name="batch_number" value="<?php echo $lppb[0]['BATCH_NUMBER']?>">
+						<input type="hidden" name="batch_detail_id" value="<?php echo $lppb[0]['BATCH_DETAIL_ID']?>">
 						</div>
 					</div>
 				</div>
@@ -48,7 +49,7 @@
 														// $removedisable=''; if ($no==count($lppb)) { 
 														// 	$removedisable="$('#btnsavekasie').removeAttr('disabled');"; } 
 														?>
-													<tr>
+													<tr <?=  $p['BATCH_DETAIL_ID']?>>
 														<td>
 															<?php echo $no ?>
 														</td> 
@@ -67,7 +68,7 @@
 															<?php } ?>
 														</td> -->
 														<td><?php echo $p['TANGGAL_LPPB']?><?php echo $p['BATCH_DETAIL_ID']?></td>
-														<td><?php echo $p['PO_NUMBER']?></td>
+														<td class="no_po"><?php echo $p['PO_NUMBER']?></td>
 														<td class="batchdid_<?php echo $p['BATCH_DETAIL_ID']?>">
 															<?php if ($p['STATUS'] == 3 OR $p['STATUS'] == 6) { ?>
 																<span class="btn btn-success" style="cursor: none">Approved</span>
@@ -78,7 +79,13 @@
 															<?php } ?>
 														</td>
 														<td class="batchdid_<?php echo $p['BATCH_DETAIL_ID']?>"><span class="tglTerimaTolak"></span></td>
-														<td class="batchdid_<?php echo $p['BATCH_DETAIL_ID']?>"><?php echo $p['REASON']?><input type="text" value="<?php echo $p['REASON']?>" style="display: none; width: 100px" class="form-control txtAlasan" name="alasan_reject[]">
+
+														<!-- <td><input id="txtTolak_<?php echo $p['BATCH_DETAIL_ID'] ?>" type="text" value="<?php echo $p['REASON']?>" style="display: none;width: 100%;"  class="form-control txtAlasan" name="alasan_reject[]">
+															<input type="hidden" name="id[]" value="<?php echo $p['BATCH_DETAIL_ID']?>"></td> -->
+
+														<td class="batchdid_<?php echo $p['BATCH_DETAIL_ID']?>">
+															<?php echo $p['REASON']?>
+														<input type="text" value="<?php echo $p['REASON']?>" style="display: none; width: 100px" class="form-control txtAlasan" name="alasan_reject" id="txtTolak_<?php echo $p['BATCH_DETAIL_ID']?>">
 															<input type="hidden" name="id[]" value="<?php echo $p['BATCH_DETAIL_ID']?>"></td>
 													</tr>
 												<?php $no++; } ?>
@@ -107,4 +114,5 @@
 </form>
 <script type="text/javascript">
 	var id_gd;
+	var txtTolak = "txtTolak_<?php echo $p['BATCH_DETAIL_ID']?>";
 </script>

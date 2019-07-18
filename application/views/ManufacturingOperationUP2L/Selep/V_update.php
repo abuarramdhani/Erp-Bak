@@ -33,31 +33,56 @@
 											<div class="form-group">
                                                 <label for="txtSelepDateHeader" class="control-label col-lg-4">Selep Date</label>
                                                 <div class="col-lg-4">
-                                                    <input type="text" name="txtSelepDateHeader" class="form-control time-form ajaxOnChange" value="<?php echo $headerRow['selep_date']; ?>" required="" placeholder="Selep Date">
+                                                    <input type="text" name="txtSelepDateHeader" class="form-control time-form1 ajaxOnChange" value="<?php echo $headerRow['selep_date']; ?>" required="" placeholder="Selep Date">
                                                 </div>
                                                 
                                             </div>
-
+                                            <?php $exCompDes = explode("|", $headerRow['component_code']);?>
 											<div class="form-group">
                                                 <label for="txtComponentCodeHeader" class="control-label col-lg-4">Component Code</label>
                                                 <div class="col-lg-4">
-                                                   <select class="form-control jsSlcComp toupper" id="txtComponentCodeHeader" name="component_description" required data-placeholder="Component Code" onchange="getCompDescMO(this)">
+                                                   <select class="form-control jsSlcComp toupper" id="txtComponentCodeHeader" name="txtComponentCodeHeader" required data-placeholder="Component Code" onchange="getCompDescMO(this)">
+                                                    <option selected value="<?= $exCompDes[0]?>"><?= $exCompDes[0]?></option>
                                                     <option><?php echo $headerRow['component_code']; ?></option>
                                                     </select>
                                                 </div>
                                             </div>
-
+                                        
 											<div class="form-group">
                                                 <label for="txtComponentDescriptionHeader" class="control-label col-lg-4">Component Description</label>
                                                 <div class="col-lg-4">
-                                                    <input type="text" placeholder="Component Description" name="txtComponentDescriptionHeader" id="txtComponentDescriptionHeader" class="form-control" value="<?php echo $headerRow['component_description']; ?>"/>
+                                                    <input type="text" placeholder="Component Description" name="component_description" id="component_description" class="form-control" value="<?= $headerRow['component_description'];?>">
                                                 </div>
                                             </div>
 
+                                            <div class="form-group">
+                                                <label for="txtShift" class="control-label col-lg-4">Shift</label>
+                                                <div class="col-lg-4">
+                                                    <select class="form-control slcShift" id="txtShift" name="txtShift">
+                                                        <option><?php echo $headerRow['shift']; ?></option> 
+                                                        <!-- DISINI -->
+                                                    </select>    
+                                                </div>
+                                            </div>
+                                            
 											<div class="form-group">
                                                 <label for="txtSelepQuantityHeader" class="control-label col-lg-4">Selep Quantity</label>
                                                 <div class="col-lg-4">
-                                                    <input type="text" placeholder="Selep Quantity" name="txtSelepQuantityHeader" id="txtSelepQuantityHeader" class="form-control" value="<?php echo $headerRow['selep_quantity']; ?>"/>
+                                                    <input type="number" placeholder="Selep Quantity" name="txtSelepQuantityHeader" id="txtSelepQuantityHeader" class="form-control" value="<?php echo $headerRow['selep_quantity']; ?>"/>
+                                                </div>
+                                            </div>
+                                            <!-- edit -->
+                                            <div class="form-group">
+                                                <label for="txtScrapQuantityHeader" class="control-label col-lg-4">Scrap Quantity</label>
+                                                <div class="col-lg-4">
+                                                    <input type="number" placeholder="Scrap Quantity" name="txtScrapQuantityHeader" id="txtScrapQuantityHeader" class="form-control" value="<?php echo $headerRow['scrap_quantity']; ?>"/>
+                                                </div>
+                                            </div>
+                                            
+                                            <div class="form-group">
+                                                <label for="txtKeterangan" class="control-label col-lg-4">Keterangan</label>
+                                                <div class="col-lg-4">
+                                                    <input type="text" placeholder="Keterangan" name="txtKeterangan" id="txtKeterangan" class="form-control" value="<?php echo $headerRow['keterangan']; ?>" />
                                                 </div>
                                             </div>
 
