@@ -119,7 +119,7 @@ class C_MasterPekerja extends CI_Controller
 		$fileName = time().'-'.trim(addslashes($_FILES['file']['name']));
 		$fileName = str_replace(' ', '_', $fileName);
 
-		$config['upload_path'] = 'assets/upload/';
+		$config['upload_path'] = 'assets/upload/PayrollNonstaff/MasterPekerja/';
 		$config['file_name'] = $fileName;
 		$config['allowed_types'] = '*';
 
@@ -128,34 +128,59 @@ class C_MasterPekerja extends CI_Controller
 		$data['upload_data'] = '';
 		if ($this->upload->do_upload('file')) {
 			$uploadData = $this->upload->data();
-			$inputFileName = 'assets/upload/'.$uploadData['file_name'];
-			// $inputFileName = 'assets/upload/1490405144-PROD0117_(copy).dbf';
-			$db = dbase_open($inputFileName, 0);
-			// print_r(dbase_get_header_info($db));
-			$db_rows = dbase_numrecords($db);
-			for ($i=1; $i <= $db_rows; $i++) {
-				$db_record = dbase_get_record_with_names($db, $i);
+			$inputFileName = 'assets/upload/PayrollNonstaff/MasterPekerja/'.$uploadData['file_name'];
+			$inputFileType = $uploadData['file_type'];
+			$this->load->library('excel');
+
+			$inputFileType = PHPExcel_IOFactory::identify($inputFileName);
+	        $objReader = PHPExcel_IOFactory::createReader($inputFileType);
+	        $objPHPExcel = $objReader->load($inputFileName);
+
+			$sheet = $objPHPExcel->setActiveSheetIndex(0);
+			$highestRow = $sheet->getHighestRow();
+			$highestColumn = $sheet->getHighestColumn();
+			$columnCount = 	PHPExcel_Cell::columnIndexFromString($highestColumn);
+			$sheetHead = $sheet->rangeToArray(
+				'A1:'.$highestColumn.'1',NULL,TRUE,FALSE
+			);
+
+			$sheetData = $sheet->rangeToArray(
+				'A2:'.$highestColumn.$highestRow,NULL,TRUE,FALSE
+			);
+
+			$db_record = array();
+
+			for ($row=0; $row <= $highestRow - 2 ; $row++) { 
+				$a = array();
+				for ($column=0; $column <= $columnCount - 1; $column++) { 
+					$headTitle = explode(',', $sheetHead[0][$column]);
+					$a[$headTitle[0]] = $sheetData[$row][$column];
+				}
+				$db_record[$row] = $a;
+			}
+
+			for ($i=1; $i <= $highestRow - 2; $i++) {
 
 				$dataCekUpdate = array(
-					'rtrim(employee_code)' => rtrim(utf8_encode($db_record['NOIND'])),
+					'rtrim(employee_code)' => rtrim(utf8_encode($db_record[$i]['NOIND'])),
 				);
 
 				$data = array(
-					'employee_code' => utf8_encode($db_record['NOIND']),
-					'employee_name' => utf8_encode($db_record['NAMA']),
-					'sex' => utf8_encode($db_record['JENKEL']),
-					'address' => utf8_encode($db_record['ALAMAT']),
+					'employee_code' => utf8_encode($db_record[$i]['NOIND']),
+					'employee_name' => utf8_encode($db_record[$i]['NAMA']),
+					'sex' => utf8_encode($db_record[$i]['JENKEL']),
+					'address' => utf8_encode($db_record[$i]['ALAMAT']),
 					'telephone' => '',
-					'handphone' => utf8_encode($db_record['NO_HP']),
-					'worker_recruited_date' => utf8_encode($db_record['DIANGKAT']),
-					'worker_start_working_date' => utf8_encode($db_record['MASUK_KERJ']),
-					'section_code' => utf8_encode($db_record['KODESIE']),
-					'resign' => utf8_encode($db_record['KELUAR']),
-					'resign_date' => utf8_encode($db_record['TGL_KELUAR']),
-					'new_employee_code' => utf8_encode($db_record['NOIND_BARU']),
-					'worker_status_code' => utf8_encode($db_record['KD_STATUS_']),
-					'location_code' => utf8_encode($db_record['ID_LOK_KER']),
-					'worker_code' => utf8_encode($db_record['NIK']),
+					'handphone' => utf8_encode($db_record[$i]['NO_HP']),
+					'worker_recruited_date' => utf8_encode($db_record[$i]['DIANGKAT']),
+					'worker_start_working_date' => utf8_encode($db_record[$i]['MASUK_KERJ']),
+					'section_code' => utf8_encode($db_record[$i]['KODESIE']),
+					'resign' => utf8_encode($db_record[$i]['KELUAR']),
+					'resign_date' => utf8_encode($db_record[$i]['TGL_KELUAR']),
+					'new_employee_code' => utf8_encode($db_record[$i]['NOIND_BARU']),
+					'worker_status_code' => utf8_encode($db_record[$i]['KD_STATUS_']),
+					'location_code' => utf8_encode($db_record[$i]['ID_LOK_KER']),
+					'worker_code' => utf8_encode($db_record[$i]['NIK']),
 
 				);
 

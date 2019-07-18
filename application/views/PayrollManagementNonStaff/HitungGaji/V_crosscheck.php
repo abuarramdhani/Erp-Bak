@@ -256,13 +256,13 @@
                                         <td style='border-top: none;border-bottom: none; border-right: 1px solid #000; padding-left: 10px;' >
                                         <?php
                                         foreach ($getDetailKondite as $dataKondite) {
-                                            $MK = $dataKondite['MK'];
-                                            $BKI = $dataKondite['BKI'];
-                                            $BKP = $dataKondite['BKP'];
-                                            $TKP = $dataKondite['TKP'];
-                                            $KB = $dataKondite['KB'];
-                                            $KK = $dataKondite['KK'];
-                                            $KS = $dataKondite['KS'];
+                                            $MK = $dataKondite['mk'];
+                                            $BKI = $dataKondite['bki'];
+                                            $BKP = $dataKondite['bkp'];
+                                            $TKP = $dataKondite['tkp'];
+                                            $KB = $dataKondite['kb'];
+                                            $KK = $dataKondite['kk'];
+                                            $KS = $dataKondite['ks'];
                                         }
 
                                         $PK_p= $nilaiPK;
@@ -299,14 +299,14 @@
                                                 $gol = 'E';
                                             }
 
-                                            echo $dataKondite['MK'].' ';
-                                            echo $dataKondite['BKI'].' ';
-                                            echo $dataKondite['BKP'].' ';
-                                            echo $dataKondite['TKP'].' ';
-                                            echo $dataKondite['KB'].' ';
-                                            echo $dataKondite['KK'].' ';
-                                            echo $dataKondite['KS'].' ';
-                                            echo $dataKondite['KS'].' '; 
+                                            echo $dataKondite['mk'].' ';
+                                            echo $dataKondite['bki'].' ';
+                                            echo $dataKondite['bkp'].' ';
+                                            echo $dataKondite['tkp'].' ';
+                                            echo $dataKondite['kb'].' ';
+                                            echo $dataKondite['kk'].' ';
+                                            echo $dataKondite['ks'].' ';
+                                            echo $dataKondite['ks'].' '; 
                                             
                                             switch ($textNilaiPK) {
                                                         case "51":

@@ -18,7 +18,7 @@
                     </div>
                 </div>
                 <br/>
-          
+          <?php $pk_kondite = array(); ?>
                 <div class="row">
                     <div class="col-lg-12">
                         <div class="box box-primary box-solid">
@@ -433,13 +433,13 @@
                                                                     }
                                                                 }
 
-                                                                $MK = $dataInsentifKondite['MK'];
-                                                                $BKI = $dataInsentifKondite['BKI'];
-                                                                $BKP = $dataInsentifKondite['BKP'];
-                                                                $TKP = $dataInsentifKondite['TKP'];
-                                                                $KB = $dataInsentifKondite['KB'];
-                                                                $KK = $dataInsentifKondite['KK'];
-                                                                $KS = $dataInsentifKondite['KS'];
+                                                                $MK = $dataInsentifKondite['mk'];
+                                                                $BKI = $dataInsentifKondite['bki'];
+                                                                $BKP = $dataInsentifKondite['bkp'];
+                                                                $TKP = $dataInsentifKondite['tkp'];
+                                                                $KB = $dataInsentifKondite['kb'];
+                                                                $KK = $dataInsentifKondite['kk'];
+                                                                $KS = $dataInsentifKondite['ks'];
 
                                                                 if ($MK == 'A') {$MK_p = 8; }elseif ($MK == 'B') {$MK_p = 4; }else{$MK_p = 0; }
 
@@ -626,6 +626,7 @@
                                                 </div>
                                                 <div class="box-body no-padding" style="display: block; background-color: #f8f8f8">
                                                 <?php
+                                                    // echo "<pre>";print_r($getDetailPekerja);echo "</pre>";
                                                     foreach ($getDetailPekerja as $dataDetailPekerja) {
                                                 ?>
                                                     <table class="table">
@@ -651,12 +652,12 @@
                                                             <td><?php echo 'Rp '.number_format($dataDetailPekerja['pot_dl'], 0, '', '.').',-';?></td>
                                                             <td><b>Pot. DPLK</b></td>
                                                             <td>:</td>
-                                                            <td><?php echo 'Rp '.number_format($dataDetailPekerja['pot_dplk'], 0, '', '.').',-';?></td>
+                                                            <td><?php echo 'Rp '.number_format($dataDetailPekerja['potongan_dplk'], 0, '', '.').',-';?></td>
                                                         </tr>
                                                         <tr>
                                                             <td><b>Pot. SPSI</b></td>
                                                             <td>:</td>
-                                                            <td><?php echo 'Rp '.number_format($dataDetailPekerja['pot_spsi'], 0, '', '.').',-';?></td>
+                                                            <td><?php echo 'Rp '.number_format($dataDetailPekerja['potongan_spsi'], 0, '', '.').',-';?></td>
                                                             <td><b>Pot. TKP</b></td>
                                                             <td>:</td>
                                                             <td><?php echo 'Rp '.number_format($dataDetailPekerja['pot_tkp'], 0, '', '.').',-';?></td>
@@ -695,7 +696,7 @@
                                                         <tr>
                                                             <td width="15%"><b>DL</b></td>
                                                             <td width="1%">:</td>
-                                                            <td width="34%"><?php echo 'Rp '.number_format($dataDetailPekerja['DL'], 0, '', '.').',-';?></td>
+                                                            <td width="34%"><?php echo 'Rp '.number_format($dataDetailPekerja['dl'], 0, '', '.').',-';?></td>
                                                             <td width="15%"><b>Pot. Koperasi</b></td>
                                                             <td width="1%">:</td>
                                                             <td width="34%"><?php echo 'Rp '.number_format($dataDetailPekerja['potongan_koperasi'], 0, '', '.').',-';?></td>
@@ -706,7 +707,7 @@
                                                             <td><?php echo 'Rp '.number_format($dataDetailPekerja['tambahan'], 0, '', '.').',-';?></td>
                                                             <td><b>UBS</b></td>
                                                             <td>:</td>
-                                                            <td><?php echo 'Rp '.number_format($dataDetailPekerja['UBS'], 0, '', '.').',-';?></td>
+                                                            <td><?php echo 'Rp '.number_format($dataDetailPekerja['ubs'], 0, '', '.').',-';?></td>
                                                         </tr>
                                                         <tr>
                                                             <td><b>Duka</b></td>
@@ -714,7 +715,7 @@
                                                             <td><?php echo 'Rp '.number_format($dataDetailPekerja['duka'], 0, '', '.').',-';?></td>
                                                             <td><b>Uang makan puasa</b></td>
                                                             <td>:</td>
-                                                            <td><?php echo 'Rp '.number_format($dataDetailPekerja['UM_puasa'], 0, '', '.').',-';?></td>
+                                                            <td><?php echo 'Rp '.number_format($dataDetailPekerja['um_puasa'], 0, '', '.').',-';?></td>
                                                         </tr>
                                                         <tr>
                                                             <td><b>Potongan</b></td>
@@ -722,23 +723,23 @@
                                                             <td><?php echo 'Rp '.number_format($dataDetailPekerja['potongan'], 0, '', '.').',-';?></td>
                                                             <td><b>SK CT</b></td>
                                                             <td>:</td>
-                                                            <td><?php echo 'Rp '.number_format($dataDetailPekerja['SK_CT'], 0, '', '.').',-';?></td>
+                                                            <td><?php echo 'Rp '.number_format($dataDetailPekerja['sk_ct'], 0, '', '.').',-';?></td>
                                                         </tr>
                                                         <tr>
                                                             <td><b>HC</b></td>
                                                             <td>:</td>
-                                                            <td><?php echo 'Rp '.number_format($dataDetailPekerja['HC'], 0, '', '.').',-';?></td>
+                                                            <td><?php echo 'Rp '.number_format($dataDetailPekerja['hc'], 0, '', '.').',-';?></td>
                                                             <td><b>Potongan 2</b></td>
                                                             <td>:</td>
-                                                            <td><?php echo 'Rp '.number_format($dataDetailPekerja['POT_2'], 0, '', '.').',-';?></td>
+                                                            <td><?php echo 'Rp '.number_format((float)$dataDetailPekerja['pot_2'], 0, '', '.').',-';?></td>
                                                         </tr>
                                                         <tr>
                                                             <td><b>Jml Uang Makan</b></td>
                                                             <td>:</td>
-                                                            <td><?php echo 'Rp '.number_format($dataDetailPekerja['jml_UM'], 0, '', '.').',-';?></td>
+                                                            <td><?php echo 'Rp '.number_format($dataDetailPekerja['jml_um'], 0, '', '.').',-';?></td>
                                                             <td><b>Tambahan 2</b></td>
                                                             <td>:</td>
-                                                            <td><?php echo 'Rp '.number_format($dataDetailPekerja['TAMB_2'], 0, '', '.').',-';?></td>
+                                                            <td><?php echo 'Rp '.number_format((float)$dataDetailPekerja['tamb_2'], 0, '', '.').',-';?></td>
                                                         </tr>
                                                         <tr>
                                                             <td><b>Cicilan</b></td>

@@ -47,10 +47,12 @@ $(document).ready(function() {
             action: function ( e, dt, node, config ) {
               if($('label input').val() != '' || $('label input').val() != null){
                 filter = $('label input').val();
+                dataFilter = $('#slcPeriodeDataAbsensi').val();
               }else{
                 filter = '';
+                dataFilter = $('#slcPeriodeDataAbsensi').val();
               }
-              window.location = baseurl+"PayrollManagementNonStaff/ProsesGaji/DataAbsensi/downloadExcel?filter="+filter;
+              window.location = baseurl+"PayrollManagementNonStaff/ProsesGaji/DataAbsensi/downloadExcel?filter="+filter+"&data="+dataFilter;
             }
           }]
         },
@@ -61,6 +63,10 @@ $(document).ready(function() {
         "ajax":{
           url : baseurl+"PayrollManagementNonStaff/ProsesGaji/DataAbsensi/showList",
           type: "post",
+          data: function(d){
+            dataFilter = $('#slcPeriodeDataAbsensi').val();
+            d.dataFilter = dataFilter;
+          },
           error: function(){
             //$("#tblDataAbsensi").append('<tbody class="text-center"><tr><th colspan="6">No data found in the server</th></tr></tbody>');
             //$("#tblDataAbsensi_processing").css("display","none");
@@ -1124,4 +1130,58 @@ $(document).ready(function() {
     }
   });
 
+  $('#ImportDataAbsensi').submit(function(e){
+    e.preventDefault();
+    $.ajax({
+      url : baseurl+'PayrollManagementNonStaff/ProsesGaji/DataAbsensi/doImport',
+      type : 'POST',
+      data : new FormData(this),
+      processData: false,
+      contentType: false,
+      cache: false,
+      async: true,
+      success : function(data){
+        alert('Selesai');
+      }
+    })
+  });
+
+$('#btnShowListDataAbsensi').on('click',function(){
+    var data = $('#slcPeriodeDataAbsensi').val();
+    $('#tblDataAbsensi').DataTable().destroy(); 
+    $('#tblDataAbsensi').DataTable({
+        dom: 'Bfrtip',
+        buttons: {
+          buttons: [{
+            text: 'Excel',
+            action: function ( e, dt, node, config ) {
+              if($('label input').val() != '' || $('label input').val() != null){
+                filter = $('label input').val();
+                dataFilter = $('#slcPeriodeDataAbsensi').val();
+              }else{
+                filter = '';
+                dataFilter = $('#slcPeriodeDataAbsensi').val();
+              }
+              window.location = baseurl+"PayrollManagementNonStaff/ProsesGaji/DataAbsensi/downloadExcel?filter="+filter+"&data="+dataFilter;
+            }
+          }]
+        },
+        "processing": true,
+        "serverSide": true,
+        "scrollX": true,
+        responsive: true,
+        "ajax":{
+          url : baseurl+"PayrollManagementNonStaff/ProsesGaji/DataAbsensi/showList",
+          type: "post",
+          data: function(d){
+            dataFilter = $('#slcPeriodeDataAbsensi').val();
+            d.dataFilter = dataFilter;
+          },
+          error: function(){
+            //$("#tblDataAbsensi").append('<tbody class="text-center"><tr><th colspan="6">No data found in the server</th></tr></tbody>');
+            //$("#tblDataAbsensi_processing").css("display","none");
+          }
+        }
+      });
+  });
 });

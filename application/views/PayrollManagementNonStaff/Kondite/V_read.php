@@ -45,31 +45,31 @@
                                                         </tr>
 														<tr>
                                                             <td class="col-lg-2" style="border: 0"><strong>MK</strong></td>
-                                                            <td style="border: 0">: <?php echo $headerRow['MK']; ?></td>
+                                                            <td style="border: 0">: <?php echo $headerRow['mk']; ?></td>
                                                         </tr>
 														<tr>
                                                             <td class="col-lg-2" style="border: 0"><strong>BKI</strong></td>
-                                                            <td style="border: 0">: <?php echo $headerRow['BKI']; ?></td>
+                                                            <td style="border: 0">: <?php echo $headerRow['bki']; ?></td>
                                                         </tr>
 														<tr>
                                                             <td class="col-lg-2" style="border: 0"><strong>BKP</strong></td>
-                                                            <td style="border: 0">: <?php echo $headerRow['BKP']; ?></td>
+                                                            <td style="border: 0">: <?php echo $headerRow['bkp']; ?></td>
                                                         </tr>
 														<tr>
                                                             <td class="col-lg-2" style="border: 0"><strong>TKP</strong></td>
-                                                            <td style="border: 0">: <?php echo $headerRow['TKP']; ?></td>
+                                                            <td style="border: 0">: <?php echo $headerRow['tkp']; ?></td>
                                                         </tr>
 														<tr>
                                                             <td class="col-lg-2" style="border: 0"><strong>KB</strong></td>
-                                                            <td style="border: 0">: <?php echo $headerRow['KB']; ?></td>
+                                                            <td style="border: 0">: <?php echo $headerRow['kb']; ?></td>
                                                         </tr>
 														<tr>
                                                             <td class="col-lg-2" style="border: 0"><strong>KK</strong></td>
-                                                            <td style="border: 0">: <?php echo $headerRow['KK']; ?></td>
+                                                            <td style="border: 0">: <?php echo $headerRow['kk']; ?></td>
                                                         </tr>
 														<tr>
                                                             <td class="col-lg-2" style="border: 0"><strong>KS</strong></td>
-                                                            <td style="border: 0">: <?php echo $headerRow['KS']; ?></td>
+                                                            <td style="border: 0">: <?php echo $headerRow['ks']; ?></td>
                                                         </tr>
 														<tr>
                                                             <td class="col-lg-2" style="border: 0"><strong>Approval</strong></td>

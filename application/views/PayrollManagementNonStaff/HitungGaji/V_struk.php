@@ -7,11 +7,13 @@
     </style>
 </head>
 
-<?php
-    foreach ($strukData as $row) {
-?>
+
 
 <body>
+<?php
+    $number = 1;
+    foreach ($strukData as $row) {
+?>
     <div style="margin-left:20px;margin-right:20px;padding-top:10px;">
         <!--- etc -->
         <div class="row" style="margin-left:3px;margin-right:3px;padding-top:10px;">
@@ -505,10 +507,12 @@
             </table>
         </div>
     </div>
-</body>
-    <pagebreak>
+    <?php if (count($strukData) !== $number): ?>
+        <pagebreak>
+    <?php endif ?>
 <?php
-
+    $number++;
     }
 
 ?>
+</body>

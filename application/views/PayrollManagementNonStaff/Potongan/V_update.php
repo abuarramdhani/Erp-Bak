@@ -109,7 +109,7 @@
 											<div class="form-group">
                                                 <label for="txtPotThpHeader" class="control-label col-lg-4">Pot Thp</label>
                                                 <div class="col-lg-4">
-                                                    <input type="text" placeholder="Pot Thp" name="txtPotThpHeader" id="txtPotThpHeader" class="form-control" value="<?php echo $headerRow['pot_thp']; ?>"/>
+                                                    <input type="text" placeholder="Pot Thp" name="txtPotThpHeader" id="txtPotThpHeader" class="form-control" value="<?php echo $headerRow['pot_tkp']; ?>"/>
                                                 </div>
                                             </div>
 

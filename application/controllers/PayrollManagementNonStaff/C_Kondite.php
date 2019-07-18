@@ -89,6 +89,8 @@ class C_Kondite extends CI_Controller
 
 	public function Import()
 	{
+		$user = $this->session->user;
+		$this->M_dataabsensi->updateProgress('Import Kondite',0,$user);
 		$user_id = $this->session->userid;
 
 		$data['Menu'] = 'Proses Gaji';
@@ -120,13 +122,13 @@ class C_Kondite extends CI_Controller
 					'noind' => $noind[$i],
 					'kodesie' => $kodesie,
 					'tanggal' => $tanggal,
-					'MK' => $this->input->post('txtMKHeader['.$i.']'),
-					'BKI' => $this->input->post('txtBKIHeader['.$i.']'),
-					'BKP' => $this->input->post('txtBKPHeader['.$i.']'),
-					'TKP' => $this->input->post('txtTKPHeader['.$i.']'),
-					'KB' => $this->input->post('txtKBHeader['.$i.']'),
-					'KK' => $this->input->post('txtKKHeader['.$i.']'),
-					'KS' => $this->input->post('txtKSHeader['.$i.']'),
+					'mk' => $this->input->post('txtMKHeader['.$i.']'),
+					'bki' => $this->input->post('txtBKIHeader['.$i.']'),
+					'bkp' => $this->input->post('txtBKPHeader['.$i.']'),
+					'tkp' => $this->input->post('txtTKPHeader['.$i.']'),
+					'kb' => $this->input->post('txtKBHeader['.$i.']'),
+					'kk' => $this->input->post('txtKKHeader['.$i.']'),
+					'ks' => $this->input->post('txtKSHeader['.$i.']'),
 					'creation_date' => 'NOW()',
 					'created_by' => $this->session->userid,
 				);
@@ -150,13 +152,13 @@ class C_Kondite extends CI_Controller
 					'noind' => $noind,
 					'kodesie' => $kodesie,
 					'tanggal' => $tanggal[$i],
-					'MK' => $this->input->post('txtMKHeader['.$i.']'),
-					'BKI' => $this->input->post('txtBKIHeader['.$i.']'),
-					'BKP' => $this->input->post('txtBKPHeader['.$i.']'),
-					'TKP' => $this->input->post('txtTKPHeader['.$i.']'),
-					'KB' => $this->input->post('txtKBHeader['.$i.']'),
-					'KK' => $this->input->post('txtKKHeader['.$i.']'),
-					'KS' => $this->input->post('txtKSHeader['.$i.']'),
+					'mk' => $this->input->post('txtMKHeader['.$i.']'),
+					'bki' => $this->input->post('txtBKIHeader['.$i.']'),
+					'bkp' => $this->input->post('txtBKPHeader['.$i.']'),
+					'tkp' => $this->input->post('txtTKPHeader['.$i.']'),
+					'kb' => $this->input->post('txtKBHeader['.$i.']'),
+					'kk' => $this->input->post('txtKKHeader['.$i.']'),
+					'ks' => $this->input->post('txtKSHeader['.$i.']'),
 					'creation_date' => 'NOW()',
 					'created_by' => $this->session->userid,
 				);
@@ -173,12 +175,13 @@ class C_Kondite extends CI_Controller
 	}
 
 	public function doImport(){
-		$this->session->set_userdata('ImportProgress', '0');
+		$user = $this->session->user;
+		$this->M_dataabsensi->updateProgress('Import Kondite',0,$user);
 
 		$fileName = time().'-'.trim(addslashes($_FILES['file']['name']));
 		$fileName = str_replace(' ', '_', $fileName);
 
-		$config['upload_path'] = 'assets/upload/';
+		$config['upload_path'] = 'assets/upload/PayrollNonStaff/InsKondite/';
 		$config['file_name'] = $fileName;
 		$config['allowed_types'] = '*';
 
@@ -187,33 +190,64 @@ class C_Kondite extends CI_Controller
 		$data['upload_data'] = '';
 		if ($this->upload->do_upload('file')) {
 			$uploadData = $this->upload->data();
-			$inputFileName = 'assets/upload/'.$uploadData['file_name'];
-			// $inputFileName = 'assets/upload/1490405144-PROD0117_(copy).dbf';
-			$db = dbase_open($inputFileName, 0);
-			// print_r(dbase_get_header_info($db));
-			$db_rows = dbase_numrecords($db);
-			for ($i=1; $i <= $db_rows; $i++) {
-				$db_record = dbase_get_record_with_names($db, $i);
+			$inputFileName = 'assets/upload/PayrollNonStaff/InsKondite/'.$uploadData['file_name'];
+			$inputFileType = $uploadData['file_type'];
+			$this->load->library('excel');
+
+			$inputFileType = PHPExcel_IOFactory::identify($inputFileName);
+	        $objReader = PHPExcel_IOFactory::createReader($inputFileType);
+	        $objPHPExcel = $objReader->load($inputFileName);
+
+			$sheet = $objPHPExcel->setActiveSheetIndex(0);
+			$highestRow = $sheet->getHighestRow();
+			$highestColumn = $sheet->getHighestColumn();
+			$columnCount = 	PHPExcel_Cell::columnIndexFromString($highestColumn);
+			$sheetHead = $sheet->rangeToArray(
+				'A1:'.$highestColumn.'1',NULL,TRUE,FALSE
+			);
+
+			$sheetData = $sheet->rangeToArray(
+				'A2:'.$highestColumn.$highestRow,NULL,TRUE,FALSE
+			);
+
+			$db_record = array();
+
+			for ($row=0; $row <= $highestRow - 2 ; $row++) { 
+				$a = array();
+				for ($column=0; $column <= $columnCount - 1; $column++) { 
+					$headTitle = explode(',', $sheetHead[0][$column]);
+					$a[$headTitle[0]] = $sheetData[$row][$column];
+				}
+				$db_record[$row] = $a;
+			}
+
+			for ($i=1; $i <= $highestRow - 2; $i++) {
 
 				$data = array(
-					'tanggal' => utf8_encode($db_record['TGL']),
-					'noind' => utf8_encode($db_record['NOIND']),
-					'MK' => utf8_encode($db_record['KONDITE1']),
-					'BKI' => utf8_encode($db_record['KONDITE2']),
-					'BKP' => utf8_encode($db_record['KONDITE3']),
-					'TKP' => utf8_encode($db_record['KONDITE4']),
-					'KB' => utf8_encode($db_record['KONDITE5']),
-					'KK' => utf8_encode($db_record['KONDITE6']),
-					'KS' => utf8_encode($db_record['KONDITE7']),
-					'kodesie' => utf8_encode($db_record['KODESIE']),
+					'tanggal' => utf8_encode($db_record[$i]['TGL']),
+					'noind' => utf8_encode($db_record[$i]['NOIND']),
+					'mk' => utf8_encode($db_record[$i]['KONDITE1']),
+					'bki' => utf8_encode($db_record[$i]['KONDITE2']),
+					'bkp' => utf8_encode($db_record[$i]['KONDITE3']),
+					'tkp' => utf8_encode($db_record[$i]['KONDITE4']),
+					'kb' => utf8_encode($db_record[$i]['KONDITE5']),
+					'kk' => utf8_encode($db_record[$i]['KONDITE6']),
+					'ks' => utf8_encode($db_record[$i]['KONDITE7']),
+					'kodesie' => utf8_encode($db_record[$i]['KODESIE']),
 					'creation_date' => 'NOW()',
 					'created_by' => $this->session->userid,
 				);
 
 				$this->M_kondite->setKondite($data);
 
-				$ImportProgress = ($i/$db_rows)*100;
-				$this->session->set_userdata('ImportProgress', $ImportProgress);
+				$ImportProgress = ($i/($highestRow - 2))*100;
+				$cek_data = $this->M_dataabsensi->getProgress($user,'Import Kondite');
+				if ($cek_data == 0) {
+					$this->M_dataabsensi->setProgress('Import Kondite',$ImportProgress,$user);
+				}else{
+					$this->M_dataabsensi->updateProgress('Import Kondite',$ImportProgress,$user);
+				}
+				session_write_close();
 				flush();
 			}
 			unlink($inputFileName);
@@ -276,13 +310,13 @@ class C_Kondite extends CI_Controller
 			'noind' => $noind,
 			'kodesie' => $this->input->post('cmbKodesieHeader',TRUE),
 			'tanggal' => $this->input->post('txtTanggalHeader',TRUE),
-			'MK' => $this->input->post('txtMKHeader',TRUE),
-			'BKI' => $this->input->post('txtBKIHeader',TRUE),
-			'BKP' => $this->input->post('txtBKPHeader',TRUE),
-			'TKP' => $this->input->post('txtTKPHeader',TRUE),
-			'KB' => $this->input->post('txtKBHeader',TRUE),
-			'KK' => $this->input->post('txtKKHeader',TRUE),
-			'KS' => $this->input->post('txtKSHeader',TRUE)
+			'mk' => $this->input->post('txtMKHeader',TRUE),
+			'bki' => $this->input->post('txtBKIHeader',TRUE),
+			'bkp' => $this->input->post('txtBKPHeader',TRUE),
+			'tkp' => $this->input->post('txtTKPHeader',TRUE),
+			'kb' => $this->input->post('txtKBHeader',TRUE),
+			'kk' => $this->input->post('txtKKHeader',TRUE),
+			'ks' => $this->input->post('txtKSHeader',TRUE)
 			);
 		$this->M_kondite->updateKondite($data, $plaintext_string);
 
@@ -445,13 +479,13 @@ class C_Kondite extends CI_Controller
 			4 => 'kodesie',
 			5 => 'unit_name',
 			6 => 'tanggal',
-			7 => '"MK"',
-			8 => '"BKI"',
-			9 => '"BKP"',
-			10 => '"TKP"',
-			11 => '"KB"',
-			12 => '"KK"',
-			13 => '"KS"'
+			7 => 'mk',
+			8 => 'bki',
+			9 => 'bkp',
+			10 => 'tkp',
+			11 => 'kb',
+			12 => 'kk',
+			13 => 'ks'
 		);
 
 		$data_table = $this->M_kondite->getKonditeDatatables();
@@ -485,10 +519,10 @@ class C_Kondite extends CI_Controller
 			$encrypted_string = str_replace(array('+', '/', '='), array('-', '_', '~'), $encrypted_string);
 			$count--;
 			if ($count != 0) {
-				$json .= '["'.$no.'","<a style=\'margin-right:4px\' href=\''.base_url('PayrollManagementNonStaff/ProsesGaji/Kondite/read/'.$encrypted_string.'').'\' data-toggle=\'tooltip\' data-placement=\'bottom\' title=\'Read Data\'><span class=\'fa fa-list-alt fa-2x\'></span></a><a style=\'margin-right:4px\' href=\''.base_url('PayrollManagementNonStaff/ProsesGaji/Kondite/update/'.$encrypted_string.'').'\' data-toggle=\'tooltip\' data-placement=\'bottom\' title=\'Edit Data\'><span class=\'fa fa-pencil-square-o fa-2x\'></span></a><a href=\''.base_url('PayrollManagementNonStaff/ProsesGaji/Kondite/delete/'.$encrypted_string.'').'\' data-toggle=\'tooltip\' data-placement=\'bottom\' title=\'Hapus Data\' onclick=\"return confirm(\'Are you sure you want to delete this item?\');\"><span class=\'fa fa-trash fa-2x\'></span></a>","'.$result['noind'].'","'.$result['employee_name'].'","'.$result['kodesie'].'","'.$result['unit_name'].'","'.$result['tanggal'].'","'.$result['MK'].'","'.$result['BKI'].'","'.$result['BKP'].'","'.$result['TKP'].'","'.$result['KB'].'","'.$result['KK'].'","'.$result['KS'].'"],';
+				$json .= '["'.$no.'","<a style=\'margin-right:4px\' href=\''.base_url('PayrollManagementNonStaff/ProsesGaji/Kondite/read/'.$encrypted_string.'').'\' data-toggle=\'tooltip\' data-placement=\'bottom\' title=\'Read Data\'><span class=\'fa fa-list-alt fa-2x\'></span></a><a style=\'margin-right:4px\' href=\''.base_url('PayrollManagementNonStaff/ProsesGaji/Kondite/update/'.$encrypted_string.'').'\' data-toggle=\'tooltip\' data-placement=\'bottom\' title=\'Edit Data\'><span class=\'fa fa-pencil-square-o fa-2x\'></span></a><a href=\''.base_url('PayrollManagementNonStaff/ProsesGaji/Kondite/delete/'.$encrypted_string.'').'\' data-toggle=\'tooltip\' data-placement=\'bottom\' title=\'Hapus Data\' onclick=\"return confirm(\'Are you sure you want to delete this item?\');\"><span class=\'fa fa-trash fa-2x\'></span></a>","'.$result['noind'].'","'.$result['employee_name'].'","'.$result['kodesie'].'","'.$result['unit_name'].'","'.$result['tanggal'].'","'.$result['mk'].'","'.$result['bki'].'","'.$result['bkp'].'","'.$result['tkp'].'","'.$result['kb'].'","'.$result['kk'].'","'.$result['ks'].'"],';
 			}
 			else{
-				$json .= '["'.$no.'","<a style=\'margin-right:4px\' href=\''.base_url('PayrollManagementNonStaff/ProsesGaji/Kondite/read/'.$encrypted_string.'').'\' data-toggle=\'tooltip\' data-placement=\'bottom\' title=\'Read Data\'><span class=\'fa fa-list-alt fa-2x\'></span></a><a style=\'margin-right:4px\' href=\''.base_url('PayrollManagementNonStaff/ProsesGaji/Kondite/update/'.$encrypted_string.'').'\' data-toggle=\'tooltip\' data-placement=\'bottom\' title=\'Edit Data\'><span class=\'fa fa-pencil-square-o fa-2x\'></span></a><a href=\''.base_url('PayrollManagementNonStaff/ProsesGaji/Kondite/delete/'.$encrypted_string.'').'\' data-toggle=\'tooltip\' data-placement=\'bottom\' title=\'Hapus Data\' onclick=\"return confirm(\'Are you sure you want to delete this item?\');\"><span class=\'fa fa-trash fa-2x\'></span></a>","'.$result['noind'].'","'.$result['employee_name'].'","'.$result['kodesie'].'","'.$result['unit_name'].'","'.$result['tanggal'].'","'.$result['MK'].'","'.$result['BKI'].'","'.$result['BKP'].'","'.$result['TKP'].'","'.$result['KB'].'","'.$result['KK'].'","'.$result['KS'].'"]';
+				$json .= '["'.$no.'","<a style=\'margin-right:4px\' href=\''.base_url('PayrollManagementNonStaff/ProsesGaji/Kondite/read/'.$encrypted_string.'').'\' data-toggle=\'tooltip\' data-placement=\'bottom\' title=\'Read Data\'><span class=\'fa fa-list-alt fa-2x\'></span></a><a style=\'margin-right:4px\' href=\''.base_url('PayrollManagementNonStaff/ProsesGaji/Kondite/update/'.$encrypted_string.'').'\' data-toggle=\'tooltip\' data-placement=\'bottom\' title=\'Edit Data\'><span class=\'fa fa-pencil-square-o fa-2x\'></span></a><a href=\''.base_url('PayrollManagementNonStaff/ProsesGaji/Kondite/delete/'.$encrypted_string.'').'\' data-toggle=\'tooltip\' data-placement=\'bottom\' title=\'Hapus Data\' onclick=\"return confirm(\'Are you sure you want to delete this item?\');\"><span class=\'fa fa-trash fa-2x\'></span></a>","'.$result['noind'].'","'.$result['employee_name'].'","'.$result['kodesie'].'","'.$result['unit_name'].'","'.$result['tanggal'].'","'.$result['mk'].'","'.$result['bki'].'","'.$result['bkp'].'","'.$result['tkp'].'","'.$result['kb'].'","'.$result['kk'].'","'.$result['ks'].'"]';
 			}
 			$no++;
 		}
@@ -500,8 +534,8 @@ class C_Kondite extends CI_Controller
 	public function downloadExcel()
     {
 		$filter = $this->input->get('filter');
-		$column_table = array('', 'noind', 'employee_name', 'kodesie', 'unit_name', 'tanggal', 'MK', 'BKI', 'BKP', 'TKP', 'KB', 'KK', 'KS');
-		$column_view = array('No', 'Noind', 'Nama', 'Kodesie', 'Nama Unit', 'Tanggal', 'MK', 'BKI', 'BKP', 'TKP', 'KB', 'KK', 'KS');
+		$column_table = array('', 'noind', 'employee_name', 'kodesie', 'unit_name', 'tanggal', 'mk', 'bki', 'bkp', 'tkp', 'kb', 'kk', 'ks');
+		$column_view = array('no', 'noind', 'nama', 'kodesie', 'nama unit', 'tanggal', 'mk', 'bki', 'bkp', 'tkp', 'kb', 'kk', 'ks');
 		$data_table = $this->M_kondite->getKonditeSearch($filter)->result_array();
 
 		$this->load->library("Excel");
