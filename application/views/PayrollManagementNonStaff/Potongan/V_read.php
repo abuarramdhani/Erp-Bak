@@ -69,7 +69,7 @@
                                                         </tr>
 														<tr>
                                                             <td class="col-lg-2" style="border: 0"><strong>Pot Thp</strong></td>
-                                                            <td style="border: 0">: <?php echo $headerRow['pot_thp']; ?></td>
+                                                            <td style="border: 0">: <?php echo $headerRow['pot_tkp']; ?></td>
                                                         </tr>
 													<?php endforeach; ?>
                                                     </table>

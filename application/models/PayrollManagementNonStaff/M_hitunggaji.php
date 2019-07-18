@@ -11,14 +11,14 @@ class M_hitunggaji extends CI_Model
     public function getHitungGaji($noind = '', $kodesie = '', $bln_gaji, $thn_gaji){
         $sql = "
             SELECT
-                pab.\"HMS\" as \"IMSNilai\",
-                pab.\"HMM\" as \"IMMNilai\",
-                pab.\"UBT\" as \"UBTNilai\",
-                pab.\"HUPAMK\" as \"UPAMKNilai\",
+                pab.\"hms\" as \"IMSNilai\",
+                pab.\"hmm\" as \"IMMNilai\",
+                pab.\"ubt\" as \"UBTNilai\",
+                pab.\"hupamk\" as \"UPAMKNilai\",
                 pab.\"jam_lembur\" as \"jamLembur\",
                 pab.\"jml_izin\",
                 pab.\"jml_mangkir\",
-                pab.\"DL\",
+                pab.\"dl\",
                 pta.\"kurang_bayar\",
                 pab.\"tambahan\",
                 pta.\"lain_lain\" as \"tambahan_lain\",

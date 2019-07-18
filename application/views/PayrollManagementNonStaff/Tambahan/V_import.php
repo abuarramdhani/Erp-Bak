@@ -37,13 +37,23 @@
                                                 <span class="input-group-btn">
                                                     <div class="fileUpload btn btn-block btn-primary">
                                                         <span>Browse</span>
-                                                        <input name="file" type="file" class="upload uploadBtn" accept=".dbf" required/>
+                                                        <input name="file" type="file" class="upload uploadBtn" accept=".xls" required/>
                                                     </div>
                                                 </span>
                                             </div>
                                         </div>
                                         <div class="col-lg-1" id="server-status">
                                             
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <div class="col-lg-offset-2 col-lg-8">
+                                            <div class="progress">
+                                                <div class="progress-bar progress-bar-striped active" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" style="width: 0%" id="progressImport">
+                                                    0 %
+                                                </div>
+                                            </div>
+
                                         </div>
                                     </div>
                                     <div class="form-group">
@@ -73,5 +83,20 @@
                 $(this).closest('.row').find('.uploadFile').val(path[i].name);
             }
         }
+    });
+    $(document).ready(function(){
+        setInterval(function(){
+             $.ajax({
+              type:'get',
+              data: {user: '<?php echo $user; ?>', type: 'Import Absensi'},
+              dataType: 'json',
+              url: baseurl + 'PayrollManagementNonStaff/ProsesGaji/DataAbsensi/getProgressData',
+              success: function(data){
+                $('#progressImport').attr('aria-valuenow',data);
+                $('#progressImport').css('width',data+'%');
+                $('#progressImport').text(data+' %');
+              }
+            });
+        },5000);
     });
 </script>

@@ -79,7 +79,7 @@
                                                 <input type="hidden" name="month" id="dbfmonth">
                                                 <input type="hidden" name="year" id="dbfyear">                                                
                                                 <input type="hidden" name="tanggal" id="dbftanggal">
-                                                <button type="submit" class="btn btn-success btn-block"><i class="fa fa-file-text-o"></i>  Eksport DBF</button>
+                                                <button type="submit" class="btn btn-success btn-block" disabled><i class="fa fa-file-text-o"></i>  Eksport DBF</button>
                                             </form>
                                         </div>
                                         <div class="col-lg-3">

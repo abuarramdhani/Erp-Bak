@@ -79,6 +79,8 @@ class C_Potongan extends CI_Controller
 
 	public function Import()
 	{
+		$user = $this->session->user;
+		$this->M_dataabsensi->updateProgress('Import Potongan',0,$user);
 		$user_id = $this->session->userid;
 
 		$data['Title'] = 'Potongan';
@@ -124,12 +126,13 @@ class C_Potongan extends CI_Controller
 	}
 
 	public function doImport(){
-		$this->session->set_userdata('ImportProgress', '0');
+		$user = $this->session->user;
+		$this->M_dataabsensi->updateProgress('Import Potongan',0,$user);
 
 		$fileName = time().'-'.trim(addslashes($_FILES['file']['name']));
 		$fileName = str_replace(' ', '_', $fileName);
 
-		$config['upload_path'] = 'assets/upload/';
+		$config['upload_path'] = 'assets/upload/PayrollNonStaff/Potongan/';
 		$config['file_name'] = $fileName;
 		$config['allowed_types'] = '*';
 
@@ -138,33 +141,63 @@ class C_Potongan extends CI_Controller
 		$data['upload_data'] = '';
 		if ($this->upload->do_upload('file')) {
 			$uploadData = $this->upload->data();
-			$inputFileName = 'assets/upload/'.$uploadData['file_name'];
-			// $inputFileName = 'assets/upload/1490405144-PROD0117_(copy).dbf';
-			$db = dbase_open($inputFileName, 0);
-			// print_r(dbase_get_header_info($db));
-			$db_rows = dbase_numrecords($db);
-			for ($i=1; $i <= $db_rows; $i++) {
-				$db_record = dbase_get_record_with_names($db, $i);
+			$inputFileName = 'assets/upload/PayrollNonStaff/Potongan/'.$uploadData['file_name'];
+			$inputFileType = $uploadData['file_type'];
+			$this->load->library('excel');
 
+			$inputFileType = PHPExcel_IOFactory::identify($inputFileName);
+	        $objReader = PHPExcel_IOFactory::createReader($inputFileType);
+	        $objPHPExcel = $objReader->load($inputFileName);
+
+			$sheet = $objPHPExcel->setActiveSheetIndex(0);
+			$highestRow = $sheet->getHighestRow();
+			$highestColumn = $sheet->getHighestColumn();
+			$columnCount = 	PHPExcel_Cell::columnIndexFromString($highestColumn);
+			$sheetHead = $sheet->rangeToArray(
+				'A1:'.$highestColumn.'1',NULL,TRUE,FALSE
+			);
+
+			$sheetData = $sheet->rangeToArray(
+				'A2:'.$highestColumn.$highestRow,NULL,TRUE,FALSE
+			);
+
+			$db_record = array();
+
+			for ($row=0; $row <= $highestRow - 2 ; $row++) { 
+				$a = array();
+				for ($column=0; $column <= $columnCount - 1; $column++) { 
+					$headTitle = explode(',', $sheetHead[0][$column]);
+					$a[$headTitle[0]] = $sheetData[$row][$column];
+				}
+				$db_record[$row] = $a;
+			}
+
+			for ($i=1; $i <= $highestRow - 2; $i++) {
 				$data = array(
-					'bulan_gaji' => utf8_encode($db_record['BLN_GJ']),
-					'tahun_gaji' => utf8_encode($db_record['THN_GJ']),
-					'noind' => utf8_encode($db_record['NOIND']),
-					'pot_lebih_bayar' => utf8_encode($db_record['POT']),
+					'bulan_gaji' => utf8_encode($db_record[$i]['BLN_GJ']),
+					'tahun_gaji' => utf8_encode($db_record[$i]['THN_GJ']),
+					'noind' => utf8_encode($db_record[$i]['NOIND']),
+					'pot_lebih_bayar' => utf8_encode($db_record[$i]['POT']),
 				);
 
 				$data2 = array(
-					'bulan_gaji' => utf8_encode($db_record['BLN_GJ']),
-					'tahun_gaji' => utf8_encode($db_record['THN_GJ']),
-					'noind' => utf8_encode($db_record['NOIND']),
-					'kurang_bayar' => utf8_encode($db_record['TAMBAHAN']),
+					'bulan_gaji' => utf8_encode($db_record[$i]['BLN_GJ']),
+					'tahun_gaji' => utf8_encode($db_record[$i]['THN_GJ']),
+					'noind' => utf8_encode($db_record[$i]['NOIND']),
+					'kurang_bayar' => utf8_encode($db_record[$i]['TAMBAHAN']),
 				);
 
 				$this->M_potongan->setPotongan($data);
 				$this->M_potongan->setTambahan($data2);
 
-				$ImportProgress = ($i/$db_rows)*100;
-				$this->session->set_userdata('ImportProgress', $ImportProgress);
+				$ImportProgress = ($i/($highestRow - 2))*100;
+				$cek_data = $this->M_dataabsensi->getProgress($user,'Import Potongan');
+				if ($cek_data == 0) {
+					$this->M_dataabsensi->setProgress('Import Potongan',$ImportProgress,$user);
+				}else{
+					$this->M_dataabsensi->updateProgress('Import Potongan',$ImportProgress,$user);
+				}
+				session_write_close();
 				flush();
 			}
 			unlink($inputFileName);
