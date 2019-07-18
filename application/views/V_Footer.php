@@ -108,7 +108,7 @@
 	<script src="<?php echo base_url('assets/js/customWM.js');?>" type="text/javascript"></script>
 	<script src="<?php echo base_url('assets/js/customSL.js');?>" type="text/javascript"></script>
     <script src="<?php echo base_url('assets/js/jquery-maskmoney.js');?>" type="text/javascript"></script>
-	<!-- <script src="<?php echo base_url('assets/js/customPR.js');?>" type="text/javascript"></script>-->
+	<script src="<?php echo base_url('assets/js/customPR.js');?>" type="text/javascript"></script>
 	<script src="<?php echo base_url('assets/js/customGA.js');?>" type="text/javascript"></script>
 	<!--	<script src="<?php echo base_url('assets/js/customLKH.js');?>" type="text/javascript"></script>-->
 	<script src="<?php echo base_url('assets/js/customOC.js');?>" type="text/javascript"></script>
