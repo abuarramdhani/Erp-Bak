@@ -4,7 +4,7 @@ date_default_timezone_set('Asia/Jakarta');
 
 class C_inputkirim extends CI_Controller
 {
-	
+
 	public function __construct()
 	{
 		parent::__construct();
@@ -18,7 +18,7 @@ class C_inputkirim extends CI_Controller
 		$this->load->model('M_Index');
 		$this->load->model('SystemAdministration/MainMenu/M_user');
 		$this->load->model('WasteManagementSeksi/MainMenu/M_kirim');
-		  
+
 		if($this->session->userdata('logged_in')!=TRUE) {
 			$this->load->helper('url');
 			$this->session->set_userdata('last_page', current_url());
@@ -29,7 +29,7 @@ class C_inputkirim extends CI_Controller
 
 	public function getSession(){
 		if ($this->session->is_logged) {
-			
+
 		}else{
 			redirect('');
 		}
@@ -72,7 +72,7 @@ class C_inputkirim extends CI_Controller
 		$data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id);
 		$data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id);
 
-		$data['JenisLimbah'] = $this->M_kirim->getLimJenis();
+		$data['JenisLimbah'] = $this->M_kirim->getLimJenis($kodesie);
 		$data['Seksi'] = $this->M_kirim->getSekNamaByKodesie($kodesie);
 		$data['Seksi2'] = $this->M_kirim->getSekNama();
 		$data['Lokasi'] = $this->M_kirim->getLokasi();
@@ -89,14 +89,14 @@ class C_inputkirim extends CI_Controller
 			}
 			$datapost = array(
 				'id_kirim' => $id['0']['id'],
-				'tanggal' => $this->input->post('txtTanggalKirimLimbah'), 
-				'waktu' => $this->input->post('txtWaktuKirimLimbah'), 
+				'tanggal' => $this->input->post('txtTanggalKirimLimbah'),
+				'waktu' => $this->input->post('txtWaktuKirimLimbah'),
 				'jenis_limbah' => $this->input->post('txtJenisLimbah'),
 				'pengirim' => $this->input->post('txtPengirimLimbah'),
 				'lokasi_kerja' => $this->input->post('txtLokasi'),
-				'kondisi' => $this->input->post('txtKondisi'), 
-				'jumlah' => $this->input->post('txtJumlah'), 
-				'keterangan' => $this->input->post('txtKeterangan'), 
+				'kondisi' => $this->input->post('txtKondisi'),
+				'jumlah' => $this->input->post('txtJumlah'),
+				'keterangan' => $this->input->post('txtKeterangan'),
 			);
 			// echo "<pre>";
 			// print_r($datapost);
@@ -107,7 +107,7 @@ class C_inputkirim extends CI_Controller
 			redirect(site_url('WasteManagementSeksi/InputKirimLimbah/Sendmail/Create/'.$encrypted_string));
 		}
 
-		
+
 	}
 
 	public function EditKirim($id){
@@ -141,13 +141,13 @@ class C_inputkirim extends CI_Controller
 		}else{
 			$datapost = array(
 				'id_kirim' => $plaintext_string,
-				'tanggal' => $this->input->post('txtTanggalKirimLimbah'), 
-				'waktu' => $this->input->post('txtWaktuKirimLimbah'), 
+				'tanggal' => $this->input->post('txtTanggalKirimLimbah'),
+				'waktu' => $this->input->post('txtWaktuKirimLimbah'),
 				'jenis_limbah' => $this->input->post('txtJenisLimbah'),
 				'lokasi_kerja' => $this->input->post('txtLokasi'),
-				'kondisi' => $this->input->post('txtKondisi'), 
-				'jumlah' => $this->input->post('txtJumlah'), 
-				'keterangan' => $this->input->post('txtKeterangan'), 
+				'kondisi' => $this->input->post('txtKondisi'),
+				'jumlah' => $this->input->post('txtJumlah'),
+				'keterangan' => $this->input->post('txtKeterangan'),
 			);
 			// echo "<pre>";
 			// print_r($datapost);
@@ -155,7 +155,7 @@ class C_inputkirim extends CI_Controller
 			$this->M_kirim->UpdateLimKirim($datapost);
 			redirect(site_url('WasteManagementSeksi/InputKirimLimbah/Sendmail/Edit/'.$id));
 		}
-		
+
 	}
 
 	public function DelKirim($id){
@@ -202,7 +202,7 @@ class C_inputkirim extends CI_Controller
 		$tanggal = $limbah['0']['tanggal'];
 		$waktu = $limbah['0']['waktu'];
 
-		
+
 
 		if ($aksi == "Create") {
 			$text = "user <b> ".$user_name." </b> telah menginput kiriman limbah. ";
@@ -225,7 +225,7 @@ class C_inputkirim extends CI_Controller
 				#detail {
    	 						border: 1px solid black;
    	 						text-align: justify;
-   	 						border-collapse: collapse;					
+   	 						border-collapse: collapse;
 						}
 
 			  	</style>
@@ -233,7 +233,7 @@ class C_inputkirim extends CI_Controller
 				<body>
 						<h3 style="text-decoration: underline;">Waste Management</h3>
 					<hr/>
-				
+
 					<p> '.$text.' <br> Dengan detail sebagai berikut :
 					</p>
 					<table>
@@ -268,11 +268,11 @@ class C_inputkirim extends CI_Controller
 					<p>
 					Untuk melihat/mengelola, silahkan login ke ERP
 					</p>
-					
+
 				</body>
 				</html>';
 
-		$mail = new PHPMailer(); 
+		$mail = new PHPMailer();
         $mail->SMTPDebug = 0;
         $mail->Debugoutput = 'html';
 

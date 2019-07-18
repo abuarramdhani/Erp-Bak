@@ -13,6 +13,16 @@ $styleArray = array(
 $border_all = array ('borders' => array('allborders' => array('style' => PHPExcel_Style_Border::BORDER_THIN,'color' => array('black'),)));
 
 //UNTUK CETAK KE XLS
+  //orientation page
+  $objPHPExcel->getActiveSheet()
+    ->getPageSetup()
+    ->setOrientation(PHPExcel_Worksheet_PageSetup::ORIENTATION_LANDSCAPE);
+  $objPHPExcel->getActiveSheet()
+    ->getPageSetup()
+    ->setPaperSize(PHPExcel_Worksheet_PageSetup::PAPERSIZE_A4);
+  //Print set fit one page
+  $objPHPExcel->getActiveSheet()->getPageSetup()->setFitToWidth(1);
+  $objPHPExcel->getActiveSheet()->getPageSetup()->setFitToHeight(0);
   //Rename Worksite
   $objPHPExcel->getActiveSheet()->setTitle('Sheet1');
   $objPHPExcel->getActiveSheet()->getStyle('A:K')->applyFromArray($styleArray);
