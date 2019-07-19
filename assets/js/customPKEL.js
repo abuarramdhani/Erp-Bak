@@ -49,7 +49,7 @@ $(function () {
 				return {
 					results: $.map(data, function (item) {
 						return {
-							id: item.kd_pkj,
+							id: item.kdpekerjaan,
 							text: item.pekerjaan
 						};
 					})
