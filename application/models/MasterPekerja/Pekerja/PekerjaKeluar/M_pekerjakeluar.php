@@ -46,7 +46,7 @@ class M_pekerjakeluar extends CI_Model {
 			 // return $data;
 	 	}
 
-	 public function getkdPekerja($pekerja,$kd_pekerjaan)
+	 /*public function getkdPekerja($pekerja,$kd_pekerjaan)
 	 {
 	 	$kd_pekerjaan = substr($kd_pekerjaan, 0,7);
 	 	$sql = "select distinct(case 	when 	pri.kd_pkj is not null
@@ -54,7 +54,7 @@ class M_pekerjakeluar extends CI_Model {
 				end
 				) as pekerjaan,pri.kd_pkj
 				from hrd_khs.tpribadi as pri
-				left join hrd_khs.tpekerjaan as tpekerjaan
+			    right join hrd_khs.tpekerjaan as tpekerjaan
 				on 	tpekerjaan.kdpekerjaan=pri.kd_pkj
 				where left(pri.kodesie,7) like '$kd_pekerjaan%' and upper(pekerjaan) like upper('%$pekerja%') order by pri.kd_pkj asc";
 				// echo $sql;exit();
@@ -63,6 +63,26 @@ class M_pekerjakeluar extends CI_Model {
 			 // return $data;
 
 	 }
+	 */
+
+	  public function getkdPekerja($pekerja,$kd_pekerjaan)
+	 {
+	 	$kd_pekerjaan = substr($kd_pekerjaan, 0,7);
+	 	$sql = "select concat_ws(' - ', kdpekerjaan, pekerjaan) as pekerjaan,kdpekerjaan
+					from hrd_khs.tpekerjaan as tpekerjaan
+				where left(tpekerjaan.kdpekerjaan,7) like '$kd_pekerjaan%'
+ 					order by kdpekerjaan asc";
+		$query 	=	$this->personalia->query($sql);
+			return $query->result_array();	
+			 // return $data;
+
+	 }
+	
+	
+
+	 
+	 
+
 
 
 	public function dataPekerja($noind,$keluar)
