@@ -51,4 +51,96 @@ class M_splasska extends CI_Model{
 		return $query->row();
 	}
 
+	public function cek_spl($spl_id){
+		$sql = "select 
+					round(
+						(
+							timestampdiff(
+								second,
+								convert(concat(Tgl_Lembur,' ',Jam_Mulai_Lembur), DATETIME),
+								(
+									case when Jam_Mulai_Lembur > Jam_Akhir_Lembur then 
+										convert(concat(date_add(Tgl_Lembur, interval 1 day),' ',Jam_Akhir_Lembur), DATETIME)
+									else 
+										convert(concat(Tgl_Lembur,' ',Jam_Akhir_Lembur), DATETIME)
+									end
+								)
+							)
+						)/3600
+					,2) -
+					(
+						case when Break = 'Y' then 
+							0.25
+						else 
+							0
+						end 
+					) -
+					(
+						case when Istirahat = 'Y' then 
+							0.75
+						else 
+							0
+						end 
+					) as jml_lembur , 
+					Kd_Lembur as kode,
+					Tgl_Lembur as tanggal,
+					Noind as noind,
+					Jam_Mulai_Lembur as awal,
+					Jam_Akhir_Lembur as akhir
+				from splseksi.tspl 
+				where ID_SPL = '$spl_id' 
+				order by Tgl_Lembur desc";
+		$query = $this->spl->query($sql);
+		return $query->row();
+	}
+
+	public function get_wkt_pkj($noind,$tanggal){
+		$sql = "select jam_kerja from \"Presensi\".tshiftpekerja 
+				where tanggal = '$tanggal' and noind = '$noind'";
+		return $this->prs->query($sql)->row()->jam_kerja;
+	}
+
+	public function cek_hl($noind,$tanggal){
+		$sql = "select * from \"Presensi\".tdatapresensi 
+				where noind = '$noind' and tanggal = '$tanggal' and kd_ket = 'HL'";
+		return $this->prs->query($sql)->num_rows();
+	}
+
+	public function insert_tdatapresensi_hl($awal,$akhir,$noind,$tanggal,$lembur){
+		$sql = "insert into \"Presensi\".tdatapresensi
+				(tanggal,noind,kodesie,masuk,keluar,kd_ket,total_lembur,ket,user_,noind_baru,create_timestamp)
+				select '$tanggal',noind,kodesie,'masuk','keluar','HL','biasa','ERSPL',noind_baru,now()
+				from hrd_khs.tpribadi 
+				where noind = '$noind'";
+		$this->prs->query($sql);
+	}
+
+	public function cek_tdatapresensi($noind,$tanggal){
+		$sql = "select * from \"Presensi\".tdatapresensi 
+				where noind = '$noind' and tanggal = '$tanggal' and kd_ket in ('PKJ','PDL')";
+		return $this->prs->query($sql)->row();
+	}
+
+	public function update_tdatapresensi($kd_ket,$noind,$tanggal,$lembur){
+		$sql = "update \"Presensi\".tdatapresensi 
+				set kd_ket = '$kd_ket',
+				total_lembur = '$lembur',
+				last_action = 'UPDATE',
+				last_action_date = now()
+				where noind = '$noind' and tanggal = '$tanggal'";
+		$this->prs->query($sql);
+	}
+
+	public function recheck_spl($spl_id){
+		$sql = "select * from splseksi.tspl where ID_SPL ='$spl_id'";
+		$result = $this->spl->query($sql)->row();
+		$sql = "select * from \"Presensi\".tdatapresensi where noind = '".$result->Noind."' and tanggal = '".$result->Tgl_Lembur."'";
+		return $this->prs->query($sql)->num_rows();
+	}
+
+	public function get_tdatapresensi($noind,$tanggal){
+		$sql = "select * from \"Presensi\".tdatapresensi where noind = '$noind' and tanggal = '$tanggal'";
+		return $this->prs->query($sql)->row();
+	}
+
 }

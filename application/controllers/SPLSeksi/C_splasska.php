@@ -240,6 +240,63 @@ class C_splasska extends CI_Controller {
 		}
 	}
 
+	public function update_datapresensi($spl_id){
+		$si = $spl_id;
+		$jml_lembur = 0;
+		$cek_tspl = $this->M_splasska->cek_spl($si);
+		// print_r($cek_tspl);exit();
+		if(floatval($cek_tspl->jml_lembur) > 0){
+			if ($cek_tspl->kode == '004') {
+				$wkt_pkj = $this->M_splasska->get_wkt_pkj($cek_tspl->noind,$cek_stpl->$tanggal);
+				$jml_lembur = floatval($cek_tspl->jml_lembur) - $wkt_pkj;
+			}else{
+				$jml_lembur = floatval($cek_tspl->jml_lembur);
+			}
+		}
+
+		if($cek_tspl->kode == '004'){
+			if ($jml_lembur > 8) {
+				$lembur1 = ($jml_lembur - 8) * 4;
+				$lembur2 = 3;
+				$lembur3 = 14;
+			}else if($jml_lembur > 7){
+				$lembur1 = ($jml_lembur - 7) * 3;
+				$lembur2 = 14;
+				$lembur3 = 0;
+			}else{
+				$lembur1 = $jml_lembur * 2;
+				$lembur2 = 0;
+				$lembur3 = 0;
+			}
+		}else{
+			if($jml_lembur > 1){
+				$lembur1 = ($jml_lembur - 1) * 2;
+				$lembur2 = 1.5;
+				$lembur3 = 0;
+			}else{
+				$lembur1 = ($jml_lembur - 8)* 1.5;
+				$lembur2 = 0;
+				$lembur3 = 0;
+			}
+		}
+		$lembur = $lembur1 + $lembur2 + $lembur3;
+		// echo $lembur;print_r($cek_tspl);exit();
+		if($cek_tspl->kode == '004'){
+			$cek_hl = $this->M_splasska->cek_hl($cek_tspl->noind,$cek_tspl->tanggal);
+			if ($cek_hl == 0) {
+				$this->M_splasska->insert_tdatapresensi_hl($cek_tspl->awal,$cek_tspl->akhir,$cek_tspl->noind,$cek_tspl->tanggal,$lembur);
+				$this->M_splasska->tlog();
+			}
+		}else{
+			$cek_tdatapresensi = $this->M_splasska->cek_tdatapresensi($cek_tspl->noind,$cek_tspl->tanggal);
+			if ($cek_tdatapresensi->kd_ket == 'PKJ') {
+				$this->M_splasska->update_tdatapresensi('PLB',$cek_tspl->noind,$cek_tspl->tanggal,$lembur);
+			}elseif($cek_tdatapresensi->kd_ket == 'PDL'){
+				$this->M_splasska->update_tdatapresensi('PDB',$cek_tspl->noind,$cek_tspl->tanggal,$lembur);
+			}
+		}
+	}
+
 	public function send_email_2($status,$spl_id,$ket){
 		$this->session->spl_validasi_waktu_asska = time();
 		$user = $this->session->user;
@@ -459,17 +516,86 @@ class C_splasska extends CI_Controller {
 		$status = $_GET['status'];
 		$spl_id = $_GET['spl_id'];
 		$ket = $_GET['ket'];
-
+		$reject = "";
 		foreach(explode('.', $spl_id) as $si){
-			$this->data_spl_approv($si, $status, $ket);
+			if($status == '35'){
+				$recheck_spl = $this->M_splasska->recheck_spl($si);
+				if($recheck_spl == 0){
+					$this->data_spl_approv($si, $status, $ket);
+					$this->update_datapresensi($si);
+				}else{
+					if ($reject == "") {
+						$reject .= $si;
+					}else{
+						$reject .= ".".$si;
+					}
+				}
+			}
 		}
 		
 		$this->send_email_2($status,$spl_id,$ket);
-
 		$this->session->spl_validasi_waktu_asska = time();
-
-		echo "Memproses data lembur<br>";
+		redirect(site_url("ALA/Approve/result_reject/".$reject));
+		// echo "Memproses data lembur<br>";
 		// echo "<script>window.close();</script>";
+	}
+
+	function result_reject($spl_id){
+		$data = $this->menu('', '', '');
+		$data_spl = array();
+		$number = 0;
+		foreach (explode(".", $spl_id) as $si) {
+			$jml_lembur = 0;
+			$cek_tspl = $this->M_splasska->cek_spl($si);
+			// print_r($cek_tspl);exit();
+			if(floatval($cek_tspl->jml_lembur) > 0){
+				if ($cek_tspl->kode == '004') {
+					$wkt_pkj = $this->M_splasska->get_wkt_pkj($cek_tspl->noind,$cek_stpl->$tanggal);
+					$jml_lembur = floatval($cek_tspl->jml_lembur) - $wkt_pkj;
+				}else{
+					$jml_lembur = floatval($cek_tspl->jml_lembur);
+				}
+			}
+
+			if($cek_tspl->kode == '004'){
+				if ($jml_lembur > 8) {
+					$lembur1 = ($jml_lembur - 8) * 4;
+					$lembur2 = 3;
+					$lembur3 = 14;
+				}else if($jml_lembur > 7){
+					$lembur1 = ($jml_lembur - 7) * 3;
+					$lembur2 = 14;
+					$lembur3 = 0;
+				}else{
+					$lembur1 = $jml_lembur * 2;
+					$lembur2 = 0;
+					$lembur3 = 0;
+				}
+			}else{
+				if($jml_lembur > 1){
+					$lembur1 = ($jml_lembur - 1) * 2;
+					$lembur2 = 1.5;
+					$lembur3 = 0;
+				}else{
+					$lembur1 = ($jml_lembur - 8)* 1.5;
+					$lembur2 = 0;
+					$lembur3 = 0;
+				}
+			}
+			$lembur = $lembur1 + $lembur2 + $lembur3;
+			$tdatapresensi = $this->M_splasska->get_tdatapresensi($cek_tspl->noind,$cek_tspl->tanggal);
+			$data_spl[$number] = array(
+				'tanggal' => $cek_tspl->tanggal,
+				'noind' => $cek_tspl->noind,
+				'lembur' => $lembur,
+				'lembur_2' => $tdatapresensi->total_lembur
+			);
+		}
+		$data['data']	= $data_spl;
+		$this->load->view('V_Header',$data);
+		$this->load->view('V_Sidemenu',$data);
+		$this->load->view('SPLSeksi/AssKa/V_result',$data);
+		$this->load->view('V_Footer',$data);
 	}
 
 }
