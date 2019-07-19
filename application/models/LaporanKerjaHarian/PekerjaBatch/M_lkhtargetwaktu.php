@@ -12,38 +12,23 @@ class M_lkhtargetwaktu extends CI_Model {
 		return ($this->session->kodesie) ? substr($this->session->kodesie, 0, 6) : '';
 	}
 
-	var $table = 'er.er_employee_all'; 
-	var	$column_order = array('employee_code', 'employee_name', 'employee_code');
-	var	$column_search = array('employee_name', 'employee_code');
-	var $order = array('employee_code' => 'asc');
+	var $table = 'lkh.vi_lkh_target_waktu_listdata'; 
+	var	$column_order = array(3 => 'lower(pekerja)', 4 => 'lower(record_pekerjaan)', 5 => 'lower(record_kondite)', 6 => 'lower(status)');
+	var	$column_search = array(3 => 'lower(pekerja)', 4 => 'lower(record_pekerjaan)', 5 => 'lower(record_kondite)', 6 => 'lower(status)');
+	var $order = array('pekerja' => 'asc');
 
-	public function getListQuery($pekerja) {
-		if(empty($pekerja)) {
-			$this->erp
-					->from($this->table)
-					->like('section_code', $this->getSessionKodeSie(), 'after')
-					->where_in('worker_status_code', array('H', 'A', 'P', "K"))
-					->where('resign', 0);
-		} else {
-			$this->erp
-					->from($this->table)
-					->like('section_code', $this->getSessionKodeSie(), 'after')
-					->where_in('worker_status_code', array('H', 'A', 'P', "K"))
-					->where_in('employee_code', $pekerja)
-					->where('resign', 0);
-		}
-		$i = 0;
+	public function getListQuery() {
+		$this->erp->from($this->table);
 		if($_POST['search']['value']) {
+			$i = 0;
 			foreach($this->column_search as $item) {
-				if($i === 0) {
+				if($i == 0) {
 					$this->erp->group_start();
-					$this->erp->like($item, strtoupper($_POST['search']['value']));
+					$this->erp->like($item, strtolower($_POST['search']['value']));
 				} else {
-					$this->erp->or_like($item, strtoupper($_POST['search']['value']));
+					$this->erp->or_like($item, strtolower($_POST['search']['value']));
 				}
-				if(count($this->column_search) - 1 == $i) {
-					$this->erp->group_end();
-				}
+				if(count($this->column_search) - 1 == $i) { $this->erp->group_end(); }
 				$i++;
 			}
 		}
@@ -51,178 +36,184 @@ class M_lkhtargetwaktu extends CI_Model {
 			$this->erp->order_by($this->column_order[$_POST['order']['0']['column']], $_POST['order']['0']['dir']);
 		} else if (isset($this->order)) {
 			$order = $this->order;
-			$this->erp->order_by('employee_code');
+			$this->erp->order_by('pekerja');
 		}
 	}
 
-	public function getList($pekerja) {
-		$this->getListQuery($pekerja);
+	public function getList($periode, $pekerja, $type) {
+		$this->getListQuery();
 		if($_POST['length'] != -1) {
-			if(empty($pekerja)) {
-				$query = $this->erp
-								->like('section_code', $this->getSessionKodeSie(), 'after')
-								->where_in('worker_status_code', array('H', 'A', 'P', "K"))
-								->where('resign', 0)
-								->limit($_POST['length'], $_POST['start'])
-								->get();
+			if($type == 'listdata') {
+				if(empty($pekerja)) {
+					$query = $this->erp
+									->where('resign', 0)
+									->where_in('worker_status_code', array('H', 'A', 'P', 'K'))
+									->like('section_code', $this->getSessionKodeSie(), 'after')
+									->where('extract(month from periode) = \''.$periode[0].'\' and extract(year from periode) = \''.$periode[1].'\'')
+									->limit($_POST['length'], $_POST['start'])
+									->get();
+				} else {
+					$query = $this->erp
+									->where_in('employee_code', $pekerja)
+									->where('resign', 0)
+									->where_in('worker_status_code', array('H', 'A', 'P', 'K'))
+									->like('section_code', $this->getSessionKodeSie(), 'after')
+									->where('extract(month from periode) = \''.$periode[0].'\' and extract(year from periode) = \''.$periode[1].'\'')
+									->limit($_POST['length'], $_POST['start'])
+									->get();
+				}
 			} else {
-				$query = $this->erp
-								->like('section_code', $this->getSessionKodeSie(), 'after')
-								->where_in('worker_status_code', array('H', 'A', 'P', "K"))
-								->where_in('employee_code', $pekerja)
-								->where('resign', 0)
-								->limit($_POST['length'], $_POST['start'])
-								->get();
+				if(empty($pekerja)) {
+					$query = $this->erp
+									->where('resign', 0)
+									->where_in('worker_status_code', array('H', 'A', 'P', 'K'))
+									->like('section_code', $this->getSessionKodeSie(), 'after')
+									->where('extract(month from periode) = \''.$periode[0].'\' and extract(year from periode) = \''.$periode[1].'\'')
+									->where('lower(status) = \''.$type.'\'')
+									->limit($_POST['length'], $_POST['start'])
+									->get();
+				} else {
+					$query = $this->erp
+									->where_in('employee_code', $pekerja)
+									->where('resign', 0)
+									->where_in('worker_status_code', array('H', 'A', 'P', 'K'))
+									->like('section_code', $this->getSessionKodeSie(), 'after')
+									->where('extract(month from periode) = \''.$periode[0].'\' and extract(year from periode) = \''.$periode[1].'\'')
+									->where('lower(status) = \''.$type.'\'')
+									->limit($_POST['length'], $_POST['start'])
+									->get();
+				}
 			}
 			return $query->result();
 		}
 	}
 
-	public function getListCountFiltered($pekerja) {
-		$this->getListQuery($pekerja);
-		return $this->erp->get()->num_rows();
-	}
-
-	public function getListCountAll($pekerja) {
-		if(empty($pekerja)) {
-			return $this->erp
-						->from($this->table)
-						->like('section_code', $this->getSessionKodeSie(), 'after')
-						->where_in('worker_status_code', array('H', 'A', 'P', "K"))
-						->where('resign', 0)
-						->get()
-						->num_rows();
+	public function getListCountFiltered($periode, $pekerja, $type) {
+		$this->getListQuery();
+		if($type == 'listdata') {
+			if(empty($pekerja)) {
+				return $this->erp
+							->where('resign', 0)
+							->where_in('worker_status_code', array('H', 'A', 'P', 'K'))
+							->like('section_code', $this->getSessionKodeSie(), 'after')
+							->where('extract(month from periode) = \''.$periode[0].'\' and extract(year from periode) = \''.$periode[1].'\'')
+							->get()
+							->num_rows();
+			} else {
+				return $this->erp
+							->where_in('employee_code', $pekerja)
+							->where('resign', 0)
+							->where_in('worker_status_code', array('H', 'A', 'P', 'K'))
+							->like('section_code', $this->getSessionKodeSie(), 'after')
+							->where('extract(month from periode) = \''.$periode[0].'\' and extract(year from periode) = \''.$periode[1].'\'')
+							->get()
+							->num_rows();
+			}
 		} else {
-			return $this->erp
-						->from($this->table)
-						->like('section_code', $this->getSessionKodeSie(), 'after')
-						->where_in('worker_status_code', array('H', 'A', 'P', "K"))
-						->where_in('employee_code', $pekerja)
-						->where('resign', 0)
-						->get()
-						->num_rows();
+			if(empty($pekerja)) {
+				return $this->erp
+							->where('resign', 0)
+							->where_in('worker_status_code', array('H', 'A', 'P', 'K'))
+							->like('section_code', $this->getSessionKodeSie(), 'after')
+							->where('extract(month from periode) = \''.$periode[0].'\' and extract(year from periode) = \''.$periode[1].'\'')
+							->where('lower(status) = \''.$type.'\'')
+							->get()
+							->num_rows();
+			} else {
+				return $this->erp
+							->where_in('employee_code', $pekerja)
+							->where('resign', 0)
+							->where_in('worker_status_code', array('H', 'A', 'P', 'K'))
+							->like('section_code', $this->getSessionKodeSie(), 'after')
+							->where('extract(month from periode) = \''.$periode[0].'\' and extract(year from periode) = \''.$periode[1].'\'')
+							->where('lower(status) = \''.$type.'\'')
+							->get()
+							->num_rows();
+			}
 		}
 	}
 
-	public function getRecordPekerjaan($periode, $pekerja) {
-		if(isset($periode) && isset($pekerja)) {
-			$query = "select concat('Jml Data ', count(noind), ' - ',
-					array_to_string(
-					array(
-					select concat(count(noind), '@', case when aktual >= target or target = '0' then '100%' else concat(((aktual::float/target::float)*100)::int, '%') end) as nilai
-					from lkh.lkh_target_waktu
-					where noind = ltw.noind and extract(month from tgl_lkh) = '".$periode[0]."' and extract(year from tgl_lkh) = '".$periode[1]."'
-					group by noind, case when aktual >= target or target = '0' then '100%' else concat(((aktual::float/target::float)*100)::int, '%') end
-					order by case when aktual >= target or target = '0' then '100%' else concat(((aktual::float/target::float)*100)::int, '%') end
-					), ', ')) as hasil
-					from lkh.lkh_target_waktu ltw
-					where extract(month from tgl_lkh) = '".$periode[0]."'
-					and extract(year from tgl_lkh) = '".$periode[1]."'
-					and noind = '".$pekerja."'
-					group by noind;";
-				$result = $this->erp->query($query)->row();
-			return ($result) ? $result->hasil : 'Jml Data 0';
+	public function getListCountAll($periode, $pekerja, $type) {
+		if($type == 'listdata') {
+			if(empty($pekerja)) {
+				return $this->erp
+							->from($this->table)
+							->where('resign', 0)
+							->like('section_code', $this->getSessionKodeSie(), 'after')
+							->where_in('worker_status_code', array('H', 'A', 'P', 'K'))
+							->where('extract(month from periode) = \''.$periode[0].'\' and extract(year from periode) = \''.$periode[1].'\'')
+							->get()
+							->num_rows();
+			} else {
+				return $this->erp
+							->from($this->table)
+							->where_in('employee_code', $pekerja)
+							->where('resign', 0)
+							->where_in('worker_status_code', array('H', 'A', 'P', 'K'))
+							->like('section_code', $this->getSessionKodeSie(), 'after')
+							->where('extract(month from periode) = \''.$periode[0].'\' and extract(year from periode) = \''.$periode[1].'\'')
+							->get()
+							->num_rows();
+			}
+		} else {
+			if(empty($pekerja)) {
+				return $this->erp
+							->from($this->table)
+							->where('resign', 0)
+							->like('section_code', $this->getSessionKodeSie(), 'after')
+							->where_in('worker_status_code', array('H', 'A', 'P', 'K'))
+							->where('extract(month from periode) = \''.$periode[0].'\' and extract(year from periode) = \''.$periode[1].'\'')
+							->where('lower(status) = \''.$type.'\'')
+							->get()
+							->num_rows();
+			} else {
+				return $this->erp
+							->from($this->table)
+							->where_in('employee_code', $pekerja)
+							->where('resign', 0)
+							->where_in('worker_status_code', array('H', 'A', 'P', 'K'))
+							->like('section_code', $this->getSessionKodeSie(), 'after')
+							->where('extract(month from periode) = \''.$periode[0].'\' and extract(year from periode) = \''.$periode[1].'\'')
+							->where('lower(status) = \''.$type.'\'')
+							->get()
+							->num_rows();
+			}
 		}
-		return 'Jml Data 0';
+	}
+
+	public function getLkhStatus($periode, $pekerja) {
+		if(empty($periode) || empty($pekerja)) { return ''; }
+		$periode = explode('/', $periode);
+		$approval_status = $this->erp->query('select (case approval_status when \'1\' then \'Unapproved\' when \'2\' then \'Approved\' when \'3\' then \'Rejected\' else \'ListData\' end) as "approval_status" from lkh.lkh_approval where extract(month from periode) = \''.$periode[0].'\' and extract(year from periode) = \''.$periode[1].'\' and noind = \''.$pekerja.'\'')->result();
+		if(empty($approval_status)) {
+			return 'ListData';
+		} else {
+			return $approval_status;
+		}
 	}
 
 	public function getRecordPekerjaanDetailLkh($periode, $pekerja) {
 		if(empty($periode) || empty($pekerja)) { return ''; }
 		$periode = explode('/', $periode);
-		$query = "select concat(count(noind), ' Kegiatan - ',
-				array_to_string(
-				array(
-				select concat(count(noind), '@', case when aktual >= target or target = '0' then '100%' else concat(((aktual::float/target::float)*100)::int, '%') end) as nilai
-				from lkh.lkh_target_waktu
-				where noind = ltw.noind and extract(month from tgl_lkh) = '".$periode[0]."' and extract(year from tgl_lkh) = '".$periode[1]."'
-				group by noind, case when aktual >= target or target = '0' then '100%' else concat(((aktual::float/target::float)*100)::int, '%') end
-				order by case when aktual >= target or target = '0' then '100%' else concat(((aktual::float/target::float)*100)::int, '%') end
-				), ', ')) as hasil
-				from lkh.lkh_target_waktu ltw
-				where extract(month from tgl_lkh) = '".$periode[0]."'
-				and extract(year from tgl_lkh) = '".$periode[1]."'
-				and noind = '".$pekerja."'
-				group by noind;";
-		$result = $this->erp->query($query)->row();
-		return ($result) ? $result->hasil : '';
-	}
-
-	public function getNilaiInsentifKondite($periode, $pekerja) {
-		if(empty($periode) || empty($pekerja)) { return null; }
-		$query = "select
-					array_to_string(
-						array(
-							select concat(count(lgk.nilai), '@',lgk.nilai) as nilai
-							from lkh.lkh_target_waktu as ltw_b
-							inner join lkh.lkh_gol_kondite as lgk
-							on ltw_b.gol_kondite between lgk.batas_bawah and lgk.batas_atas
-							where ltw_b.noind = ltw.noind
-							and extract(month from tgl_lkh) = '".$periode[0]."'
-							and extract(year from tgl_lkh) = '".$periode[1]."'
-							group by lgk.nilai
-							order by lgk.nilai
-						),
-						', '
-					) as hasil
-				from lkh.lkh_target_waktu as ltw
-				where extract(month from tgl_lkh) = '".$periode[0]."'
-				and extract(year from tgl_lkh) = '".$periode[1]."'
-				and noind = '".$pekerja."'
-				group by noind";
-		$result = $this->erp->query($query)->row();
-		return ($result) ? $result->hasil : null;
+		$result = $this->erp->select('record_pekerjaan')
+							->where('employee_code', $pekerja)
+							->where('extract(month from periode) = \''.$periode[0].'\' and extract(year from periode) = \''.$periode[1].'\'')
+							->get('lkh.vi_lkh_target_waktu_listdata')
+							->row()
+							->record_pekerjaan;
+		return ($result) ? $result : '';
 	}
 
 	public function getNilaiInsentifKonditeDetailLkh($periode, $pekerja) {
 		if(empty($periode) || empty($pekerja)) { return ''; }
 		$periode = explode('/', $periode);
-		$query = "select
-					array_to_string(
-						array(
-							select concat(count(lgk.nilai), '@',lgk.nilai) as nilai
-							from lkh.lkh_target_waktu as ltw_b
-							inner join lkh.lkh_gol_kondite as lgk
-							on ltw_b.gol_kondite between lgk.batas_bawah and lgk.batas_atas
-							where ltw_b.noind = ltw.noind
-							and extract(month from tgl_lkh) = '".$periode[0]."'
-							and extract(year from tgl_lkh) = '".$periode[1]."'
-							group by lgk.nilai
-							order by lgk.nilai
-						),
-						', '
-					) as hasil
-				from lkh.lkh_target_waktu as ltw
-				where extract(month from tgl_lkh) = '".$periode[0]."'
-				and extract(year from tgl_lkh) = '".$periode[1]."'
-				and noind = '".$pekerja."'
-				group by noind";
-		$result = $this->erp->query($query)->row();
-		return ($result) ? $result->hasil : '';
-	}
-
-	public function getApproval($periode, $pekerja) {
-		if(empty($periode) || empty($pekerja)) { return null; }
-		$data = $this->erp->where('periode', implode('/', $periode))->where('noind', $pekerja)->order_by('approval_id')->limit(1)->get('lkh.lkh_approval')->row();
-		return (empty($data->status)) ? 'Draft' : $this->getApprovalStatusName($data->status);
-	}
-
-	public function getWarningSpDetailLkh($periode, $pekerja) {
-		if(empty($periode) || empty($pekerja)) { return ''; }
-		$periode = explode('/', $periode);
-		return '';
-	}
-
-	public function getApprovalStatusName($type) {
-		switch($type) {
-			case 1:
-				return 'Unapproved';
-			case 2:
-				return 'Approved';
-			case 3:
-				return 'Rejected';
-			default:
-				return 'Draft';
-		}
+		$result = $this->erp->select('record_kondite')
+							->where('employee_code', $pekerja)
+							->where('extract(month from periode) = \''.$periode[0].'\' and extract(year from periode) = \''.$periode[1].'\'')
+							->get('lkh.vi_lkh_target_waktu_listdata')
+							->row()
+							->record_kondite;
+		return ($result) ? $result : '';
 	}
 
 	public function getLkhData($lkhId) {
@@ -240,6 +231,9 @@ class M_lkhtargetwaktu extends CI_Model {
 		$query = 'select
 						lkh_id,
 						tgl_lkh as "date",
+						extract(day from tgl_lkh) as "date_day",
+						extract(month from tgl_lkh) as "date_month",
+						extract(year from tgl_lkh) as "date_year",
 						uraian_pekerjaan,
 						status_target,
 						target,
@@ -313,5 +307,118 @@ class M_lkhtargetwaktu extends CI_Model {
 		if(strlen((string) $days) < 2) { $days = '0'.$days; }
 		$getMonthID = array('Januari', 'Februari', 'Maret', 'April', 'Mei', 'Juni', 'Juli', 'Agustus', 'September', 'Oktober', 'November', 'Desember');
 		return (string) $days.' '.$getMonthID[$month - 1].' '.$year;
+	}
+
+	public function getEmployeeKdJabatan($employee_code) {
+		$query = $this->personalia->select('cast(kd_jabatan as integer)')->where('noind', $employee_code)->get('hrd_khs.tpribadi')->row()->kd_jabatan;
+		return ($query) ? $query : null;
+	}
+
+	public function getApprover($term, $approver1) {
+		$filterKodesie = $this->getSessionKodeSie();
+		for($i = 0; $i < 3; $i++) {
+			if($term) {
+				$result = $this->personalia->query("
+					select trim(noind) as noind, trim(nama) as nama
+					from hrd_khs.tpribadi
+					where (noind ILIKE '%$term%' or nama ILIKE '%$term%')
+					and keluar = false
+					and kodesie like('".$filterKodesie."%')
+					and kd_jabatan != '-'
+					and cast(kd_jabatan as integer) < '".$this->getEmployeeKdJabatan((empty($approver1)) ? $this->session->user : $approver1)."'
+				");
+			} else {
+				$result = $this->personalia->query("
+					select trim(noind) as noind, trim(nama) as nama
+					from hrd_khs.tpribadi
+					where keluar = false
+					and kodesie like('".$filterKodesie."%')
+					and kd_jabatan != '-'
+					and cast(kd_jabatan as integer) < '".$this->getEmployeeKdJabatan((empty($approver1)) ? $this->session->user : $approver1)."'
+				");
+			}
+			if(!empty($result->result())) { break; }
+			$filterKodesie = substr($filterKodesie, 0, (strlen($filterKodesie) - 2));
+		}
+		return $result->result();
+	}
+
+	public function kirimApproval($periode, $pekerja, $approver1, $approver2) {
+		$result['success'] = false;
+		if(empty($periode) || empty($pekerja) || empty($approver1) || empty($approver2)) {
+			$result['message'] = 'Terjadi kesalahan saat mengirim data [empty_param]';
+		} else {
+			$periode = array_diff(explode(', ', $periode), array(''));
+			$pekerja = array_diff(explode(', ', $pekerja), array(''));
+			if(count($periode) == count($pekerja)) {
+				$this->erp->trans_start();
+				$values = "";
+				for($i = 0; $i < count($pekerja); $i++) {
+					$getPekerja = $pekerja[$i];
+					$getPeriode = $periode[$i];
+					if($i < (count($pekerja) - 1)) {
+						$values .= "('".$getPekerja."', '".$getPeriode."', '".$approver1."', '1', '1'), ('".$getPekerja."', '".$getPeriode."', '".$approver2."', '2', '1'),";
+					} else {
+						$values .= "('".$getPekerja."', '".$getPeriode."', '".$approver1."', '1', '1'), ('".$getPekerja."', '".$getPeriode."', '".$approver2."', '2', '1')";
+					}
+				}
+				$this->erp->query("insert into lkh.lkh_approval (noind, periode, approver, approver_level, approval_status) values ".$values);
+				$this->erp->trans_complete();
+				if ($this->db->trans_status() === false) {
+					$result['message'] = 'Terjadi kesalahan saat mengirim data';
+				} else {
+					$result['success'] = true;
+					$result['message'] = 'Data approval berhasil dikirim';
+				}
+			} else {
+				$result['message'] = 'Terjadi kesalahan saat mengirim data [arr_mismatch]';
+			}
+		}
+		return $result;
+	}
+
+	public function deleteDataKegiatanBatch($periode, $pekerja) {
+		$result['success'] = false;
+		if(empty($periode) || empty($pekerja)) {
+			$result['message'] = 'Terjadi kesalahan saat menghapus data [empty_param]';
+		} else {
+			$periode = array_diff(explode(', ', $periode), array(''));
+			$pekerja = array_diff(explode(', ', $pekerja), array(''));
+			if(count($periode) == count($pekerja)) {
+				$this->erp->trans_start();
+				$values = "";
+				for($i = 0; $i < count($pekerja); $i++) {
+					$getPekerja = $pekerja[$i];
+					$getPeriode = explode('/', $periode[$i]);
+					$this->erp->query('update lkh.lkh_target_waktu set "uraian_pekerjaan" = null where noind = \''.$getPekerja.'\' and extract(month from tgl_lkh) = \''.$getPeriode[0].'\' and extract(year from tgl_lkh) = \''.$getPeriode[1].'\'');
+				}
+				$this->erp->trans_complete();
+				if ($this->db->trans_status() === false) {
+					$result['message'] = 'Terjadi kesalahan saat menghapus data';
+				} else {
+					$result['success'] = true;
+					$result['message'] = 'Data kegiatan berhasil dihapus';
+				}
+			} else {
+				$result['message'] = 'Terjadi kesalahan saat menghapus data [arr_mismatch]';
+			}
+		}
+		return $result;
+	}
+
+	public function deleteDataKegiatan($periode, $pekerja) {
+		$result['success'] = false;
+		if(empty($periode) || empty($pekerja)) {
+			$result['message'] = 'Terjadi kesalahan saat menghapus data [empty_param]';
+		} else {
+			$periode = explode('/', $periode);
+			if($this->erp->where('extract(month from tgl_lkh) = \''.$periode[0].'\' and extract(year from tgl_lkh) = \''.$periode[1].'\' and noind = \''.$pekerja.'\'')->update('lkh.lkh_target_waktu', array('uraian_pekerjaan' => null))) {
+				$result['success'] = true;
+				$result['message'] = 'Data kegiatan berhasil dihapus';
+			} else {
+				$result['message'] = 'Terjadi kesalahan saat menghapus data';
+			}
+		}
+		return $result;
 	}
 }

@@ -15,6 +15,7 @@
 						<div class="text-left ">
 							<span><b>Detail Batch </b></span>
 							<input type="hidden" name="batch_number" value="<?php echo $lppb[0]['BATCH_NUMBER']?>">
+						<input type="hidden" name="batch_detail_id" value="<?php echo $lppb[0]['BATCH_DETAIL_ID']?>">
 						</div>
 					</div>
 				</div>
@@ -78,7 +79,13 @@
 															<?php } ?>
 														</td>
 														<td class="batchdid_<?php echo $p['BATCH_DETAIL_ID']?>"><span class="tglTerimaTolak"></span></td>
-														<td class="batchdid_<?php echo $p['BATCH_DETAIL_ID']?>"><?php echo $p['REASON']?><input type="text" value="<?php echo $p['REASON']?>" style="display: none; width: 100px" class="form-control txtAlasan" name="alasan_reject[]" id="txtTolak_<?php echo $p['BATCH_DETAIL_ID']?>">
+
+														<!-- <td><input id="txtTolak_<?php echo $p['BATCH_DETAIL_ID'] ?>" type="text" value="<?php echo $p['REASON']?>" style="display: none;width: 100%;"  class="form-control txtAlasan" name="alasan_reject[]">
+															<input type="hidden" name="id[]" value="<?php echo $p['BATCH_DETAIL_ID']?>"></td> -->
+
+														<td class="batchdid_<?php echo $p['BATCH_DETAIL_ID']?>">
+															<?php echo $p['REASON']?>
+														<input type="text" value="<?php echo $p['REASON']?>" style="display: none; width: 100px" class="form-control txtAlasan" name="alasan_reject" id="txtTolak_<?php echo $p['BATCH_DETAIL_ID']?>">
 															<input type="hidden" name="id[]" value="<?php echo $p['BATCH_DETAIL_ID']?>"></td>
 													</tr>
 												<?php $no++; } ?>

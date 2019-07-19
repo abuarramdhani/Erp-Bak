@@ -11,7 +11,6 @@ class C_Index extends CI_Controller {
 		$this->load->library('session');
 		$this->load->model('SystemAdministration/MainMenu/M_user');
 		if($this->session->userdata('logged_in') != TRUE) {
-			$this->load->helper('url');
 			$this->session->set_userdata('last_page', current_url());
 			$this->session->set_userdata('Responsbility', 'some_value');
 		}

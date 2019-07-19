@@ -11,10 +11,6 @@ class C_ListData extends CI_Controller {
 		$this->load->library('session');
 		$this->load->model('SystemAdministration/MainMenu/M_user');
 		$this->load->model('LaporanKerjaHarian/PekerjaBatch/M_lkhtargetwaktu');
-		if($this->session->userdata('logged_in') != TRUE) {
-			$this->session->set_userdata('last_page', current_url());
-			$this->session->set_userdata('Responsbility', 'some_value');
-		}
 	}
 
 	public function index($type) {
@@ -25,7 +21,6 @@ class C_ListData extends CI_Controller {
 		$data['filterPekerja'] = (empty($this->input->post('filterPekerja'))) ? '' : explode(',', $this->input->post('filterPekerja'));
 		$this->session->set_flashdata('periode', $data['filterPeriode']);
 		$this->session->set_flashdata('pekerja', $data['filterPekerja']);
-
 		$data['UserMenu'] = $this->M_user->getUserMenu($user_id, $this->session->responsibility_id);
 		$data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id, $this->session->responsibility_id);
 		$data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id, $this->session->responsibility_id);
@@ -33,10 +28,9 @@ class C_ListData extends CI_Controller {
 		$data['Menu'] = $data['UserMenu'][0]['menu_title'];
 		$data['SubMenuOne'] = '';
 		$data['SubMenuTwo'] = '';
-		$data['type'] = strtolower($type);
-
+		$data['type'] = $type;
 		$this->load->view('V_Header', $data);
-		switch($data['type']) {
+		switch(strtolower($data['type'])) {
 			case 'draft':
 				$data['Title'] = $data['UserSubMenuOne'][0]['menu'];
 				$data['SubMenuOne'] = $data['UserSubMenuOne'][0]['menu_title'];
@@ -75,36 +69,44 @@ class C_ListData extends CI_Controller {
 				$pekerja[$i] = $pekerja[$i][0];
 			}
 		}
-		$list = $this->M_lkhtargetwaktu->getList($pekerja);
+		$counter = 1;
 		$data = array();
-		$counter = 0;
+		$list = $this->M_lkhtargetwaktu->getList($periode, $pekerja, strtolower($type));
 		foreach ($list as $key) {
 			$row = array();
-			$approvalStatus = $this->M_lkhtargetwaktu->getApproval($periode, $key->employee_code);
-			if(strtolower($type) == 'listdata' || strtolower($approvalStatus) == strtolower($type)) {
-				$row[] = ($counter + 1).'.';
-				$row[] = "<div style='text-align: center;'><input type='checkbox' name='checkBoxDataList[]' id='checkbox-lkh-".$counter."' class='checkBoxDataList'/></div>";
-				if($counter < (count($list) - 1)) {
-					$row[] = "<div style='text-align: center;'><form action='".base_url('LkhPekerjaBatch/TargetWaktu/Detail')."' method='POST'><input name='filterPekerja' id='row-lkh-".$counter."' type='text' value='".$key->employee_code."' hidden/><input name='filterPeriode' type='text' value='".$periodeRaw."' hidden/><button type='submit' data-toggle='tooltip' data-placement='bottom' data-original-title='Detail Data' class='btn btn-primary' style='margin-right: 6px;'><i class='fa fa-info-circle'></i></button><button type='button' data-toggle='tooltip' data-placement='bottom' data-original-title='Delete Data' onclick='javascript:deleteListLkhPekerja(\"".$key->employee_code."\", \"".$counter."\");' class='btn btn-danger'><i class='fa fa-trash'></i></button></form><form action='".base_url('LkhPekerjaBatch/TargetWaktu/ListData/Delete')."' method='POST' hidden><input name='filterPekerja' type='text' value='".$key->employee_code."' hidden/><button type='submit' id='delete-row-lkh-".$counter."' hidden></button</form></div>";
-				} else {
-					$row[] = "<div style='text-align: center;'><form action='".base_url('LkhPekerjaBatch/TargetWaktu/Detail')."' method='POST'><input name='filterPekerja' id='row-lkh-".$counter."' type='text' value='".$key->employee_code."' hidden/><input name='filterPeriode' type='text' value='".$periodeRaw."' hidden/><button type='submit' class='btn btn-primary' style='margin-right: 6px;'><i class='fa fa-info-circle'></i></button><button type='button' onclick='javascript:deleteListLkhPekerja(\"".$key->employee_code."\", \"".$counter."\");' class='btn btn-danger'><i class='fa fa-trash'></i></button></form><form action='".base_url('LkhPekerjaBatch/TargetWaktu/Delete')."' method='POST' hidden><input name='filterPekerja' type='text' value='".$key->employee_code."' hidden/><button type='submit' id='delete-row-lkh-".$counter."' hidden></button</form></div>";
-				}
-				$row[] = $key->employee_code.' - '.$key->employee_name;
-				$recordPekerjaan = $this->M_lkhtargetwaktu->getRecordPekerjaan($periode, $key->employee_code);
-				$row[] = ($recordPekerjaan) ? $recordPekerjaan : '<div style="text-align: center">-</div>';
-				$nilaiKondite = $this->M_lkhtargetwaktu->getNilaiInsentifKondite($periode, $key->employee_code);
-				$row[] = ($nilaiKondite) ? $nilaiKondite : '<div style="text-align: center">-</div>';
-				$row[] = ($approvalStatus) ? '<div style="text-align: center">'.$approvalStatus.'</div>' : '<div style="text-align: center">-</div>';
-				$data[] = $row;
-				$counter++;
-			}
+			$row[] = $counter.'.';
+			$row[] = "<div style='text-align: center;'><input type='checkbox' name='checkBoxDataList[]' id='checkbox-row-".$counter."' class='checkBoxDataList' ".(($key->record_pekerjaan == '-' || $key->record_kondite == '-' || $key->status != 'Draft') ? 'disabled' : '')."/></div>";
+			$row[] = "<div style='text-align: center;'><form action='".base_url('LkhPekerjaBatch/TargetWaktu/Detail')."' method='POST'><input name='filterPekerja' id='employee-code-row-".$counter."' type='text' value='".$key->employee_code."' hidden/><input name='filterPeriode' id='periode-row-".$counter."' type='text' value='".$periodeRaw."' hidden/><input name='type' type='text' value='".$key->status."' hidden/><button type='submit' class='btn btn-primary' style='margin-right: 6px;'><i class='fa fa-info-circle'></i></button><button ".(($key->record_pekerjaan == '-' || $key->record_kondite == '-' || $key->status != 'Draft') ? 'disabled' : '')." type='button' onclick='javascript:openDeleteDataModal(\"".$counter."\", \"".$key->employee_code."\");' class='btn btn-danger'><i class='fa fa-trash'></i></button></form></div>";
+			$row[] = '<span id="employee-name-row-'.$counter.'">'.$key->pekerja.'</span>';
+			$row[] = '<div style="text-align: center" id="employee-record-pekerjaan-row-'.$counter.'">'.$key->record_pekerjaan.'</div>';
+			$row[] = '<div style="text-align: center" id="employee-record-kondite-row-'.$counter.'">'.$key->record_kondite.'</div>';
+			$row[] = '<div style="text-align: center" id="employee-status-row-'.$counter.'">'.(($key->status == 'Unapproved') ? 'Request Approval' : $key->status).'</div>';
+			$row[] = $key->status;
+			$data[] = $row;
+			$counter++;
 		}
 		$output = array(
 			'draw' => $_POST['draw'], 
-			'recordsTotal' => $this->M_lkhtargetwaktu->getListCountAll($pekerja),
-			'recordsFiltered' => $this->M_lkhtargetwaktu->getListCountFiltered($pekerja),
+			'recordsTotal' => $this->M_lkhtargetwaktu->getListCountAll($periode, $pekerja, strtolower($type)),
+			'recordsFiltered' => $this->M_lkhtargetwaktu->getListCountFiltered($periode, $pekerja, strtolower($type)),
 			'data' => $data
 		);
 		echo json_encode($output);
+	}
+
+	public function getApprover() {
+		echo json_encode($this->M_lkhtargetwaktu->getApprover($this->input->post('term'), $this->input->post('approver1')));
+	}
+
+	public function kirimApproval() {
+		echo json_encode($this->M_lkhtargetwaktu->kirimApproval($this->input->post('periode'), $this->input->post('pekerja'), $this->input->post('approver1'), $this->input->post('approver2')));
+	}
+
+	public function deleteDataKegiatanBatch() {
+		echo json_encode($this->M_lkhtargetwaktu->deleteDataKegiatanBatch($this->input->post('periode'), $this->input->post('pekerja')));
+	}
+
+	public function deleteDataKegiatan() {
+		echo json_encode($this->M_lkhtargetwaktu->deleteDataKegiatan($this->input->post('periode'), $this->input->post('pekerja')));
 	}
 }

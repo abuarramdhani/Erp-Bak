@@ -435,13 +435,13 @@ class C_HitungGaji extends CI_Controller
 				}
 			}
 
-			$MK = $dataInsentifKondite['MK'];
-			$BKI = $dataInsentifKondite['BKI'];
-			$BKP = $dataInsentifKondite['BKP'];
-			$TKP = $dataInsentifKondite['TKP'];
-			$KB = $dataInsentifKondite['KB'];
-			$KK = $dataInsentifKondite['KK'];
-			$KS = $dataInsentifKondite['KS'];
+			$MK = $dataInsentifKondite['mk'];
+			$BKI = $dataInsentifKondite['bki'];
+			$BKP = $dataInsentifKondite['bkp'];
+			$TKP = $dataInsentifKondite['tkp'];
+			$KB = $dataInsentifKondite['kb'];
+			$KK = $dataInsentifKondite['kk'];
+			$KS = $dataInsentifKondite['ks'];
 
 			$pesanerror='';
 			//checkerror
@@ -824,9 +824,10 @@ class C_HitungGaji extends CI_Controller
 			}
 			else{
 				$filterData = array();
+				$nomor = 0;
 				foreach ($resultProcess as $row) {
 					if ($row['noind'] == $data['noind']) {
-						$filterData[] = array (
+						$filterData[$nomor] = array (
 							'tgl_pembayaran' => $row['tgl_pembayaran'],
 							'noind' => $row['noind'],
 							'employee_name' => $row['employee_name'],
@@ -876,7 +877,7 @@ class C_HitungGaji extends CI_Controller
 				$data['strukData'] = $filterData;
 			}
 		}
-
+		// print_r($data['strukData']);exit;
 		$html = $this->load->view('PayrollManagementNonStaff/HitungGaji/V_struk', $data, true);
 		// print_r($data['strukData']);exit;
 

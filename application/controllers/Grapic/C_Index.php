@@ -1415,8 +1415,27 @@ class C_Index extends CI_Controller
 						$kodeUnit = 'CABANG MAKASSAR';
 						$banyak = $this->M_index->pekerjaUnitPemasaran($now, $kodeUnit, $sqlPKL);
 					}else if ($val == '28'){
-						$kodeUnit = 'CABANG MEDAN';
-						$banyak = $this->M_index->pekerjaUnitPemasaran($now, $kodeUnit, $sqlPKL);
+						$kodeUnit = 'SHOWROOM TUGUMULYO';
+						$banyak = $this->M_index->pekerjacabang($now, $sqlPKL, $kodeUnit);
+					}else if ($val == '29'){
+						$kodeUnit = 'MAKASSAR';
+						$banyak = $this->M_index->pekerjacabang($now, $sqlPKL, $kodeUnit);
+						// print_r($banyak);exit();
+					}else if ($val == '30'){
+						$kodeUnit = 'CIVIL MAINTENANCE'; // bukan cabang tapi pakai query ini juga bisa
+						$banyak = $this->M_index->pekerjacabang($now, $sqlPKL, $kodeUnit);
+					}else if ($val == '31'){
+						//non penunjang atau direct
+						$kode = 'and (b.jenispekerjaan=true or b.kdpekerjaan is null)';
+						$banyak = $this->M_index->pekerjaOperatorAll($now, $sqlPKL, $kode);
+					}else if ($val == '32'){
+						//penunjang atau in-direct
+						$kode = 'and (b.jenispekerjaan=false)';
+						$banyak = $this->M_index->pekerjaOperatorAll($now, $sqlPKL, $kode);
+					}else if ($val == '33'){
+						//non civil maintenance
+						$kodeUnit = 'CIVIL MAINTENANCE'; // bukan cabang tapi pakai query ini juga bisa
+						$banyak = $this->M_index->pekerjanoncivil($now, $sqlPKL, $kodeUnit);
 					}
 
 

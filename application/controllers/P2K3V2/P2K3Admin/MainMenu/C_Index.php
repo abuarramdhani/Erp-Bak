@@ -716,6 +716,47 @@ public function RiwayatKebutuhan()
 	$this->load->view('V_Footer',$data);
 }
 
+public function editRiwayatKebutuhan($id, $ks)
+{
+	$user1 = $this->session->user;
+	$user_id = $this->session->userid;
+	$kodesie = $this->session->kodesie;
+
+	$data['Title'] = 'Riwayat';
+	$data['Menu'] = 'Riwayat';
+	$data['SubMenuOne'] = 'Standar Kebutuhan';
+	$data['SubMenuTwo'] = '';
+
+	$data['UserMenu'] = $this->M_user->getUserMenu($user_id,$this->session->responsibility_id);
+	$data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id);
+	$data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id);
+
+	$data['seksi'] = $this->M_dtmasuk->cekseksi($ks);
+	$data['inputStandar'] = $this->M_order->getInputstd3($id);
+	$data['daftar_pekerjaan']	= $this->M_order->daftar_pekerjaan($ks);
+	$data['id'] = $id;
+
+	$this->load->view('V_Header',$data);
+	$this->load->view('V_Sidemenu',$data);
+	$this->load->view('P2K3V2/P2K3Admin/APD/V_Admin_Edit_Riwayat', $data);
+	$this->load->view('V_Footer',$data);
+}
+
+public function SaveEditRiwayatKebutuhan()
+{
+	// print_r($_POST);exit();
+	$id = $this->input->post('id');
+	$jmlUmum = $this->input->post('jmlUmum');
+	$staffJumlah = $this->input->post('staffJumlah');
+	$pkjJumlah = $this->input->post('pkjJumlah');
+	$pkj = implode(',', $pkjJumlah);
+
+	$update = $this->M_dtmasuk->updateRiwayat($id, $jmlUmum, $staffJumlah,$pkj);
+	if ($update) {
+		redirect('p2k3adm_V2/Admin/RiwayatKebutuhan');
+	}
+}
+
 public function RiwayatOrder()
 {
 	$user1 = $this->session->user;

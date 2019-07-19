@@ -168,13 +168,13 @@ class C_ApprovalKaizen extends CI_Controller {
 			$NoindApprover[$value['level']] = $value['approver'];			
 		}
 		// set Approval to next level ,(From Approver 2 to level Department & Dirut)
-		$needNextApproval = 0;
+		$needNextApproval = '0';
 		$checkNextApprover = $this->input->post('checkNextApprover');
 		if (isset($checkNextApprover)) {
-			$needNextApproval = 1;
+			$needNextApproval = '1';
 		}
 		// need next approval
-		if($needNextApproval == 0) {
+		if($needNextApproval == '0') {
 			if($yangApprove && !$yangReject && !$yangRevisi && !$yangBelum) {
 				$status_date =  date('Y-m-d h:i:s');
 				$this->M_approvalkaizen->UpdateStatus($kaizen_id, 3, $status_date);
@@ -241,6 +241,10 @@ class C_ApprovalKaizen extends CI_Controller {
 			}
 			$this->EmailAlert($kaizen_id, $status);
 			$this->sendPidgin($kaizen_id, $status);
+			if ($status == '3') {
+			$this->EmailAlertAproval($kaizen_id, $status);
+			$this->sendPidginAprover($kaizen_id, $status);
+			}
 		}
 		redirect(base_url('SystemIntegration/KaizenGenerator/ApprovalKaizen/index'));
 	}
@@ -309,6 +313,73 @@ class C_ApprovalKaizen extends CI_Controller {
 			$getEmailTemplate = $this->M_submit->getEmailTemplate($mailStatus);
 			$subject = $getEmailTemplate[0]['subject'];
 			$body = sprintf($getEmailTemplate[0]['body'], trim($getKaizen[0]['pencetus']), trim($approverName), trim($getKaizen[0]['judul']), trim($link));
+			//send Email
+			$this->load->library('PHPMailerAutoload');
+			$mail = new PHPMailer();
+			$mail->SMTPDebug = 0;
+			$mail->Debugoutput = 'html';
+			// set smtp
+			$mail->isSMTP();
+			$mail->Host = 'm.quick.com';
+			$mail->Port = 465;
+			$mail->SMTPAuth = true;
+			$mail->SMTPSecure = 'ssl';
+			$mail->SMTPOptions = array(
+					'ssl' => array(
+					'verify_peer' => false,
+					'verify_peer_name' => false,
+					'allow_self_signed' => true
+				)
+			);
+			$mail->Username = 'no-reply';
+			$mail->Password = '123456';
+			$mail->WordWrap = 50;
+			//set email content
+			$mail->setFrom('no-reply@quick.com', 'Email Sistem');
+			$mail->addAddress($emailUser);
+			$mail->Subject = $subject;
+			$mail->msgHTML($body);
+			// check error
+			if (!$mail->send()) {
+				echo "Mailer Error: ".$mail->ErrorInfo;
+				exit();
+			}
+		}
+	}
+
+	private function EmailAlertAproval($kaizen_id, $mailStatus) {
+		// echo "a :".$kaizen_id."<br>b :".$mailStatus;
+		//get Rincian Aprover Kaizen
+		$getApprover = $this->M_approvalkaizen->getApprover($kaizen_id,FALSE);
+		// print_r('<pre>'); print_r($getApprover); exit();
+		if($getApprover) {
+			//get aprover email
+			$getEmail = $this->M_submit->getEmail($getApprover[1]['approver']);
+			$emailUser = $getEmail[0]['internal_mail'];
+		}
+		if($emailUser) {
+			//get approver name
+			$getKaizen = $this->M_submit->getKaizen($kaizen_id, FALSE);
+			$approverName = trim($this->M_submit->getEmployeeName($this->session->user));
+			//get template
+			$link = base_url("SystemIntegration/KaizenGenerator/View/$kaizen_id");
+			switch($mailStatus) {
+				case 3:
+					$mailStatus = 1;
+					break;
+				case 4:
+					$mailStatus = 9;
+					break;
+				case 5:
+					$mailStatus = 7;
+					break;
+				default:
+					$mailStatus = 7;
+					break;
+			}
+			$getEmailTemplate = $this->M_submit->getEmailTemplate($mailStatus);
+			$subject = $getEmailTemplate[0]['subject'];
+			$body = sprintf($getEmailTemplate[0]['body'], trim($getKaizen[0]['pencetus']), trim($getKaizen[0]['judul']), trim($link));
 			//send Email
 			$this->load->library('PHPMailerAutoload');
 			$mail = new PHPMailer();
@@ -425,6 +496,49 @@ class C_ApprovalKaizen extends CI_Controller {
 			switch($mailStatus) {
 				case 3:
 					$mailStatus = 6;
+					break;
+				case 4:
+					$mailStatus = 10;
+					break;
+				case 5:
+					$mailStatus = 8;
+					break;
+				default:
+					$mailStatus = 8;
+					break;
+			}
+			$getEmailTemplate = $this->M_submit->getPidginTemplate($mailStatus);
+			$subject = $getEmailTemplate[0]['subject'];
+			$body = sprintf($getEmailTemplate[0]['body'], trim($getKaizen[0]['pencetus']), trim($approverName), trim($getKaizen[0]['judul']), trim($link));
+			$body = str_replace('<br/>', "\n", $body);
+			$pidgin = new Sendmessage;
+			@($pidgin->send($userAccount," \n ".$subject." \n ".$body));
+		}
+	}
+
+	private function sendPidginAprover($kaizen_id, $mailStatus) {
+		// echo "a :".$kaizen_id."<br>b :".$mailStatus;
+		//get Rincian Aprover Kaizen
+		$getApprover = $this->M_approvalkaizen->getApprover($kaizen_id,FALSE);
+		// print_r('<pre>'); print_r($getApprover); exit();
+		if($getApprover) {
+			//get aprover email
+			$getEmail = $this->M_submit->getEmail($getApprover[1]['approver']);
+			$emailUser = $getEmail[0]['internal_mail'];
+		}
+		if($emailUser) {
+			$this->load->library('Sendmessage');
+			$userAccount = $getEmail[0]['pidgin_account'];
+			$getKaizen = $this->M_submit->getKaizen($kaizen_id, FALSE);
+			
+			//get approver name
+			$approverName = trim($this->M_submit->getEmployeeName($this->session->user));
+
+			//get template
+			$link = base_url("SystemIntegration/KaizenGenerator/ApprovalKaizen/View/$kaizen_id");
+			switch($mailStatus) {
+				case 3:
+					$mailStatus = 2;
 					break;
 				case 4:
 					$mailStatus = 10;

@@ -24,6 +24,8 @@ class C_Detail extends CI_Controller {
 		$data['filterPeriode'] = (empty($this->input->post('filterPeriode'))) ? date('m/Y') : $this->input->post('filterPeriode');
 		$data['filterPekerja'] = $this->input->post('filterPekerja');
 		if(empty($data['filterPekerja'])) { echo('Terjadi kesalahan saat memuat detail data LKH. [ID Pekerja tidak ditemukan].'); exit(); }
+		$data['listType'] = $this->M_lkhtargetwaktu->getLkhStatus($data['filterPeriode'], $data['filterPekerja']);
+		$data['type'] = ($data['listType'] == 'ListData') ? 'Draft' : $data['listType'];
 
 		$data['UserMenu'] = $this->M_user->getUserMenu($user_id, $this->session->responsibility_id);
 		$data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id, $this->session->responsibility_id);
@@ -39,11 +41,22 @@ class C_Detail extends CI_Controller {
 		$data['dataList'] = $this->M_lkhtargetwaktu->getLkhDetailDataList($data['filterPeriode'], $data['filterPekerja']);
 		$data['recordPekerjaan'] = $this->M_lkhtargetwaktu->getRecordPekerjaanDetailLkh($data['filterPeriode'], $data['filterPekerja']);
 		$data['nilaiInsentifKondite'] = $this->M_lkhtargetwaktu->getNilaiInsentifKonditeDetailLkh($data['filterPeriode'], $data['filterPekerja']);
-		$data['warningSP'] = $this->M_lkhtargetwaktu->getWarningSpDetailLkh($data['filterPeriode'], $data['filterPekerja']);
+		$data['warningSP'] = $this->calculateWarningSP($data['dataList']);
 		$this->load->view('V_Header', $data);
 		$this->load->view('V_Sidemenu', $data);
 		$this->load->view('LaporanKerjaHarian/PekerjaBatch/TargetWaktu/V_Detail', $data);
 		$this->load->view('V_Footer', $data);
+	}
+
+	public function calculateWarningSP($dataList) {
+		if(!empty($dataList)) {
+			$i = 0; $result = array();
+			foreach($dataList as $data) {
+				if(intval(str_replace('%', '', $data['aktual_persen'])) < 100) { $result[$i++] = $this->M_lkhtargetwaktu->getFormattedDate($data['date_day'], $data['date_month'], $data['date_year']); }
+				if(count($result) == 3) { return implode(', ', $result); }
+			}
+		}
+		return null;
 	}
 
 	public function getData() {

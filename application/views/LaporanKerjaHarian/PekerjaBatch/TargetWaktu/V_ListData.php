@@ -1,13 +1,13 @@
 <style type="text/css">
-    /* .dataTables_wrapper .dataTables_processing {
+    .dataTables_wrapper .dataTables_processing {
         position: absolute;
-        margin-top: 45px;
+        /* margin-top: 45px;
         padding-top: 16px;
-        padding-bottom: 40px;
+        padding-bottom: 40px; */
         text-align: center;
         font-size: 1.2em;
         z-index: 999;
-    } */
+    }
     #datepicker, #filterPeriode {
         cursor: pointer;
     }
@@ -37,6 +37,13 @@
     }
     .dataTable_Processing {
         z-index: 999;
+    }
+    .fade-transition {
+        -webkit-transition: background-color 250ms linear;
+        -moz-transition: background-color 250ms linear;
+        -o-transition: background-color 250ms linear;
+        -ms-transition: background-color 250ms linear;
+        transition: background-color 250ms linear;
     }
 </style>
 <section class="content">
@@ -80,10 +87,13 @@
                                 </div>
                                 <div class="col-lg-3">
                                     <div>
-                                        <a href="<?php echo site_url('LKH/TargetWaktu/HapusData') ?>" data-toggle="tooltip" data-placement="left" style="float:right;margin-right:1%;margin-top:-0.5%;" alt="Hapus Data" title="Hapus Data" >
+                                        <a onclick="javascript:reloadDataTables();" data-toggle="tooltip" data-placement="left" style="float:right;margin-top:-0.5%;" alt="Refresh Halaman" title="Refresh Data">
+                                            <button type="button" class="btn btn-default btn-sm"><i class="fa fa-refresh fa-2x"></i></button>
+                                        </a>
+                                        <a onclick="javascript:openDeleteDataBatchModal();" data-toggle="tooltip" data-placement="left" style="float:right;margin-right:3%;margin-top:-0.5%;" alt="Hapus Data Kegiatan (Batch)" title="Hapus Data Kegiatan (Batch)">
                                             <button type="button" class="btn btn-default btn-sm"><i class="fa fa-trash fa-2x"></i></button>
                                         </a>
-                                        <a href="<?php echo site_url('LKH/TargetWaktu/KirimApproval/') ?>" data-toggle="tooltip" data-placement="left" style="float:right;margin-right:1%;margin-top:-0.5%;" alt="Kirim Approval ke Atasan" title="Kirim Approval ke Atasan" >
+                                        <a onclick="javascript:openKirimApprovalModal();" data-toggle="tooltip"  data-placement="left" style="float:right;margin-right:3%;margin-top:-0.5%;" alt="Kirim Approval ke Atasan" title="Kirim Approval ke Atasan">
                                             <button type="button" class="btn btn-default btn-sm"><i class="fa fa-check fa-2x"></i></button>
                                         </a>
                                     </div>
@@ -118,12 +128,12 @@
                                         </div>
                                     </div>
                                     <div class="col-md-1">
-                                        <form id="formFilterLkhPekerja" action="<?= base_url('LkhPekerjaBatch/TargetWaktu/ListData'); ?>" method="POST">
+                                        <form id="formFilterLkhPekerja" action="<?= base_url('LkhPekerjaBatch/TargetWaktu/'.$type); ?>" method="POST">
                                             <input id="currentLkhPekerjaData1" value="<?= $filterPeriode; ?>" hidden/>
                                             <input id="currentLkhPekerjaData2" value="<?= (empty($filterPekerja)) ? '' : implode(',', $filterPekerja);; ?>" hidden/>
                                             <input name="filterPeriode" id="formFilterLkhPekerjaData1" hidden/>
                                             <input name="filterPekerja" id="formFilterLkhPekerjaData2" hidden/>
-                                            <button style="margin-top: 2px;" class="btn btn-default btn-sm" type="submit">Tampilkan</button>
+                                            <button id="btnFilterLkh" style="margin-top: 2px;" class="btn btn-default btn-sm" type="submit">Tampilkan</button>
                                         </form>
                                     </div>
                                 </div>
@@ -153,34 +163,70 @@
         </div>
     </div>
 </section>
+<div class="modal fade" id="modalKirimApproval" role="dialog">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">Kirim Approval</h4>
+            </div>
+            <div class="modal-body">
+                <div>
+                    <span id="approvalDataCount"></span><br/>
+                    <b>Pilih Approver:</b>
+                </div>
+                <div style="margin-top: 8px;">
+                    <select class="form-control" id="slcApprover1" style="width: 100%"></select>
+                </div>
+                <div style="margin-top: 8px;">
+                    <select class="form-control" id="slcApprover2" style="width: 100%" disabled></select>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Batal</button>
+                <button type="button" class="btn btn-primary" id="btnConfirmKirimApproval">Kirim</button>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal fade" id="modalDeleteDataBatch" role="dialog">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">Hapus Data Kegiatan (Batch)</h4>
+            </div>
+            <div class="modal-body">
+                <span id="deleteDataBatchCount" style="font-weight: bold;"></span>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Batal</button>
+                <button type="button" class="btn btn-danger" id="btnConfirmDeleteBatch">Hapus</button>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal fade" id="modalDeleteData" role="dialog">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">Hapus Data Kegiatan</h4>
+            </div>
+            <div class="modal-body">
+                <span id="deleteDataMessage"></span>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Batal</button>
+                <button type="button" class="btn btn-danger" id="btnConfirmDelete">Hapus</button>
+            </div>
+        </div>
+    </div>
+</div>
 <script type="text/javascript">
+    var table;
     $(function() {
-        <?php
-            if($this->session->flashdata('delete-lkh-pekerja-respond')) {
-                switch($this->session->flashdata('delete-lkh-pekerja-respond')) {
-                    case 1:
-                        echo "
-                            Swal.fire({
-                                text: 'Terjadi kesalahan saat menghapus data LKH pekerja',
-                                confirmButtonText: 'Tutup',
-                                type: 'error'
-                            });
-                        ";
-                        break;
-                    case 2:
-                        echo "
-                            Swal.fire({
-                                text: 'Data LKH pekerja telah dihapus',
-                                confirmButtonText: 'Tutup',
-                                type: 'success'
-                            });
-                        ";
-                        break;
-                }
-            }
-        ?>
-        $('#tblLkhPekerjaListData').DataTable({
-            //dom: 'Bfrtip',
+        table = $('#tblLkhPekerjaListData').DataTable({
             dom: '<"dataTable_Button"B><"dataTable_Filter"f>rt<"dataTable_Information"i><"dataTable_Pagination"p>',
             buttons: [
                 'pageLength',
@@ -286,24 +332,37 @@
             serverSide: true,
             scrollX: true,
             responsive: true,
+            searchDelay: 500,
             drawCallback: function(x) {
                 $('#checkbox-all').iCheck('uncheck');
                 initCheckbox();
             },
-            rowCallback: function(row, data, index) {
-                if(data[6] == 'true') $('td', row).css('background-color', '#f44336').css('color', 'white');
+            createdRow: function(row, data, index) {
+                $('td', row).eq(5).addClass('fade-transition');
+                switch(data[7]) {
+                    case 'Request Approval':
+                    case 'Unapproved':
+                        $('td', row).eq(5).css({'background-color': '#ffb74d', 'color': 'black'});
+                        break;
+                    case 'Approved':
+                        $('td', row).eq(5).css({'background-color': '#4CAF50', 'color': 'white'});
+                        break;
+                    case 'Rejected':
+                        $('td', row).eq(5).css({'background-color': '#FF5252', 'color': 'white'});
+                        break;
+                }
             },
             columnDefs: [
                 {"targets": [0], "searchable": false, "orderable": false, "visible": false},
                 {"targets": [1], "searchable": false, "orderable": false, "visible": true},
                 {"targets": [2], "searchable": false, "orderable": false, "visible": true},
                 {"targets": [3], "searchable": true,  "orderable": true,  "visible": true},
-                {"targets": [4], "searchable": true,  "orderable": false, "visible": true},
+                {"targets": [4], "searchable": true,  "orderable": true, "visible": true},
                 {"targets": [5], "searchable": true,  "orderable": true,  "visible": true},
                 {"targets": [6], "searchable": true,  "orderable": true,  "visible": true}
             ],
             order: [
-                [2, "asc"]
+                [3, "asc"]
             ],
             ajax: {
                 url : "<?= base_url('LkhPekerjaBatch/TargetWaktu/getList'); ?>",
@@ -316,4 +375,187 @@
             }
         });
     });
+
+    function reloadDataTables() {
+        if(table) table.ajax.reload(null, false);
+    }
+
+    function openKirimApprovalModal() {
+        var valid = false, dataCount = 0;
+        for(var i = 0; i <= table.page.info().recordsTotal; i++) {
+            if($("#checkbox-row-" + i).prop("checked")) { valid = true; dataCount++; }
+        }
+        if(valid) {
+            $('#approvalDataCount').text('Memilih ' + dataCount + ' data dari total ' + table.page.info().recordsTotal + ' data LKH Pekerja.');
+            $('#modalKirimApproval').modal('show');
+            $('#btnConfirmKirimApproval').off('click').click(function() {
+                if($('#slcApprover1').val() && $('#slcApprover2').val()) {
+                    kirimApproval();
+                } else {
+                    $.toaster('Mohon lengkapi opsi approver', '', 'danger');
+                }
+            });
+        } else  {
+            $.toaster('Tidak ada data yang dipilih', '', 'danger');
+        }
+    }
+
+    function kirimApproval() {
+        var employee_code = '', periode = '', approver1 = $('#slcApprover1').val(), approver2 = $('#slcApprover2').val();
+        $('#btnConfirmKirimApproval').attr('disabled', true);
+        for(var i = 0; i <= table.page.info().recordsTotal; i++) {
+            if($("#checkbox-row-" + i).prop("checked") == true && $('#employee-record-pekerjaan-row-' + i).text() != '-' && $('#employee-record-kondite-row-' + i).text() != '-') {
+                employee_code += $('#employee-code-row-' + i).val() + ', ';
+                periode += getFormattedPeriode($('#periode-row-' + i).val()) + ', ';
+            }
+        }
+        if(employee_code && periode && approver1 && approver2) {
+            $.ajax({
+                url: '<?= base_url("LkhPekerjaBatch/TargetWaktu/kirimApproval"); ?>',
+                type: 'POST',
+                dataType: 'json',
+                async: true,
+                data: {
+                    'periode': periode,
+                    'pekerja': employee_code,
+                    'approver1': approver1,
+                    'approver2': approver2
+                },
+                success: function(response) {
+                    $('#btnConfirmKirimApproval').attr('disabled', false);
+                    if(response.success) {
+                        $('#checkbox-all').iCheck('uncheck');
+                        for(var i = 0; i <= table.page.info().recordsTotal; i++) {
+                            if($('#checkbox-row-' + i).prop('checked')) {
+                                $('#checkbox-row-' + i).iCheck('uncheck');
+                                $('#checkbox-row-' + i).attr('disabled', true);
+                                $('#employee-status-row-' + i).text('Request Approval');
+                                $('#employee-status-row-' + i).parent().css('background-color', '#ffb74d');
+                            }
+                        }
+                        $.toaster(response.message, '', 'success');
+                        $('#modalKirimApproval').modal('hide');
+                    } else {
+                        $.toaster(response.message, '', 'danger');
+                    }
+                },
+                error: function(response) {
+                    console.log('Terjadi kesalahan saat mengirim data [status: ' + response.status + ']');
+                    $('#btnConfirmKirimApproval').attr('disabled', false);
+                    $.toaster('Terjadi kesalahan saat mengirim data', '', 'danger');
+                }
+            });
+        } else {
+            $.toaster('Tidak ada data yang dipilih', '', 'danger');
+        }
+    }
+
+    function openDeleteDataBatchModal() {
+        var valid = false, dataCount = 0;
+        for(var i = 0; i <= table.page.info().recordsTotal; i++) {
+            if($("#checkbox-row-" + i).prop("checked")) {
+                valid = true;
+                dataCount++;
+            }
+        }
+        if(valid) {
+            $('#deleteDataBatchCount').text('Anda yakin ingin menghapus ' + dataCount + ' data dari total ' + table.page.info().recordsTotal + ' data kegiatan LKH Pekerja ?');
+            $('#modalDeleteDataBatch').modal('show');
+            $('#btnConfirmDeleteBatch').off('click').click(function() {
+                deleteDataKegiatanBatch();
+            });
+        } else {
+            $.toaster('Tidak ada data yang dipilih', '', 'danger');
+        }
+    }
+
+    function deleteDataKegiatanBatch() {
+        var employee_code = '', periode = '';
+        $('#btnConfirmDeleteBatch').attr('disabled', true);
+        for(var i = 0; i <= table.page.info().recordsTotal; i++) {
+            if($("#checkbox-row-" + i).prop("checked") == true && $('#employee-record-pekerjaan-row-' + i).text() != '-' && $('#employee-record-kondite-row-' + i).text() != '-') {
+                employee_code += $('#employee-code-row-' + i).val() + ', ';
+                periode += $('#periode-row-' + i).val() + ', ';
+            }
+        }
+        if(employee_code && periode) {
+            $.ajax({
+                url: '<?= base_url("LkhPekerjaBatch/TargetWaktu/deleteDataKegiatanBatch"); ?>',
+                type: 'POST',
+                dataType: 'json',
+                async: true,
+                data: {
+                    'periode': periode,
+                    'pekerja': employee_code
+                },
+                success: function(response) {
+                    $('#btnConfirmDeleteBatch').attr('disabled', false);
+                    if(response.success) {
+                        $('#checkbox-all').iCheck('uncheck');
+                        for(var i = 0; i <= table.page.info().recordsTotal; i++) if($('#checkbox-row-' + i).prop('checked')) $('#checkbox-row-' + i).iCheck('uncheck');
+                        $.toaster(response.message, '', 'success');
+                        $('#modalDeleteDataBatch').modal('hide');
+                    } else {
+                        $.toaster(response.message, '', 'danger');
+                    }
+                },
+                error: function(response) {
+                    console.log('Terjadi kesalahan saat menghapus data [status: ' + response.status + ']');
+                    $('#btnConfirmDeleteBatch').attr('disabled', false);
+                    $.toaster('Terjadi kesalahan saat menghapus data', '', 'danger');
+                }
+            });
+        } else {
+            $.toaster('Tidak ada data yang dipilih', '', 'danger');
+        }
+    }
+
+    function openDeleteDataModal(row, id) {
+        if(row, id) {
+            $('#deleteDataMessage').html('Anda yakin ingin menghapus data kegiatan LKH pekerja <b>' + $('#employee-name-row-'+row).text() + '</b> ?');
+            $('#modalDeleteData').modal('show');
+            $('#btnConfirmDelete').off('click').click(function() {
+                deleteDataKegiatan(row, id);
+            });
+        }
+    }
+
+    function deleteDataKegiatan(row, id) {
+        $('#btnDeleteData').attr('disabled', true);
+        if(row && id) {
+            $.ajax({
+                url: '<?= base_url("LkhPekerjaBatch/TargetWaktu/deleteDataKegiatan"); ?>',
+                type: 'POST',
+                dataType: 'json',
+                async: true,
+                data: {
+                    'periode': $('#periode-row-' + row).val(),
+                    'pekerja': id
+                },
+                success: function(response) {
+                    $('#btnDeleteData').attr('disabled', false);
+                    if(response.success) {
+                        $.toaster(response.message, '', 'success');
+                        $('#modalDeleteData').modal('hide');
+                    } else {
+                        $.toaster(response.message, '', 'danger');
+                    }
+                },
+                error: function(response) {
+                    console.log('Terjadi kesalahan saat menghapus data [status: ' + response.status + ']');
+                    $('#btnDeleteData').attr('disabled', false);
+                    $.toaster('Terjadi kesalahan saat menghapus data', '', 'danger');
+                }
+            });
+        }
+    }
+
+    function getFormattedPeriode(periode) {
+        var result = '';
+        if(periode) {
+            periode = periode.split('/');
+            return periode[1] + '-' + periode[0] + '-01';
+        }
+        return result;
+    }
 </script>

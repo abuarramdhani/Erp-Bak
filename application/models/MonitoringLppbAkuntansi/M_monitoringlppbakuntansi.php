@@ -13,7 +13,8 @@ class M_monitoringlppbakuntansi extends CI_Model {
         $query = "SELECT DISTINCT a.batch_number, a.create_date, a.group_batch,
                         (SELECT COUNT (lppb_number)
                            FROM khs_lppb_batch_detail c
-                           WHERE c.batch_number = a.batch_number) jumlah_lppb,
+                           WHERE c.status = 5
+                           AND c.batch_number = a.batch_number) jumlah_lppb,
                         (SELECT COUNT (lppb_number)
                            FROM khs_lppb_batch_detail g
                           WHERE g.status = 5
@@ -58,6 +59,9 @@ class M_monitoringlppbakuntansi extends CI_Model {
                AND B.STATUS = 5
                AND a.id_gudang = '$id'
                ORDER BY a.batch_number DESC";
+        // echo "<pre>";
+        // print_r($query);
+        // exit();
         $run = $oracle->query($query);
         return $run->result_array();
     }
@@ -132,8 +136,11 @@ class M_monitoringlppbakuntansi extends CI_Model {
                                AND rts.po_header_id = pol.po_header_id)
                     AND a.po_header_id = poh.po_header_id
                     AND a.lppb_number = rsh.receipt_num
+                    ORDER BY a.batch_detail_id
                     ";
-
+                  // echo "<pre>";
+                  // print_r($query);
+                  // exit();
         $run = $oracle->query($query);
         return $run->result_array();
     }
@@ -239,12 +246,13 @@ class M_monitoringlppbakuntansi extends CI_Model {
         return $run->result_array();
     }
 
-    public function finishdetail($batch_number,$lppb_number){
+    public function finishdetail($batch_number){
         $oracle = $this->load->database('oracle',true);
         $query = "SELECT DISTINCT poh.po_header_id,
                 a.lppb_number,
                 poh.segment1 po_number,
-                pov.vendor_name vendor_name, rsh.creation_date tanggal_lppb,
+                pov.vendor_name vendor_name, 
+                rsh.creation_date tanggal_lppb,
                 MP.ORGANIZATION_CODE, 
                 MP.ORGANIZATION_ID,
                 rt.transaction_type status_lppb,
@@ -293,8 +301,10 @@ class M_monitoringlppbakuntansi extends CI_Model {
                              WHERE rt.shipment_header_id = rts.shipment_header_id
                                AND rts.po_header_id = pol.po_header_id)
                     AND a.po_header_id = poh.po_header_id
-                    $lppb_number
                     AND a.lppb_number = rsh.receipt_num";
+        //             echo "<pre>";
+        //             print_r($query);
+        //             exit();
         $run = $oracle->query($query);
         return $run->result_array();
     }

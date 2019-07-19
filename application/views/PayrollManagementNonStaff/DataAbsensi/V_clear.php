@@ -50,7 +50,8 @@
                                             
                                         </div>
                                         <div class="col-sm-2">
-                                            <button type="button" id="btnPreClearData" class="btn btn-primary btn-block" style="float: right;">Kosongkan</button>
+                                            <a href="javascript:history.back()" class="btn btn-info">Back</a>
+                                            <button type="button" id="btnPreClearData" class="btn btn-primary" style="float: right;">Kosongkan</button>
                                             <div class="modal fade" id="clear-alert">
                                                 <div class="modal-dialog modal-sm">
                                                     <div class="modal-content">

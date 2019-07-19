@@ -1339,7 +1339,7 @@ class C_Order extends CI_Controller
       			'kode_item'	=>	$item[$i],
       			'kd_pekerjaan'	=> $kd_pkj,
       			'jml_item'	=>	implode(',', $jml[$i]),
-      			'kodesie'	=>	$kodesie,
+      			'kodesie'	=>	$ks,
       			'jml_kebutuhan_umum'	=>	$umum[$i],
       			'jml_kebutuhan_staff'	=>	$staff[$i],
       			'tgl_input'	=>	$tgl_input,

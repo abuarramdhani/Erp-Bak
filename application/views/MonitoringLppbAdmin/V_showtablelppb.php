@@ -1,5 +1,6 @@
 </style>
-		<?php foreach ($lppb as $lp) { ?>
+		<?php foreach ($lppb as $lp) 
+		{ ?>
 		<input type="hidden" value="<?php echo $lp['PO_HEADER_ID']?>" name="po_header_id">
 		<input type="hidden" value="<?php echo $lp['PO_NUMBER']?>" name="po_number">
 		<input type="hidden" value="<?php echo $lp['ORGANIZATION_ID']?>" name="organization_id">

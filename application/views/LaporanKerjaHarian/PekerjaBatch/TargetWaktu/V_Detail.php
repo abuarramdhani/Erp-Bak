@@ -60,10 +60,30 @@
             <div class="col-lg-12">
                 <div class="row">
                     <div class="col-lg-12">
-                        <div class="col-lg-11">
+                        <div class="col-lg-8">
                             <div class="text-left">
                                 <h1><b><?= $Title ?></b></h1>
                                 <h2 style="margin-top: -4px;"><?= $EmployeeInfo ?></h2>
+                            </div>
+                        </div>
+                        <div class="col-lg-4">
+                            <div class="text-right">
+                                <h1 style="visibility: hidden;">-</h1>
+                                <h3><b>Status: </b><span 
+                                <?php
+                                    switch(strtolower($type)) {
+                                        case 'unapproved':
+                                            echo 'style="color: #ffb74d"';
+                                            break;
+                                        case 'approved':
+                                            echo 'style="color: #4CAF50"';
+                                            break;
+                                        case 'rejected':
+                                            echo 'style="color: #FF5252"';
+                                            break;
+                                    }
+                                ?>
+                                ><?= ($type == 'unapproved') ? 'Request Approval' : $type ?></span></h3>
                             </div>
                         </div>
                     </div>
@@ -96,14 +116,57 @@
                                     </div>
                                     <div class="col-md-1">
                                         <form id="formFilterLkhPekerja" action="<?= base_url('LkhPekerjaBatch/TargetWaktu/Detail'); ?>" method="POST">
-                                            <input id="currentLkhPekerjaData2" name="filterPekerja" value="<?= $filterPekerja; ?>" hidden/>
                                             <input id="currentLkhPekerjaData1" value="<?= $filterPeriode; ?>" hidden/>
+                                            <input id="currentLkhPekerjaData2" name="filterPekerja" value="<?= $filterPekerja; ?>" hidden/>
                                             <input id="formFilterLkhPekerjaData1" name="filterPeriode" hidden/>
                                             <button style="margin-top: 2px;" class="btn btn-default btn-sm" type="submit">Tampilkan</button>
                                         </form>
                                     </div>
                                 </div>
-                                <div class="col-lg-3"></div>
+                                <div class="col-lg-3">
+                                    <div>
+                                        <a onclick="javascript:location.reload();" data-toggle="tooltip" data-placement="left" style="float:right;margin-top:-0.5%;" alt="Refresh Halaman" title="Refresh Data">
+                                            <button type="button" class="btn btn-default btn-sm"><i class="fa fa-refresh fa-2x"></i></button>
+                                        </a>
+                                        <form action="<?= base_url('LkhPekerjaBatch/TargetWaktu/'.$listType); ?>" method="POST">
+                                            <input type="text" name="filterPeriode" value="<?= $filterPeriode; ?>" hidden />
+                                            <a type="submit" data-toggle="tooltip" data-placement="left" style="float:right;margin-right:3%;margin-top:-0.5%;" alt="Kembali ke halaman sebelumnya" title="Kembali ke halaman sebelumnya">
+                                                <button class="btn btn-default btn-sm"><i class="fa fa-arrow-left fa-2x"></i></button>
+                                            </a>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                            <div id="info-box" style="padding: 16px; display: none;">
+                                <i id="info-box-icon" aria-hidden="true" class="fa
+                                <?php
+                                    switch(strtolower($type)) {
+                                        case 'unapproved':
+                                            echo 'fa-pencil-square';
+                                            break;
+                                        case 'approved':
+                                            echo 'fa-check';
+                                            break;
+                                        case 'rejected':
+                                            echo 'fa-ban';
+                                            break;
+                                    }
+                                ?>"></i>
+                                <b id="info-box-text" style="margin-left: 8px">
+                                <?php
+                                    switch(strtolower($type)) {
+                                        case 'unapproved':
+                                            echo 'LKH Pekerja sudah di kirim ke atasan. Anda tidak bisa mengubahnya sebelum di periksa oleh atasan.';
+                                            break;
+                                        case 'approved':
+                                            echo 'LKH Pekerja sudah di approve oleh atasan. Anda sudah tidak bisa mengubahnya.';
+                                            break;
+                                        case 'rejected':
+                                            echo 'LKH Pekerja di tolak oleh atasan. Mohon untuk merevisi data lkh.';
+                                            break;
+                                    }
+                                ?>
+                                </b>
                             </div>
                             <div class="box-body">
                                 <div class="table-responsive">
@@ -131,7 +194,6 @@
                                         <tbody>
                                             <?php
                                                 if(isset($dateList)) {
-                                                    //print_r($dateList); exit();
                                                     if(empty($dataList)) {
                                                         for($i = 0; $i < count($dateList); $i++) {
                                                             echo('<tr>');
@@ -157,25 +219,52 @@
                                                         $count = 0;
                                                         for($i = 0; $i < count($dateList); $i++) {
                                                             if(!empty($dataList[$count]['date']) && $dataList[$count]['date'] == $dateList[$i]['date']) {
-                                                                echo('<span id="lkh-id-row-'.$count.'" style="display: none;">'.$dataList[$count]['lkh_id'].'</span>');
-                                                                echo('<tr>');
-                                                                echo('<td><div style="text-align: center;">'.($i + 1).'.</div></td>');
-                                                                echo('<td style="width: 110px;"><div style="text-align: center;">'.$dateList[$i]['formatted_date'].'</div></td>');
-                                                                echo('<td class="input-frame"><div style="text-align: center;"><input type="text" onfocusin="onFocusIn($(this));" onfocusout="onFocusOut($(this));" data-row="'.$count.'" data-column="uraian_pekerjaan" oninput="this.value = this.value.charAt(0).toUpperCase() + this.value.slice(1)" style="width: 140px;" value="'.$dataList[$count]['uraian_pekerjaan'].'"/></div></td>');
-                                                                echo('<td class="input-frame"><div style="text-align: center;"><input type="text" onfocusin="onFocusIn($(this));" onfocusout="onFocusOut($(this));" data-row="'.$count.'" data-column="status_target" maxlength="2" oninput="this.value = this.value.toUpperCase()" style="width: 25px; text-align: center;" value="'.$dataList[$count]['status_target'].'"/></div></td>');
-                                                                echo('<td><div style="text-align: center;">'.$dataList[$count]['target'].'</div></td>');
-                                                                echo('<td><div style="text-align: center;">'.$dataList[$count]['aktual'].'</div></td>');
-                                                                echo('<td><div style="text-align: center;">'.$dataList[$count]['aktual_persen'].'</div></td>');
-                                                                echo('<td class="input-frame"><div style="text-align: center;"><input onfocusin="onFocusIn($(this));" onfocusout="onFocusOut($(this));" data-row="'.$count.'" data-column="kondite_mk" maxlength="1" oninput="this.value = this.value.toUpperCase()" style="width: 25px; text-align: center;" type="text" value="'.$dataList[$count]['kondite_mk'].'"/></div></td>');
-                                                                echo('<td class="input-frame"><div style="text-align: center;"><input onfocusin="onFocusIn($(this));" onfocusout="onFocusOut($(this));" data-row="'.$count.'" data-column="kondite_i" maxlength="1" oninput="this.value = this.value.toUpperCase()" style="width: 25px; text-align: center;" type="text" value="'.$dataList[$count]['kondite_i'].'"/></div></td>');
-                                                                echo('<td class="input-frame"><div style="text-align: center;"><input onfocusin="onFocusIn($(this));" onfocusout="onFocusOut($(this));" data-row="'.$count.'" data-column="kondite_bk" maxlength="1" oninput="this.value = this.value.toUpperCase()" style="width: 25px; text-align: center;" type="text" value="'.$dataList[$count]['kondite_bk'].'"/></div></td>');
-                                                                echo('<td class="input-frame"><div style="text-align: center;"><input onfocusin="onFocusIn($(this));" onfocusout="onFocusOut($(this));" data-row="'.$count.'" data-column="kondite_tk" maxlength="1" oninput="this.value = this.value.toUpperCase()" style="width: 25px; text-align: center;" type="text" value="'.$dataList[$count]['kondite_tk'].'"/></div></td>');
-                                                                echo('<td class="input-frame"><div style="text-align: center;"><input onfocusin="onFocusIn($(this));" onfocusout="onFocusOut($(this));" data-row="'.$count.'" data-column="kondite_kp" maxlength="1" oninput="this.value = this.value.toUpperCase()" style="width: 25px; text-align: center;" type="text" value="'.$dataList[$count]['kondite_kp'].'"/></div></td>');
-                                                                echo('<td class="input-frame"><div style="text-align: center;"><input onfocusin="onFocusIn($(this));" onfocusout="onFocusOut($(this));" data-row="'.$count.'" data-column="kondite_ks" maxlength="1" oninput="this.value = this.value.toUpperCase()" style="width: 25px; text-align: center;" type="text" value="'.$dataList[$count]['kondite_ks'].'"/></div></td>');
-                                                                echo('<td class="input-frame"><div style="text-align: center;"><input onfocusin="onFocusIn($(this));" onfocusout="onFocusOut($(this));" data-row="'.$count.'" data-column="kondite_kk" maxlength="1" oninput="this.value = this.value.toUpperCase()" style="width: 25px; text-align: center;" type="text" value="'.$dataList[$count]['kondite_kk'].'"/></div></td>');
-                                                                echo('<td class="input-frame"><div style="text-align: center;"><input onfocusin="onFocusIn($(this));" onfocusout="onFocusOut($(this));" data-row="'.$count.'" data-column="kondite_pk" maxlength="1" oninput="this.value = this.value.toUpperCase()" style="width: 25px; text-align: center;" type="text" value="'.$dataList[$count]['kondite_pk'].'"/></div></td>');
-                                                                echo('<td class="fade-transition"><div style="text-align: center;"><b id="gol-kondite-'.$dataList[$count]['lkh_id'].'">'.$dataList[$count]['gol_kondite'].'</b></div></td>');
-                                                                echo('</tr>');
+                                                                switch(strtolower($type)) {
+                                                                    case 'draft':
+                                                                    case 'rejected':
+                                                                        echo('<span id="lkh-id-row-'.$count.'" style="display: none;">'.$dataList[$count]['lkh_id'].'</span>');
+                                                                        echo('<tr>');
+                                                                        echo('<td><div style="text-align: center;">'.($i + 1).'.</div></td>');
+                                                                        echo('<td style="width: 110px;"><div style="text-align: center;">'.$dateList[$i]['formatted_date'].'</div></td>');
+                                                                        echo('<td class="input-frame"><div style="text-align: center;"><input type="text" onfocusin="onFocusIn($(this));" onfocusout="onFocusOut($(this));" data-row="'.$count.'" data-column="uraian_pekerjaan" oninput="this.value = this.value.charAt(0).toUpperCase() + this.value.slice(1)" style="width: 140px;" value="'.$dataList[$count]['uraian_pekerjaan'].'"/></div></td>');
+                                                                        echo('<td class="input-frame"><div style="text-align: center;"><input type="text" onfocusin="onFocusIn($(this));" onfocusout="onFocusOut($(this));" data-row="'.$count.'" data-column="status_target" maxlength="2" oninput="this.value = this.value.toUpperCase()" style="width: 25px; text-align: center;" value="'.$dataList[$count]['status_target'].'"/></div></td>');
+                                                                        echo('<td><div style="text-align: center;">'.$dataList[$count]['target'].'</div></td>');
+                                                                        echo('<td><div style="text-align: center;">'.$dataList[$count]['aktual'].'</div></td>');
+                                                                        echo('<td><div style="text-align: center;">'.$dataList[$count]['aktual_persen'].'</div></td>');
+                                                                        echo('<td class="input-frame"><div style="text-align: center;"><input onfocusin="onFocusIn($(this));" onfocusout="onFocusOut($(this));" data-row="'.$count.'" data-column="kondite_mk" maxlength="1" oninput="this.value = this.value.toUpperCase()" style="width: 25px; text-align: center;" type="text" value="'.$dataList[$count]['kondite_mk'].'"/></div></td>');
+                                                                        echo('<td class="input-frame"><div style="text-align: center;"><input onfocusin="onFocusIn($(this));" onfocusout="onFocusOut($(this));" data-row="'.$count.'" data-column="kondite_i" maxlength="1" oninput="this.value = this.value.toUpperCase()" style="width: 25px; text-align: center;" type="text" value="'.$dataList[$count]['kondite_i'].'"/></div></td>');
+                                                                        echo('<td class="input-frame"><div style="text-align: center;"><input onfocusin="onFocusIn($(this));" onfocusout="onFocusOut($(this));" data-row="'.$count.'" data-column="kondite_bk" maxlength="1" oninput="this.value = this.value.toUpperCase()" style="width: 25px; text-align: center;" type="text" value="'.$dataList[$count]['kondite_bk'].'"/></div></td>');
+                                                                        echo('<td class="input-frame"><div style="text-align: center;"><input onfocusin="onFocusIn($(this));" onfocusout="onFocusOut($(this));" data-row="'.$count.'" data-column="kondite_tk" maxlength="1" oninput="this.value = this.value.toUpperCase()" style="width: 25px; text-align: center;" type="text" value="'.$dataList[$count]['kondite_tk'].'"/></div></td>');
+                                                                        echo('<td class="input-frame"><div style="text-align: center;"><input onfocusin="onFocusIn($(this));" onfocusout="onFocusOut($(this));" data-row="'.$count.'" data-column="kondite_kp" maxlength="1" oninput="this.value = this.value.toUpperCase()" style="width: 25px; text-align: center;" type="text" value="'.$dataList[$count]['kondite_kp'].'"/></div></td>');
+                                                                        echo('<td class="input-frame"><div style="text-align: center;"><input onfocusin="onFocusIn($(this));" onfocusout="onFocusOut($(this));" data-row="'.$count.'" data-column="kondite_ks" maxlength="1" oninput="this.value = this.value.toUpperCase()" style="width: 25px; text-align: center;" type="text" value="'.$dataList[$count]['kondite_ks'].'"/></div></td>');
+                                                                        echo('<td class="input-frame"><div style="text-align: center;"><input onfocusin="onFocusIn($(this));" onfocusout="onFocusOut($(this));" data-row="'.$count.'" data-column="kondite_kk" maxlength="1" oninput="this.value = this.value.toUpperCase()" style="width: 25px; text-align: center;" type="text" value="'.$dataList[$count]['kondite_kk'].'"/></div></td>');
+                                                                        echo('<td class="input-frame"><div style="text-align: center;"><input onfocusin="onFocusIn($(this));" onfocusout="onFocusOut($(this));" data-row="'.$count.'" data-column="kondite_pk" maxlength="1" oninput="this.value = this.value.toUpperCase()" style="width: 25px; text-align: center;" type="text" value="'.$dataList[$count]['kondite_pk'].'"/></div></td>');
+                                                                        echo('<td class="fade-transition"><div style="text-align: center;"><b id="gol-kondite-'.$dataList[$count]['lkh_id'].'">'.$dataList[$count]['gol_kondite'].'</b></div></td>');
+                                                                        echo('</tr>');
+                                                                        break;
+                                                                    case 'unapproved':
+                                                                    case 'approved':
+                                                                        echo('<span id="lkh-id-row-'.$count.'" style="display: none;">'.$dataList[$count]['lkh_id'].'</span>');
+                                                                        echo('<tr>');
+                                                                        echo('<td><div style="text-align: center;">'.($i + 1).'.</div></td>');
+                                                                        echo('<td style="width: 110px;"><div style="text-align: center;">'.$dateList[$i]['formatted_date'].'</div></td>');
+                                                                        echo('<td class="input-frame"><div style="text-align: center;"><input disabled type="text" data-row="'.$count.'" data-column="uraian_pekerjaan" oninput="this.value = this.value.charAt(0).toUpperCase() + this.value.slice(1)" style="width: 140px;" value="'.$dataList[$count]['uraian_pekerjaan'].'"/></div></td>');
+                                                                        echo('<td class="input-frame"><div style="text-align: center;"><input disabled type="text" data-row="'.$count.'" data-column="status_target" maxlength="2" oninput="this.value = this.value.toUpperCase()" style="width: 25px; text-align: center;" value="'.$dataList[$count]['status_target'].'"/></div></td>');
+                                                                        echo('<td><div style="text-align: center;">'.$dataList[$count]['target'].'</div></td>');
+                                                                        echo('<td><div style="text-align: center;">'.$dataList[$count]['aktual'].'</div></td>');
+                                                                        echo('<td><div style="text-align: center;">'.$dataList[$count]['aktual_persen'].'</div></td>');
+                                                                        echo('<td class="input-frame"><div style="text-align: center;"><input disabled data-row="'.$count.'" data-column="kondite_mk" maxlength="1" oninput="this.value = this.value.toUpperCase()" style="width: 25px; text-align: center;" type="text" value="'.$dataList[$count]['kondite_mk'].'"/></div></td>');
+                                                                        echo('<td class="input-frame"><div style="text-align: center;"><input disabled data-row="'.$count.'" data-column="kondite_i" maxlength="1" oninput="this.value = this.value.toUpperCase()" style="width: 25px; text-align: center;" type="text" value="'.$dataList[$count]['kondite_i'].'"/></div></td>');
+                                                                        echo('<td class="input-frame"><div style="text-align: center;"><input disabled data-row="'.$count.'" data-column="kondite_bk" maxlength="1" oninput="this.value = this.value.toUpperCase()" style="width: 25px; text-align: center;" type="text" value="'.$dataList[$count]['kondite_bk'].'"/></div></td>');
+                                                                        echo('<td class="input-frame"><div style="text-align: center;"><input disabled data-row="'.$count.'" data-column="kondite_tk" maxlength="1" oninput="this.value = this.value.toUpperCase()" style="width: 25px; text-align: center;" type="text" value="'.$dataList[$count]['kondite_tk'].'"/></div></td>');
+                                                                        echo('<td class="input-frame"><div style="text-align: center;"><input disabled data-row="'.$count.'" data-column="kondite_kp" maxlength="1" oninput="this.value = this.value.toUpperCase()" style="width: 25px; text-align: center;" type="text" value="'.$dataList[$count]['kondite_kp'].'"/></div></td>');
+                                                                        echo('<td class="input-frame"><div style="text-align: center;"><input disabled data-row="'.$count.'" data-column="kondite_ks" maxlength="1" oninput="this.value = this.value.toUpperCase()" style="width: 25px; text-align: center;" type="text" value="'.$dataList[$count]['kondite_ks'].'"/></div></td>');
+                                                                        echo('<td class="input-frame"><div style="text-align: center;"><input disabled data-row="'.$count.'" data-column="kondite_kk" maxlength="1" oninput="this.value = this.value.toUpperCase()" style="width: 25px; text-align: center;" type="text" value="'.$dataList[$count]['kondite_kk'].'"/></div></td>');
+                                                                        echo('<td class="input-frame"><div style="text-align: center;"><input disabled data-row="'.$count.'" data-column="kondite_pk" maxlength="1" oninput="this.value = this.value.toUpperCase()" style="width: 25px; text-align: center;" type="text" value="'.$dataList[$count]['kondite_pk'].'"/></div></td>');
+                                                                        echo('<td class="fade-transition"><div style="text-align: center;"><b id="gol-kondite-'.$dataList[$count]['lkh_id'].'">'.$dataList[$count]['gol_kondite'].'</b></div></td>');
+                                                                        echo('</tr>');
+                                                                        break;
+                                                                }
                                                                 $count++;
                                                             } else {
                                                                 echo('<tr>');
@@ -210,7 +299,7 @@
 								<ul style="margin-top: 6px;">
 									<?= (empty($recordPekerjaan)) ? '' : '<li id="txt-record-pekerjaan"><b>Record Pekerjaan : </b>'.$recordPekerjaan.'</li>'; ?>
 									<?= (empty($nilaiInsentifKondite)) ? '' : '<li id="txt-rerata-golkondite"><b>Penilaian Insentif Kondite : </b>'.$nilaiInsentifKondite.'</li>'; ?>
-									<?= (empty($warningSP)) ? '' : '<li style="color: red; font-weight: bold;" id="txt-warning-sp">Mendapat SP Bawah Prestasi karena tanggal '.$warningSP.' tidak mencapai target.</li>'; ?>
+									<?= (empty($warningSP)) ? '' : '<li style="color: red;" id="txt-warning-sp"><b>Mendapat SP Bawah Prestasi karena pada tanggal '.$warningSP.' tidak mencapai target.</b></li>'; ?>
 								<ul>
 							</div>
                         </div>
@@ -221,10 +310,30 @@
     </div>
 </section>
 <script type="text/javascript">
-    var employee_name = '<?= $EmployeeName ?>'; var employee_code = '<?= $filterPekerja ?>'; var stringCache = '';
+    var employee_name = '<?= trim($EmployeeName) ?>';
+    var employee_code = '<?= trim($filterPekerja) ?>';
+    var stringCache = '';
+    <?php
+        switch(strtolower($type)) {
+            case 'draft':
+                echo '$("#info-box").hide();';
+                break;
+            case 'unapproved':
+                echo '$("#info-box").css({"padding": "16px", "background-color": "#ffb74d"});';
+                echo '$("#info-box").show();';
+                break;
+            case 'approved':
+                echo '$("#info-box").css({"padding": "16px", "background-color: "#4CAF50", "color": "white"});';
+                echo '$("#info-box").show();';
+                break;
+            case 'rejected':
+                echo '$("#info-box").css({"padding": "16px", "background-color: "#FF5252", "color": "white"});';
+                echo '$("#info-box").show();';
+                break;
+        }
+    ?>
 	$(function() {
 		$('#tblLkhPekerjaDetail').DataTable({
-            // dom: 'bfrtip',
             dom: '<"dataTable_Button"B><"dataTable_Filter"f>rt<"dataTable_Information"i><"dataTable_Pagination"p>',
 			buttons: [
 				{
@@ -392,7 +501,7 @@
             url: '<?= base_url("LkhPekerjaBatch/TargetWaktu/Detail/getData"); ?>',
             async: true,
             type: 'POST',
-            dataType: 'JSON',
+            dataType: 'json',
             data: { 'lkh_id': lkh_id, 'column': column, 'value': value },
             success: function(response) {
                 input.removeAttr("data-toggle");

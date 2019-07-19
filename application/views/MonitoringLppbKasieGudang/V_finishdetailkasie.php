@@ -76,7 +76,7 @@
 														}elseif($p['STATUS'] == 3) {
 															$status = '<span class="label label-primary">Kasie Gudang Approve &nbsp;<br></span>';
 														}elseif ($p['STATUS'] == 5) {
-															$status = '<span class="label label-info">Checking Akuntansi (Sumbit ke Akuntansi) &nbsp;<br></span>';
+															$status = '<span class="label label-info">Checking Akuntansi (Submit ke Akuntansi) &nbsp;<br></span>';
 														}elseif ($p['STATUS'] == 6) {
 															$status = '<span class="label label-success">Akuntansi Approve &nbsp;<br></span>';
 														}?>	

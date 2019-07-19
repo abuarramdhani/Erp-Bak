@@ -461,6 +461,10 @@ $(function () {
 
   }
 
+  $(document).on('ready', function(){
+    $('.spl-chk-data').iCheck('destroy');
+  });
+
   function spl_load_data(){
     url = window.location.pathname;
     usr = $('#txt_ses').val();
