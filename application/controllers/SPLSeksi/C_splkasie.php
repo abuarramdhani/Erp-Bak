@@ -47,10 +47,10 @@ class C_splkasie extends CI_Controller {
 
 	public function data_spl(){
 		$wkt_validasi = $this->session->spl_validasi_waktu_kasie;
-		if (time() - $wkt_validasi > 120) {
-			$this->session->spl_validasi_kasie = FALSE;
-			redirect(site_url('SPL'));
-		}
+		// if (time() - $wkt_validasi > 120) {
+		// 	$this->session->spl_validasi_kasie = FALSE;
+		// 	redirect(site_url('SPL'));
+		// }
 		$this->session->spl_validasi_waktu_kasie = time();
 		$data = $this->menu('', '', '');
 		$data['lokasi'] = $this->M_splseksi->show_lokasi();
