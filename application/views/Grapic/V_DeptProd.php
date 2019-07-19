@@ -131,6 +131,7 @@
 												<option value="3">--Dept. Produksi - Pekerja Tidak Langsung / InDirect Labour</option>
 												<option value="4">--Dept. Produksi - Pekerja Langsung / Direct Labour</option>
 												<option disabled="">======================Dept. Produksi Per Seksi======================</option>
+												<option value="89">--Dept. Produksi Atasan Seksi</option>
 												<option value="6">--Dept. Produksi - Seksi Administrasi Desain</option>
 												<option value="7">--Dept. Produksi - Seksi Assembly</option>
 												<option value="8">--Dept. Produksi - Seksi Assembly Gear Trans</option>
@@ -155,6 +156,7 @@
 												<option value="28">--Dept. Produksi - Seksi Heat Treatmen-TKS</option>
 												<option value="29">--Dept. Produksi - Seksi Lab. Kimia dan Pasir Cetak</option>
 												<option value="30">--Dept. Produksi - Seksi Machining 1</option>
+												<option value="88">--Dept. Produksi - Seksi Machining A</option>
 												<option value="31">--Dept. Produksi - Seksi Machining A-TKS</option>
 												<option value="32">--Dept. Produksi - Seksi Machining B</option>
 												<option value="33">--Dept. Produksi - Seksi Machining B-TKS</option>
@@ -224,7 +226,7 @@
 													<input name="SDMpkl" hidden="" type="text" value="<?php echo $truePKL; ?>">
 													<input name="SDMval" hidden="" type="text" value="<?php echo $val; ?>">
 													<input name="SDMdiv" hidden="" type="text">
-													<?php for ($y=0; $y <= 87; $y++) { ?>
+													<?php for ($y=0; $y <= 89; $y++) { ?>
 													<script>
 														var inde = <?= $hitung ?> ;
 													</script>
@@ -338,7 +340,9 @@
 																<?php for ($i=0; $i < count(${$var1})-1; $i++) { 
 																	$turun = (${$var1}[$i+1]-${$var1}[$i]); ?>
 																	<td><?php echo abs($turun); ?></td>
-																	<td><?php echo abs(round(($turun/${$var1}[$i]*100),1)); ?>%</td>
+																	<td><?php if (${$var1}[$i]==0) {
+																		echo "0";
+																	}else {echo abs(round(($turun/${$var1}[$i]*100),1));} ?>%</td>
 																	<?php } ?>
 																	<?php for ($i=count(${$var1}); $i <=25 ; $i++) { ?>
 																	<td></td>
@@ -484,7 +488,7 @@
 									}
 								} ?>];
 							</script>
-							<button onclick="topFunction()" id="myBtn" style="display: none;  position: fixed;  bottom: 20px;  right: 30px;  z-index: 99;  font-size: 18px;  border: none; outline: none; background-color: red;  color: white; cursor: pointer; padding: 15px; border-radius: 4px;" title="Go to top">Click Go To Top</button>
+							<button onclick="topFunction()" id="myBtn" style="display: none;  position: fixed;  bottom: 20px;  right: 30px;  z-index: 99;  font-size: 18px;  border: none; outline: none; background-color: red;  color: white; cursor: pointer; padding: 15px; border-radius: 4px;" title="Go to top">Go To Top</button>
 							<script>
 							// When the user scrolls down 20px from the top of the document, show the button
 							window.onscroll = function() {scrollFunction()};
