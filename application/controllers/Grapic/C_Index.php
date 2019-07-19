@@ -1303,9 +1303,9 @@ class C_Index extends CI_Controller
 		$data['submit'] = 'false';
 		if ($submit == 'true') {
 			$data['submit'] = $submit;
-			$nama =  'SEMUA, Dept. Personalia, Dept. Keuangan, Dept. Pemasaran, Dept. Pemasaran - Pusat, Dept. Pemasaran - Cabang / Showroom / POS, Akuntansi, ICT, IA, Pengembangan Sistem, PEMBELIAN SUBKONTRAKTOR, Semua Data, Semua Pekerja Tidak Langsung / InDirect Labour , Semua Pekerja Langsung / Direct Labour , Civil Maintenance, PEMBELIAN SUPPLIER, PENGEMBANGAN PEMBELIAN, Atasan Dept.Keuangan, Atasan Dept.Personalia, ELECTRONIC DATA PROCESSING, GENERAL AFFAIR & HUBUNGAN KERJA, PELATIHAN, PEOPLE DEVELOPMENT, RECRUITMENT & SELECTION, WASTE MANAGEMENT, Atasan Dept.Pemasaran, CABANG JAKARTA, CABANG MAKASSAR, CABANG MEDAN';
+			$nama =  'SEMUA, Dept. Personalia, Dept. Keuangan, Dept. Pemasaran, Dept. Pemasaran - Pusat, Dept. Pemasaran - Cabang / Showroom / POS, Akuntansi, ICT, IA, Pengembangan Sistem, PEMBELIAN SUBKONTRAKTOR, Semua Data, Semua Pekerja Tidak Langsung / InDirect Labour , Semua Pekerja Langsung / Direct Labour , Civil Maintenance, PEMBELIAN SUPPLIER, PENGEMBANGAN PEMBELIAN, Atasan Dept.Keuangan, Atasan Dept.Personalia, ELECTRONIC DATA PROCESSING, GENERAL AFFAIR & HUBUNGAN KERJA, PELATIHAN, PEOPLE DEVELOPMENT, RECRUITMENT & SELECTION, WASTE MANAGEMENT, Atasan Dept.Pemasaran, CABANG JAKARTA, CABANG MAKASSAR, CABANG MEDAN, CABANG PERWAKILAN JAKARTA, CABANG PERWAKILAN MAKASSAR, CABANG PERWAKILAN MEDAN, CABANG PERWAKILAN SURABAYA, CABANG PERWAKILAN TANJUNG KARANG, CABANG PERWAKILAN YOGYAKARTA, CABANG SURABAYA, CABANG TANJUNG KARANG, CABANG YOGYAKARTA, PEMASARAN 1, PEMASARAN 2, PEMASARAN 3, PEMASARAN 4, PEMASARAN 5, PEMASARAN DEMO & PURNA JUAL, PEMASARAN EXPORT&DIRECT SELLING PRODUCT, PEMASARAN JOB ORDER, PEMASARAN PROMOSI, PEMASARAN SPARE PART, PEMASARAN SPECIAL CUSTOMER, PEMASARAN SUPPORT, PEMASARAN TR-2, VDE&GENSET AUDIT&PENGEMB. ORG. PMS&CAB, Dept. Pemasaran Atasan Seksi, Seksi AUDIT PEMASARAN&CABANG, Seksi CABANG JAKARTA, Seksi CABANG MAKASSAR, Seksi CABANG MEDAN, Seksi CABANG PERWAKILAN JAKARTA, Seksi CABANG PERWAKILAN MAKASSAR, Seksi CABANG PERWAKILAN MEDAN, Seksi CABANG PERWAKILAN SURABAYA, Seksi CABANG PERWAKILAN TANJUNG KARANG, Seksi CABANG PERWAKILAN YOGYAKARTA, Seksi CABANG SURABAYA, Seksi CABANG TANJUNG KARANG, Seksi CABANG YOGYAKARTA, CUSTOMER CARE, CUSTOMER CARE & KLAIM, DEMO & PURNA JUAL, DEMO & SERVICE AREA I, DEMO & SERVICE AREA II, ***DESAIN PROMOSI, DESAIN PROMOSI, DIGITAL MARKETING & KOMUNITAS QUICK, DIGITAL MARKETING&KOMUNITAS QUICK, ***PEMASARAN ALAT TRANSPORTASI, PEMASARAN ALAT TRANSPORTASI AREA I, PEMASARAN ALAT TRANSPORTASI AREA II, ***PEMASARAN EXPORT, PEMASARAN EXPORT, PEMASARAN HARVESTER, PEMASARAN JOB ORDER, PEMASARAN MESIN PERTANIAN A, PEMASARAN MESIN PERTANIAN B, PEMASARAN ONLINE, PEMASARAN SPARE PART AREA I, PEMASARAN SPARE PART AREA II, PEMASARAN SPARE PART AREA III, PEMASARAN SPARE PART ENGINE, PEMASARAN SP (SAP&BDL), PEMASARAN TR-2 AREA I, PEMASARAN TR-2 AREA II, PEMASARAN TR-2 AREA III, PEMASARAN TR4&COMBINE HARVESTER, PEMASARAN TRAKTOR RODA 4, PEMASARAN VDE&GENSET, PENGEMBANGAN & PENYEDIAAN PRD TR-2, PENGIRIMAN PRODUK, PENJUALAN SPARE PART, POS BANYUASIN, POS SAMARINDA, POS SAMPIT, PRODUKSI PROMOSI, PUSAT PELATIHAN PELANGGAN & STANDARISASI, RISET&IMPLEMENTASI PROMOSI, SHOWROOM BANJARMASIN, SHOWROOM JAMBI, SHOWROOM PALU, SHOWROOM PEKANBARU, SHOWROOM PONTIANAK, SHOWROOM SIDRAP, SISTEM PENGEMBANGAN ORGANISASI CABANG&ORACLE, SPECIAL CUSTOMER BARAT, SPECIAL CUSTOMER MOS, ***SPECIAL CUSTOMER PUSAT, SPECIAL CUSTOMER PUSAT, SPECIAL CUSTOMER QUALITY CONTROL, SPECIAL CUSTOMER TENGAH, SPECIAL CUSTOMER TIME KEEPER, SPECIAL CUSTOMER TIMUR, TOKO ONLINE';
 			if ($val == '0') {
-				$all = array('11','1','2','3','4','5','6','7','8','9','10','12','13','14','15', '16', '17', '18', '19', '20', '21', '22', '23', '24','25','26','27','28');
+				$all = array('11','1','2','3','4','5','6','7','8','9','10','12','13','14','15', '16', '17', '18', '19', '20', '21', '22', '23', '24','25','26','27','28','29','30','31','32','33','34','35','36','37','38','39','40','41','42','43','44','45','46','47','48','49','50','51','52','53','54','55','56','57','58','59','60','61','62','63','64','65','66','67','68','69','70','71','72','73','74','75','76','77','78','79','80','81','82','83','84','85','86','87','88','89','90','91','92','93','94','95','96','97','98','99','100','101','102','103','104','105','106','107','108','109','110','111','112','113','114','115','116','117','118','119','120');
 			}else{
 				$all[] = $val;
 			}
@@ -1415,27 +1415,284 @@ class C_Index extends CI_Controller
 						$kodeUnit = 'CABANG MAKASSAR';
 						$banyak = $this->M_index->pekerjaUnitPemasaran($now, $kodeUnit, $sqlPKL);
 					}else if ($val == '28'){
-						$kodeUnit = 'SHOWROOM TUGUMULYO';
-						$banyak = $this->M_index->pekerjacabang($now, $sqlPKL, $kodeUnit);
+						$kodeUnit = 'CABANG MEDAN';
+						$banyak = $this->M_index->pekerjaUnitPemasaran($now, $kodeUnit, $sqlPKL);
 					}else if ($val == '29'){
-						$kodeUnit = 'MAKASSAR';
-						$banyak = $this->M_index->pekerjacabang($now, $sqlPKL, $kodeUnit);
-						// print_r($banyak);exit();
+						$kodeUnit = 'CABANG PERWAKILAN JAKARTA';
+						$banyak = $this->M_index->pekerjaUnitPemasaran($now, $kodeUnit, $sqlPKL);
 					}else if ($val == '30'){
-						$kodeUnit = 'CIVIL MAINTENANCE'; // bukan cabang tapi pakai query ini juga bisa
-						$banyak = $this->M_index->pekerjacabang($now, $sqlPKL, $kodeUnit);
+						$kodeUnit = 'CABANG PERWAKILAN MAKASSAR';
+						$banyak = $this->M_index->pekerjaUnitPemasaran($now, $kodeUnit, $sqlPKL);
 					}else if ($val == '31'){
-						//non penunjang atau direct
-						$kode = 'and (b.jenispekerjaan=true or b.kdpekerjaan is null)';
-						$banyak = $this->M_index->pekerjaOperatorAll($now, $sqlPKL, $kode);
+						$kodeUnit = 'CABANG PERWAKILAN MEDAN';
+						$banyak = $this->M_index->pekerjaUnitPemasaran($now, $kodeUnit, $sqlPKL);
 					}else if ($val == '32'){
-						//penunjang atau in-direct
-						$kode = 'and (b.jenispekerjaan=false)';
-						$banyak = $this->M_index->pekerjaOperatorAll($now, $sqlPKL, $kode);
+						$kodeUnit = 'CABANG PERWAKILAN SURABAYA';
+						$banyak = $this->M_index->pekerjaUnitPemasaran($now, $kodeUnit, $sqlPKL);
 					}else if ($val == '33'){
-						//non civil maintenance
-						$kodeUnit = 'CIVIL MAINTENANCE'; // bukan cabang tapi pakai query ini juga bisa
-						$banyak = $this->M_index->pekerjanoncivil($now, $sqlPKL, $kodeUnit);
+						$kodeUnit = 'CABANG PERWAKILAN TANJUNG KARANG';
+						$banyak = $this->M_index->pekerjaUnitPemasaran($now, $kodeUnit, $sqlPKL);
+					}else if ($val == '34'){
+						$kodeUnit = 'CABANG PERWAKILAN YOGYAKARTA';
+						$banyak = $this->M_index->pekerjaUnitPemasaran($now, $kodeUnit, $sqlPKL);
+					}else if ($val == '35'){
+						$kodeUnit = 'CABANG SURABAYA';
+						$banyak = $this->M_index->pekerjaUnitPemasaran($now, $kodeUnit, $sqlPKL);
+					}else if ($val == '36'){
+						$kodeUnit = 'CABANG TANJUNG KARANG';
+						$banyak = $this->M_index->pekerjaUnitPemasaran($now, $kodeUnit, $sqlPKL);
+					}else if ($val == '37'){
+						$kodeUnit = 'CABANG YOGYAKARTA';
+						$banyak = $this->M_index->pekerjaUnitPemasaran($now, $kodeUnit, $sqlPKL);
+					}else if ($val == '38'){
+						$kodeUnit = 'PEMASARAN 1';
+						$banyak = $this->M_index->pekerjaUnitPemasaran($now, $kodeUnit, $sqlPKL);
+					}else if ($val == '39'){
+						$kodeUnit = 'PEMASARAN 2';
+						$banyak = $this->M_index->pekerjaUnitPemasaran($now, $kodeUnit, $sqlPKL);
+					}else if ($val == '40'){
+						$kodeUnit = 'PEMASARAN 3';
+						$banyak = $this->M_index->pekerjaUnitPemasaran($now, $kodeUnit, $sqlPKL);
+					}else if ($val == '41'){
+						$kodeUnit = 'PEMASARAN 4';
+						$banyak = $this->M_index->pekerjaUnitPemasaran($now, $kodeUnit, $sqlPKL);
+					}else if ($val == '42'){
+						$kodeUnit = 'PEMASARAN 5';
+						$banyak = $this->M_index->pekerjaUnitPemasaran($now, $kodeUnit, $sqlPKL);
+					}else if ($val == '43'){
+						$kodeUnit = 'PEMASARAN DEMO & PURNA JUAL';
+						$banyak = $this->M_index->pekerjaUnitPemasaran($now, $kodeUnit, $sqlPKL);
+					}else if ($val == '44'){
+						$kodeUnit = 'PEMASARAN EXPORT&DIRECT SELLING PRODUCT';
+						$banyak = $this->M_index->pekerjaUnitPemasaran($now, $kodeUnit, $sqlPKL);
+					}else if ($val == '45'){
+						$kodeUnit = 'PEMASARAN JOB ORDER';
+						$banyak = $this->M_index->pekerjaUnitPemasaran($now, $kodeUnit, $sqlPKL);
+					}else if ($val == '46'){
+						$kodeUnit = 'PEMASARAN PROMOSI';
+						$banyak = $this->M_index->pekerjaUnitPemasaran($now, $kodeUnit, $sqlPKL);
+					}else if ($val == '47'){
+						$kodeUnit = 'PEMASARAN SPARE PART';
+						$banyak = $this->M_index->pekerjaUnitPemasaran($now, $kodeUnit, $sqlPKL);
+					}else if ($val == '48'){
+						$kodeUnit = 'PEMASARAN SPECIAL CUSTOMER';
+						$banyak = $this->M_index->pekerjaUnitPemasaran($now, $kodeUnit, $sqlPKL);
+					}else if ($val == '49'){
+						$kodeUnit = 'PEMASARAN SUPPORT';
+						$banyak = $this->M_index->pekerjaUnitPemasaran($now, $kodeUnit, $sqlPKL);
+					}else if ($val == '50'){
+						$kodeUnit = 'PEMASARAN TR-2';
+						$banyak = $this->M_index->pekerjaUnitPemasaran($now, $kodeUnit, $sqlPKL);
+					}else if ($val == '51'){
+						$kodeUnit = 'VDE&GENSET AUDIT&PENGEMB. ORG. PMS&CAB';
+						$banyak = $this->M_index->pekerjaUnitPemasaran($now, $kodeUnit, $sqlPKL);
+					}else if ($val == '52'){
+						$kodeSeksi = '-';
+						$banyak = $this->M_index->pekerjaSeksiDeptPemasaran($now, $kodeSeksi, $sqlPKL);
+					}else if ($val == '53'){
+						$kodeSeksi = 'AUDIT PEMASARAN&CABANG';
+						$banyak = $this->M_index->pekerjaSeksiDeptPemasaran($now, $kodeSeksi, $sqlPKL);
+					}else if ($val == '54'){
+						$kodeSeksi = 'CABANG JAKARTA';
+						$banyak = $this->M_index->pekerjaSeksiDeptPemasaran($now, $kodeSeksi, $sqlPKL);
+					}else if ($val == '55'){
+						$kodeSeksi = 'CABANG MAKASSAR';
+						$banyak = $this->M_index->pekerjaSeksiDeptPemasaran($now, $kodeSeksi, $sqlPKL);
+					}else if ($val == '56'){
+						$kodeSeksi = 'CABANG MEDAN';
+						$banyak = $this->M_index->pekerjaSeksiDeptPemasaran($now, $kodeSeksi, $sqlPKL);
+					}else if ($val == '57'){
+						$kodeSeksi = 'CABANG PERWAKILAN JAKARTA';
+						$banyak = $this->M_index->pekerjaSeksiDeptPemasaran($now, $kodeSeksi, $sqlPKL);
+					}else if ($val == '58'){
+						$kodeSeksi = 'CABANG PERWAKILAN MAKASSAR';
+						$banyak = $this->M_index->pekerjaSeksiDeptPemasaran($now, $kodeSeksi, $sqlPKL);
+					}else if ($val == '59'){
+						$kodeSeksi = 'CABANG PERWAKILAN MEDAN';
+						$banyak = $this->M_index->pekerjaSeksiDeptPemasaran($now, $kodeSeksi, $sqlPKL);
+					}else if ($val == '60'){
+						$kodeSeksi = 'CABANG PERWAKILAN SURABAYA';
+						$banyak = $this->M_index->pekerjaSeksiDeptPemasaran($now, $kodeSeksi, $sqlPKL);
+					}else if ($val == '61'){
+						$kodeSeksi = 'CABANG PERWAKILAN TANJUNG KARANG';
+						$banyak = $this->M_index->pekerjaSeksiDeptPemasaran($now, $kodeSeksi, $sqlPKL);
+					}else if ($val == '62'){
+						$kodeSeksi = 'CABANG PERWAKILAN YOGYAKARTA';
+						$banyak = $this->M_index->pekerjaSeksiDeptPemasaran($now, $kodeSeksi, $sqlPKL);
+					}else if ($val == '63'){
+						$kodeSeksi = 'CABANG SURABAYA';
+						$banyak = $this->M_index->pekerjaSeksiDeptPemasaran($now, $kodeSeksi, $sqlPKL);
+					}else if ($val == '64'){
+						$kodeSeksi = 'CABANG TANJUNG KARANG';
+						$banyak = $this->M_index->pekerjaSeksiDeptPemasaran($now, $kodeSeksi, $sqlPKL);
+					}else if ($val == '65'){
+						$kodeSeksi = 'CABANG YOGYAKARTA';
+						$banyak = $this->M_index->pekerjaSeksiDeptPemasaran($now, $kodeSeksi, $sqlPKL);
+					}else if ($val == '66'){
+						$kodeSeksi = 'CUSTOMER CARE';
+						$banyak = $this->M_index->pekerjaSeksiDeptPemasaran($now, $kodeSeksi, $sqlPKL);
+					}else if ($val == '67'){
+						$kodeSeksi = 'CUSTOMER CARE & KLAIM';
+						$banyak = $this->M_index->pekerjaSeksiDeptPemasaran($now, $kodeSeksi, $sqlPKL);
+					}else if ($val == '68'){
+						$kodeSeksi = 'DEMO & PURNA JUAL';
+						$banyak = $this->M_index->pekerjaSeksiDeptPemasaran($now, $kodeSeksi, $sqlPKL);
+					}else if ($val == '69'){
+						$kodeSeksi = 'DEMO & SERVICE AREA I';
+						$banyak = $this->M_index->pekerjaSeksiDeptPemasaran($now, $kodeSeksi, $sqlPKL);
+					}else if ($val == '70'){
+						$kodeSeksi = 'DEMO & SERVICE AREA II';
+						$banyak = $this->M_index->pekerjaSeksiDeptPemasaran($now, $kodeSeksi, $sqlPKL);
+					}else if ($val == '71'){
+						$kodeSeksi = '***DESAIN PROMOSI';
+						$banyak = $this->M_index->pekerjaSeksiDeptPemasaran($now, $kodeSeksi, $sqlPKL);
+					}else if ($val == '72'){
+						$kodeSeksi = 'DESAIN PROMOSI';
+						$banyak = $this->M_index->pekerjaSeksiDeptPemasaran($now, $kodeSeksi, $sqlPKL);
+					}else if ($val == '73'){
+						$kodeSeksi = 'DIGITAL MARKETING & KOMUNITAS QUICK';
+						$banyak = $this->M_index->pekerjaSeksiDeptPemasaran($now, $kodeSeksi, $sqlPKL);
+					}else if ($val == '74'){
+						$kodeSeksi = 'DIGITAL MARKETING&KOMUNITAS QUICK';
+						$banyak = $this->M_index->pekerjaSeksiDeptPemasaran($now, $kodeSeksi, $sqlPKL);
+					}else if ($val == '75'){
+						$kodeSeksi = '***PEMASARAN ALAT TRANSPORTASI';
+						$banyak = $this->M_index->pekerjaSeksiDeptPemasaran($now, $kodeSeksi, $sqlPKL);
+					}else if ($val == '76'){
+						$kodeSeksi = 'PEMASARAN ALAT TRANSPORTASI AREA I';
+						$banyak = $this->M_index->pekerjaSeksiDeptPemasaran($now, $kodeSeksi, $sqlPKL);
+					}else if ($val == '77'){
+						$kodeSeksi = 'PEMASARAN ALAT TRANSPORTASI AREA II';
+						$banyak = $this->M_index->pekerjaSeksiDeptPemasaran($now, $kodeSeksi, $sqlPKL);
+					}else if ($val == '78'){
+						$kodeSeksi = '***PEMASARAN EXPORT';
+						$banyak = $this->M_index->pekerjaSeksiDeptPemasaran($now, $kodeSeksi, $sqlPKL);
+					}else if ($val == '79'){
+						$kodeSeksi = 'PEMASARAN EXPORT';
+						$banyak = $this->M_index->pekerjaSeksiDeptPemasaran($now, $kodeSeksi, $sqlPKL);
+					}else if ($val == '80'){
+						$kodeSeksi = 'PEMASARAN HARVESTER';
+						$banyak = $this->M_index->pekerjaSeksiDeptPemasaran($now, $kodeSeksi, $sqlPKL);
+					}else if ($val == '81'){
+						$kodeSeksi = 'PEMASARAN JOB ORDER';
+						$banyak = $this->M_index->pekerjaSeksiDeptPemasaran($now, $kodeSeksi, $sqlPKL);
+					}else if ($val == '82'){
+						$kodeSeksi = 'PEMASARAN MESIN PERTANIAN A';
+						$banyak = $this->M_index->pekerjaSeksiDeptPemasaran($now, $kodeSeksi, $sqlPKL);
+					}else if ($val == '83'){
+						$kodeSeksi = 'PEMASARAN MESIN PERTANIAN B';
+						$banyak = $this->M_index->pekerjaSeksiDeptPemasaran($now, $kodeSeksi, $sqlPKL);
+					}else if ($val == '84'){
+						$kodeSeksi = 'PEMASARAN ONLINE';
+						$banyak = $this->M_index->pekerjaSeksiDeptPemasaran($now, $kodeSeksi, $sqlPKL);
+					}else if ($val == '85'){
+						$kodeSeksi = 'PEMASARAN SPARE PART AREA I';
+						$banyak = $this->M_index->pekerjaSeksiDeptPemasaran($now, $kodeSeksi, $sqlPKL);
+					}else if ($val == '86'){
+						$kodeSeksi = 'PEMASARAN SPARE PART AREA II';
+						$banyak = $this->M_index->pekerjaSeksiDeptPemasaran($now, $kodeSeksi, $sqlPKL);
+					}else if ($val == '87'){
+						$kodeSeksi = 'PEMASARAN SPARE PART AREA III';
+						$banyak = $this->M_index->pekerjaSeksiDeptPemasaran($now, $kodeSeksi, $sqlPKL);
+					}else if ($val == '88'){
+						$kodeSeksi = 'PEMASARAN SPARE PART ENGINE';
+						$banyak = $this->M_index->pekerjaSeksiDeptPemasaran($now, $kodeSeksi, $sqlPKL);
+					}else if ($val == '89'){
+						$kodeSeksi = 'PEMASARAN SP (SAP&BDL)';
+						$banyak = $this->M_index->pekerjaSeksiDeptPemasaran($now, $kodeSeksi, $sqlPKL);
+					}else if ($val == '90'){
+						$kodeSeksi = 'PEMASARAN TR-2 AREA I';
+						$banyak = $this->M_index->pekerjaSeksiDeptPemasaran($now, $kodeSeksi, $sqlPKL);
+					}else if ($val == '91'){
+						$kodeSeksi = 'PEMASARAN TR-2 AREA II';
+						$banyak = $this->M_index->pekerjaSeksiDeptPemasaran($now, $kodeSeksi, $sqlPKL);
+					}else if ($val == '92'){
+						$kodeSeksi = 'PEMASARAN TR-2 AREA III';
+						$banyak = $this->M_index->pekerjaSeksiDeptPemasaran($now, $kodeSeksi, $sqlPKL);
+					}else if ($val == '93'){
+						$kodeSeksi = 'PEMASARAN TR4&COMBINE HARVESTER';
+						$banyak = $this->M_index->pekerjaSeksiDeptPemasaran($now, $kodeSeksi, $sqlPKL);
+					}else if ($val == '94'){
+						$kodeSeksi = 'PEMASARAN TRAKTOR RODA 4';
+						$banyak = $this->M_index->pekerjaSeksiDeptPemasaran($now, $kodeSeksi, $sqlPKL);
+					}else if ($val == '95'){
+						$kodeSeksi = 'PEMASARAN VDE&GENSET';
+						$banyak = $this->M_index->pekerjaSeksiDeptPemasaran($now, $kodeSeksi, $sqlPKL);
+					}else if ($val == '96'){
+						$kodeSeksi = 'PENGEMBANGAN & PENYEDIAAN PRD TR-2';
+						$banyak = $this->M_index->pekerjaSeksiDeptPemasaran($now, $kodeSeksi, $sqlPKL);
+					}else if ($val == '97'){
+						$kodeSeksi = 'PENGIRIMAN PRODUK';
+						$banyak = $this->M_index->pekerjaSeksiDeptPemasaran($now, $kodeSeksi, $sqlPKL);
+					}else if ($val == '98'){
+						$kodeSeksi = 'PENJUALAN SPARE PART';
+						$banyak = $this->M_index->pekerjaSeksiDeptPemasaran($now, $kodeSeksi, $sqlPKL);
+					}else if ($val == '99'){
+						$kodeSeksi = 'POS BANYUASIN';
+						$banyak = $this->M_index->pekerjaSeksiDeptPemasaran($now, $kodeSeksi, $sqlPKL);
+					}else if ($val == '100'){
+						$kodeSeksi = 'POS SAMARINDA';
+						$banyak = $this->M_index->pekerjaSeksiDeptPemasaran($now, $kodeSeksi, $sqlPKL);
+					}else if ($val == '101'){
+						$kodeSeksi = 'POS SAMPIT';
+						$banyak = $this->M_index->pekerjaSeksiDeptPemasaran($now, $kodeSeksi, $sqlPKL);
+					}else if ($val == '102'){
+						$kodeSeksi = 'PRODUKSI PROMOSI';
+						$banyak = $this->M_index->pekerjaSeksiDeptPemasaran($now, $kodeSeksi, $sqlPKL);
+					}else if ($val == '103'){
+						$kodeSeksi = 'PUSAT PELATIHAN PELANGGAN & STANDARISASI';
+						$banyak = $this->M_index->pekerjaSeksiDeptPemasaran($now, $kodeSeksi, $sqlPKL);
+					}else if ($val == '104'){
+						$kodeSeksi = 'RISET&IMPLEMENTASI PROMOSI';
+						$banyak = $this->M_index->pekerjaSeksiDeptPemasaran($now, $kodeSeksi, $sqlPKL);
+					}else if ($val == '105'){
+						$kodeSeksi = 'SHOWROOM BANJARMASIN';
+						$banyak = $this->M_index->pekerjaSeksiDeptPemasaran($now, $kodeSeksi, $sqlPKL);
+					}else if ($val == '106'){
+						$kodeSeksi = 'SHOWROOM JAMBI';
+						$banyak = $this->M_index->pekerjaSeksiDeptPemasaran($now, $kodeSeksi, $sqlPKL);
+					}else if ($val == '107'){
+						$kodeSeksi = 'SHOWROOM PALU';
+						$banyak = $this->M_index->pekerjaSeksiDeptPemasaran($now, $kodeSeksi, $sqlPKL);
+					}else if ($val == '108'){
+						$kodeSeksi = 'SHOWROOM PEKANBARU';
+						$banyak = $this->M_index->pekerjaSeksiDeptPemasaran($now, $kodeSeksi, $sqlPKL);
+					}else if ($val == '109'){
+						$kodeSeksi = 'SHOWROOM PONTIANAK';
+						$banyak = $this->M_index->pekerjaSeksiDeptPemasaran($now, $kodeSeksi, $sqlPKL);
+					}else if ($val == '110'){
+						$kodeSeksi = 'SHOWROOM SIDRAP';
+						$banyak = $this->M_index->pekerjaSeksiDeptPemasaran($now, $kodeSeksi, $sqlPKL);
+					}else if ($val == '111'){
+						$kodeSeksi = 'SISTEM PENGEMBANGAN ORGANISASI CABANG&ORACLE';
+						$banyak = $this->M_index->pekerjaSeksiDeptPemasaran($now, $kodeSeksi, $sqlPKL);
+					}else if ($val == '112'){
+						$kodeSeksi = 'SPECIAL CUSTOMER BARAT';
+						$banyak = $this->M_index->pekerjaSeksiDeptPemasaran($now, $kodeSeksi, $sqlPKL);
+					}else if ($val == '113'){
+						$kodeSeksi = 'SPECIAL CUSTOMER MOS';
+						$banyak = $this->M_index->pekerjaSeksiDeptPemasaran($now, $kodeSeksi, $sqlPKL);
+					}else if ($val == '114'){
+						$kodeSeksi = '***SPECIAL CUSTOMER PUSAT';
+						$banyak = $this->M_index->pekerjaSeksiDeptPemasaran($now, $kodeSeksi, $sqlPKL);
+					}else if ($val == '115'){
+						$kodeSeksi = 'SPECIAL CUSTOMER PUSAT';
+						$banyak = $this->M_index->pekerjaSeksiDeptPemasaran($now, $kodeSeksi, $sqlPKL);
+					}else if ($val == '116'){
+						$kodeSeksi = 'SPECIAL CUSTOMER QUALITY CONTROL';
+						$banyak = $this->M_index->pekerjaSeksiDeptPemasaran($now, $kodeSeksi, $sqlPKL);
+					}else if ($val == '117'){
+						$kodeSeksi = 'SPECIAL CUSTOMER TENGAH';
+						$banyak = $this->M_index->pekerjaSeksiDeptPemasaran($now, $kodeSeksi, $sqlPKL);
+					}else if ($val == '118'){
+						$kodeSeksi = 'SPECIAL CUSTOMER TIME KEEPER';
+						$banyak = $this->M_index->pekerjaSeksiDeptPemasaran($now, $kodeSeksi, $sqlPKL);
+					}else if ($val == '119'){
+						$kodeSeksi = 'SPECIAL CUSTOMER TIMUR';
+						$banyak = $this->M_index->pekerjaSeksiDeptPemasaran($now, $kodeSeksi, $sqlPKL);
+					}else if ($val == '120'){
+						$kodeSeksi = 'TOKO ONLINE';
+						$banyak = $this->M_index->pekerjaSeksiDeptPemasaran($now, $kodeSeksi, $sqlPKL);
 					}
 
 
@@ -1526,7 +1783,289 @@ class C_Index extends CI_Controller
 				}else if ($val == '24'){
 					$min =  round((1.15*$hasil[$x][0]/100),2);
 					$minAg =  round((1.3*$hasil[$x][0]/100),2);
-				}else if ($val == '25'){
+				}else if ($val == '26'){
+					$min =  round((1.15*$hasil[$x][0]/100),2);
+					$minAg =  round((1.3*$hasil[$x][0]/100),2);
+				}else if ($val == '27'){
+					$min =  round((1.15*$hasil[$x][0]/100),2);
+					$minAg =  round((1.3*$hasil[$x][0]/100),2);
+				}else if ($val == '28'){
+					$min =  round((1.15*$hasil[$x][0]/100),2);
+					$minAg =  round((1.3*$hasil[$x][0]/100),2);
+				}else if ($val == '29'){
+					$min =  round((1.15*$hasil[$x][0]/100),2);
+					$minAg =  round((1.3*$hasil[$x][0]/100),2);
+				}else if ($val == '30'){
+					$min =  round((1.15*$hasil[$x][0]/100),2);
+					$minAg =  round((1.3*$hasil[$x][0]/100),2);
+				}else if ($val == '31'){
+					$min =  round((1.15*$hasil[$x][0]/100),2);
+					$minAg =  round((1.3*$hasil[$x][0]/100),2);
+				}else if ($val == '32'){
+					$min =  round((1.15*$hasil[$x][0]/100),2);
+					$minAg =  round((1.3*$hasil[$x][0]/100),2);
+				}else if ($val == '33'){
+					$min =  round((1.15*$hasil[$x][0]/100),2);
+					$minAg =  round((1.3*$hasil[$x][0]/100),2);
+				}else if ($val == '34'){
+					$min =  round((1.15*$hasil[$x][0]/100),2);
+					$minAg =  round((1.3*$hasil[$x][0]/100),2);
+				}else if ($val == '35'){
+					$min =  round((1.15*$hasil[$x][0]/100),2);
+					$minAg =  round((1.3*$hasil[$x][0]/100),2);
+				}else if ($val == '36'){
+					$min =  round((1.15*$hasil[$x][0]/100),2);
+					$minAg =  round((1.3*$hasil[$x][0]/100),2);
+				}else if ($val == '37'){
+					$min =  round((1.15*$hasil[$x][0]/100),2);
+					$minAg =  round((1.3*$hasil[$x][0]/100),2);
+				}else if ($val == '38'){
+					$min =  round((1.15*$hasil[$x][0]/100),2);
+					$minAg =  round((1.3*$hasil[$x][0]/100),2);
+				}else if ($val == '39'){
+					$min =  round((1.15*$hasil[$x][0]/100),2);
+					$minAg =  round((1.3*$hasil[$x][0]/100),2);
+				}else if ($val == '40'){
+					$min =  round((1.15*$hasil[$x][0]/100),2);
+					$minAg =  round((1.3*$hasil[$x][0]/100),2);
+				}else if ($val == '41'){
+					$min =  round((1.15*$hasil[$x][0]/100),2);
+					$minAg =  round((1.3*$hasil[$x][0]/100),2);
+				}else if ($val == '42'){
+					$min =  round((1.15*$hasil[$x][0]/100),2);
+					$minAg =  round((1.3*$hasil[$x][0]/100),2);
+				}else if ($val == '43'){
+					$min =  round((1.15*$hasil[$x][0]/100),2);
+					$minAg =  round((1.3*$hasil[$x][0]/100),2);
+				}else if ($val == '44'){
+					$min =  round((1.15*$hasil[$x][0]/100),2);
+					$minAg =  round((1.3*$hasil[$x][0]/100),2);
+				}else if ($val == '45'){
+					$min =  round((1.15*$hasil[$x][0]/100),2);
+					$minAg =  round((1.3*$hasil[$x][0]/100),2);
+				}else if ($val == '46'){
+					$min =  round((1.15*$hasil[$x][0]/100),2);
+					$minAg =  round((1.3*$hasil[$x][0]/100),2);
+				}else if ($val == '47'){
+					$min =  round((1.15*$hasil[$x][0]/100),2);
+					$minAg =  round((1.3*$hasil[$x][0]/100),2);
+				}else if ($val == '48'){
+					$min =  round((1.15*$hasil[$x][0]/100),2);
+					$minAg =  round((1.3*$hasil[$x][0]/100),2);
+				}else if ($val == '49'){
+					$min =  round((1.15*$hasil[$x][0]/100),2);
+					$minAg =  round((1.3*$hasil[$x][0]/100),2);
+				}else if ($val == '50'){
+					$min =  round((1.15*$hasil[$x][0]/100),2);
+					$minAg =  round((1.3*$hasil[$x][0]/100),2);
+				}else if ($val == '51'){
+					$min =  round((1.15*$hasil[$x][0]/100),2);
+					$minAg =  round((1.3*$hasil[$x][0]/100),2);
+				}else if ($val == '52'){
+					$min =  round((1.15*$hasil[$x][0]/100),2);
+					$minAg =  round((1.3*$hasil[$x][0]/100),2);
+				}else if ($val == '53'){
+					$min =  round((1.15*$hasil[$x][0]/100),2);
+					$minAg =  round((1.3*$hasil[$x][0]/100),2);
+				}else if ($val == '54'){
+					$min =  round((1.15*$hasil[$x][0]/100),2);
+					$minAg =  round((1.3*$hasil[$x][0]/100),2);
+				}else if ($val == '55'){
+					$min =  round((1.15*$hasil[$x][0]/100),2);
+					$minAg =  round((1.3*$hasil[$x][0]/100),2);
+				}else if ($val == '56'){
+					$min =  round((1.15*$hasil[$x][0]/100),2);
+					$minAg =  round((1.3*$hasil[$x][0]/100),2);
+				}else if ($val == '57'){
+					$min =  round((1.15*$hasil[$x][0]/100),2);
+					$minAg =  round((1.3*$hasil[$x][0]/100),2);
+				}else if ($val == '58'){
+					$min =  round((1.15*$hasil[$x][0]/100),2);
+					$minAg =  round((1.3*$hasil[$x][0]/100),2);
+				}else if ($val == '59'){
+					$min =  round((1.15*$hasil[$x][0]/100),2);
+					$minAg =  round((1.3*$hasil[$x][0]/100),2);
+				}else if ($val == '60'){
+					$min =  round((1.15*$hasil[$x][0]/100),2);
+					$minAg =  round((1.3*$hasil[$x][0]/100),2);
+				}else if ($val == '61'){
+					$min =  round((1.15*$hasil[$x][0]/100),2);
+					$minAg =  round((1.3*$hasil[$x][0]/100),2);
+				}else if ($val == '62'){
+					$min =  round((1.15*$hasil[$x][0]/100),2);
+					$minAg =  round((1.3*$hasil[$x][0]/100),2);
+				}else if ($val == '63'){
+					$min =  round((1.15*$hasil[$x][0]/100),2);
+					$minAg =  round((1.3*$hasil[$x][0]/100),2);
+				}else if ($val == '64'){
+					$min =  round((1.15*$hasil[$x][0]/100),2);
+					$minAg =  round((1.3*$hasil[$x][0]/100),2);
+				}else if ($val == '65'){
+					$min =  round((1.15*$hasil[$x][0]/100),2);
+					$minAg =  round((1.3*$hasil[$x][0]/100),2);
+				}else if ($val == '66'){
+					$min =  round((1.15*$hasil[$x][0]/100),2);
+					$minAg =  round((1.3*$hasil[$x][0]/100),2);
+				}else if ($val == '67'){
+					$min =  round((1.15*$hasil[$x][0]/100),2);
+					$minAg =  round((1.3*$hasil[$x][0]/100),2);
+				}else if ($val == '68'){
+					$min =  round((1.15*$hasil[$x][0]/100),2);
+					$minAg =  round((1.3*$hasil[$x][0]/100),2);
+				}else if ($val == '69'){
+					$min =  round((1.15*$hasil[$x][0]/100),2);
+					$minAg =  round((1.3*$hasil[$x][0]/100),2);
+				}else if ($val == '70'){
+					$min =  round((1.15*$hasil[$x][0]/100),2);
+					$minAg =  round((1.3*$hasil[$x][0]/100),2);
+				}else if ($val == '71'){
+					$min =  round((1.15*$hasil[$x][0]/100),2);
+					$minAg =  round((1.3*$hasil[$x][0]/100),2);
+				}else if ($val == '72'){
+					$min =  round((1.15*$hasil[$x][0]/100),2);
+					$minAg =  round((1.3*$hasil[$x][0]/100),2);
+				}else if ($val == '73'){
+					$min =  round((1.15*$hasil[$x][0]/100),2);
+					$minAg =  round((1.3*$hasil[$x][0]/100),2);
+				}else if ($val == '74'){
+					$min =  round((1.15*$hasil[$x][0]/100),2);
+					$minAg =  round((1.3*$hasil[$x][0]/100),2);
+				}else if ($val == '75'){
+					$min =  round((1.15*$hasil[$x][0]/100),2);
+					$minAg =  round((1.3*$hasil[$x][0]/100),2);
+				}else if ($val == '76'){
+					$min =  round((1.15*$hasil[$x][0]/100),2);
+					$minAg =  round((1.3*$hasil[$x][0]/100),2);
+				}else if ($val == '77'){
+					$min =  round((1.15*$hasil[$x][0]/100),2);
+					$minAg =  round((1.3*$hasil[$x][0]/100),2);
+				}else if ($val == '78'){
+					$min =  round((1.15*$hasil[$x][0]/100),2);
+					$minAg =  round((1.3*$hasil[$x][0]/100),2);
+				}else if ($val == '79'){
+					$min =  round((1.15*$hasil[$x][0]/100),2);
+					$minAg =  round((1.3*$hasil[$x][0]/100),2);
+				}else if ($val == '80'){
+					$min =  round((1.15*$hasil[$x][0]/100),2);
+					$minAg =  round((1.3*$hasil[$x][0]/100),2);
+				}else if ($val == '81'){
+					$min =  round((1.15*$hasil[$x][0]/100),2);
+					$minAg =  round((1.3*$hasil[$x][0]/100),2);
+				}else if ($val == '82'){
+					$min =  round((1.15*$hasil[$x][0]/100),2);
+					$minAg =  round((1.3*$hasil[$x][0]/100),2);
+				}else if ($val == '83'){
+					$min =  round((1.15*$hasil[$x][0]/100),2);
+					$minAg =  round((1.3*$hasil[$x][0]/100),2);
+				}else if ($val == '84'){
+					$min =  round((1.15*$hasil[$x][0]/100),2);
+					$minAg =  round((1.3*$hasil[$x][0]/100),2);
+				}else if ($val == '85'){
+					$min =  round((1.15*$hasil[$x][0]/100),2);
+					$minAg =  round((1.3*$hasil[$x][0]/100),2);
+				}else if ($val == '86'){
+					$min =  round((1.15*$hasil[$x][0]/100),2);
+					$minAg =  round((1.3*$hasil[$x][0]/100),2);
+				}else if ($val == '87'){
+					$min =  round((1.15*$hasil[$x][0]/100),2);
+					$minAg =  round((1.3*$hasil[$x][0]/100),2);
+				}else if ($val == '88'){
+					$min =  round((1.15*$hasil[$x][0]/100),2);
+					$minAg =  round((1.3*$hasil[$x][0]/100),2);
+				}else if ($val == '89'){
+					$min =  round((1.15*$hasil[$x][0]/100),2);
+					$minAg =  round((1.3*$hasil[$x][0]/100),2);
+				}else if ($val == '90'){
+					$min =  round((1.15*$hasil[$x][0]/100),2);
+					$minAg =  round((1.3*$hasil[$x][0]/100),2);
+				}else if ($val == '91'){
+					$min =  round((1.15*$hasil[$x][0]/100),2);
+					$minAg =  round((1.3*$hasil[$x][0]/100),2);
+				}else if ($val == '92'){
+					$min =  round((1.15*$hasil[$x][0]/100),2);
+					$minAg =  round((1.3*$hasil[$x][0]/100),2);
+				}else if ($val == '93'){
+					$min =  round((1.15*$hasil[$x][0]/100),2);
+					$minAg =  round((1.3*$hasil[$x][0]/100),2);
+				}else if ($val == '94'){
+					$min =  round((1.15*$hasil[$x][0]/100),2);
+					$minAg =  round((1.3*$hasil[$x][0]/100),2);
+				}else if ($val == '95'){
+					$min =  round((1.15*$hasil[$x][0]/100),2);
+					$minAg =  round((1.3*$hasil[$x][0]/100),2);
+				}else if ($val == '96'){
+					$min =  round((1.15*$hasil[$x][0]/100),2);
+					$minAg =  round((1.3*$hasil[$x][0]/100),2);
+				}else if ($val == '97'){
+					$min =  round((1.15*$hasil[$x][0]/100),2);
+					$minAg =  round((1.3*$hasil[$x][0]/100),2);
+				}else if ($val == '98'){
+					$min =  round((1.15*$hasil[$x][0]/100),2);
+					$minAg =  round((1.3*$hasil[$x][0]/100),2);
+				}else if ($val == '99'){
+					$min =  round((1.15*$hasil[$x][0]/100),2);
+					$minAg =  round((1.3*$hasil[$x][0]/100),2);
+				}else if ($val == '100'){
+					$min =  round((1.15*$hasil[$x][0]/100),2);
+					$minAg =  round((1.3*$hasil[$x][0]/100),2);
+				}else if ($val == '101'){
+					$min =  round((1.15*$hasil[$x][0]/100),2);
+					$minAg =  round((1.3*$hasil[$x][0]/100),2);
+				}else if ($val == '102'){
+					$min =  round((1.15*$hasil[$x][0]/100),2);
+					$minAg =  round((1.3*$hasil[$x][0]/100),2);
+				}else if ($val == '103'){
+					$min =  round((1.15*$hasil[$x][0]/100),2);
+					$minAg =  round((1.3*$hasil[$x][0]/100),2);
+				}else if ($val == '104'){
+					$min =  round((1.15*$hasil[$x][0]/100),2);
+					$minAg =  round((1.3*$hasil[$x][0]/100),2);
+				}else if ($val == '105'){
+					$min =  round((1.15*$hasil[$x][0]/100),2);
+					$minAg =  round((1.3*$hasil[$x][0]/100),2);
+				}else if ($val == '106'){
+					$min =  round((1.15*$hasil[$x][0]/100),2);
+					$minAg =  round((1.3*$hasil[$x][0]/100),2);
+				}else if ($val == '107'){
+					$min =  round((1.15*$hasil[$x][0]/100),2);
+					$minAg =  round((1.3*$hasil[$x][0]/100),2);
+				}else if ($val == '108'){
+					$min =  round((1.15*$hasil[$x][0]/100),2);
+					$minAg =  round((1.3*$hasil[$x][0]/100),2);
+				}else if ($val == '109'){
+					$min =  round((1.15*$hasil[$x][0]/100),2);
+					$minAg =  round((1.3*$hasil[$x][0]/100),2);
+				}else if ($val == '110'){
+					$min =  round((1.15*$hasil[$x][0]/100),2);
+					$minAg =  round((1.3*$hasil[$x][0]/100),2);
+				}else if ($val == '111'){
+					$min =  round((1.15*$hasil[$x][0]/100),2);
+					$minAg =  round((1.3*$hasil[$x][0]/100),2);
+				}else if ($val == '112'){
+					$min =  round((1.15*$hasil[$x][0]/100),2);
+					$minAg =  round((1.3*$hasil[$x][0]/100),2);
+				}else if ($val == '113'){
+					$min =  round((1.15*$hasil[$x][0]/100),2);
+					$minAg =  round((1.3*$hasil[$x][0]/100),2);
+				}else if ($val == '114'){
+					$min =  round((1.15*$hasil[$x][0]/100),2);
+					$minAg =  round((1.3*$hasil[$x][0]/100),2);
+				}else if ($val == '115'){
+					$min =  round((1.15*$hasil[$x][0]/100),2);
+					$minAg =  round((1.3*$hasil[$x][0]/100),2);
+				}else if ($val == '116'){
+					$min =  round((1.15*$hasil[$x][0]/100),2);
+					$minAg =  round((1.3*$hasil[$x][0]/100),2);
+				}else if ($val == '117'){
+					$min =  round((1.15*$hasil[$x][0]/100),2);
+					$minAg =  round((1.3*$hasil[$x][0]/100),2);
+				}else if ($val == '118'){
+					$min =  round((1.15*$hasil[$x][0]/100),2);
+					$minAg =  round((1.3*$hasil[$x][0]/100),2);
+				}else if ($val == '119'){
+					$min =  round((1.15*$hasil[$x][0]/100),2);
+					$minAg =  round((1.3*$hasil[$x][0]/100),2);
+				}else if ($val == '120'){
 					$min =  round((1.15*$hasil[$x][0]/100),2);
 					$minAg =  round((1.3*$hasil[$x][0]/100),2);
 				}else{

@@ -154,6 +154,99 @@
 												<option value="25">--Dept. Pemasaran Unit CABANG JAKARTA</option>
 												<option value="26">--Dept. Pemasaran Unit CABANG MAKASSAR</option>
 												<option value="27">--Dept. Pemasaran Unit CABANG MEDAN</option>
+												<option value="28">--Dept. Pemasaran Unit CABANG PERWAKILAN JAKARTA</option>
+												<option value="29">--Dept. Pemasaran Unit CABANG PERWAKILAN MAKASSAR</option>
+												<option value="30">--Dept. Pemasaran Unit CABANG PERWAKILAN MEDAN</option>
+												<option value="31">--Dept. Pemasaran Unit CABANG PERWAKILAN SURABAYA</option>
+												<option value="32">--Dept. Pemasaran Unit CABANG PERWAKILAN TANJUNG KARANG</option>
+												<option value="33">--Dept. Pemasaran Unit CABANG PERWAKILAN YOGYAKARTA</option>
+												<option value="34">--Dept. Pemasaran Unit CABANG SURABAYA</option>
+												<option value="35">--Dept. Pemasaran Unit CABANG TANJUNG KARANG</option>
+												<option value="36">--Dept. Pemasaran Unit CABANG YOGYAKARTA</option>
+												<option value="37">--Dept. Pemasaran Unit PEMASARAN 1</option>
+												<option value="38">--Dept. Pemasaran Unit PEMASARAN 2</option>
+												<option value="39">--Dept. Pemasaran Unit PEMASARAN 3</option>
+												<option value="40">--Dept. Pemasaran Unit PEMASARAN 4</option>
+												<option value="41">--Dept. Pemasaran Unit PEMASARAN 5</option>
+												<option value="42">--Dept. Pemasaran Unit PEMASARAN DEMO & PURNA JUAL</option>
+												<option value="43">--Dept. Pemasaran Unit PEMASARAN EXPORT&DIRECT SELLING PRODUCT</option>
+												<option value="44">--Dept. Pemasaran Unit PEMASARAN JOB ORDER</option>
+												<option value="45">--Dept. Pemasaran Unit PEMASARAN PROMOSI</option>
+												<option value="46">--Dept. Pemasaran Unit PEMASARAN SPARE PART</option>
+												<option value="47">--Dept. Pemasaran Unit PEMASARAN SPECIAL CUSTOMER</option>
+												<option value="48">--Dept. Pemasaran Unit PEMASARAN SUPPORT</option>
+												<option value="49">--Dept. Pemasaran Unit PEMASARAN TR-2</option>
+												<option value="50">--Dept. Pemasaran Unit VDE&GENSET AUDIT&PENGEMB. ORG. PMS&CAB</option>
+												<option disabled="">========================Dept. Pemasaran Seksi========================</option>
+												<option value="51">--Dept. Pemasaran Atasan Seksi</option>
+												<option value="52">---Dept. Pemasaran Seksi AUDIT PEMASARAN&CABANG</option>
+												<option value="53">---Dept. Pemasaran Seksi CABANG JAKARTA</option>
+												<option value="54">---Dept. Pemasaran Seksi CABANG MAKASSAR</option>
+												<option value="55">---Dept. Pemasaran Seksi CABANG MEDAN</option>
+												<option value="56">---Dept. Pemasaran Seksi CABANG PERWAKILAN JAKARTA</option>
+												<option value="57">---Dept. Pemasaran Seksi CABANG PERWAKILAN MAKASSAR</option>
+												<option value="58">---Dept. Pemasaran Seksi CABANG PERWAKILAN MEDAN
+												<option value="59">---Dept. Pemasaran Seksi CABANG PERWAKILAN SURABAYA</option>
+												<option value="60">---Dept. Pemasaran Seksi CABANG PERWAKILAN TANJUNG KARANG</option>
+												<option value="61">---Dept. Pemasaran Seksi CABANG PERWAKILAN YOGYAKARTA</option>
+												<option value="62">---Dept. Pemasaran Seksi CABANG SURABAYA</option>
+												<option value="63">---Dept. Pemasaran Seksi CABANG TANJUNG KARANG</option>
+												<option value="64">---Dept. Pemasaran Seksi CABANG YOGYAKARTA</option>
+												<option value="65">---Dept. Pemasaran Seksi CUSTOMER CARE</option>
+												<option value="66">---Dept. Pemasaran Seksi CUSTOMER CARE & KLAIM</option>
+												<option value="67">---Dept. Pemasaran Seksi DEMO & PURNA JUAL</option>
+												<option value="68">---Dept. Pemasaran Seksi DEMO & SERVICE AREA I</option>
+												<option value="69">---Dept. Pemasaran Seksi DEMO & SERVICE AREA II</option>
+												<option value="70">---Dept. Pemasaran Seksi ***DESAIN PROMOSI</option>
+												<option value="71">---Dept. Pemasaran Seksi DESAIN PROMOSI</option>
+												<option value="72">---Dept. Pemasaran Seksi DIGITAL MARKETING & KOMUNITAS QUICK</option>
+												<option value="73">---Dept. Pemasaran Seksi DIGITAL MARKETING&KOMUNITAS QUICK</option>
+												<option value="74">---Dept. Pemasaran Seksi ***PEMASARAN ALAT TRANSPORTASI</option>
+												<option value="75">---Dept. Pemasaran Seksi PEMASARAN ALAT TRANSPORTASI AREA I</option>
+												<option value="76">---Dept. Pemasaran Seksi PEMASARAN ALAT TRANSPORTASI AREA II</option>
+												<option value="77">---Dept. Pemasaran Seksi ***PEMASARAN EXPORT</option>
+												<option value="78">---Dept. Pemasaran Seksi PEMASARAN EXPORT</option>
+												<option value="79">---Dept. Pemasaran Seksi PEMASARAN HARVESTER</option>
+												<option value="80">---Dept. Pemasaran Seksi PEMASARAN JOB ORDER</option>
+												<option value="81">---Dept. Pemasaran Seksi PEMASARAN MESIN PERTANIAN A</option>
+												<option value="82">---Dept. Pemasaran Seksi PEMASARAN MESIN PERTANIAN B</option>
+												<option value="83">---Dept. Pemasaran Seksi PEMASARAN ONLINE</option>
+												<option value="84">---Dept. Pemasaran Seksi PEMASARAN SPARE PART AREA I</option>
+												<option value="85">---Dept. Pemasaran Seksi PEMASARAN SPARE PART AREA II</option>
+												<option value="86">---Dept. Pemasaran Seksi PEMASARAN SPARE PART AREA III</option>
+												<option value="87">---Dept. Pemasaran Seksi PEMASARAN SPARE PART ENGINE</option>
+												<option value="88">---Dept. Pemasaran Seksi PEMASARAN SP (SAP&BDL)</option>
+												<option value="89">---Dept. Pemasaran Seksi PEMASARAN TR-2 AREA I</option>
+												<option value="90">---Dept. Pemasaran Seksi PEMASARAN TR-2 AREA II</option>
+												<option value="91">---Dept. Pemasaran Seksi PEMASARAN TR-2 AREA III</option>
+												<option value="92">---Dept. Pemasaran Seksi PEMASARAN TR4&COMBINE HARVESTER</option>
+												<option value="93">---Dept. Pemasaran Seksi PEMASARAN TRAKTOR RODA 4</option>
+												<option value="94">---Dept. Pemasaran Seksi PEMASARAN VDE&GENSET</option>
+												<option value="95">---Dept. Pemasaran Seksi PENGEMBANGAN & PENYEDIAAN PRD TR-2</option>
+												<option value="96">---Dept. Pemasaran Seksi PENGIRIMAN PRODUK</option>
+												<option value="97">---Dept. Pemasaran Seksi PENJUALAN SPARE PART</option>
+												<option value="98">---Dept. Pemasaran Seksi POS BANYUASIN</option>
+												<option value="99">---Dept. Pemasaran Seksi POS SAMARINDA</option>
+												<option value="100">---Dept. Pemasaran Seksi POS SAMPIT</option>
+												<option value="101">---Dept. Pemasaran Seksi PRODUKSI PROMOSI</option>
+												<option value="102">---Dept. Pemasaran Seksi PUSAT PELATIHAN PELANGGAN & STANDARISASI</option>
+												<option value="103">---Dept. Pemasaran Seksi RISET&IMPLEMENTASI PROMOSI</option>
+												<option value="104">---Dept. Pemasaran Seksi SHOWROOM BANJARMASIN</option>
+												<option value="105">---Dept. Pemasaran Seksi SHOWROOM JAMBI</option>
+												<option value="106">---Dept. Pemasaran Seksi SHOWROOM PALU</option>
+												<option value="107">---Dept. Pemasaran Seksi SHOWROOM PEKANBARU</option>
+												<option value="108">---Dept. Pemasaran Seksi SHOWROOM PONTIANAK</option>
+												<option value="109">---Dept. Pemasaran Seksi SHOWROOM SIDRAP</option>
+												<option value="110">---Dept. Pemasaran Seksi SISTEM PENGEMBANGAN ORGANISASI CABANG&ORACLE</option>
+												<option value="111">---Dept. Pemasaran Seksi SPECIAL CUSTOMER BARAT</option>
+												<option value="112">---Dept. Pemasaran Seksi SPECIAL CUSTOMER MOS</option>
+												<option value="113">---Dept. Pemasaran Seksi ***SPECIAL CUSTOMER PUSAT</option>
+												<option value="114">---Dept. Pemasaran Seksi SPECIAL CUSTOMER PUSAT</option>
+												<option value="115">---Dept. Pemasaran Seksi SPECIAL CUSTOMER QUALITY CONTROL</option>
+												<option value="116">---Dept. Pemasaran Seksi SPECIAL CUSTOMER TENGAH</option>
+												<option value="117">---Dept. Pemasaran Seksi SPECIAL CUSTOMER TIME KEEPER</option>
+												<option value="118">---Dept. Pemasaran Seksi SPECIAL CUSTOMER TIMUR</option>
+												<option value="119">---Dept. Pemasaran Seksi TOKO ONLINE</option>
 											</select>
 											</div>
 										</div>
@@ -166,7 +259,7 @@
 													<input name="SDMpkl" hidden="" type="text" value="<?php echo $truePKL; ?>">
 													<input name="SDMval" hidden="" type="text" value="<?php echo $val; ?>">
 													<input name="SDMdiv" hidden="" type="text">
-													<?php for ($y=0; $y < 28; $y++) { 
+													<?php for ($y=0; $y < 120; $y++) { 
 																	?>
 																	<script>
 																		var inde = <?= $hitung ?> ;
