@@ -1304,9 +1304,9 @@ class C_Produksi extends CI_Controller
 		$data['submit'] = 'false';
 		if ($submit == 'true') {
 			$data['submit'] = $submit;
-			$nama =  'SEMUA, Dept. Produksi, Dept. Produksi - Pusat, Dept. Produksi - Tuksono, Dept. Produksi - Pekerja Tidak Langsung / InDirect Labour), Dept. Produksi - Pekerja Langsung / Direct Labour, Dept. Produksi -  Melati, Dept. Produksi - Seksi Administrasi Desain, Dept. Produksi - Seksi Assembly, Dept. Produksi - Seksi Assembly Gear Trans, Dept. Produksi - Seksi Assembly-TKS, Seksi Cetakan & Pasir Cetak & Inti Cor Dan Peleburan-Penuangan, Seksi Cetakan & Pasir Cetak & Inti Cor Dan Pel&Pen-TKS, Dept. Produksi - Seksi Desain A, Dept. Produksi - Seksi Desain B, Dept. Produksi - Seksi Desain C, Dept. Produksi - Seksi DOJO Desain, Dept. Produksi - Seksi DOJO Foundry, Dept. Produksi - Seksi DOJO Machining, Dept. Produksi - Seksi Finishing, Dept. Produksi - Seksi Finishing-TKS, Dept. Produksi - Seksi Gudang Blank Material-TKS, Dept. Produksi - Seksi Gudang D & E, Dept. Produksi - Seksi Gudang Komponen, Dept. Produksi - Seksi Gudang Material Dan Bahan Penolong, Dept. Produksi - Seksi Gudang Pengadaan dan Blank Material, Dept. Produksi - Seksi Gudang Produksi Dan Ekpedisi, Dept. Produksi - Seksi Gudang Produksi Dan Ekpedisi-TKS, Dept. Produksi - Seksi Heat Treatmen-TKS, Dept. Produksi - Seksi Lab. Kimia dan Pasir Cetak, Dept. Produksi - Seksi Machining 1, Dept. Produksi - Seksi Machining A-TKS, Dept. Produksi - Seksi Machining B, Dept. Produksi - Seksi Machining B-TKS, Dept. Produksi - Seksi Machining C, Dept. Produksi - Seksi Machining C-TKS, Dept. Produksi - Seksi Machining D, Dept. Produksi - Seksi Machining D-TKS, Dept. Produksi - Seksi Machining E, Dept. Produksi - Seksi Machining Prototype, Dept. Produksi - Seksi Maintenace, Dept. Produksi - Seksi Maintenace-TKS, Dept. Produksi - Seksi Maintenace Dan Pengembangan Alat, Dept. Produksi - Seksi Maintenace Dan Pengembangan Alat-TKS, Dept. Produksi - Seksi Painting Dan Packaging, Dept. Produksi - Seksi Painting Dan Packaging-TKS, Dept. Produksi - Seksi Penerimaan Barang Gudang, Dept. Produksi - Seksi Penerimaan Barang Gudang-TKS, Dept. Produksi - Seksi Pengeluaran Barang Gudang, Dept. Produksi - Seksi Pengeluaran Barang Gudang-TKS, Dept. Produksi - Seksi Pengembangan Prototype A, Dept. Produksi - Seksi Pengembangan Prototype B, Dept. Produksi - Seksi Pola, Dept. Produksi - Seksi Pola/Pattern-TKS, Dept. Produksi - Seksi Potong AS, Dept. Produksi - Seksi PPC & Gudang dan Administrasi, Dept. Produksi - Seksi PPC Tool Making, Dept. Produksi - Seksi PPIC, Dept. Produksi - Seksi PPIC-TKS, Dept. Produksi - Seksi PPIC&Gudang Dan Administrasi-TKS, Dept. Produksi - Seksi PPIC Prototype Desain, Dept. Produksi - Seksi Production And Inventory ERP Application, Dept. Produksi - Seksi Production Engineering, Dept. Produksi - Seksi Production Engineering-DOJO, Dept. Produksi - Seksi QC Desain Riset Dan Testing, Dept. Produksi - Seksi Quality Assurance, Dept. Produksi - Seksi Quality Control, Dept. Produksi - Seksi Quality Control-TKS, Dept. Produksi - Seksi Quality Engineering, Dept. Produksi - Seksi Quality - TKS, Dept. Produksi - Seksi Rekayasa Dan Rebuilding Mensin, Dept. Produksi - Seksi Riset Dan Testing Alat Uji, Dept. Produksi - Seksi Riset Dan Testing Cultivator, Dept. Produksi - Seksi Riset Dan Testing Harvester, Dept. Produksi - Seksi Riset Dan Testing Pengembangan, Dept. Produksi - Seksi Riset Dan Testing PPIC, Dept. Produksi - Seksi Riset Dan Testing Quick Truck, Dept. Produksi - Seksi Riset Dan Testing Traktor 2W, Dept. Produksi - Seksi Riset Dan Testing Traktor 4W, Dept. Produksi - Seksi Sheet Metal-TKS, Dept. Produksi - Seksi Tool Making 1, Dept. Produksi - Seksi Tool Making A, Dept. Produksi - Seksi Tool Making B, Dept. Produksi - Seksi Tool Warehouse, Dept. Produksi - Seksi Tool Warehouse-TKS, Dept. Produksi - Seksi Welding A, Dept. Produksi - Seksi Welding B, Dept. Produksi - Seksi Welding-TKS';
+			$nama =  'SEMUA, Dept. Produksi, Dept. Produksi - Pusat, Dept. Produksi - Tuksono, Dept. Produksi - Pekerja Tidak Langsung / InDirect Labour), Dept. Produksi - Pekerja Langsung / Direct Labour, Dept. Produksi -  Melati, Dept. Produksi - Seksi Administrasi Desain, Dept. Produksi - Seksi Assembly, Dept. Produksi - Seksi Assembly Gear Trans, Dept. Produksi - Seksi Assembly-TKS, Seksi Cetakan & Pasir Cetak & Inti Cor Dan Peleburan-Penuangan, Seksi Cetakan & Pasir Cetak & Inti Cor Dan Pel&Pen-TKS, Dept. Produksi - Seksi Desain A, Dept. Produksi - Seksi Desain B, Dept. Produksi - Seksi Desain C, Dept. Produksi - Seksi DOJO Desain, Dept. Produksi - Seksi DOJO Foundry, Dept. Produksi - Seksi DOJO Machining, Dept. Produksi - Seksi Finishing, Dept. Produksi - Seksi Finishing-TKS, Dept. Produksi - Seksi Gudang Blank Material-TKS, Dept. Produksi - Seksi Gudang D & E, Dept. Produksi - Seksi Gudang Komponen, Dept. Produksi - Seksi Gudang Material Dan Bahan Penolong, Dept. Produksi - Seksi Gudang Pengadaan dan Blank Material, Dept. Produksi - Seksi Gudang Produksi Dan Ekpedisi, Dept. Produksi - Seksi Gudang Produksi Dan Ekpedisi-TKS, Dept. Produksi - Seksi Heat Treatmen-TKS, Dept. Produksi - Seksi Lab. Kimia dan Pasir Cetak, Dept. Produksi - Seksi Machining 1, Dept. Produksi - Seksi Machining A-TKS, Dept. Produksi - Seksi Machining B, Dept. Produksi - Seksi Machining B-TKS, Dept. Produksi - Seksi Machining C, Dept. Produksi - Seksi Machining C-TKS, Dept. Produksi - Seksi Machining D, Dept. Produksi - Seksi Machining D-TKS, Dept. Produksi - Seksi Machining E, Dept. Produksi - Seksi Machining Prototype, Dept. Produksi - Seksi Maintenace, Dept. Produksi - Seksi Maintenace-TKS, Dept. Produksi - Seksi Maintenace Dan Pengembangan Alat, Dept. Produksi - Seksi Maintenace Dan Pengembangan Alat-TKS, Dept. Produksi - Seksi Painting Dan Packaging, Dept. Produksi - Seksi Painting Dan Packaging-TKS, Dept. Produksi - Seksi Penerimaan Barang Gudang, Dept. Produksi - Seksi Penerimaan Barang Gudang-TKS, Dept. Produksi - Seksi Pengeluaran Barang Gudang, Dept. Produksi - Seksi Pengeluaran Barang Gudang-TKS, Dept. Produksi - Seksi Pengembangan Prototype A, Dept. Produksi - Seksi Pengembangan Prototype B, Dept. Produksi - Seksi Pola, Dept. Produksi - Seksi Pola/Pattern-TKS, Dept. Produksi - Seksi Potong AS, Dept. Produksi - Seksi PPC & Gudang dan Administrasi, Dept. Produksi - Seksi PPC Tool Making, Dept. Produksi - Seksi PPIC, Dept. Produksi - Seksi PPIC-TKS, Dept. Produksi - Seksi PPIC&Gudang Dan Administrasi-TKS, Dept. Produksi - Seksi PPIC Prototype Desain, Dept. Produksi - Seksi Production And Inventory ERP Application, Dept. Produksi - Seksi Production Engineering, Dept. Produksi - Seksi Production Engineering-DOJO, Dept. Produksi - Seksi QC Desain Riset Dan Testing, Dept. Produksi - Seksi Quality Assurance, Dept. Produksi - Seksi Quality Control, Dept. Produksi - Seksi Quality Control-TKS, Dept. Produksi - Seksi Quality Engineering, Dept. Produksi - Seksi Quality - TKS, Dept. Produksi - Seksi Rekayasa Dan Rebuilding Mensin, Dept. Produksi - Seksi Riset Dan Testing Alat Uji, Dept. Produksi - Seksi Riset Dan Testing Cultivator, Dept. Produksi - Seksi Riset Dan Testing Harvester, Dept. Produksi - Seksi Riset Dan Testing Pengembangan, Dept. Produksi - Seksi Riset Dan Testing PPIC, Dept. Produksi - Seksi Riset Dan Testing Quick Truck, Dept. Produksi - Seksi Riset Dan Testing Traktor 2W, Dept. Produksi - Seksi Riset Dan Testing Traktor 4W, Dept. Produksi - Seksi Sheet Metal-TKS, Dept. Produksi - Seksi Tool Making 1, Dept. Produksi - Seksi Tool Making A, Dept. Produksi - Seksi Tool Making B, Dept. Produksi - Seksi Tool Warehouse, Dept. Produksi - Seksi Tool Warehouse-TKS, Dept. Produksi - Seksi Welding A, Dept. Produksi - Seksi Welding B, Dept. Produksi - Seksi Welding-TKS, Dept. Produksi - Seksi Machining A, Dept. Produksi Atasan Seksi';
 			if ($val == '0') {
-				$all = array('1','2','3','4','5','6','7','8','9','10','11','12','13','14','15','16','17','18','19','20','21','22','23','24','25','25','26','27','28','29','30','31','32','33','34','35','36','37','38','39','40','41','42','43','44','45','46','47','48','49','50','51','52','53','54','55','56','57','58','59','60','61','62','63','64','65','66','67','68','69','70','71','72','73','74','75','76','77','78','79','80','81','82','83','84','85','86','87');
+				$all = array('1','2','3','4','5','6','7','8','9','10','11','12','13','14','15','16','17','18','19','20','21','22','23','24','25','25','26','27','28','29','30','31','32','33','34','35','36','37','38','39','40','41','42','43','44','45','46','47','48','49','50','51','52','53','54','55','56','57','58','59','60','61','62','63','64','65','66','67','68','69','70','71','72','73','74','75','76','77','78','79','80','81','82','83','84','85','86','87','88','89');
 			}else{
 				$all[] = $val;
 			}
@@ -1333,15 +1333,15 @@ class C_Produksi extends CI_Controller
 					$now =  $date->format("m-d");
 					$lokasi_kerja = '';
 					if ($val == '1' ) {
-						$kodeDept = 'PRODUKSI';
+						$kodeDept = '3';
 						$banyak = $this->M_index->pekerjaDepartemen($now, $kodeDept, $sqlPKL, $lokasi_kerja);
 					}else if ($val == '2'){
 						$lokasi_kerja = "and lokasi_kerja = '01'";
-						$kodeDept = 'PRODUKSI';
+						$kodeDept = '3';
 						$banyak = $this->M_index->pekerjaDepartemen($now, $kodeDept, $sqlPKL, $lokasi_kerja);
 					}else if ($val == '3'){
 						$lokasi_kerja = "and lokasi_kerja = '02'";
-						$kodeDept = 'PRODUKSI';
+						$kodeDept = '3';
 						$banyak = $this->M_index->pekerjaDepartemen($now, $kodeDept, $sqlPKL, $lokasi_kerja);
 					}else if ($val == '4'){
 						//non penunjang atau direct
@@ -1354,332 +1354,340 @@ class C_Produksi extends CI_Controller
 					}else if ($val == '6'){
 						//dept produksi melati
 						$lokasi_kerja = "and lokasi_kerja = '03'";
-						$kodeDept = 'PRODUKSI';
+						$kodeDept = '3';
 						$banyak = $this->M_index->pekerjaDepartemen($now, $kodeDept, $sqlPKL, $lokasi_kerja);
 					}else if ($val == '7'){
 						//Dept. Produksi - Seksi Administrasi Desain
 						$kodeSeksi = 'ADMINISTRASI DESAIN';
-						$banyak = $this->M_index->pekerjaSeksi($now, $kodeSeksi, $sqlPKL);
+						$banyak = $this->M_index->pekerjaSeksiDeptProduksi($now, $kodeSeksi, $sqlPKL);
 					}else if ($val == '8'){
 						//Dept. Produksi - Seksi ASSEMBLY
 						$kodeSeksi = 'ASSEMBLY';
-						$banyak = $this->M_index->pekerjaSeksi($now, $kodeSeksi, $sqlPKL);
+						$banyak = $this->M_index->pekerjaSeksiDeptProduksi($now, $kodeSeksi, $sqlPKL);
 					}else if ($val == '9'){
 						//Dept. Produksi - Seksi ASSEMBLY GEAR TRANS
 						$kodeSeksi = 'ASSEMBLY GEAR TRANS';
-						$banyak = $this->M_index->pekerjaSeksi($now, $kodeSeksi, $sqlPKL);
+						$banyak = $this->M_index->pekerjaSeksiDeptProduksi($now, $kodeSeksi, $sqlPKL);
 					}else if ($val == '10'){
 						//Dept. Produksi - Seksi ASSEMBLY-TKS
 						$kodeSeksi = 'ASSEMBLY-TKS';
-						$banyak = $this->M_index->pekerjaSeksi($now, $kodeSeksi, $sqlPKL);
+						$banyak = $this->M_index->pekerjaSeksiDeptProduksi($now, $kodeSeksi, $sqlPKL);
 					}else if ($val == '11'){
 						//Dept. Produksi - Seksi CETAKAN,PASIR CETAK & INTI COR,PELEBURAN-PENUANGAN
 						$kodeSeksi = 'CETAKAN,PASIR CETAK & INTI COR,PELEBURAN-PENUANGAN';
-						$banyak = $this->M_index->pekerjaSeksi($now, $kodeSeksi, $sqlPKL);
+						$banyak = $this->M_index->pekerjaSeksiDeptProduksi($now, $kodeSeksi, $sqlPKL);
 					}else if ($val == '12'){
 						//Dept. Produksi - Seksi CETAKAN,PASIR CETAK & INTI COR,PELEBURAN-PENUANGAN-TKS
 						$kodeSeksi = 'CETAKAN, PASIR CETAK&INTI COR, PEL&PEN - TKS';
-						$banyak = $this->M_index->pekerjaSeksi($now, $kodeSeksi, $sqlPKL);
+						$banyak = $this->M_index->pekerjaSeksiDeptProduksi($now, $kodeSeksi, $sqlPKL);
 					}else if ($val == '13'){
 						//Dept. Produksi - Seksi DESAIN A
 						$kodeSeksi = 'DESAIN A';
-						$banyak = $this->M_index->pekerjaSeksi($now, $kodeSeksi, $sqlPKL);
+						$banyak = $this->M_index->pekerjaSeksiDeptProduksi($now, $kodeSeksi, $sqlPKL);
 					}else if ($val == '14'){
 						//Dept. Produksi - Seksi DESAIN B
 						$kodeSeksi = 'DESAIN B';
-						$banyak = $this->M_index->pekerjaSeksi($now, $kodeSeksi, $sqlPKL);
+						$banyak = $this->M_index->pekerjaSeksiDeptProduksi($now, $kodeSeksi, $sqlPKL);
 					}else if ($val == '15'){
 						//Dept. Produksi - Seksi DESAIN C
 						$kodeSeksi = 'DESAIN C';
-						$banyak = $this->M_index->pekerjaSeksi($now, $kodeSeksi, $sqlPKL);
+						$banyak = $this->M_index->pekerjaSeksiDeptProduksi($now, $kodeSeksi, $sqlPKL);
 					}else if ($val == '16'){
 						//Dept. Produksi - Seksi DOJO DESAIN
 						$kodeSeksi = 'DOJO DESAIN';
-						$banyak = $this->M_index->pekerjaSeksi($now, $kodeSeksi, $sqlPKL);
+						$banyak = $this->M_index->pekerjaSeksiDeptProduksi($now, $kodeSeksi, $sqlPKL);
 					}else if ($val == '17'){
 						//Dept. Produksi - Seksi DOJO FOUNDRY
 						$kodeSeksi = 'DOJO FOUNDRY';
-						$banyak = $this->M_index->pekerjaSeksi($now, $kodeSeksi, $sqlPKL);
+						$banyak = $this->M_index->pekerjaSeksiDeptProduksi($now, $kodeSeksi, $sqlPKL);
 					}else if ($val == '18'){
 						//Dept. Produksi - Seksi DOJO MACHINING
 						$kodeSeksi = 'DOJO MACHINING';
-						$banyak = $this->M_index->pekerjaSeksi($now, $kodeSeksi, $sqlPKL);
+						$banyak = $this->M_index->pekerjaSeksiDeptProduksi($now, $kodeSeksi, $sqlPKL);
 					}else if ($val == '19'){
 						//Dept. Produksi - Seksi FINISHING
 						$kodeSeksi = 'FINISHING';
-						$banyak = $this->M_index->pekerjaSeksi($now, $kodeSeksi, $sqlPKL);
+						$banyak = $this->M_index->pekerjaSeksiDeptProduksi($now, $kodeSeksi, $sqlPKL);
 					}else if ($val == '20'){
 						//Dept. Produksi - Seksi FINISHING-TKS
 						$kodeSeksi = 'FINISHING - TKS';
-						$banyak = $this->M_index->pekerjaSeksi($now, $kodeSeksi, $sqlPKL);
+						$banyak = $this->M_index->pekerjaSeksiDeptProduksi($now, $kodeSeksi, $sqlPKL);
 					}else if ($val == '21'){
 						//Dept. Produksi - Seksi GUDANG BLANK MATERIAL-TKS
 						$kodeSeksi = 'GUDANG BLANK MATERIAL-TKS';
-						$banyak = $this->M_index->pekerjaSeksi($now, $kodeSeksi, $sqlPKL);
+						$banyak = $this->M_index->pekerjaSeksiDeptProduksi($now, $kodeSeksi, $sqlPKL);
 					}else if ($val == '22'){
 						//Dept. Produksi - GUDANG D & E
 						$kodeSeksi = 'GUDANG D & E';
-						$banyak = $this->M_index->pekerjaSeksi($now, $kodeSeksi, $sqlPKL);
+						$banyak = $this->M_index->pekerjaSeksiDeptProduksi($now, $kodeSeksi, $sqlPKL);
 					}else if ($val == '23'){
 						//Dept. Produksi - Seksi GUDANG KOMPONEN
 						$kodeSeksi = 'GUDANG KOMPONEN';
-						$banyak = $this->M_index->pekerjaSeksi($now, $kodeSeksi, $sqlPKL);
+						$banyak = $this->M_index->pekerjaSeksiDeptProduksi($now, $kodeSeksi, $sqlPKL);
 					}else if ($val == '24'){
 						//Dept. Produksi - Seksi GUDANG MATERIAL & BAHAN PENOLONG
 						$kodeSeksi = 'GUDANG MATERIAL & BAHAN PENOLONG';
-						$banyak = $this->M_index->pekerjaSeksi($now, $kodeSeksi, $sqlPKL);
+						$banyak = $this->M_index->pekerjaSeksiDeptProduksi($now, $kodeSeksi, $sqlPKL);
 					}else if ($val == '25'){
 						//Dept. Produksi - Seksi GUDANG PENGADAAN & BLANK MATERIAL
 						$kodeSeksi = 'GUDANG PENGADAAN & BLANK MATERIAL';
-						$banyak = $this->M_index->pekerjaSeksi($now, $kodeSeksi, $sqlPKL);
+						$banyak = $this->M_index->pekerjaSeksiDeptProduksi($now, $kodeSeksi, $sqlPKL);
 					}else if ($val == '26'){
 						//Dept. Produksi - Seksi GUDANG PRODUKSI & EKSPEDISI
 						$kodeSeksi = 'GUDANG PRODUKSI & EKSPEDISI';
-						$banyak = $this->M_index->pekerjaSeksi($now, $kodeSeksi, $sqlPKL);
+						$banyak = $this->M_index->pekerjaSeksiDeptProduksi($now, $kodeSeksi, $sqlPKL);
 					}else if ($val == '27'){
 						//Dept. Produksi - Seksi GUDANG PRODUKSI & EKSPEDISI TKS
 						$kodeSeksi = 'GUDANG PRODUKSI & EKSPEDISI - TKS';
-						$banyak = $this->M_index->pekerjaSeksi($now, $kodeSeksi, $sqlPKL);
+						$banyak = $this->M_index->pekerjaSeksiDeptProduksi($now, $kodeSeksi, $sqlPKL);
 					}else if ($val == '28'){
 						//Dept. Produksi - Seksi HEAT TREATMENT
 						$kodeSeksi = 'HEAT TREATMENT - TKS';
-						$banyak = $this->M_index->pekerjaSeksi($now, $kodeSeksi, $sqlPKL);
+						$banyak = $this->M_index->pekerjaSeksiDeptProduksi($now, $kodeSeksi, $sqlPKL);
 					}else if ($val == '29'){
 						//Dept. Produksi - Seksi LABORATORIUM KIMIA & PASIR CETAK
 						$kodeSeksi = 'LABORATORIUM KIMIA & PASIR CETAK';
-						$banyak = $this->M_index->pekerjaSeksi($now, $kodeSeksi, $sqlPKL);
+						$banyak = $this->M_index->pekerjaSeksiDeptProduksi($now, $kodeSeksi, $sqlPKL);
 					}else if ($val == '30'){
 						//Dept. Produksi - Seksi MACHINING 1
 						$kodeSeksi = 'MACHINING 1';
-						$banyak = $this->M_index->pekerjaSeksi($now, $kodeSeksi, $sqlPKL);
+						$banyak = $this->M_index->pekerjaSeksiDeptProduksi($now, $kodeSeksi, $sqlPKL);
 					}else if ($val == '31'){
 						//Dept. Produksi - Seksi MACHINING A-TKS
 						$kodeSeksi = 'MACHINING A - TKS';
-						$banyak = $this->M_index->pekerjaSeksi($now, $kodeSeksi, $sqlPKL);
+						$banyak = $this->M_index->pekerjaSeksiDeptProduksi($now, $kodeSeksi, $sqlPKL);
 					}else if ($val == '32'){
 						//Dept. Produksi - Seksi MACHINING B
 						$kodeSeksi = 'MACHINING B';
-						$banyak = $this->M_index->pekerjaSeksi($now, $kodeSeksi, $sqlPKL);
+						$banyak = $this->M_index->pekerjaSeksiDeptProduksi($now, $kodeSeksi, $sqlPKL);
 					}else if ($val == '33'){
 						//Dept. Produksi - Seksi MACHINING B-TKS
 						$kodeSeksi = 'MACHINING B - TKS';
-						$banyak = $this->M_index->pekerjaSeksi($now, $kodeSeksi, $sqlPKL);
+						$banyak = $this->M_index->pekerjaSeksiDeptProduksi($now, $kodeSeksi, $sqlPKL);
 					}else if ($val == '34'){
 						//Dept. Produksi - Seksi MACHINING C
 						$kodeSeksi = 'MACHINING C';
-						$banyak = $this->M_index->pekerjaSeksi($now, $kodeSeksi, $sqlPKL);
+						$banyak = $this->M_index->pekerjaSeksiDeptProduksi($now, $kodeSeksi, $sqlPKL);
 					}else if ($val == '35'){
 						//Dept. Produksi - Seksi MACHINING C-TKS
 						$kodeSeksi = 'MACHINING C - TKS';
-						$banyak = $this->M_index->pekerjaSeksi($now, $kodeSeksi, $sqlPKL);
+						$banyak = $this->M_index->pekerjaSeksiDeptProduksi($now, $kodeSeksi, $sqlPKL);
 					}else if ($val == '36'){
 						//Dept. Produksi - Seksi MACHINING D
 						$kodeSeksi = 'MACHINING D';
-						$banyak = $this->M_index->pekerjaSeksi($now, $kodeSeksi, $sqlPKL);
+						$banyak = $this->M_index->pekerjaSeksiDeptProduksi($now, $kodeSeksi, $sqlPKL);
 					}else if ($val == '37'){
 						//Dept. Produksi - Seksi MACHINING D-TKS
 						$kodeSeksi = 'MACHINING D - TKS';
-						$banyak = $this->M_index->pekerjaSeksi($now, $kodeSeksi, $sqlPKL);
+						$banyak = $this->M_index->pekerjaSeksiDeptProduksi($now, $kodeSeksi, $sqlPKL);
 					}else if ($val == '38'){
 						//Dept. Produksi - Seksi MACHINING E
 						$kodeSeksi = 'MACHINING E';
-						$banyak = $this->M_index->pekerjaSeksi($now, $kodeSeksi, $sqlPKL);
+						$banyak = $this->M_index->pekerjaSeksiDeptProduksi($now, $kodeSeksi, $sqlPKL);
 					}else if ($val == '39'){
 						//Dept. Produksi - Seksi MACHINING PROTOTYPE
 						$kodeSeksi = 'MACHINING PROTOTYPE';
-						$banyak = $this->M_index->pekerjaSeksi($now, $kodeSeksi, $sqlPKL);
+						$banyak = $this->M_index->pekerjaSeksiDeptProduksi($now, $kodeSeksi, $sqlPKL);
 					}else if ($val == '40'){
 						//Dept. Produksi - Seksi MAINTENANCE
 						$kodeSeksi = 'MAINTENANCE';
-						$banyak = $this->M_index->pekerjaSeksi($now, $kodeSeksi, $sqlPKL);
+						$banyak = $this->M_index->pekerjaSeksiDeptProduksi($now, $kodeSeksi, $sqlPKL);
 					}else if ($val == '41'){
 						//Dept. Produksi - Seksi MAINTENANCE-TKS
 						$kodeSeksi = 'MAINTENANCE - TKS';
-						$banyak = $this->M_index->pekerjaSeksi($now, $kodeSeksi, $sqlPKL);
+						$banyak = $this->M_index->pekerjaSeksiDeptProduksi($now, $kodeSeksi, $sqlPKL);
 					}else if ($val == '42'){
 						//Dept. Produksi - Seksi MAINTENANCE & PENGEMBANGAN ALAT
 						$kodeSeksi = 'MAINTENANCE & PENGEMBANGAN ALAT';
-						$banyak = $this->M_index->pekerjaSeksi($now, $kodeSeksi, $sqlPKL);
+						$banyak = $this->M_index->pekerjaSeksiDeptProduksi($now, $kodeSeksi, $sqlPKL);
 					}else if ($val == '43'){
 						//Dept. Produksi - Seksi MAINTENANCE & PENGEMBANGAN ALAT-TKS
 						$kodeSeksi = 'MAINTENANCE & PENGEMBANGAN ALAT - TKS';
-						$banyak = $this->M_index->pekerjaSeksi($now, $kodeSeksi, $sqlPKL);
+						$banyak = $this->M_index->pekerjaSeksiDeptProduksi($now, $kodeSeksi, $sqlPKL);
 					}else if ($val == '44'){
 						//Dept. Produksi - Seksi PAINTING & PACKAGING
 						$kodeSeksi = 'PAINTING & PACKAGING';
-						$banyak = $this->M_index->pekerjaSeksi($now, $kodeSeksi, $sqlPKL);
+						$banyak = $this->M_index->pekerjaSeksiDeptProduksi($now, $kodeSeksi, $sqlPKL);
 					}else if ($val == '45'){
 						//Dept. Produksi - Seksi PAINTING & PACKAGING-TKS
 						$kodeSeksi = 'PAINTING & PACKAGING - TKS';
-						$banyak = $this->M_index->pekerjaSeksi($now, $kodeSeksi, $sqlPKL);
+						$banyak = $this->M_index->pekerjaSeksiDeptProduksi($now, $kodeSeksi, $sqlPKL);
 					}else if ($val == '46'){
 						//Dept. Produksi - Seksi PENERIMAAN BARANG GUDANG
 						$kodeSeksi = 'PENERIMAAN BARANG GUDANG';
-						$banyak = $this->M_index->pekerjaSeksi($now, $kodeSeksi, $sqlPKL);
+						$banyak = $this->M_index->pekerjaSeksiDeptProduksi($now, $kodeSeksi, $sqlPKL);
 					}else if ($val == '47'){
 						//Dept. Produksi - Seksi PENERIMAAN BARANG GUDANG-TKS
 						$kodeSeksi = 'PENERIMAAN BARANG GUDANG-TKS';
-						$banyak = $this->M_index->pekerjaSeksi($now, $kodeSeksi, $sqlPKL);
+						$banyak = $this->M_index->pekerjaSeksiDeptProduksi($now, $kodeSeksi, $sqlPKL);
 					}else if ($val == '48'){
 						//Dept. Produksi - Seksi PENGELUARAN BARANG GUDANG
 						$kodeSeksi = 'PENGELUARAN BARANG GUDANG';
-						$banyak = $this->M_index->pekerjaSeksi($now, $kodeSeksi, $sqlPKL);
+						$banyak = $this->M_index->pekerjaSeksiDeptProduksi($now, $kodeSeksi, $sqlPKL);
 					}else if ($val == '49'){
 						//Dept. Produksi - Seksi PENGELUARAN BARANG GUDANG-TKS
 						$kodeSeksi = 'PENGELUARAN BARANG GUDANG-TKS';
-						$banyak = $this->M_index->pekerjaSeksi($now, $kodeSeksi, $sqlPKL);
+						$banyak = $this->M_index->pekerjaSeksiDeptProduksi($now, $kodeSeksi, $sqlPKL);
 					}else if ($val == '50'){
 						//Dept. Produksi - Seksi PENGEMBANGAN PROTOTYPE A
 						$kodeSeksi = 'PENGEMBANGAN PROTOTYPE A';
-						$banyak = $this->M_index->pekerjaSeksi($now, $kodeSeksi, $sqlPKL);
+						$banyak = $this->M_index->pekerjaSeksiDeptProduksi($now, $kodeSeksi, $sqlPKL);
 					}else if ($val == '51'){
 						//Dept. Produksi - Seksi PENGEMBANGAN PROTOTYPE B
 						$kodeSeksi = 'PENGEMBANGAN PROTOTYPE B';
-						$banyak = $this->M_index->pekerjaSeksi($now, $kodeSeksi, $sqlPKL);
+						$banyak = $this->M_index->pekerjaSeksiDeptProduksi($now, $kodeSeksi, $sqlPKL);
 					}else if ($val == '52'){
 						//Dept. Produksi - Seksi POLA
 						$kodeSeksi = 'POLA';
-						$banyak = $this->M_index->pekerjaSeksi($now, $kodeSeksi, $sqlPKL);
+						$banyak = $this->M_index->pekerjaSeksiDeptProduksi($now, $kodeSeksi, $sqlPKL);
 					}else if ($val == '53'){
 						//Dept. Produksi - Seksi POLA/PATTERN-TKS
 						$kodeSeksi = 'POLA/PATTERN - TKS';
-						$banyak = $this->M_index->pekerjaSeksi($now, $kodeSeksi, $sqlPKL);
+						$banyak = $this->M_index->pekerjaSeksiDeptProduksi($now, $kodeSeksi, $sqlPKL);
 					}else if ($val == '54'){
 						//Dept. Produksi - Seksi POTONG AS
 						$kodeSeksi = 'POTONG AS';
-						$banyak = $this->M_index->pekerjaSeksi($now, $kodeSeksi, $sqlPKL);
+						$banyak = $this->M_index->pekerjaSeksiDeptProduksi($now, $kodeSeksi, $sqlPKL);
 					}else if ($val == '55'){
 						//Dept. Produksi - Seksi PPC, GUDANG DAN ADMINISTRASI
 						$kodeSeksi = 'PPC, GUDANG & ADMINISTRASI';
-						$banyak = $this->M_index->pekerjaSeksi($now, $kodeSeksi, $sqlPKL);
+						$banyak = $this->M_index->pekerjaSeksiDeptProduksi($now, $kodeSeksi, $sqlPKL);
 					}else if ($val == '56'){
 						//Dept. Produksi - Seksi PPC TOOL MAKING
 						$kodeSeksi = 'PPC TOOL MAKING';
-						$banyak = $this->M_index->pekerjaSeksi($now, $kodeSeksi, $sqlPKL);
+						$banyak = $this->M_index->pekerjaSeksiDeptProduksi($now, $kodeSeksi, $sqlPKL);
 					}else if ($val == '57'){
 						//Dept. Produksi - Seksi PPIC
 						$kodeSeksi = 'PPIC';
-						$banyak = $this->M_index->pekerjaSeksi($now, $kodeSeksi, $sqlPKL);
+						$banyak = $this->M_index->pekerjaSeksiDeptProduksi($now, $kodeSeksi, $sqlPKL);
 					}else if ($val == '58'){
 						//Dept. Produksi - Seksi PPIC TKS
 						$kodeSeksi = 'PPIC - TKS';
-						$banyak = $this->M_index->pekerjaSeksi($now, $kodeSeksi, $sqlPKL);
+						$banyak = $this->M_index->pekerjaSeksiDeptProduksi($now, $kodeSeksi, $sqlPKL);
 					}else if ($val == '59'){
 						//Dept. Produksi - Seksi PPIC, GUDANG & ADMINISTRASI-TKS
 						$kodeSeksi = 'PPIC, GUDANG, ADM - TKS';
-						$banyak = $this->M_index->pekerjaSeksi($now, $kodeSeksi, $sqlPKL);
+						$banyak = $this->M_index->pekerjaSeksiDeptProduksi($now, $kodeSeksi, $sqlPKL);
 					}else if ($val == '60'){
 						//Dept. Produksi - Seksi PPIC PROTOTYPE DESAIN
 						$kodeSeksi = 'PPIC PROTOTYPE DISAIN';
-						$banyak = $this->M_index->pekerjaSeksi($now, $kodeSeksi, $sqlPKL);
+						$banyak = $this->M_index->pekerjaSeksiDeptProduksi($now, $kodeSeksi, $sqlPKL);
 					}else if ($val == '61'){
 						//Dept. Produksi - Seksi PRODUCTION AND INVENTORY ERP APPLICATION
 						$kodeSeksi = 'PRODUCTION AND INVENTORY ERP APPLICATION';
-						$banyak = $this->M_index->pekerjaSeksi($now, $kodeSeksi, $sqlPKL);
+						$banyak = $this->M_index->pekerjaSeksiDeptProduksi($now, $kodeSeksi, $sqlPKL);
 					}else if ($val == '62'){
 						//Dept. Produksi - Seksi PRODUCTION ENGINEERING
 						$kodeSeksi = 'PRODUCTION ENGINEERING';
-						$banyak = $this->M_index->pekerjaSeksi($now, $kodeSeksi, $sqlPKL);
+						$banyak = $this->M_index->pekerjaSeksiDeptProduksi($now, $kodeSeksi, $sqlPKL);
 					}else if ($val == '63'){
 						//Dept. Produksi - Seksi PRODUCTION ENGINEERING-DOJO
 						$kodeSeksi = 'PRODUCTION ENGINEERING - DOJO';
-						$banyak = $this->M_index->pekerjaSeksi($now, $kodeSeksi, $sqlPKL);
+						$banyak = $this->M_index->pekerjaSeksiDeptProduksi($now, $kodeSeksi, $sqlPKL);
 					}else if ($val == '64'){
 						//Dept. Produksi - Seksi QC DESAIN , RISET & TESTING
 						$kodeSeksi = 'QC DESAIN, RISET & TESTING';
-						$banyak = $this->M_index->pekerjaSeksi($now, $kodeSeksi, $sqlPKL);
+						$banyak = $this->M_index->pekerjaSeksiDeptProduksi($now, $kodeSeksi, $sqlPKL);
 					}else if ($val == '65'){
 						//Dept. Produksi - Seksi QUALITY ASSURANCE
 						$kodeSeksi = 'QUALITY ASSURANCE';
-						$banyak = $this->M_index->pekerjaSeksi($now, $kodeSeksi, $sqlPKL);
+						$banyak = $this->M_index->pekerjaSeksiDeptProduksi($now, $kodeSeksi, $sqlPKL);
 					}else if ($val == '66'){
 						//Dept. Produksi - Seksi QUALITY CONTROL
 						$kodeSeksi = 'QUALITY CONTROL';
-						$banyak = $this->M_index->pekerjaSeksi($now, $kodeSeksi, $sqlPKL);
+						$banyak = $this->M_index->pekerjaSeksiDeptProduksi($now, $kodeSeksi, $sqlPKL);
 					}else if ($val == '67'){
 						//Dept. Produksi - Seksi QUALITY CONTROL-TKS
 						$kodeSeksi = 'QUALITY CONTROL - TKS';
-						$banyak = $this->M_index->pekerjaSeksi($now, $kodeSeksi, $sqlPKL);
+						$banyak = $this->M_index->pekerjaSeksiDeptProduksi($now, $kodeSeksi, $sqlPKL);
 					}else if ($val == '68'){
 						//Dept. Produksi - Seksi QUALITY ENGINEERING
 						$kodeSeksi = 'QUALITY ENGINEERING';
-						$banyak = $this->M_index->pekerjaSeksi($now, $kodeSeksi, $sqlPKL);
+						$banyak = $this->M_index->pekerjaSeksiDeptProduksi($now, $kodeSeksi, $sqlPKL);
 					}else if ($val == '69'){
 						//Dept. Produksi - Seksi QUALITY-TKS
 						$kodeSeksi = 'QUALITY - TKS';
-						$banyak = $this->M_index->pekerjaSeksi($now, $kodeSeksi, $sqlPKL);
+						$banyak = $this->M_index->pekerjaSeksiDeptProduksi($now, $kodeSeksi, $sqlPKL);
 					}else if ($val == '70'){
 						//Dept. Produksi - Seksi REKAYASA & REBUILDING MESIN
 						$kodeSeksi = 'REKAYASA & REBUILDING MESIN';
-						$banyak = $this->M_index->pekerjaSeksi($now, $kodeSeksi, $sqlPKL);
+						$banyak = $this->M_index->pekerjaSeksiDeptProduksi($now, $kodeSeksi, $sqlPKL);
 					}else if ($val == '71'){
 						//Dept. Produksi - Seksi RISET & TESTING ALAT UJI
 						$kodeSeksi = 'RISET & TESTING ALAT UJI';
-						$banyak = $this->M_index->pekerjaSeksi($now, $kodeSeksi, $sqlPKL);
+						$banyak = $this->M_index->pekerjaSeksiDeptProduksi($now, $kodeSeksi, $sqlPKL);
 					}else if ($val == '72'){
 						//Dept. Produksi - Seksi RISET & TESTING CULTIVATOR
 						$kodeSeksi = 'RISET & TESTING CULTIVATOR';
-						$banyak = $this->M_index->pekerjaSeksi($now, $kodeSeksi, $sqlPKL);
+						$banyak = $this->M_index->pekerjaSeksiDeptProduksi($now, $kodeSeksi, $sqlPKL);
 					}else if ($val == '73'){
 						//Dept. Produksi - Seksi RISET & TESTING HARVESTER
 						$kodeSeksi = 'RISET & TESTING HARVESTER';
-						$banyak = $this->M_index->pekerjaSeksi($now, $kodeSeksi, $sqlPKL);
+						$banyak = $this->M_index->pekerjaSeksiDeptProduksi($now, $kodeSeksi, $sqlPKL);
 					}else if ($val == '74'){
 						//Dept. Produksi - Seksi RISET & TESTING PENGEMBANGAN
 						$kodeSeksi = 'RISET & TESTING PENGEMBANGAN';
-						$banyak = $this->M_index->pekerjaSeksi($now, $kodeSeksi, $sqlPKL);
+						$banyak = $this->M_index->pekerjaSeksiDeptProduksi($now, $kodeSeksi, $sqlPKL);
 					}else if ($val == '75'){
 						//Dept. Produksi - Seksi RISET & TESTING PPIC
 						$kodeSeksi = 'RISET & TESTING PPIC';
-						$banyak = $this->M_index->pekerjaSeksi($now, $kodeSeksi, $sqlPKL);
+						$banyak = $this->M_index->pekerjaSeksiDeptProduksi($now, $kodeSeksi, $sqlPKL);
 					}else if ($val == '76'){
 						//Dept. Produksi - Seksi RISET & TESTING QUICK TRUCK
 						$kodeSeksi = 'RISET & TESTING QUICK TRUCK';
-						$banyak = $this->M_index->pekerjaSeksi($now, $kodeSeksi, $sqlPKL);
+						$banyak = $this->M_index->pekerjaSeksiDeptProduksi($now, $kodeSeksi, $sqlPKL);
 					}else if ($val == '77'){
 						//Dept. Produksi - Seksi RISET & TESTING TRAKTOR 2W
 						$kodeSeksi = 'RISET & TESTING TRAKTOR 2W';
-						$banyak = $this->M_index->pekerjaSeksi($now, $kodeSeksi, $sqlPKL);
+						$banyak = $this->M_index->pekerjaSeksiDeptProduksi($now, $kodeSeksi, $sqlPKL);
 					}else if ($val == '78'){
 						//Dept. Produksi - Seksi RISET & TESTING TRAKTOR 4W
 						$kodeSeksi = 'RISET & TESTING TRAKTOR 4W';
-						$banyak = $this->M_index->pekerjaSeksi($now, $kodeSeksi, $sqlPKL);
+						$banyak = $this->M_index->pekerjaSeksiDeptProduksi($now, $kodeSeksi, $sqlPKL);
 					}else if ($val == '79'){
 						//Dept. Produksi - Seksi SHEET METAL-TKS
 						$kodeSeksi = 'SHEET METAL - TKS';
-						$banyak = $this->M_index->pekerjaSeksi($now, $kodeSeksi, $sqlPKL);
+						$banyak = $this->M_index->pekerjaSeksiDeptProduksi($now, $kodeSeksi, $sqlPKL);
 					}else if ($val == '80'){
 						//Dept. Produksi - Seksi TOOL MAKING 1
 						$kodeSeksi = 'TOOL MAKING 1';
-						$banyak = $this->M_index->pekerjaSeksi($now, $kodeSeksi, $sqlPKL);
+						$banyak = $this->M_index->pekerjaSeksiDeptProduksi($now, $kodeSeksi, $sqlPKL);
 					}else if ($val == '81'){
 						//Dept. Produksi - Seksi TOOL MAKING A
 						$kodeSeksi = 'TOOL MAKING A';
-						$banyak = $this->M_index->pekerjaSeksi($now, $kodeSeksi, $sqlPKL);
+						$banyak = $this->M_index->pekerjaSeksiDeptProduksi($now, $kodeSeksi, $sqlPKL);
 					}else if ($val == '82'){
 						//Dept. Produksi - Seksi Tool MAKING B
 						$kodeSeksi = 'TOOL MAKING B';
-						$banyak = $this->M_index->pekerjaSeksi($now, $kodeSeksi, $sqlPKL);
+						$banyak = $this->M_index->pekerjaSeksiDeptProduksi($now, $kodeSeksi, $sqlPKL);
 					}else if ($val == '83'){
 						//Dept. Produksi - Seksi TOOL WARE HOUSE
 						$kodeSeksi = 'TOOL WARE HOUSE';
-						$banyak = $this->M_index->pekerjaSeksi($now, $kodeSeksi, $sqlPKL);
+						$banyak = $this->M_index->pekerjaSeksiDeptProduksi($now, $kodeSeksi, $sqlPKL);
 					}else if ($val == '84'){
 						//Dept. Produksi - Seksi Tool WARE HOUSE-TKS
 						$kodeSeksi = 'TOOL WARE HOUSE - TKS';
-						$banyak = $this->M_index->pekerjaSeksi($now, $kodeSeksi, $sqlPKL);
+						$banyak = $this->M_index->pekerjaSeksiDeptProduksi($now, $kodeSeksi, $sqlPKL);
 					}else if ($val == '85'){
 						//Dept. Produksi - Seksi WELDING A
 						$kodeSeksi = 'WELDING A';
-						$banyak = $this->M_index->pekerjaSeksi($now, $kodeSeksi, $sqlPKL);
+						$banyak = $this->M_index->pekerjaSeksiDeptProduksi($now, $kodeSeksi, $sqlPKL);
 					}else if ($val == '86'){
 						//Dept. Produksi - Seksi WELDING B
 						$kodeSeksi = 'WELDING B';
-						$banyak = $this->M_index->pekerjaSeksi($now, $kodeSeksi, $sqlPKL);
+						$banyak = $this->M_index->pekerjaSeksiDeptProduksi($now, $kodeSeksi, $sqlPKL);
 					}else if ($val == '87'){
 						//Dept. Produksi - Seksi WELDING-TKS
 						$kodeSeksi = 'WELDING-TKS';
-						$banyak = $this->M_index->pekerjaSeksi($now, $kodeSeksi, $sqlPKL);
+						$banyak = $this->M_index->pekerjaSeksiDeptProduksi($now, $kodeSeksi, $sqlPKL);
+					}else if ($val == '88'){
+						//Dept. Produksi - Seksi MACHINING A
+						$kodeSeksi = 'MACHINING A';
+						$banyak = $this->M_index->pekerjaSeksiDeptProduksi($now, $kodeSeksi, $sqlPKL);
+					}else if ($val == '89'){
+						//Dept. Produksi - Seksi MACHINING A
+						$kodeSeksi = '-';
+						$banyak = $this->M_index->pekerjaSeksiDeptProduksi($now, $kodeSeksi, $sqlPKL);
 					}
 
 
@@ -1972,6 +1980,12 @@ class C_Produksi extends CI_Controller
 					$min =  round((1.15*$hasil[$x][0]/100),2);
 					$minAg =  round((1.3*$hasil[$x][0]/100),2);
 				}else if ($val == '87'){
+					$min =  round((1.15*$hasil[$x][0]/100),2);
+					$minAg =  round((1.3*$hasil[$x][0]/100),2);
+				}else if ($val == '88'){
+					$min =  round((1.15*$hasil[$x][0]/100),2);
+					$minAg =  round((1.3*$hasil[$x][0]/100),2);
+				}else if ($val == '89'){
 					$min =  round((1.15*$hasil[$x][0]/100),2);
 					$minAg =  round((1.3*$hasil[$x][0]/100),2);
 				}else{

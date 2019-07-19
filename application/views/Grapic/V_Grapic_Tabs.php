@@ -124,41 +124,36 @@
 											<div class="col-lg-6">
 											<select id="divselector" class="form-control" >
 												<option value="0"><strong>Semua Data</strong></option>
-												<option value="30">--Semua Pekerja Tidak Langsung / InDirect Labour</option>
-												<option value="31">--Semua Pekerja Langsung / Direct Labour</option>
+												<option value="11">--Semua Pekerja Tidak Langsung / InDirect Labour</option>
+												<option value="12">--Semua Pekerja Langsung / Direct Labour</option>
 												<option disable="">==========================Dept. Personalia==========================</option>
 												<option value="1">Dept. Personalia</option>
-												<option value="29">--Civil Maintenance</option>
-												<option value="32">--Non Civil Maintenance</option>
+												<option value="17">--Dept.Personalia Atasan</option>
+												<option value="13">--Dept.Personalia Unit Civil Maintenance</option>
+												<option value="18">--Dept.Personalia Unit ELECTRONIC DATA PROCESSING</option>
+												<option value="19">--Dept.Personalia Unit GENERAL AFFAIR & HUBUNGAN KERJA</option>
+												<option value="20">--Dept.Personalia Unit PELATIHAN</option>
+												<option value="21">--Dept.Personalia Unit PEOPLE DEVELOPMENT</option>
+												<option value="22">--Dept.Personalia Unit RECRUITMENT & SELECTION</option>
+												<option value="23">--Dept.Personalia Unit WASTE MANAGEMENT</option>
 												<option disabled="">==========================Dept. Keuangan==========================</option>
 												<option value="2">Dept. Keuangan</option>
-												<option value="6">--Akuntansi</option>
-												<option value="7">--ICT</option>
-												<option value="9">--Pengembangan Sistem</option>
-												<option value="10">--Purchasing</option>
+												<option value="16">--Dept.Keuangan Atasan</option>
+												<option value="6">--Dept.Keuangan Unit Akuntansi</option>
+												<option value="7">--Dept.Keuangan Unit ICT</option>
+												<option value="8">--Dept.Keuangan Unit Internal Audit</option>
+												<option value="9">--Dept.Keuangan Unit Pengembangan Sistem</option>
+												<option value="10">--Dept.Keuangan Unit Pembelian Subkontraktor</option>
+												<option value="14">--Dept.Keuangan Unit Pembelian Supplier</option>
+												<option value="15">--Dept.Keuangan Unit Pengembangan Pembelian</option>
 												<option disabled="">==========================Dept. Pemasaran==========================</option>
 												<option value="3">Dept. Pemasaran</option>
-												<option value="4">--Dept. Pemasaran - Pusat</option>
-												<option value="5">--Dept. Pemasaran - Cabang / Showroom / POS</option>
-												<option value="11">---Jakarta</option>
-												<option value="12">---Medan</option>
-												<option value="13">---Tanjung Karang</option>
-												<option value="14">---Yogyakarta</option>
-												<option value="15">---Surabaya</option>
-												<option value="16">---Samarinda</option>
-												<option value="17">---Sampit</option>
-												<option value="18">---Satgas Demo</option>
-												<option value="19">---Banjarmasin</option>
-												<option value="20">---Jambi</option>
-												<option value="21">---Nganjuk</option>
-												<option value="22">---Padang</option>
-												<option value="23">---Palu</option>
-												<option value="24">---Pekanbaru</option>
-												<option value="25">---Pontianak</option>
-												<option value="26">---Sidrap</option>
-												<option value="27">---Tugumulyo</option>
-												<option value="28">---Makassar</option>
-												<option value="8">Internal Audit</option>
+												<option value="4">-Dept. Pemasaran - Pusat</option>
+												<option value="5">-Dept. Pemasaran - Cabang / Showroom / POS</option>
+												<option value="24">--Dept. Pemasaran Atasan</option>
+												<option value="25">--Dept. Pemasaran Unit CABANG JAKARTA</option>
+												<option value="26">--Dept. Pemasaran Unit CABANG MAKASSAR</option>
+												<option value="27">--Dept. Pemasaran Unit CABANG MEDAN</option>
 											</select>
 											</div>
 										</div>
@@ -171,7 +166,7 @@
 													<input name="SDMpkl" hidden="" type="text" value="<?php echo $truePKL; ?>">
 													<input name="SDMval" hidden="" type="text" value="<?php echo $val; ?>">
 													<input name="SDMdiv" hidden="" type="text">
-													<?php for ($y=0; $y < 33; $y++) { 
+													<?php for ($y=0; $y < 28; $y++) { 
 																	?>
 																	<script>
 																		var inde = <?= $hitung ?> ;
@@ -449,7 +444,7 @@
 									}
 								} ?>];
 							</script>
-							<button onclick="topFunction()" id="myBtn" style="display: none;  position: fixed;  bottom: 20px;  right: 30px;  z-index: 99;  font-size: 18px;  border: none; outline: none; background-color: red;  color: white; cursor: pointer; padding: 15px; border-radius: 4px;" title="Go to top">Click Go To Top</button>
+							<button onclick="topFunction()" id="myBtn" style="display: none;  position: fixed;  bottom: 20px;  right: 30px;  z-index: 99;  font-size: 18px;  border: none; outline: none; background-color: red;  color: white; cursor: pointer; padding: 15px; border-radius: 4px;" title="Go to top">Go To Top</button>
 							<script>
 							// When the user scrolls down 20px from the top of the document, show the button
 							window.onscroll = function() {scrollFunction()};
