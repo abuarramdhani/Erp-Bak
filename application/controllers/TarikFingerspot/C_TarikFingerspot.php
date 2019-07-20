@@ -2,11 +2,11 @@
 set_time_limit(0);
 Defined('BASEPATH') or exit('No Direct Script Access Allowed');
 /**
- * 
+ *
  */
 class C_TarikFingerspot extends CI_Controller
 {
-	
+
 	function __construct()
 	{
 		parent::__construct();
@@ -64,7 +64,7 @@ class C_TarikFingerspot extends CI_Controller
 		$data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id);
 		$data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id);
 
-		$this->form_validation->set_rules('required');	
+		$this->form_validation->set_rules('required');
 		if($this->form_validation->run() === TRUE){
 
 			$tanggal = $this->input->post('txtTanggalTarikFinger');
@@ -102,12 +102,12 @@ class C_TarikFingerspot extends CI_Controller
 					}else{
 						$cek = $this->M_tarikfingerspot->cekPresensi($data_presensi);
 					}
-					
-					
+
+
 					if ($cek == '0') {
 
 						if (substr($key['noind'], 0,1) == 'L') {
-							//	Kirim ke Presensi.tprs_shift2
+							//	Kirim ke Presensi.tprs_shift2.
 							//	{
 				 					$data_presensi['transfer']	=	FALSE;
 				 					// $data_presensi['user_']		=	'CRON';
@@ -132,12 +132,19 @@ class C_TarikFingerspot extends CI_Controller
 				 					// $data_presensi['user_']		=	'CRON';
 				 					$this->M_tarikfingerspot->insert_presensi('"Presensi"', 'tprs_shift', $data_presensi);
 							//	}
+
+							//	Kirim ke Presensi.tpresensi_riil
+							//	{
+				 					$data_presensi['transfer']	=	FALSE;
+				 					// $data_presensi['user_']		=	'CRON';
+				 					$this->M_tarikfingerspot->insert_presensi('"Presensi"', 'tpresensi_riil', $data_presensi);
+							//	}
 						}
 
-							
+
 			 			$insert[$no] = $key;
 			 			$no++;
-					}	
+					}
 				}
 				echo "Data Diinsert : ".$no."<br><br>";
 				foreach ($insert as $key) {
@@ -151,7 +158,7 @@ class C_TarikFingerspot extends CI_Controller
 				$this->load->view('V_Footer',$data);
 			}
 		}
-		
+
 	}
 
 	public function TransferPresensi($server){
@@ -185,7 +192,7 @@ class C_TarikFingerspot extends CI_Controller
 		$device = $this->M_tarikfingerspot->getDevice();
 		}
 		else
-		{	
+		{
 		$log = $this->M_tarikfingerspot->getAttLog($plaintext_string,'');
 		$device = $this->M_tarikfingerspot->getDevice();
 		}
@@ -211,8 +218,8 @@ class C_TarikFingerspot extends CI_Controller
 			}else{
 				$cek = $this->M_tarikfingerspot->cekPresensi($data_presensi);
 			}
-			
-			
+
+
 			if ($cek == '0') {
 
 				if (substr($key['noind'], 0,1) == 'L') {
@@ -241,9 +248,16 @@ class C_TarikFingerspot extends CI_Controller
 		 					// $data_presensi['user_']		=	'CRON';
 		 					$this->M_tarikfingerspot->insert_presensi('"Presensi"', 'tprs_shift', $data_presensi);
 					//	}
+
+					//	Kirim ke Presensi.tpresensi_riil
+					//	{
+		 					$data_presensi['transfer']	=	FALSE;
+		 					// $data_presensi['user_']		=	'CRON';
+		 					$this->M_tarikfingerspot->insert_presensi('"Presensi"', 'tpresensi_riil', $data_presensi);
+					//	}
 				}
 
-					
+
 	 			$insert[$no] = $key;
 	 			$idx = 0;
 	 			foreach ($device as $dev) {
@@ -254,7 +268,7 @@ class C_TarikFingerspot extends CI_Controller
 	 			}
 	 			$no++;
 			}
-			$num++;	
+			$num++;
 		}
 		echo "Data Diinsert : ".$no."<br><br>";
 		foreach ($insert as $key) {
@@ -262,7 +276,7 @@ class C_TarikFingerspot extends CI_Controller
 		}
 
 		$this->load->library('PHPMailerAutoload');
-		
+
 		$table = "";
 		foreach ($device as $dvc) {
 			if($dvc['lokasi_server_tarik_data']==$server or '' == $server)
@@ -283,7 +297,7 @@ class C_TarikFingerspot extends CI_Controller
 		}
 		$text = "jumlah data yang telah proses hari ini dan kemarin : ".($num - 1).".<br>
 				Apabila Ada hari kemarin yang baru masuk, maka harus menjalankan distribusi ulang (Sehingga Point dan sebaran pekerja Benar).";
-		
+
 		$waktuAkhir = date('Y-m-d H:i:s');
 		if(''==$server){
 			$namaserver='Semua Server';
@@ -323,11 +337,11 @@ class C_TarikFingerspot extends CI_Controller
 					<p>
 					Segera check apakah semua data tertarik.
 					</p>
-					
+
 				</body>
 				</html>';
 
-		$mail = new PHPMailer(); 
+		$mail = new PHPMailer();
         $mail->SMTPDebug = 0;
         $mail->Debugoutput = 'html';
 
@@ -354,7 +368,7 @@ class C_TarikFingerspot extends CI_Controller
         $email['1'] = array(
         	'email_kirim' => 'edp@quick.com',
         	'nama_kirim' => 'EDP'
-        );        
+        );
         $email['2'] = array(
         	'email_kirim' => 'hbk@quick.com',
         	'nama_kirim' => 'Hubungan Kerja'
@@ -381,7 +395,7 @@ class C_TarikFingerspot extends CI_Controller
        		$mail->Subject = 'Laporan Tarik Absensi Pekerja Semua Titik';
         }
 
-		
+
 
 		$mail->msgHTML($message);
 
