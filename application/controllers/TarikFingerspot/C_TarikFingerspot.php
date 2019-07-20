@@ -107,7 +107,7 @@ class C_TarikFingerspot extends CI_Controller
 					if ($cek == '0') {
 
 						if (substr($key['noind'], 0,1) == 'L') {
-							//	Kirim ke Presensi.tprs_shift2
+							//	Kirim ke Presensi.tprs_shift2.
 							//	{
 				 					$data_presensi['transfer']	=	FALSE;
 				 					// $data_presensi['user_']		=	'CRON';
