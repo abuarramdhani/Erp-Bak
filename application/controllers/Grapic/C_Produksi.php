@@ -1345,7 +1345,7 @@ class C_Produksi extends CI_Controller
 						$banyak = $this->M_index->pekerjaDepartemen($now, $kodeDept, $sqlPKL, $lokasi_kerja);
 					}else if ($val == '4'){
 						//non penunjang atau direct
-						$kode = 'and (b.jenispekerjaan=true or b.kdpekerjaan=null)';
+						$kode = 'and (b.jenispekerjaan=true or b.kdpekerjaan is null)';
 						$banyak = $this->M_index->pekerjaOperator($now, $sqlPKL, $kode);
 					}else if ($val == '5'){
 						//penunjang atau in-direct
