@@ -1365,7 +1365,7 @@ class C_Index extends CI_Controller
 						$banyak = $this->M_index->semuaData($now, $sqlPKL);
 					}else if ($val == '12'){
 						//non penunjang atau direct
-						$kode = 'and (b.jenispekerjaan=true or b.kdpekerjaan=null)';
+						$kode = 'and (b.jenispekerjaan=true or b.kdpekerjaan is null)';
 						$banyak = $this->M_index->pekerjaOperatorAll($now, $sqlPKL, $kode);
 					}else if ($val == '13'){
 						//penunjang atau in-direct
