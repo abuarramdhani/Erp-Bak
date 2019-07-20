@@ -76,7 +76,7 @@
 				<td align="center" style="font-size: 10px; border-right: 1px solid black; border-bottom: 1px solid black">&nbsp;<?php echo $data_body['satuan'] ?></td>
 				<td align="center" style="font-size: 10px; border-right: 1px solid black; border-bottom: 1px solid black">&nbsp;<?php echo $data_body['diminta'] ?></td>
 				<td align="center" style="font-size: 10px; border-right: 1px solid black; border-bottom: 1px solid black">&nbsp;<?php echo $qty_serah[$i] ?></td>
-				<td style="font-size: 10px; border-bottom: 1px solid black">&nbsp;<?php echo $data_body['ket'] ?></td>
+				<td align="center" style="font-size: 10px; border-bottom: 1px solid black">&nbsp;<?php echo $data_body['ket'] ?></td>
 				<td align="center" style="height: 25px; font-size: 10px; border-left: 1px solid black; border-bottom: 1px solid black">&nbsp;<?php echo $data_body['account'] ?></td>
 			</tr>
 <?php

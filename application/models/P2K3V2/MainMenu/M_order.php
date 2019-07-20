@@ -304,7 +304,7 @@ class M_Order extends CI_Model
         // echo $kodesie;exit();
         $sql = "select ks.*, km.item from k3.k3n_standar_kebutuhan ks
         left join k3.k3_master_item km on km.kode_item = ks.kode_item
-        where ks.kodesie like '$kodesie%' order by tgl_input desc";
+        where ks.kodesie like '$kodesie%' order by tgl_input desc, km.item";
         // echo $sql;exit();
         $query = $this->erp->query($sql);
 

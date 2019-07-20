@@ -26,7 +26,7 @@
                                     <form method="post" action="<?php echo site_url('p2k3adm_V2/Admin/monitoring');?>" enctype="multipart/form-data">
                                         <div class="col-md-3">
                                             <div class="input-group">
-                                                <input class="form-control monthPicker"  autocomplete="off" type="text" name="k3_periode" id="tanggal" style="width: 200px" placeholder="Masukkan Periode" value="<?php echo $pr; ?>"/>
+                                                <input class="form-control p2k3_tanggal_periode"  autocomplete="off" type="text" name="k3_periode" id="yangPentingtdkKosong" style="width: 200px" placeholder="Masukkan Periode" value="<?php echo $pr; ?>"/>
                                             </div>
                                         </div>
                                         <div class="col-md-2">
@@ -110,7 +110,7 @@
          // Start jQuery click function to view Bootstrap modal when view info button is clicked
          $('.p2k3_btn_sSeksi').click(function(){
              // Get the id of selected phone and assign it in a variable called phoneData
-             var phoneData = $('#tanggal').val();
+             var phoneData = $('#yangPentingtdkKosong').val();
                 // Start AJAX function
                 $.ajax({
                  // Path for controller function which fetches selected phone data
