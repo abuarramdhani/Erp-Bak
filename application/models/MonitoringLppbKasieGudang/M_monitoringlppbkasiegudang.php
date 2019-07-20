@@ -51,7 +51,12 @@ class M_monitoringlppbkasiegudang extends CI_Model {
                WHERE a.BATCH_NUMBER = b.BATCH_NUMBER
                AND c.STATUS IN (2,3)
                AND A.ID_GUDANG = '$id'
-               ORDER BY a.batch_number DESC";
+               AND (SELECT COUNT (lppb_number)
+                           FROM khs_lppb_batch_detail c
+                           WHERE c.batch_number = a.batch_number
+                           AND c.status IN (2,3)
+                           ) <> 0
+               ORDER BY a.create_date DESC";
         $run = $oracle->query($query);
         return $run->result_array();
     }
@@ -74,7 +79,8 @@ class M_monitoringlppbkasiegudang extends CI_Model {
         $query = "SELECT DISTINCT poh.po_header_id,
                 a.lppb_number,
                 poh.segment1 po_number,
-                pov.vendor_name vendor_name, rsh.creation_date tanggal_lppb,
+                pov.vendor_name vendor_name, 
+                rsh.creation_date tanggal_lppb,
                 MP.ORGANIZATION_CODE, 
                 MP.ORGANIZATION_ID,
                 rt.transaction_type status_lppb,
@@ -86,30 +92,28 @@ class M_monitoringlppbkasiegudang extends CI_Model {
                 a.source,
                 a.group_batch,
                 a.reason
-                   FROM rcv_shipment_headers rsh,
-                        rcv_shipment_lines rsl,
-                        po_vendors pov,
-                        po_headers_all poh,
-                        po_lines_all pol,
-                        rcv_transactions rt,
-                        MTL_PARAMETERS MP,
-                        khs_lppb_batch_detail klbd,
-                        khs_lppb_action_detail_1 klad,
-                        (SELECT klb.batch_number
-                        , klbd.po_header_id
-                        , klb.lppb_info
-                        , klbd.batch_detail_id
-                        , klbd.status
-                        , klbd.status_date
-                        , klb.source
-                        , klb.group_batch
-                        , klbd.lppb_number
-                        , klad.reason 
-                        FROM khs_lppb_batch klb, khs_lppb_batch_detail klbd, khs_lppb_action_detail_1 klad
-                        WHERE klb.batch_number = klbd.batch_number
-                        AND klbd.batch_detail_id = klad.batch_detail_id
-                        AND klb.batch_number = $batch_number
-                        AND klbd.status IN (2,3)) a
+            FROM  rcv_shipment_headers rsh,
+                  rcv_shipment_lines rsl,
+                  po_vendors pov,
+                  po_headers_all poh,
+                  po_lines_all pol,
+                  rcv_transactions rt,
+                  MTL_PARAMETERS MP,
+                          (SELECT klb.batch_number
+                          , klbd.po_header_id
+                          , klb.lppb_info
+                          , klbd.batch_detail_id
+                          , klbd.status
+                          , klbd.status_date
+                          , klb.source
+                          , klb.group_batch
+                          , klbd.lppb_number
+                          , klad.reason 
+                          FROM khs_lppb_batch klb, khs_lppb_batch_detail klbd, khs_lppb_action_detail_1 klad
+                          WHERE klb.batch_number = klbd.batch_number
+                          AND klbd.batch_detail_id = klad.batch_detail_id
+                          AND klb.batch_number = $batch_number
+                          AND klbd.status IN (2,3)) a
                   WHERE rsh.shipment_header_id = rsl.shipment_header_id
                     AND rsh.shipment_header_id = rt.shipment_header_id
                     AND rsl.shipment_line_id = rt.shipment_line_id
@@ -126,7 +130,7 @@ class M_monitoringlppbkasiegudang extends CI_Model {
                                AND rts.po_header_id = pol.po_header_id)
                     AND a.po_header_id = poh.po_header_id
                     AND a.lppb_number = rsh.receipt_num
-                    order by a.batch_detail_id ";
+                    order by a.batch_detail_id";
         
         $run = $oracle->query($query);
         return $run->result_array();
@@ -366,7 +370,11 @@ class M_monitoringlppbkasiegudang extends CI_Model {
                AND b.batch_detail_id = c.batch_detail_id
                AND c.status = 4
                AND c.status not in 3
-               ORDER BY a.batch_number DESC";
+               and  (SELECT COUNT (lppb_number)
+                           FROM khs_lppb_batch_detail c
+                           WHERE c.batch_number = a.batch_number
+                           AND c.status = 4) <>0
+               ORDER BY a.create_date DESC";
         $run = $oracle->query($query);
         return $run->result_array();
     }
