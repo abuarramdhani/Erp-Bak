@@ -61,7 +61,7 @@ class M_logbookharian extends CI_MODEL
                           limkir.id_kirim,
                           limjen.id_jenis_limbah,
                           limjen.jenis_limbah,
-                           cast(limkir.tanggal_kirim as date) tanggal,
+                          cast(limkir.tanggal_kirim as date) tanggal,
                            sec.section_name sumber,
                            concat_ws(
                                  ' ',
@@ -78,8 +78,7 @@ class M_logbookharian extends CI_MODEL
                             left join er.er_section sec
                       				on sec.section_code = concat(limkir.kodesie_kirim,'00')
                             where limkir.lokasi_kerja = '$lokasi' $condition
-                          order by limjen.jenis_limbah, tanggal DESC";
-                          // echo $sqlfilterData; exit();
+                          order by tanggal ASC";
       $query = $this->db->query($sqlfilterData);
       return $query->result_array();
   }
@@ -112,8 +111,7 @@ class M_logbookharian extends CI_MODEL
                                   inner join ga.ga_limbah_jenis limjen
                                     on limjen.id_jenis_limbah = limkir.id_jenis_limbah
                                     where limkir.lokasi_kerja = '$lokasi' $condition
-                                    order by tanggal DESC ";
-                              // print_r('<pre>');print_r($sqlfilterData);exit();
+                                    order by tanggal ASC ";
       $query = $this->db->query($sqlfilterData);
       return $query->result_array();
   }
