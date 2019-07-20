@@ -351,7 +351,7 @@ class M_Dtmasuk extends CI_Model
                 where substring(section_code,0,8) = substring(ks.kd_pekerjaan,0,8) limit 1) from k3.k3n_standar_kebutuhan ks
                 inner join k3.k3n_order ko on substring(ko.kodesie,0,8) = substring(ks.kodesie,0,8) where ko.periode = '$pr'
                 and ko.status = '1'
-                order by substring(ks.kd_pekerjaan,0,8) asc";
+                order by 2 asc";
                 // echo $sql;exit();
         $query = $this->erp->query($sql);
         return $query->result_array();
@@ -423,7 +423,9 @@ class M_Dtmasuk extends CI_Model
                     from
                         k3.k3n_order ko
                     where
-                        ko.periode = '$y-$tgl' );";
+                        ko.periode = '$y-$tgl' 
+                        ) order by 2 asc;";
+                        // echo $sql;exit();
         $query = $this->erp->query($sql);
         return $query->result_array();
     }
@@ -503,6 +505,13 @@ class M_Dtmasuk extends CI_Model
         // echo $sql;exit();
         $query = $this->erp->query($sql);
         return true;
+    }
+
+    public function getBulan($item)
+    {
+        $sql = "select * from k3.k3_master_item where kode_item = '$item'";
+        $query = $this->erp->query($sql);
+        return $query->row()->xbulan;
     }
 
 }

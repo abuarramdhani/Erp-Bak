@@ -1286,7 +1286,7 @@ class C_Order extends CI_Controller
       		for ($i=0; $i < $hit; $i++) { 
       			$jml += ($a[$i]*$b[$i]); 
       		}
-      		$jml = $jml+$c+($d*$e);
+      		$jml = ceil($jml+$c+($d*$e));
       		$min = ($jml-$key['jml_bon']);
       		$push = array(	"total"	=> $jml,
       			"min"	=>	$min,);
@@ -1429,7 +1429,7 @@ class C_Order extends CI_Controller
       				for ($i=0; $i < $hit; $i++) { 
       					$jml += ($a[$i]*$b[$i]); 
       				}
-      				$jml = $jml+$c+($d*$e);
+      				$jml = ceil($jml+$c+($d*$e));
       				echo '<tr>
       				<td>'.$x.'</td>
       				<td>'.$key["item"].'</td>
@@ -1491,7 +1491,7 @@ class C_Order extends CI_Controller
   		for ($i=0; $i < $hit; $i++) { 
   			$jml += ($a[$i]*$b[$i]); 
   		}
-  		$jml = $jml+$c+($d*$e);
+  		$jml = ceil($jml+$c+($d*$e));
   		$push = array("total"=> $jml);
   		array_splice($key,5,1,$push);
   		$new[] = $key;

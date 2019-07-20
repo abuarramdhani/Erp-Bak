@@ -26,7 +26,7 @@
 										</div>
 										<div class="col-md-2">
 											<div class="input-group col-md-12">
-												<input required="" class="form-control monthPicker"  autocomplete="off" type="text" name="k3_periode" id="tanggal" value="<?php echo $pr; ?>"/>
+												<input required="" class="form-control p2k3_tanggal_periode"  autocomplete="off" type="text" name="k3_periode" id="yangPentingtdkKosong" value="<?php echo $pr; ?>"/>
 											</div>
 										</div>
 										<div class="col-md-2">

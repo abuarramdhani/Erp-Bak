@@ -25,7 +25,7 @@
                                         </div>
                                         <div class="col-md-3">
                                             <div class="input-group col-md-12">
-                                                <input required="" class="form-control monthPicker"  autocomplete="off" type="text" name="k3_periode" id="tanggal" value="<?php echo $pr; ?>"/>
+                                                <input required="" class="form-control p2k3_tanggal_periode"  autocomplete="off" type="text" name="k3_periode" id="yangPentingtdkKosong" value="<?php echo $pr; ?>"/>
                                             </div>
                                         </div>
                                         <div class="col-md-2">
@@ -35,21 +35,21 @@
                                     <?php if ($run == '1') { ?>
                                     <?php $a = 0; foreach ($listHitung as $key): ?>
                                     <table id="tb_InputKebutuhanAPD" class="table table-striped table-bordered table-hover text-center">
-                                        <caption style="color: #000; font-weight: bold;"><?php echo $allKs[$a]['section_name']; ?></caption>
+                                        <caption style="color: #000; font-weight: bold;"><?php echo $allKs[$a]['section_name'].' - '.$allKs[$a]['kodesie']; ?></caption>
                                         <thead>
                                             <tr class="bg-info" style="font-weight: bold;">
-                                                <td>periode</td>
-                                                <td>nama APD</td>
-                                                <td>kodesie</td>
-                                                <td>jumlah kebutuhan</td>
+                                                <td width="15%">Periode</td>
+                                                <td width="15%">Kode Item</td>
+                                                <td width="55%">Nama APD</td>
+                                                <td width="15%">Jumlah kebutuhan</td>
                                             </tr>
                                         </thead>
                                         <tbody>
                                             <?php foreach ($key as $row): ?>
                                                 <tr>
                                                     <td><?php echo $pr; ?></td>
+                                                    <td><?php echo $row['kode_item']; ?></td>
                                                     <td><?php echo $row['item']; ?></td>
-                                                    <td><?php echo $row['kodesie']; ?></td>
                                                     <td><?php echo $row['0']; ?></td>
                                                 </tr>
                                             <?php endforeach ?>

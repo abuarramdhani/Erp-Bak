@@ -379,11 +379,17 @@ class C_Index extends CI_Controller
 			$delPeriode = $this->M_dtmasuk->delPeriode($pr);
 			$list = array();
 			$data['allKs'] = $this->M_dtmasuk->allKs($pr);
+			// echo "<pre>";
+			// print_r($data['allKs']);exit();
 			foreach ($data['allKs'] as $key) {
 				$record = $this->M_dtmasuk->getlistHitung($pr, $key['kodesie']);
+				// echo "<br>";print_r($key['kodesie']);echo "<br>";
 				$new = array();
 				foreach ($record as $row) {
 					$a = $row['jml_item'];
+					// echo $a;
+					// echo "<br>";
+					// echo $row['kode_item'];
 					$b = $row['jml_pekerja'];
 					$c = $row['jml_kebutuhan_umum'];
 					$d = $row['jml_kebutuhan_staff'];
@@ -394,10 +400,15 @@ class C_Index extends CI_Controller
 					for ($i=0; $i < $hit; $i++) { 
 						$jml += ($a[$i]*$b[$i]); 
 					}
-					$jml = $jml+$c+($d*$e);
+					// echo "<br>";
+					// echo $row['kode_item'].'=';
+					// echo $jml.'-'.$c.'-'.$d.'-'.$e;
+					$jml = ceil($jml+$c+($d*$e));
+					// echo "___".$jml;
 					$push = array("total"=> $jml);
 					array_splice($row,4,1,$push);
 					$new[] = $row;
+					// print_r($new);exit();
 
 					$item = array(
 						'periode'	=>	$pr,
@@ -412,6 +423,7 @@ class C_Index extends CI_Controller
 				}
 				$list[] = $new;
 			}
+			// exit();
 			$data['listHitung'] = $list;
 			// echo "<pre>";
 			// print_r($data['listHitung']);
@@ -520,10 +532,13 @@ class C_Index extends CI_Controller
 		//implode jumlah
 		$a = 0;
 		for ($i=0; $i < count($item); $i++) {
+			$getbulan = $this->M_dtmasuk->getBulan($item[$i]);
 			for ($x=$a; $x < (count($daftar_pekerjaan)*($i+1)); $x++) { 
-				$jml[$i][] = $jumlah[$x];
+				$jml[$i][] = (round($jumlah[$x]/$getbulan,2));
 			}
 
+			$itemUmum = (round($umum[$i]/$getbulan,2));
+			$itemStaf = (round($staff[$i]/$getbulan,2));
 			$data = array(
 				'kode_item'	=>	$item[$i],
 				'kd_pekerjaan'	=> $kd_pkj,
@@ -535,8 +550,8 @@ class C_Index extends CI_Controller
 				'tgl_approve_tim'	=>	$tgl_input,
 				'approve_by'	=>	$noind,
 				'approve_tim_by'	=>	$noind,
-				'jml_kebutuhan_umum'	=>	$umum[$i],
-				'jml_kebutuhan_staff'	=>	$staff[$i],
+				'jml_kebutuhan_umum'	=>	$itemUmum,
+				'jml_kebutuhan_staff'	=>	$itemStaf,
 				);
 			$a += count($daftar_pekerjaan);
 			// echo "<pre>";
@@ -544,6 +559,7 @@ class C_Index extends CI_Controller
 			// echo "<br>";exit();
 			$input = $this->M_order->save_standar($data);
 		}
+		// exit();
 		redirect('p2k3adm_V2/Admin/inputStandarTIM');
 	}
 
@@ -583,6 +599,7 @@ class C_Index extends CI_Controller
 	public function detail_seksi()
 	{
 		$id_kebutuhan = $this->input->post('phoneData');
+		// echo $id_kebutuhan;exit();
 		if(isset($id_kebutuhan) and !empty($id_kebutuhan)){
 			$records = $this->M_dtmasuk->detail_seksi($id_kebutuhan);
 			if (empty($records)) {
@@ -679,7 +696,7 @@ public function ajaxRow($ks, $pr)
 	echo json_encode(array('data'=>$datha));
 }
 
-public function RiwayatKebutuhan()
+public function RiwayatKebutuhan($ks = false)
 {
 	$user1 = $this->session->user;
 	$user_id = $this->session->userid;
@@ -693,8 +710,9 @@ public function RiwayatKebutuhan()
 	$data['UserMenu'] = $this->M_user->getUserMenu($user_id,$this->session->responsibility_id);
 	$data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id);
 	$data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id);
-
-	$ks = $this->input->post('k3_adm_ks');
+	if (empty($ks)) {
+		$ks = $this->input->post('k3_adm_ks');
+	}
 	if (empty($ks)) {
 		$ks = $kodesie;
 	}
@@ -732,6 +750,7 @@ public function editRiwayatKebutuhan($id, $ks)
 	$data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id);
 
 	$data['seksi'] = $this->M_dtmasuk->cekseksi($ks);
+	$data['ks'] = $ks;
 	$data['inputStandar'] = $this->M_order->getInputstd3($id);
 	$data['daftar_pekerjaan']	= $this->M_order->daftar_pekerjaan($ks);
 	$data['id'] = $id;
@@ -746,6 +765,7 @@ public function SaveEditRiwayatKebutuhan()
 {
 	// print_r($_POST);exit();
 	$id = $this->input->post('id');
+	$ks = $this->input->post('ks');
 	$jmlUmum = $this->input->post('jmlUmum');
 	$staffJumlah = $this->input->post('staffJumlah');
 	$pkjJumlah = $this->input->post('pkjJumlah');
@@ -753,7 +773,7 @@ public function SaveEditRiwayatKebutuhan()
 
 	$update = $this->M_dtmasuk->updateRiwayat($id, $jmlUmum, $staffJumlah,$pkj);
 	if ($update) {
-		redirect('p2k3adm_V2/Admin/RiwayatKebutuhan');
+		redirect('p2k3adm_V2/Admin/RiwayatKebutuhan/'.$ks);
 	}
 }
 

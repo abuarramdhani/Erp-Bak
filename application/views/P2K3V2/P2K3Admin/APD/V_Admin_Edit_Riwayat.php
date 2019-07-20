@@ -73,6 +73,7 @@
                                         </tbody>
                                     </table>
                                     <input hidden="" value="<?php echo $id; ?>" name="id">
+                                    <input hidden="" value="<?php echo $ks; ?>" name="ks">
                                     <div class="col-md-12 text-right">
                                         <button class="btn btn-primary">Simpan</button>
                                     </div>

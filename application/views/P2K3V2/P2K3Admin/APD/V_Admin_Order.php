@@ -1,3 +1,9 @@
+<style type="text/css">
+    .table-condensed thead tr:nth-child(2),
+    .table-condensed tbody {
+      display: none
+  }
+</style>
 <section class="content">
     <div class="inner" >
         <div class="row">
@@ -36,7 +42,7 @@
                                         </div>
                                         <div class="col-md-3">
                                             <div class="input-group col-md-12">
-                                                <input required="" class="form-control monthPicker"  autocomplete="off" type="text" name="k3_periode" id="tanggal" value="<?php echo $pr; ?>"/>
+                                                <input required="" class="form-control p2k3_tanggal_periode"  autocomplete="off" type="text" name="k3_periode" value="<?php echo $pr; ?>" id="yangPentingtdkKosong"/>
                                             </div>
                                         </div>
                                         <div class="col-md-2">
@@ -63,7 +69,7 @@
                                                     <?php echo $key['item']; ?>
                                                 </td>
                                                 <td>
-                                                <?php echo $key['item_kode']; ?>
+                                                    <?php echo $key['item_kode']; ?>
                                                 </td>
                                                 <td>
                                                     <?php echo $key['jml_kebutuhan']; ?>

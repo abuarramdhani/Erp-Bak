@@ -403,9 +403,12 @@ $("#tanggal").datepicker({
   }
 });
 
+$("input.p2k3_tanggal_periode").monthpicker({
+  changeYear:true,
+  dateFormat: 'mm - yy', });
 
 $(".monthPicker").focus(function () {
-  $(".ui-datepicker-calendar").hide();
+  $(".ui-datepicker-calendar").remove();
   $("#ui-datepicker-div").position({
     my: "center top",
     at: "center bottom",
@@ -714,16 +717,16 @@ function format ( d ) {
       }).then(function(result) {
         if (result.value) {
          $('#surat-loading').attr('hidden', false);
-          $.ajax({
-            type: 'POST',
-            url: baseurl+'p2k3adm_V2/Admin/addEmail',
-            data: {email:result.value},
-            success: function(response){
-              location.reload();
-            }
-          });
-        }
-      });
+         $.ajax({
+          type: 'POST',
+          url: baseurl+'p2k3adm_V2/Admin/addEmail',
+          data: {email:result.value},
+          success: function(response){
+            location.reload();
+          }
+        });
+       }
+     });
     });
 
     $('.et_edit_email').click(function(){
@@ -740,16 +743,16 @@ function format ( d ) {
       }).then(function(result) {
         if (result.value) {
          $('#surat-loading').attr('hidden', false);
-          $.ajax({
-            type: 'POST',
-            url: baseurl+'p2k3adm_V2/Admin/editEmail',
-            data: {email:result.value, id:id},
-            success: function(response){
-              location.reload();
-            }
-          });
-        }
-      });
+         $.ajax({
+          type: 'POST',
+          url: baseurl+'p2k3adm_V2/Admin/editEmail',
+          data: {email:result.value, id:id},
+          success: function(response){
+            location.reload();
+          }
+        });
+       }
+     });
     });
 
     $('.et_del_email').click(function(){
@@ -766,29 +769,29 @@ function format ( d ) {
       }).then(function(result) {
         if (result.value) {
          $('#surat-loading').attr('hidden', false);
-          $.ajax({
-            type: 'POST',
-            url: baseurl+'p2k3adm_V2/Admin/hapusEmail',
-            data: {id:id},
-            success: function(response){
-              location.reload();
-            }
-          });
-        }
-      });
+         $.ajax({
+          type: 'POST',
+          url: baseurl+'p2k3adm_V2/Admin/hapusEmail',
+          data: {id:id},
+          success: function(response){
+            location.reload();
+          }
+        });
+       }
+     });
     });
 
   });
-    function p2k3_val(){
-      var max = $('#pw2k3_maxpkj').val();
-      var staf = $("input[name='staffJumlah']").val();
-      var values = $("input[name='pkjJumlah\\[\\]']")
-              .map(function(){return $(this).val();}).get();
-      var jumlah = Number(staf);
+function p2k3_val(){
+  var max = $('#pw2k3_maxpkj').val();
+  var staf = $("input[name='staffJumlah']").val();
+  var values = $("input[name='pkjJumlah\\[\\]']")
+  .map(function(){return $(this).val();}).get();
+  var jumlah = Number(staf);
 
-      for (var i = 0; i < values.length; i++) {
-        jumlah += Number(values[i]);
-      }
+  for (var i = 0; i < values.length; i++) {
+    jumlah += Number(values[i]);
+  }
       // alert(jumlah);
       if (jumlah > Number(max)) {
         Swal.fire({
