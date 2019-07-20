@@ -149,7 +149,7 @@ class M_pesangon extends CI_Model {
 
 	public function pengirim($id)
 		{
-		 	$lihat = "select pri.nama as pengirim from hrd_khs.t_pesangon as hit
+		 	$lihat = "select pri.nama as pengirim, pri.jabatan as jabatan from hrd_khs.t_pesangon as hit
 		 			join 		hrd_khs.tpribadi as pri on hit.pengirim=pri.noind where hit.id_pesangon='$id'";
 		 	$query = $this->personalia->query($lihat);
 		 	return $query->result_array();
