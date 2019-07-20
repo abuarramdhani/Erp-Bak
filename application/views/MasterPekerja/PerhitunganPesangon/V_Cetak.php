@@ -289,7 +289,7 @@
 		</tr>
 
 		<tr>
-		    <td>Supervisor</td>
+		    <td><?php echo ucwords(strtolower($pengirim['0']['jabatan'])) ?> </td>
 			<td>Ass.Ka Dept.Personalia</td>
 
 		</tr>
