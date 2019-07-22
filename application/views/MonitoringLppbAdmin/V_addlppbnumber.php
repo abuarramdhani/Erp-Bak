@@ -105,7 +105,7 @@
 									</div>
 								</div>
 								<div>
-									<table class="table table-bordered table-hover text-center dtTableMl">
+									<table class="table table-bordered table-hover text-center dtTableMl" style="width: 100%">
 										<thead>
 											<tr class="bg-primary">
 												<td class="text-center">No</td>

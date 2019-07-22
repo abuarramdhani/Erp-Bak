@@ -30,6 +30,10 @@ class M_monitoringlppbakuntansi extends CI_Model {
                    FROM khs_lppb_batch a, KHS_LPPB_BATCH_DETAIL B
                WHERE a.BATCH_NUMBER = b.BATCH_NUMBER
                AND B.STATUS = 5
+               AND (SELECT COUNT (lppb_number)
+                           FROM khs_lppb_batch_detail c
+                           WHERE c.status = 5
+                           AND c.batch_number = a.batch_number) <> 0
                ORDER BY a.batch_number DESC";
         $run = $oracle->query($query);
         return $run->result_array();

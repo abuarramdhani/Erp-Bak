@@ -14,11 +14,12 @@
 						</tr>
 					</thead>
 					<tbody>
+
 					<?php $no=1; if ($lppb) { foreach($lppb as $lb){ ?>
 					<tr>
 						<td><?php echo $no?></td>
 						<td>
-							<a title="Detail Lppb" target="_blank" href="<?php echo base_url('MonitoringLppbKasieGudang/Unprocess/detailLppbKasieGudang/'.$lb['BATCH_NUMBER'])?>" class="btn btn-default btn-xs"><i class="fa fa-file-text-o"></i></a>
+							<a title="Detail Lppb" target="_blank" onclick = "bukaMdl(<?php echo $lb['BATCH_NUMBER']?>)" class="btn btn-default btn-xs" data-toggle="modal" data-target="mdlSubmitToKasieGudang"><i class="fa fa-file-text-o"></i></a>
 							<?php if ($lb['KASIE_GUDANG_APPROVED'] >= 0 and $lb['KASIE_GUDANG_REJECT'] >= 0 AND $lb['CHECKING_KASIE_GUDANG'] >= 0 and $lb['CHECKING_AKUNTANSI'] >= 0) { ?>
 							<a title="Submit to Kasie Akuntansi" id="btnSubmitCheckingToAkuntansi" onclick="submitToKasie(this)" data-id="<?php echo $lb['BATCH_NUMBER']?>" data-batch="<?php echo $lb['GROUP_BATCH']?>" class="btn btn-primary btn-xs"><i class="fa fa-paper-plane"></i></a>
 							<?php } ?>
@@ -71,3 +72,37 @@
 <script type="text/javascript">
 	var id_gd;
 </script>
+
+
+
+<!-- Modal Baru -->
+<div class="modal fade mdlSubmitToKasieGudang"  id="mdlSubmitToKasieGudang" tabindex="1" role="dialog" aria-labelledby="judulModal" aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header" style="width: 100%;" >
+                <h3 class="box-header with border" id="formModalLabel"><b> Unproses Lppb</b></h3>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            
+                <div class="modal-body" style="width: 100%;">
+                	<div class="modal-tabel" >
+                	<!-- <div class="text-left ">
+							<span><b>Detail Batch </b></span>
+							<input type="hidden" name="batch_number" value="<?php echo $result[0]['BATCH_NUMBER']?>">
+						<input type="hidden" name="batch_detail_id" value="<?php echo $result[0]['BATCH_DETAIL_ID']?>">
+						</div> -->
+					</div>
+                   
+                    	<div class="modal-footer">
+                    		<div class="col-md-2 pull-left">
+                        	<!-- <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button> -->
+                        <!-- 	<button type="submit" class="btn btn-primary" id="BtnSubmit" onclick="updateData(this)">Ubah Data</button> -->
+                    		</div>
+                    	</div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

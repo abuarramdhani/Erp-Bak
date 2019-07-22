@@ -20,7 +20,7 @@
 						<td><?php echo $no?></td>
 						<td>
 							<input name="batch_number" id="batch_number" value="<?php echo $lb['BATCH_NUMBER']?>" type="hidden">
-							<a target="_blank" href="ListBatch/detailLppb/<?php echo $lb['BATCH_NUMBER']?>" title="Detail Lppb ..." class="btn btn-default btn-xs" ><i class="fa fa-file-text-o"></i></a>
+							<a target="_blank" onclick="ModalDetailAdmin(<?php echo $lb['BATCH_NUMBER']?>)" data-toggle="modal" data-target="mdlDetailAdminGudang" title="Detail Lppb ..." class="btn btn-default btn-xs" ><i class="fa fa-file-text-o detailIcon"></i></a>
 
 						<?php if($lb['NEW_DRAF'] > 0 and $lb['ADMIN_EDIT'] > 0 or $lb['NEW_DRAF'] > 0){ ?>
 							<a title="Submit to Kasie Gudang" id="btnSubmitChecking" data-id="<?= $lb['BATCH_NUMBER'] ?>" data-batch="<?php echo $lb['GROUP_BATCH']?>" onclick="getBtch(this)" class="btn btn-primary btn-xs"><i class="fa fa-paper-plane"></i>
@@ -121,3 +121,35 @@
 <script type="text/javascript">
 	var id_gd;
 </script>
+
+<!-- Modal Baru -->
+<div class="modal fade mdlDetailAdminGudang"  id="mdlDetailAdminGudang" tabindex="1" role="dialog" aria-labelledby="judulModal" aria-hidden="true">
+    <div class="modal-dialog modal-lg" style="width:1150px;" role="document">
+        <div class="modal-content">
+            <div class="modal-header" style="width: 100%;" >
+                <h3 class="box-header with border" id="formModalLabel"><b>Detail Draft Lppb</b></h3>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            
+                <div class="modal-body" style="width: 100%;">
+                	<div class="modal-tabel" >
+                	<!-- <div class="text-left ">
+							<span><b>Detail Batch </b></span>
+							<input type="hidden" name="batch_number" value="<?php echo $result[0]['BATCH_NUMBER']?>">
+						<input type="hidden" name="batch_detail_id" value="<?php echo $result[0]['BATCH_DETAIL_ID']?>">
+						</div> -->
+					</div>
+                   
+                    	<div class="modal-footer">
+                    		<div class="col-md-2 pull-left">
+                        	<!-- <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button> -->
+                        <!-- 	<button type="submit" class="btn btn-primary" id="BtnSubmit" onclick="updateData(this)">Ubah Data</button> -->
+                    		</div>
+                    	</div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

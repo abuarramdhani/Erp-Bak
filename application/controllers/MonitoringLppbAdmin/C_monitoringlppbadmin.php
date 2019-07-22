@@ -94,6 +94,8 @@ class C_monitoringlppbadmin extends CI_Controller{
 		$this->load->view('V_Sidemenu',$data);
 		$this->load->view('MonitoringLppbAdmin/V_addlppbnumber',$data);
 		$this->load->view('V_Footer',$data);
+
+		// $this->output->cache(1);
 	}
 	public function addNomorLPPB(){ //FUNGSI SEARCH DI SUBMIT LPPB
 		// print_r($_POST);
@@ -174,9 +176,7 @@ class C_monitoringlppbadmin extends CI_Controller{
 		$cek_section = $this->M_monitoringlppbadmin->checkSectionName($id_gudang);
 		$tanggal = strtoupper(date('dMY'));
 		$batch = $cek_section[0]['SECTION_KEYWORD'].'-'.$tanggal;
-		// print_r($batch);
 		$checkLengthBatch = $this->M_monitoringlppbadmin->checkLengthBatch($batch);
-		// print_r($checkLengthBatch);exit();
 		$running_number = $this->M_monitoringlppbadmin->checkGroupBatch($batch,$checkLengthBatch[0]['LENGTH']);
 		if ($running_number[0]['BATCH'] == 0) {
 			$group_batch = $cek_section[0]['SECTION_KEYWORD'].'-'.$tanggal; 
@@ -198,16 +198,9 @@ class C_monitoringlppbadmin extends CI_Controller{
 				$this->M_monitoringlppbadmin->saveLppbNumber3($id3[$key]['BATCH_DETAIL_ID'],$date);
 			}
 		}
-		// echo "<pre>";
-		// print_r($ponumb);
-		// foreach ($exp_lppb_num as $ln => $val) {
-			
-			// $id2 = $this->M_monitoringlppbadmin->saveLppbNumber2($id,$exp_lppb_num[$ln],$date,$exp_org_id[$ln],$exp_po_num[$ln],$exp_header_id[$ln]);
-			// $id3 = $this->M_monitoringlppbadmin->batch_detail_id($id);
-			// $this->M_monitoringlppbadmin->saveLppbNumber3($id3[$ln]['BATCH_DETAIL_ID'],$date);
-		// }
+		
 	}
-	public function detailLppb($id) //FUNGSI UNTUK VIEW DETAIL HASIL DARI MENU DRAFT
+	public function detailLppb() //FUNGSI UNTUK VIEW DETAIL HASIL DARI MENU DRAFT
 	{
 		$this->checkSession();
 		$user_id = $this->session->userid;
@@ -220,6 +213,7 @@ class C_monitoringlppbadmin extends CI_Controller{
 		$data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id);
 		$data['inventory'] = $this->M_monitoringlppbadmin->getInventory();
 		$data['status'] = $this->M_monitoringlppbadmin->getStatus();
+		$id = $this->input->post('batch_number');
 		$match = $this->M_monitoringlppbadmin->getBatchDetailId($id);
 		$lppb_number1 = $match[0]['LPPB_NUMBER'];
 		foreach ($match as $key => $value) {
@@ -231,11 +225,22 @@ class C_monitoringlppbadmin extends CI_Controller{
 		$jumlahData = $this->M_monitoringlppbadmin->cekJumlahData($id,$kondisi);
 		$data['lppb'] = $searchLppb;
 		$data['jml'] = $jumlahData;
-		$this->load->view('V_Header',$data);
-		$this->load->view('V_Sidemenu',$data);
-		$this->load->view('MonitoringLppbAdmin/V_detaillppbnumber',$data);
-		$this->load->view('V_Footer',$data);
+
+		// mencegah error
+
+		if (!empty($data['lppb'])) {
+				
+			$this->load->view('MonitoringLppbAdmin/V_detaillppbnumber',$data);
+			}else{
+			echo "<script> Swal.fire({
+  									type: 'error',
+  									title: 'Maaf...',
+ 									text: 'Data Kosong',
+									}) </script>";
+			echo "<script>$('#mdlDetailAdminGudang').modal('hide')</script>";
+			}
 	}
+
 	public function deleteNumberBatch(){ //DELETE BATCH
 		$batch_number = $this->input->post('batch_number');
 		$this->M_monitoringlppbadmin->deleteNumberBatch($batch_number);
@@ -251,7 +256,7 @@ class C_monitoringlppbadmin extends CI_Controller{
 		}
 	}
 	public function saveEditLppbNumber(){ //FUNGSI SAVE DI BAGIAN EDIT
-		echo"<pre>";print_r($_POST);
+		// echo"<pre>";print_r($_POST);
 		$lppb_number = str_replace(' ', '', $this->input->post('lppb_number'));
 		$date = date('d-m-Y H:i:s');
 		$batch_number = $this->input->post('batch_number');
@@ -259,40 +264,39 @@ class C_monitoringlppbadmin extends CI_Controller{
 		$po_number = $this->input->post('po_number');
 		$po_header_id = $this->input->post('po_header_id');
 		$batch_detail_id = $this->input->post('batch_detail_id');
-		// $batch_detail_idNew = $this->input->post('batch_detail_idNew');
 		$lppb_numberNew = str_replace(' ', '', $this->input->post('lppb_numberNew'));
 		$organization_idNew = $this->input->post('organization_idNew');
 		$po_numberNew = $this->input->post('po_numberNew');
 		$po_header_idNew = $this->input->post('po_header_idNew');
 		$id_lppb = $this->input->post('id_lppb');
-		// $dataid = $this->M_monitoringlppbadmin->saveEditLppbNumber($batch_number);
-		// print_r($dataid);exit();
-		// $id = $dataid[0]['BATCH_NUMBER'];
 		$expLppb = explode(',', $lppb_number);
 		$expIo = explode(',', $organization_id);
 		$expLppbNew = explode(',', $lppb_numberNew);
 		$expIoNew = explode(',', $organization_idNew);
 		$exp_po_num = explode(',',$po_number);
-		$exp_po_header = explode(',',$po_header_id);
-		// $exp_po_numNew = explode(',',$po_numberNew);
-		// $exp_po_headerNew = explode(',',$po_header_idNew);
+		$exp_po_header =  explode(',',$po_header_id);
+		// $exp_batch_detail_id = explode(',',$batch_detail_id);
 		$i = 0;
 		foreach ($expLppb as $ln => $val) {
 			$this->M_monitoringlppbadmin->saveEditLppbNumber2Update($batch_number,$expLppb[$ln],$date,$expIo[$ln],$exp_po_num[$ln],$exp_po_header[$ln]);
-			$this->M_monitoringlppbadmin->saveEditLppbNumber3Update($batch_detail_id[$ln],$date);
+			$this->M_monitoringlppbadmin->saveEditLppbNumber3Update($batch_detail_id[$i],$date);
 			$i++;
-			
 		}
-		echo"<pre>";
+		// echo"<pre>";
+		
+		if (!empty($expLppbNew[0])){
 		foreach ($expLppbNew as $key => $value) {
 			$ponumb[] = explode(',', $po_numberNew[$key]);
 			$poheadid[] = explode(',', $po_header_idNew[$key]);
 			foreach ($ponumb[$key] as $k => $data) {
 				$id2 = $this->M_monitoringlppbadmin->saveEditLppbNumber2($batch_number,$value,$date,$expIoNew[$key],$data,$poheadid[$key][$k]);
-				$id3 = $this->M_monitoringlppbadmin->limitBatchDetId($batch_number);
-				print_r($id3);
+				// print_r($id2);
+				$id3 = $this->M_monitoringlppbadmin->getBdi($poheadid[$key][$k]);
+				// print_r($id3);
 				$this->M_monitoringlppbadmin->saveEditLppbNumber3($id3[0]['BATCH_DETAIL_ID'],$date);
+				}
 			}
+		
 		}
 		
 	}
@@ -325,7 +329,7 @@ class C_monitoringlppbadmin extends CI_Controller{
 		$this->load->view('MonitoringLppbAdmin/V_rejectlppb',$data);
 		$this->load->view('V_Footer',$data);
 	}
-	public function detailRejectLppb($id)
+	public function detailRejectLppb()
 	{
 		$this->checkSession();
 		$user_id = $this->session->userid;
@@ -336,6 +340,7 @@ class C_monitoringlppbadmin extends CI_Controller{
 		$data['UserMenu'] = $this->M_user->getUserMenu($user_id,$this->session->responsibility_id);
 		$data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id);
 		$data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id);
+		$id = $this->input->post('batch_number');
 		$match = $this->M_monitoringlppbadmin->getBatchDetailId($id);
 		$no=0;
 		$lppb_number1 = $match[0]['LPPB_NUMBER'];
@@ -348,10 +353,18 @@ class C_monitoringlppbadmin extends CI_Controller{
 		$jumlahData = $this->M_monitoringlppbadmin->cekJumlahData($id,$kondisi);
 		$data['lppb'] = $searchLppb;
 		$data['jml'] = $jumlahData;
-		$this->load->view('V_Header',$data);
-		$this->load->view('V_Sidemenu',$data);
-		$this->load->view('MonitoringLppbAdmin/V_rejectDetailLppb',$data);
-		$this->load->view('V_Footer',$data);
+
+		if (!empty($data['lppb'])) {
+				
+			$this->load->view('MonitoringLppbAdmin/V_rejectDetailLppb',$data);
+			}else{
+			echo "<script> Swal.fire({
+  									type: 'error',
+  									title: 'Maaf...',
+ 									text: 'Data Kosong',
+									}) </script>";
+			echo "<script>$('#mdlRejectAdminGudang').modal('hide')</script>";
+			}
 	}
 	public function Finish()
 	{
@@ -370,7 +383,7 @@ class C_monitoringlppbadmin extends CI_Controller{
 		$this->load->view('MonitoringLppbAdmin/V_finishlppb',$data);
 		$this->load->view('V_Footer',$data);
 	}
-	public function FinishDetail($batch_number)
+	public function FinishDetail()
 	{
 		$this->checkSession();
 		$user_id = $this->session->userid;
@@ -381,6 +394,7 @@ class C_monitoringlppbadmin extends CI_Controller{
 		$data['UserMenu'] = $this->M_user->getUserMenu($user_id,$this->session->responsibility_id);
 		$data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id);
 		$data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id);
+		$batch_number = $this->input->post('batch_number');
 		$match = $this->M_monitoringlppbadmin->getBatchDetailId($batch_number);
 		$lppb_number1 = $match[0]['LPPB_NUMBER'];
 		foreach ($match as $key => $value) {
@@ -392,11 +406,23 @@ class C_monitoringlppbadmin extends CI_Controller{
 		$jumlahData = $this->M_monitoringlppbadmin->cekJumlahData($batch_number,$kondisi);
 		$data['lppb'] = $searchLppb;
 		$data['jml'] = $jumlahData;
+
+		if (!empty($data['lppb'])) {
+				
+			$this->load->view('MonitoringLppbAdmin/V_finishdetail',$data);
+			}else{
+			echo "<script> Swal.fire({
+  									type: 'error',
+  									title: 'Maaf...',
+ 									text: 'Data Kosong',
+									}) </script>";
+			echo "<script>$('#mdlFinishAdminGudang').modal('hide')</script>";
+			}
 		
-		$this->load->view('V_Header',$data);
-		$this->load->view('V_Sidemenu',$data);
-		$this->load->view('MonitoringLppbAdmin/V_finishdetail',$data);
-		$this->load->view('V_Footer',$data);
+		// $this->load->view('V_Header',$data);
+		// $this->load->view('V_Sidemenu',$data);
+		// $this->load->view('MonitoringLppbAdmin/V_finishdetail',$data);
+		// $this->load->view('V_Footer',$data);
 	}
 	public function deleteAllRows(){
 		$batch_number = $this->input->post('batch_number');

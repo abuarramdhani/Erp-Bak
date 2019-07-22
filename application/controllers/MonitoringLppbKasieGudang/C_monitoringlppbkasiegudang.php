@@ -62,7 +62,6 @@ class C_monitoringlppbkasiegudang extends CI_Controller{
 	public function showGudangByKasie()
 	{
 		$id_gudang = $this->input->post('id_gudang');
-
 		$getGudang = $this->M_monitoringlppbkasiegudang->showLppbKasieGudang($id_gudang);
 		$data['lppb'] = $getGudang;
 		$return = $this->load->view('MonitoringLppbKasieGudang/V_lppbgudang',$data,TRUE);
@@ -70,7 +69,7 @@ class C_monitoringlppbkasiegudang extends CI_Controller{
 		echo ($return);
 	}
 	
-	public function detailLppbKasieGudang($batch_number)
+	public function detailLppbKasieGudang()
 	{
 		$this->checkSession();
 		$user_id = $this->session->userid;
@@ -82,6 +81,7 @@ class C_monitoringlppbkasiegudang extends CI_Controller{
 		$data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id);
 		$data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id);
 
+		$batch_number = $this->input->post('batch_number');
 		$match = $this->M_monitoringlppbkasiegudang->getBatchDetailId($batch_number);
 		$lppb_number1 = $match[0]['LPPB_NUMBER'];
 		foreach ($match as $key => $value) {
@@ -94,22 +94,26 @@ class C_monitoringlppbkasiegudang extends CI_Controller{
 		$data['lppb'] = $searchLppb;
 		$data['jml'] = $jumlahData;
 
-		$this->load->view('V_Header',$data);
-		$this->load->view('V_Sidemenu',$data);
-		$this->load->view('MonitoringLppbKasieGudang/V_detaillppbkasiegudang',$data);
-		$this->load->view('V_Footer',$data);
+		// if else ketika data kosong
+		if (!empty($data['lppb'])) {
+				
+			$this->load->view('MonitoringLppbKasieGudang/V_tabelmodal',$data);
+			}else{
+			echo "<script> Swal.fire({
+  									type: 'error',
+  									title: 'Maaf...',
+ 									text: 'Data Kosong',
+									}) </script>";
+			echo "<script>$('#mdlSubmitToKasieGudang').modal('hide')</script>";
+			}
 	}
 
 	public function saveActionLppbNumber(){
-		// echo"<pre>";
-		// print_r($_POST);
 		
-		$proses = $this->input->post('hdnProses[]');
+		$proses = $this->input->post('hdnProses');
 		$alasan = $this->input->post('alasan_reject');
-		// print_r()
-		// echo"<pre>"; print_r($_POST);
-		$id = $this->input->post('id[]');
-		$date = $this->input->post('tglTerimaTolak[]');
+		$id = $this->input->post('id');
+		$date = $this->input->post('tglTerimaTolak');
 		$batch_number = $this->input->post('batch_number');
 		$batch_detail_id = $this->input->post('batch_detail_id');
 
@@ -127,16 +131,24 @@ class C_monitoringlppbkasiegudang extends CI_Controller{
 	}
 
 	public function SubmitKeAKuntansi(){
-		// print_r($_POST);exit();
+		// print_r($_POST);
 		$date = date('d-m-Y H:i:s');
 		$batch_number = $this->input->post('batch_number');
+		$status = $this->M_monitoringlppbkasiegudang->detailUnprocess($batch_number);
+		// $data['status'] = $status[0]['STATUS'];
+		// $alasan_reject = $this->input->post('alasan_reject');
+		// echo "<pre>";
+		// print_r($data);
+		// exit();
 
 		$this->M_monitoringlppbkasiegudang->submitToKasieAkuntansi($date,$batch_number);
-		$batch_detail_id  = $this->M_monitoringlppbkasiegudang->getBatchDetailId($batch_number);
+		// $batch_detail_id  = $this->M_monitoringlppbkasiegudang->getBatchDetailId($batch_number);
 
-		foreach ($batch_detail_id as $key => $value) {
-			$id = $value['BATCH_DETAIL_ID'];
-			$this->M_monitoringlppbkasiegudang->submitToKasieAkuntansi2($date,$id);
+		foreach ($status as $key => $value) {
+			if ($value['STATUS'] = 3 ) {
+				$id = $value['BATCH_DETAIL_ID'];
+				$this->M_monitoringlppbkasiegudang->submitToKasieAkuntansi2($date,$id);
+			}
 		}
 
 	}
@@ -161,7 +173,7 @@ class C_monitoringlppbkasiegudang extends CI_Controller{
 		$this->load->view('V_Footer',$data);
 	}
 
-	public function detailFinishKasie($batch_number)
+	public function detailFinishKasie()
 	{
 		$this->checkSession();
 		$user_id = $this->session->userid;
@@ -173,6 +185,8 @@ class C_monitoringlppbkasiegudang extends CI_Controller{
 		$data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id);
 		$data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id);
 
+		$batch_number = $this->input->post('batch_number');
+		// print_r($batch_number);
 		$match = $this->M_monitoringlppbkasiegudang->getBatchDetailId($batch_number);
 		$lppb_number1 = $match[0]['LPPB_NUMBER'];
 		foreach ($match as $key => $value) {
@@ -182,12 +196,21 @@ class C_monitoringlppbkasiegudang extends CI_Controller{
 		$searchLppb = $this->M_monitoringlppbkasiegudang->finishdetail($batch_number);
 		$jumlahData = $this->M_monitoringlppbkasiegudang->cekJumlahData($batch_number,$kondisi);
 		$data['lppb'] = $searchLppb;
+		// echo "<pre>";print_r($data);
 		$data['jml'] = $jumlahData;
 
-		$this->load->view('V_Header',$data);
-		$this->load->view('V_Sidemenu',$data);
-		$this->load->view('MonitoringLppbKasieGudang/V_finishdetailkasie',$data);
-		$this->load->view('V_Footer',$data);
+		if (!empty($data['lppb'])) {
+				
+			$this->load->view('MonitoringLppbKasieGudang/V_finishdetailkasie',$data);
+			}else{
+			echo "<script> Swal.fire({
+  									type: 'error',
+  									title: 'Maaf...',
+ 									text: 'Data Kosong',
+									}) </script>";
+			echo "<script>$('#mdlFinishKasieGudang').modal('hide')</script>";
+			}
+
 	}
 
 	public function Reject()
@@ -209,7 +232,7 @@ class C_monitoringlppbkasiegudang extends CI_Controller{
 		$this->load->view('MonitoringLppbKasieGudang/V_rejectlppb',$data);
 		$this->load->view('V_Footer',$data);
 	}
-	public function RejectLppb($batch_number)
+	public function RejectLppb()
 	{
 		$this->checkSession();
 		$user_id = $this->session->userid;
@@ -220,7 +243,8 @@ class C_monitoringlppbkasiegudang extends CI_Controller{
 		$data['UserMenu'] = $this->M_user->getUserMenu($user_id,$this->session->responsibility_id);
 		$data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id);
 		$data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id);
-
+		$batch_number = $this->input->post('batch_number');
+		// print_r($_POST);
 		$match = $this->M_monitoringlppbkasiegudang->getBatchDetailId($batch_number);
 		$lppb_number1 = $match[0]['LPPB_NUMBER'];
 		foreach ($match as $key => $value) {
@@ -229,15 +253,22 @@ class C_monitoringlppbkasiegudang extends CI_Controller{
 			// $rangeLppb = "AND rsh.receipt_num between $lppb_number1 and $lppb_number2";
 			$kondisi = "AND klbd.status in (4,7)";
 			$searchLppb = $this->M_monitoringlppbkasiegudang->rejectdetail($batch_number);
+			// echo "<pre>";print_r($searchLppb);
 			$jumlahData = $this->M_monitoringlppbkasiegudang->cekJumlahData($batch_number,$kondisi);
 		$data['lppb'] = $searchLppb;
 		// print_r($searchLppb);exit();
 		$data['jml'] = $jumlahData;
-
-		$this->load->view('V_Header',$data);
-		$this->load->view('V_Sidemenu',$data);
-		$this->load->view('MonitoringLppbKasieGudang/V_rejectdetail',$data);
-		$this->load->view('V_Footer',$data);
+		// if else ketika data kosong
+		if (!empty($data['lppb'])) {
+			$this->load->view('MonitoringLppbKasieGudang/V_rejectdetail',$data);
+			}else{
+			echo "<script> Swal.fire({
+  									type: 'error',
+  									title: 'Maaf...',
+ 									text: 'Data Kosong',
+									}) </script>";
+			echo "<script>$('#mdlRejectKasieGudang').modal('hide')</script>";
+			}
 	}
 
 }

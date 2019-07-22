@@ -37,7 +37,7 @@
 									<tr>
 										<td><?php echo $no?></td>
 										<td>
-											<a title="Detail Lppb" href="<?php echo base_url('MonitoringLppbAkuntansi/Finish/finsihDetail/'.$lb['BATCH_NUMBER'])?>" class="btn btn-default btn-xs"><i class="fa fa-file-text-o"></i></a>
+											<a title="Detail Lppb" data-toggle="modal" data-target="mdlFinishAkt" onclick="ModalFinishAkt(<?php echo $lb['BATCH_NUMBER']?>)" class="btn btn-default btn-xs"><i class="fa fa-file-text-o"></i></a>
 											<?php if ($lb['KASIE_GUDANG_APPROVED'] >= 1 and $lb['KASIE_GUDANG_REJECT'] == 0 AND $lb['CHECKING_KASIE_GUDANG'] == 0 and $lb['CHECKING_AKUNTANSI'] == 0) { ?>
 											<a title="Submit to Kasie Akuntansi" id="btnSubmitCheckingToAkuntansi" onclick="submitToKasie(this)" data-id="<?php echo $lb['BATCH_NUMBER']?>" class="btn btn-primary btn-xs"><i class="fa fa-paper-plane"></i></a>
 											<?php } ?>
@@ -68,3 +68,34 @@
 <script type="text/javascript">
 	var id_gd;
 </script>
+
+<div class="modal fade mdlFinishAkt"  id="mdlFinishAkt" tabindex="1" role="dialog" aria-labelledby="judulModal" aria-hidden="true">
+    <div class="modal-dialog modal-lg" style="width:1150px;" role="document">
+        <div class="modal-content">
+            <div class="modal-header" style="width: 100%;" >
+                <h3 class="box-header with border" id="formModalLabel"><b>Detail Finish Lppb</b></h3>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            
+                <div class="modal-body" style="width: 100%;">
+                	<div class="modal-tabel" >
+                	<!-- <div class="text-left ">
+							<span><b>Detail Batch </b></span>
+							<input type="hidden" name="batch_number" value="<?php echo $result[0]['BATCH_NUMBER']?>">
+						<input type="hidden" name="batch_detail_id" value="<?php echo $result[0]['BATCH_DETAIL_ID']?>">
+						</div> -->
+					</div>
+                   
+                    	<div class="modal-footer">
+                    		<div class="col-md-2 pull-left">
+                        	<!-- <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button> -->
+                        <!-- 	<button type="submit" class="btn btn-primary" id="BtnSubmit" onclick="updateData(this)">Ubah Data</button> -->
+                    		</div>
+                    	</div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

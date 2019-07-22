@@ -12,9 +12,8 @@
 					<div class="row">
 						<div class="col-lg-12">
 							<div class="text-left ">
-								<span ><b>Lppb Number Details</b></span>
+								<span ><b>Lppb Number Detail <?php echo $lppb[0]['GROUP_BATCH']?> </b></span>
 								<input name="batch_number" id="batch_number" value="<?php echo $lppb[0]['BATCH_NUMBER']?>" type="hidden">
-								
 							</div>
 						</div>
 					</div>
@@ -49,7 +48,7 @@
 																<span><label>IO</label></span>
 															</td>
 														<td style="padding:0 0 5px 0">
-															<select id="inventory" name="inventory" class="form-control select2 select2-hidden-accessible" style="width:100%;margin-bottom:10px">
+															<select id="inventory" name="inventory" class="form-control select2 " style="width:100%;margin-bottom:10px">
 																	<!-- ngeluarin data dari option pake foreach -->
 																<option value="" > Inventory Organization </option>
 																	<?php foreach ($inventory as $io) { 
@@ -69,7 +68,7 @@
 															<span><label>Status Detail</label></span>
 														</td>
 													<td style="padding:2px 0 0 0">
-														<select id="status_lppb" name="status_lppb" class="form-control select2 	select2-hidden-accessible" style="width:100%;margin-bottom:10px">
+														<select id="status_lppb" name="status_lppb" class="form-control select2 " style="width:100%;margin-bottom:10px">
 															<option value="" > Pilih Status </option>
 																<?php foreach ($status as $st) { ?> 
 															<option value="<?php echo $st['STATUS_LPPB'] ?>"><?php echo $st['STATUS_LPPB'] ?></option>
@@ -129,9 +128,11 @@
 								<div id="loading_search">
 								</div>
 							</div>
-							<span>Jumlah Data : <b><?php echo $jml[0]['JUMLAH_DATA']?></b></span>
+							<span>Jumlah Data  : <b><?php echo $jml[0]['JUMLAH_DATA']?></b></span> <br>
+							<span>Batch Number : <b><?php echo $lppb[0]['BATCH_NUMBER']?></b></span>
+
 							<div>
-								<table class="table text-center dtTableMl">
+								<table class="table text-center dtTableMl" style="width: 100%;">
 									<thead style="vertical-align: middle;"> 
 										<tr class="bg-primary">
 											<td class="text-center">No</td>
@@ -199,15 +200,15 @@
 									</table>
 								</div>
 								<div class="col-md-2 pull-right">
-									<?php if ($lppb[0]['STATUS'] == 0 ) { ?>
-										<a href="<?php echo base_url('MonitoringLPPB/NewDrafLppb')?>">
+									<?php if ($lppb[0]['STATUS'] == 1 ) { ?>
+										<!-- <a href="<?php echo base_url('MonitoringLPPB/NewDrafLppb')?>">
 											<button type="button" class="btn btn-primary" style="margin-top: 10px">Back</button>
-										</a>
-										<button id="save_lppb" type="Submit" name="save_lppb" onclick="saveEditLPPBNumber($(this))" class="btn btn-success pull-right" style="margin-top: 10px;">Save</button>
+										</a> -->
+										<!-- <button id="save_lppb" type="Submit" name="save_lppb" onclick="saveEditLPPBNumber($(this))" class="btn btn-success pull-right" style="margin-top: 10px;">Save</button> -->
 									<?php }else{ ?>
-										<a href="<?php echo base_url('MonitoringLPPB/NewDrafLppb')?>">
+										<!-- <a href="<?php echo base_url('MonitoringLPPB/NewDrafLppb')?>">
 											<button type="button" class="btn btn-primary" style="margin-top: 10px">Back</button>
-										</a>
+										</a> -->
 										<button id="save_lppb" type="Submit" name="save_lppb" onclick="saveEditLPPBNumber($(this))" class="btn btn-success pull-right" style="margin-top: 10px;">Save</button>
 									<?php } ?>
 								</div>
