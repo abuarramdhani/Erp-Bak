@@ -10,7 +10,7 @@ class C_Detail extends CI_Controller {
         $this->load->library('form_validation');
 		$this->load->library('session');
 		$this->load->model('SystemAdministration/MainMenu/M_user');
-		$this->load->model('LaporanKerjaHarian/PekerjaSingle/M_lkhtargetwaktu');
+		$this->load->model('LaporanKerjaHarian/AtasanSingle/M_lkhtargetwaktu');
 		if($this->session->userdata('logged_in') != TRUE) {
 			$this->load->helper('url');
 			$this->session->set_userdata('last_page', current_url());
@@ -44,7 +44,7 @@ class C_Detail extends CI_Controller {
 		$data['warningSP'] = $this->calculateWarningSP($data['dataList']);
 		$this->load->view('V_Header', $data);
 		$this->load->view('V_Sidemenu', $data);
-		$this->load->view('LaporanKerjaHarian/PekerjaSingle/TargetWaktu/V_Detail', $data);
+		$this->load->view('LaporanKerjaHarian/AtasanSingle/TargetWaktu/V_Detail', $data);
 		$this->load->view('V_Footer', $data);
 	}
 
@@ -73,5 +73,13 @@ class C_Detail extends CI_Controller {
 		$response['status'] = 'error';
 		if(isset($lkh_id)) { $gol_kondite = $this->M_lkhtargetwaktu->getGolKonditeLkhDetailCell($lkh_id); if(isset($gol_kondite)) { $response['status'] = 'success'; $response['gol_kondite'] = $gol_kondite; } }
 		echo json_encode($response);
+	}
+
+	public function approveLkh() {
+		echo json_encode($this->M_lkhtargetwaktu->approveLkh($this->input->post('periode'), $this->input->post('pekerja')));
+	}
+
+	public function rejectLkh() {
+		echo json_encode($this->M_lkhtargetwaktu->rejectLkh($this->input->post('periode'), $this->input->post('pekerja'), $this->input->post('reason')));
 	}
 }

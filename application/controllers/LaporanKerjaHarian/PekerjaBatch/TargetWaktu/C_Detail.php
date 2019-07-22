@@ -24,8 +24,8 @@ class C_Detail extends CI_Controller {
 		$data['filterPeriode'] = (empty($this->input->post('filterPeriode'))) ? date('m/Y') : $this->input->post('filterPeriode');
 		$data['filterPekerja'] = $this->input->post('filterPekerja');
 		if(empty($data['filterPekerja'])) { echo('Terjadi kesalahan saat memuat detail data LKH. [ID Pekerja tidak ditemukan].'); exit(); }
-		$data['listType'] = $this->M_lkhtargetwaktu->getLkhStatus($data['filterPeriode'], $data['filterPekerja']);
-		$data['type'] = ($data['listType'] == 'ListData') ? 'Draft' : $data['listType'];
+		$data['listType'] = (empty($this->input->post('type'))) ? 'ListData' : $this->input->post('type');
+		$data['type'] = $this->M_lkhtargetwaktu->getLkhStatus($data['filterPeriode'], $data['filterPekerja']);
 
 		$data['UserMenu'] = $this->M_user->getUserMenu($user_id, $this->session->responsibility_id);
 		$data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id, $this->session->responsibility_id);

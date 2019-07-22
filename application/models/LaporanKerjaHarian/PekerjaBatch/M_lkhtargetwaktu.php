@@ -17,6 +17,13 @@ class M_lkhtargetwaktu extends CI_Model {
 	var	$column_search = array(3 => 'lower(pekerja)', 4 => 'lower(record_pekerjaan)', 5 => 'lower(record_kondite)', 6 => 'lower(status)');
 	var $order = array('pekerja' => 'asc');
 
+	public function getListFilterPekerja($term, $periode) {
+		$periode = explode('/', $periode);
+		$term = strtolower($term);
+		$query = $this->erp->select('employee_code, employee_name')->where('resign = \'0\' and periode = \''.($periode[1].'-'.$periode[0].'-01').'\' and worker_status_code in (\'H\', \'A\', \'P\', \'K\') and (lower(employee_code) like \''.$term.'%\' or lower(employee_name) like \''.$term.'%\')')->order_by('employee_code')->get($this->table)->result_array();
+		return $query;
+	}
+
 	public function getListQuery() {
 		$this->erp->from($this->table);
 		if($_POST['search']['value']) {
@@ -27,15 +34,15 @@ class M_lkhtargetwaktu extends CI_Model {
 					$this->erp->like($item, strtolower($_POST['search']['value']));
 				} else {
 					$this->erp->or_like($item, strtolower($_POST['search']['value']));
+					}
+					if(count($this->column_search) - 1 == $i) { $this->erp->group_end(); }
+					$i++;
 				}
-				if(count($this->column_search) - 1 == $i) { $this->erp->group_end(); }
-				$i++;
 			}
-		}
-		if(isset($_POST['order'])) {
-			$this->erp->order_by($this->column_order[$_POST['order']['0']['column']], $_POST['order']['0']['dir']);
-		} else if (isset($this->order)) {
-			$order = $this->order;
+			if(isset($_POST['order'])) {
+				$this->erp->order_by($this->column_order[$_POST['order']['0']['column']], $_POST['order']['0']['dir']);
+			} else if (isset($this->order)) {
+				$order = $this->order;
 			$this->erp->order_by('pekerja');
 		}
 	}
@@ -184,12 +191,7 @@ class M_lkhtargetwaktu extends CI_Model {
 	public function getLkhStatus($periode, $pekerja) {
 		if(empty($periode) || empty($pekerja)) { return ''; }
 		$periode = explode('/', $periode);
-		$approval_status = $this->erp->query('select (case approval_status when \'1\' then \'Unapproved\' when \'2\' then \'Approved\' when \'3\' then \'Rejected\' else \'ListData\' end) as "approval_status" from lkh.lkh_approval where extract(month from periode) = \''.$periode[0].'\' and extract(year from periode) = \''.$periode[1].'\' and noind = \''.$pekerja.'\'')->result();
-		if(empty($approval_status)) {
-			return 'ListData';
-		} else {
-			return $approval_status;
-		}
+		return $this->erp->select('status')->where('employee_code', $pekerja)->where('periode', ($periode[1].'-'.$periode[0].'-01'))->get($this->table)->row()->status;
 	}
 
 	public function getRecordPekerjaanDetailLkh($periode, $pekerja) {
@@ -356,6 +358,8 @@ class M_lkhtargetwaktu extends CI_Model {
 				for($i = 0; $i < count($pekerja); $i++) {
 					$getPekerja = $pekerja[$i];
 					$getPeriode = $periode[$i];
+					$getExplodedPeriode = explode('-', $getPeriode);
+					$this->erp->query("update lkh.lkh_target_waktu set \"lkh_status\" = '1' where noind = '".$getPekerja."' and extract(month from tgl_lkh) = '".$getExplodedPeriode[1]."' and extract(year from tgl_lkh) = '".$getExplodedPeriode[0]."'");
 					if($i < (count($pekerja) - 1)) {
 						$values .= "('".$getPekerja."', '".$getPeriode."', '".$approver1."', '1', '1'), ('".$getPekerja."', '".$getPeriode."', '".$approver2."', '2', '1'),";
 					} else {
@@ -364,7 +368,7 @@ class M_lkhtargetwaktu extends CI_Model {
 				}
 				$this->erp->query("insert into lkh.lkh_approval (noind, periode, approver, approver_level, approval_status) values ".$values);
 				$this->erp->trans_complete();
-				if ($this->db->trans_status() === false) {
+				if ($this->erp->trans_status() === false) {
 					$result['message'] = 'Terjadi kesalahan saat mengirim data';
 				} else {
 					$result['success'] = true;
@@ -393,7 +397,7 @@ class M_lkhtargetwaktu extends CI_Model {
 					$this->erp->query('update lkh.lkh_target_waktu set "uraian_pekerjaan" = null where noind = \''.$getPekerja.'\' and extract(month from tgl_lkh) = \''.$getPeriode[0].'\' and extract(year from tgl_lkh) = \''.$getPeriode[1].'\'');
 				}
 				$this->erp->trans_complete();
-				if ($this->db->trans_status() === false) {
+				if ($this->erp->trans_status() === false) {
 					$result['message'] = 'Terjadi kesalahan saat menghapus data';
 				} else {
 					$result['success'] = true;

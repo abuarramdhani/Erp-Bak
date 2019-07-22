@@ -10,12 +10,12 @@ class C_ListData extends CI_Controller {
         $this->load->library('form_validation');
 		$this->load->library('session');
 		$this->load->model('SystemAdministration/MainMenu/M_user');
-		$this->load->model('LaporanKerjaHarian/PekerjaBatch/M_lkhtargetwaktu');
+		$this->load->model('LaporanKerjaHarian/AtasanSingle/M_lkhtargetwaktu');
 	}
 
 	public function index($type) {
 		if(!$this->session->is_logged) { redirect(base_url()); }
-		if(empty($type)) { redirect(base_url('LkhPekerjaBatch/TargetWaktu/ListData')); }
+		if(empty($type)) { redirect(base_url('LkhAtasanSingle/TargetWaktu/ListData')); }
 		$user_id = $this->session->userid;
 		$data['filterPeriode'] = (empty($this->input->post('filterPeriode'))) ? date('m/Y') : $this->input->post('filterPeriode');
 		$data['filterPekerja'] = (empty($this->input->post('filterPekerja'))) ? '' : explode(',', $this->input->post('filterPekerja'));
@@ -31,29 +31,25 @@ class C_ListData extends CI_Controller {
 		$data['type'] = $type;
 		$this->load->view('V_Header', $data);
 		switch(strtolower($data['type'])) {
-			case 'draft':
+			case 'unapproved':
 				$data['Title'] = $data['UserSubMenuOne'][0]['menu'];
 				$data['SubMenuOne'] = $data['UserSubMenuOne'][0]['menu_title'];
 				break;
-			case 'unapproved':
+			case 'rejected':
 				$data['Title'] = $data['UserSubMenuOne'][1]['menu'];
 				$data['SubMenuOne'] = $data['UserSubMenuOne'][1]['menu_title'];
 				break;
-			case 'rejected':
+			case 'approved':
 				$data['Title'] = $data['UserSubMenuOne'][2]['menu'];
 				$data['SubMenuOne'] = $data['UserSubMenuOne'][2]['menu_title'];
 				break;
-			case 'approved':
+			default:
 				$data['Title'] = $data['UserSubMenuOne'][3]['menu'];
 				$data['SubMenuOne'] = $data['UserSubMenuOne'][3]['menu_title'];
 				break;
-			default:
-				$data['Title'] = $data['UserSubMenuOne'][4]['menu'];
-				$data['SubMenuOne'] = $data['UserSubMenuOne'][4]['menu_title'];
-				break;
 		}
 		$this->load->view('V_Sidemenu', $data);
-		$this->load->view('LaporanKerjaHarian/PekerjaBatch/TargetWaktu/V_ListData', $data);
+		$this->load->view('LaporanKerjaHarian/AtasanSingle/TargetWaktu/V_ListData', $data);
 		$this->load->view('V_Footer', $data);
 	}
 
@@ -65,7 +61,7 @@ class C_ListData extends CI_Controller {
 		$periodeRaw = (empty($this->input->post('periode'))) ? date('m/Y') : $this->input->post('periode');
 		$periode = explode('/', $periodeRaw);
 		$pekerja = (empty($this->input->post('pekerja'))) ? '' : $this->input->post('pekerja');
-		$type = (empty($this->input->post('type'))) ? 'ListData' : $this->input->post('type');
+		$type = (empty($this->input->post('type'))) ? 'listdata' : $this->input->post('type');
 		if(!empty($pekerja)) {
 			$pekerja = explode(',', $pekerja);
 			for ($i=0; $i < count($pekerja); $i++) {
@@ -78,9 +74,8 @@ class C_ListData extends CI_Controller {
 		$list = $this->M_lkhtargetwaktu->getList($periode, $pekerja, strtolower($type));
 		foreach ($list as $key) {
 			$row = array();
-			$row[] = $counter.'.';
-			$row[] = "<div style='text-align: center;'><input type='checkbox' name='checkBoxDataList[]' id='checkbox-row-".$counter."' class='checkBoxDataList' ".(($key->record_pekerjaan == '-' || $key->record_kondite == '-' || $key->status != 'Draft') ? 'disabled' : '')."/></div>";
-			$row[] = "<div style='text-align: center;'><form action='".base_url('LkhPekerjaBatch/TargetWaktu/Detail')."' method='POST'><input name='filterPekerja' id='employee-code-row-".$counter."' type='text' value='".$key->employee_code."' hidden/><input name='filterPeriode' id='periode-row-".$counter."' type='text' value='".$periodeRaw."' hidden/><input name='type' type='text' value='".$type."' hidden/><button type='submit' class='btn btn-primary' style='margin-right: 6px;'><i class='fa fa-info-circle'></i></button><button id='employee-delete-row-".$counter."' ".(($key->record_pekerjaan == '-' || $key->record_kondite == '-' || $key->status != 'Draft') ? "disabled" : "onclick='javascript:openDeleteDataModal(\"".$counter."\", \"".$key->employee_code."\");'")." type='button' class='btn btn-danger'><i class='fa fa-trash'></i></button></form></div>";
+			$row[] = '<div class="text-center">'.$counter.'.</div>';
+			$row[] = "<div style='text-align: center;'><form action='".base_url('LkhAtasanSingle/TargetWaktu/Detail')."' method='POST'><input name='filterPekerja' id='employee-code-row-".$counter."' type='text' value='".$key->employee_code."' hidden/><input name='filterPeriode' id='periode-row-".$counter."' type='text' value='".$periodeRaw."' hidden/><input name='type' type='text' value='".$type."' hidden/><button type='submit' class='btn btn-primary' style='margin-right: 6px;'><i class='fa fa-info-circle'></i><span style='margin-left: 6px;'>Detail</span></button></form></div>";
 			$row[] = '<span id="employee-name-row-'.$counter.'">'.$key->pekerja.'</span>';
 			$row[] = '<div style="text-align: center" id="employee-record-pekerjaan-row-'.$counter.'">'.$key->record_pekerjaan.'</div>';
 			$row[] = '<div style="text-align: center" id="employee-record-kondite-row-'.$counter.'">'.$key->record_kondite.'</div>';
@@ -96,10 +91,6 @@ class C_ListData extends CI_Controller {
 			'data' => $data
 		);
 		echo json_encode($output);
-	}
-
-	public function getApprover() {
-		echo json_encode($this->M_lkhtargetwaktu->getApprover($this->input->post('term'), $this->input->post('approver1')));
 	}
 
 	public function kirimApproval() {
