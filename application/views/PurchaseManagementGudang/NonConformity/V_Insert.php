@@ -45,9 +45,9 @@
                         </div>
                         <div class="col-lg-12">
                             <select class="form-control select2 slcRemarkNonConformity" name="remark[]" style="width:100%" multiple>
-                            <?php foreach ($case as $key => $cases) :?>
+                            <?php foreach ($case as $key => $cases) { ?>
                                 <option value="<?= $cases['case_id']?>" namaCase="<?= $cases['case_name']?>"><?= $cases['case_name']?></option>
-                             <? endforeach; ?>
+                            <?php } ?>
                             </select>
                         </div><br>
                         <!-- <div class="col-lg-12">
