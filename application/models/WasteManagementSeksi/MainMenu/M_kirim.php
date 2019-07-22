@@ -74,7 +74,7 @@ class M_kirim extends Ci_Model
     public function getLimJenis($kodesie){
 				$where = '';
 				if(!strstr($kodesie, '4060101')){
-					$where = "WHERE NOT limjen.kode_limbah = 'A108d'";
+					$where = "WHERE NOT limjen.jenis_limbah = 'contaminated goods'";
 				}
         $query2 = "SELECT limjen.id_jenis_limbah,
                     	limjen.jenis_limbah,
@@ -92,6 +92,10 @@ class M_kirim extends Ci_Model
         $result = $this->db->query($query);
         return $result->result_array();
     }
+
+		public function getSatLim(){
+			return $this->db->query("select distinct limbah_satuan as satuan from ga.ga_limbah_satuan")->result_array();
+		}
 
     public function insertKirimLimbah($data){
         $id = $data['id_kirim'];
