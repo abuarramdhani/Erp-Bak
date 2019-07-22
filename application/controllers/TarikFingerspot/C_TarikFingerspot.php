@@ -136,7 +136,7 @@ class C_TarikFingerspot extends CI_Controller
 							//	Kirim ke Presensi.tpresensi_riil
 							//	{
 				 					$data_presensi['transfer']	=	FALSE;
-									// $data_presensi['nomor_sn']  = $key['sn'];
+									$data_presensi['nomor_sn']  = $key['nomor_sn'];
 				 					$this->M_tarikfingerspot->insert_presensi('"Presensi"', 'tpresensi_riil', $data_presensi);
 							//	}
 						}
@@ -252,7 +252,7 @@ class C_TarikFingerspot extends CI_Controller
 					//	Kirim ke Presensi.tpresensi_riil
 					//	{
 		 					$data_presensi['transfer']	=	FALSE;
-							// $data_presensi['nomor_sn']  = $key['sn'];
+							$data_presensi['nomor_sn']  = $key['nomor_sn'];
 		 					$this->M_tarikfingerspot->insert_presensi('"Presensi"', 'tpresensi_riil', $data_presensi);
 					//	}
 				}
