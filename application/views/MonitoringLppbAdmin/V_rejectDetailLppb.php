@@ -12,11 +12,10 @@
 				<div class="row">
 					<div class="col-lg-12">
 						<div class="text-left ">
-							<span><b>Lppb Number Reject</b></span>
+							<span><b>Lppb Number Reject <?php echo $lppb[0]['GROUP_BATCH']?></b></span>
 						</div>
 					</div>
 				</div>
-				<br />
 				<div class="row">
 					<div class="col-lg-12">
 						<div class="box box-primary box-solid">

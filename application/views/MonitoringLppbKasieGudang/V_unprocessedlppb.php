@@ -37,6 +37,6 @@
 </section>
 
 <script type="text/javascript">
-	var id_gd = <?php echo $gudang[0]['SECTION_ID'] ?>
+	var id_gd = <?php echo $gudang[0]['SECTION_ID'] ?>;
 </script>
 

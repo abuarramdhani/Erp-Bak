@@ -13,7 +13,7 @@
 				<div class="row">
 					<div class="col-lg-12">
 						<div class="text-left ">
-							<span><b>Detail Batch </b></span>
+							<span><b>Detail Batch <?php echo $detailLppb[0]['GROUP_BATCH']?></b></span>
 							<input type="hidden" id="batch_number" name="batch_number" value="<?php echo $detailLppb[0]['BATCH_NUMBER']?>" >
 						</div>
 					</div>
@@ -26,7 +26,8 @@
 						<div class="box box-primary box-solid">
 							<div class="box-body">
 								<div class="col-md-12">
-									<span>Jumlah Data : <b><?php echo $jml[0]['JUMLAH_DATA']?></b></span>
+									<span>Jumlah Data  : <b><?php echo $jml[0]['JUMLAH_DATA']?></b></span><br>
+									<span>Batch Number : <b><?php echo $detailLppb[0]['BATCH_NUMBER']?></b></span>
 									<div ><!-- //class="table-responsive text-nowrap" -->
 											<table style="overflow:auto;" class="table table-striped table-bordered table-hover text-center dtTableMl dataTable no-footer">
 												<thead style="vertical-align: middle;"> 
@@ -72,9 +73,9 @@
 										</table>
 									</div>
 									<div class="col-md-2 pull-right">
-										<a href="<?php echo base_url('MonitoringLppbAkuntansi/Unprocess/')?>">
+										<!-- <a href="<?php echo base_url('MonitoringLppbAkuntansi/Unprocess/')?>">
 										<button type="button" class="btn btn-primary" style="margin-top: 10px">Back</button>
-										</a>
+										</a> -->
 										<button id="btnAkuntansii" type="submit" disabled="disabled" name="submit_action" class="btn btn-primary pull-right" style="margin-top: 10px" >Save</button>
 									</div>
 								</div>

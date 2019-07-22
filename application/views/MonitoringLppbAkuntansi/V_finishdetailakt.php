@@ -24,7 +24,8 @@
 								<div class="box box-primary box-solid">
 									<div class="box-body">
 										<div class="col-md-12">
-											<span>Jumlah Data : <b><?php echo $jml[0]['JUMLAH_DATA']?></b></span>
+											<span>Jumlah Data  : <b><?php echo $jml[0]['JUMLAH_DATA']?></b></span><br>
+											<span>Batch Number : <b><?php echo $detailLppb[0]['BATCH_NUMBER']?></b></span>
 											<div>
 												<table class="table table-bordered table-hover text-center dtTableMl">
 													<thead style="vertical-align: middle;"> 
@@ -63,9 +64,9 @@
 													</table>
 												</div>
 												<div class="col-md-2 pull-right">
-													<a href="<?php echo base_url('MonitoringLppbAkuntansi/Finish/')?>">
+													<!-- <a href="<?php echo base_url('MonitoringLppbAkuntansi/Finish/')?>">
 														<button type="button" id="" class="btn btn-primary pull-right" style="margin-top: 10px">Back</button>
-													</a>
+													</a> -->
 												</div>
 											</div>
 										</div>

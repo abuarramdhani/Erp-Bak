@@ -1,36 +1,22 @@
-<style type="text/css">
-	#filter tr td{padding: 5px}
-	.text-left span {
-		font-size: 36px
-	}
-	#tbFilterPO tr td,#tbInvoice tr td{padding: 5px}
-</style>
+<div class="box box-primary box-solid">
+ 							<div class="box-body">
+
 <form method="POST" action="<?php echo base_url('MonitoringLppbKasieGudang/Unprocess/saveActionLppbNumber')?>">
-<section class="content">
-	<div class="inner" >
-		<div class="row">
-			<div class="col-lg-12">
-				<div class="row">
-					<div class="col-lg-12">
-						<div class="text-left ">
-							<span><b>Detail Lppb <?php echo $lppb[0]['GROUP_BATCH']?></b></span>
-							<input type="hidden" name="batch_number" value="<?php echo $lppb[0]['BATCH_NUMBER']?>">
-						<input type="hidden" name="batch_detail_id" value="<?php echo $lppb[0]['BATCH_DETAIL_ID']?>">
-						</div>
-					</div>
-				</div>
-				<br />
-				<div class="row">
-					<div class="col-lg-12">
-						<div class="box box-primary box-solid">
-							<div class="box-body">
-						<div class="box box-primary box-solid">
-							<div class="box-body">
-								<div class="col-md-12">
-									<span>Jumlah Data : <b><?php echo $jml[0]['JUMLAH_DATA']?></b></span><br>
-									<span>Batch Number : <b><?php echo $lppb[0]['BATCH_NUMBER']?></b></span>
-									<div>
-											<table class="table table-bordered table-hover text-center dtTableMl">
+<input type="hidden" name="batch_number" value="<?php echo $lppb[0]['BATCH_NUMBER']?>">
+	<table class="col-md-12" style="margin-bottom: 20px">
+		<tr>
+			<td style="padding:0 0 0 10px">
+			<span><b>Jumlah Data </b><span style="padding: 0 10px 0 20px">:</span><?php echo $jml[0]['JUMLAH_DATA']?></span>
+ 			</td>
+ 		</tr>
+
+ 		<tr>
+			<td style="padding:0 0 0 10px">
+			<span><b>Batch Number</b><span style="padding: 0 8px 0 12px">:</span><?php echo $lppb[0]['BATCH_NUMBER']?></span>
+ 			</td>
+ 		</tr>
+</table>
+ <table class="table table-bordered table-hover text-center dtTableMl">
 												<thead style="vertical-align: middle;"> 
 													<tr class="bg-primary">
 														<td class="text-center">No</td>
@@ -47,8 +33,6 @@
 												</thead>
 												<tbody>
 													<?php $no=1; foreach($lppb as $key => $p) {  
-														// $removedisable=''; if ($no==count($lppb)) { 
-														// 	$removedisable="$('#btnsavekasie').removeAttr('disabled');"; } 
 														?>
 													<tr <?=  $p['BATCH_DETAIL_ID']?>>
 														<td>
@@ -68,7 +52,7 @@
 															<button class="btn btn-danger" onclick="actionLppbKasieGudang(this);<?php echo $removedisable; ?>" value="4" name="proses" data-id="<?= $p['BATCH_DETAIL_ID']?>">Not Ok</button>
 															<?php } ?>
 														</td> -->
-														<td><?php echo $p['TANGGAL_LPPB']?><?php echo $p['BATCH_DETAIL_ID']?></td>
+														<td><?php echo $p['TANGGAL_LPPB']?></td>
 														<td class="no_po"><?php echo $p['PO_NUMBER']?></td>
 														<td class="batchdid_<?php echo $p['BATCH_DETAIL_ID']?>">
 															<?php if ($p['STATUS'] == 3 OR $p['STATUS'] == 6) { ?>
@@ -86,18 +70,17 @@
 
 														<td class="batchdid_<?php echo $p['BATCH_DETAIL_ID']?>">
 															<?php echo $p['REASON']?>
-														<input type="text" value="<?php echo $p['REASON']?>" style="display: none; width: 100px" class="form-control txtAlasan" name="alasan_reject" id="txtTolak_<?php echo $p['BATCH_DETAIL_ID']?>">
+														<input type="text" value="<?php echo $p['REASON']?>" style="display: none; width: 100px" class="form-control txtAlasan" name="alasan_reject[]" id="txtTolak_<?php echo $p['BATCH_DETAIL_ID']?>">
 															<input type="hidden" name="id[]" value="<?php echo $p['BATCH_DETAIL_ID']?>"></td>
 													</tr>
 												<?php $no++; } ?>
 											</tbody>
 										</table>
-									</div>
-									<div class="col-md-3">
+											<div class="col-md-3">
 										<button type="button" class="btn btn-danger pull-left " value="4" style="margin-top: 10px" onclick="approveLppbByKasie(4);">Reject</button>
 										<button type="button" class="btn btn-success pull-right " value="3" style="margin-top: 10px" onclick="approveLppbByKasie(3);">Approve</button>
 										</table>
-											</div>
+									</div>
 									<div class="col-md-2 pull-right">
 										<!-- <a href="<?php echo base_url('MonitoringLppbKasieGudang/Unprocess/')?>">
 										<button type="button" id="" class="btn btn-primary" style="margin-top: 10px">Back</button>
@@ -107,17 +90,29 @@
 								</div>
 							</div>
 						</div>
-					</div>
-				</div>
-			</div>
-		</div>
-	</div>
-</section>
-</form>
-
-
+		</form>
 
 <script type="text/javascript">
-	var id_gd;
-	var txtTolak = "txtTolak_<?php echo $p['BATCH_DETAIL_ID']?>";
+	$('.chkAllLppb').iCheck({
+	  checkboxClass: 'icheckbox_square-blue',
+	})
+	$('.chkAllLppbNumber').iCheck({
+	  checkboxClass: 'icheckbox_square-blue',
+	})
+
+	$(document).on('ifChanged', '.chkAllLppb', function(event) {
+		if ($('.chkAllLppb').iCheck('update')[0].checked) {
+			// alert('satu');
+			$('.chkAllLppbNumber').each(function () {
+				// $(this).prop('checked',true);
+				$(this).iCheck('check');
+			});
+		}else{
+			$('.chkAllLppbNumber').each(function () {
+				// $(this).prop('checked',false);
+				$(this).iCheck('uncheck');
+			});
+			// alert('dua');
+		};
+	})
 </script>

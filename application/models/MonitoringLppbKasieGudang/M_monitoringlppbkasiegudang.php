@@ -193,12 +193,16 @@ class M_monitoringlppbkasiegudang extends CI_Model {
                   status_date = to_date('$status_date', 'DD/MM/YYYY HH24:MI:SS')
                   WHERE status = '3'
                   AND batch_number = '$batch_number'";
+        // echo "<pre>";
+        // print_r($query);
         $run = $oracle->query($query);
     }
     public function submitToKasieAkuntansi2($action_date,$batch_detail_id){
         $oracle = $this->load->database('oracle',true);
         $query = "INSERT INTO khs_lppb_action_detail_1 (status, action_date, batch_detail_id)
                     VALUES ('5', to_date('$action_date', 'DD/MM/YYYY HH24:MI:SS'), '$batch_detail_id')";
+        // echo "<pre>";
+        // print_r($query);            
         $run = $oracle->query($query);
     }
     public function getBatchDetailId($batch_number)

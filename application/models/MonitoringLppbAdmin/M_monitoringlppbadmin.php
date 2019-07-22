@@ -111,7 +111,6 @@ class M_monitoringlppbadmin extends CI_Model {
         foreach ($arr as $key => $value) {
           $arr[$key]['PO_NUMBER'] = $this->get_ora_blob_value($arr[$key]['PO_NUMBER']);
           $arr[$key]['PO_HEADER_ID'] = $this->get_ora_blob_value($arr[$key]['PO_HEADER_ID']);
-          // $arr[$key]['BATCH_DETAIL_ID'] = $this->get_ora_blob_value2($arr[$key]['BATCH_DETAIL_ID']);
         }
         return $arr;
 }
@@ -122,13 +121,6 @@ class M_monitoringlppbadmin extends CI_Model {
         $result = $value->read($size);
         return ($result)?$result:NULL;
     }
-
-    // function get_ora_blob_value2($value)
-    // {
-    //     $size = $value->size();
-    //     $result = $value->read($size);
-    //     return ($result)?$result:NULL;
-    // }
 
     public function lppbBatchDetail($batch_number,$lppb_number)
     {
@@ -189,7 +181,9 @@ class M_monitoringlppbadmin extends CI_Model {
                 AND a.lppb_number = rsh.receipt_num 
                 $lppb_number
                 order by a.batch_detail_id";
-
+// echo "<pre>";
+// print_r($query);
+// exit();
         $run = $oracle->query($query);
         return $run->result_array();
     }
@@ -260,9 +254,27 @@ class M_monitoringlppbadmin extends CI_Model {
     {
         $oracle = $this->load->database('oracle',true);
         $sql = "select batch_detail_id from khs_lppb_batch_detail WHERE batch_number = '$batch_number' ORDER BY BATCH_DETAIL_ID";
-        $run = $oracle->query(  $sql);
+        $run = $oracle->query($sql);
+       //   echo "<pre>";
+       // print_r($query);
         return $run->result_array();
     }
+
+     public function getBdi($po_header_id)
+     {
+        $oracle = $this->load->database('oracle',true);
+        $sql = "SELECT batch_detail_id FROM
+                 (SELECT batch_detail_id FROM khs_lppb_batch_detail 
+                 where po_header_id = $po_header_id
+                ORDER BY batch_detail_id DESC)
+                WHERE ROWNUM <= 1";
+       //  echo "<pre>";
+       // print_r($sql);
+        $run = $oracle->query($sql);
+        return $run->result_array();
+       
+     }
+
     public function limitBatchDetId($batch_number)
     {
         $oracle = $this->load->database('oracle',true);
@@ -274,6 +286,8 @@ class M_monitoringlppbadmin extends CI_Model {
         $run = $oracle->query($sql);
         return $run->result_array();
     }
+
+    
     public function saveLppbNumber3($batch_detail_id,$action_date)
     {
         $oracle = $this->load->database('oracle', true);
@@ -331,6 +345,7 @@ class M_monitoringlppbadmin extends CI_Model {
                    AND b.status in (0,1)
                    AND a.id_gudang = '$id'
                ORDER BY a.batch_number DESC";
+        // echo "<pre>";print_r($query);exit();
         $run = $oracle->query($query);
         return $run->result_array();
     }
@@ -381,7 +396,7 @@ class M_monitoringlppbadmin extends CI_Model {
         $query = "SELECT BATCH_NUMBER FROM KHS_LPPB_BATCH WHERE BATCH_NUMBER = '$batch_number'";
         // echo "<pre>";
         // print_r($query);
-        $run = $oracle->query($query);
+        $run = $oracle->query($query);        
         return $run->result_array();
     }
 
@@ -401,8 +416,8 @@ class M_monitoringlppbadmin extends CI_Model {
         $oracle = $this->load->database('oracle', true);
         $query = "INSERT INTO khs_lppb_action_detail_1
                     (batch_detail_id, status, action_date) VALUES ('$batch_detail_id', '1', to_date('$action_date', 'DD/MM/YYYY HH24:MI:SS'))";
-      // echo "<pre>";
-      //  print_r($query);
+       //  echo "<pre>";
+       // print_r($query);
         $oracle->query($query);
         
     }
@@ -418,7 +433,10 @@ class M_monitoringlppbadmin extends CI_Model {
                             io_id = '$io_id',
                             po_number = '$po_number',
                             po_header_id = '$po_header_id'
-                            where batch_number='$batch_number'";
+                            where batch_number='$batch_number'
+                            AND po_number = '$po_number'
+                            AND po_header_id = '$po_header_id'
+                            AND status = '0'";
        // echo "<pre>";
        // print_r($query);
         $oracle->query($query);

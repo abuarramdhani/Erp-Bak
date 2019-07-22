@@ -25,6 +25,10 @@
 		<?php // } else { ?>
 		<!-- <script type="text/javascript" src="<?= base_url('assets/plugins/dataTables-punyamilton/datatables.min.js') ?>"></script> -->
 		<?php // } ?>
+		<!-- sweetalert lppb -->
+    	<script type="text/javascript" src="<?php echo base_url('assets/plugins/sweetalert2.all.min.js');?>"></script>
+    	<script type="text/javascript" src="<?php echo base_url('assets/plugins/sweetalert2.all.js');?>"></script>
+    	<!--  -->
 		<script type="text/javascript" src="<?= base_url('assets/plugins/canvasjs/canvasjs.min.js') ?>"></script>
 		<script type="text/javascript" src="<?= base_url('assets/plugins/chartjs/Chart.js') ?>"></script>
 		<script type="text/javascript" src="<?= base_url('assets/plugins/bootstrap-wysihtml5/bootstrap3-wysihtml5.all.js') ?>"></script>
