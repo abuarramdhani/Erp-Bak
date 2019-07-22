@@ -1,11 +1,11 @@
 <?php
 defined('BASEPATH') or exit('No Direct Script Access Allowed');
 /**
- * 
+ *
  */
 class M_tarikfingerspot extends CI_MODEL
 {
-	
+
 	function __construct()
 	{
 		parent::__construct();
@@ -22,15 +22,15 @@ class M_tarikfingerspot extends CI_MODEL
 		$data = array();
 		if ('Transfer'==$status || 'Transfer178'==$status || 'Transfer179'==$status  || 'Transfer207'==$status )
 		{
-			$sql = "select cast(scan_date as date) tanggal, pin noind_baru,cast(scan_date as time) waktu, sn 
-		from fin_pro.att_log 
+			$sql = "select cast(scan_date as date) tanggal, pin noind_baru,cast(scan_date as time) waktu, sn
+		from fin_pro.att_log
 		where cast(scan_date as date) >= cast('$periode' as date)
 		order by scan_date,pin";
 		}
 		else
 		{
-			$sql = "select cast(scan_date as date) tanggal, pin noind_baru,cast(scan_date as time) waktu, sn 
-		from fin_pro.att_log 
+			$sql = "select cast(scan_date as date) tanggal, pin noind_baru,cast(scan_date as time) waktu, sn
+		from fin_pro.att_log
 		where cast(scan_date as date) = cast('$periode' as date)
 		order by scan_date,pin";
 		}
@@ -58,12 +58,12 @@ class M_tarikfingerspot extends CI_MODEL
 		{
 			$a = $this->finger178->query($sql);
 			$b = $this->finger179->query($sql);
-			$c = $this->finger207->query($sql);					
+			$c = $this->finger207->query($sql);
 			$d = $this->finger->query($sql);
-			
+
 			$a = $a->result_array();
 			$b = $b->result_array();
-			$c = $c->result_array();					
+			$c = $c->result_array();
 			$d = $d->result_array();
 
 			$resFinger=array_merge($a,$b,$c,$d);
@@ -71,10 +71,10 @@ class M_tarikfingerspot extends CI_MODEL
 		if (!empty($resFinger)) {
 			$a = 0;
 			foreach ($resFinger as $key) {
-				$sql = "select noind,noind_baru,kodesie 
-						from hrd_khs.tpribadi 
+				$sql = "select noind,noind_baru,kodesie
+						from hrd_khs.tpribadi
 						where noind_baru not like '  %'
-						and cast(noind_baru as integer) = ".$key['noind_baru']." 
+						and cast(noind_baru as integer) = ".$key['noind_baru']."
 						and keluar='0'
 					";
 				$resultHrd = $this->personalia->query($sql);
@@ -86,20 +86,21 @@ class M_tarikfingerspot extends CI_MODEL
 							'waktu' => $key['waktu'],
 							'noind' => $value['noind'],
 							'kodesie' => $value['kodesie'],
-							'noind_baru' => $value['noind_baru']
+							'noind_baru' => $value['noind_baru'],
+							'nomor_sn' => $value['sn']
 						);
-						
+
 					}
 				}
 				else
 				{
 				    //tarik data pekerja yang sudah keluar dengan menggunakan data nomor induk terakhir.
-				   $sql = "select noind,noind_baru,kodesie 
-						from hrd_khs.tpribadi 
+				   $sql = "select noind,noind_baru,kodesie
+						from hrd_khs.tpribadi
 						where noind_baru not like '  %'
-						and cast(noind_baru as integer) = ".$key['noind_baru']." 
+						and cast(noind_baru as integer) = ".$key['noind_baru']."
 						order by tglkeluar desc limit 1
-					"; 
+					";
 					$resultHrdkeluar = $this->personalia->query($sql);
 			    	$resHrdkeluar = $resultHrdkeluar->result_array();
 			    	foreach ($resHrdkeluar as $value) {
@@ -108,15 +109,16 @@ class M_tarikfingerspot extends CI_MODEL
 							'waktu' => $key['waktu'],
 							'noind' => $value['noind'],
 							'kodesie' => $value['kodesie'],
-							'noind_baru' => $value['noind_baru']
+							'noind_baru' => $value['noind_baru'],
+							'nomor_sn' => $value['sn']
 						);
-						
+
 					}
-				    
+
 				}
 
-				$sql = "select * 
-						from db_datapresensi.tb_device 
+				$sql = "select *
+						from db_datapresensi.tb_device
 						where device_sn = '".$key['sn']."' ";
 				$resultDev = $this->quick->query($sql);
 				$resDev = $resultDev->result_array();
@@ -133,9 +135,9 @@ class M_tarikfingerspot extends CI_MODEL
 	}
 
 	public function cekPresensiL($data){
-		$sql = "select * from \"Presensi\".tprs_shift2 
-				where noind = '".$data['noind']."' 
-				and tanggal = '".$data['tanggal']."' 
+		$sql = "select * from \"Presensi\".tprs_shift2
+				where noind = '".$data['noind']."'
+				and tanggal = '".$data['tanggal']."'
 				and waktu = '".$data['waktu']."' ";
 		$result = $this->personalia->query($sql);
 		$n = $result->num_rows();
@@ -144,9 +146,9 @@ class M_tarikfingerspot extends CI_MODEL
 	}
 
 	public function cekPresensi($data){
-		$sql = "select * from \"FrontPresensi\".tpresensi 
-				where noind = '".$data['noind']."' 
-				and tanggal = '".$data['tanggal']."' 
+		$sql = "select * from \"FrontPresensi\".tpresensi
+				where noind = '".$data['noind']."'
+				and tanggal = '".$data['tanggal']."'
 				and waktu = '".$data['waktu']."' ";
 		$result = $this->personalia->query($sql);
 		$n = $result->num_rows();
