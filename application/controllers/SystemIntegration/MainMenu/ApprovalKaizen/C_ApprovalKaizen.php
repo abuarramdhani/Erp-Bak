@@ -1,5 +1,6 @@
 <?php defined('BASEPATH')OR die('No direct script access allowed');
-
+ini_set('memory_limit', '1024M');
+set_time_limit(0);
 class C_ApprovalKaizen extends CI_Controller {
 	
 	function __construct() {
@@ -239,8 +240,10 @@ class C_ApprovalKaizen extends CI_Controller {
 			} else if($level == 3 && (array_key_exists(4, $NoindApprover) === true)) {
 				$updateReady = $this->M_approvalkaizen->updateReady(4, $kaizen_id, 1);
 			}
+			
 			$this->EmailAlert($kaizen_id, $status);
 			$this->sendPidgin($kaizen_id, $status);
+			
 			if ($status == '3') {
 			$this->EmailAlertAproval($kaizen_id, $status);
 			$this->sendPidginAprover($kaizen_id, $status);
@@ -512,7 +515,7 @@ class C_ApprovalKaizen extends CI_Controller {
 			$body = sprintf($getEmailTemplate[0]['body'], trim($getKaizen[0]['pencetus']), trim($approverName), trim($getKaizen[0]['judul']), trim($link));
 			$body = str_replace('<br/>', "\n", $body);
 			$pidgin = new Sendmessage;
-			@($pidgin->send($userAccount," \n ".$subject." \n ".$body));
+			$pidgin->send($userAccount," \n ".$subject." \n ".$body);
 		}
 	}
 
@@ -552,10 +555,12 @@ class C_ApprovalKaizen extends CI_Controller {
 			}
 			$getEmailTemplate = $this->M_submit->getPidginTemplate($mailStatus);
 			$subject = $getEmailTemplate[0]['subject'];
-			$body = sprintf($getEmailTemplate[0]['body'], trim($getKaizen[0]['pencetus']), trim($approverName), trim($getKaizen[0]['judul']), trim($link));
+			$body = sprintf($getEmailTemplate[0]['body'], trim($getKaizen[0]['pencetus']), trim($getKaizen[0]['judul']), trim($link));
 			$body = str_replace('<br/>', "\n", $body);
+			// echo "<h1 style='color: red'>sampai sini</h1>".$userAccount."<h1 style='color: red'>awas</h1>".$subject."<h1 style='color: red'>awas</h1>".$body;exit();
+			
 			$pidgin = new Sendmessage;
-			@($pidgin->send($userAccount," \n ".$subject." \n ".$body));
+			$pidgin->send($userAccount," \n ".$subject." \n ".$body);
 		}
 	}
 
