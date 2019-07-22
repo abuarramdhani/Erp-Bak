@@ -11,7 +11,7 @@ class Sendmessage
 	// $ci->send();
 	function send($email,$mes)
 	{
-		include 'XMPPHP/XMPP.php';
+		include_once 'XMPPHP/XMPP.php';
 		$conn = new XMPPHP_XMPP('chat.quick.com', 5222, 'notifications', '123456', 'kaizenQuick', 'chat.quick.com', $printlog = false, $loglevel = XMPPHP_Log::LEVEL_INFO);
 
 		try {
