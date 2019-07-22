@@ -158,6 +158,7 @@
 		<script type="text/javascript" src="<?= base_url('assets/js/customMPBG.js') ?>"></script>
 		<script type="text/javascript" src="<?= base_url('assets/js/customSGA.js') ?>"></script>
 		<script type="text/javascript" src="<?= base_url('assets/js/customTB.js') ?>"></script>
+		<script type="text/javascript" src="<?= base_url('assets/js/customPurM.js') ?>"></script>
 		<!--<script type="text/javascript" src="<?= base_url('assets/js/customOSP.js') ?>"></script>-->
 		<!--<script type="text/javascript" src="<?= base_url('assets/js/customHWM.js') ?>"></script>-->
 		<!-- END OF CUSTOM JAVASCRIPT | DO NOT EDIT!! -->
