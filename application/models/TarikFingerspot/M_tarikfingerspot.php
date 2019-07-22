@@ -86,7 +86,8 @@ class M_tarikfingerspot extends CI_MODEL
 							'waktu' => $key['waktu'],
 							'noind' => $value['noind'],
 							'kodesie' => $value['kodesie'],
-							'noind_baru' => $value['noind_baru']
+							'noind_baru' => $value['noind_baru'],
+							'nomor_sn' => $key['sn']
 						);
 
 					}
@@ -108,7 +109,8 @@ class M_tarikfingerspot extends CI_MODEL
 							'waktu' => $key['waktu'],
 							'noind' => $value['noind'],
 							'kodesie' => $value['kodesie'],
-							'noind_baru' => $value['noind_baru']
+							'noind_baru' => $value['noind_baru'],
+							'nomor_sn' => $key['sn']
 						);
 
 					}
