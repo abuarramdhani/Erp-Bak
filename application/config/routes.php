@@ -2688,3 +2688,16 @@ $route['LkhPekerjaBatch/TargetWaktu/Unapproved'] = 'LaporanKerjaHarian/PekerjaBa
 $route['LkhPekerjaBatch/TargetWaktu/Rejected'] = 'LaporanKerjaHarian/PekerjaBatch/TargetWaktu/C_ListData/index/Rejected';
 $route['LkhPekerjaBatch/TargetWaktu/Approved'] = 'LaporanKerjaHarian/PekerjaBatch/TargetWaktu/C_ListData/index/Approved';
 $route['LkhPekerjaBatch/TargetWaktu/ListData'] = 'LaporanKerjaHarian/PekerjaBatch/TargetWaktu/C_ListData/index/ListData';
+
+// ----------------------------------------------NONCONFORMITY----------------------------------------------------//
+$route['PurchaseManagementGudang'] = 'PurchaseManagementGudang/C_PurchaseManagementGudang';
+$route['PurchaseManagementGudang/NonConformity'] = 'PurchaseManagementGudang/MainMenu/C_NonConformity';
+$route['PurchaseManagementGudang/NonConformity/(:any)'] = 'PurchaseManagementGudang/MainMenu/C_NonConformity/$1';
+$route['PurchaseManagementGudang/NonConformity/(:any)/(:any)'] = 'PurchaseManagementGudang/MainMenu/C_NonConformity/$1/$2';
+$route['PurchaseManagementGudang/NonConformity/(:any)/(:any)/(:any)'] = 'PurchaseManagementGudang/MainMenu/C_NonConformity/$1/$2/$3';
+$route['PurchaseManagementGudang/loginAndroid'] = 'PurchaseManagementGudang/MainMenu/C_NonConformityAndroid/loginAndroid';
+$route['PurchaseManagementGudang/getCaseAndroid'] = 'PurchaseManagementGudang/MainMenu/C_NonConformityAndroid/getCaseAndroid';
+$route['PurchaseManagementGudang/submitSourceAndroid'] = 'PurchaseManagementGudang/MainMenu/C_NonConformityAndroid/submitSourceAndroid';
+$route['PurchaseManagementGudang/submitSource'] = 'PurchaseManagementGudang/MainMenu/C_NonConformityAndroid/submitSource';
+$route['PurchaseManagementGudang/(:any)'] = 'PurchaseManagementGudang/MainMenu/C_NonConformityAndroid/$1';
+$route['PurchaseManagementGudang/(:any)/(:any)'] = 'PurchaseManagementGudang/MainMenu/C_NonConformityAndroid/$1/$2';
