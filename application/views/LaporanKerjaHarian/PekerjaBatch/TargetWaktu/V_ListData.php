@@ -39,11 +39,11 @@
         z-index: 999;
     }
     .fade-transition {
-        -webkit-transition: background-color 250ms linear;
-        -moz-transition: background-color 250ms linear;
-        -o-transition: background-color 250ms linear;
-        -ms-transition: background-color 250ms linear;
-        transition: background-color 250ms linear;
+        -webkit-transition: background-color 1000ms linear;
+        -moz-transition: background-color 1000ms linear;
+        -o-transition: background-color 1000ms linear;
+        -ms-transition: background-color 1000ms linear;
+        transition: background-color 1000ms linear;
     }
 </style>
 <section class="content">
@@ -63,10 +63,10 @@
                         <div class="box box-primary box-solid">
                             <div class="box-header">
                                 <div class="col-lg-9" style="display: flex; justify-content: flex-start;">
-                                    <div class="col-md-2">
+                                    <div class="col-lg-2 text-left">
                                         <label style="margin-top: 6px;" class="control-label">Pilih Periode :</label>
                                     </div>
-                                    <div class="col-md-5">
+                                    <div class="col-lg-5 text-left">
                                         <div class="input-group date" id="datepicker" data-provide="datepicker" data-date="<?= $filterPeriode ?>" style="width: 300px;">
                                             <div class="input-group-addon">
                                                 <span class="glyphicon glyphicon-th"></span>
@@ -105,15 +105,12 @@
                                         <label style="margin-top: 6px;" class="control-label">Pilih Pekerja :</label>
                                     </div>
                                     <div class="col-md-5">
-                                        <select style="width: 300px; color: black; display: none;" class="form-control" id="slcStatus" required disabled>
-                                            <option value="0" selected>Aktif (Default)</option>
-                                        </select>
                                         <div class="form-group">
                                             <div class="input-group"style="width: 300px; color: black;">
                                                 <div class="input-group-addon">
                                                     <i class="glyphicon glyphicon-user"></i>
                                                 </div>
-                                                <select id="filterPekerja" class="form-control" multiple="multiple" required>
+                                                <select id="filterPekerja" class="form-control" multiple="multiple">
                                                     <?php
                                                         if(!empty($filterPekerja)) {
                                                             foreach((array) $filterPekerja as $i) {
@@ -150,7 +147,7 @@
                                                 <th class="text-center">Pekerja</th>
                                                 <th class="text-center">Record Pekerjaan</th>
                                                 <th class="text-center">Record Kondite</th>
-                                                <th class="text-center">Status</th>
+                                                <th style="text-align: center; width: 120px;">Status</th>
 											</tr>
                                         </thead>
                                     </table>
@@ -224,7 +221,7 @@
     </div>
 </div>
 <script type="text/javascript">
-    var table;
+    var table = null, tableInfo = null;
     $(function() {
         table = $('#tblLkhPekerjaListData').DataTable({
             dom: '<"dataTable_Button"B><"dataTable_Filter"f>rt<"dataTable_Information"i><"dataTable_Pagination"p>',
@@ -334,6 +331,7 @@
             responsive: true,
             searchDelay: 500,
             drawCallback: function(x) {
+                tableInfo = this.api().page.info();
                 $('#checkbox-all').iCheck('uncheck');
                 initCheckbox();
             },
@@ -349,6 +347,9 @@
                         break;
                     case 'Rejected':
                         $('td', row).eq(5).css({'background-color': '#FF5252', 'color': 'white'});
+                        break;
+                    default:
+                        $('td', row).eq(5).css({'background-color': '#64b5f6', 'color': 'white'});
                         break;
                 }
             },
@@ -366,7 +367,8 @@
             ],
             ajax: {
                 url : "<?= base_url('LkhPekerjaBatch/TargetWaktu/getList'); ?>",
-                type: "POST",
+                type: 'POST',
+                dataType: 'json',
                 data: {
                     type: '<?= $type ?>',
                     periode: $('#currentLkhPekerjaData1').val(),
@@ -377,16 +379,17 @@
     });
 
     function reloadDataTables() {
-        if(table) table.ajax.reload(null, false);
+        if(table) $('#tblLkhPekerjaListData').DataTable().ajax.reload(null, false);
     }
 
     function openKirimApprovalModal() {
+        if(!table) return;
         var valid = false, dataCount = 0;
-        for(var i = 0; i <= table.page.info().recordsTotal; i++) {
+        for(var i = 0; i <= tableInfo.recordsDisplay; i++) {
             if($("#checkbox-row-" + i).prop("checked")) { valid = true; dataCount++; }
         }
         if(valid) {
-            $('#approvalDataCount').text('Memilih ' + dataCount + ' data dari total ' + table.page.info().recordsTotal + ' data LKH Pekerja.');
+            $('#approvalDataCount').text('Memilih ' + dataCount + ' data dari total ' + tableInfo.recordsDisplay + ' data LKH Pekerja.');
             $('#modalKirimApproval').modal('show');
             $('#btnConfirmKirimApproval').off('click').click(function() {
                 if($('#slcApprover1').val() && $('#slcApprover2').val()) {
@@ -403,7 +406,7 @@
     function kirimApproval() {
         var employee_code = '', periode = '', approver1 = $('#slcApprover1').val(), approver2 = $('#slcApprover2').val();
         $('#btnConfirmKirimApproval').attr('disabled', true);
-        for(var i = 0; i <= table.page.info().recordsTotal; i++) {
+        for(var i = 0; i <= tableInfo.recordsDisplay; i++) {
             if($("#checkbox-row-" + i).prop("checked") == true && $('#employee-record-pekerjaan-row-' + i).text() != '-' && $('#employee-record-kondite-row-' + i).text() != '-') {
                 employee_code += $('#employee-code-row-' + i).val() + ', ';
                 periode += getFormattedPeriode($('#periode-row-' + i).val()) + ', ';
@@ -424,15 +427,17 @@
                 success: function(response) {
                     $('#btnConfirmKirimApproval').attr('disabled', false);
                     if(response.success) {
-                        $('#checkbox-all').iCheck('uncheck');
-                        for(var i = 0; i <= table.page.info().recordsTotal; i++) {
+                        for(var i = 0; i <= tableInfo.recordsDisplay; i++) {
                             if($('#checkbox-row-' + i).prop('checked')) {
                                 $('#checkbox-row-' + i).iCheck('uncheck');
-                                $('#checkbox-row-' + i).attr('disabled', true);
+                                $('#checkbox-row-' + i).iCheck('disable');
                                 $('#employee-status-row-' + i).text('Request Approval');
                                 $('#employee-status-row-' + i).parent().css('background-color', '#ffb74d');
+                                $('#employee-delete-row-' + i).attr('disabled', true);
+                                $('#employee-delete-row-' + i).removeAttr('onclick');
                             }
                         }
+                        $('#checkbox-all').iCheck('uncheck');
                         $.toaster(response.message, '', 'success');
                         $('#modalKirimApproval').modal('hide');
                     } else {
@@ -451,15 +456,16 @@
     }
 
     function openDeleteDataBatchModal() {
+        if(!table) return;
         var valid = false, dataCount = 0;
-        for(var i = 0; i <= table.page.info().recordsTotal; i++) {
+        for(var i = 0; i <= tableInfo.recordsDisplay; i++) {
             if($("#checkbox-row-" + i).prop("checked")) {
                 valid = true;
                 dataCount++;
             }
         }
         if(valid) {
-            $('#deleteDataBatchCount').text('Anda yakin ingin menghapus ' + dataCount + ' data dari total ' + table.page.info().recordsTotal + ' data kegiatan LKH Pekerja ?');
+            $('#deleteDataBatchCount').text('Anda yakin ingin menghapus ' + dataCount + ' data dari total ' + tableInfo.recordsDisplay + ' data kegiatan LKH Pekerja ?');
             $('#modalDeleteDataBatch').modal('show');
             $('#btnConfirmDeleteBatch').off('click').click(function() {
                 deleteDataKegiatanBatch();
@@ -472,7 +478,7 @@
     function deleteDataKegiatanBatch() {
         var employee_code = '', periode = '';
         $('#btnConfirmDeleteBatch').attr('disabled', true);
-        for(var i = 0; i <= table.page.info().recordsTotal; i++) {
+        for(var i = 0; i <= tableInfo.recordsDisplay; i++) {
             if($("#checkbox-row-" + i).prop("checked") == true && $('#employee-record-pekerjaan-row-' + i).text() != '-' && $('#employee-record-kondite-row-' + i).text() != '-') {
                 employee_code += $('#employee-code-row-' + i).val() + ', ';
                 periode += $('#periode-row-' + i).val() + ', ';
@@ -492,7 +498,7 @@
                     $('#btnConfirmDeleteBatch').attr('disabled', false);
                     if(response.success) {
                         $('#checkbox-all').iCheck('uncheck');
-                        for(var i = 0; i <= table.page.info().recordsTotal; i++) if($('#checkbox-row-' + i).prop('checked')) $('#checkbox-row-' + i).iCheck('uncheck');
+                        for(var i = 0; i <= tableInfo.recordsDisplay; i++) if($('#checkbox-row-' + i).prop('checked')) $('#checkbox-row-' + i).iCheck('uncheck');
                         $.toaster(response.message, '', 'success');
                         $('#modalDeleteDataBatch').modal('hide');
                     } else {
@@ -511,7 +517,7 @@
     }
 
     function openDeleteDataModal(row, id) {
-        if(row, id) {
+        if(table && row && id) {
             $('#deleteDataMessage').html('Anda yakin ingin menghapus data kegiatan LKH pekerja <b>' + $('#employee-name-row-'+row).text() + '</b> ?');
             $('#modalDeleteData').modal('show');
             $('#btnConfirmDelete').off('click').click(function() {
@@ -521,7 +527,7 @@
     }
 
     function deleteDataKegiatan(row, id) {
-        $('#btnDeleteData').attr('disabled', true);
+        $('#btnConfirmDelete').attr('disabled', true);
         if(row && id) {
             $.ajax({
                 url: '<?= base_url("LkhPekerjaBatch/TargetWaktu/deleteDataKegiatan"); ?>',
@@ -533,7 +539,7 @@
                     'pekerja': id
                 },
                 success: function(response) {
-                    $('#btnDeleteData').attr('disabled', false);
+                    $('#btnConfirmDelete').attr('disabled', false);
                     if(response.success) {
                         $.toaster(response.message, '', 'success');
                         $('#modalDeleteData').modal('hide');

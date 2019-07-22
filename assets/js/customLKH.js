@@ -4,7 +4,8 @@ $(function() {
         if($('#filterPeriode').val()) {
             $('#formFilterLkhPekerjaData1').attr('value', $('#filterPeriode').val());
             if($('#filterPekerja').select2('data')) {
-                var raw = $('#filterPekerja').select2('data'); var data = [];
+                var raw = $('#filterPekerja').select2('data');
+                var data = [];
                 for(let i = 0; i < raw.length; i++) data[i] = raw[i].text;
                 $('#formFilterLkhPekerjaData2').attr('value', data);
             }
@@ -15,22 +16,23 @@ $(function() {
         minimumInputLength: 3,
         allowClear: true,
         ajax: {		
-            url: baseurl + "RekapTIMSPromosiPekerja/GetNoInduk",
-            type: 'GET',
-            delay: 250,
+            url: baseurl + "LkhPekerjaBatch/TargetWaktu/getListFilterPekerja",
+            type: 'POST',
             dataType: 'json',
             data: function (params) {
                 var queryParameters = {
                     term: params.term,
-                    type: $('select#slcNoInduk').val(),
-                    stat: $('select#slcStatus').val()
+                    periode: $('#filterPeriode').val()
                 }
                 return queryParameters;
             },
             processResults: function (data) {
                 return {
                     results: $.map(data, function(obj) {
-                        return {id:obj.NoInduk, text:obj.NoInduk+' - '+obj.Nama};
+                        return {
+                            id:obj.employee_code,
+                            text:obj.employee_code + ' - ' + obj.employee_name
+                        };
                     })
                 };
             }

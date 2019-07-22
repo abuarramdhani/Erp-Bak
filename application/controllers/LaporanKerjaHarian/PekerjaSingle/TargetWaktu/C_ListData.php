@@ -18,9 +18,7 @@ class C_ListData extends CI_Controller {
 		if(empty($type)) { redirect(base_url('LkhPekerjaSingle/TargetWaktu/ListData')); }
 		$user_id = $this->session->userid;
 		$data['filterPeriode'] = (empty($this->input->post('filterPeriode'))) ? date('m/Y') : $this->input->post('filterPeriode');
-		$data['filterPekerja'] = (empty($this->input->post('filterPekerja'))) ? '' : explode(',', $this->input->post('filterPekerja'));
 		$this->session->set_flashdata('periode', $data['filterPeriode']);
-		$this->session->set_flashdata('pekerja', $data['filterPekerja']);
 		$data['UserMenu'] = $this->M_user->getUserMenu($user_id, $this->session->responsibility_id);
 		$data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id, $this->session->responsibility_id);
 		$data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id, $this->session->responsibility_id);
@@ -60,23 +58,15 @@ class C_ListData extends CI_Controller {
 	public function getList() {
 		$periodeRaw = (empty($this->input->post('periode'))) ? date('m/Y') : $this->input->post('periode');
 		$periode = explode('/', $periodeRaw);
-		$pekerja = (empty($this->input->post('pekerja'))) ? '' : $this->input->post('pekerja');
 		$type = (empty($this->input->post('type'))) ? 'listdata' : $this->input->post('type');
-		if(!empty($pekerja)) {
-			$pekerja = explode(',', $pekerja);
-			for ($i=0; $i < count($pekerja); $i++) {
-				$pekerja[$i] = explode(' - ', $pekerja[$i]);
-				$pekerja[$i] = $pekerja[$i][0];
-			}
-		}
 		$counter = 1;
 		$data = array();
-		$list = $this->M_lkhtargetwaktu->getList($periode, $pekerja, strtolower($type));
+		$list = $this->M_lkhtargetwaktu->getList($periode, strtolower($type));
 		foreach ($list as $key) {
 			$row = array();
 			$row[] = $counter.'.';
 			$row[] = "<div style='text-align: center;'><input type='checkbox' name='checkBoxDataList[]' id='checkbox-row-".$counter."' class='checkBoxDataList' ".(($key->record_pekerjaan == '-' || $key->record_kondite == '-' || $key->status != 'Draft') ? 'disabled' : '')."/></div>";
-			$row[] = "<div style='text-align: center;'><form action='".base_url('LkhPekerjaSingle/TargetWaktu/Detail')."' method='POST'><input name='filterPekerja' id='employee-code-row-".$counter."' type='text' value='".$key->employee_code."' hidden/><input name='filterPeriode' id='periode-row-".$counter."' type='text' value='".$periodeRaw."' hidden/><input name='type' type='text' value='".$key->status."' hidden/><button type='submit' class='btn btn-primary' style='margin-right: 6px;'><i class='fa fa-info-circle'></i></button><button ".(($key->record_pekerjaan == '-' || $key->record_kondite == '-' || $key->status != 'Draft') ? 'disabled' : '')." type='button' onclick='javascript:openDeleteDataModal(\"".$counter."\", \"".$key->employee_code."\");' class='btn btn-danger'><i class='fa fa-trash'></i></button></form></div>";
+			$row[] = "<div style='text-align: center;'><form action='".base_url('LkhPekerjaSingle/TargetWaktu/Detail')."' method='POST'><input name='filterPekerja' id='employee-code-row-".$counter."' type='text' value='".$key->employee_code."' hidden/><input name='filterPeriode' id='periode-row-".$counter."' type='text' value='".$periodeRaw."' hidden/><input name='type' type='text' value='".$type."' hidden/><button type='submit' class='btn btn-primary' style='margin-right: 6px;'><i class='fa fa-info-circle'></i></button><button id='employee-delete-row-".$counter."' ".(($key->record_pekerjaan == '-' || $key->record_kondite == '-' || $key->status != 'Draft') ? "disabled" : "onclick='javascript:openDeleteDataModal(\"".$counter."\", \"".$key->employee_code."\");'")." type='button' class='btn btn-danger'><i class='fa fa-trash'></i></button></form></div>";
 			$row[] = '<span id="employee-name-row-'.$counter.'">'.$key->pekerja.'</span>';
 			$row[] = '<div style="text-align: center" id="employee-record-pekerjaan-row-'.$counter.'">'.$key->record_pekerjaan.'</div>';
 			$row[] = '<div style="text-align: center" id="employee-record-kondite-row-'.$counter.'">'.$key->record_kondite.'</div>';
@@ -87,8 +77,8 @@ class C_ListData extends CI_Controller {
 		}
 		$output = array(
 			'draw' => $_POST['draw'], 
-			'recordsTotal' => $this->M_lkhtargetwaktu->getListCountAll($periode, $pekerja, strtolower($type)),
-			'recordsFiltered' => $this->M_lkhtargetwaktu->getListCountFiltered($periode, $pekerja, strtolower($type)),
+			'recordsTotal' => $this->M_lkhtargetwaktu->getListCountAll($periode, strtolower($type)),
+			'recordsFiltered' => $this->M_lkhtargetwaktu->getListCountFiltered($periode, strtolower($type)),
 			'data' => $data
 		);
 		echo json_encode($output);
