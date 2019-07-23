@@ -1,8 +1,7 @@
 <table class="table">
 	<tr>
-		<td width="20%" style="height: 85px;"> </td>
+		<td width="20%" style="height: 67px;"> </td>
 	</tr>
-
 </table>
 
 <table class="table" style=" font-size: 12px; width: 100%;">

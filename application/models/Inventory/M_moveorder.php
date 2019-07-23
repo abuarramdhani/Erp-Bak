@@ -54,6 +54,7 @@ class M_moveorder extends CI_Model
 						AND trunc(wdj.SCHEDULED_START_DATE) = '$date' --'12-NOV-18'    --parameter
 						$shift       --parameter
 						and bd.DEPARTMENT_CLASS_CODE = '$dept'         --parameter
+						ORDER BY we.WIP_ENTITY_ID ASC
 						--and we.WIP_ENTITY_NAME between 'D181100010' and 'D181100013'
 					";
 		// echo "<pre>";

@@ -126,7 +126,6 @@ class C_MoveOrder extends CI_Controller
 
 
 		$data['requirement'] = $array_terkelompok;
-
 		// echo "<pre>";
 		// print_r($data['requirement']);
 		// exit();
@@ -320,7 +319,7 @@ class C_MoveOrder extends CI_Controller
 			$pdf 				= $this->pdf->load();
 			if (in_array('SUBKT', $kodeDepartement[0])) {
 				// $pdf 				= new mPDF('utf-8',array(215,140), 0, '', 2, 2, 2,0);
-				$pdf 				= new mPDF('utf-8',array(215, 140), 0, '', 2, 2, 55.5, 35, 2, 4);
+				$pdf 				= new mPDF('utf-8',array(215, 140), 0, '', 2, 2, 48, 35, 2, 4);
 			} else {
 				$pdf 				= new mPDF('utf-8',array(215, 140), 0, '', 2, 2, 49.5, 25, 2, 4);	
 			}
@@ -404,6 +403,9 @@ class C_MoveOrder extends CI_Controller
 	}
 
 	public function createall(){
+		// echo "<pre>";
+		// print_r ($_POST);
+		// exit();
 		$nama_satu = '';
 		$nama_dua = '';
 		$ip_address =  $this->input->ip_address();
@@ -422,6 +424,7 @@ class C_MoveOrder extends CI_Controller
 		$array_mo = array();
 
 		foreach ($no_job as $key => $value) {
+
 			if (strpos($value, '<>') !== false ) {
 				$no_job2		= explode('<>', $no_job[$key]);
 				$qty2			= explode('<>', $qty[$key]);
@@ -433,12 +436,16 @@ class C_MoveOrder extends CI_Controller
 				$subinv_from2	= explode('<>', $subinv_from[$key]);
 				$locator_from2	= explode('<>', $locator_from[$key]);
 				$i =1;
+				
 				if (in_array($no_job2[0], $arraySelected)){
+					// echo "sebelum check picklist <br>";
 					$checkPicklist = $this->M_MoveOrder->checkPicklist($no_job2[0]);
+					// echo "checkPicklist";print_r($checkPicklist);echo"<br>";print_r($no_job2);echo "<br>";
 					if (count($checkPicklist) > 0) {
 						foreach ($checkPicklist as $keymo => $valuemo) {
 							$no_mo = $valuemo['REQUEST_NUMBER'];
 							array_push($array_mo, $no_mo);
+							// ECHO "tinggal cetak jika sudah ada mo";
 						}
 					} else {
 						$data = array();
@@ -455,7 +462,7 @@ class C_MoveOrder extends CI_Controller
 							$errQty[] = $err;
 						}
 
-						if (in_array(1, $errQty)) {
+						if (!in_array(1, $errQty)) {
 							// START
 								foreach ($no_job2 as $k => $v) {
 									$data[$subinv_from2[$k]][] = array('NO_URUT' => '',
@@ -467,7 +474,7 @@ class C_MoveOrder extends CI_Controller
 									$data2[$subinv_from2[$k]] = $locator_from2[$k];
 
 								}
-								
+
 								foreach ($data as $kSub => $vSub) {
 									$i = 1; 
 									foreach ($vSub as $key2 => $value2) {
@@ -477,24 +484,24 @@ class C_MoveOrder extends CI_Controller
 										$this->M_MoveOrder->createTemp($dataNew);
 										$i++;
 									}
-										//create MO         
+										//create MO       
 										$this->M_MoveOrder->createMO($ip_address,$job_id2[0],$subinv_to2[0],$locator_to2[0],$kSub,$data2[$kSub]);
-
 
 										//delete
 										$this->M_MoveOrder->deleteTemp($ip_address,$job_id2[0]);
 								}
 							// END
-
-								$checkPicklist = $this->M_MoveOrder->checkPicklist($job_id2[0]);
+								$checkPicklist = $this->M_MoveOrder->checkPicklist($no_job2[0]);
+								// print_r($checkPicklist);
 								foreach ($checkPicklist as $keymo => $valuemo) {
 									$no_mo = $valuemo['REQUEST_NUMBER'];
 									array_push($array_mo, $no_mo);
 								}
 							}
 						}
-					}
+					} 
 			}else{
+				// echo "masuk sini bruh";
 				if (in_array($value, $arraySelected)){
 					$checkPicklist = $this->M_MoveOrder->checkPicklist($value);
 					if (count($checkPicklist) > 0) {
@@ -515,6 +522,7 @@ class C_MoveOrder extends CI_Controller
 							}
 							$errQty[] = $err;
 						}
+						// echo "masuk kesini<br>";
 
 						if (!in_array(1, $errQty)) {
 							$data = array('NO_URUT' => 1,
@@ -523,19 +531,19 @@ class C_MoveOrder extends CI_Controller
 									'UOM' => $uom[$key],
 									'IP_ADDRESS' => $ip_address,
 									'JOB_ID' => $job_id[$key]);
-							// $data2[$subinv_from2[$k]] = $locator_from2[$k];
+							$data2[$subinv_from2[$k]] = $locator_from2[$k];
 							//create TEMP
-
 
 							$this->M_MoveOrder->createTemp($data);
 
 							//create MO
 							$this->M_MoveOrder->createMO($ip_address,$job_id[$key],$subinv_to[$key],$locator_to[$key],$subinv_from[$key],$locator_from[$key]);
 
-							//delete
+							//delete TEMP
 							$this->M_MoveOrder->deleteTemp($ip_address,$job_id[$key]);
 
 							$checkPicklist = $this->M_MoveOrder->checkPicklist($value);
+
 							foreach ($checkPicklist as $keymo => $valuemo) {
 								$no_mo = $valuemo['REQUEST_NUMBER'];
 								array_push($array_mo, $no_mo);
@@ -546,16 +554,14 @@ class C_MoveOrder extends CI_Controller
 			}
 		}
 
-		// echo "<pre>";
+		// echo "<br>";
 		// print_r($array_mo);
 		// exit();
-
 		if ($array_mo) {
 			$this->pdf($array_mo,$nama_satu,$nama_dua,$piklis);
 		}else{
 			exit('Terjadi Kesalahan :(');
 		}
-
-
 	}
+	
 }
