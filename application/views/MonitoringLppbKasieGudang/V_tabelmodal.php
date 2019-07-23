@@ -3,6 +3,7 @@
 
 <form method="POST" action="<?php echo base_url('MonitoringLppbKasieGudang/Unprocess/saveActionLppbNumber')?>">
 <input type="hidden" name="batch_number" value="<?php echo $lppb[0]['BATCH_NUMBER']?>">
+<div class="box-body">
 	<table class="col-md-12" style="margin-bottom: 20px">
 		<tr>
 			<td style="padding:0 0 0 10px">
@@ -16,7 +17,9 @@
  			</td>
  		</tr>
 </table>
- <table class="table table-bordered table-hover text-center dtTableMl">
+</div>
+ 							
+ <table class="table table-bordered table-hover text-center dtTableMl bakso">
 												<thead style="vertical-align: middle;"> 
 													<tr class="bg-primary">
 														<td class="text-center">No</td>
@@ -81,6 +84,7 @@
 										<button type="button" class="btn btn-success pull-right " value="3" style="margin-top: 10px" onclick="approveLppbByKasie(3);">Approve</button>
 										</table>
 									</div>
+									</div>
 									<div class="col-md-2 pull-right">
 										<!-- <a href="<?php echo base_url('MonitoringLppbKasieGudang/Unprocess/')?>">
 										<button type="button" id="" class="btn btn-primary" style="margin-top: 10px">Back</button>
@@ -115,4 +119,14 @@
 			// alert('dua');
 		};
 	})
+
+	$('.dtTableMl.bakso').DataTable({
+		"paging": false,
+		"info":     true,
+		"language" : {
+			"zeroRecords": " "             
+		}
+	})
+
+
 </script>
