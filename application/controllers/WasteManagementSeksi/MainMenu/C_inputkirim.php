@@ -128,7 +128,7 @@ class C_inputkirim extends CI_Controller
 		$data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id);
 		$data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id);
 
-		$data['JenisLimbah'] = $this->M_kirim->getLimJenis();
+		$data['JenisLimbah'] = $this->M_kirim->getLimJenis($kodesie);
 		$data['Seksi'] = $this->M_kirim->getSekNamaByKodesie($kodesie);
 		$data['KirimLimbah'] = $this->M_kirim->getLimKirim($plaintext_string);
 		$data['Lokasi'] = $this->M_kirim->getLokasi();
