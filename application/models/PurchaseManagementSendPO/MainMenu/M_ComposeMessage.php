@@ -1,8 +1,7 @@
 <?php
 Defined('BASEPATH') or exit('No Direct Script Access Allowed');
 
-
-class M_ComposeMessage extends CI_Model
+class M_composemessage extends CI_Model
 {
     function __construct()
     {
