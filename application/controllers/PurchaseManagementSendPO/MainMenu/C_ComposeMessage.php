@@ -66,7 +66,7 @@ class C_ComposeMessage extends CI_Controller {
 
 		// Get PDF from other function
 		$this->PurchaseManagementDocument($po_number);
-		$pdf_dir		= './assets/upload/PurchaseManagementSendPO/Temporary/PDF Document/';
+		$pdf_dir		= './assets/upload/PurchaseManagementSendPO/Temporary/PDFDocument/';
 		$pdf_filename	= 'SURAT PENGIRIMAN BARANG_PO '.$po_number;
 		$pdf_format		= '.pdf';
 
@@ -75,7 +75,7 @@ class C_ComposeMessage extends CI_Controller {
 			$ftp_server 	 = 'purchasing.quick.com';  
 			$ftp_username	 = 'SENDPO';  
 			$ftp_password 	 = '123456';
-			$ftp_local_dir	 = './assets/upload/PurchaseManagementSendPO/Temporary/';
+			$ftp_local_dir	 = './assets/upload/PurchaseManagementSendPO/Temporary/FTPDocument/';
 			$ftp_server_dir	 = './1.PENGUMUMAN/ADS2800W/Choirul/';
 			$ftp_file_format = '.pdf';
 
@@ -252,7 +252,7 @@ class C_ComposeMessage extends CI_Controller {
 
 		$pdf 		= $this->pdf->load();
 		$pdf        = new mPDF('utf-8','A4-P', 0, '', 3, 3, 3, 14, 3, 3);
-		$pdf_dir	= './assets/upload/PurchaseManagementSendPO/Temporary/PDF Document/';
+		$pdf_dir	= './assets/upload/PurchaseManagementSendPO/Temporary/PDFDocument/';
 		$filename 	= 'SURAT PENGIRIMAN BARANG_PO '.$nomor_po.'.pdf';	
 		$content 	= $this->load->view('PurchaseManagementSendPO/Report/V_Content', $data,true);
 		$footer 	= '<p style="text-align:right">PO : '.$nomor_po.'</p>';
