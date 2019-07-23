@@ -183,9 +183,9 @@ class C_ComposeMessage extends CI_Controller {
 
 	public function getUserEmail($id)
 	{
-		$this->load->model('PurchaseManagementSendPO/MainMenu/M_ComposeMessage');
+		$this->load->model('PurchaseManagementSendPO/MainMenu/M_composemessage');
 		
-		$email = $this->M_ComposeMessage->getEmailAddress($id);
+		$email = $this->M_composemessage->getEmailAddress($id);
 		if (!empty($email)){
 			$data  = str_replace(' /', ',', $email[0]['EMAIL']);
 			echo json_encode($data);
@@ -196,9 +196,9 @@ class C_ComposeMessage extends CI_Controller {
 
 	public function PurchaseManagementDocument($id)
 	{
-		$this->load->model('PurchaseManagementSendPO/MainMenu/M_ComposeMessage');
+		$this->load->model('PurchaseManagementSendPO/MainMenu/M_composemessage');
 
-		$result 	= $this->M_ComposeMessage->getDeliveryLetters($id);
+		$result 	= $this->M_composemessage->getDeliveryLetters($id);
 		$nomor_po 	= $id;
 		$max_data 	= 1;
 		
