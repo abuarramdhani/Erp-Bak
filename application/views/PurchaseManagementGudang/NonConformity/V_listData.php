@@ -55,7 +55,23 @@
                                                 	<a style="margin-right:4px" href="<?php echo base_url('PurchaseManagementGudang/NonConformity/read/'.$encrypted_string.''); ?>" data-toggle="tooltip" data-placement="bottom" title="Read Data"><span class="fa fa-list-alt fa-2x"></span></a>
                                                 </td>
                                                 <td><?php echo $row['non_conformity_num'] ?></td>
-												<td><?php echo $row['po_number'] ?></td>
+                                                <?php 
+                                                    $headerId = $row['header_id'];
+                                                    $poNumber = $this->M_nonconformity->detailPOListdata($headerId);
+                                                
+                                                    if (count($poNumber)==0) {
+                                                        echo '<td><span style="color: red"><i class="fa fa-warning"></i>Belum diset</span></td>';
+                                                    }else {
+                                                       echo'<td>';
+                                                        foreach ($poNumber as $key => $poNum) {
+                                                            echo $poNum['no_po'].'('. $poNum['line'].')<br>';
+                                                        }
+                                                        '</td>';
+                                                    }
+                                                ?>
+												<!-- <td><?php foreach ($poNumber as $key => $poNum) { ?>
+                                                    <?php echo $poNum['no_po'].'('.$poNum['line'].')<br>' ?>
+                                                <?php }?></td> -->
 												<td><?php echo $row['delivery_date'] ?></td>
 												<td><?php echo $row['packing_list'] ?></td>
 												<td><?php echo $row['courier_agent'] ?></td>

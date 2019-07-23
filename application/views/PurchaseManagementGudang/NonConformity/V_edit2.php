@@ -327,7 +327,7 @@
                                                             <td><?= $item['quantity_po'];?></td>
                                                             <td><?= $item['quantity_amount'];?></td>
                                                             <td><?= $item['quantity_problem'];?></td>
-                                                            <td><button type="button" class="btn btn-danger btnHapusLineNonC"><i class="fa fa-trash"></i></button></td>
+                                                            <td><button type="button" class="btn btn-danger btnHapusLineNonC" lineid="<?= $item['line_item_id'];?>"><i class="fa fa-trash"></i></button></td>
                                                         </tr>
                                                     <?php }?>
                                                     </tbody>
@@ -447,11 +447,12 @@
           <!-- <h4 class="modal-title">Tambah Keterangan</h4> -->
         <!-- </div> -->
         <div class="modal-body">
-          <p>Apakah anda yakin ingin menghapus line ini ?</p>
+          <p>Data ini sudah tersimpan di database, apakah anda yakin ingin menghapus ?</p>
+          <input type="hidden" class="form-control hdnLineItemIdNonC">
         </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-default pull-left" data-dismiss="modal">Cancel</button>
-          <button type="button" id="" class="btn btn-primary">Yes</button>
+          <button type="button" id="" class="btn btn-primary btnKonfirmasiHapusLineNonC">Yes</button>
         </div>
       </div>
       <!-- /.modal-content -->

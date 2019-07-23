@@ -620,4 +620,17 @@ class M_nonconformity extends CI_Model
         WHERE REQUEST_ID = '$request_id'");
         return $query->result_array();
     }
+
+    public function hapusItemSelected($line_id)
+    {
+        $this->db->where('line_item_id', $line_id);
+        $this->db->delete('pm.pm_po_oracle_non_conformity_line_items');
+    }
+
+    public function detailPOListdata($headerid)
+    {
+        $query = $this->db->query("select * from pm.pm_po_oracle_non_conformity_line_items where header_id = '$headerid'");
+
+        return $query->result_array();
+    }
 }

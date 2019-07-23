@@ -71,6 +71,9 @@ class C_NonConformity extends CI_Controller
 
 		$data['PoOracleNonConformityHeaders'] = $this->M_nonconformity->getHeaders();
 
+		// echo '<pre>';
+		// print_r($data['PoOracleNonConformityHeaders']);exit;
+
 		$this->load->view('V_Header',$data);
 		$this->load->view('V_Sidemenu',$data);
 		$this->load->view('PurchaseManagementGudang/NonConformity/V_listData', $data);
@@ -763,5 +766,14 @@ class C_NonConformity extends CI_Controller
 		}
 
 		// redirect('PurchaseManagementGudang/NonConformity', 'refresh');
+	}
+
+	public function hapusItemSelected()
+	{
+		$line_id = $_POST['lineid'];
+
+		$data = $this->M_nonconformity->hapusItemSelected($line_id);
+
+		echo '1';
 	}
 }

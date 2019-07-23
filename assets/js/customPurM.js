@@ -466,8 +466,33 @@ $(document).ready(function() {
 
     $(document).on('click','.btnHapusLineNonC', function () {
 
-        alert('tes')
+        // alert('tes')
+        var lineid = $(this).attr('lineid');
+        $('.hdnLineItemIdNonC').val(lineid);
         $('#modal-konfirmasi').modal('show');
+    })
+
+    $(document).on('click','.btnKonfirmasiHapusLineNonC', function () {
+        var lineid = $('.hdnLineItemIdNonC').val();
+
+        // alert(lineid);
+        $.ajax({
+            type: "POST",
+            url: baseurl + "PurchaseManagementGudang/NonConformity/hapusItemSelected",
+            data: {
+                lineid : lineid
+            },
+            dataType: "JSON",
+            success: function (response) {
+                if (response == 1) {
+                    $('.btnHapusLineNonC[lineid="'+lineid+'"]').closest('tr').remove();
+                    $('#modal-konfirmasi').modal('hide');
+                }else{
+                    $('#modal-konfirmasi').modal('hide');
+                    alert('hapus gagal karena kesalahan fungsi!');
+                }
+            }
+        });
     })
 
 
