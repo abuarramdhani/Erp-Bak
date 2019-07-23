@@ -2719,3 +2719,9 @@ $route['PurchaseManagementGudang/submitSourceAndroid'] = 'PurchaseManagementGuda
 $route['PurchaseManagementGudang/submitSource'] = 'PurchaseManagementGudang/MainMenu/C_NonConformityAndroid/submitSource';
 $route['PurchaseManagementGudang/(:any)'] = 'PurchaseManagementGudang/MainMenu/C_NonConformityAndroid/$1';
 $route['PurchaseManagementGudang/(:any)/(:any)'] = 'PurchaseManagementGudang/MainMenu/C_NonConformityAndroid/$1/$2';
+
+// --------------------------------------- Purchase Management Send PO -----------------------------------------------//
+$route['PurchaseManagementSendPO'] = 'PurchaseManagementSendPO/C_Index';
+$route['PurchaseManagementSendPO/SendPO'] = 'PurchaseManagementSendPO/MainMenu/C_ComposeMessage';
+$route['PurchaseManagementSendPO/SendPO/(:any)'] = 'PurchaseManagementSendPO/MainMenu/C_ComposeMessage/$1';
+$route['PurchaseManagementSendPO/SendPO/(:any)/(:any)'] = 'PurchaseManagementSendPO/MainMenu/C_ComposeMessage/$1/$2';
