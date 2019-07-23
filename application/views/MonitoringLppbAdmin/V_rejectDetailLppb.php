@@ -115,9 +115,9 @@
 											</table>
 										</div>
 										<div class="col-md-2 pull-right">
-											<a href="<?php echo base_url('MonitoringLPPB/RejectLppb')?>">
+											<!-- <a href="<?php echo base_url('MonitoringLPPB/RejectLppb')?>">
 												<button type="button" class="btn btn-primary pull-right" style="margin-top: 10px">Back</button>
-											</a>
+											</a> -->
 										</div>
 									</div>
 								</div>
