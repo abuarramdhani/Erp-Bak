@@ -70,7 +70,7 @@ class M_pekerjakeluar extends CI_Model {
 	 	$kd_pekerjaan = substr($kd_pekerjaan, 0,7);
 	 	$sql = "select concat_ws(' - ', kdpekerjaan, pekerjaan) as pekerjaan,kdpekerjaan
 					from hrd_khs.tpekerjaan as tpekerjaan
-				where left(tpekerjaan.kdpekerjaan,7) like '$kd_pekerjaan%'
+				where left(tpekerjaan.kdpekerjaan,7) like '$kd_pekerjaan%' and status='0'
  					order by kdpekerjaan asc";
 		$query 	=	$this->personalia->query($sql);
 			return $query->result_array();	

@@ -116,6 +116,14 @@
                                                          <label style="padding-left: 0px;" class="radio-inline"><input type="radio" name="rd_celana" value="Celana Merah"> Celana Merah </label>
                                                          </div>
                                                     </div>  
+                                                     <div class="form-group">
+                                                        <label for="txtJenisCelana" class="col-lg-2 control-label">Status</label>
+                                                         <div class="col-lg-6">
+                                                          <label style="padding-left: 0px;" class="radio-inline"><input type="radio" name="rd_status" checked="true" value="false"> Aktif</label>
+                                                         <label style="padding-left: 0px;" class="radio-inline"><input type="radio" name="rd_status" value="true"> Tidak Aktif </label>
+                                                         </div>
+                                                    </div>  
+
                                                 
                                         
                                         <div class="form-group">
