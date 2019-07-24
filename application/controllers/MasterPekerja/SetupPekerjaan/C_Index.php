@@ -100,6 +100,7 @@ class C_Index extends CI_Controller {
 		//echo $jenispekerjaan;exit();
 		$jenisbaju		     			    =	$this->input->post('rd_kancing');
 		$jeniscelana		     			=	$this->input->post('rd_celana');
+		$status		     		             =	$this->input->post('rd_status');
 		
 
 
@@ -110,8 +111,9 @@ class C_Index extends CI_Controller {
 											'learningperiode'		  =>	$learningperiode,
 											'satuan'		          =>	$satuan,
 											'jenispekerjaan'		  =>	$jenispekerjaan,
-											'jenisbaju'		        =>	$jenisbaju,
-											'jeniscelana'		      =>	$jeniscelana
+											'jenisbaju'		          =>	$jenisbaju,
+											'jeniscelana'		      =>	$jeniscelana,
+											'status'		          =>	$status
 
 										
 										);
@@ -212,7 +214,8 @@ class C_Index extends CI_Controller {
 		//echo $jenispekerjaan;exit();
 		$jenisbaju		     			    =	$this->input->post('rd_kancing');
 		$jeniscelana		     			=	$this->input->post('rd_celana');
-
+		$status		     		             =	$this->input->post('rd_status');
+//echo $status;exit();
 
 		$this->checkSession();
 		$user_id = $this->session->userid;
@@ -256,7 +259,8 @@ class C_Index extends CI_Controller {
 											'satuan'		          =>	$satuan,
 											'jenispekerjaan'		  =>	$jenispekerjaan,
 											'jenisbaju'		          =>	$jenisbaju,
-											'jeniscelana'		      =>	$jeniscelana
+											'jeniscelana'		      =>	$jeniscelana,
+											'status'		          =>	$status
 
 										
 										);

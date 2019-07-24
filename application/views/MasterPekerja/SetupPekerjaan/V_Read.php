@@ -71,6 +71,13 @@
                                                         </div>
                                                      </div>   
                                                      <div class="form-group">
+                                                        <label for="txtStatus" class="col-lg-2 control-label">Status</label>
+                                                        <div class="col-lg-6">
+                                                             <input class="form-control" value="<?php echo $data['status'] ?>" 
+                                                            readonly >
+                                                        </div>
+                                                     </div>   
+                                                     <div class="form-group">
                                                         <label for="txtLearningPeriode" class="col-lg-2 control-label">Learning Periode</label>
                                                          <div class="form-group">
                                                         <div class="col-lg-1">

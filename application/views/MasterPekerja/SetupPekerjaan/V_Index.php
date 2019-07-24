@@ -44,6 +44,7 @@
                                                 <th style="text-align:center;">JenisPekerjaan</th>
                                                 <th style="text-align:center;">JenisBaju</th>
                                                 <th style="text-align:center;">JenisCelana</th>
+                                                <th style="text-align:center;">Status</th>
                                          </thead>
 
                                         <tbody>
@@ -73,6 +74,7 @@
                                                 <td><?php echo $pekerjaan['jenis'];?></td>
                                                 <td><?php echo $pekerjaan['jenisbaju'];?></td>
                                                 <td><?php echo $pekerjaan['jeniscelana'];?></td>
+                                                <td><?php echo $pekerjaan['status'];?></td>
                                             </tr>
                                             <?php endforeach; ?>
                                         </tbody>                                      

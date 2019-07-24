@@ -131,6 +131,13 @@
                                                          <label style="padding-left: 0px;" class="radio-inline"><input type="radio" name="rd_celana" <?php if($edit['jeniscelana'] == 'Celana Merah'){ echo "checked";} ?>  value="Celana Merah"> Celana Merah </label>
                                                          </div>
                                                     </div>  
+                                                    <div class="form-group">
+                                                        <label for="txtStatus" class="col-lg-2 control-label">Status</label>
+                                                         <div class="col-lg-6">
+                                                          <label style="padding-left: 0px;" class="radio-inline"><input type="radio" name="rd_status" <?php if($edit['status'] == 'f'){ echo "checked";} ?> value="false"> Aktif</label>
+                                                         <label style="padding-left: 0px;" class="radio-inline"><input type="radio" name="rd_status" <?php if($edit['status'] == 't'){ echo "checked";} ?>  value="true"> Tidak Aktif </label>
+                                                         </div>
+                                                    </div>  
                                                 
                                         <?php } ?>
                                         <div class="form-group">

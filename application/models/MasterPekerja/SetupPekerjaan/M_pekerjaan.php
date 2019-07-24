@@ -12,7 +12,7 @@ class M_pekerjaan extends CI_Model {
 	public function lihat(){
 		$sql = "select *,case when satuan='H' then 'Hari' when satuan='M' then'Minggu'else 'Bulan'end as waktu, 
 		(select case when b.seksi != '-' then concat('Seksi;',b.seksi) when b.unit != '-' then concat('Unit;',b.unit)
-         when b.bidang != '-' then concat('Bidang;',b.bidang) when b.dept != '-' then concat('Dept;',b.dept) end as seksi from hrd_khs.tseksi b where left(b.kodesie,7) = left(a.kdpekerjaan,7) order by b.kodesie limit 1),case when jenispekerjaan='0' then'Direct Labour' else'Indirect Labour'end as jenis
+         when b.bidang != '-' then concat('Bidang;',b.bidang) when b.dept != '-' then concat('Dept;',b.dept) end as seksi from hrd_khs.tseksi b where left(b.kodesie,7) = left(a.kdpekerjaan,7) order by b.kodesie limit 1),case when jenispekerjaan='0' then'Direct Labour' else'Indirect Labour'end as jenis,case when status='0' then'Aktif' else'Tidak Aktif'end as status
 		from hrd_khs.tpekerjaan a 
 		order by kdpekerjaan asc";
 		$result = $this->personalia->query($sql);
@@ -37,7 +37,7 @@ class M_pekerjaan extends CI_Model {
 	    {
 	    	$sql = "select *,case when satuan='H' then 'Hari' when satuan='M' then'Minggu'else 'Bulan'end as waktu, 
 		(select case when b.seksi != '-' then b.seksi when b.unit != '-' then b.unit
-          when b.bidang != '-' then b.bidang when b.dept != '-' then b.dept end as seksi from hrd_khs.tseksi b where left(b.kodesie,7) = left(a.kdpekerjaan,7) order by b.kodesie limit 1),case when jenispekerjaan='0' then'Direct Labour' else'Indirect Labour'end as jenis
+          when b.bidang != '-' then b.bidang when b.dept != '-' then b.dept end as seksi from hrd_khs.tseksi b where left(b.kodesie,7) = left(a.kdpekerjaan,7) order by b.kodesie limit 1),case when jenispekerjaan='0' then'Direct Labour' else'Indirect Labour'end as jenis,case when status='0' then'Aktif' else'Tidak Aktif'end as status
 		from hrd_khs.tpekerjaan a  where id_kdpekerjaan='$id'";
 		$result = $this->personalia->query($sql);
 		return $result->result_array();
