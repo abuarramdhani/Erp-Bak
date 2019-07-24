@@ -17,7 +17,7 @@
 						</div>
 					</div>
 				</div>
-				
+
 				<div class="row">
 					<div class="col-lg-12">
 						<div class="box box-primary box-solid">
@@ -29,12 +29,12 @@
 									<div style="float: right !important;">
 									<span style="font-style: normal;">Lokasi Kerja:
 									<select id="select-location" style="width: 339px; height:28px ; margin-right: 8px ; background-color: white; border: normal;">
-										<?php 
+										<?php
 											if(!isset($_GET["location"])) {
 												$_GET["location"] = '';
 											}
 										?>
-										
+
 										<option value="all"
 										<?= ($_GET["location"] == 'all') ? 'selected' : '' ?>>Pilih Semua</option>
 										<option value="yogyakarta"
@@ -62,7 +62,7 @@
 											</tr>
 										</thead>
 										<tbody>
-											<?php 
+											<?php
 												$a = 1;
 												foreach ($Kiriman as $key) {
 													if(isset($_GET['location'])) {
@@ -88,21 +88,22 @@
 																		<td>
 																			<a href='".$read."' data-toggle='tooltip' data-placement='bottom' data-original-title='Lihat Data'>
 																				<span class='fa fa-list-alt fa-2x'></span>
-																			</a>"; 
+																			</a>";
 																			?>
 																			<a href='<?php echo $delete; ?>' data-toggle='tooltip' data-placement='bottom' data-original-title='Hapus Data' onclick='return confirm("Apakah Anda Yakin Ingin Menghapus data ini ?")'>
 																				<span class='fa fa-trash fa-2x'></span>
 																			</a>
 																		</td>
 																		<?php
+																		if($key['id_satuan'] == NULL) { $satuan = $key['jumlah'];} else { $satuan = $key['jumlahall'];}
 																	echo "<td>".$key['seksi']."</td>
-																		<td style=\"display: none;\">".$key['noind_location']."</td>
-																		<td>".$key['pekerja']."</td>
-																		<td>".$key['tanggal']."</td>
-																		<td>".$key['waktu']."</td>
-																		<td>".$key['jenis_limbah']."</td>
-																		<td>".$key['jumlah']."</td>
-																		<td>".$key['berat_kirim']."</td>";
+																				<td style=\"display: none;\">".$key['noind_location']."</td>
+																				<td>".$key['pekerja']."</td>
+																				<td>".$key['tanggal']."</td>
+																				<td>".$key['waktu']."</td>
+																				<td>".$key['jenis_limbah']."</td>
+																				<td>".$satuan."</td>
+																				<td>".$key['berat_kirim']."</td>";
 																		if ($key['status_kirim'] !== "3") { ?>
 																			<td>
 																				<?php echo $status; ?>
@@ -113,7 +114,7 @@
 																		<?php
 																		} else {
 																			echo "<td>".$status."</td>";
-																		} 
+																		}
 																	 echo "</tr>";
 																	$a++;
 																}
@@ -139,20 +140,21 @@
 																		<td>
 																			<a href='".$read."' data-toggle='tooltip' data-placement='bottom' data-original-title='Lihat Data'>
 																				<span class='fa fa-list-alt fa-2x'></span>
-																			</a>"; 
+																			</a>";
 																			?>
 																			<a href='<?php echo $delete; ?>' data-toggle='tooltip' data-placement='bottom' data-original-title='Hapus Data' onclick='return confirm("Apakah Anda Yakin Ingin Menghapus data ini ?")'>
 																				<span class='fa fa-trash fa-2x'></span>
 																			</a>
 																		</td>
 																		<?php
+																		if($key['id_satuan'] == NULL) { $satuan = $key['jumlah'];} else { $satuan = $key['jumlahall'];}
 																	echo "<td>".$key['seksi']."</td>
 																		<td style=\"display: none;\">".$key['noind_location']."</td>
 																		<td>".$key['pekerja']."</td>
 																		<td>".$key['tanggal']."</td>
 																		<td>".$key['waktu']."</td>
 																		<td>".$key['jenis_limbah']."</td>
-																		<td>".$key['jumlah']."</td>
+																		<td>".$satuan."</td>
 																		<td>".$key['berat_kirim']."</td>";
 																		if ($key['status_kirim'] !== "3") { ?>
 																			<td>
@@ -164,7 +166,7 @@
 																		<?php
 																		} else {
 																			echo "<td>".$status."</td>";
-																		} 
+																		}
 																	 echo "</tr>";
 																	$a++;
 																}
@@ -189,20 +191,21 @@
 																	<td>
 																		<a href='".$read."' data-toggle='tooltip' data-placement='bottom' data-original-title='Lihat Data'>
 																			<span class='fa fa-list-alt fa-2x'></span>
-																		</a>"; 
+																		</a>";
 																		?>
 																		<a href='<?php echo $delete; ?>' data-toggle='tooltip' data-placement='bottom' data-original-title='Hapus Data' onclick='return confirm("Apakah Anda Yakin Ingin Menghapus data ini ?")'>
 																			<span class='fa fa-trash fa-2x'></span>
 																		</a>
 																	</td>
 																	<?php
+																	if($key['id_satuan'] == NULL) { $satuan = $key['jumlah'];} else { $satuan = $key['jumlahall'];}
 																echo "<td>".$key['seksi']."</td>
 																	<td style=\"display: none;\">".$key['noind_location']."</td>
 																	<td>".$key['pekerja']."</td>
 																	<td>".$key['tanggal']."</td>
 																	<td>".$key['waktu']."</td>
 																	<td>".$key['jenis_limbah']."</td>
-																	<td>".$key['jumlah']."</td>
+																	<td>".$satuan."</td>
 																	<td>".$key['berat_kirim']."</td>";
 																	if ($key['status_kirim'] !== "3") { ?>
 																		<td>
@@ -214,7 +217,7 @@
 																	<?php
 																	} else {
 																		echo "<td>".$status."</td>";
-																	} 
+																	}
 																 echo "</tr>";
 																$a++;
 																break;
@@ -239,7 +242,7 @@
 															<td>
 																<a href='".$read."' data-toggle='tooltip' data-placement='bottom' data-original-title='Lihat Data'>
 																	<span class='fa fa-list-alt fa-2x'></span>
-																</a>"; 
+																</a>";
 																?>
 																<a href='<?php echo $delete; ?>' data-toggle='tooltip' data-placement='bottom' data-original-title='Hapus Data' onclick='return confirm("Apakah Anda Yakin Ingin Menghapus data ini ?")'>
 																	<span class='fa fa-trash fa-2x'></span>
@@ -264,7 +267,7 @@
 															<?php
 															} else {
 																echo "<td>".$status."</td>";
-															} 
+															}
 														 echo "</tr>";
 														$a++;
 													}

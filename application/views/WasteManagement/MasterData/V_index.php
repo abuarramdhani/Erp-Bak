@@ -18,7 +18,7 @@
                     </div>
                 </div>
                 <br/>
-          
+
                 <div class="row">
                     <div class="col-lg-12">
                         <div class="box box-primary box-solid">
@@ -42,8 +42,8 @@
                                             </tr>
                                         </thead>
                                         <tbody>
-                                            <?php 
-                                                $no = 1; 
+                                            <?php
+                                                $no = 1;
                                                 foreach($LimbahJenis as $row):
                                                 $encrypted_string = $this->encrypt->encode($row['id_jenis_limbah']);
                                                 $encrypted_string = str_replace(array('+', '/', '='), array('-', '_', '~'), $encrypted_string);
@@ -57,19 +57,19 @@
                                                 </td>
                                                 <td><?php echo $row['kode_limbah'] ?></td>
                                                 <td><?php echo $row['limbah_jenis'] ?></td>
-                                                <td><?php echo $row['satuan'] ?></td>
+                                                <td><?php echo $row['satuan_all'] ?></td>
                                                 <td><?php echo $row['sumber_limbah'] ?></td>
                                                 <td><?php echo $row['konversi'] ?></td>
                                             </tr>
                                             <?php endforeach; ?>
-                                        </tbody>                                      
+                                        </tbody>
                                     </table>
                                 </div>
                             </div>
                         </div>
                     </div>
-                </div>    
-            </div>    
+                </div>
+            </div>
         </div>
     </div>
 </section>

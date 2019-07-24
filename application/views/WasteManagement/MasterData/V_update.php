@@ -1,3 +1,8 @@
+<style>
+ #txtAjaxSatuanLimbah{
+   text-transform: capitalize;
+ }
+</style>
 <section class="content">
     <div class="inner" >
         <div class="row">
@@ -13,13 +18,13 @@
                                     <a class="btn btn-default btn-lg" href="<?php echo site_url('WasteManagement/MasterData/');?>">
                                         <i class="icon-wrench icon-2x"></i>
                                         <span ><br /></span>
-                                    </a>                             
+                                    </a>
                                 </div>
                             </div>
                         </div>
                     </div>
                     <br />
-                
+
                     <div class="row">
                         <div class="col-lg-12">
                             <div class="box box-primary box-solid">
@@ -54,11 +59,18 @@
                                             <div class="form-group">
                                                 <label for="txtSatuanLimbahHeader" class="control-label col-lg-4">Satuan Limbah</label>
                                                 <div class="col-lg-4">
-                                                    <input type="text" placeholder="Satuan Limbah" name="txtSatuanLimbahHeader" id="txtSatuanLimbahHeader" class="form-control" value="<?php echo $headerRow['satuan']; ?>" required/>
+                                                    <select style="width:100%;" class="select select2" name="txtSatuanLimbahHeader[]" id="txtSatuanLimbahHeader" multiple="multiple">
+                                                      <?php foreach ($SatuanLimbahAll as $key) {?>
+                                                        <option value="<?=$key['satuan'] ?>" <?php if (strstr($headerRow['satuan_all'], $key['satuan'])){echo 'selected';} ?> ><?= $key['satuan'] ?></option>
+                                                      <?php } ?>
+                                                    </select>
+
                                                     <input type="hidden" placeholder="Satuan Limbah" name="txtIDSatuanLimbahHeader" id="txtSatuanLimbahHeader" class="form-control" value="<?php echo $headerRow['satuan_id']; ?>"/>
                                                 </div>
+                                                <div class="col-lg-2">
+                                                  <button type="button" data-toggle="modal" data-target="#modalAddSatuan" class="btn btn-default btn-sm"><i class="fa fa-plus"></i></button>
+                                                </div>
                                             </div>
-
                                             <div class="form-group">
                                                 <label for="txtSumberLimbahHeader" class="control-label col-lg-4">Sumber Limbah</label>
                                                 <div class="col-lg-4">
@@ -108,3 +120,33 @@
         </div>
     </div>
 </section>
+
+<!-- Modal AddSatuan -->
+<div class="modal fade" id="modalAddSatuan" tabindex="-1" role="dialog" aria-labelledby="loadMeLabel">
+  <div style="transform: translateY(50%);" class="modal-dialog modal-md">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+        <h4 class="modal-title">Tambah Satuan Limbah</h4>
+      </div>
+      <div class="modal-body">
+        <div class="loader"></div>
+        <div clas="loader-txt">
+          <div class="form-group">
+            <label for="txtAjaxSatuanLimbah" class="control-label col-lg-4">Satuan Limbah</label>
+            <div class="col-lg-4">
+                <input type="text" placeholder="Satuan Limbah" name="txtAjaxSatuanLimbah" id="txtAjaxSatuanLimbah" class="form-control" value="" required/>
+            </div>
+          </div>
+          <div class="text-center">
+            <button class="btn btn-primary" type="button" onclick="addSatuan()" id="btn-addSatuan" name="button"><i class="fa fa-plus"></i> Tambah</button>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        </div>
+    </div>
+  </div>
+</div>
+<!-- End Modal -->

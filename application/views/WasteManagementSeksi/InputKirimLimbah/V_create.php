@@ -12,7 +12,7 @@
 								<div class="text-right hidden-md hidden-sm hidden-xs">
 									<a href="<?php echo site_url('WasteManagementSeksi/InputKirimLimbah') ?>" class="btn btn-default btn-lg">
 										<span class="fa fa-wrench fa-2x"></span>
-									</a>								
+									</a>
 								</div>
 
 							</div>
@@ -22,7 +22,7 @@
 						<div class="col-lg-12">
 							<div class="box box-primary box-solid">
 								<div class="box-header">
-									
+
 								</div>
 								<div class="box-body">
 									<div class="panel-body">
@@ -47,7 +47,7 @@
 													<div class="col-lg-12">
 														<select class="select select2" name="txtJenisLimbah" id="txtJenisLimbah" data-placeholder="Jenis Limbah" style="width:100%;" required>
 															<option value=""></option>
-															<?php 
+															<?php
 																$user = $this->session->user;
 																if ($user !== 'B0791') {
 																	foreach ($JenisLimbah as $key) {
@@ -64,7 +64,7 @@
 																		echo "<option value='".$key['id_jenis_limbah']."' data-satuan='".$key['satuan']."'>".$key['kode_limbah']." - ".$key['jenis_limbah']."</option>";
 																	}
 																}
-																
+
 															?>
 														</select>
 													</div>
@@ -125,7 +125,7 @@
 															<option></option>
 															<option value="1">Bocor</option>
 															<option value="0">Tidak Bocor</option>
-														</select>	
+														</select>
 													</div>
 												</div>
 											</div>
@@ -133,10 +133,16 @@
 												<label for="txtJumlah" class="control-label col-lg-4">Jumlah</label>
 												<div class="col-lg-4">
 													<div class=" col-lg-7">
-														<input type="text" class="form-control" name="txtJumlah" id="txtJumlah" placeholder="Jumlah" required>
+														<input type="number" autocomplete="off" class="form-control" name="txtJumlah" id="txtJumlah" placeholder="Jumlah" required>
 													</div>
 													<div class="col-lg-5">
-														<input type="text" class="form-control" name="txtSatuan" id="txtSatuan" placeholder="Satuan" disabled="">
+														<!-- <input type="text" class="form-control" name="txtSatuan" id="txtSatuan" placeholder="Satuan" disabled=""> -->
+														<select style="width: 100%;" class="select select2" name="txtSatuan" id="txtSatuan" data-placeholder="Satuan">
+															<option></option>
+															<!-- <?php foreach ($SatuanLimbah as $key) { ?>
+																<option value="<?=$key['id_satuan_all']?>"><?=$key['satuan']?></option>
+															<?php } ?> -->
+														</select>
 													</div>
 												</div>
 											</div>
@@ -144,19 +150,19 @@
 												<label for="txtKeterangan" class="control-label col-lg-4">Keterangan</label>
 												<div class="col-lg-4">
 													<div class="col-lg-12">
-														<textarea name="txtKeterangan" id="txtKeterangan" placeholder="Keterangan" style="width:100%;height:100px;"></textarea>
+														<textarea class="form-control" name="txtKeterangan" id="txtKeterangan" placeholder="Keterangan" style="width:100%;height:100px;"></textarea>
 													</div>
 												</div>
 											</div>
 										</div>
 									</div>
-									<div class="panel-footer">
-										<a href="javascript:history.back(1);" class="btn btn-primary">Back</a>
+									<div class="panel-footer text-center">
 										<button type="submit" class="btn btn-primary">Submit</button>
+										<a href="javascript:history.back(1);" class="btn btn-warning">Back</a>
 									</div>
 								</div>
 								<div class="box-footer">
-									
+
 								</div>
 							</div>
 						</div>

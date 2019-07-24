@@ -22,9 +22,14 @@ class M_limbahkelola extends CI_Model
                         concat(limkir.jumlah_kirim, ' ',(select limbah_satuan
                         from ga.ga_limbah_satuan limsat
                         where limsat.id_jenis_limbah = limjen.id_jenis_limbah)) jumlah,
+												(select sect.section_name from er.er_section sect where left(sect.section_code,7) = limkir.kodesie_kirim and sect.section_code like '%00') seksi,
+												concat(limkir.jumlah_kirim, ' ',(select limbah_satuan_all
+												from ga.ga_limbah_satuan_all limsatall
+												where limsatall.id_satuan_all = limkir.id_satuan)) jumlahall,
                         limkir.lokasi_kerja,
                         limkir.berat_kirim,
                         limkir.status_kirim,
+												limkir.id_satuan,
                         (select concat(employee_code,' - ',employee_name) from er.er_employee_all where employee_code = limkir.noind_pengirim and resign = '0')
                         pekerja,
                         (select concat(location_code,' - ',location_name) from er.er_location where location_code = limkir.lokasi_kerja) noind_location
@@ -44,11 +49,16 @@ class M_limbahkelola extends CI_Model
                         concat(limkir.jumlah_kirim, ' ',(select limbah_satuan
                         from ga.ga_limbah_satuan limsat
                         where limsat.id_jenis_limbah = limjen.id_jenis_limbah)) jumlah,
+												(select sect.section_name from er.er_section sect where left(sect.section_code,7) = limkir.kodesie_kirim and sect.section_code like '%00') seksi,
+												concat(limkir.jumlah_kirim, ' ',(select limbah_satuan_all
+												from ga.ga_limbah_satuan_all limsatall
+												where limsatall.id_satuan_all = limkir.id_satuan)) jumlahall,
                         limkir.lokasi_kerja,
                         limkir.berat_kirim,
                         limkir.bocor,
                         limkir.ket_kirim,
                         limkir.status_kirim,
+												limkir.id_satuan,
                         (select concat(employee_code,' - ',employee_name) from er.er_employee_all where employee_code = limkir.noind_pengirim and resign = '0')
                         pekerja,
                         (select concat(location_code,' - ',location_name) from er.er_location where location_code = limkir.lokasi_kerja) noind_location

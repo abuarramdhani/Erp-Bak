@@ -21,10 +21,12 @@ class M_kirim extends Ci_Model
                         limkir.bocor,
                         limkir.jumlah_kirim,
                         limkir.berat_kirim,
-                        (select limbah_satuan
-                        from ga.ga_limbah_satuan limsat
-                        where limsat.id_jenis_limbah = limjen.id_jenis_limbah) satuan,
+                        (select limbah_satuan_all
+                        from ga.ga_limbah_satuan_all limsatall
+                        where limsatall.id_satuan_all = limkir.id_satuan) satuan,
                         limkir.status_kirim,
+												limkir.id_satuan,
+												(select limbah_satuan from ga.ga_limbah_satuan limsat where limsat.id_jenis_limbah = limkir.id_jenis_limbah ) limbah_satuan,
                         (select concat(employee_code,' - ',employee_name) from er.er_employee_all where employee_code = limkir.noind_pengirim and resign = '0') noind_pengirim,
                         (select concat(location_code,' - ',location_name) from er.er_location where location_code = limkir.lokasi_kerja) noind_location
                     from ga.ga_limbah_kirim limkir
@@ -71,6 +73,11 @@ class M_kirim extends Ci_Model
         return $result->result_array();
     }
 
+		public function getSatuan($id){
+			$query = "select * from ga.ga_limbah_satuan_all where id_jenis_limbah = '$id' and status = '1'";
+			return $this->db->query($query)->result_array();
+		}
+
     public function getLimJenis($kodesie){
 				$where = '';
 				if(!strstr($kodesie, '4060101')){
@@ -94,7 +101,11 @@ class M_kirim extends Ci_Model
     }
 
 		public function getSatLim(){
-			return $this->db->query("select distinct limbah_satuan as satuan from ga.ga_limbah_satuan")->result_array();
+			return $this->db->query("select distinct limbah_satuan_all as satuan, id_satuan_all from ga.ga_limbah_satuan_all")->result_array();
+		}
+
+		public function getSatlimbyID($id){
+			return $this->db->query("select limbah_satuan_all as satuan, id_satuan_all from ga.ga_limbah_satuan_all where id_satuan_all = '$id' and status = '1'")->result_array();
 		}
 
     public function insertKirimLimbah($data){
@@ -110,8 +121,9 @@ class M_kirim extends Ci_Model
         $ket = $data['keterangan'];
         $tangwak = $tanggal." ".$waktu;
         $user = $this->session->user;
+				$satuan = $data['id_satuan'];
 
-        $query = "insert into ga.ga_limbah_kirim(id_kirim,id_jenis_limbah,tanggal_kirim,kodesie_kirim,lokasi_kerja,bocor,jumlah_kirim,ket_kirim,status_kirim,created_by,noind_pengirim) values('$id','$jenis','$tangwak',left('$seksi',7),'$lokasi','$kondisi','$jumlah','$ket','3','$user','$pengirim')";
+        $query = "insert into ga.ga_limbah_kirim(id_kirim,id_jenis_limbah,tanggal_kirim,kodesie_kirim,lokasi_kerja,bocor,jumlah_kirim,ket_kirim,status_kirim,created_by,noind_pengirim, id_satuan) values('$id','$jenis','$tangwak',left('$seksi',7),'$lokasi','$kondisi','$jumlah','$ket','3','$user','$pengirim', '$satuan')";
 
         $this->db->query($query);
     }
@@ -128,7 +140,8 @@ class M_kirim extends Ci_Model
                         limkir.bocor,
                         limkir.jumlah_kirim,
                         limkir.ket_kirim,
-                        limsat.limbah_satuan,
+												limkir.id_satuan,
+                        (select limbah_satuan_all from ga.ga_limbah_satuan_all where id_satuan_all = limkir.id_satuan) limbah_satuan,
                         (select concat(employee_code,' - ',employee_name) from er.er_employee_all where employee_code = limkir.noind_pengirim and resign = '0')noind_pengirim,
                         (select concat(location_code,' - ',location_name) from er.er_location where location_code = limkir.lokasi_kerja) noind_location
                     from ga.ga_limbah_kirim limkir
@@ -149,8 +162,9 @@ class M_kirim extends Ci_Model
         $jumlah = $data['jumlah'];
         $ket = $data['keterangan'];
         $tangwak = $tanggal." ".$waktu;
+				$satuan = $data['id_satuan'];
 
-        $query = "update ga.ga_limbah_kirim set tanggal_kirim = '$tangwak', id_jenis_limbah = '$jenis', lokasi_kerja = '$lokasi', bocor = '$kondisi', jumlah_kirim = '$jumlah', ket_kirim = '$ket' where id_kirim = '$id'";
+        $query = "update ga.ga_limbah_kirim set tanggal_kirim = '$tangwak', id_jenis_limbah = '$jenis', lokasi_kerja = '$lokasi', bocor = '$kondisi', jumlah_kirim = '$jumlah', ket_kirim = '$ket', id_satuan = '$satuan' where id_kirim = '$id'";
         $this->db->query($query);
     }
 
