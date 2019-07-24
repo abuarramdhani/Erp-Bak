@@ -2725,3 +2725,11 @@ $route['PurchaseManagementSendPO'] = 'PurchaseManagementSendPO/C_Index';
 $route['PurchaseManagementSendPO/SendPO'] = 'PurchaseManagementSendPO/MainMenu/C_ComposeMessage';
 $route['PurchaseManagementSendPO/SendPO/(:any)'] = 'PurchaseManagementSendPO/MainMenu/C_ComposeMessage/$1';
 $route['PurchaseManagementSendPO/SendPO/(:any)/(:any)'] = 'PurchaseManagementSendPO/MainMenu/C_ComposeMessage/$1/$2';
+
+//-----------------------------------------------------Transact KIB------------------------------------------------------------//
+$route['TransactKIB'] = 'TransactKIB/C_TransactKIB';
+$route['TransactKIB/Transact'] = 'TransactKIB/C_TransactKIB';
+$route['TransactKIB/Transact/(:any)'] = 'TransactKIB/C_TransactKIB/$1';
+$route['TransactKIB/Transact/(:any)/(:any)'] = 'TransactKIB/C_TransactKIB/$1/$2';
+$route['TransactKIB/Transact/(:any)/(:any)/(:any)'] = 'TransactKIB/C_TransactKIB/$1/$2/$3';
+$route['TransactKIB/Transact/(:any)/(:any)/(:any)/(:any)'] = 'TransactKIB/C_TransactKIB/$1/$2/$3/$4';
