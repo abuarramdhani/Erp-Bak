@@ -16,11 +16,11 @@
 					<div class="col-lg-12">
 						<div class="box box-primary box-solid">
 							<div class="box-header with-border">
-								
+
 							</div>
 							<div class="box-body">
 								<div class="panel-body">
-									<?php 
+									<?php
 									$encrypted_text = $this->encrypt->encode($LimbahKirim['0']['id_kirim']);
 									$encrypted_text = str_replace(array('+','/','='), array('-','_','~'), $encrypted_text);
 									?>
@@ -32,7 +32,7 @@
 													<div class="col-lg-12">
 														<input type="text" name="txtSeksi" value="<?php echo $LimbahKirim['0']['seksi']; ?>" class="form-control" disabled>
 													</div>
-													
+
 												</div>
 												<div class="form-group">
 													<label for="txtTanggal" class="form-label col-lg-12">tanggal Kirim</label>
@@ -57,7 +57,7 @@
 												<div class="form-group">
 													<label for="txtJumlah" class="form-label col-lg-12">Jumlah</label>
 													<div class="col-lg-12">
-														<input type="text" name="txtJumlah" value="<?php echo $LimbahKirim['0']['jumlah']; ?>" class="form-control" disabled>
+														<input type="text" name="txtJumlah" value="<?php if($LimbahKirim['0']['id_satuan'] == NULL){ echo $LimbahKirim['0']['jumlah'];}else{ echo $LimbahKirim['0']['jumlahall'];} ?>" class="form-control" disabled>
 													</div>
 												</div>
 												<div class="form-group">
@@ -96,7 +96,7 @@
 												</div>
 										<div class="row">
 											<div class="col-lg-12 text-right">
-												<?php 
+												<?php
 												$status = $LimbahKirim['0']['status_kirim'];
 												$url_reject = site_url('WasteManagement/KirimanMasuk/Reject/'.$encrypted_text);
 												if($status == '3'){ ?>

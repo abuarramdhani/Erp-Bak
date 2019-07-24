@@ -12,7 +12,7 @@
 								<div class="text-right hidden-md hidden-sm hidden-xs">
 									<a href="<?php echo site_url('WasteManagementSeksi/InputKirimLimbah') ?>" class="btn btn-default btn-lg">
 										<span class="fa fa-wrench fa-2x"></span>
-									</a>								
+									</a>
 								</div>
 
 							</div>
@@ -46,7 +46,7 @@
 													<div class="col-lg-12">
 														<select class="select select2" name="txtJenisLimbah" id="txtJenisLimbah" data-placeholder="Jenis Limbah" style="width:100%;">
 															<option value="<?php echo $KirimLimbah['0']['id_jenis_limbah'] ?>"><?php echo $KirimLimbah['0']['jenis_limbah'] ?></option>
-															<?php 
+															<?php
 																foreach ($JenisLimbah as $key) {
 																	echo "<option value='".$key['id_jenis_limbah']."' data-satuan='".$key['satuan']."'>".$key['kode_limbah']."-".$key['jenis_limbah']."</option>";
 																}
@@ -92,7 +92,7 @@
 														<select class="select select2" name="txtKondisi" id="txtKondisi" value='.$bocor.' style="width:100%;">
 															<option value="1">Bocor</option>
 															<option value="0">Tidak Bocor</option>
-														</select>	
+														</select>
 													</div>
 												</div>
 											</div>
@@ -100,10 +100,17 @@
 												<label for="txtJumlah" class="control-label col-lg-4">Jumlah</label>
 												<div class="col-lg-4">
 													<div class=" col-lg-7">
-														<input type="text" class="form-control" name="txtJumlah" id="txtJumlah" placeholder="Jumlah" value="<?php echo $KirimLimbah['0']['jumlah_kirim'];  ?>">
+														<input type="number" class="form-control" name="txtJumlah" id="txtJumlah" placeholder="Jumlah" value="<?php echo $KirimLimbah['0']['jumlah_kirim'];  ?>">
 													</div>
 													<div class="col-lg-5">
-														<input type="text" class="form-control" name="txtSatuan" id="txtSatuan" placeholder="Satuan" disabled="" value="<?php echo $KirimLimbah['0']['limbah_satuan']; ?>" style="padding-right: 0px;">
+														<!-- <input type="text" class="form-control" name="txtSatuan" id="txtSatuan" placeholder="Satuan" disabled="" value="<?php echo $KirimLimbah['0']['limbah_satuan']; ?>" style="padding-right: 0px;"> -->
+
+														<select style="width: 100%;" class="select select2" name="txtSatuan" id="txtSatuan" data-placeholder="Satuan" value="<?php echo $KirimLimbah['0']['limbah_satuan']; ?>">
+															<option></option>
+															<?php foreach ($SatuanLimbah as $key) { ?>
+																<option value="<?=$key['satuan']?>" <?php if($KirimLimbah['0']['limbah_satuan'] == $key['satuan']){echo 'selected';} ?>><?=$key['satuan']?></option>
+															<?php } ?>
+														</select>
 													</div>
 												</div>
 											</div>
@@ -112,18 +119,18 @@
 												<div class="col-lg-4">
 													<div class="col-lg-12">
 														<textarea name="txtKeterangan" id="txtKeterangan" placeholder="Keterangan" style="width:100%;height:100px;"><?php echo $KirimLimbah['0']['ket_kirim']; ?></textarea>
-													</div>	
+													</div>
 												</div>
 											</div>
 										</div>
 									</div>
-									<div class="panel-footer">
-										<a href="javascript:history.back(1);" class="btn btn-primary" >Back</a>
+									<div class="panel-footer text-center">
 										<button type="submit" class="btn btn-primary">Submit</button>
+										<a href="javascript:history.back(1);" class="btn btn-warning" >Back</a>
 									</div>
 								</div>
 								<div class="box-footer">
-									
+
 								</div>
 							</div>
 						</div>

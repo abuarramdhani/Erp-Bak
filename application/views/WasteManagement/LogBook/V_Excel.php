@@ -107,13 +107,18 @@ $border_all = array ('borders' => array('allborders' => array('style' => PHPExce
 
   $tanggalMasuk = date('d/m/Y', strtotime($FM['tanggal']));
   $maksPenyimpanan = date('d/m/Y', strtotime($FM['tanggalmax']));
+  if($FM['id_satuan'] == NULL){
+    $jumlah = $FM['jumlah'];
+  } else {
+    $jumlah = $FM['jumlahall'];
+  }
 
   $objPHPExcel->setActiveSheetIndex(0)
               ->setCellValueExplicit($kolomA, $no, PHPExcel_Cell_DataType::TYPE_STRING)
               ->setCellValueExplicit($kolomB, $FM['jenis_limbah'], PHPExcel_Cell_DataType::TYPE_STRING)
               ->setCellValueExplicit($kolomC, $tanggalMasuk, PHPExcel_Cell_DataType::TYPE_STRING)
               ->setCellValueExplicit($kolomD, $FM['sumber'], PHPExcel_Cell_DataType::TYPE_STRING)
-              ->setCellValueExplicit($kolomE, $FM['jumlah'], PHPExcel_Cell_DataType::TYPE_STRING)
+              ->setCellValueExplicit($kolomE, $jumlah, PHPExcel_Cell_DataType::TYPE_STRING)
               ->setCellValueExplicit($kolomF, $maksPenyimpanan, PHPExcel_Cell_DataType::TYPE_STRING);
   }
 
@@ -130,10 +135,14 @@ $border_all = array ('borders' => array('allborders' => array('style' => PHPExce
   $kolomK='K'.$o;
 
     $tanggalKeluar = date('d/m/Y', strtotime($FK['tanggal']));
-
+    if($FK['id_satuan'] == NULL){
+      $jumlah = $FM['jumlah'];
+    } else {
+      $jumlah = $FM['jumlahall'];
+    }
   $objPHPExcel->setActiveSheetIndex(0)
         ->setCellValueExplicit($kolomG, $tanggalKeluar, PHPExcel_Cell_DataType::TYPE_STRING)
-        ->setCellValueExplicit($kolomH, $FK['jumlah'], PHPExcel_Cell_DataType::TYPE_STRING)
+        ->setCellValueExplicit($kolomH, $jumlah, PHPExcel_Cell_DataType::TYPE_STRING)
         ->setCellValueExplicit($kolomI, '', PHPExcel_Cell_DataType::TYPE_STRING)
         ->setCellValueExplicit($kolomJ, '', PHPExcel_Cell_DataType::TYPE_STRING)
         ->setCellValueExplicit($kolomK, '0', PHPExcel_Cell_DataType::TYPE_STRING);

@@ -71,6 +71,15 @@ class M_logbookharian extends CI_MODEL
                                  where limsat.id_jenis_limbah = limjen.id_jenis_limbah),
                                  '(',limkir.berat_kirim,'kg )'
                            ) jumlah,
+                           concat_ws(
+                                 ' ',
+                                 limkir.jumlah_kirim,
+                                 (select limbah_satuan_all
+                                 from ga.ga_limbah_satuan_all limsatall
+                                 where limsatall.id_satuan_all = limkir.id_satuan),
+                                 '(',limkir.berat_kirim,'kg )'
+                           ) jumlahall,
+                           limkir.id_satuan,
                            cast(limkir.tanggal_kirim + INTERVAL '3' MONTH as date) tanggalmax
                       FROM ga.ga_limbah_kirim limkir
                         inner join ga.ga_limbah_jenis limjen
@@ -106,7 +115,16 @@ class M_logbookharian extends CI_MODEL
                                       from ga.ga_limbah_satuan limsat
                                       where limsat.id_jenis_limbah = limjen.id_jenis_limbah),
                                       '(',limkir.berat_kirim,'kg )'
-                                ) jumlah
+                                ) jumlah,
+                                concat_ws(
+                                      ' ',
+                                      limkir.jumlah_kirim,
+                                      (select limbah_satuan_all
+                                      from ga.ga_limbah_satuan_all limsatall
+                                      where limsatall.id_satuan_all = limkir.id_satuan),
+                                      '(',limkir.berat_kirim,'kg )'
+                                ) jumlah,
+                                limkir.id_satuan
                                 FROM ga.ga_limbah_kirim limkir
                                   inner join ga.ga_limbah_jenis limjen
                                     on limjen.id_jenis_limbah = limkir.id_jenis_limbah

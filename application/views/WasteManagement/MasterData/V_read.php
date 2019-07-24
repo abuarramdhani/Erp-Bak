@@ -13,13 +13,13 @@
                                     <a class="btn btn-default btn-lg" href="<?php echo site_url('WasteManagemet/MasterData/');?>">
                                         <i class="icon-wrench icon-2x"></i>
                                         <br />
-                                    </a>                             
+                                    </a>
                                 </div>
                             </div>
                         </div>
                     </div>
                     <br />
-                    
+
                     <div class="row">
                         <div class="col-lg-12">
                             <div class="box box-primary box-solid">
@@ -45,7 +45,7 @@
                                                         </tr>
                                                         <tr>
                                                             <td class="col-lg-2" style="border: 0"><strong>Satuan Limbah</strong></td>
-                                                            <td style="border: 0">: <?php echo $headerRow['satuan']; ?></td>
+                                                            <td style="border: 0">: <?php echo $headerRow['satuan_all']; ?></td>
                                                         </tr>
                                                         <tr>
                                                             <td class="col-lg-2" style="border: 0"><strong>Sumber Limbah</strong></td>

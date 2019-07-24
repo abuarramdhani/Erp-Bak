@@ -28,12 +28,12 @@
 								<div style="float: left !important;">
 									<span style="font-style: normal;">Lokasi Kerja:
 									<select id="select-location" style="width: 339px; height:28px ; margin-right: 8px ; background-color: white; border: normal;">
-										<?php 
+										<?php
 											if(!isset($_GET["location"])) {
 												$_GET["location"] = '';
 											}
 										?>
-										
+
 										<option value="all"
 										<?= ($_GET["location"] == 'all') ? 'selected' : '' ?>>Pilih Semua</option>
 										<option value="yogyakarta"
@@ -61,7 +61,7 @@
 											</tr>
 										</thead>
 										<tbody>
-											<?php 
+											<?php
 												$a = 1;
 												foreach ($LimbahKirim as $key) {
 													if(isset($_GET['location'])) {
@@ -129,7 +129,8 @@
 															<td><?php echo $key['section_name']; ?></td>
 															<td><?php echo $key['noind_location']; ?></td>
 															<td><?php echo $bocor; ?></td>
-															<td><?php echo $key['jumlah_kirim']." ".$key['satuan']; ?></td>
+															<?php if($key['id_satuan'] == NULL){ $satuan = $key['limbah_satuan'];}else{ $satuan = $key['satuan'];} ?>
+															<td><?php echo $key['jumlah_kirim']." ".$satuan ; ?></td>
 															<td><?php echo $key['berat_kirim']; ?></td>
 															<td>
 													<?php if($key['status_kirim'] == '3'){ ?>
@@ -168,7 +169,8 @@
 															<td><?php echo $key['section_name']; ?></td>
 															<td><?php echo $key['noind_location']; ?></td>
 															<td><?php echo $bocor; ?></td>
-															<td><?php echo $key['jumlah_kirim']." ".$key['satuan']; ?></td>
+															<?php if($key['id_satuan'] == NULL){ $satuan = $key['limbah_satuan'];}else{ $satuan = $key['satuan'];} ?>
+															<td><?php echo $key['jumlah_kirim']." ".$satuan ; ?></td>
 															<td><?php echo $key['berat_kirim']; ?></td>
 															<td>
 													<?php if($key['status_kirim'] == '3'){ ?>
@@ -207,7 +209,8 @@
 															<td><?php echo $key['section_name']; ?></td>
 															<td><?php echo $key['noind_location']; ?></td>
 															<td><?php echo $bocor; ?></td>
-															<td><?php echo $key['jumlah_kirim']." ".$key['satuan']; ?></td>
+															<?php if($key['id_satuan'] == NULL){ $satuan = $key['limbah_satuan'];}else{ $satuan = $key['satuan'];} ?>
+															<td><?php echo $key['jumlah_kirim']." ".$satuan ; ?></td>
 															<td><?php echo $key['berat_kirim']; ?></td>
 															<td>
 													<?php if($key['status_kirim'] == '3'){ ?>
@@ -222,7 +225,7 @@
 															}
 
 													$a++;
-												
+
 													}
 											} ?>
 										</tbody>

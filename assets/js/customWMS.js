@@ -2,8 +2,19 @@
 $(document).ready(function(){
 
 	$('#txtJenisLimbah').on('change', function(){
-		var satuan = $(this).find(':selected').attr('data-satuan');
-		$('#txtSatuan').val(satuan);
+		// var satuan = $(this).find(':selected').attr('data-satuan');
+		// $('#txtSatuan').val(satuan);
+		var id = $('#txtJenisLimbah').val();
+		$('#txtSatuan').select2('val','');
+
+		$.ajax({
+			url : baseurl + 'WasteManagementSeksi/InputKirimLimbah/ajaxSatuan',
+			data: { id: id},
+			method: 'post',
+			success: function(data){
+				$('#txtSatuan').html(data);
+			}
+		})
 	});
 
 	$('#txtPengirimLimbah').on('change', function(){
@@ -44,8 +55,8 @@ $(document).ready(function(){
 		}
 	});
 
-	
-  
+
+
 });
 
 function pieChart(canvas, data, color, color2, label) {
@@ -76,7 +87,7 @@ function pieChart(canvas, data, color, color2, label) {
 
                     var persen = (tooltipData/total)*100;
                     persen = persen.toFixed(2);
-                    return tooltipLabel + " : " + tooltipData + " Kg atau " + persen +" %"; 
+                    return tooltipLabel + " : " + tooltipData + " Kg atau " + persen +" %";
                 }
             }
         }
@@ -101,7 +112,7 @@ function barChart(canvas, data, color, color2, label) {
             label : 'Berat (Kg)'
         }]
 
-        
+
     };
     var options = {
       legend: {
@@ -123,7 +134,7 @@ function barChart(canvas, data, color, color2, label) {
       	}]
       },
       responsive: true
-     
+
     }
     var canvas = new Chart(ctx, {
         type: 'bar',
@@ -167,7 +178,7 @@ function showChart(){
 				// $('#colorInfo').text(warna+" "+warna2);
 				barChart('#chartInfoLimbahBar',berat,warna,warna2, seksi);
 			}
-			
+
 		});
 	}else{
 		var seksi = $('#txtValueSek').val();
@@ -199,8 +210,8 @@ function showChart(){
 				$('#chartInfoLimbahBar').hide();
 				// $('#colorInfo').text(warna);
 				pieChart('#chartInfoLimbahPie',berat,warna,warna2, jenis);
-				
-				
+
+
 			}
 
 		});

@@ -384,6 +384,44 @@ $(document).on('click','#btnCloseSimple',function(e){
               .draw();
         });
       });
-
-
   });
+
+	function addSatuan() {
+	  var stn = $('#txtAjaxSatuanLimbah').val();
+
+	  String.prototype.capitalize = function() {
+	    return this.charAt(0).toUpperCase() + this.slice(1);
+	  }
+
+	  if (stn == '') {
+	    alert("Inputan Kosong");
+	  } else {
+	    var stn = stn.capitalize();
+	    $.ajax({
+	      dataType: 'json',
+	      url: baseurl + 'WasteManagement/MasterData/ajaxAddSatuan',
+	      method: 'post',
+	      data: {
+	        satuan: stn
+	      },
+	      success: function(data) {
+	        if (data == '1') {
+						swal.fire({
+							title: 'Sukes Menambahkan Satuan Baru',
+							type: 'success'
+						});
+	          //alert('Sukses Menambahkan Satuan Limbah');
+	          $("#modalAddSatuan").modal('hide');
+	          $("#txtSatuanLimbahHeader").append('<option value=' + stn + '>' + stn + '</option>');
+	        } else {
+						swal.fire({
+							title: 'Satuan Sudah Ada',
+							type: 'success',
+							text: 'Tidak bisa menambahkan satuan'
+						});
+	          //alert('Satuan Limbah Sudah Ada');
+	        }
+	      }
+	    });
+	  }
+	}
