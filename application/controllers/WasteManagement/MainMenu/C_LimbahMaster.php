@@ -46,6 +46,8 @@ class C_LimbahMaster extends CI_Controller
 		$data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id);
 
 		$data['LimbahJenis'] = $this->M_limbahmaster->getLimbahJenis();
+		// echo "<pre>";
+		// print_r($data['LimbahJenis']);exit;
 
 		$this->load->view('V_Header',$data);
 		$this->load->view('V_Sidemenu',$data);
@@ -67,6 +69,8 @@ class C_LimbahMaster extends CI_Controller
 		$data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id);
 		$data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id);
 
+		$data['SatuanLimbahAll'] = $this->M_limbahmaster->getSatuanLimbahAll();
+
 		/* HEADER DROPDOWN DATA */
 
 		/* LINES DROPDOWN DATA */
@@ -76,7 +80,7 @@ class C_LimbahMaster extends CI_Controller
 			$this->load->view('V_Header',$data);
 			$this->load->view('V_Sidemenu',$data);
 			$this->load->view('WasteManagement/MasterData/V_create', $data);
-			$this->load->view('V_Footer',$data);	
+			$this->load->view('V_Footer',$data);
 		} else {
 			$id = $this->M_limbahmaster->getLimbahJenisID();
 			$data = array(
@@ -91,11 +95,19 @@ class C_LimbahMaster extends CI_Controller
 			$this->M_limbahmaster->setLimbahJenis($data);
 			$header_id = $id['0']['id'];
 
-				$satuan = array(
-					'id_jenis_limbah' => $header_id,
-					'limbah_satuan' => $this->input->post('txtSatuanLimbahHeader'),
-				);
-				$this->M_limbahmaster->setLimbahSatuan($satuan);
+				// $satuan = array(
+				// 	'id_jenis_limbah' => $header_id,
+				// 	'limbah_satuan' => $this->input->post('txtSatuanLimbahHeader'),
+				// );
+				// $this->M_limbahmaster->setLimbahSatuan($satuan);
+				$jumlahSatuan = count($_POST['txtSatuanLimbahHeader']);
+				for ($i=0; $i < $jumlahSatuan ; $i++) {
+					$satuan = array(
+						'id_jenis_limbah' => $header_id,
+						'limbah_satuan_all' => $_POST['txtSatuanLimbahHeader'][$i]
+					);
+					$this->M_limbahmaster->setSatuanAll($satuan);
+				}
 
 				$sumber = array(
 					'id_jenis_limbah' => $header_id,
@@ -134,6 +146,7 @@ class C_LimbahMaster extends CI_Controller
 
 		/* HEADER DATA */
 		$data['LimbahJenis'] = $this->M_limbahmaster->getLimbahJenis($plaintext_string);
+		$data['SatuanLimbahAll'] = $this->M_limbahmaster->getSatuanLimbahAll();
 
 		/* LINES DATA */
 
@@ -146,8 +159,9 @@ class C_LimbahMaster extends CI_Controller
 			$this->load->view('V_Header',$data);
 			$this->load->view('V_Sidemenu',$data);
 			$this->load->view('WasteManagement/MasterData/V_update', $data);
-			$this->load->view('V_Footer',$data);	
+			$this->load->view('V_Footer',$data);
 		} else {
+
 			$data = array(
 				'jenis_limbah' => $this->input->post('txtJenisLimbahHeader',TRUE),
 				'kode_limbah' => $this->input->post('txtKodeLimbahHeader'),
@@ -158,11 +172,23 @@ class C_LimbahMaster extends CI_Controller
     			);
 			$this->M_limbahmaster->updateLimbahJenis($data, $plaintext_string);
 
+				// 	$satuan = array(
+				// 		'limbah_satuan' => $this->input->post('txtSatuanLimbahHeader'),
+				// 	);
+				// $id_satuan = $this->input->post('txtIDSatuanLimbahHeader');
+				// $this->M_limbahmaster->updateLimbahSatuan($satuan, $id_satuan);
+
+			//inactive first all//
+			$this->M_limbahmaster->updateOffAll($plaintext_string);
+				$jumlahSatuan = count($_POST['txtSatuanLimbahHeader']);
+				for ($i=0; $i < $jumlahSatuan ; $i++) {
 					$satuan = array(
-						'limbah_satuan' => $this->input->post('txtSatuanLimbahHeader'),
+						'id_jenis_limbah' => $plaintext_string,
+						'limbah_satuan_all' => $_POST['txtSatuanLimbahHeader'][$i],
+						'status' => '1'
 					);
-				$id_satuan = $this->input->post('txtIDSatuanLimbahHeader');
-				$this->M_limbahmaster->updateLimbahSatuan($satuan, $id_satuan);
+					$this->M_limbahmaster->updateSatuanAll($satuan);
+				}
 
 					$id_sumber = $this->input->post('txtIDSumberLimbahHeader',TRUE);
 
@@ -218,14 +244,23 @@ class C_LimbahMaster extends CI_Controller
     {
         $plaintext_string = str_replace(array('-', '_', '~'), array('+', '/', '='), $id);
 		$plaintext_string = $this->encrypt->decode($plaintext_string);
-
 		$this->M_limbahmaster->deleteLimbahJenis($plaintext_string);
 		$this->M_limbahmaster->deleteLimbahSatuan($plaintext_string);
 		$this->M_limbahmaster->deleteLimbahSumber($plaintext_string);
 		$this->M_limbahmaster->deleteLimbahKonversi($plaintext_string);
+		$this->M_limbahmaster->deleteLimbahSatuanAll($plaintext_string);
 
 		redirect(site_url('WasteManagement/MasterData'));
     }
+
+		public function ajaxAddSatuan(){
+			$satuanall = array(
+				'limbah_satuan_all' => $this->input->post('satuan'),
+				'id_jenis_limbah' => NULL
+			 );
+			$add = $this->M_limbahmaster->setLimbahSatuanAll($satuanall);
+			echo json_encode($add);
+		}
 
 
 

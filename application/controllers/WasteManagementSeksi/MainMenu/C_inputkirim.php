@@ -50,6 +50,8 @@ class C_inputkirim extends CI_Controller
 		$data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id);
 
 		$data['LimbahKirim'] = $this->M_kirim->getLimbahKirim();
+		// echo "<pre>";
+		// print_r($data['LimbahKirim']);exit;
 
 		$this->load->view('V_Header',$data);
 		$this->load->view('V_Sidemenu',$data);
@@ -73,6 +75,8 @@ class C_inputkirim extends CI_Controller
 		$data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id);
 
 		$data['JenisLimbah'] = $this->M_kirim->getLimJenis($kodesie);
+		$data['SatuanLimbah'] = $this->M_kirim->getSatLim();
+
 		$data['Seksi'] = $this->M_kirim->getSekNamaByKodesie($kodesie);
 		$data['Seksi2'] = $this->M_kirim->getSekNama();
 		$data['Lokasi'] = $this->M_kirim->getLokasi();
@@ -97,6 +101,7 @@ class C_inputkirim extends CI_Controller
 				'kondisi' => $this->input->post('txtKondisi'),
 				'jumlah' => $this->input->post('txtJumlah'),
 				'keterangan' => $this->input->post('txtKeterangan'),
+				'id_satuan' => $this->input->post('txtSatuan')
 			);
 			// echo "<pre>";
 			// print_r($datapost);
@@ -128,9 +133,10 @@ class C_inputkirim extends CI_Controller
 		$data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id);
 		$data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id);
 
-		$data['JenisLimbah'] = $this->M_kirim->getLimJenis();
+		$data['JenisLimbah'] = $this->M_kirim->getLimJenis($kodesie);
 		$data['Seksi'] = $this->M_kirim->getSekNamaByKodesie($kodesie);
 		$data['KirimLimbah'] = $this->M_kirim->getLimKirim($plaintext_string);
+		$data['SatuanLimbah'] = $this->M_kirim->getSatlimbyID($data['KirimLimbah']['0']['id_satuan']);
 		$data['Lokasi'] = $this->M_kirim->getLokasi();
 
 		if (empty($_POST)) {
@@ -148,6 +154,7 @@ class C_inputkirim extends CI_Controller
 				'kondisi' => $this->input->post('txtKondisi'),
 				'jumlah' => $this->input->post('txtJumlah'),
 				'keterangan' => $this->input->post('txtKeterangan'),
+				'id_satuan' => $this->input->post('txtSatuan')
 			);
 			// echo "<pre>";
 			// print_r($datapost);
@@ -309,6 +316,17 @@ class C_inputkirim extends CI_Controller
 		$opsi = "<option></option>";
 		foreach ($data as $key) {
 			$opsi = $opsi."<option value='".$key['employee_code']."' data-name='".$key['employee_name']."' >".$key['employee_code']."</option>";
+		}
+
+		echo $opsi;
+	}
+
+	public function ajaxSatuan(){
+		$id = $_POST['id'];
+		$data = $this->M_kirim->getSatuan($id);
+		$opsi = "<option></option>";
+		foreach ($data as $key) {
+			$opsi = $opsi."<option value='".$key['id_satuan_all']."'>".$key['limbah_satuan_all']."</option>";
 		}
 
 		echo $opsi;
