@@ -75,31 +75,31 @@
 									<?php
 											$time = date('H:i:s');
 											$var = '';
-												if ($time > '23:35:00' && $time < '23:40:00') {
+												if ($time > '23:30:00' && $time < '23:40:00') {
 													$var = '1';
-												}elseif ($time > '23:15:00' && $time < '23:20:00') {
+												}elseif ($time > '23:10:00' && $time < '23:20:00') {
 													$var = '1';
-												} elseif ($time > '22:35:00' && $time < '22:40:00') {
+												} elseif ($time > '22:30:00' && $time < '22:40:00') {
 													$var = '1';
-												} elseif ($time > '21:05:00' && $time < '21:10:00') {
+												} elseif ($time > '21:00:00' && $time < '21:10:00') {
 													$var = '1';
-												} elseif ($time > '20:05:00' && $time < '20:10:00') {
+												} elseif ($time > '20:00:00' && $time < '20:10:00') {
 													$var = '1';
-												} elseif ($time > '19:31:00' && $time < '19:36:00') {
+												} elseif ($time > '19:26:00' && $time < '19:36:00') {
 													$var = '1';
-												} elseif ($time > '19:05:00' && $time < '19:10:00') {
+												} elseif ($time > '19:00:00' && $time < '19:10:00') {
 													$var = '1';
-												} elseif ($time > '14:46:00' && $time < '14:51:00') {
+												} elseif ($time > '14:41:00' && $time < '14:51:00') {
 													$var = '1';
-												} elseif ($time > '14:11:00' && $time < '14:16:00') {
+												} elseif ($time > '14:06:00' && $time < '14:16:00') {
 													$var = '1';
-												} elseif ($time > '12:31:00' && $time < '12:36:00') {
+												} elseif ($time > '12:26:00' && $time < '12:36:00') {
 													$var = '1';
-												} elseif ($time > '07:31:00' && $time < '07:36:00') {
+												} elseif ($time > '07:25:00' && $time < '08:00:00') {
 													$var = '1';
-												} elseif ($time > '06:31:00' && $time < '06:36:00') {
+												} elseif ($time > '06:26:00' && $time < '06:36:00') {
 													$var = '1';
-												} elseif ($time > '05:31:00' && $time < '05:36:00') {
+												} elseif ($time > '05:26:00' && $time < '05:36:00') {
 													$var = '1';
 												} else {
 													$var = '2';
