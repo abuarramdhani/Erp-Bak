@@ -1,6 +1,6 @@
 <table class="table">
 	<tr>
-		<td width="20%" style="height: 67px;"> </td>
+		<td width="20%" style="height: 67px;"> </td><!-- Harusnya 85 -->
 	</tr>
 </table>
 
