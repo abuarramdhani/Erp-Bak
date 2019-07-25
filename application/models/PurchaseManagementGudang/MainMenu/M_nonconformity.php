@@ -633,4 +633,117 @@ class M_nonconformity extends CI_Model
 
         return $query->result_array();
     }
+
+    public function updateDeskripsi($headerid, $desc)
+    {
+        $this->db->where('header_id', $headerid);
+        $this->db->update('pm.pm_po_oracle_non_conformity_lines',$desc);
+    }
+
+    public function updateLineOracle($nomorPO,$line,$lppb)
+    {
+        $oracle = $this->load->database('oracle', TRUE);
+        $query = $oracle->query("SELECT DISTINCT 
+            pol.po_line_id line_id, 
+            pol.line_num line_num,
+            poh.segment1 no_po, 
+            pol.closed_code closed_code,
+            pov.vendor_name vendor_name,
+            ppf.full_name buyer,
+            ppf.NATIONAL_IDENTIFIER ,
+            pol.unit_price unit_price,
+            pll.quantity_rejected rejected,
+            pol.item_description description,
+            pll.quantity_billed quantity_billed, 
+            rsh.receipt_num no_lppb,
+            poh.currency_code currency, 
+            rsh.shipment_num shipment,
+            rt.transaction_type status,
+            rt.quantity qty_receipt,
+            rsh.creation_date TRANSACTION, 
+            msib.segment1 item_id,
+            pol.quantity quantity
+            FROM rcv_shipment_headers rsh,
+                    rcv_shipment_lines rsl,
+                    po_vendors pov,
+                    rcv_transactions rt,
+                    hr_all_organization_units_tl org,
+                    po_headers_all poh,
+                    po_lines_all pol,
+                    po_line_locations_all pll,
+                    mtl_system_items_b msib,
+                    per_people_f ppf
+            WHERE rsh.shipment_header_id = rsl.shipment_header_id
+                AND rsh.shipment_header_id = rt.shipment_header_id
+                AND org.organization_id(+) = rsl.from_organization_id
+                AND rsl.shipment_line_id = rt.shipment_line_id
+                AND pov.vendor_id = rt.vendor_id
+                AND poh.po_header_id = rt.po_header_id
+                AND poh.agent_id = ppf.person_id
+                AND pol.po_line_id = rt.po_line_id
+                AND rt.transaction_id =
+                    (SELECT MAX (rts.transaction_id)
+                        FROM rcv_transactions rts
+                        WHERE rt.shipment_header_id = rts.shipment_header_id
+                        AND rts.po_line_id = pol.po_line_id
+                        AND rts.transaction_type IN
+                                ('REJECT', 'DELIVER', 'ACCEPT', 'RECEIVE','TRANSFER'))
+                AND msib.inventory_item_id = pol.item_id
+                AND msib.organization_id = 81
+                AND poh.po_header_id(+) = pol.po_header_id
+                AND pov.vendor_id(+) = poh.vendor_id
+                AND pol.po_line_id(+) = pll.po_line_id
+                AND poh.segment1 = $nomorPO
+                AND pol.line_num = $line
+                $lppb
+            UNION ALL
+            SELECT DISTINCT 
+                    pol.po_line_id line_id, 
+                    pol.line_num line_num,
+                    poh.segment1 no_po, 
+                    pol.closed_code closed_code,
+                    ppf.full_name buyer,
+                    ppf.NATIONAL_IDENTIFIER ,
+                    pov.vendor_name vendor_name,
+                    pol.unit_price unit_price, 
+                    pll.quantity_rejected rejected,
+                    pol.item_description description,
+                    pll.quantity_billed quantity_billed, 
+                    NULL no_lppb,
+                    poh.currency_code currency, 
+                    NULL shipment, 
+                    NULL status,
+                    NULL qty_receipt,
+                    NULL TRANSACTION, 
+                    msib.segment1 item_id,
+                    pol.quantity quantity
+            FROM po_vendors pov,
+                    hr_all_organization_units_tl org,
+                    po_headers_all poh,
+                    po_lines_all pol,
+                    po_line_locations_all pll,
+                    mtl_system_items_b msib,
+                    per_people_f ppf
+            WHERE poh.po_header_id(+) = pol.po_header_id
+                AND pov.vendor_id(+) = poh.vendor_id
+                AND pol.po_line_id(+) = pll.po_line_id
+                AND msib.inventory_item_id = pol.item_id
+                AND msib.organization_id = 81
+                AND poh.agent_id = ppf.person_id
+                AND poh.segment1 = $nomorPO
+                AND pol.line_num = $line
+                AND pol.po_line_id NOT IN (
+                    SELECT rt.po_line_id
+                        FROM rcv_transactions rt
+                        WHERE pol.po_line_id = rt.po_line_id)
+        ");
+
+        return $query->result_array();
+    }
+
+    public function updateLineFromOracle($update, $lineItemId)
+    {
+        $this->db->where('line_item_id', $lineItemId);
+        $this->db->update('pm.pm_po_oracle_non_conformity_line_items', $update);
+    }
 }

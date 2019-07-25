@@ -495,6 +495,35 @@ $(document).ready(function() {
         });
     })
 
+    $(document).on('click','.btnEditDeskripsiNonC', function () {
+        var deskripsi = $('.deskripsiNonC').html();
+        $('.txtAreaDeskripsiNonC').val(deskripsi);
+        $('#modal-ubahdeskripsi').modal('show');
+    });
+
+    $(document).on('click','.btnUpdateDeskripsiNonC', function () {
+        var headerid = $('.hdnHeaderIdNonC').val();
+        var datadeskripsi = $('.txtAreaDeskripsiNonC').val();
+
+        $.ajax({
+            type: "POST",
+            url: baseurl + "PurchaseManagementGudang/NonConformity/updateDeskripsi",
+            data: {
+                headerid : headerid,
+                deskripsi : datadeskripsi
+            },
+            dataType: "JSON",
+            success: function (response) {
+                if (response == 1) {
+                    $('.deskripsiNonC').html(datadeskripsi);
+                    $('#modal-ubahdeskripsi').modal('hide');
+                }else{
+                    alert('gagal update karena kesalahan fungsi');
+                }
+            }
+        });
+    })
+
 
 });
 

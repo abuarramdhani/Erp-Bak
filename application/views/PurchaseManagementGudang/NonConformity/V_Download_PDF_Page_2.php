@@ -89,7 +89,36 @@
             </b>
         </h5>
         <hr/>
-        <br><br>
+        <br>
+        <table style="border: 1px solid ;">
+            <!-- <thead> -->
+                <tr>
+                    <td style="border: 1px solid; text-align:center; font-size:11px;">No</td>
+                    <td style="border: 1px solid; text-align:center; font-size:11px;">PO</td>
+                    <td style="border: 1px solid; text-align:center; font-size:11px;">Line</td>
+                    <td style="border: 1px solid; text-align:center; font-size:11px;">Item Name</td>
+                    <!-- <td style="border: 1px solid; text-align:center; font-size:11px;">UOM</td> -->
+                    <td style="border: 1px solid; text-align:center; font-size:11px;">Qty Problem</td>
+                    <td style="border: 1px solid; text-align:center; font-size:11px;">Shipment Date</td>
+                    <td style="border: 1px solid; text-align:center; font-size:11px;">Reicive Date</td>
+                </tr>
+            <!-- </thead> -->
+            <body>
+            <?php $no=0; foreach ($item as $key => $itemData) { $no++;?>
+                <tr>
+                    <td style="border: 1px solid;font-size:10px; padding-left:2mm"><?php echo $no; ?></td>
+                    <td style="border: 1px solid;font-size:10px; padding-left:2mm"><?php echo $itemData['no_po']; ?></td>
+                    <td style="border: 1px solid;font-size:10px; padding-left:2mm"><?php echo $itemData['line']; ?></td>
+                    <td style="border: 1px solid;font-size:10px; padding-left:2mm"><?php echo $itemData['item_description'];?></td>
+                    <!-- <td style="border: 1px solid;font-size:10px; padding-left:2mm"><?php echo $itemData['uom'];?></td> -->
+                    <td style="border: 1px solid;font-size:10px; padding-left:2mm"><?php echo $itemData['quantity_problem']; ?></td>
+                    <td style="border: 1px solid;font-size:10px; padding-left:2mm"></td>
+                    <td style="border: 1px solid;font-size:10px; padding-left:2mm"></td>
+                </tr>
+            <?php } ?>
+            </body>
+        </table>
+        <br>
         <table class="table">
             <tr>
                 <?php foreach ($image as $key => $img) { ?>
