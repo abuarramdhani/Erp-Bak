@@ -64,6 +64,7 @@
                                                     </div>
                                                 </div> -->
                                                 <div class="row">
+                                                <input type="hidden" class="hdnHeaderIdNonC" value="<?php echo $headerRow['header_id']; ?>">
                                                     <div class="col-lg-4">
                                                         <strong>
                                                             Delivery Date
@@ -227,7 +228,7 @@
                                                               <span><?= $no++.'. '.$man['case_name'];?></span><br>
                                                           <?php endforeach; ?>
                                                       </td>
-                                                      <td><?php echo $PoOracleNonConformityLines[0]['case_description'].' '.$PoOracleNonConformityLines[0]['description']; ?></td>
+                                                      <td><span class="deskripsiNonC"><?php echo $PoOracleNonConformityLines[0]['description']; ?></span><button type="button" class="btn btn-xs btn-primary btnEditDeskripsiNonC">Edit</button></td>
                                                       <!-- <td><?php if ($PoOracleNonConformityLines[0]['judgement'] == NULL || $PoOracleNonConformityLines[0]['judgement'] == ''|| $PoOracleNonConformityLines[0]['status'] == NULL) {
                                                            echo "OPEN";}else{ echo strtoupper($PoOracleNonConformityLines[0]['status']);} ?>
                                                       </td> -->
@@ -308,4 +309,26 @@
         </div>
     </div>
 </section>
+
+<div class="modal fade" id="modal-ubahdeskripsi">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <!-- <button type="button" class="close" data-dismiss="modal" aria-label="Close"> -->
+            <!-- <span aria-hidden="true">&times;</span></button> -->
+          <h4 class="modal-title">Edit Deskripsi</h4>
+        </div>
+        <div class="modal-body">
+            <textarea class="form-control txtAreaDeskripsiNonC"></textarea>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-default pull-left" data-dismiss="modal">Cancel</button>
+          <button type="button" id="" class="btn btn-primary btnUpdateDeskripsiNonC">Yes</button>
+        </div>
+      </div>
+      <!-- /.modal-content -->
+    </div>
+    <!-- /.modal-dialog -->
+</div>
+<!-- /.modal -->
 

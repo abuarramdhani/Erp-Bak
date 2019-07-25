@@ -149,9 +149,51 @@ class C_NonConformity extends CI_Controller
 		
 		/* LINES DATA */
 		$data['PoOracleNonConformityLines'] = $this->M_nonconformity->getLines($plaintext_string);
-		$data['linesItem'] = $this->M_nonconformity->getLinesItem($data['PoOracleNonConformityHeaders'][0]['header_id']);
+		$linesItem = $this->M_nonconformity->getLinesItem($data['PoOracleNonConformityHeaders'][0]['header_id']);
+		if (count($linesItem) !== 0) {
+			// echo'<pre>';
+			// print_r($linesItem);
+			// exit;
+			for ($i=0; $i < count($linesItem); $i++) { 
+				$lineItemId = $linesItem[$i]['line_item_id'];
+				$nomorPO = $linesItem[$i]['no_po'];
+				$line = $linesItem[$i]['line'];
+				$lppb = '';
+				if ($linesItem[$i]['no_lppb'] != null || $linesItem[$i]['no_lppb'] != '') {
+					$lppb = 'AND rsh.receipt_num ='.$linesItem[$i]['no_lppb'];
+				}
+
+				$checkUpdate = $this->M_nonconformity->updateLineOracle($nomorPO,$line,$lppb);
+				// echo '<pre>';
+				// print_r($checkUpdate);
+
+				if($checkUpdate[0]['QTY_RECEIPT']=='' || $checkUpdate[0]['QTY_RECEIPT']== null){
+					$checkUpdate[0]['QTY_RECEIPT'] = 0;
+				}
+
+				$update = array(
+								'quantity_amount' => $checkUpdate[0]['QTY_RECEIPT'],
+								// 'quantity_billed' => $checkUpdate[0]['QUANTITY_BILLED'],
+								// 'quantity_reject' => $checkUpdate[0]['REJECTED'],
+								// 'currency' => $checkUpdate[0]['CURRENCY'],
+								// 'unit_price' => $checkUpdate[0]['UNIT_PRICE'],
+								'quantity_po' => $checkUpdate[0]['QUANTITY'],
+								// 'quantity_problem' => $checkUpdate[0][''],
+								'closure_status' => $checkUpdate[0]['CLOSED_CODE'],
+								'buyer' => $checkUpdate[0]['BUYER'].','.$checkUpdate[0]['NATIONAL_IDENTIFIER'],
+								'no_lppb' => $checkUpdate[0]['NO_LPPB'],
+							);
+
+				$this->M_nonconformity->updateLineFromOracle($update, $lineItemId);
+				// echo '<pre>';
+				// print_r($lineItemId);
+			}
+			// exit;
+
+		}
 		// echo'<pre>';
 		// print_r($data['linesItem']);exit;
+		$data['linesItem'] = $this->M_nonconformity->getLinesItem($data['PoOracleNonConformityHeaders'][0]['header_id']);
 
 		if (count($data['PoOracleNonConformityLines']) > 0) {
 			$sourceId = $data['PoOracleNonConformityLines'][0]['source_id'];
@@ -273,6 +315,7 @@ class C_NonConformity extends CI_Controller
 		$data['head'] = $this->M_nonconformity->getHeaders($header_id);
 		$data['lines'] = $this->M_nonconformity->getLines($header_id);
 		$data['item'] = $this->M_nonconformity->getLineItems($header_id);
+		// echo count($data['item']);exit;
 		$sourceId = $data['lines'][0]['source_id'];
 		$data['image'] = $this->M_nonconformity->getImages($sourceId);
 		// echo '<pre>';
@@ -531,9 +574,9 @@ class C_NonConformity extends CI_Controller
 		
 		$itemCheck = $this->M_nonconformity->getLinesItem($headerId);
 
-		if (count($itemCheck) >0 )  {
-			$this->M_nonconformity->deleteItem($headerId);
-		}
+		// if (count($itemCheck) >0 )  {
+		// 	$this->M_nonconformity->deleteItem($headerId);
+		// }
 
 		for ($i=0; $i <count($setItem) ; $i++) { 
 			if($qtyAmount[$i]=='' || $qtyAmount[$i]== null){
@@ -773,6 +816,18 @@ class C_NonConformity extends CI_Controller
 		$line_id = $_POST['lineid'];
 
 		$data = $this->M_nonconformity->hapusItemSelected($line_id);
+
+		echo '1';
+	}
+
+	public function updateDeskripsi()
+	{
+		$headerid = $_POST['headerid'];
+		$deskripsi = $_POST['deskripsi'];
+
+		$desc = array('description' => $deskripsi, );
+
+		$data = $this->M_nonconformity->updateDeskripsi($headerid, $desc);
 
 		echo '1';
 	}

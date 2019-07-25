@@ -2,7 +2,7 @@
             <table class="table table-bordered" style="font-size:11px;">
                 <tr>
                     <td rowspan="4">
-                        <img src="<?php echo base_url('assets/img/logo.png')?>" style="width:70px;"/>
+                        <img src="<?php echo base_url('assets/img/logo.png')?>" style="width:80px;"/>
                     </td>
                     <td rowspan="4" style="width: 300px; padding-left: 5px; padding-right: 5px;">
                         <h4><b>CV. KARYA HIDUP SENTOSA</b></h4>
@@ -60,15 +60,21 @@
 	        	<tr><td style="width: 150px; vertical-align:top;padding-left: 5px;">Attendance name</td><td colspan="3">: <?php echo $hd['person_in_charge']; ?></td></tr>
     	    	<tr><td colspan="4"><hr style="margin-bottom: 5px;"></td></tr>
         		<tr><td colspan="4" style="padding-left: 5px;"><h5><b>Description of Complained/Claimed Product</b></h5></td></tr>
-        		<tr><td style="width: 150px; vertical-align:top;padding-left: 5px;">Item name</td><td colspan="3" colspan="3">: <?php $resultstr = array(); foreach ($item as $key => $itemData) { ?>
-                    <?php $resultstr[] = $itemData['item_description']; ?>
-                <?php } echo implode(", ",$resultstr);?></td></tr>
-        		<tr><td style="width: 150px; vertical-align:top;padding-left: 5px;">Related PO</td><td colspan="3">: <?php $resultstr = array(); foreach ($item as $key => $itemData) { ?>
-                    <?php $resultstr[] = $itemData['no_po'].'('.$itemData['line'].')'; ?>
-                <?php } echo implode(", ",$resultstr)?></td></tr>
-	        	<tr><td style="width: 150px; vertical-align:top;padding-left: 5px;">Quantity Problem</td><td colspan="3">: <?php $resultstr = array(); foreach ($item as $key => $itemData) { ?>
-                    <?php $resultstr[] = $itemData['quantity_problem']; ?>
-                <?php } echo implode(", ",$resultstr)?></td></tr>
+        		<tr><td style="width: 150px; vertical-align:top;padding-left: 5px;">Item name</td><td colspan="3">: <?php if(count($item) == 1) {
+                                echo $item[0]['item_description'];
+                            }else {
+                                echo 'details on the attachment';
+                            }?></td></tr>
+        		<tr><td style="width: 150px; vertical-align:top;padding-left: 5px;">Related PO</td><td colspan="3">: <?php if(count($item) == 1) {
+                                echo $item[0]['no_po'].'('.$item[0]['line'].')';
+                            }else {
+                                echo 'details on the attachment';
+                            }?></td></tr>
+	        	<tr><td style="width: 150px; vertical-align:top;padding-left: 5px;">Quantity Problem</td><td colspan="3">: <?php if(count($item) == 1) {
+                                echo $item[0]['quantity_problem'];
+                            }else {
+                                echo 'details on the attachment';
+                            }?></td></tr>
     	    	<tr><td style="width: 150px; vertical-align:top;padding-left: 5px;">Related form</td><td colspan="3">: <?php echo $hd['packing_list']; ?></td></tr>
 	        	<tr><td colspan="4"><hr style="margin-bottom: 5px;"></td></tr>
     	    	<tr><td colspan="4" style="padding-left: 5px;"><h5><b>Description of Fact Finding</b></h5></td></tr>
