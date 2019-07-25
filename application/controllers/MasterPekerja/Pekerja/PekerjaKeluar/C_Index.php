@@ -85,6 +85,7 @@ class C_Index extends CI_Controller {
 
 		$pekerja 		= $this->M_pekerjakeluar->dataPekerja($noind,$keluar);
 		$kontak 		= $this->M_pekerjakeluar->kontakPekerja($noind);
+		// print_r($kontak); exit();
 		$pekerjaan      =$this->M_pekerjakeluar->getPekerjaan($noind);
 
 		if ($pekerja != null) {
@@ -100,7 +101,51 @@ class C_Index extends CI_Controller {
 
 			$data['check'] = $check;
 
+			if ( $kontak == null )
+			{ 
 			$data['data'] 	= array(
+									'photo' 	=> $pekerja[0]['photo'],
+									'noind' 	=> $pekerja[0]['noind'],
+									'nama' 		=> $pekerja[0]['nama'],
+									'templahir' => $pekerja[0]['templahir'],
+									'tgllahir' 	=> $pekerja[0]['tgllahir'],
+									'nik' 		=> $pekerja[0]['nik'],
+									'alamat' 	=> $pekerja[0]['alamat'],
+									'desa' 		=> $pekerja[0]['desa'],
+									'kec' 		=> $pekerja[0]['kec'],
+									'kab' 		=> $pekerja[0]['kab'],
+									'prop' 		=> $pekerja[0]['prop'],
+									'kodepos' 	=> $pekerja[0]['kodepos'],
+									'telepon' 	=> $pekerja[0]['telepon'],
+									'nohp' 		=> $pekerja[0]['nohp'],
+									'diangkat' 	=> $pekerja[0]['diangkat'],
+									'masukkerja'=> $pekerja[0]['masukkerja'],
+									'lmkontrak' => $pekerja[0]['lmkontrak'],
+									'akhkontrak'=> $pekerja[0]['akhkontrak'],
+									'jabatan' 	=> $pekerja[0]['jabatan'],
+  									
+  									'pekerjaan'=> $pekerjaan[0]['pekerjaan'],
+  									'kd_pekerjaan'=> substr($pekerjaan[0]['pekerjaan'], 0,9),
+
+									'seksi' 	=> $seksi[0]['seksi'],
+									'unit' 		=> $seksi[0]['unit'],
+									'bidang' 	=> $seksi[0]['bidang'],
+									'dept' 		=> $seksi[0]['dept'],
+
+									'internal_mail' 	=> '',
+									'telkomsel_mygroup' => '',
+									'external_mail' 	=> '',
+									'pidgin_account' 	=> '',
+
+									'tglkeluar' => $pekerja[0]['tglkeluar'],
+									'sebabklr' 	=> $pekerja[0]['sebabklr'],
+									'uk_baju' 	=> $pekerja[0]['uk_baju'],
+									'uk_celana' => $pekerja[0]['uk_celana'],
+									'uk_sepatu' => $pekerja[0]['uk_sepatu'],
+									'status_diangkat' => $pekerja[0]['status_diangkat']
+								);
+		}else{
+		$data['data'] 	= array(
 									'photo' 	=> $pekerja[0]['photo'],
 									'noind' 	=> $pekerja[0]['noind'],
 									'nama' 		=> $pekerja[0]['nama'],
@@ -141,6 +186,7 @@ class C_Index extends CI_Controller {
 									'uk_sepatu' => $pekerja[0]['uk_sepatu'],
 									'status_diangkat' => $pekerja[0]['status_diangkat']
 								);
+		}
 								// echo "<pre>";
 								// print_r($kontak); exit();
 
