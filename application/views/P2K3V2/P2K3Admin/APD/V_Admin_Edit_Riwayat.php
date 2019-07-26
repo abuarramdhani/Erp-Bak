@@ -62,18 +62,26 @@
                                                     </select>
                                                 </td>
                                                 <td><input class="form-control" readonly="" value="<?php echo $key['kode_item']; ?>"></td>
-                                                <td><input name="jmlUmum" type="number" min="0" class="form-control" value="<?php echo $key['jml_kebutuhan_umum']; ?>"></td>
-                                                <td><input name="staffJumlah" type="number" min="0" class="form-control" value="<?php echo $key['jml_kebutuhan_staff']; ?>"></td>
+                                                <td>
+                                                    <input name="jmlUmum" type="number" min="0" class="form-control" value="<?php echo round($key['jml_kebutuhan_umum']*$key['xbulan']); ?>">
+                                                </td>
+                                                <td>
+                                                    <input name="staffJumlah" type="number" min="0" class="form-control" value="<?php echo round($key['jml_kebutuhan_staff']*$key['xbulan']); ?>">
+                                                </td>
                                                 <?php $jml = explode(',', $key['jml_item']);
                                                 foreach ($jml as $row) { ?>
-                                                <td><input name="pkjJumlah[]" type="number" min="0" class="form-control" value="<?php echo $row; ?>"></td>
+                                                <td>
+                                                    <input name="pkjJumlah[]" type="number" min="0" class="form-control" value="<?php echo round($row*$key['xbulan']); ?>">
+                                                </td>
                                                 <?php  } ?>
                                             </tr>
+                                            <input hidden="" value="<?php echo $key['xbulan']; ?>" name="item">
                                             <?php $a++; } ?>
                                         </tbody>
                                     </table>
                                     <input hidden="" value="<?php echo $id; ?>" name="id">
                                     <input hidden="" value="<?php echo $ks; ?>" name="ks">
+
                                     <div class="col-md-12 text-right">
                                         <button class="btn btn-primary">Simpan</button>
                                     </div>

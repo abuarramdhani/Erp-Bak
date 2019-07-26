@@ -766,10 +766,21 @@ public function SaveEditRiwayatKebutuhan()
 	// print_r($_POST);exit();
 	$id = $this->input->post('id');
 	$ks = $this->input->post('ks');
+	$item = $this->input->post('item');
 	$jmlUmum = $this->input->post('jmlUmum');
+	$jmlUmum = round($jmlUmum/$item,2);
 	$staffJumlah = $this->input->post('staffJumlah');
+	$staffJumlah = round($staffJumlah/$item,2);
 	$pkjJumlah = $this->input->post('pkjJumlah');
-	$pkj = implode(',', $pkjJumlah);
+	$arr = array();
+	foreach ($pkjJumlah as $key) {
+		$arr[] = round($key/$item,2);
+	}
+	$pkj = implode(',', $arr);
+	// echo $pkj.' - ';
+	// echo $jmlUmum.' - ';
+	// echo $staffJumlah.' - ';
+	// exit();
 
 	$update = $this->M_dtmasuk->updateRiwayat($id, $jmlUmum, $staffJumlah,$pkj);
 	if ($update) {
