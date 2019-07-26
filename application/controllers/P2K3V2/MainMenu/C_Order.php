@@ -1331,8 +1331,9 @@ class C_Order extends CI_Controller
 		//implode jumlah
       	$a = 0;
       	for ($i=0; $i < count($item); $i++) {
+      		$getbulan = $this->M_dtmasuk->getBulan($item[$i]);
       		for ($x=$a; $x < (count($daftar_pekerjaan)*($i+1)); $x++) { 
-      			$jml[$i][] = $jumlah[$x];
+      			$jml[$i][] = (round($jumlah[$x]/$getbulan,2));
       		}
 
       		$data = array(
@@ -1340,8 +1341,8 @@ class C_Order extends CI_Controller
       			'kd_pekerjaan'	=> $kd_pkj,
       			'jml_item'	=>	implode(',', $jml[$i]),
       			'kodesie'	=>	$ks,
-      			'jml_kebutuhan_umum'	=>	$umum[$i],
-      			'jml_kebutuhan_staff'	=>	$staff[$i],
+      			'jml_kebutuhan_umum'	=>	(round($umum[$i]/$getbulan,2)),
+      			'jml_kebutuhan_staff'	=>	(round($staff[$i]/$getbulan,2)),
       			'tgl_input'	=>	$tgl_input,
       			'status'	=>	'0',
       			);
