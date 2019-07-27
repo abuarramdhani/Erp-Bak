@@ -57,22 +57,28 @@ $(document).ready(function(){
 		$('#surat-loading').attr('hidden', false);
 	});
 
-	$('.bt_et_harian').click(function(){
+	$('#formTimsBulanan').submit(function(){
 		$('#surat-loading').attr('hidden', false);
 	});
 
 	$('#evt_isi').redactor();
 	$('#evt_alasan').redactor();
+	$('.tx_et_bulanan').redactor();
 	var editor = $('#evt_result').redactor();
 
 	$('#evt_preview').click(function(){
-		var no_surat = $('#evt_no_surat').val();
-		var departemen = $('#evt_departemen').val();
-		var lampiran = $('#evt_lampiran').val();
-		var pdev = $('#evt_pdev').val();
-		var kepada = $('#evt_kepada').val();
-		var isi = $('#evt_isi').val();
-		var alasan = $('#evt_alasan').val();
+		// var no_surat = $('#evt_no_surat').val();
+		// if ($('#evt_departemen').val() != null && typeof $('#evt_departemen').val()[0] != 'undefined') {
+		// 	var departemen = $('#evt_departemen').val()[0].split(' | ');
+		// 	departemen = departemen[0];
+		// }else{
+		// 	var departemen = '';
+		// }
+		// var lampiran = $('#evt_lampiran').val();
+		// var pdev = $('#evt_pdev').val();
+		// var kepada = $('#evt_kepada').val();
+		// var isi = $('#evt_isi').val();
+		// var alasan = $('#evt_alasan').val();
 		$('#surat-loading').attr('hidden', false);
 
 		$.ajax({
@@ -81,11 +87,16 @@ $(document).ready(function(){
 			url: baseurl+"EvaluasiTIMS/Setup/previewMemo",
 			success:function(result)
 			{
-				var result = JSON.parse(result);
-				console.log(result);
+				if (result.length < 100) {
+					$('#surat-loading').attr('hidden', true);
+					alert(result);
+				}else{
+					var result = JSON.parse(result);
+					console.log(result);
 
-				$('#evt_result').redactor('set', result['preview']);
-				$('#surat-loading').attr('hidden', true);
+					$('#evt_result').redactor('set', result['preview']);
+					$('#surat-loading').attr('hidden', true);
+				}
 			},
 			error: function(jqXHR, exception) {
 				if (jqXHR.status === 0) {
@@ -132,6 +143,38 @@ $(document).ready(function(){
 				return {
 					results: $.map(data, function (item) {
 						return {
+							id: item.pilih+' | '+item.kodesie,
+							text: item.pilih,
+						}
+					})
+				};
+			},
+			cache: true
+		},
+		placeholder: 'Pilih Salah Satu',
+	});
+	$('#evt_departemen').on("select2:select", function (evt) {
+	  var element = evt.params.data.element;
+	  var $element = $(element);
+	  
+	  $element.detach();
+	  $(this).append($element);
+	  $(this).trigger("change");
+	});
+
+	$('#evt_departemen2').select2({
+		ajax:
+		{
+			url: baseurl+'EvaluasiTIMS/Setup/getKadept',
+			dataType: 'json',
+			type: 'get',
+			data: function (params) {
+				return {s: params.term, id:$('#evt_pilih').val()};
+			},
+			processResults: function (data) {
+				return {
+					results: $.map(data, function (item) {
+						return {
 							id: item.pilih,
 							text: item.pilih,
 						}
@@ -144,29 +187,54 @@ $(document).ready(function(){
 	});
 
 	$('#evt_pilih').select2();
+	$('#evt_kepada').select2();
 
 	$('#evt_pilih').change(function(){
 		var id = $(this).val();
 		var teks = $('option#'+id).text();
+		$('#evt_departemen2').each(function () { //added a each loop here
+			$(this).val(null).trigger("change");
+		});
+		$('#evt_departemen').each(function () { //added a each loop here
+			$(this).val('').trigger("change"); // ganti ke change untuk multiple
+		});
 		if (id == '0') {
 			$('#evt_departemen').attr('disabled', true);
+			$('#evt_departemen2').attr('disabled', true);
 			$('#evt_lbl_pilih').text('Pilihan :');
 		}else{
 			$('#evt_departemen').attr('disabled', false);
+			$('#evt_departemen2').attr('disabled', false);
 			$('#evt_lbl_pilih').text(teks+' :');
 		}
 	});
 
 	$('#evt_departemen').change(function(){
-		var text = $(this).val();
+		$('#surat-loading').attr('hidden', false);
+		$('#evt_kepada').each(function () { //added a each loop here
+			$(this).val(null).trigger("change");
+		});
+		var str = $(this).val();
+		// if (str) {
+		// 	str = str.split(' | ');
+		// }else{
+		// 	str = ['',''];
+		// }
+		// alert(str);
+		if (str != null && typeof str[0] != 'undefined') {
+			str = str[0].split(' | ');
+		}else{
+			str = ['',''];
+		}
+			text = str[0];
 		$.ajax({
 			type: 'POST',
 			url: baseurl+'EvaluasiTIMS/Setup/getNamaKadept',
-			data: {id:$('#evt_pilih').val(), text:text},
+			data: {id:$('#evt_pilih').val(), text:text, ks:str[1]},
 			success: function(response){
 				response = JSON.parse(response);
-				// alert(response);
-				$('#evt_kepada').val(response[0].nama);
+				$('#evt_kepada').html(response);
+				$('#surat-loading').attr('hidden', true);
 			}
 		});
 	});
@@ -211,7 +279,32 @@ $(document).ready(function(){
 	$('#evt_lampiran_angka').select2();
 	$('#evt_lampiran_angka').change(function(){
 		var angka = $(this).val();
-		var satuan = ['nol','satu','dua','tiga','empat','lima','enam','tujuh','delapan','sembilan','sepuluh'];
+		if (angka == '-') {
+			angka = 0;
+		}
+		var satuan = ['-','satu','dua','tiga','empat','lima','enam','tujuh','delapan','sembilan','sepuluh'];
 		$('#evt_lampiran_satuan').val(satuan[angka]);
+	});
+
+	$(".evt_test").click(function(){
+		var data = $('#evt_result').val();
+		var no = $('#evt_no_surat').val();
+		$.ajax({
+			type: 'POST',
+			url: baseurl+'EvaluasiTIMS/Bulanan/testPreview',
+			data: {id:no, text:data},
+			success: function(response){
+				var data2 = response.join('');
+    			var base64 = window.btoa(data2);
+				var data = 'data:application/pdf;charset=UTF-8,' + window.atob(base64);
+				alert(data);
+			}
+		});
+	});
+
+	$('.btn_edit_kdu').click(function(){
+		$('#et_edit_kdu').attr('disabled', false);
+		$('.btn_simpan_kdu').attr('disabled', false);
+		$('.btn_edit_kdu').remove();
 	});
 });

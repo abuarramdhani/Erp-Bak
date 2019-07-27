@@ -27,11 +27,10 @@
 					<th width="2%">SP</th>
 					<th width="2.5%">TIM</th>
 					<th>TIMS</th>
-					<th>Prediksi M</th>
-					<th>Prediksi TIM</th>
-					<th>Prediksi TIMS</th>
+					<th>Prediksi M <br>6 bulan</th>
+					<th>Prediksi TIM <br>6 bulan</th>
+					<th>Prediksi TIMS <br>6 bulan</th>
 					<th>Prediksi Lolos</th>
-					<th>Keterangan</th>
 				</tr>
 			</thead>
 			<tbody>
@@ -62,7 +61,6 @@
 						echo 'style="color:#ff0000;"';
 					} ?>
 					><?php echo $key['pred_lolos']; ?></td>
-					<td><?php echo $key['ket']; ?></td>
 				</tr>
 				<?php $a++; endforeach ?>
 			</tbody>
@@ -77,15 +75,17 @@
 			<tr>
 				<td width="20%" style="padding: 10px;">
 					<ul>
-						<li>T = Terlambat</li>
-						<li>I = Ijin</li>
+						<li>T   = Terlambat</li>
+						<li>I   = Ijin</li>
+						<li>M   = Mangkir</li>
 						<li>TIM = T + I + M</li>
 					</ul>
 				</td>
 				<td colspan="2" style="padding: 10px;">
 					<ul>
-						<li>M = Mangkir</li>
-						<li>S = Sakit</li>
+						<li>S    = Sakit</li>
+						<li>PSP  = Pulang Sakit dari Perusahaan</li>
+						<li>SP   = Surat Peringatan</li>
 						<li>TIMS = T + I + M + S + PSP</li>
 					</ul>
 				</td>
@@ -101,23 +101,27 @@
 						<li>M Maksimal <?php echo $tims[0]; ?></li>
 						<li>TIM Maksimal <?php echo $tims[1]; ?></li>
 						<li>TIMS Maksimal <?php echo $tims[2]; ?></li>
+						<li>SP Maksimal 0</li>
 					</ul>
 				</td>
 			</tr>
 			<tr>
 				<td style="padding-left: 20px;" colspan="3">
-					<p>*)sesuai dengan KDU (Nomor 003/DU/KI-F/12/18) yang telah diotorisasi oleh Direktur Utama</p>
+					<p>*)sesuai dengan KDU (Nomor <?php echo $kdu; ?>) yang telah diotorisasi oleh Direktur Utama</p>
 				</td>
 			</tr>
 			<tr>
 				<td style="padding-left: 10px;" colspan="3">
 					<ul>
 						<li>
-							Baris berwarna kuning menunjukkan “prediksi” pekerja yang TIDAK LOLOS pada masa 6 bulan OJT (dilihat/dihitung dari data frekuensi TIMS ybs sampai tanggal <?php echo $tgl2; ?>)
+							Untuk pekerja OJT dalam masa tunda, data frekuensi TIMS mulai diambil dari tanggal masa penundaan.
 						</li>
 					</ul> 
 				</td>
 			</tr>
 		</table>
+		<div>
+			<?php echo $ket; ?>
+		</div>
 	</body>
 	</html>

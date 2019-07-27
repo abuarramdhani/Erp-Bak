@@ -37,7 +37,7 @@
                                         <thead>
                                             <tr class="bg-primary">
                                                 <th>No</th>
-                                                <th>Action</th>
+                                                <th width="10%">Action</th>
                                                 <th>No Surat</th>
                                                 <th>Kepada</th>
                                                 <th>Bagian</th>
@@ -57,7 +57,7 @@
                                                     <td><?php echo $key['kepada']; ?></td>
                                                     <td><?php echo $key['bagian']; ?></td>
                                                     <td><?php echo $key['nama']; ?></td>
-                                                    <td><?php echo $key['create_date']; ?></td>
+                                                    <td data-order="<?php echo $key['create_date']; ?>"><?php echo date('d-M-Y',strtotime($key['create_date'])); ?></td>
                                                 </tr>
                                             <?php $i++; endforeach ?>
                                         </tbody>

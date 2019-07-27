@@ -48,14 +48,22 @@
                                                     <option <?php if ($memo[0]['pilih'] == '3') {
                                                         echo "selected";
                                                     } ?> id="3" value="3">Unit</option>
+                                                    <option <?php if ($memo[0]['pilih'] == '4') {
+                                                        echo "selected";
+                                                    } ?> id="4" value="4">Seksi</option>
                                                 </select>
                                             </div>
                                         </div>
                                         <div class="col-md-3">
                                             <div class="form-group">
                                                 <label for="no_surat" id="evt_lbl_pilih">Pilih :</label>
-                                                <select name="evt_departemen" required="" type="text" class="form-control" id="evt_departemen">
-                                                    <option value="<?php echo $memo[0]['bagian']; ?>" selected=""><?php echo $memo[0]['bagian']; ?></option>
+                                                <select multiple="multiple" name="evt_departemen[]" required="" type="text" class="form-control" id="evt_departemen">
+                                                <?php   $x = explode(',', $memo[0]['bagian']);
+                                                        $y = explode(',', $memo[0]['potongan_kodesie']);
+                                                 ?>
+                                                <?php for ($i=0; $i < count($x); $i++) { ?>
+                                                    <option selected="" value="<?php echo $x[$i].' | '.$y[$i]; ?>"><?php echo $x[$i]; ?></option>
+                                                <?php } ?>
                                                 </select>
                                             </div>
                                         </div>
@@ -63,7 +71,7 @@
                                             <div class="form-group">
                                                 <label for="no_surat">Lampiran (angka):</label>
                                                 <select name="evt_lampiran_angka" type="number" class="form-control" id="evt_lampiran_angka">
-                                                    <option id="evt_0" disabled="" selected="">Pilih Salah Satu</option>
+                                                    <option id="evt_-" value="-">-</option>
                                                     <option id="evt_1" value="1">1</option>
                                                     <option id="evt_2" value="2">2</option>
                                                     <option id="evt_3" value="3">3</option>
@@ -96,7 +104,12 @@
                                         <div class="col-md-4">
                                             <div class="form-group">
                                                 <label for="no_surat">Kepada :</label>
-                                                <input name="evt_kepada" required="" readonly="" type="text" class="form-control" id="evt_kepada" value="<?php echo $memo[0]['kepada']; ?>">
+                                                <select name="evt_kepada" required="" readonly="" type="text" class="form-control" id="evt_kepada">
+                                                <option selected="" value="<?php echo $memo[0]['kepada']; ?>"><?php echo $memo[0]['kepada']; ?></option>
+                                                <?php foreach ($namaKadept as $key): ?>
+                                                        <option value="<?php echo $key['nama']; ?>"><?php echo $key['nama'] ?></option>
+                                                    <?php endforeach ?>
+                                                </select>
                                             </div>
                                         </div>
                                         <div class="col-md-12">
@@ -162,5 +175,7 @@
     $(document).ready(function(){
         var isi = '<?php echo $memo[0]['lampiran']; ?>';
         $('#evt_'+isi).attr('selected', true);
+        // var cobba = .select2();
+        // $('#evt_departemen').val(["Keuangan | 1", "Personalia | 4"]).trigger("change");
     });
 </script>

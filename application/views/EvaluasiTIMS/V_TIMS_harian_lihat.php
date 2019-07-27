@@ -68,8 +68,16 @@
                                             <?php $a = 1; foreach ($listLt as $key): ?>
                                             <tr>
                                                 <td><?php echo $a; ?></td>
-                                                <td><?php echo $key['noind']; ?></td>
-                                                <td><?php echo $key['nama']; ?></td>
+                                                <td>
+                                                    <a target="_blank" href="<?php echo site_url('RekapTIMSPromosiPekerja/RekapTIMS/employee/'.$key['tanggal_awal_rekap'].'/'.$key['tanggal_akhir_rekap'].'/'.$key['nik']); ?>">
+                                                        <?php echo $key['noind']; ?>
+                                                    </a>
+                                                </td>
+                                                <td>
+                                                    <a target="_blank" href="<?php echo site_url('RekapTIMSPromosiPekerja/RekapTIMS/employee/'.$key['tanggal_awal_rekap'].'/'.$key['tanggal_akhir_rekap'].'/'.$key['nik']); ?>">
+                                                        <?php echo $key['nama']; ?>
+                                                    </a>
+                                                </td>
                                                 <td><?php echo date('d-M-Y', strtotime($key['tgl_masuk'])); ?></td>
                                                 <td><?php echo $key['unit']; ?></td>
                                                 <td><?php echo $key['seksi']; ?></td>
@@ -98,6 +106,9 @@
                                         <input hidden="" value="<?php echo $jpi; ?>" name="jp">
                                         <input hidden="" value="<?php echo $dept; ?>" name="nama">
                                         <button type="submit" class="dt-buttons" style="width: 53px; height: 31px;">PDF</button>
+                                        <br>
+                                        <br>
+                                        <textarea name="tx_keterangan" style="margin-top: 20px;" class="form-control tx_et_bulanan"></textarea>
                                     </form>
                                 </div>
                             </div>
