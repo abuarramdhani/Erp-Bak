@@ -43,14 +43,14 @@
                                                     <option id="1" value="1">Departemen</option>
                                                     <option id="2" value="2">Bidang</option>
                                                     <option id="3" value="3">Unit</option>
+                                                    <option id="4" value="4">Seksi</option>
                                                 </select>
                                             </div>
                                         </div>
                                         <div class="col-md-3">
                                             <div class="form-group">
                                                 <label for="no_surat" id="evt_lbl_pilih">Pilih :</label>
-                                                <select disabled="" name="evt_departemen" required="" type="text" class="form-control" id="evt_departemen">
-                                                    <option></option>
+                                                <select multiple="multiple" disabled="" name="evt_departemen[]" required="" type="text" class="form-control" id="evt_departemen">
                                                 </select>
                                             </div>
                                         </div>
@@ -59,6 +59,7 @@
                                                 <label for="no_surat">Lampiran (angka):</label>
                                                 <select name="evt_lampiran_angka" type="number" class="form-control" id="evt_lampiran_angka">
                                                     <option disabled="" selected="">Pilih Salah Satu</option>
+                                                    <option value="-">-</option>
                                                     <option value="1">1</option>
                                                     <option value="2">2</option>
                                                     <option value="3">3</option>
@@ -89,7 +90,9 @@
                                         <div class="col-md-4">
                                             <div class="form-group">
                                                 <label for="no_surat">Kepada :</label>
-                                                <input name="evt_kepada" required="" readonly="" type="text" class="form-control" id="evt_kepada">
+                                                <select name="evt_kepada" required="" type="text" class="form-control" id="evt_kepada">
+                                                    
+                                                </select>
                                             </div>
                                         </div>
                                         <div class="col-md-12">

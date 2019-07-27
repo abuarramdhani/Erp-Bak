@@ -293,12 +293,16 @@ class C_Index extends CI_Controller
 		$pr = $this->input->post('et_periode');
 		$jenisPenilaian = $this->input->post('et_jenis_jp');
 		$pilih = $this->input->post('evt_pilih');
-		$bagian = strtoupper($this->input->post('evt_departemen'));
 		$s = '';
 		$namaPilihan = '';
 		$val = '0';
 		$data['jp'] = '';
+		$listSeksi = '';
 		if (!empty($pr) || !empty($jenisPenilaian)) {
+			$bagian = $this->input->post('evt_departemen');
+			if (!empty($bagian)) {
+				$bagian = array_map('strtoupper', $bagian);
+			}
 			$val = '1';
 			$jp = $this->M_index->listJp3($jenisPenilaian);
 			// echo $jenisPenilaian;exit();
@@ -309,18 +313,33 @@ class C_Index extends CI_Controller
 			$data['jpi'] = $jenisPenilaian;
 			$vali = $this->M_index->getVal2($jenisPenilaian);
 
+			$in = '';
+			$hitung = count($bagian);
+			for ($i=0; $i < $hitung; $i++) {
+				if ($i == ($hitung-1)) {
+					$in .= "'".$bagian[$i]."'";
+					$listSeksi .= $bagian[$i];
+				}else{
+					$in .= "'".$bagian[$i]."', ";
+					$listSeksi .= $bagian[$i].', ';
+				}
+			}
 			if ($pilih == '1') {
-				$s = "et.dept = '$bagian'";
+				$s = "upper(trim(et.dept)) in ($in)";
 				$namaPilihan = 'Departemen';
 			}elseif ($pilih == '2') {
-				$s = "et.bidang = '$bagian'";
+				$s = "upper(trim(et.bidang)) in ($in)";
 				$namaPilihan = 'Bidang';
 			}elseif ($pilih == '3') {
-				$s = "et.unit = '$bagian'";
+				$s = "upper(trim(et.unit)) in ($in)";
 				$namaPilihan = 'Unit';
+			}elseif ($pilih == '4') {
+				$s = "upper(trim(et.seksi)) in ($in)";
+				$namaPilihan = 'Seksi';
 			}else{
-				$s = "et.dept like '%%'";
+				$s = "et.seksi like '%%'";
 			}
+			// echo $s;exit();
 
 			$tanggal = explode(' - ', $pr);
 			$tgl1 = $tanggal[0];
@@ -335,7 +354,7 @@ class C_Index extends CI_Controller
 		}
 		$data['val'] = $val;
 		$data['pr'] = $pr;
-		$data['nama'] = $namaPilihan.' '.$bagian;
+		$data['nama'] = $namaPilihan.' '.$listSeksi;
 		$data['s'] = $s;
 
 
@@ -463,23 +482,29 @@ class C_Index extends CI_Controller
 	public function getNamaKadept()
 	{
 		$id = $this->input->post('id');
+		$ks = $this->input->post('ks');
 		$texts = strtoupper($this->input->post('text'));
 		$text = '';
 
-		$getNamaKadept = $this->M_index->getNamaKadept($id, $texts);
-		$hit = count($getNamaKadept);
-		if ($hit > 1) {
-			for ($i=0; $i < $hit; $i++) { 
-				if ($i == ($hit-1)) {
-					$text .= $getNamaKadept[$i]['nama'];
-				}else{
-					$text .= $getNamaKadept[$i]['nama'].'/';
-				}
-			}
-			$getNamaKadept = array(array(
-				'nama' => $text,
-				));
+		$getNamaKadept = $this->M_index->getNamaKadept($id, $texts, $ks);
+		// $hit = count($getNamaKadept);
+		// if ($hit > 1) {
+		// 	for ($i=0; $i < $hit; $i++) { 
+		// 		if ($i == ($hit-1)) {
+		// 			$text .= $getNamaKadept[$i]['nama'];
+		// 		}else{
+		// 			$text .= $getNamaKadept[$i]['nama'].'/';
+		// 		}
+		// 	}
+		// 	$getNamaKadept = array(array(
+		// 		'nama' => $text,
+		// 		));
+		// }
+			$option = '<option disabled selected>Pilih Salah Satu</option>';
+		foreach ($getNamaKadept as $key) {
+			$option .= '<option value="'.$key['nama'].'">'.$key['nama'].'</option>';
 		}
+		$getNamaKadept = $option;
 		echo json_encode($getNamaKadept);
 		exit();
 	}
@@ -502,24 +527,70 @@ class C_Index extends CI_Controller
 		$lampiran_a = $this->input->post('evt_lampiran_angka');
 		$lampiran_s = $this->input->post('evt_lampiran_satuan');
 		$pdev = $this->input->post('evt_pdev');
-		$pdev = $this->M_index->getNama($pdev);
 		$kepada = $this->input->post('evt_kepada');
 		$isi = $this->input->post('evt_isi');
 		$alasan = $this->input->post('evt_alasan');
+		// print_r(gettype($bagian));exit();
+		if (empty($no_surat)) {
+			echo "Nomor Surat Kosong";
+			exit();
+		}elseif (empty($pilih)) {
+			echo "Kolom Pilih Kosong";
+			exit();
+		}elseif ($pilih && empty($bagian)) {
+			echo "Departemen/Bidang/Unit/Seksi Kosong";
+			exit();
+		}elseif (empty($lampiran_a)) {
+			echo "Lampiran Angka Kosong";
+			exit();
+		}elseif (empty($lampiran_s)) {
+			echo "Lampiran Satuan Kosong";
+			exit();
+		}elseif (empty($pdev)) {
+			echo "Kolom People Development Kosong";
+			exit();
+		}elseif (empty($kepada)) {
+			echo "Kolom Kepada Kosong";
+			exit();
+		}
+		$var = '';
+		if (gettype($bagian) == 'string') {
+			$bagian = explode(' | ', $bagian);
+			$bagian = $bagian[0];
+		}else{
+			for ($i=0; $i < count($bagian); $i++) { 
+				$x = explode(' | ', $bagian[$i]);
+				if ($i == (count($bagian)-1)) {
+					$var .=	$x[0];
+				}else{
+					$var .=	$x[0].', ';
+				}
+			}
+			$bagian = $var;
+		}
+		$pdev = $this->M_index->getNama($pdev);
 		$alasan = str_replace('<p>', '', $alasan);
 		$alasan = str_replace('</p>', '', $alasan);
+		$isi = str_replace('<table>', '<table border="1" cellpadding="8" style="border-collapse: collapse; text-align:center;">', $isi);
 		$tanggal = $this->personalia->konversitanggalIndonesia(date('Y-m-d', strtotime(date('Y-m-d'))));
 
 		if ($pilih == '1') {
 			$pilih = 'Departemen';
 		}elseif ($pilih == '2') {
 			$pilih = 'Bidang';
-		}else{
+		}elseif ($pilih == '3') {
 			$pilih = 'Unit';
+		}else{
+			$pilih = 'Seksi';
 		}
 
+		$kdu = $this->M_index->getKDU();
+		$kdu = $kdu->row()->no_kdu;
 
 		$templateMemo = $this->M_index->getMemo();
+		if ($lampiran_s == '-') {
+			$templateMemo = str_replace('[jml_lampiran] ([satuan_lampiran])&nbsp;lembar', '-', $templateMemo);
+		}
 		// echo $pdev;exit();
 
 		$parameterUbah = array(
@@ -528,6 +599,7 @@ class C_Index extends CI_Controller
 				'[jml_lampiran]',
 				'[satuan_lampiran]',
 				'[kepada]',
+				'[nomor_kdu]',
 				'[isi_memo]',
 				'[alasan]',
 				'[tanggal]',
@@ -541,6 +613,7 @@ class C_Index extends CI_Controller
 				$lampiran_a,
 				$lampiran_s,
 				$kepada,
+				$kdu,
 				$isi,
 				$alasan,
 				$tanggal,
@@ -560,6 +633,14 @@ class C_Index extends CI_Controller
 		$noind = $this->session->user;
 		$no_surat = $this->input->post('evt_no_surat');
 		$departemen = $this->input->post('evt_departemen');
+		foreach ($departemen as $key) {
+			$x = explode(' | ', $key);
+			$y[] = $x[0];
+			$z[] = $x[1];
+		}
+		// $departemen = explode(' | ', $departemen);
+		$dep = implode(',', $y);
+		$potongan = implode(',', $z);
 		$lampiran_a = $this->input->post('evt_lampiran_angka');
 		$lampiran_s = $this->input->post('evt_lampiran_satuan');
 		$pdev = $this->input->post('evt_pdev');
@@ -570,10 +651,11 @@ class C_Index extends CI_Controller
 		$alasan = $this->input->post('evt_alasan');
 		$pilih = $this->input->post('evt_pilih');
 		$tanggal = date('Y-m-d');
+		// echo $potongan;exit();
 
 		$data = array(
 				'nomor_surat' => $no_surat,
-				'bagian' => $departemen,
+				'bagian' => $dep,
 				'lampiran' => $lampiran_a,
 				'kepada' => $kepada,
 				'kasie_pdev' => $pdev,
@@ -584,6 +666,7 @@ class C_Index extends CI_Controller
 				'memo' => $result,
 				'lampiran_satuan' => $lampiran_s,
 				'pilih' => $pilih,
+				'potongan_kodesie' => $potongan,
 			);
 		$save = $this->M_index->saveMemo($data);
 		if ($save) {
@@ -604,7 +687,10 @@ class C_Index extends CI_Controller
 		$data['SubMenuTwo'] = '';
 
 		$data['memo'] = $this->M_index->getRowMemo($id);
-		// print_r($data['memo']);exit();
+        $y = explode(',', $data['memo'][0]['potongan_kodesie']);
+		$data['namaKadept'] = $this->M_index->getNamaKadept2($data['memo'][0]['pilih'], $y[0], $data['memo'][0]['kepada']);
+		// echo "<pre>";
+		// print_r($data['namaKadept']);exit();
 
 		$this->load->view('V_Header',$data);
 		$this->load->view('V_Sidemenu',$data);
@@ -620,6 +706,14 @@ class C_Index extends CI_Controller
 		$no_surat = $this->input->post('evt_no_surat');
 		$id = $this->input->post('evt_id');
 		$departemen = $this->input->post('evt_departemen');
+		foreach ($departemen as $key) {
+			$x = explode(' | ', $key);
+			$y[] = $x[0];
+			$z[] = $x[1];
+		}
+		// $departemen = explode(' | ', $departemen);
+		$dep = implode(',', $y);
+		$potongan = implode(',', $z);
 		$lampiran_a = $this->input->post('evt_lampiran_angka');
 		$lampiran_s = $this->input->post('evt_lampiran_satuan');
 		$pdev = $this->input->post('evt_pdev');
@@ -633,17 +727,17 @@ class C_Index extends CI_Controller
 
 		$data = array(
 				'nomor_surat' => $no_surat,
-				'bagian' => $departemen,
+				'bagian' => $dep,
 				'lampiran' => $lampiran_a,
 				'kepada' => $kepada,
 				'kasie_pdev' => $pdev,
 				'alasan' => $alasan,
 				'isi' => $isi,
 				'create_by' => $noind,
-				'create_date' => $tanggal,
 				'memo' => $result,
 				'lampiran_satuan' => $lampiran_s,
 				'pilih' => $pilih,
+				'potongan_kodesie' => $potongan,
 			);
 		$save = $this->M_index->saveEditMemo($data, $id);
 		if ($save) {
@@ -663,13 +757,16 @@ class C_Index extends CI_Controller
 		// $pdf 	=	new mPDF();
 		$data = str_replace('<ol>', '<ol style="text-align: justify;">', $data);
 		$isi = $data;
+		ob_end_clean();
 		$filename	=	'Preview Memo.pdf';
 
 		$pdf->AddPage();
 		$pdf->SetTitle('Preview');
-		$pdf->WriteHTML($isi);
+		$pdf->shrink_tables_to_fit = 1;
+		$pdf->use_kwt = true;
+		$pdf->WriteHTML(utf8_encode($isi));
 
-		$data['pdf'] = $pdf->Output($filename, 'I');
+		$pdf->Output($filename, 'I');
 
 		// echo json_decode($data['pdf']);
 	}
@@ -681,10 +778,13 @@ class C_Index extends CI_Controller
 		$tanggal = $this->input->post('tgl');
 		$nama = $this->input->post('nama');
 		$s = $this->input->post('ess');
+		$data['ket'] = $this->input->post('tx_keterangan');
 		$data['nama'] = $nama;
 		$data['jenis'] = 'bulanan';
 
 		$jp = $this->M_index->listJp3($jenisPenilaian);
+		$kdu = $this->M_index->getKDU();
+		$data['kdu'] = $kdu->row()->no_kdu;
 		// echo $jenisPenilaian;exit();
 		$t = $jp[0]['std_m'];
 		$tim = $jp[0]['std_tim'];
@@ -722,6 +822,8 @@ class C_Index extends CI_Controller
 			$html = $this->load->view('EvaluasiTIMS/V_Export_Php2',$data, true);
 		}
 		$pdf->AddPage();
+		$pdf->autoScriptToLang = true;
+		$pdf->autoLangToFont = true;
 		$pdf->SetTitle('Evaluasi TIMS Bulanan '.$jp[0]['jenis_penilaian'].' '.$this->input->post('tgl'));
 		$pdf->WriteHTML($html, 2);
 
@@ -734,12 +836,16 @@ class C_Index extends CI_Controller
 		$jenisPenilaian = $this->input->post('jp');
 		$tanggal = $this->input->post('tgl');
 		$nama = $this->input->post('nama');
+		$data['ket'] = $this->input->post('tx_keterangan');
 		$data['nama'] = $nama;
 		$b = substr($nama, 11);
 
 		$vali = $this->M_index->getVal2($jenisPenilaian);
 		$data['jenis'] = 'harian';
 		$jp = $this->M_index->listJp3($jenisPenilaian);
+		$kdu = $this->M_index->getKDU();
+		$data['kdu'] = $kdu->row()->no_kdu;
+
 		$t = $jp[0]['std_m'];
 		$tim = $jp[0]['std_tim'];
 		$tims = $jp[0]['std_tims'];
@@ -769,9 +875,44 @@ class C_Index extends CI_Controller
 			$html = $this->load->view('EvaluasiTIMS/V_Export_Php2',$data, true);
 		}
 		$pdf->AddPage();
+		$pdf->autoScriptToLang = true;
+		$pdf->autoLangToFont = true;
 		$pdf->SetTitle('Evaluasi TIMS Harian '.$jp[0]['jenis_penilaian'].' '.$tanggal);
 		$pdf->WriteHTML($html, 2);
 
 		$data['pdf'] = $pdf->Output($filename, 'I');
+	}
+
+	public function EditNomorKDU()
+	{
+		$this->checkSession();
+		$user_id = $this->session->userid;
+		$data['UserMenu'] = $this->M_user->getUserMenu($user_id,$this->session->responsibility_id);
+		$data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id);
+		$data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id);
+		$data['Title'] = 'Setup';
+		$data['Menu'] = 'Setup';
+		$data['SubMenuOne'] = 'Edit Nomor KDU';
+		$data['SubMenuTwo'] = '';
+
+		$kdu = $this->M_index->getKDU();
+		$data['kdu'] = $kdu->row()->no_kdu;
+
+		$this->load->view('V_Header',$data);
+		$this->load->view('V_Sidemenu',$data);
+		$this->load->view('EvaluasiTIMS/V_Edit_KDU',$data);
+		$this->load->view('V_Footer',$data);
+	}
+
+	public function SubmitKdu()
+	{
+		$kdu = $this->input->post('et_kdu');
+		$data = array(
+			'no_kdu'	=>	$kdu,
+			);
+		$save = $this->M_index->saveKdu($data);
+		if ($save) {
+			redirect('EvaluasiTIMS/Setup/EditNomorKDU');
+		}
 	}
 }

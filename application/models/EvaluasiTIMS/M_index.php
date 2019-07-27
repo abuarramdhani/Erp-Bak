@@ -764,6 +764,7 @@ class M_Index extends CI_Model
 					pri.masukkerja::date tgl_masuk,
 					pri.diangkat::date tgl_diangkat,
 					pri.kodesie,
+					pri.nik,
 					tseksi.dept,
 					tseksi.bidang,
 					tseksi.unit,
@@ -1100,6 +1101,7 @@ class M_Index extends CI_Model
 						pri.masukkerja::date tgl_masuk,
 						pri.diangkat::date tgl_diangkat,
 						pri.kodesie,
+						pri.nik,
 						tseksi.dept,
 						tseksi.bidang,
 						tseksi.unit,
@@ -1323,6 +1325,7 @@ class M_Index extends CI_Model
 
     public function listBl($tgl1, $tgl2, $t, $tim, $tims, $vali, $s)
     {
+    	// echo $s;exit();
     	if ($vali == '1') {
     		$sqlnya1 = "when (a.masukkerja + interval '6 month' + interval '6 month')::date between '$tgl1' and '$tgl2'
 						then (a.masukkerja + interval '6 month' + interval '6 month')::date
@@ -1400,6 +1403,7 @@ class M_Index extends CI_Model
 					pri.masukkerja::date tgl_masuk,
 					pri.diangkat::date tgl_diangkat,
 					pri.kodesie,
+					pri.nik,
 					tseksi.dept,
 					tseksi.bidang,
 					tseksi.unit,
@@ -1668,7 +1672,7 @@ class M_Index extends CI_Model
 							when (a.diangkat + interval '3 month')::date between '$tgl1' and '$tgl2'
 							then (a.diangkat + interval '3 month')::date";
     	}elseif ($vali == '4') {
-    		$sqltambahan = "when (a.diangkat + interval '24 month')::date between '$tgl1' and '$tgl2
+    		$sqltambahan = "when (a.diangkat + interval '24 month')::date between '$tgl1' and '$tgl2'
 							then (a.diangkat + interval '24 month')::date
 							when (a.diangkat + interval '20 month')::date between '$tgl1' and '$tgl2'
 							then (a.diangkat + interval '20 month')::date
@@ -1735,6 +1739,7 @@ class M_Index extends CI_Model
 						pri.masukkerja::date tgl_masuk,
 						pri.diangkat::date tgl_diangkat,
 						pri.kodesie,
+						pri.nik,
 						tseksi.dept,
 						tseksi.bidang,
 						tseksi.unit,
@@ -1951,7 +1956,7 @@ class M_Index extends CI_Model
 					order by
 						pri.nama,
 						pri.noind) et
-						where $s";
+						where $s;";
 						// echo $sql;exit();
 		$query = $this->personalia->query($sql);
 		return $query->result_array();
@@ -1985,7 +1990,7 @@ class M_Index extends CI_Model
     {
     	$sql = "SELECT em.*, initcap(ee.employee_name) nama from et.et_memo em
 				left join er.er_employee_all ee on ee.employee_code = em.kasie_pdev
-				where id != '1';";
+				where id != '1' order by em.create_date desc;";
     	$query = $this->erp->query($sql);
 
     	return $query->result_array();
@@ -1996,8 +2001,9 @@ class M_Index extends CI_Model
     	if ($id == '1') {
     		$sel = "ts.dept";
     		$and = "and ts.bidang like '-%'";
-    		$sql = "select
-						rtrim(initcap(ts.dept)) pilih
+    		$sqla = "select
+						rtrim(initcap(ts.dept)) pilih,
+						ts.kodesie
 					from
 						hrd_khs.tpribadi tp,
 						hrd_khs.tseksi ts
@@ -2010,41 +2016,27 @@ class M_Index extends CI_Model
 						and ts.dept like '%$s%'
 					order by
 						ts.dept;";
+			$sql = "select distinct initcap(trim(dept)) pilih, substring(kodesie,1,1) kodesie FROM hrd_khs.tseksi
+					where trim(dept) <> '-'
+					order by 1";
     	}elseif ($id == '2') {
     		$sel = "ts.bidang";
     		$and = "and ts.bidang not like '-%' and ts.unit like '-%'";
-    		$sql = "select
-						rtrim(initcap(ts.bidang)) pilih
-					from
-						hrd_khs.tpribadi tp,
-						hrd_khs.tseksi ts
-					where
-						tp.kodesie = ts.kodesie
-						and tp.keluar = '0'
-						and (tp.kd_jabatan between '02' and '09'
-						or noind like 'J7004')
-						and ts.bidang not like '-%'
-						and ts.unit like '-%'
-						and ts.bidang like '%$s%'
-					order by
-						ts.bidang;";
-    	}else{
+    		$sql = "select distinct initcap(trim(bidang)) pilih, substring(kodesie,1,1) kodesie FROM hrd_khs.tseksi
+					where trim(bidang) <> '-' and bidang like '%$s%'
+					order by 1";
+    	}elseif ($id == '3') {
     		$sel = "ts.unit";
     		$and = "and ts.unit not like '-%'";
-    		$sql = "select
-						rtrim(initcap(ts.unit)) pilih
-					from
-						hrd_khs.tpribadi tp,
-						hrd_khs.tseksi ts
-					where
-						tp.kodesie = ts.kodesie
-						and tp.keluar = '0'
-						and (tp.kd_jabatan between '02' and '09'
-						or noind like 'J7004')
-						and ts.unit not like '-%'
-						and ts.unit like '%$s%'
-					order by
-						ts.unit";
+    		$sql = "select distinct initcap(trim(unit)) pilih, substring(kodesie,1,1) kodesie FROM hrd_khs.tseksi
+					where trim(unit) <> '-' and unit like '%$s%'
+					order by 1";
+    	}else{
+    		$sel = "ts.seksi";
+    		$and = "and ts.unit not like '-%'";
+    		$sql = "select distinct initcap(trim(seksi)) pilih, substring(kodesie,1,1) kodesie FROM hrd_khs.tseksi
+					where trim(seksi) <> '-' and seksi like '%$s%'
+					order by 1";
     	}
 				// echo $sql;exit();
 		$query = $this->personalia->query($sql);
@@ -2052,76 +2044,45 @@ class M_Index extends CI_Model
 		return $query->result_array();
     }
 
-    public function getNamaKadept($id, $text)
+    public function getNamaKadept($id, $text, $ks)
     {
     	if ($id == '1') {
-    		$sel = "ts.dept";
-    		$and = "and ts.bidang like '-%'";
-    		$sql = "select
-						noind,
-						case
-							when jenkel = 'L' then 'Bapak '
-							else 'Ibu '
-						end || initcap(nama) nama,
-						ts.dept pilih
-					from
-						hrd_khs.tpribadi tp,
-						hrd_khs.tseksi ts
-					where
-						tp.kodesie = ts.kodesie
-						and tp.keluar = '0'
-						and (tp.kd_jabatan between '02' and '09'
-						or noind like 'J7004')
-						and ts.bidang like '-%'
-						and ts.dept like '%$text%'
-					order by
-						ts.dept;";
+    		$add = "and (noind = 'J7004' or kd_jabatan between '02' and '04')";
     	}elseif ($id == '2') {
-    		$sel = "ts.bidang";
-    		$and = "and ts.bidang not like '-%' and ts.unit like '-%'";
-    		$sql = "select
-						noind,
-						case
-							when jenkel = 'L' then 'Bapak '
-							else 'Ibu '
-						end || initcap(nama) nama,
-						ts.bidang pilih
-					from
-						hrd_khs.tpribadi tp,
-						hrd_khs.tseksi ts
-					where
-						tp.kodesie = ts.kodesie
-						and tp.keluar = '0'
-						and (tp.kd_jabatan between '02' and '09'
-						or noind like 'J7004')
-						and ts.bidang not like '-%'
-						and ts.unit like '-%'
-						and ts.bidang like '%$text%'
-					order by
-						ts.bidang;";
+    		$add = "and (noind = 'J7004' or kd_jabatan between '02' and '07')";
+    	}elseif ($id == '3') {
+    		$add = "and (noind = 'J7004' or kd_jabatan between '02' and '09')";
     	}else{
-    		$sel = "ts.unit";
-    		$and = "and ts.unit not like '-%'";
-    		$sql = "select
-						noind,
-						case
-							when jenkel = 'L' then 'Bapak '
-							else 'Ibu '
-						end || initcap(nama) nama,
-						ts.unit pilih
-					from
-						hrd_khs.tpribadi tp,
-						hrd_khs.tseksi ts
-					where
-						tp.kodesie = ts.kodesie
-						and tp.keluar = '0'
-						and (tp.kd_jabatan between '02' and '09'
-						or noind like 'J7004')
-						and ts.unit not like '-%'
-						and ts.unit like '%$text%'
-					order by
-						ts.unit;";
+    		$add = "and (noind = 'J7004' or kd_jabatan between '02' and '10')";
     	}
+    	$sql = "SELECT noind, case when jenkel = 'L' then 'Bapak ' else 'Ibu ' end || initcap(trim(nama)) nama FROM hrd_khs.tpribadi
+				where keluar = '0' $add
+				and substring(kodesie,1,1) = '$ks'
+				order by 2";
+				// echo $sql;exit();
+		$query = $this->personalia->query($sql);
+
+		return $query->result_array();
+    }
+
+    public function getNamaKadept2($id, $ks, $nama)
+    {
+    	$pos = strpos($nama, ' ');
+    	$nama = strtoupper(substr($nama, ($pos+1)));
+    	// echo $nama;
+    	if ($id == '1') {
+    		$add = "and (noind = 'J7004' or kd_jabatan between '02' and '04')";
+    	}elseif ($id == '2') {
+    		$add = "and (noind = 'J7004' or kd_jabatan between '02' and '07')";
+    	}elseif ($id == '3') {
+    		$add = "and (noind = 'J7004' or kd_jabatan between '02' and '09')";
+    	}else{
+    		$add = "and (noind = 'J7004' or kd_jabatan between '02' and '10')";
+    	}
+    	$sql = "SELECT substring(kodesie,1,1) kodesie,noind, case when jenkel = 'L' then 'Bapak ' else 'Ibu ' end || initcap(trim(nama)) nama FROM hrd_khs.tpribadi
+				where keluar = '0' $add
+				and substring(kodesie,1,1) = '$ks' and rtrim(nama) not like '%$nama%'
+				order by 2";
 				// echo $sql;exit();
 		$query = $this->personalia->query($sql);
 
@@ -2202,6 +2163,22 @@ class M_Index extends CI_Model
     {
     	$this->erp->where('id=', $id);
 	 	$this->erp->update('et.et_memo', $data);
+
+    	return true;
+    }
+
+    public function getKDU()
+    {
+    	$sql = "select * from et.et_kdu";
+    	$query = $this->db->query($sql);
+
+    	return $query;
+    }
+
+    public function saveKdu($data)
+    {
+    	$this->erp->where('id=', '1');
+	 	$this->erp->update('et.et_kdu', $data);
 
     	return true;
     }
