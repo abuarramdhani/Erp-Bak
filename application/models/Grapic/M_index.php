@@ -254,6 +254,44 @@ class M_index extends CI_Model
 		return $query->result_array();
 	}
 
+	public function pekerjaAllSeksiDeptProduksi($now, $tdklangsung, $langsung, $sqlPKL)
+	{
+		$sql = "select rtrim(seksi1.seksi) seksi
+				      ,count(seksi1.*) tidak_langsung
+				      ,coalesce(lsng.langsung,'0') langsung
+				      ,(count(seksi1.*) + coalesce(lsng.langsung,'0')) total 
+				from (select distinct nik, nama ,dept,bidang,unit,seksi 
+                        from (select a.noind,nik,nama,masukkerja,tglkeluar,keluar,b.* 
+                                        from hrd_khs.tpribadi a left join hrd_khs.tseksi b on a.kodesie=b.kodesie left join hrd_khs.tpekerjaan c on a.kd_pkj=c.kdpekerjaan 
+                                        where ((keluar = '0' and masukkerja<='2019-$now')) and (masukkerja >= '1990-01-01') 
+                                        and rtrim(b.kodesie) like '3%' $tdklangsung $sqlPKL
+                                  union 
+                                  select a.noind,nik,nama,masukkerja,tglkeluar,keluar,b.* 
+                                  from hrd_khs.tpribadi a left join hrd_khs.tseksi b on a.kodesie=b.kodesie left join hrd_khs.tpekerjaan c on a.kd_pkj=c.kdpekerjaan 
+                                  where ((masukkerja<='2019-$now') and (tglkeluar >= '2019-$now' and keluar = '1')) and (masukkerja >= '1990-01-01') 
+                                  and rtrim(b.kodesie) like '3%' $tdklangsung $sqlPKL order by 5 ) tabel) seksi1
+			    		left join (select rtrim(seksi2.seksi) seksi_langsung
+			               ,count(seksi2.*) langsung
+			                from (select distinct nik, nama ,dept,bidang,unit,seksi 
+                                from (select a.noind,nik,nama,masukkerja,tglkeluar,keluar,b.* 
+                                                from hrd_khs.tpribadi a left join hrd_khs.tseksi b on a.kodesie=b.kodesie left join hrd_khs.tpekerjaan c on a.kd_pkj=c.kdpekerjaan 
+                                                where ((keluar = '0' and masukkerja<='2019-$now')) and (masukkerja >= '1990-01-01') 
+                                                and rtrim(b.kodesie) like '3%' $langsung $sqlPKL
+                                        union 
+                                        select a.noind,nik,nama,masukkerja,tglkeluar,keluar,b.* 
+                                        from hrd_khs.tpribadi a left join hrd_khs.tseksi b on a.kodesie=b.kodesie left join hrd_khs.tpekerjaan c on a.kd_pkj=c.kdpekerjaan 
+                                        where ((masukkerja<='2019-$now') and (tglkeluar >= '2019-$now' and keluar = '1')) and (masukkerja >= '1990-01-01') 
+                                        and rtrim(b.kodesie) like '3%' $langsung $sqlPKL order by 5 ) tabel ) seksi2
+					    group by rtrim(seksi2.seksi)
+					    order by seksi_langsung) lsng on rtrim(seksi1.seksi) = lsng.seksi_langsung
+					group by rtrim(seksi1.seksi)
+					         ,lsng.langsung
+					order by seksi";
+				// echo $sql;exit();
+		$query = $this->personalia->query($sql);
+		return $query->result_array();
+	}
+
 	public function pekerjaPasar($now, $sqlPKL, $kodeUnit)
 	{
 		$sql = "select rtrim(b.seksi), count(a.noind) 
@@ -284,7 +322,7 @@ class M_index extends CI_Model
 				where ((masukkerja<='2019-$now') and (tglkeluar >= '2019-$now' and keluar = '1'))
 				and b.unit != '-' and (masukkerja >= '1990-01-01') and rtrim(b.seksi) like '%$kodeUnit%'  $sqlPKL
 				 ) tabel ) tabel";
-				// echo $sql;exit();
+				echo $sql;exit();
 		$query = $this->personalia->query($sql);
 		return $query->result_array();
 	}
@@ -326,7 +364,7 @@ class M_index extends CI_Model
 				and (masukkerja >= '1990-01-01') $sqlPKL and c.kodesie LIKE '3%' $kode 
 				 order by 5
 				 ) tabel ) tabel";
-				// echo $sql;
+				// echo $sql; exit();
 		$query = $this->personalia->query($sql);
 		return $query->result_array();
 	}

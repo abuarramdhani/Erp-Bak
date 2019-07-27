@@ -1304,7 +1304,7 @@ class C_Produksi extends CI_Controller
 		$data['submit'] = 'false';
 		if ($submit == 'true') {
 			$data['submit'] = $submit;
-			$nama =  'SEMUA, Dept. Produksi, Dept. Produksi - Pusat, Dept. Produksi - Tuksono, Dept. Produksi - Pekerja Tidak Langsung / InDirect Labour), Dept. Produksi - Pekerja Langsung / Direct Labour, Dept. Produksi -  Melati, Dept. Produksi - Seksi Administrasi Desain, Dept. Produksi - Seksi Assembly, Dept. Produksi - Seksi Assembly Gear Trans, Dept. Produksi - Seksi Assembly-TKS, Seksi Cetakan & Pasir Cetak & Inti Cor Dan Peleburan-Penuangan, Seksi Cetakan & Pasir Cetak & Inti Cor Dan Pel&Pen-TKS, Dept. Produksi - Seksi Desain A, Dept. Produksi - Seksi Desain B, Dept. Produksi - Seksi Desain C, Dept. Produksi - Seksi DOJO Desain, Dept. Produksi - Seksi DOJO Foundry, Dept. Produksi - Seksi DOJO Machining, Dept. Produksi - Seksi Finishing, Dept. Produksi - Seksi Finishing-TKS, Dept. Produksi - Seksi Gudang Blank Material-TKS, Dept. Produksi - Seksi Gudang D & E, Dept. Produksi - Seksi Gudang Komponen, Dept. Produksi - Seksi Gudang Material Dan Bahan Penolong, Dept. Produksi - Seksi Gudang Pengadaan dan Blank Material, Dept. Produksi - Seksi Gudang Produksi Dan Ekpedisi, Dept. Produksi - Seksi Gudang Produksi Dan Ekpedisi-TKS, Dept. Produksi - Seksi Heat Treatmen-TKS, Dept. Produksi - Seksi Lab. Kimia dan Pasir Cetak, Dept. Produksi - Seksi Machining 1, Dept. Produksi - Seksi Machining A-TKS, Dept. Produksi - Seksi Machining B, Dept. Produksi - Seksi Machining B-TKS, Dept. Produksi - Seksi Machining C, Dept. Produksi - Seksi Machining C-TKS, Dept. Produksi - Seksi Machining D, Dept. Produksi - Seksi Machining D-TKS, Dept. Produksi - Seksi Machining E, Dept. Produksi - Seksi Machining Prototype, Dept. Produksi - Seksi Maintenace, Dept. Produksi - Seksi Maintenace-TKS, Dept. Produksi - Seksi Maintenace Dan Pengembangan Alat, Dept. Produksi - Seksi Maintenace Dan Pengembangan Alat-TKS, Dept. Produksi - Seksi Painting Dan Packaging, Dept. Produksi - Seksi Painting Dan Packaging-TKS, Dept. Produksi - Seksi Penerimaan Barang Gudang, Dept. Produksi - Seksi Penerimaan Barang Gudang-TKS, Dept. Produksi - Seksi Pengeluaran Barang Gudang, Dept. Produksi - Seksi Pengeluaran Barang Gudang-TKS, Dept. Produksi - Seksi Pengembangan Prototype A, Dept. Produksi - Seksi Pengembangan Prototype B, Dept. Produksi - Seksi Pola, Dept. Produksi - Seksi Pola/Pattern-TKS, Dept. Produksi - Seksi Potong AS, Dept. Produksi - Seksi PPC & Gudang dan Administrasi, Dept. Produksi - Seksi PPC Tool Making, Dept. Produksi - Seksi PPIC, Dept. Produksi - Seksi PPIC-TKS, Dept. Produksi - Seksi PPIC&Gudang Dan Administrasi-TKS, Dept. Produksi - Seksi PPIC Prototype Desain, Dept. Produksi - Seksi Production And Inventory ERP Application, Dept. Produksi - Seksi Production Engineering, Dept. Produksi - Seksi Production Engineering-DOJO, Dept. Produksi - Seksi QC Desain Riset Dan Testing, Dept. Produksi - Seksi Quality Assurance, Dept. Produksi - Seksi Quality Control, Dept. Produksi - Seksi Quality Control-TKS, Dept. Produksi - Seksi Quality Engineering, Dept. Produksi - Seksi Quality - TKS, Dept. Produksi - Seksi Rekayasa Dan Rebuilding Mensin, Dept. Produksi - Seksi Riset Dan Testing Alat Uji, Dept. Produksi - Seksi Riset Dan Testing Cultivator, Dept. Produksi - Seksi Riset Dan Testing Harvester, Dept. Produksi - Seksi Riset Dan Testing Pengembangan, Dept. Produksi - Seksi Riset Dan Testing PPIC, Dept. Produksi - Seksi Riset Dan Testing Quick Truck, Dept. Produksi - Seksi Riset Dan Testing Traktor 2W, Dept. Produksi - Seksi Riset Dan Testing Traktor 4W, Dept. Produksi - Seksi Sheet Metal-TKS, Dept. Produksi - Seksi Tool Making 1, Dept. Produksi - Seksi Tool Making A, Dept. Produksi - Seksi Tool Making B, Dept. Produksi - Seksi Tool Warehouse, Dept. Produksi - Seksi Tool Warehouse-TKS, Dept. Produksi - Seksi Welding A, Dept. Produksi - Seksi Welding B, Dept. Produksi - Seksi Welding-TKS, Dept. Produksi - Seksi Machining A, Dept. Produksi Atasan Seksi';
+			$nama =  'SEMUA, Dept. Produksi, Dept. Produksi - Pusat, Dept. Produksi - Tuksono, Seksi Cetakan & Pasir Cetak & Inti Cor Dan Pel&Pen-TKS, Dept. Produksi - Seksi Desain A, Dept. Produksi -  Melati, Dept. Produksi - Seksi Administrasi Desain, Dept. Produksi - Seksi Assembly, Dept. Produksi - Seksi Assembly Gear Trans, Dept. Produksi - Seksi Assembly-TKS, Seksi Cetakan & Pasir Cetak & Inti Cor Dan Peleburan-Penuangan, Dept. Produksi - Pekerja Tidak Langsung / InDirect Labour), Dept. Produksi - Pekerja Langsung / Direct Labour, Dept. Produksi - Seksi Desain B, Dept. Produksi - Seksi Desain C, Dept. Produksi - Seksi DOJO Desain, Dept. Produksi - Seksi DOJO Foundry, Dept. Produksi - Seksi DOJO Machining, Dept. Produksi - Seksi Finishing, Dept. Produksi - Seksi Finishing-TKS, Dept. Produksi - Seksi Gudang Blank Material-TKS, Dept. Produksi - Seksi Gudang D & E, Dept. Produksi - Seksi Gudang Komponen, Dept. Produksi - Seksi Gudang Material Dan Bahan Penolong, Dept. Produksi - Seksi Gudang Pengadaan dan Blank Material, Dept. Produksi - Seksi Gudang Produksi Dan Ekpedisi, Dept. Produksi - Seksi Gudang Produksi Dan Ekpedisi-TKS, Dept. Produksi - Seksi Heat Treatmen-TKS, Dept. Produksi - Seksi Lab. Kimia dan Pasir Cetak, Dept. Produksi - Seksi Machining 1, Dept. Produksi - Seksi Machining A-TKS, Dept. Produksi - Seksi Machining B, Dept. Produksi - Seksi Machining B-TKS, Dept. Produksi - Seksi Machining C, Dept. Produksi - Seksi Machining C-TKS, Dept. Produksi - Seksi Machining D, Dept. Produksi - Seksi Machining D-TKS, Dept. Produksi - Seksi Machining E, Dept. Produksi - Seksi Machining Prototype, Dept. Produksi - Seksi Maintenace, Dept. Produksi - Seksi Maintenace-TKS, Dept. Produksi - Seksi Maintenace Dan Pengembangan Alat, Dept. Produksi - Seksi Maintenace Dan Pengembangan Alat-TKS, Dept. Produksi - Seksi Painting Dan Packaging, Dept. Produksi - Seksi Painting Dan Packaging-TKS, Dept. Produksi - Seksi Penerimaan Barang Gudang, Dept. Produksi - Seksi Penerimaan Barang Gudang-TKS, Dept. Produksi - Seksi Pengeluaran Barang Gudang, Dept. Produksi - Seksi Pengeluaran Barang Gudang-TKS, Dept. Produksi - Seksi Pengembangan Prototype A, Dept. Produksi - Seksi Pengembangan Prototype B, Dept. Produksi - Seksi Pola, Dept. Produksi - Seksi Pola/Pattern-TKS, Dept. Produksi - Seksi Potong AS, Dept. Produksi - Seksi PPC & Gudang dan Administrasi, Dept. Produksi - Seksi PPC Tool Making, Dept. Produksi - Seksi PPIC, Dept. Produksi - Seksi PPIC-TKS, Dept. Produksi - Seksi PPIC&Gudang Dan Administrasi-TKS, Dept. Produksi - Seksi PPIC Prototype Desain, Dept. Produksi - Seksi Production And Inventory ERP Application, Dept. Produksi - Seksi Production Engineering, Dept. Produksi - Seksi Production Engineering-DOJO, Dept. Produksi - Seksi QC Desain Riset Dan Testing, Dept. Produksi - Seksi Quality Assurance, Dept. Produksi - Seksi Quality Control, Dept. Produksi - Seksi Quality Control-TKS, Dept. Produksi - Seksi Quality Engineering, Dept. Produksi - Seksi Quality - TKS, Dept. Produksi - Seksi Rekayasa Dan Rebuilding Mensin, Dept. Produksi - Seksi Riset Dan Testing Alat Uji, Dept. Produksi - Seksi Riset Dan Testing Cultivator, Dept. Produksi - Seksi Riset Dan Testing Harvester, Dept. Produksi - Seksi Riset Dan Testing Pengembangan, Dept. Produksi - Seksi Riset Dan Testing PPIC, Dept. Produksi - Seksi Riset Dan Testing Quick Truck, Dept. Produksi - Seksi Riset Dan Testing Traktor 2W, Dept. Produksi - Seksi Riset Dan Testing Traktor 4W, Dept. Produksi - Seksi Sheet Metal-TKS, Dept. Produksi - Seksi Tool Making 1, Dept. Produksi - Seksi Tool Making A, Dept. Produksi - Seksi Tool Making B, Dept. Produksi - Seksi Tool Warehouse, Dept. Produksi - Seksi Tool Warehouse-TKS, Dept. Produksi - Seksi Welding A, Dept. Produksi - Seksi Welding B, Dept. Produksi - Seksi Welding-TKS, Dept. Produksi - Seksi Machining A, Dept. Produksi Atasan Seksi';
 			if ($val == '0') {
 				$all = array('1','2','3','4','5','6','7','8','9','10','11','12','13','14','15','16','17','18','19','20','21','22','23','24','25','25','26','27','28','29','30','31','32','33','34','35','36','37','38','39','40','41','42','43','44','45','46','47','48','49','50','51','52','53','54','55','56','57','58','59','60','61','62','63','64','65','66','67','68','69','70','71','72','73','74','75','76','77','78','79','80','81','82','83','84','85','86','87','88','89');
 			}else{
@@ -1344,13 +1344,13 @@ class C_Produksi extends CI_Controller
 						$kodeDept = '3';
 						$banyak = $this->M_index->pekerjaDepartemen($now, $kodeDept, $sqlPKL, $lokasi_kerja);
 					}else if ($val == '4'){
-						//non penunjang atau direct
-						$kode = 'and (b.jenispekerjaan=true or b.kdpekerjaan is null)';
-						$banyak = $this->M_index->pekerjaOperator($now, $sqlPKL, $kode);
+						//Dept. Produksi - Seksi CETAKAN,PASIR CETAK & INTI COR,PELEBURAN-PENUANGAN-TKS
+						$kodeSeksi = 'CETAKAN, PASIR CETAK&INTI COR, PEL&PEN - TKS';
+						$banyak = $this->M_index->pekerjaSeksiDeptProduksi($now, $kodeSeksi, $sqlPKL);
 					}else if ($val == '5'){
-						//penunjang atau in-direct
-						$kode = 'and (b.jenispekerjaan=false)';
-						$banyak = $this->M_index->pekerjaOperator($now, $sqlPKL, $kode);
+						//Dept. Produksi - Seksi DESAIN A
+						$kodeSeksi = 'DESAIN A';
+						$banyak = $this->M_index->pekerjaSeksiDeptProduksi($now, $kodeSeksi, $sqlPKL);
 					}else if ($val == '6'){
 						//dept produksi melati
 						$lokasi_kerja = "and lokasi_kerja = '03'";
@@ -1377,13 +1377,14 @@ class C_Produksi extends CI_Controller
 						$kodeSeksi = 'CETAKAN,PASIR CETAK & INTI COR,PELEBURAN-PENUANGAN';
 						$banyak = $this->M_index->pekerjaSeksiDeptProduksi($now, $kodeSeksi, $sqlPKL);
 					}else if ($val == '12'){
-						//Dept. Produksi - Seksi CETAKAN,PASIR CETAK & INTI COR,PELEBURAN-PENUANGAN-TKS
-						$kodeSeksi = 'CETAKAN, PASIR CETAK&INTI COR, PEL&PEN - TKS';
-						$banyak = $this->M_index->pekerjaSeksiDeptProduksi($now, $kodeSeksi, $sqlPKL);
+						//non penunjang atau direct
+						$kode = 'and (b.jenispekerjaan=true or b.kdpekerjaan is null)';
+						$banyak = $this->M_index->pekerjaOperator($now, $sqlPKL, $kode);
+						
 					}else if ($val == '13'){
-						//Dept. Produksi - Seksi DESAIN A
-						$kodeSeksi = 'DESAIN A';
-						$banyak = $this->M_index->pekerjaSeksiDeptProduksi($now, $kodeSeksi, $sqlPKL);
+						//penunjang atau in-direct
+						$kode = 'and (b.jenispekerjaan=false)';
+						$banyak = $this->M_index->pekerjaOperator($now, $sqlPKL, $kode);
 					}else if ($val == '14'){
 						//Dept. Produksi - Seksi DESAIN B
 						$kodeSeksi = 'DESAIN B';
@@ -1699,6 +1700,8 @@ class C_Produksi extends CI_Controller
 						// exit();
 					}else{
 						$isi = $banyak[0]['count'];
+						// 	echo "<pre>";
+						// print_r($isi); exit();
 					}
 					$hasil[$x][] = $isi;
 
@@ -2011,6 +2014,11 @@ class C_Produksi extends CI_Controller
 				// echo $sum;
 			}
 					// exit();
+			$tanggal = date('m-d');
+			$tdklangsung= 'and (c.jenispekerjaan=true or c.kdpekerjaan is null)';
+			$langsung = 'and (c.jenispekerjaan=false)';
+			$data['tabelseksi'] = $this->M_index->pekerjaAllSeksiDeptProduksi($tanggal, $tdklangsung, $langsung, $sqlPKL);
+
 			
 
 			$this->load->view('V_Header',$data);

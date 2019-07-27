@@ -472,14 +472,8 @@
 																				</tbody>
 																			</table>
 																			<canvas id="<?php echo 'myChart'.$y; ?>" width="400" height="150"></canvas>
-																			<div class="col-md-12">
-																				<div class="col-md-6">
-																					<canvas id="<?php echo 'myChartbar1'.$y; ?>" width="100" height="50"></canvas>
-																				</div>
-																				<div class="col-md-6">
-																					<canvas id="<?php echo 'myChartbar2'.$y; ?>" width="100" height="50"></canvas>
-																				</div>
-																			</div>
+																			<canvas id="<?php echo 'myChartbar1'.$y; ?>" width="400" height="100"></canvas>
+																			<canvas id="<?php echo 'myChartbar2'.$y; ?>" width="400" height="100"></canvas>
 																			<input name="imyChart" type="hidden">
 																			<input name="imyChartbar" type="hidden">
 																			<input name="imyChartbar2" type="hidden">

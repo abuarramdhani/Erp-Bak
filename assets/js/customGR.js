@@ -1,117 +1,5 @@
 $(document).ready(function(){
-	// var trgtK = $('.trgt-karyawan').val();
-	// // alert(arr);
-	// var ctx = document.getElementById("myChart").getContext('2d');
-
-	// var myChart = new Chart(ctx, {
-	// 	type: 'line',
-	// 	data: {
-	// 		labels: tgl,
-	// 		datasets: [{
-	// 			label: 'Target Karyawan',
-	// 			data: arr,
-	// 			backgroundColor: 'rgba(0, 0, 0, 0)',
-	// 			borderColor: [
-	// 			'rgba(54, 162, 225, 1)'
-	// 			],
-	// 			borderWidth: 2
-	// 		},{
-	// 			label: 'Jumlah Karyawan',
-	// 			data: kar,
-	// 			backgroundColor: 'rgba(0, 0, 0, 0)',
-	// 			borderColor: [
-	// 			'rgba(251, 136, 60, 0.94)'
-	// 			],
-	// 			borderWidth: 2
-	// 		}]
-	// 	},
-	// 	options: {
-	// 		scales: {
-	// 			yAxes: [{
-	// 				ticks: {
-	// 					beginAtZero:true
-	// 				}
-	// 			}]
-	// 		}
-	// 	}
-	// });
-
-	// var ctb = document.getElementById("myChartBar").getContext('2d');
-	// var myChartBar = new Chart(ctb, {
-	// 	type: 'bar',
-	// 	data: {
-	// 		labels: tgl,
-	// 		datasets: [{
-	// 			label: 'Jumlah Turun Per Bulan',
-	// 			data: jumTur,
-	// 			backgroundColor: '#cbc3b1',
-	// 			borderWidth: 1
-	// 		},{
-	// 			label: 'Target Turun Per Bulan',
-	// 			data: consta,
-	// 			backgroundColor: '#ffbf00',
-	// 			borderWidth: 1
-	// 		}]
-	// 	},
-	// 	options: {
-	// 		responsive: true,
-	// 		scales: {
-	// 			yAxes: [{
-	// 				ticks: {
-	// 					beginAtZero:true
-	// 				}
-	// 			}]
-	// 		}
-	// 	}
-	// });
-
-	// var ctb2 = document.getElementById("myChartBar2").getContext('2d');
-	// var myChartBar = new Chart(ctb2, {
-	// 	type: 'bar',
-	// 	data: {
-	// 		labels: tgl,
-	// 		datasets: [{
-	// 			label: 'Jumlah Turun Akumulasi',
-	// 			data: TurAku,
-	// 			backgroundColor: '#cbc3b1',
-	// 			borderWidth: 1
-	// 		},{
-	// 			label: 'Target Turun Akumulasi',
-	// 			data: TrgAku,
-	// 			backgroundColor: '#ffbf00',
-	// 			borderWidth: 1
-	// 		}]
-	// 	},
-	// 	options: {
-	// 		responsive: true,
-	// 		scales: {
-	// 			yAxes: [{
-	// 				ticks: {
-	// 					beginAtZero:true
-	// 				}
-	// 			}]
-	// 		}
-	// 	}
-	// });
-
-	// $('#bt_trig').click(function(){
-	// 	html2canvas(document.getElementById('myChart'),{scale : 2}).then(function(canvas){
-	// 		var imgData = canvas.toDataURL('image/jpg',1.0);
-	// 		$('input[name="myChart"]').val(imgData);
-	// 	});
-	// 	html2canvas(document.getElementById('myChartBar'),{scale : 2}).then(function(canvas){
-	// 		var imgData2 = canvas.toDataURL('image/png',1.0);
-	// 		$('input[name="myChartBar"]').val(imgData2);
-	// 	});
-	// 	html2canvas(document.getElementById('myChartBar2'),{scale : 2}).then(function(canvas){
-	// 		var imgData3 = canvas.toDataURL('image/png',1.0);
-	// 		$('input[name="myChartBar2"]').val(imgData3);
-	// 	});
-	// 	setTimeout(function () {
-	// 			// alert($('input[name="myChartBar2"]').val());
-	// 			$('#bt_export').click();
- //    	}, 5000);
-	// });	
+	
 	$(function(){
 		$('#divselector').change(function(){
 			$('html,body').animate({scrollTop:$('#'+$('#divselector').val()).offset().top}, 'slow'); 
@@ -223,6 +111,45 @@ $(document).ready(function(){
 			var arrayname6 = "turAkumulasi";
 			var number6 = window[arrayname6][i];
 
+			var semua1 = "targetKaryawan";
+			var semua1 = window[semua1][1];
+			var semua2 = "jumlahKaryawan";
+			var semua2 = window[semua2][1];
+			var semua3 = "trgTurunBln";
+			var semua3 = window[semua3][1];
+			var semua4 = "jumTurunBln";
+			var semua4 = window[semua4][1];
+			var semua5 = "trgAkumulasi";
+			var semua5 = window[semua5][1];
+			var semua6 = "turAkumulasi";
+			var semua6 = window[semua6][1];
+
+			var langsung1 = "targetKaryawan";
+			var langsung1 = window[langsung1][13];
+			var langsung2 = "jumlahKaryawan";
+			var langsung2 = window[langsung2][13];
+			var langsung3 = "trgTurunBln";
+			var langsung3 = window[langsung3][13];
+			var langsung4 = "jumTurunBln";
+			var langsung4 = window[langsung4][13];
+			var langsung5 = "trgAkumulasi";
+			var langsung5 = window[langsung5][13];
+			var langsung6 = "turAkumulasi";
+			var langsung6 = window[langsung6][13];
+
+			var tdklangsung1 = "targetKaryawan";
+			var tdklangsung1 = window[tdklangsung1][12];
+			var tdklangsung2 = "jumlahKaryawan";
+			var tdklangsung2 = window[tdklangsung2][12];
+			var tdklangsung3 = "trgTurunBln";
+			var tdklangsung3 = window[tdklangsung3][12];
+			var tdklangsung4 = "jumTurunBln";
+			var tdklangsung4 = window[tdklangsung4][12];
+			var tdklangsung5 = "trgAkumulasi";
+			var tdklangsung5 = window[tdklangsung5][12];
+			var tdklangsung6 = "turAkumulasi";
+			var tdklangsung6 = window[tdklangsung6][12];
+
 			var chartt = "myChart"+(i-1);
 			var chartt2 = "myChartbar1"+(i-1);
 			var chartt3 = "myChartbar2"+(i-1);
@@ -239,6 +166,73 @@ $(document).ready(function(){
 				xx = '';
 			}
 
+			if (i == 1) {
+			var myChart = new Chart(ctx, {
+				type: 'line',
+				data: {
+					labels: tgl,
+					datasets: [{
+						label: 'Target Semua Karyawan',
+						data: semua1,
+						backgroundColor: 'rgba(0, 0, 0, 0)',
+						borderColor: [
+						'rgba(54, 162, 225, 1)'
+						],
+						borderWidth: 2
+					},{
+						label: 'Jumlah Semua Karyawan',
+						data: semua2,
+						backgroundColor: 'rgba(0, 0, 0, 0)',
+						borderColor: [
+						'rgba(251, 136, 60, 0.94)'
+						],
+						borderWidth: 2
+					},{
+						label: 'Target Semua Karyawan Langsung',
+						data: langsung1,
+						backgroundColor: 'rgba(0, 0, 0, 0)',
+						borderColor: [
+						'rgba(54, 162, 225, 1)'
+						],
+						borderWidth: 2
+					},{
+						label: 'Jumlah Semua Karyawan Langsung',
+						data: langsung2,
+						backgroundColor: 'rgba(0, 0, 0, 0)',
+						borderColor: [
+						'rgb(0, 204, 0)'
+						],
+						borderWidth: 2
+					},{
+						label: 'Target Semua Karyawan Tidak Langsung',
+						data: tdklangsung1,
+						backgroundColor: 'rgba(0, 0, 0, 0)',
+						borderColor: [
+						'rgba(54, 162, 225, 1)'
+						],
+						borderWidth: 2
+					},{
+						label: 'Jumlah Semua Karyawan Tidak Langsung',
+						data: tdklangsung2,
+						backgroundColor: 'rgba(0, 0, 0, 0)',
+						borderColor: [
+						'rgb(255, 0, 0)'
+						],
+						borderWidth: 2
+					}]
+				},
+				options: {
+					scales: {
+						yAxes: [{
+							ticks: {
+								beginAtZero:true,xx,
+								suggestedMax: 10
+							}
+						}]
+					}
+				}
+			});
+		}else{
 			var myChart = new Chart(ctx, {
 				type: 'line',
 				data: {
@@ -272,8 +266,48 @@ $(document).ready(function(){
 					}
 				}
 			});
+		}
 			// alert(number4);
 			var ctb = document.getElementById(chartt2).getContext('2d');
+			if (i == 1 ) {
+				var myChartBar = new Chart(ctb, {
+				type: 'bar',
+				data: {
+					labels: tgl,
+					datasets: [{
+						label: 'Target Semua Karyawan Turun Per Bulan',
+						data: number3,
+						backgroundColor: 'rgba(54, 162, 225, 1)',
+						borderWidth: 1
+					},{
+						label: 'Jumlah Semua Karyawan Turun Per Bulan',
+						data: number4,
+						backgroundColor: '(251, 136, 60, 0.94)',
+						borderWidth: 1
+					},{
+						label: 'Jumlah Semua Karyawan Langsung Turun Per Bulan',
+						data: number4,
+						backgroundColor: '#ff0000',
+						borderWidth: 1
+					},{
+						label: 'Jumlah Semua Karyawan Tidak Langsung Turun Per Bulan',
+						data: number4,
+						backgroundColor: '#00cc00',
+						borderWidth: 1
+					}]
+				},
+				options: {
+					responsive: true,
+					scales: {
+						yAxes: [{
+							ticks: {
+								beginAtZero:true
+							}
+						}]
+					}
+				}
+			});
+			} else {
 			var myChartBar = new Chart(ctb, {
 				type: 'bar',
 				data: {
@@ -301,8 +335,48 @@ $(document).ready(function(){
 					}
 				}
 			});
+			}
 
 			var ctb2 = document.getElementById(chartt3).getContext('2d');
+			if (i == 1) {
+				var myChartBar = new Chart(ctb2, {
+				type: 'bar',
+				data: {
+					labels: tgl,
+					datasets: [{
+						label: 'Target Semua Karyawan Turun Akumulasi',
+						data: number5,
+						backgroundColor: 'rgba(54, 162, 225, 1)',
+						borderWidth: 1
+					},{
+						label: 'Jumlah Semua Karyawan Turun Akumulasi',
+						data: number6,
+						backgroundColor: '(251, 136, 60, 0.94)',
+						borderWidth: 1
+					},{
+						label: 'Jumlah Semua Karyawan Langsung Akumulasi',
+						data: number6,
+						backgroundColor: '#ff0000',
+						borderWidth: 1
+					},{
+						label: 'Jumlah Semua Karyawan Tidak Langsung Akumulasi',
+						data: number6,
+						backgroundColor: '#00cc00',
+						borderWidth: 1
+					}]
+				},
+				options: {
+					responsive: true,
+					scales: {
+						yAxes: [{
+							ticks: {
+								beginAtZero:true
+							}
+						}]
+					}
+				}
+			});
+			} else {
 			var myChartBar = new Chart(ctb2, {
 				type: 'bar',
 				data: {
@@ -330,6 +404,7 @@ $(document).ready(function(){
 					}
 				}
 			});
+			}
 		}
 	}
 
@@ -387,4 +462,9 @@ $(document).ready(function(){
 		tags:true,
 		minimumResultsForSearch: -1,
 	});
+
+	$('#tabelseksi').DataTable({
+        paging	: false,
+        filter: false
+    });
 });
