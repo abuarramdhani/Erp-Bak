@@ -515,7 +515,7 @@ class C_ApprovalKaizen extends CI_Controller {
 			$body = sprintf($getEmailTemplate[0]['body'], trim($getKaizen[0]['pencetus']), trim($approverName), trim($getKaizen[0]['judul']), trim($link));
 			$body = str_replace('<br/>', "\n", $body);
 			$pidgin = new Sendmessage;
-			$pidgin->send($userAccount," \n ".$subject." \n ".$body);
+			@($pidgin->send($userAccount," \n ".$subject." \n ".$body));
 		}
 	}
 
@@ -560,7 +560,7 @@ class C_ApprovalKaizen extends CI_Controller {
 			// echo "<h1 style='color: red'>sampai sini</h1>".$userAccount."<h1 style='color: red'>awas</h1>".$subject."<h1 style='color: red'>awas</h1>".$body;exit();
 			
 			$pidgin = new Sendmessage;
-			$pidgin->send($userAccount," \n ".$subject." \n ".$body);
+			@($pidgin->send($userAccount," \n ".$subject." \n ".$body));
 		}
 	}
 
