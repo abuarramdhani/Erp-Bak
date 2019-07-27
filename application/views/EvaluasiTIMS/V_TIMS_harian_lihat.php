@@ -128,7 +128,6 @@
         var tabell = $('.tbl_et_rekap').DataTable({
             scrollX: true,
             dom: 'lfrtpB',
-            responsive: true,
             buttons: [
             {
                 extend: 'excelHtml5',
