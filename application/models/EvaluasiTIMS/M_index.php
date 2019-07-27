@@ -9,7 +9,7 @@ class M_Index extends CI_Model
 	{
 		parent::__construct();
 		$this->erp 	= 	$this->load->database('default', TRUE);
-		$this->personalia 	= 	$this->load->database('personalia2', TRUE);
+		$this->personalia 	= 	$this->load->database('personalia', TRUE);
 	}
 
 	public function inputjp($data)
