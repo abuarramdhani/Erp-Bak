@@ -156,6 +156,14 @@ class M_tarikfingerspot extends CI_MODEL
 
 	}
 
+	public function cekLokasiKerja($data){
+		$sql = "select * from hrd_khs.tpribadi
+				where noind = '".$data['noind']."'";
+		$result = $this->personalia->query($sql);
+		return $result->result_array();
+
+	}
+
 	public function insert_presensi($table_schema, $table_name, $insert){
     	$this->personalia->insert($table_schema.".".$table_name, $insert);
     }
