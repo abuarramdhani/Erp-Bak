@@ -196,7 +196,6 @@
         var tabell = $('.tb_et_bulanan').DataTable({
             scrollX: true,
             dom: 'lfrtpB',
-            responsive: true,
             buttons: [
             {
                 extend: 'excelHtml5',
