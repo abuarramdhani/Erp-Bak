@@ -59,6 +59,12 @@ class M_limbahmaster extends CI_Model
         return $result->result_array();
     }
 
+    public function getMaxIDSatuanAll(){
+        $query = "select max(cast(id_satuan_all as integer))+1 id from ga.ga_limbah_satuan_all;";
+        $result = $this->db->query($query);
+        return $result->result_array();
+    }
+
     public function getSatuanLimbahAll(){
         $query = "select distinct trim(limbah_satuan_all) as satuan from ga.ga_limbah_satuan_all order by satuan asc";
         return $this->db->query($query)->result_array();

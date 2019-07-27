@@ -23,9 +23,10 @@ class M_limbahkelola extends CI_Model
                         from ga.ga_limbah_satuan limsat
                         where limsat.id_jenis_limbah = limjen.id_jenis_limbah)) jumlah,
 												(select sect.section_name from er.er_section sect where left(sect.section_code,7) = limkir.kodesie_kirim and sect.section_code like '%00') seksi,
-												concat(limkir.jumlah_kirim, ' ',(select limbah_satuan_all
+												concat(limkir.jumlah_kirim, ' ',
+												(select limbah_satuan_all
 												from ga.ga_limbah_satuan_all limsatall
-												where limsatall.id_satuan_all = limkir.id_satuan)) jumlahall,
+												where limsatall.id_satuan_all = limkir.id_satuan limit 1)) jumlahall,
                         limkir.lokasi_kerja,
                         limkir.berat_kirim,
                         limkir.status_kirim,

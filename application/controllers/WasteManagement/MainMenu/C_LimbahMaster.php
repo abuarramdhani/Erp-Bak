@@ -102,7 +102,10 @@ class C_LimbahMaster extends CI_Controller
 				// $this->M_limbahmaster->setLimbahSatuan($satuan);
 				$jumlahSatuan = count($_POST['txtSatuanLimbahHeader']);
 				for ($i=0; $i < $jumlahSatuan ; $i++) {
+					$newId = $this->M_limbahmaster->getMaxIDSatuanAll();
+					$newId = $newId['0']['id'];
 					$satuan = array(
+						'id_satuan_all' => $newId,
 						'id_jenis_limbah' => $header_id,
 						'limbah_satuan_all' => $_POST['txtSatuanLimbahHeader'][$i]
 					);
@@ -182,7 +185,10 @@ class C_LimbahMaster extends CI_Controller
 			$this->M_limbahmaster->updateOffAll($plaintext_string);
 				$jumlahSatuan = count($_POST['txtSatuanLimbahHeader']);
 				for ($i=0; $i < $jumlahSatuan ; $i++) {
+					$newId = $this->M_limbahmaster->getMaxIDSatuanAll();
+					$newId = $newId['0']['id'];
 					$satuan = array(
+						'id_satuan_all' => $newId,
 						'id_jenis_limbah' => $plaintext_string,
 						'limbah_satuan_all' => $_POST['txtSatuanLimbahHeader'][$i],
 						'status' => '1'
@@ -254,7 +260,10 @@ class C_LimbahMaster extends CI_Controller
     }
 
 		public function ajaxAddSatuan(){
+			$newId = $this->M_limbahmaster->getMaxIDSatuanAll();
+			$newId = $newId['0']['id'];
 			$satuanall = array(
+				'id_satuan_all' => $newId,
 				'limbah_satuan_all' => $this->input->post('satuan'),
 				'id_jenis_limbah' => NULL
 			 );
