@@ -66,9 +66,19 @@ class C_ComposeMessage extends CI_Controller {
 
 		// Get PDF from other function
 		$this->PurchaseManagementDocument($po_number);
+
+		// Directory var
+		$doc_dir		= './assets/upload/PurchaseManagementSendPO/Attachment/';
+		$doc_filename	= 'Pedoman Kerjasama Vendor Rev 7 (Quick Reference PO)';
+
 		$pdf_dir		= './assets/upload/PurchaseManagementSendPO/Temporary/PDFDocument/';
 		$pdf_filename	= 'SURAT PENGIRIMAN BARANG_PO '.$po_number;
 		$pdf_format		= '.pdf';
+
+		if (file_exists($doc_dir.preg_replace('/[^a-zA-Z0-9]/', '', $doc_filename).$pdf_format) == TRUE && file_exists($doc_dir.$doc_filename.$pdf_format) == FALSE) 
+		{
+			rename($doc_dir.preg_replace('/[^a-zA-Z0-9]/', '', $doc_filename).$pdf_format , $doc_dir.$doc_filename.$pdf_format);
+		};
 
 		// FTP //
 			// Initialise the connection parameters  
@@ -152,6 +162,13 @@ class C_ComposeMessage extends CI_Controller {
 			if (file_exists($pdf_dir.$pdf_filename.$pdf_format) == TRUE) 
 			{
 				$mail->addAttachment($pdf_dir.$pdf_filename.$pdf_format);
+			};
+			if (file_exists($doc_dir.$doc_filename.$pdf_format) == TRUE) 
+			{
+				$mail->addAttachment($doc_dir.$doc_filename.$pdf_format);
+			}else{
+				echo json_encode('Lampiran'.$doc_filename.'tidak ditemukan.');
+				exit;
 			};
 			if (isset($_FILES['file_attach1']) && $_FILES['file_attach1']['error'] == UPLOAD_ERR_OK) 
 			{
