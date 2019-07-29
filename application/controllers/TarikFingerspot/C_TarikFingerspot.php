@@ -238,8 +238,9 @@ class C_TarikFingerspot extends CI_Controller
 
 					//	Kirim ke Catering.tpresensi
 					//	{
-		 					$lokasikerja=$this->M_tarikfingerspot->cekLokasiKerja($data_presensi);
+		 					$lokasikerja=$this->M_tarikfingerspot->cekLokasiKerja($data_presensi['noind']);
 
+		 					
 		 					foreach ($lokasikerja as $lk) {
 		 						# untuk yang dihitung catering saat ini hanya yang pusat mlati
 		 						if('01'==$lk || '03'==$lk)
