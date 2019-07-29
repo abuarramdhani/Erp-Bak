@@ -108,16 +108,25 @@ $(document).ready(function(){
                         $('.divPMSPOWarnAddrNotFound').fadeOut();
                         $('#txtPMSPOToEmailAddr').val(result);
                         $('.PMSPOimgLoadAddr').hide();
+                        setTimeout(function() {
+                            $('#txtPMSPOSubject').val('KHS PURCHASE ORDER '+PONumber);
+                        }, 500);
                     }else{
                         // alert('Email address pada PO number '+PONumber+' tidak ditemukan.');
                         $('.spnPMSPOWarnAddrNotFound').html(' Tidak ditemukan Email Address dengan PO Number '+PONumber+'. ');
                         $('.divPMSPOWarnAddrNotFound').fadeIn();
+                        $('#txtPMSPOToEmailAddr').val('');
                         $('.PMSPOimgLoadAddr').hide();
+                        setTimeout(function() {
+                            $('#txtPMSPOSubject').val('KHS PURCHASE ORDER '+PONumber);
+                        }, 500);
                     }
                 }
             });
         }else{
             $('.PMSPOimgLoadAddr').hide();
+            $('#txtPMSPOSubject').val('');
+            $('#txtPMSPOToEmailAddr').val('');
         }
     });
 
@@ -142,7 +151,7 @@ $(document).ready(function(){
         }
     });
 
-    $('#txtPMSPOBCCEmailAddr').on({
+    $('#txtPMSPOBCCEmailAddr').val('purchasingsec12.quick3@gmail.com').on({
         'click': function() {
             $('.divPMSPOBCCEmailAddrWarn').fadeIn();
         },
