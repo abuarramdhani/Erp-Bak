@@ -122,8 +122,20 @@ class C_TarikFingerspot extends CI_Controller
 
 							//	Kirim ke Catering.tpresensi
 							//	{
-				 					$data_presensi['transfer']	=	FALSE;
-				 					$this->M_tarikfingerspot->insert_presensi('"Catering"', 'tpresensi', $data_presensi);
+				 					$lokasikerja=$this->M_tarikfingerspot->cekLokasiKerja($data_presensi['noind']);
+
+		 							
+				 					foreach ($lokasikerja as $lk) {
+				 						# untuk yang dihitung catering saat ini hanya yang pusat mlati
+				 						$lokasitempatmakanpusat = strpos($lk['tempat_makan'], 'PST');
+				 						$lokasitempatmakanmlati = strpos($lk['tempat_makan'], 'MLATI');
+
+				 						if($lokasitempatmakanpusat === true || $lokasitempatmakanmlati === true)
+				 						{
+				 							$data_presensi['transfer']	=	FALSE;
+				 							$this->M_tarikfingerspot->insert_presensi('"Catering"', 'tpresensi', $data_presensi);
+				 						}
+				 					}
 							//	}
 
 							//	Kirim ke Presensi.tprs_shift
@@ -243,7 +255,10 @@ class C_TarikFingerspot extends CI_Controller
 		 					
 		 					foreach ($lokasikerja as $lk) {
 		 						# untuk yang dihitung catering saat ini hanya yang pusat mlati
-		 						if('01'==$lk || '03'==$lk)
+		 						$lokasitempatmakanpusat = strpos($lk['tempat_makan'], 'PST');
+		 						$lokasitempatmakanmlati = strpos($lk['tempat_makan'], 'MLATI');
+
+		 						if($lokasitempatmakanpusat === true || $lokasitempatmakanmlati === true)
 		 						{
 		 							$data_presensi['transfer']	=	FALSE;
 		 							$this->M_tarikfingerspot->insert_presensi('"Catering"', 'tpresensi', $data_presensi);
