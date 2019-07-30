@@ -237,6 +237,10 @@ class C_LogbookHarian extends CI_Controller
     $lokasi1 = $this->M_logbookharian->getLokasiName($lokasi);
     $data['filterMasuk'] = $this->M_logbookharian->filterLimbahMasuk($tanggalawal1, $tanggalakhir1, $jenislimbahNew, $lokasi);
     $data['filterKeluar'] = $this->M_logbookharian->filterLimbahKeluar($tanggalawal2, $tanggalakhir2, $jenislimbahNew2, $lokasi);
+    // echo "<pre>";
+    // print_r($data['filterMasuk']);
+    // print_r($data['filterKeluar']);
+    // exit;
     $data['user_name'] = $username;
     $data['allBulanIn'] = $allBulanIn;
     $data['allBulanOut'] = $allBulanOut;
@@ -261,6 +265,7 @@ class C_LogbookHarian extends CI_Controller
       $stylesheet1 = file_get_contents(base_url('assets/plugins/bootstrap/3.3.7/css/bootstrap.css'));
       $pdf->WriteHTML($stylesheet1,1);
       $pdf->WriteHTML($html, 2);
+      $pdf->setTitle($filename);
       $pdf->Output($filename, 'I');
     }
   }

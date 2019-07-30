@@ -123,7 +123,7 @@ class M_logbookharian extends CI_MODEL
                                       from ga.ga_limbah_satuan_all limsatall
                                       where limsatall.id_satuan_all = limkir.id_satuan),
                                       '(',limkir.berat_kirim,'kg )'
-                                ) jumlah,
+                                ) jumlahall,
                                 limkir.id_satuan
                                 FROM ga.ga_limbah_kirim limkir
                                   inner join ga.ga_limbah_jenis limjen
@@ -133,9 +133,4 @@ class M_logbookharian extends CI_MODEL
       $query = $this->db->query($sqlfilterData);
       return $query->result_array();
   }
-
-
-
 }
-
- ?>

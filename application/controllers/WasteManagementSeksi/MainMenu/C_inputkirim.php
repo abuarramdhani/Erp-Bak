@@ -136,7 +136,16 @@ class C_inputkirim extends CI_Controller
 		$data['JenisLimbah'] = $this->M_kirim->getLimJenis($kodesie);
 		$data['Seksi'] = $this->M_kirim->getSekNamaByKodesie($kodesie);
 		$data['KirimLimbah'] = $this->M_kirim->getLimKirim($plaintext_string);
-		$data['SatuanLimbah'] = $this->M_kirim->getSatlimbyID($data['KirimLimbah']['0']['id_satuan']);
+
+		$data['SatuanLimbah'] = $this->M_kirim->getSatLimbyLim($data['KirimLimbah']['0']['id_jenis_limbah']);
+		// echo "<pre>";
+		// print_r($data['SatuanLimbah']);
+		if(empty($data['KirimLimbah']['0']['id_satuan'])){
+			$data['LimbahSatuan'] = $this->M_kirim->getSatlimOld($data['KirimLimbah']['0']['id_jenis_limbah']);
+		}else{
+			$data['LimbahSatuan'] = $this->M_kirim->getSatlimbyID($data['KirimLimbah']['0']['id_satuan']);
+		}
+		// print_r($data['LimbahSatuan']);exit;
 		$data['Lokasi'] = $this->M_kirim->getLokasi();
 
 		if (empty($_POST)) {
@@ -158,7 +167,7 @@ class C_inputkirim extends CI_Controller
 			);
 			// echo "<pre>";
 			// print_r($datapost);
-			// print_r($_POST); exit();
+			//  exit();
 			$this->M_kirim->UpdateLimKirim($datapost);
 			redirect(site_url('WasteManagementSeksi/InputKirimLimbah/Sendmail/Edit/'.$id));
 		}

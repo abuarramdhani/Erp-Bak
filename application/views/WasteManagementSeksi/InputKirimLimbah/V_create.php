@@ -157,7 +157,7 @@
 										</div>
 									</div>
 									<div class="panel-footer text-center">
-										<button type="submit" class="btn btn-primary">Submit</button>
+										<button type="submit" onclick="this.disabled=true;" class="btn btn-primary">Submit</button>
 										<a href="javascript:history.back(1);" class="btn btn-warning">Back</a>
 									</div>
 								</div>
