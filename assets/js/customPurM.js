@@ -123,7 +123,7 @@ $(document).ready(function() {
 
 
     $('.slcRemarkNonConformity').select2({
-        placeholder: 'Select Remark'
+        placeholder: 'Select Case'
     });
 
     $(document).on('click', '.btnSetItemNonC', function() {
@@ -522,8 +522,60 @@ $(document).ready(function() {
                 }
             }
         });
+    });
+
+    $(document).on('click', '.btnEditCaseNonC', function () {
+        $('#modal-ubahCase').modal('show');
     })
 
+    $(document).on('click', '.btnUpdateCaseNonC', function () {
+        var caseEdit = $('.slcRemarkNonConformity').val();
+        var header = $('.hdrNonC').val();
+        var desc = $('.descNonC').val();
+        var judgment = $('.judgementNonC').val();
+        var status = $('.statusNonC').val();
+        var sourceid = $('.sourceNonC').val();
+        var problemTrack = $('.problemTrackNonC').val();
+        var scope = $('.scopeNonC').val();
+        var problemComp = $('.problemCompNonC').val();
+        var completionDate = $('.CompDateNonC').val();
+
+
+        $.ajax({
+            type: "POST",
+            url: baseurl+"PurchaseManagementGudang/NonConformity/updateCase",
+            data: {
+                case: caseEdit,
+                headerid : header,
+                desc : desc, 
+                judgement : judgment,
+                status : status,
+                sourceid : sourceid,
+                problemTrack : problemTrack,
+                scope : scope,
+                problemComp : problemComp,
+                completionDate : completionDate 
+            },
+            success: function (response) {
+                
+                if (response == 1) {
+                    var html = "";
+                    for (var i = 0; i < caseEdit.length; i++) {
+                        var no = i +1;
+
+                        var caseDec = $('.slcRemarkNonConformity option[value="' + caseEdit[i] + '"]').attr('namaCase');
+                        html += no+'. '+caseDec+'<br>';
+                    }
+                    html += '<button type="button" class="btn btn-primary btn-xs btnEditCaseNonC">Edit</button>';
+                    $('.tdCaseNonC').html(html) 
+                    $('#modal-ubahCase').modal('hide');
+                }
+            }
+        });
+    })
+
+    $('.slcEditCaseNonC').select2({
+    });
 
 });
 
@@ -541,6 +593,7 @@ $('#tblPoOracleNonConfirmityHeaders').DataTable({
             "bSortable": false,
             "bVisible": true
         },
+        null,
         null,
         null,
         null,

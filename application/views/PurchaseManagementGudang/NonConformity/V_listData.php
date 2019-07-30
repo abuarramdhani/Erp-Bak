@@ -30,7 +30,8 @@
                                                 <th style="width:20px" class="text-center">No</th>
                                                 <th class="text-center">Action</th>
                                                 <th style="min-width: 100px" class="text-center">Conformity Number</th>
-												<th>Po Number</th>
+												<th class="text-center">Creation Date</th>
+												<th class="text-center">Po Number</th>
 												<th class="text-center">Delivery Date</th>
 												<th class="text-center">Packing List</th>
 												<th class="text-center">Courier Agent</th>
@@ -55,6 +56,7 @@
                                                 	<a style="margin-right:4px" href="<?php echo base_url('PurchaseManagementGudang/NonConformity/read/'.$encrypted_string.''); ?>" data-toggle="tooltip" data-placement="bottom" title="Read Data"><span class="fa fa-list-alt fa-2x"></span></a>
                                                 </td>
                                                 <td><?php echo $row['non_conformity_num'] ?></td>
+                                                <td><?php echo date('Y-m-d', strtotime($row['creation_date'])) ?></td>
                                                 <?php 
                                                     $headerId = $row['header_id'];
                                                     $poNumber = $this->M_nonconformity->detailPOListdata($headerId);
