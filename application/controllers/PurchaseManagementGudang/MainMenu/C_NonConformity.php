@@ -105,7 +105,11 @@ class C_NonConformity extends CI_Controller
 		
 		/* LINES DATA */
 		$data['PoOracleNonConformityLines'] = $this->M_nonconformity->getLines($plaintext_string);
+		// echo '<pre>';
+		// print_r($data['PoOracleNonConformityLines']);
+		// exit;
 		$data['linesItem'] = $this->M_nonconformity->getLinesItem($data['PoOracleNonConformityHeaders'][0]['header_id']);
+		$data['case'] = $this->M_nonconformity->getCase();
 
 		if (count($data['PoOracleNonConformityLines']) > 0) {
 			$sourceId = $data['PoOracleNonConformityLines'][0]['source_id'];
@@ -830,5 +834,46 @@ class C_NonConformity extends CI_Controller
 		$data = $this->M_nonconformity->updateDeskripsi($headerid, $desc);
 
 		echo '1';
+	}
+
+	public function updateCase()
+	{
+		$headerid = $_POST['headerid'];
+		$desc = $_POST['desc'];
+		$judgement = $_POST['judgement'];
+		$status = $_POST['status'];
+		$sourceid = $_POST['sourceid'];
+		$problemTrack = $_POST['problemTrack'];
+		$scope = $_POST['scope'];
+		$problemComp = $_POST['problemComp'];
+		$completionDate = $_POST['completionDate'];
+		$case = $_POST['case'];
+
+		// print_r(count($case));
+
+		$check = $this->M_nonconformity->checkCase($headerid);
+
+		if (count($check) > 0) {
+			$this->M_nonconformity->hapusCase($headerid);
+		}
+
+		for ($i=0; $i <count($case) ; $i++) { 
+			$case1 = array(
+							'case_id' => $case[$i],
+							'description' => $desc,
+							'header_id' => $headerid,
+							'judgement' => $judgement,
+							'status' => $status,
+							'source_id' => $sourceid,
+							'problem_tracking' => $problemTrack,
+							'scope' => $scope,
+							'problem_completion' => $problemComp,
+							'completion_date' => $completionDate,
+						 );
+			$this->M_nonconformity->updateCase($case1);
+		}
+
+		echo 1;
+
 	}
 }

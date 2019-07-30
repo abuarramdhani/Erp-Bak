@@ -617,7 +617,7 @@ class M_nonconformity extends CI_Model
     {
         $oracle = $this->load->database('oracle_dev', TRUE);
         $query = $oracle->query("SELECT * FROM KHS.KHS_CETAK_PO_LANDSCAPE
-        WHERE REQUEST_ID = '$request_id'");
+        WHERE REQUEST_ID = '$request_id' ORDER BY SEGMENT1 ASC, NOMORQ ASC");
         return $query->result_array();
     }
 
@@ -745,5 +745,89 @@ class M_nonconformity extends CI_Model
     {
         $this->db->where('line_item_id', $lineItemId);
         $this->db->update('pm.pm_po_oracle_non_conformity_line_items', $update);
+    }
+
+    public function getHeaderPOLandscape($request_id)
+    {
+        $oracle = $this->load->database('oracle_dev', TRUE);
+        $query = $oracle->query("select distinct
+        kc.SEGMENT1
+        ,kc.REVISION_NUM
+        ,kc.TANGGAL_CETAK
+        ,kc.BLANKET_INFO
+        ,kc.VENDOR_NAME
+        ,kc.VENDOR_SITE_CODE
+        ,kc.ADDRESS_LINE1
+        ,kc.TELP
+        ,kc.FAX
+        ,kc.EMAIL
+        ,kc.VENDOR_CONTACT
+        ,kc.CARA_BAYAR
+        ,kc.BANK
+        ,kc.BANK_BRANCH_NAME
+        ,kc.BANK_ACCOUNT
+        ,kc.BANK_CURRENCY
+        ,kc.NO_BLANKET
+        ,kc.TERM_OF_SHIPMENT
+        ,kc.PAYMENT
+        ,kc.INSURANCE
+        ,kc.WARRANTY
+        ,kc.LATEST_SHIPMENT
+        ,kc.INSTALLATION_COMISIONING
+        ,kc.TECHNICIAN_TRANSPORTATION
+        ,kc.TECHNICIAN_ACCOMODATION
+        ,kc.HS_CODE_PRET_TARIF_FORM
+        ,kc.DEMURRAGE
+        ,kc.CF_PAGE
+        ,kc.TOTHARGA
+        ,kc.DECTOTHARGA
+        ,kc.PPN
+        ,kc.DECPPN
+        ,kc.TOTAL
+        ,kc.DECTOTAL
+        ,kc.CF_APPROVER_2
+        ,kc.CF_APPROVER_1
+        ,kc.BUYER
+        ,kc.CF_ADMIN_PO
+        ,kc.CF_ADMIN_DIST
+        ,kc.LOCATION_CODE
+        ,kc.SHIP_TO_ADDREAS
+        from
+        khs.khs_cetak_po_landscape kc
+        where
+        kc.REQUEST_ID = '$request_id'
+        order by kc.SEGMENT1, kc.CF_PAGE
+                            ");
+        return $query->result_array();
+    }
+
+    public function getLinePOLandscape($request_id,$nomorPO, $page)
+    {
+        
+        $oracle = $this->load->database('oracle_dev', TRUE);
+        $query = $oracle->query("SELECT * from khs.khs_cetak_po_landscape
+                                 where REQUEST_ID = '$request_id'
+                                 AND SEGMENT1 = '$nomorPO'
+                                 AND CF_PAGE = '$page'
+                                 ");
+
+        return $query->result_array();
+    }
+
+    public function checkCase($headerid)
+    {
+        $query = $this->db->query("select * from pm.pm_po_oracle_non_conformity_lines where header_id='$headerid'");
+        return $query->result_array();
+    }
+
+    public function hapusCase($headerid)
+    {
+        $this->db->where('header_id', $headerid);
+        $this->db->delete('pm.pm_po_oracle_non_conformity_lines');
+    }
+
+    public function updateCase($case)
+    {
+        $this->db->insert('pm.pm_po_oracle_non_conformity_lines',$case);
     }
 }

@@ -224,9 +224,10 @@
                                                 </thead>
                                                 <tbody>
                                                     <tr>
-                                                      <td><?php $no = 1; foreach($PoOracleNonConformityLines as $man): ?>
+                                                      <td class="tdCaseNonC"><?php $no = 1; foreach($PoOracleNonConformityLines as $man): ?>
                                                               <span><?= $no++.'. '.$man['case_name'];?></span><br>
                                                           <?php endforeach; ?>
+                                                          <button type="button" class="btn btn-primary btn-xs btnEditCaseNonC">Edit</button>
                                                       </td>
                                                       <td><span class="deskripsiNonC"><?php echo $PoOracleNonConformityLines[0]['description']; ?></span><button type="button" class="btn btn-xs btn-primary btnEditDeskripsiNonC">Edit</button></td>
                                                       <!-- <td><?php if ($PoOracleNonConformityLines[0]['judgement'] == NULL || $PoOracleNonConformityLines[0]['judgement'] == ''|| $PoOracleNonConformityLines[0]['status'] == NULL) {
@@ -286,6 +287,15 @@
                                                     </tr>
                                                 </tbody>
                                               </table>
+                                              <input type="hidden" class="hdrNonC" value="<?php echo $PoOracleNonConformityHeaders[0]['header_id'];?>">
+                                              <input type="hidden" class="descNonC" value="<?php echo $PoOracleNonConformityLines[0]['description'];?>">
+                                              <input type="hidden" class="judgementNonC" value="<?php echo $PoOracleNonConformityLines[0]['judgement'];?>">
+                                              <input type="hidden" class="statusNonC" value="<?php echo $PoOracleNonConformityLines[0]['status'];?>">
+                                              <input type="hidden" class="sourceNonC" value="<?php echo $PoOracleNonConformityLines[0]['source_id'];?>">
+                                              <input type="hidden" class="problemTrackNonC" value="<?php echo $PoOracleNonConformityLines[0]['problem_tracking'];?>">
+                                              <input type="hidden" class="scopeNonC" value="<?php echo $PoOracleNonConformityLines[0]['scope'];?>">
+                                              <input type="hidden" class="problemCompNonC" value="<?php echo $PoOracleNonConformityLines[0]['problem_completion'];?>">
+                                              <input type="hidden" class="CompDateNonC" value="<?php echo $PoOracleNonConformityLines[0]['completion_date'];?>">
                                           </div>
                                           <span>Attachment :</span><br>
                                           <?php foreach ($image as $key => $img) { ?>
@@ -324,6 +334,31 @@
         <div class="modal-footer">
           <button type="button" class="btn btn-default pull-left" data-dismiss="modal">Cancel</button>
           <button type="button" id="" class="btn btn-primary btnUpdateDeskripsiNonC">Yes</button>
+        </div>
+      </div>
+      <!-- /.modal-content -->
+    </div>
+    <!-- /.modal-dialog -->
+</div>
+<!-- /.modal -->
+<div class="modal fade" id="modal-ubahCase">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <!-- <button type="button" class="close" data-dismiss="modal" aria-label="Close"> -->
+            <!-- <span aria-hidden="true">&times;</span></button> -->
+          <h4 class="modal-title">Edit Case</h4>
+        </div>
+        <div class="modal-body">
+        <select class="form-control select2 slcRemarkNonConformity" name="remark[]" style="width:100%" multiple>
+            <?php foreach ($case as $key => $cases) :?>
+                <option value="<?= $cases['case_id']?>" namaCase="<?= $cases['case_name']?>"><?= $cases['case_name']?></option>
+            <? endforeach; ?>
+        </select>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-default pull-left" data-dismiss="modal">Cancel</button>
+          <button type="button" id="" class="btn btn-primary btnUpdateCaseNonC">Yes</button>
         </div>
       </div>
       <!-- /.modal-content -->
