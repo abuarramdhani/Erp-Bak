@@ -87,7 +87,6 @@ class C_TarikFingerspot extends CI_Controller
 				$no = 0;
 				$insert = array();
 				foreach ($log as $key) {
-
 					$data_presensi = array(
 						'tanggal' => $key['tanggal'],
 						'waktu' => $key['waktu'],
@@ -123,9 +122,10 @@ class C_TarikFingerspot extends CI_Controller
 							//	Kirim ke Catering.tpresensi
 							//	{
 				 					
-		 							$data_presensi['transfer']	=	FALSE;
+									 $data_presensi['transfer']	=	FALSE;
+									 $data_presensi['tempat_makan'] = $key['tempat_makan'];
 		 							$this->M_tarikfingerspot->insert_presensi('"Catering"', 'tpresensi', $data_presensi);
-				 					
+				 					unset($data_presensi['tempat_makan']);
 							//	}
 
 							//	Kirim ke Presensi.tprs_shift
@@ -245,8 +245,9 @@ class C_TarikFingerspot extends CI_Controller
 		 					
 		 				
  							$data_presensi['transfer']	=	FALSE;
+							 $data_presensi['tempat_makan'] = $key['tempat_makan'];
  							$this->M_tarikfingerspot->insert_presensi('"Catering"', 'tpresensi', $data_presensi);
-
+							 unset($data_presensi['tempat_makan']);
 		 					
 					//	}
 

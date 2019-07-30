@@ -71,7 +71,7 @@ class M_tarikfingerspot extends CI_MODEL
 		if (!empty($resFinger)) {
 			$a = 0;
 			foreach ($resFinger as $key) {
-				$sql = "select noind,noind_baru,kodesie
+				$sql = "select noind,noind_baru,kodesie,tempat_makan
 						from hrd_khs.tpribadi
 						where noind_baru not like '  %'
 						and cast(noind_baru as integer) = ".$key['noind_baru']."
@@ -87,7 +87,8 @@ class M_tarikfingerspot extends CI_MODEL
 							'noind' => $value['noind'],
 							'kodesie' => $value['kodesie'],
 							'noind_baru' => $value['noind_baru'],
-							'nomor_sn' => $key['sn']
+							'nomor_sn' => $key['sn'],
+							'tempat_makan' => $value['tempat_makan']
 						);
 
 					}
@@ -95,7 +96,7 @@ class M_tarikfingerspot extends CI_MODEL
 				else
 				{
 				    //tarik data pekerja yang sudah keluar dengan menggunakan data nomor induk terakhir.
-				   $sql = "select noind,noind_baru,kodesie
+				   $sql = "select noind,noind_baru,kodesie,tempat_makan
 						from hrd_khs.tpribadi
 						where noind_baru not like '  %'
 						and cast(noind_baru as integer) = ".$key['noind_baru']."
@@ -110,7 +111,8 @@ class M_tarikfingerspot extends CI_MODEL
 							'noind' => $value['noind'],
 							'kodesie' => $value['kodesie'],
 							'noind_baru' => $value['noind_baru'],
-							'nomor_sn' => $key['sn']
+							'nomor_sn' => $key['sn'],
+							'tempat_makan' => $value['tempat_makan']
 						);
 
 					}
