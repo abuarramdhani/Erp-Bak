@@ -25,7 +25,6 @@ class C_LogbookHarian extends CI_Controller
     if ($this->session->userdata('logged_in')!=true) {
       $this->load->helper('url');
       $this->session->set_userdata('last_page',current_url());
-      //redirect('index')
       $this->session->set_userdata('Responsbility','some_value');
     }
   }
@@ -237,10 +236,7 @@ class C_LogbookHarian extends CI_Controller
     $lokasi1 = $this->M_logbookharian->getLokasiName($lokasi);
     $data['filterMasuk'] = $this->M_logbookharian->filterLimbahMasuk($tanggalawal1, $tanggalakhir1, $jenislimbahNew, $lokasi);
     $data['filterKeluar'] = $this->M_logbookharian->filterLimbahKeluar($tanggalawal2, $tanggalakhir2, $jenislimbahNew2, $lokasi);
-    // echo "<pre>";
-    // print_r($data['filterMasuk']);
-    // print_r($data['filterKeluar']);
-    // exit;
+
     $data['user_name'] = $username;
     $data['allBulanIn'] = $allBulanIn;
     $data['allBulanOut'] = $allBulanOut;
@@ -257,7 +253,6 @@ class C_LogbookHarian extends CI_Controller
       $this->load->library('pdf');
       $pdf = $this->pdf->load();
       $pdf = new mPDF('utf-8','A4-L',0,'',10,10,10,10,10,10);
-      // $pdf = new mPDF('utf-8', 'A4', 8, '', 5, 5, 30, 15, 10, 20);
       $filename = 'LogBook_Harian_Limbah_B3_'.$date.'.pdf';
 
       $html = $this->load->view('WasteManagement/LogBook/V_PDF',$data,true);
