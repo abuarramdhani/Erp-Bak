@@ -56,7 +56,6 @@ class M_logbookharian extends CI_MODEL
               $condition = "and limkir.tanggal_kirim BETWEEN '$tanggalawal' AND '$tanggalakhir'";
           }
       }
-// echo $condition;exit();
       $sqlfilterData = "SELECT
                           limkir.id_kirim,
                           limjen.id_jenis_limbah,
@@ -87,7 +86,7 @@ class M_logbookharian extends CI_MODEL
                             left join er.er_section sec
                       				on sec.section_code = concat(limkir.kodesie_kirim,'00')
                             where limkir.lokasi_kerja = '$lokasi' $condition
-                          order by tanggal ASC";
+                          order by id_kirim ASC";
       $query = $this->db->query($sqlfilterData);
       return $query->result_array();
   }
@@ -123,19 +122,14 @@ class M_logbookharian extends CI_MODEL
                                       from ga.ga_limbah_satuan_all limsatall
                                       where limsatall.id_satuan_all = limkir.id_satuan),
                                       '(',limkir.berat_kirim,'kg )'
-                                ) jumlah,
+                                ) jumlahall,
                                 limkir.id_satuan
                                 FROM ga.ga_limbah_kirim limkir
                                   inner join ga.ga_limbah_jenis limjen
                                     on limjen.id_jenis_limbah = limkir.id_jenis_limbah
                                     where limkir.lokasi_kerja = '$lokasi' $condition
-                                    order by tanggal ASC ";
+                                    order by id_kirim ASC ";
       $query = $this->db->query($sqlfilterData);
       return $query->result_array();
   }
-
-
-
 }
-
- ?>

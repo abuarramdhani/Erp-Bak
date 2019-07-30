@@ -50,8 +50,10 @@
 					<td style="text-align: center;"><?php echo $filterMasuk[$i]['jenis_limbah']; ?></td>
 					<td style="text-align: center;"><?php echo $filterMasuk[$i]['tanggal']; ?></td>
 					<td style="text-align: center;"><?php echo $filterMasuk[$i]['sumber']; ?></td>
+					<?php if($filterMasuk[$i]['id_satuan'] == NULL){ $jumlah = $filterMasuk[$i]['jumlah'];}else{ $jumlah = $filterMasuk[$i]['jumlahall'];} ?>
 					<td style="text-align: center;"><?php echo $filterMasuk[$i]['jumlah']; ?></td>
 					<td style="text-align: center;"><?php echo $filterMasuk[$i]['tanggalmax']; ?></td>
+					<?php if($filterKeluar[$i]['id_satuan'] == NULL){ $jumlah = $filterKeluar[$i]['jumlah'];}else{ $jumlah = $filterKeluar[$i]['jumlahall'];} ?>
 					<td style="text-align: center;"><?php echo $filterKeluar[$i]['tanggal']; ?></td>
 					<td style="text-align: center;"><?php echo $filterKeluar[$i]['jumlah']; ?></td>
 					<td></td>

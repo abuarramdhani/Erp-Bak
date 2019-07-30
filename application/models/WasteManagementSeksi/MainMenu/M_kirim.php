@@ -100,8 +100,17 @@ class M_kirim extends Ci_Model
         return $result->result_array();
     }
 
+
 		public function getSatLim(){
 			return $this->db->query("select distinct limbah_satuan_all as satuan, id_satuan_all from ga.ga_limbah_satuan_all")->result_array();
+		}
+
+		public function getSatLimbyLim($id){
+			return $this->db->query("select limbah_satuan_all as satuan, id_satuan_all from ga.ga_limbah_satuan_all where id_jenis_limbah = '$id' and status = '1'")->result_array();
+		}
+
+		public function getSatLimOld($id){
+			return $this->db->query("select limbah_satuan as satuan from ga.ga_limbah_satuan where id_jenis_limbah = '$id'")->result_array();
 		}
 
 		public function getSatlimbyID($id){
@@ -141,7 +150,8 @@ class M_kirim extends Ci_Model
                         limkir.jumlah_kirim,
                         limkir.ket_kirim,
 												limkir.id_satuan,
-                        (select limbah_satuan_all from ga.ga_limbah_satuan_all where id_satuan_all = limkir.id_satuan) limbah_satuan,
+                        (select limbah_satuan_all from ga.ga_limbah_satuan_all where id_satuan_all = limkir.id_satuan) limbah_satuan_all,
+												(select limbah_satuan from ga.ga_limbah_satuan limsat where limsat.id_jenis_limbah = limkir.id_jenis_limbah) limbah_satuan,
                         (select concat(employee_code,' - ',employee_name) from er.er_employee_all where employee_code = limkir.noind_pengirim and resign = '0')noind_pengirim,
                         (select concat(location_code,' - ',location_name) from er.er_location where location_code = limkir.lokasi_kerja) noind_location
                     from ga.ga_limbah_kirim limkir
