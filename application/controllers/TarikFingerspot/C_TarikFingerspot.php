@@ -122,20 +122,10 @@ class C_TarikFingerspot extends CI_Controller
 
 							//	Kirim ke Catering.tpresensi
 							//	{
-				 					$lokasikerja=$this->M_tarikfingerspot->cekLokasiKerja($data_presensi['noind']);
-
-		 							
-				 					foreach ($lokasikerja as $lk) {
-				 						# untuk yang dihitung catering saat ini hanya yang pusat mlati
-				 						$lokasitempatmakanpusat = strpos($lk['tempat_makan'], 'PST');
-				 						$lokasitempatmakanmlati = strpos($lk['tempat_makan'], 'MLATI');
-
-				 						if($lokasitempatmakanpusat === true || $lokasitempatmakanmlati === true)
-				 						{
-				 							$data_presensi['transfer']	=	FALSE;
-				 							$this->M_tarikfingerspot->insert_presensi('"Catering"', 'tpresensi', $data_presensi);
-				 						}
-				 					}
+				 					
+		 							$data_presensi['transfer']	=	FALSE;
+		 							$this->M_tarikfingerspot->insert_presensi('"Catering"', 'tpresensi', $data_presensi);
+				 					
 							//	}
 
 							//	Kirim ke Presensi.tprs_shift
@@ -253,17 +243,10 @@ class C_TarikFingerspot extends CI_Controller
 		 					$lokasikerja=$this->M_tarikfingerspot->cekLokasiKerja($data_presensi['noind']);
 
 		 					
-		 					foreach ($lokasikerja as $lk) {
-		 						# untuk yang dihitung catering saat ini hanya yang pusat mlati
-		 						$lokasitempatmakanpusat = strpos($lk['tempat_makan'], 'PST');
-		 						$lokasitempatmakanmlati = strpos($lk['tempat_makan'], 'MLATI');
+		 				
+ 							$data_presensi['transfer']	=	FALSE;
+ 							$this->M_tarikfingerspot->insert_presensi('"Catering"', 'tpresensi', $data_presensi);
 
-		 						if($lokasitempatmakanpusat === true || $lokasitempatmakanmlati === true)
-		 						{
-		 							$data_presensi['transfer']	=	FALSE;
-		 							$this->M_tarikfingerspot->insert_presensi('"Catering"', 'tpresensi', $data_presensi);
-		 						}
-		 					}
 		 					
 					//	}
 
