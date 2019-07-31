@@ -1,7 +1,7 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
 
-class C_Mutasi extends CI_Controller 
+class C_Mutasi extends CI_Controller
 {
 
 	function __construct()
@@ -14,7 +14,7 @@ class C_Mutasi extends CI_Controller
 
 		$this->load->model('SystemAdministration/MainMenu/M_user');
 		$this->load->model('MasterPekerja/Surat/M_surat');
-		$this->load->model('MasterPekerja/Surat/M_mutasi');			
+		$this->load->model('MasterPekerja/Surat/M_mutasi');
 
 		date_default_timezone_set('Asia/Jakarta');
 
@@ -44,17 +44,17 @@ class C_Mutasi extends CI_Controller
 	public function create()
 	{
 			/*$user_id = $this->session->userid;
-			
+
 			$data['Header']			=	'Master Pekerja - Quick ERP';
 			$data['Title']			=	'Surat Mutasi';
 			$data['Menu'] 			= 	'Surat-Surat';
 			$data['SubMenuOne'] 	= 	'Surat Mutasi';
 			$data['SubMenuTwo'] 	= 	'';
-			
+
 			$data['UserMenu'] = $this->M_user->getUserMenu($user_id,$this->session->responsibility_id);
 			$data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id);
 			$data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id);
-			
+
 	      	// $data['DaftarPekerja']	=	$this->M_surat->getAmbilPekerjaAktif();
 	      	// $data['DaftarSeksi']    =   $this->M_surat->getSeksi();
 	      	// $data['DaftarPekerjaan'] = $this->M_surat->DetailPekerjaan();
@@ -173,7 +173,7 @@ class C_Mutasi extends CI_Controller
 			$status_staf_bool 	=	FALSE;
 			if( strpos($status_staf, "NON") !== FALSE )
 			{
-				$status_staf_bool 	=	FALSE;	
+				$status_staf_bool 	=	FALSE;
 			}
 			else
 			{
@@ -266,7 +266,7 @@ class C_Mutasi extends CI_Controller
 
 			$parameterTahun 	=	date('Y', strtotime($tanggal_cetak));
 			$parameterBulan 	=	date('m', strtotime($tanggal_cetak));
-			
+
 
 			// print_r($lokasi_kerja_lama);exit();
 			$lokasi_kerja_lama 			=	explode(' - ', $lokasi_kerja_lama);
@@ -291,7 +291,7 @@ class C_Mutasi extends CI_Controller
 				else
 				{
 					$kode_surat 				=	'PS/KI-M';
-					
+
 				}
 			}
 			else
@@ -314,7 +314,7 @@ class C_Mutasi extends CI_Controller
 			$posisi_lama 				=	$posisiLama[0]['posisi'];
 
 			$posisi_baru 				=	'';
-			
+
 			$tertanda 					= 	'';
 			$nama_tanda_tangan 			=	'';
 			$jabatan_tertanda 			=	'';
@@ -360,8 +360,8 @@ class C_Mutasi extends CI_Controller
 
 				if($nomorSuratTerakhir<1000)
 				{
-					for ($i=strlen($nomorSuratTerakhir); $i < 3; $i++) 
-					{ 
+					for ($i=strlen($nomorSuratTerakhir); $i < 3; $i++)
+					{
 						$nomorSuratTerakhir 	=	'0'.$nomorSuratTerakhir;
 					}
 				}
@@ -372,14 +372,14 @@ class C_Mutasi extends CI_Controller
 			$kd_jabatan_lama = $kd_jabatan_lama[0];
 			$tembusan 	=	$this->personalia->tembusanDuaPihak($kd_jabatan_lama, $seksi_lama, $kd_lokasi_lama, $kd_jabatan_baru, $seksi_baru, $kd_lokasi_baru);
 
-			
+
 			$tembusan_HTML 	=	'';
 			foreach ($tembusan as $nembus)
 			{
 				$tembusan_HTML	.= '<li>'.ucwords(strtolower($nembus)).'</li>';
 				// echo ucwords(strtolower($nembus)).'<br/>';
 			}
-			
+
 			// echo 'ini tembus';
 			// echo $tembusan_HTML;
 
@@ -523,7 +523,7 @@ class C_Mutasi extends CI_Controller
 				'tempat_makan_2_lama' 	=>  rtrim($tempat_makan2_lama),
 				'tempat_makan_2_baru' 	=>  rtrim($tempat_makan2_baru),
 				'lokasi_kerja_lama'		=>	$lokasi_lama,
-				'lokasi_kerja_baru'		=>  $lokasi_baru, 
+				'lokasi_kerja_baru'		=>  $lokasi_baru,
 				'golkerja_lama'  		=>	$golongan_pekerjaan_lama,
 				'golkerja_baru'  		=>	$golongan_pekerjaan_baru,
 				'kd_jabatan_lama'		=>  $kd_jabatan_lama,
@@ -588,7 +588,7 @@ class C_Mutasi extends CI_Controller
 
 			$pdf->AddPage();
 			$pdf->WriteHTML($data['isiSuratMutasi'][0]['isi_surat']);
-
+			$pdf->setTitle($filename);
 			$pdf->Output($filename, 'I');
 			// $this->load->view('MasterPekerja/Surat/Mutasi/V_PDF');
 
@@ -602,14 +602,14 @@ class C_Mutasi extends CI_Controller
 			$kodeDekripsi = $this->general->dekripsi($kodeDekripsi);
 
 			$user_id = $this->session->userid;
-			
+
 			$data['Header']			=	'Master Pekerja - Quick ERP';
 			$data['Title']			=	'Master Pekerja';
 			$data['Menu'] 			= 	'Surat-Surat';
 			$data['SubMenuOne'] 	= 	'Surat Mutasi';
 			$data['SubMenuTwo'] 	= 	'';
 			$data['id']				=	$no_surat;
-			
+
 			$data['UserMenu'] = $this->M_user->getUserMenu($user_id,$this->session->responsibility_id);
 			$data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id);
 			$data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id);
@@ -707,7 +707,7 @@ class C_Mutasi extends CI_Controller
 				'tempat_makan_2_lama' 	=>  rtrim($tempat_makan2_lama),
 				'tempat_makan_2_baru' 	=>  rtrim($tempat_makan2_baru),
 				'lokasi_kerja_lama'		=>	$lokasi_lama,
-				'lokasi_kerja_baru'		=>  $lokasi_baru, 
+				'lokasi_kerja_baru'		=>  $lokasi_baru,
 				'golkerja_lama'  		=>	$golongan_pekerjaan_lama,
 				'golkerja_baru'  		=>	$golongan_pekerjaan_baru,
 				'kd_jabatan_lama'		=>  $kd_jabatan_lama,
@@ -781,7 +781,7 @@ class C_Mutasi extends CI_Controller
 			$yesterday = date('Y-m-d',strtotime(date('Y-m-d') . "-1 days"));
 			$cekMutasi = $this->M_surat->cekMutasi($now);
 			$row = count($cekMutasi);
-			
+
 			if ($row > 0) {
 				foreach ($cekMutasi as $key) {
 					$noind 				= $key['noind'];

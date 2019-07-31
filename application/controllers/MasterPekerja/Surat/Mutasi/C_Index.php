@@ -1,7 +1,7 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
 
-class C_Index extends CI_Controller 
+class C_Index extends CI_Controller
 {
 
 	function __construct()
@@ -38,13 +38,13 @@ class C_Index extends CI_Controller
 	public function index()
 	{
 		$user_id = $this->session->userid;
-		
+
 		$data['Header']			=	'Master Pekerja - Quick ERP';
 		$data['Title']			=	'Surat Mutasi';
 		$data['Menu'] 			= 	'Surat';
 		$data['SubMenuOne'] 	= 	'Surat Mutasi';
 		$data['SubMenuTwo'] 	= 	'';
-		
+
 		$data['UserMenu'] = $this->M_user->getUserMenu($user_id,$this->session->responsibility_id);
 		$data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id);
 		$data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id);
@@ -60,17 +60,17 @@ class C_Index extends CI_Controller
 	public function create()
 	{
 		/*$user_id = $this->session->userid;
-		
+
 		$data['Header']			=	'Master Pekerja - Quick ERP';
 		$data['Title']			=	'Surat Mutasi';
 		$data['Menu'] 			= 	'Surat-Surat';
 		$data['SubMenuOne'] 	= 	'Surat Mutasi';
 		$data['SubMenuTwo'] 	= 	'';
-		
+
 		$data['UserMenu'] = $this->M_user->getUserMenu($user_id,$this->session->responsibility_id);
 		$data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id);
 		$data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id);
-		
+
       	// $data['DaftarPekerja']	=	$this->M_surat->getAmbilPekerjaAktif();
       	// $data['DaftarSeksi']    =   $this->M_surat->getSeksi();
       	// $data['DaftarPekerjaan'] = $this->M_surat->DetailPekerjaan();
@@ -194,7 +194,7 @@ class C_Index extends CI_Controller
 
 
 		$parameterTahunBulanMutasi 	=	date('Y-m', strtotime($tanggal_cetak));
-		
+
 
 		$lokasi_kerja_lama 			=	explode(' - ', $lokasi_kerja_lama);
 		$lokasi_lama 				=	$lokasi_kerja_lama[1];
@@ -217,14 +217,14 @@ class C_Index extends CI_Controller
 			else
 			{
 				$kode_surat 				=	'PS/KI-M';
-				
+
 			}
 		}
 		else
 		{
 			$kode_surat 	=	$kode_surat;
 		}
-		
+
 		$templateMutasi 			=	$this->M_surat->ambilLayoutSuratMutasi();
 		$tseksiBaru 				=	$this->M_surat->cariTSeksi($seksi_baru);
 
@@ -236,7 +236,7 @@ class C_Index extends CI_Controller
 		$posisi_lama 				=	$posisiLama[0]['posisi'];
 
 		$posisi_baru 				=	'';
-		
+
 		$tertanda 					= 	'';
 		$nama_tanda_tangan 			=	'';
 		$jabatan_tertanda 			=	'';
@@ -278,8 +278,8 @@ class C_Index extends CI_Controller
 
 			if($nomorSuratMutasiTerakhir<1000)
 			{
-				for ($i=strlen($nomorSuratMutasiTerakhir); $i < 3; $i++) 
-				{ 
+				for ($i=strlen($nomorSuratMutasiTerakhir); $i < 3; $i++)
+				{
 					$nomorSuratMutasiTerakhir 	=	'0'.$nomorSuratMutasiTerakhir;
 				}
 			}
@@ -293,14 +293,14 @@ class C_Index extends CI_Controller
 
 		$tembusan 	=	$this->personalia->tembusanDuaPihak($kd_jabatan_lama, $seksi_lama, $kd_lokasi_lama, $kd_jabatan_baru, $seksi_baru, $kd_lokasi_baru);
 
-		
+
 		$tembusan_HTML 	=	'';
 		foreach ($tembusan as $nembus)
 		{
 			$tembusan_HTML	.= '<li>'.ucwords(strtolower($nembus)).'</li>';
 			// echo ucwords(strtolower($nembus)).'<br/>';
 		}
-		
+
 		// echo 'ini tembus';
 		// echo $tembusan_HTML;
 
@@ -430,7 +430,7 @@ class C_Index extends CI_Controller
 											'tempat_makan_2_lama' 	=>  rtrim($tempat_makan2_lama),
 											'tempat_makan_2_baru' 	=>  rtrim($tempat_makan2_baru),
 											'lokasi_kerja_lama'		=>	$lokasi_lama,
-											'lokasi_kerja_baru'		=>  $lokasi_baru, 
+											'lokasi_kerja_baru'		=>  $lokasi_baru,
 											'golkerja_lama'  		=>	$golongan_pekerjaan_lama,
 											'golkerja_baru'  		=>	$golongan_pekerjaan_baru,
 											'kd_jabatan_lama'		=>  $kd_jabatan_lama,
@@ -476,7 +476,7 @@ class C_Index extends CI_Controller
 
 		$pdf->AddPage();
 		$pdf->WriteHTML($data['isiSuratMutasi'][0]['isi_surat']);
-
+		$pdf->setTitle($filename);
 		$pdf->Output($filename, 'I');
 	}
 
@@ -486,14 +486,14 @@ class C_Index extends CI_Controller
 		$no_surat_decode 	=	$this->encrypt->decode($no_surat_decode);
 
 		$user_id = $this->session->userid;
-		
+
 		$data['Header']			=	'Master Pekerja - Quick ERP';
 		$data['Title']			=	'Master Pekerja';
 		$data['Menu'] 			= 	'Surat-Surat';
 		$data['SubMenuOne'] 	= 	'Surat Mutasi';
 		$data['SubMenuTwo'] 	= 	'';
 		$data['id']				=	$no_surat;
-		
+
 		$data['UserMenu'] = $this->M_user->getUserMenu($user_id,$this->session->responsibility_id);
 		$data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id);
 		$data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id);
@@ -577,7 +577,7 @@ class C_Index extends CI_Controller
 											'tempat_makan_2_lama' 	=>  rtrim($tempat_makan2_lama),
 											'tempat_makan_2_baru' 	=>  rtrim($tempat_makan2_baru),
 											'lokasi_kerja_lama'		=>	$lokasi_lama,
-											'lokasi_kerja_baru'		=>  $lokasi_baru, 
+											'lokasi_kerja_baru'		=>  $lokasi_baru,
 											'golkerja_lama'  		=>	$golongan_pekerjaan_lama,
 											'golkerja_baru'  		=>	$golongan_pekerjaan_baru,
 											'kd_jabatan_lama'		=>  $kd_jabatan_lama,

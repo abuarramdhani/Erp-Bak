@@ -48,7 +48,7 @@ class C_CetakCard extends CI_Controller
 		$data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id);
 		$data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id);
 
-		$data['DataPekerja'] = $this->M_cetakcard->getDataWorker(); 
+		$data['DataPekerja'] = $this->M_cetakcard->getDataWorker();
 
 		$this->load->view('V_Header',$data);
 		$this->load->view('V_Sidemenu',$data);
@@ -72,10 +72,11 @@ class C_CetakCard extends CI_Controller
 		$pdf = $this->pdf->load();
 		$pdf = new mPDF('utf-8', 'A4', 8, '', 5, 5, 10, 15, 0, 0, 'P');
 		$filename = 'ID_Card.pdf';
-		
+
 		$html = $this->load->view('MasterPekerja/Other/V_cetakcard', $data, true);
 
 		$pdf->WriteHTML($html, 2);
+		$pdf->setTitle($filename);
 		$pdf->Output($filename, 'D');
 
 	}
@@ -101,7 +102,7 @@ class C_CetakCard extends CI_Controller
 		}
 
 		echo json_encode($data);
-		
+
 	}
 
 }

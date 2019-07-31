@@ -3,11 +3,11 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 class C_Index extends CI_Controller {
 
- 
+
 	public function __construct()
     {
         parent::__construct();
-		  
+
         $this->load->library('General');
         $this->load->library('encrypt');
         $this->load->model('M_Index');
@@ -15,7 +15,7 @@ class C_Index extends CI_Controller {
 		$this->load->model('SystemAdministration/MainMenu/M_user');
 		$this->load->model('MasterPekerja/PerhitunganPesangon/M_pesangon');
 
-		  
+
 		if($this->session->userdata('logged_in')!=TRUE) {
 			$this->load->helper('url');
 			$this->load->helper('terbilang_helper');
@@ -29,7 +29,7 @@ class C_Index extends CI_Controller {
 	public function checkSession()
 	{
 		if($this->session->is_logged){
-			
+
 		}else{
 			redirect('');
 		}
@@ -38,19 +38,19 @@ class C_Index extends CI_Controller {
     {
     	$this->checkSession();
     	$user_id = $this->session->userid;
-    	
+
     	$data['Title']	= 'Perhitungan Pesangon';
     	$data['Menu'] = 'Cetak';
     	$data['SubMenuOne'] = 'Perhitungan Pesangon';
     	$data['SubMenuTwo'] = '';
-    	
+
     	$data['UserMenu'] = $this->M_user->getUserMenu($user_id,$this->session->responsibility_id);
     	$data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id);
     	$data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id);
 
     	$data['data'] = $this->M_pesangon->lihat();
-    	
-    	$this->load->view('V_Header',$data); 
+
+    	$this->load->view('V_Header',$data);
     	$this->load->view('V_Sidemenu',$data);
     	$this->load->view('MasterPekerja/PerhitunganPesangon/V_Index',$data);
     	$this->load->view('V_Footer',$data);
@@ -59,8 +59,8 @@ class C_Index extends CI_Controller {
 	{
 		$this->checkSession();
 		$user_id = $this->session->userid;
-        
-        
+
+
     	$data['Title']	= 'Perhitungan Pesangon';
     	$data['Menu'] = 'Cetak';
     	$data['SubMenuOne'] = 'Perhitungan Pesangon';
@@ -77,7 +77,7 @@ class C_Index extends CI_Controller {
 	}
 
 		public function update($encrypt_id)
-	{   	
+	{
 		$id	=	str_replace(array('-', '_', '~'), array('+', '/', '='), $encrypt_id);
 			$id	=	$this->encrypt->decode($id);
 	// echo $id;exit();
@@ -85,9 +85,9 @@ class C_Index extends CI_Controller {
 
 		$this->checkSession();
 		$user_id = $this->session->userid;
-        
-    
-        
+
+
+
     	$data['Title']	= 'Perhitungan Pesangon';
     	$data['Menu'] = 'Cetak';
     	$data['SubMenuOne'] = 'Perhitungan Pesangon';
@@ -110,10 +110,10 @@ class C_Index extends CI_Controller {
     	$noind = $this->input->get('term');
     	$data = $this->M_pesangon->getPekerjaAktif($noind);
     	echo json_encode($data);
-		
+
     }
 
-	
+
 
 
    	public function detailPekerja()
@@ -121,7 +121,7 @@ class C_Index extends CI_Controller {
 		$noind 						=	$this->input->post('noind');
 		$detailPekerja 				=	$this->M_pesangon->detailPekerja($noind);
 		echo json_encode($detailPekerja);
-		
+
     }
 
     	public function add()
@@ -183,18 +183,18 @@ class C_Index extends CI_Controller {
 
 
 		redirect('MasterPekerja/PerhitunganPesangon');
-		
+
 	}
 
 
 	public function edit($id)
 	{
 	// echo "<pre>";print_r($_POST);exit();
-	
+
 			$id 	=	str_replace(array('-', '_', '~'), array('+', '/', '='),$id);
 			$id 	=	$this->encrypt->decode($id);
 
-        
+
 		$jabatan_terakhir 			=	$this->input->post('txtJabatan');
 		$potongan 					=	$this->input->post('txtPotongan');
 		$hutang_koperasi 			=	$this->input->post('txtHutangKoperasi');
@@ -212,7 +212,7 @@ class C_Index extends CI_Controller {
 
 		$updateHitungPesangon			= 	array
 										(
-											
+
 											'jabatan_terakhir'	    =>	$jabatan_terakhir,
 										    'potongan'			    =>  $potongan,
 										    'hutang_koperasi'		=>	$hutang_koperasi,
@@ -223,9 +223,9 @@ class C_Index extends CI_Controller {
 										    'bank'                  =>  $bank,
 										    'edit_by'               =>  $edit_by,
 										    'edit_date'             =>  $edit_date
-	
 
-										    
+
+
 										);
 		$this->M_pesangon->update($id,$updateHitungPesangon);
 
@@ -254,8 +254,8 @@ class C_Index extends CI_Controller {
 		 $data['data'] = $this->M_pesangon->cetak($id);
 		 $data['penerima'] = $this->M_pesangon->penerima($id);
          $data['pengirim'] = $this->M_pesangon->pengirim($id);
-		  
-                                                
+
+
          // print_r($data['penerima']);exit();
 
 		$this->load->library('pdf');
@@ -263,13 +263,14 @@ class C_Index extends CI_Controller {
 		$pdf = $this->pdf->load();
 		$pdf = new mPDF('','A4',0,'',10,10,10,10,0,0);
 		$filename = 'PerhitunganPesangon.pdf';
-		
+
 
 		$html = $this->load->view('MasterPekerja/PerhitunganPesangon/V_Cetak', $data, true);
 
 		$stylesheet1 = file_get_contents(base_url('assets/plugins/bootstrap/3.3.7/css/bootstrap.css'));
 		$pdf->WriteHTML($stylesheet1,1);
 		$pdf->WriteHTML($html, 2);
+    $pdf->setTitle($filename);
 		$pdf->Output($filename, 'I');
 	   }
 
