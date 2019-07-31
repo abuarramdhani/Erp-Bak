@@ -850,6 +850,12 @@ class C_NonConformity extends CI_Controller
 		$case = $_POST['case'];
 
 		// print_r(count($case));
+		
+		if ($completionDate == '') {
+			$completionDate1 = null;
+		}else{
+			$completionDate1 = $completionDate;
+		}
 
 		$check = $this->M_nonconformity->checkCase($headerid);
 
@@ -868,7 +874,7 @@ class C_NonConformity extends CI_Controller
 							'problem_tracking' => $problemTrack,
 							'scope' => $scope,
 							'problem_completion' => $problemComp,
-							'completion_date' => $completionDate,
+							'completion_date' => $completionDate1,
 						 );
 			$this->M_nonconformity->updateCase($case1);
 		}
