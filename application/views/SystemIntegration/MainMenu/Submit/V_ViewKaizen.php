@@ -46,7 +46,11 @@
     color: #dd5a4e;
   }
 
-  
+  html{
+   scroll-behavior: smooth;
+   overflow-y: scroll;
+  }
+
 </style>
 
 <section class="content">
@@ -64,37 +68,37 @@
         <?php if($kaizen[0]['user_id'] == $this->session->userid): ?>
           <!-- Button Request Realisasi -->
           <?php if ($kaizen[0]['status'] == 6 || $kaizen[0]['status'] == 7 || $kaizen[0]['status'] == 9 ) { ?>
-          <a title="Request Approve Realisasi" 
-            class="btn btn-sm <?php echo ($kaizen[0]['status'] == 6 && $kaizen[0]['approval_realisasi'] == 0) ? ' btn-success' : ' btn-default disabled' ?> " 
+          <a title="Request Approve Realisasi"
+            class="btn btn-sm <?php echo ($kaizen[0]['status'] == 6 && $kaizen[0]['approval_realisasi'] == 0) ? ' btn-success' : ' btn-default disabled' ?> "
             href="#" data-toggle="modal" data-target="#req<?php echo  $kaizen[0]['kaizen_id'] ?>" >
                 <i class="fa fa-check"> Request Approve Realisasi</i>
           </a>
           <?php } ?>
           <!-- Button Request -->
-          <a title="Request Approve" 
-            class="btn btn-sm  <?php echo $kaizen[0]['status'] == 0 ? 'btn-info' : ($kaizen[0]['status'] == 1 ? 'btn-info ' : ' btn-default disabled') ?> " 
+          <a title="Request Approve"
+            class="btn btn-sm  <?php echo $kaizen[0]['status'] == 0 ? 'btn-info' : ($kaizen[0]['status'] == 1 ? 'btn-info ' : ' btn-default disabled') ?> "
             href="#" data-toggle="modal" data-target="#req<?php echo  $kaizen[0]['kaizen_id'] ?>" >
                 <i class="fa fa-check"> Request Approve Ide</i>
           </a>
           <!-- Button Edit -->
-          <a title="Edit Kaizen.." 
-           class="btn btn-sm  
-           <?php echo ($kaizen[0]['status'] == 2) 
+          <a title="Edit Kaizen.."
+           class="btn btn-sm
+           <?php echo ($kaizen[0]['status'] == 2)
                           ? 'btn-default disabled' : (in_array($kaizen[0]['status'], $arrKaiDone)
-                              ? 'btn-default disabled' : ($kaizen[0]['status'] == 5 ? 'btn-default disabled' : 'btn-primary')); ?>" 
+                              ? 'btn-default disabled' : ($kaizen[0]['status'] == 5 ? 'btn-default disabled' : 'btn-primary')); ?>"
            href="<?php echo base_url('SystemIntegration/KaizenGenerator/Edit/'.$kaizen[0]['kaizen_id']); ?>">
                 <i class="fa fa-edit"></i>
           </a>
           <!-- Button Delete -->
-          <a title="Delete Kaizen.." 
-           class="btn btn-sm btn-danger <?php // echo ($kaizen[0]['status'] == 3) ? '' : 'disabled'; ?>" 
-           onclick="return confirm('Are you sure you want to delete this item?');" 
+          <a title="Delete Kaizen.."
+           class="btn btn-sm btn-danger <?php // echo ($kaizen[0]['status'] == 3) ? '' : 'disabled'; ?>"
+           onclick="return confirm('Are you sure you want to delete this item?');"
            href="<?php echo base_url('SystemIntegration/KaizenGenerator/Delete/'.$kaizen[0]['kaizen_id']); ?>">
               <i class="fa fa-trash-o"></i>
           </a>
           <!-- Button Export -->
           <a  title="Export Pdf.."
-           class="btn btn-sm  <?php echo (in_array($kaizen[0]['status'], $arrKaiDone)) ? 'btn-info' : 'btn-default disabled'; ?>" 
+           class="btn btn-sm  <?php echo (in_array($kaizen[0]['status'], $arrKaiDone)) ? 'btn-info' : 'btn-default disabled'; ?>"
            href="<?php echo base_url('SystemIntegration/KaizenGenerator/Pdf/'.$kaizen[0]['kaizen_id']); ?>">
               <i class="fa fa-download"></i>
           </a>
@@ -105,18 +109,18 @@
         <?php  if($kaizen[0]['employee_code'] == $this->session->user): ?>
           <?php $colorSign = $statusku == 3 ? 'green' : ($statusku == '4' ? '#e69724' : 'red')?>
           <?php if ($statusku != 2 ){ ?>
-          <span class="custHeadNotif" style="border: 1px solid <?= $colorSign ?>"> 
+          <span class="custHeadNotif" style="border: 1px solid <?= $colorSign ?>">
             <b>Keputusan anda :</b>
             <b style="color: <?= $colorSign; ?>"><?= $statusku == 3 ? 'Approve' : ($statusku == '4' ? 'Revisi' : 'Reject')?></b>
           </span>
         <?php } ?>
-          <button id="btnAprroveOkSI" <?= in_array($kaizen[0]['status'], $arrAppDone) ? 'disabled' : ($statusku == 3 ? 'disabled' : '') ?> class="btn btn-sm btn-success" 
+          <button id="btnAprroveOkSI" <?= in_array($kaizen[0]['status'], $arrAppDone) ? 'disabled' : ($statusku == 3 ? 'disabled' : '') ?> class="btn btn-sm btn-success"
             data-id="<?= $kaizen[0]['kaizen_id'] ?>" data-approve="3" data-level=<?= $levelku; ?> disabled > Approve
           </button>
-          <button id="btnAprroveRevSI" <?= in_array($kaizen[0]['status'], $arrAppDone) ? 'disabled' : ($statusku == 3 ? 'disabled' : '') ?> class="btn btn-sm btn-warning text-warning" 
+          <button id="btnAprroveRevSI" <?= in_array($kaizen[0]['status'], $arrAppDone) ? 'disabled' : ($statusku == 3 ? 'disabled' : '') ?> class="btn btn-sm btn-warning text-warning"
             data-id="<?= $kaizen[0]['kaizen_id'] ?>" data-approve="4" data-level=<?= $levelku; ?>  > Revisi
           </button>
-          <button id="btnAprroveNotSI" <?= in_array($kaizen[0]['status'], $arrAppDone) ? 'disabled' : ($statusku == 3 ? 'disabled' : '') ?> class="btn btn-sm btn-danger" 
+          <button id="btnAprroveNotSI" <?= in_array($kaizen[0]['status'], $arrAppDone) ? 'disabled' : ($statusku == 3 ? 'disabled' : '') ?> class="btn btn-sm btn-danger"
             data-id="<?= $kaizen[0]['kaizen_id'] ?>" data-approve="5" data-level=<?= $levelku; ?>  > Reject
           </button>
         <?php  endif; ?>
@@ -125,7 +129,7 @@
         <!-- BUTTON FOR APPROVER REALISASI-->
         <?php if (($kaizen[0]['status'] == 6) && ($kaizen[0]['approval_realisasi'] == 1) && (isset($kaizen[0]['employee_code_realisasi']))) {
           if ($kaizen[0]['employee_code_realisasi'] == $this->session->user) { ?>
-               <button id="<?= $kaizen[0]['status'] == 6 ? 'btnAprroveRealSI' : '' ?>" class="btn btn-sm <?= $kaizen[0]['status'] == 7 ? 'disabled btn-default' : ($kaizen[0]['status'] == 9 ? 'disabled btn-default' : 'btn-success') ?>" 
+               <button id="<?= $kaizen[0]['status'] == 6 ? 'btnAprroveRealSI' : '' ?>" class="btn btn-sm <?= $kaizen[0]['status'] == 7 ? 'disabled btn-default' : ($kaizen[0]['status'] == 9 ? 'disabled btn-default' : 'btn-success') ?>"
                 data-id="<?= $kaizen[0]['kaizen_id'] ?>" data-approve="3" data-level="6"> Approve Realisasi
               </button>
         <?php }
@@ -136,7 +140,7 @@
     <div class="box-body">
       <div class="table-responsive">
       <?php if ($kaizen[0]['status'] != 0) { ?>
-        <?php 
+        <?php
           switch ($kaizen[0]['status']) {
             case '1':
                 $header_color = '#989898';
@@ -180,7 +184,7 @@
             case '5':
                 $header_color = '#e86363';
                 $body_color = '#ffe2e2';
-                $kaizen_status = 'Rejected'; 
+                $kaizen_status = 'Rejected';
                 if($kaizen[0]['user_id'] == $this->session->userid){
                   $body_notif = '<b> Alasan: </b> </br>
                                "'.$kaizen[0]['reason_rej'].'" </br>
@@ -198,12 +202,12 @@
                 if ($kaizen[0]['approval_realisasi'] == 0) {
                   $header_color = '#989898';
                   $body_color = '#e8e8e8';
-                  $kaizen_status = 'Submit Realisasi'; 
+                  $kaizen_status = 'Submit Realisasi';
                   $body_notif = 'Silahkan Request Approve Realisasi.';
                 }else{
                   $header_color = '#59d6f4';
                   $body_color = '#e0f9ff';
-                  $kaizen_status = 'Unchecked Realisasi'; 
+                  $kaizen_status = 'Unchecked Realisasi';
                   $body_notif = 'Kaizen menunggu approval Realisasi';
                 }
             break;
@@ -234,7 +238,7 @@
       <?php } ?>
 
 
-      
+
         <table class="table" style="border: 1px solid #000">
           <tbody>
             <tr>
@@ -349,19 +353,19 @@
         <div class="col-lg-12">
         <div style="border: 1px solid black" class="row">
           <label class="col-lg-12 " style="background-color: #88cbf1;">
-           Log Thread 
+           Log Thread
           </label>
           <div class="col-lg-12" style="overflow: auto; height: 120px;">
             <?php $y = count($thread);$x = 0; foreach ($thread as $key => $value) {
-                $colortext = ($value['status'] == '3') ? 'approve' 
-                                : ($value['status'] == '4' ? 'revisi' 
-                                  : ($value['status'] == '5' ? 'reject' : 'default') ); 
+                $colortext = ($value['status'] == '3') ? 'approve'
+                                : ($value['status'] == '4' ? 'revisi'
+                                  : ($value['status'] == '5' ? 'reject' : 'default') );
              ?>
               <?php if ($x >= 5) { ?>
                 <?php if ($x == 5) { ?>
                     <span id="rmthreadkai">
                       <a  style="cursor: pointer;">Read More</a> .. <br>
-                    </span> 
+                    </span>
                 <span id="threadmorekai" style="display: none">
                 <?php } ?>
                   <em class="text-<?= $colortext ?>" >[ <?= date('d/M/Y h:i:s', strtotime($value['waktu'])) ?> ] - <?= $value['detail'] ?></em><br>
@@ -385,7 +389,7 @@
   </div>
 </section>
 
-<?php 
+<?php
 if ( in_array($kaizen[0]['status'], $needthisform = array(0,1,6)) ) { ?>
   <div class="modal fade"  id="req<?= $kaizen[0]['kaizen_id'] ?>" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
     <div class="modal-dialog" style="min-width: 800px;">
@@ -398,7 +402,7 @@ if ( in_array($kaizen[0]['status'], $needthisform = array(0,1,6)) ) { ?>
           <input type="hidden" name="typeApp" value="<?= $kaizen[0]['status'] != 6 ? '1' : '2' ?>"/>
           <div class="modal-body">
             <div class="row">
-              <?php 
+              <?php
               $arrayTerisi = array();
               // loop input
               foreach ($form_approval as $key => $frmapp) { ?>
@@ -472,7 +476,7 @@ if ( in_array($kaizen[0]['status'], $needthisform = array(0,1,6)) ) { ?>
             <div style="border: 1px solid green" class="col-lg-12">
             <label>Alasan Approve :</label>
               <c></c> <b class="fa fa-check" style="color: green"></b>
-              
+
             </div><br><br>
             <h6>Jika Kaizen ini memerlukan Persetujuan dari <?= $next_level ?> maka silahkan pilih dibawah ini</h6>
             <h6>Jika tidak , silahkan langsung Submit</h6>
@@ -490,11 +494,11 @@ if ( in_array($kaizen[0]['status'], $needthisform = array(0,1,6)) ) { ?>
                       foreach($option_atasan2 as $key => $value){ ?>
                         <option value="<?= $value['employee_code'] ?>"><?= $value['employee_code'].' - '.$value['employee_name']; ?></option>
                       <?php }
-                    } 
+                    }
               ?>
             </select>
           </div>
-        <?php  }else{ ?> 
+        <?php  }else{ ?>
         <?php  } ?>
         </div>
         <div class="modal-footer">
@@ -506,7 +510,7 @@ if ( in_array($kaizen[0]['status'], $needthisform = array(0,1,6)) ) { ?>
     </div>
   </div>
 </div>
- 
+
 <script src="<?php echo base_url('assets/plugins/ckeditor/ckeditor.js');?>"></script>
 <script type="text/javascript">
 
