@@ -1,4 +1,10 @@
-<form method="post" action="<?php echo base_url('TrackingLppb/btn_search') ?>">
+<style type="text/css">
+	#filter tr td{padding: 5px}
+	.text-left span {
+		font-size: 36px;
+	}
+</style>
+<form action="<?php echo base_url('TrackingLppb/Tracking/exportExcelTrackingLppb') ?>" method="post">
 <section class="content">
 	<div class="inner" >
 		<div class="row">
@@ -9,6 +15,9 @@
 							<span><b>Tracking LPPB</b></span>
 						</div>
 					</div>
+						<div class="col-lg-12">
+							<button type="submit" class="btn btn-success pull-right" id="btnExport">Export Excel</button>
+						</div>
 				</div>
 				<br />
 				<div class="row">
@@ -62,9 +71,20 @@
 															<td style="padding: 0 50px 0 0"><label style="width: 100px">Inventory Organization</label></td>
 															<td>
 																<select id="inventory" name="inventory" class="form-control select2 select2-hidden-accessible" style="margin-top: 10px; width:300px;">
-																<option value="" >Pilih Gudang</option>
+																<option value="" >Pilih IO</option>
 																<?php foreach ($inventory as $io) { ?>
 																<option value="<?php echo $io['ORGANIZATION_ID'] ?>"><?php echo $io['ORGANIZATION_CODE'] ?></option>
+																<?php } ?>
+																</select>
+															</td>
+														</tr>
+														<tr>
+															<td style="padding: 0 50px 30px 0"><label style="width: 100px">Opsi Gudang</label></td>
+															<td style="padding:10px 0 50px 0;">
+																<select id="opsigdg" name="opsigdg" class="form-control select2 select2-hidden-accessible" style="margin-top: 30px; width:300px;">
+																<option value="" >Pilih Gudang</option>
+																<?php foreach ($opsi as $og) { ?>
+																<option value="<?php echo $og['SECTION_ID'] ?>"><?php echo $og['SECTION_NAME'] ?></option>
 																<?php } ?>
 																</select>
 															</td>
@@ -101,3 +121,4 @@
 <script type="text/javascript">
 	var id_gd;
 </script>
+

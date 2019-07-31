@@ -40,6 +40,7 @@
 											<input  class="form-control" size="40" style="margin-bottom: 10px" type="text" name="" value="<?php echo $lppb[0]['SOURCE']?>" readonly>
 										</td>
 									</tr>
+									<!-- <span><?php echo $lppb[0]['BATCH_DETAIL_ID'] ?></span> -->
 								</table>
 								</div><!-- <div class="col-md-6">
 								<span><label>Lppb History</label></span><br>
@@ -77,6 +78,7 @@
 														<th class="text-center">Create Date</th>
 														<th class="text-center">PO Number</th>
 														<th class="text-center">Source</th>
+														<th class="text-center">Gudang</th>
 														<th class="text-center" title="Kode Barang - Deskripsi Barang">Gudang Detail</th>
 													</tr>
 												</thead>
@@ -92,6 +94,7 @@
 														<td><?php echo $lp['CREATE_DATE']?></td>
 														<td><?php echo $lp['PO_NUMBER']?></td>
 														<td><?php echo $lp['SOURCE']?></td>
+														<td><?php echo $lp['SECTION_NAME']?></td>
 														<td><?php echo $lp['GUDANG_CODE'].'  -  '. $lp['GUDANG_DESCRIPTION']?></td>
 													</tr>
 												<?php $no++; } ?>
@@ -99,9 +102,9 @@
 										</table>
 									</div>
 									<div class="col-md-4 pull-left">
-										<a href="<?php echo base_url('TrackingLppb')?>">
+										<!-- <a href="<?php echo base_url('TrackingLppb')?>">
 											<button class="btn btn-primary">Back</button>
-										</a>
+										</a> -->
 									</div>
 								</div>
 							</div>

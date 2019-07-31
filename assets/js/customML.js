@@ -50,13 +50,15 @@ $(document).ready(function(){
 		}
 	})
 	$('#btn_search_lppb').click(function(){
-		$('#loading_lppb').html("<center><img id='loading12' style='margin-top: 2%;' src='"+baseurl+"assets/img/gif/loading2.gif'/><br /></center><br />");
+		$('#loading_lppb').html("<center><img id='loading12' style='margin-top: 2%;' src='"+baseurl+"assets/img/gif/loading99.gif'/><br /></center><br />");
 		var nama_vendor = $('#nama_vendor').val();
 		var nomor_lppb = $('#nomor_lppb').val();
 		var dateFrom = $('#dateFromUw').val();
 		var dateTo = $('#dateToUw').val();
 		var nomor_po = $('#nomor_po').val();
 		var inventory = $('#inventory').val();
+		var opsigdg = $('#opsigdg').val();
+
 		// var status = $('#status_lppb').val();
 		// console.log(status);
 		$.ajax({
@@ -69,6 +71,7 @@ $(document).ready(function(){
 				dateTo: dateTo,
 				nomor_po: nomor_po,
 				inventory: inventory,
+				opsigdg: opsigdg
 				// status: status
 			},
 			success: function (response) {
@@ -1095,6 +1098,33 @@ function ModalFinishAkt(th) {
 			url: baseurl+"MonitoringLppbAkuntansi/Finish/finishDetail",
 			data:{
 				batch_number: batch_number
+			},
+			success: function(response) {
+				// console.log(response, 'data');
+				$('.modal-tabel').html("");
+				$('.modal-tabel').html(response);
+
+
+			}
+		})
+	
+	
+}
+
+function ModalTrackingLppb(th,th2) {
+	
+	var batch_detail_id = th
+	var section_id = th2
+	console.log(section_id)
+
+	$('#mdlDetailTrackingLppb').modal('show');
+	$('.modal-tabel').html("<center><img id='loading12' style='margin-top: 2%;' src='"+baseurl+"assets/img/gif/loading99.gif'/><br /></center><br />");
+		$.ajax({
+			type: "POST",
+			url: baseurl+"TrackingLppb/Tracking/detail",
+			data:{
+				batch_detail_id: batch_detail_id,
+				section_id:section_id
 			},
 			success: function(response) {
 				// console.log(response, 'data');
