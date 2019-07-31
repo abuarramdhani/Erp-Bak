@@ -3,6 +3,7 @@
 		<tr class="bg-primary">
 			<td class="text-center">No</td>
 			<td class="text-center">Action</td>
+			<td class="text-center">Gudang</td>
 			<td class="text-center">IO</td>
 			<td class="text-center">Nomor LPPB</td>
 			<td class="text-center">Nama Vendor</td>
@@ -23,10 +24,11 @@
 				<?php echo $no ?>
 			</td> 
 			<td>
-				<a class="btn btn-primary" href="<?php echo base_url('TrackingLppb/Tracking/detail/'.$i['BATCH_DETAIL_ID'])?>" target="_blank">
+				<a class="btn btn-primary" data-toggle="modal" data-target="mdlDetailTrackingLppb" onclick="ModalTrackingLppb(<?php echo $i['BATCH_DETAIL_ID']?>, <?php echo $i['SECTION_ID']?> )">
 					Detail
 				</a>
 			</td>
+			<td><?php echo $i['SECTION_NAME']?></td>
 			<td><?php echo $i['ORGANIZATION_CODE']?></td>
 			<td><?php echo $i['LPPB_NUMBER']?></td>
 			<td><?php echo $i['VENDOR_NAME']?></td>
@@ -41,17 +43,17 @@
 			}elseif ($i['STATUS'] == 1) {
 				$status = "Admin Edit";
 			}elseif ($i['STATUS'] == 2) {
-				$status = "Submit by Kasie Gudang";
+				$status = "Submitted to Kasie Gudang";
 			}elseif ($i['STATUS'] == 3) {
-				$status = "Kasie Gudang Approve";
+				$status = "Approved by Kasie Gudang";
 			}elseif ($i['STATUS'] == 4) {
-				$status = "Kasie Gudang Reject";
+				$status = "Rejected by Kasie Gudang";
 			}elseif ($i['STATUS'] == 5) {
-				$status = "Submit by Akuntansi";
+				$status = "Submitted to Akuntansi";
 			}elseif ($i['STATUS'] == 6) {
-				$status = "Akuntansi Approve";
+				$status = "Approved by Akuntansi";
 			}elseif ($i['STATUS'] == 7) {
-				$status = "Akuntansi Reject";
+				$status = "Rejected by Akuntansi";
 			} ?>
 			<td><?php echo $status; ?></td>
 		</tr>
@@ -62,3 +64,34 @@
 <script type="text/javascript">
 	var id_gd;
 </script>
+
+<div class="modal fade mdlDetailTrackingLppb"  id="mdlDetailTrackingLppb" tabindex="1" role="dialog" aria-labelledby="judulModal" aria-hidden="true">
+    <div class="modal-dialog modal-lg" style="width:1150px;" role="document">
+        <div class="modal-content">
+            <div class="modal-header" style="width: 100%;" >
+                <!-- <h3 class="box-header with border" id="formModalLabel"><b>Detail Draft Lppb</b></h3> -->
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            
+                <div class="modal-body" style="width: 100%;">
+                	<div class="modal-tabel" >
+                	<!-- <div class="text-left ">
+							<span><b>Detail Batch </b></span>
+							<input type="hidden" name="batch_number" value="<?php echo $result[0]['BATCH_NUMBER']?>">
+						<input type="hidden" name="batch_detail_id" value="<?php echo $result[0]['BATCH_DETAIL_ID']?>">
+						</div> -->
+					</div>
+                   
+                    	<div class="modal-footer">
+                    		<div class="col-md-2 pull-left">
+                        	<!-- <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button> -->
+                        <!-- 	<button type="submit" class="btn btn-primary" id="BtnSubmit" onclick="updateData(this)">Ubah Data</button> -->
+                    		</div>
+                    	</div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
