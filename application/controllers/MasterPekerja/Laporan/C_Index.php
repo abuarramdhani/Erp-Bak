@@ -3,17 +3,17 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 class C_Index extends CI_Controller {
 
- 
+
 	public function __construct()
     {
         parent::__construct();
-		  
+
         $this->load->library('General');
-          
+
         $this->load->model('M_Index');
 		$this->load->model('SystemAdministration/MainMenu/M_user');
 		$this->load->model('MasterPekerja/Laporan/M_kecelakaan');
-		  
+
 		if($this->session->userdata('logged_in')!=TRUE) {
 			$this->load->helper('url');
 			$this->load->helper('terbilang_helper');
@@ -24,17 +24,17 @@ class C_Index extends CI_Controller {
 		date_default_timezone_set('Asia/Jakarta');
 		$this->checkSession();
     }
-	
+
 	//HALAMAN INDEX
 	public function index()
 	{
 		$this->checkSession();
 		$user_id = $this->session->userid;
-		
+
 		$data['Menu'] = 'Dashboard';
 		$data['SubMenuOne'] = '';
 		$data['SubMenuTwo'] = '';
-		
+
 		$data['UserMenu'] = $this->M_user->getUserMenu($user_id,$this->session->responsibility_id);
 		$data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id);
 		$data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id);
@@ -42,18 +42,18 @@ class C_Index extends CI_Controller {
 		$data['dataRekap'] = $this->M_kecelakaan->tampilRecord();
 
 
-		
-		$this->load->view('V_Header',$data); 
+
+		$this->load->view('V_Header',$data);
 		$this->load->view('V_Sidemenu',$data);
 		$this->load->view('MasterPekerja/Laporan/V_cobaRecord',$data);
 		$this->load->view('V_Footer',$data);
 	}
 
-	
+
 	public function checkSession()
 	{
 		if($this->session->is_logged){
-			
+
 		}else{
 			redirect('');
 		}
@@ -77,7 +77,7 @@ class C_Index extends CI_Controller {
 
 	public function inputPerusahaan()
 	{
-		
+
 		$user_id = $this->session->userid;
 
 		$this->form_validation->set_rules('txt_namaPerusahaan', 'Nama Perusahaan', 'required');
@@ -94,12 +94,12 @@ class C_Index extends CI_Controller {
 			$data['Menu'] = 'Dashboard';
 			$data['SubMenuOne'] = '';
 			$data['SubMenuTwo'] = '';
-			
+
 			$data['UserMenu'] = $this->M_user->getUserMenu($user_id,$this->session->responsibility_id);
 			$data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id);
 			$data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id);
-			
-			$this->load->view('V_Header',$data); 
+
+			$this->load->view('V_Header',$data);
 			$this->load->view('V_Sidemenu',$data);
 			$this->load->view('MasterPekerja/Laporan/V_TambahPerusahaan',$data);
 			$this->load->view('V_Footer',$data);
@@ -163,18 +163,18 @@ class C_Index extends CI_Controller {
 
 		$id_perusahaan_decode 	=	$this->general->dekripsi($id_perusahaan);
 		$data['edit'] = $this->M_kecelakaan->infoPerusahaan($id_perusahaan_decode);
-		
+
 		$data['Menu'] = 'Dashboard';
 		$data['SubMenuOne'] = '';
 		$data['SubMenuTwo'] = '';
-		
+
 		$data['UserMenu'] = $this->M_user->getUserMenu($user_id,$this->session->responsibility_id);
 		$data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id);
 		$data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id);
 
-		
 
-		$this->load->view('V_Header',$data); 
+
+		$this->load->view('V_Header',$data);
 		$this->load->view('V_Sidemenu',$data);
 		$this->load->view('MasterPekerja/Laporan/V_EditPerusahaan',$data);
 		$this->load->view('V_Footer',$data);
@@ -234,18 +234,18 @@ class C_Index extends CI_Controller {
 	{
 		$this->checkSession();
 		$user_id = $this->session->userid;
-		
+
 		$data['Menu'] = 'Dashboard';
 		$data['SubMenuOne'] = '';
 		$data['SubMenuTwo'] = '';
-		
+
 		$data['UserMenu'] = $this->M_user->getUserMenu($user_id,$this->session->responsibility_id);
 		$data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id);
 		$data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id);
-		
+
 		$data['data_Perusahan'] = $this->M_kecelakaan->tampilPerusahaan();
 
-		$this->load->view('V_Header',$data); 
+		$this->load->view('V_Header',$data);
 		$this->load->view('V_Sidemenu',$data);
 		$this->load->view('MasterPekerja/Laporan/V_DataPerusahaan',$data);
 		$this->load->view('V_Footer',$data);
@@ -276,9 +276,9 @@ class C_Index extends CI_Controller {
 			$this->M_kecelakaan->kk_perusahaan_history($delete_data);
 		}
 		$this->M_kecelakaan->deletePerusahaan($id_a);
-		redirect('MasterPekerja/SettingKecelakaanKerja');//ini redirect ke halaman apa, misal kayak gitu 
+		redirect('MasterPekerja/SettingKecelakaanKerja');//ini redirect ke halaman apa, misal kayak gitu
 	}
-	
+
 	public function simpanFaskes()
 	{
 		$namafaskes			= 	$this->input->post('it_namafaskes', TRUE);
@@ -295,13 +295,13 @@ class C_Index extends CI_Controller {
 
 	public function input()
 	{
-		
+
 		$user_id = $this->session->userid;
-		
+
 		$data['Menu'] = 'Dashboard';
 		$data['SubMenuOne'] = '';
 		$data['SubMenuTwo'] = '';
-		
+
 		$data['UserMenu'] = $this->M_user->getUserMenu($user_id,$this->session->responsibility_id);
 		$data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id);
 		$data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id);
@@ -318,14 +318,14 @@ class C_Index extends CI_Controller {
 				}else{
 					$desc_kecelakaan[4][] = $value;
 				}
-					
+
 			}
 			$data['kk_kecelakaan_detail'] = $desc_kecelakaan;
 			// echo "<pre>";
 			// print_r($desc_kecelakaan);
 			// exit();
-		
-		$this->load->view('V_Header',$data); 
+
+		$this->load->view('V_Header',$data);
 		$this->load->view('V_Sidemenu',$data);
 		$this->load->view('MasterPekerja/Laporan/V_TambahData',$data);
 		$this->load->view('V_Footer',$data);
@@ -334,7 +334,7 @@ class C_Index extends CI_Controller {
 	public function inputTahap1()
 	{
 			$user_id = $this->session->userid;
-			
+
 			$namafaskes			= 	$this->input->post('it_namafaskes', TRUE);
 			$jenisfaskes		= 	$this->input->post('rd_jenisFaskes', TRUE);
 			$alamatfaskes		= 	strtoupper($this->input->post('it_alamatFaskes', TRUE));
@@ -401,7 +401,7 @@ class C_Index extends CI_Controller {
 										// 'id_approval'		=> '',
 										'kode_mitra'		=> $kodemitra,
 									);
-			
+
 			$id_lkk1 = $this->M_kecelakaan->simpanLaporanTahap1($simpan_tahap_1);
 			$history = array(
 										'id_lkk_1'			=> $id_lkk1,
@@ -441,7 +441,7 @@ class C_Index extends CI_Controller {
 			$count_desc3 = count($desc3);
 			$count_desc4 = count($desc4);
 			// echo "<pre>";
-			for ($a=1; $a < 5; $a++) { 
+			for ($a=1; $a < 5; $a++) {
 				$name = 'count_desc'.$a;
 				for($i=0;$i<$$name;$i++){
 					$name2 = 'desc'.$a;
@@ -477,7 +477,7 @@ class C_Index extends CI_Controller {
 		$data['Menu'] = 'Dashboard';
 		$data['SubMenuOne'] = '';
 		$data['SubMenuTwo'] = '';
-		
+
 		$data['UserMenu'] = $this->M_user->getUserMenu($user_id,$this->session->responsibility_id);
 		$data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id);
 		$data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id);
@@ -496,7 +496,7 @@ class C_Index extends CI_Controller {
 				}else{
 					$desc_kecelakaan[4][] = $value;
 				}
-					
+
 			}
 		$data['kk_kecelakaan_detail'] = $desc_kecelakaan;
 		$idfaskes = $data['data1'][0]['id_faskes'];
@@ -506,7 +506,7 @@ class C_Index extends CI_Controller {
 		// print_r($data['kec']);
 		// exit();
 
-		$this->load->view('V_Header',$data); 
+		$this->load->view('V_Header',$data);
 		$this->load->view('V_Sidemenu',$data);
 		$this->load->view('MasterPekerja/Laporan/V_EditTahap1',$data);
 		$this->load->view('V_Footer',$data);
@@ -600,7 +600,7 @@ class C_Index extends CI_Controller {
 							);
 		$this->M_kecelakaan->simpanHistoryTahap1($history);
 
-		
+
 		$this->M_kecelakaan->deleteKecelakaanDetailLama($id);
 
 		$desc1 = $this->input->post('desc1');
@@ -612,7 +612,7 @@ class C_Index extends CI_Controller {
 		$count_desc3 = count($desc3);
 		$count_desc4 = count($desc4);
 		// echo "<pre>";
-		for ($a=1; $a < 5; $a++) { 
+		for ($a=1; $a < 5; $a++) {
 			$name = 'count_desc'.$a;
 			for($i=0;$i<$$name;$i++){
 				$name2 = 'desc'.$a;
@@ -663,34 +663,34 @@ class C_Index extends CI_Controller {
 		$kodesie			=	$dataPribadi[0]['kodesie'];
 		$unit 				=	$this->M_kecelakaan->unitPekerja($kodesie);
 
-		for ($i=1; $i < 5; $i++) { 
+		for ($i=1; $i < 5; $i++) {
 			$laporankec 	= 	$this->M_kecelakaan->ambilLaporanKecelakaan($id,$i);
 			if ($i == 1) {
 				$kece1 = $laporankec;
-				
+
 			}
 			if ($i == 2) {
 				$kece2 = $laporankec;
 				$jml2  = count($kece2);
-				for ($p=0; $p < $jml2; $p++) { 
+				for ($p=0; $p < $jml2; $p++) {
 					$idkece2 = $kece2[$p]['id_kecelakaan_detail'];
-					// echo $idkece2;					
+					// echo $idkece2;
 				}
 			}
 			if ($i == 3) {
 				$kece3 = $laporankec;
 				$jml3  = count($kece3);
-				for ($p=0; $p < $jml3; $p++) { 
+				for ($p=0; $p < $jml3; $p++) {
 					$idkece3 = $kece3[$p]['id_kecelakaan_detail'];
-					// echo $idkece3;					
+					// echo $idkece3;
 				}
 			}
 			if ($i == 4) {
 				$kece4 = $laporankec;
 				$jml4  = count($kece4);
-				for ($p=0; $p < $jml4; $p++) { 
+				for ($p=0; $p < $jml4; $p++) {
 					$idkece4 = $kece4[$p]['id_kecelakaan_detail'];
-					// echo $idkece4;					
+					// echo $idkece4;
 				}
 			}
 		}
@@ -729,7 +729,7 @@ class C_Index extends CI_Controller {
 										'kece1'				=> $kece1,
 										'kece2'				=> $kece2,
 										'kece3'				=> $kece3,
-										'kece4'				=> $kece4,										
+										'kece4'				=> $kece4,
 										'kejadian'			=> $dataLKK1[0]['kejadian'],
 										'penyebab'			=> $dataLKK1[0]['penyebab'],
 										'akibat'			=> $dataLKK1[0]['akibat_diderita'],
@@ -749,11 +749,12 @@ class C_Index extends CI_Controller {
 		$pdf = $this->pdf->load();
 		$pdf = new mPDF('utf-8', 'A4', 8, '', 5, 5, 10, 15, 0, 0, 'P');
 		$filename = 'kecelakaan-kerja-tahap-1/'.str_replace('/','-', $noind).'.pdf';
-		
+
 		$html = $this->load->view('MasterPekerja/Laporan/V_Pdf', $data, true);
 		// $stylesheet1 = file_get_contents(base_url('assets/plugins/bootstrap/3.3.7/css/bootstrap.css'));
 		$pdf->WriteHTML($stylesheet1,1);
 		$pdf->WriteHTML($html, 0);
+    $pdf->setTitle($filename);
 		$pdf->Output($filename, 'D');
 
 		// $this->load->view('MasterPekerja/Laporan/V_Pdf', $dataLKK1_all);
@@ -787,7 +788,7 @@ class C_Index extends CI_Controller {
 			$data['Menu'] = 'Dashboard';
 			$data['SubMenuOne'] = '';
 			$data['SubMenuTwo'] = '';
-			
+
 			$data['UserMenu'] = $this->M_user->getUserMenu($user_id,$this->session->responsibility_id);
 			$data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id);
 			$data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id);
@@ -801,13 +802,13 @@ class C_Index extends CI_Controller {
 			// echo "<pre>";
 			// print_r($data_biaya);
 			// exit();
-			
 
-			$this->load->view('V_Header',$data); 
+
+			$this->load->view('V_Header',$data);
 			$this->load->view('V_Sidemenu',$data);
 			$this->load->view('MasterPekerja/Laporan/V_TambahDataT2',$data);
 			$this->load->view('V_Footer',$data);
-		}	
+		}
 	}
 
 	public function inputDataTahap2()
@@ -845,7 +846,7 @@ class C_Index extends CI_Controller {
 		$pnorek 	= $this->input->post('txt_prekening');
 		$pnmbank 	= $this->input->post('txt_pnamabank');
 		$pketlain 	= $this->input->post('txtarea_keteranganlain');
-		if ($this->input->post('txt_jml_stmb1') != null) 
+		if ($this->input->post('txt_jml_stmb1') != null)
 		{
 			if ($santunan != null or $santunan != "") {
 				$tahap2 	= array(
@@ -924,7 +925,7 @@ class C_Index extends CI_Controller {
 										'create_timestamp' 	=> date('Y-m-d H:i:s'),
 										'create_user'		=> $this->session->user,
 									);
-					
+
 					$id_biaya_kk = $this->M_kecelakaan->simpanKKBiaya($biayasimpan);
 					// echo "<pre>";
 					// print_r($biayasimpan);
@@ -944,8 +945,8 @@ class C_Index extends CI_Controller {
 				}
 
 
-					
-				for ($a=1; $a < 3; $a++) { 
+
+				for ($a=1; $a < 3; $a++) {
 				$periode_awal 	= $this->input->post('txt_periode_awal'.$a);
 				$periode_akhir 	= $this->input->post('txt_periode_akhir'.$a);
 				$nominal 		= $this->input->post('txt_jml_stmb'.$a);
@@ -970,12 +971,12 @@ class C_Index extends CI_Controller {
 								);
 				$this->M_kecelakaan->simpanHistorySTMB($historystmb);
 				}
-					
+
 
 
 					$ket = $this->input->post('ket');
 					$jml = count($ket);
-					for ($f=0; $f < $jml; $f++) { 
+					for ($f=0; $f < $jml; $f++) {
 						$dataKK4 = array (
 										'id_lkk_2' 			=> $id_lkk2,
 										'id_ket_kk4' 		=> $ket[$f],
@@ -1005,12 +1006,12 @@ class C_Index extends CI_Controller {
 				print "<script type='text/javascript'>alert('Jangan kosongi nominal Santunan !');</script>";
 				$this->nextKecelakaan($id_lkk1_s);
 			}
-			
+
 		}else {
 			print "<script type='text/javascript'>alert('Jangan kosongi nominal STMB !');</script>";
 			$this->nextKecelakaan($id_lkk1_s);
 
-		}	
+		}
 	}
 
 	public function editTahap2($id)
@@ -1024,7 +1025,7 @@ class C_Index extends CI_Controller {
 			$data['Menu'] = 'Dashboard';
 			$data['SubMenuOne'] = '';
 			$data['SubMenuTwo'] = '';
-			
+
 			$data['UserMenu'] = $this->M_user->getUserMenu($user_id,$this->session->responsibility_id);
 			$data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id);
 			$data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id);
@@ -1038,12 +1039,12 @@ class C_Index extends CI_Controller {
 			$data['kbiaya'] 	= 	$this->M_kecelakaan->ambilBiaya($id2);
 			$data['stmb']		= 	$this->M_kecelakaan->ambilSTMB($id2);
 			$data['ukk4']		= 	$this->M_kecelakaan->ambilKK4($id2);
-			
+
 			// echo "<pre>";
 			// print_r($data['kbiaya']);
 			// exit();
 
-			$this->load->view('V_Header',$data); 
+			$this->load->view('V_Header',$data);
 			$this->load->view('V_Sidemenu',$data);
 			$this->load->view('MasterPekerja/Laporan/V_TampilTahap2',$data);
 			$this->load->view('V_Footer',$data);
@@ -1052,7 +1053,7 @@ class C_Index extends CI_Controller {
 			print "<script type='text/javascript'>alert('Data Tahap 2 tidak ditemukan. Mohon pilih menu INSERT untuk menambahkan data terlebih dahulu. Terima kasih.');</script>";
 
 			$this->index();
-		}		
+		}
 	}
 
 	public function updateTahap2($id)
@@ -1090,7 +1091,7 @@ class C_Index extends CI_Controller {
 		$pnmbank 	= $this->input->post('txt_pnamabank');
 		$pketlain 	= $this->input->post('txtarea_keteranganlain');
 
-		$tahap2 	= array(							
+		$tahap2 	= array(
 							'status_lkk_1' 				=> $status_kk,
 							'tgl_lkk_1' 				=> $tgl_lkk1,
 							'pengajuan_pembiayaan' 		=> $pengajuan,
@@ -1160,11 +1161,11 @@ class C_Index extends CI_Controller {
 								'last_update_timestamp'	=> date('Y-m-d H:i:s'),
 								'last_update_user'		=> $this->session->user,
 							);
-			
+
 			$this->M_kecelakaan->updateKKBiaya($biayasimpan,$id,$i);
 			// echo $nominal;
 			// print_r($biayasimpan);
-			
+
 			$id_biaya_kk = $data_biaya_kk[$indeks]['id_biaya_kk'];
 			$biaya_history = array(
 								'id_biaya_kk'		=> $id_biaya_kk,
@@ -1180,12 +1181,12 @@ class C_Index extends CI_Controller {
 			$indeks++;
 
 			}
-		
 
-		
+
+
 			$yu = 0;
 			$data_pengajuan_stmb = $this->M_kecelakaan->ambilIdSTMB($id);
-			for ($a=1; $a < 3; $a++) { 
+			for ($a=1; $a < 3; $a++) {
 			$id_pengajuan_stmb = $data_pengajuan_stmb[$yu]['id_pengajuan_stmb'];
 			$periode_awal 	= $this->input->post('txt_periode_awal'.$a);
 			$periode_akhir 	= $this->input->post('txt_periode_akhir'.$a);
@@ -1218,27 +1219,27 @@ class C_Index extends CI_Controller {
 			// print_r($historystmb);
 			$yu++;
 			}
-			
+
 
 			$data_kk4 = $this->M_kecelakaan->ambilDataKK4($id);
 			$idatas   = $data_kk4[0]['id_laporan_keterangan'];
 			$this->M_kecelakaan->resetIDkk4($idatas);
 			$jmlkk4   = count($data_kk4);
-			for ($ey=0; $ey < $jmlkk4; $ey++) { 
+			for ($ey=0; $ey < $jmlkk4; $ey++) {
 				$idketkk4 	= $data_kk4[$ey]['id_ket_kk4'];
 				$idkk4lama 	= $this->M_kecelakaan->deleteKK4lama($id,$idketkk4);
-				
+
 			}
 			$ket = $this->input->post('ket');
 			$jml = count($ket);
-			for ($f=0; $f < $jml; $f++) { 
+			for ($f=0; $f < $jml; $f++) {
 				$dataKK4 = array (
 								'id_lkk_2' 			=> $id,
 								'id_ket_kk4' 		=> $ket[$f],
 								'create_timestamp' 	=> date('Y-m-d H:i:s'),
 								'create_user' 		=> $this->session->user,
 							);
-				
+
 				$id_kk4 = $this->M_kecelakaan->simpanKK4($dataKK4);
 				$history_kk4 = array (
 								'id_laporan_keterangan' => $id_kk4,
@@ -1251,7 +1252,7 @@ class C_Index extends CI_Controller {
 				$this->M_kecelakaan->simpanHistoryKK4($history_kk4);
 			}
 
-			
+
 			redirect('MasterPekerja/KecelakaanKerja');
 	}
 
@@ -1275,7 +1276,7 @@ class C_Index extends CI_Controller {
 
 			// echo "<pre>";
 			// print_r($data['kk4']);
-			
+
 			// echo "<pre>";
 			// print_r($ukk);
 			// exit();
@@ -1326,16 +1327,17 @@ class C_Index extends CI_Controller {
 			$pdf = $this->pdf->load();
 			$pdf = new mPDF('utf-8', 'Legal', 8, '', 5, 5, 10, 15, 0, 0, 'P');
 			$filename = 'kecelakaan-kerja-tahap-2/'.str_replace('/','-', $noind).'.pdf';
-			
+
 			$html = $this->load->view('MasterPekerja/Laporan/V_Pdf_thp2', $data, true);
 			$pdf->WriteHTML($stylesheet1,1);
 			$pdf->WriteHTML($html, 0);
+      $pdf->setTitle($filename);
 			$pdf->Output($filename, 'I');
 		}else{
 			print "<script type='text/javascript'>alert('Data Tahap 2 tidak ditemukan. Mohon pilih menu INSERT untuk menambahkan data terlebih dahulu. Terima kasih.');</script>";
 
 			$this->index();
-		}	
+		}
 	}
 
 }
