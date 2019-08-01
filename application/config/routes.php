@@ -2733,3 +2733,12 @@ $route['TransactKIB/Transact/(:any)'] = 'TransactKIB/C_TransactKIB/$1';
 $route['TransactKIB/Transact/(:any)/(:any)'] = 'TransactKIB/C_TransactKIB/$1/$2';
 $route['TransactKIB/Transact/(:any)/(:any)/(:any)'] = 'TransactKIB/C_TransactKIB/$1/$2/$3';
 $route['TransactKIB/Transact/(:any)/(:any)/(:any)/(:any)'] = 'TransactKIB/C_TransactKIB/$1/$2/$3/$4';
+
+//------------------------------------------------Master Presensi------------------------------------------------------//
+
+$route['MasterPresensi'] = 'MasterPresensi/C_MasterPresensi';
+
+$route['MasterPresensi/SetupReffJamLembur'] 				=	'MasterPresensi/SetupReffJamLembur/C_Index';
+$route['MasterPresensi/SetupReffJamLembur/(:any)'] 		=	'MasterPresensi/SetupReffJamLembur/C_Index/$1';
+$route['MasterPresensi/SetupReffJamLembur/(:any)/(:any)'] 		=	'MasterPresensi/SetupReffJamLembur/C_Index/$1/$2';
+
