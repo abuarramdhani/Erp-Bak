@@ -128,8 +128,9 @@
 												<option value="2">--Dept. Produksi - Tuksono</option>
 												<option value="5">--Dept. Produksi - Melati</option>
 												<option disabled="">=============Dept. Produksi (Pekerja Direct/Indirect Labour=============</option>
-												<option value="3">--Dept. Produksi - Pekerja Tidak Langsung / InDirect Labour</option>
-												<option value="4">--Dept. Produksi - Pekerja Langsung / Direct Labour</option>
+												<option value="tabelseksi">--Pekerja Langsung & Tidak Langsung Per Seksi Dept.Produksi</option>
+												<option value="11">--Dept. Produksi - Pekerja Tidak Langsung / InDirect Labour</option>
+												<option value="12">--Dept. Produksi - Pekerja Langsung / Direct Labour</option>
 												<option disabled="">======================Dept. Produksi Per Seksi======================</option>
 												<option value="89">--Dept. Produksi Atasan Seksi</option>
 												<option value="6">--Dept. Produksi - Seksi Administrasi Desain</option>
@@ -137,8 +138,8 @@
 												<option value="8">--Dept. Produksi - Seksi Assembly Gear Trans</option>
 												<option value="9">--Dept. Produksi - Seksi Assembly-TKS</option>
 												<option value="10">--Dept. Produksi - Seksi Cetakan, Pasir Cetak & Inti Cor, Peleburan-Penuangan</option>
-												<option value="11">--Dept. Produksi - Seksi Cetakan, Pasir Cetak & Inti Cor, Pel&Pen-TKS</option>
-												<option value="12">--Dept. Produksi - Seksi Desain A</option>
+												<option value="3">--Dept. Produksi - Seksi Cetakan, Pasir Cetak & Inti Cor, Pel&Pen-TKS</option>
+												<option value="4">--Dept. Produksi - Seksi Desain A</option>
 												<option value="13">--Dept. Produksi - Seksi Desain B</option>
 												<option value="14">--Dept. Produksi - Seksi Desain C</option>
 												<option value="15">--Dept. Produksi - Seksi DOJO Desain</option>
@@ -421,29 +422,54 @@
 																	</tr>
 																</tbody>
 															</table>
-															<canvas id="<?php echo 'myChart'.$y; ?>" class="wadaw" width="400" height="150" value="1"></canvas>
-															<div class="col-md-12">
-																<div class="col-md-6">
-																	<canvas id="<?php echo 'myChartbar1'.$y; ?>" width="100" height="50"></canvas>
-																</div>
-																<div class="col-md-6">
-																	<canvas id="<?php echo 'myChartbar2'.$y; ?>" width="100" height="50"></canvas>
-																</div>
-															</div>
-
-															<input name="imyChart" type="hidden">
-															<input name="imyChartbar" type="hidden">
-															<input name="imyChartbar2" type="hidden">
-															<button hidden type="submit" id="btSDMexport">simpan</button>
-															</div>															
+															<canvas id="<?php echo 'myChart'.$y; ?>" width="400" height="150"></canvas>
+															<canvas id="<?php echo 'myChartbar1'.$y; ?>" width="400" height="100"></canvas>
+															<canvas id="<?php echo 'myChartbar2'.$y; ?>" width="400" height="100"></canvas>
+																<input name="imyChart" type="hidden">
+																<input name="imyChartbar" type="hidden">
+																<input name="imyChartbar2" type="hidden">
+															</div>														
 															<?php } ?>
-																			
+																		
+								<table id="tabelseksi" class="datatable table table-striped table-bordered table-hover " style="font-size:12px; width: 100%;">
+								<h3>Pekerja Langsung & Tidak Langsung per Seksi</h3>
+                                <thead>
+                                  <tr>
+                                    <th style="background-color: #00b300; color: white;">No</th>
+                                    <th style="background-color: #FF9900; color: white;">SEKSI</th>
+                                    <th style="background-color: #3c8dbc; color: white;" class="text-center">PEKERJA TIDAK LANGSUNG</th>
+                                    <th style="background-color: #FF9900; color: white;" class="text-center">PEKERJA LANGSUNG</th>
+                                    <th style="background-color: #3c8dbc; color: white;" class="text-center">TOTAL PEKERJA</th>
+                                  </tr>
+                                </thead>
+                                <tbody>
+                                  <?php
+                                    if (empty($tabelseksi)) {
+                                      # code...
+                                    }else{
+                                      $no=1;
+                                      foreach ($tabelseksi as $key) {
+                                        ?>
+                                        <tr>
+                                          <td><?php echo $no; ?></td>
+                                          <td><?php echo $key['seksi']; ?></td>
+                                          <td class="text-center"><?php echo $key['tidak_langsung']; ?></td>
+                                          <td class="text-center"><?php echo $key['langsung']; ?></td>
+                                          <td class="text-center"><?php echo $key['total']; ?></td>
+                                          
+                                        </tr>
+                                        <?php
+                                        $no++;
+                                      }
+                                    }
+
+                                  ?>
+                                </tbody>
+                              </table>	
 																		</div>
 																	</div>
 																</div>
 																<?php } ?>
-
-													
 
 															</form>
 														<!--</div> end div tab-->
