@@ -360,13 +360,15 @@ class C_TarikFingerspot extends CI_Controller
 						'.$table.'
 						</table>
 					<br>
+						Catering : '.($no_c).'
+					<br>
 					<b>
 						'.$text.'
 					</b>
 					<p>
 					Segera check apakah semua data tertarik.
 					</p>
-
+					
 				</body>
 				</html>';
 
