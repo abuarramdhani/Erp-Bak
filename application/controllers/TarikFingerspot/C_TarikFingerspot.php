@@ -217,7 +217,7 @@ class C_TarikFingerspot extends CI_Controller
 		$no_c = 0;
 		$num = 0;
 		$insert = array();
-		$inser_c = array();
+		$insert_c = array();
 		$lokasi = array();
 		foreach ($log as $key) {
 
