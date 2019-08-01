@@ -95,11 +95,11 @@ class C_MoveOrder extends CI_Controller
 				array_push($array_sudah, $value['WIP_ENTITY_NAME']);
 				if ($dept == 'SUBKT') {
 					$atr = ",khs_inv_qty_att(wdj.ORGANIZATION_ID,wro.INVENTORY_ITEM_ID,bic.ATTRIBUTE1,bic.ATTRIBUTE2,'') atr";
-					$getBody = $this->M_MoveOrder->getBody($value['WIP_ENTITY_NAME'],$atr);
+					$getBody = $this->M_MoveOrder->getBody($value['WIP_ENTITY_NAME'],$atr,$dept);
 				}else {
 					// EDIT LUTFI
 					$atr = ",khs_inv_qty_att(wdj.ORGANIZATION_ID,wro.INVENTORY_ITEM_ID,bic.ATTRIBUTE1,bic.ATTRIBUTE2,'') atr";	
-					$getBody = $this->M_MoveOrder->getBody($value['WIP_ENTITY_NAME'],$atr);	
+					$getBody = $this->M_MoveOrder->getBody($value['WIP_ENTITY_NAME'],$atr,$dept);	
 				}
 				$array_terkelompok[$value['WIP_ENTITY_NAME']]['header'] = $value; 
 				$array_terkelompok[$value['WIP_ENTITY_NAME']]['body'] = $getBody; 
