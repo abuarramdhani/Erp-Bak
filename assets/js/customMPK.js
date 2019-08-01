@@ -3,6 +3,9 @@ $(document).ready(function(){
 	$('#dataTable-MasterLokasi').DataTable( {
 	  		dom:'flrtp',
 	});
+	$('#dataTable-ReffJamLembur').DataTable( {
+	  		dom:'flrtp',
+	});
 
 	$('.select-nama').select2({
 		ajax: {
@@ -28,6 +31,9 @@ $(document).ready(function(){
 		placeholder: 'Select Nama Pekerja',
 		allowClear: false,
 	});
+
+
+
 
 	$(function() {
 		$('#tabel-idcard').DataTable( {
