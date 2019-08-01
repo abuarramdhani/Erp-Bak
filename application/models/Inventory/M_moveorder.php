@@ -66,7 +66,7 @@ class M_moveorder extends CI_Model
 	}
 
 
-	function getBody($job_no,$atr) //----------------->>
+	function getBody($job_no,$atr,$dept) //----------------->>
 	{
 		$oracle = $this->load->database('oracle',TRUE);
 		$sql = "
@@ -113,6 +113,7 @@ class M_moveorder extends CI_Model
 					and bic.ATTRIBUTE1 is not null
 					-- INT THE TRUTH ABOVE IT WILL USED --
 					and we.WIP_ENTITY_NAME = '$job_no'
+					and bd.DEPARTMENT_CLASS_CODE = '$dept'
 					group by we.WIP_ENTITY_ID,  we.WIP_ENTITY_NAME ,msib2.SEGMENT1, msib2.DESCRIPTION, msib2.inventory_item_id
                     ,wro.REQUIRED_QUANTITY,msib2.PRIMARY_UOM_CODE, bic.ATTRIBUTE1, mil.SEGMENT1
                     ,bic.SUPPLY_SUBINVENTORY,bic.SUPPLY_LOCATOR_ID ,mil2.SEGMENT1
