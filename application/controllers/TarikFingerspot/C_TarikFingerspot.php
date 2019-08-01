@@ -85,7 +85,9 @@ class C_TarikFingerspot extends CI_Controller
 
 				$log = $this->M_tarikfingerspot->getAttLog($plaintext_string,'');
 				$no = 0;
+				$no_c = 0;
 				$insert = array();
+				$insert_c = array();
 				foreach ($log as $key) {
 					$data_presensi = array(
 						'tanggal' => $key['tanggal'],
@@ -100,6 +102,8 @@ class C_TarikFingerspot extends CI_Controller
 						$cek = $this->M_tarikfingerspot->cekPresensiL($data_presensi);
 					}else{
 						$cek = $this->M_tarikfingerspot->cekPresensi($data_presensi);
+						$cek_katering = $this->M_tarikfingerspot->cekCatering($data_presensi);
+						$cek_lokasi_finger = $this->M_tarikfingerspot->cekLokasiFinger($key['user_']);
 					}
 
 
@@ -119,15 +123,6 @@ class C_TarikFingerspot extends CI_Controller
 				 					$this->M_tarikfingerspot->insert_presensi('"FrontPresensi"', 'tpresensi', $data_presensi);
 							//	}
 
-							//	Kirim ke Catering.tpresensi
-							//	{
-				 					
-									 $data_presensi['transfer']	=	FALSE;
-									 $data_presensi['tempat_makan'] = $key['tempat_makan'];
-		 							$this->M_tarikfingerspot->insert_presensi('"Catering"', 'tpresensi', $data_presensi);
-				 					unset($data_presensi['tempat_makan']);
-							//	}
-
 							//	Kirim ke Presensi.tprs_shift
 							//	{
 				 					$data_presensi['transfer']	=	FALSE;
@@ -139,7 +134,8 @@ class C_TarikFingerspot extends CI_Controller
 							//	{
 				 					$data_presensi['transfer']	=	FALSE;
 									$data_presensi['nomor_sn']  = $key['nomor_sn'];
-				 					$this->M_tarikfingerspot->insert_presensi('"Presensi"', 'tpresensi_riil', $data_presensi);
+									$this->M_tarikfingerspot->insert_presensi('"Presensi"', 'tpresensi_riil', $data_presensi);
+									unset($data_presensi['nomor_sn']);
 							//	}
 						}
 
@@ -147,9 +143,26 @@ class C_TarikFingerspot extends CI_Controller
 			 			$insert[$no] = $key;
 			 			$no++;
 					}
+
+					if($cek_katering == '0' && $cek_lokasi_finger == '01'){
+						//	Kirim ke Catering.tpresensi
+						//	{
+								$data_presensi['transfer']	=	FALSE;
+								$data_presensi['tempat_makan'] = $key['tempat_makan'];
+								$this->M_tarikfingerspot->insert_presensi('"Catering"', 'tpresensi', $data_presensi);
+								unset($data_presensi['tempat_makan']);
+						//	}
+						$inser_c[$no_c] = $key;
+						$no_c++;
+					}
 				}
 				echo "Data Diinsert : ".$no."<br><br>";
 				foreach ($insert as $key) {
+					print_r($key);echo "<br>";
+				}
+
+				echo "Data Catering Diinsert : ".$no."<br><br>";
+				foreach ($insert_c as $key) {
 					print_r($key);echo "<br>";
 				}
 			}else{
@@ -219,6 +232,8 @@ class C_TarikFingerspot extends CI_Controller
 				$cek = $this->M_tarikfingerspot->cekPresensiL($data_presensi);
 			}else{
 				$cek = $this->M_tarikfingerspot->cekPresensi($data_presensi);
+				$cek_katering = $this->M_tarikfingerspot->cekCatering($data_presensi);
+				$cek_lokasi_finger = $this->M_tarikfingerspot->cekLokasiFinger($key['user_']);
 			}
 
 
@@ -238,19 +253,6 @@ class C_TarikFingerspot extends CI_Controller
 		 					$this->M_tarikfingerspot->insert_presensi('"FrontPresensi"', 'tpresensi', $data_presensi);
 					//	}
 
-					//	Kirim ke Catering.tpresensi
-					//	{
-		 					$lokasikerja=$this->M_tarikfingerspot->cekLokasiKerja($data_presensi['noind']);
-
-		 					
-		 				
- 							$data_presensi['transfer']	=	FALSE;
-							 $data_presensi['tempat_makan'] = $key['tempat_makan'];
- 							$this->M_tarikfingerspot->insert_presensi('"Catering"', 'tpresensi', $data_presensi);
-							 unset($data_presensi['tempat_makan']);
-		 					
-					//	}
-
 					//	Kirim ke Presensi.tprs_shift
 					//	{
 		 					$data_presensi['transfer']	=	FALSE;
@@ -262,7 +264,8 @@ class C_TarikFingerspot extends CI_Controller
 					//	{
 		 					$data_presensi['transfer']	=	FALSE;
 							$data_presensi['nomor_sn']  = $key['nomor_sn'];
-		 					$this->M_tarikfingerspot->insert_presensi('"Presensi"', 'tpresensi_riil', $data_presensi);
+							$this->M_tarikfingerspot->insert_presensi('"Presensi"', 'tpresensi_riil', $data_presensi);
+							unset($data_presensi['nomor_sn']);
 					//	}
 				}
 
@@ -277,10 +280,27 @@ class C_TarikFingerspot extends CI_Controller
 	 			}
 	 			$no++;
 			}
+
+			if($cek_katering == '0' && $cek_lokasi_finger == '01'){
+				//	Kirim ke Catering.tpresensi
+				//	{
+						$data_presensi['transfer']	=	FALSE;
+						$data_presensi['tempat_makan'] = $key['tempat_makan'];
+						$this->M_tarikfingerspot->insert_presensi('"Catering"', 'tpresensi', $data_presensi);
+						unset($data_presensi['tempat_makan']);
+				//	}
+				$inser_c[$no_c] = $key;
+				$no_c++;
+			}
 			$num++;
 		}
 		echo "Data Diinsert : ".$no."<br><br>";
 		foreach ($insert as $key) {
+			print_r($key);echo "<br>";
+		}
+
+		echo "Data Catering Diinsert : ".$no."<br><br>";
+		foreach ($insert_c as $key) {
 			print_r($key);echo "<br>";
 		}
 
@@ -340,13 +360,15 @@ class C_TarikFingerspot extends CI_Controller
 						'.$table.'
 						</table>
 					<br>
+						Catering : '.($no_c).'
+					<br>
 					<b>
 						'.$text.'
 					</b>
 					<p>
 					Segera check apakah semua data tertarik.
 					</p>
-
+					
 				</body>
 				</html>';
 
