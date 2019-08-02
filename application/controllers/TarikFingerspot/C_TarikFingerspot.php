@@ -152,7 +152,7 @@ class C_TarikFingerspot extends CI_Controller
 								$this->M_tarikfingerspot->insert_presensi('"Catering"', 'tpresensi', $data_presensi);
 								unset($data_presensi['tempat_makan']);
 						//	}
-						$inser_c[$no_c] = $key;
+						$insert_c[$no_c] = $key;
 						$no_c++;
 					}
 				}
@@ -291,7 +291,7 @@ class C_TarikFingerspot extends CI_Controller
 						$this->M_tarikfingerspot->insert_presensi('"Catering"', 'tpresensi', $data_presensi);
 						unset($data_presensi['tempat_makan']);
 				//	}
-				$inser_c[$no_c] = $key;
+				$insert_c[$no_c] = $key;
 				$no_c++;
 			}
 			$num++;
@@ -301,7 +301,7 @@ class C_TarikFingerspot extends CI_Controller
 			print_r($key);echo "<br>";
 		}
 
-		echo "Data Catering Diinsert : ".$no."<br><br>";
+		echo "Data Catering Diinsert : ".$no_c."<br><br>";
 		foreach ($insert_c as $key) {
 			print_r($key);echo "<br>";
 		}
