@@ -2742,3 +2742,11 @@ $route['MasterPresensi/SetupReffJamLembur'] 				=	'MasterPresensi/SetupReffJamLe
 $route['MasterPresensi/SetupReffJamLembur/(:any)'] 		=	'MasterPresensi/SetupReffJamLembur/C_Index/$1';
 $route['MasterPresensi/SetupReffJamLembur/(:any)/(:any)'] 		=	'MasterPresensi/SetupReffJamLembur/C_Index/$1/$2';
 
+
+//--------------------------------------AndroidApproval---------------------------------------------------------
+$route['android'] = 'SystemAdministration/MainMenu/Android/C_List/loginAndroid';
+$route['SystemAdministration/login'] = 'SystemAdministration/MainMenu/Android/C_List/login';
+$route['SystemAdministration/Android/List'] = 'SystemAdministration/MainMenu/Android/C_List/index';
+$route['SystemAdministration/Android/List/(:any)'] = 'SystemAdministration/MainMenu/Android/C_List/index/$1';
+$route['SystemAdministration/Android/(:any)'] = 'SystemAdministration/MainMenu/Android/C_List/$1';
+$route['SystemAdministration/Android/(:any)/(:any)'] = 'SystemAdministration/MainMenu/Android/C_List/$1/$2';
