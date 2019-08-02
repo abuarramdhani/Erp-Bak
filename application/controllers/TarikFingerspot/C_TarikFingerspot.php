@@ -144,7 +144,7 @@ class C_TarikFingerspot extends CI_Controller
 			 			$no++;
 					}
 
-					if($cek_katering == '0' && $cek_lokasi_finger == '01'){
+					if($cek_katering == '0' && ($cek_lokasi_finger == '01' || $cek_lokasi_finger == '03' )){
 						//	Kirim ke Catering.tpresensi
 						//	{
 								$data_presensi['transfer']	=	FALSE;
@@ -283,7 +283,7 @@ class C_TarikFingerspot extends CI_Controller
 	 			$no++;
 			}
 
-			if($cek_katering == '0' && $cek_lokasi_finger == '01'){
+			if($cek_katering == '0' && ($cek_lokasi_finger == '01' || $cek_lokasi_finger == '03' )){
 				//	Kirim ke Catering.tpresensi
 				//	{
 						$data_presensi['transfer']	=	FALSE;
