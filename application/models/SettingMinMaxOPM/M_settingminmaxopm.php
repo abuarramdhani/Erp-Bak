@@ -6,7 +6,7 @@ class M_settingminmaxopm extends CI_Model {
     {
         parent::__construct();
         $this->load->database();
-        $this->oracle = $this->load->database('oracle', true);
+        $this->oracle = $this->load->database('oracle_dev', true);
     }
 
   public function TampilRoutingClass()
@@ -160,6 +160,18 @@ class M_settingminmaxopm extends CI_Model {
         msib.MAX_MINMAX_QUANTITY = '$max',
         msib.ATTRIBUTE9 = '$rop',
         msib.ATTRIBUTE10 = '$induk',
+        msib.ATTRIBUTE11 = TO_CHAR(sysdate, 'DD-MON-YYYY HH24:MI:SS')
+        where msib.SEGMENT1 = '$itemcode'";
+      $query = $this->oracle->query($sql);
+  }
+
+
+  public function saveImport($itemcode, $min, $max, $rop)
+  {
+      $sql = "UPDATE mtl_system_items_b msib
+        set msib.MIN_MINMAX_QUANTITY = '$min',
+        msib.MAX_MINMAX_QUANTITY = '$max',
+        msib.ATTRIBUTE9 = '$rop',
         msib.ATTRIBUTE11 = TO_CHAR(sysdate, 'DD-MON-YYYY HH24:MI:SS')
         where msib.SEGMENT1 = '$itemcode'";
       $query = $this->oracle->query($sql);

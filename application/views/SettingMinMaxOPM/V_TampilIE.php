@@ -27,10 +27,10 @@
 	<div class="inner">
 		<div class="box box-info">
 			<div class="box-header with-border">
-				<h2><b><center>SORTIR DATA MIN MAX</center></b></h2>
+				<h2><b><center>SORTIR DATA MIN MAX UNTUK IE EXCEL</center></b></h2>
 			</div>
 			<div class="box-body">
-			<center><form method="post" action="<?php echo base_url('SettingMinMax/EditbyRoute')?>">
+			<center><form method="post" action="<?php echo base_url('SettingMinMax/EditbyRouteIE')?>">
 				<div class="row">
 					<div class="col-md-2 col-md-offset-2" style="text-align: right;">
 							<label>ORGANIZATION</label>
