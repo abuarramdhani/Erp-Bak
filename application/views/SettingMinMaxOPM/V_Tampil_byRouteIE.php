@@ -39,7 +39,15 @@
 		<div class="box box-info">
 			<h2 style="text-align: center; font-wight: bold;"><b>PILIH DATA MINMAX UNTUK IMPORT EXPORT EXCEL</b></h2>
 			<div class="box-body">
-		
+			<?php foreach ($minmax as $mm) { ?>
+			<?php } ?>
+			<div class="col-lg-12" style="padding-top: 8px;">
+					<div style="text-align: center;">
+						<a style="float: center; margin-right: 3%; margin-top: -0.5%;" class="btn btn-danger" id="export_excell"><span class="fa fa-download"> EXPORT</a>
+						<a style="float: center; margin-right: 3%; margin-top: -0.5%;" data-toggle="modal" data-target="#Modalku<?php echo $mm['SEGMENT1']; ?>"  class="btn btn-warning" ><span class="fa fa-upload"> IMPORT</a>
+						<a style="float: center; margin-right: 3%; margin-top: -0.5%;" href="<?php echo base_url('SettingMinMax/IE')?>" class="btn btn-success"><span class="fa fa-check-square"> SELESAI</a>
+					</div>
+				</div>
 				<table id="tableDataMinMaxIE" class="table table-striped table-bordered table-responsive table-hover">
 					<thead style="background:#22aadd; color:#FFFFFF;">
 						<th style="text-align:center; width: 5%">NO</th>
@@ -70,13 +78,6 @@
 						<?php } ?>
 					</tbody>
 				</table>
-				<div class="col-lg-12" style="padding-top: 8px;">
-					<div style="text-align: center;">
-						<a style="float: center; margin-right: 3%; margin-top: -0.5%;" class="btn btn-danger" id="export_excell"><span class="fa fa-download"> EXPORT</a>
-						<a style="float: center; margin-right: 3%; margin-top: -0.5%;" data-toggle="modal" data-target="#Modalku<?php echo $mm['SEGMENT1']; ?>"  class="btn btn-warning" ><span class="fa fa-upload"> IMPORT</a>
-						<a style="float: center; margin-right: 3%; margin-top: -0.5%;" href="<?php echo base_url('SettingMinMax/IE')?>" class="btn btn-success"><span class="fa fa-check-square"> SELESAI</a>
-					</div>
-				</div>
 			</div>
 		</div>
 	</div>
