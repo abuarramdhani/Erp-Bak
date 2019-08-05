@@ -5,7 +5,7 @@ $(function() {
     	]
 	});
 	var dt2 = $('#tableDataMinMaxIE').DataTable({
-		dom: '<"dataTable_Button"B><"dataTable_Filter"f>rt<"dataTable_Information"i><"dataTable_Pagination"p>',
+		dom: '<"dataTable_Button"B><"dataTable_Filter"f>rt<"dataTable_Information"i>',
 		columnDefs: [
 			{
 				orderable: false,
@@ -13,8 +13,10 @@ $(function() {
 				targets: 1
 			}
 		],
+		
+		paging	: false,
         buttons: [
-			'pageLength',
+			// 'pageLength',
 			{
 				extend: 'excelHtml5',
 				title: 'Edit Data Min Max',
