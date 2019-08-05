@@ -1,3 +1,8 @@
+<style type="text/css">
+    .dataTables_filter{
+        float: right;
+    }
+</style>
 <section class="content">
     <div class="inner" >
         <div class="row">
@@ -19,7 +24,7 @@
                         <div class="box box-primary box-solid">
                             <div class="box-header with-border"></div>
                             <div class="box-body">
-                                <div class="panel-body" style="overflow-x: scroll;">
+                                <div class="panel-body">
                                     <div class="col-md-1 text-left" align="right">
                                         <label for="lb_periode" class="control-label">Seksi : </label>
                                     </div>
@@ -42,12 +47,12 @@
                                            } ?>
                                        </h4>
                                    </div>
-                                   <table style="margin-top: 50px; overflow-x: scroll;" id="p2k3_adm_list_approve" class="table table-striped table-bordered table-hover text-center">
+                                   <table style="margin-top: 50px;" class="table table-striped table-bordered table-hover text-center dataTable-p2k3Frezz">
                                     <thead>
                                         <tr class="bg-info">
-                                            <th>No</th>
-                                            <th style="min-width: 200px;">APD</th>
-                                            <th>Kode Barang</th>
+                                            <th class="bg-info">No</th>
+                                            <th class="bg-info" style="min-width: 200px;">APD</th>
+                                            <th class="bg-info">Kode Barang</th>
                                             <th>Kebutuhan Umum</th>
                                             <th>STAFF</th>
                                             <?php foreach ($daftar_pekerjaan as $key) { ?>
