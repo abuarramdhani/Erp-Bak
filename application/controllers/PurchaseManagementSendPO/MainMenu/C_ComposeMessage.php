@@ -55,6 +55,7 @@ class C_ComposeMessage extends CI_Controller {
 		$getCCEmail		= $_POST['ccEmail'];
 		$getBCCEmail	= $_POST['bccEmail'];
 		$subject	 	= $_POST['subject'];
+		$format_message	= $_POST['format_message'];
 		$body			= $_POST['body'];
 		$toEmail		= preg_replace('/\s+/', '', explode(',', $getTargetEmail));
 		$ccEmail		= preg_replace('/\s+/', '', explode(',', $getCCEmail));
@@ -163,13 +164,16 @@ class C_ComposeMessage extends CI_Controller {
 			{
 				$mail->addAttachment($pdf_dir.$pdf_filename.$pdf_format);
 			};
-			if (file_exists($doc_dir.$doc_filename.$pdf_format) == TRUE) 
-			{
-				$mail->addAttachment($doc_dir.$doc_filename.$pdf_format);
-			}else{
-				echo json_encode('Lampiran'.$doc_filename.'tidak ditemukan.');
-				exit;
+			if ($format_message != 'English') {
+				if (file_exists($doc_dir.$doc_filename.$pdf_format) == TRUE) 
+				{
+					$mail->addAttachment($doc_dir.$doc_filename.$pdf_format);
+				}else{
+					echo json_encode('Lampiran '.$doc_filename.' tidak ditemukan.');
+					exit;
+				};	
 			};
+	
 			if (isset($_FILES['file_attach1']) && $_FILES['file_attach1']['error'] == UPLOAD_ERR_OK) 
 			{
 				$mail->AddAttachment($_FILES['file_attach1']['tmp_name'],$_FILES['file_attach1']['name']);

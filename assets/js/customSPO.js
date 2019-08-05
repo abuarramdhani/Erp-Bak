@@ -112,7 +112,6 @@ $(document).ready(function(){
                             $('#txtPMSPOSubject').val('KHS PURCHASE ORDER '+PONumber);
                         }, 500);
                     }else{
-                        // alert('Email address pada PO number '+PONumber+' tidak ditemukan.');
                         $('.spnPMSPOWarnAddrNotFound').html(' Tidak ditemukan Email Address dengan PO Number '+PONumber+'. ');
                         $('.divPMSPOWarnAddrNotFound').fadeIn();
                         $('#txtPMSPOToEmailAddr').val('');
@@ -240,6 +239,7 @@ $(document).ready(function(){
                 bccEmail 		= $('#txtPMSPOBCCEmailAddr').val(),
                 file_attach1    = $('#inpPMSPOAttachment1').prop('files')[0],
                 file_attach2    = $('#inpPMSPOAttachment2').prop('files')[0],
+                format_message  = $('#slcPMSPOFormatMessage').val(),
                 body            = $('#txaPMSPOEmailBody').val();
             form_data.append('po_number', po_number);
             form_data.append('toEmail', toEmail);
@@ -248,6 +248,7 @@ $(document).ready(function(){
             form_data.append('subject', subject);
             form_data.append('file_attach1', file_attach1);
             form_data.append('file_attach2', file_attach2);
+            form_data.append('format_message', format_message);
             form_data.append('body', body);
 
             $.ajax({
