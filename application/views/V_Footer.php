@@ -95,6 +95,7 @@
 		<script type="text/javascript" src="<?= base_url('assets/js/custom.js') ?>"></script>
 		<script type="text/javascript" src="<?= base_url('assets/js/customFA.js') ?>"></script>
 		<script type="text/javascript" src="<?= base_url('assets/js/customCM.js') ?>"></script>
+		<script type="text/javascript" src="<?= base_url('assets/js/customAL.js') ?>"></script>
 		<script type="text/javascript" src="<?= base_url('assets/js/customAP.js') ?>"></script>
 		<script type="text/javascript" src="<?= base_url('assets/js/customAPD.js') ?>"></script>
 		<script type="text/javascript" src="<?= base_url('assets/js/customAR.js') ?>"></script>
