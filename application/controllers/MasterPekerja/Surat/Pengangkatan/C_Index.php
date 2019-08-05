@@ -473,6 +473,8 @@ class C_Index extends CI_Controller
 												'jenis_surat'			=>	'PENGANGKATAN',
 											);
 			$this->M_pengangkatan->inputNomorSurat($inputNomorSurat);
+      		$this->M_pengangkatan->inserttlogbaru($nomor_induk, $nomor_induk_baru);
+
 			if ($kode > 0) {
 				redirect('MasterPekerja/Surat/SuratPengangkatanNonStaff');
 			}else{
@@ -618,6 +620,8 @@ class C_Index extends CI_Controller
 											'nomor_induk_baru'		=>	$nomor_induk_baru,
 										);
 		$this->M_pengangkatan->updateSuratPengangkatan($updateSuratPengangkatan, $nomor_surat, $kodeSurat, $tanggal_cetak_asli);
+      	$this->M_pengangkatan->inserttlogupdate($nomor_induk, $nomor_induk_baru);
+		
 		if (substr($nomor_induk, 0,1) == 'E') {
 				redirect('MasterPekerja/Surat/SuratPengangkatanNonStaff');
 			}else{

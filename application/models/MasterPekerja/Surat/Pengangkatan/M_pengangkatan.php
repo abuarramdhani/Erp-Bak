@@ -613,5 +613,22 @@
 	 	{
 	 		$this->personalia->insert('"Surat".t_arsip_nomor_surat', $inputNomorSurat);
 	 	}
+
+	 	public function inserttlogbaru($nomor_induk, $nomor_induk_baru)
+	 	{
+	 		$tanggal = date("Y-m-d H:i:s");
+	 		$inserttlogbaru 	= "	INSERT INTO hrd_khs.tlog (wkt, menu, ket, noind, jenis, program, noind_baru) VALUES ('$tanggal', 'SURAT PENGANGKATAN', 'PEMBUATAN SURAT PENGANGKATAN $nomor_induk', '$nomor_induk' , 'CREATE -> SURAT PENGANGKATAN', 'SURAT', '$nomor_induk_baru')";
+
+			$query = $this->personalia->query($inserttlogbaru);
+	 	}
+
+	 	public function inserttlogupdate($nomor_induk, $nomor_induk_baru)
+	 	{
+	 		$tanggal = date("Y-m-d H:i:s");
+	 		$inserttlogbaru 	= "	INSERT INTO hrd_khs.tlog (wkt, menu, ket, noind, jenis, program, noind_baru) VALUES ('$tanggal', 'SURAT PENGANGKATAN', 'EDIT SURAT PENGANGKATAN $nomor_induk', '$nomor_induk' , 'UPDATE -> SURAT PENGANGKATAN', 'SURAT', '$nomor_induk_baru');";
+
+			$query = $this->personalia->query($inserttlogbaru);
+	 	}
+
  	}
 
