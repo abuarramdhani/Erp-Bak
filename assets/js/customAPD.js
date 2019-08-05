@@ -119,8 +119,16 @@ $("#group_add2").click(function(e){
 
 $(function()
 {
-  $('.dataTable-p2k3').dataTable( {
+  $('.dataTable-p2k3').DataTable({
     dom: 'frtp',
+  });
+
+  $('.dataTable-p2k3Frezz').DataTable({
+    dom: 'frt',
+    scrollX: true,
+    fixedColumns:   {
+      leftColumns: 3,
+    },
   });
 
   $('.apd-select2').select2({

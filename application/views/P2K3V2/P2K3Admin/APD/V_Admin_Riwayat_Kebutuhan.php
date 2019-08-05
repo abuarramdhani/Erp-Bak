@@ -1,3 +1,8 @@
+<style type="text/css">
+    .dataTables_filter{
+        float: right;
+    }
+</style>
 <section class="content">
     <div class="inner" >
         <div class="row">
@@ -42,12 +47,12 @@
                                            } ?>
                                        </h4>
                                    </div>
-                                  <table class="table table-striped table-bordered table-hover dataTable-p2k3 text-center" style="font-size:12px; overflow-x: scroll;">
+                                  <table class="table table-striped table-bordered table-hover dataTable-p2k3Frezz text-center" style="font-size:12px;">
                                         <thead class="bg-primary">
                                             <tr>
-                                                <th>NO</th>
-                                                <th>Nama APD</th>
-                                                <th>Kode Barang</th>
+                                                <th class="bg-primary">NO</th>
+                                                <th class="bg-primary">Nama APD</th>
+                                                <th class="bg-primary">Kode Barang</th>
                                                 <th>Kebutuhan Umum</th>
                                                 <th>STAFF</th>
                                                 <?php foreach ($daftar_pekerjaan as $key) { ?>
