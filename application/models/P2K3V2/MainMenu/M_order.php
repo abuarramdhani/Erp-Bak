@@ -13,17 +13,19 @@ class M_Order extends CI_Model
 
     public function getSeksi($noind)
     {
-        $query = $this->db->query("select el.employee_name as nama,
-                                            el.employee_code as code,
-                                            es.section_code,
-                                            es.department_name as dept,
-                                            es.field_name as bidang,
-                                            es.unit_name as unit,
-                                            es.section_name as section
-                                    from er.er_employee_all as el
-                                    left join er.er_section as es
-                                    on el.section_code=es.section_code
-                                    where el.employee_code='$noind'");
+        $sql = "select el.employee_name as nama,
+                        el.employee_code as code,
+                        es.section_code,
+                        es.department_name as dept,
+                        es.field_name as bidang,
+                        es.unit_name as unit,
+                        es.section_name as section
+                from er.er_employee_all as el
+                left join er.er_section as es
+                on el.section_code=es.section_code
+                where el.employee_code='$noind'";
+                // echo $sql;exit();
+        $query = $this->db->query($sql);
         return $query->result_array();
     }
 
@@ -582,6 +584,14 @@ class M_Order extends CI_Model
                 where keluar = '0'
                 and kodesie like '$ks%'";
         $query = $this->personalia->query($sql);
+        return $query->result_array();
+    }
+
+    public function getPekerja($ks)
+    {
+        $ks = substr($ks, 0,7);
+        $sql = "select * from er.er_employee_all where section_code like '$ks%' and resign = '0' order by employee_name asc";
+        $query = $this->db->query($sql);
         return $query->result_array();
     }
 }
