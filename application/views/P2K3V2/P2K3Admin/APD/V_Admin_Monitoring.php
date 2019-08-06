@@ -46,9 +46,9 @@
                                         </caption>
                                         <thead>
                                             <tr class="bg-info">
-                                                <th>No</th>
+                                                <th width="10%" class="text-center">No</th>
                                                 <th>Seksi</th>
-                                                <th>Status</th>
+                                                <th width="20%">Status</th>
                                             </tr>
                                         </thead>
                                         <tbody id="DetailInputKebutuhanAPD">

@@ -789,6 +789,25 @@ function format ( d ) {
      });
     });
 
+    $('.p2k3_detail_seksi').click(function(){
+      var ks = $(this).val();
+      $.ajax({
+        url: baseurl+'P2K3_V2/Order/getJumlahPekerja',
+        method: "POST",
+        data: {ks:ks},
+        success: function(data){
+          $('#phone_result').html(data);
+          $('#p2k3_detail_pekerja').modal('show');
+        },
+        error:function(xhr, ajaxOptions, thrownError){
+          $.toaster(xhr+','+ajaxOptions+','+thrownError);
+        }
+      });
+    });
+
+    $('.p2k3_select2').select2({
+      allowClear: false
+    });
   });
 function p2k3_val(){
   var max = $('#pw2k3_maxpkj').val();

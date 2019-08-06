@@ -1572,9 +1572,12 @@ class C_Order extends CI_Controller
   	$cost_center = $this->input->post('txt_cost');
   	$kode_cabang = $this->input->post('kode_cabang1');
   	$lokasi = $this->input->post('txt_lokasi');
+  	$lokasi = '142';
   	$gudang = $this->input->post('txt_gudang');
+  	$gudang = 'PNL-NPR';
   	$seksi = $this->input->post('p2k3_seksi_bon');
   	$lokator = $this->input->post('txt_locator');
+  	$lokator = '783';
 
   	$account = $this->M_order->account('APD', $cost_center);
 
@@ -1708,6 +1711,8 @@ class C_Order extends CI_Controller
   	$this->load->library('Pdf');
   	$pdf = $this->pdf->load();
   	$pdf = new mPDF('',array(210,148.5),0,'',10,10,5,0,0,5,'P');
+  	$pdf->setAutoTopMargin = 'stretch';
+  	$pdf->setAutoBottomMargin = 'stretch';
   	$filename = $nomor_urut.'-Bon-Bppbg.pdf';
   	$stylesheet = file_get_contents(base_url('assets/plugins/bootstrap/3.3.6/css/bootstrap.css'));
   	$html = $this->load->view('P2K3V2/Order/V_pdfBon', $data, true);
@@ -1738,5 +1743,36 @@ class C_Order extends CI_Controller
   	foreach ($lokator as $data_lokator) {
   		echo '<option value="'.$data_lokator['LOCATOR_ID'].'">'.$data_lokator['SEGMENT1'].'</option>';
   	}
+  }
+
+  public function getJumlahPekerja()
+  {
+  	$ks = $this->input->post('ks');
+  	if(isset($ks) and !empty($ks)){
+		  	$getPekerja = $this->M_order->getPekerja($ks);
+			if (empty($getPekerja)) {
+				echo '<center><ul class="list-group"><li class="list-group-item">'.'Kosong'.'</li></ul></center>';
+			}else{
+				echo '<table class="table table-bordered table-hover table-striped text-center">
+				<tr>
+					<th style="width:20px;">No</th>
+					<th style="width:200px;">Noind</th>
+					<th>Nama</th>
+				</tr>';
+				$i = 1;
+				foreach($getPekerja as $key){
+					echo '<tr>
+					<td>'.$i.'</td>
+					<td>'.$key["employee_code"].'</td>
+					<td>'.$key["employee_name"].'</td>
+				</tr>';
+				$i++;
+			}
+			echo '</table>';
+		}
+	}
+	else {
+		echo '<center><ul class="list-group"><li class="list-group-item">'.'Kodesie tidak ditemukan'.'</li></ul></center>';
+	}
   }
 }

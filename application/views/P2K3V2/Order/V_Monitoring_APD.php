@@ -9,27 +9,29 @@
                 </div>
                 <div class="row">
                     <div class="col-lg-12">
-                        <div class="panel panel-primary" style="height: 110px;">
-                            <div class="panel-body">
-                                <div class="row">
-                                    <div class="col-lg-1">
-                                        <div class="form-group">
-                                            <label class="control-label">Departement</label> <br>
-                                            <label class="control-label">Bidang</label> <br>
-                                            <label class="control-label">Unit</label> <br>
+                        <div class="panel panel-primary" style="">
+                                <div class="panel-body">
+                                    <div class="row">
+                                        <div class="col-lg-1">
+                                            <div class="form-group">
+                                                <label class="control-label">Departement</label> <br>
+                                                <label class="control-label">Bidang</label> <br>
+                                                <label class="control-label">Unit</label> <br>
+                                                <label class="control-label">Seksi</label>
+                                            </div>
                                         </div>
-                                    </div>
-                                    <div class="col-lg-5">
-                                        <div class="form-group">
-                                            <label class="control-label">: <?php echo $seksi[0]["dept"] ?></label> <br>
-                                            <label class="control-label">: <?php echo $seksi[0]["bidang"] ?></label> <br>
-                                            <label class="control-label">: <?php echo $seksi[0]["unit"] ?></label> <br>
+                                        <div class="col-lg-5">
+                                            <div class="form-group">
+                                                <label class="control-label">: <?php echo $seksi[0]["dept"] ?></label> <br>
+                                                <label class="control-label">: <?php echo $seksi[0]["bidang"] ?></label> <br>
+                                                <label class="control-label">: <?php echo $seksi[0]["unit"] ?></label> <br>
+                                                <label class="control-label">: <?php echo $seksi[0]["section"] ?></label> <button type="button" class="btn btn-xs p2k3_detail_seksi" value="<?php echo $seksi[0]['section_code'] ?>">Details</button>
+                                            </div>
                                         </div>
+                                        
                                     </div>
-                                    
                                 </div>
                             </div>
-                        </div>
                     </div>
                 </div>
                 <br />
@@ -95,3 +97,20 @@
         </div>
     </div>
 </section>
+<div class="modal fade" id="p2k3_detail_pekerja" tabindex="-1" role="dialog" aria-labelledby="basicModal" aria-hidden="true" style="margin-top: -20px;">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title" id="myModalLabel">Detail Pekerja</h4>
+            </div>
+            <div class="modal-body">
+                <!-- Place to print the fetched phone -->
+                <div id="phone_result"></div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
