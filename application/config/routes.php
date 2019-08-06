@@ -2753,3 +2753,7 @@ $route['SystemAdministration/Android/List'] = 'SystemAdministration/MainMenu/And
 $route['SystemAdministration/Android/List/(:any)'] = 'SystemAdministration/MainMenu/Android/C_List/index/$1';
 $route['SystemAdministration/Android/(:any)'] = 'SystemAdministration/MainMenu/Android/C_List/$1';
 $route['SystemAdministration/Android/(:any)/(:any)'] = 'SystemAdministration/MainMenu/Android/C_List/$1/$2';
+// --------------------------------------- ADM Seleksi -----------------------------------------------//
+$route['ADMSeleksi'] = 'ADMSeleksi/Menu/C_Index/index';
+$route['ADMSeleksi/Menu/(:any)'] = 'ADMSeleksi/Menu/C_Index/$1';
+$route['ADMSeleksi/Menu/(:any)/(:any)'] = 'ADMSeleksi/Menu/C_Index/$1/$2';
