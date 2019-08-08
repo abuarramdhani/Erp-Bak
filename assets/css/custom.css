@@ -547,3 +547,34 @@ outline:none;
 .swal2-popup {
   font-size: 1.8rem !important;
 }
+
+.buttonScrollTop {
+    transition: opacity 250ms linear;
+    opacity: 0;
+    position: fixed;
+    bottom: 24px; 
+    right: 24px;
+    z-index: 99;
+}
+
+.is-invicible {
+    opacity: 0;
+}
+
+.is-shown {
+    opacity: 1;
+}
+
+.is-size-gone {
+    height: 0;
+    width: 0;
+    padding: 0;
+    margin: 0;
+    overflow: hidden;
+}
+
+.is-size-auto {
+    height: auto;
+    width: auto;
+    overflow: auto;
+}
