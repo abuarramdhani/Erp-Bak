@@ -5,7 +5,10 @@ require_once("../koneksi.php");
 $image = $_FILES['file']['tmp_name'];
 $imagename = $_FILES['file']['name'];
 
-$file_path = $_SERVER['DOCUMENT_ROOT'] . '/API/NORI/UPLOAD/uploads/';
+// $file_path = $_SERVER['DOCUMENT_ROOT'] . '/API/NORI/UPLOAD/uploads/';
+$file_path = 'http://182.23.18.195/assets/upload/absenpekerja/';
+// $file_path = $_SERVER['DOCUMENT_ROOT'] . '/alf_absen/assets/upload/absenpekerja/';
+
 
 if(!$image){
   echo json_encode(array('message'=>'required file is empty.'));
