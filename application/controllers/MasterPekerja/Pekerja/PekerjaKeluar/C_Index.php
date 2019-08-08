@@ -125,7 +125,7 @@ class C_Index extends CI_Controller {
 									'jabatan' 	=> $pekerja[0]['jabatan'],
   									
   									'pekerjaan'=> $pekerjaan[0]['pekerjaan'],
-  									'kd_pekerjaan'=> substr($pekerjaan[0]['pekerjaan'], 0,9),
+  									'kd_pekerjaan'=>  $pekerjaan[0]['kd_pekerjaan'],
 
 									'seksi' 	=> $seksi[0]['seksi'],
 									'unit' 		=> $seksi[0]['unit'],
@@ -167,8 +167,8 @@ class C_Index extends CI_Controller {
 									'jabatan' 	=> $pekerja[0]['jabatan'],
   									
   									'pekerjaan'=> $pekerjaan[0]['pekerjaan'],
-  									'kd_pekerjaan'=> substr($pekerjaan[0]['pekerjaan'], 0,9),
-
+  									'kd_pekerjaan'=>  $pekerjaan[0]['kd_pekerjaan'],
+  									
 									'seksi' 	=> $seksi[0]['seksi'],
 									'unit' 		=> $seksi[0]['unit'],
 									'bidang' 	=> $seksi[0]['bidang'],
