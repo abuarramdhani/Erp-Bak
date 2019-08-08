@@ -4,8 +4,16 @@ $(function() {
     		{ targets: '_all', orderable: false}
     	]
 	});
+	var today = new Date();
+	var dd = String(today.getDate()).padStart(2, '0');
+	var mm = String(today.getMonth() + 1).padStart(2, '0'); //January is 0!
+	var yyyy = today.getFullYear();
+
+	today = dd + '-' + mm + '-' + yyyy;
+	// document.write(today);
+
 	var dt2 = $('#tableDataMinMaxIE').DataTable({
-		dom: '<"dataTable_Button"B><"dataTable_Filter"f>rt<"dataTable_Information"i>',
+		dom: '<"dataTable_Button"B><"dataTable_Filter"f>rt<"dataTable_Information"i><"dataTable_Paging"p>',
 		columnDefs: [
 			{
 				orderable: false,
@@ -13,16 +21,13 @@ $(function() {
 				targets: 1
 			}
 		],
-		
-		paging	: false,
         buttons: [
-			// 'pageLength',
 			{
 				extend: 'excelHtml5',
-				title: 'Edit Data Min Max',
+				title: 'Edit Data Min Max'+' : '+today,
 				exportOptions: {
 					columns: ':visible',
-					rows: ':visible',
+					// rows: ':visible',
 					modifier: {
                         selected: true
                     },
