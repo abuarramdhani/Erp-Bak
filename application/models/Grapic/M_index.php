@@ -97,8 +97,7 @@ class M_index extends CI_Model
 	}
 
 
-	public function pekerjaUnitKeuangan($now, $kodeUnit, $sqlPKL)
-	{
+	public function pekerjaUnitKeuangan($now, $kodeUnit, $sqlPKL) {
 		$sql = "
 		select rtrim(unit),count(*)	from 
 				(
@@ -114,7 +113,6 @@ class M_index extends CI_Model
 				where ((masukkerja<='2019-$now') and (tglkeluar >= '2019-$now' and keluar = '1'))
 				and (masukkerja >= '1990-01-01') and rtrim(b.kodesie) like '1%' and rtrim(b.unit) = '$kodeUnit'  $sqlPKL
 				 ) tabel ) tabel group by rtrim(unit)";
-				// echo $sql;exit();
 		$query = $this->personalia->query($sql);
 		return $query->result_array();
 	}
@@ -231,11 +229,8 @@ class M_index extends CI_Model
 		return $query->result_array();
 	}
 
-	public function pekerjaSeksiDeptPemasaran($now, $kodeSeksi, $sqlPKL)
-	{
-		$sql = "
-		select rtrim(seksi),count(*)	from 
-				(
+	public function pekerjaSeksiDeptPemasaran($now, $kodeSeksi, $sqlPKL) {
+		$sql = "select rtrim(seksi),count(*) from (
 				select distinct nik, nama ,dept,bidang,unit,seksi 
 				from
 				(select a.noind,nik,nama,masukkerja,tglkeluar,keluar,b.*
@@ -249,17 +244,18 @@ class M_index extends CI_Model
 				and (masukkerja >= '1990-01-01') and rtrim(b.kodesie) like '2%' and rtrim(b.seksi) = '$kodeSeksi' $sqlPKL
 				 order by 5
 				 ) tabel ) tabel group by rtrim(seksi)";
-				// echo $sql;exit();
 		$query = $this->personalia->query($sql);
 		return $query->result_array();
 	}
 
-	public function pekerjaAllSeksiDeptProduksi($now, $tdklangsung, $langsung, $sqlPKL)
-	{
-		$sql = "select rtrim(seksi1.seksi) seksi
-				      ,count(seksi1.*) tidak_langsung
-				      ,coalesce(lsng.langsung,'0') langsung
-				      ,(count(seksi1.*) + coalesce(lsng.langsung,'0')) total 
+	public function pekerjaAllSeksiDeptProduksi($now, $tdklangsung, $langsung, $sqlPKL) {
+		$sql = "select
+					trim(seksi1.bidang) bidang,
+					trim(seksi1.unit) unit,
+					trim(seksi1.seksi) seksi,
+					count(seksi1.*) tidak_langsung,
+					coalesce(lsng.langsung,'0') langsung,
+					(count(seksi1.*) + coalesce(lsng.langsung,'0')) total 
 				from (select distinct nik, nama ,dept,bidang,unit,seksi 
                         from (select a.noind,nik,nama,masukkerja,tglkeluar,keluar,b.* 
                                         from hrd_khs.tpribadi a left join hrd_khs.tseksi b on a.kodesie=b.kodesie left join hrd_khs.tpekerjaan c on a.kd_pkj=c.kdpekerjaan 
@@ -284,9 +280,8 @@ class M_index extends CI_Model
                                         and rtrim(b.kodesie) like '3%' $langsung $sqlPKL order by 5 ) tabel ) seksi2
 					    group by rtrim(seksi2.seksi)
 					    order by seksi_langsung) lsng on rtrim(seksi1.seksi) = lsng.seksi_langsung
-					group by rtrim(seksi1.seksi)
-					         ,lsng.langsung
-					order by seksi";
+					group by bidang, unit, seksi, lsng.langsung
+					order by bidang";
 				// echo $sql;exit();
 		$query = $this->personalia->query($sql);
 		return $query->result_array();
@@ -394,8 +389,7 @@ class M_index extends CI_Model
 		return $query->result_array();
 	}
 
-	public function semuaData($now, $sqlPKL)
-	{
+	public function semuaData($now, $sqlPKL) {
 		$sql = "
 		select count(*)	from 
 				(
