@@ -167,6 +167,10 @@
 		<script type="text/javascript" src="<?= base_url('assets/js/customSPO.js') ?>"></script>
 		<script type="text/javascript" src="<?= base_url('assets/js/customTK.js') ?>"></script>
 		<script type="text/javascript" src="<?= base_url('assets/js/customAS.js') ?>"></script>
+		<script src="<?php echo base_url('assets/js/customMLP.js');?>" type="text/javascript"></script>
+		<script src="<?php echo base_url('assets/js/customMLPB.js');?>" type="text/javascript"></script>
+		<script src="<?php echo base_url('assets/js/customMLPA.js');?>" type="text/javascript"></script>
+		<script src="<?php echo base_url('assets/js/customMLPD.js');?>" type="text/javascript"></script>
 		<!--<script type="text/javascript" src="<?= base_url('assets/js/customOSP.js') ?>"></script>-->
 		<!--<script type="text/javascript" src="<?= base_url('assets/js/customHWM.js') ?>"></script>-->
 		<!-- END OF CUSTOM JAVASCRIPT | DO NOT EDIT!! -->

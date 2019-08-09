@@ -10,16 +10,16 @@ th, td{
 </style>
 <div class="box box-primary box-solid">
 	<div class="box-header with-border"><b>Hasil</b></div>
-	<h4 align="center" > LPPB UMUM </h4>
     <div class="box-body">
+	<h4 align="center" > LPPB IMPORT </h4>
         <div class="panel-body">
-		<!-- <div id="filterUmum"></div><br /> -->
-            <div class="text-nowrap">
-				<table id="tbl_umumDt" class="datatable table table-striped table-bordered table-hover">
+		<!-- <div id= "filterImport"></div><br /> -->
+            <div class="table-responsive text-nowrap">
+				<table id="tbl_importDt" class="datatable table table-striped table-bordered table-hover">
 				<thead class="bg-primary">
                     <tr>
-						<th style="background-color: #337ab7;">NO</td>
-                        <th style="background-color: #337ab7 ;">RECEIPT_NUM</th>
+						<th style="background-color: #337ab7;" >NO</td>
+                        <th style="background-color: #337ab7;" >RECEIPT_NUM</th>
 						<th>IO</th>
 						<th>NO_LPPB</th>
                         <th>PO</th>
@@ -27,7 +27,7 @@ th, td{
 						<th>ITEM</th>
 						<th>DESCRIPTION</th>
                         <th>TRANSFER_QTY</th>
-						<th>TRANSFER_DATE</th>
+                        <th>TRANSFER_DATE</th>
 						<th>DELIVER_QTY</th>
 						<th>DELIVER_DATE</th>
 						<th>ACCEPT_QTY</th>
@@ -39,7 +39,7 @@ th, td{
 						<th>RECEIPT_DATE</th>
 						<th>TRANSACTION_DATE</th>
 						<th>SHIPMENT_LINE_ID</th>
-						<th>TRANSACTION_ID</th>
+						<th>TRANSCACTION_ID</th>
 					</tr>
 				</thead>
 				<tbody>
@@ -60,7 +60,7 @@ th, td{
 						<td><?= $row['ACCEPT_QTY'] ?></td>
 						<td><?= $row['ACCEPT_DATE'] ?></td>
 						<td><?= $row['REJECT_QTY'] ?></td>
-						<td><?= $row['REJECT_DATE'] ?></td>	
+						<td><?= $row['REJECT_DATE'] ?></td>
 						<td><?= $row['RECEIVE_QTY'] ?></td>
 						<td><?= $row['RECEIVE_DATE'] ?></td>
 						<td><?= $row['RECEIPT_DATE'] ?></td>

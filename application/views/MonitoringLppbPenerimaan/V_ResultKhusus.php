@@ -1,3 +1,4 @@
+
 <style>
 th, td{
 	text-align: center;
@@ -10,16 +11,16 @@ th, td{
 </style>
 <div class="box box-primary box-solid">
 	<div class="box-header with-border"><b>Hasil</b></div>
-	<h4 align="center" > LPPB UMUM </h4>
+	<h4 align="center" > LPPB KHUSUS </h4>
     <div class="box-body">
         <div class="panel-body">
-		<!-- <div id="filterUmum"></div><br /> -->
-            <div class="text-nowrap">
-				<table id="tbl_umumDt" class="datatable table table-striped table-bordered table-hover">
+		<!-- <div id="filterKhusus"></div> <br /> -->
+            <div class="table-responsive text-nowrap">
+				<table id="tbl_khususDt" class="datatable table table-striped table-bordered table-hover">
 				<thead class="bg-primary">
                     <tr>
-						<th style="background-color: #337ab7;">NO</td>
-                        <th style="background-color: #337ab7 ;">RECEIPT_NUM</th>
+						<th style="background-color: #337ab7;" >NO</td>
+                        <th style="background-color: #337ab7;" >RECEIPT_NUM</th>
 						<th>IO</th>
 						<th>NO_LPPB</th>
                         <th>PO</th>
@@ -74,4 +75,8 @@ th, td{
 			</div>
 		</div>
 	</div>
+
+
+
+	
 </div>

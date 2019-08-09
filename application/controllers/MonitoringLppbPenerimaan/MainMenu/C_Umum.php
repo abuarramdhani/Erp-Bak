@@ -1,4 +1,4 @@
-<?php if (!defined('BASEPATH')) exit('No direct script access allowed');
+﻿<?php if (!defined('BASEPATH')) exit('No direct script access allowed');
 
 class C_Umum extends CI_Controller
 {
@@ -22,7 +22,7 @@ class C_Umum extends CI_Controller
 	public function checkSession()
 	{
 		if($this->session->is_logged){
-
+ 
 		} else {
 			redirect('index');
 		}
@@ -43,6 +43,9 @@ class C_Umum extends CI_Controller
 		$data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id);
 		$data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id);
 
+		$detailio = $this->M_umum->showIo();
+		$data['lppb'] = $detailio;
+		
 		$this->load->view('V_Header',$data);
 		$this->load->view('V_Sidemenu',$data);
 		$this->load->view('MonitoringLppbPenerimaan/V_Umum');
@@ -55,39 +58,79 @@ class C_Umum extends CI_Controller
 		return $ss[2]."-".$ss[1]."-".$ss[0];
 	}
 
+	// public function getdata(){
+	// 	$user = $this->session->username;
+
+	// 	$user_id = $this->session->userid;
+
+	// 	$data['Title'] = 'Khusus';
+	// 	$data['Menu'] = 'Khusus';
+	// 	$data['SubMenuOne'] = '';
+	// 	$data['SubMenuTwo'] = '';
+
+	// 	$data['UserMenu'] = $this->M_user->getUserMenu($user_id,$this->session->responsibility_id);
+	// 	$data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id);
+	// 	$data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id);
+
+		
+
+	// 	$this->load->view('V_Header',$data);
+	// 	$this->load->view('V_Sidemenu',$data);
+	// 	$this->load->view('MonitoringLppbPenerimaan/V_Khusus');
+	// 	$this->load->view('V_Footer',$data);
+
+
+	// }
+
 	public function search()
 	{
-		$noLpAw = $_POST['noLpAw'];
-		$noLpAk = $_POST['noLpAk'];
-		$tglAw = $_POST['tglAw'];
-		$tglAk = $_POST['tglAk'];
+		
+		$noLpAw = $this->input->post('noLpAw');
+		$noLpAk = $this->input->post('noLpAk');
+		$tgAw = $this->input->post('tgAw');
+		$tgAk =$this->input->post('tgAk');
+		$io = $this->input->post('io');
+		// print_r($_POST);exit();
+		// print_r($io);
+		
 		$atr=NULL;
 		$atr2=NULL;
-			
+		$atr3=NULL;
 			
 		if ($noLpAw != '' AND $noLpAk != ''){
-			$atr = "AND rsh.RECEIPT_NUM between nvl($noLpAw,rsh.RECEIPT_NUM) and nvl($noLpAk,rsh.RECEIPT_NUM)";
+			
+			$atr = "and rsh.RECEIPT_NUM between nvl($noLpAw ,rsh.RECEIPT_NUM) and nvl($noLpAk,rsh.RECEIPT_NUM)";
 		}
 		else{
 			$atr ='';
 		}
-
-		if ($tglAw != '' AND $tglAk != ''){
-			$formatedAw = $this->format_date($tglAw);
-			$formatedAk = $this->format_date($tglAk);
+		
+		if ($tgAw != '' AND $tgAk != ''){
+			$formatedAw = $this->format_date($tgAw);
+			$formatedAk = $this->format_date($tgAk);
 			$tgAw = strtoupper(date('d-M-Y', strtotime($formatedAw)));
 			$tgAk = strtoupper(date('d-M-Y', strtotime($formatedAk)));
-			$atr2 = "and trunc(wkt.MINTIME) between nvl('$tgAw',wkt.MINTIME) and nvl('$tgAk',wkt.MINTIME)";
+			$atr2 = " and trunc(wkt.MINTIME) between nvl('$tgAw',wkt.MINTIME) and nvl('$tgAk',wkt.MINTIME)";
+			
 		}
 		else{
 			$atr2 ='';
 		}
-		$data['value'] = $this->M_umum->getSearch($atr,$atr2);
+		
+
+		if($io !=''){
+			$atr3 = "and rsh.SHIP_TO_ORG_ID = '$io'";
+		}
+		else {
+			$atr3 ='';
+		}
+		// echo"<pre>";print_r($atr);exit();
+		$data['value'] = $this->M_umum->getSearch($atr,$atr2,$atr3);
+		
+		// echo "<pre>";print_r($data);exit();
 		// echo"<pre>";print_r($data['value']);
 		// exit();
 
-		$this->load->view('MonitoringLppbPenerimaan/V_Result',$data);
-		
+		$this->load->view('MonitoringLppbPenerimaan/V_Result',$data);	
 	}
-
 }
