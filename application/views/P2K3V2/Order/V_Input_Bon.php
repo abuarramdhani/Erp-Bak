@@ -39,7 +39,7 @@
 										</div>
 										<div class="col-md-10">
 											<div class="col-md-9" style="padding: 3px">
-												<select required="" id="pemakai_2" name="txt_pemakai_2" class="form-control select2" data-placeholder="Pilih Seksi">
+												<select required="" id="pemakai_2" name="txt_pemakai_2" class="form-control p2k3_select2" data-placeholder="Pilih Seksi">
 													<option></option>
 												</select>
 											</div>
@@ -60,29 +60,29 @@
 										<label class="col-md-12 control-label">Lokasi</label>
 										<div class="col-md-10">
 											<div class="col-md-9" style="padding:3px">
-												<select required="" id="p2k3_lokasi" name="txt_lokasi" class="form-control select2" data-placeholder="Pilih Lokasi Gudang">
-													<option></option>
-													<?php foreach ($lokasi as $data_lokasi) {?>
+												<select required="" id="p2k3_lokasi" name="txt_lokasi" class="form-control p2k3_select2" data-placeholder="Pilih Lokasi Gudang" disabled="">
+													<option selected="" value="142">Yogyakarta </option>
+													<!-- <?php foreach ($lokasi as $data_lokasi) {?>
 													<option value="<?php echo $data_lokasi['LOCATION_ID'] ?>"><?php echo $data_lokasi['LOCATION_CODE'] ?> </option>
-													<?php } ?>
+													<?php } ?> -->
 												</select>
 											</div>
 										</div>
 										<label class="col-md-12 control-label">Subinventory</label>
 										<div class="col-md-10">
 											<div class="col-md-9" style="padding:3px">
-												<select required="" id="p2k3_gudang" name="txt_gudang" class="form-control select2" data-placeholder="Pilih Subinventory" disabled>
-													<option></option>
+												<select required="" id="p2k3_gudang_hilangkanini" name="txt_gudang" class="form-control p2k3_select2" data-placeholder="Pilih Subinventory" disabled="">
+													<option selected="" value="PNL-NPR">[PNL-NPR] GUDANG BAHAN PENOLONG NON-PRODUKSI</option>
 												</select>
 											</div>
 											<input id="gudang_print" type="hidden" name="txt_gudang_print">
 										</div>
-										<div class="form-group" style="margin: 8 auto; display: none">
+										<div class="form-group" style="margin: 8 auto;">
 											<label class="col-md-12 control-label">Locator</label>
 											<div class="col-md-10">
-												<div class="col-md-9 bg-danger" style="padding: 3px">
-													<select style="width: 100%" id="p2k3_locator" name="txt_locator" class="form-control select2" data-placeholder="Pilih Locator" disabled>
-														<option></option>
+												<div class="col-md-9" style="padding: 3px">
+													<select style="width: 100%" id="p2k3_locator_hilangkanini" name="txt_locator" class="form-control p2k3_select2" data-placeholder="Pilih Locator" disabled="">
+														<option selected="" value="783">UMUM</option>
 													</select>
 												</div>
 											</div>
@@ -204,7 +204,7 @@
 		var jum = '<?php echo $a; ?>';
 		if (jum == '1') {
 			$('#pemakai_2').attr('disabled', true);
-			$('#p2k3_lokasi').attr('disabled', true);
+			// $('#p2k3_lokasi').attr('disabled', true);
 			$('#surat-loading').attr('hidden', true);
 		}
 	});

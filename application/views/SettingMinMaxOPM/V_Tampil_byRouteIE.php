@@ -26,7 +26,13 @@
     .dataTable_Processing {
         z-index: 999;
     }
+
+	.buttons-html5{
+		display:none;
+	}
+
 </style>
+
 <section class="content">
 	<div
 		class="loader"
@@ -47,7 +53,7 @@
 						<a style="float: center; margin-right: 3%; margin-top: -0.5%;" data-toggle="modal" data-target="#Modalku<?php echo $mm['SEGMENT1']; ?>"  class="btn btn-warning" ><span class="fa fa-upload"> IMPORT</a>
 						<a style="float: center; margin-right: 3%; margin-top: -0.5%;" href="<?php echo base_url('SettingMinMax/IE')?>" class="btn btn-success"><span class="fa fa-check-square"> SELESAI</a>
 					</div>
-				</div>
+			</div>
 				<table id="tableDataMinMaxIE" class="table table-striped table-bordered table-responsive table-hover">
 					<thead style="background:#22aadd; color:#FFFFFF;">
 						<th style="text-align:center; width: 5%">NO</th>

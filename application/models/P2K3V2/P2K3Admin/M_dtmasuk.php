@@ -152,9 +152,21 @@ class M_Dtmasuk extends CI_Model
 
     public function getOrder($pr)
     {
-        $sql = " select ko.status, es.section_name from k3.k3n_order ko 
-                 left join er.er_section es on substring(es.section_code,0,8) = substring(ko.kodesie,0,8) 
-                 where ko.periode = '$pr' group by es.section_name, ko.status order by es.section_name asc;";
+        $sql = " select 
+                    ko.status,
+                    es.section_name
+                from
+                    k3.k3n_order ko
+                left join er.er_section es on
+                    substring(es.section_code, 0, 8) = substring(ko.kodesie, 0, 8)
+                where
+                    ko.periode = '$pr'
+                    and ko.tgl_input = (select max(ko2.tgl_input) from k3.k3n_order ko2 where ko2.kodesie = ko.kodesie and ko2.periode = ko.periode)
+                group by
+                    es.section_name,
+                    ko.status, ko.tgl_input
+                order by
+                    es.section_name asc;";
                 // echo $sql;exit();
         $query = $this->erp->query($sql);
         return $query->result_array();

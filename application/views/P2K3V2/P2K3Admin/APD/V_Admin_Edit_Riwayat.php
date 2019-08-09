@@ -1,3 +1,8 @@
+<style type="text/css">
+    td{
+        min-width:155px; /* force table to be oversize */
+    }
+</style>
 <section class="content">
     <div class="inner" >
         <div class="row">

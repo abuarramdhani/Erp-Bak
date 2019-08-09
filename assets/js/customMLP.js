@@ -1,15 +1,20 @@
 function getMLP(th) {
-		$(document).ready(function(){
+	$(document).ready(function(){
 		var noLpAw = $('input[name="noLpAw"]').val();
 		var noLpAk = $('input[name="noLpAk"]').val();
-		var tglAw = $('input[name="tglAw"]').val();
-		var tglAk = $('input[name="tglAk"]').val();
-		// console.log(noLpAw, noLpAk, tglAw, tglAk, 'okas');
+		var tgAw = $('input[name="tgAw"]').val();
+		var tgAk = $('input[name="tgAk"]').val();
+		var io = $('.io').val();
+		console.log(noLpAw, noLpAk, tgAw, tgAk, io);
 		
 		var request = $.ajax({
 			url: baseurl+'MonitoringLppbPenerimaan/Umum/search/',
 			data: {
-				noLpAw : noLpAw, noLpAk : noLpAk, tglAw : tglAw, tglAk : tglAk
+				noLpAw : noLpAw, 
+				noLpAk : noLpAk, 
+				tgAw : tgAw, 
+				tgAk : tgAk,
+				io : io
 			},
 			type: "POST",
 			datatype: 'html'
@@ -31,14 +36,17 @@ function getMLP(th) {
 			//   })
 		request.done(function(result){
 			// console.log("sukses2");
-				$('#ResultLppb').html(result);
-				$('#myTable').DataTable({
-					"scrollX": true,
-					"scrollY": 500,
-  					"scrollCollapse": true,
-					"fixedHeader":true,
+			$('#ResultLppb').html(result);
+				$('#tbl_umumDt').DataTable({
+					scrollX: true,
+					scrollY:  400,
+					scrollCollapse: true,
+					paging:true,
+					info:false,
+					fixedColumns: {
+						leftColumns: 2
+					}
 				});
-			})
-		});
-		
+			});
+		});		
 }

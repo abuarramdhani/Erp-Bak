@@ -36,7 +36,7 @@ class M_pekerjakeluar extends CI_Model {
 	 		$data= "select (case 	when 	pri.kd_pkj is not null
  								then 	pri.kd_pkj || ' - ' || rtrim(tpekerjaan.pekerjaan)
 								end
-								) as pekerjaan
+								) as pekerjaan,pri.kd_pkj as kd_pekerjaan
 								from hrd_khs.tpribadi as pri
 								left join hrd_khs.tpekerjaan as tpekerjaan
 								on 	tpekerjaan.kdpekerjaan=pri.kd_pkj

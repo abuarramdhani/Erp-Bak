@@ -16,7 +16,7 @@
                             <div class="col-lg-1 ">
                                 <div class="text-right hidden-md hidden-sm hidden-xs">
                                     <a class="btn btn-default btn-lg"
-                                        href="<?php echo site_url('MonitoringLppbPenerimaan/Umum/');?>">
+                                        href="<?php echo site_url('MonitoringLppbPenerimaan/Khusus/');?>">
                                         <i class="icon-wrench icon-2x">
                                         </i>
                                         <span>
@@ -48,19 +48,32 @@
                                             <label class="control-label">Tgl Transaksi</label>
                                             <div class="input-group date">
                                                 <div class="input-group-addon"><i class="fa fa-calendar"></i></div>
-                                                    <input type="text" class="form-control pull-right" id="tglAw" name="tglAw" placeholder="Tanggal Transaksi">
+                                                    <input type="text" class="form-control pull-right" id="tgAw" name="tgAw" placeholder="Tanggal Transaksi">
                                             </div>
                                             </div>
                                         <div class="col-md-6">
                                             <label class="control-label">Tgl Penerimaan</label>
                                             <div class="input-group date">
                                                 <div class="input-group-addon"><i class="fa fa-calendar"></i></div>
-                                                    <input type="text" class="form-control pull-right" id="tglAk" name="tglAk" placeholder="Tanggal Penerimaan">
+                                                    <input type="text" class="form-control pull-right" id="tgAk" name="tgAk" placeholder="Tanggal Penerimaan">
                                                 </div>
                                             </div>
                                         </div>
+                                        <div class="panel-body">
+                                        <div class="col-md-12">
+                                            <label class="control-label">ID Organization</label>
+                                                <select id="io" name="io" class="form-control select2 select2-hidden-accessible io" style="width:100%;" data-placeholder="ID Organization">
+															<option value=""></option>
+															<?php foreach ($lppb as $lp) { ?>
+															<option name="io" value="<?php echo $lp['ORGANIZATION_ID'] ?>"><?php echo $lp['ORGANIZATION_CODE'] ?></option>
+															<?php } ?>
+											    </select> 
+                                            
+                                        </div>
+
+    
                                     <div class="panel-body">
-                                    <div class="col-md-12">
+                                    <div class="col-md-12"><br />
 
                                     <!-- <button type="button" data-toggle="modal" class="btn btn-danger" data-target="#myModal">Buka modal</button>
                                     <div class="modal fade" tabindex="-1" role="dialog">
@@ -81,7 +94,7 @@
                                     </div>
                                     </div> -->
 
-                                        <center><button class="btn btn-primary" onclick="getMLP(this)"><i class="fa fa-search"></i> Find </button></center>
+                                        <center ><button class="btn btn-primary" onclick="getMLP(this)"><i class="fa fa-search"></i> Find </button></center>
                                         
                                     </div>
                                 </div>
