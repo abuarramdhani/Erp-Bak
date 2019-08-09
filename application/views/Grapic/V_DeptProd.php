@@ -3,7 +3,6 @@
 	td { height: 60px; }
 	thead tr th { height: auto; }
 	.dataTable tbody tr td { height: auto; }
-	.html2canvas-container { width: 1900px !important; height: 430px !important; }
 	.fixed-column { position: absolute; background: white; width: 100px; left: 16px; margin-bottom: 2px; }
 </style>
 <script>
@@ -56,7 +55,7 @@
 														<option value="1">-- Dept. Produksi - Pusat</option>
 														<option value="2">-- Dept. Produksi - Tuksono</option>
 														<option value="5">-- Dept. Produksi - Melati</option>
-														<option style="font-weight: bolder;" disabled>============= Dept. Produksi (Pekerja Direct/Indirect Labour =============</option>
+														<option style="font-weight: bolder;" disabled>========== Dept. Produksi (Pekerja Direct/Indirect Labour ==========</option>
 														<option value="tabelseksi">-- Pekerja Langsung & Tidak Langsung Per Seksi Dept.Produksi</option>
 														<option value="11">-- Dept. Produksi - Pekerja Tidak Langsung / InDirect Labour</option>
 														<option value="12">-- Dept. Produksi - Pekerja Langsung / Direct Labour</option>
@@ -196,7 +195,7 @@
 									<div class="btn-group pull-right">
 										<button id="button-fullscreen" class="btn btn-primary"><i class="fa fa-desktop" style="margin-right: 8px;"></i>Show in Fullscreen</button>
 										<button disabled title="Fitur sedang dalam proses pengembangan" id="button-print" class="btn btn-primary"><i id="btn-print-box" style="margin-right: 8px;" class="fa fa-print"></i>Print</button>
-										<button disabled title="Fitur sedang dalam proses pengembangan" id="button-save" class="btn btn-primary"><i id="btn-save-box" style="margin-right: 8px;" class="fa fa-floppy-o"></i>Save</button>
+										<button title="Fitur sedang dalam proses pengembangan" id="button-save" class="btn btn-primary"><i id="btn-save-box" style="margin-right: 8px;" class="fa fa-floppy-o"></i>Save</button>
 									</div>
 								</div>
 							</div>
@@ -230,20 +229,18 @@
 								</table>
 								<?php else: ?>
 								<div style="margin-left: 98px;">
-									<table id="tabelDataSDM" style="overflow-x: scroll; width: 100%; display: block;" class="table table-bordered table-hover text-center">
-										<thead style="border-color: black">
-											<tr>
-												<th class="fixed-column" style="background-color: #00a65a; color: white; min-width: 100px;">Keterangan</th>
-												<?php $a = 1; foreach ($akhir as $key => $value): ?>
-												<th class="<?= ($a++ % 2 == 0) ? 'bg-primary' : 'bg-orange' ?>" colspan="<?= $value ?>"><?= $key ?></th>
-												<?php endforeach ?>
-											</tr>
+									<table id="tableRekapSDM" class="table table-bordered table-hover text-center" style="overflow-x: scroll; width: 100%; display: block;">
+										<thead>
+											<th class="fixed-column" style="background-color: #00a65a; color: white; min-width: 100px;">Keterangan</th>
+											<?php $a = 1; foreach ($akhir as $key => $value): ?>
+											<th class="<?= ($a++ % 2 == 0) ? 'bg-primary' : 'bg-orange' ?>" colspan="<?= $value ?>"><?= $key ?></th>
+											<?php endforeach ?>
 										</thead>
 										<tbody>
 											<tr>
 												<td class="fixed-column">Tanggal</td>
 												<?php foreach ($tgl as $key => $date): ?>
-												<td colspan="2"><?= $date->format("m.d") ?></td>	
+												<td colspan="2" style="text-align: center;"><?= $date->format("m.d") ?></td>
 												<?php endforeach ?>
 											</tr>
 											<tr>
@@ -289,7 +286,6 @@
 															}
 														?>
 													];
-													
 												</script>
 											</tr>
 											<tr>
@@ -297,7 +293,7 @@
 												<?php foreach ($target as $key => $value): ?>
 												<td colspan="2"><?= $value ?></td>
 												<?php endforeach ?>
-												<?php for ($i = (count($target) - 1); $i < count($akhir); $i++): ?>
+												<?php for ($i = count($target); $i < 26; $i++): ?>
 												<td colspan="2"></td>
 												<?php endfor ?>
 												<script>
@@ -439,13 +435,13 @@
 												<td>0%</td>
 												<?php for ($i = 0; $i < count($target) - 1; $i++): $turun = ($target[$i + 1] - $target[0]); ?>
 												<td><?= abs($turun) ?></td>
-												<?php if(0 != $target[0]): ?>
+												<?php if($target[0] != 0): ?>
 												<td><?= abs(round(($turun / $target[0] * 100), 1)) ?>%</td>
 												<?php else: ?>
 												<td>0%</td>
 												<?php endif ?>
 												<?php endfor ?>
-												<?php for ($i = (count($target) - 1); $i < 25; $i++): ?>
+												<?php for ($i = count($target); $i < 26; $i++): ?>
 												<td></td>
 												<td></td>
 												<?php endfor ?>
@@ -542,35 +538,37 @@
 	];
 
 	document.addEventListener('DOMContentLoaded', async _ => {
-		$('#datatableSeksi').DataTable({
-			language: {
-				"processing":       "Memuat data...",
-				"loadingRecords":   "Memuat...",
-				"search":           "Cari : ",
-				"lengthMenu":       "Menampilkan _MENU_ baris per halaman",
-				"emptyTable":       "Belum ada data",
-				"zeroRecords":      "Tidak ada data yang sesuai dengan kata kunci",
-				"infoEmpty":        "Data tidak tersedia",
-				"infoFiltered":     "(di filter dari _MAX_ total data)",
-				"info":             "Menampilkan data ke _START_ sampai _END_ dari _TOTAL_ data",
-				"paginate": {
-					"first":        "Pertama",
-					"last":         "Terakhir",
-					"next":         "Selanjutnya",
-					"previous":     "Sebelumnya"
-				},
-				"aria": {
-					"sortAscending":    ": aktifkan untuk mengurutkan data secara ascending",
-					"sortDescending":   ": aktifkan untuk mengurutkan data secara descending"
-				},
-				"buttons": {
-					"pageLength": {
-						_: "Menampilkan %d baris",
-						'-1': "Tampilkan semua"
+		if(filterData === 'tabelseksi') {
+			$('#datatableSeksi').DataTable({
+				language: {
+					"processing":       "Memuat data...",
+					"loadingRecords":   "Memuat...",
+					"search":           "Cari : ",
+					"lengthMenu":       "Menampilkan _MENU_ baris per halaman",
+					"emptyTable":       "Belum ada data",
+					"zeroRecords":      "Tidak ada data yang sesuai dengan kata kunci",
+					"infoEmpty":        "Data tidak tersedia",
+					"infoFiltered":     "(di filter dari _MAX_ total data)",
+					"info":             "Menampilkan data ke _START_ sampai _END_ dari _TOTAL_ data",
+					"paginate": {
+						"first":        "Pertama",
+						"last":         "Terakhir",
+						"next":         "Selanjutnya",
+						"previous":     "Sebelumnya"
+					},
+					"aria": {
+						"sortAscending":    ": aktifkan untuk mengurutkan data secara ascending",
+						"sortDescending":   ": aktifkan untuk mengurutkan data secara descending"
+					},
+					"buttons": {
+						"pageLength": {
+							_: "Menampilkan %d baris",
+							'-1': "Tampilkan semua"
+						}
 					}
 				}
-			}
-		});
+			});
+		}
 		document.getElementById('filter-data-loading').innerHTML = 'Dept. Produksi';
 		let buttonScrollTopIsHidden = true;
 		window.onscroll = async _ => { 

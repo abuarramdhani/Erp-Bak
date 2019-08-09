@@ -71,7 +71,6 @@ const showChart1 = async _ => {
 					borderColor: 'rgba(251, 136, 60, 0.94)',
 					borderWidth: 2
 				}
-				// Hide Bar 2 & 3
 				// , {
 				// 	label: 'Target Semua Karyawan Langsung',
 				// 	data: targetSemuaKaryawanLangsung,
@@ -158,19 +157,21 @@ const showChartBar1 = async _ => {
 				}, {
 					label: 'Jumlah Semua Karyawan Turun Per Bulan',
 					data: jumlahTurunPerBulan,
-					backgroundColor: '(251, 136, 60, 0.94)',
+					backgroundColor: 'rgba(251, 136, 60, 0.94)',
 					borderWidth: 1
-				}, {
-					label: 'Jumlah Semua Karyawan Langsung Turun Per Bulan',
-					data: jumlahSemuaKaryawanLangsungTurunPerBulan,
-					backgroundColor: '#ff0000',
-					borderWidth: 1
-				}, {
-					label: 'Jumlah Semua Karyawan Tidak Langsung Turun Per Bulan',
-					data: jumlahSemuaKaryawanTidakLangsungTurunPerBulan,
-					backgroundColor: '#00cc00',
-					borderWidth: 1
-				}]
+				}
+				// , {
+				// 	label: 'Jumlah Semua Karyawan Langsung Turun Per Bulan',
+				// 	data: jumlahSemuaKaryawanLangsungTurunPerBulan,
+				// 	backgroundColor: '#ff0000',
+				// 	borderWidth: 1
+				// }, {
+				// 	label: 'Jumlah Semua Karyawan Tidak Langsung Turun Per Bulan',
+				// 	data: jumlahSemuaKaryawanTidakLangsungTurunPerBulan,
+				// 	backgroundColor: '#00cc00',
+				// 	borderWidth: 1
+				// }
+				]
 			},
 			options: {
 				responsive: true,
@@ -191,12 +192,12 @@ const showChartBar1 = async _ => {
 				datasets: [{
 					label: 'Target Turun Per Bulan',
 					data: targetTurunPerBulan,
-					backgroundColor: '#ffbf00',
+					backgroundColor: 'rgba(54, 162, 225, 1)',
 					borderWidth: 1
 				}, {
 					label: 'Jumlah Turun Per Bulan',
 					data: jumlahTurunPerBulan,
-					backgroundColor: '#cbc3b1',
+					backgroundColor: 'rgba(251, 136, 60, 0.94)',
 					borderWidth: 1
 				}]
 			},
@@ -229,19 +230,21 @@ const showChartBar2 = async _ => {
 				}, {
 					label: 'Jumlah Semua Karyawan Turun Akumulasi',
 					data: jumlahTurunAkumulasi,
-					backgroundColor: '(251, 136, 60, 0.94)',
+					backgroundColor: 'rgba(251, 136, 60, 0.94)',
 					borderWidth: 1
-				}, {
-					label: 'Jumlah Semua Karyawan Langsung Akumulasi',
-					data: jumlahSemuaKaryawanTurunLangsungAkumulasi,
-					backgroundColor: '#ff0000',
-					borderWidth: 1
-				}, {
-					label: 'Jumlah Semua Karyawan Tidak Langsung Akumulasi',
-					data: jumlahSemuaKaryawanTurunTidakLangsungAkumulasi,
-					backgroundColor: '#00cc00',
-					borderWidth: 1
-				}]
+				}
+				// , {
+				// 	label: 'Jumlah Semua Karyawan Langsung Akumulasi',
+				// 	data: jumlahSemuaKaryawanTurunLangsungAkumulasi,
+				// 	backgroundColor: '#ff0000',
+				// 	borderWidth: 1
+				// }, {
+				// 	label: 'Jumlah Semua Karyawan Tidak Langsung Akumulasi',
+				// 	data: jumlahSemuaKaryawanTurunTidakLangsungAkumulasi,
+				// 	backgroundColor: '#00cc00',
+				// 	borderWidth: 1
+				// }
+				]
 			},
 			options: {
 				responsive: true,
@@ -262,12 +265,12 @@ const showChartBar2 = async _ => {
 				datasets: [{
 					label: 'Target Turun Akumulasi',
 					data: targetTurunAkumulasi,
-					backgroundColor: '#ffbf00',
+					backgroundColor: 'rgba(54, 162, 225, 1)',
 					borderWidth: 1
 				}, {
 					label: 'Jumlah Turun Akumulasi',
 					data: jumlahTurunAkumulasi,
-					backgroundColor: '#cbc3b1',
+					backgroundColor: 'rgba(251, 136, 60, 0.94)',
 					borderWidth: 1
 				}]
 			},
@@ -332,26 +335,38 @@ const print = async (id) => {
 };
 
 const save = async (id) => {
-	const element = document.getElementById('box-' + id);
-	const buttonSave = document.getElementById('btn-save-' + id);
-	let title = 'Grafik Jumlah Pekerja 2018 vs 2019 (tanpa PKL, Magang & TKPW)';
-	if(id == 1) title = 'Grafik Jumlah Pekerja 2018 vs 2019 (termasuk PKL, Magang & TKPW)';
-	loading.showInButton(buttonSave, 'fa-floppy-o');
-	html2canvas(element, {
-		scale: 1,
-		height: 600
-	}).then((canvas) => {
-		setTimeout(_ => {
-			let doc = new jsPDF('L', 'mm', 'a4');
-			doc.addImage(canvas.toDataURL('image/jpeg'), 'JPEG', 8, 8);
-			doc.save(title + '.pdf', { 
-				returnPromise: true
-			}).then(_ => {
-				setTimeout(_ => {
-					loading.hideInButton(buttonSave, 'fa-floppy-o');
-				}, 2500);
-			});
-		}, 500);
+	// const element = document.getElementById('box-' + id);
+	// const buttonSave = document.getElementById('btn-save-' + id);
+	// let title = 'Grafik Jumlah Pekerja 2018 vs 2019 (tanpa PKL, Magang & TKPW)';
+	// if(id == 1) title = 'Grafik Jumlah Pekerja 2018 vs 2019 (termasuk PKL, Magang & TKPW)';
+	// loading.showInButton(buttonSave, 'fa-floppy-o');
+	// html2canvas(element, {
+	// 	scale: 1,
+	// 	height: 600
+	// }).then((canvas) => {
+	// 	setTimeout(_ => {
+	// 		let doc = new jsPDF('L', 'mm', 'a4');
+	// 		doc.addImage(canvas.toDataURL('image/jpeg'), 'JPEG', 8, 8);
+	// 		doc.save(title + '.pdf', { 
+	// 			returnPromise: true
+	// 		}).then(_ => {
+	// 			setTimeout(_ => {
+	// 				loading.hideInButton(buttonSave, 'fa-floppy-o');
+	// 			}, 2500);
+	// 		});
+	// 	}, 500);
+	// });
+
+	// const table_html = document.getElementById('tableRekapSDM').outerHTML.replace(/ /g, '%20');
+	// let a = document.createElement('a');
+	// a.href = 'data:application/vnd.ms-excel, ' + table_html;
+	// a.download = 'exported_table_' + Math.floor((Math.random() * 9999999) + 1000000) + '.xls';
+	// a.click();
+	$("#tableRekapSDM").table2excel({
+		name: 'Worksheet Name',
+		filename: 'test.xls',
+		preserveColors: true
+		
 	});
 };
 

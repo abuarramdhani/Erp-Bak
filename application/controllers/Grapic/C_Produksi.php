@@ -1266,7 +1266,7 @@ class C_Produksi extends CI_Controller {
 				'Dept. Produksi - Seksi Assembly Gear Trans',
 				'Dept. Produksi - Seksi Assembly-TKS',
 				'Dept. Produksi - Seksi Cetakan & Pasir Cetak & Inti Cor Dan Peleburan-Penuangan',
-				'Dept. Produksi - Pekerja Tidak Langsung / InDirect Labour)',
+				'Dept. Produksi - Pekerja Tidak Langsung / InDirect Labour',
 				'Dept. Produksi - Pekerja Langsung / Direct Labour',
 				'Dept. Produksi - Seksi Desain B',
 				'Dept. Produksi - Seksi Desain C',
@@ -1358,7 +1358,8 @@ class C_Produksi extends CI_Controller {
 				$data['truePKL'] = 'true';
 			}
 			$bulan = array('Januari','Februari','Maret','April','Mei','Juni','Juli','Agustus','September','Oktober','November','Desember');
-			$jumlah = array('6','4','4','4','4','4','6','4','4','4','4','4');
+			// $jumlah = array('6','4','4','4','4','4','6','4','4','4','4','4');
+			$jumlah = array(6, 4, 4, 4, 4, 4, 6, 4, 4, 4, 4, 4);			
 			$data['akhir'] = array_combine($bulan, $jumlah);
 			$begin = new DateTime('2019-01-01');
 			$end = new DateTime('2019-12-31');
