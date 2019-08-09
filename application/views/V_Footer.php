@@ -12,23 +12,9 @@
 		<script type="text/javascript" src="<?= base_url('assets/plugins/fastclick/fastclick.min.js') ?>"></script>
 		<script type="text/javascript" src="<?= base_url('assets/theme/js/app.min.js') ?>"></script>
 		<script type="text/javascript" src="<?= base_url('assets/plugins/datatables-latest/datatables.min.js') ?>"></script>
-		<?php // if(!(isset($newDataTable))) { ?>
-		<!-- <script type="text/javascript" src="<?= base_url('assets/plugins/dataTables/jquery.dataTables.min.js') ?>"></script>
-		<script type="text/javascript" src="<?= base_url('assets/plugins/dataTables/dataTables.bootstrap.js') ?>"></script>
-		<script type="text/javascript" src="<?= base_url('assets/plugins/dataTables/extensions/buttons.html5.min.js') ?>"></script>
-		<script type="text/javascript" src="<?= base_url('assets/plugins/dataTables/extensions/buttons.print.min.js') ?>"></script>
-		<script type="text/javascript" src="<?= base_url('assets/plugins/dataTables/extensions/FixedColumns/js/dataTables.fixedColumns.min.js') ?>"></script>
-		<script type="text/javascript" src="<?= base_url('assets/plugins/dataTables/extensions/dataTables.buttons.min.js') ?>"></script>
-		<script type="text/javascript" src="<?= base_url('assets/plugins/dataTables/extensions/jszip.min.js') ?>"></script>
-		<script type="text/javascript" src="<?= base_url('assets/plugins/dataTables/extensions/pdfmake.min.js') ?>"></script>
-		<script type="text/javascript" src="<?= base_url('assets/plugins/dataTables/extensions/vfs_fonts.js') ?>"></script> -->
-		<?php // } else { ?>
-		<!-- <script type="text/javascript" src="<?= base_url('assets/plugins/dataTables-punyamilton/datatables.min.js') ?>"></script> -->
-		<?php // } ?>
-		<!-- sweetalert lppb -->
-    	<script type="text/javascript" src="<?php echo base_url('assets/plugins/sweetalert2.all.min.js');?>"></script>
-    	<script type="text/javascript" src="<?php echo base_url('assets/plugins/sweetalert2.all.js');?>"></script>
-    	<!--  -->
+    	<script type="text/javascript" src="<?= base_url('assets/plugins/table2excel/jquery.table2excel.min.js');?>"></script>
+    	<script type="text/javascript" src="<?= base_url('assets/plugins/sweetalert2.all.min.js');?>"></script>
+    	<script type="text/javascript" src="<?= base_url('assets/plugins/sweetalert2.all.js');?>"></script>
 		<script type="text/javascript" src="<?= base_url('assets/plugins/canvasjs/canvasjs.min.js') ?>"></script>
 		<script type="text/javascript" src="<?= base_url('assets/plugins/chartjs/Chart.js') ?>"></script>
 		<script type="text/javascript" src="<?= base_url('assets/plugins/bootstrap-wysihtml5/bootstrap3-wysihtml5.all.js') ?>"></script>
