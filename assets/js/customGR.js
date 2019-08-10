@@ -1,7 +1,9 @@
 document.addEventListener('DOMContentLoaded', async _ => {
 	await unlockForm();
-	if (proses && filterData != 'tabelseksi') await initGraph();
-	setOnClickListener();
+	if (proses && filterData != 'tabelseksi') {
+		await initGraph();
+		setOnClickListener();
+	}
 });
 
 const animation = {
@@ -310,31 +312,50 @@ const showFullscreen = async _ => {
 	}
 };
 
-const print = async (id) => {
-	const element = document.getElementById('box-' + id);
-	const buttonPrint = document.getElementById('button-print-');
-	loading.showInButton(buttonPrint, 'fa-print');
-	html2canvas(element, {
-		scale: 1,
-		height: 600
-	}).then((canvas) => {
-		setTimeout(_ => {
-			new Promise(resolve => {
-				let newWindow = window.open();
-				newWindow.document.body.appendChild(canvas);
-				newWindow.focus();
-				newWindow.print();
-				resolve();
-			}).then(_ => {
-				setTimeout(_ => {
-					loading.hideInButton(buttonPrint, 'fa-print');
-				}, 1000);
+const print = async _ => {
+	const element = document.getElementById('table-rekap-sdm');
+	new Promise(resolve => {
+		loading.showInButton(document.getElementById('icon-button-print'), 'fa-print');
+		//element.parentNode.style.display = 'block';
+		resolve();
+	}). then( _ => {
+		setTimeout( _ => {
+			html2canvas(element, {
+				scale: 1,
+				onclone: doc => {
+					doc.getElementById('table-rekap-sdm').style.display = 'block';
+					console.log(doc);
+				}
+			}).then((canvas) => {
+				new Promise(resolve => {
+					let newWindow = window.open();
+					newWindow.document.body.appendChild(canvas);
+					newWindow.focus();
+					newWindow.print();
+					resolve();
+				}).then( _ => {
+					setTimeout( _ => {
+						loading.hideInButton(document.getElementById('icon-button-print'), 'fa-print');
+					}, 100);
+				});
 			});
-		}, 500);
+		}, 250);
 	});
 };
 
-const save = async (id) => {
+const save = async _ => {
+	new Promise( resolve => {
+		loading.showInButton(document.getElementById('icon-button-save'), 'fa-floppy-o');
+		$("#table-rekap-sdm").table2excel({
+			filename: document.getElementById('title').innerHTML + ' - ' + document.getElementById('data-title').innerHTML + '.xls',
+			preserveColors: true
+		});
+		resolve();
+	}).then( _ => {
+		setTimeout(_ => {
+			loading.hideInButton(document.getElementById('icon-button-save'), 'fa-floppy-o');
+		}, 500);
+	});
 	// const element = document.getElementById('box-' + id);
 	// const buttonSave = document.getElementById('btn-save-' + id);
 	// let title = 'Grafik Jumlah Pekerja 2018 vs 2019 (tanpa PKL, Magang & TKPW)';
@@ -356,164 +377,4 @@ const save = async (id) => {
 	// 		});
 	// 	}, 500);
 	// });
-
-	// const table_html = document.getElementById('tableRekapSDM').outerHTML.replace(/ /g, '%20');
-	// let a = document.createElement('a');
-	// a.href = 'data:application/vnd.ms-excel, ' + table_html;
-	// a.download = 'exported_table_' + Math.floor((Math.random() * 9999999) + 1000000) + '.xls';
-	// a.click();
-	$("#tableRekapSDM").table2excel({
-		name: 'Worksheet Name',
-		filename: 'test.xls',
-		preserveColors: true
-		
-	});
 };
-
-// $('#divselector').change(_ => {
-// 	$('html,body').animate({scrollTop:$('#'+$('#divselector').val()).offset().top}, 'fast'); 
-// });
-
-// $('.grData').change(async _ => {
-// 	var angka = $('.grData').val();
-// 	var sek = $('.grSek').val();
-// 	if (angka == '2') {
-// 		$('.grDept').prop('disabled', false);
-// 		$('.grDept').select2({
-// 			placeholder: "Departamen",
-// 			minimumResultsForSearch: -1,
-// 			allowClear: false,
-// 			ajax:
-// 			{
-// 				url: baseurl+'RekapTIMSPromosiPekerja/RekapAbsensiPekerja/daftarDepartemen',
-// 				dataType: 'json',
-// 				delay: 500,
-// 				type: 'GET',
-// 				data: function(params){
-// 					return {
-// 						term: params.term
-// 					}
-// 				},
-// 				processResults: function (data){
-// 					return {
-// 						results: $.map(data, function(obj){
-// 							return {id: obj.nama_departemen, text: obj.nama_departemen};
-// 						})
-// 					}
-// 				}
-// 			}
-// 		});
-// 	} else {
-// 		$('.grDept').each(function () {
-// 			$(this).select2('destroy').val("").select2();
-// 		});
-// 		$('.grDept').prop('disabled', true);
-// 		if (sek.length > 1) {
-// 			$('.grSek').each(function () {
-// 				$(this).select2('destroy').val("").select2();
-// 			});
-// 		}
-// 		$('.grSek').prop('disabled', true);
-// 	}
-// });
-
-// $('.grDept').change(async _ => {
-// 	if ($('.grSek').val().length > 1) {
-// 		$('.grSek').each(function () { //added a each loop here
-// 			$(this).select2('destroy').val("").select2();
-// 		});
-// 	}
-// 	var dept = $('.grDept').val();
-// 	if (dept == "SEMUA DEPARTEMEN") {
-// 		$('.grSek').prop('disabled', true);
-// 		if ($('.grSek').val().length > 1) {
-// 			$('.grSek').each( _ => { //added a each loop here
-// 				$(this).select2('destroy').val("").select2();
-// 			});
-// 		}
-// 	} else {
-// 		$('.grSek').prop('disabled', false);
-// 		$('.grSek').select2({
-// 			placeholder: "Seksi",
-// 			searching: true,
-// 			minimumInputLength: 3,
-// 			allowClear: false,
-// 			ajax:
-// 			{
-// 				url: baseurl+'SDM/data',
-// 				dataType: 'json',
-// 				delay: 500,
-// 				type: 'POST',
-// 				data: function(params){
-// 					return {
-// 						term: params.term,
-// 						dept: dept
-// 					}
-// 				},
-// 				processResults: function (data){
-// 					return {
-// 						results: $.map(data, function(obj){
-// 							return {id: obj.kodesie, text: obj.seksi};
-// 						})
-// 					}
-// 				}
-// 			}
-// 		});
-// 	}
-// })
-
-// $('#btnExportSDM').click(async _ => {
-// 	var angka = ["13", "0", "1","2","3","4","5","6","7","8","9","10", "11", "12","14","15","16","17"];
-// 	var tampungan1 = [];
-// 	var tampungan2 = [];
-// 	var tampungan3 = [];
-// 	var tampungan4 = [];
-
-// 	angka.forEach(item => {
-// 		var chartt = "myChart"+(item);
-// 		var chartt2 = "myChartbar"+(item);
-// 		var chartt3 = "myChartbar2"+(item);
-// 		var tabel = "SDMdivToCan"+(item);
-// 		alert(tabel);
-// 		var canvas1 = document.getElementById(chartt);
-// 		var imgData1 = canvas1.toDataURL('image/jpg',1.0);
-// 		var canvas2 = document.getElementById(chartt2);
-// 		var imgData2 = canvas2.toDataURL('image/jpg',1.0);
-// 		var canvas3 = document.getElementById(chartt3);
-// 		var imgData3 = canvas3.toDataURL('image/jpg',1.0);
-// 		html2canvas(document.getElementById(tabel),{scale : 2}).then(function(canvas){
-// 			var imgData4 = canvas.toDataURL('image/png',1.0);
-// 			alert(imgData4);
-// 		});
-// 		tampungan1.push(imgData1);
-// 		tampungan2.push(imgData2);
-// 		tampungan3.push(imgData3);
-// 	});
-
-// 	$.ajax({
-// 		type: "POST",
-// 		url: baseurl+"SDM/exportGambar",
-// 		data: {
-// 			data1:tampungan1,
-// 			data2:tampungan2,
-// 			data3:tampungan3,
-// 			data4:tampungan4,
-// 		},
-// 		success: _ => {
-// 			alert(angka);
-// 		}
-// 	});
-// });	
-
-// $('#sdm_select_tahun').select2({
-// 	allowClear: true,
-// 	placeholder: "Pilih Tahun",
-// 	minimumInputLength: 1,
-// 	tags:true,
-// 	minimumResultsForSearch: -1,
-// });
-
-// $('#tabelseksi').DataTable({
-//     paging	: false,
-//     filter: false
-// });

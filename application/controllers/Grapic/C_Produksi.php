@@ -1252,8 +1252,8 @@ class C_Produksi extends CI_Controller {
 		$data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id);
 		$data['Title'] = 'Efisiensi SDM Dept. Produksi';
 		$data['Menu'] = 'Efisiensi SDM Dept. Produksi';
-		$data['submit'] = ($this->input->post('buttonSubmit')) ? true : false;
-		if($data['submit']) {
+		$data['submit'] = ($this->input->post('buttonSubmit')) ? 'true' : 'false';
+		if($data['submit'] == 'true') {
 			$nama = array(
 				'Dept. Produksi',
 				'Dept. Produksi - Pusat',
@@ -1358,7 +1358,6 @@ class C_Produksi extends CI_Controller {
 				$data['truePKL'] = 'true';
 			}
 			$bulan = array('Januari','Februari','Maret','April','Mei','Juni','Juli','Agustus','September','Oktober','November','Desember');
-			// $jumlah = array('6','4','4','4','4','4','6','4','4','4','4','4');
 			$jumlah = array(6, 4, 4, 4, 4, 4, 6, 4, 4, 4, 4, 4);			
 			$data['akhir'] = array_combine($bulan, $jumlah);
 			$begin = new DateTime('2019-01-01');

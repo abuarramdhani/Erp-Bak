@@ -3,13 +3,12 @@
 	td { height: 60px; }
 	thead tr th { height: auto; }
 	.dataTable tbody tr td { height: auto; }
-	.html2canvas-container { width: 1900px !important; height: 430px !important; }
 	.fixed-column { position: absolute; background: white; width: 100px; left: 16px; margin-bottom: 2px; }
 </style>
 <script>
-	const proses = <?= $submit ?>;
-	const filterData = '<?= $filterData ?>';
-	const withPKL = '<?= $withPKL ?>';
+	const proses = <?= (!empty($submit)) ? $submit : 'false' ?>;
+	const filterData = '<?= (!empty($filterData)) ? $filterData : '' ?>';
+	const withPKL = '<?= (!empty($withPKL)) ? $withPKL : '' ?>';
 </script>
 <section class="content">
 	<div class="inner">
@@ -18,7 +17,7 @@
 				<div class="row">
 					<div class="col-lg-12">
 						<div class="text-left" style="margin-top: -12px; margin-bottom: 18px;">
-							<h1 style="font-weight: bold"><?= $Title ?></h1>
+							<h1 id="title" style="font-weight: bold"><?= $Title ?></h1>
 						</div>
 					</div>
 				</div>
@@ -35,7 +34,7 @@
 												</div>
 												<div class="col-lg-7 text-left" style="padding: 0">
 													<a disabled target="_blank" style="margin-right: 6px;" class="btSDMdl btn btn-primary"><i class="fa fa-download" style="margin-right: 8px;"></i>Download</a>
-													<a <?= (substr(base_url(), 7, 13) == 'erp.quick.com') ? 'disabled' : 'disabled' ?>  title="Fitur masih dalam tahap pengembangan" type="button" class="btn btn-primary"><i class="fa fa-upload" style="margin-right: 8px;"></i>Upload</a>
+													<a disabled <?= (substr(base_url(), 7, 13) == 'erp.quick.com') ? 'disabled' : '' ?>  title="Fitur masih dalam tahap pengembangan" type="button" class="btn btn-primary"><i class="fa fa-upload" style="margin-right: 8px;"></i>Upload</a>
 													<!-- <a target="_blank" style="margin-right: 6px;" href="<?= base_url('SDM/getData'); ?>" class="btSDMdl btn btn-primary"><i class="fa fa-download" style="margin-right: 8px;"></i>Download</a> -->
 													<!-- <a <?= (substr(base_url(), 7, 13) == 'erp.quick.com') ? 'disabled' : 'data-toggle="modal" data-target="#myModalSDM"' ?> title="Fitur masih dalam tahap pengembangan" type="button" class="btn btn-primary"><i class="fa fa-upload" style="margin-right: 8px;"></i>Upload</a> -->	
 												</div>
@@ -187,7 +186,7 @@
 								</form>
 							</div>
 						</div>
-						<?php if ($submit): ?>
+						<?php if ($submit === 'true'): ?>
 						<script>
 							const nama = '<?= $nama ?>';
 
@@ -222,19 +221,19 @@
 						<div class="box box-primary box-solid">
 							<div class="box-header with-border">
 								<div class="col-lg-6">
-									<h3 style="margin-top: 4px; margin-bottom: 0;"><?= $nama ?></h3>
+									<h3 id="data-title" style="margin-top: 4px; margin-bottom: 0;"><?= $nama ?></h3>
 								</div>
 								<div class="col-lg-6" style="padding: 0;">
 									<div class="btn-group pull-right">
 										<button id="button-fullscreen" class="btn btn-primary"><i class="fa fa-desktop" style="margin-right: 8px;"></i>Show in Fullscreen</button>
-										<button disabled title="Fitur sedang dalam proses pengembangan" id="button-print" class="btn btn-primary"><i id="btn-print-box" style="margin-right: 8px;" class="fa fa-print"></i>Print</button>
-										<button title="Fitur sedang dalam proses pengembangan" id="button-save" class="btn btn-primary"><i id="btn-save-box" style="margin-right: 8px;" class="fa fa-floppy-o"></i>Save</button>
+										<button disabled title="Fitur sedang dalam proses pengembangan" id="button-print" class="btn btn-primary"><i id="icon-button-print" style="margin-right: 8px;" class="fa fa-print"></i>Print</button>
+										<button title="Fitur sedang dalam proses pengembangan" id="button-save" class="btn btn-primary"><i id="icon-button-save" style="margin-right: 8px;" class="fa fa-floppy-o"></i>Save</button>
 									</div>
 								</div>
 							</div>
 							<div id="box-body-data" class="box-body" style="padding: 16px; overflow-y: auto; background-color: white;">
 								<div style="margin-left: 98px;">
-									<table id="tabelDataSDM" style="overflow-x: scroll; width: 100%; display: block;" class="table table-bordered table-hover text-center">
+									<table id="table-rekap-sdm" style="overflow-x: scroll; width: 100%; display: block;" class="table table-bordered table-hover text-center">
 										<thead style="border-color: black">
 											<tr>
 												<th class="fixed-column" style="background-color: #00a65a; color: white; min-width: 100px;">Keterangan</th>
