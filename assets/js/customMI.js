@@ -312,22 +312,22 @@ function prosesInvMI(th){
 	// prnt.html('<img src="'+baseurl+'assets/img/gif/loading5.gif" id="gambarloading">');
 	simpanHtml[invoice_id]= $('.ganti_'+invoice_id+'').html();
 	if (proses == 2) {
-		prnt.html('<span class="btn btn-success" style="cursor: none;font-size: 10pt;" >Diterima<input type="hidden" name="hdnTerima[]" class="hdnProses" value="'+invoice_id+'"></span><a class="btn btn-sm btn-primary" onclick="reloadTerima($(this));"><i class="fa fa-refresh"></i></a>');
+		prnt.html('<span class="btn btn-success" style="cursor: none;font-size: 10pt;" >Diterima<input type="hidden" name="hdnTerima[]" class="hdnProses" value="'+invoice_id+'"></span><a class="btn btn-sm btn-primary" onclick="reloadTerima('+invoice_id+');"><i class="fa fa-refresh"></i></a>');
 	} else {
-		prnt.html('<span class="btn btn-danger" style="font-size: 8pt ;cursor: none;">Ditolak (Isikan Alasan)<input type="hidden" name="hdnTolak[]" class="hdnProses" value="'+invoice_id+'"></span><a class="btn btn-sm btn-primary" onclick="reloadTolak($(this));"><i class="fa fa-refresh"></i></a>');
+		prnt.html('<span class="btn btn-danger" style="font-size: 8pt ;cursor: none;">Ditolak (Isikan Alasan)<input type="hidden" name="hdnTolak[]" class="hdnProses" value="'+invoice_id+'"></span><a class="btn btn-sm btn-primary" onclick="reloadTolak('+invoice_id+');"><i class="fa fa-refresh"></i></a>');
 		prnt.siblings('td').children('.reason_finance_class'+invoice_id+'').show();
 		prnt.siblings('td').children('.reason_finance_class'+invoice_id+'').attr('required',true);
 		alert('Alasan harus diisi');
 	}
 }
 function reloadTerima(th) {
-	var id = $(th).parent().attr('data-id');
+	var id = th;
 	if (id) {
 		$('.ganti_'+id+'').html(simpanHtml[id]);
 	}
 }
 function reloadTolak(th) {
-	var id = $(th).parent().attr('data-id');
+	var id = th;
 	$('.ganti_'+id+'').html(simpanHtml[id]);
 	$('.reason_finance_class'+id+'').remove();
 }
@@ -460,6 +460,3 @@ function btn_cari(th) {
 	var id = th.attr('invoice');
 	var win = window.open(baseurl+'Monitoring/TrackingInvoice/DetailInvoice/'+id);
 }
-// function btn_back(th) {
-// 	var win = window.open(baseurl+'Monitoring/TrackingInvoice');
-// }
