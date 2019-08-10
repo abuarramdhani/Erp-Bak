@@ -12,6 +12,7 @@ $validation = $_POST['validation'];
 if(!empty($android_id) || !empty($imei) || !empty($hardware_serial) || !empty($gsf)|| !empty($nama)|| !empty($noInduk)|| !empty($tanggalRequest)|| !empty($validation)){
 		$sql="SELECT COUNT(*) FROM sys.sys_android WHERE android_id='".$android_id."' AND imei='".$imei."' AND hardware_serial='".$hardware_serial."' AND gsf='".$gsf."'";
 		$d = pg_query($conn,$sql);
+		$total=0;
 		while ($row = pg_fetch_row($d)[0]) {
 		     $total = $row[0];
 		}
@@ -23,9 +24,14 @@ if(!empty($android_id) || !empty($imei) || !empty($hardware_serial) || !empty($g
 	        VALUES ('".$android_id."', '".$imei."', '".$hardware_serial."', '".$gsf."','".$nama."','".$noInduk."','".$tanggalRequest."','".$validation."')";    
 
 	        $gas = pg_query($conn,$sql);
-
-	        $data['status'] = true;
-	        $data['result'][] = "Berhasil Menambah Data";
+	        if(pg_affected_rows($gas)>0){
+	        	$data['status'] = true;
+	        	$data['result'][] = "Berhasil Menambah Data";
+	        }else{
+	        	$data['status'] = false;
+	        	$data['result'][] = "Gagal Menambah Data";
+	        }
+	        
 		}else{
 			$data['status'] = false;
 	        $data['result'][] = "Data sudah ada";
