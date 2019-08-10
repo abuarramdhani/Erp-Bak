@@ -2778,3 +2778,10 @@ $route['MonitoringLppbPenerimaan/KhususImport/(:any)/(:any)'] 	= 'MonitoringLppb
 $route['MonitoringLppbPenerimaan/Import'] 						= 'MonitoringLppbPenerimaan/MainMenu/C_Import';
 $route['MonitoringLppbPenerimaan/Import/(:any)'] 				= 'MonitoringLppbPenerimaan/MainMenu/C_Import/$1';
 $route['MonitoringLppbPenerimaan/Import/(:any)/(:any)'] 		= 'MonitoringLppbPenerimaan/MainMenu/C_Import/$1/$2';
+
+//-------------------------------------------AbsenAtasan------------------------------------------------------------//
+
+$route['AbsenAtasan'] = 'AbsenAtasan/C_Index';
+$route['AbsenAtasan/List'] = 'AbsenAtasan/C_Index/listData';
+$route['AbsenAtasan/List/(:any)'] = 'AbsenAtasan/C_Index/$1';
+$route['AbsenAtasan/List/(:any)/(:any)'] = 'AbsenAtasan/C_Index/$1/$2';
