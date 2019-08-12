@@ -451,7 +451,7 @@ class C_Index extends CI_Controller
 		// exit();
 		$this->load->library('pdf');
 		$pdf 	=	$this->pdf->load();
-		$pdf 	=	new mPDF('utf-8', array(216,330), 10, "timesnewroman", 10, 10, 55, 30, 0, 0, 'P');
+		$pdf 	=	new mPDF('utf-8', array(216,330), 11, "timesnewroman", 10, 10, 55, 30, 0, 0, 'P');
 		// $pdf 	=	new mPDF();
 		$isi = $this->M_index->getMemo($no_surat);
 		$judul = $this->M_index->getMemo2($no_surat);
@@ -753,13 +753,12 @@ class C_Index extends CI_Controller
 		$no = $this->input->post('no');
 		$this->load->library('pdf');
 		$pdf 	=	$this->pdf->load();
-		$pdf 	=	new mPDF('utf-8', array(216,330), 10, "timesnewroman", 10, 10, 55, 30, 0, 0, 'P');
+		$pdf 	=	new mPDF('utf-8', array(216,330), 11, "timesnewroman", 10, 10, 55, 30, 0, 0, 'P');
 		// $pdf 	=	new mPDF();
 		$data = str_replace('<ol>', '<ol style="text-align: justify;">', $data);
 		$isi = $data;
 		ob_end_clean();
 		$filename	=	'Preview Memo.pdf';
-
 		$pdf->AddPage();
 		$pdf->SetTitle('Preview');
 		$pdf->shrink_tables_to_fit = 1;
@@ -813,7 +812,7 @@ class C_Index extends CI_Controller
 		header('Content-Disposition: attachment; filename="filename.pdf"');
 		$this->load->library('pdf');
 		$pdf 	=	$this->pdf->load();
-		$pdf 	=	new mPDF('utf-8', array(216,330), 10, "timesnewroman", 10, 10, 10, 10, 0, 0, 'L');
+		$pdf 	=	new mPDF('utf-8', array(216,330), 11, "timesnewroman", 5, 5, 10, 10, 0, 0, 'L');
 		// $pdf 	=	new mPDF();
 		$filename	=	'Evaluasi TIMS Bulanan '.$jp[0]['jenis_penilaian'].' '.$this->input->post('tgl').'.pdf';
 		if ($jenisPenilaian == '1') {
@@ -866,7 +865,7 @@ class C_Index extends CI_Controller
 		header('Content-Disposition: attachment; filename="filename.pdf"');
 		$this->load->library('pdf');
 		$pdf 	=	$this->pdf->load();
-		$pdf 	=	new mPDF('utf-8', array(216,330), 10, "timesnewroman", 10, 10, 10, 10, 0, 0, 'L');
+		$pdf 	=	new mPDF('utf-8', array(216,330), 11, "timesnewroman", 5, 5, 10, 10, 0, 0, 'L');
 		// $pdf 	=	new mPDF();
 		$filename	=	'Evaluasi TIMS Harian '.$jp[0]['jenis_penilaian'].' '.$tanggal.'.pdf';
 		if ($jenisPenilaian == '1') {
@@ -914,5 +913,72 @@ class C_Index extends CI_Controller
 		if ($save) {
 			redirect('EvaluasiTIMS/Setup/EditNomorKDU');
 		}
+	}
+
+	public function detail_perpanjangan()
+	{
+		// print_r($_POST);
+		$noind = $_POST['noind'];
+		$nilai = $_POST['nilai'];
+
+		$jp = $this->M_index->listJp3($nilai);
+		$t = $jp[0]['std_m'];
+		$tim = $jp[0]['std_tim'];
+		$tims = $jp[0]['std_tims'];
+
+		$res = $this->M_index->getPerpanjangan($noind, $t, $tim, $tims);
+		if (!empty($res)) {
+		echo '<label class="col-md-3" style="font-weight: bold;">Periode OJT </label>:     <label> '.date('d-M-Y', strtotime($res[0]['tanggal_awal_rekap'])).' sd '.date('d-M-Y', strtotime($res[0]['tanggal_akhir_rekap'])).'</label><br>
+				<label class="col-md-3" style="font-weight: bold;">No Induk </label>:     <label> '.$res[0]['noind'].'</label><br>
+                <label class="col-md-3" style="font-weight: bold;">Nama </label>:     <label> '.$res[0]['nama'].'</label><br>
+                <label class="col-md-3" style="font-weight: bold;">Tanggal Masuk </label>:     <label> '.$res[0]['tgl_masuk'].'</label><br>
+                <label class="col-md-3" style="font-weight: bold;">Unit </label>:     <label> '.$res[0]['unit'].'</label><br>
+                <label class="col-md-3" style="font-weight: bold;">Seksi </label>:     <label> '.$res[0]['seksi'].'</label><br>
+                <label class="col-md-3" style="font-weight: bold;">Lama Kerja </label>:     <label> '.$res[0]['masa_kerja'].'</label>
+                <br>
+                <div class="col-md-12" style="overflow-x:scroll;">
+                <table class="table table-bordered text-center">
+                	<thead class="bg-primary">
+	                	<tr>
+		                	<td>T</td>
+		                	<td>I</td>
+		                	<td>M</td>
+		                	<td>S</td>
+		                	<td>PSP</td>
+		                	<td>IP</td>
+		                	<td>CT</td>
+		                	<td>SP</td>
+		                	<td>TIM</td>
+		                	<td>TIMS</td>
+		                	<td>Prediksi M</td>
+		                	<td>Prediksi TIM</td>
+		                	<td>Prediksi TIMS</td>
+		                	<td>Prediksi Lolos</td>
+	                	</tr>
+	                </thead>
+	                <tbody>
+	                	<tr>
+	                		<td>'.$res[0]['telat'].'</td>
+                            <td>'.$res[0]['ijin'].'</td>
+                            <td>'.$res[0]['mangkir'].'</td>
+                            <td>'.$res[0]['sk'].'</td>
+                            <td>'.$res[0]['psp'].'</td>
+                            <td>'.$res[0]['ip'].'</td>
+                            <td>'.$res[0]['ct'].'</td>
+                            <td>'.$res[0]['sp'].'</td>
+                            <td>'.$res[0]['tim'].'</td>
+                            <td>'.$res[0]['tims'].'</td>
+                            <td>'.round($res[0]['pred_m'],2).'</td>
+                            <td>'.round($res[0]['pred_tim'],2).'</td>
+                            <td>'.round($res[0]['pred_tims'],2).'</td>
+                            <td>'.$res[0]['pred_lolos'].'</td>
+	                	<tr>
+	                </tbody>
+                </table>';
+		}else{
+			echo '<center><ul class="list-group"><li class="list-group-item">'.'Data Kosong'.'</li></ul></center>';
+		}
+		// print_r($perpanjangan);
+
 	}
 }

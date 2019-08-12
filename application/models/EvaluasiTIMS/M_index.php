@@ -309,11 +309,11 @@ class M_Index extends CI_Model
 				left join (
 					select
 						case
-							when a.masukkerja + interval '6 month' < a.diangkat::date or a.diangkat::date < now()::date then (a.masukkerja + interval '6 month')::date
+							when a.masukkerja + interval '6 month' < a.diangkat::date then (a.masukkerja + interval '6 month')::date
 							else a.masukkerja::date
 						end as tgl1,
 						case
-							when (a.masukkerja + interval '6 month') < a.diangkat::date or a.diangkat::date < now()::date then
+							when (a.masukkerja + interval '6 month') < a.diangkat::date then
 							case
 								$sql1
 								else null
@@ -946,11 +946,11 @@ class M_Index extends CI_Model
 				left join (
 					select
 						case
-							when a.masukkerja + interval '6 month' < a.diangkat::date or a.diangkat::date < now()::date then (a.masukkerja + interval '6 month')::date
+							when a.masukkerja + interval '6 month' < a.diangkat::date then (a.masukkerja + interval '6 month')::date
 							else a.masukkerja::date
 						end as tgl1,
 						case
-							when (a.masukkerja + interval '6 month') < a.diangkat::date or a.diangkat::date < now()::date then
+							when (a.masukkerja + interval '6 month') < a.diangkat::date then
 							case
 								$sql1
 								else null
@@ -1585,11 +1585,11 @@ class M_Index extends CI_Model
 				left join (
 					select
 						case
-							when a.masukkerja + interval '6 month' < a.diangkat::date or a.diangkat::date < now()::date then (a.masukkerja + interval '6 month')::date
+							when a.masukkerja + interval '6 month' < a.diangkat::date then (a.masukkerja + interval '6 month')::date
 							else a.masukkerja::date
 						end as tgl1,
 						case
-							when (a.masukkerja + interval '6 month') < a.diangkat::date or a.diangkat::date < now()::date then
+							when (a.masukkerja + interval '6 month') < a.diangkat::date then
 							case
 								$sqlnya1								
 								else null
@@ -2181,5 +2181,226 @@ class M_Index extends CI_Model
 	 	$this->erp->update('et.et_kdu', $data);
 
     	return true;
+    }
+
+    public function getPerpanjangan($noind, $t, $tim, $tims)
+    {
+    	$sql = "select
+		    	et.*,
+		    	et.telat + et.ijin + et.mangkir tim,
+		    	et.telat + et.ijin + et.mangkir + et.sk + et.psp tims,
+		    	et.mangkir*(cast (180 as float))/ et.jml_hari_rekap pred_m,
+		    	(et.telat + et.ijin + et.mangkir)*(cast (180 as float))/ et.jml_hari_rekap pred_tim,
+		    	(et.telat + et.ijin + et.mangkir + et.sk + et.psp)*(cast (180 as float))/ et.jml_hari_rekap pred_tims,
+		    	case
+		    	when (et.mangkir*(cast (180 as float))/ et.jml_hari_rekap) > $t
+		    	or ((et.telat + et.ijin + et.mangkir)*(cast (180 as float))/ et.jml_hari_rekap) > $tim
+		    	or ((et.telat + et.ijin + et.mangkir + et.sk + et.psp)*(cast (180 as float))/ et.jml_hari_rekap) > $tims
+		    	or et.SP > 0 then 'TIDAK LOLOS'
+		    	else 'LOLOS'
+		    		end pred_lolos
+		    	from
+		    	(
+		    	select
+		    	pri.noind,
+		    	pri.nama,
+		    	pri.masukkerja::date tgl_masuk,
+		    	pri.diangkat::date tgl_diangkat,
+		    	pri.kodesie,
+		    	tseksi.dept,
+		    	tseksi.bidang,
+		    	tseksi.unit,
+		    	tseksi.seksi,
+		    	param.tgl1 as tanggal_awal_rekap,
+		    	param.tgl2 as tanggal_akhir_rekap,
+		    	param.tgl2-param.tgl1 jml_hari_rekap,
+		    	/*Terlambat - Status Pekerja Aktif*/
+		    	(
+		    	select
+		    	coalesce(count(tim.tanggal)) as total_frekuensi
+		    	from
+		    	\"Presensi\".tdatatim as tim
+		    	where
+		    	tim.tanggal between param.tgl1 and param.tgl2
+		    	and trim(tim.kd_ket)= 'TT'
+		    	and tim.point>0
+		    	and trim(tim.noind)= pri.noind ) as telat,
+		    	/*Ijin Keluar Pribadi - Status Pekerja Aktif*/
+		    	(
+		    	select
+		    	coalesce(count(tim.tanggal)) as total_frekuensi
+		    	from
+		    	\"Presensi\".tdatatim as tim
+		    	where
+		    	tim.tanggal between param.tgl1 and param.tgl2
+		    	and trim(tim.kd_ket)= 'TIK'
+		    	and tim.point>0
+		    	and trim(tim.noind)= pri.noind ) as ijin,
+		    	/*Mangkir - Status Pekerja Aktif*/
+		    	(
+		    	select
+		    	coalesce(count(tim.tanggal)) as total_frekuensi
+		    	from
+		    	\"Presensi\".tdatatim as tim
+		    	where
+		    	tim.tanggal between param.tgl1 and param.tgl2
+		    	and trim(tim.kd_ket)= 'TM'
+		    	and tim.point>0
+		    	and trim(tim.noind)= pri.noind ) as mangkir,
+		    	/*Sakit Keterangan Dokter - Status Pekerja Aktif*/
+		    	(
+		    	select
+		    	coalesce(count(datapres.tanggal)) as total_frekuensi
+		    	from
+		    	\"Presensi\".tdatapresensi as datapres
+		    	where
+		    	datapres.tanggal between param.tgl1 and param.tgl2
+		    	and datapres.kd_ket = 'PSK'
+		    	and datapres.noind = pri.noind ) as SK,
+		    	/*Sakit Perusahaan - Status Pekerja Aktif*/
+		    	(
+		    	select
+		    	coalesce(count(datapres.tanggal)) as total_frekuensi
+		    	from
+		    	\"Presensi\".tdatapresensi as datapres
+		    	where
+		    	datapres.tanggal between param.tgl1 and param.tgl2
+		    	and datapres.kd_ket = 'PSP'
+		    	and datapres.noind = pri.noind ) as PSP,
+		    	/*Ijin Perusahaan - Status Pekerja Aktif*/
+		    	(
+		    	select
+		    	coalesce(count(datapres.tanggal)) as total_frekuensi
+		    	from
+		    	\"Presensi\".tdatapresensi as datapres
+		    	where
+		    	datapres.tanggal between param.tgl1 and param.tgl2
+		    	and datapres.kd_ket = 'PIP'
+		    	and datapres.noind = pri.noind ) as IP,
+		    	/*Cuti Tahunan - Status Pekerja Aktif*/
+		    	(
+		    	select
+		    	coalesce(count(datapres.tanggal)) as total_frekuensi
+		    	from
+		    	\"Presensi\".tdatapresensi as datapres
+		    	where
+		    	datapres.tanggal between param.tgl1 and param.tgl2
+		    	and datapres.kd_ket = 'CT'
+		    	and datapres.noind = pri.noind ) as CT,
+		    	/*Surat Peringatan - Status Pekerja Aktif*/
+		    	(
+		    	select
+		    	count(*)
+		    	from
+		    	\"Surat\".v_surat_tsp_rekap as tabelsp
+		    	where
+		    	tabelsp.noind = pri.noind
+		    	and (tabelsp.tanggal_awal_berlaku between param.tgl1 - interval '6 month' + interval '1 day' and param.tgl2) ) as SP,
+		    	/*Hari Kerja - Aktif*/
+		    	(
+		    	select
+		    	count(*)
+		    	from
+		    	\"Presensi\".tshiftpekerja as sftpkj
+		    	where
+		    	sftpkj.tanggal between param.tgl1 and param.tgl2
+		    	and sftpkj.noind = pri.noind ) as totalhk,
+		    	/*Masa Kerja Total*/
+		    	(
+		    	select
+		    	concat(masa_kerja.tahun, ' tahun ', masa_kerja.bulan, ' bulan ', masa_kerja.hari, ' hari')
+		    	from
+		    	(
+		    	select
+		    	( masa_kerja.total_tahun + (
+		    	case
+		    	when masa_kerja.total_bulan>11 then floor(masa_kerja.total_bulan / 12)
+		    	else 0
+		    		end ) + (
+		    	case
+		    	when masa_kerja.total_hari>364 then floor(masa_kerja.total_hari / 365)
+		    	else 0
+		    		end ) ) as tahun,
+		    	( (
+		    	case
+		    	when masa_kerja.total_bulan>11 then masa_kerja.total_bulan-(floor(masa_kerja.total_bulan / 12)* 12)
+		    	else masa_kerja.total_bulan
+		    		end ) + (
+		    	case
+		    	when masa_kerja.total_hari>29 then floor(masa_kerja.total_hari / 30)
+		    	else 0
+		    		end ) ) as bulan,
+		    	( (
+		    	case
+		    	when masa_kerja.total_hari>29 then masa_kerja.total_hari-(floor(masa_kerja.total_hari / 30)* 30)
+		    	else masa_kerja.total_hari
+		    		end ) ) as hari
+		    	from
+		    	(
+		    	select
+		    	sum(extract(year from master_masa_kerja.masa_kerja)) as total_tahun,
+		    	sum(extract(month from master_masa_kerja.masa_kerja)) as total_bulan,
+		    	sum(extract(day from master_masa_kerja.masa_kerja)) as total_hari
+		    	from
+		    	(
+		    	select
+		    	pri3.*,
+		    	(
+		    	case
+		    	when pri3.keluar = false then (
+		    	case
+		    	when pri3.kode_status_kerja in ('A',
+		    	'B') then ( age(current_date, pri3.diangkat) )
+		    	else ( age(current_date, pri3.masukkerja) )
+		    		end )
+		    	else (
+		    		case
+		    	when pri3.kode_status_kerja in ('A',
+		    	'B') then ( age(pri3.tglkeluar, pri3.diangkat) )
+		    	else ( age(pri3.tglkeluar, pri3.masukkerja) )
+		    		end )
+		    	end ) as masa_kerja
+		    	from
+		    	(
+		    	select
+		    	pri2.noind,
+		    	pri2.nik,
+		    	pri2.tgllahir,
+		    	pri2.kode_status_kerja,
+		    	pri2.keluar,
+		    	pri2.masukkerja,
+		    	pri2.diangkat,
+		    	pri2.tglkeluar,
+		    	pri2.akhkontrak
+		    	from
+		    	hrd_khs.v_hrd_khs_tpribadi as pri2
+		    	where
+		    	pri2.nik = pri.nik
+		    	and pri2.tgllahir = pri.tgllahir ) as pri3 ) master_masa_kerja ) as masa_kerja ) as masa_kerja ) as masa_kerja
+		    	from
+		    	hrd_khs.v_hrd_khs_tpribadi as pri
+		    	left join hrd_khs.v_hrd_khs_tseksi as tseksi on
+		    	tseksi.kodesie = pri.kodesie
+		    	left join hrd_khs.tnoind as tnoind on
+		    	tnoind.fs_noind = pri.kode_status_kerja
+		    	left join hrd_khs.torganisasi as torganisasi on
+		    	torganisasi.kd_jabatan = pri.kd_jabatan
+		    	left join (
+		    	select
+		    	a.masukkerja::date as tgl1, 
+		    	(a.masukkerja + interval '6 month')::date as tgl2,
+		    	a.noind
+		    	from
+		    	hrd_khs.tpribadi a
+		    	where
+		    	a.keluar = '0') as param on
+		    	param.noind = pri.noind
+		    	where
+		    	pri.noind in ('$noind')
+		    	order by
+		    	pri.nama,
+		    	pri.noind) et";
+		$query = $this->personalia->query($sql);
+		return $query->result_array();
     }
 }
