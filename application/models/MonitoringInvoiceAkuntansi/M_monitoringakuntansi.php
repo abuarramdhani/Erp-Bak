@@ -27,7 +27,7 @@ class M_monitoringakuntansi extends CI_Model {
     }
 
 	public function unprocessedInvoice($batchNumber)
-	{   $this->db->cache_on();
+	{   
 		$erp_db = $this->load->database('oracle',true);
 		$sql = "SELECT  ami.invoice_id, ami.vendor_name vendor_name,
                 ami.invoice_number invoice_number,
@@ -76,7 +76,7 @@ class M_monitoringakuntansi extends CI_Model {
 	}
 
 	public function DetailUnprocess($batch_num,$invoice_id)
-	{   $this->db->cache_on();
+	{   
 		$erp_db = $this->load->database('oracle',true);
         $sql = "SELECT aipo.invoice_id invoice_id, 
         		invoice_number invoice_number,
@@ -145,7 +145,7 @@ class M_monitoringakuntansi extends CI_Model {
     }
 
 	public function processedInvoice($batchNumber)
-	{   $this->db->cache_on();
+	{   
 		$erp_db = $this->load->database('oracle',true);
 		$sql = "SELECT distinct ami.invoice_id invoice_id,
                          ami.vendor_name vendor_name,
@@ -177,7 +177,7 @@ class M_monitoringakuntansi extends CI_Model {
 	}
 
 	public function DetailProcess($invoice_id)
-	{    $this->db->cache_on();
+	{    
 		$erp_db = $this->load->database('oracle',true);
         $sql = "SELECT ami.invoice_number invoice_number,
                 ami.invoice_date invoice_date,
@@ -301,6 +301,7 @@ class M_monitoringakuntansi extends CI_Model {
                 WHERE last_finance_invoice_status = 2
                 $login
                 ORDER BY submited_date desc";
+        // echo "<pre>";print_r($sql);exit();
         $run = $erp_db->query($sql);
         return $run->result_array();
     }
@@ -311,6 +312,7 @@ class M_monitoringakuntansi extends CI_Model {
                       FROM khs_ap_monitoring_invoice b
                      WHERE b.last_finance_invoice_status = 2
                        AND b.batch_number = '$batch_number'";
+        // echo "<pre>";print_r($sql);exit();
         $run = $oracle->query($sql);
         return $run->result_array();
     }

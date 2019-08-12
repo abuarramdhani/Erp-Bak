@@ -129,7 +129,7 @@ class C_kasiepembelian extends CI_Controller{
 		$this->load->view('V_Sidemenu',$data);
 		$this->load->view('MonitoringInvKasiePembelian/V_detail',$data);
 		$this->load->view('V_Footer',$data);
-		$this->output->cache(1);
+		// $this->output->cache(1);
 	}
 
 	public function submittofinance(){
