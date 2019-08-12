@@ -2,7 +2,15 @@
  /*div.dt-buttons {
     float: center;
 }*/
-.dataTables_filter input { width: 50px }
+.table-striped > tbody > tr:nth-child(2n+1) > td, .table-striped > tbody > tr:nth-child(2n+1) > th {
+   background-color: #bcd5eb;
+}
+.dataTables_paginate{
+    float: right;
+}
+.dataTables_length{
+    float: left;
+}
 </style>
 <meta http-equiv="Content-Type" content="text/html;charset=utf-8">
 <section class="content">
@@ -77,17 +85,17 @@
                                     </script>
                                     <?php if ($val == '1'): ?>
                                         <div style="margin-top: 100px;">
-                                            <table class="table table-bordered table-hover text-center tb_et_bulanan">
-                                                <caption align="center" style="color: black;font-weight: bold; font-size: 24px; text-align: center;"><?php
+                                                <p align="center" style="color: black;font-weight: bold; font-size: 24px; text-align: center;"><?php
                                                     $pri = str_replace(' - ', ' sd ', $pr);
                                                     $Nper = explode(' - ', $pr);
-                                                    echo $jp.'<br>Periode '.date('d-M-Y', strtotime($Nper[0])).' sd '.date('d-M-Y', strtotime($Nper[1])).'<br>'.$nama; ?></caption>
+                                                    echo $jp.'<br>Periode '.date('d-M-Y', strtotime($Nper[0])).' sd '.date('d-M-Y', strtotime($Nper[1])).'<br>'.$nama; ?></p>
+                                            <table class="table table-bordered table-striped table-hover text-center tb_et_bulanan">
                                                     <input hidden="" id="p2k3_judul" value="<?php echo 'Evaluasi TIMS Bulanan - '.$jp.' '.$pri; ?>">
                                                     <thead>
                                                         <tr class="bg-primary">
-                                                            <th>No</th>
-                                                            <th>No Induk</th>
-                                                            <th style="min-width: 100px;">Nama</th>
+                                                            <th class="bg-primary">No</th>
+                                                            <th class="bg-primary">No Induk</th>
+                                                            <th class="bg-primary" style="min-width: 100px;">Nama</th>
                                                             <th style="min-width: 80px;">Tgl Masuk</th>
                                                             <th>Unit</th>
                                                             <th>Seksi</th>
@@ -141,7 +149,13 @@
                                                             <td><?php echo round($key['pred_tim'],2); ?></td>
                                                             <td><?php echo round($key['pred_tims'],2); ?></td>
                                                             <td><?php echo $key['pred_lolos']; ?></td>
-                                                            <td><?php echo $key['ket']; ?></td>
+                                                            <?php if ($key['ket'] == 'PERPANJANGAN'): ?>
+                                                                <td>
+                                                                    <a class="evt_noint_per" data-noind="<?php echo $key['noind']; ?>" data-penilaian="<?php echo $jpi; ?>" style="cursor: pointer;"><?php echo $key['ket']; ?></a>
+                                                                </td>
+                                                            <?php else: ?>
+                                                                <td><?php echo $key['ket']; ?></td>
+                                                            <?php endif ?>
                                                         </tr>
                                                         <?php $a++; endforeach ?>
                                                     </tbody>
@@ -151,7 +165,7 @@
                                                     <input hidden="" value="<?php echo $jpi; ?>" name="jp">
                                                     <input hidden="" value="<?php echo $nama; ?>" name="nama">
                                                     <input hidden="" value="<?php echo $s; ?>" name="ess">
-                                                    <button type="submit" class="dt-buttons" style="width: 53px; height: 31px;">PDF</button>
+                                                    <button type="submit" hidden="" id="et_submitPDF" style="width: 55px; height: 31px;">PDF</button>
                                                     <br>
                                                     <br>
                                                     <h4><b>Keterangan :</b></h4>
@@ -170,6 +184,25 @@
         </div>
     </div>
 </section>
+<div class="modal fade" id="evt_perpanjangan" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 class="modal-title" id="exampleModalLabel" style="font-weight: bold;">TIMS 6 Bulan Masa OJT</h3>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div id="phone_result" class="modal-body">
+
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <!-- <button type="button" class="btn btn-primary">Save changes</button> -->
+            </div>
+        </div>
+    </div>
+</div>
 <div hidden id="surat-loading" style="top: 0;left: 0;right: 0;bottom: 0; margin: auto; position: fixed; background: rgba(0,0,0,.5); z-index: 11;">
     <img src="http://erp.quick.com/assets/img/gif/loadingtwo.gif" style="position: fixed; top: 0;left: 0;right: 0;bottom: 0; margin: auto; width: 40%;">
 </div>
@@ -196,6 +229,10 @@
         var tabell = $('.tb_et_bulanan').DataTable({
             scrollX: true,
             dom: 'lfrtpB',
+            scrollCollapse: true,
+            fixedColumns:   {
+                leftColumns: 3,
+            },
             buttons: [
             {
                 extend: 'excelHtml5',
@@ -236,5 +273,25 @@
           ]
       });
         tabell.columns.adjust().draw();
+        $('div.btn-group').append('<button id="et_clickPDF" class="btn btn-default buttons-excel buttons-html5">PDF</button>');
+        $('#et_clickPDF').click(function(){
+            $('#et_submitPDF').click();
+        });
+
+        $('.evt_noint_per').click(function(){
+            $('#surat-loading').attr('hidden', false);
+             var noind = $(this).attr('data-noind');
+             var nilaian = $(this).attr('data-penilaian');
+                $.ajax({
+                 url: "<?php echo base_url() ?>EvaluasiTIMS/Bulanan/detail_perpanjangan",
+                    method: "POST",
+                    data: {noind:noind, nilai:nilaian},
+                    success: function(data){
+                        $('#surat-loading').attr('hidden', true);
+                     $('#phone_result').html(data);
+                        $('#evt_perpanjangan').modal('show');
+                    }
+                });
+         });
     });
 </script>

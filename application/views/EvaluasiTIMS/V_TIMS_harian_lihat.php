@@ -1,3 +1,15 @@
+<style type="text/css">
+    .dataTables_paginate{
+        float: right;
+    }
+    .dataTables_length{
+        float: left;
+    }
+    .dataTables_filter input { width: 50px }
+    .table-striped > tbody > tr:nth-child(2n+1) > td, .table-striped > tbody > tr:nth-child(2n+1) > th {
+     background-color: #bcd5eb;
+ }
+</style>
 <section class="content">
     <div class="inner" >
         <div class="row">
@@ -29,7 +41,7 @@
                                     <form class="col-12 text-center">
                                         <div class="form-inline">
                                             <h3>
-                                                <?php echo $jp; ?> - <?php echo $dept; ?>
+                                                <b><?php echo $jp; ?> - <?php echo $dept; ?></b>
                                             </h3>
                                         </div>
                                     </form>
@@ -37,16 +49,16 @@
                                         var jp = '<?php echo $jp; ?>';
                                         var pr = "<?php echo date('Y-m-d'); ?>";
                                     </script>
-                                    <table style="" class="table table-striped table-bordered table-hover text-center tbl_et_rekap">
+                                    <table style="" class="table table-striped table-striped table-bordered table-hover text-center tbl_et_rekap">
                                         <thead>
                                             <tr class="bg-primary">
-                                                <th>No</th>
-                                                <th>No Induk</th>
-                                                <th>Nama</th>
-                                                <th style="min-width: 100px;">Tgl Masuk</th>
+                                                <th class="bg-primary">No</th>
+                                                <th class="bg-primary">No Induk</th>
+                                                <th class="bg-primary" style="min-width: 100px;">Nama</th>
+                                                <th style="min-width: 80px;">Tgl Masuk</th>
                                                 <th>Unit</th>
                                                 <th>Seksi</th>
-                                                <th style="min-width: 100px;">Lama Kerja</th>
+                                                <th style="min-width: 80px;">Lama Kerja</th>
                                                 <th>T</th>
                                                 <th>I</th>
                                                 <th>M</th>
@@ -96,7 +108,13 @@
                                                 <td><?php echo round($key['pred_tim'],2); ?></td>
                                                 <td><?php echo round($key['pred_tims'],2); ?></td>
                                                 <td><?php echo $key['pred_lolos']; ?></td>
-                                                <td><?php echo $key['ket']; ?></td>
+                                                <?php if ($key['ket'] == 'PERPANJANGAN'): ?>
+                                                    <td>
+                                                        <a class="evt_noint_per" data-noind="<?php echo $key['noind']; ?>" data-penilaian="<?php echo $jpi; ?>" style="cursor: pointer;"><?php echo $key['ket']; ?></a>
+                                                    </td>
+                                                <?php else: ?>
+                                                    <td><?php echo $key['ket']; ?></td>
+                                                <?php endif ?>
                                             </tr>
                                             <?php $a++; endforeach ?>
                                         </tbody>
@@ -105,7 +123,7 @@
                                         <input hidden="" value="<?php echo date('Y-m-d'); ?>" name="tgl">
                                         <input hidden="" value="<?php echo $jpi; ?>" name="jp">
                                         <input hidden="" value="<?php echo $dept; ?>" name="nama">
-                                        <button type="submit" class="dt-buttons" style="width: 53px; height: 31px;">PDF</button>
+                                        <button type="submit" hidden="" id="et_submitPDF" style="width: 53px; height: 31px;">PDF</button>
                                         <br>
                                         <br>
                                         <textarea name="tx_keterangan" style="margin-top: 20px;" class="form-control tx_et_bulanan"></textarea>
@@ -120,6 +138,28 @@
     </div>
 </div>
 </section>
+<div class="modal fade" id="evt_perpanjangan" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 class="modal-title" id="exampleModalLabel" style="font-weight: bold;">TIMS 6 Bulan Masa OJT</h3>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div id="phone_result" class="modal-body">
+
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <!-- <button type="button" class="btn btn-primary">Save changes</button> -->
+            </div>
+        </div>
+    </div>
+</div>
+<div hidden id="surat-loading" style="top: 0;left: 0;right: 0;bottom: 0; margin: auto; position: fixed; background: rgba(0,0,0,.5); z-index: 11;">
+    <img src="http://erp.quick.com/assets/img/gif/loadingtwo.gif" style="position: fixed; top: 0;left: 0;right: 0;bottom: 0; margin: auto; width: 40%;">
+</div>
 <script>
     $(document).ready(function(){
         var judul = 'Evaluasi TIMS Bulanan - '+jp+' '+pr;
@@ -128,6 +168,10 @@
         var tabell = $('.tbl_et_rekap').DataTable({
             scrollX: true,
             dom: 'lfrtpB',
+            scrollCollapse: true,
+            fixedColumns:   {
+                leftColumns: 3,
+            },
             buttons: [
             {
                 extend: 'excelHtml5',
@@ -139,5 +183,29 @@
             ]
         });
         tabell.columns.adjust().draw();
+       
+        setTimeout(function() {
+             $("input[type=search]").css('width', '200px');
+         }, 100);
+             $('div.btn-group').append('<button id="et_clickPDF" class="btn btn-default buttons-excel buttons-html5">PDF</button>');
+            $('#et_clickPDF').click(function(){
+                $('#et_submitPDF').click();
+            });
+
+            $('.evt_noint_per').click(function(){
+            $('#surat-loading').attr('hidden', false);
+             var noind = $(this).attr('data-noind');
+             var nilaian = $(this).attr('data-penilaian');
+                $.ajax({
+                 url: "<?php echo base_url() ?>EvaluasiTIMS/Bulanan/detail_perpanjangan",
+                    method: "POST",
+                    data: {noind:noind, nilai:nilaian},
+                    success: function(data){
+                        $('#surat-loading').attr('hidden', true);
+                     $('#phone_result').html(data);
+                        $('#evt_perpanjangan').modal('show');
+                    }
+                });
+         });
     });
 </script>
