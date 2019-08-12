@@ -47,6 +47,28 @@ class M_absenatasan extends CI_Model
 		return $query->result_array();
 	}
 
+	public function approveAbsenApproval($id,$data1){
+		$this->db->where('absen_id',$id);
+		$this->db->update('at.at_absen_approval',$data1);
+	}
+
+	public function approveAbsen($id,$data2){
+		$this->db->where('absen_id',$id);
+		$this->db->update('at.at_absen',$data2);
+	}
+
+	public function rejectAbsenApproval($id,$data1){
+		$this->db->where('absen_id',$id);
+		$this->db->update('at.at_absen_approval',$data1);
+	}
+	public function rejectAbsen($id,$data2){
+		$this->db->where('absen_id',$id);
+		$this->db->update('at.at_absen',$data2);
+	}
+
+
+
+
 	
 
 }
