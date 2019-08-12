@@ -19,7 +19,6 @@ class M_kasiepembelian extends CI_Model {
     }
 
 	public function showListSubmittedForChecking($login){
-    $this->db->cache_on();
 		$erp_db = $this->load->database('oracle',true);
 		$sql = "SELECT distinct batch_number batch_number, MAX (to_date(last_admin_date)) submited_date,
                 last_finance_invoice_status, source
@@ -50,7 +49,6 @@ class M_kasiepembelian extends CI_Model {
       }
 
     public function showDetailPerBatch($batchNumber){
-        $this->db->cache_on();
         $oracle = $this->load->database('oracle',true);
         $sql = "SELECT ami.invoice_id invoice_id,
                          ami.vendor_name vendor_name,
@@ -192,7 +190,6 @@ class M_kasiepembelian extends CI_Model {
     }
 
     public function invoiceDetail($invoice_id){
-        $this->db->cache_on();
         $oracle = $this->load->database('oracle',true);
         $sql = "SELECT ami.invoice_number invoice_number,
                 ami.invoice_date invoice_date,
@@ -245,7 +242,6 @@ class M_kasiepembelian extends CI_Model {
     }
 
     public function showFinishBatch($login){
-        $this->db->cache_on();
         $erp_db = $this->load->database('oracle',true);
         $sql = "SELECT to_char(tabel.submited_date, 'MONTH'),
                 tabel.batch_number,
@@ -304,7 +300,6 @@ class M_kasiepembelian extends CI_Model {
     }
 
     public function finish_detail($batchNumber){
-        $this->db->cache_on();
         $oracle = $this->load->database('oracle',true);
         $sql = "SELECT ami.invoice_id invoice_id,
                          ami.vendor_name vendor_name,
@@ -365,7 +360,6 @@ class M_kasiepembelian extends CI_Model {
 
     public function finish_detail_invoice($invoice_id)
     {
-        $this->db->cache_on();
         $erp_db = $this->load->database('oracle',true);
         $sql = "SELECT aipo.invoice_id invoice_id, 
                 invoice_number invoice_number,
@@ -414,7 +408,6 @@ class M_kasiepembelian extends CI_Model {
     }
 
      public function detailBatch($batch_number){
-        $this->db->cache_on();
         $oracle = $this->load->database('oracle',true);
         $sql = "SELECT distinct (SELECT COUNT (last_purchasing_invoice_status)
                       FROM khs_ap_monitoring_invoice b
