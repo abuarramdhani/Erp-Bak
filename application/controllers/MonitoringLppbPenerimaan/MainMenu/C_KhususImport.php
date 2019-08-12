@@ -14,7 +14,7 @@ class C_KhususImport extends CI_Controller
 		$this->load->library('encrypt');
 
 		$this->load->model('SystemAdministration/MainMenu/M_user');
-		$this->load->model('MonitoringLppbPenerimaan/MainMenu/M_khususimport');
+		$this->load->model('MonitoringLppbPenerimaan/MainMenu/M_khususImport');
 
 		$this->checkSession();
 	}
@@ -43,7 +43,7 @@ class C_KhususImport extends CI_Controller
 		$data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id);
 		$data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id);
 
-		$detailio = $this->M_khususimport->showIo();
+		$detailio = $this->M_khususImport->showIo();
 		$data['lppb'] = $detailio;
 
 		$this->load->view('V_Header',$data);
@@ -94,7 +94,7 @@ class C_KhususImport extends CI_Controller
 			$atr3 = '';
 		}
 
-		$data['value'] = $this->M_khususimport->getSearch($atr,$atr2,$atr3);
+		$data['value'] = $this->M_khususImport->getSearch($atr,$atr2,$atr3);
 		// echo"<pre>";print_r($data['value']);
 		// exit();
 
