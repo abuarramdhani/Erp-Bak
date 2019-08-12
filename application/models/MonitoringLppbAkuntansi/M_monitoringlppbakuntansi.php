@@ -34,6 +34,7 @@ class M_monitoringlppbakuntansi extends CI_Model {
                            FROM khs_lppb_batch_detail c
                            WHERE c.status = 5
                            AND c.batch_number = a.batch_number) <> 0
+               AND trunc(a.create_date) BETWEEN to_date('01/08/2019','dd/mm/yyyy') and sysdate
                ORDER BY a.batch_number DESC";
         $run = $oracle->query($query);
         return $run->result_array();
