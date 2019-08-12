@@ -36,8 +36,6 @@ const setOnClickListener = async _ => {
 	document.getElementById('button-fullscreen').addEventListener('click', showFullscreen);
 	document.getElementById('button-print').removeEventListener('click', print);
 	document.getElementById('button-print').addEventListener('click', print);
-	document.getElementById('button-save').removeEventListener('click', save);
-	document.getElementById('button-save').addEventListener('click', save);
 };
 
 const unlockForm = async _ => {
@@ -313,33 +311,53 @@ const showFullscreen = async _ => {
 };
 
 const print = async _ => {
-	const element = document.getElementById('table-rekap-sdm');
+	const table = document.getElementById('table-rekap-sdm');
+	const chart1 = document.getElementById('chart1');
+	const chart2 = document.getElementById('chartBar1');
+	const chart3 = document.getElementById('chartBar2');
 	new Promise(resolve => {
 		loading.showInButton(document.getElementById('icon-button-print'), 'fa-print');
-		//element.parentNode.style.display = 'block';
 		resolve();
-	}). then( _ => {
-		setTimeout( _ => {
-			html2canvas(element, {
-				scale: 1,
+	}).then( _ => {
+		new Promise(resolve => {
+			let win;
+			html2canvas(table, {
+				scale: 2,
+				letterRendering: true,
 				onclone: doc => {
 					doc.getElementById('table-rekap-sdm').style.display = 'block';
-					console.log(doc);
 				}
-			}).then((canvas) => {
-				new Promise(resolve => {
-					let newWindow = window.open();
-					newWindow.document.body.appendChild(canvas);
-					newWindow.focus();
-					newWindow.print();
-					resolve();
-				}).then( _ => {
-					setTimeout( _ => {
-						loading.hideInButton(document.getElementById('icon-button-print'), 'fa-print');
-					}, 100);
+			}).then(table_canvas => {
+				table_canvas.webkitImageSmoothingEnabled = false;
+				table_canvas.mozImageSmoothingEnabled = false;
+				table_canvas.imageSmoothingEnabled = false;
+				win = window.open();
+				win.document.body.appendChild(table_canvas);
+				html2canvas(chart1, {
+					scale: 2,
+					letterRendering: true
+				}).then(chart1_canvas => {
+					win.document.body.appendChild(chart1_canvas);
+					html2canvas(chart2, {
+						scale: 2,
+						letterRendering: true
+					}).then(chart2_canvas => {
+						win.document.body.appendChild(chart2_canvas);
+						html2canvas(chart3, {
+							scale: 2,
+							letterRendering: true
+						}).then(chart3_canvas => {
+							win.document.body.appendChild(chart3_canvas);
+							win.focus();
+							win.print();
+							resolve();
+						});
+					});
 				});
 			});
-		}, 250);
+		}).then( _ => {
+			loading.hideInButton(document.getElementById('icon-button-print'), 'fa-print');
+		});
 	});
 };
 
@@ -356,25 +374,4 @@ const save = async _ => {
 			loading.hideInButton(document.getElementById('icon-button-save'), 'fa-floppy-o');
 		}, 500);
 	});
-	// const element = document.getElementById('box-' + id);
-	// const buttonSave = document.getElementById('btn-save-' + id);
-	// let title = 'Grafik Jumlah Pekerja 2018 vs 2019 (tanpa PKL, Magang & TKPW)';
-	// if(id == 1) title = 'Grafik Jumlah Pekerja 2018 vs 2019 (termasuk PKL, Magang & TKPW)';
-	// loading.showInButton(buttonSave, 'fa-floppy-o');
-	// html2canvas(element, {
-	// 	scale: 1,
-	// 	height: 600
-	// }).then((canvas) => {
-	// 	setTimeout(_ => {
-	// 		let doc = new jsPDF('L', 'mm', 'a4');
-	// 		doc.addImage(canvas.toDataURL('image/jpeg'), 'JPEG', 8, 8);
-	// 		doc.save(title + '.pdf', { 
-	// 			returnPromise: true
-	// 		}).then(_ => {
-	// 			setTimeout(_ => {
-	// 				loading.hideInButton(buttonSave, 'fa-floppy-o');
-	// 			}, 2500);
-	// 		});
-	// 	}, 500);
-	// });
 };

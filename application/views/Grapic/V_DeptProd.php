@@ -33,8 +33,8 @@
 													<label class="control-label">Aksi :</label>
 												</div>
 												<div class="col-lg-7 text-left" style="padding: 0">
-													<a disabled title="Fitur masih dalam tahap pengembangan" class="btn btn-primary" style="margin-right: 6px;"><i class="fa fa-download" style="margin-right: 8px;"></i>Download</a>
-													<a disabled title="Fitur masih dalam tahap pengembangan" class="btn btn-primary"><i class="fa fa-upload" style="margin-right: 8px;"></i>Upload</a>
+													<a disabled title="Fitur sedang dalam proses pengembangan" class="btn btn-primary" style="margin-right: 6px;"><i class="fa fa-download" style="margin-right: 8px;"></i>Download</a>
+													<a disabled title="Fitur sedang dalam proses pengembangan" class="btn btn-primary"><i class="fa fa-upload" style="margin-right: 8px;"></i>Upload</a>
 													<!-- <a target="_blank" style="margin-right: 6px;" href="<?= base_url('SDM/getData'); ?>" class="btSDMdl btn btn-primary"><i class="fa fa-download" style="margin-right: 8px;"></i>Download</a> -->
 													<!-- <a <?= (substr(base_url(), 7, 13) == 'erp.quick.com') ? 'disabled' : 'data-toggle="modal" data-target="#myModalSDM"' ?> title="Fitur masih dalam tahap pengembangan" type="button" class="btn btn-primary"><i class="fa fa-upload" style="margin-right: 8px;"></i>Upload</a> -->	
 												</div>
@@ -194,8 +194,7 @@
 								<div class="col-lg-6" style="padding: 0;">
 									<div class="btn-group pull-right">
 										<button id="button-fullscreen" class="btn btn-primary"><i class="fa fa-desktop" style="margin-right: 8px;"></i>Show in Fullscreen</button>
-										<button title="Fitur sedang dalam proses pengembangan" id="button-print" class="btn btn-primary"><i id="icon-button-print" style="margin-right: 8px;" class="fa fa-print"></i>Print</button>
-										<button title="Fitur sedang dalam proses pengembangan" id="button-save" class="btn btn-primary"><i id="icon-button-save" style="margin-right: 8px;" class="fa fa-floppy-o"></i>Save</button>
+										<button id="button-print" class="btn btn-primary"><i id="icon-button-print" style="margin-right: 8px;" class="fa fa-print"></i>Print</button>
 									</div>
 								</div>
 							</div>
@@ -252,103 +251,75 @@
 														$processTarget1 = $target1[0] + $minAg1;
 														$processTarget2 = $target2[0] + $minAg2;
 													}
-													for($i = 0; $i < 26; $i++):
+													for($i = 0; $i <= 25; $i++):
 												?>
-												<?php if ($i <= 17): ?>
-												<td colspan="2"><?= $printTarget = $printTarget - $minAg; ?></td>
-												<?php else: ?>
-												<td colspan="2"><?= $printTarget = $printTarget - $min; ?></td>
-												<?php endif ?>
+												<td colspan="2"><?= $printTarget = ($i <= 17) ? ($printTarget - $minAg) : ($printTarget - $min) ?></td>
 												<?php endfor ?>
 												<script>
-													targetKaryawan = [
-														<?php 
+													targetKaryawan = [ <?php 
+														for($j = 0; $j < 26; $j++) {
+															echo ($j < 25) ? ($j <= 17) ? '"'.$processTarget = ($processTarget - $minAg).'",' : '"'.$processTarget = ($processTarget - $min).'",' : '"'.$processTarget = ($processTarget - $min).'"';
+														}
+													?>];
+													targetSemuaKaryawanTidakLangsung = [<?php
+														if($nama == 'Semua Data') {
 															for($j = 0; $j < 26; $j++) {
-																echo ($j < 25) ? ($j <= 17) ? '"'.$processTarget = ($processTarget - $minAg).'",' : '"'.$processTarget = ($processTarget - $min).'",' : '"'.$processTarget = ($processTarget - $min).'"';
+																echo ($j < 25) ? ($j <= 17) ? '"'.$processTarget1 = ($processTarget1 - $minAg1).'",' : '"'.$processTarget1 = ($processTarget1 - $min1).'",' : '"'.$processTarget1 = ($processTarget1 - $min1).'"';
 															}
-														?>
-													];
-													targetSemuaKaryawanTidakLangsung = [
-														<?php
-															if($nama == 'Semua Data') {
-																for($j = 0; $j < 26; $j++) {
-																	echo ($j < 25) ? ($j <= 17) ? '"'.$processTarget1 = ($processTarget1 - $minAg1).'",' : '"'.$processTarget1 = ($processTarget1 - $min1).'",' : '"'.$processTarget1 = ($processTarget1 - $min1).'"';
-																}
+														}
+													?>];
+													targetSemuaKaryawanLangsung = [<?php 
+														if($nama == 'Semua Data') {
+															for($j = 0; $j < 26; $j++) {
+																echo ($j < 25) ? ($j <= 17) ? '"'.$processTarget2 = ($processTarget2 - $minAg2).'",' : '"'.$processTarget2 = ($processTarget2 - $min2).'",' : '"'.$processTarget2 = ($processTarget2 - $min2).'"';
 															}
-														?>
-													];
-													targetSemuaKaryawanLangsung = [
-														<?php 
-															if($nama == 'Semua Data') {
-																for($j = 0; $j < 26; $j++) {
-																	echo ($j < 25) ? ($j <= 17) ? '"'.$processTarget2 = ($processTarget2 - $minAg2).'",' : '"'.$processTarget2 = ($processTarget2 - $min2).'",' : '"'.$processTarget2 = ($processTarget2 - $min2).'"';
-																}
-															}
-														?>
-													];
+														}
+													?>];
 												</script>
 											</tr>
 											<tr>
 												<td class="fixed-column">Jumlah Karyawan</td>
-												<?php foreach ($target as $key => $value): ?>
+												<?php foreach($target as $key => $value): ?>
 												<td colspan="2"><?= $value ?></td>
-												<?php endforeach ?>
-												<?php for ($i = count($target); $i < 26; $i++): ?>
+												<?php endforeach; for($i = count($target); $i <= 25; $i++): ?>
 												<td colspan="2"></td>
 												<?php endfor ?>
 												<script>
-													jumlahKaryawan = [
-														<?php 
-															for ($j = 0; $j < count($target); $j++) {
-																echo (($j < (count($target) - 1)) ? '"'.$target[$j].'",' : '"'.$target[$j].'"');
+													jumlahKaryawan = [<?php 
+														for ($j = 0; $j < count($target); $j++) {
+															echo (($j < (count($target) - 1)) ? '"'.$target[$j].'",' : '"'.$target[$j].'"');
+														}
+													?>];
+													jumlahSemuaKaryawanTidakLangsung = [<?php
+														if($nama == 'Semua Data') {
+															for ($j = 0; $j < count($target1); $j++) {
+																echo (($j < (count($target1) - 1)) ? '"'.$target1[$j].'",' : '"'.$target1[$j].'"');
 															}
-														?>
-													];
-													jumlahSemuaKaryawanTidakLangsung = [
-														<?php
-															if($nama == 'Semua Data') {
-																for ($j = 0; $j < count($target1); $j++) {
-																	echo (($j < (count($target1) - 1)) ? '"'.$target1[$j].'",' : '"'.$target1[$j].'"');
-																}
+														}
+													?>];
+													jumlahSemuaKaryawanLangsung = [<?php
+														if($nama == 'Semua Data') {
+															for ($j = 0; $j < count($target2); $j++) {
+																echo (($j < (count($target2) - 1)) ? '"'.$target2[$j].'",' : '"'.$target2[$j].'"');
 															}
-														?>
-													];
-													jumlahSemuaKaryawanLangsung = [
-														<?php
-															if($nama == 'Semua Data') {
-																for ($j = 0; $j < count($target2); $j++) {
-																	echo (($j < (count($target2) - 1)) ? '"'.$target2[$j].'",' : '"'.$target2[$j].'"');
-																}
-															}
-														?>
-													];
+														}
+													?>];
 												</script>
 											</tr>
 											<tr>
 												<td class="fixed-column">Target Turun Perbulan</td>
 												<td>0</td>
 												<td>0%</td>
-												<?php for($i = 0; $i < 25; $i++): ?>
+												<?php for($i = 0; $i <= 24; $i++): ?>
 												<td><?= $minAg ?></td>
-												<?php if($target[0] != 0): ?>
-												<?php 	if($i > 16): ?>
-												<td><?= round($min / $target[0] * 100, 1) ?>%</td>
-												<?php 	else: ?>
-												<td><?= round($minAg / $target[0] * 100, 1) ?>%</td>
-												<?php 	endif ?>
-												<?php else: ?>
-												<td>0%</td>
-												<?php endif ?>
+												<td><?= ($target[0] == 0) ? 0 : ($i <= 16) ? round($minAg / $target[0] * 100, 1) : round($min / $target[0] * 100, 1) ?>%</td>
 												<?php endfor ?>
 												<script>
-													targetTurunPerBulan = [
-														"0",
-														<?php 
-															for($j = 0; $j < 25; $j++) {
-																echo (($j < 24) ? ($j <= 16) ? '"'.$minAg.'",' : '"'.$min.'",' : '"'.$min.'"');
-															}
-														?>
-													];
+													targetTurunPerBulan = ["0",<?php 
+														for($j = 0; $j <= 24; $j++) {
+															echo (($j <= 23) ? ($j <= 16) ? '"'.$minAg.'",' : '"'.$min.'",' : '"'.$min.'"');
+														}
+													?>];
 												</script>
 											</tr>
 											<tr>
@@ -357,76 +328,50 @@
 												<td>0%</td>
 												<?php for($i = 0; $i < count($target) - 1; $i++): $turun = ($target[$i + 1] - $target[$i]); ?>
 												<td><?= abs($turun) ?></td>
-												<td><?= ($target[$i] == '0' ? '0' : abs(round(($turun / $target[$i] * 100), 1))) ?>%</td>
-												<?php endfor ?>
-												<?php for ($i = count($target) - 1; $i < 25 ; $i++): ?>
+												<td><?= ($target[$i] == 0) ? 0 : abs(round(($turun / $target[$i] * 100), 1)) ?>%</td>
+												<?php endfor; for($i = count($target) - 1; $i <= 24 ; $i++): ?>
 												<td></td>
 												<td></td>
 												<?php endfor ?>
 												<script>
-													jumlahTurunPerBulan = [
-														"0",
-														<?php
-															for($j = 0; $j < count($target) - 1; $j++) {
-																$x = ($target[$j + 1] - $target[$j]);
-																echo (($j < (count($target) - 2)) ? '"'.abs($x).'",' : '"'.abs($x).'"');
+													jumlahTurunPerBulan = ["0",<?php
+														for($j = 0; $j <= count($target) - 2; $j++) {
+															$x = ($target[$j + 1] - $target[$j]);
+															echo (($j <= (count($target) - 3)) ? '"'.abs($x).'",' : '"'.abs($x).'"');
+														}
+													?>];
+													jumlahSemuaKaryawanTidakLangsungTurunPerBulan = ["0",<?php
+														if($nama == 'Semua Data') {
+															for($j = 0; $j <= count($target1) - 2; $j++) {
+																$x = ($target1[$j + 1] - $target1[$j]);
+																echo (($j <= (count($target1) - 3)) ? '"'.abs($x).'",' : '"'.abs($x).'"');
 															}
-														?>
-													];
-													jumlahSemuaKaryawanTidakLangsungTurunPerBulan = [
-														"0",
-														<?php
-															if($nama == 'Semua Data') {
-																for($j = 0; $j < count($target1) - 1; $j++) {
-																	$x = ($target1[$j + 1] - $target1[$j]);
-																	echo (($j < (count($target1) - 2)) ? '"'.abs($x).'",' : '"'.abs($x).'"');
-																}
+														}
+													?>];
+													jumlahSemuaKaryawanLangsungTurunPerBulan = ["0",<?php
+														if($nama == 'Semua Data') {
+															for($j = 0; $j <= count($target2) - 2; $j++) {
+																$x = ($target2[$j + 1] - $target2[$j]);
+																echo (($j <= (count($target2) - 3)) ? '"'.abs($x).'",' : '"'.abs($x).'"');
 															}
-														?>
-													];
-													jumlahSemuaKaryawanLangsungTurunPerBulan = [
-														"0",
-														<?php
-															if($nama == 'Semua Data') {
-																for($j = 0; $j < count($target2) - 1; $j++) {
-																	$x = ($target2[$j + 1] - $target2[$j]);
-																	echo (($j < (count($target2) - 2)) ? '"'.abs($x).'",' : '"'.abs($x).'"');
-																}
-															}
-														?>
-													];
+														}
+													?>];
 												</script>
 											</tr>
 											<tr>
 												<td class="fixed-column">Target Turun Akumulasi</td>
 												<td>0</td>
 												<td>0%</td>
-												<?php
-													$trgaku = 0;
-													$trgaku2 = 0;
-													for($i = 0; $i < 25; $i++) { 
-														if($i > 16) {
-															echo '<td>'.$trgaku = ($trgaku + $min).'</td>';
-														} else {
-															echo '<td>'.$trgaku = ($trgaku + $minAg).'</td>';
-														}
-														if($target[0] != 0) {
-															echo '<td>'.$trgaku2 = round($trgaku / $target[0] * 100, 1).'%</td>';
-														} else {
-															echo '<td>0%</td>';
-														}
-													}
-												?>
+												<?php $trgaku = 0; $trgaku2 = 0; $trgakumulasi = 0; for($i = 0; $i <= 24; $i++): ?>
+												<td><?= $trgaku += (($i <= 16) ? $minAg : $min) ?></td>
+												<td><?= ($target[0] == 0) ? 0 : $trgaku2 = round($trgaku / $target[0] * 100, 1) ?></td>
+												<?php endfor ?>
 												<script>
-													targetTurunAkumulasi = [
-														"0",
-														<?php
-															$trgakumulasi = 0;
-															for($j = 0; $j < 25; $j++) {
-																echo (($j < 24) ? ($j <= 16) ? '"'.$trgakumulasi = ($trgakumulasi+ $minAg).'",' : '"'.$trgakumulasi = ($trgakumulasi + $min).'",' : '"'.$trgakumulasi = ($trgakumulasi + $min).'"' );
-															}
-														?>
-													];
+													targetTurunAkumulasi = ["0",<?php
+														for($j = 0; $j <= 24; $j++) {
+															echo (($j <= 23) ? ($j <= 16) ? '"'.$trgakumulasi = ($trgakumulasi+ $minAg).'",' : '"'.$trgakumulasi = ($trgakumulasi + $min).'",' : '"'.$trgakumulasi = ($trgakumulasi + $min).'"' );
+														}
+													?>];
 												</script>
 											</tr>
 											<tr>
@@ -435,310 +380,180 @@
 												<td>0%</td>
 												<?php for ($i = 0; $i < count($target) - 1; $i++): $turun = ($target[$i + 1] - $target[0]); ?>
 												<td><?= abs($turun) ?></td>
-												<?php if($target[0] != 0): ?>
-												<td><?= abs(round(($turun / $target[0] * 100), 1)) ?>%</td>
-												<?php else: ?>
-												<td>0%</td>
-												<?php endif ?>
-												<?php endfor ?>
-												<?php for ($i = count($target); $i < 26; $i++): ?>
+												<td><?= ($target[0] == 0) ? 0 : abs(round(($turun / $target[0] * 100), 1)) ?>%</td>
+												<?php endfor; for ($i = count($target); $i <= 25; $i++): ?>
 												<td></td>
 												<td></td>
 												<?php endfor ?>
 												<script>
-													jumlahTurunAkumulasi = [
-														"0",
-														<?php
-															for($j = 0; $j < count($target) - 1; $j++) {
-																$x = ($target[$j + 1] - $target[0]);
-																echo (($j < (count($target) - 2)) ? '"'.abs($x).'",' : '"'.abs($x).'"');
+													jumlahTurunAkumulasi = ["0",<?php
+														for($j = 0; $j <= count($target) - 2; $j++) {
+															$x = ($target[$j + 1] - $target[0]);
+															echo (($j <= (count($target) - 3)) ? '"'.abs($x).'",' : '"'.abs($x).'"');
+														}
+													?>];
+													jumlahSemuaKaryawanTurunTidakLangsungAkumulasi = ["0",<?php
+														if($nama == 'Semua Data') {
+															for($j = 0; $j <= count($target1) - 2; $j++) {
+																$x = ($target1[$j + 1] - $target1[0]);
+																echo (($j <= (count($target1) - 3)) ? '"'.abs($x).'",' : '"'.abs($x).'"');
 															}
-														?>
-													];
-													jumlahSemuaKaryawanTurunTidakLangsungAkumulasi = [
-														"0",
-														<?php
-															if($nama == 'Semua Data') {
-																for($j = 0; $j < count($target1) - 1; $j++) {
-																	$x = ($target1[$j + 1] - $target1[0]);
-																	echo (($j < (count($target1) - 2)) ? '"'.abs($x).'",' : '"'.abs($x).'"');
-																}
+														}
+													?>];
+													jumlahSemuaKaryawanTurunLangsungAkumulasi = ["0",<?php
+														if($nama == 'Semua Data') {
+															for($j = 0; $j <= count($target2) - 2; $j++) {
+																$x = ($target2[$j + 1] - $target2[0]);
+																echo (($j <= (count($target2) - 3)) ? '"'.abs($x).'",' : '"'.abs($x).'"');
 															}
-														?>
-													];
-													jumlahSemuaKaryawanTurunLangsungAkumulasi = [
-														"0",
-														<?php
-															if($nama == 'Semua Data') {
-																for($j = 0; $j < count($target2) - 1; $j++) {
-																	$x = ($target2[$j + 1] - $target2[0]);
-																	echo (($j < (count($target2) - 2)) ? '"'.abs($x).'",' : '"'.abs($x).'"');
-																}
-															}
-														?>
-													];
+														}
+													?>];
 												</script>
 											</tr>
 										</tbody>
 									</table>
 								</div>
-								<div style="display: none;">
-									<table id="table-rekap-sdm" class="table table-bordered table-hover text-center" style="overflow-x: auto; width: 100%; display: block;">
+								<div id="table-rekap-sdm" style="display: none;">
+									<table class="table table-bordered table-hover text-center" style="width: 100%; table-layout: fixed;">
 										<thead>
-											<th style="background-color: #00a65a; color: white; min-width: 100px;">Keterangan</th>
-											<?php $a = 1; foreach ($akhir as $key => $value): ?>
-											<th class="<?= ($a++ % 2 == 0) ? 'bg-primary' : 'bg-orange' ?>" colspan="<?= $value ?>"><?= $key ?></th>
-											<?php endforeach ?>
+											<th style="background-color: #00a65a; color: white; width: 90px; font-size: 1.3rem;">Keterangan</th>
+											<?php $x = 0; foreach ($akhir as $key => $value): if($x <= 5):  ?>
+											<th style="font-size: 1.3rem; display: fixed;" class="<?= (($x + 1) % 2 == 0) ? 'bg-primary' : 'bg-orange' ?>" colspan="<?= $value ?>"><?= $key ?></th>
+											<?php endif; $x++; endforeach ?>
 										</thead>
 										<tbody>
 											<tr>
-												<td>Tanggal</td>
-												<?php foreach ($tgl as $key => $date): ?>
-												<td colspan="2" style="text-align: center;"><?= $date->format("m.d") ?></td>
-												<?php endforeach ?>
+												<td style="height: auto; font-size: 0.9rem;">Tanggal</td>
+												<?php $x = 0; foreach ($tgl as $key => $date): if($x <= 12): ?>
+												<td colspan="2" style="height: auto; font-size: 0.9rem; padding-left: 0; padding-right: 0;"><?= $date->format("m.d") ?></td>
+												<?php endif; $x++; endforeach ?>
 											</tr>
 											<tr>
-												<td>Target Karyawan</td>
-												<?php
-													$printTarget = $target[0] + $minAg;
-													$processTarget = $target[0] + $minAg;
-													if($nama == 'Semua Data') {
-														$processTarget1 = $target1[0] + $minAg1;
-														$processTarget2 = $target2[0] + $minAg2;
-													}
-													for($i = 0; $i < 26; $i++):
-												?>
-												<?php if ($i <= 17): ?>
-												<td colspan="2"><?= $printTarget = $printTarget - $minAg; ?></td>
-												<?php else: ?>
-												<td colspan="2"><?= $printTarget = $printTarget - $min; ?></td>
-												<?php endif ?>
+												<td style="height: auto; font-size: 0.9rem;">Target Karyawan</td>
+												<?php $printTarget = $target[0] + $minAg; for($i = 0; $i <= 12; $i++): ?>
+												<td colspan="2" style="height: auto; font-size: 0.9rem; padding-left: 0; padding-right: 0;"><?= $printTarget = $printTarget - $minAg; ?></td>
 												<?php endfor ?>
-												<script>
-													targetKaryawan = [
-														<?php 
-															for($j = 0; $j < 26; $j++) {
-																echo ($j < 25) ? ($j <= 17) ? '"'.$processTarget = ($processTarget - $minAg).'",' : '"'.$processTarget = ($processTarget - $min).'",' : '"'.$processTarget = ($processTarget - $min).'"';
-															}
-														?>
-													];
-													targetSemuaKaryawanTidakLangsung = [
-														<?php
-															if($nama == 'Semua Data') {
-																for($j = 0; $j < 26; $j++) {
-																	echo ($j < 25) ? ($j <= 17) ? '"'.$processTarget1 = ($processTarget1 - $minAg1).'",' : '"'.$processTarget1 = ($processTarget1 - $min1).'",' : '"'.$processTarget1 = ($processTarget1 - $min1).'"';
-																}
-															}
-														?>
-													];
-													targetSemuaKaryawanLangsung = [
-														<?php 
-															if($nama == 'Semua Data') {
-																for($j = 0; $j < 26; $j++) {
-																	echo ($j < 25) ? ($j <= 17) ? '"'.$processTarget2 = ($processTarget2 - $minAg2).'",' : '"'.$processTarget2 = ($processTarget2 - $min2).'",' : '"'.$processTarget2 = ($processTarget2 - $min2).'"';
-																}
-															}
-														?>
-													];
-												</script>
 											</tr>
 											<tr>
-												<td>Jumlah Karyawan</td>
-												<?php foreach ($target as $key => $value): ?>
-												<td colspan="2"><?= $value ?></td>
-												<?php endforeach ?>
-												<?php for ($i = count($target); $i < 26; $i++): ?>
-												<td colspan="2"></td>
+												<td style="height: auto; font-size: 0.9rem;">Jumlah Karyawan</td>
+												<?php $x = 0; foreach ($target as $key => $value): if($x <= 12): ?>
+												<td colspan="2" style="height: auto; font-size: 0.9rem; padding-left: 0; padding-right: 0;"><?= $value ?></td>
+												<?php endif; $x++; endforeach; for ($i = $x; $i <= 12; $i++): ?>
+												<td colspan="2" style="height: auto; font-size: 0.9rem; padding-left: 0; padding-right: 0;"></td>
 												<?php endfor ?>
-												<script>
-													jumlahKaryawan = [
-														<?php 
-															for ($j = 0; $j < count($target); $j++) {
-																echo (($j < (count($target) - 1)) ? '"'.$target[$j].'",' : '"'.$target[$j].'"');
-															}
-														?>
-													];
-													jumlahSemuaKaryawanTidakLangsung = [
-														<?php
-															if($nama == 'Semua Data') {
-																for ($j = 0; $j < count($target1); $j++) {
-																	echo (($j < (count($target1) - 1)) ? '"'.$target1[$j].'",' : '"'.$target1[$j].'"');
-																}
-															}
-														?>
-													];
-													jumlahSemuaKaryawanLangsung = [
-														<?php
-															if($nama == 'Semua Data') {
-																for ($j = 0; $j < count($target2); $j++) {
-																	echo (($j < (count($target2) - 1)) ? '"'.$target2[$j].'",' : '"'.$target2[$j].'"');
-																}
-															}
-														?>
-													];
-												</script>
 											</tr>
 											<tr>
-												<td>Target Turun Perbulan</td>
-												<td>0</td>
-												<td>0%</td>
-												<?php for($i = 0; $i < 25; $i++): ?>
-												<td><?= $minAg ?></td>
-												<?php if($target[0] != 0): ?>
-												<?php 	if($i > 16): ?>
-												<td><?= round($min / $target[0] * 100, 1) ?>%</td>
-												<?php 	else: ?>
-												<td><?= round($minAg / $target[0] * 100, 1) ?>%</td>
-												<?php 	endif ?>
-												<?php else: ?>
-												<td>0%</td>
-												<?php endif ?>
+												<td style="height: auto; font-size: 0.9rem;">Target Turun Perbulan</td>
+												<td style="height: auto; font-size: 0.9rem; padding-left: 0; padding-right: 0;">0</td>
+												<td style="height: auto; font-size: 0.9rem; padding-left: 0; padding-right: 0;">0%</td>
+												<?php for($i = 0; $i <= 11; $i++): ?>
+												<td style="height: auto; font-size: 0.9rem; padding-left: 0; padding-right: 0;"><?= $minAg ?></td>
+												<td style="height: auto; font-size: 0.9rem; padding-left: 0; padding-right: 0;"><?= ($target[0] == 0) ? 0 : round($minAg / $target[0] * 100, 1) ?>%</td>
 												<?php endfor ?>
-												<script>
-													targetTurunPerBulan = [
-														"0",
-														<?php 
-															for($j = 0; $j < 25; $j++) {
-																echo (($j < 24) ? ($j <= 16) ? '"'.$minAg.'",' : '"'.$min.'",' : '"'.$min.'"');
-															}
-														?>
-													];
-												</script>
 											</tr>
 											<tr>
-												<td>Jumlah Turun Per Bulan</td>
-												<td>0</td>
-												<td>0%</td>
-												<?php for($i = 0; $i < count($target) - 1; $i++): $turun = ($target[$i + 1] - $target[$i]); ?>
-												<td><?= abs($turun) ?></td>
-												<td><?= ($target[$i] == '0' ? '0' : abs(round(($turun / $target[$i] * 100), 1))) ?>%</td>
+												<td style="height: auto; font-size: 0.9rem;">Jumlah Turun Per Bulan</td>
+												<td style="height: auto; font-size: 0.9rem; padding-left: 0; padding-right: 0;">0</td>
+												<td style="height: auto; font-size: 0.9rem; padding-left: 0; padding-right: 0;">0%</td>
+												<?php for($i = 0; $i < count($target) - 1; $i++): if($i <= 11): $turun = ($target[$i + 1] - $target[$i]); ?>
+												<td style="height: auto; font-size: 0.9rem; padding-left: 0; padding-right: 0;"><?= abs($turun) ?></td>
+												<td style="height: auto; font-size: 0.9rem; padding-left: 0; padding-right: 0;"><?= ($target[$i] == 0) ? 0 : abs(round(($turun / $target[$i] * 100), 1)) ?>%</td>
+												<?php endif; endfor; for ($i = count($target); $i <= 11; $i++): ?>
+												<td style="height: auto; font-size: 0.9rem; padding-left: 0; padding-right: 0;"></td>
+												<td style="height: auto; font-size: 0.9rem; padding-left: 0; padding-right: 0;"></td>
 												<?php endfor ?>
-												<?php for ($i = count($target) - 1; $i < 25 ; $i++): ?>
-												<td></td>
-												<td></td>
-												<?php endfor ?>
-												<script>
-													jumlahTurunPerBulan = [
-														"0",
-														<?php
-															for($j = 0; $j < count($target) - 1; $j++) {
-																$x = ($target[$j + 1] - $target[$j]);
-																echo (($j < (count($target) - 2)) ? '"'.abs($x).'",' : '"'.abs($x).'"');
-															}
-														?>
-													];
-													jumlahSemuaKaryawanTidakLangsungTurunPerBulan = [
-														"0",
-														<?php
-															if($nama == 'Semua Data') {
-																for($j = 0; $j < count($target1) - 1; $j++) {
-																	$x = ($target1[$j + 1] - $target1[$j]);
-																	echo (($j < (count($target1) - 2)) ? '"'.abs($x).'",' : '"'.abs($x).'"');
-																}
-															}
-														?>
-													];
-													jumlahSemuaKaryawanLangsungTurunPerBulan = [
-														"0",
-														<?php
-															if($nama == 'Semua Data') {
-																for($j = 0; $j < count($target2) - 1; $j++) {
-																	$x = ($target2[$j + 1] - $target2[$j]);
-																	echo (($j < (count($target2) - 2)) ? '"'.abs($x).'",' : '"'.abs($x).'"');
-																}
-															}
-														?>
-													];
-												</script>
 											</tr>
 											<tr>
-												<td>Target Turun Akumulasi</td>
-												<td>0</td>
-												<td>0%</td>
-												<?php
-													$trgaku = 0;
-													$trgaku2 = 0;
-													for($i = 0; $i < 25; $i++) { 
-														if($i > 16) {
-															echo '<td>'.$trgaku = ($trgaku + $min).'</td>';
-														} else {
-															echo '<td>'.$trgaku = ($trgaku + $minAg).'</td>';
-														}
-														if($target[0] != 0) {
-															echo '<td>'.$trgaku2 = round($trgaku / $target[0] * 100, 1).'%</td>';
-														} else {
-															echo '<td>0%</td>';
-														}
-													}
-												?>
-												<script>
-													targetTurunAkumulasi = [
-														"0",
-														<?php
-															$trgakumulasi = 0;
-															for($j = 0; $j < 25; $j++) {
-																echo (($j < 24) ? ($j <= 16) ? '"'.$trgakumulasi = ($trgakumulasi+ $minAg).'",' : '"'.$trgakumulasi = ($trgakumulasi + $min).'",' : '"'.$trgakumulasi = ($trgakumulasi + $min).'"' );
-															}
-														?>
-													];
-												</script>
+												<td style="height: auto; font-size: 0.9rem;">Target Turun Akumulasi</td>
+												<td style="height: auto; font-size: 0.9rem; padding-left: 0; padding-right: 0;">0</td>
+												<td style="height: auto; font-size: 0.9rem; padding-left: 0; padding-right: 0;">0%</td>
+												<?php $trgaku = 0; $trgaku2 = 0; for($i = 0; $i <= 11; $i++): ?>
+												<td style="height: auto; font-size: 0.9rem; padding-left: 0; padding-right: 0;"><?= $trgaku = ($trgaku + $minAg) ?></td>
+												<td style="height: auto; font-size: 0.9rem; padding-left: 0; padding-right: 0;"><?= ($target[0] == 0) ? 0 : $trgaku2 = round($trgaku / $target[0] * 100, 1)?>%</td>
+												<?php endfor ?>
 											</tr>
 											<tr>
-												<td>Jumlah Turun Akumulasi</td>
-												<td>0</td>
-												<td>0%</td>
-												<?php for ($i = 0; $i < count($target) - 1; $i++): $turun = ($target[$i + 1] - $target[0]); ?>
-												<td><?= abs($turun) ?></td>
-												<?php if($target[0] != 0): ?>
-												<td><?= abs(round(($turun / $target[0] * 100), 1)) ?>%</td>
-												<?php else: ?>
-												<td>0%</td>
-												<?php endif ?>
+												<td style="height: auto; font-size: 0.9rem;">Jumlah Turun Akumulasi</td>
+												<td style="height: auto; font-size: 0.9rem; padding-left: 0; padding-right: 0;">0</td>
+												<td style="height: auto; font-size: 0.9rem; padding-left: 0; padding-right: 0;">0%</td>
+												<?php for($i = 0; $i < count($target) - 1; $i++): if($i <= 11): $turun = ($target[$i + 1] - $target[0]); ?>
+												<td style="height: auto; font-size: 0.9rem; padding-left: 0; padding-right: 0;"><?= abs($turun) ?></td>
+												<td style="height: auto; font-size: 0.9rem; padding-left: 0; padding-right: 0;"><?= ($target[0] == 0) ? 0 : abs(round(($turun / $target[0] * 100), 1)) ?>%</td>
+												<?php endif; endfor; for ($i = count($target); $i <= 11; $i++): ?>
+												<td style="height: auto; font-size: 0.9rem; padding-left: 0; padding-right: 0;"></td>
+												<td style="height: auto; font-size: 0.9rem; padding-left: 0; padding-right: 0;"></td>
 												<?php endfor ?>
-												<?php for ($i = count($target); $i < 26; $i++): ?>
-												<td></td>
-												<td></td>
+											</tr>
+										</tbody>
+									</table>
+									<table class="table table-bordered table-hover text-center" style="margin-top: 8px; width: 100%; table-layout: fixed;">
+										<thead>
+											<th style="background-color: #00a65a; color: white; width: 90px; font-size: 1.3rem; display: fixed;">Keterangan</th>
+											<?php $x = 0; foreach($akhir as $key => $value): if($x >= 6): ?>
+											<th style="font-size: 1.3rem; display: fixed;" class="<?= (($x + 1) % 2 == 0) ? 'bg-primary' : 'bg-orange' ?>" colspan="<?= $value ?>"><?= $key ?></th>
+											<?php endif; $x++; endforeach ?>
+										</thead>
+										<tbody>
+											<tr>
+												<td style="height: auto; font-size: 0.9rem;">Tanggal</td>
+												<?php $x = 0; foreach($tgl as $key => $date): if($x >= 13): ?>
+												<td colspan="2" style="height: auto; font-size: 0.9rem; padding-left: 0; padding-right: 0;"><?= $date->format("m.d") ?></td>
+												<?php endif; $x++; endforeach ?>
+											</tr>
+											<tr>
+												<td style="height: auto; font-size: 0.9rem;">Target Karyawan</td>
+												<?php for($i = 0; $i <= 25; $i++): if($i >= 13): ?>
+												<td colspan="2" style="height: auto; font-size: 0.9rem; padding-left: 0; padding-right: 0;"><?= $printTarget -= (($i <= 17) ? $minAg : $min) ?></td>
+												<?php endif; endfor ?>
+											</tr>
+											<tr>
+												<td style="height: auto; font-size: 0.9rem;">Jumlah Karyawan</td>
+												<?php $x = 0; foreach ($target as $key => $value): if($x >= 13): ?>
+												<td colspan="2" style="height: auto; font-size: 0.9rem; padding-left: 0; padding-right: 0;"><?= $value ?></td>
+												<?php endif; $x++; endforeach; for ($i = $x; $i <= 25; $i++): ?>
+												<td colspan="2" style="height: auto; font-size: 0.9rem; padding-left: 0; padding-right: 0;"></td>
 												<?php endfor ?>
-												<script>
-													jumlahTurunAkumulasi = [
-														"0",
-														<?php
-															for($j = 0; $j < count($target) - 1; $j++) {
-																$x = ($target[$j + 1] - $target[0]);
-																echo (($j < (count($target) - 2)) ? '"'.abs($x).'",' : '"'.abs($x).'"');
-															}
-														?>
-													];
-													jumlahSemuaKaryawanTurunTidakLangsungAkumulasi = [
-														"0",
-														<?php
-															if($nama == 'Semua Data') {
-																for($j = 0; $j < count($target1) - 1; $j++) {
-																	$x = ($target1[$j + 1] - $target1[0]);
-																	echo (($j < (count($target1) - 2)) ? '"'.abs($x).'",' : '"'.abs($x).'"');
-																}
-															}
-														?>
-													];
-													jumlahSemuaKaryawanTurunLangsungAkumulasi = [
-														"0",
-														<?php
-															if($nama == 'Semua Data') {
-																for($j = 0; $j < count($target2) - 1; $j++) {
-																	$x = ($target2[$j + 1] - $target2[0]);
-																	echo (($j < (count($target2) - 2)) ? '"'.abs($x).'",' : '"'.abs($x).'"');
-																}
-															}
-														?>
-													];
-												</script>
+											</tr>
+											<tr>
+												<td style="height: auto; font-size: 0.9rem;">Target Turun Perbulan</td>
+												<?php for($i = 0; $i <= 25; $i++): if($i >= 13): ?>
+												<td style="height: auto; font-size: 0.9rem; padding-left: 0; padding-right: 0;"><?= $minAg ?></td>
+												<td style="height: auto; font-size: 0.9rem; padding-left: 0; padding-right: 0;"><?= ($target[0] == 0) ? 0 : ($i <= 16) ? round($minAg / $target[0] * 100, 1) : round($min / $target[0] * 100, 1) ?>%</td>
+												<?php endif; endfor ?>
+											</tr>
+											<tr>
+												<td style="height: auto; font-size: 0.9rem;">Jumlah Turun Per Bulan</td>
+												<?php for($i = 0; $i < count($target) - 1; $i++): if($i >= 12): $turun = ($target[$i + 1] - $target[$i]); ?>
+												<td style="height: auto; font-size: 0.9rem; padding-left: 0; padding-right: 0;"><?= abs($turun) ?></td>
+												<td style="height: auto; font-size: 0.9rem; padding-left: 0; padding-right: 0;"><?= ($target[$i] == 0) ? 0 : abs(round(($turun / $target[$i] * 100), 1)) ?>%</td>
+												<?php endif; endfor; for ($i = count($target); $i <= 25; $i++): ?>
+												<td style="height: auto; font-size: 0.9rem; padding-left: 0; padding-right: 0;"></td>
+												<td style="height: auto; font-size: 0.9rem; padding-left: 0; padding-right: 0;"></td>
+												<?php endfor ?>
+											</tr>
+											<tr>
+												<td style="height: auto; font-size: 0.9rem;">Target Turun Akumulasi</td>
+												<?php for($i = 0; $i <= 25; $i++): if($i >= 13): ?>
+												<td style="height: auto; font-size: 0.9rem; padding-left: 0; padding-right: 0;"><?= $trgaku += (($i <= 17) ? $minAg : $min) ?></td>
+												<td style="height: auto; font-size: 0.9rem; padding-left: 0; padding-right: 0;"><?= ($target[0] == 0) ? 0 : $trgaku2 = round($trgaku / $target[0] * 100, 1) ?>%</td>
+												<?php endif; endfor ?>
+											</tr>
+											<tr>
+												<td style="height: auto; font-size: 0.9rem;">Jumlah Turun Akumulasi</td>
+												<?php for($i = 0; $i < count($target) - 1; $i++): if($i >= 12): $turun = ($target[$i + 1] - $target[0]); ?>
+												<td style="height: auto; font-size: 0.9rem; padding-left: 0; padding-right: 0;"><?= abs($turun) ?></td>
+												<td style="height: auto; font-size: 0.9rem; padding-left: 0; padding-right: 0;"><?= ($target[0] == 0) ? 0 : abs(round(($turun / $target[0] * 100), 1)) ?>%</td>
+												<?php endif; endfor; for ($i = count($target); $i <= 25; $i++): ?>
+												<td style="height: auto; font-size: 0.9rem; padding-left: 0; padding-right: 0;"></td>
+												<td style="height: auto; font-size: 0.9rem; padding-left: 0; padding-right: 0;"></td>
+												<?php endfor ?>
 											</tr>
 										</tbody>
 									</table>
 								</div>
-								<canvas style="margin-top: 18px;" id="chart1" width="400" height="150"></canvas>
-								<canvas style="margin-top: 18px;" id="chartBar1" width="400" height="100"></canvas>
-								<canvas style="margin-top: 18px;" id="chartBar2" width="400" height="100"></canvas>
+								<canvas style="margin-top: 18px;" id="chart1" style="width: 100%; height: 150px; display: fixed;"></canvas>
+								<canvas style="margin-top: 18px;" id="chartBar1" style="width: 100%; height: 100px; display: fixed;"></canvas>
+								<canvas style="margin-top: 18px;" id="chartBar2" style="width: 100%; height: 100px; display: fixed;"></canvas>
 								<?php endif ?>
 							</div>
 						<?php endif ?>
