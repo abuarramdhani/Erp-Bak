@@ -163,6 +163,50 @@ class C_Index extends CI_Controller
 		$this->load->view('V_Footer',$data);
 		}
 
+		public function approveApproval($id){
+			$status = 1;
+			$tgl_approval = date('Y-m-d H:i:s');
+
+			$data1 = 
+			['status' => $status,
+			 'tgl_approval' => $tgl_approval	
+			];
+
+			$this->M_absenatasan->approveAbsenApproval($id,$data1);
+
+			$data2 = 
+			['status' => $status,
+			 'tgl_status' => $tgl_approval
+			];
+
+			$this->M_absenatasan->approveAbsen($id,$data2);
+
+			redirect('AbsenAtasan/List');
+
+		}
+
+
+		public function rejectApproval($id){
+			$status = 2;
+			$tgl_approval = date('Y-m-d H:i:s');
+
+			// echo $this->input->post('reason');exit();
+			$data1 = 
+			['status' => $status,
+			'tgl_approval' => $tgl_approval,
+			'reason' => $this->input->post('reason')
+			];
+
+			$this->M_absenatasan->rejectAbsenApproval($id,$data1);
+
+			$data2=
+			['status' => $status,
+			 'tgl_status' => $tgl_approval
+			];
+			$this->M_absenatasan->rejectAbsen($id,$data2);
+			redirect('AbsenAtasan/List');
+		}
+
 	}
 	
 ?>		
