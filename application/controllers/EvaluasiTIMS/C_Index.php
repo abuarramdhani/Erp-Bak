@@ -931,7 +931,7 @@ class C_Index extends CI_Controller
 		echo '<label class="col-md-3" style="font-weight: bold;">Periode OJT </label>:     <label> '.date('d-M-Y', strtotime($res[0]['tanggal_awal_rekap'])).' sd '.date('d-M-Y', strtotime($res[0]['tanggal_akhir_rekap'])).'</label><br>
 				<label class="col-md-3" style="font-weight: bold;">No Induk </label>:     <label> '.$res[0]['noind'].'</label><br>
                 <label class="col-md-3" style="font-weight: bold;">Nama </label>:     <label> '.$res[0]['nama'].'</label><br>
-                <label class="col-md-3" style="font-weight: bold;">Tanggal Masuk </label>:     <label> '.$res[0]['tgl_masuk'].'</label><br>
+                <label class="col-md-3" style="font-weight: bold;">Tanggal Masuk </label>:     <label> '.date('d-M-Y', strtotime($res[0]['tgl_masuk'])).'</label><br>
                 <label class="col-md-3" style="font-weight: bold;">Unit </label>:     <label> '.$res[0]['unit'].'</label><br>
                 <label class="col-md-3" style="font-weight: bold;">Seksi </label>:     <label> '.$res[0]['seksi'].'</label><br>
                 <label class="col-md-3" style="font-weight: bold;">Lama Kerja </label>:     <label> '.$res[0]['masa_kerja'].'</label>
