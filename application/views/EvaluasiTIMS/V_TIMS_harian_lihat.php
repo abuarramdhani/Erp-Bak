@@ -110,7 +110,7 @@
                                                 <td><?php echo $key['pred_lolos']; ?></td>
                                                 <?php if ($key['ket'] == 'PERPANJANGAN'): ?>
                                                     <td>
-                                                        <a class="evt_noint_per" data-noind="<?php echo $key['noind']; ?>" data-penilaian="<?php echo $jpi; ?>" style="cursor: pointer;"><?php echo $key['ket']; ?></a>
+                                                        <a onclick="evt_ayoJalan('<?php echo $key['noind']; ?>', '<?php echo $jpi; ?>')" class="" data-noind="<?php echo $key['noind']; ?>" data-penilaian="<?php echo $jpi; ?>" style="cursor: pointer;"><?php echo $key['ket']; ?></a>
                                                     </td>
                                                 <?php else: ?>
                                                     <td><?php echo $key['ket']; ?></td>
@@ -191,21 +191,5 @@
             $('#et_clickPDF').click(function(){
                 $('#et_submitPDF').click();
             });
-
-            $('.evt_noint_per').click(function(){
-            $('#surat-loading').attr('hidden', false);
-             var noind = $(this).attr('data-noind');
-             var nilaian = $(this).attr('data-penilaian');
-                $.ajax({
-                 url: "<?php echo base_url() ?>EvaluasiTIMS/Bulanan/detail_perpanjangan",
-                    method: "POST",
-                    data: {noind:noind, nilai:nilaian},
-                    success: function(data){
-                        $('#surat-loading').attr('hidden', true);
-                     $('#phone_result').html(data);
-                        $('#evt_perpanjangan').modal('show');
-                    }
-                });
-         });
     });
 </script>
