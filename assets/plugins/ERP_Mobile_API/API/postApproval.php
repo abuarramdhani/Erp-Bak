@@ -13,7 +13,7 @@ $status			= $_POST['status'];
 $tanggal_status	= $_POST['tanggal_status'];
 $nama			= $_POST['nama'];
 $atasan 		= $_POST['atasan'];
-if(!empty($noinduk) && !empty($longitude) && !empty($latitude) && !empty($lokasi) && !empty($tanggal) && !empty($waktu) && !empty($jenis_absen_id) && !empty($gambar)  && !empty($status) && !empty($tanggal_status) && !empty($atasan)){
+if(!empty($noinduk) && !empty($longitude) && !empty($latitude) && !empty($lokasi) && !empty($tanggal) && !empty($waktu) && !empty($jenis_absen_id) && !empty($gambar) && !empty($tanggal_status) && !empty($atasan)){
 		$sql="SELECT COUNT(*) FROM at.at_absen WHERE noind='".$noinduk."' AND longitude='".$longitude."' AND latitude='".$latitude."' AND lokasi='".$lokasi."' AND tgl='".$tanggal."' AND waktu='".$waktu."' AND jenis_absen_id='".$jenis_absen_id."' AND gambar='".$gambar."' AND status='".$status."' AND tgl_status='".$tanggal_status."' AND nama='".$nama."' ";
 
 		$d = pg_query($conn,$sql);
