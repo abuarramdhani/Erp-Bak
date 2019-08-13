@@ -2785,3 +2785,14 @@ $route['AbsenAtasan'] = 'AbsenAtasan/C_Index';
 $route['AbsenAtasan/List'] = 'AbsenAtasan/C_Index/listData';
 $route['AbsenAtasan/List/(:any)'] = 'AbsenAtasan/C_Index/$1';
 $route['AbsenAtasan/List/(:any)/(:any)'] = 'AbsenAtasan/C_Index/$1/$2';
+
+// --------------------------------------- Monitoring Biaya Keuangan -----------------------------------------------//
+$route['MonitoringBiayaKeuangan'] = 'MonitoringBiayaKeuangan/C_Index';
+$route['MonitoringBiayaKeuangan/Dashboard'] = 'MonitoringBiayaKeuangan/MainMenu/Dashboard/C_ChartDashboard';
+$route['MonitoringBiayaKeuangan/Dashboard/(:any)'] = 'MonitoringBiayaKeuangan/MainMenu/Dashboard/C_ChartDashboard/$1';
+$route['MonitoringBiayaKeuangan/Dashboard/(:any)/(:any)'] = 'MonitoringBiayaKeuangan/MainMenu/Dashboard/C_ChartDashboard/$1/$2';
+
+$route['MonitoringBiayaKeuangan'] = 'MonitoringBiayaKeuangan/C_Index';
+$route['MonitoringBiayaKeuangan/Detail'] = 'MonitoringBiayaKeuangan/MainMenu/Detail/C_ChartDetail';
+$route['MonitoringBiayaKeuangan/Detail/(:any)'] = 'MonitoringBiayaKeuangan/MainMenu/Detail/C_ChartDetail/$1';
+$route['MonitoringBiayaKeuangan/Detail/(:any)/(:any)'] = 'MonitoringBiayaKeuangan/MainMenu/Detail/C_ChartDetail/$1/$2';
