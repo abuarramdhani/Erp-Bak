@@ -84,11 +84,10 @@
                             </div>
                             <div class="row">
                                 <div class="col-md-12" >
-                                    <div class="table"  style="overflow-y:scroll;">
-                                        <div class="panel panel-default">
+                                        <!-- <div class="panel panel-default">
                                             <div class="panel-body">
-                                                <div class="table-responsive" >
-                                    <table class="table table-stripe table-bordered table-hover "  style="table-layout:fixed; width: 1200px" name="tblMenuBarangTua" id="tblMenuBarangTua">
+ -->                                                <div class="table-responsive" >
+                                    <table class="datatable table table-striped table-bordered table-responsive table-hover hasiltablemumet">
                                                        <thead >
                                                             <tr class="text-center bg-primary">
                                                     <th style="text-align:center;" width="5%">No</th>
@@ -98,11 +97,12 @@
                                                     <th style="text-align:center;" width="15%">Ekspedisi</th>
                                                     <th style="text-align:center;" width="15%">Jumlah Colly</th>
                                                     <th style="text-align:center;" width="15%">Jumlah Item</th>
-                                                <th style="text-align:center;" width="15%">Jumlah Qty Diminta</th>
-                                                <th style="text-align:center;" width="15%">Jumlah Qty Dikirim</th>
+                                                    <th style="text-align:center;" width="15%">Jumlah Qty Diminta</th>
+                                                    <th style="text-align:center;" width="15%">Jumlah Qty Dikirim</th>
                                                     <th style="text-align:center;" width="15%">Mulai</th>
                                                     <th style="text-align:center;" width="15%">Selesai</th>
                                                     <th style="text-align:center;" width="15%">Lama</th>
+                                                    <th style="text-align:center;" width="15%">Action</th>
                                                             </tr>
                                                         </thead>
                                                         <tbody>
@@ -135,9 +135,13 @@
                                                         <td><?php echo $jml_dikirim; ?></td>
                                                         <td><?php echo $value['JAM_MULAI']; ?></td>
                                                         <td><?php echo $value['JAM_SELESAI']; ?></td>
-                                                        <td><?php echo round($value['LAMA'],2) * 1440; ?> Menit</td>
+                                                        <td><?php echo round($value['LAMA'] / 60); ?> Menit</td>
+                                                        <td><a style="float: center;" data-toggle="modal" data-target="#Modalku<?=$value['NO_SPB'];?>"  class="btn-xs btn btn-primary"> Show Detail</a></td>
                                                     </tr>
-                <tr class="text-left">
+
+
+
+            <!--    <tr class="text-left">
                     <td colspan="10">
                     <span style="margin-left:20px" onclick="seeDetailMPO(this,'<?php echo $no; ?>')" class="btn btn-xs btn-primary"> 
                         see detail >>
@@ -172,7 +176,7 @@
                 </table>
             </div>
                     </td>
-                </tr>
+                </tr> --> 
                                         <?php 
                                             $no++;
                                             endforeach; 
@@ -195,7 +199,62 @@
                     </div>
                 </div>
             </div>
+</section>
+<?php $no=1; foreach ($detail as $key => $val){ ?>
+    <!-- <p><?= $key;?></p> -->
+
+
+<div class="modal fade" id="Modalku<?=$key;?>" tabindex="1" role="dialog" aria-labelledby="judulModal" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content" style="width: 100%" >
+            <div class="modal-header">
+                <h3 class="box-header with border" id="formModalLabel" align="center" >Data Detail</h3>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+
+            
+           
+             <div style="margin-top: 5px ; width: 100% " id="detail<?php echo $no; ?>" >
+                <table class="table table-sm table-bordered table-hover table-striped table-responsive"  style="border: 2px solid #ddd">
+                    <thead>
+                        <tr class="text-center">
+                            <th>No.</th>
+                            <th>Kode Komponen</th>
+                            <th>Nama Komponen</th>
+                            <th>Qty Diminta</th>
+                            <th>Qty Dikirim</th>
+                            <th>UOM</th>
+        
+                        </tr>
+                    </thead>
+                    <tbody>
+              
+                        <?php
+                        $no=1;
+                         foreach ($val['body'] as $row => $valoe){ ?>
+                       
+                        <tr>
+                            <td><?php echo $no; ?></td>
+                            <td><?php echo $valoe['ITEM_CODE']; ?></td>
+                            <td><?php echo $valoe['DESCRIPTION']; ?></td>
+                            <td><?php echo $valoe['QTY_DIMINTA']; ?></td>
+                            <td><?php echo $valoe['QTY_DIKIRIM']; ?></td>
+                            <td><?php echo $valoe['UOM']; ?></td>
+                        </tr>
+                    <?php
+                    $no++;
+                     } ?>
+                 
+                    </tbody>
+                </table>
+            </div>
+            </div>
         </div>
     </div>
 </div>
-</section>
+
+<?php $no++;
+} ?>
+
+    

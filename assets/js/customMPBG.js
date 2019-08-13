@@ -1,3 +1,17 @@
+ $(document).ready( function (){
+
+    $('.hasiltablemumet').DataTable({
+    	fixedHeader: true,
+		scrollY:  400,
+		paging: true,
+		info:false
+    });
+    
+    	
+
+   
+ });
+
 $('#selectWare').change(function(){
 	jQuery('DIV.ResultMonitoring').html('');
 	var wh = $('select[name="slcWarehouse"]').val();
@@ -10,6 +24,8 @@ $('#selectWare').change(function(){
 	$('#nama_sub_spbs').val('').trigger('change');
 	$('#job_spbs').val('');
 	$('#komponen').val('');
+
+			
 });
 
 function tampilMPBG(th)
@@ -59,6 +75,7 @@ function tampilMPBG(th)
 
 	request.done(function(result){
 			$('#ResultMonitoring').html(result);
+
 			$('.jamMulaiMPBG').timepicker({
 				showSeconds: true,
 				showMeridian: false,
@@ -105,7 +122,10 @@ function tampilMPBG(th)
 			//   });
 		
 		})
+
 }
+
+
 
 function updateData(th){
 	var spbs = $('#spbs').val();
@@ -129,7 +149,7 @@ function updateData(th){
 			jamMulaiMPBG : jamMulaiMPBG,
 			jamAkhirMPBG : jamAkhirMPBG,
 			qtyKirim : qtyKirim,
-			keterangan : keterangan
+			keterangan : keterangan 
 		},
 		type: "POST",
 		datatype: 'html', 
@@ -139,3 +159,7 @@ function updateData(th){
 			console.log("Done");
 		})
 }
+
+
+
+
