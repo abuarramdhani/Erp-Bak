@@ -1,7 +1,9 @@
 document.addEventListener('DOMContentLoaded', async _ => {
 	await unlockForm();
-	if (proses && filterData != 'tabelseksi') await initGraph();
-	setOnClickListener();
+	if (proses && filterData != 'tabelseksi') {
+		await initGraph();
+		setOnClickListener();
+	}
 });
 
 const animation = {
@@ -34,8 +36,6 @@ const setOnClickListener = async _ => {
 	document.getElementById('button-fullscreen').addEventListener('click', showFullscreen);
 	document.getElementById('button-print').removeEventListener('click', print);
 	document.getElementById('button-print').addEventListener('click', print);
-	document.getElementById('button-save').removeEventListener('click', save);
-	document.getElementById('button-save').addEventListener('click', save);
 };
 
 const unlockForm = async _ => {
@@ -71,7 +71,6 @@ const showChart1 = async _ => {
 					borderColor: 'rgba(251, 136, 60, 0.94)',
 					borderWidth: 2
 				}
-				// Hide Bar 2 & 3
 				// , {
 				// 	label: 'Target Semua Karyawan Langsung',
 				// 	data: targetSemuaKaryawanLangsung,
@@ -158,19 +157,21 @@ const showChartBar1 = async _ => {
 				}, {
 					label: 'Jumlah Semua Karyawan Turun Per Bulan',
 					data: jumlahTurunPerBulan,
-					backgroundColor: '(251, 136, 60, 0.94)',
+					backgroundColor: 'rgba(251, 136, 60, 0.94)',
 					borderWidth: 1
-				}, {
-					label: 'Jumlah Semua Karyawan Langsung Turun Per Bulan',
-					data: jumlahSemuaKaryawanLangsungTurunPerBulan,
-					backgroundColor: '#ff0000',
-					borderWidth: 1
-				}, {
-					label: 'Jumlah Semua Karyawan Tidak Langsung Turun Per Bulan',
-					data: jumlahSemuaKaryawanTidakLangsungTurunPerBulan,
-					backgroundColor: '#00cc00',
-					borderWidth: 1
-				}]
+				}
+				// , {
+				// 	label: 'Jumlah Semua Karyawan Langsung Turun Per Bulan',
+				// 	data: jumlahSemuaKaryawanLangsungTurunPerBulan,
+				// 	backgroundColor: '#ff0000',
+				// 	borderWidth: 1
+				// }, {
+				// 	label: 'Jumlah Semua Karyawan Tidak Langsung Turun Per Bulan',
+				// 	data: jumlahSemuaKaryawanTidakLangsungTurunPerBulan,
+				// 	backgroundColor: '#00cc00',
+				// 	borderWidth: 1
+				// }
+				]
 			},
 			options: {
 				responsive: true,
@@ -191,12 +192,12 @@ const showChartBar1 = async _ => {
 				datasets: [{
 					label: 'Target Turun Per Bulan',
 					data: targetTurunPerBulan,
-					backgroundColor: '#ffbf00',
+					backgroundColor: 'rgba(54, 162, 225, 1)',
 					borderWidth: 1
 				}, {
 					label: 'Jumlah Turun Per Bulan',
 					data: jumlahTurunPerBulan,
-					backgroundColor: '#cbc3b1',
+					backgroundColor: 'rgba(251, 136, 60, 0.94)',
 					borderWidth: 1
 				}]
 			},
@@ -229,19 +230,21 @@ const showChartBar2 = async _ => {
 				}, {
 					label: 'Jumlah Semua Karyawan Turun Akumulasi',
 					data: jumlahTurunAkumulasi,
-					backgroundColor: '(251, 136, 60, 0.94)',
+					backgroundColor: 'rgba(251, 136, 60, 0.94)',
 					borderWidth: 1
-				}, {
-					label: 'Jumlah Semua Karyawan Langsung Akumulasi',
-					data: jumlahSemuaKaryawanTurunLangsungAkumulasi,
-					backgroundColor: '#ff0000',
-					borderWidth: 1
-				}, {
-					label: 'Jumlah Semua Karyawan Tidak Langsung Akumulasi',
-					data: jumlahSemuaKaryawanTurunTidakLangsungAkumulasi,
-					backgroundColor: '#00cc00',
-					borderWidth: 1
-				}]
+				}
+				// , {
+				// 	label: 'Jumlah Semua Karyawan Langsung Akumulasi',
+				// 	data: jumlahSemuaKaryawanTurunLangsungAkumulasi,
+				// 	backgroundColor: '#ff0000',
+				// 	borderWidth: 1
+				// }, {
+				// 	label: 'Jumlah Semua Karyawan Tidak Langsung Akumulasi',
+				// 	data: jumlahSemuaKaryawanTurunTidakLangsungAkumulasi,
+				// 	backgroundColor: '#00cc00',
+				// 	borderWidth: 1
+				// }
+				]
 			},
 			options: {
 				responsive: true,
@@ -262,12 +265,12 @@ const showChartBar2 = async _ => {
 				datasets: [{
 					label: 'Target Turun Akumulasi',
 					data: targetTurunAkumulasi,
-					backgroundColor: '#ffbf00',
+					backgroundColor: 'rgba(54, 162, 225, 1)',
 					borderWidth: 1
 				}, {
 					label: 'Jumlah Turun Akumulasi',
 					data: jumlahTurunAkumulasi,
-					backgroundColor: '#cbc3b1',
+					backgroundColor: 'rgba(251, 136, 60, 0.94)',
 					borderWidth: 1
 				}]
 			},
@@ -307,198 +310,68 @@ const showFullscreen = async _ => {
 	}
 };
 
-const print = async (id) => {
-	const element = document.getElementById('box-' + id);
-	const buttonPrint = document.getElementById('button-print-');
-	loading.showInButton(buttonPrint, 'fa-print');
-	html2canvas(element, {
-		scale: 1,
-		height: 600
-	}).then((canvas) => {
-		setTimeout(_ => {
-			new Promise(resolve => {
-				let newWindow = window.open();
-				newWindow.document.body.appendChild(canvas);
-				newWindow.focus();
-				newWindow.print();
-				resolve();
-			}).then(_ => {
-				setTimeout(_ => {
-					loading.hideInButton(buttonPrint, 'fa-print');
-				}, 1000);
+const print = async _ => {
+	const table = document.getElementById('table-rekap-sdm');
+	const chart1 = document.getElementById('chart1');
+	const chart2 = document.getElementById('chartBar1');
+	const chart3 = document.getElementById('chartBar2');
+	new Promise(resolve => {
+		loading.showInButton(document.getElementById('icon-button-print'), 'fa-print');
+		resolve();
+	}).then( _ => {
+		new Promise(resolve => {
+			let win;
+			html2canvas(table, {
+				scale: 2,
+				letterRendering: true,
+				onclone: doc => {
+					doc.getElementById('table-rekap-sdm').style.display = 'block';
+				}
+			}).then(table_canvas => {
+				table_canvas.webkitImageSmoothingEnabled = false;
+				table_canvas.mozImageSmoothingEnabled = false;
+				table_canvas.imageSmoothingEnabled = false;
+				win = window.open();
+				win.document.body.appendChild(table_canvas);
+				html2canvas(chart1, {
+					scale: 2,
+					letterRendering: true
+				}).then(chart1_canvas => {
+					win.document.body.appendChild(chart1_canvas);
+					html2canvas(chart2, {
+						scale: 2,
+						letterRendering: true
+					}).then(chart2_canvas => {
+						win.document.body.appendChild(chart2_canvas);
+						html2canvas(chart3, {
+							scale: 2,
+							letterRendering: true
+						}).then(chart3_canvas => {
+							win.document.body.appendChild(chart3_canvas);
+							win.focus();
+							win.print();
+							resolve();
+						});
+					});
+				});
 			});
-		}, 500);
+		}).then( _ => {
+			loading.hideInButton(document.getElementById('icon-button-print'), 'fa-print');
+		});
 	});
 };
 
-const save = async (id) => {
-	const element = document.getElementById('box-' + id);
-	const buttonSave = document.getElementById('btn-save-' + id);
-	let title = 'Grafik Jumlah Pekerja 2018 vs 2019 (tanpa PKL, Magang & TKPW)';
-	if(id == 1) title = 'Grafik Jumlah Pekerja 2018 vs 2019 (termasuk PKL, Magang & TKPW)';
-	loading.showInButton(buttonSave, 'fa-floppy-o');
-	html2canvas(element, {
-		scale: 1,
-		height: 600
-	}).then((canvas) => {
+const save = async _ => {
+	new Promise( resolve => {
+		loading.showInButton(document.getElementById('icon-button-save'), 'fa-floppy-o');
+		$("#table-rekap-sdm").table2excel({
+			filename: document.getElementById('title').innerHTML + ' - ' + document.getElementById('data-title').innerHTML + '.xls',
+			preserveColors: true
+		});
+		resolve();
+	}).then( _ => {
 		setTimeout(_ => {
-			let doc = new jsPDF('L', 'mm', 'a4');
-			doc.addImage(canvas.toDataURL('image/jpeg'), 'JPEG', 8, 8);
-			doc.save(title + '.pdf', { 
-				returnPromise: true
-			}).then(_ => {
-				setTimeout(_ => {
-					loading.hideInButton(buttonSave, 'fa-floppy-o');
-				}, 2500);
-			});
+			loading.hideInButton(document.getElementById('icon-button-save'), 'fa-floppy-o');
 		}, 500);
 	});
 };
-
-// $('#divselector').change(_ => {
-// 	$('html,body').animate({scrollTop:$('#'+$('#divselector').val()).offset().top}, 'fast'); 
-// });
-
-// $('.grData').change(async _ => {
-// 	var angka = $('.grData').val();
-// 	var sek = $('.grSek').val();
-// 	if (angka == '2') {
-// 		$('.grDept').prop('disabled', false);
-// 		$('.grDept').select2({
-// 			placeholder: "Departamen",
-// 			minimumResultsForSearch: -1,
-// 			allowClear: false,
-// 			ajax:
-// 			{
-// 				url: baseurl+'RekapTIMSPromosiPekerja/RekapAbsensiPekerja/daftarDepartemen',
-// 				dataType: 'json',
-// 				delay: 500,
-// 				type: 'GET',
-// 				data: function(params){
-// 					return {
-// 						term: params.term
-// 					}
-// 				},
-// 				processResults: function (data){
-// 					return {
-// 						results: $.map(data, function(obj){
-// 							return {id: obj.nama_departemen, text: obj.nama_departemen};
-// 						})
-// 					}
-// 				}
-// 			}
-// 		});
-// 	} else {
-// 		$('.grDept').each(function () {
-// 			$(this).select2('destroy').val("").select2();
-// 		});
-// 		$('.grDept').prop('disabled', true);
-// 		if (sek.length > 1) {
-// 			$('.grSek').each(function () {
-// 				$(this).select2('destroy').val("").select2();
-// 			});
-// 		}
-// 		$('.grSek').prop('disabled', true);
-// 	}
-// });
-
-// $('.grDept').change(async _ => {
-// 	if ($('.grSek').val().length > 1) {
-// 		$('.grSek').each(function () { //added a each loop here
-// 			$(this).select2('destroy').val("").select2();
-// 		});
-// 	}
-// 	var dept = $('.grDept').val();
-// 	if (dept == "SEMUA DEPARTEMEN") {
-// 		$('.grSek').prop('disabled', true);
-// 		if ($('.grSek').val().length > 1) {
-// 			$('.grSek').each( _ => { //added a each loop here
-// 				$(this).select2('destroy').val("").select2();
-// 			});
-// 		}
-// 	} else {
-// 		$('.grSek').prop('disabled', false);
-// 		$('.grSek').select2({
-// 			placeholder: "Seksi",
-// 			searching: true,
-// 			minimumInputLength: 3,
-// 			allowClear: false,
-// 			ajax:
-// 			{
-// 				url: baseurl+'SDM/data',
-// 				dataType: 'json',
-// 				delay: 500,
-// 				type: 'POST',
-// 				data: function(params){
-// 					return {
-// 						term: params.term,
-// 						dept: dept
-// 					}
-// 				},
-// 				processResults: function (data){
-// 					return {
-// 						results: $.map(data, function(obj){
-// 							return {id: obj.kodesie, text: obj.seksi};
-// 						})
-// 					}
-// 				}
-// 			}
-// 		});
-// 	}
-// })
-
-// $('#btnExportSDM').click(async _ => {
-// 	var angka = ["13", "0", "1","2","3","4","5","6","7","8","9","10", "11", "12","14","15","16","17"];
-// 	var tampungan1 = [];
-// 	var tampungan2 = [];
-// 	var tampungan3 = [];
-// 	var tampungan4 = [];
-
-// 	angka.forEach(item => {
-// 		var chartt = "myChart"+(item);
-// 		var chartt2 = "myChartbar"+(item);
-// 		var chartt3 = "myChartbar2"+(item);
-// 		var tabel = "SDMdivToCan"+(item);
-// 		alert(tabel);
-// 		var canvas1 = document.getElementById(chartt);
-// 		var imgData1 = canvas1.toDataURL('image/jpg',1.0);
-// 		var canvas2 = document.getElementById(chartt2);
-// 		var imgData2 = canvas2.toDataURL('image/jpg',1.0);
-// 		var canvas3 = document.getElementById(chartt3);
-// 		var imgData3 = canvas3.toDataURL('image/jpg',1.0);
-// 		html2canvas(document.getElementById(tabel),{scale : 2}).then(function(canvas){
-// 			var imgData4 = canvas.toDataURL('image/png',1.0);
-// 			alert(imgData4);
-// 		});
-// 		tampungan1.push(imgData1);
-// 		tampungan2.push(imgData2);
-// 		tampungan3.push(imgData3);
-// 	});
-
-// 	$.ajax({
-// 		type: "POST",
-// 		url: baseurl+"SDM/exportGambar",
-// 		data: {
-// 			data1:tampungan1,
-// 			data2:tampungan2,
-// 			data3:tampungan3,
-// 			data4:tampungan4,
-// 		},
-// 		success: _ => {
-// 			alert(angka);
-// 		}
-// 	});
-// });	
-
-// $('#sdm_select_tahun').select2({
-// 	allowClear: true,
-// 	placeholder: "Pilih Tahun",
-// 	minimumInputLength: 1,
-// 	tags:true,
-// 	minimumResultsForSearch: -1,
-// });
-
-// $('#tabelseksi').DataTable({
-//     paging	: false,
-//     filter: false
-// });

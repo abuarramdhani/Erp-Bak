@@ -1243,8 +1243,8 @@ class C_Index extends CI_Controller {
 		$data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id);
 		$data['Title'] = 'Efisiensi SDM';
 		$data['Menu'] = 'Efisiensi SDM';
-		$data['submit'] = ($this->input->post('buttonSubmit')) ? true : false;
-		if($data['submit']) {
+		$data['submit'] = ($this->input->post('buttonSubmit')) ? 'true' : 'false';
+		if($data['submit'] == 'true') {
 			$nama = array(
 				'Dept. Personalia',
 				'Dept. Keuangan',
@@ -1380,7 +1380,7 @@ class C_Index extends CI_Controller {
 				$data['truePKL'] = 'true';
 			}
 			$bulan = array('Januari','Februari','Maret','April','Mei','Juni','Juli','Agustus','September','Oktober','November','Desember');
-			$jumlah = array('6','4','4','4','4','4','6','4','4','4','4','4');
+			$jumlah = array(6, 4, 4, 4, 4, 4, 6, 4, 4, 4, 4, 4);
 			$data['akhir'] = array_combine($bulan, $jumlah);
 			$begin = new DateTime('2019-01-01');
 			$end = new DateTime('2019-12-31');
@@ -1831,7 +1831,6 @@ class C_Index extends CI_Controller {
 				$min = round((1.15 * $hasil[0] / 100), 2);
 				$minAg = round((1.3 * $hasil[0] / 100), 2);
 			} else if ($val == 24) {
-				// no code
 				$min = round((1.3 * $hasil[0] / 100), 2);
 				$minAg = round((1.3 * $hasil[0] / 100), 2);
 			} else if ($val == 25) {
