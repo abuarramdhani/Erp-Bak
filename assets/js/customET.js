@@ -307,4 +307,22 @@ $(document).ready(function(){
 		$('.btn_simpan_kdu').attr('disabled', false);
 		$('.btn_edit_kdu').remove();
 	});
+
 });
+	function evt_ayoJalan(noind, nilaian){
+		// alert(noind);
+		// alert(nilaian);
+		$('#surat-loading').attr('hidden', false);
+		// var noind = $(this).attr('data-noind');
+		// var nilaian = $(this).attr('data-penilaian');
+		$.ajax({
+			url: baseurl+"EvaluasiTIMS/Bulanan/detail_perpanjangan",
+			method: "POST",
+			data: {noind:noind, nilai:nilaian},
+			success: function(data){
+				$('#surat-loading').attr('hidden', true);
+				$('#phone_result').html(data);
+				$('#evt_perpanjangan').modal('show');
+			}
+		});
+	};
