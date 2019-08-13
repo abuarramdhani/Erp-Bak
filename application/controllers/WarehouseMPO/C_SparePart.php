@@ -33,6 +33,7 @@ class C_SparePart extends CI_Controller {
   {
     $this->checkSession();
     $user_id = $this->session->userid;
+    $spb     = $this->M_sparepart->allSpare();
     
     $data['Menu'] = 'Dashboard';
     $data['SubMenuOne'] = '';
@@ -44,10 +45,75 @@ class C_SparePart extends CI_Controller {
 
     $data['line'] = $this->M_sparepart->lineSpare();
     $data['show'] = $this->M_sparepart->allSpare();
-    
+
+    // $no_spb = $this->M_sparepart->lineSpare();
+    // $spb = $no_spb[0]['NO_SPB'];
+    // $data['modal'] = $this->M_sparepart->getDetail($spb);
+
     // echo "<pre>";
-    // print_r($data);
+    // print_r($data['line']);
     // exit();
+
+    // $detail   = $this->M_model->getDetail($spb);
+    //  echo "<pre>";
+    // print_r($detail);
+    // exit();
+
+
+
+       
+
+
+    $i =  array();
+    
+    foreach ($data['show'] as $key => $value) {
+
+        if ($value['JAM_SELESAI'] != NULL) {
+        $lama = strtotime($value['JAM_SELESAI']) - strtotime($value['JAM_MULAI']);
+        }else{
+
+             $lama = 0;
+        }
+
+        
+         array_push($i, $lama);
+    }
+
+    for ($b=0; $b < sizeof($i) ; $b++) { 
+        $data['show'][$b]['LAMA'] = $i[$b];
+    }
+
+
+    // echo "<pre>";
+    // print_r($data['show']);
+    // exit();
+
+    $array_sudah = array();
+    $array_terkelompok = array();
+        foreach ($data['show'] as $key => $detail) {
+            if (in_array($detail['NO_SPB'], $array_sudah)) {
+                
+            }else{
+                array_push($array_sudah, $detail['NO_SPB']);
+                if ($spb == 'NO_SPB') {
+                    $getBody = $this->M_sparepart->getDetail($detail['NO_SPB'],$spb);
+                }else {
+                    $getBody = $this->M_sparepart->getDetail($detail['NO_SPB'],$spb);   
+                }
+                // $array_terkelompok[$value['NO_SPB']]['header'] = $value; 
+                $array_terkelompok[$detail['NO_SPB']]['body'] = $getBody; 
+            }
+        }
+        // echo "<pre>"; 
+        // print_r($array_sudah);
+        // print_r($array_terkelompok);
+        // exit();
+
+        $data['detail'] = $array_terkelompok;
+        // echo "<pre>";
+        // print_r($data['detail']);
+        // exit();
+
 
     $this->load->view('V_Header',$data);
     $this->load->view('V_Sidemenu',$data);
@@ -83,6 +149,8 @@ class C_SparePart extends CI_Controller {
     $data['show'] = $this->M_sparepart->filterSpare($tanggalSPBSawal,$tanggalSPBSakhir,$tanggalKirimAwal,$tanggalKirimAkhir,$noSPB);
 
     $data['line'] = $this->M_sparepart->lineSpare();
+
+
     
     // echo "<pre>";
     // print_r($data);
@@ -94,4 +162,7 @@ class C_SparePart extends CI_Controller {
     $this->load->view('V_Footer',$data);
 
   }
+
+
+
 }
