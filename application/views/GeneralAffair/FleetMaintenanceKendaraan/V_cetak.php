@@ -61,7 +61,7 @@
 		</tbody>
 	</table>
 	<br></br>
-	<p style="font-size: 14px;">Estimasi biaya service mohon dapat dikirimkan ke alamat email purchasing.sec7@quick.co.id UP Bapak Agit Novian dan di cc operator1@quick.co.id UP Ibu Yolenta dengan <b>Subject : Estimasi Biaya Service Mobil <?php echo $FleetMaintenanceKendaraan['merk_kendaraan']." Plat No ".$FleetMaintenanceKendaraan['nomor_polisi'];?></b>. Estimasi terhadap biaya service tersebut akan kami berikan persetujuan terlebih dahulu, sebelum service dikerjakan.<br></br>
+	<p style="font-size: 14px;">Estimasi biaya service mohon dapat dikirimkan ke alamat email purchasing.sec7@quick.co.id UP Bapak Agit Novian dan di cc operator1@quick.co.id UP Ibu Reny dengan <b>Subject : Estimasi Biaya Service Mobil <?php echo $FleetMaintenanceKendaraan['merk_kendaraan']." Plat No ".$FleetMaintenanceKendaraan['nomor_polisi'];?></b>. Estimasi terhadap biaya service tersebut akan kami berikan persetujuan terlebih dahulu, sebelum service dikerjakan.<br></br>
 		Demikian surat ini kami sampaikan. Atas perhatian dan kerjasamanya, kami ucapkan terima kasih.
 	</p>
 	<div style="position: absolute;bottom: 100px;left: 100px">
@@ -95,10 +95,10 @@
 				<td style="padding: 30px 7px"> </td>
 			</tr>
 			<tr>
-				<td style="padding: 7px;text-align: center;">Yolenta Ivana Putri</td>
+				<td style="padding: 7px;text-align: center;">Reny Sulistiyaningtyas</td>
 			</tr>
 			<tr>
-				<td style="padding: 7px;text-align: center;">(Kasi Madya Genneral Affairs)</td>
+				<td style="padding: 7px;text-align: center;">(Kasi Madya EDP)</td>
 			</tr>
 		</table>
 	</div>
