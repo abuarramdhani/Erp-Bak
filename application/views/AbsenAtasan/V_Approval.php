@@ -110,7 +110,7 @@
 		<div class="panel box-footer" style="padding-left: 50px;">
 			<div class="row">
 				<div class="col-md-1">
-					<a class="btn btn-primary" href="<?php echo base_url('AbsenAtasan/List/approveApproval/'.$dataEmployee[0]['absen_id']); ?>" ><i class="fa fa-check"></i>   Approve</a>
+					<a id="btnApprove" class="btn btn-primary" href="<?php echo base_url('AbsenAtasan/List/approveApproval/'.$dataEmployee[0]['absen_id']); ?>" ><i class="fa fa-check"></i>   Approve</a>
 				</div>
 				<div class="col-md-1">
 					
