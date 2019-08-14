@@ -165,8 +165,10 @@ class C_Index extends CI_Controller
 
 		public function approveApproval($id){
 			$status = 1;
+			date_default_timezone_set('Asia/Jakarta');
 			$tgl_approval = date('Y-m-d H:i:s');
 
+			// echo $tgl_approval;exit();
 			$data1 = 
 			['status' => $status,
 			 'tgl_approval' => $tgl_approval	
@@ -181,6 +183,7 @@ class C_Index extends CI_Controller
 
 			$this->M_absenatasan->approveAbsen($id,$data2);
 
+			$this->session->set_flashdata('msg','sukses');
 			redirect('AbsenAtasan/List');
 
 		}
@@ -188,6 +191,7 @@ class C_Index extends CI_Controller
 
 		public function rejectApproval($id){
 			$status = 2;
+			date_default_timezone_set('Asia/Jakarta');
 			$tgl_approval = date('Y-m-d H:i:s');
 
 			// echo $this->input->post('reason');exit();

@@ -101,8 +101,8 @@
 					
 				</div>
 			 	<div class="col-md-2">
-			 		<a target="_blank" class="btn btn-success" href="https://maps.google.com/?q=<?php echo $dataEmployee[0]	['latitude']; ?>,<?php echo $dataEmployee[0]['longitude']; ?>"><i class="fa fa-map-marker"></i>  Lihat di Google Maps</a>
-			 	</div>			 
+			 		<button data-toggle="modal" data-target="#locationModal" class="btn btn-success" href="#"><i class="fa fa-map-marker"></i>  Lihat di Google Maps</button>
+			 	</div>					 
 			 </div>
 
 		</div>
@@ -110,7 +110,7 @@
 		<div class="panel box-footer" style="padding-left: 50px;">
 			<div class="row">
 				<div class="col-md-1">
-					<a class="btn btn-primary" href="<?php echo base_url('AbsenAtasan/List/approveApproval/'.$dataEmployee[0]['absen_id']); ?>" ><i class="fa fa-check"></i>   Approve</a>
+					<a id="btnApprove" class="btn btn-primary" href="<?php echo base_url('AbsenAtasan/List/approveApproval/'.$dataEmployee[0]['absen_id']); ?>" ><i class="fa fa-check"></i>   Approve</a>
 				</div>
 				<div class="col-md-1">
 					
@@ -150,6 +150,36 @@
 			      <div class="modal-footer">
 			        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
 			        <button type="submit" class="btn btn-danger" >Reject</button>
+			        </form>
+			      </div>
+			    </div>
+			  </div>
+		</div>
+
+		<div id="locationModal" class="modal fade" role="dialog">
+			  <div class="modal-dialog" style="width: 1000px;">
+			    <!-- Modal content-->
+			    <div class="modal-content">
+			      <div class="modal-header">
+			        <button type="button" class="close" data-dismiss="modal">&times;</button>
+			        <center><h4 class="modal-title"><strong>Lokasi</strong></h4></center>
+			      </div>
+			      <div class="modal-body">
+			      <center>
+			      	<iframe 
+					  width="800" 
+					  height="400" 
+					  frameborder="1" 
+					  scrolling="yes" 
+					  marginheight="0" 
+					  marginwidth="0" 
+					  src="https://maps.google.com/maps?q=<?php echo $dataEmployee[0]['latitude'];?>,<?php echo $dataEmployee[0]	['longitude']; ?>&hl=es;z=14&amp;output=embed"
+					 >
+					 </iframe>
+					 </center>
+			      </div>
+			      <div class="modal-footer">
+			        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
 			        </form>
 			      </div>
 			    </div>
