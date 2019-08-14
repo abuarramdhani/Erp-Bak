@@ -4,13 +4,26 @@ $(function() {
     		{ targets: '_all', orderable: false}
     	]
 	});
-	var today = new Date();
-	var dd = String(today.getDate()).padStart(2, '0');
-	var mm = String(today.getMonth() + 1).padStart(2, '0'); //January is 0!
-	var yyyy = today.getFullYear();
 
-	today = dd + '-' + mm + '-' + yyyy;
-	// document.write(today);
+//SETTING CURRENT DATE//
+var today = new Date();
+var dd = today.getDate();
+var mm = today.getMonth() + 1; //January is 0!
+var yyyy = today.getFullYear();
+if (dd < 10) {
+  dd = '0' + dd;
+} 
+if (mm < 10) {
+  mm = '0' + mm;
+} 
+today = dd + '-' + mm + '-' + yyyy;
+
+					// var today = new Date();
+					// var dd = String(today.getDate()).padStart(2, '0');
+					// var mm = String(today.getMonth() + 1).padStart(2, '0'); 
+					// var yyyy = today.getFullYear();
+
+					// today = dd + '-' + mm + '-' + yyyy;
 
 	var dt2 = $('#tableDataMinMaxIE').DataTable({
 		dom: '<"dataTable_Button"B><"dataTable_Filter"f>rt<"dataTable_Information"i><"dataTable_Paging"p>',
