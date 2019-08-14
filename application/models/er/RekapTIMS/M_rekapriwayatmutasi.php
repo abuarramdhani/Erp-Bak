@@ -140,7 +140,20 @@
 
 		public function ambilRiwayatMutasi($parameterCari)
 		{
-			$ambilRiwayatMutasi			= "	select distinct	concat_ws(' - ', pri.noind, pri.nama) as pekerja,
+			$ambilRiwayatMutasi			= "	SELECT distinct	pri.noind as noind,
+														pri.nama as nama,
+														pri.nik as nik,
+														pri.tgllahir as lahir,
+														(
+															select kes.no_peserta
+															from hrd_khs.tbpjskes kes
+															where kes.noind = pri.noind
+														) as bpjskes,
+														(
+															select no_peserta
+															from hrd_khs.tbpjstk tk
+															where tk.noind = pri.noind
+														) as bpjstk,
 														tmutasi.tglberlaku::date,
 														(
 															select		(
