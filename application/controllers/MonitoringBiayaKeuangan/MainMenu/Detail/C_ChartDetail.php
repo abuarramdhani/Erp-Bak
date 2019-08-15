@@ -79,41 +79,76 @@ class C_ChartDetail extends CI_Controller {
 
 		$objPHPExcel = new PHPExcel();
 
-		$objPHPExcel->getActiveSheet()->getColumnDimension('A')->setWidth(5);
-		$objPHPExcel->getActiveSheet()->getColumnDimension('B')->setWidth(11);
-		$objPHPExcel->getActiveSheet()->getColumnDimension('C')->setWidth(80);
-		$objPHPExcel->getActiveSheet()->getColumnDimension('D')->setWidth(7);
-		$objPHPExcel->getActiveSheet()->getColumnDimension('E')->setWidth(14);
-		$objPHPExcel->getActiveSheet()->getColumnDimension('F')->setWidth(15);
-		$objPHPExcel->getActiveSheet()->getColumnDimension('G')->setWidth(15);
-		$objPHPExcel->getActiveSheet()->getStyle('A1:G1')->getFont()->setBold(true);
+		$objPHPExcel->getActiveSheet()->getColumnDimension('A')->setWidth(7);
+		$objPHPExcel->getActiveSheet()->getColumnDimension('B')->setWidth(12);
+		$objPHPExcel->getActiveSheet()->getColumnDimension('C')->setWidth(12);
+		$objPHPExcel->getActiveSheet()->getStyle('A1:C1')->getFont()->setBold(true);
 
 		$objset = $objPHPExcel->setActiveSheetIndex(0);
 
-		$objset->setCellValue("A1", "No");
-		$objset->setCellValue("B1", "FLEX VALUE");
-		$objset->setCellValue("C1", "DESCRIPTION");
-		$objset->setCellValue("D1", "BULAN");
-		$objset->setCellValue("E1", "PERIOD NAME");
-		$objset->setCellValue("F1", "TAHUN 1");
-		$objset->setCellValue("G1", "TAHUN 2");
+		$objset->setCellValue("A1", "BULAN");
+		$objset->setCellValue("B1", "TAHUN 1");
+		$objset->setCellValue("C1", "TAHUN 2");
 
 		$row = 2;
 		foreach ($data['FinanceCostByAccountName'] as $key => $val) {
-			$objset->setCellValue("A".$row, $key+1);
-			$objset->setCellValue("B".$row, $val['FLEX_VALUE']);
-			$objset->setCellValue("C".$row, $val['DESCRIPTION']);
-			$objset->setCellValue("D".$row, $val['BULAN']);
-			$objset->setCellValue("E".$row, $val['PERIOD_NAME']);
-			$objset->setCellValue("F".$row, $val['TAHUN_1']);
-			$objset->setCellValue("G".$row, $val['TAHUN_2']);
+			$objset->setCellValue("A".$row, $val['BULAN']);
+			$objset->setCellValue("B".$row, $val['TAHUN_1']);
+			$objset->setCellValue("C".$row, $val['TAHUN_2']);
 			$row++;
 		}
 
 		$objPHPExcel->setActiveSheetIndex(0);
 		$objPHPExcel->getActiveSheet()
 					->setTitle('Monitoring Biaya Keuangan')
-					->getStyle('A1:G'.(count($data['FinanceCostByAccountName'])+1))
+					->getStyle('A1:C'.(count($data['FinanceCostByAccountName'])+1))
+					->getAlignment()
+					->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_LEFT);
+		$objWriter = PHPExcel_IOFactory::createWriter($objPHPExcel, 'Excel2007');
+		header("Last-Modified: " . gmdate("D, d M Y H:i:s") . " GMT");
+		header("Cache-Control: no-store, no-cache, must-revalidate");
+		header("Cache-Control: post-check=0, pre-check=0", false);
+		header("Pragma: no-cache");
+		header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
+		header('Content-Disposition: attachment;filename="Monitoring Biaya Keuangan Akun '.$id.' - '.date('d M Y').'.xlsx"');
+		$objWriter->save("php://output");
+	}
+	
+	public function ExportDetailReportToExcel($id)
+	{
+		$this->checkSession();
+		$user_id = $this->session->userid;
+
+		$data['FinanceCostByAccountName'] = $this->M_chart->GetFinanceCostDetailReportByAccountName($id);
+
+		$objPHPExcel = new PHPExcel();
+
+		$objPHPExcel->getActiveSheet()->getColumnDimension('A')->setWidth(5);
+		$objPHPExcel->getActiveSheet()->getColumnDimension('B')->setWidth(18);
+		$objPHPExcel->getActiveSheet()->getColumnDimension('C')->setWidth(12);
+		$objPHPExcel->getActiveSheet()->getColumnDimension('D')->setWidth(80);
+		$objPHPExcel->getActiveSheet()->getStyle('A1:D1')->getFont()->setBold(true);
+
+		$objset = $objPHPExcel->setActiveSheetIndex(0);
+
+		$objset->setCellValue("A1", "No");
+		$objset->setCellValue("B1", "TANGGAL DIBUAT");
+		$objset->setCellValue("C1", "TOTAL");
+		$objset->setCellValue("D1", "KETERANGAN");
+
+		$row = 2;
+		foreach ($data['FinanceCostByAccountName'] as $key => $val) {
+			$objset->setCellValue("A".$row, $key+1);
+			$objset->setCellValue("B".$row, $val['CREATION_DATE']);
+			$objset->setCellValue("C".$row, $val['TOTAL']);
+			$objset->setCellValue("D".$row, $val['DESCRIPTION']);
+			$row++;
+		}
+
+		$objPHPExcel->setActiveSheetIndex(0);
+		$objPHPExcel->getActiveSheet()
+					->setTitle('Monitoring Biaya Keuangan')
+					->getStyle('A1:D'.(count($data['FinanceCostByAccountName'])+1))
 					->getAlignment()
 					->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_LEFT);
 		$objWriter = PHPExcel_IOFactory::createWriter($objPHPExcel, 'Excel2007');

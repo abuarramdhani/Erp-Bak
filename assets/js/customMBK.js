@@ -23,16 +23,15 @@ function CustomMBK() {
 
         $('.pMBKDateNow').html(MBKDateNow)
         
-        $('.slcMBKAccountName').on('change', function(){
-            let AccName   = $('option:selected', this).attr('title')
-            if (AccName != null){
-                $('.spnMBKAccountNameTitle').html('Akun '+AccName)
-            }
-        })
-
         $('.btnMBKShowChart').on('click', function(){
-            let AccName = $('.slcMBKAccountName').val()
+            let AccName = $('.slcMBKAccountName').val(),
+                AccNameTitle   = $('option:selected', $('.slcMBKAccountName')).attr('title')
+            if (AccNameTitle != null){
+                $('.spnMBKAccountNameTitle').html('Akun '+AccNameTitle)
+            }
             if(AccName != null){
+                $('.slcMBKAccountName').select2({ disabled : true })
+                $('.btnMBKShowChart').attr('disabled','disabled')
                 $('.divMBKWarnAccount').fadeOut()
                 $('.spnMBKWarnAccount').siblings('i').attr('class','fa fa-remove')
                 $('.spnMBKWarnAccountColor').attr('class','bg-red spnMBKWarnAccountColor')
@@ -51,6 +50,19 @@ function CustomMBK() {
                 $('.aMBKExportExcel').attr('href',baseurl+'MonitoringBiayaKeuangan/Detail/ExportReportToExcel/'+AccName)
             }else {
                 $('.aMBKExportExcel').attr('href','#')
+                $('.divMBKWarnExport').fadeIn()
+                setTimeout(function() {
+                    $('.divMBKWarnExport').fadeOut()
+                }, 3000)
+            }
+        })
+
+        $('.aMBKDetailExportExcel').on('click', function(){
+            let AccName = $('.slcMBKAccountName').val()
+            if (AccName != null){
+                $('.aMBKDetailExportExcel').attr('href',baseurl+'MonitoringBiayaKeuangan/Detail/ExportDetailReportToExcel/'+AccName)
+            }else {
+                $('.aMBKDetailExportExcel').attr('href','#')
                 $('.divMBKWarnExport').fadeIn()
                 setTimeout(function() {
                     $('.divMBKWarnExport').fadeOut()
@@ -79,13 +91,21 @@ function CustomMBK() {
                 dataType: 'json',
                 success: function (resp) {
                     $('.divMBKimgLoad').hide()
-                    if (resp.label.length != 0 ){
+                    let tahun1 = resp.tahun1.map(Number),
+                        tahun2 = resp.tahun2.map(Number),
+                        totaltahun1 = tahun1.reduce(function(acc, val) { return acc + val; }, 0),
+                        totaltahun2 = tahun2.reduce(function(acc, val) { return acc + val; }, 0)
+                    if ( (totaltahun1+totaltahun2) > 0 ) {
                         MBKChartDestroy()
                         MBKChartDetail(resp.label, resp.tahun1, resp.tahun2)
+                        $('.btnMBKShowChart').removeAttr('disabled','disabled')
+                        $('.slcMBKAccountName').select2({ disabled : false })
                     } else {
                         $('.spnMBKWarnAccount').html(' Tidak ditemukan data pada akun '+AccName+'. ')
                         $('.divMBKWarnAccount').fadeIn()
                         MBKChartDestroy()
+                        $('.btnMBKShowChart').removeAttr('disabled','disabled')
+                        $('.slcMBKAccountName').select2({ disabled : false })
                     }
                 }
             })

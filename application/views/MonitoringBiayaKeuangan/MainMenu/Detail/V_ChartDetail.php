@@ -94,7 +94,7 @@
 
             <div class="box-body">
             
-              <div class="col-sm-11 divMBKWarnExport" style="display:none">
+              <div class="col-sm-9 divMBKWarnExport" style="margin-left:50px;display:none">
                 <ul class="timeline" style="margin:0px;float:right;">
                   <li class="time-label" style="margin:0px">
                     <span class="bg-yellow">
@@ -105,6 +105,11 @@
               </div>
 
               <div style="height:50px">
+                <div style="float:right;margin-left: 10px">
+                  <a title="Export detail report to Excel"
+                    href="#" 
+                    class="btn btn-primary aMBKDetailExportExcel"><i class="fa fa-download"></i>&nbsp; Export Detail</a>
+                </div>
                 <div style="float:right;">
                   <a title="Export report to Excel"
                     href="#"
