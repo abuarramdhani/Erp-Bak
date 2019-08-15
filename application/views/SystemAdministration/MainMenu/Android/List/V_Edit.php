@@ -79,16 +79,21 @@
 
 
 				<tr id="row_valid_until">
+				<?php
+					foreach ($akhirKontrak as $key => $valid) {
+
+				?>
 					<td>Valid Until (Default Akhir Kontrak)</td>
 					<td>
 						<div id="datepicker" class="input-group date" data-provide="datepicker">
-						   <input type="text" id="input_valid_until" class="form-control" name="valid-until" value="<?php echo date('Y/m/d', strtotime($akhirKontrak[0]['akhkontrak'])); ?>">
+						   <input type="text" id="input_valid_until" class="form-control" name="valid-until" value="<?php echo date('Y/m/d', strtotime($valid['akhkontrak'])); ?>">
 						<!-- </div> -->
 
 						    <div class="input-group-addon">
 						        <span class="glyphicon glyphicon-th"></span>
 						    </div>
 					</td>
+				<?php } ?>
 				</tr>
 
 				</table>
@@ -106,7 +111,7 @@ $(document).ready(function(){
       if ( value == 1)
       {
         $("#row_valid_until").show();
-        $("#input_valid_until").attr('value','<?php echo date('Y/m/d', strtotime($akhirKontrak[0]['akhkontrak'])); ?>');
+        $("#input_valid_until").attr('value','<?php echo date('Y/m/d', strtotime($valid['akhkontrak'])); ?>');
 
       }
       else
