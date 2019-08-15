@@ -47,6 +47,13 @@ class M_absenatasan extends CI_Model
 		return $query->result_array();
 	}
 
+	public function getAtasan($absen_id){
+		$sql 	= "SELECT approver FROM at.at_absen_approval WHERE absen_id='$absen_id'";
+		$query 	= $this->db->query($sql);
+
+		return $query->result_array();
+	}
+
 	public function approveAbsenApproval($id,$data1){
 		$this->db->where('absen_id',$id);
 		$this->db->update('at.at_absen_approval',$data1);
@@ -64,6 +71,12 @@ class M_absenatasan extends CI_Model
 	public function rejectAbsen($id,$data2){
 		$this->db->where('absen_id',$id);
 		$this->db->update('at.at_absen',$data2);
+	}
+
+	public function getEmployeeEmail($noinduk){
+		$sql = "SELECT * FROM er.er_employee_all WHERE employee_code='$noinduk'";
+		$query = $this->db->query($sql);
+		return $query->result_array();
 	}
 
 

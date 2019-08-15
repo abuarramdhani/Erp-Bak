@@ -81,7 +81,6 @@
 				<tr id="row_valid_until">
 				<?php
 					foreach ($akhirKontrak as $key => $valid) {
-
 				?>
 					<td>Valid Until (Default Akhir Kontrak)</td>
 					<td>

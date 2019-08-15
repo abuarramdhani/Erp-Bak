@@ -16,6 +16,7 @@ class C_Index extends CI_Controller
 			$this->load->library('form_validation');
 			$this->load->library('session');
 			$this->load->library('encrypt');
+			$this->load->library('email');
 			$this->load->model('M_Index');
 			$this->load->model('AbsenAtasan/M_absenatasan');
 			$this->load->model('SystemIntegration/M_submit');
@@ -163,6 +164,7 @@ class C_Index extends CI_Controller
 		$this->load->view('V_Footer',$data);
 		}
 
+
 		public function approveApproval($id){
 			$status = 1;
 			date_default_timezone_set('Asia/Jakarta');
@@ -182,6 +184,32 @@ class C_Index extends CI_Controller
 			];
 
 			$this->M_absenatasan->approveAbsen($id,$data2);
+
+			$employee = $this->M_absenatasan->getListAbsenById($id);
+			// echo "<pre>";
+			// print_r($employee);exit();
+			$noinduk 	 = $employee[0]['noind'];
+			$namaPekerja = $employee[0]['nama'];
+			$jenisAbsen  = $employee[0]['jenis_absen'];
+			$waktu		 = $employee[0]['waktu'];
+			$lokasi		 = $employee[0]['lokasi'];
+			$latitude	 = $employee[0]['latitude'];
+			$longitude	 = $employee[0]['longitude'];
+			$status 	 = "DiApprove";
+			$dataAtasan	 = $this->M_absenatasan->getAtasan($id);
+			$atasan 	 = $dataAtasan[0]['approver'];
+			// print_r($atasan);exit();
+
+
+			$employeeEmailData['email'] = $this->M_absenatasan->getEmployeeEmail($noinduk);
+			// echo $employeeEmail['internal_mail'];exit();
+			$internalMail = $employeeEmailData['email'][0]['internal_mail'];
+			$eksternalMail	= $employeeEmailData['email'][0]['external_mail'];
+			// print_r($internalMail);exit();
+
+
+			$this->kirim_email($internalMail,$eksternalMail,$namaPekerja,$jenisAbsen,$waktu,$lokasi,$latitude,$longitude,$status,$atasan);
+			$this->kirim_emailPersonalia($internalMail,$eksternalMail,$namaPekerja,$jenisAbsen,$waktu,$lokasi,$latitude,$longitude,$status,$atasan);
 
 			$this->session->set_flashdata('msg','sukses');
 			redirect('AbsenAtasan/List');
@@ -208,9 +236,143 @@ class C_Index extends CI_Controller
 			 'tgl_status' => $tgl_approval
 			];
 			$this->M_absenatasan->rejectAbsen($id,$data2);
+
+			$employee = $this->M_absenatasan->getListAbsenById($id);
+			$noinduk 	 = $employee[0]['noind'];
+			$namaPekerja = $employee[0]['nama'];
+			$jenisAbsen  = $employee[0]['jenis_absen'];
+			$waktu		 = $employee[0]['waktu'];
+			$lokasi		 = $employee[0]['lokasi'];
+			$latitude	 = $employee[0]['latitude'];
+			$longitude	 = $employee[0]['longitude'];
+			$status 	 = "DiTolak";
+			$atasan 	 = $this->M_absenatasan->getAtasan($id);
+
+			
+			$employeeEmailData['email'] = $this->M_absenatasan->getEmployeeEmail($noinduk);
+			// echo $employeeEmail['internal_mail'];exit();
+			$internalMail = $employeeEmailData['email'][0]['internal_mail'];
+			$eksternalMail	= $employeeEmailData['email'][0]['external_mail'];
+			// print_r($internalMail);exit();
+
+
+			$this->kirim_email($internalMail,$eksternalMail,$namaPekerja,$jenisAbsen,$waktu,$lokasi,$latitude,$longitude,$status,$atasan);
+
 			redirect('AbsenAtasan/List');
 		}
 
+		function kirim_email($internalMail,$eksternalMail,$namaPekerja,$jenisAbsen,$waktu,$lokasi,$latitude,$longitude,$status,$atasan){
+			date_default_timezone_set("Asia/Jakarta");
+
+			if(!$internalMail==null){
+				$this->load->library('PHPMailerAutoload');
+				$mail = new PHPMailer;
+				$mail->isSMTP();
+				$mail->SMTPDebug = 0;
+				$mail->Debugoutput = 'html';
+				$mail->Host = 'm.quick.com';
+				$mail->Port = 465;
+				$mail->SMTPAuth = true;
+				$mail->SMTPSecure = 'ssl';
+				$mail->SMTPOptions = array(
+				'ssl' => array(
+				'verify_peer' => false,
+				'verify_peer_name' => false,
+				'allow_self_signed' => true
+				));
+				$mail->Username = 'no-reply@quick.com';
+				$mail->Password = "123456";
+				$mail->setFrom('noreply@quick.co.id', 'Notifikasi Absensi Online');
+				$mail->addAddress($internalMail, 'Absensi Online Pekerja');
+				if(!$eksternalMail==null){
+					$mail->addAddress($eksternalMail, 'Absensi Online Pekerja');
+				}
+				$mail->Subject = 'Status Absensi Online Anda';
+				$mail->msgHTML("
+				<h4>Absensi Online</h4><hr>
+				Kepada Yth.<br>
+				$namaPekerja<br><br>
+				
+				Kami informasikan bahwa request approval Absen Online Anda, detail sbb :<br>
+				Jenis Absen : $jenisAbsen<br>
+				Waktu : $waktu<br>
+				lokasi : $lokasi , koordinat : ( $latitude , $longitude ) 
+				<a href='http://maps.google.com/maps?q=$latitude,$longitude''>Lihat Lokasi di Google Maps</a><br>
+				atau <br>
+
+				Status : Telah $status oleh $atasan<br>
+
+				Anda dapat melakukan pengecekan melalui : 
+				1. Internet : aplikasi Quick ERP Mobile atau klik link ini <link ngarah lgs buka aplikasi>. Apabila belum memiliki aplikasinya dapat download di  <link>
+				2. jaringan lokal : http://erp.quick.co (http://quick.co.id/dinas_luar)m atau klik <a href='http://erp.quick.com/'>disini</a><br>
+
+				<small>Email ini digenerate melalui QuickERP pada ".date('d-m-Y H:i:s').".<br>
+				pabila anda mengalami kendala dapat menghubungi Seksi Hubker (xxxxxxxx) atau ICT Support Center (08112545922) </small>");
+				//Replace the plain text body with one created manually
+				//send the message, check for errors
+				$mail->send();
+				if (!$mail->send()) {
+					echo "Mailer Error: " . $mail->ErrorInfo;
+				} else {
+					//echo "Message sent!";
+				}
+
+		}
+	}
+
+
+		function kirim_emailPersonalia($internalMail,$eksternalMail,$namaPekerja,$jenisAbsen,$waktu,$lokasi,$latitude,$longitude,$status,$atasan){
+				date_default_timezone_set("Asia/Jakarta");
+				$this->load->library('PHPMailerAutoload');
+				$mail = new PHPMailer;
+				$mail->isSMTP();
+				$mail->SMTPDebug = 0;
+				$mail->Debugoutput = 'html';
+				$mail->Host = 'm.quick.com';
+				$mail->Port = 465;
+				$mail->SMTPAuth = true;
+				$mail->SMTPSecure = 'ssl';
+				$mail->SMTPOptions = array(
+				'ssl' => array(
+				'verify_peer' => false,
+				'verify_peer_name' => false,
+				'allow_self_signed' => true
+				));
+				$mail->Username = 'no-reply@quick.com';
+				$mail->Password = "123456";
+				$mail->setFrom('noreply@quick.co.id', 'Notifikasi Absensi Online');
+				$mail->addAddress('hbk@quick.com', 'Absensi Online Pekerja');
+				$mail->addAddress('edp@quick.com', 'Absen Online Pekerja');
+				$mail->Subject = 'Status Absensi Online Anda';
+				$mail->msgHTML("
+				<h4>Absensi Online</h4><hr>
+				Kepada Yth.<br>
+				$namaPekerja<br><br>
+				
+				Kami informasikan bahwa request approval Absen Online Anda, detail sbb :<br>
+				Jenis Absen : $jenisAbsen<br>
+				Waktu : $waktu<br>
+				lokasi : $lokasi , koordinat : ( $latitude , $longitude ) 
+				<a href='http://maps.google.com/maps?q=$latitude,$longitude''>Lihat Lokasi di Google Maps</a><br>
+				atau <br>
+
+				Status : Telah $status oleh $atasan<br>
+
+				Anda dapat melakukan pengecekan melalui : 
+				1. Internet : aplikasi Quick ERP Mobile atau klik link ini <link ngarah lgs buka aplikasi>. Apabila belum memiliki aplikasinya dapat download di  <link>
+				2. jaringan lokal : http://erp.quick.co (http://quick.co.id/dinas_luar)m atau klik <a href='http://erp.quick.com/'>disini</a><br>
+
+				<small>Email ini digenerate melalui QuickERP pada ".date('d-m-Y H:i:s').".<br>
+				pabila anda mengalami kendala dapat menghubungi Seksi Hubker (xxxxxxxx) atau ICT Support Center (08112545922) </small>");
+				//Replace the plain text body with one created manually
+				//send the message, check for errors
+				$mail->send();
+				if (!$mail->send()) {
+					echo "Mailer Error: " . $mail->ErrorInfo;
+				} else {
+					//echo "Message sent!";
+				}
+			}
 	}
 	
 ?>		
