@@ -131,7 +131,7 @@
                                                                     <?php echo $key['nama']; ?>
                                                                 </a>
                                                             </td>
-                                                            <td><?php echo date('d-M-Y', strtotime($key['tgl_masuk'])); ?></td>
+                                                            <td data-order="<?php echo $key['tgl_masuk']; ?>"><?php echo date('d-M-Y', strtotime($key['tgl_masuk'])); ?></td>
                                                             <td><?php echo $key['unit']; ?></td>
                                                             <td><?php echo $key['seksi']; ?></td>
                                                             <td><?php echo $key['masa_kerja']; ?></td>
