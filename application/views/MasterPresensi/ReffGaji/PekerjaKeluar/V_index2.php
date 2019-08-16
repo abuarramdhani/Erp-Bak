@@ -104,7 +104,7 @@ background-color: #337ab7;
 												if (isset($_POST['slcPekerja'])){ 
 													foreach ($_POST['slcPekerja'] as $key) { ?>
 														<input type="hidden" name="slcPekerja2[]" value="<?php echo $key; ?>">
-											<? 		}
+											<?php 		}
 												}else{ ?>
 													<input type="hidden" name="slcPekerja2[]" value="">
 											<?php } ?>
@@ -121,7 +121,7 @@ background-color: #337ab7;
 												if (isset($_POST['slcPekerja'])){ 
 													foreach ($_POST['slcPekerja'] as $key) { ?>
 														<input type="hidden" name="slcPekerja2[]" value="<?php echo $key; ?>">
-											<? 		}
+											<?php 		}
 												}else{ ?>
 													<input type="hidden" name="slcPekerja2[]" value="">
 											<?php } ?>
