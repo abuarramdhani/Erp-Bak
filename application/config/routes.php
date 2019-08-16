@@ -1810,6 +1810,10 @@ $route['Presensi/PresensiDL/(:any)']		= 'Presensi/MenuUtama/C_Presensi_DL/$1';
 $route['Presensi/PresensiDL/(:any)/(:any)']	= 'Presensi/MenuUtama/C_Presensi_DL/$1/$2';
 $route['Presensi/PresensiDL/(:any)/(:any)/(:any)']	= 'Presensi/MenuUtama/C_Presensi_DL/$1/$2/$3';
 
+$route['MasterPresensi/ReffGaji/PekerjaKeluar'] = 'MasterPresensi/ReffGaji/C_PekerjaKeluar';
+$route['MasterPresensi/ReffGaji/PekerjaKeluar/(:any)'] = 'MasterPresensi/ReffGaji/C_PekerjaKeluar/$1';
+$route['MasterPresensi/ReffGaji/PekerjaKeluar/(:any)/(:any)'] = 'MasterPresensi/ReffGaji/C_PekerjaKeluar/$1/$2';
+
 
 //-------------------------------------Hambatan Produksi-------------------------------------------------
 $route['ManufacturingOperation/ProductionObstacles/master'] = 'ManufacturingOperation/ProductionObstacles/MainMenu/C_Master';
