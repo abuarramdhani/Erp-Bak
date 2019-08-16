@@ -18,7 +18,7 @@ background-color: #337ab7;
 			<div class="col-lg-12">
 				<div class="row">
 					<div class="col-lg-12">
-						<div class="col-lg-11 text-right"><h3><b><?=$Title ?></b></h3></div>
+						<div class="col-lg-11 text-right"><h3><b><?php echo $Title; ?></b></h3></div>
 						<div class="col-lg-1">
 							<div class="text-right hidden-md hidden-sm hidden-xs">
 								<a href="" class="btn btn-default btn-lg"><span class="icon-wrench icon-2x"></span></a>
@@ -33,11 +33,11 @@ background-color: #337ab7;
 							<div class="box-body">
 								<div class="row">
 									<div class="col-lg-12">
-										<form class="form-horizontal" method="POST" action="<?php echo site_url('MasterPresensi/ReffGaji/PekerjaKeluar/Proses') ?>">
+										<form class="form-horizontal" method="POST" action="<?php echo site_url('MasterPresensi/ReffGaji/PekerjaKeluar/Proses') ; ?>">
 											<div class="form-group">
 												<label class="control-label col-lg-4">Tanggal Cetak</label>
 												<div class="col-lg-4">
-													<input type="text" class="date form-control" name="txtTglCetak" id="txtTglCetakPKJKeluar" value="<?php echo date('Y-m-d') ?>" required>
+													<input type="text" class="date form-control" name="txtTglCetak" id="txtTglCetakPKJKeluar" value="<?php echo date('Y-m-d') ; ?>" required>
 												</div>
 											</div>
 											<div class="form-group">
@@ -94,7 +94,7 @@ background-color: #337ab7;
 								</div>
 								<div class="row">
 									<div class="col-lg-12 text-right">
-										<form target="_blank" method="POST" style="float: right;margin-right: 20px;margin-bottom: 20px" action="<?php echo site_url('MasterPresensi/ReffGaji/PekerjaKeluar/Export') ?>">
+										<form target="_blank" method="POST" style="float: right;margin-right: 20px;margin-bottom: 20px" action="<?php echo site_url('MasterPresensi/ReffGaji/PekerjaKeluar/Export') ; ?>">
 											<input type="hidden" name="txtTglCetak2" value="<?php if(isset($_POST['txtTglCetak'])){echo $_POST['txtTglCetak'];} ?>">
 											<input type="hidden" name="txtPuasa2" value="<?php if(isset($_POST['txtPuasa'])){echo $_POST['txtPuasa'];} ?>">
 											<input type="hidden" name="txtPeriodePuasa2" value="<?php if(isset($_POST['txtPeriodePuasa'])){echo $_POST['txtPeriodePuasa'];} ?>">
@@ -154,7 +154,7 @@ background-color: #337ab7;
 												$text .= "&txtPotSeragam2=".$_POST['txtPotSeragam'];
 											}
 										?>
-										<a target="_blank" style="float: right;margin-right: 20px;margin-bottom: 20px" href="<?php echo base_url('MasterPresensi/ReffGaji/PekerjaKeluar/print_pdf?'.$text) ?>" class="btn btn-danger">Print</a>
+										<a target="_blank" style="float: right;margin-right: 20px;margin-bottom: 20px" href="<?php echo base_url('MasterPresensi/ReffGaji/PekerjaKeluar/print_pdf?'.$text) ; ?>" class="btn btn-danger">Print</a>
 									</div>
 								</div>
 								<div class="row">
@@ -193,7 +193,7 @@ background-color: #337ab7;
 													foreach ($data as $key) { ?>
 														<tr>
 															<td><?=$angka ?></td>
-															<td><a target="_blank" href="<?php echo base_url('MasterPresensi/ReffGaji/PekerjaKeluar/detail_absensi/'.$key['noind']) ?>"><?=$key['noind'] ?></a></td>
+															<td><a target="_blank" href="<?php echo base_url('MasterPresensi/ReffGaji/PekerjaKeluar/detail_absensi/'.$key['noind']) ; ?>"><?=$key['noind'] ?></a></td>
 															<td><?=$key['nama'] ?></td>
 															<td><?=$key['kodesie'] ?></td>
 															<td><?=$key['seksi'] ?></td>
