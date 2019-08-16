@@ -102,8 +102,9 @@
 				</div>
 			 	<div class="col-md-2">
 			 		<button data-toggle="modal" data-target="#locationModal" class="btn btn-success" href="#"><i class="fa fa-map-marker"></i>  Lihat di Google Maps</button>
-			 	</div>					 
+			 	</div>			 
 			 </div>
+
 
 		</div>
 
@@ -187,3 +188,13 @@
 		</div>
 
 </section>
+
+<script type="text/javascript">
+
+$(document).ready(function(){
+
+
+	});
+});
+	
+</script>
