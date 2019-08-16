@@ -157,72 +157,7 @@ background-color: #337ab7;
 										<a target="_blank" style="float: right;margin-right: 20px;margin-bottom: 20px" href="<?php echo base_url('MasterPresensi/ReffGaji/PekerjaKeluar/print_pdf?'.$text) ?>" class="btn btn-danger">Print</a>
 									</div>
 								</div>
-								<div class="row">
-									<div class="col-lg-12">
-										<table class="table table-bordered table-hover table-striped" id="table-gaji-pekerja-keluar" style="width: 100%">
-											<thead class=" bg-primary">
-												<tr>
-													<th>No</th>
-													<th>Noind</th>
-													<th>Nama</th>
-													<th>Kodesie</th>
-													<th>Seksi</th>
-													<th>Tanggal Keluar</th>
-													<th>IP</th>
-													<th>IK</th>
-													<th>UBT</th>
-													<th>UPAMK</th>
-													<th>IF</th>
-													<th>LEMBUR</th>
-													<th>HTM</th>
-													<th>Tambahan</th>
-													<th>UM Puasa</th>
-													<th>IMS</th>
-													<th>IMM</th>
-													<th>IPT</th>
-													<th>UM Cabang</th>
-													<th>Pot. Seragam</th>
-													<th>JKN</th>
-													<th>JHT</th>
-													<th>JP</th>
-												</tr>
-											</thead>
-											<tbody>
-												<?php if (isset($data) && !empty($data)) {
-													$angka = 1;
-													foreach ($data as $key) { ?>
-														<tr>
-															<td><?=$angka ?></td>
-															<td><a target="_blank" href="<?php echo base_url('MasterPresensi/ReffGaji/PekerjaKeluar/detail_absensi/'.$key['noind']) ?>"><?=$key['noind'] ?></a></td>
-															<td><?=$key['nama'] ?></td>
-															<td><?=$key['kodesie'] ?></td>
-															<td><?=$key['seksi'] ?></td>
-															<td><?=$key['tgl_keluar'] ?></td>
-															<td><?=$key['ip'] ?></td>
-															<td><?=$key['ik'] ?></td>
-															<td><?=$key['ubt'] ?></td>
-															<td><?=$key['upamk'] ?></td>
-															<td><?=$key['if'] ?></td>
-															<td><?=$key['lembur'] ?></td>
-															<td><?=$key['htm'] ?></td>
-															<td><?=$key['tambahan'] ?></td>
-															<td><?=$key['um_puasa'] ?></td>
-															<td><?=$key['ims'] ?></td>
-															<td><?=$key['imm'] ?></td>
-															<td><?=$key['ipt'] ?></td>
-															<td><?=$key['um_cabang'] ?></td>
-															<td><?=$key['pot_seragam'] ?></td>
-															<td><?=$key['jkn'] ?></td>
-															<td><?=$key['jht'] ?></td>
-															<td><?=$key['jp'] ?></td>
-														</tr>
-													<?php $angka++;
-													}
-												} ?>
-											</tbody>
-										</table>
-									</div>
-								</div>
+								
 							</div>
 						</div>
 					</div>
