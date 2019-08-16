@@ -80,7 +80,7 @@
                       <td class="text-center"><?= $no; ?></td>
                       <td><?= $kaizen_item['judul']; ?></td>
                       <td><?= $kaizen_item['pencetus']; ?></td>
-                      <td class="text-center"><?= date("d M Y", strtotime($kaizen_item['created_date'])); ?></td>
+                      <td class="text-center" data-order="<?php echo $kaizen_item['created_date']; ?>"><?= date("d M Y", strtotime($kaizen_item['created_date'])); ?></td>
                       <td class="text-left">
                             <?php if ($kaizen_item['status_approve']) { ?>
                                 <table width="100%">
