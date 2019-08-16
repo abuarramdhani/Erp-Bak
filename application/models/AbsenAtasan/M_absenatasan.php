@@ -79,6 +79,19 @@ class M_absenatasan extends CI_Model
 		return $query->result_array();
 	}
 
+	public function getEmployeeEmailByNama($nama){
+		$sql = "SELECT * FROM er.er_employee_all WHERE employee_name='$nama'";
+		$query = $this->db->query($sql);
+		return $query->result_array();
+	}
+
+	public function getEmailPersonalia(){
+		$sql = "SELECT * FROM er.er_employee_all WHERE section_code IN ('409010100','409010101','409010102','401010100','401010101','401010102','401010103',
+				'401010104','401010105','401010106','401010107')";
+		$query = $this->db->query($sql);
+		return $query->result_array();		
+	}
+
 
 
 
