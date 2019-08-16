@@ -91,7 +91,7 @@
                     <tr>
                       <td class="text-center"><?= $no; ?></td>
                       <td id="judul"><?= $kaizen_item['judul']; ?></td>
-                      <td class="text-center"><?= date("d M Y", strtotime($kaizen_item['created_date'])); ?></td>
+                      <td class="text-center" data-order="<?php echo $kaizen_item['created_date']; ?>"><?= date("d M Y", strtotime($kaizen_item['created_date'])); ?></td>
                       <td class="text-left">
                         <?php $arrIdeDone = array('3','6','7','9');
                             if ($kaizen_item['status'] == 0) { ?>
