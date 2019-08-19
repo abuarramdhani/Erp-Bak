@@ -502,7 +502,7 @@ $(document).ready(function() {
     });
 
     $(document).on('click','.btnUpdateDeskripsiNonC', function () {
-        var headerid = $('.hdnHeaderIdNonC').val();
+        var headerid = $('.hdrNonC').val();
         var datadeskripsi = $('.txtAreaDeskripsiNonC').val();
 
         $.ajax({
@@ -524,9 +524,49 @@ $(document).ready(function() {
         });
     });
 
+    $(document).on('click','.btnEditStatusNonC', function () {
+        var status = $(this).attr('status');
+        
+        $('.slcStatusNonC').val(status).trigger('change.select2');
+        $('#modal-ubahStatus').modal('show');
+    })
+
+    $('.slcStatusNonC').select2();
+
     $(document).on('click', '.btnEditCaseNonC', function () {
         $('#modal-ubahCase').modal('show');
+
     })
+
+    
+
+    $(document).on('click', '.btnUpdateStatusNonC', function () {
+        var status = $('.slcStatusNonC').val();
+        if (status==0) {
+            var stat = 'OPEN';
+        }else if(status==1){
+            var stat = 'CLOSE';
+        }
+        var headerid = $('.hdrNonC').val();
+
+        $.ajax({
+            type: "POST",
+            url: baseurl+"PurchaseManagementGudang/NonConformity/updateStatus",
+            data: {
+                headerid: headerid,
+                status: status
+            },
+            success: function (response) {
+                if (response==1) {
+                    $('.statusNonC').html(stat);
+                    $('.btnEditStatusNonC').attr('status', status);
+                    $('#modal-ubahStatus').modal('hide');
+                }else{
+                    alert('gagal');
+                }
+            }
+        });
+    });
 
     $(document).on('click', '.btnUpdateCaseNonC', function () {
         var caseEdit = $('.slcRemarkNonConformity').val();
@@ -575,6 +615,10 @@ $(document).ready(function() {
     })
 
     $('.slcEditCaseNonC').select2({
+    });
+
+    $('.slcAssignNonC').select2({
+        placeholder: 'Select To Assign',
     });
 
 });

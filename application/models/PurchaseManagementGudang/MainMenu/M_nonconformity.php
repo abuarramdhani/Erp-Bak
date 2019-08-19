@@ -13,10 +13,17 @@ class M_nonconformity extends CI_Model
     public function getHeaders($id = FALSE)
     {
     	if ($id === FALSE) {
-            $query = $this->db->query("SELECT * FROM pm.pm_po_oracle_non_conformity_headers WHERE replace(status, ' ', '') NOT LIKE 'cancel' OR status is null ORDER BY non_conformity_num");
+            $query = $this->db->query("SELECT * FROM pm.pm_po_oracle_non_conformity_headers WHERE replace(status, ' ', '') NOT LIKE 'cancel' OR status is null AND assign is null ORDER BY non_conformity_num");
         } else {
             $query = $this->db->get_where('pm.pm_po_oracle_non_conformity_headers', array('header_id' => $id));
     	}
+
+        return $query->result_array();
+    }
+
+    public function getHeaders2($assign)
+    {
+        $query = $this->db->query("SELECT * FROM pm.pm_po_oracle_non_conformity_headers WHERE assign ='$assign' ORDER BY non_conformity_num");
 
         return $query->result_array();
     }
@@ -135,6 +142,25 @@ class M_nonconformity extends CI_Model
         
         return $query->result_array();
     }
+
+    public function checkNonConformitySubkonNum()
+    {
+       $erp = $this->db;
+       $query = $erp->query("select header_id, non_conformity_num from pm.pm_po_oracle_non_conformity_headers 
+            where non_conformity_num like 'NC-PURSUB-".date('y')."-".date('m')."-%' order by non_conformity_num DESC limit 1");
+        
+        return $query->result_array();
+    }
+
+    public function checkNonConformitySupplierNum()
+    {
+       $erp = $this->db;
+       $query = $erp->query("select header_id, non_conformity_num from pm.pm_po_oracle_non_conformity_headers 
+            where non_conformity_num like 'NC-PURSUP-".date('y')."-".date('m')."-%' order by non_conformity_num DESC limit 1");
+        
+        return $query->result_array();
+    }
+
 
     public function simpanHeader($header)
     {
@@ -829,5 +855,17 @@ class M_nonconformity extends CI_Model
     public function updateCase($case)
     {
         $this->db->insert('pm.pm_po_oracle_non_conformity_lines',$case);
+    }
+
+    public function updateAssign($plaintext_string, $data)
+    {
+        $this->db->where('header_id', $plaintext_string);
+        $this->db->update('pm.pm_po_oracle_non_conformity_headers', $data);
+    }
+
+    public function updateStatus($headerid,$data)
+    {
+        $this->db->where('header_id', $headerid);
+        $this->db->update('pm.pm_po_oracle_non_conformity_lines', $data);
     }
 }
