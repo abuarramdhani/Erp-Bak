@@ -95,7 +95,7 @@ background-color: #337ab7;
 								<div class="row">
 									<div class="col-lg-12 text-right">
 										<form target="_blank" method="POST" style="float: right;margin-right: 20px;margin-bottom: 20px" action="<?php echo site_url('MasterPresensi/ReffGaji/PekerjaKeluar/Export') ?>">
-											<input type="hidden" name="txtTglCetak2" value="<?php if(isset($_POST['txtTglCetak'])){echo $_POST['txtTglCetak'];} ?>">
+											<input type="hidden" name="txtTglCetak2" value="<?php if(isset($_POST['txtTglCetak'])){echo $_POST['txtTglCetak']; } ?>">
 											<input type="hidden" name="txtPuasa2" value="<?php if(isset($_POST['txtPuasa'])){echo $_POST['txtPuasa'];} ?>">
 											<input type="hidden" name="txtPeriodePuasa2" value="<?php if(isset($_POST['txtPeriodePuasa'])){echo $_POST['txtPeriodePuasa'];} ?>">
 											<input type="hidden" name="txtPeriodeGaji2" value="<?php if(isset($_POST['txtPeriodeGaji'])){echo $_POST['txtPeriodeGaji'];} ?>">
@@ -104,7 +104,7 @@ background-color: #337ab7;
 												if (isset($_POST['slcPekerja'])){ 
 													foreach ($_POST['slcPekerja'] as $key) { ?>
 														<input type="hidden" name="slcPekerja2[]" value="<?php echo $key; ?>">
-											<? 		}
+											<?php 		}
 												}else{ ?>
 													<input type="hidden" name="slcPekerja2[]" value="">
 											<?php } ?>
@@ -121,7 +121,7 @@ background-color: #337ab7;
 												if (isset($_POST['slcPekerja'])){ 
 													foreach ($_POST['slcPekerja'] as $key) { ?>
 														<input type="hidden" name="slcPekerja2[]" value="<?php echo $key; ?>">
-											<? 		}
+											<?php 		}
 												}else{ ?>
 													<input type="hidden" name="slcPekerja2[]" value="">
 											<?php } ?>
@@ -157,7 +157,72 @@ background-color: #337ab7;
 										<a target="_blank" style="float: right;margin-right: 20px;margin-bottom: 20px" href="<?php echo base_url('MasterPresensi/ReffGaji/PekerjaKeluar/print_pdf?'.$text) ?>" class="btn btn-danger">Print</a>
 									</div>
 								</div>
-								
+								<div class="row">
+									<div class="col-lg-12">
+										<table class="table table-bordered table-hover table-striped" id="table-gaji-pekerja-keluar" style="width: 100%">
+											<thead>
+												<tr>
+													<th>No</th>
+													<th>Noind</th>
+													<th>Nama</th>
+													<th>Kodesie</th>
+													<th>Seksi</th>
+													<th>Tanggal Keluar</th>
+													<th>IP</th>
+													<th>IK</th>
+													<th>UBT</th>
+													<th>UPAMK</th>
+													<th>IF</th>
+													<th>LEMBUR</th>
+													<th>HTM</th>
+													<th>Tambahan</th>
+													<th>UM Puasa</th>
+													<th>IMS</th>
+													<th>IMM</th>
+													<th>IPT</th>
+													<th>UM Cabang</th>
+													<th>Pot. Seragam</th>
+													<th>JKN</th>
+													<th>JHT</th>
+													<th>JP</th>
+												</tr>
+											</thead>
+											<tbody>
+												<?php if (isset($data) && !empty($data)) {
+													$angka = 1;
+													foreach ($data as $key) { ?>
+														<tr>
+															<td><?=$angka ?></td>
+															<td><a target="_blank" href="<?php echo base_url('MasterPresensi/ReffGaji/PekerjaKeluar/detail_absensi/'.$key['noind']) ; ?>"><?=$key['noind'] ?></a></td>
+															<td><?=$key['nama'] ?></td>
+															<td><?=$key['kodesie'] ?></td>
+															<td><?=$key['seksi'] ?></td>
+															<td><?=$key['tgl_keluar'] ?></td>
+															<td><?=$key['ip'] ?></td>
+															<td><?=$key['ik'] ?></td>
+															<td><?=$key['ubt'] ?></td>
+															<td><?=$key['upamk'] ?></td>
+															<td><?=$key['if'] ?></td>
+															<td><?=$key['lembur'] ?></td>
+															<td><?=$key['htm'] ?></td>
+															<td><?=$key['tambahan'] ?></td>
+															<td><?=$key['um_puasa'] ?></td>
+															<td><?=$key['ims'] ?></td>
+															<td><?=$key['imm'] ?></td>
+															<td><?=$key['ipt'] ?></td>
+															<td><?=$key['um_cabang'] ?></td>
+															<td><?=$key['pot_seragam'] ?></td>
+															<td><?=$key['jkn'] ?></td>
+															<td><?=$key['jht'] ?></td>
+															<td><?=$key['jp'] ?></td>
+														</tr>
+													<?php $angka++;
+													}
+												} ?>
+											</tbody>
+										</table>
+									</div>
+								</div>
 							</div>
 						</div>
 					</div>
