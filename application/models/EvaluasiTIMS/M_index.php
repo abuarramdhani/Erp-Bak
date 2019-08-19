@@ -431,17 +431,17 @@ class M_Index extends CI_Model
 					et.telat + et.ijin + et.mangkir + et.sk + et.psp tims,
 					case
 						when et.tgl_diangkat::date <> '1900-01-01' and (et.tgl_diangkat + interval '2 years')::date <= now()::date
-						and (now()::date - et.tgl_diangkat::date) >= 730 then et.mangkir
+						then et.mangkir
 						else et.mangkir*(cast (720 as float))/ et.jml_hari_rekap
 					end pred_m,
 					case
 						when et.tgl_diangkat::date <> '1900-01-01' and (et.tgl_diangkat + interval '2 years')::date <= now()::date
-						and (now()::date - et.tgl_diangkat::date) >= 730 then et.telat + et.ijin + et.mangkir
+						then et.telat + et.ijin + et.mangkir
 						else (et.telat + et.ijin + et.mangkir)*(cast (720 as float))/ et.jml_hari_rekap
 					end pred_tim,
 					case
 						when et.tgl_diangkat::date <> '1900-01-01' and (et.tgl_diangkat + interval '2 years')::date <= now()::date
-						and (now()::date - et.tgl_diangkat::date) >= 730 then et.telat + et.ijin + et.mangkir + et.sk + et.psp
+						then et.telat + et.ijin + et.mangkir + et.sk + et.psp
 						else (et.telat + et.ijin + et.mangkir + et.sk + et.psp)*(cast (720 as float))/ et.jml_hari_rekap
 					end pred_tims,
 					case	
@@ -453,7 +453,7 @@ class M_Index extends CI_Model
 					end pred_lolos,
 					case
 						when et.tgl_diangkat::date <> '1900-01-01' and (et.tgl_diangkat + interval '2 years')::date <= now()::date
-						and (now()::date - et.tgl_diangkat::date) >= 730 then 'LEBIH DARI 2 TAHUN'
+						then 'LEBIH DARI 2 TAHUN'
 						else 'KURANG DARI 2 TAHUN'
 					end ket
 				from
@@ -1068,17 +1068,17 @@ class M_Index extends CI_Model
 					et.telat + et.ijin + et.mangkir + et.sk + et.psp tims,
 					case
 						when et.tgl_diangkat::date <> '1900-01-01' and (et.tgl_diangkat + interval '2 years')::date <= now()::date
-						and (now()::date - et.tgl_diangkat::date) >= 730 then et.mangkir
+						then et.mangkir
 						else et.mangkir*(cast (720 as float))/ et.jml_hari_rekap
 					end pred_m,
 					case
 						when et.tgl_diangkat::date <> '1900-01-01' and (et.tgl_diangkat + interval '2 years')::date <= now()::date
-						and (now()::date - et.tgl_diangkat::date) >= 730 then et.telat + et.ijin + et.mangkir
+						then et.telat + et.ijin + et.mangkir
 						else (et.telat + et.ijin + et.mangkir)*(cast (720 as float))/ et.jml_hari_rekap
 					end pred_tim,
 					case
 						when et.tgl_diangkat::date <> '1900-01-01' and (et.tgl_diangkat + interval '2 years')::date <= now()::date
-						and (now()::date - et.tgl_diangkat::date) >= 730 then et.telat + et.ijin + et.mangkir + et.sk + et.psp
+						then et.telat + et.ijin + et.mangkir + et.sk + et.psp
 						else (et.telat + et.ijin + et.mangkir + et.sk + et.psp)*(cast (720 as float))/ et.jml_hari_rekap
 					end pred_tims,
 					case	
@@ -1090,7 +1090,7 @@ class M_Index extends CI_Model
 					end pred_lolos,
 					case
 						when et.tgl_diangkat::date <> '1900-01-01' and (et.tgl_diangkat + interval '2 years')::date <= now()::date
-						and (now()::date - et.tgl_diangkat::date) >= 730 then 'LEBIH DARI 2 TAHUN'
+						then 'LEBIH DARI 2 TAHUN'
 						else 'KURANG DARI 2 TAHUN'
 					end ket
 				from
