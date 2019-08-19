@@ -50,7 +50,7 @@ class C_PekerjaKeluar extends CI_Controller
 		
 		$this->load->view('V_Header',$data);
 		$this->load->view('V_Sidemenu',$data);
-		$this->load->view('MasterPresensi/ReffGaji/PekerjaKeluar/V_index2',$data);
+		$this->load->view('MasterPresensi/ReffGaji/PekerjaKeluar/V_index',$data);
 		$this->load->view('V_Footer',$data);
 	}
 
