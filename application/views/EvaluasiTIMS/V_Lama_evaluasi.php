@@ -29,7 +29,7 @@
                                        <div class="row">
                                         <div class="form-inline">
                                             <div style="font-weight: bold;" class="col-md-12 form-group">
-                                                <label style="margin-top: 0px;" class="col-sm-2 col-form-label" for="name">Lama Evaluasi OJT:</label>
+                                                <label style="margin-top: 0px;" class="col-sm-2 col-form-label" for="name">OJT:</label>
                                                 <div class="col-md-2">
                                                     <input style="width: 1.2em;" type="radio" class="form-control" name="et_rd_le" id="et_rd_1" value="1"> 1 Bulan
                                                 </div>
@@ -41,7 +41,7 @@
                                                 </div>
                                             </div>
                                             <div style="font-weight: bold; margin-top: 50px;" class="col-md-12 form-group">
-                                                <label style="margin-top: 0px;" class="col-sm-2 col-form-label" for="name">Lama Evaluasi PM:</label>
+                                                <label style="margin-top: 0px;" class="col-sm-2 col-form-label" for="name">Non OJT:</label>
                                                 <div class="col-md-2">
                                                     <input style="width: 1.2em;" type="radio" class="form-control" name="et_rd_le2" id="evt_rd_2" value="2"> 2 Bulan
                                                 </div>

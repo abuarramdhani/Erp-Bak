@@ -339,7 +339,7 @@ class M_Index extends CI_Model
 						hrd_khs.tpribadi
 					where
 						keluar = '0'
-						and ((substring(noind, 1, 1) = 'D' and upper(pendidikan) in ('S1','S2','S3','D3'))
+						and ((substring(noind, 1, 1) = 'D' and upper(pendidikan) in ('S1','S2','S3','D3','D4'))
 						or (substring(noind, 1, 1) = 'J' and status_diangkat = '0'))
 						and kd_jabatan not in ('13','14','15','17','24') )
 					and param.tgl2 = now()::date
@@ -430,18 +430,18 @@ class M_Index extends CI_Model
 					et.telat + et.ijin + et.mangkir tim,
 					et.telat + et.ijin + et.mangkir + et.sk + et.psp tims,
 					case
-						when et.tgl_diangkat::date <> '1900-01-01'
-						and (now()::date - et.tgl_diangkat::date) >= 730 then et.mangkir
+						when et.tgl_diangkat::date <> '1900-01-01' and (et.tgl_diangkat + interval '2 years')::date <= now()::date
+						then et.mangkir
 						else et.mangkir*(cast (720 as float))/ et.jml_hari_rekap
 					end pred_m,
 					case
-						when et.tgl_diangkat::date <> '1900-01-01'
-						and (now()::date - et.tgl_diangkat::date) >= 730 then et.telat + et.ijin + et.mangkir
+						when et.tgl_diangkat::date <> '1900-01-01' and (et.tgl_diangkat + interval '2 years')::date <= now()::date
+						then et.telat + et.ijin + et.mangkir
 						else (et.telat + et.ijin + et.mangkir)*(cast (720 as float))/ et.jml_hari_rekap
 					end pred_tim,
 					case
-						when et.tgl_diangkat::date <> '1900-01-01'
-						and (now()::date - et.tgl_diangkat::date) >= 730 then et.telat + et.ijin + et.mangkir + et.sk + et.psp
+						when et.tgl_diangkat::date <> '1900-01-01' and (et.tgl_diangkat + interval '2 years')::date <= now()::date
+						then et.telat + et.ijin + et.mangkir + et.sk + et.psp
 						else (et.telat + et.ijin + et.mangkir + et.sk + et.psp)*(cast (720 as float))/ et.jml_hari_rekap
 					end pred_tims,
 					case	
@@ -452,8 +452,8 @@ class M_Index extends CI_Model
 						else 'LOLOS'
 					end pred_lolos,
 					case
-						when et.tgl_diangkat::date <> '1900-01-01'
-						and (now()::date - et.tgl_diangkat::date) >= 730 then 'LEBIH DARI 2 TAHUN'
+						when et.tgl_diangkat::date <> '1900-01-01' and (et.tgl_diangkat + interval '2 years')::date <= now()::date
+						then 'LEBIH DARI 2 TAHUN'
 						else 'KURANG DARI 2 TAHUN'
 					end ket
 				from
@@ -645,12 +645,12 @@ class M_Index extends CI_Model
 					left join (
 						select
 							case
-								when a.diangkat::date <> '1900-01-01' and (now()::date - a.diangkat::date) >= 730
+								when a.diangkat::date <> '1900-01-01' and (a.diangkat + interval '2 years')::date <= now()::date
 								then (now() - interval '2 year')::date
 								else a.diangkat::date
 							end as tgl1,
 							case
-								when a.diangkat::date <> '1900-01-01' and (now()::date - a.diangkat::date) >= 730
+								when a.diangkat::date <> '1900-01-01' and (a.diangkat + interval '2 years')::date <= now()::date
 								then now()::date
 								else
 									case
@@ -672,8 +672,8 @@ class M_Index extends CI_Model
 							hrd_khs.tpribadi
 						where
 							keluar = '0'
-							and ((substring(noind, 1, 1) in ('B','A'))
-							or (substring(noind, 1, 1) in ('J','H')	and status_diangkat = '1'))
+							and (substring(noind, 1, 1) = 'B'
+							or (substring(noind, 1, 1) = 'J' and status_diangkat = '1'))
 							and kd_jabatan not in ('13','14','15','17','24'))
 						and param.tgl2 = now()::date
 					order by
@@ -976,7 +976,7 @@ class M_Index extends CI_Model
 						hrd_khs.tpribadi
 					where
 						keluar = '0'
-						and ((substring(noind, 1, 1) = 'D' and upper(pendidikan) in ('S1','S2','S3','D3'))
+						and ((substring(noind, 1, 1) = 'D' and upper(pendidikan) in ('S1','S2','S3','D3','D4'))
 						or (substring(noind, 1, 1) = 'J' and status_diangkat = '0'))
 						and kd_jabatan not in ('13','14','15','17','24') )
 					and param.tgl2 = now()::date
@@ -1067,18 +1067,18 @@ class M_Index extends CI_Model
 					et.telat + et.ijin + et.mangkir tim,
 					et.telat + et.ijin + et.mangkir + et.sk + et.psp tims,
 					case
-						when et.tgl_diangkat::date <> '1900-01-01'
-						and (now()::date - et.tgl_diangkat::date) >= 730 then et.mangkir
+						when et.tgl_diangkat::date <> '1900-01-01' and (et.tgl_diangkat + interval '2 years')::date <= now()::date
+						then et.mangkir
 						else et.mangkir*(cast (720 as float))/ et.jml_hari_rekap
 					end pred_m,
 					case
-						when et.tgl_diangkat::date <> '1900-01-01'
-						and (now()::date - et.tgl_diangkat::date) >= 730 then et.telat + et.ijin + et.mangkir
+						when et.tgl_diangkat::date <> '1900-01-01' and (et.tgl_diangkat + interval '2 years')::date <= now()::date
+						then et.telat + et.ijin + et.mangkir
 						else (et.telat + et.ijin + et.mangkir)*(cast (720 as float))/ et.jml_hari_rekap
 					end pred_tim,
 					case
-						when et.tgl_diangkat::date <> '1900-01-01'
-						and (now()::date - et.tgl_diangkat::date) >= 730 then et.telat + et.ijin + et.mangkir + et.sk + et.psp
+						when et.tgl_diangkat::date <> '1900-01-01' and (et.tgl_diangkat + interval '2 years')::date <= now()::date
+						then et.telat + et.ijin + et.mangkir + et.sk + et.psp
 						else (et.telat + et.ijin + et.mangkir + et.sk + et.psp)*(cast (720 as float))/ et.jml_hari_rekap
 					end pred_tims,
 					case	
@@ -1089,8 +1089,8 @@ class M_Index extends CI_Model
 						else 'LOLOS'
 					end pred_lolos,
 					case
-						when et.tgl_diangkat::date <> '1900-01-01'
-						and (now()::date - et.tgl_diangkat::date) >= 730 then 'LEBIH DARI 2 TAHUN'
+						when et.tgl_diangkat::date <> '1900-01-01' and (et.tgl_diangkat + interval '2 years')::date <= now()::date
+						then 'LEBIH DARI 2 TAHUN'
 						else 'KURANG DARI 2 TAHUN'
 					end ket
 				from
@@ -1283,12 +1283,12 @@ class M_Index extends CI_Model
 					left join (
 						select
 							case
-								when a.diangkat::date <> '1900-01-01' and (now()::date - a.diangkat::date) >= 730
+								when a.diangkat::date <> '1900-01-01' and (a.diangkat + interval '2 years')::date <= now()::date
 								then (now() - interval '2 year')::date
 								else a.diangkat::date
 							end as tgl1,
 							case
-								when a.diangkat::date <> '1900-01-01' and (now()::date - a.diangkat::date) >= 730
+								when a.diangkat::date <> '1900-01-01' and (a.diangkat + interval '2 years')::date <= now()::date
 								then now()::date
 								else
 									case									
@@ -1310,8 +1310,8 @@ class M_Index extends CI_Model
 							hrd_khs.tpribadi
 						where
 							keluar = '0'
-							and ((substring(noind, 1, 1) in ('B','A'))
-							or (substring(noind, 1, 1) in ('J','H')	and status_diangkat = '1'))
+							and (substring(noind, 1, 1) = 'B'
+							or (substring(noind, 1, 1) = 'J' and status_diangkat = '1'))
 							and kd_jabatan not in ('13','14','15','17','24'))
 						and param.tgl2 = now()::date
 						and tseksi.dept = '$b'
@@ -1614,7 +1614,7 @@ class M_Index extends CI_Model
 						hrd_khs.tpribadi
 					where
 						keluar = '0'
-						and ((substring(noind, 1, 1) = 'D' and upper(pendidikan) in ('S1','S2','S3','D3'))
+						and ((substring(noind, 1, 1) = 'D' and upper(pendidikan) in ('S1','S2','S3','D3','D4'))
 						or (substring(noind, 1, 1) = 'J' and status_diangkat = '0'))
 						and kd_jabatan not in ('13','14','15','17','24') )
 					and param.tgl2 between '$tgl1' and '$tgl2'
@@ -1654,6 +1654,54 @@ class M_Index extends CI_Model
 							then (a.diangkat + interval '4 month')::date
 							when (a.diangkat + interval '2 month')::date between '$tgl1' and '$tgl2'
 							then (a.diangkat + interval '2 month')::date";
+			$case1		=	"when (a.diangkat + interval '2 years' + interval '24 month')::date between '$tgl1' and '$tgl2'
+							then (a.diangkat + interval '24 month')::date
+							when (a.diangkat + interval '2 years' + interval '22 month')::date between '$tgl1' and '$tgl2'
+							then (a.diangkat + interval '22 month')::date
+							when (a.diangkat + interval '2 years' + interval '20 month')::date between '$tgl1' and '$tgl2'
+							then (a.diangkat + interval '20 month')::date
+							when (a.diangkat + interval '2 years' + interval '18 month')::date between '$tgl1' and '$tgl2'
+							then (a.diangkat + interval '18 month')::date
+							when (a.diangkat + interval '2 years' + interval '16 month')::date between '$tgl1' and '$tgl2'
+							then (a.diangkat + interval '16 month')::date
+							when (a.diangkat + interval '2 years' + interval '14 month')::date between '$tgl1' and '$tgl2'
+							then (a.diangkat + interval '14 month')::date
+							when (a.diangkat + interval '2 years' + interval '12 month')::date between '$tgl1' and '$tgl2'
+							then (a.diangkat + interval '12 month')::date
+							when (a.diangkat + interval '2 years' + interval '10 month')::date between '$tgl1' and '$tgl2'
+							then (a.diangkat + interval '10 month')::date
+							when (a.diangkat + interval '2 years' + interval '8 month')::date between '$tgl1' and '$tgl2'
+							then (a.diangkat + interval '8 month')::date
+							when (a.diangkat + interval '2 years' + interval '6 month')::date between '$tgl1' and '$tgl2'
+							then (a.diangkat + interval '6 month')::date
+							when (a.diangkat + interval '2 years' + interval '4 month')::date between '$tgl1' and '$tgl2'
+							then (a.diangkat + interval '4 month')::date
+							when (a.diangkat + interval '2 years' + interval '2 month')::date between '$tgl1' and '$tgl2'
+							then (a.diangkat + interval '2 month')::date";
+			$case2		=	"when (a.diangkat + interval '2 years' + interval '24 month')::date between '$tgl1' and '$tgl2'
+							then (a.diangkat + interval '2 years' + interval '24 month')::date
+							when (a.diangkat + interval '2 years' + interval '22 month')::date between '$tgl1' and '$tgl2'
+							then (a.diangkat + interval '2 years' + interval '22 month')::date
+							when (a.diangkat + interval '2 years' + interval '20 month')::date between '$tgl1' and '$tgl2'
+							then (a.diangkat + interval '2 years' + interval '20 month')::date
+							when (a.diangkat + interval '2 years' + interval '18 month')::date between '$tgl1' and '$tgl2'
+							then (a.diangkat + interval '2 years' + interval '18 month')::date
+							when (a.diangkat + interval '2 years' + interval '16 month')::date between '$tgl1' and '$tgl2'
+							then (a.diangkat + interval '2 years' + interval '16 month')::date
+							when (a.diangkat + interval '2 years' + interval '14 month')::date between '$tgl1' and '$tgl2'
+							then (a.diangkat + interval '2 years' + interval '14 month')::date
+							when (a.diangkat + interval '2 years' + interval '12 month')::date between '$tgl1' and '$tgl2'
+							then (a.diangkat + interval '2 years' + interval '12 month')::date
+							when (a.diangkat + interval '2 years' + interval '10 month')::date between '$tgl1' and '$tgl2'
+							then (a.diangkat + interval '2 years' + interval '10 month')::date
+							when (a.diangkat + interval '2 years' + interval '8 month')::date between '$tgl1' and '$tgl2'
+							then (a.diangkat + interval '2 years' + interval '8 month')::date
+							when (a.diangkat + interval '2 years' + interval '6 month')::date between '$tgl1' and '$tgl2'
+							then (a.diangkat + interval '2 years' + interval '6 month')::date
+							when (a.diangkat + interval '2 years' + interval '4 month')::date between '$tgl1' and '$tgl2'
+							then (a.diangkat + interval '2 years' + interval '4 month')::date
+							when (a.diangkat + interval '2 years' + interval '2 month')::date between '$tgl1' and '$tgl2'
+							then (a.diangkat + interval '2 years' + interval '2 month')::date";
     	}elseif ($vali == '3') {
     		$sqltambahan = "when (a.diangkat + interval '24 month')::date between '$tgl1' and '$tgl2'
 							then (a.diangkat + interval '24 month')::date
@@ -1671,6 +1719,38 @@ class M_Index extends CI_Model
 							then (a.diangkat + interval '6 month')::date
 							when (a.diangkat + interval '3 month')::date between '$tgl1' and '$tgl2'
 							then (a.diangkat + interval '3 month')::date";
+			$case1		=	"when (a.diangkat + interval '2 years' + interval '24 month')::date between '$tgl1' and '$tgl2'
+							then (a.diangkat + interval '24 month')::date
+							when (a.diangkat + interval '2 years' + interval '21 month')::date between '$tgl1' and '$tgl2'
+							then (a.diangkat + interval '21 month')::date
+							when (a.diangkat + interval '2 years' + interval '18 month')::date between '$tgl1' and '$tgl2'
+							then (a.diangkat + interval '18 month')::date
+							when (a.diangkat + interval '2 years' + interval '15 month')::date between '$tgl1' and '$tgl2'
+							then (a.diangkat + interval '15 month')::date
+							when (a.diangkat + interval '2 years' + interval '12 month')::date between '$tgl1' and '$tgl2'
+							then (a.diangkat + interval '12 month')::date
+							when (a.diangkat + interval '2 years' + interval '9 month')::date between '$tgl1' and '$tgl2'
+							then (a.diangkat + interval '9 month')::date
+							when (a.diangkat + interval '2 years' + interval '6 month')::date between '$tgl1' and '$tgl2'
+							then (a.diangkat + interval '6 month')::date
+							when (a.diangkat + interval '2 years' + interval '3 month')::date between '$tgl1' and '$tgl2'
+							then (a.diangkat + interval '3 month')::date";
+			$case2		=	"when (a.diangkat + interval '2 years' + interval '24 month')::date between '$tgl1' and '$tgl2'
+							then (a.diangkat + interval '2 years' + interval '24 month')::date
+							when (a.diangkat + interval '2 years' + interval '21 month')::date between '$tgl1' and '$tgl2'
+							then (a.diangkat + interval '2 years' + interval '21 month')::date
+							when (a.diangkat + interval '2 years' + interval '18 month')::date between '$tgl1' and '$tgl2'
+							then (a.diangkat + interval '2 years' + interval '18 month')::date
+							when (a.diangkat + interval '2 years' + interval '15 month')::date between '$tgl1' and '$tgl2'
+							then (a.diangkat + interval '2 years' + interval '15 month')::date
+							when (a.diangkat + interval '2 years' + interval '12 month')::date between '$tgl1' and '$tgl2'
+							then (a.diangkat + interval '2 years' + interval '12 month')::date
+							when (a.diangkat + interval '2 years' + interval '9 month')::date between '$tgl1' and '$tgl2'
+							then (a.diangkat + interval '2 years' + interval '9 month')::date
+							when (a.diangkat + interval '2 years' + interval '6 month')::date between '$tgl1' and '$tgl2'
+							then (a.diangkat + interval '2 years' + interval '6 month')::date
+							when (a.diangkat + interval '2 years' + interval '3 month')::date between '$tgl1' and '$tgl2'
+							then (a.diangkat + interval '2 years' + interval '3 month')::date";
     	}elseif ($vali == '4') {
     		$sqltambahan = "when (a.diangkat + interval '24 month')::date between '$tgl1' and '$tgl2'
 							then (a.diangkat + interval '24 month')::date
@@ -1684,6 +1764,30 @@ class M_Index extends CI_Model
 							then (a.diangkat + interval '8 month')::date
 							when (a.diangkat + interval '4 month')::date between '$tgl1' and '$tgl2'
 							then (a.diangkat + interval '4 month')::date";
+			$case1		=	"when (a.diangkat + interval '2 years' + interval '24 month')::date between '$tgl1' and '$tgl2'
+							then (a.diangkat + interval '24 month')::date
+							when (a.diangkat + interval '2 years' + interval '20 month')::date between '$tgl1' and '$tgl2'
+							then (a.diangkat + interval '20 month')::date
+							when (a.diangkat + interval '2 years' + interval '16 month')::date between '$tgl1' and '$tgl2'
+							then (a.diangkat + interval '16 month')::date
+							when (a.diangkat + interval '2 years' + interval '12 month')::date between '$tgl1' and '$tgl2'
+							then (a.diangkat + interval '12 month')::date
+							when (a.diangkat + interval '2 years' + interval '8 month')::date between '$tgl1' and '$tgl2'
+							then (a.diangkat + interval '8 month')::date
+							when (a.diangkat + interval '2 years' + interval '4 month')::date between '$tgl1' and '$tgl2'
+							then (a.diangkat + interval '4 month')::date";
+			$case2		=	"when (a.diangkat + interval '2 years' + interval '24 month')::date between '$tgl1' and '$tgl2'
+							then (a.diangkat + interval '2 years' + interval '24 month')::date
+							when (a.diangkat + interval '2 years' + interval '20 month')::date between '$tgl1' and '$tgl2'
+							then (a.diangkat + interval '2 years' + interval '20 month')::date
+							when (a.diangkat + interval '2 years' + interval '16 month')::date between '$tgl1' and '$tgl2'
+							then (a.diangkat + interval '2 years' + interval '16 month')::date
+							when (a.diangkat + interval '2 years' + interval '12 month')::date between '$tgl1' and '$tgl2'
+							then (a.diangkat + interval '2 years' + interval '12 month')::date
+							when (a.diangkat + interval '2 years' + interval '8 month')::date between '$tgl1' and '$tgl2'
+							then (a.diangkat + interval '2 years' + interval '8 month')::date
+							when (a.diangkat + interval '2 years' + interval '4 month')::date between '$tgl1' and '$tgl2'
+							then (a.diangkat + interval '2 years' + interval '4 month')::date";
     	}elseif ($vali == '6') {
     		$sqltambahan = "when (a.diangkat + interval '24 month')::date between '$tgl1' and '$tgl2'
 							then (a.diangkat + interval '24 month')::date
@@ -1693,11 +1797,35 @@ class M_Index extends CI_Model
 							then (a.diangkat + interval '12 month')::date
 							when (a.diangkat + interval '6 month')::date between '$tgl1' and '$tgl2'
 							then (a.diangkat + interval '6 month')::date";
+			$case1		=	"when (a.diangkat + interval '2 years' + interval '24 month')::date between '$tgl1' and '$tgl2'
+							then (a.diangkat + interval '24 month')::date
+							when (a.diangkat + interval '2 years' + interval '18 month')::date between '$tgl1' and '$tgl2'
+							then (a.diangkat + interval '18 month')::date
+							when (a.diangkat + interval '2 years' + interval '12 month')::date between '$tgl1' and '$tgl2'
+							then (a.diangkat + interval '12 month')::date
+							when (a.diangkat + interval '2 years' + interval '6 month')::date between '$tgl1' and '$tgl2'
+							then (a.diangkat + interval '6 month')::date";
+			$case2		=	"when (a.diangkat + interval '2 years' + interval '24 month')::date between '$tgl1' and '$tgl2'
+							then (a.diangkat + interval '2 years' + interval '24 month')::date
+							when (a.diangkat + interval '2 years' + interval '18 month')::date between '$tgl1' and '$tgl2'
+							then (a.diangkat + interval '2 years' + interval '18 month')::date
+							when (a.diangkat + interval '2 years' + interval '12 month')::date between '$tgl1' and '$tgl2'
+							then (a.diangkat + interval '2 years' + interval '12 month')::date
+							when (a.diangkat + interval '2 years' + interval '6 month')::date between '$tgl1' and '$tgl2'
+							then (a.diangkat + interval '2 years' + interval '6 month')::date";
     	}else{
     		$sqltambahan = "when (a.diangkat + interval '24 month')::date between '$tgl1' and '$tgl2'
 							then (a.diangkat + interval '24 month')::date
 							when (a.diangkat + interval '12 month')::date between '$tgl1' and '$tgl2'
 							then (a.diangkat + interval '12 month')::date";
+			$case1		=	"when (a.diangkat + interval '2 years' + interval '24 month')::date between '$tgl1' and '$tgl2'
+							then (a.diangkat + interval '24 month')::date
+							when (a.diangkat + interval '2 years' + interval '12 month')::date between '$tgl1' and '$tgl2'
+							then (a.diangkat + interval '12 month')::date";
+			$case2		=	"when (a.diangkat + interval '2 years' + interval '24 month')::date between '$tgl1' and '$tgl2'
+							then (a.diangkat + interval '2 years' + interval '24 month')::date
+							when (a.diangkat + interval '2 years' + interval '12 month')::date between '$tgl1' and '$tgl2'
+							then (a.diangkat + interval '2 years' + interval '12 month')::date";
     	}
     	$sql = "select
 					et.*,
@@ -1705,18 +1833,15 @@ class M_Index extends CI_Model
 					et.telat + et.ijin + et.mangkir tim,
 					et.telat + et.ijin + et.mangkir + et.sk + et.psp tims,
 					case
-						when et.tgl_diangkat::date <> '1900-01-01'
-						and (now()::date - et.tgl_diangkat::date) >= 730 then et.mangkir
+						when et.tgl_diangkat::date <> '1900-01-01' and (et.tgl_diangkat + interval '2 years')::date <= '$tgl2' then et.mangkir
 						else et.mangkir*(cast (720 as float))/ et.jml_hari_rekap
 					end pred_m,
 					case
-						when et.tgl_diangkat::date <> '1900-01-01'
-						and (now()::date - et.tgl_diangkat::date) >= 730 then et.telat + et.ijin + et.mangkir
+						when et.tgl_diangkat::date <> '1900-01-01' and (et.tgl_diangkat + interval '2 years')::date <= '$tgl2' then et.telat + et.ijin + et.mangkir
 						else (et.telat + et.ijin + et.mangkir)*(cast (720 as float))/ et.jml_hari_rekap
 					end pred_tim,
 					case
-						when et.tgl_diangkat::date <> '1900-01-01'
-						and (now()::date - et.tgl_diangkat::date) >= 730 then et.telat + et.ijin + et.mangkir + et.sk + et.psp
+						when et.tgl_diangkat::date <> '1900-01-01' and (et.tgl_diangkat + interval '2 years')::date <= '$tgl2' then et.telat + et.ijin + et.mangkir + et.sk + et.psp
 						else (et.telat + et.ijin + et.mangkir + et.sk + et.psp)*(cast (720 as float))/ et.jml_hari_rekap
 					end pred_tims,
 					case	
@@ -1727,8 +1852,8 @@ class M_Index extends CI_Model
 						else 'LOLOS'
 					end pred_lolos,
 					case
-						when et.tgl_diangkat::date <> '1900-01-01'
-						and (now()::date - et.tgl_diangkat::date) >= 730 then 'LEBIH DARI 2 TAHUN'
+						when et.tgl_diangkat::date <> '1900-01-01' and (et.tgl_diangkat + interval '2 years')::date <= '$tgl2'
+						then 'LEBIH DARI 2 TAHUN'
 						else 'KURANG DARI 2 TAHUN'
 					end ket
 				from
@@ -1921,13 +2046,21 @@ class M_Index extends CI_Model
 					left join (
 						select
 							case
-								when a.diangkat::date <> '1900-01-01' and (now()::date - a.diangkat::date) >= 730
-								then (now() - interval '2 year')::date
+								when a.diangkat::date <> '1900-01-01' and (a.diangkat + interval '2 years')::date <= '$tgl2'
+								then 
+									case
+									$case1
+									else null
+								end
 								else a.diangkat::date
 							end as tgl1,
 							case
-								when a.diangkat::date <> '1900-01-01' and (now()::date - a.diangkat::date) >= 730
-								then now()::date
+								when a.diangkat::date <> '1900-01-01' and (a.diangkat + interval '2 years')::date <= '$tgl2'
+								then
+									case
+									$case2
+									else null
+								end
 								else
 									case
 									$sqltambahan
@@ -2002,7 +2135,7 @@ class M_Index extends CI_Model
     		$sel = "ts.dept";
     		$and = "and ts.bidang like '-%'";
     		$sqla = "select
-						rtrim(initcap(ts.dept)) pilih,
+						rtrim(ts.dept) pilih,
 						ts.kodesie
 					from
 						hrd_khs.tpribadi tp,
@@ -2016,25 +2149,25 @@ class M_Index extends CI_Model
 						and ts.dept like '%$s%'
 					order by
 						ts.dept;";
-			$sql = "select distinct initcap(trim(dept)) pilih, substring(kodesie,1,1) kodesie FROM hrd_khs.tseksi
+			$sql = "select distinct trim(dept) pilih, substring(kodesie,1,1) kodesie FROM hrd_khs.tseksi
 					where trim(dept) <> '-'
 					order by 1";
     	}elseif ($id == '2') {
     		$sel = "ts.bidang";
     		$and = "and ts.bidang not like '-%' and ts.unit like '-%'";
-    		$sql = "select distinct initcap(trim(bidang)) pilih, substring(kodesie,1,1) kodesie FROM hrd_khs.tseksi
+    		$sql = "select distinct trim(bidang) pilih, substring(kodesie,1,1) kodesie FROM hrd_khs.tseksi
 					where trim(bidang) <> '-' and bidang like '%$s%'
 					order by 1";
     	}elseif ($id == '3') {
     		$sel = "ts.unit";
     		$and = "and ts.unit not like '-%'";
-    		$sql = "select distinct initcap(trim(unit)) pilih, substring(kodesie,1,1) kodesie FROM hrd_khs.tseksi
+    		$sql = "select distinct trim(unit) pilih, substring(kodesie,1,1) kodesie FROM hrd_khs.tseksi
 					where trim(unit) <> '-' and unit like '%$s%'
 					order by 1";
     	}else{
     		$sel = "ts.seksi";
     		$and = "and ts.unit not like '-%'";
-    		$sql = "select distinct initcap(trim(seksi)) pilih, substring(kodesie,1,1) kodesie FROM hrd_khs.tseksi
+    		$sql = "select distinct trim(seksi) pilih, substring(kodesie,1,1) kodesie FROM hrd_khs.tseksi
 					where trim(seksi) <> '-' and seksi like '%$s%'
 					order by 1";
     	}
