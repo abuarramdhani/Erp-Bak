@@ -48,7 +48,11 @@ $(document).ready(function(){
 		});
 
 		$('.bt_et_harian').attr('disabled', false);
-	})
+	});
+
+	$('.bt_et_harian').click(function(){
+		$('#surat-loading').attr('hidden', false);
+	});
 
 	$('input[name*=et_rd_le]').on('ifChecked', function(){
 		$('.btn_et_el').prop('disabled', false);
