@@ -187,6 +187,8 @@ class C_Tambahan extends CI_Controller
 				$this->M_tambahan->setPotongan($data2);
 
 				$ImportProgress = ($i/($highestRow - 2))*100;
+				$ImportProgress = round($ImportProgress);
+				
 				$cek_data = $this->M_dataabsensi->getProgress($user,'Import Tambahan');
 				if ($cek_data == 0) {
 					$this->M_dataabsensi->setProgress('Import Tambahan',$ImportProgress,$user);

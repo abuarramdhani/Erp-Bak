@@ -241,6 +241,8 @@ class C_Kondite extends CI_Controller
 				$this->M_kondite->setKondite($data);
 
 				$ImportProgress = ($i/($highestRow - 2))*100;
+				$ImportProgress = round($ImportProgress);
+				
 				$cek_data = $this->M_dataabsensi->getProgress($user,'Import Kondite');
 				if ($cek_data == 0) {
 					$this->M_dataabsensi->setProgress('Import Kondite',$ImportProgress,$user);

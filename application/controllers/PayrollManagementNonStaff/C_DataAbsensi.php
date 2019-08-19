@@ -131,6 +131,7 @@ class C_DataAbsensi extends CI_Controller
 				}
 				$selesai++;
 				$persentase = ($selesai/$persen)*100;
+				$persentase = round($persentase);
 				
 				$cek_data = $this->M_dataabsensi->getProgress($user,'Import Absensi');
 				if ($cek_data == 0) {
@@ -381,6 +382,7 @@ class C_DataAbsensi extends CI_Controller
 				
 
 				$ImportProgress = ($i/($highestRow - 2))*100;
+				$ImportProgress = round($ImportProgress);
 				$cek_data = $this->M_dataabsensi->getProgress($user,'Import Absensi');
 				if ($cek_data == 0) {
 					$this->M_dataabsensi->setProgress('Import Absensi',$ImportProgress,$user);
