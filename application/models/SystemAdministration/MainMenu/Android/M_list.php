@@ -75,6 +75,10 @@ class M_list extends CI_Model
           return $query->result_array();
         }
 
+    public function tambahData($data){
+            $this->db->insert('sys.sys_android',$data);
+    }    
+
     // public function getValidUntil($id){
     //     $query = "select valid_until from sys.sys_android WHERE gadget_id=$id";
     //     $this->db->query($query);

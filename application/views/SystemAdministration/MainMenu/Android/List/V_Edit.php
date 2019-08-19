@@ -32,7 +32,7 @@
 				</tr>
 				<tr>
 					<td>No Induk</td>
-					<td><input type="text" class="form-control" readonly value="<?php echo $android[0]['info_2']; ?>"></input> </td>
+					<td><input type="text" class="form-control" value="<?php echo $android[0]['info_2']; ?>"></input> </td>
 				</tr>
 				<tr>
 					<td>Waktu Request</td>

@@ -3,6 +3,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 class C_List extends CI_Controller {
 
+
 	public function __construct()
     {
     	parent::__construct();
@@ -10,6 +11,8 @@ class C_List extends CI_Controller {
     	$this->load->helper('url');
     	$this->load->helper('html');
     	$this->load->library('session');
+    	$this->load->helper(array('form', 'url'));
+	    $this->load->library('form_validation');
 
     	$this->load->model('M_Index');
     	$this->load->model('SystemAdministration/MainMenu/M_user');
@@ -92,9 +95,13 @@ class C_List extends CI_Controller {
 
 	public function updateData($id){
 		// $data = ['info_1' => $this->input->post('andro-employee')];
+		$tanggal = $this->input->post('valid-until');
+		// echo $tanggal;exit();
+		$valid_until = date('Y/m/d',strtotime($tanggal));
+		// echo $valid_until;exit(); 
 		$data = ['info_1' => $this->input->post('andro-employee'),
 				 'validation' => $this->input->post('andro-status'),
-				 'valid_until' => $this->input->post('valid-until')	
+				 'valid_until' => $valid_until
 				 ];
 		// print_r($data);exit();
 
@@ -159,6 +166,33 @@ class C_List extends CI_Controller {
 		}else{
 			echo "0";
 		}
+	}
+
+	function tambahData(){
+		date_default_timezone_set("Asia/Jakarta");
+		$tanggal = $this->input->post('valid_until');
+		$valid_until = date('Y/m/d',strtotime($tanggal)); 
+		// echo $valid_until;exit();
+
+		$karyawan = $this->input->post('andro-employee');
+		$karyawan = explode(" - ", $karyawan);
+		$noinduk  = $karyawan[0];	
+		$karyawan = $karyawan[1];
+
+		
+		$data =
+		[
+			'android_id' 		=> $this->input->post('androidid'),
+			'imei'		 		=> $this->input->post('imei'),
+			'hardware_serial'	=> $this->input->post('hwserial'),
+			'gsf'				=> $this->input->post('gsf'),
+			'info_1'			=> $karyawan,
+			'info_2'			=> $noinduk,
+			'valid_until'		=> $valid_until		];
+
+		$this->M_list->tambahData($data);
+		redirect('SystemAdministration/Android/List');
+	
 	}
 
 	
