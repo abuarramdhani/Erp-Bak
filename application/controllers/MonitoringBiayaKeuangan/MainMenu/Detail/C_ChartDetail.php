@@ -1,11 +1,9 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
 
-class C_ChartDetail extends CI_Controller 
-{
+class C_ChartDetail extends CI_Controller {
 
-	public function __construct()
-	{
+	public function __construct(){
 		parent::__construct();
 		  
         $this->load->helper('form');
@@ -26,16 +24,14 @@ class C_ChartDetail extends CI_Controller
 		 }
 	}
 
-	public function checkSession()
-	{
-		if ( $this->session->is_logged ){
-		} else {
+	public function checkSession() {
+		if($this->session->is_logged){
+		}else{
 			redirect('index');
 		}
 	}
 
-	public function index() 
-	{
+	public function index() {
         $this->checkSession();
 		$user_id = $this->session->userid;
 		
@@ -45,8 +41,7 @@ class C_ChartDetail extends CI_Controller
 		$data['UserMenu'] 		= $this->M_user->getUserMenu($user_id,$this->session->responsibility_id);
 		$data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id);
         $data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id);
-	
-		$data['SectionList'] = $this->M_chart->GetSectionList();
+		
 		$data['AccountList'] = $this->M_chart->GetAccountList();
 		
 		$this->load->view('V_Header',$data);
@@ -55,31 +50,21 @@ class C_ChartDetail extends CI_Controller
         $this->load->view('V_Footer',$data);
 	}
 	
-	public function AjaxGetAccountListBySectionName()
-	{
-		$sec = $this->input->post('SecName');
+	public function AjaxGetFinanceCostByAccountName() {
 
-		$data['SectionList'] = $this->M_chart->GetAccountList($sec);
-
-		echo json_encode($data);
-	}
-
-	public function AjaxGetFinanceCostByAccountNameAndSection() 
-	{
 		$arr['label'] = array();
 		$arr['tahun1'] = array();
 		$arr['tahun2'] = array();
 		$bulan = array('','Januari','Februari','Maret','April','Mei','Juni','Juli','Agustus','September','Oktober','November','Desember');
 
-		$sec = $this->input->post('SecName');
-		$acc = $this->input->post('AccName');
+		$id = $this->input->post('AccName');
 
-		$data['FinanceCostByAccountName'] = $this->M_chart->GetFinanceCostByAccountNameAndSectionName($sec,$acc);
+		$data['FinanceCostByAccountName'] = $this->M_chart->GetFinanceCostByAccountName($id);
 
 		foreach ($data['FinanceCostByAccountName'] as $key => $val) {
 			array_push($arr['label'], $bulan[$val['BULAN']]);
-			array_push($arr['tahun1'], $val['TAHUN1']);
-			array_push($arr['tahun2'], $val['TAHUN2']);
+			array_push($arr['tahun1'], $val['TAHUN_1']);
+			array_push($arr['tahun2'], $val['TAHUN_2']);
 		}
 
 		echo json_encode($arr);
@@ -90,11 +75,7 @@ class C_ChartDetail extends CI_Controller
 		$this->checkSession();
 		$user_id = $this->session->userid;
 
-		$id = explode('-',$id);
-		$sec = $id[0];
-		$acc = $id[1];
-
-		$data['FinanceCostByAccountNameAndSectionname'] = $this->M_chart->GetFinanceCostByAccountNameAndSectionName($sec,$acc);
+		$data['FinanceCostByAccountName'] = $this->M_chart->GetFinanceCostByAccountName($id);
 
 		$objPHPExcel = new PHPExcel();
 
@@ -110,17 +91,17 @@ class C_ChartDetail extends CI_Controller
 		$objset->setCellValue("C1", "TAHUN 2");
 
 		$row = 2;
-		foreach ($data['FinanceCostByAccountNameAndSectionname'] as $key => $val) {
+		foreach ($data['FinanceCostByAccountName'] as $key => $val) {
 			$objset->setCellValue("A".$row, $val['BULAN']);
-			$objset->setCellValue("B".$row, $val['TAHUN1']);
-			$objset->setCellValue("C".$row, $val['TAHUN2']);
+			$objset->setCellValue("B".$row, $val['TAHUN_1']);
+			$objset->setCellValue("C".$row, $val['TAHUN_2']);
 			$row++;
 		}
 
 		$objPHPExcel->setActiveSheetIndex(0);
 		$objPHPExcel->getActiveSheet()
 					->setTitle('Monitoring Biaya Keuangan')
-					->getStyle('A1:C'.(count($data['FinanceCostByAccountNameAndSectionname'])+1))
+					->getStyle('A1:C'.(count($data['FinanceCostByAccountName'])+1))
 					->getAlignment()
 					->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_LEFT);
 		$objWriter = PHPExcel_IOFactory::createWriter($objPHPExcel, 'Excel2007');
@@ -129,7 +110,7 @@ class C_ChartDetail extends CI_Controller
 		header("Cache-Control: post-check=0, pre-check=0", false);
 		header("Pragma: no-cache");
 		header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
-		header('Content-Disposition: attachment;filename="Report Monitoring Biaya Keuangan - Biaya Bulanan - Seksi '.$sec.' Akun '.$acc.' - '.date('d M Y').'.xlsx"');
+		header('Content-Disposition: attachment;filename="Monitoring Biaya Keuangan Akun '.$id.' - '.date('d M Y').'.xlsx"');
 		$objWriter->save("php://output");
 	}
 	
@@ -138,11 +119,7 @@ class C_ChartDetail extends CI_Controller
 		$this->checkSession();
 		$user_id = $this->session->userid;
 
-		$id = explode('-',$id);
-		$sec = $id[0];
-		$acc = $id[1];
-
-		$data['FinanceCostByAccountNameAndSectionname'] = $this->M_chart->GetFinanceCostDetailReportByAccountNameAndSectionName($sec,$acc);
+		$data['FinanceCostByAccountName'] = $this->M_chart->GetFinanceCostDetailReportByAccountName($id);
 
 		$objPHPExcel = new PHPExcel();
 
@@ -160,7 +137,7 @@ class C_ChartDetail extends CI_Controller
 		$objset->setCellValue("D1", "KETERANGAN");
 
 		$row = 2;
-		foreach ($data['FinanceCostByAccountNameAndSectionname'] as $key => $val) {
+		foreach ($data['FinanceCostByAccountName'] as $key => $val) {
 			$objset->setCellValue("A".$row, $key+1);
 			$objset->setCellValue("B".$row, $val['CREATION_DATE']);
 			$objset->setCellValue("C".$row, $val['TOTAL']);
@@ -171,7 +148,7 @@ class C_ChartDetail extends CI_Controller
 		$objPHPExcel->setActiveSheetIndex(0);
 		$objPHPExcel->getActiveSheet()
 					->setTitle('Monitoring Biaya Keuangan')
-					->getStyle('A1:D'.(count($data['FinanceCostByAccountNameAndSectionname'])+1))
+					->getStyle('A1:D'.(count($data['FinanceCostByAccountName'])+1))
 					->getAlignment()
 					->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_LEFT);
 		$objWriter = PHPExcel_IOFactory::createWriter($objPHPExcel, 'Excel2007');
@@ -180,7 +157,7 @@ class C_ChartDetail extends CI_Controller
 		header("Cache-Control: post-check=0, pre-check=0", false);
 		header("Pragma: no-cache");
 		header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
-		header('Content-Disposition: attachment;filename="Report Monitoring Biaya Keuangan - Detail Biaya Bulanan - Seksi '.$sec.' Akun '.$acc.' - '.date('d M Y').'.xlsx"');
+		header('Content-Disposition: attachment;filename="Monitoring Biaya Keuangan Akun '.$id.' - '.date('d M Y').'.xlsx"');
 		$objWriter->save("php://output");
 	}
 

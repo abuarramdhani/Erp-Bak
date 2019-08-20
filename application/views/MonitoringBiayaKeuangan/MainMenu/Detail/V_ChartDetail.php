@@ -16,24 +16,6 @@
         margin-left: auto;
         margin-right: auto;
       }
-      .chartWrapper {
-        position: relative;
-      }
-      .chartWrapper>canvas {
-        position: absolute;
-        left: 0;
-        top: 0;
-        pointer-events: none;
-      }
-      .chartAreaWrapper {
-        overflow-x: scroll;
-        position: relative;
-        width: 100%;
-      }
-      .chartAreaWrapper2 {
-        position: relative;
-        height: 300px;
-      }
     </style>
 
     <!-- Content Header (Page header) -->
@@ -53,49 +35,18 @@
           <div class="box box-primary">
 
 
-            <div class="box-header with-border" style="text-align: center">
-
-              <h3 class="box-title">
-                <b> GRAFIK BIAYA BULANAN DEPARTEMEN KEUANGAN</b><br>
-              </h3><br>
-              <span style="font-family: sans-serif" class="spnMBKSectionNameTitle"></span>
-              <span style="font-family: sans-serif" class="spnMBKAccountNameTitle"></span>
-              <p class="pMBKDateNow"></p>
-
-              <table align="center">
-                <tr>
-                  <td><div class="LegendRectangleWhite"></div></td>
-                  <td>&nbsp;&nbsp;Tahun 2018&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
-                  <td><div class="LegendRectangleBlue"></div></td>
-                  <td>&nbsp;&nbsp;Tahun 2019</td>
-                </tr>
-              </table><br><br>
+            <div class="box-header with-border" style="text-align: center"><br>
 
               <div class="form-group" style="text-align: left">
-
-                <label class="col-sm-3 control-label" style="font-weight:normal;">Silahkan Pilih Seksi</label>
-      
-                <div class="col-sm-3" style="left: -100px">
-                  <select class="form-control select2 slcMBKSectionName" style="width: 100%;">
-                      <option section="All" title="All" selected>All</option>
-                    <?php foreach ($SectionList as $key => $val) { ?>
-                      <option section="<?= $val['SEKSI'] ?>" title="<?= $val['DESCRIPTION'] ?>"><?= $val['DESCRIPTION'] ?></option>
-                    <?php } ?>
-                  </select>
-                </div> 
                 
-                  <div class="col-sm-1 divMBKimgLoadSec" style="margin-left:-125px;margin-right:10px;display:none">
-                    <img src="<?=base_url('assets/img/gif/loading5.gif')?>"
-                      style="width:35px; height:35px; float:left;">
-                  </div><br><br>
-
-                <label class="col-sm-3 control-label" style="font-weight:normal;">Silahkan Pilih Akun Biaya</label>
+                <label for="txtPMSPONoPO" class="col-sm-3 control-label" style="font-weight:normal;">Silahkan Pilih Akun
+                  Biaya</label>
                
                 <div class="col-sm-3" style="left: -100px">
                   <select class="form-control select2 slcMBKAccountName" style="width: 100%;">
-                      <option value="" disabled selected></option>
+                    <option value="" disabled selected></option>
                     <?php foreach ($AccountList as $key => $val) { ?>
-                      <option account="<?= $val['ACCOUNT'] ?>" title="<?= $val['DESCRIPTION'] ?>"><?= $val['DESCRIPTION'] ?></option>
+                    <option title="<?= $val['DESCRIPTION'] ?>"><?= $val['ACCOUNT'] ?></option>
                     <?php } ?>
                   </select>
                 </div>
@@ -103,7 +54,7 @@
                 <div class="col-sm-6" style="left: -125px">
                   
                   <div class="col-sm-3">
-                    <button type="button" title="Tampilkan Grafik" class="btn btn-default btnMBKShowChartDetail"><i
+                    <button type="button" title="Tampilkan Grafik" class="btn btn-default btnMBKShowChart"><i
                         class="fa fa-bar-chart"></i>&nbsp; Tampilkan</a></button>
                   </div>
 
@@ -112,11 +63,7 @@
                       style="width:35px; height:35px; float:left;">
                   </div>
 
-                </div>
-
-                <label class="col-sm-3 control-label"></label>
-               
-                  <div class="col-sm-8 divMBKWarnAccount" style="left: -100px;margin-top:5px;display:none">
+                  <div class="col-sm-8 divMBKWarnAccount" style="display:none">
                     <ul class="timeline" style="margin:0px;float:left;">
                       <li class="time-label" style="margin:0px">
                         <span class="bg-red spnMBKWarnAccountColor">&nbsp;<i class="fa fa-remove"></i>&nbsp;<span
@@ -125,7 +72,22 @@
                     </ul>
                   </div>
 
+                </div>
+
               </div><br><br>
+              
+              <h3 class="box-title"><b>Grafik Biaya Bulanan Departemen Keuangan</b><br>
+                <span class="spnMBKAccountNameTitle"></span></h3>
+              <p class="pMBKDateNow"></p>
+              
+              <table align="center">
+                <tr>
+                  <td><div class="LegendRectangleWhite"></div></td>
+                  <td>&nbsp;&nbsp;Tahun 2018&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
+                  <td><div class="LegendRectangleBlue"></div></td>
+                  <td>&nbsp;&nbsp;Tahun 2019</td>
+                </tr>
+              </table>
 
             </div>
 
@@ -144,31 +106,24 @@
 
               <div style="height:50px">
                 <div style="float:right;margin-left: 10px">
-                  <a href="" class="aMBKExportExcel">
-                    <button title="Export report to Excel" class="btn btn-default btnMBKExportExcel">
-                      <i class="fa fa-download"></i>&nbsp; Export
-                    </button>
-                  </a>
+                  <a title="Export detail report to Excel"
+                    href="#" 
+                    class="btn btn-primary aMBKDetailExportExcel"><i class="fa fa-download"></i>&nbsp; Export Detail</a>
                 </div>
                 <div style="float:right;">
-                  <a href="" class="aMBKDetailExportExcel">
-                    <button title="Export detail report to Excel" class="btn btn-primary btnMBKDetailExportExcel">
-                      <i class="fa fa-download"></i>&nbsp; Export Detail
-                    </button>
-                  </a>
+                  <a title="Export report to Excel"
+                    href="#"
+                    class="btn btn-default aMBKExportExcel"><i class="fa fa-download"></i>&nbsp; Export</a>
                 </div>
               </div>
 
-                <div class="chartWrapper">
-                  <div class="chartAreaWrapper">
-                    <div class="chartAreaWrapper2">
-                      <canvas class="cnvMBKChart"></canvas>
-                    </div>
+              <div class="box-body">
+                <div style="overflow-x: scroll;">
+                  <div class="divMBKChart chart" style="width: 100%">
+                    <canvas class="cnvMBKChart" height="350px"></canvas>
                   </div>
-                  <canvas class="cnvMBKChartAxis" height="0" width="0" 
-                  style="display:none; background-color:white; padding-right:10px; border-right:1px solid #b5b5b5;">
-                  </canvas>
                 </div>
+              </div>
 
             </div>
 
