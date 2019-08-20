@@ -14,7 +14,10 @@
 			</div>
 		</div>
 		<div class="panel box-body" >
-		<table id="ms_barang" class="table table-striped table-bordered table-responsive table-hover dataTable no-footer">
+
+		<div class="table-responsive">
+			
+				<table id="ms_barang" class="table table-striped table-bordered table-hover dataTable no-footer">
 			<thead>
 				<tr style="background-color:#367FA9; color:white ">
 						<th class="text-center " style="width:15px">No</th>
@@ -59,6 +62,8 @@
 			</tbody>
 			<?php } ?>
 		</table>
+		</div>
+
 		</div>
 	</div>
 
