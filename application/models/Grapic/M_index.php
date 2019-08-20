@@ -1,19 +1,15 @@
 <?php defined('BASEPATH') OR die('No direct script access allowed');
-/**
-* 
-*/
-class M_index extends CI_Model
-{
+
+class M_index extends CI_Model {
 	
-	function __construct()
-	{
+	function __construct() {
 		parent::__construct();
-		$this->personalia 	= 	$this->load->database('personalia', TRUE);
+		$this->personalia = $this->load->database('personalia', TRUE);
 	}
 
 	public function banyak($now)
 	{
-		$sql = "select count(noind) from hrd_khs.tpribadi where (keluar = '0' or (tglkeluar >= '2019-$now' and keluar = '1')) and (masukkerja >= '1990-01-01') and left(noind, 1) not in ('L','M','Z') and kodesie NOT LIKE '101030%' order by 1";
+		$sql = "select count(noind) from hrd_khs.tpribadi where (keluar = '0' or (tglkeluar >= '2019-$now' and keluar = '1')) and left(noind, 1) not in ('L','M','Z') and kodesie NOT LIKE '101030%' order by 1";
 		// echo $sql;
 		$query = $this->personalia->query($sql);
 		return $query->result_array();
@@ -21,7 +17,7 @@ class M_index extends CI_Model
 
 	public function banyakPekerja($now, $ictSql)
 	{
-		$sql = "select count(noind) from hrd_khs.tpribadi a where (keluar = '0' or (tglkeluar >= '2019-$now' and keluar = '1')) and (masukkerja >= '1990-01-01') and left(noind, 1) not in ('L','M','Z') $ictSql order by 1";
+		$sql = "select count(noind) from hrd_khs.tpribadi a where (keluar = '0' or (tglkeluar >= '2019-$now' and keluar = '1')) and left(noind, 1) not in ('L','M','Z') $ictSql order by 1";
 		// echo $sql;
 		$query = $this->personalia->query($sql);
 		return $query->result_array();
@@ -45,7 +41,7 @@ class M_index extends CI_Model
 		from hrd_khs.tpribadi a 
 		left join hrd_khs.tseksi b on a.kodesie=b.kodesie
 		where (keluar = '0' or (tglkeluar >= '2019-$now' and keluar = '1')) and b.dept != '-'
-		and (masukkerja >= '1990-01-01') $ictSql and rtrim(b.dept) = '$kodeDept'
+		$ictSql and rtrim(b.dept) = '$kodeDept'
 		group by rtrim(b.dept)
 		order by 1;";
 		$query = $this->personalia->query($sql);
@@ -62,12 +58,12 @@ class M_index extends CI_Model
 				(select a.noind,nik,nama,masukkerja,tglkeluar,keluar,b.*
 				from hrd_khs.tpribadi a left join hrd_khs.tseksi b on a.kodesie=b.kodesie 
 				where ((keluar = '0' and masukkerja<='2019-$now'))
-				and (masukkerja >= '1990-01-01') and rtrim(b.kodesie) like '$kodeDept%' $sqlPKL $lokasi 
+				and rtrim(b.kodesie) like '$kodeDept%' $sqlPKL $lokasi 
 				union 
 				select a.noind,nik,nama,masukkerja,tglkeluar,keluar,b.*
 				from hrd_khs.tpribadi a left join hrd_khs.tseksi b on a.kodesie=b.kodesie 
 				where ((masukkerja<='2019-$now') and (tglkeluar >= '2019-$now' and keluar = '1'))
-				and (masukkerja >= '1990-01-01') and rtrim(b.kodesie) like '$kodeDept%' $sqlPKL $lokasi 
+				and (masukkerja >= '1945-01-01') and rtrim(b.kodesie) like '$kodeDept%' $sqlPKL $lokasi 
 				 order by 5
 				 ) tabel ) tabel group by rtrim(dept)";
 				// echo $sql;exit();
@@ -84,12 +80,12 @@ class M_index extends CI_Model
 				(select a.noind,nik,nama,masukkerja,tglkeluar,keluar,b.*
 				from hrd_khs.tpribadi a left join hrd_khs.tseksi b on a.kodesie=b.kodesie 
 				where ((keluar = '0' and masukkerja<='2019-$now'))
-				and b.unit != '-' and (masukkerja >= '1990-01-01') and rtrim(b.unit) like '%$kodeUnit%'  $sqlPKL
+				and b.unit != '-' and rtrim(b.unit) like '%$kodeUnit%'  $sqlPKL
 				union 
 				select a.noind,nik,nama,masukkerja,tglkeluar,keluar,b.*
 				from hrd_khs.tpribadi a left join hrd_khs.tseksi b on a.kodesie=b.kodesie 
 				where ((masukkerja<='2019-$now') and (tglkeluar >= '2019-$now' and keluar = '1'))
-				and b.unit != '-' and (masukkerja >= '1990-01-01') and rtrim(b.unit) like '%$kodeUnit%'  $sqlPKL
+				and b.unit != '-' and (masukkerja >= '1945-01-01') and rtrim(b.unit) like '%$kodeUnit%'  $sqlPKL
 				 ) tabel ) tabel group by rtrim(dept)";
 				// echo $sql;exit();
 		$query = $this->personalia->query($sql);
@@ -106,12 +102,12 @@ class M_index extends CI_Model
 				(select a.noind,nik,nama,masukkerja,tglkeluar,keluar,b.*
 				from hrd_khs.tpribadi a left join hrd_khs.tseksi b on a.kodesie=b.kodesie 
 				where ((keluar = '0' and masukkerja<='2019-$now'))
-				and (masukkerja >= '1990-01-01') and rtrim(b.kodesie) like '1%' and rtrim(b.unit) = '$kodeUnit'  $sqlPKL
+				and rtrim(b.kodesie) like '1%' and rtrim(b.unit) = '$kodeUnit'  $sqlPKL
 				union 
 				select a.noind,nik,nama,masukkerja,tglkeluar,keluar,b.*
 				from hrd_khs.tpribadi a left join hrd_khs.tseksi b on a.kodesie=b.kodesie 
 				where ((masukkerja<='2019-$now') and (tglkeluar >= '2019-$now' and keluar = '1'))
-				and (masukkerja >= '1990-01-01') and rtrim(b.kodesie) like '1%' and rtrim(b.unit) = '$kodeUnit'  $sqlPKL
+				and (masukkerja >= '1945-01-01') and rtrim(b.kodesie) like '1%' and rtrim(b.unit) = '$kodeUnit'  $sqlPKL
 				 ) tabel ) tabel group by rtrim(unit)";
 		$query = $this->personalia->query($sql);
 		return $query->result_array();
@@ -127,12 +123,12 @@ class M_index extends CI_Model
 				(select a.noind,nik,nama,masukkerja,tglkeluar,keluar,b.*
 				from hrd_khs.tpribadi a left join hrd_khs.tseksi b on a.kodesie=b.kodesie 
 				where ((keluar = '0' and masukkerja<='2019-$now'))
-				and (masukkerja >= '1990-01-01') and rtrim(b.kodesie) like '2%' and rtrim(b.unit) = '$kodeUnit'  $sqlPKL
+				and rtrim(b.kodesie) like '2%' and rtrim(b.unit) = '$kodeUnit'  $sqlPKL
 				union 
 				select a.noind,nik,nama,masukkerja,tglkeluar,keluar,b.*
 				from hrd_khs.tpribadi a left join hrd_khs.tseksi b on a.kodesie=b.kodesie 
 				where ((masukkerja<='2019-$now') and (tglkeluar >= '2019-$now' and keluar = '1'))
-				and (masukkerja >= '1990-01-01') and rtrim(b.kodesie) like '2%' and rtrim(b.unit) = '$kodeUnit'  $sqlPKL
+				and (masukkerja >= '1945-01-01') and rtrim(b.kodesie) like '2%' and rtrim(b.unit) = '$kodeUnit'  $sqlPKL
 				 ) tabel ) tabel group by rtrim(unit)";
 				// echo $sql;exit();
 		$query = $this->personalia->query($sql);
@@ -149,12 +145,12 @@ class M_index extends CI_Model
 				(select a.noind,nik,nama,masukkerja,tglkeluar,keluar,b.*
 				from hrd_khs.tpribadi a left join hrd_khs.tseksi b on a.kodesie=b.kodesie 
 				where ((keluar = '0' and masukkerja<='2019-$now'))
-				and (masukkerja >= '1990-01-01') and rtrim(b.kodesie) like '4%' and rtrim(b.unit) = '$kodeUnit'  $sqlPKL
+				and rtrim(b.kodesie) like '4%' and rtrim(b.unit) = '$kodeUnit'  $sqlPKL
 				union 
 				select a.noind,nik,nama,masukkerja,tglkeluar,keluar,b.*
 				from hrd_khs.tpribadi a left join hrd_khs.tseksi b on a.kodesie=b.kodesie 
 				where ((masukkerja<='2019-$now') and (tglkeluar >= '2019-$now' and keluar = '1'))
-				and (masukkerja >= '1990-01-01') and rtrim(b.kodesie) like '4%' and rtrim(b.unit) ='$kodeUnit'  $sqlPKL
+				and (masukkerja >= '1945-01-01') and rtrim(b.kodesie) like '4%' and rtrim(b.unit) ='$kodeUnit'  $sqlPKL
 				 ) tabel ) tabel group by rtrim(unit)";
 				// echo $sql;exit();
 		$query = $this->personalia->query($sql);
@@ -171,12 +167,12 @@ class M_index extends CI_Model
 				(select a.noind,nik,nama,masukkerja,tglkeluar,keluar,b.*
 				from hrd_khs.tpribadi a left join hrd_khs.tseksi b on a.kodesie=b.kodesie 
 				where ((keluar = '0' and masukkerja<='2019-$now'))
-				and (masukkerja >= '1990-01-01') and rtrim(b.kodesie) like '3%' and rtrim(b.unit) = '$kodeUnit'  $sqlPKL
+				and rtrim(b.kodesie) like '3%' and rtrim(b.unit) = '$kodeUnit'  $sqlPKL
 				union 
 				select a.noind,nik,nama,masukkerja,tglkeluar,keluar,b.*
 				from hrd_khs.tpribadi a left join hrd_khs.tseksi b on a.kodesie=b.kodesie 
 				where ((masukkerja<='2019-$now') and (tglkeluar >= '2019-$now' and keluar = '1'))
-				and (masukkerja >= '1990-01-01') and rtrim(b.kodesie) like '3%' and rtrim(b.unit) ='$kodeUnit'  $sqlPKL
+				and (masukkerja >= '1945-01-01') and rtrim(b.kodesie) like '3%' and rtrim(b.unit) ='$kodeUnit'  $sqlPKL
 				 ) tabel ) tabel group by rtrim(unit)";
 				// echo $sql;exit();
 		$query = $this->personalia->query($sql);
@@ -193,12 +189,12 @@ class M_index extends CI_Model
 				(select a.noind,nik,nama,masukkerja,tglkeluar,keluar,b.*
 				from hrd_khs.tpribadi a left join hrd_khs.tseksi b on a.kodesie=b.kodesie 
 				where ((keluar = '0' and masukkerja<='2019-$now'))
-				and (masukkerja >= '1990-01-01') and rtrim(b.seksi) = '$kodeSeksi' $sqlPKL 
+				and rtrim(b.seksi) = '$kodeSeksi' $sqlPKL 
 				union 
 				select a.noind,nik,nama,masukkerja,tglkeluar,keluar,b.*
 				from hrd_khs.tpribadi a left join hrd_khs.tseksi b on a.kodesie=b.kodesie 
 				where ((masukkerja<='2019-$now') and (tglkeluar >= '2019-$now' and keluar = '1'))
-				and (masukkerja >= '1990-01-01') and rtrim(b.seksi) = '$kodeSeksi' $sqlPKL
+				and (masukkerja >= '1945-01-01') and rtrim(b.seksi) = '$kodeSeksi' $sqlPKL
 				 order by 5
 				 ) tabel ) tabel group by rtrim(seksi)";
 				// echo $sql;exit();
@@ -216,12 +212,12 @@ class M_index extends CI_Model
 				(select a.noind,nik,nama,masukkerja,tglkeluar,keluar,b.*
 				from hrd_khs.tpribadi a left join hrd_khs.tseksi b on a.kodesie=b.kodesie 
 				where ((keluar = '0' and masukkerja<='2019-$now'))
-				and (masukkerja >= '1990-01-01') and rtrim(b.kodesie) like '3%' and rtrim(b.seksi) = '$kodeSeksi' $sqlPKL 
+				and rtrim(b.kodesie) like '3%' and rtrim(b.seksi) = '$kodeSeksi' $sqlPKL 
 				union 
 				select a.noind,nik,nama,masukkerja,tglkeluar,keluar,b.*
 				from hrd_khs.tpribadi a left join hrd_khs.tseksi b on a.kodesie=b.kodesie 
 				where ((masukkerja<='2019-$now') and (tglkeluar >= '2019-$now' and keluar = '1'))
-				and (masukkerja >= '1990-01-01') and rtrim(b.kodesie) like '3%' and rtrim(b.seksi) = '$kodeSeksi' $sqlPKL
+				and (masukkerja >= '1945-01-01') and rtrim(b.kodesie) like '3%' and rtrim(b.seksi) = '$kodeSeksi' $sqlPKL
 				 order by 5
 				 ) tabel ) tabel group by rtrim(seksi)";
 				// echo $sql;exit();
@@ -236,12 +232,12 @@ class M_index extends CI_Model
 				(select a.noind,nik,nama,masukkerja,tglkeluar,keluar,b.*
 				from hrd_khs.tpribadi a left join hrd_khs.tseksi b on a.kodesie=b.kodesie 
 				where ((keluar = '0' and masukkerja<='2019-$now'))
-				and (masukkerja >= '1990-01-01') and rtrim(b.kodesie) like '2%' and rtrim(b.seksi) = '$kodeSeksi' $sqlPKL 
+				and rtrim(b.kodesie) like '2%' and rtrim(b.seksi) = '$kodeSeksi' $sqlPKL 
 				union 
 				select a.noind,nik,nama,masukkerja,tglkeluar,keluar,b.*
 				from hrd_khs.tpribadi a left join hrd_khs.tseksi b on a.kodesie=b.kodesie 
 				where ((masukkerja<='2019-$now') and (tglkeluar >= '2019-$now' and keluar = '1'))
-				and (masukkerja >= '1990-01-01') and rtrim(b.kodesie) like '2%' and rtrim(b.seksi) = '$kodeSeksi' $sqlPKL
+				and (masukkerja >= '1945-01-01') and rtrim(b.kodesie) like '2%' and rtrim(b.seksi) = '$kodeSeksi' $sqlPKL
 				 order by 5
 				 ) tabel ) tabel group by rtrim(seksi)";
 		$query = $this->personalia->query($sql);
@@ -259,24 +255,24 @@ class M_index extends CI_Model
 				from (select distinct nik, nama ,dept,bidang,unit,seksi 
                         from (select a.noind,nik,nama,masukkerja,tglkeluar,keluar,b.* 
                                         from hrd_khs.tpribadi a left join hrd_khs.tseksi b on a.kodesie=b.kodesie left join hrd_khs.tpekerjaan c on a.kd_pkj=c.kdpekerjaan 
-                                        where ((keluar = '0' and masukkerja<='2019-$now')) and (masukkerja >= '1990-01-01') 
+                                        where ((keluar = '0' and masukkerja<='2019-$now'))
                                         and rtrim(b.kodesie) like '3%' $tdklangsung $sqlPKL
                                   union 
                                   select a.noind,nik,nama,masukkerja,tglkeluar,keluar,b.* 
                                   from hrd_khs.tpribadi a left join hrd_khs.tseksi b on a.kodesie=b.kodesie left join hrd_khs.tpekerjaan c on a.kd_pkj=c.kdpekerjaan 
-                                  where ((masukkerja<='2019-$now') and (tglkeluar >= '2019-$now' and keluar = '1')) and (masukkerja >= '1990-01-01') 
+                                  where ((masukkerja<='2019-$now') and (tglkeluar >= '2019-$now' and keluar = '1')) and (masukkerja >= '1945-01-01') 
                                   and rtrim(b.kodesie) like '3%' $tdklangsung $sqlPKL order by 5 ) tabel) seksi1
 			    		left join (select rtrim(seksi2.seksi) seksi_langsung
 			               ,count(seksi2.*) langsung
 			                from (select distinct nik, nama ,dept,bidang,unit,seksi 
                                 from (select a.noind,nik,nama,masukkerja,tglkeluar,keluar,b.* 
                                                 from hrd_khs.tpribadi a left join hrd_khs.tseksi b on a.kodesie=b.kodesie left join hrd_khs.tpekerjaan c on a.kd_pkj=c.kdpekerjaan 
-                                                where ((keluar = '0' and masukkerja<='2019-$now')) and (masukkerja >= '1990-01-01') 
+                                                where ((keluar = '0' and masukkerja<='2019-$now'))
                                                 and rtrim(b.kodesie) like '3%' $langsung $sqlPKL
                                         union 
                                         select a.noind,nik,nama,masukkerja,tglkeluar,keluar,b.* 
                                         from hrd_khs.tpribadi a left join hrd_khs.tseksi b on a.kodesie=b.kodesie left join hrd_khs.tpekerjaan c on a.kd_pkj=c.kdpekerjaan 
-                                        where ((masukkerja<='2019-$now') and (tglkeluar >= '2019-$now' and keluar = '1')) and (masukkerja >= '1990-01-01') 
+                                        where ((masukkerja<='2019-$now') and (tglkeluar >= '2019-$now' and keluar = '1')) and (masukkerja >= '1945-01-01') 
                                         and rtrim(b.kodesie) like '3%' $langsung $sqlPKL order by 5 ) tabel ) seksi2
 					    group by rtrim(seksi2.seksi)
 					    order by seksi_langsung) lsng on rtrim(seksi1.seksi) = lsng.seksi_langsung
@@ -292,7 +288,7 @@ class M_index extends CI_Model
 		$sql = "select rtrim(b.seksi), count(a.noind) 
 		from hrd_khs.tpribadi a left join hrd_khs.tseksi b on a.kodesie=b.kodesie 
 		where (keluar = '0' or (tglkeluar >= '2019-$now' and keluar = '1')) 
-		and b.unit != '-' and (masukkerja >= '1990-01-01') and rtrim(b.seksi) = '$kodeUnit' 
+		and b.unit != '-' and rtrim(b.seksi) = '$kodeUnit' 
 		and rtrim(b.bidang) = 'PEMASARAN 6' $sqlPKL
 		group by rtrim(b.seksi) order by 1;";
 				// echo $sql;exit();
@@ -310,12 +306,12 @@ class M_index extends CI_Model
 				(select a.noind,nik,nama,masukkerja,tglkeluar,keluar,b.*
 				from hrd_khs.tpribadi a left join hrd_khs.tseksi b on a.kodesie=b.kodesie 
 				where ((keluar = '0' and masukkerja<='2019-$now'))
-				and b.unit != '-' and (masukkerja >= '1990-01-01') and rtrim(b.seksi) like '%$kodeUnit%'  $sqlPKL
+				and b.unit != '-' and rtrim(b.seksi) like '%$kodeUnit%'  $sqlPKL
 				union
 				select a.noind,nik,nama,masukkerja,tglkeluar,keluar,b.*
 				from hrd_khs.tpribadi a left join hrd_khs.tseksi b on a.kodesie=b.kodesie 
 				where ((masukkerja<='2019-$now') and (tglkeluar >= '2019-$now' and keluar = '1'))
-				and b.unit != '-' and (masukkerja >= '1990-01-01') and rtrim(b.seksi) like '%$kodeUnit%'  $sqlPKL
+				and b.unit != '-' and (masukkerja >= '1945-01-01') and rtrim(b.seksi) like '%$kodeUnit%'  $sqlPKL
 				 ) tabel ) tabel";
 				echo $sql;exit();
 		$query = $this->personalia->query($sql);
@@ -331,7 +327,7 @@ class M_index extends CI_Model
 				(select a.noind,nama,masukkerja,tglkeluar,keluar,b.*
 				from hrd_khs.tpribadi a left join hrd_khs.tseksi b on a.kodesie=b.kodesie 
 				where ((keluar = '0' and masukkerja<='2019-$now') or (tglkeluar >= '2019-$now' and keluar = '1'))
-				and b.unit != '-' and (masukkerja >= '1990-01-01') and left(b.kodesie,1)='4' and rtrim(b.seksi) not like '%$kodeUnit%'  $sqlPKL
+				and b.unit != '-' and left(b.kodesie,1)='4' and rtrim(b.seksi) not like '%$kodeUnit%'  $sqlPKL
 				 order by 5
 				 ) tabel ) tabel";
 				// echo $sql;exit();
@@ -350,13 +346,13 @@ class M_index extends CI_Model
 				from hrd_khs.tpribadi a left join hrd_khs.tseksi c on a.kodesie=c.kodesie 
 				left join hrd_khs.tpekerjaan b on a.kd_pkj=b.kdpekerjaan
 				where ((keluar = '0' and masukkerja<='2019-$now'))
-				and (masukkerja >= '1990-01-01') $sqlPKL and c.kodesie LIKE '3%' $kode 
+				$sqlPKL and c.kodesie LIKE '3%' $kode 
 				union 
 				select a.noind,nik,nama,masukkerja,tglkeluar,keluar,c.*
 				from hrd_khs.tpribadi a left join hrd_khs.tseksi c on a.kodesie=c.kodesie 
 				left join hrd_khs.tpekerjaan b on a.kd_pkj=b.kdpekerjaan
 				where ((masukkerja<='2019-$now') and (tglkeluar >= '2019-$now' and keluar = '1'))
-				and (masukkerja >= '1990-01-01') $sqlPKL and c.kodesie LIKE '3%' $kode 
+				and (masukkerja >= '1945-01-01') $sqlPKL and c.kodesie LIKE '3%' $kode 
 				 order by 5
 				 ) tabel ) tabel";
 				// echo $sql; exit();
@@ -375,13 +371,13 @@ class M_index extends CI_Model
 				from hrd_khs.tpribadi a left join hrd_khs.tseksi c on a.kodesie=c.kodesie 
 				left join hrd_khs.tpekerjaan b on a.kd_pkj=b.kdpekerjaan
 				where ((keluar = '0' and masukkerja<='2019-$now'))
-				and (masukkerja >= '1990-01-01') $sqlPKL $kode 
+				$sqlPKL $kode 
 				union
 				select a.noind,nik,nama,masukkerja,tglkeluar,keluar,c.*
 				from hrd_khs.tpribadi a left join hrd_khs.tseksi c on a.kodesie=c.kodesie 
 				left join hrd_khs.tpekerjaan b on a.kd_pkj=b.kdpekerjaan
 				where ((masukkerja<='2019-$now') and (tglkeluar >= '2019-$now' and keluar = '1'))
-				and (masukkerja >= '1990-01-01') $sqlPKL $kode 
+				and (masukkerja >= '1945-01-01') $sqlPKL $kode 
 				 order by 5
 				 ) tabel ) tabel";
 				// echo $sql;exit();cc
@@ -398,12 +394,12 @@ class M_index extends CI_Model
 				(select a.noind,a.nik,nama,masukkerja,tglkeluar,keluar,b.*
 				from hrd_khs.tpribadi a left join hrd_khs.tseksi b on a.kodesie=b.kodesie 
 				where ((keluar = '0' and masukkerja<='2019-$now'))
-				and (masukkerja >= '1990-01-01') $sqlPKL 
+				$sqlPKL 
 				union
 				select a.noind,a.nik,nama,masukkerja,tglkeluar,keluar,b.*
 				from hrd_khs.tpribadi a left join hrd_khs.tseksi b on a.kodesie=b.kodesie 
 				where ((masukkerja<='2019-$now') and (tglkeluar >= '2019-$now' and keluar = '1'))
-				and (masukkerja >= '1990-01-01') $sqlPKL 
+				and (masukkerja >= '1945-01-01') $sqlPKL 
 
 				 ) tabel ) tabel";
 				// echo $sql;exit();
@@ -488,12 +484,12 @@ class M_index extends CI_Model
 	(select a.noind,nik,nama,masukkerja,tglkeluar,keluar,b.*
 	from hrd_khs.tpribadi a left join hrd_khs.tseksi b on a.kodesie=b.kodesie 
 	where ((keluar = '0' and masukkerja<='$tahun-01-01'))
-	and (masukkerja >= '1990-01-01') $pkl
+	$pkl
 	union 
 	select a.noind,nik,nama,masukkerja,tglkeluar,keluar,b.*
 	from hrd_khs.tpribadi a left join hrd_khs.tseksi b on a.kodesie=b.kodesie 
 	where ((masukkerja<='$tahun-01-01') and (tglkeluar >= '$tahun-01-01' and keluar = '1'))
-	and (masukkerja >= '1990-01-01') $pkl
+	and (masukkerja >= '1945-01-01') $pkl
 	 ) tabel ) tabel) as tahun
 union
 select 2 as urut,'Februari' as Bulan, 
@@ -504,12 +500,12 @@ select 2 as urut,'Februari' as Bulan,
 	(select a.noind,nik,nama,masukkerja,tglkeluar,keluar,b.*
 	from hrd_khs.tpribadi a left join hrd_khs.tseksi b on a.kodesie=b.kodesie 
 	where ((keluar = '0' and masukkerja<='$tahun-02-01'))
-	and (masukkerja >= '1990-01-01') $pkl
+	$pkl
 	union 
 	select a.noind,nik,nama,masukkerja,tglkeluar,keluar,b.*
 	from hrd_khs.tpribadi a left join hrd_khs.tseksi b on a.kodesie=b.kodesie 
 	where ((masukkerja<='$tahun-02-01') and (tglkeluar >= '$tahun-02-01' and keluar = '1'))
-	and (masukkerja >= '1990-01-01') $pkl
+	and (masukkerja >= '1945-01-01') $pkl
 	 ) tabel ) tabel) as tahun
 union
 select 3 as urut,'Maret' as Bulan, 
@@ -520,12 +516,12 @@ select 3 as urut,'Maret' as Bulan,
 	(select a.noind,nik,nama,masukkerja,tglkeluar,keluar,b.*
 	from hrd_khs.tpribadi a left join hrd_khs.tseksi b on a.kodesie=b.kodesie 
 	where ((keluar = '0' and masukkerja<='$tahun-03-01'))
-	and (masukkerja >= '1990-01-01') $pkl
+	$pkl
 	union 
 	select a.noind,nik,nama,masukkerja,tglkeluar,keluar,b.*
 	from hrd_khs.tpribadi a left join hrd_khs.tseksi b on a.kodesie=b.kodesie 
 	where ((masukkerja<='$tahun-03-01') and (tglkeluar >= '$tahun-03-01' and keluar = '1'))
-	and (masukkerja >= '1990-01-01') $pkl
+	and (masukkerja >= '1945-01-01') $pkl
 	 ) tabel ) tabel) as tahun
 union
 select 4 as urut,'April' as Bulan, 
@@ -536,12 +532,12 @@ select 4 as urut,'April' as Bulan,
 	(select a.noind,nik,nama,masukkerja,tglkeluar,keluar,b.*
 	from hrd_khs.tpribadi a left join hrd_khs.tseksi b on a.kodesie=b.kodesie 
 	where ((keluar = '0' and masukkerja<='$tahun-04-01'))
-	and (masukkerja >= '1990-01-01') $pkl
+	$pkl
 	union 
 	select a.noind,nik,nama,masukkerja,tglkeluar,keluar,b.*
 	from hrd_khs.tpribadi a left join hrd_khs.tseksi b on a.kodesie=b.kodesie 
 	where ((masukkerja<='$tahun-04-01') and (tglkeluar >= '$tahun-04-01' and keluar = '1'))
-	and (masukkerja >= '1990-01-01') $pkl
+	and (masukkerja >= '1945-01-01') $pkl
 	 ) tabel ) tabel) as tahun
 union
 select 5 as urut,'Mei' as Bulan, 
@@ -552,12 +548,12 @@ select 5 as urut,'Mei' as Bulan,
 	(select a.noind,nik,nama,masukkerja,tglkeluar,keluar,b.*
 	from hrd_khs.tpribadi a left join hrd_khs.tseksi b on a.kodesie=b.kodesie 
 	where ((keluar = '0' and masukkerja<='$tahun-05-01'))
-	and (masukkerja >= '1990-01-01') $pkl
+	$pkl
 	union 
 	select a.noind,nik,nama,masukkerja,tglkeluar,keluar,b.*
 	from hrd_khs.tpribadi a left join hrd_khs.tseksi b on a.kodesie=b.kodesie 
 	where ((masukkerja<='$tahun-05-01') and (tglkeluar >= '$tahun-05-01' and keluar = '1'))
-	and (masukkerja >= '1990-01-01') $pkl
+	and (masukkerja >= '1945-01-01') $pkl
 	 ) tabel ) tabel) as tahun
 union
 select 6 as urut,'Juni' as Bulan, 
@@ -568,12 +564,12 @@ select 6 as urut,'Juni' as Bulan,
 	(select a.noind,nik,nama,masukkerja,tglkeluar,keluar,b.*
 	from hrd_khs.tpribadi a left join hrd_khs.tseksi b on a.kodesie=b.kodesie 
 	where ((keluar = '0' and masukkerja<='$tahun-06-01'))
-	and (masukkerja >= '1990-01-01') $pkl
+	$pkl
 	union 
 	select a.noind,nik,nama,masukkerja,tglkeluar,keluar,b.*
 	from hrd_khs.tpribadi a left join hrd_khs.tseksi b on a.kodesie=b.kodesie 
 	where ((masukkerja<='$tahun-06-01') and (tglkeluar >= '$tahun-06-01' and keluar = '1'))
-	and (masukkerja >= '1990-01-01') $pkl
+	and (masukkerja >= '1945-01-01') $pkl
 	 ) tabel ) tabel) as tahun
 union
 select 7 as urut,'Juli' as Bulan, 
@@ -584,12 +580,12 @@ select 7 as urut,'Juli' as Bulan,
 	(select a.noind,nik,nama,masukkerja,tglkeluar,keluar,b.*
 	from hrd_khs.tpribadi a left join hrd_khs.tseksi b on a.kodesie=b.kodesie 
 	where ((keluar = '0' and masukkerja<='$tahun-07-01'))
-	and (masukkerja >= '1990-01-01') $pkl
+	$pkl
 	union 
 	select a.noind,nik,nama,masukkerja,tglkeluar,keluar,b.*
 	from hrd_khs.tpribadi a left join hrd_khs.tseksi b on a.kodesie=b.kodesie 
 	where ((masukkerja<='$tahun-07-01') and (tglkeluar >= '$tahun-07-01' and keluar = '1'))
-	and (masukkerja >= '1990-01-01') $pkl
+	and (masukkerja >= '1945-01-01') $pkl
 	 ) tabel ) tabel) as tahun
 union
 select 8 as urut,'Agustus' as Bulan, 
@@ -600,12 +596,12 @@ select 8 as urut,'Agustus' as Bulan,
 	(select a.noind,nik,nama,masukkerja,tglkeluar,keluar,b.*
 	from hrd_khs.tpribadi a left join hrd_khs.tseksi b on a.kodesie=b.kodesie 
 	where ((keluar = '0' and masukkerja<='$tahun-08-01'))
-	and (masukkerja >= '1990-01-01') $pkl
+	$pkl
 	union 
 	select a.noind,nik,nama,masukkerja,tglkeluar,keluar,b.*
 	from hrd_khs.tpribadi a left join hrd_khs.tseksi b on a.kodesie=b.kodesie 
 	where ((masukkerja<='$tahun-08-01') and (tglkeluar >= '$tahun-08-01' and keluar = '1'))
-	and (masukkerja >= '1990-01-01') $pkl
+	and (masukkerja >= '1945-01-01') $pkl
 	 ) tabel ) tabel) as tahun
 union
 select 9 as urut,'September' as Bulan, 
@@ -616,12 +612,12 @@ select 9 as urut,'September' as Bulan,
 	(select a.noind,nik,nama,masukkerja,tglkeluar,keluar,b.*
 	from hrd_khs.tpribadi a left join hrd_khs.tseksi b on a.kodesie=b.kodesie 
 	where ((keluar = '0' and masukkerja<='$tahun-09-01'))
-	and (masukkerja >= '1990-01-01') $pkl
+	$pkl
 	union 
 	select a.noind,nik,nama,masukkerja,tglkeluar,keluar,b.*
 	from hrd_khs.tpribadi a left join hrd_khs.tseksi b on a.kodesie=b.kodesie 
 	where ((masukkerja<='$tahun-09-01') and (tglkeluar >= '$tahun-09-01' and keluar = '1'))
-	and (masukkerja >= '1990-01-01') $pkl
+	and (masukkerja >= '1945-01-01') $pkl
 	 ) tabel ) tabel) as tahun
 union
 select 10 as urut,'Oktober' as Bulan, 
@@ -632,12 +628,12 @@ select 10 as urut,'Oktober' as Bulan,
 	(select a.noind,nik,nama,masukkerja,tglkeluar,keluar,b.*
 	from hrd_khs.tpribadi a left join hrd_khs.tseksi b on a.kodesie=b.kodesie 
 	where ((keluar = '0' and masukkerja<='$tahun-10-01'))
-	and (masukkerja >= '1990-01-01') $pkl
+	$pkl
 	union 
 	select a.noind,nik,nama,masukkerja,tglkeluar,keluar,b.*
 	from hrd_khs.tpribadi a left join hrd_khs.tseksi b on a.kodesie=b.kodesie 
 	where ((masukkerja<='$tahun-10-01') and (tglkeluar >= '$tahun-10-01' and keluar = '1'))
-	and (masukkerja >= '1990-01-01') $pkl
+	and (masukkerja >= '1945-01-01') $pkl
 	 ) tabel ) tabel) as tahun
 union
 select 11 as urut,'November' as Bulan, 
@@ -648,12 +644,12 @@ select 11 as urut,'November' as Bulan,
 	(select a.noind,nik,nama,masukkerja,tglkeluar,keluar,b.*
 	from hrd_khs.tpribadi a left join hrd_khs.tseksi b on a.kodesie=b.kodesie 
 	where ((keluar = '0' and masukkerja<='$tahun-11-01'))
-	and (masukkerja >= '1990-01-01') $pkl
+	$pkl
 	union 
 	select a.noind,nik,nama,masukkerja,tglkeluar,keluar,b.*
 	from hrd_khs.tpribadi a left join hrd_khs.tseksi b on a.kodesie=b.kodesie 
 	where ((masukkerja<='$tahun-11-01') and (tglkeluar >= '$tahun-11-01' and keluar = '1'))
-	and (masukkerja >= '1990-01-01') $pkl
+	and (masukkerja >= '1945-01-01') $pkl
 	 ) tabel ) tabel) as tahun
 union
 select 12 as urut,'Desember' as Bulan, 
@@ -664,12 +660,12 @@ select 12 as urut,'Desember' as Bulan,
 	(select a.noind,nik,nama,masukkerja,tglkeluar,keluar,b.*
 	from hrd_khs.tpribadi a left join hrd_khs.tseksi b on a.kodesie=b.kodesie 
 	where ((keluar = '0' and masukkerja<='$tahun-12-01'))
-	and (masukkerja >= '1990-01-01') $pkl
+	$pkl
 	union 
 	select a.noind,nik,nama,masukkerja,tglkeluar,keluar,b.*
 	from hrd_khs.tpribadi a left join hrd_khs.tseksi b on a.kodesie=b.kodesie 
 	where ((masukkerja<='$tahun-12-01') and (tglkeluar >= '$tahun-12-01' and keluar = '1'))
-	and (masukkerja >= '1990-01-01') $pkl
+	and (masukkerja >= '1945-01-01') $pkl
 	 ) tabel ) tabel) as tahun
 order by 1
 		";
