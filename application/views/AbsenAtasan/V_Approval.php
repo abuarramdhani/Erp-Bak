@@ -11,7 +11,6 @@
 			</div>
 		</div>
 		<div class="panel box-body" style="padding-left: 50px;" >
-		<form action="" method="post">
 			<div class="text-left">
 				<h4><strong>Detail Pekerja</strong></h4>
 			</div>
@@ -106,14 +105,12 @@
 			 	</div>			 
 			 </div>
 
-				
-		</form>
 		</div>
 
 		<div class="panel box-footer" style="padding-left: 50px;">
 			<div class="row">
 				<div class="col-md-1">
-					<a class="btn btn-primary" href=""><i class="fa fa-check"></i>   Approve</a>
+					<a class="btn btn-primary" href="<?php echo base_url('AbsenAtasan/List/approveApproval/'.$dataEmployee[0]['absen_id']); ?>" ><i class="fa fa-check"></i>   Approve</a>
 				</div>
 				<div class="col-md-1">
 					
@@ -142,15 +139,18 @@
 			      			<h4>:</h4>
 			      		</div>
 			      		<div class="col-md-8">
+			      		<form method="post" id="rejectForm" action="<?php echo base_url('AbsenAtasan/List/rejectApproval/'.$dataEmployee[0]['absen_id']); ?>">
 			      			<div class="form-group">
-							  <textarea class="form-control" rows="5" id="comment"></textarea>
+							  <textarea class="form-control" name="reason" rows="5" id="comment" form="rejectForm"></textarea>
 							</div>
+						
 			      		</div>
 			      	</div>
 			      </div>
 			      <div class="modal-footer">
 			        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-			        <button type="submit" class="btn btn-default" data-dismiss="modal">Submit</button>
+			        <button type="submit" class="btn btn-danger" >Reject</button>
+			        </form>
 			      </div>
 			    </div>
 			  </div>
