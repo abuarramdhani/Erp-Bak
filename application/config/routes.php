@@ -505,6 +505,10 @@ $route['KeluarMasukKendaraan/(:any)/(:any)'] = 'KeluarMasukKendaraan/C_Index/$1/
 //------------------------------------Catering Management---------------------------------------------------
 $route['CateringManagement'] 						= 'CateringManagement/C_CateringManagement/index';
 
+$route['ApprovalTambahan'] = 'CateringManagement/C_Approval';
+$route['ApprovalTambahan/(:any)'] = 'CateringManagement/C_Approval/$1';
+$route['ApprovalTambahan/(:any)/(:any)'] = 'CateringManagement/C_Approval/$1/$2';
+
 $route['CateringManagement/Receipt'] 				= 'CateringManagement/C_Receipt/index';
 $route['CateringManagement/Receipt/Create'] 		= 'CateringManagement/C_Receipt/create';
 $route['CateringManagement/Receipt/Update'] 		= 'CateringManagement/C_Receipt/update';
@@ -619,9 +623,9 @@ $route['CateringManagement/DataPesanan'] = 'CateringManagement/Pesanan/C_Pesanan
 $route['CateringManagement/DataPesanan/(:any)'] = 'CateringManagement/Pesanan/C_Pesanan/$1';
 $route['CateringManagement/DataPesanan/(:any)/(:any)'] = 'CateringManagement/Pesanan/C_Pesanan/$1/$2';
 
-$route['CateringManagement/PesananTambahan'] = 'CateringManagement/Pesanan/C_Tambahan';
-$route['CateringManagement/PesananTambahan/(:any)'] = 'CateringManagement/Pesanan/C_Tambahan/$1';
-$route['CateringManagement/PesananTambahan/(:any)/(:any)'] = 'CateringManagement/Pesanan/C_Tambahan/$1/$2';
+$route['CateringTambahan'] = 'CateringTambahan/C_Tambahan';
+$route['CateringTambahan/(:any)'] = 'CateringTambahan/C_Tambahan/$1';
+$route['CateringTambahan/(:any)/(:any)'] = 'CateringTambahan/C_Tambahan/$1/$2';
 
 $route['CateringManagement/Plotting'] = 'CateringManagement/Pesanan/C_Plotting';
 $route['CateringManagement/Plotting/(:any)'] = 'CateringManagement/Pesanan/C_Plotting/$1';
@@ -1274,6 +1278,7 @@ $route['MonitoringKomponen/Monitoring/(:any)/(:any)'] = 'MonitoringKomponen/Main
 $route['MonitoringKomponen/MonitoringSeksi'] = 'MonitoringKomponen/MainMenu/C_Monitoring_Seksi';
 $route['MonitoringKomponen/MonitoringSeksi/(:any)'] = 'MonitoringKomponen/MainMenu/C_Monitoring_Seksi/$1';
 $route['MonitoringKomponen/MonitoringSeksi/(:any)/(:any)'] = 'MonitoringKomponen/MainMenu/C_Monitoring_Seksi/$1/$2';
+
 //------------------------------------ Grapic ----------------------------------------
 $route['SDM/(:any)'] = 'Grapic/C_Index/$1';
 $route['SDM/(:any)/(:any)'] = 'Grapic/C_Index/$1/$2';
@@ -1292,6 +1297,8 @@ $route['SDM/input'] = 'Grapic/C_Index/input';
 $route['SDM/inputv2'] = 'Grapic/C_Index/inputv2';
 $route['SDM/openPDF'] = 'Grapic/C_Index/openPDF';
 
+$route['RevisiEfisiensi'] = 'Grapic/C_Revisi';
+$route['RevisiEfisiensi/getData'] = 'Grapic/C_Revisi/getData';
 
 //------------------------------------ Management Kebutuhan Pekerja ----------------------------------------
 $route['ItemManagement'] = 'ItemManagement/C_Index/index';
@@ -1880,6 +1887,10 @@ $route['Presensi/PresensiDL'] 			= 'Presensi/MenuUtama/C_Presensi_DL/index';
 $route['Presensi/PresensiDL/(:any)']		= 'Presensi/MenuUtama/C_Presensi_DL/$1';
 $route['Presensi/PresensiDL/(:any)/(:any)']	= 'Presensi/MenuUtama/C_Presensi_DL/$1/$2';
 $route['Presensi/PresensiDL/(:any)/(:any)/(:any)']	= 'Presensi/MenuUtama/C_Presensi_DL/$1/$2/$3';
+
+$route['MasterPresensi/ReffGaji/PekerjaKeluar'] = 'MasterPresensi/ReffGaji/C_PekerjaKeluar';
+$route['MasterPresensi/ReffGaji/PekerjaKeluar/(:any)'] = 'MasterPresensi/ReffGaji/C_PekerjaKeluar/$1';
+$route['MasterPresensi/ReffGaji/PekerjaKeluar/(:any)/(:any)'] = 'MasterPresensi/ReffGaji/C_PekerjaKeluar/$1/$2';
 
 
 //-------------------------------------Hambatan Produksi-------------------------------------------------
@@ -2796,3 +2807,8 @@ $route['MonitoringBiayaKeuangan'] = 'MonitoringBiayaKeuangan/C_Index';
 $route['MonitoringBiayaKeuangan/Detail'] = 'MonitoringBiayaKeuangan/MainMenu/Detail/C_ChartDetail';
 $route['MonitoringBiayaKeuangan/Detail/(:any)'] = 'MonitoringBiayaKeuangan/MainMenu/Detail/C_ChartDetail/$1';
 $route['MonitoringBiayaKeuangan/Detail/(:any)/(:any)'] = 'MonitoringBiayaKeuangan/MainMenu/Detail/C_ChartDetail/$1/$2';
+
+$route['MonitoringBiayaKeuangan'] = 'MonitoringBiayaKeuangan/C_Index';
+$route['MonitoringBiayaKeuangan/BiayaSeksi'] = 'MonitoringBiayaKeuangan/MainMenu/BiayaSeksi/C_ChartBiayaSeksi';
+$route['MonitoringBiayaKeuangan/BiayaSeksi/(:any)'] = 'MonitoringBiayaKeuangan/MainMenu/BiayaSeksi/C_ChartBiayaSeksi/$1';
+$route['MonitoringBiayaKeuangan/BiayaSeksi/(:any)/(:any)'] = 'MonitoringBiayaKeuangan/MainMenu/BiayaSeksi/C_ChartBiayaSeksi/$1/$2';
