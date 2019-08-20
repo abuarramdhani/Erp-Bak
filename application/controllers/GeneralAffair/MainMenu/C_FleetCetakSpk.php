@@ -17,7 +17,7 @@ class C_FleetCetakSpk extends CI_Controller
 		$this->load->model('GeneralAffair/MainMenu/M_fleetcetakspk');
 		$this->load->model('GeneralAffair/MainMenu/M_fleetmaintenancekendaraan');
 		$this->load->model('GeneralAffair/MainMenu/M_location');
-		
+
 		$this->checkSession();
 	}
 
@@ -53,17 +53,17 @@ class C_FleetCetakSpk extends CI_Controller
 		if ($lokasi == '01') {
 			foreach ($datamenu1 as $key) {
 				$data['UserSubMenuOne'][$i] = array(
-					'user_id' => $key['user_id'], 
-					'user_group_menu_name' => $key['user_group_menu_name'], 
-					'user_group_menu_id' => $key['user_group_menu_id'], 
-					'group_menu_list_id' => $key['group_menu_list_id'], 
-					'menu_sequence' => $key['menu_sequence'], 
-					'menu_id' => $key['menu_id'], 
-					'root_id' => $key['root_id'], 
-					'menu_title' => $key['menu_title'], 
-					'menu' => $key['menu'], 
-					'menu_link' => $key['menu_link'], 
-					'org_id' => $key['org_id'], 
+					'user_id' => $key['user_id'],
+					'user_group_menu_name' => $key['user_group_menu_name'],
+					'user_group_menu_id' => $key['user_group_menu_id'],
+					'group_menu_list_id' => $key['group_menu_list_id'],
+					'menu_sequence' => $key['menu_sequence'],
+					'menu_id' => $key['menu_id'],
+					'root_id' => $key['root_id'],
+					'menu_title' => $key['menu_title'],
+					'menu' => $key['menu'],
+					'menu_link' => $key['menu_link'],
+					'org_id' => $key['org_id'],
 				);
 				$i++;
 			}
@@ -71,23 +71,23 @@ class C_FleetCetakSpk extends CI_Controller
 			foreach ($datamenu1 as $key) {
 				if ($key['menu_id'] !== '289' && $key['menu_id'] !== '290' && $key['menu_id'] !== '291' && $key['menu_id'] !== '296' && $key['menu_id'] !== '478') {
 					$data['UserSubMenuOne'][$i] = array(
-						'user_id' => $key['user_id'], 
-						'user_group_menu_name' => $key['user_group_menu_name'], 
-						'user_group_menu_id' => $key['user_group_menu_id'], 
-						'group_menu_list_id' => $key['group_menu_list_id'], 
-						'menu_sequence' => $key['menu_sequence'], 
-						'menu_id' => $key['menu_id'], 
-						'root_id' => $key['root_id'], 
-						'menu_title' => $key['menu_title'], 
-						'menu' => $key['menu'], 
-						'menu_link' => $key['menu_link'], 
-						'org_id' => $key['org_id'], 
+						'user_id' => $key['user_id'],
+						'user_group_menu_name' => $key['user_group_menu_name'],
+						'user_group_menu_id' => $key['user_group_menu_id'],
+						'group_menu_list_id' => $key['group_menu_list_id'],
+						'menu_sequence' => $key['menu_sequence'],
+						'menu_id' => $key['menu_id'],
+						'root_id' => $key['root_id'],
+						'menu_title' => $key['menu_title'],
+						'menu' => $key['menu'],
+						'menu_link' => $key['menu_link'],
+						'org_id' => $key['org_id'],
 					);
 					$i++;
 				}
-			}	
+			}
 		}
-		
+
 		$data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id);
 
 		if ($lokasi == '01') {
@@ -95,7 +95,9 @@ class C_FleetCetakSpk extends CI_Controller
 		}else{
 			$data['FleetCetakSpk'] = $this->M_fleetcetakspk->getFleetCetakSpkCabang($lokasi);
 		}
-		
+
+		$data['today'] = date('d-m-Y');
+
 		$this->load->view('V_Header',$data);
 		$this->load->view('V_Sidemenu',$data);
 		$this->load->view('GeneralAffair/FleetCetakSpk/V_index', $data);
@@ -122,17 +124,17 @@ class C_FleetCetakSpk extends CI_Controller
 		if ($lokasi == '01') {
 			foreach ($datamenu1 as $key) {
 				$data['UserSubMenuOne'][$i] = array(
-					'user_id' => $key['user_id'], 
-					'user_group_menu_name' => $key['user_group_menu_name'], 
-					'user_group_menu_id' => $key['user_group_menu_id'], 
-					'group_menu_list_id' => $key['group_menu_list_id'], 
-					'menu_sequence' => $key['menu_sequence'], 
-					'menu_id' => $key['menu_id'], 
-					'root_id' => $key['root_id'], 
-					'menu_title' => $key['menu_title'], 
-					'menu' => $key['menu'], 
-					'menu_link' => $key['menu_link'], 
-					'org_id' => $key['org_id'], 
+					'user_id' => $key['user_id'],
+					'user_group_menu_name' => $key['user_group_menu_name'],
+					'user_group_menu_id' => $key['user_group_menu_id'],
+					'group_menu_list_id' => $key['group_menu_list_id'],
+					'menu_sequence' => $key['menu_sequence'],
+					'menu_id' => $key['menu_id'],
+					'root_id' => $key['root_id'],
+					'menu_title' => $key['menu_title'],
+					'menu' => $key['menu'],
+					'menu_link' => $key['menu_link'],
+					'org_id' => $key['org_id'],
 				);
 				$i++;
 			}
@@ -140,21 +142,21 @@ class C_FleetCetakSpk extends CI_Controller
 			foreach ($datamenu1 as $key) {
 				if ($key['menu_id'] !== '289' && $key['menu_id'] !== '290' && $key['menu_id'] !== '291' && $key['menu_id'] !== '296' && $key['menu_id'] !== '478') {
 					$data['UserSubMenuOne'][$i] = array(
-						'user_id' => $key['user_id'], 
-						'user_group_menu_name' => $key['user_group_menu_name'], 
-						'user_group_menu_id' => $key['user_group_menu_id'], 
-						'group_menu_list_id' => $key['group_menu_list_id'], 
-						'menu_sequence' => $key['menu_sequence'], 
-						'menu_id' => $key['menu_id'], 
-						'root_id' => $key['root_id'], 
-						'menu_title' => $key['menu_title'], 
-						'menu' => $key['menu'], 
-						'menu_link' => $key['menu_link'], 
-						'org_id' => $key['org_id'], 
+						'user_id' => $key['user_id'],
+						'user_group_menu_name' => $key['user_group_menu_name'],
+						'user_group_menu_id' => $key['user_group_menu_id'],
+						'group_menu_list_id' => $key['group_menu_list_id'],
+						'menu_sequence' => $key['menu_sequence'],
+						'menu_id' => $key['menu_id'],
+						'root_id' => $key['root_id'],
+						'menu_title' => $key['menu_title'],
+						'menu' => $key['menu'],
+						'menu_link' => $key['menu_link'],
+						'org_id' => $key['org_id'],
 					);
 					$i++;
 				}
-			}	
+			}
 		}
 		$data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id);
 
@@ -176,7 +178,7 @@ class C_FleetCetakSpk extends CI_Controller
 			$this->load->view('V_Header',$data);
 			$this->load->view('V_Sidemenu',$data);
 			$this->load->view('GeneralAffair/FleetCetakSpk/V_create', $data);
-			$this->load->view('V_Footer',$data);	
+			$this->load->view('V_Footer',$data);
 		} else {
 			$dataMain = array(
 				'kendaraan_id' => $this->input->post('cmbKendaraanIdHeader'),
@@ -204,7 +206,7 @@ class C_FleetCetakSpk extends CI_Controller
 						'create_date' => date('Y-m-d h:i:s'),
 						'create_by' => $this->session->userid,
 				);
-				
+
 				$this->M_fleetcetakspk->setFleetCetakSpkDetail($lines);
 			}
 
@@ -240,17 +242,17 @@ class C_FleetCetakSpk extends CI_Controller
 		if ($lokasi == '01') {
 			foreach ($datamenu1 as $key) {
 				$data['UserSubMenuOne'][$i] = array(
-					'user_id' => $key['user_id'], 
-					'user_group_menu_name' => $key['user_group_menu_name'], 
-					'user_group_menu_id' => $key['user_group_menu_id'], 
-					'group_menu_list_id' => $key['group_menu_list_id'], 
-					'menu_sequence' => $key['menu_sequence'], 
-					'menu_id' => $key['menu_id'], 
-					'root_id' => $key['root_id'], 
-					'menu_title' => $key['menu_title'], 
-					'menu' => $key['menu'], 
-					'menu_link' => $key['menu_link'], 
-					'org_id' => $key['org_id'], 
+					'user_id' => $key['user_id'],
+					'user_group_menu_name' => $key['user_group_menu_name'],
+					'user_group_menu_id' => $key['user_group_menu_id'],
+					'group_menu_list_id' => $key['group_menu_list_id'],
+					'menu_sequence' => $key['menu_sequence'],
+					'menu_id' => $key['menu_id'],
+					'root_id' => $key['root_id'],
+					'menu_title' => $key['menu_title'],
+					'menu' => $key['menu'],
+					'menu_link' => $key['menu_link'],
+					'org_id' => $key['org_id'],
 				);
 				$i++;
 			}
@@ -258,21 +260,21 @@ class C_FleetCetakSpk extends CI_Controller
 			foreach ($datamenu1 as $key) {
 				if ($key['menu_id'] !== '289' && $key['menu_id'] !== '290' && $key['menu_id'] !== '291' && $key['menu_id'] !== '296' && $key['menu_id'] !== '478') {
 					$data['UserSubMenuOne'][$i] = array(
-						'user_id' => $key['user_id'], 
-						'user_group_menu_name' => $key['user_group_menu_name'], 
-						'user_group_menu_id' => $key['user_group_menu_id'], 
-						'group_menu_list_id' => $key['group_menu_list_id'], 
-						'menu_sequence' => $key['menu_sequence'], 
-						'menu_id' => $key['menu_id'], 
-						'root_id' => $key['root_id'], 
-						'menu_title' => $key['menu_title'], 
-						'menu' => $key['menu'], 
-						'menu_link' => $key['menu_link'], 
-						'org_id' => $key['org_id'], 
+						'user_id' => $key['user_id'],
+						'user_group_menu_name' => $key['user_group_menu_name'],
+						'user_group_menu_id' => $key['user_group_menu_id'],
+						'group_menu_list_id' => $key['group_menu_list_id'],
+						'menu_sequence' => $key['menu_sequence'],
+						'menu_id' => $key['menu_id'],
+						'root_id' => $key['root_id'],
+						'menu_title' => $key['menu_title'],
+						'menu' => $key['menu'],
+						'menu_link' => $key['menu_link'],
+						'org_id' => $key['org_id'],
 					);
 					$i++;
 				}
-			}	
+			}
 		}
 		$data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id);
 
@@ -304,7 +306,7 @@ class C_FleetCetakSpk extends CI_Controller
 			$this->load->view('V_Header',$data);
 			$this->load->view('V_Sidemenu',$data);
 			$this->load->view('GeneralAffair/FleetCetakSpk/V_update', $data);
-			$this->load->view('V_Footer',$data);	
+			$this->load->view('V_Footer',$data);
 		} else {
 			$data = array(
 				'kendaraan_id' => $this->input->post('cmbKendaraanIdHeader',TRUE),
@@ -339,8 +341,8 @@ class C_FleetCetakSpk extends CI_Controller
 							'last_update' => date('Y-m-d h:i:s'),
 							'last_update_by' => $this->session->userid,
 						);
-						$this->M_fleetcetakspk->updateFleetCetakSpkDetail($lines, $id_lines);	
-					}	
+						$this->M_fleetcetakspk->updateFleetCetakSpkDetail($lines, $id_lines);
+					}
 			}
 
 			redirect(site_url('GeneralAffair/FleetCetakSpk'));
@@ -366,17 +368,17 @@ class C_FleetCetakSpk extends CI_Controller
 		if ($lokasi == '01') {
 			foreach ($datamenu1 as $key) {
 				$data['UserSubMenuOne'][$i] = array(
-					'user_id' => $key['user_id'], 
-					'user_group_menu_name' => $key['user_group_menu_name'], 
-					'user_group_menu_id' => $key['user_group_menu_id'], 
-					'group_menu_list_id' => $key['group_menu_list_id'], 
-					'menu_sequence' => $key['menu_sequence'], 
-					'menu_id' => $key['menu_id'], 
-					'root_id' => $key['root_id'], 
-					'menu_title' => $key['menu_title'], 
-					'menu' => $key['menu'], 
-					'menu_link' => $key['menu_link'], 
-					'org_id' => $key['org_id'], 
+					'user_id' => $key['user_id'],
+					'user_group_menu_name' => $key['user_group_menu_name'],
+					'user_group_menu_id' => $key['user_group_menu_id'],
+					'group_menu_list_id' => $key['group_menu_list_id'],
+					'menu_sequence' => $key['menu_sequence'],
+					'menu_id' => $key['menu_id'],
+					'root_id' => $key['root_id'],
+					'menu_title' => $key['menu_title'],
+					'menu' => $key['menu'],
+					'menu_link' => $key['menu_link'],
+					'org_id' => $key['org_id'],
 				);
 				$i++;
 			}
@@ -384,21 +386,21 @@ class C_FleetCetakSpk extends CI_Controller
 			foreach ($datamenu1 as $key) {
 				if ($key['menu_id'] !== '289' && $key['menu_id'] !== '290' && $key['menu_id'] !== '291' && $key['menu_id'] !== '296' && $key['menu_id'] !== '478') {
 					$data['UserSubMenuOne'][$i] = array(
-						'user_id' => $key['user_id'], 
-						'user_group_menu_name' => $key['user_group_menu_name'], 
-						'user_group_menu_id' => $key['user_group_menu_id'], 
-						'group_menu_list_id' => $key['group_menu_list_id'], 
-						'menu_sequence' => $key['menu_sequence'], 
-						'menu_id' => $key['menu_id'], 
-						'root_id' => $key['root_id'], 
-						'menu_title' => $key['menu_title'], 
-						'menu' => $key['menu'], 
-						'menu_link' => $key['menu_link'], 
-						'org_id' => $key['org_id'], 
+						'user_id' => $key['user_id'],
+						'user_group_menu_name' => $key['user_group_menu_name'],
+						'user_group_menu_id' => $key['user_group_menu_id'],
+						'group_menu_list_id' => $key['group_menu_list_id'],
+						'menu_sequence' => $key['menu_sequence'],
+						'menu_id' => $key['menu_id'],
+						'root_id' => $key['root_id'],
+						'menu_title' => $key['menu_title'],
+						'menu' => $key['menu'],
+						'menu_link' => $key['menu_link'],
+						'org_id' => $key['org_id'],
 					);
 					$i++;
 				}
-			}	
+			}
 		}
 		$data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id);
 
@@ -449,7 +451,7 @@ class C_FleetCetakSpk extends CI_Controller
 		$plaintext_string = $this->encrypt->decode($plaintext_string);
 
 		$data['FleetHeaderCetakSpk'] 			= $this->M_fleetcetakspk->getFleetCetakSpk($plaintext_string);
-		
+
 		$data['FleetHeaderCetakSpk'] = $data['FleetHeaderCetakSpk'][0];
 		$tgl = $data['FleetHeaderCetakSpk']['tanggal_maintenance'];
 		$tanggal = explode('-', $tgl);
@@ -459,13 +461,14 @@ class C_FleetCetakSpk extends CI_Controller
 		$pdf = $this->pdf->load();
 		$pdf = new mPDF('utf-8', 'A4', 8, '', 5, 5, 10, 15, 0, 0, 'P');
 		$filename = 'Cetak_Maintenance_Kendaraan.pdf';
-		
+
 		$stylesheet = file_get_contents(base_url('assets/plugins/bootstrap/3.3.7/css/bootstrap.css'));
-		$html = $this->load->view('GeneralAffair/FleetCetakSpk/V_cetak', $data, true);
+		$html = $this->load->view('GeneralAffair/FleetCetakSpk/V_cetakPDF', $data, true);
 
 		$pdf->WriteHTML($stylesheet, 1);
 		$pdf->WriteHTML($html, 2);
-		$pdf->Output($filename, 'D');
+		$pdf->setTitle($filename);
+		$pdf->Output($filename, 'I');
 	}
 
 }
