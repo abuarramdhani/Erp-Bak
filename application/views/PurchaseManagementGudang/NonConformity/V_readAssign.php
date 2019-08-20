@@ -13,14 +13,7 @@
                                 </h1>
                             </div>
                         </div>
-                        <!-- <div class="col-lg-1 ">
-                            <div class="text-right hidden-md hidden-sm hidden-xs">
-                                <a class="btn btn-default btn-lg" href="<?php echo site_url('PurchaseManagement/NonConformity');?>">
-                                    <i class="icon-wrench icon-2x">
-                                    </i>
-                                </a>
-                            </div>
-                        </div> -->
+                        
                     </div>
                 </div>
                 <br/>
@@ -33,7 +26,7 @@
                             ?>
                             <div class="box-header with-border">
                                 Non Conformity Headers
-                                <a href="<?php echo base_url('PurchaseManagementGudang/NonConformity/edit/'.$encrypted_string.''); ?>" class="btn btn-primary pull-right" style="border: 1px solid white;"><i class="fa fa-pencil"> Edit</i></a>
+                                
                             </div>
                             <div class="box-body">
                                 <div class="panel-body">
@@ -227,10 +220,8 @@
                                                       <td class="tdCaseNonC"><?php $no = 1; foreach($PoOracleNonConformityLines as $man): ?>
                                                               <span><?= $no++.'. '.$man['case_name'];?></span><br>
                                                           <?php endforeach; ?>
-                                                          <button type="button" class="btn btn-primary btn-xs btnEditCaseNonC">Edit</button>
                                                       </td>
-                                                      <td><span class="deskripsiNonC"><?php echo $PoOracleNonConformityLines[0]['description']; ?></span><br>
-                                                      <button type="button" class="btn btn-xs btn-primary btnEditDeskripsiNonC">Edit</button></td>
+                                                      <td><span class="deskripsiNonC"><?php echo $PoOracleNonConformityLines[0]['description']; ?></span>
                                                       <!-- <td><?php if ($PoOracleNonConformityLines[0]['judgement'] == NULL || $PoOracleNonConformityLines[0]['judgement'] == ''|| $PoOracleNonConformityLines[0]['status'] == NULL) {
                                                            echo "OPEN";}else{ echo strtoupper($PoOracleNonConformityLines[0]['status']);} ?>
                                                       </td> -->
@@ -243,9 +234,7 @@
                                                         $stat = '<span style="color: red"><i class="fa fa-warning"></i>Belum diset</span>';
                                                       }
                                                       ?>
-                                                      <span class="statusNonC"><?php echo $stat?></span>
-                                                      <br>
-                                                      <button type="button" class="btn btn-primary btn-xs btnEditStatusNonC" status="<?= $PoOracleNonConformityLines[0]['status']?>">Edit</button>
+                                                      <?php echo $stat?>
                                                       </td>
                                                       <td>
                                                       <?php if (count($linesItem)==0) { ?>
@@ -314,6 +303,25 @@
             </div>
         </div>
         <div class="panel-footer">
+            <form class="form-horizontal" id=""  enctype="multipart/form-data" method="post" action="<?php echo site_url('PurchaseManagementGudang/NonConformity/submitAssign');?>">
+                <input type="hidden" class="form-control" name ="hdnHeadId" value="<?php echo $id;?>">
+                <table>
+                    <tr>
+                        <td>Next Action </td>
+                        <td>: </td>
+                        <td>
+                            <select class="select2 slcAssignNonC form-control" name="slcAssign">
+                                <option></option>
+                                <option value="1">SUPPLIER</option>
+                                <option value="2">SUBKON</option>
+                                <!-- <option value="3">Return to PBB</option> -->
+                            </select>
+                        </td>
+                        <td>&nbsp;</td>
+                        <td><button type="submit" class="btn btn-success">Submit</button></td>
+                    </tr>
+                </table>
+            </form>
             <div align="right">
                 <a class="btn btn-primary btn-lg btn-rect" href="javascript:history.back(1)">
                     Back
@@ -322,75 +330,3 @@
         </div>
     </div>
 </section>
-
-<div class="modal fade" id="modal-ubahdeskripsi">
-    <div class="modal-dialog">
-      <div class="modal-content">
-        <div class="modal-header">
-          <!-- <button type="button" class="close" data-dismiss="modal" aria-label="Close"> -->
-            <!-- <span aria-hidden="true">&times;</span></button> -->
-          <h4 class="modal-title">Edit Deskripsi</h4>
-        </div>
-        <div class="modal-body">
-            <textarea class="form-control txtAreaDeskripsiNonC"></textarea>
-        </div>
-        <div class="modal-footer">
-          <button type="button" class="btn btn-default pull-left" data-dismiss="modal">Cancel</button>
-          <button type="button" id="" class="btn btn-primary btnUpdateDeskripsiNonC">Yes</button>
-        </div>
-      </div>
-      <!-- /.modal-content -->
-    </div>
-    <!-- /.modal-dialog -->
-</div>
-<!-- /.modal -->
-<div class="modal fade" id="modal-ubahCase">
-    <div class="modal-dialog">
-      <div class="modal-content">
-        <div class="modal-header">
-          <!-- <button type="button" class="close" data-dismiss="modal" aria-label="Close"> -->
-            <!-- <span aria-hidden="true">&times;</span></button> -->
-          <h4 class="modal-title">Edit Case</h4>
-        </div>
-        <div class="modal-body">
-        <select class="form-control select2 slcRemarkNonConformity" name="remark[]" style="width:100%" multiple>
-        <?php foreach ($case as $key => $cases) { ?>
-            <option value="<?= $cases['case_id']?>" namaCase="<?= $cases['case_name']?>"><?= $cases['case_name']?></option>
-        <?php } ?>
-        </select>
-        </div>
-        <div class="modal-footer">
-          <button type="button" class="btn btn-default pull-left" data-dismiss="modal">Cancel</button>
-          <button type="button" id="" class="btn btn-primary btnUpdateCaseNonC">Yes</button>
-        </div>
-      </div>
-      <!-- /.modal-content -->
-    </div>
-    <!-- /.modal-dialog -->
-</div>
-<!-- /.modal -->
-<div class="modal fade" id="modal-ubahStatus">
-    <div class="modal-dialog">
-      <div class="modal-content">
-        <div class="modal-header">
-          <!-- <button type="button" class="close" data-dismiss="modal" aria-label="Close"> -->
-            <!-- <span aria-hidden="true">&times;</span></button> -->
-          <h4 class="modal-title">Change Status</h4>
-        </div>
-        <div class="modal-body">
-        <select class="select select2 slcStatusNonC form-control" width="100%" name="slcCaseStatus">
-            <option value="0" stat="OPEN">OPEN</option>
-            <option value="1" stat="CLOSE">CLOSE</option>
-        </select>
-        </div>
-        <div class="modal-footer">
-          <button type="button" class="btn btn-default pull-left" data-dismiss="modal">Cancel</button>
-          <button type="button" id="" class="btn btn-primary btnUpdateStatusNonC">Yes</button>
-        </div>
-      </div>
-      <!-- /.modal-content -->
-    </div>
-    <!-- /.modal-dialog -->
-</div>
-<!-- /.modal -->
-

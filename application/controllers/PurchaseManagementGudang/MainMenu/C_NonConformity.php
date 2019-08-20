@@ -60,9 +60,9 @@ class C_NonConformity extends CI_Controller
 
 		$user_id = $this->session->userid;
 
-		$data['Title'] = 'Non Conformity';
-		$data['Menu'] = 'Purchase Management';
-		$data['SubMenuOne'] = '';
+		$data['Title'] = 'Pending Assign';
+		$data['Menu'] = 'Non Conformity';
+		$data['SubMenuOne'] = 'Pending Assign';
 		$data['SubMenuTwo'] = '';
 
 		$data['UserMenu'] = $this->M_user->getUserMenu($user_id,$this->session->responsibility_id);
@@ -77,6 +77,62 @@ class C_NonConformity extends CI_Controller
 		$this->load->view('V_Header',$data);
 		$this->load->view('V_Sidemenu',$data);
 		$this->load->view('PurchaseManagementGudang/NonConformity/V_listData', $data);
+		$this->load->view('V_Footer',$data);
+	}
+
+	public function listSupplier()
+	{
+		$user = $this->session->username;
+
+		$user_id = $this->session->userid;
+
+		$data['Title'] = 'List Data Supplier';
+		$data['Menu'] = 'Non Conformity';
+		$data['SubMenuOne'] = 'List Data Supplier';
+		$data['SubMenuTwo'] = '';
+
+		$data['UserMenu'] = $this->M_user->getUserMenu($user_id,$this->session->responsibility_id);
+		$data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id);
+		$data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id);
+
+		$assign = 1;
+
+		$data['PoOracleNonConformityHeaders'] = $this->M_nonconformity->getHeaders2($assign);
+
+		// echo '<pre>';
+		// print_r($data['PoOracleNonConformityHeaders']);exit;
+
+		$this->load->view('V_Header',$data);
+		$this->load->view('V_Sidemenu',$data);
+		$this->load->view('PurchaseManagementGudang/NonConformity/V_listDataSupplier', $data);
+		$this->load->view('V_Footer',$data);
+	}
+
+	public function listSubkon()
+	{
+		$user = $this->session->username;
+
+		$user_id = $this->session->userid;
+
+		$data['Title'] = 'List Data Subkon';
+		$data['Menu'] = 'Non Conformity';
+		$data['SubMenuOne'] = 'List Data Subkon';
+		$data['SubMenuTwo'] = '';
+
+		$data['UserMenu'] = $this->M_user->getUserMenu($user_id,$this->session->responsibility_id);
+		$data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id);
+		$data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id);
+
+		$assign = 2;
+
+		$data['PoOracleNonConformityHeaders'] = $this->M_nonconformity->getHeaders2($assign);
+
+		// echo '<pre>';
+		// print_r($data['PoOracleNonConformityHeaders']);exit;
+
+		$this->load->view('V_Header',$data);
+		$this->load->view('V_Sidemenu',$data);
+		$this->load->view('PurchaseManagementGudang/NonConformity/V_listDataSubkon', $data);
 		$this->load->view('V_Footer',$data);
 	}
 
@@ -127,6 +183,115 @@ class C_NonConformity extends CI_Controller
 		$this->load->view('V_Sidemenu',$data);
 		$this->load->view('PurchaseManagementGudang/NonConformity/V_read', $data);
 		$this->load->view('V_Footer',$data);
+	}
+
+	public function readAssign($id)
+	{
+		$user_id = $this->session->userid;
+
+		$data['Title'] = 'Non Conformity Data';
+		$data['Menu'] = 'Purchase Management';
+		$data['SubMenuOne'] = '';
+		$data['SubMenuTwo'] = '';
+
+		$data['UserMenu'] = $this->M_user->getUserMenu($user_id,$this->session->responsibility_id);
+		$data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id);
+		$data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id);
+
+		$plaintext_string = str_replace(array('-', '_', '~'), array('+', '/', '='), $id);
+		$plaintext_string = $this->encrypt->decode($plaintext_string);
+
+		$data['id'] = $id;
+
+		/* HEADER DATA */
+		$data['PoOracleNonConformityHeaders'] = $this->M_nonconformity->getHeaders($plaintext_string);
+		$data['Phone'] = $this->M_nonconformity->getPhone($data['PoOracleNonConformityHeaders'][0]['po_number']);
+		
+		/* LINES DATA */
+		$data['PoOracleNonConformityLines'] = $this->M_nonconformity->getLines($plaintext_string);
+		// echo '<pre>';
+		// print_r($data['PoOracleNonConformityLines']);
+		// exit;
+		$data['linesItem'] = $this->M_nonconformity->getLinesItem($data['PoOracleNonConformityHeaders'][0]['header_id']);
+		$data['case'] = $this->M_nonconformity->getCase();
+
+		if (count($data['PoOracleNonConformityLines']) > 0) {
+			$sourceId = $data['PoOracleNonConformityLines'][0]['source_id'];
+	
+			$data['image'] = $this->M_nonconformity->getImages($sourceId);
+		}else {
+			$data['image'] = '';
+			$data['PoOracleNonConformityLines'] = '';
+		}
+
+		// echo'<pre>';
+		// print_r($data['PoOracleNonConformityLines']);exit;
+
+		$this->load->view('V_Header',$data);
+		$this->load->view('V_Sidemenu',$data);
+		$this->load->view('PurchaseManagementGudang/NonConformity/V_readAssign', $data);
+		$this->load->view('V_Footer',$data);
+	}
+
+	public function submitAssign()
+	{
+		$encryptId = $this->input->post('hdnHeadId');
+		$plaintext_string = str_replace(array('-', '_', '~'), array('+', '/', '='), $encryptId);
+		$plaintext_string = $this->encrypt->decode($plaintext_string);
+
+		$assign = $this->input->post('slcAssign');
+
+		if ($assign == 2) {
+			$num = $this->M_nonconformity->checkNonConformitySubkonNum();
+			if (count($num)==0) {
+				$nonConformityNum = 'NC-PURSUB-'.date('y').'-'.date('m').'-'.'000';
+			}else{
+				$nonConformityNum = $num[0]['non_conformity_num'];
+			}
+			$numberNC = explode('-', $nonConformityNum);
+
+			$numberNC[4]++;
+
+			$numberNC[4] = sprintf("%03d", $numberNC[4]);
+
+			$nonConformityNumber = implode('-', $numberNC);
+
+			$data = array('non_conformity_num' => $nonConformityNumber, 
+						  'assign' => $assign,
+						);
+			$this->M_nonconformity->updateAssign($plaintext_string, $data);
+		}else if($assign == 1) {
+
+			$num = $this->M_nonconformity->checkNonConformitySupplierNum();
+			if (count($num)==0) {
+				$nonConformityNum = 'NC-PURSUP-'.date('y').'-'.date('m').'-'.'000';
+			}else{
+				$nonConformityNum = $num[0]['non_conformity_num'];
+			}
+			$numberNC = explode('-', $nonConformityNum);
+
+			$numberNC[4]++;
+
+			$numberNC[4] = sprintf("%03d", $numberNC[4]);
+
+			$nonConformityNumber = implode('-', $numberNC);
+
+			
+			$data = array('non_conformity_num' => $nonConformityNumber, 
+						  'assign' => $assign,
+						);
+			$this->M_nonconformity->updateAssign($plaintext_string, $data);
+		}elseif ($assign == 3) {
+			$data = array(
+						  'assign' => $assign,
+						);
+
+			$this->M_nonconformity->updateAssign($plaintext_string, $data);
+		}
+
+
+		redirect('PurchaseManagementGudang/NonConformity/listData', 'refresh');
+
 	}
 
 	public function edit($id)
@@ -207,6 +372,8 @@ class C_NonConformity extends CI_Controller
 			$data['image'] = '';
 			$data['PoOracleNonConformityLines'] = '';
 		}
+
+		$data['case'] = $this->M_nonconformity->getCase();
 
 		// echo'<pre>';
 		// print_r($data['PoOracleNonConformityLines']);exit;
@@ -353,9 +520,9 @@ class C_NonConformity extends CI_Controller
 
 		$user_id = $this->session->userid;
 
-		$data['Title'] = 'Non Conformity';
-		$data['Menu'] = 'Purchase Management';
-		$data['SubMenuOne'] = '';
+		$data['Title'] = 'Submit';
+		$data['Menu'] = 'Non Conformity';
+		$data['SubMenuOne'] = 'Submit';
 		$data['SubMenuTwo'] = '';
 
 		$data['UserMenu'] = $this->M_user->getUserMenu($user_id,$this->session->responsibility_id);
@@ -882,4 +1049,17 @@ class C_NonConformity extends CI_Controller
 		echo 1;
 
 	}
+
+	public function updateStatus()
+	{
+		$status = $_POST['status'];
+		$headerid = $_POST['headerid'];
+
+		$data = array('status' => $status, );
+
+		$this->M_nonconformity->updateStatus($headerid,$data);
+
+		echo 1;
+	}
+	
 }

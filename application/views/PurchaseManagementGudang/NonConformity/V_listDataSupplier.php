@@ -7,14 +7,14 @@
                         <div class="col-lg-11">
                             <div class="text-right"><h1><b><?= $Title ?></b></h1></div>
                         </div>
-                        <div class="col-lg-1">
+                        <!-- <div class="col-lg-1">
                             <div class="text-right hidden-md hidden-sm hidden-xs">
                                 <a class="btn btn-default btn-lg" href="<?php echo site_url('PurchaseManagement/NonConformity');?>">
                                     <i class="icon-wrench icon-2x"></i>
                                     <br/>
                                 </a>
                             </div>
-                        </div>
+                        </div> -->
                     </div>
                 </div>
                 <br/>
@@ -53,7 +53,7 @@
                                             <tr>
                                                 <td align='center'><?php echo $no++;?></td>
                                                 <td align='center'>
-                                                	<a style="margin-right:4px" href="<?php echo base_url('PurchaseManagementGudang/NonConformity/readAssign/'.$encrypted_string.''); ?>" data-toggle="tooltip" data-placement="bottom" title="Read Data"><span class="fa fa-list-alt fa-2x"></span></a>
+                                                	<a style="margin-right:4px" href="<?php echo base_url('PurchaseManagementGudang/NonConformity/read/'.$encrypted_string.''); ?>" data-toggle="tooltip" data-placement="bottom" title="Read Data"><span class="fa fa-list-alt fa-2x"></span></a>
                                                 </td>
                                                 <td><?php echo $row['non_conformity_num'] ?></td>
                                                 <td><?php echo date('Y-m-d', strtotime($row['creation_date'])) ?></td>
