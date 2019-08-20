@@ -13,7 +13,7 @@ class M_nonconformity extends CI_Model
     public function getHeaders($id = FALSE)
     {
     	if ($id === FALSE) {
-            $query = $this->db->query("SELECT * FROM pm.pm_po_oracle_non_conformity_headers WHERE replace(status, ' ', '') NOT LIKE 'cancel' OR status is null AND assign is null ORDER BY non_conformity_num");
+            $query = $this->db->query("SELECT * FROM pm.pm_po_oracle_non_conformity_headers WHERE assign is null ORDER BY non_conformity_num");
         } else {
             $query = $this->db->get_where('pm.pm_po_oracle_non_conformity_headers', array('header_id' => $id));
     	}
