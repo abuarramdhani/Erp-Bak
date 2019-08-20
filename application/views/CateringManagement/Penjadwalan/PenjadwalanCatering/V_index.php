@@ -22,7 +22,7 @@
 					<div class="col-lg-12">
 						<div class="box box-primary box-solid">
 							<div class="box-header with-border">
-								
+
 							</div>
 							<div class="box-body">
 								<div class="row">
@@ -33,6 +33,9 @@
 												<div class="col-lg-4">
 													<input type="text" class="date form-control" name="txtperiodePenjadwalanCatering" id="txtperiodePenjadwalanCatering" value="<?php if (isset($select)) {echo $select['periode'];}?>" placeholder="Periode" data-date-format="yyyy-mm-dd" required>
 												</div>
+												<div class="col-lg-4">
+													<button class="btn fa fa-search fa-2x"></button>
+												</div>
 											</div>
 											<div class="form-group">
 												<label class="control-label col-lg-4">Catering</label>
@@ -40,7 +43,7 @@
 													<select class="select select2" name="txtCateringPenjadwalanCatering" data-placeholder="Katering" required style="width: 100%;">
 														<option></option>
 														<?php
-															
+
 															foreach ($katering as $key) { ?>
 																<option value="<?php echo $key['fs_kd_katering']; ?>" <?php if (isset($select) and $key['fs_kd_katering'] == $select['kode']) {
 																echo "selected";} ?> ><?php echo $key['fs_kd_katering']." - ".$key['fs_nama_katering']; ?></option>
@@ -50,8 +53,16 @@
 												</div>
 											</div>
 											<div class="form-group">
-												<div class="col-lg-8 text-right">
-													<button type="submit" class="btn btn-primary">Search</button>
+												<div class="col-lg-12 text-center">
+													<?php if (isset($select)) {
+														$encrypted_periode = $this->encrypt->encode($select['periode']);
+		                                                $encrypted_periode = str_replace(array('+', '/', '='), array('-', '_', '~'), $encrypted_periode);
+														$encrypted_kode = $this->encrypt->encode($select['kode']);
+		                                                $encrypted_kode = str_replace(array('+', '/', '='), array('-', '_', '~'), $encrypted_kode);
+														?>
+														<a href="<?php echo site_url('CateringManagement/PenjadwalanCatering/Create/'.$encrypted_periode."/".$encrypted_kode) ?>" class="btn btn-primary">Tambah</a>
+														<a href="<?php echo site_url('CateringManagement/PenjadwalanCatering/Distribusi/'.$encrypted_periode."/".$encrypted_kode) ?>" class="btn btn-success" style="margin-left: 50px;">Distribusi</a>
+													<?php } ?>
 												</div>
 											</div>
 										</form>
@@ -59,18 +70,6 @@
 								</div>
 								<div class="row">
 									<div class="col-lg-12 text-right">
-										<div>
-											<?php if (isset($select)) { 
-												$encrypted_periode = $this->encrypt->encode($select['periode']);
-                                                $encrypted_periode = str_replace(array('+', '/', '='), array('-', '_', '~'), $encrypted_periode);
-												$encrypted_kode = $this->encrypt->encode($select['kode']);
-                                                $encrypted_kode = str_replace(array('+', '/', '='), array('-', '_', '~'), $encrypted_kode);
-												?>
-												<a href="<?php echo site_url('CateringManagement/PenjadwalanCatering/Create/'.$encrypted_periode."/".$encrypted_kode) ?>" class="btn btn-primary">Tambah</a>
-												<a href="<?php echo site_url('CateringManagement/PenjadwalanCatering/Distribusi/'.$encrypted_periode."/".$encrypted_kode) ?>" class="btn btn-success" style="margin-left: 50px;">Distribusi</a>
-											<?php } ?>
-										</div>
-										<br>
 										<div class="table-responsive">
 											<table class="datatable table table-hover table-striped table-bordered text-left">
 												<thead class="bg-primary">
