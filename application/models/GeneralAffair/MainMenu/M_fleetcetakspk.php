@@ -5,45 +5,55 @@ class M_fleetcetakspk extends CI_Model
     public function __construct()
     {
         parent::__construct();
-        $this->load->database();    
+        $this->load->database();
     }
 
     public function getFleetCetakSpk($id = FALSE)
     {
     	if ($id === FALSE) {
-    		$query = $this->db->query("select fcspk.*,
+    		$query = $this->db->query("SELECT fcspk.*,
                                                 fkn.nomor_polisi as no_pol,
                                                 (select location_name from er.er_location where location_code = fkn.kode_lokasi_kerja) lokasi,
                                                 fmk.maintenance_kategori as maintenance_kategori,
                                                 fbl.nama_bengkel as nama_bengkel,
                                                 fbl.alamat_bengkel as alamat_bengkel,
-                                                fmkn.merk_kendaraan as merk_kendaraan
+                                                fmkn.merk_kendaraan as merk_kendaraan,
+                                                (select string_agg(jenis_maintenance, ', ')
+                                                 from ga.ga_fleet_cetak_spk_detail fcspkd
+                                                 where fcspkd.surat_id=fcspk.surat_id
+                                                ) as jenis_mtc
                                         from    ga.ga_fleet_cetak_spk as fcspk
                                             left join ga.ga_fleet_kendaraan as fkn
                                             on  fcspk.kendaraan_id=fkn.kendaraan_id
                                             left join ga.ga_fleet_maintenance_kategori as fmk
-                                            on  fcspk.maintenance_kategori_id=fmk.maintenance_kategori_id 
-                                            left join ga.ga_fleet_bengkel as fbl
-                                            on  fcspk.id_bengkel=fbl.bengkel_id
-                                            join ga.ga_fleet_merk_kendaraan as fmkn
-                                            on fkn.merk_kendaraan_id=fmkn.merk_kendaraan_id");
-    	} else {
-    		$query = $this->db->query("select fcspk.*,
-                                                fkn.nomor_polisi as no_pol,
-                                                fmk.maintenance_kategori as maintenance_kategori,
-                                                fbl.nama_bengkel as nama_bengkel,
-                                                fbl.alamat_bengkel as alamat_bengkel,
-                                                fmkn.merk_kendaraan as merk_kendaraan
-                                        from    ga.ga_fleet_cetak_spk as fcspk
-                                            left join ga.ga_fleet_kendaraan as fkn
-                                            on  fcspk.kendaraan_id=fkn.kendaraan_id
-                                            left join ga.ga_fleet_maintenance_kategori as fmk
-                                            on  fcspk.maintenance_kategori_id=fmk.maintenance_kategori_id 
+                                            on  fcspk.maintenance_kategori_id=fmk.maintenance_kategori_id
                                             left join ga.ga_fleet_bengkel as fbl
                                             on  fcspk.id_bengkel=fbl.bengkel_id
                                             join ga.ga_fleet_merk_kendaraan as fmkn
                                             on fkn.merk_kendaraan_id=fmkn.merk_kendaraan_id
-                                        where fcspk.surat_id=$id");
+                                            order by fcspk.tanggal_maintenance desc");
+    	} else {
+    		$query = $this->db->query("SELECT fcspk.*,
+                                                fkn.nomor_polisi as no_pol,
+                                                fmk.maintenance_kategori as maintenance_kategori,
+                                                fbl.nama_bengkel as nama_bengkel,
+                                                fbl.alamat_bengkel as alamat_bengkel,
+                                                fmkn.merk_kendaraan as merk_kendaraan,
+                                                (select string_agg(jenis_maintenance, ', ')
+                                                 from ga.ga_fleet_cetak_spk_detail fcspkd
+                                                 where fcspkd.surat_id=fcspk.surat_id
+                                                ) as jenis_mtc
+                                        from    ga.ga_fleet_cetak_spk as fcspk
+                                            left join ga.ga_fleet_kendaraan as fkn
+                                            on  fcspk.kendaraan_id=fkn.kendaraan_id
+                                            left join ga.ga_fleet_maintenance_kategori as fmk
+                                            on  fcspk.maintenance_kategori_id=fmk.maintenance_kategori_id
+                                            left join ga.ga_fleet_bengkel as fbl
+                                            on  fcspk.id_bengkel=fbl.bengkel_id
+                                            join ga.ga_fleet_merk_kendaraan as fmkn
+                                            on fkn.merk_kendaraan_id=fmkn.merk_kendaraan_id
+                                        where fcspk.surat_id=$id
+                                        order by fcspk.tanggal_maintenance desc");
     	}
 
     	return $query->result_array();
@@ -61,7 +71,7 @@ class M_fleetcetakspk extends CI_Model
                                             left join ga.ga_fleet_kendaraan as fkn
                                             on  fcspk.kendaraan_id=fkn.kendaraan_id
                                             left join ga.ga_fleet_maintenance_kategori as fmk
-                                            on  fcspk.maintenance_kategori_id=fmk.maintenance_kategori_id 
+                                            on  fcspk.maintenance_kategori_id=fmk.maintenance_kategori_id
                                             left join ga.ga_fleet_bengkel as fbl
                                             on  fcspk.id_bengkel=fbl.bengkel_id
                                             join ga.ga_fleet_merk_kendaraan as fmkn
@@ -110,7 +120,7 @@ class M_fleetcetakspk extends CI_Model
         $this->db->delete('ga.ga_fleet_cetak_spk_detail');
     }
 
-	public function getFleetKendaraan($query_lokasi)
+	public function getFleetKendaraan($query_lokasi=false)
 	{
 		$ambilKendaraan     = " select  kdrn.kendaraan_id as kendaraan_id,
                                         kdrn.nomor_polisi as nomor_polisi
