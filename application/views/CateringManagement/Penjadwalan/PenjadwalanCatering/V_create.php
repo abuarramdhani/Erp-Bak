@@ -60,6 +60,7 @@
 									</div>
 									<div class="form-group">
 										<div class="col-lg-8 text-right">
+											<button onclick="goback()" class="btn btn-danger">Batal</button>
 											<button type="submit" class="btn btn-primary">Simpan</button>
 										</div>
 									</div>
@@ -96,13 +97,13 @@
 																	<tr>
 																		<td><?php echo $angka ?></td>
 																		<td><?php echo $key['fd_tanggal'] ?></td>
-																		<td <?php 
-																		if($key['fs_tujuan_shift1']=='t'){ 
+																		<td <?php
+																		if($key['fs_tujuan_shift1']=='t'){
 																			$a = "Kirim";
 																		}else{
 																			$a = "-";
 																		}
-																		if($hasilinput['s1']=='1'){ 
+																		if($hasilinput['s1']=='1'){
 																			$b = "Kirim";
 																		}else{
 																			$b = "-";
@@ -112,13 +113,13 @@
 																		}
 
 																		 ?>><?php if($key['fs_tujuan_shift1']=='t'){ echo "Kirim";}else{echo "-";} ?></td>
-																		<td <?php 
-																		if($key['fs_tujuan_shift2']=='t'){ 
+																		<td <?php
+																		if($key['fs_tujuan_shift2']=='t'){
 																			$a = "Kirim";
 																		}else{
 																			$a = "-";
 																		}
-																		if($hasilinput['s2']=='1'){ 
+																		if($hasilinput['s2']=='1'){
 																			$b = "Kirim";
 																		}else{
 																			$b = "-";
@@ -128,13 +129,13 @@
 																		}
 
 																		 ?>><?php if($key['fs_tujuan_shift2']=='t'){ echo "Kirim";}else{echo "-";} ?></td>
-																		<td <?php 
-																		if($key['fs_tujuan_shift3']=='t'){ 
+																		<td <?php
+																		if($key['fs_tujuan_shift3']=='t'){
 																			$a = "Kirim";
 																		}else{
 																			$a = "-";
 																		}
-																		if($hasilinput['s3']=='1'){ 
+																		if($hasilinput['s3']=='1'){
 																			$b = "Kirim";
 																		}else{
 																			$b = "-";
@@ -144,13 +145,13 @@
 																		}
 
 																		 ?>><?php if($key['fs_tujuan_shift3']=='t'){ echo "Kirim";}else{echo "-";} ?></td>
-																		<td <?php 
-																		if($key['fs_tujuan_shift1']=='t'){ 
+																		<td <?php
+																		if($key['fs_tujuan_shift1']=='t'){
 																			$a = "Kirim";
 																		}else{
 																			$a = "-";
 																		}
-																		if($hasilinput['s1']=='1'){ 
+																		if($hasilinput['s1']=='1'){
 																			$b = "Kirim";
 																		}else{
 																			$b = "-";
@@ -160,13 +161,13 @@
 																		}
 
 																		 ?>><?php if($hasilinput['s1']=='1'){ echo "Kirim";}else{echo "-";} ?></td>
-																		<td <?php 
-																		if($key['fs_tujuan_shift2']=='t'){ 
+																		<td <?php
+																		if($key['fs_tujuan_shift2']=='t'){
 																			$a = "Kirim";
 																		}else{
 																			$a = "-";
 																		}
-																		if($hasilinput['s2']=='1'){ 
+																		if($hasilinput['s2']=='1'){
 																			$b = "Kirim";
 																		}else{
 																			$b = "-";
@@ -176,13 +177,13 @@
 																		}
 
 																		 ?>><?php if($hasilinput['s2']=='1'){ echo "Kirim";}else{echo "-";} ?></td>
-																		<td <?php 
-																		if($key['fs_tujuan_shift3']=='t'){ 
+																		<td <?php
+																		if($key['fs_tujuan_shift3']=='t'){
 																			$a = "Kirim";
 																		}else{
 																			$a = "-";
 																		}
-																		if($hasilinput['s3']=='1'){ 
+																		if($hasilinput['s3']=='1'){
 																			$b = "Kirim";
 																		}else{
 																			$b = "-";
@@ -206,7 +207,7 @@
 							</div>
 						</form>
 					</div>
-				</div>					
+				</div>
 			</div>
 		</div>
 	</div>

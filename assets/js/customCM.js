@@ -421,7 +421,13 @@ $(document).ready(function(){
 	  		dom:'frtp',
 	  	});
 			$('.dataTable-EditTmp').DataTable( {
-	  		dom:'flrtp',
+
+	  	});
+			$('.approveCatering').DataTable( {
+
+	  	});
+			$('.approvedCat').DataTable( {
+
 	  	});
 	  	$('.dataTable-Tmp').DataTable( {
 	      	dom: 'Blrtip',
@@ -441,7 +447,6 @@ $(document).ready(function(){
 	    });
 	});
 
-
 	//Penjadwalan
 
 	$(function(){
@@ -459,9 +464,6 @@ $(document).ready(function(){
 		      "viewMode":'months',
 		      "minViewMode":'months'
 		});
-
-
-
 	});
 
 $(document).ready(function(){
@@ -544,7 +546,7 @@ $(document).ready(function(){
 		allowClear: true,
 		placeholder: "Tempat Makan",
 		ajax: {
-			url: baseurl+'CateringManagement/PesananTambahan/tempatMakan',
+			url: baseurl+'CateringManagement/CateringTambahan/tempatMakan',
 			dataType:'json',
 			type: "GET",
 			data: function (params) {
@@ -558,7 +560,6 @@ $(document).ready(function(){
 							text: item.nama
 						};
 					})
-
 				};
 			},
 		},
@@ -606,15 +607,61 @@ $(document).ready(function(){
 	    						text: item.fs_nama_katering
 	    					};
 	    				})
-
 	    			};
 	    		},
 	    	},
 	    });
+	  });
 
+		$('#Tranfer_modal_ploting-').on('show.bs.modal', function (event) {
+	    var button = $(event.relatedTarget) // Button that triggered the modal
+	    var recipient = button.data('whatever') // Extract info from data-* attributes
+	    // If necessary, you could initiate an AJAX request here (and then do the updating in a callback).
+	    // Update the modal's content. We'll use jQuery here, but you could use a data binding library or other methods instead.
+	    var modal = $(this)
+	    modal.find('.modal-title').text('New message to ' + recipient)
+	    modal.find('.modal-body input').val(recipient)
+
+	    var tgl = $(event.relatedTarget).data('tgl');
+	    var shift = $(event.relatedTarget).data('shift');
+	    var lokasi = $(event.relatedTarget).data('loker');
+	    var tempat_makan = $(event.relatedTarget).data('tempat-makan');
+	    var jml = $(event.relatedTarget).data('jml');
+	    $('#modal-tanggal_katering-').val(tgl);
+	    $('#modal-Shift_pesan-').val(shift);
+	    $('#modal-tanggal_katering-').val(tgl);
+	    $('#modal-lokasi_kerja-').val(lokasi);
+	    $('#modal-tempat_makan-').val(tempat_makan);
+	    $('#modal-jml_total-').val(jml);
+	    $('#modal-select2_katering-').select2({
+	    	minimumInputLength: 0,
+	    	allowClear: true,
+	    	placeholder: "Tempat Pesan",
+	    	ajax: {
+	    		url: baseurl+'CateringManagement/DataPesanan/tempatPesan',
+	    		dataType:'json',
+	    		type: "GET",
+	    		data: function (params) {
+	    			return {term: params.term,
+	    					tgl: tgl,
+	    					shift: shift,
+	    					lokasi: lokasi
+							};
+	    		},
+	    		processResults: function (data) {
+	    			return {
+	    				results: $.map(data, function (item) {
+	    					return {
+	    						id: item.fs_kd_katering,
+	    						text: item.fs_nama_katering
+	    					};
+	    				})
+	    			};
+	    		},
+	    	},
+	    });
 	  });
 });
-
 
 //Cetak
 
@@ -734,7 +781,6 @@ function transferPuasa(banyak,tglsmtr){
 		}else{
 			var persentaseprogress = ((parseInt(tglnow)-parseInt(tglawal))/(parseInt(tglakhir)-parseInt(tglawal)))*100;
 		}
-
 	}
 
 	$.ajax({
@@ -756,9 +802,7 @@ function transferPuasa(banyak,tglsmtr){
 			}
 		}
 	});
-
 };
-
 
 function batalTransferPuasa(){
 	var valtgl = $('#txtPeriodeTranferPuasa').val();
@@ -781,24 +825,27 @@ function pilihDeletePuasa(){
 	$('#formEditReadPuasaCatering').hide();
 	$('#formStatusReadPuasaCatering').hide();
 	$('#btnPilihReadPuasaCatering').hide();
+
 	$('#formDeleteReadPuasaCatering').show();
 	$('#btnSubmitReadPuasaCatering').show();
 }
 
 function pilihEditPuasa(){
-	$('#formEditReadPuasaCatering').show();
-	$('#formStatusReadPuasaCatering').show();
 	$('#btnPilihReadPuasaCatering').hide();
 	$('#formDeleteReadPuasaCatering').hide();
+
+	$('#formEditReadPuasaCatering').show();
+	$('#formStatusReadPuasaCatering').show();
 	$('#btnSubmitReadPuasaCatering').show();
 }
 
 function batalPilihPuasa(){
 	$('#formEditReadPuasaCatering').hide();
 	$('#formStatusReadPuasaCatering').hide();
-	$('#btnPilihReadPuasaCatering').show();
 	$('#formDeleteReadPuasaCatering').hide();
 	$('#btnSubmitReadPuasaCatering').hide();
+
+	$('#btnPilihReadPuasaCatering').show();
 }
 
 $(document).ready(function(){
@@ -806,7 +853,6 @@ $(document).ready(function(){
 });
 
 function modalDelete(id) {
-	// alert(id);
 Swal.fire({
   title: 'Apakah Anda Yakin?',
   text: "Mengapus data ini secara permanent !",
@@ -835,8 +881,6 @@ $(document).ready(function(){
 	  confirmButtonText: 'Ya, Saya Yakin!'
 	}).then((result) => {
 	  if (result.value) {
-	  	// window.location.href = baseurl+"CateringManagement/Extra/PesananManual/Update/"+id;
-	  	// $('form#cm_submit').submit();
 	  	$('#cm_btn_submit2').click();
 	  	return true;
 	  }
@@ -863,8 +907,10 @@ $(document).ready(function() {
 				 $('#txtEditPekerjaanMakan').val(result['pekerjaan']);
 				 $('#makan1').val(result['tempat_makan']);
 				 $('#makan1').select2().trigger('change');
+				 $('#kirimAll').prop('disabled',false);
+		 		 $('#kirimStaff').prop('disabled',false);
+		 	 	 $('#kirimNonStaff').prop('disabled',false);
 			 }
-
 				 });
 	})
 })
@@ -1045,8 +1091,390 @@ function batal(){
 		  }
 }
 
-function reseta(){
+function resetEdit(){
 	$('#makan1').select2('val', '');
 	$('#makan2').select2('val', '');
 	$('#txtSeksiEdit').select2('val', '');
+}
+
+function disableinput()
+{
+	var x = $('#tambahan_pesanan').val();
+	var y = $('#pengurangan_pesanan').val();
+
+	if (x.length > 0 ) {
+		$('#pengurangan_pesanan').attr('disabled',true);
+	}else{
+		$('#pengurangan_pesanan').attr('disabled',false);
+	}
+	if (y.length > 0 ) {
+		$('#tambahan_pesanan').attr('disabled',true);
+	}else {
+		$('#tambahan_pesanan').attr('disabled',false);
+	}
+}
+
+$('#ketnoind').select2({
+		minimumInputLength: 3,
+		allowClear: true,
+		placeholder: "Input Nomor Induk / Nama"
+	})
+
+	$('#noindpribadi').select2({
+		minimumInputLength: 3,
+		allowClear: true,
+		placeholder: "Input Nomor Induk / Nama"
+	})
+
+function kirimapprove(){
+		var shift = $('#shift_pesanan').val();
+		var loker = $('#lokasi_pesanan').val();
+		var tmp_makan = $('#slc_tempat_makan').val();
+		var tambah = $('#tambahan_pesanan').val();
+		var kurang = $('#pengurangan_pesanan').val();
+		var kep = $('#keperluanCat').val();
+		if (kep == "SELEKSI") {
+			var ket = $('#ketnoind').val();
+			var implode = 1;
+		}else if (kep == "T/V") {
+			var ket = $('#TamuVendor').val();
+			var implode = 0;
+		}else if (kep == "LEMBUR"){
+			var ket = $('#noindpribadi').val();
+			var implode = 1;
+		}
+		var approval = $('#app').val();
+		var loading = baseurl + 'assets/img/gif/loadingquick.gif';
+
+		console.log(shift);
+		console.log(loker);
+		console.log(tmp_makan);
+		console.log(tambah);
+		console.log(kurang);
+		console.log(ket);
+		console.log(kep);
+
+		if (tmp_makan == null || (tambah == "" && kurang == "") || ket == null  || approval == '') {
+			Swal.fire(
+			  'Peringatan!',
+			  'Data Harap di isi dengan Lengkap!',
+			  'warning'
+			)
+		}else {
+			Swal.fire({
+				title: 'Apakah Anda Yakin ?',
+				text: "Pesanan akan di Proses",
+				type: 'warning',
+				showCancelButton: true,
+				confirmButtonColor: '#3085d6',
+				cancelButtonColor: '#d33',
+				confirmButtonText: 'Yes'
+			}).then((result) => {
+				if (result.value) {
+					Swal.fire({
+						html : "<img style='width: 100px; height: auto;'src='"+loading+"'>",
+						text : 'Loading...',
+						customClass: 'swal-wide',
+						showConfirmButton:false
+					});
+					$.ajax({
+						type:'POST',
+						data:{
+							shift_pesanan: shift,
+							lokasi_pesanan: loker,
+							tempat_makan: tmp_makan,
+							tambahan_pesanan: tambah,
+							pengurangan_pesanan: kurang,
+							keperluan: kep,
+							ketnoind: ket,
+							implode: implode
+						},
+						url:baseurl+"CateringTambahan/simpan",
+						success:function(result){
+							swal.close();
+							window.location.reload();
+							Swal.fire(
+							  'SUCCESS',
+							  'Data akan dimintakan Approve',
+							  'success'
+							)
+							return true;
+						}
+					});
+					return true;
+				}
+			});
+		}
+}
+
+function reseta(){
+	window.location.reload();
+}
+
+$(document).ready(function(){
+	$('#transfer_all').click(function(){
+		var tanggal = $('#modal-tanggal_katering').val();
+		var shift = $('#modal-Shift_pesan').val();
+		var lokasi_kerja = $('#modal-lokasi_kerja').val();
+		var tempat_makan = $('#modal-tempat_makan').val();
+		var jml_total = $('#modal-jml_total').val();
+		var tempat_katering = $('#modal-select2_katering').val();
+		var loading = baseurl + 'assets/img/gif/loadingquick.gif';
+
+		Swal.fire({
+			title: 'Apakah Anda Yakin ?',
+			text : 'TEMPAT MAKAN ' + $('#modal-tempat_makan').val() + ' AKAN DI PLOTTING KE ' + $('#modal-select2_katering').text(),
+			type: 'warning',
+			showCancelButton: true,
+			confirmButtonColor: '#3085d6',
+			cancelButtonColor: '#d33',
+			confirmButtonText: 'Yes'
+		}).then((result) => {
+			if (result.value) {
+				$.ajax({
+					type:'POST',
+					data:{
+						tanggal_katering: tanggal,
+						Shift_pesan: shift,
+						lokasi_kerja: lokasi_kerja,
+						tempat_makan: tempat_makan,
+						jml_total: jml_total,
+						tempat_katering: tempat_katering
+					},
+					url:baseurl+"CateringManagement/DataPesanan/transfer",
+				  success:function(result){
+				  	Swal.fire({
+					  html : "<img style='width: 100px; height: auto;'src='"+loading+"'>",
+			  	  text : 'Loading...',
+				    customClass: 'swal-wide',
+					  showConfirmButton:false
+					 })
+					 window.location.reload();
+				 return true;
+				 },
+				 error:function(result){
+					 alert('error');
+				 }
+				});
+			}
+		});
+		return false;
+	})
+})
+
+$(document).ready(function(){
+	$('#pindahAll').click(function(){
+		var tanggal = $('#modal-tanggal_katering-').val();
+		var shift = $('#modal-Shift_pesan-').val();
+		var lokasi_kerja = $('#modal-lokasi_kerja-').val();
+		var tempat_makan = $('#modal-tempat_makan-').val();
+		var jml_total = $('#modal-jml_total-').val();
+		var tempat_katering = $('#modal-select2_katering-').val();
+		var loading = baseurl + 'assets/img/gif/loadingquick.gif';
+
+		Swal.fire({
+			title: 'Apakah Anda Yakin ?',
+			text : 'TEMPAT MAKAN ' + $('#modal-tempat_makan-').val() + ' AKAN DI PINDAH KE ' + $('#modal-select2_katering-').text(),
+			type: 'warning',
+			showCancelButton: true,
+			confirmButtonColor: '#3085d6',
+			cancelButtonColor: '#d33',
+			confirmButtonText: 'Yes'
+		}).then((result) => {
+				if (result.value) {
+					$.ajax({
+						url:baseurl+"CateringManagement/DataPesanan/pindah",
+						method:'POST',
+						data:{
+							tanggal_katering: tanggal,
+							Shift_pesan: shift,
+							lokasi_kerja: lokasi_kerja,
+							tempat_makan: tempat_makan,
+							jml_total: jml_total,
+							tempat_katering: tempat_katering
+						},
+						success:function(result){
+							Swal.fire({
+ 						 	html : "<img style='width: 100px; height: auto;'src='"+loading+"'>",
+ 							customClass: 'swal-wide',
+ 							showConfirmButton:false
+ 						 })
+ 						  window.location.reload();
+ 		 				 return true;
+		 				 },
+						 error:function(result){
+							 alert('error');
+						 }
+					});
+				}
+			});
+			return false;
+		})
+	})
+
+function goback(){
+	window.history.back();
+}
+
+function detailcatering(id)
+{
+	var kosong1 = $('#modal-jml_plus_Tambahan').val();
+	var kosong2 = $('#modal-jml_min_Tambahan').val();
+	$.ajax({
+		method: 'POST',
+		url:baseurl+"ApprovalTambahan/Detail",
+		data:{id:id},
+		dataType:'json',
+		success: function(data){
+			console.log(data);
+			$('#modal-id_Tambahan').val(data[0].id);
+			$('#modal-Shift_Tambahan').val(function() {
+				if (data[0].kd_shift == 1) {
+					return 'SHIFT 1 DAN UMUM';
+				}else if (data[0].kd_shift == 2) {
+					return 'SHIFT 2';
+				}else {
+					return 'SHIFT 3';
+				}
+			});
+			$('#modal-lokasi_kerja_Tambahan').val(function() {
+				if (data[0].lokasi_kerja == 1) {
+					return 'YOGYAKARTA (PUSAT)';
+				}else if (data[0].lokasi_kerja == 2) {
+					return 'TUKSONO';
+				}
+			});
+			$('#modal-tempat_makan_Tambahan').val(data[0].tempat_makan);
+			$('#modal-jml_plus_Tambahan').val(function(){
+				if(data[0].tambahan == ''){
+					return '-';
+				}else{
+					return data[0].tambahan;
+				}
+			});
+			$('#modal-jml_min_Tambahan').val(function() {
+				if (data[0].pengurangan == '') {
+					return '-';
+				}else {
+					return data[0].pengurangan;
+				}
+			});
+			$('#modal-keterangan').val(data[0].keterangan);
+			$('#modal-Keperluan').val(data[0].keperluan);
+			$('#modal-pemesan').val(data[0].user_ +' - '+ data[0].nama);
+			$('#modal-siePesan').val(data[0].seksi);
+			if (kosong1 == null) {
+				$('#modal-jml_plus_Tambahan').html("-");
+			}
+			if (data[0].status == 1) {
+				$('#appcatering2').hide();
+				$('#appcatering3').hide();
+				$('#appcatering1').hide();
+				$('#appcatering4').hide();
+
+				$('#appcatering1').show();
+			}else if (data[0].status == 2) {
+				$('#appcatering2').hide();
+				$('#appcatering3').hide();
+				$('#appcatering1').hide();
+				$('#appcatering4').hide();
+
+				$('#appcatering2').show();
+			}else if (data[0].status == 4) {
+				$('#appcatering2').hide();
+				$('#appcatering3').hide();
+				$('#appcatering1').hide();
+				$('#appcatering2').hide();
+
+				$('#appcatering4').show();
+			}else{
+				$('#appcatering2').hide();
+				$('#appcatering3').hide();
+				$('#appcatering1').hide();
+				$('#appcatering4').hide();
+
+				$('#appcatering3').show();
+			}
+
+			$("#modal-approve-catering").modal();
+		}
+	})
+
+}
+
+function ApproveCatering()
+{
+	let id = $('#modal-id_Tambahan').val();
+	let shift = $('#modal-Shift_Tambahan').val();
+	let loker = $('#modal-lokasi_kerja_Tambahan').val();
+	let tmp_makan = $('#modal-tempat_makan_Tambahan').val();
+	let plus = $("#modal-jml_plus_Tambahan").val();
+	let min = $('#modal-jml_min_Tambahan').val();
+	$.ajax({
+		method: 'POST',
+		url: baseurl+"ApprovalTambahan/Approval",
+		data:{
+			id:id,
+			Shift_Tambahan: shift,
+			lokasi_kerja: loker,
+			tempat_makan: tmp_makan,
+			plus:plus,
+			min: min,
+			status:2
+		},
+		success:function(data){
+			var url = baseurl + "ApprovalTambahan";
+			$('#page').load(url + " #page");
+			$("#modal-approve-catering").modal('hide');
+			Swal.fire({
+				title: 'Success',
+				text: "Pesanan Telah di Approve",
+				type: 'success'
+			})
+		}
+	})
+}
+
+function RejectCatering() {
+	let id = $('#modal-id_Tambahan').val();
+
+	$.ajax({
+		method: 'POST',
+		url: baseurl+"ApprovalTambahan/Approval",
+		data:{
+			id:id,
+			status:3
+		},
+		success:function(data){
+			var url = baseurl + "ApprovalTambahan";
+			$('#page').load(url + " #page");
+			$("#modal-approve-catering").modal('hide');
+			Swal.fire({
+				title: 'Reject Success',
+				text: "Pesanan Telah di Reject",
+				type: 'error'
+			})
+		}
+	})
+}
+
+function KeperluanSelekted() {
+	let kep = $('#keperluanCat').val();
+
+	if( kep == "SELEKSI" || kep == "all") {
+     $('#ketinputdiv').removeClass('hilang');
+
+		 $('#ketinput2div').addClass('hilang');
+		 $('#ketareadiv').addClass('hilang');
+	}else if (kep == "T/V") {
+		$('#ketareadiv').removeClass('hilang');
+
+		$('#ketinputdiv').addClass('hilang');
+		$('#ketinput2div').addClass('hilang');
+	}else if (kep == "LEMBUR") {
+		$('#ketinput2div').removeClass('hilang');
+
+		$('#ketareadiv').addClass('hilang');
+		$('#ketinputdiv').addClass('hilang');
+	}
 }

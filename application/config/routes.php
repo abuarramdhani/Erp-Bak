@@ -505,6 +505,10 @@ $route['KeluarMasukKendaraan/(:any)/(:any)'] = 'KeluarMasukKendaraan/C_Index/$1/
 //------------------------------------Catering Management---------------------------------------------------
 $route['CateringManagement'] 						= 'CateringManagement/C_CateringManagement/index';
 
+$route['ApprovalTambahan'] = 'CateringManagement/C_Approval';
+$route['ApprovalTambahan/(:any)'] = 'CateringManagement/C_Approval/$1';
+$route['ApprovalTambahan/(:any)/(:any)'] = 'CateringManagement/C_Approval/$1/$2';
+
 $route['CateringManagement/Receipt'] 				= 'CateringManagement/C_Receipt/index';
 $route['CateringManagement/Receipt/Create'] 		= 'CateringManagement/C_Receipt/create';
 $route['CateringManagement/Receipt/Update'] 		= 'CateringManagement/C_Receipt/update';
@@ -619,9 +623,9 @@ $route['CateringManagement/DataPesanan'] = 'CateringManagement/Pesanan/C_Pesanan
 $route['CateringManagement/DataPesanan/(:any)'] = 'CateringManagement/Pesanan/C_Pesanan/$1';
 $route['CateringManagement/DataPesanan/(:any)/(:any)'] = 'CateringManagement/Pesanan/C_Pesanan/$1/$2';
 
-$route['CateringManagement/PesananTambahan'] = 'CateringManagement/Pesanan/C_Tambahan';
-$route['CateringManagement/PesananTambahan/(:any)'] = 'CateringManagement/Pesanan/C_Tambahan/$1';
-$route['CateringManagement/PesananTambahan/(:any)/(:any)'] = 'CateringManagement/Pesanan/C_Tambahan/$1/$2';
+$route['CateringTambahan'] = 'CateringTambahan/C_Tambahan';
+$route['CateringTambahan/(:any)'] = 'CateringTambahan/C_Tambahan/$1';
+$route['CateringTambahan/(:any)/(:any)'] = 'CateringTambahan/C_Tambahan/$1/$2';
 
 $route['CateringManagement/Plotting'] = 'CateringManagement/Pesanan/C_Plotting';
 $route['CateringManagement/Plotting/(:any)'] = 'CateringManagement/Pesanan/C_Plotting/$1';
