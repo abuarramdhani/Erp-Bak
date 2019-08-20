@@ -3,8 +3,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 class C_ChartDashboard extends CI_Controller {
 
-	public function __construct()
-	{
+	public function __construct(){
 		parent::__construct();
 		  
         $this->load->helper('form');
@@ -25,16 +24,14 @@ class C_ChartDashboard extends CI_Controller {
 		 }
 	}
 
-	public function checkSession() 
-	{
-		if ( $this->session->is_logged ){
-		} else {
+	public function checkSession() {
+		if($this->session->is_logged){
+		}else{
 			redirect('index');
 		}
 	}
 
-	public function index() 
-	{
+	public function index() {
         $this->checkSession();
 		$user_id = $this->session->userid;
 		
@@ -44,43 +41,36 @@ class C_ChartDashboard extends CI_Controller {
 		$data['UserMenu'] 		= $this->M_user->getUserMenu($user_id,$this->session->responsibility_id);
 		$data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id);
         $data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id);
-					
-		$data['SectionList'] = $this->M_chart->GetSectionList();
-	
+		
 		$this->load->view('V_Header',$data);
 		$this->load->view('V_Sidemenu',$data);
         $this->load->view('MonitoringBiayaKeuangan/MainMenu/Dashboard/V_ChartDashboard',$data);
         $this->load->view('V_Footer',$data);
 	}
+	
+	
+	public function AjaxGetFinanceCost() {
+		$data['FinanceCostTotal'] = $this->M_chart->GetFinanceCostDashboard();
 		
-	public function AjaxGetFinanceCostDashboardBySectionName() 
-	{
 		$arr['label'] = array();
 		$arr['tahun1'] = array();
 		$arr['tahun2'] = array();
 
-		$id = $this->input->post('SecName');
-
-		$arr['Section'] = $id;
-
-		$data['FinanceCostBySectionName'] = $this->M_chart->GetFinanceCostDashboardBySectionName($id);
-
-		foreach ($data['FinanceCostBySectionName'] as $key => $val) {
+		foreach ($data['FinanceCostTotal'] as $key => $val) {
 			array_push($arr['label'], array($val['FLEX_VALUE'], $val['DESCRIPTION']));
 			array_push($arr['tahun1'], $val['TAHUN_1']);
 			array_push($arr['tahun2'], $val['TAHUN_2']);
 		}
 
 		echo json_encode($arr);
-
 	}
 
-	public function ExportReportToExcel($id)
+	public function ExportReportToExcel()
 	{
 		$this->checkSession();
 		$user_id = $this->session->userid;
 
-		$data['FinanceCostBySectionName'] = $this->M_chart->GetFinanceCostDashboardBySectionName($id);
+		$data['FinanceCostTotal'] = $this->M_chart->GetFinanceCostDashboard();
 
 		$objPHPExcel = new PHPExcel();
 
@@ -100,7 +90,7 @@ class C_ChartDashboard extends CI_Controller {
 		$objset->setCellValue("E1", "TAHUN 2");
 
 		$row = 2;
-		foreach ($data['FinanceCostBySectionName'] as $key => $val) {
+		foreach ($data['FinanceCostTotal'] as $key => $val) {
 			$objset->setCellValue("A".$row, $key+1);
 			$objset->setCellValue("B".$row, $val['FLEX_VALUE']);
 			$objset->setCellValue("C".$row, $val['DESCRIPTION']);
@@ -112,7 +102,7 @@ class C_ChartDashboard extends CI_Controller {
 		$objPHPExcel->setActiveSheetIndex(0);
 		$objPHPExcel->getActiveSheet()
 					->setTitle('Monitoring Biaya Keuangan')
-					->getStyle('A1:E'.(count($data['FinanceCostBySectionName'])+1))
+					->getStyle('A1:E'.(count($data['FinanceCostTotal'])+1))
 					->getAlignment()
 					->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_LEFT);
 		$objWriter = PHPExcel_IOFactory::createWriter($objPHPExcel, 'Excel2007');
@@ -121,7 +111,7 @@ class C_ChartDashboard extends CI_Controller {
 		header("Cache-Control: post-check=0, pre-check=0", false);
 		header("Pragma: no-cache");
 		header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
-		header('Content-Disposition: attachment;filename="Report Monitoring Biaya Keuangan - Biaya Total - Seksi '.$id.' - '.date('d M Y').'.xlsx"');
+		header('Content-Disposition: attachment;filename="Monitoring Biaya Keuangan Total - '.date('d M Y').'.xlsx"');
 		$objWriter->save("php://output");
 	}
 

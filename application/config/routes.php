@@ -2807,8 +2807,3 @@ $route['MonitoringBiayaKeuangan'] = 'MonitoringBiayaKeuangan/C_Index';
 $route['MonitoringBiayaKeuangan/Detail'] = 'MonitoringBiayaKeuangan/MainMenu/Detail/C_ChartDetail';
 $route['MonitoringBiayaKeuangan/Detail/(:any)'] = 'MonitoringBiayaKeuangan/MainMenu/Detail/C_ChartDetail/$1';
 $route['MonitoringBiayaKeuangan/Detail/(:any)/(:any)'] = 'MonitoringBiayaKeuangan/MainMenu/Detail/C_ChartDetail/$1/$2';
-
-$route['MonitoringBiayaKeuangan'] = 'MonitoringBiayaKeuangan/C_Index';
-$route['MonitoringBiayaKeuangan/BiayaSeksi'] = 'MonitoringBiayaKeuangan/MainMenu/BiayaSeksi/C_ChartBiayaSeksi';
-$route['MonitoringBiayaKeuangan/BiayaSeksi/(:any)'] = 'MonitoringBiayaKeuangan/MainMenu/BiayaSeksi/C_ChartBiayaSeksi/$1';
-$route['MonitoringBiayaKeuangan/BiayaSeksi/(:any)/(:any)'] = 'MonitoringBiayaKeuangan/MainMenu/BiayaSeksi/C_ChartBiayaSeksi/$1/$2';
