@@ -385,8 +385,8 @@ SELECT DISTINCT pol.po_line_id line_id,
                 source
                 FROM khs_ap_monitoring_invoice
                 WHERE batch_number is not null
-                and (last_purchasing_invoice_status = 1
-                or last_finance_invoice_status = 2)
+                and (last_purchasing_invoice_status = 1 OR last_purchasing_invoice_status = 2
+                and last_finance_invoice_status = 2)
                 $source
                 ORDER BY submited_date DESC";
         $query = $oracle->query($sql);
