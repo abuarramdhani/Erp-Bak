@@ -1,4 +1,3 @@
-
 <?php defined('BASEPATH') OR die('No direct script access allowed');
 
 class M_monitoringpengirimangudang extends CI_Model
