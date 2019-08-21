@@ -319,6 +319,8 @@ function addRowResponsibility(base){
 	e.preventDefault();
 	$("select#slcUserResponsbility:last").select2("destroy");
 	$("select#slcActive:last").select2("destroy");
+	$("select#slcLokal:last").select2("destroy");
+	$("select#slcInternet:last").select2("destroy");
 	
 	$('.clone').last().clone().appendTo(newgroup).appendTo('#tbodyUserResponsibility');
 
@@ -341,10 +343,31 @@ function addRowResponsibility(base){
 		placeholder: "",
 			allowClear : true,
 	});
+
+	$("select#slcLokal").select2({
+		placeholder: "",
+			allowClear : true,
+	});
 	
+	$("select#slcLokal:last").select2({
+		placeholder: "",
+			allowClear : true,
+	});
+
+	$("select#slcInternet").select2({
+		placeholder: "",
+			allowClear : true,
+	});
+	
+	$("select#slcInternet:last").select2({
+		placeholder: "",
+			allowClear : true,
+	});
 	
 	$("select#slcUserResponsbility:last").val("").change();
 	$("select#slcActive:last").val("").change();
+	$("select#slcLokal:last").val("").change();
+	$("select#slcInternet:last").val("").change();
 	$("input#hdnUserApplicationId:last").val("0");
 	$("button.btnDeleteUserResponsibility:last").attr("id-user-responsibility","0");
 }

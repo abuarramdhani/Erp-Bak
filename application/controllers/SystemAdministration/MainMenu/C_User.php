@@ -135,6 +135,8 @@ class C_User extends CI_Controller {
 				
 				$responsibility_id = $this->input->post('slcUserResponsbility');
 				$active = $this->input->post('slcActive');
+				$lokal		= $this->input->post('slcLokal');
+				$internet	= $this->input->post('slcInternet');
 				
 				$i=0;
 				foreach($responsibility_id as $loop){
@@ -143,7 +145,9 @@ class C_User extends CI_Controller {
 						'user_id'				=> $insert_id,
 						'active'				=> $active[$i],
 						'creation_date' 		=> $this->input->post('hdnDate'),
-						'created_by' 			=> $this->input->post('hdnUser')
+						'created_by' 			=> $this->input->post('hdnUser'),
+						'lokal'					=> $lokal[$i],
+						'internet'				=> $internet[$i]
 					);
 					$this->M_user->setUserResponsbility($data_responsbility[$i]);
 					$i++;
@@ -172,9 +176,11 @@ class C_User extends CI_Controller {
 		
 		$plaintext_string=str_replace(array('-', '_', '~'), array('+', '/', '='), $id);
 		$plaintext_string = $this->encrypt->decode($plaintext_string);
+
 		
 		$data['UserResponsibility'] = $this->M_user->getUserResponsibility($plaintext_string);
-		//echo $plaintext_string;
+		// print_r($data['UserResponsibility']);exit();
+		// echo $plaintext_string;exit();
 
 		$data['UserData'] = $this->M_user->getUser($plaintext_string);
 		$data['id'] = $id;
@@ -217,7 +223,11 @@ class C_User extends CI_Controller {
 			$user_application_id = $this->input->post('hdnUserApplicationId');
 			
 			$i=0;
+			$lokal		= $this->input->post('slcLokal');
+			$internet	= $this->input->post('slcInternet');
+
 			foreach($responsibility_id as $loop){
+
 				$data_responsbility[$i] = array(
 					'user_group_menu_id' 	=> $responsibility_id[$i],
 					'user_id'				=> $plaintext_string,
@@ -225,8 +235,12 @@ class C_User extends CI_Controller {
 					'last_update_date' 		=> $this->input->post('hdnDate'),
 					'last_updated_by' 		=> $this->input->post('hdnUser'),
 					'creation_date' 		=> $this->input->post('hdnDate'),
-					'created_by' 			=> $this->input->post('hdnUser')
+					'created_by' 			=> $this->input->post('hdnUser'),
+					'lokal'					=> $lokal[$i],
+					'internet'				=> $internet[$i]
 				);
+				
+				// print_r($data_responsbility);exit();
 				if(count($responsibility_id) > 0){
 					if($user_application_id[$i]==0){
 						unset($data_responsbility[$i]['last_update_date']);
@@ -237,7 +251,7 @@ class C_User extends CI_Controller {
 						unset($data_responsbility[$i]['created_by']);
 						$UserResponsibility = $this->M_user->getUserResponsibility($plaintext_string,"",$user_application_id[$i]);
 						if($data_responsbility[$i]['user_group_menu_id']!=$UserResponsibility[0]['user_group_menu_id'] 
-						or $data_responsbility[$i]['active']!=$UserResponsibility[0]['active']){
+						or $data_responsbility[$i]['active']!=$UserResponsibility[0]['active'] or $data_responsbility[$i]['lokal']!=$UserResponsibility[0]['lokal'] or $data_responsbility[$i]['internet']!= $UserResponsibility[0]['internet']){
 							$this->M_user->UpdateUserResponsbility($data_responsbility[$i],$user_application_id[$i]);
 						}
 					}
