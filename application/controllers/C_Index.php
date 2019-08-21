@@ -48,7 +48,11 @@ class C_Index extends CI_Controller {
 			//$data['user'] = $usr;
 			$data['Menu'] = 'dashboard';
 
-			$data['UserResponsibility'] = $this->M_user->getUserResponsibility($user_id);
+			if(base_url('')=='http://182.23.18.195/'){
+				$data['UserResponsibility'] = $this->M_user->getUserResponsibilityInternet($user_id);
+			}else{
+				$data['UserResponsibility'] = $this->M_user->getUserResponsibility($user_id);
+			}			
 			
 			$this->load->view('V_Header',$data);
 			$this->load->view('V_Sidemenu',$data);
