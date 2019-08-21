@@ -86,8 +86,10 @@
 															<table class="table table-bordered table-hover text-center"  style="table-layout: fixed;" name="tblUserResponsbility" id="tblUserResponsbility">
 																<thead>
 																	<tr class="bg-primary">
-																		<th width="70%">Responsibility</th>
-																		<th width="20%">Active</th>
+																		<th width="60%">Responsibility</th>
+																		<th width="10%">Active</th>
+																		<th width="10%">Lokal</th>
+																		<th width="10%">Internet</th>
 																		<th width="10%">Delete</th>
 																	</tr>
 																</thead>
@@ -107,6 +109,20 @@
 																				<option value=""></option>
 																				<option value="Y">Yes</option>
 																				<option value="N">No</option>
+																			</select>
+																		</td>
+																		<td>
+																			<select class="form-control select4" name="slcLokal[]" id="slcLokal" >
+																				<option value="" ></option>
+																				<option value="1">Yes</option>
+																				<option value="0">No</option>
+																			</select>
+																		</td>
+																		<td>
+																			<select class="form-control select4" name="slcInternet[]" id="slcInternet" >
+																				<option value="" ></option>
+																				<option value="1">Yes</option>
+																				<option value="0">No</option>
 																			</select>
 																		</td>
 																		<td>

@@ -86,8 +86,10 @@
 															<table class="table table-bordered table-hover text-center"  style="table-layout: fixed;" name="tblUserResponsbility" id="tblUserResponsbility">
 																<thead>
 																	<tr class="bg-primary">
-																		<th width="70%">Responsibility</th>
-																		<th width="20%">Active</th>
+																		<th width="60%">Responsibility</th>
+																		<th width="10%">Active</th>
+																		<th width="10%">Lokal</th>
+																		<th width="10%">Internet</th>
 																		<th width="10%">Delete</th>
 																	</tr>
 																</thead>
@@ -110,6 +112,20 @@
 																				<option value="" <?php if($UserResponsibility_item['active']=="N"){echo "selected";} ?>></option>
 																				<option value="Y" <?php if($UserResponsibility_item['active']=="Y"){echo "selected";} ?>>Yes</option>
 																				<option value="N" <?php if($UserResponsibility_item['active']=="N"){echo "selected";} ?>>No</option>
+																			</select>
+																		</td>
+																		<td>
+																			<select class="form-control select4" name="slcLokal[]" id="slcLokal" >
+																				<option <?php if($UserResponsibility_item['lokal']==0){echo "selected";} ?> value="" ></option>
+																				<option <?php if($UserResponsibility_item['lokal']==1){echo "selected";} ?>  value="1">Yes</option>
+																				<option <?php if($UserResponsibility_item['lokal']==0){echo "selected";}?> value="0">No</option>
+																			</select>
+																		</td>
+																		<td>
+																			<select class="form-control select4" name="slcInternet[]" id="slcInternet" >
+																				<option <?php if($UserResponsibility_item['internet']==0){echo "selected";} ?> value="" ></option>
+																				<option <?php if($UserResponsibility_item['internet']==1){echo "selected";} ?> value="1">Yes</option>
+																				<option <?php if($UserResponsibility_item['internet']==0){echo "selected";} ?> value="0">No</option>
 																			</select>
 																		</td>
 																		<td>
