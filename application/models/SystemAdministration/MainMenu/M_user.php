@@ -131,6 +131,42 @@ class M_user extends CI_Model {
 				
 		}
 
+		public function getUserResponsibilityInternet($user_id=FALSE,$responsbility_id="",$user_application_id="")
+		{	
+			if($responsbility_id==""){
+				$and = "";
+			}else{
+				$and = "AND sugm.user_group_menu_id = $responsbility_id";
+			}
+			
+			if($user_application_id==""){
+				$and1 = "";
+			}else{
+				$and1 = "AND sua.user_application_id = $user_application_id";
+			}
+			
+			$sql = "SELECT su.user_id,sugm.user_group_menu_id, sugm.user_group_menu_name, 
+					smod.module_name,smod.module_link,sua.active,sua.user_application_id,sugm.org_id, smod.module_image,sua.lokal,sua.internet
+					FROM sys.sys_user su,
+					sys.sys_user_application sua,
+					sys.sys_user_group_menu sugm,
+					sys.sys_module smod
+					WHERE 
+					1 = 1
+					AND sua.internet=1
+					AND su.user_id = sua.user_id
+					AND sua.user_group_menu_id = sugm.user_group_menu_id
+					AND smod.module_id= sugm.module_id
+					AND su.user_id=$user_id
+					$and $and1
+					order by sugm.user_group_menu_name;
+					";					
+			
+			$query = $this->db->query($sql);
+			return $query->result_array();
+				
+		}
+
 				
 		public function getUserReport($report_name=FALSE,$responsbility_id="",$user_id="")
 		{	
