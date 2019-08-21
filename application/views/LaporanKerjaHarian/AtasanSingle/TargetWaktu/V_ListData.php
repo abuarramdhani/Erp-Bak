@@ -1,9 +1,6 @@
 <style type="text/css">
     .dataTables_wrapper .dataTables_processing {
         position: absolute;
-        /* margin-top: 45px;
-        padding-top: 16px;
-        padding-bottom: 40px; */
         text-align: center;
         font-size: 1.2em;
         z-index: 999;
