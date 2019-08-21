@@ -1,4 +1,3 @@
-
 <?php defined('BASEPATH') OR die('No direct script access allowed');
 
 class M_monitoringpengirimansparepart extends CI_Model

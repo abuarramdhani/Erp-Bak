@@ -1,7 +1,6 @@
-
 <?php defined('BASEPATH') OR die('No direct script access allowed');
 
-class M_monitoringpengirimangudang extends CI_Model
+class M_monitoringpengirimanunit extends CI_Model
 {
   var $oracle;
   function __construct()
@@ -26,7 +25,7 @@ class M_monitoringpengirimangudang extends CI_Model
     {
       $db = $this->load->database('dpostgre',true);
       $sql = "
-       select
+      select
               osh.shipment_header_id                                                        no_shipment
               ,ovt.name                                                                     jenis_kendaraan
               ,osh.estimate_depart_date                                                     berangkat
@@ -71,13 +70,13 @@ class M_monitoringpengirimangudang extends CI_Model
     {
       $db = $this->load->database('dpostgre',true);
       $sql = "
-        select
+       select
               osh.shipment_header_id                                                      no_shipment
               ,ovt.name                                                                   jenis_kendaraan
               ,osh.estimate_depart_date                                                   berangkat
               ,osh.estimate_loading_date                                                  loading
               ,ofg.name                                                                   asal_gudang
---              ,CONCAT(op.name,'-',oc.name)                                              tujuan
+--              ,CONCAT(op.name,'-',oc.name)                                                tujuan
             ,ooc.name                                                                     cabang
             ,ooc.cabang_id                                                                cabang_id
 --              ,op.province_id                                                           province_id
@@ -130,7 +129,15 @@ class M_monitoringpengirimangudang extends CI_Model
      public function getUnit()
      {
       $db = $this->load->database('dpostgre',true);
-      $sql = "select unit_id, name from om.om_unit";
+      $sql = "select unit_id, name from om.om_unit where unit_id not in (0)";
+      $runQuery = $db->query($sql);
+      return $runQuery->result_array();
+     } 
+
+     public function getUnitEdit()
+     {
+      $db = $this->load->database('dpostgre',true);
+      $sql = "select * from om.om_unit";
       $runQuery = $db->query($sql);
       return $runQuery->result_array();
      } 
@@ -178,10 +185,19 @@ class M_monitoringpengirimangudang extends CI_Model
       public function getContentId()
      {
       $db = $this->load->database('dpostgre',true);
+      $sql = "select content_type_id content_id, name from om.om_content_type where content_type_id in (1,3)";
+      $runQuery = $db->query($sql);
+      return $runQuery->result_array();
+     }
+
+     public function getContentIdEdit()
+     {
+      $db = $this->load->database('dpostgre',true);
       $sql = "select content_type_id content_id, name from om.om_content_type";
       $runQuery = $db->query($sql);
       return $runQuery->result_array();
      }
+
 
      // untill here!-----------------------------------------------------------------------------
 
@@ -217,27 +233,209 @@ class M_monitoringpengirimangudang extends CI_Model
       return $runQuery->result_array();
       } 
 
-      public function insertActualTime($id,$brkt,$load)
+// proses saving MPM ada di sini bruh --------------------------------------------------
+      public function saveInsertMpm($edd,$eld,$fingo,$status,$cabang,$jk,$usr)
       {
         $db = $this->load->database('dpostgre',true);
-        $sql = "UPDATE om.om_shipment_header
-                SET 
-                actual_loading_date = '$load',
-                actual_depart_date = '$brkt'
-                WHERE  shipment_header_id = '$id'";
+        $sql = "insert into om.om_shipment_header 
+                      (estimate_depart_date,
+                      estimate_loading_date,
+                      shipment_from_fg_id,   
+                      is_full_flag,
+                      shipment_to_cabang_id,
+                      vehicle_type_id,
+                      creation_date,
+                      created_by) 
+                values ('$edd', 
+                      '$eld',
+                      '$fingo', 
+                      '$status', 
+                      '$cabang', 
+                      '$jk',
+                      now(),
+                      '$usr')";
         $runQuery = $db->query($sql);
       }
 
-      public function timegudang($id)
-      {
+      public function getNumberShipment()
+       {
         $db = $this->load->database('dpostgre',true);
-        $sql = "select actual_loading_date, actual_depart_date from om.om_shipment_header where shipment_header_id = $id";
+        $sql = "select max (shipment_header_id) id from om.om_shipment_header";
         $runQuery = $db->query($sql);
         return $runQuery->result_array();
+
+       } 
+
+       public function saveInsertMpm2($noShip,$content,$jumlah,$tipe,$unit,$user)
+       {
+        $db = $this->load->database('dpostgre',true);
+        $sql = "insert into om.om_shipment_line (creation_date, shipment_header_id, content_type_id, 
+                quantity, uom_id, unit_id, created_by)
+                values (now(), $noShip, $content, $jumlah, $tipe, $unit, '$user')";
+        $runQuery = $db->query($sql);
+       }
+// -------------------------------------------------------------------------------------------------
+       // update header
+       public function updateMPM($edd,$eld,$fingo,$status,$cabang,$jk,$usr,$id)
+       {
+          $db = $this->load->database('dpostgre',true);
+          $sql = "UPDATE om.om_shipment_header
+                    SET estimate_depart_date = '$edd',
+                    estimate_loading_date = '$eld',
+                    shipment_from_fg_id = '$fingo',
+                    is_full_flag = '$status',
+                    shipment_to_cabang_id = '$cabang',
+                    vehicle_type_id = '$jk',
+                    creation_date = now(),
+                    created_by = '$usr'
+                    WHERE  shipment_header_id = '$id'";
+        $runQuery = $db->query($sql);
+       }
+
+       public function deleteMPM($id)
+       {
+         $db = $this->load->database('dpostgre',true);
+         $sql = "DELETE 
+                    FROM om.om_shipment_line
+                    WHERE shipment_header_id = '$id'";
+        $runQuery = $db->query($sql);
+       }
+
+       public function UpdatebyInsertMPM($noShip,$content,$jumlah,$tipe,$unit,$user)
+       {
+        $db = $this->load->database('dpostgre',true);
+        $sql = "insert into om.om_shipment_line (creation_date, shipment_header_id, content_type_id, 
+                quantity, uom_id, unit_id, created_by)
+                values (now(), $noShip, $content, $jumlah, $tipe, $unit, '$user')";
+        $runQuery = $db->query($sql);
+       }
+// -----------------------setup----------------------------------------------------------------------------------------------
+      public function SaveKota($kota,$id)
+      {
+        $db = $this->load->database('dpostgre',true);
+        $sql = "insert into om.om_city (name, province_id) values ('$kota', '$id')";
+        $runQuery = $db->query($sql);
+        $sql2 = "delete from om.om_city where province_id = '0'";
+        $runQuery = $db->query($sql2);
+
       }
+
+      public function SaveProv($prov)
+      {
+        $db = $this->load->database('dpostgre',true);
+        $sql = "insert into om.om_province (name) values ('$prov')";
+        $runQuery = $db->query($sql);
+      }
+
+      public function SaveJK($jk)
+      {
+        $db = $this->load->database('dpostgre',true);
+        $sql = "insert into om.om_vehicle_type (name) values ('$jk')";
+        $runQuery = $db->query($sql);
+      }
+
+       public function SaveUnit($unit)
+      {
+        $db = $this->load->database('dpostgre',true);
+        $sql = "insert into om.om_unit (name) values ('$unit')";
+        $runQuery = $db->query($sql);
+      }
+
       
-    
-         
+    public function saveCabangName($cbg,$alamat)
+    {
+        $db = $this->load->database('dpostgre',true);
+        $sql = "insert into om.om_cabang (name, alamat,active_flag) values ('$cbg', '$alamat', 'Y')";
+        $runQuery = $db->query($sql);
+    }
+
+    public function SetupCabang()
+     {
+        $db = $this->load->database('dpostgre',true);
+        $sql = "select cabang_id, name, alamat from om.om_cabang";
+        $runQuery = $db->query($sql);
+        return $runQuery->result_array();
+     } 
+
+     public function caricabang($id)
+     {
+        $db = $this->load->database('dpostgre',true);
+        $sql = "select cabang_id, name, alamat from om.om_cabang where cabang_id='$id'";
+        $runQuery = $db->query($sql);
+        return $runQuery->result_array();
+     }
+     public function deleteRoow($iddaw)
+     {
+        $db = $this->load->database('dpostgre',true);
+        $sql = "delete from om.om_cabang where cabang_id = '$iddaw'";
+        $runQuery = $db->query($sql);
+     }
+
+     public function editRow($id,$alamat,$nama)
+     {
+        $db = $this->load->database('dpostgre',true);
+        $sql = "update om.om_cabang set name = '$nama', alamat = '$alamat' where cabang_id = $id";
+        // echo $sql;
+        $runQuery = $db->query($sql);
+     }
+    public function setupvehicle()
+    {   $db = $this->load->database('dpostgre',true);
+        $sql = "select ovt.vehicle_type_id, ovt.name from om.om_vehicle_type ovt";
+        $runQuery = $db->query($sql);
+        return $runQuery->result_array();
+    }
+
+    public function setupUnit()
+    {
+        $db = $this->load->database('dpostgre',true);
+        $sql = "select unit_id, name from om.om_unit";
+        $runQuery = $db->query($sql);
+        return $runQuery->result_array();
+    }
+
+    public function deleteRowUnit($id)
+    {
+        $db = $this->load->database('dpostgre',true);
+        $sql = "delete from om.om_unit where unit_id = $id";
+        $runQuery = $db->query($sql);
+    }
+
+     public function deleteRowUnit2($id)
+    {
+        $db = $this->load->database('dpostgre',true);
+        $sql = "delete from om.om_vehicle_type where vehicle_type_id = $id";
+        $runQuery = $db->query($sql);
+    }
+
+    public function saveVehicle($id,$name)
+    {
+        $db = $this->load->database('dpostgre',true);
+        $sql = "update om.om_vehicle_type set name = '$name' where vehicle_type_id = $id";
+        $runQuery = $db->query($sql);
+    }
+
+    public function saveUnit2($id,$name)
+    {
+        $db = $this->load->database('dpostgre',true);
+        $sql = "update om.om_unit set name = '$name' where unit_id = $id";
+        $runQuery = $db->query($sql);
+    }
+
+    public function getVehicle($id)
+    {
+        $db = $this->load->database('dpostgre',true);
+        $sql = "select vehicle_type_id id, name from om.om_vehicle_type where vehicle_type_id = $id";
+        $runQuery = $db->query($sql);
+        return $runQuery->result_array();
+    }
+
+    public function getUnit2($id)
+    {
+        $db = $this->load->database('dpostgre',true);
+        $sql = "select unit_id id, name from om.om_unit where unit_id = $id";
+        $runQuery = $db->query($sql);
+        return $runQuery->result_array();
+    }
 }
 
 ?>
