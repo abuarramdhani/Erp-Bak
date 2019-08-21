@@ -12,7 +12,7 @@ class C_MonitoringPengirimanGudang extends CI_Controller{
           //load the login model
 		$this->load->library('session');
 		$this->load->model('M_Index');
-		$this->load->model('MonitoringPengirimanGudang/M_MonitoringPengirimanGudang');
+		$this->load->model('MonitoringPengirimanGudang/M_monitoringpengirimangudang');
 		$this->load->model('SystemAdministration/MainMenu/M_user');
 		date_default_timezone_set('Asia/Jakarta');
 		  
@@ -59,7 +59,7 @@ class C_MonitoringPengirimanGudang extends CI_Controller{
 		$data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id);
 		$data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id);
 	
-		$data_kirim = $this->M_MonitoringPengirimanGudang->SelectDashboard();
+		$data_kirim = $this->M_monitoringpengirimangudang->SelectDashboard();
 		$data['kirim'] = $data_kirim;
 
 		$this->load->view('V_Header',$data);
@@ -101,7 +101,7 @@ class C_MonitoringPengirimanGudang extends CI_Controller{
 			$query .= "";
 		}
 
-		$getFind = $this->M_MonitoringPengirimanGudang->FindShipment($query);
+		$getFind = $this->M_monitoringpengirimangudang->FindShipment($query);
 		$data['find'] = $getFind;
 
 		$return = $this->load->view('MonitoringPengirimanGudang/V_findTable_gd',$data);
@@ -117,16 +117,16 @@ class C_MonitoringPengirimanGudang extends CI_Controller{
 		}else{
 			$query .= "";
 		}
-		$getHeader = $this->M_MonitoringPengirimanGudang->FindShipment($query);
-		$getLine = $this->M_MonitoringPengirimanGudang->editMPM($no_ship);
-		$getProv = $this->M_MonitoringPengirimanGudang->getProvince();
-		$getFinGo = $this->M_MonitoringPengirimanGudang->getFinishGood();
-		// $getCity = $this->M_MonitoringPengirimanGudang->getCity();
-		$jk = $this->M_MonitoringPengirimanGudang->getJK();
-		$getTipe = $this->M_MonitoringPengirimanGudang->getUom();
-		$getUnit = $this->M_MonitoringPengirimanGudang->getUnit();
-		$content_id = $this->M_MonitoringPengirimanGudang->getContentId();
-		$time = $this->M_MonitoringPengirimanGudang->timegudang($no_ship);
+		$getHeader = $this->M_monitoringpengirimangudang->FindShipment($query);
+		$getLine = $this->M_monitoringpengirimangudang->editMPM($no_ship);
+		$getProv = $this->M_monitoringpengirimangudang->getProvince();
+		$getFinGo = $this->M_monitoringpengirimangudang->getFinishGood();
+		// $getCity = $this->M_monitoringpengirimangudang->getCity();
+		$jk = $this->M_monitoringpengirimangudang->getJK();
+		$getTipe = $this->M_monitoringpengirimangudang->getUom();
+		$getUnit = $this->M_monitoringpengirimangudang->getUnit();
+		$content_id = $this->M_monitoringpengirimangudang->getContentId();
+		$time = $this->M_monitoringpengirimangudang->timegudang($no_ship);
 
 
 		$data['time'] = $time;
@@ -151,15 +151,15 @@ class C_MonitoringPengirimanGudang extends CI_Controller{
 		$actual_loading = $this->input->post('actual_loading');
 		
          // update header
-        $insertActual = $this->M_MonitoringPengirimanGudang->insertActualTime($no_ship,$actual_brkt,$actual_loading);
+        $insertActual = $this->M_monitoringpengirimangudang->insertActualTime($no_ship,$actual_brkt,$actual_loading);
 
 	}
 
 
 	public function getRow() {
-		$getTipe = $this->M_MonitoringPengirimanGudang->getUom();
-		$getUnit = $this->M_MonitoringPengirimanGudang->getUnit();
-		$content_id = $this->M_MonitoringPengirimanGudang->getContentId();
+		$getTipe = $this->M_monitoringpengirimangudang->getUom();
+		$getUnit = $this->M_monitoringpengirimangudang->getUnit();
+		$content_id = $this->M_monitoringpengirimangudang->getContentId();
 
 		$data['content_id'] = $content_id;
 		$data['unit'] = $getUnit;

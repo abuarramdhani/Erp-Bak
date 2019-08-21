@@ -12,7 +12,7 @@ class C_MonitoringPengirimanSparepart extends CI_Controller{
           //load the login model
 		$this->load->library('session');
 		$this->load->model('M_Index');
-		$this->load->model('MonitoringPengirimanSparepart/M_MonitoringPengirimanSparepart');
+		$this->load->model('MonitoringPengirimanSparepart/M_monitoringpengirimansparepart');
 		$this->load->model('SystemAdministration/MainMenu/M_user');
 		date_default_timezone_set('Asia/Jakarta');
 		  
@@ -59,7 +59,7 @@ class C_MonitoringPengirimanSparepart extends CI_Controller{
 		$data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id);
 		$data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id);
 	
-		$data_kirim = $this->M_MonitoringPengirimanSparepart->SelectDashboard();
+		$data_kirim = $this->M_monitoringpengirimansparepart->SelectDashboard();
 		$data['kirim'] = $data_kirim;
 
 		$this->load->view('V_Header',$data);
@@ -101,7 +101,7 @@ class C_MonitoringPengirimanSparepart extends CI_Controller{
 			$query .= "";
 		}
 
-		$getFind = $this->M_MonitoringPengirimanSparepart->FindShipment($query);
+		$getFind = $this->M_monitoringpengirimansparepart->FindShipment($query);
 		$data['find'] = $getFind;
 
 		$return = $this->load->view('MonitoringPengirimanSparepart/V_findTable_sp',$data);
@@ -117,14 +117,14 @@ class C_MonitoringPengirimanSparepart extends CI_Controller{
 		}else{
 			$query .= "";
 		}
-		$getHeader = $this->M_MonitoringPengirimanSparepart->FindShipment($query);
-		$getLine = $this->M_MonitoringPengirimanSparepart->editMPM($no_ship);
-		$getCabang = $this->M_MonitoringPengirimanSparepart->getCabang();
-		$getFinGo = $this->M_MonitoringPengirimanSparepart->getFinishGood();
-		$jk = $this->M_MonitoringPengirimanSparepart->getJK();
-		$getTipe = $this->M_MonitoringPengirimanSparepart->getUom();
-		$content_id = $this->M_MonitoringPengirimanSparepart->getContentId();
-		$getUnit = $this->M_MonitoringPengirimanSparepart->getUnit();
+		$getHeader = $this->M_monitoringpengirimansparepart->FindShipment($query);
+		$getLine = $this->M_monitoringpengirimansparepart->editMPM($no_ship);
+		$getCabang = $this->M_monitoringpengirimansparepart->getCabang();
+		$getFinGo = $this->M_monitoringpengirimansparepart->getFinishGood();
+		$jk = $this->M_monitoringpengirimansparepart->getJK();
+		$getTipe = $this->M_monitoringpengirimansparepart->getUom();
+		$content_id = $this->M_monitoringpengirimansparepart->getContentId();
+		$getUnit = $this->M_monitoringpengirimansparepart->getUnit();
 
 		$data['unit'] = $getUnit;
 		$data['uom'] = $getTipe;
@@ -141,9 +141,9 @@ class C_MonitoringPengirimanSparepart extends CI_Controller{
 
 	}
 	public function getRowsp() {
-		$getTipe = $this->M_MonitoringPengirimanSparepart->getUom();
-		$getUnit = $this->M_MonitoringPengirimanSparepart->getUnitSp();
-		$content_id = $this->M_MonitoringPengirimanSparepart->getSparepart();
+		$getTipe = $this->M_monitoringpengirimansparepart->getUom();
+		$getUnit = $this->M_monitoringpengirimansparepart->getUnitSp();
+		$content_id = $this->M_monitoringpengirimansparepart->getSparepart();
 
 		$data['content_id'] = $content_id;
 		$data['unit'] = $getUnit;
@@ -168,12 +168,12 @@ class C_MonitoringPengirimanSparepart extends CI_Controller{
 		$cabang = $this->input->post('cabang');
 		
          // update header
-        $updateMPM1 = $this->M_MonitoringPengirimanSparepart->updateMPM($estimasi,$estimasi_loading,$finish_good,$status,$cabang,$kendaraan,$usrname,$no_ship);
+        $updateMPM1 = $this->M_monitoringpengirimansparepart->updateMPM($estimasi,$estimasi_loading,$finish_good,$status,$cabang,$kendaraan,$usrname,$no_ship);
         // update line
-        $deleteLine = $this->M_MonitoringPengirimanSparepart->deleteMPM($no_ship);
+        $deleteLine = $this->M_monitoringpengirimansparepart->deleteMPM($no_ship);
         
         foreach ($content as $key => $value) {
-		$updateMPM2 = $this->M_MonitoringPengirimanSparepart->UpdatebyInsertMPM($no_ship,$value,$jumlah[$key],$tipe[$key],$unit[$key],$usrname);
+		$updateMPM2 = $this->M_monitoringpengirimansparepart->UpdatebyInsertMPM($no_ship,$value,$jumlah[$key],$tipe[$key],$unit[$key],$usrname);
 		}
 
 	}
