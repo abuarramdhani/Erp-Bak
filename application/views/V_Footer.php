@@ -48,6 +48,11 @@
 		<script type="text/javascript" src="<?= base_url('assets/plugins/datepicker/js/bootstrap-datepicker.js') ?>"></script>
 		<script type="text/javascript" src="<?= base_url('assets/plugins/daterangepicker-master/daterangepicker.js') ?>"></script>
 		<script type="text/javascript" src="<?= base_url('assets/plugins/timepicker/js/bootstrap-timepicker.min.js') ?>"></script>
+		<!-- datetimepicker -->
+		<script type="text/javascript" src="<?= base_url('assets/plugins/datetimepicker/build/jquery.datetimepicker.full.js') ?>"></script>
+		<script type="text/javascript" src="<?= base_url('assets/plugins/datetimepicker/build/jquery.datetimepicker.full.min.js') ?>"></script>
+		<script type="text/javascript" src="<?= base_url('assets/plugins/datetimepicker/build/jquery.datetimepicker.min.js') ?>"></script>
+		<!-- end -->
 		<script type="text/javascript" src="<?= base_url('assets/plugins/switch/static/js/bootstrap-switch.min.js') ?>"></script>
 		<script type="text/javascript" src="<?= base_url('assets/plugins/jquery.dualListbox-1.3/jquery.dualListBox-1.3.min.js') ?>"></script>
 		<script type="text/javascript" src="<?= base_url('assets/plugins/autosize/jquery.autosize.min.js') ?>"></script>
@@ -154,6 +159,7 @@
 		<script type="text/javascript" src="<?= base_url('assets/js/customTK.js') ?>"></script>
 		<script type="text/javascript" src="<?= base_url('assets/js/customAS.js') ?>"></script>
 		<script type="text/javascript" src="<?= base_url('assets/js/customMBK.js') ?>"></script>
+		<script type="text/javascript" src="<?= base_url('assets/js/customMPM.js') ?>"></script>
 		<script src="<?php echo base_url('assets/js/customMLP.js');?>" type="text/javascript"></script>
 		<script src="<?php echo base_url('assets/js/customMLPB.js');?>" type="text/javascript"></script>
 		<script src="<?php echo base_url('assets/js/customMLPA.js');?>" type="text/javascript"></script>
