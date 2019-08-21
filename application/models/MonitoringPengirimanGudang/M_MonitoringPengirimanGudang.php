@@ -1,7 +1,7 @@
 
 <?php defined('BASEPATH') OR die('No direct script access allowed');
 
-class M_MonitoringPengirimanGudang extends CI_Model
+class M_monitoringpengirimangudang extends CI_Model
 {
   var $oracle;
   function __construct()

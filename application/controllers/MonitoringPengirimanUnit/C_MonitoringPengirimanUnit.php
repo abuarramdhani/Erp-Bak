@@ -12,7 +12,7 @@ class C_MonitoringPengirimanUnit extends CI_Controller{
           //load the login model
 		$this->load->library('session');
 		$this->load->model('M_Index');
-		$this->load->model('MonitoringPengirimanUnit/M_MonitoringPengirimanUnit');
+		$this->load->model('MonitoringPengirimanUnit/M_monitoringpengirimanunit');
 		$this->load->model('SystemAdministration/MainMenu/M_user');
 		date_default_timezone_set('Asia/Jakarta');
 		  
@@ -59,7 +59,7 @@ class C_MonitoringPengirimanUnit extends CI_Controller{
 		$data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id);
 		$data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id);
 	
-		$data_kirim = $this->M_MonitoringPengirimanUnit->SelectDashboard();
+		$data_kirim = $this->M_monitoringpengirimanunit->SelectDashboard();
 		$data['kirim'] = $data_kirim;
 
 		$this->load->view('V_Header',$data);
@@ -100,7 +100,7 @@ class C_MonitoringPengirimanUnit extends CI_Controller{
 			$query .= "";
 		}
 
-		$getFind = $this->M_MonitoringPengirimanUnit->FindShipment($query);
+		$getFind = $this->M_monitoringpengirimanunit->FindShipment($query);
 		$data['find'] = $getFind;
 
 		$return = $this->load->view('MonitoringPengirimanUnit/V_findTable',$data);
@@ -116,16 +116,16 @@ class C_MonitoringPengirimanUnit extends CI_Controller{
 		}else{
 			$query .= "";
 		}
-		$getHeader = $this->M_MonitoringPengirimanUnit->FindShipment($query);
-		$getLine = $this->M_MonitoringPengirimanUnit->editMPM($no_ship);
-		$getFinGo = $this->M_MonitoringPengirimanUnit->getFinishGood();
-		$getCabang = $this->M_MonitoringPengirimanUnit->getCabang();
-		$jk = $this->M_MonitoringPengirimanUnit->getJK();
-		$getTipe = $this->M_MonitoringPengirimanUnit->getUom();
-		$getUnit = $this->M_MonitoringPengirimanUnit->getUnit();
-		$content_id = $this->M_MonitoringPengirimanUnit->getContentId();
-		$getUnitEdit = $this->M_MonitoringPengirimanUnit->getUnitEdit();
-		$content_idEdit = $this->M_MonitoringPengirimanUnit->getContentIdEdit();
+		$getHeader = $this->M_monitoringpengirimanunit->FindShipment($query);
+		$getLine = $this->M_monitoringpengirimanunit->editMPM($no_ship);
+		$getFinGo = $this->M_monitoringpengirimanunit->getFinishGood();
+		$getCabang = $this->M_monitoringpengirimanunit->getCabang();
+		$jk = $this->M_monitoringpengirimanunit->getJK();
+		$getTipe = $this->M_monitoringpengirimanunit->getUom();
+		$getUnit = $this->M_monitoringpengirimanunit->getUnit();
+		$content_id = $this->M_monitoringpengirimanunit->getContentId();
+		$getUnitEdit = $this->M_monitoringpengirimanunit->getUnitEdit();
+		$content_idEdit = $this->M_monitoringpengirimanunit->getContentIdEdit();
 		
 		$data['unit'] = $getUnit;
 		$data['uom'] = $getTipe;
@@ -158,12 +158,12 @@ class C_MonitoringPengirimanUnit extends CI_Controller{
 		$content = $this->input->post('content');
 		
          // update header
-        $updateMPM1 = $this->M_MonitoringPengirimanUnit->updateMPM($estimasi,$estimasi_loading,$finish_good,$status,$cabang,$kendaraan,$usrname,$no_ship);
+        $updateMPM1 = $this->M_monitoringpengirimanunit->updateMPM($estimasi,$estimasi_loading,$finish_good,$status,$cabang,$kendaraan,$usrname,$no_ship);
         // update line
-        $deleteLine = $this->M_MonitoringPengirimanUnit->deleteMPM($no_ship);
+        $deleteLine = $this->M_monitoringpengirimanunit->deleteMPM($no_ship);
         
         foreach ($content as $key => $value) {
-		$updateMPM2 = $this->M_MonitoringPengirimanUnit->UpdatebyInsertMPM($no_ship,$value,$jumlah[$key],$tipe[$key],$unit[$key],$usrname);
+		$updateMPM2 = $this->M_monitoringpengirimanunit->UpdatebyInsertMPM($no_ship,$value,$jumlah[$key],$tipe[$key],$unit[$key],$usrname);
 		}
 		// redirect('MonitoringPengiriman/Dashboard');
 
@@ -184,14 +184,14 @@ class C_MonitoringPengirimanUnit extends CI_Controller{
 		$data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id);
 
 		$prov_id = $this->input->post('provinsi');
-		$getFinGo = $this->M_MonitoringPengirimanUnit->getFinishGood();
-		$getProv = $this->M_MonitoringPengirimanUnit->getProvince();
-		$getTipe = $this->M_MonitoringPengirimanUnit->getUom();
-		$getUnit = $this->M_MonitoringPengirimanUnit->getUnit();
-		$id = $this->M_MonitoringPengirimanUnit->getId();
-		$jk = $this->M_MonitoringPengirimanUnit->getJK();
-		$content_id = $this->M_MonitoringPengirimanUnit->getContentId();
-		$cabang = $this->M_MonitoringPengirimanUnit->getCabang();
+		$getFinGo = $this->M_monitoringpengirimanunit->getFinishGood();
+		$getProv = $this->M_monitoringpengirimanunit->getProvince();
+		$getTipe = $this->M_monitoringpengirimanunit->getUom();
+		$getUnit = $this->M_monitoringpengirimanunit->getUnit();
+		$id = $this->M_monitoringpengirimanunit->getId();
+		$jk = $this->M_monitoringpengirimanunit->getJK();
+		$content_id = $this->M_monitoringpengirimanunit->getContentId();
+		$cabang = $this->M_monitoringpengirimanunit->getCabang();
 
 		$data['unit'] = $getUnit;
 		$data['uom'] = $getTipe;
@@ -211,7 +211,7 @@ class C_MonitoringPengirimanUnit extends CI_Controller{
 	public function SelectCity()
 	{
 		$code = $this->input->post('param');
-		$getCity = $this->M_MonitoringPengirimanUnit->getCity2($code);
+		$getCity = $this->M_monitoringpengirimanunit->getCity2($code);
 
 		$data['city2'] = $getCity;
 		echo json_encode($data);
@@ -219,9 +219,9 @@ class C_MonitoringPengirimanUnit extends CI_Controller{
 	}
 
 	public function getRow() {
-		$getTipe = $this->M_MonitoringPengirimanUnit->getUom();
-		$getUnit = $this->M_MonitoringPengirimanUnit->getUnit();
-		$content_id = $this->M_MonitoringPengirimanUnit->getContentId();
+		$getTipe = $this->M_monitoringpengirimanunit->getUom();
+		$getUnit = $this->M_monitoringpengirimanunit->getUnit();
+		$content_id = $this->M_monitoringpengirimanunit->getContentId();
 
 		$data['content_id'] = $content_id;
 		$data['unit'] = $getUnit;
@@ -245,12 +245,12 @@ class C_MonitoringPengirimanUnit extends CI_Controller{
 		$tipe = $this->input->post('tipe');
 		$content = $this->input->post('content');
 
-		$saveMPM1 = $this->M_MonitoringPengirimanUnit->saveInsertMpm($estimasi,$estimasi_loading,$finish_good,$status,$cabang,$kendaraan,$usrname);
-		$dataId = $this->M_MonitoringPengirimanUnit->getNumberShipment();
+		$saveMPM1 = $this->M_monitoringpengirimanunit->saveInsertMpm($estimasi,$estimasi_loading,$finish_good,$status,$cabang,$kendaraan,$usrname);
+		$dataId = $this->M_monitoringpengirimanunit->getNumberShipment();
 		$id = $dataId[0]['id'];
 
 		foreach ($content as $key => $value) {
-		$saveMPM2 = $this->M_MonitoringPengirimanUnit->saveInsertMpm2($id,$value,$jumlah[$key],$tipe[$key],$unit[$key],$usrname);
+		$saveMPM2 = $this->M_monitoringpengirimanunit->saveInsertMpm2($id,$value,$jumlah[$key],$tipe[$key],$unit[$key],$usrname);
 		}
 	
 	    // redirect('MonitoringPengiriman/Dashboard');
@@ -266,11 +266,11 @@ class C_MonitoringPengirimanUnit extends CI_Controller{
 		$data['UserMenu'] = $this->M_user->getUserMenu($user_id,$this->session->responsibility_id);
 		$data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id);
 		$data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id);
-		// $getProv = $this->M_MonitoringPengirimanUnit->getProvince();
-		// $jk = $this->M_MonitoringPengirimanUnit->getJK();
-		// $getUnit = $this->M_MonitoringPengirimanUnit->getUnit();
-		$setupVehicle = $this->M_MonitoringPengirimanUnit->setupvehicle();
-		$setupUnit = $this->M_MonitoringPengirimanUnit->setupUnit();
+		// $getProv = $this->M_monitoringpengirimanunit->getProvince();
+		// $jk = $this->M_monitoringpengirimanunit->getJK();
+		// $getUnit = $this->M_monitoringpengirimanunit->getUnit();
+		$setupVehicle = $this->M_monitoringpengirimanunit->setupvehicle();
+		$setupUnit = $this->M_monitoringpengirimanunit->setupUnit();
 
 		$data['unit'] = $setupUnit;
 		$data['vehicle'] = $setupVehicle;
@@ -288,12 +288,12 @@ class C_MonitoringPengirimanUnit extends CI_Controller{
 	 	$set_unit = $this->input->post('set_unit');
 
 	 	if ($set_jk == NULL){ 
-	 	$SaveUnit = $this->M_MonitoringPengirimanUnit->SaveUnit($set_unit);
+	 	$SaveUnit = $this->M_monitoringpengirimanunit->SaveUnit($set_unit);
 	 	}elseif ($set_unit == NULL) {
-	 	$SaveJK = $this->M_MonitoringPengirimanUnit->SaveJK($set_jk);
+	 	$SaveJK = $this->M_monitoringpengirimanunit->SaveJK($set_jk);
 	 	}else {
-	 	$SaveUnit = $this->M_MonitoringPengirimanUnit->SaveUnit($set_unit);
-	 	$SaveJK = $this->M_MonitoringPengirimanUnit->SaveJK($set_jk);
+	 	$SaveUnit = $this->M_monitoringpengirimanunit->SaveUnit($set_unit);
+	 	$SaveJK = $this->M_monitoringpengirimanunit->SaveJK($set_jk);
 	 	}
 	 } 
 
@@ -309,7 +309,7 @@ class C_MonitoringPengirimanUnit extends CI_Controller{
 		$data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id);
 		$data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id);
 		
-		$getTabelCabang = $this->M_MonitoringPengirimanUnit->SetupCabang();
+		$getTabelCabang = $this->M_monitoringpengirimanunit->SetupCabang();
 
 		$data['cabang'] = $getTabelCabang;
 
@@ -326,13 +326,13 @@ class C_MonitoringPengirimanUnit extends CI_Controller{
 		$cabangname = $this->input->post('cabang');
 		$alamatcabang = $this->input->post('alamat');
 		// echo "<pre>";print_r($_POST);exit();
-		$saveCabangName = $this->M_MonitoringPengirimanUnit->saveCabangName($cabangname,$alamatcabang);
+		$saveCabangName = $this->M_monitoringpengirimanunit->saveCabangName($cabangname,$alamatcabang);
 	}
 
 	public function bukaModal()
 	{
 		$id = $this->input->post('cabang_id');
-		$searchCabang = $this->M_MonitoringPengirimanUnit->caricabang($id);
+		$searchCabang = $this->M_monitoringpengirimanunit->caricabang($id);
 		$data['data'] = $searchCabang;
 
 		// echo "pre";print_r($data);exit();
@@ -342,7 +342,7 @@ class C_MonitoringPengirimanUnit extends CI_Controller{
 	public function deleteRow()
 	{
 		$id = $this->input->post('id');
-		$deleteRoow = $this->M_MonitoringPengirimanUnit->deleteRoow($id);
+		$deleteRoow = $this->M_monitoringpengirimanunit->deleteRoow($id);
 	}
 
 	public function editCabang()
@@ -352,21 +352,21 @@ class C_MonitoringPengirimanUnit extends CI_Controller{
 		$alamat = strtoupper($this->input->post('alamat'));
 		$namacabang = strtoupper($this->input->post('namacabang'));
 
-		$editRow = $this->M_MonitoringPengirimanUnit->editRow($id,$alamat,$namacabang);
+		$editRow = $this->M_monitoringpengirimanunit->editRow($id,$alamat,$namacabang);
 	}
 
 	public function deleteUnit()
 	{
 		$id = $this->input->post('id');
 
-		$deleteRowUnit = $this->M_MonitoringPengirimanUnit->deleteRowUnit($id);
+		$deleteRowUnit = $this->M_monitoringpengirimanunit->deleteRowUnit($id);
 	}
 
 	public function deleteVehicle()
 	{
 		$id = $this->input->post('id');
 
-		$deleteRowUnit = $this->M_MonitoringPengirimanUnit->deleteRowUnit2($id);
+		$deleteRowUnit = $this->M_monitoringpengirimanunit->deleteRowUnit2($id);
 	}
 
 	public function EditVehicle()
@@ -374,7 +374,7 @@ class C_MonitoringPengirimanUnit extends CI_Controller{
 		$id = strtoupper($this->input->post('id'));
 		$name = strtoupper($this->input->post('name'));
 
-		$saveEditVehicle = $this->M_MonitoringPengirimanUnit->saveVehicle($id,$name);
+		$saveEditVehicle = $this->M_monitoringpengirimanunit->saveVehicle($id,$name);
 
 
 	}
@@ -384,14 +384,14 @@ class C_MonitoringPengirimanUnit extends CI_Controller{
 		$id = strtoupper($this->input->post('id'));
 		$name = strtoupper($this->input->post('name'));
 
-		$saveEditVehicle = $this->M_MonitoringPengirimanUnit->saveUnit2($id,$name);
+		$saveEditVehicle = $this->M_monitoringpengirimanunit->saveUnit2($id,$name);
 	}
 
 	public function openVehicle()
 	{
 		$id = $this->input->post('id_vehicle');
 
-		$data = $this->M_MonitoringPengirimanUnit->getVehicle($id);
+		$data = $this->M_monitoringpengirimanunit->getVehicle($id);
 
 		$data['vehicle'] = $data;
 		$return = $this->load->view('MonitoringPengirimanUnit/V_vehicleEdit',$data);
@@ -402,7 +402,7 @@ class C_MonitoringPengirimanUnit extends CI_Controller{
 	{
 		$id = $this->input->post('id_unit');
 
-		$data = $this->M_MonitoringPengirimanUnit->getUnit2($id);
+		$data = $this->M_monitoringpengirimanunit->getUnit2($id);
 
 		$data['unit'] = $data;
 		$return = $this->load->view('MonitoringPengirimanUnit/V_unitEdit',$data);
