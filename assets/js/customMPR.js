@@ -31,19 +31,22 @@ $(function(){
 });
 
 $(document).ready(function(){
-	var table = $('#table-gaji-pekerja-keluar').DataTable({
-		// fixedHeader		: true,
-		scrollY			: '400px',
-		scrollX			: true,
-		scrollCollapse	: true,
-		columnDefs: [
-            { width: 200, targets: 0 }
-        ],
-	});
+	var tblexist = $('#table-gaji-pekerja-keluar').html();
+	if(tblexist){
+		var table = $('#table-gaji-pekerja-keluar').DataTable({
+			// fixedHeader		: true,
+			scrollY			: '400px',
+			scrollX			: true,
+			scrollCollapse	: true,
+			columnDefs: [
+	            { width: 200, targets: 0 }
+	        ],
+		});
 
-	new $.fn.dataTable.FixedColumns( table, {
-		leftColumns: 4
-	} );
+		new $.fn.dataTable.FixedColumns( table, {
+			leftColumns: 4
+		} );
+	}
 });
 
 $(document).ready(function(){
