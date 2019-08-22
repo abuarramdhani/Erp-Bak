@@ -2842,3 +2842,13 @@ $route['MonitoringPengirimanGudang/(:any)'] = 'MonitoringPengirimanGudang/C_Moni
 $route['MonitoringPengirimanGudang/Dashboard'] = 'MonitoringPengirimanGudang/C_MonitoringPengirimanGudang/dashboard_gd';
 $route['MonitoringPengirimanGudang/FindShipment'] = 'MonitoringPengirimanGudang/C_MonitoringPengirimanGudang/findShipment_gd';
 $route['MonitoringPengirimanGudang/FindShipment/(:any)'] = 'MonitoringPengirimanGudang/C_MonitoringPengirimanGudang/$1';
+
+// --------------------------------------- Monitoring Biaya Seksi ICT ----------------------------------------------//
+$route['MonitoringBiayaSeksiICT'] = 'MonitoringBiayaSeksiICT/C_Index';
+$route['MonitoringBiayaSeksiICT/Dashboard'] = 'MonitoringBiayaSeksiICT/MainMenu/Dashboard/C_ChartDashboard';
+$route['MonitoringBiayaSeksiICT/Dashboard/(:any)'] = 'MonitoringBiayaSeksiICT/MainMenu/Dashboard/C_ChartDashboard/$1';
+$route['MonitoringBiayaSeksiICT/Dashboard/(:any)/(:any)'] = 'MonitoringBiayaSeksiICT/MainMenu/Dashboard/C_ChartDashboard/$1/$2';
+
+$route['MonitoringBiayaSeksiICT/Detail'] = 'MonitoringBiayaSeksiICT/MainMenu/Detail/C_ChartDetail';
+$route['MonitoringBiayaSeksiICT/Detail/(:any)'] = 'MonitoringBiayaSeksiICT/MainMenu/Detail/C_ChartDetail/$1';
+$route['MonitoringBiayaSeksiICT/Detail/(:any)/(:any)'] = 'MonitoringBiayaSeksiICT/MainMenu/Detail/C_ChartDetail/$1/$2';
