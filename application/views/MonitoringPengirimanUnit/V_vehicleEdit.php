@@ -8,6 +8,9 @@
 	<div class="inner" >
 		<div class="row">
 					<div class="col-lg-12">
+			<div class="text-left ">
+							<span><b><i class="fa fa-gear"></i> Edit Kendaraan </b></span>
+						</div>
 						<div class="box box-primary box-solid">
 							<div class="box-body">
 								<div class="box box-primary box-solid">
@@ -17,7 +20,7 @@
 												class="col-md-12" style="margin-bottom: 20px">
 													<tr>
 																<td style="width: 20%">
-																	<span><label>Edit Kendaraan</label></span>
+																	<span><label>Kendaraan</label></span>
 																</td>
 																<td style="width: 40%">
 																	<input class="form-control capital" style="width: 300px;margin-left: 10px" type="text" id="vehiclename" name="vehiclename" value="<?php echo $vehicle[0]['name'] ?>"></input>

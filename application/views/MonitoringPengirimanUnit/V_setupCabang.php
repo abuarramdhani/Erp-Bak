@@ -50,8 +50,8 @@
 												</div>
 											</div>
 										</div>
-									<div class="col-md-12 pull-left">
-										<button onclick="SaveCabang($(this))" type="button" class="btn btn-success pull-left" style="margin-top: 10px; margin-bottom: 20px; margin-left: 20px;" > <i class="fa fa-plus"></i> Add</button>
+									<div class="col-md-12 pull-right">
+										<button onclick="SaveCabang($(this))" type="button" class="btn btn-success pull-right" style="margin-top: 10px; margin-bottom: 20px; margin-left: 20px;" > <i class="fa fa-plus"></i> Add</button>
 									</div>
 									<table class="table table-bordered table-hover text-center tblMPM">
 										<thead>
@@ -88,7 +88,7 @@
 	</div>
 </section>
 
-<div class="modal fade MdlSetupCbg"  id="MdlSetupCbg" tabindex="1" role="dialog" aria-labelledby="judulModal" aria-hidden="true">
+<!-- <div class="modal fade MdlSetupCbg"  id="MdlSetupCbg" tabindex="1" role="dialog" aria-labelledby="judulModal" aria-hidden="true">
     <div class="modal-dialog modal-lg" style="width:1150px;" role="document">
         <div class="modal-content">
             <div class="modal-header" style="width: 100%;" >
@@ -109,5 +109,15 @@
             </form>
         </div>
     </div>
-</div>
+</div> -->
 
+<div class="modal fade MdlSetupCbg"  id="MdlSetupCbg" tabindex="1" role="dialog" aria-labelledby="judulModal" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">   
+            <div class="modal-body" style="width: 100%;">
+                <div class="modal-tabel" >
+				</div>
+            </div>
+        </div>
+    </div>
+</div>

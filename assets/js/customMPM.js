@@ -14,6 +14,19 @@ $('.time-set').datetimepicker({
 
 $('#blinking_td tr:first-child').css('background-color', '#c9efff').addClass('blink_me');
 
+	
+$(document).ready(function(){
+	$('.tb_dash_unit').DataTable({
+		"paging": true,
+		"info":     false,
+		"language" : {
+			"zeroRecords": " "             
+		}
+	})
+
+	})
+
+
 // -------------------------------------------PENGIRIMAN UNIT --------------------------------------------------------
 
 
@@ -353,7 +366,7 @@ function saveEditMPM(th){
 	 	var cabang_id = th
 
 	$('#MdlSetupCbg').modal('show');
-	$('.modal-tabel').html("<center><img id='loading12' style='margin-top: 2%;' src='"+baseurl+"assets/img/gif/loading99.gif'/><br /></center><br />");
+	$('.modal-tabel').html("<center><img id='loading12' style='margin-top: 2%;' src='"+baseurl+"assets/img/gif/loading12.gif'/><br /></center><br />");
 		$.ajax({
 			type: "POST",
 			url: baseurl+"MonitoringPengiriman/Setup/Cabang/bukaModal",

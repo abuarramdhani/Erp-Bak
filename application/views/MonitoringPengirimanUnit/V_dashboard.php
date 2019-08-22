@@ -42,9 +42,14 @@ tr.hidden td{
 				<br />
 				<div class="row">
 					<div class="col-lg-12">
-						<div class="box box-primary box-solid">
-							<div class="box-body">
-								<table id="tbListSubmit_unit" class="table table-striped table-bordered table-hover text-center">
+						<div class="box box-primary">
+					  		<div class="box-header with-border">
+					  			<div class="text-right">
+					  				<span><b><i class="fa fa-bookmark" style="color: #ffc400"></i> Tabel refresh otomatis setiap 30 detik</b></span> 
+					  			</div>
+					  		</div>
+								<div class="box-body">
+									<table id="tbListSubmit_unit" class="tb_dash_unit table table-striped table-bordered table-hover text-center">
 									<thead>
 										<tr class="bg-primary">
 											<th class="text-center">No</th>
@@ -64,11 +69,11 @@ tr.hidden td{
 
 											<?php if ($k['actual_berangkat'] == NULL && $k['berangkat'] < date('Y-m-d H:i:s')) { ?>
 												<tr class ="danger">
-											<?php }elseif ($k['actual_berangkat'] != "" ) { ?>
+											<?php }elseif (!empty($k['actual_berangkat'])) { ?>
 												<tr class ="hidden">
 											<?php }else{ ?>
 												<tr>
-											<?php } ?>
+											<?php }?>
 
 											<td><?php echo $no ?> </td>
 											<td><?php echo  $k['no_shipment'] ?></td>
@@ -83,12 +88,13 @@ tr.hidden td{
 										</tr>
 										<?php $no++; } ?>
 									</tbody>
-								</table>
-							</div>
-						</div>
+									</table>
+									</div>
+								</div>
 					</div>
 				</div>
 			</div>
 		</div>
 	</div>
 </section>
+
