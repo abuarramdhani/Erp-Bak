@@ -129,13 +129,4 @@ thead.unit  tr th{
     </div>
 </div>
 
-<div class="modal fade mdlUnit"  id="mdlUnit" tabindex="1" role="dialog" aria-labelledby="judulModal" aria-hidden="true">
-    <div class="modal-dialog" role="document">
-        <div class="modal-content">   
-            <div class="modal-body" style="width: 100%;">
-                <div class="modal-tabel" >
-				</div>
-            </div>
-        </div>
-    </div>
-</div>
+

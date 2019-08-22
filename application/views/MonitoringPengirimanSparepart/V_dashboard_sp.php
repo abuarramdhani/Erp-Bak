@@ -19,11 +19,13 @@ tr:first-child {
 }
 
 tr.danger td{
-	 background-color: #ba2020;
+	 background-color: #eb3d34;
 }
-/*table.dataTable thead tr {
-  background-color: #bd3735;
-}*/
+
+tr.hidden td{
+	display: none;
+}
+
 </style>
 <head> <meta http-equiv="refresh" content="30"/> </head>
 <section class="content">
@@ -33,16 +35,21 @@ tr.danger td{
 				<div class="row">
 					<div class="col-lg-12">
 						<div class="text-left ">
-							<span><b><i class="fa fa-calendar"></i> List Pengiriman Marketing Sparepart</b></span>
+							<span><b><i class="fa fa-calendar"></i> List Pengiriman Marketing Unit</b></span>
 						</div>
 					</div>
 				</div>
 				<br />
 				<div class="row">
 					<div class="col-lg-12">
-						<div class="box box-primary box-solid">
-							<div class="box-body">
-								<table id="tbListSubmit_unit" class="table table-striped table-bordered table-hover text-center">
+						<div class="box box-primary">
+					  		<div class="box-header with-border">
+					  			<div class="text-right">
+					  				<span><b><i class="fa fa-bookmark" style="color: #ffc400"></i> Tabel refresh otomatis setiap 30 detik</b></span> 
+					  			</div>
+					  		</div>
+								<div class="box-body">
+									<table id="tbListSubmit_unit" class="tb_dash_unit table table-striped table-bordered table-hover text-center">
 									<thead>
 										<tr class="bg-primary">
 											<th class="text-center">No</th>
@@ -60,12 +67,14 @@ tr.danger td{
 									<tbody id="blinking_td">
 										<?php $no=1; foreach($kirim as $k) { ?>
 
-											<?php if (empty($k['actual_berangkat']) && $k['berangkat'] < date('Y-m-d H:i:s')) { ?>
-												<tr class="danger">
+											<?php if ($k['actual_berangkat'] == NULL && $k['berangkat'] < date('Y-m-d H:i:s')) { ?>
+												<tr class ="danger">
+											<?php }elseif (!empty($k['actual_berangkat'])) { ?>
+												<tr class ="hidden">
 											<?php }else{ ?>
 												<tr>
-											<?php } ?>
-											
+											<?php }?>
+
 											<td><?php echo $no ?> </td>
 											<td><?php echo  $k['no_shipment'] ?></td>
 											<td><?php echo  $k['jenis_kendaraan'] ?></td>
@@ -74,17 +83,18 @@ tr.danger td{
 											<td><?php echo  $k['cabang'] ?></td>
 											<td><?php echo  $k['muatan'] ?></td>
 											<td><?php echo  $k['status'] ?></td>
-											<td><?php echo  $k['actual_loading'] ?></td>
-											<td><?php echo  $k['actual_berangkat'] ?> </td>
+											<td id="actual_loading_td"><?php echo  $k['actual_loading'] ?></td>
+											<td id="actual_brkt_td"><?php echo  $k['actual_berangkat'] ?> </td>
 										</tr>
 										<?php $no++; } ?>
 									</tbody>
-								</table>
-							</div>
-						</div>
+									</table>
+									</div>
+								</div>
 					</div>
 				</div>
 			</div>
 		</div>
 	</div>
 </section>
+

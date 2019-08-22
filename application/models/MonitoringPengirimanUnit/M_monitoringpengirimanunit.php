@@ -1,3 +1,4 @@
+
 <?php defined('BASEPATH') OR die('No direct script access allowed');
 
 class M_monitoringpengirimanunit extends CI_Model
@@ -50,6 +51,7 @@ class M_monitoringpengirimanunit extends CI_Model
               left join om.om_city oc on osh.shipment_to_city_id = oc.city_id
     where osh.estimate_depart_date > now() - interval '1 day'
     and osh.estimate_depart_date > now() - interval '5 minute'
+    --and osh.actual_depart_date is null
       group by
               osh.shipment_header_id
               ,ovt.name
