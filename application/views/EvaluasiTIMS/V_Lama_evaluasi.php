@@ -30,31 +30,39 @@
                                         <div class="form-inline">
                                             <div style="font-weight: bold;" class="col-md-12 form-group">
                                                 <label style="margin-top: 0px;" class="col-sm-2 col-form-label" for="name">OJT:</label>
-                                                <div class="col-md-2">
+                                                <div class="col-md-12">
                                                     <input style="width: 1.2em;" type="radio" class="form-control" name="et_rd_le" id="et_rd_1" value="1"> 1 Bulan
                                                 </div>
-                                                <div class="col-md-2">
+                                                <div class="col-md-12">
                                                     <input style="width: 100px;" type="radio" class="form-control" name="et_rd_le" id="et_rd_2" value="2"> 2 Bulan
                                                 </div>
-                                                <div class="col-md-2">
+                                                <div class="col-md-12">
                                                     <input style="width: 100px;" type="radio" class="form-control" name="et_rd_le" id="et_rd_3" value="3"> 3 Bulan
                                                 </div>
                                             </div>
                                             <div style="font-weight: bold; margin-top: 50px;" class="col-md-12 form-group">
                                                 <label style="margin-top: 0px;" class="col-sm-2 col-form-label" for="name">Non OJT:</label>
-                                                <div class="col-md-2">
+                                                <div class="col-md-12">
+                                                    <input style="width: 1.2em;" type="radio" class="form-control" name="et_rd_le2" id="evt_rd_1" value="1"> 1 Bulan
+                                                </div>
+                                                <br>
+                                                <div class="col-md-12">
                                                     <input style="width: 1.2em;" type="radio" class="form-control" name="et_rd_le2" id="evt_rd_2" value="2"> 2 Bulan
                                                 </div>
-                                                <div class="col-md-2">
+                                                <br>
+                                                <div class="col-md-12">
                                                     <input style="width: 100px;" type="radio" class="form-control" name="et_rd_le2" id="evt_rd_3" value="3"> 3 Bulan
                                                 </div>
-                                                <div class="col-md-2">
+                                                <br>
+                                                <div class="col-md-12">
                                                     <input style="width: 100px;" type="radio" class="form-control" name="et_rd_le2" id="evt_rd_4" value="4"> 4 Bulan
                                                 </div>
-                                                <div class="col-md-2">
+                                                <br>
+                                                <div class="col-md-12">
                                                     <input style="width: 100px;" type="radio" class="form-control" name="et_rd_le2" id="evt_rd_6" value="6"> 6 Bulan
                                                 </div>
-                                                <div class="col-md-2">
+                                                <br>
+                                                <div class="col-md-12">
                                                     <input style="width: 100px;" type="radio" class="form-control" name="et_rd_le2" id="evt_rd_12" value="12"> 12 Bulan
                                                 </div>
                                             </div>
@@ -94,7 +102,9 @@
         }else if (cek == '3') {
             $('#et_rd_3').iCheck('check');
         }
-        if (cek2 == '2') {
+        if(cek2 == '1'){
+            $('#evt_rd_1').iCheck('check');
+        }else if (cek2 == '2') {
             $('#evt_rd_2').iCheck('check');
         }else if (cek2 == '3') {
             $('#evt_rd_3').iCheck('check');
