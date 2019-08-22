@@ -240,6 +240,7 @@ class C_NonConformity extends CI_Controller
 		$plaintext_string = $this->encrypt->decode($plaintext_string);
 
 		$assign = $this->input->post('slcAssign');
+		$reasonReturn = $this->input->post('txtReasonReturn');
 
 		if ($assign == 2) {
 			$num = $this->M_nonconformity->checkNonConformitySubkonNum();
@@ -282,8 +283,26 @@ class C_NonConformity extends CI_Controller
 						);
 			$this->M_nonconformity->updateAssign($plaintext_string, $data);
 		}elseif ($assign == 3) {
+			
+			$num = $this->M_nonconformity->checkNonConformityReturnNum();
+			
+			if (count($num)==0) {
+				$nonConformityNum = 'NC-RETURN-'.date('y').'-'.date('m').'-'.'000';
+			}else{
+				$nonConformityNum = $num[0]['non_conformity_num'];
+			}
+			$numberNC = explode('-', $nonConformityNum);
+
+			$numberNC[4]++;
+
+			$numberNC[4] = sprintf("%03d", $numberNC[4]);
+
+			$nonConformityNumber = implode('-', $numberNC);
+
 			$data = array(
-						  'assign' => $assign,
+							'non_conformity_num' => $nonConformityNumber,
+							'assign' => $assign,
+							'return_reason' => $reasonReturn,
 						);
 
 			$this->M_nonconformity->updateAssign($plaintext_string, $data);

@@ -314,12 +314,21 @@
                                 <option></option>
                                 <option value="1">SUPPLIER</option>
                                 <option value="2">SUBKON</option>
-                                <!-- <option value="3">Return to PBB</option> -->
+                                <option value="3">Return to PBB</option>
                             </select>
                         </td>
                         <td>&nbsp;</td>
                         <td><button type="submit" class="btn btn-success">Submit</button></td>
+                        <td>&nbsp;</td>
                     </tr>
+                </table>
+                <br>
+                <table class="reasonReturnNonC" style="display:none">
+                        <tr>
+                            <td>Alasan Return </td>
+                            <td>: </td>
+                            <td><textarea class="form-control txtReasonReturnNonC" name="txtReasonReturn"></textarea></td>
+                        </tr>
                 </table>
             </form>
             <div align="right">

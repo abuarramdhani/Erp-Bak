@@ -621,6 +621,17 @@ $(document).ready(function() {
         placeholder: 'Select To Assign',
     });
 
+    $(document).on('change', '.slcAssignNonC', function() {
+        var assign = $(this).val();
+        if (assign == 3) {
+            $('.reasonReturnNonC').css('display','block');
+            $('.txtReasonReturnNonC').attr('required', 'required');
+        } else{
+            $('.reasonReturnNonC').css('display','none');
+            $('.txtReasonReturnNonC').removeAttr('required');
+        }
+    });
+
 });
 
 function showBigImage(elm) {
