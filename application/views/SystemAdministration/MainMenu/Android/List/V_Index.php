@@ -1,7 +1,8 @@
 	<section class="content">
 	<div class="inner" >
-			<div class="box box-header"  style="padding-left:20px">
+			<div class="box box-header"  style="padding-left:20px;padding-right: 20px;">
 				<h3 class="pull-left"><strong> Android Entry List </strong> - Android</h3>
+				<button style="margin-top: 10px;padding: 10px;" data-toggle="modal" data-target="#tambahData" class="btn btn-primary pull-right"><i class="fa fa-plus"></i> Tambah Data</button>
 			</div>
 	</div>
 		<div class="panel box-body" >
@@ -49,11 +50,7 @@
 <!-- <?php echo base_url('SystemAdministration/Android/delete/'.$andro['gadget_id']) ?> -->
 						
 						<a class="btn btn-danger" href="<?php echo base_url('SystemAdministration/Android/delete/'.$andro['gadget_id']) ?>"><i class="fa fa-close"></i> Hapus</a>
-						
-						<button data-toggle="modal" data-target="#tambahData" class="btn btn-primary"><i class="fa fa-plus"></i> Tambah</button>
-						
-
-					</td>
+						</td>
 
 					<td><?php echo $andro['android_id'] ?></td>
 					<td><?php echo $andro['imei']?></td>

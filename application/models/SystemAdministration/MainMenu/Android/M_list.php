@@ -77,7 +77,19 @@ class M_list extends CI_Model
 
     public function tambahData($data){
             $this->db->insert('sys.sys_android',$data);
-    }    
+    }
+
+    public function getEmailICT(){
+        $sql = "SELECT * FROM er.er_employee_all WHERE section_code='101030100'";
+        $query = $this->db->query($sql);
+        return $query->result_array();      
+    } 
+
+    public function getEmployeeEmailByNoinduk($noinduk){
+        $sql = "SELECT * FROM er.er_employee_all WHERE employee_code='$noinduk'";
+        $query = $this->db->query($sql);
+        return $query->result_array();
+    }   
 
     // public function getValidUntil($id){
     //     $query = "select valid_until from sys.sys_android WHERE gadget_id=$id";
