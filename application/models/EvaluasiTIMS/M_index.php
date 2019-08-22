@@ -354,7 +354,57 @@ class M_Index extends CI_Model
 
     public function listHarian2($t, $tim, $tims, $val)
     {
-    	if ($val == '2') {
+    	if ($val == '1') {
+    		$sql1 = "when (a.diangkat + interval '2 years' + interval '24 month')::date = now()::date
+					then (a.diangkat + interval '24 month')::date
+					when (a.diangkat + interval '2 years' + interval '23 month')::date = now()::date
+					then (a.diangkat + interval '23 month')::date
+					when (a.diangkat + interval '2 years' + interval '22 month')::date = now()::date
+					then (a.diangkat + interval '22 month')::date
+					when (a.diangkat + interval '2 years' + interval '21 month')::date = now()::date
+					then (a.diangkat + interval '21 month')::date
+					when (a.diangkat + interval '2 years' + interval '20 month')::date = now()::date
+					then (a.diangkat + interval '20 month')::date
+					when (a.diangkat + interval '2 years' + interval '19 month')::date = now()::date
+					then (a.diangkat + interval '19 month')::date
+					when (a.diangkat + interval '2 years' + interval '18 month')::date = now()::date
+					then (a.diangkat + interval '18 month')::date
+					when (a.diangkat + interval '2 years' + interval '17 month')::date = now()::date
+					then (a.diangkat + interval '17 month')::date
+					when (a.diangkat + interval '2 years' + interval '16 month')::date = now()::date
+					then (a.diangkat + interval '16 month')::date
+					when (a.diangkat + interval '2 years' + interval '15 month')::date = now()::date
+					then (a.diangkat + interval '15 month')::date
+					when (a.diangkat + interval '2 years' + interval '14 month')::date = now()::date
+					then (a.diangkat + interval '14 month')::date
+					when (a.diangkat + interval '2 years' + interval '13 month')::date = now()::date
+					then (a.diangkat + interval '13 month')::date
+					when (a.diangkat + interval '2 years' + interval '12 month')::date = now()::date
+					then (a.diangkat + interval '12 month')::date
+					when (a.diangkat + interval '2 years' + interval '11 month')::date = now()::date
+					then (a.diangkat + interval '11 month')::date
+					when (a.diangkat + interval '2 years' + interval '10 month')::date = now()::date
+					then (a.diangkat + interval '10 month')::date
+					when (a.diangkat + interval '2 years' + interval '9 month')::date = now()::date
+					then (a.diangkat + interval '9 month')::date
+					when (a.diangkat + interval '2 years' + interval '8 month')::date = now()::date
+					then (a.diangkat + interval '8 month')::date
+					when (a.diangkat + interval '2 years' + interval '7 month')::date = now()::date
+					then (a.diangkat + interval '7 month')::date
+					when (a.diangkat + interval '2 years' + interval '6 month')::date = now()::date
+					then (a.diangkat + interval '6 month')::date
+					when (a.diangkat + interval '2 years' + interval '5 month')::date = now()::date
+					then (a.diangkat + interval '5 month')::date
+					when (a.diangkat + interval '2 years' + interval '4 month')::date = now()::date
+					then (a.diangkat + interval '4 month')::date
+					when (a.diangkat + interval '2 years' + interval '3 month')::date = now()::date
+					then (a.diangkat + interval '3 month')::date
+					when (a.diangkat + interval '2 years' + interval '2 month')::date = now()::date
+					then (a.diangkat + interval '2 month')::date
+					when (a.diangkat + interval '2 years' + interval '1 month')::date = now()::date
+					then (a.diangkat + interval '1 month')::date";
+    	}
+    	elseif ($val == '2') {
     		$sql1 = "when (a.diangkat + interval '24 month')::date = now()::date
 					then (a.diangkat + interval '24 month')::date
 					when (a.diangkat + interval '22 month')::date = now()::date
@@ -991,7 +1041,57 @@ class M_Index extends CI_Model
 
     public function listLt2($b, $t, $tim, $tims, $val)
     {
-    	if ($val == '2') {
+    	if ($val == '1') {
+    		$sql1 = "when (a.diangkat + interval '2 years' + interval '24 month')::date = now()::date
+					then (a.diangkat + interval '24 month')::date
+					when (a.diangkat + interval '2 years' + interval '23 month')::date = now()::date
+					then (a.diangkat + interval '23 month')::date
+					when (a.diangkat + interval '2 years' + interval '22 month')::date = now()::date
+					then (a.diangkat + interval '22 month')::date
+					when (a.diangkat + interval '2 years' + interval '21 month')::date = now()::date
+					then (a.diangkat + interval '21 month')::date
+					when (a.diangkat + interval '2 years' + interval '20 month')::date = now()::date
+					then (a.diangkat + interval '20 month')::date
+					when (a.diangkat + interval '2 years' + interval '19 month')::date = now()::date
+					then (a.diangkat + interval '19 month')::date
+					when (a.diangkat + interval '2 years' + interval '18 month')::date = now()::date
+					then (a.diangkat + interval '18 month')::date
+					when (a.diangkat + interval '2 years' + interval '17 month')::date = now()::date
+					then (a.diangkat + interval '17 month')::date
+					when (a.diangkat + interval '2 years' + interval '16 month')::date = now()::date
+					then (a.diangkat + interval '16 month')::date
+					when (a.diangkat + interval '2 years' + interval '15 month')::date = now()::date
+					then (a.diangkat + interval '15 month')::date
+					when (a.diangkat + interval '2 years' + interval '14 month')::date = now()::date
+					then (a.diangkat + interval '14 month')::date
+					when (a.diangkat + interval '2 years' + interval '13 month')::date = now()::date
+					then (a.diangkat + interval '13 month')::date
+					when (a.diangkat + interval '2 years' + interval '12 month')::date = now()::date
+					then (a.diangkat + interval '12 month')::date
+					when (a.diangkat + interval '2 years' + interval '11 month')::date = now()::date
+					then (a.diangkat + interval '11 month')::date
+					when (a.diangkat + interval '2 years' + interval '10 month')::date = now()::date
+					then (a.diangkat + interval '10 month')::date
+					when (a.diangkat + interval '2 years' + interval '9 month')::date = now()::date
+					then (a.diangkat + interval '9 month')::date
+					when (a.diangkat + interval '2 years' + interval '8 month')::date = now()::date
+					then (a.diangkat + interval '8 month')::date
+					when (a.diangkat + interval '2 years' + interval '7 month')::date = now()::date
+					then (a.diangkat + interval '7 month')::date
+					when (a.diangkat + interval '2 years' + interval '6 month')::date = now()::date
+					then (a.diangkat + interval '6 month')::date
+					when (a.diangkat + interval '2 years' + interval '5 month')::date = now()::date
+					then (a.diangkat + interval '5 month')::date
+					when (a.diangkat + interval '2 years' + interval '4 month')::date = now()::date
+					then (a.diangkat + interval '4 month')::date
+					when (a.diangkat + interval '2 years' + interval '3 month')::date = now()::date
+					then (a.diangkat + interval '3 month')::date
+					when (a.diangkat + interval '2 years' + interval '2 month')::date = now()::date
+					then (a.diangkat + interval '2 month')::date
+					when (a.diangkat + interval '2 years' + interval '1 month')::date = now()::date
+					then (a.diangkat + interval '1 month')::date";
+    	}
+    	elseif ($val == '2') {
     		$sql1 = "when (a.diangkat + interval '24 month')::date = now()::date
 					then (a.diangkat + interval '24 month')::date
 					when (a.diangkat + interval '22 month')::date = now()::date
@@ -1629,7 +1729,153 @@ class M_Index extends CI_Model
 
     public function listBl2($tgl1, $tgl2, $t, $tim, $tims, $vali, $s)
     {
-    	if ($vali == '2') {
+    	if ($vali == '1') {
+	    		$case1 = "when (a.diangkat + interval '2 years' + interval '24 month')::date between '$tgl1' and '$tgl2'
+						then (a.diangkat + interval '24 month')::date
+						when (a.diangkat + interval '2 years' + interval '23 month')::date between '$tgl1' and '$tgl2'
+						then (a.diangkat + interval '23 month')::date
+						when (a.diangkat + interval '2 years' + interval '22 month')::date between '$tgl1' and '$tgl2'
+						then (a.diangkat + interval '22 month')::date
+						when (a.diangkat + interval '2 years' + interval '21 month')::date between '$tgl1' and '$tgl2'
+						then (a.diangkat + interval '21 month')::date
+						when (a.diangkat + interval '2 years' + interval '20 month')::date between '$tgl1' and '$tgl2'
+						then (a.diangkat + interval '20 month')::date
+						when (a.diangkat + interval '2 years' + interval '19 month')::date between '$tgl1' and '$tgl2'
+						then (a.diangkat + interval '19 month')::date
+						when (a.diangkat + interval '2 years' + interval '18 month')::date between '$tgl1' and '$tgl2'
+						then (a.diangkat + interval '18 month')::date
+						when (a.diangkat + interval '2 years' + interval '17 month')::date between '$tgl1' and '$tgl2'
+						then (a.diangkat + interval '17 month')::date
+						when (a.diangkat + interval '2 years' + interval '16 month')::date between '$tgl1' and '$tgl2'
+						then (a.diangkat + interval '16 month')::date
+						when (a.diangkat + interval '2 years' + interval '15 month')::date between '$tgl1' and '$tgl2'
+						then (a.diangkat + interval '15 month')::date
+						when (a.diangkat + interval '2 years' + interval '14 month')::date between '$tgl1' and '$tgl2'
+						then (a.diangkat + interval '14 month')::date
+						when (a.diangkat + interval '2 years' + interval '13 month')::date between '$tgl1' and '$tgl2'
+						then (a.diangkat + interval '13 month')::date
+						when (a.diangkat + interval '2 years' + interval '12 month')::date between '$tgl1' and '$tgl2'
+						then (a.diangkat + interval '12 month')::date
+						when (a.diangkat + interval '2 years' + interval '11 month')::date between '$tgl1' and '$tgl2'
+						then (a.diangkat + interval '11 month')::date
+						when (a.diangkat + interval '2 years' + interval '10 month')::date between '$tgl1' and '$tgl2'
+						then (a.diangkat + interval '10 month')::date
+						when (a.diangkat + interval '2 years' + interval '9 month')::date between '$tgl1' and '$tgl2'
+						then (a.diangkat + interval '9 month')::date
+						when (a.diangkat + interval '2 years' + interval '8 month')::date between '$tgl1' and '$tgl2'
+						then (a.diangkat + interval '8 month')::date
+						when (a.diangkat + interval '2 years' + interval '7 month')::date between '$tgl1' and '$tgl2'
+						then (a.diangkat + interval '7 month')::date
+						when (a.diangkat + interval '2 years' + interval '6 month')::date between '$tgl1' and '$tgl2'
+						then (a.diangkat + interval '6 month')::date
+						when (a.diangkat + interval '2 years' + interval '5 month')::date between '$tgl1' and '$tgl2'
+						then (a.diangkat + interval '5 month')::date
+						when (a.diangkat + interval '2 years' + interval '4 month')::date between '$tgl1' and '$tgl2'
+						then (a.diangkat + interval '4 month')::date
+						when (a.diangkat + interval '2 years' + interval '3 month')::date between '$tgl1' and '$tgl2'
+						then (a.diangkat + interval '3 month')::date
+						when (a.diangkat + interval '2 years' + interval '2 month')::date between '$tgl1' and '$tgl2'
+						then (a.diangkat + interval '2 month')::date
+						when (a.diangkat + interval '2 years' + interval '1 month')::date between '$tgl1' and '$tgl2'
+						then (a.diangkat + interval '1 month')::date";
+			$case2 = "when (a.diangkat + interval '2 years' + interval '24 month')::date between '$tgl1' and '$tgl2'
+							then (a.diangkat + interval '2 years' + interval '24 month')::date
+							when (a.diangkat + interval '2 years' + interval '23 month')::date between '$tgl1' and '$tgl2'
+							then (a.diangkat + interval '2 years' + interval '23 month')::date
+							when (a.diangkat + interval '2 years' + interval '22 month')::date between '$tgl1' and '$tgl2'
+							then (a.diangkat + interval '2 years' + interval '22 month')::date
+							when (a.diangkat + interval '2 years' + interval '21 month')::date between '$tgl1' and '$tgl2'
+							then (a.diangkat + interval '2 years' + interval '21 month')::date
+							when (a.diangkat + interval '2 years' + interval '20 month')::date between '$tgl1' and '$tgl2'
+							then (a.diangkat + interval '2 years' + interval '20 month')::date
+							when (a.diangkat + interval '2 years' + interval '19 month')::date between '$tgl1' and '$tgl2'
+							then (a.diangkat + interval '2 years' + interval '19 month')::date
+							when (a.diangkat + interval '2 years' + interval '18 month')::date between '$tgl1' and '$tgl2'
+							then (a.diangkat + interval '2 years' + interval '18 month')::date
+							when (a.diangkat + interval '2 years' + interval '17 month')::date between '$tgl1' and '$tgl2'
+							then (a.diangkat + interval '2 years' + interval '17 month')::date
+							when (a.diangkat + interval '2 years' + interval '16 month')::date between '$tgl1' and '$tgl2'
+							then (a.diangkat + interval '2 years' + interval '16 month')::date
+							when (a.diangkat + interval '2 years' + interval '15 month')::date between '$tgl1' and '$tgl2'
+							then (a.diangkat + interval '2 years' + interval '15 month')::date
+							when (a.diangkat + interval '2 years' + interval '14 month')::date between '$tgl1' and '$tgl2'
+							then (a.diangkat + interval '2 years' + interval '14 month')::date
+							when (a.diangkat + interval '2 years' + interval '13 month')::date between '$tgl1' and '$tgl2'
+							then (a.diangkat + interval '2 years' + interval '13 month')::date
+							when (a.diangkat + interval '2 years' + interval '12 month')::date between '$tgl1' and '$tgl2'
+							then (a.diangkat + interval '2 years' + interval '12 month')::date
+							when (a.diangkat + interval '2 years' + interval '11 month')::date between '$tgl1' and '$tgl2'
+							then (a.diangkat + interval '2 years' + interval '11 month')::date
+							when (a.diangkat + interval '2 years' + interval '10 month')::date between '$tgl1' and '$tgl2'
+							then (a.diangkat + interval '2 years' + interval '10 month')::date
+							when (a.diangkat + interval '2 years' + interval '9 month')::date between '$tgl1' and '$tgl2'
+							then (a.diangkat + interval '2 years' + interval '9 month')::date
+							when (a.diangkat + interval '2 years' + interval '8 month')::date between '$tgl1' and '$tgl2'
+							then (a.diangkat + interval '2 years' + interval '8 month')::date
+							when (a.diangkat + interval '2 years' + interval '7 month')::date between '$tgl1' and '$tgl2'
+							then (a.diangkat + interval '2 years' + interval '7 month')::date
+							when (a.diangkat + interval '2 years' + interval '6 month')::date between '$tgl1' and '$tgl2'
+							then (a.diangkat + interval '2 years' + interval '6 month')::date
+							when (a.diangkat + interval '2 years' + interval '5 month')::date between '$tgl1' and '$tgl2'
+							then (a.diangkat + interval '2 years' + interval '5 month')::date
+							when (a.diangkat + interval '2 years' + interval '4 month')::date between '$tgl1' and '$tgl2'
+							then (a.diangkat + interval '2 years' + interval '4 month')::date
+							when (a.diangkat + interval '2 years' + interval '3 month')::date between '$tgl1' and '$tgl2'
+							then (a.diangkat + interval '2 years' + interval '3 month')::date
+							when (a.diangkat + interval '2 years' + interval '2 month')::date between '$tgl1' and '$tgl2'
+							then (a.diangkat + interval '2 years' + interval '2 month')::date
+							when (a.diangkat + interval '2 years' + interval '1 month')::date between '$tgl1' and '$tgl2'
+							then (a.diangkat + interval '2 years' + interval '1 month')::date";
+			$sqltambahan = "when (a.diangkat + interval '24 month')::date between '$tgl1' and '$tgl2'
+					then (a.diangkat + interval '24 month')::date
+					when (a.diangkat + interval '23 month')::date between '$tgl1' and '$tgl2'
+					then (a.diangkat + interval '23 month')::date
+					when (a.diangkat + interval '22 month')::date between '$tgl1' and '$tgl2'
+					then (a.diangkat + interval '22 month')::date
+					when (a.diangkat + interval '21 month')::date between '$tgl1' and '$tgl2'
+					then (a.diangkat + interval '21 month')::date
+					when (a.diangkat + interval '20 month')::date between '$tgl1' and '$tgl2'
+					then (a.diangkat + interval '20 month')::date
+					when (a.diangkat + interval '19 month')::date between '$tgl1' and '$tgl2'
+					then (a.diangkat + interval '19 month')::date
+					when (a.diangkat + interval '18 month')::date between '$tgl1' and '$tgl2'
+					then (a.diangkat + interval '18 month')::date
+					when (a.diangkat + interval '17 month')::date between '$tgl1' and '$tgl2'
+					then (a.diangkat + interval '17 month')::date
+					when (a.diangkat + interval '16 month')::date between '$tgl1' and '$tgl2'
+					then (a.diangkat + interval '16 month')::date
+					when (a.diangkat + interval '15 month')::date between '$tgl1' and '$tgl2'
+					then (a.diangkat + interval '15 month')::date
+					when (a.diangkat + interval '14 month')::date between '$tgl1' and '$tgl2'
+					then (a.diangkat + interval '14 month')::date
+					when (a.diangkat + interval '13 month')::date between '$tgl1' and '$tgl2'
+					then (a.diangkat + interval '13 month')::date
+					when (a.diangkat + interval '12 month')::date between '$tgl1' and '$tgl2'
+					then (a.diangkat + interval '12 month')::date
+					when (a.diangkat + interval '11 month')::date between '$tgl1' and '$tgl2'
+					then (a.diangkat + interval '11 month')::date
+					when (a.diangkat + interval '10 month')::date between '$tgl1' and '$tgl2'
+					then (a.diangkat + interval '10 month')::date
+					when (a.diangkat + interval '9 month')::date between '$tgl1' and '$tgl2'
+					then (a.diangkat + interval '9 month')::date
+					when (a.diangkat + interval '8 month')::date between '$tgl1' and '$tgl2'
+					then (a.diangkat + interval '8 month')::date
+					when (a.diangkat + interval '7 month')::date between '$tgl1' and '$tgl2'
+					then (a.diangkat + interval '7 month')::date
+					when (a.diangkat + interval '6 month')::date between '$tgl1' and '$tgl2'
+					then (a.diangkat + interval '6 month')::date
+					when (a.diangkat + interval '5 month')::date between '$tgl1' and '$tgl2'
+					then (a.diangkat + interval '5 month')::date
+					when (a.diangkat + interval '4 month')::date between '$tgl1' and '$tgl2'
+					then (a.diangkat + interval '4 month')::date
+					when (a.diangkat + interval '3 month')::date between '$tgl1' and '$tgl2'
+					then (a.diangkat + interval '3 month')::date
+					when (a.diangkat + interval '2 month')::date between '$tgl1' and '$tgl2'
+					then (a.diangkat + interval '2 month')::date
+					when (a.diangkat + interval '1 month')::date between '$tgl1' and '$tgl2'
+					then (a.diangkat + interval '1 month')::date";
+    	}
+    	elseif ($vali == '2') {
     		$sqltambahan = "when (a.diangkat + interval '24 month')::date between '$tgl1' and '$tgl2'
 							then (a.diangkat + interval '24 month')::date
 							when (a.diangkat + interval '22 month')::date between '$tgl1' and '$tgl2'
