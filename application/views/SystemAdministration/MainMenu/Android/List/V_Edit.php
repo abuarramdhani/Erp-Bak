@@ -12,19 +12,19 @@
 		<table class="table table-striped table-bordered table-responsive table-hover dataTable no-footer">
 				<tr>
 					<td>Android ID</td>
-					<td><input type="text" class="form-control" readonly value="<?php echo $android[0]['android_id']; ?>"></input> </td>
+					<td><input type="text" name="android_id" class="form-control" readonly value="<?php echo $android[0]['android_id']; ?>"></input> </td>
 				</tr>
 				<tr>
 					<td>IMEI</td>
-					<td><input type="text" class="form-control" readonly value="<?php echo $android[0]['imei']; ?>"></input> </td>
+					<td><input type="text" name="imei" class="form-control" readonly value="<?php echo $android[0]['imei']; ?>"></input> </td>
 				</tr>
 				<tr>
 					<td>Hardware Serial</td>
-					<td><input type="text" class="form-control" readonly value="<?php echo $android[0]['hardware_serial']; ?>"></input> </td>
+					<td><input type="text" name="hwserial" class="form-control" readonly value="<?php echo $android[0]['hardware_serial']; ?>"></input> </td>
 				</tr>
 				<tr>
 					<td>GSF</td>
-					<td><input type="text" class="form-control" readonly value="<?php echo $android[0]['gsf']; ?>"></input> </td>
+					<td><input type="text" name="gsf" class="form-control" readonly value="<?php echo $android[0]['gsf']; ?>"></input> </td>
 				</tr>
 				<tr>
 					<td>Nama Karyawan</td>
@@ -32,7 +32,7 @@
 				</tr>
 				<tr>
 					<td>No Induk</td>
-					<td><input type="text" class="form-control" value="<?php echo $android[0]['info_2']; ?>"></input> </td>
+					<td><input type="text" name="noindukKaryawan" class="form-control" value="<?php echo $android[0]['info_2']; ?>"></input> </td>
 				</tr>
 				<tr>
 					<td>Waktu Request</td>

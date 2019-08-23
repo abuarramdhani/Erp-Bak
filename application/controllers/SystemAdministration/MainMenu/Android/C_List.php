@@ -98,14 +98,40 @@ class C_List extends CI_Controller {
 		$tanggal = $this->input->post('valid-until');
 		// echo $tanggal;exit();
 		$valid_until = date('Y/m/d',strtotime($tanggal));
-		// echo $valid_until;exit(); 
-		$data = ['info_1' => $this->input->post('andro-employee'),
-				 'validation' => $this->input->post('andro-status'),
-				 'valid_until' => $valid_until
+		// echo $valid_until;exit();
+		$validation 	= $this->input->post('andro-status');
+		$noinduk 		= $this->input->post('noindukKaryawan');
+		$namaPekerja	= $this->input->post('andro-employee');
+		$data = ['info_1' => $namaPekerja,
+				 'validation' => $validation,
+				 'valid_until' => $valid_until,
+				 'info_2'	=> $noinduk
 				 ];
-		// print_r($data);exit();
+		// print_r($data);exit();		
+		$emailKaryawan = $this->M_list->getEmployeeEmailByNoinduk($noinduk);
+		// echo "<pre>";
+		// print_r($emailKaryawan);exit();
+		$internalMail 	= $emailKaryawan[0]['internal_mail'];
+		$eksternalMail	= $emailKaryawan[0]['external_mail'];
 
+		$android_id 		= $this->input->post('android_id');
+		$imei 				= $this->input->post('imei');
+		$hardware_serial	= $this->input->post('hwserial');
+		$gsf 				= $this->input->post('gsf');
+
+		$status="";
+		if($validation==1){
+			$status = "Disetujui";
+		}else{
+			$status = "Tidak Disetujui";
+		}
+		$approver 			= trim($this->session->employee);
+		$noindukApprover	= $this->session->user;	
+
+
+		$this->kirim_email($internalMail,$eksternalMail,$namaPekerja,$status,$approver,$noindukApprover,$android_id,$imei,$hardware_serial,$gsf);
 		$this->M_list->updateData($id,$data);
+
 		redirect('SystemAdministration/Android/List');
 	}
 
@@ -193,6 +219,136 @@ class C_List extends CI_Controller {
 		$this->M_list->tambahData($data);
 		redirect('SystemAdministration/Android/List');
 	
+	}
+
+	public function kirimEmailICTAndroid(){
+
+				$namaPekerja 		= $this->input->post('namaPekerja');
+				$noindukPekerja		= $this->input->post('noindukPekerja');
+				$android_id 		= $this->input->post('android_id');
+				$imei 				= $this->input->post('imei');
+				$hardware_serial	= $this->input->post('hwserial');
+				$gsf 				= $this->input->post('gsf');
+				
+				$dataICT 			= $this->M_list->getEmailICT();
+				// echo "<pre>";
+				// print_r($dataICT);exit();
+				foreach ($dataICT as $key => $emailICT) {
+			
+				$internalMailICT = $emailICT['internal_mail'];
+				$externalMailICT = $emailICT['external_mail'];
+				$namaSeksiICT	 = $emailICT['employee_name'];
+				// echo "<pre>";
+				// print_r($internalMailICT);
+				// print_r($emailICT);
+				
+
+				$this->load->library('PHPMailerAutoload');
+				$mail = new PHPMailer;
+				$mail->isSMTP();
+				$mail->SMTPDebug = 0;
+				$mail->Debugoutput = 'html';
+				$mail->Host = 'm.quick.com';
+				$mail->Port = 465;
+				$mail->SMTPAuth = true;
+				$mail->SMTPSecure = 'ssl';
+				$mail->SMTPOptions = array(
+				'ssl' => array(
+				'verify_peer' => false,
+				'verify_peer_name' => false,
+				'allow_self_signed' => true
+				));
+				$mail->Username = 'no-reply@quick.com';
+				$mail->Password = "123456";
+				$mail->setFrom('noreply@quick.co.id', 'ERP Mobile');
+				$mail->addAddress($internalMailICT, 'Seksi ICT');
+				if(!$externalMailICT==null || !$externalMailICT==""){
+					$mail->addAddress($externalMailICT, 'Seksi ICT');
+				}
+				$mail->Subject = 'ERP Mobile Registrasi Android Baru';
+				$mail->msgHTML("
+				<h4>Registrasi Android Baru</h4><hr>
+				Kepada Yth.<br>
+				$namaSeksiICT<br><br>
+				
+				Kami informasikan bahwa $noindukPekerja - $namaPekerja telah melakukan registrasi Android untuk ERP Mobile, dengan detail sbb :<br><br>
+				Android ID 				: $android_id<br>
+				IMEI 					: $imei<br>
+				Hardware Serial 		: $hardware_serial<br>
+				GSF 					: $gsf<br><br>
+
+				Anda dapat melakukan pengecekan melalui :<br> 
+				1. Internet : aplikasi Quick ERP Mobile. Apabila belum memiliki aplikasinya dapat download <a href='https://quick.co.id/download'>Disini</a><br>
+				2. jaringan lokal : http://erp.quick.com (http://quick.co.id/dinas_luar) atau klik <a href='http://erp.quick.com/'><strong>Disini</strong></a><br><br>
+
+				<small>Email ini digenerate melalui QuickERP pada ".date('d-m-Y H:i:s').".<br>
+				Apabila anda mengalami kendala dapat menghubungi ICT Support Center (08112545922) </small>");
+				//Replace the plain text body with one created manually
+				//send the message, check for errors
+				if (!$mail->send()) {
+					echo "Mailer Error: " . $mail->ErrorInfo;
+				} else {
+					//echo "Message sent!";
+				}
+			}
+			}
+
+
+	function kirim_email($internalMail,$eksternalMail,$namaPekerja,$status,$approver,$noindukApprover,$android_id,$imei,$hardware_serial,$gsf){
+			date_default_timezone_set("Asia/Jakarta");
+
+			if(!$internalMail==null){
+				$this->load->library('PHPMailerAutoload');
+				$mail = new PHPMailer;
+				$mail->isSMTP();
+				$mail->SMTPDebug = 0;
+				$mail->Debugoutput = 'html';
+				$mail->Host = 'm.quick.com';
+				$mail->Port = 465;
+				$mail->SMTPAuth = true;
+				$mail->SMTPSecure = 'ssl';
+				$mail->SMTPOptions = array(
+				'ssl' => array(
+				'verify_peer' => false,
+				'verify_peer_name' => false,
+				'allow_self_signed' => true
+				));
+				$mail->Username = 'no-reply@quick.com';
+				$mail->Password = "123456";
+				$mail->setFrom('noreply@quick.co.id', 'ERP Mobile');
+				$mail->addAddress($internalMail, 'ERP Mobile User');
+				if(!$eksternalMail==null){
+					$mail->addAddress($eksternalMail, 'Status Registrasi Android ERP Mobile');
+				}
+				$mail->Subject = 'Status Registrasi Android Anda';
+				$mail->msgHTML("
+				<h4>Status Registrasi Android Anda</h4><hr>
+				Kepada Yth.<br>
+				$namaPekerja<br><br>
+				
+				Kami informasikan bahwa request hak akses ERP Mobile anda, dengan detail sbb :<br><br>
+				Android ID 				: $android_id<br>
+				IMEI 					: $imei<br>
+				Hardware Serial 		: $hardware_serial<br>
+				GSF 					: $gsf<br><br>
+
+				Status : $status oleh $approver<br><br>
+
+				Anda dapat melakukan pengecekan melalui :<br> 
+				1. Internet : aplikasi Quick ERP Mobile. Apabila belum memiliki aplikasinya dapat download <a href='https://quick.co.id/download'>Disini</a><br>
+				2. jaringan lokal : http://erp.quick.com (http://quick.co.id/dinas_luar) atau klik <a href='http://erp.quick.com/'><strong>Disini</strong></a><br><br>
+
+				<small>Email ini digenerate melalui QuickERP pada ".date('d-m-Y H:i:s').".<br>
+				Apabila anda mengalami kendala dapat menghubungi ICT Support Center (08112545922) </small>");
+				//Replace the plain text body with one created manually
+				//send the message, check for errors
+				if (!$mail->send()) {
+					echo "Mailer Error: " . $mail->ErrorInfo;
+				} else {
+					//echo "Message sent!";
+				}
+
+		}
 	}
 
 	
