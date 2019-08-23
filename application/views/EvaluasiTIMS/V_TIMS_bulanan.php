@@ -11,6 +11,20 @@
 .dataTables_length{
     float: left;
 }
+    #et_set_eval{
+        position:absolute;
+        z-index: 300;
+        right:0;
+        margin-top: -25px;
+        top:0; font-weight: bold;
+    }
+    #et_set_eval2{
+        position:absolute;
+        z-index: 300;
+        right:0;
+        margin-top: -12px;
+        top:0; font-weight: bold;
+    }
 </style>
 <meta http-equiv="Content-Type" content="text/html;charset=utf-8">
 <section class="content">
@@ -42,6 +56,8 @@
                                 <div class="panel-body">
                                    <div class="row">
                                     <form id="formTimsBulanan" class="col-md-12" method="post" action="<?php echo site_url('EvaluasiTIMS/Bulanan'); ?>">
+                                        <p id="et_set_eval"><?php echo 'Lama Evaluasi OJT : '.$LamaEvaluasi[0]['lama_penilaian'].' bulan'; ?></p>
+                                        <p id="et_set_eval2"><?php echo 'Lama Evaluasi Non OJT : '.$LamaEvaluasi[1]['lama_penilaian'].' bulan'; ?></p>
                                         <div class="form-inline">
                                             <div class="col-md-12">
                                                 <label style="margin-top: 5px;" class="col-sm-2 col-form-label" for="name">Periode :</label>

@@ -1730,102 +1730,102 @@ class M_Index extends CI_Model
     public function listBl2($tgl1, $tgl2, $t, $tim, $tims, $vali, $s)
     {
     	if ($vali == '1') {
-	    		$case1 = "when (a.diangkat + interval '2 years' + interval '24 month')::date between '$tgl1' and '$tgl2'
-						then (a.diangkat + interval '24 month')::date
-						when (a.diangkat + interval '2 years' + interval '23 month')::date between '$tgl1' and '$tgl2'
-						then (a.diangkat + interval '23 month')::date
-						when (a.diangkat + interval '2 years' + interval '22 month')::date between '$tgl1' and '$tgl2'
-						then (a.diangkat + interval '22 month')::date
-						when (a.diangkat + interval '2 years' + interval '21 month')::date between '$tgl1' and '$tgl2'
-						then (a.diangkat + interval '21 month')::date
-						when (a.diangkat + interval '2 years' + interval '20 month')::date between '$tgl1' and '$tgl2'
-						then (a.diangkat + interval '20 month')::date
-						when (a.diangkat + interval '2 years' + interval '19 month')::date between '$tgl1' and '$tgl2'
-						then (a.diangkat + interval '19 month')::date
-						when (a.diangkat + interval '2 years' + interval '18 month')::date between '$tgl1' and '$tgl2'
-						then (a.diangkat + interval '18 month')::date
-						when (a.diangkat + interval '2 years' + interval '17 month')::date between '$tgl1' and '$tgl2'
-						then (a.diangkat + interval '17 month')::date
-						when (a.diangkat + interval '2 years' + interval '16 month')::date between '$tgl1' and '$tgl2'
-						then (a.diangkat + interval '16 month')::date
-						when (a.diangkat + interval '2 years' + interval '15 month')::date between '$tgl1' and '$tgl2'
-						then (a.diangkat + interval '15 month')::date
-						when (a.diangkat + interval '2 years' + interval '14 month')::date between '$tgl1' and '$tgl2'
-						then (a.diangkat + interval '14 month')::date
-						when (a.diangkat + interval '2 years' + interval '13 month')::date between '$tgl1' and '$tgl2'
-						then (a.diangkat + interval '13 month')::date
-						when (a.diangkat + interval '2 years' + interval '12 month')::date between '$tgl1' and '$tgl2'
-						then (a.diangkat + interval '12 month')::date
-						when (a.diangkat + interval '2 years' + interval '11 month')::date between '$tgl1' and '$tgl2'
-						then (a.diangkat + interval '11 month')::date
-						when (a.diangkat + interval '2 years' + interval '10 month')::date between '$tgl1' and '$tgl2'
-						then (a.diangkat + interval '10 month')::date
-						when (a.diangkat + interval '2 years' + interval '9 month')::date between '$tgl1' and '$tgl2'
-						then (a.diangkat + interval '9 month')::date
-						when (a.diangkat + interval '2 years' + interval '8 month')::date between '$tgl1' and '$tgl2'
-						then (a.diangkat + interval '8 month')::date
-						when (a.diangkat + interval '2 years' + interval '7 month')::date between '$tgl1' and '$tgl2'
-						then (a.diangkat + interval '7 month')::date
-						when (a.diangkat + interval '2 years' + interval '6 month')::date between '$tgl1' and '$tgl2'
-						then (a.diangkat + interval '6 month')::date
-						when (a.diangkat + interval '2 years' + interval '5 month')::date between '$tgl1' and '$tgl2'
-						then (a.diangkat + interval '5 month')::date
-						when (a.diangkat + interval '2 years' + interval '4 month')::date between '$tgl1' and '$tgl2'
-						then (a.diangkat + interval '4 month')::date
-						when (a.diangkat + interval '2 years' + interval '3 month')::date between '$tgl1' and '$tgl2'
-						then (a.diangkat + interval '3 month')::date
-						when (a.diangkat + interval '2 years' + interval '2 month')::date between '$tgl1' and '$tgl2'
-						then (a.diangkat + interval '2 month')::date
-						when (a.diangkat + interval '2 years' + interval '1 month')::date between '$tgl1' and '$tgl2'
-						then (a.diangkat + interval '1 month')::date";
-			$case2 = "when (a.diangkat + interval '2 years' + interval '24 month')::date between '$tgl1' and '$tgl2'
-							then (a.diangkat + interval '2 years' + interval '24 month')::date
-							when (a.diangkat + interval '2 years' + interval '23 month')::date between '$tgl1' and '$tgl2'
-							then (a.diangkat + interval '2 years' + interval '23 month')::date
-							when (a.diangkat + interval '2 years' + interval '22 month')::date between '$tgl1' and '$tgl2'
-							then (a.diangkat + interval '2 years' + interval '22 month')::date
-							when (a.diangkat + interval '2 years' + interval '21 month')::date between '$tgl1' and '$tgl2'
-							then (a.diangkat + interval '2 years' + interval '21 month')::date
-							when (a.diangkat + interval '2 years' + interval '20 month')::date between '$tgl1' and '$tgl2'
-							then (a.diangkat + interval '2 years' + interval '20 month')::date
-							when (a.diangkat + interval '2 years' + interval '19 month')::date between '$tgl1' and '$tgl2'
-							then (a.diangkat + interval '2 years' + interval '19 month')::date
-							when (a.diangkat + interval '2 years' + interval '18 month')::date between '$tgl1' and '$tgl2'
-							then (a.diangkat + interval '2 years' + interval '18 month')::date
-							when (a.diangkat + interval '2 years' + interval '17 month')::date between '$tgl1' and '$tgl2'
-							then (a.diangkat + interval '2 years' + interval '17 month')::date
-							when (a.diangkat + interval '2 years' + interval '16 month')::date between '$tgl1' and '$tgl2'
-							then (a.diangkat + interval '2 years' + interval '16 month')::date
-							when (a.diangkat + interval '2 years' + interval '15 month')::date between '$tgl1' and '$tgl2'
-							then (a.diangkat + interval '2 years' + interval '15 month')::date
-							when (a.diangkat + interval '2 years' + interval '14 month')::date between '$tgl1' and '$tgl2'
-							then (a.diangkat + interval '2 years' + interval '14 month')::date
-							when (a.diangkat + interval '2 years' + interval '13 month')::date between '$tgl1' and '$tgl2'
-							then (a.diangkat + interval '2 years' + interval '13 month')::date
-							when (a.diangkat + interval '2 years' + interval '12 month')::date between '$tgl1' and '$tgl2'
-							then (a.diangkat + interval '2 years' + interval '12 month')::date
-							when (a.diangkat + interval '2 years' + interval '11 month')::date between '$tgl1' and '$tgl2'
-							then (a.diangkat + interval '2 years' + interval '11 month')::date
-							when (a.diangkat + interval '2 years' + interval '10 month')::date between '$tgl1' and '$tgl2'
-							then (a.diangkat + interval '2 years' + interval '10 month')::date
-							when (a.diangkat + interval '2 years' + interval '9 month')::date between '$tgl1' and '$tgl2'
-							then (a.diangkat + interval '2 years' + interval '9 month')::date
-							when (a.diangkat + interval '2 years' + interval '8 month')::date between '$tgl1' and '$tgl2'
-							then (a.diangkat + interval '2 years' + interval '8 month')::date
-							when (a.diangkat + interval '2 years' + interval '7 month')::date between '$tgl1' and '$tgl2'
-							then (a.diangkat + interval '2 years' + interval '7 month')::date
-							when (a.diangkat + interval '2 years' + interval '6 month')::date between '$tgl1' and '$tgl2'
-							then (a.diangkat + interval '2 years' + interval '6 month')::date
-							when (a.diangkat + interval '2 years' + interval '5 month')::date between '$tgl1' and '$tgl2'
-							then (a.diangkat + interval '2 years' + interval '5 month')::date
-							when (a.diangkat + interval '2 years' + interval '4 month')::date between '$tgl1' and '$tgl2'
-							then (a.diangkat + interval '2 years' + interval '4 month')::date
-							when (a.diangkat + interval '2 years' + interval '3 month')::date between '$tgl1' and '$tgl2'
-							then (a.diangkat + interval '2 years' + interval '3 month')::date
-							when (a.diangkat + interval '2 years' + interval '2 month')::date between '$tgl1' and '$tgl2'
-							then (a.diangkat + interval '2 years' + interval '2 month')::date
-							when (a.diangkat + interval '2 years' + interval '1 month')::date between '$tgl1' and '$tgl2'
-							then (a.diangkat + interval '2 years' + interval '1 month')::date";
+	    		$case1 = "when (a.diangkat + interval '1 year' * (date_part('year','$tgl2'::date)-date_part('year',a.diangkat)) + interval '24 month')::date between '$tgl1' and '$tgl2'
+					then (a.diangkat + interval '1 year' * (date_part('year','$tgl2'::date)-date_part('year',a.diangkat)) + interval '24 month' - interval '2 years')::date
+					when (a.diangkat + interval '1 year' * (date_part('year','$tgl2'::date)-date_part('year',a.diangkat)) + interval '23 month')::date between '$tgl1' and '$tgl2'
+					then (a.diangkat + interval '1 year' * (date_part('year','$tgl2'::date)-date_part('year',a.diangkat)) + interval '23 month' - interval '2 years')::date
+					when (a.diangkat + interval '1 year' * (date_part('year','$tgl2'::date)-date_part('year',a.diangkat)) + interval '22 month')::date between '$tgl1' and '$tgl2'
+					then (a.diangkat + interval '1 year' * (date_part('year','$tgl2'::date)-date_part('year',a.diangkat)) + interval '22 month' - interval '2 years')::date
+					when (a.diangkat + interval '1 year' * (date_part('year','$tgl2'::date)-date_part('year',a.diangkat)) + interval '21 month')::date between '$tgl1' and '$tgl2'
+					then (a.diangkat + interval '1 year' * (date_part('year','$tgl2'::date)-date_part('year',a.diangkat)) + interval '21 month' - interval '2 years')::date
+					when (a.diangkat + interval '1 year' * (date_part('year','$tgl2'::date)-date_part('year',a.diangkat)) + interval '20 month')::date between '$tgl1' and '$tgl2'
+					then (a.diangkat + interval '1 year' * (date_part('year','$tgl2'::date)-date_part('year',a.diangkat)) + interval '20 month' - interval '2 years')::date
+					when (a.diangkat + interval '1 year' * (date_part('year','$tgl2'::date)-date_part('year',a.diangkat)) + interval '19 month')::date between '$tgl1' and '$tgl2'
+					then (a.diangkat + interval '1 year' * (date_part('year','$tgl2'::date)-date_part('year',a.diangkat)) + interval '19 month' - interval '2 years')::date
+					when (a.diangkat + interval '1 year' * (date_part('year','$tgl2'::date)-date_part('year',a.diangkat)) + interval '18 month')::date between '$tgl1' and '$tgl2'
+					then (a.diangkat + interval '1 year' * (date_part('year','$tgl2'::date)-date_part('year',a.diangkat)) + interval '18 month' - interval '2 years')::date
+					when (a.diangkat + interval '1 year' * (date_part('year','$tgl2'::date)-date_part('year',a.diangkat)) + interval '17 month')::date between '$tgl1' and '$tgl2'
+					then (a.diangkat + interval '1 year' * (date_part('year','$tgl2'::date)-date_part('year',a.diangkat)) + interval '17 month' - interval '2 years')::date
+					when (a.diangkat + interval '1 year' * (date_part('year','$tgl2'::date)-date_part('year',a.diangkat)) + interval '16 month')::date between '$tgl1' and '$tgl2'
+					then (a.diangkat + interval '1 year' * (date_part('year','$tgl2'::date)-date_part('year',a.diangkat)) + interval '16 month' - interval '2 years')::date
+					when (a.diangkat + interval '1 year' * (date_part('year','$tgl2'::date)-date_part('year',a.diangkat)) + interval '15 month')::date between '$tgl1' and '$tgl2'
+					then (a.diangkat + interval '1 year' * (date_part('year','$tgl2'::date)-date_part('year',a.diangkat)) + interval '15 month' - interval '2 years')::date
+					when (a.diangkat + interval '1 year' * (date_part('year','$tgl2'::date)-date_part('year',a.diangkat)) + interval '14 month')::date between '$tgl1' and '$tgl2'
+					then (a.diangkat + interval '1 year' * (date_part('year','$tgl2'::date)-date_part('year',a.diangkat)) + interval '14 month' - interval '2 years')::date
+					when (a.diangkat + interval '1 year' * (date_part('year','$tgl2'::date)-date_part('year',a.diangkat)) + interval '13 month')::date between '$tgl1' and '$tgl2'
+					then (a.diangkat + interval '1 year' * (date_part('year','$tgl2'::date)-date_part('year',a.diangkat)) + interval '13 month' - interval '2 years')::date
+					when (a.diangkat + interval '1 year' * (date_part('year','$tgl2'::date)-date_part('year',a.diangkat)) + interval '12 month')::date between '$tgl1' and '$tgl2'
+					then (a.diangkat + interval '1 year' * (date_part('year','$tgl2'::date)-date_part('year',a.diangkat)) + interval '12 month' - interval '2 years')::date
+					when (a.diangkat + interval '1 year' * (date_part('year','$tgl2'::date)-date_part('year',a.diangkat)) + interval '11 month')::date between '$tgl1' and '$tgl2'
+					then (a.diangkat + interval '1 year' * (date_part('year','$tgl2'::date)-date_part('year',a.diangkat)) + interval '11 month' - interval '2 years')::date
+					when (a.diangkat + interval '1 year' * (date_part('year','$tgl2'::date)-date_part('year',a.diangkat)) + interval '10 month')::date between '$tgl1' and '$tgl2'
+					then (a.diangkat + interval '1 year' * (date_part('year','$tgl2'::date)-date_part('year',a.diangkat)) + interval '10 month' - interval '2 years')::date
+					when (a.diangkat + interval '1 year' * (date_part('year','$tgl2'::date)-date_part('year',a.diangkat)) + interval '9 month')::date between '$tgl1' and '$tgl2'
+					then (a.diangkat + interval '1 year' * (date_part('year','$tgl2'::date)-date_part('year',a.diangkat)) + interval '9 month' - interval '2 years')::date
+					when (a.diangkat + interval '1 year' * (date_part('year','$tgl2'::date)-date_part('year',a.diangkat)) + interval '8 month')::date between '$tgl1' and '$tgl2'
+					then (a.diangkat + interval '1 year' * (date_part('year','$tgl2'::date)-date_part('year',a.diangkat)) + interval '8 month' - interval '2 years')::date
+					when (a.diangkat + interval '1 year' * (date_part('year','$tgl2'::date)-date_part('year',a.diangkat)) + interval '7 month')::date between '$tgl1' and '$tgl2'
+					then (a.diangkat + interval '1 year' * (date_part('year','$tgl2'::date)-date_part('year',a.diangkat)) + interval '7 month' - interval '2 years')::date
+					when (a.diangkat + interval '1 year' * (date_part('year','$tgl2'::date)-date_part('year',a.diangkat)) + interval '6 month')::date between '$tgl1' and '$tgl2'
+					then (a.diangkat + interval '1 year' * (date_part('year','$tgl2'::date)-date_part('year',a.diangkat)) + interval '6 month' - interval '2 years')::date
+					when (a.diangkat + interval '1 year' * (date_part('year','$tgl2'::date)-date_part('year',a.diangkat)) + interval '5 month')::date between '$tgl1' and '$tgl2'
+					then (a.diangkat + interval '1 year' * (date_part('year','$tgl2'::date)-date_part('year',a.diangkat)) + interval '5 month' - interval '2 years')::date
+					when (a.diangkat + interval '1 year' * (date_part('year','$tgl2'::date)-date_part('year',a.diangkat)) + interval '4 month')::date between '$tgl1' and '$tgl2'
+					then (a.diangkat + interval '1 year' * (date_part('year','$tgl2'::date)-date_part('year',a.diangkat)) + interval '4 month' - interval '2 years')::date
+					when (a.diangkat + interval '1 year' * (date_part('year','$tgl2'::date)-date_part('year',a.diangkat)) + interval '3 month')::date between '$tgl1' and '$tgl2'
+					then (a.diangkat + interval '1 year' * (date_part('year','$tgl2'::date)-date_part('year',a.diangkat)) + interval '3 month' - interval '2 years')::date
+					when (a.diangkat + interval '1 year' * (date_part('year','$tgl2'::date)-date_part('year',a.diangkat)) + interval '2 month')::date between '$tgl1' and '$tgl2'
+					then (a.diangkat + interval '1 year' * (date_part('year','$tgl2'::date)-date_part('year',a.diangkat)) + interval '2 month' - interval '2 years')::date
+					when (a.diangkat + interval '1 year' * (date_part('year','$tgl2'::date)-date_part('year',a.diangkat)) + interval '1 month')::date between '$tgl1' and '$tgl2'
+					then (a.diangkat + interval '1 year' * (date_part('year','$tgl2'::date)-date_part('year',a.diangkat)) + interval '1 month' - interval '2 years')::date";
+			$case2 = "when (a.diangkat + interval '1 year' * (date_part('year','$tgl2'::date)-date_part('year',a.diangkat)) + interval '24 month')::date between '$tgl1' and '$tgl2'
+					then (a.diangkat + interval '1 year' * (date_part('year','$tgl2'::date)-date_part('year',a.diangkat)) + interval '24 month')::date
+					when (a.diangkat + interval '1 year' * (date_part('year','$tgl2'::date)-date_part('year',a.diangkat)) + interval '23 month')::date between '$tgl1' and '$tgl2'
+					then (a.diangkat + interval '1 year' * (date_part('year','$tgl2'::date)-date_part('year',a.diangkat)) + interval '23 month')::date
+					when (a.diangkat + interval '1 year' * (date_part('year','$tgl2'::date)-date_part('year',a.diangkat)) + interval '22 month')::date between '$tgl1' and '$tgl2'
+					then (a.diangkat + interval '1 year' * (date_part('year','$tgl2'::date)-date_part('year',a.diangkat)) + interval '22 month')::date
+					when (a.diangkat + interval '1 year' * (date_part('year','$tgl2'::date)-date_part('year',a.diangkat)) + interval '21 month')::date between '$tgl1' and '$tgl2'
+					then (a.diangkat + interval '1 year' * (date_part('year','$tgl2'::date)-date_part('year',a.diangkat)) + interval '21 month')::date
+					when (a.diangkat + interval '1 year' * (date_part('year','$tgl2'::date)-date_part('year',a.diangkat)) + interval '20 month')::date between '$tgl1' and '$tgl2'
+					then (a.diangkat + interval '1 year' * (date_part('year','$tgl2'::date)-date_part('year',a.diangkat)) + interval '20 month')::date
+					when (a.diangkat + interval '1 year' * (date_part('year','$tgl2'::date)-date_part('year',a.diangkat)) + interval '19 month')::date between '$tgl1' and '$tgl2'
+					then (a.diangkat + interval '1 year' * (date_part('year','$tgl2'::date)-date_part('year',a.diangkat)) + interval '19 month')::date
+					when (a.diangkat + interval '1 year' * (date_part('year','$tgl2'::date)-date_part('year',a.diangkat)) + interval '18 month')::date between '$tgl1' and '$tgl2'
+					then (a.diangkat + interval '1 year' * (date_part('year','$tgl2'::date)-date_part('year',a.diangkat)) + interval '18 month')::date
+					when (a.diangkat + interval '1 year' * (date_part('year','$tgl2'::date)-date_part('year',a.diangkat)) + interval '17 month')::date between '$tgl1' and '$tgl2'
+					then (a.diangkat + interval '1 year' * (date_part('year','$tgl2'::date)-date_part('year',a.diangkat)) + interval '17 month')::date
+					when (a.diangkat + interval '1 year' * (date_part('year','$tgl2'::date)-date_part('year',a.diangkat)) + interval '16 month')::date between '$tgl1' and '$tgl2'
+					then (a.diangkat + interval '1 year' * (date_part('year','$tgl2'::date)-date_part('year',a.diangkat)) + interval '16 month')::date
+					when (a.diangkat + interval '1 year' * (date_part('year','$tgl2'::date)-date_part('year',a.diangkat)) + interval '15 month')::date between '$tgl1' and '$tgl2'
+					then (a.diangkat + interval '1 year' * (date_part('year','$tgl2'::date)-date_part('year',a.diangkat)) + interval '15 month')::date
+					when (a.diangkat + interval '1 year' * (date_part('year','$tgl2'::date)-date_part('year',a.diangkat)) + interval '14 month')::date between '$tgl1' and '$tgl2'
+					then (a.diangkat + interval '1 year' * (date_part('year','$tgl2'::date)-date_part('year',a.diangkat)) + interval '14 month')::date
+					when (a.diangkat + interval '1 year' * (date_part('year','$tgl2'::date)-date_part('year',a.diangkat)) + interval '13 month')::date between '$tgl1' and '$tgl2'
+					then (a.diangkat + interval '1 year' * (date_part('year','$tgl2'::date)-date_part('year',a.diangkat)) + interval '13 month')::date
+					when (a.diangkat + interval '1 year' * (date_part('year','$tgl2'::date)-date_part('year',a.diangkat)) + interval '12 month')::date between '$tgl1' and '$tgl2'
+					then (a.diangkat + interval '1 year' * (date_part('year','$tgl2'::date)-date_part('year',a.diangkat)) + interval '12 month')::date
+					when (a.diangkat + interval '1 year' * (date_part('year','$tgl2'::date)-date_part('year',a.diangkat)) + interval '11 month')::date between '$tgl1' and '$tgl2'
+					then (a.diangkat + interval '1 year' * (date_part('year','$tgl2'::date)-date_part('year',a.diangkat)) + interval '11 month')::date
+					when (a.diangkat + interval '1 year' * (date_part('year','$tgl2'::date)-date_part('year',a.diangkat)) + interval '10 month')::date between '$tgl1' and '$tgl2'
+					then (a.diangkat + interval '1 year' * (date_part('year','$tgl2'::date)-date_part('year',a.diangkat)) + interval '10 month')::date
+					when (a.diangkat + interval '1 year' * (date_part('year','$tgl2'::date)-date_part('year',a.diangkat)) + interval '9 month')::date between '$tgl1' and '$tgl2'
+					then (a.diangkat + interval '1 year' * (date_part('year','$tgl2'::date)-date_part('year',a.diangkat)) + interval '9 month')::date
+					when (a.diangkat + interval '1 year' * (date_part('year','$tgl2'::date)-date_part('year',a.diangkat)) + interval '8 month')::date between '$tgl1' and '$tgl2'
+					then (a.diangkat + interval '1 year' * (date_part('year','$tgl2'::date)-date_part('year',a.diangkat)) + interval '8 month')::date
+					when (a.diangkat + interval '1 year' * (date_part('year','$tgl2'::date)-date_part('year',a.diangkat)) + interval '7 month')::date between '$tgl1' and '$tgl2'
+					then (a.diangkat + interval '1 year' * (date_part('year','$tgl2'::date)-date_part('year',a.diangkat)) + interval '7 month')::date
+					when (a.diangkat + interval '1 year' * (date_part('year','$tgl2'::date)-date_part('year',a.diangkat)) + interval '6 month')::date between '$tgl1' and '$tgl2'
+					then (a.diangkat + interval '1 year' * (date_part('year','$tgl2'::date)-date_part('year',a.diangkat)) + interval '6 month')::date
+					when (a.diangkat + interval '1 year' * (date_part('year','$tgl2'::date)-date_part('year',a.diangkat)) + interval '5 month')::date between '$tgl1' and '$tgl2'
+					then (a.diangkat + interval '1 year' * (date_part('year','$tgl2'::date)-date_part('year',a.diangkat)) + interval '5 month')::date
+					when (a.diangkat + interval '1 year' * (date_part('year','$tgl2'::date)-date_part('year',a.diangkat)) + interval '4 month')::date between '$tgl1' and '$tgl2'
+					then (a.diangkat + interval '1 year' * (date_part('year','$tgl2'::date)-date_part('year',a.diangkat)) + interval '4 month')::date
+					when (a.diangkat + interval '1 year' * (date_part('year','$tgl2'::date)-date_part('year',a.diangkat)) + interval '3 month')::date between '$tgl1' and '$tgl2'
+					then (a.diangkat + interval '1 year' * (date_part('year','$tgl2'::date)-date_part('year',a.diangkat)) + interval '3 month')::date
+					when (a.diangkat + interval '1 year' * (date_part('year','$tgl2'::date)-date_part('year',a.diangkat)) + interval '2 month')::date between '$tgl1' and '$tgl2'
+					then (a.diangkat + interval '1 year' * (date_part('year','$tgl2'::date)-date_part('year',a.diangkat)) + interval '2 month')::date
+					when (a.diangkat + interval '1 year' * (date_part('year','$tgl2'::date)-date_part('year',a.diangkat)) + interval '1 month')::date between '$tgl1' and '$tgl2'
+					then (a.diangkat + interval '1 year' * (date_part('year','$tgl2'::date)-date_part('year',a.diangkat)) + interval '1 month')::date";
 			$sqltambahan = "when (a.diangkat + interval '24 month')::date between '$tgl1' and '$tgl2'
 					then (a.diangkat + interval '24 month')::date
 					when (a.diangkat + interval '23 month')::date between '$tgl1' and '$tgl2'
@@ -1900,54 +1900,54 @@ class M_Index extends CI_Model
 							then (a.diangkat + interval '4 month')::date
 							when (a.diangkat + interval '2 month')::date between '$tgl1' and '$tgl2'
 							then (a.diangkat + interval '2 month')::date";
-			$case1		=	"when (a.diangkat + interval '2 years' + interval '24 month')::date between '$tgl1' and '$tgl2'
-							then (a.diangkat + interval '24 month')::date
-							when (a.diangkat + interval '2 years' + interval '22 month')::date between '$tgl1' and '$tgl2'
-							then (a.diangkat + interval '22 month')::date
-							when (a.diangkat + interval '2 years' + interval '20 month')::date between '$tgl1' and '$tgl2'
-							then (a.diangkat + interval '20 month')::date
-							when (a.diangkat + interval '2 years' + interval '18 month')::date between '$tgl1' and '$tgl2'
-							then (a.diangkat + interval '18 month')::date
-							when (a.diangkat + interval '2 years' + interval '16 month')::date between '$tgl1' and '$tgl2'
-							then (a.diangkat + interval '16 month')::date
-							when (a.diangkat + interval '2 years' + interval '14 month')::date between '$tgl1' and '$tgl2'
-							then (a.diangkat + interval '14 month')::date
-							when (a.diangkat + interval '2 years' + interval '12 month')::date between '$tgl1' and '$tgl2'
-							then (a.diangkat + interval '12 month')::date
-							when (a.diangkat + interval '2 years' + interval '10 month')::date between '$tgl1' and '$tgl2'
-							then (a.diangkat + interval '10 month')::date
-							when (a.diangkat + interval '2 years' + interval '8 month')::date between '$tgl1' and '$tgl2'
-							then (a.diangkat + interval '8 month')::date
-							when (a.diangkat + interval '2 years' + interval '6 month')::date between '$tgl1' and '$tgl2'
-							then (a.diangkat + interval '6 month')::date
-							when (a.diangkat + interval '2 years' + interval '4 month')::date between '$tgl1' and '$tgl2'
-							then (a.diangkat + interval '4 month')::date
-							when (a.diangkat + interval '2 years' + interval '2 month')::date between '$tgl1' and '$tgl2'
-							then (a.diangkat + interval '2 month')::date";
-			$case2		=	"when (a.diangkat + interval '2 years' + interval '24 month')::date between '$tgl1' and '$tgl2'
-							then (a.diangkat + interval '2 years' + interval '24 month')::date
-							when (a.diangkat + interval '2 years' + interval '22 month')::date between '$tgl1' and '$tgl2'
-							then (a.diangkat + interval '2 years' + interval '22 month')::date
-							when (a.diangkat + interval '2 years' + interval '20 month')::date between '$tgl1' and '$tgl2'
-							then (a.diangkat + interval '2 years' + interval '20 month')::date
-							when (a.diangkat + interval '2 years' + interval '18 month')::date between '$tgl1' and '$tgl2'
-							then (a.diangkat + interval '2 years' + interval '18 month')::date
-							when (a.diangkat + interval '2 years' + interval '16 month')::date between '$tgl1' and '$tgl2'
-							then (a.diangkat + interval '2 years' + interval '16 month')::date
-							when (a.diangkat + interval '2 years' + interval '14 month')::date between '$tgl1' and '$tgl2'
-							then (a.diangkat + interval '2 years' + interval '14 month')::date
-							when (a.diangkat + interval '2 years' + interval '12 month')::date between '$tgl1' and '$tgl2'
-							then (a.diangkat + interval '2 years' + interval '12 month')::date
-							when (a.diangkat + interval '2 years' + interval '10 month')::date between '$tgl1' and '$tgl2'
-							then (a.diangkat + interval '2 years' + interval '10 month')::date
-							when (a.diangkat + interval '2 years' + interval '8 month')::date between '$tgl1' and '$tgl2'
-							then (a.diangkat + interval '2 years' + interval '8 month')::date
-							when (a.diangkat + interval '2 years' + interval '6 month')::date between '$tgl1' and '$tgl2'
-							then (a.diangkat + interval '2 years' + interval '6 month')::date
-							when (a.diangkat + interval '2 years' + interval '4 month')::date between '$tgl1' and '$tgl2'
-							then (a.diangkat + interval '2 years' + interval '4 month')::date
-							when (a.diangkat + interval '2 years' + interval '2 month')::date between '$tgl1' and '$tgl2'
-							then (a.diangkat + interval '2 years' + interval '2 month')::date";
+			$case1		=	"when (a.diangkat + interval '1 year' * (date_part('year','$tgl2'::date)-date_part('year',a.diangkat)) + interval '24 month')::date between '$tgl1' and '$tgl2'
+							then (a.diangkat + interval '1 year' * (date_part('year','$tgl2'::date)-date_part('year',a.diangkat)) + interval '24 month' - interval '2 years')::date
+							when (a.diangkat + interval '1 year' * (date_part('year','$tgl2'::date)-date_part('year',a.diangkat)) + interval '22 month')::date between '$tgl1' and '$tgl2'
+							then (a.diangkat + interval '1 year' * (date_part('year','$tgl2'::date)-date_part('year',a.diangkat)) + interval '22 month' - interval '2 years')::date
+							when (a.diangkat + interval '1 year' * (date_part('year','$tgl2'::date)-date_part('year',a.diangkat)) + interval '20 month')::date between '$tgl1' and '$tgl2'
+							then (a.diangkat + interval '1 year' * (date_part('year','$tgl2'::date)-date_part('year',a.diangkat)) + interval '20 month' - interval '2 years')::date
+							when (a.diangkat + interval '1 year' * (date_part('year','$tgl2'::date)-date_part('year',a.diangkat)) + interval '18 month')::date between '$tgl1' and '$tgl2'
+							then (a.diangkat + interval '1 year' * (date_part('year','$tgl2'::date)-date_part('year',a.diangkat)) + interval '18 month' - interval '2 years')::date
+							when (a.diangkat + interval '1 year' * (date_part('year','$tgl2'::date)-date_part('year',a.diangkat)) + interval '16 month')::date between '$tgl1' and '$tgl2'
+							then (a.diangkat + interval '1 year' * (date_part('year','$tgl2'::date)-date_part('year',a.diangkat)) + interval '16 month' - interval '2 years')::date
+							when (a.diangkat + interval '1 year' * (date_part('year','$tgl2'::date)-date_part('year',a.diangkat)) + interval '14 month')::date between '$tgl1' and '$tgl2'
+							then (a.diangkat + interval '1 year' * (date_part('year','$tgl2'::date)-date_part('year',a.diangkat)) + interval '14 month' - interval '2 years')::date
+							when (a.diangkat + interval '1 year' * (date_part('year','$tgl2'::date)-date_part('year',a.diangkat)) + interval '12 month')::date between '$tgl1' and '$tgl2'
+							then (a.diangkat + interval '1 year' * (date_part('year','$tgl2'::date)-date_part('year',a.diangkat)) + interval '12 month' - interval '2 years')::date
+							when (a.diangkat + interval '1 year' * (date_part('year','$tgl2'::date)-date_part('year',a.diangkat)) + interval '10 month')::date between '$tgl1' and '$tgl2'
+							then (a.diangkat + interval '1 year' * (date_part('year','$tgl2'::date)-date_part('year',a.diangkat)) + interval '10 month' - interval '2 years')::date
+							when (a.diangkat + interval '1 year' * (date_part('year','$tgl2'::date)-date_part('year',a.diangkat)) + interval '8 month')::date between '$tgl1' and '$tgl2'
+							then (a.diangkat + interval '1 year' * (date_part('year','$tgl2'::date)-date_part('year',a.diangkat)) + interval '8 month' - interval '2 years')::date
+							when (a.diangkat + interval '1 year' * (date_part('year','$tgl2'::date)-date_part('year',a.diangkat)) + interval '6 month')::date between '$tgl1' and '$tgl2'
+							then (a.diangkat + interval '1 year' * (date_part('year','$tgl2'::date)-date_part('year',a.diangkat)) + interval '6 month' - interval '2 years')::date
+							when (a.diangkat + interval '1 year' * (date_part('year','$tgl2'::date)-date_part('year',a.diangkat)) + interval '4 month')::date between '$tgl1' and '$tgl2'
+							then (a.diangkat + interval '1 year' * (date_part('year','$tgl2'::date)-date_part('year',a.diangkat)) + interval '4 month' - interval '2 years')::date
+							when (a.diangkat + interval '1 year' * (date_part('year','$tgl2'::date)-date_part('year',a.diangkat)) + interval '2 month')::date between '$tgl1' and '$tgl2'
+							then (a.diangkat + interval '1 year' * (date_part('year','$tgl2'::date)-date_part('year',a.diangkat)) + interval '2 month' - interval '2 years')::date";
+			$case2		=	"when (a.diangkat + interval '1 year' * (date_part('year','$tgl2'::date)-date_part('year',a.diangkat)) + interval '24 month')::date between '$tgl1' and '$tgl2'
+							then (a.diangkat + interval '1 year' * (date_part('year','$tgl2'::date)-date_part('year',a.diangkat)) + interval '24 month')::date
+							when (a.diangkat + interval '1 year' * (date_part('year','$tgl2'::date)-date_part('year',a.diangkat)) + interval '22 month')::date between '$tgl1' and '$tgl2'
+							then (a.diangkat + interval '1 year' * (date_part('year','$tgl2'::date)-date_part('year',a.diangkat)) + interval '22 month')::date
+							when (a.diangkat + interval '1 year' * (date_part('year','$tgl2'::date)-date_part('year',a.diangkat)) + interval '20 month')::date between '$tgl1' and '$tgl2'
+							then (a.diangkat + interval '1 year' * (date_part('year','$tgl2'::date)-date_part('year',a.diangkat)) + interval '20 month')::date
+							when (a.diangkat + interval '1 year' * (date_part('year','$tgl2'::date)-date_part('year',a.diangkat)) + interval '18 month')::date between '$tgl1' and '$tgl2'
+							then (a.diangkat + interval '1 year' * (date_part('year','$tgl2'::date)-date_part('year',a.diangkat)) + interval '18 month')::date
+							when (a.diangkat + interval '1 year' * (date_part('year','$tgl2'::date)-date_part('year',a.diangkat)) + interval '16 month')::date between '$tgl1' and '$tgl2'
+							then (a.diangkat + interval '1 year' * (date_part('year','$tgl2'::date)-date_part('year',a.diangkat)) + interval '16 month')::date
+							when (a.diangkat + interval '1 year' * (date_part('year','$tgl2'::date)-date_part('year',a.diangkat)) + interval '14 month')::date between '$tgl1' and '$tgl2'
+							then (a.diangkat + interval '1 year' * (date_part('year','$tgl2'::date)-date_part('year',a.diangkat)) + interval '14 month')::date
+							when (a.diangkat + interval '1 year' * (date_part('year','$tgl2'::date)-date_part('year',a.diangkat)) + interval '12 month')::date between '$tgl1' and '$tgl2'
+							then (a.diangkat + interval '1 year' * (date_part('year','$tgl2'::date)-date_part('year',a.diangkat)) + interval '12 month')::date
+							when (a.diangkat + interval '1 year' * (date_part('year','$tgl2'::date)-date_part('year',a.diangkat)) + interval '10 month')::date between '$tgl1' and '$tgl2'
+							then (a.diangkat + interval '1 year' * (date_part('year','$tgl2'::date)-date_part('year',a.diangkat)) + interval '10 month')::date
+							when (a.diangkat + interval '1 year' * (date_part('year','$tgl2'::date)-date_part('year',a.diangkat)) + interval '8 month')::date between '$tgl1' and '$tgl2'
+							then (a.diangkat + interval '1 year' * (date_part('year','$tgl2'::date)-date_part('year',a.diangkat)) + interval '8 month')::date
+							when (a.diangkat + interval '1 year' * (date_part('year','$tgl2'::date)-date_part('year',a.diangkat)) + interval '6 month')::date between '$tgl1' and '$tgl2'
+							then (a.diangkat + interval '1 year' * (date_part('year','$tgl2'::date)-date_part('year',a.diangkat)) + interval '6 month')::date
+							when (a.diangkat + interval '1 year' * (date_part('year','$tgl2'::date)-date_part('year',a.diangkat)) + interval '4 month')::date between '$tgl1' and '$tgl2'
+							then (a.diangkat + interval '1 year' * (date_part('year','$tgl2'::date)-date_part('year',a.diangkat)) + interval '4 month')::date
+							when (a.diangkat + interval '1 year' * (date_part('year','$tgl2'::date)-date_part('year',a.diangkat)) + interval '2 month')::date between '$tgl1' and '$tgl2'
+							then (a.diangkat + interval '1 year' * (date_part('year','$tgl2'::date)-date_part('year',a.diangkat)) + interval '2 month')::date";
     	}elseif ($vali == '3') {
     		$sqltambahan = "when (a.diangkat + interval '24 month')::date between '$tgl1' and '$tgl2'
 							then (a.diangkat + interval '24 month')::date
@@ -1965,38 +1965,38 @@ class M_Index extends CI_Model
 							then (a.diangkat + interval '6 month')::date
 							when (a.diangkat + interval '3 month')::date between '$tgl1' and '$tgl2'
 							then (a.diangkat + interval '3 month')::date";
-			$case1		=	"when (a.diangkat + interval '2 years' + interval '24 month')::date between '$tgl1' and '$tgl2'
-							then (a.diangkat + interval '24 month')::date
-							when (a.diangkat + interval '2 years' + interval '21 month')::date between '$tgl1' and '$tgl2'
-							then (a.diangkat + interval '21 month')::date
-							when (a.diangkat + interval '2 years' + interval '18 month')::date between '$tgl1' and '$tgl2'
-							then (a.diangkat + interval '18 month')::date
-							when (a.diangkat + interval '2 years' + interval '15 month')::date between '$tgl1' and '$tgl2'
-							then (a.diangkat + interval '15 month')::date
-							when (a.diangkat + interval '2 years' + interval '12 month')::date between '$tgl1' and '$tgl2'
-							then (a.diangkat + interval '12 month')::date
-							when (a.diangkat + interval '2 years' + interval '9 month')::date between '$tgl1' and '$tgl2'
-							then (a.diangkat + interval '9 month')::date
-							when (a.diangkat + interval '2 years' + interval '6 month')::date between '$tgl1' and '$tgl2'
-							then (a.diangkat + interval '6 month')::date
-							when (a.diangkat + interval '2 years' + interval '3 month')::date between '$tgl1' and '$tgl2'
-							then (a.diangkat + interval '3 month')::date";
-			$case2		=	"when (a.diangkat + interval '2 years' + interval '24 month')::date between '$tgl1' and '$tgl2'
-							then (a.diangkat + interval '2 years' + interval '24 month')::date
-							when (a.diangkat + interval '2 years' + interval '21 month')::date between '$tgl1' and '$tgl2'
-							then (a.diangkat + interval '2 years' + interval '21 month')::date
-							when (a.diangkat + interval '2 years' + interval '18 month')::date between '$tgl1' and '$tgl2'
-							then (a.diangkat + interval '2 years' + interval '18 month')::date
-							when (a.diangkat + interval '2 years' + interval '15 month')::date between '$tgl1' and '$tgl2'
-							then (a.diangkat + interval '2 years' + interval '15 month')::date
-							when (a.diangkat + interval '2 years' + interval '12 month')::date between '$tgl1' and '$tgl2'
-							then (a.diangkat + interval '2 years' + interval '12 month')::date
-							when (a.diangkat + interval '2 years' + interval '9 month')::date between '$tgl1' and '$tgl2'
-							then (a.diangkat + interval '2 years' + interval '9 month')::date
-							when (a.diangkat + interval '2 years' + interval '6 month')::date between '$tgl1' and '$tgl2'
-							then (a.diangkat + interval '2 years' + interval '6 month')::date
-							when (a.diangkat + interval '2 years' + interval '3 month')::date between '$tgl1' and '$tgl2'
-							then (a.diangkat + interval '2 years' + interval '3 month')::date";
+			$case1		=	"when (a.diangkat + interval '1 year' * (date_part('year','$tgl2'::date)-date_part('year',a.diangkat)) + interval '24 month')::date between '$tgl1' and '$tgl2'
+							then (a.diangkat + interval '1 year' * (date_part('year','$tgl2'::date)-date_part('year',a.diangkat)) + interval '24 month' - interval '2 years')::date
+							when (a.diangkat + interval '1 year' * (date_part('year','$tgl2'::date)-date_part('year',a.diangkat)) + interval '21 month')::date between '$tgl1' and '$tgl2'
+							then (a.diangkat + interval '1 year' * (date_part('year','$tgl2'::date)-date_part('year',a.diangkat)) + interval '21 month' - interval '2 years')::date
+							when (a.diangkat + interval '1 year' * (date_part('year','$tgl2'::date)-date_part('year',a.diangkat)) + interval '18 month')::date between '$tgl1' and '$tgl2'
+							then (a.diangkat + interval '1 year' * (date_part('year','$tgl2'::date)-date_part('year',a.diangkat)) + interval '18 month' - interval '2 years')::date
+							when (a.diangkat + interval '1 year' * (date_part('year','$tgl2'::date)-date_part('year',a.diangkat)) + interval '15 month')::date between '$tgl1' and '$tgl2'
+							then (a.diangkat + interval '1 year' * (date_part('year','$tgl2'::date)-date_part('year',a.diangkat)) + interval '15 month' - interval '2 years')::date
+							when (a.diangkat + interval '1 year' * (date_part('year','$tgl2'::date)-date_part('year',a.diangkat)) + interval '12 month')::date between '$tgl1' and '$tgl2'
+							then (a.diangkat + interval '1 year' * (date_part('year','$tgl2'::date)-date_part('year',a.diangkat)) + interval '12 month' - interval '2 years')::date
+							when (a.diangkat + interval '1 year' * (date_part('year','$tgl2'::date)-date_part('year',a.diangkat)) + interval '9 month')::date between '$tgl1' and '$tgl2'
+							then (a.diangkat + interval '1 year' * (date_part('year','$tgl2'::date)-date_part('year',a.diangkat)) + interval '9 month' - interval '2 years')::date
+							when (a.diangkat + interval '1 year' * (date_part('year','$tgl2'::date)-date_part('year',a.diangkat)) + interval '6 month')::date between '$tgl1' and '$tgl2'
+							then (a.diangkat + interval '1 year' * (date_part('year','$tgl2'::date)-date_part('year',a.diangkat)) + interval '6 month' - interval '2 years')::date
+							when (a.diangkat + interval '1 year' * (date_part('year','$tgl2'::date)-date_part('year',a.diangkat)) + interval '3 month')::date between '$tgl1' and '$tgl2'
+							then (a.diangkat + interval '1 year' * (date_part('year','$tgl2'::date)-date_part('year',a.diangkat)) + interval '3 month' - interval '2 years')::date";
+			$case2		=	"when (a.diangkat + interval '1 year' * (date_part('year','$tgl2'::date)-date_part('year',a.diangkat)) + interval '24 month')::date between '$tgl1' and '$tgl2'
+							then (a.diangkat + interval '1 year' * (date_part('year','$tgl2'::date)-date_part('year',a.diangkat)) + interval '24 month')::date
+							when (a.diangkat + interval '1 year' * (date_part('year','$tgl2'::date)-date_part('year',a.diangkat)) + interval '21 month')::date between '$tgl1' and '$tgl2'
+							then (a.diangkat + interval '1 year' * (date_part('year','$tgl2'::date)-date_part('year',a.diangkat)) + interval '21 month')::date
+							when (a.diangkat + interval '1 year' * (date_part('year','$tgl2'::date)-date_part('year',a.diangkat)) + interval '18 month')::date between '$tgl1' and '$tgl2'
+							then (a.diangkat + interval '1 year' * (date_part('year','$tgl2'::date)-date_part('year',a.diangkat)) + interval '18 month')::date
+							when (a.diangkat + interval '1 year' * (date_part('year','$tgl2'::date)-date_part('year',a.diangkat)) + interval '15 month')::date between '$tgl1' and '$tgl2'
+							then (a.diangkat + interval '1 year' * (date_part('year','$tgl2'::date)-date_part('year',a.diangkat)) + interval '15 month')::date
+							when (a.diangkat + interval '1 year' * (date_part('year','$tgl2'::date)-date_part('year',a.diangkat)) + interval '12 month')::date between '$tgl1' and '$tgl2'
+							then (a.diangkat + interval '1 year' * (date_part('year','$tgl2'::date)-date_part('year',a.diangkat)) + interval '12 month')::date
+							when (a.diangkat + interval '1 year' * (date_part('year','$tgl2'::date)-date_part('year',a.diangkat)) + interval '9 month')::date between '$tgl1' and '$tgl2'
+							then (a.diangkat + interval '1 year' * (date_part('year','$tgl2'::date)-date_part('year',a.diangkat)) + interval '9 month')::date
+							when (a.diangkat + interval '1 year' * (date_part('year','$tgl2'::date)-date_part('year',a.diangkat)) + interval '6 month')::date between '$tgl1' and '$tgl2'
+							then (a.diangkat + interval '1 year' * (date_part('year','$tgl2'::date)-date_part('year',a.diangkat)) + interval '6 month')::date
+							when (a.diangkat + interval '1 year' * (date_part('year','$tgl2'::date)-date_part('year',a.diangkat)) + interval '3 month')::date between '$tgl1' and '$tgl2'
+							then (a.diangkat + interval '1 year' * (date_part('year','$tgl2'::date)-date_part('year',a.diangkat)) + interval '3 month')::date";
     	}elseif ($vali == '4') {
     		$sqltambahan = "when (a.diangkat + interval '24 month')::date between '$tgl1' and '$tgl2'
 							then (a.diangkat + interval '24 month')::date
@@ -2010,30 +2010,30 @@ class M_Index extends CI_Model
 							then (a.diangkat + interval '8 month')::date
 							when (a.diangkat + interval '4 month')::date between '$tgl1' and '$tgl2'
 							then (a.diangkat + interval '4 month')::date";
-			$case1		=	"when (a.diangkat + interval '2 years' + interval '24 month')::date between '$tgl1' and '$tgl2'
-							then (a.diangkat + interval '24 month')::date
-							when (a.diangkat + interval '2 years' + interval '20 month')::date between '$tgl1' and '$tgl2'
-							then (a.diangkat + interval '20 month')::date
-							when (a.diangkat + interval '2 years' + interval '16 month')::date between '$tgl1' and '$tgl2'
-							then (a.diangkat + interval '16 month')::date
-							when (a.diangkat + interval '2 years' + interval '12 month')::date between '$tgl1' and '$tgl2'
-							then (a.diangkat + interval '12 month')::date
-							when (a.diangkat + interval '2 years' + interval '8 month')::date between '$tgl1' and '$tgl2'
-							then (a.diangkat + interval '8 month')::date
-							when (a.diangkat + interval '2 years' + interval '4 month')::date between '$tgl1' and '$tgl2'
-							then (a.diangkat + interval '4 month')::date";
-			$case2		=	"when (a.diangkat + interval '2 years' + interval '24 month')::date between '$tgl1' and '$tgl2'
-							then (a.diangkat + interval '2 years' + interval '24 month')::date
-							when (a.diangkat + interval '2 years' + interval '20 month')::date between '$tgl1' and '$tgl2'
-							then (a.diangkat + interval '2 years' + interval '20 month')::date
-							when (a.diangkat + interval '2 years' + interval '16 month')::date between '$tgl1' and '$tgl2'
-							then (a.diangkat + interval '2 years' + interval '16 month')::date
-							when (a.diangkat + interval '2 years' + interval '12 month')::date between '$tgl1' and '$tgl2'
-							then (a.diangkat + interval '2 years' + interval '12 month')::date
-							when (a.diangkat + interval '2 years' + interval '8 month')::date between '$tgl1' and '$tgl2'
-							then (a.diangkat + interval '2 years' + interval '8 month')::date
-							when (a.diangkat + interval '2 years' + interval '4 month')::date between '$tgl1' and '$tgl2'
-							then (a.diangkat + interval '2 years' + interval '4 month')::date";
+			$case1		=	"when (a.diangkat + interval '1 year' * (date_part('year','$tgl2'::date)-date_part('year',a.diangkat)) + interval '24 month')::date between '$tgl1' and '$tgl2'
+							then (a.diangkat + interval '1 year' * (date_part('year','$tgl2'::date)-date_part('year',a.diangkat)) + interval '24 month' - interval '2 years')::date
+							when (a.diangkat + interval '1 year' * (date_part('year','$tgl2'::date)-date_part('year',a.diangkat)) + interval '20 month')::date between '$tgl1' and '$tgl2'
+							then (a.diangkat + interval '1 year' * (date_part('year','$tgl2'::date)-date_part('year',a.diangkat)) + interval '20 month' - interval '2 years')::date
+							when (a.diangkat + interval '1 year' * (date_part('year','$tgl2'::date)-date_part('year',a.diangkat)) + interval '16 month')::date between '$tgl1' and '$tgl2'
+							then (a.diangkat + interval '1 year' * (date_part('year','$tgl2'::date)-date_part('year',a.diangkat)) + interval '16 month' - interval '2 years')::date
+							when (a.diangkat + interval '1 year' * (date_part('year','$tgl2'::date)-date_part('year',a.diangkat)) + interval '12 month')::date between '$tgl1' and '$tgl2'
+							then (a.diangkat + interval '1 year' * (date_part('year','$tgl2'::date)-date_part('year',a.diangkat)) + interval '12 month' - interval '2 years')::date
+							when (a.diangkat + interval '1 year' * (date_part('year','$tgl2'::date)-date_part('year',a.diangkat)) + interval '8 month')::date between '$tgl1' and '$tgl2'
+							then (a.diangkat + interval '1 year' * (date_part('year','$tgl2'::date)-date_part('year',a.diangkat)) + interval '8 month' - interval '2 years')::date
+							when (a.diangkat + interval '1 year' * (date_part('year','$tgl2'::date)-date_part('year',a.diangkat)) + interval '4 month')::date between '$tgl1' and '$tgl2'
+							then (a.diangkat + interval '1 year' * (date_part('year','$tgl2'::date)-date_part('year',a.diangkat)) + interval '4 month' - interval '2 years')::date";
+			$case2		=	"when (a.diangkat + interval '1 year' * (date_part('year','$tgl2'::date)-date_part('year',a.diangkat)) + interval '24 month')::date between '$tgl1' and '$tgl2'
+							then (a.diangkat + interval '1 year' * (date_part('year','$tgl2'::date)-date_part('year',a.diangkat)) + interval '24 month')::date
+							when (a.diangkat + interval '1 year' * (date_part('year','$tgl2'::date)-date_part('year',a.diangkat)) + interval '20 month')::date between '$tgl1' and '$tgl2'
+							then (a.diangkat + interval '1 year' * (date_part('year','$tgl2'::date)-date_part('year',a.diangkat)) + interval '20 month')::date
+							when (a.diangkat + interval '1 year' * (date_part('year','$tgl2'::date)-date_part('year',a.diangkat)) + interval '16 month')::date between '$tgl1' and '$tgl2'
+							then (a.diangkat + interval '1 year' * (date_part('year','$tgl2'::date)-date_part('year',a.diangkat)) + interval '16 month')::date
+							when (a.diangkat + interval '1 year' * (date_part('year','$tgl2'::date)-date_part('year',a.diangkat)) + interval '12 month')::date between '$tgl1' and '$tgl2'
+							then (a.diangkat + interval '1 year' * (date_part('year','$tgl2'::date)-date_part('year',a.diangkat)) + interval '12 month')::date
+							when (a.diangkat + interval '1 year' * (date_part('year','$tgl2'::date)-date_part('year',a.diangkat)) + interval '8 month')::date between '$tgl1' and '$tgl2'
+							then (a.diangkat + interval '1 year' * (date_part('year','$tgl2'::date)-date_part('year',a.diangkat)) + interval '8 month')::date
+							when (a.diangkat + interval '1 year' * (date_part('year','$tgl2'::date)-date_part('year',a.diangkat)) + interval '4 month')::date between '$tgl1' and '$tgl2'
+							then (a.diangkat + interval '1 year' * (date_part('year','$tgl2'::date)-date_part('year',a.diangkat)) + interval '4 month')::date";
     	}elseif ($vali == '6') {
     		$sqltambahan = "when (a.diangkat + interval '24 month')::date between '$tgl1' and '$tgl2'
 							then (a.diangkat + interval '24 month')::date
@@ -2043,35 +2043,35 @@ class M_Index extends CI_Model
 							then (a.diangkat + interval '12 month')::date
 							when (a.diangkat + interval '6 month')::date between '$tgl1' and '$tgl2'
 							then (a.diangkat + interval '6 month')::date";
-			$case1		=	"when (a.diangkat + interval '2 years' + interval '24 month')::date between '$tgl1' and '$tgl2'
-							then (a.diangkat + interval '24 month')::date
-							when (a.diangkat + interval '2 years' + interval '18 month')::date between '$tgl1' and '$tgl2'
-							then (a.diangkat + interval '18 month')::date
-							when (a.diangkat + interval '2 years' + interval '12 month')::date between '$tgl1' and '$tgl2'
-							then (a.diangkat + interval '12 month')::date
-							when (a.diangkat + interval '2 years' + interval '6 month')::date between '$tgl1' and '$tgl2'
-							then (a.diangkat + interval '6 month')::date";
-			$case2		=	"when (a.diangkat + interval '2 years' + interval '24 month')::date between '$tgl1' and '$tgl2'
-							then (a.diangkat + interval '2 years' + interval '24 month')::date
-							when (a.diangkat + interval '2 years' + interval '18 month')::date between '$tgl1' and '$tgl2'
-							then (a.diangkat + interval '2 years' + interval '18 month')::date
-							when (a.diangkat + interval '2 years' + interval '12 month')::date between '$tgl1' and '$tgl2'
-							then (a.diangkat + interval '2 years' + interval '12 month')::date
-							when (a.diangkat + interval '2 years' + interval '6 month')::date between '$tgl1' and '$tgl2'
-							then (a.diangkat + interval '2 years' + interval '6 month')::date";
+			$case1		=	"when (a.diangkat + interval '1 year' * (date_part('year','$tgl2'::date)-date_part('year',a.diangkat)) + interval '24 month')::date between '$tgl1' and '$tgl2'
+							then (a.diangkat + interval '1 year' * (date_part('year','$tgl2'::date)-date_part('year',a.diangkat)) + interval '24 month' - interval '2 years')::date
+							when (a.diangkat + interval '1 year' * (date_part('year','$tgl2'::date)-date_part('year',a.diangkat)) + interval '18 month')::date between '$tgl1' and '$tgl2'
+							then (a.diangkat + interval '1 year' * (date_part('year','$tgl2'::date)-date_part('year',a.diangkat)) + interval '18 month' - interval '2 years')::date
+							when (a.diangkat + interval '1 year' * (date_part('year','$tgl2'::date)-date_part('year',a.diangkat)) + interval '12 month')::date between '$tgl1' and '$tgl2'
+							then (a.diangkat + interval '1 year' * (date_part('year','$tgl2'::date)-date_part('year',a.diangkat)) + interval '12 month' - interval '2 years')::date
+							when (a.diangkat + interval '1 year' * (date_part('year','$tgl2'::date)-date_part('year',a.diangkat)) + interval '6 month')::date between '$tgl1' and '$tgl2'
+							then (a.diangkat + interval '1 year' * (date_part('year','$tgl2'::date)-date_part('year',a.diangkat)) + interval '6 month' - interval '2 years')::date";
+			$case2		=	"when (a.diangkat + interval '1 year' * (date_part('year','$tgl2'::date)-date_part('year',a.diangkat)) + interval '24 month')::date between '$tgl1' and '$tgl2'
+							then (a.diangkat + interval '1 year' * (date_part('year','$tgl2'::date)-date_part('year',a.diangkat)) + interval '24 month')::date
+							when (a.diangkat + interval '1 year' * (date_part('year','$tgl2'::date)-date_part('year',a.diangkat)) + interval '18 month')::date between '$tgl1' and '$tgl2'
+							then (a.diangkat + interval '1 year' * (date_part('year','$tgl2'::date)-date_part('year',a.diangkat)) + interval '18 month')::date
+							when (a.diangkat + interval '1 year' * (date_part('year','$tgl2'::date)-date_part('year',a.diangkat)) + interval '12 month')::date between '$tgl1' and '$tgl2'
+							then (a.diangkat + interval '1 year' * (date_part('year','$tgl2'::date)-date_part('year',a.diangkat)) + interval '12 month')::date
+							when (a.diangkat + interval '1 year' * (date_part('year','$tgl2'::date)-date_part('year',a.diangkat)) + interval '6 month')::date between '$tgl1' and '$tgl2'
+							then (a.diangkat + interval '1 year' * (date_part('year','$tgl2'::date)-date_part('year',a.diangkat)) + interval '6 month')::date";
     	}else{
     		$sqltambahan = "when (a.diangkat + interval '24 month')::date between '$tgl1' and '$tgl2'
 							then (a.diangkat + interval '24 month')::date
 							when (a.diangkat + interval '12 month')::date between '$tgl1' and '$tgl2'
 							then (a.diangkat + interval '12 month')::date";
-			$case1		=	"when (a.diangkat + interval '2 years' + interval '24 month')::date between '$tgl1' and '$tgl2'
-							then (a.diangkat + interval '24 month')::date
-							when (a.diangkat + interval '2 years' + interval '12 month')::date between '$tgl1' and '$tgl2'
-							then (a.diangkat + interval '12 month')::date";
-			$case2		=	"when (a.diangkat + interval '2 years' + interval '24 month')::date between '$tgl1' and '$tgl2'
-							then (a.diangkat + interval '2 years' + interval '24 month')::date
-							when (a.diangkat + interval '2 years' + interval '12 month')::date between '$tgl1' and '$tgl2'
-							then (a.diangkat + interval '2 years' + interval '12 month')::date";
+			$case1		=	"when (a.diangkat + interval '1 year' * (date_part('year','$tgl2'::date)-date_part('year',a.diangkat)) + interval '24 month')::date between '$tgl1' and '$tgl2'
+							then (a.diangkat + interval '1 year' * (date_part('year','$tgl2'::date)-date_part('year',a.diangkat)) + interval '24 month' - interval '2 years')::date
+							when (a.diangkat + interval '1 year' * (date_part('year','$tgl2'::date)-date_part('year',a.diangkat)) + interval '12 month')::date between '$tgl1' and '$tgl2'
+							then (a.diangkat + interval '1 year' * (date_part('year','$tgl2'::date)-date_part('year',a.diangkat)) + interval '12 month' - interval '2 years')::date";
+			$case2		=	"when (a.diangkat + interval '1 year' * (date_part('year','$tgl2'::date)-date_part('year',a.diangkat)) + interval '24 month')::date between '$tgl1' and '$tgl2'
+							then (a.diangkat + interval '1 year' * (date_part('year','$tgl2'::date)-date_part('year',a.diangkat)) + interval '24 month')::date
+							when (a.diangkat + interval '1 year' * (date_part('year','$tgl2'::date)-date_part('year',a.diangkat)) + interval '12 month')::date between '$tgl1' and '$tgl2'
+							then (a.diangkat + interval '1 year' * (date_part('year','$tgl2'::date)-date_part('year',a.diangkat)) + interval '12 month')::date";
     	}
     	$sql = "select
 					et.*,
@@ -2363,6 +2363,16 @@ class M_Index extends CI_Model
     	$query = $this->erp->query($sql);
 
     	return $query->row()->lama_penilaian;
+    }
+
+    public function getVal3($id)
+    {
+    	$sql = "SELECT el.*, ep.jenis_penilaian FROM et.et_lama_penilaian el
+				left join et.et_jenis_penilaian ep on el.id = ep.id_jenis 
+				where id = '$id' order by id asc";
+    	$query = $this->erp->query($sql);
+
+    	return $query->result_array();
     }
 
     public function getListMemo()

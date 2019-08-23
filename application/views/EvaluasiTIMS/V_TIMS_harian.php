@@ -10,6 +10,20 @@
     {
         transition: all 0.4s ease;
     }
+    #et_set_eval{
+        position:absolute;
+        z-index: 300;
+        right:0;
+        margin-top: -25px;
+        top:0; font-weight: bold;
+    }
+    #et_set_eval2{
+        position:absolute;
+        z-index: 300;
+        right:0;
+        margin-top: -12px;
+        top:0; font-weight: bold;
+    }
 </style>
 <section class="content">
     <div class="inner" >
@@ -28,16 +42,18 @@
                 </div>
                 <div class="col-lg-12">
                     <div class="box box-primary box-solid">
-                        <div class="box-header with-border">Notifikasi</div>
+                        <div class="box-header with-border"></div>
                         <div class="box-body">
                             <div class="panel-body">
                                 <div class="row">
                                     <div class="col-md-12">
+                                        <p id="et_set_eval"><?php echo 'Lama Evaluasi OJT : '.$LamaEvaluasi[0]['lama_penilaian'].' bulan'; ?></p>
+                                        <p id="et_set_eval2"><?php echo 'Lama Evaluasi Non OJT : '.$LamaEvaluasi[1]['lama_penilaian'].' bulan'; ?></p>
                                         <form method="post" action="<?php echo site_url('EvaluasiTIMS/Harian'); ?>">
                                             <div class="col-md-12 form-group">
                                                 <label style="margin-top: 5px;" class="col-sm-2 col-form-label" for="name">Jenis Penilaian :</label>
                                                 <div class="col-md-4">
-                                                    <select required="" type="text" class="form-control et_select_jp" style="width: 100%;" name="et_s_harian" id="name">
+                                                    <select required="" type="text" class="form-control et_select_jp et_get_lamaEval" style="width: 100%;" name="et_s_harian" id="name">
                                                         <option></option>
                                                     </select>
                                                 </div>
