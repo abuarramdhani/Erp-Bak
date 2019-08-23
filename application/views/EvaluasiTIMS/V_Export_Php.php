@@ -11,12 +11,12 @@
 			<thead>
 				<tr>
 					<th>No</th>
-					<th>No Induk</th>
+					<th width="3%">No Induk</th>
 					<th>Nama</th>
 					<th>Tgl Masuk</th>
-					<th>Unit</th>
-					<th>Seksi</th>
-					<th>Lama Kerja</th>
+					<th width="14%">Unit</th>
+					<th width="14%">Seksi</th>
+					<th width="6%">Lama Kerja</th>
 					<th width="2%">T</th>
 					<th width="2%">I</th>
 					<th width="2%">M</th>

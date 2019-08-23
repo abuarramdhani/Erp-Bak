@@ -9,6 +9,22 @@
     .table-striped > tbody > tr:nth-child(2n+1) > td, .table-striped > tbody > tr:nth-child(2n+1) > th {
      background-color: #bcd5eb;
  }
+ #et_set_eval{
+        position:absolute;
+        z-index: 300;
+        right:0;
+        margin-top: 20px;
+        margin-right: 5px;
+        top:0; font-weight: bold;
+    }
+    #et_set_eval2{
+        position:absolute;
+        z-index: 300;
+        right:0;
+        margin-top: 32px;
+        margin-right: 5px;
+        top:0; font-weight: bold;
+    }
 </style>
 <section class="content">
     <div class="inner" >
@@ -39,6 +55,8 @@
                                 <div class="panel-body">
                                    <div class="row">
                                     <form class="col-12 text-center">
+                                       <p id="et_set_eval"><?php echo 'Lama Evaluasi OJT : '.$LamaEvaluasi[0]['lama_penilaian'].' bulan'; ?></p>
+                                       <p id="et_set_eval2"><?php echo 'Lama Evaluasi Non OJT : '.$LamaEvaluasi[1]['lama_penilaian'].' bulan'; ?></p>
                                         <div class="form-inline">
                                             <h3>
                                                 <b><?php echo $jp; ?> - <?php echo $dept; ?></b>
