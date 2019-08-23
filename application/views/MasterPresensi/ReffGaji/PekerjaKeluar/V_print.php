@@ -3,8 +3,15 @@
     <link rel="stylesheet" href="<?php echo base_url('assets/plugins/bootstrap/3.3.7/css/bootstrap.css');?>" />
     </head>
     <body>
-        <div style='text-align: center'>
-            <h3>Reff. Gaji Pekerja Keluar</h3>
+        <div style='text-align: left'>
+            <?php $bulan = array("","Januari","Februari","Maret","April","Mei","Juni","Juli","Agustus","September","Oktober","November","Desember");
+                $tgl_Cetak = explode('-',$pos['txtTglCetak2']);
+                $prd = explode(" - ",$pos['txtPeriodeGaji2']); 
+                $prd_awal = explode("-", $prd[0]);
+                $prd_akhir = explode("-", $prd[1]);
+            ?>
+            <h5>Data Pekerja Keluar Bulan : <?php echo $bulan[intval($tgl_Cetak[1])]." ".$tgl_Cetak[0] ?> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Tanggal Cetak : <?php echo $tgl_Cetak[2]."/".$tgl_Cetak[1]."/".$tgl_Cetak[0] ?></h5>
+            <h6>(Periode Pekerja Keluar : <?php echo $prd_awal[2]."/".$prd_awal[1]."/".$prd_awal[0]." - ".$prd_akhir[2]."/".$prd_akhir[1]."/".$prd_akhir[0] ?>)</h6>
         </div>
         <div>
         <table style="width:100%" class="table table-bordered table-hover table-striped dataTable">
