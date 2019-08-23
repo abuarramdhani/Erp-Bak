@@ -2852,3 +2852,48 @@ $route['MonitoringBiayaSeksiICT/Dashboard/(:any)/(:any)'] = 'MonitoringBiayaSeks
 $route['MonitoringBiayaSeksiICT/Detail'] = 'MonitoringBiayaSeksiICT/MainMenu/Detail/C_ChartDetail';
 $route['MonitoringBiayaSeksiICT/Detail/(:any)'] = 'MonitoringBiayaSeksiICT/MainMenu/Detail/C_ChartDetail/$1';
 $route['MonitoringBiayaSeksiICT/Detail/(:any)/(:any)'] = 'MonitoringBiayaSeksiICT/MainMenu/Detail/C_ChartDetail/$1/$2';
+
+// ----------------------------------------------- Surat Permohonan Cuti ----------------------------------------------------//
+$route['PermohonanCuti'] = 'PermohonanCuti/C_Index/index';
+
+$route['PermohonanCuti/Tahunan'] = 'PermohonanCuti/MainMenu/C_Tahunan';
+$route['PermohonanCuti/Tahunan/(:any)'] = 'PermohonanCuti/MainMenu/C_Tahunan/$1';
+$route['PermohonanCuti/Tahunan/(:any)/(:any)'] = 'PermohonanCuti/MainMenu/C_Tahunan/$1/$2';
+
+$route['PermohonanCuti/Istimewa'] = 'PermohonanCuti/MainMenu/C_Istimewa';
+$route['PermohonanCuti/Istimewa/(:any)'] = 'PermohonanCuti/MainMenu/C_Istimewa/$1';
+$route['PermohonanCuti/Istimewa/(:any)/(:any)'] = 'PermohonanCuti/MainMenu/C_Istimewa/$1/$2';
+
+$route['PermohonanCuti/DraftCuti'] = 'PermohonanCuti/MainMenu/C_DraftCuti';
+$route['PermohonanCuti/DraftCuti/EditTahunan'] = 'PermohonanCuti/MainMenu/C_DraftCuti/EditTahunan';
+$route['PermohonanCuti/DraftCuti/EditTahunan/(:any)'] = 'PermohonanCuti/MainMenu/C_DraftCuti/EditTahunan/$1';
+$route['PermohonanCuti/DraftCuti/EditTahunan/(:any)/(:any)'] = 'PermohonanCuti/MainMenu/C_DraftCuti/EditTahunan/$1/$2';
+$route['PermohonanCuti/DraftCuti/Delete/(:any)'] = 'PermohonanCuti/MainMenu/C_DraftCuti/Delete/$1';
+$route['PermohonanCuti/DraftCuti/Request/(:any)'] = 'PermohonanCuti/MainMenu/C_DraftCuti/Request/$1';
+$route['PermohonanCuti/DraftCuti/Detail/(:any)'] = 'PermohonanCuti/MainMenu/C_DraftCuti/Detail/$1';
+$route['PermohonanCuti/DraftCuti/PreviewCetak/(:any)'] = 'PermohonanCuti/MainMenu/C_DraftCuti/PreviewCetak/$1';
+$route['PermohonanCuti/DraftCuti/(:any)'] = 'PermohonanCuti/MainMenu/C_DraftCuti/$1';
+
+$route['PermohonanCuti/Approval'] = 'PermohonanCuti/MainMenu/C_Approval';
+$route['PermohonanCuti/Approval/Inprocess'] = 'PermohonanCuti/MainMenu/C_Approval/Inprocess';
+$route['PermohonanCuti/Approval/Inprocess/Detail'] = 'PermohonanCuti/MainMenu/C_Approval/Detail';
+$route['PermohonanCuti/Approval/Inprocess/Detail/(:any)'] = 'PermohonanCuti/MainMenu/C_Approval/Detail/$1';
+$route['PermohonanCuti/Approval/Inprocess/Approve/(:any)'] = 'PermohonanCuti/MainMenu/C_Approval/Approve/$1';
+
+$route['PermohonanCuti/Approval/Approved'] = 'PermohonanCuti/MainMenu/C_Approval/Approved';
+$route['PermohonanCuti/Approval/Approved/Detail'] = 'PermohonanCuti/MainMenu/C_Approval/Detail';
+$route['PermohonanCuti/Approval/Approved/Detail/(:any)'] = 'PermohonanCuti/MainMenu/C_Approval/Detail/$1';
+$route['PermohonanCuti/Approval/Approved/Detail/(:any)/(:any)'] = 'PermohonanCuti/MainMenu/C_Approval/Detail/$1/$2';
+
+$route['PermohonanCuti/Approval/Rejected'] = 'PermohonanCuti/MainMenu/C_Approval/Rejected';
+$route['PermohonanCuti/Approval/Rejected/Detail'] = 'PermohonanCuti/MainMenu/C_Approval/Detail';
+$route['PermohonanCuti/Approval/Rejected/Detail/(:any)'] = 'PermohonanCuti/MainMenu/C_Approval/Detail/$1';
+$route['PermohonanCuti/Approval/Rejected/Detail/(:any)/(:any)'] = 'PermohonanCuti/MainMenu/C_Approval/Detail/$1/$2';
+
+$route['PermohonanCuti/Approval/(:any)'] = 'PermohonanCuti/MainMenu/C_Approval/$1';
+$route['PermohonanCuti/Approval/All'] = 'PermohonanCuti/MainMenu/C_Approval/All';
+$route['PermohonanCuti/Approval/All/Detail'] = 'PermohonanCuti/MainMenu/C_Approval/Detail';
+$route['PermohonanCuti/Approval/All/Detail/(:any)'] = 'PermohonanCuti/MainMenu/C_Approval/Detail/$1';
+$route['PermohonanCuti/Approval/All/Detail/(:any)/(:any)'] = 'PermohonanCuti/MainMenu/C_Approval/Detail/$1/$2';
+
+$route['PermohonanCuti/Approval/SendMail'] = 'PermohonanCuti/MainMenu/C_Approval/sendMail';

@@ -31,7 +31,7 @@
 		<script type="text/javascript" src="<?= base_url('assets/plugins/chartjs/Chart.bundle.min.js') ?>"></script>
 		<script type="text/javascript" src="<?= base_url('assets/plugins/redactor/js/redactor.min.js') ?>"></script>
 		<script type="text/javascript" src="<?= base_url('assets/plugins/mdtimepicker/mdtimepicker.js') ?>"></script>
-		<script type="text/javascript" src="<?= base_url('assets/plugins/html2canvas/html2canvas.min.js') ?>"></script>	
+		<script type="text/javascript" src="<?= base_url('assets/plugins/html2canvas/html2canvas.min.js') ?>"></script>
 		<script type="text/javascript" src="<?= base_url('assets/plugins/highchart/highcharts.js') ?>"></script>
 		<script type="text/javascript" src="<?= base_url('assets/plugins/highchart/exporting.js') ?>"></script>
 		<script type="text/javascript" src="<?= base_url('assets/plugins/highchart/offline-exporting.js') ?>"></script>
@@ -160,6 +160,7 @@
 		<script type="text/javascript" src="<?= base_url('assets/js/customAS.js') ?>"></script>
 		<script type="text/javascript" src="<?= base_url('assets/js/customMBK.js') ?>"></script>
 		<script type="text/javascript" src="<?= base_url('assets/js/customMPM.js') ?>"></script>
+		<script type="text/javascript" src="<?= base_url('assets/js/customPCP.js') ?>"></script>
 		<script src="<?php echo base_url('assets/js/customMLP.js');?>" type="text/javascript"></script>
 		<script src="<?php echo base_url('assets/js/customMLPB.js');?>" type="text/javascript"></script>
 		<script src="<?php echo base_url('assets/js/customMLPA.js');?>" type="text/javascript"></script>
@@ -190,7 +191,7 @@
 					"allowClear" : true,
 					"format": 'dd M yyyy'
 				});
-				$('[data-toggle="tooltip"]').tooltip(); 
+				$('[data-toggle="tooltip"]').tooltip();
 				formInit();
 				<?php
 					if($this->session->flashdata('delete-menu-respond')) {
