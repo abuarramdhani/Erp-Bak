@@ -2897,3 +2897,9 @@ $route['PermohonanCuti/Approval/All/Detail/(:any)'] = 'PermohonanCuti/MainMenu/C
 $route['PermohonanCuti/Approval/All/Detail/(:any)/(:any)'] = 'PermohonanCuti/MainMenu/C_Approval/Detail/$1/$2';
 
 $route['PermohonanCuti/Approval/SendMail'] = 'PermohonanCuti/MainMenu/C_Approval/sendMail';
+
+$route['CetakStikerCC/Cetak'] 					= 'CetakStikerCC/C_Cetak';
+$route['CetakStikerCC'] 					    = 'CetakStikerCC/C_Index';
+$route['CetakStikerCC/Cetak/(:any)']			= 'CetakStikerCC/C_Cetak/$1';
+$route['CetakStikerCC/Cetak/(:any)/(:any)'] 	= 'CetakStikerCC/C_Cetak/$1/$2';
+$route['CetakStikerCC/Cetak/(:any)/(:any)/(:any)'] 	= 'CetakStikerCC/C_Cetak/$1/$2/$3';
