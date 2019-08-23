@@ -1,4 +1,4 @@
-<style type="text/css">html, body { scroll-behavior: smooth; } td { height: 60px; } thead tr th { height: auto; } .fixed-column { position: absolute; background: white; width: 100px; left: 16px; margin-bottom: 2px; }</style>
+<style type="text/css">html, body { scroll-behavior: smooth; } tbody tr td { /*padding-top: 18px !important;*/ } thead tr th { height: auto; } .fixed-column { position: absolute; background: white; width: 100px; left: 16px; margin-bottom: 2px; }</style>
 <?php if(count($title) > 1): ?>
 <div class="row" id="frame-total-khs-data">
     <div class="box box-primary box-solid">
@@ -56,7 +56,7 @@
         <div class="box-header with-border"><h3 style="margin-top: 0; margin-bottom: 0;"><?= $department ?></h3></div>
             <div id="box-body-data" class="box-body" style="padding: 16px; padding-bottom: 0; overflow-y: auto; background-color: white;">
                 <?php switch($department): case 'Keuangan': case 'Produksi': ?>
-                <div style="margin-left: 98px;">
+                <div style="margin-left: 99px;">
                     <table class="table table-bordered table-hover text-center" style="overflow-x: scroll; width: 100%; display: block;">
                         <thead>
                             <th class="fixed-column" style="background-color: #00a65a; color: white; min-width: 100px; padding-top: 56px; padding-bottom: 56px; margin-top: 1px;">Keterangan</th>
@@ -122,7 +122,7 @@
                                 <?php endif; endif; ?>
                                 <?php $i++; endforeach ?>
                             </tr>
-                            <td class="fixed-column" style="height: auto; padding-bottom: 20px; padding-top: 19px;">Non Staff</td>
+                            <td class="fixed-column" style="height: auto; padding-bottom: 19px; padding-top: 20px;">Non Staff</td>
                             <tr>
                                 <?php $i = 0; foreach($tableData[$department] as $item) { $targetTurun[2][$i] = 0; $targetSisa[2][$i] = 0; $aktualTurun[2][$i] = 0; $aktualSisa[2][$i] = 0; $i++; } ?>
                                 <?php $target = 0; $aktual = 0; $i = 0; foreach($tableData[$department] as $item): ?>
@@ -198,7 +198,7 @@
                     </div>
                 </div>
                 <?php break; case 'Pemasaran': ?>
-                <div style="margin-left: 98px;">
+                <div style="margin-left: 99px;">
                     <table class="table table-bordered table-hover text-center" style="overflow-x: scroll; width: 100%; display: block;">
                         <thead>
                             <th class="fixed-column" style="background-color: #00a65a; color: white; min-width: 100px; padding-top: 56px; padding-bottom: 56px; margin-top: 1px;">Keterangan</th>
@@ -264,7 +264,7 @@
                                 <?php endif; endif; ?>
                                 <?php $i++; endforeach ?>
                             </tr>
-                            <td class="fixed-column" style="height: auto; padding-bottom: 20px; padding-top: 19px;">Non Staff</td>
+                            <td class="fixed-column" style="height: auto; padding-bottom: 19px; padding-top: 20px;">Non Staff</td>
                             <tr>
                                 <?php $i = 0; foreach($tableData[$department] as $item) { $targetTurun[2][$i] = 0; $targetSisa[2][$i] = 0; $aktualTurun[2][$i] = 0; $aktualSisa[2][$i] = 0; $i++; } ?>
                                 <?php $target = 0; $aktual = 0; $i = 0; foreach($tableData[$department] as $item): ?>
@@ -318,7 +318,7 @@
                                     $totalTargetTurun = array(); $totalTargetSisa = array();
                                     for($i = 0; $i < count($tableData[$department]); $i++) { $totalTargetTurun[$i] = 0; $totalTargetSisa[$i] = 0; $totalAktualTurun[$i] = 0; $totalAktualSisa[$i] = 0; }
                                     for($i = 1; $i < count($tableData[$department]); $i++) {
-                                        for($j = 0; $j < 4; $j++) {
+                                        for($j = 0; $j < 5; $j++) {
                                             $totalTargetTurun[$i] += $targetTurun[$j][$i];
                                             $totalTargetSisa[$i] += $targetSisa[$j][$i];
                                             $totalAktualTurun[$i] += $aktualTurun[$j][$i];
@@ -358,7 +358,7 @@
                     </div>
                 </div>
                 <?php break; case 'Personalia': ?>
-                <div style="margin-left: 98px;">
+                <div style="margin-left: 99px;">
                     <table class="table table-bordered table-hover text-center" style="overflow-x: scroll; width: 100%; display: block;">
                         <thead>
                             <th class="fixed-column" style="background-color: #00a65a; color: white; min-width: 100px; padding-top: 56px; padding-bottom: 56px; margin-top: 1px;">Keterangan</th>
@@ -424,7 +424,7 @@
                                 <?php endif; endif; ?>
                                 <?php $i++; endforeach ?>
                             </tr>
-                            <td class="fixed-column" style="height: auto; padding-bottom: 20px; padding-top: 19px;">Non Staff</td>
+                            <td class="fixed-column" style="height: auto; padding-bottom: 19px; padding-top: 20px;">Non Staff</td>
                             <tr>
                                 <?php $i = 0; foreach($tableData[$department] as $item) { $targetTurun[2][$i] = 0; $targetSisa[2][$i] = 0; $aktualTurun[2][$i] = 0; $aktualSisa[2][$i] = 0; $i++; } ?>
                                 <?php $target = 0; $aktual = 0; $i = 0; foreach($tableData[$department] as $item): ?>
@@ -478,7 +478,7 @@
                                     $totalTargetTurun = array(); $totalTargetSisa = array();
                                     for($i = 0; $i < count($tableData[$department]); $i++) { $totalTargetTurun[$i] = 0; $totalTargetSisa[$i] = 0; $totalAktualTurun[$i] = 0; $totalAktualSisa[$i] = 0; }
                                     for($i = 1; $i < count($tableData[$department]); $i++) {
-                                        for($j = 0; $j < 4; $j++) {
+                                        for($j = 0; $j < 5; $j++) {
                                             $totalTargetTurun[$i] += $targetTurun[$j][$i];
                                             $totalTargetSisa[$i] += $targetSisa[$j][$i];
                                             $totalAktualTurun[$i] += $aktualTurun[$j][$i];

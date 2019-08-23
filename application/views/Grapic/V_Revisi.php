@@ -1,4 +1,4 @@
-<style type="text/css">html, body { scroll-behavior: smooth; } td { height: 60px; } thead tr th { height: auto; } .fixed-column { position: absolute; background: white; width: 100px; left: 16px; margin-bottom: 2px; }</style>
+<style type="text/css">html, body { scroll-behavior: smooth; } tbody tr td { height: auto; padding-top: 18px !important; } thead tr th { height: auto; } .fixed-column { position: absolute; background: white; width: 100px; left: 16px; margin-bottom: 2px; }</style>
 <section class="content inner row">
     <div class="col-lg-12">
         <div class="row text-left" style="margin-top: -12px; margin-bottom: 8px;">
