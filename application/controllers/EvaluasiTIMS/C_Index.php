@@ -216,16 +216,18 @@ class C_Index extends CI_Controller
 					$a[] = '0';
 				}
 			}
-			// echo "<pre>";
 			// print_r($listHarian);
 			// exit();
 			// print_r($a);
 		}
+			// echo "<pre>";
 		$data['val'] = $val;
 		// print_r($last_col);exit();
 		$data['jumlah'] = $a;
 		$data['jp'] = $jp;
 		$data['idi'] = $lh;
+		$data['LamaEvaluasi'] = $this->M_index->getVal();
+		// print_r($data['LamaEvaluasi']);exit();
 
 		$this->load->view('V_Header',$data);
 		$this->load->view('V_Sidemenu',$data);
@@ -269,6 +271,7 @@ class C_Index extends CI_Controller
 		$data['jp'] = $jp[0]['jenis_penilaian'];
 		$data['jpi'] = $a;
 		$data['dept'] = 'Departemen '.$b;
+		$data['LamaEvaluasi'] = $this->M_index->getVal();
 		
 		$this->load->view('V_Header',$data);
 		$this->load->view('V_Sidemenu',$data);
@@ -289,6 +292,8 @@ class C_Index extends CI_Controller
 		$data['Menu'] = 'TIMS Bulanan';
 		$data['SubMenuOne'] = '';
 		$data['SubMenuTwo'] = '';
+
+		$data['LamaEvaluasi'] = $this->M_index->getVal();
 
 		$pr = $this->input->post('et_periode');
 		$jenisPenilaian = $this->input->post('et_jenis_jp');
@@ -475,6 +480,7 @@ class C_Index extends CI_Controller
 		// $getKadept = array_column($getKadept, 'pilih');
 		// $getKadept = array_unique($getKadept);
 		$getKadept = array_map("unserialize", array_unique(array_map("serialize", $getKadept)));
+		// exit();
 
 		echo json_encode($getKadept);
 	}
@@ -980,5 +986,20 @@ class C_Index extends CI_Controller
 		}
 		// print_r($perpanjangan);
 
+	}
+
+	public function getLamaEval()
+	{
+		$a = $this->input->post('s');
+		$vali = $this->M_index->getVal2($a);
+
+		$ret = '';
+		if ($a == '1') {
+			$ret = 'Lama Evaluasi OJT :'.$vali.' bulan';
+		}else{
+			$ret = 'Lama Evaluasi Non OJT :'.$vali.' bulan';
+		}
+		$ret = str_replace('"', '', $ret);
+		echo $ret;
 	}
 }
