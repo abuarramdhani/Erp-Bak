@@ -7,6 +7,11 @@
 	.capital{
     text-transform: uppercase;
 }
+
+thead.cabang tr th {
+	background-color: #00a65a;
+}
+
 </style>
 
 <section class="content">
@@ -23,9 +28,10 @@
 				<br />
 				<div class="row">
 					<div class="col-lg-12">
-						<div class="box box-primary box-solid">
+						<div class="box box-success">
+							<div class="box-header with-border"></div>
 							<div class="box-body">
-								<div class="box box-primary box-solid">
+								<div class="box box-success box-solid">
 									<div class="box-body">
 										<div class="col-md-12">
 											<table id="filter"
@@ -54,7 +60,7 @@
 										<button onclick="SaveCabang($(this))" type="button" class="btn btn-success pull-right" style="margin-top: 10px; margin-bottom: 20px; margin-left: 20px;" > <i class="fa fa-plus"></i> Add</button>
 									</div>
 									<table class="table table-bordered table-hover text-center tblMPM">
-										<thead>
+										<thead class="cabang">
 											<tr class="bg-primary">
 												<th style="width: 5%"class="text-center">No.</th>
 												<th style="width: 40%" class="text-center">NAMA CABANG</th>

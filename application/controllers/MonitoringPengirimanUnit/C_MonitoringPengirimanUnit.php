@@ -149,7 +149,7 @@ class C_MonitoringPengirimanUnit extends CI_Controller{
 		$estimasi = $this->input->post('estimasi');
 		$estimasi_loading = $this->input->post('estimasi_loading');
 		$finish_good = $this->input->post('finish_good');
-		$status = $this->input->post('status');
+		// $status = $this->input->post('status');
 		$cabang = $this->input->post('cabang');
 		$kendaraan = $this->input->post('jk');
 		$unit = $this->input->post('unit');
@@ -158,7 +158,7 @@ class C_MonitoringPengirimanUnit extends CI_Controller{
 		$content = $this->input->post('content');
 		
          // update header
-        $updateMPM1 = $this->M_monitoringpengirimanunit->updateMPM($estimasi,$estimasi_loading,$finish_good,$status,$cabang,$kendaraan,$usrname,$no_ship);
+        $updateMPM1 = $this->M_monitoringpengirimanunit->updateMPM($estimasi,$estimasi_loading,$finish_good,$cabang,$kendaraan,$usrname,$no_ship);
         // update line
         $deleteLine = $this->M_monitoringpengirimanunit->deleteMPM($no_ship);
         
@@ -237,7 +237,7 @@ class C_MonitoringPengirimanUnit extends CI_Controller{
 		$estimasi = $this->input->post('estimasi');
 		$estimasi_loading = $this->input->post('estimasi_loading');
 		$finish_good = $this->input->post('finish_good');
-		$status = $this->input->post('status');
+		// $status = $this->input->post('status');
 		$cabang = $this->input->post('cabang');
 		$kendaraan = $this->input->post('jk');
 		$unit = $this->input->post('unit');
@@ -245,7 +245,7 @@ class C_MonitoringPengirimanUnit extends CI_Controller{
 		$tipe = $this->input->post('tipe');
 		$content = $this->input->post('content');
 
-		$saveMPM1 = $this->M_monitoringpengirimanunit->saveInsertMpm($estimasi,$estimasi_loading,$finish_good,$status,$cabang,$kendaraan,$usrname);
+		$saveMPM1 = $this->M_monitoringpengirimanunit->saveInsertMpm($estimasi,$estimasi_loading,$finish_good,$cabang,$kendaraan,$usrname);
 		$dataId = $this->M_monitoringpengirimanunit->getNumberShipment();
 		$id = $dataId[0]['id'];
 

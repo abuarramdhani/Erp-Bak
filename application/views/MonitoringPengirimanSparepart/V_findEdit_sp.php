@@ -99,7 +99,7 @@
 																	<?php } ?>
 																	</select>
 																</td>
-																<td>
+																<!-- <td>
 																	<span><label>Sudah Penuh?</label></span>
 																</td>
 																<td>
@@ -115,8 +115,8 @@
 																			?>
 																			<option value="" > Pilih </option>
 																		<option value="Y" <?php echo $y ?>> YES </option>
-																		<option value="N" <?php echo $n ?>> NO </option>
-																</td>
+																		<option value="N" <?php echo $n ?>> NO </option> -->
+																<!-- </td> -->
 															</tr>
 											</table>
 										</div>
@@ -142,9 +142,9 @@
 					<td class="text-center"> 
 						<?php echo $no; ?> </td>
 					<td class="text-center"> 
-						<input type="number" value="<?php echo $value['quantity'] ?>" class="form-control" style="width: 100%" type="text" id="jumlah" name="jumlah"> </td>
+						<input type="number" value="<?php echo $value['quantity'] ?>" class="form-control" style="width: 100%" type="text" id="jumlah" name="jumlah" disabled> </td>
 					<td class="text-center">
-						<select id="tipe" name="tipe" class="form-control selectUnitMPM" style="width:100%;">
+						<select id="tipe" name="tipe" class="form-control selectUnitMPM" style="width:100%;" disabled>
 							<option value="" > Pilih </option>
 								<?php foreach ($uom as $k) { 
 									$s='';
@@ -157,7 +157,7 @@
 						</select>
 					</td>
 					<td class="text-center"> 
-						<select id="content" name="content" class="form-control selectUnitMPM" style="width:100%;">
+						<select id="content" name="content" class="form-control selectUnitMPM" style="width:100%;" disabled>
 							<option value="" > Pilih </option>
 								<?php foreach ($content as $k) { 
 									$s='';
@@ -170,7 +170,7 @@
 						</select>
 					</td>
 					<td class="text-center"> 
-						<select id="unit" name="unit" class="form-control selectUnitMPM" style="width:100%;">
+						<select id="unit" name="unit" class="form-control selectUnitMPM" style="width:100%;" disabled>
 							<option value="" > Pilih </option>
 								<?php foreach ($unit as $k) { 
 									$s='';
@@ -183,7 +183,7 @@
 						</select>
 					</td>
 					<td class="text-center"> 
-						<button type="button" class="btnDeleteRowsp btn btn-danger" onclick="myFunction()"><i class="glyphicon glyphicon-trash" disable ></i>
+						<button type="button" class="btnDeleteRowsp btn btn-danger" onclick="myFunction()"><i class="glyphicon glyphicon-trash" disabled ></i>
 						</button>
 					</td>
 				</tr>

@@ -99,7 +99,7 @@
 																	<?php } ?>
 																	</select>
 																</td>
-																<td>
+																<!-- <td>
 																	<span><label>Sudah Penuh?</label></span>
 																</td>
 																<td>
@@ -116,7 +116,7 @@
 																			<option value="" > Pilih </option>
 																		<option value="Y" <?php echo $y ?>> YES </option>
 																		<option value="N" <?php echo $n ?>> NO </option>
-																</td>
+																</td> -->
 															</tr>
 															<tr>
 																

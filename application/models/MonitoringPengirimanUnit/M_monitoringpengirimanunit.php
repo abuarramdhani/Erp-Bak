@@ -50,8 +50,8 @@ class M_monitoringpengirimanunit extends CI_Model
               left join om.om_province op on osh.shipment_to_province_id = op.province_id
               left join om.om_city oc on osh.shipment_to_city_id = oc.city_id
     where osh.estimate_depart_date > now() - interval '1 day'
-    and osh.estimate_depart_date > now() - interval '5 minute'
-    --and osh.actual_depart_date is null
+    --and osh.estimate_depart_date > now() - interval ' minute'
+    and osh.actual_depart_date is null
       group by
               osh.shipment_header_id
               ,ovt.name
@@ -236,22 +236,20 @@ class M_monitoringpengirimanunit extends CI_Model
       } 
 
 // proses saving MPM ada di sini bruh --------------------------------------------------
-      public function saveInsertMpm($edd,$eld,$fingo,$status,$cabang,$jk,$usr)
+      public function saveInsertMpm($edd,$eld,$fingo,$cabang,$jk,$usr)
       {
         $db = $this->load->database('dpostgre',true);
         $sql = "insert into om.om_shipment_header 
                       (estimate_depart_date,
                       estimate_loading_date,
                       shipment_from_fg_id,   
-                      is_full_flag,
                       shipment_to_cabang_id,
                       vehicle_type_id,
                       creation_date,
                       created_by) 
                 values ('$edd', 
                       '$eld',
-                      '$fingo', 
-                      '$status', 
+                      '$fingo',  
                       '$cabang', 
                       '$jk',
                       now(),
@@ -278,14 +276,14 @@ class M_monitoringpengirimanunit extends CI_Model
        }
 // -------------------------------------------------------------------------------------------------
        // update header
-       public function updateMPM($edd,$eld,$fingo,$status,$cabang,$jk,$usr,$id)
+       public function updateMPM($edd,$eld,$fingo,$cabang,$jk,$usr,$id)
        {
           $db = $this->load->database('dpostgre',true);
           $sql = "UPDATE om.om_shipment_header
                     SET estimate_depart_date = '$edd',
                     estimate_loading_date = '$eld',
                     shipment_from_fg_id = '$fingo',
-                    is_full_flag = '$status',
+                    -- is_full_flag = '$status',
                     shipment_to_cabang_id = '$cabang',
                     vehicle_type_id = '$jk',
                     creation_date = now(),

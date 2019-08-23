@@ -146,12 +146,14 @@ class C_MonitoringPengirimanGudang extends CI_Controller{
 
 	public function saveEditMPMgd()
 	{
+		// print_r($_POST);
 		$no_ship = $this->input->post('no_ship');
 		$actual_brkt = $this->input->post('actual_brkt');
 		$actual_loading = $this->input->post('actual_loading');
+		$status = $this->input->post('statusgudang');
 		
          // update header
-        $insertActual = $this->M_monitoringpengirimangudang->insertActualTime($no_ship,$actual_brkt,$actual_loading);
+        $insertActual = $this->M_monitoringpengirimangudang->insertActualTime($no_ship,$actual_brkt,$actual_loading, $status);
 
 	}
 

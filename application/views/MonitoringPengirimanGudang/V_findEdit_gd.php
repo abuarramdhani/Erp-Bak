@@ -103,19 +103,11 @@
 																	<span><label>Sudah Penuh?</label></span>
 																</td>
 																<td>
-																	<select id="status" name="status" class="form-control select2" style="width: 300px" disabled>
-																		<?php
-																			$y = '';
-																			$n = '';
-																				if($header[0]['status'] == 'N') {
-																					$n = 'selected';
-																				} else {
-																					$y = 'selected';
-																				}
-																			?>
-																			<option value="" > Pilih </option>
-																		<option value="Y" <?php echo $y ?>> YES </option>
-																		<option value="N" <?php echo $n ?>> NO </option>
+																	<select id="statusBakso" name="status" class="form-control select2" style="width: 300px">
+																		<option value="" > Pilih </option>
+																		<option value="Y" > YES </option>
+																		<option value="N" > NO </option>
+																	</select>
 																</td>
 															</tr>
 															<tr>

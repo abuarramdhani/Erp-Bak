@@ -28,7 +28,11 @@
 											<td><?php echo  $k['asal_gudang'] ?></td>
 											<td><?php echo  $k['cabang'] ?></td>
 											<td><?php echo  $k['muatan'] ?></td>
-											<td><?php echo  $k['status'] ?></td>
+											<?php if ($k['status'] == NULL) { ?>
+											<td>UNCONFIRMED</td>
+											<?php }else{ ?>
+											<td><?php echo $k['status'] ?> </td>
+											<?php }?>
 											<td><button type="button" data-toggle="modal" data-target="MdlMPM" onclick="ModalDetailUnit(<?php echo $k['no_shipment'] ?>)" class="btn btn-default"><i class="fa fa-pencil"></i> Edit</button>
 										</tr>
 										<?php $no++; } ?>

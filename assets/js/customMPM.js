@@ -181,7 +181,7 @@ function myFunction() {
 function saveMPM(){
 		var estimasi = $('#estimasi_brkt').val();
 		var finish_good = $('#fingo').val();
-		var status = $('#status').val();
+		// var status = $('#status').val();
 		var cabang = $('#cabang').val();
 		var jk = $('#jk').val();
 		var estimasi_loading = $('#estimasi_loading').val();
@@ -218,7 +218,7 @@ function saveMPM(){
 			estimasi: estimasi,
 			estimasi_loading:estimasi_loading,
 			finish_good: finish_good,
-			status: status,
+			// status: status,
 			cabang: cabang,
 			jk: jk,
 			tipe: arry,
@@ -247,7 +247,7 @@ function saveEditMPM(th){
 		var no_ship = th
 		var estimasi = $('#estimasi_brkt').val();
 		var finish_good = $('#fingo').val();
-		var status = $('#status').val();
+		// var status = $('#status').val();
 		var jk = $('#jk').val();
 		var estimasi_loading = $('#estimasi_loading').val();
 		var cabang = $('#cabang').val();
@@ -286,7 +286,7 @@ function saveEditMPM(th){
 			estimasi: estimasi,
 			estimasi_loading:estimasi_loading,
 			finish_good: finish_good,
-			status: status,
+			// status: status,
 			jk: jk,
 			tipe: arry,
 			content: arry1,
@@ -962,7 +962,8 @@ $('.entergd').on("keypress",function(e){
 		var no_ship = th
 		var actual_brkt = $('#actual_brkt').val();
 		var actual_loading = $('#actual_loading').val();
-		console.log(no_ship)
+		var status = $('#statusBakso').val();
+		console.log(status)
 
 		$.ajax({
 		type: "POST",
@@ -971,6 +972,7 @@ $('.entergd').on("keypress",function(e){
 			no_ship:no_ship,
 			actual_loading: actual_loading,
 			actual_brkt:actual_brkt,
+			statusgudang:status,
 		},
 		success: function(response){
 			Swal.fire({

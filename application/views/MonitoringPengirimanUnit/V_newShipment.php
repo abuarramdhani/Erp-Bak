@@ -20,7 +20,9 @@
 				<br />
 				<div class="row">
 					<div class="col-lg-12">
-						<div class="box box-primary box-solid">
+						<div class="box box-primary">
+							<div class="box-header with-border">
+					  		</div>
 							<div class="box-body">
 								<div class="box box-primary box-solid">
 									<div class="box-body">
@@ -53,18 +55,6 @@
 																<td>
 																	<input class="form-control time-set" style="width: 300px" type="text" id="estimasi_loading" name="estimasi_loading"></input>
 																</td>
-																
-																<!-- <td>
-																	<span><label>Kota Tujuan</label></span>
-																</td>
-																<td>
-																	<select id="city" name="city" class="form-control select2 select2-hidden-accessible" style="width:300px;">
-																		<option value="" > Pilih  </option>
-																		<?php foreach ($city as $k) { ?>
-																		<option value="<?php echo $k['city_id'] ?>"><?php echo $k['name'] ?></option>
-																		<?php } ?>
-																	</select>
-																</td> -->
 																<td>
 																	<span><label>Finish Good</label></span>
 																</td>
@@ -89,7 +79,7 @@
 																		<?php } ?>
 																	</select>
 																</td>
-																<td>
+																<!-- <td>
 																	<span><label>Sudah Penuh?</label></span>
 																</td>
 																<td>
@@ -98,7 +88,7 @@
 																		<option value="Y" > YES </option>
 																		<option value="N" > NO </option>
 																	</select>
-																</td>
+																</td> -->
 															</tr>
 															<tr>
 																
