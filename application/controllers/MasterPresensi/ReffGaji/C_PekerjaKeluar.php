@@ -575,6 +575,7 @@ class C_PekerjaKeluar extends CI_Controller
 		$gaji = $this->proses_hitung($puasa,$tgl_puasa,$prd_gaji,$status_pekerja,$noind,$pot_seragam);
 
 		$data['data'] = $gaji;
+		$data['pos'] = $_GET;
 		$this->load->library('pdf');
 
 		$pdf = $this->pdf->load();
