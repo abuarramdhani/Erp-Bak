@@ -491,7 +491,7 @@ class C_Index extends CI_Controller
 
 		$this->load->library('pdf');
 		$pdf 	=	$this->pdf->load();
-		$pdf 	=	new mPDF('utf-8', array(216,297), 10, "timesnewroman", 20, 20, 40, 30, 0, 0, 'P');
+		$pdf 	=	new mPDF('utf-8', array(216,297), 10, "timesnewroman", 20, 20, 20, 30, 0, 0, 'P');
 		// $pdf 	=	new mPDF();
 
 		$filename	=	'SuratPengangkatan-'.str_replace('/', '_', $no_surat_decode).'.pdf';
@@ -621,7 +621,7 @@ class C_Index extends CI_Controller
 										);
 		$this->M_pengangkatan->updateSuratPengangkatan($updateSuratPengangkatan, $nomor_surat, $kodeSurat, $tanggal_cetak_asli);
       	$this->M_pengangkatan->inserttlogupdate($nomor_induk, $nomor_induk_baru);
-		
+
 		if (substr($nomor_induk, 0,1) == 'E') {
 				redirect('MasterPekerja/Surat/SuratPengangkatanNonStaff');
 			}else{
