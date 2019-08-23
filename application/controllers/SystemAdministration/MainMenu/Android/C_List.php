@@ -315,10 +315,10 @@ class C_List extends CI_Controller {
 				));
 				$mail->Username = 'no-reply@quick.com';
 				$mail->Password = "123456";
-				$mail->setFrom('noreply@quick.co.id', 'Notifikasi Registrasi Android');
-				$mail->addAddress($internalMail, 'Notifikasi Registrasi Android');
+				$mail->setFrom('noreply@quick.co.id', 'ERP Mobile');
+				$mail->addAddress($internalMail, 'ERP Mobile User');
 				if(!$eksternalMail==null){
-					$mail->addAddress($eksternalMail, 'Notifikasi Registrasi Android');
+					$mail->addAddress($eksternalMail, 'Status Registrasi Android ERP Mobile');
 				}
 				$mail->Subject = 'Status Registrasi Android Anda';
 				$mail->msgHTML("
@@ -326,7 +326,7 @@ class C_List extends CI_Controller {
 				Kepada Yth.<br>
 				$namaPekerja<br><br>
 				
-				Kami informasikan bahwa request approval Absen Online Anda, detail sbb :<br><br>
+				Kami informasikan bahwa request hak akses ERP Mobile anda, dengan detail sbb :<br><br>
 				Android ID 				: $android_id<br>
 				IMEI 					: $imei<br>
 				Hardware Serial 		: $hardware_serial<br>
