@@ -161,6 +161,7 @@
 		<script type="text/javascript" src="<?= base_url('assets/js/customMBK.js') ?>"></script>
 		<script type="text/javascript" src="<?= base_url('assets/js/customMPM.js') ?>"></script>
 		<script type="text/javascript" src="<?= base_url('assets/js/customPCP.js') ?>"></script>
+		<script type="text/javascript" src="<?= base_url('assets/js/customCSC.js') ?>"></script>
 		<script src="<?php echo base_url('assets/js/customMLP.js');?>" type="text/javascript"></script>
 		<script src="<?php echo base_url('assets/js/customMLPB.js');?>" type="text/javascript"></script>
 		<script src="<?php echo base_url('assets/js/customMLPA.js');?>" type="text/javascript"></script>
