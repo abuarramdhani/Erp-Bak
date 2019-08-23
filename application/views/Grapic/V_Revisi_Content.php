@@ -16,8 +16,8 @@
                             <?php if($i == 1): ?>
                                 <th class="bg-orange"><?= $month ?></th>
                             <?php else: ?>
-                                <th class="<?= ($i % 2 == 0) ? 'bg-primary' : 'bg-orange' ?>" colspan="3"><?= $month ?></th>
-                                <th class="<?= ($i % 2 == 0) ? 'bg-primary' : 'bg-orange' ?>"><?= $currentMonthFormatted ?></th>
+                                <th class="<?= ($i % 2 == 0) ? 'bg-primary' : 'bg-orange' ?>" colspan="2"><?= $month ?></th>
+                                <th class="<?= ($i % 2 == 0) ? 'bg-primary' : 'bg-orange' ?>" colspan="2"><?= $currentMonthFormatted ?></th>
                             <?php endif ?>
                             <?php $i++; endforeach ?>
                         </tr>
@@ -70,8 +70,8 @@
                                 <?php if($i == 1): ?>
                                     <th class="bg-orange"><?= $month ?></th>
                                 <?php else: ?>
-                                    <th class="<?= ($i % 2 == 0) ? 'bg-primary' : 'bg-orange' ?>" colspan="3"><?= $month ?></th>
-                                    <th class="<?= ($i % 2 == 0) ? 'bg-primary' : 'bg-orange' ?>"><?= $currentMonthFormatted ?></th>
+                                    <th class="<?= ($i % 2 == 0) ? 'bg-primary' : 'bg-orange' ?>" colspan="2"><?= $month ?></th>
+                                    <th class="<?= ($i % 2 == 0) ? 'bg-primary' : 'bg-orange' ?>" colspan="2"><?= $currentMonthFormatted ?></th>
                                 <?php endif ?>
                                 <?php $i++; endforeach ?>
                             </tr>
@@ -212,8 +212,8 @@
                                 <?php if($i == 1): ?>
                                     <th class="bg-orange"><?= $month ?></th>
                                 <?php else: ?>
-                                    <th class="<?= ($i % 2 == 0) ? 'bg-primary' : 'bg-orange' ?>" colspan="3"><?= $month ?></th>
-                                    <th class="<?= ($i % 2 == 0) ? 'bg-primary' : 'bg-orange' ?>"><?= $currentMonthFormatted ?></th>
+                                    <th class="<?= ($i % 2 == 0) ? 'bg-primary' : 'bg-orange' ?>" colspan="2"><?= $month ?></th>
+                                    <th class="<?= ($i % 2 == 0) ? 'bg-primary' : 'bg-orange' ?>" colspan="2"><?= $currentMonthFormatted ?></th>
                                 <?php endif ?>
                                 <?php $i++; endforeach ?>
                             </tr>
@@ -372,8 +372,8 @@
                                 <?php if($i == 1): ?>
                                     <th class="bg-orange"><?= $month ?></th>
                                 <?php else: ?>
-                                    <th class="<?= ($i % 2 == 0) ? 'bg-primary' : 'bg-orange' ?>" colspan="3"><?= $month ?></th>
-                                    <th class="<?= ($i % 2 == 0) ? 'bg-primary' : 'bg-orange' ?>"><?= $currentMonthFormatted ?></th>
+                                    <th class="<?= ($i % 2 == 0) ? 'bg-primary' : 'bg-orange' ?>" colspan="2"><?= $month ?></th>
+                                    <th class="<?= ($i % 2 == 0) ? 'bg-primary' : 'bg-orange' ?>" colspan="2"><?= $currentMonthFormatted ?></th>
                                 <?php endif ?>
                                 <?php $i++; endforeach ?>
                             </tr>
