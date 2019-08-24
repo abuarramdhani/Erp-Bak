@@ -30,9 +30,10 @@ thead.unit  tr th{
 				<br />
 				<div class="row">
 					<div class="col-lg-12">
-						<div class="box box-primary box-solid">
+						<div class="box box-danger">
+						<div class="box-header with-border"></div>
 							<div class="box-body">
-								<div class="box box-primary box-solid">
+								<div class="box box-danger box-solid">
 									<div class="box-body">
 										<div class="col-md-12">
 											<table id="filter"
@@ -60,7 +61,7 @@ thead.unit  tr th{
 									<div class="col-md-12 pull-left">
 										<button onclick="saveSetup($(this))" type="button" class="btn btn-success pull-right" style="margin-top: 10px; margin-bottom: 20px; margin-left: 20px;" > <i class="fa fa-check"></i> Save</button>
 									</div>
-								<div class="col-md-12">
+									<div class="col-md-12">
 								<table class="table vehicle cell-border table-bordered table-hover text-center tblMPM">
 										<thead class ="vehicle">
 											<tr class="bg-primary">
@@ -103,6 +104,7 @@ thead.unit  tr th{
 											</tr>
 										</tbody>
 									</table>
+						</div>
 								</center>
 								</div>
 								

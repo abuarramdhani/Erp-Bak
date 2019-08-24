@@ -50,7 +50,7 @@ class M_monitoringpengirimangudang extends CI_Model
               left join om.om_province op on osh.shipment_to_province_id = op.province_id
               left join om.om_city oc on osh.shipment_to_city_id = oc.city_id
     where osh.estimate_depart_date > now() - interval '1 day'
-    and osh.estimate_depart_date > now() - interval '5 minute'
+    -- and osh.estimate_depart_date > now() - interval '5 minute'
     and osh.actual_depart_date is null
       group by
               osh.shipment_header_id
@@ -218,15 +218,17 @@ class M_monitoringpengirimangudang extends CI_Model
       return $runQuery->result_array();
       } 
 
-      public function insertActualTime($id,$brkt,$load)
+      public function insertActualTime($id,$brkt,$load,$status)
       {
         $db = $this->load->database('dpostgre',true);
         $sql = "UPDATE om.om_shipment_header
                 SET 
                 actual_loading_date = '$load',
-                actual_depart_date = '$brkt'
+                actual_depart_date = '$brkt',
+                is_full_flag = '$status'
                 WHERE  shipment_header_id = '$id'";
         $runQuery = $db->query($sql);
+                // echo $sql;
       }
 
       public function timegudang($id)

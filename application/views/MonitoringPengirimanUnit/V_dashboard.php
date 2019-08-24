@@ -68,11 +68,11 @@ tr.hidden td{
 										<?php $no=1; foreach($kirim as $k) { ?>
 
 											<?php if ($k['actual_berangkat'] == NULL && $k['berangkat'] < date('Y-m-d H:i:s')) { ?>
-												<tr class ="danger">
+												<tr class ="danger" data-toggle="tooltip" data-placement="top"title="Shipment melewati batas estimasi!!">
 											<?php }elseif (!empty($k['actual_berangkat'])) { ?>
 												<tr class ="hidden">
 											<?php }else{ ?>
-												<tr>
+												<tr data-toggle="tooltip" data-placement="top"title="Disortir berdasarkan waktu keberangkatan">
 											<?php }?>
 
 											<td><?php echo $no ?> </td>
@@ -82,9 +82,22 @@ tr.hidden td{
 											<td><?php echo  $k['asal_gudang'] ?></td>
 											<td><?php echo  $k['cabang'] ?></td>
 											<td><?php echo  $k['muatan'] ?></td>
-											<td><?php echo  $k['status'] ?></td>
-											<td id="actual_loading_td"><?php echo  $k['actual_loading'] ?></td>
-											<td id="actual_brkt_td"><?php echo  $k['actual_berangkat'] ?> </td>
+											<?php if ($k['status'] == 'N') { ?>
+											<td>UNCONFIRMED</td>
+											<?php }else{ ?>
+											<td><?php echo $k['status'] ?> </td>
+											<?php }?>
+
+											<?php if ($k['actual_loading'] == NULL) { ?>
+											<td>UNCONFIRMED</td>
+											<?php }else{ ?>
+											<td><?php echo $k['actual_loading'] ?> </td>
+
+											<?php }?><?php if ($k['actual_berangkat'] == NULL) { ?>
+											<td>UNCONFIRMED</td>
+											<?php }else{ ?>
+											<td><?php echo $k['actual_berangkat'] ?> </td>
+											<?php }?>
 										</tr>
 										<?php $no++; } ?>
 									</tbody>
