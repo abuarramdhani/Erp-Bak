@@ -194,7 +194,8 @@ class M_surat extends CI_Model
 		then 	'STAF'
 		else 	'NON STAF'
 			end
-		) as status_staf
+		) as status_staf,
+		pri.alamat
 		from 		hrd_khs.v_hrd_khs_tpribadi as pri
 		left join 	hrd_khs.v_hrd_khs_tseksi as tseksi
 		on 	tseksi.kodesie=pri.kodesie

@@ -695,6 +695,30 @@ $(function()
 							}
 						}
 					});
+					
+					$('#MasterPekerja-BAPSP3-DaftarPekerja').select2({
+						allowClear: false,
+						placeholder: "Pilih Pekerja",
+						minimumInputLength: 3,
+						ajax:
+						{
+							url: baseurl+'MasterPekerja/Surat/daftar_pekerja_sp3',
+							dataType: 'json',
+							delay: 500,
+							data: function (params){
+								return {
+									term: params.term
+								}
+							},
+							processResults: function(data) {
+								return {
+									results: $.map(data, function(obj){
+										return {id: obj.noind, text: obj.noind+' - '+obj.nama};
+									})
+								};
+							}
+						}
+					});
 				//	}
 
 				// 	Redactor WYSIWYG Text Editor
@@ -1001,6 +1025,46 @@ $(function()
 				    	});
 
 					});
+					
+					$('#MasterPekerja-BAPSP3-btnPreview').click(function(){
+						$('#surat-loading').attr('hidden', false);
+						$(document).ajaxStop(function(){
+							$('#surat-loading').attr('hidden', true);
+						});
+						$.ajax({
+							type: 'POST',
+							data: $('#MasterPekerja-FormCreate').serialize(),
+							url: baseurl+"MasterPekerja/Surat/BAPSP3/prosesPreviewBAPSP3",
+							success:function(result)
+							{
+								var result = JSON.parse(result);
+								console.log(result);
+
+								$('.MasterPekerja-Surat-txaPreview').redactor('set', result['preview']);
+							}
+						});
+
+					});
+					
+				$('#MasterPekerja-BAPSP3-DaftarPekerja').change(function(){
+					var noind = $('#MasterPekerja-BAPSP3-DaftarPekerja').val();
+					if(noind)
+					{
+						$.ajax({
+							type:'POST',
+							data:{noind: noind},
+							url:baseurl+"MasterPekerja/Surat/detail_pekerja",
+							success:function(result)
+							{
+								var result = JSON.parse(result);
+								$('#MasterPekerja-txtAlamatPekerja').val(result['alamat']);
+								$('#MasterPekerja-txtCustomJabatan').val(result['custom_jabatan']);
+								$('#MasterPekerja-txtNamaPerusahaan').val(result['nama_perusahaan']);
+								$('#MasterPekerja-txtAlamatPerusahaan').val(result['alamat_perusahaan']);
+							}
+						});
+					}
+				});
 
 			//	}
 

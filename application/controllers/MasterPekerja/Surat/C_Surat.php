@@ -114,6 +114,14 @@
 
 		// 	Javascript
 		//	{
+				public function daftar_pekerja_sp3()
+				{
+					$this->load->model('MasterPekerja/Surat/BAPSP3/M_Daftar');
+					$keyword 	 	=	strtoupper($this->input->get('term', TRUE));
+					$pekerja		=	$this->M_Daftar->ambilDataSP3($keyword);
+					echo json_encode($pekerja);
+				}
+				
 				public function daftar_pekerja_aktif()
 				{
 					$keyword 	 	=	strtoupper($this->input->get('term', TRUE));
@@ -170,6 +178,23 @@
 					$data['tempat_makan2'] 				= 	$detail_pekerja[0]['tempat_makan2'];
 					$data['status_staf'] 				= 	$detail_pekerja[0]['status_staf'];
 					$data['jabatan_dl'] 				= 	$detail_pekerja[0]['jabatan_dl'];
+					
+					$kode_induk = array('A', 'H', 'K', 'P', 'E');
+					if(in_array(substr($noind,0,1), $kode_induk)){
+						$custom_jabatan = "OPERATOR ".$detail_pekerja[0]['seksi'];;
+					}else{
+						$custom_jabatan = $detail_pekerja[0]['nama_jabatan'];
+					}
+					if($detail_pekerja[0]['kode_lokasi_kerja'] == "02"){
+						$custom_alamatperusahaan = "Jl. Dudukan, Tuksono, Sentolo, Kulonporgo 55664";
+					}else{
+						$custom_alamatperusahaan = "Jl. Magelang No. 144 Yogyakarta 55241";
+					}
+					
+					$data['alamat']						=	$detail_pekerja[0]['alamat'];
+					$data['custom_jabatan']				=	$custom_jabatan;
+					$data['nama_perusahaan']			=	"CV. Karya Hidup Sentosa";
+					$data['alamat_perusahaan']			=	$custom_alamatperusahaan;
 
 					if ( empty($data['kode_pekerjaan']) && empty($data['nama_pekerjaan']) )
 					{
