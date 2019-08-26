@@ -67,15 +67,16 @@
         if(titleList.length <= 1) return;
         if(!visible) { element('#frame-total-khs-data').hide(); return; }
         let totalDataAwal = 0; let totalTargetTurun = []; let totalTargetSisa = []; let totalAktualTurun = []; let totalAktualSisa = []; let calculateTotalTargetTurun = 0; let calculateTotalTargetSisa = 0; let calculateTotalAktualTurun = 0; let calculateTotalAktualSisa = 0;
-        titleList.forEach(title => {
-            document.querySelectorAll('.total-data-awal-' + title).forEach(td => { totalDataAwal += parseInt(td.innerHTML); });
-            for(var i = 1; i < Object.keys(monthList).length; i++) {
+        for(var i = 1; i < Object.keys(monthList).length; i++) {
+            titleList.forEach(title => {
+                document.querySelectorAll('.total-data-awal-' + title).forEach(td => { totalDataAwal += parseInt(td.innerHTML); });
                 document.querySelectorAll('.total-target-turun-' + i + '-' + title).forEach(td => { calculateTotalTargetTurun += parseInt(td.innerHTML); totalTargetTurun[i - 1] = calculateTotalTargetTurun; });
                 document.querySelectorAll('.total-target-sisa-' + i + '-' + title).forEach(td => { calculateTotalTargetSisa += parseInt(td.innerHTML); totalTargetSisa[i - 1] = calculateTotalTargetSisa; });
                 document.querySelectorAll('.total-aktual-turun-' + i + '-' + title).forEach(td => { calculateTotalAktualTurun += parseInt(td.innerHTML); totalAktualTurun[i - 1] = calculateTotalAktualTurun; });
                 document.querySelectorAll('.total-aktual-sisa-' + i + '-' + title).forEach(td => { calculateTotalAktualSisa += parseInt(td.innerHTML); totalAktualSisa[i - 1] = calculateTotalAktualSisa; });
-            }
-        });
+            });
+            calculateTotalTargetTurun = 0; calculateTotalTargetSisa = 0; calculateTotalAktualTurun = 0; calculateTotalAktualSisa = 0;
+        }
         element('#total-khs-data-awal').setHTML(totalDataAwal);
         var i = 0; document.querySelectorAll('.total-khs-target-turun').forEach(td => { td.innerHTML = (totalTargetTurun[i]) ? totalTargetTurun[i++] : '-'; });
         i = 0; document.querySelectorAll('.total-khs-target-sisa').forEach(td => { td.innerHTML = (totalTargetSisa[i]) ? totalTargetSisa[i++] : '-'; });
