@@ -114,11 +114,8 @@
 
 		// 	Javascript
 		//	{
-				public function daftar_pekerja_sp3()
-				{
-					$this->load->model('MasterPekerja/Surat/BAPSP3/M_Daftar');
-					$keyword 	 	=	strtoupper($this->input->get('term', TRUE));
-					$pekerja		=	$this->M_Daftar->ambilDataSP3($keyword);
+				public function daftar_pekerja_sp3() {
+					$pekerja = $this->M_surat->pekerjaSP3(strtoupper($this->input->get('term', TRUE)));
 					echo json_encode($pekerja);
 				}
 				

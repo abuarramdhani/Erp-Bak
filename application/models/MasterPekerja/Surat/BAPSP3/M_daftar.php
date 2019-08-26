@@ -8,10 +8,8 @@ class M_Daftar extends CI_Model {
 		$this->personalia 	= 	$this->load->database('personalia', TRUE);
     }
 	
-	public function ambilDataSP3($filter)
-	{
-		$sql = "select p.noind, p.nama, sp.no_surat, sp.berlaku as berlaku_mulai,
-				(date_trunc('month', sp.berlaku) + '6month'::interval - '1day'::interval)::date as berlaku_selesai
+	public function ambilDataSP3($filter) {
+		$sql = "select p.noind, p.nama, sp.no_surat, sp.berlaku as berlaku_mulai, (date_trunc('month', sp.berlaku) + '6month'::interval - '1day'::interval)::date as berlaku_selesai
 			from hrd_khs.tpribadi p inner join
 			(select no_surat, noind, sp_ke, (left(berlaku, 4) || '-' || right(berlaku, 2) || '-01')::date as berlaku  from \"Surat\".tsp union
 			select no_surat, noind, sp_ke, (left(berlaku, 4) || '-' || right(berlaku, 2) || '-01')::date as berlaku  from \"Surat\".tsp_nonabsen union
@@ -30,12 +28,8 @@ class M_Daftar extends CI_Model {
 		return $query->result_array();
 	}
 	
-	public function ambilLayoutSurat()
-	{
-		$this->personalia->where('jenis_surat=', 'BAPSP3');
-		$this->personalia->select('isi_surat');
-		$this->personalia->from('"Surat".tisi_surat"');
-		return $this->personalia->get()->result_array();
+	public function ambilLayoutSurat() {
+		return $this->personalia->select('isi_surat')->from('"Surat".tisi_surat"')->where('jenis_surat=', 'BAPSP3')->get()->result_array();
 	}
 	
 	public function inputBAPSP3($data)

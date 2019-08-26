@@ -31,7 +31,7 @@
                                                     <div class="form-group">
                                                         <label for="cmbNoind" class="col-lg-4 control-label">Nomor Induk</label>
                                                         <div class="col-lg-8">
-                                                            <select required class="select2" name="txtNoind" id="MasterPekerja-BAPSP3-DaftarPekerja" style="width: 100%">
+                                                            <select required class="select2" name="cmbNoind" id="MasterPekerja-BAPSP3-DaftarPekerja" style="width: 100%">
                                                                 <option></option>
                                                             </select>
                                                         </div>
@@ -62,12 +62,13 @@
                                                         </div>
                                                     </div>
 													<div class="form-group">
-                                                        <label for="txtWakilPerusahaan" class="col-lg-4 control-label">Nama Wakil Perusahaan</label>
+                                                        <label for="cmbWakilPerusahaan" class="col-lg-4 control-label">Nama Wakil Perusahaan</label>
                                                         <div class="col-lg-8">
-                                                            <input type="text" name="txtWakilPerusahaan" class="form-control" id="MasterPekerja-txtWakilPerusahaan">
+                                                            <select required class="select2" name="cmbWakilPerusahaan" id="MasterPekerja-BAPSP3-WakilPerusahaan" style="width: 100%">
+                                                                <option></option>
+                                                            </select>
                                                         </div>
                                                     </div>
-													
                                                 </div>
 												<div class="col-lg-6">
 													<div class="form-group">
@@ -85,20 +86,29 @@
 													<div class="form-group">
                                                         <label for="txtKeteranganPekerja" class="col-lg-4 control-label">Keterangan Pekerja</label>
                                                         <div class="col-lg-8">
-															<textarea rows="3" name="txtKeteranganPekerja" class="form-control" id="MasterPekerja-txtKeteranganPekerja"></textarea>
+															<textarea rows="3" name="txtKeteranganPekerja" class="form-control" id="MasterPekerja-txtKeteranganPekerja" style="resize: none;"></textarea>
                                                         </div>
                                                     </div>
-													
-													<div class="form-group">
-                                                        <label for="txtUser01" class="col-lg-4 control-label">User 1</label>
+													<!-- <div class="form-group">
+                                                        <label for="txtPokokMasalah" class="col-lg-4 control-label">Pokok Masalah</label>
                                                         <div class="col-lg-8">
-                                                            <input type="text" name="txtUser01" class="form-control" id="MasterPekerja-txtUser01" required="">
+															<textarea rows="3" name="txtPokokMasalah" class="redactor" id="MasterPekerja-txtPokokMasalah"></textarea>
+                                                        </div>
+                                                    </div> -->
+													<div class="form-group">
+                                                        <label for="cmbTandaTangan1" class="col-lg-4 control-label">Tanda Tangan 1</label>
+                                                        <div class="col-lg-8">
+                                                            <select required class="select2" name="cmbTandaTangan1" id="MasterPekerja-BAPSP3-TandaTangan1" style="width: 100%">
+                                                                <option></option>
+                                                            </select>
                                                         </div>
                                                     </div>
 													<div class="form-group">
-                                                        <label for="txtUser02" class="col-lg-4 control-label">User 2</label>
+                                                        <label for="cmbTandaTangan2" class="col-lg-4 control-label">Tanda Tangan 2</label>
                                                         <div class="col-lg-8">
-                                                            <input type="text" name="txtUser02" class="form-control" id="MasterPekerja-txtUser02" required="">
+                                                            <select required class="select2" name="cmbTandaTangan2" id="MasterPekerja-BAPSP3-TandaTangan2" style="width: 100%">
+                                                                <option></option>
+                                                            </select>
                                                         </div>
                                                     </div>
 													
@@ -109,7 +119,7 @@
                                                             <a id="MasterPekerja-BAPSP3-btnPreview" title="Preview" class="btn btn-info">Preview</a>
                                                         </div>
                                                         <div class="col-lg-10">
-                                                            <textarea required class="redactor MasterPekerja-Surat-txaPreview" name="txaPreview" id=""></textarea>
+                                                            <textarea required class="redactor" name="txaPreview" id="MasterPekerja-Surat-txaPreview"></textarea>
                                                         </div>
                                                     </div>  
                                                 </div>

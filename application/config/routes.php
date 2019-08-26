@@ -1853,10 +1853,11 @@ $route['MasterPekerja/Surat/SuratPengangkatanNonStaff']               =   'Maste
 $route['MasterPekerja/Surat/SuratPengangkatanNonStaff/(:any)']        =   'MasterPekerja/Surat/Pengangkatan/C_Index/$1';
 $route['MasterPekerja/Surat/SuratPengangkatanNonStaff/(:any)/(:any)'] =   'MasterPekerja/Surat/Pengangkatan/C_Index/$1/$2/$3';
 
-$route['MasterPekerja/Surat/BAPSP3'] = 'MasterPekerja/Surat/BAPSP3/C_Daftar';
-$route['MasterPekerja/Surat/BAPSP3/Add'] = 'MasterPekerja/Surat/BAPSP3/C_Add';
-$route['MasterPekerja/Surat/BAPSP3/Edit'] = 'MasterPekerja/Surat/BAPSP3/C_Edit';
-$route['MasterPekerja/Surat/BAPSP3/Preview'] = 'MasterPekerja/Surat/BAPSP3/C_Preview';
+$route['MasterPekerja/Surat/BAPSP3']								=	'MasterPekerja/Surat/BAPSP3/C_Daftar';
+$route['MasterPekerja/Surat/BAPSP3/(:any)']							=	'MasterPekerja/Surat/BAPSP3/C_Daftar/$1';
+$route['MasterPekerja/Surat/BAPSP3/(:any)/(:any)']					=	'MasterPekerja/Surat/BAPSP3/C_Daftar/$1/$2';
+$route['MasterPekerja/Surat/BAPSP3/(:any)/(:any)/(:any)']			=	'MasterPekerja/Surat/BAPSP3/C_Daftar/$1/$2/$3';
+$route['MasterPekerja/Surat/BAPSP3/(:any)/(:any)/(:any)/(:any)']	=	'MasterPekerja/Surat/BAPSP3/C_Daftar/$1/$2/$3/$4';
 
 //------------------------------------ Penerimaan PO ----------------------------------------
 $route['PenerimaanPO']						   = 'PenerimaanPO/C_Penerimaan';
