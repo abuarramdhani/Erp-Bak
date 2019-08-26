@@ -102,7 +102,10 @@
                                 <td class="row-1-aktual-turun-<?= $department ?>"><?= $aktual = (($aktual - $item[0]['aktual']) < 0) ? 0 : ($aktual - $item[0]['aktual']); $aktualTurun[0][$i] += $aktual; ?></td>
                                 <td class="row-1-aktual-sisa-<?= $department ?>"><?= $item[0]['aktual']; $aktualSisa[0][$i] += $item[0]['aktual'] ?></td>
                                 <?php else: ?>
-                                <td>-</td><td>-</td><td>-</td><td>-</td>
+                                <td class="row-1-target-turun-<?= $department ?>"><?= $item[0]['target']; $targetTurun[0][$i] += $item[0]['target'] ?></td>
+                                <td class="row-1-target-sisa-<?= $department ?>"><?= $target = (($target - $item[0]['target']) < 0) ? 0 : ($target - $item[0]['target']); $targetSisa[0][$i] += $target; ?></td>
+                                <td>-</td>
+                                <td>-</td>
                                 <?php endif; endif; ?>
                                 <?php $i++; endforeach ?>
                             </tr>
@@ -118,7 +121,10 @@
                                 <td class="row-2-aktual-turun-<?= $department ?>"><?= $aktual = (($aktual - $item[1]['aktual']) < 0) ? 0 : ($aktual - $item[1]['aktual']); $aktualTurun[1][$i] += $aktual; ?></td>
                                 <td class="row-2-aktual-sisa-<?= $department ?>"><?= $item[1]['aktual']; $aktualSisa[1][$i] += $item[1]['aktual'] ?></td>
                                 <?php else: ?>
-                                <td>-</td><td>-</td><td>-</td><td>-</td>
+                                <td class="row-2-target-turun-<?= $department ?>"><?= $item[1]['target']; $targetTurun[1][$i] += $item[1]['target'] ?></td>
+                                <td class="row-2-target-sisa-<?= $department ?>"><?= $target = (($target - $item[1]['target']) < 0) ? 0 : ($target - $item[1]['target']); $targetSisa[1][$i] += $target; ?></td>
+                                <td>-</td>
+                                <td>-</td>
                                 <?php endif; endif; ?>
                                 <?php $i++; endforeach ?>
                             </tr>
@@ -134,7 +140,10 @@
                                 <td class="row-3-aktual-turun-<?= $department ?>"><?= $aktual = (($aktual - $item[2]['aktual']) < 0) ? 0 : ($aktual - $item[2]['aktual']); $aktualTurun[2][$i] += $aktual; ?></td>
                                 <td class="row-3-aktual-sisa-<?= $department ?>"><?= $item[2]['aktual']; $aktualSisa[2][$i] += $item[2]['aktual'] ?></td>
                                 <?php else: ?>
-                                <td>-</td><td>-</td><td>-</td><td>-</td>
+                                <td class="row-3-target-turun-<?= $department ?>"><?= $item[2]['target']; $targetTurun[2][$i] += $item[2]['target'] ?></td>
+                                <td class="row-3-target-sisa-<?= $department ?>"><?= $target = (($target - $item[2]['target']) < 0) ? 0 : ($target - $item[2]['target']); $targetSisa[2][$i] += $target; ?></td>
+                                <td>-</td>
+                                <td>-</td>
                                 <?php endif; endif; ?>
                                 <?php $i++; endforeach ?>
                             </tr>
@@ -150,7 +159,10 @@
                                 <td class="row-4-aktual-turun-<?= $department ?>"><?= $aktual = (($aktual - $item[3]['aktual']) < 0) ? 0 : ($aktual - $item[3]['aktual']); $aktualTurun[3][$i] += $aktual; ?></td>
                                 <td class="row-4-aktual-sisa-<?= $department ?>"><?= $item[3]['aktual']; $aktualSisa[3][$i] += $item[3]['aktual'] ?></td>
                                 <?php else: ?>
-                                <td>-</td><td>-</td><td>-</td><td>-</td>
+                                <td class="row-4-target-turun-<?= $department ?>"><?= $item[3]['target']; $targetTurun[3][$i] += $item[3]['target'] ?></td>
+                                <td class="row-4-target-sisa-<?= $department ?>"><?= $target = (($target - $item[3]['target']) < 0) ? 0 : ($target - $item[3]['target']); $targetSisa[3][$i] += $target; ?></td>
+                                <td>-</td>
+                                <td>-</td>
                                 <?php endif; endif; ?>
                                 <?php $i++; endforeach ?>
                             </tr>
@@ -177,7 +189,10 @@
                                 <td class="total-aktual-turun-<?= $i ?>-<?= $department ?>"><?= $totalAktualTurun[$i] ?></td>
                                 <td class="total-aktual-sisa-<?= $i ?>-<?= $department ?>"><?= $totalAktualSisa[$i] ?></td>
                                 <?php else: ?>
-                                <td>-</td><td>-</td><td>-</td><td>-</td>
+                                <td class="total-target-turun-<?= $i ?>-<?= $department ?>"><?= $totalTargetTurun[$i] ?></td>
+                                <td class="total-target-sisa-<?= $i ?>-<?= $department ?>"><?= $totalTargetSisa[$i] ?></td>
+                                <td>-</td>
+                                <td>-</td>
                                 <?php endif; endif; ?>
                                 <?php $i++; endforeach ?>
                             </tr>
@@ -244,7 +259,10 @@
                                 <td class="row-1-aktual-turun-<?= $department ?>"><?= $aktual = (($aktual - $item[0]['aktual']) < 0) ? 0 : ($aktual - $item[0]['aktual']); $aktualTurun[0][$i] += $aktual; ?></td>
                                 <td class="row-1-aktual-sisa-<?= $department ?>"><?= $item[0]['aktual']; $aktualSisa[0][$i] += $item[0]['aktual'] ?></td>
                                 <?php else: ?>
-                                <td>-</td><td>-</td><td>-</td><td>-</td>
+                                <td class="row-1-target-turun-<?= $department ?>"><?= $item[0]['target']; $targetTurun[0][$i] += $item[0]['target'] ?></td>
+                                <td class="row-1-target-sisa-<?= $department ?>"><?= $target = (($target - $item[0]['target']) < 0) ? 0 : ($target - $item[0]['target']); $targetSisa[0][$i] += $target; ?></td>
+                                <td>-</td>
+                                <td>-</td>
                                 <?php endif; endif; ?>
                                 <?php $i++; endforeach ?>
                             </tr>
@@ -260,7 +278,10 @@
                                 <td class="row-2-aktual-turun-<?= $department ?>"><?= $aktual = (($aktual - $item[1]['aktual']) < 0) ? 0 : ($aktual - $item[1]['aktual']); $aktualTurun[1][$i] += $aktual; ?></td>
                                 <td class="row-2-aktual-sisa-<?= $department ?>"><?= $item[1]['aktual']; $aktualSisa[1][$i] += $item[1]['aktual'] ?></td>
                                 <?php else: ?>
-                                <td>-</td><td>-</td><td>-</td><td>-</td>
+                                <td class="row-2-target-turun-<?= $department ?>"><?= $item[1]['target']; $targetTurun[1][$i] += $item[1]['target'] ?></td>
+                                <td class="row-2-target-sisa-<?= $department ?>"><?= $target = (($target - $item[1]['target']) < 0) ? 0 : ($target - $item[1]['target']); $targetSisa[1][$i] += $target; ?></td>
+                                <td>-</td>
+                                <td>-</td>
                                 <?php endif; endif; ?>
                                 <?php $i++; endforeach ?>
                             </tr>
@@ -276,7 +297,10 @@
                                 <td class="row-3-aktual-turun-<?= $department ?>"><?= $aktual = (($aktual - $item[2]['aktual']) < 0) ? 0 : ($aktual - $item[2]['aktual']); $aktualTurun[2][$i] += $aktual; ?></td>
                                 <td class="row-3-aktual-sisa-<?= $department ?>"><?= $item[2]['aktual']; $aktualSisa[2][$i] += $item[2]['aktual'] ?></td>
                                 <?php else: ?>
-                                <td>-</td><td>-</td><td>-</td><td>-</td>
+                                <td class="row-3-target-turun-<?= $department ?>"><?= $item[2]['target']; $targetTurun[2][$i] += $item[2]['target'] ?></td>
+                                <td class="row-3-target-sisa-<?= $department ?>"><?= $target = (($target - $item[2]['target']) < 0) ? 0 : ($target - $item[2]['target']); $targetSisa[2][$i] += $target; ?></td>
+                                <td>-</td>
+                                <td>-</td>
                                 <?php endif; endif; ?>
                                 <?php $i++; endforeach ?>
                             </tr>
@@ -292,7 +316,10 @@
                                 <td class="row-4-aktual-turun-<?= $department ?>"><?= $aktual = (($aktual - $item[3]['aktual']) < 0) ? 0 : ($aktual - $item[3]['aktual']); $aktualTurun[3][$i] += $aktual; ?></td>
                                 <td class="row-4-aktual-sisa-<?= $department ?>"><?= $item[3]['aktual']; $aktualSisa[3][$i] += $item[3]['aktual'] ?></td>
                                 <?php else: ?>
-                                <td>-</td><td>-</td><td>-</td><td>-</td>
+                                <td class="row-4-target-turun-<?= $department ?>"><?= $item[3]['target']; $targetTurun[3][$i] += $item[3]['target'] ?></td>
+                                <td class="row-4-target-sisa-<?= $department ?>"><?= $target = (($target - $item[3]['target']) < 0) ? 0 : ($target - $item[3]['target']); $targetSisa[3][$i] += $target; ?></td>
+                                <td>-</td>
+                                <td>-</td>
                                 <?php endif; endif; ?>
                                 <?php $i++; endforeach ?>
                             </tr>
@@ -319,7 +346,10 @@
                                 <td class="total-aktual-turun-<?= $i ?>-<?= $department ?>"><?= $totalAktualTurun[$i] ?></td>
                                 <td class="total-aktual-sisa-<?= $i ?>-<?= $department ?>"><?= $totalAktualSisa[$i] ?></td>
                                 <?php else: ?>
-                                <td>-</td><td>-</td><td>-</td><td>-</td>
+                                <td class="total-target-turun-<?= $i ?>-<?= $department ?>"><?= $totalTargetTurun[$i] ?></td>
+                                <td class="total-target-sisa-<?= $i ?>-<?= $department ?>"><?= $totalTargetSisa[$i] ?></td>
+                                <td>-</td>
+                                <td>-</td>
                                 <?php endif; endif; ?>
                                 <?php $i++; endforeach ?>
                             </tr>
@@ -386,7 +416,10 @@
                                 <td class="row-1-aktual-turun-<?= $department ?>"><?= $aktual = (($aktual - $item[0]['aktual']) < 0) ? 0 : ($aktual - $item[0]['aktual']); $aktualTurun[0][$i] += $aktual; ?></td>
                                 <td class="row-1-aktual-sisa-<?= $department ?>"><?= $item[0]['aktual']; $aktualSisa[0][$i] += $item[0]['aktual'] ?></td>
                                 <?php else: ?>
-                                <td>-</td><td>-</td><td>-</td><td>-</td>
+                                <td class="row-1-target-turun-<?= $department ?>"><?= $item[0]['target']; $targetTurun[0][$i] += $item[0]['target'] ?></td>
+                                <td class="row-1-target-sisa-<?= $department ?>"><?= $target = (($target - $item[0]['target']) < 0) ? 0 : ($target - $item[0]['target']); $targetSisa[0][$i] += $target; ?></td>
+                                <td>-</td>
+                                <td>-</td>
                                 <?php endif; endif; ?>
                                 <?php $i++; endforeach ?>
                             </tr>
@@ -402,7 +435,10 @@
                                 <td class="row-2-aktual-turun-<?= $department ?>"><?= $aktual = (($aktual - $item[1]['aktual']) < 0) ? 0 : ($aktual - $item[1]['aktual']); $aktualTurun[1][$i] += $aktual; ?></td>
                                 <td class="row-2-aktual-sisa-<?= $department ?>"><?= $item[1]['aktual']; $aktualSisa[1][$i] += $item[1]['aktual'] ?></td>
                                 <?php else: ?>
-                                <td>-</td><td>-</td><td>-</td><td>-</td>
+                                <td class="row-2-target-turun-<?= $department ?>"><?= $item[1]['target']; $targetTurun[1][$i] += $item[1]['target'] ?></td>
+                                <td class="row-2-target-sisa-<?= $department ?>"><?= $target = (($target - $item[1]['target']) < 0) ? 0 : ($target - $item[1]['target']); $targetSisa[1][$i] += $target; ?></td>
+                                <td>-</td>
+                                <td>-</td>
                                 <?php endif; endif; ?>
                                 <?php $i++; endforeach ?>
                             </tr>
@@ -418,7 +454,10 @@
                                 <td class="row-3-aktual-turun-<?= $department ?>"><?= $aktual = (($aktual - $item[2]['aktual']) < 0) ? 0 : ($aktual - $item[2]['aktual']); $aktualTurun[2][$i] += $aktual; ?></td>
                                 <td class="row-3-aktual-sisa-<?= $department ?>"><?= $item[2]['aktual']; $aktualSisa[2][$i] += $item[2]['aktual'] ?></td>
                                 <?php else: ?>
-                                <td>-</td><td>-</td><td>-</td><td>-</td>
+                                <td class="row-3-target-turun-<?= $department ?>"><?= $item[2]['target']; $targetTurun[2][$i] += $item[2]['target'] ?></td>
+                                <td class="row-3-target-sisa-<?= $department ?>"><?= $target = (($target - $item[2]['target']) < 0) ? 0 : ($target - $item[2]['target']); $targetSisa[2][$i] += $target; ?></td>
+                                <td>-</td>
+                                <td>-</td>
                                 <?php endif; endif; ?>
                                 <?php $i++; endforeach ?>
                             </tr>
@@ -434,7 +473,10 @@
                                 <td class="row-4-aktual-turun-<?= $department ?>"><?= $aktual = (($aktual - $item[3]['aktual']) < 0) ? 0 : ($aktual - $item[3]['aktual']); $aktualTurun[3][$i] += $aktual; ?></td>
                                 <td class="row-4-aktual-sisa-<?= $department ?>"><?= $item[3]['aktual']; $aktualSisa[3][$i] += $item[3]['aktual'] ?></td>
                                 <?php else: ?>
-                                <td>-</td><td>-</td><td>-</td><td>-</td>
+                                <td class="row-4-target-turun-<?= $department ?>"><?= $item[3]['target']; $targetTurun[3][$i] += $item[3]['target'] ?></td>
+                                <td class="row-4-target-sisa-<?= $department ?>"><?= $target = (($target - $item[3]['target']) < 0) ? 0 : ($target - $item[3]['target']); $targetSisa[3][$i] += $target; ?></td>
+                                <td>-</td>
+                                <td>-</td>
                                 <?php endif; endif; ?>
                                 <?php $i++; endforeach ?>
                             </tr>
@@ -450,7 +492,10 @@
                                 <td class="row-5-aktual-turun-<?= $department ?>"><?= $aktual = (($aktual - $item[4]['aktual']) < 0) ? 0 : ($aktual - $item[4]['aktual']); $aktualTurun[4][$i] += $aktual; ?></td>
                                 <td class="row-5-aktual-sisa-<?= $department ?>"><?= $item[4]['aktual']; $aktualSisa[4][$i] += $item[4]['aktual'] ?></td>
                                 <?php else: ?>
-                                <td>-</td><td>-</td><td>-</td><td>-</td>
+                                <td class="row-5-target-turun-<?= $department ?>"><?= $item[4]['target']; $targetTurun[4][$i] += $item[4]['target'] ?></td>
+                                <td class="row-5-target-sisa-<?= $department ?>"><?= $target = (($target - $item[4]['target']) < 0) ? 0 : ($target - $item[4]['target']); $targetSisa[4][$i] += $target; ?></td>
+                                <td>-</td>
+                                <td>-</td>
                                 <?php endif; endif; ?>
                                 <?php $i++; endforeach ?>
                             </tr>
@@ -477,7 +522,10 @@
                                 <td class="total-aktual-turun-<?= $i ?>-<?= $department ?>"><?= $totalAktualTurun[$i] ?></td>
                                 <td class="total-aktual-sisa-<?= $i ?>-<?= $department ?>"><?= $totalAktualSisa[$i] ?></td>
                                 <?php else: ?>
-                                <td>-</td><td>-</td><td>-</td><td>-</td>
+                                <td class="total-target-turun-<?= $i ?>-<?= $department ?>"><?= $totalTargetTurun[$i] ?></td>
+                                <td class="total-target-sisa-<?= $i ?>-<?= $department ?>"><?= $totalTargetSisa[$i] ?></td>
+                                <td>-</td>
+                                <td>-</td>
                                 <?php endif; endif; ?>
                                 <?php $i++; endforeach ?>
                             </tr>
@@ -546,7 +594,10 @@
                                 <td class="row-1-aktual-turun-<?= $department ?>"><?= $aktual = (($aktual - $item[0]['aktual']) < 0) ? 0 : ($aktual - $item[0]['aktual']); $aktualTurun[0][$i] += $aktual; ?></td>
                                 <td class="row-1-aktual-sisa-<?= $department ?>"><?= $item[0]['aktual']; $aktualSisa[0][$i] += $item[0]['aktual'] ?></td>
                                 <?php else: ?>
-                                <td>-</td><td>-</td><td>-</td><td>-</td>
+                                <td class="row-1-target-turun-<?= $department ?>"><?= $item[0]['target']; $targetTurun[0][$i] += $item[0]['target'] ?></td>
+                                <td class="row-1-target-sisa-<?= $department ?>"><?= $target = (($target - $item[0]['target']) < 0) ? 0 : ($target - $item[0]['target']); $targetSisa[0][$i] += $target; ?></td>
+                                <td>-</td>
+                                <td>-</td>
                                 <?php endif; endif; ?>
                                 <?php $i++; endforeach ?>
                             </tr>
@@ -562,7 +613,10 @@
                                 <td class="row-2-aktual-turun-<?= $department ?>"><?= $aktual = (($aktual - $item[1]['aktual']) < 0) ? 0 : ($aktual - $item[1]['aktual']); $aktualTurun[1][$i] += $aktual; ?></td>
                                 <td class="row-2-aktual-sisa-<?= $department ?>"><?= $item[1]['aktual']; $aktualSisa[1][$i] += $item[1]['aktual'] ?></td>
                                 <?php else: ?>
-                                <td>-</td><td>-</td><td>-</td><td>-</td>
+                                <td class="row-2-target-turun-<?= $department ?>"><?= $item[1]['target']; $targetTurun[1][$i] += $item[1]['target'] ?></td>
+                                <td class="row-2-target-sisa-<?= $department ?>"><?= $target = (($target - $item[1]['target']) < 0) ? 0 : ($target - $item[1]['target']); $targetSisa[1][$i] += $target; ?></td>
+                                <td>-</td>
+                                <td>-</td>
                                 <?php endif; endif; ?>
                                 <?php $i++; endforeach ?>
                             </tr>
@@ -578,7 +632,10 @@
                                 <td class="row-3-aktual-turun-<?= $department ?>"><?= $aktual = (($aktual - $item[2]['aktual']) < 0) ? 0 : ($aktual - $item[2]['aktual']); $aktualTurun[2][$i] += $aktual; ?></td>
                                 <td class="row-3-aktual-sisa-<?= $department ?>"><?= $item[2]['aktual']; $aktualSisa[2][$i] += $item[2]['aktual'] ?></td>
                                 <?php else: ?>
-                                <td>-</td><td>-</td><td>-</td><td>-</td>
+                                <td class="row-3-target-turun-<?= $department ?>"><?= $item[2]['target']; $targetTurun[2][$i] += $item[2]['target'] ?></td>
+                                <td class="row-3-target-sisa-<?= $department ?>"><?= $target = (($target - $item[2]['target']) < 0) ? 0 : ($target - $item[2]['target']); $targetSisa[2][$i] += $target; ?></td>
+                                <td>-</td>
+                                <td>-</td>
                                 <?php endif; endif; ?>
                                 <?php $i++; endforeach ?>
                             </tr>
@@ -594,7 +651,10 @@
                                 <td class="row-4-aktual-turun-<?= $department ?>"><?= $aktual = (($aktual - $item[3]['aktual']) < 0) ? 0 : ($aktual - $item[3]['aktual']); $aktualTurun[3][$i] += $aktual; ?></td>
                                 <td class="row-4-aktual-sisa-<?= $department ?>"><?= $item[3]['aktual']; $aktualSisa[3][$i] += $item[3]['aktual'] ?></td>
                                 <?php else: ?>
-                                <td>-</td><td>-</td><td>-</td><td>-</td>
+                                <td class="row-4-target-turun-<?= $department ?>"><?= $item[3]['target']; $targetTurun[3][$i] += $item[3]['target'] ?></td>
+                                <td class="row-4-target-sisa-<?= $department ?>"><?= $target = (($target - $item[3]['target']) < 0) ? 0 : ($target - $item[3]['target']); $targetSisa[3][$i] += $target; ?></td>
+                                <td>-</td>
+                                <td>-</td>
                                 <?php endif; endif; ?>
                                 <?php $i++; endforeach ?>
                             </tr>
@@ -610,7 +670,10 @@
                                 <td class="row-5-aktual-turun-<?= $department ?>"><?= $aktual = (($aktual - $item[4]['aktual']) < 0) ? 0 : ($aktual - $item[4]['aktual']); $aktualTurun[4][$i] += $aktual; ?></td>
                                 <td class="row-5-aktual-sisa-<?= $department ?>"><?= $item[4]['aktual']; $aktualSisa[4][$i] += $item[4]['aktual'] ?></td>
                                 <?php else: ?>
-                                <td>-</td><td>-</td><td>-</td><td>-</td>
+                                <td class="row-5-target-turun-<?= $department ?>"><?= $item[4]['target']; $targetTurun[4][$i] += $item[4]['target'] ?></td>
+                                <td class="row-5-target-sisa-<?= $department ?>"><?= $target = (($target - $item[4]['target']) < 0) ? 0 : ($target - $item[4]['target']); $targetSisa[4][$i] += $target; ?></td>
+                                <td>-</td>
+                                <td>-</td>
                                 <?php endif; endif; ?>
                                 <?php $i++; endforeach ?>
                             </tr>
@@ -637,7 +700,10 @@
                                 <td class="total-aktual-turun-<?= $i ?>-<?= $department ?>"><?= $totalAktualTurun[$i] ?></td>
                                 <td class="total-aktual-sisa-<?= $i ?>-<?= $department ?>"><?= $totalAktualSisa[$i] ?></td>
                                 <?php else: ?>
-                                <td>-</td><td>-</td><td>-</td><td>-</td>
+                                <td class="total-target-turun-<?= $i ?>-<?= $department ?>"><?= $totalTargetTurun[$i] ?></td>
+                                <td class="total-target-sisa-<?= $i ?>-<?= $department ?>"><?= $totalTargetSisa[$i] ?></td>
+                                <td>-</td>
+                                <td>-</td>
                                 <?php endif; endif; ?>
                                 <?php $i++; endforeach ?>
                             </tr>
