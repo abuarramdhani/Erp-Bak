@@ -119,7 +119,7 @@ class M_Revisi extends CI_Model {
 				group by tabel.kelompok_id, tabel.target
 				".($kodeDepartment == 3 || $kodeDepartment == 4 ? "
 				union
-				select kelompok_id as kelompok, target as target, sum(aktual) as aktual
+				select kelompok_id as kelompok, ".($kodeDepartment == 3 ? "coalesce((select target from hrd_khs.hr_target_efisiensi where bulan='$month' and departemen='3' and kelompok_id=tabel.kelompok_id), 0) as target" : "target").", sum(aktual) as aktual
 				from (
 					select data_kelompok.kelompok_id as kelompok_id, coalesce(data_target.target, '0') as target,
 						count(tabel.*) ".($kodeDepartment == 3 ? "" : "* -1")." as aktual
