@@ -27,7 +27,7 @@ class M_Revisi extends CI_Model {
 						coalesce(data_target.target, '0') as target,
 						count(tabel.*) as aktual
 					from (
-						select distinct nik, nama, kd_jabatan, jabatan, dept, bidang, unit, seksi
+						select distinct nik, nama, kd_jabatan, jabatan, dept, bidang, unit
 						from (
 							select a.noind, nik, nama, c.kd_jabatan, c.jabatan, masukkerja, tglkeluar, keluar, b.*
 							from hrd_khs.tpribadi a
@@ -76,7 +76,7 @@ class M_Revisi extends CI_Model {
 						coalesce(data_target.target, '0') as target,
 						count(tabel.*) as aktual
 					from (
-						select distinct nik, nama, kode_status_kerja, jabatan, dept, bidang, unit, seksi
+						select distinct nik, nama, kode_status_kerja, jabatan, dept, bidang, unit
 						from (
 							select a.noind, nik, nama, kode_status_kerja, c.jabatan, masukkerja, tglkeluar, keluar, b.*
 							from hrd_khs.tpribadi a
@@ -124,7 +124,7 @@ class M_Revisi extends CI_Model {
 					select data_kelompok.kelompok_id as kelompok_id, coalesce(data_target.target, '0') as target,
 						count(tabel.*) ".($kodeDepartment == 3 ? "" : "* -1")." as aktual
 					from (
-						select distinct nik, nama, kd_jabatan, jabatan, dept, bidang, unit, seksi
+						select distinct nik, nama, kd_jabatan, jabatan, dept, bidang, unit
 						from (
 							select a.noind, nik, nama, c.kd_jabatan, c.jabatan, masukkerja, tglkeluar, keluar, b.*
 							from hrd_khs.tpribadi a
