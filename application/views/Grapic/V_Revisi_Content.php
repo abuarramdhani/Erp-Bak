@@ -1,4 +1,4 @@
-<style type="text/css">html, body { scroll-behavior: smooth; } tbody tr td { /*padding-top: 18px !important;*/ } thead tr th { height: auto; } .fixed-column { position: absolute; background: white; width: 100px; left: 16px; margin-bottom: 2px; }</style>
+<style type="text/css">html, body { scroll-behavior: smooth; } tbody tr td { height: 60px;/*padding-top: 18px !important;*/ } thead tr th { height: auto; } .fixed-column { position: absolute; background: white; width: 100px; left: 16px; margin-bottom: 2px; }</style>
 <?php if(count($title) > 1): ?>
 <div class="row" id="frame-total-khs-data">
     <div class="box box-primary box-solid">
