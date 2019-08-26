@@ -67,9 +67,9 @@
         if(titleList.length <= 1) return;
         if(!visible) { element('#frame-total-khs-data').hide(); return; }
         let totalDataAwal = 0; let totalTargetTurun = []; let totalTargetSisa = []; let totalAktualTurun = []; let totalAktualSisa = []; let calculateTotalTargetTurun = 0; let calculateTotalTargetSisa = 0; let calculateTotalAktualTurun = 0; let calculateTotalAktualSisa = 0;
+        titleList.forEach(title => { document.querySelectorAll('.total-data-awal-' + title).forEach(td => { totalDataAwal += parseInt(td.innerHTML); }); });
         for(var i = 1; i < Object.keys(monthList).length; i++) {
             titleList.forEach(title => {
-                document.querySelectorAll('.total-data-awal-' + title).forEach(td => { totalDataAwal += parseInt(td.innerHTML); });
                 document.querySelectorAll('.total-target-turun-' + i + '-' + title).forEach(td => { calculateTotalTargetTurun += parseInt(td.innerHTML); totalTargetTurun[i - 1] = calculateTotalTargetTurun; });
                 document.querySelectorAll('.total-target-sisa-' + i + '-' + title).forEach(td => { calculateTotalTargetSisa += parseInt(td.innerHTML); totalTargetSisa[i - 1] = calculateTotalTargetSisa; });
                 document.querySelectorAll('.total-aktual-turun-' + i + '-' + title).forEach(td => { calculateTotalAktualTurun += parseInt(td.innerHTML); totalAktualTurun[i - 1] = calculateTotalAktualTurun; });
