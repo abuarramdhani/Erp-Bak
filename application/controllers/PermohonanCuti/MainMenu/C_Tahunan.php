@@ -28,9 +28,7 @@ class C_Tahunan extends CI_Controller
 
 	public function checkSession()
 	{
-		if($this->session->is_logged){
-
-		} else {
+		if(!$this->session->is_logged){
 			redirect('index');
 		}
 	}
@@ -302,7 +300,13 @@ class C_Tahunan extends CI_Controller
 
 			//dicekdulu tgl sekarang, cek statuspkj tgl sebelumnya, jika = pkj tidak bisa ambil cuti, jika = PSK bisa ambil
 			$beforeToday = date('Y-m-d', strtotime(date('Y-m-d') . ' -1 days'));
-			$cekPSK = $this->M_permohonancuti->cekPSK($beforeToday, $_SESSION['user']); //cek 1 hari sebelum sekarang PSK/TM
+			$sunday = date('D', strtotime($beforeToday)); //sebelum hari ini adalah hari minggu ?
+			if($sunday == 'Sun'){ //sebelum hari ini adalah hari minggu ?
+				$beforeToday = date('Y-m-d', strtotime(date('Y-m-d') . ' -2 days'));
+				$cekPSK = $this->M_permohonancuti->cekPSK($beforeToday, $_SESSION['user']); //cek 2 hari sebelum sekarang PSK/TM
+			}else{
+				$cekPSK = $this->M_permohonancuti->cekPSK($beforeToday, $_SESSION['user']); //cek 1 hari sebelum sekarang PSK/TM
+			}
 			if($cekPSK > 0){
 				$pkj = 0; //cek apakah hari yg diambil pkj
 				foreach ($tglambilcuti as $key) {
