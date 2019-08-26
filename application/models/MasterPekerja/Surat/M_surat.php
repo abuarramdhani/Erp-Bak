@@ -112,6 +112,20 @@ class M_surat extends CI_Model
 		$query 					=	$this->personalia->query($pekerja);
 		return $query->result_array();
 	}
+	
+	public function pekerjaSP3($filter) {
+		$query = $this->personalia->query("select list.noind, list.nama from(
+			select p.noind as noind, p.nama as nama, sp.no_surat, sp.berlaku as berlaku_mulai, (date_trunc('month', sp.berlaku) + '6month'::interval - '1day'::interval)::date as berlaku_selesai
+			from hrd_khs.tpribadi p inner join
+			(select no_surat, noind, sp_ke, (left(berlaku, 4) || '-' || right(berlaku, 2) || '-01')::date as berlaku  from \"Surat\".tsp union
+			select no_surat, noind, sp_ke, (left(berlaku, 4) || '-' || right(berlaku, 2) || '-01')::date as berlaku  from \"Surat\".tsp_nonabsen union
+			select no_surat, noind, sp_ke, (left(berlaku, 4) || '-' || right(berlaku, 2) || '-01')::date as berlaku  from \"Surat\".tsp_prestasi) sp on p.noind=sp.noind
+			where p.keluar='0' and sp.sp_ke='3' and (p.noind like '%$filter%' or p.nama like '%$filter%')
+			order by sp.berlaku desc) as list
+			group by list.noind, list.nama
+			order by 1");
+		return $query->result_array();
+	}
 
 	public function pekerja_staf($keyword)
 	{
@@ -194,7 +208,8 @@ class M_surat extends CI_Model
 		then 	'STAF'
 		else 	'NON STAF'
 			end
-		) as status_staf
+		) as status_staf,
+		pri.alamat
 		from 		hrd_khs.v_hrd_khs_tpribadi as pri
 		left join 	hrd_khs.v_hrd_khs_tseksi as tseksi
 		on 	tseksi.kodesie=pri.kodesie
