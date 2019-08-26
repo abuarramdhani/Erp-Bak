@@ -326,18 +326,26 @@ class M_chart extends CI_Model
 				$sql = "SELECT
 								gjl.CREATION_DATE
 								,gir.REFERENCE_9 total
-								,xal.DESCRIPTION
+								,case when gjh.je_category = 'Receiving' then (select rsl.item_description from rcv_transactions rct,rcv_shipment_lines rsl where rct.TRANSACTION_ID = xte.SOURCE_ID_INT_1 and rct.shipment_line_id = rsl.SHIPMENT_LINE_ID)
+											else xal.DESCRIPTION 
+								end description
 								FROM 
 								gl_je_lines gjl
 								,gl_code_combinations gcc
 								,gl_je_headers gjh
 								,gl_import_references gir
 								,xla_ae_lines xal
+								,xla_ae_headers xah
+								,xla_transaction_entities_upg xte
 								WHERE gjh.je_header_id = gjl.je_header_id
 								and gcc.code_combination_id(+) = gjl.code_combination_id
 								AND gjl.je_header_id = gir.je_header_id
 								AND gjl.je_line_num = gir.je_line_num
 								and gir.gl_sl_link_id = xal.gl_sl_link_id
+								and xal.AE_HEADER_ID = xah.AE_HEADER_ID
+								and xte.application_id = xah.application_id
+								and xte.entity_id = xah.entity_id
+								and xte.ledger_id = xah.ledger_id
 								and gjl.EFFECTIVE_DATE between '01-JAN-2019' AND last_day(sysdate)
 								and((gcc.segment4 BETWEEN '1000' AND '1ZZZ' OR (gcc.segment3 IN ('522201', '522527', '522528', '522529', '522530')
 											AND gcc.segment4 = '0000'))
