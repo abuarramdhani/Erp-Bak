@@ -270,8 +270,8 @@
                             <tr>
                                 <?php $i = 0; foreach($tableData[$department] as $item) { $targetTurun[1][$i] = 0; $targetSisa[1][$i] = 0; $aktualTurun[1][$i] = 0; $aktualSisa[1][$i] = 0; $i++; } ?>
                                 <?php $target = 0; $aktual = 0; $i = 0; foreach($tableData[$department] as $item): ?>
-                                <?php if($i == 0): $target = $item[1]['aktual'] ?>
-                                <td class="row-2-target-sisa-<?= $department ?> row-2-aktual-sisa-<?= $department ?>"><?= $item[1]['aktual'] - 2 ?><?php $aktual = $item[1]['aktual']; $totalDataAwal += $aktual ?></td>
+                                <?php if($i == 0): $target = $item[1]['aktual'] - 2 ?>
+                                <td class="row-2-target-sisa-<?= $department ?> row-2-aktual-sisa-<?= $department ?>"><?= $aktual = $item[1]['aktual'] - 2; $totalDataAwal += $aktual ?></td>
                                 <?php else: if($monthListNumber[$i] <= $currentMonth): ?>
                                 <td class="row-2-target-turun-<?= $department ?>"><?= $item[1]['target']; $targetTurun[1][$i] += $item[1]['target'] ?></td>
                                 <td class="row-2-target-sisa-<?= $department ?>"><?= $target = (($target - $item[1]['target']) < 0) ? 0 : ($target - $item[1]['target']); $targetSisa[1][$i] += $target; ?></td>
@@ -289,8 +289,8 @@
                             <tr>
                                 <?php $i = 0; foreach($tableData[$department] as $item) { $targetTurun[2][$i] = 0; $targetSisa[2][$i] = 0; $aktualTurun[2][$i] = 0; $aktualSisa[2][$i] = 0; $i++; } ?>
                                 <?php $target = 0; $aktual = 0; $i = 0; foreach($tableData[$department] as $item): ?>
-                                <?php if($i == 0): $target = $item[2]['aktual'] ?>
-                                <td class="row-3-target-sisa-<?= $department ?> row-3-aktual-sisa-<?= $department ?>"><?= $item[2]['aktual'] - 7 ?><?php $aktual = $item[2]['aktual']; $totalDataAwal += $aktual ?></td>
+                                <?php if($i == 0): $target = $item[2]['aktual'] - 7 ?>
+                                <td class="row-3-target-sisa-<?= $department ?> row-3-aktual-sisa-<?= $department ?>"><?= $aktual = $item[2]['aktual'] - 7; $totalDataAwal += $aktual ?></td>
                                 <?php else: if($monthListNumber[$i] <= $currentMonth): ?>
                                 <td class="row-3-target-turun-<?= $department ?>"><?= $item[2]['target']; $targetTurun[2][$i] += $item[2]['target'] ?></td>
                                 <td class="row-3-target-sisa-<?= $department ?>"><?= $target = (($target - $item[2]['target']) < 0) ? 0 : ($target - $item[2]['target']); $targetSisa[2][$i] += $target; ?></td>
@@ -339,7 +339,7 @@
                                 ?>
                                 <?php $i = 0; foreach($tableData[$department] as $item): ?>
                                 <?php if($i == 0): ?>
-                                <td class="total-data-awal-<?= $department ?>"><?= $totalDataAwal - 9 ?></td>
+                                <td class="total-data-awal-<?= $department ?>"><?= $totalDataAwal ?></td>
                                 <?php else: if($monthListNumber[$i] <= $currentMonth): ?>
                                 <td class="total-target-turun-<?= $i ?>-<?= $department ?>"><?= $totalTargetTurun[$i] ?></td>
                                 <td class="total-target-sisa-<?= $i ?>-<?= $department ?>"><?= $totalTargetSisa[$i] ?></td>
