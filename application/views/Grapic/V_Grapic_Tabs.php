@@ -418,6 +418,7 @@
 									</table>
 								</div>
 								<div id="table-rekap-sdm" style="display: none;">
+									<h3 style="text-align: center; margin-bottom: 8px;">Efisiensi SDM - <?= $nama ?><br/><?= (!empty($withPKL)) ? 'Dengan PKL, Magang & TKPW' : 'Tanpa PKL, Magang & TKPW' ?></h3>
 									<table class="table table-bordered table-hover text-center" style="width: 100%; table-layout: fixed;">
 										<thead>
 											<th style="background-color: #00a65a; color: white; width: 90px; font-size: 1.3rem;">Keterangan</th>
