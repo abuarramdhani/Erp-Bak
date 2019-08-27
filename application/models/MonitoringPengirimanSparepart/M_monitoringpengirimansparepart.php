@@ -228,14 +228,14 @@ class M_monitoringpengirimansparepart extends CI_Model
 
 // -------------------------------------------------------------------------------------------------
        // update header
-       public function updateMPM($edd,$eld,$fingo,$status,$cabang,$jk,$usr,$id)
+       public function updateMPM($edd,$eld,$fingo,$cabang,$jk,$usr,$id)
        {
           $db = $this->load->database('dpostgre',true);
           $sql = "UPDATE om.om_shipment_header
                     SET estimate_depart_date = '$edd',
                     estimate_loading_date = '$eld',
                     shipment_from_fg_id = '$fingo',
-                    is_full_flag = '$status',
+                    -- is_full_flag = '$status',
                     shipment_to_cabang_id = '$cabang',
                     vehicle_type_id = '$jk',
                     creation_date = now(),
