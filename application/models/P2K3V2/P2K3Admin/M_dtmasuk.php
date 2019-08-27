@@ -311,7 +311,7 @@ class M_Dtmasuk extends CI_Model
                         and periode = '$pr') b
                 order by
                     1";
-                echo $sql;exit();
+                // echo $sql;exit();
         $query = $this->erp->query($sql);
         return $query->result_array();
     }
