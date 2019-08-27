@@ -1,4 +1,5 @@
-<style type="text/css">html, body { scroll-behavior: smooth; } tbody tr td { /* height: auto; padding-top: 18px !important; */ } thead tr th { height: auto; } .fixed-column { position: absolute; background: white; width: 100px; left: 16px; margin-bottom: 2px; } .background-red { background-color: #FF5252; color: white; }</style>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/1.3.2/jspdf.min.js"></script>
+<style type="text/css">html, body { scroll-behavior: smooth; } tbody tr td { /* height: auto; padding-top: 18px !important; */ } thead tr th { height: auto; } .fixed-column { position: absolute; background: white; width: 100px; left: 16px; margin-bottom: 2px; } .background-red { background-color: #FF5252; color: white; } .fadeIn { -webkit-animation: fadeIn 0.5s; -moz-animation: fadeIn 0.5s; -o-animation: fadeIn 0.5s; animation: fadeIn 0.5s; } .fadeOut { -webkit-animation: fadeOut 0.5s; -moz-animation: fadeOut 0.5s; -o-animation: fadeOut 0.5s; animation: fadeOut 0.5s; }</style>
 <section class="content inner row">
     <div class="col-lg-12">
         <div class="row text-left" style="margin-top: -12px; margin-bottom: 8px;">
@@ -34,32 +35,56 @@
                 </div>
             </div>
         </div>
-        <div id="content"></div>
+        <div id="content" class="animated"></div>
     </div>
 </section>
 <script>
+
     document.addEventListener('DOMContentLoaded', async _ => {
+        if(window.history.replaceState) window.history.replaceState(null, null, window.location.href);
         element('#select-filter-data-loading').setHTML('Semua Data');
         element('#select-filter-data').enable();
         document.getElementById('form-filter-data').addEventListener('submit', getDataRevisiEfisiensi.bind(this));
     });
 
+    const re = {
+        exportPDF: async (content, fileName, documentWidth = 110, xMargin = 10, yMargin = 10) => {
+            console.log($('#'+content)[0])
+            const pdf = new jsPDF()
+            pdf.fromHTML(
+                $('#'+content)[0],
+                xMargin,
+                yMargin,
+                { 'width': documentWidth, 'elementHandlers': { '#ignoreContent': function (element, renderer) { return true; } } },
+                dispose => { pdf.save('Test.pdf'); }
+            )
+            // pdf.save(fileName.replace('.pdf', '')+'.pdf')
+        }
+    }
+
     const getDataRevisiEfisiensi = async form => {
         form.preventDefault();
-        element('#button-apply-filter').animation.showLoading();
+        element('#button-apply-filter').animate.showLoading();
         fetch(`<?= base_url('RevisiEfisiensi/getData') ?>`, {
             method: 'POST',
             body: new FormData(form.target)
-        })
-        .then(response => response.json()).then(async response => {
-            if(response.view.isNotNullOrEmpty()) element('#content').setHTML(response.view);
-            await setTotal(response.titleList, response.monthList, true);
-            await setChart(response.titleList, response.monthList);
-            element('#button-apply-filter').animation.hideLoading('fa-search');
+        }).then(response => response.json()).then(async response => {
+            if(response.view.isNotNullOrEmpty()) {
+                element('#content').animate.css('fadeOut', async _ => {
+                    await element('#content').setHTML(response.view);
+                    await setTotal(response.titleList, response.monthList, true);
+                    await setChart(response.titleList, response.monthList);
+                    element('#content').animate.css('fadeIn', _ => {
+                        element('#button-apply-filter').animate.hideLoading('fa-search');
+                    })
+                })
+            } else {
+                element('#button-apply-filter').animate.hideLoading('fa-search');
+            }
         }).catch(e => {
-            console.log(e);
+            print.error(e);
             $.toaster('Terjadi kesalahan saat memuat data', '', 'danger');
-            element('#button-apply-filter').animation.hideLoading('fa-search');
+            element('#button-apply-filter').animate.hideLoading('fa-search');
         });
     };
 
@@ -393,7 +418,7 @@
                     element('#chart-loading-placeholder-' + titleList[0]).hide();
                     element('#chart-frame-' + titleList[0]).show();
                 }).catch(e => {
-                    console.log(e);
+                    print.error(e);
                     element('#chart-loading-placeholder-' + titleList[0]).setColor('red').setHTML('Terjadi kesalahan saat memuat grafik');
                     $.toaster('Terjadi kesalahan saat memuat grafik', '', 'danger');
                 });
@@ -442,7 +467,16 @@
                     e.style.display = 'none';
                     return this;
                 },
-                animation: {
+                animate: {
+                    css(animationName, callback) {
+                        e.classList.add('animated', animationName)
+                        function onAnimationEnd() {
+                            e.classList.remove('animated', animationName)
+                            e.removeEventListener('animationend', onAnimationEnd)
+                            if (typeof callback === 'function') callback()
+                        }
+                        e.addEventListener('animationend', onAnimationEnd)
+                    },
                     showLoading() {
                         e.disabled = true;
                         e.childNodes[0].classList = '';
@@ -461,12 +495,15 @@
             e = object.get(selector);
             return object;
         } catch(e) {
-            printError(e);
+            print.error(e);
         }
     }
-
-    const print = function(msg) {
-        console.log(msg);
+    
+    const print = {
+        log: (x) => { console.log(x) },
+        info: (x) => { console.info(x) },
+        warning: (x) => { console.warn(x) },
+        error: (x) => { console.error(x) }
     }
 
     String.prototype.isNotNull = function() {

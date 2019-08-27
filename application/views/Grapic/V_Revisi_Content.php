@@ -9,6 +9,7 @@
             <div class="col-lg-6" style="padding: 0;">
                 <div class="btn-group pull-right">
                     <button id="button-fullscreen-total-khs" class="btn btn-primary"><i class="fa fa-desktop" style="margin-right: 8px;"></i>Show in Fullscreen</button>
+                    <button id="button-save-total-khs" class="btn btn-primary"><i class="fa fa-floppy-o" style="margin-right: 8px;"></i>Save</button>
                     <button id="button-print-total-khs" class="btn btn-primary"><i class="fa fa-print" style="margin-right: 8px;"></i>Print</button>
                 </div>
             </div>
@@ -72,6 +73,7 @@
             <div class="col-lg-6" style="padding: 0;">
                 <div class="btn-group pull-right">
                     <button id="button-fullscreen-<?= $department ?>" class="btn btn-primary"><i class="fa fa-desktop" style="margin-right: 8px;"></i>Show in Fullscreen</button>
+                    <button id="button-save-<?= $department ?>" class="btn btn-primary" onclick="javascript:re.exportPDF('box-body-data-<?= $department ?>', 'Revisi Efisiensi SDM - <?= $department ?>')"><i class="fa fa-floppy-o" style="margin-right: 8px;"></i>Save</button>
                     <button id="button-print-<?= $department ?>" class="btn btn-primary"><i class="fa fa-print" style="margin-right: 8px;"></i>Print</button>
                 </div>
             </div>
