@@ -1,4 +1,4 @@
-<script src="<?= base_url('assets/plugins/jsPDF/jspdf.debug.js') ?>"></script>
+<!-- <script src="<?= base_url('assets/plugins/jsPDF/jspdf.debug.js') ?>"></script> -->
 <style type="text/css">html, body { scroll-behavior: smooth; } tbody tr td { /* height: auto; padding-top: 18px !important; */ } thead tr th { height: auto; } .fixed-column { position: absolute; background: white; width: 100px; left: 16px; margin-bottom: 2px; } .background-red { background-color: #FF5252; color: white; } .fadeIn { -webkit-animation: fadeIn 0.5s; -moz-animation: fadeIn 0.5s; -o-animation: fadeIn 0.5s; animation: fadeIn 0.5s; } .fadeOut { -webkit-animation: fadeOut 0.5s; -moz-animation: fadeOut 0.5s; -o-animation: fadeOut 0.5s; animation: fadeOut 0.5s; }</style>
 <section class="content inner row">
     <div class="col-lg-12">
