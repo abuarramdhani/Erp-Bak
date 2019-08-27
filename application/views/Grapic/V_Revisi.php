@@ -1,4 +1,4 @@
-<style type="text/css">html, body { scroll-behavior: smooth; } tbody tr td { /* height: auto; padding-top: 18px !important; */ } thead tr th { height: auto; } .fixed-column { position: absolute; background: white; width: 100px; left: 16px; margin-bottom: 2px; }</style>
+<style type="text/css">html, body { scroll-behavior: smooth; } tbody tr td { /* height: auto; padding-top: 18px !important; */ } thead tr th { height: auto; } .fixed-column { position: absolute; background: white; width: 100px; left: 16px; margin-bottom: 2px; } .background-red { background-color: #FF5252; color: white; }</style>
 <section class="content inner row">
     <div class="col-lg-12">
         <div class="row text-left" style="margin-top: -12px; margin-bottom: 8px;">
@@ -68,7 +68,7 @@
         if(!visible) { element('#frame-total-khs-data').hide(); return; }
         let totalDataAwal = 0; let totalTargetTurun = []; let totalTargetSisa = []; let totalAktualTurun = []; let totalAktualSisa = []; let calculateTotalTargetTurun = 0; let calculateTotalTargetSisa = 0; let calculateTotalAktualTurun = 0; let calculateTotalAktualSisa = 0;
         titleList.forEach(title => { document.querySelectorAll('.total-data-awal-' + title).forEach(td => { totalDataAwal += parseInt(td.innerHTML); }); });
-        for(var i = 1; i < Object.keys(monthList).length; i++) {
+        for(let i = 1; i < Object.keys(monthList).length; i++) {
             titleList.forEach(title => {
                 document.querySelectorAll('.total-target-turun-' + i + '-' + title).forEach(td => { calculateTotalTargetTurun += parseInt(td.innerHTML); totalTargetTurun[i - 1] = calculateTotalTargetTurun; });
                 document.querySelectorAll('.total-target-sisa-' + i + '-' + title).forEach(td => { calculateTotalTargetSisa += parseInt(td.innerHTML); totalTargetSisa[i - 1] = calculateTotalTargetSisa; });
@@ -78,9 +78,9 @@
             calculateTotalTargetTurun = 0; calculateTotalTargetSisa = 0; calculateTotalAktualTurun = 0; calculateTotalAktualSisa = 0;
         }
         element('#total-khs-data-awal').setHTML(totalDataAwal);
-        var i = 0; document.querySelectorAll('.total-khs-target-turun').forEach(td => { td.innerHTML = (totalTargetTurun[i]) ? totalTargetTurun[i++] : '-'; });
+        let i = 0; document.querySelectorAll('.total-khs-target-turun').forEach(td => { td.innerHTML = (totalTargetTurun[i]) ? totalTargetTurun[i++] : '-'; });
         i = 0; document.querySelectorAll('.total-khs-target-sisa').forEach(td => { td.innerHTML = (totalTargetSisa[i]) ? totalTargetSisa[i++] : '-'; });
-        i = 0; document.querySelectorAll('.total-khs-aktual-turun').forEach(td => { td.innerHTML = (totalAktualTurun[i]) ? totalAktualTurun[i++] : '-'; });
+        i = 0; document.querySelectorAll('.total-khs-aktual-turun').forEach(td => { if(totalAktualTurun[i] < totalTargetTurun[i]) td.classList.add('background-red'); td.innerHTML = (totalAktualTurun[i]) ? totalAktualTurun[i++] : '-'; });
         i = 0; document.querySelectorAll('.total-khs-aktual-sisa').forEach(td => { td.innerHTML = (totalAktualSisa[i]) ? totalAktualSisa[i++] : '-'; });
     }
 
