@@ -765,7 +765,7 @@ function saveEditMPMsp(th){
 		var no_ship = th
 		var estimasi = $('#estimasi_brkt').val();
 		var finish_good = $('#fingo').val();
-		var status = $('#status').val();
+		// var status = $('#status').val();
 		var jk = $('#jk').val();
 		var estimasi_loading = $('#estimasi_loading').val();
 		var cabang = $('#cabang').val();
@@ -804,7 +804,7 @@ function saveEditMPMsp(th){
 			estimasi: estimasi,
 			estimasi_loading:estimasi_loading,
 			finish_good: finish_good,
-			status: status,
+			// status: status,
 			jk: jk,
 			tipe: arry,
 			content: arry1,
