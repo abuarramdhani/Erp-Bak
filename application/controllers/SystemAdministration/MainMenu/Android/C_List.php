@@ -101,6 +101,7 @@ class C_List extends CI_Controller {
 		// echo $valid_until;exit();
 		$validation 	= $this->input->post('andro-status');
 		$noinduk 		= $this->input->post('noindukKaryawan');
+		$noinduk 		= strtoupper($noinduk);
 		$namaPekerja	= $this->input->post('andro-employee');
 		$data = ['info_1' => $namaPekerja,
 				 'validation' => $validation,
@@ -132,6 +133,7 @@ class C_List extends CI_Controller {
 		$this->kirim_email($internalMail,$eksternalMail,$namaPekerja,$status,$approver,$noindukApprover,$android_id,$imei,$hardware_serial,$gsf);
 		$this->M_list->updateData($id,$data);
 
+		$this->session->set_flashdata('msg','sukses');
 		redirect('SystemAdministration/Android/List');
 	}
 
