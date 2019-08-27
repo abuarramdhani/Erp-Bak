@@ -8,6 +8,7 @@ class M_Dtmasuk extends CI_Model
         $this->load->database();
         $this->personalia   =   $this->load->database('personalia', TRUE) ;
         $this->erp          =   $this->load->database('erp_db', TRUE);
+        $this->oracle          =   $this->load->database('oracle', TRUE);
     }
 
     public function daftar_seksi($tgl, $tahun){
@@ -114,9 +115,42 @@ class M_Dtmasuk extends CI_Model
 
     public function listToApprove($ks, $pr)
     {
-    	$sql = "select ks.*, km.item from k3.k3n_standar_kebutuhan ks 
-		left join k3.k3_master_item km on km.kode_item = ks.kode_item
-		where cast(tgl_approve as varchar) like '$pr%' and ks.status = 1 and ks.kodesie like '$ks%' order by ks.tgl_approve asc";
+        $sql = "select ks.*, km.item from k3.k3n_standar_kebutuhan ks 
+        left join k3.k3_master_item km on km.kode_item = ks.kode_item
+        where cast(tgl_approve as varchar) like '$pr%' and ks.status = 1 and ks.kodesie like '$ks%' order by ks.tgl_approve asc";
+        $query = $this->erp->query($sql);
+
+        return $query->result_array();
+    }
+
+    public function listDahApprove($ks, $pr)
+    {
+    	$sql = "select
+                    kb.kode_item,
+                    km.item,
+                    kb.kd_pekerjaan,
+                    kb.jml_item,
+                    kb.jml_kebutuhan_staff,
+                    kb.jml_kebutuhan_umum,
+                    kb.kodesie,
+                    kb.tgl_approve_tim
+                from
+                    k3.k3n_standar_kebutuhan kb,
+                    k3.k3_master_item km
+                where
+                    kb.kode_item = km.kode_item
+                    and kb.kodesie = '$ks'
+                    and kb.status = 3
+                    and tgl_approve_tim = (
+                    select
+                        max(kb2.tgl_approve_tim)
+                    from
+                        k3.k3n_standar_kebutuhan kb2
+                    where
+                        kb2.kodesie = kb.kodesie
+                        and kb2.status = kb.status
+                        and kb.kode_item = kb2.kode_item )
+                order by 2";
     	$query = $this->erp->query($sql);
 
         return $query->result_array();
@@ -256,6 +290,7 @@ class M_Dtmasuk extends CI_Model
                         k3.k3n_bon kb
                     where
                         kb.periode = '$pr'
+                        and kb.kodesie = '$ks%'
                     group by
                         kb.periode,
                         kb.item_code) bon on
@@ -276,7 +311,7 @@ class M_Dtmasuk extends CI_Model
                         and periode = '$pr') b
                 order by
                     1";
-                // echo $sql;exit();
+                echo $sql;exit();
         $query = $this->erp->query($sql);
         return $query->result_array();
     }
@@ -309,6 +344,7 @@ class M_Dtmasuk extends CI_Model
                             k3.k3n_bon kb
                         where
                             kb.periode = '$pr'
+                            and kb.kodesie = '$ks%'
                         group by
                             kb.periode,
                             kb.item_code) bon on
@@ -360,7 +396,7 @@ class M_Dtmasuk extends CI_Model
     public function allKs($pr)
     {
         $sql = "select distinct(substring(ks.kd_pekerjaan,0,8)) kodesie, (select section_name from er.er_section 
-                where substring(section_code,0,8) = substring(ks.kd_pekerjaan,0,8) limit 1) from k3.k3n_standar_kebutuhan ks
+                where substring(section_code,0,8) = substring(ks.kd_pekerjaan,0,8) limit 1) section_name from k3.k3n_standar_kebutuhan ks
                 inner join k3.k3n_order ko on substring(ko.kodesie,0,8) = substring(ks.kodesie,0,8) where ko.periode = '$pr'
                 and ko.status = '1'
                 order by 2 asc";
@@ -526,4 +562,104 @@ class M_Dtmasuk extends CI_Model
         return $query->row()->xbulan;
     }
 
+    public function getFoto($item)
+    {
+        $sql = "select * from k3.k3_master_item where kode_item = '$item' or item = '$item'";
+        $query = $this->erp->query($sql);
+        return $query->result_array();
+    }
+
+    public function GetMasterItem()
+    {
+        $sql = "select * from k3.k3_master_item order by item asc";
+        $query = $this->erp->query($sql);
+
+        return $query->result_array();
+    }
+
+    public function updete($data, $kode)
+    {
+        $this->db->where('kode_item', $kode);
+        $this->db->update('k3.k3_master_item', $data);
+
+        // print_r($this->db->last_query());    exit();
+        return true;
+    }
+
+    public function delItem($id)
+    {
+        $sql = "delete from k3.k3_master_item where id = '$id'";
+        echo $sql;exit();
+        $query = $this->db->query($sql);
+    }
+
+    public function getItemOracle()
+    {
+        $sql = "SELECT   msib.segment1 kode_item, msib.description item,
+                         msib.primary_uom_code satuan
+                    FROM mtl_system_items_b msib
+                   WHERE msib.organization_id = 102
+                     AND msib.inventory_item_status_code = 'Active'
+                     AND msib.segment1 LIKE 'PP1%'
+                ORDER BY 1";
+        $query = $this->oracle->query($sql);
+
+        return $query->result_array();
+    }
+
+    public function insertItem($data)
+    {
+        $query = $this->db->insert('k3.k3_master_item', $data);
+    }
+
+    public function getItemin($val)
+    {
+        $sql = "select ks.*, km.item from k3.k3n_standar_kebutuhan ks 
+                left join k3.k3_master_item km on km.kode_item = ks.kode_item where ks.id in ($val);";
+
+        $query = $this->db->query($sql);
+        return $query->result_array();
+    }
+
+    public function stokOracle($kode)
+    {
+        $sql = "SELECT khs_inv_qty_att ('102',
+                        (SELECT msib.inventory_item_id
+                           FROM mtl_system_items_b msib
+                          WHERE msib.organization_id = 102
+                            AND msib.segment1 = '$kode'),
+                        'PNL-NPR',
+                        783,
+                        ''
+                        ) as stok
+                        FROM DUAL";
+        $query = $this->oracle->query($sql);
+
+        // return $query->result_array();
+        return $query->row()->STOK;
+    }
+
+    public function getBon($id)
+    {
+        $sql = "select
+                    kb.*,
+                    km.item,
+                    km.satuan,
+                    ib.account,
+                    ib.tanggal,
+                    ib.seksi_bon,
+                    ib.pemakai,
+                    ib.cost_center,
+                    ib.kode_cabang
+                from
+                    k3.k3n_bon kb
+                left join k3.k3_master_item km on
+                    km.kode_item = kb.item_code
+                left join im.im_master_bon ib on
+                    ib.no_bon = kb.no_bon
+                where kb.no_bon = '$id'";
+
+        $query = $this->db->query($sql);
+        return $query->result_array();
+    }
 }

@@ -56,7 +56,7 @@
                                                 <tr style="color: #000;" class="multiinput">
                                                     <td id="nomor"><?php echo $a; ?></td>
                                                     <td>
-                                                        <?php echo $key['item']; ?>
+                                                        <a style="cursor:pointer;" class="p2k3_see_apd_text"><?php echo $key['item']; ?></a>
                                                         <input hidden="" class="p2k3_item" type="text" value="<?php echo $key['item']; ?>">
                                                     </td>
                                                     <td>
@@ -67,9 +67,8 @@
                                                         <?php echo $key['0']; ?>
                                                         <input hidden="" class="p2k3_ob" type="text" value="<?php echo $key['0']; ?>">
                                                     </td>
-                                                    <td>
-                                                        <p hidden="" class="p2k3_pstok"></p>
-                                                        <input style="width: 100px;" class="form-control p2k3_stok" type="number">
+                                                    <td class="p2k3_stok">
+                                                        <?php echo $key['1']; ?>
                                                     </td>
                                                     <td>
                                                         <p hidden="" class="p2k3_popp"></p>
@@ -99,13 +98,21 @@
     </div>
 </div>
 </section>
+<div id="surat-loading" style="top: 0;left: 0;right: 0;bottom: 0; margin: auto; position: fixed; background: rgba(0,0,0,.5); z-index: 11;" hidden="hidden">
+    <img src="http://erp.quick.com/assets/img/gif/loadingtwo.gif" style="position: fixed; top: 0;left: 0;right: 0;bottom: 0; margin: auto; width: 40%;">
+</div>
 <script>
     $(document).ready(function(){
         $('tr.multiinput').each(function(){
             var ob = $(this).find('input.p2k3_ob').val();
             var keb = $(this).find('input.p2k3_kebutuhan').val();
-            var hit = (Number(keb) * 1.1) + Number(ob) - 0 - 0;
+            var sg = $(this).closest('tr').find('td.p2k3_stok').text();
+            var hit = (Number(keb) * 1.1) + Number(ob) - Number(sg) - 0;
             var up = Math.ceil(hit);
+            if (up < 0) {
+                // alert(up);
+                up = 0;
+            }
             $(this).find('input.p2k3_ijpp').val(up);
             $(this).find('p.p2k3_pjpp').text(up);
         })
@@ -131,7 +138,7 @@
         ]
     });
 
-        $(".p2k3_stok").bind("change paste keyup", function() {
+        $(".p2k3_stokaasd").bind("change paste keyup", function() { //tidak di pakai
             var ob = $(this).closest('tr').find('input.p2k3_ob').val();
             var keb = $(this).closest('tr').find('input.p2k3_kebutuhan').val();
             var opp = $(this).closest('tr').find('input.p2k3_opp').val();
@@ -150,7 +157,7 @@
         $(".p2k3_opp").bind("change paste keyup", function() {
             var ob = $(this).closest('tr').find('input.p2k3_ob').val();
             var keb = $(this).closest('tr').find('input.p2k3_kebutuhan').val();
-            var sg = $(this).closest('tr').find('input.p2k3_stok').val();
+            var sg = $(this).closest('tr').find('td.p2k3_stok').text();
             var opp = $(this).val();
             var cal1 = (Number(keb) * 1.1)+ Number(ob) - Number(sg) - Number(opp);
             if (Number(cal1) < 0) {

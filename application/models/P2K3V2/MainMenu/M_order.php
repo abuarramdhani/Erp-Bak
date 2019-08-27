@@ -60,7 +60,9 @@ class M_Order extends CI_Model
                 from
                     hrd_khs.tpekerjaan tn
                 where
-                    substring(kdpekerjaan, 1, 7) = '$kodesie'";
+                    substring(kdpekerjaan, 1, 7) = '$kodesie'
+                    ";
+                    //order by kdpekerjaan asc
         $query = $this->personalia->query($sql);
         return $query->result_array();
 
@@ -426,6 +428,7 @@ class M_Order extends CI_Model
                         k3.k3n_bon kb
                     where
                         kb.periode = '$pr'
+                        and kb.kodesie = '$ks%'
                     group by
                         kb.periode,
                         kb.item_code) bon on
@@ -593,5 +596,37 @@ class M_Order extends CI_Model
         $sql = "select * from er.er_employee_all where section_code like '$ks%' and resign = '0' order by employee_name asc";
         $query = $this->db->query($sql);
         return $query->result_array();
+    }
+
+    public function getEmail($kodesie)
+    {
+        $ks = substr($kodesie, 0,7);
+        $sql = "Select * from k3.k3n_email_seksi where kodesie like '%$ks%'";
+        $query = $this->db->query($sql);
+        return $query->result_array();
+    }
+
+    public function addEmailSeksi($email, $kodesie, $noind)
+    {
+        $tgl = date('Y-m-d H:i:s');
+        $ks = substr($kodesie, 0,7);
+        $sql = "insert into k3.k3n_email_seksi (kodesie, email, last_update_by, last_update_date) values ('$ks', '$email', '$noind', '$tgl');";
+        $query = $this->erp->query($sql);
+        return true;
+    }
+
+    public function editEmailSeksi($id,$email, $noind)
+    {
+        $tgl = date('Y-m-d H:i:s');
+        $sql = "update k3.k3n_email_seksi set email = '$email', last_update_by = '$noind', last_update_date = '$tgl' where id = '$id';";
+        $query = $this->erp->query($sql);
+        return true;
+    }
+
+    public function hapusEmailSeksi($id)
+    {
+        $sql = "delete from k3.k3n_email_seksi where id = '$id';";
+        $query = $this->erp->query($sql);
+        return true;
     }
 }

@@ -29,7 +29,7 @@
 		<tr>
 			<td rowspan="2" colspan="2" align="left" style="width: 20%;font-size: 10px; border-bottom: 1px solid black">&nbsp; <strong><p style="font-size: 14px;"><strong>BUKTI PERMINTAAN & PEMAKAIAN BARANG GUDANG (BPPBG)</strong></p></strong>
 			</td>
-			<td align="center" style="width: 20%;font-size: 10px;border-right: 1px solid black; border-bottom: 1px solid black">&nbsp; <strong><?php echo $data['seksi'] ?></strong>
+			<td align="center" style="white-space: nowrap; width: 20%;font-size: 10px;border-right: 1px solid black; border-bottom: 1px solid black">&nbsp; <strong><?php echo $data['seksi'] ?></strong>
 			</td>
 			<td align="center" style="width: 20%;font-size: 10px;border-bottom: 1px solid black;">&nbsp;<strong><?php echo $data['gudang'] ?></strong>
 			</td>

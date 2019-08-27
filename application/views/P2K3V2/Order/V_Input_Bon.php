@@ -106,7 +106,7 @@
 												<tr style="color: #000;" class="multiinput">
 													<td id="nomor"><?php echo $a; ?></td>
 													<td>
-														<?php echo $key['item']; ?>
+														<a style="cursor:pointer;" class="p2k3_see_apd_text"><?php echo $key['item']; ?></a>
 														<input hidden="" name="p2k3_apd[]" value="<?php echo $key['kode_item']; ?>">
 														<input hidden="" name="p2k3_nama_apd[]" value="<?php echo $key['item']; ?>">
 														<input hidden="" name="p2k3_satuan_apd[]" value="<?php echo $key['satuan']; ?>">

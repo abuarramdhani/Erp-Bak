@@ -18,18 +18,19 @@
                     <div class="col-lg-12">
                         <div class="box box-primary box-solid">
                             <div class="box-body">
-                                <div class="panel-body" style="overflow-x: scroll;">
+                                <div class="panel-body" style="">
                                     <form method="post" class="form-horizontal" action="<?php echo site_url('p2k3adm_V2/Admin/hitung');?>" enctype="multipart/form-data">
                                         <div class="col-md-1 text-left" align="right">
                                             <label for="lb_periode" class="control-label">Periode : </label>
                                         </div>
                                         <div class="col-md-3">
                                             <div class="input-group col-md-12">
-                                                <input required="" class="form-control p2k3_tanggal_periode"  autocomplete="off" type="text" name="k3_periode" id="yangPentingtdkKosong" value="<?php echo $pr; ?>"/>
+                                                <input placeholder="Masukan Periode" required="" class="form-control p2k3_tanggal_periode"  autocomplete="off" type="text" name="k3_periode" id="yangPentingtdkKosong" value="<?php echo $pr; ?>"/>
                                             </div>
                                         </div>
                                         <div class="col-md-2">
-                                            <button name="validasi" type="submit" class="btn btn-primary" value="hitung">Hitung</button>
+                                            <button style="cursor: not-allowed" name="validasi" type="button" class="btn btn-primary p2k3_submit_hitung" value="hitung" data-toggle="tooltip" data-placement="top" title="Silahkan klik button Cek terlebih dahulu">Hitung</button>
+                                            <button style="margin-left: 10px;" type="button" class="btn btn-primary p2k3_cek_hitung" disabled="">Cek</button>
                                         </div>
                                     </form>
                                     <?php if ($run == '1') { ?>
@@ -48,8 +49,13 @@
                                             <?php foreach ($key as $row): ?>
                                                 <tr>
                                                     <td><?php echo $pr; ?></td>
-                                                    <td><?php echo $row['kode_item']; ?></td>
-                                                    <td><?php echo $row['item']; ?></td>
+                                                    <td>
+                                                        <a style="cursor:pointer;" class="p2k3_to_input"><?php echo $row['kode_item']; ?></a>
+                                                        <input hidden="" value="<?php echo $row['kode_item']; ?>" class="p2k3_see_apd">
+                                                    </td>
+                                                    <td>
+                                                        <a style="cursor:pointer;" class="p2k3_see_apd_text"><?php echo $row['item']; ?></a>
+                                                    </td>
                                                     <td><?php echo $row['0']; ?></td>
                                                 </tr>
                                             <?php endforeach ?>
@@ -66,3 +72,39 @@
         </div>
     </div>
 </section>
+<div class="modal fade" id="p2k3_cekError" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div style="width: 1050px;" class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Data yang Error</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div id="p2k3_result"></div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+<div id="surat-loading" style="top: 0;left: 0;right: 0;bottom: 0; margin: auto; position: fixed; background: rgba(0,0,0,.5); z-index: 11;" hidden="hidden">
+    <img src="http://erp.quick.com/assets/img/gif/loadingtwo.gif" style="position: fixed; top: 0;left: 0;right: 0;bottom: 0; margin: auto; width: 40%;">
+</div>
+<script type="text/javascript">
+    $(document).ready(function(){
+        $('.p2k3_tanggal_periode').change(function(){
+            if ($(this).val().length > 8) {
+                $('.p2k3_cek_hitung').attr('disabled', false);
+            }else{
+                $('.p2k3_cek_hitung').attr('disabled',true);
+            }
+
+            $('.p2k3_submit_hitung').css('cursor', 'not-allowed');
+            $('.p2k3_submit_hitung').attr('data-original-title', 'Silahkan klik button Cek terlebih dahulu');
+            $('.p2k3_submit_hitung').attr('type', 'button');
+        });
+    });
+</script>

@@ -80,7 +80,7 @@
                                                                                             </select>
                                                                                         </td>
                                                                                         <td>
-                                                                                            <input id="txtKodeItem" readonly="" type="text" class="form-control apd-isk-kode" name="txtKodeItem[]" data-id="1">
+                                                                                            <input id="txtKodeItem" readonly="" type="text" class="form-control apd-isk-kode p2k3_see_apd" name="txtKodeItem[]" data-id="1">
                                                                                         </td>
                                                                                         <td>
                                                                                             <input required="" type="number" min="0" class="form-control apd-isk-kode" name="txtkebUmum[]">
@@ -96,7 +96,7 @@
                                                                                         <td>
                                                                                             <button class="btn btn-default group_rem">
                                                                                                 <a href="javascript:void(0);"  title="Hapus Baris">
-                                                                                                    <span class="glyphicon glyphicon-trash"></span> 
+                                                                                                    <span class="glyphicon glyphicon-trash"></span>
                                                                                                 </a>
                                                                                             </button>
                                                                                         </td>
@@ -133,3 +133,16 @@
         </div>
     </div>
 </section>
+<div id="surat-loading" style="top: 0;left: 0;right: 0;bottom: 0; margin: auto; position: fixed; background: rgba(0,0,0,.5); z-index: 11;" hidden="hidden">
+    <img src="http://erp.quick.com/assets/img/gif/loadingtwo.gif" style="position: fixed; top: 0;left: 0;right: 0;bottom: 0; margin: auto; width: 40%;">
+</div>
+<script type="text/javascript">
+    $(document).ready(function() {
+      $(window).keydown(function(event){
+        if(event.keyCode == 13) {
+          event.preventDefault();
+          return false;
+      }
+  });
+  });
+</script>

@@ -91,8 +91,13 @@
                                                 ?>
                                             <tr style="color: #000;">
                                                 <td style="min-width: 10px;"><?php echo $a; ?></td>
-                                                <td><?php echo $key['item']; ?></td>
-                                                <td><?php echo $key['kode_item']; ?></td>
+                                                <td>
+                                                    <a style="cursor:pointer;" class="p2k3_see_apd_text"><?php echo $key['item']; ?></a>
+                                                </td>
+                                                <td>
+                                                    <a style="cursor:pointer;" class="p2k3_to_input"><?php echo $key['kode_item']; ?></a>
+                                                    <input hidden="" value="<?php echo $key['kode_item']; ?>" class="p2k3_see_apd">
+                                                </td>
                                                 <td><?php echo $key['jml_kebutuhan_umum']; ?></td>
                                                 <td><?php echo $key['jml_kebutuhan_staff']; ?></td>
                                                 <?php $jml = explode(',', $key['jml_item']);
@@ -114,6 +119,9 @@
         </div>
     </div>
 </section>
+<div id="surat-loading" style="top: 0;left: 0;right: 0;bottom: 0; margin: auto; position: fixed; background: rgba(0,0,0,.5); z-index: 11;" hidden="hidden">
+    <img src="http://erp.quick.com/assets/img/gif/loadingtwo.gif" style="position: fixed; top: 0;left: 0;right: 0;bottom: 0; margin: auto; width: 40%;">
+</div>
 <div class="modal fade" id="p2k3_detail_pekerja" tabindex="-1" role="dialog" aria-labelledby="basicModal" aria-hidden="true" style="margin-top: -20px;">
     <div class="modal-dialog modal-lg">
         <div class="modal-content">

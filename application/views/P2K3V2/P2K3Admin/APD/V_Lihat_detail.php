@@ -20,45 +20,106 @@
                             <div class="box box-primary box-solid">
                                 <div class="box-header with-border">Approval</div>
                                 <div class="box-body">
-                                    <div class="panel-body" style="overflow-x: scroll;">
-                                        <table id="tb_InputKebutuhanAPD" class="table table-striped table-bordered table-hover text-center">
-                                            <caption style="color: #000; font-weight: bold;"><?php echo $seksi[0]['section_name']; ?></caption>
-                                            <thead>
-                                                <tr class="bg-info">
-                                                    <th><input type="checkbox" class="p2k3_chkAll"></th>
-                                                    <th>No</th>
-                                                    <th style="min-width: 200px;">Nama APD</th>
-                                                    <th>Kode Barang</th>
-                                                    <th>Kebutuhan Umum</th>
-                                                    <th>Staff</th>
-                                                    <?php foreach ($daftar_pekerjaan as $key) { ?>
-                                                    <th><?php echo $key['pekerjaan'];?></th>
-                                                    <?php } ?>
-                                                </tr>
-                                            </thead>
-                                            <tbody id="DetailInputKebutuhanAPD">
-                                                <?php $a=1; foreach ($listToApprove as $key) { ?>
-                                                <tr style="color: #000;">
-                                                    <td id="nomor"><input type="checkbox" class="p2k3_chk" name="id[]" value="<?php echo $key['id']; ?>"></td>
-                                                    <td id="nomor"><?php echo $a; ?></td>
-                                                    <td><?php echo $key['item']; ?></td>
-                                                    <td><?php echo $key['kode_item']; ?></td>
-                                                    <td><?php echo $key['jml_kebutuhan_umum']; ?></td>
-                                                    <td><?php echo $key['jml_kebutuhan_staff']; ?></td>
-                                                    <?php $jml = explode(',', $key['jml_item']);
-                                                    foreach ($jml as $row) { ?>
-                                                    <td><?php echo $row; ?></td>
-                                                    <?php  } ?>
-                                                    <!-- <input name="id[]" hidden value="<?php echo $key['id']; ?>"> -->
-                                                </tr>
-                                                <?php $a++; } ?>
-                                            </tbody>
-                                        </table>
+                                    <div class="panel-body">
+                                            <b style="font-size: 24px;"><?php echo $seksi[0]['section_name']; ?></b>
+                                                <br>
+                                                <b>Permintaan update Standar Kebutuhan</b>
+                                            <table class="table table-striped table-bordered table-hover text-center p2k3_tbl_frezz">
+                                                <thead>
+                                                    <tr class="bg-info">
+                                                        <th class="bg-info"><input type="checkbox" class="p2k3_chkAll"></th>
+                                                        <th class="bg-info">No</th>
+                                                        <th class="bg-info" style="min-width: 200px;">Nama APD</th>
+                                                        <th class="bg-info">Kode Barang</th>
+                                                        <th>Kebutuhan Umum</th>
+                                                        <th>Staff</th>
+                                                        <?php foreach ($daftar_pekerjaan as $key) { ?>
+                                                        <th><?php echo $key['pekerjaan'];?></th>
+                                                        <?php } ?>
+                                                    </tr>
+                                                </thead>
+                                                <tbody id="DetailInputKebutuhanAPD">
+                                                    <?php $a=1; foreach ($listToApprove as $key) { ?>
+                                                    <tr style="color: #000;">
+                                                        <td>
+                                                            <input type="checkbox" class="p2k3_chk" name="id[]" value="<?php echo $key['id']; ?>">
+                                                        </td>
+                                                        <td id="nomor">
+                                                            <?php echo $a; ?>
+                                                        </td>
+                                                        <td>
+                                                            <a style="cursor:pointer; min-width: 200px;" class="p2k3_see_apd_text"><?php echo $key['item']; ?></a>
+                                                        </td>
+                                                        <td>
+                                                            <a style="cursor:pointer;" class="p2k3_to_input"><?php echo $key['kode_item']; ?></a>
+                                                            <input hidden="" value="<?php echo $key['kode_item']; ?>" class="p2k3_see_apd">
+                                                        </td>
+                                                        <td><?php echo $key['jml_kebutuhan_umum']; ?></td>
+                                                        <td><?php echo $key['jml_kebutuhan_staff']; ?></td>
+                                                        <?php $jml = explode(',', $key['jml_item']);
+                                                        foreach ($jml as $row) { ?>
+                                                        <td><?php echo $row; ?></td>
+                                                        <?php  } ?>
+                                                        <!-- <input name="id[]" hidden value="<?php echo $key['id']; ?>"> -->
+                                                    </tr>
+                                                    <?php $a++; } ?>
+                                                </tbody>
+                                            </table>
                                         <div class="panel-footer">
                                             <div class="row text-right" style="margin-right: 12px">
                                                 <button onclick="return confirm('Apa anda yakin ingin Reject Data ini?')" class="btn btn-danger" type="submit" name="p2k3_action" value="reject">Reject</button>
                                                 <button onclick="return confirm('Apa anda yakin ingin Approve Data ini?')" class="btn btn-success" type="submit" name="p2k3_action" value="approve">Approve</button>
                                             </div>
+                                        </div>
+                                        <br>
+                                        <br>
+                                        <div>                                            
+                                           <h5 style="color: #000; font-weight: bold;">Standar kebutuhan Terakhir</h5>
+                                           <table class="table table-striped table-bordered table-hover text-center p2k3_tbl_frezz">
+                                            <thead>
+                                                <tr class="bg-info">
+                                                     <th class="bg-info"><input type="checkbox" disabled=""></th>
+                                                    <th class="bg-info">No</th>
+                                                    <th class="bg-info" style="min-width: 200px;">Nama APD</th>
+                                                    <th class="bg-info">Kode Barang</th>
+                                                    <th>Kebutuhan Umum</th>
+                                                    <th>Staff</th>
+                                                    <?php foreach ($daftar_pekerjaan as $key) { ?>
+                                                    <th><?php echo $key['pekerjaan'];?></th>
+                                                    <?php } ?>
+                                                    <th style="min-width: 150px;">Tanggal Approve TIM</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody id="DetailInputKebutuhanAPD">
+                                                <?php $a=1; foreach ($listDahApprove as $key) { ?>
+                                                <?php if (in_array($key['kode_item'], $idnya)): ?>
+                                                    <tr style="color: #000; background-color: #c3ffb6">
+                                                <?php else: ?>
+                                                    <tr style="color: #000;">
+                                                <?php endif ?>
+                                                    <td>
+                                                        <input type="checkbox" disabled="">
+                                                    </td>
+                                                        <td id="nomor"><?php echo $a; ?></td>
+                                                        <td>
+                                                            <a style="cursor:pointer; min-width: 200px;" class="p2k3_see_apd_text"><?php echo $key['item']; ?></a>
+                                                        </td>
+                                                        <td>
+                                                            <a style="cursor:pointer;" class="p2k3_to_input"><?php echo $key['kode_item']; ?></a>
+                                                            <input hidden="" value="<?php echo $key['kode_item']; ?>" class="p2k3_see_apd">
+                                                        </td>
+                                                        <td><?php echo $key['jml_kebutuhan_umum']; ?></td>
+                                                        <td><?php echo $key['jml_kebutuhan_staff']; ?></td>
+                                                        <?php $jml = explode(',', $key['jml_item']);
+                                                        foreach ($jml as $row) { ?>
+                                                        <td><?php echo $row; ?></td>
+                                                        <?php  } ?>
+                                                        <td><?php echo $key['tgl_approve_tim']; ?></td>
+                                                        <!-- <input name="id[]" hidden value="<?php echo $key['id']; ?>"> -->
+                                                    </tr>
+                                                    <?php $a++; } ?>
+                                                </tbody>
+                                            </table>
                                         </div>
                                     </div>
                                 </div>
@@ -70,3 +131,6 @@
         </div>
     </div>
 </section>
+<div id="surat-loading" style="top: 0;left: 0;right: 0;bottom: 0; margin: auto; position: fixed; background: rgba(0,0,0,.5); z-index: 11;" hidden="hidden">
+    <img src="http://erp.quick.com/assets/img/gif/loadingtwo.gif" style="position: fixed; top: 0;left: 0;right: 0;bottom: 0; margin: auto; width: 40%;">
+</div>
