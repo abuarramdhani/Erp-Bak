@@ -84,6 +84,7 @@
                                                 <th>Seksi pengebon</th>
                                                 <th>Gudang</th>
                                                 <th>Keterangan</th>
+                                                <th>Cetak Bon</th>
                                             </tr>
                                         </thead>
                                         <tbody id="DetailInputKebutuhanAPD">
@@ -109,6 +110,11 @@
                                                 <td>
                                                     <?php echo $key['keterangan']; ?>
                                                 </td>
+                                                <td>
+                                                    <a target="_blank" data-toggle="tooltip" data-placement="top" title="Cetak Bon" href="<?php echo site_url('p2k3adm_V2/Admin/CetakBon/'.$key['no_bon']);?>" class="btn btn-danger">
+                                                        <i class="fa fa-file-pdf-o" aria-hidden="true"></i>
+                                                    </a>
+                                                </td>
                                             </tr>
                                             <?php $clas = 'p2k3_row'.$a; ?>
                                             <tr>
@@ -133,8 +139,13 @@
                                                                 <?php for ($i=0; $i < $lim; $i++) { ?>
                                                                 <tr>
                                                                     <td><?php echo ($i+1); ?></td>
-                                                                    <td><?php echo $kode[$i]; ?></td>
-                                                                    <td><?php echo $apd[$i]; ?></td>
+                                                                    <td>
+                                                                        <a style="cursor:pointer;" class="p2k3_see_apd_text"><?php echo $kode[$i]; ?></a>
+                                                                    </td>
+                                                                    <td>
+                                                                        <a style="cursor:pointer;" class="p2k3_to_input"><?php echo $apd[$i]; ?></a>
+                                                                        <input hidden="" value="<?php echo $apd[$i]; ?>" class="p2k3_see_apd">
+                                                                    </td>
                                                                     <td><?php echo $jml[$i]; ?></td>
                                                                     <td><?php echo $satuan[$i]; ?></td>
                                                                 </tr>
@@ -156,6 +167,9 @@
         </div>
     </div>
 </section>
+<div id="surat-loading" style="top: 0;left: 0;right: 0;bottom: 0; margin: auto; position: fixed; background: rgba(0,0,0,.5); z-index: 11;" hidden="hidden">
+    <img src="http://erp.quick.com/assets/img/gif/loadingtwo.gif" style="position: fixed; top: 0;left: 0;right: 0;bottom: 0; margin: auto; width: 40%;">
+</div>
 <script>
     $(document).ready(function(){
         $.ajax({

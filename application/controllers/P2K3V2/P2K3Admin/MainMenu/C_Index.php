@@ -13,6 +13,7 @@ class C_Index extends CI_Controller
 		$this->load->library('session');
 		$this->load->library('encrypt');
 		$this->load->library('ciqrcode');
+		$this->load->library('upload');
 
 		$this->load->model('SystemAdministration/MainMenu/M_user');
 		$this->load->model('P2K3V2/P2K3Admin/M_dtmasuk');
@@ -174,14 +175,20 @@ class C_Index extends CI_Controller
 		$data['pr'] = $periode;
 		if ($val == 'hitung') {
 			$data['toHitung'] = $this->M_dtmasuk->toHitung($pr);
+			// echo "<pre>";
 			foreach ($data['toHitung'] as $key) {
+				$kode = $key['item_kode'];
+				$stok = $this->M_dtmasuk->stokOracle($kode);
+
 				$a = $key['ttl_kebutuhan'];
 				$b = $key['ttl_bon'];
 				$out = ($a-$b);
 				$push = array("total"=> $out);
 				array_splice($key,5,1,$push);
+				array_push($key, $stok);
 				$new[] = $key;
 				$data['toHitung'] = $new;
+				// print_r($new);exit();
 			}
 			$data['run'] = '1';
 		}
@@ -380,14 +387,15 @@ class C_Index extends CI_Controller
 			$list = array();
 			$data['allKs'] = $this->M_dtmasuk->allKs($pr);
 			// echo "<pre>";
-			// print_r($data['allKs']);exit();
+			// print_r($data['allKs']);
+			// exit();
 			foreach ($data['allKs'] as $key) {
 				$record = $this->M_dtmasuk->getlistHitung($pr, $key['kodesie']);
-				// echo "<br>";print_r($key['kodesie']);echo "<br>";
+				// echo "<br><b>";print_r($key['kodesie']);echo "</b><br>";
 				$new = array();
 				foreach ($record as $row) {
 					$a = $row['jml_item'];
-					// echo $a;
+					// echo $row['kode_item'];
 					// echo "<br>";
 					// echo $row['kode_item'];
 					$b = $row['jml_pekerja'];
@@ -723,6 +731,8 @@ public function RiwayatKebutuhan($ks = false)
 	}
 	// $data['list'] = $this->M_dtmasuk->getListAprove($ks, $baru);
 	$data['inputStandar'] = $this->M_order->getInputstd($ks);
+	// echo "<pre>";
+	// print_r($data['inputStandar']);exit();
 	$data['daftar_pekerjaan']	= $this->M_order->daftar_pekerjaan($ks);
 	$data['seksi'] = '';
 	$data['seksi'] = $this->M_dtmasuk->cekseksi($ks);
@@ -863,4 +873,340 @@ public function hapusEmail()
 	$id = $this->input->post('id');
 	$addEmail = $this->M_dtmasuk->hapusEmail($id);
 }
+
+public function MasterItem()
+{
+	$user1 = $this->session->user;
+	$user_id = $this->session->userid;
+	$kodesie = $this->session->kodesie;
+
+	$data['Title'] = 'Setup';
+	$data['Menu'] = 'Setup';
+	$data['SubMenuOne'] = 'Master Item';
+	$data['SubMenuTwo'] = '';
+
+	$data['UserMenu'] = $this->M_user->getUserMenu($user_id,$this->session->responsibility_id);
+	$data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id);
+	$data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id);
+
+	$data['Item'] = $this->M_dtmasuk->GetMasterItem();
+	$data['Oracle'] = $this->M_dtmasuk->getItemOracle();
+	// echo "<pre>";
+	// print_r($data['Oracle']);exit();
+
+	$this->load->view('V_Header',$data);
+	$this->load->view('V_Sidemenu',$data);
+	$this->load->view('P2K3V2/P2K3Admin/APD/V_Admin_Setup_Master_Item', $data);
+	$this->load->view('V_Footer',$data);
+}
+
+public function EditMasterItem()
+{
+	// print_r($_POST);exit();
+	$kode_item = $this->input->post('kode_item');
+	$bulan = $this->input->post('et_bulan_item');
+
+	if (!empty($_FILES['et_file_item']['name'])) {
+		$direktori_file		= $_FILES['et_file_item']['name'];
+		$ekstensi_file		= pathinfo($direktori_file,PATHINFO_EXTENSION);
+		$nama_file			= $kode_item.'.'.$ekstensi_file;
+		// echo $nama_file;exit();
+		if(!is_dir('./assets/upload/P2K3/item'))
+	  	{
+	  		mkdir('./assets/upload/P2K3/item', 0777, true);
+	  		chmod('./assets/upload/P2K3/item', 0777);
+	  	}
+		$config['upload_path']          = './assets/upload/P2K3/item';
+		// $config['allowed_types']        = 'jpg|png|gif|';
+		$config['allowed_types']        = '*';
+		$config['max_size']				= 50000;
+		$config['file_name']		 	= $nama_file;
+		$config['overwrite'] 			= TRUE;
+
+
+		$this->upload->initialize($config);
+
+		if ($this->upload->do_upload('et_file_item')) 
+		{
+			$this->upload->data();
+		} 
+		else 
+		{
+			$errorinfo = $this->upload->display_errors();
+			echo $errorinfo;exit();
+		}
+
+		$data = array(
+				'xbulan'	=>	$bulan,
+				'nama_file'	=>	$nama_file,
+			);
+	}else{
+		$data = array(
+				'xbulan'	=>	$bulan,
+			);
+	}
+	$updete = $this->M_dtmasuk->updete($data, $kode_item);
+
+	redirect('p2k3adm_V2/Admin/MasterItem');
+}
+
+public function HapusMasterItem()
+{
+
+	$id = $this->input->post('hapus_id');
+
+	$delete = $this->M_dtmasuk->delItem($id);
+	redirect('p2k3adm_V2/Admin/MasterItem');
+}
+
+public function AddMasterItem()
+{
+	// print_r($_POST);
+	$val = $this->input->post('item');
+	$val = explode('-', $val);
+
+	$namaItem = $val[0];
+	$kodeItem = $val[1];
+
+	$satuan = $this->input->post('setItem');
+	$xbulan = $this->input->post('xbulan');
+
+	if (!empty($_FILES['et_file_item']['name'])) {
+		$direktori_file		= $_FILES['et_file_item']['name'];
+		$ekstensi_file		= pathinfo($direktori_file,PATHINFO_EXTENSION);
+		$nama_file			= $kodeItem.'.'.$ekstensi_file;
+		// echo $nama_file;exit();
+		if(!is_dir('./assets/upload/P2K3/item'))
+	  	{
+	  		mkdir('./assets/upload/P2K3/item', 0777, true);
+	  		chmod('./assets/upload/P2K3/item', 0777);
+	  	}
+		$config['upload_path']          = './assets/upload/P2K3/item';
+		// $config['allowed_types']        = 'jpg|png|gif|';
+		$config['allowed_types']        = '*';
+		$config['max_size']				= 50000;
+		$config['file_name']		 	= $nama_file;
+		$config['overwrite'] 			= TRUE;
+
+
+		$this->upload->initialize($config);
+
+		if ($this->upload->do_upload('et_file_item')) 
+		{
+			$this->upload->data();
+		} 
+		else 
+		{
+			$errorinfo = $this->upload->display_errors();
+			echo $errorinfo;exit();
+		}
+
+		$data = array(
+				'kode_item'	=>	$kodeItem,
+				'item'		=>	$namaItem,
+				'satuan'	=>	$satuan,
+				'xbulan'	=>	$xbulan,
+				'nama_file'	=>	$nama_file,
+			);
+	}else{
+		$data = array(
+				'kode_item'	=>	$kodeItem,
+				'item'		=>	$namaItem,
+				'satuan'	=>	$satuan,
+				'xbulan'	=>	$xbulan,
+				'nama_file'	=>	'-',
+			);
+	}
+
+	$insert = $this->M_dtmasuk->insertItem($data);
+
+	redirect('p2k3adm_V2/Admin/MasterItem');
+}
+
+public function getFoto()
+{
+	header('Content-Type: application/json');
+
+	$kode = $this->input->post('id');
+	$getFoto = $this->M_dtmasuk->getFoto($kode);
+	if (empty($getFoto)) {
+		$poto = '';
+		$nama = '';
+		$kode = '';
+	}else{
+		$nama = $getFoto[0]['item'];
+		$poto = $getFoto[0]['nama_file'];
+		$kode = $getFoto[0]['kode_item'];
+	}
+
+	$data['nama'] = $nama;
+	$data['foto'] = $poto;
+	$data['kode'] = $kode;
+	echo json_encode($data);
+}
+
+public function CetakBon($id)
+{
+	echo '<pre>';
+	$getBon = $this->M_dtmasuk->getBon($id);
+	// print_r($getBon);exit();
+
+	//pdf
+
+	$this->load->library('ciqrcode');
+  	if(!is_dir('./assets/img/temp_qrcode'))
+  	{
+  		mkdir('./assets/img/temp_qrcode', 0777, true);
+  		chmod('./assets/img/temp_qrcode', 0777);
+  	}
+  	$lembar = ceil(count($getBon)/10);
+		// echo $lembar;exit();
+  	$y = 0;
+  	$k = 1;
+  	for ($i=0; $i < $lembar; $i++) {
+  		$max = (10*$k);
+  		$data_array_2 = array();
+  		for ($x=$y; $x < $max; $x++) {
+  			if ($x < $lembar ) {
+  				$data_array_2[] = array(
+  					'kode' => $getBon[$x]['item_code'],
+  					'nama' => $getBon[$x]['item'],
+  					'satuan' => $getBon[$x]['satuan'],
+  					'diminta' => $getBon[$x]['jml_bon'],
+  					'account' => $getBon[$x]['account'],
+  					'ket' => 'UNTUK KEBUTUHAN APD PERIODE '.$getBon[$x]['periode'],
+  					);
+  			}else{
+  				$data_array_2[] = array(
+  					'kode' => '',
+  					'nama' => '',
+  					'satuan' => '',
+  					'diminta' => '', 
+  					'ket' => '',
+  					'account' => '',
+  					'produk' => '',
+  					'exp' =>'',
+  					'lokasi_simpanku' => ''
+  					);
+  			}
+			// echo $x; 
+  		}
+		// print_r($data_array_2);
+
+  		$data_array[] = array(
+  			'nomor' => $id,
+  			'tgl' => $getBon[0]['tanggal'],
+  			'gudang' => 'PNL-NPR',
+  			// 'seksi' => '',
+  			'seksi' => $getBon[0]['seksi_bon'],
+  			'pemakai' => $getBon[0]['pemakai'],
+  			'rdPemakai' => 'Seksi',
+  			'fungsi' => 'BARANG P2K3 & APD',
+  			'cost' => $getBon[0]['cost_center'],
+  			'kocab' => $getBon[0]['kode_cabang'],
+  			'data_body' => $data_array_2,
+  			);
+  		$y = $y + 10;
+  		$k++;
+  	}
+	// 		print_r($data_array);
+	// exit();
+  	$params['data']		= $id;
+  	$params['level']	= 'H';
+  	$params['size']		= 10;
+  	$config['black']	= array(224,255,255);
+  	$config['white']	= array(70,130,180);
+  	$params['savename'] = './assets/img/temp_qrcode/'.$id.'.png';
+  	$this->ciqrcode->generate($params);
+
+  	$data['kumpulandata'] = $data_array;
+		// print_r($data_array);
+		// exit;
+  	$this->load->library('Pdf');
+  	$pdf = $this->pdf->load();
+  	$pdf = new mPDF('',array(210,148.5),0,'',10,10,5,0,0,5,'P');
+  	$pdf->setAutoTopMargin = 'stretch';
+  	$pdf->setAutoBottomMargin = 'stretch';
+  	$filename = $nomor_urut.'-Bon-Bppbg.pdf';
+  	$stylesheet = file_get_contents(base_url('assets/plugins/bootstrap/3.3.6/css/bootstrap.css'));
+  	$html = $this->load->view('P2K3V2/Order/V_pdfBon', $data, true);
+		// echo ($html);
+		// exit();
+
+
+  	$pdf->setFooter('<div style="float: left; margin-right: 30px; width:200px">
+  		<i style="font-size: 10px;margin-right: 10%">FRM-WHS-02-PDN-02 (Rev.04)</i>
+  	</div>
+  	<div style="float: left; width: 350px; background-color=red">
+  		<i style="padding-left: 60%; font-size: 10px;margin-left: 10%">**) Pengebonan komponen/material produksi harus disetujui PPIC</i>
+  	</div>
+  	<div style="float: right; width: 100px">
+  		<i style="padding-left: 60%; font-size: 10px;margin-left: 10%">Hal. {PAGENO} dari {nb}</i>
+  	</div>');
+  	$pdf->WriteHTML($stylesheet,1);
+  	$pdf->WriteHTML($html);
+  	$pdf->Output($filename, 'I');
+}
+
+	public function cekHitung()
+	{
+		$pr = $this->input->post('pr');
+		$m = substr($pr, 0,2);
+		$y = substr($pr, 5,5);
+		$per = $y.'-'.$m;
+		$data['allKs'] = $this->M_dtmasuk->allKs($per);
+		$arrTable = array();
+		foreach ($data['allKs'] as $key) {
+		$table = '';
+			$record = $this->M_dtmasuk->getlistHitung($per, $key['kodesie']);
+				$table .= '<table class="table table-bordered table-hover table-striped text-center">
+					<caption style="color:#000"><b>'.$key['kodesie'].' - '.$key['section_name'].'</b></caption>
+					<tr>
+						<th style="width:20px;">No</th>
+						<th style="width:200px;">Kode Item</th>
+						<th style="width:200px;">Item</th>
+						<th style="width:200px;">Data Standar Kebutuhan</th>
+						<th style="width:200px;">Tanggal Approve Standar</th>
+						<th style="width:200px;">Data Order</th>
+					</tr>';
+					$i = 1;
+			foreach ($record as $row) {
+				$a = $row['jml_item'];
+				$b = $row['jml_pekerja'];
+				$ax = explode(',', $a);
+				$bx = explode(',', $b);
+				if (count($ax) !== count($bx)) {
+					$table .= '<tr class="aw SmityWeberJegerMenJensen aw ">
+					<td>'.$i.'</td>
+					<td>'.$row["kode_item"].'</td>
+					<td>'.$row["item"].'</td>
+					<td>'.$row["jml_item"].'</td>
+					<td>'.$row["tgl_approve_tim"].'</td>
+					<td>'.$row["jml_pekerja"].'</td>
+				</tr>';
+				$i++;
+				}else{
+					$table .= '<tr>asdadad</tr>';
+					$table .= '';
+				}
+			}
+				$table .= '</table><br>';
+			$arrTable[] = $table;
+		}
+			$newTable = '';
+			foreach ($arrTable as $key) {
+				if (strrpos($key, 'SmityWeberJegerMenJensen') !== false) {
+					$newTable .= $key;
+				}else{
+					//do not
+				}
+			}
+		// print_r($arrTable);
+		// exit();
+			if (strlen($newTable) < 10) {
+				echo '<center><ul class="list-group"><li class="list-group-item">Data Aman</li></ul></center>';
+			}else{
+				echo $newTable;
+			}
+	}
 }

@@ -791,13 +791,44 @@ function format ( d ) {
 
     $('.p2k3_detail_seksi').click(function(){
       var ks = $(this).val();
+      $('#surat-loading').attr('hidden', false);
       $.ajax({
         url: baseurl+'P2K3_V2/Order/getJumlahPekerja',
         method: "POST",
         data: {ks:ks},
         success: function(data){
+          
           $('#phone_result').html(data);
+          $('#surat-loading').attr('hidden', true);
           $('#p2k3_detail_pekerja').modal('show');
+        },
+        error:function(xhr, ajaxOptions, thrownError){
+          $.toaster(xhr+','+ajaxOptions+','+thrownError);
+        }
+      });
+    });
+
+    $('.p2k3_cek_hitung').click(function(){
+      var pr = $('.p2k3_tanggal_periode').val();
+      $('#surat-loading').attr('hidden', false);
+      $.ajax({
+        url: baseurl+'p2k3adm_V2/Admin/cekHitung',
+        method: "POST",
+        data: {pr:pr},
+        success: function(data){
+          $('#p2k3_result').html(data);
+          $('#surat-loading').attr('hidden', true);
+          $('#p2k3_cekError').modal('show');
+          // alert(data.indexOf('center'));
+          if (data.indexOf('center') > 10) {
+            $('.p2k3_submit_hitung').css('cursor', 'not-allowed');
+            $('.p2k3_submit_hitung').attr('data-original-title', 'Ada Error Pada data. Harap perbaiki sebelum melanjutkan');
+            $('.p2k3_submit_hitung').attr('type', 'button');
+          } else {
+            $('.p2k3_submit_hitung').css('cursor', 'pointer');
+            $('.p2k3_submit_hitung').attr('data-original-title', 'Data Aman klik untuk Melanjutkan');
+            $('.p2k3_submit_hitung').attr('type', 'submit');
+          }
         },
         error:function(xhr, ajaxOptions, thrownError){
           $.toaster(xhr+','+ajaxOptions+','+thrownError);
@@ -807,6 +838,81 @@ function format ( d ) {
 
     $('.p2k3_select2').select2({
       allowClear: false
+    });
+
+    $('.p2k3_select2Item').select2({
+      allowClear: false,
+      placeholder: 'Pilih Item',
+      minimumInputLength: 2,
+    });
+
+    $('.et_edit_masterItem').click(function(){
+      var kode = $(this).closest('tr').find('td.et_kode').text();
+      var nama = $(this).closest('tr').find('td.et_item').text();
+      var bulan = $(this).closest('tr').find('td.et_exbulan').text();
+      $('#p2k3_kode_item').val(kode);
+      $('#p2k3_kode_item2').val(kode);
+      $('#p2k3_nama_item').val(nama);
+      $('#p2k3_bulan_item').val(bulan);
+      $('#p2k3_edit_item').modal("show");
+    });
+
+    $('.p2k3_see_image').click(function(){
+      var file = $(this).val();
+      var nama = $(this).attr('data-nama');
+      var kode = $(this).attr('data-kode');
+      // alert(file);
+      Swal.fire({
+        // title: file,
+        // text: kode+' - '+nama,
+        html: '<b>'+kode+' - '+nama+'</b>',
+        imageUrl: baseurl+'assets/upload/P2K3/item/'+file,
+        // imageWidth: 600,
+        // imageHeight: 400,
+        imageAlt: file,
+        animation: false
+      });
+    });
+
+    $('.p2k3_select2Item').change(function(){
+      var satuan = $('option:selected', this).attr('data-satuan');
+      // alert(satuan);
+      $('#p2k3_setItem').val(satuan);
+    });
+
+    $('.p2k3_to_input').click(function(){
+      // alert($(this).closest('tr').find('input').val());
+      $(this).closest('tr').find('input.p2k3_see_apd').trigger("click");
+    });
+
+    $('.p2k3_see_apd_text').click(function(){
+      var vall = $(this).text();
+        $('#surat-loading').attr('hidden', false);
+        $.ajax({
+          type: 'POST',
+          url: baseurl+'p2k3adm_V2/Admin/getFoto',
+          data: {id:vall},
+          success: function(response){
+              // alert(response['foto']);
+            $('#surat-loading').attr('hidden', true);
+            if (response['foto'] == '-') {
+              Swal.fire({
+                html: '<b>Foto tidak di Temukan</b>',
+                imageUrl: baseurl+'assets/img/notFound.png',
+                imageAlt: 'not found',
+                animation: false
+              });
+            }else{
+              var file = response['foto'];
+              Swal.fire({
+                html: '<b>'+response['kode']+' - '+response['nama']+'</b>',
+                imageUrl: baseurl+'assets/upload/P2K3/item/'+file,
+                imageAlt: file,
+                animation: false
+              });
+            }
+          }
+        });
     });
   });
 function p2k3_val(){
@@ -831,3 +937,128 @@ function p2k3_val(){
         return true;
       }
     }
+
+    $(document).on('click', '.p2k3_see_apd', function() {
+      var nama = $(this).closest('tr').find('select.apd-select2').text();
+      nama = $.trim(nama);
+      // console.log(nama);
+      var vall = $(this).val();
+      if (vall.length < 2) {
+        // alert(vall);
+      }else{
+      $('#surat-loading').attr('hidden', false);
+        $.ajax({
+          type: 'POST',
+          url: baseurl+'p2k3adm_V2/Admin/getFoto',
+          data: {id:vall},
+          success: function(response){
+              // alert(response['foto']);
+            $('#surat-loading').attr('hidden', true);
+            if (response['foto'] == '-') {
+              Swal.fire({
+                html: '<b>Foto tidak di Temukan</b>',
+                imageUrl: baseurl+'assets/img/notFound.png',
+                imageAlt: 'not found',
+                animation: false
+              });
+            }else{
+              var file = response['foto'];
+              Swal.fire({
+                html: '<b>'+vall+' - '+response['nama']+'</b>',
+                imageUrl: baseurl+'assets/upload/P2K3/item/'+file,
+                imageAlt: file,
+                animation: false
+              });
+            }
+          }
+        });
+      }
+    });
+
+$(document).ready(function(){
+  $('.et_add_email_seksi').click(function(){
+    Swal.fire({
+      title: 'Input email address',
+      input: 'email',
+      allowOutsideClick: false,
+      allowEscapeKey: false,
+      showCancelButton: true,
+      inputPlaceholder: 'Enter your email address'
+    }).then(function(result) {
+      if (result.value) {
+       $('#surat-loading').attr('hidden', false);
+       $.ajax({
+        type: 'POST',
+        url: baseurl+'P2K3_V2/Order/addEmailSeksi',
+        data: {email:result.value},
+        success: function(response){
+          location.reload();
+        }
+      });
+     }
+   });
+  });
+
+  $('.et_edit_email_seksi').click(function(){
+      var em = $(this).closest('tr').find('td.et_em').text();
+      var id = $(this).closest('tr').find('input').val();
+      Swal.fire({
+        title: 'Input email address',
+        input: 'email',
+        allowOutsideClick: false,
+        allowEscapeKey: false,
+        showCancelButton: true,
+        inputValue: em,
+        inputPlaceholder: 'Enter your email address'
+      }).then(function(result) {
+        if (result.value) {
+         $('#surat-loading').attr('hidden', false);
+         $.ajax({
+          type: 'POST',
+          url: baseurl+'P2K3_V2/Order/editEmailSeksi',
+          data: {email:result.value, id:id},
+          success: function(response){
+            location.reload();
+          }
+        });
+       }
+     });
+    });
+
+  $('.et_del_email_seksi').click(function(){
+      var em = $(this).closest('tr').find('td.et_em').text();
+      var id = $(this).closest('tr').find('input').val();
+      Swal.fire({
+        allowOutsideClick: false,
+        allowEscapeKey: false,
+        showCancelButton: true,
+        title: em,
+        text: "Apa anda yakin ingin Menghapus Email Ini?",
+        type: 'warning',
+        focusCancel: true
+      }).then(function(result) {
+        if (result.value) {
+         $('#surat-loading').attr('hidden', false);
+         $.ajax({
+          type: 'POST',
+          url: baseurl+'P2K3_V2/Order/hapusEmailSeksi',
+          data: {id:id},
+          success: function(response){
+            location.reload();
+          }
+        });
+       }
+     });
+    });
+
+  $('.p2k3_tbl_frezz').DataTable({
+    dom: 'frt',
+    // scrollX: true,
+    scrollX: "100%",
+    "ordering": false,
+    scrollCollapse: true,
+    fixedColumns:   {
+      leftColumns: 4,
+    },
+  });
+});

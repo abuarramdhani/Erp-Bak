@@ -1117,6 +1117,10 @@ class C_Order extends CI_Controller
       	//masuk ke database
       	$noind = $this->session->user;
       	$id = $this->input->post('p2k3_idStandar');
+      	if (empty($id)) {
+      		redirect('P2K3_V2/Order/approveStandar');
+      		exit();
+      	}
       	$status = $this->input->post('p2k3_action');
       	$st = '1';
       	if ($status == 'reject') {
@@ -1734,45 +1738,101 @@ class C_Order extends CI_Controller
   	$pdf->Output($filename, 'I');
   }
 
-  public function lokator()
-  {
-  	$gudang	= $this->input->post('gudang_id');
-  	$lokator=$this->M_order->lokator($gudang);
+	  public function lokator()
+	  {
+	  	$gudang	= $this->input->post('gudang_id');
+	  	$lokator=$this->M_order->lokator($gudang);
 
-  	echo '<option></option>';
-  	foreach ($lokator as $data_lokator) {
-  		echo '<option value="'.$data_lokator['LOCATOR_ID'].'">'.$data_lokator['SEGMENT1'].'</option>';
-  	}
-  }
+	  	echo '<option></option>';
+	  	foreach ($lokator as $data_lokator) {
+	  		echo '<option value="'.$data_lokator['LOCATOR_ID'].'">'.$data_lokator['SEGMENT1'].'</option>';
+	  	}
+	  }
 
-  public function getJumlahPekerja()
-  {
-  	$ks = $this->input->post('ks');
-  	if(isset($ks) and !empty($ks)){
-		  	$getPekerja = $this->M_order->getPekerja($ks);
-			if (empty($getPekerja)) {
-				echo '<center><ul class="list-group"><li class="list-group-item">'.'Kosong'.'</li></ul></center>';
-			}else{
-				echo '<table class="table table-bordered table-hover table-striped text-center">
-				<tr>
-					<th style="width:20px;">No</th>
-					<th style="width:200px;">Noind</th>
-					<th>Nama</th>
-				</tr>';
-				$i = 1;
-				foreach($getPekerja as $key){
-					echo '<tr>
-					<td>'.$i.'</td>
-					<td>'.$key["employee_code"].'</td>
-					<td>'.$key["employee_name"].'</td>
-				</tr>';
-				$i++;
+	  public function getJumlahPekerja()
+	  {
+	  	$ks = $this->input->post('ks');
+	  	if(isset($ks) and !empty($ks)){
+			  	$getPekerja = $this->M_order->getPekerja($ks);
+				if (empty($getPekerja)) {
+					echo '<center><ul class="list-group"><li class="list-group-item">'.'Kosong'.'</li></ul></center>';
+				}else{
+					echo '<table class="table table-bordered table-hover table-striped text-center">
+					<tr>
+						<th style="width:20px;">No</th>
+						<th style="width:200px;">Noind</th>
+						<th>Nama</th>
+					</tr>';
+					$i = 1;
+					foreach($getPekerja as $key){
+						echo '<tr>
+						<td>'.$i.'</td>
+						<td>'.$key["employee_code"].'</td>
+						<td>'.$key["employee_name"].'</td>
+					</tr>';
+					$i++;
+				}
+				echo '</table>';
 			}
-			echo '</table>';
+		}
+		else {
+			echo '<center><ul class="list-group"><li class="list-group-item">'.'Kodesie tidak ditemukan'.'</li></ul></center>';
+		}
+	  }
+
+	public function EmailSeksi()
+	{
+		$user = $this->session->username;
+      	$user_id = $this->session->userid;
+      	$noind = $this->session->user;
+      	$kodesie = $this->session->kodesie;
+
+      	$data['Title'] = 'Email Seksi';
+      	$data['Menu'] = 'Email Seksi';
+      	$data['SubMenuOne'] = '';
+      	$data['SubMenuTwo'] = '';
+
+      	$data['UserMenu'] = $this->M_user->getUserMenu($user_id,$this->session->responsibility_id);
+      	$data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id);
+      	$data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id);
+      	$data['seksi'] 		= $this->M_order->getSeksi($noind);
+      	$data['email']		= $this->M_order->getEmail($kodesie);
+
+      	$this->load->view('V_Header',$data);
+  		$this->load->view('V_Sidemenu',$data);
+  		$this->load->view('P2K3V2/Order/V_Email_Seksi', $data);
+  		$this->load->view('V_Footer',$data);
+	}
+
+	public function addEmailSeksi()
+	{
+		$noind = $this->session->user;
+		$kodesie = $this->session->kodesie;
+		$email = $this->input->post('email');
+		$addEmail = $this->M_order->addEmailSeksi($email, $kodesie, $noind);
+	}
+
+	public function editEmailSeksi()
+	{
+		$kodesie = $this->session->kodesie;
+		$noind = $this->session->user;
+
+		$email = $this->input->post('email');
+		$id = $this->input->post('id');
+
+		$em = $this->M_order->getEmail($kodesie);
+		// print_r($em);exit();
+		if ($em[0]['email'] == $email) {
+			//tidak perlu update
+			echo "uwaw";
+		}else{
+			$addEmail = $this->M_order->editEmailSeksi($id,$email, $noind);
 		}
 	}
-	else {
-		echo '<center><ul class="list-group"><li class="list-group-item">'.'Kodesie tidak ditemukan'.'</li></ul></center>';
-	}
-  }
+
+	public function hapusEmailSeksi()
+{
+	$id = $this->input->post('id');
+	$addEmail = $this->M_order->hapusEmailSeksi($id);
+}
 }
