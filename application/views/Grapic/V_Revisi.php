@@ -1,4 +1,4 @@
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/1.3.2/jspdf.min.js"></script>
+<script src="<?= base_url('assets/plugins/jsPDF/jspdf.debug.js') ?>"></script>
 <style type="text/css">html, body { scroll-behavior: smooth; } tbody tr td { /* height: auto; padding-top: 18px !important; */ } thead tr th { height: auto; } .fixed-column { position: absolute; background: white; width: 100px; left: 16px; margin-bottom: 2px; } .background-red { background-color: #FF5252; color: white; } .fadeIn { -webkit-animation: fadeIn 0.5s; -moz-animation: fadeIn 0.5s; -o-animation: fadeIn 0.5s; animation: fadeIn 0.5s; } .fadeOut { -webkit-animation: fadeOut 0.5s; -moz-animation: fadeOut 0.5s; -o-animation: fadeOut 0.5s; animation: fadeOut 0.5s; }</style>
 <section class="content inner row">
     <div class="col-lg-12">
@@ -39,8 +39,7 @@
     </div>
 </section>
 <script>
-
-    document.addEventListener('DOMContentLoaded', async _ => {
+    document.addEventListener('DOMContentLoaded', async function() {
         if(window.history.replaceState) window.history.replaceState(null, null, window.location.href);
         element('#select-filter-data-loading').setHTML('Semua Data');
         element('#select-filter-data').enable();
@@ -49,16 +48,8 @@
 
     const re = {
         exportPDF: async (content, fileName, documentWidth = 110, xMargin = 10, yMargin = 10) => {
-            console.log($('#'+content)[0])
             const pdf = new jsPDF()
-            pdf.fromHTML(
-                $('#'+content)[0],
-                xMargin,
-                yMargin,
-                { 'width': documentWidth, 'elementHandlers': { '#ignoreContent': function (element, renderer) { return true; } } },
-                dispose => { pdf.save('Test.pdf'); }
-            )
-            // pdf.save(fileName.replace('.pdf', '')+'.pdf')
+            pdf.fromHTML($('#'+content)[0], xMargin, yMargin, { 'width': documentWidth, 'elementHandlers': { '#ignoreContent': function (element, renderer) { return true; } } }, dispose => { pdf.save(fileName.replace('.pdf', '')+'.pdf'); })
         }
     }
 
