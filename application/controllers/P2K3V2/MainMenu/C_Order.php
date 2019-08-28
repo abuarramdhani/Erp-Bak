@@ -1645,6 +1645,11 @@ class C_Order extends CI_Controller
   		mkdir('./assets/img/temp_qrcode', 0777, true);
   		chmod('./assets/img/temp_qrcode', 0777);
   	}
+  	if(!is_dir('./assets/upload/P2K3/PDF'))
+  	{
+  		mkdir('./assets/upload/P2K3/PDF', 0777, true);
+  		chmod('./assets/upload/P2K3/PDF', 0777);
+  	}
   	$lembar = ceil(count($apd)/10);
 		// echo $lembar;exit();
   	$y = 0;
@@ -1717,7 +1722,7 @@ class C_Order extends CI_Controller
   	$pdf = new mPDF('',array(210,148.5),0,'',10,10,5,0,0,5,'P');
   	$pdf->setAutoTopMargin = 'stretch';
   	$pdf->setAutoBottomMargin = 'stretch';
-  	$filename = $nomor_urut.'-Bon-Bppbg.pdf';
+  	$filename = './assets/upload/P2K3/PDF/'.$noBon.'-Bon-Bppbg.pdf';
   	$stylesheet = file_get_contents(base_url('assets/plugins/bootstrap/3.3.6/css/bootstrap.css'));
   	$html = $this->load->view('P2K3V2/Order/V_pdfBon', $data, true);
 		// echo ($html);
@@ -1735,7 +1740,23 @@ class C_Order extends CI_Controller
   	</div>');
   	$pdf->WriteHTML($stylesheet,1);
   	$pdf->WriteHTML($html);
-  	$pdf->Output($filename, 'I');
+  	$pdf->Output($filename, 'F');
+  	redirect('P2K3_V2/Order/PDF/'.$noBon);
+  }
+
+  public function PDF($id)
+  {
+  	$file = './assets/upload/P2K3/PDF/'.$id.'-Bon-Bppbg.pdf';
+	$filename = $id.'-Bon-Bppbg.pdf'; /* Note: Always use .pdf at the end. */
+	// echo $filename;exit();
+
+	header('Content-type: application/pdf');
+	header('Content-Disposition: inline; filename="' . $filename . '"');
+	header('Content-Transfer-Encoding: binary');
+	header('Content-Length: ' . filesize($file));
+	header('Accept-Ranges: bytes');
+
+	@readfile($file);
   }
 
 	  public function lokator()

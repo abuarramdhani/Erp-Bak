@@ -73,7 +73,7 @@
     </div>
 </section>
 <div class="modal fade" id="p2k3_cekError" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-  <div style="width: 1050px;" class="modal-dialog" role="document">
+  <div style="width: 80%;" class="modal-dialog" role="document">
     <div class="modal-content">
       <div class="modal-header">
         <h5 class="modal-title" id="exampleModalLabel">Data yang Error</h5>
