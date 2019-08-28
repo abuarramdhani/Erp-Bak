@@ -117,7 +117,9 @@ class M_Dtmasuk extends CI_Model
     {
         $sql = "select ks.*, km.item from k3.k3n_standar_kebutuhan ks 
         left join k3.k3_master_item km on km.kode_item = ks.kode_item
-        where cast(tgl_approve as varchar) like '$pr%' and ks.status = 1 and ks.kodesie like '$ks%' order by ks.tgl_approve asc";
+        where cast(tgl_approve as varchar) like '$pr%' and ks.status = 1 and ks.kodesie like '$ks%'
+        order by km.item, ks.tgl_approve asc";
+        // echo $sql;exit();
         $query = $this->erp->query($sql);
 
         return $query->result_array();
@@ -151,6 +153,7 @@ class M_Dtmasuk extends CI_Model
                         and kb2.status = kb.status
                         and kb.kode_item = kb2.kode_item )
                 order by 2";
+                // echo $sql;exit();
     	$query = $this->erp->query($sql);
 
         return $query->result_array();
