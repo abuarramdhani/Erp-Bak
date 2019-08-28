@@ -139,7 +139,7 @@ class M_Dtmasuk extends CI_Model
                     k3.k3_master_item km
                 where
                     kb.kode_item = km.kode_item
-                    and kb.kodesie = '$ks'
+                    and kb.kodesie like '$ks%'
                     and kb.status = 3
                     and tgl_approve_tim = (
                     select
@@ -291,7 +291,7 @@ class M_Dtmasuk extends CI_Model
                         k3.k3n_bon kb
                     where
                         kb.periode = '$pr'
-                        and kb.kodesie = '$ks'
+                        and kb.kodesie like '$ks%'
                     group by
                         kb.periode,
                         kb.item_code) bon on
@@ -324,40 +324,54 @@ class M_Dtmasuk extends CI_Model
                     mon.periode ,
                     mon.item_kode ,
                     mon.item ,
-                    sum(to_number(mon.jml_kebutuhan, '999G999D9S')) jml_kebutuhan ,
+                    sum(mon.jml_kebutuhan) jml_kebutuhan ,
                     sum(mon.ttl_bon) ttl_bon ,
                     sum(mon.sisa_saldo) sisa_saldo
                 from
                     (
-                        select kh.*,
+                    select
+                        kh.periode,
+                        kh.item_kode,
                         km.item,
+                        sum(kh.jml_kebutuhan::int) jml_kebutuhan,
                         coalesce(bon.ttl_bon, 0) ttl_bon,
-                        to_number(kh.jml_kebutuhan, '999G999D9S')-coalesce(bon.ttl_bon, 0) sisa_saldo
+                        sum(kh.jml_kebutuhan::int)-coalesce(bon.ttl_bon, 0) sisa_saldo
                     from
                         k3.k3_master_item km,
                         k3.k3n_hitung kh
                     left join (
                         select
                             kb.periode,
+                            kb.kodesie,
                             kb.item_code,
-                            sum(to_number(kb.jml_bon, '999G999D9S')) ttl_bon
+                            sum(jml_bon::int) ttl_bon
                         from
                             k3.k3n_bon kb
                         where
-                            kb.periode = '$pr'
-                            and kb.kodesie = '$ks'
+                            kb.kodesie like '$ks%'
+                            and kb.periode = '$pr'
                         group by
                             kb.periode,
+                            kb.kodesie,
                             kb.item_code) bon on
-                        kh.item_kode = bon.item_code
+                        kh.kodesie = bon.kodesie
+                        and kh.item_kode = bon.item_code
+                        and kh.periode = bon.periode
                     where
-                        km.kode_item = kh.item_kode
+                        kh.item_kode = km.kode_item
                         and kh.periode = '$pr'
-                        and kh.kodesie like '$ks%') mon
+                        and kh.kodesie like '$ks%'
+                    group by
+                        kh.periode,
+                        kh.item_kode,
+                        km.item,
+                        bon.ttl_bon) mon
                 group by
                     mon.periode ,
                     mon.item_kode ,
-                    mon.item";
+                    mon.item
+                order by
+                    3";
                 // echo $sql;exit();
         $query = $this->erp->query($sql);
         return $query->result_array();
@@ -693,7 +707,7 @@ class M_Dtmasuk extends CI_Model
                 left join im.im_master_bon ib on
                     ib.no_bon = kb.no_bon
                 where kb.no_bon = '$id'";
-            echo $sql;;exit();
+            // echo $sql;;exit();
         $query = $this->db->query($sql);
         return $query->result_array();
     }

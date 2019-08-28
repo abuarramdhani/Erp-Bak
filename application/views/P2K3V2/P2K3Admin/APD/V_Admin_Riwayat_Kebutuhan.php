@@ -47,7 +47,7 @@
                                            } ?>
                                        </h4>
                                    </div>
-                                  <table class="table table-striped table-bordered table-hover  text-center" style="font-size:12px;">
+                                  <table class="table table-striped table-bordered table-hover dataTable-p2k3Frezz text-center" style="font-size:12px;">
                                         <thead class="bg-primary">
                                             <tr>
                                                 <th class="bg-primary">NO</th>
