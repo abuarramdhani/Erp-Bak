@@ -183,7 +183,7 @@ class C_DraftCuti extends CI_Controller
 		];
 		$this->load->library('email', $Quick);
 		$this->email->from('no-reply', 'Email Sistem - Cuti');
-		$this->email->to('dicka_ismaji@quick.com'); //change to address before upload to server prod
+		$this->email->to($address);
 		$this->email->subject('Permintaan Approval Cuti');
 		$this->email->message("
 		<br>
