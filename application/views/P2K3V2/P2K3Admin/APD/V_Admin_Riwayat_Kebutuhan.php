@@ -24,7 +24,7 @@
                         <div class="box box-primary box-solid">
                             <div class="box-header with-border"></div>
                             <div class="box-body">
-                                <div class="panel-body" style="overflow-x: scroll;">
+                                <div class="panel-body">
                                     <div class="col-md-1 text-left" align="right">
                                         <label for="lb_periode" class="control-label">Seksi : </label>
                                     </div>

@@ -124,7 +124,7 @@ $(function()
   });
 
   $('.dataTable-p2k3Frezz').DataTable({
-    dom: 'frt',
+    dom: 'frtp',
     scrollX: true,
     fixedColumns:   {
       leftColumns: 3,
