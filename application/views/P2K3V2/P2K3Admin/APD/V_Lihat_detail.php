@@ -24,13 +24,13 @@
                                             <b style="font-size: 24px;"><?php echo $seksi[0]['section_name']; ?></b>
                                                 <br>
                                                 <b>Permintaan update Standar Kebutuhan</b>
-                                            <table class="table table-striped table-bordered table-hover text-center p2k3_tbl_frezz">
+                                            <table style="width: 100%" class="table table-striped table-bordered table-hover text-center <?php echo (count($daftar_pekerjaan) < 7) ? 'p2k3_tbl_frezz_nos':'p2k3_tbl_frezz'; ?>">
                                                 <thead>
                                                     <tr class="bg-info">
                                                         <th class="bg-info"><input type="checkbox" class="p2k3_chkAll"></th>
                                                         <th class="bg-info">No</th>
                                                         <th class="bg-info" style="min-width: 200px;">Nama APD</th>
-                                                        <th class="bg-info">Kode Barang</th>
+                                                        <th class="bg-info" style="white-space: nowrap;">Kode Barang</th>
                                                         <th>Kebutuhan Umum</th>
                                                         <th>Staff</th>
                                                         <?php foreach ($daftar_pekerjaan as $key) { ?>
@@ -75,7 +75,7 @@
                                         <br>
                                         <div>                                            
                                            <h5 style="color: #000; font-weight: bold;">Standar kebutuhan Terakhir</h5>
-                                           <table class="table table-striped table-bordered table-hover text-center p2k3_tbl_frezz">
+                                           <table class="table table-striped table-bordered table-hover text-center <?php echo (count($daftar_pekerjaan) < 7) ? 'p2k3_tbl_frezz_nos':'p2k3_tbl_frezz'; ?>">
                                             <thead>
                                                 <tr class="bg-info">
                                                      <th class="bg-info"><input type="checkbox" disabled=""></th>
