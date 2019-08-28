@@ -1047,6 +1047,21 @@ public function getFoto()
 
 public function CetakBon($id)
 {
+	$file = './assets/upload/P2K3/PDF/'.$id.'-Bon-Bppbg.pdf';
+	$filename = $id.'-Bon-Bppbg.pdf'; /* Note: Always use .pdf at the end. */
+	// echo $filename;exit();
+
+	header('Content-type: application/pdf');
+	header('Content-Disposition: inline; filename="' . $filename . '"');
+	header('Content-Transfer-Encoding: binary');
+	header('Content-Length: ' . filesize($file));
+	header('Accept-Ranges: bytes');
+
+	@readfile($file);
+}
+
+public function CetakBongagal($id)
+{
 	echo '<pre>';
 	$getBon = $this->M_dtmasuk->getBon($id);
 	// print_r($getBon);exit();
@@ -1186,7 +1201,7 @@ public function CetakBon($id)
 				</tr>';
 				$i++;
 				}else{
-					$table .= '<tr>asdadad</tr>';
+					// $table .= '<tr></tr>';
 					$table .= '';
 				}
 			}

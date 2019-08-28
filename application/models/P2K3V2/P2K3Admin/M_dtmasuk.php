@@ -273,6 +273,7 @@ class M_Dtmasuk extends CI_Model
                             k3.k3n_standar_kebutuhan ks2
                         where
                             ks2.kodesie like '$ks%'
+                            and ks2.status = '3'
                         group by
                             ks2.kode_item) kz on
                         ks.kode_item = kz.kode_item
@@ -290,7 +291,7 @@ class M_Dtmasuk extends CI_Model
                         k3.k3n_bon kb
                     where
                         kb.periode = '$pr'
-                        and kb.kodesie = '$ks%'
+                        and kb.kodesie = '$ks'
                     group by
                         kb.periode,
                         kb.item_code) bon on
@@ -344,7 +345,7 @@ class M_Dtmasuk extends CI_Model
                             k3.k3n_bon kb
                         where
                             kb.periode = '$pr'
-                            and kb.kodesie = '$ks%'
+                            and kb.kodesie = '$ks'
                         group by
                             kb.periode,
                             kb.item_code) bon on
@@ -374,20 +375,54 @@ class M_Dtmasuk extends CI_Model
 
     public function getlistHitung($pr, $ks)
     {
-       $sql = "select ks.jml_kebutuhan_staff, ks.jml_kebutuhan_umum, km.item, ks.kode_item, ks.kd_pekerjaan, ks.jml_item, ks.kodesie, ks.tgl_approve_tim, ko.jml_pekerja, ko.periode, ko.jml_pekerja_staff
-                from k3.k3_master_item km,
-                (select ko.jml_pekerja_staff, ko.kd_pekerjaan, ko.jml_pekerja, ko.kodesie, ko.tgl_approve, ko.periode
-                from k3.k3n_order ko
-                where status = 1
-                and kodesie like '$ks%'
-                and periode = '$pr') ko,
-                k3.k3n_standar_kebutuhan ks inner join (select substring(ks2.kodesie,0,8), ks2.kode_item, max(ks2.tgl_approve_tim) maks
-                from k3.k3n_standar_kebutuhan ks2 group by ks2.kode_item, substring(ks2.kodesie,0,8)) kz on ks.kode_item = kz.kode_item and ks.tgl_approve_tim = kz.maks
-                where km.kode_item = ks.kode_item
-                and ks.status = 3 
-                and ks.kodesie like '$ks%'
-                and substring(ks.kodesie,0,8) = substring(ko.kodesie,0,8)
-                order by 3";
+       $sql = "select
+                    ks.jml_kebutuhan_staff,
+                    ks.jml_kebutuhan_umum,
+                    km.item,
+                    ks.kode_item,
+                    ks.kd_pekerjaan,
+                    ks.jml_item,
+                    ks.kodesie,
+                    ks.tgl_approve_tim,
+                    ko.jml_pekerja,
+                    ko.periode,
+                    ko.jml_pekerja_staff
+                from
+                    k3.k3_master_item km,
+                    (
+                        select ko.jml_pekerja_staff,
+                        ko.kd_pekerjaan,
+                        ko.jml_pekerja,
+                        ko.kodesie,
+                        ko.tgl_approve,
+                        ko.periode
+                    from
+                        k3.k3n_order ko
+                    where
+                        status = 1
+                        and kodesie like '$ks%'
+                        and periode = '$pr') ko,
+                    k3.k3n_standar_kebutuhan ks
+                inner join (
+                        select substring(ks2.kodesie, 0, 8),
+                        ks2.kode_item,
+                        max(ks2.tgl_approve_tim) maks
+                    from
+                        k3.k3n_standar_kebutuhan ks2
+                    where
+                        ks2.status = 3
+                    group by
+                        ks2.kode_item,
+                        substring(ks2.kodesie, 0, 8)) kz on
+                    ks.kode_item = kz.kode_item
+                    and ks.tgl_approve_tim = kz.maks
+                where
+                    km.kode_item = ks.kode_item
+                    and ks.status = 3
+                    and ks.kodesie like '$ks%'
+                    and substring(ks.kodesie, 0, 8) = substring(ko.kodesie, 0, 8)
+                order by
+                    3";
                 // echo $sql;exit();
         $query = $this->erp->query($sql);
         return $query->result_array();
@@ -658,7 +693,7 @@ class M_Dtmasuk extends CI_Model
                 left join im.im_master_bon ib on
                     ib.no_bon = kb.no_bon
                 where kb.no_bon = '$id'";
-
+            echo $sql;;exit();
         $query = $this->db->query($sql);
         return $query->result_array();
     }

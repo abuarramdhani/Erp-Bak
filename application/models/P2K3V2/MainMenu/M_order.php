@@ -411,6 +411,7 @@ class M_Order extends CI_Model
                             k3.k3n_standar_kebutuhan ks2
                         where
                             ks2.kodesie like '$ks%'
+                            and ks2.status = '3'
                         group by
                             ks2.kode_item) kz on
                         ks.kode_item = kz.kode_item
@@ -428,7 +429,7 @@ class M_Order extends CI_Model
                         k3.k3n_bon kb
                     where
                         kb.periode = '$pr'
-                        and kb.kodesie = '$ks%'
+                        and kb.kodesie = '$ks'
                     group by
                         kb.periode,
                         kb.item_code) bon on
