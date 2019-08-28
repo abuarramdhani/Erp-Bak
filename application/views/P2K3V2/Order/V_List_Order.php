@@ -61,7 +61,7 @@
                                                 <th width="15%">Tanggal Input</th>
                                                 <th>Status</th>
                                                 <th>Periode</th>
-                                                <th>Action</th>
+                                                <!-- <th>Action</th> -->
                                             </tr>
                                         </thead>
                                         <tbody>
@@ -93,9 +93,9 @@
                                                         var kodesie = '<?php echo $key['kodesie']; ?>';
                                                         // var periode = '<?php echo $key['periode']; ?>';
                                                     </script>
-                                                    <td>
+                                                    <!-- <td>
                                                         <button class="btn btn-primary btn-sm p2k3_lihat_detail">Lihat</button>
-                                                    </td>
+                                                    </td> -->
                                                     <?php $a++; } ?>
                                                 </tr>
                                             </tbody> 
