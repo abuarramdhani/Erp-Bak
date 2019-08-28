@@ -60,8 +60,8 @@
                                                         <input hidden="" class="p2k3_item" type="text" value="<?php echo $key['item']; ?>">
                                                     </td>
                                                     <td>
-                                                        <?php echo $key['ttl_kebutuhan']; ?>
-                                                        <input hidden="" class="p2k3_kebutuhan" type="text" value="<?php echo $key['ttl_kebutuhan']; ?>">
+                                                        <?php echo $key['jml_kebutuhan']; ?>
+                                                        <input hidden="" class="p2k3_kebutuhan" type="text" value="<?php echo $key['jml_kebutuhan']; ?>">
                                                     </td>
                                                     <td>
                                                         <?php echo $key['0']; ?>
