@@ -49,41 +49,44 @@
                                             <button type="submit" class="btn btn-primary">Lihat</button>
                                         </div>
                                     </form>
-                                    <table style="margin-top: 50px;" id="tb_InputKebutuhanAPD" class="table table-striped table-bordered table-hover text-center">
-                                        <caption style="color: #000; font-weight: bold;"><?php echo $seksi[0]['section_name']; ?></caption>
-                                        <thead>
-                                            <tr class="bg-info">
-                                                <th>No</th>
-                                                <th>APD</th>
-                                                <th>Kode Barang</th>
-                                                <th>Jumlah Kebutuhan</th>
-                                                <th>Jumlah Bon</th>
-                                                <th>Sisa Saldo</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody id="DetailInputKebutuhanAPD">
-                                            <?php $a=1; foreach ($listtobon as $key): ?>
-                                            <tr style="color: #000;" class="multiinput">
-                                                <td id="nomor"><?php echo $a; ?></td>
-                                                <td>
-                                                    <?php echo $key['item']; ?>
-                                                </td>
-                                                <td>
-                                                    <?php echo $key['item_kode']; ?>
-                                                </td>
-                                                <td>
-                                                    <?php echo $key['jml_kebutuhan']; ?>
-                                                </td>
-                                                <td>
-                                                    <?php echo $key['ttl_bon']; ?>
-                                                </td>
-                                                <td>
-                                                    <?php echo $key['sisa_saldo']; ?>
-                                                </td>
-                                            </tr>
-                                            <?php $a++; endforeach ?>
-                                        </tbody>
-                                    </table>
+                                    <div class="col-md-12" style="margin-top: 30px;">
+                                        <p style="color: #000; font-weight: bold; font-size: 20px;"><?php echo $seksi[0]['section_name']; ?></p>
+                                        <table style="margin-top: 50px;" id="tb_InputKebutuhanAPD" class="table table-striped table-bordered table-hover text-center dataTable-p2k3">
+                                            <thead>
+                                                <tr class="bg-info">
+                                                    <th>No</th>
+                                                    <th>APD</th>
+                                                    <th>Kode Barang</th>
+                                                    <th>Jumlah Kebutuhan</th>
+                                                    <th>Jumlah Bon</th>
+                                                    <th>Sisa Saldo</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody id="DetailInputKebutuhanAPD">
+                                                <?php $a=1; foreach ($listtobon as $key): ?>
+                                                <tr style="color: #000;" class="multiinput">
+                                                    <td id="nomor"><?php echo $a; ?></td>
+                                                    <td>
+                                                        <a style="cursor:pointer;" class="p2k3_see_apd_text"><?php echo $key['item']; ?></a>
+                                                    </td>
+                                                    <td>
+                                                        <a style="cursor:pointer;" class="p2k3_to_input"><?php echo $key['item_kode']; ?></a>
+                                                        <input hidden="" value="<?php echo $key['item_kode']; ?>" class="p2k3_see_apd">
+                                                    </td>
+                                                    <td>
+                                                        <?php echo $key['jml_kebutuhan']; ?>
+                                                    </td>
+                                                    <td>
+                                                        <?php echo $key['ttl_bon']; ?>
+                                                    </td>
+                                                    <td>
+                                                        <?php echo $key['sisa_saldo']; ?>
+                                                    </td>
+                                                </tr>
+                                                <?php $a++; endforeach ?>
+                                            </tbody>
+                                        </table>
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -93,6 +96,9 @@
         </div>
     </div>
 </section>
+<div id="surat-loading" style="top: 0;left: 0;right: 0;bottom: 0; margin: auto; position: fixed; background: rgba(0,0,0,.5); z-index: 11;" hidden="hidden">
+    <img src="http://erp.quick.com/assets/img/gif/loadingtwo.gif" style="position: fixed; top: 0;left: 0;right: 0;bottom: 0; margin: auto; width: 40%;">
+</div>
 <script>
     $(document).ready(function(){
         $.ajax({

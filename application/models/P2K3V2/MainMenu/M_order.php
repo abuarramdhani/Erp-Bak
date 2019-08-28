@@ -429,7 +429,7 @@ class M_Order extends CI_Model
                         k3.k3n_bon kb
                     where
                         kb.periode = '$pr'
-                        and kb.kodesie = '$ks'
+                        and kb.kodesie like '$ks%'
                     group by
                         kb.periode,
                         kb.item_code) bon on
