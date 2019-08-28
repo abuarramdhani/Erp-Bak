@@ -168,6 +168,7 @@
 		<script src="<?php echo base_url('assets/js/customMLPD.js');?>" type="text/javascript"></script>
 		<script src="<?php echo base_url('assets/js/customMPR.js');?>" type="text/javascript"></script>
 		<script src="<?php echo base_url('assets/js/customMBI.js');?>" type="text/javascript"></script>
+		<script src="<?php echo base_url('assets/js/customPLO.js');?>" type="text/javascript"></script>
 		<!--<script type="text/javascript" src="<?= base_url('assets/js/customOSP.js') ?>"></script>-->
 		<!--<script type="text/javascript" src="<?= base_url('assets/js/customHWM.js') ?>"></script>-->
 		<!-- END OF CUSTOM JAVASCRIPT | DO NOT EDIT!! -->

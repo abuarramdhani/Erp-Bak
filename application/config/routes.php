@@ -2904,3 +2904,30 @@ $route['CetakStikerCC'] 					    = 'CetakStikerCC/C_Index';
 $route['CetakStikerCC/Cetak/(:any)']			= 'CetakStikerCC/C_Cetak/$1';
 $route['CetakStikerCC/Cetak/(:any)/(:any)'] 	= 'CetakStikerCC/C_Cetak/$1/$2';
 $route['CetakStikerCC/Cetak/(:any)/(:any)/(:any)'] 	= 'CetakStikerCC/C_Cetak/$1/$2/$3';
+
+//---------------------------Perhitungan Loading ODM-------------------------------//
+$route['PerhitunganLoadingODM'] = 'PerhitunganLoadingODM/C_Index';
+$route['PerhitunganLoadingODM/Input'] = 'PerhitunganLoadingODM/MainMenu/Input/C_Input';
+$route['PerhitunganLoadingODM/Input/(:any)'] = 'PerhitunganLoadingODM/MainMenu/Input/C_Input/$1';
+$route['PerhitunganLoadingODM/Input/ItemCode/(:any)'] = 'PerhitunganLoadingODM/MainMenu/Input/C_Input/ItemCode/$1';
+$route['PerhitunganLoadingODM/Input/ItemCode'] = 'PerhitunganLoadingODM/MainMenu/Input/C_Input/ItemCode';
+$route['PerhitunganLoadingODM/Input/saveData'] = 'PerhitunganLoadingODM/MainMenu/Input/C_Input/saveData';
+$route['PerhitunganLoadingODM/Input/(:any)/(:any)']	= 'PerhitunganLoadingODM/MainMenu/Input/C_Input/$1/$2';
+$route['PerhitunganLoadingODM/Input/(:any)/(:any)/(:any)']	= 'PerhitunganLoadingODM/MainMenu/Input/C_Input/$1/$2/$3';
+$route['PerhitunganLoadingODM/View/savetable/'] = 'PerhitunganLoadingODM/MainMenu/View/C_View/savetable';
+$route['PerhitunganLoadingODM/View/savetable/(:any)'] = 'PerhitunganLoadingODM/MainMenu/View/C_View/savetable/$1';
+
+$route['PerhitunganLoadingODM/View'] = 'PerhitunganLoadingODM/MainMenu/View/C_View';
+$route['PerhitunganLoadingODM/View/(:any)'] = 'PerhitunganLoadingODM/MainMenu/View/C_View/$1';
+$route['PerhitunganLoadingODM/View/(:any)/(:any)'] = 'PerhitunganLoadingODM/MainMenu/View/C_View/$1/$2';
+$route['PerhitunganLoadingODM/View/DeptClass/(:any)'] = 'PerhitunganLoadingODM/MainMenu/View/C_View/DeptClass/$1';
+$route['PerhitunganLoadingODM/View/DeptClass'] = 'PerhitunganLoadingODM/MainMenu/View/C_View/DeptClass';
+$route['PerhitunganLoadingODM/View/DeptCode/(:any)'] = 'PerhitunganLoadingODM/MainMenu/View/C_View/DeptCode/$1';
+$route['PerhitunganLoadingODM/View/DeptCode'] = 'PerhitunganLoadingODM/MainMenu/View/C_View/DeptCode';
+$route['PerhitunganLoadingODM/View/(:any)/(:any)']	= 'PerhitunganLoadingODM/MainMenu/View/C_View/$1/$2';
+$route['PerhitunganLoadingODM/View/(:any)/(:any)/(:any)']	= 'PerhitunganLoadingODM/MainMenu/View/C_View/$1/$2/$3';
+
+$route['PerhitunganLoadingODM/Summary'] = 'PerhitunganLoadingODM/MainMenu/Summary/C_Summary';
+$route['PerhitunganLoadingODM/Summary/(:any)'] = 'PerhitunganLoadingODM/MainMenu/Summary/C_Summary/$1';
+$route['PerhitunganLoadingODM/Summary/(:any)/(:any)']	= 'PerhitunganLoadingODM/MainMenu/Summary/C_Summary/$1/$2';
+$route['PerhitunganLoadingODM/Summary/(:any)/(:any)/(:any)']	= 'PerhitunganLoadingODM/MainMenu/Summary/C_Summary/$1/$2/$3';
