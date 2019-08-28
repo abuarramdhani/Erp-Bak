@@ -1053,9 +1053,21 @@ $(document).ready(function(){
 
   $('.p2k3_tbl_frezz').DataTable({
     dom: 'frtp',
+    scrollX: true,
+    "paging": false,
+    // scrollX: "100%",
+    "ordering": false,
+    scrollCollapse: true,
+    fixedColumns:   {
+      leftColumns: 4,
+    },
+  });
+
+  $('.p2k3_tbl_frezz_nos').DataTable({
+    dom: 'frtp',
     // scrollX: true,
     "paging": false,
-    scrollX: "100%",
+    // scrollX: "100%",
     "ordering": false,
     scrollCollapse: true,
     fixedColumns:   {
