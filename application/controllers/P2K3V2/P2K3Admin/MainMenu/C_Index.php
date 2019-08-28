@@ -174,13 +174,15 @@ class C_Index extends CI_Controller
 		$data['run'] = '0';
 		$data['pr'] = $periode;
 		if ($val == 'hitung') {
-			$data['toHitung'] = $this->M_dtmasuk->toHitung($pr);
+			// $data['toHitung'] = $this->M_dtmasuk->toHitung($pr);
+			$data['toHitung'] = $this->M_dtmasuk->listtobon2('', $pr);
+
 			// echo "<pre>";
 			foreach ($data['toHitung'] as $key) {
 				$kode = $key['item_kode'];
 				$stok = $this->M_dtmasuk->stokOracle($kode);
 
-				$a = $key['ttl_kebutuhan'];
+				$a = $key['jml_kebutuhan'];
 				$b = $key['ttl_bon'];
 				$out = ($a-$b);
 				$push = array("total"=> $out);

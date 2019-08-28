@@ -106,5 +106,8 @@
             $('.p2k3_submit_hitung').attr('data-original-title', 'Silahkan klik button Cek terlebih dahulu');
             $('.p2k3_submit_hitung').attr('type', 'button');
         });
+        setTimeout(function(){
+            $('.p2k3_tanggal_periode').focus();
+        }, 200);
     });
 </script>

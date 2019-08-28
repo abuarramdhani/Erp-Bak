@@ -880,12 +880,12 @@ function format ( d ) {
       $('#p2k3_setItem').val(satuan);
     });
 
-    $('.p2k3_to_input').click(function(){
+    $(document).on('click', '.p2k3_to_input', function() {
       // alert($(this).closest('tr').find('input').val());
       $(this).closest('tr').find('input.p2k3_see_apd').trigger("click");
     });
 
-    $('.p2k3_see_apd_text').click(function(){
+    $(document).on('click', '.p2k3_see_apd_text', function() {
       var vall = $(this).text();
         $('#surat-loading').attr('hidden', false);
         $.ajax({
