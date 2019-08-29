@@ -767,6 +767,7 @@ $(function() {
     // 	{
     $('#MasterPekerja-txtPokokMasalah').redactor();
     $('#MasterPekerja-Surat-txaPreview').redactor();
+    $('.MasterPekerja-Surat-txaPreview').redactor();
     $('#MasterPekerja-SuratPerbantuan-txaPreview').redactor();
     $('.MasterPekerja-SuratRotasi-txaPreview').redactor();
     $('.MasterPekerja-SuratPromosi-txaPreview').redactor();
