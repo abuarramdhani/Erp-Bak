@@ -9,6 +9,7 @@ class M_Daftar extends CI_Model {
     }
 	
 	public function ambilDataSP3($filter) {
+		if(empty($filter)) { return null; }
 		$sql = "select p.noind, p.nama, sp.no_surat, sp.berlaku as berlaku_mulai, (date_trunc('month', sp.berlaku) + '6month'::interval - '1day'::interval)::date as berlaku_selesai
 			from hrd_khs.tpribadi p inner join
 			(select no_surat, noind, sp_ke, (left(berlaku, 4) || '-' || right(berlaku, 2) || '-01')::date as berlaku  from \"Surat\".tsp union
@@ -20,10 +21,9 @@ class M_Daftar extends CI_Model {
 		return $query->result_array();
 	}
 	
-	public function ambilDataBAP($filter){
-		if(!empty($filter)){	$filter = "where bap.bap_id='$filter'";	}else{	$filter = "";	}
-		$sql = "select bap.*, em.employee_name, em.section_code, em.location_code
-			from hr.hr_bap bap inner join er.er_employee_all em on bap.noind=em.employee_code $filter";
+	public function ambilDataBAP($filter) {
+		if(!empty($filter)) { $filter = "where bap.bap_id='$filter'"; } else { $filter = ""; }
+		$sql = "select bap.*, em.employee_name, em.section_code, em.location_code from hr.hr_bap bap inner join er.er_employee_all em on bap.noind=em.employee_code $filter";
 		$query = $this->khs_erp->query($sql);
 		return $query->result_array();
 	}
@@ -32,22 +32,22 @@ class M_Daftar extends CI_Model {
 		return $this->personalia->select('isi_surat')->from('"Surat".tisi_surat"')->where('jenis_surat=', 'BAPSP3')->get()->result_array();
 	}
 	
-	public function inputBAPSP3($data)
-	{
+	public function inputBAPSP3($data) {
 	 	$this->khs_erp->insert('hr.hr_bap', $data);
 	}
 	
-	public function updateBAPSP3($data_id, $data)
-	{
+	public function updateBAPSP3($data_id, $data) {
 	 	$this->khs_erp->where('bap_id', $data_id);
 	 	$this->khs_erp->update('hr.hr_bap', $data);
 	}
 	
-	public function deleteBAPSP3($data_id)
-	{
+	public function deleteBAPSP3($data_id) {
 	 	$this->khs_erp->where('bap_id', $data_id);
 	 	$this->khs_erp->delete('hr.hr_bap');
 	}
 	
-	
+	public function getPekerjaData($noind) {
+		if(empty($noind)) { return null; }
+		return $this->personalia->select('upper(noind) as noind, upper(nama) as nama')->where('noind', $noind)->limit(1)->get('hrd_khs.tpribadi')->row();
+	}
 }

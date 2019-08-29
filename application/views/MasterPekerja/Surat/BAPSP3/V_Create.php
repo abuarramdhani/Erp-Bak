@@ -19,7 +19,6 @@
                         </div>
                     </div>
                     <br />
-                
                     <div class="row">
                         <div class="col-lg-12">
                             <div class="box box-primary box-solid">
@@ -48,7 +47,6 @@
                                                             <input type="text" name="txtCustomJabatan" class="form-control" id="MasterPekerja-txtCustomJabatan" readonly="">
                                                         </div>
                                                     </div>
-													
 													<div class="form-group">
                                                         <label for="txtNamaPerusahaan" class="col-lg-4 control-label">Nama Perusahaan</label>
                                                         <div class="col-lg-8">
@@ -64,7 +62,7 @@
 													<div class="form-group">
                                                         <label for="cmbWakilPerusahaan" class="col-lg-4 control-label">Nama Wakil Perusahaan</label>
                                                         <div class="col-lg-8">
-                                                            <select required class="select2" name="cmbWakilPerusahaan" id="MasterPekerja-BAPSP3-WakilPerusahaan" style="width: 100%">
+                                                            <select class="select2" name="cmbWakilPerusahaan" id="MasterPekerja-BAPSP3-WakilPerusahaan" style="width: 100%">
                                                                 <option></option>
                                                             </select>
                                                         </div>
@@ -89,16 +87,10 @@
 															<textarea rows="3" name="txtKeteranganPekerja" class="form-control" id="MasterPekerja-txtKeteranganPekerja" style="resize: none;"></textarea>
                                                         </div>
                                                     </div>
-													<!-- <div class="form-group">
-                                                        <label for="txtPokokMasalah" class="col-lg-4 control-label">Pokok Masalah</label>
-                                                        <div class="col-lg-8">
-															<textarea rows="3" name="txtPokokMasalah" class="redactor" id="MasterPekerja-txtPokokMasalah"></textarea>
-                                                        </div>
-                                                    </div> -->
 													<div class="form-group">
                                                         <label for="cmbTandaTangan1" class="col-lg-4 control-label">Tanda Tangan 1</label>
                                                         <div class="col-lg-8">
-                                                            <select required class="select2" name="cmbTandaTangan1" id="MasterPekerja-BAPSP3-TandaTangan1" style="width: 100%">
+                                                            <select class="select2" name="cmbTandaTangan1" id="MasterPekerja-BAPSP3-TandaTangan1" style="width: 100%">
                                                                 <option></option>
                                                             </select>
                                                         </div>
@@ -106,12 +98,11 @@
 													<div class="form-group">
                                                         <label for="cmbTandaTangan2" class="col-lg-4 control-label">Tanda Tangan 2</label>
                                                         <div class="col-lg-8">
-                                                            <select required class="select2" name="cmbTandaTangan2" id="MasterPekerja-BAPSP3-TandaTangan2" style="width: 100%">
+                                                            <select class="select2" name="cmbTandaTangan2" id="MasterPekerja-BAPSP3-TandaTangan2" style="width: 100%">
                                                                 <option></option>
                                                             </select>
                                                         </div>
                                                     </div>
-													
 												</div>
                                                 <div class="col-lg-12">
                                                     <div class="form-group">

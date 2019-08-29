@@ -710,7 +710,7 @@ $(function() {
             processResults: function(data) {
                 return {
                     results: $.map(data, function(obj) {
-                        return { id: obj.nama, text: obj.noind + ' - ' + obj.nama };
+                        return { id: obj.noind, text: obj.noind + ' - ' + obj.nama };
                     })
                 };
             }
@@ -733,7 +733,7 @@ $(function() {
             processResults: function(data) {
                 return {
                     results: $.map(data, function(obj) {
-                        return { id: obj.nama, text: obj.noind + ' - ' + obj.nama };
+                        return { id: obj.noind, text: obj.noind + ' - ' + obj.nama };
                     })
                 };
             }
@@ -756,7 +756,7 @@ $(function() {
             processResults: function(data) {
                 return {
                     results: $.map(data, function(obj) {
-                        return { id: obj.nama, text: obj.noind + ' - ' + obj.nama };
+                        return { id: obj.noind, text: obj.noind + ' - ' + obj.nama };
                     })
                 };
             }
@@ -1052,20 +1052,27 @@ $('#MasterPekerja-SuratPengangkatanStaf-btnPreview').click(function() {
 });
 
 $('#MasterPekerja-BAPSP3-btnPreview').click(function() {
+    if ($('#MasterPekerja-BAPSP3-DaftarPekerja').val() == '') { $.toaster('Mohon isi nomor induk pekerja', '', 'danger'); return; }
     $('#surat-loading').attr('hidden', false);
-    $(document).ajaxStop(function() {
-        $('#surat-loading').attr('hidden', true);
-    });
     $.ajax({
         async: true,
         type: 'POST',
         data: $('#MasterPekerja-FormCreate').serialize(),
         url: baseurl + "MasterPekerja/Surat/BAPSP3/prosesPreviewBAPSP3",
-        success: function(result) {
-            result = JSON.parse(result);
-            console.log(result['template']);
-            console.log(result['wakil']);
-            $('#MasterPekerja-Surat-txaPreview').redactor('set', result['preview']);
+        success: function(response) {
+            try {
+                response = JSON.parse(response);
+                $('#MasterPekerja-Surat-txaPreview').redactor('set', response['preview']);
+            } catch (e) {
+                console.error(e);
+                $.toaster('Terjadi kesalahan saat memuat preview', '', 'danger');
+            }
+            $('#surat-loading').attr('hidden', true);
+        },
+        error: function(response) {
+            console.error(response.status);
+            $.toaster('Terjadi kesalahan saat memuat preview', '', 'danger');
+            $('#surat-loading').attr('hidden', true);
         }
     });
 

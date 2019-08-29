@@ -56,11 +56,11 @@
                                                     $parameter = $this->general->enkripsi($surat['bap_id']);
                                             ?>
                                             <tr>
-                                                <td align='center'><?php echo $no++;?></td>
-                                                <td align='center' style="white-space: nowrap;">
-                                                    <a target="_blank" style="margin-right:4px" href="<?php echo base_url('MasterPekerja/Surat/BAPSP3/previewcetak/'.$parameter.''); ?>" data-toggle="tooltip" data-placement="bottom" title="Preview Cetak"><span class="fa fa-file-pdf-o fa-2x"></span></a>
-                                                    <a style="margin-right:4px" href="<?php echo base_url('MasterPekerja/Surat/BAPSP3/update/'.$parameter.''); ?>" data-toggle="tooltip" data-placement="bottom" title="Edit Data"><span class="fa fa-pencil-square-o fa-2x"></span></a>
-                                                    <a href="<?php echo base_url('MasterPekerja/Surat/BAPSP3/delete/'.$parameter.''); ?>" data-toggle="tooltip" data-placement="bottom" title="Hapus Data" onclick="return confirm('Are you sure you want to delete this item?');"><span class="fa fa-trash fa-2x"></span></a>
+                                                <td style="text-align: center;"><?php echo $no++;?></td>
+                                                <td style="text-align: center;" style="white-space: nowrap;">
+                                                    <a target="_blank" style="margin-right:4px" href="<?php echo base_url('MasterPekerja/Surat/BAPSP3/previewcetak/'.$parameter.''); ?>" title="Preview Cetak"><span class="fa fa-file-pdf-o fa-2x"></span></a>
+                                                    <a style="margin-right:4px" href="<?php echo base_url('MasterPekerja/Surat/BAPSP3/update/'.$parameter.''); ?>" title="Edit Data"><span class="fa fa-pencil-square-o fa-2x"></span></a>
+                                                    <a href="<?php echo base_url('MasterPekerja/Surat/BAPSP3/delete/'.$parameter.''); ?>" title="Hapus Data" onclick="return confirm('Are you sure you want to delete this item?');"><span class="fa fa-trash fa-2x"></span></a>
                                                 </td>
                                                 <td><?php echo $surat['noind'];?></td>
                                                 <td><?php echo $surat['employee_name'];?></td>

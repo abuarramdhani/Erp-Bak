@@ -183,7 +183,7 @@
 						$custom_jabatan = $detail_pekerja[0]['nama_jabatan'];
 					}
 					if($detail_pekerja[0]['kode_lokasi_kerja'] == "02"){
-						$custom_alamatperusahaan = "Jl. Dudukan, Tuksono, Sentolo, Kulonporgo 55664";
+						$custom_alamatperusahaan = "Jl. Dudukan, Tuksono, Sentolo, Kulonprogo 55664";
 					}else{
 						$custom_alamatperusahaan = "Jl. Magelang No. 144 Yogyakarta 55241";
 					}
