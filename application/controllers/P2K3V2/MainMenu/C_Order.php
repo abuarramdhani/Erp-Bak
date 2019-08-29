@@ -1650,7 +1650,12 @@ class C_Order extends CI_Controller
   		mkdir('./assets/upload/P2K3/PDF', 0777, true);
   		chmod('./assets/upload/P2K3/PDF', 0777);
   	}
-  	$lembar = ceil(count($apd)/10);
+  	// $lembar = ceil(count($apd)/10);
+  	$nol = array_count_values($bon);
+  	$nol = $nol['0'];
+  	$all = count($apd);
+  	$lembar = ceil(($all-$nol)/10);
+  	// $lembar = 2;
 		// echo $lembar;exit();
   	$y = 0;
   	$k = 1;
@@ -1688,6 +1693,23 @@ class C_Order extends CI_Controller
 			// echo $x; 
   		}
 		// print_r($data_array_2);
+		if ($i == ($lembar-1)) {
+			$counts = array_count_values($bon);
+			// echo $counts['0'];
+			for ($i=0; $i < $counts['0']; $i++) { 
+				$data_array_2[] = array(
+  					'kode' => '',
+  					'nama' => '',
+  					'satuan' => '',
+  					'diminta' => '', 
+  					'ket' => '',
+  					'account' => '',
+  					'produk' => '',
+  					'exp' =>'',
+  					'lokasi_simpanku' => ''
+  					);
+			}
+		}
 
   		$data_array[] = array(
   			'nomor' => $noBon,
