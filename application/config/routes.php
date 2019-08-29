@@ -1299,6 +1299,7 @@ $route['SDM/openPDF'] = 'Grapic/C_Index/openPDF';
 
 $route['RevisiEfisiensi'] = 'Grapic/C_Revisi';
 $route['RevisiEfisiensi/getData'] = 'Grapic/C_Revisi/getData';
+$route['RevisiEfisiensi/exportPDF'] = 'Grapic/C_Revisi/exportPDF';
 
 //------------------------------------ Management Kebutuhan Pekerja ----------------------------------------
 $route['ItemManagement'] = 'ItemManagement/C_Index/index';
