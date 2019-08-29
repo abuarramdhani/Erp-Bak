@@ -48,6 +48,6 @@ class M_Daftar extends CI_Model {
 	
 	public function getPekerjaData($noind) {
 		if(empty($noind)) { return null; }
-		return $this->personalia->select('upper(noind) as noind, upper(nama) as nama')->where('noind', $noind)->limit(1)->get('hrd_khs.tpribadi')->row();
+		return $this->personalia->select('trim(upper(noind)) as noind, trim(upper(nama)) as nama')->where('noind', $noind)->limit(1)->get('hrd_khs.tpribadi')->row();
 	}
 }

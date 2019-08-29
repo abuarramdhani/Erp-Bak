@@ -52,31 +52,32 @@ class C_Daftar extends CI_Controller {
 	}
 
 	public function prosesPreviewBAPSP3() {
-		$nomor_induk 				=	$this->input->post('cmbNoind');
-		$alamat_pekerja 			=	$this->input->post('txtAlamatPekerja');
-		$jabatan_pekerja 			=	$this->input->post('txtCustomJabatan');
-		$nama_perusahaan 			=	$this->input->post('txtNamaPerusahaan');
-		$alamat_perusahaan 			=	$this->input->post('txtAlamatPerusahaan');
-		$wakil_perusahaan 			=	empty($this->input->post('cmbWakilPerusahaan')) ? '' : $this->M_Daftar->getPekerjaData($this->input->post('cmbWakilPerusahaan'))->nama;
-		$tanggal_pemeriksaan 		=	$this->input->post('txtTanggalPemeriksaan');
-		$tanggal_pemeriksaan 		=	$this->personalia->konversitanggalIndonesia($tanggal_pemeriksaan);
-		$tempat_pemeriksaan 		=	$this->input->post('txtTempatPemeriksaan');
-		$keterangan_pekerja 		=	$this->input->post('txtKeteranganPekerja');
-		$user_01 					=	empty($this->input->post('cmbTandaTangan1')) ? '' : $this->M_Daftar->getPekerjaData($this->input->post('cmbTandaTangan1'))->nama;
-		$user_02 					=	empty($this->input->post('cmbTandaTangan2')) ? '' : $this->M_Daftar->getPekerjaData($this->input->post('cmbTandaTangan2'))->nama;
-		$tanggal_cetak				=   date('Y-m-d');
-		$tanggal_cetak				=   $this->personalia->konversitanggalIndonesia($tanggal_cetak);
-		$datasp3					=	$this->M_Daftar->ambilDataSP3($nomor_induk);
-		$nama_pekerja				=	$datasp3[0]['nama'];
-		$tanggal_berlaku_mulai		=	$datasp3[0]['berlaku_mulai'];
-		$tanggal_berlaku_mulai		=	$this->personalia->konversitanggalIndonesia($tanggal_berlaku_mulai);
-		$tanggal_berlaku_selesai	=	$datasp3[0]['berlaku_selesai'];
-		$tanggal_berlaku_selesai	=	$this->personalia->konversitanggalIndonesia($tanggal_berlaku_selesai);
-		$template 					=	$this->M_Daftar->ambilLayoutSurat()[0]['isi_surat'];
+		$nomor_induk = trim($this->input->post('cmbNoind'));
+		$alamat_pekerja = trim($this->input->post('txtAlamatPekerja'));
+		$jabatan_pekerja = trim($this->input->post('txtCustomJabatan'));
+		$nama_perusahaan = trim($this->input->post('txtNamaPerusahaan'));
+		$alamat_perusahaan = trim($this->input->post('txtAlamatPerusahaan'));
+		$wakil_perusahaan = empty($this->input->post('cmbWakilPerusahaan')) ? null : $this->M_Daftar->getPekerjaData($this->input->post('cmbWakilPerusahaan'))->nama;
+		$tanggal_pemeriksaan = empty($this->input->post('txtTanggalPemeriksaan')) ? null : trim($this->input->post('txtTanggalPemeriksaan'));
+		if(!empty($tanggal_pemeriksaan)) { $tanggal_pemeriksaan = $this->personalia->konversitanggalIndonesia($tanggal_pemeriksaan); }
+		$tempat_pemeriksaan = trim($this->input->post('txtTempatPemeriksaan'));
+		$keterangan_pekerja = trim($this->input->post('txtKeteranganPekerja'));
+		$user_01 = empty($this->input->post('cmbTandaTangan1')) ? '' : $this->M_Daftar->getPekerjaData($this->input->post('cmbTandaTangan1'))->nama;
+		$user_02 = empty($this->input->post('cmbTandaTangan2')) ? '' : $this->M_Daftar->getPekerjaData($this->input->post('cmbTandaTangan2'))->nama;
+		// $tanggal_cetak = date('Y-m-d');
+		// $tanggal_cetak = $this->personalia->konversitanggalIndonesia($tanggal_cetak);
+		$tanggal_cetak = '..........................................';
+		$datasp3 = $this->M_Daftar->ambilDataSP3($nomor_induk);
+		$nama_pekerja = $datasp3[0]['nama'];
+		$tanggal_berlaku_mulai = $datasp3[0]['berlaku_mulai'];
+		$tanggal_berlaku_mulai = $this->personalia->konversitanggalIndonesia($tanggal_berlaku_mulai);
+		$tanggal_berlaku_selesai = $datasp3[0]['berlaku_selesai'];
+		$tanggal_berlaku_selesai = $this->personalia->konversitanggalIndonesia($tanggal_berlaku_selesai);
+		$template = $this->M_Daftar->ambilLayoutSurat()[0]['isi_surat'];
 		if(empty($wakil_perusahaan)) { $wakil_perusahaan =	"............................................................................................................................................................ "; }
 		if(empty($tanggal_pemeriksaan)) { $tanggal_pemeriksaan = "............................................................................................................................................................ "; }
 		if(empty($tempat_pemeriksaan)) { $tempat_pemeriksaan	= "............................................................................................................................................................ "; }
-		if(empty($keterangan_pekerja)) { $keterangan_pekerja	= ".............................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................."; }
+		if(empty($keterangan_pekerja)) { $keterangan_pekerja	= "..............................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................."; }
 		$key = array(
 			'[noind_pekerja]',
 			'[nama_pekerja]',
@@ -164,8 +165,8 @@ class C_Daftar extends CI_Controller {
 		$data		=	$this->general->loadHeaderandSidemenu('BAP SP 3 - Master Pekerja - Quick ERP', 'BAP SP 3', 'Surat', 'BAP SP 3');
 		$data['view'] = $this->M_Daftar->ambilDataBAP($bap_id);
 		$data['wakilPerusahaan'] = $this->M_Daftar->getPekerjaData($data['view'][0]['wakil_perusahaan']);
-		$data['tandaTangan1'] = $this->M_Daftar->getPekerjaData($data['view'][0]['pihak_a']);
-		$data['tandaTangan2'] = $this->M_Daftar->getPekerjaData($data['view'][0]['pihak_a']);
+		$data['tandaTangan1'] = empty($data['view'][0]['pihak_a']) ? null : $this->M_Daftar->getPekerjaData($data['view'][0]['pihak_a']);
+		$data['tandaTangan2'] = empty($data['view'][0]['pihak_b']) ? null : $this->M_Daftar->getPekerjaData($data['view'][0]['pihak_b']);
 		if($data['view'][0]['location_code'] == "02") {
 			$custom_alamatperusahaan = "Jl. Dudukan, Tuksono, Sentolo, Kulonporgo 55664";
 		} else {
@@ -211,9 +212,9 @@ class C_Daftar extends CI_Controller {
 	}
 
 	public function delete($data_id) {
-			$bap_id		=	$this->general->dekripsi($data_id);
-			$this->M_Daftar->deleteBAPSP3($bap_id);
-			redirect('MasterPekerja/Surat/BAPSP3');
+		$bap_id		=	$this->general->dekripsi($data_id);
+		$this->M_Daftar->deleteBAPSP3($bap_id);
+		redirect('MasterPekerja/Surat/BAPSP3');
 	}
 
 }

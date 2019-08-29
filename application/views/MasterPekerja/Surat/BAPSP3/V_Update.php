@@ -70,7 +70,9 @@
                                                         <label for="txtWakilPerusahaan" class="col-lg-4 control-label">Nama Wakil Perusahaan</label>
                                                         <div class="col-lg-8">
                                                             <select class="select2" name="cmbWakilPerusahaan" id="MasterPekerja-BAPSP3-WakilPerusahaan" style="width: 100%">
-                                                                <option value="<?= $wakilPerusahaan['noind']; ?>" selected><?= $wakilPerusahaan['noind']." - ".$wakilPerusahaan['employee_name']; ?></option>
+                                                                <?php if(!empty($wakilPerusahaan)): ?>
+                                                                <option value="<?= $wakilPerusahaan->noind ?>" selected><?= $wakilPerusahaan->noind." - ".$wakilPerusahaan->nama; ?></option>
+                                                                <?php endif; ?>
                                                             </select>
                                                         </div>
                                                     </div>
@@ -99,7 +101,9 @@
                                                         <label for="txtUser01" class="col-lg-4 control-label">Tanda Tangan 1</label>
                                                         <div class="col-lg-8">
                                                             <select class="select2" name="cmbTandaTangan1" id="MasterPekerja-BAPSP3-TandaTangan1" style="width: 100%">
-                                                                <option value="<?= $tandaTangan1['noind']; ?>" selected><?= $tandaTangan1['noind']." - ".$tandaTangan1['employee_name']; ?></option>
+                                                                <?php if(!empty($tandaTangan1)): ?>
+                                                                <option value="<?= $tandaTangan1->noind; ?>" selected><?= $tandaTangan1->noind." - ".$tandaTangan1->nama; ?></option>
+                                                                <?php endif; ?>
                                                             </select>
                                                         </div>
                                                     </div>
@@ -107,7 +111,9 @@
                                                         <label for="txtUser02" class="col-lg-4 control-label">Tanda Tangan 2</label>
                                                         <div class="col-lg-8">
                                                             <select class="select2" name="cmbTandaTangan2" id="MasterPekerja-BAPSP3-TandaTangan2" style="width: 100%">
-                                                                <option value="<?= $tandaTangan2['noind']; ?>" selected><?= $tandaTangan2['noind']." - ".$tandaTangan2['employee_name']; ?></option>
+                                                                <?php if(!empty($tandaTangan2)): ?>
+                                                                <option value="<?= $tandaTangan2->noind; ?>" selected><?= $tandaTangan2->noind." - ".$tandaTangan2->nama; ?></option>
+                                                                <?php endif; ?>
                                                             </select>
                                                         </div>
                                                     </div>
