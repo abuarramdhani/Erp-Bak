@@ -235,7 +235,8 @@ class C_Index extends CI_Controller
 
 		$noind = $this->session->user;
 		$data['listOrder'] = $this->M_dtmasuk->getOrder($pr);
-		// print_r($data['listOrder']);exit();
+		$data['listOrder2'] = $this->M_dtmasuk->getOrder2($pr);
+		// print_r($data['listOrder2']);exit();
 		$data['jumlah'] = $this->M_dtmasuk->getjmlSeksi();
 		$data['jumlahDepan'] = $this->M_dtmasuk->getjmlSeksiDepan($pr);
 		$data['sub'] = $sub;
@@ -618,6 +619,7 @@ class C_Index extends CI_Controller
 				echo '<table class="table table-bordered table-hover table-striped text-center">
 				<tr>
 					<th>NO</th>
+					<th>KODESIE</th>
 					<th>NAMA SEKSI</th>
 				</tr>';
 				$i = 1;
@@ -626,6 +628,7 @@ class C_Index extends CI_Controller
 				foreach($records as $key){
 					echo '<tr>
 					<td>'.$i.'</td>
+					<td>'.$key["kodesie"].'</td>
 					<td>'.$key["seksi"].'</td>
 				</tr>';
 				$i++;
