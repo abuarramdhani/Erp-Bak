@@ -9,7 +9,7 @@ class M_salesomset extends CI_Model {
 		//read
 		public function viewSalesomset($thismonth,$thisyear)
 		{
-			$sql = "select * from sf.sales_omset so, sys.sys_organization org where so.org_id=org.org_id AND so.month=$thismonth AND so.year=$thisyear order by sales_omset_id limit 200";
+			$sql = "select * from sf.sales_omset2 so, sys.sys_organization org where so.org_id=org.org_id AND so.month=$thismonth AND so.year=$thisyear order by sales_omset2_id limit 200";
 			$query = $this->db->query($sql);
 			return $query->result_array();
 		}
@@ -18,7 +18,7 @@ class M_salesomset extends CI_Model {
 		function downloadSalesomsetcsv()
 		{	
 			$this->load->dbutil();
-			$q=$this->db->query("select * from sf.sales_omset order by sales_omset_id");
+			$q=$this->db->query("select * from sf.sales_omset2 order by sales_omset2_id");
 			$delimiter = ",";
 			$newline = "\r\n";
 			return $this->dbutil->csv_from_result($q,$delimiter,$newline);
@@ -28,7 +28,7 @@ class M_salesomset extends CI_Model {
 		function downloadSalesomsetxml()
 		{	
 			$this->load->dbutil();
-			$query = $this->db->query("select * from sf.sales_omset order by sales_omset_id");
+			$query = $this->db->query("select * from sf.sales_omset2 order by sales_omset2_id");
 			$config = array (
 								  'root'    => 'root',
 								  'element' => 'element', 
@@ -42,7 +42,7 @@ class M_salesomset extends CI_Model {
 		//Full data
 		public function viewFullsalesomset()
 		{
-			$sql = "select * from sf.sales_omset so, sys.sys_organization org where so.org_id=org.org_id order by sales_omset_id limit 200";
+			$sql = "select * from sf.sales_omset2 so, sys.sys_organization org where so.org_id=org.org_id order by sales_omset2_id limit 200";
 			$query = $this->db->query($sql);
 			return $query->result_array();
 		}
@@ -58,7 +58,7 @@ class M_salesomset extends CI_Model {
 		//source year
 		public function viewYear()
 		{
-			$sql = "select distinct(year) from sf.sales_omset order by year";
+			$sql = "select distinct(year) from sf.sales_omset2 order by year";
 			$query = $this->db->query($sql);
 			return $query->result_array();
 		}
@@ -66,7 +66,7 @@ class M_salesomset extends CI_Model {
 		//profilter
 		public function filterSalesomset($month,$year,$organization)
 		{
-			$sql = "select * from sf.sales_omset so, sys.sys_organization org where (so.org_id=org.org_id) AND (so.month=$month) AND (so.year=$year) AND (so.org_id=$organization)order by sales_omset_id";
+			$sql = "select * from sf.sales_omset2 so, sys.sys_organization org where (so.org_id=org.org_id) AND (so.month=$month) AND (so.year=$year) AND (so.org_id=$organization)order by sales_omset2_id";
 			$query = $this->db->query($sql);
 			return $query->result_array();
 		}
