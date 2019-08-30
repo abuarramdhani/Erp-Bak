@@ -125,7 +125,7 @@
                             <thead>
                                 <tr>
                                     <th width="10%">NO</th>
-                                    <th>KODESIE</th>
+                                    <th width="20%">KODESIE</th>
                                     <th>NAMA SEKSI</th>
                                 </tr>
                             </thead>
@@ -134,7 +134,7 @@
                                 <tr>
                                     <td><?php echo $nom; ?></td>
                                     <td><?php echo $key['kodesie']; ?></td>
-                                    <td><?php echo $nom['section_name']; ?></td>
+                                    <td><?php echo $key['section_name']; ?></td>
                                 </tr>
                             <?php $nom++; endforeach ?>
                             </tbody>
