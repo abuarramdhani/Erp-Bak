@@ -43,10 +43,12 @@
                                         }
                                          echo $jumlahDepan.' dari '.$jumlah[0]['count'].' seksi yang telah input Order ('.$persen.'%)'; ?>
                                             <button <?php if (strlen($pr) < 1){echo "disabled";} ?> class="btn btn-xs p2k3_btn_sSeksi">Detail</button>
+                                            <button class="btn btn-xs btn-danger" data-toggle="modal" data-target="#p2k3_detail2">Cek Standar Kebutuhan</button>
                                         </caption>
                                         <thead>
                                             <tr class="bg-info">
                                                 <th width="10%" class="text-center">No</th>
+                                                <th>Kodesie</th>
                                                 <th>Seksi</th>
                                                 <th width="20%">Status</th>
                                             </tr>
@@ -67,6 +69,9 @@
                                                 } ?>
                                                 <tr style="color: #000;">
                                                     <td id="nomor"><?php echo $a; ?></td>
+                                                    <td>
+                                                        <?php echo $key['section_code']; ?>
+                                                    </td>
                                                     <td>
                                                         <?php echo $key['section_name']; ?>
                                                     </td>
@@ -104,31 +109,63 @@
             </div>
         </div>
     </div>
+    <div class="modal fade" id="p2k3_detail2" tabindex="-1" role="dialog" aria-labelledby="basicModal" aria-hidden="true">
+        <div class="modal-dialog modal-lg" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                    <h4 class="modal-title" id="myModalLabel">Seksi yang belum input Standar Kebutuhan</h4>
+                </div>
+                <div class="modal-body">
+                    <div>
+                    <?php if (count($listOrder2) < 1): ?>
+                        <center><ul class="list-group"><li class="list-group-item">Semua Seksi telah input</li></ul></center>
+                    <?php else: ?>
+                        <table class="table table-striped table-bordered table-hover text-center">
+                            <thead>
+                                <tr>
+                                    <th width="10%">NO</th>
+                                    <th width="20%">KODESIE</th>
+                                    <th>NAMA SEKSI</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                            <?php $nom = 1; foreach ($listOrder2 as $key): ?>
+                                <tr>
+                                    <td><?php echo $nom; ?></td>
+                                    <td><?php echo $key['kodesie']; ?></td>
+                                    <td><?php echo $key['section_name']; ?></td>
+                                </tr>
+                            <?php $nom++; endforeach ?>
+                            </tbody>
+                        </table>
+                    <?php endif ?>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div id="surat-loading" style="top: 0;left: 0;right: 0;bottom: 0; margin: auto; position: fixed; background: rgba(0,0,0,.5); z-index: 11;" hidden="hidden">
+        <img src="http://erp.quick.com/assets/img/gif/loadingtwo.gif" style="position: fixed; top: 0;left: 0;right: 0;bottom: 0; margin: auto; width: 40%;">
+    </div>
     <script type="text/javascript">
-     // Start jQuery function after page is loaded
-     $(document).ready(function(){
-         // Start jQuery click function to view Bootstrap modal when view info button is clicked
-         $('.p2k3_btn_sSeksi').click(function(){
-             // Get the id of selected phone and assign it in a variable called phoneData
-             var phoneData = $('#yangPentingtdkKosong').val();
-                // Start AJAX function
-                $.ajax({
-                 // Path for controller function which fetches selected phone data
-                 url: "<?php echo base_url() ?>p2k3adm_V2/Admin/detail_seksi",
-                    // Method of getting data
-                    method: "POST",
-                    // Data is sent to the server
-                    data: {phoneData:phoneData},
-                    // Callback function that is executed after data is successfully sent and recieved
-                    success: function(data){
-                     // Print the fetched data of the selected phone in the section called #phone_result 
-                     // within the Bootstrap modal
-                     $('#phone_result').html(data);
-                        // Display the Bootstrap modal
-                        $('#phoneModal').modal('show');
-                    }
-                });
-             // End AJAX function
-         });
-     });  
+       $(document).ready(function(){
+           $('.p2k3_btn_sSeksi').click(function(){
+               var phoneData = $('#yangPentingtdkKosong').val();
+               $('#surat-loading').attr('hidden', false);
+               $.ajax({
+                   url: "<?php echo base_url() ?>p2k3adm_V2/Admin/detail_seksi",
+                   method: "POST",
+                   data: {phoneData:phoneData},
+                   success: function(data){
+                       $('#phone_result').html(data);
+                       $('#phoneModal').modal('show');
+                       $('#surat-loading').attr('hidden', true);
+                   }
+               });
+           });
+       });  
  </script>
