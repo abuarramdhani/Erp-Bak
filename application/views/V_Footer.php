@@ -79,6 +79,7 @@
 		<script type="text/javascript" src="<?= base_url('assets/plugins/table-to-CSV/tableExport.js') ?>"></script>
 		<script type="text/javascript" src="<?= base_url('assets/plugins/table-to-CSV/FileSaver.min.js') ?>"></script>
 		<script type="text/javascript" src="<?= base_url('assets/plugins/monthPicker/monthpicker.js') ?>"></script>
+		<script type="text/javascript" src="<?= base_url('assets/plugins/print/print.min.js') ?>"></script>
 		<script type="text/javascript" src="<?= base_url('assets/js/formValidation.js') ?>"></script>
 		<script type="text/javascript" src="<?= base_url('assets/js/jquery-maskmoney.js') ?>"></script>
 

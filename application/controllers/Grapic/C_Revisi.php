@@ -40,4 +40,22 @@ class C_Revisi extends CI_Controller {
 		else { $data['title'][0] = $this->getDataFilterList()[$this->input->post('select-filter-data')]; for($i = 0; $i < 6; $i++) { $data['tableData'][$data['title'][0]][$i] = $this->M_Revisi->getData(strtolower($data['title'][0]), ($i + 7), $this->currentYear); } }
 		echo json_encode(array('view' => $this->load->view('Grapic/V_Revisi_Content', $data, true), 'titleList' => $data['title'], 'monthList' => $data['monthList'], 'monthListFormatted' => $data['monthListFormatted']));
 	}
+
+	public function exportPDF() {
+		$content = empty($this->input->post('content')) ? '' : $this->input->post('content');
+		$title = empty($this->input->post('fileName')) ? '' : $this->input->post('fileName');
+		$fileName = (empty($this->input->post('fileName')) ? 'Refisi Efisiensi - ' : $this->input->post('fileName').' - ').time().'.pdf';
+		$path = 'assets/generated/Efisiensi SDM/Revisi Efisiensi/';
+		$this->load->library('pdf');
+		$pdf = $this->pdf->load();
+		if (!file_exists($path)) { if (!mkdir(FCPATH.$path, 0777, true)) { die('Failed to create folder '.$path); } }
+		$pdf->AddPage('L');
+		$pdf->WriteHTML('<link type="text/css" rel="stylesheet" href="'.base_url('assets/plugins/bootstrap/3.3.7/css/bootstrap.css').'" />');
+		$pdf->WriteHTML('<link type="text/css" rel="stylesheet" href="'.base_url('assets/theme/css/AdminLTE.min.css').'" />');
+		$pdf->WriteHTML('<style type="text/css">tbody tr td { height: 60px; } thead tr th { height: auto; } .fixed-column { position: absolute; background: white; width: 100px; left: 16px; margin-bottom: 2px; } .background-red { background-color: #FF5252; color: white; }</style>');
+		if(!empty($title)) { $pdf->WriteHTML('<h1 style="font-size: 1.4rem; margin-bottom: 12px;">'.$title.'</h1>'); }
+		$pdf->WriteHTML($content);
+		$pdf->Output(FCPATH.$path.'/'.$fileName, 'F');
+		echo json_encode(array('filePath' => base_url($path.$fileName), 'fileName' => $fileName));
+	}
 }

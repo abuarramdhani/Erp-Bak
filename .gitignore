@@ -28,3 +28,4 @@ application/logs/*
 /info.php
 /trial/
 /aplikasi/
+/assets/generated/
