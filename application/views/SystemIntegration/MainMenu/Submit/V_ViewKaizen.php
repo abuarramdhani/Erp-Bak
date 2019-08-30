@@ -1,58 +1,55 @@
 <style type="text/css">
-  .custNotifBody{
-    padding-bottom: 5px;
-    border-bottom-left-radius: 5px;
-    border-bottom-right-radius: 5px;
-    /*min-height: 30px;*/
-    background-color: #ffeed6;
-  }
-
-  .custNotifHeader{
-    color: white;
-    vertical-align: middle;
-    height: 25px;
-    border-top-left-radius: 5px;
-    border-top-right-radius: 5px;
-    background-color: #e69724;
-  }
-
-  .custGaris{
-    border: 0.5px solid #e69724;
-    margin-top: 5px;
-    margin-bottom: 5px;
-  }
-
-  .custHeadNotif{
-    border-radius: 5px;
-    margin-right: 5px;
-    padding: 5px;
-    margin-top: 2px;
-    vertical-align: middle;
-  }
-
-  .has-error .select2-selection {
-    border-color: rgb(185, 74, 72) !important;
+.custNotifBody {
+	padding-bottom: 5px;
+	border-bottom-left-radius: 5px;
+	border-bottom-right-radius: 5px;
+	background-color: #ffeed6;
 }
 
-  .text-approve {
-    color: #77ac4f;
-  }
+.custNotifHeader {
+	color: white;
+	vertical-align: middle;
+	height: 25px;
+	border-top-left-radius: 5px;
+	border-top-right-radius: 5px;
+	background-color: #e69724;
+}
 
-  .text-revisi {
-    color: #c98b2d;
-  }
+.custGaris {
+	border: 0.5px solid #e69724;
+	margin-top: 5px;
+	margin-bottom: 5px;
+}
 
-  .text-reject {
-    color: #dd5a4e;
-  }
+.custHeadNotif {
+	border-radius: 5px;
+	margin-right: 5px;
+	padding: 5px;
+	margin-top: 2px;
+	vertical-align: middle;
+}
 
-  html{
-   scroll-behavior: smooth;
-   overflow-y: scroll;
-  }
+.has-error .select2-selection {
+	border-color: rgb(185, 74, 72) !important;
+}
 
+.text-approve {
+	color: #77ac4f;
+}
+
+.text-revisi {
+	color: #c98b2d;
+}
+
+.text-reject {
+	color: #dd5a4e;
+}
+
+html {
+	scroll-behavior: smooth;
+	overflow-y: scroll;
+}
 </style>
-
 <section class="content">
   <div class="box box-default color-palette-box">
     <div class="box-header with-border">
@@ -299,7 +296,7 @@
               <td style="border-top: 1px solid #000; border-right: 1px solid #000" colspan="3" class="text-center"><b>Kondisi saat ini(Uraian/gambar/Sket/Foto)</b>
               <?php  if($kaizen[0]['employee_code'] == $this->session->user): { ?>
               <br>
-              <input class="text-right"  <?= in_array($kaizen[0]['status'], $arrAppDone) ? 'disabled' : ($statusku == 3 ? 'disabled' : '') ?>  type="checkbox" id="myCheck"></br>
+              <input class="text-right" <?= in_array($kaizen[0]['status'], $arrAppDone) ? 'disabled' : ($statusku == 3 ? 'disabled' : '') ?>  type="checkbox" id="myCheck"></br>
               <?php } ?>
               <?php  endif; ?>
               </td>
@@ -510,29 +507,16 @@ if ( in_array($kaizen[0]['status'], $needthisform = array(0,1,6)) ) { ?>
     </div>
   </div>
 </div>
-
+<a href="#" id="buttonGoTop" class="fa fa-arrow-up" style="display: none;  position: fixed;  bottom: 48px;  right: 26px;  z-index: 99;  font-size: 18px;  border: none; outline: none; background-color: red;  color: white; cursor: pointer; padding: 15px; border-radius: 4px;" title="Go to top"></a>
 <script src="<?php echo base_url('assets/plugins/ckeditor/ckeditor.js');?>"></script>
-<script type="text/javascript">
-
- CKEDITOR.disableAutoInline = true;
+<script>
+	CKEDITOR.disableAutoInline = true
+	
+	window.onscroll = _ => {
+		if (document.body.scrollTop > 20 || document.documentElement.scrollTop > 20) {
+			document.getElementById("buttonGoTop").style.display = "block";
+		} else {
+			document.getElementById("buttonGoTop").style.display = "none";
+		}
+	}
 </script>
-
-  <button onclick="topFunction()" id="myBtn" class="fa fa-arrow-up" style="display: none;  position: fixed;  bottom: 48px;  right: 26px;  z-index: 99;  font-size: 18px;  border: none; outline: none; background-color: red;  color: white; cursor: pointer; padding: 15px; border-radius: 4px;" title="Go to top"></button>
-  <script>
-      // When the user scrolls down 20px from the top of the document, show the button
-      window.onscroll = function() {scrollFunction()};
-
-      function scrollFunction() {
-        if (document.body.scrollTop > 20 || document.documentElement.scrollTop > 20) {
-            document.getElementById("myBtn").style.display = "block";
-        } else {
-            document.getElementById("myBtn").style.display = "none";
-        }
-      }
-
-        // When the user clicks on the button, scroll to the top of the document
-      function topFunction() {
-      document.body.scrollTop = 0;
-      document.documentElement.scrollTop = 0;
-      }
-  </script>
