@@ -2932,3 +2932,9 @@ $route['PerhitunganLoadingODM/Summary'] = 'PerhitunganLoadingODM/MainMenu/Summar
 $route['PerhitunganLoadingODM/Summary/(:any)'] = 'PerhitunganLoadingODM/MainMenu/Summary/C_Summary/$1';
 $route['PerhitunganLoadingODM/Summary/(:any)/(:any)']	= 'PerhitunganLoadingODM/MainMenu/Summary/C_Summary/$1/$2';
 $route['PerhitunganLoadingODM/Summary/(:any)/(:any)/(:any)']	= 'PerhitunganLoadingODM/MainMenu/Summary/C_Summary/$1/$2/$3';
+
+// -------------------------------------- Purchase Management Send PO Subcontractor -------------------------------------- //
+$route['PurchaseManagementSendPOSubcontractor'] = 'PurchaseManagementSendPOSubcontractor/C_Index';
+$route['PurchaseManagementSendPOSubcontractor/SendPO'] = 'PurchaseManagementSendPOSubcontractor/MainMenu/C_ComposeMessage';
+$route['PurchaseManagementSendPOSubcontractor/SendPO/(:any)'] = 'PurchaseManagementSendPOSubcontractor/MainMenu/C_ComposeMessage/$1';
+$route['PurchaseManagementSendPOSubcontractor/SendPO/(:any)/(:any)'] = 'PurchaseManagementSendPOSubcontractor/MainMenu/C_ComposeMessage/$1/$2';
