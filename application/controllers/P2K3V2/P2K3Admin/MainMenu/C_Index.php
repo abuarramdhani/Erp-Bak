@@ -618,8 +618,8 @@ class C_Index extends CI_Controller
 			}else{
 				echo '<table class="table table-bordered table-hover table-striped text-center">
 				<tr>
-					<th>NO</th>
-					<th>KODESIE</th>
+					<th width="10%">NO</th>
+					<th width="20%">KODESIE</th>
 					<th>NAMA SEKSI</th>
 				</tr>';
 				$i = 1;
