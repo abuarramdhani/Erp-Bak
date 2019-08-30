@@ -166,6 +166,7 @@
 		<script src="<?= base_url('assets/js/customMPR.js');?>"></script>
 		<script src="<?= base_url('assets/js/customMBI.js');?>"></script>
 		<script src="<?= base_url('assets/js/customPLO.js');?>"></script>
+		<script src="<?= base_url('assets/js/customSPS.js');?>"></script>
 		<script src="<?= base_url('assets/js/customSI.js') ?>"></script>
 		<!-- <script src="<?= base_url('assets/js/customMO.js') ?>"></script> -->
 		<!-- <script src="<?= base_url('assets/js/customPR.js') ?>"></script> -->
