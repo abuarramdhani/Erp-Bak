@@ -191,7 +191,8 @@ class M_Dtmasuk extends CI_Model
     {
         $sql = " select 
                     ko.status,
-                    es.section_name
+                    es.section_name,
+                    substring(es.section_code, 0, 8) section_code
                 from
                     k3.k3n_order ko
                 left join er.er_section es on
@@ -201,9 +202,30 @@ class M_Dtmasuk extends CI_Model
                     and ko.tgl_input = (select max(ko2.tgl_input) from k3.k3n_order ko2 where ko2.kodesie = ko.kodesie and ko2.periode = ko.periode)
                 group by
                     es.section_name,
-                    ko.status, ko.tgl_input
+                    ko.status, ko.tgl_input,
+                    substring(es.section_code, 0, 8)
                 order by
                     es.section_name asc;";
+                // echo $sql;exit();
+        $query = $this->erp->query($sql);
+        return $query->result_array();
+    }
+
+    public function getOrder2($pr)
+    {
+        $sql = "select
+                    distinct ko.kodesie,
+                    es.section_name
+                from
+                    k3.k3n_order ko,
+                    er.er_section es
+                where
+                    substring(es.section_code, 1, 7) = ko.kodesie
+                    and ko.kodesie not in (
+                        select distinct ks.kodesie
+                    from
+                        k3.k3n_standar_kebutuhan ks)
+                order by 2;";
                 // echo $sql;exit();
         $query = $this->erp->query($sql);
         return $query->result_array();
