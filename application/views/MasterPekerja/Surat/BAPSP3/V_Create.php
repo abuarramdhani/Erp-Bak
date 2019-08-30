@@ -72,7 +72,7 @@
 													<div class="form-group">
                                                         <label for="txtTanggalPemeriksaan" class="col-lg-4 control-label">Tanggal Pemeriksaan</label>
                                                         <div class="col-lg-8">
-                                                            <input type="text" name="txtTanggalPemeriksaan" class="form-control MasterPekerja-daterangepickersingledate">
+                                                            <input type="text" name="txtTanggalPemeriksaan" class="form-control" id="MasterPekerja-daterangepickersingledate">
                                                         </div>
                                                     </div>
 													<div class="form-group">
@@ -136,6 +136,11 @@
 </div>
 <script>
     document.addEventListener('DOMContentLoaded', _ => {
-        $('.MasterPekerja-daterangepickersingledate').val('')
+        $('#MasterPekerja-daterangepickersingledate').daterangepicker({
+            singleDatePicker: true,
+            autoUpdateInput: false
+        }, chosenDate => {
+            $('#MasterPekerja-daterangepickersingledate').val(chosenDate.format('YYYY-MM-DD'));
+        })
     })
 </script>

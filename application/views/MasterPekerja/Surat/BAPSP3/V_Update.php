@@ -81,7 +81,7 @@
 													<div class="form-group">
                                                         <label for="txtTanggalPemeriksaan" class="col-lg-4 control-label">Tanggal Pemeriksaan</label>
                                                         <div class="col-lg-8">
-                                                            <input type="text" name="txtTanggalPemeriksaan" class="form-control MasterPekerja-daterangepickersingledate" value="<?= $view[0]['tgl_pemeriksaan']; ?>">
+                                                            <input type="text" name="txtTanggalPemeriksaan" class="form-control" value="<?= $view[0]['tgl_pemeriksaan']; ?>" id="MasterPekerja-daterangepickersingledate">
                                                         </div>
                                                     </div>
 													<div class="form-group">
@@ -149,3 +149,13 @@
 <div id="surat-loading" hidden style="top: 0;left: 0;right: 0;bottom: 0; margin: auto; position: fixed; background: rgba(0,0,0,.5); z-index: 11;">
     <img src="<?= site_url('assets/img/gif/loadingtwo.gif');?>" style="position: fixed; top: 0;left: 0;right: 0;bottom: 0; margin: auto; width: 40%;">
 </div>
+<script>
+    document.addEventListener('DOMContentLoaded', _ => {
+        $('#MasterPekerja-daterangepickersingledate').daterangepicker({
+            singleDatePicker: true,
+            autoUpdateInput: false
+        }, chosenDate => {
+            $('#MasterPekerja-daterangepickersingledate').val(chosenDate.format('YYYY-MM-DD'));
+        })
+    })
+</script>

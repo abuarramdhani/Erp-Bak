@@ -12,8 +12,8 @@ class C_Daftar extends CI_Controller {
     }
 	
 	public function index() {
-		$data 			=	$this->general->loadHeaderandSidemenu('BAP SP 3 - Master Pekerja - Quick ERP', 'BAP SP 3', 'Surat', 'BAP SP 3');
-		$data['view'] 	=	$this->M_Daftar->ambilDataBAP('');
+		$data =	$this->general->loadHeaderandSidemenu('BAP SP 3 - Master Pekerja - Quick ERP', 'BAP SP 3', 'Surat', 'BAP SP 3');
+		$data['view'] =	$this->M_Daftar->ambilDataBAP();
 		$this->load->view('V_Header',$data);
 		$this->load->view('V_Sidemenu',$data);
 		$this->load->view('MasterPekerja/Surat/BAPSP3/V_Index', $data);
@@ -21,7 +21,7 @@ class C_Daftar extends CI_Controller {
 	}
 
 	public function create() {
-		$data 			=	$this->general->loadHeaderandSidemenu('BAP SP 3 - Master Pekerja - Quick ERP', 'BAP SP 3', 'Surat', 'BAP SP 3');
+		$data = $this->general->loadHeaderandSidemenu('BAP SP 3 - Master Pekerja - Quick ERP', 'BAP SP 3', 'Surat', 'BAP SP 3');
 		$this->load->view('V_Header',$data);
 		$this->load->view('V_Sidemenu',$data);
 		$this->load->view('MasterPekerja/Surat/BAPSP3/V_Create',$data);
