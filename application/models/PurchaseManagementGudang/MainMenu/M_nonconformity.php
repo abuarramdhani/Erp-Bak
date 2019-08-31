@@ -161,6 +161,14 @@ class M_nonconformity extends CI_Model
         return $query->result_array();
     }
 
+    public function checkNonConformityReturnNum()
+    {
+       $erp = $this->db;
+       $query = $erp->query("select header_id, non_conformity_num from pm.pm_po_oracle_non_conformity_headers 
+            where non_conformity_num like 'NC-RETURN-".date('y')."-".date('m')."-%' order by non_conformity_num DESC limit 1");
+        
+        return $query->result_array();
+    }
 
     public function simpanHeader($header)
     {
