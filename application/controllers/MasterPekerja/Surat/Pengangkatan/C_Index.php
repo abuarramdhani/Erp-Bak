@@ -491,7 +491,7 @@ class C_Index extends CI_Controller
 
 		$this->load->library('pdf');
 		$pdf 	=	$this->pdf->load();
-		$pdf 	=	new mPDF('utf-8', array(216,297), 9, "timesnewroman", 20, 20, 40, 30, 0, 0, 'P');
+		$pdf 	=	new mPDF('utf-8', array(216,297), 9.5, "timesnewroman", 20, 20, 40, 30, 0, 0, 'P');
 		// $pdf 	=	new mPDF();
 
 		$filename	=	'SuratPengangkatan-'.str_replace('/', '_', $no_surat_decode).'.pdf';
