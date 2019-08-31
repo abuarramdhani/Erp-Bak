@@ -123,18 +123,22 @@
                                                         <table class="table table-xs table-bordered">
                                                             <thead class="bg-info">
                                                                 <tr>
-                                                                    <td>No</td>
-                                                                    <td>Kode Item</td>
-                                                                    <td>Nama Item</td>
-                                                                    <td>Jumlah Bon</td>
-                                                                    <td>Satuan</td>
+                                                                    <td width="5%"><b>No</b></td>
+                                                                    <td width="15%"><b>Kode Item</b></td>
+                                                                    <td><b>Nama Item</b></td>
+                                                                    <td width="10%"><b>Jumlah Bon</b></td>
+                                                                    <td width="10%"><b>Transact</b></td>
+                                                                    <td width="10%"><b>Qty Transact</b></td>
+                                                                    <td width="8%"><b>Satuan</b></td>
                                                                 </tr>
                                                             </thead>
                                                             <tbody>
-                                                                <?php   $kode = explode(',', $key['kode_barang']);
-                                                                $apd = explode(',', $key['nama_apd']);
-                                                                $jml = explode(',', $key['jml_bon']);
-                                                                $satuan = explode(',', $key['satuan']); 
+                                                                <?php   $kode = explode(';', $key['kode_barang']);
+                                                                $apd = explode(';', $key['nama_apd']);
+                                                                $jml = explode(';', $key['jml_bon']);
+                                                                $satuan = explode(';', $key['satuan']);
+                                                                $qty = explode(';', $key['qty_transact']);
+                                                                $trans = explode(';', $key['transact']);
                                                                 $lim = count($kode); ?>
                                                                 <?php for ($i=0; $i < $lim; $i++) { ?>
                                                                 <tr>
@@ -147,6 +151,9 @@
                                                                         <input hidden="" value="<?php echo $apd[$i]; ?>" class="p2k3_see_apd">
                                                                     </td>
                                                                     <td><?php echo $jml[$i]; ?></td>
+                                                                    <td><?php echo ($trans[$i] == 'N') ? '<i style="color:red" class="fa fa-times" aria-hidden="true"></i>
+                                                                        ':'<i style="color:green" class="fa fa-check" aria-hidden="true"></i>'; ?></td>
+                                                                    <td><?php echo $qty[$i]; ?></td>
                                                                     <td><?php echo $satuan[$i]; ?></td>
                                                                 </tr>
                                                                 <?php } ?>

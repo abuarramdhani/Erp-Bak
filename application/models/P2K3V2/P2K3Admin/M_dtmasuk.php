@@ -556,10 +556,10 @@ class M_Dtmasuk extends CI_Model
     {
         $sql = "select
                     kb.no_bon,
-                    string_agg(mb.kode_barang, ',') kode_barang,
-                    string_agg(mb.nama_barang, ',') nama_apd,
-                    string_agg(kb.jml_bon, ',') jml_bon,
-                    string_agg(mb.satuan, ',') satuan,
+                    string_agg(mb.kode_barang, ';') kode_barang,
+                    string_agg(mb.nama_barang, ';') nama_apd,
+                    string_agg(kb.jml_bon, ';') jml_bon,
+                    string_agg(mb.satuan, ';') satuan,
                     kb.tgl_bon,
                     kb.kodesie,
                     mb.seksi_bon seksi_pengebon,
@@ -567,7 +567,9 @@ class M_Dtmasuk extends CI_Model
                     mb.penggunaan,
                     mb.keterangan,
                     kb.periode,
-                    mb.tujuan_gudang
+                    mb.tujuan_gudang,
+                    string_agg(mb.penyerahan, ';') qty_transact,
+                    string_agg(mb.flag, ';') transact
                 from
                     k3.k3n_bon kb,
                     im.im_master_bon mb
@@ -576,8 +578,9 @@ class M_Dtmasuk extends CI_Model
                     and kb.item_code = mb.kode_barang
                     and kb.periode = '$pr'
                     and kb.kodesie like '$ks%'
-                group by kb.no_bon,
-                kb.tgl_bon,
+                group by
+                    kb.no_bon,
+                    kb.tgl_bon,
                     kb.kodesie,
                     mb.seksi_bon,
                     mb.pemakai,
@@ -732,7 +735,7 @@ class M_Dtmasuk extends CI_Model
                 left join im.im_master_bon ib on
                     ib.no_bon = kb.no_bon
                 where kb.no_bon = '$id'";
-            // echo $sql;;exit();
+            echo $sql;exit();
         $query = $this->db->query($sql);
         return $query->result_array();
     }
