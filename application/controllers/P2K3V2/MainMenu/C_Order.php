@@ -1650,66 +1650,61 @@ class C_Order extends CI_Controller
   		mkdir('./assets/upload/P2K3/PDF', 0777, true);
   		chmod('./assets/upload/P2K3/PDF', 0777);
   	}
-  	// $lembar = ceil(count($apd)/10);
+
+  	$newApd = $apd;
+  	$newNama_apd = $nama_apd;
+  	$newSatuan_apd = $satuan_apd;
+  	$newBon = $bon;
+
+  	for ($i=0; $i < count($bon); $i++) { 
+  		if ($newBon[$i] == 0) {
+  			unset($newBon[$i]);
+  			unset($newNama_apd[$i]);
+  			unset($newApd[$i]);
+  			unset($newSatuan_apd[$i]);
+  		}
+  	}
+
+  	$newApd = array_values($newApd);
+  	$newNama_apd = array_values($newNama_apd);
+  	$newSatuan_apd = array_values($newSatuan_apd);
+  	$newBon = array_values($newBon);
+
   	$nol = array_count_values($bon);
   	$nol = $nol['0'];
   	$all = count($apd);
   	$lembar = ceil(($all-$nol)/10);
-  	// $lembar = 2;
-		// echo $lembar;exit();
+
   	$y = 0;
+  	$batas = 0;
   	$k = 1;
   	for ($i=0; $i < $lembar; $i++) {
   		$max = (10*$k);
   		$data_array_2 = array();
   		for ($x=$y; $x < $max; $x++) {
-  			
-  			if ($x < count($apd) ) {
-  				if ($bon[$x] == '0') {
-					//do not  					
+  				if (!array_key_exists($x, $newBon)) {
+					$data_array_2[] = array(
+  					'kode' => '',
+  					'nama' => '',
+  					'satuan' => '',
+  					'diminta' => '', 
+  					'ket' => '',
+  					'account' => '',
+  					'produk' => '',
+  					'exp' =>'',
+  					'lokasi_simpanku' => ''
+  					); 					
   				}else{
   				$data_array_2[] = array(
-  					'kode' => $apd[$x],
-  					'nama' => $nama_apd[$x],
-  					'satuan' => $satuan_apd[$x],
-  					'diminta' => $bon[$x],
+  					'kode' => $newApd[$x],
+  					'nama' => $newNama_apd[$x],
+  					'satuan' => $newSatuan_apd[$x],
+  					'diminta' => $newBon[$x],
   					'account' => $account,
   					'ket' => 'UNTUK KEBUTUHAN APD PERIODE '.$pr,
   					);
   				}
-  			}else{
-  				$data_array_2[] = array(
-  					'kode' => '',
-  					'nama' => '',
-  					'satuan' => '',
-  					'diminta' => '', 
-  					'ket' => '',
-  					'account' => '',
-  					'produk' => '',
-  					'exp' =>'',
-  					'lokasi_simpanku' => ''
-  					);
   			}
-			// echo $x; 
-  		}
-		// print_r($data_array_2);
-		if ($i == ($lembar-1)) {
-			$counts = array_count_values($bon);
-			// echo $counts['0'];
-			for ($i=0; $i < $counts['0']; $i++) { 
-				$data_array_2[] = array(
-  					'kode' => '',
-  					'nama' => '',
-  					'satuan' => '',
-  					'diminta' => '', 
-  					'ket' => '',
-  					'account' => '',
-  					'produk' => '',
-  					'exp' =>'',
-  					'lokasi_simpanku' => ''
-  					);
-			}
-		}
 
   		$data_array[] = array(
   			'nomor' => $noBon,
