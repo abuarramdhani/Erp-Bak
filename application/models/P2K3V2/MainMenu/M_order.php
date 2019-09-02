@@ -61,8 +61,8 @@ class M_Order extends CI_Model
                     hrd_khs.tpekerjaan tn
                 where
                     substring(kdpekerjaan, 1, 7) = '$kodesie'
+                    order by kdpekerjaan asc
                     ";
-                    //order by kdpekerjaan asc
         $query = $this->personalia->query($sql);
         return $query->result_array();
 
