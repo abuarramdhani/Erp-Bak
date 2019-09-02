@@ -9,8 +9,8 @@
             <div class="col-lg-6" style="padding: 0;">
                 <div class="btn-group pull-right">
                     <button id="button-fullscreen-total-khs" class="btn btn-primary" onclick="javascript:re.showFullscreen('box-body-total-khs');"><i class="fa fa-desktop" style="margin-right: 8px;"></i>Show in Fullscreen</button>
-                    <button id="button-save-total-khs" class="btn btn-primary" onclick="javascript:re.exportPDF('button-save-total-khs', 'data-total-khs', 'Revisi Efisiensi SDM - Total KHS')"><i class="fa fa-floppy-o" style="margin-right: 8px;"></i>Save</button>
-                    <button id="button-print-total-khs" class="btn btn-primary" onclick="javascript:re.printPDF('button-print-total-khs', 'data-total-khs', 'Revisi Efisiensi SDM - Total KHS')"><i class="fa fa-print" style="margin-right: 8px;"></i>Print</button>
+                    <button id="button-save-total-khs" class="btn btn-primary" onclick="javascript:re.exportPDF('button-save-total-khs', 'Revisi Efisiensi SDM - Total KHS', 'data-total-khs')"><i class="fa fa-floppy-o" style="margin-right: 8px;"></i>Save</button>
+                    <button id="button-print-total-khs" class="btn btn-primary" onclick="javascript:re.printPDF('button-print-total-khs', 'Revisi Efisiensi SDM - Total KHS', 'data-total-khs')"><i class="fa fa-print" style="margin-right: 8px;"></i>Print</button>
                 </div>
             </div>
         </div>
@@ -119,9 +119,25 @@
             </div>
             <div class="col-lg-6" style="padding: 0;">
                 <div class="btn-group pull-right">
+                    <?php
+                        $chartTitleId = '';
+                        $chartId = '';
+                        if(count($title) == 1) {
+                            $chartTitleId = ', [';
+                            $chartId = ', [';
+                            for($i = 1; $i <= count($tableData[$department][0]); $i++) {
+                                $chartTitleId .= '\'chart-title-'.$i.'-'.$department.'\', ';
+                                $chartId .= '\'chart-'.$i.'-'.$department.'\', ';
+                            }
+                            $chartTitleId = substr($chartTitleId, 0, strlen($chartTitleId) - 2);
+                            $chartId = substr($chartId, 0, strlen($chartId) - 2);
+                            $chartTitleId .= ']';
+                            $chartId .= ']';
+                        }
+                    ?>
                     <button id="button-fullscreen-<?= $department ?>" class="btn btn-primary" onclick="javascript:re.showFullscreen('box-body-<?= $department ?>');"><i class="fa fa-desktop" style="margin-right: 8px;"></i>Show in Fullscreen</button>
-                    <button id="button-save-<?= $department ?>" class="btn btn-primary" onclick="javascript:re.exportPDF('button-save-<?= $department ?>', 'data-<?= $department ?>', 'Revisi Efisiensi SDM - Departemen <?= $department ?>')"><i class="fa fa-floppy-o" style="margin-right: 8px;"></i>Save</button>
-                    <button id="button-print-<?= $department ?>" class="btn btn-primary" onclick="javascript:re.printPDF('button-print-<?= $department ?>', 'data-<?= $department ?>', 'Revisi Efisiensi SDM - Departemen <?= $department ?>')"><i class="fa fa-print" style="margin-right: 8px;"></i>Print</button>
+                    <button id="button-save-<?= $department ?>" class="btn btn-primary" onclick="javascript:re.exportPDF('button-save-<?= $department ?>', 'Revisi Efisiensi SDM - Departemen <?= $department ?>', 'data-<?= $department ?>'<?= trim($chartTitleId) ?><?= trim($chartId) ?>)"><i class="fa fa-floppy-o" style="margin-right: 8px;"></i>Save</button>
+                    <button id="button-print-<?= $department ?>" class="btn btn-primary" onclick="javascript:re.printPDF('button-print-<?= $department ?>', 'Revisi Efisiensi SDM - Departemen <?= $department ?>', 'data-<?= $department ?>'<?= trim($chartTitleId) ?><?= trim($chartId) ?>)"><i class="fa fa-print" style="margin-right: 8px;"></i>Print</button>
                 </div>
             </div>
         </div>
@@ -278,13 +294,13 @@
             <div style="margin-bottom: 18px; text-align: center;">
                 <b id="chart-loading-placeholder-<?= $department ?>">Memuat grafik...</b>
                 <div id="chart-frame-<?= $department ?>" style="display: none;">
-                    <b>Kasie Utama ke atas</b>
+                    <b id="chart-title-1-<?= $department ?>">Kasie Utama ke atas</b>
                     <canvas id="chart-1-<?= $department ?>" style="width: 100%; margin-bottom: 8px;"></canvas>
-                    <b>Staff s/d Kasie Madya</b>
+                    <b id="chart-title-2-<?= $department ?>">Staff s/d Kasie Madya</b>
                     <canvas id="chart-2-<?= $department ?>" style="width: 100%; margin-bottom: 8px;"></canvas>
-                    <b>Non Staff</b>
+                    <b id="chart-title-3-<?= $department ?>">Non Staff</b>
                     <canvas id="chart-3-<?= $department ?>" style="width: 100%; margin-bottom: 8px;"></canvas>
-                    <b>Outsourcing</b>
+                    <b id="chart-title-4-<?= $department ?>">Outsourcing</b>
                     <canvas id="chart-4-<?= $department ?>" style="width: 100%;"></canvas>
                 </div>
             </div>
@@ -586,13 +602,13 @@
             <div style="margin-bottom: 18px; text-align: center;">
                 <b id="chart-loading-placeholder-<?= $department ?>">Memuat grafik...</b>
                 <div id="chart-frame-<?= $department ?>" style="display: none;">
-                    <b>Kasie Utama ke atas</b>
+                    <b id="chart-title-1-<?= $department ?>">Kasie Utama ke atas</b>
                     <canvas id="chart-1-<?= $department ?>" style="width: 100%; margin-bottom: 8px;"></canvas>
-                    <b>Staff s/d Kasie Madya</b>
+                    <b id="chart-title-2-<?= $department ?>">Staff s/d Kasie Madya</b>
                     <canvas id="chart-2-<?= $department ?>" style="width: 100%; margin-bottom: 8px;"></canvas>
-                    <b>Non Staff</b>
+                    <b id="chart-title-3-<?= $department ?>">Non Staff</b>
                     <canvas id="chart-3-<?= $department ?>" style="width: 100%; margin-bottom: 8px;"></canvas>
-                    <b>Outsourcing</b>
+                    <b id="chart-title-4-<?= $department ?>">Outsourcing</b>
                     <canvas id="chart-4-<?= $department ?>" style="width: 100%;"></canvas>
                 </div>
             </div>
@@ -913,15 +929,15 @@
             <div style="margin-bottom: 18px; text-align: center;">
                 <b id="chart-loading-placeholder-<?= $department ?>">Memuat grafik...</b>
                 <div id="chart-frame-<?= $department ?>" style="display: none;">
-                    <b>Kasie Utama ke atas</b>
+                    <b id="chart-title-1-<?= $department ?>">Kasie Utama ke atas</b>
                     <canvas id="chart-1-<?= $department ?>" style="width: 100%; margin-bottom: 8px;"></canvas>
-                    <b>Staff s/d Kasie Madya</b>
+                    <b id="chart-title-2-<?= $department ?>">Staff s/d Kasie Madya</b>
                     <canvas id="chart-2-<?= $department ?>" style="width: 100%; margin-bottom: 8px;"></canvas>
-                    <b>Non Staff</b>
+                    <b id="chart-title-3-<?= $department ?>">Non Staff</b>
                     <canvas id="chart-3-<?= $department ?>" style="width: 100%; margin-bottom: 8px;"></canvas>
-                    <b>Outsourcing</b>
+                    <b id="chart-title-4-<?= $department ?>">Outsourcing</b>
                     <canvas id="chart-4-<?= $department ?>" style="width: 100%; margin-bottom: 8px;"></canvas>
-                    <b>Cabang</b>
+                    <b id="chart-title-5-<?= $department ?>">Cabang</b>
                     <canvas id="chart-5-<?= $department ?>" style="width: 100%;"></canvas>
                 </div>
             </div>
@@ -1261,15 +1277,15 @@
             <div style="margin-bottom: 18px; text-align: center;">
                 <b id="chart-loading-placeholder-<?= $department ?>">Memuat grafik...</b>
                 <div id="chart-frame-<?= $department ?>" style="display: none;">
-                    <b>Kasie Utama ke atas</b>
+                    <b id="chart-title-1-<?= $department ?>">Kasie Utama ke atas</b>
                     <canvas id="chart-1-<?= $department ?>" style="width: 100%; margin-bottom: 8px;"></canvas>
-                    <b>Staff s/d Kasie Madya</b>
+                    <b id="chart-title-2-<?= $department ?>">Staff s/d Kasie Madya</b>
                     <canvas id="chart-2-<?= $department ?>" style="width: 100%; margin-bottom: 8px;"></canvas>
-                    <b>Non Staff</b>
+                    <b id="chart-title-3-<?= $department ?>">Non Staff</b>
                     <canvas id="chart-3-<?= $department ?>" style="width: 100%; margin-bottom: 8px;"></canvas>
-                    <b>Outsourcing</b>
+                    <b id="chart-title-4-<?= $department ?>">Outsourcing</b>
                     <canvas id="chart-4-<?= $department ?>" style="width: 100%; margin-bottom: 8px;"></canvas>
-                    <b>Harian Lepas</b>
+                    <b id="chart-title-5-<?= $department ?>">Harian Lepas</b>
                     <canvas id="chart-5-<?= $department ?>" style="width: 100%;"></canvas>
                 </div>
             </div>
