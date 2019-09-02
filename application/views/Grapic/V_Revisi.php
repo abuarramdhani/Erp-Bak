@@ -34,7 +34,6 @@
                 </div>
             </div>
         </div>
-        <div id="contentTest"></div>
         <div id="content" class="animated"></div>
     </div>
 </section>
@@ -75,35 +74,53 @@
             })
         },
 
-        exportPDF: async (buttonId, contentId, fileName) => {
+        exportPDF: async (buttonId, fileName, contentId, chartTitleId = null, chartId = null) => {
             try {
                 element('#' + buttonId).animate.showLoading()
                 element('#button-apply-filter').disable()
                 const formData = new FormData()
-                formData.append('content', element('#' + contentId).getHTML())
                 formData.append('fileName', fileName.replace('.pdf', ''))
-                fetch('<?= base_url('RevisiEfisiensi/exportPDF') ?>', {
-                    method: 'POST',
-                    body: formData
-                }).then(response => response.json()).then(response => {
-                    if(response.filePath.isNotNullOrEmpty()) {
-                        const a = document.createElement('a')
-                        a.style.display = 'none'
-                        a.href = response.filePath
-                        a.download = response.fileName
-                        document.body.appendChild(a)
-                        a.click()
-                    } else {
-                        console.error('response.filePath is null & empty!')
-                        $.toaster('Terjadi kesalahan saat menyimpan PDF', '', 'danger')
+                formData.append('content', element('#' + contentId).getHTML())
+                new Promise(async resolve => {
+                    if(chartTitleId && chartId) {
+                        let i = 0, j = 0;
+                        chartTitles = []
+                        await chartTitleId.forEach(title => { chartTitles[i++] = element('#' + title).getHTML() })
+                        formData.append('chartTitles', JSON.stringify(chartTitles))
+                        chartBlobs = []
+                        await chartId.forEach(async chart => { chartBlobs[j++] = await re.getCanvasBlob(chart) })
+                        formData.append('chartBlobs', JSON.stringify(chartBlobs))
                     }
-                    setTimeout( _ => {
+                    resolve()
+                }).then( _ => {
+                    fetch('<?= base_url('RevisiEfisiensi/exportPDF') ?>', {
+                        method: 'POST',
+                        body: formData
+                    }).then(response => response.json()).then(response => {
+                        if(response.filePath.isNotNullOrEmpty()) {
+                            const a = document.createElement('a')
+                            a.style.display = 'none'
+                            a.href = response.filePath
+                            a.download = response.fileName
+                            document.body.appendChild(a)
+                            a.click()
+                        } else {
+                            console.error('response.filePath is null & empty!')
+                            $.toaster('Terjadi kesalahan saat menyimpan PDF', '', 'danger')
+                        }
+                        setTimeout( _ => {
+                            element('#' + buttonId).animate.hideLoading('fa-floppy-o')
+                            element('#button-apply-filter').enable()
+                        }, 1000)
+                    }).catch(e => {
+                        console.error(e)
+                        $.toaster('Terjadi kesalahan saat menyimpan PDF', '', 'danger')
                         element('#' + buttonId).animate.hideLoading('fa-floppy-o')
                         element('#button-apply-filter').enable()
-                    }, 1000)
+                    })
                 }).catch(e => {
                     console.error(e)
-                    $.toaster('Terjadi kesalahan saat menyimpan PDF', '', 'danger')
+                    $.toaster('Terjadi kesalahan saat memproses grafik PDF', '', 'danger')
                     element('#' + buttonId).animate.hideLoading('fa-floppy-o')
                     element('#button-apply-filter').enable()
                 })
@@ -115,27 +132,45 @@
             }
         },
 
-        printPDF: async (buttonId, contentId, fileName) => {
+        printPDF: async (buttonId, fileName, contentId, chartTitleId = null, chartId = null) => {
             try {
                 element('#' + buttonId).animate.showLoading()
                 element('#button-apply-filter').disable()
                 const formData = new FormData()
-                formData.append('content', element('#' + contentId).getHTML())
                 formData.append('fileName', fileName.replace('.pdf', ''))
-                fetch('<?= base_url('RevisiEfisiensi/exportPDF') ?>', {
-                    method: 'POST',
-                    body: formData
-                }).then(response => response.json()).then(response => {
-                    if(response.filePath.isNotNullOrEmpty()) {
-                        printJS(response.filePath)
-                    } else {
-                        console.error('response.filePath is null & empty!')
-                        $.toaster('Terjadi kesalahan saat mencetak dokumen', '', 'danger')
+                formData.append('content', element('#' + contentId).getHTML())
+                new Promise(async resolve => {
+                    if(chartTitleId && chartId) {
+                        let i = 0, j = 0;
+                        chartTitles = []
+                        await chartTitleId.forEach(title => { chartTitles[i++] = element('#' + title).getHTML() })
+                        formData.append('chartTitles', JSON.stringify(chartTitles))
+                        chartBlobs = []
+                        await chartId.forEach(async chart => { chartBlobs[j++] = await re.getCanvasBlob(chart) })
+                        formData.append('chartBlobs', JSON.stringify(chartBlobs))
                     }
-                    setTimeout( _ => {
+                    resolve()
+                }).then( _ => {
+                    fetch('<?= base_url('RevisiEfisiensi/exportPDF') ?>', {
+                        method: 'POST',
+                        body: formData
+                    }).then(response => response.json()).then(response => {
+                        if(response.filePath.isNotNullOrEmpty()) {
+                            printJS(response.filePath)
+                        } else {
+                            console.error('response.filePath is null & empty!')
+                            $.toaster('Terjadi kesalahan saat mencetak dokumen', '', 'danger')
+                        }
+                        setTimeout( _ => {
+                            element('#' + buttonId).animate.hideLoading('fa-print')
+                            element('#button-apply-filter').enable()
+                        }, 1000)
+                    }).catch(e => {
+                        console.error(e)
+                        $.toaster('Terjadi kesalahan saat mencetak dokumen', '', 'danger')
                         element('#' + buttonId).animate.hideLoading('fa-print')
                         element('#button-apply-filter').enable()
-                    }, 1000)
+                    })
                 }).catch(e => {
                     console.error(e)
                     $.toaster('Terjadi kesalahan saat mencetak dokumen', '', 'danger')
@@ -166,6 +201,16 @@
                 console.error(e)
                 $.toaster('Terjadi kesalahan saat memuat mode fullscreen', '', 'danger')
             }
+        },
+
+        getCanvasBlob: async canvasId => {
+            const canvas = document.getElementById(canvasId)
+            const newCanvas = canvas.cloneNode(true)
+            let ctx = newCanvas.getContext('2d')
+            ctx.fillStyle = '#ffffff'
+            ctx.fillRect(0, 0, newCanvas.width, newCanvas.height)
+            ctx.drawImage(canvas, 0, 0)
+            return newCanvas.toDataURL('image/jpeg', 1.0)
         },
 
         setTotal: async (titleList, monthList, visible) => {
@@ -205,7 +250,7 @@
                         switch(titleList[0]) {
                             case 'Keuangan':
                             case 'Produksi':
-                                var i = 0; document.querySelectorAll('.row-1-target-sisa-' + titleList[0]).forEach(td => { targetSisa1[i++] = td.innerHTML; });
+                                i = 0; document.querySelectorAll('.row-1-target-sisa-' + titleList[0]).forEach(td => { targetSisa1[i++] = td.innerHTML; });
                                 i = 0; document.querySelectorAll('.row-2-target-sisa-' + titleList[0]).forEach(td => { targetSisa2[i++] = td.innerHTML; });
                                 i = 0; document.querySelectorAll('.row-3-target-sisa-' + titleList[0]).forEach(td => { targetSisa3[i++] = td.innerHTML; });
                                 i = 0; document.querySelectorAll('.row-4-target-sisa-' + titleList[0]).forEach(td => { targetSisa4[i++] = td.innerHTML; });
@@ -243,7 +288,7 @@
                                             }]
                                         }
                                     }
-                                });
+                                })
                                 new Chart(element('#chart-2-' + titleList[0]).getContext('2d'), {
                                     type: 'line',
                                     data: {
@@ -587,9 +632,19 @@
         }
     }
 
+    String.prototype.isEmpty = function() { return this.toString() == ''; }
+
     String.prototype.isNotEmpty = function() { return this.toString() != ''; }
+
+    String.prototype.isNull = function() { return this.toString() == null; }
 
     String.prototype.isNotNull = function() { return this.toString() != null; }
 
-    String.prototype.isNotNullOrEmpty = function() { return this.toString() != '' || this.toString() != null; }
+    String.prototype.isNullAndEmpty = function() { return this.toString() == null && this.toString() == ''; }
+
+    String.prototype.isNullOrEmpty = function() { return this.toString() == null || this.toString() == ''; }
+
+    String.prototype.isNotNullAndEmpty = function() { return this.toString() == null && this.toString() == ''; }
+
+    String.prototype.isNotNullOrEmpty = function() { return this.toString() != null || this.toString() != ''; }
 </script>

@@ -45,6 +45,8 @@ class C_Revisi extends CI_Controller {
 		$content = empty($this->input->post('content')) ? '' : $this->input->post('content');
 		$title = empty($this->input->post('fileName')) ? '' : $this->input->post('fileName');
 		$fileName = (empty($this->input->post('fileName')) ? 'Refisi Efisiensi - ' : $this->input->post('fileName').' - ').time().'.pdf';
+		$chartTitles = empty($this->input->post('chartTitles')) ? null : json_decode($this->input->post('chartTitles'));
+		$chartBlobs = empty($this->input->post('chartBlobs')) ? null : json_decode($this->input->post('chartBlobs'));
 		$path = 'assets/generated/Efisiensi SDM/Revisi Efisiensi/';
 		$this->load->library('pdf');
 		$pdf = $this->pdf->load();
@@ -52,9 +54,54 @@ class C_Revisi extends CI_Controller {
 		$pdf->AddPage('L');
 		$pdf->WriteHTML('<link type="text/css" rel="stylesheet" href="'.base_url('assets/plugins/bootstrap/3.3.7/css/bootstrap.css').'" />');
 		$pdf->WriteHTML('<link type="text/css" rel="stylesheet" href="'.base_url('assets/theme/css/AdminLTE.min.css').'" />');
-		$pdf->WriteHTML('<style type="text/css">tbody tr td { height: 60px; } thead tr th { height: auto; } .fixed-column { position: absolute; background: white; width: 100px; left: 16px; margin-bottom: 2px; } .background-red { background-color: #FF5252; color: white; }</style>');
+		$pdf->WriteHTML('<style type="text/css">@page { margin: 0px; } tbody tr td { height: 60px; } thead tr th { height: auto; } .fixed-column { position: absolute; background: white; width: 100px; left: 16px; margin-bottom: 2px; } .background-red { background-color: #FF5252; color: white; } .row { padding: 0px !important; margin: 0px !important; } .row > div { margin: 0px !important; padding: 0px !important; } .col-xs-1, .col-sm-1, .col-md-1, .col-lg-1, .col-xs-2, .col-sm-2, .col-md-2, .col-lg-2, .col-xs-3, .col-sm-3, .col-md-3, .col-lg-3, .col-xs-4, .col-sm-4, .col-md-4, .col-lg-4, .col-xs-5, .col-sm-5, .col-md-5, .col-lg-5, .col-xs-6, .col-sm-6, .col-md-6, .col-lg-6, .col-xs-7, .col-sm-7, .col-md-7, .col-lg-7, .col-xs-8, .col-sm-8, .col-md-8, .col-lg-8, .col-xs-9, .col-sm-9, .col-md-9, .col-lg-9, .col-xs-10, .col-sm-10, .col-md-10, .col-lg-10, .col-xs-11, .col-sm-11, .col-md-11, .col-lg-11, .col-xs-12, .col-sm-12, .col-md-12, .col-lg-12 { border: 0; padding: 0; margin-left: -0.00001; }</style>');
 		if(!empty($title)) { $pdf->WriteHTML('<h1 style="font-size: 1.4rem; margin-bottom: 12px;">'.$title.'</h1>'); }
 		$pdf->WriteHTML($content);
+		if(!empty($chartTitles) && !empty($chartBlobs)) {
+			$j = 0;
+			if(count($chartBlobs) % 2 == 0) {
+				for($i = 0; $i < count($chartBlobs) / 2; $i++) {
+					if(count($titleList) <= 4) {
+						$pdf->WriteHTML('
+							<div class="row">
+								<div class="col-xs-6 text-center" style="margin-top: 20px; margin-bottom: 20px;"><b style="font-size: 0.8rem;">'.$chartTitles[$j].'</b><img src="'.$chartBlobs[$j++].'" style="width: 100%; height: 280px;" /></div>
+								<div class="col-xs-6 text-center"><b style="font-size: 0.8rem;">'.$chartTitles[$j].'</b><img src="'.$chartBlobs[$j++].'" style="width: 100%; height: 280px;" /></div>
+							</div>
+						');
+					} else {
+						$pdf->WriteHTML('
+							<div class="row">
+								<div class="col-xs-6 text-center" style="margin-top: 20px;"><b style="font-size: 0.8rem;">'.$chartTitles[$j].'</b><img src="'.$chartBlobs[$j++].'" style="width: 100%; height: 280px;" /></div>
+								<div class="col-xs-6 text-center"><b style="font-size: 0.8rem;">'.$chartTitles[$j].'</b><img src="'.$chartBlobs[$j++].'" style="width: 100%; height: 280px;" /></div>
+							</div>
+						');
+					}
+				}
+			} else {
+				for($i = 0; $i < (count($chartBlobs) - 1) / 2; $i++) {
+					if(count($titleList) <= 4) {
+						$pdf->WriteHTML('
+							<div class="row">
+								<div class="col-xs-6 text-center" style="margin-top: 20px; margin-bottom: 20px;"><b style="font-size: 0.8rem;">'.$chartTitles[$j].'</b><img src="'.$chartBlobs[$j++].'" style="width: 100%; height: 280px;" /></div>
+								<div class="col-xs-6 text-center"><b style="font-size: 0.8rem;">'.$chartTitles[$j].'</b><img src="'.$chartBlobs[$j++].'" style="width: 100%; height: 280px;" /></div>
+							</div>
+						');
+					} else {
+						$pdf->WriteHTML('
+							<div class="row">
+								<div class="col-xs-6 text-center" style="margin-top: 20px;"><b style="font-size: 0.8rem;">'.$chartTitles[$j].'</b><img src="'.$chartBlobs[$j++].'" style="width: 100%; height: 280px;" /></div>
+								<div class="col-xs-6 text-center"><b style="font-size: 0.8rem;">'.$chartTitles[$j].'</b><img src="'.$chartBlobs[$j++].'" style="width: 100%; height: 280px;" /></div>
+							</div>
+						');
+					}
+				}
+				if(count($titleList) <= 4) {
+					$pdf->WriteHTML('<div class="row"><div class="col-xs-6 text-center" style="margin-top: 20px; margin-bottom: 20px;"><b style="font-size: 0.8rem;">'.$chartTitles[count($chartTitles) - 1].'</b><img src="'.$chartBlobs[count($chartBlobs) - 1].'" style="width: 100%; height: 280px;" /></div></div>');	
+				} else {
+					$pdf->WriteHTML('<div class="row"><div class="col-xs-6 text-center" style="margin-top: 20px;"><b style="font-size: 0.8rem;">'.$chartTitles[count($chartTitles) - 1].'</b><img src="'.$chartBlobs[count($chartBlobs) - 1].'" style="width: 100%; height: 280px;" /></div></div>');	
+				}
+			}
+		}
 		$pdf->Output(FCPATH.$path.'/'.$fileName, 'F');
 		echo json_encode(array('filePath' => base_url($path.$fileName), 'fileName' => $fileName));
 	}

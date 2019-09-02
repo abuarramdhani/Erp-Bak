@@ -12,7 +12,7 @@ class M_Revisi extends CI_Model {
 	}
 	
 	function getData($department, $month, $currentYear) {
-		switch(strtolower($department)) {
+		switch(trim(strtolower($department))) {
 			case 'keuangan': $kodeDepartment = 1; break;
 			case 'pemasaran': $kodeDepartment = 2; break;
 			case 'produksi': $kodeDepartment = 3; break;
