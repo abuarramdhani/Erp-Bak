@@ -1,4 +1,14 @@
 	<section class="content">
+
+	<?php if(!empty($this->session->flashdata('msg'))){ ?>
+	<script type="text/javascript">
+		$(document).ready(function(){
+			Swal.fire(
+			'Berhasil Mengubah Data','','success'
+			)
+		});
+	</script>
+	<?php } ?>
 	<div class="inner" >
 			<div class="box box-header"  style="padding-left:20px;padding-right: 20px;">
 				<h3 class="pull-left"><strong> Android Entry List </strong> - Android</h3>
@@ -43,13 +53,13 @@
 					<tr>
 					<td><?php echo $no ?></td>
 					<td>
-						<a href="<?php echo base_url('SystemAdministration/Android/edit/'.$andro['gadget_id']) ?>" class="btn btn-success"><i class="fa fa-edit"></i> 
+						<a href="<?php echo base_url('SystemAdministration/Android/edit/'.$andro['gadget_id']) ?>" class="btn btn-success btn-edit"><i class="fa fa-edit"></i> 
 						Edit
 						</a>
 						
 <!-- <?php echo base_url('SystemAdministration/Android/delete/'.$andro['gadget_id']) ?> -->
 						
-						<a class="btn btn-danger" href="<?php echo base_url('SystemAdministration/Android/delete/'.$andro['gadget_id']) ?>"><i class="fa fa-close"></i> Hapus</a>
+						<a class="btn btn-danger btn-hapus" href="<?php echo base_url('SystemAdministration/Android/delete/'.$andro['gadget_id']) ?>"><i class="fa fa-close"></i> Hapus</a>
 						</td>
 
 					<td><?php echo $andro['android_id'] ?></td>
@@ -133,6 +143,26 @@
         	$(this).closest('span').addClass("label label-default");
         }
     });
+
+		$('.btn-hapus').click(function(e){
+			e.preventDefault();
+			var getLink = $(this).attr('href');
+
+			Swal.fire({
+			  title: 'Anda yakin ingin menghapus?',
+			  text: "You won't be able to revert this!",
+			  type: 'warning',
+			  showCancelButton: true,
+			  confirmButtonColor: '#3085d6',
+			  cancelButtonColor: '#d33',
+			  confirmButtonText: 'Ya, Hapus!',
+			  cancelButtonText: 'Tidak'
+			}).then((result) => {
+			  if (	result.value) {
+			  	window.location.href = getLink
+			  }
+			})
+		})
 
 	});
 </script>
