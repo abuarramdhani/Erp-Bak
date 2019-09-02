@@ -34,13 +34,13 @@
 																	<span><label>Estimasi Berangkat</label></span>
 																</td>
 																<td>
-																	<input class="form-control time-set" style="width: 300px" type="text" id="estimasi_brkt" name="estimasi_brkt"></input>
+																	<input class="form-control time-set" style="width: 300px" type="text" id="estimasi_brkt" name="estimasi_brkt" required="required"></input>
 																</td>
 																<td>
 																	<span><label>Cabang Tujuan</label></span>
 																</td>
 																<td>
-																	<select id="cabang" name="cabang" class="form-control select2 select2-hidden-accessible" style="width:300px;">
+																	<select id="cabang" name="cabang" class="form-control select2 select2-hidden-accessible" style="width:300px;" required="required">
 																		<option value="" > Pilih  </option>
 																		<?php foreach ($cabang as $k) { ?>
 																		<option value="<?php echo $k['cabang_id'] ?>"><?php echo $k['name'] ?></option>
@@ -53,13 +53,13 @@
 																	<span><label>Estimasi Loading</label></span>
 																</td>
 																<td>
-																	<input class="form-control time-set" style="width: 300px" type="text" id="estimasi_loading" name="estimasi_loading"></input>
+																	<input class="form-control time-set" style="width: 300px" type="text" id="estimasi_loading" name="estimasi_loading" required="required"></input>
 																</td>
 																<td>
 																	<span><label>Finish Good</label></span>
 																</td>
 																<td>
-																	<select id="fingo" name="fingo" class="form-control select2 select2-hidden-accessible" style="width:300px;">
+																	<select id="fingo" name="fingo" class="form-control select2 select2-hidden-accessible" style="width:300px;" required="required">
 																		<option value="" > Pilih  </option>
 																		<?php foreach ($fingo as $k) { ?>
 																		<option value="<?php echo $k['fingo'] ?>"><?php echo $k['name'] ?></option>
@@ -72,14 +72,14 @@
 																	<span><label>Kendaraan</label></span>
 																</td>
 																	<td>
-																	<select id="jk" name="jk" class="form-control select2 select2-hidden-accessible" style="width:300px;">
+																	<select id="jk" name="jk" class="form-control select2 select2-hidden-accessible" style="width:300px;" required="required">
 																		<option value="" > Pilih  </option>
 																		<?php foreach ($kendaraan as $k) { ?>
 																		<option value="<?php echo $k['jk'] ?>"><?php echo $k['name'] ?></option>
 																		<?php } ?>
 																	</select>
 																</td>
-																<!-- <td>
+																<td>
 																	<span><label>Sudah Penuh?</label></span>
 																</td>
 																<td>
@@ -88,7 +88,7 @@
 																		<option value="Y" > YES </option>
 																		<option value="N" > NO </option>
 																	</select>
-																</td> -->
+																</td>
 															</tr>
 															<tr>
 																
@@ -98,15 +98,15 @@
 									</div>
 								</div>
 									<div class="col-md-12 pull-left">
-										<button onclick="addRowMpm();" type="button" class="btn btn-primary pull-right" style="margin-top: 10px; margin-bottom: 20px;"><i class="fa fa-plus"></i> Add</button>
+										<button id="newship" onclick="addRowMpm();" type="button" class="btn btn-primary pull-right" style="margin-top: 10px; margin-bottom: 20px;"><i class="fa fa-plus"></i> Add</button>
 									</div>
 									<table class="table table-bordered table-hover text-center tblMPM">
 										<thead>
 											<tr class="bg-primary">
-												<th style="width: 5%" class="text-center">No</th>
+												<th style="width: 5%"  class="text-center">No</th>
 												<th style="width: 10%" class="text-center">Jumlah</th>
 												<th style="width: 25%" class="text-center">Satuan</th>
-												<th style="width: 30%"class="text-center">Content Type</th>
+												<th style="width: 30%" class="text-center">Content Type</th>
 												<th style="width: 30%" class="text-center">Unit/Sparepart</th>
 												<th style="width: 10%" class="text-center">Action</th>
 											</tr>

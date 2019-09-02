@@ -82,12 +82,7 @@ tr.hidden td{
 											<td><?php echo  $k['asal_gudang'] ?></td>
 											<td><?php echo  $k['cabang'] ?></td>
 											<td><?php echo  $k['muatan'] ?></td>
-											<?php if ($k['status'] == 'N') { ?>
-											<td>UNCONFIRMED</td>
-											<?php }else{ ?>
-											<td><?php echo $k['status'] ?> </td>
-											<?php }?>
-
+											<td><?php echo  $k['status'] ?> </td>
 											<?php if ($k['actual_loading'] == NULL) { ?>
 											<td>UNCONFIRMED</td>
 											<?php }else{ ?>

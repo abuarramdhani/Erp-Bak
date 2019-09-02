@@ -99,7 +99,7 @@
 																	<?php } ?>
 																	</select>
 																</td>
-																<!-- <td>
+																<td>
 																	<span><label>Sudah Penuh?</label></span>
 																</td>
 																<td>
@@ -116,7 +116,7 @@
 																			<option value="" > Pilih </option>
 																		<option value="Y" <?php echo $y ?>> YES </option>
 																		<option value="N" <?php echo $n ?>> NO </option>
-																</td> -->
+																</td>
 															</tr>
 															<tr>
 																
@@ -126,7 +126,7 @@
 									</div>
 								</div>
 									<div class="col-md-12 pull-left">
-										<button onclick="addRowMpm();" type="button" class="btn btn-primary pull-right" style="margin-top: 10px; margin-bottom: 20px;" ><i class="fa fa-plus"></i> Add</button>
+										<button onclick="addRowMpm2();" type="button" class="btn btn-primary pull-right" style="margin-top: 10px; margin-bottom: 20px;" ><i class="fa fa-plus"></i> Add</button>
 									</div>
 									<table id="myTable" class="table table-bordered table-hover text-center tblMPM">
 										<thead>
@@ -139,10 +139,10 @@
 												<th style="width: 10%" class="text-center">Action</th>
 											</tr>
 										</thead>
-										<tbody id="tabelAddmpm">
+										<tbody class="findtabel" id="tabelAddmpm">
 				<?php $no=1;foreach($line as $key => $value) { ?>
 				<tr id="<?php echo $no; ?>" class="bakso">
-<td class="text-center"><?php echo $no; ?> </td>
+<td class="text-center editnum"><?php echo $no; ?> </td>
 <td class="text-center"><input type="number" value="<?php echo $value['quantity'] ?>" class="form-control" style="width: 100%" type="text" name="jumlah"> </td>
 <td class="text-center"><select name="tipe" class="form-control selectUnitMPM" style="width:100%;">
 						<option value="" > Pilih </option>
@@ -177,7 +177,7 @@
 								<?php echo $k['name'] ?></option>
 									<?php } ?>						
 						</select></td>
-<td class="text-center"><button type="button" class="btnDeleteRowUnit btn btn-danger" onclick="myFunction()"><i class="glyphicon glyphicon-trash" disable ></i></button></td>
+<td class="text-center"><button type="button" class="btnDeleteRowUnit btn btn-danger" onclick="deleteEdit(<?php echo $no; ?>)"><i class="glyphicon glyphicon-trash" disable ></i></button></td>
 				</tr>
 				<?php $no++;} ?>
 			</tbody>
