@@ -103,25 +103,27 @@
 																	<span><label>Sudah Penuh?</label></span>
 																</td>
 																<td>
-																	<select id="statusBakso" name="status" class="form-control select2" style="width: 300px">
-																		<option value="" > Pilih </option>
-																		<option value="Y" > YES </option>
-																		<option value="N" > NO </option>
-																	</select>
+																	<select id="status" name="status" class="form-control select2" style="width: 300px" disabled>
+																		<?php
+																			$y = '';
+																			$n = '';
+																				if($header[0]['status'] == 'N') {
+																					$n = 'selected';
+																				} else {
+																					$y = 'selected';
+																				}
+																			?>
+																			<option value="" > Pilih </option>
+																		<option value="Y" <?php echo $y ?>> YES </option>
+																		<option value="N" <?php echo $n ?>> NO </option>
 																</td>
 															</tr>
 															<tr>
 																<td>
-																	<span><label>Actual Berangkat</label></span>
-																</td>
-																<td>
-																	<input class="form-control time-form" style="width: 300px" type="text" id="actual_brkt" name="actual_brkt" value="<?php echo $time[0]['actual_depart_date'] ?>"></input>
-																</td>
-																<td>
 																	<span><label>Actual Loading</label></span>
 																</td>
 																<td>
-																	<input class="form-control time-form" style="width: 300px" type="text" id="actual_loading" name="actual_loading" value="<?php echo $time[0]['actual_loading_date'] ?>"></input>
+																	<input class="form-control time-form" style="width: 300px" type="text" id="actual_loading" name="actual_loading" value="<?php echo $time[0]['actual_loading_date'] ?>" ></input>
 																</td>
 															</tr>
 											</table>

@@ -24,7 +24,7 @@ class M_monitoringpengirimansparepart extends CI_Model
 
     public function SelectDashboard() //pake database dev
     {
-      $db = $this->load->database('dpostgre',true);
+      $db = $this->load->database();
       $sql = "
        select
               osh.shipment_header_id                                                        no_shipment
@@ -51,7 +51,7 @@ class M_monitoringpengirimansparepart extends CI_Model
               left join om.om_city oc on osh.shipment_to_city_id = oc.city_id
     where osh.estimate_depart_date > now() - interval '1 day'
     -- and osh.estimate_depart_date > now() - interval '5 minute'
-    and osh.actual_depart_date is null
+    and osh.actual_loading_date is null
       group by
               osh.shipment_header_id
               ,ovt.name
@@ -64,13 +64,13 @@ class M_monitoringpengirimansparepart extends CI_Model
               ,osh.actual_loading_date                            
               ,osh.actual_depart_date                           
       order by osh.estimate_depart_date";
-        $runQuery = $db->query($sql);
+        $runQuery = $this->db->query($sql);
         return $runQuery->result_array();
     }
 
     public function FindShipment($no_ship)
     {
-      $db = $this->load->database('dpostgre',true);
+      $db = $this->load->database();
       $sql = "
       select
               osh.shipment_header_id                                                      no_shipment
@@ -115,7 +115,7 @@ class M_monitoringpengirimansparepart extends CI_Model
               ,ovt.vehicle_type_id 
               ,ofg.finish_good_id
               ,osh.is_full_flag";
-        $runQuery = $db->query($sql);
+        $runQuery = $this->db->query($sql);
         return $runQuery->result_array();
   
     }
@@ -123,72 +123,72 @@ class M_monitoringpengirimansparepart extends CI_Model
     // this down is for the options in New Shipment-----------------------------------------------------------------
     public function getUom()
      {
-      $db = $this->load->database('dpostgre',true);
+      $db = $this->load->database();
       $sql = "select uom_id, name from om.om_uom";
-      $runQuery = $db->query($sql);
+      $runQuery = $this->db->query($sql);
       return $runQuery->result_array();
      } 
      public function getUnit()
      {
-      $db = $this->load->database('dpostgre',true);
+      $db = $this->load->database();
       $sql = "select unit_id, name from om.om_unit";
-      $runQuery = $db->query($sql);
+      $runQuery = $this->db->query($sql);
       return $runQuery->result_array();
      } 
 
      public function getFinishGood()
      {
-      $db = $this->load->database('dpostgre',true);
+      $db = $this->load->database();
       $sql = "select finish_good_id fingo, name from om.om_finish_good";
-      $runQuery = $db->query($sql);
+      $runQuery = $this->db->query($sql);
       return $runQuery->result_array();
      }
 
      public function getCabang()
      {
-      $db = $this->load->database('dpostgre',true);
+      $db = $this->load->database();
       $sql = "select cabang_id, name from om.om_cabang";
-      $runQuery = $db->query($sql);
+      $runQuery = $this->db->query($sql);
       return $runQuery->result_array();
      }
 
      public function getId()
      {
-      $db = $this->load->database('dpostgre',true);
+      $db = $this->load->database();
       $sql = "select shipment_header_id id from om.om_shipment_header";
-      $runQuery = $db->query($sql);
+      $runQuery = $this->db->query($sql);
       return $runQuery->result_array();
      }
 
      public function getJK()
      {
-      $db = $this->load->database('dpostgre',true);
+      $db = $this->load->database();
       $sql = "select vehicle_type_id jk, name from om.om_vehicle_type";
-      $runQuery = $db->query($sql);
+      $runQuery = $this->db->query($sql);
       return $runQuery->result_array();
      }
 
       public function getContentId()
      {
-      $db = $this->load->database('dpostgre',true);
+      $db = $this->load->database();
       $sql = "select content_type_id content_id, name from om.om_content_type";
-      $runQuery = $db->query($sql);
+      $runQuery = $this->db->query($sql);
       return $runQuery->result_array();
      }
 
      public function getSparepart()
      {
-      $db = $this->load->database('dpostgre',true);
+      $db = $this->load->database();
       $sql = "select content_type_id content_id, name from om.om_content_type where content_type_id not in (1,3)";
-      $runQuery = $db->query($sql);
+      $runQuery = $this->db->query($sql);
       return $runQuery->result_array();
      }
 
      public function getUnitSp()
      {
-      $db = $this->load->database('dpostgre',true);
+      $db = $this->load->database();
       $sql = "select unit_id, name from om.om_unit where unit_id = 0";
-      $runQuery = $db->query($sql);
+      $runQuery = $this->db->query($sql);
       return $runQuery->result_array();
      }
 
@@ -196,7 +196,7 @@ class M_monitoringpengirimansparepart extends CI_Model
 
      public function editMPM($no_ship)
       {
-        $db = $this->load->database('dpostgre',true);
+        $db = $this->load->database();
         $sql = "select
                 osh.shipment_header_id                                      no_shipment
                 ,ovt.name                                                   jenis_kendaraan
@@ -222,45 +222,45 @@ class M_monitoringpengirimansparepart extends CI_Model
                 left join om.om_province op on osh.shipment_to_province_id = op.province_id
                 left join om.om_city oc on osh.shipment_to_city_id = oc.city_id
                 where osh.shipment_header_id = '$no_ship'";
-      $runQuery = $db->query($sql);
+      $runQuery = $this->db->query($sql);
       return $runQuery->result_array();
       } 
 
 // -------------------------------------------------------------------------------------------------
        // update header
-       public function updateMPM($edd,$eld,$fingo,$cabang,$jk,$usr,$id)
+       public function updateMPM($edd,$eld,$fingo,$status,$cabang,$jk,$usr,$id)
        {
-          $db = $this->load->database('dpostgre',true);
+          $db = $this->load->database();
           $sql = "UPDATE om.om_shipment_header
                     SET estimate_depart_date = '$edd',
                     estimate_loading_date = '$eld',
                     shipment_from_fg_id = '$fingo',
-                    -- is_full_flag = '$status',
+                    is_full_flag = '$status',
                     shipment_to_cabang_id = '$cabang',
                     vehicle_type_id = '$jk',
                     creation_date = now(),
                     created_by = '$usr'
                     WHERE  shipment_header_id = '$id'";
-        $runQuery = $db->query($sql);
+        $runQuery = $this->db->query($sql);
          // echo $sql;
        }
 
        public function deleteMPM($id)
        {
-         $db = $this->load->database('dpostgre',true);
+         $db = $this->load->database();
          $sql = "DELETE 
                     FROM om.om_shipment_line
                     WHERE shipment_header_id = '$id'";
-        $runQuery = $db->query($sql);
+        $runQuery = $this->db->query($sql);
        }
 
        public function UpdatebyInsertMPM($noShip,$content,$jumlah,$tipe,$unit,$user)
        {
-        $db = $this->load->database('dpostgre',true);
+        $db = $this->load->database();
         $sql = "insert into om.om_shipment_line (creation_date, shipment_header_id, content_type_id, 
                 quantity, uom_id, unit_id, created_by)
                 values (now(), $noShip, $content, $jumlah, $tipe, $unit, '$user')";
-        $runQuery = $db->query($sql);
+        $runQuery = $this->db->query($sql);
         // echo $sql;
        }
     

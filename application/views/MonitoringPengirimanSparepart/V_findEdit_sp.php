@@ -99,7 +99,7 @@
 																	<?php } ?>
 																	</select>
 																</td>
-																<!-- <td>
+																<td>
 																	<span><label>Sudah Penuh?</label></span>
 																</td>
 																<td>
@@ -115,8 +115,8 @@
 																			?>
 																			<option value="" > Pilih </option>
 																		<option value="Y" <?php echo $y ?>> YES </option>
-																		<option value="N" <?php echo $n ?>> NO </option> -->
-																<!-- </td> -->
+																		<option value="N" <?php echo $n ?>> NO </option>
+																</td>
 															</tr>
 											</table>
 										</div>
@@ -139,7 +139,7 @@
 										<tbody id="tabelAddmpmsp">
 				<?php $no=1;foreach($line as $key => $value) { ?>
 				<tr id="<?php echo $no; ?>" class="bakso">
-					<td class="text-center"> 
+					<td id="nomor_sp" class="text-center"> 
 						<?php echo $no; ?> </td>
 					<td class="text-center"> 
 						<input type="number" value="<?php echo $value['quantity'] ?>" class="form-control" style="width: 100%" type="text" id="jumlah" name="jumlah" disabled> </td>

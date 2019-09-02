@@ -148,12 +148,19 @@ class C_MonitoringPengirimanGudang extends CI_Controller{
 	{
 		// print_r($_POST);
 		$no_ship = $this->input->post('no_ship');
-		$actual_brkt = $this->input->post('actual_brkt');
 		$actual_loading = $this->input->post('actual_loading');
 		$status = $this->input->post('statusgudang');
+
+		// if (empty($status)) {
+		// 	echo "<script> Swal.fire({
+  // 									type: 'error',
+  // 									title: 'Perhatian!',
+ 	// 								text: 'Harap lengkapi data',
+		// 							}) </script>";
+		// }
 		
          // update header
-        $insertActual = $this->M_monitoringpengirimangudang->insertActualTime($no_ship,$actual_brkt,$actual_loading, $status);
+        $insertActual = $this->M_monitoringpengirimangudang->insertActualTime($no_ship,$actual_loading, $status);
 
 	}
 

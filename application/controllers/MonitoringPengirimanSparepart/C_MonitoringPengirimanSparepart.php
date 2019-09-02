@@ -159,7 +159,7 @@ class C_MonitoringPengirimanSparepart extends CI_Controller{
 		$estimasi = $this->input->post('estimasi');
 		$estimasi_loading = $this->input->post('estimasi_loading');
 		$finish_good = $this->input->post('finish_good');
-		// $status = $this->input->post('status');
+		$status = $this->input->post('status');
 		$kendaraan = $this->input->post('jk');
 		$unit = $this->input->post('unit'); //sparepart 
 		$jumlah = $this->input->post('jumlah');
@@ -168,7 +168,7 @@ class C_MonitoringPengirimanSparepart extends CI_Controller{
 		$cabang = $this->input->post('cabang');
 		
          // update header
-        $updateMPM1 = $this->M_monitoringpengirimansparepart->updateMPM($estimasi,$estimasi_loading,$finish_good,$cabang,$kendaraan,$usrname,$no_ship);
+        $updateMPM1 = $this->M_monitoringpengirimansparepart->updateMPM($estimasi,$estimasi_loading,$finish_good,$status,$cabang,$kendaraan,$usrname,$no_ship);
         // update line
         $deleteLine = $this->M_monitoringpengirimansparepart->deleteMPM($no_ship);
         
