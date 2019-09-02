@@ -2938,3 +2938,54 @@ $route['PurchaseManagementSendPOSubcontractor'] = 'PurchaseManagementSendPOSubco
 $route['PurchaseManagementSendPOSubcontractor/SendPO'] = 'PurchaseManagementSendPOSubcontractor/MainMenu/C_ComposeMessage';
 $route['PurchaseManagementSendPOSubcontractor/SendPO/(:any)'] = 'PurchaseManagementSendPOSubcontractor/MainMenu/C_ComposeMessage/$1';
 $route['PurchaseManagementSendPOSubcontractor/SendPO/(:any)/(:any)'] = 'PurchaseManagementSendPOSubcontractor/MainMenu/C_ComposeMessage/$1/$2';
+
+//-------------------------  Monitoring Flow Out  -------------------------//
+$route['MonitoringFlowOut']									= 'MonitoringFlowOut/C_Index';
+
+$route['MonitoringFlowOut/InternalInput']					= 'MonitoringFlowOut/MainMenu/C_InternalInput';
+$route['MonitoringFlowOut/InternalInput/(:any)']			= 'MonitoringFlowOut/MainMenu/C_InternalInput/$1';
+$route['MonitoringFlowOut/InternalInput/(:any)/(:any)'] 	= 'MonitoringFlowOut/MainMenu/C_InternalInput/$1/$2';
+
+$route['MonitoringFlowOut/InternalInput/getCode']			= 'MonitoringFlowOut/MainMenu/C_InternalInput/getCode';
+$route['MonitoringFlowOut/InternalInput/getCode/(:any)']	= 'MonitoringFlowOut/MainMenu/C_InternalInput/getCode/$1';
+$route['MonitoringFlowOut/InternalInput/getCode/(:any)/(:any)']	= 'MonitoringFlowOut/MainMenu/C_InternalInput/getCode/$1/$2';
+
+$route['MonitoringFlowOut/InternalView']					= 'MonitoringFlowOut/MainMenu/C_InternalView';
+$route['MonitoringFlowOut/InternalView/(:any)']				= 'MonitoringFlowOut/MainMenu/C_InternalView/$1';
+$route['MonitoringFlowOut/InternalView/(:any)/(:any)'] 		= 'MonitoringFlowOut/MainMenu/C_InternalView/$1/$2';
+
+$route['MonitoringFlowOut/ExternalInput']					= 'MonitoringFlowOut/MainMenu/C_ExternalInput';
+$route['MonitoringFlowOut/ExternalInput/(:any)']			= 'MonitoringFlowOut/MainMenu/C_ExternalInput/$1';
+$route['MonitoringFlowOut/ExternalInput/(:any)/(:any)']		= 'MonitoringFlowOut/MainMenu/C_ExternalInput/$1/$2';
+
+$route['MonitoringFlowOut/ExternalInput/getCode']			= 'MonitoringFlowOut/MainMenu/C_ExternalInput/getCode';
+$route['MonitoringFlowOut/ExternalInput/getCode/(:any)']	= 'MonitoringFlowOut/MainMenu/C_ExternalInput/getCode/$1';
+$route['MonitoringFlowOut/ExternalInput/getCode/(:any)/(:any)']	= 'MonitoringFlowOut/MainMenu/C_ExternalInput/getCode/$1/$2';
+
+$route['MonitoringFlowOut/ExternalView']					= 'MonitoringFlowOut/MainMenu/C_ExternalView';
+$route['MonitoringFlowOut/ExternalView/(:any)']				= 'MonitoringFlowOut/MainMenu/C_ExternalView/$1';
+$route['MonitoringFlowOut/ExternalView/(:any)/(:any)']		= 'MonitoringFlowOut/MainMenu/C_ExternalView/$1/$2';
+
+$route['MonitoringFlowOut/CarJatuhTempo']					= 'MonitoringFlowOut/MainMenu/C_CarJatuhTempo';
+$route['MonitoringFlowOut/CarJatuhTempo/(:any)']			= 'MonitoringFlowOut/MainMenu/C_CarJatuhTempo/$1';
+$route['MonitoringFlowOut/CarJatuhTempo/(:any)/(:any)']		= 'MonitoringFlowOut/MainMenu/C_CarJatuhTempo/$1/$2';
+
+$route['MonitoringFlowOut/Seksi']							= 'MonitoringFlowOut/MainMenu/C_Seksi';
+$route['MonitoringFlowOut/Seksi/(:any)']					= 'MonitoringFlowOut/MainMenu/C_Seksi/$1';
+$route['MonitoringFlowOut/Seksi/(:any)/(:any)']				= 'MonitoringFlowOut/MainMenu/C_Seksi/$1/$2';
+
+$route['MonitoringFlowOut/UserQC']							= 'MonitoringFlowOut/MainMenu/C_UserQC';
+$route['MonitoringFlowOut/UserQC/(:any)']					= 'MonitoringFlowOut/MainMenu/C_UserQC/$1';
+$route['MonitoringFlowOut/UserQC/(:any)/(:any)']			= 'MonitoringFlowOut/MainMenu/C_UserQC/$1/$2';
+
+$route['MonitoringFlowOut/PossibleFailure']					= 'MonitoringFlowOut/MainMenu/C_PossibleFailure';
+$route['MonitoringFlowOut/PossibleFailure/(:any)']			= 'MonitoringFlowOut/MainMenu/C_PossibleFailure/$1';
+$route['MonitoringFlowOut/PossibleFailure/(:any)/(:any)']	= 'MonitoringFlowOut/MainMenu/C_PossibleFailure/$1/$2';
+
+$route['MonitoringFlowOut/TagihanInternal']						= 'MonitoringFlowOut/MainMenu/C_TagihanInternal';
+$route['MonitoringFlowOut/TagihanInternal/(:any)']				= 'MonitoringFlowOut/MainMenu/C_TagihanInternal/$1';
+$route['MonitoringFlowOut/TagihanInternal/(:any)/(:any)']		= 'MonitoringFlowOut/MainMenu/C_TagihanInternal/$1/$2';
+
+$route['MonitoringFlowOut/TagihanExternal']						= 'MonitoringFlowOut/MainMenu/C_TagihanExternal';
+$route['MonitoringFlowOut/TagihanExternal/(:any)']				= 'MonitoringFlowOut/MainMenu/C_TagihanExternal/$1';
+$route['MonitoringFlowOut/TagihanExternal/(:any)/(:any)']		= 'MonitoringFlowOut/MainMenu/C_TagihanExternal/$1/$2';
