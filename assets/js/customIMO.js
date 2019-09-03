@@ -226,7 +226,7 @@ function formsubmitIMO(id){
 }
 
 
-$('.checkedAllIMO, .ch_komp_imo').on('click',function(){
+$('.checkedAllIMO1, .ch_komp_imo1').on('click',function(){
 	var a = 0;
 	var jml = 0;
 	var val = '';
