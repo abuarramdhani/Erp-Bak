@@ -71,15 +71,6 @@
 			}
 		});
 
-		
-
-		function myFunction() {
-		  alert("Kondisi True");
-		}
-		function myFunction2() {
-		  alert("Yang ini Kondisi False");
-		}
-
 	</script>
 	
  <style type="text/css">
