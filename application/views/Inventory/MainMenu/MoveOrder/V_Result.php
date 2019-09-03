@@ -5,11 +5,11 @@
     <script src="<?php echo base_url('assets/plugins/dataTables/jquery.dataTables.min.js');?>"></script>
 	<script src="<?php echo base_url('assets/plugins/dataTables/dataTables.bootstrap.js');?>"></script>
 	<script type="text/javascript">
-		$('.ch_komp_imo').on('click',function(){
+		$('.ch_komp_imo1').on('click',function(){
 			var a = 0;
 			var jml = 0;
 			var val = '';
-			$('input[name="ch_komp[]"]').each(function(){
+			$('input[name="ch_komp[]"]').each(function(){``
 				if ($(this).is(":checked") === true ) {
 					a = 1;
 					jml +=1;
@@ -32,7 +32,7 @@
 			}
 
 		});
-		$('.checkedAllIMO').on('click', function(){
+		$('.checkedAllIMO1').on('click', function(){
 			var check = 0;
 			var a = 0;
 			var jml = 0;
@@ -106,7 +106,7 @@
 	<thead>
 		<tr class="bg-primary ">
 			<th width="5%"> &nbsp;
-				<input type="checkbox" class="checkedAllIMO">&nbsp;
+				<input type="checkbox" class="checkedAllIMO1">&nbsp;
 			</th>
 			<th width="10%">WIP NAME</th>
 			<th width="13%">KODE ITEM</th>
@@ -168,11 +168,11 @@
 				<center>
 				<?php if ($penandabutton == 1) { ?>
 					<b style="color: #c1c1c1"> <?= $no++; ?></b> <br>
-						<input type="checkbox"  class="ch_komp_imo" onclick="return false;"
+						<input type="checkbox"  class="ch_komp_imo1" onclick="return false;"
 							value="<?= $value['header']['WIP_ENTITY_NAME'].'+'; ?>">
 				<?php } else { ?>
 						<b <?= ($value['body']) ? '' : 'style="color: #c1c1c1"' ?>><?= $no++; ?></b> <br>
-						<input type="checkbox"  class="ch_komp_imo" <?= ($value['body']) ? ' name="ch_komp[]"' : 'onclick="return false;"' ?>
+						<input type="checkbox"  class="ch_komp_imo1" <?= ($value['body']) ? ' name="ch_komp[]"' : 'onclick="return false;"' ?>
 							value="<?= $value['header']['WIP_ENTITY_NAME'].'+'; ?>">
 				<?php } ?>
 				</center>
