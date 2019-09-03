@@ -28,11 +28,14 @@
                             <th style="background-color: #FF851B; color: white;"><?= $month ?></th>
                         <?php else: ?>
                             <th style="background-color: <?= (($i + 1) % 2 == 0) ? '#337AB7' : '#FF851B' ?>; color: white;" colspan="2"><?= $month ?></th>
-                        <?php if($monthListNumber[$i] <= $currentMonth): ?>
-                            <th style="background-color: <?= (($i + 1) % 2 == 0) ? '#337AB7' : '#FF851B' ?>; color: white;" colspan="2"><?= $currentMonthFormatted ?></th>
-                        <?php else: ?>
-                            <th style="background-color: <?= (($i + 1) % 2 == 0) ? '#337AB7' : '#FF851B' ?>; color: white;" colspan="2">-</th>
-                        <?php endif; endif; ?>
+                            <?php if($monthListNumber[$i] == $currentMonth): ?>
+                                <th style="background-color: <?= (($i + 1) % 2 == 0) ? '#337AB7' : '#FF851B' ?>; color: white;" colspan="2"><?= $currentMonthFormatted ?></th>
+                            <?php elseif($monthListNumber[$i] < $currentMonth): ?>
+                                <th style="background-color: <?= (($i + 1) % 2 == 0) ? '#337AB7' : '#FF851B' ?>; color: white;" colspan="2"><?= $month ?></th>
+                            <?php else: ?>
+                                <th style="background-color: <?= (($i + 1) % 2 == 0) ? '#337AB7' : '#FF851B' ?>; color: white;" colspan="2">-</th>
+                            <?php endif; ?>
+                        <?php endif; ?>
                         <?php $i++; endforeach ?>
                     </tr>
                     <tr>
@@ -71,15 +74,18 @@
                     </tr>
                     <tr>
                         <?php $i = 0; foreach($monthListFormatted as $month): ?>
-                        <?php if($i == 0): ?>
-                            <th style="background-color: #FF851B; color: white; font-size: 1.3rem; padding: 10px;"><?= $month ?></th>
-                        <?php else: ?>
-                            <th style="background-color: <?= (($i + 1) % 2 == 0) ? '#337AB7' : '#FF851B' ?>; color: white; font-size: 1.3rem; padding: 10px;" colspan="2"><?= $month ?></th>
-                        <?php if($monthListNumber[$i] <= $currentMonth): ?>
-                            <th style="background-color: <?= (($i + 1) % 2 == 0) ? '#337AB7' : '#FF851B' ?>; color: white; font-size: 1.3rem; padding: 10px;" colspan="2"><?= $currentMonthFormatted ?></th>
-                        <?php else: ?>
-                            <th style="background-color: <?= (($i + 1) % 2 == 0) ? '#337AB7' : '#FF851B' ?>; color: white; font-size: 1.3rem; padding: 10px;" colspan="2">-</th>
-                        <?php endif; endif; ?>
+                            <?php if($i == 0): ?>
+                                <th style="background-color: #FF851B; color: white; font-size: 1.3rem; padding: 10px;"><?= $month ?></th>
+                            <?php else: ?>
+                                <th style="background-color: <?= (($i + 1) % 2 == 0) ? '#337AB7' : '#FF851B' ?>; color: white; font-size: 1.3rem; padding: 10px;" colspan="2"><?= $month ?></th>
+                            <?php if($monthListNumber[$i] == $currentMonth): ?>
+                                <th style="background-color: <?= (($i + 1) % 2 == 0) ? '#337AB7' : '#FF851B' ?>; color: white; font-size: 1.3rem; padding: 10px;" colspan="2"><?= $currentMonthFormatted ?></th>
+                            <?php elseif($monthListNumber[$i] < $currentMonth): ?>
+                                <th style="background-color: <?= (($i + 1) % 2 == 0) ? '#337AB7' : '#FF851B' ?>; color: white; font-size: 1.3rem; padding: 10px;" colspan="2"><?= $month ?></th>
+                            <?php else: ?>
+                                <th style="background-color: <?= (($i + 1) % 2 == 0) ? '#337AB7' : '#FF851B' ?>; color: white; font-size: 1.3rem; padding: 10px;" colspan="2">-</th>
+                            <?php endif; ?>
+                        <?php endif; ?>
                         <?php $i++; endforeach ?>
                     </tr>
                     <tr>
@@ -160,11 +166,14 @@
                                 <th style="background-color: #FF851B; color: white;"><?= $month ?></th>
                             <?php else: ?>
                                 <th style="background-color: <?= (($i + 1) % 2 == 0) ? '#337AB7' : '#FF851B' ?>; color: white;" colspan="2"><?= $month ?></th>
-                            <?php if($monthListNumber[$i] <= $currentMonth): ?>
-                                <th style="background-color: <?= (($i + 1) % 2 == 0) ? '#337AB7' : '#FF851B' ?>; color: white;" colspan="2"><?= $currentMonthFormatted ?></th>
-                            <?php else: ?>
-                                <th style="background-color: <?= (($i + 1) % 2 == 0) ? '#337AB7' : '#FF851B' ?>; color: white;" colspan="2">-</th>
-                            <?php endif; endif; ?>
+                                <?php if($monthListNumber[$i] == $currentMonth): ?>
+                                    <th style="background-color: <?= (($i + 1) % 2 == 0) ? '#337AB7' : '#FF851B' ?>; color: white;" colspan="2"><?= $currentMonthFormatted ?></th>
+                                <?php elseif($monthListNumber[$i] < $currentMonth): ?>
+                                    <th style="background-color: <?= (($i + 1) % 2 == 0) ? '#337AB7' : '#FF851B' ?>; color: white;" colspan="2"><?= $month ?></th>
+                                <?php else: ?>
+                                    <th style="background-color: <?= (($i + 1) % 2 == 0) ? '#337AB7' : '#FF851B' ?>; color: white;" colspan="2">-</th>
+                                <?php endif; ?>
+                            <?php endif; ?>
                             <?php $i++; endforeach ?>
                         </tr>
                         <tr>
@@ -318,12 +327,15 @@
                             <?php if($i == 0): ?>
                                 <th style="background-color: #FF851B; color: white; font-size: 1.3rem; padding: 10px;"><?= $month ?></th>
                             <?php else: ?>
-                                <th style="background-color: <?= (($i + 1) % 2 == 0) ? '#337AB7' : '#FF851B' ?>; color: white; font-size: 1.3rem; padding: 10px;" colspan="2"><?= $month ?></th>
-                            <?php if($monthListNumber[$i] <= $currentMonth): ?>
-                                <th style="background-color: <?= (($i + 1) % 2 == 0) ? '#337AB7' : '#FF851B' ?>; color: white; font-size: 1.3rem; padding: 10px;" colspan="2"><?= $currentMonthFormatted ?></th>
-                            <?php else: ?>
-                                <th style="background-color: <?= (($i + 1) % 2 == 0) ? '#337AB7' : '#FF851B' ?>; color: white; font-size: 1.3rem; padding: 10px;" colspan="2">-</th>
-                            <?php endif; endif; ?>
+                                    <th style="background-color: <?= (($i + 1) % 2 == 0) ? '#337AB7' : '#FF851B' ?>; color: white; font-size: 1.3rem; padding: 10px;" colspan="2"><?= $month ?></th>
+                                <?php if($monthListNumber[$i] == $currentMonth): ?>
+                                    <th style="background-color: <?= (($i + 1) % 2 == 0) ? '#337AB7' : '#FF851B' ?>; color: white; font-size: 1.3rem; padding: 10px;" colspan="2"><?= $currentMonthFormatted ?></th>
+                                <?php elseif($monthListNumber[$i] < $currentMonth): ?>
+                                    <th style="background-color: <?= (($i + 1) % 2 == 0) ? '#337AB7' : '#FF851B' ?>; color: white; font-size: 1.3rem; padding: 10px;" colspan="2"><?= $month ?></th>
+                                <?php else: ?>
+                                    <th style="background-color: <?= (($i + 1) % 2 == 0) ? '#337AB7' : '#FF851B' ?>; color: white; font-size: 1.3rem; padding: 10px;" colspan="2">-</th>
+                                <?php endif; ?>
+                            <?php endif; ?>
                             <?php $i++; endforeach ?>
                         </tr>
                         <tr>
@@ -468,11 +480,14 @@
                                 <th style="background-color: #FF851B; color: white;"><?= $month ?></th>
                             <?php else: ?>
                                 <th style="background-color: <?= (($i + 1) % 2 == 0) ? '#337AB7' : '#FF851B' ?>; color: white;" colspan="2"><?= $month ?></th>
-                            <?php if($monthListNumber[$i] <= $currentMonth): ?>
-                                <th style="background-color: <?= (($i + 1) % 2 == 0) ? '#337AB7' : '#FF851B' ?>; color: white;" colspan="2"><?= $currentMonthFormatted ?></th>
-                            <?php else: ?>
-                                <th style="background-color: <?= (($i + 1) % 2 == 0) ? '#337AB7' : '#FF851B' ?>; color: white;" colspan="2">-</th>
-                            <?php endif; endif; ?>
+                                <?php if($monthListNumber[$i] == $currentMonth): ?>
+                                    <th style="background-color: <?= (($i + 1) % 2 == 0) ? '#337AB7' : '#FF851B' ?>; color: white;" colspan="2"><?= $currentMonthFormatted ?></th>
+                                <?php elseif($monthListNumber[$i] < $currentMonth): ?>
+                                    <th style="background-color: <?= (($i + 1) % 2 == 0) ? '#337AB7' : '#FF851B' ?>; color: white;" colspan="2"><?= $month ?></th>
+                                <?php else: ?>
+                                    <th style="background-color: <?= (($i + 1) % 2 == 0) ? '#337AB7' : '#FF851B' ?>; color: white;" colspan="2">-</th>
+                                <?php endif; ?>
+                            <?php endif; ?>
                             <?php $i++; endforeach ?>
                         </tr>
                         <tr>
@@ -626,12 +641,15 @@
                             <?php if($i == 0): ?>
                                 <th style="background-color: #FF851B; color: white; font-size: 1.3rem; padding: 10px;"><?= $month ?></th>
                             <?php else: ?>
-                                <th style="background-color: <?= (($i + 1) % 2 == 0) ? '#337AB7' : '#FF851B' ?>; color: white; font-size: 1.3rem; padding: 10px;" colspan="2"><?= $month ?></th>
-                            <?php if($monthListNumber[$i] <= $currentMonth): ?>
-                                <th style="background-color: <?= (($i + 1) % 2 == 0) ? '#337AB7' : '#FF851B' ?>; color: white; font-size: 1.3rem; padding: 10px;" colspan="2"><?= $currentMonthFormatted ?></th>
-                            <?php else: ?>
-                                <th style="background-color: <?= (($i + 1) % 2 == 0) ? '#337AB7' : '#FF851B' ?>; color: white; font-size: 1.3rem; padding: 10px;" colspan="2">-</th>
-                            <?php endif; endif; ?>
+                                    <th style="background-color: <?= (($i + 1) % 2 == 0) ? '#337AB7' : '#FF851B' ?>; color: white; font-size: 1.3rem; padding: 10px;" colspan="2"><?= $month ?></th>
+                                <?php if($monthListNumber[$i] == $currentMonth): ?>
+                                    <th style="background-color: <?= (($i + 1) % 2 == 0) ? '#337AB7' : '#FF851B' ?>; color: white; font-size: 1.3rem; padding: 10px;" colspan="2"><?= $currentMonthFormatted ?></th>
+                                <?php elseif($monthListNumber[$i] < $currentMonth): ?>
+                                    <th style="background-color: <?= (($i + 1) % 2 == 0) ? '#337AB7' : '#FF851B' ?>; color: white; font-size: 1.3rem; padding: 10px;" colspan="2"><?= $month ?></th>
+                                <?php else: ?>
+                                    <th style="background-color: <?= (($i + 1) % 2 == 0) ? '#337AB7' : '#FF851B' ?>; color: white; font-size: 1.3rem; padding: 10px;" colspan="2">-</th>
+                                <?php endif; ?>
+                            <?php endif; ?>
                             <?php $i++; endforeach ?>
                         </tr>
                         <tr>
@@ -776,11 +794,14 @@
                                 <th style="background-color: #FF851B; color: white;"><?= $month ?></th>
                             <?php else: ?>
                                 <th style="background-color: <?= (($i + 1) % 2 == 0) ? '#337AB7' : '#FF851B' ?>; color: white;" colspan="2"><?= $month ?></th>
-                            <?php if($monthListNumber[$i] <= $currentMonth): ?>
-                                <th style="background-color: <?= (($i + 1) % 2 == 0) ? '#337AB7' : '#FF851B' ?>; color: white;" colspan="2"><?= $currentMonthFormatted ?></th>
-                            <?php else: ?>
-                                <th style="background-color: <?= (($i + 1) % 2 == 0) ? '#337AB7' : '#FF851B' ?>; color: white;" colspan="2">-</th>
-                            <?php endif; endif; ?>
+                                <?php if($monthListNumber[$i] == $currentMonth): ?>
+                                    <th style="background-color: <?= (($i + 1) % 2 == 0) ? '#337AB7' : '#FF851B' ?>; color: white;" colspan="2"><?= $currentMonthFormatted ?></th>
+                                <?php elseif($monthListNumber[$i] < $currentMonth): ?>
+                                    <th style="background-color: <?= (($i + 1) % 2 == 0) ? '#337AB7' : '#FF851B' ?>; color: white;" colspan="2"><?= $month ?></th>
+                                <?php else: ?>
+                                    <th style="background-color: <?= (($i + 1) % 2 == 0) ? '#337AB7' : '#FF851B' ?>; color: white;" colspan="2">-</th>
+                                <?php endif; ?>
+                            <?php endif; ?>
                             <?php $i++; endforeach ?>
                         </tr>
                         <tr>
@@ -955,12 +976,15 @@
                             <?php if($i == 0): ?>
                                 <th style="background-color: #FF851B; color: white; font-size: 1.3rem; padding: 10px;"><?= $month ?></th>
                             <?php else: ?>
-                                <th style="background-color: <?= (($i + 1) % 2 == 0) ? '#337AB7' : '#FF851B' ?>; color: white; font-size: 1.3rem; padding: 10px;" colspan="2"><?= $month ?></th>
-                            <?php if($monthListNumber[$i] <= $currentMonth): ?>
-                                <th style="background-color: <?= (($i + 1) % 2 == 0) ? '#337AB7' : '#FF851B' ?>; color: white; font-size: 1.3rem; padding: 10px;" colspan="2"><?= $currentMonthFormatted ?></th>
-                            <?php else: ?>
-                                <th style="background-color: <?= (($i + 1) % 2 == 0) ? '#337AB7' : '#FF851B' ?>; color: white; font-size: 1.3rem; padding: 10px;" colspan="2">-</th>
-                            <?php endif; endif; ?>
+                                    <th style="background-color: <?= (($i + 1) % 2 == 0) ? '#337AB7' : '#FF851B' ?>; color: white; font-size: 1.3rem; padding: 10px;" colspan="2"><?= $month ?></th>
+                                <?php if($monthListNumber[$i] == $currentMonth): ?>
+                                    <th style="background-color: <?= (($i + 1) % 2 == 0) ? '#337AB7' : '#FF851B' ?>; color: white; font-size: 1.3rem; padding: 10px;" colspan="2"><?= $currentMonthFormatted ?></th>
+                                <?php elseif($monthListNumber[$i] < $currentMonth): ?>
+                                    <th style="background-color: <?= (($i + 1) % 2 == 0) ? '#337AB7' : '#FF851B' ?>; color: white; font-size: 1.3rem; padding: 10px;" colspan="2"><?= $month ?></th>
+                                <?php else: ?>
+                                    <th style="background-color: <?= (($i + 1) % 2 == 0) ? '#337AB7' : '#FF851B' ?>; color: white; font-size: 1.3rem; padding: 10px;" colspan="2">-</th>
+                                <?php endif; ?>
+                            <?php endif; ?>
                             <?php $i++; endforeach ?>
                         </tr>
                         <tr>
@@ -1124,11 +1148,14 @@
                                 <th style="background-color: #FF851B; color: white;"><?= $month ?></th>
                             <?php else: ?>
                                 <th style="background-color: <?= (($i + 1) % 2 == 0) ? '#337AB7' : '#FF851B' ?>; color: white;" colspan="2"><?= $month ?></th>
-                            <?php if($monthListNumber[$i] <= $currentMonth): ?>
-                                <th style="background-color: <?= (($i + 1) % 2 == 0) ? '#337AB7' : '#FF851B' ?>; color: white;" colspan="2"><?= $currentMonthFormatted ?></th>
-                            <?php else: ?>
-                                <th style="background-color: <?= (($i + 1) % 2 == 0) ? '#337AB7' : '#FF851B' ?>; color: white;" colspan="2">-</th>
-                            <?php endif; endif; ?>
+                                <?php if($monthListNumber[$i] == $currentMonth): ?>
+                                    <th style="background-color: <?= (($i + 1) % 2 == 0) ? '#337AB7' : '#FF851B' ?>; color: white;" colspan="2"><?= $currentMonthFormatted ?></th>
+                                <?php elseif($monthListNumber[$i] < $currentMonth): ?>
+                                    <th style="background-color: <?= (($i + 1) % 2 == 0) ? '#337AB7' : '#FF851B' ?>; color: white;" colspan="2"><?= $month ?></th>
+                                <?php else: ?>
+                                    <th style="background-color: <?= (($i + 1) % 2 == 0) ? '#337AB7' : '#FF851B' ?>; color: white;" colspan="2">-</th>
+                                <?php endif; ?>
+                            <?php endif; ?>
                             <?php $i++; endforeach ?>
                         </tr>
                         <tr>
@@ -1303,12 +1330,15 @@
                             <?php if($i == 0): ?>
                                 <th style="background-color: #FF851B; color: white; font-size: 1.3rem; padding: 10px;"><?= $month ?></th>
                             <?php else: ?>
-                                <th style="background-color: <?= (($i + 1) % 2 == 0) ? '#337AB7' : '#FF851B' ?>; color: white; font-size: 1.3rem; padding: 10px;" colspan="2"><?= $month ?></th>
-                            <?php if($monthListNumber[$i] <= $currentMonth): ?>
-                                <th style="background-color: <?= (($i + 1) % 2 == 0) ? '#337AB7' : '#FF851B' ?>; color: white; font-size: 1.3rem; padding: 10px;" colspan="2"><?= $currentMonthFormatted ?></th>
-                            <?php else: ?>
-                                <th style="background-color: <?= (($i + 1) % 2 == 0) ? '#337AB7' : '#FF851B' ?>; color: white; font-size: 1.3rem; padding: 10px;" colspan="2">-</th>
-                            <?php endif; endif; ?>
+                                    <th style="background-color: <?= (($i + 1) % 2 == 0) ? '#337AB7' : '#FF851B' ?>; color: white; font-size: 1.3rem; padding: 10px;" colspan="2"><?= $month ?></th>
+                                <?php if($monthListNumber[$i] == $currentMonth): ?>
+                                    <th style="background-color: <?= (($i + 1) % 2 == 0) ? '#337AB7' : '#FF851B' ?>; color: white; font-size: 1.3rem; padding: 10px;" colspan="2"><?= $currentMonthFormatted ?></th>
+                                <?php elseif($monthListNumber[$i] < $currentMonth): ?>
+                                    <th style="background-color: <?= (($i + 1) % 2 == 0) ? '#337AB7' : '#FF851B' ?>; color: white; font-size: 1.3rem; padding: 10px;" colspan="2"><?= $month ?></th>
+                                <?php else: ?>
+                                    <th style="background-color: <?= (($i + 1) % 2 == 0) ? '#337AB7' : '#FF851B' ?>; color: white; font-size: 1.3rem; padding: 10px;" colspan="2">-</th>
+                                <?php endif; ?>
+                            <?php endif; ?>
                             <?php $i++; endforeach ?>
                         </tr>
                         <tr>

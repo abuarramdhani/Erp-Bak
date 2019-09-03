@@ -11,7 +11,8 @@ class M_Revisi extends CI_Model {
 		return $this->personalia->select('tanggal')->limit(1)->get('hrd_khs.hr_update_data')->row()->tanggal;
 	}
 	
-	function getData($department, $month, $currentYear) {
+	function getData($department, $month, $year) {
+		$day = date('t', strtotime($month.'/01/'.$year)) <= 30 ? date('t', strtotime($month.'/01/'.$year)) : 30;
 		switch(trim(strtolower($department))) {
 			case 'keuangan': $kodeDepartment = 1; break;
 			case 'pemasaran': $kodeDepartment = 2; break;
@@ -35,7 +36,7 @@ class M_Revisi extends CI_Model {
 								a.kodesie = b.kodesie
 							left join hrd_khs.torganisasi c on
 								a.kd_jabatan = c.kd_jabatan
-							where ((keluar = '0' and masukkerja <= cast('$currentYear-$month-30' as date)))
+							where ((keluar = '0' and masukkerja <= cast('$year-$month-$day' as date)))
 								and a.kode_status_kerja <> 'C'
 								and left(noind, 1) not in('L', 'Z', 'M')
 							union
@@ -43,8 +44,8 @@ class M_Revisi extends CI_Model {
 							from hrd_khs.tpribadi a
 							left join hrd_khs.tseksi b on a.kodesie = b.kodesie
 							left join hrd_khs.torganisasi c on a.kd_jabatan = c.kd_jabatan
-							where ((masukkerja <= cast('$currentYear-$month-30' as date))
-								and (tglkeluar >= cast('$currentYear-$month-30' as date)
+							where ((masukkerja <= cast('$year-$month-$day' as date))
+								and (tglkeluar >= cast('$year-$month-$day' as date)
 								and keluar = '1'))
 								and (masukkerja >= '1945-01-01')
 								and a.kode_status_kerja <> 'C'
@@ -82,7 +83,7 @@ class M_Revisi extends CI_Model {
 							from hrd_khs.tpribadi a
 							left join hrd_khs.tseksi b on a.kodesie = b.kodesie
 							left join hrd_khs.torganisasi c on a.kd_jabatan = c.kd_jabatan
-							where ((keluar = '0' and masukkerja <= cast('$currentYear-$month-30' as date)))
+							where ((keluar = '0' and masukkerja <= cast('$year-$month-$day' as date)))
 								and a.kode_status_kerja = 'C'
 								and left(noind, 1) not in('L', 'Z', 'M')
 							union
@@ -90,8 +91,8 @@ class M_Revisi extends CI_Model {
 							from hrd_khs.tpribadi a
 							left join hrd_khs.tseksi b on a.kodesie = b.kodesie
 							left join hrd_khs.torganisasi c on a.kd_jabatan = c.kd_jabatan
-							where ((masukkerja <= cast('$currentYear-$month-30' as date))
-								and (tglkeluar >= cast('$currentYear-$month-30' as date)
+							where ((masukkerja <= cast('$year-$month-$day' as date))
+								and (tglkeluar >= cast('$year-$month-$day' as date)
 								and keluar = '1'))
 								and (masukkerja >= '1945-01-01')
 								and a.kode_status_kerja = 'C'
@@ -130,7 +131,7 @@ class M_Revisi extends CI_Model {
 							from hrd_khs.tpribadi a
 							left join hrd_khs.tseksi b on a.kodesie = b.kodesie
 							left join hrd_khs.torganisasi c on a.kd_jabatan = c.kd_jabatan
-							where ((keluar = '0' and masukkerja <= cast('$currentYear-$month-30' as date)))
+							where ((keluar = '0' and masukkerja <= cast('$year-$month-$day' as date)))
 								and a.kode_status_kerja = 'D'
 								and rtrim(upper(pendidikan)) not in ('S1', 'S2', 'S3', 'D1', 'D2', 'D3', 'D4')
 								and left(a.kodesie, 1)= '4'
@@ -140,7 +141,7 @@ class M_Revisi extends CI_Model {
 							from hrd_khs.tpribadi a
 							left join hrd_khs.tseksi b on a.kodesie = b.kodesie
 							left join hrd_khs.torganisasi c on a.kd_jabatan = c.kd_jabatan
-							where ((masukkerja <= cast('$currentYear-$month-30' as date)) and (tglkeluar >= cast('$currentYear-$month-30' as date) and keluar = '1'))
+							where ((masukkerja <= cast('$year-$month-$day' as date)) and (tglkeluar >= cast('$year-$month-$day' as date) and keluar = '1'))
 								and (masukkerja >= '1945-01-01')
 								and a.kode_status_kerja = 'D'
 								and rtrim(upper(pendidikan)) not in ('S1', 'S2', 'S3', 'D1', 'D2', 'D3', 'D4')
