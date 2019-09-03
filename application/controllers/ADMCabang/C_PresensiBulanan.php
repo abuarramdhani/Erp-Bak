@@ -276,7 +276,7 @@ class C_PresensiBulanan extends CI_Controller
 		header('Content-Disposition:attachment;filename="'.$filename.'"');
 		header('Cache-Control: max-age=0');
 
-		$writer = PHPExcel_IOFactory::createWriter($this->excel,'Excel5');
+		$writer = PHPExcel_IOFactory::createWriter($this->excel,'Excel2007');
 		$writer->save('php://output');
 	}
 }
