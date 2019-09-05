@@ -12,11 +12,11 @@ class M_permohonancuti extends CI_MODEL {
           $this->load->library('encrypt');
   }
 
-  // -------------- --------------------------global function for menu cuti----------------------------------------------- //
+  // -------------- --------------------------global function fOR menu cuti----------------------------------------------- //
   public function getPekerja($noind){
-    $query = "SELECT tp.nama, tp.noind, ts.seksi, ts.unit, ts.dept, ts.kodesie, tp.kd_jabatan
-              FROM hrd_khs.tpribadi tp inner join hrd_khs.tseksi ts on tp.kodesie = ts.kodesie
-              WHERE tp.noind = '$noind'";
+    $query  = "SELECT tp.nama, tp.noind, ts.seksi, ts.unit, ts.dept, ts.kodesie, tp.kd_jabatan
+               FROM hrd_khs.tpribadi tp inner join hrd_khs.tseksi ts on tp.kodesie = ts.kodesie
+               WHERE tp.noind = '$noind'";
     $result = $this->personalia->query($query);
 		return $result->result_array();
   }
@@ -30,68 +30,68 @@ class M_permohonancuti extends CI_MODEL {
     $jabatan = "SELECT kd_jabatan
                 FROM hrd_khs.tpribadi
                 WHERE noind = '$noind'";
-    $jbtn = $this->personalia->query($jabatan)->row()->kd_jabatan;
+    $jbtn    = $this->personalia->query($jabatan)->row()->kd_jabatan;
 
-    $query1 = "SELECT tp.noind, tp.nama, tp.kd_jabatan, tp.jabatan
-               FROM hrd_khs.tpribadi tp
-                inner join hrd_khs.tORganisasi c on c.kd_jabatan=tp.kd_jabatan
-                inner join hrd_khs.tseksi ts on ts.kodesie = tp.kodesie
-               WHERE tp.keluar = '0' AND CASE
-                        WHEN '$jbtn' in('13','14','15','16','17') then
-                           CASE
-                             WHEN (SELECT keluar FROM hrd_khs.tpribadi WHERE kd_jabatan in('10','11','12') AND keluar = '0' AND left('$kodesie',7) = left(kodesie,7) limit 1) = '0' then tp.kd_jabatan in('10','11','12') AND left('$kodesie',7) = left(tp.kodesie,7)
-                             WHEN (SELECT keluar FROM hrd_khs.tpribadi WHERE kd_jabatan in('08','09') AND keluar = '0' AND left('$kodesie',5) = left(kodesie,5) limit 1) = '0' then tp.kd_jabatan in('08','09') AND left('$kodesie',5) = left(tp.kodesie,5)
-                             WHEN (SELECT keluar FROM hrd_khs.tpribadi WHERE kd_jabatan in('07','06','05') AND keluar = '0' AND left('$kodesie',3) = left(kodesie,3) limit 1) = '0' then tp.kd_jabatan in('05','06','07') AND left('$kodesie',3) = left(tp.kodesie,3)
-                             WHEN (SELECT keluar FROM hrd_khs.tpribadi WHERE kd_jabatan in('02','03','04') AND keluar = '0' AND left('$kodesie',1) = left(kodesie,1) limit 1) = '0' then tp.kd_jabatan in('02','03','04') AND left('$kodesie',1) = left(tp.kodesie,1)
-                            ELSE tp.noind = 'a'
-                           END
-                        WHEN '$jbtn' in('11','12') then
-                           CASE
-                            WHEN (SELECT keluar FROM hrd_khs.tpribadi WHERE kd_jabatan in('10') AND keluar = '0' AND left('$kodesie',7) = left(kodesie,7) limit 1) = '0' then tp.kd_jabatan in('10') AND left('$kodesie',7) = left(tp.kodesie,7)
-                            WHEN (SELECT keluar FROM hrd_khs.tpribadi WHERE kd_jabatan in('08','09') AND keluar = '0' AND left('$kodesie',5) = left(kodesie,5) limit 1) = '0' then tp.kd_jabatan in('08','09') AND left('$kodesie',5) = left(tp.kodesie,5)
-                            WHEN (SELECT keluar FROM hrd_khs.tpribadi WHERE kd_jabatan in('07','06','05') AND keluar = '0' AND left('$kodesie',3) = left(kodesie,3) limit 1) = '0' then tp.kd_jabatan in('05','06','07') AND left('$kodesie',3) = left(tp.kodesie,3)
-                            WHEN (SELECT keluar FROM hrd_khs.tpribadi WHERE kd_jabatan in('02','03','04') AND keluar = '0' AND left('$kodesie',1) = left(kodesie,1) limit 1) = '0' then tp.kd_jabatan in('02','03','04') AND left('$kodesie',1) = left(tp.kodesie,1)
-                            ELSE tp.noind = 'a'
-                           END
-                        WHEN '$jbtn' in('10') then
-                           CASE
-                             WHEN (SELECT keluar FROM hrd_khs.tpribadi WHERE kd_jabatan in('08','09') AND keluar = '0' AND left('$kodesie',5) = left(kodesie,5) limit 1) = '0' then tp.kd_jabatan in('08','09') AND left('$kodesie',5) = left(tp.kodesie,5)
-                             WHEN (SELECT keluar FROM hrd_khs.tpribadi WHERE kd_jabatan in('07','06','05') AND keluar = '0' AND left('$kodesie',3) = left(kodesie,3) limit 1) = '0' then tp.kd_jabatan in('05','06','07') AND left('$kodesie',3) = left(tp.kodesie,3)
-                             WHEN (SELECT keluar FROM hrd_khs.tpribadi WHERE kd_jabatan in('02','03','04') AND keluar = '0' AND left('$kodesie',1) = left(kodesie,1) limit 1) = '0' then tp.kd_jabatan in('02','03','04') AND left('$kodesie',1) = left(tp.kodesie,1)
-                            ELSE tp.noind = 'a'
-                           END
-                        WHEN '$jbtn' in('09') then
-                           CASE
-                             WHEN (SELECT keluar FROM hrd_khs.tpribadi WHERE kd_jabatan in('08') AND keluar = '0' AND left('$kodesie',5) = left(kodesie,5) limit 1) = '0' then tp.kd_jabatan in('08') AND left('$kodesie',5) = left(tp.kodesie,5)
-                             WHEN (SELECT keluar FROM hrd_khs.tpribadi WHERE kd_jabatan in('07','06','05') AND keluar = '0' AND left('$kodesie',3) = left(kodesie,3) limit 1) = '0' then tp.kd_jabatan in('05','06','07') AND left('$kodesie',3) = left(tp.kodesie,3)
-                             WHEN (SELECT keluar FROM hrd_khs.tpribadi WHERE kd_jabatan in('02','03','04') AND keluar = '0' AND left('$kodesie',1) = left(kodesie,1) limit 1) = '0' then tp.kd_jabatan in('02','03','04') AND left('$kodesie',1) = left(tp.kodesie,1)
-                            ELSE tp.noind = 'a'
-                           END
-                        WHEN '$jbtn' in('08') then
-                           CASE
-                             WHEN (SELECT keluar FROM hrd_khs.tpribadi WHERE kd_jabatan in('07','06','05') AND keluar = '0' AND left('$kodesie',3) = left(kodesie,3) limit 1) = '0' then tp.kd_jabatan in('05','06','07') AND left('$kodesie',3) = left(tp.kodesie,3)
-                             WHEN (SELECT keluar FROM hrd_khs.tpribadi WHERE kd_jabatan in('02','03','04') AND keluar = '0' AND left('$kodesie',1) = left(kodesie,1) limit 1) = '0' then tp.kd_jabatan in('02','03','04') AND left('$kodesie',1) = left(tp.kodesie,1)
-                            ELSE tp.noind = 'a'
-                           END
-                        WHEN '$jbtn' in('07') then
-                           CASE
-                             WHEN (SELECT keluar FROM hrd_khs.tpribadi WHERE kd_jabatan in('06','05') AND keluar = '0' AND left('$kodesie',3) = left(kodesie,3) limit 1) = '0' then tp.kd_jabatan in('05','06') AND left('$kodesie',3) = left(tp.kodesie,3)
-                             WHEN (SELECT keluar FROM hrd_khs.tpribadi WHERE kd_jabatan in('02','03','04') AND keluar = '0' AND left('$kodesie',1) = left(kodesie,1) limit 1) = '0' then tp.kd_jabatan in('02','03','04') AND left('$kodesie',1) = left(tp.kodesie,1)
-                            ELSE tp.noind = 'a'
-                           END
-                        WHEN '$jbtn' in('06') then
-                           CASE
-                            WHEN (SELECT keluar FROM hrd_khs.tpribadi WHERE kd_jabatan in('05') AND keluar = '0' AND left('$kodesie',3) = left(kodesie,3) limit 1) = '0' then tp.kd_jabatan in('05') AND left('$kodesie',3) = left(tp.kodesie,3)
-                            WHEN (SELECT keluar FROM hrd_khs.tpribadi WHERE kd_jabatan in('02','03','04') AND keluar = '0' AND left('$kodesie',1) = left(kodesie,1) limit 1) = '0' then tp.kd_jabatan in('02','03','04') AND left('$kodesie',1) = left(tp.kodesie,1)
-                            ELSE tp.noind = 'a'
-                           END
-                        WHEN '$jbtn' in('05') then
+    $query1  = "SELECT tp.noind, tp.nama, tp.kd_jabatan, tp.jabatan
+                FROM hrd_khs.tpribadi tp
+                 inner join hrd_khs.tORganisasi c on c.kd_jabatan=tp.kd_jabatan
+                 inner join hrd_khs.tseksi ts on ts.kodesie = tp.kodesie
+                WHERE tp.keluar = '0' AND CASE
+                         WHEN '$jbtn' in('13','14','15','16','17') then
                             CASE
+                              WHEN (SELECT keluar FROM hrd_khs.tpribadi WHERE kd_jabatan in('10','11','12') AND keluar = '0' AND left('$kodesie',7) = left(kodesie,7) limit 1) = '0' then tp.kd_jabatan in('10','11','12') AND left('$kodesie',7) = left(tp.kodesie,7)
+                              WHEN (SELECT keluar FROM hrd_khs.tpribadi WHERE kd_jabatan in('08','09') AND keluar = '0' AND left('$kodesie',5) = left(kodesie,5) limit 1) = '0' then tp.kd_jabatan in('08','09') AND left('$kodesie',5) = left(tp.kodesie,5)
+                              WHEN (SELECT keluar FROM hrd_khs.tpribadi WHERE kd_jabatan in('07','06','05') AND keluar = '0' AND left('$kodesie',3) = left(kodesie,3) limit 1) = '0' then tp.kd_jabatan in('05','06','07') AND left('$kodesie',3) = left(tp.kodesie,3)
+                              WHEN (SELECT keluar FROM hrd_khs.tpribadi WHERE kd_jabatan in('02','03','04') AND keluar = '0' AND left('$kodesie',1) = left(kodesie,1) limit 1) = '0' then tp.kd_jabatan in('02','03','04') AND left('$kodesie',1) = left(tp.kodesie,1)
+                             ELSE tp.noind = 'a'
+                            END
+                         WHEN '$jbtn' in('11','12') then
+                            CASE
+                             WHEN (SELECT keluar FROM hrd_khs.tpribadi WHERE kd_jabatan in('10') AND keluar = '0' AND left('$kodesie',7) = left(kodesie,7) limit 1) = '0' then tp.kd_jabatan in('10') AND left('$kodesie',7) = left(tp.kodesie,7)
+                             WHEN (SELECT keluar FROM hrd_khs.tpribadi WHERE kd_jabatan in('08','09') AND keluar = '0' AND left('$kodesie',5) = left(kodesie,5) limit 1) = '0' then tp.kd_jabatan in('08','09') AND left('$kodesie',5) = left(tp.kodesie,5)
+                             WHEN (SELECT keluar FROM hrd_khs.tpribadi WHERE kd_jabatan in('07','06','05') AND keluar = '0' AND left('$kodesie',3) = left(kodesie,3) limit 1) = '0' then tp.kd_jabatan in('05','06','07') AND left('$kodesie',3) = left(tp.kodesie,3)
                              WHEN (SELECT keluar FROM hrd_khs.tpribadi WHERE kd_jabatan in('02','03','04') AND keluar = '0' AND left('$kodesie',1) = left(kodesie,1) limit 1) = '0' then tp.kd_jabatan in('02','03','04') AND left('$kodesie',1) = left(tp.kodesie,1)
                              ELSE tp.noind = 'a'
                             END
-                        ELSE tp.noind = 'a'
-                      END ORDER BY tp.noind ASC";
+                         WHEN '$jbtn' in('10') then
+                            CASE
+                              WHEN (SELECT keluar FROM hrd_khs.tpribadi WHERE kd_jabatan in('08','09') AND keluar = '0' AND left('$kodesie',5) = left(kodesie,5) limit 1) = '0' then tp.kd_jabatan in('08','09') AND left('$kodesie',5) = left(tp.kodesie,5)
+                              WHEN (SELECT keluar FROM hrd_khs.tpribadi WHERE kd_jabatan in('07','06','05') AND keluar = '0' AND left('$kodesie',3) = left(kodesie,3) limit 1) = '0' then tp.kd_jabatan in('05','06','07') AND left('$kodesie',3) = left(tp.kodesie,3)
+                              WHEN (SELECT keluar FROM hrd_khs.tpribadi WHERE kd_jabatan in('02','03','04') AND keluar = '0' AND left('$kodesie',1) = left(kodesie,1) limit 1) = '0' then tp.kd_jabatan in('02','03','04') AND left('$kodesie',1) = left(tp.kodesie,1)
+                             ELSE tp.noind = 'a'
+                            END
+                         WHEN '$jbtn' in('09') then
+                            CASE
+                              WHEN (SELECT keluar FROM hrd_khs.tpribadi WHERE kd_jabatan in('08') AND keluar = '0' AND left('$kodesie',5) = left(kodesie,5) limit 1) = '0' then tp.kd_jabatan in('08') AND left('$kodesie',5) = left(tp.kodesie,5)
+                              WHEN (SELECT keluar FROM hrd_khs.tpribadi WHERE kd_jabatan in('07','06','05') AND keluar = '0' AND left('$kodesie',3) = left(kodesie,3) limit 1) = '0' then tp.kd_jabatan in('05','06','07') AND left('$kodesie',3) = left(tp.kodesie,3)
+                              WHEN (SELECT keluar FROM hrd_khs.tpribadi WHERE kd_jabatan in('02','03','04') AND keluar = '0' AND left('$kodesie',1) = left(kodesie,1) limit 1) = '0' then tp.kd_jabatan in('02','03','04') AND left('$kodesie',1) = left(tp.kodesie,1)
+                             ELSE tp.noind = 'a'
+                            END
+                         WHEN '$jbtn' in('08') then
+                            CASE
+                              WHEN (SELECT keluar FROM hrd_khs.tpribadi WHERE kd_jabatan in('07','06','05') AND keluar = '0' AND left('$kodesie',3) = left(kodesie,3) limit 1) = '0' then tp.kd_jabatan in('05','06','07') AND left('$kodesie',3) = left(tp.kodesie,3)
+                              WHEN (SELECT keluar FROM hrd_khs.tpribadi WHERE kd_jabatan in('02','03','04') AND keluar = '0' AND left('$kodesie',1) = left(kodesie,1) limit 1) = '0' then tp.kd_jabatan in('02','03','04') AND left('$kodesie',1) = left(tp.kodesie,1)
+                             ELSE tp.noind = 'a'
+                            END
+                         WHEN '$jbtn' in('07') then
+                            CASE
+                              WHEN (SELECT keluar FROM hrd_khs.tpribadi WHERE kd_jabatan in('06','05') AND keluar = '0' AND left('$kodesie',3) = left(kodesie,3) limit 1) = '0' then tp.kd_jabatan in('05','06') AND left('$kodesie',3) = left(tp.kodesie,3)
+                              WHEN (SELECT keluar FROM hrd_khs.tpribadi WHERE kd_jabatan in('02','03','04') AND keluar = '0' AND left('$kodesie',1) = left(kodesie,1) limit 1) = '0' then tp.kd_jabatan in('02','03','04') AND left('$kodesie',1) = left(tp.kodesie,1)
+                             ELSE tp.noind = 'a'
+                            END
+                         WHEN '$jbtn' in('06') then
+                            CASE
+                             WHEN (SELECT keluar FROM hrd_khs.tpribadi WHERE kd_jabatan in('05') AND keluar = '0' AND left('$kodesie',3) = left(kodesie,3) limit 1) = '0' then tp.kd_jabatan in('05') AND left('$kodesie',3) = left(tp.kodesie,3)
+                             WHEN (SELECT keluar FROM hrd_khs.tpribadi WHERE kd_jabatan in('02','03','04') AND keluar = '0' AND left('$kodesie',1) = left(kodesie,1) limit 1) = '0' then tp.kd_jabatan in('02','03','04') AND left('$kodesie',1) = left(tp.kodesie,1)
+                             ELSE tp.noind = 'a'
+                            END
+                         WHEN '$jbtn' in('05') then
+                             CASE
+                              WHEN (SELECT keluar FROM hrd_khs.tpribadi WHERE kd_jabatan in('02','03','04') AND keluar = '0' AND left('$kodesie',1) = left(kodesie,1) limit 1) = '0' then tp.kd_jabatan in('02','03','04') AND left('$kodesie',1) = left(tp.kodesie,1)
+                              ELSE tp.noind = 'a'
+                             END
+                         ELSE tp.noind = 'a'
+                       END ORDER BY tp.noind ASC";
     $result = $this->personalia->query($query1);
     return $result->result_array();
   }
@@ -101,14 +101,14 @@ class M_permohonancuti extends CI_MODEL {
     $SisaCuti = "SELECT sisa_cuti
                  FROM \"Presensi\".tdatacuti
                  WHERE noind = '$noind' AND periode =  '$periode'";
-    $result = $this->personalia->query($SisaCuti);
+    $result   = $this->personalia->query($SisaCuti);
     return $result->result_array();
   }
 
   public function getTglBlhAmbil($noind,$periode){
-    $query = "SELECT tgl_boleh_ambil
-              FROM \"Presensi\".tdatacuti
-              WHERE noind = '$noind' AND periode =  '$periode'";
+    $query  = "SELECT tgl_boleh_ambil
+               FROM \"Presensi\".tdatacuti
+               WHERE noind = '$noind' AND periode =  '$periode'";
     $result = $this->personalia->query($query);
     return $result->result_array();
   }
@@ -117,28 +117,50 @@ class M_permohonancuti extends CI_MODEL {
     $tahunan = "SELECT jenis_cuti,lm_jenis_cuti_id
                 FROM lm.lm_jenis_cuti jc
                 WHERE jc.lm_tipe_cuti_id = '1' ORDER BY jc.jenis_cuti ASC ";
-    $result = $this->db->query($tahunan);
+    $result  = $this->db->query($tahunan);
     return $result->result_array();
   }
 
   public function getKeperluan(){
     $keperluan = "SELECT lm_keperluan_id, keperluan FROM lm.lm_keperluan WHERE  lm_jenis_cuti_id = '13' ORDER BY keperluan ASC";
-    $result = $this->db->query($keperluan);
+    $result    = $this->db->query($keperluan);
     return $result->result_array();
   }
 
   public function getTglAmbil($noind){
     $tglbolehambil = "SELECT tgl_boleh_ambil FROM \"Presensi\".tdatacuti WHERE noind = '$noind'";
-    $result = $this->personalia->query($tglbolehambil);
+    $result        = $this->personalia->query($tglbolehambil);
     return $result->result_array();
   }
 
-  public function cekPKJ($tgl, $noind){
-    return $this->personalia->query("select * from \"Presensi\".tdatapresensi where tanggal='$tgl' and noind='$noind' and kd_ket='PKJ'")->num_rows();
+  public function cekTMPSK($tgl, $noind){
+    return $this->personalia->query("SELECT kd_ket FROM \"Presensi\".tdatapresensi WHERE tanggal='$tgl' AND noind='$noind' AND kd_ket IN('TM','PSK')")->num_rows();
   }
 
-  public function cekPSK($tgl, $noind){
-    return $this->personalia->query("select * from \"Presensi\".tdatapresensi where tanggal='$tgl' and noind='$noind' and kd_ket in('TM', 'PSK')")->num_rows();
+  public function cekTM($tgl, $noind){
+    return $this->personalia->query("SELECT kd_ket FROM \"Presensi\".tdatatim WHERE tanggal='$tgl' AND noind='$noind' AND kd_ket IN('TM')")->num_rows();
+  }
+
+  public function cekPresensi($tgl, $noind)
+  {
+    return $this->personalia->query("SELECT kd_ket FROM \"Presensi\".tdatapresensi WHERE tanggal='$tgl' AND noind='$noind'")->num_rows();
+  }
+
+  public function get_libur($for, $until)
+  {
+    $schema = '"Dinas_Luar".tlibur';
+    $holiday = "SELECT tanggal FROM $schema WHERE tanggal BETWEEN '$for' AND '$until' ";
+    $data =  $this->personalia->query($holiday)->result_array();
+
+    if(!empty($data)){
+      $holiday = array();
+      foreach ($data as $key) {
+        $holiday[] = date('Y-m-d', strtotime($key['tanggal']));
+      }
+      return $holiday;
+    }else{
+      return $data;
+    }
   }
 
 
@@ -163,7 +185,7 @@ class M_permohonancuti extends CI_MODEL {
   // ----------------------------------------Istimewa---------------------------------------------//
   public function getCutiIstimewa(){
     $istimewa = "SELECT jenis_cuti, lm_jenis_cuti_id FROM lm.lm_jenis_cuti jc WHERE jc.lm_tipe_cuti_id = '2' ORDER BY jc.jenis_cuti ASC ";
-    $result = $this->db->query($istimewa);
+    $result   = $this->db->query($istimewa);
     return $result->result_array();
   }
 
@@ -191,7 +213,7 @@ class M_permohonancuti extends CI_MODEL {
   }
 
   public function getNama($noind){
-    $nama = "SELECT employee_name as nama FROM er.er_employee_all emp WHERE emp.employee_code ='$noind'";
+    $nama   = "SELECT employee_name as nama FROM er.er_employee_all emp WHERE emp.employee_code ='$noind'";
     $result = $this->db->query($nama);
     return $result->result_array();
   }
@@ -208,7 +230,7 @@ class M_permohonancuti extends CI_MODEL {
   }
 
   public function getApproval_cuti($id_cuti){
-    $query = "SELECT status, approver, ready FROM lm.lm_approval_cuti WHERE lm_pengajuan_cuti_id = '$id_cuti' ORDER BY approval_id ASC";
+    $query  = "SELECT status, approver, ready FROM lm.lm_approval_cuti WHERE lm_pengajuan_cuti_id = '$id_cuti' ORDER BY approval_id ASC";
     $result = $this->db->query($query);
     return $result->result_array();
   }
@@ -246,7 +268,7 @@ class M_permohonancuti extends CI_MODEL {
 
   public function getDetailTglAmbil($id){
     $tglambil = "SELECT tgl_pengambilan FROM lm.lm_pengajuan_cuti_tgl_ambil WHERE lm_pengajuan_cuti_id = $id ";
-    $result = $this->db->query($tglambil);
+    $result   = $this->db->query($tglambil);
     return $result->result_array();
   }
 
@@ -261,32 +283,32 @@ class M_permohonancuti extends CI_MODEL {
   public function changeKep($jenis, $id_cuti, $data)
   {
     if($jenis == '13'){
-      $set = "lm_keperluan_id = '$data'";
+      $SET = "lm_keperluan_id = '$data'";
     }else{
-      $set = "keperluan = '$data'";
+      $SET = "keperluan = '$data'";
     }
 
-    $query = "UPDATE lm.lm_pengajuan_cuti SET $set WHERE lm_pengajuan_cuti = '$id_cuti'";
+    $query = "UPDATE lm.lm_pengajuan_cuti SET $SET WHERE lm_pengajuan_cuti = '$id_cuti'";
     return $this->db->query($query);
   }
 
-  public function resetTglCuti($id_cuti)
+  public function reSETTglCuti($id_cuti)
   {
-    $this->db->query("delete from lm.lm_pengajuan_cuti_tgl_ambil where lm_pengajuan_cuti_id ='$id_cuti'");
+    $this->db->query("delete FROM lm.lm_pengajuan_cuti_tgl_ambil WHERE lm_pengajuan_cuti_id ='$id_cuti'");
   }
 
   public function updateRequest($id_cuti, $time, $thread, $thread2, $approval1){
     $this->db->insert('lm.lm_pengajuan_cuti_thread', $thread);
     $this->db->insert('lm.lm_pengajuan_cuti_thread', $thread2);
-    $pengajuan = "UPDATE lm.lm_pengajuan_cuti set status = '1', tanggal_status = '$time' WHERE lm_pengajuan_cuti = '$id_cuti'";
-    $approval = "UPDATE lm.lm_approval_cuti set status  = '1' WHERE lm_pengajuan_cuti_id = '$id_cuti' AND approver ='$approval1'";
+    $pengajuan = "UPDATE lm.lm_pengajuan_cuti SET status = '1', tanggal_status = '$time' WHERE lm_pengajuan_cuti = '$id_cuti'";
+    $approval  = "UPDATE lm.lm_approval_cuti SET status  = '1' WHERE lm_pengajuan_cuti_id = '$id_cuti' AND approver ='$approval1'";
 
     $this->db->query($pengajuan);
     $this->db->query($approval);
   }
 
   public function deleteCuti($id_cuti){
-    $query = "DELETE FROM lm.lm_pengajuan_cuti WHERE lm_pengajuan_cuti = '$id_cuti'";
+    $query  = "DELETE FROM lm.lm_pengajuan_cuti WHERE lm_pengajuan_cuti = '$id_cuti'";
       $this->db->query($query);
     $query1 = "DELETE FROM lm.lm_pengajuan_cuti_thread WHERE lm_pengajuan_cuti_id = '$id_cuti'";
       $this->db->query($query1);
@@ -318,7 +340,7 @@ class M_permohonancuti extends CI_MODEL {
     $atasan = $this->db->query($query3)->row()->employee_name;
 
     $bulanId = array(
-      '0' => '-',
+      '0'  => '-',
       '01' => 'Januari',
       '02' => 'Februari',
       '03' => 'Maret',
@@ -335,29 +357,29 @@ class M_permohonancuti extends CI_MODEL {
     $tglkerja = date('Y-m-d', strtotime($cuti['0']['tgl']. '-1 days'));
 
     $bulanAmbil = $bulanId[date('m', strtotime($tglkerja))];
-    $tglambil = date('d',strtotime($tglkerja)).' '.$bulanAmbil.' '.date('Y',strtotime($tglkerja));
+    $tglambil   = date('d',strtotime($tglkerja)).' '.$bulanAmbil.' '.date('Y',strtotime($tglkerja));
 
-    $bulanHpl = $bulanId[date('m', strtotime($cuti['0']['tgl_hpl']))];
-    $tglHpl = date('d',strtotime($cuti['0']['tgl_hpl'])).' '.$bulanHpl.' '.date('Y',strtotime($cuti['0']['tgl_hpl']));
+    $bulanHpl   = $bulanId[date('m', strtotime($cuti['0']['tgl_hpl']))];
+    $tglHpl     = date('d',strtotime($cuti['0']['tgl_hpl'])).' '.$bulanHpl.' '.date('Y',strtotime($cuti['0']['tgl_hpl']));
 
-    $bulanNow = $bulanId[date('m')];
-    $tglNow = date('d').' '.$bulanNow.' '.date('Y');
+    $bulanNow   = $bulanId[date('m')];
+    $tglNow     = date('d').' '.$bulanNow.' '.date('Y');
 
 
     $data = array();
-    $data['noind'] = $cuti['0']['noind'];
-    $data['nama'] = $cuti['0']['nama'];
-    $data['tgl'] = $tglambil;
+    $data['noind']   = $cuti['0']['noind'];
+    $data['nama']    = $cuti['0']['nama'];
+    $data['tgl']     = $tglambil;
     $data['tgl_hpl'] = $tglHpl;
-    $data['atasan'] = $atasan;
-    $data['alamat'] = $cuti['0']['alamat'];
-    $data['seksi'] = $personal['0']['seksi'];
-    $data['now'] = $tglNow;
+    $data['atasan']  = $atasan;
+    $data['alamat']  = $cuti['0']['alamat'];
+    $data['seksi']   = $personal['0']['seksi'];
+    $data['now']     = $tglNow;
     return $data;
   }
 
   public function updateAlamat($alamat,$id_cuti){ // update alamat on cuti istimewa (Istirahat melahirkan) / ajax
-    $sql = "UPDATE lm.lm_pengajuan_cuti set alamat = '$alamat' WHERE lm_pengajuan_cuti = '$id_cuti'";
+    $sql = "UPDATE lm.lm_pengajuan_cuti SET alamat = '$alamat' WHERE lm_pengajuan_cuti = '$id_cuti'";
     $this->db->query($sql);
   }
 
