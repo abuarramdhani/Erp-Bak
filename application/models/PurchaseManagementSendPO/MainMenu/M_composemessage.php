@@ -21,7 +21,7 @@ class M_composemessage extends CI_Model
 								khs_supplier_email_account ksea
 						WHERE
 								pha.VENDOR_ID = ksea.VENDOR_ID
-							AND ksea.KODE = 'HZ_PARTIES'
+							AND ksea.KODE = 'HZ_PARTY_SITES'
 							AND pha.SEGMENT1 = '$id'
 						";
 				$query = $this->oracle->query($sql);
@@ -101,6 +101,22 @@ class M_composemessage extends CI_Model
 										AND poh.segment1 = '$id'
 						Order By pl.LINE_NUM
 						";
+				$query = $this->oracle->query($sql);
+				return $query->result_array();
+		}
+
+		public function getVendorName($id)
+		{
+				$sql = "SELECT DISTINCT
+										pv.VENDOR_NAME
+								FROM
+										po_headers_all pha,
+										po_vendors pv
+								WHERE
+										pv.VENDOR_ID = pha.VENDOR_ID
+									AND
+										pha.SEGMENT1 = $id
+								";
 				$query = $this->oracle->query($sql);
 				return $query->result_array();
 		}
