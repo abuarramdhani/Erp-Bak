@@ -264,7 +264,7 @@ $(document).ready(function(){
                         Swal.fire
                         (
                             'Success!',
-                            'Pesan telah terkirim',
+                            'Pesan telah terkirim dan terarsip',
                             'success'
                         )
                     }else{

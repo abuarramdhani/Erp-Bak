@@ -51,6 +51,27 @@ class C_ComposeMessage extends CI_Controller {
 
     public function SendEmail()
 	{
+		// Delete temporary files
+		$TempFTPDir = glob('./assets/upload/PurchaseManagementSendPO/Temporary/FTPDocument/*');
+		$TempPDFDir = glob('./assets/upload/PurchaseManagementSendPO/Temporary/PDFDocument/*');
+		$TempZIPDir = glob('./assets/upload/PurchaseManagementSendPO/Temporary/ZIPDocument/*');
+
+		foreach($TempFTPDir as $key => $val){
+			if(is_file($val)){
+				unlink($val);
+			}
+		}
+		foreach($TempPDFDir as $key => $val){
+			if(is_file($val)){
+				unlink($val);
+			}
+		}
+		foreach($TempZIPDir as $key => $val){
+			if(is_file($val)){
+				unlink($val);
+			}
+		}
+
 		// Get email content using Ajax
 		$po_number		= $this->input->post('po_number');
 		$getTargetEmail = $this->input->post('toEmail');
@@ -132,10 +153,54 @@ class C_ComposeMessage extends CI_Controller {
 			{		
 				$files = ftp_get($conn, $ftp_local_dir.$po_number.$ftp_file_format, $ftp_server_dir.$po_number.$ftp_file_format, FTP_BINARY);
 			}else{
-				echo json_encode('Lampiran dengan PO Number "'.$po_number.'" tidak ditemukan.');
+				echo json_encode('Lampiran pada direktori sharing dengan PO Number "'.$po_number.'" tidak ditemukan.');
 				exit;
 			}
 
+			// Archive message attachment as zip
+				// Zip Variable
+				$ftp_server_archive_dir = './ARSIP_SCAN_PO/';
+				$zip_dir	 			= './assets/upload/PurchaseManagementSendPO/Temporary/ZIPDocument/';
+				$zip_format				= '.zip';
+
+				// Zip get FTP PDF
+				if( file_exists($ftp_local_dir.$po_number.$ftp_file_format) == TRUE ) {
+					$this->zip->read_file($ftp_local_dir.$po_number.$ftp_file_format,$po_number.$ftp_file_format);
+				};		
+
+				// Zip get generated PDF
+				if( file_exists($pdf_dir.$pdf_filename.$pdf_format) == TRUE ) {
+					$this->zip->read_file($pdf_dir.$pdf_filename.$pdf_format,$pdf_filename.$pdf_format);
+				};
+
+				// Zip get Document Vendor
+				if ( $format_message != 'English' ) {
+					if( file_exists($doc_dir.$doc_filename.$pdf_format) == TRUE ) {
+						$this->zip->read_file($doc_dir.$doc_filename.$pdf_format,$doc_filename.$pdf_format);
+					} else {
+						echo json_encode('Lampiran '.$doc_filename.' tidak ditemukan.');
+						exit;
+					}
+				}
+
+				// Zip get additional attachment
+				if ( isset($_FILES['file_attach1']) && $_FILES['file_attach1']['error'] == UPLOAD_ERR_OK ) {
+					$this->zip->read_file($_FILES['file_attach1']['tmp_name'],$_FILES['file_attach1']['name']);
+				};
+				if ( isset($_FILES['file_attach2']) && $_FILES['file_attach2']['error'] == UPLOAD_ERR_OK ) {
+					$this->zip->read_file($_FILES['file_attach2']['tmp_name'],$_FILES['file_attach2']['name']);
+				};
+
+				// Archive and save document
+				$this->zip->archive($zip_dir.$po_number.$zip_format);
+
+				if( ftp_nlist($conn, $ftp_server_archive_dir.$data['VendorName'][0]['VENDOR_NAME']) < 1 ){
+					ftp_mkdir($conn, $ftp_server_archive_dir.$data['VendorName'][0]['VENDOR_NAME']);
+				};
+
+				ftp_put($conn, $ftp_server_archive_dir.$data['VendorName'][0]['VENDOR_NAME'].'/'.
+						$po_number.$zip_format, $zip_dir.$po_number.$zip_format, FTP_BINARY);
+				
 			// Close connection
 			ftp_close($conn);
 		// FTP //
@@ -209,14 +274,6 @@ class C_ComposeMessage extends CI_Controller {
 		} else {
 			echo json_encode('Message sent!');
 		}
-
-		// Delete saved local files
-		if (file_exists($ftp_local_dir.$po_number.$ftp_file_format) == TRUE) {
-			unlink($ftp_local_dir.$po_number.$ftp_file_format);
-		};
-		if (file_exists($pdf_dir.$pdf_filename.$pdf_format) == TRUE) {
-			unlink($pdf_dir.$pdf_filename.$pdf_format);
-		};
 	}
 
 	public function getUserEmail($id)
@@ -261,8 +318,8 @@ class C_ComposeMessage extends CI_Controller {
 		$data['NO_PO'] = $nomor_po;
 
 		if(empty($data['DETAIL'])){
-			echo json_encode('Lampiran dengan PO Number "'.$nomor_po.'" tidak ditemukan.');
-			exit();
+			echo json_encode('Lampiran Surat Pengiriman Barang dengan PO Number "'.$nomor_po.'" tidak ditemukan.');
+			exit;
 		}
 
 		// ------ GENERATE QRCODE ------
