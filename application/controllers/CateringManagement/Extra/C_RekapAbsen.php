@@ -1,12 +1,12 @@
 <?php
 Defined('BASEPATH') or exit('No direct Script access allowed');
 /**
- *   
+ *
  */
 class C_RekapAbsen extends CI_Controller
 {
-	
-	function __construct() 
+
+	function __construct()
 	{
 		parent::__construct();
 		$this->load->helper('form');
@@ -19,7 +19,7 @@ class C_RekapAbsen extends CI_Controller
 
 		$this->load->model('SystemAdministration/MainMenu/M_user');
 		$this->load->model('CateringManagement/Extra/M_rekapabsen');
-		$this->checkSession(); 
+		$this->checkSession();
 	}
 
 	public function checkSession()
@@ -53,12 +53,10 @@ class C_RekapAbsen extends CI_Controller
 		$tanggal = $this->input->post('tanggal');
 		$shift = $this->input->post('shift_pesanan');
 		$tempat = $this->input->post('tempat_makan');
+		$user_id = $this->session->userid;
 
 		$data['data'] = $this->M_rekapabsen->cari($tanggal,$shift,$tempat);
 
-		$user_id = $this->session->userid;
-
-		// $date = explode( ' - ' , $tanggal);
 		$tgl1 = date('d/M/Y',strtotime($tanggal));
 		$data['tanggalm'] = $tgl1;
 
@@ -75,8 +73,8 @@ class C_RekapAbsen extends CI_Controller
 		$this->load->view('V_Sidemenu',$data);
 		$this->load->view('CateringManagement/Extra/LihatAbsen/V_index.php',$data);
 		$this->load->view('V_Footer',$data);
-		
+
 	}
-		
+
 }
 ?>

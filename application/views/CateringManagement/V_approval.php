@@ -41,9 +41,9 @@
                                    <tr>
                                      <th style="width: 30px;">No</th>
                                      <th style="width: 150px; text-align: center;">Action</th>
+                                     <th>Waktu Makan</th>
                                      <th>Tempat Makan</th>
                                      <th>Tambahan</th>
-                                     <th>Pengurangan</th>
                                      <th>Nama Pemesan</th>
                                      <th>Seksi</th>
                                      <th class="text-center">Status</th>
@@ -71,17 +71,19 @@
                                                style="padding:1px 5px; margin-top:5px;"
                                                onclick="detailcatering(<?= $key['id']?>)"></i></td>
                                            <?php endif; ?>
+                                           <td><?php if ($key['shift_tambahan'] == '1' || $key['shift_tambahan'] == '4') {
+                                                 echo "MAKAN SIANG";
+                                               }elseif ($key['shift_tambahan'] == '2') {
+                                                 echo "MAKAN MALAM";
+                                               }else {
+                                                 echo "MAKAN DINI HARI";
+                                               } ?></td>
                                            <td><?php echo $key['tempat_makan']; ?></td>
                                            <td><?php if (empty($key['tambahan'])) {
-                                             echo "-";
-                                           }else {
-                                             echo  $key['tambahan'];
-                                           }; ?></td>
-                                           <td><?php if (empty($key['pengurangan'])) {
-                                             echo "-";
-                                           }else {
-                                             echo $key['pengurangan'];
-                                           }; ?></td>
+                                                 echo "-";
+                                               }else {
+                                                 echo  $key['tambahan'];
+                                               }; ?></td>
                                            <?php foreach ($sie as $keyb){
                                              if ($key['user_'] == $keyb['noind']) {
                                                $noind = $keyb['noind'];
@@ -117,7 +119,6 @@
                                        <th>Tanggal Pesanan</th>
                                        <th>Tempat Makan</th>
                                        <th>Tambahan</th>
-                                       <th>Pengurangan</th>
                                        <th>Nama Pemesan</th>
                                        <th>Seksi</th>
                                        <th class="text-center">Status</th>
@@ -141,7 +142,7 @@
                                                  style="border-radius:3px; padding:1px 5px; margin-top:5px; color: red;"
                                                  onclick="detailcatering(<?= $key['id']?>)"></i></td>
                                                <?php else: ?>
-                                                 <td class="text-center"><i class="btn fa fa-2x fa-file-text-o btn-xs " data-toggle="tooltip" title="Lihat Detail"
+                                                 <td class="text-center"><i class="btn fa fa-2x fa-list-alt btn-xs " data-toggle="tooltip" title="Lihat Detail"
                                                    style="padding:1px 5px; margin-top:5px;"
                                                    onclick="detailcatering(<?= $key['id']?>)"></i></td>
                                                  <?php endif; ?>
@@ -151,11 +152,6 @@
                                                    echo "-";
                                                  }else {
                                                    echo  $key['tambahan'];
-                                                 }; ?></td>
-                                                 <td><?php if (empty($key['pengurangan'])) {
-                                                   echo "-";
-                                                 }else {
-                                                   echo $key['pengurangan'];
                                                  }; ?></td>
                                                  <?php foreach ($sie as $keyb){
                                                    if ($key['user_'] == $keyb['noind']) {
@@ -251,13 +247,6 @@
           <br>
           <div class="row">
             <div class="col-lg-12">
-              <label class="col-lg-4 text-right">Jumlah Pengurangan</label><label class="col-lg-1">:</label>
-              <input class="form-control col-lg-7" name="min" id="modal-jml_min_Tambahan" readonly  style="width: 55%">
-            </div>
-          </div>
-          <br>
-          <div class="row">
-            <div class="col-lg-12">
               <label class="col-lg-4 text-right">Keperluan</label><label class="col-lg-1">:</label>
               <input class="form-control col-lg-7" name="kep" id="modal-Keperluan" readonly  style="width: 55%">
             </div>
@@ -266,7 +255,7 @@
           <div class="row">
             <div class="col-lg-12">
               <label class="col-lg-4 text-right">Keterangan</label><label class="col-lg-1">:</label>
-              <input class="form-control col-lg-7" name="ket"  id="modal-keterangan" readonly style="width: 55%">
+              <div id="data_keterangan_approv" class="row">
             </div>
           </div>
         </div>
@@ -295,7 +284,7 @@ $(document).ready(function(){
   var noind = '<?=$user?>';
   console.log(noind);
 
-  if(noind != 'J1256')
+  if(noind != 'J1256' && noind != 'F2324' && noind != 'B0720')
   {
     $('#page').hide();
     Swal.fire({

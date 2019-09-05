@@ -114,7 +114,7 @@
 															<button type="button" class="btn btn-primary edit_tempat_makan_staff" id="kirimStaff" onclick="simpanstaff()">Edit Staff</button>&nbsp
 															<button type="button" class="btn btn-primary edit_tempat_makan_nonstaff" id="kirimNonStaff" onclick="simpannonstaff()">Edit NonStaff</button>&nbsp
 															<button type="button" class="btn btn-danger edit_tempat_makan_batal" id="batal1" onclick="batal()" style="display:none ;">Batal</button>&nbsp
-															<button type="reset" class="btn btn-info" onclick="reseta()" >Reset</button>
+															<button type="reset" class="btn btn-info" onclick="resetEdit()" >Reset</button>
 														<br>
 														</form>
 												</table>
@@ -136,7 +136,7 @@
 																</div>
 																<br>
 																<form method="POST" action="<?php echo site_url('CateringManagement/Extra/EditTempatMakan/getShow'); ?>">
-																<table class="datatable table dataTable-EditTmp table-bordered text-left" style="font-size:12px; width: 100%; margin: 1px;">
+																<table class="datatable table dataTable-EditTmp table-bordered text-left" style="font-size:12px; width: 100%; margin: 1px; text-align: left;">
 																	<div class="row"></div>
 
 											                <thead>

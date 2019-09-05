@@ -35,7 +35,7 @@ class C_Tambahan extends CI_Controller
 		$user = $this->session->username;
 		$user_id = $this->session->userid;
 
-		$data['Title'] = 'Pesanan Tambahan';
+		$data['Title'] = 'Pesanan Tambah Makan';
 		$data['Menu'] = 'Pesanan Tambahan ';
 		$data['SubMenuOne'] = '';
 		$data['SubMenuTwo'] = '';
@@ -67,70 +67,186 @@ class C_Tambahan extends CI_Controller
 
 	public function simpan()
 	{
-		// echo "<pre>";
-		 //print_r($_POST);exit;
 		$tgl_pesanan = date('Y-m-d');
 		$kd_shift = $this->input->post('shift_pesanan');
-		$lokasi_kerja = $this->input->post('lokasi_pesanan');
 		$tempat_makan = $this->input->post('tempat_makan');
-		$tambahan = $this->input->post('tambahan_pesanan');
-		$pengurangan = $this->input->post('pengurangan_pesanan');
+		$tambahan = $this->input->post('total_pesanan');
 		$keperluan = $this->input->post('keperluan');
 		$ket = $this->input->post('ketnoind');
 		$implode = $this->input->post('implode');
+
 		if($implode == 1){
-			$in = implode(", ", $ket);
+			$in = implode("', '", $ket);
+			$newin = "'$in'";
+			$inputNama = str_replace("', '",', ',$in);
+			$tmp_makan_tpribadi = $this->M_pesanan->getTempatMakanTpribadi(true ,$newin);
 		}else{
-			$in = $ket;
+			$in = $ket[0];
+			$tmp_makan_tpribadi = $this->M_pesanan->getTempatMakanTpribadi(false, $in);
+		}
+		  // echo "<pre>";
+		  // print_r($tmp_makan_tpribadi);exit();
+
+
+		if ((($kd_shift == '1' || $kd_shift == '2' || $kd_shift == '3') && $keperluan == 'SELEKSI') || (($kd_shift == '1' || $kd_shift == '2' || $kd_shift == '3') && $keperluan == 'T/V')) {
+			$array = array(
+				'tgl_pesanan' => $tgl_pesanan,
+				'tempat_makan' => $tempat_makan,
+				'lokasi_kerja' => '01',
+				'shift_tambahan' => $kd_shift,
+				'tambahan' => $tambahan,
+				'keterangan' => $inputNama,
+				'user_' => $this->session->user,
+				'status' => 1,
+				'keperluan' => $keperluan
+			);
+			$this->M_pesanan->insertapprove($array);
 		}
 
-		//keperluan e-mail
-		$noind = $this->session->user;
-		$object = $this->M_pesanan->getNama($noind);
-		$seksi = $this->M_pesanan->getSieEmail($noind);
-		$link = base_url('ApprovalTambahan');
+		$noind = $shift_validasi = $lokasi = array();
+		if ($keperluan == 'LEMBUR_DATANG') {
+			for ($i=0; $i < count($tmp_makan_tpribadi) ; $i++) {
+				unset($noind);
+				unset($shift_validasi);
+				unset($lokasi);
+				for ($j=0; $j < count($tmp_makan_tpribadi[$i]) ; $j++) {
+						$noind[$j] = $tmp_makan_tpribadi[$i][$j]['noind'];
+						$makan_validasi[$i][$j] = $tmp_makan_tpribadi[$i][$j]['tempat_makan'];
+						$shift_validasi[$j] = $tmp_makan_tpribadi[$i][$j]['kd_shift'];
+						$lokasi[$j] = $tmp_makan_tpribadi[$i][$j]['lokasi_kerja'];
 
-		$jenis = "";
-		if (empty($jenis)) {
-			if ($tambahan > 0 && empty($pengurangan)) {
-				$jenis = "Tambahan";
-			}elseif (empty($tambahan) && $pengurangan > 0) {
-				$jenis = "Pengurangan";
+						if ($kd_shift == '1') {
+							$cekInvalid= $this->M_pesanan->getValidasiNoind($noind[$j], $makan_validasi[$i][$j]);
+						}
+						if ($kd_shift == '2') {
+							$cekInvalid= $this->M_pesanan->getValidasiNoindShift2($noind[$j], $makan_validasi[$i][$j]);
+						}
+						if ($kd_shift == '3') {
+							$cekInvalid= $this->M_pesanan->getValidasiNoindShift3($noind[$j], $makan_validasi[$i][$j]);
+						}
+						if(!empty($cekInvalid)){
+							$validasi_noind[$i][] = $cekInvalid[0]['noind'];
+							unset($noind[$j]);
+						}
+				}
+
+				if(!empty($noind)){
+					$noindNew = implode(', ', $noind);
+
+					$array1 = array(
+						'tgl_pesanan' => $tgl_pesanan,
+						'tempat_makan' => $tmp_makan_tpribadi[$i][0]['tempat_makan'],
+						'lokasi_kerja' => $lokasi[0],
+						'shift_tambahan' => $kd_shift+1,
+						'tambahan' => count($noind),
+						'keterangan' => $noindNew,
+						'user_' => $this->session->user,
+						'status' => 1,
+						'keperluan' => $keperluan,
+						'shift_keterangan' => $shift_validasi[0]
+					);
+					$array2 = array(
+						'tgl_pesanan' => $tgl_pesanan,
+						'tempat_makan' => $tmp_makan_tpribadi[$i][0]['tempat_makan'],
+						'lokasi_kerja' => $lokasi[0],
+						'shift_tambahan' => $kd_shift,
+						'tambahan' => count($noind),
+						'keterangan' => $noindNew,
+						'user_' => $this->session->user,
+						'status' => 1,
+						'keperluan' => $keperluan,
+						'shift_keterangan' => $shift_validasi[0]
+					);
+					$this->M_pesanan->insertapprovedatang($array1, $array2);
+				}
+			}
+		}
+		//echo "<pre>";
+		 //print_r($tmp_makan_tpribadi);die;
+
+		$noind = $shift_validasi = $lokasi = array();
+		if ($keperluan == 'LEMBUR_PULANG') {
+			for ($i=0; $i < count($tmp_makan_tpribadi) ; $i++) {
+				unset($noind);
+				unset($shift_validasi);
+				unset($lokasi);
+				for ($j=0; $j < count($tmp_makan_tpribadi[$i]) ; $j++) {
+						$noind[$j] = $tmp_makan_tpribadi[$i][$j]['noind'];
+						$makan_validasi[$i][$j] = $tmp_makan_tpribadi[$i][$j]['tempat_makan'];
+						$shift_validasi[$j] = $tmp_makan_tpribadi[$i][$j]['kd_shift'];
+						$lokasi[$j] = $tmp_makan_tpribadi[$i][$j]['lokasi_kerja'];
+
+						if ($kd_shift == '1') {
+							$cekInvalid= $this->M_pesanan->getValidasiNoind($noind[$j], $makan_validasi[$i][$j]);
+						}
+						if ($kd_shift == '2') {
+							$cekInvalid= $this->M_pesanan->getValidasiNoindShift2($noind[$j], $makan_validasi[$i][$j]);
+						}
+						if ($kd_shift == '3') {
+							$cekInvalid= $this->M_pesanan->getValidasiNoindShift3($noind[$j], $makan_validasi[$i][$j]);
+						}
+						if(!empty($cekInvalid)){
+							$validasi_noind[$i][] = $cekInvalid[0]['noind'];
+							unset($noind[$j]);
+						}
+				}
+
+				if(!empty($noind)){
+					$noindNew = implode(', ', $noind);
+
+					$array2 = array(
+						'tgl_pesanan' => $tgl_pesanan,
+						'tempat_makan' => $tmp_makan_tpribadi[$i][0]['tempat_makan'],
+						'lokasi_kerja' => $lokasi[0],
+						'shift_tambahan' => $kd_shift,
+						'tambahan' => count($noind),
+						'keterangan' => $noindNew,
+						'user_' => $this->session->user,
+						'status' => 1,
+						'keperluan' => $keperluan,
+						'shift_keterangan' => $shift_validasi[0]
+					);
+					$this->M_pesanan->insertapprove($array2);
+				}
 			}
 		}
 
-		$jumlah = "";
-		if (empty($jumlah)) {
-			if (!empty($tambahan)) {
-				$jumlah = $tambahan;
-			}else {
-				$jumlah = $pengurangan;
+
+		if(isset($validasi_noind) && !empty($validasi_noind)){
+			$validasi_noind = array_values($validasi_noind);
+			$notif[0] = 'invalid';
+			for ($i=0; $i < count($validasi_noind) ; $i++) {
+				for ($j=0; $j < count($validasi_noind[$i]) ; $j++) {
+					$whoInvalid[] = $validasi_noind[$i][$j];
+				}
 			}
+			$total_mail = $tambahan - count($whoInvalid);
+			$whoInvalid = implode(', ', $whoInvalid);
+			$notif[1] = $whoInvalid;
+
+			//keperluan e-mail
+			$noind = $this->session->user;
+			$object = $this->M_pesanan->getNama($noind);
+			$seksi = $this->M_pesanan->getSieEmail($noind);
+			$link = base_url('ApprovalTambahan');
+
+			$this->sendMail($object, $link, $seksi, $total_mail);
+		}else{
+			//keperluan e-mail
+			$noind = $this->session->user;
+			$object = $this->M_pesanan->getNama($noind);
+			$seksi = $this->M_pesanan->getSieEmail($noind);
+			$link = base_url('ApprovalTambahan');
+
+			$this->sendMail($object, $link, $seksi, $tambahan);
+			$notif[0] = 'valid';
+			$notif[1] = '';
 		}
 
-		$user = $this->session->username;
-
-		$array = array(
-					'tgl_pesanan' => $tgl_pesanan,
-					'tempat_makan' => $tempat_makan,
-					'lokasi_kerja' => $lokasi_kerja,
-					'kd_shift' => $kd_shift,
-					'tambahan' => $tambahan,
-					'pengurangan' => $pengurangan,
-					'keterangan' => $in,
-					'user_' => $this->session->user,
-					'status' => 1,
-					'keperluan' => $keperluan
-				);
-		$this->M_pesanan->insertapprove($array);
-
-		$this->sendMail($object, $link, $seksi, $jenis, $jumlah);
-
-		//redirect('CateringTambahan'); iki raguno
-
+		echo json_encode($notif); //liat ini dulu
 	}
 
-	public function sendMail($object, $link, $seksi, $jenis, $jumlah){
+	public function sendMail($object, $link, $seksi, $tambahan){
 		$Quick = [
 			'mailtype'  => 'html',
 			'charset'   => 'utf-8',
@@ -143,19 +259,17 @@ class C_Tambahan extends CI_Controller
 			'newline'   => "\r\n"
 		];
 		$this->load->library('email', $Quick);
-		$this->email->from('no-reply', 'Email Catering');
+		$this->email->from('no-reply', 'Permohonan Catering Tambahan');
 			// $this->email->to($address);
 		$this->email->to('rosyidatun_nur_r@quick.com');
 		$this->email->subject('Permintaan Approval Catering Tambahan');
-		$this->email->message("Anda mendapat pengajuan approval <b>".$jenis." Catering</b> dari <b>".$object."</b>, dengan rincian : <br><br>
-			Jumlah : ".$jumlah." <br>
+		$this->email->message("Anda mendapat pengajuan approval <b>Tambahan Catering</b> dari <b>".$object."</b>, dengan rincian : <br><br>
+			Jumlah : ".$tambahan." <br>
 			Seksi : ".$seksi." <br>
 			Status : <style= 'text-color: orange';>Menunggu Approval anda <br><br>
-			Klik <a href=".$link.">Link</a> untuk Melihat Cuti disini <br>
+			Klik <a href=".$link.">Link</a> untuk Melihat Pesanan disini <br>
 			");
 		$this->email->send();
 	}
-
-
 
 }
