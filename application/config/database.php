@@ -674,10 +674,10 @@ $efg="";
 		);
 		$db['recruitment'] = array(
 			'dsn'				=> '',
-			'hostname' => 'quick.co.id',
-			'username' => 'quickc01_r33cr11',
-			'password' => 'BuZpN^V1MzJH',
-			'database' => 'quickc01_r3cru1t',
+			'hostname' 			=> 'quick.co.id',
+			'username' 			=> 'quickc01_r33cr11',
+			'password' 			=> 'BuZpN^V1MzJH',
+			'database' 			=> 'quickc01_r3cru1t',
 			'dbdriver' 			=> 'mysqli',
 			'dbprefix' 			=> '',
 			'pconnect' 			=> FALSE,
