@@ -11,7 +11,9 @@ class C_ComposeMessage extends CI_Controller {
         $this->load->helper('html');
 		$this->load->library('form_validation');
 		$this->load->library('session');
+		$this->load->library('zip');
 		$this->load->model('M_Index');
+		$this->load->model('PurchaseManagementSendPO/MainMenu/M_composemessage');
 		$this->load->model('SystemAdministration/MainMenu/M_user');
        	  
 		 if($this->session->userdata('logged_in')!=TRUE) {
@@ -31,7 +33,7 @@ class C_ComposeMessage extends CI_Controller {
 	public function index()
 	{
         $this->checkSession();
-        
+								
 		$user_id = $this->session->userid;
 		
 		$data['Menu'] = 'Dashboard';
@@ -50,13 +52,13 @@ class C_ComposeMessage extends CI_Controller {
     public function SendEmail()
 	{
 		// Get email content using Ajax
-		$po_number		= $_POST['po_number'];
-		$getTargetEmail = $_POST['toEmail'];
-		$getCCEmail		= $_POST['ccEmail'];
-		$getBCCEmail	= $_POST['bccEmail'];
-		$subject	 	= $_POST['subject'];
-		$format_message	= $_POST['format_message'];
-		$body			= $_POST['body'];
+		$po_number		= $this->input->post('po_number');
+		$getTargetEmail = $this->input->post('toEmail');
+		$getCCEmail		= $this->input->post('ccEmail');
+		$getBCCEmail	= $this->input->post('bccEmail');
+		$subject	 	= $this->input->post('subject');
+		$format_message	= $this->input->post('format_message');
+		$body			= $this->input->post('body');
 		$toEmail		= preg_replace('/\s+/', '', explode(',', $getTargetEmail));
 		$ccEmail		= preg_replace('/\s+/', '', explode(',', $getCCEmail));
 		$bccEmail		= preg_replace('/\s+/', '', explode(',', $getBCCEmail));
@@ -65,8 +67,23 @@ class C_ComposeMessage extends CI_Controller {
 			$body = ' ';
 	   	}
 
+		// Get Vendor Name
+		$data['VendorName'] = $this->M_composemessage->getVendorName($po_number);
+
 		// Get PDF from other function
-		$this->PurchaseManagementDocument($po_number);
+		if ( count($data['VendorName']) > 0 ){			
+			switch ( $data['VendorName'][0]['VENDOR_NAME'] ) {
+				case 'GINSA INTI PRATAMA,PT':
+				case 'SENTRAL FASTINDO, CV':
+				case 'SIDO RAHAYU, PT':
+				case 'SAGATEKNINDO SEJATI,PT':
+				case 'TUNGGAL DJAJA INDAH, PT. PABRIK CAT':
+					$this->PurchaseManagementDocument($po_number);
+					break;
+				default:
+					break;
+			}
+		}
 
 		// Directory var
 		$doc_dir		= './assets/upload/PurchaseManagementSendPO/Attachment/';
@@ -143,7 +160,7 @@ class C_ComposeMessage extends CI_Controller {
 				);
         $mail->Username = 'purchasing.sec12@quick.co.id';
         $mail->Password = 'uZa78cf4npur2018sec12';
-        $mail->WordWrap = 50;
+		$mail->WordWrap = 50;
 
         // Set email content to sent
 		$mail->setFrom('purchasing.sec12@quick.co.id', 'Admin PO CV. KHS');
@@ -184,7 +201,7 @@ class C_ComposeMessage extends CI_Controller {
 			};
 		$mail->Subject = $subject;
 		$mail->msgHTML($body);
-		
+
 		// Send email
 		if (!$mail->send()) {
 			echo json_encode(null);
@@ -203,9 +220,7 @@ class C_ComposeMessage extends CI_Controller {
 	}
 
 	public function getUserEmail($id)
-	{
-		$this->load->model('PurchaseManagementSendPO/MainMenu/M_composemessage');
-		
+	{		
 		$email = $this->M_composemessage->getEmailAddress($id);
 		if (!empty($email)){
 			$data  = str_replace(' /', ',', $email[0]['EMAIL']);
@@ -217,8 +232,6 @@ class C_ComposeMessage extends CI_Controller {
 
 	public function PurchaseManagementDocument($id)
 	{
-		$this->load->model('PurchaseManagementSendPO/MainMenu/M_composemessage');
-
 		$result 	= $this->M_composemessage->getDeliveryLetters($id);
 		$nomor_po 	= $id;
 		$max_data 	= 1;
