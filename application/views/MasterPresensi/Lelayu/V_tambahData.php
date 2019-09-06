@@ -3,6 +3,7 @@
 	 width:250px !important;
 	}
 </style>
+<?php if($spsi != 'alert'): ?>
 <section class="content">
 	<div class="inner">
 		<div class="row">
@@ -101,14 +102,14 @@
 													<h5>Askanit ke-Atas</h5>
 												</div>
 												<div class="col-lg-2 text-right">
-													<h5 name="askanit" id="askanit" value="<?php echo $spsi['0']['noind']."	x " ?>"><?php echo $spsi['0']['noind']."	x "." Rp " ?></h5>
+													<h5 name="askanit" id="askanit" value="<?php echo $spsi."	x " ?>"><?php echo $spsi."	x "." Rp " ?></h5>
 												</div>
 												<div class="col-lg-1 text-right">
 													<h5 name="nomAskanit" id="nomAskanit" value="<?php echo $nominal ?>"><?php echo number_format($nominal,2,',','.'); ?></h5>
 												</div>
 												<h5 class="col-lg-1 text-right">Rp</h5>
 												<div class="col-lg-2 text-right">
-													<h5 name="totalAskanit" id="totalAskanit" value="<?php $total1 = $spsi['0']['noind']*$nominal; echo $total1 ?>"><?php
+													<h5 name="totalAskanit" id="totalAskanit" value="<?php $total1 = $spsi*$nominal; echo $total1 ?>"><?php
 															echo number_format($total1,2,',','.'); ?></h5>
 												</div>
 
@@ -116,14 +117,14 @@
 													<h5>Kasie Madya - Kasie Utama</h5>
 												</div>
 												<div class="col-lg-2 text-right">
-													<h5 name="madya" id="madya" value="<?php echo $spsi1['0']['noind']." x " ?>"><?php echo $spsi1['0']['noind']." x "." Rp " ?></h5>
+													<h5 name="madya" id="madya" value="<?php echo $spsi1." x " ?>"><?php echo $spsi1." x "." Rp " ?></h5>
 												</div>
 												<div class="col-lg-1 text-right">
 													<h5 name="nomMadya" id="nomMadya" value="<?php echo $nominal1 ?>"><?php echo number_format($nominal1,2,',','.'); ?></h5>
 												</div>
 												<h5 class="col-lg-1 text-right">Rp</h5>
 												<div class="col-lg-2 text-right">
-													<h5 name="totMadya" id="totMadya" value="<?php $total2 = $spsi1['0']['noind']*$nominal1; echo $total2 ?>"><?php
+													<h5 name="totMadya" id="totMadya" value="<?php $total2 = $spsi1*$nominal1; echo $total2 ?>"><?php
 															echo number_format($total2,2,',','.'); ?></h5>
 												</div>
 
@@ -131,14 +132,14 @@
 													<h5>Supervisor - Kasie Pratama</h5>
 												</div>
 												<div class="col-lg-2 text-right">
-													<h5 name="supervisor" id="supervisor" value="<?php echo $spsi2['0']['noind']." x " ?>"><?php echo $spsi2['0']['noind']." x "." Rp " ?></h5>
+													<h5 name="supervisor" id="supervisor" value="<?php echo $spsi2." x " ?>"><?php echo $spsi2." x "." Rp " ?></h5>
 												</div>
 												<div class="col-lg-1 text-right">
 													<h5 name="nomSuper" id="nomSuper" value="<?php echo $nominal2 ?>"><?php echo number_format($nominal2,2,',','.'); ?></h5>
 												</div>
 												<h5 class="col-lg-1 text-right">Rp</h5>
 												<div class="col-lg-2 text-right">
-													<h5 name="totSuper" id="totSuper" value="<?php $total3 = $spsi2['0']['noind']*$nominal2; echo $total3 ?>"><?php
+													<h5 name="totSuper" id="totSuper" value="<?php $total3 = $spsi2*$nominal2; echo $total3 ?>"><?php
 															echo number_format($total3,2,',','.'); ?></h5>
 												</div>
 
@@ -146,14 +147,14 @@
 													<h5>Non Staff dan Staff Non Manajerial</h5>
 												</div>
 												<div class="col-lg-2 text-right">
-													<h5 name="nonStaff" id="nonStaff" value="<?php echo $spsi3['0']['noind']." x " ?>"><?php echo $spsi3['0']['noind']." x "." Rp " ?></h5>
+													<h5 name="nonStaff" id="nonStaff" value="<?php echo $spsi3." x " ?>"><?php echo $spsi3." x "." Rp " ?></h5>
 												</div>
 												<div class="col-lg-1 text-right">
 													<h5 name="nomNon" id="nomNon" value="<?php echo $nominal3 ?>"><?php echo number_format($nominal3,2,',','.'); ?></h5>
 												</div>
 												<h5 class="col-lg-1 text-right">Rp</h5>
 												<div class="col-lg-2 text-right">
-													<h5 name="totNon" id="totNon" value="<?php $total4 = $spsi3['0']['noind']*$nominal3; echo $total4 ?>"><?php
+													<h5 name="totNon" id="totNon" value="<?php $total4 = $spsi3*$nominal3; echo $total4 ?>"><?php
 															echo number_format($total4,2,',','.'); ?></h5>
 												</div>
 											</div>
@@ -191,3 +192,22 @@
 		</div>
 	</div>
 </section>
+<?php endif; ?>
+<script type="text/javascript">
+	$(document).ready(function(){
+		let spsi 	= '<?= $spsi ?>'
+		let spsi1 = '<?= $spsi1 ?>'
+		let spsi2 = '<?= $spsi2 ?>'
+		let spsi3 = '<?= $spsi3 ?>'
+		console.log(spsi, spsi1, spsi2, spsi3)
+		if(spsi == 'alert' || spsi1 == 'alert' ||spsi2 == 'alert' ||spsi3 == 'alert'){
+			swal.fire({
+				title:'Peringatan',
+				text:'Periode Cutoff tidak ditemukan',
+				type:'warning',
+				showConfirmButton:true
+			})
+			window.location.href = baseurl+"MasterPresensi";
+		}
+	})
+</script>

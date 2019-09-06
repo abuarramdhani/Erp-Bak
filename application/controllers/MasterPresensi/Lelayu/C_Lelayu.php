@@ -37,6 +37,9 @@ class C_Lelayu extends CI_Controller
     $user = $this->session->username;
     $user_id = $this->session->userid;
     $today = date('d M Y');
+    $bulancutoff = date('Y-m-21');
+    $bulanlalu = date('Y-m-d', strtotime($bulancutoff. ' -1 month'));
+    $tanggalcutoff = date('d');
 
     $data['Title'] = 'Tambah Data Lelayu';
     $data['Menu'] = 'Master Presensi';
@@ -50,13 +53,13 @@ class C_Lelayu extends CI_Controller
     $data['pekerja'] = $this->M_lelayu->getPekerja();
     $data['today'] = $today;
     $data['data'] = $this->M_lelayu->getData()->result_array();
-    $data['spsi'] = $this->M_lelayu->getSPSI();
+    $data['spsi'] = $this->M_lelayu->getSPSI($bulancutoff, $tanggalcutoff, $bulanlalu);
     $data['nominal'] = $this->M_lelayu->getNominal();
-    $data['spsi1'] = $this->M_lelayu->getSPSI1();
+    $data['spsi1'] = $this->M_lelayu->getSPSI1($bulancutoff, $tanggalcutoff, $bulanlalu);
     $data['nominal1'] = $this->M_lelayu->getNominal1();
-    $data['spsi2'] = $this->M_lelayu->getSPSI2();
+    $data['spsi2'] = $this->M_lelayu->getSPSI2($bulancutoff, $tanggalcutoff, $bulanlalu);
     $data['nominal2'] = $this->M_lelayu->getNominal2();
-    $data['spsi3'] = $this->M_lelayu->getSPSI3();
+    $data['spsi3'] = $this->M_lelayu->getSPSI3($bulancutoff, $tanggalcutoff, $bulanlalu);
     $data['nominal3'] = $this->M_lelayu->getNominal3();
 
     $this->load->view('V_Header',$data);
@@ -98,11 +101,15 @@ class C_Lelayu extends CI_Controller
     );
     $this->M_lelayu->insertAll($array);
 
+    $bulancutoff = date('Y-m-21');
+    $tanggalcutoff = date('d');
+    $bulanlalu = date('Y-m-d', strtotime($bulancutoff. ' -1 month'));
+
     $id = $this->M_lelayu->getID();
-    $noindAll = $this->M_lelayu->getNoindAll();
-    $noindAll1 = $this->M_lelayu->getNoindAll1();
-    $noindAll2 = $this->M_lelayu->getNoindAll2();
-    $noindAll3 = $this->M_lelayu->getNoindAll3();
+    $noindAll = $this->M_lelayu->getNoindAll($bulancutoff, $tanggalcutoff, $bulanlalu);
+    $noindAll1 = $this->M_lelayu->getNoindAll1($bulancutoff, $tanggalcutoff, $bulanlalu);
+    $noindAll2 = $this->M_lelayu->getNoindAll2($bulancutoff, $tanggalcutoff, $bulanlalu);
+    $noindAll3 = $this->M_lelayu->getNoindAll3($bulancutoff, $tanggalcutoff, $bulanlalu);
     $nominal = $this->M_lelayu->getNominal();
     $nominal1 = $this->M_lelayu->getNominal1();
     $nominal2 = $this->M_lelayu->getNominal2();

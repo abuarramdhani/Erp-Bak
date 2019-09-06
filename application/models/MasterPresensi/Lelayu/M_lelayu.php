@@ -27,10 +27,51 @@ class M_lelayu extends CI_Model
     return $this->personalia->query($sql)->result_array();
   }
 
-  public function getSPSI()
+  public function getSPSI($bulancutoff, $tanggalcutoff, $bulanlalu)
   {
-    $sql1 = "SELECT count(noind) as noind FROM hrd_khs.tpribadi WHERE keluar='0' AND (kd_jabatan BETWEEN '01' AND '09') AND (noind like 'A%' OR noind like 'B%')";
-    return $this->personalia->query($sql1)->result_array();
+    $selectcutoff = $this->personalia->query('SELECT tanggal_awal::date from "Presensi".tcutoff order by id_cutoff desc limit 1')->row()->tanggal_awal;
+    if ($tanggalcutoff >= 21) {
+      if ($bulancutoff == $selectcutoff) {
+        $trigerbulan = "'$bulancutoff'";
+      }else {
+        return "alert";
+      }
+    }elseif ($tanggalcutoff <= 20) {
+      if ($bulanlalu == $selectcutoff) {
+        $trigerbulan = "'$bulanlalu'";
+      }else {
+        return "alert";
+      }
+    }
+    if(!isset($alert)){
+      $sql1 = "SELECT count(noind) as noind FROM (
+                select a.noind, nik, nama, c.kd_jabatan, c.jabatan, masukkerja, tglkeluar, keluar,
+                b.dept, b.bidang, b.unit
+                from hrd_khs.tpribadi a
+                left join hrd_khs.tseksi b on
+                  a.kodesie = b.kodesie
+                left join hrd_khs.torganisasi c on
+                  a.kd_jabatan = c.kd_jabatan
+                where ((keluar = '0' and masukkerja <= cast($trigerbulan as date)))
+                  and a.kode_status_kerja <> 'C'
+                  and left(noind, 1) not in('L', 'Z', 'M')
+                union
+                select a.noind, nik, nama, c.kd_jabatan, c.jabatan, masukkerja, tglkeluar, keluar,
+                b.dept, b.bidang, b.unit
+                from hrd_khs.tpribadi a
+                left join hrd_khs.tseksi b on a.kodesie = b.kodesie
+                left join hrd_khs.torganisasi c on a.kd_jabatan = c.kd_jabatan
+                where ((masukkerja <= cast($trigerbulan as date))
+                  and (tglkeluar >= cast($trigerbulan as date)
+                  and keluar = '1'))
+                  and (masukkerja >= '1945-01-01')
+                  and a.kode_status_kerja <> 'C'
+                  and left(noind, 1) not in('L', 'Z', 'M')
+                order by 5
+              ) as tabel
+              where left(noind,1) in ('A','B') and (kd_jabatan BETWEEN '01' AND '09')";
+      return $this->personalia->query($sql1)->row()->noind;
+    }
   }
 
   public function getNominal()
@@ -39,10 +80,51 @@ class M_lelayu extends CI_Model
     return $this->db->query($sql2)->row()->nominal;
   }
 
-  public function getSPSI1()
+  public function getSPSI1($bulancutoff, $tanggalcutoff, $bulanlalu)
   {
-    $sql1 = "SELECT count(noind) as noind FROM hrd_khs.tpribadi WHERE keluar='0' AND (kd_jabatan BETWEEN '10' AND '11') AND (noind like 'A%' OR noind like 'B%')";
-    return $this->personalia->query($sql1)->result_array();
+    $selectcutoff = $this->personalia->query('SELECT tanggal_awal::date from "Presensi".tcutoff order by id_cutoff desc limit 1')->row()->tanggal_awal;
+    if ($tanggalcutoff >= 21) {
+      if ($bulancutoff == $selectcutoff) {
+        $trigerbulan = "'$bulancutoff'";
+      }else {
+        return "alert";
+      }
+    }elseif ($tanggalcutoff <= 20) {
+      if ($bulanlalu == $selectcutoff) {
+        $trigerbulan = "'$bulanlalu'";
+      }else {
+        return "alert";
+      }
+    }
+    if(!isset($alert)){
+    $sql1 = "SELECT count(noind) as noind FROM (
+              select a.noind, nik, nama, c.kd_jabatan, c.jabatan, masukkerja, tglkeluar, keluar,
+              b.dept, b.bidang, b.unit
+              from hrd_khs.tpribadi a
+              left join hrd_khs.tseksi b on
+                a.kodesie = b.kodesie
+              left join hrd_khs.torganisasi c on
+                a.kd_jabatan = c.kd_jabatan
+              where ((keluar = '0' and masukkerja <= cast($trigerbulan as date)))
+                and a.kode_status_kerja <> 'C'
+                and left(noind, 1) not in('L', 'Z', 'M')
+              union
+              select a.noind, nik, nama, c.kd_jabatan, c.jabatan, masukkerja, tglkeluar, keluar,
+              b.dept, b.bidang, b.unit
+              from hrd_khs.tpribadi a
+              left join hrd_khs.tseksi b on a.kodesie = b.kodesie
+              left join hrd_khs.torganisasi c on a.kd_jabatan = c.kd_jabatan
+              where ((masukkerja <= cast($trigerbulan as date))
+                and (tglkeluar >= cast($trigerbulan as date)
+                and keluar = '1'))
+                and (masukkerja >= '1945-01-01')
+                and a.kode_status_kerja <> 'C'
+                and left(noind, 1) not in('L', 'Z', 'M')
+              order by 5
+            ) as tabel
+            where left(noind,1) in ('A','B') and (kd_jabatan BETWEEN '10' AND '11')";
+    return $this->personalia->query($sql1)->row()->noind;
+    }
   }
 
   public function getNominal1()
@@ -51,10 +133,51 @@ class M_lelayu extends CI_Model
     return $this->db->query($sql2)->row()->nominal;
   }
 
-  public function getSPSI2()
+  public function getSPSI2($bulancutoff, $tanggalcutoff, $bulanlalu)
   {
-    $sql1 = "SELECT count(noind) as noind FROM hrd_khs.tpribadi WHERE keluar='0' AND (kd_jabatan BETWEEN '12' AND '13') AND (noind like 'A%' OR noind like 'B%')";
-    return $this->personalia->query($sql1)->result_array();
+    $selectcutoff = $this->personalia->query('SELECT tanggal_awal::date from "Presensi".tcutoff order by id_cutoff desc limit 1')->row()->tanggal_awal;
+    if ($tanggalcutoff >= 21) {
+      if ($bulancutoff == $selectcutoff) {
+        $trigerbulan = "'$bulancutoff'";
+      }else {
+        return "alert";
+      }
+    }elseif ($tanggalcutoff <= 20) {
+      if ($bulanlalu == $selectcutoff) {
+        $trigerbulan = "'$bulanlalu'";
+      }else {
+        return "alert";
+      }
+    }
+    if(!isset($alert)){
+    $sql1 = "SELECT count(noind) as noind FROM (
+              select a.noind, nik, nama, c.kd_jabatan, c.jabatan, masukkerja, tglkeluar, keluar,
+              b.dept, b.bidang, b.unit
+              from hrd_khs.tpribadi a
+              left join hrd_khs.tseksi b on
+                a.kodesie = b.kodesie
+              left join hrd_khs.torganisasi c on
+                a.kd_jabatan = c.kd_jabatan
+              where ((keluar = '0' and masukkerja <= cast($trigerbulan as date)))
+                and a.kode_status_kerja <> 'C'
+                and left(noind, 1) not in('L', 'Z', 'M')
+              union
+              select a.noind, nik, nama, c.kd_jabatan, c.jabatan, masukkerja, tglkeluar, keluar,
+              b.dept, b.bidang, b.unit
+              from hrd_khs.tpribadi a
+              left join hrd_khs.tseksi b on a.kodesie = b.kodesie
+              left join hrd_khs.torganisasi c on a.kd_jabatan = c.kd_jabatan
+              where ((masukkerja <= cast($trigerbulan as date))
+                and (tglkeluar >= cast($trigerbulan as date)
+                and keluar = '1'))
+                and (masukkerja >= '1945-01-01')
+                and a.kode_status_kerja <> 'C'
+                and left(noind, 1) not in('L', 'Z', 'M')
+              order by 5
+            ) as tabel
+            where left(noind,1) in ('A','B') and (kd_jabatan BETWEEN '12' AND '13')";
+    return $this->personalia->query($sql1)->row()->noind;
+    }
   }
 
   public function getNominal2()
@@ -63,10 +186,51 @@ class M_lelayu extends CI_Model
     return $this->db->query($sql2)->row()->nominal;
   }
 
-  public function getSPSI3()
+  public function getSPSI3($bulancutoff, $tanggalcutoff, $bulanlalu)
   {
-    $sql1 = "SELECT count(noind) as noind FROM hrd_khs.tpribadi WHERE keluar='0' AND (kd_jabatan BETWEEN '14' AND '15') AND (noind like 'A%' OR noind like 'B%')";
-    return $this->personalia->query($sql1)->result_array();
+    $selectcutoff = $this->personalia->query('SELECT tanggal_awal::date from "Presensi".tcutoff order by id_cutoff desc limit 1')->row()->tanggal_awal;
+    if ($tanggalcutoff >= 21) {
+      if ($bulancutoff == $selectcutoff) {
+        $trigerbulan = "'$bulancutoff'";
+      }else {
+        return "alert";
+      }
+    }elseif ($tanggalcutoff <= 20) {
+      if ($bulanlalu == $selectcutoff) {
+        $trigerbulan = "'$bulanlalu'";
+      }else {
+        return "alert";
+      }
+    }
+    if(!isset($alert)){
+    $sql1 = "SELECT count(noind) as noind FROM (
+              select a.noind, nik, nama, c.kd_jabatan, c.jabatan, masukkerja, tglkeluar, keluar,
+              b.dept, b.bidang, b.unit
+              from hrd_khs.tpribadi a
+              left join hrd_khs.tseksi b on
+                a.kodesie = b.kodesie
+              left join hrd_khs.torganisasi c on
+                a.kd_jabatan = c.kd_jabatan
+              where ((keluar = '0' and masukkerja <= cast($trigerbulan as date)))
+                and a.kode_status_kerja <> 'C'
+                and left(noind, 1) not in('L', 'Z', 'M')
+              union
+              select a.noind, nik, nama, c.kd_jabatan, c.jabatan, masukkerja, tglkeluar, keluar,
+              b.dept, b.bidang, b.unit
+              from hrd_khs.tpribadi a
+              left join hrd_khs.tseksi b on a.kodesie = b.kodesie
+              left join hrd_khs.torganisasi c on a.kd_jabatan = c.kd_jabatan
+              where ((masukkerja <= cast($trigerbulan as date))
+                and (tglkeluar >= cast($trigerbulan as date)
+                and keluar = '1'))
+                and (masukkerja >= '1945-01-01')
+                and a.kode_status_kerja <> 'C'
+                and left(noind, 1) not in('L', 'Z', 'M')
+              order by 5
+            ) as tabel
+            where left(noind,1) in ('A','B') and (kd_jabatan BETWEEN '14' AND '15')";
+    return $this->personalia->query($sql1)->row()->noind;
+    }
   }
 
   public function getNominal3()
@@ -75,28 +239,196 @@ class M_lelayu extends CI_Model
     return $this->db->query($sql2)->row()->nominal;
   }
 
-  public function getNoindAll()
+  public function getNoindAll($bulancutoff, $tanggalcutoff, $bulanlalu)
   {
-    $sql = "SELECT DISTINCT noind FROM hrd_khs.tpribadi WHERE keluar='0' AND (kd_jabatan BETWEEN '01' AND '09') AND (noind like 'A%' OR noind like 'B%') order by noind";
+    $selectcutoff = $this->personalia->query('SELECT tanggal_awal::date from "Presensi".tcutoff order by id_cutoff desc limit 1')->row()->tanggal_awal;
+    if ($tanggalcutoff >= 21) {
+      if ($bulancutoff == $selectcutoff) {
+        $trigerbulan = "'$bulancutoff'";
+      }else {
+        return "alert";
+      }
+    }elseif ($tanggalcutoff <= 20) {
+      if ($bulanlalu == $selectcutoff) {
+        $trigerbulan = "'$bulanlalu'";
+      }else {
+        return "alert";
+      }
+    }
+    if(!isset($alert)){
+    $sql = "SELECT distinct noind
+            FROM (
+							select a.noind, nik, nama, c.kd_jabatan, c.jabatan, masukkerja, tglkeluar, keluar,
+							b.dept, b.bidang, b.unit
+							from hrd_khs.tpribadi a
+							left join hrd_khs.tseksi b on
+								a.kodesie = b.kodesie
+							left join hrd_khs.torganisasi c on
+								a.kd_jabatan = c.kd_jabatan
+							where ((keluar = '0' and masukkerja <= cast($trigerbulan as date)))
+								and a.kode_status_kerja <> 'C'
+								and left(noind, 1) not in('L', 'Z', 'M')
+							union
+							select a.noind, nik, nama, c.kd_jabatan, c.jabatan, masukkerja, tglkeluar, keluar,
+							b.dept, b.bidang, b.unit
+							from hrd_khs.tpribadi a
+							left join hrd_khs.tseksi b on a.kodesie = b.kodesie
+							left join hrd_khs.torganisasi c on a.kd_jabatan = c.kd_jabatan
+							where ((masukkerja <= cast($trigerbulan as date))
+								and (tglkeluar >= cast($trigerbulan as date)
+								and keluar = '1'))
+								and (masukkerja >= '1945-01-01')
+								and a.kode_status_kerja <> 'C'
+								and left(noind, 1) not in('L', 'Z', 'M')
+							order by 5
+						) as tabel
+						where left(noind,1) in ('A','B') and (kd_jabatan BETWEEN '01' AND '09') order by noind";
     return $this->personalia->query($sql)->result_array();
+    }
   }
 
-  public function getNoindAll1()
+  public function getNoindAll1($bulancutoff, $tanggalcutoff, $bulanlalu)
   {
-    $sql = "SELECT DISTINCT noind FROM hrd_khs.tpribadi WHERE keluar='0' AND (kd_jabatan BETWEEN '10' AND '11') AND (noind like 'A%' OR noind like 'B%') order by noind";
+    $selectcutoff = $this->personalia->query('SELECT tanggal_awal::date from "Presensi".tcutoff order by id_cutoff desc limit 1')->row()->tanggal_awal;
+    if ($tanggalcutoff >= 21) {
+      if ($bulancutoff == $selectcutoff) {
+        $trigerbulan = "'$bulancutoff'";
+      }else {
+        return "alert";
+      }
+    }elseif ($tanggalcutoff <= 20) {
+      if ($bulanlalu == $selectcutoff) {
+        $trigerbulan = "'$bulanlalu'";
+      }else {
+        return "alert";
+      }
+    }
+    if(!isset($alert)){
+    $sql = "SELECT distinct noind
+            FROM (
+							select a.noind, nik, nama, c.kd_jabatan, c.jabatan, masukkerja, tglkeluar, keluar,
+							b.dept, b.bidang, b.unit
+							from hrd_khs.tpribadi a
+							left join hrd_khs.tseksi b on
+								a.kodesie = b.kodesie
+							left join hrd_khs.torganisasi c on
+								a.kd_jabatan = c.kd_jabatan
+							where ((keluar = '0' and masukkerja <= cast($trigerbulan as date)))
+								and a.kode_status_kerja <> 'C'
+								and left(noind, 1) not in('L', 'Z', 'M')
+							union
+							select a.noind, nik, nama, c.kd_jabatan, c.jabatan, masukkerja, tglkeluar, keluar,
+							b.dept, b.bidang, b.unit
+							from hrd_khs.tpribadi a
+							left join hrd_khs.tseksi b on a.kodesie = b.kodesie
+							left join hrd_khs.torganisasi c on a.kd_jabatan = c.kd_jabatan
+							where ((masukkerja <= cast($trigerbulan as date))
+								and (tglkeluar >= cast($trigerbulan as date)
+								and keluar = '1'))
+								and (masukkerja >= '1945-01-01')
+								and a.kode_status_kerja <> 'C'
+								and left(noind, 1) not in('L', 'Z', 'M')
+							order by 5
+						) as tabel
+						where left(noind,1) in ('A','B') and (kd_jabatan BETWEEN '10' AND '11') order by noind";
     return $this->personalia->query($sql)->result_array();
+    }
   }
 
-  public function getNoindAll2()
+  public function getNoindAll2($bulancutoff, $tanggalcutoff, $bulanlalu)
   {
-    $sql = "SELECT DISTINCT noind FROM hrd_khs.tpribadi WHERE keluar='0' AND (kd_jabatan BETWEEN '12' AND '13') AND (noind like 'A%' OR noind like 'B%') order by noind";
+    $selectcutoff = $this->personalia->query('SELECT tanggal_awal::date from "Presensi".tcutoff order by id_cutoff desc limit 1')->row()->tanggal_awal;
+    if ($tanggalcutoff >= 21) {
+      if ($bulancutoff == $selectcutoff) {
+        $trigerbulan = "'$bulancutoff'";
+      }else {
+        return "alert";
+      }
+    }elseif ($tanggalcutoff <= 20) {
+      if ($bulanlalu == $selectcutoff) {
+        $trigerbulan = "'$bulanlalu'";
+      }else {
+        return "alert";
+      }
+    }
+    if(!isset($alert)){
+    $sql = "SELECT distinct noind
+            FROM (
+							select a.noind, nik, nama, c.kd_jabatan, c.jabatan, masukkerja, tglkeluar, keluar,
+							b.dept, b.bidang, b.unit
+							from hrd_khs.tpribadi a
+							left join hrd_khs.tseksi b on
+								a.kodesie = b.kodesie
+							left join hrd_khs.torganisasi c on
+								a.kd_jabatan = c.kd_jabatan
+							where ((keluar = '0' and masukkerja <= cast($trigerbulan as date)))
+								and a.kode_status_kerja <> 'C'
+								and left(noind, 1) not in('L', 'Z', 'M')
+							union
+							select a.noind, nik, nama, c.kd_jabatan, c.jabatan, masukkerja, tglkeluar, keluar,
+							b.dept, b.bidang, b.unit
+							from hrd_khs.tpribadi a
+							left join hrd_khs.tseksi b on a.kodesie = b.kodesie
+							left join hrd_khs.torganisasi c on a.kd_jabatan = c.kd_jabatan
+							where ((masukkerja <= cast($trigerbulan as date))
+								and (tglkeluar >= cast($trigerbulan as date)
+								and keluar = '1'))
+								and (masukkerja >= '1945-01-01')
+								and a.kode_status_kerja <> 'C'
+								and left(noind, 1) not in('L', 'Z', 'M')
+							order by 5
+						) as tabel
+						where left(noind,1) in ('A','B') and (kd_jabatan BETWEEN '12' AND '13') order by noind";
     return $this->personalia->query($sql)->result_array();
+    }
   }
 
-  public function getNoindAll3()
+  public function getNoindAll3($bulancutoff, $tanggalcutoff, $bulanlalu)
   {
-    $sql = "SELECT DISTINCT noind FROM hrd_khs.tpribadi WHERE keluar='0' AND (kd_jabatan BETWEEN '14' AND '15') AND (noind like 'A%' OR noind like 'B%') order by noind";
+    $selectcutoff = $this->personalia->query('SELECT tanggal_awal::date from "Presensi".tcutoff order by id_cutoff desc limit 1')->row()->tanggal_awal;
+    if ($tanggalcutoff >= 21) {
+      if ($bulancutoff == $selectcutoff) {
+        $trigerbulan = "'$bulancutoff'";
+      }else {
+        return "alert";
+      }
+    }elseif ($tanggalcutoff <= 20) {
+      if ($bulanlalu == $selectcutoff) {
+        $trigerbulan = "'$bulanlalu'";
+      }else {
+        return "alert";
+      }
+    }
+    if(!isset($alert)){
+    $sql = "SELECT distinct noind
+            FROM (
+							select a.noind, nik, nama, c.kd_jabatan, c.jabatan, masukkerja, tglkeluar, keluar,
+							b.dept, b.bidang, b.unit
+							from hrd_khs.tpribadi a
+							left join hrd_khs.tseksi b on
+								a.kodesie = b.kodesie
+							left join hrd_khs.torganisasi c on
+								a.kd_jabatan = c.kd_jabatan
+							where ((keluar = '0' and masukkerja <= cast($trigerbulan as date)))
+								and a.kode_status_kerja <> 'C'
+								and left(noind, 1) not in('L', 'Z', 'M')
+							union
+							select a.noind, nik, nama, c.kd_jabatan, c.jabatan, masukkerja, tglkeluar, keluar,
+							b.dept, b.bidang, b.unit
+							from hrd_khs.tpribadi a
+							left join hrd_khs.tseksi b on a.kodesie = b.kodesie
+							left join hrd_khs.torganisasi c on a.kd_jabatan = c.kd_jabatan
+							where ((masukkerja <= cast($trigerbulan as date))
+								and (tglkeluar >= cast($trigerbulan as date)
+								and keluar = '1'))
+								and (masukkerja >= '1945-01-01')
+								and a.kode_status_kerja <> 'C'
+								and left(noind, 1) not in('L', 'Z', 'M')
+							order by 5
+						) as tabel
+						where left(noind,1) in ('A','B') and (kd_jabatan BETWEEN '14' AND '15') order by noind";
     return $this->personalia->query($sql)->result_array();
+    }
   }
 
   public function insertAll($array)
@@ -163,7 +495,6 @@ class M_lelayu extends CI_Model
 
   public function getPekerjaTerpotong($id)
   {
-
     $selectNom = $this->db->query("select distinct nominal from hr.hr_pekerja_dipotong where lelayu_id = '$id'")->result_array();
     sort($selectNom);
     $newArr = array();
