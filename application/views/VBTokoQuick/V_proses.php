@@ -3,7 +3,7 @@ thead.cabang tr th {
 	background-color: #00acd6;
 }
 </style>
-									<table id="tb_quick" class="tb_dash_unit table table-striped table-bordered table-hover text-center">
+									<table style="width: 100%" id="tb_quick" class="tb_dash_unit table table-striped table-bordered table-hover text-center">
 									<thead class="cabang">
 										<tr class="bg-primary">
 											<th class="text-center">No</th>
@@ -17,7 +17,7 @@ thead.cabang tr th {
 											<th class="text-center">Paid Amount</th>
 										</tr>
 									</thead>
-									<tbody>
+									<tbody id="tbody_quick">
 										<?php if (empty($hasilArray['TransactionData'])) { ?>
 											<?php echo "Data not found"; ?>
 											<tr>
@@ -32,8 +32,18 @@ thead.cabang tr th {
 											<td class="text-center"> <?php echo $ha['TransactionDate']?> </td>
 											<td class="text-center"> <?php echo $ha['PaymentFlagStatus']?> </td>
 											<td class="text-center"> <?php echo $ha['Reference']?> </td>
-											<td class="text-center"> <?php echo $ha['TotalAmount']?> </td>
-											<td class="text-center"> <?php echo $ha['PaidAmount']?> </td>
+											<td class="text-center TotalAmount">
+											<?php if($ha['TotalAmount']==NULL) {
+								          	 echo 'Rp.'.' ,-';
+								          	}else{
+								          	 echo 'Rp. '. number_format($ha['TotalAmount'],0,'.','.').',00-';
+								          	};?></td>
+											<td class="text-center PaidAmount"> 
+											<?php if($ha['PaidAmount']==NULL) {
+								          	 echo 'Rp.'.' ,-';
+								          	}else{
+								          	 echo 'Rp. '. number_format($ha['PaidAmount'],0,'.','.').',00-';
+								          	};?></td>
 										</tr>
 										<?php $no++;} ?>
 									</tbody>
