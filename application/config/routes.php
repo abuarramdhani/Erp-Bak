@@ -2989,3 +2989,6 @@ $route['MonitoringFlowOut/TagihanInternal/(:any)/(:any)']		= 'MonitoringFlowOut/
 $route['MonitoringFlowOut/TagihanExternal']						= 'MonitoringFlowOut/MainMenu/C_TagihanExternal';
 $route['MonitoringFlowOut/TagihanExternal/(:any)']				= 'MonitoringFlowOut/MainMenu/C_TagihanExternal/$1';
 $route['MonitoringFlowOut/TagihanExternal/(:any)/(:any)']		= 'MonitoringFlowOut/MainMenu/C_TagihanExternal/$1/$2';
+// --------------------------------------------VA BCA TOKO QUICK-----------------------
+$route['VBTokoQuick'] = 'VBTokoQuick/C_VBTokoQuick/dashboard';
+$route['VBTokoQuick/Dashboard/(:any)'] = 'VBTokoQuick/C_VBTokoQuick/$1';
