@@ -36,8 +36,8 @@ function CustomSPS() {
                     <br>\
                 <p>\
                     Regards,<br>\
-                    Ms. Choirul<br>\
-                    Admin Purchasing<br>\
+                    Ms. Indri<br>\
+                    Admin Purchasing Subcont<br>\
                     <b>CV Karya Hidup Sentosa (QUICK)</b><br>\
                     Jalan Magelang No 144 Yogyakarta - Indonesia<br>\
                     Telp. <a href="https://m.quick.com/callto:+62-274-512095"><u>+62-274-512095</u></a> ext 211<br>\
@@ -77,8 +77,8 @@ function CustomSPS() {
                 <br>\
             <p>\
                 Salam,<br>\
-                Ms. Choirul<br>\
-                Admin Purchasing<br>\
+                Ms. Indri<br>\
+                Admin Pembelian Subkon<br>\
                 <b>CV Karya Hidup Sentosa (QUICK)</b><br>\
                 Jalan Magelang No 144 Yogyakarta - Indonesia<br>\
                 Telp. <a href="https://m.quick.com/callto:+62-274-512095"><u>+62-274-512095</u></a> ext 211<br>\
