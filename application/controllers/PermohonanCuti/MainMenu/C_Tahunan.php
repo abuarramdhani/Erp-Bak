@@ -272,6 +272,7 @@ class C_Tahunan extends CI_Controller
 		//istirahat susulan//
 		}elseif ($jenisCuti == "13") {
 			$maxdate = strtotime($susulanEnd['1']);
+			$mindate = strtotime($susulanEnd['0']);
 
 			$difference = $maxdate - $today;
 
@@ -298,37 +299,40 @@ class C_Tahunan extends CI_Controller
 			}
 			array_push($tglambilcuti, date('Y-m-d', strtotime($end_date)));
 
-			//dicekdulu tgl sekarang, cek statuspkj tgl sebelumnya, jika = pkj tidak bisa ambil cuti, jika = PSK bisa ambil
-			$beforeToday = date('Y-m-d', strtotime(date('Y-m-d') . ' -1 days'));
-			$sunday = date('D', strtotime($beforeToday)); //sebelum hari ini adalah hari minggu ?
-			if($sunday == 'Sun'){ //sebelum hari ini adalah hari minggu ?
-				$beforeToday = date('Y-m-d', strtotime(date('Y-m-d') . ' -2 days'));
-				$cekPSK = $this->M_permohonancuti->cekPSK($beforeToday, $_SESSION['user']); //cek 2 hari sebelum sekarang PSK/TM
-			}else{
-				$cekPSK = $this->M_permohonancuti->cekPSK($beforeToday, $_SESSION['user']); //cek 1 hari sebelum sekarang PSK/TM
-			}
-			if($cekPSK > 0){
-				$pkj = 0; //cek apakah hari yg diambil pkj
-				foreach ($tglambilcuti as $key) {
-					$cekPKJ = $this->M_permohonancuti->cekPKJ($key, $_SESSION['user']);
-					if($cekPKJ > 0){
-						$pkj = 1;
-					}
-				}
-			}else{
-				$pkj = 1;
+			$today   		= date('Y-m-d');
+			$yesterday	= date('Y-m-d',strtotime($today.' -1 days'));
+			$startDate 	= date('Y-m-d',$maxdate);
+			$startDate 	= date('Y-m-d', strtotime($startDate. "-1 days"));
+			$pkj 				= array();
+			$cekTM 			= array();
+
+			foreach ($tglambilcuti as $key) {
+				$cekTM[] = $this->M_permohonancuti->cekTM($key, $_SESSION['user']); //cuti susulan hanya dpt diambil tgl dimana mangkir
 			}
 
-			if($pkj > 0){
+			if(in_array(0, $cekTM)){
 				$notif = '13';
 			}else{
-				if($ambil < $boleh ){
-					$notif = "2";
-				}elseif ($days >= 0) {
-					$notif = "5";
+				if($startDate <= $yesterday){
+					while($startDate != $yesterday ){
+						$startDate 		= date('Y-m-d', strtotime($startDate. " +1 days"));
+						$cekPKJ 			= $this->M_permohonancuti->cekPKJ($startDate, $_SESSION['user']);
+						if($cekPKJ > 0){
+							$pkj[] = 1;
+						}else{
+							$pkj[] = 0;
+						}
+					}
 				}
 			}
-
+			if(in_array(1,$pkj)){
+				$notif = '13';
+			}
+			if($ambil < $boleh ){
+				$notif = "2";
+			}elseif ($days >= 0) {
+				$notif = "5";
+			}
 		}
 
 		$banyakharicuti = count($tglambilcuti);
@@ -342,19 +346,20 @@ class C_Tahunan extends CI_Controller
 		}
 
 		$data = array(
-			'1' => "Sisa Cuti = 0",
-			'2' => "Pekerja Belum Memiliki Cuti",
-			'3' => "Pengajuan Cuti Tahunan min. H-6 pengambilan cuti",
-			'4' => "Bukan Merupakan Cuti Mendadak",
-			'5' => "Bukan Merupakan Cuti Susulan",
-			'6' => "Jumlah Pengambilan Cuti Melebihi Sisa Cuti",
-			'7' => "Bukan kejadian yang Terencana",
-			'8' => "Harus mengirimkan Dokumen(Bukti) ke seksi Hubker",
-			'9' => "Jumlah Cuti Melebihi Ketentuan",
-			'10' => "Bukan termasuk acara mendadak (Acara yang terencana)",
-			'11' => "Harap mengirimkan surat HPL dari Dokter / Rumah sakit",
-			'12' => "Membuat surat pernyatan siap menanggung resiko",
-			'13' => "Cuti tidak bisa diinput"
+			'1' 	=> "Sisa Cuti = 0",
+			'2' 	=> "Pekerja Belum Memiliki Cuti",
+			'3' 	=> "Pengajuan Cuti Tahunan min. H-6 pengambilan cuti",
+			'4' 	=> "Bukan Merupakan Cuti Mendadak",
+			'5' 	=> "Bukan Merupakan Cuti Susulan",
+			'6' 	=> "Jumlah Pengambilan Cuti Melebihi Sisa Cuti",
+			'7' 	=> "Bukan kejadian yang Terencana",
+			'8' 	=> "Harus mengirimkan Dokumen(Bukti) ke seksi Hubker",
+			'9' 	=> "Jumlah Cuti Melebihi Ketentuan",
+			'10' 	=> "Bukan termasuk acara mendadak (Acara yang terencana)",
+			'11' 	=> "Harap mengirimkan surat HPL dari Dokter / Rumah sakit",
+			'12' 	=> "Membuat surat pernyatan siap menanggung resiko",
+			'13' 	=> "Cuti tidak bisa diinput",
+			'14' 	=> "Anda Masuk Kerja pada Tanggal yang diambil"
 		);
 		if(!empty($notif)){
 			$notif = $data[$notif];

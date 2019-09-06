@@ -41,7 +41,6 @@ class C_Index extends CI_Controller
     $data['UserMenu'] = $this->M_user->getUserMenu($user_id,$this->session->responsibility_id);
     $data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id);
     $data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id);
-		
 		$base = base_url();
     if(empty($data['UserMenu'])){
       header("location: $base ");

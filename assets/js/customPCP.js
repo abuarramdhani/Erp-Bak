@@ -179,12 +179,6 @@ $(document).ready(function() {
             text: ""
           })
         } else {
-
-          $('#loadingCuti').modal({
-            backdrop: "static",
-            keyboard: false,
-            show: true
-          });
           setTimeout(function() {
             $('#loadingCuti').modal('hide');
           }, 10000);
@@ -197,6 +191,13 @@ $(document).ready(function() {
               jenis_cuti: jenis,
               tanggal: tgl,
               tanggalsusulan: tglsusulan
+            },
+            beforeSend: function(){
+              $('#loadingCuti').modal({
+                backdrop: "static",
+                keyboard: false,
+                show: true
+              });
             },
             success: function(data) {
               console.log(data);
