@@ -133,17 +133,12 @@ class M_permohonancuti extends CI_MODEL {
     return $result->result_array();
   }
 
-  public function cekTMPSK($tgl, $noind){
-    return $this->personalia->query("SELECT kd_ket FROM \"Presensi\".tdatapresensi WHERE tanggal='$tgl' AND noind='$noind' AND kd_ket IN('TM','PSK')")->num_rows();
+  public function cekPKJ($tgl, $noind){
+    return $this->personalia->query("SELECT kd_ket FROM \"Presensi\".tdatapresensi WHERE tanggal='$tgl' AND noind='$noind' AND kd_ket IN('PKJ')")->num_rows();
   }
 
   public function cekTM($tgl, $noind){
     return $this->personalia->query("SELECT kd_ket FROM \"Presensi\".tdatatim WHERE tanggal='$tgl' AND noind='$noind' AND kd_ket IN('TM')")->num_rows();
-  }
-
-  public function cekPresensi($tgl, $noind)
-  {
-    return $this->personalia->query("SELECT kd_ket FROM \"Presensi\".tdatapresensi WHERE tanggal='$tgl' AND noind='$noind'")->num_rows();
   }
 
   public function get_libur($for, $until)

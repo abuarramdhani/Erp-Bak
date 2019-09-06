@@ -272,6 +272,7 @@ class C_Tahunan extends CI_Controller
 		//istirahat susulan//
 		}elseif ($jenisCuti == "13") {
 			$maxdate = strtotime($susulanEnd['1']);
+			$mindate = strtotime($susulanEnd['0']);
 
 			$difference = $maxdate - $today;
 
@@ -298,14 +299,13 @@ class C_Tahunan extends CI_Controller
 			}
 			array_push($tglambilcuti, date('Y-m-d', strtotime($end_date)));
 
-			$today    = date('Y-m-d');
-			$yesterday= date('Y-m-d',strtotime($today.' -1 days'));
-			$libur 		= $this->M_permohonancuti->get_libur(date('Y-m-d', strtotime($susulanEnd[0])), $today);
-			$LastDate = date('Y-m-d',$maxdate);
-			$LastDate = date('Y-m-d', strtotime($LastDate. "-1 days"));
-			$pkj 			= array();
+			$today   		= date('Y-m-d');
+			$yesterday	= date('Y-m-d',strtotime($today.' -1 days'));
+			$startDate 	= date('Y-m-d',$maxdate);
+			$startDate 	= date('Y-m-d', strtotime($startDate. "-1 days"));
+			$pkj 				= array();
+			$cekTM 			= array();
 
-			$cekTM = array();
 			foreach ($tglambilcuti as $key) {
 				$cekTM[] = $this->M_permohonancuti->cekTM($key, $_SESSION['user']); //cuti susulan hanya dpt diambil tgl dimana mangkir
 			}
@@ -313,25 +313,20 @@ class C_Tahunan extends CI_Controller
 			if(in_array(0, $cekTM)){
 				$notif = '13';
 			}else{
-				if($LastDate <= $yesterday){
-					$i = 1;
-					while($LastDate != $yesterday ){
-						$LastDate 		= date('Y-m-d', strtotime($LastDate. " +1 days"));
-						$cekAbsen 		= $this->M_permohonancuti->cekTMPSK($LastDate, $_SESSION['user']);
-						$cekPresensi 	= $this->M_permohonancuti->cekPresensi($LastDate, $_SESSION['user']);
-						$hari     		= date('D', strtotime($LastDate));
-
-						if(in_array($LastDate, $libur) || $hari == 'Sun' || $cekAbsen > 0 || $cekPresensi == 0){
-							$pkj[] = 0;
-						}else{
+				if($startDate <= $yesterday){
+					while($startDate != $yesterday ){
+						$startDate 		= date('Y-m-d', strtotime($startDate. " +1 days"));
+						$cekPKJ 			= $this->M_permohonancuti->cekPKJ($startDate, $_SESSION['user']);
+						if($cekPKJ > 0){
 							$pkj[] = 1;
+						}else{
+							$pkj[] = 0;
 						}
-						$i++;
-					}
-					if(in_array(1,$pkj)){
-						$notif = '13';
 					}
 				}
+			}
+			if(in_array(1,$pkj)){
+				$notif = '13';
 			}
 			if($ambil < $boleh ){
 				$notif = "2";
