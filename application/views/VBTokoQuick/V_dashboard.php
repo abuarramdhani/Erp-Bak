@@ -14,7 +14,7 @@
 				<div class="row">
 					<div class="col-lg-12">
 						<div class="text-left ">
-							<span><b><i class="fa fa-search"></i> Find VA BCA</b></span>
+							<span><b><i class="fa fa-search"></i> Find Virtual Account BCA</b></span>
 						</div>
 					</div>
 				</div>
