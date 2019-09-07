@@ -13,6 +13,12 @@ $('#tablejenisorder').DataTable({
 $('#credit').DataTable({
     dom: 'frtip'
 });
+$('.TableTarifSPSI').DataTable({
+
+});
+$('.TableTarifPerusahaan').DataTable({
+
+});
 function MPdelete(id) {
     var confirmDel = confirm('Apakah anda Yakin?');
     if(confirmDel){
@@ -20,7 +26,7 @@ function MPdelete(id) {
         $.ajax({
             url: baseurl+'MonitoringPEIA/C_AccountReceivables/deleteSeksi/'+id,
             success:function(results){
-               
+
                 $('table#tableseksi tbody tr[row-id="'+id+'"]').remove();
                 $.toaster('Data was deleted!', 'Deleted', 'success');
                  $('.hapus').prop('disabled',false);
@@ -38,7 +44,7 @@ function DeleteOrder(id) {
         $.ajax({
             url: baseurl+'MonitoringPEIA/C_AccountReceivables/deleteOrder/'+id,
             success:function(results){
-               
+
                 $('table#tableorder tbody tr[row-id="'+id+'"]').remove();
                 $.toaster('Data was deleted!', 'Deleted', 'success');
                  $('.hapus').prop('disabled',false);
@@ -56,7 +62,7 @@ function DeleteJenisOrder(id) {
         $.ajax({
             url: baseurl+'MonitoringPEIA/C_AccountReceivables/deleteJenisOrder/'+id,
             success:function(results){
-               
+
                 $('table#tablejenisorder tbody tr[row-id="'+id+'"]').remove();
                 $.toaster('Data was deleted!', 'Deleted', 'success');
                  $('.hapus').prop('disabled',false);
@@ -74,7 +80,7 @@ function DeleteLaporan(id) {
         $.ajax({
             url: baseurl+'MonitoringPEIA/C_AccountReceivables/deleteLaporan/'+id,
             success:function(results){
-               
+
                 $('table#credit tbody tr[row-id="'+id+'"]').remove();
                 $.toaster('Data was deleted!', 'Deleted', 'success');
                  $('.hapus').prop('disabled',false);
@@ -180,3 +186,183 @@ function generatePDFpe() {
     tgl2 = $("#tanggalan2").val();
     window.open(baseurl+'MonitoringPEIA/Laporan/C_Jobharian/buatPDF/'+tgl1+'/'+tgl2, '_blank');
 }
+
+$(document).ready(function() {
+  $('#Penerima_kasbon').select2({
+    allowClear: false,
+    placeholder: "Input Noind atau Nama",
+    minimumInputLength: 3,
+  });
+  $('#Menyetujui_kasbon').select2({
+    allowClear: false,
+    placeholder: "Input Noind atau Nama",
+    minimumInputLength: 3,
+  });
+  $('#selectPekerja').select2({
+    allowClear: false,
+    placeholder: "Input Noind atau Nama",
+    minimumInputLength: 3,
+  });
+
+  $('.dataTable-List-Lelayu').DataTable({
+
+  });
+})
+
+function MP_simpan_lelayu() {
+  var pekerja = $('#selectPekerja').val();
+  var waktu = $('#waktu').attr('value');
+  var ket = $('#keterangan_Lelayu').val();
+  var nomKafan = $('#id_kafan').attr('value');
+  var nomDuka = $('#uang_Duka').attr('value');
+  var askanit = $('#askanit').attr('value');
+  var nomAskanit = $('#nomAskanit').attr('value');
+  var totalAskanit = $('#totalAskanit').attr('value');
+  var madya = $('#madya').attr('value');
+  var nomMadya = $('#nomMadya').attr('value');
+  var totMadya = $('#totMadya').attr('value');
+  var supervisor = $('#supervisor').attr('value');
+  var nomSuper = $('#nomSuper').attr('value');
+  var totSuper = $('#totSuper').attr('value');
+  var nonStaff = $('#nonStaff').attr('value');
+  var nomNon = $('#nomNon').attr('value');
+  var totNon = $('#totNon').attr('value');
+  var loading = baseurl + 'assets/img/gif/loadingquick.gif';
+
+  console.log(pekerja);
+  console.log(waktu);
+  console.log(ket);
+  console.log(nomKafan);
+  console.log(nomDuka);
+  console.log(askanit);
+  console.log(totalAskanit);
+  console.log(madya);
+  console.log(nomMadya);
+  console.log(totMadya);
+  console.log(supervisor);
+  console.log(nomSuper);
+  console.log(totSuper);
+  console.log(nonStaff);
+  console.log(nomNon);
+  console.log(totNon);
+
+  if (pekerja == 0 || ket == 0) {
+    Swal.fire(
+			  'Peringatan!',
+			  'Data Harap di isi dengan Lengkap!',
+			  'warning'
+			)
+  }else {
+			Swal.fire({
+				title: 'Apakah Anda Yakin ?',
+				text: "Lelayu akan di Proses",
+				type: 'warning',
+				showCancelButton: true,
+				confirmButtonColor: '#3085d6',
+				cancelButtonColor: '#d33',
+				confirmButtonText: 'Yes'
+			}).then((result) => {
+				if (result.value) {
+          $.ajax({
+            type:'POST',
+            beforeSend: function(){
+              Swal.fire({
+                html : "<img style='width: 100px; height: auto;'src='"+loading+"'>",
+                text : 'Loading...',
+                customClass: 'swal-wide',
+                showConfirmButton:false
+              });
+            },
+            url: baseurl+"MasterPresensi/Lelayu/save",
+            data:{
+              nama_lelayu: pekerja,
+              tanggal_lelayu: waktu,
+              keterangan_Lelayu:ket,
+              nomKafan: nomKafan,
+              nomDuka: nomDuka,
+              askanit: askanit,
+              nomAskanit: nomAskanit,
+              totalAskanit: totalAskanit,
+              madya: madya,
+              nomMadya: nomMadya,
+              totMadya: totMadya,
+              supervisor: supervisor,
+              nomSuper: nomSuper,
+              totSuper: totSuper,
+              nonStaff: nonStaff,
+              nomNon: nomNon,
+              totNon: totNon
+            },
+            success:function(result){
+              window.location.reload();
+              Swal.fire({
+        			  title:'Success',
+        			  text:'Lelayu telah di simpan',
+        			  type: 'success',
+                showConfirmButton:false
+        			});
+            }
+          });
+          return true;
+        }
+    });
+  }
+}
+
+function MP_LelayuDelete(id) {
+Swal.fire({
+  title: 'Apakah Anda Yakin?',
+  text: "Mengapus data ini secara permanent !",
+  type: 'warning',
+  showCancelButton: true,
+  confirmButtonColor: '#3085d6',
+  cancelButtonColor: '#d33',
+  confirmButtonText: 'Yes, delete it!'
+}).then((result) => {
+  if (result.value) {
+  	window.location.href = baseurl+"MasterPresensi/Lelayu/ListData/hapus/"+id;
+  }
+});
+return false;
+}
+
+function detailLelayu(id) {
+  $.ajax({
+    method: 'POST',
+    url: baseurl+"MasterPresensi/Lelayu/ListData/detail",
+    data:{lelayu_id:id},
+    dataType: 'json',
+    success: function(data) {
+      console.log(data);
+      $('#Lelayu_id_id').val(data[0].id);
+      $('#tanggal_lelayu_id').val(data[0].tgl_lelayu);
+      $('#lelayu_pekerja_id').val(data[0].nama);
+      $('#keterangan_lelayu_id').val(data[0].keterangan);
+      $('#uang_perusahaan_id').val(function() {
+        return 'Rp '+ data[0].perusahaan.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".") + ',-';
+      });
+      $('#uang_spsi_id').val(function() {
+        return  'Rp '+ data[0].spsi.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".") + ',-';
+      });
+      $("#Modal_Lelayu").modal();
+    }
+  })
+}
+
+function ApproveLelayu(id) {
+  $('#form-kanban').attr('action','ListData/exportKasBon/'+id);
+  $("#Modal_Approv_kasBon").modal();
+}
+
+/** add active class and stay opened when selected */
+var url = window.location;
+
+// for sidebar menu entirely but not cover treeview
+$('ul.sidebar-menu a').filter(function() {
+	 return this.href == url;
+}).parent().addClass('active');
+
+// for treeview
+$('ul.treeview-menu a').filter(function() {
+	 return this.href == url;
+}).parentsUntil(".sidebar-menu > .treeview-menu").addClass('active');

@@ -1899,6 +1899,25 @@ $route['MasterPresensi/ReffGaji/PekerjaKeluar'] = 'MasterPresensi/ReffGaji/C_Pek
 $route['MasterPresensi/ReffGaji/PekerjaKeluar/(:any)'] = 'MasterPresensi/ReffGaji/C_PekerjaKeluar/$1';
 $route['MasterPresensi/ReffGaji/PekerjaKeluar/(:any)/(:any)'] = 'MasterPresensi/ReffGaji/C_PekerjaKeluar/$1/$2';
 
+//------------------------------------Master Presensi - Lelayu ---------------------------------------------------
+$route['MasterPresensi/Lelayu'] = 'MasterPresensi/Lelayu/C_Lelayu';
+$route['MasterPresensi/Lelayu/(:any)'] = 'MasterPresensi/Lelayu/C_Lelayu/$1';
+$route['MasterPresensi/Lelayu/(:any)/(:any)'] = 'MasterPresensi/Lelayu/C_Lelayu/$1/$2';
+
+$route['MasterPresensi/Lelayu/ListData'] = 'MasterPresensi/Lelayu/C_List';
+$route['MasterPresensi/Lelayu/ListData/detail'] = 'MasterPresensi/Lelayu/C_List/detail';
+$route['MasterPresensi/Lelayu/ListData/exportExcel'] = 'MasterPresensi/Lelayu/C_List/exportExcel';
+$route['MasterPresensi/Lelayu/ListData/(:any)'] = 'MasterPresensi/Lelayu/C_List/$1';
+$route['MasterPresensi/Lelayu/ListData/(:any)/(:any)'] = 'MasterPresensi/Lelayu/C_List/$1/$2';
+
+$route['MasterPresensi/Lelayu/TarifPerusahaan'] = 'MasterPresensi/Lelayu/C_Tarif';
+$route['MasterPresensi/Lelayu/TarifPerusahaan/(:any)'] = 'MasterPresensi/Lelayu/C_Tarif/$1';
+$route['MasterPresensi/Lelayu/TarifPerusahaan/(:any)/(:any)'] = 'MasterPresensi/Lelayu/C_Tarif/$1/$2';
+
+$route['MasterPresensi/Lelayu/TarifSPSI'] = 'MasterPresensi/Lelayu/C_TarifSPSI';
+$route['MasterPresensi/Lelayu/TarifSPSI/(:any)'] = 'MasterPresensi/Lelayu/C_TarifSPSI/$1';
+$route['MasterPresensi/Lelayu/TarifSPSI/(:any)/(:any)'] = 'MasterPresensi/Lelayu/C_TarifSPSI/$1/$2';
+
 
 //-------------------------------------Hambatan Produksi-------------------------------------------------
 $route['ManufacturingOperation/ProductionObstacles/master'] = 'ManufacturingOperation/ProductionObstacles/MainMenu/C_Master';
