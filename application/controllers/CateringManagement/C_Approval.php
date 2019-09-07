@@ -58,16 +58,18 @@ class C_Approval extends CI_Controller
 		$data['tambahan'] = $this->M_pesanan->ambilTambahanKatering($today);
     $data['ambilapprove'] = $this->M_pesanan->ambilapprove($today);
     $data['dataTambahan'] = $this->M_pesanan->dataTambahan($today);
-    if (empty($data['ambilapprove'])) {
-      // code...
-    }else {
+
+    if (!empty($data['ambilapprove'])) {
       $explod = explode(" ",$data['ambilapprove']['0']['keterangan']);
       $data['ket'] = implode(", ", $explod);
+    }else {
+
     }
+
     $data['user'] = $this->session->user;
     $data['sie'] = $this->M_pesanan->getNamaSie();
     $data['hidden'] = '';
-    if($data['user'] != 'J1256'){
+    if($data['user'] != 'J1256' && $data['user'] != 'F2324' && $data['user'] != 'B0720'){
       $data['hidden'] = 'hidden';
     }
 
@@ -82,7 +84,19 @@ class C_Approval extends CI_Controller
     $id = $_POST['id'];
     $data = $this->M_pesanan->ambildetail($id);
     $getSeksi = $this->M_pesanan->getSeksi($data['0']['kodesie']);
+		$ket = explode(", ",$data['0']['keterangan']);
+		if ($ket > 1) {
+			for ($i=0; $i < count($ket) ; $i++) {
+				$nama[] = $this->M_pesanan->getNamaa(true, $ket[$i])[0]['nama'];
+			}
+			$nama = implode(', ',$nama);
+		}else {
+			$ket = $data['0']['keterangan'];
+			$nama = $this->M_pesanan->getNamaa(false, $ket)[0]['nama'];
+		}
     $data['0']['seksi'] = $getSeksi;
+    $data['0']['nama'] 	= $nama;
+    $data['0']['nama1'] 	= $data['0']['nama1'];
     echo json_encode($data);
   }
 
@@ -92,25 +106,71 @@ class C_Approval extends CI_Controller
     $status = $_POST['status'];
     $setuju = $this->M_pesanan->updateapproval($id, $status);
 
-    $today = date('Y-m-d');
-    $kd_shift = $_POST['Shift_Tambahan'];
-    $lokasi = $_POST['lokasi_kerja'];
+    $link = base_url("CateringTambahan/Seksi");
+
+    $today        = date('Y-m-d');
+    $kd_shift     = $_POST['Shift_Tambahan'];
+    $lokasi       = $_POST['lokasi_kerja'];
     $tempat_makan = $_POST['tempat_makan'];
-    $tambahan = $_POST['plus'];
-    $kurang = $_POST['min'];
+    $tambahan     = $_POST['plus'];
 
-    $pesanan = $this->M_pesanan->ambilPesananHariIni($today);
-
-    if (!empty($tambahan)) {
-      $tambahkurang = $pesanan[0]['jml_bukan_shift']+$tambahan;
-      $jmltotal = $pesanan[0]['jml_total']+$tambahan;
-    }else {
-      $tambahkurang = $pesanan[0]['jml_bukan_shift']-$kurang;
-      $jmltotal = $pesanan[0]['jml_total']-$kurang;
+    if ($kd_shift == '4') {
+      unset($kd_shift);
+      $kd_shift = '1';
     }
 
-		$this->M_pesanan->editTotalPesanan($jmltotal, $today, $kd_shift, $tempat_makan, $tambahkurang);
+    $pesanan = $this->M_pesanan->ambilPesananHariIni();
+    $usermail = $this->M_pesanan->getUserforMail($id);
+    $imail = $this->M_pesanan->getMail($usermail);
+    print_r($imail);
+
+    $insertTambah = array(
+      'fd_tanggal' => $today,
+      'fs_tempat_makan' => $tempat_makan,
+      'fs_kd_shift' => $kd_shift,
+      'fn_jumlah_pesanan' => $tambahan,
+      'fb_keterangan' => 1
+    );
+    $this->M_pesanan->insertTambahPesan($insertTambah);
+
+    $jumlah = $pesanan['0']['jml_bukan_shift']+$tambahan;
+    $jmltotal = $pesanan['0']['jml_total']+$tambahan;
+
+    if ($status == '2') {
+      $alert = "Telah di <b>Approve</b>";
+    }elseif ($status == '3') {
+      $alert = "Telah di <b>Reject</b>";
+    }elseif ($status == '4') {
+      $alert = "<b>Tidak Terbaca</b>";
+    }
+
+    $update_erp = $this->M_pesanan->editTotalPesanan($jmltotal, $kd_shift, $tempat_makan, $jumlah);
+    $this->sendMail($imail, $link, $alert);
+
   }
+
+  public function sendMail($imail, $link, $alert){
+		$Quick = [
+			'mailtype'  => 'html',
+			'charset'   => 'utf-8',
+			'protocol'  => 'smtp',
+			'smtp_host' => 'mail.quick.com',
+			'smtp_user' => 'no-reply@quick.com',
+			'smtp_pass' => '123456',
+			'smtp_port' => 587,
+			'crlf'      => "\r\n",
+			'newline'   => "\r\n"
+		];
+		$this->load->library('email', $Quick);
+		$this->email->from('no-reply', 'Responses Catering');
+			// $this->email->to($address);
+		$this->email->to($imail);
+		$this->email->subject('Pemberitahuan Pesanan Catering Tambahan');
+		$this->email->message("Pesanan yang anda ajukan ".$alert." oleh Kasie General Affair
+			Klik <a href=".$link.">Link</a> untuk Melihat Pesanan disini <br>
+			");
+		$this->email->send();
+	}
 
 }
 

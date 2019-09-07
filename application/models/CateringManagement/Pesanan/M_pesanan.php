@@ -299,14 +299,28 @@ class M_pesanan extends CI_Model
 
     public function ambilapprove($today)
     {
-      $sql = "SELECT * FROM \"Catering\".tapprove_tambahan
+      $sql = "SELECT * FROM \"Catering\".tapprove_tambah_makan
               WHERE tgl_pesanan = '$today'";
       return $this->personalia->query($sql)->result_array();
     }
 
+    public function getUserforMail($id)
+    {
+      $sql = "SELECT user_ FROM \"Catering\".tapprove_tambah_makan tt
+              WHERE tt.id = '$id'";
+      return $this->personalia->query($sql)->row()->user_;
+    }
+
+    public function getMail($user)
+    {
+      $sql = "SELECT internal_mail FROM er.er_employee_all
+              WHERE employee_code = '$user'";
+      return $this->db->query($sql)->row()->internal_mail;
+    }
+
     public function dataTambahan($today)
     {
-      $sql = "SELECT *, cast(tgl_pesanan as date) tanggal FROM \"Catering\".tapprove_tambahan
+      $sql = "SELECT *, cast(tgl_pesanan as date) tanggal FROM \"Catering\".tapprove_tambah_makan
               WHERE tgl_pesanan not in ('$today')";
       return $this->personalia->query($sql)->result_array();
     }
@@ -315,16 +329,16 @@ class M_pesanan extends CI_Model
     {
       $sql = "SELECT *,
               (SELECT tp.nama
-              FROM hrd_khs.tpribadi tp WHERE tp.noind=ta.user_) nama,
+              FROM hrd_khs.tpribadi tp WHERE tp.noind=ta.user_) nama1,
               (SELECT tp.kodesie
               FROM hrd_khs.tpribadi tp WHERE tp.noind=ta.user_) kodesie
-              FROM \"Catering\".tapprove_tambahan ta where id = '$id'";
+              FROM \"Catering\".tapprove_tambah_makan ta where id = '$id'";
       return $this->personalia->query($sql)->result_array();
     }
 
     public function updateapproval($id, $status)
     {
-      $this->personalia->query("update \"Catering\".tapprove_tambahan set status='$status' where id = '$id'");
+      $this->personalia->query("update \"Catering\".tapprove_tambah_makan set status='$status' where id = '$id'");
     }
 
     public function getSeksi($kodesie)
@@ -336,13 +350,43 @@ class M_pesanan extends CI_Model
     {
       $sql = "SELECT tp.noind, tp.nama, ts.seksi
               FROM hrd_khs.tpribadi tp INNER JOIN hrd_khs.tseksi ts on ts.kodesie=tp.kodesie
-              INNER JOIN \"Catering\".tapprove_tambahan ta on ta.user_=tp.noind
+              INNER JOIN \"Catering\".tapprove_tambah_makan ta on ta.user_=tp.noind
               WHERE keluar = '0'";
       return $this->personalia->query($sql)->result_array();
     }
     public function updateStatus($today)
     {
-      $this->personalia->query("update \"Catering\".tapprove_tambahan set status = '4' where status='1' and tgl_pesanan not in ('$today')");
+      $this->personalia->query("update \"Catering\".tapprove_tambah_makan set status = '4' where status='1' and tgl_pesanan not in ('$today')");
+    }
+
+    public function getImail($inmail)
+    {
+      $sql = "SELECT id FROM internal_mail FROM er.er_employee_all where employee_code = '$inmail' ";
+      return $this->db->query($sql)->row()->internal_mail;
+    }
+
+    public function insertpesantambahkurang($arrayIn)
+    {
+      $this->personalia->insert('"Catering".tpesanan_erp',$arrayIn);
+      return;
+    }
+
+    public function insertTambahPesan($insertTambah)
+    {
+      $this->personalia->insert('"Catering".tpesanantambahan',$insertTambah);
+      return;
+    }
+
+    public function getNamaa($params, $ket)
+    {
+      if($params == true){
+        $noind = "in('$ket')";
+      }else{
+        $noind = "='$ket'";
+      }
+      $sql = "SELECT concat_ws(' - ', noind, nama) as nama from hrd_khs.tpribadi where noind $noind";
+      // print_r($sql);exit();
+      return $this->personalia->query($sql)->result_array();
     }
 
 }
