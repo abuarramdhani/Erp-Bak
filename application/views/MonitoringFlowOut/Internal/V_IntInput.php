@@ -76,7 +76,7 @@
                                             </div>
                                             <div class="form-group">
                                                 <label>Seksi Penemu</label>
-                                                <select style="width:100%;" name="txtSeksiPenemu" class="form-control" required="">
+                                                <select style="width:100%;" name="txtSeksiPenemu" id="mfo_select" class="form-control" required="">
                                                     <option selected value="">Select your option</option>
                                                     <?php foreach ($seksi as $pil) { ?>
                                                         <option value="<?= $pil['seksi'] ?>"><?= $pil['seksi'] ?></option>
@@ -107,7 +107,7 @@
                                             </div>
                                             <div class="form-group">
                                                 <label>Possible Failure</label>
-                                                <select style="width:100%;" name="txtPoss" class="form-control" required="">
+                                                <select style="width:100%;" name="txtPoss" id="mfo_select3" class="form-control" required="">
                                                     <option name="" selected value="">Select your choice</option>
                                                     <?php foreach ($fail as $faila) { ?>
                                                         <option value="<?= $faila['possible_failure'] ?>"><?= $faila['possible_failure'] ?></option>
@@ -135,8 +135,7 @@
                                             </div>
                                             <div class="form-group">
                                                 <label>Seksi Penanggungjawab</label>
-                                                <select name="txtSeksiPenanggungJawab" style="width:100%;" class="form-control" required="">
-                                                    <option selected value="">Select your option</option>
+                                                <select name="txtSeksiPenanggungJawab[]" id="mfo_selectPJ" style="width:100%;" class="form-control" required="" multiple="multiple">
                                                     <?php foreach ($seksi as $pil) { ?>
                                                         <option value="<?= $pil['seksi'] ?>"><?= $pil['seksi'] ?></option>
                                                     <?php } ?>

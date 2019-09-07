@@ -176,9 +176,9 @@
                                                                 <a class="btn btn-success btn-sm"
                                                                     href="<?php echo base_url() ?>MonitoringFlowOut/InternalView/edit/<?= $s['id_int'] ?>">
                                                                     <i class="fa fa-pencil"></i></a>
-                                                                <button onclick="delInternal(<?= $s['id_int'] ?>)"
-                                                                    class="btn btn-danger btn-sm"><i
-                                                                        class="fa fa-trash"></i></button>
+                                                                <a href="<?= base_url('MonitoringFlowOut/InternalView/delInternal/'. $s['id_int']. '/'. $s['upload_qr'] . '/' . $s['upload_car']) ?>"
+                                                                    onclick="return confirm('Apakah yakin untuk menghapus ini ?')" class="btn btn-danger btn-sm"><i
+                                                                        class="fa fa-trash"></i></a>
                                                             </td>
                                                             <?php } ?>
                                                         </tr>

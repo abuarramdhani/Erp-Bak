@@ -82,7 +82,7 @@
                                             </div>
                                             <div class="form-group">
                                                 <label>Seksi Penemu</label>
-                                                <select style="width:100%;" name="txtSeksiPenemu" class="form-control">
+                                                <select style="width:100%;" id="mfo_select" name="txtSeksiPenemu" class="form-control">
                                                     <option selected value="<?= $getEdit[0]['seksi_penemu'] ?>">
                                                         <?= $getEdit[0]['seksi_penemu'] ?></option>
                                                     <?php foreach ($seksi as $pil) { ?>
@@ -115,7 +115,7 @@
                                             </div>
                                             <div class="form-group">
                                                 <label>Possible Failure</label>
-                                                <select style="width:100%;" name="txtPoss" class="form-control">
+                                                <select style="width:100%;" name="txtPoss" id="mfo_select3" class="form-control">
                                                     <option selected value="<?= $getEdit[0]['possible_fail'] ?>">
                                                         <?= $getEdit[0]['possible_fail'] ?></option>
                                                     <?php foreach ($fail as $faila) { ?>
@@ -148,12 +148,14 @@
                                             </div>
                                             <div class="form-group">
                                                 <label>Seksi Penanggungjawab</label>
-                                                <select name="txtSeksiPenanggungJawab" style="width:100%;" class="form-control">
-                                                    <option selected value="<?= $getEdit[0]['seksi_penanggungjawab'] ?>">
-                                                        <?= $getEdit[0]['seksi_penanggungjawab'] ?></option>
-                                                    <?php foreach ($seksi as $pil) { ?>
-                                                        <option value="<?= $pil['seksi'] ?>"><?= $pil['seksi'] ?></option>
-                                                    <?php } ?>
+                                                <select name="txtSeksiPenanggungJawab[]" style="width:100%;" class="form-control" id="mfo_selectPJ" multiple="multiple">
+                                                        <?php $txtSeksiPenanggungJawab = explode(",", $getEdit[0]['seksi_penanggungjawab']);
+                                                        foreach ($txtSeksiPenanggungJawab as $key => $value) { ?>
+                                                        <option selected value="<?= $value?>"> <?= $value?> </option>
+                                                        <?php } ?>
+                                                        <?php foreach ($seksi as $pil) { ?>
+                                                            <option value="<?= $pil['seksi'] ?>"><?= $pil['seksi'] ?></option>
+                                                        <?php } ?>
                                                 </select>
                                             </div>
                                             <div class="form-group">

@@ -168,7 +168,9 @@
                                                                 <td>
                                                                     <button onclick="readExternal(<?php echo $s['id_ext'] ?>)" class="btn btn-primary btn-sm"><i class="fa fa-list-alt"></i></button>
                                                                     <a class="btn btn-success btn-sm" href="<?php echo base_url() ?>MonitoringFlowOut/ExternalView/edit/<?php echo $s['id_ext'] ?>"> <i class="fa fa-pencil"></i></a>
-                                                                    <button onclick="delExternal(<?php echo $s['id_ext'] ?>)" class="btn btn-danger btn-sm"><i class="fa fa-trash"></i></button>
+                                                                    <a href="<?= base_url('MonitoringFlowOut/ExternalView/delExternal/'. $s['id_ext']. '/'. $s['upload_qr'] . '/' . $s['upload_car']) ?>"
+                                                                        onclick="return confirm('Apakah yakin untuk menghapus ini ?')" class="btn btn-danger btn-sm"><i
+                                                                            class="fa fa-trash"></i></a>
                                                                 </td>
                                                             <?php  } ?>
                                                         </tr>
