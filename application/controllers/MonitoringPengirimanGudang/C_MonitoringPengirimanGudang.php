@@ -110,6 +110,7 @@ class C_MonitoringPengirimanGudang extends CI_Controller{
 
 	public function btn_edit_gd()
 	{
+		// echo "<pre>";print_r($_POST);exit();
 		$no_ship = $this->input->post('no_ship');
 		$query = '';
 		if ($no_ship !=  '' or $no_ship != null) {
@@ -127,8 +128,9 @@ class C_MonitoringPengirimanGudang extends CI_Controller{
 		$getUnit = $this->M_monitoringpengirimangudang->getUnit();
 		$content_id = $this->M_monitoringpengirimangudang->getContentId();
 		$time = $this->M_monitoringpengirimangudang->timegudang($no_ship);
+		$cabang = $this->M_monitoringpengirimangudang->getCabang();
 
-
+		$data['cabang'] = $cabang;
 		$data['time'] = $time;
 		$data['unit'] = $getUnit;
 		$data['uom'] = $getTipe;
