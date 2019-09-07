@@ -303,49 +303,9 @@ function delQiInt(ths) {
     success: function (response) {
       if (response == 1) {
         $('tr[data="' + ths + '"]').remove();
-      } else {
-        r;
-      }
+      } else {}
     }
   });
-}
-function delInternal(ths) {
-  swalWithBootstrapButtons
-    .fire({
-      title: "Are you sure?",
-      text: "You won't be able to revert this!",
-      type: "warning",
-      showCancelButton: true,
-      confirmButtonText: "Yes, delete it!",
-      cancelButtonText: "No, cancel!",
-      reverseButtons: true
-    })
-    .then(result => {
-      if (result.value) {
-        $.ajax({
-          method: "post",
-          url: baseurl + "MonitoringFlowOut/InternalView/delInternal/" + ths,
-          dataType: "json",
-          success: function (response) {
-            if (response == 1) {
-              $('tr[data="' + ths + '"]').remove();
-            }
-          }
-        });
-
-        swalWithBootstrapButtons.fire(
-          "Deleted!",
-          "Your file has been deleted.",
-          "success"
-        );
-      } else if (result.dismiss === Swal.DismissReason.cancel) {
-        swalWithBootstrapButtons.fire(
-          "Cancelled",
-          "Your imaginary file is safe :)",
-          "error"
-        );
-      }
-    });
 }
 // CRUD External
 function readExternal(ths) {
@@ -391,49 +351,9 @@ function delQiExt(ths) {
     success: function (response) {
       if (response == 1) {
         $('tr[data="' + ths + '"]').remove();
-      } else {
-        r;
-      }
+      } else { }
     }
   });
-}
-function delExternal(ths) {
-  swalWithBootstrapButtons
-    .fire({
-      title: "Are you sure?",
-      text: "You won't be able to revert this!",
-      type: "warning",
-      showCancelButton: true,
-      confirmButtonText: "Yes, delete it!",
-      cancelButtonText: "No, cancel!",
-      reverseButtons: true
-    })
-    .then(result => {
-      if (result.value) {
-        $.ajax({
-          method: "post",
-          url: baseurl + "MonitoringFlowOut/ExternalView/delExternal/" + ths,
-          dataType: "json",
-          success: function (response) {
-            if (response == 1) {
-              $('tr[data="' + ths + '"]').remove();
-            }
-          }
-        });
-
-        swalWithBootstrapButtons.fire(
-          "Deleted!",
-          "Your file has been deleted.",
-          "success"
-        );
-      } else if (result.dismiss === Swal.DismissReason.cancel) {
-        swalWithBootstrapButtons.fire(
-          "Cancelled",
-          "Your imaginary file is safe :)",
-          "error"
-        );
-      }
-    });
 }
 // CRUD Seksi
 function crSeksi() {
@@ -840,6 +760,11 @@ $('input[type="file"][name="upCar"]').change(function(){
   $('#disDDAC').attr("placeholder", "Tekan 'Backspace' agar nilai tahun tidak 1970");
 })
 $(document).ready(function () {
+  //Select2 Seksi Penanggungjawab Internal dan External
+  $('#mfo_select').select2();
+  $('#mfo_selectPJ').select2();
+  $('#mfo_select3').select2();
+
   $('#slcSeksiFAjx').select2({
     allowClear: true,
     tags: true,
