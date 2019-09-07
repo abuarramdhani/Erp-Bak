@@ -214,6 +214,7 @@ class M_monitoringpengirimangudang extends CI_Model
                 left join om.om_province op on osh.shipment_to_province_id = op.province_id
                 left join om.om_city oc on osh.shipment_to_city_id = oc.city_id
                 where osh.shipment_header_id = '$no_ship'";
+          // echo $sql;exit();
       $runQuery = $this->db->query($sql);
       return $runQuery->result_array();
       } 
