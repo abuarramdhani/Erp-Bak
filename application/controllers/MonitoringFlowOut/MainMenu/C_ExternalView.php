@@ -64,10 +64,12 @@ class C_ExternalView extends CI_Controller
 		echo json_encode($data);
 	}
 
-	function delExternal($id)
+	function delExternal($id, $link_qr, $link_car)
 	{
+		unlink('./assets/upload/MonitoringFlowOut/uploadQr/' . $link_qr);
+		unlink('./assets/upload/MonitoringFlowOut/uploadCar/' . $link_car);
 		$this->M_external->delExternal($id);
-		echo 1;
+		redirect(base_url('MonitoringFlowOut/ExternalView'));
 	}
 
 	public function search()
@@ -115,17 +117,26 @@ class C_ExternalView extends CI_Controller
 
 	function update($id)
 	{
+		$arrPJ = $this->input->post('txtSeksiPenanggungJawab[]');
+		$txtSeksiPenanggungJawab = implode(",", $arrPJ);
+
 		if ($_FILES['upQr']['name'] != '') {
+			unlink('./assets/upload/MonitoringFlowOut/uploadQr/' . $this->input->post('fileLamaQr'));
 			$temp = explode(".", $_FILES["upQr"]["name"]);
 			$newfilenameQr = "upQr_" . date('d-M-Y_h-i-a') . '.' . end($temp);
+			mkdir('./assets/upload/MonitoringFlowOut/uploadQr/', 0777, true);
 			move_uploaded_file($_FILES["upQr"]["tmp_name"], "./assets/upload/MonitoringFlowOut/uploadQr/" . $newfilenameQr);
+			chmod('./assets/upload/MonitoringFlowOut/uploadQr/'.$newfilenameQr, 0777);
 		} else {
 			$newfilenameQr = $this->input->post('fileLamaQr');
 		}
 		if ($_FILES['upCar']['name'] != '') {
+			unlink('./assets/upload/MonitoringFlowOut/uploadCar/' . $this->input->post('fileLamaCar'));
 			$temp = explode(".", $_FILES["upCar"]["name"]);
 			$newfilenameCar = "upCar_" . date('d-M-Y_h-i-a') . '.' . end($temp);
+			mkdir('./assets/upload/MonitoringFlowOut/uploadCar/', 0777, true);
 			move_uploaded_file($_FILES["upCar"]["tmp_name"], "./assets/upload/MonitoringFlowOut/uploadCar/" . $newfilenameCar);
+			chmod('./assets/upload/MonitoringFlowOut/uploadCar/' . $newfilenameCar, 0777);
 		} else {
 			$newfilenameCar = $this->input->post('fileLamaCar');
 		}
@@ -166,8 +177,8 @@ class C_ExternalView extends CI_Controller
 		} else {
 			$status = NULL;
 		}
-		if (!empty($this->input->post('txtSeksiPenanggungJawab'))) {
-			$seksi_penanggungjawab = $this->input->post('txtSeksiPenanggungJawab');
+		if (!empty($txtSeksiPenanggungJawab)) {
+			$seksi_penanggungjawab = $txtSeksiPenanggungJawab;
 		} else {
 			$seksi_penanggungjawab = NULL;
 		}

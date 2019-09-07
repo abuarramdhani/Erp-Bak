@@ -53,10 +53,15 @@ class C_ExternalInput extends CI_Controller
 
 	public function create()
 	{
+		$arrPJ = $this->input->post('txtSeksiPenanggungJawab[]');
+		$txtSeksiPenanggungJawab = implode(",", $arrPJ);
+		
 		if ($_FILES['upQr']['name'] != '') {
 			$temp = explode(".", $_FILES["upQr"]["name"]);
 			$newfilenameQr = "upQr_" . date('d-M-Y_h-i-a') . '.' . end($temp);
+			mkdir('./assets/upload/MonitoringFlowOut/uploadQr/', 0777, true);
 			move_uploaded_file($_FILES["upQr"]["tmp_name"], "./assets/upload/MonitoringFlowOut/uploadQr/" . $newfilenameQr);
+			chmod('./assets/upload/MonitoringFlowOut/uploadQr/'. $newfilenameQr, 0777);
 		} else {
 			$newfilenameQr = NULL;
 		}
@@ -64,7 +69,9 @@ class C_ExternalInput extends CI_Controller
 		if ($_FILES['upCar']['name'] != '') {
 			$temp = explode(".", $_FILES["upCar"]["name"]);
 			$newfilenameCar = "upCar_" . date('d-M-Y_h-i-a') . '.' . end($temp);
+			mkdir('./assets/upload/MonitoringFlowOut/uploadCar/', 0777, true);
 			move_uploaded_file($_FILES["upCar"]["tmp_name"], "./assets/upload/MonitoringFlowOut/uploadCar/" . $newfilenameCar);
+			chmod('./assets/upload/MonitoringFlowOut/uploadCar/' . $newfilenameCar, 0777);
 		} else {
 			$newfilenameCar = NULL;
 		}
@@ -105,8 +112,8 @@ class C_ExternalInput extends CI_Controller
 		} else {
 			$status = NULL;
 		}
-		if (!empty($this->input->post('txtSeksiPenanggungJawab'))) {
-			$seksi_penanggungjawab = $this->input->post('txtSeksiPenanggungJawab');
+		if (!empty($txtSeksiPenanggungJawab)) {
+			$seksi_penanggungjawab = $txtSeksiPenanggungJawab;
 		} else {
 			$seksi_penanggungjawab = NULL;
 		}

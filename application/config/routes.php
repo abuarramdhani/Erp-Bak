@@ -2953,6 +2953,8 @@ $route['MonitoringFlowOut/InternalInput/getCode/(:any)/(:any)']	= 'MonitoringFlo
 $route['MonitoringFlowOut/InternalView']					= 'MonitoringFlowOut/MainMenu/C_InternalView';
 $route['MonitoringFlowOut/InternalView/(:any)']				= 'MonitoringFlowOut/MainMenu/C_InternalView/$1';
 $route['MonitoringFlowOut/InternalView/(:any)/(:any)'] 		= 'MonitoringFlowOut/MainMenu/C_InternalView/$1/$2';
+$route['MonitoringFlowOut/InternalView/(:any)/(:any)/(:any)'] 		= 'MonitoringFlowOut/MainMenu/C_InternalView/$1/$2/$3';
+$route['MonitoringFlowOut/InternalView/(:any)/(:any)/(:any)/(:any)'] 		= 'MonitoringFlowOut/MainMenu/C_InternalView/$1/$2/$3/$4';
 
 $route['MonitoringFlowOut/ExternalInput']					= 'MonitoringFlowOut/MainMenu/C_ExternalInput';
 $route['MonitoringFlowOut/ExternalInput/(:any)']			= 'MonitoringFlowOut/MainMenu/C_ExternalInput/$1';
@@ -2965,6 +2967,8 @@ $route['MonitoringFlowOut/ExternalInput/getCode/(:any)/(:any)']	= 'MonitoringFlo
 $route['MonitoringFlowOut/ExternalView']					= 'MonitoringFlowOut/MainMenu/C_ExternalView';
 $route['MonitoringFlowOut/ExternalView/(:any)']				= 'MonitoringFlowOut/MainMenu/C_ExternalView/$1';
 $route['MonitoringFlowOut/ExternalView/(:any)/(:any)']		= 'MonitoringFlowOut/MainMenu/C_ExternalView/$1/$2';
+$route['MonitoringFlowOut/ExternalView/(:any)/(:any)/(:any)']		= 'MonitoringFlowOut/MainMenu/C_ExternalView/$1/$2/$3';
+$route['MonitoringFlowOut/ExternalView/(:any)/(:any)/(:any)/(:any)']		= 'MonitoringFlowOut/MainMenu/C_ExternalView/$1/$2/$3/$4';
 
 $route['MonitoringFlowOut/CarJatuhTempo']					= 'MonitoringFlowOut/MainMenu/C_CarJatuhTempo';
 $route['MonitoringFlowOut/CarJatuhTempo/(:any)']			= 'MonitoringFlowOut/MainMenu/C_CarJatuhTempo/$1';
