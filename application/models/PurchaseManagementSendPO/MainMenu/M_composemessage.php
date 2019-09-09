@@ -13,20 +13,17 @@ class M_composemessage extends CI_Model
 		public function getEmailAddress($id)
 		{
 				$sql = 
-						"SELECT *
-						FROM  
-								(SELECT
+						"SELECT
 										pha.SEGMENT1,
-										ksea.EMAIL
+								hps.ATTRIBUTE16 AS EMAIL
 								FROM
 										po_headers_all pha,
-										khs_supplier_email_account ksea
+								hz_party_sites hps,
+								ap_suppliers asp
 								WHERE
-										pha.VENDOR_ID = ksea.VENDOR_ID
-										AND pha.SEGMENT1 = '$id'
-								ORDER BY
-										ksea.KODE DESC) 
-						WHERE ROWNUM <= 1
+								pha.VENDOR_ID = asp.VENDOR_ID
+								AND hps.PARTY_ID = asp.PARTY_ID
+								AND pha.SEGMENT1 = $id
 						";
 				$query = $this->oracle->query($sql);
 				return $query->result_array();
