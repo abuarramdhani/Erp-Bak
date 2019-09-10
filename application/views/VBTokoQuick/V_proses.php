@@ -19,9 +19,14 @@ thead.cabang tr th {
 									</thead>
 									<tbody id="tbody_quick">
 										<?php if (empty($hasilArray['TransactionData'])) { ?>
-											<?php echo "Data not found"; ?>
-											<tr>
-										<?php }$no=1;foreach($hasilArray['TransactionData'] as $ha) { ?>
+											<?php echo "<script> Swal.fire({
+	  													type: 'error',
+	  													title: 'Maaf...',
+	 													text: 'Data tidak ditemukan',
+														}) </script>";?>
+										<?php }else{ ?>
+											<!-- else nya dibawah, tampil data -->
+										<?php $no=1;foreach($hasilArray['TransactionData'] as $ha) { ?>
 										<tr id="<?php echo $no; ?>">
 											<td class="text-center">  <?php echo $no; ?></td>
 											 <?php $no=1;foreach($ha['DetailBills'] as $db) { ?>
@@ -46,6 +51,7 @@ thead.cabang tr th {
 								          	};?></td>
 										</tr>
 										<?php $no++;} ?>
+									<?php }?>
 									</tbody>
 									</table>
 									</div>
