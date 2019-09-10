@@ -161,8 +161,8 @@ class C_Index extends CI_Controller
 		$kd_jabatan_baru 			=	$this->input->post('txtKdJabatanBaru');
 		$jabatan_baru 				=	$this->input->post('txtJabatanBaru');
 		$lokasi_kerja_baru          =   $this->input->post('txtLokasiKerjaBaru');
-		$tempat_makan1_baru         =   $this->input->post('txtTempatMakan1Baru');
-		$tempat_makan2_baru         =   $this->input->post('txtTempatMakan2Baru');
+		// $tempat_makan1_baru         =   $this->input->post('txtTempatMakan1Baru');
+		// $tempat_makan2_baru         =   $this->input->post('txtTempatMakan2Baru');
 
 		$tanggal_berlaku 			=	$this->input->post('txtTanggalBerlaku');
 		$tanggal_cetak 				=	$this->input->post('txtTanggalCetak');
@@ -415,8 +415,8 @@ class C_Index extends CI_Controller
 		$kd_jabatan_baru 			=	$this->input->post('txtKdJabatanBaru');
 		$jabatan_baru 				=	$this->input->post('txtJabatanBaru');
 		$lokasi_kerja_baru          =   $this->input->post('txtLokasiKerjaBaru');
-		$tempat_makan1_baru         =   $this->input->post('txtTempatMakan1Baru');
-		$tempat_makan2_baru         =   $this->input->post('txtTempatMakan2Baru');
+		// $tempat_makan1_baru         =   $this->input->post('txtTempatMakan1Baru');
+		// $tempat_makan2_baru         =   $this->input->post('txtTempatMakan2Baru');
 		$pekerjaan_baru             =   $this->input->post('txtPekerjaanBaru');
 
 		$tanggal_berlaku 			=	$this->input->post('txtTanggalBerlaku');
@@ -459,9 +459,9 @@ class C_Index extends CI_Controller
 											'kodesie_lama'  		=>  $seksi_lama,
 											'kodesie_baru'  		=>  $seksi_baru,
 											'tempat_makan_1_lama' 	=>  rtrim($tempat_makan1_lama),
-											'tempat_makan_1_baru' 	=>  rtrim($tempat_makan1_baru),
+											// 'tempat_makan_1_baru' 	=>  rtrim($tempat_makan1_baru),
 											'tempat_makan_2_lama' 	=>  rtrim($tempat_makan2_lama),
-											'tempat_makan_2_baru' 	=>  rtrim($tempat_makan2_baru),
+											// 'tempat_makan_2_baru' 	=>  rtrim($tempat_makan2_baru),
 											'lokasi_kerja_lama'		=>	$lokasi_lama,
 											'lokasi_kerja_baru'		=>  $lokasi_baru,
 											'golkerja_lama'  		=>	$golongan_pekerjaan_lama,
@@ -570,8 +570,8 @@ class C_Index extends CI_Controller
 		$kd_jabatan_baru 			=	$this->input->post('txtKdJabatanBaru');
 		$jabatan_baru 				=	$this->input->post('txtJabatanBaru');
 		$lokasi_kerja_baru          =   $this->input->post('txtLokasiKerjaBaru');
-		$tempat_makan1_baru         =   $this->input->post('txtTempatMakan1Baru');
-		$tempat_makan2_baru         =   $this->input->post('txtTempatMakan2Baru');
+		// $tempat_makan1_baru         =   $this->input->post('txtTempatMakan1Baru');
+		// $tempat_makan2_baru         =   $this->input->post('txtTempatMakan2Baru');
 		$pekerjaan_baru             =   $this->input->post('txtPekerjaanBaru');
 
 		$tanggal_berlaku 			=	$this->input->post('txtTanggalBerlaku');
@@ -612,9 +612,9 @@ class C_Index extends CI_Controller
 											'kodesie_lama'  		=>  $seksi_lama,
 											'kodesie_baru'  		=>  $seksi_baru,
 											'tempat_makan_1_lama' 	=>  rtrim($tempat_makan1_lama),
-											'tempat_makan_1_baru' 	=>  rtrim($tempat_makan1_baru),
+											// 'tempat_makan_1_baru' 	=>  rtrim($tempat_makan1_baru),
 											'tempat_makan_2_lama' 	=>  rtrim($tempat_makan2_lama),
-											'tempat_makan_2_baru' 	=>  rtrim($tempat_makan2_baru),
+											// 'tempat_makan_2_baru' 	=>  rtrim($tempat_makan2_baru),
 											'lokasi_kerja_lama'		=>	$lokasi_lama,
 											'lokasi_kerja_baru'		=>  $lokasi_baru,
 											'golkerja_lama'  		=>	$golongan_pekerjaan_lama,
