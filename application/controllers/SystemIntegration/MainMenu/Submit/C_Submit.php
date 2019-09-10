@@ -1,29 +1,24 @@
 <?php defined('BASEPATH')OR die('No direct script access allowed');
-class C_Submit extends CI_Controller
-{
+class C_Submit extends CI_Controller {
 	
-	function __construct()
-		{
-			parent::__construct();
-			date_default_timezone_set('Asia/Jakarta');
-			$this->load->helper('form');
-	        $this->load->helper('url');
-	        $this->load->helper('html');
-	        $this->load->library('form_validation');
-	          //load the login model
-			$this->load->library('session');
-			$this->load->model('M_Index');
-			$this->load->model('SystemAdministration/MainMenu/M_user');
-			$this->load->model('SystemIntegration/M_submit');
-			$this->load->model('SystemIntegration/M_log');
-
-			if($this->session->userdata('logged_in')!=TRUE) {
-				$this->load->helper('url');
-				$this->session->set_userdata('last_page', current_url());
-				$this->session->set_userdata('Responsbility', 'some_value');
-			}
-
+	function __construct() {
+		parent::__construct();
+		date_default_timezone_set('Asia/Jakarta');
+		if(!$this->session->userdata('logged_in')) {
+			$this->load->helper('url');
+			$this->session->set_userdata('last_page', current_url());
+			$this->session->set_userdata('Responsbility', 'some_value');
 		}
+		$this->load->helper('form');
+		$this->load->helper('url');
+		$this->load->helper('html');
+		$this->load->library('form_validation');
+		$this->load->library('session');
+		$this->load->model('M_Index');
+		$this->load->model('SystemAdministration/MainMenu/M_user');
+		$this->load->model('SystemIntegration/M_submit');
+		$this->load->model('SystemIntegration/M_log');
+	}
 
 	public function checkSession()
 		{
@@ -141,29 +136,28 @@ class C_Submit extends CI_Controller
 		}		
 	}	
 
-	public function view($id)
-		{
-			$this->checkSession();
-			$this->load->model('SystemIntegration/M_approvalkaizen');
-			$user_id = $this->session->userid;
-			$noinduk = $this->session->userdata['user'];
-			$data['Menu'] = 'View Kaizen';
-			$data['SubMenuOne'] = '';
-			$data['UserMenu'] = $this->M_user->getUserMenu($user_id,$this->session->responsibility_id);
-			$data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id);
-			$data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id);
-			$data['user'] = $this->session->userdata('logged_in');
-			$data['kaizen'] = $this->M_submit->getKaizen($id, FALSE);
-			$data['thread'] = $this->M_log->ShowLog($id);
-
-			
-			//get form input approval
-			$form_approval = array();
-			if ($data['kaizen'] && in_array($data['kaizen'][0]['status'], $needthisform = array(0,1))  ):
+	public function view($id) {
+		$this->checkSession();
+		$this->load->model('SystemIntegration/M_approvalkaizen');
+		$user_id = $this->session->userid;
+		$noinduk = $this->session->userdata['user'];
+		$data['Menu'] = 'View Kaizen';
+		$data['SubMenuOne'] = '';
+		$data['UserMenu'] = $this->M_user->getUserMenu($user_id,$this->session->responsibility_id);
+		$data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id);
+		$data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id);
+		$data['user'] = $this->session->userdata('logged_in');
+		$data['kaizen'] = $this->M_submit->getKaizen($id, FALSE);
+		$data['thread'] = $this->M_log->ShowLog($id);
+		
+		//get form input approval
+		$form_approval = array();
+		if ($data['kaizen'] && in_array($data['kaizen'][0]['status'], $needthisform = array(0, 1))) {
 			$getKodeJabatan = $this->M_submit->getKodeJabatan($noinduk);
 			if (($getKodeJabatan >= 13) && ($getKodeJabatan != 19) && ($getKodeJabatan != 16)) {
 				$atasan1 = $this->M_submit->getAtasan($noinduk, 1);
 				$atasan2 = $this->M_submit->getAtasan($noinduk, 2);
+
 				$form_approval[0]['title'] = 'Atasan 1';
 				$form_approval[0]['level'] = '1';
 				$form_approval[0]['namefrm'] = 'SlcAtasanLangsung';
@@ -173,93 +167,83 @@ class C_Submit extends CI_Controller
 				$form_approval[1]['level'] = '2';
 				$form_approval[1]['namefrm'] = 'SlcAtasanAtasanLangsung';
 				$form_approval[1]['option'] = $atasan2;
-				
-			}else{
+			} else {
 				$atasan2 = $this->M_submit->getAtasan($noinduk, 2);
 				$form_approval[0]['title'] = 'Atasan';
 				$form_approval[0]['level'] = '2';
 				$form_approval[0]['namefrm'] = 'SlcAtasanAtasanLangsung';
 				$form_approval[0]['option'] = $atasan2;
-
 			}
-			elseif($data['kaizen'][0]['status'] == 6):
-				$atasan1 = $this->M_submit->getAtasan($noinduk, 1);
-				$form_approval[0]['title'] = 'Atasan';
-				$form_approval[0]['level'] = '6';
-				$form_approval[0]['namefrm'] = 'SlcAtasanLangsung';
-				$form_approval[0]['option'] = $atasan1;
-			endif;
-			$data['form_approval'] = $form_approval;
-			
-			$data['kaizen'][0]['employee_code'] = '';
-			$data['section_user'] = $this->M_approvalkaizen->getSectAll($data['kaizen'][0]['noinduk']);
-
-			if ($data['kaizen'][0]['komponen']) {
-				$arrayKomponen = explode(',', $data['kaizen'][0]['komponen']);
-				foreach ($arrayKomponen as $key => $value) {
-					$dataItem = $this->M_submit->getMasterItem(FALSE,$value);
-					$kodeItem = $dataItem[0]['SEGMENT1'];
-					$namaItem = $dataItem[0]['ITEM_NAME'];
-					$komponen[] = $aa = array('id' => $value, 'code' => $kodeItem, 'name' => $namaItem);
-				}
-
-				$data['kaizen'][0]['komponen'] = $komponen;
-			}
-
-
-			$reason_app = array();
-			$reason_rev = array();
-			$reason_rej = array();
-			$data['kaizen'][0]['status_app'] = '';
-
-			// $a = 0; for ($i=1; $i < 3; $i++) { 
-			// 	$getApprovalLvl = $this->M_submit->getApprover($data['kaizen'][0]['kaizen_id'], $i);
-			// 	$data['kaizen'][0]['status_app']['level'.$i] = $getApprovalLvl ? $getApprovalLvl[0]['status'] : 0;
-			// 	$data['kaizen'][0]['status_app']['staff'.$i] = $getApprovalLvl ? $getApprovalLvl[0]['employee_name'] : '';
-			// 	$data['kaizen'][0]['status_app']['staff_code'.$i] = $getApprovalLvl ? $getApprovalLvl[0]['employee_code'] :'' ;
-			// 	$data['kaizen'][0]['status_app']['reason'.$i] = $getApprovalLvl ? $getApprovalLvl[0]['reason'] :'';
-
-			// 		if ($getApprovalLvl) {
-			// 			if ($getApprovalLvl[0]['status'] == 4 ) {
-			// 				array_push($reason_rev, $data['kaizen'][0]['status_app']['reason'.$i]);
-			// 			}elseif ($data['kaizen'][0]['status'] == 5) {
-			// 				array_push($reason_rej, $data['kaizen'][0]['status_app']['reason'.$i]);
-			// 			}elseif ($data['kaizen'][0]['status'] == 3) {
-			// 				array_push($reason_app, $data['kaizen'][0]['status_app']['reason'.$i]);
-			// 			}
-			// 		}
-
-			// 	$a++;
-			// }
-
-			$getAllApprover = $this->M_submit->getApprover($data['kaizen'][0]['kaizen_id'],FALSE);
-
-			$a = 0;
-			foreach ($getAllApprover as $key => $value) {
-				$data['kaizen'][0]['status_app'][$value['level']]['level'] = $value['level'];
-				$data['kaizen'][0]['status_app'][$value['level']]['staff'] = $value['employee_name'];
-				$data['kaizen'][0]['status_app'][$value['level']]['staff_code'] = $value['employee_code'];
-				$data['kaizen'][0]['status_app'][$value['level']]['reason'] = $value['reason'];
-				
-					if ($value['status'] == 4 ) {
-						array_push($reason_rev, $value['reason']);
-					}elseif ($value['status'] == 5) {
-						array_push($reason_rej, $value['reason']);
-					}elseif ($value['status'] == 3) {
-						array_push($reason_app, $value['reason']);
-					}
-
-				$a++;
-			}
-			$data['kaizen'][0]['reason_app'] = implode(',<br>', $reason_app);
-			$data['kaizen'][0]['reason_rev'] = implode(',<br>', $reason_rev);
-			$data['kaizen'][0]['reason_rej'] = implode(',<br>', $reason_rej);
-
-			$this->load->view('V_Header', $data);
-			$this->load->view('V_Sidemenu', $data);
-			$this->load->view('SystemIntegration/MainMenu/Submit/V_ViewKaizen', $data);
-			$this->load->view('V_Footer');
+		} else if($data['kaizen'][0]['status'] == 6) {
+			$atasan1 = $this->M_submit->getAtasan($noinduk, 1);
+			$form_approval[0]['title'] = 'Atasan';
+			$form_approval[0]['level'] = '6';
+			$form_approval[0]['namefrm'] = 'SlcAtasanLangsung';
+			$form_approval[0]['option'] = $atasan1;
 		}
+
+		$data['form_approval'] = $form_approval;
+		$data['kaizen'][0]['employee_code'] = '';
+		$data['section_user'] = $this->M_approvalkaizen->getSectAll($data['kaizen'][0]['noinduk']);
+		if ($data['kaizen'][0]['komponen']) {
+			$arrayKomponen = explode(',', $data['kaizen'][0]['komponen']);
+			foreach ($arrayKomponen as $key => $value) {
+				$dataItem = $this->M_submit->getMasterItem(FALSE,$value);
+				$kodeItem = $dataItem[0]['SEGMENT1'];
+				$namaItem = $dataItem[0]['ITEM_NAME'];
+				$komponen[] = $aa = array('id' => $value, 'code' => $kodeItem, 'name' => $namaItem);
+			}
+			$data['kaizen'][0]['komponen'] = $komponen;
+		}
+
+		$reason_app = array();
+		$reason_rev = array();
+		$reason_rej = array();
+		$data['kaizen'][0]['status_app'] = '';
+
+		// $a = 0; for ($i=1; $i < 3; $i++) { 
+		// 	$getApprovalLvl = $this->M_submit->getApprover($data['kaizen'][0]['kaizen_id'], $i);
+		// 	$data['kaizen'][0]['status_app']['level'.$i] = $getApprovalLvl ? $getApprovalLvl[0]['status'] : 0;
+		// 	$data['kaizen'][0]['status_app']['staff'.$i] = $getApprovalLvl ? $getApprovalLvl[0]['employee_name'] : '';
+		// 	$data['kaizen'][0]['status_app']['staff_code'.$i] = $getApprovalLvl ? $getApprovalLvl[0]['employee_code'] :'' ;
+		// 	$data['kaizen'][0]['status_app']['reason'.$i] = $getApprovalLvl ? $getApprovalLvl[0]['reason'] :'';
+		// 		if ($getApprovalLvl) {
+		// 			if ($getApprovalLvl[0]['status'] == 4 ) {
+		// 				array_push($reason_rev, $data['kaizen'][0]['status_app']['reason'.$i]);
+		// 			}elseif ($data['kaizen'][0]['status'] == 5) {
+		// 				array_push($reason_rej, $data['kaizen'][0]['status_app']['reason'.$i]);
+		// 			}elseif ($data['kaizen'][0]['status'] == 3) {
+		// 				array_push($reason_app, $data['kaizen'][0]['status_app']['reason'.$i]);
+		// 			}
+		// 		}
+		// 	$a++;
+		// }
+
+		$a = 0;
+		$getAllApprover = $this->M_submit->getApprover($data['kaizen'][0]['kaizen_id'],FALSE);
+		foreach ($getAllApprover as $key => $value) {
+			$data['kaizen'][0]['status_app'][$value['level']]['level'] = $value['level'];
+			$data['kaizen'][0]['status_app'][$value['level']]['staff'] = $value['employee_name'];
+			$data['kaizen'][0]['status_app'][$value['level']]['staff_code'] = $value['employee_code'];
+			$data['kaizen'][0]['status_app'][$value['level']]['reason'] = $value['reason'];
+			if ($value['status'] == 4 ) {
+				array_push($reason_rev, $value['reason']);
+			} else if ($value['status'] == 5) {
+				array_push($reason_rej, $value['reason']);
+			} else if ($value['status'] == 3) {
+				array_push($reason_app, $value['reason']);
+			}
+			$a++;
+		}
+		$data['kaizen'][0]['reason_app'] = implode(',<br>', $reason_app);
+		$data['kaizen'][0]['reason_rev'] = implode(',<br>', $reason_rev);
+		$data['kaizen'][0]['reason_rej'] = implode(',<br>', $reason_rej);
+
+		$this->load->view('V_Header', $data);
+		$this->load->view('V_Sidemenu', $data);
+		$this->load->view('SystemIntegration/MainMenu/Submit/V_ViewKaizen', $data);
+		$this->load->view('V_Footer');
+	}
 
 
 	public function edit($id)

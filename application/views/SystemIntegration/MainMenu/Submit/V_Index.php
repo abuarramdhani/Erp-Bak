@@ -76,6 +76,5 @@
 </section>
 <script src="<?php echo base_url('assets/plugins/ckeditor/ckeditor.js');?>"></script>
 <script type="text/javascript">
-
- CKEDITOR.disableAutoInline = true;
+  CKEDITOR.disableAutoInline = true;
 </script>
