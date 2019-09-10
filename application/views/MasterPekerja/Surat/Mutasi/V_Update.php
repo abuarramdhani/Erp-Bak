@@ -44,7 +44,7 @@
                                                             </select>
                                                         </div>
                                                     </div>
-                                                   <!--  <div class="form-group">
+                                                   <!--   <div class="form-group">
                                                         <label for="cmbNoind" class="col-lg-4 control-label">Nomor Induk</label>
                                                         <div class="col-lg-8">
                                                             <input type="text" class="form-control" name="txtNoind" readonly="" id="MasterPekerja-SuratMutasi-DaftarPekerja" value="<?php echo $edit['noind'];?>">    

@@ -129,7 +129,7 @@
                                                                     foreach ($DaftarKdJabatan as $kdjabatan) 
                                                                     {
                                                                ?>
-                                                            <!--  <option value="<?php echo $kdjabatan['kd_jabatan'];?>"><?php echo $kdjabatan['jabatan'];?></option> -->
+                                                            <!--  <option value="<?php echo $kdjabatan['kd_jabatan'];?>"><?php echo $kdjabatan['jabatan'];?> </option> -->
                                                             <option value="<?php echo $kdjabatan['kd_jabatan'];?>">
                                                                          <?php echo $kdjabatan['kd_jabatan'].' - '.$kdjabatan['jabatan'];?>
                                                                      </option>

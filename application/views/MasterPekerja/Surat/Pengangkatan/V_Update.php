@@ -48,7 +48,7 @@
                                                         <div class="col-lg-8">
                                                             <input type="text" class="form-control" name="txtNoind" readonly="" id="MasterPekerja-SuratMutasi-DaftarPekerja" value="<?php echo $edit['noind'];?>">    
                                                         </div>
-                                                    </div> -->
+                                                    </div>  -->
                                                 </div>
                                                 <div class="col-lg-6">
                                                     <div class="form-group">
@@ -193,7 +193,7 @@
                                                             </select>
                                                         </div>
                                                     </div>
-                                                   <!--  <div class="form-group">
+                                                   <!--  <div class="form-group" >
                                                         <label for="txtTempatMakan1Baru" class="col-lg-4 control-label">Tempat Makan 1</label>
                                                         <div class="col-lg-8">
                                                             <select name="txtTempatMakan1Baru" class="form-control select2 MasterPekerja-DaftarTempatMakan" >

@@ -78,7 +78,7 @@ class C_Index extends CI_Controller
       	$data['DaftarKdJabatan'] = $this->M_Rotasi->DetailKdJabatan();
       	$data['DaftarTempatMakan1'] = $this->M_Rotasi->DetailTempatMakan1();
       	$data['DaftarTempatMakan2'] = $this->M_Rotasi->DetailTempatMakan2();
-		// echo "<pre>";
+
 		// print_r($data['DaftarKdJabatan']);
 		// echo "</pre>";
 		// exit();

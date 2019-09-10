@@ -93,8 +93,8 @@ class C_Index extends CI_Controller
 		$data['kode'] = $kode;
 
 
-      	// $data['DaftarPekerja']	=	$this->M_pengangkatan->getAmbilPekerjaAktif();
-      	// $data['DaftarSeksi']    =   $this->M_pengangkatan->getSeksi();
+      	// $data['DaftarPekerja']	=	$this->M_pengangkatan->getAmbilPekerjaAktif() ;
+      	// $data['DaftarSeksi']    =   $this->M_pengangkatan->getSeksi(); 
       	// $data['DaftarPekerjaan'] = $this->M_pengangkatan->DetailPekerjaan();
 		$data['DaftarGolongan'] = $this->M_pengangkatan->DetailGolongan();
       	$data['DaftarLokasiKerja'] = $this->M_pengangkatan->DetailLokasiKerja();

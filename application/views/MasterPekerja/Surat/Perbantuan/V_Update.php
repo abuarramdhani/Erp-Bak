@@ -49,7 +49,7 @@
                                                         <div class="col-lg-8">
                                                             <input type="text" class="form-control" name="txtNoind" readonly="" id="MasterPekerja-SuratPerbantuan-DaftarPekerja" value="<?php echo $edit['noind'];?>">    
                                                         </div>
-                                                    </div> -->
+                                                    </div>  -->
                                                 </div>
                                                 <div class="col-lg-6">
                                                     <div class="form-group">

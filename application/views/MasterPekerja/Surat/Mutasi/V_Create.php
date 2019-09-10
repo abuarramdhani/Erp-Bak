@@ -149,7 +149,7 @@
                                                             </select>
                                                         </div>
                                                     </div>
-                                                    <!-- <div class="form-group">
+                                                    <!--  <div class="form-group">
                                                         <label for="txtTempatMakan1Baru" class="col-lg-4 control-label">Tempat Makan 1</label>
                                                         <div class="col-lg-8">
                                                             <select required name="txtTempatMakan1Baru" class="form-control select2 MasterPekerja-DaftarTempatMakan" >

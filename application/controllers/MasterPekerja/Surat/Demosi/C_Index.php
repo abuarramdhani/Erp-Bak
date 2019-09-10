@@ -73,7 +73,7 @@ class C_Index extends CI_Controller
 		$data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id);
 
       	// $data['DaftarPekerja']	=	$this->M_demosi->getAmbilPekerjaAktif();
-      	// $data['DaftarSeksi']    =   $this->M_demosi->getSeksi();
+      	// $data['DaftarSeksi']    =   $this->M_demosi->getSeksi(); 
       	// $data['DaftarPekerjaan'] = $this->M_demosi->DetailPekerjaan();
 		$data['DaftarGolongan'] = $this->M_demosi->DetailGolongan();
       	$data['DaftarLokasiKerja'] = $this->M_demosi->DetailLokasiKerja();

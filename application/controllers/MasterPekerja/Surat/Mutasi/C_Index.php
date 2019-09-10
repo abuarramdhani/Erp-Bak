@@ -65,7 +65,7 @@ class C_Index extends CI_Controller
 		$data['Title']			=	'Surat Mutasi';
 		$data['Menu'] 			= 	'Surat-Surat';
 		$data['SubMenuOne'] 	= 	'Surat Mutasi';
-		$data['SubMenuTwo'] 	= 	'';
+		$data['SubMenuTwo'] 	= 	''; 
 
 		$data['UserMenu'] = $this->M_user->getUserMenu($user_id,$this->session->responsibility_id);
 		$data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id);

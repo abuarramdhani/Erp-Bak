@@ -81,7 +81,7 @@ class C_Index extends CI_Controller
       	$data['DaftarTempatMakan2'] = $this->M_perbantuan->DetailTempatMakan2();
 		// echo "<pre>";
 		// print_r($data['DaftarKdJabatan']);
-		// echo "</pre>";
+		// echo "</pre>"; 
 		// exit();
 
 		$this->load->view('V_Header',$data);
