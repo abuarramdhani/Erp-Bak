@@ -113,8 +113,8 @@
 								</div>
 								<div class="form-group">
 									<label class="control-label col-lg-4">Keperluan</label>
-									<div class="col-lg-4 col-xs-10">
-										<div class="col-lg-12">
+									<div class="col-lg-4">
+										<div class="col-lg-12 col-xs-10">
 												<input type="text" class="form-control" name="" id="DetailKeperluan" value="<?php if(empty($Detail['0']['keperluan'])){ echo "-";}else{echo $Detail['0']['keperluan'];} ?>" readonly>
 										</div>
 									</div>
