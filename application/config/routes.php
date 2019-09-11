@@ -3020,3 +3020,17 @@ $route['MonitoringFlowOut/TagihanExternal/(:any)/(:any)']		= 'MonitoringFlowOut/
 // --------------------------------------------VA BCA TOKO QUICK-----------------------
 $route['VBTokoQuick'] = 'VBTokoQuick/C_VBTokoQuick/dashboard';
 $route['VBTokoQuick/Dashboard/(:any)'] = 'VBTokoQuick/C_VBTokoQuick/$1';
+
+// --------------------------------------- Monitoring Biaya Produksi -----------------------------------------------//
+$route['MonitoringBiayaProduksi'] = 'MonitoringBiayaProduksi/C_Index';
+$route['MonitoringBiayaProduksi/Dashboard'] = 'MonitoringBiayaProduksi/MainMenu/Dashboard/C_ChartDashboard';
+$route['MonitoringBiayaProduksi/Dashboard/(:any)'] = 'MonitoringBiayaProduksi/MainMenu/Dashboard/C_ChartDashboard/$1';
+$route['MonitoringBiayaProduksi/Dashboard/(:any)/(:any)'] = 'MonitoringBiayaProduksi/MainMenu/Dashboard/C_ChartDashboard/$1/$2';
+
+$route['MonitoringBiayaProduksi/Detail'] = 'MonitoringBiayaProduksi/MainMenu/Detail/C_ChartDetail';
+$route['MonitoringBiayaProduksi/Detail/(:any)'] = 'MonitoringBiayaProduksi/MainMenu/Detail/C_ChartDetail/$1';
+$route['MonitoringBiayaProduksi/Detail/(:any)/(:any)'] = 'MonitoringBiayaProduksi/MainMenu/Detail/C_ChartDetail/$1/$2';
+
+$route['MonitoringBiayaProduksi/BiayaSeksi'] = 'MonitoringBiayaProduksi/MainMenu/BiayaSeksi/C_ChartBiayaSeksi';
+$route['MonitoringBiayaProduksi/BiayaSeksi/(:any)'] = 'MonitoringBiayaProduksi/MainMenu/BiayaSeksi/C_ChartBiayaSeksi/$1';
+$route['MonitoringBiayaProduksi/BiayaSeksi/(:any)/(:any)'] = 'MonitoringBiayaProduksi/MainMenu/BiayaSeksi/C_ChartBiayaSeksi/$1/$2';

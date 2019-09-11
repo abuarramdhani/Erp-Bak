@@ -170,6 +170,7 @@
 		<script src="<?= base_url('assets/js/customSPS.js');?>"></script>
 		<script src="<?= base_url('assets/js/customMFO.js');?>"></script>
 		<script src="<?= base_url('assets/js/customVBC.js');?>"></script>
+		<script src="<?= base_url('assets/js/customMBP.js');?>"></script>
 		<!-- <script src="<?= base_url('assets/js/customMO.js') ?>"></script> -->
 		<!-- <script src="<?= base_url('assets/js/customPR.js') ?>"></script> -->
 		<!-- <script src="<?= base_url('assets/js/customOSP.js') ?>"></script> -->
