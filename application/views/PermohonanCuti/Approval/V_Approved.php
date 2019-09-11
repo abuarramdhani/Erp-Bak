@@ -1,3 +1,17 @@
+<style media="screen">
+@media screen and (max-width: 767px) {
+  div.dataTables_length {
+    display: none !important;
+  }
+  div.dataTables_wrapper div.dataTables_filter{
+    float:right !important;
+  }
+  .personal{
+    display:none;
+  }
+}
+</style>
+
 <section class="content">
   <div class="panel-body">
     <div class="row">
@@ -10,16 +24,16 @@
             </button>
           </div>
         </div>
-        <div class="box-body  bg-info">
+        <div class="box-body personal bg-info">
           <div class="row">
             <div class="col-lg-12">
               <div class="row">
                 <div class="col-lg-1 col-md-2 col-sm-2 col-xs-3">
-                  <text>Nama </text><br>
-                  <text>No Induk </text><br>
-                  <text>Seksi </text><br>
-                  <text>Unit </text><br>
-                  <text>Departemen </text>
+                  <text>Nama        </text><br>
+                  <text>No Induk    </text><br>
+                  <text>Seksi       </text><br>
+                  <text>Unit        </text><br>
+                  <text>Departemen  </text>
                 </div>
                 <div class="col-lg-11 col-md-10 col-sm-10 col-xs-9">
                   <?php foreach ($Info as $key): ?>
@@ -49,7 +63,7 @@
                 <tr class="bg-primary">
                   <th class="text-center" style="width:5%;">No</th>
                   <th class="text-center" style="width:10%;">Tanggal Pengajuan</th>
-                  <th class="text-center">Id Cuti</th>
+                  <!-- <th class="text-center">Id Cuti</th> -->
                   <th class="text-center">Noind</th>
                   <th class="text-center">Nama</th>
                   <th class="text-center">Tipe Cuti</th>
@@ -67,8 +81,8 @@
                     ?>
                 <tr>
                   <td class="text-center"><?php echo $no ?></td>
-                  <td><?php echo date("d/F/Y",strtotime($key['tgl'])) ?></td>
-                  <td><?php echo $key['id_cuti'] ?></td>
+                  <td><?php echo date("d/m/Y",strtotime($key['tgl'])) ?></td>
+                  <!-- <td><?php echo $key['id_cuti'] ?></td> -->
                   <td><?php echo $key['noind'] ?></td>
                   <td><?php echo $key['name'] ?></td>
                   <td><?php echo $key['tipe'] ?></td>

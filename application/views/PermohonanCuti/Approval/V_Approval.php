@@ -7,6 +7,12 @@
   .small-box .icon{
     display:inherit;
   }
+
+  @media screen and (max-width: 767px) {
+    .personal{
+      display:none;
+    }
+  }
 </style>
 <section class="content">
   <div class="panel-body">
@@ -20,7 +26,7 @@
             </button>
           </div>
         </div>
-        <div class="box-body  bg-info">
+        <div class="box-body personal bg-info">
           <div class="row">
             <div class="col-lg-12">
               <div class="row">
@@ -88,7 +94,7 @@
 								<a href="<?= site_url('PermohonanCuti/Approval/Rejected') ?>" class="small-box-footer">Info Lengkap <i class="fa fa-arrow-circle-right"></i></a>
 							</div>
 						</div>
-          <?php if(strstr($this->session->kodesie, '4090101')){  ?>
+          <!-- <?php if(strstr($this->session->kodesie, '4090101')){  ?>
             <div class="col-lg-3 col-xs-6">
               <div class="small-box bg-primary">
                 <div class="inner">
@@ -101,7 +107,7 @@
                 <a href="<?= site_url('PermohonanCuti/Approval/Canceled') ?>" class="small-box-footer">Info Lengkap <i class="fa fa-arrow-circle-right"></i></a>
               </div>
             </div>
-          <?php } ?>
+          <?php } ?> -->
       </div>
     </div>
   </div>
