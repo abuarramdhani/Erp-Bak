@@ -134,7 +134,7 @@
 											<button type="button" id="rejectCuti" class="btn btn-danger"><i class="fa fa-close"> Tolak</i></button>
 											<button type="submit" style="display:none;" id="approveCuti2" name="approve" value="2"></button>
 											<button type="submit" style="display:none;" id="rejectCuti2" name="approve" value="3"></button>
-											<a href="<?php echo base_url('PermohonanCuti/Approval/Inprocess') ?>" class="btn btn-warning">Back</a>
+											<a href="<?php echo base_url('PermohonanCuti/Approval/Inprocess') ?>" class="btn btn-warning" onclick="$('#loading1').attr('class','fa fa-spinner fa-spin')"><i id="loading1"></i> Back</a>
 										</div>
 									</div>
 									<?php }else{ ?>
