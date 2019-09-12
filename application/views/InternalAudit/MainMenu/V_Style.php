@@ -151,7 +151,7 @@
 		}
 
 	/*end og custom butt on*/
-	
+
 	/*custom table yang pojoknya tumpul*/
 		.table-curved {
 		   border-collapse: separate;
@@ -161,7 +161,7 @@
 		   border-top: 0px;
 		}
 
-		.table-curved th {                                                                                                            
+		.table-curved th {
 			background-color: #424c53 !important;
 			color: white;;
 			text-align: center;
@@ -263,10 +263,11 @@
 	              <div style="width: 100%; text-align: center;">
 	              <div class="image-cropper" style="display: inline-block">
 				    <?php
-					$file 			= 	"http://quick.com/aplikasi/photo/".$this->session->user.'.'.'jpg';
+					$path_photo  		=	base_url('assets/img/photo').'/';
+					$file 					= 	$path_photo.$this->session->user.'.'.'jpg';
 					$file_headers 	= 	@get_headers($file);
 					if(!$file_headers || substr($file_headers[0], strpos($file_headers[0], 'Not Found'), 9) == 'Not Found'){
-						$file 			= 	"http://quick.com/aplikasi/photo/".$this->session->user.'.'.'JPG';
+						$file 			= 	$path_photo.$this->session->user.'.'.'JPG';
 						$file_headers 	= 	@get_headers($file);
 						if(!$file_headers || substr($file_headers[0], strpos($file_headers[0], 'Not Found'), 9) == 'Not Found'){
 							$ekstensi 	= 	'Not Found';
@@ -278,7 +279,7 @@
 					}
 
 					if($ekstensi=='jpg' || $ekstensi=='JPG'){
-						echo '<img src="http://quick.com/aplikasi/photo/'.$this->session->user.'.'.$ekstensi.'" class="rounded imgs" alt="User Image" title="'.$this->session->user.' - '.$this->session->employee.'">';
+						echo '<img src="'.$path_photo.$this->session->user.'.'.$ekstensi.'" class="rounded imgs" alt="User Image" title="'.$this->session->user.' - '.$this->session->employee.'">';
 					}else{
 						echo '<img src="'.base_url('assets/theme/img/user.png').'" class="rounded imgs" alt="User Image" />';
 					}
@@ -313,7 +314,7 @@
 	              <strong><i class="fa fa-user margin-r-5"></i> Initial</strong>
 
 	              <p class="text-muted">
-	                ndaru 
+	                ndaru
 	              </p>
 
 	              <hr>

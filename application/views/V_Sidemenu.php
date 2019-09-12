@@ -3,10 +3,11 @@
 		<div class="user-panel" style="height:100px;">
             <div class="pull-left image">
               	<?php
-				$file 			= 	"http://quick.com/aplikasi/photo/".$this->session->user.'.'.'jpg';
+				$path_photo  		=	base_url('assets/img/photo').'/';
+				$file 					= "$path_photo".$this->session->user.'.'.'jpg';
 				$file_headers 	= 	@get_headers($file);
 				if(!$file_headers || substr($file_headers[0], strpos($file_headers[0], 'Not Found'), 9) == 'Not Found'){
-					$file 			= 	"http://quick.com/aplikasi/photo/".$this->session->user.'.'.'JPG';
+					$file 			= 	"$path_photo".$this->session->user.'.'.'JPG';
 					$file_headers 	= 	@get_headers($file);
 					if(!$file_headers || substr($file_headers[0], strpos($file_headers[0], 'Not Found'), 9) == 'Not Found'){
 						$ekstensi 	= 	'Not Found';
@@ -18,7 +19,7 @@
 				}
 
 				if($ekstensi=='jpg' || $ekstensi=='JPG'){
-					echo '<img src="http://quick.com/aplikasi/photo/'.$this->session->user.'.'.$ekstensi.'" class="img-circle" alt="User Image" title="'.$this->session->user.' - '.$this->session->employee.'">';
+					echo '<img src="'.$path_photo.$this->session->user.'.'.$ekstensi.'" class="img-circle" alt="User Image" title="'.$this->session->user.' - '.$this->session->employee.'">';
 				}else{
 					echo '<img src="'.base_url('assets/theme/img/user.png').'" class="img-circle" alt="User Image" />';
 				}
@@ -27,7 +28,7 @@
             <div class="pull-left info">
             	<p><?php echo $this->session->user;?></p>
             	<p><h6><strong><?php echo $this->session->employee;?></strong></h6></p>
-            	<?php if($this->session->user != "KHSERP"){ ?> 
+            	<?php if($this->session->user != "KHSERP"){ ?>
             		<a href="<?php echo base_url('ChangePassword');?>">Change Password</a>
             	<?php  } ?>
             	<br />
@@ -81,7 +82,7 @@
 					?>
 						<li class="<?=$menu_class?>">
 							<a href="<?= $link?>">
-							<?php	
+							<?php
 								if($UserMenu_item['menu_link']==""){
 									echo $UserMenu_item['menu_title'];
 							?>
@@ -93,7 +94,7 @@
 							?>
 							</a>
 								<!-- -------------------- Menu Level 2 -------------------- -->
-								<?php	
+								<?php
 									if($UserMenu_item['menu_link']==""){
 								?>
 								<ul class="treeview-menu">
@@ -112,7 +113,7 @@
 												}
 									?>
 										<li class="<?= $sub_menu_class_one?>"><a href="<?= $link_sub1?>">
-										<?php	
+										<?php
 											if($UserSubMenuOne_item['menu_link']==""){
 												echo $UserSubMenuOne_item['menu_title'];
 										?>
@@ -123,7 +124,7 @@
 											}
 										?>
 										<!-- -------------------- Menu Level 3 -------------------- -->
-										<?php	
+										<?php
 											if($UserSubMenuOne_item['menu_link']==""){
 										?>
 										<ul class="treeview-menu">
@@ -147,7 +148,7 @@
 													}
 												}
 											?>
-								
+
 										</ul>
 										<?php
 											}
@@ -158,7 +159,7 @@
 											}
 										}
 									?>
-						
+
 								</ul>
 								<?php
 									}
@@ -168,7 +169,7 @@
 					<?php
 						}
 					?>
-					
+
 				</ul>
 				<!-- -------------------- Menu Level 1 -------------------- -->
 						<?php } ?>
@@ -177,12 +178,12 @@
 </aside>
 	<div class="content-wrapper">
 <div id="data_content">
-	
+
 			<div class="col-lg-12 col-sm-12 col-xs-12">
 				<div class="modal fade" id="myModal" tabindex="-1" role="dialog"  aria-labelledby="myModalLabel" aria-hidden="true">
 					<div class="modal-dialog">
 						<div class="modal-content">
-						
+
 						</div>
 					</div>
 				</div>

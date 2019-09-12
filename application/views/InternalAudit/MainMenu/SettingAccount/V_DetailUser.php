@@ -48,7 +48,7 @@ img {
 								<button class="btn btn-md  btn-primary btnFrmFPDHome"><b>User Profile</b></button>
 							</div>
 							<div class="box-body" style="min-height: 350px; " >
-								
+
 <!-- from here -->
       <div class="row">
         <div class="col-md-3">
@@ -57,13 +57,14 @@ img {
           <div class="box box-primary">
             <div class="box-body box-profile">
               <div style="width: 100%; text-align: center;">
-              	
+
               <div class="image-cropper" style="display: inline-block">
 			    <?php
-				$file 			= 	"http://quick.com/aplikasi/photo/".$user['no_induk'].'.'.'jpg';
+				$path_photo  		=	base_url('assets/img/photo').'/';
+				$file 			= 	$path_photo.$user['no_induk'].'.'.'jpg';
 				$file_headers 	= 	@get_headers($file);
 				if(!$file_headers || substr($file_headers[0], strpos($file_headers[0], 'Not Found'), 9) == 'Not Found'){
-					$file 			= 	"http://quick.com/aplikasi/photo/".$this->session->user.'.'.'JPG';
+					$file 			= 	$path_photo.$this->session->user.'.'.'JPG';
 					$file_headers 	= 	@get_headers($file);
 					if(!$file_headers || substr($file_headers[0], strpos($file_headers[0], 'Not Found'), 9) == 'Not Found'){
 						$ekstensi 	= 	'Not Found';
@@ -75,7 +76,7 @@ img {
 				}
 
 				if($ekstensi=='jpg' || $ekstensi=='JPG'){
-					echo '<img src="http://quick.com/aplikasi/photo/'.$user['no_induk'].'.'.$ekstensi.'" class="rounded" alt="User Image" title="'.$user['name'].' - '.$user['no_induk'].'">';
+					echo '<img src="'.$path_photo.$user['no_induk'].'.'.$ekstensi.'" class="rounded" alt="User Image" title="'.$user['name'].' - '.$user['no_induk'].'">';
 				}else{
 					echo '<img src="'.base_url('assets/theme/img/user.png').'" class="rounded" alt="User Image" />';
 				}
@@ -100,7 +101,7 @@ img {
             </div>
             <!-- /.box-body -->
           </div>
-          
+
         </div>
         <!-- /.col -->
         <div class="col-md-9">
