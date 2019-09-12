@@ -33,7 +33,9 @@
 											<?php }else{ ?>
 											<td><?php echo $k['status'] ?> </td>
 											<?php }?>
-											<td><button type="button" data-toggle="modal" data-target="MdlMPM" onclick="ModalDetailUnit(<?php echo $k['no_shipment'] ?>)" class="btn btn-default"><i class="fa fa-pencil"></i> Edit</button>
+											<td>
+												<a title="edit ..." class="btn btn-warning btn-sm" data-target="MdlMPM" data-toggle="modal" onclick="ModalDetailUnit(<?php echo $k['no_shipment'] ?>)"><i class="fa fa-hand-pointer-o"></i></a>
+												<a title="delete ..." class="btn btn-danger btn-sm" onclick="DeleteShipment(<?php echo $k['no_shipment'] ?>)"><i class="fa fa-trash"></i></a></td>
 										</tr>
 										<?php $no++; } ?>
 									</tbody>

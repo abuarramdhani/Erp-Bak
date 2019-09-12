@@ -30,7 +30,53 @@ $(document).ready(function(){
 // -------------------------------------------PENGIRIMAN UNIT --------------------------------------------------------
 
 
+function DeleteShipment(th) {
+	var id = th
+	const swalWithBootstrapButtons = Swal.mixin({
+		  customClass: {
+		    confirmButton: 'btn btn-success',
+		    cancelButton: 'btn btn-danger'
+		  },
+		  buttonsStyling: true
+		})
 
+	swalWithBootstrapButtons.fire({
+		  title: 'Shipment Akan Dihapus',
+		  text: 'Yakin ingin menghapus Shipment No.'+id+'?',
+		  type: 'warning',
+		  showCancelButton: true,
+		  confirmButtonText: 'Yes, delete it!',
+		  cancelButtonText: 'No, cancel!',
+		  reverseButtons: true
+	}).then((result) => {
+  if (result.value) {
+	  	$.ajax({
+					type: "POST",
+					url: baseurl+"MonitoringPengiriman/FindShipment/deleteShipment",
+					data:{
+						id_shipment:id,
+					},
+					success: function(response) {
+						  swalWithBootstrapButtons.fire(
+					      'Deleted!',
+					      'Shipment No.'+id+' berhasil dihapus!',
+					      'success'
+					    	)
+						  window.location.reload();
+			 		}
+
+				});
+  } else if (
+    result.dismiss === Swal.DismissReason.cancel
+  ) {
+    swalWithBootstrapButtons.fire(
+      'Cancelled',
+      'Shipment No.'+id+' batal dihapus :)',
+      'error'
+    )
+  }
+})
+}
 
 $('.enter').on("keypress",function(e){
 		if (e.keyCode == 13) {
