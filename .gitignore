@@ -29,3 +29,8 @@ application/logs/*
 /trial/
 /aplikasi/
 /assets/generated/
+/assets/img/
+/img/
+/portal-karyawan/
+/presensi_cabang/
+/quick-support-system/
