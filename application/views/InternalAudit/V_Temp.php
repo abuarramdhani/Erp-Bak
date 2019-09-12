@@ -164,7 +164,7 @@
 	  			</tr>
 	  		</tbody>
 	  </table>
-<?php break; 
+<?php break;
 	case 'edit_account': ?>
 <div class="col-lg-12 " style=" margin-top: 20px">
 	<form method="post" action="<?= base_url('InternalAudit/SettingAccount/AuditObject/SaveEditAuditProject')?>">
@@ -199,7 +199,7 @@
 				<tr>
 					<td width="90%">
 					<table style="width: 100%" class="table table-responsive table-curved" id="tbl-acc-set-ia" >
-					<?php if ($data_audit[0]['staff']) { 
+					<?php if ($data_audit[0]['staff']) {
 					foreach ($data_audit[0]['staff'] as $k => $v) { ?>
 						<tr>
 							<td width="90%">
@@ -254,7 +254,7 @@
 				<tr>
 					<td width="90%">
 					<table style="width: 100%" class="table table-responsive table-curved" id="tbl-acc-set-ia2" >
-					<?php if ($data_audit[0]['auditor']) { 
+					<?php if ($data_audit[0]['auditor']) {
 					foreach ($data_audit[0]['auditor'] as $k => $v) { ?>
 						<tr>
 							<td width="90%">
@@ -317,7 +317,7 @@ case 'detail_progress': ?>
 	.dataTables_length{
 			display: none;
 		}
-	
+
 </style>
 	<div class="col-lg-12">
 	<table class="table dtb2 table-curved table-responsive table-striped table-hover" width="100%">
@@ -344,7 +344,7 @@ case 'detail_progress': ?>
 	  						<i class="fa fa-clock-o"> history..</i>
 	  					</a> -->
   					<?php } ?>
-  					
+
   				</center>
   				</td>
   				<td ><p class="desc_progress"><?= $v['description']; ?></p>
@@ -413,7 +413,7 @@ case 'detail_progress': ?>
 	  						<i class="fa fa-clock-o"> history..</i>
 	  					</a> -->
   					<?php } ?>
-  					
+
   				</center>
   				</td>
   				<td><?= $v['description']; ?>
@@ -489,10 +489,11 @@ case 'view_user': ?>
 	              <div style="width: 100%; text-align: center;">
 	              <div class="image-cropper" style="display: inline-block">
 				    <?php
-					$file 			= 	"http://quick.com/aplikasi/photo/".$user['no_induk'].'.'.'jpg';
+					$path_photo  		=	base_url('assets/img/photo').'/';
+					$file 			= 	$path_photo.$user['no_induk'].'.'.'jpg';
 					$file_headers 	= 	@get_headers($file);
 					if(!$file_headers || substr($file_headers[0], strpos($file_headers[0], 'Not Found'), 9) == 'Not Found'){
-						$file 			= 	"http://quick.com/aplikasi/photo/".$this->session->user.'.'.'JPG';
+						$file 			= 	$path_photo.$this->session->user.'.'.'JPG';
 						$file_headers 	= 	@get_headers($file);
 						if(!$file_headers || substr($file_headers[0], strpos($file_headers[0], 'Not Found'), 9) == 'Not Found'){
 							$ekstensi 	= 	'Not Found';
@@ -504,7 +505,7 @@ case 'view_user': ?>
 					}
 
 					if($ekstensi=='jpg' || $ekstensi=='JPG'){
-						echo '<img src="http://quick.com/aplikasi/photo/'.$user['no_induk'].'.'.$ekstensi.'" class="rounded imgs" alt="User Image" title="'.$user['name'].' - '.$user['no_induk'].'">';
+						echo '<img src="'.$path_photo.$user['no_induk'].'.'.$ekstensi.'" class="rounded imgs" alt="User Image" title="'.$user['name'].' - '.$user['no_induk'].'">';
 					}else{
 						echo '<img src="'.base_url('assets/theme/img/user.png').'" class="rounded imgs" alt="User Image" />';
 					}
@@ -539,7 +540,7 @@ case 'view_user': ?>
 	              <strong><i class="fa fa-user margin-r-5"></i> Initial</strong>
 
 	              <p class="text-muted">
-	                <?= $user['initial'] ?> 
+	                <?= $user['initial'] ?>
 	              </p>
 
 	              <hr>
@@ -550,6 +551,3 @@ case 'view_user': ?>
 	          </div>
 <?php	break;
 } ?>
-
-
-

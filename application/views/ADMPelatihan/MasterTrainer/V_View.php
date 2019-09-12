@@ -15,14 +15,14 @@
 						<div class="text-right hidden-md hidden-sm hidden-xs">
                             <a class="btn btn-default btn-lg" href="<?php echo site_url('ADMPelatihan/MasterTrainer');?>">
                                 <i class="icon-wrench icon-2x"></i>
-                                <span><br/></span>	
+                                <span><br/></span>
                             </a>
 						</div>
 					</div>
 				</div>
 			</div>
 			<br/>
-			
+
 			<div class="row">
 				<div class="col-lg-12">
 					<div class="box box-primary box-solid">
@@ -36,11 +36,12 @@
 									<!-- <img src="" id="prevPhoto" style="border-radius: 10px;" width="117px" height="148px"/> -->
 									 <?php
 									 	foreach ($detail as $dt) {
-											$file 			= 	"http://quick.com/aplikasi/photo/".$dt['noind'].'.'.'jpg';
+											$path_photo  		=	base_url('assets/img/photo').'/';
+											$file 			= 	$path_photo.$dt['noind'].'.'.'jpg';
 											$file_headers 	= 	@get_headers($file);
 											if(!$file_headers || substr($file_headers[0], strpos($file_headers[0], 'Not Found'), 9) == 'Not Found')
 											{
-												$file 			= 	"http://quick.com/aplikasi/photo/".$dt['noind'].'.'.'JPG';
+												$file 			= 	$path_photo.$dt['noind'].'.'.'JPG';
 												$file_headers 	= 	@get_headers($file);
 												if(!$file_headers || substr($file_headers[0], strpos($file_headers[0], 'Not Found'), 9) == 'Not Found')
 												{
@@ -58,7 +59,7 @@
 
 											if($ekstensi=='jpg' || $ekstensi=='JPG')
 											{
-												echo '<img src="http://quick.com/aplikasi/photo/'.$dt['noind'].'.'.$ekstensi.'" id="prevPhoto" style="border-radius: 10px;" width="117px" height="148px"/>';
+												echo '<img src="'.$path_photo.$dt['noind'].'.'.$ekstensi.'" id="prevPhoto" style="border-radius: 10px;" width="117px" height="148px"/>';
 											}
 											else
 											{
@@ -70,7 +71,7 @@
 							</div>
 							<div class="col-sm-10">
 								<form method="post" action="<?php echo base_url('ADMPelatihan/MasterTrainer/Update')?>">
-								<?php foreach($detail as $dt){?>	
+								<?php foreach($detail as $dt){?>
 									<div class="row" style="margin: 30px 10px 10px">
 										<div class="form-group">
 											<label class="col-lg-2 control-label">Id Trainer</label>
@@ -127,7 +128,7 @@
 													</tr>
 												</thead>
 												<tbody>
-													<?php $no=1; $checkPendidikan = array(); 
+													<?php $no=1; $checkPendidikan = array();
 														foreach ($GetAllInfo as $gi) {
 														if (!in_array($gi['pendidikan'], $checkPendidikan)) {
 															array_push($checkPendidikan, $gi['pendidikan']);
@@ -201,10 +202,10 @@
 														<td><?php echo $no?></td>
 														<td><?php echo $ge['training_name'] ?></td>
 														<td>
-															<?php 
-																$date=$ge['training_date']; 
-																$newDate=date("d F Y", strtotime($date));	
-																echo $newDate 
+															<?php
+																$date=$ge['training_date'];
+																$newDate=date("d F Y", strtotime($date));
+																echo $newDate
 															?>
 														</td>
 													</tr>
@@ -233,10 +234,10 @@
 														<td><?php echo $no?></td>
 														<td><?php echo $gs['training_name'] ?></td>
 														<td>
-															<?php 
-																$date=$gs['training_date']; 
-																$newDate=date("d F Y", strtotime($date));	
-																echo $newDate 
+															<?php
+																$date=$gs['training_date'];
+																$newDate=date("d F Y", strtotime($date));
+																echo $newDate
 															?></td>
 													</tr>
 													<?php } ?>
@@ -265,10 +266,10 @@
 														<td><?php echo $no?></td>
 														<td><?php echo $gt['kegiatan'] ?></td>
 														<td>
-															<?php 
-																$date=$gt['date']; 
-																$newDate=date("d F Y", strtotime($date));	
-																echo $newDate 
+															<?php
+																$date=$gt['date'];
+																$newDate=date("d F Y", strtotime($date));
+																echo $newDate
 															?>
 														</td>
 														<td><?php echo $gt['jabatan'] ?></td>
@@ -291,10 +292,8 @@
 						<!-- </div> -->
 					</div>
 				</div>
-			</div>		
-		</div>		
+			</div>
+		</div>
 	</div>
 	</div>
-</section>			
-			
-				
+</section>

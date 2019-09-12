@@ -397,7 +397,7 @@ class C_Approval extends CI_Controller
 		];
 		$this->load->library('email', $Quick);
 		$this->email->from('no-reply', 'Email Sistem - Cuti');
-		$this->email->to($address);
+    $this->email->to($address);
 		$this->email->subject('Permintaan Approval Cuti');
 		$this->email->message("
     <br>
@@ -427,7 +427,7 @@ class C_Approval extends CI_Controller
       $title = "Cuti Telah di Approve";
       $message = "
         <br>
-        textarea
+        Approval Cuti
         <br><br>
         <hr>
         Selamat ! Cuti anda telah di Setujui oleh <b>".$approver.".</b> Rincian Cuti: <br>
@@ -445,7 +445,7 @@ class C_Approval extends CI_Controller
       $status = "Cuti tidak disetujui";
       $message = "
         <br>
-        textarea
+        Approval Cuti
         <br><br>
         <hr>
         Maaf, Cuti anda tidak disetujui oleh <b>".$approver."</b>. Rincian Cuti: <br>
@@ -472,17 +472,17 @@ class C_Approval extends CI_Controller
     ];
     $this->load->library('email', $Quick);
     $this->email->from('no-reply', 'Email Sistem - Cuti');
-    $this->email->to($address);
+    $this->email->to($mailAddressReq);
     $this->email->subject($title);
     $this->email->message($message);
     $this->email->send();
   }
 
 	public function CancelCuti(){
-		$noind = $_POST['noind'];
-		$id_cuti = $_POST['id_cuti'];
-		$tipe = $_POST['tipe'];
-		$alasan = $_POST['alasan'];
+		$noind    = $_POST['noind'];
+		$id_cuti  = $_POST['id_cuti'];
+		$tipe     = $_POST['tipe'];
+		$alasan   = $_POST['alasan'];
 
 		$enc = $this->encrypt->encode($id_cuti);
 		$dec = str_replace(array('+', '/', '='), array('-', '_', '~'), $enc);

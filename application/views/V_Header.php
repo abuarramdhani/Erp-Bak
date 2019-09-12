@@ -22,7 +22,7 @@
 	<!-- <link type="text/css" rel="stylesheet" href="<?= base_url('assets/plugins/dataTables/dataTables.bootstrap.css') ?>" />
     <link type="text/css" rel="stylesheet" href="<?= base_url('assets/plugins/dataTables/buttons.dataTables.min.css') ?>" />
     <link type="text/css" rel="stylesheet" href="<?= base_url('assets/plugins/dataTables/extensions/FixedColumns/css/dataTables.fixedColumns.min.css') ?>" /> -->
-	<link type="text/css" rel="stylesheet" href="<?= base_url('assets/plugins/touchspin/jquery.bootstrap-touchspin.min.css') ?>" />	
+	<link type="text/css" rel="stylesheet" href="<?= base_url('assets/plugins/touchspin/jquery.bootstrap-touchspin.min.css') ?>" />
 	<link type="text/css" rel="stylesheet" href="<?= base_url('assets/plugins/pace/center-atom-pace.css') ?>" />
 	<link type="text/css" rel="stylesheet" href="<?= base_url('assets/plugins/jQueryUI/jquery-ui.css') ?>" />
 	<link type="text/css" rel="stylesheet" href="<?= base_url('assets/plugins/uniform/themes/default/css/uniform.default.css') ?>" />
@@ -80,10 +80,11 @@
 						<li class="dropdown user user-menu">
 							<a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
 								<?php
-									$file = "http://quick.com/aplikasi/photo/".$this->session->user.'.'.'jpg';
-									$file_headers = @get_headers($file);
+                  $path_photo  		=	base_url('assets/img/photo').'/';
+									$file           = $path_photo.$this->session->user.'.'.'jpg';
+									$file_headers   = @get_headers($file);
 									if(!$file_headers || substr($file_headers[0], strpos($file_headers[0], 'Not Found'), 9) == 'Not Found') {
-										$file = "http://quick.com/aplikasi/photo/".$this->session->user.'.'.'JPG';
+										$file = $path_photo.$this->session->user.'.'.'JPG';
 										$file_headers = @get_headers($file);
 										if(!$file_headers || substr($file_headers[0], strpos($file_headers[0], 'Not Found'), 9) == 'Not Found') {
 											$ekstensi = 'Not Found';
@@ -94,7 +95,7 @@
 										$ekstensi = 'jpg';
 									}
 									if($ekstensi=='jpg' || $ekstensi=='JPG') {
-										$lokasifoto="http://quick.com/aplikasi/photo/".$this->session->user.".".$ekstensi;
+										$lokasifoto=$path_photo.$this->session->user.".".$ekstensi;
 									} else {
 										$lokasifoto=base_url('assets/theme/img/user.png');
 									}
@@ -126,7 +127,7 @@
 						?>
 						<li class="hidden-xs hidden-sm">
 							<a href="<?= site_url($this->session->module_link) ?>">
-								<i class="icon-home"></i><?= $this->session->responsibility ?>	
+								<i class="icon-home"></i><?= $this->session->responsibility ?>
 							</a>
 						</li>
 						<li class="hidden-md hidden-lg">

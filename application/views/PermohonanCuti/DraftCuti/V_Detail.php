@@ -113,8 +113,8 @@
 								</div>
 								<div class="form-group">
 									<label class="control-label col-lg-4">Keperluan</label>
-									<div class="col-lg-4 col-xs-10">
-										<div class="col-lg-12">
+									<div class="col-lg-4">
+										<div class="col-lg-12 col-xs-10">
 												<input type="text" class="form-control" name="" id="DetailKeperluan" value="<?php if(empty($Detail['0']['keperluan'])){ echo "-";}else{echo $Detail['0']['keperluan'];} ?>" readonly>
 										</div>
 									</div>
@@ -122,10 +122,10 @@
 									<div class="col">
 										<a id="ubahKeperluan" class="btn btn-success btn-sm fa fa-edit" onclick="ubahKeperluan()"></a>
 										<?php if($Detail['0']['jenis_id'] != '13'): ?>
-											<a id="saveKeperluan" class="btn btn-primary btn-sm fa fa-save hidden" onclick="saveKeperluan(1)"></a>
+											<a id="saveKeperluan" class="btn btn-primary btn-sm fa fa-save hidden" onclick="saveKeperluan(1)"></a>&nbsp
 											<button type="button" onclick="batalKeperluan()" id="cancelKeperluan" class="btn btn-danger btn-sm hidden">batal</button>
 										<?php else: ?>
-											<a id="saveKeperluan" class="btn btn-primary btn-sm fa fa-save hidden" onclick="saveKeperluan(2)"></a>
+											<a id="saveKeperluan" class="btn btn-primary btn-sm fa fa-save hidden" onclick="saveKeperluan(2)"></a>&nbsp
 											<button type="button" onclick="batalKeperluan()" id="cancelKeperluan" class="btn btn-danger btn-sm hidden">batal</button>
 										<?php endif; ?>
 									</div>
@@ -145,10 +145,10 @@
 									<div class="col">
 										<?php if($Detail['0']['status'] == '0' OR $Detail['0']['status'] == '1' ): ?>
 											<a id="ubahTglCuti" class="btn btn-success btn-sm fa fa-edit" onclick="ubahTglCuti(<?=$Detail['0']['jenis_id']?>)"></a>
-											<a id="saveTglCuti" class="btn btn-primary btn-sm fa fa-save hidden" onclick="saveTglCuti(<?=$Detail['0']['id_cuti']?>, '<?=$Detail['0']['tipe']?>', <?=$Detail['0']['jenis_id']?>)"></a>
+											<a id="saveTglCuti" class="btn btn-primary btn-sm fa fa-save hidden" onclick="saveTglCuti(<?=$Detail['0']['id_cuti']?>, '<?=$Detail['0']['tipe']?>', <?=$Detail['0']['jenis_id']?>)"></a>&nbsp
 											<button type="button" onclick="batalTgl()" id="cancelTglCuti" class="btn btn-danger btn-sm hidden">batal</button>
 										<?php endif; ?>
-										&nbsp <span class="label label-info"><?=$banyakcuti." Hari"?></span>
+										<span class="label label-info"><?=$banyakcuti." Hari"?></span>
 									</div>
 								</div>
 								<?php if ($Detail['0']['jenis'] == 'Istirahat Melahirkan' && $Detail['0']['status'] != '2'){ ?>
