@@ -442,6 +442,15 @@ class M_monitoringpengirimanunit extends CI_Model
         $runQuery = $this->db->query($sql);
         return $runQuery->result_array();
     }
+
+     public function hapusShipment($id)
+    {
+        $db = $this->load->database();
+        $sql = "delete from om.om_shipment_header where shipment_header_id = '$id'";
+        $runQuery = $this->db->query($sql);
+        $sql2 = "delete from om.om_shipment_line where shipment_header_id = '$id'";
+        $runQuery = $this->db->query($sql2);
+    }
 }
 
 ?>

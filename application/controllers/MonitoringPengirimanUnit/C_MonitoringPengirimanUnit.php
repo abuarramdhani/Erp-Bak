@@ -420,5 +420,12 @@ class C_MonitoringPengirimanUnit extends CI_Controller{
 		$return = $this->load->view('MonitoringPengirimanUnit/V_unitEdit',$data);
 	}
 
+	public function deleteShipment()
+	{
+		$id = $this->input->post('id_shipment');
+
+		$hapus = $this->M_monitoringpengirimanunit->hapusShipment($id);
+	}
+
 }
 ?>
