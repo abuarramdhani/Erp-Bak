@@ -279,10 +279,10 @@ class C_ComposeMessage extends CI_Controller {
 	public function getUserEmail($id)
 	{		
 		$email = $this->M_composemessage->getEmailAddress($id);
-		if (!empty($email)){
+		if ( !empty($email) && $email[0]['EMAIL'] != '' ){
 			$data  = str_replace(' /', ',', $email[0]['EMAIL']);
 			echo json_encode($data);
-		}else{
+		} else {
 			echo json_encode(null);
 		}
 	}
