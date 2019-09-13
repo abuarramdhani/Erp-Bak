@@ -80,6 +80,7 @@
 		<script src="<?= base_url('assets/plugins/print/print.min.js') ?>"></script>
 		<script src="<?= base_url('assets/js/formValidation.js') ?>"></script>
 		<script src="<?= base_url('assets/js/jquery-maskmoney.js') ?>"></script>
+		<script src="<?= base_url('assets/plugins/howler/howler.js') ?>"></script>
 
 
 		<!-- CUSTOM JAVASCRIPT FOR APPLICATION | DO NOT EDIT!! -->
@@ -171,6 +172,7 @@
 		<script src="<?= base_url('assets/js/customMFO.js');?>"></script>
 		<script src="<?= base_url('assets/js/customVBC.js');?>"></script>
 		<script src="<?= base_url('assets/js/customMBP.js');?>"></script>
+		<script src="<?= base_url('assets/js/customMSO.js');?>"></script>
 		<!-- <script src="<?= base_url('assets/js/customMO.js') ?>"></script> -->
 		<!-- <script src="<?= base_url('assets/js/customPR.js') ?>"></script> -->
 		<!-- <script src="<?= base_url('assets/js/customOSP.js') ?>"></script> -->
