@@ -1878,6 +1878,15 @@ $route['PenerimaanPO/awal/loadSubinv/(:any)']  = 'PenerimaanPO/C_PenerimaanAwal/
 $route['PenerimaanPO/cek'] 					   = 'PenerimaanPO/C_Pengecekan';
 $route['PenerimaanPO/cek/loadDataCek']         = 'PenerimaanPO/C_Pengecekan/loadDataCek';
 
+//------------------------------------Perizinan Dinas----------------------------------------
+$route['PerizinanDinas']					= 'PerizinanDinas/C_Index';
+// $route['PerizinanDinas/(:any)']				= 'PerizinanDinas/C_Index/$1';
+// $route['PerizinanDinas/(:any)/(:any)']		= 'PerizinanDinas/C_Index/$1/$2';
+
+$route['PerizinanDinas/AtasanApproval']								= 'PerizinanDinas/AtasanApproval/C_Index';
+$route['PerizinanDinas/AtasanApproval/(:any)']						= 'PerizinanDinas/AtasanApproval/C_Index/$1';
+$route['PerizinanDinas/AtasanApproval/(:any)/(:any)']				= 'PerizinanDinas/AtasanApproval/C_Index/$1/$2';
+$route['PerizinanDinas/AtasanApproval/(:any)/(:any)/(:any)']		= 'PerizinanDinas/AtasanApproval/C_Index/$1/$2/$3';
 //------------------------------------------------Product Cost-------------------------------------------------------//
 $route['ProductCost']										= 'ProductCost/C_Index';
 $route['ProductCost/BppbgAccount']							= 'ProductCost/MainMenu/C_BppbgAccount';
