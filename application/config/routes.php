@@ -3034,3 +3034,10 @@ $route['MonitoringBiayaProduksi/Detail/(:any)/(:any)'] = 'MonitoringBiayaProduks
 $route['MonitoringBiayaProduksi/BiayaSeksi'] = 'MonitoringBiayaProduksi/MainMenu/BiayaSeksi/C_ChartBiayaSeksi';
 $route['MonitoringBiayaProduksi/BiayaSeksi/(:any)'] = 'MonitoringBiayaProduksi/MainMenu/BiayaSeksi/C_ChartBiayaSeksi/$1';
 $route['MonitoringBiayaProduksi/BiayaSeksi/(:any)/(:any)'] = 'MonitoringBiayaProduksi/MainMenu/BiayaSeksi/C_ChartBiayaSeksi/$1/$2';
+
+// --------------------------------------------MonitoringSalesOrder--------------------
+$route['MonitoringSalesOrder']                  = 'MonitoringSalesOrder/C_Index';
+$route['MonitoringSalesOrder/SO_Out']           = 'MonitoringSalesOrder/C_MonitoringSalesOrder';
+$route['MonitoringSalesOrder/SO_Out/(:any)/(:any)']    = 'MonitoringSalesOrder/C_MonitoringSalesOrder/$1/$2';
+$route['MonitoringSalesOrder/SO_Done']          = 'MonitoringSalesOrder/C_MonitoringSalesOrder/do_done';
+$route['MonitoringSalesOrder/SO_Done/(:any)/(:any)']   = 'MonitoringSalesOrder/C_MonitoringSalesOrder/$1/$2';
