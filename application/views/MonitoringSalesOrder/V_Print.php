@@ -23,7 +23,7 @@
 
               <div class="box">
                 <div class="box-header">
-                  <h3 class="box-title">No SO &emsp;&emsp;&emsp;&nbsp;: <? if(isset($detail[0]['ORDER_NUMBER'])) echo $detail[0]['ORDER_NUMBER'] ?></h3>
+                  <h3 class="box-title">No SO &emsp;&emsp;&emsp;&nbsp;: <?php if(isset($detail[0]['ORDER_NUMBER'])) echo $detail[0]['ORDER_NUMBER'] ?></h3>
                 </div>
                 <!-- /.box-header -->
                 <div class="box-body">
