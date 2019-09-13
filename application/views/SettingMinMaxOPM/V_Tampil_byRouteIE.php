@@ -57,7 +57,7 @@
 				<table id="tableDataMinMaxIE" class="table table-striped table-bordered table-responsive table-hover">
 					<thead style="background:#22aadd; color:#FFFFFF;">
 						<th style="text-align:center; width: 5%">NO</th>
-						<th class="text-center"><input type="checkbox" id="check-all"/></th>
+						<th class="text-center check-all"><input type="checkbox" id="check-all"/></th>
 						<th style="text-align:center; width: 15%">ITEM CODE</th>
 						<th style="text-align:center; width: 20%">DESCRIPTION</th>
 						<th style="text-align:center; width: 10%">UOM</th>

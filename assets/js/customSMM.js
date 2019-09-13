@@ -56,7 +56,7 @@ today = dd + '-' + mm + '-' + yyyy;
         order: [[0, 'asc']]
 	});
 	// $('#tableDataMinMaxIE tbody').on('click', 'tr', function() { $(this).toggleClass('selected'); }); // slct by row
-	$('#check-all').off('ifChanged').on('ifChanged', function(event) {
+	$('.check-all').off('ifChanged').on('ifChanged', function(event) {
 		if(event.target.checked) {
 			dt2.rows().select();        
 		} else {
