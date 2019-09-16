@@ -10,11 +10,6 @@ label{
 .container{
 	width: auto;
 }
-/* .modal{
-  position: relative;
-  top: 50%;
-  transform: translateY(-50%); */
-}
 </style>
 <section class="content">
 	<div class="inner">
@@ -43,32 +38,41 @@ label{
 											<th>Action</th>
 										</tr>
 									</thead>
-									<?php $no = 1 ?>
-									<?php foreach ($Draft as $key) {
-										$encrypted_string = $this->encrypt->encode($key['lm_pengajuan_cuti']);
-										$id = str_replace(array('+', '/', '='), array('-', '_', '~'), $encrypted_string);
-										$detail = base_url('PermohonanCuti/DraftCuti/Edit/'.$id);
-										?>
+									<tbody>
+									<?php
+									  $no = 1;
+										foreach ($Draft as $key):
+											$encrypted_string = $this->encrypt->encode($key['lm_pengajuan_cuti']);
+											$id 	  = str_replace(array('+', '/', '='), array('-', '_', '~'), $encrypted_string);
+											$detail = base_url('PermohonanCuti/DraftCuti/Edit/'.$id);
+									?>
 									<tr id="row<?=$key['lm_pengajuan_cuti']?>">
 										<td class="text-center"><?php echo $no ?></td>
-										<td><?php echo date("d-M-Y",strtotime($key['tgl_pengajuan'])) ?></td>
+										<td><?= date("d-M-Y",strtotime($key['tgl_pengajuan'])) ?></td>
 										<!-- <td><?php //echo $key['lm_pengajuan_cuti'] ?></td> -->
-										<td><?php echo $key['nama'] ?></td>
-										<td><?php echo $key['tipe_cuti'] ?></td>
-										<td><?php echo $key['jenis_cuti'] ?></td>
-										<td><?php if (empty($key['kp'])){ echo $key['keperluan'];}else{ echo $key['kp'];} ?></td>
-										<td><?php if ($key['status'] == '0'){ ?>
-												<span class='label label-warning'> Belum request</span>
-											<?php }elseif ($key['status'] == '1') {
-												echo "<span class='label label-warning'><i class='fa fa-clock-o'> </i>  Menunggu Approval</span>";
-											}elseif ($key['status'] == '2') {
-												echo "<span class='label label-success'><i class='fa fa-check'> </i>  Approved</span>";
-											}elseif ($key['status'] == '3'){
-												echo "<span class='label label-danger'><i class='fa fa-close'> </i>  Rejected</span>";
-											}elseif ($key['status'] == '4'){
-												echo "<span class='label label-danger'><i class='fa fa-ban'> </i>  Dibatalkan</span>";
-											}
-										 ?>
+										<td><?= $key['nama'] ?></td>
+										<td><?= $key['tipe_cuti'] ?></td>
+										<td><?= $key['jenis_cuti'] ?></td>
+										<td><?php if (empty($key['kp'])){
+													if($key['keperluan'] == ''){
+														$key['keperluan'] = '-';
+													}
+													echo $key['keperluan'];
+												}else{
+													echo $key['kp']."--";}
+												?>
+										</td>
+										<td><?php if ($key['status'] == '0'): ?>
+													<span class='label label-warning'> Belum request</span>
+												<?php elseif ($key['status'] == '1'): ?>
+													<span class='label label-warning'><i class='fa fa-clock-o'> </i>  Menunggu Approval</span>
+												<?php elseif ($key['status'] == '2'): ?>
+													<span class='label label-success'><i class='fa fa-check'> </i>  Approved</span>
+												<?php elseif ($key['status'] == '3'): ?>
+													<span class='label label-danger'><i class='fa fa-close'> </i>  Rejected</span>
+												<?php elseif ($key['status'] == '4'): ?>
+													<span class='label label-danger'><i class='fa fa-ban'> </i>  Dibatalkan</span>
+												<?php endif ?>
 										</td>
 										<td>
 											<?php if ($key['status'] == '0'): ?>
@@ -83,7 +87,7 @@ label{
 											<?php endif; ?>
 										</td>
 									</tr>
-									<?php $no++; } ?>
+									<?php $no++; endforeach; ?>
 									</tbody>
 								</table>
 							</div>

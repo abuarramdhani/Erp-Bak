@@ -177,6 +177,8 @@ class C_DraftCuti extends CI_Controller
 			'smtp_host' => 'mail.quick.com',
 			'smtp_user' => 'no-reply@quick.com',
 			'smtp_pass' => '123456',
+			'priority'  => 1,
+			'smtp_keepalive'=> true,
 			'smtp_port' => 587,
 			'crlf'      => "\r\n",
 			'newline'   => "\r\n"
@@ -189,11 +191,11 @@ class C_DraftCuti extends CI_Controller
 		<br>
       <b>Permintaan Approval Cuti Baru</b><br><br>
       <hr><br>
-      Anda mendapat pengajuan approval cuti dari <b>".$object."</b>, dengan rincian : <br><br>
+      Anda mendapat pengajuan approval cuti dari <b>".$object."</b>. Rincian cuti : <br><br>
 			Jenis Cuti   : ".$jenis." <br>
-			Keperluan	   : ".$keperluan." <br>
+			Keperluan	   : ".($keperluan==null? "-" : $keperluan)." <br>
 			Status cuti  : Menunggu Approval anda <br><br>
-			Klik <a href=".$link.">Link</a> untuk Melihat detail Cuti disini
+			Klik <a href=".$link.">disini</a> untuk Melihat detail Cuti disini
 			<br>
 			<br>
 			<br>

@@ -365,11 +365,9 @@ class C_Approval extends CI_Controller
 
     $nextApprover   = $this->M_approval->getReadyNextApprover($level, $id_cuti);
 
-    $this->sendMailBack($approve, $nextApprover, $mailAddressReq, $keperluan, $jenis, $linkDraft, $getnama['0']['nama']); //Send feedback to requester if approval do approve/reject
-
 		if($approve == '2'){
 			if ($level == '1' && !strstr("02,03,04", $kdjabatanLv1) ){
-				$this->sendMail($mailAddressApp, $datacuti['0']['nama'], $object, $linkApproval, $keperluan, $jenis);
+				$this->sendMail($mailAddressApp, $dataCuti['0']['nama'], $object, $linkApproval, $keperluan, $jenis);
 			} else {
 				if (strstr($nextAppr, $dataCuti['0']['jenis']) && $level == '2') {
 					for ($i=0; $i < count($mailAddressEDP) ; $i++) {
@@ -378,6 +376,7 @@ class C_Approval extends CI_Controller
 				}
 			}
 		}
+    $this->sendMailBack($approve, $nextApprover, $mailAddressReq, $keperluan, $jenis, $linkDraft, $getnama['0']['nama']); //Send feedback to requester if approval do approve/reject
     //end notification mail//
 		redirect(site_url('PermohonanCuti/Approval/Inprocess'));
 	}
@@ -391,6 +390,8 @@ class C_Approval extends CI_Controller
 			'smtp_host' => 'mail.quick.com',
 			'smtp_user' => 'no-reply@quick.com',
 			'smtp_pass' => '123456',
+      'priority'  => 1,
+      'smtp_keepalive'=> true,
 			'smtp_port' => 587,
 			'crlf'      => "\r\n",
 			'newline'   => "\r\n"
@@ -405,7 +406,7 @@ class C_Approval extends CI_Controller
       <hr><br>
       Anda mendapat pengajuan approval cuti dari <b>".$object."</b>, dengan rincian : <br><br>
 			Jenis Cuti   : ".$jenis." <br>
-			Keperluan	   : ".$keperluan." <br>
+			Keperluan	   : ".($keperluan==null? "-" : $keperluan)." <br>
 			Status cuti  : Menunggu Approval anda <br><br>
 			Klik <a href=".$link.">Link</a> untuk Melihat detail Cuti disini
       <br>
@@ -430,11 +431,11 @@ class C_Approval extends CI_Controller
         Approval Cuti
         <br><br>
         <hr>
-        Selamat ! Cuti anda telah di Setujui oleh <b>".$approver.".</b> Rincian Cuti: <br>
+        Selamat ! Cuti anda telah di Setujui oleh <b>".$approver."</b>. Rincian Cuti : <br>
         Jenis Cuti   : ".$jenis." <br>
-  			Keperluan	   : ".$keperluan." <br>
+  			Keperluan	   : ".($keperluan==null? "-" : $keperluan)." <br>
   			Status cuti  : ".$status." <br><br>
-        Klik <a href=".$linkDraft.">Link</a> untuk melihat detail cuti anda
+        Klik <a href=".$linkDraft.">disini</a> untuk melihat detail cuti anda
         <br>
         <br>
         <br>
@@ -448,11 +449,11 @@ class C_Approval extends CI_Controller
         Approval Cuti
         <br><br>
         <hr>
-        Maaf, Cuti anda tidak disetujui oleh <b>".$approver."</b>. Rincian Cuti: <br>
+        Maaf, cuti anda tidak disetujui oleh <b>".$approver."</b>. Rincian Cuti : <br>
         Jenis Cuti   : ".$jenis." <br>
-        Keperluan	   : ".$keperluan." <br>
+        Keperluan	   : ".($keperluan==null? "-" : $keperluan)." <br>
         Status cuti  : ".$status." <br><br>
-        Klik <a href=".$linkDraft.">Link</a> untuk melihat detail cuti anda
+        Klik <a href=".$linkDraft.">disini</a> untuk melihat detail cuti anda
         <br>
         <br>
         <br>
@@ -466,6 +467,8 @@ class C_Approval extends CI_Controller
       'smtp_host' => 'mail.quick.com',
       'smtp_user' => 'no-reply@quick.com',
       'smtp_pass' => '123456',
+      'smtp_keepalive'=> true,
+      'priority'  => 1,
       'smtp_port' => 587,
       'crlf'      => "\r\n",
       'newline'   => "\r\n"

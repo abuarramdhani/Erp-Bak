@@ -64,7 +64,7 @@
 									<label class="control-label col-lg-4">Id Cuti</label>
 									<div class="col-lg-4">
 										<div class="col-lg-12">
-												<input type="text" class="form-control" name="" id="id_cuti" value="<?php echo $Detail['0']['id_cuti'] ?>" readonly>
+												<input type="text" class="form-control" id="id_cuti" value="<?php echo $Detail['0']['id_cuti'] ?>" readonly>
 										</div>
 									</div>
 								</div>
@@ -72,7 +72,7 @@
 									<label class="control-label col-lg-4">Tanggal Pembuatan</label>
 									<div class="col-lg-4">
 										<div class="col-lg-12">
-												<input type="text" class="form-control" name="" id="" value="<?php echo date("d M Y",strtotime($Detail['0']['tgl_pengajuan'])) ?>" readonly>
+												<input type="text" class="form-control" id="" value="<?php echo date("d M Y",strtotime($Detail['0']['tgl_pengajuan'])) ?>" readonly>
 										</div>
 									</div>
 								</div>
@@ -80,10 +80,10 @@
 									<label class="control-label col-lg-4">No Induk</label>
 									<div class="col-lg-4">
 										<div class="col-lg-4 col-md-4 col-sm-4 col-xs-4">
-												<input type="text" class="form-control" name="" id="" value="<?=$Detail['0']['noind'] ?>" readonly>
+												<input type="text" class="form-control" id="" value="<?=$Detail['0']['noind'] ?>" readonly>
 										</div>
 										<div class="col-lg-8 col-md-8 col-sm-8 col-xs-8">
-												<input type="text" class="form-control" name="" value="<?=$Detail['0']['nama']?>" readonly>
+												<input type="text" class="form-control" value="<?=$Detail['0']['nama']?>" readonly>
 										</div>
 									</div>
 								</div>
@@ -91,7 +91,7 @@
 									<label class="control-label col-lg-4">Keterangan</label>
 									<div class="col-lg-4">
 										<div class="col-lg-12">
-												<input type="text" class="form-control" name="" id="" value="<?=$keterangan['0']['kd_ket'].' - '.$keterangan['0']['keterangan'] ?>" readonly>
+												<input type="text" class="form-control" id="" value="<?=$keterangan['0']['kd_ket'].' - '.$keterangan['0']['keterangan'] ?>" readonly>
 										</div>
 									</div>
 								</div>
@@ -99,7 +99,7 @@
 									<label class="control-label col-lg-4">Tipe Cuti</label>
 									<div class="col-lg-4">
 										<div class="col-lg-12">
-												<input type="text" class="form-control" name="" id="" value="<?=$Detail['0']['tipe'] ?>" readonly>
+												<input type="text" class="form-control" id="" value="<?=$Detail['0']['tipe'] ?>" readonly>
 										</div>
 									</div>
 								</div>
@@ -107,7 +107,7 @@
 									<label class="control-label col-lg-4">Jenis Cuti</label>
 									<div class="col-lg-4">
 										<div class="col-lg-12">
-												<input type="text" class="form-control" name="" id="" value="<?=$Detail['0']['jenis'] ?>" readonly>
+												<input type="text" class="form-control" id="" value="<?=$Detail['0']['jenis'] ?>" readonly>
 										</div>
 									</div>
 								</div>
@@ -115,7 +115,7 @@
 									<label class="control-label col-lg-4">Keperluan</label>
 									<div class="col-lg-4">
 										<div class="col-lg-12 col-xs-10">
-												<input type="text" class="form-control" name="" id="DetailKeperluan" value="<?php if(empty($Detail['0']['keperluan'])){ echo "-";}else{echo $Detail['0']['keperluan'];} ?>" readonly>
+												<input type="text" class="form-control" id="DetailKeperluan" value="<?php if(empty($Detail['0']['keperluan'])){ echo "-";}else{echo $Detail['0']['keperluan'];} ?>" readonly>
 										</div>
 									</div>
 									<?php if($Detail['0']['status'] == '0' OR $Detail['0']['status'] == '1' ): ?>
@@ -136,7 +136,7 @@
 									<div class="col-lg-4">
 										<div class="col-lg-12 col-xs-10">
 											<!-- <?php //if($Detail['0']['jenis_id'] != '13'): ?> -->
-												<input type="text" value="<?php if($Detail['0']['jenis'] == 'Istirahat Melahirkan'){ echo $tglambilhpl;}else{ echo $tglambil;}?>" id="DetailTglCuti" class="form-control" data-date-format="yyyy-mm-dd" disabled>
+												<input type="text" value="<?php if($Detail['0']['jenis'] == 'Istirahat Melahirkan'){ echo $tglambilhpl;}else{ echo $tglambil;}?>" id="DetailTglCuti" data-tgl="<?php if($Detail['0']['jenis'] == 'Istirahat Melahirkan'){ echo $tglambilhpl;}else{ echo $tglambil;}?>" class="form-control" data-date-format="yyyy-mm-dd" disabled>
 											<!-- <?php //else: ?> -->
 												<!-- <input type="text" value="<?php //if($Detail['0']['jenis'] == 'Istirahat Melahirkan'){ echo $tglambilhpl;}else{ echo $tglambil;}?>" id="txtPengambilanCutiTahunanSusulan" data-date-format="yyyy-mm-dd" class="form-control" disabled> -->
 											<!-- <?php //endif; ?> -->
@@ -179,21 +179,19 @@
 									<label class="control-label col-lg-4">Status</label>
 									<div class="col-lg-4">
 										<div class="col-lg-12">
-												<?php if ($Detail['0']['status'] == '0'){ ?>
-														<span class='label label-warning'> Belum request</span>
-													<?php }elseif ($Detail['0']['status'] == '1') {
-														echo "<span class='label label-warning'><i class='fa fa-clock-o'></i> Menunggu Approval</span>";
-													}elseif ($Detail['0']['status'] == '2') {
-														echo "<span class='label label-success'><i class='fa fa-check'></i> Approved</span>";
-													}elseif ($Detail['0']['status'] == '3'){
-														echo "<span class='label label-danger'><i class='fa fa-close'></i> Rejected</span>";
-													}elseif ($Detail['0']['status'] == '4'){
-														echo "<span class='label label-danger'><i class='fa fa-ban'></i> Dibatalkan</span>";
-													}
-												 ?>
-												 <span class="label label-primary"><i class="fa fa-calendar"></i> <?php echo date("d/M/Y",strtotime($Thread['0']['waktu'])) ?></span>
-												 <span class="label label-default"><i class="fa fa-clock-o"></i> <?php echo date("H:i:s",strtotime($Thread['0']['waktu'])) ?></span>
-
+											<?php if ($Detail['0']['status'] == '0'): ?>
+												<span class='label label-warning'> Belum request</span>
+											<?php elseif ($Detail['0']['status'] == '1'): ?>
+												<span class='label label-warning'><i class='fa fa-clock-o'></i> Menunggu Approval</span>
+											<?php elseif ($Detail['0']['status'] == '2'): ?>
+												<span class='label label-success'><i class='fa fa-check'></i> Approved</span>
+											<?php elseif ($Detail['0']['status'] == '3'): ?>
+												<span class='label label-danger'><i class='fa fa-close'></i> Rejected</span>
+											<?php elseif ($Detail['0']['status'] == '4'): ?>
+												<span class='label label-danger'><i class='fa fa-ban'></i> Dibatalkan</span>
+											<?php endif; ?>
+											 <span class="label label-primary"><i class="fa fa-calendar"></i> <?= date("d/M/Y",strtotime($Thread['0']['waktu'])) ?></span>
+											 <span class="label label-default"><i class="fa fa-clock-o"></i> <?= date("H:i:s",strtotime($Thread['0']['waktu'])) ?></span>
 										</div>
 									</div>
 								</div>
@@ -223,7 +221,7 @@
 									</div>
 								</div>
 								<div class="panel-footer text-center">
-									<a href="<?php echo base_url('PermohonanCuti/DraftCuti') ?>" class="btn btn-warning" onclick="$('#loading1').attr('class','fa fa-spinner fa-spin')"><i id="loading1"></i> Back</a>
+									<a href="<?= base_url('PermohonanCuti/DraftCuti') ?>" class="btn btn-warning" onclick="$('#loading1').attr('class','fa fa-spinner fa-spin')"><i id="loading1"></i> Back</a>
 								</div>
 							</div>
 						</div>
