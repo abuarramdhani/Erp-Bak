@@ -183,7 +183,7 @@
         $.ajax({
           type:'POST',
           data:{lokasi_id:'value'},
-          url:baseurl+'p2k3adm_V2/Admin/getSeksiAprove2',
+          url:baseurl+'p2k3adm_V2/Admin/getSeksiAprove3',
           success:function(result)
           {
             $(".k3_admin_monitorbon").prop("disabled",false).html(result);
