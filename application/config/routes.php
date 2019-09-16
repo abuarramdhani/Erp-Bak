@@ -3056,3 +3056,13 @@ $route['MonitoringSalesOrder/SO_Out']           = 'MonitoringSalesOrder/C_Monito
 $route['MonitoringSalesOrder/SO_Out/(:any)/(:any)']    = 'MonitoringSalesOrder/C_MonitoringSalesOrder/$1/$2';
 $route['MonitoringSalesOrder/SO_Done']          = 'MonitoringSalesOrder/C_MonitoringSalesOrder/do_done';
 $route['MonitoringSalesOrder/SO_Done/(:any)/(:any)']   = 'MonitoringSalesOrder/C_MonitoringSalesOrder/$1/$2';
+
+
+// ------------------------------------------------- Cetak Kanban Machining ---------------------------------------------//
+$route['CetakKanban'] 						= 'CetakKanban/C_Index';
+$route['CetakKanban/Cetak'] 				= 'CetakKanban/C_Cetak';
+$route['CetakKanban/Cetak/(:any)'] 			= 'CetakKanban/C_Cetak/$1';
+$route['CetakKanban/Cetak/(:any)/(:any)'] 	= 'CetakKanban/C_Cetak/$1/$2';
+$route['CetakKanban/Cetak/getJobFrom'] 		= 'CetakKanban/C_Cetak/getJobFrom';
+$route['CetakKanban/Cetak/Report'] 			= 'CetakKanban/C_Cetak/Report';
+$route['CetakKanban/Cetak/Creport'] 			= 'CetakKanban/C_Cetak/Creport';
