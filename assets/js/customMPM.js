@@ -16,7 +16,7 @@ $('#blinking_td tr:first-child').css('background-color', '#c9efff').addClass('bl
 
 	
 $(document).ready(function(){
-	$('.tb_dash_unit').DataTable({
+	$('.tb_dash_unit, .table-history').DataTable({
 		"paging": true,
 		"info":     false,
 		"language" : {
@@ -25,6 +25,17 @@ $(document).ready(function(){
 	})
 
 	})
+
+// $(document).ready(function() {
+//     $('#table-history').DataTable( {
+//         dom: 'Bfrtip',
+//         buttons: [
+//             'copy', 'csv', 'excel', 'pdf', 'print'
+//         ]
+//     } );
+// } );
+
+
 
 
 // -------------------------------------------PENGIRIMAN UNIT --------------------------------------------------------
@@ -67,6 +78,7 @@ function DeleteShipment(th) {
 
 				});
   } else if (
+    /* Read more about handling dismissals below */
     result.dismiss === Swal.DismissReason.cancel
   ) {
     swalWithBootstrapButtons.fire(
@@ -77,6 +89,37 @@ function DeleteShipment(th) {
   }
 })
 }
+// 	var cnf = confirm('Yakin untuk menghapusnya ?');
+// 	var ths = $(this);
+// 	if (cnf) {
+// 				$.ajax({
+// 				type: "POST",
+// 				url: baseurl+"MonitoringPengiriman/FindShipment/deleteShipment",
+// 				data:{
+// 					id_shipment:id,
+// 				},
+// 				success: function(response) {
+// 					  Swal.fire({
+// 				  type: 'error',
+// 				  title: 'Data has been deleted!',
+// 				  showConfirmButton: false,
+// 				  timer: 1500
+
+// 		 		});
+// 					  window.location.reload();
+
+// 				}
+
+// 			 })
+// 			}else{
+// 		    Swal.fire(
+//   					'Saved!',
+//   					'Hapus dibatalkan',
+//   					'success'
+// 						);
+// 			}
+	
+// }
 
 $('.enter').on("keypress",function(e){
 		if (e.keyCode == 13) {

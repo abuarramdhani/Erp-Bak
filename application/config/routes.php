@@ -2862,6 +2862,8 @@ $route['MonitoringPengiriman/Setup'] = 'MonitoringPengirimanUnit/C_MonitoringPen
 $route['MonitoringPengiriman/Setup/(:any)'] = 'MonitoringPengirimanUnit/C_MonitoringPengirimanUnit/$1';
 $route['MonitoringPengiriman/Setup/Cabang'] = 'MonitoringPengirimanUnit/C_MonitoringPengirimanUnit/cabang';
 $route['MonitoringPengiriman/Setup/Cabang/(:any)'] = 'MonitoringPengirimanUnit/C_MonitoringPengirimanUnit/$1';
+$route['MonitoringPengiriman/ShipmentHistory'] = 'MonitoringPengirimanUnit/C_MonitoringPengirimanUnit/shipment_history_unit';
+$route['MonitoringPengiriman/ShipmentHistory/(:any)'] = 'MonitoringPengirimanUnit/C_MonitoringPengirimanUnit/$1';
 
 //-----------------------------------------Monitoring Pengiriman Sparepart----------------------------------------//
 
@@ -2870,6 +2872,8 @@ $route['MonitoringPengirimanSparepart/(:any)'] = 'MonitoringPengirimanSparepart/
 $route['MonitoringPengirimanSparepart/Dashboard'] = 'MonitoringPengirimanSparepart/C_MonitoringPengirimanSparepart/dashboard_sp';
 $route['MonitoringPengirimanSparepart/FindShipment'] = 'MonitoringPengirimanSparepart/C_MonitoringPengirimanSparepart/findShipment_sp';
 $route['MonitoringPengirimanSparepart/FindShipment/(:any)'] = 'MonitoringPengirimanSparepart/C_MonitoringPengirimanSparepart/$1';
+$route['MonitoringPengirimanSparepart/ShipmentHistory'] = 'MonitoringPengirimanSparepart/C_MonitoringPengirimanSparepart/shipment_history_sp';
+$route['MonitoringPengirimanSparepart/ShipmentHistory/(:any)'] = 'MonitoringPengirimanSparepart/C_MonitoringPengirimanSparepart/$1';
 
 // -------------------------------Monitoring Pengiriman Gudang-----------------------------------------------//
 $route['MonitoringPengirimanGudang'] = 'MonitoringPengirimanGudang/C_MonitoringPengirimanGudang/dashboard_gd';
@@ -2877,6 +2881,8 @@ $route['MonitoringPengirimanGudang/(:any)'] = 'MonitoringPengirimanGudang/C_Moni
 $route['MonitoringPengirimanGudang/Dashboard'] = 'MonitoringPengirimanGudang/C_MonitoringPengirimanGudang/dashboard_gd';
 $route['MonitoringPengirimanGudang/FindShipment'] = 'MonitoringPengirimanGudang/C_MonitoringPengirimanGudang/findShipment_gd';
 $route['MonitoringPengirimanGudang/FindShipment/(:any)'] = 'MonitoringPengirimanGudang/C_MonitoringPengirimanGudang/$1';
+$route['MonitoringPengirimanGudang/ShipmentHistory'] = 'MonitoringPengirimanGudang/C_MonitoringPengirimanGudang/shipment_history_gd';
+$route['MonitoringPengirimanGudang/ShipmentHistory/(:any)'] = 'MonitoringPengirimanGudang/C_MonitoringPengirimanGudang/$1';
 
 // --------------------------------------- Monitoring Biaya Seksi ICT ----------------------------------------------//
 $route['MonitoringBiayaSeksiICT'] = 'MonitoringBiayaSeksiICT/C_Index';

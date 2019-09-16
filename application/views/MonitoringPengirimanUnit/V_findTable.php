@@ -7,14 +7,14 @@
 <table style="width: 100%" id="unitpunya" class="table table-striped table-bordered table-hover text-center">
 	<thead>
 										<tr class="bg-primary">
-											<th style="width: 3%;"  class="text-center">No</th>
-											<th style="width: 7%;"  class="text-center">No Shipment</th>
+											<th style="width: 3%;" class="text-center">No</th>
+											<th style="width: 7%;" class="text-center">No Shipment</th>
 											<th style="width: 10%;" class="text-center">Kendaraan</th>
 											<th style="width: 10%;" class="text-center">Berangkat</th>
 											<th style="width: 10%;" class="text-center">Finish Good</th>
 											<th style="width: 10%;" class="text-center">Cabang Tujuan</th>
 											<th style="width: 30%;" class="text-center">Muatan</th>
-											<th style="width: 5%;"  class="text-center">Full</th>
+											<th style="width: 5%;" class="text-center">Full</th>
 											<th style="width: 15%;" class="text-center">Action</th>
 										</tr>
 									</thead>
