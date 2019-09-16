@@ -75,7 +75,7 @@
                                         <br>
                                         <div>                                            
                                            <h5 style="color: #000; font-weight: bold;">Standar kebutuhan Terakhir</h5>
-                                           <table class="table table-striped table-bordered table-hover text-center <?php echo (count($daftar_pekerjaan) < 7) ? 'p2k3_tbl_frezz_nos':'p2k3_tbl_frezz'; ?>">
+                                           <table style="width: 100%" class="table table-striped table-bordered table-hover text-center <?php echo (count($daftar_pekerjaan) < 7) ? 'p2k3_tbl_frezz_nos':'p2k3_tbl_frezz'; ?>">
                                             <thead>
                                                 <tr class="bg-info">
                                                      <th class="bg-info"><input type="checkbox" disabled=""></th>
@@ -87,7 +87,7 @@
                                                     <?php foreach ($daftar_pekerjaan as $key) { ?>
                                                     <th><?php echo $key['pekerjaan'];?></th>
                                                     <?php } ?>
-                                                    <th style="min-width: 150px;">Tanggal Approve TIM</th>
+                                                    <th>Tanggal Approve TIM</th>
                                                 </tr>
                                             </thead>
                                             <tbody id="DetailInputKebutuhanAPD">

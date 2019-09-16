@@ -402,14 +402,126 @@ class M_Dtmasuk extends CI_Model
         return $query->result_array();
     }
 
+    public function listtobonHitung($ks, $pr)
+    {
+        $ks = substr($ks, 0,7);
+        $sql = "select
+                    kh.periode,
+                    kh.item_kode kode_item,
+                    km.item,
+                    kh.jml_kebutuhan,
+                    km.satuan,
+                    sum(coalesce(bon.jml_bon::int, 0)) bon
+                from
+                    k3.k3n_hitung kh
+                left join k3.k3n_bon bon on
+                    kh.periode = bon.periode
+                    and kh.kodesie = bon.kodesie
+                    and kh.item_kode = bon.item_code ,
+                    k3.k3_master_item km
+                where
+                    kh.item_kode = km.kode_item
+                    and kh.kodesie like '$ks%'
+                    and kh.periode = '$pr'
+                group by
+                    kh.periode,
+                    kh.item_kode,
+                    km.item,
+                    km.satuan,
+                    kh.jml_kebutuhan
+                order by
+                    3";
+                // echo $sql;exit();
+        $query = $this->erp->query($sql);
+        return $query->result_array();
+    }
+
+    public function listperhitungan($pr)
+    {
+        $minPr = explode('-', $pr);
+        $y = $minPr[0];
+        $m = ($minPr[1]-1);
+        if (strlen($m) < 2) {
+            $m = '0'.$m;
+        }
+
+        if ($m == '1' || $m == '01') {
+            $m = '12';
+            $y = $y-1;
+        }
+        $newPr = $y.'-'.$m;
+        $sql = "select
+                    mon.periode ,
+                    mon.item_kode ,
+                    mon.item ,
+                    sum(mon.jml_kebutuhan) jml_kebutuhan ,
+                    sum(mon.ttl_bon) ttl_bon ,
+                    sum(mon.sisa_saldo) sisa_saldo
+                from
+                    (
+                    select
+                        kh.periode,
+                        kh.item_kode,
+                        km.item,
+                        sum(kh.jml_kebutuhan::int) jml_kebutuhan,
+                        coalesce(bon.ttl_bon, 0) ttl_bon,
+                        sum(kh.jml_kebutuhan::int)-coalesce(bon.ttl_bon, 0) sisa_saldo
+                    from
+                        k3.k3_master_item km,
+                        k3.k3n_hitung kh
+                    left join (
+                        select
+                            kb.periode,
+                            kb.item_code,
+                            sum(jml_bon::int) ttl_bon
+                        from
+                            k3.k3n_bon kb
+                        where
+                            kb.kodesie like '%'
+                            and kb.periode = '$newPr'
+                        group by
+                            kb.periode,
+                            kb.item_code) bon on
+                        kh.item_kode = bon.item_code
+                    where
+                        kh.item_kode = km.kode_item
+                        and kh.periode = '$pr'
+                        and kh.kodesie like '%'
+                    group by
+                        kh.periode,
+                        kh.item_kode,
+                        km.item,
+                        bon.ttl_bon) mon
+                group by
+                    mon.periode ,
+                    mon.item_kode ,
+                    mon.item
+                order by
+                    3";
+                    // echo $sql;exit();
+        $query = $this->erp->query($sql);
+        return $query->result_array();
+    }
+
     public function insertBon($data)
     {
         $query = $this->db->insert('k3.k3n_bon', $data);
     }
 
+    public function getIdOr()
+    {
+        $sql = "SELECT max(NO_ID) baris from im_master_bon";
+
+        $query = $this->oracle->query($sql);
+        return $query->row()->BARIS+1;
+    }
+
     public function insertBonIm($data)
     {
-        $query = $this->db->insert('im.im_master_bon', $data);
+        $this->oracle->trans_start();
+        $this->oracle->insert('IM_MASTER_BON',$data);
+        $this->oracle->trans_complete();
+        // $query = $this->oracle->insert('im_master_bon', $data);
     }
 
     public function getlistHitung($pr, $ks)
@@ -474,6 +586,7 @@ class M_Dtmasuk extends CI_Model
                 inner join k3.k3n_order ko on substring(ko.kodesie,0,8) = substring(ks.kodesie,0,8) where ko.periode = '$pr'
                 and ko.status = '1'
                 order by 2 asc";
+                // and ko.kodesie like '%1010301%'
                 // echo $sql;exit();
         $query = $this->erp->query($sql);
         return $query->result_array();
@@ -593,6 +706,38 @@ class M_Dtmasuk extends CI_Model
                     3";
                     // echo $sql;exit();
         $query = $this->erp->query($sql);
+        return $query->result_array();
+    }
+
+    public function monitorbonOracle($ks, $pr)
+    {
+        if ($ks == '') {
+            $seksi = "mb.seksi_bon like '%%'";
+        }else{
+            $seksi = "mb.seksi_bon = '$ks'";
+        }
+        $sql = "SELECT   mb.no_bon,
+                         RTRIM (XMLAGG (XMLELEMENT (e, mb.kode_barang || ';')).EXTRACT ('//text()'),';') kode_barang,
+                         RTRIM (XMLAGG (XMLELEMENT (e, mb.nama_barang || ';')).EXTRACT ('//text()'),';') nama_apd,
+                         RTRIM (XMLAGG (XMLELEMENT (e, mb.permintaan || ';')).EXTRACT ('//text()'),';') jml_bon,
+                         RTRIM (XMLAGG (XMLELEMENT (e, mb.satuan || ';')).EXTRACT ('//text()'),';') satuan,
+                         mb.tanggal tgl_bon, mb.seksi_bon seksi_pengebon,
+                         mb.pemakai seksi_pemakai, mb.penggunaan, mb.keterangan,
+                         mb.tujuan_gudang,
+                         RTRIM (XMLAGG (XMLELEMENT (e, mb.penyerahan || ';')).EXTRACT ('//text()'),';') qty_transact,
+                         RTRIM (XMLAGG (XMLELEMENT (e, mb.flag || ';')).EXTRACT ('//text()'),';') transact
+                    FROM im_master_bon mb
+                   WHERE mb.keterangan LIKE '%$pr' and $seksi
+                GROUP BY mb.no_bon,
+                         mb.tanggal,
+                         mb.seksi_bon,
+                         mb.pemakai,
+                         mb.penggunaan,
+                         mb.keterangan,
+                         mb.tujuan_gudang
+                ORDER BY 1, 3";
+                // echo $sql;exit();
+        $query = $this->oracle->query($sql);
         return $query->result_array();
     }
 

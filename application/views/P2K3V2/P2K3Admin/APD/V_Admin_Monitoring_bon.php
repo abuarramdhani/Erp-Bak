@@ -43,7 +43,7 @@
                         <div class="box box-primary box-solid">
                             <div class="box-header with-border"></div>
                             <div class="box-body">
-                                <div class="panel-body" style="overflow-x: scroll;">
+                                <div class="panel-body">
                                     <form method="post" class="form-horizontal" action="<?php echo site_url('p2k3adm_V2/Admin/monitoringBon');?>" enctype="multipart/form-data">
                                         <div class="col-md-1 text-left" align="right">
                                             <label for="lb_periode" class="control-label">Seksi : </label>
@@ -73,7 +73,7 @@
                                         var kodes = '<?php echo $kodesie; ?>';
                                         var period = '<?php echo $period; ?>';
                                     </script>
-                                    <table style="margin-top: 50px; width: 100%;" class="table table-striped table-bordered table-hover text-center p2k3_monitoringbon">
+                                    <table style="margin-top: 50px; width: 100%; position: relative;" class="table table-striped table-bordered table-hover text-center p2k3_monitoringbon">
                                         <caption style="color: #000; font-weight: bold;"><?php echo $seksi[0]['section_name']; ?></caption>
                                         <thead class="bg-primary">
                                             <tr>
@@ -91,7 +91,7 @@
                                             <?php $a=1; foreach ($monitorbon as $key): ?>
                                             <tr style="color: #000;" class="multiinput">
                                                 <td>
-                                                    <a class="p2k3_row_swow" href="#"><img class="1" id="p2k3_img" src="../../assets/img/icon/details_open.png"></a>
+                                                    <div style="cursor: pointer;" class="p2k3_row_swow" href="#"><img class="1" id="p2k3_img" src="../../assets/img/icon/details_open.png"></div>
                                                     <input hidden="" value="<?php echo $a; ?>">
                                                 </td>
                                                 <!-- <td id="nomor"><?php echo $a; ?></td> -->
@@ -118,9 +118,9 @@
                                             </tr>
                                             <?php $clas = 'p2k3_row'.$a; ?>
                                             <tr>
-                                                <td style="padding: 0px;" colspan="7">
-                                                    <div hidden="" class="<?php echo $clas; ?>">
-                                                        <table class="table table-xs table-bordered">
+                                                <td style="padding: 0px; position: relative;" colspan="7">
+                                                    <div style="overflow: hidden; display: none; position: relative; width: 100%;" class="<?php echo $clas; ?>">
+                                                        <table class="table table-xs table-bordered" style="margin: 0; padding: 0; position: relative;">
                                                             <thead class="bg-info">
                                                                 <tr>
                                                                     <td width="5%"><b>No</b></td>
@@ -179,6 +179,7 @@
 </div>
 <script>
     $(document).ready(function(){
+        $('#surat-loading').attr('hidden', false);
         $.ajax({
           type:'POST',
           data:{lokasi_id:'value'},

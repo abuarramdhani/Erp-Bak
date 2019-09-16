@@ -112,8 +112,8 @@
 														<input hidden="" name="p2k3_satuan_apd[]" value="<?php echo $key['satuan']; ?>">
 													</td>
 													<td>
-														<p><?php echo $key['0']; ?></p>
-														<input class="p2k3_inKeb" hidden="" name="p2k3_jmlKebutuhan[]" value="<?php echo $key['0']; ?>">
+														<p><?php echo $key['jml_kebutuhan']; ?></p>
+														<input class="p2k3_inKeb" hidden="" name="p2k3_jmlKebutuhan[]" value="<?php echo $key['jml_kebutuhan']; ?>">
 													</td>
 													<td>
 														<?php echo $key['bon']; ?>

@@ -339,6 +339,22 @@ class M_Order extends CI_Model
         return $query->result_array();
     }
 
+    public function delRiwayatKeb($id)
+    {
+        $sql = "delete from k3.k3n_standar_kebutuhan where id = '$id'";
+        // echo $sql;exit();
+        $query = $this->erp->query($sql);
+        return true;
+    }
+
+    public function delRiwayatOr($id)
+    {
+        $sql = "delete from k3.k3n_order where id = '$id'";
+        // echo $sql;exit();
+        $query = $this->erp->query($sql);
+        return true;
+    }
+
     public function getInputOrder($kodesie)
     {
         $kodesie = substr($kodesie, 0,7);

@@ -46,6 +46,7 @@
                                     <thead class="bg-primary">
                                         <tr>
                                             <th>NO</th>
+                                            <th style="min-width: 90px;">Action</th>
                                             <th>jumlah Pekerja (STAFF)</th>
                                             <?php foreach ($daftar_pekerjaan as $key) { ?>
                                             <th>Jumlah Pekerja (<?php echo $key['pekerjaan'];?>)</th>
@@ -53,7 +54,6 @@
                                             <th width="15%">Tanggal Input</th>
                                             <th>Status</th>
                                             <th>Periode</th>
-                                            <th>Action</th>
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -73,6 +73,15 @@
                                             ?>
                                             <tr>
                                                 <td><?php echo $a; ?></td>
+                                                <script>
+                                                    var kodesie = '<?php echo $key['kodesie']; ?>';
+                                                </script>
+                                                <td>
+                                                    <button class="btn btn-primary btn-sm p2k3_lihat_detail">Lihat</button>
+                                                    <a class="btn btn-danger btn-sm" style="margin-right:4px" href="<?php echo site_url('p2k3adm_V2/Admin/hapusRiwayatOrder/'.$key['id'].'/'.$key['kodesie']); ?>" data-toggle="tooltip" data-placement="left" title="" data-original-title="Hapus" onclick="return confirm('Apa anda yakin ingin Menghapus data order ini?')">
+                                                        <span class="fa fa-trash"></span>
+                                                    </a>
+                                                </td>
                                                 <td><?php echo $key['jml_pekerja_staff']; ?></td>
                                                 <?php $jml = explode(',', $key['jml_pekerja']);
                                                 foreach ($jml as $row) { ?>
@@ -81,13 +90,6 @@
                                                 <td><?php echo $key['tgl_input']; ?></td>
                                                 <td><?php echo $status; ?></td>
                                                 <td id="periode"><?php echo $key['periode']; ?></td>
-                                                <script>
-                                                    var kodesie = '<?php echo $key['kodesie']; ?>';
-                                                        // var periode = '<?php echo $key['periode']; ?>';
-                                                    </script>
-                                                    <td>
-                                                        <button class="btn btn-primary btn-sm p2k3_lihat_detail">Lihat</button>
-                                                    </td>
                                                     <?php $a++; } ?>
                                                 </tr>
                                             </tbody> 
@@ -117,32 +119,25 @@
  </div>
 </div>
 </div>
+<div id="surat-loading" style="top: 0;left: 0;right: 0;bottom: 0; margin: auto; position: fixed; background: rgba(0,0,0,.5); z-index: 11;" hidden="hidden">
+    <img src="http://erp.quick.com/assets/img/gif/loadingtwo.gif" style="position: fixed; top: 0;left: 0;right: 0;bottom: 0; margin: auto; width: 40%;">
+</div>
 <script type="text/javascript">
-     // Start jQuery function after page is loaded
      $(document).ready(function(){
-         // Start jQuery click function to view Bootstrap modal when view info button is clicked
          $('.p2k3_lihat_detail').click(function(){
+            $('#surat-loading').attr('hidden', false);
             var periode = $(this).closest('tr').find('td#periode').text();
-             // Get the id of selected phone and assign it in a variable called phoneData
-                // Start AJAX function
                 $.ajax({
-                 // Path for controller function which fetches selected phone data
                  url: "<?php echo base_url() ?>P2K3_V2/Order/modal",
-                    // Method of getting data
                     method: "POST",
-                    // Data is sent to the server
                     data: {ks:kodesie,
                         pr:periode},
-                    // Callback function that is executed after data is successfully sent and recieved
                     success: function(data){
-                     // Print the fetched data of the selected phone in the section called #phone_result 
-                     // within the Bootstrap modal
                      $('#phone_result').html(data);
-                        // Display the Bootstrap modal
+                        $('#surat-loading').attr('hidden', true);
                         $('#phoneModal').modal('show');
                     }
                 });
-             // End AJAX function
          });
      });  
  </script>

@@ -24,7 +24,7 @@
                         <div class="box box-primary box-solid">
                             <div class="box-header with-border"></div>
                             <div class="box-body">
-                                <div class="panel-body">
+                                <div class="panel-body" style="overflow-x: scroll;">
                                     <div class="col-md-1 text-left" align="right">
                                         <label for="lb_periode" class="control-label">Seksi : </label>
                                     </div>
@@ -47,10 +47,11 @@
                                            } ?>
                                        </h4>
                                    </div>
-                                  <table class="table table-striped table-bordered table-hover dataTable-p2k3Frezz text-center" style="font-size:12px;">
+                                  <table class="table table-striped table-bordered table-hover dataTable-p2k3Frezz4 text-center" style="font-size:12px;">
                                         <thead class="bg-primary">
                                             <tr>
                                                 <th class="bg-primary">NO</th>
+                                                <th class="bg-primary" style="min-width: 50px;">Action</th>
                                                 <th class="bg-primary">Nama APD</th>
                                                 <th class="bg-primary">Kode Barang</th>
                                                 <th>Kebutuhan Umum</th>
@@ -60,7 +61,6 @@
                                                 <?php } ?>
                                                 <th width="15%">Tanggal Input</th>
                                                 <th>Status</th>
-                                                <th>Action</th>
                                             </tr>
                                         </thead>
                                         <tbody>
@@ -81,6 +81,14 @@
                                             <tr style="color: #000;">
                                                 <td style="min-width: 10px;"><?php echo $a; ?></td>
                                                 <td>
+                                                    <a style="margin-right:4px" href="<?php echo site_url('p2k3adm_V2/Admin/editRiwayatKebutuhan/'.$key['id'].'/'.$key['kodesie']); ?>" data-toggle="tooltip" data-placement="left" title="" data-original-title="Edit">
+                                                        <span class="fa fa-edit fa-2x"></span>
+                                                    </a>
+                                                    <a style="margin-right:4px" href="<?php echo site_url('p2k3adm_V2/Admin/hapusRiwayatKebutuhan/'.$key['id'].'/'.$key['kodesie']); ?>" data-toggle="tooltip" data-placement="left" title="" data-original-title="Hapus" onclick="return confirm('Apa anda yakin ingin Menghapus item ini?')">
+                                                        <span class="fa fa-trash fa-2x"></span>
+                                                    </a>
+                                                </td>
+                                                <td>
                                                     <a style="cursor:pointer;" class="p2k3_see_apd_text"><?php echo $key['item']; ?></a>
                                                 </td>
                                                 <td>
@@ -95,11 +103,6 @@
                                                 <?php  } ?>
                                                 <td><?php echo $key['tgl_input']; ?></td>
                                                 <td><?php echo $status; ?></td>
-                                                <td>
-                                                <a style="margin-right:4px" href="<?php echo site_url('p2k3adm_V2/Admin/editRiwayatKebutuhan/'.$key['id'].'/'.$key['kodesie']); ?>" data-toggle="tooltip" data-placement="bottom" title="" data-original-title="Edit">
-                                                        <span class="fa fa-edit fa-2x"></span>
-                                                    </a>
-                                                </td>
                                             </tr>
                                             <?php $a++; } ?>
                                         </tbody>

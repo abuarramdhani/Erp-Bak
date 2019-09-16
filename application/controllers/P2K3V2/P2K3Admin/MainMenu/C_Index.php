@@ -175,7 +175,9 @@ class C_Index extends CI_Controller
 		$data['pr'] = $periode;
 		if ($val == 'hitung') {
 			// $data['toHitung'] = $this->M_dtmasuk->toHitung($pr);
-			$data['toHitung'] = $this->M_dtmasuk->listtobon2('', $pr);
+			$data['toHitung'] = $this->M_dtmasuk->listPerhitungan($pr);
+			// echo "<pre>";
+			// print_r($data['toHitung']);exit();
 
 			// echo "<pre>";
 			foreach ($data['toHitung'] as $key) {
@@ -324,7 +326,7 @@ class C_Index extends CI_Controller
 		// echo '<option></option>';
 		echo '<option selected value="semua">SEMUA SEKSI</option>';
 		foreach ($data as $key) {
-			echo '<option value="'.$key['substring'].'">'.$key['substring'].' - '.$key['section_name'].'</option>';
+			echo '<option value="'.$key['section_name'].'">'.$key['substring'].' - '.$key['section_name'].'</option>';
 		}
 	}
 
@@ -501,14 +503,25 @@ class C_Index extends CI_Controller
 		$data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id);
 		$act = '0';
 		$ks = $this->input->post('k3_adm_ks');
+		$pr = $this->input->post('k3_periode');
 		if (!empty($ks)) {
 			$act = '1';
-			$pr = date("Y-m", strtotime(" +1 months"));
+			if (!empty($pr)) {
+				$m = substr($pr, 0,2);
+				$y = substr($pr, 5,5);
+				$pr = $y.'-'.$m;
+			}else{
+				$pr = date("Y-m", strtotime(" +1 months"));
+			}
 			$cek = $this->M_order->cekOrder($ks, $pr);
 			if ($cek > 0) {
 				$act = '2';
 			}
+			$m = substr($pr, 5,2);
+			$y = substr($pr, 0,4);
+			$pr = $m.' - '.$y;
 		}
+		$data['pr'] = $pr;
 		$data['daftar_pekerjaan']	= $this->M_order->daftar_pekerjaan($ks);
 		$data['act'] = $act;
 		$data['seksi'] = $this->M_dtmasuk->cekseksi($ks);
@@ -583,6 +596,9 @@ class C_Index extends CI_Controller
       	$staff = $this->input->post('staffJumlah');
       	$periode = $this->input->post('k3_periode');
 		// print_r($_POST); print_r($daftar_pekerjaan);exit();
+		$m = substr($periode, 0,2);
+		$y = substr($periode, 5,5);
+		$periode = $y.'-'.$m;
 
       	foreach ($daftar_pekerjaan as $key) {
       		$kd[] = $key['kdpekerjaan'];
@@ -603,6 +619,8 @@ class C_Index extends CI_Controller
       		'tgl_approve'	=>	date('Y-m-d H:i:s'),
       		'approve_by'	=>	$noind,
       		);
+      	// echo "<pre>";
+      	// print_r($data);exit();
       	$inputPkj = $this->M_order->inputPkj($data);
       	redirect('p2k3adm_V2/Admin/inputOrderTIM');
 	}
@@ -677,23 +695,21 @@ public function MonitoringBon()
 		$seksi = array(array('section_name' => 'SEMUA SEKSI'));
 	}
 	$data['seksi'] = $seksi;
-	// print_r($data['seksi']);exit();
 	if ($ks == 'semua') {
 		$ks = '';
 	}
 	$data['pr'] = $periode;
 	$data['period'] = $pr;
-	$data['monitorbon'] = $this->M_dtmasuk->monitorbon($ks, $pr);
-	// foreach ($data['monitorbon'] as $key) {
-	// 	$kode = explode(',', $key['kode_barang']);
-	// 	$apd = explode(',', $key['nama_apd']);
-	// 	$kode = explode(',', $key['jml_bon']);
-	// 	$kode = explode(',', $key['satuan']);
-	// }
-
-	// echo "<pre>"; print_r($kode);exit();
-
-
+	// echo "<pre>";
+	// $data['monitorbon'] = $this->M_dtmasuk->monitorbon($ks, $pr);
+	$data['monitorbon'] = $this->M_dtmasuk->monitorbonOracle($ks, $pr);
+	$count = count($data['monitorbon']);
+	$a = array();
+	for ($i=0; $i < $count; $i++) { 
+		$a[] = array_change_key_case($data['monitorbon'][$i],CASE_LOWER);
+	}
+	$data['monitorbon'] = $a; 
+	// print_r($data['monitorbon']);exit();
 
 	$this->load->view('V_Header',$data);
 	$this->load->view('V_Sidemenu',$data);
@@ -776,6 +792,7 @@ public function editRiwayatKebutuhan($id, $ks)
 	$this->load->view('V_Footer',$data);
 }
 
+
 public function SaveEditRiwayatKebutuhan()
 {
 	// print_r($_POST);exit();
@@ -803,7 +820,25 @@ public function SaveEditRiwayatKebutuhan()
 	}
 }
 
-public function RiwayatOrder()
+public function hapusRiwayatKebutuhan($id, $ks)
+{
+	// echo $id;
+	$delRiwayatKeb = $this->M_order->delRiwayatKeb($id);
+	if ($delRiwayatKeb) {
+		redirect('p2k3adm_V2/Admin/RiwayatKebutuhan/'.$ks);
+	}
+}
+
+public function hapusRiwayatOrder($id, $ks)
+{
+	// echo $id;
+	$delRiwayatOr = $this->M_order->delRiwayatOr($id);
+	if ($delRiwayatOr) {
+		redirect('p2k3adm_V2/Admin/Riwayatorder/'.$ks);
+	}
+}
+
+public function RiwayatOrder($kosie = false)
 {
 	$user1 = $this->session->user;
 	$user_id = $this->session->userid;
@@ -821,6 +856,9 @@ public function RiwayatOrder()
 	$ks = $this->input->post('k3_adm_ks');
 	if (empty($ks)) {
 		$ks = $kodesie;
+	}
+	if (!empty($kosie)) {
+		$ks = $kosie;
 	}
 	$baru = '1999-01-01 01:10:10';
 	$cek_terbaru = $this->M_dtmasuk->cek_terbaru($ks);
@@ -1069,7 +1107,7 @@ public function CetakBongagal($id)
 {
 	echo '<pre>';
 	$getBon = $this->M_dtmasuk->getBon($id);
-	// print_r($getBon);exit();
+	print_r($getBon);exit();
 
 	//pdf
 
@@ -1087,7 +1125,8 @@ public function CetakBongagal($id)
   		$max = (10*$k);
   		$data_array_2 = array();
   		for ($x=$y; $x < $max; $x++) {
-  			if ($x < $lembar ) {
+  			if ($x < count($getBon) ) {
+  			// echo $getBon[$x]['item_code'];
   				$data_array_2[] = array(
   					'kode' => $getBon[$x]['item_code'],
   					'nama' => $getBon[$x]['item'],
@@ -1112,6 +1151,7 @@ public function CetakBongagal($id)
 			// echo $x; 
   		}
 		// print_r($data_array_2);
+		// exit();
 
   		$data_array[] = array(
   			'nomor' => $id,
