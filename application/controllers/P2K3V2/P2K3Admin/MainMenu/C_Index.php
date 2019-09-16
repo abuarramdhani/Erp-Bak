@@ -326,6 +326,19 @@ class C_Index extends CI_Controller
 		// echo '<option></option>';
 		echo '<option selected value="semua">SEMUA SEKSI</option>';
 		foreach ($data as $key) {
+			echo '<option value="'.$key['substring'].'">'.$key['substring'].' - '.$key['section_name'].'</option>';
+		}
+	}
+
+	public function getSeksiAprove3()
+	{
+		$item = '';
+		$item = strtoupper($item);
+		$data = $this->M_dtmasuk->getSeksiApprove2($item);
+		// echo json_encode($data);
+		// echo '<option></option>';
+		echo '<option selected value="semua">SEMUA SEKSI</option>';
+		foreach ($data as $key) {
 			echo '<option value="'.$key['section_name'].'">'.$key['substring'].' - '.$key['section_name'].'</option>';
 		}
 	}
