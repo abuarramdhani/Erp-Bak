@@ -1,4 +1,5 @@
 var baseurlMSO = baseurl+'MonitoringSalesOrder/C_MonitoringSalesOrder/'
+var windowLoc = $(location).attr('pathname');
 $(document).ready(function(){
     load_data();
     $('#do_list').DataTable({
@@ -17,10 +18,12 @@ $(document).ready(function(){
         },
         "autoWidth": false,
     } ); 
-
-    setInterval(function() {
-        fetch_data()
-    }, 15000)
+    
+    if(windowLoc.includes("/MonitoringSalesOrder")){
+		setInterval(function() {
+        	fetch_data()
+    	}, 15000)
+	}
 
 });
 
