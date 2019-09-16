@@ -1481,34 +1481,14 @@ class C_Order extends CI_Controller
   	$data['pr'] = $periode;
   	$data['ks'] = $ks;
   	$data['pri'] = $pr;
-  	$data['listtobon'] = $this->M_dtmasuk->listtobon($ks, $pr);
+  	$data['listtobon'] = $this->M_dtmasuk->listtobonHitung($ks, $pr);
+  	// echo "<pre>";
+  	// print_r($data['listtobon']);exit();
   	$data['lokasi'] = $this->M_order->lokasi();
-  	$jml = '';
-  	foreach ($data['listtobon'] as $key) {
-  		$a = $key['jml_item'];
-  		$b = $key['jml_pekerja'];
-  		$c = $key['jml_kebutuhan_umum'];
-  		$d = $key['jml_kebutuhan_staff'];
-  		$e = $key['jml_pekerja_staff'];
-  		$a = explode(',', $a);
-  		$b = explode(',', $b);
-  		$hit = count($a);
-  		for ($i=0; $i < $hit; $i++) { 
-  			$jml += ($a[$i]*$b[$i]); 
-  		}
-  		$jml = ceil($jml+$c+($d*$e));
-  		$push = array("total"=> $jml);
-  		array_splice($key,5,1,$push);
-  		$new[] = $key;
-  		$data['listtobon'] = $new;
-  		$jml = 0;
-  	}
   	$data['seksi'] = $this->M_dtmasuk->cekseksi($ks);
   	if (empty($data['seksi'])) {
   		$data['seksi'] = array('section_name' 	=>	'');
   	}
-		// echo "<pre>";
-		// print_r($data['listtobon']);exit();
 
   	$this->load->view('V_Header',$data);
   	$this->load->view('V_Sidemenu',$data);
@@ -1612,24 +1592,28 @@ class C_Order extends CI_Controller
   			);
   		$input = $this->M_dtmasuk->insertBon($data);
 
+  		$idOr = $this->M_dtmasuk->getIdOr();
+
   		$data2 = array(
-  			'kode_barang'	=>	$apd[$i],
-  			'nama_barang'	=>	$nama_apd[$i],
-  			'satuan'		=>	$satuan_apd[$i],
-  			'permintaan'	=>	$bon[$i],
-  			'keterangan'	=>	'UNTUK KEBUTUHAN APD PERIODE '.$pr,
-  			'cost_center'	=>	$cost_center,
-  			'penggunaan'	=>	'BARANG P2K3 & APD',
-  			'seksi_bon'		=>	$seksi,
-  			'tujuan_gudang'	=>	$gudang,
-  			'tanggal'		=>	date('d M Y'),
-  			'no_bon'		=>	$noBon,
-  			'pemakai'		=>	$pemakai,
-  			'jenis_pemakai'	=>	'Seksi',
-  			'lokasi'		=>	$lokasi,
-  			'lokator'		=>	$lokator,
-  			'account'		=>	$account,
-  			'kode_cabang'	=>	$kode_cabang,
+  			'NO_ID'			=>	$idOr,
+  			'KODE_BARANG'	=>	$apd[$i],
+  			'NAMA_BARANG'	=>	$nama_apd[$i],
+  			'SATUAN'		=>	$satuan_apd[$i],
+  			'PERMINTAAN'	=>	$bon[$i],
+  			'KETERANGAN'	=>	'UNTUK KEBUTUHAN APD PERIODE '.$pr,
+  			'COST_CENTER'	=>	$cost_center,
+  			'PENGGUNAAN'	=>	'BARANG P2K3 & APD',
+  			'SEKSI_BON'		=>	$seksi,
+  			'TUJUAN_GUDANG'	=>	$gudang,
+  			'TANGGAL'		=>	date('d M Y'),
+  			'NO_BON'		=>	$noBon,
+  			'PEMAKAI'		=>	$pemakai,
+  			'JENIS_PEMAKAI'	=>	'Seksi',
+  			'LOKASI'		=>	$lokasi,
+  			'LOKATOR'		=>	$lokator,
+  			'ACCOUNT'		=>	$account,
+  			'KODE_CABANG'	=>	$kode_cabang,
+  			'EXP'			=>	'N',
   			);
   		$input2 = $this->M_dtmasuk->insertBonIm($data2);
 		// print_r($data2); 

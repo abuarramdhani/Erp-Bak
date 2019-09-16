@@ -1,5 +1,5 @@
 <style type="text/css">
-    td{
+    td.p2k3_width_order{
         min-width:130px; /* force table to be oversize */
         }
 </style>
@@ -45,8 +45,14 @@
                                             </div>
 
                                             <div class="col-md-3" style="padding-left: 0px; margin-left: 3px">
-                                                <div class="input-group">
-                                                    <input readonly class="form-control"  autocomplete="off" type="text" name="k3_periode" id="" style="width: 200px" placeholder="Masukkan Periode" value="<?php echo date('Y-m', strtotime('+1 months')); ?>"/>
+                                                <div class="input-group col-md-12">
+                                                    <?php if (!empty($pr)) {
+
+                                                    }else{
+                                                        $pr = date('m - Y', strtotime('+1 months'));
+                                                    } 
+                                                    ?>
+                                                    <input class="form-control p2k3_tanggal_periode"  autocomplete="off" type="text" name="k3_periode" id="ygpentinggkkosong" placeholder="Masukkan Periode" value="<?php echo $pr; ?>"/>
                                                 </div>
                                             </div>
                                         </div>
@@ -64,7 +70,7 @@
                                                                         </div>
                                                                         <div class="panel-body table-responsive" style="overflow-x: auto;">
                                                                          <table id="tb_InputKebutuhanAPD" class="table table-striped table-bordered table-hover">
-                                                                             <caption style="color: #000;font-weight: bold;font-size: 18px; padding-left: 0px;"><?php echo $seksi[0]['section_name']; ?>
+                                                                             <caption style="color: #000;font-weight: bold;font-size: 18px; padding-left: 0px;"><?php echo $seksi[0]['section_name'].' / Periode '.$pr; ?>
                                                                                 </caption>
                                                                              <thead>
                                                                                 <tr class="bg-primary">
@@ -80,13 +86,13 @@
                                                                             </thead>
                                                                             <tbody id="DetailInputKebutuhanAPD">
                                                                                 <tr row-id="1" class="multiinput">
-                                                                                    <td style="min-width: 10px;" id="nomor">1</td>
-                                                                                    <td><input required type="number" name="staffJumlah" class="form-control" min="0" /></td>
+                                                                                    <td class="p2k3_width_order" style="min-width: 10px;" id="nomor">1</td>
+                                                                                    <td class="p2k3_width_order"><input required type="number" name="staffJumlah" class="form-control" min="0" /></td>
                                                                                     <?php
                                                                                     $i = 0;
                                                                                     foreach ($daftar_pekerjaan as $pekerjaan)
                                                                                         { ?>
-                                                                                    <td>
+                                                                                    <td class="p2k3_width_order">
                                                                                         <div class="form-group">
                                                                                             <div class="col-lg-12">
                                                                                                 <input required type="number" name="pkjJumlah[]" class="form-control" min="0"  />
@@ -100,7 +106,7 @@
                                                                             </tbody>
                                                                         </table>
                                                                         <input name="p2k3_adm_kodesie" hidden="" type="text" value="<?php echo $kodesie; ?>">
-                                                                         <input name="k3_periode" hidden="" value="<?php echo date('Y-m', strtotime('+1 months')); ?>"/>
+                                                                         <input name="k3_periode" hidden="" value="<?php echo $pr; ?>"/>
                                                                         <div class="row text-right" style="margin-right: 12px; margin-top: 20px;">
                                                                             <?php if ($act == '1'): ?>
                                                                                 <a href="<?php echo site_url('P2K3_V2/Order/inputStandarKebutuhan');?>" class="btn btn-primary btn-lg btn-rect">Back</a>

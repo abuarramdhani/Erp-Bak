@@ -131,6 +131,14 @@ $(function()
     },
   });
 
+  $('.dataTable-p2k3Frezz4').DataTable({
+    dom: 'frtp',
+    scrollX: true,
+    fixedColumns:   {
+      leftColumns: 4,
+    },
+  });
+
   $('.apd-select2').select2({
     ajax:
     {
@@ -670,7 +678,8 @@ function format ( d ) {
       var val = $(this).closest('td').find('input').val();
       var clas = 'p2k3_row'+val;
       // alert(clas);
-      $("."+clas).slideToggle();
+      $("."+clas).slideToggle("slow");
+      // $("."+clas).css('display', 'block');
       var clas2 = $(this).find('img').attr('class');
       // alert (clas2);
       if (clas2 == '1') {
@@ -1072,6 +1081,15 @@ $(document).ready(function(){
     scrollCollapse: true,
     fixedColumns:   {
       leftColumns: 4,
+    },
+  });
+
+  $('.dataTable_p2k3Frezz_noOrder').DataTable({
+    dom: 'frtp',
+    scrollX: true,
+    "ordering": false,
+    fixedColumns:   {
+      leftColumns: 3,
     },
   });
 });
