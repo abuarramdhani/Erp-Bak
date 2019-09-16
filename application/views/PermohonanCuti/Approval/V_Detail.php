@@ -23,8 +23,6 @@
 							</div><br>
 								<input type="hidden" name="" id="id_cuti" value="<?=$Detail['0']['id_cuti'] ?>">
 								<div class="container">
-
-								<!-- </div> -->
 									<div class="form-group">
 										<label class="control-label col-lg-4 col-sm-3">Nama</label>
 										<div class="col-lg-4 col-sm-8">
@@ -127,7 +125,7 @@
 										</div>
 									</div>
 									<br>
-									<?php if(isset($ApproverStatus['0']['status']) && $ApproverStatus['0']['status'] == 1){ ?>
+									<?php if(isset($ApproverStatus['0']['status']) && $ApproverStatus['0']['status'] == 1): ?>
 									<div class="form-group">
 										<div class="col-lg-12 text-center">
 											<button type="button" id="approveCuti" class="btn btn-success"><i class="fa fa-check"> Setuju</i></button>
@@ -137,19 +135,19 @@
 											<a href="<?php echo base_url('PermohonanCuti/Approval/Inprocess') ?>" class="btn btn-warning" onclick="$('#loading1').attr('class','fa fa-spinner fa-spin')"><i id="loading1"></i> Back</a>
 										</div>
 									</div>
-									<?php }else{ ?>
+								<?php else: ?>
 										<div class="form-group">
 											<div class="col-lg-12 text-center">
 												<!-- <?php //$status = $ApproverStatus['0']['status']; if ($status == '1') { $back ="Inprocess";}elseif($status == '2' || $status == '4'){ $back = "Approved";}else{$back = "Rejected";} ?> -->
 													<!-- ini dihilangi karena nanti error :v -->
 													<!-- <a href="<?php //echo base_url('PermohonanCuti/Approval/'.$back) ?>" class="btn btn-warning">Back</a> -->
 													<button type="button" onclick="window.history.go(-1)" class="btn btn-warning">back</button>
-												<?php if(strstr($kodesie, '4090101') && $Detail['0']['status'] == 2 ) {?>
+												<?php if(strstr($kodesie, '4090101') && $Detail['0']['status'] == 2 ):?>
 													<button type="button" name="button" id="cancelCuti" class="btn btn-danger"><i class=""> Batalkan Cuti</i></button>
-												<?php } ?>
+												<?php endif; ?>
 											</div>
 										</div>
-									<?php } ?>
+								<?php endif; ?>
 									</div>
 								</div>
 							</div>

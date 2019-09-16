@@ -762,8 +762,7 @@ function ubahTglCuti(jenis) {
 }
 
 function batalTgl() {
-  $('#DetailTglCuti').css('border','');
-  $('#DetailTglCuti').attr('disabled', true);
+  $('#DetailTglCuti').css('border','').attr('disabled', true).val($('#DetailTglCuti').data('tgl'));
   $('#ubahTglCuti').removeClass('hidden');
   $('#saveTglCuti').addClass('hidden');
   $('#cancelTglCuti').addClass('hidden');
