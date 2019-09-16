@@ -177,6 +177,7 @@
 		<!-- <script src="<?= base_url('assets/js/customPR.js') ?>"></script> -->
 		<!-- <script src="<?= base_url('assets/js/customOSP.js') ?>"></script> -->
 		<!-- <script src="<?= base_url('assets/js/customHWM.js') ?>"></script> -->
+		<script type="text/javascript" src="<?= base_url('assets/js/customCKM.js') ?>"></script>
 		<!-- END OF CUSTOM JAVASCRIPT | DO NOT EDIT!! -->
 
 
