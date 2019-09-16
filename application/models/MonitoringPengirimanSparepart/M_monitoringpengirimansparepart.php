@@ -263,6 +263,65 @@ class M_monitoringpengirimansparepart extends CI_Model
         $runQuery = $this->db->query($sql);
         // echo $sql;
        }
+
+        public function history()
+    {
+        $db = $this->load->database();
+        $sql = "
+           select
+              osh.shipment_header_id                                                      no_shipment
+              ,ovt.name                                                                   jenis_kendaraan
+              ,osh.creation_date                                                          creation_date
+              ,osh.estimate_depart_date                                                   berangkat
+              ,osh.estimate_loading_date                                                  loading
+--              ,osh.actual_depart_date                                                   act_berangkat
+              ,osh.actual_loading_date                                                    act_loading
+              ,ofg.name                                                                   asal_gudang
+--              ,CONCAT(op.name,'-',oc.name)                                              tujuan
+            ,ooc.name                                                                     cabang
+            ,ooc.cabang_id                                                                cabang_id
+--              ,op.province_id                                                           province_id
+--              ,oc.city_id                                                               city_id
+              ,ovt.vehicle_type_id                                                        jk_id
+              ,ofg.finish_good_id                                                         fg_id
+              --,oct.name                                                                 jenis_muatan
+              ,string_agg(distinct CONCAT(osl.quantity,' ',oum.name,' ',ou.name), ', ')   muatan
+              ,OSH.is_full_flag                                                           status
+      from
+              om.om_shipment_header osh
+              left join om.om_shipment_line osl on osh.shipment_header_id = osl.shipment_header_id
+              left join om.om_vehicle_type ovt on osh.vehicle_type_id = ovt.vehicle_type_id 
+              left join om.om_finish_good ofg on osh.shipment_from_fg_id = ofg.finish_good_id
+              left join om.om_content_type oct on osl.content_type_id = oct.content_type_id
+              left join om.om_uom oum on osl.uom_id = oum.uom_id
+              left join om.om_cabang ooc on ooc.cabang_id = osh.shipment_to_cabang_id
+              left join om.om_unit ou on osl.unit_id = ou.unit_id
+              left join om.om_province op on osh.shipment_to_province_id = op.province_id
+              left join om.om_city oc on osh.shipment_to_city_id = oc.city_id  
+--              where osh.actual_loading_date is not null
+      group by
+              osh.shipment_header_id
+              ,ovt.name
+              ,osh.estimate_depart_date
+              ,osh.estimate_loading_date
+              ,osh.actual_loading_date
+              ,osh.creation_date
+--              ,osh.actual_depart_date
+              ,ofg.name
+              ,op.name
+              ,oc.name
+              ,ooc.name 
+              ,ooc.cabang_id
+--              ,op.province_id
+--              ,oc.city_id
+              ,ovt.vehicle_type_id 
+              ,ofg.finish_good_id
+              ,osh.is_full_flag
+      order by osh.estimate_depart_date desc";
+        $runQuery = $this->db->query($sql);
+        return $runQuery->result_array();
+      
+    }
     
          
 }
