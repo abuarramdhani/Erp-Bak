@@ -10,7 +10,7 @@ if(!empty($tanggal) || !empty($currentTime) || !empty($spdl_id)){
 
 	$query 	= $conn->query($sql);
 
-	if(mysql_affected_rows($conn)>0){
+	if(mysqli_affected_rows($conn)>0){
 		$data['status'] = true;
 		$data['result'][] = "Berhasil";
 	}else{
