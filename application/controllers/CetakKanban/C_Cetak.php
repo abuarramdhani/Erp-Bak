@@ -118,9 +118,9 @@ class C_Cetak extends CI_Controller {
 			$k = 0;
 			foreach ($kegunaan as $guna) {
 			$data = $this->M_cetak->insertData($guna,$wipid[$k]);
-			// echo json_encode($data);
-
 			$k++;
+
+			// echo "<pre>"; print_r($data); exit();
 			} 
 		}else {
 			
