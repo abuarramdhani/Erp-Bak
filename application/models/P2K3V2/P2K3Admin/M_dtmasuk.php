@@ -748,15 +748,15 @@ class M_Dtmasuk extends CI_Model
             $seksi = "mb.seksi_bon = '$ks'";
         }
         $sql = "SELECT   mb.no_bon,
-                         RTRIM (XMLAGG (XMLELEMENT (e, mb.kode_barang || ';')).EXTRACT ('//text()'),';') kode_barang,
-                         RTRIM (XMLAGG (XMLELEMENT (e, mb.nama_barang || ';')).EXTRACT ('//text()'),';') nama_apd,
-                         RTRIM (XMLAGG (XMLELEMENT (e, mb.permintaan || ';')).EXTRACT ('//text()'),';') jml_bon,
-                         RTRIM (XMLAGG (XMLELEMENT (e, mb.satuan || ';')).EXTRACT ('//text()'),';') satuan,
+                         RTRIM (XMLAGG (XMLELEMENT (e, mb.kode_barang || ';') ORDER by mb.nama_barang).EXTRACT ('//text()'),';') kode_barang,
+                         RTRIM (XMLAGG (XMLELEMENT (e, mb.nama_barang || ';') ORDER by mb.nama_barang).EXTRACT ('//text()'),';') nama_apd,
+                         RTRIM (XMLAGG (XMLELEMENT (e, mb.permintaan || ';') ORDER by mb.nama_barang).EXTRACT ('//text()'),';') jml_bon,
+                         RTRIM (XMLAGG (XMLELEMENT (e, mb.satuan || ';') ORDER by mb.nama_barang).EXTRACT ('//text()'),';') satuan,
                          mb.tanggal tgl_bon, mb.seksi_bon seksi_pengebon,
                          mb.pemakai seksi_pemakai, mb.penggunaan, mb.keterangan,
                          mb.tujuan_gudang,
-                         RTRIM (XMLAGG (XMLELEMENT (e, mb.penyerahan || ';')).EXTRACT ('//text()'),';') qty_transact,
-                         RTRIM (XMLAGG (XMLELEMENT (e, mb.flag || ';')).EXTRACT ('//text()'),';') transact
+                         RTRIM (XMLAGG (XMLELEMENT (e, mb.penyerahan || ';') ORDER by mb.nama_barang).EXTRACT ('//text()'),';') qty_transact,
+                         RTRIM (XMLAGG (XMLELEMENT (e, mb.flag || ';') ORDER by mb.nama_barang).EXTRACT ('//text()'),';') transact
                     FROM im_master_bon mb
                    WHERE mb.keterangan LIKE '%$pr' and $seksi
                 GROUP BY mb.no_bon,
