@@ -1,7 +1,7 @@
 let dataRow = [];
 
  $(document).ready(function () {
-    $('#date').datepicker({
+    $('.initanggal').datepicker({
      //merubah format tanggal datepicker ke dd-mm-yyyy
         format: "dd/mm/yyyy",
         //aktifkan kode dibawah untuk melihat perbedaanya, disable baris perintah diatas
