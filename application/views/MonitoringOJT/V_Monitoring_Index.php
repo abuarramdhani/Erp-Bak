@@ -24,6 +24,8 @@
 	box-shadow:none !important;
 	border:1px solid #ccc !important;
 	}
+
+	tr.ojt_strip_tbl:nth-child(odd) {background-color: #bcd5eb;}
 </style>
 				<div class="row">
 					<div class="col-lg-12">
@@ -192,11 +194,11 @@
 								<br/>
 								<div class="tab-content">
 									<div id="aktif" class="tab-pane fade in active">
-										<table class="table table-bordered table-hover table-responsive-xs table-sm" id="MonitoringOJT-monitoringPekerjaAktif" style="width: 100%;">
+										<table class="table table-bordered table-responsive-xs table-sm" id="MonitoringOJT-monitoringPekerjaAktif" style="width: 100%;">
 											<thead>
 												<tr>
 													<th style="white-space: nowrap; text-align: center;">No.</th>
-													<th style="white-space: nowrap; text-align: center;">Action</th>
+													<th class="ojt_click_trig" style="white-space: nowrap; text-align: center;">Action</th>
 													<th style="white-space: nowrap; text-align: center;">Pekerja</th>
 													<th style="white-space: nowrap; text-align: center;">Seksi</th>
 													<th style="white-space: nowrap; text-align: center;">Proses Berjalan</th>
@@ -216,7 +218,7 @@
 													{
 														$pekerja_id 	=	$this->general->enkripsi($pekerja['pekerja_id']);
 														?>
-														<tr>
+														<tr class="ojt_strip_tbl">
 															<td style="white-space: nowrap; text-align: center; vertical-align: middle"><?php echo $no;?></td>
 															<td style="white-space: nowrap; text-align: center; vertical-align: middle">
 																<a alt="Jadwal" title="Jadwal" href="<?php echo base_url('OnJobTraining/Monitoring/scheduling/'.$pekerja_id);?>">
@@ -307,11 +309,11 @@
 										</table>
 									</div>
 									<div id="tunda" class="tab-pane fade in">
-										<table class="table table-bordered table-hover" id="MonitoringOJT-monitoringPekerjaTunda" style="width: 100%;">
+										<table class="table table-bordered" id="MonitoringOJT-monitoringPekerjaTunda" style="width: 100%;">
 											<thead>
 												<tr>
 													<th style="white-space: nowrap; text-align: center;">No.</th>
-													<th style="white-space: nowrap; text-align: center;">Action</th>
+													<th class="ojt_click_trig" style="white-space: nowrap; text-align: center;">Action</th>
 													<th style="white-space: nowrap; text-align: center;">Pekerja</th>
 													<th style="white-space: nowrap; text-align: center;">Seksi</th>
 													<th style="white-space: nowrap; text-align: center;">Selesai PDCA</th>
@@ -332,7 +334,7 @@
 													{
 														$pekerja_id 	=	$this->general->enkripsi($pekerja['pekerja_id']);
 														?>
-														<tr>
+														<tr class="ojt_strip_tbl">
 															<td style="white-space: nowrap; text-align: center; vertical-align: middle"><?php echo $no;?></td>
 															<td style="white-space: nowrap; text-align: center; vertical-align: middle">
 																<a alt="Jadwal" title="Jadwal" href="<?php echo base_url('OnJobTraining/Monitoring/scheduling/'.$pekerja_id);?>">
@@ -433,7 +435,7 @@
 										</table>
 									</div>
 									<div id="selesai" class="tab-pane fade in">
-										<table class="table table-bordered table-hover" id="MonitoringOJT-monitoringPekerjaSelesai">
+										<table class="table table-bordered" id="MonitoringOJT-monitoringPekerjaSelesai">
 											<thead>
 												<tr>
 													<th style="white-space: nowrap; text-align: center;">No.</th>
@@ -456,7 +458,7 @@
 													{
 														$pekerja_id 	=	$this->general->enkripsi($pekerja['pekerja_id']);
 														?>
-														<tr>
+														<tr class="ojt_strip_tbl">
 															<td style="white-space: nowrap; text-align: center; vertical-align: middle"><?php echo $no;?></td>
 															<td style="white-space: nowrap; text-align: center; vertical-align: middle">
 																<a alt="Jadwal" title="Jadwal" href="<?php echo base_url('OnJobTraining/Monitoring/scheduling/'.$pekerja_id);?>">
@@ -499,7 +501,7 @@
 										</table>
 									</div>
 									<div id="keluar" class="tab-pane fade in">
-										<table class="table table-bordered table-hover" id="MonitoringOJT-monitoringPekerjaKeluar" style="width: 100%;">
+										<table class="table table-bordered" id="MonitoringOJT-monitoringPekerjaKeluar" style="width: 100%;">
 											<thead>
 												<tr>
 													<th style="white-space: nowrap; text-align: center;">No.</th>
@@ -524,7 +526,7 @@
 													{
 														$pekerja_id 	=	$this->general->enkripsi($pekerja['pekerja_id']);
 														?>
-														<tr>
+														<tr class="ojt_strip_tbl">
 															<td style="white-space: nowrap; text-align: center; vertical-align: middle"><?php echo $no;?></td>
 															<td style="white-space: nowrap; text-align: center; vertical-align: middle">
 																<a alt="Jadwal" title="Jadwal" href="<?php echo base_url('OnJobTraining/Monitoring/scheduling/'.$pekerja_id);?>">
