@@ -102,7 +102,8 @@ class C_Index extends CI_Controller
 		}
 
 		
-			$data['listtobon'] = $this->M_dtmasuk->listtobon2($ks, $pr);
+			// $data['listtobon'] = $this->M_dtmasuk->listtobon2($ks, $pr);
+			$data['listtobon'] = $this->M_dtmasuk->listtobonHitung2($ks, $pr);
 		$jml = '';
 		// echo "<pre>";
 		// print_r($data['listtobon']);exit();
@@ -693,11 +694,11 @@ public function MonitoringBon()
 	$y = substr($pr, 5,5);
 	$periode = $pr;
 	$pr = $y.'-'.$m;
-		// echo $pr;exit();
-	if (empty($pr)) {
+	if ($pr == '-') {
 		$pr = date('Y-m');
 		$periode = date('m - Y');
 		$ks = $kodesie;
+		// echo $pr;exit();
 	}
 	$seksi = $this->M_dtmasuk->cekseksi($ks);
 	$data['kodesie'] = $ks;
