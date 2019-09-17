@@ -1715,6 +1715,20 @@ $route['OnJobTraining']		=	'MonitoringOJT/C_Index';
 			$route['OnJobTraining/CetakUndangan/(:any)/(:any)']			=	'MonitoringOJT/C_CetakUndangan/$1/$2';
 	//	}
 
+	//	LembarKeputusan
+	//	{
+			$route['OnJobTraining/LembarKeputusan']						=	'MonitoringOJT/C_Cetak/LembarKeputusan';
+			$route['OnJobTraining/LembarKeputusan/(:any)']				=	'MonitoringOJT/C_Cetak/$1';
+			$route['OnJobTraining/LembarKeputusan/(:any)/(:any)']		=	'MonitoringOJT/C_Cetak/$1/$2';
+	//	}
+
+	//	LembarEvaluasi
+	//	{
+			$route['OnJobTraining/LembarEvaluasi']						=	'MonitoringOJT/C_Cetak/LembarEvaluasi';
+			$route['OnJobTraining/LembarEvaluasi/(:any)']				=	'MonitoringOJT/C_Cetak/$1';
+			$route['OnJobTraining/LembarEvaluasi/(:any)/(:any)']		=	'MonitoringOJT/C_Cetak/$1/$2';
+	//	}
+
 	//	Cetak Memo Jadwal Training
 	//	{
 			$route['OnJobTraining/CetakMemoJadwalTraining']					=	'MonitoringOJT/C_CetakMemoJadwalTraining';
