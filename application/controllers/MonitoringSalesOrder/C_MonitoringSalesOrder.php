@@ -5,6 +5,8 @@ class C_MonitoringSalesOrder extends CI_CONTROLLER {
     public function __construct()
 		{
             parent::__construct();
+            
+            date_default_timezone_set('Asia/Jakarta');
 
             $this->load->helper('form');
             $this->load->helper('url');

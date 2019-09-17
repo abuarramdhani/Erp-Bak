@@ -45,6 +45,7 @@ function fetch_data(){
                 console.log(data[0].TOTAL ,old_count);
                 var sound = new Howl({
                     src: [baseurl + "assets/upload/MonitoringSalesOrder/alert.mp3"],
+                    loop: true,
                     autoplay: true,
                     html5: true,
                   });  
