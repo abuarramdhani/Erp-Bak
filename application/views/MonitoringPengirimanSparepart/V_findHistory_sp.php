@@ -27,7 +27,7 @@ tr.hidden td{
 }
 
 </style>
-<form action="<?php echo base_url('MonitoringPengiriman/ShipmentHistory/export_sp') ?>" method="post">
+<form action="<?php echo base_url('MonitoringPengirimanSparepart/ShipmentHistory/export_sp') ?>" method="post">
 <section class="content">
 	<div class="inner" >
 		<div class="row">

@@ -28,7 +28,7 @@ tr.hidden td{
 
 </style>
 <!-- <head> <meta http-equiv="refresh" content="30"/> </head> -->
-<form action="<?php echo base_url('MonitoringPengiriman/ShipmentHistory/export_gd') ?>" method="post">
+<form action="<?php echo base_url('MonitoringPengirimanGudang/ShipmentHistory/export_gd') ?>" method="post">
 <section class="content">
 	<div class="inner" >
 		<div class="row">
