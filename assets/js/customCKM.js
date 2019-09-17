@@ -1,5 +1,16 @@
 let dataRow = [];
 
+ $(document).ready(function () {
+    $('#date').datepicker({
+     //merubah format tanggal datepicker ke dd-mm-yyyy
+        format: "dd/mm/yyyy",
+        //aktifkan kode dibawah untuk melihat perbedaanya, disable baris perintah diatas
+        //format: "dd-mm-yyyy",
+        autoclose: true
+    });
+});
+
+
 $('#date').change(function(){
 	var date = $('input[name="date"]').val();
 	var deptclass = $('select[name="deptclass"]').val();
