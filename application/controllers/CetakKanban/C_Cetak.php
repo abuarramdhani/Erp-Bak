@@ -57,31 +57,31 @@ class C_Cetak extends CI_Controller {
 	}
 
 	public function getShift(){
-		$date = $this->input->post('date');
-		$date2 = explode('/', $date);
-		$datenew = $date ? $date2[2].'/'.$date2[1].'/'.$date2[0] : '';
+		$tuanggal = $this->input->post('tuanggal');
+		$date2 = explode('/', $tuanggal);
+		$datenew = $tuanggal ? $date2[2].'/'.$date2[1].'/'.$date2[0] : '';
 		$data = $this->M_cetak->getShift($datenew);
 		echo json_encode($data);
 	}
 
 	public function getJobFrom(){
 		$term = $this->input->get('term');
-		$date = $this->input->get('date');
+		$tuanggal = $this->input->get('tuanggal');
 		$shift = $this->input->get('shift');
 
-		$data = $this->M_cetak->getJobFrom($term,$date,$shift);
+		$data = $this->M_cetak->getJobFrom($term,$tuanggal,$shift);
 		echo json_encode($data);
 	}
 
 	public function search(){
-		$date 		= $this->input->post('date');
+		$tuanggal 		= $this->input->post('tuanggal');
 		$shift 		= $this->input->post('shift');
 		$deptclass 	= $this->input->post('deptclass');
 		$jobfrom 	= $this->input->post('jobfrom');
 		$jobto 		= $this->input->post('jobto');
 		$status 	= $this->input->post('status');
 
-		$data['value'] = $this->M_cetak->getData($date,$shift,$deptclass,$jobfrom,$jobto,$status);
+		$data['value'] = $this->M_cetak->getData($tuanggal,$shift,$deptclass,$jobfrom,$jobto,$status);
 
 		$this->load->view('CetakKanban/V_Result',$data);
 	}
