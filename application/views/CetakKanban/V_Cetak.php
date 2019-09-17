@@ -41,7 +41,7 @@
 	                		</div>
 	                		<div class="col-md-6">
 	                			<div class="input-group date">
-	                				<input type="text" class="form-control pull-right" id="date" class="initanggal" name="date" placeholder="DD/MM/YYYY" autocomplete="off">
+	                				<input type="text" class="form-control pull-right" id="tuanggal" class="tuanggal" name="tuanggal" placeholder="DD/MM/YYYY" autocomplete="off">
 	                				<div class="input-group-addon"><i class="fa fa-calendar"></i></div>
 	                			</div>
 	                		</div>

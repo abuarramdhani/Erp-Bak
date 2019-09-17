@@ -1,7 +1,7 @@
 let dataRow = [];
 
  $(document).ready(function () {
-    $('.initanggal').datepicker({
+    $('#tuanggal').datepicker({
      //merubah format tanggal datepicker ke dd-mm-yyyy
         format: "dd/mm/yyyy",
         //aktifkan kode dibawah untuk melihat perbedaanya, disable baris perintah diatas
@@ -11,15 +11,15 @@ let dataRow = [];
 });
 
 
-$('#date').change(function(){
-	var date = $('input[name="date"]').val();
+$('#tuanggal').change(function(){
+	var tuanggal = $('input[name="tuanggal"]').val();
 	var deptclass = $('select[name="deptclass"]').val();
 	var html = '<option></option>';
 	$.ajax({
 			url : baseurl+('CetakKanban/Cetak/getShift'),
 			type : 'POST',
 			data : {
-				date : date
+				tuanggal : tuanggal
 				},
 			datatype : 'json',
 			success: function(result) {
@@ -38,8 +38,8 @@ $('.inputShiftCKM').change(function(){
 	$('.btnselect').removeAttr("disabled");
 })
 
-$("#date, #shift").change(function(){
-	var date = $('input[name="date"]').val();
+$("#tuanggal, #shift").change(function(){
+	var tuanggal = $('input[name="tuanggal"]').val();
 	var shift = $('select[name="shift"]').val();
 
 $('#jobfrom').select2({
@@ -51,7 +51,7 @@ $('#jobfrom').select2({
 				data: function (params) {
 					var queryParameters = {
 						term: params.term,
-						date : date,
+						tuanggal : tuanggal,
 						shift : shift
 					}
 					return queryParameters;
@@ -77,7 +77,7 @@ $('#jobto').select2({
 				data: function (params) {
 					var queryParameters = {
 						term: params.term,
-						date : date,
+						tuanggal : tuanggal,
 						shift : shift
 					}
 					return queryParameters;
@@ -98,19 +98,19 @@ $('#jobto').select2({
 
 function getCKM(th) {
 	$(document).ready(function(){
-		var date 		= $('input[name="date"]').val();
+		var tuanggal 		= $('input[name="tuanggal"]').val();
 		var shift 		= $('select[name="shift"]').val();
 		var deptclass 	= $('select[name="deptclass"]').val();
 		var jobfrom 	= $('select[name="jobfrom"]').val();
 		var jobto 		= $('select[name="jobto"]').val();
 		var status 		= $('select[name="status"]').val();
 
-		console.log(date, shift, deptclass, jobfrom, jobto, status);
+		console.log(tuanggal, shift, deptclass, jobfrom, jobto, status);
 
 		var request = $.ajax({
 			url: baseurl+'CetakKanban/Cetak/search',
 			data: {
-				date : date,
+				tuanggal : tuanggal,
 				shift : shift,
 				deptclass : deptclass,
 				jobfrom : jobfrom,

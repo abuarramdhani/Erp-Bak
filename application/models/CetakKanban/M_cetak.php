@@ -42,7 +42,7 @@ class M_cetak extends CI_Model {
 		return $query->result_array();
 	}
 
-	function getJobFrom($term,$date, $shift)
+	function getJobFrom($term,$tuanggal, $shift)
 	{
 		$oracle = $this->load->database('oracle_dev',TRUE);
 		$sql = 	"SELECT DISTINCT we.wip_entity_name job_number
@@ -51,7 +51,7 @@ class M_cetak extends CI_Model {
                 bom_calendar_shifts bcs
           		WHERE wdj.wip_entity_id = we.wip_entity_id
             	AND khs_shift (wdj.scheduled_start_date) = bcs.shift_num
-            	AND to_char (wdj.scheduled_start_date, 'DD/MM/YYYY') = '$date'
+            	AND to_char (wdj.scheduled_start_date, 'DD/MM/YYYY') = '$tuanggal'
             	AND bcs.shift_num = '$shift'
             	AND we.wip_entity_name  like upper('%$term%')";
 		$query = $oracle->query($sql);
@@ -75,7 +75,7 @@ class M_cetak extends CI_Model {
 		// return $query->result_array();
 	}
 
-	function getData($date,$shift,$deptclass,$jobfrom,$jobto,$status){
+	function getData($tuanggal,$shift,$deptclass,$jobfrom,$jobto,$status){
 		$oracle = $this->load->database('oracle_dev',TRUE);
     	$sql = 	"SELECT
 	              we.WIP_ENTITY_NAME||'-'||wo.OPERATION_SEQ_NUM qr_code,
@@ -121,7 +121,7 @@ class M_cetak extends CI_Model {
                 AND we.WIP_ENTITY_NAME between nvl('$jobfrom',we.WIP_ENTITY_NAME) and nvl('$jobto',we.WIP_ENTITY_NAME)
                 AND bd.DEPARTMENT_CLASS_CODE = nvl('$deptclass',bd.DEPARTMENT_CLASS_CODE)
                 AND wdj.STATUS_TYPE in (nvl('$status',wdj.STATUS_TYPE))
-                AND to_char(wdj.SCHEDULED_START_DATE,'DD/MM/YYYY') = '$date'
+                AND to_char(wdj.SCHEDULED_START_DATE,'DD/MM/YYYY') = '$tuanggal'
                 and wdj.STATUS_TYPE in (1,3)
                 AND wdj.WIP_ENTITY_ID        = wo.WIP_ENTITY_ID
                 AND wo.DEPARTMENT_ID         = bd.DEPARTMENT_ID
