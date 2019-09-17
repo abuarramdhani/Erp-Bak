@@ -246,7 +246,12 @@ function getRow(th){
 
 function insertReport(th) {
 	// $("#formInsert").submit();
-	$("#formTerserah").submit();
+	if ($(".checkedAll").is(":checked")) {
+		$("#formSemua").submit();
+	}else{
+		$("#formTerserah").submit();
+	}
+	
 }
 
 // function insertOracle(th) {

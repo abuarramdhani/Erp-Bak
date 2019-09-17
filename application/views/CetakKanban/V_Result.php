@@ -1,12 +1,12 @@
 <div class="box box-solid">
     <div class="box-body">
-        <!-- <form class="form-horizontal" id="formTerserah" method="post" action="<?= base_url('CetakKanban/Cetak/Report')?>" target="_blank" > -->
+        <form class="form-horizontal" id="formSemua" method="post" action="<?= base_url('CetakKanban/Cetak/Report')?>" target="_blank" >
             <table id="myTable" class="datatable table table-striped table-responsive table-bordered table-hover" style="font-size: 13px; width: 100%">
                 <thead class="bg-info">
                     <tr>
                      <th style="text-align: center; vertical-align: middle;" width="4%">NO</th>
-                     <!-- <th><input type="checkbox" name="select-all" class="checkedAll" id="check-all"></th> -->
-                     <th style="text-align: center; vertical-align: middle;">Action</th>
+                     <th><input type="checkbox" name="select-all" class="checkedAll" id="check-all"></th>
+                     <!-- <th style="text-align: center; vertical-align: middle;">Action</th> -->
                      <th style="text-align: center; vertical-align: middle;">Kegunaan</th>
                      <th style="text-align: center; vertical-align: middle;">Nomor Job</th>
                      <th style="text-align: center; vertical-align: middle;">Kode</th>
@@ -29,12 +29,12 @@
                     <!-- <td><a href="http://produksi.quick.com/print_pdf_prod/print_kanban_prod_odm_v2.php?shift=<?= $row['SHIFT_NUM'] ?>&date=<?= $row['SCHEDULED_START_DATE'] ?>%2000:00:00&dept=<?php echo $row['DEPT_CLASS']  ?>&jobfrom=<?php echo $row['JOB_NUMBER'] ?>&jobto=<?php echo $row['JOB_NUMBER'] ?>&status=<?php echo $row['STATUS_TYPE'] ?>" target="_blank"><span class="btn btn-sm btn-primary" onclick="insertOracle(<?= $no?>)"><span class="fa fa-print"></span><b> print</b></span></a>
                     </td> -->
                     <td class="selectKegunaan">
-                        <select type="text" id="selectBambank" name="kegunaan[]" data-row="<?= $no ?>" class="form-control kegunaan" style="width: 100%" disabled>
-                            <option value="" disabled 
+                        <select type="text" id="selectBambank" name="tujuanbaru[]" data-row="<?= $no ?>" class="form-control kegunaan" style="width: 100%" disabled>
+                            <option value=""  
                             <?php if ($row['TUJUAN'] == NULL) {
                                 echo "selected";
                             } ?>
-                            >Pilih Kegunaan</option>
+                            ></option>
                             <option value="UNIT" 
                             <?php if ($row['TUJUAN'] == 'UNIT') {
                                 echo "selected";
@@ -49,7 +49,7 @@
                                 echo "selected";
                             } ?>>PROTOTYPE</option>
                         </select>
-                        <input type="hidden" name="WIP_ENTITY_ID[]" class="WIP_ENTITY_ID" data-row="<?= $no ?>"  value="<?php echo $row['WIP_ENTITY_ID'] ?>"></input>
+                        <input type="hidden" name="wipidbaru[]" class="WIP_ENTITY_ID" data-row="<?= $no ?>"  value="<?php echo $row['WIP_ENTITY_ID'] ?>"></input>
                     </td>
                     <!-- </form> -->
                     <td class="jobNumber"><input type="hidden" name="JOB_NUMBER[]" class="JOB_NUMBER" data-row="<?= $no ?>"  value="<?php echo $row['JOB_NUMBER'] ?>"><?= $row['JOB_NUMBER'] ?></td>
@@ -89,8 +89,9 @@
             </tbody>
         </table>
         <div class="row text-center" style="padding-right: 10px">
-         <button type="button" title="cetak kanban" id="cetak" class="btn btn-danger btncetak" disabled="disabled" onclick="insertReport()"><i class="fa fa-print"></i><b> print</b><b id="jmlChk"></button>
-     </div>
+         <button type="button" title="cetak kanban" id="cetak" class="btn btn-danger btncetak" disabled="disabled" onclick="insertReport()"><i class="fa fa-print"></i><b> print</b><b id="jmlChk"></b></button>
+        </div>
+        </form>
 </div>
 <!-- <div style="display: none;">
     <form id="formInsert" method="post" action="<?= base_url('CetakKanban/Cetak/insertOracle')?>">
@@ -185,13 +186,14 @@
             });
             if (a == 0) {
                 $('#cetak').attr("disabled","disabled");
-                // $('#selectBambank').attr("disabled","disabled");
+                $('.kegunaan').attr("disabled","disabled");
                 $('#jmlChk').text('');
             }else{
                 $('#cetak').removeAttr("disabled");
-                // $('#selectBambank').removeAttr("disabled");
+                $('.kegunaan').removeAttr("disabled");
                 $('#jmlChk').text('('+jml+')');
-                // $('input[name="selectedPick"]').val(val);
+                // $('input[name="JOB_NUMBER"]').val(val);
+
             }
         });
 
