@@ -140,6 +140,12 @@
 
 		//	DataTables
 		//	{
+				$('.dataTable-OJTFrezz').DataTable({
+					scrollX: true,
+					fixedColumns:   {
+						leftColumns: 3,
+					},
+				});
 				$('#MonitoringOJT-tabelDaftarOrientasi').DataTable({
 					scrollX: true,
 				});
@@ -158,19 +164,61 @@
 
 				$('#MonitoringOJT-monitoringPekerjaAktif').DataTable({
 					scrollX: true,
-					// scrollY: '275px',
+					scrollY: '475px',
+					fixedColumns:   {
+						leftColumns: 3,
+					},
 				});
-
+				$('a:contains(Aktif)').click(function(){
+					setTimeout(
+					  function() 
+					  {
+						$('.ojt_click_trig').click();
+					  }, 200);
+				});
+				$('a:contains(Tertunda)').click(function(){
+					setTimeout(
+					  function() 
+					  {
+						$('.ojt_click_trig').click();
+					  }, 200);
+				});
+				$('a:contains(Selesai)').click(function(){
+					setTimeout(
+					  function() 
+					  {
+						$('th:contains(Action)').click();
+					  }, 200);
+				});
+				$('a:contains(Keluar)').click(function(){
+					setTimeout(
+					  function() 
+					  {
+						$('th:contains(Action)').click();
+					  }, 200);
+				});
 				$('#MonitoringOJT-monitoringPekerjaTunda').DataTable({
 					scrollX: true,
+					scrollY: '475px',
+					fixedColumns:   {
+						leftColumns: 3,
+					},
 				});
 
 				$('#MonitoringOJT-monitoringPekerjaSelesai').DataTable({
 					scrollX: true,
+					scrollY: '475px',
+					fixedColumns:   {
+						leftColumns: 3,
+					},
 				});
 
 				$('#MonitoringOJT-monitoringPekerjaKeluar').DataTable({
 					scrollX: true,
+					scrollY: '475px',
+					fixedColumns:   {
+						leftColumns: 3,
+					},
 				});
 
 				/*$('#MonitoringOJT-rekapKegiatanHarian').DataTable({
@@ -206,6 +254,9 @@
 							}
 						}
 					}
+				});
+				$(".ojt_periode").select2({
+					placeholder: 'Pilih Periode',
 				});
 
 				$('.MonitoringOJT-cmbPemberitahuanPelaksanaan').select2({
@@ -307,6 +358,7 @@
 
 				$('#MonitoringOJT-cmbPekerjaOJT').select2({
 					searching: true,
+					placeholder: 'Pilih Pekerja',
 					minimumInputLength: 3,
 					allowClear: false,
 					ajax:
@@ -453,6 +505,36 @@
 						}
 					});
 				});
+
+				$('#MonitoringOJT-btnPratinjauKeputusan').click(function(){
+					$('#surat-loading').attr('hidden', false);
+					$.ajax({
+						type: 'POST',
+						data: $('#MonitoringOJT-frmCetakUndangan').serialize(),
+						url: baseurl+'OnJobTraining/LembarKeputusan/isi_keputusan',
+						success: function(result)
+						{
+							var result = JSON.parse(result);
+							$('#MonitoringOJT-txaIsiUndangan').redactor('set', result['isi_undangan']);
+							$('#surat-loading').attr('hidden', true);
+						}
+					});
+				});
+
+				$('#MonitoringOJT-btnPratinjauEvaluasi').click(function(){
+					$('#surat-loading').attr('hidden', false);
+					$.ajax({
+						type: 'POST',
+						data: $('#MonitoringOJT-frmCetakUndangan').serialize(),
+						url: baseurl+'OnJobTraining/LembarKeputusan/isi_evaluasi',
+						success: function(result)
+						{
+							var result = JSON.parse(result);
+							$('#MonitoringOJT-txaIsiUndangan').redactor('set', result['isi_undangan']);
+							$('#surat-loading').attr('hidden', true);
+						}
+					});
+				});
 				
 				$('#MonitoringOJT-btnPratinjauMemoJadwalTraining').click(function(){
 					$.ajax({
@@ -488,6 +570,7 @@
 				$('#MonitoringOJT-Undangan-txaFormatUndangan').redactor();
 				$('#MonitoringOJT-Memo-txaFormatMemo').redactor();
 				$('#MonitoringOJT-txaIsiUndangan').redactor();
+				$('#MonitoringOJT-txaIsiUndangan2').redactor();
 				$('#MonitoringOJT-txaIsiMemoJadwalTraining').redactor();
 				$('#MonitoringOJT-txaIsiLampiranJadwalTraining').redactor();
 				$('#MonitoringOJT-txaIsiMemoPDCA').redactor();

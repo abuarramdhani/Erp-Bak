@@ -7,6 +7,7 @@
 	    {
 	        parent::__construct();
 	        $this->load->database();
+	        $this->personalia = $this->load->database('personalia', true);
 	    }
 
 	    public function undangan_cetak($id_proses_undangan = FALSE)
@@ -79,5 +80,150 @@
 	    	$this->db->where('id_proses_undangan =', $id_proses_undangan);
 
 	    	return $this->db->get()->result_array();
+	    }
+
+	    public function getListKeputusan()
+	    {
+	    	$sql = "select tk.*, tp.noind, ea.employee_name from ojt.tb_lembar_keputusan tk
+					left join ojt.tb_pekerja tp on tp.pekerja_id = tk.id_pekerja
+					left join er.er_employee_all ea on ea.employee_code = tp.noind
+					where tk.status_hapus = '0'";
+
+	    	$query = $this->db->query($sql);
+	    	return $query->result_array();
+	    }
+
+	    public function getNoind($id)
+	    {
+	    	$this->db->select('noind');
+	    	$this->db->from('ojt.tb_pekerja');
+	    	$this->db->where('pekerja_id =', $id);
+	    	return $this->db->get()->result_array();
+	    }
+
+	    public function getDetailPekerja($noind, $pr)
+	    {
+	    	if ($pr == '3') {
+	    		$akhir = "(tp.masukkerja + interval '3 month' - interval '1 day') akhir";
+	    	}elseif ($pr == '36') {
+	    		$akhir = "(tp.masukkerja + interval '3 month' - interval '1 day') akhir1, (tp.masukkerja + interval '6 month' - interval '1 day') akhir2";
+	    	}else{
+	    		$akhir = "(tp.masukkerja + interval '6 month' - interval '1 day') akhir";
+	    	}
+	    	$sql = "select tp.*, ts.unit, ts.seksi, ts.dept, $akhir, tr.jabatan status_jabatan
+	    			from hrd_khs.tpribadi tp
+					left join hrd_khs.tseksi ts on ts.kodesie = tp.kodesie
+					left join hrd_khs.torganisasi tr on tr.kd_jabatan = tp.kd_jabatan
+					where noind = '$noind';";
+			// echo $sql;exit();
+	    	$query = $this->personalia->query($sql);
+	    	return $query->result_array();
+	    }
+
+	    public function saveKeputusan($data)
+	    {
+	    	$this->db->insert('ojt.tb_lembar_keputusan', $data);
+	    }
+	    public function saveEvaluasi($data)
+	    {
+	    	$this->db->insert('ojt.tb_lembar_evaluasi', $data);
+	    }
+
+	    public function getId($tb, $column)
+	    {
+	    	$sql = "SELECT max($column) FROM $tb";
+
+	    	$query = $this->db->query($sql);
+	    	return $query->row()->max;
+	    }
+
+	    public function keputusan_cetak($id)
+	    {
+	    	$sql = "select
+						tk.*,
+						tp.noind,
+						ea.employee_name
+					from
+						ojt.tb_lembar_keputusan tk
+					left join ojt.tb_pekerja tp on
+						tp.pekerja_id = tk.id_pekerja
+					left join er.er_employee_all ea on
+						ea.employee_code = tp.noind
+					where tk.id_keputusan = '$id';";
+
+			$query = $this->db->query($sql);
+	    	return $query->result_array();
+	    }
+
+	    public function evaluasi_cetak($id)
+	    {
+	    	$sql = "select
+						tk.*,
+						tp.noind,
+						ea.employee_name
+					from
+						ojt.tb_lembar_evaluasi tk
+					left join ojt.tb_pekerja tp on
+						tp.pekerja_id = tk.id_pekerja
+					left join er.er_employee_all ea on
+						ea.employee_code = tp.noind
+					where tk.id_evaluasi = '$id';";
+
+			$query = $this->db->query($sql);
+	    	return $query->result_array();
+	    }
+
+	    public function updateKeputusan($create_undangan, $id)
+	    {
+	    	$this->db->where('id_keputusan =', $id);
+	    	$this->db->update('ojt.tb_lembar_keputusan', $create_undangan);
+	    }
+
+	    public function updateEvaluasi($create_undangan, $id)
+	    {
+	    	$this->db->where('id_evaluasi =', $id);
+	    	$this->db->update('ojt.tb_lembar_evaluasi', $create_undangan);
+	    }
+
+	    public function delUp($id)
+	    {
+	    	$sql = "update ojt.tb_lembar_keputusan set status_hapus = '1' where id_keputusan = '$id'";
+
+	    	$query = $this->db->query($sql);
+	    }
+
+	    public function delUp2($id)
+	    {
+	    	$sql = "update ojt.tb_lembar_evaluasi set status_hapus = '1' where id_evaluasi = '$id'";
+
+	    	$query = $this->db->query($sql);
+	    }
+
+	    public function getAtasan($noind)
+	    {
+	    	$sql = "select
+						tp.noind,
+						tp.nama,
+						tp.kodesie,
+						tp.jabatan,
+						coalesce((select rtrim(nama) from hrd_khs.tpribadi where keluar = '0' and kd_jabatan = '02' and substring(kodesie, 1, 1) = substring(tp.kodesie, 1, 1)), '....................................') kadept,
+						coalesce((select rtrim(nama) from hrd_khs.tpribadi where keluar = '0' and kd_jabatan in ('03', '04') and substring(kodesie, 1, 1) = substring(tp.kodesie, 1, 1)), '....................................') wakadept
+					from
+						hrd_khs.tpribadi tp
+					where
+						tp.noind = '$noind';";
+			$query = $this->personalia->query($sql);
+	    	return $query->result_array();
+	    }
+
+	    public function getListEvaluasi()
+	    {
+	    	$sql = "select tk.*, tp.noind, ea.employee_name from ojt.tb_lembar_evaluasi tk
+					left join ojt.tb_pekerja tp on tp.pekerja_id = tk.id_pekerja
+					left join er.er_employee_all ea on ea.employee_code = tp.noind
+					where tk.status_hapus = '0'";
+
+	    	$query = $this->db->query($sql);
+	    	return $query->result_array();
 	    }
  	}
