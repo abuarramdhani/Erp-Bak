@@ -1277,28 +1277,7 @@ class C_Order extends CI_Controller
       	}
       	$jml = '';
       	$data['pr'] = $periode;
-      	$data['listmonitor'] = $this->M_order->listmonitor($kodesie, $pr);
-      	foreach ($data['listmonitor'] as $key) {
-      		$a = $key['jml_item'];
-      		$b = $key['jml_pekerja'];
-      		$c = $key['jml_kebutuhan_umum'];
-      		$d = $key['jml_kebutuhan_staff'];
-      		$e = $key['jml_pekerja_staff'];
-      		$a = explode(',', $a);
-      		$b = explode(',', $b);
-      		$hit = count($a);
-      		for ($i=0; $i < $hit; $i++) { 
-      			$jml += ($a[$i]*$b[$i]); 
-      		}
-      		$jml = ceil($jml+$c+($d*$e));
-      		$min = ($jml-$key['jml_bon']);
-      		$push = array(	"total"	=> $jml,
-      			"min"	=>	$min,);
-      		array_splice($key,4,2,$push);
-      		$new[] = $key;
-      		$data['listmonitor'] = $new;
-      		$jml = 0;
-      	}
+      	$data['listmonitor'] = $this->M_dtmasuk->listtobonHitung2($kodesie, $pr);
 		// echo "<pre>";
 		// print_r($data['listmonitor']);exit();
 
