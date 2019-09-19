@@ -15,8 +15,8 @@ class Access extends CI_Model
   {
     $user_id      = $this->session->userid;
     $current_url  = rtrim($_SERVER['REQUEST_URI'], "/");
-    $menu_url     = explode("/", $current_url)[2];
-    $key_query    = explode("/", $current_url)[2]."%";
+    $menu_url     = explode("/", $current_url)[1];
+    $key_query    = explode("/", $current_url)[1]."%";
     $sql = " SELECT sm.menu_link
              FROM
               sys.sys_user_application sua
@@ -30,7 +30,7 @@ class Access extends CI_Model
     $main_url = "";
     if(!empty($result)){
       $main_url = explode("/", $result[0]['menu_link'])[0];
-      $real_url = "/khs-erp-cuti"."/".$main_url;
+      $real_url = "/".$main_url;
     }
     $canAccess = true;
     if($menu_url == $main_url){
