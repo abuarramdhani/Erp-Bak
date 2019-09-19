@@ -19,7 +19,10 @@ class C_Index extends CI_Controller
     $this->load->library('encrypt');
 
     $this->load->model('SystemAdministration/MainMenu/M_user');
-
+		//------cek hak akses halaman-------//
+		$this->load->library('access');
+		$this->access->page();
+		//---------------^_^----------------//
     $this->checkSession();
   }
 
@@ -41,10 +44,6 @@ class C_Index extends CI_Controller
     $data['UserMenu'] = $this->M_user->getUserMenu($user_id,$this->session->responsibility_id);
     $data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id);
     $data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id);
-		$base = base_url();
-    if(empty($data['UserMenu'])){
-      header("location: $base ");
-    }
 
     $this->load->view('V_Header',$data);
     $this->load->view('V_Sidemenu',$data);

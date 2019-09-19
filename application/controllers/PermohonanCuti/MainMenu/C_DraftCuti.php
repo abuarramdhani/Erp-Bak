@@ -23,6 +23,10 @@ class C_DraftCuti extends CI_Controller
 		$this->load->model('SystemAdministration/MainMenu/M_user');
 		$this->load->model('PermohonanCuti/M_permohonancuti');
 		$this->load->model('PermohonanCuti/M_approval');
+		//------cek hak akses halaman-------//
+		$this->load->library('access');
+		$this->access->page();
+		//---------------^_^----------------//
 		$this->checkSession();
 	}
 

@@ -24,7 +24,11 @@ class C_Approval extends CI_Controller
 		$this->load->model('PermohonanCuti/M_approval');
 		$this->load->model('PermohonanCuti/M_permohonancuti');
 
-		$this->checkSession();
+    //------cek hak akses halaman-------//
+		$this->load->library('access');
+		$this->access->page();
+		//---------------^_^----------------//
+    $this->checkSession();
 	}
 
 	public function checkSession()
@@ -47,11 +51,6 @@ class C_Approval extends CI_Controller
 		$data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id);
 		$data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id);
     $data['Info'] = $this->M_permohonancuti->getPekerja($noind); // get information about logged user
-
-    //redirect to base if account didn't have this responsbility
-		if(empty($data['UserMenu']['2'])){
-			redirect(base_url('PermohonanCuti'));
-		}
 
     //special icon for Seksi edp login on approval
 		if (strstr($kodesie, '4090101')){
