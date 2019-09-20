@@ -3080,3 +3080,9 @@ $route['CetakKanban/Cetak/(:any)/(:any)'] 	= 'CetakKanban/C_Cetak/$1/$2';
 $route['CetakKanban/Cetak/getJobFrom'] 		= 'CetakKanban/C_Cetak/getJobFrom';
 $route['CetakKanban/Cetak/Report'] 			= 'CetakKanban/C_Cetak/Report';
 $route['CetakKanban/Cetak/Creport'] 			= 'CetakKanban/C_Cetak/Creport';
+
+//--------------------------------------------------- Check PPh Cabang --------------------------------------------------//
+$route['AccountPayables/CheckPPhCabang/Upload'] = 'CheckPPHCabang/MainMenu/C_Upload';
+$route['AccountPayables/CheckPPhCabang/Upload/(:any)'] = 'CheckPPHCabang/MainMenu/C_Upload/$1';
+$route['AccountPayables/CheckPPhCabang/List'] = 'CheckPPHCabang/MainMenu/C_List';
+$route['AccountPayables/CheckPPhCabang/List/(:any)'] = 'CheckPPHCabang/MainMenu/C_List/$1';
