@@ -1,9 +1,4 @@
 <section class="content">
-	<!-- <div class="inner">
-		<div class="row">
-			<div class="col-lg-12">
-				<div class="row">
-					<div class="col-lg-12"> -->
 		<div class="col-lg-11">
 			<div class="text-right">
 				<h1>
@@ -29,11 +24,6 @@
 					</div>
 					<br>
 					<div class="box-body">
-					<!--  <div class="col-md-12 text-right">
-	                    <label style="font-size: 15px"><?php echo date("l, d F Y") ?></label>
-	                </div>
-	                <br>
-	                <br> -->
 	                <div class="col-lg-12">
 	                	<div class="form-group col-lg-12">
 	                		<div class="col-md-4" style="text-align: right;">
@@ -41,7 +31,7 @@
 	                		</div>
 	                		<div class="col-md-6">
 	                			<div class="input-group date">
-	                				<input type="text" class="form-control pull-right" id="tuanggal" class="tuanggal" name="tuanggal" placeholder="DD/MM/YYYY" autocomplete="off">
+	                				<input type="text" class="form-control pull-right tuanggal" id="tuanggal" class="tuanggal" name="tuanggal" placeholder="DD/MM/YYYY" autocomplete="off">
 	                				<div class="input-group-addon"><i class="fa fa-calendar"></i></div>
 	                			</div>
 	                		</div>
@@ -108,7 +98,7 @@
 
 						<div class="panel-body">
 							<div class="col-md-12">
-								<center><button class="btn btn-lg btn-success btnselect" onclick="getCKM(this)" disabled="disabled"><i class="fa fa-search"></i><b> select</b></button></center>
+								<center><button class="btn btn-lg btn-primary btncari" onclick="getCKM(this)" disabled="disabled"><i class="fa fa-search"></i><b> select</b></button></center>
 							</div>
 						</div>
 					</div>
