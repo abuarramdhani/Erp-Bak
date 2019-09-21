@@ -49,6 +49,7 @@ class C_Index extends CI_Controller {
     	$data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id);
 
     	$data['data'] = $this->M_pesangon->lihat();
+			$data['tertanda'] = $this->M_pesangon->getTertandaKasbon();
 
     	$this->load->view('V_Header',$data);
     	$this->load->view('V_Sidemenu',$data);
@@ -112,9 +113,6 @@ class C_Index extends CI_Controller {
     	echo json_encode($data);
 
     }
-
-
-
 
    	public function detailPekerja()
 	{
@@ -248,31 +246,139 @@ class C_Index extends CI_Controller {
 			$id	=	str_replace(array('-', '_', '~'), array('+', '/', '='), $encrypt_id);
 			$id	=	$this->encrypt->decode($id);
 
+      $data['id']			=	$encrypt_id;
 
-         $data['id']			=	$encrypt_id;
+			$data['data'] = $this->M_pesangon->cetak($id);
+			$data['penerima'] = $this->M_pesangon->penerima($id);
+      $data['pengirim'] = $this->M_pesangon->pengirim($id);
 
-		 $data['data'] = $this->M_pesangon->cetak($id);
-		 $data['penerima'] = $this->M_pesangon->penerima($id);
-         $data['pengirim'] = $this->M_pesangon->pengirim($id);
+			$this->load->library('pdf');
 
-
-         // print_r($data['penerima']);exit();
-
-		$this->load->library('pdf');
-
-		$pdf = $this->pdf->load();
-		$pdf = new mPDF('','A4',0,'',10,10,10,10,0,0);
-		$filename = 'PerhitunganPesangon.pdf';
+			$pdf = $this->pdf->load();
+			$pdf = new mPDF('','Legal',0,'',10,5,5,5,0,0);
+			$filename = 'PerhitunganPesangon.pdf';
 
 
-		$html = $this->load->view('MasterPekerja/PerhitunganPesangon/V_Cetak', $data, true);
+			$html = $this->load->view('MasterPekerja/PerhitunganPesangon/V_Cetak', $data, true);
 
-		$stylesheet1 = file_get_contents(base_url('assets/plugins/bootstrap/3.3.7/css/bootstrap.css'));
-		$pdf->WriteHTML($stylesheet1,1);
-		$pdf->WriteHTML($html, 2);
-    $pdf->setTitle($filename);
-		$pdf->Output($filename, 'I');
+			$stylesheet1 = file_get_contents(base_url('assets/plugins/bootstrap/3.3.7/css/bootstrap.css'));
+			$pdf->WriteHTML($stylesheet1,1);
+			$pdf->WriteHTML($html, 2);
+	    $pdf->setTitle($filename);
+			$pdf->Output($filename, 'I');
 	   }
+
+		 public function getPDF()
+		 {
+			 $type = $_GET['type'];
+			 $id 	 = $_GET['id'];
+
+			 $data['personalia'] = $_GET['personalia'];
+			 $data['spsi'] = $_GET['spsi'];
+			 $data['saksi1'] = $_GET['saksi1'];
+			 $data['saksi2'] = $_GET['saksi2'];
+			 $data['saksi3'] = $_GET['saksi3'];
+
+			 $data['pekerjaPHK'] = $this->M_pesangon->getPekerjaPHK($id);
+			 $jenkel = trim($data['pekerjaPHK'][0]['jenkel']);
+			 if ($jenkel == 'L') {
+				 	$data['jenis'] = 'Sdr.';
+				}elseif ($jenkel == 'P') {
+					$data['jenis'] = 'Sdri.';
+				}
+
+		   $hari  = date('D');
+			 // print_r($hari);exit();
+
+			 $hariarr = array(
+				 '',
+				 'Senin' ,
+				 'Selasa',
+				 'Rabu'  ,
+				 'Kamis' ,
+				 'Jumat' ,
+				 'Sabtu' ,
+				 'Minggu',
+			 );
+			 if ($hari == 'Mon') {
+				 	$data['hari'] = $hariarr[1];
+				}elseif ($hari == 'Tue') {
+					$data['hari'] = $hariarr[2];
+				}elseif ($hari == 'Wed') {
+					$data['hari'] = $hariarr[3];
+				}elseif ($hari == 'Thu') {
+					$data['hari'] = $hariarr[4];
+				}elseif ($hari == 'Fri') {
+					$data['hari'] = $hariarr[5];
+				}elseif ($hari == 'Sat') {
+					$data['hari'] = $hariarr[6];
+				}elseif ($hari == 'Sun') {
+					$data['hari'] = $hariarr[7];
+				}
+
+				$month = date('m');
+				$bulan = array(
+					"",
+					"Januari",
+					"Februari",
+					"Maret",
+					"April",
+					"Mei",
+					"Juni",
+					"Juli",
+					"Agustus",
+					"September",
+					"Oktober",
+					"November",
+					"Desember"
+				);
+				if ($month == '01') {
+					$data['month'] = $bulan[1];
+				}elseif ($month == '02') {
+					$data['month'] = $bulan[2];
+				}elseif ($month == '03') {
+					$data['month'] = $bulan[3];
+				}elseif ($month == '04') {
+					$data['month'] = $bulan[4];
+				}elseif ($month == '05') {
+					$data['month'] = $bulan[5];
+				}elseif ($month == '06') {
+					$data['month'] = $bulan[6];
+				}elseif ($month == '07') {
+					$data['month'] = $bulan[7];
+				}elseif ($month == '08') {
+					$data['month'] = $bulan[8];
+				}elseif ($month == '09') {
+					$data['month'] = $bulan[9];
+				}elseif ($month == '10') {
+					$data['month'] = $bulan[10];
+				}elseif ($month == '11') {
+					$data['month'] = $bulan[11];
+				}elseif ($month == '12') {
+					$data['month'] = $bulan[12];
+				}
+
+ 			 $this->load->library('pdf');
+
+ 			 $pdf = $this->pdf->load();
+ 			 $pdf = new mPDF('P','A4',0,'',10,10,10,10,0,0);
+ 			 $filename = 'Perjanjian Bersama Usia Lanjut.pdf'.$date;
+
+			 if($type == 'lansia'){
+				 $html = $this->load->view('MasterPekerja/PerhitunganPesangon/Perjanjian/V_lansia', $data, true);
+			 }elseif($type == 'lansia_exp'){
+				 $html = $this->load->view('MasterPekerja/PerhitunganPesangon/Perjanjian/V_lansia_express', $data, true);
+			 }else{
+				 $html = $this->load->view('MasterPekerja/PerhitunganPesangon/Perjanjian/V_non_lansia', $data, true);
+			 }
+
+ 			 $stylesheet1 = file_get_contents(base_url('assets/plugins/bootstrap/3.3.7/css/bootstrap.css'));
+ 			 $pdf->WriteHTML($stylesheet1,1);
+ 			 $pdf->WriteHTML($html, 2);
+ 	     $pdf->setTitle($filename);
+ 			 $pdf->Output($filename, 'I');
+		 }
+
 
 
 }

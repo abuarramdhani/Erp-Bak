@@ -1342,6 +1342,18 @@ $(function() {
 
 $(document).ready(function() {
     $('#tbl').DataTable();
+
+    $('#Saksi_Janji1').select2({
+      placeholder:"Input Nama Saksi"
+    });
+
+    $('#Saksi_Janji2').select2({
+      placeholder:"Input Nama Saksi"
+    });
+
+    $('#Saksi_Janji3').select2({
+      placeholder:"Input Nama Saksi"
+    });
 });
 
 $(document).on('ready', function() {
@@ -1547,6 +1559,42 @@ $(document).on('ready', function() {
             }
         });
     });
-
-
 })
+
+
+    function perjanjianPHK(id, personalia, spsi, saksi1, saksi2) {
+      $("#Modal_Button_Pesangon").modal();
+      $('#Lansia').attr('href', baseurl + "MasterPekerja/PerhitunganPesangon/getPDF" + "?type=lansia&id=" + id + "&personalia=" + personalia.trim() + "&spsi=" + spsi.trim() + "&saksi1=" + saksi1.trim() + "&saksi2=" + saksi2.trim())
+      $('#Lansia_express').attr('href',baseurl + "MasterPekerja/PerhitunganPesangon/getPDF" + "?type=lansia_exp&id=" + id + "&personalia=" + personalia.trim() + "&spsi=" + spsi.trim() + "&saksi1=" + saksi1.trim() + "&saksi2=" + saksi2.trim())
+      $('#Non_lansia').attr('href',baseurl + "MasterPekerja/PerhitunganPesangon/getPDF" + "?type=non_lansia&id=" + id + "&personalia=" + personalia.trim() + "&spsi=" + spsi.trim() + "&saksi1=" + saksi1.trim() + "&saksi2=" + saksi2.trim())
+    }
+
+    function DaftarHadir(id) {
+      $("#Saksi_Janji1").select2('val','')
+      $("#Saksi_Janji2").select2('val','')
+
+      $("#Modal_Hadirin_Perjanjian").modal();
+
+      $('#perjanjianPHK').click(function(){
+        let personalia  = $('#Wakil_Personalia').val(),
+            spsi        = $('#Wakil_SPSI').val(),
+            saksi1      = $('#Saksi_Janji1').val(),
+            saksi2      = $('#Saksi_Janji2').val()
+
+            if (saksi1 === null || saksi1 == '') {
+              Swal.fire(
+      				  'Peringatan!',
+      				  'Saksi 1 Harus Di Input!',
+      				  'warning'
+      				)
+            }else {
+              $("#Modal_Hadirin_Perjanjian").modal('hide');
+              perjanjianPHK(id, personalia, spsi, saksi1, saksi2)
+            }
+
+            if (saksi2 == null) {
+              console.log('kk');
+              saksi2      = $('#Saksi_Janji2').val('');
+            }
+      })
+    }
