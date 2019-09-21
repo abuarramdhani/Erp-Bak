@@ -130,10 +130,10 @@
 										<td  rowspan="3" style="text-align: left;" >
 											<?php
 											$codeContents = $value[$p]['QR_CODE'];
-											$fileName = 'img/'.$codeContents.'.png';
+											$fileName = 'assets/upload/CetakKanban/'.$codeContents.'.png';
 											QRcode::png($codeContents, $fileName, H, 3, 3);
 											?>
-											<img  style=" float:right;  opacity: 1 ; width:18mm; padding:;  height:auto;" src="img/<?php echo $codeContents.'.png'; ?>" />
+											<img  style=" float:right;  opacity: 1 ; width:18mm; padding:;  height:auto;" src="assets/upload/CetakKanban/<?php echo $codeContents.'.png'; ?>" />
 										</td>
 									</tr>
 									<tr>

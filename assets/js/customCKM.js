@@ -2,10 +2,7 @@ let dataRow = [];
 
  $(document).ready(function () {
     $('#tuanggal').datepicker({
-     //merubah format tanggal datepicker ke dd-mm-yyyy
         format: "dd/mm/yyyy",
-        //aktifkan kode dibawah untuk melihat perbedaanya, disable baris perintah diatas
-        //format: "dd-mm-yyyy",
         autoclose: true
     });
 });
@@ -26,16 +23,15 @@ $('#tuanggal').change(function(){
 				$.each(JSON.parse(result), function(key, value) {
 					html += '<option value="'+value.SHIFT_NUM+'">'+value.DESCRIPTION+'</option>';
 					$('.inputShiftCKM').removeAttr("disabled");
-
 				});
 					$('.inputShiftCKM').html(html);
-					// $('.inputShiftCKM').val(null).trigger('change');
+					$('.inputShiftCKM').val(null).trigger('change');
 			}
 		});
 });
 
-$('.inputShiftCKM').change(function(){
-	$('.btnselect').removeAttr("disabled");
+$('.tuanggal').focus(function(){
+	$('.btncari').removeAttr("disabled");
 })
 
 $("#tuanggal, #shift").change(function(){
@@ -98,7 +94,7 @@ $('#jobto').select2({
 
 function getCKM(th) {
 	$(document).ready(function(){
-		var tuanggal 		= $('input[name="tuanggal"]').val();
+		var tuanggal 	= $('input[name="tuanggal"]').val();
 		var shift 		= $('select[name="shift"]').val();
 		var deptclass 	= $('select[name="deptclass"]').val();
 		var jobfrom 	= $('select[name="jobfrom"]').val();
@@ -120,8 +116,6 @@ function getCKM(th) {
 			type: "POST",
 			datatype: 'html'
 		});
-
-
 			$('#ResultCKM').html('');
 			$('#ResultCKM').html('<center><img style="width:100px; height:auto" src="'+baseurl+'assets/img/gif/loading14.gif"></center>' );
 
@@ -146,7 +140,6 @@ function getRow(th){
 	var checked = $('tr[data="' + th +'"] td.chkCtk input').prop('checked')
 
 	var key = $('tr[data="' + th +'"] td.jobNumber input').val() // for identity
-	var kuntji = $('tr[data="' + th +'"] td.selectKegunaan select').val();
 	 var newItem = `
 	 		<div class="dataRow_${th}">
 	 			<input type="text" name="JOB_NUMBER[]" value="${key}">
@@ -180,35 +173,19 @@ function getRow(th){
 				
 	 		</div>
 	 `;
-// <input type="text" name="kegunaan[]" value="${kuntji}">
-// 				<input type="text" name="WIP_ENTITY_ID[]" value="${$('tr[data="' + th +'"] input.WIP_ENTITY_ID').val()}">
+
 	if (checked == true) {
 		$('#formTerserah').append(newItem);
 		$('tr[data="' + th +'"] td.selectKegunaan select').removeAttr("disabled");
+		$('tr[data="' + th +'"] td.inputDuedate input').removeAttr("disabled");
 	}else {
 		$('.dataRow_' + th).remove()
         $('tr[data="' + th +'"] td.selectKegunaan select').attr("disabled","disabled");
+        $('tr[data="' + th +'"] td.inputDuedate input').attr("disabled","disabled");
+
 
 	}
 
-	// $("#selectBambank").change(function(){
-	// var check = $('tr[data="' + th +'"] td.chkCtk input').prop('checked');
-	// var tujuan = $('tr[data="' + th +'"] td.selectKegunaan select').val();
-	// console.log(tujuan);
-	// var initujuan =  `
-	//  		<div class="dataTujuan_${th}">
-	//  			<input type="text" name="tujuanbaru[]" value="${tujuan}">
-	// 			<input type="text" name="wipidbaru[]" value="${$('tr[data="' + th +'"] input.WIP_ENTITY_ID').val()}">
-	//  		</div>
-	//  `;
-	// if (check == true) {
-	// 	$('#formTerserah').append(initujuan);
-	// }else {
-	// 	$('.dataTujuan_' + th).remove()
-	// }
-	// })
-
-	// $("#selectBambank").change(function(){
 	$(".kegunaan").change(function(){
 	var check = $('tr[data="' + th +'"] td.chkCtk input').prop('checked');
 	var tujuanbaru = $('tr[data="' + th +'"] td.selectKegunaan select').val();
@@ -230,7 +207,7 @@ function getRow(th){
 			url: baseurl+'CetakKanban/Cetak/Report',
 			data: {
 				tujuanbaru : tujuanbaru,
-				wipidbaru : wipidbaru
+				wipidbaru : wipidbaru,
 			},
 			datatype : 'json',
 		});
@@ -239,24 +216,37 @@ function getRow(th){
 	}
 	})
 
-	// var kuntji = $('tr[data="' + th +'"] td.selectKegunaan select').val();
-	// var insertitem =  `
-	//  		<div class="dataRow_${th}">
-	//  			<input type="text" name="kegunaan[]" value="${kuntji}">
-	// 			<input type="text" name="WIP_ENTITY_ID[]" value="${$('tr[data="' + th +'"] input.WIP_ENTITY_ID').val()}">
+	$(".due_date").on("change", function(){
+		var check = $('tr[data="' + th +'"] td.chkCtk input').prop('checked');
+		var due_date = $('tr[data="' + th +'"] td.inputDuedate input').val();
+		var wipidbaru = $('tr[data="' + th +'"] input.WIP_ENTITY_ID').val();
 
-	//  		</div>
-	//  `;
-
-	// if (checked == true) {
-	// 	$('#formInsert').append(insertitem);
-	// }else {
-	// 	$('.dataRow_' + th).remove()
-	// }
+		var updateDue =  `
+ 		<div class="dataRow_${th}">
+			<input type="text" name="due_date[]" value="${due_date}">
+			<input type="text" name="wipidbaru[]" value="${wipidbaru}">
+ 		</div>
+	 `;
+		
+		console.log(due_date);
+		if (check == true) {
+			$('#formTerserah').append(updateDue);
+			$.ajax({
+				type: 'POST',
+				url: baseurl+'CetakKanban/Cetak/Report',
+				data: {
+					due_date : due_date,
+					wipidbaru : wipidbaru,
+				},
+				datatype : 'json',
+			});
+		}else {
+			$('.dataRow_' + th).remove()
+		}
+	})
 }
 
 function insertReport(th) {
-	// $("#formInsert").submit();
 	if ($(".checkedAll").is(":checked")) {
 		$("#formSemua").submit();
 	}else{
@@ -264,20 +254,3 @@ function insertReport(th) {
 	}
 	
 }
-
-// function insertOracle(th) {
-// 	var kegunaan = $('tr[data="' + th +'"] td.kegunaan select').val();
-// 	var wipid = $('tr[data="' + th +'"] input.WIP_ENTITY_ID').val();
-
-// 	console.log(kegunaan, wipid);
-// 	ajax : ({
-// 			url: baseurl+'CetakKanban/Cetak/insertOracle',
-// 			data: {
-// 				kegunaan : kegunaan,
-// 				wipid : wipid,
-// 			},
-// 			type: "POST",
-// 			datatype: 'json',
-// 		});
-
-// }

@@ -47,8 +47,6 @@ class C_Cetak extends CI_Controller {
 		$data['deptclass'] = $this->M_cetak->getDeptClass();
 		$data['status'] = $this->M_cetak->getStatus();
 
-		// $data['shift'] = $this->M_cetak->getShift(FALSE);
-
 		$this->load->view('V_Header',$data);
 		$this->load->view('V_Sidemenu',$data);
 		$this->load->view('CetakKanban/V_Cetak',$data);
@@ -86,44 +84,37 @@ class C_Cetak extends CI_Controller {
 		$this->load->view('CetakKanban/V_Result',$data);
 	}
 
-	// public function insertOracle(){
-	// 	$kegunaan 	= $this->input->post('kegunaan[]');
-	// 	$wipid 		= $this->input->post('WIP_ENTITY_ID[]');
-
-	// 	// echo "<pre>"; print_r($kegunaan); exit();
-	// 	$k = 0;
-	// 	foreach ($kegunaan as $guna) {
-	// 	// $apaya = $this->M_cetak->insertData($guna,$wipid[$k]);
-	// 	$this->M_cetak->insertData($guna,$wipid[$k]);
-	// 	$k++;
-	// 	// echo "<pre>"; print_r($apaya); exit();
-
-	// 	}
-	// }
-
 	public function Report(){
-		// $kegunaan 	= $this->input->post('tujuanbaru[]');
-		// $wipid 		= $this->input->post('wipidbaru[]');
-
-		// $kegunaan = $_POST['tujuanbaru'];
-		// $wipid = $_POST['wipidbaru'];
-
-		$kegunaan 	= $this->input->post('tujuanbaru');
-		$wipid 		= $this->input->post('wipidbaru');
-
-		// echo "<pre>"; print_r($kegunaan);print_r($wipid);
-		// exit();
-
-		if ($kegunaan != "") {
+		$kegunaan 	= $this->input->post('tujuanbaru[]');
+		$wipid 		= $this->input->post('wipidbaru[]');
+		$due_date 	= $this->input->post('due_date[]');
+		
+		if (!empty($kegunaan) && !empty($due_date)){
 			$k = 0;
-			foreach ($kegunaan as $guna) {
-			$data = $this->M_cetak->insertData($guna,$wipid[$k]);
-			$k++;
+			foreach ($kegunaan as $una) {
+			$data = $this->M_cetak->updateData($una,$due_date[$k],$wipid[$k]);
 
-			// echo "<pre>"; print_r($data); exit();
+			$k++;
 			} 
-		}else {
+		}
+		elseif (empty($kegunaan) && empty($due_date)) {
 			
+		}
+		elseif ($kegunaan == ""){
+			$y = 0;
+			foreach ($due_date as $due) {
+			$data = $this->M_cetak->updateDueDate($due,$wipid[$y]);
+
+			$y++;
+			} 
+		}
+		elseif ($due_date == ""){
+			$z = 0;
+			foreach ($kegunaan as $use) {
+			$data = $this->M_cetak->updateKegunaan($use,$wipid[$z]);
+
+			$z++;
+			} 
 		}
 		
 		$data['STATUS_TYPE']			= $this->input->post('STATUS_TYPE[]');
@@ -202,24 +193,12 @@ class C_Cetak extends CI_Controller {
 			$o++;
 		}
 		
-		// $urutan = $this->M_cetak->getProses($ey['JOB_NUMBER'],$ey['JOB_NUMBER'],$tgl);
-
-		// foreach ($data['proses'] as $hue) {
-		// 	echo "<pre>";
-		// 	print_r($hue);
-		// }
-		
-		// print_r(count($data['dataprint']));
-		// print_r($data['proses']);
-		// print_r(count($data['proses']));
-		// exit();
-		
 		ob_start();
 		$this->load->library('ciqrcode');
-		if(!is_dir('./img'))
+		if(!is_dir('.assets/upload/CetakKanban'))
 		{
-			mkdir('./img', 0777, true);
-			chmod('./img', 0777);
+			mkdir('.assets/upload/CetakKanban', 0777, true);
+			chmod('.assets/upload/CetakKanban', 0777);
 		}
 		foreach ($temp as $show) {
 			$params['data']		= ($show['QR_CODE']);
@@ -227,7 +206,7 @@ class C_Cetak extends CI_Controller {
 			$params['size']		= 10;
 			$params['black']	= array(255,255,255);
 			$params['white']	= array(0,0,0);
-			$params['savename'] = './img/'.($show['QR_CODE']).'.png';
+			$params['savename'] = './assets/upload/CetakKanban/'.($show['QR_CODE']).'.png';
 			$this->ciqrcode->generate($params);
 
 		}

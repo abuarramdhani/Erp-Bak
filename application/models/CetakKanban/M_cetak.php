@@ -66,9 +66,22 @@ class M_cetak extends CI_Model {
 		return $query->result_array();
 	}
 
-	function insertData($kegunaan,$wipid){
+	function updateData($kegunaan,$due_date,$wipid){
+		$sql = "UPDATE WIP_DISCRETE_JOBS wdj set wdj.ATTRIBUTE3 = '$kegunaan', wdj.attribute1 = '$due_date' WHERE wdj.WIP_ENTITY_ID = '$wipid'";
+		$query = $this->oracle->query($sql);
+		echo $sql;
+	}
+
+	function updateDueDate($due_date, $wipid){
+		$sql = "UPDATE WIP_DISCRETE_JOBS wdj set wdj.attribute1 = '$due_date' WHERE wdj.WIP_ENTITY_ID = '$wipid'";
+		$query = $this->oracle->query($sql);
+		echo $sql;
+	}
+
+	function updateKegunaan($kegunaan, $wipid){
 		$sql = "UPDATE WIP_DISCRETE_JOBS wdj set wdj.ATTRIBUTE3 = '$kegunaan' WHERE wdj.WIP_ENTITY_ID = '$wipid'";
 		$query = $this->oracle->query($sql);
+		echo $sql;
 	}
 
 	function getData($tuanggal,$shift,$deptclass,$jobfrom,$jobto,$status){
@@ -102,7 +115,8 @@ class M_cetak extends CI_Model {
                   wo.DESCRIPTION KODE_PROSES,
                   wo.ATTRIBUTE7 ACTIVITY,
                   wdj.START_QUANTITY TARGET_PPIC,
-                  wdj.ATTRIBUTE3 TUJUAN
+                  wdj.ATTRIBUTE3 TUJUAN,
+                  wdj.attribute1 DUE_DATE
                 FROM wip_discrete_jobs wdj ,
                   wip_entities we ,
                   wip_operations wo ,
@@ -112,7 +126,8 @@ class M_cetak extends CI_Model {
                   BOM_DEPARTMENT_CLASSES bdc
                 WHERE wdj.WIP_ENTITY_ID      = we.WIP_ENTITY_ID
                 --AND we.WIP_ENTITY_NAME       = 'D181100048'   ----------------------> no JOB
-                AND bcs.SHIFT_NUM = '$shift'
+                -- AND bcs.SHIFT_NUM = '$shift'
+                AND bcs.SHIFT_NUM = nvl('$shift',bcs.SHIFT_NUM)
                 AND khs_shift(wdj.SCHEDULED_START_DATE) = bcs.SHIFT_NUM
                 AND we.WIP_ENTITY_NAME between nvl('$jobfrom',we.WIP_ENTITY_NAME) and nvl('$jobto',we.WIP_ENTITY_NAME)
                 AND bd.DEPARTMENT_CLASS_CODE = nvl('$deptclass',bd.DEPARTMENT_CLASS_CODE)
