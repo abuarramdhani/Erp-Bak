@@ -13,6 +13,7 @@
                        <th style="text-align: center; vertical-align: middle;">QTY</th>
                        <th style="text-align: center; vertical-align: middle;">Sche Start Date</th>
                        <th style="text-align: center; vertical-align: middle;">Shift</th>
+                       <th style="text-align: center; vertical-align: middle;">Location Code</th> <!---- Penambahan kolom location code --->
                        <th style="text-align: center; vertical-align: middle;">Kegunaan</th>
                        <th style="text-align: center; vertical-align: middle;">Due Date</th>
                    </tr>
@@ -32,6 +33,7 @@
                 <td class="targetPpic"><input type="hidden"  name="TARGET_PPIC[]" class="TARGET_PPIC" data-row="<?= $no ?>" value="<?php echo $row['TARGET_PPIC'] ?>"><?= $row['TARGET_PPIC'].' '.$row['UOM_CODE']?></td>
                 <td class="schDate"><input type="hidden"  name="SCHEDULED_START_DATE[]" class="SCHEDULED_START_DATE" data-row="<?= $no ?>" value="<?php echo $row['SCHEDULED_START_DATE'] ?>"><?= $row['SCHEDULED_START_DATE'] ?></td>
                 <td class="shift"><input type="hidden" name="SHIFT[]" class="SHIFT" data-row="<?= $no ?>" value="<?php echo $row['SHIFT_NUM'] ?>"><?= $row['SHIFT'] ?></td>
+                <td class="location_code"><?= $row['LOCATION_CODE'] ?></td> <!---- Penambahan kolom location code --->
                 <td class="selectKegunaan">
                     <select type="text" id="selectBambank" name="tujuanbaru[]" data-row="<?= $no ?>" class="form-control kegunaan" style="width: 100%" disabled>
                         <option value=""  
