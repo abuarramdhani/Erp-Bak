@@ -3086,3 +3086,14 @@ $route['AccountPayables/CheckPPhCabang/Upload'] = 'CheckPPHCabang/MainMenu/C_Upl
 $route['AccountPayables/CheckPPhCabang/Upload/(:any)'] = 'CheckPPHCabang/MainMenu/C_Upload/$1';
 $route['AccountPayables/CheckPPhCabang/List'] = 'CheckPPHCabang/MainMenu/C_List';
 $route['AccountPayables/CheckPPhCabang/List/(:any)'] = 'CheckPPHCabang/MainMenu/C_List/$1';
+
+//-----------------------------------------------------Monitoring GD Sparepart------------------------------------------------------------//
+$route['MonitoringGdSparepart'] = 'MonitoringGdSparepart/C_Index';
+
+$route['MonitoringGdSparepart/Input']					= 'MonitoringGdSparepart/C_Input';
+$route['MonitoringGdSparepart/Input/(:any)']			= 'MonitoringGdSparepart/C_Input/$1';
+$route['MonitoringGdSparepart/Input/(:any)/(:any)']		= 'MonitoringGdSparepart/C_Input/$1/$2';
+
+$route['MonitoringGdSparepart/Monitoring']					= 'MonitoringGdSparepart/C_Monitoring';
+$route['MonitoringGdSparepart/Monitoring/(:any)']			= 'MonitoringGdSparepart/C_Monitoring/$1';
+$route['MonitoringGdSparepart/Monitoring/(:any)/(:any)']	= 'MonitoringGdSparepart/C_Monitoring/$1/$2';

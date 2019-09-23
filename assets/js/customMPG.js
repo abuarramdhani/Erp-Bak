@@ -1,0 +1,141 @@
+function getMPG(th) {
+    $(document).ready(function(){
+    var noDokumen = $('input[name="noDokumen"]').val();
+    var jenis_dokumen = $('#jenis_dokumen').val();
+    // console.log(jenis_dokumen);
+    // console.log(noDokumen);
+    
+    var request = $.ajax({
+        url: baseurl+'MonitoringGdSparepart/Input/input',
+        data: {
+            noDokumen : noDokumen, 
+            jenis_dokumen : jenis_dokumen
+        },
+        type: "POST",
+        datatype: 'html'
+    });
+    
+    $('#tb_GudangSparepart').html('');
+	$('#tb_GudangSparepart').html('<center><img style="width:130px; height:auto" src="'+baseurl+'assets/img/gif/loading10.gif"></center>' );
+    
+    request.done(function(result){
+        $('#tb_GudangSparepart').html('');
+        $('#tb_GudangSparepart').html(result);
+        // $('#tb_monitorGudang').dataTable({
+        //     "retrieve": true,
+        //     "paging" : false,
+        //     "scrollX": true,
+        //     "scrollCollapse": true,
+        //     "fixedHeader":true
+        //     });
+        })
+    });
+}
+
+$('#noDokumen').change(function(){
+    getAutoFillDocument()
+});
+$('#noDokumen').keypress(function (e) {
+    var key = e.which;
+    if(key == 13)  // the enter key code
+     {
+        getAutoFillDocument()
+     }
+});   
+
+function getAutoFillDocument(){
+    var no_document = $('input[name="noDokumen"]').val();
+
+    $('input[name="no_document"]').val(no_document)
+
+    var length = no_document.length
+    
+    if(length == 12){
+        $('#jenis_dokumen').val('IO').trigger('change')
+    }else if(length == 5){
+        $('#jenis_dokumen').val('LPPB').trigger('change')
+    }else {
+        $('#jenis_dokumen').val('KIB').trigger('change')
+    }
+}
+
+function getMGS(th) {
+    $(document).ready(function(){
+
+    var jenis_dokumen = $('#jenis_dokumen').val();
+    var no_document = $('input[name="no_document"]').val();
+    var tglAwal = $('input[name="tglAwal"]').val();
+    var tglAkhir = $('input[name="tglAkhir"]').val();
+    var pic = $('input[name="pic"]').val();
+    var item = $('input[name="item"]').val();
+    // console.log(item);
+
+    var request = $.ajax({
+        url: baseurl+'MonitoringGdSparepart/Monitoring/search',
+        data: {
+            jenis_dokumen : jenis_dokumen, 
+            no_document : no_document, 
+            tglAwal : tglAwal, 
+            tglAkhir : tglAkhir, 
+            pic : pic, 
+            item : item
+        },
+        type: "POST",
+        datatype: 'html'
+    });
+    
+    $('#ResultMGS').html('');
+    $('#ResultMGS').html('<center><img style="width:150px; height:auto" src="'+baseurl+'assets/img/gif/loadingtwo.gif"></center>' );
+        
+    request.done(function(result){
+        $('#ResultMGS').html('');
+        $('#ResultMGS').html(result);
+        // $('#myTable').dataTable({
+        //     "paging": false,
+        //     "scrollX": true,
+        //     "scrollCollapse": true,
+        //     "fixedHeader":true,
+        //     "ordering": false,
+        //     });
+        })
+    });
+}
+
+function btnRowAdd(th, no){
+	var title = $(th).text();
+	$('#clone'+no).slideToggle('slow');
+}
+
+function btnEdit(th, no, nomor){
+	var title = $(th).text();
+	$('#edit'+no+nomor).slideToggle('slow');
+}
+
+
+$('#search_by').change(function(){
+    var value = $('#search_by').val()
+
+    if(value == "dokumen"){
+        $('#slcDokumen').css('display', '')
+        $('#slcTgl').css('display', 'none');
+        $('#slcPIC').css('display', 'none');
+        $('#slcItem').css('display', 'none');
+    }else if(value == "tanggal"){
+        $('#slcTgl').css('display', '')
+        $('#slcDokumen').css('display', 'none');
+        $('#slcPIC').css('display', 'none');
+        $('#slcItem').css('display', 'none');
+    }else if(value == "pic"){
+        $('#slcPIC').css('display', '')
+        $('#slcTgl').css('display', 'none');
+        $('#slcDokumen').css('display', 'none');
+        $('#slcItem').css('display', 'none');
+    }else if(value == "item"){
+        $('#slcItem').css('display', '')
+        $('#slcTgl').css('display', 'none');
+        $('#slcDokumen').css('display', 'none');
+        $('#slcPIC').css('display', 'none');
+    }
+});
+
+
