@@ -3,6 +3,7 @@ class M_ajax extends CI_Model {
     public function __construct()
     {
     	$this->oracle = $this->load->database ('oracle', TRUE);
+    	// $this->oracle = $this->load->database ('oracle_dev', TRUE);
     }
 
     public function getSubInv($id)
@@ -122,5 +123,24 @@ class M_ajax extends CI_Model {
 	public function delTemp($ip){
 		$this->oracle->where('IP',$ip);
 		$this->oracle->delete('KHS_PACKINGLIST_TRANSACT_TEMP');
-	}
+    }
+    
+    public function insertError($ip){
+        $sql = "INSERT INTO KHS_PACKINGLIST_TEMP_ERR
+        (IP, NO_SPB )
+        SELECT IP, NO_SPB
+        FROM KHS_PACKINGLIST_TRANSACT_TEMP
+        WHERE IP = '$ip'";
+
+        $query = $this->oracle->query($sql);
+    }
+
+    public function delTable($ip){
+        $sql = "DELETE FROM KHS_PACKINGLIST_TRANSACT_TEMP kmtt WHERE kmtt.IP = '$ip'";
+        
+        $query = $this->oracle->query($sql);
+    }
+    
+    
+
 }

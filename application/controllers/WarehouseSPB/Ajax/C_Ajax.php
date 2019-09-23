@@ -159,4 +159,21 @@ class C_Ajax extends CI_Controller {
 			$ipaddress = 'UNKNOWN';
 		return $ipaddress;
 	}
+
+
+	public function delTable(){
+		$ip =  $this->get_client_ip();
+		$pass = $this->input->post('passwd');
+		$pwd = '1231233';
+		// echo "<pre>"; print_r ($pass);print_r($ip); exit();
+
+		if ($pass == $pwd){
+			$this->M_ajax->insertError($ip);
+			$this->M_ajax->delTable($ip);
+		}else{
+			// echo "<script language=\"javascript\">alert('Access Denied');</script>";
+		}
+		redirect('WarehouseSPB/Transaction/PackingList');
+	}
+	
 }
