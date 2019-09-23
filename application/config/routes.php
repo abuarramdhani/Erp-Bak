@@ -2249,6 +2249,7 @@ $route['InventoryManagement/CreateKIB/getSubInv'] = 'InventoryKIB/MainMenu/Creat
 $route['InventoryManagement/CreateKIB/submitpdf'] = 'InventoryKIB/MainMenu/CreateKIB/C_CreateKIB/submitpdf';
 $route['InventoryManagement/CreateKIB/pdf/(:any)/(:any)/(:any)'] = 'InventoryKIB/MainMenu/CreateKIB/C_CreateKIB/pdf/$1/$2/$3';
 $route['InventoryManagement/CreateKIB/pdf2/(:any)/(:any)/(:any)'] = 'InventoryKIB/MainMenu/CreateKIB/C_CreateKIB/pdf2/$1/$2/$3';
+$route['InventoryManagement/CreateKIB/pdf3/(:any)'] = 'InventoryKIB/MainMenu/CreateKIB/C_CreateKIB/pdf3/$1';
 
 
 
