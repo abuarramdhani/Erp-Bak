@@ -150,12 +150,138 @@ class C_CreateKIB extends CI_Controller
 		$this->printpdf($org,$status,$no_batch,$kib);
 	}
 
-
-	public function printpdf($org,$status,$no_batch,$kib){
+	public function pdf3($nomorset)
+	{
+		$org = 'opm';
 		$this->load->library('ciqrcode');
 		$this->load->library('Pdf');
 		$pdf 			= $this->pdf->load();
-		$pdf = new mPDF('utf-8',array(210,330), 0, '', 13, 13, 0, 5, 0, 0);
+		
+
+		$dataKIB = $this->M_createkib->getKIB3($nomorset);
+		// echo "<pre>";
+		// print_r($dataKIB);
+		// exit();
+		$dataKIBKelompok  =array();
+		$arrayREQNUM = array();
+		// $tanggal = $this->M_createkib->getSysdate();
+		date_default_timezone_set("Asia/Jakarta");
+		$tanggal = date("d-M-Y G:i:s"); 
+		$a = 0;
+		// echo "<PRE>";
+		// print_r($tanggal);
+		// exit();
+
+		foreach ($dataKIB as $key => $value) {
+
+			if (in_array($value['NOMORSET'], $arrayREQNUM)) {
+				$indexnya = array_search($value['NOMORSET'], $arrayREQNUM);
+				$dataKIBKelompok[$indexnya]['KOMPONEN'][] = array('KODE_KOMP' => $value['KODE_KOMP'],
+															'QTY_KIB' => $value['QTY_KIB'],
+															'DESC_KOMP' => $value['DESC_KOMP'],
+															'UOM_KOMP' => $value['UOM_KOMP']
+														);
+			} else {
+				array_push($arrayREQNUM, $value['NOMORSET']);
+				$getOrg = $this->M_createkib->getOrgFrom($no_batch);
+				$org_from = $getOrg[0]['ORGANIZATION_CODE'];
+				$qty_handling_nu = $this->M_createkib->getHandling($value['TO_SUBINVENTORY_CODE'],$org_from);
+				$indexnya = array_search($value['NOMORSET'], $arrayREQNUM);
+				// $arrayREQNUM[] = $value['NOMORSET'];
+				$dataKIBKelompok[$indexnya]['FROM_SUBINVENTORY_CODE'] = $value['FROM_SUBINVENTORY_CODE'];
+				$dataKIBKelompok[$indexnya]['FROM_LOCATOR'] = $value['FROM_LOCATOR'];
+				$dataKIBKelompok[$indexnya]['TO_SUBINVENTORY_CODE'] = $value['TO_SUBINVENTORY_CODE'];
+				$dataKIBKelompok[$indexnya]['TO_LOCATOR'] = $value['TO_LOCATOR'];
+				$dataKIBKelompok[$indexnya]['KODE_ASSY'] = $value['KODE_ASSY'];
+				$dataKIBKelompok[$indexnya]['DESC_ASSY'] = $value['DESC_ASSY'];
+				$dataKIBKelompok[$indexnya]['UOM_ASSY'] = $value['UOM_ASSY'];
+				$dataKIBKelompok[$indexnya]['KOMPONEN'][] = array('KODE_KOMP' => $value['KODE_KOMP'],
+														'QTY_KIB' => $value['QTY_KIB'],
+														'DESC_KOMP' => $value['DESC_KOMP'],
+														'UOM_KOMP' => $value['UOM_KOMP']);
+				// $dataKIBKelompok[$indexnya]['DESCRIPTION'] = $value['DESCRIPTION'];
+				// $dataKIBKelompok[$indexnya]['KODE_KONTAINER'] = $value['KODE_KONTAINER'];
+				// $dataKIBKelompok[$indexnya]['DESKRIPSI_KONTAINER'] = $value['DESKRIPSI_KONTAINER'];
+				// $dataKIBKelompok[$indexnya]['TIPE_PRODUCT'] = $value['TIPE_PRODUCT'];
+				// $dataKIBKelompok[$indexnya]['PLAN_QTY'] = $value['PLAN_QTY'];
+				// $dataKIBKelompok[$indexnya]['ACTUAL_QTY'] = $value['ACTUAL_QTY'];
+				// $dataKIBKelompok[$indexnya]['QUANTITY'] = $value['QUANTITY'] ;
+				// $dataKIBKelompok[$indexnya]['HANDLING_QTY'] = $value['HANDLING_QTY'];
+				$dataKIBKelompok[$indexnya]['QTY_ASSY'] = $value['QTY_ASSY'];
+				$dataKIBKelompok[$indexnya]['NOMORSET'] = $value['NOMORSET'];
+				$dataKIBKelompok[$indexnya]['BATCH_NUMBER'] = $value['BATCH_NUMBER'];
+				$dataKIBKelompok[$indexnya]['ALIAS_KODE'] = $value['ALIAS_KODE'];
+				$dataKIBKelompok[$indexnya]['TANGGAL'] = $tanggal;
+				// $a++;
+			}
+			
+		}
+
+		$data['dataKIB'] = $dataKIBKelompok;
+		// echo "<pre>";
+		$length = sizeof($data['dataKIB'][0]['KOMPONEN']);
+		if ($length != 0) {
+			$size = $length * 48 ;
+		} else {
+			$size = 48;
+		} 
+		
+		// echo "$size";
+		// print_r($data['dataKIB']);
+		// exit();
+		$pdf = new mPDF('utf-8',array(210,$size), 0, '', 13, 13, 0, 20, 0, 0);
+		if($data['dataKIB']):
+			// ------ GENERATE QRCODE ------
+			if(!is_dir('./assets/img'))
+			{
+				mkdir('./assets/img', 0777, true);
+				chmod('./assets/img', 0777);
+			}
+
+			$temp_filename = array();
+			foreach ($data['dataKIB'] as $kib) {
+				$params['data']		= $kib['NOMORSET'];
+				$params['level']	= 'H';
+				$params['size']		= 3;
+				$config['black']	= array(224,255,255);
+				$config['white']	= array(70,130,180);
+				$params['savename'] = './assets/img/'.$kib['NOMORSET'].'.png';
+				$this->ciqrcode->generate($params);
+				array_push($temp_filename, $params['savename']);
+			}
+		endif;
+
+		$data['dataKIB'] = $dataKIBKelompok;
+		// echo "<pre>";
+		// print_r($data);
+		// exit();
+		$filename			= 'KIB_'.time().'.pdf';
+		$html = $this->load->view('InventoryKIB/MainMenu/CreateKIB/V_Pdf3',$data,true);
+		// echo "$html";
+		// exit();
+		$pdf->WriteHTML($html,0);
+		$pdf->Output($filename, 'I');
+		if (!empty($temp_filename)) {
+				foreach ($temp_filename as $tf) {
+					if(is_file($tf)){
+						unlink($tf);
+					}
+				}
+			}
+
+
+	}
+
+
+	public function printpdf($org,$status,$no_batch,$kib){
+		$length = 350;
+		if ($status == 1) {
+			$length = 290;
+		}
+		$this->load->library('ciqrcode');
+		$this->load->library('Pdf');
+		$pdf 			= $this->pdf->load();
+		$pdf = new mPDF('utf-8',array(210,$length), 0, '', 13, 13, 0, 25, 0, 0);
 
 		if ($status == '0' && $kib == '0') {
 			exit('Status & No kib is null');
@@ -169,11 +295,10 @@ class C_CreateKIB extends CI_Controller
 			$status = null;
 		}
 
-
 		$dataKIBKelompok  =array();
 		$arrayREQNUM = array();
 		if ($org == 'opm') {
-			$dataKIB = $this->M_createkib->getKIB2($status,$no_batch,$kib);
+			$dataKIB = $this->M_createkib->getKIB2($status,$no_batch,$kib);	
 		}elseif ($org == 'odm') {
 			$dataKIB = $this->M_createkib->getKIB22($status,$no_batch,$kib);
 		}
@@ -215,6 +340,9 @@ class C_CreateKIB extends CI_Controller
 			}
 			
 		}
+		// echo "<pre>";
+		// print_r($dataKIBKelompok);
+		// exit();
 		if ($dataKIBKelompok) {
 			$this->M_createkib->updateFlagPrint($no_batch,$kib);
 		}
