@@ -277,9 +277,13 @@ class C_Index extends CI_Controller {
 			 $data['spsi'] = $_GET['spsi'];
 			 $data['saksi1'] = $_GET['saksi1'];
 			 $data['saksi2'] = $_GET['saksi2'];
-			 $data['saksi3'] = $_GET['saksi3'];
 
 			 $data['pekerjaPHK'] = $this->M_pesangon->getPekerjaPHK($id);
+			 $tgl_keluar = $data['pekerjaPHK'];
+			 $data['tgl_keluar'] = date("d", strtotime($tgl_keluar[0]['tanggal_keluar']));
+			 $data['bln_keluar'] = date("m", strtotime($tgl_keluar[0]['tanggal_keluar']));
+			 $data['thn_keluar'] = date("Y", strtotime($tgl_keluar[0]['tanggal_keluar']));
+
 			 $jenkel = trim($data['pekerjaPHK'][0]['jenkel']);
 			 if ($jenkel == 'L') {
 				 	$data['jenis'] = 'Sdr.';
@@ -288,8 +292,6 @@ class C_Index extends CI_Controller {
 				}
 
 		   $hari  = date('D');
-			 // print_r($hari);exit();
-
 			 $hariarr = array(
 				 '',
 				 'Senin' ,
@@ -356,6 +358,32 @@ class C_Index extends CI_Controller {
 					$data['month'] = $bulan[11];
 				}elseif ($month == '12') {
 					$data['month'] = $bulan[12];
+				}
+
+				if ($data['bln_keluar'] == '01') {
+					$data['bln_keluar'] = $bulan[1];
+				}elseif ($data['bln_keluar'] == '02') {
+					$data['bln_keluar'] = $bulan[2];
+				}elseif ($data['bln_keluar'] == '03') {
+					$data['bln_keluar'] = $bulan[3];
+				}elseif ($data['bln_keluar'] == '04') {
+					$data['bln_keluar'] = $bulan[4];
+				}elseif ($data['bln_keluar'] == '05') {
+					$data['bln_keluar'] = $bulan[5];
+				}elseif ($data['bln_keluar'] == '06') {
+					$data['bln_keluar'] = $bulan[6];
+				}elseif ($data['bln_keluar'] == '07') {
+					$data['bln_keluar'] = $bulan[7];
+				}elseif ($data['bln_keluar'] == '08') {
+					$data['bln_keluar'] = $bulan[8];
+				}elseif ($data['bln_keluar'] == '09') {
+					$data['bln_keluar'] = $bulan[9];
+				}elseif ($data['bln_keluar'] == '10') {
+					$data['bln_keluar'] = $bulan[10];
+				}elseif ($data['bln_keluar'] == '11') {
+					$data['bln_keluar'] = $bulan[11];
+				}elseif ($data['bln_keluar'] == '12') {
+					$data['bln_keluar'] = $bulan[12];
 				}
 
  			 $this->load->library('pdf');

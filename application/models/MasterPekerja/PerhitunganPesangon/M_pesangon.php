@@ -115,7 +115,7 @@ class M_pesangon extends CI_Model {
 
 		public function getPekerjaPHK($id)
 	 	{
-	 		$sql	= "	SELECT ts.*, tp.*, ti.seksi, ti.unit, ti.dept from hrd_khs.t_pesangon ts
+	 		$sql	= "	SELECT ts.*, tp.*, cast(tp.tglkeluar as date) tanggal_keluar, ti.seksi, ti.unit, ti.dept from hrd_khs.t_pesangon ts
 								INNER JOIN hrd_khs.tpribadi tp on tp.noind = ts.noinduk
 								INNER JOIN hrd_khs.tseksi ti on ti.kodesie = tp.kodesie
 								where id_pesangon = '$id'";

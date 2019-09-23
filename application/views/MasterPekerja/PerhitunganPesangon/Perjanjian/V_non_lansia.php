@@ -134,7 +134,7 @@
       <td style="border-right:1px solid black; border-bottom: 1px solid black; width: 200px; font-size: 14px; font-family: times;" valign="top">&nbsp;Pokok Perundingan</td>
       <td style="border-right:1px solid black; border-bottom: 1px solid black; width:10px; text-align: center font-size: 14px; font-family: times; text-align: center;" valign="top">:</td>
 			<td style="width:5px; border-bottom: 1px solid black;"></td>
-			<td style="border-bottom: 1px solid black; font-size: 14px; font-family: times; text-align: justify;"><b><?php echo $jenis ?> <?php echo ucwords(strtolower($key['nama'])).'('.$key['noind'].')' ?></b> akan di Putus Hubungan Kerja (PHK) karena melakukan pelanggaran Pasal 70 ayat (2e) Perjanjian Kerja Bersama CV. Karya Hidup Sentosa, yaitu : "Pekerja melakukan pelanggaran lagi setelah mendapat peringatan ketiga / terakhir yang masih berlaku", sehingga hubungan kerja antara Perusahaan dengan <b><?php echo $jenis ?> <?php echo ucwords(strtolower($key['nama'])).'('.$key['noind'].')' ?></b> berakhir per tanggal <b><?php echo date('d').' '.$month.' '.date('Y') ?></b></td>
+			<td style="border-bottom: 1px solid black; font-size: 14px; font-family: times; text-align: justify;"><b><?php echo $jenis ?> <?php echo ucwords(strtolower($key['nama'])).'('.$key['noind'].')' ?></b> akan di Putus Hubungan Kerja (PHK) karena melakukan pelanggaran Pasal 70 ayat (2e) Perjanjian Kerja Bersama CV. Karya Hidup Sentosa, yaitu : "Pekerja melakukan pelanggaran lagi setelah mendapat peringatan ketiga / terakhir yang masih berlaku", sehingga hubungan kerja antara Perusahaan dengan <b><?php echo $jenis ?> <?php echo ucwords(strtolower($key['nama'])).'('.$key['noind'].')' ?></b> berakhir per tanggal <b><?php echo $tgl_keluar.' '.$bln_keluar.' '.$thn_keluar ?></b></td>
     </tr>
     <tr>
       <td style="height: 15px; border-right: 1px solid black; border-bottom: 1px solid black;"></td>
@@ -176,7 +176,7 @@
 			<td style="border-right:1px solid black; border-bottom: 1px solid black; width: 200px; font-size: 14px; font-family: times;" valign="top">&nbsp;Kesimpulan</td>
       <td style="border-right:1px solid black; border-bottom: 1px solid black; width:10px; text-align: center font-size: 14px; font-family: times; text-align: center;" valign="top">:</td>
 			<td style="width:5px; border-bottom: 1px solid black;"></td>
-			<td style="border-bottom: 1px solid black; font-size: 14px; font-family: times; text-align: justify;">Kedua belah pihak sepakat untuk mengakhiri hubungan kerjanya secara Bipartit pertanggal <b><?php echo date('d').' '.$month.' '.date('Y') ?></b> dan Perusahaan memberikan kompensasi sesuai UU-RI No.13 tahun 2003<hr width="40%" style="margin-bottom: 0.5em; margin-right: auto;"></td>
+			<td style="border-bottom: 1px solid black; font-size: 14px; font-family: times; text-align: justify;">Kedua belah pihak sepakat untuk mengakhiri hubungan kerjanya secara Bipartit pertanggal <b><?php echo $tgl_keluar.' '.$bln_keluar.' '.$thn_keluar ?></b> dan Perusahaan memberikan kompensasi sesuai UU-RI No.13 tahun 2003<hr width="40%" style="margin-bottom: 0.5em; margin-right: auto;"></td>
     </tr>
   </table>
 	<br>
