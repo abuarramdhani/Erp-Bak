@@ -1873,6 +1873,11 @@ $route['MasterPekerja/Surat/SuratPengangkatanNonStaff']               =   'Maste
 $route['MasterPekerja/Surat/SuratPengangkatanNonStaff/(:any)']        =   'MasterPekerja/Surat/Pengangkatan/C_Index/$1';
 $route['MasterPekerja/Surat/SuratPengangkatanNonStaff/(:any)/(:any)'] =   'MasterPekerja/Surat/Pengangkatan/C_Index/$1/$2/$3';
 
+$route['MasterPekerja/Surat/SuratUsiaLanjut']               =   'MasterPekerja/Surat/UsiaLanjut/C_Index';
+$route['MasterPekerja/Surat/SuratUsiaLanjut/(:any)']        =   'MasterPekerja/Surat/UsiaLanjut/C_Index/$1';
+$route['MasterPekerja/Surat/SuratUsiaLanjut/(:any)/(:any)'] =   'MasterPekerja/Surat/UsiaLanjut/C_Index/$1/$2/$3';
+$route['MasterPekerja/Surat/SuratUsiaLanjut/(:any)/(:any)/(:any)'] =   'MasterPekerja/Surat/UsiaLanjut/C_Index/$1/$2/$3/$4';
+
 $route['MasterPekerja/Surat/BAPSP3']								=	'MasterPekerja/Surat/BAPSP3/C_Daftar';
 $route['MasterPekerja/Surat/BAPSP3/(:any)']							=	'MasterPekerja/Surat/BAPSP3/C_Daftar/$1';
 $route['MasterPekerja/Surat/BAPSP3/(:any)/(:any)']					=	'MasterPekerja/Surat/BAPSP3/C_Daftar/$1/$2';

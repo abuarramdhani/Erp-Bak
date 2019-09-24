@@ -51,12 +51,12 @@ $(document).ready(function() {
                 pageSize: 'A4',
             }
         ],
-        scrollX: true,
-        // scrollY: 400,
-        lengthMenu: [
-            [10, 25, 50, 100, -1],
-            [10, 25, 50, 100, "All"]
-        ],
+        // scrollX: true,
+        // // scrollY: 400,
+        // lengthMenu: [
+        //     [10, 25, 50, 100, -1],
+        //     [10, 25, 50, 100, "All"]
+        // ],
     });
 
     function SelectNama() {
@@ -770,6 +770,7 @@ $(function() {
     $('.MasterPekerja-Surat-txaPreview').redactor();
     $('#MasterPekerja-SuratPerbantuan-txaPreview').redactor();
     $('.MasterPekerja-SuratRotasi-txaPreview').redactor();
+    $('.MasterPekerja-SuratUsiaLanjut-txaPreview').redactor();
     $('.MasterPekerja-SuratPromosi-txaPreview').redactor();
     $('#MasterPekerja-Surat-txaFormatSurat').redactor();
     $('#MasterPekerja-SuratDemosi-txaPreview').redactor();
@@ -1024,6 +1025,29 @@ $('.MasterPekerja-SuratRotasi-btnPreview').click(function() {
             $('.MasterPekerja-SuratMutasi-txtNomorSurat').val(result['nomorSurat']);
             $('.MasterPekerja-SuratMutasi-txtHalSurat').val(result['halSurat']);
             $('.MasterPekerja-SuratMutasi-txtKodeSurat').val(result['kodeSurat']);
+        }
+    });
+
+});
+
+$('.MasterPekerja-SuratUsiaLanjut-btnPreview').click(function() {
+    $('#surat-loading').attr('hidden', false);
+    $(document).ajaxStop(function() {
+        $('#surat-loading').attr('hidden', true);
+    });
+    // var a = $('.MasterPekerja-Surat-DaftarPekerja').val(); alert(a);
+    $.ajax({
+        type: 'POST',
+        data: $('#MasterPekerja-SuratUsiaLanjut-FormCreate').serialize(),
+        url: baseurl + "MasterPekerja/Surat/SuratUsiaLanjut/prosesPreviewUsiaLanjut",
+        success: function(result) {
+            var result = JSON.parse(result);
+            console.log(result);
+
+            // CKEDITOR.instances['MasterPekerja-SuratRotasi-txaPreview'].setData(result['preview']);
+            $('.MasterPekerja-SuratUsiaLanjut-txaPreview').redactor('set', result['preview']);
+            // $('.MasterPekerja-SuratUsiaLanjut-txtNomorSurat').val(result['nomorSurat']);
+            // $('.MasterPekerja-SuratUsiaLanjut-txtHalSurat').val(result['halSurat']);
         }
     });
 
@@ -1354,6 +1378,10 @@ $(document).ready(function() {
     $('#Saksi_Janji3').select2({
       placeholder:"Input Nama Saksi"
     });
+});
+
+$(document).ready(function() {
+    $('#usialanjut').DataTable();
 });
 
 $(document).on('ready', function() {
