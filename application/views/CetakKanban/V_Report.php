@@ -26,8 +26,10 @@
 	}
 
 </style>
+
 <body>
 	<?php  
+
 	if($dataprint):
 	
 	foreach ($dataprint as $key => $value) {
@@ -141,8 +143,13 @@
 											<b style="font-size: 8px">Target PE SK</b>
 										</td>
 										<td>
-											<b style="font-size: 8px">:&nbsp;<?= floor($value[$p]['TARGETSK']).' '.$value[$p]['UOM_CODE'] ?>
-												(<?= round(($value[$p]['TARGET_PPIC']/$value[$p]['TARGETSK'])*100) ?> %)</b>
+											<b style="font-size: 8px">:&nbsp;<?php 
+											if($value[$p]['TARGETSK'] != NULL || $value[$p]['TARGETSK'] != 0){ 
+												echo floor($value[$p]['TARGETSK']).' '.$value[$p]['UOM_CODE']; 
+												echo " (".(round(($value[$p]['TARGET_PPIC']/$value[$p]['TARGETSK'])*100)." %)");
+											}else { 
+												echo " %"; } ?>
+											</b>
 											</td>
 									</tr>
 									<tr>
@@ -150,8 +157,14 @@
 												<b style="font-size: 8px">Target PE JS</b>
 											</td>
 											<td >
-												<b style="font-size: 8px">:&nbsp;<?= floor($value[$p]['TARGETJS']).' '.$value[$p]['UOM_CODE'] ?>
-													(<?= round(($value[$p]['TARGET_PPIC']/$value[$p]['TARGETJS'])*100) ?> %)</b>
+												<b style="font-size: 8px">:&nbsp;<?php
+												if ($value[$p]['TARGETJS'] != NULL || $value[$p]['TARGETJS'] != 0) {
+												  	echo floor($value[$p]['TARGETJS']).' '.$value[$p]['UOM_CODE'];
+													echo " (".(round(($value[$p]['TARGET_PPIC']/$value[$p]['TARGETJS'])*100)." %)");
+												  } else {
+												  	echo " %";
+												  } ?>
+												</b>
 												</td>
 									</tr>
 					</table>
