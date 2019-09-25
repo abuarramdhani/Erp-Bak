@@ -440,27 +440,43 @@ class M_Dtmasuk extends CI_Model
     {
         $ks = substr($ks, 0,7);
         $sql = "select
-                    kh.periode,
-                    kh.item_kode,
-                    km.item,
-                    sum(kh.jml_kebutuhan::int) jml_kebutuhan,
-                    sum(coalesce(bon.jml_bon::int, 0)) ttl_bon,
-                    sum(kh.jml_kebutuhan::int - coalesce(bon.jml_bon::int, 0)) sisa_saldo
+                    a.periode,
+                    a.kode_item item_kode,
+                    a.item,
+                    sum(a.jml_kebutuhan::int) jml_kebutuhan,
+                    sum(a.bon) ttl_bon,
+                    sum(a.sisa_saldo) sisa_saldo
                 from
-                    k3.k3n_hitung kh
-                left join k3.k3n_bon bon on
-                    kh.periode = bon.periode
-                    and kh.kodesie = bon.kodesie
-                    and kh.item_kode = bon.item_code ,
-                    k3.k3_master_item km
+                    (
+                        select kh.periode,
+                        kh.item_kode kode_item,
+                        km.item,
+                        kh.kodesie,
+                        kh.jml_kebutuhan,
+                        sum(coalesce(bon.jml_bon::int, 0)) bon,
+                        kh.jml_kebutuhan::int - sum(coalesce(bon.jml_bon::int, 0)) sisa_saldo
+                    from
+                        k3.k3n_hitung kh
+                    left join k3.k3n_bon bon on
+                        kh.periode = bon.periode
+                        and kh.kodesie = bon.kodesie
+                        and kh.item_kode = bon.item_code ,
+                        k3.k3_master_item km
+                    where
+                        kh.item_kode = km.kode_item
+                        and kh.periode = '$pr'
+                    group by
+                        kh.periode,
+                        kh.item_kode,
+                        kh.jml_kebutuhan,
+                        km.item,
+                        kh.kodesie) a
                 where
-                    kh.item_kode = km.kode_item
-                    and kh.kodesie like '$ks%'
-                    and kh.periode = '$pr'
+                    a.kodesie like '$ks%'
                 group by
-                    kh.periode,
-                    kh.item_kode,
-                    km.item
+                    a.periode,
+                    a.kode_item,
+                    a.item
                 order by
                     3";
                 // echo $sql;exit();
