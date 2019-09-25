@@ -49,7 +49,8 @@
 																		<a target="_blank" href="<?php echo site_url('HitungHlcm/HitungGaji/printProses/pdf/'.$valLink); ?>" class="fa fa-file-pdf-o fa-2x" data-toggle='tooltip' data-placement='bottom' data-original-title='Export PDF'></a>
 																	</td>
 																</tr>
-															<?php }
+															<?php $angka++;
+															}
 														}
 													?>
 												</tbody>

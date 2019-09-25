@@ -1,6 +1,8 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
 
+date_default_timezone_set('Asia/Jakarta');
+
 class C_ProsesGaji extends CI_Controller {
 
 	/**
@@ -84,6 +86,8 @@ class C_ProsesGaji extends CI_Controller {
 		$periode = explode(' - ', $periode);
 		$tanggalawal = date('Y-m-d',strtotime($periode[0]));
 		$tanggalakhir = date('Y-m-d',strtotime($periode[1]));
+		$keluar = $this->input->post('keluar');
+		$link .= '/'.$keluar;
 		$loker = $this->input->post('lokasi_kerja');
 		$puasa = $this->input->post('puasa');
 		if ($puasa == 'on' || $puasa == 'true' || $puasa == 't') {
@@ -95,7 +99,6 @@ class C_ProsesGaji extends CI_Controller {
 			$lokasi_kerja = "AND tp.lokasi_kerja='$loker'";
 			$link .= '/'.$loker;
 		}
-		
 
 		$this->checkSession();
 		$user_id = $this->session->userid;
@@ -112,9 +115,9 @@ class C_ProsesGaji extends CI_Controller {
 		$data['periodeGajiSelected'] = $this->input->post('periodeData');
 		$data['gaji']	= $this->M_prosesgaji->ambilNominalGaji();
 		if ($puasa == 'on' || $puasa == 'true' || $puasa == 't') {
-			$data['data'] 	= $this->M_prosesgaji->prosesHitung($tanggalawal,$tanggalakhir,$lokasi_kerja,$periode_puasa);
+			$data['data'] 	= $this->M_prosesgaji->prosesHitung($tanggalawal,$tanggalakhir,$lokasi_kerja,$keluar,$periode_puasa);
 		}else{
-			$data['data'] 	= $this->M_prosesgaji->prosesHitung($tanggalawal,$tanggalakhir,$lokasi_kerja);
+			$data['data'] 	= $this->M_prosesgaji->prosesHitung($tanggalawal,$tanggalakhir,$lokasi_kerja,$keluar);
 		}
 
 		// echo "<pre>";print_r($data['data']);
@@ -318,6 +321,9 @@ class C_ProsesGaji extends CI_Controller {
 			}
 			$arrData[$angka]['nama'] = $key['nama'];
 			$arrData[$angka]['pekerjaan'] = $key['pekerjaan'];
+			$arrData[$angka]['lokasi'] = $this->M_prosesgaji->getLocationCode($key['noind']);
+			$arrData[$angka]['tambahan'] = $this->M_prosesgaji->getTambahan($key['noind'],$tglawal,$tglakhir);
+			$arrData[$angka]['potongan'] = $this->M_prosesgaji->getPotongan($key['noind'],$tglawal,$tglakhir);
 			// echo $puasa."<p style='color: red;'>".$key['noind']."</p><br>";
 			$angka++;
 		}
@@ -334,7 +340,7 @@ class C_ProsesGaji extends CI_Controller {
 		
 	}
 
-	public function printProses($cetak,$periode,$lokasi = FALSE){
+	public function printProses($cetak,$periode,$keluar = FALSE,$lokasi = FALSE){
 		$plaintext_string = str_replace(array('-', '_', '~'), array('+', '/', '='), $periode);
 		$plaintext_string = $this->encrypt->decode($plaintext_string);
 		$data = array();
@@ -348,10 +354,31 @@ class C_ProsesGaji extends CI_Controller {
 		}
 		
 		if (isset($lokasi) and !empty($lokasi)) {
-			$data['data'] = $this->M_prosesgaji->getHlcmProsesPrint($periode,$lokasi);
+			if (isset($keluar) and !empty($keluar)) {
+				$data['data'] = $this->M_prosesgaji->getHlcmProsesPrint($periode,$keluar,$lokasi);
+			}else{
+				$data['data'] = $this->M_prosesgaji->getHlcmProsesPrint($periode,FALSE,$lokasi);
+			}
 		}else{
-			$data['data'] = $this->M_prosesgaji->getHlcmProsesPrint($periode);
+			if (isset($keluar) and !empty($keluar)) {
+				$data['data'] = $this->M_prosesgaji->getHlcmProsesPrint($periode,$keluar);
+			}else{
+				$data['data'] = $this->M_prosesgaji->getHlcmProsesPrint($periode);
+			}
 		}
+		// echo "<pre>";
+		// print_r($data['data']);
+		// exit();
+		$angka = 0;
+		foreach ($data['data'] as $key) {
+			$data['data'][$angka]['tambahan'] = $this->M_prosesgaji->getTambahan($key['noind'],$key['tgl_awal_periode'],$key['tgl_akhir_periode']);
+			$data['data'][$angka]['potongan'] = $this->M_prosesgaji->getPotongan($key['noind'],$key['tgl_awal_periode'],$key['tgl_akhir_periode']);
+			$data['data'][$angka]['lokasi'] = $this->M_prosesgaji->getLocationCode($key['noind']);
+			$angka++;
+		}
+		// echo "<pre>";
+		// print_r($data['data']);
+		// exit();
 
 		if ($cetak == 'pdf') {
 			$this->load->library('pdf');
@@ -360,49 +387,120 @@ class C_ProsesGaji extends CI_Controller {
 			$filename = "Penggajian HLCM Periode - ".$data['periode'].".pdf";
 			$html = $this->load->view('UpahHlCm/ProsesGaji/V_cetak', $data, true);
 			// print_r($data['data']);exit();
-			// $this->load->view('UpahHlCm/ProsesGaji/V_cetak', $data['data']);
+			// $this->load->view('UpahHlCm/ProsesGaji/V_cetak', $data);exit();
 
 			$stylesheet1 = file_get_contents(base_url('assets/plugins/bootstrap/3.3.7/css/bootstrap.css'));
+			$pdf->SetHTMLFooter("<i style='font-size: 8pt'>Halaman ini dicetak melalui Aplikasi QuickERP-HLCM pada oleh ".$this->session->user." tgl. ".date('d/m/Y H:i:s').". Halaman {PAGENO} dari {nb}</i> ");
 			$pdf->WriteHTML($stylesheet1,1);
 			$pdf->WriteHTML($html, 2);
 			$pdf->Output($filename, 'I');
 		}elseif ($cetak == 'xls'){
 			$this->load->library('excel');
 			$this->excel->getActiveSheet()->setCellValue('A1','No');
-			$this->excel->getActiveSheet()->setCellValue('B1','Nama');
-			$this->excel->getActiveSheet()->setCellValue('C1','Status');
-			$this->excel->getActiveSheet()->setCellValue('D1','Komponen');
-			$this->excel->getActiveSheet()->setCellValue('D2','Gaji Pokok');
-			$this->excel->getActiveSheet()->setCellValue('E2','Uang Makan');
-			$this->excel->getActiveSheet()->setCellValue('F2','Uang Makan Puasa');
-			$this->excel->getActiveSheet()->setCellValue('G2','Lembur');
-			$this->excel->getActiveSheet()->setCellValue('H1','Nominal');
-			$this->excel->getActiveSheet()->setCellValue('H2','Gaji Pokok');
-			$this->excel->getActiveSheet()->setCellValue('I2','Uang Makan');
-			$this->excel->getActiveSheet()->setCellValue('J2','Uang Makan Puasa');
-			$this->excel->getActiveSheet()->setCellValue('K2','Lembur');
-			$this->excel->getActiveSheet()->setCellValue('L1','Total Gaji');
-			$this->excel->getActiveSheet()->mergeCells('A1:A2');
-			$this->excel->getActiveSheet()->mergeCells('B1:B2');
-			$this->excel->getActiveSheet()->mergeCells('C1:C2');
-			$this->excel->getActiveSheet()->mergeCells('D1:G1');
-			$this->excel->getActiveSheet()->mergeCells('H1:K1');
-			$this->excel->getActiveSheet()->mergeCells('L1:L2');
+			$this->excel->getActiveSheet()->setCellValue('B1','No. Induk');
+			$this->excel->getActiveSheet()->setCellValue('C1','Nama');
+			$this->excel->getActiveSheet()->setCellValue('D1','Status');
+			$this->excel->getActiveSheet()->setCellValue('E1','Lokasi Kerja');
+			$this->excel->getActiveSheet()->mergeCells('A1:A3');
+			$this->excel->getActiveSheet()->mergeCells('B1:B3');
+			$this->excel->getActiveSheet()->mergeCells('C1:C3');
+			$this->excel->getActiveSheet()->mergeCells('D1:D3');
+			$this->excel->getActiveSheet()->mergeCells('E1:E3');
 
-			$a = 1;
+			$this->excel->getActiveSheet()->setCellValue('F1','Proses Gaji');
+			$this->excel->getActiveSheet()->setCellValue('F2','Komponen');
+			$this->excel->getActiveSheet()->setCellValue('F3','Gaji Pokok');
+			$this->excel->getActiveSheet()->setCellValue('G3','Uang Makan');
+			$this->excel->getActiveSheet()->setCellValue('H3','Uang Makan Puasa');
+			$this->excel->getActiveSheet()->setCellValue('I3','Lembur');
+			$this->excel->getActiveSheet()->setCellValue('J2','Nominal');
+			$this->excel->getActiveSheet()->setCellValue('J3','Gaji Pokok');
+			$this->excel->getActiveSheet()->setCellValue('K3','Uang Makan');
+			$this->excel->getActiveSheet()->setCellValue('L3','Uang Makan Puasa');
+			$this->excel->getActiveSheet()->setCellValue('M3','Lembur');
+			$this->excel->getActiveSheet()->mergeCells('F1:M1');
+			$this->excel->getActiveSheet()->mergeCells('F2:I2');
+			$this->excel->getActiveSheet()->mergeCells('J2:M2');
+
+			$this->excel->getActiveSheet()->setCellValue('N1','Tambahan');
+			$this->excel->getActiveSheet()->setCellValue('N2','Komponen');
+			$this->excel->getActiveSheet()->setCellValue('N3','Gaji Pokok');
+			$this->excel->getActiveSheet()->setCellValue('O3','Uang Makan');
+			$this->excel->getActiveSheet()->setCellValue('P3','Lembur');
+			$this->excel->getActiveSheet()->setCellValue('Q2','Nominal');
+			$this->excel->getActiveSheet()->setCellValue('Q3','Gaji Pokok');
+			$this->excel->getActiveSheet()->setCellValue('R3','Uang Makan');
+			$this->excel->getActiveSheet()->setCellValue('S3','Lembur');
+			$this->excel->getActiveSheet()->mergeCells('N1:S1');
+			$this->excel->getActiveSheet()->mergeCells('N2:P2');
+			$this->excel->getActiveSheet()->mergeCells('Q2:S2');
+
+			$this->excel->getActiveSheet()->setCellValue('T1','Potongan');
+			$this->excel->getActiveSheet()->setCellValue('T2','Komponen');
+			$this->excel->getActiveSheet()->setCellValue('T3','Gaji Pokok');
+			$this->excel->getActiveSheet()->setCellValue('U3','Uang Makan');
+			$this->excel->getActiveSheet()->setCellValue('V3','Lembur');
+			$this->excel->getActiveSheet()->setCellValue('W2','Nominal');
+			$this->excel->getActiveSheet()->setCellValue('W3','Gaji Pokok');
+			$this->excel->getActiveSheet()->setCellValue('X3','Uang Makan');
+			$this->excel->getActiveSheet()->setCellValue('Y3','Lembur');
+			$this->excel->getActiveSheet()->mergeCells('T1:Y1');
+			$this->excel->getActiveSheet()->mergeCells('T2:V2');
+			$this->excel->getActiveSheet()->mergeCells('W2:Y2');
+
+			$this->excel->getActiveSheet()->setCellValue('Z1','Total Gaji');
+			$this->excel->getActiveSheet()->mergeCells('Z1:Z3');			
+
+			$a = 2;
 			foreach ($data['data'] as $val) {
-				$this->excel->getActiveSheet()->setCellValue('A'.($a+2),$a);
-				$this->excel->getActiveSheet()->setCellValue('B'.($a+2),$val['nama']);
-				$this->excel->getActiveSheet()->setCellValue('C'.($a+2),$val['pekerjaan']);
-				$this->excel->getActiveSheet()->setCellValueExplicit('D'.($a+2),number_format($val['jml_gp'],'2',',','.'),PHPExcel_Cell_DataType::TYPE_STRING);
-				$this->excel->getActiveSheet()->setCellValueExplicit('E'.($a+2),number_format($val['jml_um'],'2',',','.'),PHPExcel_Cell_DataType::TYPE_STRING);
-				$this->excel->getActiveSheet()->setCellValueExplicit('F'.($a+2),number_format($val['jml_ump'],'2',',','.'),PHPExcel_Cell_DataType::TYPE_STRING);
-				$this->excel->getActiveSheet()->setCellValueExplicit('G'.($a+2),number_format($val['jml_lbr'],'2',',','.'),PHPExcel_Cell_DataType::TYPE_STRING);
-				$this->excel->getActiveSheet()->setCellValueExplicit('H'.($a+2),number_format($val['gp'],'0',',','.'),PHPExcel_Cell_DataType::TYPE_STRING);
-				$this->excel->getActiveSheet()->setCellValueExplicit('I'.($a+2),number_format($val['um'],'0',',','.'),PHPExcel_Cell_DataType::TYPE_STRING);
-				$this->excel->getActiveSheet()->setCellValueExplicit('J'.($a+2),number_format($val['ump'],'0',',','.'),PHPExcel_Cell_DataType::TYPE_STRING);
-				$this->excel->getActiveSheet()->setCellValueExplicit('K'.($a+2),number_format($val['lmbr'],'0',',','.'),PHPExcel_Cell_DataType::TYPE_STRING);
-				$this->excel->getActiveSheet()->setCellValueExplicit('L'.($a+2),number_format($val['total_bayar'],'0',',','.'),PHPExcel_Cell_DataType::TYPE_STRING);
+				$this->excel->getActiveSheet()->setCellValue('A'.($a+2),$a-1);
+				$this->excel->getActiveSheet()->setCellValue('B'.($a+2),$val['noind']);
+				$this->excel->getActiveSheet()->setCellValue('C'.($a+2),$val['nama']);
+				$this->excel->getActiveSheet()->setCellValue('D'.($a+2),$val['pekerjaan']);
+				$this->excel->getActiveSheet()->setCellValue('E'.($a+2),$val['lokasi']);
+				$this->excel->getActiveSheet()->setCellValueExplicit('F'.($a+2),number_format($val['jml_gp'],'2',',','.'),PHPExcel_Cell_DataType::TYPE_STRING);
+				$this->excel->getActiveSheet()->setCellValueExplicit('G'.($a+2),number_format($val['jml_um'],'2',',','.'),PHPExcel_Cell_DataType::TYPE_STRING);
+				$this->excel->getActiveSheet()->setCellValueExplicit('H'.($a+2),number_format($val['jml_ump'],'2',',','.'),PHPExcel_Cell_DataType::TYPE_STRING);
+				$this->excel->getActiveSheet()->setCellValueExplicit('I'.($a+2),number_format($val['jml_lbr'],'2',',','.'),PHPExcel_Cell_DataType::TYPE_STRING);
+				$this->excel->getActiveSheet()->setCellValueExplicit('J'.($a+2),number_format($val['gp'],'0',',','.'),PHPExcel_Cell_DataType::TYPE_STRING);
+				$this->excel->getActiveSheet()->setCellValueExplicit('K'.($a+2),number_format($val['um'],'0',',','.'),PHPExcel_Cell_DataType::TYPE_STRING);
+				$this->excel->getActiveSheet()->setCellValueExplicit('L'.($a+2),number_format($val['ump'],'0',',','.'),PHPExcel_Cell_DataType::TYPE_STRING);
+				$this->excel->getActiveSheet()->setCellValueExplicit('M'.($a+2),number_format($val['lmbr'],'0',',','.'),PHPExcel_Cell_DataType::TYPE_STRING);
+				if (!empty($val['tambahan'])) {
+					$this->excel->getActiveSheet()->setCellValueExplicit('N'.($a+2),number_format($val['tambahan']->gp,'2',',','.'),PHPExcel_Cell_DataType::TYPE_STRING);
+					$this->excel->getActiveSheet()->setCellValueExplicit('O'.($a+2),number_format($val['tambahan']->um,'2',',','.'),PHPExcel_Cell_DataType::TYPE_STRING);
+					$this->excel->getActiveSheet()->setCellValueExplicit('P'.($a+2),number_format($val['tambahan']->lembur,'2',',','.'),PHPExcel_Cell_DataType::TYPE_STRING);
+					$this->excel->getActiveSheet()->setCellValueExplicit('Q'.($a+2),number_format($val['tambahan']->nominal_gp,'0',',','.'),PHPExcel_Cell_DataType::TYPE_STRING);
+					$this->excel->getActiveSheet()->setCellValueExplicit('R'.($a+2),number_format($val['tambahan']->nominal_um,'0',',','.'),PHPExcel_Cell_DataType::TYPE_STRING);
+					$this->excel->getActiveSheet()->setCellValueExplicit('S'.($a+2),number_format($val['tambahan']->nominal_lembur,'0',',','.'),PHPExcel_Cell_DataType::TYPE_STRING);
+					$val['total_bayar'] += ($val['tambahan']->nominal_gp + $val['tambahan']->nominal_um + $val['tambahan']->nominal_lembur);
+				}else{
+					$this->excel->getActiveSheet()->setCellValueExplicit('N'.($a+2),number_format(0,'2',',','.'),PHPExcel_Cell_DataType::TYPE_STRING);
+					$this->excel->getActiveSheet()->setCellValueExplicit('O'.($a+2),number_format(0,'2',',','.'),PHPExcel_Cell_DataType::TYPE_STRING);
+					$this->excel->getActiveSheet()->setCellValueExplicit('P'.($a+2),number_format(0,'2',',','.'),PHPExcel_Cell_DataType::TYPE_STRING);
+					$this->excel->getActiveSheet()->setCellValueExplicit('Q'.($a+2),number_format(0,'0',',','.'),PHPExcel_Cell_DataType::TYPE_STRING);
+					$this->excel->getActiveSheet()->setCellValueExplicit('R'.($a+2),number_format(0,'0',',','.'),PHPExcel_Cell_DataType::TYPE_STRING);
+					$this->excel->getActiveSheet()->setCellValueExplicit('S'.($a+2),number_format(0,'0',',','.'),PHPExcel_Cell_DataType::TYPE_STRING);
+				}
+
+				if (!empty($val['potongan'])) {
+					$this->excel->getActiveSheet()->setCellValueExplicit('T'.($a+2),number_format($val['potongan']->gp,'2',',','.'),PHPExcel_Cell_DataType::TYPE_STRING);
+					$this->excel->getActiveSheet()->setCellValueExplicit('U'.($a+2),number_format($val['potongan']->um,'2',',','.'),PHPExcel_Cell_DataType::TYPE_STRING);
+					$this->excel->getActiveSheet()->setCellValueExplicit('V'.($a+2),number_format($val['potongan']->lembur,'2',',','.'),PHPExcel_Cell_DataType::TYPE_STRING);
+					$this->excel->getActiveSheet()->setCellValueExplicit('W'.($a+2),number_format($val['potongan']->nominal_gp,'0',',','.'),PHPExcel_Cell_DataType::TYPE_STRING);
+					$this->excel->getActiveSheet()->setCellValueExplicit('X'.($a+2),number_format($val['potongan']->nominal_um,'0',',','.'),PHPExcel_Cell_DataType::TYPE_STRING);
+					$this->excel->getActiveSheet()->setCellValueExplicit('Y'.($a+2),number_format($val['potongan']->nominal_lembur,'0',',','.'),PHPExcel_Cell_DataType::TYPE_STRING);
+					$val['total_bayar'] -= ($val['potongan']->nominal_gp + $val['potongan']->nominal_um + $val['potongan']->nominal_lembur);
+				}else{
+					$this->excel->getActiveSheet()->setCellValueExplicit('T'.($a+2),number_format(0,'2',',','.'),PHPExcel_Cell_DataType::TYPE_STRING);
+					$this->excel->getActiveSheet()->setCellValueExplicit('U'.($a+2),number_format(0,'2',',','.'),PHPExcel_Cell_DataType::TYPE_STRING);
+					$this->excel->getActiveSheet()->setCellValueExplicit('V'.($a+2),number_format(0,'2',',','.'),PHPExcel_Cell_DataType::TYPE_STRING);
+					$this->excel->getActiveSheet()->setCellValueExplicit('W'.($a+2),number_format(0,'0',',','.'),PHPExcel_Cell_DataType::TYPE_STRING);
+					$this->excel->getActiveSheet()->setCellValueExplicit('X'.($a+2),number_format(0,'0',',','.'),PHPExcel_Cell_DataType::TYPE_STRING);
+					$this->excel->getActiveSheet()->setCellValueExplicit('Y'.($a+2),number_format(0,'0',',','.'),PHPExcel_Cell_DataType::TYPE_STRING);
+				}
+
+				$this->excel->getActiveSheet()->setCellValueExplicit('Z'.($a+2),number_format($val['total_bayar'],'0',',','.'),PHPExcel_Cell_DataType::TYPE_STRING);
 				$a++;
 			}
 			$this->excel->getActiveSheet()->setCellValue('A'.($a+3),"Periode : ".$data['periode']);
@@ -418,7 +516,7 @@ class C_ProsesGaji extends CI_Controller {
 						'horizontal' =>PHPExcel_Style_Alignment::HORIZONTAL_LEFT,
 						'vertical' => PHPExcel_Style_Alignment::VERTICAL_CENTER
 					)
-				),'A1:L'.($a+1));
+				),'A1:Z'.($a+1));
 			$this->excel->getActiveSheet()->duplicateStyleArray(
 				array(
 					'alignment' => array(
@@ -430,7 +528,7 @@ class C_ProsesGaji extends CI_Controller {
 						'startcolor' => array(
 							'argb' => '0000ccff')
 					)
-				),'A1:L2');
+				),'A1:Z3');
 			$this->excel->getActiveSheet()->duplicateStyleArray(
 				array(
 					'alignment' => array(
@@ -444,7 +542,7 @@ class C_ProsesGaji extends CI_Controller {
 						'horizontal' => PHPExcel_Style_Alignment::HORIZONTAL_CENTER,
 						'vertical' => PHPExcel_Style_Alignment::VERTICAL_CENTER
 					)
-				),'D3:L'.($a+1));
+				),'D3:Z'.($a+1));
 			$this->excel->getActiveSheet()->getColumnDimension('A')->setWidth('5');
 			$this->excel->getActiveSheet()->getColumnDimension('B')->setWidth('30');
 			$this->excel->getActiveSheet()->getColumnDimension('C')->setWidth('20');
