@@ -2240,6 +2240,22 @@ $route['HitungHlcm/Arsip'] 	= 'UpahHlCm/MenuCetak/C_Arsip';
 $route['HitungHlcm/Arsip/(:any)'] 	= 'UpahHlCm/MenuCetak/C_Arsip/$1';
 $route['HitungHlcm/Arsip/(:any)/(:any)'] 	= 'UpahHlCm/MenuCetak/C_Arsip/$1/$2';
 
+$route['HitungHlcm/TambahanPotongan'] = 'UpahHlCm/ProsesGaji/C_TambPot';
+$route['HitungHlcm/TambahanPotongan/(:any)'] = 'UpahHlCm/ProsesGaji/C_TambPot/$1';
+$route['HitungHlcm/TambahanPotongan/(:any)/(:any)'] = 'UpahHlCm/ProsesGaji/C_TambPot/$1/$2';
+$route['HitungHlcm/TambahanPotongan/(:any)/(:any)/(:any)'] = 'UpahHlCm/ProsesGaji/C_TambPot/$1/$2/$3';
+$route['HitungHlcm/HitungGaji/(:any)/(:any)/(:any)/(:any)/(:any)'] 	= 'UpahHlCm/ProsesGaji/C_ProsesGaji/$1/$2/$3/$4/$5';
+$route['HitungHlcm/HitungGaji/(:any)/(:any)/(:any)/(:any)/(:any)/(:any)'] 	= 'UpahHlCm/ProsesGaji/C_ProsesGaji/$1/$2/$3/$4/$5/$6';
+$route['HitungHlcm/DetailPresensi'] = "UpahHlCm/PresensiPekerja/C_DetailPresensi";
+$route['HitungHlcm/DetailPresensi/(:any)'] = "UpahHlCm/PresensiPekerja/C_DetailPresensi/$1";
+$route['HitungHlcm/DetailPresensi/(:any)/(:any)'] = "UpahHlCm/PresensiPekerja/C_DetailPresensi/$1/$2";
+$route['HitungHlcm/RekapPresensi'] = "UpahHlCm/PresensiPekerja/C_RekapPresensi";
+$route['HitungHlcm/RekapPresensi/(:any)'] = "UpahHlCm/PresensiPekerja/C_RekapPresensi/$1";
+$route['HitungHlcm/RekapPresensi/(:any)/(:any)'] = "UpahHlCm/PresensiPekerja/C_RekapPresensi/$1/$2";
+$route['HitungHlcm/ArsipPresensi'] = "UpahHlCm/PresensiPekerja/C_ArsipPresensi";
+$route['HitungHlcm/ArsipPresensi/(:any)'] = "UpahHlCm/PresensiPekerja/C_ArsipPresensi/$1";
+$route['HitungHlcm/ArsipPresensi/(:any)/(:any)'] = "UpahHlCm/PresensiPekerja/C_ArsipPresensi/$1/$2";
+
 //------------------------------------------------Inventory------------------------------------------------//
 //Move Order
 $route['InventoryManagement/CreateMoveOrder'] = 'Inventory/MainMenu/MoveOrder/C_MoveOrder';
