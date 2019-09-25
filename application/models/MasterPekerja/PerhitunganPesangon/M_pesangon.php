@@ -18,7 +18,7 @@ class M_pesangon extends CI_Model {
             										rtrim(tseksi.dept) as departemen,
             rtrim(lokker.lokasi_kerja) as lokasi_kerja,
             (
-				case 	when 	pri.kd_pkj is not null
+				case 	when 	(pri.kd_pkj is not null || pri.kd_pkj = '0')
 				then 	 rtrim(tpekerjaan.pekerjaan)
 				else     pri.jabatan
 				end
@@ -298,7 +298,7 @@ class M_pesangon extends CI_Model {
             										rtrim(tseksi.dept) as departemen,
             rtrim(lokker.lokasi_kerja) as lokasi_kerja,
             (
-				case 	when 	pri.kd_pkj is not null
+				case 	when 	(pri.kd_pkj is not null || pri.kd_pkj = '0')
 				then 	 rtrim(tpekerjaan.pekerjaan)
 				else     pri.jabatan
 				end
