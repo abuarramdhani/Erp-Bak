@@ -1,6 +1,8 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
 
+date_default_timezone_set('Asia/Jakarta');
+
 class C_Rekap extends CI_Controller {
 
 	/**
@@ -83,13 +85,13 @@ class C_Rekap extends CI_Controller {
 		$periodew = explode(' - ', $data['periode']);
 		$tanggalawal = date('Y-m-d',strtotime($periodew[0]));
 		$tanggalakhir = date('Y-m-d',strtotime($periodew[1]));
-
+		$status = $this->input->post('statusPekerja');
 		$tgl = date('F-Y',strtotime($tanggalawal));
 		$noind = "";
-
-		$data['kom'] = $this->M_prosesgaji->getHlcmSlipGajiPrint($tanggalawal,$tanggalakhir,$noind);
+		$ttd_dibuat = $this->M_prosesgaji->getApproval("Rekap");
+		$data['kom'] = $this->M_prosesgaji->getHlcmSlipGajiPrint($tanggalawal,$tanggalakhir,$noind,$status);
 		$data['rekap'] = $this->M_cetakdata->ambildataRekap();
-
+		$data['potongan_tambahan'] = $this->M_cetakdata->ambilPotTam($tanggalawal,$tanggalakhir);
 		$submit = $this->input->post('txtSubmit');
 		if ($submit == 'Cetak Pdf') {
 			$kom 	= $data['kom'];
@@ -115,20 +117,31 @@ class C_Rekap extends CI_Controller {
 					'atas_nama' 	=> $an,
 					'bank' 			=> $bank,
 				);
+				if (!empty($data['potongan_tambahan'])) {
+					
+					foreach ($data['potongan_tambahan'] as $pot_tam) {
+						if($key['noind'] == $pot_tam['noind']){
+							$data['res'][$row]['total_terima'] += $pot_tam['total_gp'] + $pot_tam['total_um'] + $pot_tam['total_lembur'];
+							$total_semua += $pot_tam['total_gp'] + $pot_tam['total_um'] + $pot_tam['total_lembur'];
+						}
+					}
+
+				}
 
 				$row++;
 			}
 
+			$data['dibuat'] = $ttd_dibuat;
 			$data['total_semua'] = $total_semua;
 
 			$pdf = $this->pdf->load();
 			$pdf = new mPDF('utf-8', 'F4', 8, '', 12, 15, 15, 15, 10, 20);
 			$filename = 'Rekap-'.$tgl.'.pdf';
-
+			// $this->load->view('UpahHlCm/MenuCetak/V_cetakRekap', $data);
 			$html = $this->load->view('UpahHlCm/MenuCetak/V_cetakRekap', $data, true);
-
+			$pdf->SetHTMLFooter("<i style='font-size: 8pt'>Halaman ini dicetak melalui Aplikasi QuickERP-HLCM pada oleh ".$this->session->user." tgl. ".date('d/m/Y H:i:s').". Halaman {PAGENO} dari {nb}</i>");
 			$pdf->WriteHTML($html, 2);
-			$pdf->Output($filename, 'D');
+			$pdf->Output($filename, 'I');
 		}else{
 			$kom 	= $data['kom'];
 			$rekap 	= $data['rekap'];
@@ -155,6 +168,10 @@ class C_Rekap extends CI_Controller {
 			$row = 5;
 			$total_semua = 0;
 			$no = 1;
+			$coorCell = $this->excel->getActiveSheet()->getCellByColumnAndRow(0,$row);
+			$coorCellSave1 =$coorCell->getCoordinate();
+			$coorCell = $this->excel->getActiveSheet()->getCellByColumnAndRow(7,$row);
+			$coorCellSave2 =$coorCell->getCoordinate();
 			foreach ($kom as $key) {
 				if ($key['lokasi_kerja'] == '02') {
 					$total_semua += $key['total_bayar'];
@@ -162,6 +179,12 @@ class C_Rekap extends CI_Controller {
 					$worksheet->setCellValueByColumnAndRow(1,$row,$tglterima);
 					$worksheet->setCellValueByColumnAndRow(3,$row,$key['nama']);
 					$this->excel->getActiveSheet()->getStyle('E'.$row)->getNumberFormat()->setFormatCode('#,##0');
+					foreach ($data['potongan_tambahan'] as $pot_tam) {
+						if($key['noind'] == $pot_tam['noind']){
+							$key['total_bayar'] += $pot_tam['total_gp'] + $pot_tam['total_um'] + $pot_tam['total_lembur'];
+							$total_semua += $pot_tam['total_gp'] + $pot_tam['total_um'] + $pot_tam['total_lembur'];
+						}
+					}
 					$this->excel->getActiveSheet()->setCellValueExplicit('E'.$row,$key['total_bayar'],PHPExcel_Cell_DataType::TYPE_NUMERIC);
 					foreach ($rekap as $val) {
 						if ($key['noind'] == $val['noind']) {
@@ -191,6 +214,27 @@ class C_Rekap extends CI_Controller {
 			),$coorCellSave1.':'.$coorCellSave2);
 			$row++;
 
+			$coorCell = $this->excel->getActiveSheet()->getCellByColumnAndRow(7,$row);
+			$coorCellSave2 =$coorCell->getCoordinate();
+			$coorCell = $this->excel->getActiveSheet()->getCellByColumnAndRow(3,$row);
+			$coorCellSave9 =$coorCell->getCoordinate();
+			$coorCell = $this->excel->getActiveSheet()->getCellByColumnAndRow(5,$row);
+			$coorCellSave10 =$coorCell->getCoordinate();
+			$row++;
+			$no++;
+			$coorCell = $this->excel->getActiveSheet()->getCellByColumnAndRow(3,($row+1));
+			$coorCellSave3 =$coorCell->getCoordinate();
+			$coorCell = $this->excel->getActiveSheet()->getCellByColumnAndRow(4,($row+1));
+			$coorCellSave4 =$coorCell->getCoordinate();
+			$coorCell = $this->excel->getActiveSheet()->getCellByColumnAndRow(6,($row+1));
+			$coorCellSave5 =$coorCell->getCoordinate();
+			$coorCell = $this->excel->getActiveSheet()->getCellByColumnAndRow(6,($row+5));
+			$coorCellSave6 =$coorCell->getCoordinate();
+			$coorCell = $this->excel->getActiveSheet()->getCellByColumnAndRow(6,($row+6));
+			$coorCellSave7 =$coorCell->getCoordinate();
+			$coorCell = $this->excel->getActiveSheet()->getCellByColumnAndRow(7,($row+6));
+			$coorCellSave8 =$coorCell->getCoordinate();
+			
 			foreach ($kom as $key) {
 				if ($key['lokasi_kerja'] == '01') {
 					$total_semua += $key['total_bayar'];
@@ -198,6 +242,16 @@ class C_Rekap extends CI_Controller {
 					$worksheet->setCellValueByColumnAndRow(1,$row,$tglterima);
 					$worksheet->setCellValueByColumnAndRow(3,$row,$key['nama']);
 					$this->excel->getActiveSheet()->getStyle('E'.$row)->getNumberFormat()->setFormatCode('#,##0');
+					if (!empty($data['potongan_tambahan'])) {
+						
+						foreach ($data['potongan_tambahan'] as $pot_tam) {
+							if($key['noind'] == $pot_tam['noind']){
+								$key['total_bayar'] += $pot_tam['total_gp'] + $pot_tam['total_um'] + $pot_tam['total_lembur'];
+								$total_semua += $pot_tam['total_gp'] + $pot_tam['total_um'] + $pot_tam['total_lembur'];
+							}
+						}
+						
+					}
 					$this->excel->getActiveSheet()->setCellValueExplicit('E'.$row,$key['total_bayar'],PHPExcel_Cell_DataType::TYPE_NUMERIC);
 					foreach ($rekap as $val) {
 						if ($key['noind'] == $val['noind']) {
@@ -227,6 +281,20 @@ class C_Rekap extends CI_Controller {
 					$coorCellSave7 =$coorCell->getCoordinate();
 					$coorCell = $this->excel->getActiveSheet()->getCellByColumnAndRow(7,($row+6));
 					$coorCellSave8 =$coorCell->getCoordinate();
+					$coorCell = $this->excel->getActiveSheet()->getCellByColumnAndRow(1,($row+5));
+					$coorCellSave9 =$coorCell->getCoordinate();
+					$coorCell = $this->excel->getActiveSheet()->getCellByColumnAndRow(1,($row+6));
+					$coorCellSave10 =$coorCell->getCoordinate();
+					$coorCell = $this->excel->getActiveSheet()->getCellByColumnAndRow(3,($row+5));
+					$coorCellSave11 =$coorCell->getCoordinate();
+					$coorCell = $this->excel->getActiveSheet()->getCellByColumnAndRow(3,($row+6));
+					$coorCellSave12 =$coorCell->getCoordinate();
+					$coorCell = $this->excel->getActiveSheet()->getCellByColumnAndRow(1,($row+2));
+					$coorCellSave13 =$coorCell->getCoordinate();
+					$coorCell = $this->excel->getActiveSheet()->getCellByColumnAndRow(3,($row+2));
+					$coorCellSave14 =$coorCell->getCoordinate();
+					$coorCell = $this->excel->getActiveSheet()->getCellByColumnAndRow(6,($row+2));
+					$coorCellSave15 =$coorCell->getCoordinate();
 				}
 			}
 
@@ -263,9 +331,30 @@ class C_Rekap extends CI_Controller {
 				};
 				$ttd .= date('Y');
 			$worksheet->setCellValue($coorCellSave5,'Yogyakarta, '.$ttd);
-			$worksheet->setCellValue($coorCellSave6,'Taufiq Giri Ichwanusofa');
-			$worksheet->setCellValue($coorCellSave7,'Kepala Seksi Electronic Data Processing');
+			foreach ($ttd_dibuat as $ttd_buat) {
+				if ($ttd_buat['posisi'] == "mengetahui") {
+					$worksheet->setCellValue($coorCellSave13,"Mengetahui");
+					$worksheet->setCellValue($coorCellSave9,ucwords(strtolower($ttd_buat['nama'])));
+					$worksheet->setCellValue($coorCellSave10,ucwords(strtolower($ttd_buat['jabatan'])));
+				}
+			}
+			foreach ($ttd_dibuat as $ttd_buat) {
+				if ($ttd_buat['posisi'] == "menyetujui") {
+					$worksheet->setCellValue($coorCellSave14,"Menyetujui");
+					$worksheet->setCellValue($coorCellSave11,ucwords(strtolower($ttd_buat['nama'])));
+					$worksheet->setCellValue($coorCellSave12,ucwords(strtolower($ttd_buat['jabatan'])));
+				}
+			}
+			foreach ($ttd_dibuat as $ttd_buat) {
+				if ($ttd_buat['posisi'] == "dibuat") {
+					$worksheet->setCellValue($coorCellSave15,"Dibuat Oleh");
+					$worksheet->setCellValue($coorCellSave6,ucwords(strtolower($ttd_buat['nama'])));
+					$worksheet->setCellValue($coorCellSave7,ucwords(strtolower($ttd_buat['jabatan'])));
+				}
+			}
 			$worksheet->getStyle($coorCellSave6)->getFont()->setUnderline(true);
+			$worksheet->getStyle($coorCellSave9)->getFont()->setUnderline(true);
+			$worksheet->getStyle($coorCellSave11)->getFont()->setUnderline(true);
 
 			$this->excel->getActiveSheet()->getColumnDimension('A')->setWidth('5');
 			$this->excel->getActiveSheet()->getColumnDimension('B')->setWidth('20');

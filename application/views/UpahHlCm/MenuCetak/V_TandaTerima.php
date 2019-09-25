@@ -7,7 +7,7 @@
 			</div>
 			<div class="panel-body">
 				<br>
-				<form style="margin-left: 200px" method="POST" action="<?php echo base_url('HitungHlcm/TandaTerima/cetakpdf');?>">
+				<form target="_blank" style="margin-left: 200px" method="POST" action="<?php echo base_url('HitungHlcm/TandaTerima/cetakpdf');?>">
 					<div class="row">
 						<div class="form-group">
 							<div class="col-lg-1">

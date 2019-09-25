@@ -3,6 +3,8 @@ defined('BASEPATH') or exit('No Direct Script Access Allowed');
 /**
  * 
  */
+date_default_timezone_set('Asia/Jakarta');
+
 class C_Arsip extends CI_Controller
 {
 	

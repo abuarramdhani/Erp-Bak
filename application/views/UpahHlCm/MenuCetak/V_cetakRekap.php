@@ -20,7 +20,7 @@
 	<div style="width: 100%;height: 10px; border-left: 1px solid black; border-right: 1px solid black">
 		
 	</div>
-	<table style="width: 100%;border-collapse: collapse;font-size: 12px;page-break-after: always;border: 1px solid black">
+	<table style="width: 100%;border-collapse: collapse;font-size: 12px;page-break-after: always;border: 1px solid black;">
 		<tr style="background-color: #ccffcc;">
 			<td style="border-top: 1px solid black;border-bottom: 1px solid black; text-align: center; width: 4%; height: 25px;">NO</td>
 			<td style="border: 1px solid black; text-align: center; width: 10%">TGL TERIMA</td>
@@ -52,7 +52,7 @@
 			$no++; }
 		}	?>
 		</table>
-		<table style="width: 100%;border-collapse: collapse;font-size: 12px;margin-top: 10px; border: 1px solid black">
+		<table style="width: 100%;border-collapse: collapse;font-size: 12px;margin-top: 10px; border: 1px solid black;border-bottom-width: 0px">
 		<tr style="background-color: #ccffcc;">
 			<td style="border-top: 1px solid black;border-bottom: 1px solid black; text-align: center; width: 4%; height: 25px;">NO</td>
 			<td style="border: 1px solid black; text-align: center; width: 10%">TGL TERIMA</td>
@@ -140,18 +140,77 @@
 			?></td>
 		</tr>
 		<tr>
-			<td height="50px"></td>
-		</tr>
-		<tr>
-			<td colspan="5"></td>			
-			<td colspan="3" style="text-align: center;"><u>Taufiq Giri Ichwanusofa</u></td>
-		</tr>
-		<tr style="margin-top: 10px;">
-			<td colspan="5"></td>			
-			<td colspan="3" style="text-align: center;">Kepala Seksi Electronic Data Processing</td>
+			<td height="20px"></td>
 		</tr>
 	</table>
-
+	<table style="width: 100%;border-collapse: collapse;font-size: 12px;page-break-after: always;border: 1px solid black;border-top-width: 0px">
+		<tr>
+			<td style="text-align: center">Mengetahui,</td>
+			<td style="text-align: center">Menyetujui,</td>
+			<td style="text-align: center">Dibuat Oleh</td>
+		</tr>
+		<tr>
+			<td style="height: 50px" colspan="8"></td>
+		</tr>
+		<tr>
+			<td style="text-align: center">
+				<?php 
+				foreach ($dibuat as $ttd_dibuat) {
+					if ($ttd_dibuat['posisi'] == "mengetahui") {
+						echo "<u>".ucwords(strtolower($ttd_dibuat['nama']))."</u>";
+					}
+				}
+				?>
+			</td>
+			<td style="text-align: center">
+				<?php 
+				foreach ($dibuat as $ttd_dibuat) {
+					if ($ttd_dibuat['posisi'] == "menyetujui") {
+						echo "<u>".ucwords(strtolower($ttd_dibuat['nama']))."</u>";
+					}
+				}
+				?>
+			</td>
+			<td style="text-align: center">
+				<?php 
+				foreach ($dibuat as $ttd_dibuat) {
+					if ($ttd_dibuat['posisi'] == "dibuat") {
+						echo "<u>".ucwords(strtolower($ttd_dibuat['nama']))."</u>";
+					}
+				}
+				?>
+			</td>
+		</tr>
+		<tr>
+			<td style="text-align: center">
+				<?php 
+				foreach ($dibuat as $ttd_dibuat) {
+					if ($ttd_dibuat['posisi'] == "mengetahui") {
+						echo ucwords(strtolower($ttd_dibuat['jabatan']));
+					}
+				}
+				?>
+			</td>
+			<td style="text-align: center">
+				<?php 
+				foreach ($dibuat as $ttd_dibuat) {
+					if ($ttd_dibuat['posisi'] == "menyetujui") {
+						echo ucwords(strtolower($ttd_dibuat['jabatan']));
+					}
+				}
+				?>
+			</td>
+			<td style="text-align: center">
+				<?php 
+				foreach ($dibuat as $ttd_dibuat) {
+					if ($ttd_dibuat['posisi'] == "dibuat") {
+						echo ucwords(strtolower($ttd_dibuat['jabatan']));
+					}
+				}
+				?>
+			</td>
+		</tr>
+	</table>
 </div>
 </body>
 </html>

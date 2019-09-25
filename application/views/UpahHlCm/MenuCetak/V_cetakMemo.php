@@ -129,8 +129,8 @@
 	</table>
 	<table style="width: 100%; font-size: 15px;margin-top: 45px;text-align: center;">
 		<tr>
-			<td style="width: 45%"></td>
-			<td>Yogyakarta, 
+			<td style=""></td>
+			<td colspan="2" style="text-align: right;">Yogyakarta, 
 			<?php 
 				echo date('d');
 				$month=date('m');
@@ -163,18 +163,55 @@
 			?></td>
 		</tr>
 		<tr>
-			<td>Mengetahui</td>
-			<td>Dibuat Oleh</td>
+			<td style="text-align: center;width: 33%">Mengetahui,</td>
+			<td style="text-align: center;width: 34%">Menyetujui,</td>
+			<td style="text-align: center;width: 33%">Dibuat Oleh</td>
 		</tr>
 	</table>
 	<table style="width: 100%;font-size: 15px;text-align: center; margin-top: 55px;">
 		<tr>
-			<td width="45%"><u>Bambang Yudhosuseno</u></td>
-			<td><u>Anis Ulfah Mustaqim</u></td>
+			<?php 
+			foreach ($ttd as $ttd_mengetahui) {
+				if($ttd_mengetahui['posisi'] == "mengetahui"){
+					echo "<td width='33%'><u>".ucwords(strtolower($ttd_mengetahui['nama']))."</u></td>";
+			
+				}
+			}
+			foreach ($ttd as $ttd_mengetahui) {
+				if($ttd_mengetahui['posisi'] == "menyetujui"){
+					echo "<td width='34%'><u>".ucwords(strtolower($ttd_mengetahui['nama']))."</u></td>";
+			
+				}
+			}
+			foreach ($ttd as $ttd_dibuat) {
+				if($ttd_dibuat['posisi'] == "dibuat"){
+					echo "<td width='33%'><u>".ucwords(strtolower($ttd_dibuat['nama']))."</u></td>";
+			
+				}
+			}
+			?>
 		</tr>
 		<tr>
-			<td>Ass.Ka Dept.Personalia</td>
-			<td>Kepala Seksi Electronic Data Processing</td>
+			<?php 
+			foreach ($ttd as $ttd_mengetahui) {
+				if($ttd_mengetahui['posisi'] == "mengetahui"){
+					echo "<td>".ucwords(strtolower($ttd_mengetahui['jabatan']))."</td>";
+			
+				}
+			}
+			foreach ($ttd as $ttd_mengetahui) {
+				if($ttd_mengetahui['posisi'] == "menyetujui"){
+					echo "<td>".ucwords(strtolower($ttd_mengetahui['jabatan']))."</td>";
+			
+				}
+			}
+			foreach ($ttd as $ttd_dibuat) {
+				if($ttd_dibuat['posisi'] == "dibuat"){
+					echo "<td>".ucwords(strtolower($ttd_dibuat['jabatan']))."</td>";
+			
+				}
+			}
+			?>
 		</tr>
 	</table>
 </div>
