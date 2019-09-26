@@ -23,7 +23,18 @@ class M_nonconformity extends CI_Model
 
     public function getHeaders2($assign)
     {
-        $query = $this->db->query("SELECT * FROM pm.pm_po_oracle_non_conformity_headers WHERE assign ='$assign' ORDER BY non_conformity_num");
+        $query = $this->db->query("SELECT * FROM pm.pm_po_oracle_non_conformity_headers WHERE assign ='$assign' 
+        AND forward_buyer <> 1
+        ORDER BY non_conformity_num");
+
+        return $query->result_array();
+    }
+
+    public function getHeaders3($buyer)
+    {
+        $query = $this->db->query("SELECT * FROM pm.pm_po_oracle_non_conformity_headers WHERE forward_buyer = 1
+        AND forward_to = '$buyer'
+        ORDER BY non_conformity_num");
 
         return $query->result_array();
     }
@@ -138,7 +149,7 @@ class M_nonconformity extends CI_Model
     {
        $erp = $this->db;
        $query = $erp->query("select header_id, non_conformity_num from pm.pm_po_oracle_non_conformity_headers 
-            where non_conformity_num like 'NC-PUR-".date('y')."-".date('m')."-%' order by header_id DESC limit 1");
+            where non_conformity_num like 'NC-PUR-".date('y')."-".date('m')."-%' order by non_conformity_num DESC limit 1");
         
         return $query->result_array();
     }
@@ -876,4 +887,54 @@ class M_nonconformity extends CI_Model
         $this->db->where('header_id', $headerid);
         $this->db->update('pm.pm_po_oracle_non_conformity_lines', $data);
     }
+    
+    public function deleteGambar($gambar)
+    {
+        $this->db->where('image_detail_id', $gambar);
+        $this->db->delete('pm.pm_non_conformity_image_detail');
+    }
+
+    public function searchGambar($gambar)
+    {
+        $this->db->where('image_detail_id', $gambar);
+        $query = $this->db->get('pm.pm_non_conformity_image_detail');
+
+        return $query->result_array();
+    }
+
+    public function GetBuyer($status)
+    {
+        $query = $this->db->query("select * from pm.pm_non_conformity_buyer where status='$status'");
+        return $query->result_array();
+    }
+
+    public function updateSource($source_id, $source)
+    {
+        $this->db->where('source_id', $source_id);
+        $this->db->update('pm.pm_non_conformity_source', $source);
+    }
+
+    public function deleteCase($source_id)
+    {
+        $this->db->where('source_id', $source_id);
+        $this->db->delete('pm.pm_non_conformity_case_detail');
+    }
+
+    public function deleteLine($header_id)
+    {
+        $this->db->where('header_id', $header_id);
+        $this->db->delete('pm.pm_po_oracle_non_conformity_lines');
+    }
+
+    public function getNotesBuyer($header_id)
+    {
+        $query = $this->db->get_where('pm.pm_non_conformity_buyer_notes', array('header_id' => $header_id,));
+        return $query->result_array();
+    }
+
+    public function saveNotes($note)
+    {
+        $this->db->insert('pm.pm_non_conformity_buyer_notes',$note);
+    }
+
 }

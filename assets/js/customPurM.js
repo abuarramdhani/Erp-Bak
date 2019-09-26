@@ -169,7 +169,7 @@ $(document).ready(function() {
     $('.dateDelivNonConformity').datepicker({
         autoclose: true,
         todayHighlight: true,
-        format: 'yyyy-mm-dd'
+        format: 'dd-M-yy',
     });
 
     $('.slcJudgementNonConformity').select2({
@@ -632,6 +632,14 @@ $(document).ready(function() {
         }
     });
 
+    $(document).on('click','.btnForwardBuyerNonC', function () {
+        $('#modal-forwardBuyer').modal('show');
+    })
+
+    $('.slcBuyerNonC').select2({
+        placeholder: 'Select Buyer to Forward',
+    });
+
 });
 
 function showBigImage(elm) {
@@ -658,7 +666,6 @@ $('#tblPoOracleNonConfirmityHeaders').DataTable({
         null,
         null,
         null,
-        null
     ],
     buttons: ['excel']
 });

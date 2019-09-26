@@ -176,6 +176,15 @@ class C_NonConformity extends CI_Controller
 			$data['PoOracleNonConformityLines'] = '';
 		}
 
+		if ($this->session->responsibility_id == 2569) {
+			$supplier = 1;
+			$buyer = $this->M_nonconformity->getBuyer($supplier);
+			$data['buyer'] = $buyer;
+		}else if ($this->session->responsibility_id == 2641) {
+			$subkon = 2;
+			$buyer = $this->M_nonconformity->getBuyer($subkon);
+			$data['buyer'] = $buyer;
+		}
 		// echo'<pre>';
 		// print_r($data['PoOracleNonConformityLines']);exit;
 
@@ -315,6 +324,7 @@ class C_NonConformity extends CI_Controller
 
 	public function edit($id)
 	{
+		// echo $this->session->responsibility_id;exit;
 		$user_id = $this->session->userid;
 
 		$data['Title'] = 'Non Conformity Data';
@@ -328,6 +338,8 @@ class C_NonConformity extends CI_Controller
 
 		$plaintext_string = str_replace(array('-', '_', '~'), array('+', '/', '='), $id);
 		$plaintext_string = $this->encrypt->decode($plaintext_string);
+
+		// echo $plaintext_string; exit;
 
 		$data['id'] = $id;
 
@@ -394,8 +406,20 @@ class C_NonConformity extends CI_Controller
 
 		$data['case'] = $this->M_nonconformity->getCase();
 
+		if ($this->session->responsibility_id == 2569) {
+			$supplier = 1;
+			$buyer = $this->M_nonconformity->getBuyer($supplier);
+			$data['buyer'] = $buyer;
+		}else if ($this->session->responsibility_id == 2641) {
+			$subkon = 2;
+			$buyer = $this->M_nonconformity->getBuyer($subkon);
+			$data['buyer'] = $buyer;
+		}
+
+		$data['notes'] = $this->M_nonconformity->getNotesBuyer($plaintext_string);
+
 		// echo'<pre>';
-		// print_r($data['PoOracleNonConformityLines']);exit;
+		// print_r($data['notes']);exit;
 
 		$this->load->view('V_Header',$data);
 		$this->load->view('V_Sidemenu',$data);
@@ -683,6 +707,7 @@ class C_NonConformity extends CI_Controller
 
 	public function saveData()
 	{
+		// print_r($this->session->employee);exit;
 		$headerId = $this->input->post('txtHeaderId');
 		$deliveryDate = $this->input->post('txtDeliveryDate');
 		$packingList = $this->input->post('txtPackingList');
@@ -714,6 +739,7 @@ class C_NonConformity extends CI_Controller
 		$statusLine = $this->input->post('hdnStatusLine[]');
 		$buyer = $this->input->post('hdnBuyer[]');
 		$noLppb = $this->input->post('hdnLppb[]');
+		$notesFromBuyer = $this->input->post('noteFromBuyer');
 
 		$header = 	array(
 						// 'po_number' => $poNumber,
@@ -799,6 +825,18 @@ class C_NonConformity extends CI_Controller
 			$this->M_nonconformity->setItem($item);
 
 		}
+
+		if ($this->session->responsibility_id == 2663 && $notesFromBuyer != '') {
+			$note = array(
+							'header_id' => $headerId,
+							'notes' => $notesFromBuyer,
+							'date' => 'now()',
+							'noind' => $this->session->user,
+							'buyer' => $this->session->employee
+						);
+	
+			$this->M_nonconformity->saveNotes($note);
+		}
 		
 	    // echo'<pre>';
 		// print_r($header);exit;
@@ -806,7 +844,11 @@ class C_NonConformity extends CI_Controller
 		$encrypted_string = $this->encrypt->encode($headerId);
 		$encrypted_string = str_replace(array('+', '/', '='), array('-', '_', '~'), $encrypted_string);
 
-		redirect('PurchaseManagementGudang/NonConformity/read/'.$encrypted_string, 'refresh');
+		if ($this->session->responsibility_id == 2663) {
+			redirect('PurchaseManagementGudang/NonConformity/readBuyer/'.$encrypted_string, 'refresh');
+		}else{
+			redirect('PurchaseManagementGudang/NonConformity/read/'.$encrypted_string, 'refresh');
+		}
 	}
 
 	public function getDetailPO()
@@ -1080,5 +1122,144 @@ class C_NonConformity extends CI_Controller
 
 		echo 1;
 	}
+
+	public function submitForward()
+	{
+		$header_id = $this->input->post('hdnHdr');
+		$buyer = $this->input->post('slcBuyerNonC');
+
+		// echo $header_id.'-'.$buyer;exit;
+
+		$data = array(
+						'forward_buyer' => 1,
+						'forward_to' => $buyer,
+					 );
+
+		$this->M_nonconformity->updateAssign($header_id,$data);
+
+		if ($this->session->responsibility_id == 2569) {
+
+			redirect('PurchaseManagementGudang/NonConformity/listSupplier', 'refresh');
+			
+		}else if ($this->session->responsibility_id == 2641) {
+			
+			redirect('PurchaseManagementGudang/NonConformity/listSubkon', 'refresh');
+		}
+	}
+
+	public function listBuyer()
+	{
+		$user = $this->session->user;
+
+		$user_id = $this->session->userid;
+
+		$data['Title'] = 'List Data For Buyer';
+		$data['Menu'] = 'Non Conformity';
+		$data['SubMenuOne'] = 'List Data For Buyer';
+		$data['SubMenuTwo'] = '';
+
+		$data['UserMenu'] = $this->M_user->getUserMenu($user_id,$this->session->responsibility_id);
+		$data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id);
+		$data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id);
+
+		$data['PoOracleNonConformityHeaders'] = $this->M_nonconformity->getHeaders3($user);
+		// echo '<pre>';
+		// print_r($data['PoOracleNonConformityHeaders']);exit;
+
+		$this->load->view('V_Header',$data);
+		$this->load->view('V_Sidemenu',$data);
+		$this->load->view('PurchaseManagementGudang/NonConformity/V_listDataBuyer', $data);
+		$this->load->view('V_Footer',$data);
+	}
+
+	/* READ DATA */
+	public function readBuyer($id)
+	{
+		$user_id = $this->session->userid;
+
+		$data['Title'] = 'Non Conformity Data';
+		$data['Menu'] = 'Purchase Management';
+		$data['SubMenuOne'] = '';
+		$data['SubMenuTwo'] = '';
+
+		$data['UserMenu'] = $this->M_user->getUserMenu($user_id,$this->session->responsibility_id);
+		$data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id);
+		$data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id);
+
+		$plaintext_string = str_replace(array('-', '_', '~'), array('+', '/', '='), $id);
+		$plaintext_string = $this->encrypt->decode($plaintext_string);
+
+		$data['id'] = $id;
+
+		/* HEADER DATA */
+		$data['PoOracleNonConformityHeaders'] = $this->M_nonconformity->getHeaders($plaintext_string);
+		$data['Phone'] = $this->M_nonconformity->getPhone($data['PoOracleNonConformityHeaders'][0]['po_number']);
+		
+		/* LINES DATA */
+		$data['PoOracleNonConformityLines'] = $this->M_nonconformity->getLines($plaintext_string);
+		// echo '<pre>';
+		// print_r($data['PoOracleNonConformityLines']);
+		// exit;
+		$data['linesItem'] = $this->M_nonconformity->getLinesItem($data['PoOracleNonConformityHeaders'][0]['header_id']);
+		$data['case'] = $this->M_nonconformity->getCase();
+
+		if (count($data['PoOracleNonConformityLines']) > 0) {
+			$sourceId = $data['PoOracleNonConformityLines'][0]['source_id'];
 	
+			$data['image'] = $this->M_nonconformity->getImages($sourceId);
+		}else {
+			$data['image'] = '';
+			$data['PoOracleNonConformityLines'] = '';
+		}
+
+		if ($this->session->responsibility_id == 2569) {
+			$supplier = 1;
+			$buyer = $this->M_nonconformity->getBuyer($supplier);
+			$data['buyer'] = $buyer;
+		}else if ($this->session->responsibility_id == 2641) {
+			$subkon = 2;
+			$buyer = $this->M_nonconformity->getBuyer($subkon);
+			$data['buyer'] = $buyer;
+		}
+		// echo'<pre>';
+		// print_r($data['PoOracleNonConformityLines']);exit;
+
+		$this->load->view('V_Header',$data);
+		$this->load->view('V_Sidemenu',$data);
+		$this->load->view('PurchaseManagementGudang/NonConformity/V_readBuyer', $data);
+		$this->load->view('V_Footer',$data);
+	}
+
+	public function submitReturn()
+	{
+		$header_id = $this->input->post('hdnHdr');
+		$data = array(
+						'forward_buyer' => 2,
+					 );
+
+		$this->M_nonconformity->updateAssign($header_id,$data);
+
+
+		redirect('PurchaseManagementGudang/NonConformity/listBuyer', 'refresh');
+	}
+
+	public function pendingExecute()
+	{
+		$header_id = $this->input->post('hdnHdr');
+
+		$data = array(
+						'assign' => 4,
+					 );
+
+		$this->M_nonconformity->updateAssign($header_id, $data);
+
+		if ($this->session->responsibility_id == 2569) {
+
+			redirect('PurchaseManagementGudang/NonConformity/listSupplier', 'refresh');
+			
+		}else if ($this->session->responsibility_id == 2641) {
+			
+			redirect('PurchaseManagementGudang/NonConformity/listSubkon', 'refresh');
+		}
+	}
 }
