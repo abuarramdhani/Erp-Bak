@@ -20,7 +20,7 @@ class M_pesangon extends CI_Model {
             (
 				case 	when 	pri.kd_pkj is not null and pri.kd_pkj <> ''
 				then 	 rtrim(tpekerjaan.pekerjaan)
-				else     pri.jabatan
+				else     tref.jabatan
 				end
 			) as pekerjaan,
 			to_char(pri.diangkat,'DD/MM/YYYY') as diangkat,
@@ -98,6 +98,7 @@ class M_pesangon extends CI_Model {
 			concat(cuti.sisa_cuti,' GP/30 ')as sisacutihari
 							from 		hrd_khs.tpribadi as pri
 							join 	hrd_khs.tseksi as tseksi on tseksi.kodesie=pri.kodesie
+							left join hrd_khs.trefjabatan tref on tref.noind = pri.noind
 							left join    hrd_khs.t_alasan_pesangon alasan on alasan.alasan_master_pekerja=pri.sebabklr
 							left join    \"Presensi\".tdatacuti as cuti on pri.noind=cuti.noind
 							left join 	hrd_khs.tpekerjaan as tpekerjaan on tpekerjaan.kdpekerjaan=pri.kd_pkj
@@ -130,7 +131,7 @@ class M_pesangon extends CI_Model {
 
 	 public function getPekerjaAktif($noind)
 	 	{
-	 		$getPekerjaAktif="select trim(noind) as noind, concat_ws(' - ', noind, nama) as pekerja from hrd_khs.tpribadi where   noind like '$noind%' or nama like'$noind%'
+	 		$getPekerjaAktif="select trim(noind) as noind, concat_ws(' - ', noind, nama) as pekerja from hrd_khs.tpribadi where   noind like '$noind%' or nama like'$noind%' and keluar = '0'
 			order by noind ";
 	 		$query 	=	$this->personalia->query($getPekerjaAktif);
 			return $query->result_array();
@@ -159,8 +160,8 @@ class M_pesangon extends CI_Model {
 
 	public function pengirim($id)
 		{
-		 	$lihat = "select pri.nama as pengirim, pri.jabatan as jabatan from hrd_khs.t_pesangon as hit
-		 			join 		hrd_khs.tpribadi as pri on hit.pengirim=pri.noind where hit.id_pesangon='$id'";
+		 	$lihat = "select pri.nama as pengirim, tref.jabatan as jabatan from hrd_khs.t_pesangon as hit
+		 			join 		hrd_khs.tpribadi as pri on hit.pengirim=pri.noind left join hrd_khs.trefjabatan tref on pri.noind = tref.noind where hit.id_pesangon='$id'";
 		 	$query = $this->personalia->query($lihat);
 		 	return $query->result_array();
 		 }
@@ -183,7 +184,7 @@ class M_pesangon extends CI_Model {
             (
 				case 	when 	pri.kd_pkj is not null and pri.kd_pkj <> ''
 				then 	 rtrim(tpekerjaan.pekerjaan)
-				else     pri.jabatan
+				else     tref.jabatan
 				end
 			) as pekerjaan,
 			tpes.id_pesangon as id,
@@ -270,6 +271,7 @@ class M_pesangon extends CI_Model {
 							from 		hrd_khs.tpribadi as pri
 							join    hrd_khs.t_pesangon as tpes on pri.noind=tpes.noinduk
 							join 	hrd_khs.tseksi as tseksi on tseksi.kodesie=pri.kodesie
+							left join hrd_khs.trefjabatan tref on tref.noind = pri.noind
 							left join    hrd_khs.t_alasan_pesangon alasan on alasan.alasan_master_pekerja=pri.sebabklr
 							left join    \"Presensi\".tdatacuti as cuti on pri.noind=cuti.noind
 							left join 	hrd_khs.tpekerjaan as tpekerjaan on tpekerjaan.kdpekerjaan=pri.kd_pkj
@@ -300,7 +302,7 @@ class M_pesangon extends CI_Model {
             (
 				case 	when 	pri.kd_pkj is not null and pri.kd_pkj <> ''
 				then 	 rtrim(tpekerjaan.pekerjaan)
-				else     pri.jabatan
+				else     tref.jabatan
 				end
 			) as pekerjaan,
 			tpes.id_pesangon as id,
@@ -387,6 +389,7 @@ class M_pesangon extends CI_Model {
 							from 		hrd_khs.tpribadi as pri
 							join    hrd_khs.t_pesangon as tpes on pri.noind=tpes.noinduk
 							join 	hrd_khs.tseksi as tseksi on tseksi.kodesie=pri.kodesie
+							left join hrd_khs.trefjabatan tref on tref.noind = pri.noind
 							left join    hrd_khs.t_alasan_pesangon alasan on alasan.alasan_master_pekerja=pri.sebabklr
 							left join    \"Presensi\".tdatacuti as cuti on pri.noind=cuti.noind
 							left join 	hrd_khs.tpekerjaan as tpekerjaan on tpekerjaan.kdpekerjaan=pri.kd_pkj
