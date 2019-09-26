@@ -72,7 +72,7 @@
                                                         <span class="pull-right">:</span>
                                                     </div>
                                                     <div class="col-lg-8">
-                                                        <input style="width: 310px;" type="text" class="form-control dateDelivNonConformity" name="txtDeliveryDate" required value="<?php echo $headerRow['delivery_date']; ?>">
+                                                        <input style="width: 310px;" type="text" class="form-control dateDelivNonConformity" name="txtDeliveryDate" required value="<?php echo date("d-M-y", strtotime($headerRow['delivery_date'])); ?>">
                                                     </div>
                                                 </div><br>
                                                 <div class="row">
@@ -298,6 +298,14 @@
                                             Lines Selected <i class="fa fa-plus"></i>
                                         </div>
                                         <div class="panel-body">
+                                        <?php if ($this->session->responsibility_id == 2569 || $this->session->responsibility_id == 2641) { ?>
+                                            
+                                            <table>
+                                                <tr>
+                                                    <td><button type="button" class="btn btn-success btnForwardBuyerNonC"><i>Forward To Buyer</i></button></td>
+                                                </tr>
+                                            </table><br>
+                                        <?php } ?>
                                             <table class="table table-bordered text-center">
                                                     <thead class="bg-primary">
                                                         <tr>
@@ -347,6 +355,53 @@
                                             </div> -->
                                         </div>
                                     </div>
+                                    <div class="panel panel-danger">
+                                        <div class="panel-heading">
+                                            Notes From Buyer
+                                        </div>
+                                        <div class="panel-body">
+                                            <div class="col-lg-6">
+                                                <?php if (count($notes) == 0) { ?>
+                                                    <p>Tidak ada notes !</p>
+                                                <?php } else { ?>
+                                                    <table class="table table-responsive table-bordered">
+                                                        <thead>
+                                                            <tr>
+                                                                <th>No</th>
+                                                                <th>Buyer</th>
+                                                                <th>Notes</th>
+                                                                <th>Date</th>
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody>
+                                                        <?php $no = 0; foreach ($notes as $key => $note) { $no++; ?>
+                                                            <tr>
+                                                                <td><?= $no; ?></td>
+                                                                <td><?= $note['buyer'];?></td>
+                                                                <td><?= $note['notes'];?></td>
+                                                                <td><?= date("Y-m-d H:i:s", strtotime($note['date']));?></td>
+                                                            </tr>
+                                                        <?php }?>
+                                                        </tbody>
+                                                    </table>
+                                                <?php }?>
+                                            </div>
+                                            <?php if ($this->session->responsibility_id == 2661) {
+                                                $display = "";
+                                            } else{
+                                                $display = 'style="display:none;"';
+                                            }?>
+                                            <div class="col-lg-6" <?php echo $display; ?>>
+                                                <table>
+                                                    <tr>
+                                                        <th>Add Notes</th>
+                                                        <th>:</th>
+                                                        <td><textArea class="form-control" name="noteFromBuyer" style="width:420px" placeholder="add notes here!"></textArea></td>
+                                                    </tr>
+                                                </table>
+                                            </div>
+                                        </div>
+                                    </div>
                                     <div class="panel panel-default">
                                         <div class="panel-heading">
                                             Problem Solving
@@ -383,7 +438,9 @@
                                                                 </select>
                                                             </td>
                                                             <td><input type="text" class="form-control" placeholder="Set Problem Completion" name="txtProblemCompletion" value="<?php echo $PoOracleNonConformityLines[0]['problem_completion']?>"></td>
-                                                            <td><input type="text" class="form-control dateDelivNonConformity" placeholder="Set Date" name="txtDate" value="<?php echo $PoOracleNonConformityLines[0]['completion_date']; ?>"></td>
+                                                            <td><input type="text" class="form-control dateDelivNonConformity" placeholder="Set Date" name="txtDate" value="<?php if(count($PoOracleNonConformityLines[0]['completion_date'])!= 0){
+                                                                echo date("d-M-y", strtotime($PoOracleNonConformityLines[0]['completion_date']));
+                                                            } ?>"></td>
                                                             <td>
                                                                 <?php
                                                                     $yes = '';
@@ -513,6 +570,40 @@
         </div>
       </div>
       <!-- /.modal-content -->
+    </div>
+    <!-- /.modal-dialog -->
+</div>
+<!-- /.modal -->
+<div class="modal fade" id="modal-forwardBuyer">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">Forward to Buyer</h4>
+            </div>
+            <form class="form-horizontal" id="form-simpan"  enctype="multipart/form-data" method="post" action="<?php echo site_url('PurchaseManagementGudang/NonConformity/submitForward');?>">
+                <div class="modal-body">
+                    <input type="hidden" name="hdnHdr" value="<?php echo $PoOracleNonConformityHeaders[0]['header_id'];?>">
+                    <table>
+                        <tr>
+                            <td>Select Buyer :&nbsp;</td>
+                            <td>
+                            <select class="select2 slcBuyerNonC" style="width:300px;" name="slcBuyerNonC">
+                                    <option></option>
+                                    <?php foreach ($buyer as $key => $byr) {?>
+                                        <option value="<?= $byr['noind'];?>"><?= $byr['nama'];?></option>
+                                    <?php } ?>
+                            </select>
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default pull-left" data-dismiss="modal">Cancel</button>
+                    <button type="submit" id="" class="btn btn-primary">Yes</button>
+                </div>
+            </form>
+        </div>
+        <!-- /.modal-content -->
     </div>
     <!-- /.modal-dialog -->
 </div>
