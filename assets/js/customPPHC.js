@@ -1,6 +1,6 @@
 $(document).ready(function() {
 	$('#infoErrorPPhCabang').modal('show');
-	$('form#form_pph_cabang').on('submit', function(event){
+	$('form#form_pph2_cabang').on('submit', function(event){
 		event.preventDefault();
 		var formData = new FormData($('form')[0]);
 
