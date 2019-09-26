@@ -166,34 +166,47 @@ $(document).ready(function(){
 	});
 });
 
-$('.pro-time').on('change',function(){
-	var preProc = Number($('#preProc').val()); 
-    var postProc = Number($('#postProc').val());
-    var preparation = Number($('#preparation').val()); 
-    var delivery = Number($('#delivery').val());
-    var totProc = preparation + delivery;
-    console.log(totProc);
+// $('.pro-time').on('change',function(){
+// 	var preProc = Number($('#preProc').val()); 
+// 	// console.log(preProc);
+//     var postProc = Number($('#postProc').val());
+//     // console.log(postProc);
+//     var preparation = Number($('#preparation').val()); 
+//     // console.log(preparation);
+//     var delivery = Number($('#delivery').val());
+//     console.log(delivery);
+//     var totProc1 = (preparation*100 + delivery*100)/100;
+//     // var totProc = (parseFloat(totProc1) + 0.01).toFixed(2);
+//   	var totProc = parseFloat(totProc1.toPrecision(2));
+//     console.log(totProc);
 
-    $('#totProc').val(totProc);
+//     $('#totProc').val(totProc);
 
-    var hasil = preProc + totProc + postProc;
-    console.log(hasil);
-    $('#totLead').val(hasil);
-});
+//     var hasil1 = (preProc*100 + totProc*100 + postProc*100)/100;
+//     // var hasil = hasil1.toFixed(2);
+//     var hasil = Math.round(hasil1 * 100)/100;
+
+//     // var hasil = parseFloat(hasil.toPrecision(2));
+//     console.log(hasil);
+//     $('#totLead').val(hasil);
+// });
 
 function tambahJadi(th){	
-	var preProc = parseInt($(th).closest('tr').find('input.preProc').val());
-	var ppo = parseInt($(th).closest('tr').find('input.ppo').val());
-	var deliver = parseInt($(th).closest('tr').find('input.deliver').val());
-	var totProc = parseInt($(th).closest('tr').find('input.totProc').val());
-	var postProc = parseInt($(th).closest('tr').find('input.postProc').val());
-	var totLead = parseInt($(th).closest('tr').find('input.totLead').val());
+	var preProc = parseFloat($(th).closest('tr').find('input.preProc').val());
+	var ppo = parseFloat($(th).closest('tr').find('input.ppo').val());
+	var deliver = parseFloat($(th).closest('tr').find('input.deliver').val());
+	var totProc = parseFloat($(th).closest('tr').find('input.totProc').val());
+	var postProc = parseFloat($(th).closest('tr').find('input.postProc').val());
+	var totLead = parseFloat($(th).closest('tr').find('input.totLead').val());
+	// alert('iki')
 
-	var hasil1 = ppo + deliver;
-	$(th).closest('tr').find('input.totProc').val(hasil1) // totProc
+	var hasilnya = (ppo + deliver);
+	var hasil1 = (parseFloat(hasilnya)).toFixed(2);
+	$(th).closest('tr').find('input.totProc').val(hasil1); // totProc
 
-	var hasil2 = preProc +  hasil1 + postProc;
-	$(th).closest('tr').find('input.totLead').val(hasil2) // totLead	
+	var hasiltu = (preProc +  ppo + deliver + postProc);
+	var hasil2 = (parseFloat(hasiltu)).toFixed(2);
+	$(th).closest('tr').find('input.totLead').val(hasil2); // totLead	
 
 	console.log(hasil1);
 	console.log(hasil2);
@@ -281,14 +294,14 @@ $("#search").change(function () {
 							'<td><input type="hidden" name="uom1[]" id="uom1" value="'+ data.PRIMARY_UOM_CODE +'">'+ data.PRIMARY_UOM_CODE +'</td>'+
 							'<td><input type="hidden" name="uom2[]" id="uom2" value="'+ data.SECONDARY_UOM_CODE +'">'+ data.SECONDARY_UOM_CODE +'</td>'+
 							'<td><select style="background-color: bisque;" name="per1[]" id="per1"><option selected="selected">'+ data.FULL_NAME +'</option>'+data.buyer +'</select></td>'+
-							'<td><input type="number" style="background-color: bisque;" class="form-control-plaintext preProc" name="preProc[]" id="preProc" value="'+ data.PREPROCESSING_LEAD_TIME +'" onchange="tambahJadi(this)" ></td>'+
-							'<td><input type="number" style="background-color: bisque;" class="form-control-plaintext ppo" name="ppo[]" id="ppo" value="'+ data.ATTRIBUTE6 +'" onchange="tambahJadi(this)"></td>'+
-							'<td><input type="number" style="background-color: bisque;" class="form-control-plaintext deliver" name="deliver[]" id="deliver" value="'+ data.ATTRIBUTE8 +'" onchange="tambahJadi(this)"></td>'+
-							'<td><input type="number" style="border: transparent; background-color: transparent;" class="form-control-plaintext totProc" name="totProc[]" id="totProc" value="'+ data.FULL_LEAD_TIME +'" readonly></td>'+
-							'<td><input type="number" style="background-color: bisque;" class="form-control-plaintext postProc" name="postProc[]" id="postProc" value="'+ data.POSTPROCESSING_LEAD_TIME +'" onchange="tambahJadi(this)"></td>'+
-							'<td><input type="number" style="border: transparent; background-color: transparent;" class="form-control-plaintext totLead" name="totLead[]" id="totLead" value="'+ data.TOTAL_LEADTIME +'" readonly></td>'+
-							'<td><input type="number" style="background-color: bisque;" class="form-control-plaintext" name="moq[]" id="moq" value="'+ data.MINIMUM_ORDER_QUANTITY +'"></td>'+
-							'<td><input type="number" style="background-color: bisque;" class="form-control-plaintext" name="flm[]" id="flm" value="'+ data.FIXED_LOT_MULTIPLIER +'" ></td>'+
+							'<td><input type="number"  step="0.01" title="Input dengan 2 angka dibelakang koma" style="background-color: bisque;" class="form-control-plaintext preProc" name="preProc[]" id="preProc" value="'+ data.PREPROCESSING_LEAD_TIME +'" onchange="tambahJadi(this)" ></td>'+
+							'<td><input type="number"  step="0.01" title="Input dengan 2 angka dibelakang koma" style="background-color: bisque;" class="form-control-plaintext ppo" name="ppo[]" id="ppo" value="'+ data.ATTRIBUTE6 +'" onchange="tambahJadi(this)"></td>'+
+							'<td><input type="number"  step="0.01" title="Input dengan 2 angka dibelakang koma" style="background-color: bisque;" class="form-control-plaintext deliver" name="deliver[]" id="deliver" value="'+ data.ATTRIBUTE8 +'" onchange="tambahJadi(this)"></td>'+
+							'<td><input type="number"  step="0.01" title="Input dengan 2 angka dibelakang koma" style="border: transparent; background-color: transparent;" class="form-control-plaintext totProc" name="totProc[]" id="totProc" value="'+ data.FULL_LEAD_TIME +'" readonly></td>'+
+							'<td><input type="number"  step="0.01" title="Input dengan 2 angka dibelakang koma" style="background-color: bisque;" class="form-control-plaintext postProc" name="postProc[]" id="postProc" value="'+ data.POSTPROCESSING_LEAD_TIME +'" onchange="tambahJadi(this)"></td>'+
+							'<td><input type="number"  step="0.01" title="Input dengan 2 angka dibelakang koma" style="border: transparent; background-color: transparent;" class="form-control-plaintext totLead" name="totLead[]" id="totLead" value="'+ data.TOTAL_LEADTIME +'" readonly></td>'+
+							'<td><input type="number"  step="0.01" title="Input dengan 2 angka dibelakang koma" style="background-color: bisque;" class="form-control-plaintext" name="moq[]" id="moq" value="'+ data.MINIMUM_ORDER_QUANTITY +'"></td>'+
+							'<td><input type="number"  step="0.01" title="Input dengan 2 angka dibelakang koma" style="background-color: bisque;" class="form-control-plaintext" name="flm[]" id="flm" value="'+ data.FIXED_LOT_MULTIPLIER +'" ></td>'+
 							'<td><select style="background-color: bisque;" name="attr18[]" id="attr18">'+ data.select +'</select></td>'+
 							'<td><input type="text" style="background-color: bisque;" class="form-control-plaintext" name="keterangan[]" id="keterangan"></td>'+
 							'<td><center><button type="button" onclick="deleteRowThisHehe(this)" class="btn btn-danger btn-xs hapus'+id+'" title="Delete" >'+
