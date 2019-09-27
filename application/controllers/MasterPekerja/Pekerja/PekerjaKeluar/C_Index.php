@@ -3,50 +3,50 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 class C_Index extends CI_Controller {
 
- 
+
 	public function __construct()
-    {
-        parent::__construct();
-		  
-        $this->load->library('General');
-        
-        $this->load->model('M_Index');
+  {
+    parent::__construct();
+
+    $this->load->library('General');
+
+    $this->load->model('M_Index');
 		$this->load->model('SystemAdministration/MainMenu/M_user');
 		$this->load->model('MasterPekerja/Pekerja/PekerjaKeluar/M_pekerjakeluar');
-		  
-		if($this->session->userdata('logged_in')!=TRUE) {
-			$this->load->helper('url');
-			// $this->load->helper('terbilang_helper');
-			$this->session->set_userdata('last_page', current_url());
-				  //redirect('index');
-			$this->session->set_userdata('Responsbility', 'some_value');
-		}
-		date_default_timezone_set('Asia/Jakarta');
-		$this->checkSession();
-    }
-	
+
+  	if($this->session->userdata('logged_in')!=TRUE) {
+  		$this->load->helper('url');
+  		// $this->load->helper('terbilang_helper');
+  		$this->session->set_userdata('last_page', current_url());
+  			  //redirect('index');
+  		$this->session->set_userdata('Responsbility', 'some_value');
+  	}
+  	date_default_timezone_set('Asia/Jakarta');
+  	$this->checkSession();
+  }
+
 	//HALAMAN INDEX
 	public function index(){
 		$this->checkSession();
 		$user_id = $this->session->userid;
-		
+
 		$data['Menu'] = 'Dashboard';
 		$data['SubMenuOne'] = '';
 		$data['SubMenuTwo'] = '';
-		
+
 		$data['UserMenu'] = $this->M_user->getUserMenu($user_id,$this->session->responsibility_id);
 		$data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id);
 		$data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id);
 
-		$this->load->view('V_Header',$data); 
+		$this->load->view('V_Header',$data);
 		$this->load->view('V_Sidemenu',$data);
 		$this->load->view('MasterPekerja/Pekerja/PekerjaKeluar/V_Index',$data);
 		$this->load->view('V_Footer',$data);
 	}
-	
+
 	public function checkSession(){
 		if($this->session->is_logged){
-			
+
 		}else{
 			redirect('');
 		}
@@ -63,11 +63,9 @@ class C_Index extends CI_Controller {
 
 	public function data_pekerjaan()
 	{
-		$pekerja 	= strtoupper($this->input->get('term'));
+		$pekerja 	    = strtoupper($this->input->get('term'));
 		$kd_pekerjaan = $this->input->get('kd_pekerjaan');
-		// print_r($_GET);exit();
 		$data = $this->M_pekerjakeluar->getkdPekerja($pekerja,$kd_pekerjaan);
-		// print_r($data);exit();
 		echo json_encode($data);
 	}
 
@@ -76,17 +74,16 @@ class C_Index extends CI_Controller {
 		$this->checkSession();
 		$user_id = $this->session->userid;
 
-		$noind 					= $this->input->post('slc_Pekerja');
-		$keluar 				= $this->input->post('rd_keluar');
+		$noind 					    = $this->input->post('slc_Pekerja');
+		$keluar 				    = $this->input->post('rd_keluar');
 		$internal_mail 			= $this->input->post('txt_internalmail');
-		$telkomsel_mygroup 		= $this->input->post('txt_telkomsel_mygroup');
+		$telkomsel_mygroup 	= $this->input->post('txt_telkomsel_mygroup');
 		$external_mail 			= $this->input->post('txt_external_mail');
 		$pidgin_account 		= $this->input->post('txt_pidgin_account');
 
-		$pekerja 		= $this->M_pekerjakeluar->dataPekerja($noind,$keluar);
-		$kontak 		= $this->M_pekerjakeluar->kontakPekerja($noind);
-		// print_r($kontak); exit();
-		$pekerjaan      =$this->M_pekerjakeluar->getPekerjaan($noind);
+		$pekerja 	        	= $this->M_pekerjakeluar->dataPekerja($noind,$keluar);
+		$kontak 		        = $this->M_pekerjakeluar->kontakPekerja($noind);
+		$pekerjaan          =$this->M_pekerjakeluar->getPekerjaan($noind);
 
 		if ($pekerja != null) {
 			$kodesie 		= $pekerja[0]['kodesie'];
@@ -96,110 +93,106 @@ class C_Index extends CI_Controller {
 			if ($pekerja[0]['status_diangkat'] =="t") {
 				$check = 'checked';
 			}
-			// echo $pekerja[0]['status_diangkat'];
-			// exit();
 
 			$data['check'] = $check;
 
 			if ( $kontak == null )
-			{ 
+			{
 			$data['data'] 	= array(
-									'photo' 	=> $pekerja[0]['photo'],
-									'noind' 	=> $pekerja[0]['noind'],
-									'nama' 		=> $pekerja[0]['nama'],
-									'templahir' => $pekerja[0]['templahir'],
-									'tgllahir' 	=> $pekerja[0]['tgllahir'],
-									'nik' 		=> $pekerja[0]['nik'],
-									'alamat' 	=> $pekerja[0]['alamat'],
-									'desa' 		=> $pekerja[0]['desa'],
-									'kec' 		=> $pekerja[0]['kec'],
-									'kab' 		=> $pekerja[0]['kab'],
-									'prop' 		=> $pekerja[0]['prop'],
-									'kodepos' 	=> $pekerja[0]['kodepos'],
-									'telepon' 	=> $pekerja[0]['telepon'],
-									'nohp' 		=> $pekerja[0]['nohp'],
-									'diangkat' 	=> $pekerja[0]['diangkat'],
-									'masukkerja'=> $pekerja[0]['masukkerja'],
-									'lmkontrak' => $pekerja[0]['lmkontrak'],
-									'akhkontrak'=> $pekerja[0]['akhkontrak'],
-									'jabatan' 	=> $pekerja[0]['jabatan'],
-  									
-  									'pekerjaan'=> $pekerjaan[0]['pekerjaan'],
-  									'kd_pekerjaan'=>  $pekerjaan[0]['kd_pekerjaan'],
+									'photo' 	          => $pekerja[0]['photo'],
+									'noind' 	          => $pekerja[0]['noind'],
+									'nama' 		          => $pekerja[0]['nama'],
+									'templahir'         => $pekerja[0]['templahir'],
+									'tgllahir' 	        => $pekerja[0]['tgllahir'],
+									'nik' 		          => $pekerja[0]['nik'],
+									'alamat' 	          => $pekerja[0]['alamat'],
+									'desa' 		          => $pekerja[0]['desa'],
+									'kec' 		          => $pekerja[0]['kec'],
+									'kab' 		          => $pekerja[0]['kab'],
+									'prop' 		          => $pekerja[0]['prop'],
+									'kodepos' 	        => $pekerja[0]['kodepos'],
+									'telepon' 	        => $pekerja[0]['telepon'],
+									'nohp' 	   	        => $pekerja[0]['nohp'],
+									'diangkat' 	        => $pekerja[0]['diangkat'],
+									'masukkerja'        => $pekerja[0]['masukkerja'],
+									'lmkontrak'         => $pekerja[0]['lmkontrak'],
+									'akhkontrak'        => $pekerja[0]['akhkontrak'],
+									'jabatan' 	        => $pekerja[0]['jabatanref'],
 
-									'seksi' 	=> $seksi[0]['seksi'],
-									'unit' 		=> $seksi[0]['unit'],
-									'bidang' 	=> $seksi[0]['bidang'],
-									'dept' 		=> $seksi[0]['dept'],
+									'pekerjaan'         => $pekerjaan[0]['pekerjaan'],
+									'kd_pekerjaan'      =>  $pekerjaan[0]['kd_pekerjaan'],
 
-									'internal_mail' 	=> '',
+									'seksi' 	          => $seksi[0]['seksi'],
+									'unit' 		          => $seksi[0]['unit'],
+									'bidang' 	          => $seksi[0]['bidang'],
+									'dept' 		          => $seksi[0]['dept'],
+
+									'internal_mail' 	  => '',
 									'telkomsel_mygroup' => '',
-									'external_mail' 	=> '',
-									'pidgin_account' 	=> '',
+									'external_mail' 	  => '',
+									'pidgin_account' 	  => '',
 
-									'tglkeluar' => $pekerja[0]['tglkeluar'],
-									'sebabklr' 	=> $pekerja[0]['sebabklr'],
-									'uk_baju' 	=> $pekerja[0]['uk_baju'],
-									'uk_celana' => $pekerja[0]['uk_celana'],
-									'uk_sepatu' => $pekerja[0]['uk_sepatu'],
-									'status_diangkat' => $pekerja[0]['status_diangkat']
+									'tglkeluar'         => $pekerja[0]['tglkeluar'],
+									'sebabklr'          => $pekerja[0]['sebabklr'],
+									'uk_baju'           => $pekerja[0]['uk_baju'],
+									'uk_celana'         => $pekerja[0]['uk_celana'],
+									'uk_sepatu'         => $pekerja[0]['uk_sepatu'],
+									'status_diangkat'   => $pekerja[0]['status_diangkat']
 								);
 		}else{
 		$data['data'] 	= array(
-									'photo' 	=> $pekerja[0]['photo'],
-									'noind' 	=> $pekerja[0]['noind'],
-									'nama' 		=> $pekerja[0]['nama'],
-									'templahir' => $pekerja[0]['templahir'],
-									'tgllahir' 	=> $pekerja[0]['tgllahir'],
-									'nik' 		=> $pekerja[0]['nik'],
-									'alamat' 	=> $pekerja[0]['alamat'],
-									'desa' 		=> $pekerja[0]['desa'],
-									'kec' 		=> $pekerja[0]['kec'],
-									'kab' 		=> $pekerja[0]['kab'],
-									'prop' 		=> $pekerja[0]['prop'],
-									'kodepos' 	=> $pekerja[0]['kodepos'],
-									'telepon' 	=> $pekerja[0]['telepon'],
-									'nohp' 		=> $pekerja[0]['nohp'],
-									'diangkat' 	=> $pekerja[0]['diangkat'],
-									'masukkerja'=> $pekerja[0]['masukkerja'],
-									'lmkontrak' => $pekerja[0]['lmkontrak'],
-									'akhkontrak'=> $pekerja[0]['akhkontrak'],
-									'jabatan' 	=> $pekerja[0]['jabatan'],
-  									
-  									'pekerjaan'=> $pekerjaan[0]['pekerjaan'],
-  									'kd_pekerjaan'=>  $pekerjaan[0]['kd_pekerjaan'],
-  									
-									'seksi' 	=> $seksi[0]['seksi'],
-									'unit' 		=> $seksi[0]['unit'],
-									'bidang' 	=> $seksi[0]['bidang'],
-									'dept' 		=> $seksi[0]['dept'],
+									'photo' 	          => $pekerja[0]['photo'],
+									'noind' 	          => $pekerja[0]['noind'],
+									'nama' 		          => $pekerja[0]['nama'],
+									'templahir'         => $pekerja[0]['templahir'],
+									'tgllahir' 	        => $pekerja[0]['tgllahir'],
+									'nik' 		          => $pekerja[0]['nik'],
+									'alamat' 	          => $pekerja[0]['alamat'],
+									'desa' 		          => $pekerja[0]['desa'],
+									'kec' 		          => $pekerja[0]['kec'],
+									'kab' 		          => $pekerja[0]['kab'],
+									'prop' 		          => $pekerja[0]['prop'],
+									'kodepos' 	        => $pekerja[0]['kodepos'],
+									'telepon' 	        => $pekerja[0]['telepon'],
+									'nohp' 		          => $pekerja[0]['nohp'],
+									'diangkat' 	        => $pekerja[0]['diangkat'],
+									'masukkerja'        => $pekerja[0]['masukkerja'],
+									'lmkontrak'         => $pekerja[0]['lmkontrak'],
+									'akhkontrak'        => $pekerja[0]['akhkontrak'],
+									'jabatan' 	        => $pekerja[0]['jabatanref'],
 
-									'internal_mail' 	=> $kontak[0]['internal_mail'],
+									'pekerjaan'         => $pekerjaan[0]['pekerjaan'],
+									'kd_pekerjaan'      =>  $pekerjaan[0]['kd_pekerjaan'],
+
+									'seksi' 	          => $seksi[0]['seksi'],
+									'unit' 		          => $seksi[0]['unit'],
+									'bidang' 	          => $seksi[0]['bidang'],
+									'dept' 		          => $seksi[0]['dept'],
+
+									'internal_mail' 	  => $kontak[0]['internal_mail'],
 									'telkomsel_mygroup' => $kontak[0]['telkomsel_mygroup'],
-									'external_mail' 	=> $kontak[0]['external_mail'],
-									'pidgin_account' 	=> $kontak[0]['pidgin_account'],
+									'external_mail' 	  => $kontak[0]['external_mail'],
+									'pidgin_account' 	  => $kontak[0]['pidgin_account'],
 
-									'tglkeluar' => $pekerja[0]['tglkeluar'],
-									'sebabklr' 	=> $pekerja[0]['sebabklr'],
-									'uk_baju' 	=> $pekerja[0]['uk_baju'],
-									'uk_celana' => $pekerja[0]['uk_celana'],
-									'uk_sepatu' => $pekerja[0]['uk_sepatu'],
-									'status_diangkat' => $pekerja[0]['status_diangkat']
+									'tglkeluar'         => $pekerja[0]['tglkeluar'],
+									'sebabklr' 	        => $pekerja[0]['sebabklr'],
+									'uk_baju' 	        => $pekerja[0]['uk_baju'],
+									'uk_celana'         => $pekerja[0]['uk_celana'],
+									'uk_sepatu'         => $pekerja[0]['uk_sepatu'],
+									'status_diangkat'   => $pekerja[0]['status_diangkat']
 								);
 		}
-								// echo "<pre>";
-								// print_r($kontak); exit();
 
-			
+
 			$data['Menu'] = 'Dashboard';
 			$data['SubMenuOne'] = '';
 			$data['SubMenuTwo'] = '';
-			
+
 			$data['UserMenu'] = $this->M_user->getUserMenu($user_id,$this->session->responsibility_id);
 			$data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id);
 			$data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id);
 
-			$this->load->view('V_Header',$data); 
+			$this->load->view('V_Header',$data);
 			$this->load->view('V_Sidemenu',$data);
 			$this->load->view('MasterPekerja/Pekerja/PekerjaKeluar/V_Edit',$data);
 			$this->load->view('V_Footer',$data);
@@ -207,19 +200,19 @@ class C_Index extends CI_Controller {
 			$data['Menu'] = 'Dashboard';
 			$data['SubMenuOne'] = '';
 			$data['SubMenuTwo'] = '';
-			
+
 			$data['UserMenu'] = $this->M_user->getUserMenu($user_id,$this->session->responsibility_id);
 			$data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id);
 			$data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id);
 
-			$this->load->view('V_Header',$data); 
+			$this->load->view('V_Header',$data);
 			$this->load->view('V_Sidemenu',$data);
 			$this->load->view('MasterPekerja/Pekerja/PekerjaKeluar/V_Index',$data);
 			$this->load->view('V_Footer',$data);
-			
+
 			print "<script type='text/javascript'>alert('Data yang Anda masukan tidak ditemukan. Mohon coba kembali');</script>";
 
-		
+
 	}
 }
 
@@ -236,7 +229,7 @@ class C_Index extends CI_Controller {
 		$ambil_kec 	= $this->M_pekerjakeluar->ambilKec($kec);
 		$ambil_desa = $this->M_pekerjakeluar->ambilDesa($desa);
 
-		if ( $ambil_prov != null ) 
+		if ( $ambil_prov != null )
 		{
 			$data 	 	= array(
 								'noind' 	=> $this->input->post('txt_noinduk'),
@@ -273,9 +266,7 @@ class C_Index extends CI_Controller {
 								'pidgin_account' 	=> $this->input->post('txt_pidginaccount'),
 
 								);
-		//  echo "<pre>";
-		// print_r($data);
-		//  exit();
+
 		$this->M_pekerjakeluar->updateDataPekerja($data,$noind);
 		$this->M_pekerjakeluar->updateDataPekerjaa($mail,$noind);
 		$history 	= array(
@@ -297,22 +288,22 @@ class C_Index extends CI_Controller {
 						);
 		$this->M_pekerjakeluar->historyTlog($tlog);
 		print "<script type='text/javascript'>alert('Data telah berhasil diubah. Mohon cek kembali');</script>";
-		if (print "<script type='text/javascript'>alert('Data telah berhasil diubah. Mohon cek kembali');</script>" != null) 
+		if (print "<script type='text/javascript'>alert('Data telah berhasil diubah. Mohon cek kembali');</script>" != null)
 			{
 			$data['Menu'] = 'Dashboard';
 			$data['SubMenuOne'] = '';
 			$data['SubMenuTwo'] = '';
-			
+
 			$data['UserMenu'] = $this->M_user->getUserMenu($user_id,$this->session->responsibility_id);
 			$data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id);
 			$data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id);
 
-			$this->load->view('V_Header',$data); 
+			$this->load->view('V_Header',$data);
 			$this->load->view('V_Sidemenu',$data);
 			$this->load->view('MasterPekerja/Pekerja/PekerjaKeluar/V_Index',$data);
 			$this->load->view('V_Footer',$data);
 			};
-	
+
 		}else {
 			$data 	 	= array(
 								'noind' 	=> $this->input->post('txt_noinduk'),
@@ -345,9 +336,7 @@ class C_Index extends CI_Controller {
 								'pidgin_account' 	=> $this->input->post('txt_pidginaccount'),
 
 								);
-		// echo "<pre>";
-		// print_r($data);
-		// exit();
+
 		$this->M_pekerjakeluar->updateDataPekerja($data,$noind);
 		$this->M_pekerjakeluar->updateDataPekerjaa($mail,$noind);
 		$history 	= array(
@@ -369,25 +358,22 @@ class C_Index extends CI_Controller {
 						);
 		$this->M_pekerjakeluar->historyTlog($tlog);
 		print "<script type='text/javascript'>alert('Data telah berhasil diubah. Mohon cek kembali');</script>";
-		if (print "<script type='text/javascript'>alert('Data telah berhasil diubah. Mohon cek kembali');</script>" != null) 
+		if (print "<script type='text/javascript'>alert('Data telah berhasil diubah. Mohon cek kembali');</script>" != null)
 			{
 			$data['Menu'] = 'Dashboard';
 			$data['SubMenuOne'] = '';
 			$data['SubMenuTwo'] = '';
-			
+
 			$data['UserMenu'] = $this->M_user->getUserMenu($user_id,$this->session->responsibility_id);
 			$data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id);
 			$data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id);
 
-			$this->load->view('V_Header',$data); 
+			$this->load->view('V_Header',$data);
 			$this->load->view('V_Sidemenu',$data);
 			$this->load->view('MasterPekerja/Pekerja/PekerjaKeluar/V_Index',$data);
 			$this->load->view('V_Footer',$data);
 			};
 		}
-		
-
-			
 	}
 
 	public function provinsiPekerja(){
