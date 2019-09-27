@@ -5,7 +5,7 @@ class M_monitoringsalesorder extends CI_Model{
     public function __construct(){
         parent::__construct();
         $this->load->database();
-        $this->oracle = $this->load->database('oracle_dev',TRUE);
+        $this->oracle = $this->load->database('oracle',TRUE);
     }
 
     public function do_outstanding(){
