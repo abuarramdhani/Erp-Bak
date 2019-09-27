@@ -931,4 +931,45 @@ class M_Dtmasuk extends CI_Model
         $query = $this->db->query($sql);
         return $query->result_array();
     }
+
+    public function cekDuplikat()
+    {
+        $sql = "select
+                    distinct a.*,
+                    es.section_name
+                from
+                    (
+                        select kb.kode_item,
+                        km.item,
+                        kb.kodesie,
+                        count(km.item) duplicate
+                    from
+                        k3.k3n_standar_kebutuhan kb,
+                        k3.k3_master_item km
+                    where
+                        kb.kode_item = km.kode_item
+                        and kb.status = 3
+                        and kb.tgl_approve_tim = (
+                        select
+                            max(kb2.tgl_approve_tim)
+                        from
+                            k3.k3n_standar_kebutuhan kb2
+                        where
+                            kb2.kodesie = kb.kodesie
+                            and kb2.kode_item = kb.kode_item
+                            and kb2.status = kb.status )
+                    group by
+                        kb.kode_item,
+                        km.item,
+                        kb.kodesie ) a,
+                    er.er_section es
+                where
+                    a.duplicate > 1
+                    and a.kodesie = substring(es.section_code, 1, 7)
+                order by
+                    3,
+                    2";
+        $query = $this->db->query($sql);
+        return $query->result_array();
+    }
 }

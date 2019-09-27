@@ -1277,6 +1277,32 @@ public function CetakBongagal($id)
 			}
 		// print_r($arrTable);
 		// exit();
+
+			$cekDuplikat = $this->M_dtmasuk->cekDuplikat();
+			if (count($cekDuplikat) > 0) {
+				$newTable .= '<hr><table class="table table-bordered table-hover table-striped text-center">
+						<caption style="color:red"><b>TERDAPAT DATA GANDA PADA STANDAR KEBUTUHAN YANG DIGUNAKAN!!!</b></caption>
+						<tr>
+							<th style="width:20px;">No</th>
+							<th style="width:200px;">Kode Item</th>
+							<th style="width:200px;">Item</th>
+							<th style="width:200px;">Kodesie</th>
+							<th style="width:200px;">Seksi</th>
+						</tr>';
+				$x = 1;
+				foreach ($cekDuplikat as $key) {
+					$newTable .= '<tr class="aw SmityWeberJegerMenJensen aw ">
+						<td>'.$x.'</td>
+						<td>'.$key["kode_item"].'</td>
+						<td>'.$key["item"].'</td>
+						<td>'.$key["kodesie"].'</td>
+						<td>'.$key["section_name"].'</td>
+					</tr>';
+					$x++;
+				}
+				$newTable .= '</table>
+				<p style="color:red"><b>Silahkan hapus data yang tidak dipakai pada menu Riwayat Standar Kebutuhan.</b></p>';
+			}
 			if (strlen($newTable) < 10) {
 				echo '<center><ul class="list-group"><li class="list-group-item">Data Aman</li></ul></center>';
 			}else{
