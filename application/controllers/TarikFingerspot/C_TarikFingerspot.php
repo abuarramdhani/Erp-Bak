@@ -98,62 +98,66 @@ class C_TarikFingerspot extends CI_Controller
 						'user_' => $key['user_']
 					);
 
-					if (substr($key['noind'], 0,1) == 'L') {
-						$cek = $this->M_tarikfingerspot->cekPresensiL($data_presensi);
-					}else{
-						$cek = $this->M_tarikfingerspot->cekPresensi($data_presensi);
-						$cek_katering = $this->M_tarikfingerspot->cekCatering($data_presensi);
-						$cek_lokasi_finger = $this->M_tarikfingerspot->cekLokasiFinger($key['user_']);
-					}
-
-
-					if ($cek == '0') {
-
+					//cek ke rill
+		 			$cekRill = $this->M_tarikfingerspot->cekPresensiRill($data_presensi);
+		 			if ($cekRill == '0') {
 						if (substr($key['noind'], 0,1) == 'L') {
-							//	Kirim ke Presensi.tprs_shift2
-							//	{
-				 					$data_presensi['transfer']	=	FALSE;
-				 					// $data_presensi['user_']		=	'CRON';
-				 					$this->M_tarikfingerspot->insert_presensi('"Presensi"', 'tprs_shift2', $data_presensi);
-							//	}
+							$cek = $this->M_tarikfingerspot->cekPresensiL($data_presensi);
 						}else{
-							//	Kirim ke FrontPresensi.tpresensi
-							//	{
-									$data_presensi['transfer']	=	TRUE;
-				 					$this->M_tarikfingerspot->insert_presensi('"FrontPresensi"', 'tpresensi', $data_presensi);
-							//	}
-
-							//	Kirim ke Presensi.tprs_shift
-							//	{
-				 					$data_presensi['transfer']	=	FALSE;
-				 					// $data_presensi['user_']		=	'CRON';
-				 					$this->M_tarikfingerspot->insert_presensi('"Presensi"', 'tprs_shift', $data_presensi);
-							//	}
-
-							//	Kirim ke Presensi.tpresensi_riil
-							//	{
-				 					$data_presensi['transfer']	=	FALSE;
-									$data_presensi['nomor_sn']  = $key['nomor_sn'];
-									$this->M_tarikfingerspot->insert_presensi('"Presensi"', 'tpresensi_riil', $data_presensi);
-									unset($data_presensi['nomor_sn']);
-							//	}
+							$cek = $this->M_tarikfingerspot->cekPresensi($data_presensi);
+							$cek_katering = $this->M_tarikfingerspot->cekCatering($data_presensi);
+							$cek_lokasi_finger = $this->M_tarikfingerspot->cekLokasiFinger($key['user_']);
 						}
 
 
-			 			$insert[$no] = $key;
-			 			$no++;
-					}
+						if ($cek == '0') {
 
-					if($cek_katering == '0' && ($cek_lokasi_finger == '01' || $cek_lokasi_finger == '02' || $cek_lokasi_finger == '03' ) && (substr($key['noind'], 0,1) != 'R' || (substr($key['noind'], 0,1) != 'R' && $cek_lokasi_finger != '01'))){
-						//	Kirim ke Catering.tpresensi
-						//	{
-								$data_presensi['transfer']	=	FALSE;
-								$data_presensi['tempat_makan'] = $key['tempat_makan'];
-								$this->M_tarikfingerspot->insert_presensi('"Catering"', 'tpresensi', $data_presensi);
-								unset($data_presensi['tempat_makan']);
-						//	}
-						$insert_c[$no_c] = $key;
-						$no_c++;
+							if (substr($key['noind'], 0,1) == 'L') {
+								//	Kirim ke Presensi.tprs_shift2
+								//	{
+					 					$data_presensi['transfer']	=	FALSE;
+					 					// $data_presensi['user_']		=	'CRON';
+					 					$this->M_tarikfingerspot->insert_presensi('"Presensi"', 'tprs_shift2', $data_presensi);
+								//	}
+							}else{
+								//	Kirim ke FrontPresensi.tpresensi
+								//	{
+										$data_presensi['transfer']	=	TRUE;
+					 					$this->M_tarikfingerspot->insert_presensi('"FrontPresensi"', 'tpresensi', $data_presensi);
+								//	}
+
+								//	Kirim ke Presensi.tprs_shift
+								//	{
+					 					$data_presensi['transfer']	=	FALSE;
+					 					// $data_presensi['user_']		=	'CRON';
+					 					$this->M_tarikfingerspot->insert_presensi('"Presensi"', 'tprs_shift', $data_presensi);
+								//	}
+
+								//	Kirim ke Presensi.tpresensi_riil
+								//	{
+					 					$data_presensi['transfer']	=	FALSE;
+										$data_presensi['nomor_sn']  = $key['nomor_sn'];
+										$this->M_tarikfingerspot->insert_presensi('"Presensi"', 'tpresensi_riil', $data_presensi);
+										unset($data_presensi['nomor_sn']);
+								//	}
+							}
+
+
+				 			$insert[$no] = $key;
+				 			$no++;
+						}
+
+						if($cek_katering == '0' && ($cek_lokasi_finger == '01' || $cek_lokasi_finger == '02' || $cek_lokasi_finger == '03' ) && (substr($key['noind'], 0,1) != 'R' || (substr($key['noind'], 0,1) != 'R' && $cek_lokasi_finger != '01'))){
+							//	Kirim ke Catering.tpresensi
+							//	{
+									$data_presensi['transfer']	=	FALSE;
+									$data_presensi['tempat_makan'] = $key['tempat_makan'];
+									$this->M_tarikfingerspot->insert_presensi('"Catering"', 'tpresensi', $data_presensi);
+									unset($data_presensi['tempat_makan']);
+							//	}
+							$insert_c[$no_c] = $key;
+							$no_c++;
+						}
 					}
 				}
 				echo "Data Diinsert : ".$no."<br><br>";
@@ -229,72 +233,75 @@ class C_TarikFingerspot extends CI_Controller
 				'noind_baru' => $key['noind_baru'],
 				'user_' => $key['user_']
 			);
-
-			if (substr($key['noind'], 0,1) == 'L') {
-				$cek = $this->M_tarikfingerspot->cekPresensiL($data_presensi);
-			}else{
-				$cek = $this->M_tarikfingerspot->cekPresensi($data_presensi);
-				$cek_katering = $this->M_tarikfingerspot->cekCatering($data_presensi);
-				$cek_lokasi_finger = $this->M_tarikfingerspot->cekLokasiFinger($key['user_']);
-			}
-
-
-			if ($cek == '0') {
-
+ 			//cek ke rill
+ 			$cekRill = $this->M_tarikfingerspot->cekPresensiRill($data_presensi);
+ 			if ($cekRill == '0') {
 				if (substr($key['noind'], 0,1) == 'L') {
-					//	Kirim ke Presensi.tprs_shift2
-					//	{
-		 					$data_presensi['transfer']	=	FALSE;
-		 					// $data_presensi['user_']		=	'CRON';
-		 					$this->M_tarikfingerspot->insert_presensi('"Presensi"', 'tprs_shift2', $data_presensi);
-					//	}
+					$cek = $this->M_tarikfingerspot->cekPresensiL($data_presensi);
 				}else{
-					//	Kirim ke FrontPresensi.tpresensi
-					//	{
-							$data_presensi['transfer']	=	TRUE;
-		 					$this->M_tarikfingerspot->insert_presensi('"FrontPresensi"', 'tpresensi', $data_presensi);
-					//	}
-
-					//	Kirim ke Presensi.tprs_shift
-					//	{
-		 					$data_presensi['transfer']	=	FALSE;
-		 					// $data_presensi['user_']		=	'CRON';
-		 					$this->M_tarikfingerspot->insert_presensi('"Presensi"', 'tprs_shift', $data_presensi);
-					//	}
-
-					//	Kirim ke Presensi.tpresensi_riil
-					//	{
-		 					$data_presensi['transfer']	=	FALSE;
-							$data_presensi['nomor_sn']  = $key['nomor_sn'];
-							$this->M_tarikfingerspot->insert_presensi('"Presensi"', 'tpresensi_riil', $data_presensi);
-							unset($data_presensi['nomor_sn']);
-					//	}
+					$cek = $this->M_tarikfingerspot->cekPresensi($data_presensi);
+					$cek_katering = $this->M_tarikfingerspot->cekCatering($data_presensi);
+					$cek_lokasi_finger = $this->M_tarikfingerspot->cekLokasiFinger($key['user_']);
 				}
 
 
-	 			$insert[$no] = $key;
-	 			$idx = 0;
-	 			foreach ($device as $dev) {
-	 				if ($dev['inisial_lokasi'] == $data_presensi['user_']) {
-	 					$device[$idx]['jumlah'] = intval($device[$idx]['jumlah']) + 1;
-	 				}
-	 				$idx++;
-	 			}
-	 			$no++;
-			}
+				if ($cek == '0') {
 
-			if($cek_katering == '0' && ($cek_lokasi_finger == '01' || $cek_lokasi_finger == '02' || $cek_lokasi_finger == '03' ) && (substr($key['noind'], 0,1) != 'R' || (substr($key['noind'], 0,1) == 'R' && $cek_lokasi_finger != '01'))){
-				//	Kirim ke Catering.tpresensi
-				//	{
-						$data_presensi['transfer']	=	FALSE;
-						$data_presensi['tempat_makan'] = $key['tempat_makan'];
-						$this->M_tarikfingerspot->insert_presensi('"Catering"', 'tpresensi', $data_presensi);
-						unset($data_presensi['tempat_makan']);
-				//	}
-				$insert_c[$no_c] = $key;
-				$no_c++;
+					if (substr($key['noind'], 0,1) == 'L') {
+						//	Kirim ke Presensi.tprs_shift2
+						//	{
+			 					$data_presensi['transfer']	=	FALSE;
+			 					// $data_presensi['user_']		=	'CRON';
+			 					$this->M_tarikfingerspot->insert_presensi('"Presensi"', 'tprs_shift2', $data_presensi);
+						//	}
+					}else{
+						//	Kirim ke FrontPresensi.tpresensi
+						//	{
+								$data_presensi['transfer']	=	TRUE;
+			 					$this->M_tarikfingerspot->insert_presensi('"FrontPresensi"', 'tpresensi', $data_presensi);
+						//	}
+
+						//	Kirim ke Presensi.tprs_shift
+						//	{
+			 					$data_presensi['transfer']	=	FALSE;
+			 					// $data_presensi['user_']		=	'CRON';
+			 					$this->M_tarikfingerspot->insert_presensi('"Presensi"', 'tprs_shift', $data_presensi);
+						//	}
+
+						//	Kirim ke Presensi.tpresensi_riil
+						//	{
+			 					$data_presensi['transfer']	=	FALSE;
+								$data_presensi['nomor_sn']  = $key['nomor_sn'];
+								$this->M_tarikfingerspot->insert_presensi('"Presensi"', 'tpresensi_riil', $data_presensi);
+								unset($data_presensi['nomor_sn']);
+						//	}
+					}
+
+
+		 			$insert[$no] = $key;
+		 			$idx = 0;
+		 			foreach ($device as $dev) {
+		 				if ($dev['inisial_lokasi'] == $data_presensi['user_']) {
+		 					$device[$idx]['jumlah'] = intval($device[$idx]['jumlah']) + 1;
+		 				}
+		 				$idx++;
+		 			}
+		 			$no++;
+				}
+
+				if($cek_katering == '0' && ($cek_lokasi_finger == '01' || $cek_lokasi_finger == '02' || $cek_lokasi_finger == '03' ) && (substr($key['noind'], 0,1) != 'R' || (substr($key['noind'], 0,1) == 'R' && $cek_lokasi_finger != '01'))){
+					//	Kirim ke Catering.tpresensi
+					//	{
+							$data_presensi['transfer']	=	FALSE;
+							$data_presensi['tempat_makan'] = $key['tempat_makan'];
+							$this->M_tarikfingerspot->insert_presensi('"Catering"', 'tpresensi', $data_presensi);
+							unset($data_presensi['tempat_makan']);
+					//	}
+					$insert_c[$no_c] = $key;
+					$no_c++;
+				}
+				$num++;
 			}
-			$num++;
 		}
 		echo "Data Diinsert : ".$no."<br><br>";
 		foreach ($insert as $key) {
