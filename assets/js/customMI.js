@@ -3,6 +3,17 @@ $(document).ready(function(){
 	$('#btn_clear_invoice').click(function() {
 		$('#nama_vendor').val('').trigger('change')
 	})
+
+	$('#btnMISave').click(function(){
+		Swal.fire({
+			  // position: 'top-end',
+			  type: 'success',
+			  title: 'Data has been saved!',
+			  showConfirmButton: false,
+			  timer: 1500
+			})
+	})
+	
 	$('#btnMICancel').click(function() {
 		$('#poLinesTable').remove()
 	})
