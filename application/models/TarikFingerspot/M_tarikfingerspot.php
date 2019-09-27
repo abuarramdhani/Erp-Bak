@@ -158,6 +158,17 @@ class M_tarikfingerspot extends CI_MODEL
 
 	}
 
+	public function cekPresensiRill($data)
+	{
+		$sql = "select * from \"Presensi\".tpresensi_riil
+				where noind = '".$data['noind']."'
+				and tanggal = '".$data['tanggal']."'
+				and waktu = '".$data['waktu']."' ";
+		$result = $this->personalia->query($sql);
+		$n = $result->num_rows();
+		return $n;
+	}
+
 	public function cekCatering($data){
 		$sql = "select * from \"Catering\".tpresensi
 				where noind = '".$data['noind']."'
