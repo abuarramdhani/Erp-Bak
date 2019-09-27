@@ -423,6 +423,9 @@ $(document).ready(function(){
 			$('.dataTable-EditTmp').DataTable( {
 
 	  	});
+			$('.dataTable_receipt').DataTable( {
+
+	  	});
 			$('.approveCatering').DataTable( {
 
 	  	});
