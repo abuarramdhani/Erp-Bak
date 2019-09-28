@@ -1,98 +1,70 @@
+<?php echo validation_errors(); ?>
+<?php // echo "<pre>";print_r($Moulding);exit();
+?>
 <section class="content">
-    <div class="inner" >
+    <div class="inner">
         <div class="row">
-            <form method="post" action="<?php echo site_url('ManufacturingOperationUP2L/Moulding/update/'.$id);?>" class="form-horizontal">
+            <form method="post" action="<?php echo site_url('ManufacturingOperationUP2L/Moulding/update/' . $id); ?>" class="form-horizontal">
                 <div class="col-lg-12">
                     <div class="row">
                         <div class="col-lg-12">
                             <div class="col-lg-11">
-                                <div class="text-right"><h1><b><?= $Title ?></b></h1></div>
+                                <div class="text-right">
+                                    <h1><b><?= $Title ?></b></h1>
+                                </div>
                             </div>
                             <div class="col-lg-1 ">
                                 <div class="text-right hidden-md hidden-sm hidden-xs">
-                                    <a class="btn btn-default btn-lg" href="<?php echo site_url('ManufacturingOperationUP2L/Moulding/');?>">
+                                    <a class="btn btn-default btn-lg" href="<?php echo site_url('ManufacturingOperationUP2L/Moulding/'); ?>">
                                         <i class="icon-wrench icon-2x"></i>
-                                        <span ><br /></span>
-                                    </a>                             
+                                        <span><br /></span>
+                                    </a>
                                 </div>
                             </div>
                         </div>
                     </div>
                     <br />
-                
+
                     <div class="row">
                         <div class="col-lg-12">
                             <div class="box box-primary box-solid">
                                 <div class="box-header with-border">Update Moulding</div>
-                                <?php
-                                    foreach ($Moulding as $headerRow):
-                                ?>
+
                                 <div class="box-body">
                                     <div class="panel-body">
                                         <div class="row">
-											<div class="form-group">
+                                            <div class="form-group">
+                                                <input type="hidden" name="txtMouldingId" id="txtMouldingId" value="<?= $Moulding[0]['moulding_id'] ?>">
                                                 <label for="txtComponentCodeHeader" class="control-label col-lg-4">Component Code</label>
                                                 <div class="col-lg-4">
-                                                    <input type="text" placeholder="Component Code" name="txtComponentCodeHeader" id="txtComponentCodeHeader" class="form-control" value="<?php echo $headerRow['component_code']; ?>"/>
+                                                    <input type="text" placeholder="Component Code" name="txtComponentCodeHeader" id="txtComponentCodeHeader" class="form-control" value="<?php echo $Moulding[0]['component_code'];?>" />
                                                 </div>
                                             </div>
 
-											<div class="form-group">
+                                            <div class="form-group">
                                                 <label for="txtComponentDescriptionHeader" class="control-label col-lg-4">Component Description</label>
                                                 <div class="col-lg-4">
-                                                    <input type="text" placeholder="Component Description" name="txtComponentDescriptionHeader" id="txtComponentDescriptionHeader" class="form-control" value="<?php echo $headerRow['component_description']; ?>"/>
+                                                    <input type="text" placeholder="Component Description" name="txtComponentDescriptionHeader" id="txtComponentDescriptionHeader" class="form-control" value="<?= $Moulding[0]['component_description'];?>" />
                                                 </div>
                                             </div>
 
-											<div class="form-group">
+                                            <div class="form-group">
                                                 <label for="txtProductionDateHeader" class="control-label col-lg-4">Production Date</label>
                                                 <div class="col-lg-4">
-                                                    <input type="text" maxlength="10" placeholder="<?php echo date('Y-m-d')?>" name="txtProductionDateHeader" value="<?php echo $headerRow['production_date'] ?>" class="date form-control" data-date-format="yyyy-mm-dd" id="txtProductionDateHeader" />
+                                                    <input type="text" placeholder="<?php echo date('Y-m-d') ?>" name="txtProductionDateHeader" value="<?php echo $Moulding[0]['production_date'] ?>" class="date form-control" data-date-format="yyyy-mm-dd" id="txtProductionDateHeader" />
                                                 </div>
                                             </div>
 
-											<div class="form-group">
+                                            <div class="form-group">
                                                 <label for="txtMouldingQuantityHeader" class="control-label col-lg-4">Moulding Quantity</label>
                                                 <div class="col-lg-4">
-                                                    <input type="text" placeholder="Moulding Quantity" name="txtMouldingQuantityHeader" id="txtMouldingQuantityHeader" class="form-control" value="<?php echo $headerRow['moulding_quantity']; ?>"/>
+                                                    <input type="text" placeholder="Moulding Quantity" name="txtMouldingQuantityHeader" id="txtMouldingQuantityHeader" class="form-control" value="<?php echo $Moulding[0]['moulding_quantity']; ?>" />
                                                 </div>
                                             </div>
-
-											<div class="form-group">
-                                                <label for="txtJobIdHeader" class="control-label col-lg-4">Job Id</label>
-                                                <div class="col-lg-4">
-                                                    <input type="text" placeholder="Job Id" name="txtJobIdHeader" id="txtJobIdHeader" class="form-control" value=""/>
-                                                </div>
-                                            </div>
-
-											<div class="form-group">
-                                                <label for="txtScrapQuantityHeader" class="control-label col-lg-4">Scrap Quantity</label>
-                                                <div class="col-lg-4">
-                                                    <input type="text" placeholder="Scrap Quantity" name="txtScrapQuantityHeader" id="txtScrapQuantityHeader" class="form-control" value=""/>
-                                                </div>
-                                            </div>
-
-											<div class="form-group">
-                                                <label for="txtScrapTypeHeader" class="control-label col-lg-4">Scrap Type</label>
-                                                <div class="col-lg-4">
-                                                    <input type="text" placeholder="Scrap Type" name="txtScrapTypeHeader" id="txtScrapTypeHeader" class="form-control" value=""/>
-                                                </div>
-                                            </div>
-
 
                                         </div>
-
                                         <div class="col-lg-12">
                                             <br />
-                                            <br />
-                                            <div class="row">
-                                                <div class="nav-tabs-custom">
-                                                    <ul class="nav nav-tabs">
-                                                    </ul>
-                                                    <div class="tab-content">
-                                                    </div>
-                                                </div>
-                                            </div>
                                         </div>
                                     </div>
                                     <div class="panel-footer">
@@ -103,7 +75,7 @@
                                         </div>
                                     </div>
                                 </div>
-                                <?php endforeach; ?>
+
                             </div>
                         </div>
                     </div>

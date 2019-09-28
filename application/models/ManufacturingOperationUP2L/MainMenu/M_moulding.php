@@ -5,39 +5,50 @@ class M_moulding extends CI_Model
     public function __construct()
     {
         parent::__construct();
-        $this->load->database();    
+        $this->load->database();
     }
 
     public function monitoringMoulding()
     {
-       $sql="select mm.moulding_id,
-                    mm.component_code,
-                    mm.component_description,
-                    mm.production_date,
-                    mm.moulding_quantity,
-                    mm.keterangan,
-                    mm.print_code,
-                    count(me.name) jumlah_pekerja,
-                    (select sum(ms.quantity) from mo.mo_moulding_scrap ms where ms.moulding_id = mm.moulding_id) scrap_qty
-            from mo.mo_moulding mm,
-                 mo.mo_moulding_employee me
-            where mm.moulding_id = me.moulding_id
-            group by 
-                    mm.moulding_id,
-                    mm.moulding_quantity,
-                    mm.component_code,
-                    mm.component_description,
-                    mm.production_date,
-                    mm.keterangan
-            order by 1";
+        $sql = "SELECT mm.moulding_id, 
+                mm.component_code, 
+                mm.component_description, 
+                mm.production_date, 
+                mm.shift, 
+                mm.moulding_quantity, 
+                mm.keterangan, 
+                mm.print_code, 
+                Count(me.name)                           jumlah_pekerja, 
+                (SELECT Sum(ms.quantity) 
+                FROM   mo.mo_moulding_scrap ms 
+                WHERE  ms.moulding_id = mm.moulding_id) scrap_qty, 
+                (SELECT Sum(mb.qty) 
+                FROM   mo.mo_moulding_bongkar mb 
+                WHERE  mb.moulding_id = mm.moulding_id) bongkar_qty,
+                ma.kode
+        FROM   mo.mo_moulding mm, 
+                mo.mo_moulding_employee me,
+        mo.mo_absensi ma
+        WHERE  mm.moulding_id = me.moulding_id 
+        and ma.category_produksi = 'Moulding'
+        and ma.id_produksi = mm.moulding_id
+        and ma.no_induk = me.no_induk
+        GROUP  BY mm.moulding_id, 
+                mm.moulding_quantity, 
+                mm.component_code, 
+                mm.component_description, 
+                mm.production_date, 
+                mm.keterangan,
+                ma.kode
+        ORDER  BY mm.production_date, ma.kode";
         $query = $this->db->query($sql);
         return $query->result_array();
     }
 
     public function getMoulding($id = FALSE)
     {
-    	if ($id === FALSE) {
-            $sql="select mm.moulding_id,
+        if ($id === FALSE) {
+            $sql = "select mm.moulding_id,
                     mm.component_code,
                     mm.component_description,
                     mm.production_date,
@@ -48,9 +59,9 @@ class M_moulding extends CI_Model
             from mo.mo_moulding mm,
                  mo.mo_moulding_employee me
             where mm.moulding_id = me.moulding_id";
-    		$query = $this->db->query($sql);
-    	} else {
-    		$sql="select mm.moulding_id,
+            $query = $this->db->query($sql);
+        } else {
+            $sql = "select mm.moulding_id,
                     mm.component_code,
                     mm.component_description,
                     mm.production_date,
@@ -63,9 +74,9 @@ class M_moulding extends CI_Model
             where mm.moulding_id = me.moulding_id
                   and mm.moulding_id = '$id'";
             $query = $this->db->query($sql);
-    	}
+        }
 
-    	return $query->result_array();
+        return $query->result_array();
     }
 
     public function getScrap($id)
@@ -74,11 +85,12 @@ class M_moulding extends CI_Model
                     kode_scrap,
                     moulding_id,
                     quantity,
-                    (select sum(quantity) from mo.mo_moulding_scrap where moulding_id=$id) jumlah
+                    scrap_id,
+                    (select sum(quantity) from mo.mo_moulding_scrap where moulding_id='$id') jumlah
                 from mo.mo_moulding_scrap
-              where moulding_id = $id";
-      $query = $this->db->query($sql);
-      return $query->result_array();
+              where moulding_id = '$id'";
+        $query = $this->db->query($sql);
+        return $query->result_array();
     }
 
     public function getBongkar($id)
@@ -86,11 +98,12 @@ class M_moulding extends CI_Model
         $sql = "select 
                     moulding_id,
                     qty,
+                    bongkar_id,
                     (select sum(qty) from mo.mo_moulding_bongkar where moulding_id=$id) jumlah
                 from mo.mo_moulding_bongkar
               where moulding_id = $id";
-      $query = $this->db->query($sql);
-      return $query->result_array();
+        $query = $this->db->query($sql);
+        return $query->result_array();
     }
 
 
@@ -112,16 +125,64 @@ class M_moulding extends CI_Model
         $query = $this->db->query($sql);
     }
 
-    public function updateMoulding($data, $id)
+    public function updateMoulding($id, $data)
     {
-        $this->db->where('moulding_id', $id);
+        // $sql = "
+        //     SET mo.mo_moulding
+        //     (component_code = '$component_code', component_description = '$component_description', production_date = '$production_date,
+        //     moulding_quantity = '$moulding_quantity', job_id = '$job_id', scrap_quantity = '$scrap_quantity', scrap_type = '$scrap_type')
+        //     WHERE id = $id;
+
+        // ";
+        //VALUES ($component_code, $component_description, $production_date, $moulding_quantity, $job_id, $scrap_quantity, $scrap_type)
+        // $query = $this->db->query($sql);
+
+        $this->db->where('moulding_id', $id); //$this->db->where('moulding_id', $id);
         $this->db->update('mo.mo_moulding', $data);
+    }
+
+    public function editScrap($id)
+    {
+        $sql = "select type_scrap,
+                    kode_scrap,
+                    moulding_id,
+                    quantity,
+                    (select sum(quantity) from mo.mo_moulding_scrap where moulding_id=$id) jumlah
+                from mo.mo_moulding_scrap
+              where moulding_id = $id";
+        $query = $this->db->query($sql);
+        return $query->result_array();
     }
 
     public function deleteMoulding($id)
     {
-        $this->db->where('moulding_id', $id);
-        $this->db->delete('mo.mo_moulding');
+        $sql = "DELETE FROM mo.mo_moulding WHERE moulding_id = '$id'; DELETE FROM mo.mo_absensi WHERE id_produksi = '$id';
+                DELETE FROM mo.mo_moulding_employee WHERE moulding_id = '$id'; DELETE FROM mo.mo_moulding_bongkar WHERE moulding_id = '$id';
+                DELETE FROM mo.mo_moulding_scrap WHERE moulding_id = '$id';";
+        $this->db->query($sql);
+    }
+
+    public function delScr($ids)
+    {
+        $sql = "DELETE FROM mo.mo_moulding_scrap WHERE scrap_id = '$ids'";
+        $query = $this->db->query($sql);
+    }
+    public function delBon($idb)
+    {
+        $sql = "DELETE FROM mo.mo_moulding_bongkar WHERE bongkar_id = '$idb'";
+        $query = $this->db->query($sql);
+    }
+    public function updBon($qtyBon, $idBongkar)
+    {
+
+        $sql = "UPDATE mo.mo_moulding_bongkar SET qty = '$qtyBon' WHERE bongkar_id = '$idBongkar'";
+        $query = $this->db->query($sql);
+    }
+    public function updScr($qtyScr, $idScr, $codeScrap, $typeScrap)
+    {
+
+        $sql = "UPDATE mo.mo_moulding_scrap SET quantity = '$qtyScr', kode_scrap = '$codeScrap', type_scrap = '$typeScrap' WHERE scrap_id = '$idScr'";
+        $query = $this->db->query($sql);
     }
 }
 

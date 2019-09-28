@@ -2286,6 +2286,9 @@ $route['ManufacturingOperationUP2L/Mixing/(:any)/(:any)']			= 'ManufacturingOper
 $route['ManufacturingOperationUP2L/Moulding']						= 'ManufacturingOperationUP2L/MainMenu/C_Moulding';
 $route['ManufacturingOperationUP2L/Moulding/(:any)']				= 'ManufacturingOperationUP2L/MainMenu/C_Moulding/$1';
 $route['ManufacturingOperationUP2L/Moulding/(:any)/(:any)']			= 'ManufacturingOperationUP2L/MainMenu/C_Moulding/$1/$2';
+$route['ManufacturingOperationUP2L/OTT']							= 'ManufacturingOperationUP2L/MainMenu/C_OTT';
+$route['ManufacturingOperationUP2L/OTT/(:any)']						= 'ManufacturingOperationUP2L/MainMenu/C_OTT/$1';
+$route['ManufacturingOperationUP2L/OTT/(:any)/(:any)']				= 'ManufacturingOperationUP2L/MainMenu/C_OTT/$1/$2';
 $route['ManufacturingOperationUP2L/MasterItem']						= 'ManufacturingOperationUP2L/MainMenu/C_MasterItem';
 $route['ManufacturingOperationUP2L/MasterItem/(:any)']				= 'ManufacturingOperationUP2L/MainMenu/C_MasterItem/$1';
 $route['ManufacturingOperationUP2L/MasterItem/(:any)/(:any)'] 		= 'ManufacturingOperationUP2L/MainMenu/C_MasterItem/$1/$2';
@@ -2298,6 +2301,7 @@ $route['ManufacturingOperationUP2L/MasterPersonal/(:any)/(:any)']	= 'Manufacturi
 $route['ManufacturingOperationUP2L/QualityControl']					= 'ManufacturingOperationUP2L/MainMenu/C_QualityControl';
 $route['ManufacturingOperationUP2L/QualityControl/(:any)']			= 'ManufacturingOperationUP2L/MainMenu/C_QualityControl/$1';
 $route['ManufacturingOperationUP2L/QualityControl/(:any)/(:any)']	= 'ManufacturingOperationUP2L/MainMenu/C_QualityControl/$1/$2';
+$route['ManufacturingOperationUP2L/QualityControl/(:any)/(:any)/(:any)']	= 'ManufacturingOperationUP2L/MainMenu/C_QualityControl/$1/$2/$3';
 $route['ManufacturingOperationUP2L/XFIN']							= 'ManufacturingOperationUP2L/MainMenu/C_XFIN';
 $route['ManufacturingOperationUP2L/XFIN/(:any)']					= 'ManufacturingOperationUP2L/MainMenu/C_XFIN/$1';
 $route['ManufacturingOperationUP2L/XFIN/(:any)/(:any)']				= 'ManufacturingOperationUP2L/MainMenu/C_XFIN/$1/$2';
@@ -2316,6 +2320,10 @@ $route['ManufacturingOperationUP2L/Job/ReplaceComp']				= 'ManufacturingOperatio
 $route['ManufacturingOperationUP2L/Job/ReplaceComp/(:any)']			= 'ManufacturingOperationUP2L/MainMenu/C_ReplaceComp/$1';
 $route['ManufacturingOperationUP2L/Job/ReplaceComp/(:any)/(:any)']	= 'ManufacturingOperationUP2L/MainMenu/C_ReplaceComp/$1/$2';
 $route['ManufacturingOperationUP2L/Job/ReplaceComp/(:any)/(:any)/(:any)']	= 'ManufacturingOperationUP2L/MainMenu/C_ReplaceComp/$1/$2/$3';
+
+$route['ManufacturingOperationUP2L/Absen']							= 'ManufacturingOperationUP2L/MainMenu/C_Absen';
+$route['ManufacturingOperationUP2L/Absen/(:any)']					= 'ManufacturingOperationUP2L/MainMenu/C_Absen/$1';
+$route['ManufacturingOperationUP2L/Absen/(:any)/(:any)']			= 'ManufacturingOperationUP2L/MainMenu/C_Absen/$1/$2';
 
 
 //------------------------------------Employee Recruitment---------------------------------------------//

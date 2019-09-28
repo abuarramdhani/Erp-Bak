@@ -20,7 +20,8 @@ class M_ajax extends CI_Model
         // }
 
         $sql = "SELECT mst.nama_barang,
-                       mst.kode_barang
+                       mst.kode_barang,
+                       mst.kode_proses
                 FROM mo.mo_master_item mst
                 WHERE (mst.nama_barang LIKE '%$term%'
                        OR mst.kode_barang LIKE '%$term%')
@@ -75,8 +76,8 @@ class M_ajax extends CI_Model
 
     public function getDatePrintCode($date){
       $this->db->select("*");
-      $this->db->from("mo.mo_moulding");
-      $this->db->where("production_date",$date);
+      $this->db->from("mo.mo_selep");
+      $this->db->where("selep_date",$date);
 
       $result = $this->db->get();
 
@@ -85,9 +86,21 @@ class M_ajax extends CI_Model
     }
 
 
-    public function setQualityControl($data)
+    public function setQualityControl(
+      $checking_date, $print_code, $checking_quantity, $scrap_quantity,
+			$created_by, $remaining_quantity, $component_code, $employee,
+			$component_description, $selep_quantity, $shift, $check_qc, $id
+    )
     {
-        return $this->db->insert('mo.mo_quality_control', $data);
+      $sql = "INSERT INTO mo.mo_quality_control(checking_date, print_code, checking_quantity, scrap_quantity,
+                                                created_by, remaining_quantity, component_code, employee,
+                                                component_description, selep_quantity, shift, selep_id_c)
+      VALUES ('$checking_date', '$print_code', '$checking_quantity', '$scrap_quantity',
+              '$created_by', '$remaining_quantity', '$component_code', '$employee',
+              '$component_description', '$selep_quantity', '$shift', '$id'); --INPUT BIASA KE SELEP
+              UPDATE mo.mo_selep SET qc_qty_not_ok = '$scrap_quantity', qc_qty_ok = '$checking_quantity', check_qc = '$check_qc' WHERE selep_id = '$id';";
+              //INPUT DI TABEL SELEP TENTANG CHECKING OKE BUAT XFIN
+      $this->db->query($sql);
     }
     
     public function addScrap($id,$qty,$code,$desc)
@@ -245,6 +258,24 @@ class M_ajax extends CI_Model
         and bsd.SEQ_NUM is not null
         and bsd.shift_date=trunc(to_date('$tanggal','YYYY/MM/DD'))
         ORDER BY BCS.SHIFT_NUM asc
+      ");
+      return $query->result_array();
+    }
+    public function getAllShift($term)
+    {
+      $query = $this->oracle->query("
+        select distinct BCS.DESCRIPTION
+        from BOM_SHIFT_TIMES bst,
+        BOM_CALENDAR_SHIFTS bcs,
+        bom_shift_dates bsd
+        where bst.CALENDAR_CODE = bcs.CALENDAR_CODE
+        and bst.SHIFT_NUM = bcs.SHIFT_NUM
+        and bcs.CALENDAR_CODE='KHS_CAL'
+        and bst.shift_num = bsd.shift_num
+        and bst.calendar_code=bsd.calendar_code
+        and bsd.SEQ_NUM is not null
+        and BCS.DESCRIPTION like '%$term%'
+        ORDER BY BCS.DESCRIPTION asc
       ");
       return $query->result_array();
     }

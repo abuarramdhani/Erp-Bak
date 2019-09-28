@@ -1,5 +1,5 @@
 <?php if (!defined('BASEPATH')) exit('No direct script access allowed');
-
+date_default_timezone_set("Asia/Jakarta");
 class C_MasterItem extends CI_Controller
 {
 	function __construct()
@@ -24,9 +24,7 @@ class C_MasterItem extends CI_Controller
 
 	public function checkSession()
 	{
-		if($this->session->is_logged){
-
-		} else {
+		if(!$this->session->is_logged){
 			redirect('index');
 		}
 	}
@@ -37,13 +35,13 @@ class C_MasterItem extends CI_Controller
 
 		$user_id = $this->session->userid;
 
-		$data['Title'] = 'Master';
-		$data['Menu'] = 'Manufacturing Operation';
+		$data['Title'] 		= 'Master';
+		$data['Menu'] 		= 'Manufacturing Operation';
 		$data['SubMenuOne'] = 'Master Item';
 		$data['SubMenuTwo'] = '';
 
 
-		$data['UserMenu'] = $this->M_user->getUserMenu($user_id,$this->session->responsibility_id);
+		$data['UserMenu'] 		= $this->M_user->getUserMenu($user_id,$this->session->responsibility_id);
 		$data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id);
 		$data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id);
 		$data['message'] 		= $message;
@@ -59,8 +57,8 @@ class C_MasterItem extends CI_Controller
 	public function Create($message=FALSE)
 	{
 		$this->checkSession();
-		$user_id  = $this->session->userid;
-		$data['Menu'] = 'Dashboard';
+		$user_id  			= $this->session->userid;
+		$data['Menu'] 		= 'Dashboard';
 		$data['SubMenuOne'] = '';
 		$data['SubMenuTwo'] = '';
 
@@ -76,216 +74,103 @@ class C_MasterItem extends CI_Controller
 	}
 
 	public function CreateSubmit()
-	{	
-		$this->checkSession();
-		$user_id  = $this->session->userid;
+	{
+		$user_id = $this->session->userid;
+		$fileName 					= $_FILES['item']['name'] .'-'. time();
+		$config['upload_path']		= 'assets/download/ManufacturingOperationUP2L/masterItem/';
+		$config['allowed_types']	= '*';
+		$config['max_size'] 	 	= '8096';
+		$config['overwrite'] 		= true;
+		$config['file_name'] 		= $fileName;
 
-		$fileName 				= time().'-'.$_FILES['Item']['name'];
-	    $config['upload_path']	= 'assets/upload/ManufacturingOperationUP2L/masterItem/';
-	    $config['file_name']	= $fileName;
-	    $config['allowed_types']= 'xls|xlsx|csv';
-	    $config['max_size']		= 2048;
-	    $this->upload->initialize($config);
+		$this->upload->initialize($config);
 
-        if(! $this->upload->do_upload('Item') ){
-        	$error = $this->upload->display_errors();
-       		$msg =	'<div class="row">
-	 					<div class="col-md-10 col-md-offset-1 col-sm-12">
-	 						<div id="messUpPP" class="modal fade modal-danger" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel">
-	 							<div class="modal-dialog modal-lg" role="document">
-	 								<div class="modal-content">
-	 									<div class="modal-body">
-	 										<button type="button" class="close" data-dismiss="modal" aria-label="Close">
-	 											<span aria-hidden="true">&times;</span>
-	 										</button>';
-	 										$msg .= $error;
-		 									$msg .= '
-		 								</div>
-		 							</div>
-			 					</div>
-		 					</div>
-			 			</div>
-           		    </div>
-            		<script type="text/javascript">
-						$("#messUpPP").modal("show");
-					</script>';
-			$this->Create($msg);
-	    }else{
-	        $media			= $this->upload->data();
-	        $inputFileName 	= 'assets/upload/ManufacturingOperationUP2L/masterItem/'.$media['file_name'];
-    		// $section 		= $this->M_dataplan->getSection();
-
-            try{
+		if($this->upload->do_upload('item')) {
+			$media			= $this->upload->data();
+	        $inputFileName 	= 'assets/download/ManufacturingOperationUP2L/masterItem/'.$media['file_name'];
+            try {
             	$inputFileType  = PHPExcel_IOFactory::identify($inputFileName);
             	$objReader      = PHPExcel_IOFactory::createReader($inputFileType);
-            	$objPHPExcel    = $objReader->load($inputFileName);
-            }catch(Exception $e){
+				$objPHPExcel    = $objReader->load($inputFileName);
+            } catch(Exception $e) {
             	die('Error loading file "'.pathinfo($inputFileName,PATHINFO_BASENAME).'": '.$e->getMessage());
-            }
-
-            $sheet          = $objPHPExcel->getSheet(0);
+			}
+			$sheet          = $objPHPExcel->getSheet(0);
             $highestRow     = $sheet->getHighestRow();
-            $highestColumn  = $sheet->getHighestColumn();
-            $errStock       = 0;
 
+			for ($row = 3; $row <= $highestRow; $row++) {
+				$rowData = $sheet->rangeToArray('A' . $row . ':' . 'K' . $row, NULL, FALSE, TRUE);
+				$value = array(
+					'id'				=> (empty($rowData[0][0]) ? 0 : $rowData[0][0]),
+					'type'				=> (empty($rowData[0][1]) ? null : $rowData[0][1]),
+					'kode_barang' 		=> (empty($rowData[0][2]) ? null : $rowData[0][2]),
+					'nama_barang'		=> (empty($rowData[0][3]) ? null : $rowData[0][3]),
+					'proses'			=> (empty($rowData[0][4]) ? null : $rowData[0][4]),
+					'kode_proses'		=> (empty($rowData[0][5]) ? null : $rowData[0][5]),
+					'target_sk'			=> (empty($rowData[0][6]) ? 0 : $rowData[0][6]),
+					'target_js'			=> (empty($rowData[0][7]) ? 0 : $rowData[0][7]),
+					'tanggal_berlaku' 	=> date('Y-m-d', PHPExcel_Shared_Date::ExcelToPHP($rowData[0][8])),
+					'created_by'		=> $user_id,
+					'creation_date'		=> date("Y-m-d H:i:s"),
+					'jenis'				=> (empty($rowData[0][9]) ? null : $rowData[0][9]),
+					'berat' 			=> (empty($rowData[0][10]) ? 0 : $rowData[0][10]),
+				);
 
-            // echo $highestRow;
-            // exit();
-
-
-            for ($row = 5; $row <= $highestRow; $row++){
-            	$rowData = $sheet->rangeToArray('A' . $row . ':' . $highestColumn . $row, NULL, TRUE, FALSE);
-
-            	if ($rowData[0][0] != null) {
-            		$datPoint = "1";
-        			// $secCheckPoint = 0;
-            		// foreach ($section as $sc) {
-            		// 	if ($secCheckPoint == 0 && strtoupper(preg_replace('/\s+/', '', $sc['section_name'])) == strtoupper(preg_replace('/\s+/', '', $rowData[0][1]))) {
-            		// 		$section_id = $sc['section_id'];
-            		// 		$secCheckPoint = 1;
-            		// 	}
-            		// }
-
-            		$value = array(
-						'type'			=> $rowData[0][1],
-						'nama_barang'	=> $rowData[0][2],
-						'kode_barang' 	=> $rowData[0][3],
-						'proses'		=> $rowData[0][4],
-						'kode_proses'	=> $rowData[0][5],
-						'target_sk'		=> $rowData[0][6],
-						'target_js'		=> $rowData[0][7],
-						'tanggal_berlaku' => date('Y-m-d', PHPExcel_Shared_Date::ExcelToPHP($rowData[0][8])),
-						'created_by'	=> $user_id,
-						'creation_date'	=> date("Y-m-d H:i:s"),
-						'jenis'			=> $rowData[0][9],
-						'berat' 		=> $rowData[0][10] 
-					);
-
-
-
-
-					// if ($secCheckPoint == 0) {
-					// 	$sectionError = 'Nama Seksi Ada yang tidak sesuai. '.strtoupper(preg_replace('/\s+/', '', $rowData[0][1]));
-     //    				$errStock++;
-					// }else{
-					// 	$sectionError = '';
-					// }
-
-                    if (!is_numeric($rowData[0][6])) {
-                        $errStock++;
-                        $qtyError = 'Target_sk pada baris ke-'.$row.' tidak Numeric.';
-                    }elseif (!is_numeric($rowData[0][6])) {
-                    	$errStock++;
-                        $qtyError = 'Target_js pada baris ke-'.$row.' tidak Numeric.';
-                    }
-                    else{
-                        $qtyError = '';
-                    }
-                    if (empty($rowData[0][1])||empty($rowData[0][2]) || empty($rowData[0][3])) {
-                        $errStock++;
-                        $emptyError = 'Data pada baris ke-'.$row.' kosong.';
-                    }else{
-                        $emptyError = '';
-                    }
-                }else{
-                    $datPoint = null;
-                }
-                
-   
-
-                if ($datPoint !=null && $errStock == 0) {
-                	$this->M_masteritem->insert($value, 'mo.mo_master_item');
-                	
-                }
-            }
-
+					if ($value['id'] == 0) {
+						unset($value['id']);
+						$this->M_masteritem->insert($value, 'mo.mo_master_item');
+					} else {
+						$this->M_masteritem->updateMasterItem(
+							$value['type'], $value['kode_barang'], $value['nama_barang'], $value['proses'],
+							$value['kode_proses'], $value['target_sk'], $value['target_js'], $value['tanggal_berlaku'],
+							$user_id, $value['id'], $value['jenis'], $value['berat']
+						);
+					}
+			}
+		} else {
+			echo '<pre>Error : <br>';print_r($this->upload->display_errors());
+		}
 		unlink($inputFileName);
-        	
-        	if ($errStock > 0) {
-        		$msg =	'<div class="row">
-	 					<div class="col-md-10 col-md-offset-1 col-sm-12">
-	 						<div id="messUpPP" class="modal fade modal-danger" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel">
-	 							<div class="modal-dialog modal-lg" role="document">
-	 								<div class="modal-content">
-	 									<div class="modal-body">
-	 										<button type="button" class="close" data-dismiss="modal" aria-label="Close">
-	 											<span aria-hidden="true">&times;</span>
-	 										</button>';
-	 										$msg .= $qtyError.'<br>';
-	 										$msg .= $errStock.'<br>';
-	 										$msg .= '
-		 								</div>
-		 							</div>
-			 					</div>
-		 					</div>
-			 			</div>
-           		    </div>
-            		<script type="text/javascript">
-						$("#messUpPP").modal("show");
-					</script>';
-        		$this->index($msg);
-        		redirect(base_url('ManufacturingOperationUP2L/MasterItem'));
-        	}else{
-            	$msg =	'<div class="row">
-	 					<div class="col-md-10 col-md-offset-1 col-sm-12">
-	 						<div id="messUpPP" class="modal fade modal-success" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel">
-	 							<div class="modal-dialog modal-lg" role="document">
-	 								<div class="modal-content">
-	 									<div class="modal-body">
-	 										<button type="button" class="close" data-dismiss="modal" aria-label="Close">
-	 											<span aria-hidden="true">&times;</span>
-	 										</button>
-	 										UPLOAD COMPLETE!
-		 								</div>
-		 							</div>
-			 					</div>
-		 					</div>
-			 			</div>
-           		    </div>
-            		<script type="text/javascript">
-						$("#messUpPP").modal("show");
-					</script>';
-        		$this->index($msg);
-        		redirect(base_url('ManufacturingOperationUP2L/MasterItem'));
-        	}
-        }
+		redirect(base_url('ManufacturingOperationUP2L/MasterItem'));
 	}
 
 	public function updateMasIt()
 	{
-		$user_id = $this->session->userid;
-		$type = $this->input->post('txtType');
-		$kodBar = $this->input->post('txtKodeBarang');
-		$namBar = $this->input->post('txtNamaBarang');
-		$proses = $this->input->post('txtProses');
-		$kodPros = $this->input->post('txtKodeProses');
-		$SK = $this->input->post('txtSK');
-		$JS = $this->input->post('txtJS');
+		$user_id 	= $this->session->userid;
+		$type 	 	= $this->input->post('txtType');
+		$kodBar  	= $this->input->post('txtKodeBarang');
+		$namBar  	= $this->input->post('txtNamaBarang');
+		$proses  	= $this->input->post('txtProses');
+		$kodPros 	= $this->input->post('txtKodeProses');
+		$berat   	= $this->input->post('tBerat');
+		$SK      	= $this->input->post('txtSK');
+		$JS      	= $this->input->post('txtJS');
 		$tglBerlaku = $this->input->post('tglBerlaku');
-		$jenis = $this->input->post('txtJenis');
-		$id = $this->input->post('txtId');
+		$jenis   	= $this->input->post('txtJenis');
+		$id      	= $this->input->post('txtId');
 		
 
-		$data = $this->M_masteritem->updateMasterItem($type,$kodBar,$namBar,$proses,$kodPros,$SK,$JS,$tglBerlaku,$user_id,$id,$jenis);
+		$data = $this->M_masteritem->updateMasterItem($type,$kodBar,$namBar,$proses,$kodPros,$SK,$JS,$tglBerlaku,$user_id,$id,$jenis,$berat);
 		redirect(base_url('ManufacturingOperationUP2L/MasterItem'));
 
 	}
 
 	public function insertMasIt()
 	{
-		$user_id = $this->session->userid;
-		$type = $this->input->post('tType');
-		$kodBar = $this->input->post('tKodeBarang');
-		$namBar = $this->input->post('tNamaBarang');
-		$proses = $this->input->post('tProses');
-		$kodPros = $this->input->post('tKodeProses');
-		$SK = $this->input->post('tSK');
-		$JS = $this->input->post('tJS');
-		$jenis = $this->input->post('tJenis');
-		$tglBerlaku = $this->input->post('tBerlaku');
-		$creation_date = date('d/m/y');
+		$user_id 		= $this->session->userid;
+		$type 			= $this->input->post('tType');
+		$kodBar 		= $this->input->post('tKodeBarang');
+		$namBar 		= $this->input->post('tNamaBarang');
+		$proses 		= $this->input->post('tProses');
+		$kodPros 		= $this->input->post('tKodeProses');
+		$berat			= $this->input->post('tBerat');
+		$SK 			= $this->input->post('tSK');
+		$JS 			= $this->input->post('tJS');
+		$jenis 			= $this->input->post('tJenis');
+		$tglBerlaku 	= $this->input->post('tBerlaku');
+		$creation_date 	= date('d/m/y');
 
-		$data = $this->M_masteritem->insertMasIt($type,$kodBar,$namBar,$proses,$kodPros,$SK,$JS,$tglBerlaku,$user_id,$creation_date,$jenis);
+		$data = $this->M_masteritem->insertMasIt($type,$kodBar,$namBar,$proses,$kodPros,$SK,$JS,$tglBerlaku,$user_id,$creation_date,$jenis,$berat);
 		redirect(base_url('ManufacturingOperationUP2L/MasterItem'));
 
 	}

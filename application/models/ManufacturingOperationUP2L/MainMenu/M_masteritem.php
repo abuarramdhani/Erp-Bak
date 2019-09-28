@@ -32,21 +32,21 @@ class M_masteritem extends CI_Model
 		return $query->result_array();
     }
 
-    public function updateMasterItem($type,$kodBar,$namBar,$proses,$kodPros,$SK,$JS,$tglBerlaku,$user_id,$id,$jenis)
+    public function updateMasterItem($type,$kodBar,$namBar,$proses,$kodPros,$SK,$JS,$tglBerlaku,$user_id,$id,$jenis,$berat)
     {
         $sql = "
             update mo.mo_master_item 
-            SET type ='$type', kode_barang= '$kodBar', nama_barang='$namBar', proses='$proses', kode_proses='$kodPros', target_sk=$SK, target_js=$JS, tanggal_berlaku='$tglBerlaku', created_by=$user_id, creation_date=current_date, jenis='$jenis'
+            SET type ='$type', kode_barang= '$kodBar', nama_barang='$namBar', proses='$proses', kode_proses='$kodPros', target_sk=$SK, target_js=$JS, tanggal_berlaku='$tglBerlaku', created_by=$user_id, creation_date=current_date, jenis='$jenis', berat='$berat'
             WHERE id =$id";
         $query = $this->db->query($sql);
     }
 
-    public function insertMasIt($type,$kodBar,$namBar,$proses,$kodPros,$SK,$JS,$tglBerlaku,$user_id,$creation_date,$jenis)
+    public function insertMasIt($type,$kodBar,$namBar,$proses,$kodPros,$SK,$JS,$tglBerlaku,$user_id,$creation_date,$jenis,$berat)
     {
         $sql = "
             insert into mo.mo_master_item 
-           (type, kode_barang, nama_barang, proses, kode_proses, target_sk, target_js, tanggal_berlaku, created_by, creation_date, jenis) 
-           values ('$type', '$kodBar', '$namBar', '$proses', '$kodPros', $SK, $JS, '$tglBerlaku', $user_id, current_date, '$jenis')
+           (type, kode_barang, nama_barang, proses, kode_proses, target_sk, target_js, tanggal_berlaku, created_by, creation_date, jenis, berat) 
+           values ('$type', '$kodBar', '$namBar', '$proses', '$kodPros', $SK, $JS, '$tglBerlaku', $user_id, current_date, '$jenis', '$berat')
           ";
         $query = $this->db->query($sql);
     }

@@ -13,7 +13,7 @@ class M_report extends CI_Model
      
      public function getDetail($id = FALSE)
     {
-        if ($id === FALSE && $kode === FALSE) {
+        if ($id === FALSE) {
             $query = $this->db->get('mo.mo_moulding_scrap');
         }else{
             $query = $this->db->get_where('mo.mo_moulding_scrap', array('moulding_id' => $id));

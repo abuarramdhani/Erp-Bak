@@ -1,5 +1,5 @@
 <?php if (!defined('BASEPATH')) exit('No direct script access allowed');
-
+date_default_timezone_set("Asia/Jakarta");
 class C_XFIN extends CI_Controller
 {
 	function __construct()
@@ -21,9 +21,7 @@ class C_XFIN extends CI_Controller
 
 	public function checkSession()
 	{
-		if($this->session->is_logged){
-
-		} else {
+		if ($this->session->is_logged) { } else {
 			redirect('index');
 		}
 	}
@@ -39,22 +37,22 @@ class C_XFIN extends CI_Controller
 		$data['SubMenuOne'] = '';
 		$data['SubMenuTwo'] = '';
 
-		$data['UserMenu'] = $this->M_user->getUserMenu($user_id,$this->session->responsibility_id);
-		$data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id);
-		$data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id);
+		$data['UserMenu'] = $this->M_user->getUserMenu($user_id, $this->session->responsibility_id);
+		$data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id, $this->session->responsibility_id);
+		$data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id, $this->session->responsibility_id);
 
-		$this->load->view('V_Header',$data);
-		$this->load->view('V_Sidemenu',$data);
+		$this->load->view('V_Header', $data);
+		$this->load->view('V_Sidemenu', $data);
 		$this->load->view('ManufacturingOperationUP2L/XFIN/V_index');
-		$this->load->view('V_Footer',$data);
+		$this->load->view('V_Footer', $data);
 	}
 
 	/*EXPORT*/
 	public function export()
 	{
 		// $selepdata = $this->M_selep->getSelep();
-		require(APPPATH. 'third_party\Excel\PHPExcel.php');
-		require(APPPATH. 'third_party\Excel\PHPExcel\Writer\Excel5.php');
+		require(APPPATH . 'third_party\Excel\PHPExcel.php');
+		require(APPPATH . 'third_party\Excel\PHPExcel\Writer\Excel5.php');
 		$this->checkSession();
 		$user_id = $this->session->userid;
 
@@ -66,36 +64,28 @@ class C_XFIN extends CI_Controller
 
 		$objset->getPageSetup()->setOrientation(PHPExcel_Worksheet_PageSetup::ORIENTATION_LANDSCAPE);
 		$objset->getPageSetup()->setFitToWidth(1);
-		
-		//BETWEEN
-			$txtStartDate = $this->input->post('txtStartDate');
-			$txtEndDate = $this->input->post('txtEndDate');
-			$selepdate = $this->M_selep->getSelepDate($txtStartDate,$txtEndDate);
-			// if ( strtotime($txtStartDate) > strtotime($txtEndDate) ) {
-			// 	echo "<script language=\"javascript\">
-			// 	$(txtStartDate).val('').trigger('change');
-			// 	$(txtEndDate).val('').trigger('change');
-			// 	document.location = base_url('');
-			// 	</script>";
-			// }
-			// else{
-			// 	print_r('Berhasil!');
-			// }
-			
-		// echo '<pre>';
-		// 	print_r($selepdate);
-		// exit;
-			
 
+		//BETWEEN
+		$txtStartDate = $this->input->post('txtStartDate');
+		$txtEndDate = $this->input->post('txtEndDate');
+		$selepdate = $this->M_selep->getSelepDate($txtStartDate, $txtEndDate);
+		
 		//false
 		$f = false;
 
 		//TH KOLOM
-		$cols = array("A", "B", "C", "D", "E", "F", "G", "H", "I", "J","K","L","M","N","O","P","Q","R","S","T","U","V","W","X");
-		$val = array("TGL", "SHIFT", "KELOMPOK", "KODECOR", "KODEBRG","NAMABRG", "KODEPRO", "JUMLAH", "BAIK","REPAIR", "REJECT", "KETERANGAN",
-		"RGER_RT,N,4,0","RGER_PH,N,4,0","RGER_CW,N,4,0","RINT_RT,N,4,0","RINT_PH,N,4,0","RINT,CW,N,4,0", "CASTING",
-		"NOBP", "TGLBP", "CETAKBP", "NOBP_GB", "CETAKBP_GB");
+		$cols = array("A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X");
+		$val = array(
+			"TGL", "SHIFT", "KELOMPOK", "KODECOR", "KODEBRG", "NAMABRG", "KODEPRO", "JUMLAH", "BAIK", "REPAIR", "REJECT", "KETERANGAN",
+			"RGER_RT,N,4,0", "RGER_PH,N,4,0", "RGER_CW,N,4,0", "RINT_RT,N,4,0", "RINT_PH,N,4,0", "RINT,CW,N,4,0", "CASTING",
+			"NOBP", "TGLBP", "CETAKBP", "NOBP_GB", "CETAKBP_GB"
+		);
+
 		$style = array(
+			'font'  => array(
+				'bold'  => true,
+				'color' => array('rgb' => '000000'),
+			),
 			'alignment' => array(
 				'horizontal' => PHPExcel_Style_Alignment::VERTICAL_CENTER,
 			),
@@ -115,10 +105,10 @@ class C_XFIN extends CI_Controller
 				)
 			)
 		);
-		for ($a=0;$a<24; $a++) {
-			$objset->setCellValue($cols[$a].'1', $val[$a]);
-			$objset->getColumnDimension('A')->setWidth(10); //TGL
-			$objset->getColumnDimension('B')->setWidth(30); //SHIFT
+		for ($a = 0; $a < 24; $a++) {
+			$objset->setCellValue($cols[$a] . '1', $val[$a]);
+			$objset->getColumnDimension('A')->setWidth(13); //TGL
+			$objset->getColumnDimension('B')->setWidth(40); //SHIFT
 			$objset->getColumnDimension('C')->setWidth(25); //KELOMPOK
 			$objset->getColumnDimension('D')->setWidth(10); //KODECOR
 			$objset->getColumnDimension('E')->setWidth(25); //KODEBRG
@@ -137,131 +127,134 @@ class C_XFIN extends CI_Controller
 			$objset->getColumnDimension('R')->setWidth(10); //RINT_CW
 			$objset->getColumnDimension('S')->setWidth(10); //CASTING
 			$objset->getColumnDimension('T')->setWidth(10); //NOBP
-			$objset->getColumnDimension('U')->setWidth(10); //TGLBP
+			$objset->getColumnDimension('U')->setWidth(13); //TGLBP
 			$objset->getColumnDimension('V')->setWidth(10); //CETAKBP
 			$objset->getColumnDimension('W')->setWidth(10); //NOBP_GB
-			$objset->getColumnDimension('X')->setWidth(10); //CETAKBP_GB
-			$objset->getStyle($cols[$a].'1')->applyFromArray($style);
+			$objset->getColumnDimension('X')->setWidth(14); //CETAKBP_GB
+			$objset->getStyle($cols[$a] . '1')->applyFromArray($style);
+			$objset->getRowDimension('1')->setRowHeight(20);
 		}
 		$baris  = 2;
 		//KODE BARANG
 		$monthCode = array(
-			array('month' => 1,'code' => 'A'),
-			array('month' => 2,'code' => 'B'),
-			array('month' => 3,'code' => 'C'),
-			array('month' => 4,'code' => 'D'),
-			array('month' => 5,'code' => 'E'),
-			array('month' => 6,'code' => 'F'),
-			array('month' => 7,'code' => 'G'),
-			array('month' => 8,'code' => 'H'),
-			array('month' => 9,'code' => 'J'),
-			array('month' => 10,'code' => 'K'),
-			array('month' => 11,'code' => 'L'),
-			array('month' => 12,'code' => 'M')
+			array('month' => 1, 'code' => 'A'),
+			array('month' => 2, 'code' => 'B'),
+			array('month' => 3, 'code' => 'C'),
+			array('month' => 4, 'code' => 'D'),
+			array('month' => 5, 'code' => 'E'),
+			array('month' => 6, 'code' => 'F'),
+			array('month' => 7, 'code' => 'G'),
+			array('month' => 8, 'code' => 'H'),
+			array('month' => 9, 'code' => 'J'),
+			array('month' => 10, 'code' => 'K'),
+			array('month' => 11, 'code' => 'L'),
+			array('month' => 12, 'code' => 'M')
 		);
 		$yearCode = array(
-			array('year' => 0,'code' => 'N'),
-			array('year' => 1,'code' => 'P'),
-			array('year' => 2,'code' => 'Q'),
-			array('year' => 3,'code' => 'R'),
-			array('year' => 4,'code' => 'S'),
-			array('year' => 5,'code' => 'U'),
-			array('year' => 6,'code' => 'V'),
-			array('year' => 7,'code' => 'W'),
-			array('year' => 8,'code' => 'Y'),
-			array('year' => 9,'code' => 'Z'),
+			array('year' => 0, 'code' => 'N'),
+			array('year' => 1, 'code' => 'P'),
+			array('year' => 2, 'code' => 'Q'),
+			array('year' => 3, 'code' => 'R'),
+			array('year' => 4, 'code' => 'S'),
+			array('year' => 5, 'code' => 'U'),
+			array('year' => 6, 'code' => 'V'),
+			array('year' => 7, 'code' => 'W'),
+			array('year' => 8, 'code' => 'Y'),
+			array('year' => 9, 'code' => 'Z'),
 		);
 
 		foreach ($selepdate as $sd) {
-			$baik = $sd['selep_quantity']-$sd['scrap_quantity'];
+			$baik = $sd['qc_qty_ok'];
 			$origDate = $sd['selep_date'];
-			$newDate = date("m/d/y", strtotime($origDate));
-			
-			$val = explode('/', $newDate);
+			$newDate = date("d-m-Y", strtotime($origDate));
+			$brg = (explode("|", $sd['component_code']));
 
-		//PISAH
-			$brg = (explode("|",$sd['component_code']));
-		foreach ($monthCode as $value) {
-			if ($val[0] == $value['month']) {
-				$bulan = $value['code'];
+			$val = explode('-', $newDate);
+			// echo '<pre>';print_r($val);exit;
+			//PISAH
+			
+			foreach ($monthCode as $value) {
+				if ($val[1] == $value['month']) {
+					$bulan = $value['code'];
+				}
 			}
-		}
-		foreach ($yearCode as $v) {
-			if (substr($val[2], 1) == $v['year']) {
-				$tahun = $v['code'];
+			
+			foreach ($yearCode as $v) {
+				if (substr($val[2], -1) == $v['year']) {
+					$tahun = $v['code'];
+				}
 			}
-		}
 
 			//ISI
-			
-			$objset->getStyle('A'.$baris)->applyFromArray($style2);
-			$objset->getStyle('B'.$baris)->applyFromArray($style2);
-			$objset->getStyle('C'.$baris)->applyFromArray($style2);
-			$objset->getStyle('D'.$baris)->applyFromArray($style2);
-			$objset->getStyle('E'.$baris)->applyFromArray($style2);
-			$objset->getStyle('F'.$baris)->applyFromArray($style2);
-			$objset->getStyle('G'.$baris)->applyFromArray($style2);
-			$objset->getStyle('H'.$baris)->applyFromArray($style2);
-			$objset->getStyle('I'.$baris)->applyFromArray($style2);
-			$objset->getStyle('J'.$baris)->applyFromArray($style2);
-			$objset->getStyle('K'.$baris)->applyFromArray($style2);
-			$objset->getStyle('L'.$baris)->applyFromArray($style2);
-			$objset->getStyle('M'.$baris)->applyFromArray($style2);
-			$objset->getStyle('N'.$baris)->applyFromArray($style2);
-			$objset->getStyle('O'.$baris)->applyFromArray($style2);
-			$objset->getStyle('P'.$baris)->applyFromArray($style2);
-			$objset->getStyle('Q'.$baris)->applyFromArray($style2);
-			$objset->getStyle('R'.$baris)->applyFromArray($style2);
-			$objset->getStyle('S'.$baris)->applyFromArray($style2);
-			$objset->getStyle('T'.$baris)->applyFromArray($style2);
-			$objset->getStyle('U'.$baris)->applyFromArray($style2);
-			$objset->getStyle('V'.$baris)->applyFromArray($style2);
-			$objset->getStyle('W'.$baris)->applyFromArray($style2);
-			$objset->getStyle('X'.$baris)->applyFromArray($style2);
+			$objset->getStyle('A' . $baris)->applyFromArray($style2);
+			$objset->getStyle('B' . $baris)->applyFromArray($style2);
+			$objset->getStyle('C' . $baris)->applyFromArray($style2);
+			$objset->getStyle('D' . $baris)->applyFromArray($style2);
+			$objset->getStyle('E' . $baris)->applyFromArray($style2);
+			$objset->getStyle('F' . $baris)->applyFromArray($style2);
+			$objset->getStyle('G' . $baris)->applyFromArray($style2);
+			$objset->getStyle('H' . $baris)->applyFromArray($style2);
+			$objset->getStyle('I' . $baris)->applyFromArray($style2);
+			$objset->getStyle('J' . $baris)->applyFromArray($style2);
+			$objset->getStyle('K' . $baris)->applyFromArray($style2);
+			$objset->getStyle('L' . $baris)->applyFromArray($style2);
+			$objset->getStyle('M' . $baris)->applyFromArray($style2);
+			$objset->getStyle('N' . $baris)->applyFromArray($style2);
+			$objset->getStyle('O' . $baris)->applyFromArray($style2);
+			$objset->getStyle('P' . $baris)->applyFromArray($style2);
+			$objset->getStyle('Q' . $baris)->applyFromArray($style2);
+			$objset->getStyle('R' . $baris)->applyFromArray($style2);
+			$objset->getStyle('S' . $baris)->applyFromArray($style2);
+			$objset->getStyle('T' . $baris)->applyFromArray($style2);
+			$objset->getStyle('U' . $baris)->applyFromArray($style2);
+			$objset->getStyle('V' . $baris)->applyFromArray($style2);
+			$objset->getStyle('W' . $baris)->applyFromArray($style2);
+			$objset->getStyle('X' . $baris)->applyFromArray($style2);
 
-			$objset->setCellValue('A'.$baris, $newDate); //TGL
-			$objset->setCellValue('B'.$baris, $sd['shift']); //SHIFT
-			$objset->setCellValue('C'.$baris, $sd['job_id']); //KELOMPOK
-			$objset->setCellValue('D'.$baris, $bulan.''.$tahun); //KODECOR
-			$objset->setCellValue('E'.$baris, $brg[0]); //KODEBRG
-			$objset->setCellValue('F'.$baris, $brg[1]); //NAMABRG
+			$objset->setCellValue('A' . $baris, $newDate); //TGL
+			$objset->setCellValue('B' . $baris, $sd['shift']); //SHIFT
+			$objset->setCellValue('C' . $baris, $sd['job_id']); //KELOMPOK
+			$objset->setCellValue('D' . $baris, $bulan . '' . $tahun); //KODECOR
+			$objset->setCellValue('E' . $baris, $brg[0]); //KODEBRG
+			$objset->setCellValue('F' . $baris, $sd['component_description']); //NAMABRG
 
 			$kode_barang = $this->M_selep->getKodeProses($brg[0]);
-			$objset->setCellValue('G'.$baris, $kode_barang[0]['kode_proses']); //KODEPRO
 			
-			$objset->setCellValue('H'.$baris, $sd['selep_quantity']); //JML
-			$objset->setCellValue('I'.$baris, $baik); //BAIK
-			$objset->setCellValue('J'.$baris, ""); //REPAIR
-			$objset->setCellValue('K'.$baris, ""); //REJECT
-			$objset->setCellValue('L'.$baris, $sd['keterangan']); //KETERANGAN
-			$objset->setCellValue('M'.$baris, ""); //RGER_RT
-			$objset->setCellValue('N'.$baris, ""); //RGER_PH
-			$objset->setCellValue('O'.$baris, ""); //RGER_CW
-			$objset->setCellValue('P'.$baris, ""); //RINT_RT
-			$objset->setCellValue('Q'.$baris, ""); //RINT_PH
-			$objset->setCellValue('R'.$baris, ""); //RINT_CW
-			// $objset->setCellValue('R'.$baris, $sd['scrap_quantity']);
-			$objset->setCellValue('S'.$baris, ""); //CASTING
-			$objset->setCellValue('T'.$baris, ""); //NOBP
-			$objset->setCellValue('U'.$baris, ""); //TGLBP
-			$objset->setCellValue('V'.$baris, $f); //CETAKBP
-			$objset->setCellValue('W'.$baris, ""); //NOBP_GB
-			$objset->setCellValue('X'.$baris, $f); //CETAKBP_GB
+			$rejected = $sd['qc_qty_not_ok'];
+
+			$tglBp = date('d-m-Y', strtotime($newDate. ' + 3 days'));
+
+			foreach ($kode_barang as $key => $codebrg) {
+				$objset->setCellValue('G' . $baris, $codebrg['kode_proses']); //KODEPRO
+			}
+
+			$objset->setCellValue('H' . $baris, $sd['selep_quantity']); //JML
+			$objset->setCellValue('I' . $baris, $baik); //BAIK
+			$objset->setCellValue('J' . $baris, ""); //REPAIR
+			$objset->setCellValue('K' . $baris, $rejected); //REJECT
+			$objset->setCellValue('L' . $baris, $sd['keterangan']); //KETERANGAN
+			$objset->setCellValue('M' . $baris, ""); //RGER_RT
+			$objset->setCellValue('N' . $baris, ""); //RGER_PH
+			$objset->setCellValue('O' . $baris, ""); //RGER_CW
+			$objset->setCellValue('P' . $baris, ""); //RINT_RT
+			$objset->setCellValue('Q' . $baris, ""); //RINT_PH
+			$objset->setCellValue('R' . $baris, ""); //RINT_CW
+			$objset->setCellValue('S' . $baris, ""); //CASTING
+			$objset->setCellValue('T' . $baris, ""); //NOBP
+			$objset->setCellValue('U' . $baris, $tglBp); //TGLBP
+			$objset->setCellValue('V' . $baris, $f); //CETAKBP
+			$objset->setCellValue('W' . $baris, ""); //NOBP_GB
+			$objset->setCellValue('X' . $baris, $f); //CETAKBP_GB
 			$baris++;
 		}
+		$filename = "Check Selep " . date("d-m-Y") . ".xls";
 
-		$filename = "Check Selep ".date("d-m-Y").".xls";
-
-		header("Content-Type: application/vnd.ms-excel");   
-		header('Content-Disposition: attachment; filename="'.$filename.'"');
+		header("Content-Type: application/vnd.ms-excel");
+		header('Content-Disposition: attachment; filename="' . $filename . '"');
 		header('Cache-Control: max-age=0');
 
-		$objWriter = PHPExcel_IOFactory::createWriter($objPHPExcel, 'Excel5'); 
+		$objWriter = PHPExcel_IOFactory::createWriter($objPHPExcel, 'Excel5');
 		$objWriter->save('php://output');
-		exit;
+		
 	}
 }
-
-/* End of file C_Mixing.php */
-/* Location: ./application/controllers/ManufacturingOperationUP2L/MainMenu/C_Mixing.php */
-/* Generated automatically on 2017-12-20 14:47:57 */
