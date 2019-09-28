@@ -75,7 +75,9 @@
 												<option value="BARANG">BARANG</option>
 												<option value="JASA NON EKSPEDISI TRAKTOR">JASA NON EKSPEDISI TRAKTOR</option>
 												<option value="JASA EKSPEDISI TRAKTOR">JASA EKSPEDISI TRAKTOR</option>
-												<option value="PREPAYMENT">PREPAYMENT</option>
+												<!-- reupload -->
+												<option value="PREPAYMENT">PREPAYMENT</option> 
+												<!-- reupload -->
 											</select>
 										</td>
 										<td id="jenis_jasa" style="display: none">
