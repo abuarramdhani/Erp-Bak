@@ -125,7 +125,7 @@ class C_Mixing extends CI_Controller
 
 				$i++;
 			}
-			redirect(site_url('ManufacturingOperationUP2L/Mixing'));
+			redirect(site_url('ManufacturingOperationUP2L/Mixing/create'));
 		}
 	}
 

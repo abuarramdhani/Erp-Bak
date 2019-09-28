@@ -92,7 +92,7 @@ class C_Absen extends CI_Controller
         );
 		
         $this->M_absen->save_create($data);
-        redirect(site_url('ManufacturingOperationUP2L/Absen'));
+        redirect(site_url('ManufacturingOperationUP2L/Absen/view_create'));
     }
 
     public function read_data($id)

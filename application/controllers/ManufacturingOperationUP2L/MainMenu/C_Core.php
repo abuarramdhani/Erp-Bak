@@ -126,7 +126,7 @@ class C_Core extends CI_Controller
 				$this->M_core->setAbsensi($data);
 				$i++;
 			}
-			redirect(site_url('ManufacturingOperationUP2L/Core'));
+			redirect(site_url('ManufacturingOperationUP2L/Core/create'));
 		}
 	}
 

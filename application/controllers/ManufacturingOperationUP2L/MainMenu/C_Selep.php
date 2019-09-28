@@ -101,7 +101,7 @@ class C_Selep extends CI_Controller
 			);
 
 			$this->M_selep->setSelep($data);
-			redirect(site_url('ManufacturingOperationUP2L/Selep'));
+			redirect(site_url('ManufacturingOperationUP2L/Selep/create'));
 		}
 	}
 

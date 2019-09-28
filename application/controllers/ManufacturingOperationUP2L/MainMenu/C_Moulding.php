@@ -130,7 +130,7 @@ class C_Moulding extends CI_Controller
 			$i++;
 		}
 
-		redirect(site_url('ManufacturingOperationUP2L/Moulding'));
+		redirect(site_url('ManufacturingOperationUP2L/Moulding/view_create'));
 	}
 
 	public function update($id)
