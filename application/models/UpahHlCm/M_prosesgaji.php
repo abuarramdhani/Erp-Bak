@@ -17,6 +17,181 @@ class M_prosesgaji extends CI_Model {
 		return $data->result_array();
 	}
 
+	public function ambilNominalGajiPotTam($noind){
+		$sql = "select a.noind,a.nama,b.pekerjaan,b.lokasi_kerja,b.nominal,b.uang_makan,b.uang_makan_puasa 
+				from hlcm.hlcm_datapekerja a
+				inner join hlcm.hlcm_datagaji b 
+				on a.kode_pekerjaan = b.kode_pekerjaan 
+				and a.lokasi_kerja = b.lokasi_kerja
+				where a.noind = '$noind'";
+		return $this->erp->query($sql)->row();
+	}
+
+	public function getPekerjaPotTam($text){
+		$sql = "select noind,nama 
+				from hlcm.hlcm_datapekerja 
+				where upper(nama) like upper('%$text%') or upper(noind) like upper('%$text%')";
+		return $this->erp->query($sql)->result_array();
+	}
+
+	public function insertPotTam($table,$data){
+		$this->erp->insert($table,$data);
+	}
+
+	public function getLastTamPot($noind = FALSE,$awal = FALSE,$akhir = FALSE){
+		if ($noind == FALSE) {
+			if ($awal !== FALSE & $akhir !== FALSE){
+				$kondisi = "where tgl_awal_periode = '$awal'
+				and tgl_akhir_periode = '$akhir'";
+			}else {
+				$kondisi = "";
+			}
+		}else {
+			$kondisi = "where noind = '$noind'
+				and tgl_awal_periode = '$awal'
+				and tgl_akhir_periode = '$akhir'";
+		}
+		$sql = "select 'tambahan' as sumber,(select employee_name from er.er_employee_all e where e.employee_code = a.noind) as nama,* 
+				from hlcm.hlcm_tambahan a
+				$kondisi
+				union all
+				select 'potongan' as sumber,(select employee_name from er.er_employee_all e where e.employee_code = a.noind) as nama, * 
+				from hlcm.hlcm_potongan a
+				$kondisi";
+		return $this->erp->query($sql)->result_array();
+	}
+
+	public function getTamPotAll($awal,$akhir,$noind = FALSE){
+		$where = "";
+		if ($noind != FALSE) {
+			$where = "and a.noind = '$noind'";
+		}
+		$sql = "select 	a.noind,a.nama,d.pekerjaan,'$awal'::date as awal, '$akhir'::date as akhir,
+						(select location_name from er.er_location where location_code = a.lokasi_kerja) as lokasi_kerja,
+						coalesce(b.gp, 0) as tam_gp, coalesce(b.um, 0) as tam_um, coalesce(b.lembur, 0) as tam_lembur,
+						coalesce(c.gp, 0) as pot_gp, coalesce(c.um, 0) as pot_um, coalesce(c.lembur, 0) as pot_lembur,
+						coalesce(b.nominal_gp, 0) as nom_tam_gp, coalesce(b.nominal_um, 0) as nom_tam_um, coalesce(b.nominal_lembur, 0) as nom_tam_lembur,
+						coalesce(c.nominal_gp, 0) as nom_pot_gp, coalesce(c.nominal_um, 0) as nom_pot_um, coalesce(c.nominal_lembur, 0) as nom_pot_lembur
+				from hlcm.hlcm_datapekerja a
+				left join hlcm.hlcm_tambahan b 
+				on a.noind = b.noind 
+				and b.tgl_awal_periode = '$awal'
+				and b.tgl_akhir_periode = '$akhir'
+				left join hlcm.hlcm_potongan c 
+				on a.noind = c.noind 
+				and c.tgl_awal_periode = '$awal'
+				and c.tgl_akhir_periode = '$akhir'
+				left join hlcm.hlcm_datagaji d 
+				on a.kode_pekerjaan = d.kode_pekerjaan
+				and a.lokasi_kerja = d.lokasi_kerja
+				where 	(
+							b.tgl_awal_periode is not null 
+						or 
+							c.tgl_awal_periode is not null
+						)
+						$where
+				order by a.noind";
+		return $this->erp->query($sql)->result_array();
+	}
+
+	public function deleteTamPot($awal,$akhir,$noind){
+		$sql = "delete from hlcm.hlcm_potongan 
+				where tgl_awal_periode = '$awal' and tgl_akhir_periode = '$akhir' and noind = '$noind'";
+		$this->erp->query($sql);
+		$sql = "delete from hlcm.hlcm_tambahan 
+				where tgl_awal_periode = '$awal' and tgl_akhir_periode = '$akhir' and noind = '$noind'";
+		$this->erp->query($sql);
+	}
+
+	public function insertHistoryPotTam($awal,$akhir,$noind,$user,$action){
+		$waktu = time();
+		$sql = "insert into hlcm.hlcm_tambahan_history
+				(id_tambahan, noind, tgl_awal_periode, tgl_akhir_periode, gp, um, lembur, created_timestamp, created_by, nominal_gp, nominal_um, nominal_lembur, gp_perhari, um_perhari, lembur_perjam,action,action_user,action_time)
+				select id_tambahan, noind, tgl_awal_periode, tgl_akhir_periode, gp, um, lembur, created_timestamp, created_by, nominal_gp, nominal_um, nominal_lembur, gp_perhari, um_perhari, lembur_perjam,'$action','$user','$waktu'
+				from hlcm.hlcm_tambahan 
+				where noind = '$noind' and tgl_awal_periode = '$awal' and tgl_akhir_periode = '$akhir';";
+		$this->erp->query($sql);
+
+		$sql = "insert into hlcm.hlcm_potongan_history
+				(id_potongan, noind, tgl_awal_periode, tgl_akhir_periode, gp, um, lembur, created_timestamp, created_by, nominal_gp, nominal_um, nominal_lembur, gp_perhari, um_perhari, lembur_perjam,action,action_user,action_time)
+				select id_potongan, noind, tgl_awal_periode, tgl_akhir_periode, gp, um, lembur, created_timestamp, created_by, nominal_gp, nominal_um, nominal_lembur, gp_perhari, um_perhari, lembur_perjam,'$action','$user','$waktu'
+				from hlcm.hlcm_potongan 
+				where noind = '$noind' and tgl_awal_periode = '$awal' and tgl_akhir_periode = '$akhir';";
+		$this->erp->query($sql);
+	}
+
+	public function getHistoryTamPot(){
+		$sql = "select a.noind,a.nama,p.tgl_awal_periode,p.tgl_akhir_periode 
+				from hlcm.hlcm_datapekerja a 
+				join hlcm.hlcm_potongan_history p
+				on a.noind = p.noind
+				join hlcm.hlcm_tambahan_history t
+				on p.noind = t.noind 
+				and p.tgl_awal_periode = t.tgl_awal_periode
+				and p.tgl_akhir_periode = t.tgl_akhir_periode
+				and p.action_time = t.action_time
+				group by a.noind,p.tgl_awal_periode,p.tgl_akhir_periode,a.nama
+				order by p.tgl_awal_periode desc ,p.tgl_akhir_periode desc ,a.noind";
+		return $this->erp->query($sql)->result_array();
+	}
+
+	public function getDetailHistoryTamPot($noind,$awal,$akhir){
+		$sql = "select 	to_timestamp(p.action_time)::timestamp as waktu, 
+						p.action_user,
+						case when p.\"action\" = 1 then 
+							'Created' 
+						when p.\"action\" = 2 then 
+							'Before Edit' 
+						when p.\"action\" = 3 then 
+							'After Edit' 
+						else 
+							'Deleted' 
+						end as kegiatan,
+						p.gp as pgp,p.nominal_gp as pnominal_gp,p.gp_perhari as pgp_perhari,
+						p.um as pum,p.nominal_um as pnominal_um,p.um_perhari as pum_perhari,
+						p.lembur as plembur, p.nominal_lembur as pnominal_lembur,p.lembur_perjam as plembur_perjam,
+						t.gp as tgp,t.nominal_gp as tnominal_gp,t.gp_perhari as tgp_perhari,
+						t.um as tum,t.nominal_um as tnominal_um,t.um_perhari as tum_perhari,
+						t.lembur as tlembur, t.nominal_lembur as tnominal_lembur,t.lembur_perjam as tlembur_perjam
+				from hlcm.hlcm_datapekerja a 
+				join hlcm.hlcm_potongan_history p
+				on a.noind = p.noind
+				join hlcm.hlcm_tambahan_history t
+				on p.noind = t.noind 
+				and p.tgl_awal_periode = t.tgl_awal_periode
+				and p.tgl_akhir_periode = t.tgl_akhir_periode
+				and p.action_time = t.action_time
+				where a.noind = '$noind' 
+				and (
+					(p.tgl_awal_periode = '$awal' and p.tgl_akhir_periode = '$akhir') 
+					or 
+					(t.tgl_awal_periode = '$awal' and t.tgl_akhir_periode = '$akhir')
+				)
+				order by p.action_time desc ";
+		return $this->erp->query($sql)->result_array();
+	}
+
+	public function getTambahan($noind,$awal,$akhir){
+		$sql = "select * from hlcm.hlcm_tambahan where noind = '$noind' and tgl_awal_periode = '$awal' and tgl_akhir_periode = '$akhir'";
+		return $this->erp->query($sql)->row();
+	}
+
+	public function getPotongan($noind,$awal,$akhir){
+		$sql = "select * from hlcm.hlcm_potongan where noind = '$noind' and tgl_awal_periode = '$awal' and tgl_akhir_periode = '$akhir'";
+		return $this->erp->query($sql)->row();
+	}
+
+	public function getApproval($jenis){
+		$sql = "select c.posisi,a.noind,trim(a.nama) as nama,a.jabatan,a.id_status,a.lokasi_kerja 
+				from hlcm.hlcm_approval a 
+				inner join hlcm.hlcm_document b 
+				on a.document_id = b.id_document
+				inner join hlcm.hlcm_posisi c 
+				on a.id_status = c.id_status
+				where b.nama_document = '$jenis'";
+		return $this->erp->query($sql)->result_array();
+	}
+
 	public function getCutOffGaji($all = FALSE){
 		if (isset($all) and !empty($all)) {
 			$all = "";
@@ -60,6 +235,83 @@ class M_prosesgaji extends CI_Model {
 		return $data->result_array();
 	}
 
+	public function getCutOffGajiPotTam(){
+		$sql = "select distinct periode,
+						case when substring(periode,5,2) = '01' then
+							'Januari'
+						when substring(periode,5,2) = '02' then
+							'Februari'
+						when substring(periode,5,2) = '03' then
+							'Maret'
+						when substring(periode,5,2) = '04' then
+							'April'
+						when substring(periode,5,2) = '05' then
+							'Mei'
+						when substring(periode,5,2) = '06' then
+							'Juni'
+						when substring(periode,5,2) = '07' then
+							'Juli'
+						when substring(periode,5,2) = '08' then
+							'Agustus'
+						when substring(periode,5,2) = '09' then
+							'September'
+						when substring(periode,5,2) = '10' then
+							'Oktober'
+						when substring(periode,5,2) = '11' then
+							'November'
+						when substring(periode,5,2) = '12' then
+							'Desember'
+						end bulan,
+						left(periode,4) tahun,
+						concat(tanggal_awal::date,' - ',tanggal_akhir::date) rangetanggal,
+						tanggal_awal::date,
+						tanggal_akhir::date
+				from \"Presensi\".tcutoff where tanggal_awal >= current_timestamp - interval '6 month'
+				order by periode";
+		$data = $this->personalia->query($sql);
+		return $data->result_array();
+	}
+
+	public function updateTamPot($awal,$akhir,$noind,$data,$jenis,$gp,$um,$lembur){
+		$sql = "update hlcm.hlcm_$jenis 
+				set gp = $gp, um = $um, lembur = $lembur ,
+				nominal_gp = $gp*gp_perhari, nominal_um = $um*um_perhari, nominal_lembur = $lembur*lembur_perjam 
+				where noind = '$noind' and tgl_awal_periode = '$awal' and tgl_akhir_periode = '$akhir'";
+		$this->erp->query($sql);
+	}
+
+	public function cekTambahanPotongan($jenis,$awal,$akhir,$noind){
+		$sql = "select * from hlcm.hlcm_$jenis
+				where noind = '$noind' and tgl_awal_periode = '$awal' and tgl_akhir_periode = '$akhir'";
+		return $this->erp->query($sql)->num_rows();
+	}
+
+	public function getNominalFromTamPot($awal,$akhir,$noind){
+		$kondisi = "where a.noind = '$noind' and a.tgl_awal_periode = '$awal' and a.tgl_akhir_periode = '$akhir'";
+		$sql = "select * 
+				from hlcm.hlcm_tambahan a
+				$kondisi
+				union all
+				select * 
+				from hlcm.hlcm_potongan a
+				$kondisi ";
+		return $this->erp->query($sql)->row();
+	}
+
+	public function getLocationCode($noind){
+		$sql = "select b.lokasi_kerja
+				from hrd_khs.tpribadi a 
+				inner join  hrd_khs.tlokasi_kerja b 
+				on a.lokasi_kerja = b.id_
+				where noind = '$noind';";
+		$data = $this->personalia->query($sql)->row();
+		if (isset($data) and !empty($data)) {
+			return $data->lokasi_kerja;
+		}else{
+			return "-";
+		}
+	}
+
 	public function getHlcmProses($periode,$noind){
 		$sql = "select * from hlcm.hlcm_proses where noind = '$noind' and periode = '$periode'";
 		$result = $this->erp->query($sql);
@@ -93,7 +345,22 @@ class M_prosesgaji extends CI_Model {
 		$this->erp->update('hlcm.hlcm_proses_detail',$data);
 	}
 
-	public function getHlcmProsesPrint($tglBln,$lokasi = FALSE){
+	public function getHlcmProsesPrint($tglBln,$keluar = FALSE,$lokasi = FALSE){
+		$where_keluar = "";
+		if ($keluar !== FALSE) {
+			$sql = "select tanggal_awal::date as awal, tanggal_akhir::date as akhir from \"Presensi\".tcutoff where periode = '$tglBln' and os='0'";
+			$query_1 = $this->personalia->query($sql)->row();
+			$tanggalawal = $query_1->awal;
+			$tanggalakhir = $query_1->akhir;
+			if ($keluar == "1") {
+				$where_keluar = "and (eall.resign_date between '$tanggalawal' and '$tanggalakhir' or eall.resign = '0')";
+			}elseif($keluar == "2"){
+				$where_keluar = " and eall.resign = '0' ";
+			}else{
+				$where_keluar = " and eall.resign_date between '$tanggalawal' and '$tanggalakhir' ";
+			}
+			
+		}
 		$lokasi_kerja = '';
 		if (isset($lokasi) and !empty($lokasi)) {
 			$lokasi_kerja = " and prs.lokasi_kerja = '$lokasi' ";
@@ -109,12 +376,23 @@ class M_prosesgaji extends CI_Model {
 					on prs.noind = eall.employee_code
 				where prs.periode = '$tglBln'
 				$lokasi_kerja
+				$where_keluar
 				order by prs.kode_pekerjaan";
 		$result = $this->erp->query($sql);
 		return $result->result_array();
 	}
 
-	public function getHlcmSlipGajiPrint($tgl_awal,$tgl_akhir,$noind){
+	public function getHlcmSlipGajiPrint($tgl_awal,$tgl_akhir,$noind,$status = FALSE){
+		$where_keluar = "";
+		if ($status !== FALSE) {
+			if ($status == "1") {
+				$where_keluar = "and (eall.resign_date between '$tgl_awal' and '$tgl_akhir' or eall.resign = '0')";
+			}elseif($status == "2"){
+				$where_keluar = " and eall.resign = '0' ";
+			}else{
+				$where_keluar = " and eall.resign_date between '$tgl_awal' and '$tgl_akhir' ";
+			}
+		}
 		$no_induk = '';
 		if (isset($noind) and !empty($noind)) {
 			$no_induk = " and prs.noind = '$noind' ";
@@ -131,6 +409,7 @@ class M_prosesgaji extends CI_Model {
 				where prs.tgl_awal_periode = '$tgl_awal'
 				and prs.tgl_akhir_periode = '$tgl_akhir'
 				$no_induk
+				$where_keluar
 				order by prs.kode_pekerjaan";
 		$result = $this->erp->query($sql);
 		return $result->result_array();
@@ -142,7 +421,7 @@ class M_prosesgaji extends CI_Model {
 		return $result->num_rows();
 	}
 	
-	public function prosesHitung($tanggalawal,$tanggalakhir,$lokasi_kerja,$puasa = FALSE)
+	public function prosesHitung($tanggalawal,$tanggalakhir,$lokasi_kerja,$keluar,$puasa = FALSE)
 	{
 		if ($puasa !== FALSE) {
 			$periode_puasa = explode(" - ", $puasa);
@@ -151,6 +430,14 @@ class M_prosesgaji extends CI_Model {
 		}else{
 			$puasaAwal = '1990-01-01';
 			$puasaAkhir = '1990-01-01';
+		}
+
+		if ($keluar == "1") {
+			$where_keluar = "and (tp.tglkeluar between '$tanggalawal' and '$tanggalakhir' or tp.keluar = '0')";
+		}elseif($keluar == "2"){
+			$where_keluar = " and tp.keluar = '0' ";
+		}else{
+			$where_keluar = " and tp.tglkeluar between '$tanggalawal' and '$tanggalakhir' ";
 		}
 		// echo "aaa";exit();
 		
@@ -2349,7 +2636,7 @@ tp.puasa
 from hrd_khs.tpribadi tp
 left join \"Presensi\".tshiftpekerja tsp on tsp.noind=tp.noind
 where left(tp.noind,1)='R' and tsp.tanggal between '$tanggalawal' and '$tanggalakhir' 
-and (tp.tglkeluar between '$tanggalawal' and '$tanggalakhir' or tp.keluar = '0')
+$where_keluar
 $lokasi_kerja
 group by tp.noind,tp.nama,tp.kd_pkj,tp.lokasi_kerja,tp.puasa,tp.tglkeluar
 order by tp.noind";

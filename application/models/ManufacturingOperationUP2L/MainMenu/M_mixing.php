@@ -5,21 +5,26 @@ class M_mixing extends CI_Model
     public function __construct()
     {
         parent::__construct();
-        $this->load->database();    
+        $this->load->database();
     }
 
-    public function getMixing($id = FALSE)
+    public function getMixing()
     {
-    	if ($id === FALSE) {
-    		$query = $this->db->get('mo.mo_mixing');
-    	} else {
-    		$query = $this->db->get_where('mo.mo_mixing', array('mixing_id' => $id));
-    	}
-
-    	return $query->result_array();
+        $sql = "SELECT mm.*, ma.kode kode
+                FROM mo.mo_mixing mm, mo.mo_absensi ma
+                WHERE ma.id_produksi = mm.mixing_id AND ma.category_produksi = 'Mixing'
+                GROUP BY mm.mixing_id, ma.kode
+                ORDER  BY mm.production_date, ma.kode";
+        return $this->db->query($sql)->result_array();
+    }
+    
+    public function getMixingById($id)
+    {
+        $query = $this->db->get_where('mo.mo_mixing', array('mixing_id' => $id));
+        return $query->result_array();
     }
 
-      public function setAbsensi($data)
+    public function setAbsensi($data)
     {
         return $this->db->insert('mo.mo_absensi', $data);
     }
@@ -38,9 +43,10 @@ class M_mixing extends CI_Model
 
     public function deleteMixing($id)
     {
-        $this->db->where('mixing_id', $id);
-        $this->db->delete('mo.mo_mixing');
+        $sql = "DELETE FROM mo.mo_mixing WHERE mixing_id = '$id'; DELETE FROM mo.mo_absensi WHERE id_produksi = '$id'";
+        $this->db->query($sql);
     }
+
 }
 
 /* End of file M_mixing.php */

@@ -1,6 +1,8 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
 
+date_default_timezone_set('Asia/Jakarta');
+
 class C_TandaTerima extends CI_Controller {
 
 	/**
@@ -83,19 +85,19 @@ class C_TandaTerima extends CI_Controller {
 		$tgl = date('F-Y',strtotime($tanggalawal));
 
 		$data['pekerja'] = $this->M_cetakdata->ambilKepalaTukang();
-		$data['pj']  = $this->M_cetakdata->ambilPenanggungjawab();
-
+		// $data['pj']  = $this->M_cetakdata->ambilPenanggungjawab();
+		$data['pj']  = $this->M_prosesgaji->getApproval("Tanda Terima");
 		// echo "<pre>";
-		// print_r($data['pekerja']);
+		// print_r($data['pj']);
 		// exit();
 		$pdf = $this->pdf->load();
 		$pdf = new mPDF('utf-8', 'F4', 8, '', 5, 5, 5, 15, 10, 20);
 		$filename = 'Tanda_Terima-'.$tgl.'.pdf';
-
+		// $this->load->view('UpahHlCm/MenuCetak/V_cetakTandaTerima', $data);
 		$html = $this->load->view('UpahHlCm/MenuCetak/V_cetakTandaTerima', $data, true);
-
+		$pdf->SetHTMLFooter("<i style='font-size: 8pt'>Halaman ini dicetak melalui Aplikasi QuickERP-HLCM pada oleh ".$this->session->user." tgl. ".date('d/m/Y H:i:s').". Halaman {PAGENO} dari {nb}</i>");
 		$pdf->WriteHTML($html, 2);
-		$pdf->Output($filename, 'D');
+		$pdf->Output($filename, 'I');
 
 
 	}

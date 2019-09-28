@@ -1836,4 +1836,60 @@ class C_Order extends CI_Controller
 	$id = $this->input->post('id');
 	$addEmail = $this->M_order->hapusEmailSeksi($id);
 }
+
+public function MonitoringBon()
+{
+	$user1 = $this->session->user;
+	$user_id = $this->session->userid;
+	$kodesie = $this->session->kodesie;
+
+	$data['Title'] = 'Monitoring Bon';
+	$data['Menu'] = 'Monitoring Bon';
+	$data['SubMenuOne'] = '';
+	$data['SubMenuTwo'] = '';
+
+	$data['UserMenu'] = $this->M_user->getUserMenu($user_id,$this->session->responsibility_id);
+	$data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id);
+	$data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id);
+
+	$pr = $this->input->post('k3_periode');
+	$m = substr($pr, 0,2);
+	$y = substr($pr, 5,5);
+	$periode = $pr;
+	$pr = $y.'-'.$m;
+	$ks = substr($kodesie, 0,7);
+	// echo $ks;exit();
+	if ($pr == '-') {
+		$pr = date('Y-m');
+		$periode = date('m - Y');
+	}
+		// echo $pr;exit();
+	$seksi = $this->M_dtmasuk->cekseksi($ks);
+	$data['kodesie'] = $ks;
+	if ($ks == 'semua') {
+		$seksi = array(array('section_name' => 'SEMUA SEKSI'));
+	}
+	$data['seksi'] = $seksi;
+	if ($ks == 'semua') {
+		$ks = '';
+	}
+	$data['pr'] = $periode;
+	$data['period'] = $pr;
+	// echo "<pre>";
+	// $data['monitorbon'] = $this->M_dtmasuk->monitorbon($ks, $pr);
+	$ks = $seksi[0]['section_name'];
+	$data['monitorbon'] = $this->M_dtmasuk->monitorbonOracle($ks, $pr);
+	$count = count($data['monitorbon']);
+	$a = array();
+	for ($i=0; $i < $count; $i++) { 
+		$a[] = array_change_key_case($data['monitorbon'][$i],CASE_LOWER);
+	}
+	$data['monitorbon'] = $a; 
+	// print_r($data['monitorbon']);exit();
+
+	$this->load->view('V_Header',$data);
+	$this->load->view('V_Sidemenu',$data);
+	$this->load->view('P2K3V2/Order/V_Monitoring_Bon_seksi', $data);
+	$this->load->view('V_Footer',$data);
+}
 }

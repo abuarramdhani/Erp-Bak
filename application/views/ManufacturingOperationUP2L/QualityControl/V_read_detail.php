@@ -10,7 +10,7 @@
                             </div>
                             <div class="col-lg-1 ">
                                 <div class="text-right hidden-md hidden-sm hidden-xs">
-                                    <a class="btn btn-default btn-lg" href="<?php echo site_url('ManufacturingOperationUP2L/Moulding/');?>">
+                                    <a class="btn btn-default btn-lg" href="<?php echo site_url('ManufacturingOperationUP2L/');?>">
                                         <i class="icon-wrench icon-2x"></i>
                                         <br />
                                     </a>                             
@@ -32,26 +32,29 @@
                                                     <table class="table" style="border: 0px !Important;">
                                                     <?php foreach ($QualityControl as $headerRow): ?>
                                                         <tr>
-                                                            <td class="col-lg-6" style="border: 0"><strong>Component Code :</strong></td>
+                                                            <td class="col-lg-6" style="border: 0"><strong>Component Code</strong></td>
                                                             <td style="border: 0" id="component_code" >  <?php echo $headerRow['component_code']; ?></td>
                                                         </tr>
                                                         <tr>
                                                             <td class="col-lg-6" style="border: 0"><strong>Component Description :</strong></td>
-                                                            <td style="border: 0">:<?php echo $headerRow['component_description']; ?></td>
+                                                            <td style="border: 0" id="description"><?php echo $headerRow['component_description']; ?></td>
                                                         </tr>
                                                         <tr>
                                                             <td class="col-lg-6" style="border: 0"><strong>Production Date :</strong></td>
-                                                            <td style="border: 0" id="production_date" ><?php echo $headerRow['production_date']; ?></td>
+                                                            <td style="border: 0" id="production_date" ><?php echo $headerRow['selep_date']; ?></td>
                                                         </tr>
                                                         <tr>
-                                                            <td class="col-lg-6" style="border: 0"><strong>Print Code :</strong></td>
-                                                            <td style="border: 0" id="print_code" > <?php echo $headerRow['print_code']; ?></td>
+                                                            <td class="col-lg-6" style="border: 0"><strong>Shift :</strong></td>
+                                                            <td style="border: 0" id="shift" > <?php echo $headerRow['shift']; ?></td>
                                                         </tr>
                                                         <tr>
-                                                            <td class="col-lg-6" style="border: 0"><strong>Moulding Quantity :</strong></td>
-                                                            <td style="border: 0"> <?php echo $headerRow['moulding_quantity']; ?>
-                                                                <input type="hidden" id="mould_qty" value="<?php echo $headerRow['moulding_quantity']; ?>">
-                                                                <input type="hidden" id="mould_id" value="<?php echo $headerRow['moulding_id']; ?>">
+                                                            <td class="col-lg-6" style="border: 0"><strong>Employee :</strong></td>
+                                                            <td style="border: 0" id="job_id" > <?php echo $headerRow['job_id']; ?></td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td class="col-lg-6" style="border: 0"><strong>Selep Checking OK Quantity :</strong></td>
+                                                            <td style="border: 0" id="selep_qty"> <?php echo $headerRow['checking_ok']; ?>
+                                                                <input type="hidden" id="mould_id" value="<?php echo $headerRow['selep_id']; ?>">
                                                             </td>
                                                         </tr>
                                                         <tr>

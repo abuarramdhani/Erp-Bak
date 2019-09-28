@@ -66,20 +66,90 @@ class M_cetak extends CI_Model {
 		return $query->result_array();
 	}
 
-	function insertData($kegunaan,$wipid){
+	function updateData($kegunaan,$due_date,$wipid){
+		$sql = "UPDATE WIP_DISCRETE_JOBS wdj set wdj.ATTRIBUTE3 = '$kegunaan', wdj.attribute1 = '$due_date' WHERE wdj.WIP_ENTITY_ID = '$wipid'";
+		$query = $this->oracle->query($sql);
+		echo $sql;
+	}
+
+	function updateDueDate($due_date, $wipid){
+		$sql = "UPDATE WIP_DISCRETE_JOBS wdj set wdj.attribute1 = '$due_date' WHERE wdj.WIP_ENTITY_ID = '$wipid'";
+		$query = $this->oracle->query($sql);
+		echo $sql;
+	}
+
+	function updateKegunaan($kegunaan, $wipid){
 		$sql = "UPDATE WIP_DISCRETE_JOBS wdj set wdj.ATTRIBUTE3 = '$kegunaan' WHERE wdj.WIP_ENTITY_ID = '$wipid'";
 		$query = $this->oracle->query($sql);
+		echo $sql;
 	}
 
 	function getData($tuanggal,$shift,$deptclass,$jobfrom,$jobto,$status){
 		$oracle = $this->load->database('oracle',TRUE);
-    	$sql = 	"SELECT
-	              we.WIP_ENTITY_NAME||'-'||wo.OPERATION_SEQ_NUM qr_code,
-	              bdc.DEPARTMENT_CLASS_CODE ROUTING_CLASS_DESC,
-	              we.WIP_ENTITY_ID ,
-	              bcs.SHIFT_NUM,
-	              wdj.STATUS_TYPE,
-	              we.WIP_ENTITY_NAME JOB_NUMBER,
+		//SEBELUM PENAMBAHAN LOCATION CODE
+    	// $sql = 	"SELECT
+	    //           we.WIP_ENTITY_NAME||'-'||wo.OPERATION_SEQ_NUM qr_code,
+	    //           bdc.DEPARTMENT_CLASS_CODE ROUTING_CLASS_DESC,
+	    //           we.WIP_ENTITY_ID ,
+	    //           bcs.SHIFT_NUM,
+	    //           wdj.STATUS_TYPE,
+	    //           we.WIP_ENTITY_NAME JOB_NUMBER,
+     //              msib.segment1 ITEM_CODE,
+     //              msib.UNIT_VOLUME UNIT_VOLUME,
+     //              msib.description,
+     //              msib.PRIMARY_UOM_CODE UOM_CODE,
+     //              (SELECT mcb.segment1
+     //              FROM mtl_item_categories mic ,
+     //                mtl_categories_b mcb
+     //              WHERE msib.INVENTORY_ITEM_ID = mic.INVENTORY_ITEM_ID
+     //              AND msib.ORGANIZATION_ID     = mic.ORGANIZATION_ID
+     //              AND mic.CATEGORY_ID          = mcb.CATEGORY_ID
+     //              AND mic.CATEGORY_SET_ID      = 1100000042
+     //              ) TYPE_PRODUCT,
+     //              wdj.SCHEDULED_START_DATE,
+     //              wdj.SCHEDULED_COMPLETION_DATE NEED_BY,
+     //              bcs.description shift,
+     //              wo.OPERATION_SEQ_NUM OPR_SEQ,
+     //              wo.OPERATION_SEQUENCE_ID,
+     //              bd.DEPARTMENT_CODE OPERATION,
+     //              bd.DEPARTMENT_CLASS_CODE DEPT_CLASS,
+     //              wo.DESCRIPTION KODE_PROSES,
+     //              wo.ATTRIBUTE7 ACTIVITY,
+     //              wdj.START_QUANTITY TARGET_PPIC,
+     //              wdj.ATTRIBUTE3 TUJUAN,
+     //              wdj.attribute1 DUE_DATE
+     //            FROM wip_discrete_jobs wdj ,
+     //              wip_entities we ,
+     //              wip_operations wo ,
+     //              bom_departments bd ,
+     //              mtl_system_items_b msib,
+     //              bom_calendar_shifts bcs,
+     //              BOM_DEPARTMENT_CLASSES bdc
+     //            WHERE wdj.WIP_ENTITY_ID      = we.WIP_ENTITY_ID
+     //            --AND we.WIP_ENTITY_NAME       = 'D181100048'   ----------------------> no JOB
+     //            -- AND bcs.SHIFT_NUM = '$shift'
+     //            AND bcs.SHIFT_NUM = nvl('$shift',bcs.SHIFT_NUM)
+     //            AND khs_shift(wdj.SCHEDULED_START_DATE) = bcs.SHIFT_NUM
+     //            AND we.WIP_ENTITY_NAME between nvl('$jobfrom',we.WIP_ENTITY_NAME) and nvl('$jobto',we.WIP_ENTITY_NAME)
+     //            AND bd.DEPARTMENT_CLASS_CODE = nvl('$deptclass',bd.DEPARTMENT_CLASS_CODE)
+     //            AND wdj.STATUS_TYPE in (nvl('$status',wdj.STATUS_TYPE))
+     //            AND to_char(wdj.SCHEDULED_START_DATE,'DD/MM/YYYY') = '$tuanggal'
+     //            and wdj.STATUS_TYPE in (1,3)
+     //            AND wdj.WIP_ENTITY_ID        = wo.WIP_ENTITY_ID
+     //            AND wo.DEPARTMENT_ID         = bd.DEPARTMENT_ID
+     //            AND wo.ORGANIZATION_ID       = bd.ORGANIZATION_ID
+     //            AND bd.DEPARTMENT_CLASS_CODE = bdc.DEPARTMENT_CLASS_CODE
+     //            AND wdj.PRIMARY_ITEM_ID      = msib.INVENTORY_ITEM_ID
+     //            AND wdj.ORGANIZATION_ID      = msib.ORGANIZATION_ID
+     //            AND bd.ORGANIZATION_ID = bdc.ORGANIZATION_ID
+     //            AND wo.OPERATION_SEQ_NUM = 10";
+		$sql = "SELECT
+                  we.WIP_ENTITY_NAME||'-'||wo.OPERATION_SEQ_NUM qr_code,
+                  bdc.DEPARTMENT_CLASS_CODE ROUTING_CLASS_DESC,
+                  we.WIP_ENTITY_ID ,
+                  bcs.SHIFT_NUM,
+                  wdj.STATUS_TYPE,
+                  we.WIP_ENTITY_NAME JOB_NUMBER,
                   msib.segment1 ITEM_CODE,
                   msib.UNIT_VOLUME UNIT_VOLUME,
                   msib.description,
@@ -102,17 +172,24 @@ class M_cetak extends CI_Model {
                   wo.DESCRIPTION KODE_PROSES,
                   wo.ATTRIBUTE7 ACTIVITY,
                   wdj.START_QUANTITY TARGET_PPIC,
-                  wdj.ATTRIBUTE3 TUJUAN
+                  wdj.ATTRIBUTE3 TUJUAN,
+                  wdj.attribute1 DUE_DATE,
+                  hla.LOCATION_CODE
                 FROM wip_discrete_jobs wdj ,
                   wip_entities we ,
                   wip_operations wo ,
                   bom_departments bd ,
                   mtl_system_items_b msib,
                   bom_calendar_shifts bcs,
-                  BOM_DEPARTMENT_CLASSES bdc
+                  BOM_DEPARTMENT_CLASSES bdc,
+                  mtl_secondary_inventories msi,
+                  HR_LOCATIONS_ALL hla,
+                  bom_operational_routings bor,
+                  bom_operation_sequences bos
                 WHERE wdj.WIP_ENTITY_ID      = we.WIP_ENTITY_ID
                 --AND we.WIP_ENTITY_NAME       = 'D181100048'   ----------------------> no JOB
-                AND bcs.SHIFT_NUM = '$shift'
+--                 AND bcs.SHIFT_NUM = '$shift'
+                AND bcs.SHIFT_NUM = nvl('$shift',bcs.SHIFT_NUM)
                 AND khs_shift(wdj.SCHEDULED_START_DATE) = bcs.SHIFT_NUM
                 AND we.WIP_ENTITY_NAME between nvl('$jobfrom',we.WIP_ENTITY_NAME) and nvl('$jobto',we.WIP_ENTITY_NAME)
                 AND bd.DEPARTMENT_CLASS_CODE = nvl('$deptclass',bd.DEPARTMENT_CLASS_CODE)
@@ -126,7 +203,12 @@ class M_cetak extends CI_Model {
                 AND wdj.PRIMARY_ITEM_ID      = msib.INVENTORY_ITEM_ID
                 AND wdj.ORGANIZATION_ID      = msib.ORGANIZATION_ID
                 AND bd.ORGANIZATION_ID = bdc.ORGANIZATION_ID
-                AND wo.OPERATION_SEQ_NUM = 10";
+                AND wo.OPERATION_SEQ_NUM = 10
+                and bos.ROUTING_SEQUENCE_ID = wdj.COMMON_ROUTING_SEQUENCE_ID
+                and bor.ROUTING_SEQUENCE_ID = bos.ROUTING_SEQUENCE_ID
+                and bor.COMPLETION_SUBINVENTORY = msi.SECONDARY_INVENTORY_NAME
+                AND msi.DISABLE_DATE is null
+                and msi.LOCATION_ID=hla.LOCATION_ID(+)";
 		$query = $oracle->query($sql);
 		return $query->result_array();
 	}

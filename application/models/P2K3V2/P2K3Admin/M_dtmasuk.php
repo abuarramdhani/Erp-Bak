@@ -440,27 +440,43 @@ class M_Dtmasuk extends CI_Model
     {
         $ks = substr($ks, 0,7);
         $sql = "select
-                    kh.periode,
-                    kh.item_kode,
-                    km.item,
-                    sum(kh.jml_kebutuhan::int) jml_kebutuhan,
-                    sum(coalesce(bon.jml_bon::int, 0)) ttl_bon,
-                    sum(kh.jml_kebutuhan::int - coalesce(bon.jml_bon::int, 0)) sisa_saldo
+                    a.periode,
+                    a.kode_item item_kode,
+                    a.item,
+                    sum(a.jml_kebutuhan::int) jml_kebutuhan,
+                    sum(a.bon) ttl_bon,
+                    sum(a.sisa_saldo) sisa_saldo
                 from
-                    k3.k3n_hitung kh
-                left join k3.k3n_bon bon on
-                    kh.periode = bon.periode
-                    and kh.kodesie = bon.kodesie
-                    and kh.item_kode = bon.item_code ,
-                    k3.k3_master_item km
+                    (
+                        select kh.periode,
+                        kh.item_kode kode_item,
+                        km.item,
+                        kh.kodesie,
+                        kh.jml_kebutuhan,
+                        sum(coalesce(bon.jml_bon::int, 0)) bon,
+                        kh.jml_kebutuhan::int - sum(coalesce(bon.jml_bon::int, 0)) sisa_saldo
+                    from
+                        k3.k3n_hitung kh
+                    left join k3.k3n_bon bon on
+                        kh.periode = bon.periode
+                        and kh.kodesie = bon.kodesie
+                        and kh.item_kode = bon.item_code ,
+                        k3.k3_master_item km
+                    where
+                        kh.item_kode = km.kode_item
+                        and kh.periode = '$pr'
+                    group by
+                        kh.periode,
+                        kh.item_kode,
+                        kh.jml_kebutuhan,
+                        km.item,
+                        kh.kodesie) a
                 where
-                    kh.item_kode = km.kode_item
-                    and kh.kodesie like '$ks%'
-                    and kh.periode = '$pr'
+                    a.kodesie like '$ks%'
                 group by
-                    kh.periode,
-                    kh.item_kode,
-                    km.item
+                    a.periode,
+                    a.kode_item,
+                    a.item
                 order by
                     3";
                 // echo $sql;exit();
@@ -912,6 +928,47 @@ class M_Dtmasuk extends CI_Model
                     ib.no_bon = kb.no_bon
                 where kb.no_bon = '$id'";
             echo $sql;exit();
+        $query = $this->db->query($sql);
+        return $query->result_array();
+    }
+
+    public function cekDuplikat()
+    {
+        $sql = "select
+                    distinct a.*,
+                    es.section_name
+                from
+                    (
+                        select kb.kode_item,
+                        km.item,
+                        kb.kodesie,
+                        count(km.item) duplicate
+                    from
+                        k3.k3n_standar_kebutuhan kb,
+                        k3.k3_master_item km
+                    where
+                        kb.kode_item = km.kode_item
+                        and kb.status = 3
+                        and kb.tgl_approve_tim = (
+                        select
+                            max(kb2.tgl_approve_tim)
+                        from
+                            k3.k3n_standar_kebutuhan kb2
+                        where
+                            kb2.kodesie = kb.kodesie
+                            and kb2.kode_item = kb.kode_item
+                            and kb2.status = kb.status )
+                    group by
+                        kb.kode_item,
+                        km.item,
+                        kb.kodesie ) a,
+                    er.er_section es
+                where
+                    a.duplicate > 1
+                    and a.kodesie = substring(es.section_code, 1, 7)
+                order by
+                    3,
+                    2";
         $query = $this->db->query($sql);
         return $query->result_array();
     }

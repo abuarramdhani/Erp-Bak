@@ -35,7 +35,7 @@
 								<label class="control-label">Posisi</label>
 							</div>
 							<div class="col-lg-5">
-								<select name="posisipekerja" id="posisipekerja" class="form-control" required="required">
+								<select name="posisipekerja" id="posisipekerja" class="form-control select select2" required="required">
 									<option disabled="disabled"></option>
 									<option value="1" 
 									<?php if ($data[0]['id_status'] == '1') {
@@ -49,6 +49,34 @@
 									<?php if ($data[0]['id_status'] == '3') {
 										echo "selected='selected'";
 									}?>>menyetujui</option>
+									<option value="4"
+									<?php if ($data[0]['id_status'] == '4') {
+										echo "selected='selected'";
+									}?>>dibuat</option>
+								</select>
+							</div>
+						</div>
+					</div>
+					<div style="margin-top: 5px" class="row">
+						<div class="form-group">
+							<div align="right" class="col-lg-2">
+								<label class="control-label">Dokumen</label>
+							</div>
+							<div class="col-lg-5">
+								<select name="jenisdokumen" id="posisipekerja" class="form-control select select2" required="required">
+									<option disabled="disabled"></option>
+									<option value="1" 
+									<?php if ($data[0]['document_id'] == '1') {
+										echo "selected='selected'";
+									}?>>Tanda Terima</option>
+									<option value="2"
+									<?php if ($data[0]['document_id'] == '2') {
+										echo "selected='selected'";
+									}?>>Memo</option>
+									<option value="3"
+									<?php if ($data[0]['document_id'] == '3') {
+										echo "selected='selected'";
+									}?>>Rekap</option>
 								</select>
 							</div>
 						</div>

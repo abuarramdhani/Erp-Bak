@@ -300,6 +300,11 @@
                                               <input type="hidden" class="problemCompNonC" value="<?php echo $PoOracleNonConformityLines[0]['problem_completion'];?>">
                                               <input type="hidden" class="CompDateNonC" value="<?php echo $PoOracleNonConformityLines[0]['completion_date'];?>">
                                           </div>
+                                          <!-- <table>
+                                              <tr>
+                                                  <td><button type="button" class="btn btn-success btnForwardBuyerNonC"><i>Forward To Buyer</i></button></td>
+                                              </tr>
+                                          </table> -->
                                           <span>Attachment :</span><br>
                                           <?php foreach ($image as $key => $img) { ?>
                                             <img style="max-height : 100px;" src="<?php echo base_url().$img['image_path'].''.$img['file_name']; ?>">
@@ -314,11 +319,17 @@
             </div>
         </div>
         <div class="panel-footer">
-            <div align="right">
-                <a class="btn btn-primary btn-lg btn-rect" href="javascript:history.back(1)">
-                    Back
-                </a>
-            </div>
+            <form class="form-horizontal" id="form-simpan"  enctype="multipart/form-data" method="post" action="<?php echo site_url('PurchaseManagementGudang/NonConformity/pendingExecute');?>">
+                <div align="right">
+                    <?php if ($PoOracleNonConformityLines[0]['problem_completion'] != null || $PoOracleNonConformityLines[0]['problem_completion'] != '') { ?>
+                            <input type="hidden" name="hdnHdr" value="<?php echo $PoOracleNonConformityHeaders[0]['header_id'];?>">
+                            <button type="submit" class="btn btn-success btn-lg">Pending Execute</button>
+                    <?php } ?>
+                    <a class="btn btn-primary btn-lg btn-rect" href="javascript:history.back(1)">
+                     Back
+                    </a>
+                </div>
+            </form>
         </div>
     </div>
 </section>
@@ -393,4 +404,37 @@
     <!-- /.modal-dialog -->
 </div>
 <!-- /.modal -->
-
+<!-- <div class="modal fade" id="modal-forwardBuyer">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">Forward to Buyer</h4>
+            </div>
+            <form class="form-horizontal" id="form-simpan"  enctype="multipart/form-data" method="post" action="<?php echo site_url('PurchaseManagementGudang/NonConformity/submitForward');?>">
+                <div class="modal-body">
+                    <input type="hidden" name="hdnHdr" value="<?php echo $PoOracleNonConformityHeaders[0]['header_id'];?>">
+                    <table>
+                        <tr>
+                            <td>Select Buyer :&nbsp;</td>
+                            <td>
+                            <select class="select2 slcBuyerNonC" style="width:300px;" name="slcBuyerNonC">
+                                    <option></option>
+                                    <?php foreach ($buyer as $key => $byr) {?>
+                                        <option value="<?= $byr['noind'];?>"><?= $byr['nama'];?></option>
+                                    <?php } ?>
+                            </select>
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default pull-left" data-dismiss="modal">Cancel</button>
+                    <button type="submit" id="" class="btn btn-primary">Yes</button>
+                </div>
+            </form>
+        </div> -->
+        <!-- /.modal-content -->
+    <!-- </div> -->
+    <!-- /.modal-dialog -->
+<!-- </div> -->
+<!-- /.modal -->

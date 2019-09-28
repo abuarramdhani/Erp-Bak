@@ -47,8 +47,12 @@
                                                             <td class="col-lg-2" style="border: 0"><strong>Mixing Quantity</strong></td>
                                                             <td style="border: 0">: <?php echo $headerRow['mixing_quantity']; ?></td>
                                                         </tr>
+                                                        <tr>
+                                                            <td class="col-lg-2" style="border: 0"><strong>Print Code</strong></td>
+                                                            <td style="border: 0">: <?php echo $headerRow['print_code']; ?></td>
+                                                        </tr>
 														<tr>
-                                                            <td class="col-lg-2" style="border: 0"><strong>Job Id</strong></td>
+                                                            <td class="col-lg-2" style="border: 0"><strong>Employee</strong></td>
                                                             <td style="border: 0">: <?php echo $headerRow['job_id']; ?></td>
                                                         </tr>
 													<?php endforeach; ?>

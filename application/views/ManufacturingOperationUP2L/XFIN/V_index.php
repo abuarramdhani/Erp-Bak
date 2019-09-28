@@ -41,16 +41,16 @@
                                             <div class="form-group">
                                                 <label class="control-label col-md-4">Start Date</label>
                                                 <div class="col-md-4">
-                                                    <input type="text" id="txtStartDate" name="txtStartDate" required="true" class="form-control time-form1 ajaxOnChange" autocomplete="off" placeholder="Start Date">
+                                                    <input type="text" id="txtStartDate" name="txtStartDate" required="true" class="form-control time-form1" autocomplete="off" placeholder="Start Date">
                                                 </div>
                                             </div>
                                             <div class="form-group">
                                                 <label class="control-label col-md-4">End Date</label>
                                                 <div class="col-md-4">
-                                                    <input type="text" id="txtEndDate" name="txtEndDate" required="true" class="form-control time-form1 ajaxOnChange" autocomplete="off" placeholder="End Date">
+                                                    <input type="text" id="txtEndDate" name="txtEndDate" required="true" class="form-control time-form1" autocomplete="off" placeholder="End Date">
                                                 </div>
                                             </div> <br />
-                                            <center><input type="submit" class="btn btn-success"> <input type="reset" class="btn btn-warning"></center>
+                                            <center><input type="submit" class="btn btn-success"></center>
                                         </div>
                                     </form>
                                     </div>

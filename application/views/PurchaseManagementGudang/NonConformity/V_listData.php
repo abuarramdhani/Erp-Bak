@@ -40,7 +40,7 @@
 												<th class="text-center">Supplier</th>
 												<!-- <th class="text-center">Supplier Address</th> -->
                                                 <th class="text-center">Person In Charge</th>
-												<th class="text-center">Status</th>
+												<!-- <th class="text-center">Status</th> -->
 											</tr>
                                         </thead>
                                         <tbody>
@@ -82,8 +82,8 @@
 												<td><?php echo $row['supplier'] ?></td>
 												<!-- <td><?php echo $row['supplier_address'] ?></td> -->
                                                 <td><?php echo $row['person_in_charge'] ?></td>
-												<td><?php if ($row['status'] == NULL || $row['status'] == '' || $row['status'] == 'open') {
-                                                    $status = 'open';}else{$status = $row['status'];} echo strtoupper($status); ?></td>
+												<!-- <td><?php if ($row['status'] == NULL || $row['status'] == '' || $row['status'] == 'open') {
+                                                    $status = 'open';}else{$status = $row['status'];} echo strtoupper($status); ?></td> -->
 											</tr>
                                             <?php endforeach; ?>
                                         </tbody>                                      

@@ -173,6 +173,8 @@
 		<script src="<?= base_url('assets/js/customVBC.js');?>"></script>
 		<script src="<?= base_url('assets/js/customMBP.js');?>"></script>
 		<script src="<?= base_url('assets/js/customMSO.js');?>"></script>
+		<script src="<?= base_url('assets/js/customPPHC.js');?>"></script>
+		<script src="<?= base_url('assets/js/customMPG.js');?>"></script>
 		<!-- <script src="<?= base_url('assets/js/customMO.js') ?>"></script> -->
 		<!-- <script src="<?= base_url('assets/js/customPR.js') ?>"></script> -->
 		<!-- <script src="<?= base_url('assets/js/customOSP.js') ?>"></script> -->

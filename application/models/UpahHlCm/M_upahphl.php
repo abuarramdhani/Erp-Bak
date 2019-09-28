@@ -111,7 +111,7 @@ class M_upahphl extends CI_Model {
 	}
 	public function dataApproval()
 	{
-		$query = "select ap.*, (select ket.posisi from hlcm.hlcm_posisi ket where ap.id_status=ket.id_status) as posisi from hlcm.hlcm_approval ap";
+		$query = "select ap.*, (select ket.posisi from hlcm.hlcm_posisi ket where ap.id_status=ket.id_status) as posisi, (select nama_document from hlcm.hlcm_document docu where docu.id_document = ap.document_id) as document from hlcm.hlcm_approval ap order by document_id, lokasi_kerja, id_status";
 		$data = $this->erp->query($query);
 		return $data->result_array();
 	}

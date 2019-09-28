@@ -38,6 +38,7 @@
 												<th>Component Code</th>
 												<th>Component Description</th>
 												<th>Selep Quantity</th>
+												<th>Scrap Quantity</th>
                                                 <th>Shift</th>
 												<th>Employee</th>
 											</tr>
@@ -46,20 +47,19 @@
                                             <?php 
                                             	$no = 1; 
                                             	foreach($Selep as $row):
-                                            	$encrypted_string = $this->encrypt->encode($row['selep_id']);
-												$encrypted_string = str_replace(array('+', '/', '='), array('-', '_', '~'), $encrypted_string);
 											?>
                                             <tr>
                                                 <td align='center'><?php echo $no++;?></td>
                                                 <td align='center'>
-                                                	<a style="margin-right:4px" href="<?php echo base_url('ManufacturingOperationUP2L/Selep/read/'.$encrypted_string.''); ?>" data-toggle="tooltip" data-placement="bottom" title="Read Data"><span class="fa fa-list-alt fa-2x"></span></a>
-                                                	<a style="margin-right:4px" href="<?php echo base_url('ManufacturingOperationUP2L/Selep/edit/'.$encrypted_string.''); ?>" data-toggle="tooltip" data-placement="bottom" title="Edit Data"><span class="fa fa-pencil-square-o fa-2x"></span></a>
-                                                	<a href="<?php echo base_url('ManufacturingOperationUP2L/Selep/delete/'.$encrypted_string.''); ?>" data-toggle="tooltip" data-placement="bottom" title="Hapus Data" onclick="return confirm('Are you sure you want to delete this item?');"><span class="fa fa-trash fa-2x"></span></a>
+                                                	<a style="margin-right:4px" href="<?php echo base_url('ManufacturingOperationUP2L/Selep/read/'. $row['selep_id']); ?>" data-toggle="tooltip" data-placement="bottom" title="Read Data"><span class="fa fa-list-alt fa-2x"></span></a>
+                                                	<a style="margin-right:4px" href="<?php echo base_url('ManufacturingOperationUP2L/Selep/edit/'. $row['selep_id']); ?>" data-toggle="tooltip" data-placement="bottom" title="Edit Data"><span class="fa fa-pencil-square-o fa-2x"></span></a>
+                                                	<a href="<?php echo base_url('ManufacturingOperationUP2L/Selep/delete/'.$row['selep_id']); ?>" data-toggle="tooltip" data-placement="bottom" title="Hapus Data" onclick="return confirm('Are you sure you want to delete this item?');"><span class="fa fa-trash fa-2x"></span></a>
                                                 </td>
 												<td><?php echo $row['selep_date'] ?></td>
 												<td><?php echo $row['component_code'] ?></td>
 												<td><?php echo $row['component_description'] ?></td>
 												<td><?php echo $row['selep_quantity'] ?></td>
+												<td><?php echo $row['scrap_quantity'] ?></td>
                                                 <td><?php echo $row['shift'] ?></td>
 												<td><?php echo $row['job_id'] ?></td>
 											</tr>

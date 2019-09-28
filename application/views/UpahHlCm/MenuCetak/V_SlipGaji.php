@@ -7,7 +7,7 @@
 			</div>
 			<div class="panel-body">
 				<br>
-				<form style="margin-left: 200px" method="POST" action="<?php echo base_url('HitungHlcm/SlipGaji/cetakpdf');?>">
+				<form target="_blank" style="margin-left: 200px" method="POST" action="<?php echo base_url('HitungHlcm/SlipGaji/cetakpdf');?>">
 					<div class="row">
 						<div class="form-group">
 							<div class="col-lg-1">
@@ -35,6 +35,20 @@
 							</div>
 							<div class="col-lg-3" style="padding-left: 0px">
 								<p style="font-size: 10px;">*kosongi untuk cetak slip gaji semua pekerja dalam periode tsb</p>					
+							</div>
+						</div>
+					</div>
+					<div class="row">
+						<div class="form-group">
+							<div class="col-lg-1">
+								<label class="control-label">Status</label>
+							</div>
+							<div class="col-lg-3">
+								<select name="statusPekerja" id="statusPekerja" data-placeholder="Status Pekerja" class="select2" style="width: 100%" required>
+									<option value="1">Semua Pekerja</option>
+									<option value="2">Pekerja Aktif</option>
+									<option value="3">Pekerja Keluar</option>
+								</select>					
 							</div>
 						</div>
 					</div>

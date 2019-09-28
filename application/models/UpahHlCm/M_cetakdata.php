@@ -129,6 +129,60 @@ class M_cetakdata extends CI_Model {
 		return $data->result_array();
 	}
 
+	public function ambilPotTam($awal,$akhir){
+		$sql = "select noind,nama,
+						sum(nominal_gp) as total_gp, 
+						sum(nominal_um) as total_um, 
+						sum(nominal_lembur) as total_lembur
+				from (
+					select 'tambahan' as sumber,noind,
+						(select employee_name from er.er_employee_all e where e.employee_code = a.noind) as nama,
+						nominal_gp, nominal_um,nominal_lembur 
+					from hlcm.hlcm_tambahan a
+					where tgl_awal_periode = '$awal'
+					and tgl_akhir_periode = '$akhir'
+				union all
+					select 'potongan' as sumber,noind,
+						(select employee_name from er.er_employee_all e where e.employee_code = a.noind) as nama,
+						(-1*nominal_gp), (-1*nominal_um),(-1*nominal_lembur)
+					from hlcm.hlcm_potongan a
+					where tgl_awal_periode = '$awal'
+					and tgl_akhir_periode = '$akhir'
+				) as tbl
+				group by noind, nama";
+		$data = $this->erp->query($sql);
+		return $data->result_array();
+	}
 	
+	public function ambilPotTam_detail($awal,$akhir){
+		$sql = "select noind,nama,
+						nominal_gp, 
+						nominal_um, 
+						nominal_lembur,
+						gp,
+						um,
+						lembur,
+						gp_perhari,
+						um_perhari,
+						lembur_perjam,
+						sumber
+				from (
+					select 'tambahan' as sumber,noind,
+						(select employee_name from er.er_employee_all e where e.employee_code = a.noind) as nama,
+						nominal_gp, nominal_um,nominal_lembur,gp,um,lembur,gp_perhari,um_perhari,lembur_perjam
+					from hlcm.hlcm_tambahan a
+					where tgl_awal_periode = '$awal'
+					and tgl_akhir_periode = '$akhir'
+				union all
+					select 'potongan' as sumber,noind,
+						(select employee_name from er.er_employee_all e where e.employee_code = a.noind) as nama,
+						nominal_gp,nominal_um,nominal_lembur,gp,um,lembur,gp_perhari,um_perhari,lembur_perjam
+					from hlcm.hlcm_potongan a
+					where tgl_awal_periode = '$awal'
+					and tgl_akhir_periode = '$akhir'
+				) as tbl";
+		$data = $this->erp->query($sql);
+		return $data->result_array();
+	}
 	
 };

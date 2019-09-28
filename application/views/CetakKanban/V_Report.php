@@ -26,8 +26,10 @@
 	}
 
 </style>
+
 <body>
 	<?php  
+
 	if($dataprint):
 	
 	foreach ($dataprint as $key => $value) {
@@ -130,10 +132,10 @@
 										<td  rowspan="3" style="text-align: left;" >
 											<?php
 											$codeContents = $value[$p]['QR_CODE'];
-											$fileName = 'img/'.$codeContents.'.png';
+											$fileName = 'assets/upload/CetakKanban/'.$codeContents.'.png';
 											QRcode::png($codeContents, $fileName, H, 3, 3);
 											?>
-											<img  style=" float:right;  opacity: 1 ; width:18mm; padding:;  height:auto;" src="img/<?php echo $codeContents.'.png'; ?>" />
+											<img  style=" float:right;  opacity: 1 ; width:18mm; padding:;  height:auto;" src="assets/upload/CetakKanban/<?php echo $codeContents.'.png'; ?>" />
 										</td>
 									</tr>
 									<tr>
@@ -141,8 +143,13 @@
 											<b style="font-size: 8px">Target PE SK</b>
 										</td>
 										<td>
-											<b style="font-size: 8px">:&nbsp;<?= floor($value[$p]['TARGETSK']).' '.$value[$p]['UOM_CODE'] ?>
-												(<?= round(($value[$p]['TARGET_PPIC']/$value[$p]['TARGETSK'])*100) ?> %)</b>
+											<b style="font-size: 8px">:&nbsp;<?php 
+											if($value[$p]['TARGETSK'] != NULL || $value[$p]['TARGETSK'] != 0){ 
+												echo floor($value[$p]['TARGETSK']).' '.$value[$p]['UOM_CODE']; 
+												echo " (".(round(($value[$p]['TARGET_PPIC']/$value[$p]['TARGETSK'])*100)." %)");
+											}else { 
+												echo " %"; } ?>
+											</b>
 											</td>
 									</tr>
 									<tr>
@@ -150,8 +157,14 @@
 												<b style="font-size: 8px">Target PE JS</b>
 											</td>
 											<td >
-												<b style="font-size: 8px">:&nbsp;<?= floor($value[$p]['TARGETJS']).' '.$value[$p]['UOM_CODE'] ?>
-													(<?= round(($value[$p]['TARGET_PPIC']/$value[$p]['TARGETJS'])*100) ?> %)</b>
+												<b style="font-size: 8px">:&nbsp;<?php
+												if ($value[$p]['TARGETJS'] != NULL || $value[$p]['TARGETJS'] != 0) {
+												  	echo floor($value[$p]['TARGETJS']).' '.$value[$p]['UOM_CODE'];
+													echo " (".(round(($value[$p]['TARGET_PPIC']/$value[$p]['TARGETJS'])*100)." %)");
+												  } else {
+												  	echo " %";
+												  } ?>
+												</b>
 												</td>
 									</tr>
 					</table>

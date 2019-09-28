@@ -5,18 +5,19 @@ class M_selep extends CI_Model
     public function __construct()
     {
         parent::__construct();
-        $this->load->database();    
+        $this->load->database();
     }
 
-    public function getSelep($id = FALSE)
+    public function getSelep()
     {
-    	if ($id === FALSE) {
-    		$query = $this->db->get('mo.mo_selep');
-    	} else {
-    		$query = $this->db->get_where('mo.mo_selep', array('selep_id' => $id));
-    	}
-
-    	return $query->result_array();
+        $sql = "SELECT * FROM mo.mo_selep ORDER BY selep_date, shift, job_id";
+        $query = $this->db->query($sql);
+        return $query->result_array();
+    }
+    public function getSelepById($id)
+    {
+        $query = $this->db->get_where('mo.mo_selep', array('selep_id' => $id));
+        return $query->result_array();
     }
 
     public function setSelep($data)
@@ -24,7 +25,7 @@ class M_selep extends CI_Model
         return $this->db->insert('mo.mo_selep', $data);
     }
 
-        public function setAbsensi($data)
+    public function setAbsensi($data)
     {
         return $this->db->insert('mo.mo_absensi', $data);
     }
@@ -37,18 +38,16 @@ class M_selep extends CI_Model
 
     public function deleteSelep($id)
     {
-        $this->db->where('selep_id', $id);
-        $this->db->delete('mo.mo_selep');
+        $sql = "DELETE FROM mo.mo_selep WHERE selep_id = '$id'; DELETE FROM mo.mo_quality_control WHERE selep_id_c = '$id';";
+        $this->db->query($sql);
     }
 
-    public function getSelepDate($txtStartDate,$txtEndDate)
+    public function getSelepDate($txtStartDate, $txtEndDate)
     {
-        $query = $this->db->query("
-        SELECT * FROM mo.mo_selep WHERE (selep_date BETWEEN '$txtStartDate' AND '$txtEndDate')
-        ");
-        return $query->result_array();
+        $sql = "SELECT * FROM mo.mo_selep WHERE selep_date BETWEEN '$txtStartDate' AND '$txtEndDate' ORDER BY selep_date";
+        return $this->db->query($sql)->result_array();
     }
-    
+
     public function getKodeProses($kode_barang)
     {
         $query = $this->db->query("
@@ -57,9 +56,4 @@ class M_selep extends CI_Model
         ");
         return $query->result_array();
     }
-
 }
-
-/* End of file M_selep.php */
-/* Location: ./application/models/ManufacturingOperation/MainMenu/M_selep.php */
-/* Generated automatically on 2017-12-20 14:52:40 */

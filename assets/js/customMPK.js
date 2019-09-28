@@ -51,12 +51,12 @@ $(document).ready(function() {
                 pageSize: 'A4',
             }
         ],
-        scrollX: true,
-        // scrollY: 400,
-        lengthMenu: [
-            [10, 25, 50, 100, -1],
-            [10, 25, 50, 100, "All"]
-        ],
+        // scrollX: true,
+        // // scrollY: 400,
+        // lengthMenu: [
+        //     [10, 25, 50, 100, -1],
+        //     [10, 25, 50, 100, "All"]
+        // ],
     });
 
     function SelectNama() {
@@ -770,6 +770,7 @@ $(function() {
     $('.MasterPekerja-Surat-txaPreview').redactor();
     $('#MasterPekerja-SuratPerbantuan-txaPreview').redactor();
     $('.MasterPekerja-SuratRotasi-txaPreview').redactor();
+    $('.MasterPekerja-SuratUsiaLanjut-txaPreview').redactor();
     $('.MasterPekerja-SuratPromosi-txaPreview').redactor();
     $('#MasterPekerja-Surat-txaFormatSurat').redactor();
     $('#MasterPekerja-SuratDemosi-txaPreview').redactor();
@@ -1024,6 +1025,29 @@ $('.MasterPekerja-SuratRotasi-btnPreview').click(function() {
             $('.MasterPekerja-SuratMutasi-txtNomorSurat').val(result['nomorSurat']);
             $('.MasterPekerja-SuratMutasi-txtHalSurat').val(result['halSurat']);
             $('.MasterPekerja-SuratMutasi-txtKodeSurat').val(result['kodeSurat']);
+        }
+    });
+
+});
+
+$('.MasterPekerja-SuratUsiaLanjut-btnPreview').click(function() {
+    $('#surat-loading').attr('hidden', false);
+    $(document).ajaxStop(function() {
+        $('#surat-loading').attr('hidden', true);
+    });
+    // var a = $('.MasterPekerja-Surat-DaftarPekerja').val(); alert(a);
+    $.ajax({
+        type: 'POST',
+        data: $('#MasterPekerja-SuratUsiaLanjut-FormCreate').serialize(),
+        url: baseurl + "MasterPekerja/Surat/SuratUsiaLanjut/prosesPreviewUsiaLanjut",
+        success: function(result) {
+            var result = JSON.parse(result);
+            console.log(result);
+
+            // CKEDITOR.instances['MasterPekerja-SuratRotasi-txaPreview'].setData(result['preview']);
+            $('.MasterPekerja-SuratUsiaLanjut-txaPreview').redactor('set', result['preview']);
+            // $('.MasterPekerja-SuratUsiaLanjut-txtNomorSurat').val(result['nomorSurat']);
+            // $('.MasterPekerja-SuratUsiaLanjut-txtHalSurat').val(result['halSurat']);
         }
     });
 
@@ -1342,6 +1366,22 @@ $(function() {
 
 $(document).ready(function() {
     $('#tbl').DataTable();
+
+    $('#Saksi_Janji1').select2({
+      placeholder:"Input Nama Saksi"
+    });
+
+    $('#Saksi_Janji2').select2({
+      placeholder:"Input Nama Saksi"
+    });
+
+    $('#Saksi_Janji3').select2({
+      placeholder:"Input Nama Saksi"
+    });
+});
+
+$(document).ready(function() {
+    $('#usialanjut').DataTable();
 });
 
 $(document).on('ready', function() {
@@ -1547,6 +1587,42 @@ $(document).on('ready', function() {
             }
         });
     });
-
-
 })
+
+
+    function perjanjianPHK(id, personalia, spsi, saksi1, saksi2) {
+      $("#Modal_Button_Pesangon").modal();
+      $('#Lansia').attr('href', baseurl + "MasterPekerja/PerhitunganPesangon/getPDF" + "?type=lansia&id=" + id + "&personalia=" + personalia.trim() + "&spsi=" + spsi.trim() + "&saksi1=" + saksi1.trim() + "&saksi2=" + saksi2.trim())
+      $('#Lansia_express').attr('href',baseurl + "MasterPekerja/PerhitunganPesangon/getPDF" + "?type=lansia_exp&id=" + id + "&personalia=" + personalia.trim() + "&spsi=" + spsi.trim() + "&saksi1=" + saksi1.trim() + "&saksi2=" + saksi2.trim())
+      $('#Non_lansia').attr('href',baseurl + "MasterPekerja/PerhitunganPesangon/getPDF" + "?type=non_lansia&id=" + id + "&personalia=" + personalia.trim() + "&spsi=" + spsi.trim() + "&saksi1=" + saksi1.trim() + "&saksi2=" + saksi2.trim())
+    }
+
+    function DaftarHadir(id) {
+      $("#Saksi_Janji1").select2('val','')
+      $("#Saksi_Janji2").select2('val','')
+
+      $("#Modal_Hadirin_Perjanjian").modal();
+
+      $('#perjanjianPHK').click(function(){
+        let personalia  = $('#Wakil_Personalia').val(),
+            spsi        = $('#Wakil_SPSI').val(),
+            saksi1      = $('#Saksi_Janji1').val(),
+            saksi2      = $('#Saksi_Janji2').val()
+
+            if (saksi1 === null || saksi1 == '') {
+              Swal.fire(
+      				  'Peringatan!',
+      				  'Saksi 1 Harus Di Input!',
+      				  'warning'
+      				)
+            }else {
+              $("#Modal_Hadirin_Perjanjian").modal('hide');
+              perjanjianPHK(id, personalia, spsi, saksi1, saksi2)
+            }
+
+            if (saksi2 == null) {
+              console.log('kk');
+              saksi2      = $('#Saksi_Janji2').val('');
+            }
+      })
+    }

@@ -15,10 +15,7 @@
                         </div>
                         <div class="col-lg-1 ">
                             <div class="text-right hidden-md hidden-sm hidden-xs">
-                                <a class="btn btn-default btn-lg" href="<?php echo site_url('WarehouseSPB/Transaction/PackingList');?>">
-                                    <i aria-hidden="true" class="fa fa-car fa-2x">
-                                    </i>
-                                </a>
+                                <button type="button" class="btn btn-default btn-lg" id="refreshTab" data-toggle="modal" data-target="#mdlRefresh"> <i class="fa fa-refresh fa-2x"></i></button>
                             </div>
                         </div>
                     </div>
@@ -65,4 +62,27 @@
         </div>
     </div>
   </div>
+</div>
+
+<div class="modal fade" id="mdlRefresh" tabindex="-1" role="dialog" aria-labelledby="myModalRefresh">
+	<div class="modal-dialog" role="document">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+				<h4 class="modal-title" style="text-align:center;">Password</h4>
+			</div>
+			<form method="post" action="<?= base_url('WarehouseSPB/Ajax/delTable'); ?>">
+			<div class="modal-body">
+				<div class="panel-body">
+					<div class="col-md-6" align="center" style="float:none; margin: 0 auto">
+						<input type="password" id="passwd" name="passwd" class="form-control" style="width:50%; text-align:center;" required>
+					</div>
+				</div>
+			</div>
+			<div class="modal-footer">
+				<button type="submit" class="btn btn-info">Submit</button>
+			</div>
+			</form>
+		</div>
+	</div>
 </div>

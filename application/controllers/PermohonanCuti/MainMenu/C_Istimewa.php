@@ -22,7 +22,10 @@ class C_Istimewa extends CI_Controller
 
 		$this->load->model('SystemAdministration/MainMenu/M_user');
 		$this->load->model('PermohonanCuti/M_permohonancuti');
-
+		//------cek hak akses halaman-------//
+		$this->load->library('access');
+		$this->access->page();
+		//---------------^_^----------------//
 		$this->checkSession();
 	}
 

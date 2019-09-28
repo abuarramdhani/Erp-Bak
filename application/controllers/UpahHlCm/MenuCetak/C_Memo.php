@@ -1,6 +1,8 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
 
+date_default_timezone_set('Asia/Jakarta');
+
 class C_Memo extends CI_Controller {
 
 	/**
@@ -82,13 +84,13 @@ class C_Memo extends CI_Controller {
 		$periodew = explode(' - ', $data['periode']);
 		$tanggalawal = date('Y-m-d',strtotime($periodew[0]));
 		$tanggalakhir = date('Y-m-d',strtotime($periodew[1]));
-
+		$status = $this->input->post('statusPekerja');
 		$tgl = date('F-Y',strtotime($tanggalawal));
 		$noind = "";
-
-		$kom = $this->M_prosesgaji->getHlcmSlipGajiPrint($tanggalawal,$tanggalakhir,$noind);
+		$ttd = $this->M_prosesgaji->getApproval("Memo");
+		$kom = $this->M_prosesgaji->getHlcmSlipGajiPrint($tanggalawal,$tanggalakhir,$noind,$status);
 		$nom = $this->M_prosesgaji->ambilNominalGaji();
-
+		$potongan_tambahan = $this->M_cetakdata->ambilPotTam($tanggalawal,$tanggalakhir);
 		
 		// echo "<pre>";
 		// print_r($kom);
@@ -102,6 +104,15 @@ class C_Memo extends CI_Controller {
 		$total_t_serabutan ="";
 		$total_t_tenaga ="";
 		foreach ($kom as $key) {
+			if (!empty($potongan_tambahan)) {
+				
+				foreach ($potongan_tambahan as $pot_tam) {
+					if($key['noind'] == $pot_tam['noind']){
+						$key['total_bayar'] += $pot_tam['total_gp'] + $pot_tam['total_um'] + $pot_tam['total_lembur'];
+					}
+				}
+				
+			}
 			if ($key['lokasi_kerja'] == '01') {
 				if ($key['pekerjaan'] == 'KEPALA TUKANG') {
 					$total_p_ktukang += $key['total_bayar'];
@@ -152,14 +163,15 @@ class C_Memo extends CI_Controller {
 		// exit();
 		$type = $this->input->post('txtSubmit');
 		if ($type == 'Cetak Pdf') {
+			$data['ttd'] = $ttd;
 			$pdf = $this->pdf->load();
 			$pdf = new mPDF('utf-8', 'F4', 8, '', 12, 15, 15, 15, 10, 20);
 			$filename = 'Memo-'.$tgl.'.pdf';
 
 			$html = $this->load->view('UpahHlCm/MenuCetak/V_cetakMemo', $data, true);
-
+			$pdf->SetHTMLFooter("<i style='font-size: 8pt'>Halaman ini dicetak melalui Aplikasi QuickERP-HLCM pada oleh ".$this->session->user." tgl. ".date('d/m/Y H:i:s').". Halaman {PAGENO} dari {nb}</i>");
 			$pdf->WriteHTML($html, 2);
-			$pdf->Output($filename, 'D');
+			$pdf->Output($filename, 'I');
 		}else{
 			$this->load->library('excel');
 			$worksheet = $this->excel->getActiveSheet();
@@ -259,22 +271,45 @@ class C_Memo extends CI_Controller {
 			$worksheet->setCellValue('E26','Yogyakarta, '.$tgl);
 			$worksheet->mergeCells('E26:F26');
 
-			$worksheet->setCellValue('B27','Mengetahui');
+			$worksheet->setCellValue('C34','Mengetahui');
 			$worksheet->setCellValue('E27','Dibuat Oleh');
+			$worksheet->setCellValue('B27','Menyetujui');
 			$worksheet->mergeCells('B27:C27');
 			$worksheet->mergeCells('E27:F27');
+			$worksheet->mergeCells('C34:E34');
 
-			$worksheet->setCellValue('B31','Bambang Yudhosuseno');
-			$worksheet->setCellValue('B32','Ass.Ka Dept.Personalia ');
+			foreach ($ttd as $ttd_mengetahui) {
+				if ($ttd_mengetahui['posisi'] == "mengetahui") {
+					$worksheet->setCellValue('C38',ucwords(strtolower($ttd_mengetahui['nama'])));
+					$worksheet->setCellValue('C39',ucwords(strtolower($ttd_mengetahui['jabatan'])));
+				}
+			}
+			
 			$worksheet->mergeCells('B31:C31');
 			$worksheet->mergeCells('B32:C32');
 			$worksheet->getStyle('B31')->getFont()->setUnderline(true);
 
-			$worksheet->setCellValue('E31','Anis Ulfah Mustaqim');
-			$worksheet->setCellValue('E32','Kepala Seksi Electronic Data Processing');
+			foreach ($ttd as $ttd_dibuat) {
+				if ($ttd_dibuat['posisi'] == "dibuat") {
+					$worksheet->setCellValue('E31',ucwords(strtolower($ttd_dibuat['nama'])));
+					$worksheet->setCellValue('E32',ucwords(strtolower($ttd_dibuat['jabatan'])));
+				}
+			}
+			
 			$worksheet->mergeCells('E31:F31');
 			$worksheet->mergeCells('E32:F32');
 			$worksheet->getStyle('E31')->getFont()->setUnderline(true);
+
+			foreach ($ttd as $ttd_dibuat) {
+				if ($ttd_dibuat['posisi'] == "menyetujui") {
+					$worksheet->setCellValue('B31',ucwords(strtolower($ttd_dibuat['nama'])));
+					$worksheet->setCellValue('B32',ucwords(strtolower($ttd_dibuat['jabatan'])));
+				}
+			}
+			
+			$worksheet->mergeCells('C38:E38');
+			$worksheet->mergeCells('C39:E39');
+			$worksheet->getStyle('C38')->getFont()->setUnderline(true);
 
 			$imagestr = new PHPExcel_Worksheet_Drawing();
 			$imagestr->setName('logo');
@@ -317,7 +352,7 @@ class C_Memo extends CI_Controller {
 					'horizontal' =>PHPExcel_Style_Alignment::HORIZONTAL_CENTER,
 					'vertical' => PHPExcel_Style_Alignment::VERTICAL_CENTER
 				)
-			),'B26:E32');
+			),'B26:E39');
 			
 			$this->excel->getActiveSheet()->duplicateStyleArray(
 			array(

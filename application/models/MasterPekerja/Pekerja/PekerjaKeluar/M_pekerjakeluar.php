@@ -8,9 +8,9 @@ class M_pekerjakeluar extends CI_Model {
 		$this->personalia 	= 	$this->load->database('personalia', TRUE);
 		$this->erp 			=	$this->load->database('erp_db', TRUE);
 		$this->daerah 		=	$this->load->database('daerah', TRUE);
-		
+
 	}
-	
+
 	public function getPekerja($pekerja,$keluar)
 	{
 		// $this->personalia->like('noind', $pekerja);
@@ -42,7 +42,7 @@ class M_pekerjakeluar extends CI_Model {
 								on 	tpekerjaan.kdpekerjaan=pri.kd_pkj
 								where pri.noind='$noind'";
    			$query 	=	$this->personalia->query($data);
-			return $query->result_array();	
+			return $query->result_array();
 			 // return $data;
 	 	}
 
@@ -59,7 +59,7 @@ class M_pekerjakeluar extends CI_Model {
 				where left(pri.kodesie,7) like '$kd_pekerjaan%' and upper(pekerjaan) like upper('%$pekerja%') order by pri.kd_pkj asc";
 				// echo $sql;exit();
 		$query 	=	$this->personalia->query($sql);
-			return $query->result_array();	
+			return $query->result_array();
 			 // return $data;
 
 	 }
@@ -73,24 +73,18 @@ class M_pekerjakeluar extends CI_Model {
 				where left(tpekerjaan.kdpekerjaan,7) like '$kd_pekerjaan%' and status='0'
  					order by kdpekerjaan asc";
 		$query 	=	$this->personalia->query($sql);
-			return $query->result_array();	
+			return $query->result_array();
 			 // return $data;
 
 	 }
-	
-	
-
-	 
-	 
-
-
 
 	public function dataPekerja($noind,$keluar)
 	{
-		$this->personalia->where('noind', $noind);
-		$this->personalia->where('keluar', $keluar);
-		$query = $this->personalia->get('hrd_khs.tpribadi');
-		return $query->result_array();
+		$sql = "SELECT tp.*, tref.jabatan as jabatanref
+						FROM hrd_khs.tpribadi tp
+						LEFT JOIN hrd_khs.trefjabatan tref on tp.noind = tref.noind and tp.kodesie = tref.kodesie
+						WHERE tp.noind = '$noind' AND keluar = '$keluar'";
+		return $this->personalia->query($sql)->result_array();
 	}
 
 	public function kontakPekerja($noind)

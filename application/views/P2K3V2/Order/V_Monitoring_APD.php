@@ -73,17 +73,17 @@
                                                     <a style="cursor:pointer;" class="p2k3_see_apd_text"><?php echo $key['item']; ?></a>
                                                 </td>
                                                 <td>
-                                                    <a style="cursor:pointer;" class="p2k3_to_input"><?php echo $key['kode_item']; ?></a>
-                                                    <input hidden="" value="<?php echo $key['kode_item']; ?>" class="p2k3_see_apd">
+                                                    <a style="cursor:pointer;" class="p2k3_to_input"><?php echo $key['item_kode']; ?></a>
+                                                    <input hidden="" value="<?php echo $key['item_kode']; ?>" class="p2k3_see_apd">
                                                 </td>
                                                 <td>
-                                                    <?php echo $key['0']; ?>
+                                                    <?php echo $key['jml_kebutuhan']; ?>
                                                 </td>
                                                 <td>
-                                                    <?php echo $key['jml_bon']; ?>
+                                                    <?php echo $key['ttl_bon']; ?>
                                                 </td>
                                                 <td>
-                                                    <?php echo $key['1']; ?>
+                                                    <?php echo $key['sisa_saldo']; ?>
                                                 </td>
                                             </tr>
                                             <?php $a++; endforeach ?>

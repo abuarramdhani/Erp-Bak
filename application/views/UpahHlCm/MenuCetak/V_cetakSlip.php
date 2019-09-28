@@ -1,5 +1,6 @@
 <?php
-foreach ($res as $key) {
+if (isset($res) and !empty($res)) {
+	foreach ($res as $key) {
 		$lain = "";
 		$nomlain = "";
 ?>
@@ -15,7 +16,7 @@ foreach ($res as $key) {
 							
 	?>
 <div style="margin: 10px;">
-	<table style="width:100%; padding: 0px; font-size: 12px">
+	<table style="width:100%; padding: 0px; font-size: 11px">
 		<tr>
 			<td style="width: 10%" rowspan="5">
 				<img style="height: 80px; width: 70px" src="<?php echo base_url('/assets/img/logo.png') ?>" />
@@ -74,7 +75,7 @@ foreach ($res as $key) {
 </div>
 
 <div>
-	<table style="width: 100%; font-size: 14px;border-collapse:separate; border-spacing:0 5px;">
+	<table style="width: 100%; font-size: 10px;border-collapse:separate; border-spacing:0 5px;">
 			<tr >
 				<th style="width: 50px;">No</th>
 				<th colspan="7" style="text-align: left; padding-left: 10px;">Keterangan</th>
@@ -503,9 +504,95 @@ foreach ($res as $key) {
 					</td>
 				</tr>
 			<?php } ?>
-				
+
+			<?php 
+			$nomor = 5;
+			if($key['tambahan'] == 1 or $key['potongan'] == 1){
+				if ($key['tambahan'] == 1) {
+					?>
 			<tr>
-				<td style="text-align: center;">5</td>
+				<td style="text-align: center;"><?php echo $nomor ?></td>
+				<td>Tambahan Gaji Pokok</td>
+				<td><?php echo number_format($key['tambahan_gp'],'2','.','') ?></td>
+				<td>hari</td>
+				<td>x</td>
+				<td>Rp</td>
+				<td><?php echo number_format($key['tambahan_gp_per_a'],'0',',','.') ?></td>
+				<td>Rp</td>
+				<td style="text-align: center;"><?php echo number_format($key['tambahan_gp_total'],'0',',','.') ?></td>
+			</tr>
+			<tr>
+				<td style="text-align: center;"></td>
+				<td>Tambahan Lembur</td>
+				<td><?php echo number_format($key['tambahan_lembur'],'2','.','') ?></td>
+				<td>Jam</td>
+				<td>x</td>
+				<td>Rp</td>
+				<td><?php echo number_format($key['tambahan_lembur_per_a'],'0',',','.') ?></td>
+				<td>Rp</td>
+				<td style="text-align: center;"><?php echo number_format($key['tambahan_lembur_total'],'0',',','.') ?></td>
+			</tr>
+			<tr>
+				<td style="text-align: center;"></td>
+				<td>Tambahan Uang Makan</td>
+				<td><?php echo number_format($key['tambahan_um'],'2','.','') ?></td>
+				<td>hari</td>
+				<td>x</td>
+				<td>Rp</td>
+				<td><?php echo number_format($key['tambahan_um_per_a'],'0',',','.') ?></td>
+				<td>Rp</td>
+				<td style="text-align: center;"><?php echo number_format($key['tambahan_um_total'],'0',',','.') ?></td>
+			</tr>
+					<?php
+					$nomor++;
+				}
+
+				if ($key['potongan'] == 1) {
+					?>
+			<tr>
+				<td style="text-align: center;"><?php echo $nomor ?></td>
+				<td>Potongan Gaji Pokok</td>
+				<td><?php echo number_format($key['potongan_gp'],'2','.','') ?></td>
+				<td>hari</td>
+				<td>x</td>
+				<td>Rp</td>
+				<td><?php echo number_format($key['potongan_gp_per_a'],'0',',','.') ?></td>
+				<td>Rp</td>
+				<td style="text-align: center;"><?php echo number_format($key['potongan_gp_total'],'0',',','.') ?></td>
+			</tr>
+			<tr>
+				<td style="text-align: center;"></td>
+				<td>Potongan Lembur</td>
+				<td><?php echo number_format($key['potongan_lembur'],'2','.','') ?></td>
+				<td>Jam</td>
+				<td>x</td>
+				<td>Rp</td>
+				<td><?php echo number_format($key['potongan_lembur_per_a'],'0',',','.') ?></td>
+				<td>Rp</td>
+				<td style="text-align: center;"><?php echo number_format($key['potongan_lembur_total'],'0',',','.') ?></td>
+			</tr>
+			<tr>
+				<td style="text-align: center;"></td>
+				<td>Potongan Uang Makan</td>
+				<td><?php echo number_format($key['potongan_um'],'2','.','') ?></td>
+				<td>hari</td>
+				<td>x</td>
+				<td>Rp</td>
+				<td><?php echo number_format($key['potongan_um_per_a'],'0',',','.') ?></td>
+				<td>Rp</td>
+				<td style="text-align: center;"><?php echo number_format($key['potongan_um_total'],'0',',','.') ?></td>
+			</tr>
+					<?php
+					$nomor++;
+				}
+
+			} ?>
+			<tr>
+				<td style="text-align: center;">
+					<?php 
+					echo $nomor;
+					?>
+				</td>
 				<td>Lain-lain</td>
 				<td>
 					<?php 
@@ -546,13 +633,38 @@ foreach ($res as $key) {
 				<td style="text-align: center;"><?php echo number_format($key['total_terima'],'0',',','.')?></td>
 			</tr>
 	</table>
-	<?php if (isset($key['gp'])) { ?>
-		<div style="margin-top: 15px;margin-left: 440px;font-size: 14px;">
+	<?php if (isset($key['gp'])) { 
+		if($key['tambahan'] == 1 or $key['potongan'] == 1){
+			if ($key['tambahan'] == 0 or $key['potongan'] == 0) {
+				?>
+		<div style="margin-top: 10px;margin-left: 440px;font-size: 14px;">
+			<label>Yogyakarta, <?php echo date('d F Y');?></label>
+		</div>
+		<div style="margin-top: 20px; margin-left: 230px; font-size: 14px;">
+			<label><i><b>GAJIKU BERASAL DARI UANG PELANGGAN</b></i></label>
+		</div>
+				<?php 
+			}else{
+				?>
+		<div style="margin-top: 5px;margin-left: 440px;font-size: 14px;">
+			<label>Yogyakarta, <?php echo date('d F Y');?></label>
+		</div>
+		<div style="margin-top: 5px; margin-left: 230px; font-size: 14px;">
+			<label><i><b>GAJIKU BERASAL DARI UANG PELANGGAN</b></i></label>
+		</div>
+				<?php 
+			}
+		}else{
+			?>
+		<div style="margin-top: 12px;margin-left: 440px;font-size: 14px;">
 			<label>Yogyakarta, <?php echo date('d F Y');?></label>
 		</div>
 		<div style="margin-top: 40px; margin-left: 230px; font-size: 14px;">
 			<label><i><b>GAJIKU BERASAL DARI UANG PELANGGAN</b></i></label>
 		</div>
+			<?php 
+		}
+		?>
 	<?php }else{ ?>
 		<div style="margin-top: 10px;margin-left: 440px;font-size: 14px;">
 			<label>Yogyakarta, <?php echo date('d F Y');?></label>
@@ -573,5 +685,6 @@ if ($co > '1') {
 	
 </div> 
 <?php
+	}
 }
 ?>

@@ -48,16 +48,17 @@
                                          </thead>
 
                                         <tbody>
-                                              <?php 
-                                                $no = 1; 
+                                              <?php
+                                                $no = 1;
                                                 foreach($data as $pesangon) :
                                                 $encrypted_string = $this->encrypt->encode($pesangon['id_pesangon']);
                                                 $encrypted_string = str_replace(array('+', '/', '='), array('-', '_', '~'), $encrypted_string);
-                                                    
+
                                             ?>
                                             <tr>
                                                 <td align='center'><?php echo $no++;?></td>
                                                 <td align='center' style="white-space: nowrap;">
+                                                    <a onclick="DaftarHadir(<?php echo $pesangon['id_pesangon']; ?>)" style="margin-right:4px" data-toggle="tooltip" data-placement="bottom" title="Cetak Perjanjian"><span class="fa fa-print fa-2x"></span></a>
                                                     <a target="_blank" style="margin-right:4px" href="<?php echo base_url('MasterPekerja/PerhitunganPesangon/previewcetak/'.$encrypted_string.''); ?>" data-toggle="tooltip" data-placement="bottom" title="Preview Cetak"><span class="fa fa-file-pdf-o fa-2x"></span></a>
                                                     <a style="margin-right:4px" href="<?php echo base_url('MasterPekerja/PerhitunganPesangon/update/'.$encrypted_string.''); ?>" data-toggle="tooltip" data-placement="bottom" title="Edit Data"><span class="fa fa-pencil-square-o fa-2x"></span></a>
                                                     <a href="<?php echo base_url('MasterPekerja/PerhitunganPesangon/delete/'.$encrypted_string.''); ?>" data-toggle="tooltip" data-placement="bottom" title="Hapus Data" onclick="return confirm('Are you sure you want to delete this item?');"><span class="fa fa-trash fa-2x"></span></a>
@@ -74,14 +75,112 @@
                                                 <td><?php echo $pesangon['lain_lain'];?></td>
                                             </tr>
                                             <?php endforeach; ?>
-                                        </tbody>                                      
+                                        </tbody>
                                     </table>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
-            </div>    
+            </div>
         </div>
     </div>
-</section>                
+</section>
+
+<div class="modal fade" id="Modal_Button_Pesangon" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+   <div class="modal-dialog" role="document" style="width: 600px">
+     <div class="modal-content">
+       <!-- <form method="POST"> -->
+       <div class="modal-header text-center">
+         <button type="button" class="close hover" data-dismiss="modal">&times;</button>
+         <h3>Cetak Surat Perjanjian</h3>
+       </div>
+       <div class="modal-body" style="text-align: center;">
+          <div class="col-lg-4">
+            <div class="row">
+              <button style="height: 50px; width: 120px; color:"><a target="_blank" id="Lansia">USIA LANJUT</a></button>
+            </div>
+          </div>
+          <div class="col-lg-4">
+            <div class="row">
+              <button style="height: 50px; width: 120px; color:"><a target="_blank" id="Lansia_express">USIA LANJUT DIPERCEPAT</a></button>
+            </div>
+          </div>
+          <div class="col-lg-4">
+            <div class="row">
+              <button style="height: 50px; width: 120px; color:"><a target="_blank" id="Non_lansia">NON USIA LANJUT</a></button>
+            </div>
+          </div>
+      </div>
+       <div class="modal-footer" style="text-align: center;margin-top: 60px;">
+         <button data-dismiss="modal" class="btn btn-danger">Close</button>
+       </div>
+     <!-- </form> -->
+     </div>
+   </div>
+</div>
+
+<div class="modal fade" id="Modal_Hadirin_Perjanjian" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+   <div class="modal-dialog" role="document" style="width: 600px">
+     <div class="modal-content">
+       <form method="POST">
+       <div class="modal-header text-center">
+         <button type="button" class="close hover" data-dismiss="modal">&times;</button>
+         <h3>Input Data</h3>
+       </div>
+       <div class="modal-body" style="width: 100%; text-align: center;">
+          <div class="row">
+            <div class="col-lg-12">
+              <label class="col-lg-12 text-center">Wakil Personalia</label><br>
+              <select  class=" col-lg-8 select select2 text-center" name="Wakil_Personalia" id="Wakil_Personalia"  style="width: 55%">
+              <option></option>
+              <?php foreach ($tertanda as $key) { ?>
+                <option <?php if($key['noind'] == 'B0307'){echo "selected";} ?> value="<?php echo $key['nama'] ?>"><?php echo $key['noind']." - ".$key['nama'] ?></option>
+              <?php } ?>
+              </select>
+            </div>
+          </div>
+          <br>
+          <div class="row">
+            <div class="col-lg-12">
+              <label class="col-lg-12 text-center">Wakil SPSI</label><br>
+              <select  class="form-control col-lg-8 select select2 text-center" name="Wakil_SPSI" id="Wakil_SPSI"  style="width: 55%">
+              <option></option>
+              <?php foreach ($tertanda as $key) { ?>
+                <option <?php if($key['noind'] == 'B0242'){echo "selected";} ?> value="<?php echo $key['nama'] ?>"><?php echo $key['noind']." - ".$key['nama'] ?></option>
+              <?php } ?>
+              </select>
+            </div>
+          </div>
+          <br>
+          <div class="row">
+            <div class="col-lg-12">
+              <label class="col-lg-12 text-center">Saksi 1</label><br>
+              <select  class="form-control col-lg-8 select select2 text-center" name="Saksi_Janji1" id="Saksi_Janji1"  style="width: 55%">
+              <option></option>
+              <?php foreach ($tertanda as $key) { ?>
+                <option value="<?php echo $key['nama'] ?>"><?php echo $key['noind']." - ".$key['nama'] ?></option>
+              <?php } ?>
+              </select>
+            </div>
+          </div>
+          <br>
+          <div class="row">
+            <div class="col-lg-12">
+              <label class="col-lg-12 text-center">Saksi 2</label><br>
+              <select  class="form-control col-lg-8 select select2 text-center" name="Saksi_Janji2" id="Saksi_Janji2"  style="width: 55%">
+              <option></option>
+              <?php foreach ($tertanda as $key) { ?>
+                <option value="<?php echo $key['nama'] ?>"><?php echo $key['noind']." - ".$key['nama'] ?></option>
+              <?php } ?>
+              </select>
+            </div>
+          </div>
+        </div>
+       <div class="modal-footer" style="text-align: center;">
+         <button type="button" class="btn btn-success" id="perjanjianPHK">Submit</button>
+       </div>
+       </form>
+     </div>
+   </div>
+ </div>

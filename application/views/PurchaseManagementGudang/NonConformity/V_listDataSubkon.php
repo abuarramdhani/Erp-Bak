@@ -40,7 +40,7 @@
 												<th class="text-center">Supplier</th>
 												<!-- <th class="text-center">Supplier Address</th> -->
                                                 <th class="text-center">Person In Charge</th>
-												<th class="text-center">Status</th>
+												<!-- <th class="text-center">Status</th> -->
 											</tr>
                                         </thead>
                                         <tbody>
@@ -48,9 +48,13 @@
                                             	$no = 1; 
                                             	foreach($PoOracleNonConformityHeaders as $row):
                                             	$encrypted_string = $this->encrypt->encode($row['header_id']);
-												$encrypted_string = str_replace(array('+', '/', '='), array('-', '_', '~'), $encrypted_string);
+                                                $encrypted_string = str_replace(array('+', '/', '='), array('-', '_', '~'), $encrypted_string);
+                                                $style='';
+                                                if ($row['forward_buyer']==2) {
+                                                    $style = 'style="background-color: #b1ff89"';
+                                                }
 											?>
-                                            <tr>
+                                            <tr <?php echo $style;?> >
                                                 <td align='center'><?php echo $no++;?></td>
                                                 <td align='center'>
                                                 	<a style="margin-right:4px" href="<?php echo base_url('PurchaseManagementGudang/NonConformity/read/'.$encrypted_string.''); ?>" data-toggle="tooltip" data-placement="bottom" title="Read Data"><span class="fa fa-list-alt fa-2x"></span></a>
@@ -78,12 +82,13 @@
 												<td><?php echo $row['packing_list'] ?></td>
 												<td><?php echo $row['courier_agent'] ?></td>
 												<td><?php echo $row['verificator'] ?></td>
-												<td><?php echo strpbrk($row['buyer'], ' ') ?></td>
+												<td><?php echo $row['forward_to'] ?></td>
+												<!-- <td><?php echo strpbrk($row['buyer'], ' ') ?></td> -->
 												<td><?php echo $row['supplier'] ?></td>
 												<!-- <td><?php echo $row['supplier_address'] ?></td> -->
                                                 <td><?php echo $row['person_in_charge'] ?></td>
-												<td><?php if ($row['status'] == NULL || $row['status'] == '' || $row['status'] == 'open') {
-                                                    $status = 'open';}else{$status = $row['status'];} echo strtoupper($status); ?></td>
+												<!-- <td><?php if ($row['status'] == NULL || $row['status'] == '' || $row['status'] == 'open') {
+                                                    $status = 'open';}else{$status = $row['status'];} echo strtoupper($status); ?></td> -->
 											</tr>
                                             <?php endforeach; ?>
                                         </tbody>                                      

@@ -5,17 +5,17 @@ class M_monitoringsalesorder extends CI_Model{
     public function __construct(){
         parent::__construct();
         $this->load->database();
-        $this->oracle = $this->load->database('oracle_dev',TRUE);
+        $this->oracle = $this->load->database('oracle',TRUE);
     }
 
     public function do_outstanding(){
-        $query= "select distinct so_header_id, order_number, to_char(creation_date,'yyyy-mm-dd hh:mi:ss') creation_date from khs_do_gudang order by creation_date DESC";
+        $query= "select distinct so_header_id, order_number, to_char(creation_date,'yyyy-mm-dd HH24:MI:SS') creation_date from khs_do_gudang order by order_number DESC";
         $hasil = $this->oracle->query($query);
         return $hasil->result_array();
     }
 
     public function do_done(){
-        $query = "select distinct so_header_id, order_number, to_char(creation_date,'yyyy-mm-dd hh:mi:ss') creation_date from KHS_DONE_SO_GUDANG order by creation_date DESC";
+        $query = "select distinct so_header_id, order_number, to_char(creation_date,'yyyy-mm-dd HH24:MI:SS') creation_date from KHS_DONE_SO_GUDANG order by order_number DESC";
         $hasil = $this->oracle->query($query);
         return $hasil->result_array();
     }

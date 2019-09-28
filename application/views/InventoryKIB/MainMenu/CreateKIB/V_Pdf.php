@@ -3,7 +3,10 @@
 		font-family: 'Arial';
 	}
 </style>
-
+<?php 
+	date_default_timezone_set("Asia/Jakarta");
+	$tanggal = date("d-M-Y G:i:s"); 
+?>
 <body>
 <?php foreach ($dataKIB as $key => $value) { ?>
 	<div style="width:210mm; height: 330mm; float: left; padding-top: 20mm" >
@@ -23,6 +26,17 @@
 			<tr >
 				<td style="height: 10mm; padding-left: 5mm;padding-right: 5mm;">
 				<table style="width: 100% ; font-size: 32px">
+					<tr>
+						<td>
+							<b>Tanggal Cetak</b>
+						</td>
+						<td>
+							<b>:</b>
+						</td>
+						<td>
+							<b><span style="font-size: 30px;"><?= $tanggal;?></span></b>
+						</td>
+					</tr>
 					<tr>
 						<td>
 							<b>DARI</b>
@@ -50,7 +64,7 @@
 				<hr style="border-top: dotted 1px;" />
 				</td>
 			</tr>
-			<tr>
+			<!-- <tr>
 				<td style="height: 20mm; padding-left: 5mm;padding-right: 5mm; font-size: 32px">
 					<p>OPERATOR PRODUKSI</p>
 					<table style="width: 100%; font-size: 32px">
@@ -64,10 +78,11 @@
 							<td><?php echo $opr['ACTIVITY'] ?></td>
 						</tr>
 						<?php } ?>
+						
 					</table>
 					<hr style="border-top: dotted 1px;" />
 				</td>
-			</tr>
+			</tr> -->
 			<tr>
 				<td style="height: 10mm; padding-left: 5mm;padding-right: 5mm; font-size: 32px">
 				<p>
@@ -110,7 +125,7 @@
 								Keterangan<br>
 							</td>
 							<td  style="width: 70mm; text-align: right;" rowspan="2">
-								<img style="width: 62mm; height: auto;" src="<?php echo base_url('assets/img/'.$value['REQUEST_NUMBER'].'.png') ?>">
+								<img style="width: 40mm; height: auto;" src="<?php echo base_url('assets/img/'.$value['REQUEST_NUMBER'].'.png') ?>">
 							</td>
 						</tr>
 						<tr>
@@ -120,7 +135,7 @@
 								</b>
 							</td>
 						</tr>
-						<tr>
+						<tr style="border-bottom: 6px solid black;">
 							<td>FRM-WHS-01-PDN-01</td>
 							<td style="text-align: right;"><?php echo $value['REQUEST_NUMBER'] ?></td>
 						</tr>
@@ -128,7 +143,7 @@
 				</td>
 			</tr>
 			<!-- <tr>
-				<td style="height: 5mm; padding-left: 5mm;padding-right: 5mm; font-size: 32px">
+				<td style="height: 5mm; padding-left: 5mm;padding-right: 5mm; font-size: 10px">
 					&nbsp;
 				</td>
 			</tr> -->
