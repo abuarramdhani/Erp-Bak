@@ -1,7 +1,7 @@
 <section class="content">
     <div class="inner" >
         <div class="row">
-            <form method="post" action="<?php echo site_url('ManufacturingOperationUP2L/Core/create');?>" class="form-horizontal">
+            <form autocomplete="off" method="post" action="<?php echo site_url('ManufacturingOperationUP2L/Core/create');?>" class="form-horizontal">
                 <div class="col-lg-12">
                     <div class="row">
                         <div class="col-lg-12">
@@ -66,6 +66,28 @@
                                                     <input type="number" min="0" name="core_quantity" required="" class="form-control" placeholder="Core Quantity">
                                                 </div>
                                             </div>
+                                            <div class="form-group">
+                                            <label for="ottKodeP" class="control-label col-lg-4">Kode Kelompok</label>
+                                                <div class="col-lg-6">
+                                                    <select class="form-control" id="ottKodeP" name="ottKodeP">
+                                                        <option name="ottKodeP" selected value="">--- Kode Kelompok ---</option>
+                                                        <option name="ottKodeP" value="A">A</option>
+                                                        <option name="ottKodeP" value="B">B</option>
+                                                        <option name="ottKodeP" value="C">C</option>
+                                                        <option name="ottKodeP" value="D">D</option>
+                                                        <option name="ottKodeP" value="E">E</option>
+                                                        <option name="ottKodeP" value="F">F</option>
+                                                        <option name="ottKodeP" value="G">G</option>
+                                                        <option name="ottKodeP" value="H">H</option>
+                                                        <option name="ottKodeP" value="I">I</option>
+                                                        <option name="ottKodeP" value="J">J</option>
+                                                        <option name="ottKodeP" value="K">K</option>
+                                                        <option name="ottKodeP" value="L">L</option>
+                                                        <option name="ottKodeP" value="M">M</option>
+                                                        <option name="ottKodeP" value="N">N</option>
+                                                    </select>
+                                                </div>
+                                            </div>
                                             
                                          <div class="panel panel-default">
                                             <div class="panel-heading">Employee</div>
@@ -113,7 +135,6 @@
                                                                 <option value="true">True</option>
                                                             </select>
                                                         </div>
-
                                                     </div>
                                                 </div>
                                             </div>

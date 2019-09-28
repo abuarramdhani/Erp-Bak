@@ -42,18 +42,16 @@ class C_Ajax extends CI_Controller
 		$type = $this->input->post('type');
 		$qty = $this->input->post('qty');
 
-		$a =explode('|', $type);
+		$a = explode('|', $type);
 		$code = $a[0];
-		$desc = $a[1]; 
+		$desc = $a[1];
 
-		$this->M_ajax->addScrap($id,$qty,$code,$desc);
+		$this->M_ajax->addScrap($id, $qty, $code, $desc);
 
 		$data = $this->M_ajax->viewScrap($id);
 		foreach ($data as $scrap) {
-			echo '<li class="list-group-item">'.$scrap['type_scrap'].' ['.$scrap['kode_scrap'].']'.' | '.$scrap['quantity'].'</li>';
+			echo '<li class="list-group-item">' . $scrap['type_scrap'] . ' [' . $scrap['kode_scrap'] . ']' . ' | ' . $scrap['quantity'] . '</li>';
 		}
-
-
 	}
 
 
@@ -63,63 +61,67 @@ class C_Ajax extends CI_Controller
 		$type = $this->input->post('type');
 		$qty = $this->input->post('qty');
 
-		$this->M_ajax->addBongkar($id,$qty);
+		$this->M_ajax->addBongkar($id, $qty);
 
 		$data = $this->M_ajax->viewBongkar($id);
 		foreach ($data as $bongkar) {
-			echo '<li class="list-group-item">'.$bongkar['moulding_id'].' ['.$bongkar['qty'].']'.'</li>';
+			echo '<li class="list-group-item">' . $bongkar['moulding_id'] . ' [' . $bongkar['qty'] . ']' . '</li>';
 		}
-
 	}
 
-	public function addQuality(){
-		$data = array(
-				'checking_date' => $this->input->post('CHECKING_DATE'),
-				'print_code' => $this->input->post('PRINT_CODE'),
-				'checking_quantity' => $this->input->post('CHECK'),
-				'scrap_quantity' => $this->input->post('SCRAP'),
-				'created_by' => $this->session->userid,
-				'remaining_quantity' => $this->input->post('REMAIN'),
-				'component_code' => $this->input->post('COMPONENT')
-    		);
+	public function addQuality()
+	{
+		$qty = $this->input->post('REMAIN');
+		$id = $this->input->post('ID');
+		$checking_date = $this->input->post('CHECKING_DATE');
+		$print_code = $this->input->post('PRINT_CODE');
+		$checking_quantity = $this->input->post('CHECK');
+		$scrap_quantity = $this->input->post('SCRAP');
+		$created_by = $this->session->userid;
+		$remaining_quantity = $this->input->post('REMAIN');
+		$component_code = $this->input->post('COMPONENT');
+		$employee = $this->input->post('EMPLOYEE');
+		$component_description = $this->input->post('DESCRIPTION');
+		$selep_quantity = $this->input->post('SELEPQTY');
+		$shift = $this->input->post('SHIFT');
+		$check_qc = TRUE;
 
-		$this->M_ajax->setQualityControl($data);
+		$this->M_ajax->setQualityControl(
+			$checking_date, $print_code, $checking_quantity, $scrap_quantity,
+			$created_by, $remaining_quantity, $component_code, $employee,
+			$component_description, $selep_quantity, $shift, $check_qc, $id
+		);
 
-		
-		$qty = $this->input->post('REMAIN'); 
-		$moulding_id = $this->input->post('ID');
-
-		$this->M_ajax->setMouldingQuantity($qty,$moulding_id);
-
+		$this->M_ajax->setMouldingQuantity($qty, $id);
 	}
 
 	public function getPrintCode()
 	{
 		$monthCode = array(
-			array('month' => 1,'code' => 'A'),
-			array('month' => 2,'code' => 'B'),
-			array('month' => 3,'code' => 'C'),
-			array('month' => 4,'code' => 'D'),
-			array('month' => 5,'code' => 'E'),
-			array('month' => 6,'code' => 'F'),
-			array('month' => 7,'code' => 'G'),
-			array('month' => 8,'code' => 'H'),
-			array('month' => 9,'code' => 'J'),
-			array('month' => 10,'code' => 'K'),
-			array('month' => 11,'code' => 'L'),
-			array('month' => 12,'code' => 'M')
+			array('month' => 1, 'code' => 'A'),
+			array('month' => 2, 'code' => 'B'),
+			array('month' => 3, 'code' => 'C'),
+			array('month' => 4, 'code' => 'D'),
+			array('month' => 5, 'code' => 'E'),
+			array('month' => 6, 'code' => 'F'),
+			array('month' => 7, 'code' => 'G'),
+			array('month' => 8, 'code' => 'H'),
+			array('month' => 9, 'code' => 'J'),
+			array('month' => 10, 'code' => 'K'),
+			array('month' => 11, 'code' => 'L'),
+			array('month' => 12, 'code' => 'M')
 		);
 		$yearCode = array(
-			array('year' => 0,'code' => 'N'),
-			array('year' => 1,'code' => 'P'),
-			array('year' => 2,'code' => 'Q'),
-			array('year' => 3,'code' => 'R'),
-			array('year' => 4,'code' => 'S'),
-			array('year' => 5,'code' => 'U'),
-			array('year' => 6,'code' => 'V'),
-			array('year' => 7,'code' => 'W'),
-			array('year' => 8,'code' => 'Y'),
-			array('year' => 9,'code' => 'Z'),
+			array('year' => 0, 'code' => 'N'),
+			array('year' => 1, 'code' => 'P'),
+			array('year' => 2, 'code' => 'Q'),
+			array('year' => 3, 'code' => 'R'),
+			array('year' => 4, 'code' => 'S'),
+			array('year' => 5, 'code' => 'U'),
+			array('year' => 6, 'code' => 'V'),
+			array('year' => 7, 'code' => 'W'),
+			array('year' => 8, 'code' => 'Y'),
+			array('year' => 9, 'code' => 'Z'),
 		);
 
 		$tanggal = $this->input->post('tanggal');
@@ -137,16 +139,16 @@ class C_Ajax extends CI_Controller
 		}
 
 		echo '<div class="col-md-3">
-                <input type="radio" name="print_code" placeholder="Print Code" value="'.$val[2].$bulan.' '.$tahun.'" required> '.$val[2].$bulan.' '.$tahun.'
-                <br><input type="radio" name="print_code" placeholder="Print Code" value="'.$bulan.$val[2].' '.$tahun.'" required> '.$bulan.$val[2].' '.$tahun.'
-                <br><input type="radio" name="print_code" placeholder="Print Code" value="T'.$val[2].$bulan.' '.$tahun.'" required> T'.$val[2].$bulan.' '.$tahun.'
-                <br><input type="radio" name="print_code" placeholder="Print Code" value="T'.$bulan.$val[2].' '.$tahun.'" required> T'.$bulan.$val[2].' '.$tahun.'
+                <input type="radio" name="print_code" placeholder="Print Code" value="' . $val[2] . $bulan . ' ' . $tahun . '" required> ' . $val[2] . $bulan . ' ' . $tahun . '
+                <br><input type="radio" name="print_code" placeholder="Print Code" value="' . $bulan . $val[2] . ' ' . $tahun . '" required> ' . $bulan . $val[2] . ' ' . $tahun . '
+                <br><input type="radio" name="print_code" placeholder="Print Code" value="T' . $val[2] . $bulan . ' ' . $tahun . '" required> T' . $val[2] . $bulan . ' ' . $tahun . '
+                <br><input type="radio" name="print_code" placeholder="Print Code" value="T' . $bulan . $val[2] . ' ' . $tahun . '" required> T' . $bulan . $val[2] . ' ' . $tahun . '
             </div>
             <div class="col-md-3">
-                <input type="radio" name="print_code" placeholder="Print Code" value="X'.$val[2].$bulan.' '.$tahun.'" required> X'.$val[2].$bulan.' '.$tahun.'
-                <br><input type="radio" name="print_code" placeholder="Print Code" value="X'.$bulan.$val[2].' '.$tahun.'" required> X'.$bulan.$val[2].' '.$tahun.'
-                <br><input type="radio" name="print_code" placeholder="Print Code" value="XT'.$val[2].$bulan.' '.$tahun.'" required> XT'.$val[2].$bulan.' '.$tahun.'
-                <br><input type="radio" name="print_code" placeholder="Print Code" value="XT'.$bulan.$val[2].' '.$tahun.'" required> XT'.$bulan.$val[2].' '.$tahun.'
+                <input type="radio" name="print_code" placeholder="Print Code" value="X' . $val[2] . $bulan . ' ' . $tahun . '" required> X' . $val[2] . $bulan . ' ' . $tahun . '
+                <br><input type="radio" name="print_code" placeholder="Print Code" value="X' . $bulan . $val[2] . ' ' . $tahun . '" required> X' . $bulan . $val[2] . ' ' . $tahun . '
+                <br><input type="radio" name="print_code" placeholder="Print Code" value="XT' . $val[2] . $bulan . ' ' . $tahun . '" required> XT' . $val[2] . $bulan . ' ' . $tahun . '
+                <br><input type="radio" name="print_code" placeholder="Print Code" value="XT' . $bulan . $val[2] . ' ' . $tahun . '" required> XT' . $bulan . $val[2] . ' ' . $tahun . '
             </div>';
 	}
 
@@ -155,6 +157,12 @@ class C_Ajax extends CI_Controller
 		$tanggal = $_POST['tanggal'];
 		$data = $this->M_ajax->getShift($tanggal);
 		echo json_encode($data);
+	}
+
+	public function getAllShift()
+	{
+		$term = strtoupper($this->input->get('term', TRUE));
+		echo json_encode($this->M_ajax->getAllShift($term));
 	}
 
 	public function getJobData()
@@ -167,9 +175,10 @@ class C_Ajax extends CI_Controller
 		$this->load->view('ManufacturingOperationUP2L/ReplaceComp/V_jobtable', $data);
 	}
 
-	public function getDatePrintCode(){
+	public function getDatePrintCode()
+	{
 		$data = $this->input->post('TANGGAL');
-		
+
 		$query = $this->M_ajax->getDatePrintCode($data);
 
 		echo json_encode($query);
@@ -229,29 +238,33 @@ class C_Ajax extends CI_Controller
 		foreach ($data as $edit) {
 			echo '
 					<div class="row">
-					 <form method="post" action="'.base_url('ManufacturingOperationUP2L/MasterItem/updateMasIt').'">
+					 <form method="post" action="' . base_url('ManufacturingOperationUP2L/MasterItem/updateMasIt') . '">
                         <div class="col-md-6">
                             <div class="form-group">
                                 <label>Type</label>
-                                <input class="form-control" type="text" name="txtType" value="'.$edit['type'].'" required>
-                                <input class="form-control" type="hidden" name="txtId" value="'.$id.'">
+                                <input class="form-control" type="text" name="txtType" value="' . $edit['type'] . '" required>
+                                <input class="form-control" type="hidden" name="txtId" value="' . $id . '">
                             </div>
                             <div class="form-group">
                                 <label for="usr">Kode Barang:</label>
-                                <input type="text" class="form-control" name="txtKodeBarang" value="'.$edit['kode_barang'].'" required>
+                                <input type="text" class="form-control" name="txtKodeBarang" value="' . $edit['kode_barang'] . '" required>
                             </div>
                             <div class="form-group">
                                 <label for="usr">Nama Barang:</label>
-                                <input type="text" class="form-control" name="txtNamaBarang" value="'.$edit['nama_barang'].'" required>
+                                <input type="text" class="form-control" name="txtNamaBarang" value="' . $edit['nama_barang'] . '" required>
                             </div>
                             <div class="form-group">
                                 <label for="usr">Proses:</label>
-                                <input type="text" class="form-control" name="txtProses" value="'.$edit['proses'].'" required>
+                                <input type="text" class="form-control" name="txtProses" value="' . $edit['proses'] . '" required>
                             </div>
                             <div class="form-group">
                                 <label for="usr">Kode Proses:</label>
-                                <input type="text" class="form-control" name="txtKodeProses" value="'.$edit['kode_proses'].'" required>
-                            </div>
+                                <input type="text" class="form-control" name="txtKodeProses" value="' . $edit['kode_proses'] . '" required>
+							</div>
+							<div class="form-group">
+								<label for="usr">Berat:</label>
+								<input type="text" class="form-control" name="tBerat" value="' . $edit['berat'] . '" required>
+							</div>
                         </div>
                         <div class="col-md-6">
                             <div class="panel panel-default">
@@ -259,21 +272,21 @@ class C_Ajax extends CI_Controller
                                 <div class="panel-body">
                                     <div class="form-group">
                                         <label for="usr">Senin-Kamis</label>
-                                        <input type="number" class="form-control" name="txtSK" value="'.$edit['target_sk'].'" required>
+                                        <input type="number" class="form-control" name="txtSK" value="' . $edit['target_sk'] . '" required>
                                     </div>
                                     <div class="form-group">
                                        	<label for="usr">Jumat-Sabtu:</label>
-                                       	<input type="number" class="form-control" name="txtJS" value="'.$edit['target_js'].'" required>
+                                       	<input type="number" class="form-control" name="txtJS" value="' . $edit['target_js'] . '" required>
                                     </div> 
                                 </div>
                             </div>
                             <div class="form-group">
                                 <label for="usr">Tanggal Berlaku</label>
-                                <input id="tglBerlaku" type="date" class="form-control" name="tglBerlaku" value="'.$edit['tanggal_berlaku'].'" required>
+                                <input id="tglBerlaku" type="date" class="form-control" name="tglBerlaku" value="' . $edit['tanggal_berlaku'] . '" required>
                             </div>            
                             <div class="form-group">
                                 <label for="usr">Jenis</label>
-                                <input id="txtJenis" type="text" class="form-control" name="txtJenis" value="'.$edit['jenis'].'" required>
+                                <input id="txtJenis" type="text" class="form-control" name="txtJenis" value="' . $edit['jenis'] . '" required>
                             </div>                     
                             <button type="submit" class="btn btn-default" >Submit</button>       
                         </div>
@@ -291,16 +304,16 @@ class C_Ajax extends CI_Controller
 		foreach ($data as $edit) {
 			echo '
 			<div class="row">
-			<form method="post" action="'.base_url('ManufacturingOperationUP2L/MasterScrap/updateMasScrap').'">
+			<form method="post" action="' . base_url('ManufacturingOperationUP2L/MasterScrap/updateMasScrap') . '">
 			<div class="col-md-12">
                     <div class="form-group">
                         <label>Description :</label>
-                        <input class="form-control" type="text" name="txt_descScrap" placeholder="Deskripsi Scrap" value="'.$edit['description'].'" required>
-                        <input class="form-control" type="hidden" name="txtId" value="'.$edit['id'].'" required>
+                        <input class="form-control" type="text" name="txt_descScrap" placeholder="Deskripsi Scrap" value="' . $edit['description'] . '" required>
+                        <input class="form-control" type="hidden" name="txtId" value="' . $edit['id'] . '" required>
                     </div>
                     <div class="form-group">
                         <label>Kode</label>
-                        <input type="text" class="form-control" name="text_kodeScrap" placeholder="Kode Scrap" value="'.$edit['scrap_code'].'" required>
+                        <input type="text" class="form-control" name="text_kodeScrap" placeholder="Kode Scrap" value="' . $edit['scrap_code'] . '" required>
                     </div>
                     <button type="submit" class="btn btn-default" style="float:right" >Submit</button>
                   </div>
@@ -315,16 +328,16 @@ class C_Ajax extends CI_Controller
 		foreach ($data as $edit) {
 			echo '
 			<div class="row">
-			<form method="post" action="'.base_url('ManufacturingOperationUP2L/MasterPersonal/updateMasPer').'">
+			<form method="post" action="' . base_url('ManufacturingOperationUP2L/MasterPersonal/updateMasPer') . '">
 			<div class="col-md-12">
                     <div class="form-group">
                         <label>Nama:</label>
-                        <input class="form-control" type="text" name="tNama" placeholder="Type" value="'.$edit['nama'].'" required>
-                        <input class="form-control" type="hidden" name="txtId" placeholder="Type" value="'.$edit['id'].'" required>
+                        <input class="form-control" type="text" name="tNama" placeholder="Type" value="' . $edit['nama'] . '" required>
+                        <input class="form-control" type="hidden" name="txtId" placeholder="Type" value="' . $edit['id'] . '" required>
                     </div>
                     <div class="form-group">
                         <label for="usr">No Induk:</label>
-                        <input type="text" class="form-control" name="tNoInduk" placeholder="Kode Barang" value="'.$edit['no_induk'].'" required>
+                        <input type="text" class="form-control" name="tNoInduk" placeholder="Kode Barang" value="' . $edit['no_induk'] . '" required>
                     </div>
                     <button type="submit" class="btn btn-default" style="float:right" >Submit</button>
                   </div>

@@ -1,4 +1,4 @@
-<input type="hidden" id="up2l_tmpl" value="A0">
+<input type="hidden" id="up2l_tmpl" value="<?= $tmpl; ?>">
 <style>
     .active {
         color : #000 !important;
@@ -105,7 +105,7 @@
                                                     <th>Selep Date</th>
                                                     <th>Component Code</th>
                                                     <th>Component Description</th>
-                                                    <th>Selep Qty</th>
+                                                    <th>Selep Quantity OK</th>
                                                     <th>Scrap Quantity</th>
                                                     <th>Shift</th>
                                                     <th>Employee</th>
@@ -121,7 +121,7 @@
                                                     <td align='center'>
                                                         <a style="margin-right:4px" href="<?php echo base_url('ManufacturingOperationUP2L/QualityControl/read_detail/'.$row['selep_id'].''); ?>" data-toggle="tooltip" data-placement="bottom" title="Tambah Data Selep Ke QC"><span class="fa fa-plus fa-2x"></span></a>
                                                         <a style="margin-right:4px" href="<?php echo base_url('ManufacturingOperationUP2L/Selep/edit/'.$row['selep_id'].''); ?>" data-toggle="tooltip" data-placement="bottom" title="Edit Data"><span class="fa fa-pencil-square-o fa-2x"></span></a>
-                                                        <a href="<?php echo base_url('ManufacturingOperationUP2L/Selep/delete2/'.$row['selep_id'].''); ?>" data-toggle="tooltip" data-placement="bottom" title="Hapus Data" onclick="return confirm('Are you sure you want to delete this item?');"><span class="fa fa-trash fa-2x"></span></a>
+                                                        <a href="<?php echo base_url('ManufacturingOperationUP2L/Selep/delete/'.$row['selep_id'].''); ?>" data-toggle="tooltip" data-placement="bottom" title="Hapus Data" onclick="return confirm('Are you sure you want to delete this item?');"><span class="fa fa-trash fa-2x"></span></a>
                                                     </td>
                                                     <td><?php echo $row['selep_date'] ?></td>
                                                     <td><?php echo $row['component_code'] ?></td>
@@ -149,9 +149,9 @@
                                                     <th>Component Code</th>
                                                     <th>Component Description</th>
                                                     <th>Shift</th>
+                                                    <th>Selep Quantity OK</th>
                                                     <th>Checking Quantity</th>
                                                     <th>Scrap Quantity</th>
-                                                    <th>Qty OK</th>
                                                     <th>Remaining Quantity</th>
                                                     <th>Employee</th>
                                                 </tr>
@@ -169,15 +169,15 @@
                                                         <td align='center'>
                                                             <a style="margin-right:4px" href="<?php echo base_url('ManufacturingOperationUP2L/QualityControl/read/' . $row['quality_control_id'] . ''); ?>" data-toggle="tooltip" data-placement="bottom" title="Read Data"><span class="fa fa-list-alt fa-2x"></span></a>
                                                             <a style="margin-right:4px" href="<?php echo base_url('ManufacturingOperationUP2L/QualityControl/update/' . $row['quality_control_id'] . ''); ?>" data-toggle="tooltip" data-placement="bottom" title="Edit Data"><span class="fa fa-pencil-square-o fa-2x"></span></a>
-                                                            <a href="<?php echo base_url('ManufacturingOperationUP2L/QualityControl/delete/' . $row['quality_control_id'] . '/'. $row['selep_id_c']); ?>" data-toggle="tooltip" data-placement="bottom" title="Hapus Data" onclick="return confirm('Are you sure you want to delete this item?');"><span class="fa fa-trash fa-2x"></span></a>
+                                                            <a href="<?php echo base_url('ManufacturingOperationUP2L/QualityControl/delete/' . $row['quality_control_id'] . ''); ?>" data-toggle="tooltip" data-placement="bottom" title="Hapus Data" onclick="return confirm('Are you sure you want to delete this item?');"><span class="fa fa-trash fa-2x"></span></a>
                                                         </td>
                                                         <td><?php echo $row['checking_date'] ?></td>
                                                         <td><?php echo $row['component_code']; ?></td>
                                                         <td><?php echo $row['component_description']; ?></td>
                                                         <td><?php echo $row['shift']; ?></td>
                                                         <td><?php echo $row['selep_quantity'] ?></td>
-                                                        <td><?php echo $row['scrap_quantity'] ?></td>
                                                         <td><?php echo $row['checking_quantity'] ?></td>
+                                                        <td><?php echo $row['scrap_quantity'] ?></td>
                                                         <td><?php echo ($row['selep_quantity'] - ($row['checking_quantity'] + $row['scrap_quantity'])) ?></td>
                                                         <td><?php echo $row['employee'] ?></td>
                                                     </tr>

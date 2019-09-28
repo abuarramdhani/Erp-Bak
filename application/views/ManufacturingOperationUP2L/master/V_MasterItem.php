@@ -43,10 +43,11 @@
                             <div class="col-md-12 tab-content" style="padding-top:2em">
                                 <div id="MonMasIt" class="tab-pane fade in active">
                                    <h3>Table Master Item</h3>
-                                   <table class="table table-bordered table-striped table-hover" id="masterItem">
+                                   <table class="table table-bordered table-hover" id="masterItem">
                                        <thead>
                                             <tr>
                                                 <th rowspan="2" style="text-align: center;vertical-align: middle;">No</th>
+                                                <th rowspan="2" style="text-align: center;vertical-align: middle;">^</th>
                                                 <th rowspan="2" style="text-align: center;vertical-align: middle;">Type</th>
                                                 <th rowspan="2" style="text-align: center;vertical-align: middle;">Kode Barang</th>
                                                 <th rowspan="2" style="text-align: center;vertical-align: middle;">Nama Barang</th>
@@ -56,6 +57,7 @@
                                                 <th rowspan="2" style="text-align: center;vertical-align: middle;">Tanggal Berlaku</th>
                                                 <th rowspan="2" style="text-align: center;vertical-align: middle;">Jenis</th>
                                                 <th rowspan="2" style="text-align: center;vertical-align: middle;">Berat</th>
+                                                <th rowspan="2" style="text-align: center;vertical-align: middle;">Id</th>
                                                 <th rowspan="2" style="text-align: center;vertical-align: middle;">Action</th>
                                             </tr>
                                             <tr>
@@ -67,6 +69,7 @@
                                        <?php $x=1; foreach ($master as $mi) {?>
                                             <tr row-id="<?php echo $x;?>">
                                                <td><?php echo $x; ?></td>
+                                               <td></td>
                                                <td><?php echo $mi['type'];?></td>
                                                <td><?php echo $mi['kode_barang'];?></td>
                                                <td><?php echo $mi['nama_barang'];?></td>
@@ -77,6 +80,7 @@
                                                <td><?php echo $mi['tanggal_berlaku'];?></td>
                                                <td><?php echo $mi['jenis'];?></td>
                                                <td><?php echo $mi['berat'];?></td>
+                                               <td><?php echo $mi['id'];?></td>
                                                <td><button class="btn btn-default edit" data-toggle="modal" data-target="#modalEdit" onclick="editMasterItem('<?php echo $mi['id']?>')"><i class="fa fa-pencil"></i></button>
                                                     <button class="hapus btn btn-default" onclick="deleteMasterItem('<?php echo $mi['id']?>','<?php echo $x;?>')"><i class="fa fa-trash"></i></button></td>
                                             </tr>
@@ -88,6 +92,7 @@
                                 </div>
                             <div id="InsMasIt" class="tab-pane fade in ">
                                 <form method="post" enctype="multipart/form-data" class="form-horizontal" action="<?php echo base_url('ManufacturingOperationUP2L/MasterItem/CreateSubmit'); ?>">
+                                <?php echo form_open_multipart(base_url('ManufacturingOperationUP2L/MasterItem/CreateSubmit'));?>
                                         <div class="row">
                                             <div class="col-md-12 text-center">
                                                 <h2>
@@ -104,14 +109,14 @@
                                             <div class="form-group">
                                                 <label class="control-label col-md-offset-2 col-md-2">Master Item File (.xls)</label>
                                                 <div class="col-lg-6">
-                                                    <input type="file" name="Item" class="form-control" required>
+                                                    <input type="file" name="item" class="form-control" required>
                                                 </div>
                                             </div>
                                         </div>
                                         <div class="row">
                                             <div class="col-md-12 text-right">
                                                 <a class="btn btn-default" href="<?php echo site_url('ManufacturingOperationUP2L/MasterItem');?>">CANCEL</a>
-                                                <a class="btn btn-warning" href="<?php echo base_url('assets/upload/ManufacturingOperationUP2L/masterItem/example.xlsx');?>">
+                                                <a class="btn btn-warning" href="<?php echo base_url('assets/download/ManufacturingOperationUP2L/masterItem/example(input-item).xlsx');?>">
                                                     <i aria-hidden="true" class="fa fa-download"></i> 
                                                 DOWNLOAD SAMPLE
                                                 </a>
@@ -120,6 +125,7 @@
                                                 </button>
                                             </div>
                                         </div>
+                                        <?php echo form_close();?>
                                     </form>
                                 </div>
                                 <div id="1by1" class="tab-pane fade in">
@@ -145,6 +151,10 @@
                                         <div class="form-group">
                                             <label for="usr">Kode Proses:</label>
                                             <input type="text" class="form-control" name="tKodeProses" placeholder="Kode Proses" required>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="usr">Berat:</label>
+                                            <input type="text" class="form-control" name="tBerat" placeholder="Berat" required>
                                         </div>
                                     </div>
                                     <div class="col-md-6">

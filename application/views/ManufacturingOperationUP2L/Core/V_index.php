@@ -26,24 +26,26 @@
                             </div>
                             <div class="box-body">
                                 <div class="table-responsive">
-                                    <table class="datatable table table-striped table-bordered table-hover text-left" id="tblCore">
+                                    <table class="datatable table table-striped table-bordered table-hover text-left" id="tblCore" style="font-size:12px;">
                                         <thead class="bg-primary">
                                             <tr>
                                                 <th style="text-align:center; width:30px">No</th>
                                                 <th style="text-align:center; min-width:80px">Action</th>
                                                 <th style="text-align:center;">Component Code</th>
                                                 <th style="text-align:center;">Description</th>
-                                                <th style="text-align:center;">Date</th>
+                                                <th style="text-align:center;">Production Date</th>
                                                 <th style="text-align:center;">Quantity</th>
                                                 <th style="text-align:center;">Print Code</th>
+                                                <th style="text-align:center;">Kode</th>
+                                                <th style="text-align:center;">Shift</th>
                                                 <th style="text-align:center;">Employee</th>
 											</tr>
                                         </thead>
                                         <tbody>
                                             <?php 
-                                            	$no = 1; 
-                                            	foreach($Core as $row):
-                                            	$encrypted_string = $this->encrypt->encode($row['core_id']);
+                                                $no = 1; 
+                                                foreach($Core as $row):
+                                                $encrypted_string = $this->encrypt->encode($row['core_id']);
 												$encrypted_string = str_replace(array('+', '/', '='), array('-', '_', '~'), $encrypted_string);
 											?>
                                             <tr>
@@ -58,6 +60,8 @@
                                                 <td align='center'><?php echo $row['production_date'];?></td>
                                                 <td align='center'><?php echo $row['core_quantity'];?></td>
                                                 <td align='center'><?php echo $row['print_code'];?></td>
+                                                <td align='center'><?php echo $row['kode'];?></td>
+                                                <td align='center'><?php echo $row['shift'];?></td>
                                                 <td align='center'><?php echo $row['employee_id'];?></td>
 											</tr>
                                             <?php endforeach; ?>
@@ -67,7 +71,7 @@
                             </div>
                         </div>
                     </div>
-                </div>    
+                </div>
             </div>    
         </div>
     </div>
