@@ -9,7 +9,7 @@ class M_tambahdata extends CI_Model {
     }
 
     function searchPekerja($term) {
-        return $this->personalia->select('upper(trim(noind)) as noind, upper(trim(nama)) as nama')->where('keluar', false)->like('lower(noind)', $term, 'after')->order_by('noind')->get('hrd_khs.tpribadi')->result_array();
+        return $this->personalia->select('upper(trim(noind)) as noind, upper(trim(nama)) as nama')->where('keluar', false)->like('lower(noind)', $term, 'after')->or_like('lower(trim(nama))', $term, 'after')->order_by('noind')->get('hrd_khs.tpribadi')->result_array();
     }
 
     function searchJenisPotongan($term) {
