@@ -118,7 +118,7 @@ class C_OTT extends CI_Controller
 				);
 				$this->M_ott->createAbs($dataAbs);
 			}
-        redirect(site_url('ManufacturingOperationUP2L/OTT'));
+        redirect(site_url('ManufacturingOperationUP2L/OTT/view_create'));
     }
 
     public function read_data($id)
