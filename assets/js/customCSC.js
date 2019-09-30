@@ -36,6 +36,15 @@ $(document).ready(function () {
 	});
 });
 
+$(document).ready(function(){
+	  $(document).on('change', '.importtt', function(){
+    	$('.button1').removeAttr('disabled')
+    	// $(this).parentsUntil('tr').find('input').attr('disabled', 'disabled')
+	    // console.log('2')
+    })
+
+});
+
 $("#search_cc").change(function () {
 	$.ajax({
 		url: baseurl + 'CetakStikerCC/Cetak/getItemDetail',

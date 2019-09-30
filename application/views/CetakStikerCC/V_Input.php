@@ -35,8 +35,7 @@
                                 <div class="panel-body">
                                     <div class="col-md-6" style="float:none; margin: 0 auto">
                                         <center><label class="control-label">Input Cost Center</label></center>
-                                        <select class="form-control select2" multiple
-                                            data-placeholder="Nomor Cost Center" id="search_cc" name="search_cc">
+                                        <select class="form-control select2" multiple data-placeholder="Nomor Cost Center" id="search_cc" name="search_cc">
                                         </select><br /><br>
                                     </div>
                                     <div class="col-md-6 import" style="float:none; margin: 0 auto">
@@ -52,7 +51,7 @@
                                                     <tr>
                                                         <td class="btn-default" style="padding-left: none;width: 10px" >
                                                             <div class="col-md-1"  >
-                                                                <input type="file" name="excel_file" id="excel_file"
+                                                                <input class="importtt" type="file" name="excel_file" id="excel_file"
                                                                     accept=".csv, .xls,.xlsx" />
                                                             </div>
                                                         </td>
@@ -60,7 +59,7 @@
                                                             <div class="col-md-1">
                                                                 <button type="submit" title="Import Excel"
                                                                     name="import_excel" class="btn button1 btn-success "
-                                                                    id="import_excel_btn"> Import Excel</button>
+                                                                    id="import_excel_btn" disabled="disabled" > Import Excel</button>
                                                             </div>
                                                         </td>
                                                 </form>
