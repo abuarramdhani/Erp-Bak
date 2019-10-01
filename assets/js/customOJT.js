@@ -158,6 +158,10 @@
 					scrollX: false,
 				});
 
+				$('#MonitoringOJT-memoPindahMakan').DataTable({
+					scrollX: false,
+				});
+
 				$('#MonitoringOJT-daftarCetakUndangan').DataTable({
 					scrollX: false,
 				});
@@ -171,28 +175,28 @@
 				});
 				$('a:contains(Aktif)').click(function(){
 					setTimeout(
-					  function() 
+					  function()
 					  {
 						$('.ojt_click_trig').click();
 					  }, 200);
 				});
 				$('a:contains(Tertunda)').click(function(){
 					setTimeout(
-					  function() 
+					  function()
 					  {
 						$('.ojt_click_trig').click();
 					  }, 200);
 				});
 				$('a:contains(Selesai)').click(function(){
 					setTimeout(
-					  function() 
+					  function()
 					  {
 						$('th:contains(Action)').click();
 					  }, 200);
 				});
 				$('a:contains(Keluar)').click(function(){
 					setTimeout(
-					  function() 
+					  function()
 					  {
 						$('th:contains(Action)').click();
 					  }, 200);
@@ -220,6 +224,58 @@
 						leftColumns: 3,
 					},
 				});
+
+				// ---------- Memo Pindah Makan------------//
+				$('#MonitoringOJT-cmbtertandaOJT').select2({
+					placeholder: 'Input Tertanda'
+				});
+
+				$('#ojt_jenis_training').select2({
+					placeholder: 'Input Jenis Training'
+				});
+
+				$('#MonitoringOJT_PekerjaPindahMakan').select2({
+					placeholder: 'Input Nama Pekerja',
+					allowClear: true
+				});
+
+				$('#MonitoringOJT-btnPratinjauPindahMakan').click(function(){
+					$('#surat-loading').attr('hidden', false);
+					$.ajax({
+						type: 'POST',
+						data: $('#MonitoringOJT-frmCetakMemoPindahMakan').serialize(),
+						url: baseurl+'OnJobTraining/MemoPindahMakan/isi_PindahMakan',
+						success: function(result)
+						{
+							var result = JSON.parse(result);
+							$('#MonitoringOJT-txtareaMemoPindahMakan').redactor('set', result['isi_memopindahmakan']);
+							$('#surat-loading').attr('hidden', true);
+						}
+					});
+				});
+
+$(document).ready(function() {
+				$('.deleteMemoMakan').click(function () {
+					let id = $(this).data('value')
+					console.log(id)
+					Swal.fire({
+					  title: 'Apakah Anda Yakin?',
+					  text: "Mengapus data ini secara permanent !",
+					  type: 'warning',
+					  showCancelButton: true,
+					  confirmButtonColor: '#3085d6',
+					  cancelButtonColor: '#d33',
+					  confirmButtonText: 'Yes, delete it!'
+					}).then( result => {
+					  if (result.value) {
+					  	window.location.href = baseurl+"OnJobTraining/MemoPindahMakan/deleteMemo/"+id
+					  }
+					})
+					return false;
+				})
+			})
+
+//----------------selesai-------------------//
 
 				/*$('#MonitoringOJT-rekapKegiatanHarian').DataTable({
 					scrollX: false,
@@ -535,7 +591,7 @@
 						}
 					});
 				});
-				
+
 				$('#MonitoringOJT-btnPratinjauMemoJadwalTraining').click(function(){
 					$.ajax({
 						type: 'POST',
@@ -549,7 +605,7 @@
 						}
 					});
 				});
-				
+
 				$('#MonitoringOJT-btnPratinjauMemoPDCA').click(function(){
 					$.ajax({
 						type: 'POST',
@@ -574,6 +630,7 @@
 				$('#MonitoringOJT-txaIsiMemoJadwalTraining').redactor();
 				$('#MonitoringOJT-txaIsiLampiranJadwalTraining').redactor();
 				$('#MonitoringOJT-txaIsiMemoPDCA').redactor();
+				$('#MonitoringOJT-txtareaMemoPindahMakan').redactor();
 		//	}
 	});
 	// 	General Function
@@ -639,8 +696,8 @@
 				}
 				else
 				{
-					$(th).closest('tr').remove(); 				
-				}   		
+					$(th).closest('tr').remove();
+				}
 			}
 
 			function MonitoringOJT_tambahUndangan()
@@ -698,8 +755,8 @@
 				}
 				else
 				{
-					$(th).closest('tr').remove(); 				
-				}   		
+					$(th).closest('tr').remove();
+				}
 			}
 
 			function MonitoringOJT_ubahStatusPekerjaKeluar(pekerja_id, noind, nama)
@@ -726,14 +783,14 @@
 
 			function MonitoringOJT_ubahEmail(pekerja_id, email_pekerja, email_atasan)
 			{
-				
+
 				$('#MonitoringOJT-monitoring-ubahEmail-txtPekerjaID').val(pekerja_id);
 				$('#MonitoringOJT-monitoring-ubahEmail-txtEmailPekerja').val(email_pekerja);
 				$('#MonitoringOJT-monitoring-ubahEmail-txtEmailAtasan').val(email_atasan);
 				$('#MonitoringOJT-ubahEmail').modal("show");
 			}
 
-		      
 
-	// 	}	
+
+	// 	}
 // 	-------Monitoring OJT----------------------------------------------end
