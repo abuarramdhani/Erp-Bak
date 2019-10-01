@@ -1736,6 +1736,14 @@ $route['OnJobTraining']		=	'MonitoringOJT/C_Index';
 			$route['OnJobTraining/CetakMemoJadwalTraining/(:any)/(:any)']	=	'MonitoringOJT/C_CetakMemoJadwalTraining/$1/$2';
 	//	}
 
+	//	Memo Pindah Makan
+		//	{
+				$route['OnJobTraining/MemoPindahMakan']						=	'MonitoringOJT/C_CetakMemoPDCA/index_PindahMakan';
+				$route['OnJobTraining/MemoPindahMakan/(:any)']				=	'MonitoringOJT/C_CetakMemoPDCA/$1';
+				$route['OnJobTraining/MemoPindahMakan/(:any)/(:any)']		=	'MonitoringOJT/C_CetakMemoPDCA/$1/$2';
+				$route['OnJobTraining/MemoPindahMakan/isi_PindahMakan']		=	'MonitoringOJT/C_CetakMemoPDCA/isi_PindahMakan';
+		//	}
+
 	//	Cetak Memo Pelaksanaan PDCA
 	//	{
 			$route['OnJobTraining/CetakMemoPDCA']					=	'MonitoringOJT/C_CetakMemoPDCA';

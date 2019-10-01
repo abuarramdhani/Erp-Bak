@@ -1,4 +1,4 @@
-<?php 
+<?php
 	if (!defined('BASEPATH')) exit('No direct script access allowed');
 
 	class M_cetakmemojadwaltraining extends CI_Model
@@ -7,6 +7,7 @@
 	    {
 	        parent::__construct();
 	        $this->load->database();
+					$this->personalia 	= 	$this->load->database('personalia', TRUE);
 	    }
 
 	   	public function cetak_memo_jadwal_training($id_proses_memo_jadwal_training = FALSE)
@@ -161,4 +162,106 @@
 
 	    	return $this->db->get()->result_array();
 	    }
+
+			//---------Model Utama untuk Memo pindah makan----------//
+			public function tampilData()
+			{
+				$sql = "SELECT * FROM ojt.tb_proses_memo_pindah_lokasi_makan";
+				return $this->db->query($sql)->result_array();
+			}
+
+			public function getDataMemo($id)
+			{
+				$sql = "SELECT * FROM ojt.tb_proses_memo_pindah_lokasi_makan WHERE id_pindah='$id'";
+				return $this->db->query($sql)->result_array();
+			}
+
+			public function deleteMemo($id)
+			{
+				$sql = "DELETE from ojt.tb_proses_memo_pindah_lokasi_makan WHERE id_pindah='$id'";
+				$this->db->query($sql);
+			}
+
+			public function getPdev()
+	    {
+				$sql = "select
+						noind,
+						initcap(nama) nama
+					from
+						hrd_khs.tpribadi
+					where
+						keluar = '0'
+						and kodesie like '408010%'
+						and (kd_jabatan in ('11','19') or noind = 'G1036')
+					order by
+						2;";
+
+			return $this->personalia->query($sql)->result_array();
+	    }
+
+			public function getPekerjaTraining($jenis_training, $tanggal_awal, $tanggal_akhir)
+			{
+				$sql = "SELECT tp.*, a.employee_name, a.section_code, b.section_name
+								FROM ojt.tb_pekerja tp
+								LEFT JOIN er.er_employee_all a ON tp.noind = a.employee_code
+								LEFT JOIN er.er_section b ON a.section_code = b.section_code
+								LEFT JOIN ojt.tb_proses c ON tp.noind = c.noind
+								WHERE c.tahapan = '$jenis_training' and c.tgl_awal = '$tanggal_awal' and c.tgl_akhir = '$tanggal_akhir' and c.selesai = '0' order by tp.noind";
+
+	 			return $this->db->query($sql)->result_array();
+			}
+
+			public function getTemplate()
+			{
+				$sql = "SELECT memo from ojt.tb_master_memo where judul='MEMO PINDAH LOKASI MAKAN'";
+				return $this->db->query($sql)->result_array();
+			}
+
+			public function saveMemo($saveMemo)
+			{
+				$this->db->insert("ojt.tb_proses_memo_pindah_lokasi_makan", $saveMemo);
+				return;
+			}
+
+			public function getmaxid()
+			{
+				$sql = "SELECT max(id_pindah) id from ojt.tb_proses_memo_pindah_lokasi_makan";
+				return $this->db->query($sql)->row()->id;
+			}
+
+			public function saveMemoHistory($saveHistory)
+			{
+				$this->db->insert("ojt.tb_proses_memo_pindah_lokasi_makan_history", $saveHistory);
+				return;
+			}
+
+			public function getTertanda($id)
+			{
+				$sql = "SELECT upper(a.tertanda) tertanda FROM ojt.tb_proses_memo_pindah_lokasi_makan a WHERE a.id_pindah='$id'";
+				return $this->db->query($sql)->row()->tertanda;
+			}
+
+			public function getTertandaNew($new)
+			{
+				$sql = "select
+						noind,
+						initcap(nama) nama
+					from
+						hrd_khs.tpribadi
+					where
+						keluar = '0'
+						and kodesie like '408010%'
+						and (kd_jabatan in ('11','19') or noind = 'G1036')
+						and nama='$new'
+					order by
+						2;";
+
+			return $this->personalia->query($sql)->result_array();
+			}
+
+			public function updateMemo($id,$saveMemo)
+			{
+				$this->db->where('id_pindah =', $id);
+				$this->db->update('ojt.tb_proses_memo_pindah_lokasi_makan', $saveMemo);
+			}
  	}
