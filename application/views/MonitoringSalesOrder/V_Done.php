@@ -21,7 +21,8 @@
                     <thead style="background-color:#367FA9; color:white">
                         <tr>
                         <th>No</th>
-                        <th>No Delivery Order</th>
+                        <th>No Sales Order</th>
+                        <th>Last Update Date</th>
                         <th>Finished Date</th>
                         </tr>
                     </thead>
@@ -34,6 +35,7 @@
                         <tr onclick="document.location = '<?php echo base_url('MonitoringSalesOrder/C_MonitoringSalesOrder/do_detail_done/'.$done['ORDER_NUMBER']);?>';">
                           <td><?= $no ?></td>
                           <td><?= $done['ORDER_NUMBER'] ?></td>
+                          <td><?= $done['LAST_UPDATE_DATE'] ?></td>
                           <td><?= $done['CREATION_DATE'] ?></td>
                         </tr>
                       <?php
