@@ -59,6 +59,7 @@
 												<option>BARANG</option>
 												<option>JASA NON EKSPEDISI TRAKTOR</option>
 												<option>JASA EKSPEDISI TRAKTOR</option>
+												<option>PREPAYMENT</option>
 											</select>
 										</td> 
 										<td>
