@@ -112,7 +112,7 @@ class C_Cetak extends CI_Controller
 		// $mpdf->useFixedTextBaseline = false;
 		// $mpdf->adjustFontDescLineheight = 0.5;
 		$pdf = $this->pdf->load();
-    	$pdf = new mPDF('utf-8',array(297,210), 0, '', 0, 0, 0, 0, 0, 0); //----- A5-L
+    	$pdf = new mPDF('utf-8',array(297,210), 0, '', 10, 0, 4, 0, 0, 0); //----- A5-L
 		// $tglNama = date("d/m/Y");
     	$filename = 'Stiker Cost Center'.'.pdf';
     	$html = $this->load->view('CetakStikerCC/V_Print', $data, true);		//-----> Fungsi Cetak PDF
