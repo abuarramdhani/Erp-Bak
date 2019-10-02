@@ -15,7 +15,7 @@ class M_monitoringsalesorder extends CI_Model{
     }
 
     public function do_done(){
-        $query = "select distinct so_header_id, order_number, to_char(creation_date,'yyyy-mm-dd HH24:MI:SS') creation_date from KHS_DONE_SO_GUDANG order by order_number DESC";
+        $query = "select distinct so_header_id, order_number, to_char(creation_date,'yyyy-mm-dd HH24:MI:SS') creation_date, last_update_date from KHS_DONE_SO_GUDANG order by order_number DESC";
         $hasil = $this->oracle->query($query);
         return $hasil->result_array();
     }
@@ -35,13 +35,13 @@ class M_monitoringsalesorder extends CI_Model{
     }
 
     public function select_item($order_number){
-        $query="SELECT * FROM khs_do_gudang WHERE order_number = '".$order_number."'";
+        $query="SELECT so_header_id,order_number,kode_barang,nama_barang,qty,uom,lokasi,to_char(creation_date,'yyyy-mm-dd HH24:MI:SS') creation_date  FROM khs_do_gudang WHERE order_number = '".$order_number."'";
         $hasil = $this->oracle->query($query);
         return $hasil->result_array();
     }
 
-    public function insert_done($so_header, $order_number,$kode_barang,$nama_barang,$qty,$uom,$lokasi){
-        $query = "INSERT into KHS_DONE_SO_GUDANG values('$so_header','$order_number','$kode_barang','$nama_barang','$qty','$uom','$lokasi',sysdate)";
+    public function insert_done($so_header, $order_number,$kode_barang,$nama_barang,$qty,$uom,$lokasi,$last_update){
+        $query = "INSERT into KHS_DONE_SO_GUDANG values('$so_header','$order_number','$kode_barang','$nama_barang','$qty','$uom','$lokasi',sysdate,'$last_update')";
         $this->oracle->query($query);
         // echo $query;
         // exit;
