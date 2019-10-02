@@ -116,6 +116,12 @@ class C_List extends CI_Controller
 
     $tanggalLelayu = $pekerja[0]['tgl_lelayu'];
     $tanggalLelayu = date("d M Y",strtotime($tanggalLelayu));
+    $jenkel = trim($pekerja[0]['jk']);
+			 if ($jenkel == 'L') {
+				 	$jk = 'Bp. ';
+				}elseif ($jenkel == 'P') {
+					$jk = 'Ibu. ';
+				}
 
     $this->load->library('pdf');
     $pdf = $this->pdf->load();
@@ -162,8 +168,6 @@ class C_List extends CI_Controller
     $total1 = $nama[0]['spsi_nonmanajerial_nominal']+$nama[0]['spsi_spv_nominal']+$nama[0]['spsi_kasie_nominal']+$nama[0]['spsi_askanit_nominal'];
     $data['terbilang_total'] = $this->terbilang($total)." Rupiah";
     $data['terbilang_total1'] = $this->terbilang($total1)." Rupiah";
-    // echo "<pre>";
-    // print_r($nama);die;
 
     $this->load->library('pdf');
     $pdf = $this->pdf->load();
@@ -231,15 +235,13 @@ class C_List extends CI_Controller
 		}
 		return $hasil;
 	}
- //--------------------------------------------------------Terbilang--------------------------------------------------------//
+ //------------------------------------------------Selesai Terbilang--------------------------------------------------------//
 
   public function exportExcel()
   {
     $data['date'] = date("d-m-Y");
     $data['exportExcel'] = $this->M_lelayu->getDataListExcel();
     $data['atasan'] = $this->M_lelayu->getAtasan();
-    // echo "<pre>";
-    // print_r($data['atasan']);exit();
 
     $this->load->library("Excel");
     $this->load->view('MasterPresensi/Lelayu/ListData/V_excel',$data);
@@ -251,6 +253,12 @@ class C_List extends CI_Controller
     $data['exportExcelSPSI'] = $this->M_lelayu->getPekerjaTerpotong($id);
     $data['LelayuSPSI'] = $this->M_lelayu->getDataPDF($id);
     $data['atasan'] = $this->M_lelayu->getAtasan();
+    $jenkel = trim($data['LelayuSPSI'][0]['jk']);
+			 if ($jenkel == 'L') {
+				 	$data['jk'] = 'Bp. ';
+				}elseif ($jenkel == 'P') {
+					$data['jk'] = 'Ibu. ';
+				}
 
     $this->load->library("Excel");
     $this->load->view('MasterPresensi/Lelayu/ListData/V_excel_spsi',$data);

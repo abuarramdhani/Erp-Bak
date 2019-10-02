@@ -120,7 +120,7 @@ $border_all = array ('borders' => array('allborders' => array('style' => PHPExce
   $namaLelayu = ucwords(mb_strtolower($LelayuSPSI[0]['nama']));
   $seksiLelayu = ucwords(mb_strtolower($LelayuSPSI[0]['seksi']));
   $objPHPExcel->setActiveSheetIndex(0)
-  ->setCellValueExplicit('C4', $namaLelayu, PHPExcel_Cell_DataType::TYPE_STRING)
+  ->setCellValueExplicit('C4', $jk.$namaLelayu, PHPExcel_Cell_DataType::TYPE_STRING)
   ->setCellValueExplicit('C5', $seksiLelayu, PHPExcel_Cell_DataType::TYPE_STRING)
   ->setCellValueExplicit('C6', $tanggalLelayu, PHPExcel_Cell_DataType::TYPE_STRING);
 
