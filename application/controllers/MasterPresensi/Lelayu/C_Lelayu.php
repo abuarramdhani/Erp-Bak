@@ -16,6 +16,7 @@ class C_Lelayu extends CI_Controller
     $this->load->library('form_validation');
     $this->load->library('session');
     $this->load->library('encrypt');
+    $this->load->library('Log_Activity');
 
     $this->load->model('SystemAdministration/MainMenu/M_user');
     $this->load->model('MasterPresensi/Lelayu/M_lelayu');
@@ -147,8 +148,11 @@ class C_Lelayu extends CI_Controller
         $this->M_lelayu->insertID($value);
       }
     }
+    $id_lelayu = $this->M_lelayu->getID();
+    $aksi = 'Lelayu';
+    $detail = 'Menambah Data Lelayu dengan id_lelayu '.$id_lelayu;
 
-
+    $this->log_activity->activity_log($aksi, $detail);
   }
 }
 

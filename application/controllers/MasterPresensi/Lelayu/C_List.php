@@ -15,6 +15,7 @@ class C_List extends CI_Controller
     $this->load->library('form_validation');
     $this->load->library('session');
     $this->load->library('encrypt');
+    $this->load->library('Log_Activity');
 
     $this->load->model('SystemAdministration/MainMenu/M_user');
     $this->load->model('MasterPresensi/Lelayu/M_lelayu');
@@ -61,6 +62,11 @@ class C_List extends CI_Controller
     $this->M_lelayu->delete($id);
     $this->M_lelayu->deletePekerjaPotong($id);
 
+    $aksi = 'Lelayu';
+    $detail = 'Menghapus Data Lelayu dengan id_lelayu '.$id;
+
+    $this->log_activity->activity_log($aksi, $detail);
+
 		redirect(base_url('MasterPresensi/Lelayu/ListData'));
   }
 
@@ -73,6 +79,11 @@ class C_List extends CI_Controller
 
   public function exportPDF($id)
   {
+    $aksi = 'Lelayu';
+    $detail = 'Export PDF Data Lelayu dengan id_lelayu '.$id;
+
+    $this->log_activity->activity_log($aksi, $detail);
+
     $date = date('d-m-Y');
     $data['today'] = date("d M Y",strtotime($date));
     $today = date('d-m-Y H:i:s');
@@ -154,6 +165,10 @@ class C_List extends CI_Controller
 
   public function exportKasBon($id)
   {
+    $aksi = 'Lelayu';
+    $detail = 'Mengexport Kasbon Lelayu dengan id_lelayu '.$id;
+
+    $this->log_activity->activity_log($aksi, $detail);
 
     $data['data'] = $this->M_lelayu->getDataList();
     $data['date'] = date('d-m-Y');
@@ -239,6 +254,11 @@ class C_List extends CI_Controller
 
   public function exportExcel()
   {
+    $aksi = 'Lelayu';
+    $detail = 'Mengexport Semua Data Lelayu';
+
+    $this->log_activity->activity_log($aksi, $detail);
+
     $data['date'] = date("d-m-Y");
     $data['exportExcel'] = $this->M_lelayu->getDataListExcel();
     $data['atasan'] = $this->M_lelayu->getAtasan();
@@ -249,6 +269,11 @@ class C_List extends CI_Controller
 
   public function exportExcelSPSI($id)
   {
+    $aksi = 'Lelayu';
+    $detail = 'Mengexport Semua Data Lelayu';
+
+    $this->log_activity->activity_log($aksi, $detail);
+    
     $data['date'] = date("d-m-Y");
     $data['exportExcelSPSI'] = $this->M_lelayu->getPekerjaTerpotong($id);
     $data['LelayuSPSI'] = $this->M_lelayu->getDataPDF($id);
