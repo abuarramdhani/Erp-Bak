@@ -122,7 +122,7 @@ class C_MonitoringSalesOrder extends CI_CONTROLLER {
         $data['detail'] = $this->M_monitoringsalesorder->select_item($order_number);
         
         foreach($data['detail'] as $key => $detail){
-            $this->M_monitoringsalesorder->insert_done($detail['SO_HEADER_ID'],$detail['ORDER_NUMBER'],$detail['KODE_BARANG'],$detail['NAMA_BARANG'],$detail['QTY'],$detail['UOM'],$detail['LOKASI']);
+            $this->M_monitoringsalesorder->insert_done($detail['SO_HEADER_ID'],$detail['ORDER_NUMBER'],$detail['KODE_BARANG'],$detail['NAMA_BARANG'],$detail['QTY'],$detail['UOM'],$detail['LOKASI'], $detail['CREATION_DATE']);
         }
         echo 1;
     }
