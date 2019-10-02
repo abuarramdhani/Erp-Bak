@@ -550,7 +550,25 @@ class C_List extends CI_Controller
 		$this->load->library('Excel');
 		$arrayJenis = array('213110','213102','213105','213106','213108','213103');
 		$arrayUrut = array();
-		$arraySpezial = array('YOGYAKARTA','TUKSONO');
+		$arraySpezial = array(
+			'YOGYAKARTA',
+			'MLATI',
+			'TUKSONO',
+			'JAKARTA',
+			'TANJUNGKARANG',
+			'MEDAN',
+			'TUGUMULYO',
+			'PADANG',
+			'PEKANBARU',
+			'PONTIANAK',
+			'JAMBI',
+			'SURABAYA',
+			'MAKASAR',
+			'SIDRAP',
+			'NGANJUK',
+			'BANJARMASIN',
+			'PALU'
+		);
 		$data = $this->M_uploadpph->getDataBatch($no);
 		$datagroup = array();
 		$datagroup2 = array();
