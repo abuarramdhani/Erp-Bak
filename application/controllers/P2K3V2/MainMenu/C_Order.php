@@ -1763,13 +1763,15 @@ class C_Order extends CI_Controller
 						<th style="width:20px;">No</th>
 						<th style="width:200px;">Noind</th>
 						<th>Nama</th>
+						<th style="width:200px;">Pekerjaan</th>
 					</tr>';
 					$i = 1;
 					foreach($getPekerja as $key){
 						echo '<tr>
 						<td>'.$i.'</td>
-						<td>'.$key["employee_code"].'</td>
-						<td>'.$key["employee_name"].'</td>
+						<td>'.$key["noind"].'</td>
+						<td>'.$key["nama"].'</td>
+						<td>'.$key["pekerjaan"].'</td>
 					</tr>';
 					$i++;
 				}
