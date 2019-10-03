@@ -224,7 +224,7 @@ class C_User extends CI_Controller {
 			$this->M_user->updateUser($data,$plaintext_string);
 
 			$aksi = 'Update User';
-			$detail = 'Update User '.$this->input->post('txtUsername').' menjadi '.$this->input->post('slcEmployee');
+			$detail = 'Update User '.$this->input->post('txtUsername');
 			$this->log_activity->activity_log($aksi, $detail);
 
 			$responsibility_id = $this->input->post('slcUserResponsbility');
@@ -301,6 +301,10 @@ class C_User extends CI_Controller {
 		foreach($ex as $e => $key){
 			$data['area'.$key] = 1;
 		}
+
+		$aksi = 'Change Password';
+		$detail = 'Change Password';
+		$this->log_activity->activity_log($aksi, $detail);
 
 		//Load halaman
 		$this->load->view('CatalogMonitoring/V_Header',$data);
