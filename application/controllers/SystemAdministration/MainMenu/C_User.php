@@ -347,7 +347,7 @@ class C_User extends CI_Controller {
 		$this->M_user->SaveUpdateUser($username,$password,$emp_id,$allarea,$cvr,$apbn);
 
 		$aksi = 'Update User';
-		$detail = 'Update User '.$this->input->post('txtUsername').' menjadi '.$username;
+		$detail = 'Update User '.$this->input->post('txtUsername');
 		$this->log_activity->activity_log($aksi, $detail);
 
 		$ses = array(
