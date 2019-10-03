@@ -125,9 +125,17 @@ class M_pesangon extends CI_Model {
 
 		public function getTertandaKasbon()
 	  {
-	    $sql = "SELECT noind, nama FROM hrd_khs.tpribadi WHERE keluar = '0' ORDER BY noind";
+	    $sql = "SELECT noind, trim(nama) as nama FROM hrd_khs.tpribadi WHERE keluar = '0' ORDER BY noind";
 	    return $this->personalia->query($sql)->result_array();
 	  }
+
+		public function getAlasanKeluar($noind)
+		{
+			$sql = "SELECT trim(a.alasan_tampil) as alasan_tampil from hrd_khs.t_alasan_pesangon a
+							LEFT JOIN hrd_khs.tpribadi b ON a.alasan_master_pekerja = b.sebabklr
+							where b.noind = '$noind'";
+			return $this->personalia->query($sql)->row()->alasan_tampil;
+		}
 
 	 public function getPekerjaAktif($noind)
 	 	{
