@@ -19,27 +19,28 @@ class C_Index extends CI_Controller {
 	 * @see http://codeigniter.com/user_guide/general/urls.html
 	 */
 	public function __construct()
-    {
-          parent::__construct();
-		  
-          $this->load->helper('form');
-          $this->load->helper('url');
-          $this->load->helper('html');
-          $this->load->library('form_validation');
+  {
+      parent::__construct();
+
+      $this->load->helper('form');
+      $this->load->helper('url');
+      $this->load->helper('html');
+			$this->load->library('Log_Activity');
+      $this->load->library('form_validation');
           //load the login model
 		  $this->load->library('session');
 		  //$this->load->library('Database');
 		  $this->load->model('M_Index');
 		  $this->load->model('SystemAdministration/MainMenu/M_user');
-		  
+
 		  if($this->session->userdata('logged_in')!=TRUE) {
 		  $this->load->helper('url');
 		  $this->session->set_userdata('last_page', current_url());
 		  //redirect('index');
     }
 		  //$this->load->model('CustomerRelationship/M_Index');
-    }
-	
+  }
+
 	public function index()
 	{
 		if($this->session->is_logged){
@@ -52,8 +53,8 @@ class C_Index extends CI_Controller {
 				$data['UserResponsibility'] = $this->M_user->getUserResponsibilityInternet($user_id);
 			}else{
 				$data['UserResponsibility'] = $this->M_user->getUserResponsibility($user_id);
-			}			
-			
+			}
+
 			$this->load->view('V_Header',$data);
 			$this->load->view('V_Sidemenu',$data);
 			$this->load->view('V_Index',$data);
@@ -61,8 +62,10 @@ class C_Index extends CI_Controller {
 		}else{
 			if($this->session->gagal){
 				$data['error'] = "Login error, please enter correct username and password";
-				
-				
+				$aksi = 'Login';
+				$detail = 'Gagal Login';
+				$this->log_activity->activity_log($aksi, $detail);
+
 			}else{
 				$data['error'] = "";
 			}
@@ -70,7 +73,7 @@ class C_Index extends CI_Controller {
 			$this->session->unset_userdata('gagal');
 		}
 	}
-	
+
 	public function Responsibility($responsibility_id)
 	{
 		if($this->session->is_logged){
@@ -78,9 +81,14 @@ class C_Index extends CI_Controller {
 			$user_id = $this->session->userid;
 			//$data['user'] = $usr;
 			//$data['Menu'] = 'dashboard';
-			
+
 			$UserResponsibility = $this->M_user->getUserResponsibility($user_id,$responsibility_id);
 			foreach($UserResponsibility as $UserResponsibility_item){
+				$aksi = 'Akses Responsibility';
+				$detail = $UserResponsibility_item['user_group_menu_name'];
+
+				$this->log_activity->activity_log($aksi, $detail);
+
 				$this->session->set_userdata('responsibility', $UserResponsibility_item['user_group_menu_name']);
 				// if(empty($UserResponsibility_item['user_group_menu_id'])){
 					// $UserResponsibility_item['user_group_menu_id'] = 0;
@@ -99,21 +107,20 @@ class C_Index extends CI_Controller {
 		}else{
 			if($this->session->gagal){
 				$data['error'] = "Login error, please enter correct username and password";
-				
-				
 			}else{
 				$data['error'] = "";
 			}
+
 			$this->load->view('V_Login',$data);
 			$this->session->unset_userdata('gagal');
 		}
 	}
-	
+
 	public function BackToLogin()
 	{
 		$this->load->view('V_Login');
 	}
-		
+
 	public function home()
 	{
 		$this->checkSession();
@@ -121,27 +128,27 @@ class C_Index extends CI_Controller {
 		$user_id = $this->session->userid;
 		//$data['user'] = $usr;
 		$data['Menu'] = 'dashboard';
-		
+
 		$data['UserMenu'] = $this->M_user->getUserMenu($user_id,$this->session->responsibility_id);
 		$data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id);
 		$data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id);
-		
+
 		$this->load->view('V_Header',$data);
 		$this->load->view('V_Sidemenu',$data);
 		$this->load->view('CustomerRelationship/V_Index',$data);
 		$this->load->view('V_Footer',$data);
 	}
-	
+
 	public function checkSession(){
 		if($this->session->is_logged){
-			
+
 		}else{
 			redirect('');
 		}
 	}
-	
+
 	public function login(){
-		
+
 		//$this->load->model('M_index');
 		$username = $this->input->post('username');
 		$password = $this->input->post('password');
@@ -150,12 +157,12 @@ class C_Index extends CI_Controller {
 
 		if($log){
 			$user = $this->M_Index->getDetail($username);
-			
+
 			foreach($user as $user_item){
 				$iduser 			= $user_item->user_id;
 				$password_default 	= $user_item->password_default;
 				$kodesie			= $user_item->section_code;
-				$employee_name 		= $user_item->employee_name; 
+				$employee_name 		= $user_item->employee_name;
 				$kode_lokasi_kerja 	= $user_item->location_code;
 			}
 			$ses = array(
@@ -167,11 +174,12 @@ class C_Index extends CI_Controller {
 							'kode_lokasi_kerja'	=> $kode_lokasi_kerja,
 						);
 			$this->session->set_userdata($ses);
-			
+
+			$aksi = 'Login';
+			$detail = 'Login';
+			$this->log_activity->activity_log($aksi, $detail);
+
 			redirect($this->session->userdata('last_page'));
-			
-			
-			//redirect('index');
 		}else{
 			$ses = array(
 							'gagal' => 1,
@@ -182,25 +190,26 @@ class C_Index extends CI_Controller {
 			}else{
 				redirect('');
 			}
-			
+
 		}
+
 	}
-	
+
 	public function ChangePassword()
 	{	$this->checkSession();
 		//$usr = "D1178";
 		$user_id = $this->session->userid;
-		
+
 		$data['UserData'] = $this->M_user->getUser($user_id);
 		$data['id'] = $user_id;
-		
+
 		foreach($data['UserData'] as $user){
 			$password = $user['user_password'];
 		}
-		
+
 		$this->form_validation->set_rules('txtPasswordNow', 'username', 'required');
 		// $this->form_validation->set_rules('txtPassword', 'username', 'required');
-		
+
 		if ($this->form_validation->run() === FALSE)
 		{
 				$data['error'] = '';
@@ -208,33 +217,46 @@ class C_Index extends CI_Controller {
 
 		}
 		else
-		{	
+		{
 			if($password == md5($this->input->post('txtPasswordNow'))){
 				if($this->input->post('txtPassword')!='' and $this->input->post('txtPasswordCheck')!=''){
-				$data = array(
-					'user_password'	=> md5($this->input->post('txtPassword')),
-					'creation_date'=>  $this->input->post('hdnDate'),
-					'created_by'=>  $this->input->post('hdnUser')
-					);
+					$aksi = 'Change Password';
+					$detail = 'Change Password';
+					$this->log_activity->activity_log($aksi, $detail);
+
+					$data = array(
+						'user_password'	=> md5($this->input->post('txtPassword')),
+						'creation_date'=>  $this->input->post('hdnDate'),
+						'created_by'=>  $this->input->post('hdnUser')
+						);
 				}
 				else{
 					$data['error'] = 'New Password Empty';
 					$this->load->view('V_ChangePassword',$data);
-				}	
+				}
 				$this->M_user->updateUser($data,$user_id);
 				//print_r($data);
 				redirect();
 			}else{
+				$aksi = 'Error Change Password';
+				$detail = 'Error Change Password';
+				$this->log_activity->activity_log($aksi, $detail);
+
 				$data['error'] = 'Password Wrong';
 				$this->load->view('V_ChangePassword',$data);
 			}
-			
+
 		}
-	
-		
+
 	}
-	
+
 	public function logout(){
+		$aksi = 'Log Out';
+		$detail = 'Log Out ERP';
+
+		$this->log_activity->activity_log($aksi, $detail);
+
+
 		$this->session->unset_userdata('is_logged');
 		if($this->session->gagal){
 			$this->session->unset_userdata('gagal');
@@ -251,5 +273,16 @@ class C_Index extends CI_Controller {
 
 		redirect('index');
 	}
-	
+
+	public function getLog()
+	{
+		$menu = $_POST['menu1'];
+
+		$aksi = 'Akses Menu';
+		$detail = 'Mengakses Menu '.$menu;
+
+		$this->log_activity->activity_log($aksi, $detail);
+
+	}
+
 }

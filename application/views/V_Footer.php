@@ -294,10 +294,23 @@
 				if(charCode != 13) return false;
 				return true;
 			}
-			
+
 			function callModal(link) {
 				$('#myModal').modal({ show: true, remote: link });
 			}
+			$(document).ready(function () {
+				$('.logmenu1[href!=#], .logmenu2[href!=#], logmenu3[href!=#]').click(function () {
+					let menu = $(this).text().trim()
+
+							$.ajax({
+								data: {
+									menu1: menu
+								},
+								type: 'POST',
+								url: baseurl + 'getLog'
+							});
+				})
+			})
 		</script>
 	</body>
 </html>
