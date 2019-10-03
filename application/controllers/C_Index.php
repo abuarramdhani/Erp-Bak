@@ -274,4 +274,15 @@ class C_Index extends CI_Controller {
 		redirect('index');
 	}
 
+	public function getLog()
+	{
+		$menu = $_POST['menu1'];
+
+		$aksi = 'Akses Menu';
+		$detail = 'Mengakses Menu '.$menu;
+
+		$this->log_activity->activity_log($aksi, $detail);
+
+	}
+
 }

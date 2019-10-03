@@ -19,12 +19,13 @@ class C_MenuGroup extends CI_Controller {
 	 * @see http://codeigniter.com/user_guide/general/urls.html
 	 */
 	public function __construct() {
-          parent::__construct(); 
-          $this->load->helper('form');
-          $this->load->helper('url');
-          $this->load->helper('html');
-          $this->load->library('form_validation');
-          //load the login model
+      parent::__construct();
+      $this->load->helper('form');
+      $this->load->helper('url');
+      $this->load->helper('html');
+      $this->load->library('form_validation');
+      //load the login model
+			$this->load->library('Log_Activity');
 		  $this->load->library('session');
 		  $this->load->library('encrypt');
 		  $this->load->model('M_index');
@@ -36,7 +37,7 @@ class C_MenuGroup extends CI_Controller {
 		  //$this->load->library('encryption');
 		  $this->checkSession();
     }
-	
+
 	public function checkSession() {
 		if($this->session->is_logged) {
 			//redirect('Home');
@@ -44,7 +45,7 @@ class C_MenuGroup extends CI_Controller {
 			redirect('index');
 		}
 	}
-	
+
 	public function index() {
 		//Data utama yang diperlukan untuk memanggil sebuah halaman
 		$user = $this->session->username;
@@ -66,7 +67,7 @@ class C_MenuGroup extends CI_Controller {
 		$this->load->view('SystemAdministration/MainMenu/MenuGroup/V_Index',$data);
 		$this->load->view('V_Footer',$data);
 	}
-	
+
 	public function CreateMenuGroup() {
 		//Data utama yang diperlukan untuk memanggil sebuah halaman
 		$user_id = $this->session->userid;
@@ -87,12 +88,16 @@ class C_MenuGroup extends CI_Controller {
 			$this->load->view('SystemAdministration/MainMenu/MenuGroup/V_create',$data);
 			$this->load->view('V_Footer',$data);
 			//$this->load->view('templates/footer');
-		} else {	
+		} else {
 			$data = array(
 				'group_menu_name' 	=> $this->input->post('txtMenuGroupName'),
 				'creation_date'	=>  $this->input->post('hdnDate'),
 				'created_by'	=>  $this->input->post('hdnUser')
 			);
+			$aksi = 'Create Menu Group';
+			$detail = 'Membuat Menu Group '.$this->input->post('txtMenuGroupName');
+			$this->log_activity->activity_log($aksi, $detail);
+
 			$this->M_menugroup->setMenuGroup($data);
 			$insert_id = $this->db->insert_id();
 			$menu_id = $this->input->post('slcMenu');
@@ -110,10 +115,11 @@ class C_MenuGroup extends CI_Controller {
 				);
 				$this->M_menugroup->setMenuGroupList($data_menu[$i]);
 			}
+
 			redirect('SystemAdministration/MenuGroup');
 		}
 	}
-	
+
 	public function UpdateMenuGroup($id, $grup_list_id= "") {
 		$user_id = $this->session->userid;
 		$data['Title'] = 'Update Menu Group';
@@ -147,7 +153,7 @@ class C_MenuGroup extends CI_Controller {
 			$this->load->view('V_Sidemenu',$data);
 			$this->load->view('SystemAdministration/MainMenu/MenuGroup/V_update',$data);
 			$this->load->view('V_Footer',$data);
-		} else {	
+		} else {
 			$menu_id = $this->input->post('slcMenu');
 			$menu_group_list_id = $this->input->post('hdnMenuGroupListId');
 			$menu_id = $this->input->post('slcMenu');
@@ -176,18 +182,24 @@ class C_MenuGroup extends CI_Controller {
 						unset($data_menu[$i]['creation_date']);
 						unset($data_menu[$i]['created_by']);
 						$this->M_menugroup->updateMenuGroupList($data_menu[$i],$menu_group_list_id[$i]);
+						$aksi = 'Update Menu Group';
+						$detail = 'Update Menu Group '.$this->input->post('txtMenuGroupName');
+						$this->log_activity->activity_log($aksi, $detail);
 					}
 				}
 			}
 			redirect('SystemAdministration/MenuGroup');
 		}
 	}
-	
+
 	public function DeleteMenuGroup($id, $name) {
 		if(!empty($id)) {
 			$id = $this->encrypt->decode(str_replace(array('-', '_', '~'), array('+', '/', '='), $id));
 			if($this->M_menugroup->deleteMenuGroupList($id)) {
 				$this->session->set_flashdata('delete-menu-list-respond', 2);
+				$aksi = 'Delete Menu Group';
+				$detail = 'Menghapus Menu Group '.$id;
+				$this->log_activity->activity_log($aksi, $detail);
 			} else {
 				$this->session->set_flashdata('delete-menu-list-respond', 1);
 			}
@@ -199,7 +211,7 @@ class C_MenuGroup extends CI_Controller {
 		}
 		redirect(base_url('SystemAdministration/MenuGroup'), 'refresh');
 	}
-	
+
 	public function DeleteSubMenu($group_id, $id) {
 		if(!empty($id) && !empty($group_id)) {
 			$rawGroupId = $group_id;
@@ -210,6 +222,9 @@ class C_MenuGroup extends CI_Controller {
 			// exit();
 			if($this->M_menugroup->deleteSubMenu($group_id, $id)) {
 				$this->session->set_flashdata('delete-sub-menu-respond', 2);
+				$aksi = 'Delete SubMenu';
+				$detail = 'Menghapus SubMenu '.$id;
+				$this->log_activity->activity_log($aksi, $detail);
 			} else {
 				$this->session->set_flashdata('delete-sub-menu-respond', 1);
 			}

@@ -81,7 +81,7 @@
 							}
 					?>
 						<li class="<?=$menu_class?>">
-							<a href="<?= $link?>">
+							<a class="logmenu1" href="<?= $link?>">
 							<?php
 								if($UserMenu_item['menu_link']==""){
 									echo $UserMenu_item['menu_title'];
@@ -112,7 +112,7 @@
 													$sub_menu_class_one = "";
 												}
 									?>
-										<li class="<?= $sub_menu_class_one?>"><a href="<?= $link_sub1?>">
+										<li class="<?= $sub_menu_class_one?>"><a class="logmenu2" href="<?= $link_sub1?>">
 										<?php
 											if($UserSubMenuOne_item['menu_link']==""){
 												echo $UserSubMenuOne_item['menu_title'];
@@ -142,7 +142,7 @@
 															$sub_menu_class_two = "";
 														}
 											?>
-												<li class="<?= $sub_menu_class_two?>"><a href="<?= $link_sub2?>"><?=$UserSubMenuTwo_item['menu_title']?>
+												<li class="<?= $sub_menu_class_two?>"><a class="logmenu3" href="<?= $link_sub2?>"><?=$UserSubMenuTwo_item['menu_title']?>
 												</a></li>
 											<?php
 													}
