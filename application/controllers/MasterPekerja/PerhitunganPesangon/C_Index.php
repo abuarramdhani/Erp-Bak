@@ -10,8 +10,8 @@ class C_Index extends CI_Controller {
 
     $this->load->library('General');
     $this->load->library('encrypt');
+		$this->load->library('session');
     $this->load->model('M_Index');
-    $this->load->library('session');
 		$this->load->model('SystemAdministration/MainMenu/M_user');
 		$this->load->model('MasterPekerja/PerhitunganPesangon/M_pesangon');
 
@@ -253,16 +253,15 @@ class C_Index extends CI_Controller {
 
 		 public function getPDF()
 		 {
-			 $type = $_GET['type'];
-			 $id 	 = $_GET['id'];
-
-			 $data['personalia'] = $_GET['personalia'];
-			 $data['spsi'] = $_GET['spsi'];
-			 $data['saksi1'] = $_GET['saksi1'];
-			 $data['saksi2'] = $_GET['saksi2'];
+			 $id 	 								= $this->input->post('id_sangu');
+			 $data['personalia'] 	= $this->input->post('Wakil_Personalia');
+			 $data['spsi'] 				= $this->input->post('Wakil_SPSI');
+			 $data['saksi1'] 			= $this->input->post('Saksi_Janji1');
+			 $data['saksi2'] 			= $this->input->post('Saksi_Janji2');
 
 			 $data['pekerjaPHK'] = $this->M_pesangon->getPekerjaPHK($id);
 			 $tgl_keluar = $data['pekerjaPHK'];
+			 $alasan = $this->M_pesangon->getAlasanKeluar($tgl_keluar[0]['noind']);
 			 $data['tgl_keluar'] = date("d", strtotime($tgl_keluar[0]['tanggal_keluar']));
 			 $data['bln_keluar'] = date("m", strtotime($tgl_keluar[0]['tanggal_keluar']));
 			 $data['thn_keluar'] = date("Y", strtotime($tgl_keluar[0]['tanggal_keluar']));
@@ -373,13 +372,15 @@ class C_Index extends CI_Controller {
 
  			 $pdf = $this->pdf->load();
  			 $pdf = new mPDF('P','A4',0,'',10,10,10,10,0,0);
- 			 $filename = 'Perjanjian Bersama Usia Lanjut.pdf'.$date;
 
-			 if($type == 'lansia'){
+			 if($alasan == "PUTUS HUBUNGAN KERJA KARENA USIA LANJUT"){
+				 $filename = 'Perjanjian Bersama Usia Lanjut.pdf'.$date;
 				 $html = $this->load->view('MasterPekerja/PerhitunganPesangon/Perjanjian/V_lansia', $data, true);
-			 }elseif($type == 'lansia_exp'){
+			 }elseif($alasan == 'PUTUS HUBUNGAN KERJA KARENA PENSIUN DIPERCEPAT'){
+				 $filename = 'Perjanjian Bersama Usia Lanjut Dipercepat.pdf'.$date;
 				 $html = $this->load->view('MasterPekerja/PerhitunganPesangon/Perjanjian/V_lansia_express', $data, true);
-			 }else{
+			 }elseif($alasan == 'PUTUS HUBUNGAN KERJA KARENA NON USIA LANJUT'){
+				 $filename = 'Perjanjian Bersama Non Usia Lanjut.pdf'.$date;
 				 $html = $this->load->view('MasterPekerja/PerhitunganPesangon/Perjanjian/V_non_lansia', $data, true);
 			 }
 
