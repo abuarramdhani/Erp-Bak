@@ -610,8 +610,20 @@ class M_Order extends CI_Model
     public function getPekerja($ks)
     {
         $ks = substr($ks, 0,7);
-        $sql = "select * from er.er_employee_all where section_code like '$ks%' and resign = '0' order by employee_name asc";
-        $query = $this->db->query($sql);
+        $sql = "select
+                    tp.noind,
+                    tp.nama,
+                    coalesce(tk.pekerjaan, 'STAFF') pekerjaan
+                from
+                    hrd_khs.tpribadi tp
+                left join hrd_khs.tpekerjaan tk on
+                    tp.kd_pkj = tk.kdpekerjaan
+                where
+                    keluar = '0'
+                    and kodesie like '$ks%'
+                order by
+                    1";
+        $query = $this->personalia->query($sql);
         return $query->result_array();
     }
 
