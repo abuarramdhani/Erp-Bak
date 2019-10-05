@@ -11,11 +11,11 @@ class M_stockgudangalat extends CI_Model
       // $this->oracle = $this->load->database('oracle', true);
    }
 
-   function insertData($tag,$nama,$merk,$qty,$pilihan) 
+   function insertData($no_po,$nama,$merk,$pilihan,$qty,$tag,$subinv) 
    {
       $db = $this->load->database();
-      $sql ="INSERT into msg.msg_stok_gdg_alat (tag, nama, merk, qty, jenis) 
-		VALUES ('$tag', '$nama', '$merk', '$qty', '$pilihan')";
+      $sql ="INSERT into msg.msg_stok_gdg_alat_tst (no_po, tag, nama, merk, qty, jenis, subinv) 
+		VALUES ('$no_po','$tag', '$nama', '$merk', '$qty', '$pilihan', '$subinv')";
       $query = $this->db->query($sql);
       // echo $sql.'<br>';
       // exit();//
@@ -25,9 +25,35 @@ class M_stockgudangalat extends CI_Model
    function insertTable() 
    {
       $db = $this->load->database();
-      $sql = "SELECT * FROM  msg.msg_stok_gdg_alat";
+      $sql = "SELECT distinct msgab.no_po, msgab.tag, msgab.nama, msgab.merk, msgab.subinv,
+      msgab.qty, 
+      count(nama) OVER (partition by nama) jml, msgab.jenis, msgab.id FROM 
+      msg.msg_stok_gdg_alat_tst msgab order by nama asc";
       $query = $this->db->query($sql);
       return $query->result_array();
+   }
+
+   function updateData($tag,$nama,$nama2,$merk,$qty,$pilihan,$no_po)
+   {
+      $db = $this->load->database();
+      $sql = "UPDATE msg.msg_stok_gdg_alat_tst SET tag = '$tag', nama = '$nama2',
+             merk = '$merk', qty = '$qty', jenis = '$pilihan', no_po = '$no_po'
+      WHERE nama = '$nama'";
+      // echo $sql;exit();
+      // print_r($sql);exit;
+      $this->db->query($sql);
+      // $query = $this->db->query($sql);
+      // return $query;
+      // return $sql;
+   }
+
+   function deleteData($id)
+   {
+      $db = $this->load->database();
+      $sql ="DELETE FROM msg.msg_stok_gdg_alat_tst 
+      WHERE id ='$id'";
+      
+      $this->db->query($sql);
    }
    
 }
