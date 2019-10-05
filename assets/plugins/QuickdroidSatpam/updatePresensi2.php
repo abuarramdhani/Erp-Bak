@@ -7,7 +7,7 @@ $idLogin		= $_POST['idLogin'];// $this->input->post('idLogin');
 
 
 if(!empty($spdl_id) || !empty($stat) || !empty($idLogin)){
-	$sql ="UPDATE Presensi.tpresensi_dl set tanggal=current_date,user_='".$idLogin."' where spdl_id='".$spdl_id."' and stat='".$stat."'";
+	$sql ="UPDATE \"Presensi\".tpresensi_dl set tanggal=current_date,user_='".$idLogin."' where spdl_id='".$spdl_id."' and stat='".$stat."'";
 
 	$query = pg_query($conn,$sql);
 	
