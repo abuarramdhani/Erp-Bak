@@ -923,9 +923,16 @@ function rekap_datatable_detail() {
 						lengthChange: true,
 						scrollX: true,
 						dom: 'Bfrtip',
-						buttons: [
-							'excel'
-						],
+						buttons: [{
+							extend: 'excel',
+							customizeData: function(data) {
+								for(var i = 0; i < data.body.length; i++) {
+									for(var j = 0; j < data.body[i].length; j++) {
+										data.body[i][j] = '\u200C' + data.body[i][j];
+									}
+								}
+							}
+						}],
 					});
 			//	}
 

@@ -171,7 +171,7 @@
                                                      <td style="white-space: nowrap; vertical-align: middle;"><?php echo $hasil['nama'];?></td>
                                                      <td style="white-space: nowrap; vertical-align: middle;"><?php echo $hasil['bpjskes'];?></td>
                                                      <td style="white-space: nowrap; vertical-align: middle;"><?php echo $hasil['bpjstk'];?></td>
-                                                     <td style="white-space: nowrap; vertical-align: middle;"><?php echo "'".$hasil['nik'];?></td>
+                                                     <td style="white-space: nowrap; vertical-align: middle;"><?php echo $hasil['nik'];?></td>
                                                      <td style="white-space: nowrap; vertical-align: middle;"><?php echo date('d-m-Y', strtotime($hasil['lahir']));?></td>
                                                      <td style="white-space: nowrap; vertical-align: middle;"><?php echo $hasil['seksi_asal'];?></td>
                                                      <td style="white-space: nowrap; vertical-align: middle;"><?php echo $hasil['lokasi_kerja_asal'];?></td>
