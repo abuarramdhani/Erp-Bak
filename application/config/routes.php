@@ -3137,3 +3137,12 @@ $route['StockGudangAlat/Stock/(:any)/(:any)'] = 'StockGudangAlat/C_StockGudangAl
 $route['StockGudangAlat/Stock/(:any)/(:any)/(:any)'] = 'StockGudangAlat/C_StockGudangAlat/$1/$2/$3';
 $route['StockGudangAlat/Stock/search_input']		= 'StockGudangAlat/C_StockGudangAlat/search_input';
 
+//---------------------------Perkiraan Barang Datang-------------------------------//
+$route['PerkiraanBarangDatang'] = 'PerkiraanBarangDatang/C_Index';
+$route['PerkiraanBarangDatang/Monitoring'] = 'PerkiraanBarangDatang/MainMenu/Monitoring/C_Monitoring';
+$route['PerkiraanBarangDatang/Monitoring/updprmdate'] = 'PerkiraanBarangDatang/MainMenu/Monitoring/C_Monitoring/UpdatePromisedDate';
+$route['PerkiraanBarangDatang/Monitoring/updprmdate/(:any)'] = 'PerkiraanBarangDatang/MainMenu/Monitoring/C_Monitoring/UpdatePromisedDate/$1';
+$route['PerkiraanBarangDatang/Monitoring/updprmdate/(:any)/(:any)'] = 'PerkiraanBarangDatang/MainMenu/Monitoring/C_Monitoring/UpdatePromisedDate/$1/$2';
+$route['PerkiraanBarangDatang/Monitoring/updstatuspbd'] = 'PerkiraanBarangDatang/MainMenu/Monitoring/C_Monitoring/UpdateStatus';
+$route['PerkiraanBarangDatang/Monitoring/updstatuspbd/(:any)'] = 'PerkiraanBarangDatang/MainMenu/Monitoring/C_Monitoring/UpdateStatus/$1';
+$route['PerkiraanBarangDatang/Monitoring/updstatuspbd/(:any)/(:any)'] = 'PerkiraanBarangDatang/MainMenu/Monitoring/C_Monitoring/UpdateStatus/$1/$2';
