@@ -10,6 +10,7 @@ class M_logbookharian extends CI_MODEL
   {
     parent::__construct();
     $this->load->database();
+    $this->personalia = $this->load->database('personalia',TRUE); 
   }
 
   public function getLimbahJenis(){
@@ -37,8 +38,8 @@ class M_logbookharian extends CI_MODEL
 
   public function getUser()
   {
-      $sql = "select * from ga.ga_limbah_user Order by nama";
-      $query = $this->db->query($sql);
+      $sql = "SELECT noind as user_name, nama FROM hrd_khs.tpribadi WHERE keluar = '0' AND kodesie LIKE '%4060101%' and kd_jabatan between '01' and '12'";
+      $query = $this->personalia->query($sql);
       return $query->result_array();
   }
 
