@@ -3146,3 +3146,17 @@ $route['PerkiraanBarangDatang/Monitoring/updprmdate/(:any)/(:any)'] = 'Perkiraan
 $route['PerkiraanBarangDatang/Monitoring/updstatuspbd'] = 'PerkiraanBarangDatang/MainMenu/Monitoring/C_Monitoring/UpdateStatus';
 $route['PerkiraanBarangDatang/Monitoring/updstatuspbd/(:any)'] = 'PerkiraanBarangDatang/MainMenu/Monitoring/C_Monitoring/UpdateStatus/$1';
 $route['PerkiraanBarangDatang/Monitoring/updstatuspbd/(:any)/(:any)'] = 'PerkiraanBarangDatang/MainMenu/Monitoring/C_Monitoring/UpdateStatus/$1/$2';
+
+//---------------------------Barang Datang-------------------------------//
+$route['BarangDatang'] = 'BarangDatang/C_Index';
+$route['BarangDatang/InputBarangDatang'] = 'BarangDatang/C_Input';
+$route['BarangDatang/InputBarangDatang/(:any)'] = 'BarangDatang/C_Input/$1';
+$route['BarangDatang/GetSupplier'] = 'BarangDatang/C_Input/GetSupplier';
+$route['BarangDatang/GetIdSupplier'] = 'BarangDatang/C_Input/GetIdSupplier';
+$route['BarangDatang/ajaxSearching'] = 'BarangDatang/C_Input/SearchingAjax';
+$route['BarangDatang/itembd'] = 'BarangDatang/C_Input/itembd';
+$route['BarangDatang/gudangbd'] = 'BarangDatang/C_Input/gudangbd';
+$route['SaveData'] = 'BarangDatang/C_Input/saveData';
+$route['BarangDatang/SearchSupplier'] = 'BarangDatang/C_Input/SearchSupplier';
+$route['BarangDatang/MonitoringBarangDatang'] = 'BarangDatang/C_Monitoring';
+$route['BarangDatang/search'] = 'BarangDatang/C_Monitoring/search';
