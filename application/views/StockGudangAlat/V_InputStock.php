@@ -80,7 +80,7 @@
                                                 <strong>Clear</strong>
                                                 <span style="padding-left: 5px" class="fa fa-refresh"></span>
                                             </button>
-                                            <button id="next" type="button" class="btn btn-primary btn-sm " style="font-size: 13px" disabled>
+                                            <button id="nextsga" type="button" class="btn btn-primary btn-sm " style="font-size: 13px" disabled>
                                                 <strong>Next</strong>
                                                 <span style="padding-left: 5px" class="fa fa-arrow-right"></span>
                                             </button>	
