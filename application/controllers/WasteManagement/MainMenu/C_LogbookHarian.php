@@ -54,6 +54,8 @@ class C_LogbookHarian extends CI_Controller
     $data['log'] = $this->M_logbookharian->getLimbahJenis();
     $data['lokasi'] = $this->M_logbookharian->getLokasi();
     $data['user_name'] = $this->M_logbookharian->getUser();
+      // echo "<pre>"; print_r($data['user_name']); exit();
+
 
 		$this->load->view('V_Header',$data);
 		$this->load->view('V_Sidemenu',$data);
