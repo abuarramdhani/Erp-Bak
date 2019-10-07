@@ -2741,12 +2741,6 @@ $route['EvaluasiTIMS'] = 'EvaluasiTIMS/C_Index/index';
 $route['EvaluasiTIMS/Setup/(:any)'] = 'EvaluasiTIMS/C_Index/$1';
 $route['EvaluasiTIMS/Setup/(:any)/(:any)'] = 'EvaluasiTIMS/C_Index/$1/$2';
 
-//-------------------------------------------------Stok Gudang Alat-----------------------------------------------------//
-$route['StockGudangAlat'] = 'StockGudangAlat/C_StockGudangAlat';
-$route['StockGudangAlat/Stock/(:any)'] = 'StockGudangAlat/C_StockGudangAlat/$1';
-$route['StockGudangAlat/Stock/(:any)/(:any)'] = 'StockGudangAlat/C_StockGudangAlat/$1/$2';
-$route['StockGudangAlat/Stock/(:any)/(:any)/(:any)'] = 'StockGudangAlat/C_StockGudangAlat/$1/$2/$3';
-
 //-----------------------------------------------------Transact Bon------------------------------------------------------------//
 $route['TransactBon'] = 'TransactBon/C_Transact';
 $route['TransactBon/Transact/(:any)'] = 'TransactBon/C_Transact/$1';
