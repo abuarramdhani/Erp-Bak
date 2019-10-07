@@ -3135,3 +3135,11 @@ $route['MonitoringGdSparepart/Input/(:any)/(:any)']		= 'MonitoringGdSparepart/C_
 $route['MonitoringGdSparepart/Monitoring']					= 'MonitoringGdSparepart/C_Monitoring';
 $route['MonitoringGdSparepart/Monitoring/(:any)']			= 'MonitoringGdSparepart/C_Monitoring/$1';
 $route['MonitoringGdSparepart/Monitoring/(:any)/(:any)']	= 'MonitoringGdSparepart/C_Monitoring/$1/$2';
+
+//-------------------------------------------------Stok Gudang Alat-----------------------------------------------------//
+$route['StockGudangAlat'] = 'StockGudangAlat/C_StockGudangAlat';
+$route['StockGudangAlat/Stock/(:any)'] = 'StockGudangAlat/C_StockGudangAlat/$1';
+$route['StockGudangAlat/Stock/(:any)/(:any)'] = 'StockGudangAlat/C_StockGudangAlat/$1/$2';
+$route['StockGudangAlat/Stock/(:any)/(:any)/(:any)'] = 'StockGudangAlat/C_StockGudangAlat/$1/$2/$3';
+$route['StockGudangAlat/Stock/search_input']		= 'StockGudangAlat/C_StockGudangAlat/search_input';
+

@@ -99,13 +99,13 @@ $("#clear").click(function(){
 $("#nama, #merk, #jenis, #qty").change(function(){
     if (($('#jenis').val() != "" && $('#jenis').val() != undefined) && $('#nama').val() != "" 
         && $('#merk').val() != "" && $('#qty').val() != "") {
-        $("#next").prop('disabled', false);
+        $("#nextsga").prop('disabled', false);
         // $("#clear").removeAttr('disabled');
     } else {
-        $("#next").prop('disabled', true);
+        $("#nextsga").prop('disabled', true);
     }
 
-    $("#next").click(function(){
+    $("#nextsga").click(function(){
 		$("#table_input").show();
 		$("#SGA_save").show();
         var saveForm = $('#formSGA').serialize(); 
