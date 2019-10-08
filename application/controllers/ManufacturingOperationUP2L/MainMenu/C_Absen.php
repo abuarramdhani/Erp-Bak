@@ -82,7 +82,7 @@ class C_Absen extends CI_Controller
         $data  = array(
 			'nama'					=> $nama[1],
 			'no_induk'				=> $nama[0],
-			'alasan'				=> $this->input->post('absAls'),
+			'alasan'				=> '',
 			'category_produksi'		=> 'Absen',
 			'presensi'				=> $this->input->post('absPrs'),
 			'nilai_ott'				=> 0,
@@ -153,7 +153,7 @@ class C_Absen extends CI_Controller
 			'nama'					=> $nama[1],
 			'no_induk'				=> $nama[0],
 			'category_produksi'		=> 'Absen',
-			'alasan'				=> $this->input->post('absAls'),
+			'alasan'				=> '',
 			'presensi'				=> $this->input->post('absPrs'),
 			'nilai_ott'				=> 0,
 			'lembur'				=> FALSE,

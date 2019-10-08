@@ -58,10 +58,6 @@
                                             <td class="title">Kategori Produksi</td>
                                             <td>: <?= $show[0]['category_produksi'] ?></td>
                                         </tr>
-                                        <tr>
-                                            <td class="title">Alasan</td>
-                                            <td>: <?= $show[0]['alasan'] ?></td>
-                                        </tr>
                                     </table>
                                 </div>
                             </div>
