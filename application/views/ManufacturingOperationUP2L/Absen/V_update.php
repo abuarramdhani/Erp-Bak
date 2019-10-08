@@ -58,10 +58,6 @@
                                                 <option value="SK">SK</option>
                                             </select>
                                         </div> <br />
-                                        <div class="form-group">
-                                            <label for="absAls" class="control-label">Alasan</label><br />
-                                            <textarea placeholder="Tuliskan alasan..." name="absAls" id="absAls" cols="80" rows="5" required><?= $show[0]['alasan'] ?></textarea>
-                                        </div> <br />
 
                                     </div><br /> <br /><br />
                             </div><div class="col-lg-3"> </div>

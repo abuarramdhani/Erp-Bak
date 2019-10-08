@@ -40,7 +40,6 @@
                                                 <th style="text-align:center;">No Induk</th>
                                                 <th style="text-align:center;">Tanggal</th>
                                                 <th style="text-align:center;">Presensi</th>
-                                                <th style="text-align:center;">Alasan</th>
                                             </tr>
                                         </thead>
                                         <tbody>
@@ -56,7 +55,6 @@
                                                 <td><?= $value['no_induk'];?></td>
                                                 <td><?= $value['created_date']?></td>
                                                 <td><?= $value['presensi']?></td>
-                                                <td><?= $value['alasan']?></td>
                                             </tr>
                                             <?php }?>
                                         </tbody>

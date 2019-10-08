@@ -87,7 +87,8 @@ class C_MasterItem extends CI_Controller
 
 		if($this->upload->do_upload('item')) {
 			$media			= $this->upload->data();
-	        $inputFileName 	= 'assets/download/ManufacturingOperationUP2L/masterItem/'.$media['file_name'];
+			$inputFileName 	= 'assets/download/ManufacturingOperationUP2L/masterItem/'.$media['file_name'];
+			chmod('./' . $inputFileName, 0777);
             try {
             	$inputFileType  = PHPExcel_IOFactory::identify($inputFileName);
             	$objReader      = PHPExcel_IOFactory::createReader($inputFileType);

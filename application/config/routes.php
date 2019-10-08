@@ -2280,8 +2280,6 @@ $route['InventoryManagement/CreateKIB/pdf/(:any)/(:any)/(:any)'] = 'InventoryKIB
 $route['InventoryManagement/CreateKIB/pdf2/(:any)/(:any)/(:any)'] = 'InventoryKIB/MainMenu/CreateKIB/C_CreateKIB/pdf2/$1/$2/$3';
 $route['InventoryManagement/CreateKIB/pdf3/(:any)'] = 'InventoryKIB/MainMenu/CreateKIB/C_CreateKIB/pdf3/$1';
 
-
-
 //------------------------------------ Manufacturing Operation ----------------------------------------
 $route['ManufacturingOperationUP2L']								= 'ManufacturingOperationUP2L/C_Index/index';
 $route['ManufacturingOperationUP2L/Core']							= 'ManufacturingOperationUP2L/MainMenu/C_Core';
@@ -2310,9 +2308,9 @@ $route['ManufacturingOperationUP2L/QualityControl']					= 'ManufacturingOperatio
 $route['ManufacturingOperationUP2L/QualityControl/(:any)']			= 'ManufacturingOperationUP2L/MainMenu/C_QualityControl/$1';
 $route['ManufacturingOperationUP2L/QualityControl/(:any)/(:any)']	= 'ManufacturingOperationUP2L/MainMenu/C_QualityControl/$1/$2';
 $route['ManufacturingOperationUP2L/QualityControl/(:any)/(:any)/(:any)']	= 'ManufacturingOperationUP2L/MainMenu/C_QualityControl/$1/$2/$3';
-$route['ManufacturingOperationUP2L/XFIN']							= 'ManufacturingOperationUP2L/MainMenu/C_XFIN';
-$route['ManufacturingOperationUP2L/XFIN/(:any)']					= 'ManufacturingOperationUP2L/MainMenu/C_XFIN/$1';
-$route['ManufacturingOperationUP2L/XFIN/(:any)/(:any)']				= 'ManufacturingOperationUP2L/MainMenu/C_XFIN/$1/$2';
+$route['ManufacturingOperationUP2L/GenerateLaporan']							= 'ManufacturingOperationUP2L/MainMenu/C_GLap';
+$route['ManufacturingOperationUP2L/GenerateLaporan/(:any)']					= 'ManufacturingOperationUP2L/MainMenu/C_GLap/$1';
+$route['ManufacturingOperationUP2L/GenerateLaporan/(:any)/(:any)']				= 'ManufacturingOperationUP2L/MainMenu/C_GLap/$1/$2';
 
 $route['ManufacturingOperationUP2L/Report']							= 'ManufacturingOperationUP2L/MainMenu/C_Report';
 $route['ManufacturingOperationUP2L/Report/(:any)']					= 'ManufacturingOperationUP2L/MainMenu/C_Report/$1';
