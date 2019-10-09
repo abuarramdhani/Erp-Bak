@@ -393,6 +393,7 @@ $(document).ready(function() {
                             $(chck).each(function() {
                                 var item = $(this).attr('item');
                                 var desc = $(this).attr('desc');
+                                var uom = $(this).attr('uom');
                                 var qtyRecipt = $(this).attr('qtyRecipt');
                                 var qtyBilled = $(this).attr('qtyBilled');
                                 var qtyReject = $(this).attr('qtyReject');
@@ -420,7 +421,7 @@ $(document).ready(function() {
                                     '<td>'+ lppb +'<input type="hidden" class="form-control" name="hdnLppb[]" value="' + lppb + '"></td>'+
                                     '<td>' + item + '<input type="hidden" class="form-control" name="hdnItem[]" value="' + item + '"></td>' +
                                     '<td>' + desc + '<input type="hidden" class="form-control" name="hdnDesc[]" value="' + desc + '"></td>' +
-                                    // '<td>' + qtyBilled + '<input type="hidden" class="form-control" name="hdnQtyBilled[]" value="' + qtyBilled + '"></td>' +
+                                    '<td>' + uom + '<input type="hidden" class="form-control" name="hdnUom[]" value="' + uom + '"></td>' +                                    // '<td>' + qtyBilled + '<input type="hidden" class="form-control" name="hdnQtyBilled[]" value="' + qtyBilled + '"></td>' +
                                     // '<td>' + qtyReject + '<input type="hidden" class="form-control" name="hdnQtyReject[]" value="' + qtyReject + '"></td>' +
                                     // '<td>' + currency + '<input type="hidden" class="form-control" name="hdnCurrency[]" value="' + currency + '"></td>' +
                                     // '<td>' + unitPrice + '<input type="hidden" class="form-control" name="hdnUnitPrice[]" value="' + unitPrice + '"></td>' +

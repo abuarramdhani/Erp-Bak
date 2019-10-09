@@ -485,6 +485,7 @@ class M_nonconformity extends CI_Model
         pov.vendor_name vendor_name,
         ppf.full_name buyer,
         ppf.NATIONAL_IDENTIFIER ,
+        pol.unit_meas_lookup_code uom,
         pol.unit_price unit_price,
         pll.quantity_rejected rejected,
         pol.item_description description,
@@ -536,6 +537,7 @@ class M_nonconformity extends CI_Model
         ppf.full_name buyer,
         ppf.NATIONAL_IDENTIFIER ,
         pov.vendor_name vendor_name,
+        pol.unit_meas_lookup_code uom,
         pol.unit_price unit_price, 
         pll.quantity_rejected rejected,
         pol.item_description description,
@@ -580,6 +582,7 @@ class M_nonconformity extends CI_Model
         ppf.full_name buyer,
         ppf.NATIONAL_IDENTIFIER ,
         pov.vendor_name vendor_name,
+        pol.unit_meas_lookup_code uom,
         pol.unit_price unit_price,
         pll.quantity_rejected rejected,
         pol.item_description description,
@@ -625,6 +628,7 @@ class M_nonconformity extends CI_Model
                 ppf.full_name buyer,
                 ppf.NATIONAL_IDENTIFIER ,
                 pov.vendor_name vendor_name,
+                pol.unit_meas_lookup_code uom,
                 pol.unit_price unit_price, 
                 pll.quantity_rejected rejected,
                 pol.item_description description,
@@ -696,6 +700,7 @@ class M_nonconformity extends CI_Model
             pov.vendor_name vendor_name,
             ppf.full_name buyer,
             ppf.NATIONAL_IDENTIFIER ,
+            pol.unit_meas_lookup_code uom,
             pol.unit_price unit_price,
             pll.quantity_rejected rejected,
             pol.item_description description,
@@ -750,6 +755,7 @@ class M_nonconformity extends CI_Model
                     ppf.full_name buyer,
                     ppf.NATIONAL_IDENTIFIER ,
                     pov.vendor_name vendor_name,
+                    pol.unit_meas_lookup_code uom,
                     pol.unit_price unit_price, 
                     pll.quantity_rejected rejected,
                     pol.item_description description,
@@ -935,6 +941,18 @@ class M_nonconformity extends CI_Model
     public function saveNotes($note)
     {
         $this->db->insert('pm.pm_non_conformity_buyer_notes',$note);
+    }
+
+    public function getDesc($headerId)
+    {
+        $query = $this->db->query("select distinct description from pm.pm_po_oracle_non_conformity_lines where header_id='$headerId'");
+        return $query->result_array();
+    }
+
+    public function getCs($headerId)
+    {
+        $query = $this->db->query("SELECT cs.case_name from pm.pm_po_oracle_non_conformity_case cs, pm.pm_po_oracle_non_conformity_lines lns where lns.case_id = to_char(cs.case_id, 'FM9999999') and lns.header_id ='$headerId'");
+        return $query->result_array();
     }
 
 }
