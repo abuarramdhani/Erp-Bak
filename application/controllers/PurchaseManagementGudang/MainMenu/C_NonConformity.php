@@ -720,6 +720,7 @@ class C_NonConformity extends CI_Controller
 		$supplierAddress = $this->input->post('txtSupplierAddress');
 		$setItem = $this->input->post('hdnItem[]');
 		$desc = $this->input->post('hdnDesc[]');
+		$uom = $this->input->post('hdnUom[]');
 		$qtyAmount = $this->input->post('hdnQtyRecipt[]');
 		$qtyBilled = $this->input->post('hdnQtyBilled[]');
 		$qtyReject = $this->input->post('hdnQtyReject[]');
@@ -806,6 +807,7 @@ class C_NonConformity extends CI_Controller
 
 			$item = array('item_code' => $setItem[$i],
 						'item_description' => $desc[$i],
+						'uom' => $uom[$i],
 						'header_id' =>$headerId,
 						'quantity_amount' =>$qtyAmount[$i],
 						'quantity_billed' =>$qtyBilled[$i],

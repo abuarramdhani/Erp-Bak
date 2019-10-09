@@ -38,9 +38,8 @@
 												<th class="text-center">Verificator</th>
 												<th class="text-center">Buyer</th>
 												<th class="text-center">Supplier</th>
-												<!-- <th class="text-center">Supplier Address</th> -->
-                                                <th class="text-center">Person In Charge</th>
-												<!-- <th class="text-center">Status</th> -->
+												<th>Case Name</th>
+                                                <th>Description</th>
 											</tr>
                                         </thead>
                                         <tbody>
@@ -64,6 +63,7 @@
                                                 <?php 
                                                     $headerId = $row['header_id'];
                                                     $poNumber = $this->M_nonconformity->detailPOListdata($headerId);
+                                                    $case = $this->M_nonconformity->getCs($headerId);
                                                 
                                                     if (count($poNumber)==0) {
                                                         echo '<td><span style="color: red"><i class="fa fa-warning"></i>Belum diset</span></td>';
@@ -80,12 +80,15 @@
 												<td><?php echo $row['courier_agent'] ?></td>
 												<td><?php echo $row['verificator'] ?></td>
 												<td><?php echo $row['forward_to'] ?></td>
-												<!-- <td><?php echo strpbrk($row['buyer'], ' ') ?></td> -->
-												<td><?php echo $row['supplier'] ?></td>
-												<!-- <td><?php echo $row['supplier_address'] ?></td> -->
-                                                <td><?php echo $row['person_in_charge'] ?></td>
-												<!-- <td><?php if ($row['status'] == NULL || $row['status'] == 'OPEN') {
-                                                    $status = 'OPEN';}else if($row['status'] == '1'){$status = 'CLOSE';} echo $status; ?></td> -->
+												<td><?php $no = 0; foreach ($case as $key => $cs) {$no++;
+                                                    
+                                                    echo $no.'. '.$cs['case_name'].'<br>';
+                                                }?></td>
+                                                <td><?php $headerId = $row['header_id']; 
+                                                $des = $this->M_nonconformity->getDesc($headerId); 
+                                                foreach ($des as $key => $desc) {
+                                                    echo $desc['description'];
+                                                }?></td>
 											</tr>
                                             <?php endforeach; ?>
                                         </tbody>                                      
