@@ -10,7 +10,7 @@
                         <div class="col-lg-1">
                             <div class="text-right hidden-md hidden-sm hidden-xs">
                                 <!-- Ganti yang di dalam site url dengan alamat main menu yang diinginkan -->
-                                <a class="btn btn-default btn-lg" href="<?php echo site_url('MasterPekerja/PerhitunganPesangon/Pesangon');?>">
+                                <a class="btn btn-default btn-lg" href="<?php echo site_url('MasterPekerja/PerhitunganPesangon');?>">
                                     <i class="icon-wrench icon-2x"></i>
                                     <br/>
                                 </a>
@@ -152,3 +152,4 @@
      </div>
    </div>
  </div>
+ <input type="hidden" id="id_modal_cetak_sangu" value="<?php echo site_url('MasterPekerja/PerhitunganPesangon/'); ?>">
