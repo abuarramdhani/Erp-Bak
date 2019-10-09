@@ -1365,8 +1365,6 @@ $(function() {
 });
 
 $(document).ready(function() {
-    $('#tbl').DataTable();
-
     $('#Saksi_Janji1').select2({
       placeholder:"Input Nama Saksi"
     });
@@ -1378,11 +1376,10 @@ $(document).ready(function() {
     $('#Saksi_Janji3').select2({
       placeholder:"Input Nama Saksi"
     });
-});
 
-$(document).ready(function() {
     $('#usialanjut').DataTable();
 });
+
 
 $(document).on('ready', function() {
     $('.setupPekerjaan-cmbDepartemen').select2({
@@ -1589,23 +1586,31 @@ $(document).on('ready', function() {
     });
 })
 
-$(document).ready(function() {
-  $('.nyobaaja').click(function() {
-    $('#id_sangu').val($(this).attr('value'));
-  });
+$('.nyobaaja').click(function() {
+  $('#id_sangu').val($(this).attr('value'));
+});
 
-  $('#perjanjianPHK').click(function(){
-    let saksi1      = $('#Saksi_Janji1').val(),
-        saksi2      = $('#Saksi_Janji2').val()
+$('#perjanjianPHK').click(function(){
+  let saksi1      = $('#Saksi_Janji1').val(),
+      saksi2      = $('#Saksi_Janji2').val()
 
-    if (saksi1 === null || saksi1 == '') {
-      Swal.fire(
-        'Peringatan!',
-        'Saksi 1 Harus Di Input!',
-        'warning'
-      )
-    }else {
-      $("#Modal_Hadirin_Perjanjian").modal('hide');
-    }
-  });
-})
+  if (saksi1 === null || saksi1 == '') {
+    Swal.fire(
+      'Peringatan!',
+      'Saksi 1 Harus Di Input!',
+      'warning'
+    )
+  }else {
+    $("#Modal_Hadirin_Perjanjian").modal('hide');
+  }
+});
+
+$('#form_cetak_sangu').submit(function(e){
+	e.preventDefault();
+	a = $('#id_modal_cetak_sangu').val();
+	this.submit()
+	setTimeout(function(){
+		window.open(a, '_self');
+	}), 100 ;
+
+});
