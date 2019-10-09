@@ -57,7 +57,7 @@
       <td style="border-right:1px solid black; border-bottom: 1px solid black; width: 200px; font-size: 14px; font-family: times;" valign="top">&nbsp;Alamat</td>
       <td style="border-right:1px solid black; border-bottom: 1px solid black; width:10px; text-align: center font-size: 14px; font-family: times; text-align: center;" valign="top">:</td>
 			<td style="width:5px; border-bottom: 1px solid black;"></td>
-			<td style="border-bottom: 1px solid black; font-size: 14px; font-family: times; text-align: justify;"><?php echo ucwords(strtolower($key['alamat'])).', '.ucwords(strtolower($key['desa'])).', '.ucwords(strtolower($key['kec'])).', '.ucwords(strtolower($key['kab'])).', '.ucwords(strtolower($key['prop'])) ?></td>
+			<td style="border-bottom: 1px solid black; font-size: 14px; font-family: times; text-align: justify;"><?php echo ucwords(strtolower($key['alamat'])).', '.ucwords(strtolower($key['desa'])).', '.ucwords(strtolower($key['kec'])).', '.ucwords(strtolower($key['kab'])).', '.$provinsi ?></td>
     </tr>
     <tr>
       <td style="height: 15px; border-right: 1px solid black; border-bottom: 1px solid black;"></td>
