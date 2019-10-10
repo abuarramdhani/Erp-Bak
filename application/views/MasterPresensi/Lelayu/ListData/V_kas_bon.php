@@ -107,7 +107,7 @@
 		</tr>
 		<tr>
       <td rowspan="6" style="border-right: 1px solid black; border-bottom: 1px solid black;"></td>
-      <td colspan="4" style="font-size: 12px;border-right: 1px solid black; border-bottom: 1px solid black;">&nbsp;Seksi <?php echo ucwords(mb_strtolower($key['seksi'])); ?></td>
+      <td colspan="4" style="font-size: 12px;border-right: 1px solid black; border-bottom: 1px solid black;">&nbsp;<?php  echo ucwords(mb_strtolower($key['keterangan'].' - '))?>Seksi <?php echo ucwords(mb_strtolower($key['seksi'])); ?></td>
       <td style=" border-bottom: 1px solid black;"></td>
 		</tr>
 		<tr >
