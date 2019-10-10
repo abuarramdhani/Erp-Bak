@@ -648,6 +648,29 @@ function rekap_datatable_detail() {
 						}
 					});
 
+					$('.RekapAbsensi-cmbLokasiKerja').select2(
+					{
+						minimumResultsForSearch: 0,
+						allowClear: false,
+						ajax:
+						{
+							url: baseurl+'RekapTIMSPromosiPekerja/RekapAbsensiPekerja/daftarLokasiKerja',
+							dataType: 'json',
+							data: function(params){
+								return {
+									term: params.term
+								}
+							},
+							processResults: function(data) {
+								return {
+									results: $.map(data, function(obj){
+										return {id: obj.id_, text: obj.id_ +' - '+obj.lokasi_kerja};
+									})
+								}
+							}
+						}
+					});
+
 					$('.RekapJamKerja-cmbLokasiKerja').select2(
 					{
 						minimumResultsForSearch: 0,

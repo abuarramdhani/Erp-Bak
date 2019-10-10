@@ -25,6 +25,7 @@
                                                 </div>
                                                 <div class="col-lg-2"></div>
                                             </div>
+                                            
                                             <br/>
                                             <div class="form-group">
                                                 <label for="cmbDepartemen" class="control-label col-lg-4">Departemen</label>
@@ -54,6 +55,14 @@
                                                 <label for="cmbSeksi" class="control-label col-lg-4">Seksi</label>
                                                 <div class="col-lg-6">
                                                     <select name="cmbSeksi" class="select2 RekapAbsensi-cmbSeksi" style="width: 100%">
+                                                    </select>
+                                                </div>
+                                            </div>
+                                            <br/>
+                                            <div class="form-group">
+                                                <label for="cmbLokasiKerja" class="control-label col-lg-4">Lokasi Kerja</label>
+                                                <div class="col-lg-6">
+                                                    <select name="cmbLokasiKerja" class="select2 RekapAbsensi-cmbLokasiKerja" style="width: 100%" required="">
                                                     </select>
                                                 </div>
                                             </div>
@@ -119,6 +128,7 @@
                                             <th style="text-align: center; vertical-align: middle; white-space: nowrap;">Bidang</th>
                                             <th style="text-align: center; vertical-align: middle; white-space: nowrap;">Unit</th>
                                             <th style="text-align: center; vertical-align: middle; white-space: nowrap;">Seksi</th>
+                                            <th style="text-align: center; vertical-align: middle; white-space: nowrap;">Lokasi Kerja</th>
                                             <th style="text-align: center; vertical-align: middle; white-space: nowrap;">Shift</th>
                                             <th style="text-align: center; vertical-align: middle; white-space: nowrap;">Keterangan</th>
                                             <th style="text-align: center; vertical-align: middle; white-space: nowrap;">Waktu 1</th>
@@ -137,6 +147,7 @@
                                             <th>Bidang</th>
                                             <th>Unit</th>
                                             <th>Seksi</th>
+                                            <th>Lokasi Kerja</th>
                                             <th>Shift</th>
                                             <th>Keterangan</th>
                                             <th>Waktu 1</th>
@@ -171,6 +182,7 @@
                                             <td style="white-space: nowrap; vertical-align: middle;"><?php echo $daftarPresensi['nama_bidang'];?></td>
                                             <td style="white-space: nowrap; vertical-align: middle;"><?php echo $daftarPresensi['nama_unit'];?></td>
                                             <td style="white-space: nowrap; vertical-align: middle;"><?php echo $daftarPresensi['nama_seksi'];?></td>
+                                            <td style="white-space: nowrap; vertical-align: middle; text-align: center;"><?php echo $daftarPresensi['lokasi'];?></td>
                                             <td style="white-space: nowrap; text-align: center; vertical-align: middle;"><?php echo $daftarPresensi['shift'];?></td>
                                             <td style="white-space: nowrap; text-align: center; vertical-align: middle;"><?php echo $daftarPresensi['keterangan'];?></td>
                                             <?php

@@ -65,6 +65,11 @@ class C_RekapAbsensi extends CI_Controller
 			$bidang 		=	$this->input->post('cmbBidang', TRUE);
 			$unit 			=	$this->input->post('cmbUnit', TRUE);
 			$seksi 			=	$this->input->post('cmbSeksi', TRUE);
+			$lokasi 		=	$this->input->post('cmbLokasiKerja', TRUE);
+			// echo $lokasi;exit();
+			if ($lokasi == '00') {
+				$lokasi = '';
+			}
 
 			$bidang 		=	substr($bidang, -2);
 			$unit 			=	substr($unit, -2);
@@ -113,7 +118,7 @@ class C_RekapAbsensi extends CI_Controller
 				$tanggalHitung 	=	$tanggalPerhitungan->format('Y-m-d');
 				$tanggalFormat 	=	$tanggalPerhitungan->format('Ymd');
 
-				$data['daftarPresensi'.$tanggalFormat] 		=	$this->M_rekapabsensi->rekapPresensiHarian($tanggalHitung, $klausaWhereKodesie);
+				$data['daftarPresensi'.$tanggalFormat] 		=	$this->M_rekapabsensi->rekapPresensiHarian($tanggalHitung, $klausaWhereKodesie, $lokasi);
 				$data['statistikPresensi'.$tanggalFormat]	=	$this->M_rekapabsensi->statistikPresensiHarian($tanggalHitung, $klausaWhereKodesie);
 
 				// echo '<pre>';
@@ -137,6 +142,7 @@ class C_RekapAbsensi extends CI_Controller
 	public function daftarDepartemen()
 	{
 		$resultDepartemen = 	$this->M_rekapabsensi->ambilDepartemen();
+
 		echo json_encode($resultDepartemen);
 	}
 
@@ -162,5 +168,14 @@ class C_RekapAbsensi extends CI_Controller
 
 		$resultSeksi	=	$this->M_rekapabsensi->ambilSeksi($unit);
 		echo json_encode($resultSeksi);
+	}
+
+	public function daftarLokasiKerja()
+	{
+		$lokasi 		=	$this->input->get('term');
+		$lokasi 		=	strtoupper($lokasi);
+
+		$resultLokasi	=	$this->M_rekapabsensi->ambilLokasi($lokasi);
+		echo json_encode($resultLokasi);
 	}
 }

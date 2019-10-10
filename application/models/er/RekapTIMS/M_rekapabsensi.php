@@ -19,6 +19,7 @@
 											select 				'0' as kode_departemen,
 																'SEMUA DEPARTEMEN' as nama_departemen
 											order by 			kode_departemen;";
+
 			$queryAmbilDepartemen		=	$this->personalia->query($ambilDepartemen);
 			return $queryAmbilDepartemen->result_array();
 		}
@@ -71,12 +72,23 @@
 			return $queryAmbilSeksi->result_array();
 		}
 
-		public function rekapPresensiHarian($tanggalHitung, $klausaWhereKodesie)
+		public function ambilLokasi($lokasi)
 		{
-			$rekapPresensiHarian			= "	select 			tabeltanggal.tanggal as tanggal_presensi,
+			$ambilLokasi			= "	SELECT * FROM hrd_khs.tlokasi_kerja WHERE id_ LIKE '%$lokasi%' OR lokasi_kerja LIKE '%$lokasi%' 
+										union select '00' as id_, 'SEMUA LOKASI KERJA' as lokasi_kerja ORDER BY id_;";
+			$queryAmbilLokasi	=	$this->personalia->query($ambilLokasi);
+			return $queryAmbilLokasi->result_array();
+		}
+
+		public function rekapPresensiHarian($tanggalHitung, $klausaWhereKodesie, $lokasi)
+		{
+			$rekapPresensiHarian			= "	SELECT 			tabeltanggal.tanggal as tanggal_presensi,
 																tblpkj.noind as nomor_induk,
 																tblpkj.nama as nama,
 																tblpkj.lokasi_kerja as lokasi_kerja,
+																(select lokasi_kerja from hrd_khs.tlokasi_kerja where id_ = RTRIM(tblpkj.lokasi_kerja)) as lokasi,
+																sftpkj.kodesie as kode_seksi,
+																sftpkj.kd_shift as kode_shift,
 																sftpkj.kodesie as kode_seksi,
 																sftpkj.kd_shift as kode_shift,
 																sftpkj.jam_msk as jam_masuk,
@@ -225,7 +237,7 @@
 																			) as tblpkj
 																			on tblpkj.noind=sftpkj.noind
 												where			sftpkj.tanggal between '$tanggalHitung' and '$tanggalHitung'
-																and 	$klausaWhereKodesie
+																and 	$klausaWhereKodesie and lokasi_kerja like '%$lokasi%'
 												group by		tanggal_presensi,
 																nomor_induk,
 																nama,
@@ -239,6 +251,7 @@
 																kode_seksi,
 																lokasi_kerja,
 																nomor_induk;";
+		// echo "<pre>"; print_r($rekapPresensiHarian); exit();
 			$queryRekapPresensiHarian 		=	$this->personalia->query($rekapPresensiHarian);
 			return $queryRekapPresensiHarian->result_array();
 		}
