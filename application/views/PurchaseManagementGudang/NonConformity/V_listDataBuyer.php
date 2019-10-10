@@ -79,9 +79,10 @@
 												<td><?php echo $row['courier_agent'] ?></td>
 												<td><?php echo $row['verificator'] ?></td>
 												<td><?php echo $row['forward_to'] ?></td>
-												<td><?php $no = 0; foreach ($case as $key => $cs) {$no++;
+                                                <td><?php echo $row['supplier'] ?></td>
+												<td><?php $no1 = 0; foreach ($case as $key => $cs) {$no1++;
                                                     
-                                                    echo $no.'. '.$cs['case_name'].'<br>';
+                                                    echo $no1.'. '.$cs['case_name'].'<br>';
                                                 }?></td>
                                                 <td><?php $headerId = $row['header_id']; 
                                                 $des = $this->M_nonconformity->getDesc($headerId); 

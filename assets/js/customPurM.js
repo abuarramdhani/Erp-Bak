@@ -667,6 +667,7 @@ $('#tblPoOracleNonConfirmityHeaders').DataTable({
         null,
         null,
         null,
+        null,
     ],
     buttons: ['excel']
 });
