@@ -28,47 +28,20 @@ if ($succ != null) {
 		</script>';
 } ?>
 <style type="text/css">
-	/* .form-control{
-		border-radius: 20px;
-	} */
-
 	.hh {
 		text-align: right;
-	}
-
-	/* textarea.form-control{
-		border-radius: 10px;
-	} */
-	.btnHoPg{
+	}.btnHoPg{
 		height: 40px;
 		width: 40px;
 		border-radius: 50%;
 		margin-top: 20px;
-	}
-	/* .select2-selection{
-		border-radius: 20px !important;
-	} */
-
-	ul.select2-results__options:last-child{
+	}ul.select2-results__options:last-child{
 		border-bottom-right-radius: 20px !important;
 		border-bottom-left-radius: 20px !important;
-	}
-
-	/* input.select2-search__field{
-		border-radius: 20px !important;
-	} */
-
-	/* span.select2-dropdown{
-		border-radius: 20px !important;
-	} */
-
-	.loadOSIMG{
+	}.loadOSIMG{
 		width: 30px;
 		height: auto;
 	}
-	/* .btn {
-		border-radius: 20px !important;
-	} */
 	
 </style>
 <section class="content">
@@ -204,7 +177,7 @@ if ($succ != null) {
 										<div class="col-lg-3 hh">
 										</div>
 										<div class="col-lg-2">
-										    <label><h4><b>Tidak PO :</b></h4></label>
+										    <label><h4><b>Unknown Item :</b></h4></label>
 										</div>
 										<!-- <div class="col-lg-8">
 										</div> -->
@@ -215,32 +188,31 @@ if ($succ != null) {
 								&nbsp;<a type="button" title="Hapus Baris" onclick="deleteRow('tbl2')" class="btn-primary btn-sm" style="font-size: 13px;cursor: pointer;"><span style="padding-left: 5px" class="fa fa-minus"></span></a>
 								<div class="col-lg-2"></div>
 									<div class="col-lg-8">
-									<div id="sub-div" align="center" style="padding-right:15px; padding-bottom: 10px" >
-										<div id="loading"></div>
-										<div id="res">
-											<table name="tbl2" id="tbl2" class="table table-striped table-bordered table-hover text-left" style="font-size:12px;">
-												<thead>
-													<tr class="bg-primary">
-														<!-- <td width="20%"><b>Item </b></td> -->
-														<td width="50%"><b>Item Description</b></td>
-														<td width="40%"><b>Sub inv</b></td>
-														<td width="10%"><b>QTY</b></td>
-													</tr>
-													</tr>
-												</thead>
-												<tbody>
-													<tr>
-														<!-- <td><input class="toupper" type="text" name="line1[]" value="" ></td> -->
-														
-														<td><select class="form-control" type="text" id="itembd" name="line1[]" value="" ><option></option></select></td>
-														<!-- <td><input class="toupper" style="width: 100%" type="text" name="line2[]" value=""></td> -->
-														<td><select class="form-control" id="gudangbd" type="text" name="line3[]" value=""><option></option></select></td>
-														<td><input class="form-control" type="number" name="line4[]" value=""></td>
-													</tr>
-												</tbody>
-											</table>
+										<div id="sub-div" align="center" style="padding-right:15px; padding-bottom: 10px" >
+											<div id="loading"></div>
+											<div id="res">
+												<table name="tbl2" id="tbl2" class="table table-striped table-bordered table-hover text-left" style="font-size:12px;">
+													<thead>
+														<tr class="bg-primary">
+															<!-- <td width="20%"><b>Item </b></td> -->
+															<td width="50%"><b>Item Description</b></td>
+															<td width="35%"><b>Sub inv</b></td>
+															<td width="15%"><b>QTY</b></td>
+														</tr>
+														</tr>
+													</thead>
+													<tbody>
+														<tr>
+															<!-- <td><input class="toupper" type="text" name="line1[]" value="" ></td> -->
+															<td><select class="form-control" type="text" id="itembd" name="line1[]" value="" ><option></option></select></td>
+															<!-- <td><input class="toupper" style="width: 100%" type="text" name="line2[]" value=""></td> -->
+															<td><select class="form-control" id="gudangbd" type="text" name="line3[]" value=""><option></option></select></td>
+															<td><input class="form-control" type="number" name="line4[]" value=""></td>
+														</tr>
+													</tbody>
+												</table>
+											</div>
 										</div>
-									</div>
 									</div>
 									<div class="form-group col-lg-12">
 										<div class="col-lg-3 hh">
@@ -251,13 +223,12 @@ if ($succ != null) {
 										</div>
 									</div>
 									<div class="form-group col-lg-12">
-										<div class="col-lg-3 hh">
-										</div>
+										<div class="col-lg-3 hh"></div>
 										<div class="col-lg-7 hh">
-										<div id="sub-div" align="center" style="padding-right:15px; padding-bottom: 10px" >
-										<button type="submit" id="btnSaveAssets" class="btn btn-primary btn-rect"><b>Save</b></button>
-								<span onClick="location.reload()" class="btn btn-warning btn-rect"><b>Clear</b></span>
-								</div>
+											<div id="sub-div" align="center" style="padding-right:15px; padding-bottom: 10px" >
+												<button type="submit" id="btnSaveAssets" class="btn btn-primary btn-rect"><b>Save</b></button>
+												<span onClick="location.reload()" class="btn btn-warning btn-rect"><b>Clear</b></span>
+											</div>
 										</div>
 									</div>
 								</div>
