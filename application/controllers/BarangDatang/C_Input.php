@@ -9,7 +9,6 @@ class C_Input extends CI_Controller
 		$this->load->helper('url');
 		$this->load->helper('html');
 		$this->load->library('form_validation');
-		// $this->load->library('csvimport');
 		//load the login model
 		$this->load->library('session');
 		$this->load->model('M_Index');
@@ -65,21 +64,12 @@ class C_Input extends CI_Controller
 		$this->load->view('V_Sidemenu',$data);
 		$this->load->view('BarangDatang/V_Input',$data);
 		$this->load->view('V_Footer',$data);
-		// echo '<pre>';
-		// print_r($data);
-		// exit;
 
 	}
 
 	public function SearchSupplier(){
 		$term = $this->input->get('activity');
-		// echo '<pre>';
-		// print_r($term);
-		// exit;
 		$data = $this->M_input->getsupplier($term);
-		// $callback = array(
-		// 	'supplier_name' =>$data[0]['VENDOR_NAME']
-		// );
 		$callback = $data[0]['VENDOR_NAME'];
 		echo $callback;
 	}
@@ -100,23 +90,13 @@ class C_Input extends CI_Controller
 	public function SearchingAjax()
 	{
 		$activity = $this->input->get('activity');
-		// $hasil = $this->M_input->getSupplier($activity);
-		// echo "<pre>"; print_r($hasil['0']); exit();
 		$data['Activity'] = $this->M_input->getTable($activity);
-		// echo "<pre>"; 
-		// print_r($data); 
-		// print_r(count($data['Activity'])); 
-		// exit();
-
 		$this->load->view('BarangDatang/V_Search', $data);
 	}
 
 	public function gudangbd()
 	{
 		$term = $this->input->GET('term');
-		// $subinv =  $this->input->GET('subinv');
-		// $loc = $this->input->GET('loc');
-		// echo "<pre>"; print_r($kode); exit();
 		$gudang = $this->M_input->getGudang($term);
 		echo json_encode($gudang);
 	}
@@ -147,12 +127,6 @@ class C_Input extends CI_Controller
 		$keterangan = $this->input->post('READY');
 		$no_id = $this->input->post('txtID');
 		$count = sizeOf($line1);
-		// echo "<pre>";
-		// print_r($line1);
-		// print_r($itemline);
-		// print_r($descline);
-		// exit;
-
 		
 		$varItem = $this->input->post('txtitem');
 		$varItemDescription = $this->input->post('txtitem_description');
@@ -163,47 +137,29 @@ class C_Input extends CI_Controller
 		$row = sizeOf($varItem);
 		$hasilcek= null;
 		$kosong = null;
-		// echo "<pre>";
-		// print_r($varID);
-		// print_r($line1[0]);
 		if (empty($varID) && empty($line1[0])) {
 			$kosong = "kosong";
 		}
 		if ($kosong == 'kosong') {
-			// $message = "Quantity Error! Please re-check";
-			// echo "<script type='text/javascript'>alert('$message');</script>";
-			// exit;
 			$this->session->set_flashdata('response',"No item to insert!");
 			redirect('BarangDatang/C_input/index');
 		}
 		// exit;
 		for($i=0;$i<$row;$i++){
-			// echo "ulang";
 			if (!(empty($varID[$i]))){
-				// echo "if1";
-				// $Item = $varItem[$i];
-				// $ItemDescription = $varItemDescription[$i];
-				// $subinv = $varsubinv[$i];
 				$cekQty = $varQty[$i];
 				$cekitem_id = $varItemId[$i];
 				$checkqty = $this->M_input->ceksisaQuantity($nopo,$cekitem_id);
-				// echo"<pre>"; print_r($checkqty);	
 				if (empty($cekQty)) {
 					$hasilcek = "error";
 				}
 				if ($cekQty > $checkqty[0]['QUANTITY']) {
-					// echo "if2";
-					// $message = "wrong answer";
-					// echo "<script type='text/javascript'>alert('$message');</script>";
 					$hasilcek = "error";
 				}
 			}
 		}
 
 		if ($hasilcek == 'error') {
-			// $message = "Quantity Error! Please re-check";
-			// echo "<script type='text/javascript'>alert('$message');</script>";
-			// exit;
 			$this->session->set_flashdata('response',"Quantity Error!");
 			redirect('BarangDatang/C_input/index');
 		}
@@ -211,45 +167,29 @@ class C_Input extends CI_Controller
 
 		$insert = $this->M_input->insertTableKHStampungheader($nopo,$nosj,$keterangan,$note,$supplier,$no_id,$tanggal_datang);
 		
-		for($i=0;$i<$count;$i++){
-			$ln11 = $line1[$i];
-			$line11 = explode("-" , $ln11);
-			$ln1 = $line11[0];
-			$ln2 = $line11[1];
-			// $ln2 = $line2[$i];
-			$ln3 = $line3[$i];
-			$ln4 = $line4[$i];
-			// $ln = $this->M_input->getItemId($ln1);
-			$ln5 = $line11[2];
-			// $ln5 = $ln['0']['ITEM_ID'];
-			// echo "<pre>"; 
-			// print_r($ln1);
-			// print_r($ln2);
-			// print_r($ln3);
-			// print_r($ln4);
-			// print_r($ln5);
-			// if(strlen($ln1) > 0 && strlen($ln2) > 0 && strlen($ln3) > 0){
-				$insert = $this->M_input->insertTableKHStampungline_tidak_po($nosj,$ln1,$ln2,$ln3,$ln4,$no_id,$ln5);
-			// 	echo "<pre>";print_r($insert);($nosj,$Item,$ItemDescription,$subinv,$Qty,$no_id,$item_id)
-			// }
-		}
-		// exit;
-		// $varItem = $this->input->post('txtitem');
-		// $varItemDescription = $this->input->post('txtitem_description');
-		// $varsubinv = $this->input->post('txtsubinv');
-		// $varQty = $this->input->post('txtqty');
-		// $varItemId = $this->input->post('txtitemid');
-		// $varID = $this->input->post('txtCheck');
-		// $row = sizeOf($varItem);
-		for($i=0;$i<$row;$i++){
-				if (!(empty($varID[$i]))){
-					$Item = $varItem[$i];
-					$ItemDescription = $varItemDescription[$i];
-					$subinv = $varsubinv[$i];
-					$Qty = $varQty[$i];
-					$item_id = $varItemId[$i];
-					$insert = $this->M_input->insertTableKHStampungline($nopo,$nosj,$Item,$ItemDescription,$Qty,$subinv,$no_id,$item_id);		
+		if (!empty($line1[0])) {
+			for($i=0;$i<$count;$i++){
+				$ln11 = $line1[$i];
+				$line11 = explode("-" , $ln11);
+				$ln1 = $line11[0];
+				$ln2 = $line11[1];
+				$ln3 = $line3[$i];
+				$ln4 = $line4[$i];
+				$ln5 = $line11[2];
+				if(strlen($ln1) > 0 && strlen($ln2) > 0 && strlen($ln3) > 0){
+					$insert = $this->M_input->insertTableKHStampungline_tidak_po($nosj,$ln1,$ln2,$ln3,$ln4,$no_id,$ln5);
 				}
+			}
+		}
+		for($i=0;$i<$row;$i++){
+			if (!(empty($varID[$i]))){
+				$Item = $varItem[$i];
+				$ItemDescription = $varItemDescription[$i];
+				$subinv = $varsubinv[$i];
+				$Qty = $varQty[$i];
+				$item_id = $varItemId[$i];
+				$insert = $this->M_input->insertTableKHStampungline($nopo,$nosj,$Item,$ItemDescription,$Qty,$subinv,$no_id,$item_id);		
+			}
 		}
 		// exit;
 		$this->session->set_flashdata('return',"Saved");
