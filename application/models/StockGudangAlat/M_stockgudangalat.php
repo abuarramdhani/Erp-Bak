@@ -8,7 +8,7 @@ class M_stockgudangalat extends CI_Model
 		parent::__construct();
 		$this->load->database();
       $this->load->library('encrypt');
-      // $this->oracle = $this->load->database('oracle', true);
+      $this->dev = $this->load->database('dpostgre', true);
    }
 
    function insertData($no_po,$nama,$merk,$pilihan,$qty,$tag,$subinv) 
@@ -16,7 +16,7 @@ class M_stockgudangalat extends CI_Model
       $db = $this->load->database();
       $sql ="INSERT into msg.msg_stok_gdg_alat_tst (no_po, tag, nama, merk, qty, jenis, subinv) 
 		VALUES ('$no_po','$tag', '$nama', '$merk', '$qty', '$pilihan', '$subinv')";
-      $query = $this->db->query($sql);
+      $query = $this->dev->query($sql);
       // echo $sql.'<br>';
       // exit();//
       // return $sql;
@@ -29,7 +29,7 @@ class M_stockgudangalat extends CI_Model
       msgab.qty, 
       count(nama) OVER (partition by nama) jml, msgab.jenis, msgab.id FROM 
       msg.msg_stok_gdg_alat_tst msgab order by nama asc";
-      $query = $this->db->query($sql);
+      $query = $this->dev->query($sql);
       return $query->result_array();
    }
 
@@ -41,7 +41,7 @@ class M_stockgudangalat extends CI_Model
       WHERE nama = '$nama'";
       // echo $sql;exit();
       // print_r($sql);exit;
-      $this->db->query($sql);
+      $this->dev->query($sql);
       // $query = $this->db->query($sql);
       // return $query;
       // return $sql;
@@ -53,7 +53,7 @@ class M_stockgudangalat extends CI_Model
       $sql ="DELETE FROM msg.msg_stok_gdg_alat_tst 
       WHERE id ='$id'";
       
-      $this->db->query($sql);
+      $this->dev->query($sql);
    }
    
 }
