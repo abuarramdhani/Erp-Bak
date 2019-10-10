@@ -27,9 +27,7 @@ class C_NonConformityAndroid extends CI_Controller
 		$password = $this->input->post('password');
 		$password_md5 = md5($password);
 		$log = $this->M_Index->login($username,$password_md5);
-		echo'<pre>';
-		print_r($log);exit;
-
+		
 		if($log){
 			$user = $this->M_Index->getDetail($username);
 			
