@@ -142,7 +142,7 @@ class C_Input extends CI_Controller
 		}
 		if ($kosong == 'kosong') {
 			$this->session->set_flashdata('response',"No item to insert!");
-			redirect('BarangDatang/C_input/index');
+			redirect (base_url('BarangDatang/InputBarangDatang');
 		}
 		// exit;
 		for($i=0;$i<$row;$i++){
@@ -161,7 +161,7 @@ class C_Input extends CI_Controller
 
 		if ($hasilcek == 'error') {
 			$this->session->set_flashdata('response',"Quantity Error!");
-			redirect('BarangDatang/C_input/index');
+			redirect (base_url('BarangDatang/InputBarangDatang');
 		}
 		// exit;
 
@@ -170,7 +170,7 @@ class C_Input extends CI_Controller
 		if (!empty($line1[0])) {
 			for($i=0;$i<$count;$i++){
 				$ln11 = $line1[$i];
-				$line11 = explode("-" , $ln11);
+				$line11 = explode("^" , $ln11);
 				$ln1 = $line11[0];
 				$ln2 = $line11[1];
 				$ln3 = $line3[$i];
@@ -193,6 +193,6 @@ class C_Input extends CI_Controller
 		}
 		// exit;
 		$this->session->set_flashdata('return',"Saved");
-		redirect ('BarangDatang/C_input/index');
+		redirect (base_url('BarangDatang/InputBarangDatang');
 	}
 }

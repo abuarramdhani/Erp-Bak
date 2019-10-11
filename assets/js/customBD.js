@@ -188,7 +188,7 @@ $(document).ready(function(){
 			processResults: function (data) {
 				return {
 					results: $.map(data, function(obj) {
-						return { id:obj.SEGMENT1+"-"+obj.DESCRIPTION+"-"+obj.ITEM_ID, text:obj.SEGMENT1+" - "+obj.DESCRIPTION};
+						return { id:obj.SEGMENT1+"-^"+obj.DESCRIPTION+"^"+obj.ITEM_ID, text:obj.SEGMENT1+" - "+obj.DESCRIPTION};
 					})
 				};
 			}
