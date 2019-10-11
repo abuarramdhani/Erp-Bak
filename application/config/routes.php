@@ -2840,6 +2840,17 @@ $route['MasterPresensi/SetupReffJamLembur'] 				=	'MasterPresensi/SetupReffJamLe
 $route['MasterPresensi/SetupReffJamLembur/(:any)'] 		=	'MasterPresensi/SetupReffJamLembur/C_Index/$1';
 $route['MasterPresensi/SetupReffJamLembur/(:any)/(:any)'] 		=	'MasterPresensi/SetupReffJamLembur/C_Index/$1/$2';
 
+$route['MasterPresensi/PotonganGaji/ListData'] = 'MasterPresensi/PotonganGaji/C_ListData';
+$route['MasterPresensi/PotonganGaji/ListData/deleteData'] = 'MasterPresensi/PotonganGaji/C_ListData/deleteData';
+$route['MasterPresensi/PotonganGaji/TambahData'] = 'MasterPresensi/PotonganGaji/C_TambahData';
+$route['MasterPresensi/PotonganGaji/TambahData/getPekerjaList'] = 'MasterPresensi/PotonganGaji/C_TambahData/getPekerjaList';
+$route['MasterPresensi/PotonganGaji/TambahData/getJenisPotonganList'] = 'MasterPresensi/PotonganGaji/C_TambahData/getJenisPotonganList';
+$route['MasterPresensi/PotonganGaji/TambahData/saveData'] = 'MasterPresensi/PotonganGaji/C_TambahData/saveData';
+$route['MasterPresensi/PotonganGaji/EditData'] = 'MasterPresensi/PotonganGaji/C_EditData';
+$route['MasterPresensi/PotonganGaji/EditData/getPekerjaList'] = 'MasterPresensi/PotonganGaji/C_EditData/getPekerjaList';
+$route['MasterPresensi/PotonganGaji/EditData/getJenisPotonganList'] = 'MasterPresensi/PotonganGaji/C_EditData/getJenisPotonganList';
+$route['MasterPresensi/PotonganGaji/EditData/updateData'] = 'MasterPresensi/PotonganGaji/C_EditData/updateData';
+$route['MasterPresensi/PotonganGaji/DetailData'] = 'MasterPresensi/PotonganGaji/C_DetailData';
 
 //--------------------------------------AndroidApproval---------------------------------------------------------
 $route['android'] = 'SystemAdministration/MainMenu/Android/C_List/loginAndroid';
