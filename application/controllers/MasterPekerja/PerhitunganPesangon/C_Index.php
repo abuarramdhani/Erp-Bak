@@ -266,6 +266,15 @@ class C_Index extends CI_Controller {
 			 $data['bln_keluar'] = date("m", strtotime($tgl_keluar[0]['tanggal_keluar']));
 			 $data['thn_keluar'] = date("Y", strtotime($tgl_keluar[0]['tanggal_keluar']));
 
+			 $propinsi = rtrim($tgl_keluar[0]['prop']);
+			 if ($propinsi == 'DI YOGYAKARTA') {
+			 	$prop = explode(' ', $tgl_keluar[0]['prop']);
+				$data['provinsi'] = $prop[0].' '.ucwords(strtolower($prop[1]));
+			}else {
+				$data['provinsi'] = ucwords(strtolower($propinsi));
+			}
+			 // echo "<pre>";print_r($prop);die;
+
 			 $jenkel = trim($data['pekerjaPHK'][0]['jenkel']);
 			 if ($jenkel == 'L') {
 				 	$data['jenis'] = 'Sdr. ';
