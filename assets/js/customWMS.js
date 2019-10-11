@@ -259,3 +259,28 @@ $(function(){
   	});
 
 });
+
+
+// $(document).ready(function(){
+	  $('#wms-inputlimbah').submit(function(e){
+	  	e.preventDefault();
+		// alert("tes");
+		wmslinkindex = $('#wmslinkindex').val();
+		this.submit()
+		setTimeout(function(){
+			window.open(wmslinkindex, '_self');
+		}), 100 ;
+		
+	});
+
+	    $('#wms-inputlimbah-edit').submit(function(e){
+	  	e.preventDefault();
+		// alert("tes");
+		wmslinkindex = $('#wmslinkindex').val();
+		this.submit()
+		setTimeout(function(){
+			window.open(wmslinkindex, '_self');
+		}), 100 ;
+		
+	})
+// });
