@@ -141,7 +141,7 @@ class C_ComposeMessage extends CI_Controller {
 				'allow_self_signed' => true)
 				);
         $mail->Username = 'purchasing.sec12@quick.co.id';
-        $mail->Password = 'uZa78cf4npur2018sec12';
+        $mail->Password = 'Qu1ck5ec12';
 		$mail->WordWrap = 50;
 		
         // Set email content to sent
