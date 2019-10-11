@@ -1,7 +1,7 @@
 <section class="content">
 	<div class="inner">
 		<div class="row">
-			<form class="form-horizontal" method="POST" action="<?php site_url('WasteManagementSeksi/InputKirimLimbah/EditKirim')?>">
+			<form target="_blank"  class="form-horizontal" method="POST" action="<?php site_url('WasteManagementSeksi/InputKirimLimbah/EditKirim')?>" id="wms-inputlimbah-edit">
 				<div class="col-lg-12">
 					<div class="row">
 						<div class="col-lg-12">
@@ -140,3 +140,4 @@
 		</div>
 	</div>
 </section>
+<input type="hidden" id="wmslinkindex" value="<?php echo site_url('WasteManagementSeksi/InputKirimLimbah/'); ?>">

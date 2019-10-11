@@ -107,6 +107,7 @@ class C_inputkirim extends CI_Controller
 			// print_r($datapost);
 			// print_r($_POST); exit();
 			$this->M_kirim->insertKirimLimbah($datapost);
+
 			$encrypted_string = $this->encrypt->encode($id['0']['id']);
             $encrypted_string = str_replace(array('+', '/', '='), array('-', '_', '~'), $encrypted_string);
 			redirect(site_url('WasteManagementSeksi/InputKirimLimbah/Sendmail/Create/'.$encrypted_string));
@@ -218,6 +219,10 @@ class C_inputkirim extends CI_Controller
 		$tanggal = $limbah['0']['tanggal'];
 		$waktu = $limbah['0']['waktu'];
 
+		$data['data_limbah'] = $this->M_kirim->getdatalimbahkirim($plaintext_string);
+
+		// echo "<pre>"; print_r($data['data_limbah']); exit();
+
 
 
 		if ($aksi == "Create") {
@@ -315,6 +320,20 @@ class C_inputkirim extends CI_Controller
 			echo "Mailer Error: " . $mail->ErrorInfo;
 			show_error($this->email->print_debugger());
 		} else {
+
+			$this->load->library('pdf');
+			$pdf 	=	$this->pdf->load();
+			$pdf 	=	new mPDF('utf-8','A5-L',10, 20, 20, 20, 20, 0, 0);
+			// $pdf 	=	new mPDF();
+
+			$filename	=	'FORM PENGIRIMAN LIMBAH B3.pdf';
+			$html = $this->load->view('WasteManagementSeksi/InputKirimLimbah/V_pdf',$data,true);
+
+			$pdf->AddPage();
+			$pdf->WriteHTML($html);
+			$pdf->setTitle($filename);
+			$pdf->Output($filename, 'D');
+
 			redirect(base_url('WasteManagementSeksi/InputKirimLimbah'));
 		}
 	}
