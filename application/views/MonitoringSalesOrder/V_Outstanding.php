@@ -4,7 +4,7 @@
    <section class="content">
       <div class="inner" >
         <div class="box box-header"  style="padding-left:20px">
-          <h3 class="pull-left"><strong> Penjualan Cast And Carry </strong>- KHS Pusat</h3>
+          <h3 class="pull-left"><strong> Cash And Carry Notification </strong>- KHS Pusat</h3>
         </div>
       </div>
       <div class="panel box-body">
