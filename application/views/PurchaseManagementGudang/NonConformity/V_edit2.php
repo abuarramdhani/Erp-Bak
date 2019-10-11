@@ -316,6 +316,7 @@
                                                             <th>LPPB No.</th>
                                                             <th>Item Code</th>
                                                             <th>Item Description</th>
+                                                            <th>UOM</th>
                                                             <!-- <th>Qty Amount</th>
                                                             <th>Qty Billed</th>
                                                             <th>Qty Reject</th>
@@ -337,6 +338,7 @@
                                                             <td><?= $item['no_lppb'];?></td>
                                                             <td><?= $item['item_code'];?></td>
                                                             <td><?= $item['item_description'];?></td>
+                                                            <td><?= $item['uom'];?></td>
                                                             <!-- <td></td>
                                                             <td></td>
                                                             <td></td>
