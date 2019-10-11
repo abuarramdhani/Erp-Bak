@@ -54,7 +54,7 @@ function CustomSPS() {
                 <br>\
             <p>\
                 Terlampir Purchase Order (PO) dan Pedoman Kerjasama Vendor dari kami, dimohon konfirmasi kesanggupan <b>\
-                dengan meyalin template balasan dibawah ini kemudian mengirim balik</b> ke alamat email ini \
+                dengan menyalin template balasan dibawah ini kemudian mengirim balik</b> ke alamat email ini \
                 selambat-lambatnya <b>1x24 jam </b>sejak email ini diterima.\
             </p>\
             <p>Template Balasan (disalin dari <b>"PO Confirmation"</b> hingga <b>"Sign Name")</b> : </p>\
