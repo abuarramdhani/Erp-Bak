@@ -100,8 +100,8 @@ background-color: #337ab7;
 											<input type="hidden" name="txtPeriodePuasa2" value="<?php if(isset($_POST['txtPeriodePuasa'])){echo $_POST['txtPeriodePuasa'];} ?>">
 											<input type="hidden" name="txtPeriodeGaji2" value="<?php if(isset($_POST['txtPeriodeGaji'])){echo $_POST['txtPeriodeGaji'];} ?>">
 											<input type="hidden" name="slcStatusPekerja2" value="<?php if(isset($_POST['slcStatusPekerja'])){echo $_POST['slcStatusPekerja'];} ?>">
-											<?php 
-												if (isset($_POST['slcPekerja'])){ 
+											<?php
+												if (isset($_POST['slcPekerja'])){
 													foreach ($_POST['slcPekerja'] as $key) { ?>
 														<input type="hidden" name="slcPekerja2[]" value="<?php echo $key; ?>">
 											<?php 		}
@@ -117,8 +117,8 @@ background-color: #337ab7;
 											<input type="hidden" name="txtPeriodePuasa2" value="<?php if(isset($_POST['txtPeriodePuasa'])){echo $_POST['txtPeriodePuasa'];} ?>">
 											<input type="hidden" name="txtPeriodeGaji2" value="<?php if(isset($_POST['txtPeriodeGaji'])){echo $_POST['txtPeriodeGaji'];} ?>">
 											<input type="hidden" name="slcStatusPekerja2" value="<?php if(isset($_POST['slcStatusPekerja'])){echo $_POST['slcStatusPekerja'];} ?>">
-											<?php 
-												if (isset($_POST['slcPekerja'])){ 
+											<?php
+												if (isset($_POST['slcPekerja'])){
 													foreach ($_POST['slcPekerja'] as $key) { ?>
 														<input type="hidden" name="slcPekerja2[]" value="<?php echo $key; ?>">
 											<?php 		}
@@ -128,7 +128,7 @@ background-color: #337ab7;
 											<input type="hidden" name="txtPotSeragam2" value="<?php if(isset($_POST['txtPotSeragam'])){echo $_POST['txtPotSeragam'];} ?>">
 											<button class="btn btn-success" type="submit">Excel</button>
 										</form>
-										<?php 
+										<?php
 											$text = "get=1";
 											if(isset($_POST['txtTglCetak'])){
 												$text .= "&txtTglCetak2=".$_POST['txtTglCetak'];
@@ -175,6 +175,8 @@ background-color: #337ab7;
 													<th>IF</th>
 													<th>LEMBUR</th>
 													<th>HTM</th>
+													<th>ABS</th>
+													<th>Ijin</th>
 													<th>Tambahan</th>
 													<th>UM Puasa</th>
 													<th>IMS</th>
@@ -182,6 +184,8 @@ background-color: #337ab7;
 													<th>IPT</th>
 													<th>UM Cabang</th>
 													<th>Pot. Seragam</th>
+													<th>Pot. Lain</th>
+													<th>Jumlah JKN</th>
 													<th>JKN</th>
 													<th>JHT</th>
 													<th>JP</th>
@@ -205,6 +209,8 @@ background-color: #337ab7;
 															<td><?=$key['if'] ?></td>
 															<td><?=$key['lembur'] ?></td>
 															<td><?=$key['htm'] ?></td>
+															<td><?=$key['tm'] ?></td>
+															<td><?=$key['tik'] ?></td>
 															<td><?=$key['tambahan'] ?></td>
 															<td><?=$key['um_puasa'] ?></td>
 															<td><?=$key['ims'] ?></td>
@@ -212,6 +218,8 @@ background-color: #337ab7;
 															<td><?=$key['ipt'] ?></td>
 															<td><?=$key['um_cabang'] ?></td>
 															<td><?=$key['pot_seragam'] ?></td>
+															<td><?=$key['pot_lain'] ?></td>
+															<td><?=$key['jml_jkn'] ?></td>
 															<td><?=$key['jkn'] ?></td>
 															<td><?=$key['jht'] ?></td>
 															<td><?=$key['jp'] ?></td>
