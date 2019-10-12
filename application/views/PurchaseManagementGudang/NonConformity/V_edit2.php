@@ -72,7 +72,9 @@
                                                         <span class="pull-right">:</span>
                                                     </div>
                                                     <div class="col-lg-8">
-                                                        <input style="width: 310px;" type="text" class="form-control dateDelivNonConformity" name="txtDeliveryDate" required value="<?php echo date("d-M-y", strtotime($headerRow['delivery_date'])); ?>">
+                                                        <input style="width: 310px;" type="text" class="form-control dateDelivNonConformity" name="txtDeliveryDate" required value="<?php if(count($headerRow['delivery_date'])!= 0){
+                                                                echo date("d-M-y", strtotime($headerRow['delivery_date']));
+                                                            } ?>">
                                                     </div>
                                                 </div><br>
                                                 <div class="row">

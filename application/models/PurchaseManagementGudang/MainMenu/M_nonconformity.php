@@ -41,7 +41,7 @@ class M_nonconformity extends CI_Model
 
     public function getHeaders4($assign)
     {
-        $query = $this->db->query("SELECT head.* FROM pm.pm_po_oracle_non_conformity_headers head, pm.pm_po_oracle_non_conformity_lines line  WHERE assign ='$assign'
+        $query = $this->db->query("SELECT DISTINCT head.* FROM pm.pm_po_oracle_non_conformity_headers head, pm.pm_po_oracle_non_conformity_lines line  WHERE assign ='$assign'
         AND head.header_id = line.header_id
         AND line.status != '1'
         ORDER BY non_conformity_num");
