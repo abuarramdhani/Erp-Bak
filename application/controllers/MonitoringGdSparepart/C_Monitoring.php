@@ -42,6 +42,75 @@ class C_Monitoring extends CI_Controller
 		$data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id);
 		$data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id);
 
+		$tanggal = date('d-M-y');
+		$dataTampil = $this->M_monitoring->tampilsemua($tanggal);
+		$i=0;
+		$no_document= array();
+		foreach ($dataTampil as $tampil) {
+			if (in_array($tampil['NO_DOCUMENT'], $no_document)) {
+				
+			}else{
+			$no_document[$i] = $tampil['NO_DOCUMENT'];
+			$i++;
+			}
+		}
+		
+// echo "<pre>"; 
+// 		print_r($no_document);
+// 		// print_r($array_sudah);
+// 		// print_r($array_terkelompok);
+// 		exit();
+		$a= 0;
+		$array_sudah = array();
+		$array_terkelompok = array();
+		foreach ($dataTampil as $key => $value) {
+
+			if (in_array($value['NO_DOCUMENT'], $array_sudah)) {
+				
+			}else{
+				array_push($array_sudah, $value['NO_DOCUMENT']);
+
+				if ($no_document[$a] == $value['NO_DOCUMENT']) {
+					$getBody = $this->M_monitoring->tampilbody($no_document[$a]);
+					$getKet = $this->M_monitoring->getKet($no_document[$a]);
+					$hitung_bd = count($getBody);
+					$hitung_ket = count($getKet);
+					if ($hitung_bd == $hitung_ket) {
+						$status= 'Sudah terlayani';
+					} else {
+						$status = 'Belum terlayani';
+					}
+				$a++;
+				}
+				else {
+					echo "<pre>"; print_r($no_document);
+					$getBody = $this->M_monitoring->tampilbody($no_document[$a]);
+					$getKet = $this->M_monitoring->getKet($no_document[$a]);
+					$hitung_bd = count($getBody);
+					$hitung_ket = count($getKet);
+					if ($hitung_bd == $hitung_ket) {
+						$status= 'Sudah terlayani';
+					} else {
+						$status = 'Belum terlayani';
+					}
+				$a++;
+
+				}
+
+				$array_terkelompok[$value['NO_DOCUMENT']]['header'] = $value; 
+				$array_terkelompok[$value['NO_DOCUMENT']]['header']['statusket'] = $status; 
+				$array_terkelompok[$value['NO_DOCUMENT']]['body'] = $getBody; 
+				}
+			}
+		
+		// echo "<pre>"; 
+		// print_r($getBody);
+		// print_r($array_sudah);
+		// print_r($array_terkelompok);
+		// exit();		
+
+		$data['value'] = $array_terkelompok;
+
 		$this->load->view('V_Header',$data);
 		$this->load->view('V_Sidemenu',$data);
 		$this->load->view('MonitoringGdSparepart/V_Monitoring', $data);

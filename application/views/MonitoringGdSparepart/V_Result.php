@@ -1,8 +1,8 @@
-<div class="box box-primary box-solid">
-	<div class="box-header with-border"><b>Hasil</b></div>
-    <div class="box-body">
-    <form method="post" action="<?= base_url('MonitoringGdSparepart/Monitoring/getUpdate'); ?>">
-        <div class="panel-body">
+<!-- <div class="box box-primary box-solid"> -->
+	<!-- <div class="box-header with-border"><b>Hasil</b></div> -->
+    <!-- <div class="box-body"> -->
+    <!-- <form method="post" action="<?= base_url('MonitoringGdSparepart/Monitoring/getUpdate'); ?>"> -->
+        <!-- <div class="panel-body"> -->
             <div class="table-responsive">
 				<table class="table table-bordered table-hover table-striped text-center" id="myTable" style="width: 100%; table-layout:fixed;">
                     <thead class="bg-primary">
@@ -27,12 +27,12 @@
                             <td><?= $row['header']['JAM_INPUT'] ?></td>
                             <td><?= $row['header']['PIC'] ?></td>
                             <td><?= $row['header']['statusket']  ?></td>
-                            <td><span class="btn btn-success" onclick="btnRowAdd(this, <?= $no ?>)" >Detail</span></td>
+                            <td><span class="btn btn-success" onclick="addDetailMGS(this, <?= $no ?>)" >Detail</span></td>
                         </tr>
                         <tr>
                             <td></td>
                             <td colspan="7" >
-                                <div id="clone<?= $no ?>" style="display:none">
+                                <div id="detail<?= $no ?>" style="display:none">
                                     <table class="table table-bordered table-hover table-striped table-responsive " style="width: 100%; border: 2px solid #ddd;">
                                         <thead class="bg-teal">
                                             <tr>
@@ -65,7 +65,7 @@
                                                         }else{
                                                             echo '';
                                                         }?>
-                                                        onclick="btnEdit(this, <?=$no?>,<?=$nomor?>)" /></td>
+                                                        onclick="btnEditMGS(this, <?=$no?>,<?=$nomor?>)" /></td>
                                             </tr>
                                             <tr>
                                                 <td></td>
@@ -105,13 +105,13 @@
                         <?php $no++;} ?>
                     </tbody>
                 </table>
-                <div class="panel-heading text-right">
+                <!-- <div class="panel-heading text-right">
                     <button type="submit" class="btn btn-lg btn-danger" title="save"> Save</button>
-                </div>
+                </div> -->
 			</div>
-		</div>
-    </form>
-	</div>
-</div>
+		<!-- </div> -->
+    <!-- </form> -->
+	<!-- </div> -->
+<!-- </div> -->
 
 
