@@ -84,12 +84,12 @@ function getMGS(th) {
         datatype: 'html'
     });
     
-    $('#ResultMGS').html('');
-    $('#ResultMGS').html('<center><img style="width:150px; height:auto" src="'+baseurl+'assets/img/gif/loadingtwo.gif"></center>' );
+    $('#myTable').html('');
+    $('#myTable').html('<center><img style="width:150px; height:auto" src="'+baseurl+'assets/img/gif/loadingtwo.gif"></center>' );
         
     request.done(function(result){
-        $('#ResultMGS').html('');
-        $('#ResultMGS').html(result);
+        $('#myTable').html('');
+        $('#myTable').html(result);
         // $('#myTable').dataTable({
         //     "paging": false,
         //     "scrollX": true,
@@ -101,12 +101,12 @@ function getMGS(th) {
     });
 }
 
-function btnRowAdd(th, no){
+function addDetailMGS(th, no){
 	var title = $(th).text();
-	$('#clone'+no).slideToggle('slow');
+	$('#detail'+no).slideToggle('slow');
 }
 
-function btnEdit(th, no, nomor){
+function btnEditMGS(th, no, nomor){
 	var title = $(th).text();
 	$('#edit'+no+nomor).slideToggle('slow');
 }
