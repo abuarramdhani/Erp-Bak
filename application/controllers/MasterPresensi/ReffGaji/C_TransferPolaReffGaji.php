@@ -63,7 +63,7 @@ class C_TransferPolaReffGaji extends CI_Controller
 
 		if (empty($tglawal)) {
 			$tglawal = $this->input->post('tglawal');
-		$tglakhir = $this->input->post('tglakhir');
+			$tglakhir = $this->input->post('tglakhir');
 		}
 
 		$arraytglawal = explode("-", $tglawal);

@@ -81,7 +81,7 @@
 	$(document).ready(function(){
         setInterval(function(){
 					status = $('#MPR-status-Read').val();
-					if(status == 1){
+					// if(status == 1){
              $.ajax({
               type:'get',
               data: {user: '<?php echo $user; ?>'},
@@ -95,7 +95,7 @@
               	}
               }
             });
-					}
+					// }
         },1000);
     });
 </script>
