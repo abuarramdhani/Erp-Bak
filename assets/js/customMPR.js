@@ -144,7 +144,9 @@ $(document).on('ready',function(){
             type : 'GET',
             success: function(e){
                $('#MPR-transferreffgaji-download').html(e);
-               $('#MPR-status-Read').val("0");
+               setTimeout(function(e){
+                 $('#MPR-status-Read').val("0");
+               },5000);  
             }
         })
     });
@@ -171,7 +173,9 @@ $(document).on('ready',function(){
             type : 'GET',
             success: function(e){
                $('#MPR-transferpolareffgaji-download').html(e);
-               $('#MPR-status-Read').val("0");
+               setTimeout(function(e){
+                 $('#MPR-status-Read').val("0");
+               },5000);
             }
         })
     });
