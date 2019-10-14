@@ -148,7 +148,7 @@
                                                         <div class="col-lg-3" style="width: 70%;">
                                                             <div class="input-group">
                                                                 <div style="max-height: 35px;" class="input-group-addon"><i class="fa fa-money"></i></div>
-                                                                <input style="max-height: 35px;" id="pg_inputNominalTotal" type="number" class="form-control" min="1" placeholder="Masukkan Nominal Total" required />
+                                                                <input style="max-height: 35px;" id="pg_inputNominalTotal" type="text" class="form-control inputnumber" placeholder="Masukkan Nominal Total" required />
                                                             </div>
                                                         </div>
                                                     </div>
@@ -159,7 +159,7 @@
                                     <div class="row" style="padding: 0 12px 12px 12px">
                                         <div class="col-lg-12">
                                             <button id="pg_buttonSimulasi" type="submit" class="btn btn-primary pull-right"><i class="fa fa-eye" style="margin-right: 8px"></i>Simulasi</button>
-                                            <a href="<?= base_url('MasterPresensi/PotonganGaji/ListData') ?>" class="btn btn-primary pull-right" style="margin-right: 8px;"><i class="fa fa-arrow-left" style="margin-right: 8px"></i>Kembali ke List Data</a>                                        
+                                            <a href="<?= base_url('MasterPresensi/PotonganGaji/ListData') ?>" class="btn btn-primary pull-right" style="margin-right: 8px;"><i class="fa fa-arrow-left" style="margin-right: 8px"></i>Kembali ke List Data</a>
                                         </div>
                                     </div>
                                 </form>
@@ -247,7 +247,7 @@
                                     text: item.noind + ' - ' + item.nama
                                 }
                             })
-                            
+
                         }
                     }
                 }
@@ -274,7 +274,7 @@
                                     text: item.jenis_potongan
                                 }
                             })
-                            
+
                         }
                     }
                 }
@@ -283,7 +283,7 @@
         async initInput() {
             $('#pg_inputPeriode').datepicker({
                 format: 'M-yyyy',
-                viewMode: 'months', 
+                viewMode: 'months',
                 minViewMode: 'months'
             })
         },
@@ -305,7 +305,7 @@
                 }
                 formData.append('pekerja', $('#pg_selectPekerja').select2('data')[0].id)
                 formData.append('jenisPotongan', $('#pg_selectJenisPotongan').select2('data')[0].id)
-                formData.append('nominalTotal', document.getElementById('pg_inputNominalTotal').value)
+                formData.append('nominalTotal', document.getElementById('pg_inputNominalTotal').value.replace(/[^0-9]/g, ""))
                 formData.append('tipePembayaran', document.getElementById('pg_inputTipePembayaran').value)
                 formData.append('periode', pgTambahData.formatPeriode(document.getElementById('pg_inputPeriode').value))
                 fetch('<?= base_url('MasterPresensi/PotonganGaji/TambahData/saveData') ?>', {
@@ -335,10 +335,11 @@
         },
         async simulateData(event) {
             event.preventDefault()
+            potongan_total = document.getElementById('pg_inputNominalTotal').value;
             element('#pg_buttonSimulasi').animate.showLoading()
             const pekerja = $('#pg_selectPekerja').select2('data')[0].id
             const jenisPotongan = $('#pg_selectJenisPotongan').select2('data')[0].id
-            const nominalTotal = document.getElementById('pg_inputNominalTotal').value
+            const nominalTotal = parseInt(potongan_total.replace(/[^0-9]/g, ""))
             const tipePembayaran = document.getElementById('pg_inputTipePembayaran').value
             const periode = pgTambahData.formatPeriode(document.getElementById('pg_inputPeriode').value)
             if(pekerja && jenisPotongan && nominalTotal && tipePembayaran && periode) {
@@ -350,9 +351,12 @@
                 var statusSimulasi = new Array()
                 if(element('#pg_divTabelSimulasi').isHidden()) {
                     tabelSimulasi.clear()
-                    const nominal = nominalTotal / tipePembayaran
+                    var nominal = Math.round(nominalTotal / tipePembayaran)
                     let sisaNominal = nominalTotal
                     for(let i = 0; i < tipePembayaran; i++) {
+                        if (i == (tipePembayaran - 1)) {
+                          nominal = sisaNominal
+                        }
                         periodeSimulasi[i] = moment(periode, 'YYYY-MM-DD').add(i, 'M').format('YYYY-MM-DD')
                         potonganSimulasi[i] = i + 1
                         nominalSimulasi[i] = nominal
@@ -362,8 +366,8 @@
                             (i + 1) + '.',
                             moment(periode, 'YYYY-MM-DD').add(i, 'M').format('MMM-YYYY'),
                             i + 1,
-                            'Rp. ' + nominal,
-                            'Rp. ' + sisaNominal,
+                            '<div class="input-group"><div style="max-height: 35px;" class="input-group-addon"><b>Rp. </b></div><input type="text" class="form-control inputnumber" data-nama="potongan" data-default="' + nominal.toLocaleString('id') + '" data-row="' + (i + 1) +'" data-pembayaran="' + tipePembayaran + '" value="' + nominal.toLocaleString('id') + '" ></div>',
+                            '<div class="input-group"><div style="max-height: 35px;" class="input-group-addon"><b>Rp. </b></div><input type="text" class="form-control inputnumber disabled" data-nama="sisa" data-default="' + sisaNominal.toLocaleString('id') + '" data-row="' + (i + 1) +'" data-pembayaran="' + tipePembayaran + '" value="' + sisaNominal.toLocaleString('id') + '" disabled></div>',
                             'Belum terpotong'
                         ]).draw(false)
                     }
@@ -381,9 +385,12 @@
                 } else {
                     element('#pg_divTabelSimulasi').animate.css('fadeOut', _ => {
                         tabelSimulasi.clear()
-                        const nominal = nominalTotal / tipePembayaran
+                        var nominal = Math.round(nominalTotal / tipePembayaran)
                         let sisaNominal = nominalTotal
                         for(let i = 0; i < tipePembayaran; i++) {
+                            if (i == (tipePembayaran - 1)) {
+                              nominal = sisaNominal
+                            }
                             periodeSimulasi[i] = moment(periode, 'YYYY-MM-DD').add(i, 'M').format('YYYY-MM-DD')
                             potonganSimulasi[i] = i + 1
                             nominalSimulasi[i] = nominal
@@ -393,8 +400,8 @@
                                 (i + 1) + '.',
                                 moment(periode, 'YYYY-MM-DD').add(i, 'M').format('MMM-YYYY'),
                                 i + 1,
-                                'Rp. ' + nominal,
-                                'Rp. ' + sisaNominal,
+                                '<div class="input-group"><div style="max-height: 35px;" class="input-group-addon"><b>Rp. </b></div><input type="text" class="form-control inputnumber" data-nama="potongan" data-default="' + nominal.toLocaleString('id') + '" data-row="' + (i + 1) +'" data-pembayaran="' + tipePembayaran + '" value="' + nominal.toLocaleString('id') + '" ></div>',
+                                '<div class="input-group"><div style="max-height: 35px;" class="input-group-addon"><b>Rp. </b></div><input type="text" class="form-control inputnumber disabled" data-nama="sisa" data-default="' + sisaNominal.toLocaleString('id') + '" data-row="' + (i + 1) +'" data-pembayaran="' + tipePembayaran + '" value="' + sisaNominal.toLocaleString('id') + '" disabled></div>',
                                 'Belum terpotong'
                             ]).draw(false)
                         }
@@ -417,7 +424,7 @@
             return moment(periode, 'MMM-YYYY').format('YYYY-MM-DD')
         }
     }
-    
+
     function element(selector) {
         try {
             let e
@@ -517,4 +524,93 @@
     String.prototype.isNotNullAndEmpty = function() { return this.toString() == null && this.toString() == '' }
 
     String.prototype.isNotNullOrEmpty = function() { return this.toString() != null || this.toString() != '' }
+
+    $(document).on('ready',function(){
+      $("section").on("keyup",".inputnumber", function(event ) {
+        val_number = $(this).val()
+        if (val_number.length > 0) {
+          val_number = val_number.replace(/[^0-9]/g, "")
+          val_number = parseFloat(val_number).toLocaleString('id')
+          $(this).val(val_number)
+        }else{
+          $(this).val("");
+        }
+
+      })
+
+      $("section").on("blur",".inputnumber", function(event ) {
+        val_number = $(this).val()
+        if (val_number.length == 0) {
+          $(this).val("0");
+        }
+
+      })
+
+      $("table").on("keyup",".inputnumber", function(event){
+        val_number = $(this).val()
+        val_number = val_number.replace(/[^0-9]/g, "")
+        val_nama = $(this).attr("data-nama")
+        val_default = $(this).attr("data-default")
+        val_default = val_default.replace(/[^0-9]/g, "")
+        val_row = $(this).attr("data-row")
+        val_sisa = $(this).closest("tr").find("[data-nama=sisa]").val();
+        val_sisa = val_sisa.replace(/[^0-9]/g, "")
+        // val_sisa_sebelumnya = $(this).closest("tbody").find("[data-row=" + (val_row - 1) + "]").closest("tr").find("[data-nama=sisa]").val();
+        if (val_row == 1) {
+          val_sisa_sebelumnya = $("#pg_inputNominalTotal").val();
+          val_sisa_sebelumnya = val_sisa_sebelumnya.replace(/[^0-9]/g, "")
+        }else{
+          val_sisa_sebelumnya = $("[data-row=" + (val_row - 1) + "]").closest("tr").find("[data-nama=sisa]").val();
+          val_sisa_sebelumnya = val_sisa_sebelumnya.replace(/[^0-9]/g, "")
+        }
+
+        val_pembayaran = $(this).attr("data-pembayaran")
+        if(parseInt(val_number) > parseInt(val_sisa)){
+          alert("Jumlah Potongan Melebihi Sisa Potongan di bulan tersebut")
+          $(this).val(val_default)
+        }else{
+          $("[data-row=" + val_row + "]").closest("tr").find("[data-nama=sisa]").val(parseFloat(val_sisa_sebelumnya - val_number).toLocaleString('id'))
+          $("[data-row=" + val_row + "]").closest("tr").find("[data-nama=sisa]").attr("data-default",parseFloat(val_sisa_sebelumnya - val_number).toLocaleString('id'))
+          $(this).attr("data-default",parseFloat(val_number).toLocaleString('id'))
+          for (var i = val_row; i <= val_pembayaran; i++) {
+            if (i == 1) {
+              val_sisa_sebelumnya = $("#pg_inputNominalTotal").val();
+              val_sisa_sebelumnya = val_sisa_sebelumnya.replace(/[^0-9]/g, "")
+            }else{
+              val_sisa_sebelumnya = $("[data-row=" + (i - 1) + "]").closest("tr").find("[data-nama=sisa]").val()
+              val_sisa_sebelumnya = val_sisa_sebelumnya.replace(/[^0-9]/g, "")
+            }
+
+            val_potongan = $("[data-row=" + i + "]").closest("tr").find("[data-nama=potongan]").val()
+            val_potongan = val_potongan.replace(/[^0-9]/g, "")
+
+            if (parseFloat(val_sisa_sebelumnya) < parseFloat(val_potongan) || i == val_pembayaran) {
+              $("[data-row=" + i + "]").closest("tr").find("[data-nama=potongan]").val(parseFloat(val_sisa_sebelumnya).toLocaleString('id'))
+              $("[data-row=" + i + "]").closest("tr").find("[data-nama=potongan]").attr("data-default",parseFloat(val_sisa_sebelumnya).toLocaleString('id'))
+            }
+            val_potongan = $("[data-row=" + i + "]").closest("tr").find("[data-nama=potongan]").val()
+            val_potongan = val_potongan.replace(/[^0-9]/g, "")
+            $("[data-row=" + i + "]").closest("tr").find("[data-nama=sisa]").val(parseFloat(val_sisa_sebelumnya - val_potongan).toLocaleString('id'))
+            $("[data-row=" + i + "]").closest("tr").find("[data-nama=sisa]").attr("data-default",parseFloat(val_sisa_sebelumnya - val_potongan).toLocaleString('id'))
+          }
+
+          var nominalSimulasi = new Array();
+          var sisaSimulasi = new Array();
+          for (var i = 1; i <= val_pembayaran; i++) {
+            val_potongan = $("[data-row=" + i + "]").closest("tr").find("[data-nama=potongan]").val()
+            val_potongan = val_potongan.replace(/[^0-9]/g, "")
+            val_sisa = $("[data-row=" + i + "]").closest("tr").find("[data-nama=sisa]").val()
+            val_sisa = val_sisa.replace(/[^0-9]/g, "")
+
+            nominalSimulasi[i - 1] = val_potongan
+            sisaSimulasi[i - 1] = val_sisa
+          }
+          formData.set('nominalSimulasi', JSON.stringify(nominalSimulasi))
+          formData.set('sisaSimulasi', JSON.stringify(sisaSimulasi))
+          console.log(formData.getAll('nominalSimulasi'))
+        }
+
+      })
+    })
+
 </script>

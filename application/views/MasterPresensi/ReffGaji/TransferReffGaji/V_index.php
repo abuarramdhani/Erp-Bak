@@ -64,7 +64,7 @@
 												</div>
 											</div>
 											<div>
-												<input value="0" id="MPR-status-Read">
+												<input value="0" type="hidden" id="MPR-status-Read">
 											</div>
 										</form>
 									</div>
