@@ -123,7 +123,7 @@
                                                         <td class="text-center"><?= $item['awal_periode'] ?></td>
                                                         <td class="text-center"><?= $item['akhir_periode'] ?></td>
                                                     </tr>
-                                                    <? endforeach; ?>
+                                                  <?php endforeach; ?>
                                                 </tbody>
                                             </table>
                                         </div>
@@ -139,7 +139,7 @@
 </section>
 <script>
     let dataTable = null
-    
+
     document.addEventListener('DOMContentLoaded', _ => {
         dataTable = $('#pg_tabelListData').DataTable({
             dom: '<"dataTable_Button"B><"dataTable_Filter"f>rt<"dataTable_Information"i><"dataTable_Pagination"p>',
@@ -234,7 +234,7 @@
             if(confirm(`Anda yakin ingin menghapus data potongan ${employeeName} ?`)) pgListData.deleteData(id, row, employeeName)
         }
     }
-    
+
     function element(selector) {
         try {
             let e
