@@ -974,4 +974,34 @@ class M_nonconformity extends CI_Model
         return $query->result_array();
     }
 
+    public function hapusDataNCSource($id)
+    {   
+        $this->db->where('source_id',$id);
+        $this->db->delete('pm.pm_non_conformity_source');
+    }
+
+    public function hapusDataNCCase($id)
+    {   
+        $this->db->where('source_id',$id);
+        $this->db->delete('pm.pm_non_conformity_case_detail');
+    }
+
+    public function hapusDataNCImage($id)
+    {   
+        $this->db->where('source_id',$id);
+        $this->db->delete('pm.pm_non_conformity_image_detail');
+    }
+
+    public function hapusDataNCLines($id)
+    {   
+        $this->db->where('source_id',$id);
+        $this->db->delete('pm.pm_po_oracle_non_conformity_lines');
+    }
+
+    public function hapusDataNCHeader($id)
+    {   
+        $this->db->where('header_id',$id);
+        $this->db->delete('pm.pm_po_oracle_non_conformity_headers');
+    }
+
 }
