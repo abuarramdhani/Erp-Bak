@@ -125,7 +125,7 @@ class C_ComposeMessage extends CI_Controller {
 			$ftp_username	 = 'SENDPO';  
 			$ftp_password 	 = '123456';
 			$ftp_local_dir	 = './assets/upload/PurchaseManagementSendPO/Temporary/FTPDocument/';
-			$ftp_server_dir	 = './1.PENGUMUMAN/ADS2800W/Choirul/';
+			$ftp_server_dir	 = './2.ADMINISTRASI_UNIT/00.OBSOLETE/1.PENGUMUMAN/ADS2800W/SCAN Choirul/';
 			$ftp_file_format = '.pdf';
 
 			// Create an FTP connection  
@@ -145,7 +145,7 @@ class C_ComposeMessage extends CI_Controller {
 
 			// Change FTP directory
 			ftp_cdup($conn);
-			ftp_chdir($conn, '/mnt/NASB/SUPPLIER_ADMIN/');
+			ftp_chdir($conn, '/mnt/NASB/SUPPLIER/');
 			// echo ftp_pwd($conn);
 
 			// Download Files
@@ -156,6 +156,10 @@ class C_ComposeMessage extends CI_Controller {
 				echo json_encode('Lampiran pada direktori sharing dengan PO Number "'.$po_number.'" tidak ditemukan.');
 				exit;
 			}
+
+			// Change FTP directory
+			ftp_cdup($conn);
+			ftp_chdir($conn, '/mnt/NASB/SUPPLIER_ADMIN/');
 
 			// Archive message attachment as zip
 				// Zip Variable
