@@ -1264,4 +1264,23 @@ class C_NonConformity extends CI_Controller
 			redirect('PurchaseManagementGudang/NonConformity/listSubkon', 'refresh');
 		}
 	}
+
+	public function hapusData($id)
+	{
+		$photos = $this->M_nonconformity->getImages($id);
+
+		foreach ($photos as $key => $photo) {
+			if(is_file($photo['image_path'].''.$photo['file_name'])){
+				unlink($photo['image_path'].''.$photo['file_name']);
+			};
+		}
+
+		$this->M_nonconformity->hapusDataNCSource($id);
+		$this->M_nonconformity->hapusDataNCCase($id);
+		$this->M_nonconformity->hapusDataNCImage($id);
+		$this->M_nonconformity->hapusDataNCLines($id);
+		$this->M_nonconformity->hapusDataNCHeader($id);
+
+		echo "berhasil";
+	}
 }
