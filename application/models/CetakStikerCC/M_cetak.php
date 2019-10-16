@@ -18,7 +18,7 @@ public function getData($term) {
     ,NVL(SUBSTR(bor.DESCRIPTION, 0, INSTR(bor.DESCRIPTION, '-')-1), bor.DESCRIPTION)||'- '||kdmr.NO_MESIN seksi_nomesin
     ,kdmr.TAG_NUMBER                                                          tag_number
     ,bor.RESOURCE_CODE                                                        kode_resource
-    ,NVL(SUBSTR(bor.DESCRIPTION, 0, INSTR(bor.DESCRIPTION, '-')-1), bor.DESCRIPTION)||'- '||NVL(SUBSTR(bor.DESCRIPTION, INSTR(bor.DESCRIPTION, '-') + 2),bor.DESCRIPTION) deskripsi
+    ,bor.DESCRIPTION deskripsi
     ,bor.LAST_UPDATE_DATE                                                     tanggal_update
 from bom_resources bor
   ,bom_department_resources bdr
@@ -104,7 +104,7 @@ order by 1,3";
     ,NVL(SUBSTR(bor.DESCRIPTION, 0, INSTR(bor.DESCRIPTION, '-')-1), bor.DESCRIPTION)||'- '||kdmr.NO_MESIN seksi_nomesin
     ,kdmr.TAG_NUMBER                                                          tag_number
     ,bor.RESOURCE_CODE                                                        kode_resource
-    ,NVL(SUBSTR(bor.DESCRIPTION, 0, INSTR(bor.DESCRIPTION, '-')-1), bor.DESCRIPTION)||'- '||NVL(SUBSTR(bor.DESCRIPTION, INSTR(bor.DESCRIPTION, '-') + 2),bor.DESCRIPTION) deskripsi
+    ,bor.DESCRIPTION deskripsi
     ,bor.LAST_UPDATE_DATE                                                     tanggal_update
 from bom_resources bor
   ,bom_department_resources bdr
