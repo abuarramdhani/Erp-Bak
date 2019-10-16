@@ -74,7 +74,7 @@ class C_Cetak extends CI_Controller
 				$age = $interval->y;
 				$usia = $age;
 				$jenkel = $key['jenkel'];
-				$pendidikan = $key['pendidikan'];
+				$pendidikan = $key['pendidikan'].' / '.ucwords(strtolower($key['jurusan'])).' / '.$key['sekolah'];
 				
 				$seksi = strtolower($key['seksi']);
 				$unit = strtolower($key['unit']);
@@ -383,7 +383,7 @@ class C_Cetak extends CI_Controller
 				$age = $interval->y;
 				$usia = $age;
 				$jenkel = $key['jenkel'];
-				$pendidikan = $key['pendidikan'];
+				$pendidikan = $key['pendidikan'].' / '.ucwords(strtolower($key['jurusan'])).' / '.$key['sekolah'];
 				
 				$seksi = strtolower($key['seksi']);
 				$unit = strtolower($key['unit']);
