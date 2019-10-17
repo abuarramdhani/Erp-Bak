@@ -110,6 +110,8 @@ class C_PekerjaKeluar extends CI_Controller
 			$gaji[$angka]['jht'] = "";
 			$gaji[$angka]['jp'] = "";
 			$gaji[$angka]['jml_jkn'] = 0;
+			$gaji[$angka]['jml_jht'] = 0;
+			$gaji[$angka]['jml_jp'] = 0;
 
 			$kom_ip 		= 0;
 			$kom_ik 		= 0;
@@ -130,6 +132,8 @@ class C_PekerjaKeluar extends CI_Controller
 			$kom_jht 		= "Tidak";
 			$kom_jp 		= "Tidak";
 			$kom_jml_jkn	= 0;
+			$kom_jml_jht	= 0;
+			$kom_jml_jp	= 0;
 
 			$tgl_bulan_awal = $this->M_pekerjakeluar->cekProsesGaji($pkj['noind'], $pkj['tglkeluar']);
 			$tgl_cut_awal = $this->M_pekerjakeluar->cekProsesGaji2($pkj['noind'], $pkj['tglkeluar']);
@@ -217,6 +221,8 @@ class C_PekerjaKeluar extends CI_Controller
 			$kom_jp = $pot_bpjs->jp;
 
 			$kom_jml_jkn = $this->M_pekerjakeluar->jumlah_jkn($pkj['noind']);
+			$kom_jml_jht = $this->M_pekerjakeluar->jumlah_jht($pkj['noind']);
+			$kom_jml_jp = $this->M_pekerjakeluar->jumlah_jp($pkj['noind']);
 
 
 			$gaji[$angka]['ip'] = round($kom_ip,2);
@@ -518,10 +524,12 @@ class C_PekerjaKeluar extends CI_Controller
 		$objexcel->setCellValue('U1','Tambahan');
 		$objexcel->setCellValue('V1','Pot. Seragam');
 		$objexcel->setCellValue('W1','Pot. Lain');
-		$objexcel->setCellValue('X1','Jumlah JKN');
-		$objexcel->setCellValue('Y1','JKN');
-		$objexcel->setCellValue('Z1','JHT');
-		$objexcel->setCellValue('AA1','JP');
+		$objexcel->setCellValue('X1','JKN');
+		$objexcel->setCellValue('Y1','JHT');
+		$objexcel->setCellValue('Z1','JP');
+		$objexcel->setCellValue('AA1','Jumlah JKN');
+		$objexcel->setCellValue('AB1','Jumlah JHT');
+		$objexcel->setCellValue('AC1','Jumlah JP');
 
 		$num = 2;
 		$nomor = 1;
@@ -549,10 +557,12 @@ class C_PekerjaKeluar extends CI_Controller
 			$objexcel->setCellValue('U'.$num,$gj['tambahan']);
 			$objexcel->setCellValue('V'.$num,$gj['pot_seragam']);
 			$objexcel->setCellValue('W'.$num,$gj['pot_lain']);
-			$objexcel->setCellValue('X'.$num,$gj['jml_jkn']);
-			$objexcel->setCellValue('Y'.$num,$gj['jkn']);
-			$objexcel->setCellValue('Z'.$num,$gj['jht']);
-			$objexcel->setCellValue('AA'.$num,$gj['jp']);
+			$objexcel->setCellValue('X'.$num,$gj['jkn']);
+			$objexcel->setCellValue('Y'.$num,$gj['jht']);
+			$objexcel->setCellValue('Z'.$num,$gj['jp']);
+			$objexcel->setCellValue('AA'.$num,$gj['jml_jkn']);
+			$objexcel->setCellValue('AB'.$num,$gj['jml_jht']);
+			$objexcel->setCellValue('AC'.$num,$gj['jml_jp']);
 			$num++;
 			$nomor++;
 		}

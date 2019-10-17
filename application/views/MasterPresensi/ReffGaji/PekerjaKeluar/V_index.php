@@ -185,10 +185,12 @@ background-color: #337ab7;
 													<th>UM Cabang</th>
 													<th>Pot. Seragam</th>
 													<th>Pot. Lain</th>
-													<th>Jumlah JKN</th>
 													<th>JKN</th>
 													<th>JHT</th>
 													<th>JP</th>
+													<th>Jumlah JKN</th>
+													<th>Jumlah JHT</th>
+													<th>Jumlah JP</th>
 												</tr>
 											</thead>
 											<tbody>
@@ -219,10 +221,12 @@ background-color: #337ab7;
 															<td><?=$key['um_cabang'] ?></td>
 															<td><?=$key['pot_seragam'] ?></td>
 															<td><?=$key['pot_lain'] ?></td>
-															<td><?=$key['jml_jkn'] ?></td>
 															<td><?=$key['jkn'] ?></td>
 															<td><?=$key['jht'] ?></td>
 															<td><?=$key['jp'] ?></td>
+															<td><?=$key['jml_jkn'] ?></td>
+															<td><?=$key['jml_jht'] ?></td>
+															<td><?=$key['jml_jp'] ?></td>
 														</tr>
 													<?php $angka++;
 													}

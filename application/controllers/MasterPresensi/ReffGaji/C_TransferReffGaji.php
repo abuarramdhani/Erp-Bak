@@ -296,6 +296,9 @@ class C_TransferReffGaji extends CI_Controller
 							$record->KD_LKS =  $dppn['lokasi_krj'] ;
 							$record->KET =  TRIM($dppn['ket']) ;
 							$record->UANGDL =  round($dppn['dldobat'],2);
+							$record->JKN =  $dppn['jml_jkn'] ;
+							$record->JHT =  $dppn['jml_jht'] ;
+							$record->JP =  $dppn['jml_jp'] ;
 							$table->writeRecord();
 
 							$progres +=1;
@@ -530,6 +533,9 @@ class C_TransferReffGaji extends CI_Controller
 							$record->KD_LKS =  $dppn['lokasi_krj'] ;
 							$record->KET =  TRIM($dppn['ket']) ;
 							$record->UANGDL =  round($dppn['dldobat'],2);
+							$record->JKN =  $dppn['jml_jkn'] ;
+							$record->JHT =  $dppn['jml_jht'] ;
+							$record->JP =  $dppn['jml_jp'] ;
 							$table2->writeRecord();
 
 							$progres +=1;
@@ -705,6 +711,9 @@ class C_TransferReffGaji extends CI_Controller
 				$record->HR_IPT =  floatval($ds['ipet']) ;
 				$record->HR_UMC =  floatval($ds['um_cabang']) ;
 				$record->DLOBAT =  floatval($ds['dldobat']);
+				$record->JKN =  $dppn['jml_jkn'] ;
+				$record->JHT =  $dppn['jml_jht'] ;
+				$record->JP =  $dppn['jml_jp'] ;
 				$table3->writeRecord();
 
 				$progres +=1;
@@ -890,6 +899,9 @@ class C_TransferReffGaji extends CI_Controller
 				$record->KD_LKS =  $dn['lokasi_krj'] ;
 				$record->KET = '';
 				$record->UANGDL =  round($dn['dldobat']);
+				$record->JKN =  $dppn['jml_jkn'] ;
+				$record->JHT =  $dppn['jml_jht'] ;
+				$record->JP =  $dppn['jml_jp'] ;
 				$table4->writeRecord();
 
 				$progres +=1;
@@ -996,6 +1008,9 @@ class C_TransferReffGaji extends CI_Controller
 					$record->TGL_KELUAR =  $tgl_keluar ;
 					$record->KD_LKS =  $do['lokasi_krj'];
 					$record->POTONGAN = floatval($dn['plain']);
+					$record->JKN =  $dppn['jml_jkn'] ;
+					$record->JHT =  $dppn['jml_jht'] ;
+					$record->JP =  $dppn['jml_jp'] ;
 					$table5->writeRecord();
 
 					$progres +=1;
