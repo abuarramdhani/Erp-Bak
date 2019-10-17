@@ -249,6 +249,8 @@ class C_PekerjaKeluar extends CI_Controller
 			$gaji[$angka]['jht'] = $kom_jht;
 			$gaji[$angka]['jp'] = $kom_jp;
 			$gaji[$angka]['jml_jkn'] = $kom_jml_jkn;
+			$gaji[$angka]['jml_jht'] = $kom_jml_jht;
+			$gaji[$angka]['jml_jp'] = $kom_jml_jp;
 
 			$this->M_pekerjakeluar->delete_reffgajikeluar($pkj['noind']);
 			$array_insert = array(
@@ -271,8 +273,12 @@ class C_PekerjaKeluar extends CI_Controller
 				'ket'			 => $gaji[$angka]['sk_susulan']  +  $gaji[$angka]['cuti_susulan'] ,
 				'um_puasa'		 => $gaji[$angka]['um_puasa'] ,
 				'ipet'			 => $gaji[$angka]['ipt'] ,
-				'um_cabang'	 => $gaji[$angka]['um_cabang']
+				'um_cabang'	 => $gaji[$angka]['um_cabang'],
+				'jml_jkn'		=> $gaji[$angka]['jml_jkn'],
+				'jml_jht'		=> $gaji[$angka]['jml_jht'],
+				'jml_jp'		=> $gaji[$angka]['jml_jp']
 			);
+			// echo "<pre>";print_r($array_insert);exit();
 			$this->M_pekerjakeluar->insert_reffgajikeluar($array_insert);
 			$angka++;
 		}
