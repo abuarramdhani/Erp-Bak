@@ -551,6 +551,7 @@ class C_TransferReffGaji extends CI_Controller
 		//staff
 
 		$data_staff = $this->M_transferreffgaji->getDataStaff($periode);
+		echo "<pre>";print_r($data_nonstaff);exit();
 		if (!empty($data_staff)) {
 			$table3 = new XBase\WritableTable(FCPATH."assets/upload/TransferReffGaji/lv_info2.dbf");
 			$table3->openWrite(FCPATH."assets/upload/TransferReffGaji/PER".$periode.$waktu.".dbf");
@@ -727,6 +728,7 @@ class C_TransferReffGaji extends CI_Controller
 
 		//non-staff
 		$data_nonstaff = $this->M_transferreffgaji->getDataNonStaff($periode);
+
 		if (!empty($data_nonstaff)) {
 			$table4 = new XBase\WritableTable(FCPATH."assets/upload/TransferReffGaji/lv_info.dbf");
 			$table4->openWrite(FCPATH."assets/upload/TransferReffGaji/DATA-ABS".$periode.$waktu.".dbf");
