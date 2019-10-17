@@ -551,7 +551,7 @@ class C_TransferReffGaji extends CI_Controller
 		//staff
 
 		$data_staff = $this->M_transferreffgaji->getDataStaff($periode);
-		echo "<pre>";print_r($data_nonstaff);exit();
+		echo "<pre>";print_r($data_staff);exit();
 		if (!empty($data_staff)) {
 			$table3 = new XBase\WritableTable(FCPATH."assets/upload/TransferReffGaji/lv_info2.dbf");
 			$table3->openWrite(FCPATH."assets/upload/TransferReffGaji/PER".$periode.$waktu.".dbf");
