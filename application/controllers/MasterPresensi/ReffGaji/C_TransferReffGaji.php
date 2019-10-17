@@ -619,7 +619,7 @@ class C_TransferReffGaji extends CI_Controller
 					$kodsie = "";
 				}
 
-
+				echo round($ds['plain']);exit();
 				$record = $table3->appendRecord();
 				$record->NOIND = $ds['noind'];
 				$record->NOINDBR = '';
