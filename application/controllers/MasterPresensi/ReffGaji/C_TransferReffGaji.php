@@ -274,7 +274,7 @@ class C_TransferReffGaji extends CI_Controller
 							$record->HL = round($dppn['hl']) ;
 							$record->CTI =  round($dppn['ct'],2) ;
 							$record->IK =  round($dppn['ijin'],2) ;
-							$record->POTONGAN =  round($dppn['pot']) + round($dppn['plain']) ;
+							$record->POTONGAN = $dppn['pot'] + $dppn['plain'];
 							$record->TAMBAHAN =  $dppn['tamb_gaji'] ;
 							$record->DUKA =  $dppn['pduka'] ;
 							$record->PT = 0;
@@ -511,7 +511,7 @@ class C_TransferReffGaji extends CI_Controller
 							$record->HL = round($dppn['hl'],2) ;
 							$record->CTI =  round($dppn['ct'],2) ;
 							$record->IK =  round($dppn['ijin'],2) ;
-							$record->POTONGAN =  round($dppn['pot'])  + round($dppn['plain']);
+							$record->POTONGAN =  $dppn['pot']  + $dppn['plain'];
 							$record->TAMBAHAN =  $dppn['tamb_gaji'] ;
 							$record->DUKA =  $dppn['pduka'] ;
 							$record->PT = 0;
@@ -654,7 +654,7 @@ class C_TransferReffGaji extends CI_Controller
 				$record->P_BONSB = 0;
 				$record->P_I_KOP =  round($ds['pikop']);
 				$record->P_UT_KOP =  round($ds['putkop']) ;
-				$record->P_LAIN = round($ds['plain']);
+				$record->P_LAIN = $ds['plain'];
 				$record->P_DUKA =  round($ds['pduka']) ;
 				$record->P_SPSI =  round($ds['pspsi']) ;
 				$record->T_GAJIP = 0;
@@ -877,7 +877,7 @@ class C_TransferReffGaji extends CI_Controller
 				$record->HL =  round($dn['hl'],2) ;
 				$record->CTI =  $dn['ct'] ;
 				$record->IK =  round($dn['ijin'], 2) ;
-				$record->POTONGAN =  round($dn['pot']) + round($dn['plain']) ;
+				$record->POTONGAN =  $dn['pot'] + $dn['plain'] ;
 				$record->TAMBAHAN =  $dn['tamb_gaji'] ;
 				$record->DUKA =  $dn['pduka'] ;
 				$record->PT = 0;
@@ -1007,7 +1007,7 @@ class C_TransferReffGaji extends CI_Controller
 					$record->ASAL_OS =  $asalOS;
 					$record->TGL_KELUAR =  $tgl_keluar ;
 					$record->KD_LKS =  $do['lokasi_krj'];
-					$record->POTONGAN = round($do['plain']);
+					$record->POTONGAN = $do['plain'];
 					$record->JKN =  $do['jml_jkn'] ;
 					$record->JHT =  $do['jml_jht'] ;
 					$record->JP =  $do['jml_jp'] ;
