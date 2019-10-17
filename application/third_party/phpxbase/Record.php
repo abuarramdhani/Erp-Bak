@@ -446,7 +446,7 @@ class Record
         }
 
         $value = str_replace(',', '.', $value);
-        $this->forceSetString($columnObj, number_format($value, $columnObj->getDecimalCount()),'.','');
+        $this->forceSetString($columnObj, number_format($value, $columnObj->getDecimalCount(),',',''));
     }
 
     public function serializeRawData()
