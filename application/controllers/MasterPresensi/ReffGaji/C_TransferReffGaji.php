@@ -274,7 +274,7 @@ class C_TransferReffGaji extends CI_Controller
 							$record->HL = round($dppn['hl']) ;
 							$record->CTI =  round($dppn['ct'],2) ;
 							$record->IK =  round($dppn['ijin'],2) ;
-							$record->POTONGAN =  floatval($dppn['pot']) + floatval($dppn['plain']) ;
+							$record->POTONGAN =  round($dppn['pot']) + round($dppn['plain']) ;
 							$record->TAMBAHAN =  $dppn['tamb_gaji'] ;
 							$record->DUKA =  $dppn['pduka'] ;
 							$record->PT = 0;
@@ -511,7 +511,7 @@ class C_TransferReffGaji extends CI_Controller
 							$record->HL = round($dppn['hl'],2) ;
 							$record->CTI =  round($dppn['ct'],2) ;
 							$record->IK =  round($dppn['ijin'],2) ;
-							$record->POTONGAN =  floatval($dppn['pot'])  + floatval($dppn['plain']);
+							$record->POTONGAN =  round($dppn['pot'])  + round($dppn['plain']);
 							$record->TAMBAHAN =  $dppn['tamb_gaji'] ;
 							$record->DUKA =  $dppn['pduka'] ;
 							$record->PT = 0;
@@ -652,11 +652,11 @@ class C_TransferReffGaji extends CI_Controller
 				$record->HR_UM =  $um_ ;
 				$record->HR_CATER = 0;
 				$record->P_BONSB = 0;
-				$record->P_I_KOP =  floatval($ds['pikop']);
-				$record->P_UT_KOP =  floatval($ds['putkop']) ;
-				$record->P_LAIN = floatval($ds['plain']);
-				$record->P_DUKA =  floatval($ds['pduka']) ;
-				$record->P_SPSI =  floatval($ds['pspsi']) ;
+				$record->P_I_KOP =  round($ds['pikop']);
+				$record->P_UT_KOP =  round($ds['putkop']) ;
+				$record->P_LAIN = round($ds['plain']);
+				$record->P_DUKA =  round($ds['pduka']) ;
+				$record->P_SPSI =  round($ds['pspsi']) ;
 				$record->T_GAJIP = 0;
 				$record->T_INSK = 0;
 				$record->T_INSP = 0;
@@ -877,7 +877,7 @@ class C_TransferReffGaji extends CI_Controller
 				$record->HL =  round($dn['hl'],2) ;
 				$record->CTI =  $dn['ct'] ;
 				$record->IK =  round($dn['ijin'], 2) ;
-				$record->POTONGAN =  floatval($dn['pot']) + floatval($dn['plain']) ;
+				$record->POTONGAN =  round($dn['pot']) + round($dn['plain']) ;
 				$record->TAMBAHAN =  $dn['tamb_gaji'] ;
 				$record->DUKA =  $dn['pduka'] ;
 				$record->PT = 0;
@@ -1007,7 +1007,7 @@ class C_TransferReffGaji extends CI_Controller
 					$record->ASAL_OS =  $asalOS;
 					$record->TGL_KELUAR =  $tgl_keluar ;
 					$record->KD_LKS =  $do['lokasi_krj'];
-					$record->POTONGAN = floatval($do['plain']);
+					$record->POTONGAN = round($do['plain']);
 					$record->JKN =  $do['jml_jkn'] ;
 					$record->JHT =  $do['jml_jht'] ;
 					$record->JP =  $do['jml_jp'] ;
