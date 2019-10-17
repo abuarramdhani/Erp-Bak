@@ -2,6 +2,7 @@
 Defined('BASEPATH') or exit('NO DIrect Script Access Allowed');
 
 set_time_limit(0);
+ini_set("memory_limit","-1");
 
 class C_TransferReffGaji extends CI_Controller
 {
@@ -273,7 +274,7 @@ class C_TransferReffGaji extends CI_Controller
 							$record->HL = round($dppn['hl']) ;
 							$record->CTI =  round($dppn['ct'],2) ;
 							$record->IK =  round($dppn['ijin'],2) ;
-							$record->POTONGAN =  $dppn['pot'] ;
+							$record->POTONGAN =  floatval($dppn['pot']) + floatval($dn['plain']) ;
 							$record->TAMBAHAN =  $dppn['tamb_gaji'] ;
 							$record->DUKA =  $dppn['pduka'] ;
 							$record->PT = 0;
@@ -507,7 +508,7 @@ class C_TransferReffGaji extends CI_Controller
 							$record->HL = round($dppn['hl'],2) ;
 							$record->CTI =  round($dppn['ct'],2) ;
 							$record->IK =  round($dppn['ijin'],2) ;
-							$record->POTONGAN =  $dppn['pot'] ;
+							$record->POTONGAN =  floatval($dppn['pot'])  + floatval($dn['plain']);
 							$record->TAMBAHAN =  $dppn['tamb_gaji'] ;
 							$record->DUKA =  $dppn['pduka'] ;
 							$record->PT = 0;
@@ -647,7 +648,7 @@ class C_TransferReffGaji extends CI_Controller
 				$record->P_BONSB = 0;
 				$record->P_I_KOP =  floatval($ds['pikop']);
 				$record->P_UT_KOP =  floatval($ds['putkop']) ;
-				$record->P_LAIN = 0;
+				$record->P_LAIN = floatval($ds['plain']);
 				$record->P_DUKA =  floatval($ds['pduka']) ;
 				$record->P_SPSI =  floatval($ds['pspsi']) ;
 				$record->T_GAJIP = 0;
@@ -867,7 +868,7 @@ class C_TransferReffGaji extends CI_Controller
 				$record->HL =  round($dn['hl'],2) ;
 				$record->CTI =  $dn['ct'] ;
 				$record->IK =  round($dn['ijin'], 2) ;
-				$record->POTONGAN =  $dn['pot'] ;
+				$record->POTONGAN =  floatval($dn['pot']) + floatval($dn['plain']) ;
 				$record->TAMBAHAN =  $dn['tamb_gaji'] ;
 				$record->DUKA =  $dn['pduka'] ;
 				$record->PT = 0;
@@ -994,6 +995,7 @@ class C_TransferReffGaji extends CI_Controller
 					$record->ASAL_OS =  $asalOS;
 					$record->TGL_KELUAR =  $tgl_keluar ;
 					$record->KD_LKS =  $do['lokasi_krj'];
+					$record->POTONGAN = floatval($dn['plain']);
 					$table5->writeRecord();
 
 					$progres +=1;
