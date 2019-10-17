@@ -274,7 +274,7 @@ class C_TransferReffGaji extends CI_Controller
 							$record->HL = round($dppn['hl']) ;
 							$record->CTI =  round($dppn['ct'],2) ;
 							$record->IK =  round($dppn['ijin'],2) ;
-							$record->POTONGAN =  floatval($dppn['pot']) + floatval($dn['plain']) ;
+							$record->POTONGAN =  floatval($dppn['pot']) + floatval($dppn['plain']) ;
 							$record->TAMBAHAN =  $dppn['tamb_gaji'] ;
 							$record->DUKA =  $dppn['pduka'] ;
 							$record->PT = 0;
@@ -511,7 +511,7 @@ class C_TransferReffGaji extends CI_Controller
 							$record->HL = round($dppn['hl'],2) ;
 							$record->CTI =  round($dppn['ct'],2) ;
 							$record->IK =  round($dppn['ijin'],2) ;
-							$record->POTONGAN =  floatval($dppn['pot'])  + floatval($dn['plain']);
+							$record->POTONGAN =  floatval($dppn['pot'])  + floatval($dppn['plain']);
 							$record->TAMBAHAN =  $dppn['tamb_gaji'] ;
 							$record->DUKA =  $dppn['pduka'] ;
 							$record->PT = 0;
@@ -711,9 +711,9 @@ class C_TransferReffGaji extends CI_Controller
 				$record->HR_IPT =  floatval($ds['ipet']) ;
 				$record->HR_UMC =  floatval($ds['um_cabang']) ;
 				$record->DLOBAT =  floatval($ds['dldobat']);
-				$record->JKN =  $dppn['jml_jkn'] ;
-				$record->JHT =  $dppn['jml_jht'] ;
-				$record->JP =  $dppn['jml_jp'] ;
+				$record->JKN =  $ds['jml_jkn'] ;
+				$record->JHT =  $ds['jml_jht'] ;
+				$record->JP =  $ds['jml_jp'] ;
 				$table3->writeRecord();
 
 				$progres +=1;
@@ -899,9 +899,9 @@ class C_TransferReffGaji extends CI_Controller
 				$record->KD_LKS =  $dn['lokasi_krj'] ;
 				$record->KET = '';
 				$record->UANGDL =  round($dn['dldobat']);
-				$record->JKN =  $dppn['jml_jkn'] ;
-				$record->JHT =  $dppn['jml_jht'] ;
-				$record->JP =  $dppn['jml_jp'] ;
+				$record->JKN =  $dn['jml_jkn'] ;
+				$record->JHT =  $dn['jml_jht'] ;
+				$record->JP =  $dn['jml_jp'] ;
 				$table4->writeRecord();
 
 				$progres +=1;
@@ -1007,10 +1007,10 @@ class C_TransferReffGaji extends CI_Controller
 					$record->ASAL_OS =  $asalOS;
 					$record->TGL_KELUAR =  $tgl_keluar ;
 					$record->KD_LKS =  $do['lokasi_krj'];
-					$record->POTONGAN = floatval($dn['plain']);
-					$record->JKN =  $dppn['jml_jkn'] ;
-					$record->JHT =  $dppn['jml_jht'] ;
-					$record->JP =  $dppn['jml_jp'] ;
+					$record->POTONGAN = floatval($do['plain']);
+					$record->JKN =  $do['jml_jkn'] ;
+					$record->JHT =  $do['jml_jht'] ;
+					$record->JP =  $do['jml_jp'] ;
 					$table5->writeRecord();
 
 					$progres +=1;
