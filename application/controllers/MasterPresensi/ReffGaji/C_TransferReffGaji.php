@@ -618,8 +618,10 @@ class C_TransferReffGaji extends CI_Controller
 				}else{
 					$kodsie = "";
 				}
+				if (round($ds['plain']) > 0) {
+					echo round($ds['plain']);exit();
+				}
 
-				echo round($ds['plain']);exit();
 				$record = $table3->appendRecord();
 				$record->NOIND = $ds['noind'];
 				$record->NOINDBR = '';
