@@ -67,7 +67,7 @@ h2{
 											</div>
 										</div>
 									</div>
-									<div class="form-group txtPerkiraanLahir">
+									<div class="form-group txtPerkiraanLahir hidden">
 										<label class="control-label col-lg-4 col-md-4 col-sm-4">Hari Perkiraan Lahir</label>
 										<div class="col-lg-4 col-md-5 col-sm-7">
 											<div class="col-lg-12">
@@ -86,7 +86,7 @@ h2{
 											</div>
 										</div>
 									</div>
-									<div class="form-group txtSebelumLahir">
+									<div class="form-group txtSebelumLahir hidden">
 										<label class="control-label col-lg-4 col-sm-4 col-md-4">Sebelum Melahirkan</label>
 										<div class="col-lg-4 col-md-5 col-sm-7">
 											<div class="col-lg-5 col-xs-5">
@@ -97,7 +97,7 @@ h2{
 											</div>
 										</div>
 									</div>
-									<div class="form-group txtSetelahLahir">
+									<div class="form-group txtSetelahLahir hidden">
 										<label class="control-label col-lg-4 col-sm-4 col-md-4">Setelah Melahirkan</label>
 										<div class="col-lg-4 col-md-5 col-sm-7">
 											<div class="col-lg-5 col-xs-5">
@@ -116,7 +116,7 @@ h2{
 											</div>
 										</div>
 									</div>
-									<div class="form-group txtAlamat">
+									<div class="form-group txtAlamat hidden">
 										<label class="control-label col-lg-4 col-md-4 col-sm-4">Alamat</label>
 										<div class="col-lg-4 col-md-5 col-sm-7">
 											<div class="col-lg-12">

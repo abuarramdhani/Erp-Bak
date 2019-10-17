@@ -96,10 +96,10 @@ $(document).ready(function() {
   $('#slc_JenisCutiIstimewa').on('change', function() {
     var nilai = $('#slc_JenisCutiIstimewa').val();
     if (nilai == '6') {
-      $(".txtPerkiraanLahir").show();
-      $(".txtSebelumLahir").show();
-      $(".txtSetelahLahir").show();
-      $(".txtAlamat").show();
+      $(".txtPerkiraanLahir").show().removeClass('hidden');
+      $(".txtSebelumLahir").show().removeClass('hidden');
+      $(".txtSetelahLahir").show().removeClass('hidden');
+      $(".txtAlamat").show().removeClass('hidden');
       $(".txtPengambilanCuti").hide();
       $('#submit_hpl').show();
       $('#submit_istimewa').hide();
@@ -122,6 +122,7 @@ $(document).ready(function() {
       $(".txtKeperluan").hide();
       $(".txtTgl").hide();
       $(".txtTglSusulan").show();
+      $(".txtTglSusulan").removeClass('hidden');
       $("#txtPengambilanCutiTahunan").val("");
       $("#txtKeperluan").val("");
       $("#slc_Keperluan").select2('val', "");
@@ -601,26 +602,29 @@ $(document).ready(function() {
         }).then((result) => {
           if (result.value) {
             var alasan = $('#alasan').val();
-
-            $.ajax({
-              url: baseurl + 'PermohonanCuti/Approval/CancelCuti',
-              method: 'POST',
-              data: {
-                id_cuti: id,
-                noind: noind,
-                tipe: tipe,
-                alasan: alasan
-              },
-              success: function(data) {
-                var enc = data.replace(/\s/g, '');
-                var link = baseurl + 'PermohonanCuti/Approval/Approved/Detail/' + enc;
-                $('.form-horizontal').load(link + ' .form-horizontal')
-                swal.fire({
-                  title: 'Cuti ini Berhasil di Batalkan',
-                  type: 'success'
-                });
-              }
-            })
+            if(alasan == '' || alasan == null || alasan == ' '){
+              alert("Alasan harus diisi !")
+            }else{
+              $.ajax({
+                url: baseurl + 'PermohonanCuti/Approval/CancelCuti',
+                method: 'POST',
+                data: {
+                  id_cuti: id,
+                  noind: noind,
+                  tipe: tipe,
+                  alasan: alasan
+                },
+                success: function(data) {
+                  var enc = data.replace(/\s/g, '');
+                  var link = baseurl + 'PermohonanCuti/Approval/Approved/Detail/' + enc;
+                  $('.form-horizontal').load(link + ' .form-horizontal')
+                  swal.fire({
+                    title: 'Cuti ini Berhasil di Batalkan',
+                    type: 'success'
+                  });
+                }
+              })
+            }
           }
         })
       });

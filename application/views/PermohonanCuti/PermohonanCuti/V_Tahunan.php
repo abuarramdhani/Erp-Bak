@@ -81,7 +81,7 @@ h2{
 											</div>
 										</div>
 									</div>
-									<div class="form-group slc_Keperluan">
+									<div class="form-group slc_Keperluan hidden">
 										<label class="control-label col-lg-4 col-md-4">Keperluan</label>
 										<div class="col-lg-4 col-md-5">
 											<div class="col-lg-12">
@@ -110,7 +110,7 @@ h2{
 												<input type="text" value="<?php if (isset($_POST['txtPengambilanCuti'])){ echo $_POST['txtPengambilanCuti'];} ?>" class="form-control" autocomplete="off" name="txtPengambilanCuti" id="txtPengambilanCutiTahunan"
 													placeholder="Tanggal Pengambilan Cuti" data-date-format="yyyy-mm-dd">
 											</div>
-											<div class="col-lg-12 txtTglSusulan">
+											<div class="col-lg-12 txtTglSusulan hidden">
 												<input type="text" value="<?php if (isset($_POST['txtPengambilanCuti'])){ echo $_POST['txtPengambilanCuti'];} ?>" class="form-control" autocomplete="off" name="txtPengambilanCutiSusulan" id="txtPengambilanCutiTahunanSusulan"
 													placeholder="Tanggal Pengambilan Cuti" data-date-format="yyyy-mm-dd">
 											</div>
