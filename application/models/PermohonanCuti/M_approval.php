@@ -143,6 +143,7 @@ class M_approval extends CI_MODEL {
           }
           $this->updateDataPresensi($id_cuti);
           if($tipe == '1'){
+            $this->perhitunganCutOff($id_cuti);
             $this->updateDataCutiTahunan($noindCuti, $id_cuti);
           }
         } else {
