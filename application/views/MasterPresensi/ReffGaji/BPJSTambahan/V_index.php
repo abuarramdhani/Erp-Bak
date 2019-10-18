@@ -27,6 +27,20 @@
 		font-weight: bold;
 		color: #16A085 !important;
 	}
+	.dataTables_wrapper .dataTables_processing {
+		position: absolute;
+		top: 50%;
+		left: 30%;
+		width: 40%;
+		height: 40px;
+		margin-left: -20%;
+		margin-top: -25px;
+		padding-top: 40px;
+		text-align: center;
+		font-size: 1.2em;
+		background-image: linear-gradient(70deg, #2ABB9B 70%, #16A085 30%);
+		border-color: black;
+	}
 </style>
 
 <section class="content">

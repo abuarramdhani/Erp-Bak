@@ -129,7 +129,37 @@ $(document).on('ready', function() {
         paging: false
     });
 
-    $('#tbl-MPR-BPJSTambahan').dataTable();
+    $('#tbl-MPR-BPJSTambahan').dataTable({
+        "processing": true,
+        "serverSide": true,
+        "order" : [],
+        "ajax":{
+          "url": baseurl+'MasterPresensi/ReffGaji/BPJSTambahan/ListPekerja',
+          "type": "post"
+        },
+        "columnDefs" : [
+        {
+          "targets":[0],
+          // "orderable":false,
+          "className": 'text-center'
+        },
+        {
+          "targets":[1],
+          // "orderable":false,
+          "className": 'text-center'
+        },
+        {
+          "targets":[4],
+          // "orderable":false,
+          "className": 'text-center'
+        },
+        {
+          "targets":[5],
+          // "orderable":false,
+          "className": 'text-center'
+        }
+        ],
+    });
 });
 
 $(document).on('ready',function(){
@@ -146,7 +176,7 @@ $(document).on('ready',function(){
                $('#MPR-transferreffgaji-download').html(e);
                setTimeout(function(e){
                  $('#MPR-status-Read').val("0");
-               },5000);  
+               },5000);
             }
         })
     });
@@ -321,27 +351,29 @@ function BPJS_refreshkeluarga(noind){
 }
 
 function BPJS_refreshtableutama(){
-    table = $('#tbl-MPR-BPJSTambahan').dataTable();
+    // table = $('#tbl-MPR-BPJSTambahan').dataTable();
+    //
+    // $.ajax({
+    //     type: 'POST',
+    //     url: baseurl + 'MasterPresensi/ReffGaji/BPJSTambahan/refresh',
+    //     data: {noind: noind},
+    //     success: function(data){
+    //         table.fnClearTable();
+    //         obj = JSON.parse(data);
+    //         no3 = 1;
+    //         for (var i = 0; i < obj.length; i++) {
+    //             table.fnAddData([
+    //                 no3,
+    //                 obj[i]['noind'],
+    //                 obj[i]['nama'],
+    //                 obj[i]['seksi'],
+    //                 obj[i]['jumlah'],
+    //                 '<button type="button" class="btn btn-sm modal-trigger-MPR-BPJSTambahan" data-noind =' + obj[i]['noind'] + ' style="background-image: linear-gradient(70deg, #2ABB9B 70%, #16A085 30%);color: white"><span class="fa fa-pencil"></span></button>'
+    //                 ]);
+    //             no3++;
+    //         }
+    //     }
+    // })
 
-    $.ajax({
-        type: 'POST',
-        url: baseurl + 'MasterPresensi/ReffGaji/BPJSTambahan/refresh',
-        data: {noind: noind},
-        success: function(data){
-            table.fnClearTable();
-            obj = JSON.parse(data);
-            no3 = 1;
-            for (var i = 0; i < obj.length; i++) {
-                table.fnAddData([
-                    no3,
-                    obj[i]['noind'],
-                    obj[i]['nama'],
-                    obj[i]['seksi'],
-                    obj[i]['jumlah'],
-                    '<button type="button" class="btn btn-sm modal-trigger-MPR-BPJSTambahan" data-noind =' + obj[i]['noind'] + ' style="background-image: linear-gradient(70deg, #2ABB9B 70%, #16A085 30%);color: white"><span class="fa fa-pencil"></span></button>'
-                    ]);
-                no3++;
-            }
-        }
-    })
+    $('#tbl-MPR-BPJSTambahan').DataTable().ajax.reload();
 }
