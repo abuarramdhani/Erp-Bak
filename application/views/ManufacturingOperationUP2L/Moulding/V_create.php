@@ -28,90 +28,52 @@
                                 <div class="box-body">
                                     <div class="panel-body">
                                         <div class="row">
-                                            <div class="form-group">
-                                                <label for="txtComponentCodeHeader" class="control-label col-lg-4">Component Code</label>
-                                                <div class="col-lg-6">
-                                                    <select class="form-control jsSlcComp toupper" id="txtComponentCodeHeader" name="component_code" required data-placeholder="Component Code" onchange="getCompDescMO(this)">
-                                                        <option></option>
-                                                    </select>
-                                                </div>
+                                        <div class="form-group">
+                                            <label class="control-label col-md-4">Production Date</label>
+                                            <div class="col-md-6">
+                                                <input type="text" name="production_date" class="form-control time-form1 ajaxOnChange" placeholder="Production Date">
                                             </div>
-
-                                            <div class="form-group">
-                                                <label for="txtComponentDescriptionHeader" class="control-label col-lg-4">Component Description</label>
-                                                <div class="col-lg-6">
-                                                    <input type="text" placeholder="Component Description" name="component_description" id="txtComponentDescriptionHeader" class="form-control" readonly />
-                                                </div>
-                                            </div>
-
-                                            <!-- 	<div class="form-group">
-                                                <label for="txtProductionDateHeader" class="control-label col-lg-4">Production Date</label>
-                                                <div class="col-lg-6">
-                                                  <input type="text" name="production_date" class="form-control time-form ajaxOnChange" id="txtProductionDateHeader" required placeholder="Production Date">
-                                                </div>
-                                            </div> -->
-                                            <div class="form-group">
-                                                <label class="control-label col-md-4">Production Date</label>
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="control-label col-md-4">Print Code</label>
+                                            <div id="print_code_area">
                                                 <div class="col-md-6">
-                                                    <input type="text" name="production_date" class="form-control time-form1 ajaxOnChange" required="" placeholder="Production Date">
+                                                    <small>-- Select production date to generate print code --</small>
                                                 </div>
                                             </div>
-                                            <div class="form-group">
-                                                <label class="control-label col-md-4">Print Code</label>
-                                                <div id="print_code_area">
-                                                    <div class="col-md-6">
-                                                        <small>-- Select production date to generate print code
-                                                            --</small>
-                                                    </div>
-                                                </div>
-                                            </div>
+                                        </div>
 
-                                            <div class="form-group">
-                                                <label for="txtShift" class="control-label col-lg-4">Shift</label>
-                                                <div class="col-lg-6">
-                                                    <select class="form-control slcShift select2" id="txtShift" name="txtShift">
-                                                        <!-- <option value=""></option> -->
-                                                    </select>
-                                                </div>
+                                        <div class="form-group">
+                                            <label for="txtShift" class="control-label col-lg-4">Shift</label>
+                                            <div class="col-lg-6">
+                                                <select class="form-control slcShift select2" id="txtShift" name="txtShift">
+                                                </select>
                                             </div>
-
-                                            <div class="form-group">
-                                                <label for="txtMouldingQuantityHeader" class="control-label col-lg-4">Moulding Quantity</label>
-                                                <div class="col-lg-6">
-                                                    <input type="number" placeholder="Moulding Quantity" name="txtMouldingQuantityHeader" id="txtMouldingQuantityHeader" class="form-control" />
-                                                </div>
+                                        </div>
+                                        <div class="form-group">
+                                        <label for="kode_kel" class="control-label col-lg-4">Kode Kelompok</label>
+                                            <div class="col-lg-6">
+                                                <select class="form-control" id="kode_kel" name="kode_kel">
+                                                    <option name="kode_kel" selected value="">--- Kode Kelompok ---</option>
+                                                    <option name="kode_kel" value="A">A</option>
+                                                    <option name="kode_kel" value="B">B</option>
+                                                    <option name="kode_kel" value="C">C</option>
+                                                    <option name="kode_kel" value="D">D</option>
+                                                    <option name="kode_kel" value="E">E</option>
+                                                    <option name="kode_kel" value="F">F</option>
+                                                    <option name="kode_kel" value="G">G</option>
+                                                    <option name="kode_kel" value="H">H</option>
+                                                    <option name="kode_kel" value="I">I</option>
+                                                    <option name="kode_kel" value="J">J</option>
+                                                    <option name="kode_kel" value="K">K</option>
+                                                    <option name="kode_kel" value="L">L</option>
+                                                    <option name="kode_kel" value="M">M</option>
+                                                    <option name="kode_kel" value="N">N</option>
+                                                </select>
                                             </div>
-                                            <div class="form-group">
-                                            <label for="ottKodeP" class="control-label col-lg-4">Kode Kelompok</label>
-                                                <div class="col-lg-6">
-                                                    <select class="form-control" id="ottKodeP" name="ottKodeP">
-                                                        <option name="ottKodeP" selected value="">--- Kode Kelompok ---</option>
-                                                        <option name="ottKodeP" value="A">A</option>
-                                                        <option name="ottKodeP" value="B">B</option>
-                                                        <option name="ottKodeP" value="C">C</option>
-                                                        <option name="ottKodeP" value="D">D</option>
-                                                        <option name="ottKodeP" value="E">E</option>
-                                                        <option name="ottKodeP" value="F">F</option>
-                                                        <option name="ottKodeP" value="G">G</option>
-                                                        <option name="ottKodeP" value="H">H</option>
-                                                        <option name="ottKodeP" value="I">I</option>
-                                                        <option name="ottKodeP" value="J">J</option>
-                                                        <option name="ottKodeP" value="K">K</option>
-                                                        <option name="ottKodeP" value="L">L</option>
-                                                        <option name="ottKodeP" value="M">M</option>
-                                                        <option name="ottKodeP" value="N">N</option>
-                                                    </select>
-                                                </div>
-                                            </div>
-                                            <div class="form-group">
-                                                <label for="txtMouldingKeteranganHeader" class="control-label col-lg-4">Keterangan</label>
-                                                <div class="col-lg-6">
-                                                    <textarea name="textarea_ket" id="textarea_ket" class="form-control" form="forminputMould" placeholder="Keterangan"></textarea>
-                                                </div>
-                                            </div>
-
-                                            <div class="panel panel-default">
-                                                <div class="panel-heading">Employee</div>
+                                        </div>
+                                        <div class="box box-default box-solid">
+                                                <div class="box-header with-border"><div class="col-lg-12"><b>Employee</b></div></div>
                                                 <div class="panel-body" id="container-employee">
                                                     <div class="form-group employee">
                                                         <label for="txtMouldingQuantityHeader" class="control-label col-lg-4">Nama</label>
@@ -120,9 +82,7 @@
                                                                 <option></option>
                                                             </select>
                                                         </div>
-
                                                         <button class="btn btn-info add_emp"><i class="fa fa-plus"></i></button>
-
                                                         <button class="btn btn-danger remove_emp" style="display: none"><i class="fa fa-close"></i></button>
 
                                                         <div class="row" style="padding:20px;">
@@ -164,17 +124,40 @@
                                                     </div>
                                                 </div>
                                             </div>
+                                            <div class="box box-default box-solid">
+                                                <div class="box-header with-border">
+                                                    <div class="col-lg-12">
+                                                        <div class="col-lg-10"><b>Component</b></div>
+                                                        <div class="col-lg-2" style="float:right;">
+                                                            <button onclick="addCompMould()" class="btn btn-success"> <i class="fa fa-plus"></i></button>
+                                                            <button onclick="delcompMould()" class="btn btn-danger"> <i class="fa fa-times"></i></button>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="panel-body" id="container-component">
+                                                    <div class="form-group">
+                                                        <label for="txtComponentCodeHeader" class="control-label col-lg-4">Component</label>
+                                                        <div class="col-lg-6">
+                                                            <select class="form-control jsSlcComp toupper" id="txtComponentCodeHeader" name="component_code[]" required data-placeholder="Component Code" onchange="getCompDescMO(this)">
+                                                            </select>
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="form-group">
+                                                        <label for="txtMouldingQuantityHeader" class="control-label col-lg-4">Moulding Quantity</label>
+                                                        <div class="col-lg-6">
+                                                            <input type="number" placeholder="Moulding Quantity" name="txtMouldingQuantityHeader[]" id="txtMouldingQuantityHeader" class="form-control" />
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
                                         </div>
 
 
                                     </div>
-                                    <div class="panel-footer">
-                                        <div class="row text-right">
-                                            <a href="javascript:history.back(1)" class="btn btn-primary btn-lg btn-rect">Back</a>
-                                            &nbsp;&nbsp;
-                                            <button type="submit" class="btn btn-primary btn-lg btn-rect">Save
-                                                Data</button>
-                                        </div>
+                                    <div class="box-footer text-right">
+                                        <button type="submit" class="btn btn-success btn-lg"><i class="fa fa-save"></i></i>  Save</button>
+                                        <a href="<?php echo site_url('ManufacturingOperationUP2L/Moulding'); ?>" class="btn btn-danger btn-lg"><i class="fa fa-arrow-left"></i></i>  Back</a>
                                     </div>
                                 </div>
                             </div>

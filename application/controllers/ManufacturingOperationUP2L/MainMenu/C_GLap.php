@@ -448,15 +448,16 @@ class C_GLap extends CI_Controller
 
 		// =================== START OF AMBIL DATA & DEKLARASI ARRAY =================== //
 		$vMould = $this->M_glap->vMoulding($tanggal1, $tanggal2);
-		$vMixing = $this->M_glap->vMixing($tanggal1, $tanggal2);
-		$vCore = $this->M_glap->vCore($tanggal1, $tanggal2);
-		$vOTT = $this->M_glap->vOTT($tanggal1, $tanggal2);
 		
 		$jadi = array();
 		$o = 0;
 		foreach ($vMould as $vol) {
 			$master = $this->M_glap->getMasterItem($vol['component_code']);
 			$scrap = $this->M_glap->getDetail($vol['moulding_id']);
+
+			$TonageBeik_f = (($master[0]['berat']) * ($vol['bongkar_qty'] - $vol['scrap_qty']));
+			$TonageIP_f = ($master[0]['berat'] * ($vol['moulding_quantity'] - $vol['bongkar_qty']));
+			$TonageReject_f = ($vol['scrap_qty'] * $master[0]['berat']);
 
 			$jadi[$o]['jenis'] = 'Moulding';
 			$jadi[$o]['id'] = $vol['moulding_id'];
@@ -469,78 +470,63 @@ class C_GLap extends CI_Controller
 			$jadi[$o]['Berat'] = $master[0]['berat'];
 			$jadi[$o]['Reject'] = (empty($vol['scrap_qty']) ? '0' : $vol['scrap_qty'] );
 			$jadi[$o]['IP'] = ($vol['moulding_quantity'] - $vol['bongkar_qty']) ;
-			$jadi[$o]['TonageBaik'] = (($master[0]['berat']) * ($vol['bongkar_qty'] - $vol['scrap_qty']));
-			$jadi[$o]['TonageIP'] = ($master[0]['berat'] * ($vol['moulding_quantity'] - $vol['bongkar_qty']));
-			$jadi[$o]['TonageReject'] = ($vol['scrap_qty'] * $master[0]['berat']);
-			$jadi[$o]['ProsentaseReject'] = '';
+			$jadi[$o]['TonageBaik'] = $TonageBeik_f;
+			$jadi[$o]['TonageIP'] = $TonageIP_f;
+			$jadi[$o]['TonageReject'] = $TonageReject_f;
+			$jadi[$o]['ProsentaseReject'] = '0';
 			$jadi[$o]['PreBaik'] = ($vol['bongkar_qty'] - $vol['scrap_qty']) + ($vol['moulding_quantity'] - $vol['bongkar_qty']);
-			$jadi[$o]['RC'] = '0';
+			$jadi[$o]['MS'] = '0';
 			$jadi[$o]['DF'] = '0';
-			$jadi[$o]['CR'] = '0';
-			$jadi[$o]['TK'] = '0';
-			$jadi[$o]['PR'] = '0';
 			$jadi[$o]['KP'] = '0';
 			$jadi[$o]['CT'] = '0';
 			$jadi[$o]['TS'] = '0';
-			$jadi[$o]['CO'] = '0';
-			$jadi[$o]['CW'] = '0';
-			$jadi[$o]['SC'] = '0';
-			$jadi[$o]['PH'] = '0';
-			$jadi[$o]['SG'] = '0';
 			$jadi[$o]['GS'] = '0';
 			$jadi[$o]['CP'] = '0';
+			$jadi[$o]['RT'] = '0';
+			$jadi[$o]['CW'] = '0';
 			$jadi[$o]['TT'] = '0';
 			$jadi[$o]['BC'] = '0';
+			$jadi[$o]['PH'] = '0';
 			$jadi[$o]['KS'] = '0';
 			$jadi[$o]['NK'] = '0';
-			$jadi[$o]['MS'] = '0';
-			$jadi[$o]['RT'] = '0';
-			$jadi[$o]['PK'] = '0';
+			$jadi[$o]['CR'] = '0';
+			$jadi[$o]['RC'] = '0';
+			$jadi[$o]['LL'] = '0';
 			foreach ($scrap as $key) {
-				if ($key['kode_scrap'] == 'RC') {
-					$jadi[$o]['RC'] += $key['quantity'];
+				if ($key['kode_scrap'] == 'MS') {
+					$jadi[$o]['MS'] += $key['quantity'];
 				} else if ($key['kode_scrap'] == 'DF') {
 					$jadi[$o]['DF'] += $key['quantity'];
-				} else if ($key['kode_scrap'] == 'CR') {
-					$jadi[$o]['CR'] += $key['quantity'];
-				} else if ($key['kode_scrap'] == 'TK') {
-					$jadi[$o]['TK'] += $key['quantity'];
-				} else if ($key['kode_scrap'] == 'PR') {
-					$jadi[$o]['PR'] += $key['quantity'];
 				} else if ($key['kode_scrap'] == 'KP') {
 					$jadi[$o]['KP'] += $key['quantity'];
 				} else if ($key['kode_scrap'] == 'CT') {
 					$jadi[$o]['CT'] += $key['quantity'];
 				} else if ($key['kode_scrap'] == 'TS') {
 					$jadi[$o]['TS'] += $key['quantity'];
-				} else if ($key['kode_scrap'] == 'CO') {
-					$jadi[$o]['CO'] += $key['quantity'];
-				} else if ($key['kode_scrap'] == 'CW') {
-					$jadi[$o]['CW'] += $key['quantity'];
-				} else if ($key['kode_scrap'] == 'SC') {
-					$jadi[$o]['SC'] += $key['quantity'];
-				} else if ($key['kode_scrap'] == 'PH') {
-					$jadi[$o]['PH'] += $key['quantity'];
-				} else if ($key['kode_scrap'] == 'SG') {
-					$jadi[$o]['SG'] += $key['quantity'];
 				} else if ($key['kode_scrap'] == 'GS') {
 					$jadi[$o]['GS'] += $key['quantity'];
 				} else if ($key['kode_scrap'] == 'CP') {
 					$jadi[$o]['CP'] += $key['quantity'];
+				} else if ($key['kode_scrap'] == 'RT') {
+					$jadi[$o]['RT'] += $key['quantity'];
+				} else if ($key['kode_scrap'] == 'CW') {
+					$jadi[$o]['CW'] += $key['quantity'];
 				} else if ($key['kode_scrap'] == 'TT') {
 					$jadi[$o]['TT'] += $key['quantity'];
 				} else if ($key['kode_scrap'] == 'BC') {
 					$jadi[$o]['BC'] += $key['quantity'];
+				} else if ($key['kode_scrap'] == 'PH') {
+					$jadi[$o]['PH'] += $key['quantity'];
 				} else if ($key['kode_scrap'] == 'KS') {
 					$jadi[$o]['KS'] += $key['quantity'];
 				} else if ($key['kode_scrap'] == 'NK') {
 					$jadi[$o]['NK'] += $key['quantity'];
-				} else if ($key['kode_scrap'] == 'MS') {
-					$jadi[$o]['MS'] += $key['quantity'];
-				} else if ($key['kode_scrap'] == 'RT') {
-					$jadi[$o]['RT'] += $key['quantity'];
-				} else if ($key['kode_scrap'] == 'PK') {
-					$jadi[$o]['PK'] += $key['quantity'];
+				} else if ($key['kode_scrap'] == 'CR') {
+					$jadi[$o]['CR'] += $key['quantity'];
+				} else if ($key['kode_scrap'] == 'RC') {
+					$jadi[$o]['RC'] += $key['quantity'];
+				} else if ($key['kode_scrap'] == 'LL') {
+					$jadi[$o]['LL'] += $key['quantity'];
 				} else { }
 			}
 			$o++;
@@ -575,28 +561,23 @@ class C_GLap extends CI_Controller
 					$hasil[$jadi[$jd]['Kode4dg']][$i]['TonageReject'] = $jadi[$jd]['TonageReject'];
 					$hasil[$jadi[$jd]['Kode4dg']][$i]['ProsentaseReject'] = $jadi[$jd]['ProsentaseReject'];
 					$hasil[$jadi[$jd]['Kode4dg']][$i]['PreBaik'] = $jadi[$jd]['PreBaik'];
-					$hasil[$jadi[$jd]['Kode4dg']][$i]['RC'] = $jadi[$jd]['RC'];
+					$hasil[$jadi[$jd]['Kode4dg']][$i]['MS'] = $jadi[$jd]['MS'];
 					$hasil[$jadi[$jd]['Kode4dg']][$i]['DF'] = $jadi[$jd]['DF'];
-					$hasil[$jadi[$jd]['Kode4dg']][$i]['CR'] = $jadi[$jd]['CR'];
-					$hasil[$jadi[$jd]['Kode4dg']][$i]['TK'] = $jadi[$jd]['TK'];
-					$hasil[$jadi[$jd]['Kode4dg']][$i]['PR'] = $jadi[$jd]['PR'];
 					$hasil[$jadi[$jd]['Kode4dg']][$i]['KP'] = $jadi[$jd]['KP'];
 					$hasil[$jadi[$jd]['Kode4dg']][$i]['CT'] = $jadi[$jd]['CT'];
 					$hasil[$jadi[$jd]['Kode4dg']][$i]['TS'] = $jadi[$jd]['TS'];
-					$hasil[$jadi[$jd]['Kode4dg']][$i]['CO'] = $jadi[$jd]['CO'];
-					$hasil[$jadi[$jd]['Kode4dg']][$i]['CW'] = $jadi[$jd]['CW'];
-					$hasil[$jadi[$jd]['Kode4dg']][$i]['SC'] = $jadi[$jd]['SC'];
-					$hasil[$jadi[$jd]['Kode4dg']][$i]['PH'] = $jadi[$jd]['PH'];
-					$hasil[$jadi[$jd]['Kode4dg']][$i]['SG'] = $jadi[$jd]['SG'];
 					$hasil[$jadi[$jd]['Kode4dg']][$i]['GS'] = $jadi[$jd]['GS'];
 					$hasil[$jadi[$jd]['Kode4dg']][$i]['CP'] = $jadi[$jd]['CP'];
+					$hasil[$jadi[$jd]['Kode4dg']][$i]['RT'] = $jadi[$jd]['RT'];
+					$hasil[$jadi[$jd]['Kode4dg']][$i]['CW'] = $jadi[$jd]['CW'];
 					$hasil[$jadi[$jd]['Kode4dg']][$i]['TT'] = $jadi[$jd]['TT'];
 					$hasil[$jadi[$jd]['Kode4dg']][$i]['BC'] = $jadi[$jd]['BC'];
+					$hasil[$jadi[$jd]['Kode4dg']][$i]['PH'] = $jadi[$jd]['PH'];
 					$hasil[$jadi[$jd]['Kode4dg']][$i]['KS'] = $jadi[$jd]['KS'];
 					$hasil[$jadi[$jd]['Kode4dg']][$i]['NK'] = $jadi[$jd]['NK'];
-					$hasil[$jadi[$jd]['Kode4dg']][$i]['MS'] = $jadi[$jd]['MS'];
-					$hasil[$jadi[$jd]['Kode4dg']][$i]['RT'] = $jadi[$jd]['RT'];
-					$hasil[$jadi[$jd]['Kode4dg']][$i]['PK'] = $jadi[$jd]['PK'];
+					$hasil[$jadi[$jd]['Kode4dg']][$i]['CR'] = $jadi[$jd]['CR'];
+					$hasil[$jadi[$jd]['Kode4dg']][$i]['RC'] = $jadi[$jd]['RC'];
+					$hasil[$jadi[$jd]['Kode4dg']][$i]['LL'] = $jadi[$jd]['LL'];
 					$i++;
 				}
 				
@@ -642,7 +623,7 @@ class C_GLap extends CI_Controller
 		}
 		for( $x = "R"; ; $x++) {
 			$worksheet->getColumnDimension($x)->setWidth(5);
-			if( $x == "AN") break;
+			if( $x == "AI") break;
 		}
 		
 		$worksheet->mergeCells('A1:C1');
@@ -672,31 +653,24 @@ class C_GLap extends CI_Controller
 		$worksheet->setCellValue('O8', '% Reject');
 		$worksheet->setCellValue('P8', 'Pre Baik (Pcs)');
 		$worksheet->setCellValue('Q8', 'diksi % Renc'); // Tdk diisi
-		$worksheet->setCellValue('R8', 'Reject');
-		$worksheet->setCellValue('R9', 'RC');
-		$worksheet->setCellValue('S9', 'DF');
-		$worksheet->setCellValue('T9', 'CR');
-		$worksheet->setCellValue('U9', 'TK');
-		$worksheet->setCellValue('V9', 'PR');
-		$worksheet->setCellValue('W9', 'KP');
-		$worksheet->setCellValue('X9', 'CT');
-		$worksheet->setCellValue('Y9', 'TS');
-		$worksheet->setCellValue('Z9', 'CO');
-		$worksheet->setCellValue('AA9', 'CW');
-		$worksheet->setCellValue('AB9', 'SC');
-		$worksheet->setCellValue('AC9', 'PH');
-		$worksheet->setCellValue('AD9', 'SG');
-		$worksheet->setCellValue('AE9', 'GS');
-		$worksheet->setCellValue('AF9', 'CP');
-		$worksheet->setCellValue('AG9', 'TT');
-		$worksheet->setCellValue('AH9', 'BC');
-		$worksheet->setCellValue('AI9', 'KS');
-		$worksheet->setCellValue('AJ9', 'NK');
-		$worksheet->setCellValue('AK9', 'MS');
-		$worksheet->setCellValue('AL9', 'RT');
-		$worksheet->setCellValue('AM9', 'PK');
-		$worksheet->getStyle('A8:AM9')->applyFromArray($header);
-		$worksheet->mergeCells('R8:AM8');
+		$worksheet->setCellValue('R8', 'MS');
+		$worksheet->setCellValue('S8', 'DF');
+		$worksheet->setCellValue('T8', 'KP');
+		$worksheet->setCellValue('U8', 'CT');
+		$worksheet->setCellValue('V8', 'TS');
+		$worksheet->setCellValue('W8', 'GS');
+		$worksheet->setCellValue('X8', 'CP');
+		$worksheet->setCellValue('Y8', 'RT');
+		$worksheet->setCellValue('Z8', 'CW');
+		$worksheet->setCellValue('AA8', 'TT');
+		$worksheet->setCellValue('AB8', 'BC');
+		$worksheet->setCellValue('AC8', 'PH');
+		$worksheet->setCellValue('AD8', 'KS');
+		$worksheet->setCellValue('AE8', 'NK');
+		$worksheet->setCellValue('AF8', 'CR');
+		$worksheet->setCellValue('AG8', 'RC');
+		$worksheet->setCellValue('AH8', 'LL');
+		$worksheet->getStyle('A8:AH8')->applyFromArray($header);
 		$worksheet->getStyle('A8:Q8')->getAlignment()->setWrapText(true); 
 		// =================== END OF DECLARE HEADER & STYLING =================== //
 
@@ -733,28 +707,23 @@ class C_GLap extends CI_Controller
 							$akhirat[$td][$hasil[$td][$dn]['KodeKomponen']]['TonageReject'] = $nilai;
 							$akhirat[$td][$hasil[$td][$dn]['KodeKomponen']]['ProsentaseReject'] = $nilai;
 							$akhirat[$td][$hasil[$td][$dn]['KodeKomponen']]['PreBaik'] = $nilai;
-							$akhirat[$td][$hasil[$td][$dn]['KodeKomponen']]['RC'] = $nilai;
+							$akhirat[$td][$hasil[$td][$dn]['KodeKomponen']]['MS'] = $nilai;
 							$akhirat[$td][$hasil[$td][$dn]['KodeKomponen']]['DF'] = $nilai;
-							$akhirat[$td][$hasil[$td][$dn]['KodeKomponen']]['CR'] = $nilai;
-							$akhirat[$td][$hasil[$td][$dn]['KodeKomponen']]['TK'] = $nilai;
-							$akhirat[$td][$hasil[$td][$dn]['KodeKomponen']]['PR'] = $nilai;
 							$akhirat[$td][$hasil[$td][$dn]['KodeKomponen']]['KP'] = $nilai;
 							$akhirat[$td][$hasil[$td][$dn]['KodeKomponen']]['CT'] = $nilai;
 							$akhirat[$td][$hasil[$td][$dn]['KodeKomponen']]['TS'] = $nilai;
-							$akhirat[$td][$hasil[$td][$dn]['KodeKomponen']]['CO'] = $nilai;
-							$akhirat[$td][$hasil[$td][$dn]['KodeKomponen']]['CW'] = $nilai;
-							$akhirat[$td][$hasil[$td][$dn]['KodeKomponen']]['SC'] = $nilai;
-							$akhirat[$td][$hasil[$td][$dn]['KodeKomponen']]['PH'] = $nilai;
-							$akhirat[$td][$hasil[$td][$dn]['KodeKomponen']]['SG'] = $nilai;
 							$akhirat[$td][$hasil[$td][$dn]['KodeKomponen']]['GS'] = $nilai;
 							$akhirat[$td][$hasil[$td][$dn]['KodeKomponen']]['CP'] = $nilai;
+							$akhirat[$td][$hasil[$td][$dn]['KodeKomponen']]['RT'] = $nilai;
+							$akhirat[$td][$hasil[$td][$dn]['KodeKomponen']]['CW'] = $nilai;
 							$akhirat[$td][$hasil[$td][$dn]['KodeKomponen']]['TT'] = $nilai;
 							$akhirat[$td][$hasil[$td][$dn]['KodeKomponen']]['BC'] = $nilai;
+							$akhirat[$td][$hasil[$td][$dn]['KodeKomponen']]['PH'] = $nilai;
 							$akhirat[$td][$hasil[$td][$dn]['KodeKomponen']]['KS'] = $nilai;
 							$akhirat[$td][$hasil[$td][$dn]['KodeKomponen']]['NK'] = $nilai;
-							$akhirat[$td][$hasil[$td][$dn]['KodeKomponen']]['MS'] = $nilai;
-							$akhirat[$td][$hasil[$td][$dn]['KodeKomponen']]['RT'] = $nilai;
-							$akhirat[$td][$hasil[$td][$dn]['KodeKomponen']]['PK'] = $nilai;
+							$akhirat[$td][$hasil[$td][$dn]['KodeKomponen']]['CR'] = $nilai;
+							$akhirat[$td][$hasil[$td][$dn]['KodeKomponen']]['RC'] = $nilai;
+							$akhirat[$td][$hasil[$td][$dn]['KodeKomponen']]['LL'] = $nilai;
 
 							$akhirat[$td][$hasil[$td][$dn]['KodeKomponen']]['HasilCor'] +=  $hasil[$td][$dn]['HasilCor'];
 							$akhirat[$td][$hasil[$td][$dn]['KodeKomponen']]['HasilBaik'] += $hasil[$td][$dn]['HasilBaik'];
@@ -766,28 +735,23 @@ class C_GLap extends CI_Controller
 							$akhirat[$td][$hasil[$td][$dn]['KodeKomponen']]['TonageReject'] += $hasil[$td][$dn]['TonageReject'];
 							$akhirat[$td][$hasil[$td][$dn]['KodeKomponen']]['ProsentaseReject'] += $hasil[$td][$dn]['ProsentaseReject'];
 							$akhirat[$td][$hasil[$td][$dn]['KodeKomponen']]['PreBaik'] += $hasil[$td][$dn]['PreBaik'];
-							$akhirat[$td][$hasil[$td][$dn]['KodeKomponen']]['RC'] += $hasil[$td][$dn]['RC'];
+							$akhirat[$td][$hasil[$td][$dn]['KodeKomponen']]['MS'] += $hasil[$td][$dn]['MS'];
 							$akhirat[$td][$hasil[$td][$dn]['KodeKomponen']]['DF'] += $hasil[$td][$dn]['DF'];
-							$akhirat[$td][$hasil[$td][$dn]['KodeKomponen']]['CR'] += $hasil[$td][$dn]['CR'];
-							$akhirat[$td][$hasil[$td][$dn]['KodeKomponen']]['TK'] += $hasil[$td][$dn]['TK'];
-							$akhirat[$td][$hasil[$td][$dn]['KodeKomponen']]['PR'] += $hasil[$td][$dn]['PR'];
 							$akhirat[$td][$hasil[$td][$dn]['KodeKomponen']]['KP'] += $hasil[$td][$dn]['KP'];
 							$akhirat[$td][$hasil[$td][$dn]['KodeKomponen']]['CT'] += $hasil[$td][$dn]['CT'];
 							$akhirat[$td][$hasil[$td][$dn]['KodeKomponen']]['TS'] += $hasil[$td][$dn]['TS'];
-							$akhirat[$td][$hasil[$td][$dn]['KodeKomponen']]['CO'] += $hasil[$td][$dn]['CO'];
-							$akhirat[$td][$hasil[$td][$dn]['KodeKomponen']]['CW'] += $hasil[$td][$dn]['CW'];
-							$akhirat[$td][$hasil[$td][$dn]['KodeKomponen']]['SC'] += $hasil[$td][$dn]['SC'];
-							$akhirat[$td][$hasil[$td][$dn]['KodeKomponen']]['PH'] += $hasil[$td][$dn]['PH'];
-							$akhirat[$td][$hasil[$td][$dn]['KodeKomponen']]['SG'] += $hasil[$td][$dn]['SG'];
 							$akhirat[$td][$hasil[$td][$dn]['KodeKomponen']]['GS'] += $hasil[$td][$dn]['GS'];
 							$akhirat[$td][$hasil[$td][$dn]['KodeKomponen']]['CP'] += $hasil[$td][$dn]['CP'];
+							$akhirat[$td][$hasil[$td][$dn]['KodeKomponen']]['RT'] += $hasil[$td][$dn]['RT'];
+							$akhirat[$td][$hasil[$td][$dn]['KodeKomponen']]['CW'] += $hasil[$td][$dn]['CW'];
 							$akhirat[$td][$hasil[$td][$dn]['KodeKomponen']]['TT'] += $hasil[$td][$dn]['TT'];
 							$akhirat[$td][$hasil[$td][$dn]['KodeKomponen']]['BC'] += $hasil[$td][$dn]['BC'];
+							$akhirat[$td][$hasil[$td][$dn]['KodeKomponen']]['PH'] += $hasil[$td][$dn]['PH'];
 							$akhirat[$td][$hasil[$td][$dn]['KodeKomponen']]['KS'] += $hasil[$td][$dn]['KS'];
 							$akhirat[$td][$hasil[$td][$dn]['KodeKomponen']]['NK'] += $hasil[$td][$dn]['NK'];
-							$akhirat[$td][$hasil[$td][$dn]['KodeKomponen']]['MS'] += $hasil[$td][$dn]['MS'];
-							$akhirat[$td][$hasil[$td][$dn]['KodeKomponen']]['RT'] += $hasil[$td][$dn]['RT'];
-							$akhirat[$td][$hasil[$td][$dn]['KodeKomponen']]['PK'] += $hasil[$td][$dn]['PK'];
+							$akhirat[$td][$hasil[$td][$dn]['KodeKomponen']]['CR'] += $hasil[$td][$dn]['CR'];
+							$akhirat[$td][$hasil[$td][$dn]['KodeKomponen']]['RC'] += $hasil[$td][$dn]['RC'];
+							$akhirat[$td][$hasil[$td][$dn]['KodeKomponen']]['LL'] += $hasil[$td][$dn]['LL'];
 							$nilai++;
 						} else {
 							$akhirat[$td][$hasil[$td][$dn]['KodeKomponen']]['HasilCor'] +=  $hasil[$td][$dn]['HasilCor'];
@@ -800,28 +764,23 @@ class C_GLap extends CI_Controller
 							$akhirat[$td][$hasil[$td][$dn]['KodeKomponen']]['TonageReject'] += $hasil[$td][$dn]['TonageReject'];
 							$akhirat[$td][$hasil[$td][$dn]['KodeKomponen']]['ProsentaseReject'] += $hasil[$td][$dn]['ProsentaseReject'];
 							$akhirat[$td][$hasil[$td][$dn]['KodeKomponen']]['PreBaik'] += $hasil[$td][$dn]['PreBaik'];
-							$akhirat[$td][$hasil[$td][$dn]['KodeKomponen']]['RC'] += $hasil[$td][$dn]['RC'];
+							$akhirat[$td][$hasil[$td][$dn]['KodeKomponen']]['MS'] += $hasil[$td][$dn]['MS'];
 							$akhirat[$td][$hasil[$td][$dn]['KodeKomponen']]['DF'] += $hasil[$td][$dn]['DF'];
-							$akhirat[$td][$hasil[$td][$dn]['KodeKomponen']]['CR'] += $hasil[$td][$dn]['CR'];
-							$akhirat[$td][$hasil[$td][$dn]['KodeKomponen']]['TK'] += $hasil[$td][$dn]['TK'];
-							$akhirat[$td][$hasil[$td][$dn]['KodeKomponen']]['PR'] += $hasil[$td][$dn]['PR'];
 							$akhirat[$td][$hasil[$td][$dn]['KodeKomponen']]['KP'] += $hasil[$td][$dn]['KP'];
 							$akhirat[$td][$hasil[$td][$dn]['KodeKomponen']]['CT'] += $hasil[$td][$dn]['CT'];
 							$akhirat[$td][$hasil[$td][$dn]['KodeKomponen']]['TS'] += $hasil[$td][$dn]['TS'];
-							$akhirat[$td][$hasil[$td][$dn]['KodeKomponen']]['CO'] += $hasil[$td][$dn]['CO'];
-							$akhirat[$td][$hasil[$td][$dn]['KodeKomponen']]['CW'] += $hasil[$td][$dn]['CW'];
-							$akhirat[$td][$hasil[$td][$dn]['KodeKomponen']]['SC'] += $hasil[$td][$dn]['SC'];
-							$akhirat[$td][$hasil[$td][$dn]['KodeKomponen']]['PH'] += $hasil[$td][$dn]['PH'];
-							$akhirat[$td][$hasil[$td][$dn]['KodeKomponen']]['SG'] += $hasil[$td][$dn]['SG'];
 							$akhirat[$td][$hasil[$td][$dn]['KodeKomponen']]['GS'] += $hasil[$td][$dn]['GS'];
 							$akhirat[$td][$hasil[$td][$dn]['KodeKomponen']]['CP'] += $hasil[$td][$dn]['CP'];
+							$akhirat[$td][$hasil[$td][$dn]['KodeKomponen']]['RT'] += $hasil[$td][$dn]['RT'];
+							$akhirat[$td][$hasil[$td][$dn]['KodeKomponen']]['CW'] += $hasil[$td][$dn]['CW'];
 							$akhirat[$td][$hasil[$td][$dn]['KodeKomponen']]['TT'] += $hasil[$td][$dn]['TT'];
 							$akhirat[$td][$hasil[$td][$dn]['KodeKomponen']]['BC'] += $hasil[$td][$dn]['BC'];
+							$akhirat[$td][$hasil[$td][$dn]['KodeKomponen']]['PH'] += $hasil[$td][$dn]['PH'];
 							$akhirat[$td][$hasil[$td][$dn]['KodeKomponen']]['KS'] += $hasil[$td][$dn]['KS'];
 							$akhirat[$td][$hasil[$td][$dn]['KodeKomponen']]['NK'] += $hasil[$td][$dn]['NK'];
-							$akhirat[$td][$hasil[$td][$dn]['KodeKomponen']]['MS'] += $hasil[$td][$dn]['MS'];
-							$akhirat[$td][$hasil[$td][$dn]['KodeKomponen']]['RT'] += $hasil[$td][$dn]['RT'];
-							$akhirat[$td][$hasil[$td][$dn]['KodeKomponen']]['PK'] += $hasil[$td][$dn]['PK'];
+							$akhirat[$td][$hasil[$td][$dn]['KodeKomponen']]['CR'] += $hasil[$td][$dn]['CR'];
+							$akhirat[$td][$hasil[$td][$dn]['KodeKomponen']]['RC'] += $hasil[$td][$dn]['RC'];
+							$akhirat[$td][$hasil[$td][$dn]['KodeKomponen']]['LL'] += $hasil[$td][$dn]['LL'];
 						}
 					}
 				}
@@ -835,29 +794,24 @@ class C_GLap extends CI_Controller
 		$vTotTonBaik = 0;
 		$vTotTonReject = 0;
 		$vTotTonIp = 0;
-		$RC = 0;
+		$MS = 0;
 		$DF = 0;
-		$CR = 0;
-		$TK = 0;
-		$PR = 0;
 		$KP = 0;
 		$CT = 0;
 		$TS = 0;
-		$CO = 0;
-		$CW = 0;
-		$SC = 0;
-		$PH = 0;
-		$SG = 0;
 		$GS = 0;
 		$CP = 0;
+		$RT = 0;
+		$CW = 0;
 		$TT = 0;
 		$BC = 0;
+		$PH = 0;
 		$KS = 0;
 		$NK = 0;
-		$MS = 0;
-		$RT = 0;
-		$PK = 0;
-
+		$CR = 0;
+		$RC = 0;
+		$LL = 0;
+		
 		foreach ($akhirat as $ke => $dunia) {
 			$worksheet->mergeCells('B'.$highestRow.':C'.$highestRow);
 			$worksheet->setCellValue('B'. $highestRow, 'Tractor  : '.$ke);
@@ -877,31 +831,31 @@ class C_GLap extends CI_Controller
 				$worksheet->setCellValue('L'. $highestRow, $alam['TonageIP']); // Tonage IP
 				$worksheet->setCellValue('M'. $highestRow, $alam['Reject']); // Jumlah Reject
 				$worksheet->setCellValue('N'. $highestRow, $alam['TonageReject']); // Tonage Reject
-				$worksheet->setCellValue('O'. $highestRow, ''); // % Reject (???)
+				if (($alam['TonageReject'] + $alam['TonageBaik']) > 0) {
+					$worksheet->setCellValue('O'. $highestRow, round($alam['TonageReject'] / ($alam['TonageReject'] + $alam['TonageBaik']) * 100, 2) ); // % Reject
+				} else {
+					$worksheet->setCellValue('O'. $highestRow, '0'); // % Reject
+				}
+				
 				$worksheet->setCellValue('P'. $highestRow, $alam['PreBaik']); //Pre Baik
 				$worksheet->setCellValue('Q'. $highestRow, ''); // Prediksi % Renc (tdk di-isi)
-				$worksheet->setCellValue('R'. $highestRow, $alam['RC']); // SCRAP
+				$worksheet->setCellValue('R'. $highestRow, $alam['MS']); // SCRAP
 				$worksheet->setCellValue('S'. $highestRow, $alam['DF']); // SCRAP
-				$worksheet->setCellValue('T'. $highestRow, $alam['CR']); // SCRAP
-				$worksheet->setCellValue('U'. $highestRow, $alam['TK']); // SCRAP
-				$worksheet->setCellValue('V'. $highestRow, $alam['PR']); // SCRAP
-				$worksheet->setCellValue('W'. $highestRow, $alam['KP']); // SCRAP
-				$worksheet->setCellValue('X'. $highestRow, $alam['CT']); // SCRAP
-				$worksheet->setCellValue('Y'. $highestRow, $alam['TS']); // SCRAP
-				$worksheet->setCellValue('Z'. $highestRow, $alam['CO']); // SCRAP
-				$worksheet->setCellValue('AA'. $highestRow, $alam['CW']); // SCRAP
-				$worksheet->setCellValue('AB'. $highestRow, $alam['SC']); // SCRAP
+				$worksheet->setCellValue('T'. $highestRow, $alam['KP']); // SCRAP
+				$worksheet->setCellValue('U'. $highestRow, $alam['CT']); // SCRAP
+				$worksheet->setCellValue('V'. $highestRow, $alam['TS']); // SCRAP
+				$worksheet->setCellValue('W'. $highestRow, $alam['GS']); // SCRAP
+				$worksheet->setCellValue('X'. $highestRow, $alam['CP']); // SCRAP
+				$worksheet->setCellValue('Y'. $highestRow, $alam['RT']); // SCRAP
+				$worksheet->setCellValue('Z'. $highestRow, $alam['CW']); // SCRAP
+				$worksheet->setCellValue('AA'. $highestRow, $alam['TT']); // SCRAP
+				$worksheet->setCellValue('AB'. $highestRow, $alam['BC']); // SCRAP
 				$worksheet->setCellValue('AC'. $highestRow, $alam['PH']); // SCRAP
-				$worksheet->setCellValue('AD'. $highestRow, $alam['SG']); // SCRAP
-				$worksheet->setCellValue('AE'. $highestRow, $alam['GS']); // SCRAP
-				$worksheet->setCellValue('AF'. $highestRow, $alam['CP']); // SCRAP
-				$worksheet->setCellValue('AG'. $highestRow, $alam['TT']); // SCRAP
-				$worksheet->setCellValue('AH'. $highestRow, $alam['BC']); // SCRAP
-				$worksheet->setCellValue('AI'. $highestRow, $alam['KS']); // SCRAP
-				$worksheet->setCellValue('AJ'. $highestRow, $alam['NK']); // SCRAP
-				$worksheet->setCellValue('AK'. $highestRow, $alam['MS']); // SCRAP
-				$worksheet->setCellValue('AL'. $highestRow, $alam['RT']); // SCRAP
-				$worksheet->setCellValue('AM'. $highestRow, $alam['PK']); // SCRAP
+				$worksheet->setCellValue('AD'. $highestRow, $alam['KS']); // SCRAP
+				$worksheet->setCellValue('AE'. $highestRow, $alam['NK']); // SCRAP
+				$worksheet->setCellValue('AF'. $highestRow, $alam['CR']); // SCRAP
+				$worksheet->setCellValue('AG'. $highestRow, $alam['RC']); // SCRAP
+				$worksheet->setCellValue('AH'. $highestRow, $alam['LL']); // SCRAP
 				
 				$vTotCetak += $alam['HasilCor'];
 				$vTotBaik += $alam['HasilBaik'];
@@ -911,29 +865,24 @@ class C_GLap extends CI_Controller
 				$vTotTonReject += $alam['TonageReject'];
 				$vTotTonIp += $alam['TonageIP'];
 				// =
-				$RC += $alam['RC'];
+				$MS += $alam['MS'];
 				$DF += $alam['DF'];
-				$CR += $alam['CR'];
-				$TK += $alam['TK'];
-				$PR += $alam['PR'];
 				$KP += $alam['KP'];
 				$CT += $alam['CT'];
 				$TS += $alam['TS'];
-				$CO += $alam['CO'];
-				$CW += $alam['CW'];
-				$SC += $alam['SC'];
-				$PH += $alam['PH'];
-				$SG += $alam['SG'];
 				$GS += $alam['GS'];
 				$CP += $alam['CP'];
+				$RT += $alam['RT'];
+				$CW += $alam['CW'];
 				$TT += $alam['TT'];
 				$BC += $alam['BC'];
+				$PH += $alam['PH'];
 				$KS += $alam['KS'];
 				$NK += $alam['NK'];
-				$MS += $alam['MS'];
-				$RT += $alam['RT'];
-				$PK += $alam['PK'];
-				$allScr = $RC + $DF + $CR + $TK + $PR + $KP + $CT + $TS + $CO + $CW + $SC + $PH + $SG + $GS + $CP + $TT + $BC + $KS + $NK + $MS + $RT + $PK;
+				$CR += $alam['CR'];
+				$RC += $alam['RC'];
+				$LL += $alam['LL'];
+				$allScr = $MS + $DF + $KP + $CT + $TS + $GS + $CP + $RT + $CW + $TT + $BC + $PH + $KS + $NK + $CR + $RC + $LL;
 				$no++;
 				$highestRow++;
 			}
@@ -973,11 +922,11 @@ class C_GLap extends CI_Controller
 			// =================== START OF RUMUS PALING BAWAH (SCRAP/REJECT) =================== //
 			for( $x = "R"; ; $x++) {
 				$worksheet->setCellValue($x . $highestRow, '=(SUM('.$x.$highestRow1.':'. $x . ($highestRow - 2).'))');
-				$worksheet->setCellValue($x. ($highestRow+1), '=('.$x.''.$highestRow.'/$AN$'. $highestRow .'*100)');
-				if( $x == "AM") break;
+				$worksheet->setCellValue($x. ($highestRow+1), '=('.$x.''.$highestRow.'/$AI$'. $highestRow .'*100)');
+				if( $x == "AH") break;
 			}
 
-			$worksheet->setCellValue('AN'. $highestRow, '=(SUM(R'.$highestRow.':AM'. $highestRow.'))'); //JUMLAH TOTAL DI SCRAPNYA
+			$worksheet->setCellValue('AI'. $highestRow, '=(SUM(R'.$highestRow.':AH'. $highestRow.'))'); //JUMLAH TOTAL DI SCRAPNYA
 			// =================== END OF RUMUS PALING BAWAH (SCRAP/REJECT) =================== //
 
 			$highestRow++;
@@ -1003,86 +952,97 @@ class C_GLap extends CI_Controller
 		$worksheet->setCellValue('L'. $highestRow, $vTotTonIp); //TON. IP
 		$worksheet->setCellValue('M'. $highestRow, $vTotReject); //JUM. REJ
 		$worksheet->setCellValue('N'. $highestRow, $vTotTonReject); //TON. REJ
-		$worksheet->setCellValue('R'. $highestRow, $RC); // SCR
+		$worksheet->setCellValue('O'. $highestRow, ''); //TON. % REJ
+		$worksheet->setCellValue('R'. $highestRow, $MS); // SCR
 		$worksheet->setCellValue('S'. $highestRow, $DF); // SCR
-		$worksheet->setCellValue('T'. $highestRow, $CR); // SCR
-		$worksheet->setCellValue('U'. $highestRow, $TK); // SCR
-		$worksheet->setCellValue('V'. $highestRow, $PR); // SCR
-		$worksheet->setCellValue('W'. $highestRow, $KP); // SCR
-		$worksheet->setCellValue('X'. $highestRow, $CT); // SCR
-		$worksheet->setCellValue('Y'. $highestRow, $TS); // SCR
-		$worksheet->setCellValue('Z'. $highestRow, $CO); // SCR
-		$worksheet->setCellValue('AA'. $highestRow, $CW); // SCR
-		$worksheet->setCellValue('AB'. $highestRow, $SC); // SCR
+		$worksheet->setCellValue('T'. $highestRow, $KP); // SCR
+		$worksheet->setCellValue('U'. $highestRow, $CT); // SCR
+		$worksheet->setCellValue('V'. $highestRow, $TS); // SCR
+		$worksheet->setCellValue('W'. $highestRow, $GS); // SCR
+		$worksheet->setCellValue('X'. $highestRow, $CP); // SCR
+		$worksheet->setCellValue('Y'. $highestRow, $RT); // SCR
+		$worksheet->setCellValue('Z'. $highestRow, $CW); // SCR
+		$worksheet->setCellValue('AA'. $highestRow, $TT); // SCR
+		$worksheet->setCellValue('AB'. $highestRow, $BC); // SCR
 		$worksheet->setCellValue('AC'. $highestRow, $PH); // SCR
-		$worksheet->setCellValue('AD'. $highestRow, $SG); // SCR
-		$worksheet->setCellValue('AE'. $highestRow, $GS); // SCR
-		$worksheet->setCellValue('AF'. $highestRow, $CP); // SCR
-		$worksheet->setCellValue('AG'. $highestRow, $TT); // SCR
-		$worksheet->setCellValue('AH'. $highestRow, $BC); // SCR
-		$worksheet->setCellValue('AI'. $highestRow, $KS); // SCR
-		$worksheet->setCellValue('AJ'. $highestRow, $NK); // SCR
-		$worksheet->setCellValue('AK'. $highestRow, $MS); // SCR
-		$worksheet->setCellValue('AL'. $highestRow, $RT); // SCR
-		$worksheet->setCellValue('AM'. $highestRow, $PK); // SCR
-		$worksheet->setCellValue('AN'. $highestRow, $allScr); // all
+		$worksheet->setCellValue('AD'. $highestRow, $KS); // SCR
+		$worksheet->setCellValue('AE'. $highestRow, $NK); // SCR
+		$worksheet->setCellValue('AF'. $highestRow, $CR); // SCR
+		$worksheet->setCellValue('AG'. $highestRow, $RC); // SCR
+		$worksheet->setCellValue('AH'. $highestRow, $LL); // SCR
+		$worksheet->setCellValue('AI'. $highestRow, $allScr); // all
 		$highestRow++;
 
-		$pTotHasilBaik = round(($vTotBaik + $vTotIp) / $vTotCetak * 100,2);
-		$pTotTonaBaik = round(($vTotTonBaik/($vTotTonBaik+$vTotTonReject)*100),2);
-		$pTotReject = round($vTotTonReject / $vTotCetak * 100,2);
-		$PTotTonaReject = round($vTotTonIp / ($vTotTonIp + $vTotTonIp + $vTotTonBaik) * 100,2);
-
-		$pRC = $RC/$allScr*100;
-		$pDF = $DF/$allScr*100;
-		$pCR = $CR/$allScr*100;
-		$pTK = $TK/$allScr*100;
-		$pPR = $PR/$allScr*100;
-		$pKP = $KP/$allScr*100;
-		$pCT = $CT/$allScr*100;
-		$pTS = $TS/$allScr*100;
-		$pCO = $CO/$allScr*100;
-		$pCW = $CW/$allScr*100;
-		$pSC = $SC/$allScr*100;
-		$pPH = $PH/$allScr*100;
-		$pSG = $SG/$allScr*100;
-		$pGS = $GS/$allScr*100;
-		$pCP = $CP/$allScr*100;
-		$pTT = $TT/$allScr*100;
-		$pBC = $BC/$allScr*100;
-		$pKS = $KS/$allScr*100;
-		$pNK = $NK/$allScr*100;
-		$pMS = $MS/$allScr*100;
-		$pRT = $RT/$allScr*100;
-		$pPK = $PK/$allScr*100;
+		$pTotHasilBaik = round((($vTotBaik + $vTotIp) / $vTotCetak * 100),2);
+		if (($vTotTonBaik+$vTotTonReject) > 0) {
+			$pTotTonaBaik = round((($vTotTonBaik/($vTotTonBaik+$vTotTonReject)*100)),2);
+			$PTotTonaReject = round((($vTotTonReject/($vTotTonReject + $vTotTonBaik) * 100)),2);
+		} else {
+			$pTotTonaBaik = 0;
+			$PTotTonaReject = 0;
+		}
+		$pTotReject = round(($vTotTonReject / $vTotCetak * 100),2);
+		
+		if ($allScr == 0) {
+			$pMS = 0;
+			$pDF = 0;
+			$pKP = 0;
+			$pCT = 0;
+			$pTS = 0;
+			$pGS = 0;
+			$pCP = 0;
+			$pRT = 0;
+			$pCW = 0;
+			$pTT = 0;
+			$pBC = 0;
+			$pPH = 0;
+			$pKS = 0;
+			$pNK = 0;
+			$pCR = 0;
+			$pRC = 0;
+			$pLL = 0;
+		} else {
+			$pMS = $MS/$allScr*100;
+			$pDF = $DF/$allScr*100;
+			$pKP = $KP/$allScr*100;
+			$pCT = $CT/$allScr*100;
+			$pTS = $TS/$allScr*100;
+			$pGS = $GS/$allScr*100;
+			$pCP = $CP/$allScr*100;
+			$pRT = $RT/$allScr*100;
+			$pCW = $CW/$allScr*100;
+			$pTT = $TT/$allScr*100;
+			$pBC = $BC/$allScr*100;
+			$pPH = $PH/$allScr*100;
+			$pKS = $KS/$allScr*100;
+			$pNK = $NK/$allScr*100;
+			$pCR = $CR/$allScr*100;
+			$pRC = $RC/$allScr*100;
+			$pLL = $LL/$allScr*100;
+		}
 		
 		$worksheet->setCellValue('C'. $highestRow, 'Total Prosentase (%)');
 		$worksheet->setCellValue('H'. $highestRow, $pTotHasilBaik);
 		$worksheet->setCellValue('J'. $highestRow, $pTotTonaBaik);
 		$worksheet->setCellValue('M'. $highestRow, $pTotReject);
 		$worksheet->setCellValue('N'. $highestRow, $PTotTonaReject);
-		$worksheet->setCellValue('R'. $highestRow, $pRC); // SCR Prosentase
+		$worksheet->setCellValue('R'. $highestRow, $pMS); // SCR Prosentase
 		$worksheet->setCellValue('S'. $highestRow, $pDF); // SCR Prosentase
-		$worksheet->setCellValue('T'. $highestRow, $pCR); // SCR Prosentase
-		$worksheet->setCellValue('U'. $highestRow, $pTK); // SCR Prosentase
-		$worksheet->setCellValue('V'. $highestRow, $pPR); // SCR Prosentase
-		$worksheet->setCellValue('W'. $highestRow, $pKP); // SCR Prosentase
-		$worksheet->setCellValue('X'. $highestRow, $pCT); // SCR Prosentase
-		$worksheet->setCellValue('Y'. $highestRow, $pTS); // SCR Prosentase
-		$worksheet->setCellValue('Z'. $highestRow, $pCO); // SCR Prosentase
-		$worksheet->setCellValue('AA'. $highestRow, $pCW); // SCR Prosentase
-		$worksheet->setCellValue('AB'. $highestRow, $pSC); // SCR Prosentase
+		$worksheet->setCellValue('T'. $highestRow, $pKP); // SCR Prosentase
+		$worksheet->setCellValue('U'. $highestRow, $pCT); // SCR Prosentase
+		$worksheet->setCellValue('V'. $highestRow, $pTS); // SCR Prosentase
+		$worksheet->setCellValue('W'. $highestRow, $pGS); // SCR Prosentase
+		$worksheet->setCellValue('X'. $highestRow, $pCP); // SCR Prosentase
+		$worksheet->setCellValue('Y'. $highestRow, $pRT); // SCR Prosentase
+		$worksheet->setCellValue('Z'. $highestRow, $pCW); // SCR Prosentase
+		$worksheet->setCellValue('AA'. $highestRow, $pTT); // SCR Prosentase
+		$worksheet->setCellValue('AB'. $highestRow, $pBC); // SCR Prosentase
 		$worksheet->setCellValue('AC'. $highestRow, $pPH); // SCR Prosentase
-		$worksheet->setCellValue('AD'. $highestRow, $pSG); // SCR Prosentase
-		$worksheet->setCellValue('AE'. $highestRow, $pGS); // SCR Prosentase
-		$worksheet->setCellValue('AF'. $highestRow, $pCP); // SCR Prosentase
-		$worksheet->setCellValue('AG'. $highestRow, $pTT); // SCR Prosentase
-		$worksheet->setCellValue('AH'. $highestRow, $pBC); // SCR Prosentase
-		$worksheet->setCellValue('AI'. $highestRow, $pKS); // SCR Prosentase
-		$worksheet->setCellValue('AJ'. $highestRow, $pNK); // SCR Prosentase
-		$worksheet->setCellValue('AK'. $highestRow, $pMS); // SCR Prosentase
-		$worksheet->setCellValue('AL'. $highestRow, $pRT); // SCR Prosentase
-		$worksheet->setCellValue('AM'. $highestRow, $pPK); // SCR Prosentase
+		$worksheet->setCellValue('AD'. $highestRow, $pKS); // SCR Prosentase
+		$worksheet->setCellValue('AE'. $highestRow, $pNK); // SCR Prosentase
+		$worksheet->setCellValue('AF'. $highestRow, $pCR); // SCR Prosentase
+		$worksheet->setCellValue('AG'. $highestRow, $pRC); // SCR Prosentase
+		$worksheet->setCellValue('AH'. $highestRow, $pLL); // SCR Prosentase
 
 		// =================== END OF CONTENT PALING BAWAH =================== //
 		
@@ -1126,7 +1086,7 @@ class C_GLap extends CI_Controller
 			$jadi[$o]['KodeKelompok'] = $vol['kode'];
 			$jadi[$o]['KodeCor'] = $vol['print_code'];
 			$jadi[$o]['KodeKomponen'] = $vol['component_code'];
-			$jadi[$o]['KodeProses'] = $kodeProses[0]['kode_proses'];
+			$jadi[$o]['KodeProses'] = (empty($vol['kode_proses']) ? $kodeProses[0]['kode_proses'] : $vol['kode_proses']);
 			$jadi[$o]['HasilCor'] = $vol['moulding_quantity'];
 			$jadi[$o]['HasilBaik'] = $vol['bongkar_qty'] - $vol['scrap_qty'];
 			$jadi[$o]['RC'] = '';
@@ -1213,7 +1173,7 @@ class C_GLap extends CI_Controller
 			$jadi[$o]['KodeKelompok'] = $vol['kode'];
 			$jadi[$o]['KodeCor'] = $vol['print_code'];
 			$jadi[$o]['KodeKomponen'] = $vol['component_code'];
-			$jadi[$o]['KodeProses'] = $kodeProses[0]['kode_proses'];
+			$jadi[$o]['KodeProses'] = (empty($vol['kode_proses']) ? $kodeProses[0]['kode_proses'] : $vol['kode_proses']);
 			$jadi[$o]['HasilCor'] = $vol['mixing_quantity'];
 			$jadi[$o]['HasilBaik'] = $vol['mixing_quantity'];
 			$jadi[$o]['RC'] = '0';
@@ -1253,7 +1213,7 @@ class C_GLap extends CI_Controller
 			$jadi[$o]['KodeKelompok'] = $vol['kode'];
 			$jadi[$o]['KodeCor'] = $vol['print_code'];
 			$jadi[$o]['KodeKomponen'] = $vol['component_code'];
-			$jadi[$o]['KodeProses'] = $kodeProses[0]['kode_proses'];
+			$jadi[$o]['KodeProses'] = (empty($vol['kode_proses']) ? $kodeProses[0]['kode_proses'] : $vol['kode_proses']);
 			$jadi[$o]['HasilCor'] = $vol['core_quantity'];
 			$jadi[$o]['HasilBaik'] = $vol['core_quantity'];
 			$jadi[$o]['RC'] = '0';
@@ -1509,7 +1469,7 @@ class C_GLap extends CI_Controller
 			$jadi[$o]['KodeKelompok'] = $vol['kode'];
 			$jadi[$o]['KodeCor'] = $vol['print_code'];
 			$jadi[$o]['KodeKomponen'] = $vol['component_code'];
-			$jadi[$o]['KodeProses'] = $kodeProses[0]['kode_proses'];
+			$jadi[$o]['KodeProses'] = (empty($vol['kode_proses']) ? $kodeProses[0]['kode_proses'] : $vol['kode_proses']);
 			$jadi[$o]['HasilCor'] = $vol['moulding_quantity'];
 			$jadi[$o]['HasilBaik'] = $vol['bongkar_qty'] - $vol['scrap_qty'];
 			$jadi[$o]['Rmurnic'] = 0;
@@ -1534,7 +1494,7 @@ class C_GLap extends CI_Controller
 			$jadi[$o]['KodeKelompok'] = $vol['kode'];
 			$jadi[$o]['KodeCor'] = $vol['print_code'];
 			$jadi[$o]['KodeKomponen'] = $vol['component_code'];
-			$jadi[$o]['KodeProses'] = $kodeProses[0]['kode_proses'];
+			$jadi[$o]['KodeProses'] = (empty($vol['kode_proses']) ? $kodeProses[0]['kode_proses'] : $vol['kode_proses']);
 			$jadi[$o]['HasilCor'] = $vol['mixing_quantity'];
 			$jadi[$o]['HasilBaik'] = $vol['mixing_quantity'];
 			$jadi[$o]['Rmurnic'] = 0;
@@ -1559,7 +1519,7 @@ class C_GLap extends CI_Controller
 			$jadi[$o]['KodeKelompok'] = $vol['kode'];
 			$jadi[$o]['KodeCor'] = $vol['print_code'];
 			$jadi[$o]['KodeKomponen'] = $vol['component_code'];
-			$jadi[$o]['KodeProses'] = $kodeProses[0]['kode_proses'];
+			$jadi[$o]['KodeProses'] = (empty($vol['kode_proses']) ? $kodeProses[0]['kode_proses'] : $vol['kode_proses']);
 			$jadi[$o]['HasilCor'] = $vol['core_quantity'];
 			$jadi[$o]['HasilBaik'] = $vol['core_quantity'];
 			$jadi[$o]['Rmurnic'] = 0;
@@ -1748,16 +1708,19 @@ class C_GLap extends CI_Controller
 
 			$tgl = explode('-', date('d-m-Y', strtotime($sc['created_date'])));
 
-			$worksheet->setCellValue('A' . $highestRow, PHPExcel_Shared_Date::FormattedPHPToExcel($tgl[2], $tgl[1], $tgl[0]));
-			$worksheet->setCellValue('B' . $highestRow, $sc['no_induk']);
-			$worksheet->setCellValue('C' . $highestRow, $sc['kode']);
-			$worksheet->setCellValue('D' . $highestRow, $kodecor);
-			$worksheet->setCellValue('E' . $highestRow, $sc['presensi']);
-			$worksheet->setCellValue('F' . $highestRow, $produksi);
-			$worksheet->setCellValue('G' . $highestRow, $sc['nilai_ott']);
-			$worksheet->setCellValue('H' . $highestRow, '');//WH
-			$worksheet->setCellValue('I' . $highestRow, $lembur);
-			$highestRow++;
+			$all = explode(',', $sc['no_induk']);
+			foreach ($all as $no_ind) {
+				$worksheet->setCellValue('A' . $highestRow, PHPExcel_Shared_Date::FormattedPHPToExcel($tgl[2], $tgl[1], $tgl[0]));
+				$worksheet->setCellValue('B' . $highestRow, $no_ind);
+				$worksheet->setCellValue('C' . $highestRow, $sc['kode']);
+				$worksheet->setCellValue('D' . $highestRow, $kodecor);
+				$worksheet->setCellValue('E' . $highestRow, $sc['presensi']);
+				$worksheet->setCellValue('F' . $highestRow, $produksi);
+				$worksheet->setCellValue('G' . $highestRow, $sc['nilai_ott']);
+				$worksheet->setCellValue('H' . $highestRow, '');//WH
+				$worksheet->setCellValue('I' . $highestRow, $lembur);
+				$highestRow++;
+			}
 		}
 
 		$worksheet->setTitle('Monthly_Planning');
@@ -1870,7 +1833,6 @@ class C_GLap extends CI_Controller
 			//ISI
 			$tgl = explode('-', date('d-m-Y', strtotime($newDate)));
 			$kode_barang = $this->M_selep->getKodeProses($brg[0]);
-			$rejected = $sd['qc_qty_not_ok'];
 			$tglBp = date('d-m-Y', strtotime($newDate. ' + 3 days'));		
 			$tglu = explode('-', $tglBp);
 			
@@ -1883,12 +1845,13 @@ class C_GLap extends CI_Controller
 				$objset->setCellValue('E' . $baris, $brg[0]); //KODEBRG
 				$objset->setCellValue('F' . $baris, $sd['component_description']); //NAMABRG
 				foreach ($kode_barang as $codebrg) {
-					$objset->setCellValue('G' . $baris, $codebrg['kode_proses']); //KODEPRO
+					$kod = (empty($sd['kode_proses']) ? $codebrg['kode_proses'] : $sd['kode_proses']);
+					$objset->setCellValue('G' . $baris, $kod); //KODEPRO
 				}
 				$objset->setCellValue('H' . $baris, $sd['selep_quantity']); //JML
 				$objset->setCellValue('I' . $baris, $baik); //BAIK
-				$objset->setCellValue('J' . $baris, "0"); //REPAIR
-				$objset->setCellValue('K' . $baris, $rejected); //REJECT
+				$objset->setCellValue('J' . $baris, $sd['repair_qty']); //REPAIR
+				$objset->setCellValue('K' . $baris, $sd['qc_qty_not_ok']); //REJECT
 				$objset->setCellValue('L' . $baris, $sd['keterangan']); //KETERANGAN
 				$objset->setCellValue('M' . $baris, "0"); //RGER_RT
 				$objset->setCellValue('N' . $baris, "0"); //RGER_PH

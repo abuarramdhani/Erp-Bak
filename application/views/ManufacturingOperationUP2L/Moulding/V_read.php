@@ -44,8 +44,20 @@
                                                             <td style="border: 0">: <?php echo $headerRow['component_description']; ?></td>
                                                         </tr>
                                                         <tr>
+                                                            <td class="col-lg-5" style="border: 0"><strong>Kode Proses</strong></td>
+                                                            <td style="border: 0">: <?php echo $headerRow['kode_proses']; ?></td>
+                                                        </tr>
+                                                        <tr>
                                                             <td class="col-lg-5" style="border: 0"><strong>Production Date</strong></td>
                                                             <td style="border: 0">: <?php echo $headerRow['production_date']; ?></td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td class="col-lg-5" style="border: 0"><strong>Print Code</strong></td>
+                                                            <td style="border: 0">: <?php echo $headerRow['print_code']; ?></td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td class="col-lg-5" style="border: 0"><strong>Shift</strong></td>
+                                                            <td style="border: 0">: <?php echo $headerRow['shift']; ?></td>
                                                         </tr>
                                                         <tr>
                                                             <td class="col-lg-5" style="border: 0"><strong>Moulding Quantity</strong></td>
@@ -54,17 +66,13 @@
                                                                 <input type="hidden" id="mould_id" value="<?php echo $headerRow['moulding_id']; ?>">
                                                             </td>
                                                         </tr>
-                                                        <tr>
-                                                            <td class="col-lg-5" style="border: 0"><strong>Keterangan</strong></td>
-                                                            <td style="border: 0">: <?php echo $headerRow['keterangan']; ?></td>
-                                                        </tr>
-                                                    <?php endforeach; ?>
                                                 </table>
                                             </div>
                                             <div class="col-lg-6">
                                                 <div class="panel panel-default">
                                                     <div class="panel-heading">
-                                                        Employee
+                                                        Employee [Kode Kelompok : <?php echo $headerRow['kode']; ?>]
+                                                        <?php endforeach; ?>
                                                     </div>
                                                     <ul class="list-group">
                                                         <?php foreach ($headerRow['employee'] as $emp) { ?>
@@ -180,7 +188,12 @@
                                 </div>
                                 <div class="panel-footer">
                                     <div align="right">
-                                        <a href="javascript:history.back(1)" class="btn btn-primary btn-lg btn-rect">Back</a>
+                                        <?php foreach ($Moulding as $u) { ?>
+                                        <form method="POST" action="<?= base_url('ManufacturingOperationUP2L/Moulding/search')?>">
+                                        <input type="hidden" name="bulan" value="<?= $u['production_date']; ?>">
+                                        <button type="submit" class="btn btn-danger btn-lg"><i class="fa fa-arrow-left"></i></i>  Back</button>
+                                        </form>
+                                        <?php } ?>
                                     </div>
                                 </div>
                                 <div class="modal modal-success fade" id="mdlEditScrap">

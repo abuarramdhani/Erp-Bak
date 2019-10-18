@@ -13,14 +13,17 @@ class M_core extends CI_Model
                 FROM mo.mo_core mm, mo.mo_absensi ma
                 WHERE ma.id_produksi = mm.core_id AND ma.category_produksi = 'Core'
                 GROUP BY mm.core_id, ma.kode
-                ORDER  BY mm.production_date, ma.kode";
+                ORDER BY extract(month from mm.production_date) desc, extract(year from mm.production_date) desc, extract(day from mm.production_date), ma.kode";
         return $this->db->query($sql)->result_array();
     }
     
     public function getCoreById($id)
     {
-        $query = $this->db->get_where('mo.mo_core', array('core_id' => $id));
-        return $query->result_array();
+        $sql = "SELECT mm.*, ma.kode kode
+                FROM mo.mo_core mm, mo.mo_absensi ma
+                WHERE ma.id_produksi = mm.core_id AND ma.category_produksi = 'Core' AND mm.core_id = '$id'
+                GROUP BY mm.core_id, ma.kode";
+        return $this->db->query($sql)->result_array();
     }
 
     public function setAbsensi($data)

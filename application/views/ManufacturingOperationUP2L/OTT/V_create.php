@@ -28,11 +28,18 @@
                                 Create
                             </div>
                             <div class="box-body">
-                                <form action="<?= base_url('ManufacturingOperationUP2L/OTT/save_create')?>" method="post">
+                                <form autocomplete="off" action="<?= base_url('ManufacturingOperationUP2L/OTT/save_create')?>" method="post">
                                     <div class="col-lg-3"> </div>
                                     <div class="col-lg-6">
                                         <div class="panel panel-default">
-                                            <div class="panel-heading">Nama</div>
+                                            <div class="panel-heading">
+                                                Nama
+                                                <div style="float:right">
+                                                    <button onclick="ottPlusBtn()" class="btn btn-success"><i class="fa fa-plus"></i></button>
+                                                    <button onclick="ottTimesBtn()" class="btn btn-warning"><i class="fa fa-times"></i></button>
+                                                </div>
+                                                <br><br>
+                                            </div>
                                             <div class="panel-body" id="container-employee">
                                                 <div class="form-group"> <br />
                                                     <div class="col-lg-9" id="tmpNama">
@@ -44,10 +51,6 @@
                                                             <?php } ?>
                                                         </select>
                                                     </div>
-                                                    <div class="col-lg-3">
-                                                        <button onclick="ottPlusBtn()" class="btn btn-success"><i class="fa fa-plus"></i></button>
-                                                        <button onclick="ottTimesBtn()" class="btn btn-warning"><i class="fa fa-times"></i></button>
-                                                    </div><br />
                                                 </div>
                                             </div>
                                         </div>

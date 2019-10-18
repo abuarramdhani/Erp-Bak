@@ -2298,6 +2298,9 @@ $route['ManufacturingOperationUP2L/OTT/(:any)/(:any)']				= 'ManufacturingOperat
 $route['ManufacturingOperationUP2L/MasterItem']						= 'ManufacturingOperationUP2L/MainMenu/C_MasterItem';
 $route['ManufacturingOperationUP2L/MasterItem/(:any)']				= 'ManufacturingOperationUP2L/MainMenu/C_MasterItem/$1';
 $route['ManufacturingOperationUP2L/MasterItem/(:any)/(:any)'] 		= 'ManufacturingOperationUP2L/MainMenu/C_MasterItem/$1/$2';
+$route['ManufacturingOperationUP2L/InputMasterItem']						= 'ManufacturingOperationUP2L/MainMenu/C_InputMasterItem';
+$route['ManufacturingOperationUP2L/InputMasterItem/(:any)']				= 'ManufacturingOperationUP2L/MainMenu/C_InputMasterItem/$1';
+$route['ManufacturingOperationUP2L/InputMasterItem/(:any)/(:any)'] 		= 'ManufacturingOperationUP2L/MainMenu/C_InputMasterItem/$1/$2';
 $route['ManufacturingOperationUP2L/MasterScrap']					= 'ManufacturingOperationUP2L/MainMenu/C_MasterScrap';
 $route['ManufacturingOperationUP2L/MasterScrap/(:any)']				= 'ManufacturingOperationUP2L/MainMenu/C_MasterScrap/$1';
 $route['ManufacturingOperationUP2L/MasterScrap/(:any)/(:any)'] 		= 'ManufacturingOperationUP2L/MainMenu/C_MasterScrap/$1/$2';
@@ -2330,6 +2333,9 @@ $route['ManufacturingOperationUP2L/Job/ReplaceComp/(:any)/(:any)/(:any)']	= 'Man
 $route['ManufacturingOperationUP2L/Absen']							= 'ManufacturingOperationUP2L/MainMenu/C_Absen';
 $route['ManufacturingOperationUP2L/Absen/(:any)']					= 'ManufacturingOperationUP2L/MainMenu/C_Absen/$1';
 $route['ManufacturingOperationUP2L/Absen/(:any)/(:any)']			= 'ManufacturingOperationUP2L/MainMenu/C_Absen/$1/$2';
+
+$route['ManufacturingOperationUP2L/DeleteDataUP2L']							= 'ManufacturingOperationUP2L/MainMenu/C_Delete';
+$route['ManufacturingOperationUP2L/DeleteDataUP2L/(:any)']					= 'ManufacturingOperationUP2L/MainMenu/C_Delete/$1';
 
 
 //------------------------------------Employee Recruitment---------------------------------------------//

@@ -1,5 +1,5 @@
 <?php if (!defined('BASEPATH')) exit('No direct script access allowed');
-
+// nggak disentuh total sama edwin
 class M_ajax extends CI_Model
 {
     public function __construct()
@@ -13,12 +13,6 @@ class M_ajax extends CI_Model
 
     public function getComponent($term)
     {
-        // if ($term==FALSE) {
-        //     $where = "";
-        // }else{
-        //     $where = "AND mst.kode_barang LIKE '%$term%'";
-        // }
-
         $sql = "SELECT mst.nama_barang,
                        mst.kode_barang,
                        mst.kode_proses
@@ -52,17 +46,6 @@ class M_ajax extends CI_Model
 
      public function getScrap($term)
     {
-        // $sql = "SELECT tp.noind,
-        //                tp.nama
-        //         FROM hrd_khs.tpribadi tp
-        //         LEFT JOIN hrd_khs.tseksi ts ON tp.kodesie = ts.kodesie
-        //         WHERE ts.dept LIKE '%PRODUKSI%'
-        //           AND ts.bidang LIKE '%PRODUKSI PENGECORAN LOGAM%'
-        //           AND ts.bidang NOT LIKE '%PRODUKSI PENGECORAN LOGAM - TKS%'
-        //           AND (tp.lokasi = 'AA'
-        //                OR tp.lokasi_kerja = '01')
-        //         ORDER BY tp.noind";
-
         $sql = "SELECT mss.description ,
                        mss.scrap_code,
                        mss.id
@@ -88,17 +71,17 @@ class M_ajax extends CI_Model
 
     public function setQualityControl(
       $checking_date, $print_code, $checking_quantity, $scrap_quantity,
-			$created_by, $remaining_quantity, $component_code, $employee,
-			$component_description, $selep_quantity, $shift, $check_qc, $id
+			$remaining_quantity, $component_code, $employee,
+			$component_description, $selep_quantity, $shift, $check_qc, $id, $repair_quantity
     )
     {
       $sql = "INSERT INTO mo.mo_quality_control(checking_date, print_code, checking_quantity, scrap_quantity,
-                                                created_by, remaining_quantity, component_code, employee,
-                                                component_description, selep_quantity, shift, selep_id_c)
+                                                remaining_quantity, component_code, employee,
+                                                component_description, selep_quantity, shift, repair_qty, selep_id_c)
       VALUES ('$checking_date', '$print_code', '$checking_quantity', '$scrap_quantity',
-              '$created_by', '$remaining_quantity', '$component_code', '$employee',
-              '$component_description', '$selep_quantity', '$shift', '$id'); --INPUT BIASA KE SELEP
-              UPDATE mo.mo_selep SET qc_qty_not_ok = '$scrap_quantity', qc_qty_ok = '$checking_quantity', check_qc = '$check_qc' WHERE selep_id = '$id';";
+              '$remaining_quantity', '$component_code', '$employee',
+              '$component_description', '$selep_quantity', '$shift', '$repair_quantity', '$id'); --INPUT BIASA KE SELEP
+              UPDATE mo.mo_selep SET qc_qty_not_ok = '$scrap_quantity', qc_qty_ok = '$checking_quantity', check_qc = '$check_qc', repair_qty = '$repair_quantity' WHERE selep_id = '$id';";
               //INPUT DI TABEL SELEP TENTANG CHECKING OKE BUAT XFIN
       $this->db->query($sql);
     }
@@ -173,13 +156,6 @@ class M_ajax extends CI_Model
       $this->db->where('replacement_component_id', $id);
       $query = $this->db->get();
       return $query->result_array();
-    }
-
-    public function setMouldingQuantity($data,$moulding_id){
-       $this->db->set('moulding_quantity',$data);
-       $this->db->where('moulding_id',$moulding_id);
-       $this->db->update('mo.mo_moulding');
-       
     }
 
     public function deleteRejectComp($id)

@@ -49,8 +49,7 @@ class C_Core extends CI_Controller
 		$this->load->view('ManufacturingOperationUP2L/Core/V_index', $data);
 		$this->load->view('V_Footer', $data);
 	}
-
-	public function create()
+	public function view_create()
 	{
 		$user_id = $this->session->userid;
 
@@ -64,70 +63,77 @@ class C_Core extends CI_Controller
 		$data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id, $this->session->responsibility_id);
 		$data['employee']		= $this->M_ajax->getEmployee();
 
-		$this->form_validation->set_rules('component_code', 'required');
-
-		if ($this->form_validation->run() === FALSE) {
-			$this->load->view('V_Header', $data);
-			$this->load->view('V_Sidemenu', $data);
-			$this->load->view('ManufacturingOperationUP2L/Core/V_create', $data);
-			$this->load->view('V_Footer', $data);
-		} else {
-			$emp			= $this->input->post('txt_employee[]');
-			$produksi		= $this->input->post('txt_produksi[]');
-			$lembur			= $this->input->post('txt_lembur[]');
-			$presensi		= $this->input->post('txt_presensi[]');
-			$ott			= $this->input->post('txt_ott[]');
-			$kode			= $this->input->post('ottKodeP');
-			$employeed		= '';
-
-			for ($i = 0; $i < sizeof($emp); $i++) {
-				if ($i == 0) {
-					$employeed = substr($emp[$i], 0, 5);
-				} else {
-					$employeed .= "," . substr($emp[$i], 0, 5);
-				}
+		$this->load->view('V_Header', $data);
+		$this->load->view('V_Sidemenu', $data);
+		$this->load->view('ManufacturingOperationUP2L/Core/V_create', $data);
+		$this->load->view('V_Footer', $data);
+	}
+	
+	public function create()
+	{
+		$emp			= $this->input->post('txt_employee[]');
+		$employeed		= '';
+		for ($i = 0; $i < sizeof($emp); $i++) {
+			if ($i == 0) {
+				$employeed = substr($emp[$i], 0, 5);
+			} else {
+				$employeed .= "," . substr($emp[$i], 0, 5);
 			}
+		}
 
-			$component_code = explode(' | ', $this->input->post('component_code'));
-			$data = array(
-				'component_code'		=> trim($component_code[0]),
-				'component_description' => trim($component_code[1]),
-				'production_date'		=> $this->input->post('production_date'),
-				'core_quantity'			=> $this->input->post('core_quantity'),
-				'print_code'			=> $this->input->post('print_code'),
-				'shift' 				=> $this->input->post('txtShift'),
-				'employee_id'			=> $employeed,
-				'created_by'			=> $user_id,
-				'created_date'			=> date('Y-m-d H:i:s')
-			);
+		$coreData = array();
+		$aksen1 = 0;
+		foreach ($this->input->post('txtCoreQuantityHeader[]') as $a) {
+			$coreData[$aksen1]['core_quantity'] = $a;
+			$aksen1++;
+		}
 
-			$this->M_core->setCore($data);
+		$aksen2 = 0;
+		foreach ($this->input->post('component_code[]') as $b) {
+			$pecCore = explode(' | ', $b);
+			$coreData[$aksen2]['component_code'] = trim($pecCore[0]);
+			$coreData[$aksen2]['component_description'] = trim($pecCore[1]);
+			$coreData[$aksen2]['kode_proses'] = trim($pecCore[2]);
+			$coreData[$aksen2]['production_date'] = $this->input->post('production_date');
+			$coreData[$aksen2]['shift'] = $this->input->post('txtShift');
+			$coreData[$aksen2]['print_code'] = $this->input->post('print_code');
+			$coreData[$aksen2]['employee_id'] = $employeed;
+			$aksen2++;
+		}
+		
+		foreach ($coreData as $co) {
+			$this->M_core->setCore($co);
 			$header_id = $this->db->insert_id();
+			
+			$emp = $this->input->post('txt_employee[]');
+			$produksi = $this->input->post('txt_produksi[]');
+			$lembur = $this->input->post('txt_lembur[]');
+			$presensi = $this->input->post('txt_presensi[]');
+			$ott = $this->input->post('txt_ott[]');
+			$kode = $this->input->post('kode_kel');
 
 			$i = 0;
 			foreach ($emp as $val) {
 				$employee = explode('|', $val);
 				$no_induk = $employee[0];
 				$nama = $employee[1];
-
 				$data =  array(
-					'nama' => $nama,
+					'nama'		=> $nama,
 					'no_induk' => $no_induk,
 					'category_produksi' => 'Core',
 					'id_produksi' => $header_id,
 					'presensi' => $presensi[$i],
 					'produksi' => $produksi[$i],
 					'nilai_ott' => $ott[$i],
-					'kode' => $kode,
 					'lembur' => $lembur[$i],
+					'kode' => $kode,
 					'created_date' =>  $this->input->post('production_date')
 				);
-
 				$this->M_core->setAbsensi($data);
 				$i++;
 			}
-			redirect(site_url('ManufacturingOperationUP2L/Core/create'));
 		}
+		redirect(site_url('ManufacturingOperationUP2L/Core/view_create'));
 	}
 
 	public function update($id)
@@ -165,20 +171,16 @@ class C_Core extends CI_Controller
 			$this->load->view('ManufacturingOperationUP2L/Core/V_update', $data);
 			$this->load->view('V_Footer', $data);
 		} else {
-			$employee 		= $this->input->post('employee_id');
-			$employee_id 	= implode(',', $employee);
-			$component_code = explode(' | ', $this->input->post('component_code'));
-
+				$component = explode(' | ', $this->input->post('cmbComponentCodeHeader', TRUE));
 			$data = array(
-				'component_code'		=> trim($component_code[0]),
-				'component_description' => trim($component_code[1]),
-				'production_date'		=> date('Y-m-d H:i:s', strtotime($this->input->post('production_date'))),
-				'core_quantity'			=> $this->input->post('core_quantity'),
+				'component_code'		=> $component[0],
+				'component_description' => $component[1],
+				'kode_proses'			=> $component[2],
+				'production_date'		=> $this->input->post('txtProductionDateHeader', TRUE),
+				'core_quantity'			=> $this->input->post('txtCoreQuantityHeader', TRUE),
 				'print_code'			=> $this->input->post('print_code'),
 				'shift'					=> $this->input->post('txtShift'),
-				'employee_id'			=> $employee_id,
-				'last_updated_by'		=> $user_id,
-				'last_updated_date'		=> date('Y-m-d H:i:s')
+				'employee_id'			=> $this->input->post('txtJobIdHeader', TRUE),
 			);
 
 			$this->M_core->updateCore($plaintext_string, $data);

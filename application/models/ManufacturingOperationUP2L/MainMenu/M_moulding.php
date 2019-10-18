@@ -16,7 +16,6 @@ class M_moulding extends CI_Model
                 mm.production_date, 
                 mm.shift, 
                 mm.moulding_quantity, 
-                mm.keterangan, 
                 mm.print_code, 
                 Count(me.name)                           jumlah_pekerja, 
                 (SELECT Sum(ms.quantity) 
@@ -38,41 +37,39 @@ class M_moulding extends CI_Model
                 mm.component_code, 
                 mm.component_description, 
                 mm.production_date, 
-                mm.keterangan,
                 ma.kode
-        ORDER  BY mm.production_date, ma.kode";
+                ORDER BY extract(month from mm.production_date) desc, extract(year from mm.production_date) desc, extract(day from mm.production_date), ma.kode";
         $query = $this->db->query($sql);
         return $query->result_array();
     }
-
+    
     public function getMoulding($id = FALSE)
     {
         if ($id === FALSE) {
-            $sql = "select mm.moulding_id,
+            $sql = "SELECT mm.moulding_id,
                     mm.component_code,
                     mm.component_description,
                     mm.production_date,
                     mm.moulding_quantity,
-                    mm.keterangan,
                     me.name,
-                    me.no_induk 
+                    me.no_induk,
             from mo.mo_moulding mm,
-                 mo.mo_moulding_employee me
+                 mo.mo_moulding_employee me,
             where mm.moulding_id = me.moulding_id";
             $query = $this->db->query($sql);
         } else {
-            $sql = "select mm.moulding_id,
-                    mm.component_code,
-                    mm.component_description,
-                    mm.production_date,
-                    mm.moulding_quantity,
-                    mm.keterangan,
+            $sql = "SELECT mm.*,
                     me.name,
-                    me.no_induk 
+                    me.no_induk,
+                    ma.kode kode
             from mo.mo_moulding mm,
-                 mo.mo_moulding_employee me
+                 mo.mo_moulding_employee me,
+                 mo.mo_absensi ma
             where mm.moulding_id = me.moulding_id
-                  and mm.moulding_id = '$id'";
+            and mm.moulding_id = '$id'
+            and ma.category_produksi = 'Moulding'
+            and ma.id_produksi = mm.moulding_id
+            group by ma.kode, mm.moulding_id, me.name, me.no_induk";
             $query = $this->db->query($sql);
         }
 
@@ -127,17 +124,7 @@ class M_moulding extends CI_Model
 
     public function updateMoulding($id, $data)
     {
-        // $sql = "
-        //     SET mo.mo_moulding
-        //     (component_code = '$component_code', component_description = '$component_description', production_date = '$production_date,
-        //     moulding_quantity = '$moulding_quantity', job_id = '$job_id', scrap_quantity = '$scrap_quantity', scrap_type = '$scrap_type')
-        //     WHERE id = $id;
-
-        // ";
-        //VALUES ($component_code, $component_description, $production_date, $moulding_quantity, $job_id, $scrap_quantity, $scrap_type)
-        // $query = $this->db->query($sql);
-
-        $this->db->where('moulding_id', $id); //$this->db->where('moulding_id', $id);
+        $this->db->where('moulding_id', $id);
         $this->db->update('mo.mo_moulding', $data);
     }
 
@@ -184,8 +171,40 @@ class M_moulding extends CI_Model
         $sql = "UPDATE mo.mo_moulding_scrap SET quantity = '$qtyScr', kode_scrap = '$codeScrap', type_scrap = '$typeScrap' WHERE scrap_id = '$idScr'";
         $query = $this->db->query($sql);
     }
+    public function search($mon, $year)
+    {
+        $sql = "SELECT mm.moulding_id, 
+                mm.component_code, 
+                mm.component_description, 
+                mm.production_date, 
+                mm.shift, 
+                mm.moulding_quantity, 
+                mm.print_code, 
+                Count(me.name)                           jumlah_pekerja, 
+                (SELECT Sum(ms.quantity) 
+                FROM   mo.mo_moulding_scrap ms 
+                WHERE  ms.moulding_id = mm.moulding_id) scrap_qty, 
+                (SELECT Sum(mb.qty) 
+                FROM   mo.mo_moulding_bongkar mb 
+                WHERE  mb.moulding_id = mm.moulding_id) bongkar_qty,
+                ma.kode
+        FROM   mo.mo_moulding mm, 
+                mo.mo_moulding_employee me,
+        mo.mo_absensi ma
+        WHERE EXTRACT(MONTH FROM mm.production_date) = '$mon'
+        and EXTRACT(YEAR FROM mm.production_date) = '$year'
+        and mm.moulding_id = me.moulding_id 
+        and ma.category_produksi = 'Moulding'
+        and ma.id_produksi = mm.moulding_id
+        and ma.no_induk = me.no_induk
+        GROUP  BY mm.moulding_id, 
+                mm.moulding_quantity, 
+                mm.component_code, 
+                mm.component_description, 
+                mm.production_date, 
+                ma.kode
+        ORDER  BY mm.production_date, ma.kode";
+        $query = $this->db->query($sql);
+        return $query->result_array();
+    }
 }
-
-/* End of file M_moulding.php */
-/* Location: ./application/models/ManufacturingOperation/MainMenu/M_moulding.php */
-/* Generated automatically on 2017-12-20 14:49:32 */

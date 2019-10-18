@@ -49,7 +49,7 @@ class C_Selep extends CI_Controller
 		$this->load->view('V_Footer', $data);
 	}
 
-	public function create()
+	public function view_create()
 	{
 		$user_id = $this->session->userid;
 
@@ -61,48 +61,55 @@ class C_Selep extends CI_Controller
 		$data['UserMenu'] = $this->M_user->getUserMenu($user_id, $this->session->responsibility_id);
 		$data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id, $this->session->responsibility_id);
 		$data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id, $this->session->responsibility_id);
+		
+		$this->load->view('V_Header', $data);
+		$this->load->view('V_Sidemenu', $data);
+		$this->load->view('ManufacturingOperationUP2L/Selep/V_create', $data);
+		$this->load->view('V_Footer', $data);
+	}
+	public function create()
+	{
+		$emp = $this->input->post('txt_employee[]');
+		$employee	= '';
 
-		$this->form_validation->set_rules('txtSelepDateHeader', 'SelepDate', 'required');
-		$this->form_validation->set_rules('txtComponentCodeHeader', 'ComponentCode', 'required');
-		$this->form_validation->set_rules('component_description', 'ComponentDescription', 'required');
-		$this->form_validation->set_rules('txtSelepQuantityHeader', 'SelepQuantity', 'required');
-
-		if ($this->form_validation->run() === FALSE) {
-			$this->load->view('V_Header', $data);
-			$this->load->view('V_Sidemenu', $data);
-			$this->load->view('ManufacturingOperationUP2L/Selep/V_create', $data);
-			$this->load->view('V_Footer', $data);
-		} else {
-
-			$emp = $this->input->post('txt_employee[]');
-			$employeed	= '';
-
-			for ($i = 0; $i < sizeof($emp); $i++) {
-				if ($i == 0) {
-					$employeed = substr($emp[$i], 0, 5);
-				} else {
-					$employeed .= "," . substr($emp[$i], 0, 5);
-				}
+		for ($i = 0; $i < sizeof($emp); $i++) {
+			if ($i == 0) {
+				$employee = substr($emp[$i], 0, 5);
+			} else {
+				$employee .= "," . substr($emp[$i], 0, 5);
 			}
-
-			$component 		= $this->input->post('txtComponentCodeHeader');
-			$component_code = explode(' | ', $component);
-
-			$data = array(
-				'selep_date' => $this->input->post('txtSelepDateHeader'),
-				'component_code' => $component_code[0],
-				'component_description' => $this->input->post('component_description'),
-				'shift' => $this->input->post('txtShift'),
-				'selep_quantity' => $this->input->post('txtSelepQuantityHeader'),
-				'job_id' => $employeed,
-				'created_by' => $this->session->userid,
-				'scrap_quantity' => $this->input->post('txtScrapQuantityHeader'),
-				'keterangan' => $this->input->post('txtKeterangan'),
-			);
-
-			$this->M_selep->setSelep($data);
-			redirect(site_url('ManufacturingOperationUP2L/Selep/create'));
 		}
+		$selepData = array();
+		$aksen1 = 0;
+		foreach ($this->input->post('txtSelepQuantityHeader[]') as $a) {
+			$selepData[$aksen1]['selep_quantity'] = $a;
+			$aksen1++;
+		}
+
+		$aksen2 = 0;
+		foreach ($this->input->post('component_code[]') as $b) {
+			$pec = explode(' | ', $b);
+			$selepData[$aksen2]['component_code'] = trim($pec[0]);
+			$selepData[$aksen2]['component_description'] = trim($pec[1]);
+			$selepData[$aksen2]['kode_proses'] = trim($pec[2]);
+			$selepData[$aksen2]['selep_date'] = $this->input->post('txtSelepDateHeader');
+			$selepData[$aksen2]['shift'] = $this->input->post('txtShift');
+			$selepData[$aksen2]['scrap_quantity'] = '0';
+			$selepData[$aksen2]['job_id'] = $employee;
+			$aksen2++;
+		}
+
+		$aksen3 = 0;
+		foreach ($this->input->post('txtKeterangan[]') as $c) {
+			$selepData[$aksen3]['keterangan'] = $c;
+			$aksen3++;
+		}
+		
+		foreach ($selepData as $se) {
+			$this->M_selep->setSelep($se);
+		}
+
+		redirect(site_url('ManufacturingOperationUP2L/Selep/view_create'));
 	}
 
 	public function edit($id)
@@ -129,15 +136,14 @@ class C_Selep extends CI_Controller
 
 	public function update($id)
 	{
-		$comp_code = explode(' | ', $this->input->post('txtComponentCodeHeader'));
+		$component = explode(' | ', $this->input->post('cmbComponentCodeHeader', TRUE));
 		$data = array(
+			'component_code'		=> $component[0],
+			'component_description' => $component[1],
+			'kode_proses'			=> $component[2],
 			'selep_date' => $this->input->post('txtSelepDateHeader', TRUE),
-			'component_code' => $comp_code[0],
-			'component_description' => $this->input->post('component_description', TRUE),
 			'selep_quantity' => $this->input->post('txtSelepQuantityHeader', TRUE),
 			'job_id' => $this->input->post('txtJobIdHeader', TRUE),
-			'last_updated_by' => $this->session->userid,
-			'scrap_quantity' => $this->input->post('txtScrapQuantityHeader', TRUE),
 			'keterangan' => $this->input->post('txtKeterangan', TRUE),
 			'shift' => $this->input->post('txtShift', TRUE),
 		);

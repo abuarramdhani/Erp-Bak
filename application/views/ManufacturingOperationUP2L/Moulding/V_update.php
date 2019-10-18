@@ -33,25 +33,47 @@
                                 <div class="box-body">
                                     <div class="panel-body">
                                         <div class="row">
-                                            <div class="form-group">
-                                                <input type="hidden" name="txtMouldingId" id="txtMouldingId" value="<?= $Moulding[0]['moulding_id'] ?>">
-                                                <label for="txtComponentCodeHeader" class="control-label col-lg-4">Component Code</label>
-                                                <div class="col-lg-4">
-                                                    <input type="text" placeholder="Component Code" name="txtComponentCodeHeader" id="txtComponentCodeHeader" class="form-control" value="<?php echo $Moulding[0]['component_code'];?>" />
-                                                </div>
-                                            </div>
+                                            <input type="hidden" name="txtMouldingId" id="txtMouldingId" value="<?= $Moulding[0]['moulding_id'] ?>">
 
                                             <div class="form-group">
-                                                <label for="txtComponentDescriptionHeader" class="control-label col-lg-4">Component Description</label>
+                                                <label class="control-label col-lg-4" for="cmbComponentCodeHeader">
+                                                    Component
+                                                </label>
                                                 <div class="col-lg-4">
-                                                    <input type="text" placeholder="Component Description" name="txtComponentDescriptionHeader" id="txtComponentDescriptionHeader" class="form-control" value="<?= $Moulding[0]['component_description'];?>" />
+                                                    <select class="form-control jsSlcComp toupper" data-placeholder="Choose an option" id="cmbComponentCodeHeader" name="cmbComponentCodeHeader" onchange="getCompDescMO(this)">
+                                                        <option value="<?php echo $Moulding[0]['component_code'].' | '.$Moulding[0]['component_description'].' | '.$Moulding[0]['kode_proses']?>">
+                                                        <?php echo $Moulding[0]['component_code'].' | '.$Moulding[0]['component_description'].' | '.$Moulding[0]['kode_proses']?>
+                                                        </option>
+                                                    </select>
                                                 </div>
                                             </div>
 
                                             <div class="form-group">
                                                 <label for="txtProductionDateHeader" class="control-label col-lg-4">Production Date</label>
                                                 <div class="col-lg-4">
-                                                    <input type="text" placeholder="<?php echo date('Y-m-d') ?>" name="txtProductionDateHeader" value="<?php echo $Moulding[0]['production_date'] ?>" class="date form-control" data-date-format="yyyy-mm-dd" id="txtProductionDateHeader" />
+                                                    <input type="text" placeholder="<?php echo date('Y-m-d') ?>" name="txtProductionDateHeader" value="<?php echo $Moulding[0]['production_date'] ?>" class="date form-control time-form1 ajaxOnChange" data-date-format="yyyy-mm-dd" id="txtProductionDateHeader" />
+                                                </div>
+                                            </div>
+
+                                            <div class="form-group">
+                                                <label class="control-label col-md-4">Print Code</label>
+                                                <div id="print_code_area">
+                                                    <div class="col-md-4">
+                                                        <?php if ($Moulding[0]['print_code']) { ?>
+                                                            <input type="text" name="print_code" id="print_code" class="form-control" value="<?php echo $Moulding[0]['print_code']; ?>">
+                                                        <?php } else {?>
+                                                        <small>-- Pilih ulang Production Date agar Kode muncul --</small>
+                                                        <?php }?>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <div class="form-group">
+                                                <label for="txtShift" class="control-label col-lg-4">Shift</label>
+                                                <div class="col-lg-4">
+                                                <select class="form-control slcShift" id="txtShift" name="txtShift">
+                                                    <option value="<?php echo $Moulding[0]['shift']; ?>"><?php echo $Moulding[0]['shift']; ?></option>
+                                                </select>    
                                                 </div>
                                             </div>
 
@@ -67,12 +89,9 @@
                                             <br />
                                         </div>
                                     </div>
-                                    <div class="panel-footer">
-                                        <div class="row text-right">
-                                            <a href="javascript:history.back(1)" class="btn btn-primary btn-lg btn-rect">Back</a>
-                                            &nbsp;&nbsp;
-                                            <button type="submit" class="btn btn-primary btn-lg btn-rect">Save Data</button>
-                                        </div>
+                                    <div class="box-footer text-right">
+                                        <button type="submit" class="btn btn-success btn-lg"><i class="fa fa-save"></i></i>  Save</button>
+                                        <a href="<?php echo site_url('ManufacturingOperationUP2L/Moulding'); ?>" class="btn btn-danger btn-lg"><i class="fa fa-arrow-left"></i></i>  Back</a>
                                     </div>
                                 </div>
 

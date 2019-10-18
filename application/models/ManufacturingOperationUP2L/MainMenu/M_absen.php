@@ -10,7 +10,7 @@ class M_absen extends CI_Model
 
     public function index_data()
     {
-        $sql = "SELECT * FROM mo.mo_absensi WHERE presensi != 'HDR'";
+        $sql = "SELECT * FROM mo.mo_absensi WHERE presensi != 'HDR' ORDER BY extract(month from created_date) desc, extract(year from created_date) desc, extract(day from created_date)";
         return $this->db->query($sql)->result_array();
     }
 

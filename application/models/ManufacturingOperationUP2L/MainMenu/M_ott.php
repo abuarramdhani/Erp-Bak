@@ -10,7 +10,7 @@ class M_ott extends CI_Model
 
     public function index_data()
     {
-        $sql = "SELECT * FROM mo.mo_ott ORDER BY otttgl";
+        $sql = "SELECT * FROM mo.mo_ott ORDER BY extract(month from otttgl) desc, extract(year from otttgl) desc, extract(day from otttgl)";
         return $this->db->query($sql)->result_array();
     }
 

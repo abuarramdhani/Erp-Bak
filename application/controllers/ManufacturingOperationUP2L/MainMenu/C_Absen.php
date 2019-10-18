@@ -78,10 +78,17 @@ class C_Absen extends CI_Controller
 
     public function save_create()
     {
-		$nama = explode(' | ', $this->input->post('absName'));
-        $data  = array(
-			'nama'					=> $nama[1],
-			'no_induk'				=> $nama[0],
+		$induk ='';
+		$nama = '';
+		foreach ($this->input->post('txt_employee') as $em) {
+			$all = explode('|', $em);
+			$induk .= ','.trim($all[0]);
+			$nama .= ','.trim($all[1]);
+		}
+
+		$data = array(
+			'nama'					=> substr($nama, 1),
+			'no_induk'				=> substr($induk, 1),
 			'alasan'				=> '',
 			'category_produksi'		=> 'Absen',
 			'presensi'				=> $this->input->post('absPrs'),
@@ -89,9 +96,8 @@ class C_Absen extends CI_Controller
 			'lembur'				=> FALSE,
 			'produksi'				=> 'T',
 			'created_date'			=> $this->input->post('absTgl'),
-        );
-		
-        $this->M_absen->save_create($data);
+		);
+		$this->M_absen->save_create($data);
         redirect(site_url('ManufacturingOperationUP2L/Absen/view_create'));
     }
 
@@ -148,7 +154,7 @@ class C_Absen extends CI_Controller
     public function save_update()
     {
         $id = $this->input->post('absId');
-        $nama = explode(' | ', $this->input->post('absName'));
+        $nama = explode(' | ', $this->input->post('txt_employee'));
         $data  = array(
 			'nama'					=> $nama[1],
 			'no_induk'				=> $nama[0],

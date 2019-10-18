@@ -14,14 +14,17 @@ class M_mixing extends CI_Model
                 FROM mo.mo_mixing mm, mo.mo_absensi ma
                 WHERE ma.id_produksi = mm.mixing_id AND ma.category_produksi = 'Mixing'
                 GROUP BY mm.mixing_id, ma.kode
-                ORDER  BY mm.production_date, ma.kode";
+                ORDER BY extract(month from mm.production_date) desc, extract(year from mm.production_date) desc, extract(day from mm.production_date), ma.kode";
         return $this->db->query($sql)->result_array();
     }
     
     public function getMixingById($id)
     {
-        $query = $this->db->get_where('mo.mo_mixing', array('mixing_id' => $id));
-        return $query->result_array();
+        $query = "SELECT mm.*, ma.kode kode
+                FROM mo.mo_mixing mm, mo.mo_absensi ma
+                WHERE ma.id_produksi = mm.mixing_id AND ma.category_produksi = 'Mixing' AND mm.mixing_id = '$id'
+                GROUP BY mm.mixing_id, ma.kode";
+        return $this->db->query($query)->result_array();
     }
 
     public function setAbsensi($data)
@@ -48,7 +51,3 @@ class M_mixing extends CI_Model
     }
 
 }
-
-/* End of file M_mixing.php */
-/* Location: ./application/models/ManufacturingOperation/MainMenu/M_mixing.php */
-/* Generated automatically on 2017-12-20 14:47:57 */

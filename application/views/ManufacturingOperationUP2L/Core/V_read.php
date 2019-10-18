@@ -26,21 +26,55 @@
                                 <div class="box-header with-border">Read Core</div>
                                 <div class="box-body">
                                     <div class="panel-body">
-                                        <div class="row">
+                                    <div class="row">
                                             <div class="col-lg-12">
                                                 <div class="table-responsive">
                                                     <table class="table" style="border: 0px !Important;">
                                                     <?php foreach ($Core as $headerRow): ?>
+														<tr>
+                                                            <td class="col-lg-2" style="border: 0"><strong>Component Code</strong></td>
+                                                            <td style="border: 0">: <?php echo $headerRow['component_code']; ?></td>
+                                                        </tr>
+														<tr>
+                                                            <td class="col-lg-2" style="border: 0"><strong>Component Description</strong></td>
+                                                            <td style="border: 0">: <?php echo $headerRow['component_description']; ?></td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td class="col-lg-2" style="border: 0"><strong>Kode Proses</strong></td>
+                                                            <td style="border: 0">: <?php echo $headerRow['kode_proses']; ?></td>
+                                                        </tr>
+														<tr>
+                                                            <td class="col-lg-2" style="border: 0"><strong>Production Date</strong></td>
+                                                            <td style="border: 0">: <?php echo $headerRow['production_date']; ?></td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td class="col-lg-2" style="border: 0"><strong>Shift</strong></td>
+                                                            <td style="border: 0">: <?php echo $headerRow['shift']; ?></td>
+                                                        </tr>
+														<tr>
+                                                            <td class="col-lg-2" style="border: 0"><strong>Core Quantity</strong></td>
+                                                            <td style="border: 0">: <?php echo $headerRow['core_quantity']; ?></td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td class="col-lg-2" style="border: 0"><strong>Print Code</strong></td>
+                                                            <td style="border: 0">: <?php echo $headerRow['print_code']; ?></td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td class="col-lg-2" style="border: 0"><strong>Kode Kelompok</strong></td>
+                                                            <td style="border: 0">: <?php echo $headerRow['kode']; ?></td>
+                                                        </tr>
+														<tr>
+                                                            <td class="col-lg-2" style="border: 0"><strong>Employee</strong></td>
+                                                            <td style="border: 0">: <?php echo $headerRow['employee_id']; ?></td>
+                                                        </tr>
 													<?php endforeach; ?>
                                                     </table>
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="panel-footer">
-                                        <div align="right">
-                                            <a href="javascript:history.back(1)" class="btn btn-primary btn-lg btn-rect">Back</a>
-                                        </div>
+                                    <div class="box-footer text-right">
+                                        <a href="<?php echo site_url('ManufacturingOperationUP2L/Core'); ?>" class="btn btn-danger btn-lg"><i class="fa fa-arrow-left"></i></i>  Back</a>
                                     </div>
                                 </div>
                             </div>

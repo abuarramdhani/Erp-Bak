@@ -14,14 +14,11 @@
                                 <div class="text-right hidden-md hidden-sm hidden-xs">
                                     <a class="btn btn-default btn-lg" href="<?php echo site_url('ManufacturingOperationUP2L/QualityControl/'); ?>">
                                         <i class="icon-wrench icon-2x"></i>
-                                        <span><br /></span>
                                     </a>
                                 </div>
                             </div>
                         </div>
                     </div>
-                    <br />
-
                     <div class="row">
                         <div class="col-lg-12">
 
@@ -33,41 +30,41 @@
                                     <input type="hidden" name="id_fix" value="<?= $headerRow['selep_id_c']?>">
                                     <div class="box-body">
                                         <div class="panel-body">
-                                            <div class="row">
-                                                <div class="form-group">
-                                                    <label for="txtCheckingDateHeader" class="control-label col-lg-4">Tanggal Cetak</label>
-                                                    <div class="col-lg-4">
-                                                        <input type="text" name="txtCheckingDateHeader" class="form-control time-form ajaxOnChange" value="<?php echo $headerRow['checking_date'] ?>" required="" placeholder="Tanggal Cetak" onclick="getDatePrintCode(this)">
-                                                    </div>
-                                                </div>
-
-                                                <div class="form-group">
-                                                    <label for="txtSelepQuantityHeader" class="control-label col-lg-4">Selep Quantity</label>
-                                                    <div class="col-lg-4">
-                                                        <input type="text" readonly="" placeholder="Selep Quantity" name="txtSelepQuantityHeader" id="mo_txtSelepQuantityHeader" class="form-control" value="<?php echo $headerRow['selep_quantity']; ?>" />
-                                                    </div>
-                                                </div>
-
-                                                <div class="form-group">
-                                                    <label for="txtCheckingQuantityHeader" class="control-label col-lg-4">Checking Quantity</label>
-                                                    <div class="col-lg-4">
-                                                        <input type="text" placeholder="Checking Quantity" name="txtCheckingQuantityHeader" id="mo_txtCheckingQuantityHeader" class="form-control" value="<?php echo $headerRow['checking_quantity']; ?>" />
-                                                    </div>
-                                                </div>
-
-                                                <div class="form-group">
-                                                    <label for="txtScrapQuantityHeader" class="control-label col-lg-4">Scrap Quantity</label>
-                                                    <div class="col-lg-4">
-                                                        <input type="text" placeholder="Scrap Quantity" name="txtScrapQuantityHeader" id="mo_txtScrapQuantityHeader" class="form-control" value="<?php echo $headerRow['scrap_quantity']; ?>" />
-                                                    </div>
-                                                </div>
-                                            </div>
+                                                <table class="table" style="border: 0px !Important;">
+                                                    <tr>
+                                                        <td class="col-lg-2" style="border: 0"><strong>Component Code</strong></td>
+                                                        <td style="border: 0">: <?php echo $headerRow['component_code']; ?></td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td class="col-lg-2" style="border: 0"><strong>Component Description</strong></td>
+                                                        <td style="border: 0">: <?php echo $headerRow['component_description']; ?></td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td class="col-lg-2" style="border: 0"><strong>Checking Date</strong></td>
+                                                        <td style="border: 0">: <?php echo $headerRow['checking_date']; ?></td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td class="col-lg-2" style="border: 0"><strong>Shift</strong></td>
+                                                        <td style="border: 0">: <?php echo $headerRow['shift']; ?></td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td class="col-lg-2" style="border: 0"><strong>Employee</strong></td>
+                                                        <td style="border: 0">: <?php echo $headerRow['employee']; ?></td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td class="col-lg-2" style="border: 0"><strong>Selep Quantity</strong></td>
+                                                        <td style="border: 0">: <?php echo $headerRow['selep_quantity']; ?></td>
+                                                    </tr>
+                                                    <tr>
+                                                        <br><td class="col-lg-2" style="border: 0"><strong>Checking Quantity</strong></td>
+                                                        <td style="border: 0"><div class="col-lg-5"><input type="text" placeholder="Checking Quantity" name="txtCheckingQuantityHeader" id="mo_txtCheckingQuantityHeader" class="form-control" value="<?php echo $headerRow['checking_quantity']; ?>" /></div></td>
+                                                    </tr>
+                                                </table>
                                         </div>
                                         <div class="panel-footer">
                                             <div class="row text-right">
-                                                <a href="javascript:history.back(1)" class="btn btn-primary btn-lg btn-rect">Back</a>
-                                                &nbsp;&nbsp;
-                                                <button type="submit" class="btn btn-primary btn-lg btn-rect">Save Data</button>
+                                                <button type="submit" class="btn btn-success btn-lg"><i class="fa fa-save"></i></i>  Save</button>
+                                                <a href="<?php echo site_url('ManufacturingOperationUP2L/QualityControl'); ?>" class="btn btn-danger btn-lg"><i class="fa fa-arrow-left"></i></i>  Back</a>
                                             </div>
                                         </div>
                                     </div>

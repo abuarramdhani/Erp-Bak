@@ -31,11 +31,7 @@
                                                 <div class="table-responsive">
                                                     <table class="table" style="border: 0px !Important;">
                                                     <?php foreach ($Selep as $headerRow): ?>
-														<tr>
-                                                            <td class="col-lg-2" style="border: 0"><strong>Selep Date</strong></td>
-                                                            <td style="border: 0">: <?php echo $headerRow['selep_date']; ?></td>
-                                                        </tr>
-														<tr>
+                                                        <tr>
                                                             <td class="col-lg-2" style="border: 0"><strong>Component Code</strong></td>
                                                             <td style="border: 0">: <?php echo $headerRow['component_code']; ?></td>
                                                         </tr>
@@ -43,12 +39,24 @@
                                                             <td class="col-lg-2" style="border: 0"><strong>Component Description</strong></td>
                                                             <td style="border: 0">: <?php echo $headerRow['component_description']; ?></td>
                                                         </tr>
+                                                        <tr>
+                                                            <td class="col-lg-2" style="border: 0"><strong>Kode Proses</strong></td>
+                                                            <td style="border: 0">: <?php echo $headerRow['kode_proses']; ?></td>
+                                                        </tr>
+														<tr>
+                                                            <td class="col-lg-2" style="border: 0"><strong>Production Date</strong></td>
+                                                            <td style="border: 0">: <?php echo $headerRow['selep_date']; ?></td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td class="col-lg-2" style="border: 0"><strong>Shift</strong></td>
+                                                            <td style="border: 0">: <?php echo $headerRow['shift']; ?></td>
+                                                        </tr>
 														<tr>
                                                             <td class="col-lg-2" style="border: 0"><strong>Selep Quantity</strong></td>
                                                             <td style="border: 0">: <?php echo $headerRow['selep_quantity']; ?></td>
                                                         </tr>
 														<tr>
-                                                            <td class="col-lg-2" style="border: 0"><strong>Job Id</strong></td>
+                                                            <td class="col-lg-2" style="border: 0"><strong>Employee</strong></td>
                                                             <td style="border: 0">: <?php echo $headerRow['job_id']; ?></td>
                                                         </tr>
 													<?php endforeach; ?>
@@ -71,10 +79,8 @@
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="panel-footer">
-                                        <div align="right">
-                                            <a href="javascript:history.back(1)" class="btn btn-primary btn-lg btn-rect">Back</a>
-                                        </div>
+                                    <div class="panel-footer text-right">
+                                        <a href="<?php echo site_url('ManufacturingOperationUP2L/Selep'); ?>" class="btn btn-danger btn-lg"><i class="fa fa-arrow-left"></i></i>  Back</a>
                                     </div>
                                 </div>
                             </div>
