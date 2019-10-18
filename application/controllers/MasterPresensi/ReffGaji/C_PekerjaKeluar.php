@@ -204,7 +204,7 @@ class C_PekerjaKeluar extends CI_Controller
 
 			if ($status_pekerja == 'B' || $status_pekerja == 'D' || $status_pekerja == 'J') {
 				if($cek_cutoff == 0){
-					$kom_if = $this->M_pekerjakeluar->hitung_If_tdk_cutoff($pkj['noind'],$tgl_bulan_berjalan_awal,$pkj['tglkeluar']);
+					$kom_if = $this->M_pekerjakeluar->hitung_If_tdk_cutoff($pkj['noind'],$tgl_cut_awal,$pkj['tglkeluar']);
 				}else{
 					$kom_if = $this->M_pekerjakeluar->hitung_If($pkj['noind'],$tgl_cut_awal,$pkj['tglkeluar']);
 				}
@@ -287,6 +287,9 @@ class C_PekerjaKeluar extends CI_Controller
 	}
 
 	public function Proses(){
+		if(!isset($_POST) or empty($_POST)){
+			redirect(site_url('MasterPresensi/ReffGaji/PekerjaKeluar/'));
+		}
 		$user_id = $this->session->userid;
 		$tgl_cetak 		= $this->input->post('txtTglCetak');
 		$puasa 			= $this->input->post('txtPuasa');
@@ -329,6 +332,9 @@ class C_PekerjaKeluar extends CI_Controller
 	}
 
 	public function Export(){
+		if(!isset($_POST) or empty($_POST)){
+			redirect(site_url('MasterPresensi/ReffGaji/PekerjaKeluar/'));
+		}
 		$user_id = $this->session->userid;
 		$tgl_cetak 		= $this->input->post('txtTglCetak2');
 		$puasa 			= $this->input->post('txtPuasa2');
@@ -486,6 +492,9 @@ class C_PekerjaKeluar extends CI_Controller
 	}
 
 	public function exportExcel(){
+		if(!isset($_POST) or empty($_POST)){
+			redirect(site_url('MasterPresensi/ReffGaji/PekerjaKeluar/'));
+		}
 		$user_id = $this->session->userid;
 		$tgl_cetak 		= $this->input->post('txtTglCetak2');
 		$puasa 			= $this->input->post('txtPuasa2');
@@ -586,6 +595,9 @@ class C_PekerjaKeluar extends CI_Controller
 	}
 
 	public function print_pdf(){
+		if(!isset($_GET) or empty($_GET)){
+			redirect(site_url('MasterPresensi/ReffGaji/PekerjaKeluar/'));
+		}
 		$user_id = $this->session->userid;
 		$tgl_cetak 		= $this->input->get('txtTglCetak2');
 		$puasa 			= $this->input->get('txtPuasa2');
