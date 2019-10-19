@@ -143,6 +143,7 @@ class M_approval extends CI_MODEL {
           }
           $this->updateDataPresensi($id_cuti);
           if($tipe == '1'){
+            $this->perhitunganCutOff($id_cuti);
             $this->updateDataCutiTahunan($noindCuti, $id_cuti);
           }
         } else {
@@ -182,7 +183,7 @@ class M_approval extends CI_MODEL {
                      SET ready = '1'
                      WHERE level = '3' and lm_pengajuan_cuti_id = '$id_cuti' ";
           $this->db->query($toEDP);
-        }else{
+        }else{ //end approval
           $statusapproved = "UPDATE lm.lm_pengajuan_cuti
                              SET status = '2', tanggal_status = '$now'
                              WHERE lm_pengajuan_cuti = '$id_cuti'";
@@ -193,6 +194,7 @@ class M_approval extends CI_MODEL {
                         WHERE lm_pengajuan_cuti_id = '$id_cuti' AND level = '3'";
           $this->db->query($updateEDP);
           if($tipe == '1'){
+            $this->perhitunganCutOff($id_cuti);
             $this->updateDataCutiTahunan($noindCuti, $id_cuti);
           }
           $this->updateDataPresensi($id_cuti);
@@ -217,6 +219,7 @@ class M_approval extends CI_MODEL {
                      WHERE lm_pengajuan_cuti = '$id_cuti' ";
       $this->db->query($statusEDP);
       $this->db->insert('lm.lm_pengajuan_cuti_thread',$threadEnd);
+      $this->perhitunganCutOff($id_cuti);
       $this->updateDataPresensi($id_cuti);
       }
     }
@@ -271,21 +274,21 @@ class M_approval extends CI_MODEL {
 			'lm_pengajuan_cuti_id' => $id,
 			'status' => '3',
 			'detail' => '(Pembatalan Cuti) - Seksi EDP (Electronic Data Processing) telah membatalkan cuti ini dengan alasan "'.$alasan.'"',
-			'waktu' => $now
+			'waktu'  => $now
 		);
     $this->db->insert('lm.lm_pengajuan_cuti_thread', $threadCancel);
 
   }
 
   public function updateDataCutiTahunan($noind, $id_cuti){
-    $periode = date('Y');
+    $periode     = date('Y');
     $jumlahambil = "SELECT tgl_pengambilan FROM lm.lm_pengajuan_cuti_tgl_ambil WHERE lm_pengajuan_cuti_id = '$id_cuti'";
     $jumlahambil = $this->db->query($jumlahambil)->result_array();
     $jumlahambil = count($jumlahambil);
-    $datacuti = "SELECT sisa_cuti, sisa_cuti_tot FROM \"Presensi\".tdatacuti WHERE noind = '$noind' and periode = '$periode'";
-    $datacuti = $this->personalia->query($datacuti)->result_array();
-    $sisacuti = $datacuti['0']['sisa_cuti'];
-    $cutiakhir = $sisacuti-$jumlahambil;
+    $datacuti    = "SELECT sisa_cuti, sisa_cuti_tot FROM \"Presensi\".tdatacuti WHERE noind = '$noind' and periode = '$periode'";
+    $datacuti    = $this->personalia->query($datacuti)->result_array();
+    $sisacuti    = $datacuti['0']['sisa_cuti'];
+    $cutiakhir   = $sisacuti-$jumlahambil;
     $sisacutitotal = $datacuti['0']['sisa_cuti_tot']-$jumlahambil;
 
     $query = "UPDATE \"Presensi\".tdatacuti SET sisa_cuti = '$cutiakhir', sisa_cuti_tot = '$sisacutitotal' where noind = '$noind' and periode = '$periode'";
@@ -297,7 +300,7 @@ class M_approval extends CI_MODEL {
                   pc.noind, pc.keterangan, pc.keperluan, (select section_code from er.er_employee_all emp where emp.employee_code = noind) kodesie
               FROM lm.lm_pengajuan_cuti pc
               WHERE lm_pengajuan_cuti = '$id_cuti'";
-    $id = $this->db->query($query)->result_array();
+    $id    = $this->db->query($query)->result_array();
 
     $tglambil = "SELECT
                     tgl_pengambilan
@@ -305,12 +308,12 @@ class M_approval extends CI_MODEL {
                  WHERE lm_pengajuan_cuti_id = '$id_cuti'";
     $date = $this->db->query($tglambil)->result_array();
 
-    $session = $this->session->user;
-    $noind = $id['0']['noind'];
-    $kodesie = $id['0']['kodesie'];
+    $session    = $this->session->user;
+    $noind      = $id['0']['noind'];
+    $kodesie    = $id['0']['kodesie'];
     $keterangan = $id['0']['keterangan'];
-    $keperluan = strtoupper($id['0']['keperluan']);
-    $kd_ket = $id['0']['keterangan'];
+    $keperluan  = strtoupper($id['0']['keperluan']);
+    $kd_ket     = $id['0']['keterangan'];
     $noind_baru = $this->personalia->query("SELECT noind_baru FROM hrd_khs.tpribadi WHERE noind = '$noind'")->row()->noind_baru;
 
     for ($i=0; $i < count($date) ; $i++) {
@@ -323,22 +326,22 @@ class M_approval extends CI_MODEL {
       $checkPresensi = $this->personalia->query($checkPresensi)->result_array();
 
       $data = array(
-        'tanggal' => $date[$i]['tgl_pengambilan'],
-        'noind' => $id['0']['noind'],
-        'kodesie' => $id['0']['kodesie'],
-        'masuk' => '0',
-        'keluar' => '0',
-        'kd_ket' => $id['0']['keterangan'],
-        'total_lembur' => '0',
-        'user_' => 'ERPCT',
-        'noind_baru' => $noind_baru,
-        'alasan' => strtoupper($id['0']['keperluan'])
+        'tanggal'       => $date[$i]['tgl_pengambilan'],
+        'noind'         => $id['0']['noind'],
+        'kodesie'       => $id['0']['kodesie'],
+        'masuk'         => '0',
+        'keluar'        => '0',
+        'kd_ket'        => $id['0']['keterangan'],
+        'total_lembur'  => '0',
+        'user_'         => 'ERPCT',
+        'noind_baru'    => $noind_baru,
+        'alasan'        => strtoupper($id['0']['keperluan'])
       );
 
       if($checkShift['0']['count'] > '0'){
         if($checkPresensi['0']['count'] > '0'){
           $getKetBefore = "SELECT kd_ket FROM \"Presensi\".tdatapresensi WHERE tanggal = '$tanggal' and noind = '$noind'";
-          $ketBefore = $this->personalia->query($getKetBefore)->row()->kd_ket;
+          $ketBefore    = $this->personalia->query($getKetBefore)->row()->kd_ket;
 
           $logupdate = "INSERT INTO hrd_khs.tlog (wkt, menu, ket, noind, jenis, program, noind_baru) VALUES (now(), 'ERP CUTI -> UPDATE DATA PRES', 'NOIND -> $noind TANGGAL -> $tanggal', '$session', 'UBAH -> KETERANGAN $ketBefore -> $keterangan', 'CUTI', '$noind_baru')";
           $this->personalia->query($logupdate);
@@ -356,6 +359,38 @@ class M_approval extends CI_MODEL {
       }
     }
   }
-  // end function
+
+  function perhitunganCutOff($id_cuti){
+    // select end cutoff terakhir
+    $akhir_cut_off = $this->personalia->query("SELECT tanggal_akhir FROM tcutoff WHERE to_char(tanggal_akhir, 'YYYY-MM') = to_char(now(), 'YYYY-MM') LIMIT 1;")->row()->tanggal_akhir;
+    $today = date('Y-m-d'); //tgl approval terakhir / hari ini
+    // cek tgl approve approval terakhir apakah melebihi tgl akhir cutoff
+    if($today > $akhir_cut_off){
+      //change to cuti susulan
+      $this->db->query("UPDATE lm.lm_pengajuan_cuti SET lm_jenis_cuti_id = '13' WHERE lm_pengajuan_cuti = '$id_cuti'");
+      //select tgl cuti <= cut_off
+      $tgl = "SELECT tgl_pengambilan FROM lm.lm_pengajuan_cuti_tgl_ambil WHERE lm_pengajuan_cuti_id = '$id_cuti' AND tgl_pengambilan <= '$akhir_cut_off'";
+      $all_date = $this->db->query($tgl)->result_array();
+
+      if(!empty($all_date)){
+        //select noind cuti
+        $noind = $this->db->query("SELECT noind FROM lm.lm_pengajuan_cuti WHERE lm_pengajuan_cuti = '$id_cuti'")->row()->noind;
+        //insert ke tsusulan
+        foreach ($all_date as $key) {
+          $tgl  = $key['tgl_pengambilan'];
+          $data = array(
+            'noind'       => $noind,
+            'tanggal'     => $tgl,
+            'stat'        => false,
+            'reffgaji'    => null,
+            'ket'         => 'CT',
+            'user_'       => $this->session->user,
+            'noind_baru'  => null
+          );
+          $insertSusulan = $this->personalia->insert('Presensi.tsusulan', $data);
+        }
+      }
+    }
+  }
 }
 // end class
