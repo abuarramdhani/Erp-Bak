@@ -1,5 +1,5 @@
 <?php if (!defined('BASEPATH')) exit('No direct script access allowed');
-
+// nggak disentuh total sama edwin
 class C_Ajax extends CI_Controller
 {
 	function __construct()
@@ -71,28 +71,26 @@ class C_Ajax extends CI_Controller
 
 	public function addQuality()
 	{
-		$qty = $this->input->post('REMAIN');
 		$id = $this->input->post('ID');
 		$checking_date = $this->input->post('CHECKING_DATE');
 		$print_code = $this->input->post('PRINT_CODE');
 		$checking_quantity = $this->input->post('CHECK');
 		$scrap_quantity = $this->input->post('SCRAP');
-		$created_by = $this->session->userid;
+		$repair_quantity = $this->input->post('REPAIR');
 		$remaining_quantity = $this->input->post('REMAIN');
 		$component_code = $this->input->post('COMPONENT');
 		$employee = $this->input->post('EMPLOYEE');
 		$component_description = $this->input->post('DESCRIPTION');
 		$selep_quantity = $this->input->post('SELEPQTY');
 		$shift = $this->input->post('SHIFT');
+		
 		$check_qc = TRUE;
 
 		$this->M_ajax->setQualityControl(
 			$checking_date, $print_code, $checking_quantity, $scrap_quantity,
-			$created_by, $remaining_quantity, $component_code, $employee,
-			$component_description, $selep_quantity, $shift, $check_qc, $id
+			$remaining_quantity, $component_code, $employee,
+			$component_description, $selep_quantity, $shift, $check_qc, $id, $repair_quantity
 		);
-
-		$this->M_ajax->setMouldingQuantity($qty, $id);
 	}
 
 	public function getPrintCode()

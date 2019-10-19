@@ -74,66 +74,64 @@ class C_Moulding extends CI_Controller
 
 	public function create()
 	{
-		$user_id = $this->session->userid;
+		$mouldingData = array();
+		$aksen1 = 0;
+		foreach ($this->input->post('txtMouldingQuantityHeader[]') as $a) {
+			$mouldingData[$aksen1]['moulding_quantity'] = $a;
+			$aksen1++;
+		}
 
-		$data['Title'] = 'Moulding';
-		$data['Menu'] = 'Manufacturing Operation';
-		$data['SubMenuOne'] = '';
-		$data['SubMenuTwo'] = '';
+		$aksen2 = 0;
+		foreach ($this->input->post('component_code[]') as $b) {
+			$pecMoulding = explode(' | ', $b);
+			$mouldingData[$aksen2]['component_code'] = trim($pecMoulding[0]);
+			$mouldingData[$aksen2]['component_description'] = trim($pecMoulding[1]);
+			$mouldingData[$aksen2]['kode_proses'] = trim($pecMoulding[2]);
+			$mouldingData[$aksen2]['production_date'] = $this->input->post('production_date');
+			$mouldingData[$aksen2]['shift'] = $this->input->post('txtShift');
+			$mouldingData[$aksen2]['print_code'] = $this->input->post('print_code');
+			$aksen2++;
+		}
 
-		$data['UserMenu'] = $this->M_user->getUserMenu($user_id, $this->session->responsibility_id);
-		$data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id, $this->session->responsibility_id);
-		$data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id, $this->session->responsibility_id);
+		foreach ($mouldingData as $mo) {
+			$this->M_moulding->setMoulding($mo);
+			$header_id = $this->db->insert_id();
+			
+			$emp = $this->input->post('txt_employee[]');
+			$produksi = $this->input->post('txt_produksi[]');
+			$lembur = $this->input->post('txt_lembur[]');
+			$presensi = $this->input->post('txt_presensi[]');
+			$ott = $this->input->post('txt_ott[]');
+			$kode = $this->input->post('kode_kel');
 
-		$comp = explode(' | ', $this->input->post('component_code'));
-
-		$data = array(
-			'component_code' => trim($comp[0]),
-			'component_description' => trim($comp[1]),
-			'production_date' => $this->input->post('production_date'),
-			'moulding_quantity' => $this->input->post('txtMouldingQuantityHeader'),
-			'shift' => $this->input->post('txtShift'),
-			'keterangan' => $this->input->post('textarea_ket'),
-			'print_code' => $this->input->post('print_code')
-		);
-		$this->M_moulding->setMoulding($data);
-		$header_id = $this->db->insert_id();
-
-		$emp = $this->input->post('txt_employee[]');
-		$produksi = $this->input->post('txt_produksi[]');
-		$lembur = $this->input->post('txt_lembur[]');
-		$presensi = $this->input->post('txt_presensi[]');
-		$ott = $this->input->post('txt_ott[]');
-		$kode = $this->input->post('ottKodeP');
-
-		$i = 0;
-		foreach ($emp as $val) {
-
-			$employee = explode('|', $val);
-			$no_induk = $employee[0];
-			$nama = $employee[1];
-			$data =  array(
-				'nama'		=> $nama,
-				'no_induk' => $no_induk,
-				'category_produksi' => 'Moulding',
-				'id_produksi' => $header_id,
-				'presensi' => $presensi[$i],
-				'produksi' => $produksi[$i],
-				'nilai_ott' => $ott[$i],
-				'lembur' => $lembur[$i],
-				'kode' => $kode,
-				'created_date' =>  $this->input->post('production_date')
-			);
-
-			$this->M_moulding->insMouldingEmployee($header_id, $no_induk, $nama);
-			$this->M_moulding->setAbsensi($data);
-			$i++;
+			$i = 0;
+			foreach ($emp as $val) {
+				$employee = explode('|', $val);
+				$no_induk = $employee[0];
+				$nama = $employee[1];
+				$data =  array(
+					'nama'		=> $nama,
+					'no_induk' => $no_induk,
+					'category_produksi' => 'Moulding',
+					'id_produksi' => $header_id,
+					'presensi' => $presensi[$i],
+					'produksi' => $produksi[$i],
+					'nilai_ott' => $ott[$i],
+					'lembur' => $lembur[$i],
+					'kode' => $kode,
+					'created_date' =>  $this->input->post('production_date')
+				);
+				
+				$this->M_moulding->insMouldingEmployee($header_id, $no_induk, $nama);
+				$this->M_moulding->setAbsensi($data);
+				$i++;
+			}
 		}
 
 		redirect(site_url('ManufacturingOperationUP2L/Moulding/view_create'));
 	}
 
-	public function update($id)
+	public function edit($id)
 	{
 		$user_id = $this->session->userid;
 
@@ -145,38 +143,31 @@ class C_Moulding extends CI_Controller
 		$data['UserMenu'] = $this->M_user->getUserMenu($user_id, $this->session->responsibility_id);
 		$data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id, $this->session->responsibility_id);
 		$data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id, $this->session->responsibility_id);
-
-		$plaintext_string = str_replace(array('-', '_', '~'), array('+', '/', '='), $id);
-		$plaintext_string = $this->encrypt->decode($plaintext_string);
 		$data['id'] = $id;
 
-		$data['Moulding'] = $this->M_moulding->getMoulding($plaintext_string);
+		$data['Moulding'] = $this->M_moulding->getMoulding($id);
 
-		$this->form_validation->set_rules('txtComponentCodeHeader', 'ComponentCode', 'required');
-		$this->form_validation->set_rules('txtComponentDescriptionHeader', 'ComponentDescription', 'required');
-		$this->form_validation->set_rules('txtProductionDateHeader', 'ProductionDate', 'required');
-		$this->form_validation->set_rules('txtMouldingQuantityHeader', 'MouldingQuantity', 'required');
+		$this->load->view('V_Header', $data);
+		$this->load->view('V_Sidemenu', $data);
+		$this->load->view('ManufacturingOperationUP2L/Moulding/V_update', $data);
+		$this->load->view('V_Footer', $data);
+	}
 
-		if ($this->form_validation->run() == TRUE) {
+	public function update($id)
+	{
+		$component = explode(' | ', $this->input->post('cmbComponentCodeHeader', TRUE));
 			$data = array(
-				'component_code' => $this->input->post('txtComponentCodeHeader', TRUE),
-				'component_description' => $this->input->post('txtComponentDescriptionHeader', TRUE),
+				'component_code'		=> $component[0],
+				'component_description' => $component[1],
+				'kode_proses'			=> $component[2],
 				'production_date' => $this->input->post('txtProductionDateHeader', TRUE),
+				'print_code'			=> $this->input->post('print_code'),
+				'shift'					=> $this->input->post('txtShift'),
 				'moulding_quantity' => $this->input->post('txtMouldingQuantityHeader', TRUE),
-				// 'job_id' => $this->input->post('txtJobIdHeader',TRUE),
-				// 'scrap_quantity' => $this->input->post('txtScrapQuantityHeader',TRUE),
-				// 'scrap_type' => $this->input->post('txtScrapTypeHeader',TRUE),
-				// 'last_updated_by' => $this->session->userid,
 			);
-			$this->M_moulding->updateMoulding($plaintext_string, $data);
+			$this->M_moulding->updateMoulding($id, $data);
 
 			redirect(site_url('ManufacturingOperationUP2L/Moulding'));
-		} else {
-			$this->load->view('V_Header', $data);
-			$this->load->view('V_Sidemenu', $data);
-			$this->load->view('ManufacturingOperationUP2L/Moulding/V_update', $data);
-			$this->load->view('V_Footer', $data);
-		}
 	}
 
 	public function read($id)
@@ -251,9 +242,12 @@ class C_Moulding extends CI_Controller
 		$head[] = array(
 			'component_code' => $mould[0]['component_code'],
 			'component_description' => $mould[0]['component_description'],
+			'kode_proses' => $mould[0]['kode_proses'],
+			'print_code' => $mould[0]['print_code'],
 			'production_date' => $mould[0]['production_date'],
+			'shift' => $mould[0]['shift'],
+			'kode' => $mould[0]['kode'],
 			'moulding_quantity' => $mould[0]['moulding_quantity'],
-			'keterangan' => $mould[0]['keterangan'],
 			'moulding_id' => $mould[0]['moulding_id'],
 			'employee' => $employee,
 			'scrap' => $scrap2,
@@ -312,4 +306,26 @@ class C_Moulding extends CI_Controller
 		$this->M_moulding->updBon($qtyBon, $idBongkar);
 		echo 1;
 	}
+	public function search()
+	{
+		$user_id = $this->session->userid;
+
+		$data['Title'] = 'Moulding';
+		$data['Menu'] = 'Manufacturing Operation';
+		$data['SubMenuOne'] = '';
+		$data['SubMenuTwo'] = '';
+
+		$data['UserMenu'] = $this->M_user->getUserMenu($user_id, $this->session->responsibility_id);
+		$data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id, $this->session->responsibility_id);
+		$data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id, $this->session->responsibility_id);
+
+		$mon = explode('-', $this->input->post('bulan'));
+		$data['Moulding'] = $this->M_moulding->search($mon[1], $mon[0]);
+
+		$this->load->view('V_Header', $data);
+		$this->load->view('V_Sidemenu', $data);
+		$this->load->view('ManufacturingOperationUP2L/Moulding/V_searched', $data);
+		$this->load->view('V_Footer', $data);
+	}
+
 }

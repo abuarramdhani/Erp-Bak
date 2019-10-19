@@ -1,5 +1,6 @@
 <?php if (!defined('BASEPATH')) exit('No direct script access allowed');
 date_default_timezone_set("Asia/Jakarta");
+// nggak disentuh total sama edwin
 class C_MasterPersonal extends CI_Controller
 {
 	function __construct()
@@ -198,7 +199,6 @@ class C_MasterPersonal extends CI_Controller
 	 										<button type="button" class="close" data-dismiss="modal" aria-label="Close">
 	 											<span aria-hidden="true">&times;</span>
 	 										</button>';
-	 										$msg .= $qtyError.'<br>';
 	 										$msg .= $errStock.'<br>';
 	 										$msg .= '
 		 								</div>

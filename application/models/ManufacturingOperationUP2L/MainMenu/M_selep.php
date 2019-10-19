@@ -10,7 +10,7 @@ class M_selep extends CI_Model
 
     public function getSelep()
     {
-        $sql = "SELECT * FROM mo.mo_selep ORDER BY selep_date, shift, job_id";
+        $sql = "SELECT * FROM mo.mo_selep ORDER BY extract(month from selep_date) desc, extract(year from selep_date) desc, extract(day from selep_date), shift, job_id";
         $query = $this->db->query($sql);
         return $query->result_array();
     }
@@ -44,7 +44,7 @@ class M_selep extends CI_Model
 
     public function getSelepDate($txtStartDate, $txtEndDate)
     {
-        $sql = "SELECT * FROM mo.mo_selep WHERE selep_date BETWEEN '$txtStartDate' AND '$txtEndDate' ORDER BY selep_date";
+        $sql = "SELECT * FROM mo.mo_selep WHERE selep_date BETWEEN '$txtStartDate' AND '$txtEndDate' ORDER BY extract(month from selep_date) desc, extract(year from selep_date) desc, extract(day from selep_date)";
         return $this->db->query($sql)->result_array();
     }
 

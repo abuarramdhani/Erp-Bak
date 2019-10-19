@@ -48,7 +48,7 @@
                                         </tr>
                                         <tr>
                                             <td class="title">Tanggal</td>
-                                            <td>: <?= $show[0]['ottTgl'] ?></td>
+                                            <td>: <?= $show[0]['otttgl'] ?></td>
                                         </tr>
                                         <tr>
                                             <td class="title">Kode Cor</td>

@@ -119,7 +119,8 @@
                                                 <tr>
                                                     <td align='center'><?php echo $no++;?></td>
                                                     <td align='center'>
-                                                        <a style="margin-right:4px" href="<?php echo base_url('ManufacturingOperationUP2L/QualityControl/read_detail/'.$row['selep_id'].''); ?>" data-toggle="tooltip" data-placement="bottom" title="Tambah Data Selep Ke QC"><span class="fa fa-plus fa-2x"></span></a>
+                                                    <a style="margin-right:4px; cursor:pointer;" data-toggle="modal" onclick="swnKuburan(<?= $row['selep_id'] ?>)" data-target="#mdlHasilQC" title="Tambah Data Selep Ke QC"> <span class="fa fa-plus fa-2x"></span> </a>
+                                                        <!-- <span style="margin-right:4px" href="<?php// echo base_url('ManufacturingOperationUP2L/QualityControl/read_detail/'.$row['selep_id'].''); ?>" data-toggle="tooltip" data-placement="bottom" title="Tambah Data Selep Ke QC"><span class="fa fa-plus fa-2x"></span></a> -->
                                                         <a style="margin-right:4px" href="<?php echo base_url('ManufacturingOperationUP2L/Selep/edit/'.$row['selep_id'].''); ?>" data-toggle="tooltip" data-placement="bottom" title="Edit Data"><span class="fa fa-pencil-square-o fa-2x"></span></a>
                                                         <a href="<?php echo base_url('ManufacturingOperationUP2L/Selep/delete/'.$row['selep_id'].''); ?>" data-toggle="tooltip" data-placement="bottom" title="Hapus Data" onclick="return confirm('Are you sure you want to delete this item?');"><span class="fa fa-trash fa-2x"></span></a>
                                                     </td>
@@ -134,6 +135,38 @@
                                                 <?php endforeach; ?>
                                             </tbody>                                      
                                         </table>
+                                        <!-- Modal -->
+                                        <div class="modal fade" id="mdlHasilQC" tabindex="-1" role="dialog" aria-labelledby="mdlHasilQC" aria-hidden="true">
+                                            <div class="modal-dialog modal-dialog-centered" role="document">
+                                                <div class="modal-content">
+                                                    <div class="modal-header">
+                                                        <b class="modal-title" id="mdlHasilQC">QC Data Selep</b>
+                                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                        <span aria-hidden="true">&times;</span>
+                                                        </button>
+                                                    </div>
+                                                    <div class="modal-content">
+                                                        <input type="hidden" id="component_code">
+                                                        <input type="hidden" id="description">
+                                                        <input type="hidden" id="production_date">
+                                                        <input type="hidden" id="shift">
+                                                        <input type="hidden" id="job_id">
+                                                        <input type="hidden" id="selep_qty">
+                                                        <input type="hidden" id="mould_id">
+                                                        <div class="row">
+                                                            <div class="col-lg-2"></div>
+                                                            <div class="col-lg-8" id="inPuY"></div>
+                                                            <div class="col-lg-2"></div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="modal-footer">
+                                                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                                        <button type="button" onclick='checkQuantity(this)' class="btn btn-primary">Save</button>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <!-- /Modal -->
                                     </div>
                                 </div>
                                 </div>

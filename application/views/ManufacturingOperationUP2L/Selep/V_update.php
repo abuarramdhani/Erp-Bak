@@ -37,21 +37,14 @@
                                                 </div>
                                                 
                                             </div>
-                                            <?php $exCompDes = explode("|", $headerRow['component_code']);?>
 											<div class="form-group">
-                                                <label for="txtComponentCodeHeader" class="control-label col-lg-4">Component Code</label>
+                                                <label for="txtComponentCodeHeader" class="control-label col-lg-4">Component</label>
                                                 <div class="col-lg-4">
-                                                   <select class="form-control jsSlcComp toupper" id="txtComponentCodeHeader" name="txtComponentCodeHeader" required data-placeholder="Component Code" onchange="getCompDescMO(this)">
-                                                    <option selected value="<?= $exCompDes[0]?>"><?= $exCompDes[0]?></option>
-                                                    <option><?php echo $headerRow['component_code']; ?></option>
+                                                    <select class="form-control jsSlcComp toupper" data-placeholder="Choose an option" id="cmbComponentCodeHeader" name="cmbComponentCodeHeader" onchange="getCompDescMO(this)">
+                                                        <option value="<?php echo $headerRow['component_code'].' | '.$headerRow['component_description'].' | '.$headerRow['kode_proses']?>">
+                                                        <?php echo $headerRow['component_code'].' | '.$headerRow['component_description'].' | '.$headerRow['kode_proses']?>
+                                                        </option>
                                                     </select>
-                                                </div>
-                                            </div>
-                                        
-											<div class="form-group">
-                                                <label for="txtComponentDescriptionHeader" class="control-label col-lg-4">Component Description</label>
-                                                <div class="col-lg-4">
-                                                    <input type="text" placeholder="Component Description" name="component_description" id="component_description" class="form-control" value="<?= $headerRow['component_description'];?>">
                                                 </div>
                                             </div>
 
@@ -60,7 +53,6 @@
                                                 <div class="col-lg-4">
                                                     <select class="form-control slcShift" id="txtShift" name="txtShift">
                                                         <option><?php echo $headerRow['shift']; ?></option> 
-                                                        <!-- DISINI -->
                                                     </select>    
                                                 </div>
                                             </div>
@@ -71,29 +63,18 @@
                                                     <input type="number" placeholder="Selep Quantity" name="txtSelepQuantityHeader" id="txtSelepQuantityHeader" class="form-control" value="<?php echo $headerRow['selep_quantity']; ?>"/>
                                                 </div>
                                             </div>
-                                            <!-- edit -->
-                                            <div class="form-group">
-                                                <label for="txtScrapQuantityHeader" class="control-label col-lg-4">Scrap Quantity</label>
+											<div class="form-group">
+                                                <label for="txtJobIdHeader" class="control-label col-lg-4">Employee</label>
                                                 <div class="col-lg-4">
-                                                    <input type="number" placeholder="Scrap Quantity" name="txtScrapQuantityHeader" id="txtScrapQuantityHeader" class="form-control" value="<?php echo $headerRow['scrap_quantity']; ?>"/>
+                                                    <input type="text" placeholder="Job Id" name="txtJobIdHeader" id="txtJobIdHeader" class="form-control" value="<?php echo $headerRow['job_id']; ?>"/>
                                                 </div>
                                             </div>
-                                            
                                             <div class="form-group">
                                                 <label for="txtKeterangan" class="control-label col-lg-4">Keterangan</label>
                                                 <div class="col-lg-4">
                                                     <input type="text" placeholder="Keterangan" name="txtKeterangan" id="txtKeterangan" class="form-control" value="<?php echo $headerRow['keterangan']; ?>" />
                                                 </div>
                                             </div>
-
-											<div class="form-group">
-                                                <label for="txtJobIdHeader" class="control-label col-lg-4">Job Id</label>
-                                                <div class="col-lg-4">
-                                                    <input type="text" placeholder="Job Id" name="txtJobIdHeader" id="txtJobIdHeader" class="form-control" value="<?php echo $headerRow['job_id']; ?>"/>
-                                                </div>
-                                            </div>
-
-
                                         </div>
 
                                         <div class="col-lg-12">
@@ -109,12 +90,9 @@
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="panel-footer">
-                                        <div class="row text-right">
-                                            <a href="javascript:history.back(1)" class="btn btn-primary btn-lg btn-rect">Back</a>
-                                            &nbsp;&nbsp;
-                                            <button type="submit" class="btn btn-primary btn-lg btn-rect">Save Data</button>
-                                        </div>
+                                    <div class="panel-footer text-right">
+                                        <button type="submit" class="btn btn-success btn-lg"><i class="fa fa-save"></i></i>  Save</button>
+                                        <a href="<?php echo site_url('ManufacturingOperationUP2L/Selep'); ?>" class="btn btn-danger btn-lg"><i class="fa fa-arrow-left"></i></i>  Back</a>
                                     </div>
                                 </div>
                                 <?php endforeach; ?>

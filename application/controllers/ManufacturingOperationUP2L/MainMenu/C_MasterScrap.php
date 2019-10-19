@@ -1,5 +1,6 @@
 <?php if (!defined('BASEPATH')) exit('No direct script access allowed');
 date_default_timezone_set("Asia/Jakarta");
+//nggak disentuh total sama edwin
 class C_MasterScrap extends CI_Controller
 {
 	function __construct()

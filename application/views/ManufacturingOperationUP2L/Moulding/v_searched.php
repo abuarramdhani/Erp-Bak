@@ -41,6 +41,7 @@
                                             </div>
                                             <div class="col-lg-2">
                                                 <button type="submit" class="btn btn-primary"> <i class="fa fa-search"></i></button>
+                                                <a href="<?= base_url('ManufacturingOperationUP2L/Moulding')?>" class="btn btn-success"> <i class="fa fa-refresh"></i></a>
                                                 </form>
                                             </div>
                                             <div class="col-lg-2"></div>
@@ -72,6 +73,7 @@
                                             foreach ($Moulding as $row) :
                                                 $encrypted_string = $this->encrypt->encode($row['moulding_id']);
                                                 $encrypted_string = str_replace(array('+', '/', '='), array('-', '_', '~'), $encrypted_string);
+                                                $kodec = str_replace(0, '', $row['print_code']);
                                                 ?>
                                                 <tr>
                                                     <td align='center'><?php echo $no++; ?></td>
@@ -83,7 +85,7 @@
                                                     <td><?php echo $row['component_code'] ?></td>
                                                     <td><?php echo $row['component_description'] ?></td>
                                                     <td><?php echo $row['production_date'] ?></td>
-                                                    <td><?php echo $row['print_code'] ?></td>
+                                                    <td><?php echo $kodec ?></td>
                                                     <td><?php echo $row['shift'] ?></td>
                                                     <td><?php echo $row['moulding_quantity'] ?></td>
                                                     <td><?php echo $row['kode'] ?></td>

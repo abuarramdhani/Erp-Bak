@@ -44,7 +44,7 @@
                                     <table>
                                         <tr>
                                             <td class="title">Nama</td>
-                                            <td>: <?= $show[0]['nama'] ?></td>
+                                            <td>: <?= $show[0]['nama'].' | '.$show[0]['no_induk'] ?></td>
                                         </tr>
                                         <tr>
                                             <td class="title">Tanggal</td>
@@ -53,10 +53,6 @@
                                         <tr>
                                             <td class="title">Presensi</td>
                                             <td>: <?= $show[0]['presensi'] ?></td>
-                                        </tr>
-                                        <tr>
-                                            <td class="title">Kategori Produksi</td>
-                                            <td>: <?= $show[0]['category_produksi'] ?></td>
                                         </tr>
                                     </table>
                                 </div>

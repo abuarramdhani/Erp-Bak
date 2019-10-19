@@ -43,23 +43,14 @@
                                         <div class="row">
                                             <div class="form-group">
                                                 <label class="control-label col-lg-4" for="cmbComponentCodeHeader">
-                                                    Component Code
+                                                    Component
                                                 </label>
                                                 <div class="col-lg-4">
-                                                <?php $com_code = explode("|", $headerRow['component_code']); ?>
                                                     <select class="form-control jsSlcComp toupper" data-placeholder="Choose an option" id="cmbComponentCodeHeader" name="cmbComponentCodeHeader" onchange="getCompDescMO(this)">
-                                                        <option value="<?php echo $com_code[0]?>">
-                                                        <?php echo $com_code[0]?>
+                                                        <option value="<?php echo $headerRow['component_code'].' | '.$headerRow['component_description'].' | '.$headerRow['kode_proses']?>">
+                                                        <?php echo $headerRow['component_code'].' | '.$headerRow['component_description'].' | '.$headerRow['kode_proses']?>
                                                         </option>
                                                     </select>
-                                                </div>
-                                            </div>
-                                            <div class="form-group">
-                                                <label class="control-label col-lg-4" for="txtComponentDescriptionHeader">
-                                                    Component Description
-                                                </label>
-                                                <div class="col-lg-4">
-                                                    <input class="form-control" id="txtComponentDescriptionHeader" name="txtComponentDescriptionHeader" placeholder="Component Description" type="text" value="<?php echo $headerRow['component_description']; ?>"/>
                                                 </div>
                                             </div>
                                             <div class="form-group">
@@ -108,15 +99,9 @@
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="panel-footer">
-                                        <div class="row text-right">
-                                            <a class="btn btn-primary btn-lg btn-rect" href="javascript:history.back(1)">
-                                                Back
-                                            </a>
-                                            <button class="btn btn-primary btn-lg btn-rect" type="submit">
-                                                Save Data
-                                            </button>
-                                        </div>
+                                    <div class="box-footer text-right">
+                                        <button type="submit" class="btn btn-success btn-lg"><i class="fa fa-save"></i></i>  Save</button>
+                                        <a href="<?php echo site_url('ManufacturingOperationUP2L/Mixing'); ?>" class="btn btn-danger btn-lg"><i class="fa fa-arrow-left"></i></i>  Back</a>
                                     </div>
                                 </div>
                                 <?php endforeach; ?>

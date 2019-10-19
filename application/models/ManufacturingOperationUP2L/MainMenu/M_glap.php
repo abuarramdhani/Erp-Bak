@@ -24,6 +24,7 @@ class M_glap extends CI_Model
                         mm.production_date, 
                         mm.moulding_quantity, 
                         mm.print_code, 
+                        mm.kode_proses,
                         (SELECT sum(ms.quantity) 
                         FROM   mo.mo_moulding_scrap ms 
                         WHERE  ms.moulding_id = mm.moulding_id) scrap_qty, 

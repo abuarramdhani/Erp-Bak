@@ -27,77 +27,74 @@
                             <div class="box box-primary box-solid">
                                 <div class="box-header with-border">Update Core</div>
                                 <?php
-                                foreach ($Core as $val) :
+                                foreach ($Core as $headerRow) :
                                     ?>
                                     <div class="box-body">
-                                        <div class="panel-body">
-                                            <div class="row">
-                                                <div class="form-group">
-                                                    <label class="control-label col-md-4">Component Code</label>
-                                                    <div class="col-md-6">
-                                                        <select class="form-control jsSlcComp toupper" name="component_code" required="" data-placeholder="Component Code" onchange="getCompDescMO(this)">
-                                                            <option></option>
-                                                            <option value="<?php echo $val['component_code'] . '|' . $val['component_description'] ?>" selected>
-                                                                <?php echo $val['component_code'] . ' | ' . $val['component_description'] ?>
-                                                            </option>
-                                                        </select>
-                                                    </div>
+                                    <div class="panel-body">
+                                        <div class="row">
+                                            <div class="form-group">
+                                                <label class="control-label col-lg-4" for="cmbComponentCodeHeader">
+                                                    Component
+                                                </label>
+                                                <div class="col-lg-4">
+                                                    <select class="form-control jsSlcComp toupper" data-placeholder="Choose an option" id="cmbComponentCodeHeader" name="cmbComponentCodeHeader" onchange="getCompDescMO(this)">
+                                                        <option value="<?php echo $headerRow['component_code'].' | '.$headerRow['component_description'].' | '.$headerRow['kode_proses']?>">
+                                                        <?php echo $headerRow['component_code'].' | '.$headerRow['component_description'].' | '.$headerRow['kode_proses']?>
+                                                        </option>
+                                                    </select>
                                                 </div>
-                                                <div class="form-group">
-                                                    <label class="control-label col-md-4">Component Description</label>
-                                                    <div class="col-md-6">
-                                                        <input type="text" value="<?php echo $val['component_description']; ?>" name="component_description" class="form-control" readonly="" placeholder="Component Description">
-                                                    </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <label class="control-label col-lg-4" for="txtProductionDateHeader">
+                                                    Production Date
+                                                </label>
+                                                <div class="col-lg-4">
+                                                    <input class="form-control time-form1 ajaxOnChange" id="txtProductionDateHeader" name="txtProductionDateHeader" placeholder="" type="text" value="<?php echo $headerRow['production_date'] ?>"/>
                                                 </div>
-                                                <div class="form-group">
-                                                    <label class="control-label col-md-4">Production Date</label>
-                                                    <div class="col-md-6">
-                                                        <input type="text" value="<?php echo date('Y/m/d', strtotime($val['production_date'])); ?>" name="production_date" class="form-control time-form1 ajaxOnChange" required="" placeholder="Production Date">
-                                                    </div>
-                                                </div>
-                                                <div class="form-group">
-                                                    <label class="control-label col-md-4">Print Code</label>
-                                                    <div class="col-md-6">
-                                                        <input type="radio" name="print_code" placeholder="Print Code" value="<?php echo $val['print_code'] ?>" required checked> <?php echo $val['print_code'] ?>
-                                                    </div>
-                                                    <div id="print_code_area">
-                                                    </div>
-                                                </div>
-                                                <div class="form-group">
-                                                    <label class="control-label col-md-4">Core Quantity</label>
-                                                    <div class="col-md-6">
-                                                        <input type="number" value="<?php echo $val['core_quantity']; ?>" name="core_quantity" required="" class="form-control" placeholder="Core Quantity">
-                                                    </div>
-                                                </div>
-                                                <div class="form-group">
-                                                    <label for="txtShift" class="control-label col-lg-4">Shift</label>
-                                                    <div class="col-lg-4">
-                                                        <select class="form-control slcShift" id="txtShift" name="txtShift">
-                                                            <option selected value="<?php echo $val['shift']; ?>"><?php echo $val['shift']; ?></option>
-                                                        </select>
-                                                    </div>
-                                                </div>
-                                                <div class="form-group">
-                                                    <label class="control-label col-md-4">Employee</label>
-                                                    <div class="col-md-6">
-                                                        <select class="form-control select4" multiple="" name="employee_id[]" required value="">
-                                                            <option></option>
-                                                            <?php foreach ($employee as $value) { ?>
-                                                                <option value="<?php echo $value['no_induk'] ?>"> <?php echo $value['no_induk'] . ' | ' . $value['nama'] ?> </option>
-                                                            <?php } ?>
-                                                        </select>
+                                            </div>
+                                            <div class="form-group">
+                                                <label class="control-label col-md-4">Print Code</label>
+                                                <div id="print_code_area">
+                                                    <div class="col-md-4">
+                                                        <?php if ($headerRow['print_code']) { ?>
+                                                            <input type="text" name="print_code" id="print_code" class="form-control" value="<?php echo $headerRow['print_code']; ?>">
+                                                        <?php } else {?>
+                                                        <small>-- Pilih ulang Production Date agar Kode muncul --</small>
+                                                        <?php }?>
                                                     </div>
                                                 </div>
                                             </div>
-                                        </div>
-                                        <div class="panel-footer">
-                                            <div class="row text-right">
-                                                <a href="javascript:history.back(1)" class="btn btn-primary btn-lg btn-rect">Back</a>
-                                                &nbsp;&nbsp;
-                                                <button type="submit" class="btn btn-primary btn-lg btn-rect">Save Data</button>
+                                            <div class="form-group">
+                                                <label for="txtShift" class="control-label col-lg-4">Shift</label>
+                                                <div class="col-lg-4">
+                                                <select class="form-control slcShift" id="txtShift" name="txtShift">
+                                                    <option value="<?php echo $headerRow['shift']; ?>"><?php echo $headerRow['shift']; ?></option>
+                                                </select>    
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <label class="control-label col-lg-4" for="txtCoreQuantityHeader">
+                                                    Core Quantity
+                                                </label>
+                                                <div class="col-lg-4">
+                                                    <input class="form-control" id="txtCoreQuantityHeader" name="txtCoreQuantityHeader" placeholder="Core Quantity" type="text" value="<?php echo $headerRow['core_quantity']; ?>"/>
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <label class="control-label col-lg-4" for="txtJobIdHeader">
+                                                    Job Id
+                                                </label>
+                                                <div class="col-lg-4">
+                                                    <input class="form-control" id="txtJobIdHeader" name="txtJobIdHeader" placeholder="Job Id" type="text" value="<?php echo $headerRow['employee_id']; ?>"/>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
+                                    <div class="box-footer text-right">
+                                        <button type="submit" class="btn btn-success btn-lg"><i class="fa fa-save"></i></i>  Save</button>
+                                        <a href="<?php echo site_url('ManufacturingOperationUP2L/Core'); ?>" class="btn btn-danger btn-lg"><i class="fa fa-arrow-left"></i></i>  Back</a>
+                                    </div>
+                                </div>
                                 <?php endforeach; ?>
                             </div>
                         </div>

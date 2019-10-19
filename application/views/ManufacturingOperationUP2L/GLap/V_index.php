@@ -16,7 +16,7 @@
                             <div class="col-lg-1 ">
                                 <div class="text-right hidden-md hidden-sm hidden-xs">
                                     <a class="btn btn-default btn-lg"
-                                        href="<?php echo site_url('ManufacturingOperationUP2L/XFIN/');?>">
+                                        href="<?php echo site_url('ManufacturingOperationUP2L/GenerateLaporan/');?>">
                                         <i class="icon-wrench icon-2x">
                                         </i>
                                         <span>
@@ -66,7 +66,8 @@
                                         </div>
                                         <div class="panel-footer">
                                             <div class="row text-right">
-                                                <button type="submit" class="btn btn-primary btn-lg btn-rect">Generate</button>
+                                                <!-- <button type="submit" class="btn btn-primary btn-lg btn-rect">Generate</button> -->
+                                                <button type="submit" class="btn btn-primary btn-lg"><i class="fa fa-download"></i></button>
                                             </div>
                                         </div>
                                     </div>
@@ -110,7 +111,8 @@
                                         </div>
                                         <div class="panel-footer">
                                             <div class="row text-right">
-                                                <button type="submit" class="btn btn-primary btn-lg btn-rect">Generate</button>
+                                                <!-- <button type="submit" class="btn btn-primary btn-lg btn-rect">Generate</button> -->
+                                                <button type="submit" class="btn btn-primary btn-lg"><i class="fa fa-download"></i></button>
                                             </div>
                                         </div>
                                     </div>
@@ -154,7 +156,8 @@
                                         </div>
                                         <div class="panel-footer">
                                             <div class="row text-right">
-                                                <button type="submit" class="btn btn-primary btn-lg btn-rect">Generate</button>
+                                                <!-- <button type="submit" class="btn btn-primary btn-lg btn-rect">Generate</button> -->
+                                                <button type="submit" class="btn btn-primary btn-lg"><i class="fa fa-download"></i></button>
                                             </div>
                                         </div>
                                     </div>
@@ -198,7 +201,8 @@
                                         </div>
                                         <div class="panel-footer">
                                             <div class="row text-right">
-                                                <button type="submit" class="btn btn-primary btn-lg btn-rect">Generate</button>
+                                                <!-- <button type="submit" class="btn btn-primary btn-lg btn-rect">Generate</button> -->
+                                                <button type="submit" class="btn btn-primary btn-lg"><i class="fa fa-download"></i></button>
                                             </div>
                                         </div>
                                     </div>
@@ -242,7 +246,8 @@
                                         </div>
                                         <div class="panel-footer">
                                             <div class="row text-right">
-                                                <button type="submit" class="btn btn-primary btn-lg btn-rect">Generate</button>
+                                                <!-- <button type="submit" class="btn btn-primary btn-lg btn-rect">Generate</button> -->
+                                                <button type="submit" class="btn btn-primary btn-lg"><i class="fa fa-download"></i></button>
                                             </div>
                                         </div>
                                     </div>
@@ -286,7 +291,8 @@
                                         </div>
                                         <div class="panel-footer">
                                             <div class="row text-right">
-                                                <button type="submit" class="btn btn-primary btn-lg btn-rect">Generate</button>
+                                                <!-- <button type="submit" class="btn btn-primary btn-lg btn-rect">Generate</button> -->
+                                                <button type="submit" class="btn btn-primary btn-lg"><i class="fa fa-download"></i></button>
                                             </div>
                                         </div>
                                     </div>
