@@ -193,6 +193,9 @@ class C_TransferReffGaji extends CI_Controller
 					$data_pkj_pkl_non = $this->M_transferreffgaji->getDataPkjPkl('F',$periode,$gp['golpkl']);
 					if (!empty($data_pkj_pkl_non)) {
 						foreach ($data_pkj_pkl_non as $dppn) {
+							if(trim($dppn['ket']) == "-"){
+								$dppn['ket'] = "";
+							}
 							$record = $table->appendRecord();
 							$record->NOINDLAMA = '';
 							$record->NOIND = $dppn['noind'];
@@ -430,6 +433,9 @@ class C_TransferReffGaji extends CI_Controller
 					$data_pkj_pkl_staff = $this->M_transferreffgaji->getDataPkjPkl('Q',$periode,$gp['golpkl']);
 					if (!empty($data_pkj_pkl_staff)) {
 						foreach ($data_pkj_pkl_staff as $dppn) {
+							if(trim($dppn['ket']) == "-"){
+								$dppn['ket'] = "";
+							}
 							$record = $table2->appendRecord();
 							$record->NOINDLAMA = '';
 							$record->NOIND = $dppn['noind'];
@@ -621,7 +627,9 @@ class C_TransferReffGaji extends CI_Controller
 				// if (round($ds['plain']) > 0) {
 					// echo round($ds['plain']);exit();
 				// }
-
+				if(trim($ds['ket']) == "-"){
+					$ds['ket'] = "";
+				}
 				$record = $table3->appendRecord();
 				$record->NOIND = $ds['noind'];
 				$record->NOINDBR = '';
@@ -796,6 +804,8 @@ class C_TransferReffGaji extends CI_Controller
 				if (substr($dn['noind'], 0,1) == "A" or substr($dn['noind'], 0,1) == "H") {
 					if (trim($dn['ket']) !== "-") {
 						$sk_ct_susul = substr(trim($dn['ket']), 0,strlen($dn['ket']) - 2);
+					}else{
+						$sk_ct_susul = "";
 					}
 				}
 				$potkop = $dn['putkop'] + $dn['pikop'];
@@ -983,6 +993,8 @@ class C_TransferReffGaji extends CI_Controller
 				if (substr($do['noind'], 0,1) == "A" or substr($do['noind'], 0,1) == "H") {
 					if (trim($do['ket']) !== "-") {
 						$sk_ct_susul = substr(trim($do['ket']), 0,strlen($do['ket']) - 2);
+					}else{
+						$sk_ct_susul = "";
 					}
 				}
 				$potkop = $do['putkop'] + $do['pikop'];

@@ -253,6 +253,12 @@ class C_PekerjaKeluar extends CI_Controller
 			$gaji[$angka]['jml_jp'] = $kom_jml_jp;
 
 			$this->M_pekerjakeluar->delete_reffgajikeluar($pkj['noind']);
+			$susulan = "";
+			if ($gaji[$angka]['sk_susulan']  +  $gaji[$angka]['cuti_susulan'] > 0){
+				$susulan = ($gaji[$angka]['sk_susulan']  +  $gaji[$angka]['cuti_susulan']).'GP';
+			}else{
+				$susulan = "-";
+			}
 			$array_insert = array(
 				'tanggal_keluar' => $gaji[$angka]['tgl_keluar'] ,
 				'noind' 		 => $gaji[$angka]['noind'] ,
@@ -270,7 +276,7 @@ class C_PekerjaKeluar extends CI_Controller
 				'ijin'			 => $gaji[$angka]['tik'] ,
 				'ct'			 => $gaji[$angka]['sisa_cuti'] ,
 				'plain'		 => $gaji[$angka]['pot_seragam'] + $gaji[$angka]['pot_lain'],
-				'ket'			 => $gaji[$angka]['sk_susulan']  +  $gaji[$angka]['cuti_susulan'] ,
+				'ket'			 => $susulan ,
 				'um_puasa'		 => $gaji[$angka]['um_puasa'] ,
 				'ipet'			 => $gaji[$angka]['ipt'] ,
 				'um_cabang'	 => $gaji[$angka]['um_cabang'],
