@@ -1940,6 +1940,18 @@ $route['MasterPresensi/ReffGaji/PekerjaKeluar'] = 'MasterPresensi/ReffGaji/C_Pek
 $route['MasterPresensi/ReffGaji/PekerjaKeluar/(:any)'] = 'MasterPresensi/ReffGaji/C_PekerjaKeluar/$1';
 $route['MasterPresensi/ReffGaji/PekerjaKeluar/(:any)/(:any)'] = 'MasterPresensi/ReffGaji/C_PekerjaKeluar/$1/$2';
 
+$route['MasterPresensi/ReffGaji/TransferReffGaji'] = 'MasterPresensi/ReffGaji/C_TransferReffGaji';
+$route['MasterPresensi/ReffGaji/TransferReffGaji/(:any)'] = 'MasterPresensi/ReffGaji/C_TransferReffGaji/$1';
+$route['MasterPresensi/ReffGaji/TransferReffGaji/(:any)/(:any)'] = 'MasterPresensi/ReffGaji/C_TransferReffGaji/$1/$2';
+
+$route['MasterPresensi/ReffGaji/TransferPolaReffGaji'] = 'MasterPresensi/ReffGaji/C_TransferPolaReffGaji';
+$route['MasterPresensi/ReffGaji/TransferPolaReffGaji/(:any)'] = 'MasterPresensi/ReffGaji/C_TransferPolaReffGaji/$1';
+$route['MasterPresensi/ReffGaji/TransferPolaReffGaji/(:any)/(:any)'] = 'MasterPresensi/ReffGaji/C_TransferPolaReffGaji/$1/$2';
+
+$route['MasterPresensi/ReffGaji/BPJSTambahan'] = 'MasterPresensi/ReffGaji/C_BPJSTambahan';
+$route['MasterPresensi/ReffGaji/BPJSTambahan/(:any)'] = 'MasterPresensi/ReffGaji/C_BPJSTambahan/$1';
+$route['MasterPresensi/ReffGaji/BPJSTambahan/(:any)/(:any)'] = 'MasterPresensi/ReffGaji/C_BPJSTambahan/$1/$2';
+
 //------------------------------------Master Presensi - Lelayu ---------------------------------------------------
 $route['MasterPresensi/Lelayu'] = 'MasterPresensi/Lelayu/C_Lelayu';
 $route['MasterPresensi/Lelayu/(:any)'] = 'MasterPresensi/Lelayu/C_Lelayu/$1';

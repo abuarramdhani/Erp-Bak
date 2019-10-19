@@ -56,6 +56,12 @@
         -o-animation: fadeOut 0.5s;
         animation: fadeOut 0.5s;
     }
+    .btn-info:hover, .btn-info:active, .btn-info.hover{
+      background-color: #00acd6 !important;
+    }
+    .btn-success:hover, .btn-success:active, .btn-success.hover{
+      background-color: #008d4c !important;
+    }
 </style>
 <section class="content">
 	<div class="inner" >
@@ -76,8 +82,8 @@
 								    <h4 id="data-title" style="margin: 7px 6px 0 6px;">List Data Potongan Gaji</h4>
                                 </div>
                                 <div class="col-lg-6 no-padding">
-                                    <a href="<?= base_url('MasterPresensi/PotonganGaji/ListData') ?>" type="button" class="btn btn-primary pull-right"><i class="fa fa-refresh" style="margin-right: 8px"></i>Refresh</button>
-                                    <a href="<?= base_url('MasterPresensi/PotonganGaji/TambahData') ?>" type="button" class="btn btn-primary pull-right" style="margin-right: 8px;"><i class="fa fa-plus" style="margin-right: 8px"></i>Tambah</a>
+                                    <a href="<?= base_url('MasterPresensi/PotonganGaji/ListData') ?>" class="btn btn-info pull-right"><i class="fa fa-refresh" style="margin-right: 8px"></i>Refresh</button>
+                                    <a href="<?= base_url('MasterPresensi/PotonganGaji/TambahData') ?>" class="btn btn-success pull-right" style="margin-right: 8px;"><i class="fa fa-plus" style="margin-right: 8px"></i>Tambah</a>
                                 </div>
                             </div>
 							<div class="box-body">
@@ -123,7 +129,7 @@
                                                         <td class="text-center"><?= $item['awal_periode'] ?></td>
                                                         <td class="text-center"><?= $item['akhir_periode'] ?></td>
                                                     </tr>
-                                                    <? endforeach; ?>
+                                                  <?php endforeach; ?>
                                                 </tbody>
                                             </table>
                                         </div>
@@ -139,7 +145,7 @@
 </section>
 <script>
     let dataTable = null
-    
+
     document.addEventListener('DOMContentLoaded', _ => {
         dataTable = $('#pg_tabelListData').DataTable({
             dom: '<"dataTable_Button"B><"dataTable_Filter"f>rt<"dataTable_Information"i><"dataTable_Pagination"p>',
@@ -234,7 +240,7 @@
             if(confirm(`Anda yakin ingin menghapus data potongan ${employeeName} ?`)) pgListData.deleteData(id, row, employeeName)
         }
     }
-    
+
     function element(selector) {
         try {
             let e
