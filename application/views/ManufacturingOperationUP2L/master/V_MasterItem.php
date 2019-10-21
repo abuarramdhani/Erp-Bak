@@ -38,7 +38,7 @@
                                         <thead>
                                             <tr>
                                                 <th rowspan="2" style="text-align: center;vertical-align: middle;">No</th>
-                                                <th rowspan="2" style="text-align: center;vertical-align: middle;">^</th>
+                                                <th rowspan="2" style="text-align: center;vertical-align: middle;">✓</th>
                                                 <th rowspan="2" style="text-align: center;vertical-align: middle;">Type</th>
                                                 <th rowspan="2" style="text-align: center;vertical-align: middle;">Kode Barang</th>
                                                 <th rowspan="2" style="text-align: center;vertical-align: middle;">Nama Barang</th>

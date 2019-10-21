@@ -63,14 +63,14 @@ class M_qualitycontrol extends CI_Model
 
     public function selectByDate1($dateQCUp2l)
     {
-        $sql = "SELECT * FROM mo.mo_selep WHERE selep_date = '$dateQCUp2l' AND check_qc = FALSE ORDER BY extract(month from production_date) desc, extract(year from production_date) desc, extract(day from production_date), shift, job_id";
+        $sql = "SELECT * FROM mo.mo_selep WHERE selep_date = '$dateQCUp2l' AND check_qc = FALSE ORDER BY extract(month from selep_date) desc, extract(year from selep_date) desc, extract(day from selep_date), shift, job_id";
         $query = $this->db->query($sql);
         return $query->result_array();
     }
 
     public function selectByDate2($dateQCUp2l)
     {
-        $sql = "SELECT * FROM mo.mo_quality_control WHERE checking_date = '$dateQCUp2l' ORDER BY extract(month from checking_date) desc, extract(year from checking_date) desc, extract(day from checking_date), shift, job_id";
+        $sql = "SELECT * FROM mo.mo_quality_control WHERE checking_date = '$dateQCUp2l' ORDER BY extract(month from checking_date) desc, extract(year from checking_date) desc, extract(day from checking_date), shift";
         $query = $this->db->query($sql);
         return $query->result_array();
     }

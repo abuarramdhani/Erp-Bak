@@ -36,7 +36,7 @@
                                         <div class="form-group">
                                         <div class="col-lg-2"></div>
                                             <div class="col-lg-6">
-                                                <form method="POST" action="<?= base_url('ManufacturingOperationUP2L/Moulding/search')?>">
+                                                <form autocomplete="off" method="POST" action="<?= base_url('ManufacturingOperationUP2L/Moulding/search')?>">
                                                 <input type="text" name="bulan" id="sea_month" class="form-control selectM" placeholder="Pilih Bulan" />
                                             </div>
                                             <div class="col-lg-2">
