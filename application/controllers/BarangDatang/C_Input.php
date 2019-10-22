@@ -45,19 +45,29 @@ class C_Input extends CI_Controller
 		$id = 1;
 		generateID:
 		$num = str_pad($id, 4, "0", STR_PAD_LEFT);
-		$no_id = 'P'.date('ymd').$num;
-		// echo"<pre>";
-		// print_r($no_id);
-		// exit;
-		$checkID_tampung_po_sj = $this->M_input->checkID_tampung_po_sj($no_id);
-		$checkID_khstampungbarangsementara = $this->M_input->checkID_khstampungbarangsementara($no_id);
-		if($checkID_tampung_po_sj == 0 && $checkID_khstampungbarangsementara == 0){
-			$data['no_id'] = $no_id;
+		$no_id_ok = 'T'.date('ymd').$num;
+		$checkID_ok = $this->M_input->CheckIDOK($no_id_ok);
+		if($checkID_ok == 0){
+			$data['id_ok'] = $no_id_ok;
 			$id = 1;
 		}
 		else{
 			$id++;
 			goto generateID;
+		}
+
+		$idrev = 1;
+		generateIDREV:
+		$numrev = str_pad($idrev, 4, "0", STR_PAD_LEFT);
+		$no_id_not_ok = 'F'.date('ymd').$numrev;
+		$checkID_not_ok =  $this->M_input->CheckIDNotOK($no_id_not_ok);
+		if($checkID_not_ok == 0){
+			$data['id_not_ok'] = $no_id_not_ok;
+			$idrev = 1;
+		}
+		else{
+			$idrev++;
+			goto generateIDREV;
 		}
 
 		$this->load->view('V_Header',$data);
@@ -104,18 +114,35 @@ class C_Input extends CI_Controller
 	public function itembd()
 	{
 		$kode = $this->input->GET('term');
-		// $subinv =  $this->input->GET('subinv');
-		// $loc = $this->input->GET('loc');
 		$item = $this->M_input->item($kode);
-		// echo "<pre>"; print_r($item); exit();
 		echo json_encode($item);
 	}
 
+	public function ClearRevBD(){
+		echo'<table name="tbl2" id="tbl2" class="table table-striped table-bordered table-hover text-left" style="font-size:12px;">
+			<thead>
+				<tr class="bg-primary">
+					<td width="20%"><b>No SJ </b></td>
+					<td width="35%"><b>Item</b></td>
+					<td width="15%"><b>QTY</b></td>
+					<td width="30%"><b>Catatan</b></td>
+				</tr>
+				</tr>
+			</thead>
+			<tbody>
+				<tr>
+					<td><input class="form-control" Placeholder="No. Surat jalan" type="text" name="linenosj[]" value="" ></td>
+					<td>
+						<select class="form-control" Placeholder="Item" type="text" id="itembd" name="lineitem[]" value="" ><option></option></select>
+					</td>
+					<td><input class="form-control" Placeholder="Qty" type="number" name="lineqty[]" value=""></td>
+					<td><input class="form-control" Placeholder="Catatan" id="" type="text" name="linenote[]" value=""></td>
+				</tr>
+			</tbody>
+		</table>';
+	}
+
 	public function saveData (){
-		$line1 = $this->input->post('line1');
-		// $line2 = $this->input->post('line2');
-		$line3 = $this->input->post('line3');
-		$line4 = $this->input->post('line4');
 		$note = $this->input->post('note');
 		$supplier = $this->input->post('txtSupplier');
 		$tanggal = $this->input->post('dateDatang');
@@ -124,9 +151,7 @@ class C_Input extends CI_Controller
 		$tanggal_datang= implode(' ', $tanggaldatang);
 		$nosj = $this->input->post('txtNoSJ');
 		$nopo = $this->input->post('txtNoPo');
-		$keterangan = $this->input->post('READY');
 		$no_id = $this->input->post('txtID');
-		$count = sizeOf($line1);
 		
 		$varItem = $this->input->post('txtitem');
 		$varItemDescription = $this->input->post('txtitem_description');
@@ -137,62 +162,78 @@ class C_Input extends CI_Controller
 		$row = sizeOf($varItem);
 		$hasilcek= null;
 		$kosong = null;
-		if (empty($varID) && empty($line1[0])) {
+		if (empty($varID)) {
 			$kosong = "kosong";
 		}
 		if ($kosong == 'kosong') {
 			$this->session->set_flashdata('response',"No item to insert!");
 			redirect (base_url('BarangDatang/InputBarangDatang'));
 		}
-		// exit;
-		for($i=0;$i<$row;$i++){
-			if (!(empty($varID[$i]))){
-				$cekQty = $varQty[$i];
-				$cekitem_id = $varItemId[$i];
-				$checkqty = $this->M_input->ceksisaQuantity($nopo,$cekitem_id);
-				if (empty($cekQty)) {
-					$hasilcek = "error";
-				}
-				if ($cekQty > $checkqty[0]['QUANTITY']) {
-					$hasilcek = "error";
-				}
-			}
-		}
 
-		if ($hasilcek == 'error') {
-			$this->session->set_flashdata('response',"Quantity Error!");
-			redirect (base_url('BarangDatang/InputBarangDatang'));
-		}
-		// exit;
-
-		$insert = $this->M_input->insertTableKHStampungheader($nopo,$nosj,$keterangan,$note,$supplier,$no_id,$tanggal_datang);
-		
-		if (!empty($line1[0])) {
-			for($i=0;$i<$count;$i++){
-				$ln11 = $line1[$i];
-				$line11 = explode("^" , $ln11);
-				$ln1 = $line11[0];
-				$ln2 = $line11[1];
-				$ln3 = $line3[$i];
-				$ln4 = $line4[$i];
-				$ln5 = $line11[2];
-				if(strlen($ln1) > 0 && strlen($ln2) > 0 && strlen($ln3) > 0){
-					$insert = $this->M_input->insertTableKHStampungline_tidak_po($nosj,$ln1,$ln2,$ln3,$ln4,$no_id,$ln5);
-				}
-			}
-		}
 		for($i=0;$i<$row;$i++){
-			if (!(empty($varID[$i]))){
-				$Item = $varItem[$i];
-				$ItemDescription = $varItemDescription[$i];
-				$subinv = $varsubinv[$i];
-				$Qty = $varQty[$i];
-				$item_id = $varItemId[$i];
-				$insert = $this->M_input->insertTableKHStampungline($nopo,$nosj,$Item,$ItemDescription,$Qty,$subinv,$no_id,$item_id);		
-			}
-		}
-		// exit;
+			$varid1 = null;
+			$Item = $varItem[$i];
+			$ItemDescription = $varItemDescription[$i];
+			$subinv = $varsubinv[$i];
+			$Qty = $varQty[$i];
+			$item_id = $varItemId[$i];	
+			echo "<pre>"; 
+			if(!isset($_POST['txtCheck'][$i])){
+			}else if ($_POST['txtCheck'][$i] == 'add'){
+				$insert = $this->M_input->insertItemOk($nopo,$nosj,$Item,$ItemDescription,$Qty,$subinv,$item_id,$tanggal_datang,$note,$supplier,$no_id);
+			}else{}
+		} 
 		$this->session->set_flashdata('return',"Saved");
 		redirect (base_url('BarangDatang/InputBarangDatang'));
 	}
+
+	public function saveDataUnknown (){
+		$linenosj = $this->input->post('linenosj');
+		$lineitem = $this->input->post('lineitem');
+		$lineqty = $this->input->post('lineqty');
+		$linenote = $this->input->post('linenote');
+		$tanggal = $this->input->post('dateDatang');
+		$tanggaldatang['tanggal'] = $this->input->post('dateDatang');
+		$tanggaldatang['waktu'] = $this->input->post('timeDatang');
+		$tanggal_datang= implode(' ', $tanggaldatang);
+		$no_id = $this->input->post('txtID');
+		$count = sizeOf($lineitem);
+		$hasilcek= null;
+		$kosong = null;
+
+		if (empty($lineqty[0])  &&  empty($tanggal)) {$kosong = "kosong";}
+		if ($kosong == 'kosong') {
+			$this->session->set_flashdata('response',"No item to insert!");
+			redirect (base_url('BarangDatang/InputBarangDatang'));
+		}
+		
+		if (!empty($lineqty[0])) {
+			for($i=0;$i<$count;$i++){
+				if (empty($lineitem[0])) {
+					$lineitem11 = null;
+					$lineitem1 = null;
+					$lnitemdesc = $linenote[$i];
+					$lnitemcode = null;
+					$lnitemid = null;
+					$lnnote = null;
+				}else{
+					$lineitem11 = $lineitem[$i];
+					$lineitem1 = explode("^" , $lineitem11);
+					$lnitemcode = $lineitem1[0];
+					$lnitemdesc = $lineitem1[1];
+					$lnitemid = $lineitem1[2];
+					$lnnote = $linenote[$i];
+				}
+				$lnqty = $lineqty[$i];
+				$lnnosj = $linenosj[$i];
+				if(strlen($lnqty) > 0){
+					$insert = $this->M_input->insertItemRev($lnnosj,$lnitemcode,$lnitemdesc,$lnitemid,$lnqty,$lnitemid,$linenote,$tanggal_datang,$lnnote,$no_id);
+				}
+			}
+		$this->session->set_flashdata('return',"Saved");
+		redirect (base_url('BarangDatang/InputBarangDatang'));
+		}
+	}
+
+
 }

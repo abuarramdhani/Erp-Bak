@@ -71,11 +71,12 @@
                 <tr class="text-center">
                     <th width="4%">No</th>
                     <th>No PO</th>
+                    <th>No SJ</th>
                     <th>Buyer</th>
                     <th>Pertanggal</th>
                     <th width="20%">Item</th>
                     <th width="8%">Qty PO</th>
-                    <th>Qty yang sudah diterima</th>
+                    <th>Diterima</th>
                     <th width="10%">Status</th>
                     <th width="10%">Detail</th>
                 </tr>
@@ -89,14 +90,15 @@
                     ?>
                 <tr id="addRow<?=$no?>">
                     <td width="3%"><?= $no; ?></td>
-                    <td><?= $row['header']['PO'] ?></td>
+                    <td><?= $row['header']['NO_PO'] ?></td>
+                    <td><?= $row['header']['NO_SJ'] ?></td>
                     <td><?= $row['header']['BUYER'] ?></td>
                     <!-- <td><?= $row['header']['TANGGAL_DATANG'] ?> <?= $row['header']['WAKTU_DATANG'] ?></td> -->
                     <td><?php date_default_timezone_set('Asia/Jakarta');
                             $date = date('d-M-Y h:i', time());
                             echo $date;?> 
                     </td>
-                    <td><?= $row['header']['DESCRIPTION'] ?></td>
+                    <td><?= $row['header']['ITEM_DESCRIPTION'] ?></td>
                     <td><?= $row['header']['PESANAN'] ?></td>
                     <td><?= $row['header']['DITERIMA'] ?></td>
                     <td><?= strtoupper($row['header']['STATUS']) ?></td>
@@ -106,7 +108,7 @@
                 if ( $status1 == 'CONFIRMITY'){?>
                     <tr class="clone<?=$no?>" style="display:none">
                     <td></td>
-                    <td colspan="8">
+                    <td colspan="9">
                         <div class="table-responsive">
                             <table class="table table-bordered table-hover text-center" id="" style="width: 100%; table-layout:fixed;">
                                 <thead class="bg-danger">
@@ -121,7 +123,7 @@
                 <?php }else if(empty($row['body'])){?>
                     <tr class="clone<?=$no?>" style="display:none">
                     <td></td>
-                    <td colspan="8">
+                    <td colspan="9">
                         <div class="table-responsive">
                             <table class="table table-bordered table-hover text-center" id="" style="width: 100%; table-layout:fixed;">
                                 <thead class="bg-warning">
@@ -137,7 +139,7 @@
                     
                 <tr class="clone<?=$no?>" style="display:none">
                     <td></td>
-                    <td colspan="8">
+                    <td colspan="9">
                         <div class="table-responsive">
                             <table class="table table-bordered table-hover text-center" id="" style="width: 100%; table-layout:fixed;">
                                 <thead>
@@ -151,7 +153,7 @@
                                         <th>Qty Receipt</th>
                                         <!-- <th width="10%">Sub-inv</th> -->
                                         <th>Receipt</th>
-                                        <th width="8%">Detail</th>
+                                        <!-- <th width="8%">Detail</th> -->
                                     </tr>
                                 </thead>
                                 <tbody class="color3"><?php
@@ -166,7 +168,7 @@
                                         }
                                         $total = array_sum($apa);
                                         $kekurangan = $row['header']['DITERIMA'] - $total;
-                                        $itm = $row['header']['DESCRIPTION'];
+                                        $itm = $row['header']['ITEM_DESCRIPTION'];
                                         // echo"<pre>";
                                         // print_r($kekurangan);
                                         // exit; 
@@ -201,7 +203,7 @@
                                         <td><?= $key['RECEIVED'] ?></td>
                                         <td><?= $key['RECEIPT'] ?></td>
                                         <!-- <td><?= $key['LOKASI'] ?></td> -->
-                                        <td><button type="button" class="btn btn-success btn-sm" onclick="btnRowAdd2(<?=$no?>,<?=$no2?>)"><i class="fa fa-info"></i></button></td>
+                                        <!-- <td><button type="button" class="btn btn-success btn-sm" onclick="btnRowAdd2(<?=$no?>,<?=$no2?>)"><i class="fa fa-info"></i></button></td> -->
                                     </tr>
                                     <!-- <?php 
                                     $proses = $row['body'][$r]['proses'];

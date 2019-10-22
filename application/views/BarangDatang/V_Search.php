@@ -13,7 +13,7 @@
 			});
          });
     </script>
-	<table class="table table-striped table-bordered table-hover text-left" id="dataTables-table" style="font-size:12px;">
+	<table class="table table-striped table-bordered table-hover text-left" id="" style="font-size:12px;">
 		<thead>
 			<tr class="bg-primary">
 				<td width="8%"><b>No</b></td>
@@ -37,13 +37,13 @@
 			?>
 			<tr>
 				<td><?php echo $num?></td>
-				<td><input name="txtCheck[<?php echo $num-1; ?>]" id="txtCheck" value="add" type="checkbox"/></td>
+				<td><input name="txtCheck[<?php echo $num-1; ?>]" id="txtCheck" onclick="ShowCount()" value="add" type="checkbox"/></td>
 				<td><input name="txtitem[]" id="txtitem" value="<?php echo $Activity_item ['ITEM']?>" type="hidden"/><?php echo $Activity_item ['ITEM']?></td>
 				<td><input name="txtitem_description[]" id="txtitem_description" value="<?php echo $Activity_item ['ITEM_DESCRIPTION']?>" type="hidden"/><?php echo $Activity_item ['ITEM_DESCRIPTION']?></td>
 				<td><input name="txtsubinv[]" id="txtsubinv" value="<?php echo $Activity_item ['SUBINV']?>" type="hidden"/><?php echo $Activity_item ['SUBINV']?></td>
 				<td><?php echo $Activity_item ['QTY']?></td>
 				<td><?php echo $Activity_item ['QTY2']?></td>
-				<td><input name="txtqty[]" id="txtqty" value="<?php echo $Activity_item ['QUANTITY']?>"/>
+				<td><input type="number" name="txtqty[]" id="txtqty" min="1" max="<?php echo $Activity_item ['QUANTITY']?>" value="<?php echo $Activity_item ['QUANTITY']?>"/>
 				<input type="hidden" name="txtitemid[]" id="txtitemid" value="<?php echo $Activity_item ['ITEM_ID']?>"/></td>
 			</tr>
 			<?php $num++;} endforeach?>
