@@ -324,7 +324,7 @@ class C_Moulding extends CI_Controller
 
 		$this->load->view('V_Header', $data);
 		$this->load->view('V_Sidemenu', $data);
-		$this->load->view('ManufacturingOperationUP2L/Moulding/V_searched', $data);
+		$this->load->view('ManufacturingOperationUP2L/Moulding/V_searche', $data);
 		$this->load->view('V_Footer', $data);
 	}
 
