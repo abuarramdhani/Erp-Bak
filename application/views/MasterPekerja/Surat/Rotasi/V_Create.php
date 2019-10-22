@@ -211,6 +211,33 @@
                                                         </div>
                                                     </div>
                                                 </div>
+                                                <div  class="col-lg-12">
+                                                    <div class="col-md-6 control-label">
+                                                        <div class="form-group">
+                                                            <label style="margin-top: 0px;" class="col-lg-4 col-form-label" for="name">Pindah Finger</label>
+                                                            <div class="col-md-2 text-left">
+                                                                <input style="width: 1.2em;" type="radio" class="form-control finger" name="finger_pindah" id="fingerYa" value="t"> Ya
+                                                            </div>
+                                                             <div class="col-md-3 text-left">
+                                                                <input style="width: 1.2em;" type="radio" class="form-control finger" name="finger_pindah" id="fingerTidak" value="f" checked=""> Tidak
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-lg-12" id="fingerpindah" hidden>
+                                                    <div class="form-group">
+                                                        <p for="txtFingerdari" class="col-lg-2 control-label">Dari</p>
+                                                        <div class="col-lg-4">
+                                                        <input type="text" class="form-control" name="txtFingerAwal" id="MasterPekerja-Surat-FingerAwal" readonly="">
+                                                        </div>
+                                                         <p for="txtFingerKe" class="col-lg-2 control-label">Ke</p>
+                                                        <div class="col-lg-4">
+                                                           <select class="select2" name="txtFingerGanti" id="MasterPekerja-Surat-FingerGanti" style="width: 100%">
+                                                                <option></option>
+                                                            </select>
+                                                        </div>
+                                                    </div>
+                                                </div>
                                                 <div class="col-lg-12">
                                                     <div class="form-group">
                                                         <div class="col-lg-2 text-right">

@@ -421,6 +421,9 @@ class C_Index extends CI_Controller
 
 		$tanggal_berlaku 			=	$this->input->post('txtTanggalBerlaku');
 		$tanggal_cetak 				=	$this->input->post('txtTanggalCetak');
+		$finger_pindah 				=	$this->input->post('finger_pindah');
+		$finger_awal 				=	$this->input->post('txtFingerAwal');
+		$finger_akhir 				=	$this->input->post('txtFingerGanti');
 
 		$nomor_surat 				=	$this->input->post('txtNomorSurat');
 		$hal_surat 					=	strtoupper($this->input->post('txtHalSurat'));
@@ -493,6 +496,24 @@ class C_Index extends CI_Controller
 												'jenis_surat'			=>	'PERBANTUAN',
 											);
 			$this->M_perbantuan->inputNomorSurat($inputNomorSurat);
+
+		$inputFingerPerbantuan			= 	array
+			(
+				'no_surat'				=>	$nomor_surat,
+				'kode' 					=>	$kodeSurat,
+				'hal_surat'				=>	$hal_surat,
+				'noind'					=>	$nomor_induk,
+				'finger_pindah'			=>	$finger_pindah,
+				'finger_awal'			=>  substr($finger_awal, 0,5),
+				'lokasifinger_awal'		=>  substr($finger_awal, 7),
+				'finger_akhir'  		=>	substr($finger_akhir, 0,5),
+				'lokasifinger_akhir'  	=>	substr($finger_akhir, 7),
+				'created_date'			=>  $tanggal_cetak,
+				'noind_baru'			=> 	$noind_baru
+				
+				);
+			
+		$this->M_perbantuan->inputFingerPerbantuan($inputFingerPerbantuan);
 		redirect('MasterPekerja/Surat/SuratPerbantuan');
 	}
 
@@ -535,6 +556,13 @@ class C_Index extends CI_Controller
 		$data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id);
 
 		$data['editSuratPerbantuan'] 		= $this->M_perbantuan->editSuratPerbantuan($no_surat_decode);
+		$data['editFinger'] 		= $this->M_perbantuan->editFinger($no_surat_decode);
+			if (empty($data['editFinger'])) {
+			$kosong  = 'tidakada';
+				$array = array('finger_pindah' => $kosong, );
+				$newaray[] = $array;
+				$data['editFinger'] = $newaray;
+			}
 		$data['DaftarGolongan'] = $this->M_perbantuan->DetailGolongan();
       	$data['DaftarLokasiKerja'] = $this->M_perbantuan->DetailLokasiKerja();
       	$data['DaftarKdJabatan'] = $this->M_perbantuan->DetailKdJabatan();
@@ -542,6 +570,7 @@ class C_Index extends CI_Controller
       	$data['DaftarTempatMakan2'] = $this->M_perbantuan->DetailTempatMakan2();
 		// echo "<pre>";
 		// print_r($data['editSuratPerbantuan']);
+		// print_r($data['editFinger']);
 		// echo "</pre>";
 		// exit();
 		$this->load->view('V_Header',$data);
@@ -577,6 +606,10 @@ class C_Index extends CI_Controller
 		$tanggal_berlaku 			=	$this->input->post('txtTanggalBerlaku');
 		$tanggal_cetak 				=	$this->input->post('txtTanggalCetak');
 		$tanggal_cetak_asli			=	$this->input->post('txtTanggalCetakAsli');
+		$finger_pindah 				=	$this->input->post('finger_pindah');
+		$finger_awal 				=	$this->input->post('txtFingerAwal');
+		$finger_akhir 				=	$this->input->post('txtFingerGanti');
+		$paramater_finger 			=	$this->input->post('txtFingerParameter');
 
 		$nomor_surat 				=	$this->input->post('txtNomorSurat');
 		$hal_surat 					=	strtoupper($this->input->post('txtHalSurat'));
@@ -633,6 +666,36 @@ class C_Index extends CI_Controller
 											'tanggal_selesai_perbantuan'=>	$tanggal_perbantuan_akhir,
 										);
 		$this->M_perbantuan->updateSuratPerbantuan($updateSuratPerbantuan, $nomor_surat, $kodeSurat, $tanggal_cetak_asli);
+
+		if ($paramater_finger == 'tidakada') {
+			$inputFingerPerbantuan			= 	array
+			(
+				'no_surat'				=>	$nomor_surat,
+				'kode' 					=>	$kodeSurat,
+				'hal_surat'				=>	$hal_surat,
+				'noind'					=>	$nomor_induk,
+				'finger_pindah'			=>	$finger_pindah,
+				'finger_awal'			=>  substr($finger_awal, 0,5),
+				'lokasifinger_awal'		=>  substr($finger_awal, 7),
+				'finger_akhir'  		=>	substr($finger_akhir, 0,5),
+				'lokasifinger_akhir'  	=>	substr($finger_akhir, 7),
+				'created_date'			=>  $tanggal_cetak,
+				'noind_baru'			=> 	$noind_baru
+				);
+			
+			$this->M_perbantuan->inputFingerPerbantuan($inputFingerPerbantuan);
+		}else{
+			$updateFingerSuratPerbantuan	= 	array
+			(
+				'finger_pindah'			=>	$finger_pindah,
+				'finger_awal'			=>  substr($finger_awal, 0,5),
+				'lokasifinger_awal'		=>  substr($finger_awal, 7),
+				'finger_akhir'  		=>	substr($finger_akhir, 0,5),
+				'lokasifinger_akhir'  	=>	substr($finger_akhir, 7),
+			);
+
+			$this->M_perbantuan->updateFingerSuratPerbantuan($updateFingerSuratPerbantuan, $nomor_surat, $kodeSurat, $tanggal_cetak_asli);
+		}
 		redirect('MasterPekerja/Surat/SuratPerbantuan');
 	}
 
@@ -643,6 +706,7 @@ class C_Index extends CI_Controller
 		// echo $no_surat_decode;exit();
 
 		$this->M_perbantuan->deleteSuratPerbantuan($no_surat_decode);
+		$this->M_perbantuan->deleteFingerSuratPerbantuan($no_surat_decode);
 
 		$no_surat_decode 		=	explode('/', $no_surat_decode);
 		$no_surat 				=	(int)$no_surat_decode[0];

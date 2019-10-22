@@ -630,5 +630,44 @@
 			$query = $this->personalia->query($inserttlogbaru);
 	 	}
 
+	 	public function inputFingerPengangkatan($inputFingerPengangkatan)
+		{
+			$this->personalia->insert('"Surat".tpindah_finger', $inputFingerPengangkatan);
+		}
+
+		public function editFinger($no_surat_decode)
+		{
+			$sql = "SELECT * from \"Surat\".tpindah_finger
+			where concat(no_surat,'/' || kode || '/',to_char(created_date, 'MM'),'/',to_char(created_date, 'yy')) = '$no_surat_decode'";
+						// echo "<pre>"; print_r($sql) ;exit();
+			$query = $this->personalia->query($sql);
+			return $query->result_array();
+		}
+
+		public function updateFingerSuratPengangkatan($updateFingerSuratPengangkatan, $nomor_surat, $kodeSurat, $tanggal_cetak)
+	 	{
+	 		$this->personalia->where('created_date', $tanggal_cetak);
+			$this->personalia->where('no_surat', $nomor_surat);
+			$this->personalia->where('kode', $kodeSurat);
+			$this->personalia->update('"Surat".tpindah_finger', $updateFingerSuratPengangkatan);
+	 	}
+
+	 	public function deleteFingerSuratPengangkatan($no_surat_decode)
+	 	{
+	 		$deleteFingerSuratPengangkatan 		= "	delete from \"Surat\".tpindah_finger
+	 									where 		concat
+													(
+														no_surat, 
+														'/'||kode||'/',
+														to_char(created_date, 'MM'), 
+														'/', 
+														to_char(created_date, 'YY')
+													)
+										=
+											'$no_surat_decode'";
+			$query 					=	$this->personalia->query($deleteFingerSuratPengangkatan);
+	 	}
+
+
  	}
 
