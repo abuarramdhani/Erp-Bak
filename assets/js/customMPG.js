@@ -1,15 +1,14 @@
 function getMPG(th) {
     $(document).ready(function(){
-    var noDokumen = $('input[name="noDokumen"]').val();
-    var jenis_dokumen = $('#jenis_dokumen').val();
+    var noDokumen       = $('input[name="noDokumen"]').val();
+    var jenis_dokumen   = $('#jenis_dokumen').val();
     // console.log(jenis_dokumen);
-    // console.log(noDokumen);
     
     var request = $.ajax({
         url: baseurl+'MonitoringGdSparepart/Input/input',
         data: {
-            noDokumen : noDokumen, 
-            jenis_dokumen : jenis_dokumen
+            noDokumen       : noDokumen, 
+            jenis_dokumen   : jenis_dokumen
         },
         type: "POST",
         datatype: 'html'
@@ -31,7 +30,7 @@ function getMPG(th) {
         })
     });
 }
-
+// no dokumen otomatis INPUT
 $('#noDokumen').change(function(){
     getAutoFillDocument()
 });
@@ -42,7 +41,7 @@ $('#noDokumen').keypress(function (e) {
         getAutoFillDocument()
      }
 });   
-
+// jenis dokumen otomatis INPUT
 function getAutoFillDocument(){
     var no_document = $('input[name="noDokumen"]').val();
 
@@ -60,36 +59,41 @@ function getAutoFillDocument(){
 }
 
 function getMGS(th) {
-    $(document).ready(function(){
-
-    var jenis_dokumen = $('#jenis_dokumen').val();
-    var no_document = $('input[name="no_document"]').val();
-    var tglAwal = $('input[name="tglAwal"]').val();
-    var tglAkhir = $('input[name="tglAkhir"]').val();
-    var pic = $('input[name="pic"]').val();
-    var item = $('input[name="item"]').val();
-    // console.log(item);
-
+    // $(document).ready(function(){
+    var search_by       = $('#search_by').val();
+    var jenis_dokumen   = $('#jenis_dokumen').val();
+    var no_document     = $('input[name="no_document"]').val();
+    var tglAwal         = $('input[name="tglAwal"]').val();
+    var tglAkhir        = $('input[name="tglAkhir"]').val();
+    var pic             = $('input[name="pic"]').val();
+    var item            = $('input[name="item"]').val();
+    console.log(search_by,jenis_dokumen,no_document,tglAwal,tglAkhir,pic,item);
+if( search_by == 'export'){
+    $('#btnExMGS').css('display', '')
+}else{
+    $('#btnExMGS').css('display', 'none')
+}
     var request = $.ajax({
         url: baseurl+'MonitoringGdSparepart/Monitoring/search',
         data: {
-            jenis_dokumen : jenis_dokumen, 
-            no_document : no_document, 
-            tglAwal : tglAwal, 
-            tglAkhir : tglAkhir, 
-            pic : pic, 
-            item : item
+            search_by       : search_by,
+            jenis_dokumen   : jenis_dokumen, 
+            no_document     : no_document, 
+            tglAwal         : tglAwal, 
+            tglAkhir        : tglAkhir, 
+            pic             : pic, 
+            item            : item
         },
         type: "POST",
         datatype: 'html'
     });
     
-    $('#myTable').html('');
-    $('#myTable').html('<center><img style="width:150px; height:auto" src="'+baseurl+'assets/img/gif/loadingtwo.gif"></center>' );
+    $('#tblMGS').html('');
+    $('#tblMGS').html('<center><img style="width:150px; height:auto" src="'+baseurl+'assets/img/gif/loadingtwo.gif"></center>' );
         
     request.done(function(result){
-        $('#myTable').html('');
-        $('#myTable').html(result);
+        $('#tblMGS').html('');
+        $('#tblMGS').html(result);
         // $('#myTable').dataTable({
         //     "paging": false,
         //     "scrollX": true,
@@ -97,8 +101,8 @@ function getMGS(th) {
         //     "fixedHeader":true,
         //     "ordering": false,
         //     });
-        })
-    });
+        });
+    // });
 }
 
 function addDetailMGS(th, no){
@@ -116,26 +120,64 @@ $('#search_by').change(function(){
     var value = $('#search_by').val()
 
     if(value == "dokumen"){
-        $('#slcDokumen').css('display', '')
+        $('#slcnodoc').css('display', '')
+        $('#slcjenis').css('display', '')
         $('#slcTgl').css('display', 'none');
         $('#slcPIC').css('display', 'none');
         $('#slcItem').css('display', 'none');
+        $('input[name="pic"]').val('');
+        $('input[name="tglAwal"]').val('');
+        $('input[name="tglAkhir"]').val('');
+        $('input[name="item"]').val('');
     }else if(value == "tanggal"){
         $('#slcTgl').css('display', '')
-        $('#slcDokumen').css('display', 'none');
+        $('#slcnodoc').css('display', 'none');
+        $('#slcjenis').css('display', 'none');
         $('#slcPIC').css('display', 'none');
         $('#slcItem').css('display', 'none');
+        $('input[name="pic"]').val('');
+        $('input[name="no_document"]').val('');
+        $('#jenis_dokumen').val('');
+        $('input[name="item"]').val('');
     }else if(value == "pic"){
         $('#slcPIC').css('display', '')
         $('#slcTgl').css('display', 'none');
-        $('#slcDokumen').css('display', 'none');
+        $('#slcnodoc').css('display', 'none');
+        $('#slcjenis').css('display', 'none');
         $('#slcItem').css('display', 'none');
+        $('input[name="no_document"]').val('');
+        $('input[name="tglAwal"]').val('');
+        $('input[name="tglAkhir"]').val('');
+        $('#jenis_dokumen').val('');
+        $('input[name="item"]').val('');
     }else if(value == "item"){
         $('#slcItem').css('display', '')
         $('#slcTgl').css('display', 'none');
+        $('#slcnodoc').css('display', 'none');
+        $('#slcjenis').css('display', 'none');
+        $('#slcPIC').css('display', 'none');
+        $('input[name="no_document"]').val('');
+        $('input[name="tglAwal"]').val('');
+        $('input[name="tglAkhir"]').val('');
+        $('input[name="pic"]').val('');
+        $('#jenis_dokumen').val('');
+    }else if(value == "export"){
+        $('#slcjenis').css('display', '')
+        $('#slcTgl').css('display', '');
         $('#slcDokumen').css('display', 'none');
         $('#slcPIC').css('display', 'none');
+        $('#slcnodoc').css('display', 'none');
+        $('#slcItem').css('display', 'none');
+        $('input[name="no_document"]').val('');
+        $('input[name="tglAwal"]').val('');
+        $('input[name="tglAkhir"]').val('');
+        $('#jenis_dokumen').val('');
+        $('input[name="item"]').val('');
+        $('input[name="pic"]').val('');
     }
 });
 
-
+$("#frmMGS").keypress(function(e) {   //Enter key   
+    if (e.which == 13) {     
+        return false;   
+    } });
