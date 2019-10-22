@@ -48,7 +48,7 @@
                                         </div>
                                         <form autocomplete="off" action="<?= base_url('ManufacturingOperationUP2L/QualityControl/selectByDate1') ?>" method="post">
                                             <div class="col-lg-2">
-                                                <input type="text" class="form-control selcDateUp2L" placeholder="Selep Date" name="dateSQCUp2l" id="dateQCUp2l" />
+                                                <input type="text" required="" class="form-control selcDateUp2L" placeholder="Selep Date" name="dateSQCUp2l" id="dateQCUp2l" />
                                             </div>
                                             <div class="col-lg-2" style="margin:0px;">
                                                 <button type="submit" class="btn btn-success"><i class="fa fa-search"></i></button>
@@ -70,7 +70,7 @@
                                     </div>
                                     <form autocomplete="off" action="<?= base_url('ManufacturingOperationUP2L/QualityControl/selectByDate2') ?>" method="post">
                                         <div class="col-lg-2">
-                                            <input type="text" class="form-control selcDateUp2L" placeholder="Checking Date" name="dateQCUp2l" id="dateQCUp2l" />
+                                            <input type="text" required="" class="form-control selcDateUp2L" placeholder="Checking Date" name="dateQCUp2l" id="dateQCUp2l" />
                                         </div>
                                         <div class="col-lg-2" style="margin:0px;">
                                             <button type="submit" class="btn btn-success"><i class="fa fa-search"></i></button>
