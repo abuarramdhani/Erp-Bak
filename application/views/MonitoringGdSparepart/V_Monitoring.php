@@ -47,15 +47,16 @@
                                             <option value="tanggal">Tanggal</option>
                                             <option value="pic">PIC</option>
                                             <option value="item">Item</option>
+                                            <option value="export" id="slcExMGS">Export Excel</option>
                                             </select>
                                     </div>
                                 </div>
-                                <div class="panel-body" style="display:none" id="slcDokumen">
-                                    <div class="col-md-3" >
+                                <div class="panel-body">
+                                    <div class="col-md-3" style="display:none" id="slcnodoc">
                                         <label >No Dokumen</label>
                                             <input id="no_document" name="no_document" class="form-control" style="width:100%;" placeholder="No Dokumen">
                                     </div>
-                                    <div class="col-md-3">
+                                    <div class="col-md-3" style="display:none" id="slcjenis">
                                         <label class="control-label">Jenis Dokumen </label>
                                             <select id="jenis_dokumen" name="jenis_dokumen" class="form-control select2 select2-hidden-accessible" style="width:100%;" data-placeholder="Pilih Item">
                                             <option></option>
@@ -106,10 +107,10 @@
                                     <div class="box box-primary box-solid">
                                         <div class="box-header with-border"><b>Hasil</b></div>
                                         <div class="box-body">
-                                        <form method="post" action="<?= base_url('MonitoringGdSparepart/Monitoring/getUpdate'); ?>">
+                                        <form method="post" id="frmMGS" action="<?= base_url('MonitoringGdSparepart/Monitoring/getUpdate'); ?>">
                                             <div class="panel-body">
                                                 <div class="table-responsive">
-                                                    <table class="table table-bordered table-hover table-striped text-center" id="myTable" style="width: 100%; table-layout:fixed;">
+                                                    <table class="table table-bordered table-hover table-striped text-center" id="tblMGS" style="width: 100%; table-layout:fixed;">
                                                         <thead class="bg-primary">
                                                             <tr class="text-center">
                                                                 <th width="3%">No</th>
@@ -155,14 +156,18 @@
                                                                             <?php $nomor=1; foreach ($row['body'] as $v) { ?>
                                                                                 <tr>
                                                                                     <td><?= $nomor++ ?>
-                                                                                        <input type="hidden" name="doc[]" value="<?= $v['NO_DOCUMENT'] ?>"/></td>
+                                                                                        <input type="hidden" name="doc[]" value="<?= $v['NO_DOCUMENT'] ?>"/>
+                                                                                        <input type="hidden" name="jenis[]" value="<?= $v['JENIS_DOKUMEN'] ?>"/>
+                                                                                        <input type="hidden" name="uom[]" value="<?= $v['UOM'] ?>"/>
+                                                                                        <input type="hidden" name="tanggal[]" value="<?= $v['CREATION_DATE'] ?>"/>
+                                                                                        <input type="hidden" name="ktrgn[]" value="<?= $row['header']['statusket'] ?>"/>
+                                                                                    </td>
                                                                                     <td style="text-align:left"><input type="hidden" name="item[]" value="<?= $v['ITEM'] ?>"/><?= $v['ITEM'] ?></td>
-                                                                                    <td style="text-align:left"><?= $v['DESCRIPTION'] ?></td>
-                                                                                    <td><?= $v['QTY'] ?></td>
+                                                                                    <td style="text-align:left"><input type="hidden" name="nama_brg[]" value="<?= $v['DESCRIPTION'] ?>"/><?= $v['DESCRIPTION'] ?></td>
+                                                                                    <td><input type="hidden" name="qty[]" value="<?= $v['QTY'] ?>"/><?= $v['QTY'] ?></td>
                                                                                     <td><?= $v['JML_OK'] ?></td>
                                                                                     <td><?= $v['JML_NOT_OK'] ?></td>
                                                                                     <td style="text-align:left"><?= $v['KETERANGAN'] ?></td>
-                                                                                    <!-- <td><button type="button" class="btn btn-warning" onclick="btnEdit(this, <?=$no?>,<?=$nomor?>)">Edit</button></td> -->
                                                                                     <td><input type="button" value="Edit" class="btn btn-warning" 
                                                                                             <?php if($row['header']['statusket']== 'Sudah terlayani') 
                                                                                             {
@@ -202,8 +207,9 @@
                                                                                     <td></td>
                                                                                 </tr>
                                                                                 <?php } ?>
-                                                                            </tbody>                                        
+                                                                            </tbody>                                     
                                                                         </table>
+                                                                            <input type="submit" class="btn btn-danger" name="action" value="Save">   
                                                                     </div>
                                                                 </td>
                                                             </tr>
@@ -211,16 +217,13 @@
                                                         </tbody>
                                                     </table>
                                                     <div class="panel-heading text-right">
-                                                        <button type="submit" class="btn btn-lg btn-danger" title="save"> Save</button>
+                                                        <input type="submit" class="btn btn-lg btn-success" name="action" style="display:none" id="btnExMGS" value="Export">
                                                     </div>
                                                 </div>
                                             </div>
                                         </form>
                                         </div>
                                     </div>
-
-
-
                             </div>
                         </div>
                     </div>

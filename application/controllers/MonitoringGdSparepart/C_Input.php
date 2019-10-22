@@ -54,20 +54,24 @@ class C_Input extends CI_Controller
 		$jenis_dokumen = $this->input->post('jenis_dokumen');
 		$atr=NULL;
 			
+		$ceknomor = $this->M_input->ceknodoc($noDokumen);
 
-		if ($jenis_dokumen == 'IO') {
-			$atr = "and mmt.SHIPMENT_NUMBER = '$noDokumen'";
-			$data['input'] = $this->M_input->getInput($atr);
-		} else if ($jenis_dokumen == 'KIB'){
-			$atr = "and kk.KIBCODE = '$noDokumen'";
-			$data['input'] = $this->M_input->getInputKIB($atr);
-		} else if ($jenis_dokumen == 'LPPB'){
-			$atr = "and RSH.RECEIPT_NUM ='$noDokumen'";
-			$data['input'] = $this->M_input->getInputLPPB($atr);
-		} else {
-			$atr = '';
+		if ($ceknomor != null) {
+			echo "<tr><td colspan='6'>No Dokumen sudah ada.</td></tr>";
+		}else{
+			if ($jenis_dokumen == 'IO') {
+				$atr = "and mmt.SHIPMENT_NUMBER = '$noDokumen'";
+				$data['input'] = $this->M_input->getInput($atr);
+			} else if ($jenis_dokumen == 'KIB'){
+				$atr = "and kk.KIBCODE = '$noDokumen'";
+				$data['input'] = $this->M_input->getInputKIB($atr);
+			} else if ($jenis_dokumen == 'LPPB'){
+				$atr = "and RSH.RECEIPT_NUM ='$noDokumen'";
+				$data['input'] = $this->M_input->getInputLPPB($atr);
+			} else {
+				$atr = '';
+			}
 		}
-
 
 		foreach ($data['input'] as $key => $k) {
 			$data['input'][$key]['JENIS_DOKUMEN'] = $jenis_dokumen;
