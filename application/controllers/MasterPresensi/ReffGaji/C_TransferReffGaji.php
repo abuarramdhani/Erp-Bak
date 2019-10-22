@@ -904,7 +904,7 @@ class C_TransferReffGaji extends CI_Controller
 				$record->REV_IK = 0;
 				$record->HC = 0;
 				$record->CICIL =  $dn['cicil'] ;
-				$record->POTKOP =  $potkop ;
+				$record->POTKOP =  $potkop."" ;
 				$record->UBS =  round($ubs,2) ;
 				$record->UM_PUASA =  $um_puasa ;
 				$record->SK_CT = round($sk_ct_susul) ;
