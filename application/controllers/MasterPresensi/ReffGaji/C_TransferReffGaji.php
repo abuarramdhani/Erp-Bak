@@ -663,7 +663,8 @@ class C_TransferReffGaji extends CI_Controller
 				$record->HR_UM =  $um_ ;
 				$record->HR_CATER = 0;
 				$record->P_BONSB = 0;
-				$record->P_I_KOP =  round($ds['pikop']);
+				// $record->P_I_KOP =  round($ds['pikop']);
+				$record->P_I_KOP =  trim($ds['pikop'])."";
 				$record->P_UT_KOP =  round($ds['putkop']) ;
 				$record->P_LAIN = round($ds['plain']);
 				$record->P_DUKA =  round($ds['pduka']) ;
