@@ -18,6 +18,15 @@ function addRow(tableID) {
     }
 }
 
+function ShowCount() {
+    var numberOfChecked = $('input:checkbox:checked').length;
+    var sumcount = "("+numberOfChecked+")"
+    if (numberOfChecked >= 1){
+            document.getElementById("btnjumlahcheck").innerHTML = sumcount;
+    }else{
+        document.getElementById("btnjumlahcheck").innerHTML = sumcount;}
+  }
+
 function deleteRow(tableID) {
     try {
         var table = document.getElementById(tableID);
@@ -26,7 +35,7 @@ function deleteRow(tableID) {
     if(rowCount > 2){
         table.deleteRow(i);
     }else{
-        alert('Baris Tidak Tersedia');
+        alert('Cannot Remove first line!');
         }
     }catch(e) {
         alert(e);
@@ -45,16 +54,15 @@ var activity = $("#no_po").val();
     });
     
     //menampilkan pesan Sedang mencari saat aplikasi melakukan proses pencarian
-    $('#res').html('');
+    $('#ResultBd').html('');
     $('#loading').html("<center><img id='loading' style='margin-top: 2%;' src='"+baseurl+"assets/img/gif/loading5.gif'/><br /><p style='color:#575555;'>Searching Data</p></center><br />");
             
     //Jika pencarian selesai
     request.done(function(output) {
-        // console.log(output.VENDOR_NAME);
 
         window.setTimeout(function(){
             $('#loading').html(''); //Prints the progress text into our Progress DIV
-            $('#res').html(output);                //Prints the data into the table
+            $('#ResultBd').html(output);                //Prints the data into the table
             
         }, 1000);
                 //Tampilkan hasil pencarian pada tag div dengan id hasil-cari
@@ -77,43 +85,9 @@ $('.searchsupplier').click(function(){
         request.done(function(output) {
             console.log(output);
             $("#pilihsupplier").val(output);
-            // window.setTimeout(function(){
-            //     $('#loading').html(''); //Prints the progress text into our Progress DIV
-            //     $('#res').html(output);                //Prints the data into the table
-                
-            // }, 1000);
-                    //Tampilkan hasil pencarian pada tag div dengan id hasil-cari
                     
         });
     })
-
-// var prm = $("#no_po").val();
-// function isisupplier() {
-//     $(document).ready(function(){
-//         var prm = $("#no_po").val();
-//         var request = $.ajax({
-//             url: baseurl+'BarangDatang/SearchSupplier',
-//             data: {
-//                 prm : prm
-//             },
-//             type: "POST",
-//             datatype: 'html'
-//         });
-//         request.done(function(result){
-//             console.log(result);
-//             // document.getElementById("loading").style.display = "none";
-//             // $('#ResultMBD').html(result);
-//             // $('#myTable').dataTable({
-//             //     "paging": false,
-//             //     "scrollX": true,
-//             //     "scrollCollapse": true,
-//             //     "fixedHeader":true,
-//             //     "ordering": false,
-//             //     'rowsGroup': [0],
-//             //     });
-//             })
-//         });
-// }
 
 
 $(document).ready(function(){
@@ -154,8 +128,6 @@ $(document).ready(function(){
 			data: function (params) {
 				var queryParameters = {
 					term: params.term,
-					// subinv: $('#gudang').val(),
-					// loc: $('#locator').val()
 				}
 				return queryParameters;
 			},
@@ -172,7 +144,8 @@ $(document).ready(function(){
 
     $("#itembd").select2({
 		minimumInputLength: 3,
-
+        // allowClear: true,
+        Placeholder: "Select Item",
 		ajax: {		
 			url:baseurl+"BarangDatang/itembd",
 			dataType: 'json',
@@ -180,8 +153,6 @@ $(document).ready(function(){
 			data: function (params) {
 				var queryParameters = {
 					term: params.term,
-					// subinv: $('#gudang').val(),
-					// loc: $('#locator').val()
 				}
 				return queryParameters;
 			},
@@ -193,7 +164,40 @@ $(document).ready(function(){
 				};
 			}
 		}	
-	});
+    });
+    
+    $("#clearFormRev").click(function(){
+        // $("input[name='Hot Fuzz']").val('');
+        // $("#jenis").val('');
+        // $("#subinv").val('');
+        // $("#merk").val('');
+        // var saveForm = $('#formSGA').serialize(); 
+        $.ajax({
+            type : 'POST',
+            url : baseurl+"ClearRevBD",
+            // data : saveForm,
+            processResults: function(){
+                $("#dateBD").val('');
+                $("#timeBD").val('');
+                $('#ResultBdrev').html('');
+            },
+            success: function(data){
+                console.log(data);
+               $('#ResultBdrev').html(data);
+            //    $('.hapus').click(function(){
+            //     $(this).closest('tr').remove();
+            //     console.log($('#tbody_hasil').html());
+            //     if($('#tbody_hasil').html().match(/^((?!<tr>).)*$/)){
+            //         $('#table_input, #SGA_save').hide();
+            //     }
+            //     });
+            },
+            error : function(){
+                $('#modal_error').modal();
+                // $('#SGA_save, #tabel_account, #button_save').hide();
+            }
+         })
+    })
 
     $("#dataTables-table tbody tr").each(function() {
         if ($(this).find("#checkbox").is(':checked')) {
@@ -260,14 +264,6 @@ function getMBD(th) {
         // console.log(result);
         document.getElementById("loading").style.display = "none";
         $('#ResultMBD').html(result);
-        // $('#myTable').dataTable({
-        //     "paging": false,
-        //     "scrollX": true,
-        //     "scrollCollapse": true,
-        //     "fixedHeader":true,
-        //     "ordering": false,
-        //     'rowsGroup': [0],
-        //     });
         })
     });
 }

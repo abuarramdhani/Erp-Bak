@@ -6,7 +6,6 @@ class M_monitoring extends CI_Model
 	{
 		parent::__construct();
         $this->load->database();
-        // $this->load->library('csvimport');
         $this->oracle = $this->load->database('oracle',true);
         $this->oracle_dev = $this->load->database('oracle',true);
     }
@@ -15,60 +14,60 @@ class M_monitoring extends CI_Model
         $sql="select distinct ood.ORGANIZATION_CODE from org_organization_definitions ood where ood.DISABLE_DATE is NULL";
         $query = $this->oracle_dev->query($sql);                             
         return $query->result_array();
-        // return $sql;
 
     }
     public function getHeader($tgl_mulai, $tgl_akhir, $atr, $nopo, $atr2, $io)
 	{
-        // echo"<pre>";
-        // print_r($no_sj);
-        // print_r($tgl_mulai);
-        // print_r($tgl_akhir);
-        // print_r($atr);
-        // exit;
-
         $sql = "$atr2
-                SELECT DISTINCT
-                            pha.SEGMENT1 PO
-                            ,ppf.FULL_NAME BUYER
-                --            ,pla.PO_LINE_ID
-                            ,mp.ORGANIZATION_CODE
-                            ,msib.SEGMENT1
-                --            ,mp.ORGANIZATION_ID
-                --            ,plla.QUANTITY_RECEIVED
-                --            ,pda.DESTINATION_ORGANIZATION_ID
-                            ,msib.INVENTORY_ITEM_ID
-                            ,msib.DESCRIPTION
-                            ,plla.QUANTITY PESANAN
-                            ,NVL ((SELECT SUM(KTBL.QTY) FROM khs_tampung_barang_line KTBL 
-                                WHERE KTBL.NO_PO = pha.SEGMENT1 AND KTBL.ITEM = msib.SEGMENT1),'0') DITERIMA
-                --            ,null DITERIMA
-                            ,hrl.LOCATION_CODE
-                            ,plla.CLOSED_CODE STATUS
-                FROM MTL_SYSTEM_ITEMS_B msib,
-                            PO_HEADERS_ALL pha,
-                            po_lines_all pla,
-                            po_line_locations_all plla,
-                            mtl_parameters mp,
-                            HR_LOCATIONS hrl,
-                            po_distributions_all pda,
-                            per_people_f ppf
-                            ,khs_tampung_barang_line KTBL
-                            ,khs_tampung_barang_header KTBH
-                WHERE pha.PO_HEADER_ID = pla.PO_HEADER_ID
-                            and pla.ITEM_ID = msib.INVENTORY_ITEM_ID
-                            and msib.ORGANIZATION_ID = plla.SHIP_TO_ORGANIZATION_ID
-                            and pha.PO_HEADER_ID = plla.PO_HEADER_ID
-                            and pla.PO_LINE_ID = plla.PO_LINE_ID
-                            and plla.SHIP_TO_ORGANIZATION_ID = mp.ORGANIZATION_ID
-                            and plla.SHIP_TO_LOCATION_ID = hrl.LOCATION_ID (+)
-                            and plla.line_location_id = pda.line_location_id
-                            and ppf.PERSON_ID = msib.BUYER_ID $io $nopo $atr
-                            and ktbl.NO_SJ = ktbh.NO_SJ 
-                            and pha.SEGMENT1 = ktbl.NO_PO(+)
-                            and (ktbh.tanggal_datang  BETWEEN TO_DATE('$tgl_mulai','YYYY-MM-DD') 
-                                    and TO_DATE('$tgl_akhir','YYYY-MM-DD'))
-                                    ";
+                select distinct 
+                    kbdo.NO_PO
+                    ,kbdo.NO_SJ
+                    ,ppf.FULL_NAME                                               buyer
+                    ,(select mp.ORGANIZATION_CODE
+                        from mtl_parameters mp
+                        where mp.ORGANIZATION_ID = plla.SHIP_TO_ORGANIZATION_ID
+                        )                                                                 org
+                    ,kbdo.ITEM
+                    ,kbdo.ITEM_ID
+                    ,kbdo.ITEM_DESCRIPTION
+                    ,pla.QUANTITY                                                 pesanan --> dari plla
+                    ,nvl((select sum(kbdo.QTY) 
+                            from khs_barang_datang_ok kbdo 
+                            where kbdo.NO_PO = pha.SEGMENT1
+                                and kbdo.ITEM = msib.SEGMENT1),'0')      diterima
+                    ,hrl.LOCATION_CODE                                        lokasi
+                    ,kbdo.TANGGAL_DATANG
+                    ,null status                                            --> dari plla
+                from khs_barang_datang_ok kbdo
+                    ,per_people_f ppf
+                    ,mtl_system_items_b msib
+                    ,po_headers_all pha
+                    ,po_lines_all pla
+                    ,po_line_locations_all plla
+                    ,po_distributions_all pda
+                    ,hr_locations_all hrl
+                    ,mtl_parameters mp
+                where msib.INVENTORY_ITEM_ID = kbdo.ITEM_ID
+                and msib.SEGMENT1 = kbdo.ITEM
+                and ppf.PERSON_ID = msib.BUYER_ID
+                --
+                and pla.ITEM_ID = kbdo.ITEM_ID
+                and pha.PO_HEADER_ID = pla.PO_HEADER_ID
+                and pla.PO_LINE_ID = plla.PO_LINE_ID
+                and plla.PO_HEADER_ID = pha.PO_HEADER_ID
+                and plla.PO_LINE_ID = pla.PO_LINE_ID
+                and pda.PO_HEADER_ID = pha.PO_HEADER_ID
+                and pda.PO_LINE_ID = plla.PO_LINE_ID
+                and pda.LINE_LOCATION_ID = plla.LINE_LOCATION_ID
+                and pda.DELIVER_TO_LOCATION_ID = hrl.LOCATION_ID
+                and plla.SHIP_TO_ORGANIZATION_ID = mp.ORGANIZATION_ID
+                --
+                and nvl(pla.CANCEL_FLAG,'N') = 'N'  -- parameter
+                $io $nopo $atr
+                --- paramtet
+                and kbdo.TANGGAL_DATANG between TO_DATE('$tgl_mulai','YYYY-MM-DD') and TO_DATE('$tgl_akhir','YYYY-MM-DD')
+                and pha.SEGMENT1 = kbdo.NO_PO
+                order by 1";
         $query = $this->oracle_dev->query($sql);                             
         return $query->result_array();
         // return $sql;
@@ -201,11 +200,7 @@ class M_monitoring extends CI_Model
     }
     public function getBodyHeader($po,$invitemid)
 	{
-        // echo "<pre>";
-        // print_r($po);
-        // print_r($invitemid);
-        // exit;
-        $sql = "SELECT distinct      rt.TRANSACTION_TYPE
+        $sql = "SELECT distinct  rt.TRANSACTION_TYPE
                     ,msib.SEGMENT1                              ITEM
                     ,msib.DESCRIPTION                           DESKRIPSI
                     ,pha.SEGMENT1                               PO
@@ -241,6 +236,7 @@ class M_monitoring extends CI_Model
                     ,po_line_locations_all plla
                     ,po_requisition_headers_all prha
                     ,po_requisition_lines prl
+                    ,khs_barang_datang_ok kbdo
                 WHERE rsh.SHIPMENT_HEADER_ID = rt.SHIPMENT_HEADER_ID
                 and rsl.SHIPMENT_HEADER_ID = rsh.SHIPMENT_HEADER_ID
                 and rsl.SHIPMENT_LINE_ID = rt.SHIPMENT_LINE_ID
@@ -256,6 +252,9 @@ class M_monitoring extends CI_Model
                 and msib.INVENTORY_ITEM_ID = '$invitemid' 
                 -- parameter
                 and pha.SEGMENT1 = '$po'
+                and pha.SEGMENT1 = kbdo.NO_PO
+                and rsl.ITEM_ID = kbdo.ITEM_ID
+                and rsh.SHIPMENT_NUM = kbdo.NO_SJ
                 and rt.TRANSACTION_DATE = ( select max(rt1.TRANSACTION_DATE)
                                             from rcv_transactions rt1
                                             where rt1.SHIPMENT_LINE_ID = rt.SHIPMENT_LINE_ID )";
@@ -271,8 +270,6 @@ class M_monitoring extends CI_Model
         } else {
             $sql= "SELECT * from khs_tampung_barang_line tbl where tbl.no_id = '$noidtabel' and tbl.no_po='$nopo'";
         }
-		// $sql= "SELECT * from bd.khs_tampung_barang_line tbl
-        //         where tbl.no_id = '$noidtabel' and tbl.no_po='$nopo'";
         $query = $this->oracle->query($sql);                             
         return $query->result_array();
         // return $sql;
