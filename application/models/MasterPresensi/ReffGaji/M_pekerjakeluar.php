@@ -477,6 +477,7 @@ class M_pekerjakeluar extends CI_Model
 										)
 									)
 									or c.kd_ket = 'PIP'
+									or left(c.kd_ket,1) = 'C'
 								)
 							) as DERIVEDTBL
 						)
@@ -796,6 +797,7 @@ class M_pekerjakeluar extends CI_Model
 										)
 									)
 									or c.kd_ket = 'PIP'
+									or left(c.kd_ket,1) = 'C'
 								)
 							) as DERIVEDTBL
 						)
@@ -896,6 +898,7 @@ class M_pekerjakeluar extends CI_Model
 
 				$ijin = $this->cek_ijin_keluar($keluar,$masuk,$break_mulai,$break_selesai,$ist_mulai,$ist_selesai) / ($tik['jam_kerja'] * 60);
 				$ijin = number_format($ijin, 2);
+				// echo $ijin."<br>";
 				if ($ijin <= 0) {
 					$nilai = $nilai;
 				}else if($ijin > 0 && $ijin <= 30){
