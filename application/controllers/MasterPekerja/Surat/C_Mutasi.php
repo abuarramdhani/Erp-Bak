@@ -484,6 +484,9 @@ class C_Mutasi extends CI_Controller
 
 			$tanggal_berlaku 			=	$this->input->post('txtTanggalBerlaku');
 			$tanggal_cetak 				=	$this->input->post('txtTanggalCetak');
+			$finger_pindah 				=	$this->input->post('finger_pindah');
+			$finger_awal 				=	$this->input->post('txtFingerAwal');
+			$finger_akhir 				=	$this->input->post('txtFingerGanti');
 
 			$nomor_surat 				=	$this->input->post('txtNomorSurat');
 			$hal_surat 					=	strtoupper($this->input->post('txtHalSurat'));
@@ -544,6 +547,22 @@ class C_Mutasi extends CI_Controller
 
 											// }
 											// exit();
+			$inputFingerMutasi			= 	array
+			(
+				'no_surat'				=>	$nomor_surat,
+				'kode' 					=>	$kodeSurat,
+				'hal_surat'				=>	$hal_surat,
+				'noind'					=>	$nomor_induk,
+				'finger_pindah'			=>	$finger_pindah,
+				'finger_awal'			=>  substr($finger_awal, 0,5),
+				'lokasifinger_awal'		=>  substr($finger_awal, 7),
+				'finger_akhir'  		=>	substr($finger_akhir, 0,5),
+				'lokasifinger_akhir'  	=>	substr($finger_akhir, 7),
+				'created_date'			=>  $tanggal_cetak,
+				'noind_baru'			=>	$noind_baru
+				);
+			
+			$this->M_surat->inputFingerMutasi($inputFingerMutasi);
 			$this->M_surat->inputSuratMutasi($inputSuratMutasi);
 			$bulan_surat = date('m', strtotime($tanggal_cetak));
 			$bulan_surat = substr($bulan_surat, 0, 2);
@@ -559,6 +578,11 @@ class C_Mutasi extends CI_Controller
 				'jenis_surat'			=>	'MUTASI',
 				);
 			$this->M_surat->inputNomorSurat($inputNomorSurat);
+
+			// echo "<pre>"; print_r($inputSuratMutasi);
+			// echo "<pre>"; print_r($inputFingerMutasi);
+			// echo "<pre>"; print_r($inputNomorSurat);
+			// exit();
 			redirect('MasterPekerja/Surat/SuratMutasi');
 		}
 
@@ -598,6 +622,7 @@ class C_Mutasi extends CI_Controller
 		{
 			$no_surat_decode 	=	str_replace(array('-', '_', '~'), array('+', '/', '='), $no_surat);
 			$no_surat_decode 	=	$this->general->dekripsi($no_surat_decode);
+
 			$kodeDekripsi 	=	str_replace(array('-', '_', '~'), array('+', '/', '='), $kode);
 			$kodeDekripsi = $this->general->dekripsi($kodeDekripsi);
 
@@ -614,28 +639,22 @@ class C_Mutasi extends CI_Controller
 			$data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id);
 			$data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id);
 
-			// echo $tanggal.'+';
-			// echo $kodeDekripsi.'+';
-			// echo $no_surat_decode;
-			// exit();
-			// $data['test'] = $this->M_surat->testweb();
-			// echo "<pre>"; print_r($data['test'] ); exit();
-
 			$data['editSuratMutasi'] 		= $this->M_surat->editSuratMutasi($tanggal, $kodeDekripsi, $no_surat_decode);
-			// echo "<pre>"; print_r($data['editSuratMutasi'] ); exit();
+			$data['editFinger'] 		= $this->M_surat->editFinger($tanggal, $kodeDekripsi, $no_surat_decode);
+			if (empty($data['editFinger'])) {
+			$kosong  = 'tidakada';
+				$array = array('finger_pindah' => $kosong, );
+				$newaray[] = $array;
+				$data['editFinger'] = $newaray;
+			}
 			$data['DaftarGolongan'] = $this->M_surat->golongan_pekerjaan($tanggal, $kodeDekripsi, $no_surat_decode);
-// 			print_r($data['DaftarGolongan'] );
-// exit();
+
 			$data['DaftarLokasiKerja'] = $this->M_surat->DetailLokasiKerja($tanggal, $kodeDekripsi, $no_surat_decode);
 			$data['DaftarKdJabatan'] = $this->M_surat->DetailKdJabatan($tanggal, $kodeDekripsi, $no_surat_decode);
-	      	// print_r($data['DaftarKdJabatan']);
-	      	// exit();
+	
 			$data['DaftarTempatMakan1'] = $this->M_surat->DetailTempatMakan1($tanggal, $kodeDekripsi, $no_surat_decode);
 			$data['DaftarTempatMakan2'] = $this->M_surat->DetailTempatMakan2($tanggal, $kodeDekripsi, $no_surat_decode);
-			// echo "<pre>";
-			// print_r($data['editSuratMutasi']);
-			// echo "</pre>";
-			// exit();
+		
 			$this->load->view('V_Header',$data);
 			$this->load->view('V_Sidemenu',$data);
 			$this->load->view('MasterPekerja/Surat/Mutasi/V_Update',$data);
@@ -670,6 +689,10 @@ class C_Mutasi extends CI_Controller
 			$tanggal_berlaku 			=	$this->input->post('txtTanggalBerlaku');
 			$tanggal_cetak 				=	$this->input->post('txtTanggalCetak');
 			$tanggal_cetak_asli			=	$this->input->post('txtTanggalCetakAsli');
+			$finger_pindah 				=	$this->input->post('finger_pindah');
+			$finger_awal 				=	$this->input->post('txtFingerAwal');
+			$finger_akhir 				=	$this->input->post('txtFingerGanti');
+			$paramater_finger 			=	$this->input->post('txtFingerParameter');
 
 			$nomor_surat 				=	$this->input->post('txtNomorSurat');
 			$hal_surat 					=	strtoupper($this->input->post('txtHalSurat'));
@@ -724,6 +747,42 @@ class C_Mutasi extends CI_Controller
 				'status_staf' 			=>	$staf,
 				);
 			$this->M_surat->updateSuratMutasi($updateSuratMutasi, $nomor_surat, $kodeSurat, $tanggal_cetak_asli);
+
+			if ($paramater_finger == 'tidakada') {
+			$inputFingerMutasi			= 	array
+			(
+				'no_surat'				=>	$nomor_surat,
+				'kode' 					=>	$kodeSurat,
+				'hal_surat'				=>	$hal_surat,
+				'noind'					=>	$nomor_induk,
+				'finger_pindah'			=>	$finger_pindah,
+				'finger_awal'			=>  substr($finger_awal, 0,5),
+				'lokasifinger_awal'		=>  substr($finger_awal, 7),
+				'finger_akhir'  		=>	substr($finger_akhir, 0,5),
+				'lokasifinger_akhir'  	=>	substr($finger_akhir, 7),
+				'created_date'			=>  $tanggal_cetak,
+				'noind_baru'			=> 	$noind_baru
+				);
+			
+			$this->M_surat->inputFingerMutasi($inputFingerMutasi);
+		}else{
+			$updateFingerSuratMutasi	= 	array
+			(
+				'finger_pindah'			=>	$finger_pindah,
+				'finger_awal'			=>  substr($finger_awal, 0,5),
+				'lokasifinger_awal'		=>  substr($finger_awal, 7),
+				'finger_akhir'  		=>	substr($finger_akhir, 0,5),
+				'lokasifinger_akhir'  	=>	substr($finger_akhir, 7),
+			);
+			
+			$this->M_surat->updateFingerSuratMutasi($updateFingerSuratMutasi, $nomor_surat, $kodeSurat, $tanggal_cetak_asli);	
+		}
+			
+			// echo "<pre>"; print_r($updateFingerSuratMutasi);
+			// echo "<pre>"; print_r($updateSuratMutasi);
+			// exit();
+			
+
 			redirect('MasterPekerja/Surat/SuratMutasi');
 		}
 
@@ -752,6 +811,8 @@ class C_Mutasi extends CI_Controller
 			// echo $bulan_surat; exit();
 			$this->M_surat->deleteArsipSuratMutasi($bulan_surat, $kodeDekripsi, $no_surat);
 			$this->M_surat->deleteSuratMutasi($tanggal,$kodeDekripsi,$no_surat_decode);
+			$this->M_surat->deleteFingerSuratMutasi($tanggal,$kodeDekripsi,$no_surat_decode);
+			
 
 			redirect('MasterPekerja/Surat/SuratMutasi');
 

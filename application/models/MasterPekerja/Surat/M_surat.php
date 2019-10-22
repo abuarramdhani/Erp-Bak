@@ -7,6 +7,8 @@ class M_surat extends CI_Model
 	{
 		parent::__construct();
 		$this->personalia 	= 	$this->load->database('personalia', TRUE);
+		$this->quick 	=	$this->load->database('quick', TRUE);
+
 	}
 
 	public function kode_surat( $jenis_surat = FALSE, $status_staf = FALSE )
@@ -1157,4 +1159,111 @@ and tahun_surat = '$tahun' and bulan_surat = '$bulan'";
 		$sql  = "update \"Catering\".tpindahmakan set berlaku = '0' where fd_tgl_selesai = '$yesterday';";
 		$query = $this->dev->query($sql);
 	}
-}
+
+	public function finger_reference($keyword = FALSE)
+    {
+    	$this->quick->select('*');
+    	$this->quick->from('db_datapresensi.tb_device');
+
+    	if ( $keyword !== FALSE )
+    	{
+    		$this->quick->group_start();
+    			$this->quick->like('device_name', $keyword);
+    			$this->quick->or_like('id_lokasi', $keyword);
+    		$this->quick->group_end();
+    	}
+
+    	$this->quick->order_by('id_lokasi');
+    	return $this->quick->get()->result_array();
+    }
+
+    function kodefinger($id)
+    {
+		$sql = "SELECT cc.id_lokasi
+				from
+					(SELECT case when tc is null
+							then '0'
+							else bb.tc
+							end id_lokasi
+							from
+								(select distinct aa.*
+								from
+									(select distinct
+										(select nomor_sn
+										from 
+											(select nomor_sn , count(nomor_sn)  as jumlah , noind
+												from \"Presensi\".tpresensi_riil b 
+												where a.noind = b.noind
+												group by nomor_sn, noind
+												) as tbl
+										order by jumlah desc 
+										limit 1
+										) tc, c.noind induk
+									FROM \"Presensi\".tpresensi_riil a right join hrd_khs.tpribadi c on a.noind= c.noind
+									WHERE c.noind = '$id' 
+								)aa
+					)bb
+				)cc";
+
+
+		$query = $this->personalia->query($sql);
+		// echo "<pre>"; print_r($query); exit();
+		return $query->row()->id_lokasi;
+	}
+
+	function lokasifinger($id)
+    {
+		$sql = "SELECT id_lokasi, device_name FROM db_datapresensi.tb_device WHERE device_sn = '$id'";
+
+		$query = $this->quick->query($sql);
+		// echo "<pre>"; print_r($query); exit();
+		return $query->result_array();
+	}
+
+	public function inputFingerMutasi($inputFingerMutasi)
+	{
+		$this->personalia->insert('"Surat".tpindah_finger', $inputFingerMutasi);
+	}
+
+	public function editFinger($tanggal,$kode,$no_surat_decode)
+	{
+		date_default_timezone_set("Asia/Bangkok");
+		$waktu = "'".date("Y/m/d",$tanggal)."'";
+		$kode = "'".$kode."'";
+		$no_surat_decode = "'".$no_surat_decode."'";
+
+		$sql = "SELECT * from \"Surat\".tpindah_finger
+		where created_date = $waktu and kode = $kode and no_surat = $no_surat_decode";
+					// echo "<pre>"; print_r($sql) ;exit();
+		$query = $this->personalia->query($sql);
+		return $query->result_array();
+	}
+
+	public function updateFingerSuratMutasi($updateFingerSuratMutasi, $nomor_surat, $kodeSurat, $tanggal_cetak)
+	{
+	    			// echo "$updateSuratMutasi<br>";
+	    			// echo "$nomor_surat<br>";
+	    			// echo "$kodeSurat<br>";
+		$this->personalia->where('created_date', $tanggal_cetak);
+		$this->personalia->where('no_surat', $nomor_surat);
+		$this->personalia->where('kode', $kodeSurat);
+		$this->personalia->update('"Surat".tpindah_finger', $updateFingerSuratMutasi);
+	}
+
+	public function deleteFingerSuratMutasi($tanggal,$kode,$no_surat_decode)
+	{
+		$no_surat = $no_surat_decode;
+		$waktu = date("Y-m-d",$tanggal);
+					// echo $waktu;
+	    			 // echo $no_surat;
+	    			 // echo $tanggal;
+	    			 // echo $kode;
+	    			 // exit();
+		$this->personalia->where('no_surat=',$no_surat);
+		$this->personalia->where('created_date', $waktu);
+		$this->personalia->where('kode=', $kode);
+		$this->personalia->delete('"Surat".tpindah_finger');
+	    			//$this->personalia->and('');
+		header('Location: '.$_SERVER['REQUEST_URI']);
+	}
+}	

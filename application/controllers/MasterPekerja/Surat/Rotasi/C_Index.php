@@ -402,6 +402,9 @@ class C_Index extends CI_Controller
 
 		$tanggal_berlaku 			=	$this->input->post('txtTanggalBerlaku');
 		$tanggal_cetak 				=	$this->input->post('txtTanggalCetak');
+		$finger_pindah 				=	$this->input->post('finger_pindah');
+		$finger_awal 				=	$this->input->post('txtFingerAwal');
+		$finger_akhir 				=	$this->input->post('txtFingerGanti');
 
 		$nomor_surat 				=	$this->input->post('txtNomorSurat');
 		$hal_surat 					=	strtoupper($this->input->post('txtHalSurat'));
@@ -473,6 +476,23 @@ class C_Index extends CI_Controller
 												'jenis_surat'			=>	'ROTASI',
 											);
 			$this->M_Rotasi->inputNomorSurat($inputNomorSurat);
+
+		$inputFingerRotasi			= 	array
+			(
+				'no_surat'				=>	$nomor_surat,
+				'kode' 					=>	$kodeSurat,
+				'hal_surat'				=>	$hal_surat,
+				'noind'					=>	$nomor_induk,
+				'finger_pindah'			=>	$finger_pindah,
+				'finger_awal'			=>  substr($finger_awal, 0,5),
+				'lokasifinger_awal'		=>  substr($finger_awal, 7),
+				'finger_akhir'  		=>	substr($finger_akhir, 0,5),
+				'lokasifinger_akhir'  	=>	substr($finger_akhir, 7),
+				'created_date'			=>  $tanggal_cetak,
+				'noind_baru'			=> 	$noind_baru
+				);
+			
+		$this->M_Rotasi->inputFingerRotasi($inputFingerRotasi);
 		redirect('MasterPekerja/Surat/SuratRotasi');
 	}
 
@@ -515,6 +535,14 @@ class C_Index extends CI_Controller
 		$data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id);
 
 		$data['editSuratRotasi'] 		= $this->M_Rotasi->editSuratRotasi($no_surat_decode);
+		$data['editFinger'] 		= $this->M_Rotasi->editFinger($no_surat_decode);
+			if (empty($data['editFinger'])) {
+			$kosong  = 'tidakada';
+				$array = array('finger_pindah' => $kosong, );
+				$newaray[] = $array;
+				$data['editFinger'] = $newaray;
+			}
+
 		$data['DaftarGolongan'] = $this->M_Rotasi->DetailGolongan();
       	$data['DaftarLokasiKerja'] = $this->M_Rotasi->DetailLokasiKerja();
       	$data['DaftarKdJabatan'] = $this->M_Rotasi->DetailKdJabatan();
@@ -558,6 +586,10 @@ class C_Index extends CI_Controller
 		$tanggal_berlaku 			=	$this->input->post('txtTanggalBerlaku');
 		$tanggal_cetak 				=	$this->input->post('txtTanggalCetak');
 		$tanggal_cetak_asli			=	$this->input->post('txtTanggalCetakAsli');
+		$finger_pindah 				=	$this->input->post('finger_pindah');
+		$finger_awal 				=	$this->input->post('txtFingerAwal');
+		$finger_akhir 				=	$this->input->post('txtFingerGanti');
+		$paramater_finger 			=	$this->input->post('txtFingerParameter');
 
 		$nomor_surat 				=	$this->input->post('txtNomorSurat');
 		$hal_surat 					=	strtoupper($this->input->post('txtHalSurat'));
@@ -612,6 +644,36 @@ class C_Index extends CI_Controller
 											'status_staf' 			=>	$staf,
 										);
 		$this->M_Rotasi->updateSuratRotasi($updateSuratRotasi, $nomor_surat, $kodeSurat, $tanggal_cetak_asli);
+
+		if ($paramater_finger == 'tidakada') {
+			$inputFingerRotasi			= 	array
+			(
+				'no_surat'				=>	$nomor_surat,
+				'kode' 					=>	$kodeSurat,
+				'hal_surat'				=>	$hal_surat,
+				'noind'					=>	$nomor_induk,
+				'finger_pindah'			=>	$finger_pindah,
+				'finger_awal'			=>  substr($finger_awal, 0,5),
+				'lokasifinger_awal'		=>  substr($finger_awal, 7),
+				'finger_akhir'  		=>	substr($finger_akhir, 0,5),
+				'lokasifinger_akhir'  	=>	substr($finger_akhir, 7),
+				'created_date'			=>  $tanggal_cetak,
+				'noind_baru'			=> 	$noind_baru
+				);
+			
+		$this->M_Rotasi->inputFingerRotasi($inputFingerRotasi);
+		}else{
+			$updateFingerSuratRotasi	= 	array
+			(
+				'finger_pindah'			=>	$finger_pindah,
+				'finger_awal'			=>  substr($finger_awal, 0,5),
+				'lokasifinger_awal'		=>  substr($finger_awal, 7),
+				'finger_akhir'  		=>	substr($finger_akhir, 0,5),
+				'lokasifinger_akhir'  	=>	substr($finger_akhir, 7),
+			);
+
+			$this->M_Rotasi->updateFingerSuratRotasi($updateFingerSuratRotasi, $nomor_surat, $kodeSurat, $tanggal_cetak_asli);
+		}
 		redirect('MasterPekerja/Surat/SuratRotasi');
 	}
 
@@ -619,8 +681,17 @@ class C_Index extends CI_Controller
 	{
 		$no_surat_decode 	=	str_replace(array('-', '_', '~'), array('+', '/', '='), $no_surat);
 		$no_surat_decode 	=	$this->encrypt->decode($no_surat_decode);
+		// echo $no_surat_decode;exit();
 
 		$this->M_Rotasi->deleteSuratRotasi($no_surat_decode);
+		$this->M_Rotasi->deleteFingerSuratRotasi($no_surat_decode);
+
+		$no_surat_decode 		=	explode('/', $no_surat_decode);
+		$no_surat 				=	(int)$no_surat_decode[0];
+		$kode_surat 			=	$no_surat_decode[1].'/'.$no_surat_decode[2];
+		$tahun 					= 	'20'.$no_surat_decode[4];
+		$bulan_surat			=	$no_surat_decode[3];
+		$this->M_Rotasi->deleteArsipSuratRotasi($bulan_surat, $tahun, $kode_surat, $no_surat);
 		redirect('MasterPekerja/Surat/SuratRotasi');
 
 	}

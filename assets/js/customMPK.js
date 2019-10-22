@@ -1,3 +1,16 @@
+$(document).on('ifChecked', '#fingerYa', function(){
+    // alert('oke');
+  $('#fingerpindah').prop('hidden', false);
+});
+
+$(document).on('ifChecked', '#fingerTidak', function(){
+    // alert('oke');
+  $('#fingerpindah').prop('hidden', true);
+  $('#MasterPekerja-Surat-FingerGanti').each(function () { //added a each loop here
+                $(this).val(null).trigger("change");
+            });
+});
+
 $(document).ready(function() {
 
     $('#dataTable-MasterLokasi').DataTable({
@@ -311,6 +324,28 @@ $(function() {
 
     //	Select2
     //	{
+    $('#MasterPekerja-Surat-FingerGanti').select2({
+         minimumInputLength: 1,
+                ajax:
+                {
+                    url: baseurl + 'MasterPekerja/Surat/finger_reference',
+                    dataType: 'json',
+                    delay: 500,
+                    data: function(params){
+                        return {
+                            term: params.term
+                        }
+                    },
+                    processResults: function (data){
+                        return {
+                            results: $.map(data, function(obj){
+                                return {id: obj.id_lokasi + ' - ' + obj.device_name, text: obj.id_lokasi + ' - ' + obj.device_name};
+                            })
+                        }
+                    }
+                }
+            });
+
     $('#MasterPekerja-Surat-DaftarPekerja').select2({
         allowClear: false,
         placeholder: "Pilih Pekerja",
@@ -807,6 +842,7 @@ $('#MasterPekerja-Surat-DaftarPekerja').change(function() {
                 $('#MasterPekerja-txtTempatMakan1').val(result['tempat_makan1']);
                 $('#MasterPekerja-txtTempatMakan2').val(result['tempat_makan2']);
                 $('#MasterPekerja-txtStatusStaf').val(result['status_staf']);
+                $('#MasterPekerja-Surat-FingerAwal').val(result['id_lokasifinger'] + ' - ' + result['lokasi_finger']);
             }
         });
         $('#MasterPekerja-DaftarGolonganPekerjaan').select2('val', '');
@@ -857,6 +893,7 @@ $('.MasterPekerja-Surat-DaftarPekerja').change(function() {
                 $('.MasterPekerja-txtTempatMakan1').val(result['tempat_makan1']);
                 $('.MasterPekerja-txtTempatMakan2').val(result['tempat_makan2']);
                 $('.MasterPekerja-txtStatusStaf').val(result['status_staf']);
+                $('#MasterPekerja-Surat-FingerAwal').val(result['id_lokasifinger'] + ' - ' + result['lokasi_finger']);
             }
         });
         $('.MasterPekerja-SuratMutasi-DaftarGolongan').select2('val', '');
@@ -1291,6 +1328,7 @@ $('.MasterPekerja-Surat-DaftarPekerja-staf-pengangkatan').change(function() {
                 $('.MasterPekerja-txtTempatMakan2').val(result['tempat_makan2']);
                 $('.MasterPekerja-txtStatusStaf').val(result['status_staf']);
                 $('.MasterPekerja-txtjabatanDlLama').val(result['jabatan_dl']);
+                $('#MasterPekerja-Surat-FingerAwal').val(result['id_lokasifinger'] + ' - ' + result['lokasi_finger']);
                 // alert(result);
             }
         });

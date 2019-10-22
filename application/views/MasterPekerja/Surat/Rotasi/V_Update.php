@@ -37,7 +37,7 @@
                                                     <div class="form-group">
                                                         <label for="cmbNoind" class="col-lg-4 control-label">Nomor Induk</label>
                                                         <div class="col-lg-8">
-                                                             <select  class="select2 golker" name="txtNoind" id="" style="width: 100%" readonly>
+                                                             <select  class="select2 golker" name="txtNoind"  id="MasterPekerja-Surat-UpdatePekerja" style="width: 100%" readonly>
                                                                 <option value="<?php echo $edit['noind']?>" selected="true" >
                                                                     <?php echo $edit['noind'].' - '.$edit['nama'] ;?>
                                                                 </option>
@@ -253,6 +253,92 @@
                                                         </div>
                                                     </div>
                                                 </div>
+                                                <input style="display: none" type="text" name="txtFingerParameter" class="form-control" value="<?php echo $editFinger[0]['finger_pindah'];?>">
+                                                 <?php if ($editFinger[0]['finger_pindah'] == 'tidakada') { ?>
+                                                 <div  class="col-lg-12">
+                                                    <div class="col-md-6 control-label">
+                                                        <div class="form-group">
+                                                            <label style="margin-top: 0px;" class="col-lg-4 col-form-label" for="name">Pindah Finger</label>
+                                                            <div class="col-md-2 text-left">
+                                                                <input style="width: 1.2em;" type="radio" class="form-control finger" name="finger_pindah" id="fingerYa" value="t"> Ya
+                                                            </div>
+                                                             <div class="col-md-3 text-left">
+                                                                <input style="width: 1.2em;" type="radio" class="form-control finger" name="finger_pindah" id="fingerTidak" value="f" checked=""> Tidak
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-lg-12" id="fingerpindah" hidden>
+                                                    <div class="form-group">
+                                                        <p for="txtFingerdari" class="col-lg-2 control-label">Dari</p>
+                                                        <div class="col-lg-4">
+                                                            <input type="text" class="form-control" name="txtFingerAwal" id="MasterPekerja-Surat-FingerAwal" readonly="">
+                                                        </div>
+                                                         <p for="txtFingerKe" class="col-lg-2 control-label">Ke</p>
+                                                        <div class="col-lg-4">
+                                                           <select class="select2" name="txtFingerGanti" id="MasterPekerja-Surat-FingerGanti" style="width: 100%">
+                                                                <option></option>
+                                                            </select>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <?php }elseif ($editFinger[0]['finger_pindah'] == 't') { ?>
+                                                 <div  class="col-lg-12">
+                                                    <div class="col-md-6 control-label">
+                                                        <div class="form-group">
+                                                            <label style="margin-top: 0px;" class="col-lg-4 col-form-label" for="name">Pindah Finger</label>
+                                                            <div class="col-md-2 text-left">
+                                                                <input style="width: 1.2em;" type="radio" class="form-control finger" name="finger_pindah" id="fingerYa" value="t" checked=""> Ya
+                                                            </div>
+                                                             <div class="col-md-3 text-left">
+                                                                <input style="width: 1.2em;" type="radio" class="form-control finger" name="finger_pindah" id="fingerTidak" value="f"> Tidak
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-lg-12" id="fingerpindah">
+                                                    <div class="form-group">
+                                                        <p for="txtFingerdari" class="col-lg-2 control-label">Dari</p>
+                                                        <div class="col-lg-4">
+                                                        <input type="text" class="form-control" name="txtFingerAwal" value="<?php echo $editFinger[0]['finger_awal'].' - '.$editFinger[0]['lokasifinger_awal']; ?>" readonly="">
+                                                        </div>
+                                                         <p for="txtFingerKe" class="col-lg-2 control-label">Ke</p>
+                                                        <div class="col-lg-4">
+                                                           <select class="select2" name="txtFingerGanti" id="MasterPekerja-Surat-FingerGanti" style="width: 100%">
+                                                                <option selected value="<?php echo $editFinger[0]['finger_akhir'].' - '.$editFinger[0]['lokasifinger_akhir']; ?>"><?php echo $editFinger[0]['finger_akhir'].' - '.$editFinger[0]['lokasifinger_akhir']; ?></option>
+                                                            </select>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <?php }elseif ($editFinger[0]['finger_pindah'] == 'f') { ?>
+                                                <div  class="col-lg-12">
+                                                    <div class="col-md-6 control-label">
+                                                        <div class="form-group">
+                                                            <label style="margin-top: 0px;" class="col-lg-4 col-form-label" for="name">Pindah Finger</label>
+                                                            <div class="col-md-2 text-left">
+                                                                <input style="width: 1.2em;" type="radio" class="form-control finger" name="finger_pindah" id="fingerYa" value="t"> Ya
+                                                            </div>
+                                                             <div class="col-md-3 text-left">
+                                                                <input style="width: 1.2em;" type="radio" class="form-control finger" name="finger_pindah" id="fingerTidak" value="f" checked=""> Tidak
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-lg-12" id="fingerpindah" hidden>
+                                                    <div class="form-group">
+                                                        <p for="txtFingerdari" class="col-lg-2 control-label">Dari</p>
+                                                        <div class="col-lg-4">
+                                                        <input type="text" class="form-control" name="txtFingerAwal" value="<?php echo $editFinger[0]['finger_awal'].' - '.$editFinger[0]['lokasifinger_awal']; ?>" readonly="">
+                                                        </div>
+                                                         <p for="txtFingerKe" class="col-lg-2 control-label">Ke</p>
+                                                        <div class="col-lg-4">
+                                                           <select class="select2" name="txtFingerGanti" id="MasterPekerja-Surat-FingerGanti" style="width: 100%">
+                                                                <option></option>
+                                                            </select>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <?php } ?>
                                                 <div class="col-lg-12">
                                                     <div class="form-group">
                                                         <div class="col-lg-2 text-right">
@@ -312,3 +398,18 @@
 <div id="surat-loading" hidden style="top: 0;left: 0;right: 0;bottom: 0; margin: auto; position: fixed; background: rgba(0,0,0,.5); z-index: 11;">
     <img src="<?php echo site_url('assets/img/gif/loadingtwo.gif');?>" style="position: fixed; top: 0;left: 0;right: 0;bottom: 0; margin: auto; width: 40%;">
 </div>
+<script>
+    $(document).ready(function(){
+        var noind = $('#MasterPekerja-Surat-UpdatePekerja').val();
+        // alert(a);
+        $.ajax({
+            type: 'POST',
+            data: { noind: noind },
+            url: baseurl + "MasterPekerja/Surat/detail_pekerja",
+            success: function(result) {
+                var result = JSON.parse(result);
+                $('#MasterPekerja-Surat-FingerAwal').val(result['id_lokasifinger'] + ' - ' + result['lokasi_finger']);
+            }
+        });
+    });
+</script>

@@ -127,6 +127,15 @@
 					echo json_encode($pekerja);
 				}
 
+				public function finger_reference()
+				{
+					$keyword 			=	strtoupper($this->input->get('term'));
+
+					$finger_reference 	=	$this->M_surat->finger_reference($keyword);
+					// echo "<pre>"; print_r($keyword); exit();
+					echo json_encode($finger_reference);
+				}
+
 				public function daftar_pekerja_pengangkatan()
 				{
 					$keyword 	 	=	strtoupper($this->input->get('term', TRUE));
@@ -160,7 +169,13 @@
 				{
 					$noind 			=	$this->input->post('noind');
 					$detail_pekerja	=	$this->M_surat->detail_pekerja($noind);
-
+					$kodelokasi 	= $this->M_surat->kodefinger($noind);
+					if ($kodelokasi == '0') {
+						$lokasi_finger = "LOKASI TIDAK DIKETAHUI";
+					}else{
+						$lokasi_finger = $this->M_surat->lokasifinger($kodelokasi);
+					}
+					// echo "<pre>"; print_r($lokasi_finger); exit();
 					$data['kodesie'] 					= 	$detail_pekerja[0]['kodesie'];
 					$data['posisi'] 					= 	$detail_pekerja[0]['posisi'];
 					$data['kode_pekerjaan'] 			= 	$detail_pekerja[0]['kode_pekerjaan'];
@@ -175,6 +190,8 @@
 					$data['tempat_makan2'] 				= 	$detail_pekerja[0]['tempat_makan2'];
 					$data['status_staf'] 				= 	$detail_pekerja[0]['status_staf'];
 					$data['jabatan_dl'] 				= 	$detail_pekerja[0]['jabatan_dl'];
+					$data['id_lokasifinger'] 			= 	$lokasi_finger[0]['id_lokasi'];
+					$data['lokasi_finger'] 				= 	$lokasi_finger[0]['device_name'];
 					
 					$kode_induk = array('A', 'H', 'K', 'P', 'E');
 					if(in_array(substr($noind,0,1), $kode_induk)){
