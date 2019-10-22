@@ -557,7 +557,7 @@ class C_TransferReffGaji extends CI_Controller
 		//staff
 
 		$data_staff = $this->M_transferreffgaji->getDataStaff($periode);
-		// echo "<pre>";print_r($data_nonstaff);exit();
+		// echo "<pre>";print_r($data_staff);exit();
 		if (!empty($data_staff)) {
 			$table3 = new XBase\WritableTable(FCPATH."assets/upload/TransferReffGaji/lv_info2.dbf");
 			$table3->openWrite(FCPATH."assets/upload/TransferReffGaji/PER".$periode.$waktu.".dbf");
@@ -663,8 +663,7 @@ class C_TransferReffGaji extends CI_Controller
 				$record->HR_UM =  $um_ ;
 				$record->HR_CATER = 0;
 				$record->P_BONSB = 0;
-				// $record->P_I_KOP =  round($ds['pikop']);
-				$record->P_I_KOP =  number_format(trim($ds['pikop']),2,'.','');
+				$record->P_I_KOP =  round($ds['pikop']);
 				$record->P_UT_KOP =  round($ds['putkop']) ;
 				$record->P_LAIN = round($ds['plain']);
 				$record->P_DUKA =  round($ds['pduka']) ;
@@ -726,6 +725,7 @@ class C_TransferReffGaji extends CI_Controller
 				$record->JKN =  $ds['jml_jkn'] ;
 				$record->JHT =  $ds['jml_jht'] ;
 				$record->JP =  $ds['jml_jp'] ;
+				// echo "<pre>";print_r($record);exit();
 				$table3->writeRecord();
 
 				$progres +=1;
@@ -905,7 +905,7 @@ class C_TransferReffGaji extends CI_Controller
 				$record->REV_IK = 0;
 				$record->HC = 0;
 				$record->CICIL =  $dn['cicil'] ;
-				$record->POTKOP =  $potkop."" ;
+				$record->POTKOP =  $potkop;
 				$record->UBS =  round($ubs,2) ;
 				$record->UM_PUASA =  $um_puasa ;
 				$record->SK_CT = round($sk_ct_susul) ;
