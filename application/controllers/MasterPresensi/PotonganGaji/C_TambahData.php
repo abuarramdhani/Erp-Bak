@@ -13,7 +13,7 @@ class C_tambahdata extends CI_Controller {
 		$data['UserMenu'] = $this->M_user->getUserMenu($this->session->userid, $this->session->responsibility_id);
 		$data['UserSubMenuOne'] = $this->M_user->getMenuLv2($this->session->userid, $this->session->responsibility_id);
 		$data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($this->session->userid, $this->session->responsibility_id);
-        $data['Title'] = $data['UserSubMenuOne'][0]['menu_title'];
+        $data['Title'] = 'Tambah Data Potongan';
 		$data['Menu'] = $data['SubMenuOne'] = $data['SubMenuTwo'] = null;
 		$this->load->view('V_Header', $data);
 		$this->load->view('V_Sidemenu', $data);
