@@ -73,7 +73,6 @@
                                             foreach ($Moulding as $row) :
                                                 $encrypted_string = $this->encrypt->encode($row['moulding_id']);
                                                 $encrypted_string = str_replace(array('+', '/', '='), array('-', '_', '~'), $encrypted_string);
-                                                $kodec = str_replace(0, '', $row['print_code']);
                                                 ?>
                                                 <tr>
                                                     <td align='center'><?php echo $no++; ?></td>
@@ -85,7 +84,7 @@
                                                     <td><?php echo $row['component_code'] ?></td>
                                                     <td><?php echo $row['component_description'] ?></td>
                                                     <td><?php echo $row['production_date'] ?></td>
-                                                    <td><?php echo $kodec ?></td>
+                                                    <td><?php echo $row['print_code'] ?></td>
                                                     <td><?php echo $row['shift'] ?></td>
                                                     <td><?php echo $row['moulding_quantity'] ?></td>
                                                     <td><?php echo $row['kode'] ?></td>
