@@ -98,10 +98,10 @@
                                                         <th class="text-center">Noind</th>
                                                         <th class="text-center">Nama</th>
                                                         <th class="text-center">Jenis Potongan</th>
-                                                        <th class="text-center">Nominal Potongan</th>
+                                                        <th class="text-center" style="min-width: 100px;">Nominal Potongan</th>
                                                         <th class="text-center">Tipe Pembayaran</th>
-                                                        <th class="text-center">Sudah Dibayar</th>
-                                                        <th class="text-center">Kurang Bayar</th>
+                                                        <th class="text-center" style="min-width: 100px;">Sudah Dibayar</th>
+                                                        <th class="text-center" style="min-width: 100px;">Kurang Bayar</th>
                                                         <th class="text-center">Awal Periode</th>
                                                         <th class="text-center">Akhir Periode</th>
                                                     </tr>
@@ -120,12 +120,12 @@
                                                             </div>
                                                         </td>
                                                         <td class="text-center"><?= $item['noind'] ?></td>
-                                                        <td class="text-center"><?= $item['nama'] ?></td>
-                                                        <td class="text-center"><?= $item['jenis_potongan'] ?></td>
-                                                        <td class="text-center">Rp. <?= $item['nominal_total'] ?></td>
+                                                        <td class="text-left"><?= $item['nama'] ?></td>
+                                                        <td class="text-left"><?= $item['jenis_potongan'] ?></td>
+                                                        <td class="text-right">Rp. <?= number_format($item['nominal_total'],0,',','.') ?></td>
                                                         <td class="text-center"><?= $item['tipe_pembayaran'] ?></td>
-                                                        <td class="text-center">Rp. <?= $item['sudah_bayar'] ?></td>
-                                                        <td class="text-center">Rp. <?= $item['kurang_bayar'] ?></td>
+                                                        <td class="text-right">Rp. <?= number_format($item['sudah_bayar'],0,',','.') ?></td>
+                                                        <td class="text-right">Rp. <?= number_format($item['kurang_bayar'],0,',','.') ?></td>
                                                         <td class="text-center"><?= $item['awal_periode'] ?></td>
                                                         <td class="text-center"><?= $item['akhir_periode'] ?></td>
                                                     </tr>
