@@ -986,6 +986,7 @@ class M_pekerjakeluar extends CI_Model
 					FROM \"Presensi\".TDataTIM a INNER JOIN
 					\"Presensi\".TShiftPekerja b ON a.tanggal = b.tanggal AND a.noind = b.noind
 					WHERE (a.tanggal >= to_char('$akhir'::date,'yyyy-mm-01')::date) AND (a.kd_ket = 'TIK') AND (a.noind = '$noind') AND (a.tanggal <= '$akhir')
+					UNION
 					SELECT a.tanggal, a.noind,
 									concat(a.tanggal::date,' ',a.keluar)::timestamp as keluar,
 									case when a.masuk::time < a.keluar::time then
