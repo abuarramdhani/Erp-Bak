@@ -49,6 +49,19 @@ class M_nonconformity extends CI_Model
         return $query->result_array();
     }
 
+    public function getHeaders4PendingExecute($assign, $cond)
+    {
+        $query = $this->db->query("SELECT DISTINCT head.*, line.problem_completion
+        FROM pm.pm_po_oracle_non_conformity_headers head
+        , pm.pm_po_oracle_non_conformity_lines line  WHERE assign ='$assign'
+        AND head.header_id = line.header_id
+        $cond
+        AND line.status != '1'
+        ORDER BY non_conformity_num");
+
+        return $query->result_array();
+    }
+
     public function getPhone($id){
         $oracle = $this->load->database( 'oracle', TRUE );
         $query = $oracle->query(" SELECT DISTINCT poh.segment1 po_number, v.vendor_name,
@@ -957,6 +970,18 @@ class M_nonconformity extends CI_Model
     {
         $query = $this->db->query("select hdr.* from pm.pm_po_oracle_non_conformity_headers hdr, pm.pm_po_oracle_non_conformity_lines line
         where hdr.header_id = line.header_id
+        and line.status = '1'");
+
+        return $query->result_array();
+    }
+
+    public function getFinishedOrder2($cond)
+    {
+        $query = $this->db->query("SELECT hdr.*, line.problem_completion
+         from pm.pm_po_oracle_non_conformity_headers hdr
+         , pm.pm_po_oracle_non_conformity_lines line
+        where hdr.header_id = line.header_id
+        $cond
         and line.status = '1'");
 
         return $query->result_array();

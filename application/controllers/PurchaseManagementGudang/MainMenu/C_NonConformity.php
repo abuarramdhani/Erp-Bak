@@ -878,172 +878,6 @@ class C_NonConformity extends CI_Controller
 		// echo json_encode($data);
 	}
 
-	public function loginAndroid()
-	{
-		$username = $this->input->post('username');
-		$password = $this->input->post('password');
-		$password_md5 = md5($password);
-		$log = $this->M_Index->login($username,$password_md5);
-
-		if($log){
-			$user = $this->M_Index->getDetail($username);
-			
-			foreach($user as $user_item){
-				$iduser 			= $user_item->user_id;
-				$password_default 	= $user_item->password_default;
-				$kodesie			= $user_item->section_code;
-				$employee_name 		= $user_item->employee_name; 
-				$kode_lokasi_kerja 	= $user_item->location_code;
-			}
-			$ses = array(
-							'error' 		=> false,
-							'userid' 			=> $iduser,
-							'user' 				=> strtoupper($username),
-							'employee'  		=> $employee_name,
-							'kodesie' 			=> $kodesie,
-							'kode_lokasi_kerja'	=> $kode_lokasi_kerja,
-						);
-			// $this->session->set_userdata($ses);
-			
-			// redirect($this->session->userdata('last_page'));
-			
-			
-			//redirect('index');
-		}else{
-			$ses = array(
-				'error' 			=> true,
-				'userid' 			=> null,
-				'user' 				=> null,
-				'employee'  		=> null,
-				'kodesie' 			=> null,
-				'kode_lokasi_kerja'	=> null,
-				);
-			// $this->session->set_userdata($ses);
-		}
-
-		echo json_encode($ses);
-	}
-
-	public function getCaseAndroid()
-	{
-		$case = $this->M_nonconformity->getCase();
-
-		if (count($case) > 0) {
-			$data['status'] = true;
-        	$data['result'][] = $case;
-		}else {
-			$data['status'] = false;
-    		$data['result'][] = "Data not Found";
-		}
-
-		print_r(json_encode($data));
-	}
-
-	public function submitSourceAndroid()
-	{
-		$user_id = $_POST['userid'];
-
-		// $photo = $this->input->post('photo[]');
-		// $remark = $this->input->post('remark[]');
-		// $description = $this->input->post('txtDescription');
-		$photo = $_FILES['file'];
-		$description = $_POST['desc'];
-		$remark = $_POST['tag'];
-
-		$source = array('info' => $description,
-						'created_by' => $user_id,
-						'creation_date' => 'now()',
-						'last_update_by' => $user_id,
-						'last_update_date' => 'now()',
-					);
-
-		$sourceId = $this->M_nonconformity->saveSource($source);
-
-		$num = $this->M_nonconformity->checkNonConformityNum();
-
-		if (count($num)==0) {
-			$nonConformityNum = 'NC-PUR-'.date('y').'-'.date('m').'-'.'000';
-		}else {
-			$nonConformityNum = $num[0]['non_conformity_num'];
-		}
-		$numberNC = explode('-', $nonConformityNum);
-
-		$numberNC[4]++;
-
-		$numberNC[4] = sprintf("%03d", $numberNC[4]);
-
-		$nonConformityNumber = implode('-', $numberNC);
-		
-
-		$header = array('creation_date' => 'now()',
-						'non_conformity_num' => $nonConformityNumber,
-
-					 );
-
-		$headerId = $this->M_nonconformity->simpanHeader($header);
-
-		//////////////////////UPLOAD PHOTO////////////
-		$path = ('./assets/upload/NonConformity/');
-		for($j=0;$j<count($_FILES['file']['tmp_name']);$j++){
-
-			$response['error'] = false;
-			$response['message'] =  "number of files recieved is = ".count($_FILES['file']['name']);
-			if(move_uploaded_file($_FILES['file']['tmp_name'][$j],$path.$_FILES['file']['name'][$j])){
-				  $response['error'] = false;
-			$response['message'] =  $response['message']. "moved sucessfully ::  ";
-
-					$inputFileName 	= './assets/upload/NonConformity/'.$_FILES['file']['name'][$j];
-				
-					if(is_file($inputFileName))
-					{
-					// echo('ada');
-						chmod($inputFileName, 0777); ## this should change the permissions
-					}else {
-					// echo('nothing');
-					}
-					$replaceFileName = str_replace(' ','_',$files['name'][$j]);
-					$upload = array (
-						'source_id' => $sourceId[0]['lastval'],
-						'image_path' => $path,
-						'file_name' => $_FILES['file']['name'][$j],
-					);
-
-					// echo"<pre>";
-					// print_r($upload);
-
-					$this->M_nonconformity->saveImage($upload);
-			
-			}else{
-			$response['error'] = true;
-			$response['message'] = $response['message'] ."cant move :::" .$path ;
-	   
-			}
-		}
-
-				//////////////////CASE///////////////////
-		for ($i=0; $i < count($remark); $i++) { 
-			
-			$case = array(
-						'source_id' => $sourceId[0]['lastval'],
-						'case_id' => $remark[$i],
-					);
-
-			$this->M_nonconformity->saveCase($case);
-
-			//////////////////////LINES//////////////////////////////
-			$lines = array(
-						'case_id' => $remark[$i],
-						'header_id' => $headerId[0]['lastval'],
-						'description' => $description,
-						'source_id' => $sourceId[0]['lastval'],
-					);
-			$this->M_nonconformity->saveLine($lines);
-
-			// print_r($lines);exit;
-		}
-
-		// redirect('PurchaseManagementGudang/NonConformity', 'refresh');
-	}
 
 	public function hapusItemSelected()
 	{
@@ -1282,5 +1116,201 @@ class C_NonConformity extends CI_Controller
 		$this->M_nonconformity->hapusDataNCHeader($id);
 
 		echo "berhasil";
+	}
+
+	public function pendingExecuteSupplier()
+	{
+
+		$user_id = $this->session->userid;
+
+		$data['Title'] = 'Pending Execute';
+		$data['Menu'] = 'Non Conformity';
+		$data['SubMenuOne'] = 'Pending Execute';
+		$data['SubMenuTwo'] = '';
+
+		$data['UserMenu'] = $this->M_user->getUserMenu($user_id,$this->session->responsibility_id);
+		$data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id);
+		$data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id);
+
+		$cond = "AND head.non_conformity_num like 'NC-PURSUP%'";
+		$data['PoOracleNonConformityHeaders'] = $this->M_nonconformity->getHeaders4PendingExecute(4,$cond);
+
+		// print_r($data['PoOracleNonConformityHeaders']);exit;
+
+		$this->load->view('V_Header',$data);
+		$this->load->view('V_Sidemenu',$data);
+		$this->load->view('PurchaseManagementGudang/NonConformity/V_listDataPendingExecute', $data);
+		$this->load->view('V_Footer',$data);
+	}
+
+	public function pendingExecuteSubkon()
+	{
+
+		$user_id = $this->session->userid;
+
+		$data['Title'] = 'Pending Execute';
+		$data['Menu'] = 'Non Conformity';
+		$data['SubMenuOne'] = 'Pending Execute';
+		$data['SubMenuTwo'] = '';
+
+		$data['UserMenu'] = $this->M_user->getUserMenu($user_id,$this->session->responsibility_id);
+		$data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id);
+		$data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id);
+
+		$cond = "AND head.non_conformity_num like 'NC-PURSUB%'";
+		$data['PoOracleNonConformityHeaders'] = $this->M_nonconformity->getHeaders4PendingExecute(4,$cond);
+
+		// print_r($data['PoOracleNonConformityHeaders']);exit;
+
+		$this->load->view('V_Header',$data);
+		$this->load->view('V_Sidemenu',$data);
+		$this->load->view('PurchaseManagementGudang/NonConformity/V_listDataPendingExecute', $data);
+		$this->load->view('V_Footer',$data);
+	}
+
+	public function readPendingExecute($id)
+	{
+		$user_id = $this->session->userid;
+
+		$data['Title'] = 'Non Conformity Data';
+		$data['Menu'] = 'Purchase Management';
+		$data['SubMenuOne'] = '';
+		$data['SubMenuTwo'] = '';
+
+		$data['UserMenu'] = $this->M_user->getUserMenu($user_id,$this->session->responsibility_id);
+		$data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id);
+		$data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id);
+
+		$plaintext_string = str_replace(array('-', '_', '~'), array('+', '/', '='), $id);
+		$plaintext_string = $this->encrypt->decode($plaintext_string);
+
+		$data['id'] = $id;
+
+		/* HEADER DATA */
+		$data['PoOracleNonConformityHeaders'] = $this->M_nonconformity->getHeaders($plaintext_string);
+		$data['Phone'] = $this->M_nonconformity->getPhone($data['PoOracleNonConformityHeaders'][0]['po_number']);
+		
+		/* LINES DATA */
+		$data['PoOracleNonConformityLines'] = $this->M_nonconformity->getLines($plaintext_string);
+
+		$data['linesItem'] = $this->M_nonconformity->getLinesItem($data['PoOracleNonConformityHeaders'][0]['header_id']);
+
+		$data['case'] = $this->M_nonconformity->getCase();
+
+		if (count($data['PoOracleNonConformityLines']) > 0) {
+			$sourceId = $data['PoOracleNonConformityLines'][0]['source_id'];
+	
+			$data['image'] = $this->M_nonconformity->getImages($sourceId);
+		}else {
+			$data['image'] = '';
+			$data['PoOracleNonConformityLines'] = '';
+		}
+
+		$data['notesBuyer'] = $this->M_nonconformity->getNotesBuyer($plaintext_string);
+
+		// echo'<pre>';
+		// print_r($data['notesBuyer']);exit;
+
+		$this->load->view('V_Header',$data);
+		$this->load->view('V_Sidemenu',$data);
+		$this->load->view('PurchaseManagementGudang/NonConformity/V_readPendingExecute', $data);
+		$this->load->view('V_Footer',$data);
+	}
+
+	public function FinishedOrderSupplier()
+	{
+		$user_id = $this->session->userid;
+
+		$data['Title'] = 'Finished Order';
+		$data['Menu'] = 'Non Conformity';
+		$data['SubMenuOne'] = 'Finished Order';
+		$data['SubMenuTwo'] = '';
+
+		$data['UserMenu'] = $this->M_user->getUserMenu($user_id,$this->session->responsibility_id);
+		$data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id);
+		$data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id);
+
+		$cond = "AND hdr.non_conformity_num like 'NC-PURSUP%'";
+		$data['PoOracleNonConformityHeaders'] = $this->M_nonconformity->getFinishedOrder2($cond);
+
+		// print_r($data['PoOracleNonConformityHeaders']);exit;
+
+		$this->load->view('V_Header',$data);
+		$this->load->view('V_Sidemenu',$data);
+		$this->load->view('PurchaseManagementGudang/NonConformity/V_listDataFinishedOrder', $data);
+		$this->load->view('V_Footer',$data);
+	}
+
+	public function FinishedOrderSubkon()
+	{
+		$user_id = $this->session->userid;
+
+		$data['Title'] = 'Finished Order';
+		$data['Menu'] = 'Non Conformity';
+		$data['SubMenuOne'] = 'Finished Order';
+		$data['SubMenuTwo'] = '';
+
+		$data['UserMenu'] = $this->M_user->getUserMenu($user_id,$this->session->responsibility_id);
+		$data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id);
+		$data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id);
+
+		$cond = "AND hdr.non_conformity_num like 'NC-PURSUB%'";
+		$data['PoOracleNonConformityHeaders'] = $this->M_nonconformity->getFinishedOrder2($cond);
+
+		// print_r($data['PoOracleNonConformityHeaders']);exit;
+
+		$this->load->view('V_Header',$data);
+		$this->load->view('V_Sidemenu',$data);
+		$this->load->view('PurchaseManagementGudang/NonConformity/V_listDataFinishedOrder', $data);
+		$this->load->view('V_Footer',$data);
+	}
+
+	public function readFinishedOrder($id)
+	{
+		$user_id = $this->session->userid;
+
+		$data['Title'] = 'Non Conformity Data';
+		$data['Menu'] = 'Purchase Management';
+		$data['SubMenuOne'] = '';
+		$data['SubMenuTwo'] = '';
+
+		$data['UserMenu'] = $this->M_user->getUserMenu($user_id,$this->session->responsibility_id);
+		$data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id);
+		$data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id);
+
+		$plaintext_string = str_replace(array('-', '_', '~'), array('+', '/', '='), $id);
+		$plaintext_string = $this->encrypt->decode($plaintext_string);
+
+		$data['id'] = $id;
+
+		/* HEADER DATA */
+		$data['PoOracleNonConformityHeaders'] = $this->M_nonconformity->getHeaders($plaintext_string);
+		$data['Phone'] = $this->M_nonconformity->getPhone($data['PoOracleNonConformityHeaders'][0]['po_number']);
+		
+		/* LINES DATA */
+		$data['PoOracleNonConformityLines'] = $this->M_nonconformity->getLines($plaintext_string);
+
+		$data['linesItem'] = $this->M_nonconformity->getLinesItem($data['PoOracleNonConformityHeaders'][0]['header_id']);
+
+		$data['case'] = $this->M_nonconformity->getCase();
+
+		if (count($data['PoOracleNonConformityLines']) > 0) {
+			$sourceId = $data['PoOracleNonConformityLines'][0]['source_id'];
+	
+			$data['image'] = $this->M_nonconformity->getImages($sourceId);
+		}else {
+			$data['image'] = '';
+			$data['PoOracleNonConformityLines'] = '';
+		}
+
+		$data['notesBuyer'] = $this->M_nonconformity->getNotesBuyer($plaintext_string);
+
+		// echo'<pre>';
+		// print_r($data['notesBuyer']);exit;
+
+		$this->load->view('V_Header',$data);
+		$this->load->view('V_Sidemenu',$data);
+		$this->load->view('PurchaseManagementGudang/NonConformity/V_readFinishedOrder', $data);
+		$this->load->view('V_Footer',$data);
 	}
 }
