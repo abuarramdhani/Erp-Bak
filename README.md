@@ -20,7 +20,7 @@ Script Sync otomatis Erp.quick.com lokal ke internet / begitu sebaliknya
 
 */5 * * * * rsync -azP --perms --chmod=777 root@192.168.168.25:/var/www/html/assets/upload_kaizen/ /var/www/html/assets/upload_kaizen/
 
-*/5 * * * * rsync -azP --perms --chmod=777 root@quick.com:/var/www/aplikasi/photo/* /var/www/html/assets/img/photo/
+* /5 * * * * rsync -azP --perms --chmod=777 root@quick.com:/var/www/aplikasi/photo/* /var/www/html/assets/img/photo/
 
 */5 * * * * cd /var/www/html && git pull > /home/administrator/cronerp.txt
 
