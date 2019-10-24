@@ -107,52 +107,6 @@ $db['oracle'] = array(
 	'save_queries' => TRUE
 );
 
-// tidak lagi digunakan
-// $db['mssql'] = array(
-// 	'dsn'	=> '',
-// 	'hostname' => '192.168.6.20:1433',
-// 	'username' => 'sa',
-// 	'password' => 'sa',
-// 	'database' => '',
-// 	'dbdriver' => 'mssql',
-// 	'dbprefix' => '',
-// 	'pconnect' => FALSE,
-// 	'db_debug' => TRUE,
-// 	'cache_on' => FALSE,
-// 	'cachedir' => '',
-// 	'char_set' => 'utf8',
-// 	'dbcollat' => 'utf8_general_ci',
-// 	'swap_pre' => '',
-// 	'encrypt' => FALSE,
-// 	'compress' => FALSE,
-// 	'stricton' => FALSE,
-// 	'failover' => array(),
-// 	'save_queries' => TRUE
-// );
-
-// $db['personalia'] = array(
-// 	'dsn'	=> '',
-// 	'hostname' => 'db.quick.com',
-// 	'username' => 'postgres',
-// 	'password' => 'password',
-// 	'database' => 'Personalia',
-// 	'dbdriver' => 'postgre',
-// 	'dbprefix' => '',
-// 	'pconnect' => FALSE,
-// 	'db_debug' => TRUE,
-// 	'cache_on' => FALSE,
-// 	'cachedir' => '',
-// 	'char_set' => 'utf8',
-// 	'dbcollat' => 'utf8_general_ci',
-// 	'swap_pre' => '',
-// 	'encrypt' => FALSE,
-// 	'compress' => FALSE,
-// 	'stricton' => FALSE,
-// 	'failover' => array(),
-// 	'save_queries' => TRUE,
-// 	'port' => 5432
-// );
-
 $db['personalia'] = array(
 	'dsn'	=> '',
 	'hostname' => 'database.quick.com',
@@ -312,29 +266,6 @@ $db['dpostgre'] = array(
 	'save_queries' => TRUE,
 	'port' => 5432
 );
-
-// $db['dinas_luar'] = array(
-// 	'dsn'	=> '',
-// 	'hostname' => 'dl.quick.com',
-// 	'username' => 'quickc01_dlo',
-// 	'password' => '{#QE.k.WxaZG',
-// 	'database' => 'quickc01_dinas_luar_online',
-// 	'dbdriver' => 'mysqli',
-// 	'dbprefix' => '',
-// 	'pconnect' => FALSE,
-// 	'db_debug' => TRUE,
-// 	'cache_on' => FALSE,
-// 	'cachedir' => '',
-// 	'char_set' => 'utf8',
-// 	'dbcollat' => 'utf8_general_ci',
-// 	'swap_pre' => '',
-// 	'encrypt' => FALSE,
-// 	'compress' => FALSE,
-// 	'stricton' => FALSE,
-// 	'failover' => array(),
-// 	'save_queries' => TRUE,
-// 	'port' => 3306
-// );
 
 $db['dinas_luar'] = array(
 	'dsn'	=> '',
