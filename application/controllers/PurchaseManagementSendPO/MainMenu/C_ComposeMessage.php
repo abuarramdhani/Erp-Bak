@@ -99,6 +99,23 @@ class C_ComposeMessage extends CI_Controller {
 				case 'SIDO RAHAYU, PT':
 				case 'SAGATEKNINDO SEJATI,PT':
 				case 'TUNGGAL DJAJA INDAH, PT. PABRIK CAT':
+				case 'KRAKATAU STEEL, PT':
+				case 'KUBOTA INDONESIA, PT':
+				case 'VENUZT MULTI TRADE,CV':
+				case 'SAMATOR GAS INDUSTRI, PT':
+				case 'ASTRA DAIDO STEEL INDONESIA, PT':
+				case 'ANEKA BAUT,TOKO':
+				case 'LANCAR, TOKO':
+				case 'INDONESIA NITTO SEIKO TRADING, PT':
+				case 'SKF INDUSTRIAL INDONESIA, PT':
+				case 'PODO MORO, TOKO':
+				case 'TIMUR RAYA ALAM DAMAI,PT':
+				case 'LANGGENG, CV':
+				case 'HONDA POWER PRODUCTS INDONESIA, PT':
+				case 'BANDO INDONESIA, PT':
+				case 'TIRA AUSTENITE TBK, PT':
+				case 'CAHAYA CITRASURYA INDOPRIMA, CV':
+				case 'DHARMA POLIMETAL, PT':
 					$this->PurchaseManagementDocument($po_number);
 					break;
 				default:
