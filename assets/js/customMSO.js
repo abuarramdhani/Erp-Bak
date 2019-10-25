@@ -18,6 +18,12 @@ $(document).ready(function(){
         },
         "autoWidth": false,
     } ); 
+
+    sound.volume(0.0);
+    sound.play();
+    setTimeout(function(){
+            sound.stop();
+        }, 500);
     
     if(windowLoc.includes("/MonitoringSalesOrder")){
 		setInterval(function() {
@@ -35,6 +41,12 @@ const swalConfirmNew = Swal.mixin({
   })
 
 var old_count;
+var sound = new Howl({
+                    src: [baseurl + "assets/upload/MonitoringSalesOrder/alert.mp3"],
+                    loop: true,
+                    html5: true,
+                  }); 
+
 function fetch_data(){
     $.ajax({
         type : "POST",
@@ -43,12 +55,7 @@ function fetch_data(){
         success : function(data){
             if (data[0].TOTAL > old_count) {
                 console.log(data[0].TOTAL ,old_count);
-                var sound = new Howl({
-                    src: [baseurl + "assets/upload/MonitoringSalesOrder/alert.mp3"],
-                    loop: true,
-                    autoplay: true,
-                    html5: true,
-                  });  
+		sound.volume(1.0); 
                 sound.play();
                 swalConfirmNew.fire({
                     title: 'Attention!',
@@ -63,7 +70,6 @@ function fetch_data(){
                     }
                   })
                 old_count = data[0].TOTAL;
-                console.log("set "+old_count)
                 load_data()
             }
         }
@@ -122,7 +128,6 @@ function load_data(){
                         '</tr>';
             })
             old_count = data.length;
-            console.log(old_count, data.length);
             
             $('#do_list tbody').html(row);
 
