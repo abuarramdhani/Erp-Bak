@@ -627,6 +627,21 @@ class M_pekerjakeluar extends CI_Model
 								from \"Presensi\".tshiftpekerja b
 								where b.noind = a.noind
 								and b.tanggal between '$awal'::date and a.tglkeluar
+							)-
+							(
+								select count(*)
+								from (
+									select date_.*
+									from generate_series(
+										a.tglkeluar,
+										to_char(a.tglkeluar,'YYYY-MM-01')::date + interval '1 month' - interval '1 day',
+										interval '1 day'
+									) as date_
+								) as dates
+								left join \"Dinas_Luar\".tlibur libur 
+								on libur.tanggal = dates.date_
+								where libur.tanggal is null
+								and (extract(isodow from dates.date_) <> '7')	
 							)
 						end as total
 					from hrd_khs.tpribadi a
@@ -947,6 +962,21 @@ class M_pekerjakeluar extends CI_Model
 								from \"Presensi\".tshiftpekerja b
 								where b.noind = a.noind
 								and b.tanggal between '$awal'::date and a.tglkeluar
+							) -
+							(
+								select count(*)
+								from (
+									select date_.*
+									from generate_series(
+										a.tglkeluar,
+										to_char(a.tglkeluar,'YYYY-MM-01')::date + interval '1 month' - interval '1 day',
+										interval '1 day'
+									) as date_
+								) as dates
+								left join \"Dinas_Luar\".tlibur libur 
+								on libur.tanggal = dates.date_
+								where libur.tanggal is null
+								and (extract(isodow from dates.date_) <> '7')	
 							)
 						end as total
 					from hrd_khs.tpribadi a
