@@ -2646,3 +2646,4 @@ $route['SaveData'] = 'BarangDatang/C_Input/saveData';
 $route['BarangDatang/SearchSupplier'] = 'BarangDatang/C_Input/SearchSupplier';
 $route['BarangDatang/MonitoringBarangDatang'] = 'BarangDatang/C_Monitoring';
 $route['BarangDatang/search'] = 'BarangDatang/C_Monitoring/search';
+//
