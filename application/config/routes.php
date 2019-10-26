@@ -1892,6 +1892,11 @@ $route['MasterPekerja/Surat/BAPSP3/(:any)/(:any)']					=	'MasterPekerja/Surat/BA
 $route['MasterPekerja/Surat/BAPSP3/(:any)/(:any)/(:any)']			=	'MasterPekerja/Surat/BAPSP3/C_Daftar/$1/$2/$3';
 $route['MasterPekerja/Surat/BAPSP3/(:any)/(:any)/(:any)/(:any)']	=	'MasterPekerja/Surat/BAPSP3/C_Daftar/$1/$2/$3/$4';
 
+$route['MasterPekerja/Surat/gajipekerjacutoff']									=	'MasterPekerja/Surat/GajiPekerjaCutoff/C_Index';
+$route['MasterPekerja/Surat/gajipekerjacutoff/(:any)']					=	'MasterPekerja/Surat/GajiPekerjaCutoff/C_Index/$1';
+$route['MasterPekerja/Surat/gajipekerjacutoff/(:any)/(:any)']					=	'MasterPekerja/Surat/GajiPekerjaCutoff/C_Index/$1/$2';
+$route['MasterPekerja/Surat/gajipekerjacutoff/(:any)/(:any)/(:any)']		=	'MasterPekerja/Surat/GajiPekerjaCutoff/C_Index/$1/$2/$3';
+
 //------------------------------------ Penerimaan PO ----------------------------------------
 $route['PenerimaanPO']						   = 'PenerimaanPO/C_Penerimaan';
 
