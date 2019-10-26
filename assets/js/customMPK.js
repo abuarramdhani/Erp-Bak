@@ -1891,3 +1891,22 @@ function nextInfo() {
     }
   })
 }
+
+$(document).ready(function(){
+   $('.tabel_izin').DataTable({
+    "ordering" : false,
+    "paging" : false,
+    "searching": false
+      });
+
+    $('.tabel_rekap').DataTable({
+    "dom": 'Bfrtip',
+        "buttons": [
+            'excel', 'pdf'
+        ]
+    });
+
+    $("input.periodeRekap").monthpicker({
+      changeYear:true,
+      dateFormat: 'yy-mm', });
+});

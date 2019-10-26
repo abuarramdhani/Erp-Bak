@@ -3194,3 +3194,21 @@ $route['SaveData'] = 'BarangDatang/C_Input/saveData';
 $route['BarangDatang/SearchSupplier'] = 'BarangDatang/C_Input/SearchSupplier';
 $route['BarangDatang/MonitoringBarangDatang'] = 'BarangDatang/C_Monitoring';
 $route['BarangDatang/search'] = 'BarangDatang/C_Monitoring/search';
+
+//------------------------------------Pola Shift Seksi---------------------------------------
+$route['PolaShiftSeksi']					= 'PolaShiftSeksi/C_Index';
+
+$route['PolaShiftSeksi/ImportPolaShift']							= 'PolaShiftSeksi/ImportPolaShift/C_Index';
+$route['PolaShiftSeksi/ImportPolaShift/(:any)']						= 'PolaShiftSeksi/ImportPolaShift/C_Index/$1';
+$route['PolaShiftSeksi/ImportPolaShift/(:any)/(:any)']				= 'PolaShiftSeksi/ImportPolaShift/C_Index/$1/$2';
+$route['PolaShiftSeksi/ImportPolaShift/(:any)/(:any)/(:any)']		= 'PolaShiftSeksi/ImportPolaShift/C_Index/$1/$2/$3';
+
+$route['PolaShiftSeksi/TukarShift']							= 'PolaShiftSeksi/TukarShift/C_Index';
+$route['PolaShiftSeksi/TukarShift/(:any)']					= 'PolaShiftSeksi/TukarShift/C_Index/$1';
+$route['PolaShiftSeksi/TukarShift/(:any)/(:any)']			= 'PolaShiftSeksi/TukarShift/C_Index/$1/$2';
+$route['PolaShiftSeksi/TukarShift/(:any)/(:any)/(:any)']	= 'PolaShiftSeksi/TukarShift/C_Index/$1/$2/$3';
+
+//--------------------------------------------------- Cetak Rekap Perizinan Dinas -----------------------------------//
+$route['MasterPekerja/RekapPerizinanDinas'] 		= 'MasterPekerja/RekapPerizinanDinas/C_Index';
+$route['MasterPekerja/RekapPerizinanDinas/(:any)'] = 'MasterPekerja/RekapPerizinanDinas/C_Index/$1';
+$route['MasterPekerja/RekapPerizinanDinas/(:any)/(:any)'] = 'MasterPekerja/RekapPerizinanDinas/C_Index/$1/$2';
