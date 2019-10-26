@@ -665,7 +665,7 @@ class M_pekerjakeluar extends CI_Model
 							end as break_selesai
 					FROM \"Presensi\".TDataTIM a INNER JOIN
 					\"Presensi\".TShiftPekerja b ON a.tanggal = b.tanggal AND a.noind = b.noind
-					WHERE (a.tanggal >= to_char('$akhir'::date,'yyyy-mm-01')::date) AND (a.kd_ket = 'TIK') AND (a.noind = '$noind') AND (a.tanggal <= '$akhir')
+					WHERE (a.tanggal >= '$awal') AND (a.kd_ket = 'TIK') AND (a.noind = '$noind') AND (a.tanggal <= '$akhir')
 					UNION
 					SELECT a.tanggal, a.noind,
 									concat(a.tanggal::date,' ',a.keluar)::timestamp as keluar,
@@ -698,7 +698,7 @@ class M_pekerjakeluar extends CI_Model
 									end as break_selesai
 							FROM \"Presensi\".TDataPresensi a INNER JOIN
 							\"Presensi\".TShiftPekerja b ON a.tanggal = b.tanggal AND a.noind = b.noind
-							WHERE (a.tanggal >= to_char('$akhir'::date,'yyyy-mm-01')::date) AND (a.kd_ket = 'TIK') AND (a.noind = '$noind') AND (a.tanggal <= '$akhir')
+							WHERE (a.tanggal >= '$awal') AND (a.kd_ket = 'PSP') AND (a.noind = '$noind') AND (a.tanggal <= '$akhir')
 					ORDER BY tanggal";
 			$result2 = $this->personalia->query($sql)->result_array();
 			$nilai = $result1['0']['total'];
@@ -951,7 +951,7 @@ class M_pekerjakeluar extends CI_Model
 						end as total
 					from hrd_khs.tpribadi a
 					where a.noind = '$noind'";
-					// echo $sql."<br>";exit();
+					// echo "<pre>".$sql."<br>";exit();
 			$result1 = $this->personalia->query($sql)->result_array();
 
 			$sql = "SELECT a.tanggal, a.noind,
@@ -985,7 +985,7 @@ class M_pekerjakeluar extends CI_Model
 							end as break_selesai
 					FROM \"Presensi\".TDataTIM a INNER JOIN
 					\"Presensi\".TShiftPekerja b ON a.tanggal = b.tanggal AND a.noind = b.noind
-					WHERE (a.tanggal >= to_char('$akhir'::date,'yyyy-mm-01')::date) AND (a.kd_ket = 'TIK') AND (a.noind = '$noind') AND (a.tanggal <= '$akhir')
+					WHERE (a.tanggal >= '$awal') AND (a.kd_ket = 'TIK') AND (a.noind = '$noind') AND (a.tanggal <= '$akhir')
 					UNION
 					SELECT a.tanggal, a.noind,
 									concat(a.tanggal::date,' ',a.keluar)::timestamp as keluar,
@@ -1018,7 +1018,7 @@ class M_pekerjakeluar extends CI_Model
 									end as break_selesai
 							FROM \"Presensi\".TDataPresensi a INNER JOIN
 							\"Presensi\".TShiftPekerja b ON a.tanggal = b.tanggal AND a.noind = b.noind
-							WHERE (a.tanggal >= to_char('$akhir'::date,'yyyy-mm-01')::date) AND (a.kd_ket = 'TIK') AND (a.noind = '$noind') AND (a.tanggal <= '$akhir')
+							WHERE (a.tanggal >= '$awal') AND (a.kd_ket ='PSP') AND (a.noind = '$noind') AND (a.tanggal <= '$akhir')
 					ORDER BY tanggal";
 
 			$result2 = $this->personalia->query($sql)->result_array();
@@ -1046,6 +1046,7 @@ class M_pekerjakeluar extends CI_Model
 
 				$ijin = $this->cek_ijin_keluar($keluar,$masuk,$break_mulai,$break_selesai,$ist_mulai,$ist_selesai) / ($tik['jam_kerja'] * 60);
 				$ijin = number_format($ijin, 2);
+				// echo $ijin."<br>";
 				if ($ijin <= 0) {
 					$nilai = $nilai;
 				}else if($ijin > 0 && $ijin <= 30){
@@ -1064,7 +1065,7 @@ class M_pekerjakeluar extends CI_Model
 				$simpan_tgl = $tik['tanggal'];
 			}
 		}
-		// echo $result1['0']['jml'];exit();
+		// echo $nilai;exit();
 		return $nilai;
 	}
 
