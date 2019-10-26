@@ -13,6 +13,9 @@ $(document).on('ifChecked', '#fingerTidak', function(){
 
 $(document).ready(function() {
 
+    $('#MP_GajiCutoff').DataTable({
+
+    });
     $('#dataTable-MasterLokasi').DataTable({
         dom: 'flrtp',
     });
@@ -130,6 +133,17 @@ $(function() {
     // 	{
     //	DateRangePicker
     //	{
+
+    $('.monthpickerq').monthpicker({
+      Button: false ,
+      dateFormat: "MM yy"
+    });
+
+    $('.monthpickerq1').monthpicker({
+      Button: false ,
+      dateFormat: "MM yy"
+    });
+
     $('.MasterPekerja-daterangepicker').daterangepicker({
         "showDropdowns": true,
         "autoApply": true,
@@ -810,6 +824,7 @@ $(function() {
     $('#MasterPekerja-Surat-txaFormatSurat').redactor();
     $('#MasterPekerja-SuratDemosi-txaPreview').redactor();
     $('#MasterPekerja-SuratPengangkatanStaf-txaPreview').redactor();
+
     //	}
 
 
@@ -1650,5 +1665,229 @@ $('#form_cetak_sangu').submit(function(e){
 	setTimeout(function(){
 		window.open(a, '_self');
 	}), 100 ;
-
 });
+
+// JS untuk Memo Pemberitahuan Gaji Pekerja Cutoff
+
+
+$('.deleteMemoCutoff').click(function () {
+  let id = $(this).data('value')
+  console.log(id)
+  Swal.fire({
+    title: 'Apakah Anda Yakin?',
+    text: "Mengapus data ini secara permanent !",
+    type: 'warning',
+    showCancelButton: true,
+    confirmButtonColor: '#3085d6',
+    cancelButtonColor: '#d33',
+    confirmButtonText: 'Yes, delete it!'
+  }).then( result => {
+    if (result.value) {
+      window.location.href = baseurl+"MasterPekerja/Surat/gajipekerjacutoff/deleteMemo/"+id
+    }
+  })
+  return false;
+})
+
+$('.btn_save_info').prop("disabled", true).click(function() {
+})
+$(".MPK_tertandaInfo").select2("disabled", true);
+
+$('#monthpickerq').on('change', function(){
+  let periode = $(this).val();
+  $('#surat-loading').removeAttr('hidden')
+
+  $.ajax({
+    method: 'post',
+    data: {ajaxPeriode: periode},
+    url: baseurl + 'MasterPekerja/Surat/gajipekerjacutoff/getDataPeriode',
+    success: function(data){
+      $('.MPK-btnPratinjauCutoff').prop("disabled", true).click(function() {
+
+      })
+      $('#surat-loading').attr('hidden', true);
+      if(data == 'null'){
+        swal.fire({
+          title:'Peringatan',
+          text:'Periode Cutoff tidak ditemukan',
+          type:'warning',
+          showConfirmButton:false
+        })
+        window.location.href = baseurl+"MasterPekerja/Surat/gajipekerjacutoff/create_Info";
+      }
+      $('#periodikCutoff').html(data);
+      $('#monthpickerq').val(periode);
+      $('#MPK_infoPekerja').change(function(){
+        let jenis = $(this).val();
+        if (jenis == 'nonstaf') {
+          $('#groupPekerjaInfo').removeClass('hidden');
+          $('#groupPekerjaStafInfo').addClass('hidden');
+          $('#MPK-btnPratinjauCutoff').prop('disabled', true).click(function () {
+
+          })
+          $('#MPK_txtaAlasan').attr('readonly', true);
+          $('#btnInfonext').click(function () {
+            $('#MPK_txtaAlasan').attr('readonly', false);
+            $('#MPK-btnPratinjauCutoff').prop('disabled', false);
+          })
+        }else if (jenis == 'staf') {
+          $('#groupPekerjaInfo').addClass('hidden');
+          $('#groupAtasanInfo').addClass('hidden');
+          $('#groupPekerjaStafInfo').removeClass('hidden');
+          $('#MPK-btnPratinjauCutoff').prop('disabled', false);
+          $('#MPK_txtaAlasan').attr('readonly', false);
+
+        }else {
+          $('#MPK-btnPratinjauCutoff').prop("disabled", true).click(function() {
+
+          })
+          $('#MPK_txtaAlasan').attr('readonly', true);
+          $('#groupPekerjaInfo').addClass('hidden');
+          $('#groupAtasanInfo').addClass('hidden');
+          $('#groupPekerjaStafInfo').addClass('hidden');
+        }
+
+        $.ajax({
+          method: 'post',
+          data: {jenis: jenis},
+          url: baseurl + 'MasterPekerja/Surat/gajipekerjacutoff/getAlasan',
+          success: function (data) {
+            if (jenis = 'nonstaf') {
+              $('#MPK_txtaAlasan').val(data);
+              $('#MPK_txtaAlasan').text(data);
+            }else if (jenis == 'staf') {
+              $('#MPK_txtaAlasan').val(data);
+              $('#MPK_txtaAlasan').text(data);
+            }else {
+              $('#MPK_txtaAlasan').val('');
+              $('#MPK_txtaAlasan').text('');
+            }
+          }
+        })
+      });
+
+      $('#MPK_txtaIsi').redactor();
+
+      $('#MPK-btnPratinjauCutoff').click(function(){
+
+        $('#surat-loading').attr('hidden', false);
+        let allnoind    = []
+        let getnoind    = $('.noind-staff').each(function(){
+          let newind    = $(this).text().trim()
+          allnoind.push(newind)
+        })
+        let seksiname  = []
+        let name    = $('.namaSeksi').each(function(){
+          let namesie     = $(this).text().trim()
+          seksiname.push(namesie)
+        })
+        console.log(seksiname);
+        let noindnstaf  = []
+        let getnstaf    = $('.noind-nonstaff').each(function(){
+          let nstaf     = $(this).text().trim()
+          noindnstaf.push(nstaf)
+        })
+        let atasanA     = []
+        let check = []
+        $('.classkuhehe').each(function(){
+          let newats    = $(this).val().trim()
+          atasanA.push(newats)
+          if (newats == '' || newats == null) {
+            Swal.fire({
+              title: 'Peringatan',
+              text: "Pastikan Anda telah mengisi parameter yang diperlukan. ;)",
+              type: 'warning',
+            });
+            $('#surat-loading').attr('hidden', true);
+            check.push(true)
+            return false
+          }
+        })
+        let jenis       = $('#MPK_infoPekerja').val()
+        let approval    = $('#MPK_tertandaInfo').val()
+        let alasan      = $('#MPK_txtaAlasan').val()
+        let period      = $('#monthpickerq').val()
+
+        if(check[0] == true){
+          return false;
+        }
+
+        if (allnoind == '' || allnoind == null || noindnstaf == '') {
+          Swal.fire({
+            title: 'Peringatan',
+            text: "Pastikan Anda telah mengisi parameter yang diperlukan. ;)",
+            type: 'warning',
+          });
+        }else {
+          $.ajax({
+            type: 'POST',
+            data: {
+              allnoind: allnoind,
+              jenis: jenis,
+              approval: approval,
+              alasan: alasan,
+              nstaf: noindnstaf,
+              noindA: atasanA,
+              periodeBaru: period,
+              seksiName: seksiname
+            },
+            url: baseurl+'MasterPekerja/Surat/gajipekerjacutoff/isi_memo_cutoff',
+            success: function(result)
+            {
+              $('.btn_save_info').prop("disabled", false);
+              console.log(result);
+              var result = JSON.parse(result);
+              $('#MPK_txtaIsi').redactor('set', result['isi_txt_memo_cutoff']);
+              $('#surat-loading').attr('hidden', true);
+            }
+          });
+        }
+      });
+
+      $('.deletenonstaf').click(function(){
+        $(this).closest('tr').remove();
+      })
+
+      $(document).ready(function() {
+        $('#MPK_tertandaInfo').select2({
+          allowClear: true,
+          placeholder: "Pilih Approval"
+        });
+
+        $('#MPK_infoPekerja').select2({
+          allowClear: true,
+          placeholder: "Pilih Status Pekerja"
+        });
+
+      })
+    }
+  })
+})
+
+function nextInfo() {
+  $('#groupPekerjaInfo').addClass('hidden');
+  $('#groupAtasanInfo').removeClass('hidden');
+
+  let noindnstaf1  = []
+  let getnstaf1    = $('.noind-nonstaff').each(function(){
+    let nstaf1     = $(this).text().trim()
+    noindnstaf1.push(nstaf1)
+  })
+  $('#surat-loading').attr('hidden', false);
+  $.ajax({
+    method: 'post',
+    data: {noindnstaf: noindnstaf1},
+    url: baseurl + 'MasterPekerja/Surat/gajipekerjacutoff/getTabel',
+    success: function (data) {
+      $('#surat-loading').attr('hidden', true);
+      $('#groupAtasanInfo').html(data);
+      console.log(data);
+      $(document).ready(function () {
+        $('.classkuhehe').select2({
+          allowClear: true,
+          placeholder: "Pilih Atasan"
+        });
+      })
+    }
+  })
+}
