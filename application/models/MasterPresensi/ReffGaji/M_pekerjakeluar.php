@@ -4740,7 +4740,7 @@ class M_pekerjakeluar extends CI_Model
 				 else
 				 	'Tidak'
 				 end as jp
-				 from hrd_khs.tpribadi
+				 from hrd_khs.tpribadi tp
 				 where noind = '$noind'";
 		return $this->personalia->query($sql)->row();
 	}
@@ -4788,7 +4788,7 @@ class M_pekerjakeluar extends CI_Model
 						0
 					else
 						case when (select count(*) from \"Presensi\".treffgaji tr where tp.noind = tr.noind and to_char(tp.tglkeluar,'YYYY-MM') = to_Char(tr.tanggal,'YYYY-MM')) > 0 then
-							'0
+							0
 						else 
 							1
 						end
@@ -4801,7 +4801,7 @@ class M_pekerjakeluar extends CI_Model
 						0
 					else
 						case when (select count(*) from \"Presensi\".treffgaji tr where tp.noind = tr.noind and to_char(tp.tglkeluar,'YYYY-MM') = to_Char(tr.tanggal,'YYYY-MM')) > 0 then
-							'0
+							0
 						else 
 							1
 						end
@@ -4809,7 +4809,7 @@ class M_pekerjakeluar extends CI_Model
 				 else
 				 	0
 				 end as jp
-				 from hrd_khs.tpribadi
+				 from hrd_khs.tpribadi tp
 				 where noind = '$noind'";
 		return $this->personalia->query($sql)->row()->jkn;
 	}
@@ -4835,7 +4835,7 @@ class M_pekerjakeluar extends CI_Model
 						0
 					else
 						case when (select count(*) from \"Presensi\".treffgaji tr where tp.noind = tr.noind and to_char(tp.tglkeluar,'YYYY-MM') = to_Char(tr.tanggal,'YYYY-MM')) > 0 then
-							'0
+							0
 						else 
 							1
 						end
@@ -4848,7 +4848,7 @@ class M_pekerjakeluar extends CI_Model
 						0
 					else
 						case when (select count(*) from \"Presensi\".treffgaji tr where tp.noind = tr.noind and to_char(tp.tglkeluar,'YYYY-MM') = to_Char(tr.tanggal,'YYYY-MM')) > 0 then
-							'0
+							0
 						else 
 							1
 						end
@@ -4856,7 +4856,7 @@ class M_pekerjakeluar extends CI_Model
 				 else
 				 	0
 				 end as jp
-				 from hrd_khs.tpribadi
+				 from hrd_khs.tpribadi tp
 				 where noind = '$noind'";
 		return $this->personalia->query($sql)->row()->jht;
 	}
@@ -4882,7 +4882,7 @@ class M_pekerjakeluar extends CI_Model
 						0
 					else
 						case when (select count(*) from \"Presensi\".treffgaji tr where tp.noind = tr.noind and to_char(tp.tglkeluar,'YYYY-MM') = to_Char(tr.tanggal,'YYYY-MM')) > 0 then
-							'0
+							0
 						else 
 							1
 						end
@@ -4895,7 +4895,7 @@ class M_pekerjakeluar extends CI_Model
 						0
 					else
 						case when (select count(*) from \"Presensi\".treffgaji tr where tp.noind = tr.noind and to_char(tp.tglkeluar,'YYYY-MM') = to_Char(tr.tanggal,'YYYY-MM')) > 0 then
-							'0
+							0
 						else 
 							1
 						end
