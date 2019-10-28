@@ -49,20 +49,29 @@ class C_MonitoringPresensiPengaturan extends CI_Controller
 			$row = array();
 			$row[] = $no;
 			$row[] = $key->noind_baru;
-			$row[] = $key->noind;
+			$noind = $key->noind;
+			$lokasi = $this->M_monitoringpresensi->kodefinger($noind);
+			if ($lokasi == '0') {
+				$lokasi_finger = "LOKASI TIDAK DIKETAHUI"; 
+			}else{
+				$lokasi_finger = $this->M_monitoringpresensi->lokasifinger($lokasi);
+			}
+			$row[] = $noind;
 			$row[] = $key->nama;
+			$row[] = $lokasi_finger;
 			$row[] = $key->privilege;
 
 			$data[] = $row;
-		}
+		}		
 
+		// echo "<pre>"; print_r($data); exit();
 		$output = array(
 			'draw' => $_POST['draw'], 
 			'recordsTotal' =>$this->M_monitoringpresensi->count_all(),
 			'recordsFiltered' => $this->M_monitoringpresensi->count_filtered(),
 			'data' => $data
 		);
-
+		
 		echo json_encode($output);
 	}
 
