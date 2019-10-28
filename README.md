@@ -36,4 +36,4 @@ Script Sync otomatis Erp.quick.com lokal ke internet / begitu sebaliknya
 
 */5 * * * * cd /var/www/html/presensi_cabang && git pull > /home/administrator/cronpresensicabang.txt
 
-*/7 * * * * sh /home/administrator/email_proses_update.sh
+6,11,16,21,26,31,36,41,46,51,56 * * * * sh /home/administrator/email_proses_update.sh
