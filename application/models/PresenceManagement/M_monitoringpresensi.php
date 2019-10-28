@@ -274,7 +274,48 @@
 			    	$this->quick->update('db_datapresensi.tb_device', $device_update);
 			    }
 	    //	}
+			    function kodefinger($id)
+			    {
+					$sql = "SELECT cc.id_lokasi
+							from
+								(SELECT case when tc is null
+										then '0'
+										else bb.tc
+										end id_lokasi
+										from
+											(select distinct aa.*
+											from
+												(select distinct
+													(select nomor_sn
+													from 
+														(select nomor_sn , count(nomor_sn)  as jumlah , noind
+															from \"Presensi\".tpresensi_riil b 
+															where a.noind = b.noind
+															group by nomor_sn, noind
+															) as tbl
+													order by jumlah desc 
+													limit 1
+													) tc, c.noind induk
+												FROM \"Presensi\".tpresensi_riil a right join hrd_khs.tpribadi c on a.noind= c.noind
+												WHERE c.noind = '$id' 
+											)aa
+								)bb
+							)cc";
 
+
+					$query = $this->personalia->query($sql);
+					// echo "<pre>"; print_r($query); exit();
+					return $query->row()->id_lokasi;
+				}
+
+				function lokasifinger($id)
+			    {
+					$sql = "SELECT device_name FROM db_datapresensi.tb_device WHERE device_sn = '$id'";
+
+					$query = $this->quick->query($sql);
+					// echo "<pre>"; print_r($query); exit();
+					return $query->row()->device_name;
+				}
 		//	User Management
 		//	{
 			    public function user_list($noind_baru = FALSE)

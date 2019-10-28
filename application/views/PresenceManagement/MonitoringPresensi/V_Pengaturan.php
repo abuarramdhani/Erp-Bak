@@ -110,6 +110,7 @@
 											<th class="text-center">Noind Baru</th>
 											<th class="text-center">Noind</th>
 											<th class="text-center">Nama</th>
+											<th class="text-center">Lokasi</th>
 											<th class="text-center">Status</th>
 											<th class="text-center">Action</th>
 										</tr>

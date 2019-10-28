@@ -697,6 +697,7 @@ function InsertLokasiFinger(th) {
 						},
 						{
 							"targets": -1,
+							"orderable":false,
 							"data": function(row, type, val, meta){
 								var f_noindbaru = row[1];
 								return "<a class='btn btn-info' href='"+baseurl+'PresenceManagement/MonitoringPresensiPengaturan/ChangeStatus/'+f_noindbaru+"_"+row[4]+"'>Change Status</a>";
@@ -704,7 +705,7 @@ function InsertLokasiFinger(th) {
 							"className": 'dt-body-center'
 						},
 						{
-							"targets": [4],
+							"targets": [5],
 							"data": function(row, type, val, meta){
 								// return row[4];
 								if (row[4] == 0) {
