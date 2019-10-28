@@ -4638,8 +4638,8 @@ class M_pekerjakeluar extends CI_Model
 		from
 		(
 		select tgl as tanggal
-		from generate_series((select to_char((tglkeluar - interval '1 month'),'yyyy-mm-01')::date as tanggal from hrd_khs.tpribadi e where e.noind = 'H5557'),
-		(select to_char((tglkeluar + interval '1 month'),'yyyy-mm-01')::date - interval '1 day' as tanggal from hrd_khs.tpribadi e where e.noind = 'H5557'),
+		from generate_series((select to_char((tglkeluar - interval '1 month'),'yyyy-mm-01')::date as tanggal from hrd_khs.tpribadi e where e.noind = '$noind'),
+		(select to_char((tglkeluar + interval '1 month'),'yyyy-mm-01')::date - interval '1 day' as tanggal from hrd_khs.tpribadi e where e.noind = '$noind'),
 		interval '1 day') as tgl
 		) as tbl
 		left join \"Presensi\".tshiftpekerja tsp
@@ -4718,7 +4718,11 @@ class M_pekerjakeluar extends CI_Model
 				 	case when masukkerja >= concat(extract(year from tglkeluar),'-',extract(month from tglkeluar),'-','01')::date then
 						'TIDAK'
 					else
-						'YA'
+						case when (select count(*) from \"Presensi\".treffgaji tr where tp.noind = tr.noind and to_char(tp.tglkeluar,'YYYY-MM') = to_Char(tr.tanggal,'YYYY-MM')) > 0 then
+							'TIDAK'
+						else 
+							'YA'
+						end
 					end
 				 else
 				 	'Tidak'
@@ -4727,7 +4731,11 @@ class M_pekerjakeluar extends CI_Model
 				 	case when masukkerja >= concat(extract(year from tglkeluar),'-',extract(month from tglkeluar),'-','01')::date then
 						'TIDAK'
 					else
-						'YA'
+						case when (select count(*) from \"Presensi\".treffgaji tr where tp.noind = tr.noind and to_char(tp.tglkeluar,'YYYY-MM') = to_Char(tr.tanggal,'YYYY-MM')) > 0 then
+							'TIDAK'
+						else 
+							'YA'
+						end
 					end
 				 else
 				 	'Tidak'
@@ -4779,7 +4787,11 @@ class M_pekerjakeluar extends CI_Model
 				 	case when masukkerja >= concat(extract(year from tglkeluar),'-',extract(month from tglkeluar),'-','01')::date then
 						0
 					else
-						1
+						case when (select count(*) from \"Presensi\".treffgaji tr where tp.noind = tr.noind and to_char(tp.tglkeluar,'YYYY-MM') = to_Char(tr.tanggal,'YYYY-MM')) > 0 then
+							'0
+						else 
+							1
+						end
 					end
 				 else
 				 	0
@@ -4788,7 +4800,11 @@ class M_pekerjakeluar extends CI_Model
 				 	case when masukkerja >= concat(extract(year from tglkeluar),'-',extract(month from tglkeluar),'-','01')::date then
 						0
 					else
-						1
+						case when (select count(*) from \"Presensi\".treffgaji tr where tp.noind = tr.noind and to_char(tp.tglkeluar,'YYYY-MM') = to_Char(tr.tanggal,'YYYY-MM')) > 0 then
+							'0
+						else 
+							1
+						end
 					end
 				 else
 				 	0
@@ -4818,7 +4834,11 @@ class M_pekerjakeluar extends CI_Model
 				 	case when masukkerja >= concat(extract(year from tglkeluar),'-',extract(month from tglkeluar),'-','01')::date then
 						0
 					else
-						1
+						case when (select count(*) from \"Presensi\".treffgaji tr where tp.noind = tr.noind and to_char(tp.tglkeluar,'YYYY-MM') = to_Char(tr.tanggal,'YYYY-MM')) > 0 then
+							'0
+						else 
+							1
+						end
 					end
 				 else
 				 	0
@@ -4827,7 +4847,11 @@ class M_pekerjakeluar extends CI_Model
 				 	case when masukkerja >= concat(extract(year from tglkeluar),'-',extract(month from tglkeluar),'-','01')::date then
 						0
 					else
-						1
+						case when (select count(*) from \"Presensi\".treffgaji tr where tp.noind = tr.noind and to_char(tp.tglkeluar,'YYYY-MM') = to_Char(tr.tanggal,'YYYY-MM')) > 0 then
+							'0
+						else 
+							1
+						end
 					end
 				 else
 				 	0
@@ -4857,7 +4881,11 @@ class M_pekerjakeluar extends CI_Model
 				 	case when masukkerja >= concat(extract(year from tglkeluar),'-',extract(month from tglkeluar),'-','01')::date then
 						0
 					else
-						1
+						case when (select count(*) from \"Presensi\".treffgaji tr where tp.noind = tr.noind and to_char(tp.tglkeluar,'YYYY-MM') = to_Char(tr.tanggal,'YYYY-MM')) > 0 then
+							'0
+						else 
+							1
+						end
 					end
 				 else
 				 	0
@@ -4866,12 +4894,16 @@ class M_pekerjakeluar extends CI_Model
 				 	case when masukkerja >= concat(extract(year from tglkeluar),'-',extract(month from tglkeluar),'-','01')::date then
 						0
 					else
-						1
+						case when (select count(*) from \"Presensi\".treffgaji tr where tp.noind = tr.noind and to_char(tp.tglkeluar,'YYYY-MM') = to_Char(tr.tanggal,'YYYY-MM')) > 0 then
+							'0
+						else 
+							1
+						end
 					end
 				 else
 				 	0
 				 end as jp
-				 from hrd_khs.tpribadi
+				 from hrd_khs.tpribadi tp
 				 where noind = '$noind'";
 		return $this->personalia->query($sql)->row()->jp;
 	}
