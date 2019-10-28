@@ -177,7 +177,8 @@ background-color: #337ab7;
 													<th>HTM</th>
 													<th>ABS</th>
 													<th>Ijin</th>
-													<th>Tambahan</th>
+													<th>Sisa Cuti</th>
+													<th>Keterangan</th>
 													<th>UM Puasa</th>
 													<th>IMS</th>
 													<th>IMM</th>
@@ -213,7 +214,8 @@ background-color: #337ab7;
 															<td><?=$key['htm'] ?></td>
 															<td><?=$key['tm'] ?></td>
 															<td><?=$key['tik'] ?></td>
-															<td><?=$key['tambahan'] ?></td>
+															<td><?=$key['sisa_cuti'] ?></td>
+															<td><?=$key['sk_susulan']+$key['cuti_susulan'] ?></td>
 															<td><?=$key['um_puasa'] ?></td>
 															<td><?=$key['ims'] ?></td>
 															<td><?=$key['imm'] ?></td>

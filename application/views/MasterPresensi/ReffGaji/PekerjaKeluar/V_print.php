@@ -31,7 +31,8 @@
                         <th style="text-align: center;font-size: 8pt;width: 5%">HTM</th>
                         <th style="text-align: center;font-size: 8pt;width: 5%">ABS</th>
                         <th style="text-align: center;font-size: 8pt;width: 5%">Ijin</th>
-                        <th style="text-align: center;font-size: 8pt;width: 5%">Tambahan</th>
+                        <th style="text-align: center;font-size: 8pt;width: 5%">Sisa Cuti</th>
+                        <th style="text-align: center;font-size: 8pt;width: 5%">Keterangan</th>
                         <th style="text-align: center;font-size: 8pt;width: 5%">UM Puasa</th>
                         <th style="text-align: center;font-size: 8pt;width: 5%">IMS</th>
                         <th style="text-align: center;font-size: 8pt;width: 5%">IMM</th>
@@ -66,7 +67,8 @@
                                 <td style="text-align: center;font-size: 8pt"><?=$key['htm'] ?></td>
                                 <td style="text-align: center;font-size: 8pt"><?=$key['tm'] ?></td>
                                 <td style="text-align: center;font-size: 8pt"><?=$key['tik'] ?></td>
-                                <td style="text-align: center;font-size: 8pt"><?=$key['tambahan'] ?></td>
+                                <td style="text-align: center;font-size: 8pt"><?=$key['sisa_cuti'] ?></td>
+                                <td style="text-align: center;font-size: 8pt"><?=$key['sk_susulan']+$key['cuti_susulan'] ?></td>
                                 <td style="text-align: center;font-size: 8pt"><?=$key['um_puasa'] ?></td>
                                 <td style="text-align: center;font-size: 8pt"><?=$key['ims'] ?></td>
                                 <td style="text-align: center;font-size: 8pt"><?=$key['imm'] ?></td>
