@@ -14,7 +14,7 @@ $(document).ready(function() {
 	// $('#data-presensi-data-pekerja').dataTable({
 	//  	'paging'      : true,
 	// });
-	
+	//
 	$('#registered-presensi').dataTable({
 	 "bLengthChange": false,
 	 "ordering": false,

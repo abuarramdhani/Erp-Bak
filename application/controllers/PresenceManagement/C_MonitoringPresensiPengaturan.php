@@ -52,7 +52,7 @@ class C_MonitoringPresensiPengaturan extends CI_Controller
 			$noind = $key->noind;
 			$lokasi = $this->M_monitoringpresensi->kodefinger($noind);
 			if ($lokasi == '0') {
-				$lokasi_finger = "LOKASI TIDAK DIKETAHUI";
+				$lokasi_finger = "LOKASI TIDAK DIKETAHUI"; 
 			}else{
 				$lokasi_finger = $this->M_monitoringpresensi->lokasifinger($lokasi);
 			}

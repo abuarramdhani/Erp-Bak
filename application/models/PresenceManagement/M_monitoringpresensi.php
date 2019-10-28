@@ -17,6 +17,7 @@
 	    	$sql = "Select noind,nama,noind_baru from hrd_khs.tpribadi where noind_baru='$noind'";
 	    	return $this->personalia->query($sql)->result_array();
 	    }
+	    
 	    public function ambilfinger($noind)
 	    {
 	    	$sql = "select a.*,b.nama_jari
