@@ -338,7 +338,7 @@ class C_Monitoring extends CI_Controller
 						->setSubject("CV. KHS")
 						->setDescription("Monitoring Gudang Sparepart")
 						->setKeywords("MGS");
-
+			//style
 			$style_title = array(
 				'font' => array(
 					'bold' => true,

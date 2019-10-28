@@ -169,13 +169,13 @@
                                                                                     <td><input type="hidden" name="qty_not[]" value="<?= $v['JML_NOT_OK'] ?>"/><?= $v['JML_NOT_OK'] ?></td>
                                                                                     <td style="text-align:left"><?= $v['KETERANGAN'] ?></td>
                                                                                     <td><input type="button" value="Edit" class="btn btn-warning" 
-                                                                                            <?php if($row['header']['statusket']== 'Sudah terlayani') 
-                                                                                            {
-                                                                                                echo ' disabled=disabled ';
-                                                                                            }else{
-                                                                                                echo '';
-                                                                                            }?>
-                                                                                            onclick="btnEditMGS(this, <?=$no?>,<?=$nomor?>)" /></td>
+                                                                                        <?php if($row['header']['statusket']== 'Sudah terlayani') 
+                                                                                        {
+                                                                                            echo ' disabled=disabled ';
+                                                                                        }else{
+                                                                                            echo '';
+                                                                                        }?>
+                                                                                        onclick="btnEditMGS(this, <?=$no?>,<?=$nomor?>)" /></td>
                                                                                 </tr>
                                                                                 <tr>
                                                                                     <td></td>
