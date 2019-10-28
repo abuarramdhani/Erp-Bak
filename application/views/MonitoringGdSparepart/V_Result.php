@@ -1,7 +1,7 @@
 <!-- <div class="box box-primary box-solid"> -->
 	<!-- <div class="box-header with-border"><b>Hasil</b></div> -->
     <!-- <div class="box-body"> -->
-    <!-- <form method="post" action="<?//= base_url('MonitoringGdSparepart/Monitoring/getUpdate'); ?>"> -->
+    <!-- <form method="post" action=""> -->
         <!-- <div class="panel-body"> -->
             <div class="table-responsive">
 				<table class="table table-bordered table-hover table-striped text-center" id="tblMGS" style="width: 100%; table-layout:fixed;">
