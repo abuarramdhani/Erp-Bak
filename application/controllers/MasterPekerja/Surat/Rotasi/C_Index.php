@@ -185,6 +185,8 @@ class C_Index extends CI_Controller
 
 		$posisiLama 				=	$this->M_Rotasi->ambilPosisi($nomor_induk);
 		$posisi_lama 				=	$posisiLama[0]['posisi'];
+
+		$posisi_baru 				=	$jabatan_baru;
 		$cekStaf 					=	$this->M_Rotasi->cekStaf($nomor_induk);
 
 		$nama_pekerjaan_lama 		=	'';
@@ -315,6 +317,7 @@ class C_Index extends CI_Controller
 											'[seksi_lama]',
 											'[unit_lama]',
 											'[departemen_lama]',
+											'[posisi_lama]',
 											'[lokasi_kerja_lama]',
 											'[pekerjaan_baru]',
 											'[golongan_pekerjaan_baru]',
@@ -322,6 +325,7 @@ class C_Index extends CI_Controller
 											'[unit_baru]',
 											'[departemen_baru]',
 											'[lokasi_kerja_baru]',
+											'[posisi_baru]',
 											'[tanggal_cetak]',
 											'[tanggal_rotasi]',
 											'[tembusan]',
@@ -345,6 +349,7 @@ class C_Index extends CI_Controller
 											$tseksiLama[0]['seksi'],
 											$tseksiLama[0]['unit'],
 											$tseksiLama[0]['dept'],
+											$posisi_lama,
 											$lokasi_lama,
 											$nama_pekerjaan_baru,
 											$golongan_pekerjaan_baru,
@@ -352,8 +357,11 @@ class C_Index extends CI_Controller
 											$tseksiBaru[0]['unit'],
 											$tseksiBaru[0]['dept'],
 											$lokasi_baru,
-											date('d F Y', strtotime($tanggal_cetak)),
-											date('d F Y', strtotime($tanggal_berlaku)),
+											$posisi_baru,
+											$this->personalia->konversitanggalIndonesia(date('Y-m-d', strtotime($tanggal_cetak))),
+											$this->personalia->konversitanggalIndonesia(date('Y-m-d', strtotime($tanggal_berlaku))),
+											//date('d F Y', strtotime($tanggal_cetak)),
+											//date('d F Y', strtotime($tanggal_berlaku)),
 											$tembusan_HTML,
 											$seksiBaru,
 											$unitBaru,
