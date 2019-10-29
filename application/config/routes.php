@@ -3163,37 +3163,37 @@ $route['MonitoringGdSparepart/Monitoring/(:any)']			= 'MonitoringGdSparepart/C_M
 $route['MonitoringGdSparepart/Monitoring/(:any)/(:any)']	= 'MonitoringGdSparepart/C_Monitoring/$1/$2';
 
 //-------------------------------------------------Stok Gudang Alat-----------------------------------------------------//
-$route['StockGudangAlat'] = 'StockGudangAlat/C_StockGudangAlat';
-$route['StockGudangAlat/Stock/(:any)'] = 'StockGudangAlat/C_StockGudangAlat/$1';
-$route['StockGudangAlat/Stock/(:any)/(:any)'] = 'StockGudangAlat/C_StockGudangAlat/$1/$2';
-$route['StockGudangAlat/Stock/(:any)/(:any)/(:any)'] = 'StockGudangAlat/C_StockGudangAlat/$1/$2/$3';
-$route['StockGudangAlat/Stock/search_input']		= 'StockGudangAlat/C_StockGudangAlat/search_input';
+$route['StockGudangAlat'] 										= 'StockGudangAlat/C_StockGudangAlat';
+$route['StockGudangAlat/Stock/(:any)'] 							= 'StockGudangAlat/C_StockGudangAlat/$1';
+$route['StockGudangAlat/Stock/(:any)/(:any)'] 					= 'StockGudangAlat/C_StockGudangAlat/$1/$2';
+$route['StockGudangAlat/Stock/(:any)/(:any)/(:any)'] 			= 'StockGudangAlat/C_StockGudangAlat/$1/$2/$3';
+$route['StockGudangAlat/Stock/search_input']					= 'StockGudangAlat/C_StockGudangAlat/search_input';
 
 //---------------------------Perkiraan Barang Datang-------------------------------//
-$route['PerkiraanBarangDatang'] = 'PerkiraanBarangDatang/C_Index';
-$route['PerkiraanBarangDatang/Monitoring'] = 'PerkiraanBarangDatang/MainMenu/Monitoring/C_Monitoring';
-$route['PerkiraanBarangDatang/Monitoring/updprmdate'] = 'PerkiraanBarangDatang/MainMenu/Monitoring/C_Monitoring/UpdatePromisedDate';
-$route['PerkiraanBarangDatang/Monitoring/updprmdate/(:any)'] = 'PerkiraanBarangDatang/MainMenu/Monitoring/C_Monitoring/UpdatePromisedDate/$1';
-$route['PerkiraanBarangDatang/Monitoring/updprmdate/(:any)/(:any)'] = 'PerkiraanBarangDatang/MainMenu/Monitoring/C_Monitoring/UpdatePromisedDate/$1/$2';
-$route['PerkiraanBarangDatang/Monitoring/updstatuspbd'] = 'PerkiraanBarangDatang/MainMenu/Monitoring/C_Monitoring/UpdateStatus';
-$route['PerkiraanBarangDatang/Monitoring/updstatuspbd/(:any)'] = 'PerkiraanBarangDatang/MainMenu/Monitoring/C_Monitoring/UpdateStatus/$1';
-$route['PerkiraanBarangDatang/Monitoring/updstatuspbd/(:any)/(:any)'] = 'PerkiraanBarangDatang/MainMenu/Monitoring/C_Monitoring/UpdateStatus/$1/$2';
+$route['PerkiraanBarangDatang'] 								= 'PerkiraanBarangDatang/C_Index';
+$route['PerkiraanBarangDatang/Monitoring'] 						= 'PerkiraanBarangDatang/MainMenu/Monitoring/C_Monitoring';
+$route['PerkiraanBarangDatang/Monitoring/updprmdate'] 			= 'PerkiraanBarangDatang/MainMenu/Monitoring/C_Monitoring/UpdatePromisedDate';
+$route['PerkiraanBarangDatang/Monitoring/updprmdate/(:any)'] 	= 'PerkiraanBarangDatang/MainMenu/Monitoring/C_Monitoring/UpdatePromisedDate/$1';
+$route['PerkiraanBarangDatang/Monitoring/updprmdate/(:any)/(:any)'] 	= 'PerkiraanBarangDatang/MainMenu/Monitoring/C_Monitoring/UpdatePromisedDate/$1/$2';
+$route['PerkiraanBarangDatang/Monitoring/updstatuspbd'] 		= 'PerkiraanBarangDatang/MainMenu/Monitoring/C_Monitoring/UpdateStatus';
+$route['PerkiraanBarangDatang/Monitoring/updstatuspbd/(:any)'] 	= 'PerkiraanBarangDatang/MainMenu/Monitoring/C_Monitoring/UpdateStatus/$1';
+$route['PerkiraanBarangDatang/Monitoring/updstatuspbd/(:any)/(:any)'] 	= 'PerkiraanBarangDatang/MainMenu/Monitoring/C_Monitoring/UpdateStatus/$1/$2';
 
-//---------------------------Barang Datang-------------------------------//
-$route['BarangDatang'] = 'BarangDatang/C_Index';
-$route['BarangDatang/InputBarangDatang'] = 'BarangDatang/C_Input';
-$route['BarangDatang/InputBarangDatang/(:any)'] = 'BarangDatang/C_Input/$1';
-$route['BarangDatang/InputBarangDatang/(:any)/(:any)'] = 'BarangDatang/C_Input/$1/$2';
-$route['BarangDatang/InputBarangDatang/(:any)/(:any)/(:any)'] = 'BarangDatang/C_Input/$1/$2/$3';
-$route['BarangDatang/GetSupplier'] = 'BarangDatang/C_Input/GetSupplier';
-$route['BarangDatang/GetIdSupplier'] = 'BarangDatang/C_Input/GetIdSupplier';
-$route['BarangDatang/ajaxSearching'] = 'BarangDatang/C_Input/SearchingAjax';
-$route['BarangDatang/itembd'] = 'BarangDatang/C_Input/itembd';
-$route['BarangDatang/gudangbd'] = 'BarangDatang/C_Input/gudangbd';
-$route['SaveData'] = 'BarangDatang/C_Input/saveData';
-$route['BarangDatang/SearchSupplier'] = 'BarangDatang/C_Input/SearchSupplier';
-$route['BarangDatang/MonitoringBarangDatang'] = 'BarangDatang/C_Monitoring';
-$route['BarangDatang/search'] = 'BarangDatang/C_Monitoring/search';
+//----------------------------------Barang Datang--------------------------------------//
+$route['BarangDatang'] 											= 'BarangDatang/C_Index';
+$route['BarangDatang/InputBarangDatang'] 						= 'BarangDatang/C_Input';
+$route['BarangDatang/InputBarangDatang/(:any)'] 				= 'BarangDatang/C_Input/$1';
+$route['BarangDatang/InputBarangDatang/(:any)/(:any)'] 			= 'BarangDatang/C_Input/$1/$2';
+$route['BarangDatang/InputBarangDatang/(:any)/(:any)/(:any)'] 	= 'BarangDatang/C_Input/$1/$2/$3';
+$route['BarangDatang/GetSupplier'] 								= 'BarangDatang/C_Input/GetSupplier';
+$route['BarangDatang/GetIdSupplier'] 							= 'BarangDatang/C_Input/GetIdSupplier';
+$route['BarangDatang/ajaxSearching'] 							= 'BarangDatang/C_Input/SearchingAjax';
+$route['BarangDatang/itembd'] 									= 'BarangDatang/C_Input/itembd';
+$route['BarangDatang/gudangbd'] 								= 'BarangDatang/C_Input/gudangbd';
+$route['SaveData'] 												= 'BarangDatang/C_Input/saveData';
+$route['BarangDatang/SearchSupplier'] 							= 'BarangDatang/C_Input/SearchSupplier';
+$route['BarangDatang/MonitoringBarangDatang'] 					= 'BarangDatang/C_Monitoring';
+$route['BarangDatang/search'] 									= 'BarangDatang/C_Monitoring/search';
 
 //------------------------------------Pola Shift Seksi---------------------------------------
 $route['PolaShiftSeksi']					= 'PolaShiftSeksi/C_Index';
@@ -3212,3 +3212,26 @@ $route['PolaShiftSeksi/TukarShift/(:any)/(:any)/(:any)']	= 'PolaShiftSeksi/Tukar
 $route['MasterPekerja/RekapPerizinanDinas'] 		= 'MasterPekerja/RekapPerizinanDinas/C_Index';
 $route['MasterPekerja/RekapPerizinanDinas/(:any)'] = 'MasterPekerja/RekapPerizinanDinas/C_Index/$1';
 $route['MasterPekerja/RekapPerizinanDinas/(:any)/(:any)'] = 'MasterPekerja/RekapPerizinanDinas/C_Index/$1/$2';
+
+//---------------------------------------Rekap LPPB---------------------------------------------//
+$route['RekapLppb'] 							= 'RekapLppb/RekapLppb/C_Rekap';
+$route['RekapLppb/(:any)'] 						= 'RekapLppb/RekapLppb/C_Rekap/$1';
+$route['RekapLppb/(:any)/(:any)']				= 'RekapLppb/RekapLppb/C_Rekap/$1/$2';
+$route['RekapLppb/(:any)/(:any)/(:any)'] 		= 'RekapLppb/RekapLppb/C_Rekap/$1/$2/$3';
+$route['RekapLppb/(:any)/(:any)/(:any)/(:any)'] = 'RekapLppb/RekapLppb/C_Rekap/$1/$2/$3/$4';
+$route['RekapLppb/Rekap'] 						= 'RekapLppb/RekapLppb/C_Rekap/Rekap';
+$route['RekapLppb/SearchData'] 					= 'RekapLppb/RekapLppb/C_Rekap/SearchData';
+// $route['RekapLppb/SaveData'] 				= 'RekapLppb/RekapLppb/C_Rekap/SaveData';
+$route['RekapLppb/SaveKirimQC'] 				= 'RekapLppb/RekapLppb/C_Rekap/SaveKirimQC';
+$route['RekapLppb/SaveTerimaQC'] 				= 'RekapLppb/RekapLppb/C_Rekap/SaveTerimaQC';
+$route['RekapLppb/SaveKembaliQC'] 				= 'RekapLppb/RekapLppb/C_Rekap/SaveKembaliQC';
+$route['RekapLppb/SaveKirimGudang'] 			= 'RekapLppb/RekapLppb/C_Rekap/SaveKirimGudang';
+$route['RekapLppb/SaveTerimaGudang'] 			= 'RekapLppb/RekapLppb/C_Rekap/SaveTerimaGudang';
+
+
+$route['RekapLppbView'] 						= 'RekapLppb/RekapLppbView/C_RekapView';
+$route['RekapLppbView/(:any)'] 					= 'RekapLppb/RekapLppbView/C_RekapView/$1';
+$route['RekapLppbView/(:any)/(:any)'] 			= 'RekapLppb/RekapLppbView/C_RekapView/$1/$2';
+$route['RekapLppbView/(:any)/(:any)/(:any)'] 	= 'RekapLppb/RekapLppbView/C_RekapView/$1/$2/$3';
+$route['RekapLppbView/Rekap'] 					= 'RekapLppb/RekapLppbView/C_RekapView/Rekap';
+$route['RekapLppbView/SearchData'] 				= 'RekapLppb/RekapLppbView/C_RekapView/SearchData';
