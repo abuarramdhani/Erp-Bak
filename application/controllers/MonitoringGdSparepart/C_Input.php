@@ -53,8 +53,11 @@ class C_Input extends CI_Controller
 		$noDokumen = $this->input->post('noDokumen');
 		$jenis_dokumen = $this->input->post('jenis_dokumen');
 		$atr=NULL;
-			
-		$ceknomor = $this->M_input->ceknodoc($noDokumen);
+		if ($jenis_dokumen == 'KIB') {
+			$ceknomor = $this->M_input->ceknoKIB($noDokumen);
+		}else{
+			$ceknomor = $this->M_input->ceknodoc($noDokumen);
+		}
 
 		if ($ceknomor != null) {
 			echo "<tr><td colspan='6'>No Dokumen sudah ada.</td></tr>";
@@ -63,7 +66,7 @@ class C_Input extends CI_Controller
 				$atr = "and mmt.SHIPMENT_NUMBER = '$noDokumen'";
 				$data['input'] = $this->M_input->getInput($atr);
 			} else if ($jenis_dokumen == 'KIB'){
-				$atr = "and kk.KIBCODE = '$noDokumen'";
+				$atr = "and kk.KIBCODE = 'PACKG$noDokumen'";
 				$data['input'] = $this->M_input->getInputKIB($atr);
 			} else if ($jenis_dokumen == 'LPPB'){
 				$atr = "and RSH.RECEIPT_NUM ='$noDokumen'";
