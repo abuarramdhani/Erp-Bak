@@ -3235,3 +3235,14 @@ $route['RekapLppbView/(:any)/(:any)'] 			= 'RekapLppb/RekapLppbView/C_RekapView/
 $route['RekapLppbView/(:any)/(:any)/(:any)'] 	= 'RekapLppb/RekapLppbView/C_RekapView/$1/$2/$3';
 $route['RekapLppbView/Rekap'] 					= 'RekapLppb/RekapLppbView/C_RekapView/Rekap';
 $route['RekapLppbView/SearchData'] 				= 'RekapLppb/RekapLppbView/C_RekapView/SearchData';
+
+//-------------------------------------------------TrackingPengirimanBarang---------------------------------------------------------------//
+$route['TrackingPengirimanBarang'] = 'TrackingPengirimanBarang/C_TrackingPengirimanBarang/sortingcenter';
+$route['TrackingPengirimanBarang/(:any)'] = 'TrackingPengirimanBarang/C_TrackingPengirimanBarang/$1';
+$route['TrackingPengirimanBarang/SortingCenter'] = 'TrackingPengirimanBarang/C_TrackingPengirimanBarang/sortingcenter';
+$route['TrackingPengirimanBarang/SortingCenter/(:any)'] = 'TrackingPengirimanBarang/C_TrackingPengirimanBarang/$1';
+$route['TrackingPengirimanBarang/OnProcess'] = 'TrackingPengirimanBarang/C_TrackingPengirimanBarang/onprocess';
+$route['TrackingPengirimanBarang/Delivered'] = 'TrackingPengirimanBarang/C_TrackingPengirimanBarang/delivered';
+$route['TrackingPengirimanBarang/Delivered/(:any)'] = 'TrackingPengirimanBarang/C_TrackingPengirimanBarang/$1';
+$route['TrackingPengirimanBarang/Setting/KurirKendaraan'] = 'TrackingPengirimanBarang/C_TrackingPengirimanBarang/setting';
+$route['TrackingPengirimanBarang/Setting/KurirKendaraan/(:any)'] = 'TrackingPengirimanBarang/C_TrackingPengirimanBarang/$1';
