@@ -308,8 +308,8 @@ class C_Monitoring extends CI_Controller
 			$nama_brg 	= $this->input->post('nama_brg[]');
 			$qty 		= $this->input->post('qty[]');
 			$satuan 	= $this->input->post('uom[]');
-			$jok 		= $this->input->post('jml_ok[]');
-			$not 		= $this->input->post('jml_not_ok[]');
+			$jok 		= $this->input->post('qty_ok[]');
+			$not 		= $this->input->post('qty_not[]');
 			$ket 		= $this->input->post('ktrgn[]');
 
 			$dataMGS = array();
@@ -338,7 +338,7 @@ class C_Monitoring extends CI_Controller
 						->setSubject("CV. KHS")
 						->setDescription("Monitoring Gudang Sparepart")
 						->setKeywords("MGS");
-
+			//style
 			$style_title = array(
 				'font' => array(
 					'bold' => true,

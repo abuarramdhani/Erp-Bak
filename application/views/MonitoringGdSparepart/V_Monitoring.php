@@ -165,17 +165,17 @@
                                                                                     <td style="text-align:left"><input type="hidden" name="item[]" value="<?= $v['ITEM'] ?>"/><?= $v['ITEM'] ?></td>
                                                                                     <td style="text-align:left"><input type="hidden" name="nama_brg[]" value="<?= $v['DESCRIPTION'] ?>"/><?= $v['DESCRIPTION'] ?></td>
                                                                                     <td><input type="hidden" name="qty[]" value="<?= $v['QTY'] ?>"/><?= $v['QTY'] ?></td>
-                                                                                    <td><?= $v['JML_OK'] ?></td>
-                                                                                    <td><?= $v['JML_NOT_OK'] ?></td>
+                                                                                    <td><input type="hidden" name="qty_ok[]" value="<?= $v['JML_OK'] ?>"/><?= $v['JML_OK'] ?></td>
+                                                                                    <td><input type="hidden" name="qty_not[]" value="<?= $v['JML_NOT_OK'] ?>"/><?= $v['JML_NOT_OK'] ?></td>
                                                                                     <td style="text-align:left"><?= $v['KETERANGAN'] ?></td>
                                                                                     <td><input type="button" value="Edit" class="btn btn-warning" 
-                                                                                            <?php if($row['header']['statusket']== 'Sudah terlayani') 
-                                                                                            {
-                                                                                                echo ' disabled=disabled ';
-                                                                                            }else{
-                                                                                                echo '';
-                                                                                            }?>
-                                                                                            onclick="btnEditMGS(this, <?=$no?>,<?=$nomor?>)" /></td>
+                                                                                        <?php if($row['header']['statusket']== 'Sudah terlayani') 
+                                                                                        {
+                                                                                            echo ' disabled=disabled ';
+                                                                                        }else{
+                                                                                            echo '';
+                                                                                        }?>
+                                                                                        onclick="btnEditMGS(this, <?=$no?>,<?=$nomor?>)" /></td>
                                                                                 </tr>
                                                                                 <tr>
                                                                                     <td></td>
