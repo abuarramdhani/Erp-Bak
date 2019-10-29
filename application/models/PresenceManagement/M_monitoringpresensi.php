@@ -314,8 +314,14 @@
 					$sql = "SELECT device_name FROM db_datapresensi.tb_device WHERE device_sn = '$id'";
 
 					$query = $this->quick->query($sql);
-					//echo "<pre>"; print_r($query); exit();
-					return $query->row()->device_name;
+				    
+				    $data = $query->result_array();
+
+					if(!empty($data)):
+						return $data['0']['device_name'];
+					else:
+						return "--- lokasi tidak ditemukan ---";
+					endif;
 				}
 		//	User Management
 		//	{
