@@ -129,6 +129,17 @@ class M_monitoring extends CI_Model {
           return $query->result_array();
           
     }
+
+    public function getKetKIB($no_document){
+        $oracle = $this->load->database('oracle', true);
+        $sql = "select distinct * from khs_kib kk 
+        where kk.INVENTORY_TRANS_FLAG = 'Y'
+        AND kk.KIBCODE = '$no_document'";
+          $query = $oracle->query($sql);
+          return $query->result_array();
+          
+    }
+
     public function tampilbody($no_document) {
         $oracle = $this->load->database('oracle', true);
         $sql ="

@@ -293,10 +293,13 @@ class M_input extends CI_Model
       return $query->result_array();
     }
 
+    public function ceknoKIB($no_document){
+        $oracle = $this->load->database('oracle', true);
+      $sql = "SELECT NO_DOCUMENT FROM KHS_MONITORING_GD_SP WHERE NO_DOCUMENT = 'PACKG$no_document'";
 
-    
+      $query = $oracle->query($sql);
+      return $query->result_array();
+    }
 
-
-    
 }
 

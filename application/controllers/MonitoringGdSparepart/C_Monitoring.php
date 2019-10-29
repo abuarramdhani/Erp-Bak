@@ -66,10 +66,12 @@ class C_Monitoring extends CI_Controller
 				array_push($array_sudah, $value['NO_DOCUMENT']);
 				if ($no_document[$a] == $value['NO_DOCUMENT']) {
 					$getBody = $this->M_monitoring->tampilbody($no_document[$a]);
-					if ($value['JENIS_DOKUMEN'] == 'IO' || $value['JENIS_DOKUMEN'] == 'KIB') {
+					if ($value['JENIS_DOKUMEN'] == 'IO') {
 						$getKet = $this->M_monitoring->getKet($no_document[$a]);
 					}else if ($value['JENIS_DOKUMEN'] == 'LPPB') {
 						$getKet = $this->M_monitoring->getKetLPPB($no_document[$a]);
+					}else if($value['JENIS_DOKUMEN'] == 'KIB'){
+						$getKet = $this->M_monitoring->getKetKIB($no_document[$a]);
 					}
 					$hitung_bd = count($getBody);
 					$hitung_ket = count($getKet);
@@ -82,10 +84,12 @@ class C_Monitoring extends CI_Controller
 				}
 				else {
 					$getBody = $this->M_monitoring->tampilbody($no_document[$a]);
-					if ($value['JENIS_DOKUMEN'] == 'IO' || $value['JENIS_DOKUMEN'] == 'KIB') {
+					if ($value['JENIS_DOKUMEN'] == 'IO') {
 						$getKet = $this->M_monitoring->getKet($no_document[$a]);
 					}else if ($value['JENIS_DOKUMEN'] == 'LPPB') {
 						$getKet = $this->M_monitoring->getKetLPPB($no_document[$a]);
+					}else if($value['JENIS_DOKUMEN'] == 'KIB'){
+						$getKet = $this->M_monitoring->getKetKIB($no_document[$a]);
 					}
 					$hitung_bd = count($getBody);
 					$hitung_ket = count($getKet);
@@ -142,10 +146,12 @@ class C_Monitoring extends CI_Controller
 					array_push($array_sudah, $value['NO_DOCUMENT']);
 					if ($no_document[$a] == $value['NO_DOCUMENT']) {
 						$getBody = $this->M_monitoring->tampilbody($no_document[$a]);
-						if ($value['JENIS_DOKUMEN'] == 'IO' || $value['JENIS_DOKUMEN'] == 'KIB') {
+						if ($value['JENIS_DOKUMEN'] == 'IO') {
 							$getKet = $this->M_monitoring->getKet($no_document[$a]);
 						}else if ($value['JENIS_DOKUMEN'] == 'LPPB') {
 							$getKet = $this->M_monitoring->getKetLPPB($no_document[$a]);
+						}else if($value['JENIS_DOKUMEN'] == 'KIB'){
+							$getKet = $this->M_monitoring->getKetKIB($no_document[$a]);
 						}
 						$hitung_bd = count($getBody);
 						$hitung_ket = count($getKet);
@@ -157,10 +163,12 @@ class C_Monitoring extends CI_Controller
 					$a++;
 					}else{
 						$getBody = $this->M_monitoring->tampilbody($no_document[$a]);
-						if ($value['JENIS_DOKUMEN'] == 'IO' || $value['JENIS_DOKUMEN'] == 'KIB') {
+						if ($value['JENIS_DOKUMEN'] == 'IO') {
 							$getKet = $this->M_monitoring->getKet($no_document[$a]);
 						}else if ($value['JENIS_DOKUMEN'] == 'LPPB') {
 							$getKet = $this->M_monitoring->getKetLPPB($no_document[$a]);
+						}else if($value['JENIS_DOKUMEN'] == 'KIB'){
+							$getKet = $this->M_monitoring->getKetKIB($no_document[$a]);
 						}
 						$hitung_bd = count($getBody);
 						$hitung_ket = count($getKet);
@@ -190,10 +198,12 @@ class C_Monitoring extends CI_Controller
 					array_push($array_sudah, $value['NO_DOCUMENT']);
 					if ($no_document == 'NO_DOCUMENT') {
 						$getBody = $dataGET;
-						if ($value['JENIS_DOKUMEN'] == 'IO' || $value['JENIS_DOKUMEN'] == 'KIB') {
+						if ($value['JENIS_DOKUMEN'] == 'IO') {
 							$getKet = $this->M_monitoring->getKet($no_document);
 						}else if ($value['JENIS_DOKUMEN'] == 'LPPB') {
 							$getKet = $this->M_monitoring->getKetLPPB($no_document);
+						}else if($value['JENIS_DOKUMEN'] == 'KIB'){
+							$getKet = $this->M_monitoring->getKetKIB($no_document);
 						}
 						$hitung_bd = count($getBody);
 						$hitung_ket = count($getKet);
@@ -204,10 +214,12 @@ class C_Monitoring extends CI_Controller
 						}
 					}else {
 						$getBody = $dataGET;
-						if ($value['JENIS_DOKUMEN'] == 'IO' || $value['JENIS_DOKUMEN'] == 'KIB') {
+						if ($value['JENIS_DOKUMEN'] == 'IO') {
 							$getKet = $this->M_monitoring->getKet($value['NO_DOCUMENT']);
 						}else if ($value['JENIS_DOKUMEN'] == 'LPPB') {
 							$getKet = $this->M_monitoring->getKetLPPB($value['NO_DOCUMENT']);
+						}else if($value['JENIS_DOKUMEN'] == 'KIB'){
+							$getKet = $this->M_monitoring->getKetKIB($value['NO_DOCUMENT']);
 						}
 						$hitung_bd = count($getBody);
 						$hitung_ket = count($getKet);
@@ -224,10 +236,12 @@ class C_Monitoring extends CI_Controller
 					array_push($array_sudah, $value['NO_DOCUMENT']);	
 					if ($search == 'tanggal') {
 						$getBody = $this->M_monitoring->getBodyTanggal($value['NO_DOCUMENT'], $tglAwal, $tglAkhir);
-						if ($value['JENIS_DOKUMEN'] == 'IO' || $value['JENIS_DOKUMEN'] == 'KIB') {
+						if ($value['JENIS_DOKUMEN'] == 'IO') {
 							$getKet = $this->M_monitoring->getKet($value['NO_DOCUMENT']);
 						}else if ($value['JENIS_DOKUMEN'] == 'LPPB') {
 							$getKet = $this->M_monitoring->getKetLPPB($value['NO_DOCUMENT']);
+						}else if($value['JENIS_DOKUMEN'] == 'KIB'){
+							$getKet = $this->M_monitoring->getKetKIB($value['NO_DOCUMENT']);
 						}
 						$hitung_bd = count($getBody);
 						$hitung_ket = count($getKet);
@@ -238,10 +252,12 @@ class C_Monitoring extends CI_Controller
 						}
 					}else if ($search == 'pic') {
 						$getBody = $this->M_monitoring->getBodyPIC($value['NO_DOCUMENT'], $pic);
-						if ($value['JENIS_DOKUMEN'] == 'IO' || $value['JENIS_DOKUMEN'] == 'KIB') {
+						if ($value['JENIS_DOKUMEN'] == 'IO') {
 							$getKet = $this->M_monitoring->getKet($value['NO_DOCUMENT']);
 						}else if ($value['JENIS_DOKUMEN'] == 'LPPB') {
 							$getKet = $this->M_monitoring->getKetLPPB($value['NO_DOCUMENT']);
+						}else if($value['JENIS_DOKUMEN'] == 'KIB'){
+							$getKet = $this->M_monitoring->getKetKIB($value['NO_DOCUMENT']);
 						}
 						$hitung_bd = count($getBody);
 						$hitung_ket = count($getKet);
@@ -252,10 +268,12 @@ class C_Monitoring extends CI_Controller
 						}
 					}else{
 						$getBody = $this->M_monitoring->getSearch($value['NO_DOCUMENT'], $no_document, $jenis_dokumen, $tglAwal, $tglAkhir, $pic, $item);
-						if ($value['JENIS_DOKUMEN'] == 'IO' || $value['JENIS_DOKUMEN'] == 'KIB') {
+						if ($value['JENIS_DOKUMEN'] == 'IO') {
 							$getKet = $this->M_monitoring->getKet($value['NO_DOCUMENT']);
 						}else if ($value['JENIS_DOKUMEN'] == 'LPPB') {
 							$getKet = $this->M_monitoring->getKetLPPB($value['NO_DOCUMENT']);
+						}else if($value['JENIS_DOKUMEN'] == 'KIB'){
+							$getKet = $this->M_monitoring->getKetKIB($value['NO_DOCUMENT']);
 						}
 						$hitung_bd = count($getBody);
 						$hitung_ket = count($getKet);
