@@ -458,8 +458,8 @@
 	    }
 
 	    var $table = 'db_datapresensi.tb_user';
-	    var	$column_order = array('noind','noind_baru','nama');
-	    var	$column_search = array('noind','noind_baru','nama');
+	    var	$column_order = array('db_datapresensi.tb_user.noind','db_datapresensi.tb_user.noind_baru','db_datapresensi.tb_user.nama');
+	    var	$column_search = array('db_datapresensi.tb_user.noind','db_datapresensi.tb_user.noind_baru','db_datapresensi.tb_user.nama');
 	    var $order = array('noind' => 'asc');
 
 	    public function user_table_query(){
@@ -485,8 +485,11 @@
 	    	}elseif (isset($this->order)) {
 	    		$order = $this->order;
 	    		$this->quick->order_by(key($order),$order[key($order)]);
-	    	}
-	    }
+			}
+
+			$this->quick->join('db_datapresensi.vi_tpribadi', 'db_datapresensi.vi_tpribadi.noind = db_datapresensi.tb_user.noind');
+			$this->quick->where('db_datapresensi.vi_tpribadi.keluar','0');
+		}
 
 	    public function user_table(){
 	    	$this->user_table_query();
