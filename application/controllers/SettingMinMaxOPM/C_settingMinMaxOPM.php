@@ -237,7 +237,7 @@ class C_settingMinMaxOPM extends CI_Controller {
 	public function SaveMinMax()
 	{	
 		// echo "<pre>";
-		// print_r($_POST);
+		// print_r($_POST['limitjob']);
 		// exit();
 		$org = $this->input->post('org');
 		$induk = $this->input->post('induk');
@@ -246,9 +246,19 @@ class C_settingMinMaxOPM extends CI_Controller {
 		$min 	= $this->input->post('min');
 		$max 	= $this->input->post('max');
 		$rop 	= $this->input->post('rop');
-		
-		$data =$this->M_settingminmaxopm->save($itemcode, $min, $max, $rop, $induk);
+		if (array_key_exists("limitjob",$_POST)) {
+			$limit = 'Y';
+			// echo "ada";
+		} else {
+			$limit = NULL;
+			// echo "tidak ada";
+		}
 
+
+		$data =$this->M_settingminmaxopm->save($itemcode, $min, $max, $rop, $induk, $limit);
+
+		// echo $data;
+		// exit()
 		$this->session->set_flashdata('org', $org);
 		$this->session->set_flashdata('route', $route);
 		redirect(base_url('SettingMinMax/EditbyRoute/'));
@@ -323,6 +333,7 @@ class C_settingMinMaxOPM extends CI_Controller {
 							'MIN' => $val[3],
 							'MAX' => $val[4],
 							'ROP' => $val[5],
+							'LIMITJOB' => $val[6]
 							
 						);
 
@@ -331,7 +342,7 @@ class C_settingMinMaxOPM extends CI_Controller {
 						//insert to db? by row
 						array_push($readData, $tmpData);
 						$this->M_settingminmaxopm->saveImport($tmpData['SEGMENT1'], $tmpData['MIN'], $tmpData['MAX'],
-													 $tmpData['ROP']);
+													 $tmpData['ROP'], $tmpData['LIMITJOB']);
 					}
 				}
 

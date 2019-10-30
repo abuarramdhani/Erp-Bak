@@ -44,7 +44,7 @@ today = dd + '-' + mm + '-' + yyyy;
 					modifier: {
                         selected: true
                     },
-					columns: [0, 2, 3, 4, 5, 6, 7],
+					columns: [0, 2, 3, 4, 5, 6, 7, 8],
 
 				}
 			}
@@ -97,6 +97,7 @@ function getData(th){
 	var min = [];
 	var max = [];
 	var rop = [];
+	var limit = [];
 	$('.chkMinmaxData').each(function(){
 		if (this.checked) {
 			var id = $(this).val()
@@ -122,6 +123,9 @@ function getData(th){
 					if(col == 8){
 						rop.push($(this).text())
 					}
+					if(col == 9){
+						limit.push($(this).text())
+					}
 					col++
 				});
 			})
@@ -136,7 +140,8 @@ function getData(th){
 		uom: uom,
 		min: min,
 		max: max,
-		rop: rop
+		rop: rop,
+		limit: limit
 		},
 		cache:false,
 		success:function(data){

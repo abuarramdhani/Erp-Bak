@@ -57,7 +57,8 @@ class M_settingminmaxopm extends CI_Model {
           msib.PRIMARY_UOM_CODE,
           msib.MIN_MINMAX_QUANTITY MIN,
           msib.MAX_MINMAX_QUANTITY MAX,
-          msib.ATTRIBUTE9 ROP
+          msib.ATTRIBUTE9 ROP,
+          msib.ATTRIBUTE13 LIMITJOB
           from bom_operational_routings bor
           ,bom_operation_sequences bos
           ,bom_departments bd
@@ -120,7 +121,8 @@ class M_settingminmaxopm extends CI_Model {
           msib.PRIMARY_UOM_CODE,
           msib.MIN_MINMAX_QUANTITY MIN,
           msib.MAX_MINMAX_QUANTITY MAX,
-          msib.ATTRIBUTE9 ROP
+          msib.ATTRIBUTE9 ROP,
+          msib.ATTRIBUTE13 LIMITJOB
           from bom_operational_routings bor
           ,bom_operation_sequences bos
           ,bom_departments bd
@@ -153,26 +155,41 @@ class M_settingminmaxopm extends CI_Model {
       return $query->result_array();
   }
 
-  public function save($itemcode, $min, $max, $rop, $induk)
+  public function save($itemcode, $min, $max, $rop, $induk, $limit)
   {
+    if ($limit == 'Y') {
+      $limit = ", msib.ATTRIBUTE13 = 'Y'";
+    } else {
+      $limit = ", msib.ATTRIBUTE13 = ''";
+    }
       $sql = "UPDATE mtl_system_items_b msib
         set msib.MIN_MINMAX_QUANTITY = '$min',
         msib.MAX_MINMAX_QUANTITY = '$max',
         msib.ATTRIBUTE9 = '$rop',
         msib.ATTRIBUTE10 = '$induk',
         msib.ATTRIBUTE11 = TO_CHAR(sysdate, 'DD-MON-YYYY HH24:MI:SS')
+        $limit
         where msib.SEGMENT1 = '$itemcode'";
+
+        // echo $sql;
+        // exit();
       $query = $this->oracle->query($sql);
   }
 
 
-  public function saveImport($itemcode, $min, $max, $rop)
+  public function saveImport($itemcode, $min, $max, $rop, $limit)
   {
+    if ($limit != NULL) {
+      $limit = ", msib.ATTRIBUTE13 = 'Y'";
+    } else {
+      $limit = ", msib.ATTRIBUTE13 = ''";
+    }
       $sql = "UPDATE mtl_system_items_b msib
         set msib.MIN_MINMAX_QUANTITY = '$min',
         msib.MAX_MINMAX_QUANTITY = '$max',
         msib.ATTRIBUTE9 = '$rop',
         msib.ATTRIBUTE11 = TO_CHAR(sysdate, 'DD-MON-YYYY HH24:MI:SS')
+        $limit
         where msib.SEGMENT1 = '$itemcode'";
       $query = $this->oracle->query($sql);
   }

@@ -61,9 +61,10 @@
 						<th style="text-align:center; width: 15%">ITEM CODE</th>
 						<th style="text-align:center; width: 20%">DESCRIPTION</th>
 						<th style="text-align:center; width: 10%">UOM</th>
-						<th style="text-align:center; width: 15%">MIN</th>
-						<th style="text-align:center; width: 15%">MAX</th>
+						<th style="text-align:center; width: 10%">MIN</th>
+						<th style="text-align:center; width: 10%">MAX</th>
 						<th style="text-align:center; width: 15%">ROP</th>
+						<th style="text-align:center; width: 10%">LIMIT</th>
 						<th style="display:none">ACTION</th>
 					</thead>
 					<tbody>
@@ -77,6 +78,7 @@
 							<td style="text-align:center" class="min"><?php echo $mm['MIN']; ?></td>
 							<td style="text-align:center" class="max"><?php echo $mm['MAX']; ?></td>
 							<td style="text-align:center" class="rop"><?php echo $mm['ROP']; ?></td>
+							<td style="text-align:center" class="limit"><?php echo $mm['LIMITJOB']; ?></td>
 							<td style="display:none">
 								<a class="btn btn-warning btn-xs" title="Edit" href="<?php echo base_url(); ?>SettingMinMax/EditbyRoute<?php echo '/EditItem/'.$org.'/'.$routeaktif.'/'.$mm['SEGMENT1'] ?>"><span class="icon-edit"></span> Edit</a>
 							</td>
