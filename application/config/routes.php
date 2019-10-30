@@ -3246,3 +3246,9 @@ $route['TrackingPengirimanBarang/Delivered'] = 'TrackingPengirimanBarang/C_Track
 $route['TrackingPengirimanBarang/Delivered/(:any)'] = 'TrackingPengirimanBarang/C_TrackingPengirimanBarang/$1';
 $route['TrackingPengirimanBarang/Setting/KurirKendaraan'] = 'TrackingPengirimanBarang/C_TrackingPengirimanBarang/setting';
 $route['TrackingPengirimanBarang/Setting/KurirKendaraan/(:any)'] = 'TrackingPengirimanBarang/C_TrackingPengirimanBarang/$1';
+
+// ------------------------------------------------- Perhitungan Utilitas Mesin ---------------------------------------------//
+$route['PerhitunganUM'] 						= 'PerhitunganUM/C_Index';
+$route['PerhitunganUM/Hitung'] 					= 'PerhitunganUM/C_Hitung';
+$route['PerhitunganUM/Hitung/(:any)'] 			= 'PerhitunganUM/C_Hitung/$1';
+$route['PerhitunganUM/Hitung/(:any)/(:any)'] 	= 'PerhitunganUM/C_Hitung/$1/$2';
