@@ -75,6 +75,22 @@
 						</div>
 					</div>
 				</div>
+			<?php if ($org == 'ODM') { ?>
+				<div class="row">
+					<div class="col-md-2 col-md-offset-2" style="text-align: right;">
+							<label>LIMIT JOB</label>
+					</div>
+					<div class="col-md-5">
+						<div class="form-group">
+							<input type="checkbox" name="limitjob" class="form-control form-group" value="Y" <?php if ($item_minmax[0]['LIMITJOB'] == 'Y') {
+								echo 'checked="checked"';
+							} ?> >
+						</div>
+					</div>
+				</div>
+
+			<?php } ?>
+				
 				<div class="row">
 					<center>
 						<form action="<?php echo base_url('SettingMinMax/EditbyRoute')?>">
