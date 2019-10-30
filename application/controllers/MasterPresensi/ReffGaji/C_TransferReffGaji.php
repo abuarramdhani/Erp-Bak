@@ -575,17 +575,17 @@ class C_TransferReffGaji extends CI_Controller
 
 				$tpribadi = $this->M_transferreffgaji->getPribadi($ds['noind']);
 				if (substr($ds['noind'], 0,1) == "B"){
-					$spsi = 1;
-					$duka = 1;
+					$spsi = "T";
+					$duka = "T";
 					if (trim($tpribadi->nokoperasi) == "Ya") {
-						$kop = "1";
+						$kop = "T";
 					}else{
-						$kop = "0";
+						$kop = "F";
 					}
 				}else{
-					$spsi = "0";
-					$duka = "0";
-					$kop = "0";
+					$spsi = "F";
+					$duka = "F";
+					$kop = "F";
 				}
 
 				if (empty($ds['xduka']) or $ds['xduka'] == "") {
@@ -605,9 +605,9 @@ class C_TransferReffGaji extends CI_Controller
 				}
 
 				if (empty($ds['angg_jkn']) or $ds['angg_jkn'] == "t") {
-					$angg_jkn_bpjs_kes = "1";
+					$angg_jkn_bpjs_kes = "T";
 				}else{
-					$angg_jkn_bpjs_kes = "0";
+					$angg_jkn_bpjs_kes = "F";
 				}
 
 				$um_ = floatval($ds['hl']) + floatval($ds['ct']) + floatval($ds['um_puasa']);
