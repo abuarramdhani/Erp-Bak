@@ -3252,3 +3252,76 @@ $route['PerhitunganUM'] 						= 'PerhitunganUM/C_Index';
 $route['PerhitunganUM/Hitung'] 					= 'PerhitunganUM/C_Hitung';
 $route['PerhitunganUM/Hitung/(:any)'] 			= 'PerhitunganUM/C_Hitung/$1';
 $route['PerhitunganUM/Hitung/(:any)/(:any)'] 	= 'PerhitunganUM/C_Hitung/$1/$2';
+
+//---------------------------------------------- Flow Process Destination -------------------------------------------//
+
+$route['FlowProcess']											=	'FlowProcessDestination/C_Index';
+$route['FlowProcess/ProductSetup']								=	'FlowProcessDestination/MainMenu/ProductSetup/C_ProductSetup';
+$route['FlowProcess/ProductSetup/(:any)']						=	'FlowProcessDestination/MainMenu/ProductSetup/C_ProductSetup/$1';
+$route['FlowProcess/ProductSetup/(:any)/(:any)']				=	'FlowProcessDestination/MainMenu/ProductSetup/C_ProductSetup/$1/$2';
+$route['FlowProcess/ProductSetup/(:any)/(:any)/(:any)']			=	'FlowProcessDestination/MainMenu/ProductSetup/C_ProductSetup/$1/$2/$3';
+$route['FlowProcess/ProductSetup/selectprdcode']				=	'FlowProcessDestination/MainMenu/ProductSetup/C_ProductSetup/selectprdcode';
+$route['FlowProcess/ProductSetup/selectprdcode/(:any)']			=	'FlowProcessDestination/MainMenu/ProductSetup/C_ProductSetup/selectprdcode/$1';
+$route['FlowProcess/ProductSetup/selectprdcode/(:any)/(:any)']	=	'FlowProcessDestination/MainMenu/ProductSetup/C_ProductSetup/selectprdcode/$1/$2';
+
+$route['FlowProcess/ProductSearch']								=	'FlowProcessDestination/MainMenu/ProductSearch/C_ProductSearch';
+$route['FlowProcess/ProductSearch/(:any)']						=	'FlowProcessDestination/MainMenu/ProductSearch/C_ProductSearch/$1';
+$route['FlowProcess/ProductSearch/(:any)/(:any)']				=	'FlowProcessDestination/MainMenu/ProductSearch/C_ProductSearch/$1/$2';
+
+$route['FlowProcess/ProductSearch/viewCompbyId']				=	'FlowProcessDestination/MainMenu/ProductSearch/C_ProductSearch/viewCompbyId';
+$route['FlowProcess/ProductSearch/viewCompbyId/(:any)']			=	'FlowProcessDestination/MainMenu/ProductSearch/C_ProductSearch/viewCompbyId/$1';
+
+$route['FlowProcess/ProductSearch/setupComponent2 ']			=	'FlowProcessDestination/MainMenu/ProductSearch/C_ProductSearch/setupComponent2';
+$route['FlowProcess/ProductSearch/setupComponent2/(:any)']		=	'FlowProcessDestination/MainMenu/ProductSearch/C_ProductSearch/setupComponent2/$1';
+$route['FlowProcess/ProductSearch/setupComponent2/(:any)/(:any)']	=	'FlowProcessDestination/MainMenu/ProductSearch/C_ProductSearch/setupComponent2/$1/$2';
+
+$route['FlowProcess/ProductSearch/bbg']							=	'FlowProcessDestination/MainMenu/ProductSearch/C_ProductSearch/bbg';
+$route['FlowProcess/ProductSearch/bbg/(:any)']					=	'FlowProcessDestination/MainMenu/ProductSearch/C_ProductSearch/bbg/$1';
+$route['FlowProcess/ProductSearch/bbg/(:any)/(:any)']			=	'FlowProcessDestination/MainMenu/ProductSearch/C_ProductSearch/bbg/$1/$2';
+
+$route['FlowProcess/ComponentSetup']							= 'FlowProcessDestination/MainMenu/ComponentSetup/C_ComponentSetup';
+$route['FlowProcess/ComponentSetup/(:any)']						= 'FlowProcessDestination/MainMenu/ComponentSetup/C_ComponentSetup/$1';
+$route['FlowProcess/ComponentSetup/(:any)/(:any)']				= 'FlowProcessDestination/MainMenu/ComponentSetup/C_ComponentSetup/$1/$2';
+$route['FlowProcess/ComponentSetup/selectdrwcode']				= 'FlowProcessDestination/MainMenu/ComponentSetup/C_ComponentSetup/selectdrwcode';
+$route['FlowProcess/ComponentSetup/selectdrwcode/(:any)']		= 'FlowProcessDestination/MainMenu/ComponentSetup/C_ComponentSetup/selectdrwcode/$1';
+$route['FlowProcess/ComponentSetup/selectdrwcode/(:any)/(:any)']= 'FlowProcessDestination/MainMenu/ComponentSetup/C_ComponentSetup/selectdrwcode/$1/$2';
+$route['FlowProcess/ComponentSetup/searchdetail']				= 'FlowProcessDestination/MainMenu/ComponentSetup/C_ComponentSetup/searchdetail';
+$route['FlowProcess/ComponentSetup/searchgroupbbg']				= 'FlowProcessDestination/MainMenu/ComponentSetup/C_ComponentSetup/searchgroupbbg';
+$route['FlowProcess/ComponentSetup/searchgroupbbg/(:any)']		= 'FlowProcessDestination/MainMenu/ComponentSetup/C_ComponentSetup/searchgroupbbg/$1';
+$route['FlowProcess/ComponentSetup/saveComp']					= 'FlowProcessDestination/MainMenu/ComponentSetup/C_ComponentSetup/saveComponent';
+$route['FlowProcess/ComponentSetup/saveComp/(:any)']			= 'FlowProcessDestination/MainMenu/ComponentSetup/C_ComponentSetup/saveComponent/$1';
+
+$route['FlowProcess/ComponentSearch']							= 'FlowProcessDestination/MainMenu/ComponentSearch/C_ComponentSearch';
+
+$route['FlowProcess/OperationSetup']							=	'FlowProcessDestination/MainMenu/OperationSetup/C_OperationSetup';
+$route['FlowProcess/OperationSetup/(:any)']						=	'FlowProcessDestination/MainMenu/OperationSetup/C_OperationSetup/$1';
+$route['FlowProcess/OperationSetup/saveOperation']				=	'FlowProcessDestination/MainMenu/OperationSetup/C_OperationSetup/saveOperation';
+$route['FlowProcess/OperationSetup/saveOperation/(:any)']		=	'FlowProcessDestination/MainMenu/OperationSetup/C_OperationSetup/saveOperation/$1';
+
+$route['FlowProcess/Setup/OperationProcessStd']					= 'FlowProcessDestination/MainMenu/Setup/C_OperationProcessStd';
+$route['FlowProcess/Setup/OperationProcessStd/(:any)']			= 'FlowProcessDestination/MainMenu/Setup/C_OperationProcessStd/$1';
+
+$route['FlowProcess/Grafik']									= 'FlowProcessDestination/MainMenu/Grafik/C_Grafik';
+$route['FlowProcess/Grafik/(:any)']								= 'FlowProcessDestination/MainMenu/Grafik/C_Grafik/$1';
+
+$route['FlowProcess/InputDataGambar'] 							= 'FlowProcessDestination/MainMenu/InputDataGambar/C_InputDataGambar/index';
+$route['FlowProcess/InputDataGambar/(:any)'] 					= 'FlowProcessDestination/MainMenu/InputDataGambar/C_InputDataGambar/$1';
+$route['FlowProcess/InputDataGambar/(:any)/(:any)']				= 'FlowProcessDestination/MainMenu/InputDataGambar/C_InputDataGambar/$1/$2';
+$route['FlowProcess/InputDataGambar/(:any)/(:any)/(:any)']		= 'FlowProcessDestination/MainMenu/InputDataGambar/C_InputDataGambar/$1/$2/$3';
+$route['FlowProcess/InputDataGambar/selectdrwcode']				= 'FlowProcessDestination/MainMenu/InputDataGambar/C_InputDataGambar/selectdrwcode';
+$route['FlowProcess/InputDataGambar/selectdrwcode/(:any)']		= 'FlowProcessDestination/MainMenu/InputDataGambar/C_InputDataGambar/selectdrwcode/$1';
+$route['FlowProcess/InputDataGambar/searchdetail'] 				= 'FlowProcessDestination/MainMenu/InputDataGambar/C_InputDataGambar/searchdetail';
+$route['FlowProcess/InputDataGambar/searchdetail/(:any)'] 		= 'FlowProcessDestination/MainMenu/InputDataGambar/C_InputDataGambar/searchdetail/$1';
+
+$route['FlowProcess/InputDataGambar/selectproduct'] 			= 'FlowProcessDestination/MainMenu/InputDataGambar/C_InputDataGambar/selectproduct';
+$route['FlowProcess/InputDataGambar/selectproduct/(:any)'] 		= 'FlowProcessDestination/MainMenu/InputDataGambar/C_InputDataGambar/selectproduct/$1';
+$route['FlowProcess/InputDataGambar/selectproduct/(:any)/(:any)']	= 'FlowProcessDestination/MainMenu/InputDataGambar/C_InputDataGambar/selectproduct/$1/$2';
+$route['FlowProcess/InputDataGambar/save'] 						= 'FlowProcessDestination/MainMenu/InputDataGambar/C_InputDataGambar/simpan';
+$route['FlowProcess/InputDataGambar/search'] 					= 'FlowProcessDestination/MainMenu/InputDataGambar/C_InputDataGambar/search';
+
+
+$route['FlowProcess/ImportProduct'] 							= 'FlowProcessDestination/MainMenu/Import/C_Importproduct/product';
+$route['FlowProcessDestination/Import/importproduk'] 			= 'FlowProcessDestination/MainMenu/Import/C_Importproduct/importproduk';
+
+$route['FlowProcess/ImportComponent'] 							= 'FlowProcessDestination/MainMenu/Import/C_Importcomponent/component';
+$route['FlowProcessDestination/Import/importcomponent'] 		= 'FlowProcessDestination/MainMenu/Import/C_Importcomponent/importcomponent';

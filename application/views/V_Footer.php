@@ -180,7 +180,8 @@
 		<script src="<?= base_url('assets/js/customRL.js');?>"></script>
 		<script src="<?= base_url('assets/js/customTPB.js');?>"></script>
 		<script src="<?= base_url('assets/js/customPUM.js');?>"></script>
-		<script type="text/javascript" src="<?= base_url('assets/js/customBD.js') ?>"></script>
+		<script src="<?= base_url('assets/js/customFPD.js');?>"></script>
+		<script src="<?= base_url('assets/js/customBD.js'); ?>"></script>
 		<!-- <script src="<?= base_url('assets/js/customMO.js') ?>"></script> -->
 		<!-- <script src="<?= base_url('assets/js/customPR.js') ?>"></script> -->
 		<!-- <script src="<?= base_url('assets/js/customOSP.js') ?>"></script> -->
