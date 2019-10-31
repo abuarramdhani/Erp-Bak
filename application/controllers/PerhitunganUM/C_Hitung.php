@@ -506,7 +506,7 @@ class C_Hitung extends CI_Controller {
 		}
 		// echo "<pre>"; print_r(sizeof($datapum)); exit();
 
-		include APPPATH.'third_party/excel/PHPExcel.php';
+		include APPPATH.'third_party/Excel/PHPExcel.php';
 		$excel = new PHPExcel();
 		$excel->getProperties()->setCreator('CV. KHS')
 	                 ->setLastModifiedBy('Quick')
