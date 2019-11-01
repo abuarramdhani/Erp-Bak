@@ -147,19 +147,19 @@ class C_splseksi extends CI_Controller {
 
 		$user = $this->session->user;
 
-		// get akses seksi
-		// $akses_sie = array();
-		// $akses_kue = $this->M_splseksi->show_pekerja('', $user, '');
-		// $akses_spl = $this->M_splseksi->show_akses_seksi($user);
-		// foreach($akses_kue as $ak){
-		// 	$akses_sie[] = $this->cut_kodesie($ak['kodesie']);
-		// 	foreach($akses_spl as $as){
-		// 		$akses_sie[] = $this->cut_kodesie($as['kodesie']);
-		// 	}
-		// }
-		// $data = $this->M_splseksi->show_pekerja3($key,$ni,$akses_sie);
+		get akses seksi
+		$akses_sie = array();
+		$akses_kue = $this->M_splseksi->show_pekerja('', $user, '');
+		$akses_spl = $this->M_splseksi->show_akses_seksi($user);
+		foreach($akses_kue as $ak){
+			$akses_sie[] = $this->cut_kodesie($ak['kodesie']);
+			foreach($akses_spl as $as){
+				$akses_sie[] = $this->cut_kodesie($as['kodesie']);
+			}
+		}
+		$data = $this->M_splseksi->show_pekerja3($key,$ni,$akses_sie);
 
-		$data = $this->M_splseksi->show_pekerja4($key,$ni);//hanya pekerja 1 seksi
+		//$data = $this->M_splseksi->show_pekerja4($key,$ni);//hanya pekerja 1 seksi
  		echo json_encode($data);
 	}
 
