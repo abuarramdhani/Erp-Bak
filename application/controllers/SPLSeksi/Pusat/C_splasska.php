@@ -540,59 +540,56 @@ class C_splasska extends CI_Controller {
 		// echo "<script>window.close();</script>";
 	}
 
-	function result_reject($spl_id = FALSE){
+	function result_reject($spl_id){
 		$data = $this->menu('', '', '');
 		$data_spl = array();
-		$number = 0; 
-		if ($spl_id !== FALSE) {
-			foreach (explode(".", $spl_id) as $si) {
-				$jml_lembur = 0;
-				$cek_tspl = $this->M_splasska->cek_spl($si);
-				// print_r($cek_tspl);exit();
-				if(floatval($cek_tspl->jml_lembur) > 0){
-					if ($cek_tspl->kode == '004') {
-						$wkt_pkj = $this->M_splasska->get_wkt_pkj($cek_tspl->noind,$cek_stpl->$tanggal);
-						$jml_lembur = floatval($cek_tspl->jml_lembur) - $wkt_pkj;
-					}else{
-						$jml_lembur = floatval($cek_tspl->jml_lembur);
-					}
-				}
-
-				if($cek_tspl->kode == '004'){
-					if ($jml_lembur > 8) {
-						$lembur1 = ($jml_lembur - 8) * 4;
-						$lembur2 = 3;
-						$lembur3 = 14;
-					}else if($jml_lembur > 7){
-						$lembur1 = ($jml_lembur - 7) * 3;
-						$lembur2 = 14;
-						$lembur3 = 0;
-					}else{
-						$lembur1 = $jml_lembur * 2;
-						$lembur2 = 0;
-						$lembur3 = 0;
-					}
+		$number = 0;
+		foreach (explode(".", $spl_id) as $si) {
+			$jml_lembur = 0;
+			$cek_tspl = $this->M_splasska->cek_spl($si);
+			// print_r($cek_tspl);exit();
+			if(floatval($cek_tspl->jml_lembur) > 0){
+				if ($cek_tspl->kode == '004') {
+					$wkt_pkj = $this->M_splasska->get_wkt_pkj($cek_tspl->noind,$cek_stpl->$tanggal);
+					$jml_lembur = floatval($cek_tspl->jml_lembur) - $wkt_pkj;
 				}else{
-					if($jml_lembur > 1){
-						$lembur1 = ($jml_lembur - 1) * 2;
-						$lembur2 = 1.5;
-						$lembur3 = 0;
-					}else{
-						$lembur1 = ($jml_lembur - 8)* 1.5;
-						$lembur2 = 0;
-						$lembur3 = 0;
-					}
+					$jml_lembur = floatval($cek_tspl->jml_lembur);
 				}
-				$lembur = $lembur1 + $lembur2 + $lembur3;
-				$tdatapresensi = $this->M_splasska->get_tdatapresensi($cek_tspl->noind,$cek_tspl->tanggal);
-				$data_spl[$number] = array(
-					'tanggal' => $cek_tspl->tanggal,
-					'noind' => $cek_tspl->noind,
-					'lembur' => $lembur,
-					'lembur_2' => $tdatapresensi->total_lembur
-				);
 			}
-			
+
+			if($cek_tspl->kode == '004'){
+				if ($jml_lembur > 8) {
+					$lembur1 = ($jml_lembur - 8) * 4;
+					$lembur2 = 3;
+					$lembur3 = 14;
+				}else if($jml_lembur > 7){
+					$lembur1 = ($jml_lembur - 7) * 3;
+					$lembur2 = 14;
+					$lembur3 = 0;
+				}else{
+					$lembur1 = $jml_lembur * 2;
+					$lembur2 = 0;
+					$lembur3 = 0;
+				}
+			}else{
+				if($jml_lembur > 1){
+					$lembur1 = ($jml_lembur - 1) * 2;
+					$lembur2 = 1.5;
+					$lembur3 = 0;
+				}else{
+					$lembur1 = ($jml_lembur - 8)* 1.5;
+					$lembur2 = 0;
+					$lembur3 = 0;
+				}
+			}
+			$lembur = $lembur1 + $lembur2 + $lembur3;
+			$tdatapresensi = $this->M_splasska->get_tdatapresensi($cek_tspl->noind,$cek_tspl->tanggal);
+			$data_spl[$number] = array(
+				'tanggal' => $cek_tspl->tanggal,
+				'noind' => $cek_tspl->noind,
+				'lembur' => $lembur,
+				'lembur_2' => $tdatapresensi->total_lembur
+			);
 		}
 		$data['data']	= $data_spl;
 		$this->load->view('V_Header',$data);

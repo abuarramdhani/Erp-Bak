@@ -318,6 +318,31 @@ class M_splseksi extends CI_Model{
 		return $this->prs->query($sql)->result_array();
 	}
 
+	public function getPresensiPusat($noind,$tanggal){
+		$sql = "select 	tsp.noind,
+						tsp.tanggal::date,
+						cast(concat(tsp.tanggal::date,' ',tsp.jam_msk) as timestamp) as jam_msk,
+						case when tsp.jam_plg::time < tsp.jam_msk::time then 
+							cast(concat(tsp.tanggal::date + interval '1 day',' ',tsp.jam_plg) as timestamp)
+						else 
+							cast(concat(tsp.tanggal::date,' ',tsp.jam_plg) as timestamp)
+						end as jam_plg,
+						case when tsp.ist_mulai::time < tsp.jam_msk::time then 
+							cast(concat(tsp.tanggal::date + interval '1 day',' ',tsp.ist_mulai) as timestamp)
+						else 
+							cast(concat(tsp.tanggal::date,' ',tsp.ist_mulai) as timestamp)
+						end as ist_mulai ,
+						case when tsp.ist_selesai::time < tsp.jam_msk::time then 
+							cast(concat(tsp.tanggal::date + interval '1 day',' ',tsp.ist_selesai) as timestamp)
+						else 
+							cast(concat(tsp.tanggal::date,' ',tsp.ist_selesai) as timestamp)
+						end as ist_selesai  
+				from \"Presensi\".tshiftpekerja tsp 
+				where tsp.noind = '$noind' 
+				and tsp.tanggal = '$tanggal'";
+		return $this->prs->query($sql)->result_array();
+	}
+
 	public function getShiftpekerja($noind,$tanggal){
 		$sql = "select * from \"Presensi\".tshiftpekerja where noind = '$noind' and tanggal = '$tanggal'";
 		return $this->prs->query($qsl)->num_rows();
