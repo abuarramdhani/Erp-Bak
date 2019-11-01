@@ -421,7 +421,7 @@ class M_pekerjakeluar extends CI_Model
 	}
 
 	public function hitung_if($noind,$awal,$akhir){
-		$sql = "select case when tanggal_akhir > '$akhir'::timestamp then
+		$sql = "select case when tanggal_akhir >= '$akhir'::timestamp then
 					'awal'
 				else
 					'akhir'
@@ -764,7 +764,7 @@ class M_pekerjakeluar extends CI_Model
 	}
 
 	public function hitung_if_tdk_cutoff($noind,$awal,$akhir){
-		$sql = "select case when tanggal_akhir > '$akhir'::timestamp then
+		$sql = "select case when tanggal_akhir >= '$akhir'::timestamp then
 					'awal'
 				else
 					'akhir'
@@ -1334,7 +1334,7 @@ class M_pekerjakeluar extends CI_Model
 	}
 
 	public function hitung_Htm($noind,$awal,$akhir){
-		$sql = "select case when tanggal_akhir > '$akhir'::timestamp then
+		$sql = "select case when tanggal_akhir >= '$akhir'::timestamp then
 					'awal'
 				else
 					'akhir'
@@ -1663,7 +1663,7 @@ class M_pekerjakeluar extends CI_Model
 	}
 
 	public function hitung_Htm_tdk_cutoff($noind,$awal,$akhir){
-		$sql = "select case when tanggal_akhir > '$akhir'::timestamp then
+		$sql = "select case when tanggal_akhir >= '$akhir'::timestamp then
 					'awal'
 				else
 					'akhir'
@@ -4145,7 +4145,7 @@ class M_pekerjakeluar extends CI_Model
 	}
 
 	public function hitung_tm($noind,$awal,$akhir){
-		$sql = "select case when tanggal_akhir > '$akhir'::timestamp then
+		$sql = "select case when tanggal_akhir >= '$akhir'::timestamp then
 					'awal'
 				else
 					'akhir'
@@ -4153,6 +4153,7 @@ class M_pekerjakeluar extends CI_Model
 				from \"Presensi\".tcutoff
 				where periode = to_char('$akhir'::timestamp,'yyyymm')
 				and os = '0'";
+		// echo "<pre>".$sql;
 		$result = $this->personalia->query($sql)->result_array();
 		$pilih = $result['0']['tanggal'];
 		// echo $pilih;exit();
@@ -4281,7 +4282,7 @@ class M_pekerjakeluar extends CI_Model
 	}
 
 	public function hitung_tm_tdk_cutoff($noind,$awal,$akhir){
-		$sql = "select case when tanggal_akhir > '$akhir'::timestamp then
+		$sql = "select case when tanggal_akhir >= '$akhir'::timestamp then
 					'awal'
 				else
 					'akhir'
@@ -4289,6 +4290,7 @@ class M_pekerjakeluar extends CI_Model
 				from \"Presensi\".tcutoff
 				where periode = to_char('$akhir'::timestamp,'yyyymm')
 				and os = '0'";
+		// echo "<pre>".$sql;
 		$result = $this->personalia->query($sql)->result_array();
 		$pilih = $result['0']['tanggal'];
 		// echo $pilih;exit();
