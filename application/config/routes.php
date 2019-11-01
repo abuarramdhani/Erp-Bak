@@ -2509,6 +2509,13 @@ $route['SPL/Daftarjari/(:any)'] = 'SPLSeksi/C_splpersonalia/$1';
 $route['SPL/DaftarFingerspot'] = 'SPLSeksi/C_splpersonalia/fingerspot';
 $route['SPL/DaftarFingerspot/(:any)'] = 'SPLSeksi/C_splpersonalia/$1';
 
+$route['SPL/Pusat'] = 'SPLSeksi/Pusat/C_splseksi'; 
+$route['SPL/Pusat/InputLembur'] = 'SPLSeksi/Pusat/C_splseksi/new_spl';
+$route['SPL/Pusat/ListLembur'] = 'SPLSeksi/Pusat/C_splseksi/data_spl';
+$route['SPL/Pusat/RekapLembur'] = 'SPLSeksi/Pusat/C_splseksi/rekap_spl';
+$route['SPL/Pusat/EditLembur/(:any)'] = 'SPLSeksi/Pusat/C_splseksi/edit_spl/$1';
+$route['SPL/Pusat/HapusLembur/(:any)'] = 'SPLSeksi/Pusat/C_splseksi/hapus_spl/$1';
+
 //---------------------------------------------------- Booking Kendaraan --------------------------------------//
 // hati hati kadang any any gak bisa kepanggil
 $route['AdminBookingKendaraan/DataKendaraan'] = 'BookingKendaraan/C_AdminData';

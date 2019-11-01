@@ -318,19 +318,52 @@ $(function () {
   //     });
   //   }
 
-    $('#example11').on('change',".spl-cek", function(e){
+  $('#example11').on('change',".spl-cek", function(e){
+    tanggal = $('input[name*=tanggal]').val();
+    waktu0 = $('input[name*=waktu_0]').val();
+    waktu1 = $('input[name*=waktu_1]').val();
+    lembur = $('select[name*=kd_lembur]').val();
+    istirahat = $('input[name*=istirahat]').val();
+    break0 = $('input[name*=break]').val();
+    pekerjaan = $('textarea[name*=pekerjaan]').val();
+
+    $('input[name*=tanggal_simpan]').val(tanggal);
+    $('input[name*=waktu_0_simpan]').val(waktu0);
+    $('input[name*=waktu_1_simpan]').val(waktu1);
+    $('select[name*=kd_lembur_simpan]').val(lembur);
+    $('input[name*=istirahat_simpan]').val(istirahat);
+    $('input[name*=break_simpan]').val(break0);
+    $('textarea[name*=pekerjaan_simpan]').val(pekerjaan);
+
     var noindSPL = $(this).val();
     var parentSelect = $(this).closest('td');
     var parentTr = $(this).closest('tr');
+    var splLink = window.location.href;
+    var ajaxlink = "";
+    if (splLink.search("Pusat") !== -1) {
+      ajaxlink = baseurl+"SPLSeksi/Pusat/C_splseksi/cek_anonymous2";
+      $('input[name=tanggal]').attr("disabled","disabled");
+      $('input[name=waktu_0]').attr("disabled","disabled");
+      $('input[name=waktu_1]').attr("disabled","disabled");
+      $('input[name=istirahat]').attr("disabled","disabled");
+      $('input[name=break]').attr("disabled","disabled");
+      $('select[name=kd_lembur]').attr("disabled","disabled");
+      $('textarea[name=pekerjaan]').attr("disabled","disabled");
+    }else{
+      ajaxlink = baseurl+"SPLSeksi/C_splseksi/cek_anonymous2";
+    }
     if (noindSPL && noindSPL !== "") {
       $.ajax({
-        url: baseurl+"SPLSeksi/C_splseksi/cek_anonymous2",
+        url: ajaxlink,
         type: "POST",
         data: {
-          tanggal: $('input[name*=tanggal]').val(),
-          waktu0: $('input[name*=waktu_0]').val(),
-          waktu1: $('input[name*=waktu_1]').val(),
-          lembur: $('select[name*=kd_lembur]').val(),
+          tanggal: tanggal,
+          waktu0: waktu0,
+          waktu1: waktu1,
+          lembur: lembur,
+          istirahat: istirahat,
+          break0: break0,
+          pekerjaan: pekerjaan,
           noind: $(this).val()},
         async: false,
         success: function(data) {
