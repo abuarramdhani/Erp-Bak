@@ -140,14 +140,24 @@ class C_CreateKIB extends CI_Controller
 
 	public function pdf($status,$no_batch,$kib)
 	{
+		$n = 0;
 		$org = 'opm';
-		$this->printpdf($org,$status,$no_batch,$kib);
+		$this->printpdf($org,$status,$no_batch,$kib,$n);
+	}
+
+	public function pdf1($status,$no_batch,$kib)
+	{
+		//$no_batch menampung item
+		$n = 1;
+		$org = 'opm';
+		$this->printpdf($org,$status,$no_batch,$kib,$n);
 	}
 
 	public function pdf2($status,$no_batch,$kib)
 	{
+		$n = 0;
 		$org = 'odm';
-		$this->printpdf($org,$status,$no_batch,$kib);
+		$this->printpdf($org,$status,$no_batch,$kib,$n);
 	}
 
 	public function pdf3($nomorset)
@@ -273,9 +283,9 @@ class C_CreateKIB extends CI_Controller
 	}
 
 
-	public function printpdf($org,$status,$no_batch,$kib){
+	public function printpdf($org,$status,$no_batch,$kib,$n){
 		$length = 350;
-		if ($status == 1) {
+		if ($status == 1 || $n == 1) {
 			$length = 290;
 		}
 		$this->load->library('ciqrcode');
@@ -298,7 +308,11 @@ class C_CreateKIB extends CI_Controller
 		$dataKIBKelompok  =array();
 		$arrayREQNUM = array();
 		if ($org == 'opm') {
-			$dataKIB = $this->M_createkib->getKIB2($status,$no_batch,$kib);	
+			if ($n == 1) {
+				$dataKIB = $this->M_createkib->getKIB222($status,$no_batch,$kib);	
+			} else {
+				$dataKIB = $this->M_createkib->getKIB2($status,$no_batch,$kib);	
+			}
 		}elseif ($org == 'odm') {
 			$dataKIB = $this->M_createkib->getKIB22($status,$no_batch,$kib);
 		}
