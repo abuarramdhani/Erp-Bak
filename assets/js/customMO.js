@@ -1,11 +1,24 @@
 $(document).ready(function () {
     var tblItem = $('#masterItem').DataTable({
-        dom: 'frtip',
+        dom: 'Bfrtip',
         columnDefs: [
             {
                 orderable: false,
                 className: 'select-checkbox',
                 targets: 1
+            }
+        ],
+        buttons: [
+            {
+                extend: 'excelHtml5',
+                title: 'Master_Item ' + Math.random(),
+                exportOptions: {
+                    columns: ':visible',
+                    modifier: {
+                        selected: true
+                            },
+                    columns: [12, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11],
+                }
             }
         ],
         select: {
@@ -50,7 +63,7 @@ $('#tblQualityControl').DataTable({
                     });
             });
         this.api()
-            .columns([10])
+            .columns([11])
             .every(function () {
                 var thsUP2L1 = this;
                 var slcUP2L1 = $(
