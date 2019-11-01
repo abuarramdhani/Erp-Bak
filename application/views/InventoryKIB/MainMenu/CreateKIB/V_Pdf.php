@@ -8,7 +8,14 @@
 	$tanggal = date("d-M-Y G:i:s"); 
 ?>
 <body>
-<?php foreach ($dataKIB as $key => $value) { ?>
+<?php foreach ($dataKIB as $key => $value) { 
+	if ($value['STATUS'] == null) {
+		$color = '#fff';
+	} else {
+		$color = '#000';
+	}
+
+	?>
 	<div style="width:210mm; height: 330mm; float: left; padding-top: 20mm" >
 		<table style="width: 100%; height: 100%; ">
 			<tr>
@@ -89,7 +96,7 @@
 					<?php echo $value['DESCRIPTION'] ?>
 				</p>
 				<b>
-					&nbsp;&nbsp;&nbsp;&nbsp;<?php echo $value['ITEM_CODE'] ?> / <?php echo $value['BATCH_NUMBER'] ?>
+					&nbsp;&nbsp;&nbsp;&nbsp;<?php echo $value['ITEM_CODE'] ?>  <span style="color: <?=$color;?>"> / <?php echo $value['BATCH_NUMBER'] ?> </span>
 				</b>
 			</tr>
 			<tr>
@@ -98,7 +105,7 @@
 					<tr>
 						<td style="width: 30%" >Tipe Produk</td>
 						<td style="width: 40%" ><?php echo $value['TIPE_PRODUCT'] ?></td>
-						<td style="width: 30%" rowspan="4">Status <?php echo $value['STATUS'] ?></td>
+						<td style="width: 30%" rowspan="4" style="color: <?=$color;?>">Status <?php echo $value['STATUS'] ?></td>
 					</tr>
 					<tr>
 						<td style="width: 30%" >Qty Aktual</td>
@@ -148,6 +155,8 @@
 				</td>
 			</tr> -->
 		</table>
+		<br>
+		<hr style="border-top: dotted 1px;" />
 	</div>
 <?php } ?>
 </body>

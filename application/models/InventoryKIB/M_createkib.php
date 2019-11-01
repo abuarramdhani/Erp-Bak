@@ -8,7 +8,7 @@ class M_createkib extends CI_Model
 	}
 	function getHeader($no)    
 	{
-		$oracle = $this->load->database('oracle',TRUE);
+		$oracle = $this->load->database('oracle_dev',TRUE);
 		$sql = "SELECT gbh.BATCH_NO batch_number,
 				msib.SEGMENT1 item_code,
 				msib.DESCRIPTION ,
@@ -42,7 +42,7 @@ class M_createkib extends CI_Model
 
 	function getDetail($no)
 	{
-		$oracle = $this->load->database('oracle',TRUE);
+		$oracle = $this->load->database('oracle_dev',TRUE);
 		$sql = "SELECT gbh.batch_no, msib.segment1, msib.description,
 				       sum(mmt.transaction_quantity) transaction_quantity, mmt.subinventory_code,
 				       mmt.locator_id,
@@ -77,7 +77,7 @@ class M_createkib extends CI_Model
 
 	function getQty($no)
 	{
-		$oracle = $this->load->database('oracle',TRUE);
+		$oracle = $this->load->database('oracle_dev',TRUE);
 		$sql = "SELECT gmd.WIP_PLAN_QTY PLAN_QTY, gmd.ACTUAL_QTY
 				FROM GME_BATCH_HEADER gbh ,
 				  gme_material_details gmd 
@@ -90,7 +90,7 @@ class M_createkib extends CI_Model
 
 	function getMO($no,$status)
 	{
-		$oracle = $this->load->database('oracle',TRUE);
+		$oracle = $this->load->database('oracle_dev',TRUE);
 		$sql = "SELECT count(*) jumlah
 			        from mtl_txn_request_headers mtrh, 
 			       mtl_txn_request_lines mtrl,
@@ -110,7 +110,7 @@ class M_createkib extends CI_Model
 
 	function getSubInv($org)
 	{
-		$oracle = $this->load->database('oracle',TRUE);
+		$oracle = $this->load->database('oracle_dev',TRUE);
 		// $sql = "SELECT temp.ORGANIZATION_ID
 		// 		     , hou.NAME
 		// 		     , temp.ORGANIZATION_CODE
@@ -152,7 +152,7 @@ class M_createkib extends CI_Model
 
 	function getDataDefault($batch_number)
 	{
-		$oracle = $this->load->database('oracle',TRUE);
+		$oracle = $this->load->database('oracle_dev',TRUE);
 		$sql ="SELECT fmd.ATTRIBUTE1 to_organization_id , fmd.ATTRIBUTE2 to_subinventory_code ,fmd.ATTRIBUTE3 to_locator_id
 				FROM fm_matl_dtl fmd ,
 				  gmd_recipes_b grb ,
@@ -169,7 +169,7 @@ class M_createkib extends CI_Model
 
 	function getJobID($no)
 	{
-		$oracle = $this->load->database('oracle',TRUE);
+		$oracle = $this->load->database('oracle_dev',TRUE);
 		$sql = "SELECT gbh.BATCH_ID, gmd.INVENTORY_ITEM_ID
 				FROM GME_BATCH_HEADER gbh ,
 				  gme_material_details gmd 
@@ -183,7 +183,7 @@ class M_createkib extends CI_Model
 
 	function createTemp($data)
 	{
-		$oracle = $this->load->database('oracle',TRUE);
+		$oracle = $this->load->database('oracle_dev',TRUE);
 		$oracle->trans_start();
 		$oracle->insert('CREATE_MO_KIB_TEMP',$data);
 		$oracle->trans_complete();
@@ -261,7 +261,7 @@ class M_createkib extends CI_Model
 
 	function deleteTemp($ip, $job_id)
 	{
-		$oracle = $this->load->database('oracle',TRUE);
+		$oracle = $this->load->database('oracle_dev',TRUE);
 		$sql = "DELETE from CREATE_MO_KIB_TEMP where IP_ADDRESS = '$ip' and JOB_ID = $job_id ";
 		$oracle->trans_start();
 		$oracle->query($sql);
@@ -271,7 +271,7 @@ class M_createkib extends CI_Model
 
 	function getKIBNumber($no)
 	{
-		$oracle = $this->load->database('oracle',TRUE);
+		$oracle = $this->load->database('oracle_dev',TRUE);
 		$sql = "SELECT mtrh.REQUEST_NUMBER no_kib,
 		       msib.SEGMENT1,
 		       msib.DESCRIPTION,
@@ -294,7 +294,7 @@ class M_createkib extends CI_Model
 
 	function getResultMO($no)
 	{
-		$oracle = $this->load->database('oracle',TRUE);
+		$oracle = $this->load->database('oracle_dev',TRUE);
 		$sql = "SELECT mtrh.REQUEST_NUMBER no_kib,
 			       msib.SEGMENT1,
 			       msib.DESCRIPTION,
@@ -317,7 +317,7 @@ class M_createkib extends CI_Model
 
 	function getLocator($org,$subInv)
 	{
-		$oracle = $this->load->database('oracle',TRUE);
+		$oracle = $this->load->database('oracle_dev',TRUE);
 		$sql = " SELECT mil.INVENTORY_LOCATION_ID, mil.DESCRIPTION from mtl_item_locations mil, mtl_parameters mp
 			        where mil.ORGANIZATION_ID = mp.ORGANIZATION_ID
 			        and mil.ENABLED_FLAG = 'Y'
@@ -328,7 +328,7 @@ class M_createkib extends CI_Model
 	}
 
 	function getOrgFrom($no){
-		$oracle = $this->load->database('oracle',TRUE);
+		$oracle = $this->load->database('oracle_dev',TRUE);
 		$sql = " SELECT mp.ORGANIZATION_CODE 
 					FROM GME_BATCH_HEADER gbh, MTL_PARAMETERS MP
 					WHERE gbh.ORGANIZATION_ID = mp.ORGANIZATION_ID
@@ -339,7 +339,7 @@ class M_createkib extends CI_Model
 
 
 	function getPeriod($date){
-		$oracle = $this->load->database('oracle',TRUE);
+		$oracle = $this->load->database('oracle_dev',TRUE);
 		$sql = " SELECT oap.OPEN_FLAG FROM org_acct_periods OAP
 			       WHERE OAP.ORGANIZATION_ID = 101
 			       AND OAP.PERIOD_NAME = '$date' ";
@@ -349,7 +349,7 @@ class M_createkib extends CI_Model
 	}
 
 	function getHandling($item_code,$org){
-		$oracle = $this->load->database('oracle',TRUE);
+		$oracle = $this->load->database('oracle_dev',TRUE);
 		$sql = "SELECT MSIB.UNIT_VOLUME FROM MTL_SYSTEM_ITEMS_B MSIB, MTL_PARAMETERS MP
 		       WHERE MSIB.ORGANIZATION_ID = MP.ORGANIZATION_ID
 		       AND MSIB.SEGMENT1 = '$item_code'
@@ -360,7 +360,7 @@ class M_createkib extends CI_Model
 	}
 
 	function getDataKIB($qtyhandling, $no){
-		$oracle = $this->load->database('oracle',TRUE);
+		$oracle = $this->load->database('oracle_dev',TRUE);
 		$sql = "SELECT  gbh.ORGANIZATION_ID ,
 					    frh.ROUTING_CLASS ROUTING_DEPT_CLASS ,
 					    gbh.PLAN_START_DATE PLANED_DATE,
@@ -430,7 +430,7 @@ class M_createkib extends CI_Model
 
 
 	function getKIB($status,$no,$kib){
-		$oracle = $this->load->database('oracle',TRUE);
+		$oracle = $this->load->database('oracle_dev',TRUE);
 		$qstatus = "";
 		$qkib = "";
 		if ($status == null) {
@@ -514,7 +514,7 @@ class M_createkib extends CI_Model
 	}
 
 	function getKIB2($status,$batch_number, $kib){
-		$oracle = $this->load->database('oracle',TRUE);
+		$oracle = $this->load->database('oracle_dev',TRUE);
 		// if ($kib == 0) {
 		// 	$kib = NULL;
 		// }
@@ -566,8 +566,64 @@ class M_createkib extends CI_Model
 		return $query->result_array();
 	}
 
+	function getKIB222($status,$batch_number,$kib) {
+		//batch number diganti item
+		$oracle = $this->load->database('oracle_dev',TRUE);
+
+		$itemku = $batch_number;
+		$N = 'N';
+
+		if ($status != null) {
+			$statusku = "and kkk.PRINT_FLAG = NVL('N',kkk.PRINT_FLAG)";
+		} else {
+			$statusku = 'and kkk.PRINT_FLAG = NVL(null,kkk.PRINT_FLAG)';
+		}
+
+		if ($kib != null) {
+			$kibku = "and kkk.KIBCODE =  NVL('$kib',kkk.KIBCODE)";
+		} else {
+			$kibku = 'and kkk.KIBCODE =  NVL(NULL,kkk.KIBCODE)';
+		}
+		
+
+		$sql = "SELECT kkk.FROM_SUBINVENTORY_CODE FROM_SUBINVENTORY_CODE 
+                  ,kkk.TO_SUBINVENTORY_CODE
+                  ,msi.ATTRIBUTE1 ALIAS_KODE
+                  ,msib.SEGMENT1 item_code
+                  ,msib.DESCRIPTION
+                  ,msib.CONTAINER_TYPE_CODE kode_kontainer
+                  ,kkk.QTY_HANDLING HANDLING_QTY
+                  ,flv.DESCRIPTION deskripsi_kontainer
+                  ,kkk.QTY_KIB QUANTITY
+                  ,kkk.KIBCODE request_number
+                  -- status
+            from khs_kib_kanban kkk
+                ,mtl_system_items_b msib 
+                ,fnd_lookup_values flv
+                ,mtl_secondary_inventories msi
+            where msib.CONTAINER_TYPE_CODE   = flv.LOOKUP_CODE (+)
+              and flv.LOOKUP_TYPE (+)            = 'CONTAINER_TYPE'
+              --
+              and msib.INVENTORY_ITEM_ID = kkk.PRIMARY_ITEM_ID
+              and msib.ORGANIZATION_ID = kkk.ORGANIZATION_ID
+              and kkk.TO_SUBINVENTORY_CODE = msi.SECONDARY_INVENTORY_NAME(+)
+              and kkk.TO_ORG_ID = msi.ORGANIZATION_ID(+)
+--              AND gbh.BATCH_NO = '$batch_number'
+				and msib.SEGMENT1 = '$itemku'
+--              AND kkk.ITEM_STATUS = '$status'
+              and kkk.INVENTORY_TRANS_FLAG = 'N'
+              $statusku
+              $kibku";
+
+        $query = $oracle->query($sql);
+		return $query->result_array();
+           // return $sql;
+           //--= in ('SHMT181201689')
+	}
+	
+
 	function getKIB22($status,$batch_number, $kib){
-		$oracle = $this->load->database('oracle',TRUE);
+		$oracle = $this->load->database('oracle_dev',TRUE);
 		// if ($kib == 0) {
 		// 	$kib = NULL;
 		// }
@@ -627,7 +683,7 @@ class M_createkib extends CI_Model
 	}
 
 	function getKIB3($no_batch){
-		$oracle = $this->load->database('oracle',TRUE);
+		$oracle = $this->load->database('oracle_dev',TRUE);
 		$sql = "SELECT kkk.kibcode NOMORSET
 				 ,msibassy.SEGMENT1 kode_assy
 				 ,msibassy.DESCRIPTION desc_assy
@@ -665,14 +721,14 @@ class M_createkib extends CI_Model
 	}
 
 	function saveKIB($data){
-		$oracle = $this->load->database('oracle',TRUE);
+		$oracle = $this->load->database('oracle_dev',TRUE);
 		$oracle->trans_start();
 		$oracle->insert('KHS_KIB_KANBAN',$data);
 		$oracle->trans_complete();
 	}
 
 	function getOrgId($org){
-		$oracle = $this->load->database('oracle',TRUE);
+		$oracle = $this->load->database('oracle_dev',TRUE);
 		$sql=" SELECT mp.organization_id FROM mtl_parameters mp
 				WHERE mp.organization_code = '$org' ";
 		$query = $oracle->query($sql);
@@ -681,7 +737,7 @@ class M_createkib extends CI_Model
 
 
 	function getKIBNumber2($job_id){
-		$oracle = $this->load->database('oracle',TRUE);
+		$oracle = $this->load->database('oracle_dev',TRUE);
 		$sql = "SELECT  frh.ROUTING_CLASS|| TO_CHAR (SYSDATE, 'RRMM')
 		             || LPAD (KHS_CREATE_MO_SEQ.NEXTVAL, 5, '0') NO_KIB
 		        FROM GME_BATCH_HEADER gbh,
@@ -694,7 +750,7 @@ class M_createkib extends CI_Model
 
 
 	function getAliasKode($subInv){
-		$oracle = $this->load->database('oracle',TRUE);
+		$oracle = $this->load->database('oracle_dev',TRUE);
 		$sql = " SELECT ATTRIBUTE1 KODE_ALIAS
 				 FROM mtl_secondary_inventories msi
 				 WHERE msi.ORGANIZATION_ID in (101,102,225)
@@ -703,7 +759,7 @@ class M_createkib extends CI_Model
 		return $query->result_array();
 	}
 	function updateFlagPrint($batch_number,$kib){
-		$oracle = $this->load->database('oracle',TRUE);
+		$oracle = $this->load->database('oracle_dev',TRUE);
 		if ($kib) {
 			$sql = "UPDATE KHS_KIB_KANBAN SET PRINT_FLAG = 'Y' WHERE KIBCODE = '$kib' ";
 		}else{
