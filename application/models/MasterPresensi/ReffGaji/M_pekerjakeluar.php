@@ -3579,7 +3579,7 @@ class M_pekerjakeluar extends CI_Model
 	}
 
 	public function hitung_tik($noind,$awal,$akhir){
-		$sql = "select case when tanggal_akhir > '$akhir'::timestamp then
+		$sql = "select case when tanggal_akhir >= '$akhir'::timestamp then
 					'awal'
 				else
 					'akhir'
@@ -3793,7 +3793,7 @@ class M_pekerjakeluar extends CI_Model
 	}
 
 	public function hitung_tik_tdk_cutoff($noind,$awal,$akhir){
-		$sql = "select case when tanggal_akhir > '$akhir'::timestamp then
+		$sql = "select case when tanggal_akhir >= '$akhir'::timestamp then
 					'awal'
 				else
 					'akhir'
