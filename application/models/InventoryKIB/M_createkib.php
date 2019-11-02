@@ -612,7 +612,6 @@ class M_createkib extends CI_Model
 				and msib.SEGMENT1 = '$itemku'
 --              AND kkk.ITEM_STATUS = '$status'
               and kkk.INVENTORY_TRANS_FLAG = 'N'
-              $statusku
               $kibku";
 
         $query = $oracle->query($sql);
