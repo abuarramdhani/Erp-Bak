@@ -59,6 +59,12 @@ $(function () {
 		},
 	});
 
+	$('#PK-slc_provinsi_pekerja').on('change',function(){
+		$('#PK-slc_kabupaten_pekerja').select2("val","");
+		$('#PK-slc_kecamatan_pekerja').select2("val","");
+		$('#PK-slc_desa_pekerja').select2("val","");
+	})
+
 	$('#PK-slc_provinsi_pekerja').select2({ 
     	minimumInputLength: 2,
 		allowClear: true, 
@@ -83,6 +89,7 @@ $(function () {
 			},
 		},
 	});
+
 
 	$('#PK-slc_kabupaten_pekerja').select2({ 
     	minimumInputLength: 0,
