@@ -147,7 +147,7 @@ class C_splseksi extends CI_Controller {
 
 		$user = $this->session->user;
 
-		get akses seksi
+		//get akses seksi
 		$akses_sie = array();
 		$akses_kue = $this->M_splseksi->show_pekerja('', $user, '');
 		$akses_spl = $this->M_splseksi->show_akses_seksi($user);
