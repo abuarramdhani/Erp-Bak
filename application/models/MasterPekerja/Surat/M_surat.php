@@ -211,7 +211,9 @@ class M_surat extends CI_Model
 		else 	'NON STAF'
 			end
 		) as status_staf,
-		pri.alamat
+		pri.alamat,
+		tb_status_jabatan.nama_status as nama_status,
+		tb_status_jabatan.nama_jabatan as nama_jabatan_upah
 		from 		hrd_khs.v_hrd_khs_tpribadi as pri
 		left join 	hrd_khs.v_hrd_khs_tseksi as tseksi
 		on 	tseksi.kodesie=pri.kodesie
@@ -221,6 +223,8 @@ class M_surat extends CI_Model
 		on 	tpekerjaan.kdpekerjaan=pri.kd_pkj
 		left join 	hrd_khs.tlokasi_kerja as tlokasi_kerja
 		on 	tlokasi_kerja.id_=pri.lokasi_kerja
+		left join hrd_khs.tb_status_jabatan as tb_status_jabatan 
+		on tb_status_jabatan.noind = pri.noind
 		where 		pri.noind='$noind';";
 		// echo $detail_pekerja;exit();
 		$query 				=	$this->personalia->query($detail_pekerja);
@@ -1265,5 +1269,15 @@ and tahun_surat = '$tahun' and bulan_surat = '$bulan'";
 		$this->personalia->delete('"Surat".tpindah_finger');
 	    			//$this->personalia->and('');
 		header('Location: '.$_SERVER['REQUEST_URI']);
+	}
+	
+	public function getNamaStatus(){
+		$sql = "SELECT distinct nama_status from hrd_khs.tb_status_jabatan WHERE nama_status!='' ";
+		return $this->personalia->query($sql)->result();
+	}
+
+	public function getNamaJabatanUpah(){
+		$sql = "SELECT distinct nama_jabatan from hrd_khs.tb_status_jabatan WHERE nama_jabatan!='' order by nama_jabatan";
+		return $this->personalia->query($sql)->result();
 	}
 }	

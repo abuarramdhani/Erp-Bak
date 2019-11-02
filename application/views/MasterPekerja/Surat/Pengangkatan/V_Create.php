@@ -98,6 +98,19 @@
                                                             <input type="text" name="txtTempatMakan2" class="form-control MasterPekerja-txtTempatMakan2" readonly="">
                                                         </div>
                                                     </div>
+                                                    <div class="form-group">
+                                                        <label for="txtStatusJabatanlama" class="col-lg-4 control-label">Status Jabatan Upah Lama</label>
+                                                        <div class="col-lg-8">
+                                                            <input type="text" name="txtStatusJabatanlama" class="form-control" id="MasterPekerja-txtStatusJabatanlama" readonly="">
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="form-group">
+                                                        <label for="txtNamaJabatanUpahlama" class="col-lg-4 control-label">Nama Jabatan Upah Lama</label>
+                                                        <div class="col-lg-8">
+                                                            <input type="text" name="txtNamaJabatanUpahlama" class="form-control" id="MasterPekerja-txtNamaJabatanUpahlama" readonly="">
+                                                        </div>
+                                                    </div>
                                                 </div>
                                                 <div class="col-lg-6">
                                                     <div class="form-group">
@@ -163,6 +176,23 @@
                                                                <?php
                                                                     }
                                                                 ?>
+                                                            </select>
+                                                        </div>
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <label for="txtStatusjabatanBaru" class="col-lg-4 control-label">Status Jabatan Upah Baru</label>
+                                                        <div class="col-lg-8">
+                                                            <select name="txtStatusjabatanBaru" class="form-control select2" id="MasterPekerja-txtStatusjabatanBaru">
+                                                                <option value=""></option>
+                                                            </select>
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="form-group">
+                                                        <label for="txtNamaJabatanUpahBaru" class="col-lg-4 control-label">Nama Jabatan Upah Baru</label>
+                                                        <div class="col-lg-8">
+                                                            <select name="txtNamaJabatanUpahBaru" class="form-control select2" id="MasterPekerja-txtNamaJabatanUpahBaru">
+                                                                <option value=""></option>
                                                             </select>
                                                         </div>
                                                     </div>

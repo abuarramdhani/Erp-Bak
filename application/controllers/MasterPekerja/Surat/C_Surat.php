@@ -192,6 +192,8 @@
 					$data['jabatan_dl'] 				= 	$detail_pekerja[0]['jabatan_dl'];
 					$data['id_lokasifinger'] 			= 	$lokasi_finger[0]['id_lokasi'];
 					$data['lokasi_finger'] 				= 	$lokasi_finger[0]['device_name'];
+					$data['nama_status'] 				= 	trim($detail_pekerja[0]['nama_status']);
+					$data['nama_jabatan_upah'] 			= 	trim($detail_pekerja[0]['nama_jabatan_upah']);
 					
 					$kode_induk = array('A', 'H', 'K', 'P', 'E');
 					if(in_array(substr($noind,0,1), $kode_induk)){
@@ -247,6 +249,20 @@
 					$keyword 		=	strtoupper($this->input->get('term', TRUE));
 					$pekerjaan 		=	$this->M_surat->pekerjaan($keyword);
 					echo json_encode($pekerjaan);
+				}
+
+				public function daftar_nama_status()
+				{
+					$keyword 			=	strtoupper($this->input->get('term', TRUE));
+					$nama_status 		=	$this->M_surat->getNamaStatus();
+					echo json_encode($nama_status);
+				}
+
+				public function daftar_nama_jabatan_upah()
+				{
+					$keyword 			=	strtoupper($this->input->get('term', TRUE));
+					$nama_jabatan 		=	$this->M_surat->getNamaJabatanUpah();
+					echo json_encode($nama_jabatan);
 				}
 
 		//	}

@@ -406,6 +406,50 @@ $(function() {
         }
     });
 
+        $('#MasterPekerja-txtStatusjabatanBaru').select2({
+         allowClear: false,
+         placeholder: "Pilih Status Jabatan Upah",
+         ajax: {
+             url: baseurl + 'MasterPekerja/Surat/daftar_nama_status',
+             dataType: 'json',
+             delay: 500,
+             data: function(params) {
+                 return {
+                     term: params.term
+                 }
+             },
+             processResults: function(data) {
+                 return {
+                     results: $.map(data, function(obj) {
+                         return { id: obj.nama_status, text: obj.nama_status };
+                     })
+                 };
+             }
+         }
+    });
+
+        $('#MasterPekerja-txtNamaJabatanUpahBaru').select2({
+         allowClear: false,
+         placeholder: "Pilih Nama Jabatan Upah Baru",
+         ajax: {
+             url: baseurl + 'MasterPekerja/Surat/daftar_nama_jabatan_upah',
+             dataType: 'json',
+             delay: 500,
+             data: function(params) {
+                 return {
+                     term: params.term
+                 }
+             },
+             processResults: function(data) {
+                 return {
+                     results: $.map(data, function(obj) {
+                         return { id: obj.nama_jabatan, text: obj.nama_jabatan };
+                     })
+                 };
+             }
+         }
+    });
+
     $('#MasterPekerja-DaftarSeksi').select2({
         allowClear: false,
         placeholder: "Pilih Seksi",
@@ -847,7 +891,7 @@ $('#MasterPekerja-Surat-DaftarPekerja').change(function() {
             url: baseurl + "MasterPekerja/Surat/detail_pekerja",
             success: function(result) {
                 var result = JSON.parse(result);
-
+                console.log(result);
                 $('#MasterPekerja-txtKodesieLama').val(result['kodesie'] + ' - ' + result['posisi']);
                 $('#MasterPekerja-txtPekerjaanLama').val(result['kode_pekerjaan'] + ' - ' + result['nama_pekerjaan']);
                 $('#MasterPekerja-txtGolonganKerjaLama').val(result['golongan_pekerjaan']);
@@ -858,6 +902,8 @@ $('#MasterPekerja-Surat-DaftarPekerja').change(function() {
                 $('#MasterPekerja-txtTempatMakan2').val(result['tempat_makan2']);
                 $('#MasterPekerja-txtStatusStaf').val(result['status_staf']);
                 $('#MasterPekerja-Surat-FingerAwal').val(result['id_lokasifinger'] + ' - ' + result['lokasi_finger']);
+                $('#MasterPekerja-txtStatusJabatanlama').val(result['nama_status']);
+                $('#MasterPekerja-txtNamaJabatanUpahlama').val(result['nama_jabatan_upah']);
             }
         });
         $('#MasterPekerja-DaftarGolonganPekerjaan').select2('val', '');
@@ -898,7 +944,7 @@ $('.MasterPekerja-Surat-DaftarPekerja').change(function() {
             url: baseurl + "MasterPekerja/Surat/detail_pekerja",
             success: function(result) {
                 var result = JSON.parse(result);
-
+                console.log(result);
                 $('.MasterPekerja-txtKodesieLama').val(result['kodesie'] + ' - ' + result['posisi']);
                 $('.MasterPekerja-txtPekerjaanLama').val(result['kode_pekerjaan'] + ' - ' + result['nama_pekerjaan']);
                 $('.MasterPekerja-txtGolonganKerjaLama').val(result['golongan_pekerjaan']);
@@ -909,6 +955,8 @@ $('.MasterPekerja-Surat-DaftarPekerja').change(function() {
                 $('.MasterPekerja-txtTempatMakan2').val(result['tempat_makan2']);
                 $('.MasterPekerja-txtStatusStaf').val(result['status_staf']);
                 $('#MasterPekerja-Surat-FingerAwal').val(result['id_lokasifinger'] + ' - ' + result['lokasi_finger']);
+                $('#MasterPekerja-txtStatusJabatanlama').val(result['nama_status']);
+                $('#MasterPekerja-txtNamaJabatanUpahlama').val(result['nama_jabatan_upah']);
             }
         });
         $('.MasterPekerja-SuratMutasi-DaftarGolongan').select2('val', '');

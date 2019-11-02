@@ -449,6 +449,10 @@
 													pengangkatan.kodesie_baru,
 													pengangkatan.jbt_dl_baru,
 													pengangkatan.jbt_dl_lama,
+													pengangkatan.nama_status_lama,
+ 													pengangkatan.nama_status_baru,
+ 													pengangkatan.nama_jabatan_upah_lama,
+ 													pengangkatan.nama_jabatan_upah_baru,
 															concat_ws
 																									(
 																										' - ',

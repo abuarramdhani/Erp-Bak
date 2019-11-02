@@ -444,6 +444,10 @@
 													mutasi.noind,
 													mutasi.kodesie_lama,
 													mutasi.kodesie_baru,
+													mutasi.nama_status_lama,
+ 													mutasi.nama_status_baru,
+ 													mutasi.nama_jabatan_upah_lama, 
+ 													mutasi.nama_jabatan_upah_baru,   
 															concat_ws
 																									(
 																										' - ',
