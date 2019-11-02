@@ -359,9 +359,9 @@ $db['erp_db'] = array(
 
 $db['spl_db'] = array(
 	'dsn'	=> '',
-	'hostname' => 'dev.quick.com',
-	'username' => 'amri',
-	'password' => 'amri',
+	'hostname' => 'database.quick.com',
+	'username' => 'spl',
+	'password' => '123321',
 	'database' => 'splseksi',
 	'dbdriver' => 'mysqli',
 	'dbprefix' => '',
