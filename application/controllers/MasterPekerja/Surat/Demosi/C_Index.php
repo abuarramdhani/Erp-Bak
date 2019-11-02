@@ -610,13 +610,19 @@ class C_Index extends CI_Controller
 		$pekerjaan_lama             =   $this->input->post('txtPekerjaanLama');
 
 		$seksi_baru 				=	$this->input->post('txtKodesieBaru');
-		$golongan_pekerjaan_baru	=	$this->input->post('txtGolonganPekerjaanLama');
+		$golongan_pekerjaan_baru	=	$this->input->post('txtGolonganPekerjaanBaru');
 		$kd_jabatan_baru 			=	$this->input->post('txtKdJabatanBaru');
 		$jabatan_baru 				=	$this->input->post('txtJabatanBaru');
 		$lokasi_kerja_baru          =   $this->input->post('txtLokasiKerjaBaru');
 		// $tempat_makan1_baru         =   $this->input->post('txtTempatMakan1Baru');
 		// $tempat_makan2_baru         =   $this->input->post('txtTempatMakan2Baru');
 		$pekerjaan_baru             =   $this->input->post('txtPekerjaanBaru');
+
+		$nama_status_lama			= 	$this->input->post('txtStatusJabatanlama');
+		$nama_status_baru			= 	$this->input->post('txtStatusjabatanBaru');
+
+		$nama_jabatan_upah_lama     =   $this->input->post('txtNamaJabatanUpahlama');
+		$nama_jabatan_upah_baru     =   $this->input->post('txtNamaJabatanUpahBaru');
 
 		$tanggal_berlaku 			=	$this->input->post('txtTanggalBerlaku');
 		$tanggal_cetak 				=	$this->input->post('txtTanggalCetak');
@@ -674,6 +680,10 @@ class C_Index extends CI_Controller
 											'kd_pkj_lama'           =>  $kd_pkj_lama,
 											'kd_pkj_baru'           =>  $kd_pkj_baru,
 											'status_staf' 			=>	$staf,
+											'nama_status_lama'		=>  $nama_status_lama,
+											'nama_status_baru'		=>  $nama_status_baru,
+											'nama_jabatan_upah_lama'=> 	$nama_jabatan_upah_lama,
+											'nama_jabatan_upah_baru'=>	$nama_jabatan_upah_baru
 										);
 		$this->M_demosi->inputSuratDemosi($inputSuratDemosi);
 
@@ -689,6 +699,7 @@ class C_Index extends CI_Controller
 												'noind' 				=>	$nomor_induk,
 												'jenis_surat'			=>	'DEMOSI',
 											);
+
 			$this->M_demosi->inputNomorSurat($inputNomorSurat);
 		redirect('MasterPekerja/Surat/SuratDemosi');
 	}
@@ -763,13 +774,19 @@ class C_Index extends CI_Controller
 		$pekerjaan_lama             =   $this->input->post('txtPekerjaanLama');
 
 		$seksi_baru 				=	$this->input->post('txtKodesieBaru');
-		$golongan_pekerjaan_baru	=	$this->input->post('txtGolonganPekerjaanLama');
+		$golongan_pekerjaan_baru	=	$this->input->post('txtGolonganPekerjaanBaru');
 		$kd_jabatan_baru 			=	$this->input->post('txtKdJabatanBaru');
 		$jabatan_baru 				=	$this->input->post('txtJabatanBaru');
 		$lokasi_kerja_baru          =   $this->input->post('txtLokasiKerjaBaru');
 		// $tempat_makan1_baru         =   $this->input->post('txtTempatMakan1Baru');
 		// $tempat_makan2_baru         =   $this->input->post('txtTempatMakan2Baru');
 		$pekerjaan_baru             =   $this->input->post('txtPekerjaanBaru');
+
+		$nama_status_lama			= 	$this->input->post('txtStatusJabatanlama');
+		$nama_status_baru			= 	$this->input->post('txtStatusjabatanBaru');
+
+		$nama_jabatan_upah_lama     =   $this->input->post('txtNamaJabatanUpahlama');
+		$nama_jabatan_upah_baru     =   $this->input->post('txtNamaJabatanUpahBaru');
 
 		$tanggal_berlaku 			=	$this->input->post('txtTanggalBerlaku');
 		$tanggal_cetak 				=	$this->input->post('txtTanggalCetak');
@@ -826,6 +843,10 @@ class C_Index extends CI_Controller
 											'kd_pkj_lama'           =>  $kd_pkj_lama,
 											'kd_pkj_baru'           =>  $kd_pkj_baru,
 											'status_staf' 			=>	$staf,
+											'nama_status_lama'		=>  $nama_status_lama,
+											'nama_status_baru'		=>  $nama_status_baru,
+											'nama_jabatan_upah_lama'=> 	$nama_jabatan_upah_lama,
+											'nama_jabatan_upah_baru'=>	$nama_jabatan_upah_baru
 										);
 		$this->M_demosi->updateSuratDemosi($updateSuratDemosi, $nomor_surat, $kodeSurat, $tanggal_cetak_asli);
 		redirect('MasterPekerja/Surat/SuratDemosi');

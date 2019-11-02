@@ -108,6 +108,18 @@
                                                             <input type="text" name="txtTempatMakan2" class="form-control" id="MasterPekerja-txtTempatMakan2" readonly="" value="<?php echo $edit['tempat_makan_2_lama'];?>">
                                                         </div>
                                                     </div>
+                                                    <div class="form-group">
+                                                         <label for="txtStatusJabatanlama" class="col-lg-4 control-label">Status Jabatan Lama</label>
+                                                         <div class="col-lg-8">
+                                                             <input type="text" name="txtStatusJabatanlama" class="form-control" id="MasterPekerja-txtStatusJabatanlama" readonly="" value="<?php echo $edit['nama_status_lama'];?>">
+                                                         </div>
+                                                     </div>
+                                                     <div class="form-group">
+                                                         <label for="txtNamaJabatanUpahlama" class="col-lg-4 control-label">Nama Jabatan Upah Lama</label>
+                                                         <div class="col-lg-8">
+                                                             <input type="text" name="txtNamaJabatanUpahlama" class="form-control" id="MasterPekerja-txtNamaJabatanUpahlama" readonly="" value="<?php echo $edit['nama_jabatan_upah_lama'];?>">
+                                                         </div>
+                                                     </div>
                                                 </div>
                                                 <div class="col-lg-6">
                                                     <div class="form-group">
@@ -193,6 +205,25 @@
                                                             </select>
                                                         </div>
                                                     </div>
+                                                    <div class="form-group">
+                                                         <label for="txtStatusjabatanBaru" class="col-lg-4 control-label">Status Jabatan Baru</label>
+                                                         <div class="col-lg-8">
+                                                             <select name="txtStatusjabatanBaru" class="form-control select2" id="MasterPekerja-txtStatusjabatanBaru">
+                                                                 <option value="<?php echo $edit['nama_status_baru'];?>" selected><?php echo $edit['nama_status_baru'];?></option>
+                                                             </select>
+                                                         </div>
+                                                     </div>
+                                                     <div class="form-group">
+                                                         <label for="txtNamaJabatanUpahBaru" class="col-lg-4 control-label">Nama Jabatan Upah Baru</label>
+                                                         <div class="col-lg-8">
+                                                             <select name="txtNamaJabatanUpahBaru" class="form-control select2" id="MasterPekerja-txtNamaJabatanUpahBaru">
+                                                                 <option value="<?php echo $edit['nama_jabatan_upah_baru'];?>">
+                                                                 <?php echo $edit['nama_jabatan_upah_baru'];?>
+                                                                 </option>
+                                                             </select>
+                                                         </div>
+                                                     </div>
+
                                                    <!--  <div class="form-group" >
                                                         <label for="txtTempatMakan1Baru" class="col-lg-4 control-label">Tempat Makan 1</label>
                                                         <div class="col-lg-8">
