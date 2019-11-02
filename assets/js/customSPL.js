@@ -93,7 +93,7 @@ $(function () {
 
   $('.spl-new-pkj-select2').select2({
     ajax:{
-      url: baseurl+"SPLSeksi/C_splseksi/show_pekerja3",
+      url: baseurl+"SPLSeksi/Pusat/C_splseksi/show_pekerja3",
       dataType: 'json',
       type: 'get',
       data: function (params) {
@@ -252,7 +252,7 @@ $(function () {
     $(".multiinput:last select").closest("td").css("background", "#ffffff");
     $('.multiinput select[name*=noind]').select2({
       ajax:{
-        url: baseurl+"SPLSeksi/C_splseksi/show_pekerja3",
+        url: baseurl+"SPLSeksi/Pusat/C_splseksi/show_pekerja3",
         dataType: 'json',
         type: 'get',
         data: function (params) {
