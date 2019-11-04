@@ -1092,4 +1092,6 @@ $(document).ready(function(){
       leftColumns: 3,
     },
   });
+
+  $('.p2k3_tbl_datamasuk').DataTable();
 });

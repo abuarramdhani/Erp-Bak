@@ -113,12 +113,23 @@ class M_Dtmasuk extends CI_Model
         return $query->result_array();
     }
 
-    public function listToApprove($ks, $pr)
+    public function listToApprove($ks, $pr, $app)
     {
-        $sql = "select ks.*, km.item from k3.k3n_standar_kebutuhan ks 
-        left join k3.k3_master_item km on km.kode_item = ks.kode_item
-        where cast(tgl_approve as varchar) like '$pr%' and ks.status = 1 and ks.kodesie like '$ks%'
-        order by km.item, ks.tgl_approve asc";
+        $sql = "select
+                    ks.*,
+                    km.item
+                from
+                    k3.k3n_standar_kebutuhan ks
+                left join k3.k3_master_item km on
+                    km.kode_item = ks.kode_item
+                where
+                    tgl_approve = '$app'
+                    and tgl_input::date = '$pr'
+                    and ks.status = 1
+                    and ks.kodesie like '$ks%'
+                order by
+                    km.item,
+                    ks.tgl_approve asc";
         // echo $sql;exit();
         $query = $this->erp->query($sql);
 

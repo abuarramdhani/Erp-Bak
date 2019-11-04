@@ -260,11 +260,25 @@ class M_Order extends CI_Model
 
     public function getNamaSeksi()
     {
-        $sql = "select substring(cast(tgl_input as varchar),0,8) periode, substring(kodesie,0,8) kodesie, er.section_name
-                from k3.k3n_standar_kebutuhan ks left join er.er_section er on substring(er.section_code,0,8) = substring(ks.kodesie,0,8)
-                where status = '1'
-                group by substring(cast(tgl_input as varchar),0,8), substring(kodesie,0,8), er.section_name
-                order by er.section_name asc";
+        $sql = "select
+                    tgl_input::date periode,
+                    tgl_approve tgl_approve_atasan,
+                    substring(kodesie, 0, 8) kodesie,
+                    er.section_name
+                from
+                    k3.k3n_standar_kebutuhan ks
+                left join er.er_section er on
+                    substring(er.section_code, 0, 8) = substring(ks.kodesie, 0, 8)
+                where
+                    status = '1'
+                group by
+                    tgl_input::date,
+                    substring(kodesie, 0, 8),
+                    er.section_name,
+                    tgl_approve
+                order by
+                    tgl_approve,
+                    er.section_name asc";
        $query = $this->db->query($sql);
         return $query->result_array();
     }
