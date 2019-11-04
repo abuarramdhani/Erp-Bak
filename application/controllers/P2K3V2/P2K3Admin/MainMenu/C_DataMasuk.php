@@ -59,8 +59,12 @@ class C_DataMasuk extends CI_Controller
 		$this->load->view('V_Footer',$data);
 	}
 
-  public function lihat($ks, $pr)
+  public function lihat()
   {
+    $ks = $this->input->get('ks');
+    $pr = $this->input->get('pr');
+    $app = str_replace('_', ' ', $this->input->get('appr'));
+
     $user = $this->session->username;
     $user1 = $this->session->user;
     $user_id = $this->session->userid;
@@ -79,7 +83,7 @@ class C_DataMasuk extends CI_Controller
 
     $data['daftar_pekerjaan'] = $this->M_order->daftar_pekerjaan($ks);
     $data['seksi'] = $this->M_dtmasuk->cekseksi($ks);
-    $data['listToApprove']      = $this->M_dtmasuk->listToApprove($ks, $pr);
+    $data['listToApprove']      = $this->M_dtmasuk->listToApprove($ks, $pr, $app);
     $data['listDahApprove']      = $this->M_dtmasuk->listDahApprove($ks, $pr);
     $lisAprove = array_column($data['listToApprove'], 'kode_item');
     $lisDahAprove = array_column($data['listDahApprove'], 'kode_item');
