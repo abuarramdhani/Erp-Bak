@@ -284,14 +284,14 @@ class C_CreateKIB extends CI_Controller
 
 
 	public function printpdf($org,$status,$no_batch,$kib,$n){
-		$length = 350;
+		$length = 370;
 		if ($status == 1 || $n == 1) {
 			$length = 290;
 		}
 		$this->load->library('ciqrcode');
 		$this->load->library('Pdf');
 		$pdf 			= $this->pdf->load();
-		$pdf = new mPDF('utf-8',array(210,$length), 0, '', 13, 13, 0, 25, 0, 0);
+		$pdf = new mPDF('utf-8',array(210,$length), 0, '', 13, 13, 0, 20, 0, 0);
 
 		if ($status == '0' && $kib == '0') {
 			exit('Status & No kib is null');
