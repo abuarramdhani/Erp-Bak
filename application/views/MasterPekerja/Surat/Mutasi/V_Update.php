@@ -216,7 +216,7 @@
                                                                  <option value="<?php echo $edit['nama_status_baru'];?>" selected><?php echo $edit['nama_status_baru'];?></option>
                                                              </select>
                                                          </div>
-                                                     </div>
+                                                     </div><!-- 
                                                      <div class="form-group">
                                                          <label for="txtNamaJabatanUpahBaru" class="col-lg-4 control-label">Nama Jabatan Upah Baru</label>
                                                          <div class="col-lg-8">
@@ -226,7 +226,7 @@
                                                                  </option>
                                                              </select>
                                                          </div>
-                                                     </div>
+                                                     </div> -->
                                                     <!-- <div class="form-group">
                                                         <label for="txtTempatMakan1Baru" class="col-lg-4 control-label">Tempat Makan 1</label>
                                                         <div class="col-lg-8">
