@@ -111,6 +111,7 @@ class M_moveorder extends CI_Model
 				                       and mtrl.INVENTORY_ITEM_ID = wro.INVENTORY_ITEM_ID
 				                       and mtrh.ORGANIZATION_ID = wro.ORGANIZATION_ID
 															 and substr(mtrh.REQUEST_NUMBER,1,2) = 'PL'
+															 and mtrl.FROM_SUBINVENTORY_CODE = bic.ATTRIBUTE1
 				            --           and mtrh.TRANSACTION_TYPE_ID in (64,137)
 				            --           and msib_komp.SEGMENT1 in ('AAG1BA0021A1-0','AAG1BA0011A1-0')
 				                  group by mtrl.INVENTORY_ITEM_ID
@@ -129,6 +130,7 @@ class M_moveorder extends CI_Model
 				               and mtrh.HEADER_STATUS in (3,7)
 				               and mtrl.INVENTORY_ITEM_ID = wro.INVENTORY_ITEM_ID
 				               and mtrh.ORGANIZATION_ID = wro.ORGANIZATION_ID
+											 and mtrl.FROM_SUBINVENTORY_CODE = bic.ATTRIBUTE1
 				    --           and mtrh.TRANSACTION_TYPE_ID in (64,137)
 				    --           and msib_komp.SEGMENT1 in ('AAG1BA0021A1-0','AAG1BA0011A1-0')
 				          group by mtrl.INVENTORY_ITEM_ID
@@ -269,6 +271,7 @@ class M_moveorder extends CI_Model
 			               and mtrl.INVENTORY_ITEM_ID = wro.INVENTORY_ITEM_ID
 			               and mtrh.ORGANIZATION_ID = wro.ORGANIZATION_ID
 										 and substr(mtrh.REQUEST_NUMBER,1,2) = 'PL'
+										 and mtrl.FROM_SUBINVENTORY_CODE = bic.ATTRIBUTE1
 			    --           and mtrh.TRANSACTION_TYPE_ID in (64,137)
 			    --           and msib_komp.SEGMENT1 in ('AAG1BA0021A1-0','AAG1BA0011A1-0')
 			          group by mtrl.INVENTORY_ITEM_ID
@@ -290,6 +293,7 @@ class M_moveorder extends CI_Model
 			                       and mtrl.INVENTORY_ITEM_ID = wro.INVENTORY_ITEM_ID
 			                       and mtrh.ORGANIZATION_ID = wro.ORGANIZATION_ID
 														 and substr(mtrh.REQUEST_NUMBER,1,2) = 'PL'
+														 and mtrl.FROM_SUBINVENTORY_CODE = bic.ATTRIBUTE1
 			            --           and mtrh.TRANSACTION_TYPE_ID in (64,137)
 			            --           and msib_komp.SEGMENT1 in ('AAG1BA0021A1-0','AAG1BA0011A1-0')
 			                  group by mtrl.INVENTORY_ITEM_ID
