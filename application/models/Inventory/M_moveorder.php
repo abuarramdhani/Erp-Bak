@@ -10,53 +10,167 @@ class M_moveorder extends CI_Model
 	function search($date,$dept,$shift,$atr)
 	{
 		$oracle = $this->load->database('oracle',TRUE);
-		$sql = "SELECT we.WIP_ENTITY_ID job_id ,we.WIP_ENTITY_NAME, msib.SEGMENT1 item_code, msib.DESCRIPTION item_desc, wdj.start_quantity,
-						msib2.INVENTORY_ITEM_ID, msib2.SEGMENT1 komponen, msib2.DESCRIPTION komp_desc
-						,wro.REQUIRED_QUANTITY,msib2.PRIMARY_UOM_CODE, bic.ATTRIBUTE1 gudang_asal, mil.SEGMENT1 locator_asal
-						,bic.SUPPLY_SUBINVENTORY gudang_tujuan,bic.SUPPLY_LOCATOR_ID locator_tujuan_id ,mil2.SEGMENT1 locator_tujuan
-						$atr
-						,bd.DEPARTMENT_CLASS_CODE dept_class, bcs.DESCRIPTION
-						 FROM wip_entities we
-						,wip_discrete_jobs wdj
-						,mtl_system_items_b msib
-						,wip_requirement_operations wro
-						,mtl_system_items_b msib2
-						,bom_bill_of_materials bom
-						,bom_inventory_components bic
-						,MTL_ITEM_LOCATIONS mil
-						,MTL_ITEM_LOCATIONS mil2
-						,wip_operations wo
-						,bom_calendar_shifts bcs
-						,bom_departments bd
-						,BOM_OPERATIONAL_ROUTINGS bor
-						where we.WIP_ENTITY_ID = wdj.WIP_ENTITY_ID
-						and we.ORGANIZATION_ID = wdj.ORGANIZATION_ID
-						and we.PRIMARY_ITEM_ID = msib.INVENTORY_ITEM_ID
-						and we.ORGANIZATION_ID = msib.ORGANIZATION_ID
-						and wdj.WIP_ENTITY_ID = wro.WIP_ENTITY_ID
-						and wro.INVENTORY_ITEM_ID = msib2.inventory_item_id
-						and wro.ORGANIZATION_ID = msib2.ORGANIZATION_ID
-						and bom.bill_sequence_id = bic.bill_sequence_id
-						and bom.ASSEMBLY_ITEM_ID = msib.inventory_item_id
-						and bom.organization_id = msib.organization_id
-						and bic.COMPONENT_ITEM_ID = msib2.inventory_item_id
-						and wdj.COMMON_BOM_SEQUENCE_ID = bom.COMMON_BILL_SEQUENCE_ID
-						and bic.ATTRIBUTE2 = mil.INVENTORY_LOCATION_ID(+)
-						and bic.SUPPLY_LOCATOR_ID = mil2.INVENTORY_LOCATION_ID(+)
-						--routing
-						and wdj.COMMON_ROUTING_SEQUENCE_ID = bor.ROUTING_SEQUENCE_ID
-						--
-						and wo.WIP_ENTITY_ID = wdj.WIP_ENTITY_ID
-						and wo.ORGANIZATION_ID = we.ORGANIZATION_ID
-						and wo.DEPARTMENT_ID = bd.DEPARTMENT_ID
-						and khs_shift(wdj.SCHEDULED_START_DATE) = bcs.SHIFT_NUM
-						and wdj.status_type = 3
-						AND trunc(wdj.SCHEDULED_START_DATE) = '$date' --'12-NOV-18'    --parameter
-						$shift       --parameter
-						and bd.DEPARTMENT_CLASS_CODE = '$dept'         --parameter
-						ORDER BY we.WIP_ENTITY_ID ASC
-						--and we.WIP_ENTITY_NAME between 'D181100010' and 'D181100013'
-					";
+		// $sql = "SELECT we.WIP_ENTITY_ID job_id ,we.WIP_ENTITY_NAME, msib.SEGMENT1 item_code, msib.DESCRIPTION item_desc, wdj.start_quantity,
+		// 				msib2.INVENTORY_ITEM_ID, msib2.SEGMENT1 komponen, msib2.DESCRIPTION komp_desc
+		// 				,wro.REQUIRED_QUANTITY,msib2.PRIMARY_UOM_CODE, bic.ATTRIBUTE1 gudang_asal, mil.SEGMENT1 locator_asal
+		// 				,bic.SUPPLY_SUBINVENTORY gudang_tujuan,bic.SUPPLY_LOCATOR_ID locator_tujuan_id ,mil2.SEGMENT1 locator_tujuan
+		// 				$atr
+		// 				,bd.DEPARTMENT_CLASS_CODE dept_class, bcs.DESCRIPTION
+		// 				 FROM wip_entities we
+		// 				,wip_discrete_jobs wdj
+		// 				,mtl_system_items_b msib
+		// 				,wip_requirement_operations wro
+		// 				,mtl_system_items_b msib2
+		// 				,bom_bill_of_materials bom
+		// 				,bom_inventory_components bic
+		// 				,MTL_ITEM_LOCATIONS mil
+		// 				,MTL_ITEM_LOCATIONS mil2
+		// 				,wip_operations wo
+		// 				,bom_calendar_shifts bcs
+		// 				,bom_departments bd
+		// 				,BOM_OPERATIONAL_ROUTINGS bor
+		// 				where we.WIP_ENTITY_ID = wdj.WIP_ENTITY_ID
+		// 				and we.ORGANIZATION_ID = wdj.ORGANIZATION_ID
+		// 				and we.PRIMARY_ITEM_ID = msib.INVENTORY_ITEM_ID
+		// 				and we.ORGANIZATION_ID = msib.ORGANIZATION_ID
+		// 				and wdj.WIP_ENTITY_ID = wro.WIP_ENTITY_ID
+		// 				and wro.INVENTORY_ITEM_ID = msib2.inventory_item_id
+		// 				and wro.ORGANIZATION_ID = msib2.ORGANIZATION_ID
+		// 				and bom.bill_sequence_id = bic.bill_sequence_id
+		// 				and bom.ASSEMBLY_ITEM_ID = msib.inventory_item_id
+		// 				and bom.organization_id = msib.organization_id
+		// 				and bic.COMPONENT_ITEM_ID = msib2.inventory_item_id
+		// 				and wdj.COMMON_BOM_SEQUENCE_ID = bom.COMMON_BILL_SEQUENCE_ID
+		// 				and bic.ATTRIBUTE2 = mil.INVENTORY_LOCATION_ID(+)
+		// 				and bic.SUPPLY_LOCATOR_ID = mil2.INVENTORY_LOCATION_ID(+)
+		// 				--routing
+		// 				and wdj.COMMON_ROUTING_SEQUENCE_ID = bor.ROUTING_SEQUENCE_ID
+		// 				--
+		// 				and wo.WIP_ENTITY_ID = wdj.WIP_ENTITY_ID
+		// 				and wo.ORGANIZATION_ID = we.ORGANIZATION_ID
+		// 				and wo.DEPARTMENT_ID = bd.DEPARTMENT_ID
+		// 				and khs_shift(wdj.SCHEDULED_START_DATE) = bcs.SHIFT_NUM
+		// 				and wdj.status_type = 3
+		// 				AND trunc(wdj.SCHEDULED_START_DATE) = '$date' --'12-NOV-18'    --parameter
+		// 				$shift       --parameter
+		// 				and bd.DEPARTMENT_CLASS_CODE = '$dept'         --parameter
+		// 				ORDER BY we.WIP_ENTITY_ID ASC
+		// 				--and we.WIP_ENTITY_NAME between 'D181100010' and 'D181100013'
+		// 			";
+		$sql = "SELECT we.WIP_ENTITY_ID job_id
+				      ,we.WIP_ENTITY_NAME
+				      ,msib.SEGMENT1 item_code
+				      ,msib.DESCRIPTION item_desc
+				      ,wdj.start_quantity
+				      ,msib2.INVENTORY_ITEM_ID
+				      ,msib2.SEGMENT1 komponen
+				      ,msib2.DESCRIPTION komp_desc
+				      ,wro.REQUIRED_QUANTITY
+				      ,msib2.PRIMARY_UOM_CODE
+				      ,bic.ATTRIBUTE1 gudang_asal
+				      ,mil.SEGMENT1 locator_asal
+				      ,bic.SUPPLY_SUBINVENTORY gudang_tujuan
+				      ,bic.SUPPLY_LOCATOR_ID locator_tujuan_id 
+				      ,mil2.SEGMENT1 locator_tujuan
+				      ,khs_inv_qty_att(wdj.ORGANIZATION_ID,wro.INVENTORY_ITEM_ID,bic.ATTRIBUTE1,bic.ATTRIBUTE2,'') atr
+				      ,bd.DEPARTMENT_CLASS_CODE dept_class
+				      ,bcs.DESCRIPTION
+				      --
+				      ,nvl(
+				           (select sum(mtrl.QUANTITY)
+				              from mtl_txn_request_headers mtrh
+				                  ,mtl_txn_request_lines mtrl
+				                  ,mtl_system_items_b msib_komp
+				             where mtrh.HEADER_ID = mtrl.HEADER_ID
+				               and mtrh.ORGANIZATION_ID = msib_komp.ORGANIZATION_ID
+				               and mtrl.INVENTORY_ITEM_ID = msib_komp.INVENTORY_ITEM_ID
+				               --
+				               and mtrl.LINE_STATUS in (3,7)
+				               and mtrh.HEADER_STATUS in (3,7)
+				               and mtrl.INVENTORY_ITEM_ID = wro.INVENTORY_ITEM_ID
+				               and mtrh.ORGANIZATION_ID = wro.ORGANIZATION_ID
+				    --           and mtrh.TRANSACTION_TYPE_ID in (64,137)
+				    --           and msib_komp.SEGMENT1 in ('AAG1BA0021A1-0','AAG1BA0011A1-0')
+				          group by mtrl.INVENTORY_ITEM_ID
+				            ),0) mo
+				      ,(
+				            (khs_inv_qty_att(wdj.ORGANIZATION_ID,wro.INVENTORY_ITEM_ID,bic.ATTRIBUTE1,bic.ATTRIBUTE2,'')
+				                )-
+				               (nvl(
+				                   (select sum(mtrl.QUANTITY)
+				                      from mtl_txn_request_headers mtrh
+				                          ,mtl_txn_request_lines mtrl
+				                          ,mtl_system_items_b msib_komp
+				                     where mtrh.HEADER_ID = mtrl.HEADER_ID
+				                       and mtrh.ORGANIZATION_ID = msib_komp.ORGANIZATION_ID
+				                       and mtrl.INVENTORY_ITEM_ID = msib_komp.INVENTORY_ITEM_ID
+				                       --
+				                       and mtrl.LINE_STATUS in (3,7)
+				                       and mtrh.HEADER_STATUS in (3,7)
+				                       and mtrl.INVENTORY_ITEM_ID = wro.INVENTORY_ITEM_ID
+				                       and mtrh.ORGANIZATION_ID = wro.ORGANIZATION_ID
+				            --           and mtrh.TRANSACTION_TYPE_ID in (64,137)
+				            --           and msib_komp.SEGMENT1 in ('AAG1BA0021A1-0','AAG1BA0011A1-0')
+				                  group by mtrl.INVENTORY_ITEM_ID
+				                    ),0) )
+				                            ) kurang
+				      ,nvl(
+				           (select sum(mtrl.QUANTITY)
+				              from mtl_txn_request_headers mtrh
+				                  ,mtl_txn_request_lines mtrl
+				                  ,mtl_system_items_b msib_komp
+				             where mtrh.HEADER_ID = mtrl.HEADER_ID
+				               and mtrh.ORGANIZATION_ID = msib_komp.ORGANIZATION_ID
+				               and mtrl.INVENTORY_ITEM_ID = msib_komp.INVENTORY_ITEM_ID
+				               --
+				               and mtrl.LINE_STATUS in (3,7)
+				               and mtrh.HEADER_STATUS in (3,7)
+				               and mtrl.INVENTORY_ITEM_ID = wro.INVENTORY_ITEM_ID
+				               and mtrh.ORGANIZATION_ID = wro.ORGANIZATION_ID
+				    --           and mtrh.TRANSACTION_TYPE_ID in (64,137)
+				    --           and msib_komp.SEGMENT1 in ('AAG1BA0021A1-0','AAG1BA0011A1-0')
+				          group by mtrl.INVENTORY_ITEM_ID
+				            ),0) mo
+				from wip_entities we
+				    ,wip_discrete_jobs wdj
+				    ,mtl_system_items_b msib
+				    ,wip_requirement_operations wro
+				    ,mtl_system_items_b msib2
+				    ,bom_bill_of_materials bom
+				    ,bom_inventory_components bic
+				    ,MTL_ITEM_LOCATIONS mil
+				    ,MTL_ITEM_LOCATIONS mil2
+				    ,wip_operations wo
+				    ,bom_calendar_shifts bcs
+				    ,bom_departments bd
+				    ,BOM_OPERATIONAL_ROUTINGS bor
+				where we.WIP_ENTITY_ID = wdj.WIP_ENTITY_ID
+				  and we.ORGANIZATION_ID = wdj.ORGANIZATION_ID
+				  and we.PRIMARY_ITEM_ID = msib.INVENTORY_ITEM_ID
+				  and we.ORGANIZATION_ID = msib.ORGANIZATION_ID
+				  and wdj.WIP_ENTITY_ID = wro.WIP_ENTITY_ID
+				  and wro.INVENTORY_ITEM_ID = msib2.INVENTORY_ITEM_ID
+				  and wro.ORGANIZATION_ID = msib2.ORGANIZATION_ID
+				  and bom.BILL_SEQUENCE_ID = bic.BILL_SEQUENCE_ID
+				  and bom.ASSEMBLY_ITEM_ID = msib.INVENTORY_ITEM_ID
+				  and bom.organization_id = msib.ORGANIZATION_ID
+				  and bic.COMPONENT_ITEM_ID = msib2.INVENTORY_ITEM_ID
+				  and wdj.COMMON_BOM_SEQUENCE_ID = bom.COMMON_BILL_SEQUENCE_ID
+				  and bic.ATTRIBUTE2 = mil.INVENTORY_LOCATION_ID(+)
+				  and bic.SUPPLY_LOCATOR_ID = mil2.INVENTORY_LOCATION_ID(+)
+				  --routing
+				  and wdj.COMMON_ROUTING_SEQUENCE_ID = bor.ROUTING_SEQUENCE_ID
+				  --
+				  and wo.WIP_ENTITY_ID = wdj.WIP_ENTITY_ID
+				  and wo.ORGANIZATION_ID = we.ORGANIZATION_ID
+				  and wo.DEPARTMENT_ID = bd.DEPARTMENT_ID
+				  and khs_shift(wdj.SCHEDULED_START_DATE) = bcs.SHIFT_NUM
+				  and wdj.STATUS_TYPE = 3
+				  and trunc(wdj.SCHEDULED_START_DATE) = '$date' --'12-NOV-18'    --parameter
+				  $shift
+				--  and bcs.SHIFT_NUM = ''      --parameter 1,  2, 3, 4,
+				  and bd.DEPARTMENT_CLASS_CODE = '$dept'       --parameter SUBKT, MACHA
+				order by we.WIP_ENTITY_ID asc";
 		// echo "<pre>";
 		// print_r($sql);
 		// exit();			
@@ -69,58 +183,154 @@ class M_moveorder extends CI_Model
 	function getBody($job_no,$atr,$dept) //----------------->>
 	{
 		$oracle = $this->load->database('oracle',TRUE);
-		$sql = "
-				SELECT we.WIP_ENTITY_ID job_id,  we.WIP_ENTITY_NAME ,msib2.SEGMENT1 komponen, msib2.DESCRIPTION komp_desc, msib2.inventory_item_id
-					,wro.REQUIRED_QUANTITY,msib2.PRIMARY_UOM_CODE, bic.ATTRIBUTE1 gudang_asal, mil.SEGMENT1 locator_asal
-					,bic.SUPPLY_SUBINVENTORY gudang_tujuan,bic.SUPPLY_LOCATOR_ID locator_tujuan_id ,mil2.SEGMENT1 locator_tujuan
-					$atr
-					,bd.DEPARTMENT_CLASS_CODE dept_class, bcs.DESCRIPTION, wdj.SCHEDULED_START_DATE 
-					 FROM wip_entities we
-					,wip_discrete_jobs wdj
-					,mtl_system_items_b msib
-					,wip_requirement_operations wro 
-					,mtl_system_items_b msib2
-					,bom_bill_of_materials bom
-					,bom_inventory_components bic
-					,MTL_ITEM_LOCATIONS mil
-					,MTL_ITEM_LOCATIONS mil2
-					,wip_operations wo
-					,bom_calendar_shifts bcs
-					,bom_departments bd
-					,BOM_OPERATIONAL_ROUTINGS bor
-					where we.WIP_ENTITY_ID = wdj.WIP_ENTITY_ID
-					and we.ORGANIZATION_ID = wdj.ORGANIZATION_ID
-					and we.PRIMARY_ITEM_ID = msib.INVENTORY_ITEM_ID
-					and we.ORGANIZATION_ID = msib.ORGANIZATION_ID
-					and wdj.WIP_ENTITY_ID = wro.WIP_ENTITY_ID
-					and wro.INVENTORY_ITEM_ID = msib2.inventory_item_id
-					and wro.ORGANIZATION_ID = msib2.ORGANIZATION_ID
-					and bom.bill_sequence_id = bic.bill_sequence_id
-					and bom.ASSEMBLY_ITEM_ID = msib.inventory_item_id
-					and bom.organization_id = msib.organization_id
-					and bic.COMPONENT_ITEM_ID = msib2.inventory_item_id
-					and wdj.COMMON_BOM_SEQUENCE_ID = bom.COMMON_BILL_SEQUENCE_ID
-					and bic.ATTRIBUTE2 = mil.INVENTORY_LOCATION_ID(+)
-					and bic.SUPPLY_LOCATOR_ID = mil2.INVENTORY_LOCATION_ID(+)
-					--routing
-					and wdj.COMMON_ROUTING_SEQUENCE_ID = bor.ROUTING_SEQUENCE_ID
-					--
-					and wo.WIP_ENTITY_ID = wdj.WIP_ENTITY_ID
-					and wo.ORGANIZATION_ID = we.ORGANIZATION_ID
-					and wo.DEPARTMENT_ID = bd.DEPARTMENT_ID
-					and khs_shift(wdj.SCHEDULED_START_DATE) = bcs.SHIFT_NUM
-					-- INT THE TRUTH IT WILL USED --
-					and bic.ATTRIBUTE1 is not null
-					-- INT THE TRUTH ABOVE IT WILL USED --
-					and we.WIP_ENTITY_NAME = '$job_no'
-					and bd.DEPARTMENT_CLASS_CODE = '$dept'
-					group by we.WIP_ENTITY_ID,  we.WIP_ENTITY_NAME ,msib2.SEGMENT1, msib2.DESCRIPTION, msib2.inventory_item_id
-                    ,wro.REQUIRED_QUANTITY,msib2.PRIMARY_UOM_CODE, bic.ATTRIBUTE1, mil.SEGMENT1
-                    ,bic.SUPPLY_SUBINVENTORY,bic.SUPPLY_LOCATOR_ID ,mil2.SEGMENT1
-                    ,wdj.ORGANIZATION_ID,wro.INVENTORY_ITEM_ID,bic.ATTRIBUTE1,bic.ATTRIBUTE2
-                    ,bd.DEPARTMENT_CLASS_CODE, bcs.DESCRIPTION, wdj.SCHEDULED_START_DATE
-                    order by bic.ATTRIBUTE1, bic.ATTRIBUTE2
-		 		";
+		// $sql = "
+		// 		SELECT we.WIP_ENTITY_ID job_id,  we.WIP_ENTITY_NAME ,msib2.SEGMENT1 komponen, msib2.DESCRIPTION komp_desc, msib2.inventory_item_id
+		// 			,wro.REQUIRED_QUANTITY,msib2.PRIMARY_UOM_CODE, bic.ATTRIBUTE1 gudang_asal, mil.SEGMENT1 locator_asal
+		// 			,bic.SUPPLY_SUBINVENTORY gudang_tujuan,bic.SUPPLY_LOCATOR_ID locator_tujuan_id ,mil2.SEGMENT1 locator_tujuan
+		// 			$atr
+		// 			,bd.DEPARTMENT_CLASS_CODE dept_class, bcs.DESCRIPTION, wdj.SCHEDULED_START_DATE 
+		// 			 FROM wip_entities we
+		// 			,wip_discrete_jobs wdj
+		// 			,mtl_system_items_b msib
+		// 			,wip_requirement_operations wro 
+		// 			,mtl_system_items_b msib2
+		// 			,bom_bill_of_materials bom
+		// 			,bom_inventory_components bic
+		// 			,MTL_ITEM_LOCATIONS mil
+		// 			,MTL_ITEM_LOCATIONS mil2
+		// 			,wip_operations wo
+		// 			,bom_calendar_shifts bcs
+		// 			,bom_departments bd
+		// 			,BOM_OPERATIONAL_ROUTINGS bor
+		// 			where we.WIP_ENTITY_ID = wdj.WIP_ENTITY_ID
+		// 			and we.ORGANIZATION_ID = wdj.ORGANIZATION_ID
+		// 			and we.PRIMARY_ITEM_ID = msib.INVENTORY_ITEM_ID
+		// 			and we.ORGANIZATION_ID = msib.ORGANIZATION_ID
+		// 			and wdj.WIP_ENTITY_ID = wro.WIP_ENTITY_ID
+		// 			and wro.INVENTORY_ITEM_ID = msib2.inventory_item_id
+		// 			and wro.ORGANIZATION_ID = msib2.ORGANIZATION_ID
+		// 			and bom.bill_sequence_id = bic.bill_sequence_id
+		// 			and bom.ASSEMBLY_ITEM_ID = msib.inventory_item_id
+		// 			and bom.organization_id = msib.organization_id
+		// 			and bic.COMPONENT_ITEM_ID = msib2.inventory_item_id
+		// 			and wdj.COMMON_BOM_SEQUENCE_ID = bom.COMMON_BILL_SEQUENCE_ID
+		// 			and bic.ATTRIBUTE2 = mil.INVENTORY_LOCATION_ID(+)
+		// 			and bic.SUPPLY_LOCATOR_ID = mil2.INVENTORY_LOCATION_ID(+)
+		// 			--routing
+		// 			and wdj.COMMON_ROUTING_SEQUENCE_ID = bor.ROUTING_SEQUENCE_ID
+		// 			--
+		// 			and wo.WIP_ENTITY_ID = wdj.WIP_ENTITY_ID
+		// 			and wo.ORGANIZATION_ID = we.ORGANIZATION_ID
+		// 			and wo.DEPARTMENT_ID = bd.DEPARTMENT_ID
+		// 			and khs_shift(wdj.SCHEDULED_START_DATE) = bcs.SHIFT_NUM
+		// 			-- INT THE TRUTH IT WILL USED --
+		// 			and bic.ATTRIBUTE1 is not null
+		// 			-- INT THE TRUTH ABOVE IT WILL USED --
+		// 			and we.WIP_ENTITY_NAME = '$job_no'
+		// 			and bd.DEPARTMENT_CLASS_CODE = '$dept'
+		// 			group by we.WIP_ENTITY_ID,  we.WIP_ENTITY_NAME ,msib2.SEGMENT1, msib2.DESCRIPTION, msib2.inventory_item_id
+  //                   ,wro.REQUIRED_QUANTITY,msib2.PRIMARY_UOM_CODE, bic.ATTRIBUTE1, mil.SEGMENT1
+  //                   ,bic.SUPPLY_SUBINVENTORY,bic.SUPPLY_LOCATOR_ID ,mil2.SEGMENT1
+  //                   ,wdj.ORGANIZATION_ID,wro.INVENTORY_ITEM_ID,bic.ATTRIBUTE1,bic.ATTRIBUTE2
+  //                   ,bd.DEPARTMENT_CLASS_CODE, bcs.DESCRIPTION, wdj.SCHEDULED_START_DATE
+  //                   order by bic.ATTRIBUTE1, bic.ATTRIBUTE2
+		//  		";
+
+		$sql = "SELECT we.WIP_ENTITY_ID job_id
+			      ,we.WIP_ENTITY_NAME 
+			      ,msib2.SEGMENT1 komponen
+			      ,msib2.DESCRIPTION komp_desc
+			      ,msib2.inventory_item_id
+			      ,wro.REQUIRED_QUANTITY
+			      ,msib2.PRIMARY_UOM_CODE
+			      ,bic.ATTRIBUTE1 gudang_asal
+			      ,mil.SEGMENT1 locator_asal
+			      ,bic.SUPPLY_SUBINVENTORY gudang_tujuan
+			      ,bic.SUPPLY_LOCATOR_ID locator_tujuan_id 
+			      ,mil2.SEGMENT1 locator_tujuan
+			      ,khs_inv_qty_att(wdj.ORGANIZATION_ID,wro.INVENTORY_ITEM_ID,bic.ATTRIBUTE1,bic.ATTRIBUTE2,'') atr
+			      ,bd.DEPARTMENT_CLASS_CODE dept_class
+			      ,bcs.DESCRIPTION
+			      ,wdj.SCHEDULED_START_DATE 
+			      --
+			      ,nvl(
+			           (select sum(mtrl.QUANTITY)
+			              from mtl_txn_request_headers mtrh
+			                  ,mtl_txn_request_lines mtrl
+			                  ,mtl_system_items_b msib_komp
+			             where mtrh.HEADER_ID = mtrl.HEADER_ID
+			               and mtrh.ORGANIZATION_ID = msib_komp.ORGANIZATION_ID
+			               and mtrl.INVENTORY_ITEM_ID = msib_komp.INVENTORY_ITEM_ID
+			               --
+			               and mtrl.LINE_STATUS in (3,7)
+			               and mtrh.HEADER_STATUS in (3,7)
+			               and mtrl.INVENTORY_ITEM_ID = wro.INVENTORY_ITEM_ID
+			               and mtrh.ORGANIZATION_ID = wro.ORGANIZATION_ID
+			    --           and mtrh.TRANSACTION_TYPE_ID in (64,137)
+			    --           and msib_komp.SEGMENT1 in ('AAG1BA0021A1-0','AAG1BA0011A1-0')
+			          group by mtrl.INVENTORY_ITEM_ID
+			            ),0) mo
+			      ,(
+			            (khs_inv_qty_att(wdj.ORGANIZATION_ID,wro.INVENTORY_ITEM_ID,bic.ATTRIBUTE1,bic.ATTRIBUTE2,'')
+			                )-
+			               (nvl(
+			                   (select sum(mtrl.QUANTITY)
+			                      from mtl_txn_request_headers mtrh
+			                          ,mtl_txn_request_lines mtrl
+			                          ,mtl_system_items_b msib_komp
+			                     where mtrh.HEADER_ID = mtrl.HEADER_ID
+			                       and mtrh.ORGANIZATION_ID = msib_komp.ORGANIZATION_ID
+			                       and mtrl.INVENTORY_ITEM_ID = msib_komp.INVENTORY_ITEM_ID
+			                       --
+			                       and mtrl.LINE_STATUS in (3,7)
+			                       and mtrh.HEADER_STATUS in (3,7)
+			                       and mtrl.INVENTORY_ITEM_ID = wro.INVENTORY_ITEM_ID
+			                       and mtrh.ORGANIZATION_ID = wro.ORGANIZATION_ID
+			            --           and mtrh.TRANSACTION_TYPE_ID in (64,137)
+			            --           and msib_komp.SEGMENT1 in ('AAG1BA0021A1-0','AAG1BA0011A1-0')
+			                  group by mtrl.INVENTORY_ITEM_ID
+			                    ),0) )
+			                            ) KURANG
+			from wip_entities we
+			    ,wip_discrete_jobs wdj
+			    ,mtl_system_items_b msib
+			    ,wip_requirement_operations wro 
+			    ,mtl_system_items_b msib2
+			    ,bom_bill_of_materials bom
+			    ,bom_inventory_components bic
+			    ,MTL_ITEM_LOCATIONS mil
+			    ,MTL_ITEM_LOCATIONS mil2
+			    ,wip_operations wo
+			    ,bom_calendar_shifts bcs
+			    ,bom_departments bd
+			    ,BOM_OPERATIONAL_ROUTINGS bor
+			where we.WIP_ENTITY_ID = wdj.WIP_ENTITY_ID
+			  and we.ORGANIZATION_ID = wdj.ORGANIZATION_ID
+			  and we.PRIMARY_ITEM_ID = msib.INVENTORY_ITEM_ID
+			  and we.ORGANIZATION_ID = msib.ORGANIZATION_ID
+			  and wdj.WIP_ENTITY_ID = wro.WIP_ENTITY_ID
+			  and wro.INVENTORY_ITEM_ID = msib2.INVENTORY_ITEM_ID
+			  and wro.ORGANIZATION_ID = msib2.ORGANIZATION_ID
+			  and bom.BILL_SEQUENCE_ID = bic.BILL_SEQUENCE_ID
+			  and bom.ASSEMBLY_ITEM_ID = msib.INVENTORY_ITEM_ID
+			  and bom.ORGANIZATION_ID = msib.ORGANIZATION_ID
+			  and bic.COMPONENT_ITEM_ID = msib2.INVENTORY_ITEM_ID
+			  and wdj.COMMON_BOM_SEQUENCE_ID = bom.COMMON_BILL_SEQUENCE_ID
+			  and bic.ATTRIBUTE2 = mil.INVENTORY_LOCATION_ID(+)
+			  and bic.SUPPLY_LOCATOR_ID = mil2.INVENTORY_LOCATION_ID(+)
+			  --routing
+			  and wdj.COMMON_ROUTING_SEQUENCE_ID = bor.ROUTING_SEQUENCE_ID
+			  --
+			  and wo.WIP_ENTITY_ID = wdj.WIP_ENTITY_ID
+			  and wo.ORGANIZATION_ID = we.ORGANIZATION_ID
+			  and wo.DEPARTMENT_ID = bd.DEPARTMENT_ID
+			  and khs_shift(wdj.SCHEDULED_START_DATE) = bcs.SHIFT_NUM
+			  -- INT THE TRUTH IT WILL USED --
+			  and bic.ATTRIBUTE1 is not null
+			  -- INT THE TRUTH ABOVE IT WILL USED --
+			  and we.WIP_ENTITY_NAME = '$job_no'
+			  and bd.DEPARTMENT_CLASS_CODE = '$dept'  
+			order by bic.ATTRIBUTE1, bic.ATTRIBUTE2";
 		// return $sql;
 		$query = $oracle->query($sql);
 		return $query->result_array();
@@ -488,7 +698,7 @@ class M_moveorder extends CI_Model
 	}
 
 
-	function createMO($ip_address,$job_id,$subInv,$locator,$subInvFrom,$locatorFrom)
+	function createMO($ip_address,$job_id,$subInv,$locator,$subInvFrom,$locatorFrom,$user_id)
 	{
 		// if ($locator) {
 		// 	$locator = null;
@@ -518,8 +728,8 @@ class M_moveorder extends CI_Model
 		// echo ':P_PARAM7 = '.$jan.'<br>';
 		// echo ':P_PARAM8 = '.$job_id.'<br>';
 		// exit();
-		// $conn = oci_connect('APPS', 'APPS', '192.168.7.3:1522/DEV');
-		$conn = oci_connect('APPS', 'APPS', '192.168.7.1:1521/PROD');
+		$conn = oci_connect('APPS', 'APPS', '192.168.7.3:1522/DEV');
+		// $conn = oci_connect('APPS', 'APPS', '192.168.7.1:1521/PROD');
 			if (!$conn) {
 	   			 $e = oci_error();
 	    		trigger_error(htmlentities($e['message'], ENT_QUOTES), E_USER_ERROR);
@@ -540,6 +750,7 @@ class M_moveorder extends CI_Model
 		oci_bind_by_name($stmt,':P_PARAM6',$ip_address);
 		oci_bind_by_name($stmt,':P_PARAM7',$jan);
 		oci_bind_by_name($stmt,':P_PARAM8',$job_id);
+		// oci_bind_by_name($stmt,':P_PARAM9',$user_id);
 
 		
 		// if (!$data) {

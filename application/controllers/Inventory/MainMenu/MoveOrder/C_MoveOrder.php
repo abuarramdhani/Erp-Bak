@@ -77,12 +77,12 @@ class C_MoveOrder extends CI_Controller
 		$dataGET = $this->M_MoveOrder->search($date,$dept,$shift,$atr);
 		
 		// echo "<pre>";
-		// print_r($date);
-		// echo "<br>";
-		// print_r($dept);
-		// echo "<br>";
-		// print_r($shift);		
-		// echo "<br>";
+		// // print_r($date);
+		// // echo "<br>";
+		// // print_r($dept);
+		// // echo "<br>";
+		// // print_r($shift);		
+		// // echo "<br>";
 		// print_r($dataGET);		
 		// exit();
 		
@@ -90,8 +90,9 @@ class C_MoveOrder extends CI_Controller
 		$array_terkelompok = array();
 		foreach ($dataGET as $key => $value) {
 			if (in_array($value['WIP_ENTITY_NAME'], $array_sudah)) {
-				
+				// echo "sudah ada";print_r($value['WIP_ENTITY_NAME']);echo"<br>";
 			}else{
+				// echo "memasukan ";print_r($value['WIP_ENTITY_NAME']);echo "<br>";
 				array_push($array_sudah, $value['WIP_ENTITY_NAME']);
 				if ($dept == 'SUBKT') {
 					$atr = ",khs_inv_qty_att(wdj.ORGANIZATION_ID,wro.INVENTORY_ITEM_ID,bic.ATTRIBUTE1,bic.ATTRIBUTE2,'') atr";
@@ -108,7 +109,7 @@ class C_MoveOrder extends CI_Controller
 		}
 
 		// echo "<pre>";
-		// print_r($array_sudah);
+		// // print_r($array_sudah);
 		// print_r($array_terkelompok);
 		// exit();
 
@@ -137,6 +138,7 @@ class C_MoveOrder extends CI_Controller
 		// echo "<pre>";
 		// print_r($_POST);
 		// exit();
+		$user_id = $this->session->user;
 		
 		$ip_address =  $this->input->ip_address();
 		$job = $this->input->post('no_job');
@@ -230,7 +232,7 @@ class C_MoveOrder extends CI_Controller
 
 						}
 							//create MO         
-							$this->M_MoveOrder->createMO($ip_address,$job_id[0],$subinv_to[0],$locator_to[0],$key,$data2[$key]);
+							$this->M_MoveOrder->createMO($ip_address,$job_id[0],$subinv_to[0],$locator_to[0],$key,$data2[$key],$user_id);
 
 							//delete
 							$this->M_MoveOrder->deleteTemp($ip_address,$job_id[0]);
@@ -258,7 +260,9 @@ class C_MoveOrder extends CI_Controller
 
 	public function pdf($array_mo,$nama_satu, $nama_dua, $piklis){
 		// ------ GET DATA ------
+		// echo "<pre>";
 		// print_r($array_mo);
+		// exit();
 
 			$temp_filename = array();
 			foreach ($array_mo as $key => $mo) {
@@ -336,7 +340,7 @@ class C_MoveOrder extends CI_Controller
 			}
 
 			// echo "<pre>";
-			// print_r($dataall);
+			// print_r($data);
 			// exit();
 
 			$head		= array();
@@ -391,6 +395,11 @@ class C_MoveOrder extends CI_Controller
 				}
 				//$pdf->WriteHTML($line,0);
 			}
+
+			// echo "<pre>";
+			// print_r($data);
+			// exit();
+			
 			$pdf->Output($filename, 'I');
 
 			if (!empty($temp_filename)) {
@@ -406,6 +415,8 @@ class C_MoveOrder extends CI_Controller
 		// echo "<pre>";
 		// print_r ($_POST);
 		// exit();
+		$user_id = $this->session->user;
+
 		$nama_satu = '';
 		$nama_dua = '';
 		$ip_address =  $this->input->ip_address();
@@ -485,7 +496,7 @@ class C_MoveOrder extends CI_Controller
 										$i++;
 									}
 										//create MO       
-										$this->M_MoveOrder->createMO($ip_address,$job_id2[0],$subinv_to2[0],$locator_to2[0],$kSub,$data2[$kSub]);
+										$this->M_MoveOrder->createMO($ip_address,$job_id2[0],$subinv_to2[0],$locator_to2[0],$kSub,$data2[$kSub],$user_id);
 
 										//delete
 										$this->M_MoveOrder->deleteTemp($ip_address,$job_id2[0]);
@@ -537,7 +548,7 @@ class C_MoveOrder extends CI_Controller
 							$this->M_MoveOrder->createTemp($data);
 
 							//create MO
-							$this->M_MoveOrder->createMO($ip_address,$job_id[$key],$subinv_to[$key],$locator_to[$key],$subinv_from[$key],$locator_from[$key]);
+							$this->M_MoveOrder->createMO($ip_address,$job_id[$key],$subinv_to[$key],$locator_to[$key],$subinv_from[$key],$locator_from[$key],$user_id);
 
 							//delete TEMP
 							$this->M_MoveOrder->deleteTemp($ip_address,$job_id[$key]);
