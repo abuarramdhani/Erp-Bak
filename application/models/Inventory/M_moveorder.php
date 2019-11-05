@@ -732,8 +732,8 @@ class M_moveorder extends CI_Model
 		// echo ':P_PARAM7 = '.$jan.'<br>';
 		// echo ':P_PARAM8 = '.$job_id.'<br>';
 		// exit();
-		$conn = oci_connect('APPS', 'APPS', '192.168.7.3:1522/DEV');
-		// $conn = oci_connect('APPS', 'APPS', '192.168.7.1:1521/PROD');
+		// $conn = oci_connect('APPS', 'APPS', '192.168.7.3:1522/DEV');
+		$conn = oci_connect('APPS', 'APPS', '192.168.7.1:1521/PROD');
 			if (!$conn) {
 	   			 $e = oci_error();
 	    		trigger_error(htmlentities($e['message'], ENT_QUOTES), E_USER_ERROR);
