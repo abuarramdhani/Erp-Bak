@@ -1,4 +1,4 @@
-	<link rel="stylesheet" href="<?php echo base_url('assets/plugins/dataTables/dataTables.bootstrap.css');?>" />
+<link rel="stylesheet" href="<?php echo base_url('assets/plugins/dataTables/dataTables.bootstrap.css');?>" />
     <link rel="stylesheet" href="<?php echo base_url('assets/plugins/dataTables/buttons.dataTables.min.css');?>" />
     <link rel="stylesheet" href="<?php echo base_url('assets/plugins/dataTables/extensions/FixedColumns/css/dataTables.fixedColumns.min.css');?>" />
     <link rel="stylesheet" href="<?php echo base_url('assets/plugins/bootstrap/3.3.7/css/bootstrap.css');?>" />
@@ -21,13 +21,12 @@
 				$('#jmlSlcIMO').text('');
 				$('#jmlSlcIMO2').text('');
 				$('#btnSelectedIMO2').attr("disabled","disabled");
-				
 			}else{
 				$('#btnSelectedIMO').removeAttr("disabled");
 				$('#jmlSlcIMO').text('('+jml+')');
 				$('#jmlSlcIMO2').text('('+jml+')');
 				$('input[name="selectedPicklistIMO"]').val(val);
-				$('#btnSelectedIMO2').removeAttr("disabled");
+				$('#btnSelectedIMO2').removeAttr("disabled");  
 				
 			}
 
@@ -121,10 +120,11 @@
 			$allSubFrom = array();
 			$allLocatorTo = array();
 			$allLocatorFrom = array();
-			$no = 1; foreach ($requirement as $key => $value) {                                                                                                                                                                                                                                   
+			$no = 1; 
+			foreach ($requirement as $key => $value) {                                                                                                                                                                                                                                   
 			$arrErr = array();
 			foreach ($value['body'] as $k => $v) {
-				if($v['REQUIRED_QUANTITY'] > $v['ATR']) { array_push($arrErr, $v['REQUIRED_QUANTITY']); }
+				if($v['REQUIRED_QUANTITY'] > $v['ATR'] || $v['MO'] > $v['ATR'] ) { array_push($arrErr, $v['REQUIRED_QUANTITY']); }
 			}
 
 			if ($value['header']['DEPT_CLASS'] == 'SUBKT') {
@@ -154,7 +154,7 @@
 
 
 		?>
-		<tr class="hdr" >
+		<tr class="hdr" id="baris<?= $no?>">
 			<td rowspan="2"   class="<?= $penanda ?>" style="vertical-align: top;" >
 				<center>
 				<?php if ($penandabutton == 1) { ?>
@@ -194,7 +194,7 @@
 <!-- YANG INI EDITAN UNTUK TEST CETAK REPORT -->
 			<td class="<?= $penanda ?>">
 				<?php if ($penandabutton == 1) { ?>
-				<button class="btn btn-sm  disabled btn-default " target="_blank" >
+				<button class="btn btn-sm  disabled btn-default " target="_blank">
 						 <?= $text_button; ?> 
 				</button><br><br>
 				<?php } else { ?>
@@ -203,11 +203,11 @@
 								 <?= $text_button; ?> 
 						</button>
 					<?php } else { ?>
-						<button class="btn btn-sm  <?= ($value['body']) ? 'btn-success' : 'disabled btn-default' ?>" target="_blank"
+						<button class="btn btn-sm  <?= ($value['body']) ? 'btn-success' : 'disabled btn-default' ?>" target="_blank" 
 								 <?= ($value['body']) ? "onclick=document.getElementById('form".$value['header']['WIP_ENTITY_NAME']."').submit();" :'' ?>>
 								 <?= $text_button; ?> 
 						</button><br><br>
-						<button class="btn btn-sm  <?= ($value['body']) ? 'btn-success' : 'disabled btn-default' ?>" target="_blank"
+						<button class="btn btn-sm  <?= ($value['body']) ? 'btn-success' : 'disabled btn-default' ?>" target="_blank" 
 								 <?= ($value['body']) ? "onclick=document.getElementById('form2".$value['header']['WIP_ENTITY_NAME']."').submit();" :'' ?>>
 								 <?= $text_button2; ?> 
 						</button>
@@ -218,10 +218,10 @@
 			<!-- EDITANNYA SAMPAI SINI -->
 
 		</tr>
-		<tr>
+		<tr >
 			<td colspan="8"  class="<?= $penanda ?>" ><span onclick="seeDetailIMO(this,'<?= $key ?>')" class="btn btn-xs btn-primary"> see detail >> </span>
 				<div style="margin-top: 5px ; display: none; " id="detail<?= $key ?>" >
-				<form method="post" target="_blank" id="form<?= $value['header']['WIP_ENTITY_NAME']; ?>" action="<?= base_url('InventoryManagement/CreateMoveOrder/create') ?>" >
+				<form method="post" target="_blank" id="form<?= $value['header']['WIP_ENTITY_NAME']; ?>" action="<? echo base_url('InventoryManagement/CreateMoveOrder/create'); ?>">
 				<table class="table table-sm table-bordered table-hover table-striped table-responsive"  style="border: 2px solid #ddd">
 					<thead>
 						<tr class="text-center">
@@ -232,7 +232,10 @@
 							<th>Unit</th>
 							<th>Jumlah Dibutuhkan</th>
 							<!-- EDIT LUTFI -->
-							<th>Jumlah ATT</th>
+							<th>ATT</th>
+							<th>MO</th>
+							<th>ATR</th>
+							
 						</tr>
 					</thead>
 					<tbody>
@@ -240,7 +243,7 @@
 						$no2 = 1;
 						if ($value['body']):
 						foreach ($value['body'] as $kut => $vulue) { ?>
-						<tr>
+						<tr class="baris<?=$no2?>">
 							<td><?= $no2++; ?>
 								<input type="hidden" name="no_job" value="<?= $vulue['WIP_ENTITY_NAME'] ?>">
 								<input type="hidden" name="invID[]" value="<?= $vulue['INVENTORY_ITEM_ID'] ?>">
@@ -260,6 +263,8 @@
 							<td><?= $vulue['PRIMARY_UOM_CODE'] ?></td>
 							<td class="<?= ($vulue['REQUIRED_QUANTITY'] > $vulue['ATR']) ? "bg-danger " : "" ?>"><?= $vulue['REQUIRED_QUANTITY'] ?></td>
 							<td class="<?= ($vulue['REQUIRED_QUANTITY'] > $vulue['ATR']) ? "text-danger text-bold-cuk" : "" ?>"><?= $vulue['ATR'] ?></td>
+							<td class="<?= ($vulue['MO'] > $vulue['ATR']) ? "text-danger text-bold-cuk" : "" ?>"><?= $vulue['MO']?></td>
+							<td><?= $vulue['KURANG'] ?></td>
 						</tr>
 						<?php 
 							$allNojob[$no][] =  $vulue['WIP_ENTITY_NAME'];
