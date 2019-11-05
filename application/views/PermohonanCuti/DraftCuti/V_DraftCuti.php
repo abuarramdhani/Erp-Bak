@@ -41,6 +41,7 @@ label{
 									<tbody>
 									<?php
 									  $no = 1;
+										if(!empty($Draft)):
 										foreach ($Draft as $key):
 											$encrypted_string = $this->encrypt->encode($key['lm_pengajuan_cuti']);
 											$id 	  = str_replace(array('+', '/', '='), array('-', '_', '~'), $encrypted_string);
@@ -88,6 +89,9 @@ label{
 										</td>
 									</tr>
 									<?php $no++; endforeach; ?>
+									<?php else: ?>
+										<tr><td style="text-align: center;" colspan="8">tidak ada cuti yang dibuat</td> <tr>
+									<?php endif; ?>
 									</tbody>
 								</table>
 							</div>

@@ -171,7 +171,7 @@ h2{
 							<div class="panel-footer text-center">
 								<input type="hidden" name="emptyapp" value="<?=$emptyapp?>">
 								<button type="button" id="submit_istimewa" class="btn btn-success">Simpan</button>
-								<button type="button" id="submit_hpl" class="btn btn-success">Simpan</button>
+								<button type="button" id="submit_hpl" class="btn btn-success hidden">Simpan</button>
 								<button type="submit" id="submit_istimewa2" class="btn btn-success" style="display:none;"></button>
 								<a href="<?php echo site_url('PermohonanCuti') ?>" class="btn btn-warning">Batal</a>
 							</div>
@@ -184,7 +184,7 @@ h2{
 </section>
 <script type="text/javascript">
 	$(document).ready(function() {
-		var kdExpect = "01,02,03,04,05,18,19,20,21,22";
+		var kdExpect = "01,02,03,04,05,18,19,20,21,22,23,24,25";
 		if (kdExpect.includes("<?= $kd_jabatan ?>")) {
 			$('#submit_istimewa').prop('disabled', true);
 			Swal.fire({

@@ -194,7 +194,7 @@ h2{
 
 <script type="text/javascript">
 	$(document).ready(function() {
-		var kdExpect = "01,02,03,04,05,18,19,20,21,22";
+		var kdExpect = "01,02,03,04,05,18,19,20,21,22,23,24,25";
 		var sisacuti = $('#txtSisaCuti').val();
 		if (kdExpect.includes("<?= $kd_jabatan ?>")) {
 			$('#submit_tahunan').prop('disabled', true);
