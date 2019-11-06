@@ -62,6 +62,17 @@ class M_rekap extends CI_Model
                                     AND prl.requisition_line_id(+) = rt.requisition_line_id
                                     AND prl.requisition_header_id = prha.requisition_header_id(+)
                                     AND NVL (prha.org_id, -99) = NVL (prl.org_id, -99)
+                                    AND rsh.RECEIPT_NUM not in (select rsh1.RECEIPT_NUM
+                                                                  from rcv_transactions rt1
+                                                                      ,rcv_shipment_headers rsh1
+                                                                      ,rcv_shipment_lines rsl1
+                                                                 where rsl1.SHIPMENT_HEADER_ID = rsh1.SHIPMENT_HEADER_ID
+                                                                   and rsh1.SHIPMENT_HEADER_ID = rt1.SHIPMENT_HEADER_ID
+                                                                   and rsl1.SHIPMENT_LINE_ID = rt1.SHIPMENT_LINE_ID
+                                                                   --
+                                                                   and (rt1.TRANSACTION_TYPE = 'CORRECT'
+                                                                    or rt1.TRANSACTION_TYPE like 'RETURN%')
+                                                                   and rsh1.RECEIPT_NUM = rsh.RECEIPT_NUM)
                                 ORDER BY rsh.receipt_num, rt.transaction_date, msib.segment1) rec,
                         khs_waktu_lppb ww
                 WHERE rec.receipt_num = ww.receipt_num(+) 
@@ -125,6 +136,17 @@ class M_rekap extends CI_Model
                                     AND prl.requisition_line_id(+) = rt.requisition_line_id
                                     AND prl.requisition_header_id = prha.requisition_header_id(+)
                                     AND NVL (prha.org_id, -99) = NVL (prl.org_id, -99)
+                                    AND rsh.RECEIPT_NUM not in (select rsh1.RECEIPT_NUM
+                                                                  from rcv_transactions rt1
+                                                                      ,rcv_shipment_headers rsh1
+                                                                      ,rcv_shipment_lines rsl1
+                                                                 where rsl1.SHIPMENT_HEADER_ID = rsh1.SHIPMENT_HEADER_ID
+                                                                   and rsh1.SHIPMENT_HEADER_ID = rt1.SHIPMENT_HEADER_ID
+                                                                   and rsl1.SHIPMENT_LINE_ID = rt1.SHIPMENT_LINE_ID
+                                                                   --
+                                                                   and (rt1.TRANSACTION_TYPE = 'CORRECT'
+                                                                    or rt1.TRANSACTION_TYPE like 'RETURN%')
+                                                                   and rsh1.RECEIPT_NUM = rsh.RECEIPT_NUM)                     
                                 ORDER BY rsh.receipt_num, rt.transaction_date, msib.segment1) rec";
         $query = $this->oracle->query($sql);                             
         return $query->result_array();
