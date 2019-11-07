@@ -221,7 +221,7 @@
 		<tr >
 			<td colspan="8"  class="<?= $penanda ?>" ><span onclick="seeDetailIMO(this,'<?= $key ?>')" class="btn btn-xs btn-primary"> see detail >> </span>
 				<div style="margin-top: 5px ; display: none; " id="detail<?= $key ?>" >
-				<form method="post" target="_blank" id="form<?= $value['header']['WIP_ENTITY_NAME']; ?>" action="<? echo base_url('InventoryManagement/CreateMoveOrder/create'); ?>">
+				<form method="post" target="_blank" id="form<?= $value['header']['WIP_ENTITY_NAME']; ?>" action="<?php echo base_url('InventoryManagement/CreateMoveOrder/create'); ?>">
 				<table class="table table-sm table-bordered table-hover table-striped table-responsive"  style="border: 2px solid #ddd">
 					<thead>
 						<tr class="text-center">
