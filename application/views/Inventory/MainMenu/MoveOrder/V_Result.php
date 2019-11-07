@@ -124,7 +124,7 @@
 			foreach ($requirement as $key => $value) {                                                                                                                                                                                                                                   
 			$arrErr = array();
 			foreach ($value['body'] as $k => $v) {
-				if($v['REQUIRED_QUANTITY'] > $v['ATR'] || $v['MO'] > $v['ATR'] ) { array_push($arrErr, $v['REQUIRED_QUANTITY']); }
+				if($v['REQUIRED_QUANTITY'] > $v['ATR'] || $v['REQUIRED_QUANTITY'] > $v['KURANG'] ) { array_push($arrErr, $v['REQUIRED_QUANTITY']); }
 			}
 
 			if ($value['header']['DEPT_CLASS'] == 'SUBKT') {
@@ -234,7 +234,7 @@
 							<!-- EDIT LUTFI -->
 							<th>ATT</th>
 							<th>MO</th>
-							<th>ATR</th>
+							<th>STOK</th>
 							
 						</tr>
 					</thead>
@@ -263,8 +263,8 @@
 							<td><?= $vulue['PRIMARY_UOM_CODE'] ?></td>
 							<td class="<?= ($vulue['REQUIRED_QUANTITY'] > $vulue['ATR']) ? "bg-danger " : "" ?>"><?= $vulue['REQUIRED_QUANTITY'] ?></td>
 							<td class="<?= ($vulue['REQUIRED_QUANTITY'] > $vulue['ATR']) ? "text-danger text-bold-cuk" : "" ?>"><?= $vulue['ATR'] ?></td>
-							<td class="<?= ($vulue['MO'] > $vulue['ATR']) ? "text-danger text-bold-cuk" : "" ?>"><?= $vulue['MO']?></td>
-							<td><?= $vulue['KURANG'] ?></td>
+							<td ><?= $vulue['MO']?></td>
+							<td class="<?= ($vulue['REQUIRED_QUANTITY'] > $vulue['KURANG']) ? "text-danger text-bold-cuk" : "" ?>"><?= $vulue['KURANG'] ?></td>
 						</tr>
 						<?php 
 							$allNojob[$no][] =  $vulue['WIP_ENTITY_NAME'];

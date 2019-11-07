@@ -276,29 +276,63 @@ class M_moveorder extends CI_Model
 			    --           and msib_komp.SEGMENT1 in ('AAG1BA0021A1-0','AAG1BA0011A1-0')
 			          group by mtrl.INVENTORY_ITEM_ID
 			            ),0) mo
-			      ,(
-			            (khs_inv_qty_att(wdj.ORGANIZATION_ID,wro.INVENTORY_ITEM_ID,bic.ATTRIBUTE1,bic.ATTRIBUTE2,'')
-			                )-
-			               (nvl(
-			                   (select sum(mtrl.QUANTITY)
-			                      from mtl_txn_request_headers mtrh
-			                          ,mtl_txn_request_lines mtrl
-			                          ,mtl_system_items_b msib_komp
-			                     where mtrh.HEADER_ID = mtrl.HEADER_ID
-			                       and mtrh.ORGANIZATION_ID = msib_komp.ORGANIZATION_ID
-			                       and mtrl.INVENTORY_ITEM_ID = msib_komp.INVENTORY_ITEM_ID
-			                       --
-			                       and mtrl.LINE_STATUS in (3,7)
-			                       and mtrh.HEADER_STATUS in (3,7)
-			                       and mtrl.INVENTORY_ITEM_ID = wro.INVENTORY_ITEM_ID
-			                       and mtrh.ORGANIZATION_ID = wro.ORGANIZATION_ID
-														 and substr(mtrh.REQUEST_NUMBER,1,2) = 'PL'
-														 and mtrl.FROM_SUBINVENTORY_CODE = bic.ATTRIBUTE1
-			            --           and mtrh.TRANSACTION_TYPE_ID in (64,137)
-			            --           and msib_komp.SEGMENT1 in ('AAG1BA0021A1-0','AAG1BA0011A1-0')
-			                  group by mtrl.INVENTORY_ITEM_ID
-			                    ),0) )
-			                            ) KURANG
+			      -- ,(
+			      --       (khs_inv_qty_att(wdj.ORGANIZATION_ID,wro.INVENTORY_ITEM_ID,bic.ATTRIBUTE1,bic.ATTRIBUTE2,'')
+			      --           )-
+			      --          (nvl(
+			      --              (select sum(mtrl.QUANTITY)
+			      --                 from mtl_txn_request_headers mtrh
+			      --                     ,mtl_txn_request_lines mtrl
+			      --                     ,mtl_system_items_b msib_komp
+			      --                where mtrh.HEADER_ID = mtrl.HEADER_ID
+			      --                  and mtrh.ORGANIZATION_ID = msib_komp.ORGANIZATION_ID
+			      --                  and mtrl.INVENTORY_ITEM_ID = msib_komp.INVENTORY_ITEM_ID
+			      --                  --
+			      --                  and mtrl.LINE_STATUS in (3,7)
+			      --                  and mtrh.HEADER_STATUS in (3,7)
+			      --                  and mtrl.INVENTORY_ITEM_ID = wro.INVENTORY_ITEM_ID
+			      --                  and mtrh.ORGANIZATION_ID = wro.ORGANIZATION_ID
+						-- 								 and substr(mtrh.REQUEST_NUMBER,1,2) = 'PL'
+						-- 								 and mtrl.FROM_SUBINVENTORY_CODE = bic.ATTRIBUTE1
+			      --       --           and mtrh.TRANSACTION_TYPE_ID in (64,137)
+			      --       --           and msib_komp.SEGMENT1 in ('AAG1BA0021A1-0','AAG1BA0011A1-0')
+			      --             group by mtrl.INVENTORY_ITEM_ID
+			      --               ),0) )
+			      --                       ) KURANG
+						,(
+            (coalesce(
+                (select sum(moqd.PRIMARY_TRANSACTION_QUANTITY)
+                   from mtl_onhand_quantities_detail moqd
+                  where moqd.ORGANIZATION_ID = wdj.ORGANIZATION_ID
+                    and moqd.INVENTORY_ITEM_ID = wro.INVENTORY_ITEM_ID
+                    and moqd.SUBINVENTORY_CODE = bic.ATTRIBUTE1
+                    and moqd.LOCATOR_ID = bic.ATTRIBUTE2),
+                (select sum(moqd.PRIMARY_TRANSACTION_QUANTITY)
+                   from mtl_onhand_quantities_detail moqd
+                  where moqd.ORGANIZATION_ID = wdj.ORGANIZATION_ID
+                    and moqd.INVENTORY_ITEM_ID = wro.INVENTORY_ITEM_ID
+                    and moqd.SUBINVENTORY_CODE = bic.ATTRIBUTE1)
+                    )
+                )-
+               (nvl(
+                   (select sum(mtrl.QUANTITY)
+                      from mtl_txn_request_headers mtrh
+                          ,mtl_txn_request_lines mtrl
+                          ,mtl_system_items_b msib_komp
+                     where mtrh.HEADER_ID = mtrl.HEADER_ID
+                       and mtrh.ORGANIZATION_ID = msib_komp.ORGANIZATION_ID
+                       and mtrl.INVENTORY_ITEM_ID = msib_komp.INVENTORY_ITEM_ID
+                       --
+                       and mtrl.LINE_STATUS in (3,7)
+                       and mtrh.HEADER_STATUS in (3,7)
+                       and mtrl.INVENTORY_ITEM_ID = wro.INVENTORY_ITEM_ID
+                       and mtrh.ORGANIZATION_ID = wro.ORGANIZATION_ID
+                       and substr(mtrh.REQUEST_NUMBER,1,2) = 'PL'
+                       and mtrl.FROM_SUBINVENTORY_CODE = bic.ATTRIBUTE1
+            --           and mtrh.TRANSACTION_TYPE_ID in (64,137)
+                  group by mtrl.INVENTORY_ITEM_ID
+                    ),0) )
+                            ) kurang
 			from wip_entities we
 			    ,wip_discrete_jobs wdj
 			    ,mtl_system_items_b msib
