@@ -8,6 +8,32 @@
     display:inherit;
   }
 
+  .badge{
+    position: absolute;
+    top: -10px;
+    right: -10px;
+    /* padding: 6px 10px; */
+    border-radius: 50%;
+    transform: scale(1.5);
+    background-color: red;
+    color: white;
+    transition: 0.4s;
+  }
+
+  .badge:hover{
+    transform: scale(2);
+  }
+
+  .blinkanim{
+    animation: blink_anim 1.5s linear infinite;
+  }
+
+  @keyframes blink_anim {
+    50% {
+      opacity: 0;
+    }
+  }
+
   @media screen and (max-width: 767px) {
     .personal{
       display:none;
@@ -60,6 +86,9 @@
           <div class="box-body ">
 						<div class="col-lg-3 col-xs-6">
 							<div class="small-box bg-yellow">
+                <span class="pull-right-container">
+                  <span class="badge <?php echo ($count_inprocess > 0)? 'blinkanim':'' ?>"><?= $count_inprocess ?></span>
+                </span>
 								<div class="inner">
 									<p>Cuti Belum</p>
 									<h8>Diproses</h8>
@@ -72,6 +101,9 @@
 						</div>
 						<div class="col-lg-3 col-xs-6">
 							<div class="small-box bg-green">
+                <span class="pull-right-container">
+                  <span class="badge"><?= $count_approved?></span>
+                </span>
 								<div class="inner">
 									<p>Cuti</p>
 									<h8>Disetujui</h8>
@@ -84,6 +116,9 @@
 						</div>
 						<div class="col-lg-3 col-xs-6">
 							<div class="small-box bg-red">
+                <span class="pull-right-container">
+                  <span class="badge"><?= $count_rejected ?></span>
+                </span>
 								<div class="inner">
 									<p>Cuti</p>
 									<h8>Ditolak</h8>
