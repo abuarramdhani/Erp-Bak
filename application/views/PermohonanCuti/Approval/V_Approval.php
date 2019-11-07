@@ -15,9 +15,24 @@
     /* padding: 6px 10px; */
     border-radius: 50%;
     transform: scale(1.5);
-    background-color: red;
     color: white;
     transition: 0.4s;
+  }
+
+  .badge-green{
+    background-color: #00A65A;
+  }
+
+  .badge-red{
+    background-color: #DD4B39;
+  }
+
+  .badge-red-strong{
+    background-color: red;
+  }
+
+  .badge-orange{
+    background-color: #F39C12;
   }
 
   .badge:hover{
@@ -29,9 +44,16 @@
   }
 
   @keyframes blink_anim {
-    50% {
+    0% {
+      opacity: 1;
+    }
+    10% {
       opacity: 0;
     }
+    100%{
+      opacity: 1;
+    }
+
   }
 
   @media screen and (max-width: 767px) {
@@ -87,7 +109,7 @@
 						<div class="col-lg-3 col-xs-6">
 							<div class="small-box bg-yellow">
                 <span class="pull-right-container">
-                  <span class="badge <?php echo ($count_inprocess > 0)? 'blinkanim':'' ?>"><?= $count_inprocess ?></span>
+                  <span class="badge <?php echo ($count_inprocess > 0)? 'badge-red-strong blinkanim':'badge-orange' ?>"><?= $count_inprocess ?></span>
                 </span>
 								<div class="inner">
 									<p>Cuti Belum</p>
@@ -102,7 +124,7 @@
 						<div class="col-lg-3 col-xs-6">
 							<div class="small-box bg-green">
                 <span class="pull-right-container">
-                  <span class="badge"><?= $count_approved?></span>
+                  <span class="badge badge-green"><?= $count_approved?></span>
                 </span>
 								<div class="inner">
 									<p>Cuti</p>
@@ -117,7 +139,7 @@
 						<div class="col-lg-3 col-xs-6">
 							<div class="small-box bg-red">
                 <span class="pull-right-container">
-                  <span class="badge"><?= $count_rejected ?></span>
+                  <span class="badge badge-red"><?= $count_rejected ?></span>
                 </span>
 								<div class="inner">
 									<p>Cuti</p>

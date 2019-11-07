@@ -84,7 +84,7 @@
 										<label class="control-label col-lg-4 col-sm-3">Tanggal Pengambilan Cuti</label>
 										<div class="col-lg-4 col-sm-7">
 											<div class="col-lg-12 col-md-11 col-sm-12 col-xs-10">
-												<textarea class="form-control" style="resize:none;" name="txtKeperluan" id="txtKeperluan" rows="5" cols="50" readonly><?php if($Detail['0']['jenis'] == 'Istirahat Melahirkan'){ echo $tglambilhpl;}else{ echo $tglambil;}?></textarea>
+												<textarea class="form-control" style="resize:none;" name="" id="" rows="5" cols="50" readonly><?php if($Detail['0']['jenis'] == 'Istirahat Melahirkan'){ echo $tglambilhpl;}else{ echo $tglambil;}?></textarea>
 											</div>
 										</div>
 										<div class="col">
@@ -92,14 +92,16 @@
 										</div>
 									</div>
 									<?php if((strstr($this->session->kodesie, '4090101') AND strstr('4,5,6,7', $Detail['0']['id_jenis']) ) OR !strstr($this->session->kodesie, '4090101')) { ?>
-										<div class="form-group">
+										<!-- <?php //if($Detail['0']['alasan'] !== null && $data['ApproverStatus']['0']['status'] != 1):  ?> -->
+										<div class="form-group <?php echo ($ApproverStatus['0']['status'] == 1 || $ApproverStatus['0']['status'] == 2)?'hidden':'' ?>">
 											<label class="control-label col-lg-4">Alasan</label>
 											<div class="col-lg-4">
 												<div class="col-lg-12">
-													<input type="text" name="txtAlasan" id="txtAlasan" autocomplete="off" value="<?php if(!empty($Detail['0']['alasan'])){echo $Detail['0']['alasan'] ;} ?>" class="form-control" required <?php if(!empty($Detail['0']['alasan'])){echo "readonly"; } ?> >
+													<input type="text" name="txtAlasan" id="txtAlasan" autocomplete="off" value="<?php if(!empty($Detail['0']['alasan'])){echo $Detail['0']['alasan'] ;} ?>" class="form-control" <?php if(!empty($Detail['0']['alasan'])){echo "readonly"; } ?> >
 												</div>
 											</div>
 										</div>
+										<!-- <?php //endif; ?> -->
 									<?php } ?>
 									<div class="container-fluid">
 										<div class="col-lg-11">
