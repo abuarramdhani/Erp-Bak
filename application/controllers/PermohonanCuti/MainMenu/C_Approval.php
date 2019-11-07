@@ -58,6 +58,12 @@ class C_Approval extends CI_Controller
 		}else{
 			$data['user'] = '';
 		}
+		
+		//count cuti yg belum diapprove & approve & ditolak
+      $data['count_inprocess'] = count($this->M_approval->getCuti($noind, '1'));
+      $data['count_approved']  = count($this->M_approval->getCuti($noind, '2'));
+      $data['count_rejected']  = count($this->M_approval->getCuti($noind, '3'));
+    //---
 
 		$this->load->view('V_Header',$data);
 		$this->load->view('V_Sidemenu',$data);
@@ -292,9 +298,11 @@ class C_Approval extends CI_Controller
 		if($approve == '2'){
       $status = "dapat";
 			$ketentuan = 'Approved';
+      $alasan = ".";
 		}else if($approve == '3'){
       $status = "tidak dapat";
 			$ketentuan = 'Rejected';
+      $alasan    = ' dengan alasan "'.$alasan.'".';
 		}
 
 		if (strstr($kodesie, '4090101')){ //if session login edp
