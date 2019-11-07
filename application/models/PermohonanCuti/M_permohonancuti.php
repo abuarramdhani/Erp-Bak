@@ -27,67 +27,77 @@ class M_permohonancuti extends CI_MODEL {
   }
 
   public function getApproval($noind, $kodesie){ //to get approval next
-    $jabatan = "SELECT kd_jabatan
+    $jabatan = "SELECT kd_jabatan, lokasi_kerja
                 FROM hrd_khs.tpribadi
                 WHERE noind = '$noind'";
     $jbtn    = $this->personalia->query($jabatan)->row()->kd_jabatan;
-
+    $loker   = $this->personalia->query($jabatan)->row()->lokasi_kerja;
     $query1  = "SELECT tp.noind, tp.nama, tp.kd_jabatan, tp.jabatan
                 FROM hrd_khs.tpribadi tp
-                 inner join hrd_khs.tORganisasi c on c.kd_jabatan=tp.kd_jabatan
+                 inner join hrd_khs.torganisasi c on c.kd_jabatan=tp.kd_jabatan
                  inner join hrd_khs.tseksi ts on ts.kodesie = tp.kodesie
+                 inner join hrd_khs.trefjabatan tj on tp.noind = tj.noind
                 WHERE tp.keluar = '0' AND CASE
-                         WHEN '$jbtn' in('13','14','15','16','17') then
+                         WHEN '$jbtn' in('14','15','16','17') then
                             CASE
-                              WHEN (SELECT keluar FROM hrd_khs.tpribadi WHERE kd_jabatan in('10','11','12') AND keluar = '0' AND left('$kodesie',7) = left(kodesie,7) limit 1) = '0' then tp.kd_jabatan in('10','11','12') AND left('$kodesie',7) = left(tp.kodesie,7)
-                              WHEN (SELECT keluar FROM hrd_khs.tpribadi WHERE kd_jabatan in('08','09') AND keluar = '0' AND left('$kodesie',5) = left(kodesie,5) limit 1) = '0' then tp.kd_jabatan in('08','09') AND left('$kodesie',5) = left(tp.kodesie,5)
-                              WHEN (SELECT keluar FROM hrd_khs.tpribadi WHERE kd_jabatan in('07','06','05') AND keluar = '0' AND left('$kodesie',3) = left(kodesie,3) limit 1) = '0' then tp.kd_jabatan in('05','06','07') AND left('$kodesie',3) = left(tp.kodesie,3)
-                              WHEN (SELECT keluar FROM hrd_khs.tpribadi WHERE kd_jabatan in('02','03','04') AND keluar = '0' AND left('$kodesie',1) = left(kodesie,1) limit 1) = '0' then tp.kd_jabatan in('02','03','04') AND left('$kodesie',1) = left(tp.kodesie,1)
+                              WHEN (SELECT tp.keluar FROM hrd_khs.tpribadi tp inner join hrd_khs.trefjabatan tj on tp.noind = tj.noind  WHERE tp.kd_jabatan in('13') AND tp.keluar = '0' AND left('$kodesie',7) = left(tj.kodesie,7) limit 1) = '0' then tp.kd_jabatan in('13') AND left('$kodesie',7) = left(tj.kodesie,7)
+                              WHEN (SELECT tp.keluar FROM hrd_khs.tpribadi tp inner join hrd_khs.trefjabatan tj on tp.noind = tj.noind  WHERE tp.kd_jabatan in('10','11','12') AND tp.keluar = '0' AND left('$kodesie',7) = left(tj.kodesie,7) limit 1) = '0' then tp.kd_jabatan in('10','11','12') AND left('$kodesie',7) = left(tj.kodesie,7)
+                              WHEN (SELECT tp.keluar FROM hrd_khs.tpribadi tp inner join hrd_khs.trefjabatan tj on tp.noind = tj.noind  WHERE tp.kd_jabatan in('08','09') AND tp.keluar = '0' AND left('$kodesie',5) = left(tj.kodesie,5) limit 1) = '0' then tp.kd_jabatan in('08','09') AND left('$kodesie',5) = left(tj.kodesie,5)
+                              WHEN (SELECT tp.keluar FROM hrd_khs.tpribadi tp inner join hrd_khs.trefjabatan tj on tp.noind = tj.noind  WHERE tp.kd_jabatan in('07','06','05') AND tp.keluar = '0' AND left('$kodesie',3) = left(tj.kodesie,3) limit 1) = '0' then tp.kd_jabatan in('05','06','07') AND left('$kodesie',3) = left(tj.kodesie,3)
+                              WHEN (SELECT tp.keluar FROM hrd_khs.tpribadi tp inner join hrd_khs.trefjabatan tj on tp.noind = tj.noind  WHERE tp.kd_jabatan in('02','03','04') AND tp.keluar = '0' AND left('$kodesie',1) = left(tj.kodesie,1) limit 1) = '0' then tp.kd_jabatan in('02','03','04') AND left('$kodesie',1) = left(tj.kodesie,1)
                              ELSE tp.noind = 'a'
                             END
+                          WHEN '$jbtn' in('13') then
+                             CASE
+                               WHEN (SELECT tp.keluar FROM hrd_khs.tpribadi tp inner join hrd_khs.trefjabatan tj on tp.noind = tj.noind  WHERE tp.kd_jabatan in('10','11','12') AND tp.keluar = '0' AND left('$kodesie',7) = left(tj.kodesie,7) limit 1) = '0' then tp.kd_jabatan in('10','11','12') AND left('$kodesie',7) = left(tj.kodesie,7)
+                               WHEN (SELECT tp.keluar FROM hrd_khs.tpribadi tp inner join hrd_khs.trefjabatan tj on tp.noind = tj.noind  WHERE tp.kd_jabatan in('08','09') AND tp.keluar = '0' AND left('$kodesie',5) = left(tj.kodesie,5) limit 1) = '0' then tp.kd_jabatan in('08','09') AND left('$kodesie',5) = left(tj.kodesie,5)
+                               WHEN (SELECT tp.keluar FROM hrd_khs.tpribadi tp inner join hrd_khs.trefjabatan tj on tp.noind = tj.noind  WHERE tp.kd_jabatan in('07','06','05') AND tp.keluar = '0' AND left('$kodesie',3) = left(tj.kodesie,3) limit 1) = '0' then tp.kd_jabatan in('05','06','07') AND left('$kodesie',3) = left(tj.kodesie,3)
+                               WHEN (SELECT tp.keluar FROM hrd_khs.tpribadi tp inner join hrd_khs.trefjabatan tj on tp.noind = tj.noind  WHERE tp.kd_jabatan in('02','03','04') AND tp.keluar = '0' AND left('$kodesie',1) = left(tj.kodesie,1) limit 1) = '0' then tp.kd_jabatan in('02','03','04') AND left('$kodesie',1) = left(tj.kodesie,1)
+                              ELSE tp.noind = 'a'
+                             END
                          WHEN '$jbtn' in('11','12') then
                             CASE
-                             WHEN (SELECT keluar FROM hrd_khs.tpribadi WHERE kd_jabatan in('10') AND keluar = '0' AND left('$kodesie',7) = left(kodesie,7) limit 1) = '0' then tp.kd_jabatan in('10') AND left('$kodesie',7) = left(tp.kodesie,7)
-                             WHEN (SELECT keluar FROM hrd_khs.tpribadi WHERE kd_jabatan in('08','09') AND keluar = '0' AND left('$kodesie',5) = left(kodesie,5) limit 1) = '0' then tp.kd_jabatan in('08','09') AND left('$kodesie',5) = left(tp.kodesie,5)
-                             WHEN (SELECT keluar FROM hrd_khs.tpribadi WHERE kd_jabatan in('07','06','05') AND keluar = '0' AND left('$kodesie',3) = left(kodesie,3) limit 1) = '0' then tp.kd_jabatan in('05','06','07') AND left('$kodesie',3) = left(tp.kodesie,3)
-                             WHEN (SELECT keluar FROM hrd_khs.tpribadi WHERE kd_jabatan in('02','03','04') AND keluar = '0' AND left('$kodesie',1) = left(kodesie,1) limit 1) = '0' then tp.kd_jabatan in('02','03','04') AND left('$kodesie',1) = left(tp.kodesie,1)
+                             WHEN (SELECT tp.keluar FROM hrd_khs.tpribadi tp inner join hrd_khs.trefjabatan tj on tp.noind = tj.noind  WHERE tp.kd_jabatan in('10') AND tp.keluar = '0' AND left('$kodesie',7) = left(tj.kodesie,7) limit 1) = '0' then tp.kd_jabatan in('10') AND left('$kodesie',7) = left(tj.kodesie,7)
+                             WHEN (SELECT tp.keluar FROM hrd_khs.tpribadi tp inner join hrd_khs.trefjabatan tj on tp.noind = tj.noind  WHERE tp.kd_jabatan in('08','09') AND tp.keluar = '0' AND left('$kodesie',5) = left(tj.kodesie,5) limit 1) = '0' then tp.kd_jabatan in('08','09') AND left('$kodesie',5) = left(tj.kodesie,5)
+                             WHEN (SELECT tp.keluar FROM hrd_khs.tpribadi tp inner join hrd_khs.trefjabatan tj on tp.noind = tj.noind  WHERE tp.kd_jabatan in('07','06','05') AND tp.keluar = '0' AND left('$kodesie',3) = left(tj.kodesie,3) limit 1) = '0' then tp.kd_jabatan in('05','06','07') AND left('$kodesie',3) = left(tj.kodesie,3)
+                             WHEN (SELECT tp.keluar FROM hrd_khs.tpribadi tp inner join hrd_khs.trefjabatan tj on tp.noind = tj.noind  WHERE tp.kd_jabatan in('02','03','04') AND tp.keluar = '0' AND left('$kodesie',1) = left(tj.kodesie,1) limit 1) = '0' then tp.kd_jabatan in('02','03','04') AND left('$kodesie',1) = left(tj.kodesie,1)
                              ELSE tp.noind = 'a'
                             END
                          WHEN '$jbtn' in('10') then
                             CASE
-                              WHEN (SELECT keluar FROM hrd_khs.tpribadi WHERE kd_jabatan in('08','09') AND keluar = '0' AND left('$kodesie',5) = left(kodesie,5) limit 1) = '0' then tp.kd_jabatan in('08','09') AND left('$kodesie',5) = left(tp.kodesie,5)
-                              WHEN (SELECT keluar FROM hrd_khs.tpribadi WHERE kd_jabatan in('07','06','05') AND keluar = '0' AND left('$kodesie',3) = left(kodesie,3) limit 1) = '0' then tp.kd_jabatan in('05','06','07') AND left('$kodesie',3) = left(tp.kodesie,3)
-                              WHEN (SELECT keluar FROM hrd_khs.tpribadi WHERE kd_jabatan in('02','03','04') AND keluar = '0' AND left('$kodesie',1) = left(kodesie,1) limit 1) = '0' then tp.kd_jabatan in('02','03','04') AND left('$kodesie',1) = left(tp.kodesie,1)
+                              WHEN (SELECT tp.keluar FROM hrd_khs.tpribadi tp inner join hrd_khs.trefjabatan tj on tp.noind = tj.noind  WHERE tp.kd_jabatan in('08','09') AND tp.keluar = '0' AND left('$kodesie',5) = left(tj.kodesie,5) limit 1) = '0' then tp.kd_jabatan in('08','09') AND left('$kodesie',5) = left(tj.kodesie,5)
+                              WHEN (SELECT tp.keluar FROM hrd_khs.tpribadi tp inner join hrd_khs.trefjabatan tj on tp.noind = tj.noind  WHERE tp.kd_jabatan in('07','06','05') AND tp.keluar = '0' AND left('$kodesie',3) = left(tj.kodesie,3) limit 1) = '0' then tp.kd_jabatan in('05','06','07') AND left('$kodesie',3) = left(tj.kodesie,3)
+                              WHEN (SELECT tp.keluar FROM hrd_khs.tpribadi tp inner join hrd_khs.trefjabatan tj on tp.noind = tj.noind  WHERE tp.kd_jabatan in('02','03','04') AND tp.keluar = '0' AND left('$kodesie',1) = left(tj.kodesie,1) limit 1) = '0' then tp.kd_jabatan in('02','03','04') AND left('$kodesie',1) = left(tj.kodesie,1)
                              ELSE tp.noind = 'a'
                             END
                          WHEN '$jbtn' in('09') then
                             CASE
-                              WHEN (SELECT keluar FROM hrd_khs.tpribadi WHERE kd_jabatan in('08') AND keluar = '0' AND left('$kodesie',5) = left(kodesie,5) limit 1) = '0' then tp.kd_jabatan in('08') AND left('$kodesie',5) = left(tp.kodesie,5)
-                              WHEN (SELECT keluar FROM hrd_khs.tpribadi WHERE kd_jabatan in('07','06','05') AND keluar = '0' AND left('$kodesie',3) = left(kodesie,3) limit 1) = '0' then tp.kd_jabatan in('05','06','07') AND left('$kodesie',3) = left(tp.kodesie,3)
-                              WHEN (SELECT keluar FROM hrd_khs.tpribadi WHERE kd_jabatan in('02','03','04') AND keluar = '0' AND left('$kodesie',1) = left(kodesie,1) limit 1) = '0' then tp.kd_jabatan in('02','03','04') AND left('$kodesie',1) = left(tp.kodesie,1)
+                              WHEN (SELECT tp.keluar FROM hrd_khs.tpribadi tp inner join hrd_khs.trefjabatan tj on tp.noind = tj.noind  WHERE tp.kd_jabatan in('08') AND tp.keluar = '0' AND left('$kodesie',5) = left(tj.kodesie,5) limit 1) = '0' then tp.kd_jabatan in('08') AND left('$kodesie',5) = left(tj.kodesie,5)
+                              WHEN (SELECT tp.keluar FROM hrd_khs.tpribadi tp inner join hrd_khs.trefjabatan tj on tp.noind = tj.noind  WHERE tp.kd_jabatan in('07','06','05') AND tp.keluar = '0' AND left('$kodesie',3) = left(tj.kodesie,3) limit 1) = '0' then tp.kd_jabatan in('05','06','07') AND left('$kodesie',3) = left(tj.kodesie,3)
+                              WHEN (SELECT tp.keluar FROM hrd_khs.tpribadi tp inner join hrd_khs.trefjabatan tj on tp.noind = tj.noind  WHERE tp.kd_jabatan in('02','03','04') AND tp.keluar = '0' AND left('$kodesie',1) = left(tj.kodesie,1) limit 1) = '0' then tp.kd_jabatan in('02','03','04') AND left('$kodesie',1) = left(tj.kodesie,1)
                              ELSE tp.noind = 'a'
                             END
                          WHEN '$jbtn' in('08') then
                             CASE
-                              WHEN (SELECT keluar FROM hrd_khs.tpribadi WHERE kd_jabatan in('07','06','05') AND keluar = '0' AND left('$kodesie',3) = left(kodesie,3) limit 1) = '0' then tp.kd_jabatan in('05','06','07') AND left('$kodesie',3) = left(tp.kodesie,3)
-                              WHEN (SELECT keluar FROM hrd_khs.tpribadi WHERE kd_jabatan in('02','03','04') AND keluar = '0' AND left('$kodesie',1) = left(kodesie,1) limit 1) = '0' then tp.kd_jabatan in('02','03','04') AND left('$kodesie',1) = left(tp.kodesie,1)
+                              WHEN (SELECT tp.keluar FROM hrd_khs.tpribadi tp inner join hrd_khs.trefjabatan tj on tp.noind = tj.noind  WHERE tp.kd_jabatan in('07','06','05') AND tp.keluar = '0' AND left('$kodesie',3) = left(tj.kodesie,3) limit 1) = '0' then tp.kd_jabatan in('05','06','07') AND left('$kodesie',3) = left(tj.kodesie,3)
+                              WHEN (SELECT tp.keluar FROM hrd_khs.tpribadi tp inner join hrd_khs.trefjabatan tj on tp.noind = tj.noind  WHERE tp.kd_jabatan in('02','03','04') AND tp.keluar = '0' AND left('$kodesie',1) = left(tj.kodesie,1) limit 1) = '0' then tp.kd_jabatan in('02','03','04') AND left('$kodesie',1) = left(tj.kodesie,1)
                              ELSE tp.noind = 'a'
                             END
                          WHEN '$jbtn' in('07') then
                             CASE
-                              WHEN (SELECT keluar FROM hrd_khs.tpribadi WHERE kd_jabatan in('06','05') AND keluar = '0' AND left('$kodesie',3) = left(kodesie,3) limit 1) = '0' then tp.kd_jabatan in('05','06') AND left('$kodesie',3) = left(tp.kodesie,3)
-                              WHEN (SELECT keluar FROM hrd_khs.tpribadi WHERE kd_jabatan in('02','03','04') AND keluar = '0' AND left('$kodesie',1) = left(kodesie,1) limit 1) = '0' then tp.kd_jabatan in('02','03','04') AND left('$kodesie',1) = left(tp.kodesie,1)
+                              WHEN (SELECT tp.keluar FROM hrd_khs.tpribadi tp inner join hrd_khs.trefjabatan tj on tp.noind = tj.noind  WHERE tp.kd_jabatan in('06','05') AND tp.keluar = '0' AND left('$kodesie',3) = left(tj.kodesie,3) limit 1) = '0' then tp.kd_jabatan in('05','06') AND left('$kodesie',3) = left(tj.kodesie,3)
+                              WHEN (SELECT tp.keluar FROM hrd_khs.tpribadi tp inner join hrd_khs.trefjabatan tj on tp.noind = tj.noind  WHERE tp.kd_jabatan in('02','03','04') AND tp.keluar = '0' AND left('$kodesie',1) = left(tj.kodesie,1) limit 1) = '0' then tp.kd_jabatan in('02','03','04') AND left('$kodesie',1) = left(tj.kodesie,1)
                              ELSE tp.noind = 'a'
                             END
                          WHEN '$jbtn' in('06') then
                             CASE
-                             WHEN (SELECT keluar FROM hrd_khs.tpribadi WHERE kd_jabatan in('05') AND keluar = '0' AND left('$kodesie',3) = left(kodesie,3) limit 1) = '0' then tp.kd_jabatan in('05') AND left('$kodesie',3) = left(tp.kodesie,3)
-                             WHEN (SELECT keluar FROM hrd_khs.tpribadi WHERE kd_jabatan in('02','03','04') AND keluar = '0' AND left('$kodesie',1) = left(kodesie,1) limit 1) = '0' then tp.kd_jabatan in('02','03','04') AND left('$kodesie',1) = left(tp.kodesie,1)
+                             WHEN (SELECT tp.keluar FROM hrd_khs.tpribadi tp inner join hrd_khs.trefjabatan tj on tp.noind = tj.noind  WHERE tp.kd_jabatan in('05') AND tp.keluar = '0' AND left('$kodesie',3) = left(tj.kodesie,3) limit 1) = '0' then tp.kd_jabatan in('05') AND left('$kodesie',3) = left(tj.kodesie,3)
+                             WHEN (SELECT tp.keluar FROM hrd_khs.tpribadi tp inner join hrd_khs.trefjabatan tj on tp.noind = tj.noind  WHERE tp.kd_jabatan in('02','03','04') AND tp.keluar = '0' AND left('$kodesie',1) = left(tj.kodesie,1) limit 1) = '0' then tp.kd_jabatan in('02','03','04') AND left('$kodesie',1) = left(tj.kodesie,1)
                              ELSE tp.noind = 'a'
                             END
                          WHEN '$jbtn' in('05') then
                              CASE
-                              WHEN (SELECT keluar FROM hrd_khs.tpribadi WHERE kd_jabatan in('02','03','04') AND keluar = '0' AND left('$kodesie',1) = left(kodesie,1) limit 1) = '0' then tp.kd_jabatan in('02','03','04') AND left('$kodesie',1) = left(tp.kodesie,1)
+                              WHEN (SELECT tp.keluar FROM hrd_khs.tpribadi tp inner join hrd_khs.trefjabatan tj on tp.noind = tj.noind  WHERE tp.kd_jabatan in('02','03','04') AND tp.keluar = '0' AND left('$kodesie',1) = left(tj.kodesie,1) limit 1) = '0' then tp.kd_jabatan in('02','03','04') AND left('$kodesie',1) = left(tj.kodesie,1)
                               ELSE tp.noind = 'a'
                              END
                          ELSE tp.noind = 'a'

@@ -101,7 +101,7 @@ $(document).ready(function() {
       $(".txtSetelahLahir").show().removeClass('hidden');
       $(".txtAlamat").show().removeClass('hidden');
       $(".txtPengambilanCuti").hide();
-      $('#submit_hpl').show();
+      $('#submit_hpl').show().removeClass('hidden');
       $('#submit_istimewa').hide();
     } else {
       $(".txtPerkiraanLahir").hide();
