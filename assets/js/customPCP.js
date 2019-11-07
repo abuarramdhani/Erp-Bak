@@ -532,21 +532,27 @@ $(document).ready(function() {
           title: "Apakah anda yakin ?",
           text: "Untuk Reject",
           type: 'question',
+          html : "Alasan : <input type='text' id='alasanReject'>",
           showCancelButton: true,
           confirmButtonColor: '#3085d6',
           cancelButtonColor: '#d33',
           confirmButtonText: 'Ya'
         }).then((result) => {
           if (result.value) {
-            if(alasan != ''){
+            let alasanReject = $('#alasanReject')
+            if(alasanReject.val() == ''){
+              alert("alasan harus diisi")
+            }else{
+              $('#txtAlasan').val(alasanReject.val())
               $('#approveCuti').prop('disabled', true);
               $('#rejectCuti').prop('disabled', true);
+
+              $('#rejectCuti2').click();
+              return true;
             }
-            $('#rejectCuti2').click();
-            return true;
           }
         });
-        return false;
+        //return false;
       })
 
       $('#txtAlamatEdit').blur(function() {
