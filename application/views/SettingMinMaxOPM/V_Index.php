@@ -11,7 +11,7 @@
                     	<div class="text-center">
                     	    <h1>
                     	        <b>
-                    	            Setting Min Max OPM
+                    	            Setting Min Max
                     	        </b>
                     	    </h1>
                     	</div>
