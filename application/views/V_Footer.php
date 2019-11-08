@@ -143,7 +143,6 @@
 		<script src="<?= base_url('assets/js/customKMK.js') ?>"></script>
 		<script src="<?= base_url('assets/js/customPD.js') ?>"></script>
 		<script src="<?= base_url('assets/js/customMPO.js') ?>"></script>
-		<script src="<?= base_url('assets/js/customSMM.js') ?>"></script>
 		<script src="<?= base_url('assets/js/customME.js') ?>"></script>
 		<script src="<?= base_url('assets/js/customOR.js') ?>"></script>
 		<script src="<?= base_url('assets/js/customMOA.js') ?>"></script>
@@ -188,6 +187,7 @@
 		<!-- <script src="<?= base_url('assets/js/customOSP.js') ?>"></script> -->
 		<!-- <script src="<?= base_url('assets/js/customHWM.js') ?>"></script> -->
 		<script type="text/javascript" src="<?= base_url('assets/js/customCKM.js') ?>"></script>
+		<script src="<?= base_url('assets/js/customSMM.js') ?>"></script>
 		<!-- END OF CUSTOM JAVASCRIPT | DO NOT EDIT!! -->
 
 
