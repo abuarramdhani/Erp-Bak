@@ -128,6 +128,18 @@
 			<td style="border-right: 1px solid black;border-left: 1px solid black;border-bottom: 1px solid black;width: 10%;padding-left: 20px"></td>
 		</tr>
 		<tr>
+		    <td style="border-left: 1px solid black;border-bottom: 1px solid black;width: 29%;padding-left: 20px">NPWP</td>
+			<td style="border-bottom: 1px solid black;width: 1%;padding-left: 20px">:</td>
+			<td style="border-bottom: 1px solid black;width: 60%;padding-left: 20px"><?php echo $data['0']['npwp']?></td>
+			<td style="border-right: 1px solid black;border-left: 1px solid black;border-bottom: 1px solid black;width: 10%;padding-left: 20px"></td>
+		</tr>
+		<tr>
+		    <td style="border-left: 1px solid black;border-bottom: 1px solid black;width: 29%;padding-left: 20px">NIK</td>
+			<td style="border-bottom: 1px solid black;width: 1%;padding-left: 20px">:</td>
+			<td style="border-bottom: 1px solid black;width: 60%;padding-left: 20px"><?php echo $data['0']['nik']?></td>
+			<td style="border-right: 1px solid black;border-left: 1px solid black;border-bottom: 1px solid black;width: 10%;padding-left: 20px"></td>
+		</tr>
+		<tr>
 		    <td style="border-left: 1px solid black;border-bottom: 1px solid black;width: 29%;padding-left: 20px">&nbsp;</td>
 			<td style="border-bottom: 1px solid black;width: 1%;padding-left: 20px"></td>
 			<td style="border-bottom: 1px solid black;width: 60%;padding-left: 20px"></td>
@@ -209,19 +221,19 @@
 		<tr>
 		    <td style="border-left: 1px solid black;border-bottom: 1px solid black;width: 29%;padding-left: 20px">HUTANG KOPERASI</td>
 			<td style="border-bottom: 1px solid black;width: 1%;padding-left: 20px">:</td>
-			<td style="border-bottom: 1px solid black;width: 60%;padding-left: 20px"><?php echo $data['0']['hutang_koperasi']?></td>
+			<td style="border-bottom: 1px solid black;width: 60%;padding-left: 20px">Rp <?php echo number_format($data['0']['hutang_koperasi'],0,',','.')?>,00</td>
 			<td style="border-right: 1px solid black;border-left: 1px solid black;border-bottom: 1px solid black;width: 10%;padding-left: 20px"></td>
 		</tr>
 		<tr>
 		    <td style="border-left: 1px solid black;border-bottom: 1px solid black;width: 29%;padding-left: 20px">HUTANG PERUSAHAAN</td>
 			<td style="border-bottom: 1px solid black;width: 1%;padding-left: 20px">:</td>
-			<td style="border-bottom: 1px solid black;width: 60%;padding-left: 20px"><?php echo $data['0']['hutang_perusahaan']?></td>
+			<td style="border-bottom: 1px solid black;width: 60%;padding-left: 20px">Rp <?php echo number_format($data['0']['hutang_perusahaan'],0,',','.')?>,00</td>
 			<td style="border-right: 1px solid black;border-left: 1px solid black;border-bottom: 1px solid black;width: 10%;padding-left: 20px"></td>
 		</tr>
 		<tr>
 		    <td style="border-left: 1px solid black;border-bottom: 1px solid black;width: 29%;padding-left: 20px">LAIN-LAIN</td>
 			<td style="border-bottom: 1px solid black;width: 1%;padding-left: 20px">:</td>
-			<td style="border-bottom: 1px solid black;width: 60%;padding-left: 20px"><?php echo $data['0']['lain_lain']?></td>
+			<td style="border-bottom: 1px solid black;width: 60%;padding-left: 20px">Rp <?php echo number_format($data['0']['lain_lain'],0,',','.')?>,00</td>
 			<td style="border-right: 1px solid black;border-left: 1px solid black;border-bottom: 1px solid black;width: 10%;padding-left: 20px"></td>
 		</tr>
 		<tr>

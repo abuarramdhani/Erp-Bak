@@ -149,23 +149,44 @@
                                                 </div>
                                             </div>
                                             <div class="row">
-                                                <div class="col-lg-12">
+                                                <div class="col-lg-6">
                                                     <div class="form-group">
-                                                        <label for="txtMasaKerja" class="col-lg-2 control-label ">Masa Kerja
+                                                        <label for="txtMasaKerja" class="col-lg-4 control-label ">Masa Kerja
                                                         </label>
-                                                        <div class="col-lg-4">
+                                                        <div class="col-lg-8">
                                                             <input type="text" name="txtMasaKerja" class="form-control" id="txtMasaKerja" readonly="">  
+                                                        </div>
+                                                     </div>   
+                                                </div>
+                                            
+                                             <div class="col-lg-6">
+                                                    <div class="form-group">
+                                                        <label for="txtNPWP" class="col-lg-4 control-label">NPWP
+                                                        </label>
+                                                        <div class="col-lg-8">
+                                                            <input type="text" name="txtNPWP" class="form-control" id="txtNPWP" 
+                                                          readonly="">  
                                                         </div>
                                                      </div>   
                                                 </div>
                                             </div>
                                             <div class="row">
-                                                <div class="col-lg-12">
+                                                <div class="col-lg-6">
                                                     <div class="form-group">
-                                                        <label for="txtSisaCuti" class="col-lg-2 control-label ">Sisa Cuti
+                                                        <label for="txtSisaCuti" class="col-lg-4 control-label ">Sisa Cuti
                                                         </label>
-                                                        <div class="col-lg-4">
+                                                        <div class="col-lg-8">
                                                             <input type="text" name="txtSisaCuti" class="form-control" id="txtSisaCuti"  readonly="">  
+                                                        </div>
+                                                     </div>   
+                                                </div>
+                                            <div class="col-lg-6">
+                                                    <div class="form-group">
+                                                        <label for="txtNIK" class="col-lg-4 control-label">NIK
+                                                        </label>
+                                                        <div class="col-lg-8">
+                                                            <input type="text" name="txtNIK" class="form-control" id="txtNIK" 
+                                                          readonly="">  
                                                         </div>
                                                      </div>   
                                                 </div>

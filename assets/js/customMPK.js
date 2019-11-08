@@ -330,6 +330,8 @@ $(function() {
                     $('#txtCuti').val(res[0]['cuti']);
                     $('#txtRugi').val(res[0]['rugi']);
                     $('#txtAkhir').val(res[0]['akhir']);
+                    $('#txtNPWP').val(res[0]['npwp']);
+                    $('#txtNIK').val(res[0]['nik']);
 
                 }
             });
