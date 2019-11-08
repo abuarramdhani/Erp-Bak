@@ -171,7 +171,8 @@
 					$detail_pekerja	=	$this->M_surat->detail_pekerja($noind);
 					$kodelokasi 	= $this->M_surat->kodefinger($noind);
 					if ($kodelokasi == '0') {
-						$lokasi_finger = "LOKASI TIDAK DIKETAHUI";
+						$lokasi_finger[0]['id_lokasi']   = "LOKASI TIDAK DIKETAHUI";
+						$lokasi_finger[0]['device_name'] = "DEVICE TIDAK DIKETAHUI";
 					}else{
 						$lokasi_finger = $this->M_surat->lokasifinger($kodelokasi);
 					}
