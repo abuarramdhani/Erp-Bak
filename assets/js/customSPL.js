@@ -323,8 +323,8 @@ $(function () {
     waktu0 = $('input[name*=waktu_0]').val();
     waktu1 = $('input[name*=waktu_1]').val();
     lembur = $('select[name*=kd_lembur]').val();
-    istirahat = $('input[name*=istirahat]').val();
-    break0 = $('input[name*=break]').val();
+    istirahat = $('input[name*=istirahat]:checked').val();
+    break0 = $('input[name*=break]:checked').val();
     pekerjaan = $('textarea[name*=pekerjaan]').val();
 
     $('input[name*=tanggal_simpan]').val(tanggal);
