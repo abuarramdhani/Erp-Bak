@@ -868,6 +868,7 @@ $(function() {
     $('#MasterPekerja-Surat-txaFormatSurat').redactor();
     $('#MasterPekerja-SuratDemosi-txaPreview').redactor();
     $('#MasterPekerja-SuratPengangkatanStaf-txaPreview').redactor();
+    $('.preview-Lapkun').redactor();
 
     //	}
 
@@ -1466,6 +1467,9 @@ $(function() {
 });
 
 $(document).ready(function() {
+
+    $('#tbl_lapkun').DataTable();
+    
     $('#Saksi_Janji1').select2({
       placeholder:"Input Nama Saksi"
     });
