@@ -6,7 +6,7 @@ class M_settingminmaxopm extends CI_Model {
     {
         parent::__construct();
         $this->load->database();
-        $this->oracle = $this->load->database('oracle', true);
+        $this->oracle = $this->load->database('oracle_dev', true);
     }
 
   public function TampilRoutingClass()
@@ -97,6 +97,7 @@ class M_settingminmaxopm extends CI_Model {
           msib.MIN_MINMAX_QUANTITY MIN,
           msib.MAX_MINMAX_QUANTITY MAX,
           msib.ATTRIBUTE9 ROP
+          -- ,msib.ATTRIBUTE13 LIMITJOB
         FROM mtl_system_items_b msib ,
           gmd_recipe_validity_rules grvr ,
           gmd_recipes_b grb ,
@@ -170,7 +171,21 @@ class M_settingminmaxopm extends CI_Model {
         msib.ATTRIBUTE11 = TO_CHAR(sysdate, 'DD-MON-YYYY HH24:MI:SS')
         $limit
         where msib.SEGMENT1 = '$itemcode'";
+        // echo $sql;
+        // exit();
+      $query = $this->oracle->query($sql);
+  }
 
+  public function savebulk($itemcode, $limit)
+  {
+    if ($limit == 'Y') {
+      $limit = " msib.ATTRIBUTE13 = 'Y'";
+    } else {
+      $limit = " msib.ATTRIBUTE13 = ''";
+    }
+      $sql = "UPDATE mtl_system_items_b msib
+        set $limit
+        where msib.SEGMENT1 = '$itemcode'";
         // echo $sql;
         // exit();
       $query = $this->oracle->query($sql);

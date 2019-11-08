@@ -1,3 +1,63 @@
+$(document).ready(function(){
+  $(".cekcekSMM").on("ifChecked", function() {
+    const ascode = $(this).attr('data-code')
+    const asval = $(this).attr('data-value')
+    console.log(ascode+'|'+asval);
+
+    $.ajax({
+      method: 'POST',
+      async: false,
+      dataType: 'json',
+      url: baseurl + 'SettingMinMaxOPM/C_settingMinMaxOPM/updateKilat',
+      data: {
+        code: ascode,
+        data: asval,
+      },
+      success: function(hasil) {
+        console.log(hasil);
+        Swal.fire({
+          position: 'middle',
+          type: 'success',
+          title: 'success checked',
+          showConfirmButton: false,
+          timer: 900
+        })
+      },
+    })
+
+  })
+
+  $(".cekcekSMM").on("ifUnchecked", function() {
+    const ascode = $(this).attr('data-code')
+    const asval = null
+    console.log(ascode+'|'+asval);
+
+    $.ajax({
+      method: 'POST',
+      async: false,
+      dataType: 'json',
+      url: baseurl + 'SettingMinMaxOPM/C_settingMinMaxOPM/updateKilat',
+      data: {
+        code: ascode,
+        data: asval,
+      },
+      success: function(hasil) {
+        console.log(hasil);
+        Swal.fire({
+          position: 'middle',
+          type: 'success',
+          title: 'success Unchecked',
+          showConfirmButton: false,
+          timer: 900
+        })
+      },
+    })
+
+  })
+
+});
+
+
 $(function() {
     $('#tableDataMinMax').DataTable({
     	columnDefs: [
@@ -12,15 +72,15 @@ var mm = today.getMonth() + 1; //January is 0!
 var yyyy = today.getFullYear();
 if (dd < 10) {
   dd = '0' + dd;
-} 
+}
 if (mm < 10) {
   mm = '0' + mm;
-} 
+}
 today = dd + '-' + mm + '-' + yyyy;
 
 					// var today = new Date();
 					// var dd = String(today.getDate()).padStart(2, '0');
-					// var mm = String(today.getMonth() + 1).padStart(2, '0'); 
+					// var mm = String(today.getMonth() + 1).padStart(2, '0');
 					// var yyyy = today.getFullYear();
 
 					// today = dd + '-' + mm + '-' + yyyy;
@@ -58,9 +118,9 @@ today = dd + '-' + mm + '-' + yyyy;
 	// $('#tableDataMinMaxIE tbody').on('click', 'tr', function() { $(this).toggleClass('selected'); }); // slct by row
 	$('.check-all').off('ifChanged').on('ifChanged', function(event) {
 		if(event.target.checked) {
-			dt2.rows().select();        
+			dt2.rows().select();
 		} else {
-			dt2.rows().deselect(); 
+			dt2.rows().deselect();
 		}
 	});
 	$(".loader").fadeOut("slow");
@@ -84,7 +144,11 @@ $('#org').change(function(){
 			}
 		});
 		}
-	
+
+});
+
+$('#sublimit').click(function() {
+	$( "#formlimit" ).submit();
 });
 
 
@@ -151,7 +215,7 @@ function getData(th){
 			console.log(xhr.responseText);
 		}
 	})
-}	
+}
 
 $('#btn_upload').click(function() {
 	$('#uploadFile').submit(function(e) {

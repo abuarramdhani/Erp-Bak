@@ -2628,6 +2628,7 @@ $route['MasterPekerja/SetupPekerjaan/(:any)/(:any)'] = 'MasterPekerja/SetupPeker
  //---------------------------Setting Min Max OPM-------------------------------//
  $route['SettingMinMax'] = 'SettingMinMaxOPM/C_settingMinMaxOPM/index';
  $route['SettingMinMax/Edit'] = 'SettingMinMaxOPM/C_settingMinMaxOPM/Edit';
+ $route['SettingMinMax/SaveLimit'] = 'SettingMinMaxOPM/C_settingMinMaxOPM/SaveLimit';
  $route['SettingMinMax/EditbyRoute'] = 'SettingMinMaxOPM/C_settingMinMaxOPM/EditbyRoute';
  $route['SettingMinMax/EditbyRoute/EditItem/(:any)/(:any)'] = 'SettingMinMaxOPM/C_settingMinMaxOPM/EditItem/$1/$2';
  $route['SettingMinMax/EditbyRoute/EditItem/(:any)/(:any)/(:any)'] = 'SettingMinMaxOPM/C_settingMinMaxOPM/EditItem/$1/$2/$3';
