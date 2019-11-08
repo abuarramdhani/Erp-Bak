@@ -330,10 +330,10 @@ $(function () {
     $('input[name*=tanggal_simpan]').val(tanggal);
     $('input[name*=waktu_0_simpan]').val(waktu0);
     $('input[name*=waktu_1_simpan]').val(waktu1);
-    $('select[name*=kd_lembur_simpan]').val(lembur);
+    $('input[name*=kd_lembur_simpan]').val(lembur);
     $('input[name*=istirahat_simpan]').val(istirahat);
     $('input[name*=break_simpan]').val(break0);
-    $('textarea[name*=pekerjaan_simpan]').val(pekerjaan);
+    $('input[name*=pekerjaan_simpan]').val(pekerjaan);
 
     var noindSPL = $(this).val();
     var parentSelect = $(this).closest('td');
