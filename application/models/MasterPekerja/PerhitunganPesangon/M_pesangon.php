@@ -16,7 +16,7 @@ class M_pesangon extends CI_Model {
             										rtrim(tseksi.seksi) as seksi,
             										rtrim(tseksi.unit) as unit,
             										rtrim(tseksi.dept) as departemen,
-            rtrim(lokker.lokasi_kerja) as lokasi_kerja,
+            rtrim(lokker.lokasi_kerja) as lokasi_kerja,rtrim(pri.npwp)as npwp,rtrim(pri.nik)as nik,
             (
 				case 	when 	pri.kd_pkj is not null and pri.kd_pkj <> ''
 				then 	 rtrim(tpekerjaan.pekerjaan)
@@ -188,7 +188,7 @@ class M_pesangon extends CI_Model {
             										rtrim(tseksi.seksi) as seksi,
             										rtrim(tseksi.unit) as unit,
             										rtrim(tseksi.dept) as departemen,
-            rtrim(lokker.lokasi_kerja) as lokasi_kerja,
+            rtrim(lokker.lokasi_kerja) as lokasi_kerja,rtrim(pri.npwp)as npwp,rtrim(pri.nik)as nik,
             (
 				case 	when 	pri.kd_pkj is not null and pri.kd_pkj <> ''
 				then 	 rtrim(tpekerjaan.pekerjaan)
@@ -306,7 +306,7 @@ class M_pesangon extends CI_Model {
             										rtrim(tseksi.seksi) as seksi,
             										rtrim(tseksi.unit) as unit,
             										rtrim(tseksi.dept) as departemen,
-            rtrim(lokker.lokasi_kerja) as lokasi_kerja,
+            rtrim(lokker.lokasi_kerja) as lokasi_kerja,rtrim(pri.npwp)as npwp,rtrim(pri.nik)as nik,
             (
 				case 	when 	pri.kd_pkj is not null and pri.kd_pkj <> ''
 				then 	 rtrim(tpekerjaan.pekerjaan)
