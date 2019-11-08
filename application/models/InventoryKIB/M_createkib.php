@@ -192,6 +192,7 @@ class M_createkib extends CI_Model
 	function createMO($nour,$ip_address,$job_id,$subInv,$locator,$subInvFrom,$locatorFrom,$status)
 	{
 		$conn = oci_connect('APPS', 'APPS', '192.168.7.1:1521/PROD');
+		// $conn = oci_connect('APPS', 'APPS', '192.168.7.3:1522/DEV');
 			if (!$conn) {
 	   			 $e = oci_error();
 	    		trigger_error(htmlentities($e['message'], ENT_QUOTES), E_USER_ERROR);
@@ -573,10 +574,11 @@ class M_createkib extends CI_Model
 		$itemku = $batch_number;
 		$N = 'N';
 
-		if ($status != null) {
-			$statusku = "and kkk.PRINT_FLAG = NVL('N',kkk.PRINT_FLAG)";
+		if ($status != 1) {
+			$statusku = "and kkk.PRINT_FLAG = 'N'";
 		} else {
-			$statusku = 'and kkk.PRINT_FLAG = NVL(null,kkk.PRINT_FLAG)';
+			// $statusku = "and kkk.PRINT_FLAG = NVL(null,'N')";
+			$statusku = "and kkk.PRINT_FLAG = 'Y'";
 		}
 
 		if ($kib != null) {
@@ -612,6 +614,7 @@ class M_createkib extends CI_Model
 				and msib.SEGMENT1 = '$itemku'
 --              AND kkk.ITEM_STATUS = '$status'
               and kkk.INVENTORY_TRANS_FLAG = 'N'
+              $statusku
               $kibku";
 
         $query = $oracle->query($sql);
