@@ -30,7 +30,8 @@ class M_pekerjakeluar extends CI_Model
 				tglkeluar::date as tglkeluar,
 				diangkat::date as diangkat,
 				ang_upamk as upamk,
-				(select seksi from hrd_khs.tseksi sek where sek.kodesie = pri.kodesie) as seksi
+				(select seksi from hrd_khs.tseksi sek where sek.kodesie = pri.kodesie) as seksi,
+				(select lokasi_kerja from hrd_khs.tlokasi_kerja tlok where tlok.ID_ = pri.lokasi_kerja) as lokasi_kerja
 				from hrd_khs.tpribadi pri
 				where keluar = '1'
 				and tglkeluar between '$prd'

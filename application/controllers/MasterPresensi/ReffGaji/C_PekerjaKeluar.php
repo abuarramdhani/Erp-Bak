@@ -85,6 +85,7 @@ class C_PekerjaKeluar extends CI_Controller
 			$gaji[$angka]['kodesie'] = $pkj['kodesie'];
 			$gaji[$angka]['seksi'] = $pkj['seksi'];
 			$gaji[$angka]['tgl_keluar'] = $pkj['tglkeluar'];
+			$gaji[$angka]['lokasi_kerja'] = $pkj['lokasi_kerja'];
 			$gaji[$angka]['gp'] = 0;
 			$gaji[$angka]['ip'] = 0;
 			$gaji[$angka]['ik'] = 0;
@@ -282,7 +283,8 @@ class C_PekerjaKeluar extends CI_Controller
 				'um_cabang'	 => $gaji[$angka]['um_cabang'],
 				'jml_jkn'		=> $gaji[$angka]['jml_jkn'],
 				'jml_jht'		=> $gaji[$angka]['jml_jht'],
-				'jml_jp'		=> $gaji[$angka]['jml_jp']
+				'jml_jp'		=> $gaji[$angka]['jml_jp'],
+				'lokasi_krj'		=> $gaji[$angka]['lokasi_kerja']
 			);
 			// echo "<pre>";print_r($array_insert);exit();
 			$this->M_pekerjakeluar->insert_reffgajikeluar($array_insert);
