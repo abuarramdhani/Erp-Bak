@@ -50,7 +50,7 @@ class M_transferreffgaji extends CI_Model
 	}
 
 	public function getDataStaff($periode){
-		$sql = "select * from (
+		$sql = "select tbl.*,tpri.nik from (
 				 select * from \"Presensi\".Treffgaji 
 				 where (
 				 			left(noind,1) = 'B' 
@@ -63,7 +63,7 @@ class M_transferreffgaji extends CI_Model
 				 and to_char(tanggal,'mmyy') ='$periode'
 				 and jns_transaksi in('01')
 				 union all 
-				 select * from \"Presensi\".Treffgaji_keluar 
+				 select * from \"Presensi\".Treffgaji_keluar refkel
 				 where (
 				 			left(noind,1) = 'B' 
 				 			or left(noind,1) = 'D' 
@@ -73,8 +73,22 @@ class M_transferreffgaji extends CI_Model
 				 			or left(noind,1) = 'Q'
 				 		) 
 				 and to_char(tanggal_keluar,'mmyy') ='$periode'
-				) as tbl order by noind";
+				 and (select count(*) from hrd_khs.tpribadi pri2 where (select nik from hrd_khs.tpribadi pri where refkel.noind = pri.noind) = pri2.nik and pri2.keluar = '0') = 0
+				) as tbl 
+				left join hrd_khs.tpribadi tpri 
+					on tpri.noind = tbl.noind
+				order by noind";
  		return $this->personalia->query($sql)->result_array();
+	}
+
+	public function getPekerjaKeluar($nik,$periode,$noind){
+		$sql = "select *
+				from \"Presensi\".Treffgaji_keluar
+				where noind in (select noind from hrd_khs.tpribadi where nik = '$nik' and keluar = '1')
+				and to_char(tanggal_keluar,'mmyy') ='$periode'
+				and noind <> '$noind'";
+		$result = $this->personalia->query($sql);
+		return $result->row();
 	}
 
 	public function getStatusJabatan($noind){
@@ -133,17 +147,11 @@ class M_transferreffgaji extends CI_Model
 				 	and jns_transaksi in('01')
 				 ) + 
 				 (
-				 	select count(*) from \"Presensi\".Treffgaji_keluar 
+				 	select count(*) from \"Presensi\".Treffgaji_keluar refkel
 				 	where left(noind,1) in ('B','D','J','T','G','Q') 
+				 	and (select count(*) from hrd_khs.tpribadi pri2 where (select nik from hrd_khs.tpribadi pri where refkel.noind = pri.noind) = pri2.nik and pri2.keluar = '0') = 0
 				 	and to_char(tanggal_keluar,'mmyy') ='$periode'
-				) /*+ 
-				(
-					select count(*) 
-				 	from \"Presensi\".Treffgaji 
-				 	where left(noind,1) in ('Q')
-				 	and to_char(tanggal,'mmyy') ='$periode'
-				 	and jns_transaksi in('01')
-				)*/,'transferreffgaji'";
+				),'transferreffgaji'";
 		$this->personalia->query($sql);
 	}
 

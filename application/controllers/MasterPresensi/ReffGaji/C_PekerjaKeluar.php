@@ -82,6 +82,7 @@ class C_PekerjaKeluar extends CI_Controller
 		foreach ($pekerja_keluar as $pkj) {
 			$gaji[$angka]['noind'] = $pkj['noind'];
 			$gaji[$angka]['nama'] = $pkj['nama'];
+			$gaji[$angka]['nama_lengkap'] = $pkj['nama_lengkap'];
 			$gaji[$angka]['kodesie'] = $pkj['kodesie'];
 			$gaji[$angka]['seksi'] = $pkj['seksi'];
 			$gaji[$angka]['tgl_keluar'] = $pkj['tglkeluar'];
@@ -263,32 +264,38 @@ class C_PekerjaKeluar extends CI_Controller
 			$array_insert = array(
 				'tanggal_keluar' => $gaji[$angka]['tgl_keluar'] ,
 				'noind' 		 => $gaji[$angka]['noind'] ,
-				'nama' 		 => $gaji[$angka]['nama'] ,
+				'nama' 		 	 => $gaji[$angka]['nama_lengkap'] ,
 				'kodesie'		 => $gaji[$angka]['kodesie'] ,
 				'ipe'			 => $gaji[$angka]['ip'] ,
 				'ika'			 => $gaji[$angka]['ik'] ,
 				'ief'			 => $gaji[$angka]['if'] ,
 				'ubt'			 => $gaji[$angka]['ubt'] ,
-				'upamk'		 => $gaji[$angka]['upamk'] ,
+				'upamk'		 	 => $gaji[$angka]['upamk'] ,
 				'ims'			 => $gaji[$angka]['ims'] ,
 				'imm'			 => $gaji[$angka]['imm'] ,
 				'jam_lembur'	 => $gaji[$angka]['lembur'] ,
 				'htm'			 => $gaji[$angka]['tm'] ,
 				'ijin'			 => $gaji[$angka]['tik'] ,
 				'ct'			 => $gaji[$angka]['sisa_cuti'] ,
-				'plain'		 => $gaji[$angka]['pot_seragam'] + $gaji[$angka]['pot_lain'],
+				'plain'		 	 => $gaji[$angka]['pot_seragam'] + $gaji[$angka]['pot_lain'],
 				'ket'			 => $susulan ,
 				'um_puasa'		 => $gaji[$angka]['um_puasa'] ,
 				'ipet'			 => $gaji[$angka]['ipt'] ,
-				'um_cabang'	 => $gaji[$angka]['um_cabang'],
-				'jml_jkn'		=> $gaji[$angka]['jml_jkn'],
-				'jml_jht'		=> $gaji[$angka]['jml_jht'],
-				'jml_jp'		=> $gaji[$angka]['jml_jp'],
-				'lokasi_krj'		=> $gaji[$angka]['lokasi_kerja']
+				'um_cabang'	 	 => $gaji[$angka]['um_cabang'],
+				'jml_jkn'		 => $gaji[$angka]['jml_jkn'],
+				'jml_jht'		 => $gaji[$angka]['jml_jht'],
+				'jml_jp'		 => $gaji[$angka]['jml_jp'],
+				'lokasi_krj'	 => $gaji[$angka]['lokasi_kerja']
 			);
 			// echo "<pre>";print_r($array_insert);exit();
 			$this->M_pekerjakeluar->insert_reffgajikeluar($array_insert);
-			$angka++;
+
+			$cek_nik_aktif = $this->M_pekerjakeluar->cek_nik_aktif($pkj['noind']);
+			if($cek_nik_aktif > 0){
+				unset($gaji[$angka]);
+			}else{
+				$angka++;
+			}
 		}
 
 		return $gaji;

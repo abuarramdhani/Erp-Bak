@@ -27,6 +27,7 @@ class M_pekerjakeluar extends CI_Model
 				else
 					concat(split_part(nama,' ',1),' ',split_part(nama,' ',2),' ',left(split_part(nama,' ',3),1))
 				end nama,
+				nama as nama_lengkap,
 				tglkeluar::date as tglkeluar,
 				diangkat::date as diangkat,
 				ang_upamk as upamk,
@@ -4909,6 +4910,15 @@ class M_pekerjakeluar extends CI_Model
 				 from hrd_khs.tpribadi tp
 				 where noind = '$noind'";
 		return $this->personalia->query($sql)->row()->jp;
+	}
+
+	public function cek_nik_aktif($noind){
+		$sql = "select * 
+				from hrd_khs.tpribadi pri2 
+				where pri2.nik = (select nik from hrd_khs.tpribadi pri where noind = '$noind') 
+				and pri2.keluar = '0'";
+		$result = $this->personalia->query($sql)->result_array();
+		return count($result);
 	}
 }
 ?>

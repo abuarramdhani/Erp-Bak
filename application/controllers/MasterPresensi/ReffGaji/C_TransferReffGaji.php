@@ -564,6 +564,21 @@ class C_TransferReffGaji extends CI_Controller
 			$table3 = new XBase\WritableTable(FCPATH."assets/upload/TransferReffGaji/lv_info2.dbf");
 			$table3->openWrite(FCPATH."assets/upload/TransferReffGaji/PER".$periode.$waktu.".dbf");
 			foreach ($data_staff as $ds) {
+				$ip_lama = 0;
+				$ik_lama = 0;
+				$ipt_lama = 0;
+				$data_pekerja_keluar = $this->M_transferreffgaji->getPekerjaKeluar($ds['nik'],$periode,$ds['noind']);
+				if(!empty($data_pekerja_keluar)){
+					$ds['ief'] += $data_pekerja_keluar->ief;
+					$ds['ims'] += $data_pekerja_keluar->ims;
+					$ds['imm'] += $data_pekerja_keluar->imm;
+					$ds['jam_lembur'] += $data_pekerja_keluar->jam_lembur;
+					$ds['um_cabang'] += $data_pekerja_keluar->um_cabang;
+					$ds['dldobat'] += $data_pekerja_keluar->dldobat;
+					$ip_lama = floatval($data_pekerja_keluar->ipe);
+					$ik_lama = floatval($data_pekerja_keluar->ika);
+					$ipt_lama = floatval($data_pekerja_keluar->ipet);
+				}
 				$jabatan = $this->M_transferreffgaji->getStatusJabatan($ds['noind']);
 				if ($jabatan <= 11) {
 					$st = "3";
@@ -738,6 +753,9 @@ class C_TransferReffGaji extends CI_Controller
 				$record->JHT =  $ds['jml_jht'] ;
 				$record->JP =  $ds['jml_jp'] ;
 				$record->HR_CUTI = floatval($ds['ct']);
+				$record->IP_LAMA = $ip_lama;
+				$record->IK_LAMA = $ik_lama;
+				$record->IPT_LAMA = $ipt_lama;
 				// echo "<pre>";print_r($record);exit();
 				$table3->writeRecord();
 
