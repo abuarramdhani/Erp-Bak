@@ -215,7 +215,9 @@ class C_TransferPolaReffGaji extends CI_Controller
 			if ($dt['kd_ket'] == "TM") {
 				$datajadi[$angka][$bulan_str.$arraytanggal['2']] = "M";
 			}elseif ($dt['kd_ket'] == "TIK" or $dt['kd_ket'] == "PSP") {
-				$datajadi[$angka][$bulan_str.$arraytanggal['2']] = 1 - $this->M_transferpolareffgaji->hitung_tik($dt['noind'],$dt['tanggal']);
+				$ijin = 1 - $this->M_transferpolareffgaji->hitung_tik($dt['noind'],$dt['tanggal']);
+				if($ijin < 1){
+					$datajadi[$angka][$bulan_str.$arraytanggal['2']] = $ijin;
 				if (strtolower($dt['inisial']) == "s1") {
 					$datajadi[$angka]['hmp'] -= 1;
 				}elseif (strtolower($dt['inisial']) == "s2") {
@@ -224,6 +226,7 @@ class C_TransferPolaReffGaji extends CI_Controller
 					$datajadi[$angka]['hmm'] -= 1;
 				}elseif (strtolower($dt['inisial']) == "su") {
 					$datajadi[$angka]['hmu'] -= 1;
+				}
 				}
 			}elseif ($dt['kd_ket'] !== "PKJ" and $dt['kd_ket'] !== "PLB" and $dt['kd_ket'] !== "HL" ) {
 				if ($dt['kd_ket'] == "PSK") {
