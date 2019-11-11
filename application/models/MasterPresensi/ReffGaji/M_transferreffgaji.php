@@ -136,14 +136,14 @@ class M_transferreffgaji extends CI_Model
 				 	select count(*) from \"Presensi\".Treffgaji_keluar 
 				 	where left(noind,1) in ('B','D','J','T','G','Q') 
 				 	and to_char(tanggal_keluar,'mmyy') ='$periode'
-				) + 
+				) /*+ 
 				(
 					select count(*) 
 				 	from \"Presensi\".Treffgaji 
 				 	where left(noind,1) in ('Q')
 				 	and to_char(tanggal,'mmyy') ='$periode'
 				 	and jns_transaksi in('01')
-				),'transferreffgaji'";
+				)*/,'transferreffgaji'";
 		$this->personalia->query($sql);
 	}
 

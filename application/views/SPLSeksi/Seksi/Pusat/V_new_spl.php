@@ -85,20 +85,20 @@
 									<div class="form-group">
 										<label class="col-sm-2 control-label">Istirahat</label>
 										<div class="col-sm-2">
-											<label style="margin-left:2%; top:+3;"><input type="radio" class="" name="istirahat" value="1" style="transform: scale(1.5); vertical-align:top;" checked> Ya</label>
+											<label style="margin-left:2%; top:+3;"><input type="radio" id="istirahat-ya" class="" name="istirahat" value="1" style="transform: scale(1.5); vertical-align:top;" checked> Ya</label>
 										</div>
 										<div class="col-sm-8">
-											<label style="margin-left:5%; vertical-align:bottom;"><input class="" type="radio" name="istirahat" value="2" style="transform: scale(1.5); vertical-align:top;"> Tidak</label>
+											<label style="margin-left:5%; vertical-align:bottom;"><input id="istirahat-no" class="" type="radio" name="istirahat" value="2" style="transform: scale(1.5); vertical-align:top;"> Tidak</label>
 										</div>
 									</div>
 
 									<div class="form-group">
 										<label class="col-sm-2 control-label">Break</label>
 										<div class="col-sm-2">
-											<label style="margin-left:2%; top:+3;"><input class="" type="radio" name="break" value="1" style="transform: scale(1.5); vertical-align:top;" checked> Ya</label>
+											<label style="margin-left:2%; top:+3;"><input class="" id="break-ya" type="radio" name="break" value="1" style="transform: scale(1.5); vertical-align:top;" checked> Ya</label>
 										</div>
 										<div class="col-sm-8">
-											<label style="margin-left:5%; vertical-align:bottom;"><input class="" type="radio" name="break" value="2" style="transform: scale(1.5); vertical-align:top;"> Tidak</label>
+											<label style="margin-left:5%; vertical-align:bottom;"><input id="break-no" class="" type="radio" name="break" value="2" style="transform: scale(1.5); vertical-align:top;"> Tidak</label>
 										</div>
 									</div>
 
@@ -112,13 +112,13 @@
 								</div>
 							</div>
 							<!-- hidden input start -->
-							<input type="hidden" name="tanggal_simpan">
-							<input type="hidden" name="waktu_0_simpan">
-							<input type="hidden" name="waktu_1_simpan">
-							<input type="hidden" name="kd_lembur_simpan">
-							<input type="hidden" name="istirahat_simpan">
-							<input type="hidden" name="break_simpan">
-							<input type="hidden" name="pekerjaan_simpan">
+							<input type="text" name="tanggal_simpan">
+							<input type="text" name="waktu_0_simpan">
+							<input type="text" name="waktu_1_simpan">
+							<input type="text" name="kd_lembur_simpan">
+							<input type="text" name="istirahat_simpan">
+							<input type="text" name="break_simpan">
+							<input type="text" name="pekerjaan_simpan">
 							<!-- hidden input end -->
 							<div class="row">
 								<div class="col-lg-12">

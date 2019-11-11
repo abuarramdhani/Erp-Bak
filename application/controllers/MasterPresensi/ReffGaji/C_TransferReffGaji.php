@@ -316,7 +316,7 @@ class C_TransferReffGaji extends CI_Controller
 		}
 
 		//pkl staff
-
+		/*
 		$data_pkl_staff = $this->M_transferreffgaji->getDataPkl('Q',$periode);
 		if (!empty($data_pkl_staff)) {
 			$table2 = new XBase\WritableTable(FCPATH."assets/upload/TransferReffGaji/lv_info.dbf");
@@ -554,6 +554,8 @@ class C_TransferReffGaji extends CI_Controller
 			}
 			$table2->close();
 		}
+		*/
+
 		//staff
 
 		$data_staff = $this->M_transferreffgaji->getDataStaff($periode);
@@ -610,7 +612,7 @@ class C_TransferReffGaji extends CI_Controller
 					$angg_jkn_bpjs_kes = "F";
 				}
 
-				$um_ = floatval($ds['hl']) + floatval($ds['ct']) + floatval($ds['um_puasa']);
+				$um_ = floatval($ds['hl']) + floatval($ds['um_puasa']);
 
 				$seksi2 = $this->M_transferreffgaji->getSeksi2($ds['kodesie']);
 				$seksi = $this->M_transferreffgaji->getSeksi($ds['kodesie']);
@@ -630,6 +632,16 @@ class C_TransferReffGaji extends CI_Controller
 				if(trim($ds['ket']) == "-"){
 					$ds['ket'] = "";
 				}
+				if (substr($ds['noind'], 0,1) == "Q") {
+					$ds['ijin'] = 0;
+					$ds['htm'] = 0;
+					$ds['ika'] = 0;
+					$ds['ipe'] = 0;
+					$ds['ief'] = 0;
+					$ds['ims'] = 0;
+					$ds['imm'] = 0;
+				}
+
 				$record = $table3->appendRecord();
 				$record->NOIND = $ds['noind'];
 				$record->NOINDBR = '';
@@ -687,7 +699,7 @@ class C_TransferReffGaji extends CI_Controller
 				$record->SUBTOTAL2 = 0;
 				$record->SUBTOTAL3 = 0;
 				$record->TERIMA = 0;
-				$record->KET =  Trim($ds['ket']) ;
+				$record->KET =  str_replace(".00","",Trim($ds['ket'])) ;
 				$record->TKENAPJK =  round($ds['tkpajak'], 2) ;
 				$record->TTAKPJK = 0;
 				$record->KOREKSI1 = '';
@@ -725,6 +737,7 @@ class C_TransferReffGaji extends CI_Controller
 				$record->JKN =  $ds['jml_jkn'] ;
 				$record->JHT =  $ds['jml_jht'] ;
 				$record->JP =  $ds['jml_jp'] ;
+				$record->HR_CUTI = floatval($ds['ct']);
 				// echo "<pre>";print_r($record);exit();
 				$table3->writeRecord();
 
@@ -1042,9 +1055,9 @@ class C_TransferReffGaji extends CI_Controller
 
 		//finish
 
+		// <!-- <a href="'.site_url("MasterPresensi/ReffGaji/TransferReffGaji/download?file=PKLSTAFFDATA-ABS".$periode."&time=".$waktu).'" class="btn btn-info">PKLSTAFFDATA-ABS'.$periode.'</a> --> pkl staff dihidden
 		$data_download = '
 		<a href="'.site_url("MasterPresensi/ReffGaji/TransferReffGaji/download?file=PKLNONSTAFFDATA-ABS".$periode."&time=".$waktu).'" class="btn btn-info">PKLNONSTAFFDATA-ABS'.$periode.'</a>
-		<a href="'.site_url("MasterPresensi/ReffGaji/TransferReffGaji/download?file=PKLSTAFFDATA-ABS".$periode."&time=".$waktu).'" class="btn btn-info">PKLSTAFFDATA-ABS'.$periode.'</a>
 		<a href="'.site_url("MasterPresensi/ReffGaji/TransferReffGaji/download?file=PER".$periode."&time=".$waktu) .'" class="btn btn-info">PER'.$periode.'</a>
 		<a href="'.site_url("MasterPresensi/ReffGaji/TransferReffGaji/download?file=DATA-ABS".$periode."&time=".$waktu) .'" class="btn btn-info">DATA-ABS'.$periode.'</a>
 		<a href="'.site_url("MasterPresensi/ReffGaji/TransferReffGaji/download?file=K".$periode."&time=".$waktu) .'" class="btn btn-info">K'.$periode.'</a>
