@@ -38,6 +38,7 @@ class C_splpersonalia extends CI_Controller {
     //fingertemp
 
     public function finger(){
+        $this->checkSession();
     	$data = $this->menu('Daftar jari', '', '');
     	$data['fingertemp'] = $this->M_splseksi->gettfingerphp();
     	$this->load->view('V_Header',$data);
@@ -47,6 +48,7 @@ class C_splpersonalia extends CI_Controller {
     }
 
     public function getfingerdata(){
+        $this->checkSession();
     	$noind = $this->input->post('noind');
     	$userid = $this->M_splseksi->getUseridByNoind($noind);
     	$finger = $this->M_splseksi->getfingerdata($noind);
@@ -71,6 +73,7 @@ class C_splpersonalia extends CI_Controller {
     }
 
     public function finger_register(){
+        $this->checkSession();
     	$userid 	= $_GET['userid'];
     	$finger = $_GET['finger'];
     	$time_limit_reg = 15;
@@ -78,6 +81,7 @@ class C_splpersonalia extends CI_Controller {
     }
 
     public function finger_process_register(){
+        $this->checkSession();
     	$data 		= explode(";",$_POST['RegTemp']);
 		$vStamp 	= $data[0];
 		$sn 		= $data[1];
@@ -113,10 +117,12 @@ class C_splpersonalia extends CI_Controller {
     }
 
     public function finger_register_error(){
+        $this->checkSession();
     	print_r($_GET);
     }
 
     public function finger_register_get_ac(){
+        $this->checkSession();
     	$vc = $_GET['vc'];
     	$data = $this->M_splseksi->getAcSnByVc($vc);
 		
@@ -124,23 +130,27 @@ class C_splpersonalia extends CI_Controller {
     }
 
     public function getUserfinger(){
+        $this->checkSession();
     	$key = $this->input->get('key');
     	$data = $this->M_splseksi->getUserfinger(strtoupper($key));
     	echo json_encode($data);
     }
 
     public function deleteFingerTemp(){
+        $this->checkSession();
     	$jari = $this->input->post('jari');
     	$userid = $this->input->post('userid');
     	$this->M_splseksi->deleteFingertemp($userid,$jari);
     }
 
     public function deleteFingertempAll(){
+        $this->checkSession();
     	$noind = $this->input->post('noind');
     	$this->M_splseksi->deleteFingertempAll($noind);
     }
 
     public function generateFingertempTable(){
+        $this->checkSession();
     	$fingertemp = $this->M_splseksi->gettfingerphp();
     	$data = "";
     	$number = 1; 
@@ -178,6 +188,7 @@ class C_splpersonalia extends CI_Controller {
     //fingerspot
 
     public function fingerspot(){
+        $this->checkSession();
     	$data = $this->menu('Daftar Fingerspot', '', '');
     	$data['fingerprint'] = $this->M_splseksi->gettcodefingerprint();
     	$this->load->view('V_Header',$data);
@@ -187,6 +198,7 @@ class C_splpersonalia extends CI_Controller {
     }
 
     public function insertFingerspot(){
+        $this->checkSession();
     	$sn = $this->input->post('sn');
     	$vc = $this->input->post('vc');
     	$ac = $this->input->post('ac');
@@ -203,6 +215,7 @@ class C_splpersonalia extends CI_Controller {
     }
 
     public function updateFingerspot(){
+        $this->checkSession();
     	$id = $this->input->post('idf');
     	$sn = $this->input->post('sn');
     	$vc = $this->input->post('vc');
@@ -220,12 +233,14 @@ class C_splpersonalia extends CI_Controller {
     }
 
     public function deleteFingerspot(){
+        $this->checkSession();
     	$id = $this->input->post('id');
 
     	$this->M_splseksi->deletetcodefingerprint($id);
     }
 
     public function generateFingerspotTable(){
+        $this->checkSession();
     	$fingerprint = $this->M_splseksi->gettcodefingerprint();
 
     	$number = 1; 
