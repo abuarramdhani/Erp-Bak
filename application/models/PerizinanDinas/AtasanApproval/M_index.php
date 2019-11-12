@@ -54,14 +54,12 @@ class M_index extends CI_Model
         $sql = "update \"Surat\".tperizinan
                 set status ='$status'
                 WHERE izin_id ='$idizin'";
-                // echo $sql;exit();
         $query = $this->personalia->query($sql);
-        // return $query->result_array();
     }
 
     public function pekerja($noind)
     {
-    	$sql = "SELECT rtrim(nama) nama FROM hrd_khs.tpribadi WHERE keluar = '0' and noind = '$noind'";
+    	$sql = "SELECT rtrim(nama) as nama, noind FROM hrd_khs.tpribadi WHERE keluar = '0' and noind = '$noind'";
     	// echo $sql;exit();
         return $this->personalia->query($sql)->result_array();
     }

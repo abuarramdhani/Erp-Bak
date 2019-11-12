@@ -53,11 +53,8 @@ class C_Index extends CI_Controller
 				$newArr = array();
 			foreach ($nama as $row) {
 				$pekerja = $this->M_index->pekerja($row);
-				// print_r($pekerja[0]['nama']);die;
-				$newArr[] = $row.' - '.$pekerja[0]['nama'];
 			}
-			$namapekerja = implode(", ",$newArr);
-			$key['namapekerja'] = $namapekerja;
+			$key['namapekerja'] = $pekerja;
 			$arrrr[] = $key;
 		 }
 		$data['izin'] = $arrrr;
@@ -70,13 +67,10 @@ class C_Index extends CI_Controller
 				$newArr = array();
 			foreach ($nama as $row) {
 				$pekerja = $this->M_index->pekerja($row);
-				$newArr[] = $row.' - '.$pekerja[0]['nama'];
 			}
-			$namapekerja = implode(", ",$newArr);
-			$key['namapekerja'] = $namapekerja;
+			$key['namapekerja'] = $pekerja;
 			$approve[] = $key;
 		 }
-		 // echo "<pre>";print_r($approve);die;
 		$data['IzinApprove'] = $approve;
 
 		$data['IzinUnApprove'] = $this->M_index->IzinUnApprove($no_induk);
@@ -86,10 +80,8 @@ class C_Index extends CI_Controller
 				$newArr = array();
 			foreach ($nama as $row) {
 				$pekerja = $this->M_index->pekerja($row);
-				$newArr[] = $row.' - '.$pekerja[0]['nama'];
 			}
-			$namapekerja = implode(", ",$newArr);
-			$key['namapekerja'] = $namapekerja;
+			$key['namapekerja'] = $pekerja;
 			$UnApprove[] = $key;
 		 }
 		$data['IzinUnApprove'] = $UnApprove;
@@ -101,10 +93,8 @@ class C_Index extends CI_Controller
 				$newArr = array();
 			foreach ($nama as $row) {
 				$pekerja = $this->M_index->pekerja($row);
-				$newArr[] = $row.' - '.$pekerja[0]['nama'];
 			}
-			$namapekerja = implode(", ",$newArr);
-			$key['namapekerja'] = $namapekerja;
+			$key['namapekerja'] = $pekerja;
 			$Reject[] = $key;
 		 }
 		$data['IzinReject'] = $Reject;
@@ -135,7 +125,6 @@ class C_Index extends CI_Controller
 			for ($i=0; $i < count($nama); $i++) {
 				for ($j=0; $j < count($tujuan) ; $j++) {
 					if ($nama[$i] == $tujuan[$j]['noind']) {
-						// echo "<pre>";print_r($tujuan);die;
 						$data = array(
 							'izin_id'	=> $idizin,
 							'noinduk' 	=> $nama[$i],

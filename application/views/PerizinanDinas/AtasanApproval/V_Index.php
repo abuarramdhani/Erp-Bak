@@ -72,9 +72,9 @@
                                             </td>
                                       <td style="white-space: nowrap; text-align: center;"><?php echo $row['izin_id'] ?></td>
                                       <td style="white-space: nowrap"><?= date("d - M - Y", strtotime($row['created_date'])); ?></td>
-                                      <td style="white-space: nowrap"><?php $daftarNamaAsli = $row['namapekerja'];
-                                                $daftarNama = str_replace(',', '<br> ', $daftarNamaAsli);
-                                           echo $daftarNama ?></td>
+                                      <td style="white-space: nowrap"><?php foreach ($row['namapekerja'] as $lue) {
+                                        echo $lue['noind'].' - '.$lue['nama'];
+                                      } ?></td>
                                       <td style="white-space: nowrap; text-align: center;"><?php if ( $row['jenis_izin'] == '1') {
                                                                                       echo "DINAS PUSAT";
                                                                                     }elseif ( $row['jenis_izin'] == '2') {
@@ -143,9 +143,9 @@
                                             </td>
                                       <td style="text-align: center;"><?php echo $row['izin_id'] ?></td>
                                       <td style="white-space: nowrap"><?= date("d - M - Y", strtotime($row['created_date'])); ?></td>
-                                     <td style="white-space: nowrap"><?php $daftarNamaAsli = $row['namapekerja'];
-                                                $daftarNama = str_replace(',', '<br> ', $daftarNamaAsli);
-                                           echo $daftarNama ?></td>
+                                     <td style="white-space: nowrap"><?php foreach ($row['namapekerja'] as $ue) {
+                                       echo $ue['noind'].' - '.$ue['nama'];
+                                     } ?></td>
                                       <td style="white-space: nowrap; text-align: center;"><?php if ( $row['jenis_izin'] == '1') {
                                                                                       echo "DINAS PUSAT";
                                                                                     }elseif ( $row['jenis_izin'] == '2') {
@@ -213,9 +213,9 @@
                                             </td>
                                       <td style="text-align: center;"><?php echo $row['izin_id'] ?></td>
                                       <td style="white-space: nowrap"><?= date("d - M - Y", strtotime($row['created_date'])); ?></td>
-                                      <td style="white-space: nowrap"><?php $daftarNamaAsli = $row['namapekerja'];
-                                                $daftarNama = str_replace(',', '<br> ', $daftarNamaAsli);
-                                           echo $daftarNama ?></td>
+                                      <td style="white-space: nowrap"><?php foreach ($row['namapekerja'] as $ue) {
+                                        echo $ue['noind'].' - '.$ue['nama'];
+                                      } ?></td>
                                      <td style="white-space: nowrap; text-align: center;"><?php if ( $row['jenis_izin'] == '1') {
                                                                                       echo "DINAS PUSAT";
                                                                                     }elseif ( $row['jenis_izin'] == '2') {
@@ -283,9 +283,9 @@
                                             </td>
                                       <td style="text-align: center;"><?php echo $row['izin_id'] ?></td>
                                       <td style="white-space: nowrap"><?= date("d - M - Y", strtotime($row['created_date'])); ?></td>
-                                      <td style="white-space: nowrap"><?php $daftarNamaAsli = $row['namapekerja'];
-                                                $daftarNama = str_replace(',', '<br> ', $daftarNamaAsli);
-                                           echo $daftarNama ?></td>
+                                      <td style="white-space: nowrap"><?php foreach ($row['namapekerja'] as $ue) {
+                                        echo $ue['noind'].' - '.$ue['nama'];
+                                      } ?></td>
                                       <td style="white-space: nowrap; text-align: center;"><?php if ( $row['jenis_izin'] == '1') {
                                                                                       echo "DINAS PUSAT";
                                                                                     }elseif ( $row['jenis_izin'] == '2') {
