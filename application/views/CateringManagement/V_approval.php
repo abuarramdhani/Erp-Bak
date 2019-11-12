@@ -284,7 +284,7 @@ $(document).ready(function(){
   var noind = '<?=$user?>';
   console.log(noind);
 
-  if(noind != 'J1256' && noind != 'F2324' && noind != 'B0720')
+  if(noind != 'J1256' && noind != 'F2324' && noind != 'B0720' && noind != 'B0799')
   {
     $('#page').hide();
     Swal.fire({

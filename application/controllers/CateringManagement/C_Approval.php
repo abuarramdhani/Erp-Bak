@@ -69,7 +69,7 @@ class C_Approval extends CI_Controller
     $data['user'] = $this->session->user;
     $data['sie'] = $this->M_pesanan->getNamaSie();
     $data['hidden'] = '';
-    if($data['user'] != 'J1256' && $data['user'] != 'F2324' && $data['user'] != 'B0720'){
+    if($data['user'] != 'J1256' && $data['user'] != 'F2324' && $data['user'] != 'B0720' && $data['user'] != 'B0799'){
       $data['hidden'] = 'hidden';
     }
 

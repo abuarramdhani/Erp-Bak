@@ -6,9 +6,9 @@ class M_index extends CI_Model
     {
         parent::__construct();
         $this->load->database();
-        $this->personalia = $this->load->database('personalia',TRUE);    
+        $this->personalia = $this->load->database('personalia',TRUE);
     }
-    
+
    public function GetIzin($no_induk)
 	{
 		$sql = "SELECT * FROM \"Surat\".tperizinan WHERE atasan_aproval LIKE '%$no_induk%' order by status";
@@ -27,7 +27,7 @@ class M_index extends CI_Model
 
 	 public function IzinApprove($no_induk)
 	{
-		$sql = "SELECT * FROM \"Surat\".tperizinan WHERE atasan_aproval LIKE '%$no_induk%' and status = '1' order by created_date DESC";
+		$sql = "SELECT * FROM \"Surat\".tperizinan WHERE atasan_aproval = '$no_induk' and status = '1' order by created_date DESC";
 
 		$query = $this->personalia->query($sql);
 		return $query->result_array();
@@ -63,7 +63,7 @@ class M_index extends CI_Model
     {
     	$sql = "SELECT rtrim(nama) nama FROM hrd_khs.tpribadi WHERE keluar = '0' and noind = '$noind'";
     	// echo $sql;exit();
-        return $this->personalia->query($sql)->row()->nama;
+        return $this->personalia->query($sql)->result_array();
     }
 
     public function taktual_izin($pekerja)
@@ -86,6 +86,12 @@ class M_index extends CI_Model
 	                where tpi.izin_id='$idizin'";
 	    $this->personalia->query($sql);
 	    return;
+    }
+
+    public function getTujuanMakan($idizin)
+    {
+      $sql = "SELECT * FROM \"Surat\".tpekerja_izin WHERE izin_id = '$idizin'";
+      return $this->personalia->query($sql)->result_array();
     }
 
 } ?>
