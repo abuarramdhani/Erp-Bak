@@ -44,6 +44,10 @@
                                                 <input style="display: none" type="radio" class="form-check-input3" name="radioJenisPencarian" value="lokasikerja"></input>
                                                 <input type="button" class="btn btn-default mencoba3" name="radioJenisPencarian" value="lokasikerja" id="RekapRiwayatMutasi-radioJenisPencarian-lokasikerja"></input>
                                             </div>
+                                            <div class="col-md-2">
+                                                <input style="display: none" type="radio" class="form-check-input4" name="radioJenisPencarian" value="periode"></input>
+                                                <input type="button" class="btn btn-default mencoba4" name="radioJenisPencarian" value="periode" id="RekapRiwayatMutasi-radioJenisPencarian-periode"></input>
+                                            </div>
                                         </div>
                                         <div id="RekapRiwayatMutasi-parameterNoind">
                                             <div class="form-group">
@@ -111,6 +115,33 @@
                                                     <label for="RekapRiwayatMutasi-daftarLokasiKerjaBaru" class="control-label col-lg-4">Lokasi Kerja</label>
                                                     <select class="select2 col-lg-6 RekapRiwayatMutasi-daftarLokasiKerja" name="cmbLokasiKerjaBaru" id="RekapRiwayatMutasi-daftarLokasiKerjaBaru" disabled="">
                                                     </select>
+                                                </div>
+                                            </div>
+                                        </div>
+                                         <div id="RekapRiwayatMutasi-parameterPeriode">
+                                            <div class="row" style="margin: 10px 10px">
+                                                <div class="col-md-2 text-right">
+                                                    <label class="control-label">Periode</label>
+                                                </div>
+                                                <div class="col-md-4">
+                                                    <div class="form-group">
+                                                        <div class="input-group">
+                                                            <div class="input-group-addon">
+                                                                From
+                                                            </div>
+                                                            <input type="text" id="rekapBegin" class="form-control" name="rekapBegin" disabled="" required>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-4">
+                                                    <div class="form-group">
+                                                        <div class="input-group">
+                                                            <div class="input-group-addon">
+                                                                To
+                                                            </div>
+                                                            <input type="text" id="rekapEnd" class="form-control" name="rekapEnd" disabled="" required>
+                                                        </div>
+                                                    </div>
                                                 </div>
                                             </div>
                                         </div>
