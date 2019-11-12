@@ -1373,6 +1373,7 @@ function rekap_datatable_detail() {
 				            $('.form-check-input2').prop('disabled', true);
 				            $('.form-check-input1').prop('disabled', true); 
 				            $('.form-check-input3').prop('disabled', true); 
+				            $('.form-check-input4').prop('disabled', true); 
 				    $('.mencoba').click(function () {
 				    	// alert('a');
 				            $('.form-check-input1').prop('disabled', false);
@@ -1381,6 +1382,8 @@ function rekap_datatable_detail() {
 				            $('.form-check-input3').iCheck('uncheck');
 				            $('.form-check-input3').prop('disabled', true);
 				            $('.form-check-input2').prop('disabled', true);
+				            $('.form-check-input4').iCheck('uncheck');
+				            $('.form-check-input4').prop('disabled', true);
 				    });
 				    $('.mencoba2').click(function () { 
 				            $('.form-check-input2').prop('disabled', false);
@@ -1388,7 +1391,10 @@ function rekap_datatable_detail() {
 				            $('.form-check-input1').iCheck('uncheck');
 				            $('.form-check-input3').iCheck('uncheck');
 				            $('.form-check-input3').prop('disabled', true);
-				            $('.form-check-input1').prop('disabled', true); 
+				            $('.form-check-input1').prop('disabled', true);
+				            $('.form-check-input4').iCheck('uncheck');
+				            $('.form-check-input4').prop('disabled', true); 
+
 				    });
 				        $('.mencoba3').click(function () {   
 				            $('.form-check-input3').prop('disabled', false);  
@@ -1397,6 +1403,18 @@ function rekap_datatable_detail() {
 				            $('.form-check-input2').iCheck('uncheck');
 				            $('.form-check-input2').prop('disabled', true);
 				            $('.form-check-input1').prop('disabled', true); 
+				            $('.form-check-input4').iCheck('uncheck');
+				            $('.form-check-input4').prop('disabled', true);
+				    });
+				        $('.mencoba4').click(function () {   
+				            $('.form-check-input3').prop('disabled', true);  
+				            $('.form-check-input3').iCheck('uncheck');
+				            $('.form-check-input1').iCheck('uncheck');
+				            $('.form-check-input2').iCheck('uncheck');
+				            $('.form-check-input2').prop('disabled', true);
+				            $('.form-check-input1').prop('disabled', true); 
+				            $('.form-check-input4').iCheck('check');
+				            $('.form-check-input4').prop('disabled', false);
 				    });
 				});
 
@@ -1413,6 +1431,8 @@ function rekap_datatable_detail() {
 						$('#RekapRiwayatMutasi-cmbSeksiBaru').prop('disabled', true);
 						$('#RekapRiwayatMutasi-daftarLokasiKerjaLama').prop('disabled', true);
 						$('#RekapRiwayatMutasi-daftarLokasiKerjaBaru').prop('disabled', true);
+						$('#rekapBegin').prop('disabled', true);
+						$('#rekapEnd').prop('disabled', true);
 
 						$('#RekapRiwayatMutasi-daftarNomorInduk').prop('required', true);
           				$('input[name="radioJenisPencarian"]').removeClass("btn-default");
@@ -1446,6 +1466,8 @@ function rekap_datatable_detail() {
 						$('#RekapRiwayatMutasi-cmbSeksiBaru').prop('disabled', false);
 						$('#RekapRiwayatMutasi-daftarLokasiKerjaLama').prop('disabled', true);
 						$('#RekapRiwayatMutasi-daftarLokasiKerjaBaru').prop('disabled', true);
+						$('#rekapBegin').prop('disabled', true);
+						$('#rekapEnd').prop('disabled', true);
 
 						$('#RekapRiwayatMutasi-daftarNomorInduk').prop('required', true);
           				$('input[name="radioJenisPencarian"]').removeClass("btn-default");
@@ -1479,6 +1501,42 @@ function rekap_datatable_detail() {
 						$('#RekapRiwayatMutasi-cmbSeksiBaru').prop('disabled', true);
 						$('#RekapRiwayatMutasi-daftarLokasiKerjaLama').prop('disabled', false);
 						$('#RekapRiwayatMutasi-daftarLokasiKerjaBaru').prop('disabled', false);
+						$('#rekapBegin').prop('disabled', true);
+						$('#rekapEnd').prop('disabled', true);
+
+						$('#RekapRiwayatMutasi-daftarNomorInduk').prop('required', true);
+          				$('input[name="radioJenisPencarian"]').removeClass("btn-default");
+			            $('input[name="radioJenisPencarian"]').removeClass("btn-primary");
+			            $('input[name="radioJenisPencarian"]').addClass("btn-default");
+						$(this).removeClass("btn-default");
+          				$(this).addClass("btn-primary");
+						/*$('#RekapRiwayatMutasi-daftarNomorInduk').prop('required', false);
+						$('#RekapRiwayatMutasi-cmbDepartemenLama').prop('required', false);
+						$('#RekapRiwayatMutasi-cmbDepartemenBaru').prop('required', false);
+						$('#RekapRiwayatMutasi-cmbBidangLama').prop('required', false);
+						$('#RekapRiwayatMutasi-cmbBidangBaru').prop('required', false);
+						$('#RekapRiwayatMutasi-cmbUnitLama').prop('required', false);
+						$('#RekapRiwayatMutasi-cmbUnitBaru').prop('required', false);
+						$('#RekapRiwayatMutasi-cmbSeksiLama').prop('required', false);
+						$('#RekapRiwayatMutasi-cmbSeksiBaru').prop('required', false);
+						$('#RekapRiwayatMutasi-daftarLokasiKerjaLama').prop('required', true);
+						$('#RekapRiwayatMutasi-daftarLokasiKerjaBaru').prop('required', true);*/
+					});
+					$('#RekapRiwayatMutasi-radioJenisPencarian-periode').click(function()
+					{
+						$('#RekapRiwayatMutasi-daftarNomorInduk').prop('disabled', true);
+						$('#RekapRiwayatMutasi-cmbDepartemenLama').prop('disabled', true);
+						$('#RekapRiwayatMutasi-cmbDepartemenBaru').prop('disabled', true);
+						$('#RekapRiwayatMutasi-cmbBidangLama').prop('disabled', true);
+						$('#RekapRiwayatMutasi-cmbBidangBaru').prop('disabled', true);
+						$('#RekapRiwayatMutasi-cmbUnitLama').prop('disabled', true);
+						$('#RekapRiwayatMutasi-cmbUnitBaru').prop('disabled', true);
+						$('#RekapRiwayatMutasi-cmbSeksiLama').prop('disabled', true);
+						$('#RekapRiwayatMutasi-cmbSeksiBaru').prop('disabled', true);
+						$('#RekapRiwayatMutasi-daftarLokasiKerjaLama').prop('disabled', true);
+						$('#RekapRiwayatMutasi-daftarLokasiKerjaBaru').prop('disabled', true);
+						$('#rekapBegin').prop('disabled', false);
+						$('#rekapEnd').prop('disabled', false);
 
 						$('#RekapRiwayatMutasi-daftarNomorInduk').prop('required', true);
           				$('input[name="radioJenisPencarian"]').removeClass("btn-default");

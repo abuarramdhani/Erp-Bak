@@ -181,6 +181,20 @@ class C_RekapRiwayatMutasi extends CI_Controller
 					$parameterCari 	.=	"	trim(tmutasi.lokasilm)='$lokasiKerjaLama'
 											and 	trim(tmutasi.lokasibr)='$lokasiKerjaBaru'";
 				}
+			
+		}elseif($jenisPencarian=='periode')
+			{
+				$periode1	= $this->input->post('rekapBegin');
+                $periode2	= $this->input->post('rekapEnd');
+
+               // $periode1 = date('Y-m-d 00:00:00', strtotime($periode1));
+			    //$periode2= date('Y-m-d 23:59:59', strtotime($periode2));
+
+				
+					$parameterCari 	.=	"	tmutasi.tglberlaku between '$periode1'
+											and '$periode2'";
+					// echo $parameterCari;exit();
+				
 			}
 
 			$rekapRiwayatMutasi 			=	$this->M_rekapriwayatmutasi->ambilRiwayatMutasi($parameterCari);
@@ -190,10 +204,10 @@ class C_RekapRiwayatMutasi extends CI_Controller
 			$data['rekapRiwayatMutasi']		=	$rekapRiwayatMutasi;
 
 			// echo $parameterCari;
-			// echo '<pre>';
+			 //echo '<pre>';
 			// print_r($rekapRiwayatMutasi);
 			// echo '</pre>';
-			// exit();
+			 //exit();
 
 			$this->load->view('V_Header', $data);
 			$this->load->view('V_Sidemenu',$data);
