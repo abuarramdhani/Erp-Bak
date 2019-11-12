@@ -38,6 +38,7 @@ class C_splasska extends CI_Controller {
     }
 
     public function index(){
+    	$this->checkSession();
 		$data = $this->menu('', '', '');
 
 		$this->load->view('V_Header',$data);
@@ -47,6 +48,7 @@ class C_splasska extends CI_Controller {
 	}
 
 	public function data_spl(){
+		$this->checkSession();
 		$wkt_validasi = $this->session->spl_validasi_waktu_asska;
 		if (time() - $wkt_validasi > 120) {
 			$this->session->spl_validasi_asska = FALSE;
@@ -116,6 +118,7 @@ class C_splasska extends CI_Controller {
 	}
 
 	public function data_spl_filter(){
+		$this->checkSession();
 		$this->session->spl_validasi_waktu_asska = time();
 		$user = $this->session->user;
 		$dari = $this->input->post('dari');
@@ -173,6 +176,7 @@ class C_splasska extends CI_Controller {
 	}
 
 	public function data_spl_approv($id, $stat, $ket){
+		$this->checkSession();
 		$this->session->spl_validasi_waktu_asska = time();
 		$user = $this->session->user;
 		$data_spl = $this->M_splseksi->show_current_spl('', '', '', $id);
@@ -241,6 +245,7 @@ class C_splasska extends CI_Controller {
 	}
 
 	public function update_datapresensi($spl_id){
+		$this->checkSession();
 		$si = $spl_id;
 		$jml_lembur = 0;
 		$cek_tspl = $this->M_splasska->cek_spl($si);
@@ -298,6 +303,7 @@ class C_splasska extends CI_Controller {
 	}
 
 	public function send_email_2($status,$spl_id,$ket){
+		$this->checkSession();
 		$this->session->spl_validasi_waktu_asska = time();
 		$user = $this->session->user;
 		$spl_id = explode('.', $spl_id);

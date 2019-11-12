@@ -36,6 +36,8 @@ class C_splseksi extends CI_Controller {
     }
 
     public function index(){
+    	$this->checkSession();
+
 		$this->session->sex = $this->M_splseksi->getSexEmployee($this->session->user);
 		$data = $this->menu('', '', '');
 		$data['responsibility_id'] = $this->session->responsibility_id;
@@ -105,6 +107,7 @@ class C_splseksi extends CI_Controller {
 	}
 
 	public function show_pekerja(){
+		$this->checkSession();
 		$key = $_GET['key'];
 		$key2 = $_GET['key2'];
 		$user = $this->session->user;
@@ -125,6 +128,7 @@ class C_splseksi extends CI_Controller {
 	}
 
 	public function show_pekerja2(){
+		$this->checkSession();
 		$key = $_GET['key'];
 
 		$data = $this->M_splseksi->show_pekerja2($key);
@@ -132,6 +136,7 @@ class C_splseksi extends CI_Controller {
 	}
 
 	public function show_pekerja3(){
+		$this->checkSession();
 		$key = $_GET['key'];
 		$key2 = $_GET['key2'];
 		$noind = explode(".", $key2);
@@ -164,6 +169,7 @@ class C_splseksi extends CI_Controller {
 	}
 
 	public function show_shift(){
+		$this->checkSession();
 		$key = $_GET['key'];
 		$tgl = $_GET['key2'];
 		$data = $this->M_splseksi->getShiftMemo($key,$tgl);
@@ -171,6 +177,7 @@ class C_splseksi extends CI_Controller {
 	}
 
 	public function show_seksi(){
+		$this->checkSession();
 		$key = $_GET['key'];
 		$key2 = $_GET['key2'];
 		$user = $this->session->user;
@@ -191,6 +198,7 @@ class C_splseksi extends CI_Controller {
 	}
 
 	public function cut_kodesie($id){
+		$this->checkSession();
 		$z = 0;
 		for($x=-1; $x>=-strlen($id); $x--){
 			if(substr($id, $x, 1) == "0"){
@@ -205,6 +213,7 @@ class C_splseksi extends CI_Controller {
 	}
 
 	public function data_spl_filter(){
+		$this->checkSession();
 		$user = $this->session->user;
 		$dari = $this->input->post('dari');
 		$dari = date_format(date_create($dari), "Y-m-d");
@@ -258,6 +267,7 @@ class C_splseksi extends CI_Controller {
 	}
 
 	public function data_spl_cetak(){
+		$this->checkSession();
 		$this->load->library('pdf');
 		$pdf = $this->pdf->load();
 
@@ -293,11 +303,13 @@ class C_splseksi extends CI_Controller {
 	}
 
 	public function hapus_spl($idspl){
+		$this->checkSession();
 		$to_hapus = $this->M_splseksi->drop_spl($idspl);
 		redirect(base_url('SPL/Pusat/ListLembur'));
 	}
 
 	public function edit_spl($idspl){
+		$this->checkSession();
 		$data = $this->menu('', '', '');
 		$data['jenis_lembur'] = $this->M_splseksi->show_jenis_lembur();
 		$data['lembur'] = $this->M_splseksi->show_current_spl('', '', '', $idspl);
@@ -310,6 +322,7 @@ class C_splseksi extends CI_Controller {
 	}
 
 	public function edit_spl_submit(){
+		$this->checkSession();
 		$user_id = $this->session->user;
 		$tanggal = $this->input->post('tanggal');
 		$tanggal = date_format(date_create($tanggal), "Y-m-d");
@@ -401,6 +414,7 @@ class C_splseksi extends CI_Controller {
 	}
 
 	public function new_spl(){
+		$this->checkSession();
 		$data = $this->menu('', '', '');
 		$data['jenis_lembur'] = $this->M_splseksi->show_jenis_lembur();
 		$data['result'] = $this->input->get('result');
@@ -412,6 +426,7 @@ class C_splseksi extends CI_Controller {
 	}
 
 	public function cek_anonymous(){
+		$this->checkSession();
 		$error = "";
 		$waktu0 = $this->input->post("waktu0");
 		$waktu1 = $this->input->post("waktu1");
@@ -486,6 +501,7 @@ class C_splseksi extends CI_Controller {
 	}
 
 	public function cek_anonymous2(){
+		$this->checkSession();
 
 		$error = "0";
 		$errortext = "";
@@ -630,6 +646,7 @@ class C_splseksi extends CI_Controller {
 	}
 
 	public function new_spl_submit(){
+		$this->checkSession();
 		$user_id = $this->session->user;
 		$tanggal = $this->input->post('tanggal_simpan');
 		$tanggal = date_format(date_create($tanggal), "Y-m-d");
@@ -734,6 +751,7 @@ class C_splseksi extends CI_Controller {
 	}
 
 	public function rekap_spl(){
+		$this->checkSession();
 		$this->session->spl_validasi_waktu_operator = time();
 		$data = $this->menu('', '', '');
 		$data['noind'] = $this->M_splseksi->show_noind();
@@ -745,6 +763,7 @@ class C_splseksi extends CI_Controller {
 	}
 
 	public function rekap_spl_filter(){
+		$this->checkSession();
 		$user = $this->session->user;
 		$dari = date("Y-m-d", strtotime($this->input->post('dari')));
 		$sampai = date("Y-m-d", strtotime($this->input->post('sampai')));
@@ -786,6 +805,7 @@ class C_splseksi extends CI_Controller {
 	}
 
 	public function send_email($spl_id) {
+		$this->checkSession();
 		$akses_sie = array();
 		$user = $this->session->user;
 		$akses_kue = $this->M_splseksi->show_pekerja('', $user, '');
@@ -928,6 +948,7 @@ class C_splseksi extends CI_Controller {
 	}
 
 	public function create_memo(){
+		$this->checkSession();
 		$noind = $this->input->get('noind');
 		$tanggal = $this->input->get('tanggal');
 
@@ -943,7 +964,7 @@ class C_splseksi extends CI_Controller {
 	}
 
 	public function submit_memo(){
-		
+		$this->checkSession();
 		$data = array(
 			'noind' => $this->input->post('txtNoind'),
 			'tgl' => $this->input->post('txtTanggal'),
@@ -980,6 +1001,7 @@ class C_splseksi extends CI_Controller {
 	}
 
 	public function pdf_memo(){
+		$this->checkSession();
 		$id = $this->input->get('id');
 		$data['alasan_memo'] = $this->M_splseksi->show_AlasanMemo($id);
 		$data['alasan_master'] = $this->M_splseksi->getAlasanMemo();
