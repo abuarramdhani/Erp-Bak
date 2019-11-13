@@ -69,6 +69,7 @@ class M_moveorder extends CI_Model
 				      ,msib2.PRIMARY_UOM_CODE
 				      ,bic.ATTRIBUTE1 gudang_asal
 				      ,mil.SEGMENT1 locator_asal
+				      ,mil.INVENTORY_LOCATION_ID locator_asal_id
 				      ,bic.SUPPLY_SUBINVENTORY gudang_tujuan
 				      ,bic.SUPPLY_LOCATOR_ID locator_tujuan_id 
 				      ,mil2.SEGMENT1 locator_tujuan
@@ -117,24 +118,6 @@ class M_moveorder extends CI_Model
 				                  group by mtrl.INVENTORY_ITEM_ID
 				                    ),0) )
 				                            ) kurang
-				      ,nvl(
-				           (select sum(mtrl.QUANTITY)
-				              from mtl_txn_request_headers mtrh
-				                  ,mtl_txn_request_lines mtrl
-				                  ,mtl_system_items_b msib_komp
-				             where mtrh.HEADER_ID = mtrl.HEADER_ID
-				               and mtrh.ORGANIZATION_ID = msib_komp.ORGANIZATION_ID
-				               and mtrl.INVENTORY_ITEM_ID = msib_komp.INVENTORY_ITEM_ID
-				               --
-				               and mtrl.LINE_STATUS in (3,7)
-				               and mtrh.HEADER_STATUS in (3,7)
-				               and mtrl.INVENTORY_ITEM_ID = wro.INVENTORY_ITEM_ID
-				               and mtrh.ORGANIZATION_ID = wro.ORGANIZATION_ID
-											 and mtrl.FROM_SUBINVENTORY_CODE = bic.ATTRIBUTE1
-				    --           and mtrh.TRANSACTION_TYPE_ID in (64,137)
-				    --           and msib_komp.SEGMENT1 in ('AAG1BA0021A1-0','AAG1BA0011A1-0')
-				          group by mtrl.INVENTORY_ITEM_ID
-				            ),0) mo
 				from wip_entities we
 				    ,wip_discrete_jobs wdj
 				    ,mtl_system_items_b msib
@@ -249,6 +232,7 @@ class M_moveorder extends CI_Model
 			      ,msib2.PRIMARY_UOM_CODE
 			      ,bic.ATTRIBUTE1 gudang_asal
 			      ,mil.SEGMENT1 locator_asal
+			      ,mil.INVENTORY_LOCATION_ID locator_asal_id
 			      ,bic.SUPPLY_SUBINVENTORY gudang_tujuan
 			      ,bic.SUPPLY_LOCATOR_ID locator_tujuan_id 
 			      ,mil2.SEGMENT1 locator_tujuan
@@ -368,6 +352,7 @@ class M_moveorder extends CI_Model
 			  and wo.DEPARTMENT_ID = bd.DEPARTMENT_ID
 			  and khs_shift(wdj.SCHEDULED_START_DATE) = bcs.SHIFT_NUM
 			  -- INT THE TRUTH IT WILL USED --
+			  and bic.WIP_SUPPLY_TYPE in (2,3)
 			  and bic.ATTRIBUTE1 is not null
 			  -- INT THE TRUTH ABOVE IT WILL USED --
 			  and we.WIP_ENTITY_NAME = '$job_no'
@@ -652,7 +637,7 @@ class M_moveorder extends CI_Model
 				and bst.CALENDAR_CODE = bcs.CALENDAR_CODE
 				and bcs.SHIFT_NUM = bst.SHIFT_NUM --hard_code
 				and mtrh.request_number = '$moveOrderAwal'
-				and mtrl.FROM_SUBINVENTORY_CODE not like 'INT%'
+				-- and mtrl.FROM_SUBINVENTORY_CODE not like 'INT%'
 				and wro.INVENTORY_ITEM_ID = mtrl.INVENTORY_ITEM_ID
 				order by
 				mtrl.LINE_ID,
@@ -749,8 +734,8 @@ class M_moveorder extends CI_Model
 			
 		// }
 
-		// if ($locatorFrom) {
-		// 	$locatorFrom = null;
+		// if ($locatorFrom != null) {
+		// 	$locatorFrom1 = $this->getLocatorId($locatorFrom);
 		// }else{
 		// 	$locatorFrom = (int) $locatorFrom;
 		// }

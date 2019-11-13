@@ -219,7 +219,7 @@ class C_MoveOrder extends CI_Controller
 					// echo "<pre>";
 					// print_r($data);
 					// exit();
-					
+					// echo "<pre>";
 					foreach ($data as $key => $value) {
 						$i = 1; 
 						// echo "PROSES SUB INV $key { ";
@@ -227,6 +227,7 @@ class C_MoveOrder extends CI_Controller
 							$dataNew = $value2;
 							$dataNew['NO_URUT'] = $i;
 							//create TEMP
+							// print_r($dataNew);
 							$this->M_MoveOrder->createTemp($dataNew);
 							$i++;
 
@@ -244,6 +245,7 @@ class C_MoveOrder extends CI_Controller
 						array_push($array_mo, $no_mo);
 					}
 			}
+			// exit();
 			// echo "<pre>";
 			// print_r($array_mo);
 			// exit();
@@ -272,7 +274,7 @@ class C_MoveOrder extends CI_Controller
 				$mentahLine	= $this->M_MoveOrder->getDetail($moveOrderAwal, $moveOrderAkhir);
 
 				// echo "<pre>";
-				// print_r($mentahHead);
+				// print_r($mentahLine);
 				// exit();
 				
 
