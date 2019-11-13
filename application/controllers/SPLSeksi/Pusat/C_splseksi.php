@@ -523,6 +523,7 @@ class C_splseksi extends CI_Controller {
 
 		
 		$presensi = $this->M_splseksi->getPresensiPusat($noind,$tanggal);
+
 		if (!empty($presensi) && count($presensi) > 0) {
 			foreach ($presensi as $datapres) {
 				$masuk_shift = date_format(date_create($datapres['jam_msk']), 'Y-m-d H:i:s');
@@ -615,7 +616,14 @@ class C_splseksi extends CI_Controller {
 			}
 		}else{
 			if ($lembur == '004') {
+				
 				$shiftpekerja = $this->M_splseksi->getShiftpekerja($noind,$tanggal);
+				
+				$awal_lembur = date_format(date_create($tanggal), "Y-m-d")." ".$waktu0;
+				$awal_lembur = date_format(date_create($awal_lembur), 'Y-m-d H:i:s');
+				$akhir_lembur = date_format(date_create($tanggal), "Y-m-d")." ".$waktu1;
+				$akhir_lembur = date_format(date_create($akhir_lembur), 'Y-m-d H:i:s');
+
 				if ($shiftpekerja == 0) {
 					$aktual_awal = $awal_lembur;
 					$aktual_akhir = $akhir_lembur;
