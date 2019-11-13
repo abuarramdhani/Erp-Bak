@@ -345,7 +345,7 @@ class M_splseksi extends CI_Model{
 
 	public function getShiftpekerja($noind,$tanggal){
 		$sql = "select * from \"Presensi\".tshiftpekerja where noind = '$noind' and tanggal = '$tanggal'";
-		return $this->prs->query($qsl)->num_rows();
+		return $this->prs->query($sql)->num_rows();
 	}
 
 	public function getDataForMemo($noind,$tanggal){
