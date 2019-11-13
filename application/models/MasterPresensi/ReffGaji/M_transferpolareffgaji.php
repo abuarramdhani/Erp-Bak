@@ -88,14 +88,20 @@ class M_transferpolareffgaji extends CI_Model
 
 	public function cek_ijin_keluar($keluar,$masuk,$break_mulai,$break_selesai,$ist_mulai,$ist_selesai){
 		$jam_ijin = 0;
+		// echo $jam_ijin;
+		// echo $keluar;exit();
 		if ($keluar >= $ist_mulai && $masuk >= $ist_mulai) {
-			if ($ist_selesai >= $keluar && $ist_selesai >= $masuk) {
-				$lama_ijin = $keluar - $masuk;
-				$lama_ist = $ist_selesai - $ist_mulai;
-				$jam_ijin = $lama_ijin - $lama_ist;
+			if ($ist_selesai <= $keluar && $ist_selesai <= $masuk) {
+				$lama_ijin = $masuk - $keluar;
+				// $lama_ist = $ist_selesai - $ist_mulai;
+				// $jam_ijin = $lama_ijin - $lama_ist;
+				$jam_ijin = $lama_ijin;
+				// 	echo "hai";
+				// echo $jam_ijin;
+				// exit();
 			}else if($keluar >= $ist_selesai && $masuk >= $ist_selesai){
 				$jam_ijin = $masuk - $keluar;
-			}else{
+			}else if($masuk >= $ist_selesai){
 				$jam_ijin = $masuk - $ist_selesai;
 			}
 		}else if($keluar <= $ist_mulai && $masuk >= $ist_mulai){
@@ -127,7 +133,7 @@ class M_transferpolareffgaji extends CI_Model
 						$setelah_ist = 0;
 					}
 					$jam_ijin = $sebelum_break + $setelah_break + $setelah_ist;
-				}else if($keluar > $break_mulai && $keluar >= $break_selesai){
+				}else if( $keluar >= $break_selesai){
 					$sebelum_ist = $ist_mulai - $keluar;
 					$setelah_ist = $masuk - $ist_selesai;
 					$jam_ijin = $sebelum_ist + $setelah_ist;
@@ -164,6 +170,7 @@ class M_transferpolareffgaji extends CI_Model
 			$jam_ijin = $jam_ijin/60;
 		}
 
+		// echo $jam_ijin."<br>";
 		return $jam_ijin;
 	}
 

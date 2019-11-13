@@ -193,7 +193,11 @@ background-color: #337ab7;
 													foreach ($data as $key) { ?>
 														<tr>
 															<td><?=$angka ?></td>
-															<td><a target="_blank" href="<?php echo base_url('MasterPresensi/ReffGaji/PekerjaKeluar/detail_absensi/'.$key['noind']) ; ?>"><?=$key['noind'] ?></a></td>
+															<td>
+																<!-- <a target="_blank" href="<?php echo base_url('MasterPresensi/ReffGaji/PekerjaKeluar/detail_absensi/'.$key['noind']) ; ?>"> -->
+																<?=$key['noind'] ?>
+																<!-- </a> -->
+															</td>
 															<td><?=$key['nama'] ?></td>
 															<td><?=$key['kodesie'] ?></td>
 															<td><?=$key['seksi'] ?></td>
