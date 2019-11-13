@@ -166,15 +166,35 @@ class C_PekerjaKeluar extends CI_Controller
 				}
 			}
 
-			$cek_cutoff = $this->M_pekerjakeluar->cek_cutoff_custom($pkj['noind']);
-			if($cek_cutoff == "0"){
-				$kom_htm = $this->M_pekerjakeluar->hitung_Htm_tdk_cutoff($pkj['noind'],$tgl_cut_awal,$pkj['tglkeluar']);
-				$kom_tik = $this->M_pekerjakeluar->hitung_tik_tdk_cutoff($pkj['noind'],$tgl_cut_awal,$pkj['tglkeluar']);
-				$kom_tm  = $this->M_pekerjakeluar->hitung_tm_tdk_cutoff($pkj['noind'],$tgl_cut_awal,$pkj['tglkeluar']);
+			if ($status_pekerja == 'D') {
+				$cek_noind_berubah = $this->M_pekerjakeluar->cek_noind_berubah($pkj['noind']);
+				if($cek_noind_berubah > 0){
+					$kom_htm = $this->M_pekerjakeluar->hitung_Htm_diangkat($pkj['noind'],$tgl_cut_awal,$pkj['tglkeluar']);
+					$kom_tik = $this->M_pekerjakeluar->hitung_tik_diangkat($pkj['noind'],$tgl_cut_awal,$pkj['tglkeluar']);
+					$kom_tm  = $this->M_pekerjakeluar->hitung_tm_diangkat($pkj['noind'],$tgl_cut_awal,$pkj['tglkeluar']);
+				}else{
+					$cek_cutoff = $this->M_pekerjakeluar->cek_cutoff_custom($pkj['noind']);
+					if($cek_cutoff == "0"){
+						$kom_htm = $this->M_pekerjakeluar->hitung_Htm_tdk_cutoff($pkj['noind'],$tgl_cut_awal,$pkj['tglkeluar']);
+						$kom_tik = $this->M_pekerjakeluar->hitung_tik_tdk_cutoff($pkj['noind'],$tgl_cut_awal,$pkj['tglkeluar']);
+						$kom_tm  = $this->M_pekerjakeluar->hitung_tm_tdk_cutoff($pkj['noind'],$tgl_cut_awal,$pkj['tglkeluar']);
+					}else{
+						$kom_htm = $this->M_pekerjakeluar->hitung_Htm($pkj['noind'],$tgl_cut_awal,$pkj['tglkeluar']);
+						$kom_tik = $this->M_pekerjakeluar->hitung_tik($pkj['noind'],$tgl_cut_awal,$pkj['tglkeluar']);
+						$kom_tm  = $this->M_pekerjakeluar->hitung_tm($pkj['noind'],$tgl_cut_awal,$pkj['tglkeluar']);
+					}
+				}
 			}else{
-				$kom_htm = $this->M_pekerjakeluar->hitung_Htm($pkj['noind'],$tgl_cut_awal,$pkj['tglkeluar']);
-				$kom_tik = $this->M_pekerjakeluar->hitung_tik($pkj['noind'],$tgl_cut_awal,$pkj['tglkeluar']);
-				$kom_tm  = $this->M_pekerjakeluar->hitung_tm($pkj['noind'],$tgl_cut_awal,$pkj['tglkeluar']);
+				$cek_cutoff = $this->M_pekerjakeluar->cek_cutoff_custom($pkj['noind']);
+				if($cek_cutoff == "0"){
+					$kom_htm = $this->M_pekerjakeluar->hitung_Htm_tdk_cutoff($pkj['noind'],$tgl_cut_awal,$pkj['tglkeluar']);
+					$kom_tik = $this->M_pekerjakeluar->hitung_tik_tdk_cutoff($pkj['noind'],$tgl_cut_awal,$pkj['tglkeluar']);
+					$kom_tm  = $this->M_pekerjakeluar->hitung_tm_tdk_cutoff($pkj['noind'],$tgl_cut_awal,$pkj['tglkeluar']);
+				}else{
+					$kom_htm = $this->M_pekerjakeluar->hitung_Htm($pkj['noind'],$tgl_cut_awal,$pkj['tglkeluar']);
+					$kom_tik = $this->M_pekerjakeluar->hitung_tik($pkj['noind'],$tgl_cut_awal,$pkj['tglkeluar']);
+					$kom_tm  = $this->M_pekerjakeluar->hitung_tm($pkj['noind'],$tgl_cut_awal,$pkj['tglkeluar']);
+				}
 			}
 
 			$kom_sisa_cuti = $this->M_pekerjakeluar->get_sisa_cuti($pkj['noind'],$pkj['tglkeluar']);
@@ -290,8 +310,8 @@ class C_PekerjaKeluar extends CI_Controller
 			// echo "<pre>";print_r($array_insert);exit();
 			$this->M_pekerjakeluar->insert_reffgajikeluar($array_insert);
 
-			$cek_nik_aktif = $this->M_pekerjakeluar->cek_nik_aktif($pkj['noind']);
-			if($cek_nik_aktif > 0){
+			$cek_noind_berubah = $this->M_pekerjakeluar->cek_noind_berubah($pkj['noind']);
+			if($cek_noind_berubah > 0){
 				unset($gaji[$angka]);
 			}else{
 				$angka++;

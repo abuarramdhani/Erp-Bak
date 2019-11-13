@@ -81,12 +81,15 @@ class M_transferreffgaji extends CI_Model
  		return $this->personalia->query($sql)->result_array();
 	}
 
-	public function getPekerjaKeluar($nik,$periode,$noind){
-		$sql = "select *
-				from \"Presensi\".Treffgaji_keluar
-				where noind in (select noind from hrd_khs.tpribadi where nik = '$nik' and keluar = '1')
-				and to_char(tanggal_keluar,'mmyy') ='$periode'
-				and noind <> '$noind'";
+	public function getPekerjaKeluar($nik,$periode){
+		$sql = "select reff.* 
+				from \"Presensi\".treffgaji_keluar reff 
+				inner join hrd_khs.tpribadi pri 
+				on reff.noind = pri.noind
+				where pri.nik = '$nik'
+				and pri.sebabklr like '%NO INDUK BERUBAH%'
+				and pri.tglkeluar between (select tanggal_awal from \"Presensi\".tcutoff where to_char(tanggal_akhir,'mmyy')='$periode' and os= '0') and 
+ 				(select tanggal_akhir from \"Presensi\".tcutoff where to_char(tanggal_akhir,'mmyy')='$periode' and os= '0')";
 		$result = $this->personalia->query($sql);
 		return $result->row();
 	}
