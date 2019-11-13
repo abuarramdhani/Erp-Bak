@@ -22,14 +22,6 @@ class M_index extends CI_Model
 		return $query->result_array();
 	}
 
-	 public function GetPekerjaIzin($no_induk)
-	{
-		$sql = "SELECT noind FROM \"Surat\".tperizinan WHERE atasan_aproval LIKE '%$no_induk%' order by status";
-
-		$query = $this->personalia->query($sql);
-		return $query->result_array();
-	}
-
 	 public function IzinApprove($no_induk)
 	{
 		$sql = "SELECT * FROM \"Surat\".tperizinan WHERE atasan_aproval = '$no_induk' and status = '1' order by created_date DESC";
@@ -60,13 +52,6 @@ class M_index extends CI_Model
                 set status ='$status'
                 WHERE izin_id ='$idizin'";
         $query = $this->personalia->query($sql);
-    }
-
-    public function pekerja($noind)
-    {
-    	$sql = "SELECT rtrim(nama) as nama, noind FROM hrd_khs.tpribadi WHERE keluar = '0' and noind = '$noind'";
-    	// echo $sql;exit();
-        return $this->personalia->query($sql)->result_array();
     }
 
     public function taktual_izin($pekerja)
