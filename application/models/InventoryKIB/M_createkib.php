@@ -610,16 +610,14 @@ class M_createkib extends CI_Model
               and msib.ORGANIZATION_ID = kkk.ORGANIZATION_ID
               and kkk.TO_SUBINVENTORY_CODE = msi.SECONDARY_INVENTORY_NAME(+)
               and kkk.TO_ORG_ID = msi.ORGANIZATION_ID(+)
---              AND gbh.BATCH_NO = '$batch_number'
-				and msib.SEGMENT1 = '$itemku'
---              AND kkk.ITEM_STATUS = '$status'
+			  and msib.SEGMENT1 = '$itemku'
               and kkk.INVENTORY_TRANS_FLAG = 'N'
               $statusku
               $kibku";
 
         $query = $oracle->query($sql);
 		return $query->result_array();
-           // return $sql;
+        // return $sql;
            //--= in ('SHMT181201689')
 	}
 	
@@ -774,6 +772,17 @@ class M_createkib extends CI_Model
 			}
 
 		}
+		$query = $oracle->query($sql);
+	}
+	
+	function updateFlagPrint2($batch_number){
+		$oracle = $this->load->database('oracle',TRUE);
+
+		$sqlGetId = "SELECT distinct msib.INVENTORY_ITEM_ID from mtl_system_items_b msib where msib.SEGMENT1 = '$batch_number'";
+		$queryBatchId = $oracle->query($queryBatchId);
+		$ArrBatchId = $queryBatchId->result_array();
+		$BatchId = $ArrBatchId[0]['INVENTORY_ITEM_ID'];
+		$sql = "UPDATE KHS_KIB_KANBAN SET PRINT_FLAG = 'Y' WHERE PRIMARY_ITEM_ID = '$BatchId' ";
 		$query = $oracle->query($sql);
 	}
 
