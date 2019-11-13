@@ -14,7 +14,7 @@
 			<tr>
 				<td style="width: 33%;font-weight: bold;padding: 5px;">No. Induk / Nama Petugas</td>
 				<td style="width: 3%;text-align: center;font-weight: bold;">:</td>
-				<td style="width: 64%;padding-left: 5px;"><?= ucwords(strtolower($noind_petugas))." / ".$nama_petugas." / ".ucwords(strtolower($seksi_petugas),' ') ?></td>
+				<td style="width: 64%;padding-left: 5px;"><?= ucwords(strtolower($noind_petugas))." / ".$nama_petugas." / ".ucwords(strtolower($seksi_petugas)) ?></td>
 			</tr>
 			<tr>
 				<td style="width: 33%;font-weight: bold;padding: 5px;">Nama Pekerja yg dikunjungi</td>
@@ -29,17 +29,17 @@
 			<tr>
 				<td style="width: 33%;font-weight: bold;padding: 5px;">Seksi</td>
 				<td style="width: 3%;text-align: center;font-weight: bold;">:</td>
-				<td style="width: 64%;padding-left: 5px;"><?= ucwords(strtolower($seksi_pekerja),' ')?></td>
+				<td style="width: 64%;padding-left: 5px;"><?= ucwords(strtolower($seksi_pekerja))?></td>
 			</tr>
 			<tr>
 				<td style="width: 33%;font-weight: bold;padding: 5px;">Alamat</td>
 				<td style="width: 3%;text-align: center;font-weight: bold;">:</td>
-				<td style="width: 64%;padding-left: 5px;"><?= ucwords(strtolower($alamat_pekerja),' ') ?></td>
+				<td style="width: 64%;padding-left: 5px;"><?= ucwords(strtolower($alamat_pekerja)) ?></td>
 			</tr>
 			<tr>
 				<td style="width: 33%;font-weight: bold;padding: 5px;">Diagnosa</td>
 				<td style="width: 3%;text-align: center;font-weight: bold;">:</td>
-				<td style="width: 64%;padding-left: 5px;"><?= ucwords(strtolower($diagnosa),' ') ?></td>
+				<td style="width: 64%;padding-left: 5px;"><?= ucwords(strtolower($diagnosa)) ?></td>
 			</tr>
 		</table>
 	</div>
