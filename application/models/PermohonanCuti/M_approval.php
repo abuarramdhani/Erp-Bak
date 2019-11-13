@@ -24,7 +24,7 @@ class M_approval extends CI_MODEL {
       $where = "ap.status = '$status' AND";
     }
     $edp = "SELECT
-              ap.lm_pengajuan_cuti_id as id_cuti, pc.noind, ap.status, ea.employee_name as name, jc.jenis_cuti, ap.alasan, pc.tanggal_status tgl, (select tipe_cuti from lm.lm_tipe_cuti where lm_tipe_cuti_id = pc.lm_tipe_cuti_id) as tipe
+              ap.lm_pengajuan_cuti_id as id_cuti, pc.noind, ap.status, ea.employee_name as name, jc.jenis_cuti, ap.alasan, pc.tanggal_status tgl, (select tipe_cuti from lm.lm_tipe_cuti where lm_tipe_cuti_id = pc.lm_tipe_cuti_id) as tipe, ap.alasan
             FROM lm.lm_pengajuan_cuti pc
               inner join er.er_employee_all ea
                 on pc.noind = ea.employee_code
@@ -43,7 +43,7 @@ class M_approval extends CI_MODEL {
       $status = "ap.status = '$status' AND";
     }
     $cuti = "SELECT
-                    ap.lm_pengajuan_cuti_id as id_cuti, pc.noind, ap.status, ea.employee_name as name, jc.jenis_cuti, ap.alasan, pc.tgl_pengajuan tgl, pc.status, (select tipe_cuti from lm.lm_tipe_cuti where lm_tipe_cuti_id = pc.lm_tipe_cuti_id) as tipe
+                    ap.lm_pengajuan_cuti_id as id_cuti, pc.noind, ap.status, ea.employee_name as name, jc.jenis_cuti, ap.alasan, pc.tgl_pengajuan tgl, pc.status, (select tipe_cuti from lm.lm_tipe_cuti where lm_tipe_cuti_id = pc.lm_tipe_cuti_id) as tipe, ap.alasan
                   FROM lm.lm_pengajuan_cuti pc
                     inner join er.er_employee_all ea
                       on pc.noind = ea.employee_code
@@ -118,7 +118,7 @@ class M_approval extends CI_MODEL {
     $now = date('d-M-Y H:i:s');
     $this->db->insert('lm.lm_pengajuan_cuti_thread',$thread);
 
-    $nextAppr = '4,5,6,7';
+    $nextAppr = '4,5,6,7'; // untuk cuti yg membutuhkan approver EDP
 
     //Level 1 -> if user clicked the button is lv1 on approval cuti
     if($level == '1'){
@@ -128,7 +128,7 @@ class M_approval extends CI_MODEL {
                   WHERE level = '1' and lm_pengajuan_cuti_id = '$id_cuti' ";
         $this->db->query($query);
 
-        if($approve = '2'){
+        if($approve == '2'){
           if (strstr($nextAppr, $jenis)){
             $this->db->insert('lm.lm_pengajuan_cuti_thread',$threadEDP);
             $toEDP = "UPDATE lm.lm_approval_cuti
@@ -387,6 +387,7 @@ class M_approval extends CI_MODEL {
             'user_'       => $this->session->user,
             'noind_baru'  => null
           );
+          // cek presensi dimana yg susulan cuma dimana hari mangkir
           $insertSusulan = $this->personalia->insert('Presensi.tsusulan', $data);
         }
       }

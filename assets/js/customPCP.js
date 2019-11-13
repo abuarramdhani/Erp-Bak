@@ -246,7 +246,7 @@ $(document).ready(function() {
             var ket = 'CM';
             break;
           case '7':
-            var ket = 'CK';
+            var ket = 'CS';
             break;
           case '8':
             var ket = 'CPA';
@@ -262,6 +262,9 @@ $(document).ready(function() {
             break;
           case '12':
             var ket = 'CPP';
+            break;
+          case '14':
+            var ket = 'CK';
             break;
           default:
             var ket = '-';
@@ -826,6 +829,9 @@ function saveTglCuti(id_cuti, tipe, jenis) {
         break;
       case 12:
         var hak = 3;
+        break;
+      case 14:
+        var hak = 1;
         break;
       default:
         var hak = '-';

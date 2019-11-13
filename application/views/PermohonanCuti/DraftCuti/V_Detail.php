@@ -152,15 +152,15 @@
 									</div>
 								</div>
 								<?php if ($Detail['0']['jenis'] == 'Istirahat Melahirkan' && $Detail['0']['status'] != '2'){ ?>
-								<div class="form-group">
+								<!-- <div class="form-group">
 									<label class="control-label col-lg-4">Alamat</label>
 									<div class="col-lg-4">
 										<div class="col-lg-12">
-											<textarea ondblclick="this.readOnly=''" class="form-control" style="resize:none;" name="txtAlamat" id="txtAlamatEdit" rows="2" cols="50" readonly><?php echo $Detail['0']['alamat'] ?></textarea>
+											<textarea ondblclick="this.readOnly=''" class="form-control" style="resize:none;" name="txtAlamat" id="txtAlamatEdit" rows="2" cols="50" readonly><?php //echo $Detail['0']['alamat'] ?></textarea>
 											<div id="noteEditAlamat" style="color:red;">*Klik 2 kali untuk edit alamat</div>
 										</div>
 									</div>
-								</div>
+								</div> -->
 								<div class="form-group">
 									<label class="control-label col-lg-4">Lampiran HPL</label>
 									<div class="col-lg-4">
@@ -250,7 +250,7 @@
 				</div>
 				<div class="form-group">
 					<label class="col-lg-12">Hari Perkiraan Lahir
-						<input class="form-control" id="txtPerkiraanLahir" type="text">
+						<input class="form-control" id="txtPerkiraanLahir" autocomplete="off" type="text">
 					</label>
 				</div>
 				<div class="form-group">

@@ -116,14 +116,14 @@ h2{
 											</div>
 										</div>
 									</div>
-									<div class="form-group txtAlamat hidden">
+									<!-- <div class="form-group txtAlamat hidden">
 										<label class="control-label col-lg-4 col-md-4 col-sm-4">Alamat</label>
 										<div class="col-lg-4 col-md-5 col-sm-7">
 											<div class="col-lg-12">
 												<textarea class="form-control" style="resize:none;" name="txtAlamat" id="txtAlamat" rows="5" cols="50" placeholder="Alamat Rumah"></textarea>
 											</div>
 										</div>
-									</div>
+									</div> -->
 									<hr>
 									<!-- <div class="row"> -->
 										<div class="form-group">

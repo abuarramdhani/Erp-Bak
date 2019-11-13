@@ -55,15 +55,15 @@ class C_Approval extends CI_Controller
     //special icon for Seksi edp login on approval
 		if (strstr($kodesie, '4090101')){
 			$data['user'] = "<span class='label label-success'><i class='fa fa-database'> EDP</i></span>";
+      $data['count_inprocess'] = count($this->M_approval->getEDP('1'));
+      $data['count_approved']  = count($this->M_approval->getEDP('2'));
+      $data['count_rejected']  = count($this->M_approval->getEDP('3'));
 		}else{
 			$data['user'] = '';
-		}
-		
-		//count cuti yg belum diapprove & approve & ditolak
       $data['count_inprocess'] = count($this->M_approval->getCuti($noind, '1'));
       $data['count_approved']  = count($this->M_approval->getCuti($noind, '2'));
       $data['count_rejected']  = count($this->M_approval->getCuti($noind, '3'));
-    //---
+		}
 
 		$this->load->view('V_Header',$data);
 		$this->load->view('V_Sidemenu',$data);
@@ -298,11 +298,11 @@ class C_Approval extends CI_Controller
 		if($approve == '2'){
       $status = "dapat";
 			$ketentuan = 'Approved';
-      $alasan = ".";
+      $alasanThread = ".";
 		}else if($approve == '3'){
       $status = "tidak dapat";
 			$ketentuan = 'Rejected';
-      $alasan    = ' dengan alasan "'.$alasan.'".';
+      $alasanThread    = ' dengan alasan "'.$alasan.'".';
 		}
 
 		if (strstr($kodesie, '4090101')){ //if session login edp
@@ -316,7 +316,7 @@ class C_Approval extends CI_Controller
     $thread = array(
       'lm_pengajuan_cuti_id' => $id_cuti,
       'status' => $approve,
-      'detail' => '(Approval '.$ketentuan.') - '.$approverThread.' Telah memberikan keputusan pada Surat Permohonan Cuti ini dengan alasan "'.$alasan.'"',
+      'detail' => "(Approval $ketentuan) - $approverThread Telah memberikan keputusan pada Surat Permohonan Cuti ini".$alasanThread,
       'waktu'  => $time
     );
 

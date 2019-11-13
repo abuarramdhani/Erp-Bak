@@ -67,6 +67,7 @@
                   <th class="text-center">Nama</th>
                   <th class="text-center">Tipe Cuti</th>
                   <th class="text-center">Jenis Cuti</th>
+                  <th class="text-center">Alasan</th>
                   <th class="text-center">Keterangan</th>
                 </tr>
               </thead>
@@ -86,6 +87,7 @@
                       <td><?php echo $key['name'] ?></td>
                       <td><?php echo $key['tipe'] ?></td>
                       <td><?php echo $key['jenis_cuti']?></td>
+                      <td><?php echo $key['alasan']?></td>
                       <td class="text-center"><a class="btn btn-info btn-sm" href="<?php echo $detail ?>"><span class="fa fa-info" title="Detail">Detail</span></a></td>
                     </tr>
                   <?php $no++; } ?>
