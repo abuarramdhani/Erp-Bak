@@ -262,7 +262,6 @@
 							<td><?= $vulue['KOMP_DESC'] ?></td>
 							<td><?= $vulue['GUDANG_ASAL'] ?></td>
 							<td><?= $vulue['LOCATOR_ASAL'] ?></td>
-							<td><?= $vulue['LOCATOR_ASAL_ID'] ?></td>
 							<td><?= $vulue['PRIMARY_UOM_CODE'] ?></td>
 							<td class="<?= ($vulue['REQUIRED_QUANTITY'] > $vulue['ATR']) ? "bg-danger " : "" ?>"><?= $vulue['REQUIRED_QUANTITY'] ?></td>
 							<td class="<?= ($vulue['REQUIRED_QUANTITY'] > $vulue['ATR']) ? "text-danger text-bold-cuk" : "" ?>"><?= $vulue['ATR'] ?></td>
