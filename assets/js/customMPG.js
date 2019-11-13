@@ -181,3 +181,55 @@ $("#frmMGS").keypress(function(e) {   //Enter key
     if (e.which == 13) {     
         return false;   
     } });
+
+
+    function saveJmlOk(no, nomor, doc) {
+        // var ket = 'kirim_qc';
+        var jml_ok = $('#jml_ok'+no+nomor).val();
+        var item = $('#item'+no+nomor).val();
+        console.log(no , jml_ok, item);
+        if(!jml_ok){
+            return;
+        }
+        $.ajax ({
+            url : baseurl + "MonitoringGdSparepart/Monitoring/saveJmlOk",
+            data: {no: no, nomor : nomor, doc : doc, jml_ok : jml_ok, item : item  },
+            type : "POST",
+            dataType: "html"
+        });
+
+    }
+
+    function saveNotOk(no , nomor , doc) {
+        // var ket = 'kirim_qc';
+        var jml_not_ok = $('#jml_not_ok'+no+nomor).val();
+         var item = $('#item'+no+nomor).val();
+        console.log(no , jml_not_ok, item);
+        if(!jml_not_ok){
+            return;
+        }
+        $.ajax ({
+            url : baseurl + "MonitoringGdSparepart/Monitoring/saveNotOk",
+            data: {no: no, nomor : nomor, doc : doc, jml_not_ok : jml_not_ok, item : item  },
+            type : "POST",
+            dataType: "html"
+        });
+
+    }
+
+    function saveKetr(no , nomor , doc) {
+        // var ket = 'kirim_qc';
+        var ket = $('#keterangan'+no+nomor).val();
+         var item = $('#item'+no+nomor).val();
+        // console.log(number , itemid , recnum , po, kirimqc)
+        if(!ket){
+            return;
+        }
+        $.ajax ({
+            url : baseurl + "MonitoringGdSparepart/Monitoring/saveKetr",
+            data: {no: no, nomor : nomor, doc : doc, ket : ket, item : item  },
+            type : "POST",
+            dataType: "html"
+        });
+
+    }

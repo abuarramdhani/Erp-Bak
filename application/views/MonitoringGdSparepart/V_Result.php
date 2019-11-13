@@ -40,10 +40,10 @@
                                                 <th>Item</th>
                                                 <th>Deskripsi</th>
                                                 <th>Jumlah</th>
-                                                <th>OK</th>
-                                                <th>NOT OK</th>
+                                                <th width="10%">OK</th>
+                                                <th width="10%">NOT OK</th>
                                                 <th>Keterangan</th>
-                                                <th>Edit</th>
+                                                <!-- <th>Edit</th> -->
                                             </tr>
                                         </thead>
                                         <tbody>
@@ -56,22 +56,43 @@
                                                     <input type="hidden" name="tanggal[]" value="<?= $v['CREATION_DATE'] ?>"/>
                                                     <input type="hidden" name="ktrgn[]" value="<?= $row['header']['statusket'] ?>"/>
                                                 </td>
-                                                <td style="text-align:left"><input type="hidden" name="item[]" value="<?= $v['ITEM'] ?>"/><?= $v['ITEM'] ?></td>
+                                                <td style="text-align:left"><input type="hidden" name="item[]" id="item<?=$no?><?= $nomor ?>" value="<?= $v['ITEM'] ?>"/><?= $v['ITEM'] ?></td>
                                                 <td style="text-align:left"><input type="hidden" name="nama_brg[]" value="<?= $v['DESCRIPTION'] ?>"/><?= $v['DESCRIPTION'] ?></td>
                                                 <td><input type="hidden" name="qty[]" value="<?= $v['QTY'] ?>"/><?= $v['QTY'] ?></td>
-                                                <td><input type="hidden" name="qty_ok[]" value="<?= $v['JML_OK'] ?>"/><?= $v['JML_OK'] ?></td>
-                                                <td><input type="hidden" name="qty_not[]" value="<?= $v['JML_NOT_OK'] ?>"/><?= $v['JML_NOT_OK'] ?></td>
-                                                <td style="text-align:left"><?= $v['KETERANGAN'] ?></td>
-                                                <td><input type="button" value="Edit" class="btn btn-warning" 
-                                                        <?php if($row['header']['statusket']== 'Sudah terlayani') 
-                                                        {
-                                                            echo ' disabled=disabled ';
-                                                        }else{
+                                                <td><input type="text" style="width:100%; text-align:center" name="qty_ok[]" id="jml_ok<?=$no?><?= $nomor ?>" onchange="saveJmlOk(<?=$no?>,<?= $nomor ?>,<?= $v['NO_DOCUMENT'] ?>)" value="<?= $v['JML_OK'] ?>"
+                                                <?php if($row['header']['statusket']== 'Sudah terlayani') 
+                                                        { ?>
+                                                        readonly
+                                                        <?php }else{
                                                             echo '';
-                                                        }?>
-                                                        onclick="btnEditMGS(this, <?=$no?>,<?=$nomor?>)" /></td>
+                                                        } ?>
+                                                /></td>
+                                                <td><input type="text" style="width:100%; text-align:center" name="qty_not[]" id="jml_not_ok<?=$no?><?= $nomor ?>" onchange="saveNotOk(<?=$no?>,<?= $nomor ?>,<?= $v['NO_DOCUMENT'] ?>)" value="<?= $v['JML_NOT_OK'] ?>"
+                                                <?php if($row['header']['statusket']== 'Sudah terlayani') 
+                                                        { ?>
+                                                        readonly
+                                                        <?php }else{
+                                                            echo '';
+                                                        } ?>
+                                                /></td>
+                                                <td style="text-align:left"><input type="text" style="width:100%" name="ketr[]" id="keterangan<?=$no?><?= $nomor ?>" onchange="saveKetr(<?=$no?>,<?= $nomor ?>,<?= $v['NO_DOCUMENT'] ?>)" value="<?= $v['KETERANGAN'] ?>"
+                                                <?php if($row['header']['statusket']== 'Sudah terlayani') 
+                                                        { ?>
+                                                        readonly
+                                                        <?php }else{
+                                                            echo '';
+                                                        } ?>
+                                                /></td>
+                                                <!-- <td><input type="button" value="Edit" class="btn btn-warning" 
+                                                    <?//php if($row['header']['statusket']== 'Sudah terlayani') 
+                                                    //{
+                                                        // echo ' disabled=disabled ';
+                                                    //}else{
+                                                    //    echo '';
+                                                    //}?>
+                                                    onclick="btnEditMGS(this, <?=$no?>,<?=$nomor?>)" /></td> -->
                                             </tr>
-                                            <tr>
+                                            <!-- <tr>
                                                 <td></td>
                                                 <td colspan="6">
                                                     <div id="edit<?=$no?><?= $nomor ?>" style="display:none">
@@ -86,24 +107,24 @@
                                                         <tbody>
                                                             <tr>
                                                                 <td>OK</td>
-                                                                <td><input type="number" name="jml_ok[]" class="form-control" placeholder="*Pastikan terisi"/></td>
+                                                                <td><input type="number" name="jml_ok<?=$no?><?= $nomor ?>" id="jml_ok<?=$no?><?= $nomor ?>" class="form-control" onchange="saveJmlOk(<?=$no?>,<?= $nomor ?>,<?= $v['NO_DOCUMENT'] ?>)" placeholder="*Pastikan terisi"/></td>
                                                                 <td></td>
                                                             </tr>    
                                                             <tr>
                                                                 <td>NOT OK</td>
-                                                                <td><input type="number" name="jml_not_ok[]" class="form-control" placeholder="*Pastikan terisi"/></td>
-                                                                <td><input  name="keterangan[]" class="form-control" placeholder="*Pastikan terisi"/></td>
-                                                            </tr>    
+                                                                <td><input type="number" name="jml_not_ok<?=$no?><?= $nomor ?>" id="jml_not_ok<?=$no?><?= $nomor ?>" class="form-control" onchange="saveNotOk(<?=$no?>,<?= $nomor ?>,<?= $v['NO_DOCUMENT'] ?>)" placeholder="*Pastikan terisi"/></td>
+                                                                <td><input  name="keterangan<?=$no?><?= $nomor ?>" id="keterangan<?=$no?><?= $nomor ?>" class="form-control" onchange="saveKetr(<?=$no?>,<?= $nomor ?>,<?= $v['NO_DOCUMENT'] ?>)" placeholder="*Pastikan terisi"/></td>
+                                                            </tr>     
                                                         </tbody>                                   
                                                         </table>
                                                     </div>
                                                 </td>
                                                 <td></td>
-                                            </tr>
+                                            </tr> -->
                                             <?php } ?>
                                         </tbody>                                        
                                     </table>
-                                    <input type="submit" class="btn btn-danger" name="action" value="Save">   
+                                    <!-- <input type="submit" class="btn btn-danger" name="action" value="Save">    -->
                                 </div>
                             </td>
                         </tr>
