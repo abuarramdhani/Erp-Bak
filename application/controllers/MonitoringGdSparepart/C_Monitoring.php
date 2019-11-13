@@ -543,5 +543,32 @@ class C_Monitoring extends CI_Controller
 		}
 		
 	}
+
+	public function saveJmlOk(){
+		$jml_ok = $this->input->post('jml_ok');
+		$item = $this->input->post('item');
+		$doc 	= $this->input->post('doc');
+
+		$query = "set JML_OK = '$jml_ok'";
+		$this->M_monitoring->dataUpdate($item, $query, $doc);
+	}
+
+	public function saveNotOk(){
+		$jml_not_ok = $this->input->post('jml_not_ok');
+		$item = $this->input->post('item');
+		$doc 	= $this->input->post('doc');
+		
+		$query = "set JML_NOT_OK = '$jml_not_ok'";
+		$this->M_monitoring->dataUpdate($item, $query, $doc);
+	}
+
+	public function saveKetr(){
+		$ket = $this->input->post('ket');
+		$item = $this->input->post('item');
+		$doc 	= $this->input->post('doc');
+		
+		$query = "set KETERANGAN = '$ket'";
+		$this->M_monitoring->dataUpdate($item, $query, $doc);
+	}
 	
 }

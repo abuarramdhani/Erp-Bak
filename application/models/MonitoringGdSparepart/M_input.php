@@ -61,7 +61,7 @@ class M_input extends CI_Model
                         ,msib.SEGMENT1 item
                         ,msib.DESCRIPTION
                         ,msib.PRIMARY_UOM_CODE uom
-                        ,kk.QTY_TRANSACTIONS qty
+                        ,kk.QTY_TRANSACTION qty
                         ,kk.QTY_KIB qbt
                         ,kk.VERIFY_DATE creation_date
                 from khs_kib kk

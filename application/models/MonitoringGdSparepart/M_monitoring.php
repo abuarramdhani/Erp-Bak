@@ -86,13 +86,23 @@ class M_monitoring extends CI_Model {
         // echo $sql;
     }
 
-    public function dataUpdate($item, $jml_ok, $jml_not_ok, $keterangan)
+    // public function dataUpdate($item, $jml_ok, $jml_not_ok, $keterangan)
+    // {
+    //     $oracle = $this->load->database('oracle', true);
+    //     $sql="UPDATE KHS_MONITORING_GD_SP set JML_OK = '$jml_ok', JML_NOT_OK = '$jml_not_ok', KETERANGAN ='$keterangan' where ITEM ='$item'";
+    //     $query = $oracle->query($sql);
+	// 		// echo $sql;
+    //     }  
+
+        public function dataUpdate($item, $query, $doc)
     {
         $oracle = $this->load->database('oracle', true);
-        $sql="UPDATE KHS_MONITORING_GD_SP set JML_OK = '$jml_ok', JML_NOT_OK = '$jml_not_ok', KETERANGAN ='$keterangan' where ITEM ='$item'";
+        $sql="UPDATE KHS_MONITORING_GD_SP $query WHERE ITEM = '$item' and NO_DOCUMENT = '$doc'";
         $query = $oracle->query($sql);
-			// echo $sql;
+        $query2 = $oracle->query('commit');
+			echo $sql;
         }  
+        
         
     public function getKet($no_document){
         $oracle = $this->load->database('oracle', true);
