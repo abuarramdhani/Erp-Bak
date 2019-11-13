@@ -774,15 +774,19 @@ class M_createkib extends CI_Model
 		}
 		$query = $oracle->query($sql);
 	}
-	
+
+	function getItemId($batch_number) {
+		$oracle = $this->load->database('oracle',TRUE);
+		$sql = "SELECT distinct msib.INVENTORY_ITEM_ID from mtl_system_items_b msib where msib.SEGMENT1 = '$batch_number'";
+		$query = $oracle->query($sql);
+		return $query->result_array();
+		// return $sql;
+
+	}
+
 	function updateFlagPrint2($batch_number){
 		$oracle = $this->load->database('oracle',TRUE);
-
-		$sqlGetId = "SELECT distinct msib.INVENTORY_ITEM_ID from mtl_system_items_b msib where msib.SEGMENT1 = '$batch_number'";
-		$queryBatchId = $oracle->query($queryBatchId);
-		$ArrBatchId = $queryBatchId->result_array();
-		$BatchId = $ArrBatchId[0]['INVENTORY_ITEM_ID'];
-		$sql = "UPDATE KHS_KIB_KANBAN SET PRINT_FLAG = 'Y' WHERE PRIMARY_ITEM_ID = '$BatchId' ";
+		$sql = "UPDATE KHS_KIB_KANBAN SET PRINT_FLAG = 'Y' WHERE PRIMARY_ITEM_ID = '$batch_number' ";
 		$query = $oracle->query($sql);
 	}
 
