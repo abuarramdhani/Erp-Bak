@@ -358,15 +358,17 @@ class C_CreateKIB extends CI_Controller
 		// echo "<pre>";
 		// print_r($dataKIBKelompok);
 		// exit();
-		if ($dataKIBKelompok) {
-			if ($n == 1) {
-				$this->M_createkib->updateFlagPrint2($no_batch);
-			} else {
-				$this->M_createkib->updateFlagPrint($no_batch,$kib);	
-			}
-			
+		if ($n == 1) {
+			$getItemId = $this->M_createkib->getItemId($no_batch);
+			// echo $getItemId[0]['INVENTORY_ITEM_ID'];exit();
+			$this->M_createkib->updateFlagPrint2($getItemId[0]['INVENTORY_ITEM_ID']);
 		}
-		
+
+
+		if ($dataKIBKelompok) {
+			$this->M_createkib->updateFlagPrint($no_batch,$kib);	
+		}
+
 		$data['dataKIB'] = $dataKIBKelompok;
 
 
