@@ -1471,7 +1471,7 @@ $(function() {
 $(document).ready(function() {
 
     $('#tbl_lapkun').DataTable();
-    
+
     $('#Saksi_Janji1').select2({
       placeholder:"Input Nama Saksi"
     });
@@ -1957,7 +1957,11 @@ $(document).ready(function(){
     "dom": 'Bfrtip',
         "buttons": [
             'excel', 'pdf'
-        ]
+        ],
+        scrollX: true,
+        fixedColumns:{
+          leftColumns:4
+        }
     });
 
     $("input.periodeRekap").monthpicker({
