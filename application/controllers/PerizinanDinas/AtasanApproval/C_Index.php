@@ -46,58 +46,11 @@ class C_Index extends CI_Controller
 		$data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id);
 		$data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id);
 
+		$data['nama'] = $this->M_index->getAllNama();
 		$data['izin'] = $this->M_index->GetIzin($no_induk);
-		$arrrr = array();
-		foreach($data['izin'] as $key) {
-			$nama = explode(', ', $key['noind']);
-				$newArr = array();
-			foreach ($nama as $row) {
-				$pekerja = $this->M_index->pekerja($row);
-			}
-			$key['namapekerja'] = $pekerja;
-			$arrrr[] = $key;
-		 }
-		$data['izin'] = $arrrr;
-
 		$data['IzinApprove'] = $this->M_index->IzinApprove($no_induk);
-
-		$approve = array();
-		foreach($data['IzinApprove'] as $key) {
-			$nama = explode(', ', $key['noind']);
-				$newArr = array();
-			foreach ($nama as $row) {
-				$pekerja = $this->M_index->pekerja($row);
-			}
-			$key['namapekerja'] = $pekerja;
-			$approve[] = $key;
-		 }
-		$data['IzinApprove'] = $approve;
-
 		$data['IzinUnApprove'] = $this->M_index->IzinUnApprove($no_induk);
-		$UnApprove = array();
-		foreach($data['IzinUnApprove'] as $key) {
-			$nama = explode(', ', $key['noind']);
-				$newArr = array();
-			foreach ($nama as $row) {
-				$pekerja = $this->M_index->pekerja($row);
-			}
-			$key['namapekerja'] = $pekerja;
-			$UnApprove[] = $key;
-		 }
-		$data['IzinUnApprove'] = $UnApprove;
-
 		$data['IzinReject'] = $this->M_index->IzinReject($no_induk);
-		$Reject = array();
-		foreach($data['IzinReject'] as $key) {
-			$nama = explode(', ', $key['noind']);
-				$newArr = array();
-			foreach ($nama as $row) {
-				$pekerja = $this->M_index->pekerja($row);
-			}
-			$key['namapekerja'] = $pekerja;
-			$Reject[] = $key;
-		 }
-		$data['IzinReject'] = $Reject;
 
 		$today = date('Y-m-d');
 

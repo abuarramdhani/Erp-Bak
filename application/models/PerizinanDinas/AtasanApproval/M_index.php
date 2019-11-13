@@ -9,6 +9,11 @@ class M_index extends CI_Model
         $this->personalia = $this->load->database('personalia',TRUE);
     }
 
+    public function getAllNama()
+    {
+      return $this->personalia->query("SELECT DISTINCT noind, trim(nama) as nama FROM hrd_khs.tpribadi")->result_array();
+    }
+
    public function GetIzin($no_induk)
 	{
 		$sql = "SELECT * FROM \"Surat\".tperizinan WHERE atasan_aproval LIKE '%$no_induk%' order by status";
