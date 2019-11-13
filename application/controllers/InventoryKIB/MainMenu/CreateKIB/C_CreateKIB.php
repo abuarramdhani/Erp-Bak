@@ -293,7 +293,8 @@ class C_CreateKIB extends CI_Controller
 		$pdf 			= $this->pdf->load();
 		$pdf = new mPDF('utf-8',array(210,$length), 0, '', 13, 13, 0, 20, 0, 0);
 
-		if ($status == '0' && $kib == '0') {
+
+		if ($status == '0' && $kib == '0' && $n == '0') {
 			exit('Status & No kib is null');
 		}
 
@@ -304,7 +305,7 @@ class C_CreateKIB extends CI_Controller
 		if ($status == '0') {
 			$status = null;
 		}
-
+		// echo "<pre>";
 		$dataKIBKelompok  =array();
 		$arrayREQNUM = array();
 		if ($org == 'opm') {
@@ -358,8 +359,14 @@ class C_CreateKIB extends CI_Controller
 		// print_r($dataKIBKelompok);
 		// exit();
 		if ($dataKIBKelompok) {
-			$this->M_createkib->updateFlagPrint($no_batch,$kib);
+			if ($n == 1) {
+				$this->M_createkib->updateFlagPrint2($no_batch);
+			} else {
+				$this->M_createkib->updateFlagPrint($no_batch,$kib);	
+			}
+			
 		}
+		
 		$data['dataKIB'] = $dataKIBKelompok;
 
 
