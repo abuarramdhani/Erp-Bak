@@ -229,6 +229,7 @@
 							<th>Kode Komponen</th>
 							<th>Nama Komponen</th>
 							<th>Gudang Asal</th>
+							<th>Locator</th>
 							<th>Unit</th>
 							<th>Jumlah Dibutuhkan</th>
 							<!-- EDIT LUTFI -->
@@ -253,13 +254,15 @@
 								<input type="hidden" name="subinvto[]" value="<?= $vulue['GUDANG_TUJUAN'] ?>">
 								<input type="hidden" name="subinvfrom[]" value="<?= $vulue['GUDANG_ASAL'] ?>">
 								<input type="hidden" name="locatorto[]" value="<?= $vulue['LOCATOR_TUJUAN_ID'] ?>">
-								<input type="hidden" name="locatorfrom[]" value="<?= $vulue['LOCATOR_ASAL'] ?>">
+								<input type="hidden" name="locatorfrom[]" value="<?= $vulue['LOCATOR_ASAL_ID'] ?>">
 								<input type="hidden" name="departement" value="NONE">
 								<input type="hidden" name="piklis" value="1">
 							</td>
 							<td><?= $vulue['KOMPONEN'] ?></td>
 							<td><?= $vulue['KOMP_DESC'] ?></td>
 							<td><?= $vulue['GUDANG_ASAL'] ?></td>
+							<td><?= $vulue['LOCATOR_ASAL'] ?></td>
+							<td><?= $vulue['LOCATOR_ASAL_ID'] ?></td>
 							<td><?= $vulue['PRIMARY_UOM_CODE'] ?></td>
 							<td class="<?= ($vulue['REQUIRED_QUANTITY'] > $vulue['ATR']) ? "bg-danger " : "" ?>"><?= $vulue['REQUIRED_QUANTITY'] ?></td>
 							<td class="<?= ($vulue['REQUIRED_QUANTITY'] > $vulue['ATR']) ? "text-danger text-bold-cuk" : "" ?>"><?= $vulue['ATR'] ?></td>
@@ -276,6 +279,7 @@
 							$allSubFrom[$no][] =  $vulue['GUDANG_ASAL'];
 							$allLocatorTo[$no][] =  $vulue['LOCATOR_TUJUAN_ID'];
 							$allLocatorFrom[$no][] =  $vulue['LOCATOR_ASAL'];
+							$allLocatorFromId[$no][] =  $vulue['LOCATOR_ASAL_ID'];
 						?>
 						<?php }
 						else:?>
@@ -305,7 +309,7 @@
 								<input type="hidden" name="subinvto[]" value="<?= $vulue['GUDANG_TUJUAN'] ?>">
 								<input type="hidden" name="subinvfrom[]" value="<?= $vulue['GUDANG_ASAL'] ?>">
 								<input type="hidden" name="locatorto[]" value="<?= $vulue['LOCATOR_TUJUAN_ID'] ?>">
-								<input type="hidden" name="locatorfrom[]" value="<?= $vulue['LOCATOR_ASAL'] ?>">
+								<input type="hidden" name="locatorfrom[]" value="<?= $vulue['LOCATOR_ASAL_ID'] ?>">
 								<input type="hidden" name="departement" value="NONE">
 								<input type="hidden" name="piklis" value="2">
 						<?php 
@@ -318,6 +322,7 @@
 							$allSubFrom[$no][] =  $vulue['GUDANG_ASAL'];
 							$allLocatorTo[$no][] =  $vulue['LOCATOR_TUJUAN_ID'];
 							$allLocatorFrom[$no][] =  $vulue['LOCATOR_ASAL'];
+							$allLocatorFromId[$no][] =  $vulue['LOCATOR_ASAL_ID'];
 						?>
 						<?php }
 						else:?>
@@ -356,6 +361,7 @@
 		<input type="hidden" name="subinvfrom[]" value="<?= implode('<>', $allSubFrom[$key]) ?>">
 		<input type="hidden" name="locatorto[]" value="<?= implode('<>', $allLocatorTo[$key]) ?>">
 		<input type="hidden" name="locatorfrom[]" value="<?= implode('<>', $allLocatorFrom[$key]) ?>">
+		<input type="hidden" name="locatorfromid[]" value="<?= implode('<>', $allLocatorFromId[$key]) ?>">
 		<input type="hidden" name="departement" value="NONE">
 		<input type="hidden" name="piklis" value="1">
 		<?php } ?>
@@ -374,6 +380,7 @@
 		<input type="hidden" name="subinvfrom[]" value="<?= implode('<>', $allSubFrom[$key]) ?>">
 		<input type="hidden" name="locatorto[]" value="<?= implode('<>', $allLocatorTo[$key]) ?>">
 		<input type="hidden" name="locatorfrom[]" value="<?= implode('<>', $allLocatorFrom[$key]) ?>">
+		<input type="hidden" name="locatorfromid[]" value="<?= implode('<>', $allLocatorFromId[$key]) ?>">
 		<input type="hidden" name="departement" value="NONE">
 		<input type="hidden" name="piklis" value="2">
 		<?php } ?>
@@ -410,6 +417,7 @@
 			<input type="hidden" name="subinvfrom[]" value="<?= $vulue['GUDANG_ASAL'] ?>">
 			<input type="hidden" name="locatorto[]" value="<?= $vulue['LOCATOR_TUJUAN_ID'] ?>">
 			<input type="hidden" name="locatorfrom[]" value="<?= $vulue['LOCATOR_ASAL'] ?>">
+			<input type="hidden" name="locatorfromid[]" value="<?= $vulue['LOCATOR_ASAL_ID'] ?>">
 			<input type="hidden" name="departement" value="SUBKT">
 
 			<?php endforeach;?>
