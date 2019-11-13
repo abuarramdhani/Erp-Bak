@@ -203,7 +203,8 @@ class M_permohonancuti extends CI_MODEL {
   // -------------------------------------------Draft----------------------------------------------//
 
   public function getDraft($noind){
-    $draft = "SELECT pc.lm_tipe_cuti_id, (SELECT tipe_cuti FROM lm.lm_tipe_cuti WHERE lm_tipe_cuti_id = pc.lm_tipe_cuti_id) as tipe_cuti, pc.tgl_pengajuan, pc.lm_pengajuan_cuti, pc.noind || ' - ' || emp.employee_name as nama, jc.jenis_cuti, kp.keperluan as kp, pc.status, pc.tanggal_status, pc.keperluan
+    $draft = "SELECT pc.lm_tipe_cuti_id, (SELECT tipe_cuti FROM lm.lm_tipe_cuti WHERE lm_tipe_cuti_id = pc.lm_tipe_cuti_id) as tipe_cuti, pc.tgl_pengajuan, pc.lm_pengajuan_cuti, pc.noind || ' - ' || emp.employee_name as nama, jc.jenis_cuti, kp.keperluan as kp, pc.status, pc.tanggal_status, pc.keperluan,
+    (SELECT alasan FROM lm.lm_approval_cuti where status = '3' and lm_pengajuan_cuti_id=pc.lm_pengajuan_cuti) as alasan
               FROM lm.lm_pengajuan_cuti pc
                 inner join lm.lm_jenis_cuti jc
                   on pc.lm_jenis_cuti_id = jc.lm_jenis_cuti_id
