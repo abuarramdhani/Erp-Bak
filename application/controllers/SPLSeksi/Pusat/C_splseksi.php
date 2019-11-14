@@ -931,7 +931,7 @@ class C_splseksi extends CI_Controller {
 				$mail->addAddress($d, 'Lembur (Approve Kasie)');
 			}
 			//Set the subject line
-			$mail->Subject = 'TRIAL SPL ERPAnda telah menerima permintaan approval spl';
+			$mail->Subject = 'Anda telah menerima permintaan approval spl';
 			//convert HTML into a basic plain-text alternative body
 			$mail->msgHTML("
 			<h4>Lembur (Appove Kasie)</h4><hr>
