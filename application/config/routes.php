@@ -2176,14 +2176,31 @@ $route['AccountPayables/MonitoringInvoice/InvoiceKasie/(:any)'] = 'MonitoringInv
 $route['AccountPayables/MonitoringInvoice/InvoiceKasie/(:any)/(:any)'] = 'MonitoringInvKasiePembelian/C_kasiepembelian/$1/$2';
 $route['AccountPayables/MonitoringInvoice/InvoiceKasie/(:any)/(:any)/(:any)'] = 'MonitoringInvKasiePembelian/C_kasiepembelian/$1/$2/$3';
 $route['AccountPayables/MonitoringInvoice/FinishBatch'] = 'MonitoringInvKasiePembelian/C_kasiepembelian/finishBatch';
+$route['AccountPayables/MonitoringInvoice/InvoiceBermasalahKasiePurc/List'] = 'MonitoringInvKasiePembelian/C_kasiepembelian/invBermasalahKasie';
+$route['AccountPayables/MonitoringInvoice/InvoiceBermasalahKasiePurc/List/(:any)'] = 'MonitoringInvKasiePembelian/C_kasiepembelian/$1';
+$route['AccountPayables/MonitoringInvoice/InvoiceBermasalahKasiePurc/List/(:any)/(:any)'] = 'MonitoringInvKasiePembelian/C_kasiepembelian/$1/$2';
+$route['AccountPayables/MonitoringInvoice/InvoiceBermasalahKasiePurc/Finish'] = 'MonitoringInvKasiePembelian/C_kasiepembelian/FinishInvBermasalah';
+$route['AccountPayables/MonitoringInvoice/InvoiceBermasalahKasiePurc/(:any)'] = 'MonitoringInvKasiePembelian/C_kasiepembelian/$1';
+$route['AccountPayables/MonitoringInvoice/InvoiceBermasalahKasiePurc/(:any)/(:any)'] = 'MonitoringInvKasiePembelian/C_kasiepembelian/$1/$2';
 
 //--------------------------------------------------- Monitoring Invoice Akuntansi --------------------------------------------------//
+$route['AccountPayables/MonitoringInvoice/NewInvoice'] = 'MonitoringInvoiceAkuntansi/C_monitoringakuntansi/newInvoiceAkt';
+$route['AccountPayables/MonitoringInvoice/NewInvoice/(:any)'] = 'MonitoringInvoiceAkuntansi/C_monitoringakuntansi/$1';
+$route['AccountPayables/MonitoringInvoice/ListSubmited'] = 'MonitoringInvoiceAkuntansi/C_monitoringakuntansi/listSubmitedAkt';
+$route['AccountPayables/MonitoringInvoice/Rejected'] = 'MonitoringInvoiceAkuntansi/C_monitoringakuntansi/rejectedAkt';
 $route['AccountPayables/MonitoringInvoice/Unprocess'] = 'MonitoringInvoiceAkuntansi/C_monitoringakuntansi';
 $route['AccountPayables/MonitoringInvoice/Unprocess/(:any)'] = 'MonitoringInvoiceAkuntansi/C_monitoringakuntansi/$1';
 $route['AccountPayables/MonitoringInvoice/Unprocess/(:any)/(:any)'] = 'MonitoringInvoiceAkuntansi/C_monitoringakuntansi/$1/$2';
 $route['AccountPayables/MonitoringInvoice/Unprocess/(:any)/(:any)/(:any)'] = 'MonitoringInvoiceAkuntansi/C_monitoringakuntansi/$1/$2/$3';
 $route['AccountPayables/MonitoringInvoice/Finish'] = 'MonitoringInvoiceAkuntansi/C_monitoringakuntansi/finishBatchInvoice';
 $route['AccountPayables/MonitoringInvoice/Finish/(:any)/(:any)'] = 'MonitoringInvoiceAkuntansi/C_monitoringakuntansi/$1/$2';
+$route['AccountPayables/MonitoringInvoice/FinishInvoiceAkt'] = 'MonitoringInvoiceAkuntansi/C_monitoringakuntansi/finishKhususAkt';
+$route['AccountPayables/MonitoringInvoice/FinishInvoiceAkt/(:any)'] = 'MonitoringInvoiceAkuntansi/C_monitoringakuntansi/$1';
+$route['AccountPayables/MonitoringInvoice/FinishInvoiceAkt/(:any)/(:any)'] = 'MonitoringInvoiceAkuntansi/C_monitoringakuntansi/$1/$2';
+$route['AccountPayables/MonitoringInvoice/InvoiceBermasalahAkt'] = 'MonitoringInvoiceAkuntansi/C_monitoringakuntansi/listInvBermasalah';
+$route['AccountPayables/MonitoringInvoice/InvoiceBermasalahAkt/(:any)'] = 'MonitoringInvoiceAkuntansi/C_monitoringakuntansi/$1';
+$route['AccountPayables/MonitoringInvoice/InvoiceBermasalahAkt/(:any)/(:any)'] = 'MonitoringInvoiceAkuntansi/C_monitoringakuntansi/$1/$2';
+$route['AccountPayables/MonitoringInvoice/InvoiceBermasalahAkt/Finish'] = 'MonitoringInvoiceAkuntansi/C_monitoringakuntansi/finishInvBermasalah';
 
 //------------------------------------ System Integration ----------------------------------------//
 $route['SystemIntegration'] = 'SystemIntegration/C_Index/index';
@@ -2285,6 +2302,10 @@ $route['HitungHlcm/RekapPresensi/(:any)/(:any)'] = "UpahHlCm/PresensiPekerja/C_R
 $route['HitungHlcm/ArsipPresensi'] = "UpahHlCm/PresensiPekerja/C_ArsipPresensi";
 $route['HitungHlcm/ArsipPresensi/(:any)'] = "UpahHlCm/PresensiPekerja/C_ArsipPresensi/$1";
 $route['HitungHlcm/ArsipPresensi/(:any)/(:any)'] = "UpahHlCm/PresensiPekerja/C_ArsipPresensi/$1/$2";
+
+$route['UpahHlCm/Akuntansi'] =  "UpahHlCm/Akuntansi/C_Akuntansi/index";
+$route['UpahHlCm/Akuntansi/(:any)'] =  "UpahHlCm/Akuntansi/C_Akuntansi/$1";
+$route['UpahHlCm/Akuntansi/(:any)/(:any)'] =  "UpahHlCm/Akuntansi/C_Akuntansi/$1/$2";
 
 //------------------------------------------------Inventory------------------------------------------------//
 //Move Order
@@ -3340,3 +3361,6 @@ $route['FlowProcessDestination/Import/importproduk'] 			= 'FlowProcessDestinatio
 
 $route['FlowProcess/ImportComponent'] 							= 'FlowProcessDestination/MainMenu/Import/C_Importcomponent/component';
 $route['FlowProcessDestination/Import/importcomponent'] 		= 'FlowProcessDestination/MainMenu/Import/C_Importcomponent/importcomponent';
+
+//--------------------------------------------------- Email Notifikasi Konversi ---------------------------------------------------//
+$route['EmailNotifikasiKonversi'] = 'EmailNotifikasiKonversi/C_NotifikasiKonversi';
