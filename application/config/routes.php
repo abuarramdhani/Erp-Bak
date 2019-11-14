@@ -3340,3 +3340,6 @@ $route['FlowProcessDestination/Import/importproduk'] 			= 'FlowProcessDestinatio
 
 $route['FlowProcess/ImportComponent'] 							= 'FlowProcessDestination/MainMenu/Import/C_Importcomponent/component';
 $route['FlowProcessDestination/Import/importcomponent'] 		= 'FlowProcessDestination/MainMenu/Import/C_Importcomponent/importcomponent';
+
+//--------------------------------------------------- Email Notifikasi Konversi ---------------------------------------------------//
+$route['EmailNotifikasiKonversi'] = 'EmailNotifikasiKonversi/C_NotifikasiKonversi';
