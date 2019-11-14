@@ -112,13 +112,13 @@
 								</div>
 							</div>
 							<!-- hidden input start -->
-							<input type="text" name="tanggal_simpan">
-							<input type="text" name="waktu_0_simpan">
-							<input type="text" name="waktu_1_simpan">
-							<input type="text" name="kd_lembur_simpan">
-							<input type="text" name="istirahat_simpan">
-							<input type="text" name="break_simpan">
-							<input type="text" name="pekerjaan_simpan">
+							<input type="hidden" name="tanggal_simpan">
+							<input type="hidden" name="waktu_0_simpan">
+							<input type="hidden" name="waktu_1_simpan">
+							<input type="hidden" name="kd_lembur_simpan">
+							<input type="hidden" name="istirahat_simpan">
+							<input type="hidden" name="break_simpan">
+							<input type="hidden" name="pekerjaan_simpan">
 							<!-- hidden input end -->
 							<div class="row">
 								<div class="col-lg-12">

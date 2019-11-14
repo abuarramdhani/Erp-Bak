@@ -416,7 +416,7 @@ class C_splasska extends CI_Controller {
 				$mail->setFrom("no-reply@quick.com", 'Email Sistem');
 				$mail->addAddress("", 'Monitoring Transaction');
 				$mail->addAddress($dt['email'], 'Lembur (Approve Asska)');
-				$mail->Subject = ' TRIAL SPL SPL Anda telah di Approve';
+				$mail->Subject = 'SPL Anda telah di Approve';
 				$mail->msgHTML($message);
 				if (!$mail->send()) {
 					echo "Mailer Error: " . $mail->ErrorInfo;
@@ -461,7 +461,7 @@ class C_splasska extends CI_Controller {
 				$mail->setFrom("no-reply@quick.com", 'Email Sistem');
 				$mail->addAddress("", 'Monitoring Transaction');
 				$mail->addAddress($dt['email'], 'Lembur (Approve Asska)');
-				$mail->Subject = ' TRIAL SPL SPL Anda telah di Reject';
+				$mail->Subject = 'SPL Anda telah di Reject';
 				$mail->msgHTML($message);
 				if (!$mail->send()) {
 					echo "Mailer Error: " . $mail->ErrorInfo;
