@@ -11,7 +11,7 @@
 				<div class="row">
 					<div class="col-lg-12">
 						<div class="text-left ">
-							<span><b>Finish Invoice</b></span>
+							<span><b>Finish Invoice Detail</b></span>
 						</div>
 					</div>
 				</div>
@@ -24,7 +24,6 @@
 									<thead>
 										<tr class="bg-primary">
 											<th class="text-center">No</th>
-											<th class="text-center">Laporkan Invoice</th>
 											<th class="text-center">Vendor Name</th>
 											<th class="text-center">Invoice Number</th>
 											<th class="text-center">Invoice Date</th>
@@ -40,13 +39,11 @@
 										</tr>
 									</thead>
 									<tbody>
-										<?php $no=1; if($finish){foreach($finish as $f){?>
+										<?php $no=1; foreach($akt2 as $f){?>
 										<tr>
 											<td><?php echo $no ?></td>
-											<td><a target="_blank" title="Laporkan sebagai Inv bermasalah..." class="btn btn-warning btn-sm" href="<?php echo base_url('AccountPayables/MonitoringInvoice/Unprocess/invBermasalah/'.$f['INVOICE_ID']);?>" ><i class="fa fa-bullhorn"></i>
-												</a></td>
 											<td><?php echo $f['VENDOR_NAME']?></td>
-											<td><a target="_blank" href="<?php echo base_url('AccountPayables/MonitoringInvoice/Finish/DetailProcessed/'.$f['INVOICE_ID']);?>">
+											<td><a href="<?php echo base_url('AccountPayables/MonitoringInvoice/Finish/DetailProcessed/'.$f['INVOICE_ID']);?>">
 												<?php echo $f['INVOICE_NUMBER']?>
 												</a>
 											</td>
@@ -73,7 +70,7 @@
 											<td><?php echo $f['BATCH_NUMBER']?></td>
 											<td><?php echo $f['SOURCE']?></td>
 										</tr>
-										<?php $no++; }} ?>
+										<?php $no++; } ?>
 									</tbody>
 								</table>
 								</div>

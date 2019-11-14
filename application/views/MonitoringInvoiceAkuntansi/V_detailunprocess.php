@@ -135,6 +135,9 @@
 						<a href="<?php echo base_url('AccountPayables/MonitoringInvoice/Unprocess/unprocess/'.$batch_num);?>">
 							<button type="button" class="btn btn-success pull-right" style="margin-top: 10px" >Back</button>
 						</a>
+						<a href="<?php echo base_url('AccountPayables/MonitoringInvoice/Unprocess/EditInvoice/'.$detail[0]['INVOICE_NUMBER']);?>">
+							<button type="button" class="btn btn-warning pull-right" style="margin-top: 10px" >Edit</button>
+						</a>
 						</div>
 					</div>
 				</div>
