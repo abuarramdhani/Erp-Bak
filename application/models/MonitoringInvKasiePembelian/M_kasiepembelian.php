@@ -18,6 +18,164 @@ class M_kasiepembelian extends CI_Model {
         return $runQuery->result_array();
     }
 
+     public function po_numberr($invoice_id){
+        $oracle = $this->load->database("oracle",TRUE);
+        $query = "SELECT DISTINCT aipo.po_number, aipo.invoice_id, poh.attribute2 ppn
+                  FROM khs_ap_invoice_purchase_order aipo, po_headers_all poh
+                  WHERE invoice_id = '$invoice_id'
+                  AND aipo.po_number = poh.segment1 ";
+        $runQuery = $oracle->query($query);
+        return $runQuery->result_array();
+    }
+
+    public function poAmount($id)
+  {
+    $erp_db = $this->load->database('oracle',true);
+    $sql = "SELECT unit_price unit_price,
+        qty_invoice qty_invoice
+        FROM khs_ap_invoice_purchase_order
+        WHERE invoice_id = $id";
+    $run = $erp_db->query($sql);
+    return $run->result_array();
+  }
+
+    public function finishInvBermasalah()
+    {
+        $erp_db = $this->load->database('oracle',true);
+        $sql = "SELECT  ami.invoice_id, ami.vendor_name vendor_name,
+                ami.invoice_number invoice_number,
+                ami.invoice_date invoice_date,
+                ami.tax_invoice_number tax_invoice_number,
+                ami.invoice_amount invoice_amount,
+                ami.last_status_purchasing_date last_status_purchasing_date,
+                ami.last_status_finance_date last_status_finance_date,
+                ami.finance_batch_number finance_batch_number,
+                ami.last_finance_invoice_status last_finance_invoice_status,
+                ami.reason reason, 
+                ami.info info,
+                ami.invoice_category invoice_category,
+                ami.nominal_dpp nominal_dpp,
+                ami.batch_number batch_number,
+                ami.jenis_jasa jenis_jasa,
+                ami.source SOURCE,
+                ami.feedback_purchasing,
+                ami.kategori_inv_bermasalah,
+                ami.kelengkapan_doc_inv_bermasalah,
+                ami.keterangan_inv_bermasalah,
+                ami.akt_action_bermasalah akt_date,
+                ami.purc_action_bermasalah purc_date
+            FROM khs_ap_monitoring_invoice ami
+            WHERE ami.feedback_purchasing IS not NULL 
+            ORDER BY ami.last_admin_date DESC";
+        $runQuery = $erp_db->query($sql);
+        return $runQuery->result_array();
+    }
+
+    public function listInvBermasalah()
+    {
+        $erp_db = $this->load->database('oracle',true);
+        $sql = "SELECT  ami.invoice_id, ami.vendor_name vendor_name,
+                ami.invoice_number invoice_number,
+                ami.invoice_date invoice_date,
+                ami.tax_invoice_number tax_invoice_number,
+                ami.invoice_amount invoice_amount,
+                ami.last_status_purchasing_date last_status_purchasing_date,
+                ami.last_status_finance_date last_status_finance_date,
+                ami.finance_batch_number finance_batch_number,
+                ami.last_finance_invoice_status last_finance_invoice_status,
+                ami.reason reason, 
+                ami.info info,
+                ami.invoice_category invoice_category,
+                ami.nominal_dpp nominal_dpp,
+                ami.batch_number batch_number,
+                ami.jenis_jasa jenis_jasa,
+                ami.kategori_inv_bermasalah,
+                ami.kelengkapan_doc_inv_bermasalah,
+                ami.keterangan_inv_bermasalah,
+                ami.akt_action_bermasalah akt_date,
+                ami.source SOURCE
+                    FROM khs_ap_monitoring_invoice ami
+                    WHERE ami.feedback_purchasing IS NULL
+                    AND ami.kategori_inv_bermasalah IS NOT NULL 
+                    ORDER BY ami.last_admin_date DESC";
+        $runQuery = $erp_db->query($sql);
+        return $runQuery->result_array();
+    }
+
+    // public function poAmount($id)
+    // {
+    //     $erp_db = $this->load->database('oracle',true);
+    //     $sql = "SELECT unit_price unit_price,
+    //             qty_invoice qty_invoice
+    //             FROM khs_ap_invoice_purchase_order
+    //             WHERE invoice_id = $id";
+    //     $run = $erp_db->query($sql);
+    //     return $run->result_array();
+    // }
+
+
+    // public function po_numberr($invoice_id){
+    //     $oracle = $this->load->database("oracle",TRUE);
+    //     $query = "SELECT DISTINCT aipo.po_number, aipo.invoice_id, poh.attribute2 ppn
+    //               FROM khs_ap_invoice_purchase_order aipo, po_headers_all poh
+    //               WHERE invoice_id = '$invoice_id'
+    //               AND aipo.po_number = poh.segment1 ";
+    //     $runQuery = $oracle->query($query);
+    //     return $runQuery->result_array();
+    // }
+
+     public function invBermasalah($invoice_id)
+    {
+        $erp_db = $this->load->database('oracle',true);
+        $sql = "SELECT aipo.invoice_id invoice_id, 
+                invoice_number invoice_number,
+                invoice_date invoice_date,
+                invoice_amount invoice_amount,
+                tax_invoice_number tax_invoice_number,
+                vendor_name vendor_name,
+                po_number po_number,
+                lppb_number lppb_number,
+                shipment_number shipment_number,
+                received_date received_date,
+                item_description item_description,
+                item_code item_code,
+                qty_receipt qty_receipt,
+                qty_reject qty_reject,
+                currency currency,
+                unit_price unit_price,
+                qty_invoice qty_invoice,
+                ami.finance_batch_number  finance_batch_number,
+                ami.info info,
+                ami.invoice_category invoice_category,
+                ami.nominal_dpp nominal_dpp,
+                ami.batch_number batch_number,
+                ami.jenis_jasa jenis_jasa,
+                ami.source source,
+                ami.KATEGORI_INV_BERMASALAH,
+                ami.KELENGKAPAN_DOC_INV_BERMASALAH,
+                ami.KETERANGAN_INV_BERMASALAH
+                FROM khs_ap_monitoring_invoice ami
+                JOIN khs_ap_invoice_purchase_order aipo ON ami.invoice_id = aipo.invoice_id
+                WHERE ami.invoice_id = '$invoice_id'";
+
+        // echo"<pre>";echo $sql;exit();
+        $runQuery = $erp_db->query($sql);
+        return $runQuery->result_array();
+    }
+    
+
+        public function saveInvBermasalah($feedback,$invoice_id,$action_date)
+    {
+        $erp_db = $this->load->database('oracle',true);
+        $sql = "UPDATE KHS_AP_MONITORING_INVOICE 
+                SET FEEDBACK_PURCHASING = '$feedback',
+                PURC_ACTION_BERMASALAH = to_date('$action_date', 'DD/MM/YYYY HH24:MI:SS')
+                WHERE INVOICE_ID = '$invoice_id'";
+        // echo "<pre>"; echo $sql;
+        $runQuery = $erp_db->query($sql);
+    }
+
+
 	public function showListSubmittedForChecking($login){
 		$erp_db = $this->load->database('oracle',true);
 		$sql = "SELECT distinct batch_number batch_number, MAX (to_date(last_admin_date)) submited_date,
@@ -29,8 +187,6 @@ class M_kasiepembelian extends CI_Model {
                 GROUP BY batch_number, last_finance_invoice_status, source
                 ORDER BY submited_date";
 		$run = $erp_db->query($sql);
-    // echo $sql;
-    // exit();
 		return $run->result_array();
 	}
 

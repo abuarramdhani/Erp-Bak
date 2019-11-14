@@ -1,3 +1,176 @@
+function ambilNominalPPPN() {
+	var nominal_dpp = $('#idNominalDpp').val();
+	var nom_dpp = $('#idNominalDpp');
+	var nominal_ppn = $('#nominalPPN');
+	var coba = $('#ppn_status').val();
+	var tax = $('#tax_id_inv');
+
+	if (coba === 'Y') {
+var persentase = (Number(nominal_dpp) * 10) / 100;
+nominal_ppn.val(persentase);
+nominal_ppn.trigger('change');
+nominal_ppn.moneyFormat();
+nom_dpp.moneyFormat();
+} else if (coba === 'N'){
+nominal_ppn.val('0');
+nominal_ppn.trigger('change');
+// nom_dpp.val('0');
+// nom_dpp.trigger('change');
+// tax.val('');
+// tax.trigger('change');
+}
+}
+
+// function caution() {
+// 	Swal.fire({
+//   title: 'Jika Tax Invoice, Nominal DPP, dan Faktur Pajak tidak diisi <br>'
+// 'Harap masukkan Keterangan di kolom Info',
+//   showConfirmButton: false,
+//   showClass: {
+//     popup: 'animated fadeInDown faster'
+//   },
+//   hideClass: {
+//     popup: 'animated fadeOutUp faster'
+//   }
+// })
+	
+// }
+
+$('#btnCariInvId').click(function(){
+		Swal.fire({
+			  title: 'Please Wait ...',
+			  showConfirmButton: false,
+			  showClass: {
+			    popup: 'animated fadeInDown faster'
+			  },
+			  hideClass: {
+			    popup: 'animated fadeOutUp faster'
+			  }
+			})
+	})
+
+
+
+function cariInvoicebyId() {
+	var invoice_id = $('#invoice_id_nih').val();
+
+	$.ajax({
+		type : 'POST',
+		url: baseurl+'AccountPayables/MonitoringInvoice/Unprocess/invBermasalah',
+		data : {
+			invoice_id:invoice_id,
+		},
+		success:function(response) {
+			
+			window.location.replace(baseurl+"AccountPayables/MonitoringInvoice/Unprocess/invBermasalah/"+invoice_id)
+		}
+	})
+}
+
+
+
+$('#btnCariTop').click(function() { 
+	Swal.fire({
+  title: 'Please Wait ...',
+  showConfirmButton: false,
+  showClass: {
+    popup: 'animated fadeInDown faster'
+  },
+  hideClass: {
+    popup: 'animated fadeOutUp faster'
+  }
+})// $('#loading_mpm').html("<center> <img id='loading99' style='margin-top: 2%;' src='"+baseurl+"assets/img/gif/loading99.gif'/><br /></center><br />");
+	var nomor_po = $('.ininopo').val();
+	var vendor_name = $('.vendorNameClass');
+	var top = $('.termOfPayment');
+
+	$.ajax({
+			method: "POST",
+			url: baseurl+"AccountPayables/MonitoringInvoice/NewInvoice/cariVendorandTerm",
+			dataType: 'JSON',
+			data:{
+					nomor_po:nomor_po
+				},
+			success: function(response) {
+
+									if (response == "") {
+											Swal.fire({
+									  type: 'error',
+									  title: 'Data tidak ditemukan!',
+									  showConfirmButton: false,
+									  timer: 1500
+									})
+
+									} else if (response !== "") {
+
+									Swal.fire({
+									  type: 'success',
+									  title: 'Data ditemukan!',
+									  showConfirmButton: false,
+									  timer: 1500
+									})
+										}
+
+			var val1 = '';	
+			var val2 = '';
+			var val3 = '';
+
+			$.each(response, (i, item) => {
+					val2 = item.PAYMENT_TERMS
+					val1 += '<option value="'+item.VENDOR_NAME+'">'+item.VENDOR_NAME+'</option>'	
+					val3 = item.PPN			
+				})	
+				// deskripsi.val(val1);
+				// deskripsi.trigger('change');
+				top.val(val2);
+				top.trigger('change');
+
+				vendor_name.html(val1);
+				vendor_name.val(response[0].VENDOR_NAME);
+				vendor_name.trigger('change');
+
+				var ini_ppn = $('#ppn_status').val(val3);
+				$('#ppn_status').trigger('change');
+				var coba = ini_ppn.val();
+				var nominal = $('.nomppn');
+				var nom_dpp = $('.nomdppfaktur');
+				var tax = $('#tax_id_inv');
+			
+				if (coba === 'Y') {
+				nominal.prop('disabled', false);
+				nominal.trigger('change');
+
+				nom_dpp.prop('disabled', false);
+				nom_dpp.val('0').trigger('change');
+
+				tax.prop('disabled', false);
+				tax.val('010.005-').trigger('change');
+
+				}else if (coba === 'N') {
+				nominal.prop('disabled', true);
+				nominal.trigger('change');
+				nominal.val(null).trigger('change')
+				nom_dpp.prop('disabled', true);
+				nom_dpp.trigger('change');
+				nom_dpp.val(null).trigger('change')
+				tax.prop('disabled', true);
+				tax.trigger('change');
+				tax.val(null).trigger('change')
+				}
+
+
+			}
+
+		});
+})
+
+$("input[id='inv_amount_akt']").keyup(function() {
+    	// var invAmount = $(this).moneyFormat();
+    	var invAmount = $(this).val($(this).val().replace( /[^0-9]+/g, "").replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,'));
+    	// var invAmount = $(this).val($(this).val().moneyFormat());
+    	// var invAmount = $(this).val($(this).val().replace( /[^0-9]+/g, "").replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,'));
+	});
+
 $(document).ready(function(){
 	//mengatur semua tabel
 	$('#btn_clear_invoice').click(function() {
@@ -13,6 +186,133 @@ $(document).ready(function(){
 			  timer: 1500
 			})
 	})
+
+	$('#btnBermasalah').click(function(){
+		Swal.fire({
+			  // position: 'top-end',
+			  type: 'success',
+			  title: 'Invoice berhasil dilaporkan!',
+			  showConfirmButton: false,
+			  timer: 1500
+			})
+	})
+
+
+
+	$( document ).ready(function() {
+	$('#slcKelengkapanDokumen').select2({
+		  placeholder: 'PILIH KELENGKAPAN DOKUMEN',
+		  allowClear: true,
+		});
+})
+
+		$( document ).ready(function() {
+	$('#slcKategori').select2({
+		  placeholder: 'PILIH KATEGORI',
+		  allowClear: true,
+		});
+})
+
+function onClickBermasalah(th) {
+	var invoice_id = th;
+	var kelengkapan_doc = $('#slcKelengkapanDokumen').val();
+	var kategori = $('#slcKategori').val();
+	var keterangan = $('#txaKeterangan').val();
+
+	console.log(invoice_id, kelengkapan_doc, kategori, keterangan)
+
+	$.ajax({
+			type: "POST",
+			url: baseurl+"AccountPayables/MonitoringInvoice/Unprocess/saveInvBermasalah",
+			data:{
+				invoice_id:invoice_id,
+				kelengkapan_doc:kelengkapan_doc,
+				kategori:kategori,
+				keterangan:keterangan
+			},
+			success: function(response) {
+				// // console.log(response, 'data');
+				// $('.modal-tabel').html("");
+				// $('.modal-tabel').html(response);
+
+
+			}
+		})
+
+}
+
+function openDetailAkt(th) {
+	var batch_number = th;
+	console.log(batch_number);
+
+	$('#mdlDetailAkt').modal('show');
+	$('.modal-tabel').html("<center><img id='loading12' style='margin-top: 2%;' src='"+baseurl+"assets/img/gif/loading99.gif'/><br /></center><br />");
+		$.ajax({
+			type: "POST",
+			url: baseurl+"AccountPayables/MonitoringInvoice/FinishInvoiceAkt/bukaModalAkutansi",
+			data:{
+				batch_number:batch_number
+			},
+			success: function(response) {
+				// console.log(response, 'data');
+				$('.modal-tabel').html("");
+				$('.modal-tabel').html(response);
+
+
+			}
+		})
+	
+	
+}
+
+function invBermasalah(th) {
+	invoice_number = th;
+
+	const swalWithBootstrapButtons = Swal.mixin({
+		  customClass: {
+		    confirmButton: 'btn btn-success',
+		    cancelButton: 'btn btn-danger'
+		  },
+		  buttonsStyling: true
+		})
+
+	swalWithBootstrapButtons.fire({
+		  title: 'Invoice Bermasalah ?',
+		  text: 'Yakin ingin melaporkan invoice '+invoice_number+'?',
+		  type: 'warning',
+		  showCancelButton: true,
+		  confirmButtonText: 'Yes, report it!',
+		  cancelButtonText: 'No, cancel!',
+		  reverseButtons: true
+	}).then((result) => {
+  if (result.value) {
+	  	$.ajax({
+		type: "POST",
+		url: baseurl+"AccountPayables/MonitoringInvoice/InvoiceBermasalahAkt/LaporInvoice",
+		data:{
+			invoice_number:invoice_number
+		},
+		success: function (response) {
+						  swalWithBootstrapButtons.fire(
+					      'Reported!',
+					      'Invoice '+invoice_number+' berhasil dilaporkan!',
+					      'success'
+					    	)
+						  window.location.replace(baseurl+"AccountPayables/MonitoringInvoice/InvoiceBermasalahAkt")
+			 		}
+
+				});
+  } else if (
+    result.dismiss === Swal.DismissReason.cancel
+  ) {
+    swalWithBootstrapButtons.fire(
+      'Cancelled',
+      'Invoice '+invoice_number+' batal dilaporkan :)',
+      'error'
+    )
+  }
+})
+}
 // --------------------------------re upload------------------//
 	$('#btnMICancel').click(function() {
 		$('#poLinesTable').remove()

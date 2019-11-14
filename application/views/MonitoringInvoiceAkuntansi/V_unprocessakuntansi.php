@@ -27,6 +27,7 @@
 									<thead>
 										<tr class="bg-primary">
 											<th class="text-center">No</th>
+											<th class="text-center">Invoice ID</th>
 											<th class="text-center">Vendor Name</th>
 											<th class="text-center">Invoice Number</th>
 											<th class="text-center" style="width: 15%">Action</th>
@@ -45,6 +46,7 @@
 										<?php $no=1; foreach($unprocess as $u){?>
 										<tr>
 											<td><?php echo $no ?></td>
+											<td><?php echo $u['INVOICE_ID'] ?></td>
 											<td><?php echo $u['VENDOR_NAME']?></td>
 											<td><strong><?php echo $u['INVOICE_NUMBER']?></strong></td>
 											<td data-id="<?= $u['INVOICE_ID'] ?>" batch_number="<?= $u['BATCH_NUMBER'] ?>" class="ganti_<?= $u['INVOICE_ID'] ?>">
@@ -97,3 +99,25 @@
 	</div>
 </section>	
 </form>
+
+<div class="modal fade mdlInvoiceBermasalah"  id="mdlInvoiceBermasalah" tabindex="1" role="dialog" aria-labelledby="judulModal" aria-hidden="true">
+    <div class="modal-dialog modal-sm" style="width:800px;" role="document">
+        <div class="modal-content">
+            <div class="modal-header" style="width: 100%;" >
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+                <div class="modal-body" style="width: 100%;">
+                	<div class="modal-tabel" >
+					</div>
+                   
+                    	<div class="modal-footer">
+                    		<div class="col-md-2 pull-left">
+                    		</div>
+                    	</div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

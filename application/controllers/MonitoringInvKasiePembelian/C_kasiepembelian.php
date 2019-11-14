@@ -73,6 +73,203 @@ class C_kasiepembelian extends CI_Controller{
 		$this->load->view('V_Footer',$data);
 	}
 
+	public function FinishInvBermasalah()
+	{
+		
+		$this->checkSession();
+		$user_id = $this->session->userid;
+		
+		$data['Menu'] = 'Dashboard';
+		$data['SubMenuOne'] = '';
+		
+		$data['UserMenu'] = $this->M_user->getUserMenu($user_id,$this->session->responsibility_id);
+		$data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id);
+		$data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id);
+
+		$finish = $this->M_kasiepembelian->finishInvBermasalah();
+
+
+		$no = 0;
+		foreach ($finish as $inv => $value) {
+
+			$invoice_id = $finish[$inv]['INVOICE_ID'];
+			// $string_id = $inv['PO_DETAIL'];
+			// echo "<pre>";
+			// print_r($unprocess);
+			// print_r($invoice_id);
+			
+			$po_amount = 0;
+			$unit = $this->M_kasiepembelian->poAmount($invoice_id);
+
+			foreach ($unit as $price) {
+				$total = $price['UNIT_PRICE'] * $price['QTY_INVOICE'];
+				$po_amount = $po_amount + $total;
+				
+			} 
+
+			$finish[$no]['PO_AMOUNT'] = $po_amount;
+
+			$po_numberr = $this->M_kasiepembelian->po_numberr($invoice_id);
+			// echo"<pre>";
+			// print_r($po_numberr);
+			$finish[$inv]['PO_NUMBER'] = '';
+			$finish[$inv]['PPN'] = '';
+			foreach ($po_numberr as $key => $value) {
+				$finish[$inv]['PO_NUMBER'] .= $value['PO_NUMBER'].'<br>';
+				$finish[$inv]['PPN'] .= $value['PPN'].'<br>';
+			}
+
+			// if ($string_id) {
+			// 	$explodeId = explode('<br>', $string_id);
+			// 	if (!$explodeId) {
+			// 		$explodeId = $string_id;
+			// 	}
+
+			// 	// foreach ($explodeId as $exp => $value) {
+			// 	// 	$cekPPN = $this->M_monitoringakuntansi->checkPPN($value);
+			// 	// 	foreach ($cekPPN as $key => $value2) {
+			// 	// 		foreach ($value2 as $va2 => $value3) {
+			// 	// 			$ppn = $value3;
+			// 	// 		}
+			// 	// 	}
+			// 	// }
+			// }
+			
+			$no++;
+		}
+		$data['finish'] =$finish;
+
+		// echo"<pre>";print_r($data['finish']);exit();
+		// $data['ppn'] = $ppn;
+
+		$this->load->view('V_Header',$data);
+		$this->load->view('V_Sidemenu',$data);
+		$this->load->view('MonitoringInvKasiePembelian/V_finishInvBermasalah',$data);
+		$this->load->view('V_Footer',$data);
+	
+	}
+
+		public function DetailInvKasie($invoice_id)
+	{
+		$this->checkSession();
+		$user_id = $this->session->userid;
+		
+		$data['Menu'] = 'Dashboard';
+		$data['SubMenuOne'] = '';
+		
+		$data['UserMenu'] = $this->M_user->getUserMenu($user_id,$this->session->responsibility_id);
+		$data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id);
+		$data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id);
+
+		$unprocess2 = $this->M_kasiepembelian->invBermasalah($invoice_id);
+		$no = 0;
+		foreach ($unprocess2 as $key ) {
+			$invoice = $key['INVOICE_ID'];
+			
+			$hasil = 0;
+			$poAmount = $this->M_kasiepembelian->poAmount($invoice);
+			foreach ($poAmount as $p) {
+				$total = $p['UNIT_PRICE'] * $p['QTY_INVOICE'];
+				$hasil = $hasil + $total;
+			}
+			$unprocess2[$no]['PO_AMOUNT'] = $hasil;
+
+			$no++;
+		}
+		$data['detail'] =$unprocess2;
+
+		// echo"<pre>";print_r($_POST);
+
+		$this->load->view('V_Header',$data);
+		$this->load->view('V_Sidemenu',$data);
+		$this->load->view('MonitoringInvKasiePembelian/V_detailInvBermasalah', $data);
+		$this->load->view('V_Footer',$data);
+	}
+
+		public function saveInvBermasalah($invoice_id)
+	{
+	
+		$feedback = $this->input->post('txaFbPurc');
+		$action_date = date('d-m-Y H:i:s');
+
+		$update = $this->M_kasiepembelian->saveInvBermasalah($feedback,$invoice_id,$action_date);
+		redirect('AccountPayables/MonitoringInvoice/InvoiceBermasalahKasiePurc/List');
+
+	}
+
+
+	public function invBermasalahKasie()
+	{
+		$this->checkSession();
+		$user_id = $this->session->userid;
+		
+		$data['Menu'] = 'Dashboard';
+		$data['SubMenuOne'] = '';
+		
+		$data['UserMenu'] = $this->M_user->getUserMenu($user_id,$this->session->responsibility_id);
+		$data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id);
+		$data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id);
+
+		$bermasalah = $this->M_kasiepembelian->listInvBermasalah();
+		
+		$no = 0;
+		foreach ($bermasalah as $inv => $value) {
+
+			$invoice_id = $bermasalah[$inv]['INVOICE_ID'];
+			// $string_id = $inv['PO_DETAIL'];
+			// echo "<pre>";
+			// print_r($unprocess);
+			// print_r($invoice_id);
+			
+			$po_amount = 0;
+			$unit = $this->M_kasiepembelian->poAmount($invoice_id);
+
+			foreach ($unit as $price) {
+				$total = $price['UNIT_PRICE'] * $price['QTY_INVOICE'];
+				$po_amount = $po_amount + $total;
+				
+			} 
+
+			$bermasalah[$no]['PO_AMOUNT'] = $po_amount;
+
+			$po_numberr = $this->M_kasiepembelian->po_numberr($invoice_id);
+			// echo"<pre>";
+			// print_r($po_numberr);
+			$bermasalah[$inv]['PO_NUMBER'] = '';
+			$bermasalah[$inv]['PPN'] = '';
+			foreach ($po_numberr as $key => $value) {
+				$bermasalah[$inv]['PO_NUMBER'] .= $value['PO_NUMBER'].'<br>';
+				$bermasalah[$inv]['PPN'] .= $value['PPN'].'<br>';
+			}
+
+			// if ($string_id) {
+			// 	$explodeId = explode('<br>', $string_id);
+			// 	if (!$explodeId) {
+			// 		$explodeId = $string_id;
+			// 	}
+
+			// 	// foreach ($explodeId as $exp => $value) {
+			// 	// 	$cekPPN = $this->M_monitoringakuntansi->checkPPN($value);
+			// 	// 	foreach ($cekPPN as $key => $value2) {
+			// 	// 		foreach ($value2 as $va2 => $value3) {
+			// 	// 			$ppn = $value3;
+			// 	// 		}
+			// 	// 	}
+			// 	// }
+			// }
+			
+			$no++;
+		}
+		$data['bermasalah'] =$bermasalah;
+		// $data['ppn'] = $ppn;
+
+		$this->load->view('V_Header',$data);
+		$this->load->view('V_Sidemenu',$data);
+		$this->load->view('MonitoringInvKasiePembelian/V_listInvBermasalah',$data);
+		$this->load->view('V_Footer',$data);
+		// $this->output->cache(1);
+	}
+
 	public function batchDetailPembelian($batchNumber){
 		$batchNumber = str_replace('%20', ' ', $batchNumber);
 		$this->checkSession();

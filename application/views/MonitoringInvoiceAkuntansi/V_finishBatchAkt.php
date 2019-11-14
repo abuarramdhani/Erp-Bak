@@ -3,6 +3,7 @@
 	.text-left span {
 		font-size: 36px
 	}
+
 </style>
 
 <section class="content">
