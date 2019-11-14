@@ -335,6 +335,7 @@ class C_TransferReffGaji extends CI_Controller
 					$ds['um_cabang'] += $data_pekerja_keluar->um_cabang;
 					$ds['dldobat'] += $data_pekerja_keluar->dldobat;
 					$ds['htm'] += $data_pekerja_keluar->htm;
+					$ds['ijin'] += $data_pekerja_keluar->ijin;
 					$ip_lama = floatval($data_pekerja_keluar->ipe);
 					$ik_lama = floatval($data_pekerja_keluar->ika);
 					$ipt_lama = floatval($data_pekerja_keluar->ipet);
