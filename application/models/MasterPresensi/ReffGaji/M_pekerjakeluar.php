@@ -3874,7 +3874,7 @@ class M_pekerjakeluar extends CI_Model
  				DERIVEDTBL ";
  		$result1 = $this->personalia->query($sql)->row();
  		if(!empty($result1) and isset($result1->jml)){
- 			return $nilai->jml;
+ 			return $result1->jml;
  		}else{
  			return 0;
  		}	

@@ -166,7 +166,7 @@ class C_PekerjaKeluar extends CI_Controller
 				}
 			}
 
-			if ($status_pekerja == 'D') {
+			if ($status_pekerja == 'D' || $status_pekerja == 'E') {
 				$cek_noind_berubah = $this->M_pekerjakeluar->cek_noind_berubah($pkj['noind']);
 				if($cek_noind_berubah > 0){
 					$kom_htm = $this->M_pekerjakeluar->hitung_Htm_diangkat($pkj['noind'],$tgl_cut_awal,$pkj['tglkeluar']);
