@@ -70,25 +70,31 @@
                     $i=1;
                     if (empty($data)) {
                     } else {
-                    foreach ($data as $key) { ?>
+                    foreach ($data as $key) { 
+                        if ($key['DELIVER_DATE'] == '') {
+                            $td = 'bg-warning';
+                        }else {
+                            $td = '';
+                        }
+                        ?>
                         <tr>
-                            <td><?= $i ?></td>
-                            <td><?= $key['ITEM'] ?><input type="hidden" name="txtItem<?= $i ?>" value="<?= $key['ITEM'] ?>"></td>
-                            <td><?= $key['DESCRIPTION'] ?><input type="hidden" name="txtDescription<?= $i ?>" value="<?= $key['DESCRIPTION'] ?>"></td>
-                            <td><?= $key['PO'] ?><input type="hidden" name="txtPO<?= $i ?>" value="<?= $key['PO'] ?>"></td>
-                            <td><?= $key['RECEIPT_NUM'] ?><input type="hidden" name="txtRecNum<?= $i ?>" value="<?= $key['RECEIPT_NUM'] ?>"></td>
-                            <td><?= $key['RECEIPT_DATE'] ?><input type="hidden" name="dateRecDate<?= $i ?>" value="<?= $key['RECEIPT_DATE'] ?>"></td>
-                            <td><?= $key['RECEIPT_DATE'] ?><input type="hidden" name="dateSudah<?= $i ?>" value="<?= $key['RECEIPT_DATE'] ?>"></td>
-                            <td>
+                            <td class="<?= $td?>"><?= $i ?></td>
+                            <td class="<?= $td?>"><?= $key['ITEM'] ?><input type="hidden" name="txtItem<?= $i ?>" value="<?= $key['ITEM'] ?>"></td>
+                            <td class="<?= $td?>"><?= $key['DESCRIPTION'] ?><input type="hidden" name="txtDescription<?= $i ?>" value="<?= $key['DESCRIPTION'] ?>"></td>
+                            <td class="<?= $td?>"><?= $key['PO'] ?><input type="hidden" name="txtPO<?= $i ?>" value="<?= $key['PO'] ?>"></td>
+                            <td class="<?= $td?>"><?= $key['RECEIPT_NUM'] ?><input type="hidden" name="txtRecNum<?= $i ?>" value="<?= $key['RECEIPT_NUM'] ?>"></td>
+                            <td class="<?= $td?>"><?= $key['RECEIPT_DATE'] ?><input type="hidden" name="dateRecDate<?= $i ?>" value="<?= $key['RECEIPT_DATE'] ?>"></td>
+                            <td class="<?= $td?>"><?= $key['RECEIPT_DATE'] ?><input type="hidden" name="dateSudah<?= $i ?>" value="<?= $key['RECEIPT_DATE'] ?>"></td>
+                            <td class="<?= $td?>">
                                 <input type="text" value="<?php if ($key['KIRIM_QC'] !== null){ echo date("m/d/Y", strtotime($key['KIRIM_QC'])); }?>" onchange="SaveKirimQC(<?=$i?>,'<?= $key['ITEM_ID'] ?>',<?= $key['RECEIPT_NUM'] ?>,<?= $key['PO'] ?>)" name="dateKirimQC<?= $i ?>" id="dateKirimQC<?= $i ?>" class="datepickRekap" />
                             </td>
-                            <td>
+                            <td class="<?= $td?>">
                                 <input value="<?php if ($key['TERIMA_QC'] !== null){ echo date("m/d/Y", strtotime($key['TERIMA_QC'])); }?>" onchange="SaveTerimaQC(<?=$i?>,'<?= $key['ITEM_ID'] ?>',<?= $key['RECEIPT_NUM'] ?>,<?= $key['PO'] ?>)" name="dateTerimaQC<?= $i ?>" id="dateTerimaQC<?= $i ?>" class="datepickRekap" />
                             </td>
-                            <td>
+                            <td class="<?= $td?>">
                                 <input value="<?php if ($key['KEMBALI_QC'] !== null){ echo date("m/d/Y", strtotime($key['KEMBALI_QC'])); }?>" onchange="SaveKembaliQC(<?=$i?>,'<?= $key['ITEM_ID'] ?>',<?= $key['RECEIPT_NUM'] ?>,<?= $key['PO'] ?>)" name="dateKembaliQC<?= $i ?>" id="dateKembaliQC<?= $i ?>" class="datepickRekap" />
                             </td>
-                            <td>
+                            <td class="<?= $td?>">
                                 <input value="<?php if ($key['KIRIM_GUDANG'] !== null){ echo date("m/d/Y", strtotime($key['KIRIM_GUDANG'])); }?>" onchange="SaveKirimGudang(<?=$i?>,'<?= $key['ITEM_ID'] ?>',<?= $key['RECEIPT_NUM'] ?>,<?= $key['PO'] ?>)" name="dateKirimGudang<?= $i ?>" id="dateKirimGudang<?= $i ?>" class="datepickRekap" />
                             </td>
                             <?php 
@@ -103,17 +109,17 @@
                                         <input value="<?php if ($key['TERIMA_GUDANG'] !== null){ echo date("m/d/Y", strtotime($key['TERIMA_GUDANG'])); }?>" onchange="SaveTerimaGudang(<?=$i?>,'<?= $key['ITEM_ID'] ?>',<?= $key['RECEIPT_NUM'] ?>,<?= $key['PO'] ?>)" name="dateTerimaGudang<?= $i ?>" id="dateTerimaGudang<?= $i ?>" class="datepickRekap" />
                                     </td>
                                 <?php }else{?>
-                                    <td>
+                                    <td class="<?= $td?>">
                                         <input value="<?php if ($key['TERIMA_GUDANG'] !== null){ echo date("m/d/Y", strtotime($key['TERIMA_GUDANG'])); }?>" onchange="SaveTerimaGudang(<?=$i?>,'<?= $key['ITEM_ID'] ?>',<?= $key['RECEIPT_NUM'] ?>,<?= $key['PO'] ?>)" name="dateTerimaGudang<?= $i ?>" id="dateTerimaGudang<?= $i ?>" class="datepickRekap" />
                                     </td>
                             <?php }
                              }else{ ?>
-                            <td >
+                            <td class="<?= $td?>" >
                                 <input value="<?php if ($key['TERIMA_GUDANG'] !== null){ echo date("m/d/Y", strtotime($key['TERIMA_GUDANG'])); }?>" onchange="SaveTerimaGudang(<?=$i?>,'<?= $key['ITEM_ID'] ?>',<?= $key['RECEIPT_NUM'] ?>,<?= $key['PO'] ?>)" name="dateTerimaGudang<?= $i ?>" id="dateTerimaGudang<?= $i ?>" class="datepickRekap" />
                             </td>
                             <?php } ?>
                             <?php ?>
-                            <td>
+                            <td class="<?= $td?>">
                                 <input type="hidden" name="dateDeliver<?= $i ?>" value="<?= $key['DELIVER_DATE'] ?>"><?= $key['DELIVER_DATE'] ?>
                             </td>
                         </tr><?php
