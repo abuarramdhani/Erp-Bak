@@ -63,11 +63,8 @@ class C_Index extends CI_Controller
 
 	public function update()
 	{
-		$value = $this->input->post('submit');
-		$str = "$value";
-		$id = (explode("|",$str));
-		$status = $id[0];
-		$idizin = $id[1];
+		$status = $this->input->post('keputusan');
+		$idizin = $this->input->post('id');
 		$update= $this->M_index->update($status, $idizin);
 
 		if ($status == 1) {
@@ -87,10 +84,7 @@ class C_Index extends CI_Controller
 					}
 				}
 			}
-			redirect('PerizinanDinas/AtasanApproval');
-
 		}elseif ($status == 2) {
-			// $delete = $this->M_index->deletemakan($idizin);
 			redirect('PerizinanDinas/AtasanApproval');
 		}else{
 		redirect('PerizinanDinas/AtasanApproval');

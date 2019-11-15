@@ -1968,3 +1968,91 @@ $(document).ready(function(){
       changeYear:true,
       dateFormat: 'yy-mm', });
 });
+
+function getApproval(a, b) {
+  var loading = baseurl + 'assets/img/gif/loadingquick.gif';
+
+  if (a == '1') {
+    swal.fire({
+      title: 'Peringatan',
+      text: "Anda akan memberikan keputusan APPROVE !",
+      type: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'OK',
+      allowOutsideClick: false
+    }).then(result => {
+      if (result.value) {
+        $.ajax({
+          beforeSend: function(){
+            Swal.fire({
+              html : "<img style='width: 100px; height: auto;'src='"+loading+"'>",
+              text : 'Loading...',
+              customClass: 'swal-wide',
+              showConfirmButton:false,
+              allowOutsideClick: false
+            });
+          },
+          data: {
+            keputusan: a,
+            id: b
+          },
+          type: 'post',
+          url: baseurl + 'PerizinanDinas/AtasanApproval/update',
+          success: function (data) {
+            Swal.fire({
+              title: 'Izin Telah di Approve',
+              type: 'success',
+              showCancelButton: false,
+              allowOutsideClick: false
+            }).then( result => {
+              window.location.reload()
+            })
+          }
+        })
+      }
+    })
+  }else if (a == '2') {
+    swal.fire({
+      title: 'Peringatan',
+      text: "Anda akan memberikan keputusan REJECT !",
+      type: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'OK',
+      allowOutsideClick: false
+    }).then(result => {
+      if (result.value) {
+        $.ajax({
+          beforeSend: function(){
+            Swal.fire({
+              html : "<img style='width: 100px; height: auto;'src='"+loading+"'>",
+              text : 'Loading...',
+              customClass: 'swal-wide',
+              showConfirmButton:false,
+              allowOutsideClick: false
+            });
+          },
+          data: {
+            keputusan: a,
+            id: b
+          },
+          type: 'post',
+          url: baseurl + 'PerizinanDinas/AtasanApproval/update',
+          success: function (data) {
+            Swal.fire({
+              title: 'Izin Telah di Reject',
+              type: 'error',
+              showCancelButton: false,
+              allowOutsideClick: false
+            }).then( result => {
+              window.location.reload()
+            })
+          }
+        })
+      }
+    })
+  }
+}
