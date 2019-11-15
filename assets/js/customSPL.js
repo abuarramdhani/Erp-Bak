@@ -738,7 +738,7 @@ $(document).ready(function(){
       $.ajax({
         data : {idf: idf, sn : sn, vc: vc, ac: ac, vkey: vkey},
         type : 'POST',
-        url : baseurl+'/SPL/DaftarFingerspot/updateFingerspot',
+        url : baseurl+'SPL/DaftarFingerspot/updateFingerspot',
         success: function(e){
           alert('Sukses');
           generateFingerspotTable();
@@ -771,7 +771,7 @@ $(document).ready(function(){
       $.ajax({
         data : {sn : sn, vc: vc, ac: ac, vkey: vkey},
         type : 'POST',
-        url : baseurl+'/SPL/DaftarFingerspot/insertFingerspot',
+        url : baseurl+'SPL/DaftarFingerspot/insertFingerspot',
         success: function(e){
           alert('Sukses');
           generateFingerspotTable();
@@ -791,7 +791,7 @@ $(document).ready(function(){
       $.ajax({
         data : {id: idf},
         type : 'POST',
-        url : baseurl+'/SPL/DaftarFingerspot/deleteFingerspot',
+        url : baseurl+'SPL/DaftarFingerspot/deleteFingerspot',
         success: function(e){
           alert('Sukses');
           generateFingerspotTable();
@@ -840,7 +840,7 @@ $(document).ready(function(){
     $.ajax({
       data : {noind: noind},
       type : 'POST',
-      url : baseurl+'/SPL/DaftarFingerspot/getfingerdata',
+      url : baseurl+'SPL/DaftarFingerspot/getfingerdata',
       success: function(data){
         $('#spl-fingertemp-modal-finger tbody').html(data);
         $('#spl-fingertemp-modal-finger').modal({backdrop: 'static', keyboard: false});
@@ -862,7 +862,7 @@ $(document).ready(function(){
     $.ajax({
       data : {noind: noind},
       type : 'POST',
-      url : baseurl+'/SPL/DaftarFingerspot/getfingerdata',
+      url : baseurl+'SPL/DaftarFingerspot/getfingerdata',
       success: function(data){
         $('#spl-fingertemp-modal-finger tbody').html(data);
         $('#spl-fingertemp-modal-finger').modal({backdrop: 'static', keyboard: false});
@@ -886,7 +886,7 @@ $(document).ready(function(){
       $.ajax({
         data : {noind: noind},
         type : 'POST',
-        url : baseurl+'/SPL/DaftarFingerspot/deleteFingertempAll',
+        url : baseurl+'SPL/DaftarFingerspot/deleteFingertempAll',
         success: function(e){
           alert('Sukses');
           generateFingertempTable();
@@ -907,13 +907,13 @@ $(document).ready(function(){
       $.ajax({
         data : {jari: jari,userid: userid},
         type : 'POST',
-        url : baseurl+'/SPL/DaftarFingerspot/deleteFingertemp',
+        url : baseurl+'SPL/DaftarFingerspot/deleteFingertemp',
         success: function(e){
           alert('Sukses');
           $.ajax({
             data : {noind: noind},
             type : 'POST',
-            url : baseurl+'/SPL/DaftarFingerspot/getfingerdata',
+            url : baseurl+'SPL/DaftarFingerspot/getfingerdata',
             success: function(data){
               $('#spl-fingertemp-modal-finger tbody').html(data);
             },
@@ -940,7 +940,7 @@ $(document).ready(function(){
       $.ajax({
         data : {noind: noind},
         type : 'POST',
-        url : baseurl+'/SPL/DaftarFingerspot/getfingerdata',
+        url : baseurl+'SPL/DaftarFingerspot/getfingerdata',
         success: function(data){
           $('#spl-fingertemp-modal-finger tbody').html(data);
           generateFingertempTable();
@@ -961,7 +961,7 @@ function generateFingerspotTable(){
   $.ajax({
     data : {id: '1'},
     type : 'POST',
-    url : baseurl+'/SPL/DaftarFingerspot/generateFingerspotTable',
+    url : baseurl+'SPL/DaftarFingerspot/generateFingerspotTable',
     success: function(data){
       $('tbody').html(data);
     },
@@ -975,7 +975,7 @@ function generateFingertempTable(){
    $.ajax({
     data : {id: '1'},
     type : 'POST',
-    url : baseurl+'/SPL/DaftarFingerspot/generateFingertempTable',
+    url : baseurl+'SPL/DaftarFingerspot/generateFingertempTable',
     success: function(data){
       $('tbody#spl-fingertemp').html(data);
     },
