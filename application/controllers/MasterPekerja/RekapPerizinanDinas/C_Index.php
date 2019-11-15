@@ -65,7 +65,7 @@ class C_Index extends CI_Controller
 		$perioderekap 		=	$this->input->post('periodeRekap');
 
 		$data['Title'] = 'REKAP DATA PERIZINAN DINAS';
-		$data['Menu'] = 'Catering Management ';
+		$data['Menu'] = 'Rekap Perizinan Dinas ';
 		$data['SubMenuOne'] = '';
 		$data['SubMenuTwo'] = '';
 
