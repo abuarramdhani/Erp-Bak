@@ -326,7 +326,8 @@ class C_TransferReffGaji extends CI_Controller
 				$ip_lama = 0;
 				$ik_lama = 0;
 				$ipt_lama = 0;
-				$data_pekerja_keluar = $this->M_transferreffgaji->getPekerjaKeluar($ds['nik'],$periode);
+				//SEMENTARA BELUM DIGUNAKAN DAHULU
+				/*$data_pekerja_keluar = $this->M_transferreffgaji->getPekerjaKeluar($ds['nik'],$periode);
 				if(!empty($data_pekerja_keluar)){
 					$ds['ief'] += $data_pekerja_keluar->ief;
 					$ds['ims'] += $data_pekerja_keluar->ims;
@@ -339,7 +340,7 @@ class C_TransferReffGaji extends CI_Controller
 					$ip_lama = floatval($data_pekerja_keluar->ipe);
 					$ik_lama = floatval($data_pekerja_keluar->ika);
 					$ipt_lama = floatval($data_pekerja_keluar->ipet);
-				}
+				}*/
 				$jabatan = $this->M_transferreffgaji->getStatusJabatan($ds['noind']);
 				if ($jabatan <= 11) {
 					$st = "3";
