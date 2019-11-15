@@ -805,7 +805,7 @@ $(document).ready(function(){
 
   $('.spl-fingertemp-modal-select-noind').select2({
     ajax:{
-      url: baseurl+"/SPL/Daftarjari/getUserfinger",
+      url: baseurl+"SPL/Daftarjari/getUserfinger",
       dataType: 'json',
       type: 'get',
       data: function (params) {
@@ -933,7 +933,7 @@ $(document).ready(function(){
     jari = $(this).attr('data-fid');
     userid = $(this).attr('data-userid');
     noind = $(this).attr('data-noind');
-    link_base64encode = btoa(baseurl+"/SPL/DaftarFingerspot/finger_register?userid="+userid+"&finger="+jari);
+    link_base64encode = btoa(baseurl+"SPL/DaftarFingerspot/finger_register?userid="+userid+"&finger="+jari);
     window.location.href = "finspot:FingerspotReg;"+link_base64encode;
     var run = 0;
     var interval = setInterval(function(){
