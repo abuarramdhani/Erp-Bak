@@ -371,7 +371,7 @@ class C_splkasie extends CI_Controller {
 				$mail->addAddress($d, 'Lembur (Approve Asska)');
 			}
 			//Set the subject line
-			$mail->Subject = ' TRIAL SPL Anda telah menerima permintaan approval spl';
+			$mail->Subject = 'SPL Anda telah menerima permintaan approval spl';
 			//convert HTML into a basic plain-text alternative body
 			$mail->msgHTML("
 			<h4>Lembur (Appove Asska)</h4><hr>
@@ -510,7 +510,7 @@ class C_splkasie extends CI_Controller {
 				$mail->setFrom("no-reply@quick.com", 'Email Sistem');
 				$mail->addAddress("", 'Monitoring Transaction');
 				$mail->addAddress($dt['email'], 'Lembur (Approve Kasie)');
-				$mail->Subject = ' TRIAL SPL SPL Anda telah di Approve';
+				$mail->Subject = 'SPL Anda telah di Approve';
 				$mail->msgHTML($message);
 				if (!$mail->send()) {
 					echo "Mailer Error: " . $mail->ErrorInfo;
@@ -555,7 +555,7 @@ class C_splkasie extends CI_Controller {
 				$mail->setFrom("no-reply@quick.com", 'Email Sistem');
 				$mail->addAddress("", 'Monitoring Transaction');
 				$mail->addAddress($dt['email'], 'Lembur (Approve Kasie)');
-				$mail->Subject = ' TRIAL SPL SPL Anda telah di Reject';
+				$mail->Subject = 'SPL Anda telah di Reject';
 				$mail->msgHTML($message);
 				if (!$mail->send()) {
 					echo "Mailer Error: " . $mail->ErrorInfo;
