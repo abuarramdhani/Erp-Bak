@@ -35,6 +35,7 @@ label{
 											<th>Jenis Cuti</th>
 											<th>Keperluan</th>
 											<th>Status</th>
+											<th>Alasan</th>
 											<th>Action</th>
 										</tr>
 									</thead>
@@ -75,6 +76,7 @@ label{
 													<span class='label label-danger'><i class='fa fa-ban'> </i>  Dibatalkan</span>
 												<?php endif ?>
 										</td>
+										<td><?php echo ($key['alasan'] != null)? $key['alasan'] : "-" ?></td>
 										<td>
 											<?php if ($key['status'] == '0'): ?>
 												<button onclick="reqCuti('<?=$id?>')" class="btn btn-warning btn-xs" data-toggle="tooltip" title="Request"><span class="fa fa-send-o"> </span></button>

@@ -203,7 +203,8 @@ class M_permohonancuti extends CI_MODEL {
   // -------------------------------------------Draft----------------------------------------------//
 
   public function getDraft($noind){
-    $draft = "SELECT pc.lm_tipe_cuti_id, (SELECT tipe_cuti FROM lm.lm_tipe_cuti WHERE lm_tipe_cuti_id = pc.lm_tipe_cuti_id) as tipe_cuti, pc.tgl_pengajuan, pc.lm_pengajuan_cuti, pc.noind || ' - ' || emp.employee_name as nama, jc.jenis_cuti, kp.keperluan as kp, pc.status, pc.tanggal_status, pc.keperluan
+    $draft = "SELECT pc.lm_tipe_cuti_id, (SELECT tipe_cuti FROM lm.lm_tipe_cuti WHERE lm_tipe_cuti_id = pc.lm_tipe_cuti_id) as tipe_cuti, pc.tgl_pengajuan, pc.lm_pengajuan_cuti, pc.noind || ' - ' || emp.employee_name as nama, jc.jenis_cuti, kp.keperluan as kp, pc.status, pc.tanggal_status, pc.keperluan,
+    (SELECT alasan FROM lm.lm_approval_cuti where status = '3' and lm_pengajuan_cuti_id=pc.lm_pengajuan_cuti) as alasan
               FROM lm.lm_pengajuan_cuti pc
                 inner join lm.lm_jenis_cuti jc
                   on pc.lm_jenis_cuti_id = jc.lm_jenis_cuti_id
@@ -241,7 +242,7 @@ class M_permohonancuti extends CI_MODEL {
   }
 
   public function getDetailPengajuan($id){
-    $detail = "SELECT pc.lm_pengajuan_cuti as id_cuti, pc.noind, emp.employee_name as nama ,pc.keterangan, tc.tipe_cuti as tipe, pc.tgl_pengajuan, jc.jenis_cuti as jenis, pc.lm_jenis_cuti_id as jenis_id, kp.keperluan kp, pc.keperluan , pc.status , pc.tanggal_status, pc.alamat
+    $detail = "SELECT pc.lm_pengajuan_cuti as id_cuti, pc.noind, emp.employee_name as nama ,pc.keterangan, tc.tipe_cuti as tipe, pc.tgl_pengajuan, jc.jenis_cuti as jenis, pc.lm_jenis_cuti_id as jenis_id, kp.keperluan kp, pc.keperluan , pc.status , pc.tanggal_status
               FROM lm.lm_pengajuan_cuti pc
                 inner join lm.lm_jenis_cuti jc
                   on pc.lm_jenis_cuti_id = jc.lm_jenis_cuti_id
@@ -328,7 +329,6 @@ class M_permohonancuti extends CI_MODEL {
                      (SELECT emp.employee_name FROM er.er_employee_all emp WHERE emp.employee_code = pc.noind) nama,
                      (SELECT min(tgl.tgl_pengambilan) FROM lm.lm_pengajuan_cuti_tgl_ambil tgl WHERE tgl.lm_pengajuan_cuti_id = '$id_cuti') tgl,
                      (SELECT ap.approver FROM lm.lm_approval_cuti ap WHERE ap.level = '1' AND ap.lm_pengajuan_cuti_id = '$id_cuti') atasan,
-                     pc.alamat,
                      pc.tgl_hpl
               FROM lm.lm_pengajuan_cuti pc
               WHERE pc.lm_pengajuan_cuti = '$id_cuti'";
@@ -343,6 +343,14 @@ class M_permohonancuti extends CI_MODEL {
     $atasan = $cuti['0']['atasan'];
     $query3 = "SELECT employee_name FROM er.er_employee_all WHERE employee_code = '$atasan'";
     $atasan = $this->db->query($query3)->row()->employee_name;
+
+    $real_alamat = "SELECT CASE
+                              WHEN POSITION(desa in alamat) > '0' THEN substr(alamat, 0, POSITION(desa in alamat)) || desa ||', '||kec||', '||kab
+                              ELSE alamat||', '||desa||', '||kec||', '||kab
+                            END as alamat
+                    FROM hrd_khs.tpribadi
+                    WHERE noind = '$noind'";
+    $real_alamat = $this->personalia->query($real_alamat)->row()->alamat;
 
     $bulanId = array(
       '0'  => '-',
@@ -372,12 +380,12 @@ class M_permohonancuti extends CI_MODEL {
 
 
     $data = array();
-    $data['noind']   = $cuti['0']['noind'];
+    $data['noind']   = $noind;
     $data['nama']    = $cuti['0']['nama'];
     $data['tgl']     = $tglambil;
     $data['tgl_hpl'] = $tglHpl;
     $data['atasan']  = $atasan;
-    $data['alamat']  = $cuti['0']['alamat'];
+    $data['alamat']  = $real_alamat;
     $data['seksi']   = $personal['0']['seksi'];
     $data['now']     = $tglNow;
     return $data;

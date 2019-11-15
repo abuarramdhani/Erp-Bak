@@ -66,7 +66,7 @@
         <br />
         <br />
         <div style="width:1200px;">
-          <div style="width:200px;float:left;">
+          <div style="width:210px;float:left;">
               <p style="line-height: 1.7;">
                 Yogyakarta, <?php echo $data['now'] ?> <br>
                 Hormat Saya,

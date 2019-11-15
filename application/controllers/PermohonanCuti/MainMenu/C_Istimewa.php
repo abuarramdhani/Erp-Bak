@@ -105,11 +105,9 @@ class C_Istimewa extends CI_Controller
 			$hpl = $_POST['txtPerkiraanLahir'];
 			$before = $_POST['txtSebelumLahir'];
 			$after = $_POST['txtSetelahLahir'];
-			$alamat = $_POST['txtAlamat'];
 			$tgl_hpl = date('Y-m-d',strtotime($hpl));
 		}else{
 			$tgl_hpl = NULL;
-			$alamat = NULL;
 		}
 
 		switch ($jenisCuti) {
@@ -140,6 +138,9 @@ class C_Istimewa extends CI_Controller
 			case '12':
 			$keterangan = "CPP";
 			break;
+			case '14':
+ 			$keterangan = "CK";
+ 			break;
 			default:
 			$keterangan = "-";
 			break;
@@ -156,8 +157,7 @@ class C_Istimewa extends CI_Controller
 			'lm_tipe_cuti_id' => '2',
 			'lm_jenis_cuti_id' => $jenisCuti,
 			'lm_keperluan_id' => NULL,
-			'tgl_hpl' => $tgl_hpl,
-			'alamat' => $alamat
+			'tgl_hpl' => $tgl_hpl
 		);
 
 		$this->M_permohonancuti->insertCuti($pengajuan);
