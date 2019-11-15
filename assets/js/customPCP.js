@@ -535,14 +535,16 @@ $(document).ready(function() {
           title: "Apakah anda yakin ?",
           text: "Untuk Reject",
           type: 'question',
-          html : "Alasan : <input type='text' id='alasanReject'>",
+          input: 'textarea',
           showCancelButton: true,
           confirmButtonColor: '#3085d6',
           cancelButtonColor: '#d33',
           confirmButtonText: 'Ya'
+          ,
+          cancelButtonText: 'Batal'
         }).then((result) => {
           if (result.value) {
-            let alasanReject = $('#alasanReject')
+            let alasanReject = $('.swal2-textarea')
             if(alasanReject.val() == ''){
               alert("alasan harus diisi")
             }else{
