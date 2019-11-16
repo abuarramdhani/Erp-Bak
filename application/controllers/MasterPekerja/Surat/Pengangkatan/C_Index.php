@@ -765,7 +765,7 @@ class C_Index extends CI_Controller
 			$mail->Username = 'no-reply@quick.com';
 			$mail->Password = "123456";
 			$mail->setFrom('noreply@quick.co.id', 'Notifikasi Pindah Finger');
-			$mail->addAddress('alfansyah_nori_p@quick.com', 'Notifikasi Pindah Finger');
+			$mail->addAddress('kasie_ict_hrd@quick.com', 'Notifikasi Pindah Finger');
 			$mail->Subject = 'Notifikasi Pindah Finger';
 			$mail->msgHTML("
 				<h4>Berhasil Insert tb_user_access</h4><br>
