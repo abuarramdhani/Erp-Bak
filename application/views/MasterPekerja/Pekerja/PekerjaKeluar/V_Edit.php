@@ -294,7 +294,7 @@
 							</div>
 							<div class="col-lg-10">
 								<input type="text" name="txt_internalmail" id="PK_txt_internalmail" class="form-control" 
-								value="<?php echo $data['internal_mail'] ?>" >
+								value="<?php echo $data['email_internal'] ?>" >
 							</div>													
 						</div>
 						<div class="row" style="margin-top: 10px;">
@@ -302,7 +302,7 @@
 								<label for="PK_txt_externalmail">External Mail </label>
 							</div>
 							<div class="col-lg-10">
-								<input type="text" name="txt_externalmail" id="PK_txt_externalmail" class="form-control" value="<?php echo $data['external_mail'] ?>">
+								<input type="text" name="txt_externalmail" id="PK_txt_externalmail" class="form-control" value="<?php echo $data['email'] ?>">
 							</div>													
 						</div>
 						<div class="row" style="margin-top: 10px;">
