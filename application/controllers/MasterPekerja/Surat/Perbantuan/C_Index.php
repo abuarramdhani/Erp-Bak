@@ -526,7 +526,7 @@ class C_Index extends CI_Controller
 			$this->M_perbantuan->inputFingerPerbantuan($inputFingerPerbantuan);
 			$inputFingerPindah = $this->M_perbantuan->inputFingerPerbantuan($inputFingerPerbantuan);
 			if($inputFingerPindah > 0){
-				$this->kirim_email_ict($noind_baru,$nomor_induk,substr($finger_awal, 7),substr($finger_akhir, 7),'MUTASI');
+				$this->kirim_email_ict($noind_baru,$nomor_induk,substr($finger_awal, 7),substr($finger_akhir, 7),'PERBANTUAN');
 			}
 			
 		redirect('MasterPekerja/Surat/SuratPerbantuan');
@@ -711,7 +711,7 @@ class C_Index extends CI_Controller
 			$this->M_perbantuan->inputFingerPerbantuan($inputFingerPerbantuan);
 			$inputFingerPindah = $this->M_perbantuan->inputFingerPerbantuan($inputFingerPerbantuan);
 			if($inputFingerPindah > 0){
-				$this->kirim_email_ict($noind_baru,$nomor_induk,substr($finger_awal, 7),substr($finger_akhir, 7),'MUTASI');
+				$this->kirim_email_ict($noind_baru,$nomor_induk,substr($finger_awal, 7),substr($finger_akhir, 7),'PERBANTUAN');
 			}
 		}else{
 			$updateFingerSuratPerbantuan	= 	array
@@ -725,7 +725,7 @@ class C_Index extends CI_Controller
 
 			$updateFingerPindah =  $this->M_perbantuan->updateFingerSuratPerbantuan($updateFingerSuratPerbantuan, $nomor_surat, $kodeSurat, $tanggal_cetak_asli);
 			if($updateFingerPindah > 0){
-				$this->kirim_email_ict($noind_baru,$nomor_induk,substr($finger_awal, 7),substr($finger_akhir, 7),'MUTASI');
+				$this->kirim_email_ict($noind_baru,$nomor_induk,substr($finger_awal, 7),substr($finger_akhir, 7),'PERBANTUAN');
 			}
 		}
 		redirect('MasterPekerja/Surat/SuratPerbantuan');

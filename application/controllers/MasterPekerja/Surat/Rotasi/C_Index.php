@@ -514,7 +514,7 @@ class C_Index extends CI_Controller
 			$this->M_Rotasi->inputFingerRotasi($inputFingerRotasi);
 			$inputFingerPindah = $this->M_Rotasi->inputFingerRotasi($inputFingerRotasi);
 			if($inputFingerPindah > 0){
-				$this->kirim_email_ict($noind_baru,$nomor_induk,substr($finger_awal, 7),substr($finger_akhir, 7),'MUTASI');
+				$this->kirim_email_ict($noind_baru,$nomor_induk,substr($finger_awal, 7),substr($finger_akhir, 7),'ROTASI');
 			}
 		redirect('MasterPekerja/Surat/SuratRotasi');
 	}
@@ -697,7 +697,7 @@ class C_Index extends CI_Controller
 		$this->M_Rotasi->inputFingerRotasi($inputFingerRotasi);
 			$inputFingerPindah = $this->M_Rotasi->inputFingerRotasi($inputFingerRotasi);
 			if($inputFingerPindah > 0){
-				$this->kirim_email_ict($noind_baru,$nomor_induk,substr($finger_awal, 7),substr($finger_akhir, 7),'MUTASI');
+				$this->kirim_email_ict($noind_baru,$nomor_induk,substr($finger_awal, 7),substr($finger_akhir, 7),'ROTASI');
 			}
 		}else{
 			$updateFingerSuratRotasi	= 	array
@@ -712,7 +712,7 @@ class C_Index extends CI_Controller
 			$this->M_Rotasi->updateFingerSuratRotasi($updateFingerSuratRotasi, $nomor_surat, $kodeSurat, $tanggal_cetak_asli);
 			$updateFingerPindah =  $this->M_Rotasi->updateFingerSuratRotasi($updateFingerSuratRotasi, $nomor_surat, $kodeSurat, $tanggal_cetak_asli);
 			if($updateFingerPindah > 0){
-				$this->kirim_email_ict($noind_baru,$nomor_induk,substr($finger_awal, 7),substr($finger_akhir, 7),'MUTASI');
+				$this->kirim_email_ict($noind_baru,$nomor_induk,substr($finger_awal, 7),substr($finger_akhir, 7),'ROTASI');
 			}
 		}
 		redirect('MasterPekerja/Surat/SuratRotasi');
