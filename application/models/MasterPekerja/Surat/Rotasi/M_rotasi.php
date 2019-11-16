@@ -682,6 +682,7 @@ and tahun_surat = '$tahun' and bulan_surat = '$bulan'";
 		public function inputFingerRotasi($inputFingerRotasi)
 		{
 			$this->personalia->insert('"Surat".tpindah_finger', $inputFingerRotasi);
+			return $this->personalia->affected_rows();
 		}
 
 		public function editFinger($no_surat_decode)
@@ -699,6 +700,7 @@ and tahun_surat = '$tahun' and bulan_surat = '$bulan'";
 			$this->personalia->where('no_surat', $nomor_surat);
 			$this->personalia->where('kode', $kodeSurat);
 			$this->personalia->update('"Surat".tpindah_finger', $updateFingerSuratRotasi);
+			return $this->personalia->affected_rows();
 	 	}
 
 	 	public function deleteArsipSuratRotasi($bulan_surat, $tahun, $kode_surat, $no_surat)
