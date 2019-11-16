@@ -637,6 +637,7 @@
 	 	public function inputFingerPengangkatan($inputFingerPengangkatan)
 		{
 			$this->personalia->insert('"Surat".tpindah_finger', $inputFingerPengangkatan);
+			return $this->personalia->affected_rows();
 		}
 
 		public function editFinger($no_surat_decode)
@@ -654,6 +655,7 @@
 			$this->personalia->where('no_surat', $nomor_surat);
 			$this->personalia->where('kode', $kodeSurat);
 			$this->personalia->update('"Surat".tpindah_finger', $updateFingerSuratPengangkatan);
+			return $this->personalia->affected_rows();
 	 	}
 
 	 	public function deleteFingerSuratPengangkatan($no_surat_decode)

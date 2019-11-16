@@ -504,7 +504,10 @@ class C_Index extends CI_Controller
 
 				);
 			
-		$this->M_pengangkatan->inputFingerPengangkatan($inputFingerPengangkatan);
+			$inputFingerPindah = $this->M_pengangkatan->inputFingerPengangkatan($inputFingerPengangkatan);
+			if($inputFingerPindah > 0){
+				$this->kirim_email_ict($noind_baru,$nomor_induk,substr($finger_awal, 7),substr($finger_akhir, 7),'MUTASI');
+			}
 
 			if ($kode > 0) {
 				redirect('MasterPekerja/Surat/SuratPengangkatanNonStaff');
@@ -693,7 +696,10 @@ class C_Index extends CI_Controller
 				
 				);
 			
-		$this->M_pengangkatan->inputFingerPengangkatan($inputFingerPengangkatan);
+			$inputFingerPindah = $this->M_pengangkatan->inputFingerPengangkatan($inputFingerPengangkatan);
+			if($inputFingerPindah > 0){
+				$this->kirim_email_ict($noind_baru,$nomor_induk,substr($finger_awal, 7),substr($finger_akhir, 7),'MUTASI');
+			}
 		}else{
 			$updateFingerSuratPengangkatan	= 	array
 			(
@@ -705,6 +711,10 @@ class C_Index extends CI_Controller
 			);
 
 			$this->M_pengangkatan->updateFingerSuratPengangkatan($updateFingerSuratPengangkatan, $nomor_surat, $kodeSurat, $tanggal_cetak_asli);
+			$updateFingerPindah =  this->M_pengangkatan->updateFingerSuratPengangkatan($updateFingerSuratPengangkatan, $nomor_surat, $kodeSurat, $tanggal_cetak_asli);
+			if($updateFingerPindah > 0){
+				$this->kirim_email_ict($noind_baru,$nomor_induk,substr($finger_awal, 7),substr($finger_akhir, 7),'MUTASI');
+			}
 		}
 
 		if (substr($nomor_induk, 0,1) == 'E') {
@@ -734,4 +744,47 @@ class C_Index extends CI_Controller
 		echo '<script>window.history.back();</script>';
 
 	}
+
+
+	function kirim_email_ict($noind_baru,$nomor_induk,$finger_awal,$finger_akhir,$jenis_surat){
+			$this->load->library('PHPMailerAutoload');
+			$mail = new PHPMailer;
+			$mail->isSMTP();
+			$mail->SMTPDebug = 0;
+			$mail->Debugoutput = 'html';
+			$mail->Host = 'm.quick.com';
+			$mail->Port = 465;
+			$mail->SMTPAuth = true;
+			$mail->SMTPSecure = 'ssl';
+			$mail->SMTPOptions = array(
+			'ssl' => array(
+			'verify_peer' => false,
+			'verify_peer_name' => false,
+			'allow_self_signed' => true
+			));
+			$mail->Username = 'no-reply@quick.com';
+			$mail->Password = "123456";
+			$mail->setFrom('noreply@quick.co.id', 'Notifikasi Pindah Finger');
+			$mail->addAddress('alfansyah_nori_p@quick.com', 'Notifikasi Pindah Finger');
+			$mail->Subject = 'Notifikasi Pindah Finger';
+			$mail->msgHTML("
+				<h4>Berhasil Insert tb_user_access</h4><br>
+				Dengan detail sebagai berikut : <br> <br>
+
+				<b>Nomor Induk Baru</b> : $noind_baru<br>
+				<b>Nomor Induk</b> : $nomor_induk<br>
+				<b>Lokasi Finger Awal</b> : $finger_awal <br>
+				<b>Lokasi Finger Akhir</b> : $finger_akhir <br>
+				<b>Jenis Surat</b> : $jenis_surat <br><br>
+
+				Atas perhatiannya terima kasih.
+				");
+			//Replace the plain text body with one created manually
+			//send the message, check for errors
+			if (!$mail->send()) {
+				echo "Mailer Error: " . $mail->ErrorInfo;
+			} else {
+				//echo "Message sent!";
+			}
+		}
 }
