@@ -77,9 +77,11 @@ class C_Index extends CI_Controller {
 		$noind 					    = $this->input->post('slc_Pekerja');
 		$keluar 				    = $this->input->post('rd_keluar');
 		$internal_mail 			= $this->input->post('txt_internalmail');
+		/*
 		$telkomsel_mygroup 	= $this->input->post('txt_telkomsel_mygroup');
 		$external_mail 			= $this->input->post('txt_external_mail');
 		$pidgin_account 		= $this->input->post('txt_pidgin_account');
+		*/
 
 		$pekerja 	        	= $this->M_pekerjakeluar->dataPekerja($noind,$keluar);
 		$kontak 		        = $this->M_pekerjakeluar->kontakPekerja($noind);
@@ -127,17 +129,23 @@ class C_Index extends CI_Controller {
 									'bidang' 	          => $seksi[0]['bidang'],
 									'dept' 		          => $seksi[0]['dept'],
 
-									'internal_mail' 	  => '',
+									/*'internal_mail' 	  => '',
 									'telkomsel_mygroup' => '',
 									'external_mail' 	  => '',
 									'pidgin_account' 	  => '',
+									*/
 
 									'tglkeluar'         => $pekerja[0]['tglkeluar'],
 									'sebabklr'          => $pekerja[0]['sebabklr'],
 									'uk_baju'           => $pekerja[0]['uk_baju'],
 									'uk_celana'         => $pekerja[0]['uk_celana'],
 									'uk_sepatu'         => $pekerja[0]['uk_sepatu'],
-									'status_diangkat'   => $pekerja[0]['status_diangkat']
+									'status_diangkat'   => $pekerja[0]['status_diangkat'],
+									'email'             => $pekerja[0]['email'],
+									'email_internal'    => $pekerja[0]['email_internal'],
+									'telkomsel_mygroup' => $pekerja[0]['telkomsel_mygroup'],
+									'pidgin_account'    => $pekerja[0]['pidgin_account']
+
 								);
 		}else{
 		$data['data'] 	= array(
@@ -169,17 +177,22 @@ class C_Index extends CI_Controller {
 									'bidang' 	          => $seksi[0]['bidang'],
 									'dept' 		          => $seksi[0]['dept'],
 
-									'internal_mail' 	  => $kontak[0]['internal_mail'],
+									/*'internal_mail' 	  => $kontak[0]['internal_mail'],
 									'telkomsel_mygroup' => $kontak[0]['telkomsel_mygroup'],
 									'external_mail' 	  => $kontak[0]['external_mail'],
 									'pidgin_account' 	  => $kontak[0]['pidgin_account'],
+									*/
 
 									'tglkeluar'         => $pekerja[0]['tglkeluar'],
 									'sebabklr' 	        => $pekerja[0]['sebabklr'],
 									'uk_baju' 	        => $pekerja[0]['uk_baju'],
 									'uk_celana'         => $pekerja[0]['uk_celana'],
 									'uk_sepatu'         => $pekerja[0]['uk_sepatu'],
-									'status_diangkat'   => $pekerja[0]['status_diangkat']
+									'status_diangkat'   => $pekerja[0]['status_diangkat'],
+									'email'             => $pekerja[0]['email'],
+									'email_internal'    => $pekerja[0]['email_internal'],
+									'telkomsel_mygroup' => $pekerja[0]['telkomsel_mygroup'],
+									'pidgin_account'    => $pekerja[0]['pidgin_account']
 								);
 		}
 
@@ -256,19 +269,23 @@ class C_Index extends CI_Controller {
 								'uk_celana' => $this->input->post('txt_ukurancelana'),
 								'uk_sepatu' => $this->input->post('txt_ukuransepatu'),
   								'kd_pkj' => $this->input->post('txt_pekerjaanPekerja'),
-								'status_diangkat'=>$this->input->post('rd_diangkat')
+								'status_diangkat'=>$this->input->post('rd_diangkat'),
+								'email_internal' 	=> $this->input->post('txt_internalmail'),
+								'telkomsel_mygroup' => $this->input->post('txt_telkomselmygroup'),
+								'email' 	=> $this->input->post('txt_externalmail'),
+								'pidgin_account' 	=> $this->input->post('txt_pidginaccount')
 							);
 
-			$mail 		= array(
+			/*$mail 		= array(
 								'internal_mail' 	=> $this->input->post('txt_internalmail'),
 								'telkomsel_mygroup' => $this->input->post('txt_telkomselmygroup'),
 								'external_mail' 	=> $this->input->post('txt_externalmail'),
 								'pidgin_account' 	=> $this->input->post('txt_pidginaccount'),
 
-								);
+								);*/
 
 		$this->M_pekerjakeluar->updateDataPekerja($data,$noind);
-		$this->M_pekerjakeluar->updateDataPekerjaa($mail,$noind);
+		/*$this->M_pekerjakeluar->updateDataPekerjaa($mail,$noind);*/
 		$history 	= array(
 							'noind' 		=> $this->input->post('txt_noindukLama'),
 							'aktifitas' 	=> 'UPDATE',
@@ -326,19 +343,23 @@ class C_Index extends CI_Controller {
 								'uk_celana' => $this->input->post('txt_ukurancelana'),
 								'uk_sepatu' => $this->input->post('txt_ukuransepatu'),
 								'kd_pkj' => $this->input->post('txt_pekerjaanPekerja'),
-								'status_diangkat'=>$this->input->post('rd_diangkat')
+								'status_diangkat'=>$this->input->post('rd_diangkat'),
+								'email_internal' 	=> $this->input->post('txt_internalmail'),
+								'telkomsel_mygroup' => $this->input->post('txt_telkomselmygroup'),
+								'email' 	=> $this->input->post('txt_externalmail'),
+								'pidgin_account' 	=> $this->input->post('txt_pidginaccount')
 							);
 
-			$mail 		= array(
+			/*$mail 		= array(
 								'internal_mail' 	=> $this->input->post('txt_internalmail'),
 								'telkomsel_mygroup' => $this->input->post('txt_telkomselmygroup'),
 								'external_mail' 	=> $this->input->post('txt_externalmail'),
 								'pidgin_account' 	=> $this->input->post('txt_pidginaccount'),
 
-								);
+								);*/
 
 		$this->M_pekerjakeluar->updateDataPekerja($data,$noind);
-		$this->M_pekerjakeluar->updateDataPekerjaa($mail,$noind);
+		/*$this->M_pekerjakeluar->updateDataPekerjaa($mail,$noind);*/
 		$history 	= array(
 							'noind' 		=> $this->input->post('txt_noindukLama'),
 							'aktifitas' 	=> 'UPDATE',
