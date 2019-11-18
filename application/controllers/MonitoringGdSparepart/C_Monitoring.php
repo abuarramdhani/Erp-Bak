@@ -43,8 +43,15 @@ class C_Monitoring extends CI_Controller
 		$data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id);
 
 		// menampilkan semua data
-		$dataTampil = $this->M_monitoring->tampilsemua();
-		// echo "<pre>"; print_r($dataTampil); exit();
+		$date = date('d/m/Y', strtotime('-1 days'));
+		$date2 = date('d/m/Y', strtotime('+1 days'));
+		// $date2 = date('d/m/Y');
+		$dataTampil = $this->M_monitoring->tampilsemua($date, $date2);
+		// echo "<pre>"; 
+		// print_r($dataTampil); 
+		// echo "<br>"; 
+		// print_r($date2); 
+		// exit();
 		$i=0;
 		$no_document= array();
 		foreach ($dataTampil as $tampil) {
@@ -187,14 +194,16 @@ class C_Monitoring extends CI_Controller
 			$data['value'] = $array_terkelompok;
 
 		}else{
-			$dataGET = $this->M_monitoring->getSearch($no_document, $jenis_dokumen,  $tglAwal, $tglAkhir, $pic, $item);
+			$dataGET = $this->M_monitoring->getSearch($no_document, $jenis_dokumen, $tglAwal, $tglAkhir, $pic, $item);				
+			// echo "<pre>"; 
+			// print_r($dataGET); exit();
 			// pengelompokan data
 			$array_sudah = array();
 			$array_terkelompok = array();
 			foreach ($dataGET as $key => $value) {
 				if (in_array($value['NO_DOCUMENT'], $array_sudah)) {
 					
-				}else if ($value['ITEM'] == $item || $value['NO_DOCUMENT'] == $no_document){	
+				}else {	
 					array_push($array_sudah, $value['NO_DOCUMENT']);
 					if ($no_document == 'NO_DOCUMENT') {
 						$getBody = $dataGET;
@@ -213,7 +222,7 @@ class C_Monitoring extends CI_Controller
 							$status = 'Belum terlayani';
 						}
 					}else {
-						$getBody = $dataGET;
+						$getBody = $this->M_monitoring->getSearch($value['NO_DOCUMENT'], $jenis_dokumen,  $tglAwal, $tglAkhir, $pic, $item);
 						if ($value['JENIS_DOKUMEN'] == 'IO') {
 							$getKet = $this->M_monitoring->getKet($value['NO_DOCUMENT']);
 						}else if ($value['JENIS_DOKUMEN'] == 'LPPB') {
@@ -232,61 +241,62 @@ class C_Monitoring extends CI_Controller
 					$array_terkelompok[$value['NO_DOCUMENT']]['header'] = $value; 
 					$array_terkelompok[$value['NO_DOCUMENT']]['header']['statusket'] = $status; 
 					$array_terkelompok[$value['NO_DOCUMENT']]['body'] = $getBody; 
-				}else{
-					array_push($array_sudah, $value['NO_DOCUMENT']);	
-					if ($search == 'tanggal') {
-						$getBody = $this->M_monitoring->getBodyTanggal($value['NO_DOCUMENT'], $tglAwal, $tglAkhir);
-						if ($value['JENIS_DOKUMEN'] == 'IO') {
-							$getKet = $this->M_monitoring->getKet($value['NO_DOCUMENT']);
-						}else if ($value['JENIS_DOKUMEN'] == 'LPPB') {
-							$getKet = $this->M_monitoring->getKetLPPB($value['NO_DOCUMENT']);
-						}else if($value['JENIS_DOKUMEN'] == 'KIB'){
-							$getKet = $this->M_monitoring->getKetKIB($value['NO_DOCUMENT']);
-						}
-						$hitung_bd = count($getBody);
-						$hitung_ket = count($getKet);
-						if ($hitung_bd == $hitung_ket) {
-							$status= 'Sudah terlayani';
-						} else {
-							$status = 'Belum terlayani';
-						}
-					}else if ($search == 'pic') {
-						$getBody = $this->M_monitoring->getBodyPIC($value['NO_DOCUMENT'], $pic);
-						if ($value['JENIS_DOKUMEN'] == 'IO') {
-							$getKet = $this->M_monitoring->getKet($value['NO_DOCUMENT']);
-						}else if ($value['JENIS_DOKUMEN'] == 'LPPB') {
-							$getKet = $this->M_monitoring->getKetLPPB($value['NO_DOCUMENT']);
-						}else if($value['JENIS_DOKUMEN'] == 'KIB'){
-							$getKet = $this->M_monitoring->getKetKIB($value['NO_DOCUMENT']);
-						}
-						$hitung_bd = count($getBody);
-						$hitung_ket = count($getKet);
-						if ($hitung_bd == $hitung_ket) {
-							$status= 'Sudah terlayani';
-						} else {
-							$status = 'Belum terlayani';
-						}
-					}else{
-						$getBody = $this->M_monitoring->getSearch($value['NO_DOCUMENT'], $no_document, $jenis_dokumen, $tglAwal, $tglAkhir, $pic, $item);
-						if ($value['JENIS_DOKUMEN'] == 'IO') {
-							$getKet = $this->M_monitoring->getKet($value['NO_DOCUMENT']);
-						}else if ($value['JENIS_DOKUMEN'] == 'LPPB') {
-							$getKet = $this->M_monitoring->getKetLPPB($value['NO_DOCUMENT']);
-						}else if($value['JENIS_DOKUMEN'] == 'KIB'){
-							$getKet = $this->M_monitoring->getKetKIB($value['NO_DOCUMENT']);
-						}
-						$hitung_bd = count($getBody);
-						$hitung_ket = count($getKet);
-						if ($hitung_bd == $hitung_ket) {
-							$status= 'Sudah terlayani';
-						} else {
-							$status = 'Belum terlayani';
-						}
-					}
-					$array_terkelompok[$value['NO_DOCUMENT']]['header'] = $value; 
-					$array_terkelompok[$value['NO_DOCUMENT']]['header']['statusket'] = $status; 
-					$array_terkelompok[$value['NO_DOCUMENT']]['body'] = $getBody; 
-					}
+				}
+				// else{
+				// 	array_push($array_sudah, $value['NO_DOCUMENT']);	
+				// 	if ($search == 'tanggal') {
+				// 		$getBody = $this->M_monitoring->getBodyTanggal($value['NO_DOCUMENT'], $tglAwal, $tglAkhir);
+				// 		if ($value['JENIS_DOKUMEN'] == 'IO') {
+				// 			$getKet = $this->M_monitoring->getKet($value['NO_DOCUMENT']);
+				// 		}else if ($value['JENIS_DOKUMEN'] == 'LPPB') {
+				// 			$getKet = $this->M_monitoring->getKetLPPB($value['NO_DOCUMENT']);
+				// 		}else if($value['JENIS_DOKUMEN'] == 'KIB'){
+				// 			$getKet = $this->M_monitoring->getKetKIB($value['NO_DOCUMENT']);
+				// 		}
+				// 		$hitung_bd = count($getBody);
+				// 		$hitung_ket = count($getKet);
+				// 		if ($hitung_bd == $hitung_ket) {
+				// 			$status= 'Sudah terlayani';
+				// 		} else {
+				// 			$status = 'Belum terlayani';
+				// 		}
+				// 	}else if ($search == 'pic') {
+				// 		$getBody = $this->M_monitoring->getBodyPIC($value['NO_DOCUMENT'], $pic);
+				// 		if ($value['JENIS_DOKUMEN'] == 'IO') {
+				// 			$getKet = $this->M_monitoring->getKet($value['NO_DOCUMENT']);
+				// 		}else if ($value['JENIS_DOKUMEN'] == 'LPPB') {
+				// 			$getKet = $this->M_monitoring->getKetLPPB($value['NO_DOCUMENT']);
+				// 		}else if($value['JENIS_DOKUMEN'] == 'KIB'){
+				// 			$getKet = $this->M_monitoring->getKetKIB($value['NO_DOCUMENT']);
+				// 		}
+				// 		$hitung_bd = count($getBody);
+				// 		$hitung_ket = count($getKet);
+				// 		if ($hitung_bd == $hitung_ket) {
+				// 			$status= 'Sudah terlayani';
+				// 		} else {
+				// 			$status = 'Belum terlayani';
+				// 		}
+				// 	}else{
+				// 		$getBody = $this->M_monitoring->getSearch($value['NO_DOCUMENT'], $no_document, $jenis_dokumen, $tglAwal, $tglAkhir, $pic, $item);
+				// 		if ($value['JENIS_DOKUMEN'] == 'IO') {
+				// 			$getKet = $this->M_monitoring->getKet($value['NO_DOCUMENT']);
+				// 		}else if ($value['JENIS_DOKUMEN'] == 'LPPB') {
+				// 			$getKet = $this->M_monitoring->getKetLPPB($value['NO_DOCUMENT']);
+				// 		}else if($value['JENIS_DOKUMEN'] == 'KIB'){
+				// 			$getKet = $this->M_monitoring->getKetKIB($value['NO_DOCUMENT']);
+				// 		}
+				// 		$hitung_bd = count($getBody);
+				// 		$hitung_ket = count($getKet);
+				// 		if ($hitung_bd == $hitung_ket) {
+				// 			$status= 'Sudah terlayani';
+				// 		} else {
+				// 			$status = 'Belum terlayani';
+				// 		}
+				// 	}
+					// $array_terkelompok[$value['NO_DOCUMENT']]['header'] = $value; 
+					// $array_terkelompok[$value['NO_DOCUMENT']]['header']['statusket'] = $status; 
+					// $array_terkelompok[$value['NO_DOCUMENT']]['body'] = $getBody; 
+					// }
 				}
 			$data['value'] = $array_terkelompok;
 		}
