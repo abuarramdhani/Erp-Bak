@@ -21,17 +21,19 @@ $(document).ready(function(){
         })
     })
 
-    $('.tblRekapLppb').DataTable({
-        "scrollX": true,
-        "columnDefs": [
-            { "width": "30%", "targets": 2, "visible": false }]
-    });
-
     $('.datepickRekap').datepicker({
         autoclose: true,
         todayHighlight: true,
         dateFormat: 'yy-mm-dd',
     });
+
+    $('.tblRekapLppb').DataTable({
+        "scrollX": true,
+        "columnDefs": [
+            { "width": "30%", "targets": 2, "visible" : false }],
+        "orderable": false,
+    });
+
 
 });
 
