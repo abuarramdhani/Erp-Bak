@@ -36,7 +36,7 @@
 <section class="content">
 	<div
 		class="loader"
-		style="	position: fixed; 
+		style="	position: fixed;
 				width: 90%;
 				height: 90%;
 				z-index: 999;
@@ -64,7 +64,11 @@
 						<th style="text-align:center; width: 10%">MIN</th>
 						<th style="text-align:center; width: 10%">MAX</th>
 						<th style="text-align:center; width: 15%">ROP</th>
-						<th style="text-align:center; width: 10%">LIMIT</th>
+            <?php
+              if ($org == 'ODM') {
+                echo '<th style="text-align:center; width: 10%">LIMIT JOB</th>';
+              }
+            ?>
 						<th style="display:none">ACTION</th>
 					</thead>
 					<tbody>
@@ -78,7 +82,13 @@
 							<td style="text-align:center" class="min"><?php echo $mm['MIN']; ?></td>
 							<td style="text-align:center" class="max"><?php echo $mm['MAX']; ?></td>
 							<td style="text-align:center" class="rop"><?php echo $mm['ROP']; ?></td>
+              <?php
+              if ($org == 'ODM') {
+              ?>
 							<td style="text-align:center" class="limit"><?php echo $mm['LIMITJOB']; ?></td>
+              <?php
+              }
+               ?>
 							<td style="display:none">
 								<a class="btn btn-warning btn-xs" title="Edit" href="<?php echo base_url(); ?>SettingMinMax/EditbyRoute<?php echo '/EditItem/'.$org.'/'.$routeaktif.'/'.$mm['SEGMENT1'] ?>"><span class="icon-edit"></span> Edit</a>
 							</td>
