@@ -2,15 +2,15 @@
 	<script src="<?php echo base_url('assets/plugins/dataTables/dataTables.bootstrap.js');?>"></script>
      <script>
          $(document).ready(function () {
-            $('.tblRkapLppb').dataTable({
-                "scrollX": true,
-            });
-            
             $('.datepickRekap').datepicker({
                 autoclose: true,
                 todayHighlight: true,
                 dateFormat: 'yy-mm-dd',
             });
+            $('.tblRkapLppb').dataTable({
+                "scrollX": true,
+            });
+            
          });
     </script>
 <table class="table table-striped table-bordered table-responsive table-hover text-left tblRkapLppb" id="" style="font-size:14px;">
