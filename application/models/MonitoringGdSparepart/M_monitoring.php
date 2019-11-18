@@ -6,13 +6,14 @@ class M_monitoring extends CI_Model {
         parent::__construct();
     }
 
-    public function tampilsemua() {
+    public function tampilsemua($date, $date2) {
         $oracle = $this->load->database('oracle', true);
         $sql ="
-                SELECT NO_DOCUMENT, JENIS_DOKUMEN, ITEM, DESCRIPTION,
-                        UOM, QTY, CREATION_DATE, to_char(CREATION_DATE, 'hh24:mi:ss') as JAM_INPUT,
-                        STATUS, JML_OK, JML_NOT_OK, PIC, KETERANGAN 
-                from KHS_MONITORING_GD_SP
+                SELECT NO_DOCUMENT, JENIS_DOKUMEN, ITEM, DESCRIPTION, 
+                UOM, QTY, CREATION_DATE, to_char(CREATION_DATE, 'hh24:mi:ss') as JAM_INPUT, 
+                STATUS, JML_OK, JML_NOT_OK, PIC, KETERANGAN 
+                from KHS_MONITORING_GD_SP 
+                where creation_date BETWEEN TO_DATE( '$date', 'DD/MM/YYYY' ) AND TO_DATE( '$date2', 'DD/MM/YYYY' ) 
                 order by CREATION_DATE DESC";
         $query = $oracle->query($sql);
         return $query->result_array();
@@ -41,7 +42,7 @@ class M_monitoring extends CI_Model {
                 order by CREATION_DATE DESC";
         $query = $oracle->query($sql);
         return $query->result_array();
-        // return $sql;
+        // echo $sql;
     }
 
     public function getExport($jenis_dokumen, $tglAwal, $tglAkhir) {
@@ -58,33 +59,33 @@ class M_monitoring extends CI_Model {
         // echo $sql;
     }
 
-    public function getBodyTanggal($no_document, $tglAwal, $tglAkhir) {
-        $oracle = $this->load->database('oracle', true);
-        $sql ="SELECT NO_DOCUMENT, JENIS_DOKUMEN, ITEM, DESCRIPTION,
-                UOM, QTY, CREATION_DATE, to_char(CREATION_DATE, 'hh24:mi:ss') as JAM_INPUT,
-                STATUS, JML_OK, JML_NOT_OK, PIC, KETERANGAN 
-        from KHS_MONITORING_GD_SP
-        WHERE no_document = '$no_document'
-        AND creation_date BETWEEN TO_DATE( '$tglAwal', 'DD/MM/YYYY' ) AND TO_DATE( '$tglAkhir', 'DD/MM/YYYY' )
-        order by CREATION_DATE DESC";
-        $query = $oracle->query($sql);
-        return $query->result_array();
-        // echo $sql;
-    }
+    // public function getBodyTanggal($no_document, $tglAwal, $tglAkhir) {
+    //     $oracle = $this->load->database('oracle', true);
+    //     $sql ="SELECT NO_DOCUMENT, JENIS_DOKUMEN, ITEM, DESCRIPTION,
+    //             UOM, QTY, CREATION_DATE, to_char(CREATION_DATE, 'hh24:mi:ss') as JAM_INPUT,
+    //             STATUS, JML_OK, JML_NOT_OK, PIC, KETERANGAN 
+    //     from KHS_MONITORING_GD_SP
+    //     WHERE no_document = '$no_document'
+    //     AND creation_date BETWEEN TO_DATE( '$tglAwal', 'DD/MM/YYYY' ) AND TO_DATE( '$tglAkhir', 'DD/MM/YYYY' )
+    //     order by CREATION_DATE DESC";
+    //     $query = $oracle->query($sql);
+    //     return $query->result_array();
+    //     // echo $sql;
+    // }
 
-    public function getBodyPIC($no_document, $pic) {
-        $oracle = $this->load->database('oracle', true);
-        $sql ="SELECT NO_DOCUMENT, JENIS_DOKUMEN, ITEM, DESCRIPTION,
-                UOM, QTY, CREATION_DATE, to_char(CREATION_DATE, 'hh24:mi:ss') as JAM_INPUT,
-                STATUS, JML_OK, JML_NOT_OK, PIC, KETERANGAN 
-        from KHS_MONITORING_GD_SP
-        WHERE no_document = '$no_document'
-        AND pic = '$pic'
-        order by CREATION_DATE DESC";
-        $query = $oracle->query($sql);
-        return $query->result_array();
-        // echo $sql;
-    }
+    // public function getBodyPIC($no_document, $pic) {
+    //     $oracle = $this->load->database('oracle', true);
+    //     $sql ="SELECT NO_DOCUMENT, JENIS_DOKUMEN, ITEM, DESCRIPTION,
+    //             UOM, QTY, CREATION_DATE, to_char(CREATION_DATE, 'hh24:mi:ss') as JAM_INPUT,
+    //             STATUS, JML_OK, JML_NOT_OK, PIC, KETERANGAN 
+    //     from KHS_MONITORING_GD_SP
+    //     WHERE no_document = '$no_document'
+    //     AND pic = '$pic'
+    //     order by CREATION_DATE DESC";
+    //     $query = $oracle->query($sql);
+    //     return $query->result_array();
+    //     // echo $sql;
+    // }
 
     // public function dataUpdate($item, $jml_ok, $jml_not_ok, $keterangan)
     // {

@@ -156,7 +156,7 @@
                                                                             <?php $nomor=1; foreach ($row['body'] as $v) { ?>
                                                                                 <tr>
                                                                                     <td><?= $nomor++ ?>
-                                                                                        <input type="hidden" name="doc[]" value="<?= $v['NO_DOCUMENT'] ?>"/>
+                                                                                        <input type="hidden" name="doc[]" id="doc<?=$no?><?= $nomor ?>" value="<?= $v['NO_DOCUMENT'] ?>"/>
                                                                                         <input type="hidden" name="jenis[]" value="<?= $v['JENIS_DOKUMEN'] ?>"/>
                                                                                         <input type="hidden" name="uom[]" value="<?= $v['UOM'] ?>"/>
                                                                                         <input type="hidden" name="tanggal[]" value="<?= $v['CREATION_DATE'] ?>"/>
@@ -165,7 +165,7 @@
                                                                                     <td style="text-align:left"><input type="hidden" name="item[]" id="item<?=$no?><?= $nomor ?>" value="<?= $v['ITEM'] ?>"/><?= $v['ITEM'] ?></td>
                                                                                     <td style="text-align:left"><input type="hidden" name="nama_brg[]" value="<?= $v['DESCRIPTION'] ?>"/><?= $v['DESCRIPTION'] ?></td>
                                                                                     <td><input type="hidden" name="qty[]" value="<?= $v['QTY'] ?>"/><?= $v['QTY'] ?></td>
-                                                                                    <td><input type="text" style="width:100%; text-align:center" name="qty_ok[]" id="jml_ok<?=$no?><?= $nomor ?>" onchange="saveJmlOk(<?=$no?>,<?= $nomor ?>,<?= $v['NO_DOCUMENT'] ?>)" value="<?= $v['JML_OK'] ?>"
+                                                                                    <td><input type="text" style="width:100%; text-align:center" name="qty_ok[]" id="jml_ok<?=$no?><?= $nomor ?>" onchange="saveJmlOk(<?=$no?>,<?= $nomor ?>)" value="<?= $v['JML_OK'] ?>"
                                                                                     <?php if($row['header']['statusket']== 'Sudah terlayani') 
                                                                                             { ?>
                                                                                             readonly
@@ -173,7 +173,7 @@
                                                                                                 echo '';
                                                                                             } ?>
                                                                                     /></td>
-                                                                                    <td><input type="text" style="width:100%; text-align:center" name="qty_not[]" id="jml_not_ok<?=$no?><?= $nomor ?>" onchange="saveNotOk(<?=$no?>,<?= $nomor ?>,<?= $v['NO_DOCUMENT'] ?>)" value="<?= $v['JML_NOT_OK'] ?>"
+                                                                                    <td><input type="text" style="width:100%; text-align:center" name="qty_not[]" id="jml_not_ok<?=$no?><?= $nomor ?>" onchange="saveNotOk(<?=$no?>,<?= $nomor ?>)" value="<?= $v['JML_NOT_OK'] ?>"
                                                                                     <?php if($row['header']['statusket']== 'Sudah terlayani') 
                                                                                             { ?>
                                                                                             readonly
@@ -181,7 +181,7 @@
                                                                                                 echo '';
                                                                                             } ?>
                                                                                     /></td>
-                                                                                    <td style="text-align:left"><input type="text" style="width:100%" name="ketr[]" id="keterangan<?=$no?><?= $nomor ?>" onchange="saveKetr(<?=$no?>,<?= $nomor ?>,<?= $v['NO_DOCUMENT'] ?>)" value="<?= $v['KETERANGAN'] ?>"
+                                                                                    <td style="text-align:left"><input type="text" style="width:100%" name="ketr[]" id="keterangan<?=$no?><?= $nomor ?>" onchange="saveKetr(<?=$no?>,<?= $nomor ?>)" value="<?= $v['KETERANGAN'] ?>"
                                                                                     <?php if($row['header']['statusket']== 'Sudah terlayani') 
                                                                                             { ?>
                                                                                            readonly

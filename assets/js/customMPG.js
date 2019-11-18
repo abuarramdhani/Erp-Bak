@@ -183,10 +183,11 @@ $("#frmMGS").keypress(function(e) {   //Enter key
     } });
 
 
-    function saveJmlOk(no, nomor, doc) {
+    function saveJmlOk(no, nomor) {
         // var ket = 'kirim_qc';
         var jml_ok = $('#jml_ok'+no+nomor).val();
         var item = $('#item'+no+nomor).val();
+        var doc = $('#doc'+no+nomor).val();
         console.log(no , jml_ok, item);
         if(!jml_ok){
             return;
@@ -200,10 +201,11 @@ $("#frmMGS").keypress(function(e) {   //Enter key
 
     }
 
-    function saveNotOk(no , nomor , doc) {
+    function saveNotOk(no , nomor) {
         // var ket = 'kirim_qc';
         var jml_not_ok = $('#jml_not_ok'+no+nomor).val();
-         var item = $('#item'+no+nomor).val();
+        var item = $('#item'+no+nomor).val();
+        var doc = $('#doc'+no+nomor).val();
         console.log(no , jml_not_ok, item);
         if(!jml_not_ok){
             return;
@@ -217,10 +219,11 @@ $("#frmMGS").keypress(function(e) {   //Enter key
 
     }
 
-    function saveKetr(no , nomor , doc) {
+    function saveKetr(no , nomor) {
         // var ket = 'kirim_qc';
         var ket = $('#keterangan'+no+nomor).val();
-         var item = $('#item'+no+nomor).val();
+        var item = $('#item'+no+nomor).val();
+        var doc = $('#doc'+no+nomor).val();
         // console.log(number , itemid , recnum , po, kirimqc)
         if(!ket){
             return;
