@@ -33,7 +33,13 @@
                         <div class="box box-primary box-solid">
                             <div class="box-header with-border"><b>Rekap LPPB</b></div>
                             <div class="box-body">
-                                <center><p>Sedang Dalam Perbaikan</p></center>
+                                <center><p>Silakan pilih menu lain untuk melakukan beberapa aktivitas</p></center>
+                                <center><p>Menu INPUT untuk merekam data aktual saat ini</p></center>
+                                <center><p>Menu PERBAIKAN untuk melakukan perbaikan data waktu yang telah berlalu</p></center>
+                                <center><p>Menu Overdue untuk melihat LPPB yang sampai akhir bulan kemarin belum ter-deliver</p></center>
+                                <center><p>Menu REKAP TAHUNAN untuk mengetahui jumlah LPPB yang belum ter-deliver tiap bulan dalam satu Tahun</p></center>
+                                <br><br>
+                                <center><p>Untuk info lebih lanjut dapat menghubungi PIC ICT</p></center>
                             </div>
                         </div>
                     </div>

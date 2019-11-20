@@ -101,27 +101,146 @@ class C_Rekap extends CI_Controller
 		$this->load->view('RekapLppb/RekapLppb/V_Result', $data);
 	}
 
+	// public function SaveKirimQC()
+	// {
+	// 	$number = $this->input->post('number');
+	// 	$itemid = $this->input->post('itemid');
+	// 	$recnum = $this->input->post('recnum');
+	// 	$po = $this->input->post('po');
+	// 	$kirimqc = $this->input->post('kirimqc');
+	// 	$ket = $this->input->post('ket');
+
+	// 	if ($kirimqc != null) {
+	// 		$datekirimqc = date("d-m-Y", strtotime($kirimqc));
+	// 	}else{
+	// 		exit;
+	// 	}
+
+	// 	$cek = $this->M_rekap->cekdata($itemid,$recnum,$po);
+	// 	if (count($cek) > 0) {
+	// 		$queryupdate = "SET KIRIM_QC = TO_TIMESTAMP('$datekirimqc', 'DD-MM-YYYY')";
+	// 		$this->M_rekap->Updatedata($itemid,$recnum,$po,$queryupdate);
+	// 	} else {
+	// 		$queryinsert = "TO_TIMESTAMP('$datekirimqc', 'DD-MM-YYYY')";
+	// 		$this->M_rekap->Insertdata($itemid,$recnum,$po,$queryinsert,$ket);
+	// 	}
+	// }
+
+	// public function SaveTerimaQC()
+	// {
+	// 	$number = $this->input->post('number');
+	// 	$itemid = $this->input->post('itemid');
+	// 	$recnum = $this->input->post('recnum');
+	// 	$po = $this->input->post('po');
+	// 	$terimaqc = $this->input->post('terimaqc');
+	// 	$ket = $this->input->post('ket');
+	// 	if ($terimaqc != null) {
+	// 		$dateterimaqc = date("d-m-Y", strtotime($terimaqc));
+	// 	}else{
+	// 		exit;
+	// 	}
+	// 	$cek = $this->M_rekap->cekdata($itemid,$recnum,$po);
+	// 	if (count($cek) > 0) {
+	// 		$queryupdate = "SET TERIMA_QC = TO_TIMESTAMP('$dateterimaqc', 'DD-MM-YYYY')";
+	// 		$this->M_rekap->Updatedata($itemid,$recnum,$po,$queryupdate);
+	// 	} else {
+	// 		$queryinsert = "TO_TIMESTAMP('$datekirimqc', 'DD-MM-YYYY')";
+	// 		$this->M_rekap->Insertdata($itemid,$recnum,$po,$queryinsert,$ket);
+	// 	}
+	// }
+	
+	// public function SaveKembaliQC()
+	// {
+	// 	$number = $this->input->post('number');
+	// 	$itemid = $this->input->post('itemid');
+	// 	$recnum = $this->input->post('recnum');
+	// 	$po = $this->input->post('po');
+	// 	$kembaliqc = $this->input->post('kembaliqc');
+	// 	$ket = $this->input->post('ket');
+	// 	if ($kembaliqc != null) {
+	// 		$datekembaliqc = date("d-m-Y", strtotime($kembaliqc));
+	// 	}else{
+	// 		exit;
+	// 	}
+	// 	$cek = $this->M_rekap->cekdata($itemid,$recnum,$po);
+	// 	if (count($cek) > 0) {
+	// 		$queryupdate = "SET KEMBALI_QC = TO_TIMESTAMP('$datekembaliqc', 'DD-MM-YYYY')";
+	// 		$this->M_rekap->Updatedata($itemid,$recnum,$po,$queryupdate);
+	// 	} else {
+	// 		$queryinsert = "TO_TIMESTAMP('$datekembaliqc', 'DD-MM-YYYY')";
+	// 		$this->M_rekap->Insertdata($itemid,$recnum,$po,$queryinsert,$ket);
+	// 	}
+	// }
+	
+	
+	// public function SaveKirimGudang()
+	// {
+	// 	$number = $this->input->post('number');
+	// 	$itemid = $this->input->post('itemid');
+	// 	$recnum = $this->input->post('recnum');
+	// 	$po = $this->input->post('po');
+	// 	$kirimgudang = $this->input->post('kirimgudang');
+	// 	$ket = $this->input->post('ket');
+	// 	if ($kirimgudang != null) {
+	// 		$datekirimgudang = date("d-m-Y", strtotime($kirimgudang));
+	// 	}else{
+	// 		exit;
+	// 	}
+	// 	$cek = $this->M_rekap->cekdata($itemid,$recnum,$po);
+	// 	if (count($cek) > 0) {
+	// 		$queryupdate = "SET KIRIM_GUDANG = TO_TIMESTAMP('$datekirimgudang', 'DD-MM-YYYY')";
+	// 		$this->M_rekap->Updatedata($itemid,$recnum,$po,$queryupdate);
+	// 	} else {
+	// 		$queryinsert = "TO_TIMESTAMP('$datekirimgudang', 'DD-MM-YYYY')";
+	// 		$this->M_rekap->Insertdata($itemid,$recnum,$po,$queryinsert,$ket);
+	// 	}
+	// }
+	
+	
+	// public function SaveTerimaGudang()
+	// {
+	// 	$number = $this->input->post('number');
+	// 	$itemid = $this->input->post('itemid');
+	// 	$recnum = $this->input->post('recnum');
+	// 	$po = $this->input->post('po');
+	// 	$terimagudang = $this->input->post('terimagudang');
+	// 	$ket = $this->input->post('ket');
+	// 	if ($terimagudang != null) {
+	// 		$dateterimagudang = date("d-m-Y", strtotime($terimagudang));
+	// 	}else{
+	// 		exit;
+	// 	}
+	// 	$cek = $this->M_rekap->cekdata($itemid,$recnum,$po);
+	// 	if (count($cek) > 0) {
+	// 		$queryupdate = "SET TERIMA_GUDANG = TO_TIMESTAMP('$dateterimagudang', 'DD-MM-YYYY')";
+	// 		$this->M_rekap->Updatedata($itemid,$recnum,$po,$queryupdate);
+	// 	} else {
+	// 		$queryinsert = "TO_TIMESTAMP('$dateterimagudang', 'DD-MM-YYYY')";
+	// 		$this->M_rekap->Insertdata($itemid,$recnum,$po,$queryinsert,$ket);
+	// 	}
+	// }
+
 	public function SaveKirimQC()
 	{
 		$number = $this->input->post('number');
 		$itemid = $this->input->post('itemid');
 		$recnum = $this->input->post('recnum');
 		$po = $this->input->post('po');
-		$kirimqc = $this->input->post('kirimqc');
+		$datekirimqc = $this->input->post('kirimqc');
 		$ket = $this->input->post('ket');
 
-		if ($kirimqc != null) {
-			$datekirimqc = date("d-m-Y", strtotime($kirimqc));
-		}else{
-			exit;
-		}
+		// if ($kirimqc != null) {
+		// 	$datekirimqc = date("d-m-Y H:i:s", strtotime($kirimqc));
+		// }else{
+		// 	exit;
+		// }
 
 		$cek = $this->M_rekap->cekdata($itemid,$recnum,$po);
 		if (count($cek) > 0) {
-			$queryupdate = "SET KIRIM_QC = TO_TIMESTAMP('$datekirimqc', 'DD-MM-YYYY')";
+			$queryupdate = "SET KIRIM_QC = TO_TIMESTAMP('$datekirimqc', 'DD-MM-YYYY HH24:MI:SS')";
 			$this->M_rekap->Updatedata($itemid,$recnum,$po,$queryupdate);
 		} else {
-			$queryinsert = "TO_TIMESTAMP('$datekirimqc', 'DD-MM-YYYY')";
+			$queryinsert = "TO_TIMESTAMP('$datekirimqc', 'DD-MM-YYYY HH24:MI:SS')";
 			$this->M_rekap->Insertdata($itemid,$recnum,$po,$queryinsert,$ket);
 		}
 	}
@@ -134,17 +253,17 @@ class C_Rekap extends CI_Controller
 		$po = $this->input->post('po');
 		$terimaqc = $this->input->post('terimaqc');
 		$ket = $this->input->post('ket');
-		if ($terimaqc != null) {
-			$dateterimaqc = date("d-m-Y", strtotime($terimaqc));
-		}else{
-			exit;
-		}
+		// if ($terimaqc != null) {
+		// 	$dateterimaqc = date("d-m-Y H:i:s", strtotime($terimaqc));
+		// }else{
+		// 	exit;
+		// }
 		$cek = $this->M_rekap->cekdata($itemid,$recnum,$po);
 		if (count($cek) > 0) {
-			$queryupdate = "SET TERIMA_QC = TO_TIMESTAMP('$dateterimaqc', 'DD-MM-YYYY')";
+			$queryupdate = "SET TERIMA_QC = TO_TIMESTAMP('$terimaqc', 'DD-MM-YYYY HH24:MI:SS')";
 			$this->M_rekap->Updatedata($itemid,$recnum,$po,$queryupdate);
 		} else {
-			$queryinsert = "TO_TIMESTAMP('$datekirimqc', 'DD-MM-YYYY')";
+			$queryinsert = "TO_TIMESTAMP('$terimaqc', 'DD-MM-YYYY HH24:MI:SS')";
 			$this->M_rekap->Insertdata($itemid,$recnum,$po,$queryinsert,$ket);
 		}
 	}
@@ -157,17 +276,17 @@ class C_Rekap extends CI_Controller
 		$po = $this->input->post('po');
 		$kembaliqc = $this->input->post('kembaliqc');
 		$ket = $this->input->post('ket');
-		if ($kembaliqc != null) {
-			$datekembaliqc = date("d-m-Y", strtotime($kembaliqc));
-		}else{
-			exit;
-		}
+		// if ($kembaliqc != null) {
+		// 	$datekembaliqc = date("d-m-Y H:i:s", strtotime($kembaliqc));
+		// }else{
+		// 	exit;
+		// }
 		$cek = $this->M_rekap->cekdata($itemid,$recnum,$po);
 		if (count($cek) > 0) {
-			$queryupdate = "SET KEMBALI_QC = TO_TIMESTAMP('$datekembaliqc', 'DD-MM-YYYY')";
+			$queryupdate = "SET KEMBALI_QC = TO_TIMESTAMP('$kembaliqc', 'DD-MM-YYYY HH24:MI:SS')";
 			$this->M_rekap->Updatedata($itemid,$recnum,$po,$queryupdate);
 		} else {
-			$queryinsert = "TO_TIMESTAMP('$datekembaliqc', 'DD-MM-YYYY')";
+			$queryinsert = "TO_TIMESTAMP('$kembaliqc', 'DD-MM-YYYY HH24:MI:SS')";
 			$this->M_rekap->Insertdata($itemid,$recnum,$po,$queryinsert,$ket);
 		}
 	}
@@ -181,17 +300,17 @@ class C_Rekap extends CI_Controller
 		$po = $this->input->post('po');
 		$kirimgudang = $this->input->post('kirimgudang');
 		$ket = $this->input->post('ket');
-		if ($kirimgudang != null) {
-			$datekirimgudang = date("d-m-Y", strtotime($kirimgudang));
-		}else{
-			exit;
-		}
+		// if ($kirimgudang != null) {
+		// 	$datekirimgudang = date("d-m-Y H:i:s", strtotime($kirimgudang));
+		// }else{
+		// 	exit;
+		// }
 		$cek = $this->M_rekap->cekdata($itemid,$recnum,$po);
 		if (count($cek) > 0) {
-			$queryupdate = "SET KIRIM_GUDANG = TO_TIMESTAMP('$datekirimgudang', 'DD-MM-YYYY')";
+			$queryupdate = "SET KIRIM_GUDANG = TO_TIMESTAMP('$kirimgudang', 'DD-MM-YYYY HH24:MI:SS')";
 			$this->M_rekap->Updatedata($itemid,$recnum,$po,$queryupdate);
 		} else {
-			$queryinsert = "TO_TIMESTAMP('$datekirimgudang', 'DD-MM-YYYY')";
+			$queryinsert = "TO_TIMESTAMP('$kirimgudang', 'DD-MM-YYYY HH24:MI:SS')";
 			$this->M_rekap->Insertdata($itemid,$recnum,$po,$queryinsert,$ket);
 		}
 	}
@@ -205,18 +324,21 @@ class C_Rekap extends CI_Controller
 		$po = $this->input->post('po');
 		$terimagudang = $this->input->post('terimagudang');
 		$ket = $this->input->post('ket');
-		if ($terimagudang != null) {
-			$dateterimagudang = date("d-m-Y", strtotime($terimagudang));
-		}else{
-			exit;
-		}
+		// if ($terimagudang != null) {
+		// 	$dateterimagudang = date("d-m-Y H:i:s", strtotime($terimagudang));
+		// }else{
+		// 	exit;
+		// }
 		$cek = $this->M_rekap->cekdata($itemid,$recnum,$po);
 		if (count($cek) > 0) {
-			$queryupdate = "SET TERIMA_GUDANG = TO_TIMESTAMP('$dateterimagudang', 'DD-MM-YYYY')";
+			$queryupdate = "SET TERIMA_GUDANG = TO_TIMESTAMP('$terimagudang', 'DD-MM-YYYY HH24:MI:SS')";
 			$this->M_rekap->Updatedata($itemid,$recnum,$po,$queryupdate);
 		} else {
-			$queryinsert = "TO_TIMESTAMP('$dateterimagudang', 'DD-MM-YYYY')";
+			$queryinsert = "TO_TIMESTAMP('$terimagudang', 'DD-MM-YYYY HH24:MI:SS')";
 			$this->M_rekap->Insertdata($itemid,$recnum,$po,$queryinsert,$ket);
 		}
 	}
+
+
+
 }

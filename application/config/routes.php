@@ -3247,10 +3247,10 @@ $route['MasterPekerja/RekapPerizinanDinas/(:any)/(:any)'] = 'MasterPekerja/Rekap
 
 //---------------------------------------Rekap LPPB---------------------------------------------//
 $route['RekapLppb'] 							= 'RekapLppb/RekapLppb/C_Rekap';
-$route['RekapLppb/(:any)'] 						= 'RekapLppb/RekapLppb/C_Rekap/$1';
-$route['RekapLppb/(:any)/(:any)']				= 'RekapLppb/RekapLppb/C_Rekap/$1/$2';
-$route['RekapLppb/(:any)/(:any)/(:any)'] 		= 'RekapLppb/RekapLppb/C_Rekap/$1/$2/$3';
-$route['RekapLppb/(:any)/(:any)/(:any)/(:any)'] = 'RekapLppb/RekapLppb/C_Rekap/$1/$2/$3/$4';
+// $route['RekapLppb/(:any)'] 						= 'RekapLppb/RekapLppb/C_Rekap/$1';
+// $route['RekapLppb/(:any)/(:any)']				= 'RekapLppb/RekapLppb/C_Rekap/$1/$2';
+// $route['RekapLppb/(:any)/(:any)/(:any)'] 		= 'RekapLppb/RekapLppb/C_Rekap/$1/$2/$3';
+// $route['RekapLppb/(:any)/(:any)/(:any)/(:any)'] = 'RekapLppb/RekapLppb/C_Rekap/$1/$2/$3/$4';
 $route['RekapLppb/Rekap'] 						= 'RekapLppb/RekapLppb/C_Rekap/Rekap';
 $route['RekapLppb/SearchData'] 					= 'RekapLppb/RekapLppb/C_Rekap/SearchData';
 // $route['RekapLppb/SaveData'] 				= 'RekapLppb/RekapLppb/C_Rekap/SaveData';
@@ -3260,13 +3260,47 @@ $route['RekapLppb/SaveKembaliQC'] 				= 'RekapLppb/RekapLppb/C_Rekap/SaveKembali
 $route['RekapLppb/SaveKirimGudang'] 			= 'RekapLppb/RekapLppb/C_Rekap/SaveKirimGudang';
 $route['RekapLppb/SaveTerimaGudang'] 			= 'RekapLppb/RekapLppb/C_Rekap/SaveTerimaGudang';
 
+$route['RekapLppb/Input'] 						= 'RekapLppb/RekapLppb/C_Input';
+$route['RekapLppb/Input/searchBulan'] 			= 'RekapLppb/RekapLppb/C_Input/searchBulan';
+$route['RekapLppb/Input/SaveKirimQC'] 			= 'RekapLppb/RekapLppb/C_Input/SaveKirimQC';
+$route['RekapLppb/Input/SaveTerimaQC'] 			= 'RekapLppb/RekapLppb/C_Input/SaveTerimaQC';
+$route['RekapLppb/Input/SaveKembaliQC'] 		= 'RekapLppb/RekapLppb/C_Input/SaveKembaliQC';
+$route['RekapLppb/Input/SaveKirimGudang'] 		= 'RekapLppb/RekapLppb/C_Input/SaveKirimGudang';
+$route['RekapLppb/Input/SaveTerimaGudang'] 		= 'RekapLppb/RekapLppb/C_Input/SaveTerimaGudang';
+$route['RekapLppb/Input/searchRekap'] 			= 'RekapLppb/RekapLppb/C_Input/searchRekap';
+$route['RekapLppb/Input/searchRekap/(:any)'] 	= 'RekapLppb/RekapLppb/C_Input/searchRekap/$1';
+$route['RekapLppb/Input/(:any)/(:any)'] 		= 'RekapLppb/RekapLppb/C_Input/$1/$2';
+
+
+$route['RekapLppb/Perbaikan'] 					= 'RekapLppb/RekapLppb/C_Perbaikan';
+$route['RekapLppb/Perbaikan/searchPerbaikan'] 	= 'RekapLppb/RekapLppb/C_Perbaikan/searchPerbaikan';
+$route['RekapLppb/Perbaikan/(:any)/(:any)'] 	= 'RekapLppb/RekapLppb/C_Perbaikan/$1/$2';
+
+$route['RekapLppb/Overdue'] 					= 'RekapLppb/RekapLppb/C_Overdue';
+$route['RekapLppb/Overdue/(:any)'] 				= 'RekapLppb/RekapLppb/C_Overdue/$1';
+
+$route['RekapLppb/RekapTahunan'] 				= 'RekapLppb/RekapLppb/C_RekapTahunan';
+$route['RekapLppb/RekapTahunan/searchTahunan'] 		= 'RekapLppb/RekapLppb/C_RekapTahunan/searchTahunan';
+$route['RekapLppb/RekapTahunan/(:any)/(:any)'] 	= 'RekapLppb/RekapLppb/C_RekapTahunan/$1/$2';
 
 $route['RekapLppbView'] 						= 'RekapLppb/RekapLppbView/C_RekapView';
-$route['RekapLppbView/(:any)'] 					= 'RekapLppb/RekapLppbView/C_RekapView/$1';
-$route['RekapLppbView/(:any)/(:any)'] 			= 'RekapLppb/RekapLppbView/C_RekapView/$1/$2';
-$route['RekapLppbView/(:any)/(:any)/(:any)'] 	= 'RekapLppb/RekapLppbView/C_RekapView/$1/$2/$3';
+// $route['RekapLppbView/(:any)'] 					= 'RekapLppb/RekapLppbView/C_RekapView/$1';
+// $route['RekapLppbView/(:any)/(:any)'] 			= 'RekapLppb/RekapLppbView/C_RekapView/$1/$2';
+// $route['RekapLppbView/(:any)/(:any)/(:any)'] 	= 'RekapLppb/RekapLppbView/C_RekapView/$1/$2/$3';
 $route['RekapLppbView/Rekap'] 					= 'RekapLppb/RekapLppbView/C_RekapView/Rekap';
 $route['RekapLppbView/SearchData'] 				= 'RekapLppb/RekapLppbView/C_RekapView/SearchData';
+
+$route['RekapLppbView/Monitoring'] 					= 'RekapLppb/RekapLppbView/C_Monitoring';
+$route['RekapLppbView/Monitoring/(:any)'] 			= 'RekapLppb/RekapLppbView/C_Monitoring/$1';
+$route['RekapLppbView/Monitoring/(:any)/(:any)'] 	= 'RekapLppb/RekapLppbView/C_Monitoring/$1/$2';
+
+$route['RekapLppbView/Undeliver'] 					= 'RekapLppb/RekapLppbView/C_Undeliver';
+$route['RekapLppbView/Undeliver/(:any)'] 			= 'RekapLppb/RekapLppbView/C_Undeliver/$1';
+$route['RekapLppbView/Undeliver/(:any)/(:any)'] 	= 'RekapLppb/RekapLppbView/C_Undeliver/$1/$2';
+
+$route['RekapLppbView/RekapTahunan'] 				= 'RekapLppb/RekapLppbView/C_RekapTahunanView';
+$route['RekapLppbView/RekapTahunan/(:any)'] 		= 'RekapLppb/RekapLppbView/C_RekapTahunanView/$1';
+$route['RekapLppbView/RekapTahunan/(:any)/(:any)'] 	= 'RekapLppb/RekapLppbView/C_RekapTahunanView/$1/$2';
 
 //-------------------------------------------------TrackingPengirimanBarang---------------------------------------------------------------//
 $route['TrackingPengirimanBarang'] = 'TrackingPengirimanBarang/C_TrackingPengirimanBarang/sortingcenter';
