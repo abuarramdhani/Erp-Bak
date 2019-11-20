@@ -142,7 +142,7 @@ class C_ComposeMessage extends CI_Controller {
 			$ftp_username	 = 'SENDPO';  
 			$ftp_password 	 = '123456';
 			$ftp_local_dir	 = './assets/upload/PurchaseManagementSendPO/Temporary/FTPDocument/';
-			$ftp_server_dir	 = './2.PEMBELIAN_UNIT/00.OBSOLETE/1.PENGUMUMAN/ADS2800W/SCAN Choirul/';
+			$ftp_server_dir	 = './1.PEMBELIAN_SEKSI/03. PURCHASE RECORD/04. PO (Scan)/7. PO DAN KONFIRMASI 2019/1. Dokumen PO 2019/';
 			$ftp_file_format = '.pdf';
 
 			// Create an FTP connection  
