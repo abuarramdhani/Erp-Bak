@@ -182,6 +182,8 @@
 		<script src="<?= base_url('assets/js/customPUM.js');?>"></script>
 		<script src="<?= base_url('assets/js/customFPD.js');?>"></script>
 		<script src="<?= base_url('assets/js/customBD.js'); ?>"></script>
+		<script src="<?= base_url('assets/js/customMSB.js'); ?>"></script>
+
 		<!-- <script src="<?= base_url('assets/js/customMO.js') ?>"></script> -->
 		<!-- <script src="<?= base_url('assets/js/customPR.js') ?>"></script> -->
 		<!-- <script src="<?= base_url('assets/js/customOSP.js') ?>"></script> -->
