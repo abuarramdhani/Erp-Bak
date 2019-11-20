@@ -128,7 +128,7 @@ class C_ComposeMessage extends CI_Controller {
 		$doc_filename	= 'Pedoman Kerjasama Vendor Rev 7 (Quick Reference PO)';
 
 		$pdf_dir		= './assets/upload/PurchaseManagementSendPO/Temporary/PDFDocument/';
-		$pdf_filename	= 'SURAT PENGIRIMAN BARANG_PO '.$po_number;
+		$pdf_filename	= 'Surat Pengiriman Barang PO '.$po_number;
 		$pdf_format		= '.pdf';
 
 		if (file_exists($doc_dir.preg_replace('/[^a-zA-Z0-9]/', '', $doc_filename).$pdf_format) == TRUE && file_exists($doc_dir.$doc_filename.$pdf_format) == FALSE) 
@@ -234,18 +234,19 @@ class C_ComposeMessage extends CI_Controller {
 
 		// Set connection SMTP Webmail
         $mail->isSMTP();
-        $mail->Host = 'mail.quick.co.id';
-        $mail->Port = 465;
+		$mail->Host = 'smtp.gmail.com';
+		$mail->Port = 587;
         $mail->SMTPAuth = true;
-		$mail->SMTPSecure = 'ssl';
+		$mail->SMTPSecure = 'tls';
 		$mail->SMTPOptions = array(
 				'ssl' => array(
 				'verify_peer' => false,
 				'verify_peer_name' => false,
-				'allow_self_signed' => true)
+				'allow_self_signed' => true
+			)
 				);
-        $mail->Username = 'purchasing.sec12@quick.co.id';
-        $mail->Password = 'Qu1ck5ec12';
+		$mail->Username = 'purchasingsec12.quick3@gmail.com';
+		$mail->Password = 'sUppLieReM4iL';
 		$mail->WordWrap = 50;
 
         // Set email content to sent
@@ -361,11 +362,11 @@ class C_ComposeMessage extends CI_Controller {
 		
 		// ------ GENERATE PDF ------
 		$this->load->library('Pdf');
+		$this->pdf->load();
 
-		$pdf 		= $this->pdf->load();
 		$pdf        = new mPDF('utf-8','A4-P', 0, '', 3, 3, 3, 14, 3, 3);
 		$pdf_dir	= './assets/upload/PurchaseManagementSendPO/Temporary/PDFDocument/';
-		$filename 	= 'SURAT PENGIRIMAN BARANG_PO '.$nomor_po.'.pdf';	
+		$filename 	= 'Surat Pengiriman Barang PO '.$nomor_po.'.pdf';	
 		$content 	= $this->load->view('PurchaseManagementSendPO/Report/V_Content', $data,true);
 		$footer 	= '<p style="text-align:right">PO : '.$nomor_po.'</p>';
 		
