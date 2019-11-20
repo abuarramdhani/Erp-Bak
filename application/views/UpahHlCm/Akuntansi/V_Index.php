@@ -23,7 +23,7 @@
 			<?php $no=0; foreach ($rekap as $key => $data): $no++ ?>
 				<tr>
 					<td><?= $no; ?></td>
-					<td style="width: 12%" class="text-center"><span>
+					<td style="width: 15%" class="text-center"><span>
 					<a target="_blank" style="margin-right: 7px;" class="btn btn-info" href="<?php echo base_url('UpahHlCm/Akuntansi/getDetail/'.$data->periode); ?>">Detail</a>
 					<button data-periode="<?=$data->periode ?>" class="btn btn-danger btn-delete">Delete</button></span></td>
 					<td class="text-center"><?= $data->str_periode.' - '.$data->tahun ?></td>

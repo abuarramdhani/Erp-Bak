@@ -96,6 +96,7 @@ class C_Akuntansi extends CI_Controller {
 
     function do_import(){
     	$filename = $_FILES['file']['name'];
+        $filename = str_replace(' ','_', $filename);
     	// echo $filename;exit();
     	$config['upload_path'] = './assets/upload/RekapPresensiHLCM/'; //buat folder dengan nama assets di root folder
         $config['file_name'] = $filename;
@@ -106,44 +107,43 @@ class C_Akuntansi extends CI_Controller {
         $this->upload->initialize($config);
 
          if(! $this->upload->do_upload('file') ){
-            $this->upload->display_errors();
+            echo $this->upload->display_errors();exit();
         }
 
         $periode = "";
-        if(strpos($filename, 'January') !== false){
+        if(strpos($filename, 'Januari') !== false){
         	$periode = date('Y').'-01-01';
-        }else if (strpos($filename, 'February') !== false) {
+        }else if (strpos($filename, 'Februari') !== false) {
         	$periode = date('Y').'-02-01';
-        }else if (strpos($filename, 'March') !== false) {
+        }else if (strpos($filename, 'Maret') !== false) {
         	$periode = date('Y').'-03-01';
         }else if (strpos($filename, 'April') !== false) {
         	$periode = date('Y').'-04-01';
-        }else if (strpos($filename, 'May') !== false) {
+        }else if (strpos($filename, 'Mei') !== false) {
         	$periode = date('Y').'-05-01';
-        }else if (strpos($filename, 'June') !== false) {
+        }else if (strpos($filename, 'Juni') !== false) {
         	$periode = date('Y').'-06-01';
-        }else if (strpos($filename, 'July') !== false) {
+        }else if (strpos($filename, 'Juli') !== false) {
         	$periode = date('Y').'-07-01';
-        }else if (strpos($filename, 'August') !== false) {
+        }else if (strpos($filename, 'Agustus') !== false) {
         	$periode = date('Y').'-08-01';
         }else if (strpos($filename, 'September') !== false) {
         	$periode = date('Y').'-09-01';
-        }else if (strpos($filename, 'October') !== false) {
+        }else if (strpos($filename, 'Oktober') !== false) {
         	$periode = date('Y').'-10-01';
         }else if (strpos($filename, 'November') !== false) {
         	$periode = date('Y').'-11-01';
-        }else if (strpos($filename, 'December') !== false) {
+        }else if (strpos($filename, 'Desember') !== false) {
             $periode = date('Y').'-12-01';
         }
         else{
         	$periode = '0000-00-00';
         }
 
-       
-        
-		
 		$media = $this->upload->data('file');
         // echo $media;exit();
+
+
 	
         $inputFileName = './assets/upload/RekapPresensiHLCM/'.$filename;
         // echo $inputFileName;exit();

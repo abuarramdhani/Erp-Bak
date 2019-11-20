@@ -2307,6 +2307,12 @@ $route['UpahHlCm/Akuntansi'] =  "UpahHlCm/Akuntansi/C_Akuntansi/index";
 $route['UpahHlCm/Akuntansi/(:any)'] =  "UpahHlCm/Akuntansi/C_Akuntansi/$1";
 $route['UpahHlCm/Akuntansi/(:any)/(:any)'] =  "UpahHlCm/Akuntansi/C_Akuntansi/$1/$2";
 
+$route['HitungHlcm/GajiPersonalia'] 	= 'UpahHlCm/ProsesGaji/C_HitungGajiPersonalia';
+$route['HitungHlcm/GajiPersonalia/(:any)'] 	= 'UpahHlCm/ProsesGaji/C_HitungGajiPersonalia/$1';
+$route['HitungHlcm/GajiPersonalia/(:any)/(:any)'] 	= 'UpahHlCm/ProsesGaji/C_HitungGajiPersonalia/$1/$2';
+$route['HitungHlcm/GajiPersonalia/(:any)/(:any)/(:any)'] 	= 'UpahHlCm/ProsesGaji/C_HitungGajiPersonalia/$1/$2/$3';
+$route['HitungHlcm/GajiPersonalia/(:any)/(:any)/(:any)/(:any)'] 	= 'UpahHlCm/ProsesGaji/C_HitungGajiPersonalia/$1/$2/$3/$4';
+
 //------------------------------------------------Inventory------------------------------------------------//
 //Move Order
 $route['InventoryManagement/CreateMoveOrder'] = 'Inventory/MainMenu/MoveOrder/C_MoveOrder';
