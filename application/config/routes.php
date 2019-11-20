@@ -3360,3 +3360,14 @@ $route['FlowProcessDestination/Import/importcomponent'] 		= 'FlowProcessDestinat
 
 //--------------------------------------------------- Email Notifikasi Konversi ---------------------------------------------------//
 $route['EmailNotifikasiKonversi'] = 'EmailNotifikasiKonversi/C_NotifikasiKonversi';
+
+$route['MonitoringSubkont'] 					   			= 'MonitoringSubkont/C_Index';
+$route['MonitoringSubkont/Monitoring'] 						= 'Monitoringsubkont/C_Monitoring';
+$route['MonitoringSubkont/Monitoring/(:any)']				= 'MonitoringSubkont/C_Monitoring/$1';
+$route['MonitoringSubkont/Monitoring/(:any)/(:any)'] 		= 'MonitoringSubkont/C_Monitoring/$1/$2';
+$route['MonitoringSubkont/Monitoring/(:any)/(:any)/(:any)'] = 'MonitoringSubkont/C_Monitoring/$1/$2/$3';
+$route['MonitoringSubkont/SO'] 								= 'Monitoringsubkont/C_So';
+$route['MonitoringSubkont/SO/(:any)']						= 'MonitoringSubkont/C_So/$1';
+$route['MonitoringSubkont/SO/(:any)/(:any)'] 				= 'MonitoringSubkont/C_So/$1/$2';
+$route['MonitoringSubkont/SO/(:any)/(:any)/(:any)']		 	= 'MonitoringSubkont/C_So/$1/$2/$3';
+$route['MonitoringSubkont/SO/(:any)/(:any)/(:any)']		 	= 'MonitoringSubkont/C_So/$1/$2/$3/$4';
