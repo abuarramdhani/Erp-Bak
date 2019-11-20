@@ -515,9 +515,9 @@ class C_TransferReffGaji extends CI_Controller
 				$record->JHT =  $ds['jml_jht'] ;
 				$record->JP =  $ds['jml_jp'] ;
 				$record->HR_CUTI = floatval($ds['ct']);
-				$record->IP_LAMA = $ip_lama;
-				$record->IK_LAMA = $ik_lama;
-				$record->IPT_LAMA = $ipt_lama;
+				$record->HR_IP_LM = $ip_lama;
+				$record->HR_IK_LM = $ik_lama;
+				$record->HR_IPT_LM = $ipt_lama;
 				// echo "<pre>";print_r($record);exit();
 				$table3->writeRecord();
 
