@@ -170,7 +170,6 @@ class M_moveorder extends CI_Model
 	function getBody($job_no,$atr,$dept) //----------------->>
 	{
 		$oracle = $this->load->database('oracle',TRUE);
-		
 		// $sql = "SELECT we.WIP_ENTITY_ID job_id
 		// 	      ,we.WIP_ENTITY_NAME 
 		// 	      ,msib2.SEGMENT1 komponen
@@ -180,6 +179,7 @@ class M_moveorder extends CI_Model
 		// 	      ,msib2.PRIMARY_UOM_CODE
 		// 	      ,bic.ATTRIBUTE1 gudang_asal
 		// 	      ,mil.SEGMENT1 locator_asal
+		// 	      ,BIC.ATTRIBUTE2
 		// 	      ,mil.INVENTORY_LOCATION_ID locator_asal_id
 		// 	      ,bic.SUPPLY_SUBINVENTORY gudang_tujuan
 		// 	      ,bic.SUPPLY_LOCATOR_ID locator_tujuan_id 
@@ -189,7 +189,7 @@ class M_moveorder extends CI_Model
 		// 	      ,bcs.DESCRIPTION
 		// 	      ,wdj.SCHEDULED_START_DATE 
 		// 	      --
-		// 	      ,nvl(
+		// 	      ,coalesce((nvl(
 		// 	           (select sum(mtrl.QUANTITY)
 		// 	              from mtl_txn_request_headers mtrh
 		// 	                  ,mtl_txn_request_lines mtrl
@@ -202,46 +202,83 @@ class M_moveorder extends CI_Model
 		// 	               and mtrh.HEADER_STATUS in (3,7)
 		// 	               and mtrl.INVENTORY_ITEM_ID = wro.INVENTORY_ITEM_ID
 		// 	               and mtrh.ORGANIZATION_ID = wro.ORGANIZATION_ID
-		// 								 and substr(mtrh.REQUEST_NUMBER,1,2) = 'PL'
-		// 								 and mtrl.FROM_SUBINVENTORY_CODE = bic.ATTRIBUTE1
-		// 	    --           and mtrh.TRANSACTION_TYPE_ID in (64,137)
-		// 	    --           and msib_komp.SEGMENT1 in ('AAG1BA0021A1-0','AAG1BA0011A1-0')
+		// 	               and substr(mtrh.REQUEST_NUMBER,1,2) = 'PL'
+		// 	               and mtrl.FROM_SUBINVENTORY_CODE = bic.ATTRIBUTE1
+		// 	               and mtrl.FROM_LOCATOR_ID = bic.ATTRIBUTE2
 		// 	          group by mtrl.INVENTORY_ITEM_ID
-		// 	            ),0) mo
-		// 				,(
-  //           (coalesce(
-  //               (select sum(moqd.PRIMARY_TRANSACTION_QUANTITY)
-  //                  from mtl_onhand_quantities_detail moqd
-  //                 where moqd.ORGANIZATION_ID = wdj.ORGANIZATION_ID
-  //                   and moqd.INVENTORY_ITEM_ID = wro.INVENTORY_ITEM_ID
-  //                   and moqd.SUBINVENTORY_CODE = bic.ATTRIBUTE1
-  //                   and moqd.LOCATOR_ID = bic.ATTRIBUTE2),
-  //               (select sum(moqd.PRIMARY_TRANSACTION_QUANTITY)
-  //                  from mtl_onhand_quantities_detail moqd
-  //                 where moqd.ORGANIZATION_ID = wdj.ORGANIZATION_ID
-  //                   and moqd.INVENTORY_ITEM_ID = wro.INVENTORY_ITEM_ID
-  //                   and moqd.SUBINVENTORY_CODE = bic.ATTRIBUTE1)
-  //                   )
-  //               )-
-  //              (nvl(
-  //                  (select sum(mtrl.QUANTITY)
-  //                     from mtl_txn_request_headers mtrh
-  //                         ,mtl_txn_request_lines mtrl
-  //                         ,mtl_system_items_b msib_komp
-  //                    where mtrh.HEADER_ID = mtrl.HEADER_ID
-  //                      and mtrh.ORGANIZATION_ID = msib_komp.ORGANIZATION_ID
-  //                      and mtrl.INVENTORY_ITEM_ID = msib_komp.INVENTORY_ITEM_ID
-  //                      --
-  //                      and mtrl.LINE_STATUS in (3,7)
-  //                      and mtrh.HEADER_STATUS in (3,7)
-  //                      and mtrl.INVENTORY_ITEM_ID = wro.INVENTORY_ITEM_ID
-  //                      and mtrh.ORGANIZATION_ID = wro.ORGANIZATION_ID
-  //                      and substr(mtrh.REQUEST_NUMBER,1,2) = 'PL'
-  //                      and mtrl.FROM_SUBINVENTORY_CODE = bic.ATTRIBUTE1
-  //           --           and mtrh.TRANSACTION_TYPE_ID in (64,137)
-  //                 group by mtrl.INVENTORY_ITEM_ID
-  //                   ),0) )
-  //                           ) kurang
+		// 	            ),0))
+		// 	            ,(nvl(
+		// 	           (select sum(mtrl.QUANTITY)
+		// 	              from mtl_txn_request_headers mtrh
+		// 	                  ,mtl_txn_request_lines mtrl
+		// 	                  ,mtl_system_items_b msib_komp
+		// 	             where mtrh.HEADER_ID = mtrl.HEADER_ID
+		// 	               and mtrh.ORGANIZATION_ID = msib_komp.ORGANIZATION_ID
+		// 	               and mtrl.INVENTORY_ITEM_ID = msib_komp.INVENTORY_ITEM_ID
+		// 	               --
+		// 	               and mtrl.LINE_STATUS in (3,7)
+		// 	               and mtrh.HEADER_STATUS in (3,7)
+		// 	               and mtrl.INVENTORY_ITEM_ID = wro.INVENTORY_ITEM_ID
+		// 	               and mtrh.ORGANIZATION_ID = wro.ORGANIZATION_ID
+		// 	               and substr(mtrh.REQUEST_NUMBER,1,2) = 'PL'
+		// 	               and mtrl.FROM_SUBINVENTORY_CODE = bic.ATTRIBUTE1
+		// 	               and mtrl.FROM_LOCATOR_ID is null
+		// 	          group by mtrl.INVENTORY_ITEM_ID
+		// 	            ),0))
+		// 	            ) mo
+		// 	,(
+		// 	            (coalesce(
+		// 	                (select sum(moqd.PRIMARY_TRANSACTION_QUANTITY)
+		// 	                   from mtl_onhand_quantities_detail moqd
+		// 	                  where moqd.ORGANIZATION_ID = wdj.ORGANIZATION_ID
+		// 	                    and moqd.INVENTORY_ITEM_ID = wro.INVENTORY_ITEM_ID
+		// 	                    and moqd.SUBINVENTORY_CODE = bic.ATTRIBUTE1
+		// 	                    and moqd.LOCATOR_ID = bic.ATTRIBUTE2),
+		// 	                (select sum(moqd.PRIMARY_TRANSACTION_QUANTITY)
+		// 	                   from mtl_onhand_quantities_detail moqd
+		// 	                  where moqd.ORGANIZATION_ID = wdj.ORGANIZATION_ID
+		// 	                    and moqd.INVENTORY_ITEM_ID = wro.INVENTORY_ITEM_ID
+		// 	                    and moqd.SUBINVENTORY_CODE = bic.ATTRIBUTE1)
+		// 	                    )
+		// 	                )-
+		// 	               coalesce((nvl(
+		// 	                   (select sum(mtrl.QUANTITY)
+		// 	                      from mtl_txn_request_headers mtrh
+		// 	                          ,mtl_txn_request_lines mtrl
+		// 	                          ,mtl_system_items_b msib_komp
+		// 	                     where mtrh.HEADER_ID = mtrl.HEADER_ID
+		// 	                       and mtrh.ORGANIZATION_ID = msib_komp.ORGANIZATION_ID
+		// 	                       and mtrl.INVENTORY_ITEM_ID = msib_komp.INVENTORY_ITEM_ID
+		// 	                       --
+		// 	                       and mtrl.LINE_STATUS in (3,7)
+		// 	                       and mtrh.HEADER_STATUS in (3,7)
+		// 	                       and mtrl.INVENTORY_ITEM_ID = wro.INVENTORY_ITEM_ID
+		// 	                       and mtrh.ORGANIZATION_ID = wro.ORGANIZATION_ID
+		// 	                       and substr(mtrh.REQUEST_NUMBER,1,2) = 'PL'
+		// 	                       and mtrl.FROM_SUBINVENTORY_CODE = bic.ATTRIBUTE1
+		// 	                       and mtrl.FROM_LOCATOR_ID = bic.ATTRIBUTE2
+		// 	                  group by mtrl.INVENTORY_ITEM_ID
+		// 	                    ),0) )
+		// 	                    ,(nvl(
+		// 	                   (select sum(mtrl.QUANTITY)
+		// 	                      from mtl_txn_request_headers mtrh
+		// 	                          ,mtl_txn_request_lines mtrl
+		// 	                          ,mtl_system_items_b msib_komp
+		// 	                     where mtrh.HEADER_ID = mtrl.HEADER_ID
+		// 	                       and mtrh.ORGANIZATION_ID = msib_komp.ORGANIZATION_ID
+		// 	                       and mtrl.INVENTORY_ITEM_ID = msib_komp.INVENTORY_ITEM_ID
+		// 	                       --
+		// 	                       and mtrl.LINE_STATUS in (3,7)
+		// 	                       and mtrh.HEADER_STATUS in (3,7)
+		// 	                       and mtrl.INVENTORY_ITEM_ID = wro.INVENTORY_ITEM_ID
+		// 	                       and mtrh.ORGANIZATION_ID = wro.ORGANIZATION_ID
+		// 	                       and substr(mtrh.REQUEST_NUMBER,1,2) = 'PL'
+		// 	                       and mtrl.FROM_SUBINVENTORY_CODE = bic.ATTRIBUTE1
+		// 	                       and mtrl.FROM_LOCATOR_ID is null
+		// 	                  group by mtrl.INVENTORY_ITEM_ID
+		// 	                    ),0) )
+		// 	                    )
+		// 	                            ) kurang
 		// 	from wip_entities we
 		// 	    ,wip_discrete_jobs wdj
 		// 	    ,mtl_system_items_b msib
@@ -280,120 +317,80 @@ class M_moveorder extends CI_Model
 		// 	  and bic.WIP_SUPPLY_TYPE in (2,3)
 		// 	  and bic.ATTRIBUTE1 is not null
 		// 	  -- INT THE TRUTH ABOVE IT WILL USED --
-		// 	  and we.WIP_ENTITY_NAME = '$job_no'
-		// 	  and bd.DEPARTMENT_CLASS_CODE = '$dept'  
+		// 	  and we.WIP_ENTITY_NAME = '$job_no' --'D191100425'-- 'D191103750'
+		// 	  and bd.DEPARTMENT_CLASS_CODE = '$dept'
 		// 	order by bic.ATTRIBUTE1, bic.ATTRIBUTE2";
-		// return $sql;
 
-		$sql = "SELECT we.WIP_ENTITY_ID job_id
+		$sql = "SELECT we.WIP_ENTITY_ID                          job_id
 			      ,we.WIP_ENTITY_NAME 
-			      ,msib2.SEGMENT1 komponen
-			      ,msib2.DESCRIPTION komp_desc
-			      ,msib2.inventory_item_id
+			      ,msib2.SEGMENT1                                             komponen
+			      ,msib2.DESCRIPTION                                         komp_desc
+			      ,msib2.INVENTORY_ITEM_ID
 			      ,wro.REQUIRED_QUANTITY
 			      ,msib2.PRIMARY_UOM_CODE
-			      ,bic.ATTRIBUTE1 gudang_asal
-			      ,mil.SEGMENT1 locator_asal
-			      ,BIC.ATTRIBUTE2
-			      ,mil.INVENTORY_LOCATION_ID locator_asal_id
-			      ,bic.SUPPLY_SUBINVENTORY gudang_tujuan
-			      ,bic.SUPPLY_LOCATOR_ID locator_tujuan_id 
-			      ,mil2.SEGMENT1 locator_tujuan
+			      ,bic.ATTRIBUTE1                                              gudang_asal
+			      ,mil.SEGMENT1                                                 locator_asal
+			      ,bic.SUPPLY_SUBINVENTORY                             gudang_tujuan
+			      ,bic.SUPPLY_LOCATOR_ID                                 locator_tujuan_id 
+			      ,mil2.SEGMENT1                                               locator_tujuan
 			      ,khs_inv_qty_att(wdj.ORGANIZATION_ID,wro.INVENTORY_ITEM_ID,bic.ATTRIBUTE1,bic.ATTRIBUTE2,'') atr
-			      ,bd.DEPARTMENT_CLASS_CODE dept_class
-			      ,bcs.DESCRIPTION
-			      ,wdj.SCHEDULED_START_DATE 
-			      --
-			      ,coalesce((nvl(
-			           (select sum(mtrl.QUANTITY)
-			              from mtl_txn_request_headers mtrh
-			                  ,mtl_txn_request_lines mtrl
-			                  ,mtl_system_items_b msib_komp
-			             where mtrh.HEADER_ID = mtrl.HEADER_ID
-			               and mtrh.ORGANIZATION_ID = msib_komp.ORGANIZATION_ID
-			               and mtrl.INVENTORY_ITEM_ID = msib_komp.INVENTORY_ITEM_ID
-			               --
-			               and mtrl.LINE_STATUS in (3,7)
-			               and mtrh.HEADER_STATUS in (3,7)
-			               and mtrl.INVENTORY_ITEM_ID = wro.INVENTORY_ITEM_ID
-			               and mtrh.ORGANIZATION_ID = wro.ORGANIZATION_ID
-			               and substr(mtrh.REQUEST_NUMBER,1,2) = 'PL'
-			               and mtrl.FROM_SUBINVENTORY_CODE = bic.ATTRIBUTE1
-			               and mtrl.FROM_LOCATOR_ID = bic.ATTRIBUTE2
-			          group by mtrl.INVENTORY_ITEM_ID
-			            ),0))
-			            ,(nvl(
-			           (select sum(mtrl.QUANTITY)
-			              from mtl_txn_request_headers mtrh
-			                  ,mtl_txn_request_lines mtrl
-			                  ,mtl_system_items_b msib_komp
-			             where mtrh.HEADER_ID = mtrl.HEADER_ID
-			               and mtrh.ORGANIZATION_ID = msib_komp.ORGANIZATION_ID
-			               and mtrl.INVENTORY_ITEM_ID = msib_komp.INVENTORY_ITEM_ID
-			               --
-			               and mtrl.LINE_STATUS in (3,7)
-			               and mtrh.HEADER_STATUS in (3,7)
-			               and mtrl.INVENTORY_ITEM_ID = wro.INVENTORY_ITEM_ID
-			               and mtrh.ORGANIZATION_ID = wro.ORGANIZATION_ID
-			               and substr(mtrh.REQUEST_NUMBER,1,2) = 'PL'
-			               and mtrl.FROM_SUBINVENTORY_CODE = bic.ATTRIBUTE1
-			               and mtrl.FROM_LOCATOR_ID is null
-			          group by mtrl.INVENTORY_ITEM_ID
-			            ),0))
-			            ) mo
-			,(
-			            (coalesce(
-			                (select sum(moqd.PRIMARY_TRANSACTION_QUANTITY)
+			      ,(select sum(moqd.PRIMARY_TRANSACTION_QUANTITY)
 			                   from mtl_onhand_quantities_detail moqd
 			                  where moqd.ORGANIZATION_ID = wdj.ORGANIZATION_ID
 			                    and moqd.INVENTORY_ITEM_ID = wro.INVENTORY_ITEM_ID
 			                    and moqd.SUBINVENTORY_CODE = bic.ATTRIBUTE1
-			                    and moqd.LOCATOR_ID = bic.ATTRIBUTE2),
-			                (select sum(moqd.PRIMARY_TRANSACTION_QUANTITY)
-			                   from mtl_onhand_quantities_detail moqd
-			                  where moqd.ORGANIZATION_ID = wdj.ORGANIZATION_ID
-			                    and moqd.INVENTORY_ITEM_ID = wro.INVENTORY_ITEM_ID
-			                    and moqd.SUBINVENTORY_CODE = bic.ATTRIBUTE1)
-			                    )
-			                )-
-			               coalesce((nvl(
-			                   (select sum(mtrl.QUANTITY)
-			                      from mtl_txn_request_headers mtrh
-			                          ,mtl_txn_request_lines mtrl
-			                          ,mtl_system_items_b msib_komp
-			                     where mtrh.HEADER_ID = mtrl.HEADER_ID
-			                       and mtrh.ORGANIZATION_ID = msib_komp.ORGANIZATION_ID
-			                       and mtrl.INVENTORY_ITEM_ID = msib_komp.INVENTORY_ITEM_ID
-			                       --
-			                       and mtrl.LINE_STATUS in (3,7)
-			                       and mtrh.HEADER_STATUS in (3,7)
-			                       and mtrl.INVENTORY_ITEM_ID = wro.INVENTORY_ITEM_ID
-			                       and mtrh.ORGANIZATION_ID = wro.ORGANIZATION_ID
-			                       and substr(mtrh.REQUEST_NUMBER,1,2) = 'PL'
-			                       and mtrl.FROM_SUBINVENTORY_CODE = bic.ATTRIBUTE1
-			                       and mtrl.FROM_LOCATOR_ID = bic.ATTRIBUTE2
-			                  group by mtrl.INVENTORY_ITEM_ID
-			                    ),0) )
-			                    ,(nvl(
-			                   (select sum(mtrl.QUANTITY)
-			                      from mtl_txn_request_headers mtrh
-			                          ,mtl_txn_request_lines mtrl
-			                          ,mtl_system_items_b msib_komp
-			                     where mtrh.HEADER_ID = mtrl.HEADER_ID
-			                       and mtrh.ORGANIZATION_ID = msib_komp.ORGANIZATION_ID
-			                       and mtrl.INVENTORY_ITEM_ID = msib_komp.INVENTORY_ITEM_ID
-			                       --
-			                       and mtrl.LINE_STATUS in (3,7)
-			                       and mtrh.HEADER_STATUS in (3,7)
-			                       and mtrl.INVENTORY_ITEM_ID = wro.INVENTORY_ITEM_ID
-			                       and mtrh.ORGANIZATION_ID = wro.ORGANIZATION_ID
-			                       and substr(mtrh.REQUEST_NUMBER,1,2) = 'PL'
-			                       and mtrl.FROM_SUBINVENTORY_CODE = bic.ATTRIBUTE1
-			                       and mtrl.FROM_LOCATOR_ID is null
-			                  group by mtrl.INVENTORY_ITEM_ID
-			                    ),0) )
-			                    )
-			                            ) kurang
+			                    and nvl(moqd.LOCATOR_ID,0) = nvl(bic.ATTRIBUTE2,0))         onhand_cob
+			      ,bd.DEPARTMENT_CLASS_CODE                         dept_class
+			      ,bcs.DESCRIPTION
+			      ,wdj.SCHEDULED_START_DATE 
+			      --
+			      ,(nvl(
+			           (select sum(mtrl.QUANTITY)
+			              from mtl_txn_request_headers mtrh
+			                  ,mtl_txn_request_lines mtrl
+			                  ,mtl_system_items_b msib_komp
+			             where mtrh.HEADER_ID = mtrl.HEADER_ID
+			               and mtrh.ORGANIZATION_ID = msib_komp.ORGANIZATION_ID
+			               and mtrl.INVENTORY_ITEM_ID = msib_komp.INVENTORY_ITEM_ID
+			               --
+			               and mtrl.LINE_STATUS in (3,7)
+			               and mtrh.HEADER_STATUS in (3,7)
+			               and mtrl.INVENTORY_ITEM_ID = wro.INVENTORY_ITEM_ID
+			               and mtrh.ORGANIZATION_ID = wro.ORGANIZATION_ID
+			               and substr(mtrh.REQUEST_NUMBER,1,2) = 'PL'
+			               and mtrl.FROM_SUBINVENTORY_CODE = bic.ATTRIBUTE1
+			               and nvl(mtrl.FROM_LOCATOR_ID,0) = nvl(bic.ATTRIBUTE2,0)
+			          group by mtrl.INVENTORY_ITEM_ID
+			            ),0)
+			            )                                                               mo
+			      ,(
+			        (select sum(moqd.PRIMARY_TRANSACTION_QUANTITY)
+			           from mtl_onhand_quantities_detail moqd
+			          where moqd.ORGANIZATION_ID = wdj.ORGANIZATION_ID
+			            and moqd.INVENTORY_ITEM_ID = wro.INVENTORY_ITEM_ID
+			            and moqd.SUBINVENTORY_CODE = bic.ATTRIBUTE1
+			            and nvl(moqd.LOCATOR_ID,0) = nvl(bic.ATTRIBUTE2,0)
+			          )-
+			        (nvl(
+			           (select sum(mtrl.QUANTITY)
+			              from mtl_txn_request_headers mtrh
+			                  ,mtl_txn_request_lines mtrl
+			                  ,mtl_system_items_b msib_komp
+			             where mtrh.HEADER_ID = mtrl.HEADER_ID
+			               and mtrh.ORGANIZATION_ID = msib_komp.ORGANIZATION_ID
+			               and mtrl.INVENTORY_ITEM_ID = msib_komp.INVENTORY_ITEM_ID
+			               --
+			               and mtrl.LINE_STATUS in (3,7)
+			               and mtrh.HEADER_STATUS in (3,7)
+			               and mtrl.INVENTORY_ITEM_ID = wro.INVENTORY_ITEM_ID
+			               and mtrh.ORGANIZATION_ID = wro.ORGANIZATION_ID
+			               and substr(mtrh.REQUEST_NUMBER,1,2) = 'PL'
+			               and mtrl.FROM_SUBINVENTORY_CODE = bic.ATTRIBUTE1
+			               and nvl(mtrl.FROM_LOCATOR_ID,0) = nvl(bic.ATTRIBUTE2,0)
+			          group by mtrl.INVENTORY_ITEM_ID
+			            ),0)
+			            )
+			        )                                                                   kurang
 			from wip_entities we
 			    ,wip_discrete_jobs wdj
 			    ,mtl_system_items_b msib
@@ -429,11 +426,10 @@ class M_moveorder extends CI_Model
 			  and wo.DEPARTMENT_ID = bd.DEPARTMENT_ID
 			  and khs_shift(wdj.SCHEDULED_START_DATE) = bcs.SHIFT_NUM
 			  -- INT THE TRUTH IT WILL USED --
-			  and bic.WIP_SUPPLY_TYPE in (2,3)
 			  and bic.ATTRIBUTE1 is not null
 			  -- INT THE TRUTH ABOVE IT WILL USED --
-			  and we.WIP_ENTITY_NAME = '$job_no' --'D191100425'-- 'D191103750'
-			  and bd.DEPARTMENT_CLASS_CODE = '$dept'
+			  and we.WIP_ENTITY_NAME = 'D191105867'--'D191103750'
+			--  and bd.DEPARTMENT_CLASS_CODE = 'PRKTA'  
 			order by bic.ATTRIBUTE1, bic.ATTRIBUTE2";
 		$query = $oracle->query($sql);
 		return $query->result_array();
