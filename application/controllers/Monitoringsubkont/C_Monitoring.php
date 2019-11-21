@@ -119,7 +119,7 @@ class C_Monitoring extends CI_Controller
 			$subkontname ='';
 		}
 		if ($kompo != ''){
-			$komponen = "msib2.segment1 = '$kompo'";
+			$komponen = "AND msib2.segment1 = '$kompo'";
 		}
 		else{
 			$komponen ='';
