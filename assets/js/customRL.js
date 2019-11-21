@@ -41,13 +41,14 @@ $(document).ready(function(){
     function SaveKirimQC(number , itemid , recnum , po) {
         var ket = 'kirim_qc';
         var kirimqc = $('#dateKirimQC'+number).val();
+        var io = $('#io'+number).val();
         console.log(number , itemid , recnum , po, kirimqc);
         if(!kirimqc){
             return;
         }
         $.ajax ({
             url : baseurl + "RekapLppb/SaveKirimQC",
-            data: {number: number, itemid: itemid, recnum : recnum, po : po , kirimqc : kirimqc, ket : ket  },
+            data: {number: number, itemid: itemid, recnum : recnum, po : po , kirimqc : kirimqc, ket : ket, io : io  },
             type : "POST",
             dataType: "html"
         });
@@ -57,13 +58,14 @@ $(document).ready(function(){
     function SaveTerimaQC(number , itemid , recnum , po) {
         var ket = 'terima_qc';
         var terimaqc = $('#dateTerimaQC'+number).val();
+        var io = $('#io'+number).val();
         // console.log(number , itemid , recnum , po, terimaqc)
         if(!terimaqc){
             return;
         }
         $.ajax ({
             url : baseurl + "RekapLppb/SaveTerimaQC",
-            data: {number: number, itemid: itemid, recnum : recnum, po : po , terimaqc : terimaqc, ket : ket },
+            data: {number: number, itemid: itemid, recnum : recnum, po : po , terimaqc : terimaqc, ket : ket, io : io },
             type : "POST",
             dataType: "html"
         });
@@ -72,13 +74,14 @@ $(document).ready(function(){
     function SaveKembaliQC(number , itemid , recnum , po) {
         var ket = 'kembali_qc';
         var kembaliqc = $('#dateKembaliQC'+number).val();
+        var io = $('#io'+number).val();
         // console.log(number , itemid , recnum , po, kembaliqc)
         if(!kembaliqc){
             return;
         }
         $.ajax ({
             url : baseurl + "RekapLppb/SaveKembaliQC",
-            data: {number: number, itemid: itemid, recnum : recnum, po : po , kembaliqc : kembaliqc, ket : ket },
+            data: {number: number, itemid: itemid, recnum : recnum, po : po , kembaliqc : kembaliqc, ket : ket, io : io },
             type : "POST",
             dataType: "html"
         });
@@ -87,13 +90,14 @@ $(document).ready(function(){
     function SaveKirimGudang(number , itemid , recnum , po) {
         var ket = 'kirim_gudang';
         var kirimgudang = $('#dateKirimGudang'+number).val();
+        var io = $('#io'+number).val();
         // console.log(number , itemid , recnum , po, kirimgudang)
         if(!kirimgudang){
             return;
         }
         $.ajax ({
             url : baseurl + "RekapLppb/SaveKirimGudang",
-            data: {number: number, itemid: itemid, recnum : recnum, po : po , kirimgudang : kirimgudang, ket : ket },
+            data: {number: number, itemid: itemid, recnum : recnum, po : po , kirimgudang : kirimgudang, ket : ket, io : io },
             type : "POST",
             dataType: "html"
         });
@@ -102,13 +106,14 @@ $(document).ready(function(){
     function SaveTerimaGudang(number , itemid , recnum , po) {
         var ket = 'terima_gudang';
         var terimagudang = $('#dateTerimaGudang'+number).val();
+        var io = $('#io'+number).val();
         // console.log(number , itemid , recnum , po, terimagudang);
         if(!terimagudang){
             return;
         }
         $.ajax ({
             url : baseurl + "RekapLppb/SaveTerimaGudang",
-            data: {number: number, itemid: itemid, recnum : recnum, po : po , terimagudang : terimagudang, ket : ket },
+            data: {number: number, itemid: itemid, recnum : recnum, po : po , terimagudang : terimagudang, ket : ket, io : io },
             type : "POST",
             dataType: "html"
         });
@@ -118,10 +123,11 @@ $(document).ready(function(){
     function searchBlnLppb(th) {
         $(document).ready(function(){
         var bulan = $('#bln').val();
+        var id_org = $('#id_org').val();
         console.log(bulan);
         var request = $.ajax({
                 url: baseurl+'RekapLppb/Input/searchBulan',
-                data: {	bulan : bulan },
+                data: {	bulan : bulan, id_org : id_org},
                 type: "POST",
                 datatype: 'html'
         });
@@ -140,13 +146,42 @@ $(document).ready(function(){
         });
     }
 
+    $(document).ready(function(){
+        $("#id_org").select2({
+            allowClear: true,
+            placeholder: "Pilih IO",
+            minimumInputLength: 0,
+            ajax: {		
+                url:baseurl+"RekapLppb/Perbaikan/searchIO",
+                dataType: 'json',
+                type: "GET",
+                data: function (params) {
+                    var queryParameters = {
+                        term: params.term
+                    }
+                    return queryParameters;
+                },
+                processResults: function (data) {
+                    console.log(data);
+                    return {
+                        results: $.map(data, function(obj) {
+                            return { id:obj.ORGANIZATION_ID, text:obj.ORGANIZATION_CODE};
+                        })
+                    };
+                }
+            }
+        });
+    });
+
     function schPerbaikan(th) {
         $(document).ready(function(){
-        var bulan = $('#bln').val();
-        console.log(bulan);
+        var no_recipt = $('#no_recipt').val();
+        var no_po = $('#no_po').val();
+        var id_org = $('#id_org').val();
+        console.log(id_org);
         var request = $.ajax({
                 url: baseurl+'RekapLppb/Perbaikan/searchPerbaikan',
-                data: {	bulan : bulan },
+                data: {	no_recipt : no_recipt, no_po : no_po, id_org : id_org },
                 type: "POST",
                 datatype: 'html'
         });
@@ -169,10 +204,11 @@ $(document).ready(function(){
     function searchTahunLppb(th) {
         $(document).ready(function(){
         var tahun = $('#tahun').val();
+        var id_org = $('#id_org').val();
         console.log(tahun);
         var request = $.ajax({
                 url: baseurl+'RekapLppb/RekapTahunan/searchTahunan',
-                data: {	tahun : tahun },
+                data: {	tahun : tahun, id_org : id_org },
                 type: "POST",
                 datatype: 'html'
         });
@@ -190,11 +226,37 @@ $(document).ready(function(){
                 })
         });
     }
+
+    function schOverdueLppb(th) {
+        $(document).ready(function(){
+        var tahun = $('#tahun').val();
+        var id_org = $('#id_org').val();
+        console.log(tahun);
+        var request = $.ajax({
+                url: baseurl+'RekapLppb/Overdue/searchOverdue',
+                data: {	tahun : tahun, id_org : id_org },
+                type: "POST",
+                datatype: 'html'
+        });
+        $('#tb_overLPPB').html('');
+        $('#tb_overLPPB').html('<center><img style="width:130px; height:auto" src="'+baseurl+'assets/img/gif/loading10.gif"></center>' );
+        request.done(function(result){
+                $('#tb_overLPPB').html('');
+                $('#tb_overLPPB').html(result);
+                // $('#myTable').dataTable({
+                //     "scrollX": false,
+                //     "scrollY": 500,
+                //     "scrollCollapse": true,
+                //     "paging":false
+                //     });
+                })
+        });
+    }
  
 
 function SaveKirimQC1(number , itemid , recnum , po) {
         var ket = 'kirim_qc';
-        // var kirimqc = $('#dateKirimQC'+number).val();
+        var io = $('#io'+number).val();
         var d = new Date();
         var kirimqc = d.getDate()+'-'+((d.getMonth()+1).toString().length==2?(d.getMonth()+1).toString():"0"+(d.getMonth()+1).toString())+'-'+d.getFullYear()+" "+d.getHours()+':'+d.getMinutes()+':'+d.getSeconds();
         // console.log(number , itemid , recnum , po, kirimqc)
@@ -203,7 +265,7 @@ function SaveKirimQC1(number , itemid , recnum , po) {
         }
         $.ajax ({
             url : baseurl + "RekapLppb/Input/SaveKirimQC",
-            data: {number: number, itemid: itemid, recnum : recnum, po : po , kirimqc : kirimqc, ket : ket  },
+            data: {number: number, itemid: itemid, recnum : recnum, po : po , kirimqc : kirimqc, ket : ket, io : io },
             type : "POST",
             dataType: "html"
         });
@@ -216,7 +278,7 @@ function SaveKirimQC1(number , itemid , recnum , po) {
 
     function SaveTerimaQC1(number , itemid , recnum , po) {
         var ket = 'terima_qc';
-        // var terimaqc = $('#dateTerimaQC'+number).val();
+        var io = $('#io'+number).val();
         var d = new Date();
         var terimaqc = d.getDate()+'-'+((d.getMonth()+1).toString().length==2?(d.getMonth()+1).toString():"0"+(d.getMonth()+1).toString())+'-'+d.getFullYear()+" "+d.getHours()+':'+d.getMinutes()+':'+d.getSeconds();
         console.log(terimaqc);
@@ -225,7 +287,7 @@ function SaveKirimQC1(number , itemid , recnum , po) {
         }
         $.ajax ({
             url : baseurl + "RekapLppb/Input/SaveTerimaQC",
-            data: {number: number, itemid: itemid, recnum : recnum, po : po , terimaqc : terimaqc, ket : ket },
+            data: {number: number, itemid: itemid, recnum : recnum, po : po , terimaqc : terimaqc, ket : ket, io : io },
             type : "POST",
             dataType: "html"
         });
@@ -237,7 +299,7 @@ function SaveKirimQC1(number , itemid , recnum , po) {
 
     function SaveKembaliQC1(number , itemid , recnum , po) {
         var ket = 'kembali_qc';
-        // var kembaliqc = $('#dateKembaliQC'+number).val();
+        var io = $('#io'+number).val();
         var d = new Date();
         var kembaliqc = d.getDate()+'-'+((d.getMonth()+1).toString().length==2?(d.getMonth()+1).toString():"0"+(d.getMonth()+1).toString())+'-'+d.getFullYear()+" "+d.getHours()+':'+d.getMinutes()+':'+d.getSeconds();
         // console.log(number , itemid , recnum , po, kembaliqc)
@@ -246,7 +308,7 @@ function SaveKirimQC1(number , itemid , recnum , po) {
         }
         $.ajax ({
             url : baseurl + "RekapLppb/Input/SaveKembaliQC",
-            data: {number: number, itemid: itemid, recnum : recnum, po : po , kembaliqc : kembaliqc, ket : ket },
+            data: {number: number, itemid: itemid, recnum : recnum, po : po , kembaliqc : kembaliqc, ket : ket, io : io },
             type : "POST",
             dataType: "html"
         });
@@ -258,7 +320,7 @@ function SaveKirimQC1(number , itemid , recnum , po) {
 
     function SaveKirimGudang1(number , itemid , recnum , po) {
         var ket = 'kirim_gudang';
-        // var kirimgudang = $('#dateKirimGudang'+number).val();
+        var io = $('#io'+number).val();
         var d = new Date();
         var kirimgudang = d.getDate()+'-'+((d.getMonth()+1).toString().length==2?(d.getMonth()+1).toString():"0"+(d.getMonth()+1).toString())+'-'+d.getFullYear()+" "+d.getHours()+':'+d.getMinutes()+':'+d.getSeconds();
         // console.log(number , itemid , recnum , po, kirimgudang)
@@ -267,7 +329,7 @@ function SaveKirimQC1(number , itemid , recnum , po) {
         }
         $.ajax ({
             url : baseurl + "RekapLppb/Input/SaveKirimGudang",
-            data: {number: number, itemid: itemid, recnum : recnum, po : po , kirimgudang : kirimgudang, ket : ket },
+            data: {number: number, itemid: itemid, recnum : recnum, po : po , kirimgudang : kirimgudang, ket : ket, io : io },
             type : "POST",
             dataType: "html"
         });
@@ -279,7 +341,7 @@ function SaveKirimQC1(number , itemid , recnum , po) {
 
     function SaveTerimaGudang1(number , itemid , recnum , po) {
         var ket = 'terima_gudang';
-        // var terimagudang = $('#dateTerimaGudang'+number).val();
+        var io = $('#io'+number).val();
         var d = new Date();
         var terimagudang = d.getDate()+'-'+((d.getMonth()+1).toString().length==2?(d.getMonth()+1).toString():"0"+(d.getMonth()+1).toString())+'-'+d.getFullYear()+" "+d.getHours()+':'+d.getMinutes()+':'+d.getSeconds();
         // console.log(number , itemid , recnum , po, terimagudang)
@@ -288,7 +350,7 @@ function SaveKirimQC1(number , itemid , recnum , po) {
         }
         $.ajax ({
             url : baseurl + "RekapLppb/Input/SaveTerimaGudang",
-            data: {number: number, itemid: itemid, recnum : recnum, po : po , terimagudang : terimagudang, ket : ket },
+            data: {number: number, itemid: itemid, recnum : recnum, po : po , terimagudang : terimagudang, ket : ket, io : io },
             type : "POST",
             dataType: "html"
         });
@@ -341,10 +403,11 @@ $('.tblRekapLppbview').DataTable({
 function schMonView(th) { 
     $(document).ready(function(){
     var bulan = $('#bulan').val();
+    var id_org = $('#id_org').val();
     console.log(bulan);
     var request = $.ajax({
             url: baseurl+'RekapLppbView/Monitoring/searchMonitoring',
-            data: {	bulan : bulan },
+            data: {	bulan : bulan, id_org : id_org },
             type: "POST",
             datatype: 'html'
     });
@@ -367,10 +430,11 @@ function schMonView(th) {
 function schUndeliverView(th) { 
     $(document).ready(function(){
     var bulan = $('#bulan').val();
+    var id_org = $('#id_org').val();
     console.log(bulan);
     var request = $.ajax({
             url: baseurl+'RekapLppbView/Undeliver/searchData',
-            data: {	bulan : bulan },
+            data: {	bulan : bulan, id_org : id_org },
             type: "POST",
             datatype: 'html'
     });
@@ -393,10 +457,11 @@ function schUndeliverView(th) {
 function schRekapThView(th) { 
     $(document).ready(function(){
     var tahun = $('#tahun').val();
+    var id_org = $('#id_org').val();
     console.log(tahun);
     var request = $.ajax({
-            url: baseurl+'RekapLppbView/RekapTahunanView/searchTahunan',
-            data: {	tahun : tahun },
+            url: baseurl+'RekapLppbView/RekapTahunan/searchTahunan',
+            data: {	tahun : tahun, id_org : id_org },
             type: "POST",
             datatype: 'html'
     });

@@ -3,6 +3,7 @@
      <script>
          $(document).ready(function () {
             $(".datepickerTahun").datepicker( {
+                autoclose: true,
                 format: " yyyy",
                 viewMode: "years", 
                 minViewMode: "years"
@@ -51,21 +52,25 @@
                             <div class="box-body">
                                 <div class="panel-body">
                                     <div class="col-md-3">
-                                        <div class="input-group input-group-sm">
                                         <input id="tahun" name="tahun" class="form-control pull-right datepickerTahun" placeholder="<?= $tahun?>" >
+                                    </div>
+                                    <div class="col-md-3">
+                                        <div class="input-group">
+                                        <select id="id_org" name="id_org" class="form-control select2" data-placeholder="Pilih IO">
+                                        <option></option>
+                                        </select>
                                         <span class="input-group-btn">
                                             <button type="button" onclick="schRekapThView(this)" class="btn btn-flat" style="background:inherit; text-align:left;padding:0px;padding-left:10px;"><i class="fa fa-2x fa-arrow-circle-right" ></i></button>    
-                                            <!-- <button type="submit" class="btn btn-flat" style="background:inherit; text-align:left;padding:0px;padding-left:10px;"><i class="fa fa-2x fa-arrow-circle-right" ></i></button>     -->
                                         </span>
                                         </div>
                                     </div>
                                 </div>
 
-                                    <div class="panel-body">
-                                        <div class="table-responsive" id="tb_rekapThView">
-                                        
-                                        </div>
+                                <div class="panel-body">
+                                    <div class="table-responsive" id="tb_rekapThView">
+                                    
                                     </div>
+                                </div>
                             </div>
                         </div>
                     </div>

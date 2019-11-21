@@ -80,8 +80,9 @@ class C_Monitoring extends CI_Controller
 
 		public function searchMonitoring(){
             $bulan = $this->input->post('bulan');
+            $io = $this->input->post('id_org');
             $prmmonth = strtoupper($bulan);
-            $data['data'] = $this->M_monitoring->getDataRekap($prmmonth);
+            $data['data'] = $this->M_monitoring->getDataRekap($prmmonth, $io);
             // echo "<pre>"; print_r($bulan);exit();
 			$this->load->view('RekapLppb/RekapLppbView/V_TblMonitoring', $data);
 		}

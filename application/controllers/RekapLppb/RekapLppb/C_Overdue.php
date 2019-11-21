@@ -42,7 +42,7 @@ class C_Overdue extends CI_Controller
 		$data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id);
 		$data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id);
 
-        $data['bulan'] = date('M-Y');
+        $data['tahun'] = date('Y');
 
         // $month = strtoupper(date("M"));
 		$year = strtoupper(date("Y"));
@@ -73,7 +73,7 @@ class C_Overdue extends CI_Controller
 		// } 
 		// $data['navbulan']= $navbulan;
 		// $prmmonth = strtoupper(date("M-Y"));
-		$data['data'] = $this->M_overdue->getDataRekap($year);
+		// $data['data'] = $this->M_overdue->getDataRekap($year);
 
 		$this->load->view('V_Header',$data);
 		$this->load->view('V_Sidemenu',$data);
@@ -83,12 +83,13 @@ class C_Overdue extends CI_Controller
 
 	public function searchOverdue()
 	{
-        $bulan = $this->input->post('bulan');
-        $prmbulan = strtoupper($bulan);
-        // echo "<pre>"; print_r($prmbulan); exit();
+        $tahun = $this->input->post('tahun');
+		$year = substr($tahun,-4);
+        $io = $this->input->post('id_org');
+        // echo "<pre>"; print_r($year); exit();
 
-        $data['data'] = $this->M_overdue->getDataRekap($prmbulan);
-        $this->load->view('RekapLppb/RekapLppb/V_TblPerbaikan', $data);
+        $data['data'] = $this->M_overdue->getDataRekap($year, $io);
+        $this->load->view('RekapLppb/RekapLppb/V_TblOverdue', $data);
 
     }
 }

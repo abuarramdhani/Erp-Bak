@@ -51,8 +51,13 @@
                             <div class="box-body">
                                 <div class="panel-body">
                                     <div class="col-md-3">
-                                        <div class="input-group input-group-sm">
                                         <input id="bulan" name="bulan" class="form-control pull-right datepickBulan" placeholder="<?= $bulan?>" >
+                                    </div>
+                                    <div class="col-md-3">
+                                        <div class="input-group">
+                                        <select id="id_org" name="id_org" class="form-control select2" data-placeholder="Pilih IO">
+                                        <option></option>
+                                        </select>
                                         <span class="input-group-btn">
                                             <button type="button" onclick="schUndeliverView(this)" class="btn btn-flat" style="background:inherit; text-align:left;padding:0px;padding-left:10px;"><i class="fa fa-2x fa-arrow-circle-right" ></i></button>    
                                         </span>
@@ -60,11 +65,11 @@
                                     </div>
                                 </div>
 
-                                    <div class="panel-body">
-                                        <div class="table-responsive"  id="tb_Undeliver">
-                                        
-                                        </div>
+                                <div class="panel-body">
+                                    <div class="table-responsive"  id="tb_Undeliver">
+                                    
                                     </div>
+                                </div>
                             </div>
                         </div>
                     </div>

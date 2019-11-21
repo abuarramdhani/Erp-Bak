@@ -42,7 +42,7 @@
             
         }else { ?>
             <tr>
-                <td><?= $i ?></td>
+                <td><?= $i ?><input type="hidden" name="io<?= $i ?>" id="io<?= $i ?>" value="<?= $io ?>"></td>
                 <td><?= $key['ITEM'] ?><input type="hidden" name="txtItem<?= $i ?>" value="<?= $key['ITEM'] ?>"></td>
                 <td><?= $key['DESCRIPTION'] ?><input type="hidden" name="txtDescription<?= $i ?>" value="<?= $key['DESCRIPTION'] ?>"></td>
                 <td><?= $key['PO'] ?><input type="hidden" name="txtPO<?= $i ?>" value="<?= $key['PO'] ?>"></td>

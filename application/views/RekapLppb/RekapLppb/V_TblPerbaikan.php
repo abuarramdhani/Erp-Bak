@@ -40,9 +40,10 @@
     if (empty($data)) {
     } else {
     foreach ($data as $key) { 
-        if ($key['DELIVER_DATE'] != '') { ?>
+        if ($key['DELIVER_DATE'] != '') { 
+            }else { }?>
             <tr>
-                <td><?= $i ?></td>
+                <td><?= $i ?><input type="hidden" name="io<?= $i ?>" id="io<?= $i ?>" value="<?= $io ?>"></td>
                 <td><?= $key['ITEM'] ?><input type="hidden" name="txtItem<?= $i ?>" value="<?= $key['ITEM'] ?>"></td>
                 <td><?= $key['DESCRIPTION'] ?><input type="hidden" name="txtDescription<?= $i ?>" value="<?= $key['DESCRIPTION'] ?>"></td>
                 <td><?= $key['PO'] ?><input type="hidden" name="txtPO<?= $i ?>" value="<?= $key['PO'] ?>"></td>
@@ -87,9 +88,7 @@
                     <input type="hidden" name="dateDeliver<?= $i ?>" value="<?= $key['DELIVER_DATE'] ?>"><?= $key['DELIVER_DATE'] ?>
                 </td>
             </tr>
-        <?php $i++; }else { ?>
-            
-        <?php  }
+        <?php $i++; 
             } 
     } ?>
     </tbody>

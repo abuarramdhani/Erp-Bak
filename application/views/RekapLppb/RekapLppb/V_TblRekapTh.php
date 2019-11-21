@@ -1,18 +1,18 @@
 <script src="<?php echo base_url('assets/plugins/dataTables/jquery.dataTables.js');?>"></script>
 	<script src="<?php echo base_url('assets/plugins/dataTables/dataTables.bootstrap.js');?>"></script>
      <script>
-         $(document).ready(function () {
+        //  $(document).ready(function () {
             // $('.datepickRekap').datepicker({
             //     autoclose: true,
             //     todayHighlight: true,
             //     dateFormat: 'yy-mm-dd',
             // });
-            $('.tblRkapLppb').dataTable({
-                "scrollX": false,
-                "paging":false,
-            });
+        //     $('.tblRkapLppb').dataTable({
+        //         "scrollX": false,
+        //         "paging":false,
+        //     });
             
-         });
+        //  });
     </script>
 <div class="table-responsive" id="tb_rekapTh">
 <table class="table table-striped table-bordered table-responsive table-hover text-center tblRkapLppb" style="font-size:14px;">

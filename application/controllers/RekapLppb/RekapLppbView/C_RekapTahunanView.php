@@ -94,6 +94,7 @@ class C_RekapTahunanView extends CI_Controller
 	public function searchTahunan()
 	{
 		$tahun = $this->input->post('tahun');
+		$io = $this->input->post('id_org');
 		$year = substr($tahun,-4);
         $navbulan = array(
 			array("1","bln" => "DEC","mon" => "DEC-$year","selisih" => ""),
@@ -112,7 +113,7 @@ class C_RekapTahunanView extends CI_Controller
 
 		for ($i=0; $i <count($navbulan) ; $i++) { 
 			$prmbulan = $navbulan[$i]['mon'];
-			$hasil = $this->M_rekaptahunanview->getSelisih($prmbulan);
+			$hasil = $this->M_rekaptahunanview->getSelisih($prmbulan, $io);
                 // echo "<pre>"; print_r($prmbulan);exit();
 			if ($hasil != null) {
 				$data['selisih'][$i] = $hasil['0']['SELISIH'];
