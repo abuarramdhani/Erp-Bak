@@ -10,7 +10,7 @@ class M_rekaptahunan extends CI_Model
         // $this->db = $this->load->database('oracle',true);
     }
 
-    public function getDataRekap($prmmonth){
+    public function getDataRekap($prmmonth, $io){
         $sql = "SELECT rec.*, 
                         NVL (ww.kirim_qc, NULL ) kirim_qc, 
                         NVL (ww.terima_qc, NULL) terima_qc,
@@ -39,7 +39,7 @@ class M_rekaptahunan extends CI_Model
                                         po_requisition_headers_all prha,
                                         po_requisition_lines prl,
                                         rcv_transactions rt
-                                WHERE rsh.ship_to_org_id = 102
+                                WHERE rsh.ship_to_org_id = '$io'
                                     AND rsh.receipt_num IS NOT NULL
                                     -- parameter---------------------------------
                                     -- AND rsh.receipt_num = '286683' ini yg dinyalain

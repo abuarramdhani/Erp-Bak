@@ -3274,13 +3274,16 @@ $route['RekapLppb/Input/(:any)/(:any)'] 		= 'RekapLppb/RekapLppb/C_Input/$1/$2';
 
 $route['RekapLppb/Perbaikan'] 					= 'RekapLppb/RekapLppb/C_Perbaikan';
 $route['RekapLppb/Perbaikan/searchPerbaikan'] 	= 'RekapLppb/RekapLppb/C_Perbaikan/searchPerbaikan';
+$route['RekapLppb/Perbaikan/(:any)'] 			= 'RekapLppb/RekapLppb/C_Perbaikan/$1';
 $route['RekapLppb/Perbaikan/(:any)/(:any)'] 	= 'RekapLppb/RekapLppb/C_Perbaikan/$1/$2';
 
 $route['RekapLppb/Overdue'] 					= 'RekapLppb/RekapLppb/C_Overdue';
 $route['RekapLppb/Overdue/(:any)'] 				= 'RekapLppb/RekapLppb/C_Overdue/$1';
+$route['RekapLppb/Overdue/(:any)/(:any)'] 		= 'RekapLppb/RekapLppb/C_Overdue/$1/$2';
 
 $route['RekapLppb/RekapTahunan'] 				= 'RekapLppb/RekapLppb/C_RekapTahunan';
-$route['RekapLppb/RekapTahunan/searchTahunan'] 		= 'RekapLppb/RekapLppb/C_RekapTahunan/searchTahunan';
+$route['RekapLppb/RekapTahunan/searchTahunan'] 	= 'RekapLppb/RekapLppb/C_RekapTahunan/searchTahunan';
+$route['RekapLppb/RekapTahunan/(:any)'] 		= 'RekapLppb/RekapLppb/C_RekapTahunan/$1';
 $route['RekapLppb/RekapTahunan/(:any)/(:any)'] 	= 'RekapLppb/RekapLppb/C_RekapTahunan/$1/$2';
 
 $route['RekapLppbView'] 						= 'RekapLppb/RekapLppbView/C_RekapView';

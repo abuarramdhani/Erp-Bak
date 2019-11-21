@@ -152,25 +152,26 @@ class M_rekap extends CI_Model
         return $query->result_array();
     }
     
-    public function cekdata($itemid,$recnum,$po){
-		$sql= "SELECT * from KHS_WAKTU_LPPB where item_id='$itemid' and receipt_num='$recnum' and po='$po'";
+    public function cekdata($itemid,$recnum,$po,$io){
+		$sql= "SELECT * from KHS_WAKTU_LPPB where item_id='$itemid' and receipt_num='$recnum' and po='$po' and io = '$io'";
         $query = $this->oracle->query($sql);                             
         return $query->result_array();
     }
     
-    public function Updatedata($itemid,$recnum,$po,$queryupdate){
+    public function Updatedata($itemid,$recnum,$po,$queryupdate,$io){
 		$sql= "UPDATE KHS_WAKTU_LPPB 
         $queryupdate
         WHERE PO = '$po'
         AND RECEIPT_NUM = '$recnum'
-        AND ITEM_ID = '$itemid'";
+        AND ITEM_ID = '$itemid'
+        AND IO = '$io'";
         $query = $this->oracle->query($sql);                             
-        // return $sql;
+        echo $sql;
     }
-    public function Insertdata($itemid,$recnum,$po,$queryinsert,$ket){
-		$sql= "INSERT INTO KHS_WAKTU_LPPB (item_id, receipt_num, po , $ket)
-        values ('$itemid','$recnum','$po',$queryinsert)";
+    public function Insertdata($itemid,$recnum,$po,$queryinsert,$ket,$io){
+		$sql= "INSERT INTO KHS_WAKTU_LPPB (item_id, receipt_num, po, io , $ket)
+        values ('$itemid','$recnum','$po','$io',$queryinsert)";
         $query = $this->oracle->query($sql);                             
-        // return $sql;
+        echo $sql;
     }
 }

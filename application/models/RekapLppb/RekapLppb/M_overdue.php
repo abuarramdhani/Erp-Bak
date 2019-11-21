@@ -10,7 +10,7 @@ class M_overdue extends CI_Model
         // $this->db = $this->load->database('oracle',true);
     }
 
-    public function getDataRekap($year){
+    public function getDataRekap($year, $io){
         $sql = "SELECT rec.*, 
         nvl(to_char(kwl.kirim_qc,'DD/MM/YYYY HH24:MI:SS'),null) kirim_qc, 
         nvl(to_char(kwl.terima_qc,'DD/MM/YYYY HH24:MI:SS'),null) terima_qc,
@@ -21,7 +21,7 @@ FROM (SELECT DISTINCT rsh.receipt_num, rsh.creation_date receipt_date,
                         msib.segment1 item, msib.description description,
                         pha.segment1 po, rt.transaction_type,
                         rt.transaction_date, rt.quantity,
-                        rsl.shipment_line_id, rsl.item_id,
+                        rsl.shipment_line_id, rsl.item_id, rsh.ship_to_org_id io,
                         (SELECT distinct rt_deliver.transaction_date
                             FROM rcv_transactions rt_deliver
                         WHERE rt.shipment_header_id =
@@ -39,7 +39,7 @@ FROM (SELECT DISTINCT rsh.receipt_num, rsh.creation_date receipt_date,
                         po_requisition_headers_all prha,
                         po_requisition_lines prl,
                         rcv_transactions rt
-                WHERE rsh.ship_to_org_id = 102
+                WHERE rsh.ship_to_org_id = '$io'
                     AND rsh.receipt_num IS NOT NULL                   
                     -- parameter---------------------------------
                    and to_char(rsh.CREATION_DATE ,'YYYY') = '$year'
@@ -74,6 +74,7 @@ FROM (SELECT DISTINCT rsh.receipt_num, rsh.creation_date receipt_date,
 WHERE rec.receipt_num = kwl.receipt_num(+) 
 AND rec.po = kwl.po(+)
 AND rec.item_id = kwl.ITEM_ID(+)
+AND rec.io = kwl.io(+)
 ORDER BY rec.receipt_num , rec.receipt_date";
         $query = $this->oracle->query($sql);                             
         return $query->result_array();

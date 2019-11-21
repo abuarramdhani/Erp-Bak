@@ -44,25 +44,25 @@ class C_Input extends CI_Controller
 
         $data['bulan'] = date('M-Y');
 
-        $month = strtoupper(date("M"));
-		$year = strtoupper(date("Y"));
-		$data['monthnow'] = ".$month.";
+        // $month = strtoupper(date("M"));
+		// $year = strtoupper(date("Y"));
+		// $data['monthnow'] = ".$month.";
 
-		$navbulan = array
-		(
-				array("1","bln" => "DEC","mon" => "DEC-$year","selisih" => ""),
-				array("2","bln" => "NOP","mon" => "NOP-$year","selisih" => ""),
-				array("3","bln" => "OCT","mon" => "OCT-$year","selisih" => ""),
-				array("4","bln" => "SEP","mon" => "SEP-$year","selisih" => ""),
-				array("5","bln" => "AUG","mon" => "AUG-$year","selisih" => ""),
-				array("6","bln" => "JUL","mon" => "JUL-$year","selisih" => ""),
-				array("7","bln" => "JUN","mon" => "JUN-$year","selisih" => ""),
-				array("8","bln" => "MAY","mon" => "MAY-$year","selisih" => ""),
-				array("9","bln" => "APR","mon" => "APR-$year","selisih" => ""),
-				array("10","bln" => "MAR","mon" => "MAR-$year","selisih" => ""),
-				array("11","bln" => "FEB","mon" => "FEB-$year","selisih" => ""),
-				array("12","bln" => "JAN","mon" => "JAN-$year","selisih" => "")
-				);
+		// $navbulan = array
+		// (
+		// 		array("1","bln" => "DEC","mon" => "DEC-$year","selisih" => ""),
+		// 		array("2","bln" => "NOP","mon" => "NOP-$year","selisih" => ""),
+		// 		array("3","bln" => "OCT","mon" => "OCT-$year","selisih" => ""),
+		// 		array("4","bln" => "SEP","mon" => "SEP-$year","selisih" => ""),
+		// 		array("5","bln" => "AUG","mon" => "AUG-$year","selisih" => ""),
+		// 		array("6","bln" => "JUL","mon" => "JUL-$year","selisih" => ""),
+		// 		array("7","bln" => "JUN","mon" => "JUN-$year","selisih" => ""),
+		// 		array("8","bln" => "MAY","mon" => "MAY-$year","selisih" => ""),
+		// 		array("9","bln" => "APR","mon" => "APR-$year","selisih" => ""),
+		// 		array("10","bln" => "MAR","mon" => "MAR-$year","selisih" => ""),
+		// 		array("11","bln" => "FEB","mon" => "FEB-$year","selisih" => ""),
+		// 		array("12","bln" => "JAN","mon" => "JAN-$year","selisih" => "")
+		// 		);
 
 		// for ($i=0; $i <count($navbulan) ; $i++) { 
 		// 	$prmbulan = $navbulan[$i]['mon'];
@@ -71,9 +71,9 @@ class C_Input extends CI_Controller
 		// 		$navbulan[$i]['selisih'] = $hasil['0']['SELISIH'];
 		// 	}
 		// } 
-		$data['navbulan']= $navbulan;
-		$prmmonth = strtoupper(date("M-Y"));
-		$data['data'] = $this->M_input->getDataRekap($prmmonth);
+		// $data['navbulan']= $navbulan;
+		// $prmmonth = strtoupper(date("M-Y"));
+		// $data['data'] = $this->M_input->getDataRekap($prmmonth);
 
 		$this->load->view('V_Header',$data);
 		$this->load->view('V_Sidemenu',$data);
@@ -84,10 +84,12 @@ class C_Input extends CI_Controller
 	public function searchBulan()
 	{
         $bulan = $this->input->post('bulan');
+		$io = $this->input->post('id_org');
+		$data['io'] = $io;
         $prmbulan = strtoupper($bulan);
         // echo "<pre>"; print_r($prmbulan); exit();
 
-        $data['data'] = $this->M_input->getDataRekap($prmbulan);
+        $data['data'] = $this->M_input->getDataRekap2($prmbulan, $io);
         $this->load->view('RekapLppb/RekapLppb/V_TableInput', $data);
 
 	}
@@ -129,6 +131,7 @@ class C_Input extends CI_Controller
 		$po = $this->input->post('po');
 		$kirimqc = $this->input->post('kirimqc');
 		$ket = $this->input->post('ket');
+		$io = $this->input->post('io');
 
 		// if ($kirimqc != null) {
 		// 	$datekirimqc = date("d-m-Y", strtotime($kirimqc));
@@ -136,13 +139,13 @@ class C_Input extends CI_Controller
 		// 	exit;
 		// }
 
-		$cek = $this->M_input->cekdata($itemid,$recnum,$po);
+		$cek = $this->M_input->cekdata($itemid,$recnum,$po, $io);
 		if (count($cek) > 0) {
 			$queryupdate = "SET KIRIM_QC = TO_TIMESTAMP('$kirimqc', 'DD-MM-YYYY HH24:MI:SS')";
-			$this->M_input->Updatedata($itemid,$recnum,$po,$queryupdate);
+			$this->M_input->Updatedata($itemid,$recnum,$po,$queryupdate, $io);
 		} else {
 			$queryinsert = "TO_TIMESTAMP('$kirimqc', 'DD-MM-YYYY HH24:MI:SS')";
-			$this->M_input->Insertdata($itemid,$recnum,$po,$queryinsert,$ket);
+			$this->M_input->Insertdata($itemid,$recnum,$po,$queryinsert,$ket, $io);
 		}
 	}
 
@@ -154,18 +157,19 @@ class C_Input extends CI_Controller
 		$po = $this->input->post('po');
 		$terimaqc = $this->input->post('terimaqc');
 		$ket = $this->input->post('ket');
+		$io = $this->input->post('io');
 		// if ($terimaqc != null) {
 		// 	$dateterimaqc = date("d-m-Y", strtotime($terimaqc));
 		// }else{
 		// 	exit;
 		// }
-		$cek = $this->M_input->cekdata($itemid,$recnum,$po);
+		$cek = $this->M_input->cekdata($itemid,$recnum,$po, $io);
 		if (count($cek) > 0) {
 			$queryupdate = "SET TERIMA_QC = TO_TIMESTAMP('$terimaqc', 'DD-MM-YYYY HH24:MI:SS')";
-			$this->M_input->Updatedata($itemid,$recnum,$po,$queryupdate);
+			$this->M_input->Updatedata($itemid,$recnum,$po,$queryupdate, $io);
 		} else {
 			$queryinsert = "TO_TIMESTAMP('$terimaqc', 'DD-MM-YYYY HH24:MI:SS')";
-			$this->M_input->Insertdata($itemid,$recnum,$po,$queryinsert,$ket);
+			$this->M_input->Insertdata($itemid,$recnum,$po,$queryinsert,$ket, $io);
 		}
 	}
 	
@@ -177,18 +181,19 @@ class C_Input extends CI_Controller
 		$po = $this->input->post('po');
 		$kembaliqc = $this->input->post('kembaliqc');
 		$ket = $this->input->post('ket');
+		$io = $this->input->post('io');
 		// if ($kembaliqc != null) {
 		// 	$datekembaliqc = date("d-m-Y", strtotime($kembaliqc));
 		// }else{
 		// 	exit;
 		// }
-		$cek = $this->M_input->cekdata($itemid,$recnum,$po);
+		$cek = $this->M_input->cekdata($itemid,$recnum,$po, $io);
 		if (count($cek) > 0) {
 			$queryupdate = "SET KEMBALI_QC = TO_TIMESTAMP('$kembaliqc', 'DD-MM-YYYY HH24:MI:SS')";
-			$this->M_input->Updatedata($itemid,$recnum,$po,$queryupdate);
+			$this->M_input->Updatedata($itemid,$recnum,$po,$queryupdate, $io);
 		} else {
 			$queryinsert = "TO_TIMESTAMP('$kembaliqc', 'DD-MM-YYYY HH24:MI:SS')";
-			$this->M_input->Insertdata($itemid,$recnum,$po,$queryinsert,$ket);
+			$this->M_input->Insertdata($itemid,$recnum,$po,$queryinsert,$ket, $io);
 		}
 	}
 	
@@ -201,18 +206,19 @@ class C_Input extends CI_Controller
 		$po = $this->input->post('po');
 		$kirimgudang = $this->input->post('kirimgudang');
 		$ket = $this->input->post('ket');
+		$io = $this->input->post('io');
 		// if ($kirimgudang != null) {
 		// 	$datekirimgudang = date("d-m-Y", strtotime($kirimgudang));
 		// }else{
 		// 	exit;
 		// }
-		$cek = $this->M_input->cekdata($itemid,$recnum,$po);
+		$cek = $this->M_input->cekdata($itemid,$recnum,$po, $io);
 		if (count($cek) > 0) {
 			$queryupdate = "SET KIRIM_GUDANG = TO_TIMESTAMP('$kirimgudang', 'DD-MM-YYYY HH24:MI:SS')";
-			$this->M_input->Updatedata($itemid,$recnum,$po,$queryupdate);
+			$this->M_input->Updatedata($itemid,$recnum,$po,$queryupdate, $io);
 		} else {
 			$queryinsert = "TO_TIMESTAMP('$kirimgudang', 'DD-MM-YYYY HH24:MI:SS')";
-			$this->M_input->Insertdata($itemid,$recnum,$po,$queryinsert,$ket);
+			$this->M_input->Insertdata($itemid,$recnum,$po,$queryinsert,$ket, $io);
 		}
 	}
 	
@@ -225,18 +231,19 @@ class C_Input extends CI_Controller
 		$po = $this->input->post('po');
 		$terimagudang = $this->input->post('terimagudang');
 		$ket = $this->input->post('ket');
+		$io = $this->input->post('io');
 		// if ($terimagudang != null) {
 		// 	$dateterimagudang = date("d-m-Y", strtotime($terimagudang));
 		// }else{
 		// 	exit;
 		// }
-		$cek = $this->M_input->cekdata($itemid,$recnum,$po);
+		$cek = $this->M_input->cekdata($itemid,$recnum,$po, $io);
 		if (count($cek) > 0) {
 			$queryupdate = "SET TERIMA_GUDANG = TO_TIMESTAMP('$terimagudang', 'DD-MM-YYYY HH24:MI:SS')";
-			$this->M_input->Updatedata($itemid,$recnum,$po,$queryupdate);
+			$this->M_input->Updatedata($itemid,$recnum,$po,$queryupdate, $io);
 		} else {
 			$queryinsert = "TO_TIMESTAMP('$terimagudang', 'DD-MM-YYYY HH24:MI:SS')";
-			$this->M_input->Insertdata($itemid,$recnum,$po,$queryinsert,$ket);
+			$this->M_input->Insertdata($itemid,$recnum,$po,$queryinsert,$ket, $io);
 		}
 	}
 }
