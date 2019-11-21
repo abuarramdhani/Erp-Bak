@@ -212,7 +212,7 @@ class C_PekerjaKeluar extends CI_Controller
 			$kom_ims = $this->M_pekerjakeluar->hitung_ims($pkj['noind'],$tgl_cut_awal,$pkj['tglkeluar']);
 			$kom_imm = $this->M_pekerjakeluar->hitung_imm($pkj['noind'],$tgl_cut_awal,$pkj['tglkeluar']);
 
-			if ($pkj['lokasi_kerja'] !== '01' && $pkj['lokasi_kerja'] !== '02' && $pkj['lokasi_kerja'] !== '03' && $pkj['lokasi_kerja'] !== '04' && (substr($pkj['noind'], 0, 1) == 'B' || substr($pkj['noind'], 0, 1) == 'D') ) {
+			if ($pkj['id_lokasi_kerja'] !== '01' && $pkj['id_lokasi_kerja'] !== '02' && $pkj['id_lokasi_kerja'] !== '03' && $pkj['id_lokasi_kerja'] !== '04' && (substr($pkj['noind'], 0, 1) == 'B' || substr($pkj['noind'], 0, 1) == 'D') ) {
 				$kom_um_cabang = $this->M_pekerjakeluar->hitung_um_cabang($pkj['noind'],$tgl_cut_awal,$pkj['tglkeluar']);
 			}
 
