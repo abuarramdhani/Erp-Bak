@@ -94,7 +94,7 @@ class C_Input extends CI_Controller
 
 	}
 
-	public function searchRekap($id)
+	public function searchRekap($id, $io)
 	{
 		// echo "wak waww";exit();
 		$user = $this->session->username;
@@ -110,16 +110,17 @@ class C_Input extends CI_Controller
 		$data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id);
 
         $data['bulan'] = $id;
+        $data['io'] = $io;
         // $prmbulan = strtoupper($bulan);
         // echo "<pre>"; print_r($prmbulan); exit();
 
-		$data['data'] = $this->M_input->getDataRekap($id);
+		$data['data'] = $this->M_input->getDataRekap2($id, $io);
 		// print_r
         // $this->load->view('RekapLppb/RekapLppb/V_TableInput', $data);
 
 		$this->load->view('V_Header',$data);
 		$this->load->view('V_Sidemenu',$data);
-		$this->load->view('RekapLppb/RekapLppb/V_Input',$data);
+		$this->load->view('RekapLppb/RekapLppb/V_TblInputRekap',$data);
 		$this->load->view('V_Footer',$data);
 	}
 

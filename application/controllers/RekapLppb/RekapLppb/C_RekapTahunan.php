@@ -95,6 +95,7 @@ class C_RekapTahunan extends CI_Controller
 	{
 		$tahun = $this->input->post('tahun');
 		$io = $this->input->post('id_org');
+		$data['io'] = $io;
 		$year = substr($tahun,-4);
         $navbulan = array
 		(

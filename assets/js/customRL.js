@@ -252,6 +252,33 @@ $(document).ready(function(){
                 })
         });
     }
+
+    function schRekapLppb(th) { 
+        $(document).ready(function(){
+        var bulan = $('#bulan').val();
+        var id_org = $('#id_org').val();
+        console.log(bulan);
+        var request = $.ajax({
+                url: baseurl+'RekapLppb/Rekap/schRekapLppb',
+                data: {	bulan : bulan, id_org : id_org },
+                type: "POST",
+                datatype: 'html'
+        });
+        $('#tb_rekapLppb').html('');
+        $('#tb_rekapLppb').html('<center><img style="width:130px; height:auto" src="'+baseurl+'assets/img/gif/loading10.gif"></center>' );
+        request.done(function(result){
+            // console.log(result)
+                $('#tb_rekapLppb').html('');
+                $('#tb_rekapLppb').html(result);
+                // $('#myTable').dataTable({
+                //     "scrollX": false,
+                //     "scrollY": 500,
+                //     "scrollCollapse": true,
+                //     "paging":false
+                //     });
+                })
+        });
+    }
  
 
 function SaveKirimQC1(number , itemid , recnum , po) {
