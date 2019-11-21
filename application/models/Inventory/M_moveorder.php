@@ -329,6 +329,7 @@ class M_moveorder extends CI_Model
 			      ,wro.REQUIRED_QUANTITY
 			      ,msib2.PRIMARY_UOM_CODE
 			      ,bic.ATTRIBUTE1                                              gudang_asal
+			      ,mil.INVENTORY_LOCATION_ID locator_asal_id
 			      ,mil.SEGMENT1                                                 locator_asal
 			      ,bic.SUPPLY_SUBINVENTORY                             gudang_tujuan
 			      ,bic.SUPPLY_LOCATOR_ID                                 locator_tujuan_id 
@@ -428,8 +429,8 @@ class M_moveorder extends CI_Model
 			  -- INT THE TRUTH IT WILL USED --
 			  and bic.ATTRIBUTE1 is not null
 			  -- INT THE TRUTH ABOVE IT WILL USED --
-			  and we.WIP_ENTITY_NAME = 'D191105867'--'D191103750'
-			--  and bd.DEPARTMENT_CLASS_CODE = 'PRKTA'  
+			  and we.WIP_ENTITY_NAME = '$job_no'--'D191103750'
+			 and bd.DEPARTMENT_CLASS_CODE = '$dept'  
 			order by bic.ATTRIBUTE1, bic.ATTRIBUTE2";
 		$query = $oracle->query($sql);
 		return $query->result_array();
