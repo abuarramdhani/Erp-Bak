@@ -822,7 +822,7 @@ class M_pekerjakeluar extends CI_Model
 						 as total
 					from hrd_khs.tpribadi a
 					where a.noind = '$noind'";
-					// echo "<pre>".$sql;exit();
+			// echo "<pre>".$sql;exit();
 			$result1 = $this->personalia->query($sql)->result_array();
 
 			$sql = "SELECT a.tanggal, a.noind,
@@ -856,7 +856,7 @@ class M_pekerjakeluar extends CI_Model
 							end as break_selesai
 					FROM \"Presensi\".TDataTIM a INNER JOIN
 					\"Presensi\".TShiftPekerja b ON a.tanggal = b.tanggal AND a.noind = b.noind
-					WHERE (a.tanggal >= '$awal') AND (a.kd_ket = 'TIK') AND (a.noind = '$noind') AND (a.tanggal <= to_char('$akhir'::date,'yyyy-mm-01')::date - interval '1 day')
+					WHERE (a.tanggal >= '$awal') AND (a.kd_ket = 'TIK') AND (a.noind = '$noind') AND (a.tanggal <= '$akhir'::date)
 					UNION
 					SELECT a.tanggal, a.noind,
 									concat(a.tanggal::date,' ',a.keluar)::timestamp as keluar,
@@ -889,8 +889,9 @@ class M_pekerjakeluar extends CI_Model
 									end as break_selesai
 							FROM \"Presensi\".TDataPresensi a INNER JOIN
 							\"Presensi\".TShiftPekerja b ON a.tanggal = b.tanggal AND a.noind = b.noind
-							WHERE (a.tanggal >= to_char('$akhir'::date,'yyyy-mm-01')::date) AND (a.kd_ket = 'PSP') AND (a.noind = '$noind') AND (a.tanggal <= '$akhir')
+							WHERE (a.tanggal >= '$akhir'::date) AND (a.kd_ket = 'PSP') AND (a.noind = '$noind') AND (a.tanggal <= '$akhir')
 					ORDER BY tanggal";
+					
 			$result2 = $this->personalia->query($sql)->result_array();
 			$nilai = $result1['0']['total'];
 			$simpan_tgl = "";
@@ -934,7 +935,7 @@ class M_pekerjakeluar extends CI_Model
 
 				$simpan_tgl = $tik['tanggal'];
 			}
-			// echo $nilai;exit();
+			 
 		}else{
 			$sql = "select noind,
 						(
