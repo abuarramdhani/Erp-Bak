@@ -49,13 +49,15 @@ class C_Rekap extends CI_Controller
     public function Rekap(){
 
         $this->checkSession();
-        $user_id = $this->session->userid;
+		$user_id = $this->session->userid;
+		$data['Title'] = 'Rekap';
         $data['Menu'] = 'Dashboard';
         $data['SubMenuOne'] = '';
         $data['UserMenu'] = $this->M_user->getUserMenu($user_id,$this->session->responsibility_id);
         $data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id);
         $data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id);
 
+		$data['bulan'] = date('M-Y');
 		// $month = strtoupper(date("M"));
 		// $year = strtoupper(date("Y"));
 		// $data['monthnow'] = ".$month.";
@@ -344,6 +346,13 @@ class C_Rekap extends CI_Controller
 		}
 	}
 
-
+	public function schRekapLppb(){
+		$bulan = $this->input->post('bulan');
+		$io = $this->input->post('id_org');
+		$prmmonth = strtoupper($bulan);
+		$data['data'] = $this->M_rekap->getDataRekap($prmmonth, $io);
+		// echo "<pre>"; print_r($bulan);exit();
+		$this->load->view('RekapLppb/RekapLppbView/V_TblMonitoring', $data);
+	}
 
 }

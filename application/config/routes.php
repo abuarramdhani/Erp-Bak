@@ -3252,6 +3252,8 @@ $route['RekapLppb'] 							= 'RekapLppb/RekapLppb/C_Rekap';
 // $route['RekapLppb/(:any)/(:any)/(:any)'] 		= 'RekapLppb/RekapLppb/C_Rekap/$1/$2/$3';
 // $route['RekapLppb/(:any)/(:any)/(:any)/(:any)'] = 'RekapLppb/RekapLppb/C_Rekap/$1/$2/$3/$4';
 $route['RekapLppb/Rekap'] 						= 'RekapLppb/RekapLppb/C_Rekap/Rekap';
+$route['RekapLppb/Rekap/(:any)'] 			= 'RekapLppb/RekapLppb/C_Rekap/$1';
+$route['RekapLppb/Rekap/(:any)/(:any)'] 	= 'RekapLppb/RekapLppb/C_Rekap/$1/$2';
 $route['RekapLppb/SearchData'] 					= 'RekapLppb/RekapLppb/C_Rekap/SearchData';
 // $route['RekapLppb/SaveData'] 				= 'RekapLppb/RekapLppb/C_Rekap/SaveData';
 $route['RekapLppb/SaveKirimQC'] 				= 'RekapLppb/RekapLppb/C_Rekap/SaveKirimQC';
@@ -3269,6 +3271,7 @@ $route['RekapLppb/Input/SaveKirimGudang'] 		= 'RekapLppb/RekapLppb/C_Input/SaveK
 $route['RekapLppb/Input/SaveTerimaGudang'] 		= 'RekapLppb/RekapLppb/C_Input/SaveTerimaGudang';
 $route['RekapLppb/Input/searchRekap'] 			= 'RekapLppb/RekapLppb/C_Input/searchRekap';
 $route['RekapLppb/Input/searchRekap/(:any)'] 	= 'RekapLppb/RekapLppb/C_Input/searchRekap/$1';
+$route['RekapLppb/Input/searchRekap/(:any)/(:any)'] 	= 'RekapLppb/RekapLppb/C_Input/searchRekap/$1/$2';
 $route['RekapLppb/Input/(:any)/(:any)'] 		= 'RekapLppb/RekapLppb/C_Input/$1/$2';
 
 

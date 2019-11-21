@@ -44,7 +44,7 @@ class M_perbaikan extends CI_Model
                                     -- parameter---------------------------------
                                     $no_recipt $no_po
                 --                    and pha.SEGMENT1 = '19018662'
-                                --and to_char(rsh.CREATION_DATE ,'MON-YYYY') = nvl('$prmmonth',to_char(rsh.CREATION_DATE , 'MON-YYYY'))
+                                --and to_char(rsh.CREATION_DATE ,'MON-YYYY') = nvl('',to_char(rsh.CREATION_DATE , 'MON-YYYY'))
                 --                    and msib.INVENTORY_ITEM_ID = ''
                 --                    and rsh.RECEIPT_NUM between nvl(:P_LPPB_FROM,rsh.RECEIPT_NUM) and nvl(:P_LPPB_TO,rsh.RECEIPT_NUM)
                                     ----------------------------------------------
