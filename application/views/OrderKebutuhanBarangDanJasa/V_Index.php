@@ -15,7 +15,7 @@
 
 				<div class="col-md-4 col-sm-6 col-xs-12">
 					<?php 
-						if ($this->session->responsibility_id == 2665) {
+						if ($this->session->responsibility_id == 2681) {
 							$classNormal = 'btnNormalOrderOKBPengelola';
 						}else {
 							$classNormal = 'btnNormalOrderOKB';
@@ -47,7 +47,7 @@
 
 				<div class="col-md-4 col-sm-6 col-xs-12">
 					<?php 
-						if ($this->session->responsibility_id == 2665) {
+						if ($this->session->responsibility_id == 2681) {
 							$classSusulan = 'btnSusulanOrderOKBPengelola';
 						}else {
 							$classSusulan = 'btnSusulanOrderOKB';
@@ -79,7 +79,7 @@
 
 				<div class="col-md-4 col-sm-6 col-xs-12">
 					<?php 
-						if ($this->session->responsibility_id == 2665) {
+						if ($this->session->responsibility_id == 2681) {
 							$classUrgent = 'btnUrgentOrderOKBPengelola';
 						}else {
 							$classUrgent = 'btnUrgentOrderOKB';
