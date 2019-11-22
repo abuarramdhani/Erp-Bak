@@ -78,7 +78,8 @@ class C_Index extends CI_Controller
 						$data = array(
 							'izin_id'	=> $idizin,
 							'noinduk' 	=> $nama[$i],
-							'tujuan' => $tujuan[$j]['tujuan']
+							'tujuan' => $tujuan[$j]['tujuan'].
+							'created_date' => date('Y-m-d H:i:s')
 						);
 						$insert = $this->M_index->taktual_izin($data);
 					}

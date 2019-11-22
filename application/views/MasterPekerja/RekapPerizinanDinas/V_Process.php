@@ -31,7 +31,6 @@
                                                 <label for="txtTanggalCetak" class="col-lg-3 control-label text-left">Periode Rekap</label>
                                                 <div class="col-lg-7">
                                                    <input class="form-control periodeRekap"  autocomplete="off" type="text" name="periodeRekap" id="periodeRekap" placeholder="Masukkan Periode" value=""/>
-                                                    <!-- <button type="submit" class="btn btn-primary">Cari</button> -->
                                                    <p>*kosongkan kolom periode , untuk menampilkan semua data</p>
                                                 </div>
                                                 <div class="form-group">
@@ -61,6 +60,7 @@
                                     <th class="text-center" style="white-space: nowrap;">Nama Pekerja</th>
                                     <th class="text-center" style="white-space: nowrap;">Jenis Izin</th>
                                     <th class="text-center" style="white-space: nowrap;">Atasan Approved</th>
+                                    <th class="text-center" style="white-space: nowrap;">Tempat Makan</th>
                                     <th class="text-center" style="white-space: nowrap;">Keterangan</th>
                                     <th class="text-center" style="white-space: nowrap;">Status</th>
                                   </tr>
@@ -71,8 +71,8 @@
                                     <tr>
                                       <td style="white-space: nowrap;"><?php echo $no; ?></td>
                                       <td style="white-space: nowrap;"><?php echo $row['izin_id'] ?></td>
-                                      <td style="white-space: nowrap;"><?= date("d - M - Y", strtotime($row['created_date'])); ?></td>
-                                      <td style="white-space: nowrap;"><?php $noind = explode(', ', $row['noind']); //print_r($noind);die;
+                                      <td style="white-space: nowrap;"><?= date("d F Y", strtotime($row['created_date'])); ?></td>
+                                      <td style="white-space: nowrap;"><?php $noind = explode(', ', $row['noind']);
                                        foreach ($noind as $kalue) {
                                          foreach ($nama as $kuy) {
                                            if ($kalue == $kuy['noind']) {
@@ -91,6 +91,14 @@
                                       <td style="white-space: nowrap;"><?php foreach ($nama as $key) {
                                         if ($row['atasan_aproval'] == $key['noind']) {
                                           echo $key['noind'].' - '.$key['nama'];
+                                        }
+                                      } ?></td>
+                                      <td style="white-space: nowrap;"><?php $tempat_makan = explode(',', $row['tujuan']);
+                                      foreach ($tempat_makan as $lue) {
+                                        if (empty($lue)) {
+                                          echo '-';
+                                        }else {
+                                          echo $lue.'<br>';
                                         }
                                       } ?></td>
                                       <td style="white-space: nowrap;"><?php echo $row['keterangan'] ?></td>

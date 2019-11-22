@@ -218,6 +218,47 @@ $(document).ready(function(){
 		cekpph();
 		calculation();
 	}
+
+	//Untuk Catering Tambahan Rekap Dinas
+	$("input.tanggalRekapDinas").daterangepicker({
+		autoUpdateInput: false,
+		locale: {
+			cancelLabel: 'Clear'
+		}
+	});
+
+	$('input.tanggalRekapDinas').on('apply.daterangepicker', function(ev, picker) {
+		$(this).val(picker.startDate.format('MM/DD/YYYY') + ' - ' + picker.endDate.format('MM/DD/YYYY'));
+	});
+
+	$('input.tanggalRekapDinas').on('cancel.daterangepicker', function(ev, picker) {
+			$(this).val('');
+	});
+
+	$('#cariRekapDinas').on('click', function () {
+		let tanggal = $('#tanggalRekapDinas').val();
+		let loading = 'assets/img/gif/loadingquick.gif'
+
+		$.ajax({
+			type: 'post',
+			data: { tanggal: tanggal},
+			url: baseurl + 'ApprovalTambahan/rekapDinas',
+			beforeSend: function(){
+					swal.fire({
+							html : "<img style='width: 100px; height: auto;'src='"+loading+"'>",
+							text : 'Loading...',
+							customClass: 'swal-wide',
+							showConfirmButton:false,
+							allowOutsideClick: false
+						});
+					},
+			success: function (data) {
+				swal.close()
+				$('#gantiHariRekap').html(data).find('.approveCatering').dataTable()
+			}
+		})
+	})
+	//Selesai
 });
 
 	//MENAMBAH ROW UNTUK FINE DETAILS

@@ -14,14 +14,9 @@ class M_index extends CI_Model
       return $this->personalia->query("SELECT DISTINCT noind, trim(nama) as nama FROM hrd_khs.tpribadi")->result_array();
     }
 
-  	public function IzinApprove($periodeRekap)
+  	public function IzinApprove($periode)
   	{
-  		if (!empty($periodeRekap)) {
-  			$where = "AND TO_CHAR(created_date, 'yyyy-mm') LIKE '$periodeRekap'";
-  		}else{
-  			$where = "";
-  		}
-  		$sql = "SELECT * FROM \"Surat\".tperizinan WHERE status = '1' $where order by created_date DESC ";
+  		$sql = "SELECT * FROM \"Surat\".tperizinan WHERE status = '1' $periode order by created_date DESC ";
 
   		$query = $this->personalia->query($sql);
   		return $query->result_array();

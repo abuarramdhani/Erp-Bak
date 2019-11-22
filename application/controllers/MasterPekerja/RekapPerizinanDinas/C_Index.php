@@ -37,8 +37,8 @@ class C_Index extends CI_Controller
 		$user_id = $this->session->userid;
 		$no_induk = $this->session->user;
 
-		$data['Title'] = 'Data Pesanan';
-		$data['Menu'] = 'Catering Management ';
+		$data['Title'] = 'Rekap Perizinan Dinas';
+		$data['Menu'] = 'Rekap Perizinan Dinas ';
 		$data['SubMenuOne'] = '';
 		$data['SubMenuTwo'] = '';
 
@@ -62,8 +62,6 @@ class C_Index extends CI_Controller
 		$user_id = $this->session->userid;
 		$no_induk = $this->session->user;
 
-		$perioderekap 		=	$this->input->post('periodeRekap');
-
 		$data['Title'] = 'REKAP DATA PERIZINAN DINAS';
 		$data['Menu'] = 'Rekap Perizinan Dinas ';
 		$data['SubMenuOne'] = '';
@@ -73,7 +71,23 @@ class C_Index extends CI_Controller
 		$data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id);
 		$data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id);
 
-		$data['IzinApprove'] = $this->M_index->IzinApprove($perioderekap);
+		$perioderekap 		=	$this->input->post('periodeRekap');
+		if (!empty($perioderekap)) {
+			$explode = explode(' - ', $perioderekap);
+			$periode1 = str_replace('/', '-', date('Y-m-d', strtotime($explode[0])));
+			$periode2 = str_replace('/', '-', date('Y-m-d', strtotime($explode[1])));
+
+			if ($periode1 == $periode2) {
+				$periode = "and cast(created_date as date) = '$periode1'";
+				$data['IzinApprove'] = $this->M_index->IzinApprove($periode);
+			}else if($periode1 != $periode2){
+				$periode = "and cast(created_date as date) between '$periode1' and '$periode2'";
+				$data['IzinApprove'] = $this->M_index->IzinApprove($periode);
+			}
+		}else {
+			$data['IzinApprove'] = $this->M_index->IzinApprove($perioderekap);
+		}
+
 		$data['nama'] = $this->M_index->getAllNama();
 		$today = date('Y-m-d');
 

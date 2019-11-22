@@ -509,6 +509,10 @@ $route['ApprovalTambahan'] = 'CateringManagement/C_Approval';
 $route['ApprovalTambahan/(:any)'] = 'CateringManagement/C_Approval/$1';
 $route['ApprovalTambahan/(:any)/(:any)'] = 'CateringManagement/C_Approval/$1/$2';
 
+$route['RekapTambahan'] = 'CateringManagement/C_Approval/index_Rekap';
+$route['RekapTambahan/(:any)'] = 'CateringManagement/C_Approval/$1';
+$route['RekapTambahan/(:any)/(:any)'] = 'CateringManagement/C_Approval/$1/$2';
+
 $route['CateringManagement/Receipt'] 				= 'CateringManagement/C_Receipt/index';
 $route['CateringManagement/Receipt/Create'] 		= 'CateringManagement/C_Receipt/create';
 $route['CateringManagement/Receipt/Update'] 		= 'CateringManagement/C_Receipt/update';
@@ -2531,7 +2535,7 @@ $route['SPL/Daftarjari/(:any)'] = 'SPLSeksi/C_splpersonalia/$1';
 $route['SPL/DaftarFingerspot'] = 'SPLSeksi/C_splpersonalia/fingerspot';
 $route['SPL/DaftarFingerspot/(:any)'] = 'SPLSeksi/C_splpersonalia/$1';
 
-$route['SPL/Pusat'] = 'SPLSeksi/Pusat/C_splseksi'; 
+$route['SPL/Pusat'] = 'SPLSeksi/Pusat/C_splseksi';
 $route['SPL/Pusat/InputLembur'] = 'SPLSeksi/Pusat/C_splseksi/new_spl';
 $route['SPL/Pusat/ListLembur'] = 'SPLSeksi/Pusat/C_splseksi/data_spl';
 $route['SPL/Pusat/RekapLembur'] = 'SPLSeksi/Pusat/C_splseksi/rekap_spl';
