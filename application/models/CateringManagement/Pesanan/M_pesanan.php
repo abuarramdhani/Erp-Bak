@@ -389,8 +389,28 @@ class M_pesanan extends CI_Model
       return $this->personalia->query($sql)->result_array();
     }
 
-}
+    public function getLokasiApprove($user)
+    {
+      $sql = "SELECT lokasi_kerja FROM hrd_khs.tpribadi where noind = '$user'";
+      return $this->personalia->query($sql)->row()->lokasi_kerja;
+    }
 
-/* End of file M_printpp.php */
-/* Location: ./application/models/GeneralAffair/MainMenu/M_printpp.php */
-/* Generated automatically on 2017-09-23 07:56:39 */
+    public function getDataDinas($lok)
+    {
+      $today = date('Y-m-d');
+      $sql="SELECT ti.tujuan FROM \"Surat\".taktual_izin ti left join \"Surat\".tperizinan tp on ti.izin_id::int = tp.izin_id
+            where ti.tujuan not in ('', ' ', 'null') AND cast(ti.created_date as time) < '09:00:00' $lok
+            AND cast(ti.created_date as date) IN ('$today')";
+      return $this->personalia->query($sql)->result_array();
+    }
+
+    public function getRekapAllDinas($today, $lok, $param)
+    {
+      $sql="SELECT ti.tujuan FROM \"Surat\".taktual_izin ti left join \"Surat\".tperizinan tp on ti.izin_id::int = tp.izin_id
+            where ti.tujuan not in ('', ' ', 'null') AND cast(ti.created_date as time) < '09:00:00' $lok $param
+            AND cast(ti.created_date as date) NOT IN ('$today')";
+      return $this->personalia->query($sql)->result_array();
+    }
+
+
+}

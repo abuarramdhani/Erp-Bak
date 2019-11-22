@@ -19,7 +19,7 @@
                 </div>
                 <br/>
                 <div class="row">
-                <form id="" method="post" action="<?php echo site_url('MasterPekerja/RekapPerizinanDinas/rekapbulanan');?>" class="form-horizontal" >                 
+                <form id="" method="post" action="<?php echo site_url('MasterPekerja/RekapPerizinanDinas/rekapbulanan');?>" class="form-horizontal" >
                 <div class="col-lg-12">
                     <div class="box box-primary box-solid">
                         <div class="box-header with-border"></div>
@@ -62,6 +62,7 @@
                                     <th class="text-center">Nama Pekerja</th>
                                     <th class="text-center">Jenis Izin</th>
                                     <th class="text-center">Atasan Approved</th>
+                                    <th class="text-center">Tempat Makan</th>
                                     <th class="text-center">Keterangan</th>
                                     <th class="text-center">Status</th>
                                   </tr>
@@ -77,4 +78,3 @@
         </div>
     </div>
 </section>
-

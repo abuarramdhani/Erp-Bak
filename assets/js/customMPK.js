@@ -125,6 +125,41 @@ $(document).ready(function() {
         })
     });
 
+    //Untuk Rekap Perizinan Dinas
+    $('.tabel_izin').DataTable({
+     "ordering" : false,
+     "paging" : false,
+     "searching": false
+       });
+
+     $('.tabel_rekap').DataTable({
+     "dom": 'Bfrtip',
+         "buttons": [
+             'excel', 'pdf'
+         ],
+         scrollX: true,
+         fixedColumns:{
+           leftColumns:4
+         }
+     });
+
+     $("input.periodeRekap").daterangepicker({
+       autoUpdateInput: false,
+       locale: {
+           cancelLabel: 'Clear'
+       }
+     });
+
+
+     $('input.periodeRekap').on('apply.daterangepicker', function(ev, picker) {
+       $(this).val(picker.startDate.format('MM/DD/YYYY') + ' - ' + picker.endDate.format('MM/DD/YYYY'));
+     });
+
+     $('input.periodeRekap').on('cancel.daterangepicker', function(ev, picker) {
+         $(this).val('');
+     });
+  //Selesai
+
 });
 
 // 	-------Master Pekerja--------------------------------------------start
@@ -1945,29 +1980,6 @@ function nextInfo() {
     }
   })
 }
-
-$(document).ready(function(){
-   $('.tabel_izin').DataTable({
-    "ordering" : false,
-    "paging" : false,
-    "searching": false
-      });
-
-    $('.tabel_rekap').DataTable({
-    "dom": 'Bfrtip',
-        "buttons": [
-            'excel', 'pdf'
-        ],
-        scrollX: true,
-        fixedColumns:{
-          leftColumns:4
-        }
-    });
-
-    $("input.periodeRekap").monthpicker({
-      changeYear:true,
-      dateFormat: 'yy-mm', });
-});
 
 function getApproval(a, b) {
   var loading = baseurl + 'assets/img/gif/loadingquick.gif';

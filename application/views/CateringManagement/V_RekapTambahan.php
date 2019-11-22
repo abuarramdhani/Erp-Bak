@@ -23,25 +23,25 @@
                     </div>
                   <div class="row">
                     <div class="col-lg-12">
-                     <div class="box box-warning box-solid">
+                     <div class="box box-primary box-solid">
                          <div class="box-header with-border">
                            <ul class="nav nav-pills nav-justified">
-                             <li class="active"><a data-toggle="pill" role="tab" href="#today">Tambahan Seksi Hari ini</a></li>
-                             <li><a data-toggle="pill" role="tab" href="#yesterday">Tambahan Dinas Hari ini</a></li>
+                             <li class="active"><a data-toggle="pill" role="tab" href="#today">Rekap Per-Seksi</a></li>
+                             <li><a data-toggle="pill" role="tab" href="#yesterday">Rekap Perizinan Dinas</a></li>
                            </ul>
                          </div>
                          <div class="box-body">
                            <div class="tab-content">
                              <div class="tab-pane fade in active" role="tabpanel" id="today">
-                               <div class="col-lg-12 bg-warning text-center" style="font-weight:bold; margin-bottom: 10px;">
+                               <div class="col-lg-12 bg-info text-center" style="font-weight:bold; margin-bottom: 10px;">
                                  <?php if(isset($today)){echo "========================   Tanggal : ".$today." ========================";} ?><br>
                                </div>
-                               <table class="datatable approveCatering table table-striped table-bordered table-hover text-left" style="font-size:12px; width: 100%">
-                                 <thead class="bg-warning">
+                               <table class="datatable approvedCat table table-striped table-bordered table-hover text-left" style="font-size:12px;">
+                                 <thead class="bg-primary">
                                    <tr>
                                      <th style="width: 30px;">No</th>
                                      <th style="width: 150px; text-align: center;">Action</th>
-                                     <th>Waktu Makan</th>
+                                     <th>Tanggal Pesanan</th>
                                      <th>Tempat Makan</th>
                                      <th>Tambahan</th>
                                      <th>Nama Pemesan</th>
@@ -51,99 +51,90 @@
                                  </thead>
                                  <tbody>
                                    <?php
-                                     if (empty($ambilapprove)) {
-                                       # code...
-                                     }else{
-                                       $no=1;
-                                       foreach ($ambilapprove as $key) { ?>
-                                         <tr>
-                                           <td><?php echo $no; ?></td>
-                                           <?php if ($key['status'] == 1): ?>
-                                             <td class="text-center"><i class="btn fa fa-hourglass-2 btn-block btn-warning btn-xs " data-toggle="tooltip" title="Request Approve"
-                                             style="border-radius:3px; padding:1px 5px; margin-top:5px;"
-                                             onclick="detailcatering(<?= $key['id']?>)">  Request Approve</i></td>
-                                           <?php elseif ($key['status'] == 2): ?>
-                                             <td class="text-center"><i class="btn fa fa-2x fa-file-text-o btn-xs" data-toggle="tooltip" title="Lihat Detail"
-                                             style="padding:1px 5px; margin-top:5px;"
-                                             onclick="detailcatering(<?= $key['id']?>)"></i></td>
-                                             <?php else: ?>
-                                               <td class="text-center"><i class="btn fa fa-2x fa-file-text-o btn-xs " data-toggle="tooltip" title="Lihat Detail"
-                                               style="padding:1px 5px; margin-top:5px;"
+                                   if (empty($dataTambahan)) {
+                                     # code...
+                                   }else{
+                                     $no=1;
+                                     foreach ($dataTambahan as $key) { ?>
+                                       <tr>
+                                         <td><?php echo $no; ?></td>
+                                         <?php if ($key['status'] == 1): ?>
+                                           <td class="text-center"><i class="btn fa fa-hourglass-2 btn-block btn-warning btn-xs " data-toggle="tooltip" title="Request Approve"
+                                           style="border-radius:3px; padding:1px 5px; margin-top:5px;"
+                                           onclick="detailcatering(<?= $key['id']?>)">  Request Approve</i></td>
+                                         <?php elseif ($key['status'] == 4): ?>
+                                             <td class="text-center"><i class="fa fa-2x fa-close" data-toggle="tooltip" title="Failed"
+                                               style="border-radius:3px; padding:1px 5px; margin-top:5px; color: red;"
                                                onclick="detailcatering(<?= $key['id']?>)"></i></td>
-                                           <?php endif; ?>
-                                           <td><?php if ($key['shift_tambahan'] == '1' || $key['shift_tambahan'] == '4') {
-                                                 echo "MAKAN SIANG";
-                                               }elseif ($key['shift_tambahan'] == '2') {
-                                                 echo "MAKAN MALAM";
-                                               }else {
-                                                 echo "MAKAN DINI HARI";
-                                               } ?></td>
-                                           <td><?php echo $key['tempat_makan']; ?></td>
-                                           <td><?php if (empty($key['tambahan'])) {
+                                             <?php else: ?>
+                                               <td class="text-center"><i class="btn fa fa-2x fa-list-alt btn-xs " data-toggle="tooltip" title="Lihat Detail"
+                                                 style="padding:1px 5px; margin-top:5px;"
+                                                 onclick="detailcatering(<?= $key['id']?>)"></i></td>
+                                               <?php endif; ?>
+                                               <td><?php echo $key['tanggal']; ?></td>
+                                               <td><?php echo $key['tempat_makan']; ?></td>
+                                               <td><?php if (empty($key['tambahan'])) {
                                                  echo "-";
                                                }else {
                                                  echo  $key['tambahan'];
                                                }; ?></td>
-                                           <?php foreach ($sie as $keyb){
-                                             if ($key['user_'] == $keyb['noind']) {
-                                               $noind = $keyb['noind'];
-                                               $nama = $keyb['nama'];
-                                               $seksi = $keyb['seksi'];
-                                             }
-                                           }; ?>
-                                           <td><?php echo $noind." - ".$nama; ?></td>
-                                           <td><?php echo $seksi; ?></td>
-                                           <?php if ($key['status'] == 1): ?>
-                                             <td class="text-center"><i class="fa fa-2x fa-hourglass-2" data-toggle="tooltip" title="Waiting Approve"
-                                             style="padding:1px 5px; margin-top:5px;"></i></td>
-                                           <?php elseif ($key['status'] == 2): ?>
-                                             <td class="text-center"><i class="fa fa-2x fa-check" data-toggle="tooltip" title="Approved"
-                                             style="padding:1px 5px; margin-top:5px; color:green;"></i></td>
-                                             <?php else: ?>
-                                               <td class="text-center"><i class="fa fa-2x fa-close" data-toggle="tooltip" title="Rejected"
-                                               style="padding:1px 5px; margin-top:5px; color: red;"></i></td>
-                                           <?php endif; ?>
-                                         </tr>
-                                         <?php
-                                         $no++;
-                                       } } ?>
-                                 </tbody>
-                               </table>
-
+                                               <?php foreach ($sie as $keyb){
+                                                 if ($key['user_'] == $keyb['noind']) {
+                                                   $noind = $keyb['noind'];
+                                                   $nama = $keyb['nama'];
+                                                   $seksi = $keyb['seksi'];
+                                                 }
+                                               }; ?>
+                                               <td><?php echo $noind." - ".$nama; ?></td>
+                                               <td><?php echo $seksi; ?></td>
+                                             <?php if ($key['status'] == 1): ?>
+                                               <td class="text-center"><i class="fa fa-2x fa-hourglass-2" data-toggle="tooltip" title="Waiting Approve"
+                                               style="padding:1px 5px; margin-top:5px;"></i></td>
+                                               <?php elseif ($key['status'] == 2): ?>
+                                                 <td class="text-center"><i class="fa fa-2x fa-check" data-toggle="tooltip" title="Approved"
+                                                   style="padding:1px 5px; margin-top:5px; color:green;"></i></td>
+                                                 <?php elseif ($key['status'] == 4): ?>
+                                                   <td class="text-center"><i class="fa fa-2x fa-close" data-toggle="tooltip" title="Failed"
+                                                     style="padding:1px 5px; margin-top:5px; color: red;"></i></td>
+                                                 <?php else: ?>
+                                                   <td class="text-center"><i class="fa fa-2x fa-close" data-toggle="tooltip" title="Rejected"
+                                                     style="padding:1px 5px; margin-top:5px; color: red;"></i></td>
+                                         <?php endif; ?>
+                                       </tr>
+                                       <?php
+                                       $no++;
+                                     } } ?>
+                                  </tbody>
+                                </table>
                              </div>
                              <div class="tab-pane fade" role="tabpanel" id="yesterday">
-                               <br>
-                               <center>
-                                 <label style="font-size:18px; text-align:center" class="bg-warning">Tambahan Pesanan Makan Pekerja Dinas</label><br>
-                                 <label style="font-size:14px; text-align:center">Data Tambahan Catering Untuk Perizinan Dinas Sebelum Jam 09:00:00</label>
-                               </center>
-                               <br>
-                               <table class="datatable approveCatering table table-striped table-bordered table-hover text-left" style="font-size:12px; width: 100%">
-                                 <thead class="bg-warning">
-                                   <tr>
-                                     <th style="width: 30px;">No</th>
-                                     <th>Tempat Makan</th>
-                                     <th>Tambahan</th>
-                                   </tr>
-                                 </thead>
-                                 <tbody>
-                                   <?php
-                                     if (empty($dataDinas)) {
-                                       # code...
-                                     }else{
-                                       $no=1;
-                                       foreach ($dataDinas as $key) { ?>
-                                         <tr>
-                                           <td><?php echo $no; ?></td>
-                                           <td><?php echo $key['0']; ?></td>
-                                           <td><?php echo count($key); ?></td>
-                                         </tr>
-                                         <?php
-                                         $no++;
-                                       } } ?>
-                                 </tbody>
-                               </table>
+                               <div class="col-lg-12 box">
+                                  <center>
+                                    <div class="form-group">
+                                      <label align="right" class="col-lg-4">Masukkan Tanggal Rekap Dinas: </label>
+                                      <div class="col-lg-5">
+                                        <input type="text" name="tanggalrekap" autocomplete="off" id="tanggalRekapDinas" class="tanggalRekapDinas form-control">
+                                        <p align="left" style="color: red">*kosongkan kolom periode , untuk menampilkan semua data</p>
+                                      </div>
+                                      <div class="col-lg-2">
+                                        <button type="button" name="button-cari" class="btn btn-primary from-control" id="cariRekapDinas">Cari</button>
+                                      </div>
+                                    </div>
+                                    <hr>
+                                  </center>
                                 </div>
+                                <div class="form-group" id="gantiHariRekap">
+                                  <table class="datatable approveCatering table table-striped table-bordered table-hover text-left" style="font-size:12px; width: 100%">
+                                    <thead class="bg-primary">
+                                      <tr>
+                                        <th style="width: 30px;">No</th>
+                                        <th>Tempat Makan</th>
+                                        <th>Tambahan</th>
+                                      </tr>
+                                    </thead>
+                                    <tbody>
+                                    </tbody>
+                                  </table>
                                 </div>
                               </div>
                             </div>
@@ -153,7 +144,8 @@
                     </div>
                   </div>
                 </div>
-              </section>
+              </div>
+            </section>
 
   <!-- //modal// -->
   <div class="modal fade" id="modal-approve-catering" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
