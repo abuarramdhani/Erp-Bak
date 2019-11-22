@@ -73,7 +73,6 @@ class C_splpersonalia extends CI_Controller {
     }
 
     public function finger_register(){
-        $this->checkSession();
     	$userid 	= $_GET['userid'];
     	$finger = $_GET['finger'];
     	$time_limit_reg = 15;
@@ -81,7 +80,6 @@ class C_splpersonalia extends CI_Controller {
     }
 
     public function finger_process_register(){
-        $this->checkSession();
     	$data 		= explode(";",$_POST['RegTemp']);
 		$vStamp 	= $data[0];
 		$sn 		= $data[1];
@@ -105,7 +103,7 @@ class C_splpersonalia extends CI_Controller {
 			$this->M_splseksi->insertFingerTemp($insert);
 			$res['result'] = true;
 			$res['server'] = "Error insert registration data!";
-			echo "empty";
+			// echo "empty";
 
 			// $msg = "Berhasil";
 			// echo base_url("SPL/DaftarFingerspot/finger_register_error?msg=".$msg);
@@ -117,12 +115,10 @@ class C_splpersonalia extends CI_Controller {
     }
 
     public function finger_register_error(){
-        $this->checkSession();
     	print_r($_GET);
     }
 
     public function finger_register_get_ac(){
-        $this->checkSession();
     	$vc = $_GET['vc'];
     	$data = $this->M_splseksi->getAcSnByVc($vc);
 		
