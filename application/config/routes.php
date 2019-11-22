@@ -3411,3 +3411,12 @@ $route['MonitoringSubkont/SO/(:any)']									= 'Monitoringsubkont/C_So/$1';
 $route['MonitoringSubkont/SO/(:any)/(:any)'] 						= 'Monitoringsubkont/C_So/$1/$2';
 $route['MonitoringSubkont/SO/(:any)/(:any)/(:any)']		 		= 'Monitoringsubkont/C_So/$1/$2/$3';
 $route['MonitoringSubkont/SO/(:any)/(:any)/(:any)(:/any)']		= 'Monitoringsubkont/C_So/$1/$2/$3/$4';
+
+// -------------------------------Order Kebutuhan Barang dan Jasa---------------------------------------//
+$route['OrderKebutuhanBarangDanJasa'] = 'OrderKebutuhanBarangDanJasa/C_Index';
+$route['OrderKebutuhanBarangDanJasa/Requisition/(:any)'] = 'OrderKebutuhanBarangDanJasa/Requisition/C_Requisition/$1';
+$route['OrderKebutuhanBarangDanJasa/Requisition/(:any)/(:any)'] = 'OrderKebutuhanBarangDanJasa/Requisition/C_Requisition/$1/$2';
+$route['OrderKebutuhanBarangDanJasa/Approver/(:any)'] = 'OrderKebutuhanBarangDanJasa/Approver/C_Approver/$1';
+$route['OrderKebutuhanBarangDanJasa/Pengelola/(:any)'] = 'OrderKebutuhanBarangDanJasa/Pengelola/C_Pengelola/$1';
+$route['OrderKebutuhanBarangDanJasa/Puller/(:any)'] = 'OrderKebutuhanBarangDanJasa/Puller/C_Puller/$1';
+$route['OrderKebutuhanBarangDanJasa/Purchasing/(:any)'] = 'OrderKebutuhanBarangDanJasa/Purchasing/C_Purchasing/$1';
