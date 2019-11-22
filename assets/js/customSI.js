@@ -1,7 +1,7 @@
 $(function() {
     $('.dataTable-pekerja').DataTable()
 
-    $('#myCheck').on('ifChecked', function(event) {
+    $(document).on('ifChecked','#myCheck', function(event) {
         if (event.target.checked && $('#youCheck').prop('checked') && $('#Check').prop('checked') && $('#tglCheck').prop('checked')) {
             $('#btnAprroveOkSI').prop('disabled', false);
             $('#textcheckbox').hide();
@@ -11,7 +11,7 @@ $(function() {
         }
     })
 
-    $('#youCheck').on('ifChanged', function(event) {
+    $(document).on('ifChanged','#youCheck', function(event) {
         if (event.target.checked && $('#myCheck').prop('checked') && $('#Check').prop('checked') && $('#tglCheck').prop('checked')) {
             $('#btnAprroveOkSI').prop('disabled', false)
             $('#textcheckbox').hide()
@@ -21,7 +21,7 @@ $(function() {
         }
     })
 
-    $('#Check').on('ifChanged', function(event) {
+    $(document).on('ifChanged','#Check', function(event) {
         if (event.target.checked && $('#myCheck').prop('checked') && $('#youCheck').prop('checked') && $('#tglCheck').prop('checked')) {
             $('#btnAprroveOkSI').prop('disabled', false)
             $('#textcheckbox').hide()
@@ -31,7 +31,7 @@ $(function() {
         }
     })
 
-    $('#tglCheck').on('ifChanged', function(event) {
+    $(document).on('ifChanged','#tglCheck', function(event) {
         if (event.target.checked && $('#myCheck').prop('checked') && $('#youCheck').prop('checked') && $('#Check').prop('checked')) {
             $('#btnAprroveOkSI').prop('disabled', false)
             $('#textcheckbox').hide()
