@@ -1,130 +1,71 @@
+var org_ss = $('#org_ss').val();
+var route_serverside = $('#routeraktif_ss').val();
+var kind = $('#kind').val();
+
 $(document).ready(function(){
-  $(".cekcekSMM").on("ifChecked", function() {
-    const ascode = $(this).attr('data-code')
-    const asval = $(this).attr('data-value')
-    console.log(ascode+'|'+asval);
 
-    $.ajax({
-      method: 'POST',
-      async: false,
-      dataType: 'json',
-      url: baseurl + 'SettingMinMaxOPM/C_settingMinMaxOPM/updateKilat',
-      data: {
-        code: ascode,
-        data: asval,
-      },
-      success: function(hasil) {
-        console.log(hasil);
-        Swal.fire({
-          position: 'middle',
-          type: 'success',
-          title: 'success checked',
-          showConfirmButton: false,
-          timer: 900
-        })
-      },
-    })
+if(kind == 'EDIT'){
 
-  })
+  $.ajax({
+  url: baseurl + 'SettingMinMaxOPM/C_settingMinMaxOPM/serversideMinMax',
+  type: 'POST',
+  data: {
+    org: org_ss,
+    route: route_serverside,
+  },
+  beforeSend: function() {
+    $( '#loadingArea' ).show();
+  },
+  success: function(result) {
+    $( '#loadingArea' ).hide();
 
-  $(".cekcekSMM").on("ifUnchecked", function() {
-    const ascode = $(this).attr('data-code')
-    const asval = null
-    console.log(ascode+'|'+asval);
-
-    $.ajax({
-      method: 'POST',
-      async: false,
-      dataType: 'json',
-      url: baseurl + 'SettingMinMaxOPM/C_settingMinMaxOPM/updateKilat',
-      data: {
-        code: ascode,
-        data: asval,
-      },
-      success: function(hasil) {
-        console.log(hasil);
-        Swal.fire({
-          position: 'middle',
-          type: 'success',
-          title: 'success Unchecked',
-          showConfirmButton: false,
-          timer: 900
-        })
-      },
-    })
-
-  })
-
-});
-
-
-$(function() {
+    $('div#tablearea').html(result);
     $('#tableDataMinMax').DataTable({
-    	columnDefs: [
-    		{ targets: '_all', orderable: false}
-    	]
-	});
+      "columnDefs": [{
+        "targets": '_all',
+        "orderable": false,
+      }],
+    });
+  },
+  error: function(XMLHttpRequest, textStatus, errorThrown) {
+    $('div#loadingArea').html('');
+    $('div#tbCompDat').html(errorThrown);
+    $("body").niceScroll();
+  }
+})
 
-//SETTING CURRENT DATE//
-var today = new Date();
-var dd = today.getDate();
-var mm = today.getMonth() + 1; //January is 0!
-var yyyy = today.getFullYear();
-if (dd < 10) {
-  dd = '0' + dd;
+}else if(kind == 'IE') {
+
+  $.ajax({
+  url: baseurl + 'SettingMinMaxOPM/C_settingMinMaxOPM/serversideMinMaxIE',
+  type: 'POST',
+  data: {
+    org: org_ss,
+    route: route_serverside,
+  },
+  beforeSend: function() {
+    $( '#loadingArea' ).show();
+  },
+  success: function(result) {
+    $( '#loadingArea' ).hide();
+    $('div#tablearea').html(result);
+
+  },
+  error: function(XMLHttpRequest, textStatus, errorThrown) {
+    $('div#loadingArea').html('');
+    $('div#tbCompDat').html(errorThrown);
+    $("body").niceScroll();
+  }
+  })
+
+}else{
+   console.log('none');
 }
-if (mm < 10) {
-  mm = '0' + mm;
-}
-today = dd + '-' + mm + '-' + yyyy;
 
-					// var today = new Date();
-					// var dd = String(today.getDate()).padStart(2, '0');
-					// var mm = String(today.getMonth() + 1).padStart(2, '0');
-					// var yyyy = today.getFullYear();
+$(".loader").fadeOut();
 
-					// today = dd + '-' + mm + '-' + yyyy;
+})
 
-	var dt2 = $('#tableDataMinMaxIE').DataTable({
-		dom: '<"dataTable_Button"B><"dataTable_Filter"f>rt<"dataTable_Information"i><"dataTable_Paging"p>',
-		columnDefs: [
-			{
-				orderable: false,
-				className: 'select-checkbox',
-				targets: 1
-			}
-		],
-        buttons: [
-			{
-				extend: 'excelHtml5',
-				title: 'Edit Data Min Max'+' : '+today,
-				exportOptions: {
-					columns: ':visible',
-					// rows: ':visible',
-					modifier: {
-                        selected: true
-                    },
-					columns: [0, 2, 3, 4, 5, 6, 7, 8],
-
-				}
-			}
-		],
-        select: {
-            style: 'multi',
-            selector: 'td:nth-child(2)'
-        },
-        order: [[0, 'asc']]
-	});
-	// $('#tableDataMinMaxIE tbody').on('click', 'tr', function() { $(this).toggleClass('selected'); }); // slct by row
-	$('.check-all').off('ifChanged').on('ifChanged', function(event) {
-		if(event.target.checked) {
-			dt2.rows().select();
-		} else {
-			dt2.rows().deselect();
-		}
-	});
-	$(".loader").fadeOut("slow");
-} );
 
 $('#org').change(function(){
 	org = $(this).val();
