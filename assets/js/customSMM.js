@@ -26,6 +26,7 @@ if(kind == 'EDIT'){
         "orderable": false,
       }],
     });
+    $(".loader").fadeOut();
   },
   error: function(XMLHttpRequest, textStatus, errorThrown) {
     $('div#loadingArea').html('');
@@ -49,6 +50,7 @@ if(kind == 'EDIT'){
   success: function(result) {
     $( '#loadingArea' ).hide();
     $('div#tablearea').html(result);
+    $(".loader").fadeOut();
 
   },
   error: function(XMLHttpRequest, textStatus, errorThrown) {
@@ -62,7 +64,7 @@ if(kind == 'EDIT'){
    console.log('none');
 }
 
-$(".loader").fadeOut();
+
 
 })
 
