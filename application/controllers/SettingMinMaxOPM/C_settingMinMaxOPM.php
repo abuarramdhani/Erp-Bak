@@ -122,6 +122,7 @@ class C_settingMinMaxOPM extends CI_Controller
         $data['UserMenu'] = $this->M_user->getUserMenu($user_id, $this->session->responsibility_id);
         $data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id, $this->session->responsibility_id);
         $data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id, $this->session->responsibility_id);
+
         if ($this->session->flashdata('route') == null) {
             $org = $this->input->post('org');
             $route = $this->input->post('routing_class');
@@ -129,7 +130,6 @@ class C_settingMinMaxOPM extends CI_Controller
             $org = $this->session->flashdata('org');
             $route = $this->session->flashdata('route');
         }
-
 
 
         $data['route'] = $this->M_settingminmaxopm->TampilRoutingClass();
@@ -391,4 +391,44 @@ class C_settingMinMaxOPM extends CI_Controller
             }
         }
     }
+
+
+    public function serversideMinMax()
+    {
+        $org = $this->input->post('org');
+        $route = $this->input->post('route');
+
+        $data['org'] = $org;
+        $data['routeaktif'] = $route;
+
+        if ($org == 'OPM') {
+            $data['minmax'] = $this->M_settingminmaxopm->TampilDataMinMax($route);
+        } elseif ($org == 'ODM') {
+            $data['minmax'] = $this->M_settingminmaxopm->TampilDataMinMaxODM($route);
+        }
+
+        $this->load->view('SettingMinMaxOPM/Ajax/V_ajax', $data);
+
+    }
+
+    public function serversideMinMaxIE()
+    {
+        $org = $this->input->post('org');
+        $route = $this->input->post('route');
+
+        $data['org'] = $org;
+        $data['routeaktif'] = $route;
+
+        if ($org == 'OPM') {
+            $data['minmax'] = $this->M_settingminmaxopm->TampilDataMinMax($route);
+        } elseif ($org == 'ODM') {
+            $data['minmax'] = $this->M_settingminmaxopm->TampilDataMinMaxODM($route);
+        }
+
+        $this->load->view('SettingMinMaxOPM/Ajax/V_ajaxIE', $data);
+
+    }
+
+
+
 }

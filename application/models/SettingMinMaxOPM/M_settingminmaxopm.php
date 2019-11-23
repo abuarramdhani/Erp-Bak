@@ -6,7 +6,7 @@ class M_settingminmaxopm extends CI_Model {
     {
         parent::__construct();
         $this->load->database();
-        $this->oracle = $this->load->database('oracle', true);
+        $this->oracle = $this->load->database('oracle_dev', true);
     }
 
   public function TampilRoutingClass()
@@ -24,7 +24,7 @@ class M_settingminmaxopm extends CI_Model {
     $query = $this->oracle->query($sql);
     return $query->result_array();
   }
-  
+
   public function TampilDataMinMax($route)
   {
       $sql = "SELECT DISTINCT msib.segment1,
@@ -52,7 +52,7 @@ class M_settingminmaxopm extends CI_Model {
 
   public function TampilDataMinMaxODM($route)
   {
-      $sql = "SELECT msib.segment1,
+      $sql = "SELECT DISTINCT msib.segment1,
           msib.DESCRIPTION,
           msib.PRIMARY_UOM_CODE,
           msib.MIN_MINMAX_QUANTITY MIN,
@@ -73,7 +73,7 @@ class M_settingminmaxopm extends CI_Model {
           and bor.ALTERNATE_ROUTING_DESIGNATOR is null
           and bos.OPERATION_SEQ_NUM = (select min(bos1.OPERATION_SEQ_NUM)
           from bom_operation_sequences bos1
-          where bos1.ROUTING_SEQUENCE_ID = bor.ROUTING_SEQUENCE_ID 
+          where bos1.ROUTING_SEQUENCE_ID = bor.ROUTING_SEQUENCE_ID
           and bos1.DISABLE_DATE is null)
           and bd.DEPARTMENT_CLASS_CODE = '$route'    ----> PARAMETER
           and msib.inventory_ITEM_ID = bor.ASSEMBLY_ITEM_ID
@@ -86,6 +86,7 @@ class M_settingminmaxopm extends CI_Model {
           and bom.ORGANIZATION_ID = msib2.ORGANIZATION_ID
           and bom.ALTERNATE_BOM_DESIGNATOR is null
           and bic.DISABLE_DATE is null";
+
       $query = $this->oracle->query($sql);
       return $query->result_array();
   }
@@ -138,7 +139,7 @@ class M_settingminmaxopm extends CI_Model {
           and bor.ALTERNATE_ROUTING_DESIGNATOR is null
           and bos.OPERATION_SEQ_NUM = (select min(bos1.OPERATION_SEQ_NUM)
           from bom_operation_sequences bos1
-          where bos1.ROUTING_SEQUENCE_ID = bor.ROUTING_SEQUENCE_ID 
+          where bos1.ROUTING_SEQUENCE_ID = bor.ROUTING_SEQUENCE_ID
           and bos1.DISABLE_DATE is null)
           and bd.DEPARTMENT_CLASS_CODE = '$route'    ----> PARAMETER
           and msib.inventory_ITEM_ID = bor.ASSEMBLY_ITEM_ID
