@@ -143,9 +143,12 @@ class M_monitoring extends CI_Model {
 
     public function getKetKIB($no_document){
         $oracle = $this->load->database('oracle', true);
-        $sql = "select distinct * from khs_kib kk 
-        where kk.INVENTORY_TRANS_FLAG = 'Y'
-        AND kk.KIBCODE = '$no_document'";
+        $sql = "select distinct kk.*, wdj.QUANTITY_COMPLETED from 
+        khs_kib kk,
+        wip_discrete_jobs wdj         
+        where kk.ORDER_ID = wdj.WIP_ENTITY_ID  
+        and kk.PRIMARY_ITEM_ID = wdj.PRIMARY_ITEM_ID      
+        and kk.KIBCODE = '$no_document'";
           $query = $oracle->query($sql);
           return $query->result_array();
           
