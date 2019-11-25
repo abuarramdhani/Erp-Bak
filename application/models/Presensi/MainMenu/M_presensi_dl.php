@@ -50,7 +50,7 @@ class M_presensi_dl extends CI_Model
 
     public function pencarian_pekerja_dl($where){
         $sqlserver = $this->load->database('personalia',true);
-        $sql = $sqlserver->query("SELECT * FROM \"Presensi\".tpresensi_dl $where");
+        $sql = $sqlserver->query("SELECT distinct * FROM \"Presensi\".tpresensi_dl $where");
         return $sql->result_array();
     }
 
@@ -59,7 +59,7 @@ class M_presensi_dl extends CI_Model
             $tanggal=date('Y-m-d');
         }
         $sqlserver = $this->load->database('personalia',true);
-        $sql = $sqlserver->query("SELECT td.spdl_id,td.noind,'' as kodesie, -- td.kodesie,
+        $sql = $sqlserver->query("SELECT td.spdl_id,td.noind,'' as kodesie,
     (case
         when
             count(td.spdl_id)=2
@@ -75,7 +75,7 @@ class M_presensi_dl extends CI_Model
                                 min(td.waktu)
                             else
                                 (
-                                    select waktu from \"Presensi\".tpresensi_dl where spdl_id=td.spdl_id and tanggal=min(td.tanggal)
+                                    select distinct waktu from \"Presensi\".tpresensi_dl where spdl_id=td.spdl_id and tanggal=min(td.tanggal)
                                 )
                         end
                     ),
@@ -90,7 +90,7 @@ class M_presensi_dl extends CI_Model
                                 max(td.waktu)
                             else
                                 (
-                                    select waktu from \"Presensi\".tpresensi_dl where spdl_id=td.spdl_id and tanggal=max(td.tanggal)
+                                    select distinct waktu from \"Presensi\".tpresensi_dl where spdl_id=td.spdl_id and tanggal=max(td.tanggal)
                                 )
                         end
                     )
@@ -121,7 +121,7 @@ class M_presensi_dl extends CI_Model
                                 min(td.wkt_realisasi)
                             else
                                 (
-                                    select wkt_realisasi from \"Presensi\".tpresensi_dl where spdl_id=td.spdl_id and tgl_realisasi=min(td.tgl_realisasi)
+                                    select distinct wkt_realisasi from \"Presensi\".tpresensi_dl where spdl_id=td.spdl_id and tgl_realisasi=min(td.tgl_realisasi)
                                 )
                         end
                     ),
@@ -136,7 +136,7 @@ class M_presensi_dl extends CI_Model
                                 max(td.wkt_realisasi)
                             else
                                 (
-                                    select wkt_realisasi from \"Presensi\".tpresensi_dl where spdl_id=td.spdl_id and tgl_realisasi=max(td.tgl_realisasi)
+                                    select distinct wkt_realisasi from \"Presensi\".tpresensi_dl where spdl_id=td.spdl_id and tgl_realisasi=max(td.tgl_realisasi)
                                 )
                         end
                     )
@@ -189,7 +189,7 @@ class M_presensi_dl extends CI_Model
                                             1
                                     end
                                 ) from
-                            (SELECT td4.waktu FROM \"Presensi\".tpresensi_dl td4 where td4.spdl_id=td.spdl_id and td4.tanggal=min(td.tanggal)) as berangkat 
+                            (SELECT distinct td4.waktu FROM \"Presensi\".tpresensi_dl td4 where td4.spdl_id=td.spdl_id and td4.tanggal=min(td.tanggal)) as berangkat 
                         )
                 end)
                 -
@@ -214,7 +214,7 @@ class M_presensi_dl extends CI_Model
                                     0
                             end
                         ) from
-                    (SELECT td4.waktu FROM \"Presensi\".tpresensi_dl td4 where td4.spdl_id=td.spdl_id and td4.tanggal=(
+                    (SELECT distinct td4.waktu FROM \"Presensi\".tpresensi_dl td4 where td4.spdl_id=td.spdl_id and td4.tanggal=(
                     case
                         when
                             count(td.tanggal)=1
@@ -258,7 +258,7 @@ class M_presensi_dl extends CI_Model
             )
     ) as point_
 FROM 
-(SELECT * FROM \"Presensi\".tpresensi_dl $where) as td
+(SELECT distinct * FROM \"Presensi\".tpresensi_dl $where) as td
 group by td.spdl_id,td.noind");
         return $sql->result_array();
     }
@@ -278,7 +278,7 @@ group by td.spdl_id,td.noind");
 
     public function editSDPL($spdl){
         $sqlserver = $this->load->database('personalia',true);
-        $sql = $sqlserver->query("select * from \"Presensi\".tpresensi_dl where spdl_id='$spdl' order by stat asc");
+        $sql = $sqlserver->query("select distinct * from \"Presensi\".tpresensi_dl where spdl_id='$spdl' order by stat asc");
         return $sql->result_array();
     }
 
@@ -322,7 +322,7 @@ group by td.spdl_id,td.noind");
 
     public function cekPresensiDL($where){
         $sqlserver = $this->load->database('personalia', true);
-        $sql = $sqlserver->query("select * from \"Presensi\".tpresensi_dl ".$where." ");
+        $sql = $sqlserver->query("select distinct * from \"Presensi\".tpresensi_dl ".$where." ");
         return $sql->result_array();
     }
 
