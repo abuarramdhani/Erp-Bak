@@ -61,13 +61,16 @@ class M_input extends CI_Model
                         ,msib.SEGMENT1 item
                         ,msib.DESCRIPTION
                         ,msib.PRIMARY_UOM_CODE uom
-                        ,kk.SCHEDULED_QUANTITY qty
+                        ,wdj.QUANTITY_COMPLETED qty
                         ,kk.QTY_KIB qbt
                         ,kk.VERIFY_DATE creation_date
                 from khs_kib kk
                     ,mtl_system_items_b msib 
+                    ,wip_discrete_jobs wdj   
                 where kk.PRIMARY_ITEM_ID = msib.INVENTORY_ITEM_ID
                     and kk.ORGANIZATION_ID = msib.ORGANIZATION_ID
+                    and kk.ORDER_ID = wdj.WIP_ENTITY_ID 
+                    and kk.PRIMARY_ITEM_ID = wdj.PRIMARY_ITEM_ID 
                     $atr";
         $query = $oracle->query($sql);
         return $query->result_array();
