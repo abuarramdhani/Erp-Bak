@@ -90,7 +90,7 @@
                                                 <td class='text-center'>".$item['jml_dl']."</td>
                                                 <td class='text-center'>".$item['point_']."</td>
                                                 <td class='text-center'>
-                                                    <a class='btn bg-maroon btn-xs' href='http://quick.com/aplikasi/dinas-luar-online/pekerja/C_PKJ/surat_tugas_pdf?spdlid=".$item['spdl_id']."' target='blank'><span class='fa fa-file-pdf-o'></span></a>
+                                                    <a class='btn bg-maroon btn-xs' href='http://dl.quick.com/pekerja/C_PKJ/surat_tugas_pdf?spdlid=".$item['spdl_id']."' target='blank'><span class='fa fa-file-pdf-o'></span></a>
                                                     <a class='btn bg-navy btn-xs' href='".site_url('Presensi/PresensiDL/editTanggalRealisasi/'.rtrim($item['spdl_id'])."?id=".$item['noind'])."' target='blank'><span class='fa fa-edit'></span></a>
                                                 </td>
                                             </tr>
