@@ -613,7 +613,7 @@ class M_createkib extends CI_Model
               and kkk.TO_SUBINVENTORY_CODE = msi.SECONDARY_INVENTORY_NAME(+)
               and kkk.TO_ORG_ID = msi.ORGANIZATION_ID(+)
               --
-              and mil.INVENTORY_LOCATION_ID = kkk.TO_LOCATOR_ID
+              and mil.INVENTORY_LOCATION_ID(+) = kkk.TO_LOCATOR_ID
               --
 			  and msib.SEGMENT1 = '$itemku'
               and kkk.INVENTORY_TRANS_FLAG = 'N'
