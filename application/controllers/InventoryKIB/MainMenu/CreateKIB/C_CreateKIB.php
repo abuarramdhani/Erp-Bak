@@ -286,7 +286,7 @@ class C_CreateKIB extends CI_Controller
 	public function printpdf($org,$status,$no_batch,$kib,$n){
 		$length = 370;
 		if ($status == 1 || $n == 1) {
-			$length = 290;
+			$length = 300;
 		}
 		$this->load->library('ciqrcode');
 		$this->load->library('Pdf');
@@ -336,6 +336,7 @@ class C_CreateKIB extends CI_Controller
 				// $arrayREQNUM[] = $value['REQUEST_NUMBER'];
 				$dataKIBKelompok[$indexnya]['FROM_SUBINVENTORY_CODE'] = $value['FROM_SUBINVENTORY_CODE'];
 				$dataKIBKelompok[$indexnya]['TO_SUBINVENTORY_CODE'] = $value['TO_SUBINVENTORY_CODE'];
+				$dataKIBKelompok[$indexnya]['TO_LOCATOR'] = $value['TO_LOCATOR'];
 				$dataKIBKelompok[$indexnya]['ITEM_CODE'] = $value['ITEM_CODE'];
 				$dataKIBKelompok[$indexnya]['OPR'][] = array('OPR_SEQ' => $value['OPR_SEQ'],
 														'ACTIVITY' => $value['ACTIVITY']);
