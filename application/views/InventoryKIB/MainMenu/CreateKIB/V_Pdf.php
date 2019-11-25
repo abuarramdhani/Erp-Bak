@@ -57,13 +57,24 @@
 					</tr>
 					<tr>
 						<td>
-							<b>KE</b>
+							<b>KE </b>
 						</td>
 						<td>
 							<b>:</b>
 						</td>
 						<td>
 							<b><?php echo $value['TO_SUBINVENTORY_CODE'] ?></b>
+						</td>
+					</tr>
+					<tr>
+						<td>
+							<b>LOCATOR</b>
+						</td>
+						<td>
+							<b>:</b>
+						</td>
+						<td>
+							<b><?php echo $value['TO_LOCATOR'] ?></b>
 						</td>
 					</tr>
 						

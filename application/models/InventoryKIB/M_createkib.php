@@ -588,7 +588,8 @@ class M_createkib extends CI_Model
 		}
 		
 
-		$sql = "SELECT kkk.FROM_SUBINVENTORY_CODE FROM_SUBINVENTORY_CODE 
+		$sql = "SELECT kkk.FROM_SUBINVENTORY_CODE FROM_SUBINVENTORY_CODE
+				  ,mil.SEGMENT1 TO_LOCATOR 
                   ,kkk.TO_SUBINVENTORY_CODE
                   ,msi.ATTRIBUTE1 ALIAS_KODE
                   ,msib.SEGMENT1 item_code
@@ -603,6 +604,7 @@ class M_createkib extends CI_Model
                 ,mtl_system_items_b msib 
                 ,fnd_lookup_values flv
                 ,mtl_secondary_inventories msi
+                ,MTL_ITEM_LOCATIONS mil
             where msib.CONTAINER_TYPE_CODE   = flv.LOOKUP_CODE (+)
               and flv.LOOKUP_TYPE (+)            = 'CONTAINER_TYPE'
               --
@@ -610,6 +612,9 @@ class M_createkib extends CI_Model
               and msib.ORGANIZATION_ID = kkk.ORGANIZATION_ID
               and kkk.TO_SUBINVENTORY_CODE = msi.SECONDARY_INVENTORY_NAME(+)
               and kkk.TO_ORG_ID = msi.ORGANIZATION_ID(+)
+              --
+              and mil.INVENTORY_LOCATION_ID(+) = kkk.TO_LOCATOR_ID
+              --
 			  and msib.SEGMENT1 = '$itemku'
               and kkk.INVENTORY_TRANS_FLAG = 'N'
               $statusku
@@ -629,6 +634,7 @@ class M_createkib extends CI_Model
 		// }
 		$sql = " SELECT kkk.FROM_SUBINVENTORY_CODE FROM_SUBINVENTORY_CODE 
 				      ,kkk.TO_SUBINVENTORY_CODE
+				      ,mil.SEGMENT1 TO_LOCATOR 
 				      ,msi.ATTRIBUTE1 ALIAS_KODE
 				      ,decode(kkk.ITEM_STATUS,1,'OK',2,'REJECT',3,'SCRAP') status
 				      ,msib.SEGMENT1 item_code
@@ -652,7 +658,8 @@ class M_createkib extends CI_Model
 					bom_operational_routings bor,
 					bom_operation_sequences bos,
 					bom_departments bd,
-					wip_operations wo
+					wip_operations wo,
+					MTL_ITEM_LOCATIONS mil
 				WHERE wdj.WIP_ENTITY_ID = we.WIP_ENTITY_ID
 					and wdj.ORGANIZATION_ID = we.ORGANIZATION_ID
 					and wdj.WIP_ENTITY_ID = kkk.ORDER_ID
@@ -673,6 +680,9 @@ class M_createkib extends CI_Model
 					and wo.DEPARTMENT_ID = bd.DEPARTMENT_ID
 					and wo.ORGANIZATION_ID = bd.ORGANIZATION_ID
 					and bor.ALTERNATE_ROUTING_DESIGNATOR is null
+					--
+		            and kkk.TO_LOCATOR_ID = mil.INVENTORY_LOCATION_ID(+)
+		            --
 					and we.WIP_ENTITY_NAME = '$batch_number'
 					AND kkk.ITEM_STATUS = '$status'
 					and kkk.KIBCODE =  NVL('$kib',kkk.KIBCODE)
