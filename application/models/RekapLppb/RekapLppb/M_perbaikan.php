@@ -175,7 +175,7 @@ class M_perbaikan extends CI_Model
         // return $sql;
     }
 
-    public function selectIO(){
+    public function selectIO($term){
         $sql = "select ood.ORGANIZATION_ID
                         ,ood.ORGANIZATION_CODE
                         ,ood.ORGANIZATION_NAME
@@ -186,8 +186,10 @@ class M_perbaikan extends CI_Model
                 where haou.ORGANIZATION_ID = ood.ORGANIZATION_ID
                     and hrl.LOCATION_ID = haou.LOCATION_ID
                     and hrl.LOCATION_CODE in ('Yogyakarta','Tuksono')
+                    and ood.ORGANIZATION_CODE like '%$term%'
                 order by ood.ORGANIZATION_CODE";
         $query = $this->oracle->query($sql);                             
         return $query->result_array();
+        // echo sql
     }
 }

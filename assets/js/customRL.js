@@ -124,10 +124,12 @@ $(document).ready(function(){
         $(document).ready(function(){
         var bulan = $('#bln').val();
         var id_org = $('#id_org').val();
+        var lppbAwl = $('#LppbAwl').val();
+        var lppbAkh = $('#LppbAkh').val();
         console.log(bulan);
         var request = $.ajax({
                 url: baseurl+'RekapLppb/Input/searchBulan',
-                data: {	bulan : bulan, id_org : id_org},
+                data: {	bulan : bulan, id_org : id_org, lppbAwl : lppbAwl, lppbAkh : lppbAkh},
                 type: "POST",
                 datatype: 'html'
         });

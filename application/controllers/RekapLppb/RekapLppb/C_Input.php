@@ -85,11 +85,25 @@ class C_Input extends CI_Controller
 	{
         $bulan = $this->input->post('bulan');
 		$io = $this->input->post('id_org');
+		$lppbAwl = $this->input->post('lppbAwl');
+		$lppbAkh = $this->input->post('lppbAkh');
 		$data['io'] = $io;
         $prmbulan = strtoupper($bulan);
-        // echo "<pre>"; print_r($prmbulan); exit();
+		// echo "<pre>"; print_r($prmbulan); exit();
+		
+		if ($bulan != '') {
+			$prmmonth = "and to_char(rsh.CREATION_DATE ,'MON-YYYY') = nvl('$prmbulan',to_char(rsh.CREATION_DATE , 'MON-YYYY'))";
+		}else{
+			$prmmonth = '';
+		}
 
-        $data['data'] = $this->M_input->getDataRekap2($prmbulan, $io);
+		if ($lppbAwl != '' && $lppbAkh != '') {
+			$lppb = "AND rsh.receipt_num between '$lppbAwl' and '$lppbAkh'";
+		}else{
+			$lppb = '';
+		}
+
+        $data['data'] = $this->M_input->getDataRekap2($prmmonth, $lppb, $io);
         $this->load->view('RekapLppb/RekapLppb/V_TableInput', $data);
 
 	}
