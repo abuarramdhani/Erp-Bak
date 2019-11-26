@@ -29,7 +29,7 @@
 											<span><label>Nomor PO</label></span>
 										</td>
 										<td>
-											<input placeholder="Nomor PO" type="text" name="txtNoPO" class="ininopo form-control" size="40" id="nomorPOID">
+											<input value="0" placeholder="Nomor PO" type="text" name="txtNoPO" class="ininopo form-control" size="40" id="nomorPOID">
 		                     				<!-- <select id="slcNomorPO" onchange="cariNomorPO()" name="nomor_po" class="form-control select2 select2-hidden-accessible" style="width:320px;">
 												<option value="" > Cari No. PO </option>
 												<?php foreach ($nomor_po as $av) { ?>
@@ -47,7 +47,7 @@
 											<span><label>Vendor</label></span>
 										</td>
 										<td>
-		                     				<select id="slcVendor" name="vendor_number" class="vendorNameClass form-control select2 select2-hidden-accessible" style="width:320px;">
+		                     				<select onchange="iniVendor()" id="slcVendor" name="vendor_number" class="vendorNameClass form-control select2 select2-hidden-accessible" style="width:320px;">
 												<option value="" > Nama Vendor </option>
 												<?php foreach ($allVendor as $av) { ?>
 												<option value="<?php echo $av['VENDOR_ID'] ?>"><?php echo $av['VENDOR_NAME'] ?></option>
@@ -73,7 +73,7 @@
 											<span><label>PPN Status</label></span>
 										</td>
 										<td>
-											<input disabled type="text" name="ppnStatus" class="form-control ppnStatus" size="40" id="ppn_status">
+											<input disabled value="N" type="text" name="ppnStatus" class="form-control ppnStatus" size="40" id="ppn_status">
 										</td>
 									</tr>
 									<tr>
@@ -143,7 +143,7 @@
 											<span><label>Nominal DPP Faktur Pajak</label></span>
 										</td>
 										<td>
-											<input class="form-control nomdppfaktur" size="40" id="idNominalDpp" type="text" name="nominal_dpp" placeholder="Nominal DPP Faktur Pajak" onchange="ambilNominalPPPN()" data-toggle="tooltip" data-placement="top"title="tekan 'Tab' untuk memunculkan Nominal PPN">
+											<input value="0" class="form-control nomdppfaktur" size="40" id="idNominalDpp" type="text" name="nominal_dpp" placeholder="Nominal DPP Faktur Pajak" onchange="ambilNominalPPPN()" data-toggle="tooltip" data-placement="top"title="tekan 'Tab' untuk memunculkan Nominal PPN">
 
 											
 										</td>
@@ -153,7 +153,7 @@
 											<span><label>Nominal PPN</label></span>
 										</td>
 										<td>
-											<input class="form-control nomppn" size="40" id="nominalPPN" type="text" name="nominalPPN" placeholder="Nominal PPN Otomatis" >
+											<input value="0" class="form-control nomppn" size="40" id="nominalPPN" type="text" name="nominalPPN" placeholder="Nominal PPN Otomatis" >
 										</td>
 									</tr>
 									<tr>

@@ -67,6 +67,11 @@ function cariInvoicebyId() {
 	})
 }
 
+function iniVendor() {
+	var nama_vendor = $('#slcVendor').val();
+	$('#hdnTxt').val(nama_vendor).trigger('change');
+
+}
 
 
 $('#btnCariTop').click(function() { 
@@ -117,8 +122,9 @@ $('#btnCariTop').click(function() {
 
 			$.each(response, (i, item) => {
 					val2 = item.PAYMENT_TERMS
-					val1 += '<option value="'+item.VENDOR_NAME+'">'+item.VENDOR_NAME+'</option>'	
-					val3 = item.PPN			
+					val1 += '<option value="'+item.VENDOR_ID+'">'+item.VENDOR_NAME+'</option>'	
+					val3 = item.PPN	
+					// val4 = item.VENDOR_NAME		
 				})	
 				// deskripsi.val(val1);
 				// deskripsi.trigger('change');
@@ -126,7 +132,7 @@ $('#btnCariTop').click(function() {
 				top.trigger('change');
 
 				vendor_name.html(val1);
-				vendor_name.val(response[0].VENDOR_NAME);
+				// vendor_name.val(response[0].VENDOR_NAME);
 				vendor_name.trigger('change');
 
 				var ini_ppn = $('#ppn_status').val(val3);

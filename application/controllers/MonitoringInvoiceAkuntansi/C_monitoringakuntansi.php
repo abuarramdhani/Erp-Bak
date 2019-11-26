@@ -91,10 +91,9 @@ class C_monitoringakuntansi extends CI_Controller{
 		$invoice_date = $this->input->post('invoice_date');//**
 		$invoice_amount = $this->input->post('invoice_amount');//**
 		$tax_invoice_number = $this->input->post('tax_invoice_number');//
-		$vendor_name = $this->input->post('vendor_number');//**
-		$cariIDVendor = $this->M_monitoringakuntansi->getIdVendor($vendor_name);
-		// echo $vendor_name; print_r($vendor_number);exit();
-		$vendor_number = $cariIDVendor[0]['VENDOR_ID'];
+		$vendor_number = $this->input->post('vendor_number');//**
+		$cariNamaVendor = $this->M_monitoringakuntansi->getNamaVendor($vendor_number);
+		$vendor_name = $cariNamaVendor[0]['VENDOR_NAME'];
 		$nominal_ppn_lama = $this->input->post('nominalPPN');//**
 		$po_number = $this->input->post('txtNoPO');//**
 		$top = $this->input->post('txtToP');//**
@@ -456,10 +455,9 @@ class C_monitoringakuntansi extends CI_Controller{
 		$invoice_date = $this->input->post('invoice_date');//
 		$invoice_amount = $this->input->post('invoice_amount');//
 		// $tax_invoice_number = $this->input->post('tax_invoice_number');//
-		$vendor_name = $this->input->post('vendor_number');//
-		$cariIDVendor = $this->M_monitoringakuntansi->getIdVendor($vendor_name);
-		// echo $vendor_name; print_r($vendor_number);exit();
-		$vendor_number = $cariIDVendor[0]['VENDOR_ID'];
+		$vendor_number = $this->input->post('vendor_number');
+		$cariNamaVendor = $this->M_monitoringakuntansi->getNamaVendor($vendor_number);
+		$vendor_name = $cariNamaVendor[0]['VENDOR_NAME'];
 		// $nominal_ppn = $this->input->post('nominalPPN');
 		$po_number = $this->input->post('txtNoPO');//
 		$top = $this->input->post('txtToP');//
@@ -499,6 +497,8 @@ class C_monitoringakuntansi extends CI_Controller{
 		redirect('AccountPayables/MonitoringInvoice/InvoiceBermasalahAkt/');
 	}
 
+
+
 	public function addPoNumberAkt()
 	{
 		// echo "<pre>";print_r($_POST);
@@ -506,10 +506,9 @@ class C_monitoringakuntansi extends CI_Controller{
 		$invoice_date = $this->input->post('invoice_date');//
 		$invoice_amount = $this->input->post('invoice_amount');//
 		$tax_invoice_number = $this->input->post('tax_invoice_number');//
-		$vendor_name = $this->input->post('vendor_number');//
-		$cariIDVendor = $this->M_monitoringakuntansi->getIdVendor($vendor_name);
-		// echo $vendor_name; print_r($vendor_number);exit();
-		$vendor_number = $cariIDVendor[0]['VENDOR_ID'];
+		$vendor_number = $this->input->post('vendor_number');
+		$cariNamaVendor = $this->M_monitoringakuntansi->getNamaVendor($vendor_number);
+		$vendor_name = $cariNamaVendor[0]['VENDOR_NAME'];
 		$nominal_ppn_lama = $this->input->post('nominalPPN');
 		$po_number = $this->input->post('txtNoPO');//
 		$top = $this->input->post('txtToP');//
@@ -542,7 +541,7 @@ class C_monitoringakuntansi extends CI_Controller{
 		 
 		// }
 		$this->M_monitoringakuntansi->savePoNumber3($add2['invoice'][0]['INVOICE_ID'],$action_date);
-		//-----------------------------------------------bikin batch----------------------------------------------------//
+		// -----------------------------------------------bikin batch----------------------------------------------------//
 		$saveDate = date('d-m-Y H:i:s');
 		$date = strtoupper(date('dMY'));
 		$status_akt = 2;
