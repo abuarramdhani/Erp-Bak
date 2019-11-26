@@ -10,7 +10,7 @@ class M_input extends CI_Model
         // $this->db = $this->load->database('oracle',true);
     }
 
-    public function getDataRekap2($prmmonth, $io){
+    public function getDataRekap2($prmmonth, $lppb, $io){
         $sql = "SELECT rec.*, 
                         nvl(to_char(kwl.kirim_qc,'DD/MM/YYYY HH24:MI:SS'),null) kirim_qc, 
                         nvl(to_char(kwl.terima_qc,'DD/MM/YYYY HH24:MI:SS'),null) terima_qc,
@@ -42,9 +42,10 @@ class M_input extends CI_Model
                                 WHERE rsh.ship_to_org_id = '$io'
                                     AND rsh.receipt_num IS NOT NULL
                                     -- parameter---------------------------------
-                                    -- AND rsh.receipt_num = '286683' ini yg dinyalain
+                                    $prmmonth $lppb
+                                    -- AND rsh.receipt_num = '286683'
                 --                    and pha.SEGMENT1 = '19018662'
-                                and to_char(rsh.CREATION_DATE ,'MON-YYYY') = nvl('$prmmonth',to_char(rsh.CREATION_DATE , 'MON-YYYY'))
+                --                and to_char(rsh.CREATION_DATE ,'MON-YYYY') = nvl('',to_char(rsh.CREATION_DATE , 'MON-YYYY'))
                 --                    and msib.INVENTORY_ITEM_ID = ''
                 --                    and rsh.RECEIPT_NUM between nvl(:P_LPPB_FROM,rsh.RECEIPT_NUM) and nvl(:P_LPPB_TO,rsh.RECEIPT_NUM)
                                     ----------------------------------------------

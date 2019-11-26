@@ -190,5 +190,6 @@ class M_perbaikan extends CI_Model
                 order by ood.ORGANIZATION_CODE";
         $query = $this->oracle->query($sql);                             
         return $query->result_array();
+        // echo sql
     }
 }
