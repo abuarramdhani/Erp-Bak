@@ -101,7 +101,7 @@ class C_DetailPresensi extends CI_Controller {
 				}elseif($key['kd_ket'] == "TM"){
 					$keterangan = "M";
 				}elseif ($key['kd_ket'] == "TIK") {
-					$keterangan = "IK";
+					$keterangan = $this->M_presensipekerja->getProporsionalTIK($key['noind'],$key['tanggal']);
 				}elseif ($key['kd_ket'] == "CT") {
 					$susulan_ct = $this->M_presensipekerja->getSusulan("CT",$key['noind'],$key['tanggal']);
 					if (!empty($susulan_ct)) {
@@ -320,7 +320,7 @@ class C_DetailPresensi extends CI_Controller {
 				}elseif($key['kd_ket'] == "TM"){
 					$keterangan = "M";
 				}elseif ($key['kd_ket'] == "TIK") {
-					$keterangan = "IK";
+					$keterangan = $this->M_presensipekerja->getProporsionalTIK($key['noind'],$key['tanggal']);
 				}elseif ($key['kd_ket'] == "CT") {
 					$susulan_ct = $this->M_presensipekerja->getSusulan("CT",$key['noind'],$key['tanggal']);
 					if (!empty($susulan_ct)) {
@@ -427,7 +427,7 @@ class C_DetailPresensi extends CI_Controller {
 				}elseif($key['kd_ket'] == "TM"){
 					$keterangan = "M";
 				}elseif ($key['kd_ket'] == "TIK") {
-					$keterangan = "IK";
+					$keterangan = $this->M_presensipekerja->getProporsionalTIK($key['noind'],$key['tanggal']);
 				}elseif ($key['kd_ket'] == "CT") {
 					$susulan_ct = $this->M_presensipekerja->getSusulan("CT",$key['noind'],$key['tanggal']);
 					if (!empty($susulan_ct)) {
