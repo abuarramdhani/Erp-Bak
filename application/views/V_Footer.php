@@ -107,6 +107,7 @@
 		<script src="<?= base_url('assets/js/customGRR.js') ?>"></script>
 		<script src="<?= base_url('assets/js/customLKH.js') ?>"></script>
 		<script src="<?= base_url('assets/js/customLK.js') ?>"></script>
+		<script src="<?= base_url('assets/js/customCDP.js') ?>"></script>
 		<script src="<?= base_url('assets/js/customOC.js') ?>"></script>
 		<script src="<?= base_url('assets/js/customOJT.js') ?>"></script>
 		<script src="<?= base_url('assets/js/customDS.js') ?>"></script>
