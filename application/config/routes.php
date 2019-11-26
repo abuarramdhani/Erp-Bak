@@ -1901,6 +1901,15 @@ $route['MasterPekerja/Surat/gajipekerjacutoff/(:any)']					=	'MasterPekerja/Sura
 $route['MasterPekerja/Surat/gajipekerjacutoff/(:any)/(:any)']					=	'MasterPekerja/Surat/GajiPekerjaCutoff/C_Index/$1/$2';
 $route['MasterPekerja/Surat/gajipekerjacutoff/(:any)/(:any)/(:any)']		=	'MasterPekerja/Surat/GajiPekerjaCutoff/C_Index/$1/$2/$3';
 
+//-------------------------------Cetak Data Pekerja Masuk dan Keluar ------------------------------------
+$route['MasterPekerja/CetakPekerjaMasuk']               				=   'MasterPekerja/CetakDataPekerja/C_PekerjaMasuk';
+$route['MasterPekerja/CetakPekerjaMasuk/(:any)']               			=   'MasterPekerja/CetakDataPekerja/C_PekerjaMasuk/$1';
+$route['MasterPekerja/CetakPekerjaMasuk/(:any)/(:any)']               			=   'MasterPekerja/CetakDataPekerja/C_PekerjaMasuk/$1/$2';
+
+$route['MasterPekerja/CetakPekerjaKeluar']               				=   'MasterPekerja/CetakDataPekerja/C_PekerjaKeluar';
+$route['MasterPekerja/CetakPekerjaKeluar/(:any)']               		=   'MasterPekerja/CetakDataPekerja/C_PekerjaKeluar/$1';
+$route['MasterPekerja/CetakPekerjaKeluar/(:any)/(:any)']               		=   'MasterPekerja/CetakDataPekerja/C_PekerjaKeluar/$1/$2';
+
 //--------------------------------LaporanKunjungan-----------------------------
 $route['MasterPekerja/LaporanKunjungan']               				=   'MasterPekerja/Rekap/C_Rekap';
 $route['MasterPekerja/LaporanKunjungan/(:any)']               		=   'MasterPekerja/Rekap/C_Rekap/$1';
