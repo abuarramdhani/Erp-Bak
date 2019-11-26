@@ -77,8 +77,9 @@
 											<span><label>PPN Status</label></span>
 										</td>
 										<td>
-											<input disabled value="<?php echo $detail[0]['PPN']?>" type="text" name="ppnStatus" class="form-control ppnStatus" size="40" id="ppn_status">
+											<input disabled type="text" name="ppnStatus" class="form-control ppnStatus" size="40" id="ppn_status">
 										</td>
+										<!-- value="<?php echo $detail[0]['PPN']?>" -->
 									</tr>
 									<tr>
 										<td>

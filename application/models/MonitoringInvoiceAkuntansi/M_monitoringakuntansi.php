@@ -7,7 +7,7 @@ class M_monitoringakuntansi extends CI_Model {
 		$this->load->library('encrypt');
 	}
 
-  public function checkLoginInAkuntansi($employee_code)
+    public function checkLoginInAkuntansi($employee_code)
     {
         $oracle = $this->load->database('erp_db',true);
         $query = "select eea.employee_code, es.unit_name
@@ -17,7 +17,7 @@ class M_monitoringakuntansi extends CI_Model {
         $runQuery = $oracle->query($query);
         return $runQuery->result_array();
     }
-
+    
 
     function get_ora_blob_value($value)
     {
@@ -71,6 +71,7 @@ public function UpdatePoNumber3($invoice_id,$action_date)
     $runQuery = $erp_db->query($sql);
 }
 
+
 public function editInvData($invoice_id)
     {
         $erp_db = $this->load->database('oracle',true);
@@ -80,7 +81,7 @@ public function editInvData($invoice_id)
                 invoice_amount invoice_amount,
                 tax_invoice_number tax_invoice_number,
                 vendor_name vendor_name,
-                vendor_id vendor_id,
+                vendor_number vendor_id,
                 po_number po_number,
                 lppb_number lppb_number,
                 shipment_number shipment_number,
@@ -103,17 +104,52 @@ public function editInvData($invoice_id)
                 ami.source source,
                 ami.KATEGORI_INV_BERMASALAH,
                 ami.KELENGKAPAN_DOC_INV_BERMASALAH,
-                ami.KETERANGAN_INV_BERMASALAH,
-                poh.attribute2 ppn
+                ami.KETERANGAN_INV_BERMASALAH
+--                poh.attribute2 ppn
                 FROM khs_ap_monitoring_invoice ami
                 JOIN khs_ap_invoice_purchase_order aipo ON ami.invoice_id = aipo.invoice_id
-                JOIN po_headers_all poh ON aipo.po_number = poh.segment1
+--                JOIN po_headers_all poh ON aipo.po_number = poh.segment1
                 WHERE ami.invoice_id = '$invoice_id'";
 
-        // echo"<pre>";echo $sql;exit();
         $runQuery = $erp_db->query($sql);
         return $runQuery->result_array();
     }
+
+    // SELECT aipo.invoice_id invoice_id, 
+    //             invoice_number invoice_number,
+    //             invoice_date invoice_date,
+    //             invoice_amount invoice_amount,
+    //             tax_invoice_number tax_invoice_number,
+    //             vendor_name vendor_name,
+    //             vendor_id vendor_id,
+    //             po_number po_number,
+    //             lppb_number lppb_number,
+    //             shipment_number shipment_number,
+    //             received_date received_date,
+    //             item_description item_description,
+    //             item_code item_code,
+    //             qty_receipt qty_receipt,
+    //             qty_reject qty_reject,
+    //             currency currency,
+    //             unit_price unit_price,
+    //             qty_invoice qty_invoice,
+    //             ami.finance_batch_number  finance_batch_number,
+    //             ami.info info,
+    //             ami.nominal_ppn,
+    //             ami.invoice_category invoice_category,
+    //             ami.nominal_dpp nominal_dpp,
+    //             ami.term_of_payment,
+    //             ami.batch_number batch_number,
+    //             ami.jenis_jasa jenis_jasa,
+    //             ami.source source,
+    //             ami.KATEGORI_INV_BERMASALAH,
+    //             ami.KELENGKAPAN_DOC_INV_BERMASALAH,
+    //             ami.KETERANGAN_INV_BERMASALAH,
+    //             poh.attribute2 ppn
+    //             FROM khs_ap_monitoring_invoice ami
+    //             JOIN khs_ap_invoice_purchase_order aipo ON ami.invoice_id = aipo.invoice_id
+    //             JOIN po_headers_all poh ON aipo.po_number = poh.segment1
+    //             WHERE ami.invoice_id = '$invoice_id'
 
     public function tarikDataPo($nomor_po)
 
@@ -372,17 +408,34 @@ public function editInvData($invoice_id)
         return $runQuery->result_array();
      }
 
+
+    public function getNamaVendor($id)
+     {
+        $oracle = $this->load->database('oracle', true);
+        $query = "SELECT vendor_name
+                  FROM po_vendors where vendor_id = '$id'";
+        $runQuery = $oracle->query($query);
+        return $runQuery->result_array();
+        // echo $query; exit();
+     }
+
      public function finishAktNew()
      {
         $oracle = $this->load->database('oracle', true);
         $query = " SELECT distinct ami.invoice_id invoice_id,
                          ami.term_of_payment top,
+--                         CASE WHEN ami.vendor_name > 0 THEN pov.vendor_name
+--                         ELSE pov.vendor_name
+--                         END vendor_name,
                          ami.vendor_name vendor_name,
                          ami.invoice_number invoice_number, 
                          ami.invoice_date invoice_date, 
                          ami.tax_invoice_number tax_invoice_number,
                          ami.invoice_amount invoice_amount, 
-                         poh.attribute2 ppn,
+                         aipo.po_number,
+                         CASE WHEN aipo.po_number = 0 THEN 'N'
+                         else poh.attribute2
+                         end ppn,
                          ami.nominal_ppn,
                          to_date(ami.last_status_purchasing_date) last_status_purchasing_date,
                          ami.purchasing_batch_number purchasing_batch_number,
@@ -397,10 +450,12 @@ public function editInvData($invoice_id)
                 FROM khs_ap_monitoring_invoice ami,
                      khs_ap_invoice_purchase_order aipo,
                      po_headers_all poh
+--                     PO_VENDORS pov
                 WHERE ami.invoice_id = aipo.invoice_id
-                and poh.segment1 = aipo.po_number
-                and last_finance_invoice_status = 2
+                and (poh.segment1 = aipo.po_number or aipo.po_number = 0)
+--                AND pov.VENDOR_NAME = ami.vendor_name
                 AND ami.SOURCE = 'AKUNTANSI'
+--                and ami.invoice_id = '17600'
                 ORDER BY vendor_name, invoice_number";
 
         $runQuery = $oracle->query($query);
