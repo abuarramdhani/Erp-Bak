@@ -94,15 +94,15 @@ class C_monitoringakuntansi extends CI_Controller{
 		$vendor_number = $this->input->post('vendor_number');//**
 		$cariNamaVendor = $this->M_monitoringakuntansi->getNamaVendor($vendor_number);
 		$vendor_name = $cariNamaVendor[0]['VENDOR_NAME'];
-		$nominal_ppn_lama = $this->input->post('nominalPPN');//**
+		// $nominal_ppn_lama = $this->input->post('nominalPPN');//**
 		$po_number = $this->input->post('txtNoPO');//**
 		$top = $this->input->post('txtToP');//**
 		$last_admin_date = date('d-m-Y H:i:s');
 		$action_date = date('d-m-Y H:i:s');
 		$note_admin = $this->input->post('note_admin');//**
 		$invoice_category = $this->input->post('invoice_category');//**
-		$nominal_dpp_lama = $this->input->post('nominal_dpp');//**
-		$jenis_jasa = $this->input->post('jenis_jasa');//
+		// $nominal_dpp_lama = $this->input->post('nominal_dpp');//**
+		// $jenis_jasa = $this->input->post('jenis_jasa');//
 		// ini fungsi login, hak ases
 		$noinduk = $this->session->userdata['user'];
 		// echo $noinduk;exit();
@@ -113,16 +113,16 @@ class C_monitoringakuntansi extends CI_Controller{
 			$source_login = 'INFORMATION & COMMUNICATION TECHNOLOGY';
 		}
 		// tentang separator 'Rp. 26.590.90000-'
-		$nominal_ppn_lama2 = str_replace('.00', '', $nominal_ppn_lama);
-		$nominal_ppn = str_replace(',', '', $nominal_ppn_lama2);
-		$nominal_dpp = str_replace('.00', '', $nominal_dpp_lama);
+		// $nominal_ppn_lama2 = str_replace('.00', '', $nominal_ppn_lama);
+		// $nominal_ppn = str_replace(',', '', $nominal_ppn_lama2);
+		// $nominal_dpp = str_replace('.00', '', $nominal_dpp_lama);
 		$amount1 = str_replace('.', '', $invoice_amount);
 		$amount2 =  str_replace('00-', '', $amount1);//478636
 		$amount3 = str_replace('Rp', '', $amount2);
 		$amount = str_replace(',', '', $amount3);
 		// $vendor = str_replace("'", "", $vendor_name);
-		$pajak = str_replace(",", "", $nominal_dpp);
-		$add2['invoice'] = $this->M_monitoringakuntansi->UpdatePoNumber2($invoice_id,$invoice_number, $invoice_date, $amount, $tax_invoice_number,$vendor_name,$vendor_number,$last_admin_date,$note_admin,$invoice_category,$pajak,$source_login,$jenis_jasa,$top,$nominal_ppn);
+		// $pajak = str_replace(",", "", $nominal_dpp);
+		$add2['invoice'] = $this->M_monitoringakuntansi->UpdatePoNumber2($invoice_id,$invoice_number, $invoice_date, $amount, $tax_invoice_number,$vendor_name,$vendor_number,$last_admin_date,$note_admin,$invoice_category,$source_login,$top);
 		
 		// foreach ($po_number as $key => $value) {
 		$this->M_monitoringakuntansi->UpdatePoNumber($po_number,$invoice_id);
@@ -502,22 +502,22 @@ class C_monitoringakuntansi extends CI_Controller{
 	public function addPoNumberAkt()
 	{
 		// echo "<pre>";print_r($_POST);
-		$invoice_number = $this->input->post('invoice_number');//
-		$invoice_date = $this->input->post('invoice_date');//
-		$invoice_amount = $this->input->post('invoice_amount');//
-		$tax_invoice_number = $this->input->post('tax_invoice_number');//
-		$vendor_number = $this->input->post('vendor_number');
-		$cariNamaVendor = $this->M_monitoringakuntansi->getNamaVendor($vendor_number);
-		$vendor_name = $cariNamaVendor[0]['VENDOR_NAME'];
-		$nominal_ppn_lama = $this->input->post('nominalPPN');
-		$po_number = $this->input->post('txtNoPO');//
-		$top = $this->input->post('txtToP');//
-		$last_admin_date = date('d-m-Y H:i:s');
-		$action_date = date('d-m-Y H:i:s');
-		$note_admin = $this->input->post('note_admin');//
-		$invoice_category = $this->input->post('invoice_category');
-		$nominal_dpp_lama = $this->input->post('nominal_dpp');//
-		$jenis_jasa = $this->input->post('jenis_jasa');//
+		$invoice_number = $this->input->post('invoice_number');//00
+		$invoice_date = $this->input->post('invoice_date');//00
+		$invoice_amount = $this->input->post('invoice_amount');//00
+		$tax_invoice_number = $this->input->post('tax_invoice_number');//00
+		$vendor_number = $this->input->post('vendor_number');//00
+		$cariNamaVendor = $this->M_monitoringakuntansi->getNamaVendor($vendor_number);//00
+		$vendor_name = $cariNamaVendor[0]['VENDOR_NAME'];//00
+		// $nominal_ppn_lama = $this->input->post('nominalPPN');
+		$po_number = $this->input->post('txtNoPO');//00
+		$top = $this->input->post('txtToP');//00
+		$last_admin_date = date('d-m-Y H:i:s');//00
+		$action_date = date('d-m-Y H:i:s');//00
+		$note_admin = $this->input->post('note_admin');//00
+		$invoice_category = $this->input->post('invoice_category');//00
+		// $nominal_dpp_lama = $this->input->post('nominal_dpp');//
+		// $jenis_jasa = $this->input->post('jenis_jasa');//
 		// ini fungsi login, hak ases
 		$noinduk = $this->session->userdata['user'];
 		// echo $noinduk;exit();
@@ -528,13 +528,13 @@ class C_monitoringakuntansi extends CI_Controller{
 			$source_login = 'INFORMATION & COMMUNICATION TECHNOLOGY';
 		}
 		// tentang separator
-		$nominal_ppn_lama2 = str_replace('.00', '', $nominal_ppn_lama);
-		$nominal_ppn = str_replace(',', '', $nominal_ppn_lama2);
-		$nominal_dpp = str_replace('.00', '', $nominal_dpp_lama);
+		// $nominal_ppn_lama2 = str_replace('.00', '', $nominal_ppn_lama);
+		// $nominal_ppn = str_replace(',', '', $nominal_ppn_lama2);
+		// $nominal_dpp = str_replace('.00', '', $nominal_dpp_lama);
 		$amount = str_replace(',', '', $invoice_amount); //478636
 		// $vendor = str_replace("'", "", $vendor_name);
-		$pajak = str_replace(",", "", $nominal_dpp);
-		$add2['invoice'] = $this->M_monitoringakuntansi->savePoNumber2($invoice_number, $invoice_date, $amount, $tax_invoice_number,$vendor_name,$vendor_number,$last_admin_date,$note_admin,$invoice_category,$pajak,$source_login,$jenis_jasa,$top,$nominal_ppn);
+		// $pajak = str_replace(",", "", $nominal_dpp);
+		$add2['invoice'] = $this->M_monitoringakuntansi->savePoNumber2($invoice_number, $invoice_date, $amount, $tax_invoice_number,$vendor_name,$vendor_number,$last_admin_date,$note_admin,$invoice_category,$source_login,$top);
 		
 		// foreach ($po_number as $key => $value) {
 		$this->M_monitoringakuntansi->savePoNumber($po_number,$add2['invoice'][0]['INVOICE_ID']);
@@ -572,7 +572,7 @@ class C_monitoringakuntansi extends CI_Controller{
 			$this->M_monitoringakuntansi->saveBatchNumberById2($inv,$saveDate,$status_akt);
 		
 
-		redirect('AccountPayables/MonitoringInvoice/FinishInvoiceAkt');
+		redirect('AccountPayables/MonitoringInvoice/NewInvoice');
 	}
 
 	public function invoiceBermasalahAkt()

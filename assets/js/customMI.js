@@ -88,6 +88,7 @@ $('#btnCariTop').click(function() {
 	var nomor_po = $('.ininopo').val();
 	var vendor_name = $('.vendorNameClass');
 	var top = $('.termOfPayment');
+	var tax_status = $('#tax_status');
 
 	$.ajax({
 			method: "POST",
@@ -119,11 +120,13 @@ $('#btnCariTop').click(function() {
 			var val1 = '';	
 			var val2 = '';
 			var val3 = '';
+			var val4 = '';
+			var val5 = '';
 
 			$.each(response, (i, item) => {
 					val2 = item.PAYMENT_TERMS
 					val1 += '<option value="'+item.VENDOR_ID+'">'+item.VENDOR_NAME+'</option>'	
-					val3 = item.PPN	
+					val3 += '<option value="'+item.PPN+'">'+item.PPN+'</option>'	
 					// val4 = item.VENDOR_NAME		
 				})	
 				// deskripsi.val(val1);
@@ -135,7 +138,7 @@ $('#btnCariTop').click(function() {
 				// vendor_name.val(response[0].VENDOR_NAME);
 				vendor_name.trigger('change');
 
-				var ini_ppn = $('#ppn_status').val(val3);
+				var ini_ppn = $('#ppn_status').html(val3);
 				$('#ppn_status').trigger('change');
 				var coba = ini_ppn.val();
 				var nominal = $('.nomppn');
@@ -143,25 +146,33 @@ $('#btnCariTop').click(function() {
 				var tax = $('#tax_id_inv');
 			
 				if (coba === 'Y') {
-				nominal.prop('disabled', false);
-				nominal.trigger('change');
+					val5 += '<option value="Y"> Y </option>'
+					val5 += '<option value="N"> N </option>'         
+					tax_status.html(val5);
+					tax_status.trigger('change');
+				// nominal.prop('disabled', false);
+				// nominal.trigger('change');
 
-				nom_dpp.prop('disabled', false);
-				nom_dpp.val('0').trigger('change');
+				// nom_dpp.prop('disabled', false);
+				// nom_dpp.val('0').trigger('change');
 
-				tax.prop('disabled', false);
-				tax.val('010.005-').trigger('change');
+				// tax.prop('disabled', false);
+				// tax.val('010.005-').trigger('change');
 
 				}else if (coba === 'N') {
-				nominal.prop('disabled', true);
-				nominal.trigger('change');
-				nominal.val(null).trigger('change')
-				nom_dpp.prop('disabled', true);
-				nom_dpp.trigger('change');
-				nom_dpp.val(null).trigger('change')
-				tax.prop('disabled', true);
-				tax.trigger('change');
-				tax.val(null).trigger('change')
+					val4 += '<option value="N"> N </option>'
+					val4 += '<option value="Y"> Y </option>'
+					tax_status.html(val4);
+					tax_status.trigger('change');
+				// nominal.prop('disabled', true);
+				// nominal.trigger('change');
+				// nominal.val(null).trigger('change')
+				// nom_dpp.prop('disabled', true);
+				// nom_dpp.trigger('change');
+				// nom_dpp.val(null).trigger('change')
+				// tax.prop('disabled', true);
+				// tax.trigger('change');
+				// tax.val(null).trigger('change')
 				}
 
 

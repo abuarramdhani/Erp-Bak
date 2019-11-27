@@ -7,6 +7,17 @@ class M_monitoringakuntansi extends CI_Model {
 		$this->load->library('encrypt');
 	}
 
+   // public function checkLoginInAkuntansi($employee_code)
+   //  {
+   //      $oracle = $this->load->database();
+   //      $sql = "select eea.employee_code, es.unit_name
+   //                  from er.er_employee_all eea, er.er_section es
+   //                  where eea.section_code = es.section_code
+   //                  and eea.employee_code = '$employee_code' ";
+   //      $runQuery = $this->db->query($sql);
+   //      return $runQuery->result_array();
+   //  }
+
     public function checkLoginInAkuntansi($employee_code)
     {
         $oracle = $this->load->database('erp_db',true);
@@ -17,7 +28,7 @@ class M_monitoringakuntansi extends CI_Model {
         $runQuery = $oracle->query($query);
         return $runQuery->result_array();
     }
-    
+
 
     function get_ora_blob_value($value)
     {
@@ -28,7 +39,9 @@ class M_monitoringakuntansi extends CI_Model {
 
     //-----------------------------------------------------------------------------tambahan menu start from here-----------------------//
 
-public function UpdatePoNumber2($invoice_id,$invoice_number, $invoice_date, $amount, $tax_invoice_number,$vendor_name,$vendor_number,$last_admin_date,$note_admin,$invoice_category,$pajak,$source_login,$jenis_jasa,$top,$nominal_ppn)
+public function UpdatePoNumber2($invoice_id,$invoice_number, $invoice_date, $amount, $tax_invoice_number,$vendor_name,$vendor_number,$last_admin_date,$note_admin,$invoice_category,$source_login,$top)
+
+// $invoice_id,$invoice_number, $invoice_date, $amount, $tax_invoice_number,$vendor_name,$vendor_number,$last_admin_date,$note_admin,$invoice_category,$source_login,$top
 {
     $erp_db = $this->load->database('oracle',true);
     $sql = "UPDATE khs_ap_monitoring_invoice SET 
@@ -41,11 +54,8 @@ public function UpdatePoNumber2($invoice_id,$invoice_number, $invoice_date, $amo
                 last_admin_date = to_date('$last_admin_date', 'DD/MM/YYYY HH24:MI:SS'),
                 info = '$note_admin',
                 invoice_category = '$invoice_category',
-                nominal_dpp = '$pajak',
                 source = '$source_login',
-                jenis_jasa = '$jenis_jasa',
-                term_of_payment = '$top',
-                nominal_ppn = '$nominal_ppn'
+                term_of_payment = '$top'
             WHERE invoice_id = '$invoice_id'";
          // echo"<pre>";echo $sql;
     $runQuery = $erp_db->query($sql);
@@ -294,13 +304,14 @@ public function editInvData($invoice_id)
         
     }
 
-    public function savePoNumber2($invoice_number, $invoice_date, $invoice_amount, $tax_invoice_number,$vendor_number,$vendor_name,$last_admin_date,$info,$invoice_category,$nominal_dpp,$source_login,$jenis_jasa,$top,$nominal_ppn)
+    public function savePoNumber2($invoice_number, $invoice_date, $invoice_amount, $tax_invoice_number,$vendor_number,$vendor_name,$last_admin_date,$info,$invoice_category,$source_login,$top)
+    // $invoice_number, $invoice_date, $amount, $tax_invoice_number,$vendor_name,$vendor_number,$last_admin_date,$note_admin,$invoice_category,$source_login,$top
     {
         $oracle = $this->load->database('oracle',true);
         $query = "INSERT INTO khs_ap_monitoring_invoice
-                    (invoice_number, invoice_date, invoice_amount,tax_invoice_number, vendor_name, vendor_number, last_admin_date, info,invoice_category,nominal_dpp,source,jenis_jasa,last_finance_invoice_status,term_of_payment,nominal_ppn)
+                    (invoice_number, invoice_date, invoice_amount,tax_invoice_number, vendor_name, vendor_number, last_admin_date, info,invoice_category,source,last_finance_invoice_status,term_of_payment)
                     VALUES 
-                    ('$invoice_number','$invoice_date','$invoice_amount', '$tax_invoice_number','$vendor_number','$vendor_name',to_date('$last_admin_date', 'DD/MM/YYYY HH24:MI:SS'), '$info','$invoice_category','$nominal_dpp','$source_login','$jenis_jasa','2','$top','$nominal_ppn')";
+                    ('$invoice_number','$invoice_date','$invoice_amount', '$tax_invoice_number','$vendor_number','$vendor_name',to_date('$last_admin_date', 'DD/MM/YYYY HH24:MI:SS'), '$info','$invoice_category','$source_login','2','$top')";
         $oracle->query($query);
         // echo "<pre>";echo $query;
         $query2 = "SELECT max(invoice_id) invoice_id
