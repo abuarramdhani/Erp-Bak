@@ -29,9 +29,9 @@
 											<th class="text-center">Invoice Number</th>
 											<th class="text-center">Invoice Date</th>
 											<th class="text-center">PPN</th>
-											<th class="text-center">Nominal PPN</th>
+											<!-- <th class="text-center">Nominal PPN</th> -->
 											<th class="text-center">Tax Invoice Number</th>
-											<th class="text-center">Nominal DPP Faktur Pajak</th>
+											<!-- <th class="text-center">Nominal DPP Faktur Pajak</th> -->
 											<th class="text-center">Invoice Amount</th>
 											<th class="text-center">Term Of Payment</th>
 											<th class="text-center">Finance Process Date</th>
@@ -52,9 +52,9 @@
 											</td>
 											<td><?php echo date('d-M-Y',strtotime($f['INVOICE_DATE']))?></td>
 											<td><?php echo $f['PPN']?></td>
-											<td><?php echo 'Rp. '. number_format($f['NOMINAL_PPN'],0,'.','.').',00-';?></td>
+											<!-- <td><?php echo 'Rp. '. number_format($f['NOMINAL_PPN'],0,'.','.').',00-';?></td> -->
 											<td><?php echo $f['TAX_INVOICE_NUMBER']?></td>
-											<td><?php echo 'Rp. '. number_format($f['NOMINAL_DPP'],0,'.','.').',00-';?></td>
+											<!-- <td><?php echo 'Rp. '. number_format($f['NOMINAL_DPP'],0,'.','.').',00-';?></td> -->
 											<td>
 											<?php if($f['INVOICE_AMOUNT']==NULL) {
 								          	 echo 'Rp.'.' ,-';

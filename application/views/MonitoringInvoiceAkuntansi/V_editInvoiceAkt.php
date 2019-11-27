@@ -61,7 +61,7 @@
 											<input type="hidden" class="hdnTextForVendor" id="hdnTxt" name="hdnTxtVendor">
 		                     			</td>
 		                     			<td>
-		                     				<span><label>(*) Untuk cari nama vendor, TOP, dan status PPN. <br>Harap klik tombol 'Cari'</label></span>
+		                     				<span><label>(*) Untuk cari nama vendor, TOP, status PPN dan Tax Invoice. <br>Harap klik tombol 'Cari'</label></span>
 		                     			</td>
 									</tr>
 									<tr>
@@ -77,7 +77,11 @@
 											<span><label>PPN Status</label></span>
 										</td>
 										<td>
-											<input disabled type="text" name="ppnStatus" class="form-control ppnStatus" size="40" id="ppn_status">
+											<select name="ppnStatus" id="ppn_status" class="form-control select2 select2-hidden-accessible" style="width:320px;">
+												<option value="">Pilih</option>
+												<option value="Y">Y</option>
+												<option value="N">N</option>
+											</select>
 										</td>
 										<!-- value="<?php echo $detail[0]['PPN']?>" -->
 									</tr>
@@ -137,13 +141,24 @@
 											<span><label>Tax Invoice Number</label></span>
 										</td>
 										<td>
-											<input value="<?php echo $detail[0]['TAX_INVOICE_NUMBER']?>" class="form-control tax_class" size="40" type="text" id="tax_id_inv" name="tax_invoice_number" data-toggle="tooltip" data-placement="top" title="Jika Tax Invoice, Nominal DPP, dan Faktur Pajak tidak diisi. Harap masukkan Alasan di kolom Info" placeholder="Tax Invoice Number" >
+											<!-- <input value="<?php echo $detail[0]['TAX_INVOICE_NUMBER']?>" class="form-control tax_class" size="40" type="text" id="tax_id_inv" name="tax_invoice_number" data-toggle="tooltip" data-placement="top" title="Jika Tax Invoice, Nominal DPP, dan Faktur Pajak tidak diisi. Harap masukkan Alasan di kolom Info" placeholder="Tax Invoice Number" > -->
+											<select name="tax_invoice_number" id="tax_status" class="form-control select2 select2-hidden-accessible" style="width:320px;">
+												<?php 
+												$s='';
+													if ($detail[0]['TAX_INVOICE_NUMBER'] === 'Y') {
+													$s='selected'; }
+												 ?>
+
+												<option value="">Pilih</option>
+												<option value="Y" <?php echo $s ?>>YES</option>
+												<option value="N" <?php echo $s ?>>NO</option>
+											</select>
 										</td>
-										<td>
+										<!-- <td>
 											<span><b>(*)Jika Tax Invoice, Nominal DPP, dan Nominal PPN tidak diisi. <br>Harap masukkan Alasan di kolom Info</b></span>
-										</td>
+										</td> -->
 									</tr>
-									<tr>
+									<!-- <tr>
 										<td>
 											<span><label>Nominal DPP Faktur Pajak</label></span>
 										</td>
@@ -158,7 +173,7 @@
 										<td>
 											<input value="<?php echo $detail[0]['NOMINAL_PPN']?>" class="form-control nomppn" size="40" id="nominalPPN" type="text" name="nominalPPN" placeholder="Nominal PPN Otomatis" >
 										</td>
-									</tr>
+									</tr> -->
 									<tr>
 										<td>
 											<span><label>Info</label></span>
