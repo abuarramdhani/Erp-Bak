@@ -24,6 +24,7 @@
 		<script src="<?= base_url('assets/plugins/input-mask/3.x') ?>/dist/inputmask/phone-codes/phone-be.js"></script>
 		<script src="<?= base_url('assets/plugins/input-mask/3.x') ?>/dist/inputmask/phone-codes/phone-ru.js"></script>
 		<script src="<?= base_url('assets/plugins/input-mask/3.x') ?>/dist/inputmask/bindings/inputmask.binding.js"></script>
+		<script src="<?= base_url('assets/plugins/intro.js-2.9.3/intro.js') ?>"></script>
 		<script src="<?= base_url('assets/plugins/multiselect/js/bootstrap-multiselect.js') ?>"></script>
 		<script src="<?= base_url('assets/plugins/touchspin/jquery.bootstrap-touchspin.min.js')?>"></script>
 		<script src="<?= base_url('assets/plugins/fine-uploader/jquery.fine-uploader.min.js') ?>"></script>
@@ -185,6 +186,7 @@
 		<script src="<?= base_url('assets/js/customBD.js'); ?>"></script>
 		<script src="<?= base_url('assets/js/customMSB.js'); ?>"></script>
 		<script src="<?= base_url('assets/js/customOKB.js'); ?>"></script>
+		<script src="<?= base_url('assets/js/customMPL.js');?>"></script>
 
 		<!-- <script src="<?= base_url('assets/js/customMO.js') ?>"></script> -->
 		<!-- <script src="<?= base_url('assets/js/customPR.js') ?>"></script> -->
