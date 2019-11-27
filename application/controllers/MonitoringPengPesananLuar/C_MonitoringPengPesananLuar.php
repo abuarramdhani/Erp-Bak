@@ -272,7 +272,6 @@ class C_MonitoringPengPesananLuar extends CI_Controller{
    		$id = $this->input->post('id_rekap_po');
    		$po = $this->input->post('no_po');
    		
-   		echo $id; echo $po;exit();
    		$cariPengiriman = $this->M_monitoringpengpesananluar->pengiriman($id);
    		
    		if ($cariPengiriman[0]['sum'] !== NULL) {
@@ -292,7 +291,6 @@ class C_MonitoringPengPesananLuar extends CI_Controller{
    	public function delete2()
    	{
    		$id = $this->input->post('id_rekap_pengiriman');
-   		echo $id; exit();
    		$cariId_PO = $this->M_monitoringpengpesananluar->cariIDPO($id);
    		$id_po = $cariId_PO[0]['id'];
    		$updateStatusOpen = $this->M_monitoringpengpesananluar->insertStatusOpen($id_po);
