@@ -1,4 +1,3 @@
-
 <?php defined('BASEPATH') OR die('No direct script access allowed');
 
 class M_monitoringpengpesananluar extends CI_Model
@@ -166,9 +165,9 @@ class M_monitoringpengpesananluar extends CI_Model
     {
         $db = $this->load->database();
         $sql = "delete from om.om_mppl_rekap_po where id_rekap_po = '$id'";
-        $runQuery1 = $db->query($sql);
+        $runQuery1 = $this->db->query($sql);
         $sql2 = "delete from om.om_mppl_rekap_po_line where id_rekap_po = '$id'";
-        $runQuery2 = $db->query($sql2);
+        $runQuery2 = $this->db->query($sql2);
     }
 
     public function cari_Id_Peng($no_po)
@@ -183,13 +182,13 @@ class M_monitoringpengpesananluar extends CI_Model
     {
         $db = $this->load->database();
         $sql = "delete from om.om_mppl_rekap_pengiriman where id_rekap_pengiriman = '$id'";
-        $runQuery1 = $db->query($sql);
+        $runQuery1 = $this->db->query($sql);
         $sql2 = "delete from om.om_mppl_rekap_pengiriman_line where id_rekap_pengiriman = '$id'";
-        $runQuery2 = $db->query($sql2);
+        $runQuery2 = $this->db->query($sql2);
         $sql3 = "delete from om.om_mppl_action_detail where id_rekap_pengiriman = '$id'";
-        $runQuery3 = $db->query($sql3);
+        $runQuery3 = $this->db->query($sql3);
         $sql4 = "delete from om.om_mppl_count_pengiriman where id_rekap_pengiriman = '$id'";
-        $runQuery4 = $db->query($sql4);
+        $runQuery4 = $this->db->query($sql4);
     }
 
     public function tarikdatamodal($id)
@@ -413,7 +412,7 @@ class M_monitoringpengpesananluar extends CI_Model
                         '$ordered')";
       $runQuery = $this->db->query($sql);
       $sql1 = "select id_line_rp from om.om_mppl_rekap_pengiriman_line where id_rekap_pengiriman = '$idHeaderYa'";
-      $runQuery1 = $db->query($sql1);
+      $runQuery1 = $this->db->query($sql1);
       return $runQuery1->result_array();
       // echo $sql;
     }
