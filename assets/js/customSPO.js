@@ -89,9 +89,9 @@ $(document).ready(function(){
         //   }
     });
 
-    $('#txtPMSPONoPO').inputFilter(function(value) {
-        return /^\d*$/.test(value); 
-    });
+    // $('#txtPMSPONoPO').inputFilter(function(value) {
+    //     return /^\d*$/.test(value); 
+    // });
     
     $('#txtPMSPONoPO').on('blur', function(){
         var PONumber = $(this).val();

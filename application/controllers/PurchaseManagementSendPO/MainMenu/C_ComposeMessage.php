@@ -80,6 +80,8 @@ class C_ComposeMessage extends CI_Controller {
 		$subject	 	= $this->input->post('subject');
 		$format_message	= $this->input->post('format_message');
 		$body			= $this->input->post('body');
+		$poArray        = explode('-', $po_number);
+		$poQuery		= $poArray[0];
 		$toEmail		= preg_replace('/\s+/', '', explode(',', $getTargetEmail));
 		$ccEmail		= preg_replace('/\s+/', '', explode(',', $getCCEmail));
 		$bccEmail		= preg_replace('/\s+/', '', explode(',', $getBCCEmail));
@@ -89,7 +91,7 @@ class C_ComposeMessage extends CI_Controller {
 	   	}
 
 		// Get Vendor Name
-		$data['VendorName'] = $this->M_composemessage->getVendorName($po_number);
+		$data['VendorName'] = $this->M_composemessage->getVendorName($poQuery);
 
 		// Get PDF from other function
 		if ( count($data['VendorName']) > 0 ){			
@@ -300,7 +302,9 @@ class C_ComposeMessage extends CI_Controller {
 
 	public function getUserEmail($id)
 	{		
-		$email = $this->M_composemessage->getEmailAddress($id);
+		$idEx  = explode('-', $id);
+		$idQuery	   = $idEx[0];
+		$email = $this->M_composemessage->getEmailAddress($idQuery);
 		if ( !empty($email) && $email[0]['EMAIL'] != '' ){
 			$data  = str_replace(' /', ',', $email[0]['EMAIL']);
 			echo json_encode($data);
@@ -311,7 +315,9 @@ class C_ComposeMessage extends CI_Controller {
 
 	public function PurchaseManagementDocument($id)
 	{
-		$result 	= $this->M_composemessage->getDeliveryLetters($id);
+		$idEx  		= explode('-', $id);
+		$idQuery	= $idEx[0];
+		$result 	= $this->M_composemessage->getDeliveryLetters($idQuery);
 		$nomor_po 	= $id;
 		$max_data 	= 1;
 		
