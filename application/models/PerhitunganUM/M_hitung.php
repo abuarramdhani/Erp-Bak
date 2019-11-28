@@ -234,7 +234,7 @@ class M_hitung extends CI_Model {
 				and substr(ffvv.FLEX_VALUE,0,1) in ('4','5','7','8') --fabrikasi
 				and ffvv.FLEX_VALUE = gcc.SEGMENT4
 				and bd.DEPARTMENT_CLASS_CODE LIKE '%$term%'
-				and (NVL(SUBSTR(br.DESCRIPTION, 0, INSTR(br.DESCRIPTION, '-')-2),'PAINTING AND PACKAGING')) NOT IN ('MACHINING B TUKSONO','HEAT TREATMENT','MACHINING C TUKSONO','MACHINING D TUKSONO')
+				--and (NVL(SUBSTR(br.DESCRIPTION, 0, INSTR(br.DESCRIPTION, '-')-2),'PAINTING AND PACKAGING')) NOT IN ('MACHINING B TUKSONO','HEAT TREATMENT','MACHINING C TUKSONO','MACHINING D TUKSONO')
 				order by seksi_code";
 			$query = $this ->oracle->query($sql);
 			return $query->result_array();
