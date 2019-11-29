@@ -20,7 +20,7 @@
             <td width=""><b>No</b></td>
             <td width=""><b>Item </b></td>
             <td width="20%"><b>Description</b></td>
-            <td width=""><b>No.PO</b></td>
+            <!-- <td width=""><b>No.PO</b></td> -->
             <td width=""><b>No. Receipt</b></td>
             <td width=""><b>Receipt Date</b></td>
             <td width=""><b>Sudah LPPB</b></td>
@@ -45,21 +45,21 @@
                 <td><?= $i ?><input type="hidden" name="io<?= $i ?>" id="io<?= $i ?>" value="<?= $io ?>"></td>
                 <td><?= $key['ITEM'] ?><input type="hidden" name="txtItem<?= $i ?>" value="<?= $key['ITEM'] ?>"></td>
                 <td><?= $key['DESCRIPTION'] ?><input type="hidden" name="txtDescription<?= $i ?>" value="<?= $key['DESCRIPTION'] ?>"></td>
-                <td><?= $key['PO'] ?><input type="hidden" name="txtPO<?= $i ?>" value="<?= $key['PO'] ?>"></td>
+                <!-- <td><input type="hidden" name="txtPO<?= $i ?>" value=""></td> -->
                 <td><?= $key['RECEIPT_NUM'] ?><input type="hidden" name="txtRecNum<?= $i ?>" value="<?= $key['RECEIPT_NUM'] ?>"></td>
                 <td><?= $key['RECEIPT_DATE'] ?><input type="hidden" name="dateRecDate<?= $i ?>" value="<?= $key['RECEIPT_DATE'] ?>"></td>
                 <td><?= $key['RECEIPT_DATE'] ?><input type="hidden" name="dateSudah<?= $i ?>" value="<?= $key['RECEIPT_DATE'] ?>"></td>
                 <td class="text-center">
-                    <input type="button" class="btn btn-xs btn-warning" <?php if ($key['KIRIM_QC'] !== null){ ?> value="<?= $key['KIRIM_QC'] ?>" disabled="disabled" <?php } else{ ?> value="klik" <?php } ?> onclick="SaveKirimQC1(<?=$i?>,'<?= $key['ITEM_ID'] ?>',<?= $key['RECEIPT_NUM'] ?>,<?= $key['PO'] ?>)" name="dateKirimQC<?= $i ?>" id="dateKirimQC<?= $i ?>"/>
+                    <input type="button" class="btn btn-xs btn-warning" <?php if ($key['KIRIM_QC'] !== null){ ?> value="<?= $key['KIRIM_QC'] ?>" disabled="disabled" <?php } else{ ?> value="klik" <?php } ?> onclick="SaveKirimQC1(<?=$i?>,'<?= $key['ITEM_ID'] ?>',<?= $key['RECEIPT_NUM'] ?>)" name="dateKirimQC<?= $i ?>" id="dateKirimQC<?= $i ?>"/>
                 </td>
                 <td class="text-center">
-                    <input type="button" class="btn btn-xs btn-warning" <?php if ($key['TERIMA_QC'] !== null){ ?> value="<?= $key['TERIMA_QC'] ?>" disabled="disabled" <?php } else{ ?> value="klik" <?php } ?> onclick="SaveTerimaQC1(<?=$i?>,'<?= $key['ITEM_ID'] ?>',<?= $key['RECEIPT_NUM'] ?>,<?= $key['PO'] ?>)" name="dateTerimaQC<?= $i ?>" id="dateTerimaQC<?= $i ?>"/>    
+                    <input type="button" class="btn btn-xs btn-warning" <?php if ($key['TERIMA_QC'] !== null){ ?> value="<?= $key['TERIMA_QC'] ?>" disabled="disabled" <?php } else{ ?> value="klik" <?php } ?> onclick="SaveTerimaQC1(<?=$i?>,'<?= $key['ITEM_ID'] ?>',<?= $key['RECEIPT_NUM'] ?>)" name="dateTerimaQC<?= $i ?>" id="dateTerimaQC<?= $i ?>"/>    
                 </td>
                 <td class="text-center">
-                    <input type="button" class="btn btn-xs btn-warning" <?php if ($key['KEMBALI_QC'] !== null){ ?> value="<?= $key['KEMBALI_QC'] ?>" disabled="disabled" <?php } else{ ?> value="klik" <?php } ?> onclick="SaveKembaliQC1(<?=$i?>,'<?= $key['ITEM_ID'] ?>',<?= $key['RECEIPT_NUM'] ?>,<?= $key['PO'] ?>)" name="dateKembaliQC<?= $i ?>" id="dateKembaliQC<?= $i ?>"/>    
+                    <input type="button" class="btn btn-xs btn-warning" <?php if ($key['KEMBALI_QC'] !== null){ ?> value="<?= $key['KEMBALI_QC'] ?>" disabled="disabled" <?php } else{ ?> value="klik" <?php } ?> onclick="SaveKembaliQC1(<?=$i?>,'<?= $key['ITEM_ID'] ?>',<?= $key['RECEIPT_NUM'] ?>)" name="dateKembaliQC<?= $i ?>" id="dateKembaliQC<?= $i ?>"/>    
                 </td>
                 <td class="text-center">
-                    <input type="button" class="btn btn-xs btn-warning" <?php if ($key['KIRIM_GUDANG'] !== null){ ?> value="<?= $key['KIRIM_GUDANG'] ?>" disabled="disabled" <?php } else{ ?> value="klik" <?php } ?> onclick="SaveKirimGudang1(<?=$i?>,'<?= $key['ITEM_ID'] ?>',<?= $key['RECEIPT_NUM'] ?>,<?= $key['PO'] ?>)" name="dateKirimGudang<?= $i ?>" id="dateKirimGudang<?= $i ?>"/>    
+                    <input type="button" class="btn btn-xs btn-warning" <?php if ($key['KIRIM_GUDANG'] !== null){ ?> value="<?= $key['KIRIM_GUDANG'] ?>" disabled="disabled" <?php } else{ ?> value="klik" <?php } ?> onclick="SaveKirimGudang1(<?=$i?>,'<?= $key['ITEM_ID'] ?>',<?= $key['RECEIPT_NUM'] ?>)" name="dateKirimGudang<?= $i ?>" id="dateKirimGudang<?= $i ?>"/>    
                 </td>
                 <?php 
                 if ($key['TERIMA_GUDANG'] !== null){
@@ -71,16 +71,16 @@
                             if ( $date > $nextdate ) {
                                 ?>
                                 <td  class="text-center" bgcolor="red">
-                                    <input type="button" class="btn btn-xs btn-warning" <?php if ($key['TERIMA_GUDANG'] !== null){ ?> value="<?= $key['TERIMA_GUDANG'] ?>" disabled="disabled" <?php } else{ ?> value="klik" <?php } ?> onclick="SaveTerimaGudang1(<?=$i?>,'<?= $key['ITEM_ID'] ?>',<?= $key['RECEIPT_NUM'] ?>,<?= $key['PO'] ?>)" name="dateTerimaGudang<?= $i ?>" id="dateTerimaGudang<?= $i ?>"/>    
+                                    <input type="button" class="btn btn-xs btn-warning" <?php if ($key['TERIMA_GUDANG'] !== null){ ?> value="<?= $key['TERIMA_GUDANG'] ?>" disabled="disabled" <?php } else{ ?> value="klik" <?php } ?> onclick="SaveTerimaGudang1(<?=$i?>,'<?= $key['ITEM_ID'] ?>',<?= $key['RECEIPT_NUM'] ?>)" name="dateTerimaGudang<?= $i ?>" id="dateTerimaGudang<?= $i ?>"/>    
                                 </td>
                             <?php }else{?>
                                 <td class="text-center">
-                                <input type="button" class="btn btn-xs btn-warning" <?php if ($key['TERIMA_GUDANG'] !== null){ ?> value="<?= $key['TERIMA_GUDANG'] ?>" disabled="disabled" <?php } else{ ?> value="klik" <?php } ?> onclick="SaveTerimaGudang1(<?=$i?>,'<?= $key['ITEM_ID'] ?>',<?= $key['RECEIPT_NUM'] ?>,<?= $key['PO'] ?>)" name="dateTerimaGudang<?= $i ?>" id="dateTerimaGudang<?= $i ?>"/>    
+                                <input type="button" class="btn btn-xs btn-warning" <?php if ($key['TERIMA_GUDANG'] !== null){ ?> value="<?= $key['TERIMA_GUDANG'] ?>" disabled="disabled" <?php } else{ ?> value="klik" <?php } ?> onclick="SaveTerimaGudang1(<?=$i?>,'<?= $key['ITEM_ID'] ?>',<?= $key['RECEIPT_NUM'] ?>)" name="dateTerimaGudang<?= $i ?>" id="dateTerimaGudang<?= $i ?>"/>    
                                 </td>
                 <?php }
                     }else{ ?>
                 <td class="text-center">
-                <input type="button" class="btn btn-xs btn-warning" <?php if ($key['TERIMA_GUDANG'] !== null){ ?> value="<?= $key['TERIMA_GUDANG'] ?>" disabled="disabled" <?php } else{ ?> value="klik" <?php } ?> onclick="SaveTerimaGudang1(<?=$i?>,'<?= $key['ITEM_ID'] ?>',<?= $key['RECEIPT_NUM'] ?>,<?= $key['PO'] ?>)" name="dateTerimaGudang<?= $i ?>" id="dateTerimaGudang<?= $i ?>"/>    
+                <input type="button" class="btn btn-xs btn-warning" <?php if ($key['TERIMA_GUDANG'] !== null){ ?> value="<?= $key['TERIMA_GUDANG'] ?>" disabled="disabled" <?php } else{ ?> value="klik" <?php } ?> onclick="SaveTerimaGudang1(<?=$i?>,'<?= $key['ITEM_ID'] ?>',<?= $key['RECEIPT_NUM'] ?>)" name="dateTerimaGudang<?= $i ?>" id="dateTerimaGudang<?= $i ?>"/>    
                 </td>
                 <?php } ?>
                 <td>
