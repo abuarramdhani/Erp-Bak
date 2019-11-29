@@ -73,7 +73,12 @@ class M_submit extends CI_Model {
 	function getAtasan($noind , $jabatan) {
 		$data = array();
 		$kodesie = $this->session->kodesie;
-		$kodesie_subs = substr($kodesie, 0, 4);
+		if(!empty($kodesie)){
+			$kodesie_subs = substr($kodesie, 0, 4);
+		}else{
+			$kodesie_subs = '';
+		}
+			
 		$personalia = $this->load->database('personalia',true);
 		$sql1 = "SELECT kd_jabatan FROM hrd_khs.tpribadi WHERE noind = '$noind'";
 		$query1 = $personalia->query($sql1);
