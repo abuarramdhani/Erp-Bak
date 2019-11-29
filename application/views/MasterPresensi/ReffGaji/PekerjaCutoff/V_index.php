@@ -70,6 +70,13 @@
 																		target="_blank">
 																		<span class="fa fa-file-excel-o"></span>
 																	</a>
+																	<a 
+																		href="<?php echo base_url('MasterPresensi/ReffGaji/PekerjaCutoffReffGaji/hitung/'.$key['tanggal_proses']) ?>"
+																		title="Hitung Komponen" 
+																		style="color: grey" 
+																		target="_blank">
+																		<span class="fa fa-cogs"></span>
+																	</a>
 																</td>
 															</tr>
 												<?php 

@@ -88,5 +88,64 @@ class M_pekerjacutoff extends CI_Model
 		return $this->personalia->query($sql)->result_array();
 	}
 
+	public function getPekerjaCufOffAktif($periode,$noind){
+		$sql = "select '$periode'::date as tanggal, b.noind as noind, b.nama as nama, b.kodesie as kodesie, 
+ 						'0' as ipe, '0' as ika, '0' as ubt, '0' as upamk, '0' as um, 
+ 						case when left(a.noind,1) in ('B','D','J') then 
+ 							(
+	 							select count(*)
+								from generate_series(
+									(select tanggal_akhir + interval '1 day' from \"Presensi\".tcutoff where periode = to_char('$periode'::date,'yyyymm') and os ='0'),
+									(select to_char(tanggal_akhir,'yyyy-mm-01')::date + interval '1 month' - interval '1 day' from \"Presensi\".tcutoff where periode = to_char('$periode'::date,'yyyymm') and os ='0'),
+									interval '1 day'
+								) as dates
+								left join \"Dinas_Luar\".tlibur as libur
+								on libur.tanggal = dates.dates
+								where libur.tanggal is null 
+								and extract(isodow from dates.dates) <> '7'	
+							)
+						else 
+							'0'
+						end as ief, 
+ 						'0' as ims, '0' as imm, '0' as jam_lembur, '0' as ijin, 0 as pot, 
+ 						(
+ 							select 30 - count(*)
+							from generate_series(
+								(select tanggal_akhir + interval '1 day' from \"Presensi\".tcutoff where periode = to_char('$periode'::date,'yyyymm') and os ='0'),
+								(select to_char(tanggal_akhir,'yyyy-mm-01')::date + interval '1 month' - interval '1 day' from \"Presensi\".tcutoff where periode = to_char('$periode'::date,'yyyymm') and os ='0'),
+								interval '1 day'
+							) as dates
+							left join \"Dinas_Luar\".tlibur as libur
+							on libur.tanggal = dates.dates
+							where libur.tanggal is null 
+							and extract(isodow from dates.dates) <> '7'	
+						) as htm, 
+ 						0 as tamb_gaji, 0 as hl, 0 as ct, '0' as putkop, '0' as plain, '0' as pikop, 
+ 						'0' as pspsi, '0' as putang, '0' as dldobat, '0' as tkpajak, '0' as ttpajak, 
+ 						'0' as pduka, '0' as utambahan, '0' as btransfer, '0' as dendaik, '0' as plbhbayar, 
+ 						'0' as pgp, '0' as tlain, null as xduka, '-' as ket, 0 as cicil, '0' as ubs, 
+ 						'' as ubs_rp, '0' as um_puasa, b.noind_baru as noind_baru, '01' as jns_transaksi, 
+ 						'0' as angg_jkn, '0' as potongan_str, '0' as tambahan_str, '0' as reff_id, 
+ 						(select lokasi_kerja from hrd_khs.tlokasi_kerja where ID_ = b.lokasi_kerja) as lokasi_krj, 
+ 						'0' as ipet, 0 as um_cabang, null as susulan, 0 as jml_jkn, 0 as jml_jht, 0 as jml_jp,c.seksi
+				from \"Presensi\".tcutoff_custom_terproses a
+				left join hrd_khs.tpribadi b 
+				on a.noind = b.noind
+				left join hrd_khs.tseksi c 
+				on b.kodesie = c.kodesie
+				where a.terakhir = '1'
+				and a.tanggal_proses = '$periode'
+				and left(a.noind,1) in ($noind)
+				and (
+					b.keluar = '0'
+					or 	(
+						b.tglkeluar > to_char('$periode'::date,'yyyy-mm-10')::date
+						and b.keluar = '1'
+						)
+					)
+				order by b.kodesie";
+		return $this->personalia->query($sql)->result_array();
+	}
+
 }
 ?>
