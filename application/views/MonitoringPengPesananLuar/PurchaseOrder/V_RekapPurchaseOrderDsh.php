@@ -40,7 +40,7 @@ thead.toscahead tr th {
 .zoom:hover {
   -ms-transform: scale(1.3); /* IE 9 */
   -webkit-transform: scale(1.3); /* Safari 3-8 */
-  transform: scale(1.3); 
+  transform: scale(1.3);
   box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2);
 }
 
@@ -116,23 +116,23 @@ thead.toscahead tr th {
 												<?php }else if ($k['status'] == 'Close') { ?>
 											<td><span class="label label-danger">Status : <?php echo  $k['status'] ?> &nbsp;<br></span></td>
 												<?php } ?>
-										
+
 											<td>
 												<button type="button" data-toggle="modal" data-target="mdlDetailPo" class="btn btn-success zoom btn-sm zoom" onclick="openModalPO(<?php echo $k['id_rekap_po']?>)" class="btnMdlPO" id="btnMdlPO"><i class="fa fa-search"></i> Detail</button>
-											
-											
+
+
 												<?php if ($k['no_so'] == NULL) { ?>
-												<a target="_blank" href="<?php echo base_url('MonitoringPengirimanPesananLuar/RekapPurchaseOrder/edit/'.$k['id_rekap_po'])?>" >
+												<a href="<?php echo base_url('MonitoringPengirimanPesananLuar/RekapPurchaseOrder/edit/'.$k['id_rekap_po'])?>" >
 													<button type="button" class="btn btn-warning zoom btn-sm zoom" id="btn_detail_pr"><i class="fa fa-pencil"></i> Edit</button>
 
 													<!-- data-target="mdlDetailPo" data-toggle="modal" onclick="MdlEditPo(<?php echo $k['id_rekap_po']?>)"  -->
 												</a>
 												<?php } ?>
 
-											
+
 												<button type="button" class="btn btn-danger zoom btn-sm zoom" onclick="onDeletePO(this)" id="btnDeletePO"><i class="fa fa-trash"></i> Delete</button>
 											</td>
-										
+
 
 											<td class="test" style="display: none"><input type="hidden" name="hdnPo" id="hdnPO" value="<?php echo $k['id_rekap_po']?>"><input type="hidden" name="hdnPo2" id="hdnPO2" value="<?php echo  $k['no_po'] ?>">
 											</td>
@@ -162,7 +162,7 @@ thead.toscahead tr th {
                 <div class="modal-body" style="width: 100%;">
                 	<div class="modal-tabel" >
 					</div>
-                   
+
                     	<div class="modal-footer">
                     		<div class="col-md-2 pull-left">
                     		</div>
