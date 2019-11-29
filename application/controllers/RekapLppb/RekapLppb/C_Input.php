@@ -143,7 +143,7 @@ class C_Input extends CI_Controller
 		$number = $this->input->post('number');
 		$itemid = $this->input->post('itemid');
 		$recnum = $this->input->post('recnum');
-		$po = $this->input->post('po');
+		// $po = $this->input->post('po');
 		$kirimqc = $this->input->post('kirimqc');
 		$ket = $this->input->post('ket');
 		$io = $this->input->post('io');
@@ -154,13 +154,13 @@ class C_Input extends CI_Controller
 		// 	exit;
 		// }
 
-		$cek = $this->M_input->cekdata($itemid,$recnum,$po, $io);
+		$cek = $this->M_input->cekdata($itemid,$recnum, $io);
 		if (count($cek) > 0) {
 			$queryupdate = "SET KIRIM_QC = TO_TIMESTAMP('$kirimqc', 'DD-MM-YYYY HH24:MI:SS')";
-			$this->M_input->Updatedata($itemid,$recnum,$po,$queryupdate, $io);
+			$this->M_input->Updatedata($itemid,$recnum,$queryupdate, $io);
 		} else {
 			$queryinsert = "TO_TIMESTAMP('$kirimqc', 'DD-MM-YYYY HH24:MI:SS')";
-			$this->M_input->Insertdata($itemid,$recnum,$po,$queryinsert,$ket, $io);
+			$this->M_input->Insertdata($itemid,$recnum,$queryinsert,$ket, $io);
 		}
 	}
 
@@ -169,7 +169,7 @@ class C_Input extends CI_Controller
 		$number = $this->input->post('number');
 		$itemid = $this->input->post('itemid');
 		$recnum = $this->input->post('recnum');
-		$po = $this->input->post('po');
+		// $po = $this->input->post('po');
 		$terimaqc = $this->input->post('terimaqc');
 		$ket = $this->input->post('ket');
 		$io = $this->input->post('io');
@@ -178,13 +178,13 @@ class C_Input extends CI_Controller
 		// }else{
 		// 	exit;
 		// }
-		$cek = $this->M_input->cekdata($itemid,$recnum,$po, $io);
+		$cek = $this->M_input->cekdata($itemid,$recnum, $io);
 		if (count($cek) > 0) {
 			$queryupdate = "SET TERIMA_QC = TO_TIMESTAMP('$terimaqc', 'DD-MM-YYYY HH24:MI:SS')";
-			$this->M_input->Updatedata($itemid,$recnum,$po,$queryupdate, $io);
+			$this->M_input->Updatedata($itemid,$recnum,$queryupdate, $io);
 		} else {
 			$queryinsert = "TO_TIMESTAMP('$terimaqc', 'DD-MM-YYYY HH24:MI:SS')";
-			$this->M_input->Insertdata($itemid,$recnum,$po,$queryinsert,$ket, $io);
+			$this->M_input->Insertdata($itemid,$recnum,$queryinsert,$ket, $io);
 		}
 	}
 	
@@ -193,7 +193,7 @@ class C_Input extends CI_Controller
 		$number = $this->input->post('number');
 		$itemid = $this->input->post('itemid');
 		$recnum = $this->input->post('recnum');
-		$po = $this->input->post('po');
+		// $po = $this->input->post('po');
 		$kembaliqc = $this->input->post('kembaliqc');
 		$ket = $this->input->post('ket');
 		$io = $this->input->post('io');
@@ -202,13 +202,13 @@ class C_Input extends CI_Controller
 		// }else{
 		// 	exit;
 		// }
-		$cek = $this->M_input->cekdata($itemid,$recnum,$po, $io);
+		$cek = $this->M_input->cekdata($itemid,$recnum, $io);
 		if (count($cek) > 0) {
 			$queryupdate = "SET KEMBALI_QC = TO_TIMESTAMP('$kembaliqc', 'DD-MM-YYYY HH24:MI:SS')";
-			$this->M_input->Updatedata($itemid,$recnum,$po,$queryupdate, $io);
+			$this->M_input->Updatedata($itemid,$recnum,$queryupdate, $io);
 		} else {
 			$queryinsert = "TO_TIMESTAMP('$kembaliqc', 'DD-MM-YYYY HH24:MI:SS')";
-			$this->M_input->Insertdata($itemid,$recnum,$po,$queryinsert,$ket, $io);
+			$this->M_input->Insertdata($itemid,$recnum,$queryinsert,$ket, $io);
 		}
 	}
 	
@@ -218,7 +218,7 @@ class C_Input extends CI_Controller
 		$number = $this->input->post('number');
 		$itemid = $this->input->post('itemid');
 		$recnum = $this->input->post('recnum');
-		$po = $this->input->post('po');
+		// $po = $this->input->post('po');
 		$kirimgudang = $this->input->post('kirimgudang');
 		$ket = $this->input->post('ket');
 		$io = $this->input->post('io');
@@ -227,13 +227,13 @@ class C_Input extends CI_Controller
 		// }else{
 		// 	exit;
 		// }
-		$cek = $this->M_input->cekdata($itemid,$recnum,$po, $io);
+		$cek = $this->M_input->cekdata($itemid,$recnum, $io);
 		if (count($cek) > 0) {
 			$queryupdate = "SET KIRIM_GUDANG = TO_TIMESTAMP('$kirimgudang', 'DD-MM-YYYY HH24:MI:SS')";
-			$this->M_input->Updatedata($itemid,$recnum,$po,$queryupdate, $io);
+			$this->M_input->Updatedata($itemid,$recnum,$queryupdate, $io);
 		} else {
 			$queryinsert = "TO_TIMESTAMP('$kirimgudang', 'DD-MM-YYYY HH24:MI:SS')";
-			$this->M_input->Insertdata($itemid,$recnum,$po,$queryinsert,$ket, $io);
+			$this->M_input->Insertdata($itemid,$recnum,$queryinsert,$ket, $io);
 		}
 	}
 	
@@ -243,7 +243,7 @@ class C_Input extends CI_Controller
 		$number = $this->input->post('number');
 		$itemid = $this->input->post('itemid');
 		$recnum = $this->input->post('recnum');
-		$po = $this->input->post('po');
+		// $po = $this->input->post('po');
 		$terimagudang = $this->input->post('terimagudang');
 		$ket = $this->input->post('ket');
 		$io = $this->input->post('io');
@@ -252,13 +252,13 @@ class C_Input extends CI_Controller
 		// }else{
 		// 	exit;
 		// }
-		$cek = $this->M_input->cekdata($itemid,$recnum,$po, $io);
+		$cek = $this->M_input->cekdata($itemid,$recnum, $io);
 		if (count($cek) > 0) {
 			$queryupdate = "SET TERIMA_GUDANG = TO_TIMESTAMP('$terimagudang', 'DD-MM-YYYY HH24:MI:SS')";
-			$this->M_input->Updatedata($itemid,$recnum,$po,$queryupdate, $io);
+			$this->M_input->Updatedata($itemid,$recnum,$queryupdate, $io);
 		} else {
 			$queryinsert = "TO_TIMESTAMP('$terimagudang', 'DD-MM-YYYY HH24:MI:SS')";
-			$this->M_input->Insertdata($itemid,$recnum,$po,$queryinsert,$ket, $io);
+			$this->M_input->Insertdata($itemid,$recnum,$queryinsert,$ket, $io);
 		}
 	}
 }
