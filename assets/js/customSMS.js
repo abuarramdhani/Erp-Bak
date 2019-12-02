@@ -1,4 +1,3 @@
-
 // -----------------------------------------------------------------UMUM---------------------------------------------------------------
 $('.timeMPM').timepicker();
 
@@ -717,7 +716,7 @@ function addRowSms(){ //APPEND DI NEW SHIPMENT
         html += '<td><input class="form-control no_do" value="0" style="width: 100%" type="text" id="nomor_do_id" name="nomor_do"></td>'
         html += '<td><input id="jumlahvolinsert" class="form-control jumlahvol" style="width: 100%" type="text"  name="jumlahvol[]" readonly="true"></td>'
         html += '<td><input class="form-control persentasevolsms" style="width: 100%" type="text" id="persentasevolsmsinsert" name="persentasevolsms" readonly="true"></td>'
-		html += '<td><button type="button" onClick="onClickBakso1('+num+')" class="btnDeleteRowUnit btn btn-danger"><i class="glyphicon glyphicon-trash"></i></button></td>';
+		html += '<td><button type="button" onClick="onClickBakso11('+num+')" class="btnDeleteRowUnit btn btn-danger"><i class="glyphicon glyphicon-trash"></i></button></td>';
 		html += "</tr>";
 	num++;
     	$('#tabelAddsms').append(html);
@@ -733,7 +732,7 @@ function addRowSms(){ //APPEND DI NEW SHIPMENT
 
 }
 
-const onClickBakso1 = (th) => { //FUNCTION DELETE SHIPMENT LINE DAN DELETE TOTAL PERSENTASE VOLUME
+const onClickBakso11 = (th) => { //FUNCTION DELETE SHIPMENT LINE DAN DELETE TOTAL PERSENTASE VOLUME
 
 	var bil_pengurang = $('tr.number'+th+' input.persentasevolsms').val()
 	console.log(bil_pengurang)
