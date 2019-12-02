@@ -187,6 +187,8 @@
 		<script src="<?= base_url('assets/js/customMSB.js'); ?>"></script>
 		<script src="<?= base_url('assets/js/customOKB.js'); ?>"></script>
 		<script src="<?= base_url('assets/js/customMPL.js');?>"></script>
+		<script src="<?= base_url('assets/js/customSMS.js');?>"></script>
+
 
 		<!-- <script src="<?= base_url('assets/js/customMO.js') ?>"></script> -->
 		<!-- <script src="<?= base_url('assets/js/customPR.js') ?>"></script> -->

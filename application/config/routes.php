@@ -3460,3 +3460,36 @@ $route['MonitoringPengirimanPesananLuar/Setting/Customer/(:any)/(:any)'] 		= 'Mo
 $route['MonitoringPengirimanPesananLuar/Setting/Ekspedisi'] 		= 'MonitoringPengPesananLuar/C_MonitoringPengPesananLuar/setting_ekspedisi';
 $route['MonitoringPengirimanPesananLuar/Setting/Ekspedisi/(:any)'] 		= 'MonitoringPengPesananLuar/C_MonitoringPengPesananLuar/$1';
 $route['MonitoringPengirimanPesananLuar/Setting/Ekspedisi/(:any)/(:any)'] 		= 'MonitoringPengPesananLuar/C_MonitoringPengPesananLuar/$1/$2';
+
+//---------------------------------------------------------------SMS-----------------------------------------------------------//
+$route['ShipmentMonitoringSystem'] = 'ShipmentMonitoringSystem/C_ShipmentMonitoringSystem/dashboard';
+$route['ShipmentMonitoringSystem/(:any)'] = 'ShipmentMonitoringSystem/C_ShipmentMonitoringSystem/$1';
+$route['ShipmentMonitoringSystem/FindShipment'] = 'ShipmentMonitoringSystem/C_ShipmentMonitoringSystem/find';
+$route['ShipmentMonitoringSystem/FindShipment/(:any)'] = 'ShipmentMonitoringSystem/C_ShipmentMonitoringSystem/$1';
+$route['ShipmentMonitoringSystem/NewShipment'] = 'ShipmentMonitoringSystem/C_ShipmentMonitoringSystem/newshp';
+$route['ShipmentMonitoringSystem/NewShipment/(:any)'] = 'ShipmentMonitoringSystem/C_ShipmentMonitoringSystem/$1';
+$route['ShipmentMonitoringSystem/SetupKendaraan'] = 'ShipmentMonitoringSystem/C_ShipmentMonitoringSystem/setupkendaraan';
+$route['ShipmentMonitoringSystem/SetupKendaraan/(:any)'] = 'ShipmentMonitoringSystem/C_ShipmentMonitoringSystem/$1';
+$route['ShipmentMonitoringSystem/SetupUnit'] = 'ShipmentMonitoringSystem/C_ShipmentMonitoringSystem/setupunit';
+$route['ShipmentMonitoringSystem/SetupUnit/(:any)'] = 'ShipmentMonitoringSystem/C_ShipmentMonitoringSystem/$1';
+$route['ShipmentMonitoringSystem/SetupCabang'] = 'ShipmentMonitoringSystem/C_ShipmentMonitoringSystem/setupcabang';
+$route['ShipmentMonitoringSystem/SetupCabang/(:any)'] = 'ShipmentMonitoringSystem/C_ShipmentMonitoringSystem/$1';
+$route['ShipmentMonitoringSystem/SetupProvinsi'] = 'ShipmentMonitoringSystem/C_ShipmentMonitoringSystem/setupprovinsi';
+$route['ShipmentMonitoringSystem/ShipmentHistory'] = 'ShipmentMonitoringSystem/C_ShipmentMonitoringSystem/shipmenthistory';
+$route['ShipmentMonitoringSystem/ShipmentHistory/(:any)'] = 'ShipmentMonitoringSystem/C_ShipmentMonitoringSystem/$1';
+$route['ShipmentMonitoringSystem/Undelivered'] = 'ShipmentMonitoringSystem/C_ShipmentMonitoringSystem/undelivered';
+$route['ShipmentMonitoringSystem/Undelivered/(:any)'] = 'ShipmentMonitoringSystem/C_ShipmentMonitoringSystem/$1';
+$route['ShipmentMonitoringSystem/TitipBarang'] = 'ShipmentMonitoringSystem/C_ShipmentMonitoringSystem/titipBarang';
+$route['ShipmentMonitoringSystem/TitipBarang/(:any)'] = 'ShipmentMonitoringSystem/C_ShipmentMonitoringSystem/$1';
+
+
+//---------------------------------------------------------------SMSGUDANG---------------------------------------------------
+$route['ShipmentMonitoringGudang'] = 'ShipmentMonitoringGudang/C_ShipmentMonitoringGudang/dashboardGudang';
+$route['ShipmentMonitoringSystem/Gudang'] = 'ShipmentMonitoringGudang/C_ShipmentMonitoringGudang/dashboardGudang';
+$route['ShipmentMonitoringSystem/Gudang/(:any)'] = 'ShipmentMonitoringGudang/C_ShipmentMonitoringGudang/$1';
+$route['ShipmentMonitoringSystem/Gudang/FindShipment'] = 'ShipmentMonitoringGudang/C_ShipmentMonitoringGudang/findShipmentGudang';
+$route['ShipmentMonitoringSystem/Gudang/FindShipment/(:any)'] = 'ShipmentMonitoringGudang/C_ShipmentMonitoringGudang/$1';
+$route['ShipmentMonitoringSystem/Gudang/History'] = 'ShipmentMonitoringGudang/C_ShipmentMonitoringGudang/historyGudang';
+$route['ShipmentMonitoringSystem/Gudang/Undelivered'] = 'ShipmentMonitoringGudang/C_ShipmentMonitoringGudang/undeliveredGudang';
+$route['ShipmentMonitoringSystem/Gudang/TitipBarang'] = 'ShipmentMonitoringGudang/C_ShipmentMonitoringGudang/titipBarangGudang';
+$route['ShipmentMonitoringSystem/Gudang/TitipBarang/(:any)'] = 'ShipmentMonitoringGudang/C_ShipmentMonitoringGudang/$1';
