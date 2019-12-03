@@ -3493,3 +3493,7 @@ $route['ShipmentMonitoringSystem/Gudang/History'] = 'ShipmentMonitoringGudang/C_
 $route['ShipmentMonitoringSystem/Gudang/Undelivered'] = 'ShipmentMonitoringGudang/C_ShipmentMonitoringGudang/undeliveredGudang';
 $route['ShipmentMonitoringSystem/Gudang/TitipBarang'] = 'ShipmentMonitoringGudang/C_ShipmentMonitoringGudang/titipBarangGudang';
 $route['ShipmentMonitoringSystem/Gudang/TitipBarang/(:any)'] = 'ShipmentMonitoringGudang/C_ShipmentMonitoringGudang/$1';
+
+// -------------------------------------------------PingChecker------------------------------------------------
+
+$route['PingChecker/check'] = 'PingChecker/C_Index/check';
