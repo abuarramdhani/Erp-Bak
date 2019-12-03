@@ -12,14 +12,15 @@ class M_rekap extends CI_Model
 
     public function getDataRekap($prmmonth, $io){
         $sql = "SELECT rec.*, 
-                        NVL (ww.kirim_qc, NULL ) kirim_qc, 
-                        NVL (ww.terima_qc, NULL) terima_qc,
-                        NVL (ww.kembali_qc, NULL) kembali_qc, 
-                        NVL (ww.kirim_gudang, NULL) kirim_gudang,
-                        NVL (ww.terima_gudang, NULL) terima_gudang
-                FROM (SELECT DISTINCT rsh.receipt_num, rsh.creation_date receipt_date,
+        nvl(to_char(ww.kirim_qc,'DD/MM/YYYY HH24:MI:SS'),null) kirim_qc, 
+        nvl(to_char(ww.terima_qc,'DD/MM/YYYY HH24:MI:SS'),null) terima_qc,
+        nvl(to_char(ww.kembali_qc,'DD/MM/YYYY HH24:MI:SS'),null) kembali_qc, 
+        nvl(to_char(ww.kirim_gudang,'DD/MM/YYYY HH24:MI:SS'),null) kirim_gudang,
+        nvl(to_char(ww.terima_gudang,'DD/MM/YYYY HH24:MI:SS'),null) terima_gudang
+        FROM (SELECT DISTINCT rsh.ship_to_org_id, rsh.receipt_num, rsh.creation_date receipt_date,
                                         msib.segment1 item, msib.description description,
-                                        pha.segment1 po, rt.transaction_type,
+                                        pha.segment1 po, 
+                                        rt.transaction_type,
                                         rt.transaction_date, rt.quantity,
                                         rsl.shipment_line_id, rsl.item_id,
                                         (SELECT distinct rt_deliver.transaction_date
@@ -30,7 +31,7 @@ class M_rekap extends CI_Model
                                                                     rt_deliver.shipment_line_id
                                             AND rt_deliver.transaction_type = 'DELIVER'
                                             AND ROWNUM=1 )
-                                                                                deliver_date
+                                                                           deliver_date
                                     FROM rcv_shipment_headers rsh,
                                         rcv_shipment_lines rsl,
                                         mtl_system_items_b msib,
@@ -42,7 +43,6 @@ class M_rekap extends CI_Model
                                 WHERE rsh.ship_to_org_id = '$io'
                                     AND rsh.receipt_num IS NOT NULL
                                     -- parameter---------------------------------
-                                    -- AND rsh.receipt_num = '286683' ini yg dinyalain
                 --                    and pha.SEGMENT1 = '19018662'
                                    and to_char(rsh.CREATION_DATE ,'MON-YYYY') = nvl('$prmmonth',to_char(rsh.CREATION_DATE , 'MON-YYYY'))
                 --                    and msib.INVENTORY_ITEM_ID = ''
@@ -62,7 +62,7 @@ class M_rekap extends CI_Model
                                     AND prl.requisition_line_id(+) = rt.requisition_line_id
                                     AND prl.requisition_header_id = prha.requisition_header_id(+)
                                     AND NVL (prha.org_id, -99) = NVL (prl.org_id, -99)
-                                    AND rsh.RECEIPT_NUM not in (select rsh1.RECEIPT_NUM
+                                    AND (rsh.RECEIPT_NUM not in (select rsh1.RECEIPT_NUM
                                                                   from rcv_transactions rt1
                                                                       ,rcv_shipment_headers rsh1
                                                                       ,rcv_shipment_lines rsl1
@@ -70,14 +70,31 @@ class M_rekap extends CI_Model
                                                                    and rsh1.SHIPMENT_HEADER_ID = rt1.SHIPMENT_HEADER_ID
                                                                    and rsl1.SHIPMENT_LINE_ID = rt1.SHIPMENT_LINE_ID
                                                                    --
-                                                                   and (rt1.TRANSACTION_TYPE = 'CORRECT'
-                                                                    or rt1.TRANSACTION_TYPE like 'RETURN%')
+                                                                   and rt1.TRANSACTION_TYPE like 'RETURN%'
+--                                                                   and (rt1.TRANSACTION_TYPE = 'CORRECT'
+--                                                                    or rt1.TRANSACTION_TYPE like 'RETURN%')
                                                                    and rsh1.RECEIPT_NUM = rsh.RECEIPT_NUM)
+                                    OR rsh.RECEIPT_NUM not in (select rsh1.RECEIPT_NUM
+                                                                  from rcv_transactions rt1
+                                                                      ,rcv_shipment_headers rsh1
+                                                                      ,rcv_shipment_lines rsl1
+                                                                 where rsl1.SHIPMENT_HEADER_ID = rsh1.SHIPMENT_HEADER_ID
+                                                                   and rsh1.SHIPMENT_HEADER_ID = rt1.SHIPMENT_HEADER_ID
+                                                                   and rsl1.SHIPMENT_LINE_ID = rt1.SHIPMENT_LINE_ID
+                                                                   --
+                                                                   and rt1.TRANSACTION_TYPE = 'CORRECT'
+                                                                   and (rt1.quantity*-1) <= rt.QUANTITY
+--                                                                   and (rt1.TRANSACTION_TYPE = 'CORRECT'
+--                                                                    or rt1.TRANSACTION_TYPE like 'RETURN%')
+                                                                   and rsh1.RECEIPT_NUM = rsh.RECEIPT_NUM
+                                                                   and rt1.SHIPMENT_HEADER_ID = rt.SHIPMENT_HEADER_ID
+                                                                   and rt1.SHIPMENT_LINE_ID = rt.SHIPMENT_LINE_ID))
                                 ORDER BY rsh.receipt_num, rt.transaction_date, msib.segment1) rec,
                         khs_waktu_lppb ww
                 WHERE rec.receipt_num = ww.receipt_num(+) 
-                AND rec.po = ww.po(+)
-                AND rec.item_id = ww.ITEM_ID(+)
+--                AND rec.po = ww.po(+)
+--                AND rec.item_id = ww.ITEM_ID(+)
+                and rec.ship_to_org_id = ww.io(+)
                 ORDER BY rec.receipt_num , rec.receipt_date";
         $query = $this->oracle->query($sql);                             
         return $query->result_array();

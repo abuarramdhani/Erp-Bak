@@ -121,7 +121,7 @@ class C_RekapTahunan extends CI_Controller
 			if ($hasil != null) {
 				$data['selisih'][$i] = $hasil['0']['SELISIH'];
                 $data['bulan'][$i] = $navbulan[$i]['mon'];
-                $data['no'][$i] = $i;
+				$data['no'][$i] = $i;
 			}else{
                 $data['selisih'][$i] = '0';
                 $data['bulan'][$i] = $navbulan[$i]['mon'];

@@ -55,9 +55,9 @@
                             <div class="box-header with-border"><b>Input</b></div>
                             <div class="box-body">
                                 <div class="panel-body">
-                                    <div class="col-md-2">
+                                    <!-- <div class="col-md-2">
                                         <input id="bln" name="bln" class="form-control pull-right datepickBulan" placeholder="<?= $bulan?>" >
-                                    </div>
+                                    </div> -->
                                     <div class="col-md-2">
                                         <select id="id_org" name="id_org" class="form-control select2" data-placeholder="Pilih IO">
                                         <option></option>
