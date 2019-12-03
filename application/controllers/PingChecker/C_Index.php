@@ -84,7 +84,6 @@ class C_Index extends CI_Controller {
 				$message = "http://$domainbase is DOWN ($status ms)";
 				
 				$subject = "".strtoupper($ip['name'])." is Down";
-    
                 $this->EmailAlert($subject, $message);
 	            
 			}
