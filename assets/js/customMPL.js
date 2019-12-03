@@ -1,5 +1,5 @@
 $(document).ready(function(){
-	$('#tblPurcOrder').DataTable({
+	$('.tblPurcOrderClass').DataTable({
 		"paging":   true,
 		"ordering": true,
 		"info":     false
