@@ -139,11 +139,54 @@ class M_pekerjacutoff extends CI_Model
 				and (
 					b.keluar = '0'
 					or 	(
-						b.tglkeluar > to_char('$periode'::date,'yyyy-mm-10')::date
+						b.tglkeluar >= to_char('$periode'::date,'yyyy-mm-01')::date
 						and b.keluar = '1'
 						)
 					)
 				order by b.kodesie";
+		return $this->personalia->query($sql)->result_array();
+	}
+
+	public function insertMemo($data){
+		$this->personalia->insert('"Presensi".tcutoff_custom_memo',$data);
+	}
+
+	public function getNamaByNoind($noind){
+		$sql = "select nama from hrd_khs.tpribadi where noind = '$noind'";
+		$result = $this->personalia->query($sql)->row();
+		if(!empty($result)){
+			return $result->nama;
+		}else{
+			return "-";
+		}
+	}
+
+	public function getSeksiByNoind($noind){
+		$sql = "select b.seksi from hrd_khs.tpribadi a left join hrd_khs.tseksi b on a.kodesie = b.kodesie where noind = '$noind'";
+		$result = $this->personalia->query($sql)->row();
+		if(!empty($result)){
+			return $result->seksi;
+		}else{
+			return "-";
+		}
+	}
+
+	public function getJabByNoind($noind){
+		$sql = "select jabatan from hrd_khs.tpribadi where noind = '$noind'";
+		$result = $this->personalia->query($sql)->row();
+		if(!empty($result)){
+			return $result->jabatan;
+		}else{
+			return "-";
+		}
+	}
+
+	public function getMemoList(){
+		$sql = "select (select concat(noind,' - ',nama) from hrd_khs.tpribadi b where a.created_by = b.noind) as dibuat, 
+				(select concat(noind,' - ',nama) from hrd_khs.tpribadi b where a.mengetahui = b.noind) as mengetahui, 
+				kepada_nonstaff,kepada_staff, file_staff, file_nonstaff, file_os, nomor_surat, periode, created_timestamp
+				from \"Presensi\".tcutoff_custom_memo a 
+				order by created_timestamp desc";
 		return $this->personalia->query($sql)->result_array();
 	}
 

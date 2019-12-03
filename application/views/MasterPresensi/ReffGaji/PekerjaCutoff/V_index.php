@@ -10,8 +10,9 @@
 				<div class="row">
 					<div class="col-lg-12">
 						<div class="box box-solid box-primary">
-							<div class="box-header with-border text-right">
-								<a class="btn btn-success" href="<?php echo base_url('MasterPresensi/ReffGaji/PekerjaCutoffReffGaji/pekerja') ?>">Cari Pekerja</a>
+							<div class="box-header with-border">
+								<a class="btn btn-success pull-right" href="<?php echo base_url('MasterPresensi/ReffGaji/PekerjaCutoffReffGaji/pekerja') ?>">Cari Pekerja</a>
+								<a class="btn btn-warning pull-left" href="<?php echo base_url('MasterPresensi/ReffGaji/PekerjaCutoffReffGaji/list_memo') ?>">Memo yang pernah di proses</a>
 							</div>
 							<div class="box-body">
 								<div class="row">
@@ -71,8 +72,8 @@
 																		<span class="fa fa-file-excel-o"></span>
 																	</a>
 																	<a 
-																		href="<?php echo base_url('MasterPresensi/ReffGaji/PekerjaCutoffReffGaji/hitung/'.$key['tanggal_proses']) ?>"
-																		title="Hitung Komponen" 
+																		href="<?php echo base_url('MasterPresensi/ReffGaji/PekerjaCutoffReffGaji/memo/'.$key['tanggal_proses']) ?>"
+																		title="Cetak Memo" 
 																		style="color: grey" 
 																		target="_blank">
 																		<span class="fa fa-cogs"></span>
