@@ -115,7 +115,7 @@ class C_Index extends CI_Controller {
 		//email
 		// $emailUser = 'suryabondan@gmail.com';
         
-        $akun = array("quick.tractor@gmail.com","suryabondan@gmail.com");
+        $akun = array("quick.tractor@gmail.com","it.sec1@quick.co.id");
 
 		//send Email
 
