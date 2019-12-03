@@ -122,14 +122,14 @@ $(document).ready(function(){
 
     function searchBlnLppb(th) {
         $(document).ready(function(){
-        var bulan = $('#bln').val();
+        // var bulan = $('#bln').val();
         var id_org = $('#id_org').val();
         var lppbAwl = $('#LppbAwl').val();
         var lppbAkh = $('#LppbAkh').val();
-        console.log(bulan);
+        // console.log();
         var request = $.ajax({
                 url: baseurl+'RekapLppb/Input/searchBulan',
-                data: {	bulan : bulan, id_org : id_org, lppbAwl : lppbAwl, lppbAkh : lppbAkh},
+                data: {	id_org : id_org, lppbAwl : lppbAwl, lppbAkh : lppbAkh},
                 type: "POST",
                 datatype: 'html'
         });
@@ -179,11 +179,12 @@ $(document).ready(function(){
         $(document).ready(function(){
         var no_recipt = $('#no_recipt').val();
         var no_po = $('#no_po').val();
+        var item = $('#item').val();
         var id_org = $('#id_org').val();
         console.log(id_org);
         var request = $.ajax({
                 url: baseurl+'RekapLppb/Perbaikan/searchPerbaikan',
-                data: {	no_recipt : no_recipt, no_po : no_po, id_org : id_org },
+                data: {	no_recipt : no_recipt, no_po : no_po, id_org : id_org, item : item },
                 type: "POST",
                 datatype: 'html'
         });
@@ -283,18 +284,18 @@ $(document).ready(function(){
     }
  
 
-function SaveKirimQC1(number , itemid , recnum ) {
+function SaveKirimQC1(number , recnum ) {
         var ket = 'kirim_qc';
         var io = $('#io'+number).val();
         var d = new Date();
         var kirimqc = d.getDate()+'-'+((d.getMonth()+1).toString().length==2?(d.getMonth()+1).toString():"0"+(d.getMonth()+1).toString())+'-'+d.getFullYear()+" "+d.getHours()+':'+d.getMinutes()+':'+d.getSeconds();
-        // console.log(number , itemid , recnum , kirimqc)
+        console.log(recnum);
         if(!kirimqc){
             return;
         }
         $.ajax ({
             url : baseurl + "RekapLppb/Input/SaveKirimQC",
-            data: {number: number, itemid: itemid, recnum : recnum , kirimqc : kirimqc, ket : ket, io : io },
+            data: {number: number, recnum : recnum , kirimqc : kirimqc, ket : ket, io : io },
             type : "POST",
             dataType: "html"
         });
@@ -305,7 +306,7 @@ function SaveKirimQC1(number , itemid , recnum ) {
 
     }
 
-    function SaveTerimaQC1(number , itemid , recnum ) {
+    function SaveTerimaQC1(number , recnum ) {
         var ket = 'terima_qc';
         var io = $('#io'+number).val();
         var d = new Date();
@@ -316,7 +317,7 @@ function SaveKirimQC1(number , itemid , recnum ) {
         }
         $.ajax ({
             url : baseurl + "RekapLppb/Input/SaveTerimaQC",
-            data: {number: number, itemid: itemid, recnum : recnum , terimaqc : terimaqc, ket : ket, io : io },
+            data: {number: number, recnum : recnum , terimaqc : terimaqc, ket : ket, io : io },
             type : "POST",
             dataType: "html"
         });
@@ -326,7 +327,7 @@ function SaveKirimQC1(number , itemid , recnum ) {
         })
     }
 
-    function SaveKembaliQC1(number , itemid , recnum ) {
+    function SaveKembaliQC1(number , recnum ) {
         var ket = 'kembali_qc';
         var io = $('#io'+number).val();
         var d = new Date();
@@ -337,7 +338,7 @@ function SaveKirimQC1(number , itemid , recnum ) {
         }
         $.ajax ({
             url : baseurl + "RekapLppb/Input/SaveKembaliQC",
-            data: {number: number, itemid: itemid, recnum : recnum , kembaliqc : kembaliqc, ket : ket, io : io },
+            data: {number: number, recnum : recnum , kembaliqc : kembaliqc, ket : ket, io : io },
             type : "POST",
             dataType: "html"
         });
@@ -347,7 +348,7 @@ function SaveKirimQC1(number , itemid , recnum ) {
         })
     }
 
-    function SaveKirimGudang1(number , itemid , recnum ) {
+    function SaveKirimGudang1(number , recnum ) {
         var ket = 'kirim_gudang';
         var io = $('#io'+number).val();
         var d = new Date();
@@ -358,7 +359,7 @@ function SaveKirimQC1(number , itemid , recnum ) {
         }
         $.ajax ({
             url : baseurl + "RekapLppb/Input/SaveKirimGudang",
-            data: {number: number, itemid: itemid, recnum : recnum , kirimgudang : kirimgudang, ket : ket, io : io },
+            data: {number: number, recnum : recnum , kirimgudang : kirimgudang, ket : ket, io : io },
             type : "POST",
             dataType: "html"
         });
@@ -368,7 +369,7 @@ function SaveKirimQC1(number , itemid , recnum ) {
         })
     }
 
-    function SaveTerimaGudang1(number , itemid , recnum ) {
+    function SaveTerimaGudang1(number , recnum ) {
         var ket = 'terima_gudang';
         var io = $('#io'+number).val();
         var d = new Date();
@@ -379,7 +380,7 @@ function SaveKirimQC1(number , itemid , recnum ) {
         }
         $.ajax ({
             url : baseurl + "RekapLppb/Input/SaveTerimaGudang",
-            data: {number: number, itemid: itemid, recnum : recnum , terimagudang : terimagudang, ket : ket, io : io },
+            data: {number: number, recnum : recnum , terimagudang : terimagudang, ket : ket, io : io },
             type : "POST",
             dataType: "html"
         });

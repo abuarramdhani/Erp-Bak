@@ -37,13 +37,16 @@
                             <div class="box-header with-border"><b>Perbaikan</b></div>
                             <div class="box-body">
                                 <div class="panel-body">
-                                    <div class="col-md-3">
+                                    <div class="col-md-2">
                                         <input id="no_recipt" name="no_recipt" class="form-control pull-right " placeholder="No Recipt" >
                                     </div>
-                                    <div class="col-md-3">
+                                    <div class="col-md-2">
                                         <input id="no_po" name="no_po" class="form-control pull-right " placeholder="No Po" >
                                     </div>
-                                    <div class="col-md-3">
+                                    <div class="col-md-2">
+                                        <input id="item" name="item" class="form-control pull-right " placeholder="Item" >
+                                    </div>
+                                    <div class="col-md-2">
                                         <div class="input-group">
                                         <select id="id_org" name="id_org" class="form-control select2" data-placeholder="Pilih IO">
                                         <option></option>

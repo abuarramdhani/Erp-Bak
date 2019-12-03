@@ -96,11 +96,20 @@ class C_Rekap extends CI_Controller
 
 	}
 	
-	public function SearchData()
-	{
-		$bulan = $this->input->get('bulan');
-		$data['data'] = $this->M_rekap->getDataRekap($bulan);
-		$this->load->view('RekapLppb/RekapLppb/V_Result', $data);
+	// public function SearchData()
+	// {
+	// 	$bulan = $this->input->get('bulan');
+	// 	$data['data'] = $this->M_rekap->getDataRekap($bulan);
+	// 	$this->load->view('RekapLppb/RekapLppb/V_Result', $data);
+	// }
+
+	public function schRekapLppb(){
+		$bulan = $this->input->post('bulan');
+		$io = $this->input->post('id_org');
+		$prmmonth = strtoupper($bulan);
+		$data['data'] = $this->M_rekap->getDataRekap($prmmonth, $io);
+		// echo "<pre>"; print_r($bulan);exit();
+		$this->load->view('RekapLppb/RekapLppb/V_TblRekaperbaikan', $data);
 	}
 
 	// public function SaveKirimQC()
@@ -346,13 +355,5 @@ class C_Rekap extends CI_Controller
 		}
 	}
 
-	public function schRekapLppb(){
-		$bulan = $this->input->post('bulan');
-		$io = $this->input->post('id_org');
-		$prmmonth = strtoupper($bulan);
-		$data['data'] = $this->M_rekap->getDataRekap($prmmonth, $io);
-		// echo "<pre>"; print_r($bulan);exit();
-		$this->load->view('RekapLppb/RekapLppbView/V_TblMonitoring', $data);
-	}
 
 }
