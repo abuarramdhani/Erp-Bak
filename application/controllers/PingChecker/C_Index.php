@@ -82,11 +82,12 @@ class C_Index extends CI_Controller {
 	
 				echo "<tr><td>http://$domainbase is DOWN</td><tr>";
 				$message = "http://$domainbase is DOWN ($status ms)";
-	
-			}
-            $subject = "".strtoupper($ip['name'])." is Down";
+	            
+	            $subject = "".strtoupper($ip['name'])." is Down";
     
-            $this->EmailAlert($subject, $message);
+                $this->EmailAlert($subject, $message);
+			}
+            
 		}
 
 
