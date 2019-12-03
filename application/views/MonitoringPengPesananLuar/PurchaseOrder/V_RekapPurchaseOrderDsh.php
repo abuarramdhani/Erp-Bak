@@ -86,7 +86,7 @@ thead.toscahead tr th {
 					  		<div id="tableHolder">
 								<div class="box-body">
 									<div style="overflow:auto;">
-									<table id="tblPurcOrder" style="min-width:110%;" class="tblPurcOrder tb_responsive_sms table table-striped table-bordered table-hover text-center">
+									<table id="tblPurcOrder" style="min-width:110%;" class="tblPurcOrderClass table table-striped table-bordered table-hover text-center">
 									<thead class="toscahead">
 										<tr class="bg-primary">
 											<th class="text-center" style="width: 2%;">No</th>
