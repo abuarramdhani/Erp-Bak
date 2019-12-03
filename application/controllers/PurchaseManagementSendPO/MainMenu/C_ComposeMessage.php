@@ -5,7 +5,7 @@ class C_ComposeMessage extends CI_Controller {
 	public function __construct()
 	{
 		parent::__construct();
-		  
+
         $this->load->helper('form');
         $this->load->helper('url');
         $this->load->helper('html');
@@ -15,7 +15,7 @@ class C_ComposeMessage extends CI_Controller {
 		$this->load->model('M_Index');
 		$this->load->model('PurchaseManagementSendPO/MainMenu/M_composemessage');
 		$this->load->model('SystemAdministration/MainMenu/M_user');
-       	  
+
 		 if($this->session->userdata('logged_in')!=TRUE) {
 			$this->load->helper('url');
 			$this->session->set_userdata('last_page', current_url());
@@ -32,24 +32,24 @@ class C_ComposeMessage extends CI_Controller {
 
 	public function index()
 	{
-        $this->checkSession();
-								
+    $this->checkSession();
+
 		$user_id = $this->session->userid;
-		
+
 		$data['Menu'] = 'Dashboard';
 		$data['SubMenuOne'] = '';
-		
+
 		$data['UserMenu'] 		= $this->M_user->getUserMenu($user_id,$this->session->responsibility_id);
 		$data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id);
         $data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id);
-  
+
 		$this->load->view('V_Header',$data);
 		$this->load->view('V_Sidemenu',$data);
         $this->load->view('PurchaseManagementSendPO/MainMenu/V_ComposeMessage',$data);
         $this->load->view('V_Footer',$data);
     }
 
-    public function SendEmail()
+  public function SendEmail()
 	{
 		// Delete temporary files
 		$TempFTPDir = glob('./assets/upload/PurchaseManagementSendPO/Temporary/FTPDocument/*');
@@ -85,16 +85,20 @@ class C_ComposeMessage extends CI_Controller {
 		$toEmail		= preg_replace('/\s+/', '', explode(',', $getTargetEmail));
 		$ccEmail		= preg_replace('/\s+/', '', explode(',', $getCCEmail));
 		$bccEmail		= preg_replace('/\s+/', '', explode(',', $getBCCEmail));
-		
+
 		if (empty($body)) {
 			$body = ' ';
 	   	}
 
 		// Get Vendor Name
-		$data['VendorName'] = $this->M_composemessage->getVendorName($poQuery);
+		if (substr($poQuery,2,3)=='999') {
+			$data['VendorName'] = $this->M_composemessage->getVendorNameGabungan($poQuery);
+		} else {
+			$data['VendorName'] = $this->M_composemessage->getVendorName($poQuery);
+		}
 
 		// Get PDF from other function
-		if ( count($data['VendorName']) > 0 ){			
+		if ( count($data['VendorName']) > 0 ){
 			switch ( $data['VendorName'][0]['VENDOR_NAME'] ) {
 				case 'GINSA INTI PRATAMA,PT':
 				case 'SENTRAL FASTINDO, CV':
@@ -118,7 +122,13 @@ class C_ComposeMessage extends CI_Controller {
 				case 'TIRA AUSTENITE TBK, PT':
 				case 'CAHAYA CITRASURYA INDOPRIMA, CV':
 				case 'DHARMA POLIMETAL, PT':
+
+				if (substr($poQuery,2,3)=='999') {
+					$this->PurchaseManagementDocumentGabungan($po_number);
+				} else {
 					$this->PurchaseManagementDocument($po_number);
+				}
+
 					break;
 				default:
 					break;
@@ -133,22 +143,22 @@ class C_ComposeMessage extends CI_Controller {
 		$pdf_filename	= 'Surat Pengiriman Barang PO '.$po_number;
 		$pdf_format		= '.pdf';
 
-		if (file_exists($doc_dir.preg_replace('/[^a-zA-Z0-9]/', '', $doc_filename).$pdf_format) == TRUE && file_exists($doc_dir.$doc_filename.$pdf_format) == FALSE) 
+		if (file_exists($doc_dir.preg_replace('/[^a-zA-Z0-9]/', '', $doc_filename).$pdf_format) == TRUE && file_exists($doc_dir.$doc_filename.$pdf_format) == FALSE)
 		{
 			rename($doc_dir.preg_replace('/[^a-zA-Z0-9]/', '', $doc_filename).$pdf_format , $doc_dir.$doc_filename.$pdf_format);
 		};
 
 		// FTP //
-			// Initialise the connection parameters  
-			$ftp_server 	 = 'purchasing.quick.com';  
-			$ftp_username	 = 'SENDPO';  
+			// Initialise the connection parameters
+			$ftp_server 	 = 'purchasing.quick.com';
+			$ftp_username	 = 'SENDPO';
 			$ftp_password 	 = '123456';
 			$ftp_local_dir	 = './assets/upload/PurchaseManagementSendPO/Temporary/FTPDocument/';
 			$ftp_server_dir	 = './1.PEMBELIAN_SEKSI/03. PURCHASE RECORD/04. PO (Scan)/7. PO DAN KONFIRMASI 2019/1. Dokumen PO 2019/';
 			$ftp_file_format = '.pdf';
 
-			// Create an FTP connection  
-			$conn = ftp_connect($ftp_server) or die('Tidak dapat terhubung ke server sharing.');  
+			// Create an FTP connection
+			$conn = ftp_connect($ftp_server) or die('Tidak dapat terhubung ke server sharing.');
 
 			// Try to login
 			if (@ftp_login($conn, $ftp_username, $ftp_password)) {
@@ -168,8 +178,8 @@ class C_ComposeMessage extends CI_Controller {
 			// echo ftp_pwd($conn);
 
 			// Download Files
-			if (ftp_size($conn, $ftp_server_dir.$po_number.$ftp_file_format) > 0) 
-			{		
+			if (ftp_size($conn, $ftp_server_dir.$po_number.$ftp_file_format) > 0)
+			{
 				$files = ftp_get($conn, $ftp_local_dir.$po_number.$ftp_file_format, $ftp_server_dir.$po_number.$ftp_file_format, FTP_BINARY);
 			}else{
 				echo json_encode('Lampiran pada direktori sharing dengan PO Number "'.$po_number.'" tidak ditemukan.');
@@ -189,7 +199,7 @@ class C_ComposeMessage extends CI_Controller {
 				// Zip get FTP PDF
 				if( file_exists($ftp_local_dir.$po_number.$ftp_file_format) == TRUE ) {
 					$this->zip->read_file($ftp_local_dir.$po_number.$ftp_file_format,$po_number.$ftp_file_format);
-				};		
+				};
 
 				// Zip get generated PDF
 				if( file_exists($pdf_dir.$pdf_filename.$pdf_format) == TRUE ) {
@@ -223,7 +233,7 @@ class C_ComposeMessage extends CI_Controller {
 
 				ftp_put($conn, $ftp_server_archive_dir.$data['VendorName'][0]['VENDOR_NAME'].'/'.
 						$po_number.$zip_format, $zip_dir.$po_number.$zip_format, FTP_BINARY);
-				
+
 			// Close connection
 			ftp_close($conn);
 		// FTP //
@@ -262,29 +272,29 @@ class C_ComposeMessage extends CI_Controller {
 		foreach ($toEmail as $key => $toE) {
 			$mail->addAddress($toE);
 		}
-			if (file_exists($ftp_local_dir.$po_number.$ftp_file_format) == TRUE) 
+			if (file_exists($ftp_local_dir.$po_number.$ftp_file_format) == TRUE)
 			{
 				$mail->addAttachment($ftp_local_dir.$po_number.$ftp_file_format);
 			};
-			if (file_exists($pdf_dir.$pdf_filename.$pdf_format) == TRUE) 
+			if (file_exists($pdf_dir.$pdf_filename.$pdf_format) == TRUE)
 			{
 				$mail->addAttachment($pdf_dir.$pdf_filename.$pdf_format);
 			};
 			if ($format_message != 'English') {
-				if (file_exists($doc_dir.$doc_filename.$pdf_format) == TRUE) 
+				if (file_exists($doc_dir.$doc_filename.$pdf_format) == TRUE)
 				{
 					$mail->addAttachment($doc_dir.$doc_filename.$pdf_format);
 				}else{
 					echo json_encode('Lampiran '.$doc_filename.' tidak ditemukan.');
 					exit;
-				};	
+				};
 			};
-	
-			if (isset($_FILES['file_attach1']) && $_FILES['file_attach1']['error'] == UPLOAD_ERR_OK) 
+
+			if (isset($_FILES['file_attach1']) && $_FILES['file_attach1']['error'] == UPLOAD_ERR_OK)
 			{
 				$mail->AddAttachment($_FILES['file_attach1']['tmp_name'],$_FILES['file_attach1']['name']);
 			};
-			if (isset($_FILES['file_attach2']) && $_FILES['file_attach2']['error'] == UPLOAD_ERR_OK) 
+			if (isset($_FILES['file_attach2']) && $_FILES['file_attach2']['error'] == UPLOAD_ERR_OK)
 			{
 				$mail->AddAttachment($_FILES['file_attach2']['tmp_name'],$_FILES['file_attach2']['name']);
 			};
@@ -301,10 +311,14 @@ class C_ComposeMessage extends CI_Controller {
 	}
 
 	public function getUserEmail($id)
-	{		
+	{
 		$idEx  = explode('-', $id);
 		$idQuery	   = $idEx[0];
-		$email = $this->M_composemessage->getEmailAddress($idQuery);
+		if (substr($idQuery,2,3)=='999') {
+			$email = $this->M_composemessage->getEmailAddressGabungan($idQuery);
+		} else {
+			$email = $this->M_composemessage->getEmailAddress($idQuery);
+		}
 		if ( !empty($email) && $email[0]['EMAIL'] != '' ){
 			$data  = str_replace(' /', ',', $email[0]['EMAIL']);
 			echo json_encode($data);
@@ -320,20 +334,20 @@ class C_ComposeMessage extends CI_Controller {
 		$result 	= $this->M_composemessage->getDeliveryLetters($idQuery);
 		$nomor_po 	= $id;
 		$max_data 	= 1;
-		
+
 		$total_page = ceil(sizeof($result)/$max_data);
 		$size 		= sizeof($result);
-			
+
 		$temp2 = array();
 		$loop  = 0;
 		$x     = 0;
-		for ($i=0; $i < $total_page; $i++){ 
+		for ($i=0; $i < $total_page; $i++){
 			if($size < $max_data){
 				$loop = $size;
 			}else{
 				$loop = $max_data;
 			}
-			for ($j=0; $j < $loop; $j++) { 
+			for ($j=0; $j < $loop; $j++) {
 				$temp2[$i][$j] = $result[$x];
 				$x++;
 			}
@@ -344,6 +358,7 @@ class C_ComposeMessage extends CI_Controller {
 		$data['DETAIL'] = $temp2;
 		// $data['NO_DIPAKE'] = $this->getNoSekarang($nomor_po);
 		$data['NO_PO'] = $nomor_po;
+		$data['NO_PO_QR'] = $nomor_po;
 
 		if(empty($data['DETAIL'])){
 			echo json_encode('Lampiran Surat Pengiriman Barang dengan PO Number "'.$nomor_po.'" tidak ditemukan.');
@@ -365,23 +380,113 @@ class C_ComposeMessage extends CI_Controller {
 		$params['white']	= array(0,0,0);
 		$params['savename'] = './img/'.$nomor_po.'.png';
 		$this->ciqrcode->generate($params);
-		
+
 		// ------ GENERATE PDF ------
 		$this->load->library('Pdf');
 		$this->pdf->load();
 
 		$pdf        = new mPDF('utf-8','A4-P', 0, '', 3, 3, 3, 14, 3, 3);
 		$pdf_dir	= './assets/upload/PurchaseManagementSendPO/Temporary/PDFDocument/';
-		$filename 	= 'Surat Pengiriman Barang PO '.$nomor_po.'.pdf';	
+		$filename 	= 'Surat Pengiriman Barang PO '.$nomor_po.'.pdf';
 		$content 	= $this->load->view('PurchaseManagementSendPO/Report/V_Content', $data,true);
 		$footer 	= '<p style="text-align:right">PO : '.$nomor_po.'</p>';
-		
+
 		$pdf->SetHTMLFooter($footer);
 		$pdf->WriteHTML($content);
 
 		$pdf->debug = true;
 		$pdf->Output($pdf_dir.$filename, 'F');
-		
+
+		if(is_file($params['savename'])){
+			unlink($params['savename']);
+		}
+	}
+
+	public function PurchaseManagementDocumentGabungan($id)
+	{
+		//ambil no_po
+		$idEx  		= explode('-', $id);
+		$idQuery	= $idEx[0];
+		$nomor_po_gabungan 	= $id;
+		$dataPO 	= $this->M_composemessage->getPONumber($idQuery);
+
+		// ------ GENERATE PDF ------
+		$this->load->library('Pdf');
+		$this->pdf->load();
+		$pdf        = new mPDF('utf-8','A4-P', 0, '', 3, 3, 3, 14, 3, 3);
+		$pdf_dir	= './assets/upload/PurchaseManagementSendPO/Temporary/PDFDocument/';
+		$filename 	= 'Surat Pengiriman Barang PO '.$nomor_po_gabungan.'.pdf';
+
+		if(empty($dataPO)){
+			echo json_encode('Lampiran Surat Pengiriman Barang dengan PO Gabungan "'.$nomor_po_gabungan.'" tidak ditemukan.');
+			exit;
+		}
+
+		foreach ($dataPO as $key => $value1) {
+				$result 	= $this->M_composemessage->getDeliveryLetters($value1['PO_NUM']);
+				$max_data 	= 1;
+
+				$total_page = ceil(sizeof($result)/$max_data);
+				$size 		= sizeof($result);
+
+				$temp2 = array();
+				$loop  = 0;
+				$x     = 0;
+				for ($i=0; $i < $total_page; $i++){
+					if($size < $max_data){
+						$loop = $size;
+					}else{
+						$loop = $max_data;
+					}
+					for ($j=0; $j < $loop; $j++) {
+						$temp2[$i][$j] = $result[$x];
+						$x++;
+					}
+					$size -= $max_data;
+				}
+				$data['RESULT'] = $result;
+				$data['DETAIL'] = $temp2;
+				// $data['NO_DIPAKE'] = $this->getNoSekarang($nomor_po_gabungan);
+				//revision number 2 digit
+				$qr_po = $value1['PO_NUM'].'-'.sprintf("%02d", $data['RESULT'][0]['REV_NUM']);
+				$data['NO_PO'] = $value1['PO_NUM'];
+				$data['NO_PO_QR'] = $qr_po;
+
+				// if(empty($data['DETAIL'])){
+				// 	echo json_encode('Lampiran Surat Pengiriman Barang dengan PO Number "'.$nomor_po_gabungan.'" tidak ditemukan.');
+				// 	exit;
+				// }
+
+				// ------ GENERATE QRCODE ------
+				$this->load->library('ciqrcode');
+					// ------ CREATE DIRECTORY TEMPORARY QR CODE ------
+						if(!is_dir('./img'))
+						{
+							mkdir('./img', 0777, true);
+							chmod('./img', 0777);
+						}
+
+				$params['data']		= $qr_po;
+				$params['level']	= 'H';
+				$params['size']		= 10;
+				$params['black']	= array(255,255,255);
+				$params['white']	= array(0,0,0);
+				$params['savename'] = './img/'.$qr_po.'.png';
+				$this->ciqrcode->generate($params);
+
+
+				$content 	= $this->load->view('PurchaseManagementSendPO/Report/V_Content', $data,true);
+				$footer 	= '<p style="text-align:right">PO Gabungan: '.$nomor_po_gabungan.'</p>';
+
+				//
+				$pdf->addPage("P", "A4");
+				$pdf->SetHTMLFooter($footer);
+			  $pdf->WriteHTML($content);
+		}
+
+		$pdf->debug = true;
+		$pdf->Output($pdf_dir.$filename, 'F');
+
 		if(is_file($params['savename'])){
 			unlink($params['savename']);
 		}
