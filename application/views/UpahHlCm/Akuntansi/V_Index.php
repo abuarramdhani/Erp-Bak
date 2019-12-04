@@ -2,7 +2,7 @@
 	<div class="panel panel-primary" >
 
 		<div class="panel-heading"  style="padding-top: 10px;padding-bottom: 10px;">
-				<h3> Import Data Absen Penggajian Harian Lepas </h3>
+				<h3 style="float: left;"> Import Data Absen Penggajian Harian Lepas </h3>
 				<div align="right"><a class="btn btn-success btn-lg" href="<?php echo base_url('UpahHlCm/Akuntansi/ImportData'); ?>">Import Data</a></div>
 		</div>
 	
