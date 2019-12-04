@@ -12,8 +12,14 @@ class M_list extends CI_Model
 
     public function getDataAndroid(){
     	$query = $this->db->query("
-			SELECT * FROM sys.sys_android
-
+			select a.*,
+                 case when a.validation = '0' then 'New'
+                 when a.validation = '1' then concat('Approved by Personalia')
+                 when a.validation = '2' then concat('Rejected by Atasan (',(select string_agg(concat(approver,' - ',(select employee_name from er.er_employee_all d where c.approver = d.employee_code)),', ') from sys.sys_android_approve_atasan c where a.gadget_id = c.gadget_id and c.status = '2'),')')
+                 when a.validation = '3' then concat('Request Remove by Atasan (',(select string_agg(concat(approver,' - ',(select employee_name from er.er_employee_all d where c.approver = d.employee_code)),', ') from sys.sys_android_approve_atasan c where a.gadget_id = c.gadget_id and c.status = '3'),')')
+                 when a.validation = '4' then concat('Approved by Atasan (',(select string_agg(concat(approver,' - ',(select employee_name from er.er_employee_all d where c.approver = d.employee_code)),', ') from sys.sys_android_approve_atasan c where a.gadget_id = c.gadget_id and c.status = '1'),')')
+                 end as status_approve
+                 from sys.sys_android a
 			");
 		return $query->result_array();
     }
