@@ -89,6 +89,8 @@ class C_trackingInvoice extends CI_Controller{
 	}
 
 	public function btn_search(){
+
+		// echo "<pre>";print_r($_POST);exit();
 		$nama_vendor = $this->input->post('nama_vendor');
 		$po_number = $this->input->post('po_number');
 		$any_keyword = $this->input->post('any_keyword');
@@ -96,6 +98,7 @@ class C_trackingInvoice extends CI_Controller{
 		$invoice_date_to = $this->input->post('invoice_date_to');
 		$invoice_date_from = $this->input->post('invoice_date_from');
 		$action_date = $this->input->post('action_date');
+		$sumber = $this->input->post('sumber');
 		// $action_status = $this->input->post('')
 
 		$param_inv = '';
@@ -105,9 +108,14 @@ class C_trackingInvoice extends CI_Controller{
 			$param_inv .= "ami.vendor_name LIKE '%$nama_vendor%'";
 		}
 
+		if ($sumber != '' OR $sumber != NULL) {
+			if ($param_inv=='') {$param_inv.='AND (';} else{$param_inv.=' AND ';}
+			$param_inv .= "ami.source LIKE '%$sumber%'";
+		}
+
 		if ($po_number != '' OR $po_number != NULL) {
 			if ($param_inv=='') {$param_inv.='AND (';} else{$param_inv.=' AND ';}
-			$param_inv .= "aaipo.po_detail LIKE '$po_number'";
+			$param_inv .= "aaipo.po_detail LIKE '$po_number%'";
 		}
 
 		if ($invoice_number != '' OR $invoice_number != NULL) {
@@ -132,20 +140,22 @@ class C_trackingInvoice extends CI_Controller{
 
 		if ($param_inv!='') {$param_inv.=') ';}
 
-		$noinduk = $this->session->userdata['user'];
-		$cek_login = $this->M_trackingInvoice->checkSourceLogin($noinduk);
+		$tabel = $this->M_trackingInvoice->searchMonitoringInvoice($param_inv);
 
-		$param_akses = '';
+		// $noinduk = $this->session->userdata['user'];
+		// $cek_login = $this->M_trackingInvoice->checkSourceLogin($noinduk);
 
-		if ($cek_login[0]['unit_name'] == 'PEMBELIAN SUPPLIER' OR $cek_login[0]['unit_name'] == 'PENGEMBANGAN PEMBELIAN' OR $cek_login[0]['unit_name'] == 'PEMBELIAN SUBKONTRAKTOR') {
-			$param_akses .= "AND (ami.source = 'PEMBELIAN SUPPLIER' OR ami.source = 'PENGEMBANGAN PEMBELIAN' OR ami.source = 'PEMBELIAN SUBKONTRAKTOR')";
-			$tabel = $this->M_trackingInvoice->searchMonitoringInvoice($param_inv,$param_akses);
-		} elseif($cek_login[0]['unit_name'] == 'INFORMATION & COMMUNICATION TECHNOLOGY'){
-			$param_akses .= "AND ami.source = 'INFORMATION & COMMUNICATION TECHNOLOGY'";
-			$tabel = $this->M_trackingInvoice->searchMonitoringInvoice($param_inv,$param_akses);
-		} else{
-			$tabel = $this->M_trackingInvoice->searchMonitoringInvoice($param_inv,$param_akses);
-		}
+		// $param_akses = '';
+
+		// if ($cek_login[0]['unit_name'] == 'PEMBELIAN SUPPLIER' OR $cek_login[0]['unit_name'] == 'PENGEMBANGAN PEMBELIAN' OR $cek_login[0]['unit_name'] == 'PEMBELIAN SUBKONTRAKTOR' OR $cek_login[0]['unit_name'] == 'AKUNTANSI' ) {
+		// 	$param_akses .= "AND (ami.source = 'PEMBELIAN SUPPLIER' OR ami.source = 'PENGEMBANGAN PEMBELIAN' OR ami.source = 'PEMBELIAN SUBKONTRAKTOR' OR ami.source = 'AKUNTANSI')";
+		// 	$tabel = $this->M_trackingInvoice->searchMonitoringInvoice($param_inv,$param_akses);
+		// } elseif($cek_login[0]['unit_name'] == 'INFORMATION & COMMUNICATION TECHNOLOGY'){
+		// 	$param_akses .= "AND ami.source = 'INFORMATION & COMMUNICATION TECHNOLOGY'";
+		// 	$tabel = $this->M_trackingInvoice->searchMonitoringInvoice($param_inv,$param_akses);
+		// } else{
+		// 	$tabel = $this->M_trackingInvoice->searchMonitoringInvoice($param_inv,$param_akses);
+		// }
 
 		//print_r($tabel);exit;
 		$status = array();
@@ -166,7 +176,12 @@ class C_trackingInvoice extends CI_Controller{
 						$line_num = $explode_lagi[1];
 						$lppb_num = $explode_lagi[2];
 
-						$match = $this->M_trackingInvoice->checkStatusLPPB($po_num,$line_num);
+						if ($line_num == '') {
+						$match = $this->M_trackingInvoice->checkStatusLPPB2($po_num);
+						} else if ($line_num !== ''){
+						$match = $this->M_trackingInvoice->checkStatusLPPB($po_num,$line_num);	
+						}
+
 
 						if ($match[0]['STATUS']=='' || $match[0]['STATUS']==NULL) {
 							$statusLppb = 'No Status';
@@ -183,35 +198,40 @@ class C_trackingInvoice extends CI_Controller{
 
 			}	
 		}
+
+		// echo "<pre>";print_r($status);exit();
 		
 		// $data['historyinvoice'] = $this->M_trackingInvoice->detailHistoryInvoice($invoice_id);
 		$data['invoice'] = $tabel;
 		$data['status'] = $status;
+
 
 		$return = $this->load->view('TrackingInvoice/V_tableSearch',$data,TRUE);
 		
 		echo ($return);
 	}
 
-	public function DetailInvoice($invoice_id){ 
+	public function DetailInvoice(){ 
 
-		$this->checkSession();
-		$user_id = $this->session->userid;
+		// $this->checkSession();
+		// $user_id = $this->session->userid;
 		
-		$data['Menu'] = 'Dashboard';
-		$data['SubMenuOne'] = '';
+		// $data['Menu'] = 'Dashboard';
+		// $data['SubMenuOne'] = '';
 		
-		$data['UserMenu'] = $this->M_user->getUserMenu($user_id,$this->session->responsibility_id);
-		$data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id);
-		$data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id);
+		// $data['UserMenu'] = $this->M_user->getUserMenu($user_id,$this->session->responsibility_id);
+		// $data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id);
+		// $data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id);
+
+		$invoice_id = $this->input->post('id');
 
 		$data['invoice'] = $this->M_trackingInvoice->detailInvoice($invoice_id);
 		$data['historyinvoice'] = $this->M_trackingInvoice->detailHistoryInvoice($invoice_id);
 
-		$this->load->view('V_Header',$data);
-		$this->load->view('V_Sidemenu',$data);
+		// $this->load->view('V_Header',$data);
+		// $this->load->view('V_Sidemenu',$data);
 		$this->load->view('TrackingInvoice/V_detailTrackingInvoice',$data);
-		$this->load->view('V_Footer',$data);
+		// $this->load->view('V_Footer',$data);
 
 		// $this->output->cache(1);
 	}
