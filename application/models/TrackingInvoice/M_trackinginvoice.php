@@ -23,7 +23,7 @@ class M_trackingInvoice extends CI_Model {
         return ($result)?$result:NULL;
     }
 
-    public function searchMonitoringInvoice($parameter_invoice,$parameter_akses){
+    public function searchMonitoringInvoice($parameter_invoice){
      
         $db = $this->load->database('oracle',true);
         $query = "SELECT xx.*,
@@ -35,6 +35,7 @@ class M_trackingInvoice extends CI_Model {
                  WHEN xx.LAST_PURCHASING_INVOICE_STATUS='2' AND xx.LAST_FINANCE_INVOICE_STATUS ='1' THEN 'Submit to Akuntansi'
                  WHEN xx.LAST_PURCHASING_INVOICE_STATUS='2' AND xx.LAST_FINANCE_INVOICE_STATUS ='2' THEN 'Received by Akuntansi'
                  WHEN xx.LAST_PURCHASING_INVOICE_STATUS='2' AND xx.LAST_FINANCE_INVOICE_STATUS ='3' THEN 'Rejected by Akuntansi'
+                 WHEN xx.LAST_PURCHASING_INVOICE_STATUS='0' AND xx.LAST_FINANCE_INVOICE_STATUS = '2' THEN 'Input by Akuntansi'
                  ELSE 'Unknown'
                  END AS status
                  FROM(SELECT ami.vendor_name vendor_name, 
@@ -82,7 +83,7 @@ class M_trackingInvoice extends CI_Model {
                     GROUP BY aipo.invoice_id) aaipo
                     WHERE aaipo.invoice_id = ami.invoice_id (+)
                     $parameter_invoice
-                    $parameter_akses )  xx";
+                )  xx";
         
         // return $query;exit(); 
         // echo "<pre>";
@@ -136,6 +137,54 @@ class M_trackingInvoice extends CI_Model {
                             AND pol.po_line_id(+) = pll.po_line_id
                             AND poh.segment1 = '$po_number'
                             AND pol.line_num = '$line_num'";
+
+                            // echo "<pre>";
+        // print_r($query);exit();
+        $runQuery = $oracle->query($query);
+        return $runQuery->result_array();
+    }
+
+    public function checkStatusLPPB2($po_number)
+    {
+        $oracle = $this->load->database('oracle',TRUE);
+        $query = "SELECT DISTINCT rt.transaction_type status
+                           FROM rcv_shipment_headers rsh,
+                                rcv_shipment_lines rsl,
+                                po_vendors pov,
+                                rcv_transactions rt,
+                                po_headers_all poh,
+                                po_lines_all pol,
+                                po_line_locations_all pll
+                          WHERE rsh.shipment_header_id = rsl.shipment_header_id
+                            AND rsh.shipment_header_id = rt.shipment_header_id
+                            AND rsl.shipment_line_id = rt.shipment_line_id
+                            AND pov.vendor_id = rt.vendor_id
+                            AND poh.po_header_id = rt.po_header_id
+                            AND pol.po_line_id = rt.po_line_id
+                            AND rt.transaction_id =
+                                   (SELECT MAX (rts.transaction_id)
+                                      FROM rcv_transactions rts
+                                     WHERE rt.shipment_header_id = rts.shipment_header_id
+                                       AND rts.po_line_id = pol.po_line_id
+                                       AND rts.transaction_type IN
+                                              ('REJECT', 'DELIVER', 'ACCEPT', 'RECEIVE',
+                                               'TRANSFER'))
+                            AND pov.vendor_id(+) = poh.vendor_id
+                            AND pol.po_line_id(+) = pll.po_line_id
+                            AND poh.segment1 = '$po_number'
+                UNION
+                SELECT DISTINCT NULL status
+                           FROM po_vendors pov,
+                                po_headers_all poh,
+                                po_lines_all pol,
+                                po_line_locations_all pll
+                          WHERE poh.po_header_id(+) = pol.po_header_id
+                            AND pov.vendor_id(+) = poh.vendor_id
+                            AND pol.po_line_id(+) = pll.po_line_id
+                            AND poh.segment1 = '$po_number'";
+
+                            // echo "<pre>";
+        // print_r($query);exit();
         $runQuery = $oracle->query($query);
         return $runQuery->result_array();
     }
@@ -181,6 +230,7 @@ class M_trackingInvoice extends CI_Model {
                 WHEN PURCHASING_STATUS='2' AND FINANCE_STATUS ='1' THEN 'Submit to Akuntansi'
                 WHEN PURCHASING_STATUS='2' AND FINANCE_STATUS ='2' THEN 'Received by Akuntansi'
                 WHEN PURCHASING_STATUS='2' AND FINANCE_STATUS ='3' THEN 'Rejected by Akuntansi'
+                WHEN PURCHASING_STATUS='0' AND FINANCE_STATUS ='2' THEN 'Input by Akuntansi'
                 ELSE 'Unknown'
                 END AS status
                 FROM khs.KHS_AP_INVOICE_ACTION_DETAIL WHERE INVOICE_ID='$invoice_id' ORDER BY ACTION_DATE DESC";
@@ -190,6 +240,13 @@ class M_trackingInvoice extends CI_Model {
 
      public function checkSourceLogin($employee_code)
     {
+        // $oracle = $this->load->database();
+        // $query = "select eea.employee_code, es.unit_name
+        //             from er.er_employee_all eea, er.er_section es
+        //             where eea.section_code = es.section_code
+        //             and eea.employee_code = '$employee_code' ";
+        // $runQuery = $this->db->query($query);
+        // return $runQuery->result_array();
         $oracle = $this->load->database('erp_db',true);
         $query = "select eea.employee_code, es.unit_name
                     from er.er_employee_all eea, er.er_section es

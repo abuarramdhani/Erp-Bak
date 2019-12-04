@@ -12,6 +12,8 @@ $(document).ready(function(){
 		var invoice_date_from = $('#invoice_date_from').val();
 		// until here
 		var action_date = $('#action_date').val();
+		var sumber = $('#source_id').val();
+
 		$.ajax({
 			type: "POST",
 			url: baseurl+"Monitoring/TrackingInvoice/btn_search",
@@ -23,7 +25,8 @@ $(document).ready(function(){
 				// id data
 				invoice_date_to: invoice_date_to,
 				invoice_date_from: invoice_date_from,
-				action_date: action_date
+				action_date: action_date,
+				sumber:sumber
 			},
 			success: function (response) {
 				$('#loading_invoice').html(response);
@@ -56,3 +59,24 @@ $(document).ready(function(){
 
 	
 })
+
+function mdlDetailTI(th) {
+	var inv_id = th
+
+	$('#MdlTrackInv').modal('show');
+	$('.modal-tabel').html("<center><img id='loading12' style='margin-top: 2%;width:200px' src='"+baseurl+"assets/img/gif/loadingquick.gif'/><br /></center><br />");
+		$.ajax({
+			type: "POST",
+			url: baseurl+"Monitoring/TrackingInvoice/DetailInvoice",
+			data:{
+				id:inv_id
+			},
+			success: function(response) {
+				// console.log(response, 'data');
+				$('.modal-tabel').html("");
+				$('.modal-tabel').html(response);
+
+
+			}
+		})
+}
