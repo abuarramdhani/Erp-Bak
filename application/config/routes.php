@@ -3497,3 +3497,9 @@ $route['ShipmentMonitoringSystem/Gudang/TitipBarang/(:any)'] = 'ShipmentMonitori
 // -------------------------------------------------PingChecker------------------------------------------------
 
 $route['PingChecker/check'] = 'PingChecker/C_Index/check';
+
+// ------------------------------------ Aplikasi Cetak Kanban Tool Room------------------------------------------//
+	$route['CetakKanbanToolRoom'] 		= 'CetakKanbanToolRoom/C_Index';
+	$route['CetakKanbanToolRoom/CetakKanban'] 		= 'CetakKanbanToolRoom/C_Cetak';
+	$route['CetakKanbanToolRoom/CetakKanban/(:any)'] 		= 'CetakKanbanToolRoom/C_Cetak/$1';
+	$route['CetakKanbanToolRoom/CetakKanban/(:any)/(:any)'] 		= 'CetakKanbanToolRoom/C_Cetak/$1/$2';
