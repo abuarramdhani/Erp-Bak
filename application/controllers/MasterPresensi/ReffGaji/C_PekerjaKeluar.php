@@ -216,12 +216,13 @@ class C_PekerjaKeluar extends CI_Controller
 				$kom_um_cabang = $this->M_pekerjakeluar->hitung_um_cabang($pkj['noind'],$tgl_cut_awal,$pkj['tglkeluar']);
 			}
 
-			if ($pkj['lokasi_kerja'] == '02') {
+			if ($pkj['id_lokasi_kerja'] == '02') {
 				if($status_pekerja == 'B' || $status_pekerja == 'D' || $status_pekerja == 'T' || $status_pekerja == 'J'){
 					$kom_ipt = $this->M_pekerjakeluar->set_ipt($pkj['noind'],$tgl_bulan_awal,$pkj['tglkeluar']);
 				}
-			}
 
+			}
+			
 			$kom_tambahan = $this->M_pekerjakeluar->hitung_tambahan($pkj['noind'],$pkj['tglkeluar']);
 
 			if ($status_pekerja == 'B' || $status_pekerja == 'D' || $status_pekerja == 'J') {
