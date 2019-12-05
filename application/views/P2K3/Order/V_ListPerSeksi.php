@@ -71,6 +71,9 @@
                                                     <th width="5%" style="text-align: center; vertical-align: middle;">NO</th>
                                                     <th width="10%" style="text-align: center; vertical-align: middle;">APD</th>
                                                     <th style="text-align: center; width: 105px; vertical-align: middle;">KODE ITEM</th>
+                                                    <th style="text-align: center; vertical-align: middle;">TOTAL ORDER</th>
+                                                    <th style="text-align: center; vertical-align: middle;">STATUS</th>
+                                                    <th style="text-align: center; vertical-align: middle; width: 7%">ACTION</th>
                                                     <?php
                                                           foreach ($daftar_pekerjaan as $pekerjaan)
                                                          {
@@ -81,12 +84,9 @@
                                                          }
                                                     ?>
                                                     <th style="text-align: center; vertical-align: middle; width: 75px;">KEBUTUHAN UMUM</th>
-                                                    <th style="text-align: center; vertical-align: middle;">TOTAL ORDER</th>
                                                     <th style="text-align: center; vertical-align: middle; width: 80px;">TOTAL PEMAKAIAN</th>
                                                     <th style="text-align: center; vertical-align: middle;" hidden>SISA</th>
                                                     <th style="text-align: center; vertical-align: middle;">KETERANGAN</th>
-                                                    <th style="text-align: center; vertical-align: middle;">STATUS</th>
-                                                    <th style="text-align: center; vertical-align: middle; width: 7%">ACTION</th>
                                                 </tr>
                                             </thead>
                                             <tbody>
@@ -99,30 +99,7 @@
                                                 <td style="text-align: center;"><?php echo $no; ?></td>
                                                 <td style="text-align: center;"><?php echo $row['item']; ?></td>
                                                 <td style="text-align: center;"><?php echo $row['kode_item']; ?></td>
-                                                <?php 
-                                                    $jmlh=0;
-                                                    foreach ($daftar_pekerjaan as $pekerjaan) 
-                                                    {
-                                                ?>
-                                                    <td style="text-align: center;">
-                                                    <?php 
-                                                        $jumlah = explode(',',$row['jml']); print_r($jumlah[$jmlh]); 
-                                                    ?>
-                                                    </td>
-                                                    <td style="text-align: center;">
-                                                    <?php 
-                                                        $jumlah = explode(',',$row['jml_pkj']); print_r($jumlah[$jmlh]); 
-                                                    ?>
-                                                    </td>
-                                                <?php 
-                                                    $jmlh++;
-                                                    }
-                                                ?>
-                                                <td style="text-align: center;"><?php echo $row['jml_umum']; ?></td>
                                                 <td style="text-align: center;"><?php echo $row['ttl_order']; ?></td>
-                                                <td style="text-align: center;"></td>
-                                                <td style="text-align: center;" hidden></td>
-                                                <td style="text-align: center;"><?php echo $row['desc'];?></td>
                                                 <td style="text-align: center;">
                                                     <?php if ($row['status'] == '0'){
                                                         echo "Pending";
@@ -163,6 +140,29 @@
                                                             }
                                                         } ?>
                                                 </td>
+                                                <?php 
+                                                    $jmlh=0;
+                                                    foreach ($daftar_pekerjaan as $pekerjaan) 
+                                                    {
+                                                ?>
+                                                    <td style="text-align: center;">
+                                                    <?php 
+                                                        $jumlah = explode(',',$row['jml']); print_r($jumlah[$jmlh]); 
+                                                    ?>
+                                                    </td>
+                                                    <td style="text-align: center;">
+                                                    <?php 
+                                                        $jumlah = explode(',',$row['jml_pkj']); print_r($jumlah[$jmlh]); 
+                                                    ?>
+                                                    </td>
+                                                <?php 
+                                                    $jmlh++;
+                                                    }
+                                                ?>
+                                                <td style="text-align: center;"><?php echo $row['jml_umum']; ?></td>
+                                                <td style="text-align: center;"></td>
+                                                <td style="text-align: center;" hidden></td>
+                                                <td style="text-align: center;"><?php echo $row['desc'];?></td>
                                             </tr>
 
                                             <?php
