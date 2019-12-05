@@ -503,7 +503,7 @@ class M_Dtmasuk extends CI_Model
             $m = '0'.$m;
         }
 
-        if ($m == '1' || $m == '01') {
+        if ($m == '0' || $m == '00') {
             $m = '12';
             $y = $y-1;
         }
