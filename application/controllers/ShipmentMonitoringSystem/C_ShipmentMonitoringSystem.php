@@ -47,6 +47,15 @@ class C_ShipmentMonitoringSystem extends CI_Controller{
 		$this->load->view('V_Footer',$data);
 	}
 
+	public function detailDO()
+	{
+		$no_ship = $this->input->post('no_ship');
+		$data['no_do'] = $this->M_shipmentmonitoringsystem->ambilDO($no_ship);
+
+		$return = $this->load->view('ShipmentMonitoringSystem/Dashboard/V_detailDO',$data);
+
+	}
+
 	public function dashboard()
 	{
 		$this->checkSession();

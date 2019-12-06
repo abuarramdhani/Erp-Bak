@@ -9,7 +9,7 @@ class M_shipmentmonitoringsystem extends CI_Model
       parent::__construct();
       $this->load->database();
       $this->load->library('encrypt');
-      $this->db = $this->load->database();
+      // $this->db = $this->load->database();
     }
 
 
@@ -24,11 +24,19 @@ class M_shipmentmonitoringsystem extends CI_Model
         return $runQuery->result_array();
     }
 
+    public function ambilDO($no_ship)
+    {
+      $db = $this->load->database();
+      $sql = "select no_do from ex.shipment_line where shipment_header_id = '$no_ship'";
+      $runQuery = $this->db->query($sql);
+      return $runQuery->result_array();
+    }
+
     public function SelectDashboard() //pake database dev
     {
       $db = $this->load->database();
       $sql =  "
-              SELECT 
+               SELECT 
               sh.shipment_header_id no_shipment,
               ev.vehicle_name jenis_kendaraan,
               sh.estimate_depart_date berangkat,
@@ -50,7 +58,8 @@ class M_shipmentmonitoringsystem extends CI_Model
               sh.pr_number pr,
               sh.pr_line_number prl,
               sh.creation_date,
-              sh.full_percentage
+              sh.full_percentage,
+              hima.no_do
               FROM 
               ex.shipment_header sh left join ex.vehicle ev
               on sh.vehicle_type_id = ev.vehicle_id
@@ -66,6 +75,9 @@ class M_shipmentmonitoringsystem extends CI_Model
               on sh.shipment_header_id = sl.shipment_header_id
               join ex.goods go
               on sl.goods_id = go.goods_id
+              join (SELECT SHIPMENT_HEADER_ID ,array_to_string(array_agg(no_do), ', '::text) AS no_do
+                         FROM ex.shipment_line
+                     group by SHIPMENT_HEADER_ID) hima on sh.shipment_header_id = hima.shipment_header_id
               where sh.actual_loading_date is null 
               -- and sh.estimate_depart_date > now()
               GROUP BY
@@ -91,10 +103,13 @@ class M_shipmentmonitoringsystem extends CI_Model
               , sh.pr_line_number
               , sh.creation_date
               , sh.full_percentage
+              , hima.no_do
               order by sh.estimate_depart_date";
         $runQuery = $this->db->query($sql);
         return $runQuery->result_array();
     }
+
+    
 
     public function detailCabang($id_cabang)
     {
@@ -186,7 +201,8 @@ class M_shipmentmonitoringsystem extends CI_Model
               sh.pr_number pr,
               sh.pr_line_number prl,
               sh.creation_date,
-              sh.full_percentage
+              sh.full_percentage,
+              aa.no_do
               FROM 
               ex.shipment_header sh left join ex.vehicle ev
               on sh.vehicle_type_id = ev.vehicle_id
@@ -202,6 +218,9 @@ class M_shipmentmonitoringsystem extends CI_Model
               on sh.shipment_header_id = sl.shipment_header_id
               join ex.goods go
               on sl.goods_id = go.goods_id
+                join (SELECT SHIPMENT_HEADER_ID ,array_to_string(array_agg(no_do), ', '::text) AS no_do
+                         FROM ex.shipment_line
+                     group by SHIPMENT_HEADER_ID) aa on sh.shipment_header_id = aa.shipment_header_id
               -- where sl.delivered_quantity < sl.quantity
               -- or sl.delivered_quantity IS NULL
 --              where sh.estimate_depart_date > now() - interval '1 day'
@@ -228,7 +247,8 @@ class M_shipmentmonitoringsystem extends CI_Model
               , sh.pr_number 
               , sh.pr_line_number
               , sh.creation_date
-              , sh.full_percentage";
+              , sh.full_percentage
+              , aa.no_do";
         $runQuery = $this->db->query($sql);
         return $runQuery->result_array();
     }
@@ -259,7 +279,8 @@ class M_shipmentmonitoringsystem extends CI_Model
               sh.ship_to_address alamat,
               sh.full_percentage persentase,
               ev.volume_cm3 volume,
-              sh.full_percentage persentase
+              sh.full_percentage persentase,
+              aa.no_do
               FROM 
               ex.shipment_header sh left join ex.vehicle ev
               on sh.vehicle_type_id = ev.vehicle_id
@@ -275,6 +296,9 @@ class M_shipmentmonitoringsystem extends CI_Model
               on sh.shipment_header_id = sl.shipment_header_id
               join ex.goods go
               on sl.goods_id = go.goods_id
+              join (SELECT SHIPMENT_HEADER_ID ,array_to_string(array_agg(no_do), ', '::text) AS no_do
+                         FROM ex.shipment_line
+                     group by SHIPMENT_HEADER_ID) aa on sh.shipment_header_id = aa.shipment_header_id
               $no_ship
               GROUP BY
               sh.shipment_header_id
@@ -301,6 +325,7 @@ class M_shipmentmonitoringsystem extends CI_Model
               , sh.full_percentage
               , ev.volume_cm3
               , sh.full_percentage
+              , aa.no_do
       ";
         $runQuery = $this->db->query($sql);
         return $runQuery->result_array();
@@ -920,7 +945,8 @@ class M_shipmentmonitoringsystem extends CI_Model
               sh.actual_loading_date actual_loading,
               sh.actual_depart_date actual_berangkat,
               sh.pr_number pr,
-              sh.creation_date creation_date
+              sh.creation_date creation_date,
+              aa.no_do
               FROM 
               ex.shipment_header sh left join ex.vehicle ev
               on sh.vehicle_type_id = ev.vehicle_id
@@ -936,6 +962,9 @@ class M_shipmentmonitoringsystem extends CI_Model
               on sh.shipment_header_id = sl.shipment_header_id
               join ex.goods go
               on sl.goods_id = go.goods_id
+              join (SELECT SHIPMENT_HEADER_ID ,array_to_string(array_agg(no_do), ', '::text) AS no_do
+                         FROM ex.shipment_line
+                     group by SHIPMENT_HEADER_ID) aa on sh.shipment_header_id = aa.shipment_header_id
               GROUP BY
               sh.shipment_header_id
               , ev.vehicle_name
@@ -955,7 +984,8 @@ class M_shipmentmonitoringsystem extends CI_Model
               , sh.actual_loading_date
               , sh.actual_depart_date
               , sh.pr_number
-              , sh.creation_date";
+              , sh.creation_date
+              , aa.no_do";
         $runQuery = $this->db->query($sql);
         return $runQuery->result_array();
       

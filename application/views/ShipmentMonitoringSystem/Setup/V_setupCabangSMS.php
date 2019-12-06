@@ -92,7 +92,7 @@ if ($button == 'NON CABANG') {
 									<div class="col-md-12 pull-right">
 										<button onclick="SaveCabangSMS($(this))" type="button" class="btn btn-success pull-right" style="margin-top: 10px; margin-bottom: 20px; margin-left: 20px;" > <i class="fa fa-plus"></i> Add</button>
 									</div>
-									<table class="table table-bordered table-hover text-center tblMPM">
+									<table class="table table-bordered table-hover text-center tb_setup_sms">
 										<thead class="cabang">
 											<tr class="bg-primary">
 												<th style="width: 5%"class="text-center">No.</th>
