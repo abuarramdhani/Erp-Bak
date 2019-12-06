@@ -176,7 +176,7 @@
 						</tr>
 						<tr>
 							<td style="text-align: center;" width="30%">Yuning</td>
-							<td style="text-align: center;" width="40%">Arnanda</td>
+							<td style="text-align: center;" width="40%">Maya Kristiana</td>
 							<td style="text-align: center;" width="30%">Novita Sari</td>
 						</tr>
 						<tr>
