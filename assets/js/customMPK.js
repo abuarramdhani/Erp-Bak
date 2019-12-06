@@ -2068,3 +2068,130 @@ function getApproval(a, b) {
     })
   }
 }
+
+//JS untuk Transposition Plotting Job
+$(document).ready(function () {
+  $('#tanggalBerlaku').datepicker({
+    autoclose: true,
+    autoApply: true,
+    format: 'dd MM yyyy',
+  })
+
+  $('#TPJ_noind').on('change', function () {
+    let noind = $(this).val()
+    let loading = 'assets/img/gif/loadingquick.gif';
+
+    $.ajax({
+      type: 'post',
+      dataType: 'json',
+      data: {
+        noind: noind
+      },
+      beforeSend: function(){
+            Swal.fire({
+              html : "<img style='width: 200px; height: auto;'src='"+loading+"'>",
+              text : 'Loading...',
+              customClass: 'swal-wide',
+              showConfirmButton:false,
+              allowOutsideClick: false
+            });
+          },
+      url: baseurl + 'TranspositionPlottingJob/change',
+      success: function (data) {
+        swal.close()
+        // $(this).find('select').prop("selected", false)
+        $('#TPJ_pkj_saat_ini').val(data[0]['kd_pkj']+' - '+data[0]['pekerjaan'])
+        let isi_data = "<option></option>"
+        for (var i = 0; i < data['kerja'].length; i++) {
+					isi_data += "<option value='" + data['kerja'][i]['kdpekerjaan'] + "'>" + data['kerja'][i]['kdpekerjaan'] +' - '+data['kerja'][i]['pekerjaan'] +"</option>"
+				}
+        $('#TPJ_pekerjaan').html(isi_data)
+      }
+    })
+  })
+
+  $('#TPJ_reload').on('click', function () {
+    let loading = 'assets/img/gif/loadingquick.gif';
+
+    Swal.fire({
+      html : "<img style='width: 200px; height: auto;'src='"+loading+"'>",
+      text : 'Loading...',
+      customClass: 'swal-wide',
+      showConfirmButton:false,
+      allowOutsideClick: false
+    });
+    window.location.reload(function () {
+      swal.close()
+    })
+  })
+
+
+  $('#TPJ_save').on('click', function () {
+    let noind = $('#TPJ_noind').val()
+    let pkj_lm = $('#TPJ_pkj_saat_ini').val()
+    let pkj_now = $('#TPJ_pekerjaan').val()
+    let date = $('#tanggalBerlaku').val()
+    let loading = 'assets/img/gif/loadingquick.gif';
+
+    if (noind == '' || pkj_lm == '' || pkj_now == '' || date == '') {
+      swal.fire({
+        title: 'Peringatan',
+        text: 'Parameter Belum Lengkap',
+        type: 'warning',
+        allowOutsideClick: false,
+        showCancelButton: false
+      })
+    }else {
+      swal.fire({
+        title: 'Peringatan',
+        text: 'Apakah Anda Yakin Mau Mengubah Data Pekerjaan ?',
+        type: 'question',
+        allowOutsideClick: false,
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33'
+      }).then((result) => {
+        if (result.value) {
+          $.ajax({
+            type: 'post',
+            data: {
+              noind: noind,
+              pkj_lm: pkj_lm,
+              pkj_now: pkj_now,
+              date: date
+            },
+            url: baseurl + 'TranspositionPlottingJob/save',
+            beforeSend: function(){
+              Swal.fire({
+                html : "<img style='width: 200px; height: auto;'src='"+loading+"'>",
+                text : 'Loading...',
+                customClass: 'swal-wide',
+                showConfirmButton:false,
+                allowOutsideClick: false
+              });
+            },
+            success: function (data) {
+              swal.fire({
+                title: 'Success',
+                text: 'Berhasil Mengganti Data Sesuai Tanggal Berlaku',
+                type: 'success',
+                allowOutsideClick: false,
+                showCancelButton: false
+              }).then((result) => {
+                Swal.fire({
+                  html : "<img style='width: 200px; height: auto;'src='"+loading+"'>",
+                  text : 'Loading...',
+                  customClass: 'swal-wide',
+                  showConfirmButton:false,
+                  allowOutsideClick: false
+                });
+                window.location.reload()
+              });
+            }
+          })
+        }
+      })
+    }
+  })
+
+})

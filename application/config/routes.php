@@ -2935,7 +2935,7 @@ $route['SystemAdministration/Android/(:any)/(:any)'] = 'SystemAdministration/Mai
  $route['SystemAdministration/Android/ApprovePersonalia'] = 'SystemAdministration/MainMenu/Android/C_Personalia';
  $route['SystemAdministration/Android/ApprovePersonalia/(:any)'] = 'SystemAdministration/MainMenu/Android/C_Personalia/$1';
  $route['SystemAdministration/Android/ApprovePersonalia/(:any)/(:any)'] = 'SystemAdministration/MainMenu/Android/C_Personalia/$1/$2';
- 
+
 // --------------------------------------- ADM Seleksi -----------------------------------------------//
 $route['ADMSeleksi'] = 'ADMSeleksi/Menu/C_Index/index';
 $route['ADMSeleksi/Menu/(:any)'] = 'ADMSeleksi/Menu/C_Index/$1';
@@ -3508,7 +3508,15 @@ $route['ShipmentMonitoringSystem/Gudang/TitipBarang/(:any)'] = 'ShipmentMonitori
 $route['PingChecker/check'] = 'PingChecker/C_Index/check';
 
 // ------------------------------------ Aplikasi Cetak Kanban Tool Room------------------------------------------//
-	$route['CetakKanbanToolRoom'] 		= 'CetakKanbanToolRoom/C_Index';
-	$route['CetakKanbanToolRoom/CetakKanban'] 		= 'CetakKanbanToolRoom/C_Cetak';
-	$route['CetakKanbanToolRoom/CetakKanban/(:any)'] 		= 'CetakKanbanToolRoom/C_Cetak/$1';
-	$route['CetakKanbanToolRoom/CetakKanban/(:any)/(:any)'] 		= 'CetakKanbanToolRoom/C_Cetak/$1/$2';
+$route['CetakKanbanToolRoom'] 		= 'CetakKanbanToolRoom/C_Index';
+$route['CetakKanbanToolRoom/CetakKanban'] 		= 'CetakKanbanToolRoom/C_Cetak';
+$route['CetakKanbanToolRoom/CetakKanban/(:any)'] 		= 'CetakKanbanToolRoom/C_Cetak/$1';
+$route['CetakKanbanToolRoom/CetakKanban/(:any)/(:any)'] 		= 'CetakKanbanToolRoom/C_Cetak/$1/$2';
+
+//---------------------------- Transposisi Plotting Job-----------------------------//
+$route['TranspositionPlottingJob'] = 'MasterPekerja/Pekerja/TranspositionJob/C_Transposition';
+$route['TranspositionPlottingJob/change'] = 'MasterPekerja/Pekerja/TranspositionJob/C_Transposition/change';
+$route['TranspositionPlottingJob/save'] = 'MasterPekerja/Pekerja/TranspositionJob/C_Transposition/save';
+$route['TranspositionPlottingJob/(:any)'] = 'MasterPekerja/Pekerja/TranspositionJob/C_Transposition/$1';
+$route['TranspositionPlottingJob/(:any)/(:any)'] = 'MasterPekerja/Pekerja/TranspositionJob/C_Transposition/$1/$2';
+$route['TranspositionPlottingJob/(:any)/(:any)/(:any)'] = 'MasterPekerja/Pekerja/TranspositionJob/C_Transposition/$1/$2/$3';
