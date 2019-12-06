@@ -377,3 +377,68 @@ function BPJS_refreshtableutama(){
 
     $('#tbl-MPR-BPJSTambahan').DataTable().ajax.reload();
 }
+
+$(document).ready(function(){
+    $('.dataTable-pekerjaCutoff').dataTable();
+    $('.slc-pekerjaCutoff').select2({
+        searching: true,
+        minimumInputLength: 3,
+        placeholder: "No. Induk / Nama Pekerja",
+        allowClear: false,
+        ajax: {
+            url: baseurl + 'MasterPresensi/ReffGaji/PekerjaCutoffReffGaji/search',
+            dataType: 'json',
+            delay: 500,
+            type: 'GET',
+            data: function(params) {
+                return {
+                    term: params.term
+                }
+            },
+            processResults: function(data) {
+                return {
+                    results: $.map(data, function(obj) {
+                        return { id: obj.noind, text: obj.noind + " - " + obj.nama };
+                    })
+                }
+            }
+        }
+    });
+    $('#btn-PekerjaCutoff-search').on('click',function(){
+        noind = $('.slc-pekerjaCutoff').val();
+        $.ajax({
+            data: {noind: noind},
+            url: baseurl + 'MasterPresensi/ReffGaji/PekerjaCutoffReffGaji/pekerjaDetail',
+            type: 'GET',
+            success: function(data){
+                obj = JSON.parse(data);
+                $('#tbodyPekerjaCutoff').html("");
+                $('#td-pekerjaCutoff-noind').html(obj['pekerja']['noind']);
+                $('#td-pekerjaCutoff-nama').html(obj['pekerja']['nama']);
+                $('#td-pekerjaCutoff-seksi').html(obj['pekerja']['seksi']);
+                $('#btn-pekerjaCutoff-pekerja-pdf').attr('data-noind',obj['pekerja']['noind']);
+                $('#btn-pekerjaCutoff-pekerja-xls').attr('data-noind',obj['pekerja']['noind']);
+                if(obj['data'].length > 0){
+                    for (var i = 0; i < obj['data'].length; i++) {
+                        $('#tbodyPekerjaCutoff').append("<tr><td class='text-center'>" + (i + 1) + "</td><td class='text-center'><a href='" + baseurl + 'MasterPresensi/ReffGaji/PekerjaCutoffReffGaji/d/' + obj[i]['tanggal_proses'] + "'>" + obj[i]['periode'] + "</a></td></tr>");
+                    }
+                }else{
+                    $('#tbodyPekerjaCutoff').append('<tr><td colspan="2" class="text-center"><i>Tidak Ditemukan Data untuk Nomor Induk <b>' + noind +'</b> di Data Pekerja Cut Off</i></td></tr>');
+                }    
+            }
+        });
+    });
+    $('#btn-pekerjaCutoff-pekerja-pdf').on('click',function(){
+        noind = $(this).attr('data-noind');
+        if(noind !== "-"){
+            window.open(baseurl + "MasterPresensi/ReffGaji/PekerjaCutoffReffGaji/pdf/n/" + noind, "_blank");    
+        }        
+    });
+    $('#btn-pekerjaCutoff-pekerja-xls').on('click',function(){
+        noind = $(this).attr('data-noind');
+        if(noind !== "-"){
+            window.open(baseurl + "MasterPresensi/ReffGaji/PekerjaCutoffReffGaji/xls/n/" + noind, "_blank");    
+        }        
+    });
+});
+
