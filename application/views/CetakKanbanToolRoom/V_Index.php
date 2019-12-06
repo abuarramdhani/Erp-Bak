@@ -19,7 +19,7 @@
                         <div style="height: 300px ;vertical-align: middle; text-align: center;">
                         <center> 
                             
-                            <img  src="<?php echo base_url('assets/img/quick.jpg');?>" style="max-width:30%; margin-top: 20px" />
+                            <img  src="<?php echo base_url('assets/img/quick-2.png');?>" style="max-width:30%; margin-top: 20px" />
                             <br>
                             Selamat Bekerja <br> <b> <?= $this->session->employee ?> </b> <b class="fa fa-smile-o"></b>
                         </center>

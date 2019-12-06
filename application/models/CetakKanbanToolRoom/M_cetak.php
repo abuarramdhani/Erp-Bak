@@ -114,7 +114,7 @@ class M_cetak extends CI_Model {
 
     public function cekId ($idunix){
         $sql = "SELECT * 
-                    FROM kct.kct_kanban_cutting_tools_dev
+                    FROM kct.kct_kanban_cutting_tools
                    WHERE idunix = '$idunix'";
 
         $query = $this->db->query($sql);
@@ -122,7 +122,7 @@ class M_cetak extends CI_Model {
     }
 
     public function insert($idunix,$kode_barang,$cost_center,$nama_barang,$no_bppbgt){
-      $sql = "INSERT INTO kct.kct_kanban_cutting_tools_dev (idunix,kode_barang,cost_center,nama_barang,nomor_bppct)
+      $sql = "INSERT INTO kct.kct_kanban_cutting_tools (idunix,kode_barang,cost_center,nama_barang,nomor_bppct)
           VALUES ('$idunix','$kode_barang','$cost_center','$nama_barang','$no_bppbgt')";
       $query = $this->db->query($sql);
     }
