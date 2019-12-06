@@ -96,7 +96,7 @@ thead.toscahead tr th {
 											<th class="text-center" style="width: 5%;">Detail PR</th>
 										</tr>
 									</thead>
-									<tbody>
+									<tbody id="blinking_td">
 										<?php $no=1; foreach($kirim as $k) { ?>
 											<?php if ($k['actual_berangkat'] == NULL && $k['berangkat'] < date('Y-m-d H:i:s')) { ?>
 												<tr class ="danger" data-toggle="tooltip" data-placement="top" title="Shipment melewati batas estimasi!!">

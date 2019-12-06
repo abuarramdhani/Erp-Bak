@@ -1,15 +1,26 @@
+
 <?php defined('BASEPATH') OR die('No direct script access allowed');
 
 class M_shipmentmonitoringgudang extends CI_Model
 {
- var $oracle;
+  var $oracle;
+  // function __construct()
+  // {
+  //   parent::__construct();
+  //   $this->load->database();
+  //     $this->load->library('encrypt');
+  //     // $this->oracle = $this->load->database('oracle', true);
+  //  }
+
   function __construct()
-  {
+{
     parent::__construct();
     $this->load->database();
-    $this->load->library('encrypt');
-      // $this->oracle = $this->load->database('oracle', true);
-   }
+          $this->load->library('encrypt');
+          // $this->oracle = $this->load->database('oracle', true);
+      // $this->db = $this->load->database();
+//   $this->personalia = $this->load->database('personalia', true);
+    }
 
 
     public function checkSourceLogin($employee_code)
@@ -315,7 +326,9 @@ class M_shipmentmonitoringgudang extends CI_Model
               sh.full_percentage persentase,
               ev.volume_cm3 volume,
               sh.full_percentage persentase,
-              aa.no_do
+              aa.no_do,
+              sh.nama_driver,
+              sh.plat_kendaraan
               FROM 
               ex.shipment_header sh left join ex.vehicle ev
               on sh.vehicle_type_id = ev.vehicle_id
@@ -361,6 +374,8 @@ class M_shipmentmonitoringgudang extends CI_Model
               , ev.volume_cm3
               , sh.full_percentage
               , aa.no_do
+              , sh.nama_driver
+              , sh.plat_kendaraan
       ";
         $runQuery = $this->db->query($sql);
         return $runQuery->result_array();

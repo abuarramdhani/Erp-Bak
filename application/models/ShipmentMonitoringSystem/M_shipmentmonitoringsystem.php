@@ -1,3 +1,4 @@
+
 <?php defined('BASEPATH') OR die('No direct script access allowed');
 
 class M_shipmentmonitoringsystem extends CI_Model
@@ -8,7 +9,7 @@ class M_shipmentmonitoringsystem extends CI_Model
       parent::__construct();
       $this->load->database();
       $this->load->library('encrypt');
-    //   $this->db = $this->load->database();
+      // $this->db = $this->load->database();
     }
 
 
@@ -34,7 +35,8 @@ class M_shipmentmonitoringsystem extends CI_Model
     public function SelectDashboard() //pake database dev
     {
       $db = $this->load->database();
-      $sql =  "SELECT 
+      $sql =  "
+               SELECT 
               sh.shipment_header_id no_shipment,
               ev.vehicle_name jenis_kendaraan,
               sh.estimate_depart_date berangkat,
