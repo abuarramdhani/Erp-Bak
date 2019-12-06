@@ -67,7 +67,7 @@ border-top-color: #f5a442;
 										<button onclick="saveSetupUnitSMS($(this))" type="button" class="btn btn-success pull-right" style="margin-top: 10px; margin-bottom: 20px; margin-left: 20px;" > <i class="fa fa-check"></i> Save</button>
 									</div>
 									<div class="col-md-12">
-								<table class="table vehicle cell-border table-bordered table-hover text-center tblMPM">
+								<table class="table vehicle cell-border table-bordered table-hover text-center tb_setup_sms">
 										<tbody id="tabelvehicleumum">
 											<thead class ="unit">
 											<tr class="bg-primary">

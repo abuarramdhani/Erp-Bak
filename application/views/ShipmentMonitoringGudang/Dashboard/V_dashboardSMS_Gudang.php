@@ -4,7 +4,7 @@
 		font-size: 36px;
 tr:first-child {background-color: #ffccf9;}
 	}
-.blink_me {
+/*.blink_me {
   animation: blinker 1.5s linear infinite;
 }
 
@@ -12,7 +12,7 @@ tr:first-child {background-color: #ffccf9;}
   50% {
     opacity: 0;
   }
-}
+}*/
 
 table.tb_sms tr:first-child {
   font-weight: bold;
@@ -91,6 +91,7 @@ thead.toscahead tr th {
 											<th class="text-center" style="width: 10%;">Actual Loading </th>
 											<th class="text-center" style="width: 10%;">Actual Depart </th>
 											<th class="text-center" style="width: 10%;">Actual QTY </th>
+											<th class="text-center" style="width: 10%;">Nomor DO</th>
 											<th class="text-center" style="width: 10%;">Nomor PR</th>
 											<th class="text-center" style="width: 5%;">Detail PR</th>
 										</tr>
@@ -131,6 +132,7 @@ thead.toscahead tr th {
 											<?php } else { ?>
 											<td> Terkirim : <?php echo $k['dq']; ?> <br> Dari : <?php echo  $k['q'] ?></td>
 											<?php }?>
+											<td><?php echo  $k['no_do'] ?></td>
 											<td><?php echo  $k['pr'] ?> </td>
 											<td><button type="button" data-toggle="modal" data-target="MdlSMS" onclick="detailPRGdg(<?php echo $k['prl'] ?>, <?php echo $k['pr'] ?>)" class="btn btn-warning zoom" class="btn_detail_pr" id="btn_detail_pr"><i class="fa fa-search"></i></button></td>
 										</tr>

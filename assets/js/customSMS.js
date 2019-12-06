@@ -12,9 +12,9 @@ $('.time-set').datetimepicker({
           locale : 'id'
     });	
 
-$('tbody#blinking_td tr:first-child').css('background-color', '#c9efff').addClass('blink_me');
+$('tbody#blinking_td tr:first-child').css('background-color', '#c9efff');
 
-
+// .addClass('blink_me')
 // $(document).ready(function() {
 //     var table = $('.tb_responsive_sms').DataTable( {
 //         responsive: true,
@@ -23,8 +23,21 @@ $('tbody#blinking_td tr:first-child').css('background-color', '#c9efff').addClas
  
 // } );	
 
+
+
 $(document).ready(function(){
 	$('.tb_responsive_sms').DataTable({
+		"paging": true,
+		"info":     true,
+		"language" : {
+		"zeroRecords": " "             
+		}
+	})
+
+	})
+
+$(document).ready(function(){
+	$('.tb_setup_sms').DataTable({
 		"paging": true,
 		"info":     true,
 		"language" : {
@@ -51,6 +64,25 @@ $(document).ready(function(){
 
 // timeDown++
 //--------------------------------------------------------------ONCHANGE-----------------------------------------------------------------//
+
+function detailDO(th) {
+	var no_ship = th;
+	
+	$('#MdlSMS').modal('show');
+	$('.modal-tabel').html("<center><img id='loading12' style='width:200px ;margin-top: 2%;' src='"+baseurl+"assets/img/gif/loadingquick.gif'/><br /></center><br />");
+		$.ajax({
+			type: "POST",
+			url: baseurl+"ShipmentMonitoringSystem/NewShipment/detailDO",
+			data:{
+				no_ship:no_ship
+			},
+			success: function(response) {
+				$('.modal-tabel').html("");
+				$('.modal-tabel').html(response);
+
+			}
+		})
+}
 
 function selectTujuan () {//ON CHANGE TUJUAN DI NEW SHIPMENT 
 	var noncabang = $('#cabangsms').val();

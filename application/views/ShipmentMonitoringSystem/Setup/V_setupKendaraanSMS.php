@@ -62,7 +62,7 @@ thead.unit  tr th{
 										<button onclick="saveSetupVehicleSMS($(this))" type="button" class="btn btn-success pull-right" style="margin-top: 10px; margin-bottom: 20px; margin-left: 20px;" > <i class="fa fa-check"></i> Save</button>
 									</div>
 									<div class="col-md-12">
-								<table class="table vehicle cell-border table-bordered table-hover text-center tblMPM">
+								<table class="table vehicle cell-border table-bordered table-hover text-center tb_setup_sms">
 										<thead class ="vehicle">
 											<tr class="bg-primary">
 												<th style="width: 5%;"class="text-center">NO.</th> 
