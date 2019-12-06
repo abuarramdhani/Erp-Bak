@@ -93,6 +93,7 @@ class C_Perbaikan extends CI_Controller
 	{
         $no_recipt = $this->input->post('no_recipt');
         $no_po = $this->input->post('no_po');
+        $item = $this->input->post('item');
 		$io = $this->input->post('id_org');
 		$data['io'] = $io;
 		
@@ -107,9 +108,14 @@ class C_Perbaikan extends CI_Controller
 		}else{
 			$nopo = '';
 		}
+		if ($item != '') {
+			$item2 = "and msib.segment1 = '$item'";
+		}else{
+			$item2 = '';
+		}
         // echo "<pre>"; print_r($io); exit();
 
-        $data['data'] = $this->M_perbaikan->getDataRekap($norecipt, $nopo, $io);
+        $data['data'] = $this->M_perbaikan->getDataRekap($norecipt, $nopo, $io, $item2);
         $this->load->view('RekapLppb/RekapLppb/V_TblPerbaikan', $data);
 
     }

@@ -1,4 +1,6 @@
-<table id="tabel_search_tracking_invoice" class="table table-striped table-bordered table-hover text-center dataTable">
+<div class="box-body">
+<div style="overflow:auto;">
+<table id="tabel_search_tracking_invoice" style="min-width: 110%"  class="table table-striped table-bordered table-hover text-center dataTable">
 	<thead style="vertical-align: middle;"> 
 		<tr class="bg-primary">
 			<td class="text-center">No</td>
@@ -23,7 +25,7 @@
 			foreach($invoice as $i) { ?>
 		<tr>
 			<td><?php echo $no?></td>
-			<td><a class="btn btn-success" onclick="btn_cari($(this))" invoice="<?php echo $i['INVOICE_ID']?>">
+			<td><a class="btn btn-success" data-target="MdlTrackInv" data-toggle="modal" onclick="mdlDetailTI(<?php echo $i['INVOICE_ID']?>)" invoice="<?php echo $i['INVOICE_ID']?>">
 				 Detail
 				</a>
 			</td>
@@ -49,3 +51,28 @@
 		?> -->
 	</tbody>
 </table>
+</div>
+</div>
+
+<div class="modal fade MdlTrackInv"  id="MdlTrackInv" tabindex="1" role="dialog" aria-labelledby="judulModal" aria-hidden="true">
+    <div class="modal-dialog modal-lg" style="width:1150px;" role="document">
+        <div class="modal-content">
+            <div class="modal-header" style="width: 100%;" >
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            
+                <div class="modal-body" style="width: 100%;">
+                	<div class="modal-tabel" >
+					</div>
+                   
+                    	<div class="modal-footer">
+                    		<div class="col-md-2 pull-left">
+                    		</div>
+                    	</div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

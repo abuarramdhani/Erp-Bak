@@ -12,7 +12,7 @@ class M_composemessage extends CI_Model
 
 		public function getEmailAddress($id)
 		{
-				$sql = 
+				$sql =
 						"SELECT NVL(
 							(SELECT
 									asp.ATTRIBUTE5
@@ -23,7 +23,7 @@ class M_composemessage extends CI_Model
 								pha.VENDOR_ID = asp.VENDOR_ID
 									AND pha.SEGMENT1 = $id),
 							(SELECT *
-							FROM  
+							FROM
 							(SELECT
 									ksea.EMAIL
 							 FROM
@@ -31,8 +31,95 @@ class M_composemessage extends CI_Model
 									khs_supplier_email_account ksea
 							 WHERE
 									pha.VENDOR_ID = ksea.VENDOR_ID
-									AND pha.SEGMENT1 = $id) 
+									AND pha.SEGMENT1 = $id)
 							WHERE ROWNUM <= 1)) email FROM dual
+						";
+				$query = $this->oracle->query($sql);
+				return $query->result_array();
+		}
+
+    //EMAIL ADDRESS PO UNITY KUBOTA
+    public function getEmailAddressGabungan($id)
+		{
+				$sql =
+						"SELECT NVL ((SELECT asp.attribute5
+                            FROM ap_suppliers asp
+                           WHERE vendor_id = 4066),
+                         (SELECT ksea.email
+                            FROM khs_supplier_email_account ksea
+                           WHERE ksea.vendor_id = 4066 AND ROWNUM <= 1)
+                        ) email
+               FROM DUAL
+						";
+				$query = $this->oracle->query($sql);
+				return $query->result_array();
+		}
+
+    // PO NUMBER UNTUK PO UNITY KUBOTA
+    public function getPONumber($id)
+		{
+				$sql =
+						"     SELECT po_unity_number , po_num
+                    from         (SELECT kppu.po_unity_id, po_unity_number, po_num01 po_num
+                                    FROM apps.khs_pur_po_unity kppu
+                                   WHERE kppu.po_unity_number = '$id'
+                                  UNION
+                                  SELECT kppu.po_unity_id, po_unity_number, po_num02
+                                    FROM apps.khs_pur_po_unity kppu
+                                   WHERE kppu.po_unity_number = '$id'
+                                  UNION
+                                  SELECT kppu.po_unity_id, po_unity_number, po_num03
+                                    FROM apps.khs_pur_po_unity kppu
+                                   WHERE kppu.po_unity_number = '$id'
+                                  UNION
+                                  SELECT kppu.po_unity_id, po_unity_number, po_num04
+                                    FROM apps.khs_pur_po_unity kppu
+                                   WHERE kppu.po_unity_number = '$id'
+                                  UNION
+                                  SELECT kppu.po_unity_id, po_unity_number, po_num05
+                                    FROM apps.khs_pur_po_unity kppu
+                                   WHERE kppu.po_unity_number = '$id'
+                                  UNION
+                                  SELECT kppu.po_unity_id, po_unity_number, po_num06
+                                    FROM apps.khs_pur_po_unity kppu
+                                   WHERE kppu.po_unity_number = '$id'
+                                  UNION
+                                  SELECT kppu.po_unity_id, po_unity_number, po_num07
+                                    FROM apps.khs_pur_po_unity kppu
+                                   WHERE kppu.po_unity_number = '$id'
+                                  UNION
+                                  SELECT kppu.po_unity_id, po_unity_number, po_num08
+                                    FROM apps.khs_pur_po_unity kppu
+                                   WHERE kppu.po_unity_number = '$id'
+                                  UNION
+                                  SELECT kppu.po_unity_id, po_unity_number, po_num09
+                                    FROM apps.khs_pur_po_unity kppu
+                                   WHERE kppu.po_unity_number = '$id'
+                                  UNION
+                                  SELECT kppu.po_unity_id, po_unity_number, po_num10
+                                    FROM apps.khs_pur_po_unity kppu
+                                   WHERE kppu.po_unity_number = '$id'
+                                  UNION
+                                  SELECT kppu.po_unity_id, po_unity_number, po_num11
+                                    FROM apps.khs_pur_po_unity kppu
+                                   WHERE kppu.po_unity_number = '$id'
+                                  UNION
+                                  SELECT kppu.po_unity_id, po_unity_number, po_num12
+                                    FROM apps.khs_pur_po_unity kppu
+                                   WHERE kppu.po_unity_number = '$id'
+                                  UNION
+                                  SELECT kppu.po_unity_id, po_unity_number, po_num13
+                                    FROM apps.khs_pur_po_unity kppu
+                                   WHERE kppu.po_unity_number = '$id'
+                                  UNION
+                                  SELECT kppu.po_unity_id, po_unity_number, po_num14
+                                    FROM apps.khs_pur_po_unity kppu
+                                   WHERE kppu.po_unity_number = '$id'
+                                  UNION
+                                  SELECT kppu.po_unity_id, po_unity_number, po_num15
+                                    FROM apps.khs_pur_po_unity kppu
+                                   WHERE kppu.po_unity_number = '$id') kppu
+              WHERE PO_NUM IS NOT NULL
 						";
 				$query = $this->oracle->query($sql);
 				return $query->result_array();
@@ -40,7 +127,7 @@ class M_composemessage extends CI_Model
 
 		public function getDeliveryLetters($id)
 		{
-				$sql = 
+				$sql =
 						"SELECT DISTINCT
 								(
 								SELECT count(pll2.rowid)+1 FROM PO_LINE_LOCATIONS_ALL pll2
@@ -51,25 +138,25 @@ class M_composemessage extends CI_Model
 									vs.VENDOR_SITE_CODE SITE,
 									pl.LINE_NUM ,
 									(SELECT max(kds.ADDRESS_DETAIL_INT) FROM KHS_DATA_SUPPLIER kds WHERE kds.VENDOR_ID=poh.VENDOR_ID AND kds.vendor_site_id=poh.vendor_site_id) ADDRESS,
-								(SELECT max(kds.PHONE_NUMBER) FROM KHS_DATA_SUPPLIER kds WHERE kds.VENDOR_ID=poh.VENDOR_ID AND kds.vendor_site_id=poh.vendor_site_id) PHONE_NUMBER, 
+								(SELECT max(kds.PHONE_NUMBER) FROM KHS_DATA_SUPPLIER kds WHERE kds.VENDOR_ID=poh.VENDOR_ID AND kds.vendor_site_id=poh.vendor_site_id) PHONE_NUMBER,
 								CASE
 										WHEN (SELECT kse.EMAIL FROM khs_supplier_email_account kse WHERE kse.VENDOR_ID(+) = poh.VENDOR_ID AND kse.KODE = 'HZ_PARTIES') IS NULL
 												THEN (SELECT kse.EMAIL FROM khs_supplier_email_account kse WHERE kse.VENDOR_ID(+) = poh.VENDOR_ID AND kse.KODE = 'HZ_PARTY_SITES')
 										ELSE (SELECT kse.EMAIL FROM khs_supplier_email_account kse WHERE kse.VENDOR_ID(+) = poh.VENDOR_ID AND kse.KODE = 'HZ_PARTIES')
 								END EMAIL_ADDRESS,
-							(CASE 
+							(CASE
 							 WHEN v.vendor_name = 'HONDA POWER PRODUCTS INDONESIA, PT'
 							 THEN (SELECT Contact_name FROM KHS_SUP_CONTACT WHERE org_name=v.VENDOR_NAME AND contact_party_id=
-										(SELECT max(contact_party_id) FROM KHS_SUP_CONTACT ksc, hz_parties hp, hz_party_usg_assignments hpua 
+										(SELECT max(contact_party_id) FROM KHS_SUP_CONTACT ksc, hz_parties hp, hz_party_usg_assignments hpua
 										WHERE ksc.CONTACT_PARTY_ID = hp.PARTY_ID AND hp.PARTY_ID = hpua.PARTY_ID AND hpua.EFFECTIVE_END_DATE > SYSDATE
 										AND hpua.PARTY_USAGE_CODE = 'SUPPLIER_CONTACT' AND org_name=v.VENDOR_NAME))
 							 ELSE
 										(SELECT Contact_name FROM KHS_SUP_CONTACT WHERE org_name=v.VENDOR_NAME AND contact_party_id=
-										(SELECT min(contact_party_id) FROM KHS_SUP_CONTACT ksc, hz_parties hp, hz_party_usg_assignments hpua 
+										(SELECT min(contact_party_id) FROM KHS_SUP_CONTACT ksc, hz_parties hp, hz_party_usg_assignments hpua
 										WHERE ksc.CONTACT_PARTY_ID = hp.PARTY_ID AND hp.PARTY_ID = hpua.PARTY_ID AND hpua.EFFECTIVE_END_DATE > SYSDATE
 										AND hpua.PARTY_USAGE_CODE = 'ORG_CONTACT' AND org_name=v.VENDOR_NAME))
 								END
-								|| decode((SELECT count(*) FROM KHS_SUP_CONTACT ksc, hz_parties hp, hz_party_usg_assignments hpua 
+								|| decode((SELECT count(*) FROM KHS_SUP_CONTACT ksc, hz_parties hp, hz_party_usg_assignments hpua
 										WHERE ksc.CONTACT_PARTY_ID = hp.PARTY_ID AND hp.PARTY_ID = hpua.PARTY_ID AND hpua.EFFECTIVE_END_DATE > SYSDATE
 										AND hpua.PARTY_USAGE_CODE = 'ORG_CONTACT' AND org_name=v.VENDOR_NAME),1,'',
 										decode((SELECT distinct Contact_name FROM KHS_SUP_CONTACT WHERE org_name=v.VENDOR_NAME AND contact_party_id=
@@ -88,6 +175,7 @@ class M_composemessage extends CI_Model
 										AND hpua.EFFECTIVE_END_DATE > SYSDATE AND hpua.PARTY_USAGE_CODE = 'ORG_CONTACT' AND org_name=v.VENDOR_NAME)))))
 								) PERSON_IN_CHARGE,
 								poh.SEGMENT1 NO_PO,
+                poh.REVISION_NUM REV_NUM,
 								pll.QUANTITY QTY_PLAN,
 								decode(uom.UOM_CODE,'UNT','UNIT',uom.UOM_CODE) UOM_CODE,
 								SUBSTR (msi.segment1, 1, 40)Kode_Barang,
@@ -100,8 +188,8 @@ class M_composemessage extends CI_Model
 								 MTL_SYSTEM_ITEMS_FVL msi,
 								 mtl_units_of_measure_tl uom,
 								 PO_LINES_ALL pl
-						WHERE pll.cancel_date IS NULL AND NVL(pl.CANCEL_FLAG,'N')='N' 
-										AND poh.VENDOR_ID=v.VENDOR_ID 
+						WHERE pll.cancel_date IS NULL AND NVL(pl.CANCEL_FLAG,'N')='N'
+										AND poh.VENDOR_ID=v.VENDOR_ID
 										AND vs.VENDOR_SITE_ID=poh.VENDOR_SITE_ID
 										AND pl.PO_HEADER_ID=poh.PO_HEADER_ID
 										AND pll.PO_LINE_ID=pl.PO_LINE_ID
@@ -130,5 +218,15 @@ class M_composemessage extends CI_Model
 				$query = $this->oracle->query($sql);
 				return $query->result_array();
 		}
+    // PO UNITY KUBOTA
+    public function getVendorNameGabungan($id)
+    {
+        $sql = "SELECT DISTINCT pv.vendor_name
+                  FROM po_vendors pv
+                 WHERE pv.vendor_id = 4066
+                ";
+        $query = $this->oracle->query($sql);
+        return $query->result_array();
+    }
 }
 ?>

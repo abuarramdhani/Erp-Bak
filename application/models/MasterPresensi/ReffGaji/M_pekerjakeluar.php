@@ -439,11 +439,11 @@ class M_pekerjakeluar extends CI_Model
 		if ($pilih == "awal") {
 			$sql = "select noind,
 						(
-							select count(*)
+							select count(distinct tanggal)
 							from \"Presensi\".tdatapresensi b
 							where b.noind = a.noind
 							and b.tanggal between to_char(a.tglkeluar,'yyyy-mm-01')::date and a.tglkeluar
-							and b.kd_ket in ('PKJ','PDL','PDB','PLB','PID')
+							and trim(b.kd_ket) in ('PKJ','PDL','PDB','PLB','PID','PSK', 'PSP', 'CT', 'CB', 'CBA', 'CD', 'CH', 'CIK', 'CIM', 'CK', 'CM', 'CPA', 'CPP', 'CS', 'PCZ', 'PRM', 'PKK' )
 						)+
 						(
 							select count(*)
@@ -453,11 +453,11 @@ class M_pekerjakeluar extends CI_Model
 							where d.tanggal is null
 						) as jumlah_masuk,
 						(
-							select count(*)
+							select count(distinct tanggal)
 							from \"Presensi\".tdatapresensi b
 							where b.noind = a.noind
 							and b.tanggal between to_char(a.tglkeluar,'yyyy-mm-01')::date and a.tglkeluar
-							and b.kd_ket in ('PKJ','PDL','PDB','PLB','PID')
+							and trim(b.kd_ket) in ('PKJ','PDL','PDB','PLB','PID','PSK', 'PSP', 'CT', 'CB', 'CBA', 'CD', 'CH', 'CIK', 'CIM', 'CK', 'CM', 'CPA', 'CPP', 'CS', 'PCZ', 'PRM', 'PKK' )
 						)  -
 						(select count(tanggal) as jml from
 						(
@@ -603,27 +603,27 @@ class M_pekerjakeluar extends CI_Model
 		}else{
 			$sql = "select noind,
 						(
-							select count(*)
+							select count(distinct tanggal)
 							from \"Presensi\".tdatapresensi b
 							where b.noind = a.noind
 							and b.tanggal between '$awal'::date and a.tglkeluar
-							and b.kd_ket in ('PKJ','PDL','PDB','PLB','PID')
+							and trim(b.kd_ket) in ('PKJ','PDL','PDB','PLB','PID','PSK', 'PSP', 'CT', 'CB', 'CBA', 'CD', 'CH', 'CIK', 'CIM', 'CK', 'CM', 'CPA', 'CPP', 'CS', 'PCZ', 'PRM', 'PKK' )
 						) as jumlah_masuk,
 						case when (select count(*) from \"Presensi\".tcutoff_custom c where a.noind = c.noind ) > 0 then
 							(
-								select count(*)
+								select count(distinct tanggal)
 								from \"Presensi\".tdatapresensi b
 								where b.noind = a.noind
 								and b.tanggal between '$awal'::date and a.tglkeluar
-								and b.kd_ket in ('PKJ','PDL','PDB','PLB','PID')
+								and trim(b.kd_ket) in ('PKJ','PDL','PDB','PLB','PID','PSK', 'PSP', 'CT', 'CB', 'CBA', 'CD', 'CH', 'CIK', 'CIM', 'CK', 'CM', 'CPA', 'CPP', 'CS', 'PCZ', 'PRM', 'PKK' )
 							)
 						else
 							(
-								select count(*)
+								select count(distinct tanggal)
 								from \"Presensi\".tdatapresensi b
 								where b.noind = a.noind
 								and b.tanggal between '$awal'::date and a.tglkeluar
-								and b.kd_ket in ('PKJ','PDL','PDB','PLB','PID')
+								and trim(b.kd_ket) in ('PKJ','PDL','PDB','PLB','PID','PSK', 'PSP', 'CT', 'CB', 'CBA', 'CD', 'CH', 'CIK', 'CIM', 'CK', 'CM', 'CPA', 'CPP', 'CS', 'PCZ', 'PRM', 'PKK' )
 							) -
 							(
 								select count(*)
@@ -781,18 +781,18 @@ class M_pekerjakeluar extends CI_Model
 		if ($pilih == "awal") {
 			$sql = "select noind,
 						(
-							select count(*)
+							select count(distinct tanggal)
 							from \"Presensi\".tdatapresensi b
 							where b.noind = a.noind
 							and b.tanggal between to_char(a.tglkeluar,'yyyy-mm-01')::date and a.tglkeluar
-							and b.kd_ket in ('PKJ','PDL','PDB','PLB','PID')
+							and trim(b.kd_ket) in ('PKJ','PDL','PDB','PLB','PID','PSK', 'PSP', 'CT', 'CB', 'CBA', 'CD', 'CH', 'CIK', 'CIM', 'CK', 'CM', 'CPA', 'CPP', 'CS', 'PCZ', 'PRM', 'PKK' )
 						) as jumlah_masuk,
 						(
-							select count(*)
+							select count(distinct tanggal)
 							from \"Presensi\".tdatapresensi b
 							where b.noind = a.noind
 							and b.tanggal between to_char(a.tglkeluar,'yyyy-mm-01')::date and a.tglkeluar
-							and b.kd_ket in ('PKJ','PDL','PDB','PLB','PID')
+							and trim(b.kd_ket) in ('PKJ','PDL','PDB','PLB','PID','PSK', 'PSP', 'CT', 'CB', 'CBA', 'CD', 'CH', 'CIK', 'CIM', 'CK', 'CM', 'CPA', 'CPP', 'CS', 'PCZ', 'PRM', 'PKK' )
 						)  -
 						(select count(tanggal) as jml from
 						(
@@ -939,27 +939,27 @@ class M_pekerjakeluar extends CI_Model
 		}else{
 			$sql = "select noind,
 						(
-							select count(*)
+							select count(distinct tanggal)
 							from \"Presensi\".tdatapresensi b
 							where b.noind = a.noind
 							and b.tanggal between '$awal'::date and a.tglkeluar
-							and b.kd_ket in ('PKJ','PDL','PDB','PLB','PID')
+							and trim(b.kd_ket) in ('PKJ','PDL','PDB','PLB','PID','PSK', 'PSP', 'CT', 'CB', 'CBA', 'CD', 'CH', 'CIK', 'CIM', 'CK', 'CM', 'CPA', 'CPP', 'CS', 'PCZ', 'PRM', 'PKK' )
 						) as jumlah_masuk,
 						case when (select count(*) from \"Presensi\".tcutoff_custom c where a.noind = c.noind ) > 0 then
 							(
-								select count(*)
+								select count(distinct tanggal)
 								from \"Presensi\".tdatapresensi b
 								where b.noind = a.noind
 								and b.tanggal between '$awal'::date and a.tglkeluar
-								and b.kd_ket in ('PKJ','PDL','PDB','PLB','PID')
+								and trim(b.kd_ket) in ('PKJ','PDL','PDB','PLB','PID','PSK', 'PSP', 'CT', 'CB', 'CBA', 'CD', 'CH', 'CIK', 'CIM', 'CK', 'CM', 'CPA', 'CPP', 'CS', 'PCZ', 'PRM', 'PKK' )
 							)
 						else
 							(
-								select count(*)
+								select count(distinct tanggal)
 								from \"Presensi\".tdatapresensi b
 								where b.noind = a.noind
 								and b.tanggal between '$awal'::date and a.tglkeluar
-								and b.kd_ket in ('PKJ','PDL','PDB','PLB','PID')
+								and trim(b.kd_ket) in ('PKJ','PDL','PDB','PLB','PID','PSK', 'PSP', 'CT', 'CB', 'CBA', 'CD', 'CH', 'CIK', 'CIM', 'CK', 'CM', 'CPA', 'CPP', 'CS', 'PCZ', 'PRM', 'PKK' )
 							) -
 							(
 								select count(*)
@@ -1397,11 +1397,11 @@ class M_pekerjakeluar extends CI_Model
 		}else{
 			$sql = "select noind,
 					(
-						select count(*)
+						select count(distinct tanggal)
 						from \"Presensi\".tdatapresensi b
 						where b.noind = a.noind
 						and b.tanggal between '$awal'::date and a.tglkeluar
-						and b.kd_ket in ('PKJ','PDL','PDB','PLB','PID')
+						and trim(b.kd_ket) in ('PKJ','PDL','PDB','PLB','PID','PSK', 'PSP', 'CT', 'CB', 'CBA', 'CD', 'CH', 'CIK', 'CIM', 'CK', 'CM', 'CPA', 'CPP', 'CS', 'PCZ', 'PRM', 'PKK' )
 					)-
 					(
 						select count(*)
@@ -1413,11 +1413,11 @@ class M_pekerjakeluar extends CI_Model
 					case when (select count(*) from \"Presensi\".tcutoff_custom c where a.noind = c.noind ) > 0 then
 						30 -
 						(
-							select count(*)
+							select count(distinct tanggal)
 							from \"Presensi\".tdatapresensi b
 							where b.noind = a.noind
 							and b.tanggal between '$awal'::date and a.tglkeluar
-							and b.kd_ket in ('PKJ','PDL','PDB','PLB','PID')
+							and trim(b.kd_ket) in ('PKJ','PDL','PDB','PLB','PID','PSK', 'PSP', 'CT', 'CB', 'CBA', 'CD', 'CH', 'CIK', 'CIM', 'CK', 'CM', 'CPA', 'CPP', 'CS', 'PCZ', 'PRM', 'PKK' )
 						)-
 						(
 							select count(*)
@@ -1727,11 +1727,11 @@ class M_pekerjakeluar extends CI_Model
 		}else{
 			$sql = "select noind,
 					(
-						select count(*)
+						select count(distinct tanggal)
 						from \"Presensi\".tdatapresensi b
 						where b.noind = a.noind
 						and b.tanggal between '$awal'::date and a.tglkeluar
-						and b.kd_ket in ('PKJ','PDL','PDB','PLB','PID')
+						and trim(b.kd_ket) in ('PKJ','PDL','PDB','PLB','PID','PSK', 'PSP', 'CT', 'CB', 'CBA', 'CD', 'CH', 'CIK', 'CIM', 'CK', 'CM', 'CPA', 'CPP', 'CS', 'PCZ', 'PRM', 'PKK' )
 					)-
 					(
 						select count(*)
@@ -1743,11 +1743,11 @@ class M_pekerjakeluar extends CI_Model
 					case when (select count(*) from \"Presensi\".tcutoff_custom c where a.noind = c.noind ) > 0 then
 						30 -
 						(
-							select count(*)
+							select count(distinct tanggal)
 							from \"Presensi\".tdatapresensi b
 							where b.noind = a.noind
 							and b.tanggal between '$awal'::date and a.tglkeluar
-							and b.kd_ket in ('PKJ','PDL','PDB','PLB','PID')
+							and trim(b.kd_ket) in ('PKJ','PDL','PDB','PLB','PID','PSK', 'PSP', 'CT', 'CB', 'CBA', 'CD', 'CH', 'CIK', 'CIM', 'CK', 'CM', 'CPA', 'CPP', 'CS', 'PCZ', 'PRM', 'PKK' )
 						)-
 						(
 							select count(*)
@@ -1968,7 +1968,7 @@ class M_pekerjakeluar extends CI_Model
 					WHERE noind = '$noind'
 					AND ket LIKE '%LEMBUR%'
 					AND stat = '0'
-					AND extract(year from tanggal) = extract(year from '$akhir'::date) )
+					AND tanggal >= '2019-01-01' )
 				)
 				AND noind = '$noind'
 				and total_Lembur is not null ";
@@ -2827,7 +2827,8 @@ class M_pekerjakeluar extends CI_Model
 	public function hitung_tambahan($noind,$akhir){
 		$sql = "select count(*) as jml from \"Presensi\".tsusulan
 				where ket in ('CT','SK')
-				and stat = '0' and noind = '$noind'";
+				and stat = '0' and noind = '$noind'
+				AND tanggal >= '2019-01-01'";
 		$result1 = $this->personalia->query($sql)->result_array();
 
 		$sql = "select sisa_cuti as jml from \"Presensi\".tdatacuti
@@ -2835,26 +2836,26 @@ class M_pekerjakeluar extends CI_Model
 				and noind = '$noind' and tgl_boleh_ambil <= '$akhir'::timestamp";
 		$result2 = $this->personalia->query($sql)->result_array();
 
-		$sql = "select  (
-						select count(c.*)
-						from hrd_khs.tlog c
-						inner join \"Presensi\".tdatapresensi d
-						on  split_part(c.ket,'TGL -> ',2)::date  = d.tanggal
-						and left(split_part(c.ket,'NO.INDUK -> ',2),5) = d.noind
-						and d.kd_ket = 'PKJ'
-						where c.ket like concat('%',a.noind,'%')
-						and c.wkt > b.tanggal_akhir
-						and split_part(c.ket,'TGL -> ',2)::date between b.tanggal_awal and b.tanggal_akhir
-						and c.program = 'PRESENSI'
-						and c.menu like '%INPUT PRESENSI MANUAL%'
-					) as jml
-				from \"Presensi\".treffgaji a
-				inner join \"Presensi\".tcutoff b
-				on  b.tanggal_akhir between (a.tanggal - interval '7 day') and a.tanggal
-				where a.noind = '$noind'
-				and a.tanggal = (select max(e.tanggal) from \"Presensi\".treffgaji e where e.noind = a.noind)
-				and b.os = '0';";
-		$result3 = $this->personalia->query($sql)->result_array();
+		// $sql = "select  (
+		// 				select count(c.*)
+		// 				from hrd_khs.tlog c
+		// 				inner join \"Presensi\".tdatapresensi d
+		// 				on  split_part(c.ket,'TGL -> ',2)::date  = d.tanggal
+		// 				and left(split_part(c.ket,'NO.INDUK -> ',2),5) = d.noind
+		// 				and d.kd_ket = 'PKJ'
+		// 				where c.ket like concat('%',a.noind,'%')
+		// 				and c.wkt > b.tanggal_akhir
+		// 				and split_part(c.ket,'TGL -> ',2)::date between b.tanggal_awal and b.tanggal_akhir
+		// 				and c.program = 'PRESENSI'
+		// 				and c.menu like '%INPUT PRESENSI MANUAL%'
+		// 			) as jml
+		// 		from \"Presensi\".treffgaji a
+		// 		inner join \"Presensi\".tcutoff b
+		// 		on  b.tanggal_akhir between (a.tanggal - interval '7 day') and a.tanggal
+		// 		where a.noind = '$noind'
+		// 		and a.tanggal = (select max(e.tanggal) from \"Presensi\".treffgaji e where e.noind = a.noind)
+		// 		and b.os = '0';";
+		// $result3 = $this->personalia->query($sql)->result_array();
 
 		$nilai = 0;
 		if (!empty($result1)) {
@@ -2867,10 +2868,10 @@ class M_pekerjakeluar extends CI_Model
 			// echo $nilai."b<br>";
 		}
 
-		if (!empty($result3)) {
-			$nilai += $result3['0']['jml'];
+		// if (!empty($result3)) {
+		// 	$nilai += $result3['0']['jml'];
 			// echo $nilai."b<br>";
-		}
+		// }
 
 		// exit();
 		return $nilai;
@@ -2892,7 +2893,8 @@ class M_pekerjakeluar extends CI_Model
 		$nilai = 0;
 		$sql = "select count(*) as jml from \"Presensi\".tsusulan
 				where ket in ('SK')
-				and stat = '0' and noind = '$noind'";
+				and stat = '0' and noind = '$noind'
+				AND tanggal >= '2019-01-01'";
 		$result1 = $this->personalia->query($sql)->result_array();
 		if (!empty($result1)) {
 			$nilai += $result1['0']['jml'];
@@ -2904,7 +2906,8 @@ class M_pekerjakeluar extends CI_Model
 		$nilai = 0;
 		$sql = "select count(*) as jml from \"Presensi\".tsusulan
 				where ket in ('CT')
-				and stat = '0' and noind = '$noind'";
+				and stat = '0' and noind = '$noind'
+				AND tanggal >= '2019-01-01'";
 		$result1 = $this->personalia->query($sql)->result_array();
 		if (!empty($result1)) {
 			$nilai += $result1['0']['jml'];
@@ -3657,11 +3660,11 @@ class M_pekerjakeluar extends CI_Model
 		}else{
 			$sql = "select noind,
 					(
-						select count(*)
+						select count(distinct tanggal)
 						from \"Presensi\".tdatapresensi b
 						where b.noind = a.noind
 						and b.tanggal between '$awal'::date and a.tglkeluar
-						and b.kd_ket in ('PKJ','PDL','PDB','PLB','PID')
+						and trim(b.kd_ket) in ('PKJ','PDL','PDB','PLB','PID','PSK', 'PSP', 'CT', 'CB', 'CBA', 'CD', 'CH', 'CIK', 'CIM', 'CK', 'CM', 'CPA', 'CPP', 'CS', 'PCZ', 'PRM', 'PKK' )
 					)-
 					(
 						select count(*)
@@ -3673,11 +3676,11 @@ class M_pekerjakeluar extends CI_Model
 					case when (select count(*) from \"Presensi\".tcutoff_custom c where a.noind = c.noind ) > 0 then
 						30 -
 						(
-							select count(*)
+							select count(distinct tanggal)
 							from \"Presensi\".tdatapresensi b
 							where b.noind = a.noind
 							and b.tanggal between '$awal'::date and a.tglkeluar
-							and b.kd_ket in ('PKJ','PDL','PDB','PLB','PID')
+							and trim(b.kd_ket) in ('PKJ','PDL','PDB','PLB','PID','PSK', 'PSP', 'CT', 'CB', 'CBA', 'CD', 'CH', 'CIK', 'CIM', 'CK', 'CM', 'CPA', 'CPP', 'CS', 'PCZ', 'PRM', 'PKK' )
 						)-
 						(
 							select count(*)
@@ -3794,11 +3797,11 @@ class M_pekerjakeluar extends CI_Model
 		}else{
 			$sql = "select noind,
 					(
-						select count(*)
+						select count(distinct tanggal)
 						from \"Presensi\".tdatapresensi b
 						where b.noind = a.noind
 						and b.tanggal between '$awal'::date and a.tglkeluar
-						and b.kd_ket in ('PKJ','PDL','PDB','PLB','PID')
+						and trim(b.kd_ket) in ('PKJ','PDL','PDB','PLB','PID','PSK', 'PSP', 'CT', 'CB', 'CBA', 'CD', 'CH', 'CIK', 'CIM', 'CK', 'CM', 'CPA', 'CPP', 'CS', 'PCZ', 'PRM', 'PKK' )
 					)-
 					(
 						select count(*)
@@ -3810,11 +3813,11 @@ class M_pekerjakeluar extends CI_Model
 					case when (select count(*) from \"Presensi\".tcutoff_custom c where a.noind = c.noind ) > 0 then
 						30 -
 						(
-							select count(*)
+							select count(distinct tanggal)
 							from \"Presensi\".tdatapresensi b
 							where b.noind = a.noind
 							and b.tanggal between '$awal'::date and a.tglkeluar
-							and b.kd_ket in ('PKJ','PDL','PDB','PLB','PID')
+							and trim(b.kd_ket) in ('PKJ','PDL','PDB','PLB','PID','PSK', 'PSP', 'CT', 'CB', 'CBA', 'CD', 'CH', 'CIK', 'CIM', 'CK', 'CM', 'CPA', 'CPP', 'CS', 'PCZ', 'PRM', 'PKK' )
 						)-
 						(
 							select count(*)

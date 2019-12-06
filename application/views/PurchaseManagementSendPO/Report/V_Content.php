@@ -42,10 +42,10 @@
                 vertical-align: top;
             }
         </style>
-    </head> 
+    </head>
     <body >
-        <?php 
-            $p=1; 
+        <?php
+            $p=1;
             $hal = 1;
 
             $COMPANY_NAME = $RESULT[0]['COMPANY_NAME'];
@@ -103,7 +103,7 @@
                             <td>PO : <?php echo $NO_PO; ?></td>
                         </tr>
                         <tr>
-                            <td colspan="2" class="hor-center"><img  style=" float:right;  opacity: 1 ; width:18mm; padding:;  height:auto;" src="<?php echo base_url('img/'.$NO_PO.'.png'); ?>" /></td>
+                            <td colspan="2" class="hor-center"><img  style=" float:right;  opacity: 1 ; width:18mm; padding:;  height:auto;" src="<?php echo base_url('img/'.$NO_PO_QR.'.png'); ?>" /></td>
                         </tr>
                     </table>
                 </td>
@@ -125,7 +125,7 @@
                     </table>
                 </td>
             </tr>
-        
+
         </table>
         <div style="height: 100%; border-top: 0; border-bottom: 0; ">
             <table width="100%" class="table table-bordered">
@@ -157,7 +157,7 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <?php 
+                    <?php
                         for ($x = 0; $x < sizeof($DETAIL); $x++){
                     ?>
                     <tr>
@@ -182,7 +182,7 @@
                         <td width="15%" style="border-bottom:1px solid #8f8f8f;"></td>
                         <td width="15%" style="border-bottom:1px solid #8f8f8f;"></td>
                     </tr>
-                    <?php 
+                    <?php
                         }
                     ?>
                 </tbody>
@@ -197,7 +197,7 @@
                             <td width="30%">___________, ____/____/_______</td>
                         </tr>
                         <tr>
-                            <td>Diterima Oleh,</td>	
+                            <td>Diterima Oleh,</td>
                             <td></td>
                             <td>Dikirim Oleh,</td>
                         </tr>
