@@ -61,8 +61,17 @@ class M_inputasset extends CI_Model
 		return $result->result_array();
 	}
 
-	public function getSeksiPemakaiAsset($kd_sie){
-		$sql = "select section_code kodesie, section_name seksi from er.er_section where section_code = '$kd_sie'";
+	public function getSeksiPemakaiAsset($kd_sie = FALSE){
+		if (isset($kd_sie) and !empty($kd_sie)) {
+			$sql = "select section_code kodesie, section_name seksi from er.er_section where section_code = '$kd_sie'";
+		}else{
+			$sql = "select section_code kodesie, section_name seksi 
+					from er.er_section 
+					where section_code like '%00' 
+					and section_name not like '-%' 
+					order by section_code";
+		}
+		
 		$result = $this->db->query($sql);
 		return $result->result_array();
 	}

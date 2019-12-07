@@ -87,7 +87,12 @@
 												<label class="control-label col-lg-4">Seksi Pemakai</label>
 												<div class="col-lg-4">
 													<select class="select select2" name="txtSeksiPemakaiAsset" id="txtSeksiPemakaiAsset" data-placeholder="Seksi Pemakai" required style="width: 100%">
-														<option value="<?php echo $seksi['0']['kodesie'] ?>"><?php echo $seksi['0']['seksi'] ?></option>
+														<option></option>
+														<?php if (isset($seksi)) {
+															foreach ($seksi as $val) { ?>
+																<option value="<?php echo $val['kodesie'] ?>"><?php echo $val['kodesie']." - ".$val['seksi'] ?></option>
+														<?php	}
+														} ?>
 													</select>
 												</div>
 											</div>
