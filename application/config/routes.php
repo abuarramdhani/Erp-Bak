@@ -3525,3 +3525,37 @@ $route['TranspositionPlottingJob/save'] = 'MasterPekerja/Pekerja/TranspositionJo
 $route['TranspositionPlottingJob/(:any)'] = 'MasterPekerja/Pekerja/TranspositionJob/C_Transposition/$1';
 $route['TranspositionPlottingJob/(:any)/(:any)'] = 'MasterPekerja/Pekerja/TranspositionJob/C_Transposition/$1/$2';
 $route['TranspositionPlottingJob/(:any)/(:any)/(:any)'] = 'MasterPekerja/Pekerja/TranspositionJob/C_Transposition/$1/$2/$3';
+
+//----------------------------------------------------Pengiriman Dokumen Personalia------------------------------------------------//
+$route['PengirimanDokumen'] 							= 'PengirimanDokumen/C_Index';
+$route['PengirimanDokumen/MasterData']					= 'PengirimanDokumen/Menu/C_MasterData';
+$route['PengirimanDokumen/InputData'] 					= 'PengirimanDokumen/Menu/C_InputData';
+$route['PengirimanDokumen/PersonaliaOne'] 				= 'PengirimanDokumen/Menu/C_Personalia/PersonaliaOne';
+$route['PengirimanDokumen/PersonaliaTwo'] 				= 'PengirimanDokumen/Menu/C_Personalia/PersonaliaTwo';
+
+$route['PengirimanDokumen/ajax/showDetail']				= 'PengirimanDokumen/Menu/C_InputData/ajaxShowDetail';
+
+$route['PengirimanDokumen/ajax/showInput']				= 'PengirimanDokumen/Menu/C_InputData/ajaxShowInput';
+$route['PengirimanDokumen/ajax/noind']					= 'PengirimanDokumen/Menu/C_InputData/ajaxNoind';
+$route['PengirimanDokumen/ajax/listMaster']				= 'PengirimanDokumen/Menu/C_InputData/ajaxListMaster';
+$route['PengirimanDokumen/ajax/addData']['post']		= 'PengirimanDokumen/Menu/C_InputData/ajaxInputData';
+
+$route['PengirimanDokumen/ajax/showMaster']				= 'PengirimanDokumen/Menu/C_MasterData/ajaxShowMaster';
+$route['PengirimanDokumen/ajax/seksi']					= 'PengirimanDokumen/Menu/C_MasterData/ajaxSeksi';
+$route['PengirimanDokumen/ajax/insertMaster']['post']	= 'PengirimanDokumen/Menu/C_MasterData/ajaxInsertMaster';
+$route['PengirimanDokumen/ajax/updateMaster']			= 'PengirimanDokumen/Menu/C_MasterData/ajaxUpdateMaster';
+$route['PengirimanDokumen/ajax/deleteMaster']			= 'PengirimanDokumen/Menu/C_MasterData/ajaxDeleteMaster';
+
+$route['PengirimanDokumen/PersonaliaOne/new']			= 'PengirimanDokumen/Menu/C_Personalia/NewData/1';
+$route['PengirimanDokumen/PersonaliaOne/approved']		= 'PengirimanDokumen/Menu/C_Personalia/Approved/1';
+$route['PengirimanDokumen/PersonaliaOne/rejected']		= 'PengirimanDokumen/Menu/C_Personalia/Rejected/1';
+
+$route['PengirimanDokumen/PersonaliaTwo/new']			= 'PengirimanDokumen/Menu/C_Personalia/NewData/2';
+$route['PengirimanDokumen/PersonaliaTwo/approved']		= 'PengirimanDokumen/Menu/C_Personalia/Approved/2';
+$route['PengirimanDokumen/PersonaliaTwo/rejected']		= 'PengirimanDokumen/Menu/C_Personalia/Rejected/2';
+
+$route['PengirimanDokumen/Personalia/ajax/sendapproval']['post'] = 'PengirimanDokumen/Menu/C_Personalia/ApprovalData';
+$route['PengirimanDokumen/Personalia/ajax/newData'] 	= 'PengirimanDokumen/Menu/C_Personalia/ajaxNewData';
+
+$route['PengirimanDokumen/Personalia/RekapAll']			= 'PengirimanDokumen/Menu/C_Personalia/rekapAll';
+$route['PengirimanDokumen/Personalia/RekapAll/(:any)'] 	= 'PengirimanDokumen/Menu/C_Personalia/rekapAll/$1';
