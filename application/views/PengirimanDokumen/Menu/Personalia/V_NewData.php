@@ -141,7 +141,6 @@
             dataType: 'json',
             success: res => {
                 let table;
-                console.log(res.length)
 
                 if (res.length > 0){
                     res.forEach(item=>{
@@ -166,49 +165,4 @@
             }
         })
     }
-
-    $(document).ready(function(){
-        // setTimeout(function(){
-        //     $('.icheckbox_flat-blue').first().click(function(){
-        //         if($(this).hasClass('checked')){
-        //             $('.icheckbox_flat-blue').removeClass('checked');
-        //         }else{
-        //             $('.icheckbox_flat-blue').addClass('checked');
-        //         }
-        //     })
-        // }, 3000)
-
-        // $(".acc_btn").each((i, obj)=>{
-
-        //     let data = $(obj).parent().html()
-        //     console.log(data);
-
-        //     $(this).on('click', function(){
-        //         console.log("asa");
-        //     })
-        // })
-
-        // let elementsArray = document.querySelectorAll(".acc_btn");
-
-        // elementsArray.forEach(function(elem) {
-        //     let id_data = $(this).parent().parent().find('.data-id').data('id')
-        //     console.log(id_data);
-            
-        //     elem.addEventListener("click", function() {
-        //         swal.fire({
-        //             title: 'Yakin untuk mengapprove ?',
-        //             text: 'cek kevalid-an data',
-        //             type: 'question',
-        //             showCancelButton: true
-        //         }).then(res=>{
-        //             if(res.value){
-        //                 console.log(id_data);
-                        
-        //             }
-        //         })
-                
-        //     });
-        // });
-        
-    })
 </script>

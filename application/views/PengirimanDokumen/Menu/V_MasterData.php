@@ -179,7 +179,6 @@
 			inform 	= $('#modalInformation').val(),
 			lv1 	= $('#modalLevelOne').val()
 			lv2 	= $('#modalLevelTwo').val()
-		console.log(code, inform, lv1, lv2)
 		
 		if(code == '' || inform == '' || lv1 == '' || lv2 == ''){
 			alert('isi semua data')
@@ -209,7 +208,6 @@
 
 	const editMaster = (id, elem) => {
 		$("#modalForm")[0].reset()
-		//$('#modalLevelOne, #modalLevelTwo').select2('val', '')
 
 		let tr = elem.parent().parent()
 		let code = tr.find('.code').text()
@@ -264,26 +262,6 @@
 			}
 		})
 	}
-
-	// pindah ke js PDP
-	// const deleteMaster = id => {
-	// 	$.ajax({
-	// 		method: 'POST',
-	// 		data: {
-	// 			id: id
-	// 		},
-	// 		url: baseurl+'PengirimanDokumen/ajax/deleteMaster',
-	// 		success: res => {
-	// 			console.log(res);
-	// 			if(res == 'ok'){
-	// 				alert("Data Telah dihapus")
-	// 				loadTable()
-	// 			}else{
-	// 				alert("Data tidak boleh dihapus")
-	// 			}
-	// 		}
-	// 	})
-	// }
 
 	const loadTable = () => {
 		$.ajax({

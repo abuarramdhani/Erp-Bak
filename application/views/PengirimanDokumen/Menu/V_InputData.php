@@ -386,7 +386,6 @@
 
         //listener row on click
         showDetailRow()
-
     })
 
     const showTableInput = () => {

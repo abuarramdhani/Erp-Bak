@@ -75,7 +75,6 @@ class C_Personalia extends CI_Controller
                         GROUP BY td.id_data,td.noind, emp.employee_name, tm.keterangan, td.tanggal,tr.status, tr.seksi, td.alasan ;
                         ";
         }
-        // echo $selecta;die;
         return $this->db->query($selecta);
     }
 
@@ -278,3 +277,5 @@ class C_Personalia extends CI_Controller
     }
 
 }
+
+// its your mission to move query to model :)
