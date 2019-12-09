@@ -212,6 +212,7 @@ class M_surat extends CI_Model
 			end
 		) as status_staf,
 		pri.alamat,
+		tb_status_jabatan.kd_status as kd_status,
 		tb_status_jabatan.nama_status as nama_status,
 		tb_status_jabatan.nama_jabatan as nama_jabatan_upah
 		from 		hrd_khs.v_hrd_khs_tpribadi as pri
@@ -1274,7 +1275,7 @@ and tahun_surat = '$tahun' and bulan_surat = '$bulan'";
 	}
 	
 	public function getNamaStatus(){
-		$sql = "SELECT distinct nama_status from hrd_khs.tb_status_jabatan WHERE nama_status!='' ";
+		$sql = "SELECT kd_status,nama_status from hrd_khs.tb_master_stat WHERE nama_status!='' GROUP BY kd_status,nama_status ORDER BY kd_status";
 		return $this->personalia->query($sql)->result();
 	}
 

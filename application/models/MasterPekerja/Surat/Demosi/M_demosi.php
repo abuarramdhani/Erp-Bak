@@ -455,6 +455,8 @@ and tahun_surat = '$tahun' and bulan_surat = '$bulan'";
 													demosi.noind,
 													demosi.kodesie_lama,
 													demosi.kodesie_baru,
+													demosi.kd_status_lama,
+ 													demosi.kd_status_baru,
 													demosi.nama_status_lama,
  													demosi.nama_status_baru,
  													demosi.nama_jabatan_upah_lama,

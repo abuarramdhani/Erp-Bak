@@ -439,16 +439,29 @@ class C_Index extends CI_Controller
 
 		$seksi_baru 				=	$this->input->post('txtKodesieBaru');
 		$golongan_pekerjaan_baru	=	$this->input->post('txtGolonganPekerjaanBaru');
+		if($golongan_pekerjaan_baru == null){
+				$golongan_pekerjaan_baru = $golongan_pekerjaan_lama;
+			}
 		$kd_jabatan_baru 			=	$this->input->post('txtKdJabatanBaru');
 		$jabatan_baru 				=	$this->input->post('txtJabatanBaru');
 		$lokasi_kerja_baru          =   $this->input->post('txtLokasiKerjaBaru');
 		// $tempat_makan1_baru         =   $this->input->post('txtTempatMakan1Baru');
 		// $tempat_makan2_baru         =   $this->input->post('txtTempatMakan2Baru');
 		$pekerjaan_baru             =   $this->input->post('txtPekerjaanBaru');
+		if($pekerjaan_baru == null){
+				$pekerjaan_baru = $pekerjaan_lama;
+			}
 		$tanggal_promosi 			=	$this->input->post('txtTanggalPeriode');
 
-		$nama_status_lama			= 	$this->input->post('txtStatusJabatanlama');
-		$nama_status_baru			= 	$this->input->post('txtStatusjabatanBaru');
+		$status_lama				= 	$this->input->post('txtStatusJabatanlama');
+		$status_lama 				= 	explode(' - ', $status_lama);
+		$kd_status_lama				= 	$status_lama[0];
+		$nama_status_lama			= 	$status_lama[1];
+
+		$status_baru				= 	$this->input->post('txtStatusjabatanBaru');
+		$status_baru 				= 	explode(' - ', $status_baru);
+		$kd_status_baru 			= 	$status_baru[0];
+		$nama_status_baru			= 	$status_baru[1];
 
 		$nama_jabatan_upah_lama     =   $this->input->post('txtNamaJabatanUpahlama');
 		$nama_jabatan_upah_baru     =   $this->input->post('txtNamaJabatanUpahBaru');
@@ -522,7 +535,9 @@ class C_Index extends CI_Controller
 			'nama_status_lama'		=>  $nama_status_lama,
 			'nama_status_baru'		=>  $nama_status_baru,
 			'nama_jabatan_upah_lama'=> 	$nama_jabatan_upah_lama,
-			'nama_jabatan_upah_baru'=>	$nama_jabatan_upah_baru
+			'nama_jabatan_upah_baru'=>	$nama_jabatan_upah_baru,
+			'kd_status_lama'		=> 	$kd_status_lama,
+			'kd_status_baru' 		=>	$kd_status_baru
 			);
 		$this->M_promosi->inputSuratPromosi($inputSuratPromosi);
 
@@ -620,15 +635,28 @@ class C_Index extends CI_Controller
 
 		$seksi_baru 				=	$this->input->post('txtKodesieBaru');
 		$golongan_pekerjaan_baru	=	$this->input->post('txtGolonganPekerjaanBaru');
+		if($golongan_pekerjaan_baru == null){
+				$golongan_pekerjaan_baru = $golongan_pekerjaan_lama;
+			}
 		$kd_jabatan_baru 			=	$this->input->post('txtKdJabatanBaru');
 		$jabatan_baru 				=	$this->input->post('txtJabatanBaru');
 		$lokasi_kerja_baru          =   $this->input->post('txtLokasiKerjaBaru');
 		// $tempat_makan1_baru         =   $this->input->post('txtTempatMakan1Baru');
 		// $tempat_makan2_baru         =   $this->input->post('txtTempatMakan2Baru');
 		$pekerjaan_baru             =   $this->input->post('txtPekerjaanBaru');
+		if($pekerjaan_baru == null){
+				$pekerjaan_baru = $pekerjaan_lama;
+			}
 
-		$nama_status_lama			= 	$this->input->post('txtStatusJabatanlama');
-		$nama_status_baru			= 	$this->input->post('txtStatusjabatanBaru');
+		$status_lama				= 	$this->input->post('txtStatusJabatanlama');
+		$status_lama 				= 	explode(' - ', $status_lama);
+		$kd_status_lama				= 	$status_lama[0];
+		$nama_status_lama			= 	$status_lama[1];
+
+		$status_baru				= 	$this->input->post('txtStatusjabatanBaru');
+		$status_baru 				= 	explode(' - ', $status_baru);
+		$kd_status_baru 			= 	$status_baru[0];
+		$nama_status_baru			= 	$status_baru[1];
 
 		$nama_jabatan_upah_lama     =   $this->input->post('txtNamaJabatanUpahlama');
 		$nama_jabatan_upah_baru     =   $this->input->post('txtNamaJabatanUpahBaru');
@@ -701,7 +729,9 @@ class C_Index extends CI_Controller
 			'nama_status_lama'		=>  $nama_status_lama,
 			'nama_status_baru'		=>  $nama_status_baru,
 			'nama_jabatan_upah_lama'=> 	$nama_jabatan_upah_lama,
-			'nama_jabatan_upah_baru'=>	$nama_jabatan_upah_baru
+			'nama_jabatan_upah_baru'=>	$nama_jabatan_upah_baru,
+			'kd_status_lama'		=> 	$kd_status_lama,
+			'kd_status_baru' 		=>	$kd_status_baru
 			);
 		$this->M_promosi->updateSuratPromosi($updateSuratPromosi, $nomor_surat, $kodeSurat, $tanggal_cetak_asli);
 		redirect('MasterPekerja/Surat/SuratPromosi');

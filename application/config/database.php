@@ -64,7 +64,7 @@ $query_builder = TRUE;
 
 $db['default'] = array(
 	'dsn'	=> '',
-	'hostname' => 'database.quick.com',
+	'hostname' => 'dev.quick.com',
 	'username' => 'postgres',
 	'password' => 'password',
 	'database' => 'erp',
@@ -109,7 +109,7 @@ $db['oracle'] = array(
 
 $db['personalia'] = array(
 	'dsn'	=> '',
-	'hostname' => 'database.quick.com',
+	'hostname' => 'dev.quick.com',
 	'username' => 'postgres',
 	'password' => 'password',
 	'database' => 'Personalia',
@@ -132,7 +132,7 @@ $db['personalia'] = array(
 
 $db['quickcom'] = array(
 	'dsn'	=> '',
-	'hostname' => 'database.quick.com',
+	'hostname' => 'dev.quick.com',
 	'username' => 'erp',
 	'password' => 'qu1ck1953',
 	'database' => 'fp_distribusi',
@@ -155,9 +155,9 @@ $db['quickcom'] = array(
 
 $db['quick'] = array(
 	'dsn'	=> '',
-	'hostname' => 'database.quick.com',
-	'username' => 'erp',
-	'password' => 'qu1ck1953',
+	'hostname' => 'dev.quick.com',
+	'username' => 'amri',
+	'password' => 'amri',
 	'database' => '',
 	'dbdriver' => 'mysqli',
 	'dbprefix' => '',
@@ -179,7 +179,7 @@ $db['quick'] = array(
 
 $db['kaizen'] = array(
 	'dsn'	=> '',
-	'hostname' => 'database.quick.com',
+	'hostname' => 'dev.quick.com',
 	'username' => 'erp',
 	'password' => 'qu1ck1953',
 	'database' => 'kaizen',
@@ -337,7 +337,7 @@ $db['daerah'] = array(
 
 $db['erp_db'] = array(
 	'dsn'	=> '',
-	'hostname' => 'database.quick.com',
+	'hostname' => 'dev.quick.com',
 	'username' => 'postgres',
 	'password' => 'password',
 	'database' => 'erp',
@@ -359,9 +359,9 @@ $db['erp_db'] = array(
 
 $db['spl_db'] = array(
 	'dsn'	=> '',
-	'hostname' => 'database.quick.com',
-	'username' => 'spl',
-	'password' => '123321',
+	'hostname' => 'dev.quick.com',
+	'username' => 'amri',
+	'password' => 'amri',
 	'database' => 'splseksi',
 	'dbdriver' => 'mysqli',
 	'dbprefix' => '',
@@ -381,7 +381,7 @@ $db['spl_db'] = array(
 
 $db['lantuma'] = array(
 	'dsn'	=> '',
-	'hostname' => 'database.quick.com',
+	'hostname' => 'dev.quick.com',
 	'username' => 'erp',
 	'password' => 'qu1ck1953',
 	'database' => 'db_lantoolmaking',

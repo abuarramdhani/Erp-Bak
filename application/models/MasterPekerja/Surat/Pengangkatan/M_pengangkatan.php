@@ -451,6 +451,8 @@
 													pengangkatan.jbt_dl_lama,
 													pengangkatan.nama_status_lama,
  													pengangkatan.nama_status_baru,
+ 													pengangkatan.kd_status_lama,
+ 													pengangkatan.kd_status_baru,
  													pengangkatan.nama_jabatan_upah_lama,
  													pengangkatan.nama_jabatan_upah_baru,
 															concat_ws
