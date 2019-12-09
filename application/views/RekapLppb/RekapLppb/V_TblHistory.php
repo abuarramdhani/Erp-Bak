@@ -18,8 +18,8 @@
             <td width=""><b>No. Receipt</b></td>
             <td width=""><b>Receipt Date</b></td>
             <td width=""><b>Sudah LPPB</b></td>
-            <td width=""><b>Proses QC</b></td>
             <td width=""><b>Kirim QC</b></td>
+            <td width=""><b>Proses QC</b></td>
             <td width=""><b>Terima QC</b></td>
             <td width=""><b>Kembali QC</b></td>
             <td width=""><b>Kirim Gudang</b></td>
@@ -47,8 +47,8 @@
                 <td class="<?= $td?>"><?= $key['RECEIPT_NUM'] ?><input type="hidden" name="txtRecNum<?= $i ?>" value="<?= $key['RECEIPT_NUM'] ?>"></td>
                 <td class="<?= $td?>"><?= $key['RECEIPT_DATE'] ?><input type="hidden" name="dateRecDate<?= $i ?>" value="<?= $key['RECEIPT_DATE'] ?>"></td>
                 <td class="<?= $td?>"><?= $key['RECEIPT_DATE'] ?><input type="hidden" name="dateSudah<?= $i ?>" value="<?= $key['RECEIPT_DATE'] ?>"></td>
-                <td class="<?= $td?>"><?= $key['TGL_QC'] ?><input type="hidden" name="prosesQC<?= $i ?>" value="<?= $key['TGL_QC'] ?>"></td>
                 <td class="<?= $td?>"><?= $key['KIRIM_QC'] ?><input type="hidden" name="dateKirimQC<?= $i ?>" value="<?= $key['KIRIM_QC'] ?>"></td>
+                <td class="<?= $td?>"><?= $key['TGL_QC'] ?><input type="hidden" name="prosesQC<?= $i ?>" value="<?= $key['TGL_QC'] ?>"></td>
                 <td class="<?= $td?>"><?= $key['TERIMA_QC'] ?><input type="hidden" name="dateTerimaQC<?= $i ?>" value="<?= $key['TERIMA_QC'] ?>"></td>
                 <td class="<?= $td?>"><?= $key['KEMBALI_QC'] ?><input type="hidden" name="dateKembaliQC<?= $i ?>" value="<?= $key['KEMBALI_QC'] ?>"></td>
                 <td class="<?= $td?>"><?= $key['KIRIM_GUDANG'] ?><input type="hidden" name="dateKirimGd<?= $i ?>" value="<?= $key['KIRIM_GUDANG'] ?>"></td>
