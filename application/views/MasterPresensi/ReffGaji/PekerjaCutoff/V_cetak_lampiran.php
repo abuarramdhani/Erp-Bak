@@ -75,7 +75,16 @@
                             <td style="border: 1px solid black;text-align: center;font-size: 8pt"><?=$key['noind'] ?></td>
                             <td style="border: 1px solid black;text-align: left;font-size: 8pt"><?=$key['nama'] ?></td>
                             <td style="border: 1px solid black;text-align: left;font-size: 8pt"><?=$key['seksi'] ?></td>
-                            <td style="border: 1px solid black;text-align: center;font-size: 8pt"><?php $t = strtotime($key['tanggal']); echo date('d/m/Y',$t); ?></td>
+                            <td style="border: 1px solid black;text-align: center;font-size: 8pt"><?php 
+                            if ('*'==$key['remark_cutoff'])
+                            {
+                                echo "-";
+                            }
+                            else
+                            {
+                                $t = strtotime($key['tanggal']); echo date('d/m/Y',$t); 
+                            }
+                            ?></td>
                             <td style="border: 1px solid black;text-align: center;font-size: 10pt"><?=$key['ika'] ?></td>
                             <td style="border: 1px solid black;text-align: center;font-size: 10pt"><?=$key['ipe'] ?></td>
                             <td style="border: 1px solid black;text-align: center;font-size: 10pt"><?=$key['ipet'] ?></td>
