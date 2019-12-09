@@ -342,7 +342,7 @@ class C_PekerjaCutoff extends CI_Controller
 		$data_staff = $this->M_pekerjacutoff->getPekerjaCufOffAktif($periode,"'B','D','J','T'");
 		// echo "<pre>";print_r($data_staff);exit();
 		if (!empty($data_staff)) {
-			/*
+			
 			$table3 = new XBase\WritableTable(FCPATH."assets/upload/TransferReffGaji/lv_info2.dbf");
 			$table3->openWrite(FCPATH."assets/upload/TransferReffGaji/Cutoff_STAFF".$periode.$waktu.".dbf");
 			foreach ($data_staff as $ds) {
@@ -514,7 +514,7 @@ class C_PekerjaCutoff extends CI_Controller
 				$jumlah_staff++;
 			}
 			$table3->close();
-			*/
+			
 			$data['data'] = $data_staff;
 			$data['cut'] = $this->M_pekerjacutoff->getCutoffDetail($periode);
 			$data['jenis'] = "staff";
@@ -528,17 +528,17 @@ class C_PekerjaCutoff extends CI_Controller
 			$pdf->WriteHTML($html, 2);
 			$pdf->AddPage('L','','','','', 10, 10, 10, 10, 10, 5);
 			$pdf->WriteHTML($html2, 2);
-			// $pdf->Output(FCPATH."assets/upload/TransferReffGaji/Cutoff_".$filename, 'F');
-			$pdf->Output($filename, 'I');
-			// $output .= '<div class="col-lg-6" style="text-align: right">DBF : <a href="'.site_url("MasterPresensi/ReffGaji/PekerjaCutoffReffGaji/download?file=Cutoff_STAFF".$periode."&time=".$waktu."&ext=dbf") .'" class="btn btn-info">STAFF_'.date('my',strtotime($periode)).'</a></div>';
-			// $output_2 .= '<div class="col-lg-6" style="text-align: right">PDF : <a href="'.site_url("MasterPresensi/ReffGaji/PekerjaCutoffReffGaji/download?file=Cutoff_STAFF".$periode."&time=".$waktu."&ext=pdf") .'" class="btn btn-danger">STAFF_'.date('my',strtotime($periode)).'</a></div>';
-			// $file_staff = "Cutoff_STAFF".$periode.$waktu;
+			$pdf->Output(FCPATH."assets/upload/TransferReffGaji/Cutoff_".$filename, 'F');
+			// $pdf->Output($filename, 'I');
+			$output .= '<div class="col-lg-6" style="text-align: right">DBF : <a href="'.site_url("MasterPresensi/ReffGaji/PekerjaCutoffReffGaji/download?file=Cutoff_STAFF".$periode."&time=".$waktu."&ext=dbf") .'" class="btn btn-info">STAFF_'.date('my',strtotime($periode)).'</a></div>';
+			$output_2 .= '<div class="col-lg-6" style="text-align: right">PDF : <a href="'.site_url("MasterPresensi/ReffGaji/PekerjaCutoffReffGaji/download?file=Cutoff_STAFF".$periode."&time=".$waktu."&ext=pdf") .'" class="btn btn-danger">STAFF_'.date('my',strtotime($periode)).'</a></div>';
+			$file_staff = "Cutoff_STAFF".$periode.$waktu;
 		}else{
 			$output .= '<div class="col-lg-6">-</div>';
 			$output_2 .= '<div class="col-lg-6">-</div>';
 			$file_staff = "-";
 		}
-		/*
+		
 		//non-staff
 		$data_nonstaff = $this->M_pekerjacutoff->getPekerjaCufOffAktif($periode,"'A','H','E'");
 
@@ -781,7 +781,7 @@ class C_PekerjaCutoff extends CI_Controller
 		$this->load->view('V_Sidemenu',$data);
 		$this->load->view('MasterPresensi/ReffGaji/PekerjaCutoff/V_hitung',$data);
 		$this->load->view('V_Footer',$data);
-		*/
+		
 	}
 
 	public function download(){
