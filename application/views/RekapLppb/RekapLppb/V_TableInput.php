@@ -53,10 +53,10 @@
                     <input type="button" class="btn btn-xs btn-warning" <?php if ($key['KIRIM_QC'] !== null){ ?> value="<?= $key['KIRIM_QC'] ?>" disabled="disabled" <?php } else{ ?> value="klik" <?php } ?> onclick="SaveKirimQC1(<?=$i?>,<?= $key['RECEIPT_NUM'] ?>)" name="dateKirimQC<?= $i ?>" id="dateKirimQC<?= $i ?>"/>
                 </td>
                 <td class="text-center">
-                    <input type="button" class="btn btn-xs btn-warning" <?php if ($key['TERIMA_QC'] !== null){ ?> value="<?= $key['TERIMA_QC'] ?>" disabled="disabled" <?php } else{ ?> value="klik" <?php } ?> onclick="SaveTerimaQC1(<?=$i?>,<?= $key['RECEIPT_NUM'] ?>)" name="dateTerimaQC<?= $i ?>" id="dateTerimaQC<?= $i ?>"/>    
+                    <input type="button" class="btn btn-xs btn-warning" <?php if ($key['TERIMA_QC'] !== null){ ?> value="<?= $key['TERIMA_QC'] ?>" disabled="disabled" <?php } elseif($key['KIRIM_QC'] != null){ ?> value="klik"<?php }  else{ ?> value="klik" disabled="disabled"<?php } ?> onclick="SaveTerimaQC1(<?=$i?>,<?= $key['RECEIPT_NUM'] ?>)" name="dateTerimaQC<?= $i ?>" id="dateTerimaQC<?= $i ?>"/>    
                 </td>
                 <td class="text-center">
-                    <input type="button" class="btn btn-xs btn-warning" <?php if ($key['KEMBALI_QC'] !== null){ ?> value="<?= $key['KEMBALI_QC'] ?>" disabled="disabled" <?php } else{ ?> value="klik" <?php } ?> onclick="SaveKembaliQC1(<?=$i?>,<?= $key['RECEIPT_NUM'] ?>)" name="dateKembaliQC<?= $i ?>" id="dateKembaliQC<?= $i ?>"/>    
+                    <input type="button" class="btn btn-xs btn-warning" <?php if ($key['KEMBALI_QC'] !== null){ ?> value="<?= $key['KEMBALI_QC'] ?>" disabled="disabled" <?php } elseif($key['TERIMA_QC'] != null){ ?> value="klik"  <?php } else{ ?> value="klik" disabled="disabled"<?php } ?> onclick="SaveKembaliQC1(<?=$i?>,<?= $key['RECEIPT_NUM'] ?>)" name="dateKembaliQC<?= $i ?>" id="dateKembaliQC<?= $i ?>"/>    
                 </td>
                 <td class="text-center">
                     <input type="button" class="btn btn-xs btn-warning" <?php if ($key['KIRIM_GUDANG'] !== null){ ?> value="<?= $key['KIRIM_GUDANG'] ?>" disabled="disabled" <?php } else{ ?> value="klik" <?php } ?> onclick="SaveKirimGudang1(<?=$i?>,<?= $key['RECEIPT_NUM'] ?>)" name="dateKirimGudang<?= $i ?>" id="dateKirimGudang<?= $i ?>"/>    

@@ -3311,6 +3311,10 @@ $route['RekapLppb/Overdue'] 					= 'RekapLppb/RekapLppb/C_Overdue';
 $route['RekapLppb/Overdue/(:any)'] 				= 'RekapLppb/RekapLppb/C_Overdue/$1';
 $route['RekapLppb/Overdue/(:any)/(:any)'] 		= 'RekapLppb/RekapLppb/C_Overdue/$1/$2';
 
+$route['RekapLppb/History'] 					= 'RekapLppb/RekapLppb/C_History';
+$route['RekapLppb/History/(:any)'] 				= 'RekapLppb/RekapLppb/C_History/$1';
+$route['RekapLppb/History/(:any)/(:any)'] 		= 'RekapLppb/RekapLppb/C_History/$1/$2';
+
 $route['RekapLppb/RekapTahunan'] 				= 'RekapLppb/RekapLppb/C_RekapTahunan';
 $route['RekapLppb/RekapTahunan/searchTahunan'] 	= 'RekapLppb/RekapLppb/C_RekapTahunan/searchTahunan';
 $route['RekapLppb/RekapTahunan/(:any)'] 		= 'RekapLppb/RekapLppb/C_RekapTahunan/$1';

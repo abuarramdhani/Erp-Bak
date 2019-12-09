@@ -91,7 +91,7 @@ class C_Rekap extends CI_Controller
 
         $this->load->view('V_Header',$data);
         $this->load->view('V_Sidemenu',$data);
-        $this->load->view('RekapLppb/RekapLppb/V_perbaikan',$data);
+        $this->load->view('RekapLppb/RekapLppb/V_Rekap',$data);
         $this->load->view('V_Footer',$data);
 
 	}

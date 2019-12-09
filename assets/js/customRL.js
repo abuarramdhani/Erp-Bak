@@ -282,6 +282,30 @@ $(document).ready(function(){
                 })
         });
     }
+
+
+    function schHistoryLppb(th) { 
+        $(document).ready(function(){
+        var tgl = $('#tgl').val();
+        var id_org = $('#id_org').val();
+        var item = $('#item_history').val();
+        var desc = $('#desc_history').val();
+        console.log(tgl, item, desc);
+        var request = $.ajax({
+                url: baseurl+'RekapLppb/History/searchHistory',
+                data: {	tgl : tgl, id_org : id_org, item : item, desc : desc },
+                type: "POST",
+                datatype: 'html'
+        });
+        $('#tb_historyLppb').html('');
+        $('#tb_historyLppb').html('<center><img style="width:130px; height:auto" src="'+baseurl+'assets/img/gif/loading10.gif"></center>' );
+        request.done(function(result){
+            // console.log(result)
+                $('#tb_historyLppb').html('');
+                $('#tb_historyLppb').html(result);
+                })
+        });
+    }
  
 
 function SaveKirimQC1(number , recnum ) {
@@ -301,6 +325,7 @@ function SaveKirimQC1(number , recnum ) {
         });
         $('#dateKirimQC'+number).each(function() {
             $('#dateKirimQC'+number).val(kirimqc); 
+            $('#dateTerimaQC'+number).removeAttr("disabled");
             // console.log(datepack);
         })
 
@@ -323,6 +348,7 @@ function SaveKirimQC1(number , recnum ) {
         });
         $('#dateTerimaQC'+number).each(function() {
             $('#dateTerimaQC'+number).val(terimaqc); 
+            $('#dateKembaliQC'+number).removeAttr("disabled");
             // console.log(datepack);
         })
     }
@@ -389,6 +415,67 @@ function SaveKirimQC1(number , recnum ) {
             // console.log(datepack);
         })
     }
+
+
+    $(document).ready(function () {
+        $("#item_history").select2({
+            allowClear: false,
+            placeholder: "Item",
+            minimumInputLength: 1,
+            ajax: {
+                url: baseurl + "RekapLppb/History/suggestItem",
+                dataType: 'json',
+                type: "GET",
+                data: function (params) {
+                    var queryParameters = {
+                        term: params.term,
+                    }
+                    return queryParameters;
+                },
+                processResults: function (data) {
+                    // console.log(data);
+                    return {
+                        results: $.map(data, function (obj) {
+                            return {
+                                id: obj.ITEM,
+                                text: obj.ITEM
+                            };
+                        })
+                    };
+                }
+            }
+        });
+    });
+
+    $(document).ready(function () {
+        $("#desc_history").select2({
+            allowClear: false,
+            placeholder: "Deskripsi",
+            minimumInputLength: 1,
+            ajax: {
+                url: baseurl + "RekapLppb/History/suggestDesc",
+                dataType: 'json',
+                type: "GET",
+                data: function (params) {
+                    var queryParameters = {
+                        term: params.term,
+                    }
+                    return queryParameters;
+                },
+                processResults: function (data) {
+                    // console.log(data);
+                    return {
+                        results: $.map(data, function (obj) {
+                            return {
+                                id: obj.DESCRIPTION,
+                                text: obj.DESCRIPTION
+                            };
+                        })
+                    };
+                }
+            }
+        });
+    });
 
 
 

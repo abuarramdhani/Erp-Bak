@@ -2,15 +2,21 @@
 	<script src="<?php echo base_url('assets/plugins/dataTables/dataTables.bootstrap.js');?>"></script>
      <script>
          $(document).ready(function () {
+            // $('.datepickTanggal').datepicker({
+            //     autoclose: true,
+            //     todayHighlight: true,
+            //     dateFormat: 'dd/mm/yyyy',
+            // });
             $('.datepickBulan').datepicker({
-                format: 'M-yyyy',
-                viewMode: "months",
-                minViewMode: "months",
+                format: 'dd-M-yyyy',
+                todayHighlight: true,
+                // viewMode: "months",
+                // minViewMode: "months",
                 autoClose: true
             });
-            $('.tblRkapLppb').dataTable({
-                "scrollX": true,
-            });
+            // $('.tblRkapLppb').dataTable({
+            //     "scrollX": true,
+            // });
             
          });
     </script>
@@ -32,7 +38,7 @@
                         <div class="col-lg-1 ">
                             <div class="text-right hidden-md hidden-sm hidden-xs">
                                 <a class="btn btn-default btn-lg"
-                                    href="<?php echo site_url('RekapLppb/Rekap/');?>">
+                                    href="<?php echo site_url('RekapLppb/History/');?>">
                                     <i class="icon-wrench icon-2x">
                                     </i>
                                     <span>
@@ -47,11 +53,21 @@
                 <div class="row">
                     <div class="col-md-12">
                         <div class="box box-primary box-solid">
-                            <div class="box-header with-border"><b>Rekap</b></div>
+                            <div class="box-header with-border"><b>History</b></div>
                             <div class="box-body">
                                 <div class="panel-body">
                                     <div class="col-md-3">
-                                        <input id="bulan" name="bulan" class="form-control pull-right datepickBulan" placeholder="<?= $bulan?>" >
+                                        <input id="tgl" name="tgl" class="form-control pull-right datepickBulan" placeholder="Tanggal Recipt" >
+                                    </div>
+                                    <div class="col-md-3">
+                                        <select class="form-control select2" data-placeholder="Item" id="item_history" name="item_history">
+                                        <option></option>
+                                        </select>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <select class="form-control select2" data-placeholder="Deskripsi" id="desc_history" name="desc_history">
+                                        <option></option>
+                                        </select>
                                     </div>
                                     <div class="col-md-3">
                                         <div class="input-group">
@@ -59,17 +75,19 @@
                                         <option></option>
                                         </select>
                                         <span class="input-group-btn">
-                                            <button type="button" onclick="schRekapLppb(this)" class="btn btn-flat" style="background:inherit; text-align:left;padding:0px;padding-left:10px;"><i class="fa fa-2x fa-arrow-circle-right" ></i></button>    
+                                            <button type="button" onclick="schHistoryLppb(this)" class="btn btn-flat" style="background:inherit; text-align:left;padding:0px;padding-left:10px;"><i class="fa fa-2x fa-arrow-circle-right" ></i></button>    
                                         </span>
                                         </div>
                                     </div>
                                 </div>
 
-                                <div class="panel-body">
-                                    <div class="table-responsive"  id="tb_rekapLppb">
-                                    
+                                    <div class="panel-body">
+                                        <div class="table-responsive"  id="tb_historyLppb">
+                                        <!-- <table class="table table-striped table-bordered table-responsive table-hover text-left tblRkapLppb" style="font-size:14px;"> -->
+                                            
+                                        <!-- </table> -->
+                                        </div>
                                     </div>
-                                </div>
                             </div>
                         </div>
                     </div>
