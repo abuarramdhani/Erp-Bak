@@ -89,7 +89,9 @@ class M_pekerjacutoff extends CI_Model
 	}
 
 	public function getPekerjaCufOffAktif($periode,$noind){
-		$sql = "select '$periode'::date as tanggal, b.noind as noind, b.nama as nama, b.kodesie as kodesie, 
+		$sql = "select *
+				from (
+				select '$periode'::date as tanggal, b.noind as noind, b.nama as nama, b.kodesie as kodesie, 
  						'0' as ipe, '0' as ika, '0' as ubt, '0' as upamk, '0' as um, 
  						case when left(a.noind,1) in ('B','D','J') then 
  							(
@@ -106,7 +108,7 @@ class M_pekerjacutoff extends CI_Model
 							)
 						else 
 							'0'
-						end as ief, 
+						end::varchar as ief, 
  						'0' as ims, '0' as imm, '0' as jam_lembur, '0' as ijin, 0 as pot, 
  						(
  							select 30 - count(*)
@@ -119,7 +121,7 @@ class M_pekerjacutoff extends CI_Model
 							on libur.tanggal = dates.dates
 							where libur.tanggal is null 
 							and extract(isodow from dates.dates) <> '7'	
-						) as htm, 
+						)::varchar as htm, 
  						0 as tamb_gaji, 0 as hl, 0 as ct, '0' as putkop, '0' as plain, '0' as pikop, 
  						'0' as pspsi, '0' as putang, '0' as dldobat, '0' as tkpajak, '0' as ttpajak, 
  						'0' as pduka, '0' as utambahan, '0' as btransfer, '0' as dendaik, '0' as plbhbayar, 
@@ -143,7 +145,35 @@ class M_pekerjacutoff extends CI_Model
 						and b.keluar = '1'
 						)
 					)
-				order by b.kodesie";
+				union all
+				select  tanggal_keluar, b.noind as noind, b.nama as nama, b.kodesie, 
+ 						ipe, ika, ubt, upamk, um, ief, ims, imm, jam_lembur, ijin, pot, 
+ 						htm, tamb_gaji, hl, ct, putkop, plain, pikop, 
+ 						pspsi, putang, dldobat, tkpajak, ttpajak, 
+ 						pduka, utambahan, btransfer, dendaik, plbhbayar, 
+ 						pgp, tlain, xduka, ket, cicil, ubs, 
+ 						ubs_rp, um_puasa, b.noind_baru, jns_transaksi, 
+ 						angg_jkn, potongan_str, tambahan_str, reff_id, lokasi_krj, 
+ 						ipet, um_cabang,  susulan, jml_jkn, jml_jht, jml_jp,c.seksi
+ 				from \"Presensi\".treffgaji_keluar a 
+ 				left join hrd_khs.tpribadi b 
+				on a.noind = b.noind
+				left join hrd_khs.tseksi c 
+				on b.kodesie = c.kodesie
+	 			where tanggal_keluar between (
+		 				select tanggal_awal 
+		 				from \"Presensi\".tcutoff 
+		 				where periode = to_char('$periode'::date,'yyyymm') 
+		 				and os = '0'
+	 				) and  (
+	 					select to_char(tanggal_akhir,'yyyy-mm-01')::date - interval '1 day'
+	 					from \"Presensi\".tcutoff 
+	 					where periode = to_char('$periode'::date,'yyyymm') 
+	 					and os = '0'
+	 				)
+	 			and left(a.noind,1) in ($noind)
+				) as tbl 
+				order by kodesie,noind";
 		return $this->personalia->query($sql)->result_array();
 	}
 

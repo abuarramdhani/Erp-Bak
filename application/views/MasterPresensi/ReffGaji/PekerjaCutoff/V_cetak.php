@@ -5,6 +5,12 @@
 </head>
 <body>
 	<?php 
+		$noind_cut = array();
+		if (!empty($cut)) {
+			foreach ($cut as $value) {
+				$noind_cut[] = $value['noind'];
+			}
+		}
 		if($jenis == "staff"){ ?>
 			<table style="width: 100%;border-bottom: 1px solid black">
 				<tbody>
@@ -93,18 +99,21 @@
 					<?php 
 					if (isset($data) and !empty($data)) {
 						$nomor = 1;
-						foreach ($data as $key) { ?>
-							<tr>
-								<td style="border: 1px solid black;padding-left: 10px;padding-right: 10px;text-align: center"><?=$nomor ?></td>
-								<td style="border: 1px solid black;padding-left: 10px;padding-right: 10px;text-align: center"><?=$key['noind'] ?></td>
-								<td style="border: 1px solid black;padding-left: 10px;padding-right: 10px;"><?=$key['nama'] ?></td>
-								<td style="border: 1px solid black;padding-left: 10px;padding-right: 10px;"><?=$key['seksi'] ?></td>
-								<td style="border: 1px solid black;padding-left: 10px;padding-right: 10px;text-align: center"><?=$key['ief'] ?></td>
-								<td style="border: 1px solid black;padding-left: 10px;padding-right: 10px;text-align: center"><?=$key['ief'] ?></td>
-								<td style="border: 1px solid black;padding-left: 10px;padding-right: 10px;text-align: center">Tidak dipotong</td>
-							</tr>
+						foreach ($data as $key) { 
+							if (in_array($key['noind'], $noind_cut)) { ?>
+								<tr>
+									<td style="border: 1px solid black;padding-left: 10px;padding-right: 10px;text-align: center"><?=$nomor ?></td>
+									<td style="border: 1px solid black;padding-left: 10px;padding-right: 10px;text-align: center"><?=$key['noind'] ?></td>
+									<td style="border: 1px solid black;padding-left: 10px;padding-right: 10px;"><?=$key['nama'] ?></td>
+									<td style="border: 1px solid black;padding-left: 10px;padding-right: 10px;"><?=$key['seksi'] ?></td>
+									<td style="border: 1px solid black;padding-left: 10px;padding-right: 10px;text-align: center"><?=$key['ief'] ?></td>
+									<td style="border: 1px solid black;padding-left: 10px;padding-right: 10px;text-align: center"><?=$key['ief'] ?></td>
+									<td style="border: 1px solid black;padding-left: 10px;padding-right: 10px;text-align: center">Tidak dipotong</td>
+								</tr>
+							 	
 							<?php 
-							$nomor++;
+								$nomor++;
+							 } 
 						}
 					}
 					?>
@@ -245,7 +254,8 @@
 					<?php 
 					if (isset($data) and !empty($data)) {
 						$nomor = 1;
-						foreach ($data as $key) { ?>
+						foreach ($data as $key) { 
+							if (in_array($key['noind'], $noind_cut)) { ?>
 							<tr>
 								<td style="border: 1px solid black;padding-left: 10px;padding-right: 10px;text-align: center"><?=$nomor ?></td>
 								<td style="border: 1px solid black;padding-left: 10px;padding-right: 10px;text-align: center"><?=$key['noind'] ?></td>
@@ -256,6 +266,7 @@
 							</tr>
 							<?php 
 							$nomor++;
+							}
 						}
 					}
 					?>

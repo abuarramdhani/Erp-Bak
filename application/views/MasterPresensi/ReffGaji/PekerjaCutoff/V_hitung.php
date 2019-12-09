@@ -16,9 +16,8 @@
 									<div class="col-lg-12">
 										<h2 style="text-align: center">Pekerja Cutoff bulan <?php echo date('F Y',strtotime($periode)) ?></h2>
 										<div class="col-lg-12" style="text-align: center">
-											<div class="col-lg-4">STAFF : <?=$jumlah_staff ?></div>
-											<div class="col-lg-4">NON STAFF : <?=$jumlah_nonstaff ?></div>
-											<div class="col-lg-4">OS : <?=$jumlah_os ?></div>
+											<div class="col-lg-6">STAFF : <?=$jumlah_staff ?></div>
+											<div class="col-lg-6">NON STAFF : <?=$jumlah_nonstaff ?></div>
 										</div>
 									</div>
 								</div>

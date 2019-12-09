@@ -25,7 +25,6 @@
 													<th class="text-center">Waktu Buat</th>
 													<th class="text-center">Staff</th>
 													<th class="text-center">Non-Staff</th>
-													<th class="text-center">OS</th>
 												</tr>
 											</thead>
 											<tbody>
@@ -51,14 +50,6 @@
 																	<?php if ($key['file_nonstaff'] !== "-") { ?>
 																		<a href="<?php echo site_url('assets/upload/TransferReffGaji/'.$key['file_nonstaff'].'.dbf') ?>" class="btn btn-info">DBF</a>
 																		<a href="<?php echo site_url('assets/upload/TransferReffGaji/'.$key['file_nonstaff'].'.pdf') ?>" class="btn btn-danger">PDF</a>
-																	<?php }else{
-																		echo " - ";
-																	} ?>
-																</td>
-																<td style="text-align: center;vertical-align: middle;">
-																	<?php if ($key['file_os'] !== "-") { ?>
-																		<a href="<?php echo site_url('assets/upload/TransferReffGaji/'.$key['file_os'].'.dbf') ?>" class="btn btn-info">DBF</a>
-																		<a href="<?php echo site_url('assets/upload/TransferReffGaji/'.$key['file_os'].'.pdf') ?>" class="btn btn-danger">PDF</a>
 																	<?php }else{
 																		echo " - ";
 																	} ?>
