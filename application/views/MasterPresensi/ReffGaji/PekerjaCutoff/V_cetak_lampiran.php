@@ -4,6 +4,8 @@
 	<title></title>
 </head>
 <body>
+    <h2>Lampiran</h2>
+    <h2>Gaji <?php echo ucwords(strtolower($jenis)) ?> yang di-cut off pada penggajian bulan <?php echo strftime('%B %Y',strtotime($memo['periode']." - 1 month")) ?> dan Pekerja Keluar <?php echo $memo['cutawal'] !== "-" ? strftime("%d %B %Y",strtotime($memo['cutawal'])) : "-" ?> s.d <?php echo $memo['akhirbulan'] !== "-" ? strftime("%d %B %Y",strtotime($memo['akhirbulan'])) : "-" ?></h2>
 	<table style="width:100%" style="border-collapse: collapse;border: 1px solid black">
         <thead>
             <tr>
@@ -72,7 +74,7 @@
                             <td style="border: 1px solid black;text-align: center;font-size: 8pt"><?=$key['noind'] ?></td>
                             <td style="border: 1px solid black;text-align: left;font-size: 8pt"><?=$key['nama'] ?></td>
                             <td style="border: 1px solid black;text-align: left;font-size: 8pt"><?=$key['seksi'] ?></td>
-                            <td style="border: 1px solid black;text-align: center;font-size: 8pt"><?php $t = strtotime($key['tgl_keluar']); echo date('d/m/Y',$t); ?></td>
+                            <td style="border: 1px solid black;text-align: center;font-size: 8pt"><?php $t = strtotime($key['tanggal']); echo date('d/m/Y',$t); ?></td>
                             <td style="border: 1px solid black;text-align: center;font-size: 8pt"><?=$key['ika'] ?></td>
                             <td style="border: 1px solid black;text-align: center;font-size: 8pt"><?=$key['ipe'] ?></td>
                             <td style="border: 1px solid black;text-align: center;font-size: 8pt"><?=$key['ipet'] ?></td>
@@ -86,7 +88,7 @@
                             <td style="border: 1px solid black;text-align: center;font-size: 8pt"><?=$key['upamk'] ?></td>
                             <td style="border: 1px solid black;text-align: center;font-size: 8pt"><?=$key['ct'] ?></td>
                             <td style="border: 1px solid black;text-align: center;font-size: 8pt"><?=$key['ket'] ?></td>
-                            <td style="border: 1px solid black;text-align: center;font-size: 8pt"><?="" ?></td>
+                            <td style="border: 1px solid black;text-align: center;font-size: 8pt"><?=$key['dldobat'] ?></td>
                             <td style="border: 1px solid black;text-align: center;font-size: 8pt"><?=$key['htm'] + $key['ijin']  ?></td>
                             <td style="border: 1px solid black;text-align: center;font-size: 8pt"><?=$key['plain'] ?></td>
                             <td style="border: 1px solid black;text-align: center;font-size: 8pt"><?=$key['jml_jkn'] ?></td>
@@ -99,7 +101,7 @@
                             <td style="border: 1px solid black;text-align: center;font-size: 8pt"><?=$key['noind'] ?></td>
                             <td style="border: 1px solid black;text-align: left;font-size: 8pt"><?=$key['nama'] ?></td>
                             <td style="border: 1px solid black;text-align: left;font-size: 8pt"><?=$key['seksi'] ?></td>
-                            <td style="border: 1px solid black;text-align: center;font-size: 8pt"><?php $t = strtotime($key['tgl_keluar']); echo date('d/m/Y',$t); ?></td>
+                            <td style="border: 1px solid black;text-align: center;font-size: 8pt"><?php $t = strtotime($key['tanggal']); echo date('d/m/Y',$t); ?></td>
                             <td style="border: 1px solid black;text-align: center;font-size: 8pt"><?=$key['ika'] ?></td>
                             <td style="border: 1px solid black;text-align: center;font-size: 8pt"><?=$key['ipe'] ?></td>
                             <td style="border: 1px solid black;text-align: center;font-size: 8pt"><?=$key['ief'] ?></td>
@@ -112,7 +114,7 @@
                             <td style="border: 1px solid black;text-align: center;font-size: 8pt"><?=$key['um_puasa'] ?></td>
                             <td style="border: 1px solid black;text-align: center;font-size: 8pt"><?=$key['ct'] ?></td>
                             <td style="border: 1px solid black;text-align: center;font-size: 8pt"><?=$key['ket'] ?></td>
-                            <td style="border: 1px solid black;text-align: center;font-size: 8pt"><?="" ?></td>
+                            <td style="border: 1px solid black;text-align: center;font-size: 8pt"><?=$key['dldobat'] ?></td>
                             <td style="border: 1px solid black;text-align: center;font-size: 8pt"><?=$key['plain'] ?></td>
                             <td style="border: 1px solid black;text-align: center;font-size: 8pt"><?=$key['jml_jkn'] ?></td>
                             <td style="border: 1px solid black;text-align: center;font-size: 8pt"><?=$key['jml_jht'] ?></td>

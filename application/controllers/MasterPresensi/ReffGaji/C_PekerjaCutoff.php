@@ -309,7 +309,7 @@ class C_PekerjaCutoff extends CI_Controller
 	}
 
 	public function hitung($periode){
-		// echo "<pre>";print_r($_POST);exit();
+		// echo "<pre>";print_r($_SESSION);exit();
 		$waktu = time();
 		$output = "";
 		$output_2 = "";
@@ -321,7 +321,7 @@ class C_PekerjaCutoff extends CI_Controller
 		$to_staff = $this->input->post('cutoff_kepada_staff');
 		$to_nonstaff = $this->input->post('cutoff_kepada_nonstaff');
 		$dibuat = $this->session->user;
-
+		$dibuat_oleh = $this->session->employee;
 		$data_memo = array(
 			'nomor_surat' 		=> $nomor_surat,
 			'mengetahui' 		=> $this->M_pekerjacutoff->getNamaByNoind($mengetahui),
@@ -332,6 +332,8 @@ class C_PekerjaCutoff extends CI_Controller
 			'jabatan_2' 		=> $this->M_pekerjacutoff->getJabByNoind($dibuat),
 			'periode'			=> $periode,
 			'seksi'				=> $this->M_pekerjacutoff->getSeksiByNoind($dibuat),
+			'cutawal'			=> $this->M_pekerjacutoff->getCutoffAwal($periode),
+			'akhirbulan'		=> $this->M_pekerjacutoff->getAkhirbulan($periode)
 		);
 		$data['memo'] = $data_memo;
 		
@@ -521,7 +523,7 @@ class C_PekerjaCutoff extends CI_Controller
 			// $this->load->view('MasterPresensi/ReffGaji/PekerjaCutoff/V_cetak', $data);
 			$html = $this->load->view('MasterPresensi/ReffGaji/PekerjaCutoff/V_cetak', $data, true);
 			$html2 = $this->load->view('MasterPresensi/ReffGaji/PekerjaCutoff/V_cetak_lampiran', $data, true);
-			$pdf->SetHTMLFooter("<i style='font-size: 8pt'>Halaman ini dicetak melalui Aplikasi QuickERP-MasterPresensi oleh ".$this->session->user." pada tgl. ".strftime('%d/%h/%Y %H:%M:%S').". Halaman {PAGENO} dari {nb}</i>");
+			$pdf->SetHTMLFooter("<i style='font-size: 8pt'>Halaman ini dicetak melalui Aplikasi QuickERP-MasterPresensi oleh ".$this->session->user." ".$this->session->employee." pada tgl. ".strftime('%d/%h/%Y %H:%M:%S').". Halaman {PAGENO} dari {nb}</i>");
 			$pdf->WriteHTML($html, 2);
 			$pdf->AddPage('L','','','','', 10, 10, 10, 10, 10, 5);
 			$pdf->WriteHTML($html2, 2);
@@ -730,7 +732,7 @@ class C_PekerjaCutoff extends CI_Controller
 			// $this->load->view('MasterPresensi/ReffGaji/PekerjaCutoff/V_cetak', $data);
 			$html = $this->load->view('MasterPresensi/ReffGaji/PekerjaCutoff/V_cetak', $data, true);
 			$html2 = $this->load->view('MasterPresensi/ReffGaji/PekerjaCutoff/V_cetak_lampiran', $data, true);
-			$pdf->SetHTMLFooter("<i style='font-size: 8pt'>Halaman ini dicetak melalui Aplikasi QuickERP-MasterPresensi oleh ".$this->session->user." pada tgl. ".strftime('%d/%h/%Y %H:%M:%S').". Halaman {PAGENO} dari {nb}</i>");
+			$pdf->SetHTMLFooter("<i style='font-size: 8pt'>Halaman ini dicetak melalui Aplikasi QuickERP-MasterPresensi oleh ".$this->session->user." ".$this->session->employee." pada tgl. ".strftime('%d/%h/%Y %H:%M:%S').". Halaman {PAGENO} dari {nb}</i>");
 			$pdf->WriteHTML($html, 2);
 			$pdf->AddPage('L','','','','', 10, 10, 10, 10, 10, 5);
 			$pdf->WriteHTML($html2, 2);

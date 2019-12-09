@@ -214,10 +214,36 @@ class M_pekerjacutoff extends CI_Model
 	public function getMemoList(){
 		$sql = "select (select concat(noind,' - ',nama) from hrd_khs.tpribadi b where a.created_by = b.noind) as dibuat, 
 				(select concat(noind,' - ',nama) from hrd_khs.tpribadi b where a.mengetahui = b.noind) as mengetahui, 
-				kepada_nonstaff,kepada_staff, file_staff, file_nonstaff, file_os, nomor_surat, periode, created_timestamp
+				kepada_nonstaff,kepada_staff, file_staff, file_nonstaff, nomor_surat, periode, created_timestamp
 				from \"Presensi\".tcutoff_custom_memo a 
 				order by created_timestamp desc";
 		return $this->personalia->query($sql)->result_array();
+	}
+
+	public function getCutoffAwal($periode){
+		$sql = "select tanggal_awal 
+ 				from \"Presensi\".tcutoff 
+ 				where periode = to_char('$periode'::date,'yyyymm') 
+ 				and os = '0'";
+ 		$result = $this->personalia->query($sql)->row();
+		if(!empty($result)){
+			return $result->tanggal_awal;
+		}else{
+			return "-";
+		}
+	}
+
+	public function getAkhirbulan($periode){
+		$sql = "select to_char(tanggal_akhir,'yyyy-mm-01')::date - interval '1 day' as akhir_bulan
+					from \"Presensi\".tcutoff 
+					where periode = to_char('$periode'::date,'yyyymm') 
+					and os = '0'";
+		$result = $this->personalia->query($sql)->row();
+		if(!empty($result)){
+			return $result->akhir_bulan;
+		}else{
+			return "-";
+		}
 	}
 
 }
