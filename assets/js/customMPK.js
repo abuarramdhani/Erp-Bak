@@ -458,7 +458,7 @@ $(function() {
              processResults: function(data) {
                  return {
                      results: $.map(data, function(obj) {
-                         return { id: obj.nama_status, text: obj.nama_status };
+                         return { id: obj.kd_status+ " - "+obj.nama_status, text: obj.kd_status+ " - "+obj.nama_status };
                      })
                  };
              }
@@ -594,7 +594,7 @@ $(function() {
     });
 
     $('#MasterPekerja-DaftarGolonganPekerjaan').select2({
-        allowClear: false,
+        allowClear: true,
         placeholder: 'Pilih Golongan Pekerjaan',
         ajax: {
             url: baseurl + 'MasterPekerja/Surat/SuratMutasi/daftar_golongan_pekerjaan',
@@ -940,7 +940,7 @@ $('#MasterPekerja-Surat-DaftarPekerja').change(function() {
                 $('#MasterPekerja-txtTempatMakan2').val(result['tempat_makan2']);
                 $('#MasterPekerja-txtStatusStaf').val(result['status_staf']);
                 $('#MasterPekerja-Surat-FingerAwal').val(result['id_lokasifinger'] + ' - ' + result['lokasi_finger']);
-                $('#MasterPekerja-txtStatusJabatanlama').val(result['nama_status']);
+                $('#MasterPekerja-txtStatusJabatanlama').val(result['kd_status']+ " - " +result['nama_status']);
                 $('#MasterPekerja-txtNamaJabatanUpahlama').val(result['nama_jabatan_upah']);
             }
         });
@@ -993,7 +993,7 @@ $('.MasterPekerja-Surat-DaftarPekerja').change(function() {
                 $('.MasterPekerja-txtTempatMakan2').val(result['tempat_makan2']);
                 $('.MasterPekerja-txtStatusStaf').val(result['status_staf']);
                 $('#MasterPekerja-Surat-FingerAwal').val(result['id_lokasifinger'] + ' - ' + result['lokasi_finger']);
-                $('#MasterPekerja-txtStatusJabatanlama').val(result['nama_status']);
+                $('#MasterPekerja-txtStatusJabatanlama').val(result['kd_status']+ " - " +result['nama_status']);
                 $('#MasterPekerja-txtNamaJabatanUpahlama').val(result['nama_jabatan_upah']);
             }
         });
