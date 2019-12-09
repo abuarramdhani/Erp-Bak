@@ -7,6 +7,7 @@
         });
 </script>
 
+<div class="table-responsive"  id="tb_historyLppb">
 <table class="table table-striped table-bordered table-responsive table-hover text-left tblRkapLppb" style="font-size:14px;">
     <thead>
         <tr class="bg-primary">
@@ -82,3 +83,4 @@
     } ?>
     </tbody>
 </table>
+</div>
