@@ -65,7 +65,7 @@ function getMGS(th) {
     var no_document     = $('input[name="no_document"]').val();
     var tglAwal         = $('input[name="tglAwal"]').val();
     var tglAkhir        = $('input[name="tglAkhir"]').val();
-    var pic             = $('input[name="pic"]').val();
+    var pic             = $('#pic').val();
     var item            = $('input[name="item"]').val();
     console.log(search_by,jenis_dokumen,no_document,tglAwal,tglAkhir,pic,item);
 if( search_by == 'export'){
@@ -125,7 +125,7 @@ $('#search_by').change(function(){
         $('#slcTgl').css('display', 'none');
         $('#slcPIC').css('display', 'none');
         $('#slcItem').css('display', 'none');
-        $('input[name="pic"]').val('');
+        $('#pic').val('');
         $('input[name="tglAwal"]').val('');
         $('input[name="tglAkhir"]').val('');
         $('input[name="item"]').val('');
@@ -135,7 +135,7 @@ $('#search_by').change(function(){
         $('#slcjenis').css('display', 'none');
         $('#slcPIC').css('display', 'none');
         $('#slcItem').css('display', 'none');
-        $('input[name="pic"]').val('');
+        $('#pic').val('');
         $('input[name="no_document"]').val('');
         $('#jenis_dokumen').val('');
         $('input[name="item"]').val('');
@@ -159,7 +159,7 @@ $('#search_by').change(function(){
         $('input[name="no_document"]').val('');
         $('input[name="tglAwal"]').val('');
         $('input[name="tglAkhir"]').val('');
-        $('input[name="pic"]').val('');
+        $('#pic').val('');
         $('#jenis_dokumen').val('');
     }else if(value == "export"){
         $('#slcjenis').css('display', '')
@@ -173,7 +173,7 @@ $('#search_by').change(function(){
         $('input[name="tglAkhir"]').val('');
         $('#jenis_dokumen').val('');
         $('input[name="item"]').val('');
-        $('input[name="pic"]').val('');
+        $('#pic').val('');
     }
 });
 
@@ -231,6 +231,24 @@ $("#frmMGS").keypress(function(e) {   //Enter key
         $.ajax ({
             url : baseurl + "MonitoringGdSparepart/Monitoring/saveKetr",
             data: {no: no, nomor : nomor, doc : doc, ket : ket, item : item  },
+            type : "POST",
+            dataType: "html"
+        });
+
+    }
+
+    function saveAction(no , nomor) {
+        // var ket = 'kirim_qc';
+        var action = $('#action'+no+nomor).val();
+        var item = $('#item'+no+nomor).val();
+        var doc = $('#doc'+no+nomor).val();
+        // console.log(number , itemid , recnum , po, kirimqc)
+        if(!action){
+            return;
+        }
+        $.ajax ({
+            url : baseurl + "MonitoringGdSparepart/Monitoring/saveAction",
+            data: {no: no, nomor : nomor, doc : doc, action : action, item : item  },
             type : "POST",
             dataType: "html"
         });

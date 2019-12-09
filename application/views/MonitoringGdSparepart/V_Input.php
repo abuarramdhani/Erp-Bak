@@ -90,7 +90,14 @@
                                     <div class="panel-body">
                                         <div class="col-md-2" align="center" style="float:none; margin: 0 auto">
                                             <label>PIC</label>
-                                            <input id="pic" name="pic" class="form-control" style="width:100%;" required>
+                                            <!-- <input id="pic" name="pic" class="form-control" style="width:100%;" required> -->
+                                            <select id="pic" name="pic" class="form-control select2 select2-hidden-accessible" style="width:100%;" required>
+                                            <option></option>
+                                            <option value="SEFIAN">SEFIAN</option>
+                                            <option value="IHSAN">IHSAN</option>
+                                            <option value="ARI">ARI</option>
+                                            <option value="IRWAN">IRWAN</option>
+                                        </select>
                                         </div>
                                     </div>
                                     <div class="panel-heading text-right">
