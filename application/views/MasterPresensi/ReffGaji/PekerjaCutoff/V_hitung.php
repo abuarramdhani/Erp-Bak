@@ -16,20 +16,18 @@
 									<div class="col-lg-12">
 										<h2 style="text-align: center">Pekerja Cutoff bulan <?php echo date('F Y',strtotime($periode)) ?></h2>
 										<div class="col-lg-12" style="text-align: center">
-											<div class="col-lg-6">STAFF : <?=$jumlah_staff ?></div>
-											<div class="col-lg-6">NON STAFF : <?=$jumlah_nonstaff ?></div>
+											<div class="col-lg-6" style="text-align: right;">STAFF : <?=$jumlah_staff ?></div>
+											<div class="col-lg-6" style="text-align: left;">NON STAFF : <?=$jumlah_nonstaff ?></div>
 										</div>
 									</div>
 								</div>
 								<div class="row">
 									<div class="col-lg-12 text-center">
-										<h5 style="text-align: left">DBF :</h5>
 										<?php echo $output ?>
 									</div>
-								</div>
+								</div><br>
 								<div class="row">
 									<div class="col-lg-12 text-center">
-										<h5 style="text-align: left">PDF :</h5>
 										<?php echo $output_2 ?>
 									</div>
 								</div>

@@ -58,7 +58,7 @@
 				<tr>
 					<td>Hal</td>
 					<td>:</td>
-					<td colspan="2">Memo Gaji Staff yang Dibayar Cut Off dan Pekerja Keluar <?php echo $memo['cutawal'] !== "-" ? strftime("%d %B %Y",strtotime($memo['cutawal'])) : "-" ?> s.d <?php echo $memo['akhirbulan'] !== "-" ? strftime("%d %B %Y",strtotime($memo['akhirbulan'])) : "-" ?></td>
+					<td colspan="2">Memo Gaji Staff yang Dibayar Cut Off & <br> Pekerja Keluar <?php echo $memo['cutawal'] !== "-" ? strftime("%d %B %Y",strtotime($memo['cutawal'])) : "-" ?> s.d <?php echo $memo['akhirbulan'] !== "-" ? strftime("%d %B %Y",strtotime($memo['akhirbulan'])) : "-" ?></td>
 				</tr>
 				<tr>
 					<td colspan="4">&nbsp;</td>

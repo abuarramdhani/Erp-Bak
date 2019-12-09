@@ -91,7 +91,7 @@ class M_pekerjacutoff extends CI_Model
 	public function getPekerjaCufOffAktif($periode,$noind){
 		$sql = "select *
 				from (
-				select '$periode'::date as tanggal, b.noind as noind, b.nama as nama, b.kodesie as kodesie, 
+				select '*' remark_cutoff,'$periode'::date as tanggal, b.noind as noind, b.nama as nama, b.kodesie as kodesie, 
  						'0' as ipe, '0' as ika, '0' as ubt, '0' as upamk, '0' as um, 
  						case when left(a.noind,1) in ('B','D','J') then 
  							(
@@ -146,7 +146,7 @@ class M_pekerjacutoff extends CI_Model
 						)
 					)
 				union all
-				select  tanggal_keluar, b.noind as noind, b.nama as nama, b.kodesie, 
+				select  '' remark_cutoff,tanggal_keluar, b.noind as noind, b.nama as nama, b.kodesie, 
  						ipe, ika, ubt, upamk, um, ief, ims, imm, jam_lembur, ijin, pot, 
  						htm, tamb_gaji, hl, ct, putkop, plain, pikop, 
  						pspsi, putang, dldobat, tkpajak, ttpajak, 
