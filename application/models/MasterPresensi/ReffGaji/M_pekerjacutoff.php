@@ -141,7 +141,7 @@ class M_pekerjacutoff extends CI_Model
 				and (
 					b.keluar = '0'
 					or 	(
-						b.tglkeluar >= to_char('$periode'::date,'yyyy-mm-01')::date
+						b.tglkeluar >= to_char('$periode'::date,'yyyy-mm-01')::date + interval '1 month'
 						and b.keluar = '1'
 						)
 					)
@@ -161,12 +161,12 @@ class M_pekerjacutoff extends CI_Model
 				left join hrd_khs.tseksi c 
 				on b.kodesie = c.kodesie
 	 			where tanggal_keluar between (
-		 				select tanggal_awal 
+		 				select tanggal_akhir + interval '1 day' 
 		 				from \"Presensi\".tcutoff 
 		 				where periode = to_char('$periode'::date,'yyyymm') 
 		 				and os = '0'
 	 				) and  (
-	 					select to_char(tanggal_akhir,'yyyy-mm-01')::date - interval '1 day'
+	 					select to_char(tanggal_akhir,'yyyy-mm-01')::date + interval '1 month' - interval '1 day'
 	 					from \"Presensi\".tcutoff 
 	 					where periode = to_char('$periode'::date,'yyyymm') 
 	 					and os = '0'
@@ -221,7 +221,7 @@ class M_pekerjacutoff extends CI_Model
 	}
 
 	public function getCutoffAwal($periode){
-		$sql = "select tanggal_awal 
+		$sql = "select tanggal_akhir + interval '1 day' as tanggal_awal 
  				from \"Presensi\".tcutoff 
  				where periode = to_char('$periode'::date,'yyyymm') 
  				and os = '0'";
@@ -234,7 +234,7 @@ class M_pekerjacutoff extends CI_Model
 	}
 
 	public function getAkhirbulan($periode){
-		$sql = "select to_char(tanggal_akhir,'yyyy-mm-01')::date - interval '1 day' as akhir_bulan
+		$sql = "select to_char(tanggal_akhir,'yyyy-mm-01')::date + interval '1 month' - interval '1 day' as akhir_bulan
 					from \"Presensi\".tcutoff 
 					where periode = to_char('$periode'::date,'yyyymm') 
 					and os = '0'";
