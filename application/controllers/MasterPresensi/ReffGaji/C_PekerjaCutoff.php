@@ -529,8 +529,8 @@ class C_PekerjaCutoff extends CI_Controller
 			$pdf->WriteHTML($html2, 2);
 			$pdf->Output(FCPATH."assets/upload/TransferReffGaji/Cutoff_".$filename, 'F');
 			// $pdf->Output($filename, 'I');
-			$output .= '<div class="col-lg-6"><a href="'.site_url("MasterPresensi/ReffGaji/PekerjaCutoffReffGaji/download?file=Cutoff_STAFF".$periode."&time=".$waktu."&ext=dbf") .'" class="btn btn-info">STAFF_'.date('my',strtotime($periode)).'</a></div>';
-			$output_2 .= '<div class="col-lg-6"><a href="'.site_url("MasterPresensi/ReffGaji/PekerjaCutoffReffGaji/download?file=Cutoff_STAFF".$periode."&time=".$waktu."&ext=pdf") .'" class="btn btn-danger">STAFF_'.date('my',strtotime($periode)).'</a></div>';
+			$output .= '<div class="col-lg-6" style="text-align: right">DBF : <a href="'.site_url("MasterPresensi/ReffGaji/PekerjaCutoffReffGaji/download?file=Cutoff_STAFF".$periode."&time=".$waktu."&ext=dbf") .'" class="btn btn-info">STAFF_'.date('my',strtotime($periode)).'</a></div>';
+			$output_2 .= '<div class="col-lg-6" style="text-align: right">PDF : <a href="'.site_url("MasterPresensi/ReffGaji/PekerjaCutoffReffGaji/download?file=Cutoff_STAFF".$periode."&time=".$waktu."&ext=pdf") .'" class="btn btn-danger">STAFF_'.date('my',strtotime($periode)).'</a></div>';
 			$file_staff = "Cutoff_STAFF".$periode.$waktu;
 		}else{
 			$output .= '<div class="col-lg-6">-</div>';
@@ -738,8 +738,8 @@ class C_PekerjaCutoff extends CI_Controller
 			$pdf->WriteHTML($html2, 2);
 			// $pdf->Output($filename, 'I');
 			$pdf->Output(FCPATH."assets/upload/TransferReffGaji/Cutoff_".$filename, 'F');
-			$output .= '<div class="col-lg-6"><a href="'.site_url("MasterPresensi/ReffGaji/PekerjaCutoffReffGaji/download?file=Cutoff_NONSTAFF".$periode."&time=".$waktu."&ext=dbf") .'" class="btn btn-info">NONSTAFF_'.date('my',strtotime($periode)).'</a></div>';
-			$output_2 .= '<div class="col-lg-6"><a href="'.site_url("MasterPresensi/ReffGaji/PekerjaCutoffReffGaji/download?file=Cutoff_NONSTAFF".$periode."&time=".$waktu."&ext=pdf") .'" class="btn btn-danger">NONSTAFF_'.date('my',strtotime($periode)).'</a></div>';
+			$output .= '<div class="col-lg-6" style="text-align: left"><a href="'.site_url("MasterPresensi/ReffGaji/PekerjaCutoffReffGaji/download?file=Cutoff_NONSTAFF".$periode."&time=".$waktu."&ext=dbf") .'" class="btn btn-info">NONSTAFF_'.date('my',strtotime($periode)).'</a></div>';
+			$output_2 .= '<div class="col-lg-6" style="text-align: left"><a href="'.site_url("MasterPresensi/ReffGaji/PekerjaCutoffReffGaji/download?file=Cutoff_NONSTAFF".$periode."&time=".$waktu."&ext=pdf") .'" class="btn btn-danger">NONSTAFF_'.date('my',strtotime($periode)).'</a></div>';
 			$file_nonstaff = "Cutoff_NONSTAFF".$periode.$waktu;
 		}else{
 			$output .= '<div class="col-lg-6">-</div>';
