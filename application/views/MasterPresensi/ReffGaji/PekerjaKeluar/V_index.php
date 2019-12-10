@@ -184,11 +184,11 @@ background-color: #337ab7;
 													<th>IMM</th>
 													<th>IPT</th>
 													<th>UM Cabang</th>
+													<th>Uang DL</th>
 													<th>Pot. Seragam</th>
 													<th>Pot. Lain</th>
-													<th>JKN</th>
-													<th>JHT</th>
-													<th>JP</th>
+													<th>Tambahan</th>
+													<th>Potongan</th>
 													<th>Jumlah JKN</th>
 													<th>Jumlah JHT</th>
 													<th>Jumlah JP</th>
@@ -221,11 +221,11 @@ background-color: #337ab7;
 															<td><?=$key['imm'] ?></td>
 															<td><?=$key['ipt'] ?></td>
 															<td><?=$key['um_cabang'] ?></td>
+															<td><?=$key['um_dl'] ?></td>
 															<td><?=$key['pot_seragam'] ?></td>
 															<td><?=$key['pot_lain'] ?></td>
-															<td><?=$key['jkn'] ?></td>
-															<td><?=$key['jht'] ?></td>
-															<td><?=$key['jp'] ?></td>
+															<td><?=$key['tam_susulan'] ?></td>
+															<td><?=$key['pot_susulan'] ?></td>
 															<td><?=$key['jml_jkn'] ?></td>
 															<td><?=$key['jml_jht'] ?></td>
 															<td><?=$key['jml_jp'] ?></td>

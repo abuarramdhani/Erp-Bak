@@ -147,7 +147,7 @@ class M_transferreffgaji extends CI_Model
  				and to_char(tanggal,'mmyy') ='$periode'
  				and jns_transaksi in('01')  
  				union all 
- 				select '2019-11-21' as tanggal, noind as noind, nama as nama, kodesie as kodesie, 
+ 				select tp.tglkeluar as tanggal, noind as noind, nama as nama, kodesie as kodesie, 
  						'0' as ipe, '0' as ika, '0' as ief, '0' as ubt, '0' as upamk, '0' as um, 
  						'0' as ims, '0' as imm, '0' as jam_lembur, '0' as htm, '0' as ijin, 0 as pot, 
  						0 as tamb_gaji, 0 as hl, 0 as ct, '0' as putkop, '0' as plain, '0' as pikop, 

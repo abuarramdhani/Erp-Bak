@@ -68,6 +68,8 @@
                             <th style="text-align: center;font-size: 8pt;width: 5%">DL & Obat</th>
                             <th style="text-align: center;font-size: 8pt;width: 8%">Pot. Lain</th>
                             <th style="text-align: center;font-size: 8pt;width: 8%">Pot. Seragam</th>
+                            <th style="text-align: center;font-size: 8pt;width: 8%">Tambahan</th>
+                            <th style="text-align: center;font-size: 8pt;width: 8%">Potongan</th>
                             <th style="text-align: center;font-size: 8pt;width: 5%">Jumlah JKN</th>
                             <th style="text-align: center;font-size: 8pt;width: 5%">Jumlah JHT</th>
                             <th style="text-align: center;font-size: 8pt;width: 5%">Jumlah JP</th>
@@ -99,8 +101,8 @@
                                     <td style="text-align: center;font-size: 8pt"><?=$key['ubt'] ?></td>
                                     <td style="text-align: center;font-size: 8pt"><?=$key['upamk'] ?></td>
                                     <td style="text-align: center;font-size: 8pt"><?=$key['sisa_cuti'] ?></td>
-                                    <td style="text-align: center;font-size: 8pt"><?=$key['sk_susulan']+$key['cuti_susulan'] ?></td>
-                                    <td style="text-align: center;font-size: 8pt"><?="" ?></td>
+                                    <td style="text-align: center;font-size: 8pt"><?=$key['ket'] ?></td>
+                                    <td style="text-align: center;font-size: 8pt"><?=$key['um_dl'] ?></td>
                                     <td style="text-align: center;font-size: 8pt"><?=$key['htm'] ?></td>
                                     <td style="text-align: center;font-size: 8pt"><?=$key['pot_lain'] ?></td>
                                     <td style="text-align: center;font-size: 8pt"><?=$key['pot_seragam'] ?></td>
@@ -126,10 +128,12 @@
                                     <td style="text-align: center;font-size: 8pt"><?=$key['lembur'] ?></td>
                                     <td style="text-align: center;font-size: 8pt"><?=$key['um_puasa'] ?></td>
                                     <td style="text-align: center;font-size: 8pt"><?=$key['sisa_cuti'] ?></td>
-                                    <td style="text-align: center;font-size: 8pt"><?=$key['sk_susulan']+$key['cuti_susulan'] ?></td>
-                                    <td style="text-align: center;font-size: 8pt"><?="" ?></td>
+                                    <td style="text-align: center;font-size: 8pt"><?=$key['ket'] ?></td>
+                                    <td style="text-align: center;font-size: 8pt"><?=$key['um_dl'] ?></td>
                                     <td style="text-align: center;font-size: 8pt"><?=$key['pot_lain'] ?></td>
                                     <td style="text-align: center;font-size: 8pt"><?=$key['pot_seragam'] ?></td>
+                                    <td style="text-align: center;font-size: 8pt"><?=$key['tam_susulan'] ?></td>
+                                    <td style="text-align: center;font-size: 8pt"><?=$key['pot_susulan'] ?></td>
                                     <td style="text-align: center;font-size: 8pt"><?=$key['jml_jkn'] ?></td>
                                     <td style="text-align: center;font-size: 8pt"><?=$key['jml_jht'] ?></td>
                                     <td style="text-align: center;font-size: 8pt"><?=$key['jml_jp'] ?></td>

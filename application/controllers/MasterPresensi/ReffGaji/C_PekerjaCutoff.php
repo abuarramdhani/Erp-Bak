@@ -3,7 +3,7 @@ Defined('BASEPATH') or exit('NO DIrect Script Access Allowed');
 
 set_time_limit(0);
 ini_set('date.timezone', 'Asia/Jakarta');
-setlocale(LC_ALL, "id_ID.utf8");
+setlocale(LC_TIME, "id_ID.utf8");
 
 class C_PekerjaCutoff extends CI_Controller
 {
