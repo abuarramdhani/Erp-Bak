@@ -89,8 +89,8 @@ class M_history extends CI_Model
                 ORDER BY rsh.receipt_num, rt.transaction_date, msib.segment1) rec,
         khs_waktu_lppb ww
   WHERE rec.receipt_num = ww.receipt_num(+) 
-    AND rec.po = ww.po(+)
-    AND rec.item_id = ww.ITEM_ID(+)
+    --AND rec.po = ww.po(+)
+    --AND rec.item_id = ww.ITEM_ID(+)
     AND rec.ship_to_org_id = ww.io(+)
 ORDER BY rec.receipt_num, rec.receipt_date";
         $query = $this->oracle->query($sql);                             
