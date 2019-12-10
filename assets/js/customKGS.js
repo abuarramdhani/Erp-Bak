@@ -140,6 +140,10 @@ function saveJmlSpb(th) {
 
 //---------------------------------------------------------PELAYANAN---------------------------------------------------------------------------
 
+$('#pic'+no).change(function() {
+    $('#btnPelayanan'+no).removeAttr("disabled");
+})
+
 function btnPelayananSPB(no) {
     var valBtn = $('#btnPelayanan'+no).val();
     var jenis  = $('#jenis_doc'+no).val();
@@ -175,6 +179,8 @@ function btnPelayananSPB(no) {
                 }
             }
             $(this).removeClass('btn-success').addClass('btn-danger');
+            $('#pic'+no).prop("disabled", true); 
+
         })
         // console.log(valBtn);
 
@@ -208,6 +214,10 @@ function btnPelayananSPB(no) {
 
 //----------------------------------------------------------PENGELUARAN--------------------------------------------------------------------------
 
+$('#pic'+no).change(function() {
+    $('#btnPengeluaran'+no).removeAttr("disabled");
+})
+
 function btnPengeluaranSPB(no) {
     var valBtn = $('#btnPengeluaran'+no).val();
     var jenis  = $('#jenis_doc'+no).val();
@@ -222,6 +232,7 @@ function btnPengeluaranSPB(no) {
             $('#btnPengeluaran'+no).val('Selesai'); 
             $('#mulai'+no).val(wkt); 
             $(this).removeClass('btn-success').addClass('btn-danger');
+            $('#pic'+no).prop("disabled", true); 
             var hoursLabel   = document.getElementById("hours"+no);
             var minutesLabel = document.getElementById("minutes"+no);
             var secondsLabel = document.getElementById("seconds"+no);
@@ -276,6 +287,10 @@ function btnPengeluaranSPB(no) {
 
 //----------------------------------------------------------PACKING--------------------------------------------------------------------------------
 
+$('#pic'+no).change(function() {
+    $('#btnPacking'+no).removeAttr("disabled");
+})
+
 function btnPackingSPB(no) {
     var valBtn  = $('#btnPacking'+no).val();
     var jenis   = $('#jenis_doc'+no).val();
@@ -290,6 +305,7 @@ function btnPackingSPB(no) {
             $('#btnPacking'+no).val('Selesai'); 
             $('#mulai'+no).val(wkt);
             $(this).removeClass('btn-success').addClass('btn-danger');
+            $('#pic'+no).prop("disabled", true); 
             var hoursLabel   = document.getElementById("hours"+no);
             var minutesLabel = document.getElementById("minutes"+no);
             var secondsLabel = document.getElementById("seconds"+no);
@@ -410,166 +426,3 @@ function schMonitoringSPB(th) {
         })
 	});
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-// MONITORING Pelayanan SPB
-$('#tb_PSPB').dataTable({
-    "scrollX": true,
-    "scrollY": 500,
-    "scrollCollapse": true,
-    "paging":true
-});
-
-function klikTgl(no) {
-    var noSpb = $('#no_doc'+no).val();
-    var jenis = $('#jenis_doc'+no).val();
-    var item = $('#item'+no).val();
-    $('#btnTgl'+no).attr("disabled", "disabled"); 
-    var d = new Date();
-    var datetgl = d.getDate()+'/'+((d.getMonth()+1).toString().length==2?(d.getMonth()+1).toString():"0"+(d.getMonth()+1).toString())+'/'+d.getFullYear()+" "+d.getHours()+':'+d.getMinutes()+':'+d.getSeconds();
-    // console.log(datetgl);
-    $.ajax ({
-        url : baseurl + "KapasitasGdSparepart/Monitoring/saveTanggal",
-        data: {noSpb : noSpb, jenis : jenis, item : item, datetgl : datetgl},
-        type : "POST",
-        dataType: "html"
-    });
-    $('#btnTgl'+no).each(function() {
-            $('#btnTgl'+no).val(datetgl); 
-            console.log(datetgl);
-    })
-}
-
-function klikBelanja(no) {
-    var noSpb = $('#no_doc'+no).val();
-    var jenis = $('#jenis_doc'+no).val();
-    var item = $('#item'+no).val();
-    $('#btnBelanja'+no).attr("disabled", "disabled"); 
-    var d = new Date();
-    var dateblj = d.getDate()+'/'+((d.getMonth()+1).toString().length==2?(d.getMonth()+1).toString():"0"+(d.getMonth()+1).toString())+'/'+d.getFullYear()+" "+d.getHours()+':'+d.getMinutes()+':'+d.getSeconds();
-    console.log(dateblj);
-    $.ajax ({
-        url : baseurl + "KapasitasGdSparepart/Monitoring/saveBelanja",
-        data: {noSpb : noSpb, jenis : jenis, item : item, dateblj : dateblj},
-        type : "POST",
-        dataType: "html"
-    });
-    $('#btnBelanja'+no).each(function() {
-        $('#btnBelanja'+no).val(dateblj); 
-        // console.log(dateblj);
-    })
-}
-
-function klikTransact(no) {
-    var noSpb = $('#no_doc'+no).val();
-    var jenis = $('#jenis_doc'+no).val();
-    var item = $('#item'+no).val();
-    $('#btnTrans'+no).attr("disabled", "disabled"); 
-    var d = new Date();
-    var datetrans = d.getDate()+'/'+((d.getMonth()+1).toString().length==2?(d.getMonth()+1).toString():"0"+(d.getMonth()+1).toString())+'/'+d.getFullYear()+" "+d.getHours()+':'+d.getMinutes()+':'+d.getSeconds();
-    console.log(datetrans);
-    $.ajax ({
-        url : baseurl + "KapasitasGdSparepart/Monitoring/saveTransact",
-        data: {noSpb : noSpb, jenis : jenis, item : item, datetrans : datetrans},
-        type : "POST",
-        dataType: "html"
-    });
-    $('#btnTrans'+no).each(function() {
-        $('#btnTrans'+no).val(datetrans); 
-        // console.log(datetrans);
-    })
-}
-
-function klikPack(no) {
-   var noSpb = $('#no_doc'+no).val();
-    var jenis = $('#jenis_doc'+no).val();
-    var item = $('#item'+no).val();
-    $('#btnPack'+no).attr("disabled", "disabled"); 
-    var d = new Date();
-    var datepack = d.getDate()+'/'+((d.getMonth()+1).toString().length==2?(d.getMonth()+1).toString():"0"+(d.getMonth()+1).toString())+'/'+d.getFullYear()+" "+d.getHours()+':'+d.getMinutes()+':'+d.getSeconds();
-    console.log(datepack);
-    $.ajax ({
-        url : baseurl + "KapasitasGdSparepart/Monitoring/savePacking",
-        data: {noSpb : noSpb, jenis : jenis, item : item, datepack : datepack},
-        type : "POST",
-        dataType: "html"
-    });
-    $('#btnPack'+no).each(function() {
-        $('#btnPack'+no).val(datepack); 
-        // console.log(datepack);
-    })
-}
-
-// REKAP Pelayanan SPB
-$('#tb_PSPB2').dataTable({
-    "scrollX": true,
-    "scrollY": true,
-    "scrollCollapse": true,
-    "paging":true,
-    dom:"lfrtBip",
-    buttons: [{
-    	extend: 'excel',
-    	text: '<i class="fa fa-download"></i> Download',
-    	title: 'Rekap Pelayanan SPB',
-    	message:'',
-    }
-    ]
-});
-$('.buttons-excel').each(function() {
-    $(this).removeClass('btn-default').addClass('btn-success')
-})
-
-function rekapPSPB(th) {
-	$(document).ready(function(){
-	var tglAwl	= $('#tglAwl').val();
-	var tglAkh	= $('#tglAkh').val();
-	var status	= $('#statusSPB').val();
-	console.log(tglAwl);
-	var request = $.ajax({
-        url: baseurl+'KapasitasGdSparepart/Rekap/dataRekapSPB',
-        data: {
-            tglAwl : tglAwl, tglAkh : tglAkh, status : status
-        },
-        type: "POST",
-        datatype: 'html'
-	});
-	$('#tblSPB').html('');
-	$('#tblSPB').html('<center><img style="width:130px; height:auto" src="'+baseurl+'assets/img/gif/loading10.gif"></center>' );
-	request.done(function(result){
-        $('#tblSPB').html('');
-        $('#tblSPB').html(result);
-        $('#my_Table3').dataTable({
-            "scrollX": true,
-            "scrollY": true,
-            "scrollCollapse": true,
-            "paging":true,
-            dom:"lfrtBip",
-            buttons: [{
-                extend: 'excel',
-                text: '<i class="fa fa-download"></i> Download',
-                title: 'Rekap Pelayanan SPB',
-                message: '',
-            }
-            ]
-        });
-    $('.buttons-excel').each(function() {
-        $(this).removeClass('btn-default').addClass('btn-success')
-    })
-    })
-    });
-}
-

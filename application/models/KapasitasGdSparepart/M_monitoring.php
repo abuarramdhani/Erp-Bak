@@ -9,7 +9,7 @@ class M_monitoring extends CI_Model {
     public function getDataSPB($query) {
         $oracle = $this->load->database('oracle', true);
         $sql ="select to_char(jam_input, 'DD/MM/YYYY HH24:MI:SS') as jam_input, 
-                to_char(tgl_dibuat, 'DD/MM/YYYY') as tgl_dibuat, 
+                tgl_dibuat, 
                 to_char(jam_input, 'DD/MM/YYYY') as tgl_input, 
                 to_char(jam_input, 'HH24:MI:SS') as jam_input2,
                 jenis_dokumen, no_dokumen, jumlah_item, jumlah_pcs,
@@ -34,7 +34,7 @@ class M_monitoring extends CI_Model {
                 urgent, pic_pelayan, pic_pengeluaran, pic_packing
                 from khs_tampung_spb
                 $query
-                order by jam_input";
+                order by urgent, tgl_dibuat";
         $query = $oracle->query($sql);
         return $query->result_array();
         // echo $sql;
@@ -43,14 +43,14 @@ class M_monitoring extends CI_Model {
     public function dataKurang($querykrg){
         $oracle = $this->load->database('oracle', true);
         $sql="select to_char(jam_input, 'DD/MM/YYYY HH24:MI:SS') as jam_input, 
-                to_char(tgl_dibuat, 'DD/MM/YYYY') as tgl_dibuat, 
+                tgl_dibuat, 
                 to_char(jam_input, 'DD/MM/YYYY') as tgl_input, 
                 to_char(jam_input, 'HH24:MI:SS') as jam_input2,
                 jenis_dokumen, no_dokumen, jumlah_item, jumlah_pcs, selesai_pengeluaran,
                 selesai_pelayanan, selesai_packing, urgent, pic_pelayan, pic_pengeluaran, pic_packing
                 from khs_tampung_spb
                 $querykrg
-                order by jam_input";
+                order by urgent, tgl_dibuat";
         $query = $oracle->query($sql);
         return $query->result_array();
     }

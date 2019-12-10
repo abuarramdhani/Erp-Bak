@@ -84,7 +84,7 @@
                                                 <table class="datatable table table-bordered table-hover table-striped text-center" id="myTable" style="width: 100%;">
                                                     <thead class="bg-primary">
                                                         <tr>
-                                                            <th>No</th>
+                                                            <th width="5px">No</th>
                                                             <th>Jam</th>
                                                             <th>Jenis Dokumen</th>
                                                             <th>No Dokumen</th>
@@ -95,8 +95,8 @@
                                                     </thead>
                                                     <tbody>
                                                         <?php $i= 0; $no=1; foreach($dospb as $val){ ?>
-                                                        <tr>
-                                                            <td style="width: 5px"><?= $no; ?></td>
+                                                            <tr>
+                                                                <td width="5px"><?= $no; ?></td>
                                                                 <td><input type="hidden" name="jam[]" value="<?= $val['TGL_DIBUAT']?>"><?= $val['TGL_DIBUAT']?></td>
                                                                 <td><input type="hidden" name="jenis_doc[]" value="<?= $val['JENIS_DOKUMEN']?>"><?= $val['JENIS_DOKUMEN']?></td>
                                                                 <td><input type="hidden" name="no_doc[]" value="<?= $val['NO_DOKUMEN']?>"><?= $val['NO_DOKUMEN']?></td>

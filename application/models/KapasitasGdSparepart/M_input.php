@@ -62,11 +62,11 @@ class M_input extends CI_Model
 
     public function getData($date) {
         $oracle = $this->load->database('oracle', true);
-        $sql = "select to_char(tgl_dibuat, 'DD/MM/YYYY') as tgl_dibuat, 
+        $sql = "select tgl_dibuat, 
         jenis_dokumen, no_dokumen, jumlah_item, jumlah_pcs, urgent
         from khs_tampung_spb
         where TO_CHAR(jam_input,'DD/MM/YYYY') between '$date' and '$date'
-        order by jam_input desc";
+        order by urgent, tgl_dibuat";
         $query = $oracle->query($sql);
         return $query->result_array();
         // echo $sql;

@@ -179,18 +179,6 @@
                                         </div>
                                     </div>
                                 </div>
-                                <!-- <div class="panel-body">
-                                        <div class="col-md-2" align="center" style="float:none; margin: 0 auto">
-                                            <label>PIC</label>
-                                            <select id="pic" name="pic" class="form-control select2 select2-hidden-accessible" style="width:100%;" required>
-                                            <option></option>
-                                            <option value="MUJIMAN">MUJIMAN</option>
-                                            <option value="JOKO">JOKO</option>
-                                            <option value="SANDY">SANDI</option>
-                                            <option value="MUSLIH">MUSLIH</option>
-                                        </select>
-                                        </div>
-                                    </div> -->
                                 <div class="panel-body">
                                     <div class="col-md-12 text-center">
                                         <button type="button" onclick="inputPSPB(this)" class="btn btn-info" style="color:black">Input <i class="fa fa-arrow-circle-right" ></i></button>    
@@ -212,15 +200,21 @@
                                                 </tr>
                                             </thead>
                                             <tbody>
-                                                <?php $no=1; foreach($value as $val){ ?>
+                                                <?php $no=1; foreach($value as $val){ 
+                                                    if ($val['URGENT'] != '') {
+                                                        $td = 'bg-danger';
+                                                    }else{
+                                                        $td = '';
+                                                    }
+                                                    ?>
                                                 <tr>
-                                                    <td style="width: 5px"><?= $no; ?></td>
-                                                    <td><input type="hidden" name="jam[]" value="<?= $val['TGL_DIBUAT']?>"><?= $val['TGL_DIBUAT']?></td>
-                                                    <td><input type="hidden" name="jenis_doc[]" value="<?= $val['JENIS_DOKUMEN']?>"><?= $val['JENIS_DOKUMEN']?></td>
-                                                    <td style="font-size:17px; font-weight: bold" ><input type="hidden" name="no_doc[]" value="<?= $val['NO_DOKUMEN']?>"><?= $val['NO_DOKUMEN']?></td>
-                                                    <td><input type="hidden" name="jml_item[]" value="<?= $val['JUMLAH_ITEM']?>"><?= $val['JUMLAH_ITEM']?></td>
-                                                    <td><input type="hidden" name="jml_pcs[]" value="<?= $val['JUMLAH_PCS']?>"><?= $val['JUMLAH_PCS']?></td>
-                                                    <td style="width: 15px"><input type="hidden" name="ket[]" value="<?= $val['URGENT']?>"><?= $val['URGENT']?></td>
+                                                    <td class="<?= $td?>" style="width: 5px"><?= $no; ?></td>
+                                                    <td class="<?= $td?>"><input type="hidden" name="jam[]" value="<?= $val['TGL_DIBUAT']?>"><?= $val['TGL_DIBUAT']?></td>
+                                                    <td class="<?= $td?>"><input type="hidden" name="jenis_doc[]" value="<?= $val['JENIS_DOKUMEN']?>"><?= $val['JENIS_DOKUMEN']?></td>
+                                                    <td class="<?= $td?>" style="font-size:17px; font-weight: bold" ><input type="hidden" name="no_doc[]" value="<?= $val['NO_DOKUMEN']?>"><?= $val['NO_DOKUMEN']?></td>
+                                                    <td class="<?= $td?>"><input type="hidden" name="jml_item[]" value="<?= $val['JUMLAH_ITEM']?>"><?= $val['JUMLAH_ITEM']?></td>
+                                                    <td class="<?= $td?>"><input type="hidden" name="jml_pcs[]" value="<?= $val['JUMLAH_PCS']?>"><?= $val['JUMLAH_PCS']?></td>
+                                                    <td class="<?= $td?>" style="width: 15px"><input type="hidden" name="ket[]" value="<?= $val['URGENT']?>"><?= $val['URGENT']?></td>
                                                 </tr>
                                                 <?php $no++; } ?>
                                             </tbody>
