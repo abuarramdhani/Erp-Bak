@@ -139,10 +139,12 @@ function saveJmlSpb(th) {
 
 
 //---------------------------------------------------------PELAYANAN---------------------------------------------------------------------------
+// function picplyn(no) {
+//     $('#pic'+no).change(function() {
+//     $('#btnPelayanan'+no).removeAttr("disabled");
+// })
+// }
 
-$('#pic'+no).change(function() {
-    $('#btnPelayanan'+no).removeAttr("disabled");
-})
 
 function btnPelayananSPB(no) {
     var valBtn = $('#btnPelayanan'+no).val();
@@ -214,9 +216,9 @@ function btnPelayananSPB(no) {
 
 //----------------------------------------------------------PENGELUARAN--------------------------------------------------------------------------
 
-$('#pic'+no).change(function() {
-    $('#btnPengeluaran'+no).removeAttr("disabled");
-})
+// $('#pic'+no).change(function() {
+//     $('#btnPengeluaran'+no).removeAttr("disabled");
+// })
 
 function btnPengeluaranSPB(no) {
     var valBtn = $('#btnPengeluaran'+no).val();
@@ -287,9 +289,9 @@ function btnPengeluaranSPB(no) {
 
 //----------------------------------------------------------PACKING--------------------------------------------------------------------------------
 
-$('#pic'+no).change(function() {
-    $('#btnPacking'+no).removeAttr("disabled");
-})
+// $('#pic'+no).change(function() {
+//     $('#btnPacking'+no).removeAttr("disabled");
+// })
 
 function btnPackingSPB(no) {
     var valBtn  = $('#btnPacking'+no).val();
