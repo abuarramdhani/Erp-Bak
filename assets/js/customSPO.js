@@ -29,7 +29,7 @@ $(document).ready(function(){
                 <br>\
             <p>\
                 Regards,<br>\
-                Ms. Choirul<br>\
+                Ms. Rika<br>\
                 Admin Purchasing<br>\
                 <b>CV Karya Hidup Sentosa (QUICK)</b><br>\
                 Jalan Magelang No 144 Yogyakarta - Indonesia<br>\
@@ -70,7 +70,7 @@ $(document).ready(function(){
             <br>\
         <p>\
             Salam,<br>\
-            Ms. Choirul<br>\
+            Ms. Rika<br>\
             Admin Purchasing<br>\
             <b>CV Karya Hidup Sentosa (QUICK)</b><br>\
             Jalan Magelang No 144 Yogyakarta - Indonesia<br>\
