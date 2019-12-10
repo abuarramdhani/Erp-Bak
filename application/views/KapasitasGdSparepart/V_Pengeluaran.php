@@ -2,7 +2,15 @@
         $(document).ready(function () {
         $('.tblpengeluaran').dataTable({
             "scrollX": true,
+            scrollY: 500,
+            ordering: false,
+            paging:false,
         });
+
+        $('.tblpengeluaran2').dataTable({
+            "scrollX": true,
+        });
+        
         
         });
 </script>
@@ -53,7 +61,7 @@
                                         <table class="datatable table table-bordered table-hover table-striped text-center tblpengeluaran" style="width: 100%;table-layout:fixed">
                                             <thead class="btn-success" style="color:yellow">
                                                 <tr>
-                                                    <th width="5px">No</th>
+                                                    <th width="20px">No</th>
                                                     <th>Tanggal</th>
                                                     <th>Jenis Dokumen</th>
                                                     <th>No Dokumen</th>
@@ -73,7 +81,7 @@
                                                     }
                                                     ?>
                                                     <tr>
-                                                        <td class="<?= $td?>" width="5px"><input type="hidden" id="mulai<?= $no?>" value=""><?= $no; ?></td>
+                                                        <td class="<?= $td?>" width="20px"><input type="hidden" id="mulai<?= $no?>" value=""><?= $no; ?></td>
                                                         <td class="<?= $td?>"><input type="hidden" id="jam<?= $no?>" value="<?= $val['TGL_DIBUAT']?>"><?= $val['TGL_DIBUAT']?></td>
                                                         <td class="<?= $td?>"><input type="hidden" id="jenis_doc<?= $no?>" value="<?= $val['JENIS_DOKUMEN']?>"><?= $val['JENIS_DOKUMEN']?></td>
                                                         <td class="<?= $td?>" style="font-size:17px; font-weight: bold"><input type="hidden" id="no_doc<?= $no?>" value="<?= $val['NO_DOKUMEN']?>"><?= $val['NO_DOKUMEN']?></td>
@@ -90,7 +98,7 @@
                                                         <td class="<?= $td?>"><?= $val['URGENT']?></td>
                                                         <td class="<?= $td?>">
                                                             <p id="timer<?= $no?>" style=""><label id="hours<?= $no?>" >00</label>:<label id="minutes<?= $no?>">00</label>:<label id="seconds<?= $no?>">00</label></p>
-                                                            <input type="button" class="btn btn-md btn-success" disabled="disabled" id="btnPengeluaran<?= $no?>" onclick="btnPengeluaranSPB(<?= $no?>)" value="Mulai">
+                                                            <input type="button" class="btn btn-md btn-success" id="btnPengeluaran<?= $no?>" onclick="btnPengeluaranSPB(<?= $no?>)" value="Mulai">
                                                         </td>
                                                     </tr>
                                                 <?php $no++; } ?>
@@ -103,7 +111,7 @@
                                 <center><label>KERJAAN YANG SUDAH DILAYANI HARI INI</label></center>
                                 <div class="panel-body">
                                     <div class="table-responsive" >
-                                    <table class="datatable table table-bordered table-hover table-striped text-center tblpengeluaran" style="width: 100%;">
+                                    <table class="datatable table table-bordered table-hover table-striped text-center tblpengeluaran2" style="width: 100%;">
                                             <thead class="btn-success" style="color:yellow">
                                                 <tr>
                                                     <th>No</th>
@@ -128,7 +136,7 @@
                                                     }
                                                     ?>
                                                     <tr>
-                                                        <td class="<?= $td?>" style="width: 5px"><?= $no; ?></td>
+                                                        <td class="<?= $td?>" ><?= $no; ?></td>
                                                         <td class="<?= $td?>"><input type="hidden" id="jam<?= $no?>" value="<?= $val['TGL_DIBUAT']?>"><?= $val['TGL_DIBUAT']?></td>
                                                         <td class="<?= $td?>"><input type="hidden" id="jenis_doc<?= $no?>" value="<?= $val['JENIS_DOKUMEN']?>"><?= $val['JENIS_DOKUMEN']?></td>
                                                         <td class="<?= $td?>" style="font-size:17px; font-weight: bold"><input type="hidden" id="no_doc<?= $no?>" value="<?= $val['NO_DOKUMEN']?>"><?= $val['NO_DOKUMEN']?></td>

@@ -2,6 +2,15 @@
     $(document).ready(function () {
         $('.tblpelayanan').dataTable({
             "scrollX": true,
+            scrollY: 500,
+            ordering: false,
+            paging:false,
+        });
+
+        $('.tblpelayanan2').dataTable({
+            "scrollX": true,
+            scrollY: 500,
+            ordering: false
         });
     
     });
@@ -52,7 +61,7 @@
                                     <table class="datatable table table-bordered table-hover table-striped text-center tblpelayanan" style="width: 100%;table-layout:fixed">
                                         <thead class="bg-primary">
                                             <tr>
-                                                <th width="5px">No</th>
+                                                <th width="20px">No</th>
                                                 <th>Tanggal</th>
                                                 <th>Jenis Dokumen</th>
                                                 <th>No Dokumen</th>
@@ -73,7 +82,7 @@
                                                 }
                                             ?>
                                                 <tr>
-                                                    <td class="<?= $td?>" width="5px"><?= $no; ?></td>
+                                                    <td class="<?= $td?>" width="20px"><?= $no; ?></td>
                                                     <td class="<?= $td?>"><input type="hidden" id="jam<?= $no?>" value="<?= $val['TGL_DIBUAT']?>"><?= $val['TGL_DIBUAT']?></td>
                                                     <td class="<?= $td?>"><input type="hidden" id="jenis_doc<?= $no?>" value="<?= $val['JENIS_DOKUMEN']?>"><?= $val['JENIS_DOKUMEN']?></td>
                                                     <td class="<?= $td?>" style="font-size:17px; font-weight: bold"><input type="hidden" id="no_doc<?= $no?>" value="<?= $val['NO_DOKUMEN']?>"><?= $val['NO_DOKUMEN']?></td>
@@ -92,7 +101,7 @@
                                                         <p id="timer<?= $no?>" style="">
                                                             <label id="hours<?= $no?>" >00</label>:<label id="minutes<?= $no?>">00</label>:<label id="seconds<?= $no?>">00</label>
                                                         </p>
-                                                        <input type="button" class="btn btn-md btn-success" id="btnPelayanan<?= $no?>" disabled="disabled" onclick="btnPelayananSPB(<?= $no?>)" value="Mulai">
+                                                        <input type="button" class="btn btn-md btn-success" id="btnPelayanan<?= $no?>" onclick="btnPelayananSPB(<?= $no?>)" value="Mulai">
                                                     </td>
                                                 </tr>
                                             <?php $no++; $i++; } ?>
@@ -104,7 +113,7 @@
                                 <center><label>KERJAAN YANG SUDAH DILAYANI HARI INI</label></center>
                                 <div class="panel-body">
                                     <div class="table-responsive" >
-                                    <table class="datatable table table-bordered table-hover table-striped text-center tblpelayanan" style="width: 100%;">
+                                    <table class="datatable table table-bordered table-hover table-striped text-center tblpelayanan2" style="width: 100%;">
                                             <thead class="bg-primary">
                                                 <tr>
                                                     <th>No</th>
