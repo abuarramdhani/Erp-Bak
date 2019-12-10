@@ -36,7 +36,7 @@ class M_transposition extends CI_Model
 
   public function saveMasterPekerja($save)
   {
-    $this->db->insert('master_pekerja.t_transposisi_pekerja', $save);
+    $this->db->insert('hr.hr_transposisi_pekerja', $save);
     return;
   }
 
