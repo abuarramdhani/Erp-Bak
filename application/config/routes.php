@@ -3563,3 +3563,30 @@ $route['PengirimanDokumen/Personalia/ajax/newData'] 	= 'PengirimanDokumen/Menu/C
 
 $route['PengirimanDokumen/Personalia/RekapAll']			= 'PengirimanDokumen/Menu/C_Personalia/rekapAll';
 $route['PengirimanDokumen/Personalia/RekapAll/(:any)'] 	= 'PengirimanDokumen/Menu/C_Personalia/rekapAll/$1';
+
+//-----------------------------------------------------Kapasitas Gudang Sparepart------------------------------------------------------------//
+$route['KapasitasGdSparepart'] 							= 'KapasitasGdSparepart/C_Index';
+
+$route['KapasitasGdSparepart/Input']					= 'KapasitasGdSparepart/C_Input';
+$route['KapasitasGdSparepart/Input/(:any)']				= 'KapasitasGdSparepart/C_Input/$1';
+$route['KapasitasGdSparepart/Input/(:any)/(:any)']		= 'KapasitasGdSparepart/C_Input/$1/$2';
+
+$route['KapasitasGdSparepart/Monitoring']				= 'KapasitasGdSparepart/C_Monitoring';
+$route['KapasitasGdSparepart/Monitoring/(:any)']		= 'KapasitasGdSparepart/C_Monitoring/$1';
+$route['KapasitasGdSparepart/Monitoring/(:any)/(:any)']	= 'KapasitasGdSparepart/C_Monitoring/$1/$2';
+
+$route['KapasitasGdSparepart/Admin']					= 'KapasitasGdSparepart/C_Admin';
+$route['KapasitasGdSparepart/Admin/(:any)']				= 'KapasitasGdSparepart/C_Admin/$1';
+$route['KapasitasGdSparepart/Admin/(:any)/(:any)']		= 'KapasitasGdSparepart/C_Admin/$1/$2';
+
+$route['KapasitasGdSparepart/Pelayanan']				= 'KapasitasGdSparepart/C_Pelayanan';
+$route['KapasitasGdSparepart/Pelayanan/(:any)']			= 'KapasitasGdSparepart/C_Pelayanan/$1';
+$route['KapasitasGdSparepart/Pelayanan/(:any)/(:any)']	= 'KapasitasGdSparepart/C_Pelayanan/$1/$2';
+
+$route['KapasitasGdSparepart/Pengeluaran']				= 'KapasitasGdSparepart/C_Pengeluaran';
+$route['KapasitasGdSparepart/Pengeluaran/(:any)']		= 'KapasitasGdSparepart/C_Pengeluaran/$1';
+$route['KapasitasGdSparepart/Pengeluaran/(:any)/(:any)']= 'KapasitasGdSparepart/C_Pengeluaran/$1/$2';
+
+$route['KapasitasGdSparepart/Packing']					= 'KapasitasGdSparepart/C_Packing';
+$route['KapasitasGdSparepart/Packing/(:any)']			= 'KapasitasGdSparepart/C_Packing/$1';
+$route['KapasitasGdSparepart/Packing/(:any)/(:any)']	= 'KapasitasGdSparepart/C_Packing/$1/$2';
