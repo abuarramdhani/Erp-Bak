@@ -66,28 +66,33 @@
                                         </thead>
                                         <tbody>
                                             <?php $i=0; $no=1; foreach($value as $val) {
+                                                if ($val['URGENT'] != '') {
+                                                    $td = 'bg-danger';
+                                                }else{
+                                                    $td = '';
+                                                }
                                             ?>
                                                 <tr>
-                                                    <td width="5px"><?= $no; ?></td>
-                                                    <td><input type="hidden" id="jam<?= $no?>" value="<?= $val['TGL_DIBUAT']?>"><?= $val['TGL_DIBUAT']?></td>
-                                                    <td><input type="hidden" id="jenis_doc<?= $no?>" value="<?= $val['JENIS_DOKUMEN']?>"><?= $val['JENIS_DOKUMEN']?></td>
-                                                    <td style="font-size:17px; font-weight: bold"><input type="hidden" id="no_doc<?= $no?>" value="<?= $val['NO_DOKUMEN']?>"><?= $val['NO_DOKUMEN']?></td>
-                                                    <td><input type="hidden" id="jml_item<?= $no?>" value="<?= $val['JUMLAH_ITEM']?>"><?= $val['JUMLAH_ITEM']?></td>
-                                                    <td><input type="hidden" id="jml_pcs<?= $no?>" value="<?= $val['JUMLAH_PCS']?>"><?= $val['JUMLAH_PCS']?></td>
-                                                    <td><select id="pic<?= $no?>" name="pic" class="form-control select2 select2-hidden-accessible" style="width:100%;" required>
+                                                    <td class="<?= $td?>" width="5px"><?= $no; ?></td>
+                                                    <td class="<?= $td?>"><input type="hidden" id="jam<?= $no?>" value="<?= $val['TGL_DIBUAT']?>"><?= $val['TGL_DIBUAT']?></td>
+                                                    <td class="<?= $td?>"><input type="hidden" id="jenis_doc<?= $no?>" value="<?= $val['JENIS_DOKUMEN']?>"><?= $val['JENIS_DOKUMEN']?></td>
+                                                    <td class="<?= $td?>" style="font-size:17px; font-weight: bold"><input type="hidden" id="no_doc<?= $no?>" value="<?= $val['NO_DOKUMEN']?>"><?= $val['NO_DOKUMEN']?></td>
+                                                    <td class="<?= $td?>"><input type="hidden" id="jml_item<?= $no?>" value="<?= $val['JUMLAH_ITEM']?>"><?= $val['JUMLAH_ITEM']?></td>
+                                                    <td class="<?= $td?>"><input type="hidden" id="jml_pcs<?= $no?>" value="<?= $val['JUMLAH_PCS']?>"><?= $val['JUMLAH_PCS']?></td>
+                                                    <td class="<?= $td?>"><select id="pic<?= $no?>" name="pic" class="form-control select2 select2-hidden-accessible" style="width:100%;" required>
                                                             <option></option>
                                                             <option value="SYAMSUL">SYAMSUL</option>
                                                             <option value="ALIF">ALIF</option>
                                                             <option value="IHSAN">IHSAN</option>
                                                             <option value="TRI">TRI</option>
                                                         </select></td>
-                                                    <td><input type="hidden" id="mulai<?= $no?>" value=""><?= $status[$i]?></td>
-                                                    <td><?= $val['URGENT']?></td>
-                                                    <td>
+                                                    <td class="<?= $td?>"><input type="hidden" id="mulai<?= $no?>" value=""><?= $status[$i]?></td>
+                                                    <td class="<?= $td?>"><?= $val['URGENT']?></td>
+                                                    <td class="<?= $td?>">
                                                         <p id="timer<?= $no?>" style="">
                                                             <label id="hours<?= $no?>" >00</label>:<label id="minutes<?= $no?>">00</label>:<label id="seconds<?= $no?>">00</label>
                                                         </p>
-                                                        <input type="button" class="btn btn-md btn-success" id="btnPelayanan<?= $no?>" onclick="btnPelayananSPB(<?= $no?>)" value="Mulai">
+                                                        <input type="button" class="btn btn-md btn-success" id="btnPelayanan<?= $no?>" disabled="disabled" onclick="btnPelayananSPB(<?= $no?>)" value="Mulai">
                                                     </td>
                                                 </tr>
                                             <?php $no++; $i++; } ?>
@@ -116,19 +121,25 @@
                                                 </tr>
                                             </thead>
                                             <tbody>
-                                                <?php $i= 0 ;$no=1; foreach($data as $val) { ?>
+                                                <?php $i= 0 ;$no=1; foreach($data as $val) { 
+                                                    if ($val['URGENT'] != '') {
+                                                        $td = 'bg-danger';
+                                                    }else{
+                                                        $td = '';
+                                                    }
+                                                    ?>
                                                     <tr>
-                                                        <td style="width: 5px"><?= $no; ?></td>
-                                                        <td><input type="hidden" id="jam<?= $no?>" value="<?= $val['TGL_DIBUAT']?>"><?= $val['TGL_DIBUAT']?></td>
-                                                        <td><input type="hidden" id="jenis_doc<?= $no?>" value="<?= $val['JENIS_DOKUMEN']?>"><?= $val['JENIS_DOKUMEN']?></td>
-                                                        <td style="font-size:17px; font-weight: bold"><input type="hidden" id="no_doc<?= $no?>" value="<?= $val['NO_DOKUMEN']?>"><?= $val['NO_DOKUMEN']?></td>
-                                                        <td><input type="hidden" id="jml_item<?= $no?>" value="<?= $val['JUMLAH_ITEM']?>"><?= $val['JUMLAH_ITEM']?></td>
-                                                        <td><input type="hidden" id="jml_pcs<?= $no?>" value="<?= $val['JUMLAH_PCS']?>"><?= $val['JUMLAH_PCS']?></td>
-                                                        <td><input type="hidden" id="mulai_pelayanan<?= $no?>" value="<?= $val['MULAI_PELAYANAN']?>"><?= $val['MULAI_PELAYANAN']?></td>
-                                                        <td><input type="hidden" id="selesai_pelayanan<?= $no?>" value="<?= $val['SELESAI_PELAYANAN']?>"><?= $val['SELESAI_PELAYANAN']?></td>
-                                                        <td><input type="hidden" id="waktu_pelayanan<?= $no?>" value="<?= $val['WAKTU_PELAYANAN'] ?>"><?= $val['WAKTU_PELAYANAN'] ?></td>
-                                                        <td><?= $val['PIC_PELAYAN']?></td>
-                                                        <td><?= $val['URGENT'] ?></td>
+                                                        <td class="<?= $td?>" style="width: 5px"><?= $no; ?></td>
+                                                        <td class="<?= $td?>"><input type="hidden" id="jam<?= $no?>" value="<?= $val['TGL_DIBUAT']?>"><?= $val['TGL_DIBUAT']?></td>
+                                                        <td class="<?= $td?>"><input type="hidden" id="jenis_doc<?= $no?>" value="<?= $val['JENIS_DOKUMEN']?>"><?= $val['JENIS_DOKUMEN']?></td>
+                                                        <td class="<?= $td?>" style="font-size:17px; font-weight: bold"><input type="hidden" id="no_doc<?= $no?>" value="<?= $val['NO_DOKUMEN']?>"><?= $val['NO_DOKUMEN']?></td>
+                                                        <td class="<?= $td?>"><input type="hidden" id="jml_item<?= $no?>" value="<?= $val['JUMLAH_ITEM']?>"><?= $val['JUMLAH_ITEM']?></td>
+                                                        <td class="<?= $td?>"><input type="hidden" id="jml_pcs<?= $no?>" value="<?= $val['JUMLAH_PCS']?>"><?= $val['JUMLAH_PCS']?></td>
+                                                        <td class="<?= $td?>"><input type="hidden" id="mulai_pelayanan<?= $no?>" value="<?= $val['MULAI_PELAYANAN']?>"><?= $val['MULAI_PELAYANAN']?></td>
+                                                        <td class="<?= $td?>"><input type="hidden" id="selesai_pelayanan<?= $no?>" value="<?= $val['SELESAI_PELAYANAN']?>"><?= $val['SELESAI_PELAYANAN']?></td>
+                                                        <td class="<?= $td?>"><input type="hidden" id="waktu_pelayanan<?= $no?>" value="<?= $val['WAKTU_PELAYANAN'] ?>"><?= $val['WAKTU_PELAYANAN'] ?></td>
+                                                        <td class="<?= $td?>"><?= $val['PIC_PELAYAN']?></td>
+                                                        <td class="<?= $td?>"><?= $val['URGENT'] ?></td>
                                                     </tr>
                                                 <?php $no++; $i++; }?>
                                             </tbody>

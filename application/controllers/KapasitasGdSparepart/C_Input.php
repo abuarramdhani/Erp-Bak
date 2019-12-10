@@ -83,7 +83,7 @@ class C_Input extends CI_Controller
 				if ($valBtn[$i] == 'Urgent') {
 					$urgent = '';
 				}elseif ($valBtn[$i] == 'Batal') {
-					$urgent = 'Urgent';
+					$urgent = 'URGENT';
 				}
 				$jml_pcs 	= 0;
 				for ($a=0; $a < count($dataSPB); $a++) { 

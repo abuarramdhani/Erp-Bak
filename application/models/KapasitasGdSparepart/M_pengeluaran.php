@@ -11,13 +11,13 @@ class M_pengeluaran extends CI_Model
     public function tampilhariini() {
         $oracle = $this->load->database('oracle', true);
         $sql = "select to_char(jam_input, 'DD/MM/YYYY HH24:MM:SS') as jam_input,
-                to_char(tgl_dibuat, 'DD/MM/YYYY') as tgl_dibuat,
+                tgl_dibuat,
                 jenis_dokumen, no_dokumen, jumlah_item, jumlah_pcs, selesai_pengeluaran,
                 selesai_pelayanan, urgent
                 from khs_tampung_spb
                 where selesai_pelayanan is not null
                 and selesai_pengeluaran is null
-                order by jam_input";
+                order by urgent, tgl_dibuat";
         $query = $oracle->query($sql);
         return $query->result_array();
         // echo $sql;
@@ -26,7 +26,7 @@ class M_pengeluaran extends CI_Model
     public function dataPengeluaran($date) {
         $oracle = $this->load->database('oracle', true);
         $sql = "select to_char(jam_input, 'DD/MM/YYYY HH24:MI:SS') as jam_input, 
-                to_char(tgl_dibuat, 'DD/MM/YYYY') as tgl_dibuat,
+                tgl_dibuat,
                 jenis_dokumen, no_dokumen, jumlah_item, jumlah_pcs,
                 to_char(mulai_pengeluaran, 'DD/MM/YYYY HH24:MI:SS') as mulai_pengeluaran, 
                 to_char(mulai_pengeluaran, 'HH24:MI:SS') as jam_mulai, 
@@ -35,7 +35,7 @@ class M_pengeluaran extends CI_Model
                 waktu_pengeluaran, urgent, pic_pengeluaran  
                 from khs_tampung_spb
                 where TO_CHAR(selesai_pengeluaran,'DD/MM/YYYY') between '$date' and '$date'
-                order by selesai_pengeluaran desc";
+                order by urgent, tgl_dibuat";
         $query = $oracle->query($sql);
         return $query->result_array();
         // echo $sql;
