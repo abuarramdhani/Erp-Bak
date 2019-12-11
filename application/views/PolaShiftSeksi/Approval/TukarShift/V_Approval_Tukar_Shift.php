@@ -30,9 +30,6 @@
                             <div class="box-body">
                                 <div class="panel-body">
                                     <div class="row">
-                                        <div class="col-md-12">
-                                            <a href="<?php echo base_url('PolaShiftSeksi/TukarShift/createTS') ?>" class="btn btn-success"><i class="fa fa-plus"></i> Add</a>
-                                        </div>
                                         <div class="col-md-12" style="margin-top: 20px;">
                                             <table class="table table-bordered tabel_tukarShift">
                                                 <thead class="bg-primary">
@@ -42,13 +39,15 @@
                                                         <td>Pekerja 1</td>
                                                         <td>Pekerja 2</td>
                                                         <td>Inisiatif</td>
-                                                        <td>Status</td>
-                                                        <td>Tanggal Input</td>
                                                         <td>Action</td>
                                                     </tr>
                                                 </thead>
                                                 <tbody>
-                                                    <?php $i = 1; foreach ($listTukar as $key): ?>
+                                                    <?php $i = 1; foreach ($listApprove as $key): 
+                                                    	if ($key['beda'] < 1) {
+                                                    		// continue;
+                                                    	}
+                                                    ?>
                                                         <tr>
                                                             <td><?= $i ?></td>
                                                             <td data-order="<?php echo substr($key['tanggal1'], 0,10) ?>"><?= date('d-M-Y', strtotime(substr($key['tanggal1'], 0,10))) ?></td>
@@ -59,18 +58,12 @@
                                                             <?php else: ?>
                                                                 <td><?= 'Perusahaan' ?></td>
                                                             <?php endif ?>
-                                                            <td><?php 
-                                                            if ($key['status'] == '01') {
-                                                                echo "<p style='color: #ffbf00'>Menunggu Approval</p>";
-                                                            }elseif ($key['status'] == '02') {
-                                                                echo "<p style='color: #00a65a'>Approved</p>";
-                                                            }else{
-                                                                echo "<p style='color: #d3232d'>Rejected</p>";
-                                                            }
-                                                             ?></td>
-                                                             <td><?= $key['create_timestamp'] ?></td>
                                                             <td class="text-center">
-                                                                <a href="<?php echo base_url('PolaShiftSeksi/TukarShift/lihatView/'.$key['tukar_id']) ?>" title="View" class="btn btn-primary btn-md"><i class="fa fa-file-text-o"></i></a>
+                                                            <?php if ($key['beda'] < 1): ?>
+                                                            	<label style="color: red">Expired</label>
+                                                            <?php else: ?>
+                                                            	<a href="<?php echo base_url('PolaShiftSeksi/Approval/ApproveTS/'.$key['tukar_id']) ?>" class="btn btn-success"><i class="fa fa-eye"></i></a>
+                                                            <?php endif ?>
                                                             </td>
                                                         </tr>
                                                     <?php $i++; endforeach ?>
