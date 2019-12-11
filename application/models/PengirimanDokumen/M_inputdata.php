@@ -17,7 +17,8 @@ class M_inputdata extends CI_Model
                          ) 
                      tgl_input,
                      tm.keterangan, td.tanggal::date, 
-                     td.status, 
+                     td.status,
+                     (select tgl_update from ps.triwayat where id_data = td.id_data and status = td.status) app_time,
                      td.alasan,
                      (select string_agg(kodesie, '|') from ps.tappr where id = tm.id) as approval
                 FROM ps.tdata td 
@@ -34,6 +35,7 @@ class M_inputdata extends CI_Model
             $approval = explode('|', $res['approval']);
             $approver1= $this->getNameSeksi($approval['0']);
             $result[$i]['approver1'] = $approver1;
+            $result[$i]['app_time']  = date('d/m/Y H:i:s', strtotime($res['app_time']));
 
             if($approval['1'] !== 'kosong'){
                 $approver2= $this->getNameSeksi($approval['1']);

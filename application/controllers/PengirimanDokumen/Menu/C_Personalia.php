@@ -214,17 +214,18 @@ class C_Personalia extends CI_Controller
         endforeach;
     }
 
+    //Menu Rekap
     function rekapAll($periode=false, $kodedokumen=false, $kodeseksi=false){
         $this->load->model('PengirimanDokumen/M_inputdata');
         $this->load->model('PengirimanDokumen/M_masterdata');
 
         $start = $end = date('Y-m-d');
-        $info_periode = date('Y/m/d');
+        $info_periode = date('Y/m/d')." (Hari ini)";
         if(isset($_GET['periode'])){
             $range = explode(' - ', $_GET['periode']);
             $start = date('Y/m/d', strtotime($range['0']));
             $end   = date('Y/m/d', strtotime($range['1']));
-            $info_periode = $start." - ".$end;
+            $info_periode = ($start == $end)? $start : $start." - ".$end;
         }
 
         $dokumen = '';
@@ -248,7 +249,8 @@ class C_Personalia extends CI_Controller
                 tm.keterangan, 
                 td.status, 
                 td.tanggal::date, 
-                tr.seksi as approver
+                tr.seksi as approver,
+                tr.tgl_update as app_time
         FROM ps.tdata td 
             inner join er.er_employee_all emp on td.noind = emp.employee_code 
             inner join ps.tmaster tm on td.id_master = tm.id 
@@ -262,7 +264,8 @@ class C_Personalia extends CI_Controller
 
         for($i=0; $i < count($table); $i++){
             $table[$i]['kodesie'] = $this->M_inputdata->getNameSeksi($table[$i]['kodesie']);
-            $table[$i]['status'] = 'Approved by '.$this->M_inputdata->getNameSeksi($table[$i]['approver']);;
+            $table[$i]['status'] = 'Diterima oleh seksi '.$this->M_inputdata->getNameSeksi($table[$i]['approver']);
+            $table[$i]['tgl_app'] = date('d/m/Y H:i:s', strtotime($table[$i]['app_time']));
         }
 
         $this->data['listDocument'] = $this->M_inputdata->ajaxListMaster();
@@ -272,7 +275,7 @@ class C_Personalia extends CI_Controller
 
         $this->load->view('V_Header', $this->data);
 		$this->load->view('V_Sidemenu',$this->data);
-        $this->load->view('PengirimanDokumen/Menu/Personalia/V_All', $this->data);
+        $this->load->view('PengirimanDokumen/Menu/Personalia/V_Rekap', $this->data);
         $this->load->view('V_Footer', $this->data);
     }
 

@@ -48,6 +48,7 @@ class C_InputData extends CI_Controller
             $tgl_input  = $res['tgl_input'];
             $tanggal    = $res['tanggal'];
             $status     = $res['status'];
+            $appTime    = $res['app_time'];
             $alasan     = $res['alasan'];
             $approver1  = $res['approver1'];
             $approver2  = $res['approver2'];
@@ -57,19 +58,19 @@ class C_InputData extends CI_Controller
                     $status = '<td class="bg-yellow">Pending</td>';
                     break;
                 case '1':
-                    $status = '<td class="bg-blue">Approve by '.ucwords(strtolower($approver1)).'</td>';
+                    $status = '<td class="bg-blue">Diterima oleh seksi '.ucwords(strtolower($approver1))." pada tanggal ".$appTime.'</td>';
                     if($approver2 === ''){
-                        $status = '<td class="bg-green">Approve by '.ucwords(strtolower($approver1)).'</td>';
+                        $status = '<td class="bg-green">Diterima oleh seksi  '.ucwords(strtolower($approver1))." pada tanggal ".$appTime.'</td>';
                     }
                     break;
                 case '2':
-                    $status = '<td class="bg-red">Reject by '.ucwords(strtolower($approver1)).'</td>';
+                    $status = '<td class="bg-red">Ditolak oleh seksi '.ucwords(strtolower($approver1))." pada tanggal ".$appTime.'</td>';
                     break;
                 case '3':
-                    $status = '<td class="bg-green">Approve by '.ucwords(strtolower($approver2)).'</td>';
+                    $status = '<td class="bg-green">Diterima oleh seksi  '.ucwords(strtolower($approver2))." pada tanggal ".$appTime.'</td>';
                     break;
                 case '4':
-                    $status = '<td class="bg-red">Reject by '.ucwords(strtolower($approver2)).'</td>';
+                    $status = '<td class="bg-red">Ditolak oleh seksi '.ucwords(strtolower($approver2))." pada tanggal ".$appTime.'</td>';
                     break;
                 default:
                     $status = 'null';

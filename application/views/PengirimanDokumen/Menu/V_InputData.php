@@ -124,6 +124,7 @@
                                             </tr>
                                         </tfoot>
                                     </table>
+                                    <small style="color: red;">*klik data untuk melihat detail</small>
                                 </div>
                             </div>
                         </div>
@@ -217,7 +218,7 @@
         <div class="modal-content">
             <div class="modal-header modal-detail">
                 <button type="button" class="close" data-dismiss="modal">&times;</button>
-                <h3 class="modal-title center"><b>Info</b></h3>
+                <h3 class="modal-title center"><b>Detail</b></h3>
             </div>
             <div class="modal-body">
                 <form>
@@ -424,16 +425,16 @@
                 status = '<td class="bg-yellow">Pending</td>'
                 break
             case '1':
-                status = `<td class="bg-green">Approve by ${ap1}</td>`
+                status = `<td class="${(ap2 === '')? 'bg-green':'bg-blue'}">Approve by ${ap1}</td>`
                 break
             case '2':
-                status = `<td class="bg-red">Reject by ${ap1}</td>`
+                status = `<td class="bg-red">Ditolak oleh seksi ${ap1}</td>`
                 break
             case '3':
-                status = `<td class="bg-green">Approve by ${ap2}</td>`
+                status = `<td class="bg-green">Diterima oleh seksi ${ap2}</td>`
                 break
             case '4':
-                status = `<td class="bg-red">Reject by ${ap2}</td>`
+                status = `<td class="bg-red">Ditolak oleh seksi ${ap2}</td>`
                 break
             default:
                 status = 'null'
@@ -446,8 +447,8 @@
         if (val == null) {
             return ''
         }
-        if (val.length > 10) {
-            return val.substr(0, 10) + '...'
+        if (val.length > 20) {
+            return val.substr(0, 20) + '...'
         }
         return val
     }
