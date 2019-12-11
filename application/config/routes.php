@@ -3261,11 +3261,18 @@ $route['PolaShiftSeksi/ImportPolaShift']							= 'PolaShiftSeksi/ImportPolaShift
 $route['PolaShiftSeksi/ImportPolaShift/(:any)']						= 'PolaShiftSeksi/ImportPolaShift/C_Index/$1';
 $route['PolaShiftSeksi/ImportPolaShift/(:any)/(:any)']				= 'PolaShiftSeksi/ImportPolaShift/C_Index/$1/$2';
 $route['PolaShiftSeksi/ImportPolaShift/(:any)/(:any)/(:any)']		= 'PolaShiftSeksi/ImportPolaShift/C_Index/$1/$2/$3';
+$route['PolaShiftSeksi/ImportPolaShift/(:any)/(:any)/(:any)/(:any)']		= 'PolaShiftSeksi/ImportPolaShift/C_Index/$1/$2/$3/$4';
 
-$route['PolaShiftSeksi/TukarShift']							= 'PolaShiftSeksi/TukarShift/C_Index';
-$route['PolaShiftSeksi/TukarShift/(:any)']					= 'PolaShiftSeksi/TukarShift/C_Index/$1';
-$route['PolaShiftSeksi/TukarShift/(:any)/(:any)']			= 'PolaShiftSeksi/TukarShift/C_Index/$1/$2';
-$route['PolaShiftSeksi/TukarShift/(:any)/(:any)/(:any)']	= 'PolaShiftSeksi/TukarShift/C_Index/$1/$2/$3';
+$route['PolaShiftSeksi/TukarShift']							= 'PolaShiftSeksi/TukarShift/C_Tukar';
+$route['PolaShiftSeksi/TukarShift/(:any)']					= 'PolaShiftSeksi/TukarShift/C_Tukar/$1';
+$route['PolaShiftSeksi/TukarShift/(:any)/(:any)']			= 'PolaShiftSeksi/TukarShift/C_Tukar/$1/$2';
+$route['PolaShiftSeksi/TukarShift/(:any)/(:any)/(:any)']	= 'PolaShiftSeksi/TukarShift/C_Tukar/$1/$2/$3';
+
+$route['PolaShiftSeksi/Approval']							= 'PolaShiftSeksi/Approval/C_Approval';
+$route['PolaShiftSeksi/Approval/(:any)']					= 'PolaShiftSeksi/Approval/C_Approval/$1';
+$route['PolaShiftSeksi/Approval/(:any)/(:any)']				= 'PolaShiftSeksi/Approval/C_Approval/$1/$2';
+$route['PolaShiftSeksi/Approval/(:any)/(:any)/(:any)']		= 'PolaShiftSeksi/Approval/C_Approval/$1/$2/$3';
+$route['PolaShiftSeksi/Approval/(:any)/(:any)/(:any)/(:any)']		= 'PolaShiftSeksi/Approval/C_Approval/$1/$2/$3/$4';
 
 //--------------------------------------------------- Cetak Rekap Perizinan Dinas -----------------------------------//
 $route['MasterPekerja/RekapPerizinanDinas'] 		= 'MasterPekerja/RekapPerizinanDinas/C_Index';
