@@ -36,6 +36,12 @@ nominal_ppn.trigger('change');
 	
 // }
 
+
+	$('.idDateInvoiceTambahInvBer').datepicker({
+		format: 'dd-M-yyyy',
+		autoclose: true,
+	});
+
 $('#btnCariInvId').click(function(){
 		Swal.fire({
 			  title: 'Please Wait ...',
@@ -509,6 +515,8 @@ function invBermasalah(th) {
 		format: 'dd-M-yyyy',
 		autoclose: true,
 	});
+
+
 	$('#btnHapus').click(function(){
 		alert('Yakin untuk menghapusnya ?');
 	});
