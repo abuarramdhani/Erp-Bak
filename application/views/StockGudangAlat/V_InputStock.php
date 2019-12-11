@@ -172,7 +172,7 @@
                       <td><?php echo $pilihan; ?></td>
                       <td class="text-center">
                         <a data-toggle="modal" data-target="#Modalku<?php echo $no; ?>" onclick="editSkrtt(<?php echo $id ?>)" class="btn btn-success fa fa-pencil-square-o"></a>
-                        <a href="<?=base_url('StockGudangAlat/C_StockGudangAlat/deleteData/'. $id); ?>" class="btn btn-danger fa fa-trash"></a>
+                        <a href="<?=base_url('StockGudangAlat/C_StockGudangAlat/deleteData/'. $id); ?>" onclick="alert('Are You Sure To Delete ?')" class="btn btn-danger fa fa-trash"></a>
                       </td>
                     </tr>
                     <?php
