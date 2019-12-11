@@ -75,7 +75,11 @@
 											<span><label>PPN Status</label></span>
 										</td>
 										<td>
-											<input disabled type="text" name="ppnStatus" class="form-control ppnStatus" size="40" id="ppn_status">
+												<select id="ppn_status" name="ppn_status" class="ppn_status form-control select2 select2-hidden-accessible" style="width:100%;">
+												<option value="">Pilih</option>
+												<option value="Y">Y</option>
+												<option value="N">N</option>
+											</select>
 										</td>
 									</tr>
 									<tr>
@@ -83,7 +87,7 @@
 											<span><label>Invoice Date</label></span>
 										</td>
 										<td>
-						                    <input type='text' class="form-control idDateInvoice" id="invoice_dateid" size="40" name="invoice_date"  placeholder="Invoice Date">
+						                    <input type='text' class="form-control idDateInvoiceTambahInvBer" id="invoice_dateid" size="40" name="invoice_date"  placeholder="Invoice Date">
 										</td>
 									</tr>
 									<tr>
