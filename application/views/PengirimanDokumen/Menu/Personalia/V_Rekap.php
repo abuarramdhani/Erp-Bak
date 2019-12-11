@@ -76,6 +76,7 @@
                                     <td>Seksi</td>
                                     <td>Keterangan</td>
                                     <td>Status</td>
+                                    <td>Tgl Approve</td>
                                 </tr>
                             </thead>
                             <tbody>
@@ -88,6 +89,7 @@
                                     <td><?= $row['kodesie'] ?></td>
                                     <td><?= $row['keterangan'] ?></td>
                                     <td><?= $row['status'] ?></td>
+                                    <td><?= $row['tgl_app'] ?></td>
                                 </tr>
                                 <?php endforeach; ?>
                             </tbody>
