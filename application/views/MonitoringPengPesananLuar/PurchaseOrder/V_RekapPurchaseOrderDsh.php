@@ -114,7 +114,7 @@ thead.toscahead tr th {
 												<?php if ($k['status'] == 'Open') { ?>
 											<td><span class="label label-primary">Status : <?php echo  $k['status'] ?> &nbsp;<br></span></td>
 												<?php }else if ($k['status'] == 'Close') { ?>
-											<td><span class="label label-danger">Status : <?php echo  $k['status'] ?> &nbsp;<br></span></td>
+											<td><span class="label label-success">Status : <?php echo  $k['status'] ?> &nbsp;<br></span></td>
 												<?php } ?>
 
 											<td>
