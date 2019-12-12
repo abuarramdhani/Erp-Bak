@@ -174,7 +174,7 @@ $('#search_by').change(function(){
         $('#jenis_dokumen').val('');
         $('input[name="item"]').val('');
         $('#pic').val('');
-    }else if(value == "incomming"){
+    }else if(value == "belumterlayani"){
         $('#slcjenis').css('display', 'none')
         $('#slcTgl').css('display', 'none');
         $('#slcDokumen').css('display', 'none');
