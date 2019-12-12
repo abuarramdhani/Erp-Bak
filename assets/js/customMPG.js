@@ -174,6 +174,19 @@ $('#search_by').change(function(){
         $('#jenis_dokumen').val('');
         $('input[name="item"]').val('');
         $('#pic').val('');
+    }else if(value == "incomming"){
+        $('#slcjenis').css('display', 'none')
+        $('#slcTgl').css('display', 'none');
+        $('#slcDokumen').css('display', 'none');
+        $('#slcPIC').css('display', 'none');
+        $('#slcnodoc').css('display', 'none');
+        $('#slcItem').css('display', 'none');
+        $('input[name="no_document"]').val('');
+        $('input[name="tglAwal"]').val('');
+        $('input[name="tglAkhir"]').val('');
+        $('#jenis_dokumen').val('');
+        $('input[name="item"]').val('');
+        $('#pic').val('');
     }
 });
 
