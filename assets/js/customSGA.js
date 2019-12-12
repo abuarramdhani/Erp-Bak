@@ -73,7 +73,7 @@ function editSkrtt(id) {
 			console.log(result);
 			console.log(result[0].nama);
       // $('#txt_id').val(id);
-			$('.noPoSaitama').val(result[0].nama);
+			$('.noPoSaitama').val(result[0].no_po);
 			$('.tagSaitama').val(result[0].tag);
 			$('.nama').val(result[0].nama);
 			$('.merek').val(result[0].merk);
