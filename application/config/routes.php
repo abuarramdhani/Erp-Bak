@@ -3566,6 +3566,7 @@ $route['PengirimanDokumen/PersonaliaTwo/approved']		= 'PengirimanDokumen/Menu/C_
 $route['PengirimanDokumen/PersonaliaTwo/rejected']		= 'PengirimanDokumen/Menu/C_Personalia/Rejected/2';
 
 $route['PengirimanDokumen/Personalia/ajax/sendapproval']['post'] = 'PengirimanDokumen/Menu/C_Personalia/ApprovalData';
+$route['PengirimanDokumen/Personalia/ajax/changeapp'] 	= 'PengirimanDokumen/Menu/C_Personalia/changeApproval';
 $route['PengirimanDokumen/Personalia/ajax/newData'] 	= 'PengirimanDokumen/Menu/C_Personalia/ajaxNewData';
 
 $route['PengirimanDokumen/Personalia/RekapAll']			= 'PengirimanDokumen/Menu/C_Personalia/rekapAll';
