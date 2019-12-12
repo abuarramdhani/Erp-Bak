@@ -327,8 +327,13 @@ class C_Monitoring extends CI_Controller
 				}
 			$data['value'] = $array_terkelompok;
 		}
-		
-		$this->load->view('MonitoringGdSparepart/V_Result', $data);
+		if ($search == "belumterlayani") {
+			// echo "haha";exit();
+			$this->load->view('MonitoringGdSparepart/V_Result2', $data);
+		}else{
+			// echo "hihi";exit();
+			$this->load->view('MonitoringGdSparepart/V_Result', $data);
+		}
 	}
 
 

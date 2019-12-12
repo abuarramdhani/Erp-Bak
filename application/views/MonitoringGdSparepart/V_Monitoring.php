@@ -47,6 +47,7 @@
                                             <option value="tanggal">Tanggal</option>
                                             <option value="pic">PIC</option>
                                             <option value="item">Item</option>
+                                            <option value="belumterlayani">Belum Terlayani</option>
                                             <option value="export" id="slcExMGS">Export Excel</option>
                                             </select>
                                     </div>
