@@ -39,12 +39,18 @@
                                 <?php $i=1; foreach($table as $row): ?>
                                     <tr>
                                         <td><?= $i++ ?></td>
-                                        <td><?= $row['noind'] ?></td>
-                                        <td><?= $row['nama'] ?></td>
-                                        <td><?= $row['keterangan'] ?></td>
-                                        <td><?= $row['tanggal'] ?></td>
+                                        <td class="personal" data-seksi="<?= $row['seksi_name'] ?>"><?= $row['noind'] ?></td>
+                                        <td class="name"><?= $row['nama'] ?></td>
+                                        <td class="ket"><?= $row['keterangan'] ?></td>
+                                        <td>
+                                        <?php echo 
+                                            ($row['tanggal_start'] == $row['tanggal_end'])? 
+                                            date('Y/m/d', strtotime($row['tanggal_start'])) : 
+                                            date('Y/m/d', strtotime($row['tanggal_start']))." - ".date('Y/m/d',strtotime($row['tanggal_end'])) 
+                                        ?>
+                                        </td>
                                         <td><?= $row['tgl_update'] ?></td>
-                                        <td><button data-toggle="modal" data-target="#modalChange" class="btn btn-sm btn-success"><i class="fa fa-edit"></button></td>
+                                        <td><button data-toggle="modal" data-id="<?= $row['id_data'] ?>" data-target="#modalChange" class="btn btn-sm btn-success btn-change"><i class="fa fa-edit"></button></td>
                                     </tr>
                                 <?php endforeach ?>
                             </tbody>
@@ -68,26 +74,30 @@
             </div>
             <div class="modal-body">
                 <form>
-                    <div class="form-group">
-                        <label for="modalDetail">Detail</label>
-                        <input class="form-control" id="modalDetail" disabled>
+                    <div class="form-group col-lg-4">
+                        <label for="modalDetail">No Induk</label>
+                        <input class="form-control col-lg-4" id="modalNoind" disabled>
                     </div>
-                    <div class="form-group">
-                        <label for="modalApp1">Approve 1</label>
-                        <input class="form-control" id="modalApp1" disabled>
+                    <div class="form-group col-lg-8">
+                        <label for="modalApp1">Nama</label>
+                        <input class="form-control" id="modalName" disabled>
                     </div>
-                    <div class="form-group">
-                        <label for="modalApp2">Approve 2</label>
-                        <input class="form-control" id="modalApp2" disabled>
+                    <div class="form-group col-lg-12">
+                        <label for="modalApp2">Keterangan</label>
+                        <input class="form-control" id="modalKet" disabled>
+                    </div>
+                    <div class="form-group col-lg-12">
+                        <label for="modalApp2">Seksi</label>
+                        <input class="form-control" id="modalSection" disabled>
                     </div>
                     <div class="form-group modalHistoryDiv borderHistory">
                         <!-- on js -->
                     </div>
                 </form>
             </div>
-            <div class="modal-footer">
-                <button class="btn btn-danger">Reject</button>
-                <button class="btn btn-success">Approve</button>
+            <div style="margin: 0 1em 0 1em;" class="modal-footer">
+                <button class="btn btn-danger rej">Reject</button>
+                <!-- <button class="btn btn-success acc">Approve</button> -->
             </div>
             <div class="modal-footer">
                 <small style="color:red;">*pastikan data valid</small>
@@ -95,3 +105,51 @@
         </div>
     </div>
 </div>
+
+<script>
+baseurl = '<?= base_url()?>'
+    $(document).ready(function(){
+        $('.btn-change').click(function(){
+            let id = $(this).data('id')
+            
+            $('.rej, .acc').attr('data-id',id)
+
+            let elem    = $(this).closest('tr')
+            let noind   = elem.find('.personal').text()
+            let name    = elem.find('.name').text()
+            let section = elem.find('.personal').data('seksi')
+            let ket     = elem.find('.ket').text()
+
+            $('#modalNoind').val(noind)
+            $('#modalName').val(name)
+            $('#modalSection').val(section)
+            $('#modalKet').val(ket)
+        })
+
+        // $('.acc').click(function(){
+        //     let id = $(this).data('id')
+        //     appDocument(id,true)
+        // })
+
+        $('.rej').click(function(){
+            let id = $(this).data('id')
+            appDocument(id,!1)
+            $('.swal2-content').after('<div><small class="swal2-notif" style="color: red;">* min 5 karakter</small></div>')
+
+            $('.swal2-actions > button').prop('disabled',true)
+            $('.swal2-textarea').attr('placeholder', 'min 5 karakter')
+
+            $('.swal2-textarea').on('input', function(){
+                let val = $(this).val()
+                $('.swal2-actions > button').prop('disabled',(val.length>=5)?false:true)
+                if(val.length >=5){
+                    $('.swal2-notif').hide()
+                }else{
+                    $('.swal2-notif').show()
+                }
+            })
+        })
+
+    })
+
+</script>

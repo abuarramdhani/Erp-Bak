@@ -18,7 +18,7 @@
                 </div>
                 <div class="box-body">
                     <div class="table-responsive">
-                        <table class="datatable table table-striped table-bordered table-hover text-left SendDocument" style="font-size: 12px;">
+                        <table class="datatable table table-striped table-bordered table-hover text-left SendDocument" style="font-size: 12px; width: 100% !important;">
                             <thead class="bg-primary center">
                                 <tr>
                                     <td><input type="checkbox" id="checkall"></td>
@@ -37,8 +37,14 @@
                                         <td class="data-id" data-id="<?= $row['id_data'] ?>"><?= $row['noind'] ?></td>
                                         <td><?= $row['nama'] ?></td>
                                         <td><?= $row['keterangan'] ?></td>
-                                        <td><?= $row['tanggal'] ?></td>
-                                        <td><?= $row['tgl_update'] ?></td>
+                                        <td>
+                                        <?php echo 
+                                            ($row['tanggal_start'] == $row['tanggal_end'])? 
+                                            date('Y/m/d', strtotime($row['tanggal_start'])) : 
+                                            date('Y/m/d', strtotime($row['tanggal_start']))." - ".date('Y/m/d',strtotime($row['tanggal_end'])) 
+                                        ?>
+                                        </td>
+                                        <td><?= date('Y/m/d', strtotime($row['tgl_update'])) ?></td>
                                         <td>
                                             <button onclick="accData(<?php echo $row['id_data'].','.$lv ?>)" class="btn btn-sm btn-success acc_btn">accept</button>&nbsp
                                             <button onclick="rejData(<?php echo $row['id_data'].','.$lv ?>)" class="btn btn-sm btn-danger rej_btn">reject</button>

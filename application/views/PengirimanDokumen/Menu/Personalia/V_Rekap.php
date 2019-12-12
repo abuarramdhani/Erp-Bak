@@ -8,6 +8,9 @@
     tbody>tr>td:first-child{
         width: 5%;
     }
+    table{
+        width: 100% !important;
+    }
 	thead>tr{
 		font-weight: bold;
 	}
@@ -83,7 +86,13 @@
                                 <?php $i=1; foreach($table as $row): ?>
                                 <tr>
                                     <td><?= $i++ ?></td>
-                                    <td><?= $row['tanggal'] ?></td>
+                                    <td>
+                                    <?php echo 
+                                        ($row['tanggal_start'] == $row['tanggal_end'])? 
+                                        date('Y/m/d', strtotime($row['tanggal_start'])) : 
+                                        date('Y/m/d', strtotime($row['tanggal_start']))." - ".date('Y/m/d',strtotime($row['tanggal_end'])) 
+                                    ?>
+                                    </td>
                                     <td><?= $row['noind'] ?></td>
                                     <td><?= $row['nama'] ?></td>
                                     <td><?= $row['kodesie'] ?></td>
