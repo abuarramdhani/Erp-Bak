@@ -1228,7 +1228,7 @@ function saveEditSMS(th){ //PROSES SAVING EDIT
 		var arry9= [];
 		$('input#no_spb').each(function(){
 		var no_spb = $(this).val();
-		arry8.push(no_spb);
+		arry9.push(no_spb);
 		})
 
 
