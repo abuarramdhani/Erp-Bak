@@ -287,8 +287,9 @@ if ($user != $created) {
 											<tr class="bg-primary">
 												<th style="width: 5%" class="text-center">No</th>
 												<th style="width: 10%" class="text-center">Jumlah Unit</th>
-												<th style="width: 45%" class="text-center">Muatan (goods)</th>
+												<th style="width: 25%" class="text-center">Muatan (goods)</th>
 												<th style="width: 10%" class="text-center">Nomor DO</th>
+												<th style="width: 10%" class="text-center">Nomor SPB</th>
 												<th style="width: 10%" class="text-center">Volume </th>
 												<th style="width: 10%" class="text-center">Persentase (%) </th>
 												<th style="width: 10%" class="text-center">Jumlah Dikirim</th>
@@ -316,6 +317,8 @@ if ($user != $created) {
 									<?php } ?>						
 						</select></td>
 				<td class="text-center"><input type="text" class="form-control no_do" style="width: 100%" type="text" id="no_do" name="no_do" value="<?php echo $value['no_do']?>" disabled="true" disabled></input></td>
+
+				<td class="text-center"><input type="text" class="form-control no_spb" style="width: 100%" type="text" id="no_spb" name="no_spb" value="<?php echo $value['no_spb']?>" disabled="true" disabled></input></td>
 
 				<td class="text-center"><input type="number" class="form-control jumlahvol" style="width: 100%" type="text" id="jumlahvol_id" name="jumlahvol1" value="<?php echo $value['volume_goods']?>" disabled="true" disabled> </input></td>
 

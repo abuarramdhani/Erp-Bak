@@ -87,6 +87,7 @@ thead.toscahead tr th {
 											<th class="text-center" style="width: 8%;">Actual QTY </th>
 											<th class="text-center" style="width: 8%;">No PR</th>
 											<th class="text-center" style="width: 8%;">Nomor DO</th>
+											<th class="text-center" style="width: 8%;">Nomor SPB</th>
 											<th title="Detail Nomor PR" class="text-center" style="width: 5%;">Detail PR</th>
 											<th title="Detail Shipment" class="text-center" style="width: 5%;">Detail SHP</th>
 										</tr>
@@ -129,6 +130,7 @@ thead.toscahead tr th {
 											<?php }?>
 											<td><?php echo  $k['pr'] ?> </td>
 											<td><?php echo  $k['no_do'] ?> </td>
+											<td><?php echo  $k['no_spb'] ?> </td>
 											<td><button title="Detail PR..." type="button" data-toggle="modal" data-target="MdlSMS" onclick="detailPR(<?php echo $k['prl'] ?>, <?php echo $k['pr'] ?>)" class="btn btn-warning zoom" class="btn_detail_pr" id="btn_detail_pr"><i class="fa fa-search"></i></button></td>
 											<td><button title="Detail Shipment..." type="button" data-toggle="modal" data-target="MdlDetailShpUndeliver" onclick="detailShpUndeliver(<?php echo $k['no_shipment'] ?>)" class="btn btn-success zoom" class="btn_detail_pr" id="btn_detail_pr"><i class="fa fa-hand-pointer-o"></i></button></td>
 										</tr>

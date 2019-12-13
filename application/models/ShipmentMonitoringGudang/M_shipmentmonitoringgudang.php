@@ -62,7 +62,8 @@ class M_shipmentmonitoringgudang extends CI_Model
               sh.pr_line_number prl,
               sh.creation_date,
               sh.full_percentage,
-              hima.no_do
+              hima.no_do,
+              wari.no_spb
               FROM 
               ex.shipment_header sh left join ex.vehicle ev
               on sh.vehicle_type_id = ev.vehicle_id
@@ -81,6 +82,9 @@ class M_shipmentmonitoringgudang extends CI_Model
               join (SELECT SHIPMENT_HEADER_ID ,array_to_string(array_agg(no_do), ', '::text) AS no_do
                          FROM ex.shipment_line
                      group by SHIPMENT_HEADER_ID) hima on sh.shipment_header_id = hima.shipment_header_id
+              join (SELECT SHIPMENT_HEADER_ID ,array_to_string(array_agg(no_spb), ', '::text) AS no_spb
+                         FROM ex.shipment_line
+                     group by SHIPMENT_HEADER_ID) wari on sh.shipment_header_id = wari.shipment_header_id
               where sh.actual_loading_date is null 
               -- and sh.estimate_depart_date > now()
               GROUP BY
@@ -107,6 +111,7 @@ class M_shipmentmonitoringgudang extends CI_Model
               , sh.creation_date
               , sh.full_percentage
               , hima.no_do
+              , wari.no_spb
               order by sh.estimate_depart_date";
         $runQuery = $this->db->query($sql);
         return $runQuery->result_array();
@@ -248,7 +253,8 @@ class M_shipmentmonitoringgudang extends CI_Model
               sh.pr_line_number prl,
               sh.creation_date,
               sh.full_percentage,
-              aa.no_do
+              aa.no_do,
+              wari.no_spb
               FROM 
               ex.shipment_header sh left join ex.vehicle ev
               on sh.vehicle_type_id = ev.vehicle_id
@@ -267,6 +273,9 @@ class M_shipmentmonitoringgudang extends CI_Model
                 join (SELECT SHIPMENT_HEADER_ID ,array_to_string(array_agg(no_do), ', '::text) AS no_do
                          FROM ex.shipment_line
                      group by SHIPMENT_HEADER_ID) aa on sh.shipment_header_id = aa.shipment_header_id
+                join (SELECT SHIPMENT_HEADER_ID ,array_to_string(array_agg(no_spb), ', '::text) AS no_spb
+                         FROM ex.shipment_line
+                     group by SHIPMENT_HEADER_ID) wari on sh.shipment_header_id = wari.shipment_header_id
               -- where sl.delivered_quantity < sl.quantity
               -- or sl.delivered_quantity IS NULL
 --              where sh.estimate_depart_date > now() - interval '1 day'
@@ -294,6 +303,7 @@ class M_shipmentmonitoringgudang extends CI_Model
               , sh.pr_line_number
               , sh.creation_date
               , sh.full_percentage
+              , wari.no_spb
               , aa.no_do";
         $runQuery = $this->db->query($sql);
         return $runQuery->result_array();
@@ -327,6 +337,7 @@ class M_shipmentmonitoringgudang extends CI_Model
               ev.volume_cm3 volume,
               sh.full_percentage persentase,
               aa.no_do,
+              wari.no_spb,
               sh.nama_driver,
               sh.plat_kendaraan
               FROM 
@@ -347,6 +358,9 @@ class M_shipmentmonitoringgudang extends CI_Model
               join (SELECT SHIPMENT_HEADER_ID ,array_to_string(array_agg(no_do), ', '::text) AS no_do
                          FROM ex.shipment_line
                      group by SHIPMENT_HEADER_ID) aa on sh.shipment_header_id = aa.shipment_header_id
+              join (SELECT SHIPMENT_HEADER_ID ,array_to_string(array_agg(no_spb), ', '::text) AS no_spb
+                         FROM ex.shipment_line
+                     group by SHIPMENT_HEADER_ID) wari on sh.shipment_header_id = wari.shipment_header_id
               $no_ship
               GROUP BY
               sh.shipment_header_id
@@ -376,6 +390,7 @@ class M_shipmentmonitoringgudang extends CI_Model
               , aa.no_do
               , sh.nama_driver
               , sh.plat_kendaraan
+              , wari.no_spb
       ";
         $runQuery = $this->db->query($sql);
         return $runQuery->result_array();
@@ -564,7 +579,8 @@ class M_shipmentmonitoringgudang extends CI_Model
               sl.created_by,
               sl.volume_goods,
               sl.volume_percentage,
-              sl.no_do
+              sl.no_do,
+              sl.no_spb
               from ex.shipment_line sl
               join ex.shipment_header sh on sh.shipment_header_id = sl.shipment_header_id
               $no_ship";
@@ -684,12 +700,17 @@ class M_shipmentmonitoringgudang extends CI_Model
 
        }
 
-       public function UpdatebyInsertSMS($no_ship,$jumlah,$unit,$jumlahvol,$pers_vol,$jml_terkirim,$usrname,$no_do)
+       public function UpdatebyInsertSMS($no_ship,$jumlah,$unit,$jumlahvol,$pers_vol,$jml_terkirim,$usrname,$no_do,$no_spb)
        {
+
+        if ($no_spb == '') {
+          $no_spb = NULL;
+        }
+
         $db = $this->load->database();
         $sql = "insert into ex.shipment_line 
-                      (goods_id, quantity, creation_date, created_by, shipment_header_id, delivered_quantity, volume_goods, volume_percentage,no_do)
-                values ('$unit', '$jumlah', now(), '$usrname', '$no_ship', '$jml_terkirim', '$jumlahvol', '$pers_vol', '$no_do')";
+                      (goods_id, quantity, creation_date, created_by, shipment_header_id, delivered_quantity, volume_goods, volume_percentage,no_do,no_spb)
+                values ('$unit', '$jumlah', now(), '$usrname', '$no_ship', '$jml_terkirim', '$jumlahvol', '$pers_vol', '$no_do', '$no_spb')";
         $runQuery = $this->db->query($sql);
                   // echo $sql;
                 
@@ -923,7 +944,8 @@ class M_shipmentmonitoringgudang extends CI_Model
               sh.actual_depart_date actual_berangkat,
               sh.pr_number pr,
               sh.creation_date creation_date,
-              aa.no_do
+              aa.no_do,
+              wari.no_spb
               FROM 
               ex.shipment_header sh left join ex.vehicle ev
               on sh.vehicle_type_id = ev.vehicle_id
@@ -942,6 +964,9 @@ class M_shipmentmonitoringgudang extends CI_Model
               join (SELECT SHIPMENT_HEADER_ID ,array_to_string(array_agg(no_do), ', '::text) AS no_do
                          FROM ex.shipment_line
                      group by SHIPMENT_HEADER_ID) aa on sh.shipment_header_id = aa.shipment_header_id
+              join (SELECT SHIPMENT_HEADER_ID ,array_to_string(array_agg(no_spb), ', '::text) AS no_spb
+                         FROM ex.shipment_line
+                     group by SHIPMENT_HEADER_ID) wari on sh.shipment_header_id = wari.shipment_header_id
               GROUP BY
               sh.shipment_header_id
               , ev.vehicle_name
@@ -962,6 +987,7 @@ class M_shipmentmonitoringgudang extends CI_Model
               , sh.actual_depart_date
               , sh.pr_number
               , sh.creation_date
+              , wari.no_spb
               , aa.no_do";
         $runQuery = $this->db->query($sql);
         return $runQuery->result_array();

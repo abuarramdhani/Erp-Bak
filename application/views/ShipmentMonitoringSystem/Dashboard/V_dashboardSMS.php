@@ -75,7 +75,7 @@ thead.toscahead tr th {
 					  		<div id="tableHolder">
 								<div class="box-body">
 									<div style="overflow:auto;">
-									<table id="tb_sms" style="min-width: 130%;" class="tb_sms table table-striped tb_responsive_sms table-bordered table-hover text-center">
+									<table id="tb_sms" style="min-width: 150%;" class="tb_sms table table-striped tb_responsive_sms table-bordered table-hover text-center">
 									<thead class="toscahead">
 										<tr class="bg-primary">
 											<th class="text-center" style="width: 5%;">No</th>
@@ -85,13 +85,14 @@ thead.toscahead tr th {
 											<th class="text-center" style="width: 10%;">Time Left</th>
 											<th class="text-center" style="width: 4%;">Finish Good</th>
 											<th class="text-center" style="width: 12%;">Tujuan</th>
-											<th class="text-center" style="width: 30%;">Muatan</th>
+											<th class="text-center" style="width: 25%;">Muatan</th>
 											<th class="text-center" style="width: 2%;">Full</th>
 											<th class="text-center" style="width: 2%;">Full (%)</th>
-											<th class="text-center" style="width: 10%;">Actual Loading </th>
-											<th class="text-center" style="width: 10%;">Actual Depart </th>
+											<th class="text-center" style="width: 8%;">Actual Loading </th>
+											<th class="text-center" style="width: 8%;">Actual Depart </th>
 											<th class="text-center" style="width: 10%;">Actual QTY </th>
-											<th class="text-center" style="width: 10%;">Nomor DO</th>
+											<th class="text-center" style="width: 15%;">Nomor DO</th>
+											<th class="text-center" style="width: 15%;">Nomor SPB</th>
 											<th class="text-center" style="width: 10%;">Nomor PR</th>
 											<th class="text-center" style="width: 5%;">Detail PR</th>
 										</tr>
@@ -133,7 +134,8 @@ thead.toscahead tr th {
 											<td> Terkirim : <?php echo $k['dq']; ?> <br> Dari : <?php echo  $k['q'] ?></td>
 											<?php }?>
 											<!-- tambahan -->
-											<td><?php echo  $k['no_do'] ?></td>
+											<td><?php echo  $k['no_do'] ?> </td>
+											<td><?php echo  $k['no_spb'] ?> </td>
 											<!-- tambahan -->
 											<td><?php echo  $k['pr'] ?> </td>
 											<td><button type="button" data-toggle="modal" data-target="MdlSMS" onclick="detailPR(<?php echo $k['prl'] ?>, <?php echo $k['pr'] ?>)" class="btn btn-warning zoom" class="btn_detail_pr" id="btn_detail_pr"><i class="fa fa-search"></i></button></td>

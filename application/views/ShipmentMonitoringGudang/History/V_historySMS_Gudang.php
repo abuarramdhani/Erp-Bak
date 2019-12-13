@@ -74,6 +74,7 @@ thead.toscahead tr th {
 											<th style="width: 5%;"  class="text-center">Full</th>
 											<th style="width: 10%;" class="text-center">Creation Date</th>
 											<th style="width: 10%;" class="text-center">Nomor DO</th>
+											<th style="width: 10%;" class="text-center">Nomor SPB</th>
 											<th style="width: 10%;" class="text-center">Created by</th>
 											<!-- <th style="width: 10%;" class="text-center">Action</th> -->
 										</tr>
@@ -105,6 +106,7 @@ thead.toscahead tr th {
 											<?php }?>
 											<td><?php echo  $k['creation_date'] ?></td>
 											<td><?php echo  $k['no_do'] ?></td>
+											<td><?php echo  $k['no_spb'] ?></td>
 											<td><?php echo  $k['created_by'] ?></td>
 
 										</tr>
