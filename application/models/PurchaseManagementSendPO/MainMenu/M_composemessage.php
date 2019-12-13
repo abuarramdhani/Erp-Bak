@@ -42,18 +42,153 @@ class M_composemessage extends CI_Model
     public function getEmailAddressGabungan($id)
 		{
 				$sql =
-						"SELECT NVL ((SELECT asp.attribute5
-                            FROM ap_suppliers asp
-                           WHERE vendor_id = 4066),
-                         (SELECT ksea.email
-                            FROM khs_supplier_email_account ksea
-                           WHERE ksea.vendor_id = 4066 AND ROWNUM <= 1)
-                        ) email
-               FROM DUAL
+						"select distinct hps.ATTRIBUTE16 EMAIL
+              from PO_HEADERS_ALL poh, ap_supplier_sites_all vs, HZ_PARTY_SITES hps,
+                   (SELECT po_unity_number , po_num
+                      from (SELECT kppu.po_unity_id, po_unity_number, po_num01 po_num
+                              FROM apps.khs_pur_po_unity kppu
+                             WHERE kppu.po_unity_number = '$id'
+                            UNION
+                            SELECT kppu.po_unity_id, po_unity_number, po_num02
+                              FROM apps.khs_pur_po_unity kppu
+                             WHERE kppu.po_unity_number = '$id'
+                            UNION
+                            SELECT kppu.po_unity_id, po_unity_number, po_num03
+                              FROM apps.khs_pur_po_unity kppu
+                             WHERE kppu.po_unity_number = '$id'
+                            UNION
+                            SELECT kppu.po_unity_id, po_unity_number, po_num04
+                              FROM apps.khs_pur_po_unity kppu
+                             WHERE kppu.po_unity_number = '$id'
+                            UNION
+                            SELECT kppu.po_unity_id, po_unity_number, po_num05
+                              FROM apps.khs_pur_po_unity kppu
+                             WHERE kppu.po_unity_number = '$id'
+                            UNION
+                            SELECT kppu.po_unity_id, po_unity_number, po_num06
+                              FROM apps.khs_pur_po_unity kppu
+                             WHERE kppu.po_unity_number = '$id'
+                            UNION
+                            SELECT kppu.po_unity_id, po_unity_number, po_num07
+                              FROM apps.khs_pur_po_unity kppu
+                             WHERE kppu.po_unity_number = '$id'
+                            UNION
+                            SELECT kppu.po_unity_id, po_unity_number, po_num08
+                              FROM apps.khs_pur_po_unity kppu
+                             WHERE kppu.po_unity_number = '$id'
+                            UNION
+                            SELECT kppu.po_unity_id, po_unity_number, po_num09
+                              FROM apps.khs_pur_po_unity kppu
+                             WHERE kppu.po_unity_number = '$id'
+                            UNION
+                            SELECT kppu.po_unity_id, po_unity_number, po_num10
+                              FROM apps.khs_pur_po_unity kppu
+                             WHERE kppu.po_unity_number = '$id'
+                            UNION
+                            SELECT kppu.po_unity_id, po_unity_number, po_num11
+                              FROM apps.khs_pur_po_unity kppu
+                             WHERE kppu.po_unity_number = '$id'
+                            UNION
+                            SELECT kppu.po_unity_id, po_unity_number, po_num12
+                              FROM apps.khs_pur_po_unity kppu
+                             WHERE kppu.po_unity_number = '$id'
+                            UNION
+                            SELECT kppu.po_unity_id, po_unity_number, po_num13
+                              FROM apps.khs_pur_po_unity kppu
+                             WHERE kppu.po_unity_number = '$id'
+                            UNION
+                            SELECT kppu.po_unity_id, po_unity_number, po_num14
+                              FROM apps.khs_pur_po_unity kppu
+                             WHERE kppu.po_unity_number = '$id'
+                            UNION
+                            SELECT kppu.po_unity_id, po_unity_number, po_num15
+                              FROM apps.khs_pur_po_unity kppu
+                             WHERE kppu.po_unity_number = '$id'
+                             ) kppu
+                   )po_unity
+              where vs.VENDOR_SITE_ID=poh.VENDOR_SITE_ID
+                AND VS.PARTY_SITE_ID = HPS.PARTY_SITE_ID
+                and poh.segment1 = po_unity.po_num
 						";
 				$query = $this->oracle->query($sql);
 				return $query->result_array();
 		}
+
+
+    public function getVendorSite($id)
+		{
+				$sql =
+						"select distinct vs.vendor_site_code site
+                from PO_HEADERS_ALL poh, ap_supplier_sites_all vs,
+                     (SELECT po_unity_number , po_num
+                        from (SELECT kppu.po_unity_id, po_unity_number, po_num01 po_num
+                                FROM apps.khs_pur_po_unity kppu
+                               WHERE kppu.po_unity_number = '$id'
+                              UNION
+                              SELECT kppu.po_unity_id, po_unity_number, po_num02
+                                FROM apps.khs_pur_po_unity kppu
+                               WHERE kppu.po_unity_number = '$id'
+                              UNION
+                              SELECT kppu.po_unity_id, po_unity_number, po_num03
+                                FROM apps.khs_pur_po_unity kppu
+                               WHERE kppu.po_unity_number = '$id'
+                              UNION
+                              SELECT kppu.po_unity_id, po_unity_number, po_num04
+                                FROM apps.khs_pur_po_unity kppu
+                               WHERE kppu.po_unity_number = '$id'
+                              UNION
+                              SELECT kppu.po_unity_id, po_unity_number, po_num05
+                                FROM apps.khs_pur_po_unity kppu
+                               WHERE kppu.po_unity_number = '$id'
+                              UNION
+                              SELECT kppu.po_unity_id, po_unity_number, po_num06
+                                FROM apps.khs_pur_po_unity kppu
+                               WHERE kppu.po_unity_number = '$id'
+                              UNION
+                              SELECT kppu.po_unity_id, po_unity_number, po_num07
+                                FROM apps.khs_pur_po_unity kppu
+                               WHERE kppu.po_unity_number = '$id'
+                              UNION
+                              SELECT kppu.po_unity_id, po_unity_number, po_num08
+                                FROM apps.khs_pur_po_unity kppu
+                               WHERE kppu.po_unity_number = '$id'
+                              UNION
+                              SELECT kppu.po_unity_id, po_unity_number, po_num09
+                                FROM apps.khs_pur_po_unity kppu
+                               WHERE kppu.po_unity_number = '$id'
+                              UNION
+                              SELECT kppu.po_unity_id, po_unity_number, po_num10
+                                FROM apps.khs_pur_po_unity kppu
+                               WHERE kppu.po_unity_number = '$id'
+                              UNION
+                              SELECT kppu.po_unity_id, po_unity_number, po_num11
+                                FROM apps.khs_pur_po_unity kppu
+                               WHERE kppu.po_unity_number = '$id'
+                              UNION
+                              SELECT kppu.po_unity_id, po_unity_number, po_num12
+                                FROM apps.khs_pur_po_unity kppu
+                               WHERE kppu.po_unity_number = '$id'
+                              UNION
+                              SELECT kppu.po_unity_id, po_unity_number, po_num13
+                                FROM apps.khs_pur_po_unity kppu
+                               WHERE kppu.po_unity_number = '$id'
+                              UNION
+                              SELECT kppu.po_unity_id, po_unity_number, po_num14
+                                FROM apps.khs_pur_po_unity kppu
+                               WHERE kppu.po_unity_number = '$id'
+                              UNION
+                              SELECT kppu.po_unity_id, po_unity_number, po_num15
+                                FROM apps.khs_pur_po_unity kppu
+                               WHERE kppu.po_unity_number = '$id'
+                               ) kppu
+                     )po_unity
+                where vs.VENDOR_SITE_ID=poh.VENDOR_SITE_ID
+                  and poh.segment1 = po_unity.po_num
+						";
+				$query = $this->oracle->query($sql);
+				return $query->result_array();
+		}
+
 
     // PO NUMBER UNTUK PO UNITY KUBOTA
     public function getPONumber($id)

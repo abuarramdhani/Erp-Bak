@@ -316,11 +316,14 @@ class C_ComposeMessage extends CI_Controller {
 		$idQuery	   = $idEx[0];
 		if (substr($idQuery,2,3)=='999') {
 			$email = $this->M_composemessage->getEmailAddressGabungan($idQuery);
+			$site = $this->M_composemessage->getVendorSite($idQuery);
 		} else {
 			$email = $this->M_composemessage->getEmailAddress($idQuery);
+			$site[0]['SITE']= NULL;
 		}
 		if ( !empty($email) && $email[0]['EMAIL'] != '' ){
-			$data  = str_replace(' /', ',', $email[0]['EMAIL']);
+			$data['email']  = str_replace(' /', ',', $email[0]['EMAIL']);
+			$data['site']   = $site[0]['SITE'];
 			echo json_encode($data);
 		} else {
 			echo json_encode(null);
