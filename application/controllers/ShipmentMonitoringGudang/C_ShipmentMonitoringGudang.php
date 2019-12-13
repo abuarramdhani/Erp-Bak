@@ -244,6 +244,7 @@ class C_ShipmentMonitoringGudang extends CI_Controller{
 		$jml_terkirim = $this->input->post('jumlah_terkirim');
 		$created_line = $this->input->post('created_line');
 		$no_do = $this->input->post('no_do');
+		$no_spb = $this->input->post('no_spb');
 
          // update header
         $updateSMS1 = $this->M_shipmentmonitoringgudang->updateheaderSMS($no_ship,$usrname,$estimasi,$estimasi_loading,$finish_good,$status,$cabang,$kendaraan,$full_persen,$alamat,$provinsi,$koota,$pr_numb,$pr_linee,$actual_loading,$actual_berangkat,$nama_driver,$plat_nomor);
@@ -251,7 +252,7 @@ class C_ShipmentMonitoringGudang extends CI_Controller{
         $deleteLine = $this->M_shipmentmonitoringgudang->deleteSMS($no_ship);
         
         foreach ($unit as $key => $value) {
-		$updateMPM2 = $this->M_shipmentmonitoringgudang->UpdatebyInsertSMS($no_ship,$jumlah[$key],$value,$jumlahvol[$key],$pers_vol[$key],$jml_terkirim[$key],$created_line[$key],$no_do[$key]);
+		$updateMPM2 = $this->M_shipmentmonitoringgudang->UpdatebyInsertSMS($no_ship,$jumlah[$key],$value,$jumlahvol[$key],$pers_vol[$key],$jml_terkirim[$key],$created_line[$key],$no_do[$key], $no_spb[$key]);
 		}
 
 	}

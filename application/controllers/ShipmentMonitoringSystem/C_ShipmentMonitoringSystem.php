@@ -235,6 +235,8 @@ class C_ShipmentMonitoringSystem extends CI_Controller{
 		$pers_vol = $this->input->post('persentasevol');
 		$created_line = $this->input->post('created_line');
 		$nomor_do = $this->input->post('nomor_do');
+		$nomor_spb = $this->input->post('nomor_spb');
+
 
          // update header
         $updateSMS1 = $this->M_shipmentmonitoringsystem->updateheaderSMS($no_ship,$usrname,$estimasi,$estimasi_loading,$finish_good,$status,$cabang,$kendaraan,$full_persen,$alamat,$provinsi,$koota,$pr_numb,$pr_linee);
@@ -242,7 +244,7 @@ class C_ShipmentMonitoringSystem extends CI_Controller{
         $deleteLine = $this->M_shipmentmonitoringsystem->deleteSMS($no_ship);
         
         foreach ($unit as $key => $value) {
-		$updateMPM2 = $this->M_shipmentmonitoringsystem->UpdatebyInsertSMS($no_ship,$jumlah[$key],$value,$jumlahvol[$key],$pers_vol[$key],$created_line[$key],$nomor_do[$key]);
+		$updateMPM2 = $this->M_shipmentmonitoringsystem->UpdatebyInsertSMS($no_ship,$jumlah[$key],$value,$jumlahvol[$key],$pers_vol[$key],$created_line[$key],$nomor_do[$key],$nomor_spb[$key]);
 		}
 
 	}
@@ -381,6 +383,8 @@ class C_ShipmentMonitoringSystem extends CI_Controller{
 		$percentage_line = $this->input->post('percentage_line');
 		$volume_line = $this->input->post('volume_line');
 		$nomor_do = $this->input->post('nomor_do');
+		$nomor_spb = $this->input->post('nomor_spb');
+
 
 		$saveSMS2 = $this->M_shipmentmonitoringsystem->saveInsertHeader2($estimasi,$estimasi_loading,$finish_good,$status,$cabang,$kendaraan,$usrname,$kota,$provinsih,$alamat,$pr_number,$pr_line,$precentage);
 		
@@ -388,7 +392,7 @@ class C_ShipmentMonitoringSystem extends CI_Controller{
 		$id = $dataId[0]['id'];
 
 		foreach ($unit as $key => $value) {
-		$saveMPM2 = $this->M_shipmentmonitoringsystem->saveInsertLines($id,$value,$jumlah[$key],$usrname,$percentage_line[$key],$volume_line[$key],$nomor_do[$key]);
+		$saveMPM2 = $this->M_shipmentmonitoringsystem->saveInsertLines($id,$value,$jumlah[$key],$usrname,$percentage_line[$key],$volume_line[$key],$nomor_do[$key],$nomor_spb[$key]);
 		}
 	
 	}

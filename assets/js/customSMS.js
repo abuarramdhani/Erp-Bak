@@ -1,3 +1,4 @@
+
 // -----------------------------------------------------------------UMUM---------------------------------------------------------------
 $('.timeMPM').timepicker();
 
@@ -746,9 +747,10 @@ function addRowSms(){ //APPEND DI NEW SHIPMENT
         html += "</select></td>";
         // kolom 4
         html += '<td><input class="form-control no_do" value="0" style="width: 100%" type="text" id="nomor_do_id" name="nomor_do"></td>'
+        html += '<td><input class="form-control no_spb" value=" " style="width: 100%" type="text" id="nomor_spb" name="nomor_spb"></td>'
         html += '<td><input id="jumlahvolinsert" class="form-control jumlahvol" style="width: 100%" type="text"  name="jumlahvol[]" readonly="true"></td>'
         html += '<td><input class="form-control persentasevolsms" style="width: 100%" type="text" id="persentasevolsmsinsert" name="persentasevolsms" readonly="true"></td>'
-		html += '<td><button type="button" onClick="onClickBakso11('+num+')" class="btnDeleteRowUnit btn btn-danger"><i class="glyphicon glyphicon-trash"></i></button></td>';
+		html += '<td><button type="button" onClick="onClickBakso1('+num+')" class="btnDeleteRowUnit btn btn-danger"><i class="glyphicon glyphicon-trash"></i></button></td>';
 		html += "</tr>";
 	num++;
     	$('#tabelAddsms').append(html);
@@ -764,7 +766,7 @@ function addRowSms(){ //APPEND DI NEW SHIPMENT
 
 }
 
-const onClickBakso11 = (th) => { //FUNCTION DELETE SHIPMENT LINE DAN DELETE TOTAL PERSENTASE VOLUME
+const onClickBakso1 = (th) => { //FUNCTION DELETE SHIPMENT LINE DAN DELETE TOTAL PERSENTASE VOLUME
 
 	var bil_pengurang = $('tr.number'+th+' input.persentasevolsms').val()
 	console.log(bil_pengurang)
@@ -820,6 +822,7 @@ function addRowSms2(){ //APPEND DI FIND SHIPMENT EDIT
         })
         html += "</select></td>";
         html += '<td><input type="text" class="form-control nomor_do" style="width: 100%" type="text" id="nomor_do_id1" name="nomor_do1" value="0"> </input></td>'
+        html += '<td><input type="text" class="form-control nomor_spb" style="width: 100%" type="text" id="nomor_spb_id1" name="nomor_spb_id1"> </input></td>'
         html += '<td><input class="form-control jumlahvol" id="jumlahvol_id" style="width: 100%" type="text"  name="jumlahvol1" readonly="true"></td>'
         html += '<td><input class="form-control persentasevolsms" style="width: 100%" type="text" id="persentasevolsms" name="persentasevolsms" readonly="true"></td>'
 		// $.map(result.user, function(item) {
@@ -827,7 +830,7 @@ function addRowSms2(){ //APPEND DI FIND SHIPMENT EDIT
 		html += '<td><input type="text" class="form-control created_line" value="'+result.user+'" style="width: 100%" type="text" id="created_line" name="created_line"></td>';
         // })
         // kolom 6
-		html += '<td><button type="button" onClick="myFunction1('+(numb+1)+')" class="btnDeleteRowUnit btn btn-danger"><i class="glyphicon glyphicon-trash"></i></button></td>';
+		html += '<td><button type="button" onClick="myFunction1('+(numb+1)+')" class="btnDeleteRowUnit btn btn-danger zoom"><i class="glyphicon glyphicon-trash"></i></button></td>';
 		html += "</tr>";
 	numb++;
 
@@ -902,9 +905,21 @@ const deleteEdit1 = (th) => {
 }
 
 
+$( document ).ready(function() {
+
+	var val_spb = $('#nomor_spb_id1').val();
+console.log(val_spb)
+if (val_spb == 'N') {
+	var hilangkan_spb = $('#nomor_spb_id1');
+	hilangkan_spb.val('').trigger('change');
+}
+	
+})
+
+
 
 function ModalDetailSMS(th) { //MODAL YANG NGELUARIN FIND SHIPMENT
-	
+
 	var no_ship = th
 
 	$('#MdlMPM').modal('show');
@@ -965,8 +980,8 @@ function saveSMS(){ //PROSES SAVING DI NEW SHIPMENT
 		var precentage_sms = $('#fullpersen').val();
 		var volume_line = $('#jumlahvolinsert').val();
 		var percentage_line = $('#persentasevolsmsinsert').val();
+		
 
-		// console.log(provSMS, kotaSMS)
 		var arry = [];
 		$('select#unitsms_id').each(function(){
 		var unit = $(this).val();
@@ -997,6 +1012,14 @@ function saveSMS(){ //PROSES SAVING DI NEW SHIPMENT
 		arry4.push(nomor_do);
 		});
 
+		var arry5 = [];
+		$('input#nomor_spb').each(function(){
+		var no_spb = $(this).val();
+		arry5.push(no_spb);
+		});
+
+		// console.log(arry4, arry5)
+
 
 		$.ajax({
 		type: "POST",
@@ -1018,7 +1041,8 @@ function saveSMS(){ //PROSES SAVING DI NEW SHIPMENT
 			percentage: precentage_sms,
 			volume_line:arry2,
 			percentage_line:arry3,
-			nomor_do:arry4
+			nomor_do:arry4,
+			nomor_spb:arry5
 		},
 		success: function(response){
 			Swal.fire({
@@ -1088,6 +1112,12 @@ function saveEditSMS(th){ //PROSES SAVING EDIT
 		arry7.push(created_line);
 		})
 
+		var arry8= [];
+		$('input#nomor_spb_id1').each(function(){
+		var no_spb = $(this).val();
+		arry8.push(no_spb);
+		})
+
 
 
 		$.ajax({
@@ -1113,7 +1143,8 @@ function saveEditSMS(th){ //PROSES SAVING EDIT
 			 jumlahvol:arry4,
 			 persentasevol:arry5,
 			 nomor_do:arry6,
-			 created_line:arry7
+			 created_line:arry7,
+			 nomor_spb:arry8
 		},
 		success: function(response){
 			Swal.fire({
@@ -1195,6 +1226,12 @@ function saveEditSMS(th){ //PROSES SAVING EDIT
 		arry8.push(no_do);
 		})
 
+		var arry9= [];
+		$('input#no_spb').each(function(){
+		var no_spb = $(this).val();
+		arry8.push(no_spb);
+		})
+
 
 
 		$.ajax({
@@ -1225,7 +1262,8 @@ function saveEditSMS(th){ //PROSES SAVING EDIT
 			 persentasevol:arry5,
 			 jumlah_terkirim:arry6,
 			 created_line:arry7,
-			 no_do:arry8
+			 no_do:arry8,
+			 no_spb:arry9
 		},
 		success: function(response){
 		console.log(response)
