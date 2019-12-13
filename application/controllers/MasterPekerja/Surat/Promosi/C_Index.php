@@ -745,7 +745,8 @@ class C_Index extends CI_Controller
 			'nama_jabatan_upah_lama'=> 	$nama_jabatan_upah_lama,
 			'nama_jabatan_upah_baru'=>	$nama_jabatan_upah_baru,
 			'kd_status_lama'		=> 	$kd_status_lama,
-			'kd_status_baru' 		=>	$kd_status_baru
+			'kd_status_baru' 		=>	$kd_status_baru,
+			'status_update'			=> '0'
 			);
 		$this->M_promosi->updateSuratPromosi($updateSuratPromosi, $nomor_surat, $kodeSurat, $tanggal_cetak_asli);
 		redirect('MasterPekerja/Surat/SuratPromosi');
