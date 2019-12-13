@@ -415,12 +415,19 @@ class C_Index extends CI_Controller
 			}
 
 		$status_lama				= 	$this->input->post('txtStatusJabatanlama');
+
+		$status_baru				= 	$this->input->post('txtStatusjabatanBaru');
+		
+		if($status_baru != null or $status_baru != "" ){
+			$status_baru 			= 	explode(' - ', $status_baru);
+		}else{
+			$status_baru 			= 	explode(' - ', $status_lama);
+		}
+
 		$status_lama 				= 	explode(' - ', $status_lama);
 		$kd_status_lama				= 	$status_lama[0];
 		$nama_status_lama			= 	$status_lama[1];
 
-		$status_baru				= 	$this->input->post('txtStatusjabatanBaru');
-		$status_baru 				= 	explode(' - ', $status_baru);
 		$kd_status_baru 			= 	$status_baru[0];
 		$nama_status_baru			= 	$status_baru[1];
 
