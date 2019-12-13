@@ -207,7 +207,7 @@
       </div>
       <form action="<?=base_url('StockGudangAlat/C_StockGudangAlat/updateData/')?>" method="post">
         <div class="modal-body">
-          <input hidden name="nama" value="<?= $key['nama']?>" />
+          <input hidden name="nama" value="<?= $key['id']?>" />
           <div class="form-group">
             <label for="nama">Nomor PO</label>
             <input type="text" class="form-control noPoSaitama" id="noPo" name="noPo">

@@ -38,7 +38,7 @@ class M_stockgudangalat extends CI_Model
       $db = $this->load->database();
       $sql = "UPDATE msg.msg_stok_gdg_alat_tst SET tag = '$tag', nama = '$nama2',
              merk = '$merk', qty = '$qty', jenis = '$pilihan', no_po = '$no_po'
-      WHERE nama = '$nama'";
+      WHERE id = '$nama'";
       // echo $sql;exit();
       // print_r($sql);exit;
       $this->dev->query($sql);
