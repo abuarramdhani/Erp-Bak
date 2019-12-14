@@ -1,6 +1,6 @@
 $(document).ready(function(){
 
-    var EnglishMessageFormat =                 
+    var EnglishMessageFormat =
     '\
         <div style="  font-family: Times New Roman, Times, serif;">\
             <p>Dear Mr./Ms.,</p>\
@@ -90,9 +90,9 @@ $(document).ready(function(){
     });
 
     // $('#txtPMSPONoPO').inputFilter(function(value) {
-    //     return /^\d*$/.test(value); 
+    //     return /^\d*$/.test(value);
     // });
-    
+
     $('#txtPMSPONoPO').on('blur', function(){
         var PONumber = $(this).val();
         // console.log(PONumber);
@@ -104,9 +104,9 @@ $(document).ready(function(){
                 dataType: 'json',
                 success: function(result) {
                     // console.log(result);
-                    if (result != null){
+                    if (result.email != null){
                         $('.divPMSPOWarnAddrNotFound').fadeOut();
-                        $('#txtPMSPOToEmailAddr').val(result);
+                        $('#txtPMSPOToEmailAddr').val(result.email);
                         $('.PMSPOimgLoadAddr').hide();
                         setTimeout(function() {
                             $('#txtPMSPOSubject').val('KHS PURCHASE ORDER '+PONumber);
@@ -120,12 +120,20 @@ $(document).ready(function(){
                             $('#txtPMSPOSubject').val('KHS PURCHASE ORDER '+PONumber);
                         }, 500);
                     }
+
+                    if (result.site != null) {
+                      $('.divPMSPOSite').fadeIn();
+                      $('#txtPMSPONoPOSite').val(result.site);
+                    } else {
+                      $('.divPMSPOSite').fadeOut();
+                    }
                 }
             });
         }else{
             $('.PMSPOimgLoadAddr').hide();
             $('#txtPMSPOSubject').val('');
             $('#txtPMSPOToEmailAddr').val('');
+            $('.divPMSPOSite').fadeOut();
         }
     });
 
@@ -133,7 +141,7 @@ $(document).ready(function(){
         'click': function() {
             $('.divPMSPOEmailAddrWarn').fadeIn();
         },
-        'blur': function() {      
+        'blur': function() {
             $('.divPMSPOEmailAddrWarn').fadeOut();
             if($(this).val().length > 0){
                 $(this).removeAttr("style", "background-color:#ffa8a8");
@@ -145,7 +153,7 @@ $(document).ready(function(){
         'click': function() {
             $('.divPMSPOCCEmailAddrWarn').fadeIn();
         },
-        'blur': function() {      
+        'blur': function() {
             $('.divPMSPOCCEmailAddrWarn').fadeOut();
         }
     });
@@ -154,7 +162,7 @@ $(document).ready(function(){
         'click': function() {
             $('.divPMSPOBCCEmailAddrWarn').fadeIn();
         },
-        'blur': function() {      
+        'blur': function() {
             $('.divPMSPOBCCEmailAddrWarn').fadeOut();
         }
     });
@@ -185,14 +193,14 @@ $(document).ready(function(){
                 // console.log('Hello World!');
                 $('.divPMSPOWarnAddrNotFound').fadeOut();
                 $('.btnPMSPODiscard').click();
-                $("#txaPMSPOEmailBody").redactor('set', ''); 
+                $("#txaPMSPOEmailBody").redactor('set', '');
                 $('#slcPMSPOFormatMessage').select2('val', '');
             }
         })
-    });    
+    });
 
     $('.btnPMSPOcheckSend').on('click', function(){
-        if ($('#txtPMSPOToEmailAddr').val().length < 1 && $('#txtPMSPONoPO').val().length < 1 ) 
+        if ($('#txtPMSPOToEmailAddr').val().length < 1 && $('#txtPMSPONoPO').val().length < 1 )
         {
             // console.log('EMAIL DAN PO KOSONG');
             $('.pPMSPOwarningDetails').html('Nomor PO dan alamat email tujuan anda belum terisi.');
@@ -226,11 +234,11 @@ $(document).ready(function(){
                 html: 'Sedang mengirim pesan ...',
                 onBeforeOpen: () => {
                     Swal.showLoading()
-                },    
+                },
             })
 
             // Ajax Send Email
-            var 
+            var
                 form_data       = new FormData(),
                 po_number       = $('#txtPMSPONoPO').val(),
                 subject         = $('#txtPMSPOSubject').val(),
