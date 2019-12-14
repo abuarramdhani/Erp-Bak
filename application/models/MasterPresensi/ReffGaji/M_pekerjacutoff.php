@@ -113,8 +113,8 @@ class M_pekerjacutoff extends CI_Model
  						(
  							select 30 - count(*)
 							from generate_series(
-								(select tanggal_akhir + interval '1 day' from \"Presensi\".tcutoff where periode = to_char('$periode'::date,'yyyymm') and os ='0'),
-								(select to_char(tanggal_akhir,'yyyy-mm-01')::date + interval '1 month' - interval '1 day' from \"Presensi\".tcutoff where periode = to_char('$periode'::date,'yyyymm') and os ='0'),
+								to_char('$periode'::date,'yyyy-mm-01')::date + interval '1 month',
+ 								(select tanggal_akhir from \"Presensi\".tcutoff where periode = to_char('$periode'::date,'yyyymm') and os ='0'),
 								interval '1 day'
 							) as dates
 							left join \"Dinas_Luar\".tlibur as libur
@@ -141,7 +141,7 @@ class M_pekerjacutoff extends CI_Model
 				and (
 					b.keluar = '0'
 					or 	(
-						b.tglkeluar >= to_char('$periode'::date,'yyyy-mm-01')::date + interval '1 month'
+						b.tglkeluar >= to_char('$periode'::date,'yyyy-mm-10')::date + interval '1 month'
 						and b.keluar = '1'
 						)
 					)
