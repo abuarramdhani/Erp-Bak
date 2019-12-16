@@ -475,6 +475,7 @@ class M_pekerjakeluar extends CI_Model
 									or c.kd_ket = 'PRM'
 									or c.kd_ket = 'PIP'
 									or left(c.kd_ket,1) = 'C'
+									or c.kd_ket = 'PCZ'
 								)
 							) as DERIVEDTBL
 						)
@@ -803,6 +804,7 @@ class M_pekerjakeluar extends CI_Model
 									or c.kd_ket = 'PRM'
 									or c.kd_ket = 'PIP'
 									or left(c.kd_ket,1) = 'C'
+									or c.kd_ket = 'PCZ'
 								)
 							) as DERIVEDTBL
 						)
