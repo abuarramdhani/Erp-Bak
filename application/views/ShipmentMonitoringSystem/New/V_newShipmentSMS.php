@@ -200,7 +200,8 @@ option:checked {
 												<th style="width: 5%"  class="text-center">No</th>
 												<th style="width: 10%" class="text-center">Jumlah Unit</th>
 												<th style="width: 40%" class="text-center">Muatan (goods)</th>
-												<th style="width: 20%" class="text-center">Nomor DO</th>
+												<th style="width: 10%" class="text-center">Nomor DO</th>
+												<th style="width: 10%" class="text-center">Nomor SPB</th>
 												<th style="width: 20%" class="text-center">Volume </th>
 												<th style="width: 15%" class="text-center">Persentase (%) </th>
 												<th style="width: 15%" class="text-center">Action</th>
@@ -218,6 +219,7 @@ option:checked {
 																<?php } ?>
 													</select></td>
 												<td><input class="form-control no_do" style="width: 100%" type="text" id="nomor_do_id" name="nomor_do" value="0" ></td>
+												<td><input class="form-control no_spb" style="width: 100%" type="text" id="nomor_spb" name="nomor_spb" value=" " ></td>
 												<td><input class="form-control jumlahvol" style="width: 100%" type="text" id="jumlahvolinsert" name="jumlahvol1" readonly="true"></td>
 												<td><input class="form-control persentasevolsms" style="width: 100%" type="text" id="persentasevolsmsinsert" name="persentasevolsms" readonly="true"></td>
 												<td><button type="button" class="btnDeleteRow btn btn-danger" onclick="onClickBakso(1)" disabled><i class="glyphicon glyphicon-trash"></i></button></td>

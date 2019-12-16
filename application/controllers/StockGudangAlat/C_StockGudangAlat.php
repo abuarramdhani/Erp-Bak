@@ -3,7 +3,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 class C_StockGudangAlat extends CI_Controller
 {
-	
+
 	function __construct()
 	{
 		parent::__construct();
@@ -49,7 +49,7 @@ class C_StockGudangAlat extends CI_Controller
 		$this->load->view('StockGudangAlat/V_InputStock',$data);
 		$this->load->view('V_Footer',$data);
     }
-    
+
     public function insertData() {
 		// echo "<pre>";
 		// print_r($_POST);exit();
@@ -71,7 +71,7 @@ class C_StockGudangAlat extends CI_Controller
 		// print_r($pilihan2);
 		// print_r($jumlah2);
 		// exit();
-		for ($i=0; $i < count($nama2); $i++) { 
+		for ($i=0; $i < count($nama2); $i++) {
 			$no_po= $no_po2[$i];
 			$nama= $nama2[$i];
 			$merk= $merk2[$i];
@@ -91,14 +91,20 @@ class C_StockGudangAlat extends CI_Controller
 			// print_r($merk);
 			// print_r($pilihan);
 			// print_r($qty);
-			
-			$this->M_stockgudangalat->insertData($no_po,$nama,$merk,$pilihan,$qty,$tag,$subinv); 
+
+			$this->M_stockgudangalat->insertData($no_po,$nama,$merk,$pilihan,$qty,$tag,$subinv);
 		}
 		// exit();
 		redirect("StockGudangAlat/");
 	}
 
-	public function updateData() 
+	public function getDataComp()
+	{
+		$id = $this->input->post('id');
+		echo json_encode($this->M_stockgudangalat->getDataComp($id));
+	}
+
+	public function updateData()
 	{
 		// echo "<pre>";
 		// print_r($_POST);
@@ -109,19 +115,19 @@ class C_StockGudangAlat extends CI_Controller
     $nama2 =$this->input->post('noMobil');
     $merk =$this->input->post('merk');
     $qty =$this->input->post('qty');
-		$pilihan = $this->input->post('pilihan');                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                           
+		$pilihan = $this->input->post('pilihan');
 
-		$this->M_stockgudangalat->updateData($tag,$nama,$nama2,$merk,$qty,$pilihan,$no_po); 
+		$this->M_stockgudangalat->updateData($tag,$nama,$nama2,$merk,$qty,$pilihan,$no_po);
 
 		redirect("StockGudangAlat/");
 	}
 
-	public function deleteData($id) 
+	public function deleteData($id)
 	{
 		// echo "<pre>";
 		// print_r($id);
 		// exit();
-		$this->M_stockgudangalat->deleteData($id); 
+		$this->M_stockgudangalat->deleteData($id);
 
 		redirect("StockGudangAlat/");
 	}
@@ -171,4 +177,4 @@ class C_StockGudangAlat extends CI_Controller
 
 
 
-?> 
+?>

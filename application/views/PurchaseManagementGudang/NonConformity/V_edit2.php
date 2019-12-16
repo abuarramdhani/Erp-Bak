@@ -390,7 +390,7 @@
                                                     </table>
                                                 <?php }?>
                                             </div>
-                                            <?php if ($this->session->responsibility_id == 2661) {
+                                            <?php if ($this->session->responsibility_id == 2663) {
                                                 $display = "";
                                             } else{
                                                 $display = 'style="display:none;"';

@@ -48,6 +48,10 @@
     </style>
 
     <!-- Content Header (Page header) -->
+<head> 
+  <meta http-equiv="refresh" content="180"/> 
+  <meta name="viewport" content="initial-scale=1"/>
+</head>
     <section class="content-header">
       <h1>
         On Process
@@ -84,10 +88,11 @@
                     <tr class="bg-primary">
                       <th class="text-center" style="width: 5%">No</th>
                       <th class="text-center" style="width: 10%">No SPB/DO</th>
-                      <th class="text-center" style="width: 30%">ID Kurir</th>
-                      <th class="text-center" style="width: 25%">Kendaraan</th>
-                      <th class="text-center" style="width: 20%">Last Update Date</th>
-                      <th class="text-center" style="width: 10%">Detail SPB</th>
+                      <th class="text-center" style="width: 20%">ID Kurir</th>
+                      <th class="text-center" style="width: 10%">Kendaraan</th>
+                      <th class="text-center" style="width: 10%">Last Update Date</th>
+                      <th class="text-center" style="width: 20%">Detail SPB</th>
+                      <th class="text-center" style="width: 10%">Status SPB</th>
                     </tr>
                   </thead>
                   <tbody id="blinking_td">
@@ -98,7 +103,21 @@
                       <td><?php echo  $n['username'] ?> - <?php echo  $n['nama_pekerja'] ?></td>
                       <td><?php echo  $n['kendaraan'] ?></td>
                       <td><?php echo  $n['last_update_date'] ?></td>
-                      <td><a title="detail..." rownum="<?php echo $no ?>" class="btn btn-warning btn-sm" data-target="MdlTPBNol" data-toggle="modal" onclick="OpenDetailNol(<?php echo $n['no_spb'];?>)"><i class="fa fa-hand-pointer-o"></i></a></td>
+                      <?php if ($n['confirmation'] == NULL) { ?>
+                      <td> 
+                        <button title="detail..." rownum="<?php echo $no ?>" class="btn btn-warning btn-sm" data-target="MdlTPBNol" data-toggle="modal" onclick="OpenDetailSatu(<?php echo $n['no_spb'];?>)"><i class="fa fa-mouse-pointer"></i> Detail</button>
+                        <a target="_blank" title="confirmation..." class="btn btn-primary btn-sm" href="<?php echo base_url('TrackingPengirimanBarang/OnProcess/Confirmation/'.$n['no_spb']) ?>"><i class="fa fa-check"></i> Confirm</a>
+                      </td>
+                      <?php }else if ($n['confirmation'] !== NULL) { ?>
+                      <td>
+                          <button title="detail..." rownum="<?php echo $no ?>" class="btn btn-warning btn-sm" data-target="MdlTPBNol" data-toggle="modal" onclick="OpenDetailSatu(<?php echo $n['no_spb'];?>)"><i class="fa fa-mouse-pointer"></i> Detail</button>
+                      </td>
+                       <?php } ?> 
+                      <?php if ($n['confirmation'] == NULL) { ?>
+                        <td><span class="label label-danger">Belum Terkonfirmasi &nbsp;<br></span></td>
+                      <?php }else if ($n['confirmation'] !== NULL) { ?>
+                        <td><span class="label label-success">Sudah Terkonfirmasi &nbsp;<br></span></td>
+                      <?php } ?>
                       </tr>
                     <?php $no++; } ?> 
                   </tbody>

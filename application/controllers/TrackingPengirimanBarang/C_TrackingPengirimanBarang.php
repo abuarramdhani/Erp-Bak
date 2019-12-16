@@ -1,10 +1,10 @@
-<?php 
+<?php
 defined('BASEPATH') OR exit('No direct script access allowed');
 class C_TrackingPengirimanBarang extends CI_Controller{
 	public function __construct()
     {
         parent::__construct();
-		  
+
         $this->load->helper('form');
         $this->load->helper('url');
         $this->load->helper('html');
@@ -15,7 +15,7 @@ class C_TrackingPengirimanBarang extends CI_Controller{
 		$this->load->model('TrackingPengirimanBarang/M_trackingpengirimanbarang');
 		$this->load->model('SystemAdministration/MainMenu/M_user');
 		date_default_timezone_set('Asia/Jakarta');
-		  
+
 		if($this->session->userdata('logged_in')!=TRUE) {
 			$this->load->helper('url');
 			$this->session->set_userdata('last_page', current_url());
@@ -24,7 +24,7 @@ class C_TrackingPengirimanBarang extends CI_Controller{
     }
     public function checkSession(){
 		if($this->session->is_logged){
-			
+
 		}else{
 			redirect();
 		}
@@ -34,10 +34,10 @@ class C_TrackingPengirimanBarang extends CI_Controller{
 	{
 		$this->checkSession();
 		$user_id = $this->session->userid;
-		
+
 		$data['Menu'] = 'Dashboard';
 		$data['SubMenuOne'] = '';
-		
+
 		$data['UserMenu'] = $this->M_user->getUserMenu($user_id,$this->session->responsibility_id);
 		$data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id);
 		$data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id);
@@ -51,10 +51,10 @@ class C_TrackingPengirimanBarang extends CI_Controller{
 	{
 		$this->checkSession();
 		$user_id = $this->session->userid;
-		
+
 		$data['Menu'] = 'Dashboard';
 		$data['SubMenuOne'] = '';
-		
+
 		$data['UserMenu'] = $this->M_user->getUserMenu($user_id,$this->session->responsibility_id);
 		$data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id);
 		$data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id);
@@ -72,11 +72,24 @@ class C_TrackingPengirimanBarang extends CI_Controller{
 	public function OpenDetailSorting()
 	{
 		$no_spb = $this->input->post('no_spb');
+		$status = $this->input->post('status');
 		$cariSPBOracle = $this->M_trackingpengirimanbarang->getSPBDetail($no_spb);
+		// echo "<pre>"; print_r($cariSPBOracle);exit();
+		$getLocation = $this->M_trackingpengirimanbarang->getLocation($no_spb);
+		// echo "$no_spb - $status <br> <pre>";
+		// print_r($getLocation);die();
 		$data['spb'] = $cariSPBOracle;
+		$data['map'] = FALSE;
+		if ($status == 'OnProcess') {
+			$data['long'] = $getLocation[0]['long'];
+			$data['lat'] = $getLocation[0]['lat'];
+			$data['map'] = TRUE;
+		}
+
+		// echo $no_spb; echo $status;exit();
 
 		if (!empty($data['spb'])) {
-			return $this->load->view('TrackingPengirimanBarang/V_mdlSPB', $data);
+			return $this->load->view('TrackingPengirimanBarang/V_mdlSPBNol', $data);
 			}else{
 			echo "<script> Swal.fire({
   									type: 'error',
@@ -86,17 +99,130 @@ class C_TrackingPengirimanBarang extends CI_Controller{
 			echo "<script>$('#MdlTPBNol').modal('hide')</script>";
 			}
 
-		
+
 	}
-	
+
+	public function OpenDetailProcess()
+	{
+		$no_spb = $this->input->post('no_spb');
+		$status = $this->input->post('status');
+		$cariSPBOracle = $this->M_trackingpengirimanbarang->ambilDataDetailProses($no_spb);
+		$countY =  $this->M_trackingpengirimanbarang->countY($no_spb);
+		$countN = $this->M_trackingpengirimanbarang->countN($no_spb);
+		
+		$getLocation = $this->M_trackingpengirimanbarang->getLocation($no_spb);
+		
+		$data['spb'] = $cariSPBOracle;
+		$data['yyy'] = $countY;
+		$data['nnn'] = $countN;
+		$data['map'] = FALSE;
+		if ($status == 'OnProcess') {
+			$data['long'] = $getLocation[0]['long'];
+			$data['lat'] = $getLocation[0]['lat'];
+			$data['map'] = TRUE;
+		}
+
+		// echo $no_spb; echo $status;exit();
+
+		if (!empty($data['spb'])) {
+			return $this->load->view('TrackingPengirimanBarang/V_mdlSPBSatu', $data);
+			}else{
+			echo "<script> Swal.fire({
+  									type: 'error',
+  									title: 'Maaf...',
+ 									text: 'Data Kosong',
+									}) </script>";
+			echo "<script>$('#MdlTPBNol').modal('hide')</script>";
+			}
+
+
+	}
+
+	public function Confirmation($id)
+	{
+		$this->checkSession();
+		$user_id = $this->session->userid;
+
+		$data['Menu'] = 'Dashboard';
+		$data['SubMenuOne'] = '';
+
+		$data['UserMenu'] = $this->M_user->getUserMenu($user_id,$this->session->responsibility_id);
+		$data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id);
+		$data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id);
+
+		$cariSPBOracle = $this->M_trackingpengirimanbarang->ambilDataConfirmation($id);
+		$data['spb'] = $cariSPBOracle;
+
+		// echo "<pre>";print_r($cariSPBOracle);exit();
+
+		$this->load->view('V_Header',$data);
+		$this->load->view('V_Sidemenu',$data);
+		$this->load->view('TrackingPengirimanBarang/V_confirmation',$data);
+		$this->load->view('V_Footer',$data);
+	}
+
+	public function submitConfirmation()
+	{
+		$arryConfirmation = $this->input->post('confirm_status');
+		$arryLine = $this->input->post('line_id');
+		$no_spb = $this->input->post('no_spb');
+		$note = $this->input->post('note');
+		$headerStatus = '';
+
+		foreach ($arryConfirmation as $key => $value) {
+			$saveStatusLine = $this->M_trackingpengirimanbarang->saveStatusLine($value,$arryLine[$key]);
+		}
+
+		if (in_array("N", $arryConfirmation)) {
+			$headerStatus = 'N';
+			echo $headerStatus;
+
+		}else {
+			$headerStatus = 'Y';
+			echo $headerStatus;
+		}
+		$saveStatusHeader = $this->M_trackingpengirimanbarang->saveStatusHeader($headerStatus,$note,$no_spb);
+	}
+
+	public function OpenDetailDelivered()
+	{
+		$no_spb = $this->input->post('no_spb');
+		$status = $this->input->post('status');
+		$cariSPBOracle = $this->M_trackingpengirimanbarang->getSPBDetail($no_spb);
+		$getLocation = $this->M_trackingpengirimanbarang->getLocation($no_spb);
+		
+		$data['spb'] = $cariSPBOracle;
+		$data['map'] = FALSE;
+		if ($status == 'OnProcess') {
+			$data['long'] = $getLocation[0]['long'];
+			$data['lat'] = $getLocation[0]['lat'];
+			$data['map'] = TRUE;
+		}
+
+		// echo $no_spb; echo $status;exit();
+
+		if (!empty($data['spb'])) {
+			return $this->load->view('TrackingPengirimanBarang/V_mdlSPBDua', $data);
+			}else{
+			echo "<script> Swal.fire({
+  									type: 'error',
+  									title: 'Maaf...',
+ 									text: 'Data Kosong',
+									}) </script>";
+			echo "<script>$('#MdlTPBNol').modal('hide')</script>";
+			}
+
+
+	}
+
 	public function onprocess()
 	{
 		$this->checkSession();
 		$user_id = $this->session->userid;
-		
+
 		$data['Menu'] = 'Dashboard';
 		$data['SubMenuOne'] = '';
-		
+
 		$data['UserMenu'] = $this->M_user->getUserMenu($user_id,$this->session->responsibility_id);
 		$data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id);
 		$data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id);
@@ -114,10 +240,10 @@ class C_TrackingPengirimanBarang extends CI_Controller{
 	{
 		$this->checkSession();
 		$user_id = $this->session->userid;
-		
+
 		$data['Menu'] = 'Dashboard';
 		$data['SubMenuOne'] = '';
-		
+
 		$data['UserMenu'] = $this->M_user->getUserMenu($user_id,$this->session->responsibility_id);
 		$data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id);
 		$data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id);
@@ -130,17 +256,17 @@ class C_TrackingPengirimanBarang extends CI_Controller{
 		$this->load->view('TrackingPengirimanBarang/V_delivered',$data);
 		$this->load->view('V_Footer',$data);
 	}
-	
+
 
 	public function setting()
 	{
-		
+
 		$this->checkSession();
 		$user_id = $this->session->userid;
-		
+
 		$data['Menu'] = 'Dashboard';
 		$data['SubMenuOne'] = '';
-		
+
 		$data['UserMenu'] = $this->M_user->getUserMenu($user_id,$this->session->responsibility_id);
 		$data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id);
 		$data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id);
@@ -154,7 +280,7 @@ class C_TrackingPengirimanBarang extends CI_Controller{
 		$this->load->view('V_Sidemenu',$data);
 		$this->load->view('TrackingPengirimanBarang/V_setting',$data);
 		$this->load->view('V_Footer',$data);
-	
+
 	}
 
 	public function saveSetupSetting()
@@ -170,7 +296,7 @@ class C_TrackingPengirimanBarang extends CI_Controller{
 		$tambahOptionKendaraan = $this->M_trackingpengirimanbarang->tambahOptionJK($kendaraan,$nomer_kendaraan);
 
 		} else{
-			
+
 		if ($slcKendaraan == NULL) {
 		$insertSetup = $this->M_trackingpengirimanbarang->insertDataSetup($id_pekerja,$nama_pekerja,$kendaraan,$nomer_kendaraan);
 		$tambahOptionKendaraan = $this->M_trackingpengirimanbarang->tambahOptionJK($kendaraan,$nomer_kendaraan);
@@ -183,7 +309,7 @@ class C_TrackingPengirimanBarang extends CI_Controller{
 
 		}
 
-		
+
 
 	}
 

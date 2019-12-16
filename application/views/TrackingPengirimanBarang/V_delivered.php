@@ -41,6 +41,10 @@
     </style>
 
     <!-- Content Header (Page header) -->
+<head> 
+  <meta http-equiv="refresh" content="60"/> 
+  <meta name="viewport" content="initial-scale=1"/>
+</head>
     <section class="content-header">
       <h1>
         Delivered
@@ -89,7 +93,7 @@
                       <td><?php echo  $n['start_date'] ?></td>
                       <td><?php echo  $n['end_date'] ?></td>
                       <td><?php echo  $n['penerima'] ?></td>
-                      <td><a title="detail..." rownum="<?php echo $no ?>" class="btn btn-warning btn-sm" data-target="MdlTPBNol" data-toggle="modal" onclick="OpenDetailNol(<?php echo $n['no_spb'];?>)"><i class="fa fa-hand-pointer-o"></i></a></td>
+                      <td><a title="detail..." rownum="<?php echo $no ?>" class="btn btn-warning btn-sm" data-target="MdlTPBNol" data-toggle="modal" onclick="OpenDetailSatu(<?php echo $n['no_spb'];?>)"><i class="fa fa-hand-pointer-o"></i></a></td>
                       <td><a title="delete..." rownum="<?php echo $no ?>" class="btn btn-danger btn-sm" onclick="deleteData(<?php echo $n['no_spb'];?>)"><i class="fa fa-trash"></i></a></td>
                       </tr>
                     <?php $no++; } ?> 

@@ -117,7 +117,9 @@ class C_Index extends CI_Controller {
 		// $emailUser = 'suryabondan@gmail.com';
         
         $akun = array("quick.tractor@gmail.com", "it.sec1@quick.co.id", "it1.quick@gmail.com", "nugroho.mail1@gmail.com", "ict.hardware.khs@gmail.com", "it.asst.u1@quick.co.id", "khoerulamri.id@gmail.com");
-
+        
+        // $akun = array("nugroho.mail1@gmail.com", "suryabondan@gmail.com");
+        
 		//send Email
 
 		$this->load->library('PHPMailerAutoload');

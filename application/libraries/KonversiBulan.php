@@ -277,7 +277,38 @@ class KonversiBulan
 		return $bulan;
   }
 
-
+  public function convert_Hari_Indonesia($nama_hari, $upper = false)
+  {
+	/**
+	* Fungsi ini digunakan untuk konvert hari en ke in
+	* @param $nama_hari String
+	* @param $upper Int 0/1 default 0/false
+	* @version 1.0
+	*/
+  	$nama_hari = strtoupper($nama_hari);
+  	$hari_en = array(
+  			'MONDAY',
+  			'TUESDAY',
+  			'WEDNESDAY',
+  			'THURSDAY',
+  			'FRIDAY',
+  			'SATURDAY',
+  			'SUNDAY',
+  		);
+  	$hari_in = array(
+  			'SENIN',
+  			'SELASA',
+  			'RABU',
+  			'KAMIS',
+  			'JUMAT',
+  			'SABTU',
+  			'MINGGU',
+  		);
+  	$hari = str_replace($hari_en, $hari_in, $nama_hari);
+  	if ($upper == false) {
+  		return strtolower($hari);
+  	}else{
+  		return $hari;
+  	}
+  }
 }
-
- ?>

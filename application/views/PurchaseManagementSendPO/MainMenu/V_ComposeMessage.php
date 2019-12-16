@@ -31,6 +31,12 @@
                     </ul>
                     <!-- /.timeline-label -->
                   </div>
+                  <div class="col-sm-3 divPMSPOSite"style="height: 20px; float:left;display:none">
+                    <!-- info site label -->
+                    <label style="font-weight:normal">SITE  &nbsp;</label>
+                    <input name="txtPMSPONoPOSite" id="txtPMSPONoPOSite" size="6px" disabled>
+                    <!-- /.info site-label -->
+                  </div>
                 </div>
                 <br>
                 <div class="form-group">
@@ -124,7 +130,7 @@
               <!-- /.box-body -->
               <div class="box-footer">
                 <div class="pull-right">
-                  <span class="spnBtnSendWait" style="display:none">                  
+                  <span class="spnBtnSendWait" style="display:none">
                     <button type="button" class="btn btn-primary" disabled><i class="fa fa-envelope-o" ></i> Sending Message</button>
                     <img src="<?=base_url('assets/img/gif/loading5.gif')?>" style="width:35px; height:35px; float:left; margin-left:-20px;" class="PMSPOimgLoadAddr">
                   </span>

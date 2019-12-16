@@ -193,6 +193,7 @@
 					$data['jabatan_dl'] 				= 	$detail_pekerja[0]['jabatan_dl'];
 					$data['id_lokasifinger'] 			= 	$lokasi_finger[0]['id_lokasi'];
 					$data['lokasi_finger'] 				= 	$lokasi_finger[0]['device_name'];
+					$data['kd_status'] 					= 	$detail_pekerja[0]['kd_status'];
 					$data['nama_status'] 				= 	trim($detail_pekerja[0]['nama_status']);
 					$data['nama_jabatan_upah'] 			= 	trim($detail_pekerja[0]['nama_jabatan_upah']);
 					

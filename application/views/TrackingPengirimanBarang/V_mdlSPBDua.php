@@ -31,41 +31,52 @@
               	</h3><br>
             </div>
          <div class="box-body">
-				<div class="col-md-12">
+				<div class="col-md-12 pull-right">
 					<!----- Tabel ----->
-					<table  id="filter" class="col-md-12 tblResponsive" style="margin-bottom: 20px">
+          <div class="col-md-6 pull-right">
+          <?php
+              if ($map) {
+                ?>
+                <div id="mapTracking" style="width: 500px;z-index: 999; height: 300px;"></div>
+                <?php
+              }
+               ?>
+            </div>
+          <div class="col-md-6 pull-left">
+					<table  id="filter" class="tblResponsive" style="margin-bottom: 20px;margin-top: 50px">
 						<tr>
-							<td style="width: 25%;padding-left: 350px;">
+							<td style="width: 25%;">
 								<span><b>No SPB</b></span>
 							</td>
-							<td style="width:25%; padding: 5px 250px 5px 50px;">
+							<td style="width:25%; padding: 5px 550px 5px 50px;">
 								<input class="form-control capital" style="width: 300px;" type="text" id="txtNoSPB" name="txtNOSPB" value="<?php echo $spb[0]['NO_SPB'] ?>"></input>
 							</td>
 						</tr>
 						<tr>
-							<td style="width: 25%;padding-left: 350px;">
+							<td style="width: 25%;">
 								<span><b>No SO</b></span>
 							</td>
-								<td style="width:25%; padding: 5px 250px 5px 50px;">
+								<td style="width:25%; padding: 5px 550px 5px 50px;">
 									<input class="form-control capital" style="width: 300px" type="text" id="txtNoSO" name="txtNoSO" value="<?php echo $spb[0]['SO'] ?>" ></input>
 								</td>
 						</tr>
 						<tr>
-							<td style="width: 25%;padding-left: 350px;">
+							<td style="width: 25%;">
 								<span><b>Customer</b></span>
 							</td>
-							<td style="width:25%; padding: 5px 250px 5px 50px;">
+							<td style="width:25%; padding: 5px 550px 5px 50px;">
 								<input class="form-control capital" style="width: 300px" type="text" id="txtSPBCustomer" name="txtSPBCustomer" value="<?php echo $spb[0]['CUST'] ?>" ></input>
 							</td>
 						</tr>
             <tr>
-              <td style="width: 25%;padding-left: 350px;">
+              <td style="width: 25%;">
                 <span><b>Alamat</b></span>
               </td>
-                <td style="width: 25%;padding: 5px 250px 5px 50px;">
+                <td style="width: 25%;padding: 5px 550px 5px 50px;">
                   <input class="form-control capital kendaraanTPB" style="width: 300px" type="text" id="txtSPBAlamat" name="txtSPBAlamat" value="<?php echo $spb[0]['ALAMAT']?>" ></input>
             </tr>
 					</table>
+          </div>
 				</div>
 			</div>
             <div class="box-body">
@@ -98,3 +109,30 @@
     </div>
  </div>
  </section>
+<script type="text/javascript">
+  function initMap(lat = <?= !empty($lat) ? $lat : '0';?>, long= <?= !empty($long) ? $long : '0';?> ) {
+    // The location of Uluru
+    var place = {
+      lat: Number(lat),
+      lng: Number(long)
+    };
+    // The map, centered at Uluru
+    var map = new google.maps.Map(
+      document.getElementById('mapTracking'), {
+        zoom: 18,
+        center: place
+      });
+    // The marker, positioned at Uluru
+    var marker = new google.maps.Marker({
+      position: place,
+      map: map
+    });
+  }
+</script>
+<!--Load the API from the specified URL
+    * The async attribute allows the browser to render the page while the API loads
+    * The key parameter will contain your own API key (which is not needed for this tutorial)
+    * The callback parameter executes the initMap() function
+    -->
+<script async defer src="https://maps.googleapis.com/maps/api/js?key=&callback=initMap">
+</script>

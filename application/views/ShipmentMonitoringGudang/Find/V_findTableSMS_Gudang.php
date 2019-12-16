@@ -26,11 +26,12 @@ thead.toscahead tr th {
 											<th style="width: 8%;" class="text-center">Kendaraan</th>
 											<th style="width: 8%;" class="text-center">Berangkat</th>
 											<th style="width: 8%;" class="text-center">Finish Good</th>
-											<th style="width: 20%;" class="text-center">Cabang Tujuan</th>
-											<th style="width: 20%;" class="text-center">Muatan</th>
+											<th style="width: 15%;" class="text-center">Cabang Tujuan</th>
+											<th style="width: 15%;" class="text-center">Muatan</th>
 											<th style="width: 5%;" class="text-center">Persentase Full (%)</th>
 											<th style="width: 5%;" class="text-center">Full</th>
-											<th style="width: 10%;" class="text-center">No DO</th>
+											<th style="width: 8%;" class="text-center">No DO</th>
+											<th style="width: 8%;" class="text-center">No SPB</th>
 											<th style="width: 25%;" class="text-center">Action</th>
 										</tr>
 									</thead>
@@ -57,6 +58,8 @@ thead.toscahead tr th {
 											<td> FULL </td>
 											<?php }?>
 											<td><?php echo  $k['no_do'] ?></td>
+											<td><?php echo  $k['no_spb'] ?></td>
+
 											<td>
 												<a title="edit ..." class="btn btn-warning btn-sm zoom" data-target="MdlMPM" data-toggle="modal" onclick="ModalDetailSMS_Gudang(<?php echo $k['no_shipment'] ?>)"><i class="fa fa-hand-pointer-o"></i></a>
 												<a title="delete ..." class="btn btn-danger btn-sm zoom" onclick="DeleteShipment_Gudang(<?php echo $k['no_shipment'] ?>)"><i class="fa fa-trash"></i></a></td>

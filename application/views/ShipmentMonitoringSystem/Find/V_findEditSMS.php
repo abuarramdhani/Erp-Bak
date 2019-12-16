@@ -53,6 +53,7 @@ if ($user != $created) {
 					<div class="col-lg-12">
 						<div class="text-left ">
 							<span style="font-family: sans-serif;"><b>Shipment No. <?php echo $header[0]['no_shipment'] ?></b></span>
+							<input type="hidden" id="hdnShpNmbr" name="hdnShpNmbr">
 						</div>
 					</div>
 				</div>
@@ -263,11 +264,12 @@ if ($user != $created) {
 											<tr class="bg-primary">
 												<th style="width: 5%" class="text-center">No</th>
 												<th style="width: 10%" class="text-center">Jumlah Unit</th>
-												<th style="width: 45%" class="text-center">Muatan (goods)</th>
+												<th style="width: 35%" class="text-center">Muatan (goods)</th>
 												<th style="width: 10%" class="text-center">Nomor DO</th>
+												<th style="width: 10%" class="text-center">Nomor SPB</th>
 												<th style="width: 10%" class="text-center">Volume </th>
 												<th style="width: 10%" class="text-center">Persentase (%) </th>
-												<th style="width: 10%" class="text-center">Created by</th>
+												<th style="width: 15%" class="text-center">Created by</th>
 												<th style="width: 10%" class="text-center">Action</th>
 											</tr>
 										</thead>
@@ -298,13 +300,16 @@ if ($user != $created) {
 						</select></td>
 				<td class="text-center"><input type="text" class="form-control nomor_do" style="width: 100%" type="text" id="nomor_do_id1" name="nomor_do1" value="<?php echo $value['no_do']?>" <?= $readLine; ?>> </input></td>
 
+				<td class="text-center"><input type="text" class="form-control nomor_spb" style="width: 100%" type="text" id="nomor_spb_id1" name="nomor_spb_id1" value="<?php echo $value['no_spb']?>" <?= $readLine; ?>> </input></td>
+
 				<td class="text-center"><input type="number" class="form-control jumlahvol" style="width: 100%" type="text" id="jumlahvol_id" name="jumlahvol1" value="<?php echo $value['volume_goods']?>" readonly="true" <?= $readLine; ?>> </input></td>
 
 				<td class="text-center"><input type="number" class="form-control persentasevolsms" id="persentasevolsms" style="width: 100%" type="text" readonly="true" value="<?php echo $value['volume_percentage']?>" name="persentasevolsms" <?= $readLine; ?>> </input></td>
 
 				<td class="text-center"><input type="text" id="created_line" value="<?php echo $value['created_by'] ?>" class="form-control created_line" style="width: 100%" type="text" name="created_line" <?= $readLine; ?>> </input></td>
 
-				<td class="text-center"><button type="button" class="btnDeleteRowUnit btn btn-danger zoom" onclick="deleteEdit1(<?php echo $no; ?>)"><i class="glyphicon glyphicon-trash" <?= $readLine; ?> ></i></button></td>
+				<td class="text-center"><button type="button" class="btnDeleteRowUnit btn btn-danger zoom" onclick="deleteEdit1(<?php echo $no; ?>)" <?= $readLine; ?> ><i class="glyphicon glyphicon-trash" ></i></button></td>
+				
 				</tr>
 				<?php $no++;} ?>
 			</tbody>

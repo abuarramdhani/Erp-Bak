@@ -475,15 +475,35 @@ class C_Mutasi extends CI_Controller
 
 			$seksi_baru 				=	$this->input->post('txtKodesieBaru');
 			$golongan_pekerjaan_baru	=	$this->input->post('txtGolonganPekerjaanBaru');
+			if($golongan_pekerjaan_baru == null){
+				$golongan_pekerjaan_baru = $golongan_pekerjaan_lama;
+			}
 			$kd_jabatan_baru 			=	$this->input->post('txtKdJabatanBaru');
 			$jabatan_baru 				=	$this->input->post('txtJabatanBaru');
 			$lokasi_kerja_baru          =   $this->input->post('txtLokasiKerjaBaru');
 			$tempat_makan1_baru         =   $this->input->post('txtTempatMakan1Baru');
 			$tempat_makan2_baru         =   $this->input->post('txtTempatMakan2Baru');
 			$pekerjaan_baru             =   $this->input->post('txtPekerjaanBaru');
+			if($pekerjaan_baru == null){
+				$pekerjaan_baru = $pekerjaan_lama;
+			}
 
-			$nama_status_lama			= 	$this->input->post('txtStatusJabatanlama');
-			$nama_status_baru			= 	$this->input->post('txtStatusjabatanBaru');
+			$status_lama				= 	$this->input->post('txtStatusJabatanlama');
+
+			$status_baru				= 	$this->input->post('txtStatusjabatanBaru');
+			
+			if($status_baru != null or $status_baru != "" ){
+				$status_baru 			= 	explode(' - ', $status_baru);
+			}else{
+				$status_baru 			= 	explode(' - ', $status_lama);
+			}
+			
+			$status_lama 				= 	explode(' - ', $status_lama);
+			$kd_status_lama				= 	$status_lama[0];
+			$nama_status_lama			= 	$status_lama[1];
+
+			$kd_status_baru 			= 	$status_baru[0];
+			$nama_status_baru			= 	$status_baru[1];
 
 			$nama_jabatan_upah_lama     =   $this->input->post('txtNamaJabatanUpahlama');
 			$nama_jabatan_upah_baru     =   $this->input->post('txtNamaJabatanUpahBaru');
@@ -550,8 +570,11 @@ class C_Mutasi extends CI_Controller
 				'nama_status_lama'		=>  $nama_status_lama,
 				'nama_status_baru'		=>  $nama_status_baru,
 				'nama_jabatan_upah_lama'=> 	$nama_jabatan_upah_lama,
-				'nama_jabatan_upah_baru'=>	$nama_jabatan_upah_baru
+				'nama_jabatan_upah_baru'=>	$nama_jabatan_upah_baru,
+				'kd_status_lama'		=> 	$kd_status_lama,
+				'kd_status_baru' 		=>	$kd_status_baru
 				);
+			// echo "<pre>";print_r($inputSuratMutasi);exit();
 											// foreach ($inputSuratMutasi as $row) {
 											// 	echo $row;
 
@@ -573,7 +596,7 @@ class C_Mutasi extends CI_Controller
 				);
 			
 			$inputFingerPindah = $this->M_surat->inputFingerMutasi($inputFingerMutasi);
-			if($inputFingerPindah > 0){
+			if($finger_pindah == 't'){
 				$this->kirim_email_ict($noind_baru,$nomor_induk,substr($finger_awal, 7),substr($finger_akhir, 7),'MUTASI');
 			}
 			$this->M_surat->inputSuratMutasi($inputSuratMutasi);
@@ -692,15 +715,35 @@ class C_Mutasi extends CI_Controller
 
 			$seksi_baru 				=	$this->input->post('txtKodesieBaru');
 			$golongan_pekerjaan_baru	=	$this->input->post('txtGolonganPekerjaanBaru');
+			if($golongan_pekerjaan_baru == null){
+				$golongan_pekerjaan_baru = $golongan_pekerjaan_lama;
+			}
 			$kd_jabatan_baru 			=	$this->input->post('txtKdJabatanBaru');
 			$jabatan_baru 				=	$this->input->post('txtJabatanBaru');
 			$lokasi_kerja_baru          =   $this->input->post('txtLokasiKerjaBaru');
 			$tempat_makan1_baru         =   $this->input->post('txtTempatMakan1Baru');
 			$tempat_makan2_baru         =   $this->input->post('txtTempatMakan2Baru');
 			$pekerjaan_baru             =   $this->input->post('txtPekerjaanBaru');
+			if($pekerjaan_baru == null){
+				$pekerjaan_baru = $pekerjaan_lama;
+			}
 
-			$nama_status_lama			= 	$this->input->post('txtStatusJabatanlama');
-			$nama_status_baru			= 	$this->input->post('txtStatusjabatanBaru');
+			$status_lama				= 	$this->input->post('txtStatusJabatanlama');
+
+			$status_baru				= 	$this->input->post('txtStatusjabatanBaru');
+			
+			if($status_baru != null or $status_baru != "" ){
+				$status_baru 			= 	explode(' - ', $status_baru);
+			}else{
+				$status_baru 			= 	explode(' - ', $status_lama);
+			}
+			
+			$status_lama 				= 	explode(' - ', $status_lama);
+			$kd_status_lama				= 	$status_lama[0];
+			$nama_status_lama			= 	$status_lama[1];
+
+			$kd_status_baru 			= 	$status_baru[0];
+			$nama_status_baru			= 	$status_baru[1];
 
 			$nama_jabatan_upah_lama     =   $this->input->post('txtNamaJabatanUpahlama');
 			$nama_jabatan_upah_baru     =   $this->input->post('txtNamaJabatanUpahBaru');
@@ -767,7 +810,10 @@ class C_Mutasi extends CI_Controller
 				'nama_status_lama'		=>  $nama_status_lama,
 				'nama_status_baru'		=>  $nama_status_baru,
 				'nama_jabatan_upah_lama'=> 	$nama_jabatan_upah_lama,
-				'nama_jabatan_upah_baru'=>	$nama_jabatan_upah_baru
+				'nama_jabatan_upah_baru'=>	$nama_jabatan_upah_baru,
+				'kd_status_lama'		=> 	$kd_status_lama,
+				'kd_status_baru' 		=>	$kd_status_baru,
+				'status_update'			=> '0'
 				);
 			$this->M_surat->updateSuratMutasi($updateSuratMutasi, $nomor_surat, $kodeSurat, $tanggal_cetak_asli);
 
@@ -789,7 +835,7 @@ class C_Mutasi extends CI_Controller
 			
 			$this->M_surat->inputFingerMutasi($inputFingerMutasi);
 			$inputFingerPindah = $this->M_surat->inputFingerMutasi($inputFingerMutasi);
-			if($inputFingerPindah > 0){
+			if($finger_pindah == 't'){
 				$this->kirim_email_ict($noind_baru,$nomor_induk,substr($finger_awal, 7),substr($finger_akhir, 7),'MUTASI');
 			}
 		}else{
@@ -968,7 +1014,6 @@ class C_Mutasi extends CI_Controller
 			$mail->addAddress('kasie_ict_hrd@quick.com', 'Notifikasi Pindah Finger');
 			$mail->Subject = 'Notifikasi Pindah Finger';
 			$mail->msgHTML("
-				<h4>Berhasil Insert tb_user_access</h4><br>
 				Dengan detail sebagai berikut : <br> <br>
 
 				<b>Nomor Induk Baru</b> : $noind_baru<br>
@@ -977,7 +1022,8 @@ class C_Mutasi extends CI_Controller
 				<b>Lokasi Finger Akhir</b> : $finger_akhir <br>
 				<b>Jenis Surat</b> : $jenis_surat <br><br>
 
-				Atas perhatiannya terima kasih.
+				Atas perhatiannya terima kasih. <br>
+				<small style='color: red;'>Perpindahan finger akan terlaksana sesuai Cronjob</small>
 				");
 			//Replace the plain text body with one created manually
 			//send the message, check for errors

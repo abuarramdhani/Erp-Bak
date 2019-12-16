@@ -47,6 +47,7 @@ class M_input extends CI_Model
             and mmt2.SHIPMENT_NUM(+) = mmt.SHIPMENT_NUMBER
             and mmt2.ITEM_ID(+) = mmt.INVENTORY_ITEM_ID
             and mmt.ORGANIZATION_ID in (102,225) -- YSP
+            and mmt.transfer_subinventory = 'SP-YSP'
         -- order by item
         ";
         $query = $oracle->query($sql);

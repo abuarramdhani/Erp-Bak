@@ -445,6 +445,8 @@ and tahun_surat = '$tahun' and bulan_surat = '$bulan'";
 													promosi.kodesie_baru,
 													promosi.nama_status_lama,
  													promosi.nama_status_baru,
+ 													promosi.kd_status_lama,
+ 													promosi.kd_status_baru,
  													promosi.nama_jabatan_upah_lama, 
  													promosi.nama_jabatan_upah_baru,   
 															concat_ws

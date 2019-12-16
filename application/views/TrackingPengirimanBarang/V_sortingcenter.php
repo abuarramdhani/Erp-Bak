@@ -49,6 +49,10 @@
     </style>
 
     <!-- Content Header (Page header) -->
+<head> 
+  <meta http-equiv="refresh" content="60"/> 
+  <meta name="viewport" content="initial-scale=1"/>
+</head>
     <section class="content-header">
       <h1>
         Sorting Center 
@@ -107,17 +111,10 @@
                   </table>
                 </div>
               </div>
-              
-
-
-            <!-- <div class="box-footer"></div> -->
-
-
+            </div>
           </div>
         </div>
-      </div>
-    </section>
-
+      </section>
   <div class="modal fade MdlTPBNol"  id="MdlTPBNol" tabindex="1" role="dialog" aria-labelledby="judulModal" aria-hidden="true">
     <div class="modal-dialog modal-lg" style="width:1150px;" role="document">
         <div class="modal-content">

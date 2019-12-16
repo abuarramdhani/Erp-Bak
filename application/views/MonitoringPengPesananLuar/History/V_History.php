@@ -120,7 +120,7 @@ thead.toscahead tr th {
 											<?php if ($k['status'] == 'Open') { ?>
 												<td><span class="label label-warning">Status : <?php echo  $k['status'] ?> &nbsp;<br></span></td>
 												<?php }else if ($k['status'] == 'Close') { ?>
-												<td><span class="label label-danger">Status : <?php echo  $k['status'] ?> &nbsp;<br></span></td>
+												<td><span class="label label-success">Status : <?php echo  $k['status'] ?> &nbsp;<br></span></td>
 											<?php } ?>
 											<td>
 											<button type="button" data-toggle="modal" data-target="mdlPengiriman" class="btn btn-default zoom btn-sm zoom" onclick="openHistoryPengiriman(<?php echo $k['id_rekap_pengiriman']?>)" class="btnMdlHis" id="btnMdlHis"><i class="fa fa-clock-o"></i> History</button>

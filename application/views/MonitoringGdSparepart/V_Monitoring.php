@@ -47,6 +47,7 @@
                                             <option value="tanggal">Tanggal</option>
                                             <option value="pic">PIC</option>
                                             <option value="item">Item</option>
+                                            <option value="belumterlayani">Belum Terlayani</option>
                                             <option value="export" id="slcExMGS">Export Excel</option>
                                             </select>
                                     </div>
@@ -85,7 +86,13 @@
                                 <div class="panel-body" style="display:none" id="slcPIC">
                                     <div class="col-md-3">
                                         <label class="control-label">PIC</label>
-                                        <input id="pic" name="pic" class="form-control" autocomplete="off" style="width:100%;" placeholder="Nama PIC">
+                                        <select id="pic" name="pic" class="form-control select2 select2-hidden-accessible" style="width:100%;" required>
+                                            <option></option>
+                                            <option value="SEFIAN">SEFIAN</option>
+                                            <option value="IHSAN">IHSAN</option>
+                                            <option value="ARI">ARI</option>
+                                            <option value="IRWAN">IRWAN</option>
+                                        </select>
                                     </div>
                                 </div>
                                 <div class="panel-body" style="display:none" id="slcItem">
@@ -113,12 +120,13 @@
                                                     <table class="table table-bordered table-hover table-striped text-center" id="tblMGS" style="width: 100%; table-layout:fixed;">
                                                         <thead class="bg-primary">
                                                             <tr class="text-center">
-                                                                <th width="3%">No</th>
+                                                                <th width="5%">No</th>
                                                                 <th>Jenis Dokumen</th>
                                                                 <th>No Dokumen</th>
                                                                 <th>Tanggal</th>
                                                                 <th>Jam Input</th>
                                                                 <th>PIC</th>
+                                                                <th>Asal</th>
                                                                 <th>Keterangan</th>
                                                                 <th></th>
                                                             </tr>
@@ -126,18 +134,19 @@
                                                         <tbody>
                                                         <?php $no=1; foreach ($value as $k => $row) { ?>
                                                             <tr class="text-center">
-                                                                <td width="3%"><?= $no; ?></td>
+                                                                <td width="5%"><?= $no; ?></td>
                                                                 <td><?= $row['header']['JENIS_DOKUMEN'] ?></td>
                                                                 <td><?= $row['header']['NO_DOCUMENT'] ?></td>
                                                                 <td><?= $row['header']['CREATION_DATE'] ?></td>
                                                                 <td><?= $row['header']['JAM_INPUT'] ?></td>
                                                                 <td><?= $row['header']['PIC'] ?></td>
+                                                                <td><?= $row['header']['gd_asal'] ?></td>
                                                                 <td><?= $row['header']['statusket']  ?></td>
                                                                 <td><span class="btn btn-success" onclick="addDetailMGS(this, <?= $no ?>)" >Detail</span></td>
                                                             </tr>
                                                             <tr>
                                                                 <td></td>
-                                                                <td colspan="7" >
+                                                                <td colspan="8" >
                                                                     <div id="detail<?= $no ?>" style="display:none">
                                                                         <table class="table table-bordered table-hover table-striped table-responsive " style="width: 100%; border: 2px solid #ddd;">
                                                                             <thead class="bg-teal">
@@ -149,7 +158,7 @@
                                                                                     <th width="10%">OK</th>
                                                                                     <th width="10%">NOT OK</th>
                                                                                     <th>Keterangan</th>
-                                                                                    <!-- <th>Edit</th> -->
+                                                                                    <th>Action</th>
                                                                                 </tr>
                                                                             </thead>
                                                                             <tbody>
@@ -189,48 +198,17 @@
                                                                                                 echo '';
                                                                                             } ?>
                                                                                     /></td>
-                                                                                    <!-- <td><input type="button" value="Edit" class="btn btn-warning" 
-                                                                                        <?//php if($row['header']['statusket']== 'Sudah terlayani') 
-                                                                                        //{
-                                                                                           // echo ' disabled=disabled ';
-                                                                                        //}else{
-                                                                                        //    echo '';
-                                                                                        //}?>
-                                                                                        onclick="btnEditMGS(this, <?=$no?>,<?=$nomor?>)" /></td> -->
-                                                                                </tr>
-                                                                                <!-- <tr>
-                                                                                    <td></td>
-                                                                                    <td colspan="6">
-                                                                                        <div id="edit<?=$no?><?= $nomor ?>" style="display:none">
-                                                                                            <table class="table table-bordered table-hover text-center table-responsive" id="myTable" style="width: 100%; border: 2px solid #ddd">
-                                                                                            <thead class="bg-yellow">
-                                                                                                <tr>
-                                                                                                    <th>Status</th>
-                                                                                                    <th width="20%">Jumlah</th>
-                                                                                                    <th>Keterangan</th>
-                                                                                                </tr>
-                                                                                            </thead>
-                                                                                            <tbody>
-                                                                                                <tr>
-                                                                                                    <td>OK</td>
-                                                                                                    <td><input type="number" name="jml_ok<?=$no?><?= $nomor ?>" id="jml_ok<?=$no?><?= $nomor ?>" class="form-control" onchange="saveJmlOk(<?=$no?>,<?= $nomor ?>,<?= $v['NO_DOCUMENT'] ?>)" placeholder="*Pastikan terisi"/></td>
-                                                                                                    <td></td>
-                                                                                                </tr>    
-                                                                                                <tr>
-                                                                                                    <td>NOT OK</td>
-                                                                                                    <td><input type="number" name="jml_not_ok<?=$no?><?= $nomor ?>" id="jml_not_ok<?=$no?><?= $nomor ?>" class="form-control" onchange="saveNotOk(<?=$no?>,<?= $nomor ?>,<?= $v['NO_DOCUMENT'] ?>)" placeholder="*Pastikan terisi"/></td>
-                                                                                                    <td><input  name="keterangan<?=$no?><?= $nomor ?>" id="keterangan<?=$no?><?= $nomor ?>" class="form-control" onchange="saveKetr(<?=$no?>,<?= $nomor ?>,<?= $v['NO_DOCUMENT'] ?>)" placeholder="*Pastikan terisi"/></td>
-                                                                                                </tr>    
-                                                                                            </tbody>                                   
-                                                                                            </table>
-                                                                                        </div>
-                                                                                    </td>
-                                                                                    <td></td>
-                                                                                </tr> -->
+                                                                                    <td style="text-align:left"><input type="text" style="width:100%" name="action[]" id="action<?=$no?><?= $nomor ?>" onchange="saveAction(<?=$no?>,<?= $nomor ?>)" value="<?= $v['ACTION'] ?>"
+                                                                                    <?php if($row['header']['statusket']== 'Sudah terlayani') 
+                                                                                            { ?>
+                                                                                           readonly
+                                                                                            <?php }else{
+                                                                                                echo '';
+                                                                                            } ?>
+                                                                                    /></td>
                                                                                 <?php } ?>
                                                                             </tbody>                                     
                                                                         </table>
-                                                                            <!-- <input type="submit" class="btn btn-danger" name="action" value="Save">    -->
                                                                     </div>
                                                                 </td>
                                                             </tr>
