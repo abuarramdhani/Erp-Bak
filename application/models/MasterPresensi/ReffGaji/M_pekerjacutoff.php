@@ -117,10 +117,6 @@ class M_pekerjacutoff extends CI_Model
  								(select tanggal_akhir from \"Presensi\".tcutoff where periode = to_char('$periode'::date,'yyyymm') and os ='0'),
 								interval '1 day'
 							) as dates
-							left join \"Dinas_Luar\".tlibur as libur
-							on libur.tanggal = dates.dates
-							where libur.tanggal is null 
-							and extract(isodow from dates.dates) <> '7'	
 						)::varchar as htm, 
  						0 as tamb_gaji, 0 as hl, 0 as ct, '0' as putkop, '0' as plain, '0' as pikop, 
  						'0' as pspsi, '0' as putang, '0' as dldobat, '0' as tkpajak, '0' as ttpajak, 

@@ -3,6 +3,7 @@ Defined('BASEPATH') or exit('NO DIrect Script Access Allowed');
 /**
  *
  */
+setlocale(LC_TIME, "id_ID.utf8");
 
 class C_PekerjaKeluar extends CI_Controller
 {
@@ -114,6 +115,10 @@ class C_PekerjaKeluar extends CI_Controller
 			$gaji[$angka]['jml_jkn'] = 0;
 			$gaji[$angka]['jml_jht'] = 0;
 			$gaji[$angka]['jml_jp'] = 0;
+			$gaji[$angka]['um_dl'] = 0;
+			$gaji[$angka]['ket'] = "";
+			$gaji[$angka]['pot_susulan'] = "";
+			$gaji[$angka]['tam_susulan'] = "";
 
 			$kom_ip 		= 0;
 			$kom_ik 		= 0;
@@ -135,13 +140,17 @@ class C_PekerjaKeluar extends CI_Controller
 			$kom_jp 		= "Tidak";
 			$kom_jml_jkn	= 0;
 			$kom_jml_jht	= 0;
-			$kom_jml_jp	= 0;
+			$kom_jml_jp		= 0;
+			$kom_um_dl 		= 0;
+			$kom_ket		= "";
+			$kom_pot_susulan = "";
+			$kom_tam_susulan = "";
 
 			$tgl_bulan_awal = $this->M_pekerjakeluar->cekProsesGaji($pkj['noind'], $pkj['tglkeluar']);
 			$tgl_cut_awal = $this->M_pekerjakeluar->cekProsesGaji2($pkj['noind'], $pkj['tglkeluar']);
 			$tgl_bulan_berjalan_awal = $this->M_pekerjakeluar->cekProsesGaji3($pkj['noind'], $pkj['tglkeluar']);
 
-
+			// komponen utama start
 			if ($status_pekerja == 'A' || $status_pekerja == 'B' || $status_pekerja == 'D') {
 				$kom_ip = $this->M_pekerjakeluar->set_Ip($pkj['noind'],$tgl_bulan_awal,$pkj['tglkeluar']);
 			}
@@ -198,8 +207,6 @@ class C_PekerjaKeluar extends CI_Controller
 			}
 
 			$kom_sisa_cuti = $this->M_pekerjakeluar->get_sisa_cuti($pkj['noind'],$pkj['tglkeluar']);
-			$kom_sk_susulan = $this->M_pekerjakeluar->get_sk_susulan($pkj['noind']);
-			$kom_cuti_susulan = $this->M_pekerjakeluar->get_cuti_susulan($pkj['noind']);
 
 			if ($puasa == 'on' || $puasa == '1' || $puasa == 'true') {
 				$kom_um_puasa = $this->M_pekerjakeluar->getKomUmPuasa($pkj['noind'],$tgl_bulan_awal,$pkj['tglkeluar'],$tgl_puasa);
@@ -247,6 +254,198 @@ class C_PekerjaKeluar extends CI_Controller
 			$kom_jml_jht = $this->M_pekerjakeluar->jumlah_jht($pkj['noind']);
 			$kom_jml_jp = $this->M_pekerjakeluar->jumlah_jp($pkj['noind']);
 
+			$kom_um_dl = $this->M_pekerjakeluar->get_uang_dl($pkj['noind'],$tgl_cut_awal,$pkj['tglkeluar']);
+
+			//komponen utama end 
+
+			//susulan start
+			$kom_sk_susulan = $this->M_pekerjakeluar->get_sk_susulan($pkj['noind']);
+			$kom_cuti_susulan = $this->M_pekerjakeluar->get_cuti_susulan($pkj['noind']);
+
+			$susulan = $this->M_pekerjakeluar->get_kom_susulan($pkj['noind'],$pkj['tglkeluar']);
+			if (!empty($susulan)) {
+				$ifsusulan = "0";
+                $gpsusulan = "0";
+                $ipsusulan = "0";
+                $iksusulan = "0";
+                $upamksusulan = "0";
+                $ubtsusulan = "0";
+                $umcsusulan = "0";
+                $iptsusulan = "0";
+                $immsusulan = "0";
+                $imssusulan = "0";
+                
+                $gpsusulantotal = "0";
+                $ifsusulantotal = "0";
+                $ipsusulantotal = "0";
+                $iksusulantotal = "0";
+                $upamksusulantotal = "0";
+                $ubtsusulantotal = "0";
+                $umcsusulantotal = "0";
+                $iptsusulantotal = "0";
+                $immsusulantotal = "0";
+                $imssusulantotal = "0";
+
+                foreach ($susulan as $ssl) {
+                	$d1 = new DateTime($ssl['tanggal']);
+                	$d2 = new DateTime($tgl_cut_awal);
+                	$dateInterval = $d2->diff($d1);
+                	$totalselisih = 12 * $dateInterval->y + $dateInterval->m;
+
+                	If ($status_pekerja == "B" Or $status_pekerja == "D" Or $status_pekerja == "J") {
+                        $ifsusulan = $this->M_pekerjakeluar->if_susulan($pkj['noind'], $ssl['tanggal']);
+                        $ifsusulan = round($ifsusulan, 2);
+                        $ifsusulantotal = $ifsusulantotal + ($ifsusulan - $ssl['if_']);
+                	}                		                  
+                    
+                    $gpsusulan = 1 - $this->M_pekerjakeluar->htm_susulan($pkj['noind'], $ssl['tanggal'], $ssl['tanggal']);
+                    $gpsusulan = round($gpsusulan, 2);
+                    $gpsusulantotal = $gpsusulantotal + ($gpsusulan - $ssl['gp']);
+                    
+                    If (($status_pekerja == "B" Or $status_pekerja == "D" Or $status_pekerja == "J") And $totalselisih > 1) {
+                        $iptsusulan = $this->M_pekerjakeluar->ipt_susulan($pkj['noind'], $ssl['tanggal']);
+                        $iptsusulan = round($iptsusulan, 2);
+                        $iptsusulantotal = $iptsusulantotal + ($iptsusulan - $ssl['ipt']);
+                    }
+                    
+                    If ($status_pekerja == "B" Or $status_pekerja == "D" ){
+                        $umcsusulan = $this->M_pekerjakeluar->um_cabang_susulan($pkj['noind'], $ssl['tanggal']);
+                        $umcsusulan = round($umcsusulan, 2);
+                        $umcsusulantotal = $umcsusulantotal + ($umcsusulan - $ssl['umc']);
+                    }
+                    
+                    If (($status_pekerja == "B" Or $status_pekerja == "D") And $totalselisih > 1) {
+                        $ipsusulan = $this->M_pekerjakeluar->ip_susulan($pkj['noind'], $ssl['tanggal']);
+                        $ipsusulan = round($ipsusulan, 2);
+                        $ipsusulantotal = $ipsusulantotal + ($ipsusulan - $ssl['ip_']);
+                    }
+                    
+                    If (($status_pekerja == "B" Or $status_pekerja == "A") And $totalselisih > 1) {
+                        $upamksusulan = $this->M_pekerjakeluar->upamk_susulan($pkj['noind'], $ssl['tanggal']);
+                        $upamksusulan = round($upamksusulan, 2);
+                        $upamksusulantotal = $upamksusulantotal + ($upamksusulan - $ssl['upamk']);
+                        
+                        $ubtsusulan = $this->M_pekerjakeluar->ubt_susulan($pkj['noind'], $ssl['tanggal']);
+                        $ubtsusulan = round($ubtsusulan, 2);
+                        $ubtsusulantotal = $ubtsusulantotal + ($ubtsusulan - $ssl['ubt']);
+                    }
+                    
+                    If (($status_pekerja == "B" Or $status_pekerja == "D") And $totalselisih > 1) {
+                        $iksusulan = $this->M_pekerjakeluar->ik_susulan($pkj['noind'], $ssl['tanggal']);
+                        $iksusulan = round($iksusulan, 2);
+                        $iksusulantotal = $iksusulantotal + ($iksusulan - $ssl['Ik_']);
+                   	}
+                    
+                    If ($status_pekerja == "T" And $totalselisih > 1) {
+                        $ipsusulan = $this->M_pekerjakeluar->iph_susulan($pkj['noind'], $ssl['tanggal']);
+                        $ipsusulan = round($ipsusulan, 2);
+                        $ipsusulantotal = $ipsusulantotal + ($ipsusulan - $ssl['ip_']);
+					}                   	
+
+                    $immsusulan = $this->M_pekerjakeluar->imm_susulan($pkj['noind'], $ssl['tanggal']);
+                    $immsusulan = round($immsusulan, 2);
+                    $immsusulantotal = $immsusulantotal + ($immsusulan - $ssl['imm']);
+                    
+                    $imssusulan = $this->M_pekerjakeluar->ims_susulan($pkj['noind'], $ssl['tanggal']);
+                    $imssusulan = round($imssusulan, 2);
+                    $imssusulantotal = $imssusulantotal + ($imssusulan - $ssl['ims']);
+                                        
+                }
+
+
+                if($status_pekerja == 'B' || $status_pekerja == 'D' || $status_pekerja == 'T' || $status_pekerja == 'J'){
+                	$gpsusulantotal += ($gaji[$angka]['sk_susulan']  +  $gaji[$angka]['cuti_susulan']);
+
+                	if($gpsusulantotal != "0"){
+                		$kom_ket = round($gpsusulantotal,2)."GP";
+                	}
+
+                	if($ifsusulantotal != "0"){
+                		$kom_ket .= round($ifsusulantotal,2)."IF";
+                	}
+
+                	if($ipsusulantotal != "0"){
+                		$kom_ket .= round($ipsusulantotal,2)."IP";
+                	}
+
+                	if($iksusulantotal != "0"){
+                		$kom_ket .= round($iksusulantotal,2)."IK";
+                	}
+
+                	if($iptsusulantotal != "0"){
+                		$kom_ket .= round($iptsusulantotal,2)."IPT";
+                	}
+
+                	if($ubtsusulantotal != "0"){
+                		$kom_ket .= round($ubtsusulantotal,2)."UBT";
+                	}
+
+                	if($upamksusulantotal != "0"){
+                		$kom_ket .= round($upamksusulantotal,2)."UPAMK";
+                	}
+
+                	if($immsusulantotal != "0"){
+                		$kom_ket .= round($immsusulantotal,2)."IMM";
+                	}
+
+                	if($imssusulantotal != "0"){
+                		$kom_ket .= round($imssusulantotal,2)."IMS";
+                	}
+
+                	if($umcsusulantotal != "0"){
+                		$kom_ket .= round($umcsusulantotal,2)."UMC";
+                	}
+                }else{
+                	if($gpsusulantotal != "0"){
+                		if ($gpsusulantotal < 0) {
+                			$pot_susulan .= round($gpsusulantotal,2)."GP";
+                		}else{
+                			$tam_susulan .= round($gpsusulantotal,2)."GP";
+                		}
+                	}
+
+                	if($ipsusulantotal != "0"){
+                		if ($ipsusulantotal < 0) {
+                			$pot_susulan .= round($ipsusulantotal,2)."IP";
+                		}else{
+                			$tam_susulan .= round($ipsusulantotal,2)."IP";
+                		}
+                	}
+
+                	if($iksusulantotal != "0"){
+                		if ($iksusulantotal < 0) {
+                			$pot_susulan .= round($iksusulantotal,2)."IK";
+                		}else{
+                			$tam_susulan .= round($iksusulantotal,2)."IK";
+                		}
+                	}
+
+                	if($ubtsusulantotal != "0"){
+                		$kom_ubt += round($ubtsusulantotal,2);
+                	}
+
+                	if($upamksusulantotal != "0"){
+                		$kom_upamk += round($upamksusulantotal,2);
+                	}
+
+                	if($immsusulantotal != "0"){
+                		$kom_imm += round($immsusulantotal,2);
+                	}
+
+                	if($imssusulantotal != "0"){
+                		$kom_ims += round($imssusulantotal,2);
+                	}
+                } 
+			}
+
+			if($kom_ket == ""){
+				if ($kom_sk_susulan  +  $kom_cuti_susulan > 0){
+					$kom_ket = ($kom_sk_susulan  +  $kom_cuti_susulan).'GP';
+				}else{
+					$kom_ket = "-";
+				}				
+			}
+			//susulan end
 
 			$gaji[$angka]['ip'] = round($kom_ip,2);
 			$gaji[$angka]['ik'] = round($kom_ik,2);
@@ -274,14 +473,13 @@ class C_PekerjaKeluar extends CI_Controller
 			$gaji[$angka]['jml_jkn'] = $kom_jml_jkn;
 			$gaji[$angka]['jml_jht'] = $kom_jml_jht;
 			$gaji[$angka]['jml_jp'] = $kom_jml_jp;
+			$gaji[$angka]['um_dl'] = $kom_um_dl;
+			$gaji[$angka]['ket'] = $kom_ket;
+			$gaji[$angka]['pot_susulan'] = $kom_pot_susulan;
+			$gaji[$angka]['tam_susulan'] = $kom_tam_susulan;
 
 			$this->M_pekerjakeluar->delete_reffgajikeluar($pkj['noind']);
-			$susulan = "";
-			if ($gaji[$angka]['sk_susulan']  +  $gaji[$angka]['cuti_susulan'] > 0){
-				$susulan = ($gaji[$angka]['sk_susulan']  +  $gaji[$angka]['cuti_susulan']).'GP';
-			}else{
-				$susulan = "-";
-			}
+			
 			$array_insert = array(
 				'tanggal_keluar' => $gaji[$angka]['tgl_keluar'] ,
 				'noind' 		 => $gaji[$angka]['noind'] ,
@@ -299,16 +497,19 @@ class C_PekerjaKeluar extends CI_Controller
 				'ijin'			 => $gaji[$angka]['tik'] ,
 				'ct'			 => $gaji[$angka]['sisa_cuti'] ,
 				'plain'		 	 => $gaji[$angka]['pot_seragam'] + $gaji[$angka]['pot_lain'],
-				'ket'			 => $susulan ,
+				'ket'			 => $gaji[$angka]['ket'] ,
 				'um_puasa'		 => $gaji[$angka]['um_puasa'] ,
 				'ipet'			 => $gaji[$angka]['ipt'] ,
 				'um_cabang'	 	 => $gaji[$angka]['um_cabang'],
 				'jml_jkn'		 => $gaji[$angka]['jml_jkn'],
 				'jml_jht'		 => $gaji[$angka]['jml_jht'],
 				'jml_jp'		 => $gaji[$angka]['jml_jp'],
-				'lokasi_krj'	 => $gaji[$angka]['lokasi_kerja']
+				'lokasi_krj'	 => $gaji[$angka]['lokasi_kerja'],
+				'dldobat'		 => $gaji[$angka]['um_dl'],
+				'tambahan_str'	 => $gaji[$angka]['tam_susulan'],
+				'potongan_str'	 => $gaji[$angka]['pot_susulan']
 			);
-			// echo "<pre>";print_r($array_insert);exit();
+			// echo "<pre>";print_r($array_insert);
 			$this->M_pekerjakeluar->insert_reffgajikeluar($array_insert);
 
 			$cek_noind_berubah = $this->M_pekerjakeluar->cek_noind_berubah($pkj['noind']);
@@ -661,7 +862,7 @@ class C_PekerjaKeluar extends CI_Controller
 		$html = $this->load->view('MasterPresensi/ReffGaji/PekerjaKeluar/V_print',$data, true);
 
 		$stylesheet1 = file_get_contents(base_url('assets/plugins/bootstrap/3.3.7/css/bootstrap.css'));
-		$pdf->SetHTMLFooter("<i style='font-size: 8pt'>Dicetak oleh ".$this->session->user." tgl. ". date('d/m/Y', time())."</i>");
+		$pdf->SetHTMLFooter("<i style='font-size: 8pt'>Halaman ini dicetak melalui Aplikasi QuickERP-MasterPresensi oleh ".$this->session->user." ".$this->session->employee." pada tgl. ".strftime('%d/%h/%Y %H:%M:%S').". Halaman {PAGENO} dari {nb}</i>");
 		$pdf->WriteHTML($stylesheet1,1);
 		$pdf->WriteHTML($html, 2);
 		$pdf->Output($filename, 'I');

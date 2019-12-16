@@ -10,6 +10,7 @@ class M_pekerjakeluar extends CI_Model
 	{
 		parent::__construct();
 		$this->personalia = $this->load->database('personalia', TRUE);
+		$this->oracle = $this->load->database('oracle', TRUE); 
 	}
 
 	public function getPekerja($kode,$nomor){
@@ -470,17 +471,11 @@ class M_pekerjakeluar extends CI_Model
 							WHERE c.noind = a.noind
 							AND c.tanggal between '$awal'::date AND to_char(a.tglkeluar,'yyyy-mm-01')::date - interval '1 day'
 							AND (
-									(
-										(c.kd_ket = 'PSK' or c.kd_ket = 'PRM')
-										and (
-											c.noind like 'K%'
-											or c.noind like 'P%'
-											or c.noind like 'F%'
-											or c.noind like 'Q%'
-										)
-									)
+									c.kd_ket = 'PSK' 
+									or c.kd_ket = 'PRM'
 									or c.kd_ket = 'PIP'
 									or left(c.kd_ket,1) = 'C'
+									or c.kd_ket = 'PCZ'
 								)
 							) as DERIVEDTBL
 						)
@@ -805,17 +800,11 @@ class M_pekerjakeluar extends CI_Model
 							WHERE c.noind = a.noind
 							AND c.tanggal between '$awal'::date AND to_char(a.tglkeluar,'yyyy-mm-01')::date - interval '1 day'
 							AND (
-									(
-										(c.kd_ket = 'PSK' or c.kd_ket = 'PRM')
-										and (
-											c.noind like 'K%'
-											or c.noind like 'P%'
-											or c.noind like 'F%'
-											or c.noind like 'Q%'
-										)
-									)
+									c.kd_ket = 'PSK' 
+									or c.kd_ket = 'PRM'
 									or c.kd_ket = 'PIP'
 									or left(c.kd_ket,1) = 'C'
+									or c.kd_ket = 'PCZ'
 								)
 							) as DERIVEDTBL
 						)
@@ -2836,44 +2825,15 @@ class M_pekerjakeluar extends CI_Model
 				and noind = '$noind' and tgl_boleh_ambil <= '$akhir'::timestamp";
 		$result2 = $this->personalia->query($sql)->result_array();
 
-		// $sql = "select  (
-		// 				select count(c.*)
-		// 				from hrd_khs.tlog c
-		// 				inner join \"Presensi\".tdatapresensi d
-		// 				on  split_part(c.ket,'TGL -> ',2)::date  = d.tanggal
-		// 				and left(split_part(c.ket,'NO.INDUK -> ',2),5) = d.noind
-		// 				and d.kd_ket = 'PKJ'
-		// 				where c.ket like concat('%',a.noind,'%')
-		// 				and c.wkt > b.tanggal_akhir
-		// 				and split_part(c.ket,'TGL -> ',2)::date between b.tanggal_awal and b.tanggal_akhir
-		// 				and c.program = 'PRESENSI'
-		// 				and c.menu like '%INPUT PRESENSI MANUAL%'
-		// 			) as jml
-		// 		from \"Presensi\".treffgaji a
-		// 		inner join \"Presensi\".tcutoff b
-		// 		on  b.tanggal_akhir between (a.tanggal - interval '7 day') and a.tanggal
-		// 		where a.noind = '$noind'
-		// 		and a.tanggal = (select max(e.tanggal) from \"Presensi\".treffgaji e where e.noind = a.noind)
-		// 		and b.os = '0';";
-		// $result3 = $this->personalia->query($sql)->result_array();
-
 		$nilai = 0;
 		if (!empty($result1)) {
 			$nilai += $result1['0']['jml'];
-			// echo $nilai."a<br>";
 		}
 
 		if (!empty($result2)) {
 			$nilai += $result2['0']['jml'];
-			// echo $nilai."b<br>";
 		}
 
-		// if (!empty($result3)) {
-		// 	$nilai += $result3['0']['jml'];
-			// echo $nilai."b<br>";
-		// }
-
-		// exit();
 		return $nilai;
 	}
 
@@ -4188,5 +4148,2223 @@ class M_pekerjakeluar extends CI_Model
 		$result = $this->personalia->query($sql)->result_array();
 		return count($result);
 	}
+
+
+	public function get_kom_susulan($noind,$akhir){
+		$sql = "select distinct tanggal , 
+                 ( 
+                     select gp_sebelum 
+                     from \"Presensi\".tsusulan_keterangan b 
+                     Where a.noind = b.noind And a.tanggal = b.tanggal and b.status = '0' 
+                     order by b.create_date 
+                     Limit 1 
+                 ) as gp,  ( 
+                     select if_sebelum 
+                     from \"Presensi\".tsusulan_keterangan b  
+                     Where a.noind = b.noind And a.tanggal = b.tanggal and b.status = '0'  
+                     order by b.create_date  
+                     Limit 1  
+                 ) as if_,   ( 
+                     select ip_sebelum 
+                     from \"Presensi\".tsusulan_keterangan b  
+                     Where a.noind = b.noind And a.tanggal = b.tanggal and b.status = '0'  
+                     order by b.create_date  
+                     Limit 1  
+                 ) as ip_,   ( 
+                     select ik_sebelum 
+                     from \"Presensi\".tsusulan_keterangan b  
+                     Where a.noind = b.noind And a.tanggal = b.tanggal and b.status = '0'  
+                     order by b.create_date  
+                     Limit 1  
+                 ) as ik_,   ( 
+                     select ubt_sebelum 
+                     from \"Presensi\".tsusulan_keterangan b  
+                     Where a.noind = b.noind And a.tanggal = b.tanggal and b.status = '0'  
+                     order by b.create_date  
+                     Limit 1  
+                 ) as ubt,   ( 
+                     select upamk_sebelum 
+                     from \"Presensi\".tsusulan_keterangan b  
+                     Where a.noind = b.noind And a.tanggal = b.tanggal and b.status = '0'  
+                     order by b.create_date  
+                     Limit 1  
+                 ) as upamk,   ( 
+                     select ipt_sebelum 
+                     from \"Presensi\".tsusulan_keterangan b  
+                     Where a.noind = b.noind And a.tanggal = b.tanggal and b.status = '0'  
+                     order by b.create_date  
+                     Limit 1  
+                 ) as ipt,   ( 
+                     select imm_sebelum 
+                     from \"Presensi\".tsusulan_keterangan b  
+                     Where a.noind = b.noind And a.tanggal = b.tanggal and b.status = '0'  
+                     order by b.create_date  
+                     Limit 1  
+                 ) as imm,   ( 
+                     select ims_sebelum 
+                     from \"Presensi\".tsusulan_keterangan b  
+                     Where a.noind = b.noind And a.tanggal = b.tanggal and b.status = '0'  
+                     order by b.create_date  
+                     Limit 1  
+                 ) as ims,   ( 
+                     select umc_sebelum 
+                     from \"Presensi\".tsusulan_keterangan b  
+                     Where a.noind = b.noind And a.tanggal = b.tanggal and b.status = '0'  
+                     order by b.create_date  
+                     Limit 1  
+                 ) as umc   from \"Presensi\".tsusulan a  
+         where a.noind = '$noind'  
+         and (a.ket like '%TUKAR SHIFT%' or a.ket like '%PRES. MANUAL%')  
+         and a.stat = '0'  
+         and date_part('year', a.tanggal) = date_part('year', '$akhir'::date) ";
+        return $this->personalia->query($sql)->result_array();
+	}
+
+	public function if_susulan($noind,$tanggal){
+		$sql = "select count(a.tanggal) as jml 
+				FROM \"Presensi\".TDataPresensi a INNER JOIN 
+				\"Presensi\".TShiftPekerja b ON a.tanggal = b.tanggal 
+				AND a.noind = b.noind 
+				WHERE a.tanggal = '$tanggal'
+				AND (a.kd_ket = 'PKJ' or (a.kd_ket = 'PDL') or (a.kd_ket = 'PDB') or a.kd_ket = 'PLB' or a.kd_ket = 'PID') 
+				AND a.noind = '$noind'";
+		$result1 = $this->personalia->query($sql)->result_array();
+
+		$sql = "SELECT a.tanggal, a.noind,
+							concat(a.tanggal::date,' ',a.keluar)::timestamp as keluar,
+							case when a.masuk::time < a.keluar::time then
+								concat((a.tanggal + interval '1 day')::date,' ',a.masuk)::timestamp
+							else
+								concat(a.tanggal::date,' ',a.masuk)::timestamp
+							end as masuk,
+							a.kd_ket,
+							b.jam_kerja,
+							case when b.jam_msk::time > b.ist_mulai::time then
+								concat((a.tanggal + interval '1 day')::date,' ',b.ist_mulai)::timestamp
+							else
+								concat(a.tanggal::date,' ',b.ist_mulai)::timestamp
+							end as ist_mulai,
+							case when b.jam_msk::time > b.ist_selesai::time then
+								concat((a.tanggal + interval '1 day')::date,' ',b.ist_selesai)::timestamp
+							else
+								concat(a.tanggal::date,' ',b.ist_selesai)::timestamp
+							end as ist_selesai,
+							case when b.jam_msk::time > b.break_mulai::time then
+								concat((a.tanggal + interval '1 day')::date,' ',b.break_mulai)::timestamp
+							else
+								concat(a.tanggal::date,' ',b.break_mulai)::timestamp
+							end as break_mulai,
+							case when b.jam_msk::time > b.break_selesai::time then
+								concat((a.tanggal + interval '1 day')::date,' ',b.break_selesai)::timestamp
+							else
+								concat(a.tanggal::date,' ',b.break_selesai)::timestamp
+							end as break_selesai
+					FROM \"Presensi\".TDataTIM a INNER JOIN
+					\"Presensi\".TShiftPekerja b ON a.tanggal = b.tanggal AND a.noind = b.noind
+					WHERE (a.tanggal = '$tanggal') AND (a.kd_ket = 'TIK') AND (a.noind = '$noind')
+					UNION
+					SELECT a.tanggal, a.noind,
+									concat(a.tanggal::date,' ',a.keluar)::timestamp as keluar,
+									case when a.masuk::time < a.keluar::time then
+										concat((a.tanggal + interval '1 day')::date,' ',a.masuk)::timestamp
+									else
+										concat(a.tanggal::date,' ',a.masuk)::timestamp
+									end as masuk,
+									a.kd_ket,
+									b.jam_kerja,
+									case when b.jam_msk::time > b.ist_mulai::time then
+										concat((a.tanggal + interval '1 day')::date,' ',b.ist_mulai)::timestamp
+									else
+										concat(a.tanggal::date,' ',b.ist_mulai)::timestamp
+									end as ist_mulai,
+									case when b.jam_msk::time > b.ist_selesai::time then
+										concat((a.tanggal + interval '1 day')::date,' ',b.ist_selesai)::timestamp
+									else
+										concat(a.tanggal::date,' ',b.ist_selesai)::timestamp
+									end as ist_selesai,
+									case when b.jam_msk::time > b.break_mulai::time then
+										concat((a.tanggal + interval '1 day')::date,' ',b.break_mulai)::timestamp
+									else
+										concat(a.tanggal::date,' ',b.break_mulai)::timestamp
+									end as break_mulai,
+									case when b.jam_msk::time > b.break_selesai::time then
+										concat((a.tanggal + interval '1 day')::date,' ',b.break_selesai)::timestamp
+									else
+										concat(a.tanggal::date,' ',b.break_selesai)::timestamp
+									end as break_selesai
+							FROM \"Presensi\".TDataPresensi a INNER JOIN
+							\"Presensi\".TShiftPekerja b ON a.tanggal = b.tanggal AND a.noind = b.noind
+							WHERE (a.kd_ket = 'PSP') AND (a.noind = '$noind') AND (a.tanggal = '$tanggal')
+					ORDER BY tanggal";
+		$result2 = $this->personalia->query($sql)->result_array();
+		if(!empty($result1)){
+			$nilai = $result1['0']['jml'];
+		}else{
+			$nilai = 0;
+		}
+			
+		$simpan_tgl = "";
+		$lanjut = false;
+		foreach ($result2 as $tik) {
+			if ($tik['tanggal'] !== $simpan_tgl) {
+				$lanjut = false;
+			}
+			$keluar = strtotime($tik['keluar']);
+			$masuk = strtotime($tik['masuk']);
+			$ist_mulai = strtotime($tik['ist_mulai']);
+			$ist_selesai = strtotime($tik['ist_selesai']);
+			$break_mulai = strtotime($tik['break_mulai']);
+			$break_selesai = strtotime($tik['break_selesai']);
+			if ($ist_mulai < $break_mulai) {
+				$simpan_ist_mulai = $ist_mulai;
+				$simpan_ist_selesai = $ist_selesai;
+				$ist_mulai = $break_mulai;
+				$ist_selesai = $break_selesai;
+				$break_mulai = $simpan_ist_mulai;
+				$break_selesai = $simpan_ist_selesai;
+			}
+
+			$ijin = $this->cek_ijin_keluar($keluar,$masuk,$break_mulai,$break_selesai,$ist_mulai,$ist_selesai) / ($tik['jam_kerja'] * 60);
+			$ijin = number_format($ijin, 2);
+			// echo "ijine:".$ijin."<br>";
+			if ($ijin <= 0) {
+				$nilai = $nilai;
+			}else if($ijin > 0 && $ijin <= 30){
+				$cek_denda = $this->cek_bebas_denda_if($keluar,$masuk,$ist_mulai,$ist_selesai);
+				if ($cek_denda == false) {
+					if($lanjut == false) {
+						$nilai -= $ijin;
+					}
+				}
+			}else{
+				if($lanjut == false){
+					$nilai -= $ijin;
+				}
+			}
+
+			$simpan_tgl = $tik['tanggal'];
+		}
+
+		return $nilai;
+	}
+
+	public function htm_susulan($noind,$tanggal){
+		$sql = "select count(tanggal) as jml from 
+        (SELECT tanggal FROM \"Presensi\".TDataTIM 
+        WHERE noind = '$noind' 
+        AND tanggal = '$tanggal'
+        AND (kd_ket = 'TM') 
+        UNION 
+        SELECT tanggal FROM \"Presensi\".TDataPresensi 
+        WHERE noind = '$noind' 
+        AND tanggal = '$tanggal' 
+        AND (((kd_ket = 'PSK' or kd_ket = 'PRM') and (noind like 'K%' or noind like 'P%' or noind like 'F%' or noind like 'Q%')) or kd_ket = 'PIP')) 
+        DERIVEDTBL ";
+        $result1 = 	$this->personalia->query($sql)->result_array();
+
+		$sql = "SELECT a.tanggal, a.noind,
+						concat(a.tanggal::date,' ',a.keluar)::timestamp as keluar,
+						case when a.masuk::time < a.keluar::time then
+							concat((a.tanggal + interval '1 day')::date,' ',a.masuk)::timestamp
+						else
+							concat(a.tanggal::date,' ',a.masuk)::timestamp
+						end as masuk,
+						a.kd_ket,
+						b.jam_kerja,
+						case when b.jam_msk::time > b.ist_mulai::time then
+							concat((a.tanggal + interval '1 day')::date,' ',b.ist_mulai)::timestamp
+						else
+							concat(a.tanggal::date,' ',b.ist_mulai)::timestamp
+						end as ist_mulai,
+						case when b.jam_msk::time > b.ist_selesai::time then
+							concat((a.tanggal + interval '1 day')::date,' ',b.ist_selesai)::timestamp
+						else
+							concat(a.tanggal::date,' ',b.ist_selesai)::timestamp
+						end as ist_selesai,
+						case when b.jam_msk::time > b.break_mulai::time then
+							concat((a.tanggal + interval '1 day')::date,' ',b.break_mulai)::timestamp
+						else
+							concat(a.tanggal::date,' ',b.break_mulai)::timestamp
+						end as break_mulai,
+						case when b.jam_msk::time > b.break_selesai::time then
+							concat((a.tanggal + interval '1 day')::date,' ',b.break_selesai)::timestamp
+						else
+							concat(a.tanggal::date,' ',b.break_selesai)::timestamp
+						end as break_selesai
+				FROM \"Presensi\".TDataTIM a INNER JOIN
+				\"Presensi\".TShiftPekerja b ON a.tanggal = b.tanggal AND a.noind = b.noind
+				WHERE (a.tanggal = '$tanggal') AND (a.kd_ket = 'TIK') AND (a.noind = '$noind')
+				ORDER BY tanggal";
+
+		$result2 = 	$this->personalia->query($sql)->result_array();
+		if(!empty($result1)){
+			$nilai = $result1['0']['jml'];
+		}else{
+			$nilai = 0;
+		}
+		$simpan_tgl = "";
+		$lanjut = false;
+		foreach ($result2 as $tik) {
+			if ($tik['tanggal'] !== $simpan_tgl) {
+				$lanjut = false;
+			}
+			$keluar = strtotime($tik['keluar']);
+			$masuk = strtotime($tik['masuk']);
+			$ist_mulai = strtotime($tik['ist_mulai']);
+			$ist_selesai = strtotime($tik['ist_selesai']);
+			$break_mulai = strtotime($tik['break_mulai']);
+			$break_selesai = strtotime($tik['break_selesai']);
+			if ($ist_mulai < $break_mulai) {
+				$simpan_ist_mulai = $ist_mulai;
+				$simpan_ist_selesai = $ist_selesai;
+				$ist_mulai = $break_mulai;
+				$ist_selesai = $break_selesai;
+				$break_mulai = $simpan_ist_mulai;
+				$break_selesai = $simpan_ist_selesai;
+			}
+
+			$ijin = $this->cek_ijin_keluar($keluar,$masuk,$break_mulai,$break_selesai,$ist_mulai,$ist_selesai) / ($tik['jam_kerja'] * 60);
+			$ijin = number_format($ijin, 2);
+			if ($ijin <= 0) {
+				$nilai = $nilai;
+			}else if($ijin > 0 && $ijin <= 30){
+				$cek_denda = $this->cek_bebas_denda_if($keluar,$masuk,$ist_mulai,$ist_selesai);
+				if ($cek_denda == false) {
+					if($lanjut == false) {
+						$nilai += $ijin;
+					}
+				}
+			}else{
+				if($lanjut == false){
+					$nilai += $ijin;
+				}
+			}
+
+			$simpan_tgl = $tik['tanggal'];
+		}
+
+		return $nilai;
+	}
+
+	public function ipt_susulan($noind,$tanggal){
+		$sql = " select * 
+				 from hrd_khs.tpribadi a 
+				 where a.noind = '$noind' 
+				 and ( 
+				     a.lokasi_kerja = '02' 
+				     or 
+				     ( 
+				         select count(*) 
+				         from hrd_khs.tmutasi b 
+				         Where a.noind = b.noind 
+				         and b.tglberlaku between '$tanggal' and now() 
+				         and ( 
+				                 b.lokasilm = '02' 
+				                 or 
+				                 b.lokasibr = '02' 
+				             ) 
+				      ) > 0 
+				     ) ";
+		$result = $this->personalia->query($sql)->result_array();
+		if (!empty($result)) {
+			$sql = "select noind ,lokasilm, lokasibr,
+						 case when lokasilm != '02' then
+						     tglberlaku 
+						 else 
+						     '$tanggal'
+						 end as mulai, 
+						 case when lokasibr != '02' then  
+						     case when '$tanggal' > tglberlaku - interval '1 day' then
+						         tglberlaku -Interval  '1 day' 
+						     Else 
+						         '$tanggal' 
+						     end
+						 else 
+						      '$tanggal' 
+						 end as selesai 
+					from hrd_khs.tmutasi 
+					where tglberlaku between '$tanggal' and now() 
+					and (lokasilm ='02' or lokasibr = '02') 
+					and noind = '$noind' ";
+			$result_2 = $this->personalia->query($sql)->row();
+			if (!empty($result_2)) {
+				foreach ($result_2 as $key) {
+					$awal = $key->mulai;
+					$akhir = $key->selesai;
+
+					$sql = "select count(tdp.tanggal) as jml
+							FROM \"Presensi\".TDataPresensi tdp INNER JOIN
+							(SELECT DISTINCT * from \"Presensi\".TShiftPekerja) tsp ON tdp.tanggal = tsp.tanggal AND tdp.noind = tsp.noind
+							WHERE tdp.tanggal >= '$awal' AND tdp.tanggal <= '$akhir'
+							AND (tdp.kd_ket = 'PKJ' or (tdp.kd_ket = 'PDL') or (tdp.kd_ket = 'PDB') or tdp.kd_ket = 'PLB' or tdp.kd_ket = 'PID')
+							AND tdp.noind = '$noind'";
+					$result1 = $this->personalia->query($sql)->result_array();
+
+					$sql = "select a.tanggal, a.noind,
+									concat(a.tanggal::date,' ',a.keluar)::timestamp as keluar,
+									case when a.masuk::time < a.keluar::time then
+										concat((a.tanggal + interval '1 day')::date,' ',a.masuk)::timestamp
+									else
+										concat(a.tanggal::date,' ',a.masuk)::timestamp
+									end as masuk,
+									a.kd_ket,
+									b.jam_kerja,
+									case when b.jam_msk::time > b.ist_mulai::time then
+										concat((a.tanggal + interval '1 day')::date,' ',b.ist_mulai)::timestamp
+									else
+										concat(a.tanggal::date,' ',b.ist_mulai)::timestamp
+									end as ist_mulai,
+									case when b.jam_msk::time > b.ist_selesai::time then
+										concat((a.tanggal + interval '1 day')::date,' ',b.ist_selesai)::timestamp
+									else
+										concat(a.tanggal::date,' ',b.ist_selesai)::timestamp
+									end as ist_selesai,
+									case when b.jam_msk::time > b.break_mulai::time then
+										concat((a.tanggal + interval '1 day')::date,' ',b.break_mulai)::timestamp
+									else
+										concat(a.tanggal::date,' ',b.break_mulai)::timestamp
+									end as break_mulai,
+									case when b.jam_msk::time > b.break_selesai::time then
+										concat((a.tanggal + interval '1 day')::date,' ',b.break_selesai)::timestamp
+									else
+										concat(a.tanggal::date,' ',b.break_selesai)::timestamp
+									end as break_selesai
+							FROM \"Presensi\".TDataPresensi a INNER JOIN
+							\"Presensi\".TShiftPekerja b ON a.tanggal = b.tanggal AND a.noind = b.noind
+							WHERE (a.tanggal >= '$awal') AND (a.kd_ket = 'PSP') AND (a.noind = '$noind') AND
+							(a.tanggal <= '$akhir')
+							Union
+							SELECT a.tanggal, a.noind,
+								concat(a.tanggal::date,' ',a.keluar)::timestamp as keluar,
+								case when a.masuk::time < a.keluar::time then
+									concat((a.tanggal + interval '1 day')::date,' ',a.masuk)::timestamp
+								else
+									concat(a.tanggal::date,' ',a.masuk)::timestamp
+								end as masuk,
+								a.kd_ket,
+								b.jam_kerja,
+								case when b.jam_msk::time > b.ist_mulai::time then
+									concat((a.tanggal + interval '1 day')::date,' ',b.ist_mulai)::timestamp
+								else
+									concat(a.tanggal::date,' ',b.ist_mulai)::timestamp
+								end as ist_mulai,
+								case when b.jam_msk::time > b.ist_selesai::time then
+									concat((a.tanggal + interval '1 day')::date,' ',b.ist_selesai)::timestamp
+								else
+									concat(a.tanggal::date,' ',b.ist_selesai)::timestamp
+								end as ist_selesai,
+								case when b.jam_msk::time > b.break_mulai::time then
+									concat((a.tanggal + interval '1 day')::date,' ',b.break_mulai)::timestamp
+								else
+									concat(a.tanggal::date,' ',b.break_mulai)::timestamp
+								end as break_mulai,
+								case when b.jam_msk::time > b.break_selesai::time then
+									concat((a.tanggal + interval '1 day')::date,' ',b.break_selesai)::timestamp
+								else
+									concat(a.tanggal::date,' ',b.break_selesai)::timestamp
+								end as break_selesai
+							FROM \"Presensi\".TDataTIM a INNER JOIN
+							\"Presensi\".TShiftPekerja b ON a.tanggal = b.tanggal AND a.noind = b.noind
+							WHERE (a.tanggal >= '$awal') AND (a.kd_ket = 'TIK') AND (a.noind = '$noind') AND (a.tanggal <= '$akhir')
+							ORDER BY tanggal";
+					$result2 = $this->personalia->query($sql)->result_array();
+					if(!empty($result1)){
+						$nilai = $result1['0']['total'];
+					}else{
+						$nilai = 0;
+					}
+					$simpan_tgl = "";
+					$lanjut = false;
+
+					foreach ($result2 as $tik) {
+						if ($tik['tanggal'] !== $simpan_tgl) {
+							$lanjut = false;
+						}
+						$keluar = strtotime($tik['keluar']);
+						$masuk = strtotime($tik['masuk']);
+						$ist_mulai = strtotime($tik['ist_mulai']);
+						$ist_selesai = strtotime($tik['ist_selesai']);
+						$break_mulai = strtotime($tik['break_mulai']);
+						$break_selesai = strtotime($tik['break_selesai']);
+						if ($ist_mulai < $break_mulai) {
+							$simpan_ist_mulai = $ist_mulai;
+							$simpan_ist_selesai = $ist_selesai;
+							$ist_mulai = $break_mulai;
+							$ist_selesai = $break_selesai;
+							$break_mulai = $simpan_ist_mulai;
+							$break_selesai = $simpan_ist_selesai;
+						}
+
+						$ijin = $this->cek_ijin_keluar($keluar,$masuk,$break_mulai,$break_selesai,$ist_mulai,$ist_selesai);
+						if ($ijin <= 0) {
+							$nilai = $nilai;
+						}else if($ijin > 0 && $ijin <= 60){
+							$nilai = $nilai;
+						}else{
+							if($lanjut == false){
+								$nilai -= 1;
+							}
+						}
+
+						$simpan_tgl = $tik['tanggal'];
+					}
+
+				}
+			}else{
+				$awal = $tanggal;
+				$akhir = $tanggal;
+
+				$sql = "select count(tdp.tanggal) as jml
+						FROM \"Presensi\".TDataPresensi tdp INNER JOIN
+						(SELECT DISTINCT * from \"Presensi\".TShiftPekerja) tsp ON tdp.tanggal = tsp.tanggal AND tdp.noind = tsp.noind
+						WHERE tdp.tanggal >= '$awal' AND tdp.tanggal <= '$akhir'
+						AND (tdp.kd_ket = 'PKJ' or (tdp.kd_ket = 'PDL') or (tdp.kd_ket = 'PDB') or tdp.kd_ket = 'PLB' or tdp.kd_ket = 'PID')
+						AND tdp.noind = '$noind'";
+				$result1 = $this->personalia->query($sql)->result_array();
+
+				$sql = "select a.tanggal, a.noind,
+								concat(a.tanggal::date,' ',a.keluar)::timestamp as keluar,
+								case when a.masuk::time < a.keluar::time then
+									concat((a.tanggal + interval '1 day')::date,' ',a.masuk)::timestamp
+								else
+									concat(a.tanggal::date,' ',a.masuk)::timestamp
+								end as masuk,
+								a.kd_ket,
+								b.jam_kerja,
+								case when b.jam_msk::time > b.ist_mulai::time then
+									concat((a.tanggal + interval '1 day')::date,' ',b.ist_mulai)::timestamp
+								else
+									concat(a.tanggal::date,' ',b.ist_mulai)::timestamp
+								end as ist_mulai,
+								case when b.jam_msk::time > b.ist_selesai::time then
+									concat((a.tanggal + interval '1 day')::date,' ',b.ist_selesai)::timestamp
+								else
+									concat(a.tanggal::date,' ',b.ist_selesai)::timestamp
+								end as ist_selesai,
+								case when b.jam_msk::time > b.break_mulai::time then
+									concat((a.tanggal + interval '1 day')::date,' ',b.break_mulai)::timestamp
+								else
+									concat(a.tanggal::date,' ',b.break_mulai)::timestamp
+								end as break_mulai,
+								case when b.jam_msk::time > b.break_selesai::time then
+									concat((a.tanggal + interval '1 day')::date,' ',b.break_selesai)::timestamp
+								else
+									concat(a.tanggal::date,' ',b.break_selesai)::timestamp
+								end as break_selesai
+						FROM \"Presensi\".TDataPresensi a INNER JOIN
+						\"Presensi\".TShiftPekerja b ON a.tanggal = b.tanggal AND a.noind = b.noind
+						WHERE (a.tanggal >= '$awal') AND (a.kd_ket = 'PSP') AND (a.noind = '$noind') AND
+						(a.tanggal <= '$akhir')
+						Union
+						SELECT a.tanggal, a.noind,
+							concat(a.tanggal::date,' ',a.keluar)::timestamp as keluar,
+							case when a.masuk::time < a.keluar::time then
+								concat((a.tanggal + interval '1 day')::date,' ',a.masuk)::timestamp
+							else
+								concat(a.tanggal::date,' ',a.masuk)::timestamp
+							end as masuk,
+							a.kd_ket,
+							b.jam_kerja,
+							case when b.jam_msk::time > b.ist_mulai::time then
+								concat((a.tanggal + interval '1 day')::date,' ',b.ist_mulai)::timestamp
+							else
+								concat(a.tanggal::date,' ',b.ist_mulai)::timestamp
+							end as ist_mulai,
+							case when b.jam_msk::time > b.ist_selesai::time then
+								concat((a.tanggal + interval '1 day')::date,' ',b.ist_selesai)::timestamp
+							else
+								concat(a.tanggal::date,' ',b.ist_selesai)::timestamp
+							end as ist_selesai,
+							case when b.jam_msk::time > b.break_mulai::time then
+								concat((a.tanggal + interval '1 day')::date,' ',b.break_mulai)::timestamp
+							else
+								concat(a.tanggal::date,' ',b.break_mulai)::timestamp
+							end as break_mulai,
+							case when b.jam_msk::time > b.break_selesai::time then
+								concat((a.tanggal + interval '1 day')::date,' ',b.break_selesai)::timestamp
+							else
+								concat(a.tanggal::date,' ',b.break_selesai)::timestamp
+							end as break_selesai
+						FROM \"Presensi\".TDataTIM a INNER JOIN
+						\"Presensi\".TShiftPekerja b ON a.tanggal = b.tanggal AND a.noind = b.noind
+						WHERE (a.tanggal >= '$awal') AND (a.kd_ket = 'TIK') AND (a.noind = '$noind') AND (a.tanggal <= '$akhir')
+						ORDER BY tanggal";
+				$result2 = $this->personalia->query($sql)->result_array();
+				if(!empty($result1)){
+					$nilai = $result1['0']['total'];
+				}else{
+					$nilai = 0;
+				}
+				$simpan_tgl = "";
+				$lanjut = false;
+
+				foreach ($result2 as $tik) {
+					if ($tik['tanggal'] !== $simpan_tgl) {
+						$lanjut = false;
+					}
+					$keluar = strtotime($tik['keluar']);
+					$masuk = strtotime($tik['masuk']);
+					$ist_mulai = strtotime($tik['ist_mulai']);
+					$ist_selesai = strtotime($tik['ist_selesai']);
+					$break_mulai = strtotime($tik['break_mulai']);
+					$break_selesai = strtotime($tik['break_selesai']);
+					if ($ist_mulai < $break_mulai) {
+						$simpan_ist_mulai = $ist_mulai;
+						$simpan_ist_selesai = $ist_selesai;
+						$ist_mulai = $break_mulai;
+						$ist_selesai = $break_selesai;
+						$break_mulai = $simpan_ist_mulai;
+						$break_selesai = $simpan_ist_selesai;
+					}
+
+					$ijin = $this->cek_ijin_keluar($keluar,$masuk,$break_mulai,$break_selesai,$ist_mulai,$ist_selesai);
+					if ($ijin <= 0) {
+						$nilai = $nilai;
+					}else if($ijin > 0 && $ijin <= 60){
+						$nilai = $nilai;
+					}else{
+						if($lanjut == false){
+							$nilai -= 1;
+						}
+					}
+
+					$simpan_tgl = $tik['tanggal'];
+				}
+			}
+
+			return $nilai;
+		}else{
+			return 0;
+		}
+	}
+
+	public function um_cabang_susulan($noind,$tanggal){
+		$nilai = 0;
+		$sql = " select * 
+		         from hrd_khs.tpribadi a 
+		         where a.noind = '$noind' 
+		         and ( 
+		             a.lokasi_kerja not in ('01','02','03','04')
+		             or 
+		             ( 
+		                 select count(*) 
+		                 from hrd_khs.tmutasi b 
+		                 Where a.noind = b.noind 
+		                 and b.tglberlaku between '$tanggal' and now()
+		                 and ( 
+		                         b.lokasilm not in ('01','02','03','04') 
+		                         or 
+		                         b.lokasibr not in ('01','02','03','04') 
+		                     ) 
+		              ) > 0 
+		             ) ";
+		$result = $this->personalia->query($sql)->result_array();
+		if (!empty($result)) {
+			$sql = "select noind ,lokasilm, lokasibr, 
+			         case when lokasilm in ('01','02','03','04') then 
+			             tglberlaku 
+			         else 
+			             '$tanggal' 
+			         end as mulai, 
+			         case when lokasibr in ('01','02','03','04') then  
+			              tglberlaku - interval '1 day'
+			         else 
+			              '$tanggal' 
+			         end as selesai 
+			        from hrd_khs.tmutasi 
+			        where tglberlaku between '$tanggal' and now()
+			        and (lokasilm not in ('01','02','03','04') or lokasibr not in ('01','02','03','04')) 
+			        and noind = '$noind' ";
+			$result_2 = $this->personalia->query($sql)->row();    
+			if (!empty($result_2)) {
+				foreach ($result_2 as $key) {
+					$awal = $key->mulai;
+					$akhir = $key->selesai;
+
+					$sql = "select 
+				                   round( 
+				                   ( count( tsp.tanggal ) 
+				                   - 
+				                   (  
+				                       case  
+				                       when ( extract( month from( '$akhir' )::date )+ 1 )= extract( month from( '$akhir' )::date )  
+				                           then  
+				                               case  
+				                               when( 30 -(( '$akhir'::date - '$awal'::date )+ 1 ))>= 0  
+				                                   then 
+				                                   ( 30 -(( '$akhir'::date - '$awal'::date )+ 1 ))  
+				                               else  
+				                                   0  
+				                               end  
+				                       else  
+				                           0  
+				                       end  
+				                   ) 
+				                   -  
+				                   sum(  
+				                       coalesce( 
+				                           (  
+				                               select  
+				                                   sum(  
+				                                       case  
+				                                           when tdt1.kd_ket = 'TM'  
+				                                               or( tdt1.kd_ket = '' and tdt1.masuk = '0' )  
+				                                               or tdt1.point = '1'  
+				                                       then  
+				                                               1  
+				                                           when tdt1.kd_ket = 'TIK'  
+				                                           or( tdt1.kd_ket = '' and tdt1.masuk != '0' )  
+				                                           then  
+				                                               case  
+				                                               when tdt1.keluar::time between tsp.jam_msk::time and '12:00:00'::time  
+				                                               then  
+				                                                   case  
+				                                                   when tdt1.masuk::time between tsp.jam_msk::time and '12:00:00'::time  
+				                                               then  
+				                                                       0  
+				                                                   else  
+				                                                       1  
+				                                                   end  
+				                                               else  
+				                                               0  
+				                                               end  
+				                                           end  
+				                                   )  
+				                           from \"Presensi\".tdatatim tdt1  
+				                               where tdt1.noind = tsp.noind  
+				                               and tdt1.tanggal = tsp.tanggal  
+				                           ) 
+				                       , 0  
+				                       ) 
+				                   ) 
+				                   +  
+				                   sum(  
+				                       coalesce( 
+				                       (  
+				                               select  
+				                                   sum(  
+				                                       case  
+				                                           when tdp1.kd_ket = 'PLB'  
+				                                           then  
+				                                               case  
+				                                                   when extract( dow from tsp.tanggal::date )= '7'  
+				                                                   then  
+				                                                       case when tdp1.keluar::time > '18:00:00'::time  
+				                                                   then  
+				                                                           2  
+				                                                       else  
+				                                                           case  
+				                                                               when tdp1.keluar::time > '11:45:00'::time  
+				                                                               then  
+				                                                                   1  
+				                                                               else  
+				                                                                   0  
+				                                                               end  
+				                                                   end  
+				                                                   else  
+				                                                       case  
+				                                                           when tdp1.keluar::time > '18:00:00'::time  
+				                                                           then  
+				                                                               case  
+				                                                               when 
+				                                                                   (  
+				                                                                       select count(*)  
+				                                                                       from \"Presensi\".tprs_shift tps  
+				                                                                   where tps.noind = tsp.noind  
+				                                                                       and tps.tanggal = tsp.tanggal  
+				                                                                       )% 2 = 0  
+				                                                               then 
+				                                                                   (  
+				                                                                       select  
+				                                                                           sum(  
+				                                                                               case  
+				                                                                                   when '18:00:00'::time  
+				                                                                                   between tbl2.awal and tbl2.akhir::time  
+				                                                                               then  
+				                                                                                       1  
+				                                                                                   else  
+				                                                                                       0  
+				                                                                                   end  
+				                                                                           ) as jml  
+				                                                                       from(  
+				                                                                           select 
+				                                                                               (  
+				                                                                                   select  
+				                                                                                   max( tps2.waktu::time )  
+				                                                                                   from \"Presensi\".tprs_shift as tps2  
+				                                                                                   where tps2.noind = tsp.noind  
+				                                                                                   and tps2.tanggal = tsp.tanggal  
+				                                                                                   and tps2.waktu < tbl.waktu  
+				                                                                               ) as awal,  
+				                                                                               tbl.waktu as akhir  
+				                                                                           from(  
+				                                                                               select waktu,  
+				                                                                               row_number() over( order by waktu::time ) as numrow  
+				                                                                           from \"Presensi\".tprs_shift as tps  
+				                                                                               where tps.noind = tsp.noind  
+				                                                                               and tps.tanggal = tsp.tanggal  
+				                                                                               order by tps.waktu::time  
+				                                                                           ) as tbl  
+				                                                                           where numrow % 2 = 0  
+				                                                                           ) as tbl2  
+				                                                                       )  
+				                                                               else  
+				                                                                   0  
+				                                                           end  
+				                                                       else  
+				                                                           0  
+				                                                       end  
+				                                               end  
+				                                           else  
+				                                               0  
+				                                           end  
+				                                   )  
+				                               from \"Presensi\".tdatapresensi tdp1  
+				                           where tdp1.noind = tsp.noind  
+				                               and tdp1.tanggal = tsp.tanggal  
+				                               ) 
+				                       , 0 ) 
+				                   ) 
+				                   -  
+				                   sum(  
+				                       coalesce( 
+				                           (  
+				                               select  
+				                               sum(  
+				                                       case  
+				                                           when( tdp1.kd_ket in( 'PSK', 'PRM', 'PKK', 'PIP', 'PCZ' ) or( tdp1.kd_ket != 'CB' and tdp1.kd_ket like 'C%' ))  
+				                                           or( tdp1.kd_ket = 'PDL' and( tdp1.masuk = '0' or tdp1.masuk = '' ))  
+				                                           then  
+				                                               1  
+				                                           when tdp1.kd_ket = rtrim( 'PDL' )  
+				                                           and( tdp1.masuk != rtrim( '0' )  
+				                                           or tdp1.masuk != rtrim( '' ))  
+				                                           then  
+				                                           case  
+				                                                   when tdp1.keluar::time between tsp.jam_msk::time and '12:00:00'::time  
+				                                                   then  
+				                                                       case  
+				                                                           when tdp1.masuk::time between tsp.jam_msk::time and '12:00:00'::time  
+				                                                           then  
+				                                                               0  
+				                                                           else  
+				                                                               1  
+				                                                           end  
+				                                               else  
+				                                                   0  
+				                                                   end  
+				                                           when tdp1.kd_ket = rtrim( 'PSP' )  
+				                                           then  
+				                                               case  
+				                                                   when tdp1.keluar::time between tsp.jam_msk::time and( tsp.ist_selesai::time - interval '1 second' )  
+				                                                   then  
+				                                                       case  
+				                                                           when tdp1.masuk::time between tsp.jam_msk::time and( tsp.ist_selesai::time - interval '1 second' )  
+				                                                       then  
+				                                                               0  
+				                                                           else  
+				                                                               1  
+				                                                           end  
+				                                                   when tdp1.keluar::time between tsp.ist_selesai::time and( tsp.jam_plg::time - interval '1 second' )  
+				                                                   then  
+				                                                       case  
+				                                                           when tdp1.masuk::time >=( tsp.ist_selesai::time - interval '1 second' )  
+				                                                           then  
+				                                                           0  
+				                                                           else  
+				                                                               1  
+				                                                           end  
+				                                                   end  
+				                                           end  
+				                                   )  
+				                               from \"Presensi\".tdatapresensi tdp1  
+				                               where tdp1.noind = tsp.noind  
+				                               and tdp1.tanggal = tsp.tanggal  
+				                           ) 
+				                       , 0  
+				                       ) 
+				                       ) 
+				                   )::decimal 
+				                   , 2  
+				                   ) as um 
+		                 from 
+		                   \"Presensi\".tshiftpekerja tsp 
+		                 where 
+		                   tsp.noind = '$noind' 
+		                   and tsp.tanggal between '$awal' and '$akhir' ";
+                   $result1 = $this->personalia->query($sql)->row();
+                   if(!empty($result1)){
+                   		$nilai += $result1->um;
+                   }
+				}
+			}else{
+				$awal = $tanggal;
+				$akhir = $tanggal;
+
+				$sql = "select 
+				                   round( 
+				                   ( count( tsp.tanggal ) 
+				                   - 
+				                   (  
+				                       case  
+				                       when ( extract( month from( '$akhir' )::date )+ 1 )= extract( month from( '$akhir' )::date )  
+				                           then  
+				                               case  
+				                               when( 30 -(( '$akhir'::date - '$awal'::date )+ 1 ))>= 0  
+				                                   then 
+				                                   ( 30 -(( '$akhir'::date - '$awal'::date )+ 1 ))  
+				                               else  
+				                                   0  
+				                               end  
+				                       else  
+				                           0  
+				                       end  
+				                   ) 
+				                   -  
+				                   sum(  
+				                       coalesce( 
+				                           (  
+				                               select  
+				                                   sum(  
+				                                       case  
+				                                           when tdt1.kd_ket = 'TM'  
+				                                               or( tdt1.kd_ket = '' and tdt1.masuk = '0' )  
+				                                               or tdt1.point = '1'  
+				                                       then  
+				                                               1  
+				                                           when tdt1.kd_ket = 'TIK'  
+				                                           or( tdt1.kd_ket = '' and tdt1.masuk != '0' )  
+				                                           then  
+				                                               case  
+				                                               when tdt1.keluar::time between tsp.jam_msk::time and '12:00:00'::time  
+				                                               then  
+				                                                   case  
+				                                                   when tdt1.masuk::time between tsp.jam_msk::time and '12:00:00'::time  
+				                                               then  
+				                                                       0  
+				                                                   else  
+				                                                       1  
+				                                                   end  
+				                                               else  
+				                                               0  
+				                                               end  
+				                                           end  
+				                                   )  
+				                           from \"Presensi\".tdatatim tdt1  
+				                               where tdt1.noind = tsp.noind  
+				                               and tdt1.tanggal = tsp.tanggal  
+				                           ) 
+				                       , 0  
+				                       ) 
+				                   ) 
+				                   +  
+				                   sum(  
+				                       coalesce( 
+				                       (  
+				                               select  
+				                                   sum(  
+				                                       case  
+				                                           when tdp1.kd_ket = 'PLB'  
+				                                           then  
+				                                               case  
+				                                                   when extract( dow from tsp.tanggal::date )= '7'  
+				                                                   then  
+				                                                       case when tdp1.keluar::time > '18:00:00'::time  
+				                                                   then  
+				                                                           2  
+				                                                       else  
+				                                                           case  
+				                                                               when tdp1.keluar::time > '11:45:00'::time  
+				                                                               then  
+				                                                                   1  
+				                                                               else  
+				                                                                   0  
+				                                                               end  
+				                                                   end  
+				                                                   else  
+				                                                       case  
+				                                                           when tdp1.keluar::time > '18:00:00'::time  
+				                                                           then  
+				                                                               case  
+				                                                               when 
+				                                                                   (  
+				                                                                       select count(*)  
+				                                                                       from \"Presensi\".tprs_shift tps  
+				                                                                   where tps.noind = tsp.noind  
+				                                                                       and tps.tanggal = tsp.tanggal  
+				                                                                       )% 2 = 0  
+				                                                               then 
+				                                                                   (  
+				                                                                       select  
+				                                                                           sum(  
+				                                                                               case  
+				                                                                                   when '18:00:00'::time  
+				                                                                                   between tbl2.awal and tbl2.akhir::time  
+				                                                                               then  
+				                                                                                       1  
+				                                                                                   else  
+				                                                                                       0  
+				                                                                                   end  
+				                                                                           ) as jml  
+				                                                                       from(  
+				                                                                           select 
+				                                                                               (  
+				                                                                                   select  
+				                                                                                   max( tps2.waktu::time )  
+				                                                                                   from \"Presensi\".tprs_shift as tps2  
+				                                                                                   where tps2.noind = tsp.noind  
+				                                                                                   and tps2.tanggal = tsp.tanggal  
+				                                                                                   and tps2.waktu < tbl.waktu  
+				                                                                               ) as awal,  
+				                                                                               tbl.waktu as akhir  
+				                                                                           from(  
+				                                                                               select waktu,  
+				                                                                               row_number() over( order by waktu::time ) as numrow  
+				                                                                           from \"Presensi\".tprs_shift as tps  
+				                                                                               where tps.noind = tsp.noind  
+				                                                                               and tps.tanggal = tsp.tanggal  
+				                                                                               order by tps.waktu::time  
+				                                                                           ) as tbl  
+				                                                                           where numrow % 2 = 0  
+				                                                                           ) as tbl2  
+				                                                                       )  
+				                                                               else  
+				                                                                   0  
+				                                                           end  
+				                                                       else  
+				                                                           0  
+				                                                       end  
+				                                               end  
+				                                           else  
+				                                               0  
+				                                           end  
+				                                   )  
+				                               from \"Presensi\".tdatapresensi tdp1  
+				                           where tdp1.noind = tsp.noind  
+				                               and tdp1.tanggal = tsp.tanggal  
+				                               ) 
+				                       , 0 ) 
+				                   ) 
+				                   -  
+				                   sum(  
+				                       coalesce( 
+				                           (  
+				                               select  
+				                               sum(  
+				                                       case  
+				                                           when( tdp1.kd_ket in( 'PSK', 'PRM', 'PKK', 'PIP', 'PCZ' ) or( tdp1.kd_ket != 'CB' and tdp1.kd_ket like 'C%' ))  
+				                                           or( tdp1.kd_ket = 'PDL' and( tdp1.masuk = '0' or tdp1.masuk = '' ))  
+				                                           then  
+				                                               1  
+				                                           when tdp1.kd_ket = rtrim( 'PDL' )  
+				                                           and( tdp1.masuk != rtrim( '0' )  
+				                                           or tdp1.masuk != rtrim( '' ))  
+				                                           then  
+				                                           case  
+				                                                   when tdp1.keluar::time between tsp.jam_msk::time and '12:00:00'::time  
+				                                                   then  
+				                                                       case  
+				                                                           when tdp1.masuk::time between tsp.jam_msk::time and '12:00:00'::time  
+				                                                           then  
+				                                                               0  
+				                                                           else  
+				                                                               1  
+				                                                           end  
+				                                               else  
+				                                                   0  
+				                                                   end  
+				                                           when tdp1.kd_ket = rtrim( 'PSP' )  
+				                                           then  
+				                                               case  
+				                                                   when tdp1.keluar::time between tsp.jam_msk::time and( tsp.ist_selesai::time - interval '1 second' )  
+				                                                   then  
+				                                                       case  
+				                                                           when tdp1.masuk::time between tsp.jam_msk::time and( tsp.ist_selesai::time - interval '1 second' )  
+				                                                       then  
+				                                                               0  
+				                                                           else  
+				                                                               1  
+				                                                           end  
+				                                                   when tdp1.keluar::time between tsp.ist_selesai::time and( tsp.jam_plg::time - interval '1 second' )  
+				                                                   then  
+				                                                       case  
+				                                                           when tdp1.masuk::time >=( tsp.ist_selesai::time - interval '1 second' )  
+				                                                           then  
+				                                                           0  
+				                                                           else  
+				                                                               1  
+				                                                           end  
+				                                                   end  
+				                                           end  
+				                                   )  
+				                               from \"Presensi\".tdatapresensi tdp1  
+				                               where tdp1.noind = tsp.noind  
+				                               and tdp1.tanggal = tsp.tanggal  
+				                           ) 
+				                       , 0  
+				                       ) 
+				                       ) 
+				                   )::decimal 
+				                   , 2  
+				                   ) as um 
+		                 from 
+		                   \"Presensi\".tshiftpekerja tsp 
+		                 where 
+		                   tsp.noind = '$noind' 
+		                   and tsp.tanggal between '$awal' and '$akhir' ";
+                   $result1 = $this->personalia->query($sql)->row();
+                   if(!empty($result1)){
+                   		$nilai += $result1->um;
+                   }
+			}
+
+			return $nilai;
+		}else{
+			return 0;
+		}
+	}
+
+	public function ip_susulan($noind,$tanggal){
+		$sql = "select count(tdp.tanggal) as jml
+				FROM \"Presensi\".TDataPresensi tdp INNER JOIN
+				(SELECT DISTINCT * from \"Presensi\".TShiftPekerja) tsp ON tdp.tanggal = tsp.tanggal AND tdp.noind = tsp.noind
+				WHERE tdp.tanggal = '$tanggal'
+				AND (tdp.kd_ket = 'PKJ' or (tdp.kd_ket = 'PDL') or (tdp.kd_ket = 'PDB') or tdp.kd_ket = 'PLB' or tdp.kd_ket = 'PID')
+				AND tdp.noind = '$noind'";
+		$result1 = $this->personalia->query($sql)->result_array();
+
+		$sql = "select a.tanggal, a.noind,
+						concat(a.tanggal::date,' ',a.keluar)::timestamp as keluar,
+						case when a.masuk::time < a.keluar::time then
+							concat((a.tanggal + interval '1 day')::date,' ',a.masuk)::timestamp
+						else
+							concat(a.tanggal::date,' ',a.masuk)::timestamp
+						end as masuk,
+						a.kd_ket,
+						b.jam_kerja,
+						case when b.jam_msk::time > b.ist_mulai::time then
+							concat((a.tanggal + interval '1 day')::date,' ',b.ist_mulai)::timestamp
+						else
+							concat(a.tanggal::date,' ',b.ist_mulai)::timestamp
+						end as ist_mulai,
+						case when b.jam_msk::time > b.ist_selesai::time then
+							concat((a.tanggal + interval '1 day')::date,' ',b.ist_selesai)::timestamp
+						else
+							concat(a.tanggal::date,' ',b.ist_selesai)::timestamp
+						end as ist_selesai,
+						case when b.jam_msk::time > b.break_mulai::time then
+							concat((a.tanggal + interval '1 day')::date,' ',b.break_mulai)::timestamp
+						else
+							concat(a.tanggal::date,' ',b.break_mulai)::timestamp
+						end as break_mulai,
+						case when b.jam_msk::time > b.break_selesai::time then
+							concat((a.tanggal + interval '1 day')::date,' ',b.break_selesai)::timestamp
+						else
+							concat(a.tanggal::date,' ',b.break_selesai)::timestamp
+						end as break_selesai
+				FROM \"Presensi\".TDataPresensi a INNER JOIN
+				\"Presensi\".TShiftPekerja b ON a.tanggal = b.tanggal AND a.noind = b.noind
+				WHERE (a.tanggal = '$tanggal') AND (a.kd_ket = 'PSP') AND (a.noind = '$noind') 
+				Union
+				SELECT a.tanggal, a.noind,
+					concat(a.tanggal::date,' ',a.keluar)::timestamp as keluar,
+					case when a.masuk::time < a.keluar::time then
+						concat((a.tanggal + interval '1 day')::date,' ',a.masuk)::timestamp
+					else
+						concat(a.tanggal::date,' ',a.masuk)::timestamp
+					end as masuk,
+					a.kd_ket,
+					b.jam_kerja,
+					case when b.jam_msk::time > b.ist_mulai::time then
+						concat((a.tanggal + interval '1 day')::date,' ',b.ist_mulai)::timestamp
+					else
+						concat(a.tanggal::date,' ',b.ist_mulai)::timestamp
+					end as ist_mulai,
+					case when b.jam_msk::time > b.ist_selesai::time then
+						concat((a.tanggal + interval '1 day')::date,' ',b.ist_selesai)::timestamp
+					else
+						concat(a.tanggal::date,' ',b.ist_selesai)::timestamp
+					end as ist_selesai,
+					case when b.jam_msk::time > b.break_mulai::time then
+						concat((a.tanggal + interval '1 day')::date,' ',b.break_mulai)::timestamp
+					else
+						concat(a.tanggal::date,' ',b.break_mulai)::timestamp
+					end as break_mulai,
+					case when b.jam_msk::time > b.break_selesai::time then
+						concat((a.tanggal + interval '1 day')::date,' ',b.break_selesai)::timestamp
+					else
+						concat(a.tanggal::date,' ',b.break_selesai)::timestamp
+					end as break_selesai
+				FROM \"Presensi\".TDataTIM a INNER JOIN
+				\"Presensi\".TShiftPekerja b ON a.tanggal = b.tanggal AND a.noind = b.noind
+				WHERE (a.tanggal = '$tanggal') AND (a.kd_ket = 'TIK') AND (a.noind = '$noind')
+				ORDER BY tanggal";
+		$result2 = $this->personalia->query($sql)->result_array();
+		if(!empty($result1)){
+			$nilai = $result1['0']['jml'];
+		}else{
+			$nilai = 0;
+		}
+		$simpan_tgl = "";
+		$lanjut = false;
+
+		foreach ($result2 as $tik) {
+			if ($tik['tanggal'] !== $simpan_tgl) {
+				$lanjut = false;
+			}
+			$keluar = strtotime($tik['keluar']);
+			$masuk = strtotime($tik['masuk']);
+			$ist_mulai = strtotime($tik['ist_mulai']);
+			$ist_selesai = strtotime($tik['ist_selesai']);
+			$break_mulai = strtotime($tik['break_mulai']);
+			$break_selesai = strtotime($tik['break_selesai']);
+			if ($ist_mulai < $break_mulai) {
+				$simpan_ist_mulai = $ist_mulai;
+				$simpan_ist_selesai = $ist_selesai;
+				$ist_mulai = $break_mulai;
+				$ist_selesai = $break_selesai;
+				$break_mulai = $simpan_ist_mulai;
+				$break_selesai = $simpan_ist_selesai;
+			}
+
+			$ijin = $this->cek_ijin_keluar($keluar,$masuk,$break_mulai,$break_selesai,$ist_mulai,$ist_selesai);
+			if ($ijin <= 0) {
+				$nilai = $nilai;
+			}else if($ijin > 0 && $ijin <= 60){
+				$nilai = $nilai;
+			}else{
+				if($lanjut == false){
+					$nilai -= 1;
+				}
+			}
+
+			$simpan_tgl = $tik['tanggal'];
+		}
+
+		return $nilai;
+	}
+
+	public function upamk_susulan($noind,$tanggal){
+		$sql = "select count(a.tanggal) as jml
+				FROM \"Presensi\".TDataPresensi a INNER JOIN
+				\"Presensi\".TShiftPekerja b ON a.tanggal = b.tanggal
+				AND a.noind = b.noind
+				WHERE a.tanggal = '$tanggal'
+				AND (a.kd_ket = 'PKJ' or a.kd_ket = 'PLB' or a.kd_ket = 'PID' or a.kd_ket = 'PDL' or a.kd_ket = 'PDB')
+				AND a.noind = '$noind'";
+		$result1 = $this->personalia->query($sql)->result_array();
+		if(!empty($result1)){
+			$nilai = $result1['0']['jml'];
+		}else{
+			$nilai = 0;
+		}
+		// echo $result1['0']['jml']."<br>";
+		$sql = "select a.tanggal, a.noind,
+					concat(a.tanggal::date,' ',a.keluar)::timestamp as keluar,
+					case when a.masuk::time < a.keluar::time then
+						concat((a.tanggal + interval '1 day')::date,' ',a.masuk)::timestamp
+					else
+						concat(a.tanggal::date,' ',a.masuk)::timestamp
+					end as masuk,
+					a.kd_ket,
+					b.jam_kerja,
+					case when b.jam_msk::time > b.ist_mulai::time then
+						concat((a.tanggal + interval '1 day')::date,' ',b.ist_mulai)::timestamp
+					else
+						concat(a.tanggal::date,' ',b.ist_mulai)::timestamp
+					end as ist_mulai,
+					case when b.jam_msk::time > b.ist_selesai::time then
+						concat((a.tanggal + interval '1 day')::date,' ',b.ist_selesai)::timestamp
+					else
+						concat(a.tanggal::date,' ',b.ist_selesai)::timestamp
+					end as ist_selesai,
+					case when b.jam_msk::time > b.break_mulai::time then
+						concat((a.tanggal + interval '1 day')::date,' ',b.break_mulai)::timestamp
+					else
+						concat(a.tanggal::date,' ',b.break_mulai)::timestamp
+					end as break_mulai,
+					case when b.jam_msk::time > b.break_selesai::time then
+						concat((a.tanggal + interval '1 day')::date,' ',b.break_selesai)::timestamp
+					else
+						concat(a.tanggal::date,' ',b.break_selesai)::timestamp
+					end as break_selesai
+				FROM \"Presensi\".TDataPresensi a INNER JOIN
+				\"Presensi\".TShiftPekerja b ON a.tanggal = b.tanggal AND a.noind = b.noind
+				WHERE (a.tanggal = '$tanggal') AND (a.kd_ket = 'PSP') AND (a.noind = '$noind')
+				Union
+				SELECT a.tanggal, a.noind,
+					concat(a.tanggal::date,' ',a.keluar)::timestamp as keluar,
+					case when a.masuk::time < a.keluar::time then
+						concat((a.tanggal + interval '1 day')::date,' ',a.masuk)::timestamp
+					else
+						concat(a.tanggal::date,' ',a.masuk)::timestamp
+					end as masuk,
+					a.kd_ket,
+					b.jam_kerja,
+					case when b.jam_msk::time > b.ist_mulai::time then
+						concat((a.tanggal + interval '1 day')::date,' ',b.ist_mulai)::timestamp
+					else
+						concat(a.tanggal::date,' ',b.ist_mulai)::timestamp
+					end as ist_mulai,
+					case when b.jam_msk::time > b.ist_selesai::time then
+						concat((a.tanggal + interval '1 day')::date,' ',b.ist_selesai)::timestamp
+					else
+						concat(a.tanggal::date,' ',b.ist_selesai)::timestamp
+					end as ist_selesai,
+					case when b.jam_msk::time > b.break_mulai::time then
+						concat((a.tanggal + interval '1 day')::date,' ',b.break_mulai)::timestamp
+					else
+						concat(a.tanggal::date,' ',b.break_mulai)::timestamp
+					end as break_mulai,
+					case when b.jam_msk::time > b.break_selesai::time then
+						concat((a.tanggal + interval '1 day')::date,' ',b.break_selesai)::timestamp
+					else
+						concat(a.tanggal::date,' ',b.break_selesai)::timestamp
+					end as break_selesai
+				FROM \"Presensi\".TDataTIM a INNER JOIN
+				\"Presensi\".TShiftPekerja b ON a.tanggal = b.tanggal AND a.noind = b.noind
+				WHERE (a.tanggal = '$tanggal') AND (a.kd_ket = 'TIK') AND (a.noind = '$noind')
+				ORDER BY tanggal";
+		$result3 = $this->personalia->query($sql)->result_array();
+
+		$ijin = 0;
+		$simpan_tgl = "";
+		$sp = false ;
+		$a = 0;
+
+		foreach ($result3 as $tik) {
+			if ($tik['tanggal'] !== $simpan_tgl) {
+				$a = 0;
+			}
+
+			$sp = false;
+
+			$keluar = strtotime($tik['keluar']);
+			$masuk = strtotime($tik['masuk']);
+			$ist_mulai = strtotime($tik['ist_mulai']);
+			$ist_selesai = strtotime($tik['ist_selesai']);
+			$break_mulai = strtotime($tik['break_mulai']);
+			$break_selesai = strtotime($tik['break_selesai']);
+			if ($ist_mulai < $break_mulai) {
+				$simpan_ist_mulai = $ist_mulai;
+				$simpan_ist_selesai = $ist_selesai;
+				$ist_mulai = $break_mulai;
+				$ist_selesai = $break_selesai;
+				$break_mulai = $simpan_ist_mulai;
+				$break_selesai = $simpan_ist_selesai;
+			}
+
+			$ijin = $this->cek_ijin_keluar($keluar,$masuk,$break_mulai,$break_selesai,$ist_mulai,$ist_selesai);
+			if ($ijin <= 0) {
+				$nilai = $nilai;
+			}else if($tik['kd_ket'] == 'PSP'){
+				$nilai -= number_format(($ijin / ($tik['jam_kerja'] * 60 )), 2);
+				// echo "<br>".($ijin / ($tik['jam_kerja'] * 60 ));print_r($tik);echo "<br>".$nilai;
+				$sp = true;
+			}else{
+				$nilai -= number_format(($ijin / ($tik['jam_kerja'] * 60 )), 2);
+				// echo "<br>".($ijin / ($tik['jam_kerja'] * 60 ));print_r($tik);echo "<br>".$nilai;
+				$a += $ijin;
+			}
+
+			$simpan_tgl = $tik['tanggal'];
+		}
+		// echo $nilai."<br>";
+		$sql = "select *,extract(dow from tdp.tanggal) + 1 as hari from \"Presensi\".Tlembur as tl,\"Presensi\".Tdatapresensi as tdp
+				where tdp.kd_ket = 'HL'
+				 and tdp.tanggal ='$tanggal'
+				 and tl.tanggal  = tdp.tanggal
+				 and tdp.noind = '$noind'
+				 and tdp.noind = tl.noind
+				 order by tdp.tanggal";
+
+		$result4 = $this->personalia->query($sql)->result_array();
+		if (!empty($result4)) {
+			foreach ($result4 as $lmr) {
+				$masuk = strtotime($lmr['masuk']);
+				$keluar = strtotime($lmr['keluar']);
+				$jam_lembur = $lmr['jml_lembur'];
+
+				$sql = "select kd_shift from \"Presensi\".TShiftPekerja where
+						date_part('month',tanggal) = date_part('month','".$lmr['tanggal']."'::date)
+						and noind = '$noind' group by kd_shift ";
+				$resshift = $this->personalia->query($sql)->result_array();
+				if ($resshift['0']['kd_shift'] !== "3") {
+					if ($lmr['hari'] == "Jumat" || $lmr['hari'] == "Sabtu") {
+						if($jam_lembur < 360 ){
+							$nilai += ($jam_lembur / 360);
+						}else{
+							$nilai += 1;
+						}
+					}else{
+						if ($jam_lembur < 420) {
+							$nilai += $jam_lembur/420;
+						}else{
+							$nilai += 1;
+						}
+					}
+
+				}else{
+					if ($lmr['hari'] == "Minggu" || $lmr['hari'] == "Jumat") {
+						if($jam_lembur < 360 ){
+							$nilai += ($jam_lembur / 360);
+						}else{
+							$nilai += 1;
+						}
+					}else{
+						if ($jam_lembur < 420) {
+							$nilai += $jam_lembur/420;
+						}else{
+							$nilai += 1;
+						}
+					}
+				}
+			}
+		}
+			// echo $nilai;exit();
+
+		return $nilai;
+	}
+
+	public function ubt_susulan($noind,$tanggal){
+		$sql = "select count(a.tanggal) as jml
+				FROM \"Presensi\".TDataPresensi a INNER JOIN
+				\"Presensi\".TShiftPekerja b ON a.tanggal = b.tanggal
+				AND a.noind = b.noind
+				WHERE a.tanggal = '$tanggal'
+				AND (a.kd_ket = 'PKJ' or a.kd_ket = 'PLB' or a.kd_ket = 'PID' or a.kd_ket = 'PDL' or a.kd_ket = 'PDB')
+				AND a.noind = '$noind'";
+		$result1 = $this->personalia->query($sql)->result_array();
+		if(!empty($result1)){
+			$nilai = $result1['0']['jml'];
+		}else{
+			$nilai = 0;
+		}
+
+		$sql = "select count(a.tanggal) as jml
+				FROM \"Presensi\".TDataPresensi a INNER JOIN
+				\"Presensi\".TShiftPekerja b ON a.tanggal = b.tanggal
+				AND a.noind = b.noind
+				WHERE a.tanggal = '$tanggal'
+				AND (a.kd_ket = 'PDL' or a.kd_ket = 'PDB') AND a.masuk = '0' and a.keluar = '0'
+				AND a.noind = '$noind'";
+		$result2 = $this->personalia->query($sql)->result_array();
+		if(!empty($result2)){
+			$nilai -= $result2['0']['jml'];
+		}else{
+			$nilai = $nilai;
+		}
+			
+		$sql = "select a.tanggal, a.noind,
+					concat(a.tanggal::date,' ',a.keluar)::timestamp as keluar,
+					case when a.masuk::time < a.keluar::time then
+						concat((a.tanggal + interval '1 day')::date,' ',a.masuk)::timestamp
+					else
+						concat(a.tanggal::date,' ',a.masuk)::timestamp
+					end as masuk,
+					a.kd_ket,
+					b.jam_kerja,
+					case when b.jam_msk::time > b.ist_mulai::time then
+						concat((a.tanggal + interval '1 day')::date,' ',b.ist_mulai)::timestamp
+					else
+						concat(a.tanggal::date,' ',b.ist_mulai)::timestamp
+					end as ist_mulai,
+					case when b.jam_msk::time > b.ist_selesai::time then
+						concat((a.tanggal + interval '1 day')::date,' ',b.ist_selesai)::timestamp
+					else
+						concat(a.tanggal::date,' ',b.ist_selesai)::timestamp
+					end as ist_selesai,
+					case when b.jam_msk::time > b.break_mulai::time then
+						concat((a.tanggal + interval '1 day')::date,' ',b.break_mulai)::timestamp
+					else
+						concat(a.tanggal::date,' ',b.break_mulai)::timestamp
+					end as break_mulai,
+					case when b.jam_msk::time > b.break_selesai::time then
+						concat((a.tanggal + interval '1 day')::date,' ',b.break_selesai)::timestamp
+					else
+						concat(a.tanggal::date,' ',b.break_selesai)::timestamp
+					end as break_selesai
+				FROM \"Presensi\".TDataPresensi a INNER JOIN
+				\"Presensi\".TShiftPekerja b ON a.tanggal = b.tanggal AND a.noind = b.noind
+				WHERE (a.tanggal = '$tanggal') AND (a.kd_ket = 'PSP') AND (a.noind = '$noind')
+				Union
+				SELECT a.tanggal, a.noind,
+					concat(a.tanggal::date,' ',a.keluar)::timestamp as keluar,
+					case when a.masuk::time < a.keluar::time then
+						concat((a.tanggal + interval '1 day')::date,' ',a.masuk)::timestamp
+					else
+						concat(a.tanggal::date,' ',a.masuk)::timestamp
+					end as masuk,
+					a.kd_ket,
+					b.jam_kerja,
+					case when b.jam_msk::time > b.ist_mulai::time then
+						concat((a.tanggal + interval '1 day')::date,' ',b.ist_mulai)::timestamp
+					else
+						concat(a.tanggal::date,' ',b.ist_mulai)::timestamp
+					end as ist_mulai,
+					case when b.jam_msk::time > b.ist_selesai::time then
+						concat((a.tanggal + interval '1 day')::date,' ',b.ist_selesai)::timestamp
+					else
+						concat(a.tanggal::date,' ',b.ist_selesai)::timestamp
+					end as ist_selesai,
+					case when b.jam_msk::time > b.break_mulai::time then
+						concat((a.tanggal + interval '1 day')::date,' ',b.break_mulai)::timestamp
+					else
+						concat(a.tanggal::date,' ',b.break_mulai)::timestamp
+					end as break_mulai,
+					case when b.jam_msk::time > b.break_selesai::time then
+						concat((a.tanggal + interval '1 day')::date,' ',b.break_selesai)::timestamp
+					else
+						concat(a.tanggal::date,' ',b.break_selesai)::timestamp
+					end as break_selesai
+				FROM \"Presensi\".TDataTIM a INNER JOIN
+				\"Presensi\".TShiftPekerja b ON a.tanggal = b.tanggal AND a.noind = b.noind
+				WHERE (a.tanggal = '$tanggal') AND (a.kd_ket = 'TIK') AND (a.noind = '$noind')
+				ORDER BY tanggal";
+		$result3 = $this->personalia->query($sql)->result_array();
+
+		$ijin = 0;
+		$simpan_tgl = "";
+		$sp = false ;
+		$a = 0;
+		foreach ($result3 as $tik) {
+			if ($tik['tanggal'] !== $simpan_tgl) {
+				$a = 0;
+
+				if ($ijin > 60 && $ijin <= 180 && $sp == false) {
+					$nilai -= 0.5;
+				}else if($ijin > 180 && $sp == false){
+					$nilai -= 1;
+				}
+			}
+
+			$sp = false;
+
+			$keluar = strtotime($tik['keluar']);
+			$masuk = strtotime($tik['masuk']);
+			$ist_mulai = strtotime($tik['ist_mulai']);
+			$ist_selesai = strtotime($tik['ist_selesai']);
+			$break_mulai = strtotime($tik['break_mulai']);
+			$break_selesai = strtotime($tik['break_selesai']);
+			if ($ist_mulai < $break_mulai) {
+				$simpan_ist_mulai = $ist_mulai;
+				$simpan_ist_selesai = $ist_selesai;
+				$ist_mulai = $break_mulai;
+				$ist_selesai = $break_selesai;
+				$break_mulai = $simpan_ist_mulai;
+				$break_selesai = $simpan_ist_selesai;
+			}
+
+			$ijin = $this->cek_ijin_keluar($keluar,$masuk,$break_mulai,$break_selesai,$ist_mulai,$ist_selesai);
+			if ($ijin <= 0) {
+				$nilai = $nilai;
+			}else if($tik['kd_ket'] == 'PSP'){
+				$nilai = $nilai;
+				$sp = true;
+			}else{
+				$a += $ijin;
+			}
+
+			$simpan_tgl = $tik['tanggal'];
+		}
+
+		if ($ijin > 60 && $ijin <= 180 && $sp == false) {
+			$nilai -= 0.5;
+		}else if($ijin > 180 && $sp == false){
+			$nilai -= 1;
+		}
+
+		$sql = "select *,extract(dow from tdp.tanggal) + 1 as hari from \"Presensi\".Tlembur as tl,\"Presensi\".Tdatapresensi as tdp
+				where tdp.kd_ket = 'HL'
+				 and tdp.tanggal ='$tanggal'
+				 and tl.tanggal  = tdp.tanggal
+				 and tdp.noind = '$noind'
+				 and tdp.noind = tl.noind
+				 order by tdp.tanggal";
+
+		$result4 = $this->personalia->query($sql)->result_array();
+		if (!empty($result4)) {
+			foreach ($result4 as $lmr) {
+				$masuk = strtotime($lmr['masuk']);
+				$keluar = strtotime($lmr['keluar']);
+				$jam_lembur = $lmr['jml_lembur'];
+
+				$sql = "select kd_shift from \"Presensi\".TShiftPekerja where
+						date_part('month',tanggal) = date_part('month','".$lmr['tanggal']."'::date)
+						and noind = '$noind' group by kd_shift ";
+				$resshift = $this->personalia->query($sql)->result_array();
+				if ($resshift['0']['kd_shift'] !== "3") {
+					if ($lmr['hari'] == "Jumat" || $lmr['hari'] == "Sabtu") {
+						if($jam_lembur <= 180 ){
+							$nilai = $nilai;
+						}else if($jam_lembur <= 300 && $jam_lembur > 180){
+							$nilai += 0.5;
+						}else{
+							$nilai += 1;
+						}
+					}else{
+						if ($jam_lembur <= 240) {
+							$nilai = $nilai;
+						}else if($jam_lembur <= 360 && $jam_lembur > 240){
+							$nilai += 0.5;
+						}else{
+							$nilai += 1;
+						}
+					}
+
+				}else{
+					if ($lmr['hari'] == "Minggu" || $lmr['hari'] == "Jumat") {
+						if($jam_lembur <= 180 ){
+							$nilai = $nilai;
+						}else if($jam_lembur <= 300 && $jam_lembur > 180){
+							$nilai += 0.5;
+						}else{
+							$nilai += 1;
+						}
+					}else{
+						if ($jam_lembur <= 240) {
+							$nilai = $nilai;
+						}else if($jam_lembur <= 360 && $jam_lembur > 240){
+							$nilai += 0.5;
+						}else{
+							$nilai += 1;
+						}
+					}
+				}
+			}
+		}
+
+
+		return $nilai;
+	}
+
+	public function ik_susulan($noind,$tanggal){
+		$sql = "select count(tdp.tanggal) as jml
+				FROM \"Presensi\".TDataPresensi tdp INNER JOIN
+				(SELECT DISTINCT * from \"Presensi\".TShiftPekerja) tsp ON tdp.tanggal = tsp.tanggal AND tdp.noind = tsp.noind
+				WHERE tdp.tanggal = '$tanggal'
+				AND (tdp.kd_ket = 'PKJ' or (tdp.kd_ket = 'PDL') or (tdp.kd_ket = 'PDB') or tdp.kd_ket = 'PLB' or tdp.kd_ket = 'PID')
+				AND tdp.noind = '$noind'";
+		$result1 = $this->personalia->query($sql)->result_array();
+
+		$sql = "select a.tanggal, a.noind,
+						concat(a.tanggal::date,' ',a.keluar)::timestamp as keluar,
+						case when a.masuk::time < a.keluar::time then
+							concat((a.tanggal + interval '1 day')::date,' ',a.masuk)::timestamp
+						else
+							concat(a.tanggal::date,' ',a.masuk)::timestamp
+						end as masuk,
+						a.kd_ket,
+						b.jam_kerja,
+						case when b.jam_msk::time > b.ist_mulai::time then
+							concat((a.tanggal + interval '1 day')::date,' ',b.ist_mulai)::timestamp
+						else
+							concat(a.tanggal::date,' ',b.ist_mulai)::timestamp
+						end as ist_mulai,
+						case when b.jam_msk::time > b.ist_selesai::time then
+							concat((a.tanggal + interval '1 day')::date,' ',b.ist_selesai)::timestamp
+						else
+							concat(a.tanggal::date,' ',b.ist_selesai)::timestamp
+						end as ist_selesai,
+						case when b.jam_msk::time > b.break_mulai::time then
+							concat((a.tanggal + interval '1 day')::date,' ',b.break_mulai)::timestamp
+						else
+							concat(a.tanggal::date,' ',b.break_mulai)::timestamp
+						end as break_mulai,
+						case when b.jam_msk::time > b.break_selesai::time then
+							concat((a.tanggal + interval '1 day')::date,' ',b.break_selesai)::timestamp
+						else
+							concat(a.tanggal::date,' ',b.break_selesai)::timestamp
+						end as break_selesai
+				FROM \"Presensi\".TDataPresensi a INNER JOIN
+				\"Presensi\".TShiftPekerja b ON a.tanggal = b.tanggal AND a.noind = b.noind
+				WHERE (a.tanggal = '$tanggal') AND (a.kd_ket = 'PSP') AND (a.noind = '$noind')
+				Union
+				SELECT a.tanggal, a.noind,
+						concat(a.tanggal::date,' ',a.keluar)::timestamp as keluar,
+						case when a.masuk::time < a.keluar::time then
+							concat((a.tanggal + interval '1 day')::date,' ',a.masuk)::timestamp
+						else
+							concat(a.tanggal::date,' ',a.masuk)::timestamp
+						end as masuk,
+						a.kd_ket,
+						b.jam_kerja,
+						case when b.jam_msk::time > b.ist_mulai::time then
+							concat((a.tanggal + interval '1 day')::date,' ',b.ist_mulai)::timestamp
+						else
+							concat(a.tanggal::date,' ',b.ist_mulai)::timestamp
+						end as ist_mulai,
+						case when b.jam_msk::time > b.ist_selesai::time then
+							concat((a.tanggal + interval '1 day')::date,' ',b.ist_selesai)::timestamp
+						else
+							concat(a.tanggal::date,' ',b.ist_selesai)::timestamp
+						end as ist_selesai,
+						case when b.jam_msk::time > b.break_mulai::time then
+							concat((a.tanggal + interval '1 day')::date,' ',b.break_mulai)::timestamp
+						else
+							concat(a.tanggal::date,' ',b.break_mulai)::timestamp
+						end as break_mulai,
+						case when b.jam_msk::time > b.break_selesai::time then
+							concat((a.tanggal + interval '1 day')::date,' ',b.break_selesai)::timestamp
+						else
+							concat(a.tanggal::date,' ',b.break_selesai)::timestamp
+						end as break_selesai
+				FROM \"Presensi\".TDataTIM a INNER JOIN
+				\"Presensi\".TShiftPekerja b ON a.tanggal = b.tanggal AND a.noind = b.noind
+				WHERE (a.tanggal = '$tanggal') AND (a.kd_ket = 'TIK') AND (a.noind = '$noind')
+				ORDER BY tanggal";
+		$result2 = $this->personalia->query($sql)->result_array();
+		if(!empty($result1)){
+			$nilai = $result1['0']['jml'];
+		}else{
+			$nilai = 0;
+		}
+		$simpan_tgl = "";
+		$lanjut = false;
+		foreach ($result2 as $tik) {
+			if ($tik['tanggal'] !== $simpan_tgl) {
+				$lanjut = false;
+			}
+			$keluar = strtotime($tik['keluar']);
+			$masuk = strtotime($tik['masuk']);
+			$ist_mulai = strtotime($tik['ist_mulai']);
+			$ist_selesai = strtotime($tik['ist_selesai']);
+			$break_mulai = strtotime($tik['break_mulai']);
+			$break_selesai = strtotime($tik['break_selesai']);
+			if ($ist_mulai < $break_mulai) {
+				$simpan_ist_mulai = $ist_mulai;
+				$simpan_ist_selesai = $ist_selesai;
+				$ist_mulai = $break_mulai;
+				$ist_selesai = $break_selesai;
+				$break_mulai = $simpan_ist_mulai;
+				$break_selesai = $simpan_ist_selesai;
+			}
+
+			$ijin = $this->cek_ijin_keluar($keluar,$masuk,$break_mulai,$break_selesai,$ist_mulai,$ist_selesai);
+			if ($ijin <= 0) {
+				$nilai = $nilai;
+			}else if($ijin > 0 && $ijin <= 30){
+				$cek_denda = $this->cek_bebas_denda_if($keluar,$masuk,$ist_mulai,$ist_selesai);
+				if ($cek_denda == false) {
+					if($lanjut == false) {
+						$nilai -= 1;
+					}
+				}
+			}else{
+				if($lanjut == false){
+					$nilai -= 1;
+				}
+			}
+
+			$simpan_tgl = $tik['tanggal'];
+		}
+		// echo $result1['0']['jml']."<br>".$nilai;exit();
+		return $nilai;
+	}
+
+	public function iph_susulan($noind,$tanggal){
+		$sql = "select count(tdp.tanggal) as jml
+				FROM \"Presensi\".TDataPresensi tdp INNER JOIN
+				(SELECT DISTINCT * from \"Presensi\".TShiftPekerja) tsp ON tdp.tanggal = tsp.tanggal AND tdp.noind = tsp.noind
+				WHERE tdp.tanggal = '$tanggal'
+				AND (tdp.kd_ket = 'PKJ' or (tdp.kd_ket = 'PDL') or (tdp.kd_ket = 'PDB') or tdp.kd_ket = 'PLB' or tdp.kd_ket = 'PID')
+				AND tdp.noind = '$noind'";
+		$result1 = $this->personalia->query($sql)->result_array();
+
+		$sql = "select a.tanggal, a.noind,
+						concat(a.tanggal::date,' ',a.keluar)::timestamp as keluar,
+						case when a.masuk::time < a.keluar::time then
+							concat((a.tanggal + interval '1 day')::date,' ',a.masuk)::timestamp
+						else
+							concat(a.tanggal::date,' ',a.masuk)::timestamp
+						end as masuk,
+						a.kd_ket,
+						b.jam_kerja,
+						case when b.jam_msk::time > b.ist_mulai::time then
+							concat((a.tanggal + interval '1 day')::date,' ',b.ist_mulai)::timestamp
+						else
+							concat(a.tanggal::date,' ',b.ist_mulai)::timestamp
+						end as ist_mulai,
+						case when b.jam_msk::time > b.ist_selesai::time then
+							concat((a.tanggal + interval '1 day')::date,' ',b.ist_selesai)::timestamp
+						else
+							concat(a.tanggal::date,' ',b.ist_selesai)::timestamp
+						end as ist_selesai,
+						case when b.jam_msk::time > b.break_mulai::time then
+							concat((a.tanggal + interval '1 day')::date,' ',b.break_mulai)::timestamp
+						else
+							concat(a.tanggal::date,' ',b.break_mulai)::timestamp
+						end as break_mulai,
+						case when b.jam_msk::time > b.break_selesai::time then
+							concat((a.tanggal + interval '1 day')::date,' ',b.break_selesai)::timestamp
+						else
+							concat(a.tanggal::date,' ',b.break_selesai)::timestamp
+						end as break_selesai
+				FROM \"Presensi\".TDataPresensi a INNER JOIN
+				\"Presensi\".TShiftPekerja b ON a.tanggal = b.tanggal AND a.noind = b.noind
+				WHERE (a.tanggal = '$tanggal') AND (a.kd_ket = 'PSP') AND (a.noind = '$noind')
+				Union
+				SELECT a.tanggal, a.noind,
+						concat(a.tanggal::date,' ',a.keluar)::timestamp as keluar,
+						case when a.masuk::time < a.keluar::time then
+							concat((a.tanggal + interval '1 day')::date,' ',a.masuk)::timestamp
+						else
+							concat(a.tanggal::date,' ',a.masuk)::timestamp
+						end as masuk,
+						a.kd_ket,
+						b.jam_kerja,
+						case when b.jam_msk::time > b.ist_mulai::time then
+							concat((a.tanggal + interval '1 day')::date,' ',b.ist_mulai)::timestamp
+						else
+							concat(a.tanggal::date,' ',b.ist_mulai)::timestamp
+						end as ist_mulai,
+						case when b.jam_msk::time > b.ist_selesai::time then
+							concat((a.tanggal + interval '1 day')::date,' ',b.ist_selesai)::timestamp
+						else
+							concat(a.tanggal::date,' ',b.ist_selesai)::timestamp
+						end as ist_selesai,
+						case when b.jam_msk::time > b.break_mulai::time then
+							concat((a.tanggal + interval '1 day')::date,' ',b.break_mulai)::timestamp
+						else
+							concat(a.tanggal::date,' ',b.break_mulai)::timestamp
+						end as break_mulai,
+						case when b.jam_msk::time > b.break_selesai::time then
+							concat((a.tanggal + interval '1 day')::date,' ',b.break_selesai)::timestamp
+						else
+							concat(a.tanggal::date,' ',b.break_selesai)::timestamp
+						end as break_selesai
+				FROM \"Presensi\".TDataTIM a INNER JOIN
+				\"Presensi\".TShiftPekerja b ON a.tanggal = b.tanggal AND a.noind = b.noind
+				WHERE (a.tanggal = '$tanggal') AND (a.kd_ket = 'TIK') AND (a.noind = '$noind')
+				ORDER BY tanggal";
+		$result2 = $this->personalia->query($sql)->result_array();
+		if(!empty($result1)){
+			$nilai = $result1['0']['jml'];
+		}else{
+			$nilai = 0;
+		}
+		$simpan_tgl = "";
+		$lanjut = false;
+		foreach ($result2 as $tik) {
+			if ($tik['tanggal'] !== $simpan_tgl) {
+				$lanjut = false;
+			}
+			$keluar = strtotime($tik['keluar']);
+			$masuk = strtotime($tik['masuk']);
+			$ist_mulai = strtotime($tik['ist_mulai']);
+			$ist_selesai = strtotime($tik['ist_selesai']);
+			$break_mulai = strtotime($tik['break_mulai']);
+			$break_selesai = strtotime($tik['break_selesai']);
+			if ($ist_mulai < $break_mulai) {
+				$simpan_ist_mulai = $ist_mulai;
+				$simpan_ist_selesai = $ist_selesai;
+				$ist_mulai = $break_mulai;
+				$ist_selesai = $break_selesai;
+				$break_mulai = $simpan_ist_mulai;
+				$break_selesai = $simpan_ist_selesai;
+			}
+
+			$ijin = $this->cek_ijin_keluar($keluar,$masuk,$break_mulai,$break_selesai,$ist_mulai,$ist_selesai);
+			$ijin = round($ijin,2);
+			$nilai -= $ijin;
+
+			$simpan_tgl = $tik['tanggal'];
+		}
+		// echo $result1['0']['jml']."<br>".$nilai;exit();
+		return $nilai;
+	}
+	
+	public function imm_susulan($noind,$tanggal){
+		$sql = "select count(a.tanggal) as jml
+				FROM \"Presensi\".TDataPresensi a
+				  INNER JOIN \"Presensi\".TShiftPekerja b ON a.tanggal = b.tanggal
+				    AND a.noind = b.noind
+				WHERE a.tanggal = '$tanggal'
+				  AND (a.kd_ket = 'PKJ' or a.kd_ket = 'PLB' or a.kd_ket = 'PID')
+				  AND (a.noind = '$noind')
+				  AND (b.kd_shift = '3' OR b.kd_shift = '12') ";
+		$result1 = $this->personalia->query($sql)->result_array();
+		$hasil = 0;
+
+		$sql = "select a.tanggal, a.noind,
+						concat(a.tanggal::date,' ',a.keluar)::timestamp as keluar,
+						case when a.masuk::time < a.keluar::time then
+							concat((a.tanggal + interval '1 day')::date,' ',a.masuk)::timestamp
+						else
+							concat(a.tanggal::date,' ',a.masuk)::timestamp
+						end as masuk,
+						a.kd_ket,
+						b.jam_kerja,
+						case when b.jam_msk::time > b.ist_mulai::time then
+							concat((a.tanggal + interval '1 day')::date,' ',b.ist_mulai)::timestamp
+						else
+							concat(a.tanggal::date,' ',b.ist_mulai)::timestamp
+						end as ist_mulai,
+						case when b.jam_msk::time > b.ist_selesai::time then
+							concat((a.tanggal + interval '1 day')::date,' ',b.ist_selesai)::timestamp
+						else
+							concat(a.tanggal::date,' ',b.ist_selesai)::timestamp
+						end as ist_selesai,
+						case when b.jam_msk::time > b.break_mulai::time then
+							concat((a.tanggal + interval '1 day')::date,' ',b.break_mulai)::timestamp
+						else
+							concat(a.tanggal::date,' ',b.break_mulai)::timestamp
+						end as break_mulai,
+						case when b.jam_msk::time > b.break_selesai::time then
+							concat((a.tanggal + interval '1 day')::date,' ',b.break_selesai)::timestamp
+						else
+							concat(a.tanggal::date,' ',b.break_selesai)::timestamp
+						end as break_selesai
+				FROM \"Presensi\".TDataTIM a INNER JOIN
+				\"Presensi\".TShiftPekerja b ON a.tanggal = b.tanggal AND a.noind = b.noind
+				WHERE (a.tanggal = '$tanggal') AND (a.kd_ket = 'TIK') AND (b.kd_shift = '3' OR b.kd_shift = '12') AND (a.noind = '$noind') 
+				UNION
+				SELECT a.tanggal, a.noind,
+						concat(a.tanggal::date,' ',a.keluar)::timestamp as keluar,
+						case when a.masuk::time < a.keluar::time then
+							concat((a.tanggal + interval '1 day')::date,' ',a.masuk)::timestamp
+						else
+							concat(a.tanggal::date,' ',a.masuk)::timestamp
+						end as masuk,
+						a.kd_ket,
+						b.jam_kerja,
+						case when b.jam_msk::time > b.ist_mulai::time then
+							concat((a.tanggal + interval '1 day')::date,' ',b.ist_mulai)::timestamp
+						else
+							concat(a.tanggal::date,' ',b.ist_mulai)::timestamp
+						end as ist_mulai,
+						case when b.jam_msk::time > b.ist_selesai::time then
+							concat((a.tanggal + interval '1 day')::date,' ',b.ist_selesai)::timestamp
+						else
+							concat(a.tanggal::date,' ',b.ist_selesai)::timestamp
+						end as ist_selesai,
+						case when b.jam_msk::time > b.break_mulai::time then
+							concat((a.tanggal + interval '1 day')::date,' ',b.break_mulai)::timestamp
+						else
+							concat(a.tanggal::date,' ',b.break_mulai)::timestamp
+						end as break_mulai,
+						case when b.jam_msk::time > b.break_selesai::time then
+							concat((a.tanggal + interval '1 day')::date,' ',b.break_selesai)::timestamp
+						else
+							concat(a.tanggal::date,' ',b.break_selesai)::timestamp
+						end as break_selesai
+				FROM \"Presensi\".TDataPresensi a INNER JOIN
+				\"Presensi\".TShiftPekerja b ON a.tanggal = b.tanggal AND a.noind = b.noind
+				WHERE (a.tanggal = '$tanggal') AND (a.kd_ket = 'PSP') AND (b.kd_shift = '3' OR b.kd_shift = '12') AND (a.noind = '$noind') 
+				ORDER BY tanggal";
+		$result2 = $this->personalia->query($sql)->result_array();
+
+		if(!empty($result1)){
+			$nilai = $result1['0']['jml'];
+		}else{
+			$nilai = 0;
+		}
+		$simpan_tgl = "";
+		$lanjut = false;
+		foreach ($result2 as $tik) {
+			if ($tik['tanggal'] !== $simpan_tgl) {
+				$lanjut = false;
+			}
+			$keluar = strtotime($tik['keluar']);
+			$masuk = strtotime($tik['masuk']);
+			$ist_mulai = strtotime($tik['ist_mulai']);
+			$ist_selesai = strtotime($tik['ist_selesai']);
+			$break_mulai = strtotime($tik['break_mulai']);
+			$break_selesai = strtotime($tik['break_selesai']);
+			if ($ist_mulai < $break_mulai) {
+				$simpan_ist_mulai = $ist_mulai;
+				$simpan_ist_selesai = $ist_selesai;
+				$ist_mulai = $break_mulai;
+				$ist_selesai = $break_selesai;
+				$break_mulai = $simpan_ist_mulai;
+				$break_selesai = $simpan_ist_selesai;
+			}
+
+			$ijin = $this->cek_ijin_keluar($keluar,$masuk,$break_mulai,$break_selesai,$ist_mulai,$ist_selesai) / ($tik['jam_kerja'] * 60);
+			if ($ijin <= 0) {
+				$nilai = $nilai;
+			}else if($ijin > 0 && $ijin <= 30){
+				$cek_denda = $this->cek_bebas_denda_if($keluar,$masuk,$ist_mulai,$ist_selesai);
+				if ($cek_denda == false) {
+					if($lanjut == false) {
+						$nilai -= 1;
+					}
+				}
+			}else{
+				if($lanjut == false){
+					$nilai -= 1;
+				}
+			}
+
+			$simpan_tgl = $tik['tanggal'];
+		}
+
+		return $nilai;
+	}
+	
+	public function ims_susulan($noind,$tanggal){
+		$sql = "select count(a.tanggal) as jml
+				FROM \"Presensi\".TDataPresensi a
+				  INNER JOIN \"Presensi\".TShiftPekerja b ON a.tanggal = b.tanggal
+				    AND a.noind = b.noind
+				WHERE a.tanggal = '$tanggal'
+				  AND (a.kd_ket = 'PKJ' or a.kd_ket = 'PLB' or a.kd_ket = 'PID')
+				  AND (a.noind = '$noind')
+				  AND (b.kd_shift = '2' OR b.kd_shift = '11')";
+		$result1 = $this->personalia->query($sql)->result_array();
+		$hasil = 0;
+
+		$sql = "select a.tanggal, a.noind,
+						concat(a.tanggal::date,' ',a.keluar)::timestamp as keluar,
+						case when a.masuk::time < a.keluar::time then
+							concat((a.tanggal + interval '1 day')::date,' ',a.masuk)::timestamp
+						else
+							concat(a.tanggal::date,' ',a.masuk)::timestamp
+						end as masuk,
+						a.kd_ket,
+						b.jam_kerja,
+						case when b.jam_msk::time > b.ist_mulai::time then
+							concat((a.tanggal + interval '1 day')::date,' ',b.ist_mulai)::timestamp
+						else
+							concat(a.tanggal::date,' ',b.ist_mulai)::timestamp
+						end as ist_mulai,
+						case when b.jam_msk::time > b.ist_selesai::time then
+							concat((a.tanggal + interval '1 day')::date,' ',b.ist_selesai)::timestamp
+						else
+							concat(a.tanggal::date,' ',b.ist_selesai)::timestamp
+						end as ist_selesai,
+						case when b.jam_msk::time > b.break_mulai::time then
+							concat((a.tanggal + interval '1 day')::date,' ',b.break_mulai)::timestamp
+						else
+							concat(a.tanggal::date,' ',b.break_mulai)::timestamp
+						end as break_mulai,
+						case when b.jam_msk::time > b.break_selesai::time then
+							concat((a.tanggal + interval '1 day')::date,' ',b.break_selesai)::timestamp
+						else
+							concat(a.tanggal::date,' ',b.break_selesai)::timestamp
+						end as break_selesai
+				FROM \"Presensi\".TDataTIM a INNER JOIN
+				\"Presensi\".TShiftPekerja b ON a.tanggal = b.tanggal AND a.noind = b.noind
+				WHERE (a.tanggal = '$tanggal') AND (a.kd_ket = 'TIK') AND (b.kd_shift = '2' OR b.kd_shift = '11') AND (a.noind = '$noind') 
+				UNION
+				SELECT a.tanggal, a.noind,
+						concat(a.tanggal::date,' ',a.keluar)::timestamp as keluar,
+						case when a.masuk::time < a.keluar::time then
+							concat((a.tanggal + interval '1 day')::date,' ',a.masuk)::timestamp
+						else
+							concat(a.tanggal::date,' ',a.masuk)::timestamp
+						end as masuk,
+						a.kd_ket,
+						b.jam_kerja,
+						case when b.jam_msk::time > b.ist_mulai::time then
+							concat((a.tanggal + interval '1 day')::date,' ',b.ist_mulai)::timestamp
+						else
+							concat(a.tanggal::date,' ',b.ist_mulai)::timestamp
+						end as ist_mulai,
+						case when b.jam_msk::time > b.ist_selesai::time then
+							concat((a.tanggal + interval '1 day')::date,' ',b.ist_selesai)::timestamp
+						else
+							concat(a.tanggal::date,' ',b.ist_selesai)::timestamp
+						end as ist_selesai,
+						case when b.jam_msk::time > b.break_mulai::time then
+							concat((a.tanggal + interval '1 day')::date,' ',b.break_mulai)::timestamp
+						else
+							concat(a.tanggal::date,' ',b.break_mulai)::timestamp
+						end as break_mulai,
+						case when b.jam_msk::time > b.break_selesai::time then
+							concat((a.tanggal + interval '1 day')::date,' ',b.break_selesai)::timestamp
+						else
+							concat(a.tanggal::date,' ',b.break_selesai)::timestamp
+						end as break_selesai
+				FROM \"Presensi\".TDataPresensi a INNER JOIN
+				\"Presensi\".TShiftPekerja b ON a.tanggal = b.tanggal AND a.noind = b.noind
+				WHERE (a.tanggal = '$tanggal') AND (a.kd_ket = 'PSP') AND (b.kd_shift = '2' OR b.kd_shift = '11') AND (a.noind = '$noind') 
+				ORDER BY tanggal";
+		$result2 = $this->personalia->query($sql)->result_array();
+
+		if(!empty($result1)){
+			$nilai = $result1['0']['jml'];
+		}else{
+			$nilai = 0;
+		}
+		$simpan_tgl = "";
+		$lanjut = false;
+		foreach ($result2 as $tik) {
+			if ($tik['tanggal'] !== $simpan_tgl) {
+				$lanjut = false;
+			}
+			$keluar = strtotime($tik['keluar']);
+			$masuk = strtotime($tik['masuk']);
+			$ist_mulai = strtotime($tik['ist_mulai']);
+			$ist_selesai = strtotime($tik['ist_selesai']);
+			$break_mulai = strtotime($tik['break_mulai']);
+			$break_selesai = strtotime($tik['break_selesai']);
+			if ($ist_mulai < $break_mulai) {
+				$simpan_ist_mulai = $ist_mulai;
+				$simpan_ist_selesai = $ist_selesai;
+				$ist_mulai = $break_mulai;
+				$ist_selesai = $break_selesai;
+				$break_mulai = $simpan_ist_mulai;
+				$break_selesai = $simpan_ist_selesai;
+			}
+
+			$ijin = $this->cek_ijin_keluar($keluar,$masuk,$break_mulai,$break_selesai,$ist_mulai,$ist_selesai) / ($tik['jam_kerja'] * 60);
+			if ($ijin <= 0) {
+				$nilai = $nilai;
+			}else if($ijin > 0 && $ijin <= 30){
+				$cek_denda = $this->cek_bebas_denda_if($keluar,$masuk,$ist_mulai,$ist_selesai);
+				if ($cek_denda == false) {
+					if($lanjut == false) {
+						$nilai -= 1;
+					}
+				}
+			}else{
+				if($lanjut == false){
+					$nilai -= 1;
+				}
+			}
+
+			$simpan_tgl = $tik['tanggal'];
+		}
+
+		return $nilai;
+	}
+
+	public function get_uang_dl($noind,$tanggal_awal,$tanggal_akhir){ 
+		$tgl_awal = strtoupper(date('d-M-Y', strtotime($tanggal_awal))); 
+		$tgl_akhir = strtoupper(date('d-M-Y', strtotime($tanggal_akhir))); 
+ 
+		$sql = "select no_induk, num, nama, sum(total_um_mggu) UM_MGGU, sum(total_umdl) UMDL, status, org_id 
+				FROM (SELECT 
+				                 case 
+				                    when aps.vendor_name <> 'KHS Employee' then assa.vendor_site_code || ' ' || substr(aps.vendor_name, 5)  
+				                    else assa.vendor_site_code || ' ' || assa.address_line1 
+				                 END no_induk, 
+				                 case 
+				                    when aps.vendor_name <> 'KHS Employee' then substr(aps.vendor_name, 5)  
+				                    else assa.address_line1 
+				                 END num, 
+				                 assa.vendor_site_code nama, 
+				                 0 total_um_mggu, round(SUM (aila.amount * nvl(aia.exchange_rate,1))) total_umdl, 
+				                 DECODE (SUBSTR (UPPER(assa.vendor_site_code), 0, 1), 
+				                         'B', 'STAFF', 
+				                         'D', 'STAFF', 
+				                         'G', 'STAFF', 
+				                         'J', 'STAFF', 
+				                         'L', 'STAFF', 
+				                         'Z', 'STAFF', 
+				                         'Q', 'STAFF', 
+				                         'C','CABANG', 
+				                         'P','OS', 
+				                         'K','OS', 
+				                         'F','PKL', 
+				                         'NON STAFF' 
+				                        ) status, 
+				                 aila.org_id 
+				            FROM ap_invoice_lines_all aila, 
+				                 ap_invoices_all aia, 
+				                 ap_supplier_sites_all assa, 
+				                 gl_code_combinations gcc, 
+				                 ap_suppliers aps 
+				           WHERE aila.invoice_id = aia.invoice_id(+) 
+				             AND assa.vendor_id = aps.vendor_id 
+				             AND assa.vendor_site_id = aia.vendor_site_id 
+				             AND aila.default_dist_ccid = gcc.code_combination_id 
+				             AND gcc.segment3 IN (521107, 512107, 514107) 
+				             AND SUBSTR (assa.vendor_site_code, 0, 1) NOT IN ('N', 'K') 
+				             AND aila.amount != 0 
+				             AND (assa.vendor_id = 2 or aps.vendor_name like 'KHS_%') 
+				             AND DECODE (SUBSTR (UPPER(assa.vendor_site_code), 0, 1), 
+				                         'B', 'STAFF', 
+				                         'D', 'STAFF', 
+				                         'G', 'STAFF', 
+				                         'J', 'STAFF', 
+				                         'L', 'STAFF', 
+				                         'Z', 'STAFF', 
+				                         'Q', 'STAFF', 
+				                         'C','CABANG', 
+				                         'P','OS', 
+				                         'K','OS', 
+				                         'F','PKL', 
+				                         'NON STAFF' 
+				                        ) in ('STAFF','NON STAFF','OS','CABANG') 
+				             AND aia.gl_date >= '$tgl_awal' 
+				             AND aia.gl_date <= '$tgl_akhir' 
+				             AND aila.org_id = 82 
+				             AND assa.vendor_site_code = '$noind' 
+				        GROUP BY assa.vendor_site_code, assa.address_line1, aila.org_id,assa.address_line1, 
+				                 assa.vendor_site_code, aps.vendor_name 
+				        UNION ALL 
+				        SELECT 
+				                 case 
+				                    when aps.vendor_name <> 'KHS Employee' then assa.vendor_site_code || ' ' || substr(aps.vendor_name, 5)  
+				                    else assa.vendor_site_code || ' ' || assa.address_line1 
+				                 END no_induk, 
+				                 case 
+				                    when aps.vendor_name <> 'KHS Employee' then substr(aps.vendor_name, 5)  
+				                    else assa.address_line1 
+				                 END num,                 
+				                 assa.vendor_site_code nama, 
+				                 ROUND(SUM (aila.amount)) total_um_mggu, 0 total_umdl, 
+				                 DECODE (SUBSTR (UPPER(assa.vendor_site_code), 0, 1), 
+				                          'B', 'STAFF', 
+				                         'D', 'STAFF', 
+				                         'G', 'STAFF', 
+				                         'J', 'STAFF', 
+				                         'L', 'STAFF', 
+				                         'Z', 'STAFF', 
+				                         'C','CABANG', 
+				                         'Q','STAFF', 
+				                         'P','OS', 
+				                         'K','OS', 
+				                         'F','PKL', 
+				                         'NON STAFF' 
+				                        ) status, 
+				                 aila.org_id 
+				            FROM ap_invoice_lines_all aila, 
+				                 ap_invoices_all aia, 
+				                 ap_supplier_sites_all assa, 
+				                 gl_code_combinations gcc, 
+				                 ap_suppliers aps 
+				           WHERE aila.invoice_id = aia.invoice_id(+) 
+				             AND assa.vendor_id = aps.vendor_id 
+				             AND assa.vendor_site_id = aia.vendor_site_id 
+				             AND aila.default_dist_ccid = gcc.code_combination_id 
+				             AND gcc.segment3 IN (521103) 
+				             AND SUBSTR (assa.vendor_site_code, 0, 1) NOT IN ('N', 'K') 
+				             AND aila.amount != 0 
+				             AND (assa.vendor_id = 2 or aps.vendor_name like 'KHS_%') 
+				             AND DECODE (SUBSTR (UPPER(assa.vendor_site_code), 0, 1), 
+				                          'B', 'STAFF', 
+				                         'D', 'STAFF', 
+				                         'G', 'STAFF', 
+				                         'J', 'STAFF', 
+				                         'L', 'STAFF', 
+				                         'Z', 'STAFF', 
+				                         'Q', 'STAFF', 
+				                         'C','CABANG', 
+				                         'P','OS', 
+				                         'K','OS', 
+				                         'F','PKL', 
+				                         'NON STAFF' 
+				                        ) in ('STAFF','NON STAFF','OS','CABANG') 
+				             AND aia.gl_date >= '$tgl_awal' 
+				             AND aia.gl_date <= '$tgl_akhir' 
+				             AND aila.org_id = 82 
+				             AND assa.vendor_site_code = '$noind'        
+				             AND aps.vendor_name not like '%GAJI%' 
+				        GROUP BY assa.vendor_site_code, assa.address_line1, aila.org_id,assa.address_line1, 
+				                 assa.vendor_site_code, aps.vendor_name) 
+				GROUP BY no_induk, status, org_id,num,nama 
+				ORDER BY no_induk "; 
+		$result = $this->oracle->query($sql)->row(); 
+ 
+		if (!empty($result) and !empty($result->UMDL)) { 
+			return $result->UMDL; 
+		}else{ 
+			return 0; 
+		} 
+ 
+	} 
 }
 ?>
