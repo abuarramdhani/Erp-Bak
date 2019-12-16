@@ -293,60 +293,60 @@ class C_PekerjaKeluar extends CI_Controller
                 	$totalselisih = 12 * $dateInterval->y + $dateInterval->m;
 
                 	If ($status_pekerja == "B" Or $status_pekerja == "D" Or $status_pekerja == "J") {
-                        $ifsusulan = if_susulan($pkj['noind'], $ssl['tanggal']);
+                        $ifsusulan = $this->M_pekerjakeluar->if_susulan($pkj['noind'], $ssl['tanggal']);
                         $ifsusulan = round($ifsusulan, 2);
                         $ifsusulantotal = $ifsusulantotal + ($ifsusulan - $ssl['if_']);
                 	}                		                  
                     
-                    $gpsusulan = 1 - htm_susulan($pkj['noind'], $ssl['tanggal'], $ssl['tanggal']);
+                    $gpsusulan = 1 - $this->M_pekerjakeluar->htm_susulan($pkj['noind'], $ssl['tanggal'], $ssl['tanggal']);
                     $gpsusulan = round($gpsusulan, 2);
                     $gpsusulantotal = $gpsusulantotal + ($gpsusulan - $ssl['gp']);
                     
                     If (($status_pekerja == "B" Or $status_pekerja == "D" Or $status_pekerja == "J") And $totalselisih > 1) {
-                        $iptsusulan = ipt_susulan($pkj['noind'], $ssl['tanggal']);
+                        $iptsusulan = $this->M_pekerjakeluar->ipt_susulan($pkj['noind'], $ssl['tanggal']);
                         $iptsusulan = round($iptsusulan, 2);
                         $iptsusulantotal = $iptsusulantotal + ($iptsusulan - $ssl['ipt']);
                     }
                     
                     If ($status_pekerja == "B" Or $status_pekerja == "D" ){
-                        $umcsusulan = um_cabang_susulan($pkj['noind'], $ssl['tanggal']);
+                        $umcsusulan = $this->M_pekerjakeluar->um_cabang_susulan($pkj['noind'], $ssl['tanggal']);
                         $umcsusulan = round($umcsusulan, 2);
                         $umcsusulantotal = $umcsusulantotal + ($umcsusulan - $ssl['umc']);
                     }
                     
                     If (($status_pekerja == "B" Or $status_pekerja == "D") And $totalselisih > 1) {
-                        $ipsusulan = ip_susulan($pkj['noind'], $ssl['tanggal']);
+                        $ipsusulan = $this->M_pekerjakeluar->ip_susulan($pkj['noind'], $ssl['tanggal']);
                         $ipsusulan = round($ipsusulan, 2);
                         $ipsusulantotal = $ipsusulantotal + ($ipsusulan - $ssl['ip_']);
                     }
                     
                     If (($status_pekerja == "B" Or $status_pekerja == "A") And $totalselisih > 1) {
-                        $upamksusulan = upamk_susulan($pkj['noind'], $ssl['tanggal']);
+                        $upamksusulan = $this->M_pekerjakeluar->upamk_susulan($pkj['noind'], $ssl['tanggal']);
                         $upamksusulan = round($upamksusulan, 2);
                         $upamksusulantotal = $upamksusulantotal + ($upamksusulan - $ssl['upamk']);
                         
-                        $ubtsusulan = ubt_susulan($pkj['noind'], $ssl['tanggal']);
+                        $ubtsusulan = $this->M_pekerjakeluar->ubt_susulan($pkj['noind'], $ssl['tanggal']);
                         $ubtsusulan = round($ubtsusulan, 2);
                         $ubtsusulantotal = $ubtsusulantotal + ($ubtsusulan - $ssl['ubt']);
                     }
                     
                     If (($status_pekerja == "B" Or $status_pekerja == "D") And $totalselisih > 1) {
-                        $iksusulan = ik_susulan($pkj['noind'], $ssl['tanggal']);
+                        $iksusulan = $this->M_pekerjakeluar->ik_susulan($pkj['noind'], $ssl['tanggal']);
                         $iksusulan = round($iksusulan, 2);
                         $iksusulantotal = $iksusulantotal + ($iksusulan - $ssl['Ik_']);
                    	}
                     
                     If ($status_pekerja == "T" And $totalselisih > 1) {
-                        $ipsusulan = iph_susulan($pkj['noind'], $ssl['tanggal']);
+                        $ipsusulan = $this->M_pekerjakeluar->iph_susulan($pkj['noind'], $ssl['tanggal']);
                         $ipsusulan = round($ipsusulan, 2);
                         $ipsusulantotal = $ipsusulantotal + ($ipsusulan - $ssl['ip_']);
 					}                   	
 
-                    $immsusulan = imm_susulan($pkj['noind'], $ssl['tanggal']);
+                    $immsusulan = $this->M_pekerjakeluar->imm_susulan($pkj['noind'], $ssl['tanggal']);
                     $immsusulan = round($immsusulan, 2);
                     $immsusulantotal = $immsusulantotal + ($immsusulan - $ssl['imm']);
                     
-                    $imssusulan = ims_susulan($pkj['noind'], $ssl['tanggal']);
+                    $imssusulan = $this->M_pekerjakeluar->ims_susulan($pkj['noind'], $ssl['tanggal']);
                     $imssusulan = round($imssusulan, 2);
                     $imssusulantotal = $imssusulantotal + ($imssusulan - $ssl['ims']);
                                         
