@@ -1,5 +1,7 @@
 function OpenDetailNol(th) {
 	var no_spb = th;
+	const url = window.location.href;
+	const status = url.split('/')
 	$('#MdlTPBNol').modal('show');
 	$('.modal-tabel').html("<center><img id='loading12' style='margin-top: 2%;' src='"+baseurl+"assets/img/gif/loading12.gif'/><br /></center><br />");
 		$.ajax({
@@ -7,6 +9,49 @@ function OpenDetailNol(th) {
 			url: baseurl+"TrackingPengirimanBarang/SortingCenter/OpenDetailSorting",
 			data:{
 				no_spb : no_spb,
+				status: status[status.length - 1],
+			},
+			success: function(response) {
+				$('.modal-tabel').html("");
+				$('.modal-tabel').html(response);
+
+			}
+		})
+}
+
+function OpenDetailSatu(th) {
+	var no_spb = th;
+	const url = window.location.href;
+	const status = url.split('/')
+	$('#MdlTPBNol').modal('show');
+	$('.modal-tabel').html("<center><img id='loading12' style='margin-top: 2%;' src='"+baseurl+"assets/img/gif/loading12.gif'/><br /></center><br />");
+		$.ajax({
+			type: "POST",
+			url: baseurl+"TrackingPengirimanBarang/SortingCenter/OpenDetailProcess",
+			data:{
+				no_spb : no_spb,
+				status: status[status.length - 1],
+			},
+			success: function(response) {
+				$('.modal-tabel').html("");
+				$('.modal-tabel').html(response);
+
+			}
+		})
+}
+
+function OpenDetailDua(th) {
+	var no_spb = th;
+	const url = window.location.href;
+	const status = url.split('/')
+	$('#MdlTPBNol').modal('show');
+	$('.modal-tabel').html("<center><img id='loading12' style='margin-top: 2%;' src='"+baseurl+"assets/img/gif/loading12.gif'/><br /></center><br />");
+		$.ajax({
+			type: "POST",
+			url: baseurl+"TrackingPengirimanBarang/SortingCenter/OpenDetailDelivered",
+			data:{
+				no_spb : no_spb,
+				status: status[status.length - 1],
 			},
 			success: function(response) {
 				$('.modal-tabel').html("");
@@ -21,11 +66,21 @@ $(document).ready(function(){
 		"paging": true,
 		"info": true,
 		"language" : {
-			"zeroRecords": " "             
+			"zeroRecords": " "
 		}
 	})
 
 	})
+
+$(document).ready(function(){
+	var input_cek = $('#hasilConfirm').val();
+
+	if (input_cek == '') {
+$('tbody#tbodyTPB tr').css('background-color', '#c9efff');
+	} 
+
+	})
+
 
 function saveSetupSettingTPB() {
 	var id_pekerja = $('#txtIdPekerja').val();
@@ -207,7 +262,7 @@ function updateSetupSettingTPB(th) {
 			})
 		$('#mdlSetupTPB').modal('hide');
 			window.location.reload();
-	 		
+
 	 	}
 	})
 
@@ -218,8 +273,8 @@ $(document).ready(function() {
         responsive: true,
         fixedHeader: true,
     } );
- 
-} );	
+
+} );
 
 function deleteData(th) {
 	var no_spb = th;
@@ -269,3 +324,100 @@ function deleteData(th) {
   }
 })
 }
+
+function buttonConYes(th) {
+	console.log(th)
+	var row = $(th).closest('tr');
+	var test = row.css('background-color', 'white');
+	var div = row.find('div.inidiv');
+	var hasil = row.find('#hasilConfirm');
+	hasil.val('Y').trigger('change')
+	console.log(th)
+
+	// var tedeh = $('.mawank tr td.tedeh');
+	// line.val('Y').trigger('change');
+	var html = '<button type="button" id="btnTerima" style="margin-right: 5px;" class="btn btn-success btn-sm" value="Y"><i class="fa fa-check"></i> Accepted </button>';
+	html += '<button type="button" onclick="BtnReload(this)" class="btn btn-warning btn-sm"><i class="fa fa-refresh">  </i></button> '
+	div.html(html);
+}
+
+function BtnReload(th) {
+	var row = $(th).closest('tr');
+	var test = row.css('background-color', '#c9efff');
+	var div = row.find('div.inidiv');
+	var hasil = row.find('#hasilConfirm');
+	hasil.val('').trigger('change')
+
+	var html = '<button type="button" style="margin-right:5px" onclick="buttonConYes(this)" class="btn btn-sm btn-success" name="btnYes"><i class="fa fa-check"></i></button>';
+    html +=   '<button type="button" class="btn btn-sm btn-danger" onclick="buttonConNo(this)" name="btnNO"><i class="fa fa-remove"></i></button>'
+    div.html(html);
+}
+
+function buttonConNo(th) {
+	var row = $(th).closest('tr');
+	var test = row.css('background-color', 'white');
+	var div = row.find('div.inidiv');
+	var hasil = row.find('#hasilConfirm');
+	hasil.val('N').trigger('change')
+	
+	var html = '<button type="button" id="btnTolak" style="margin-right: 5px;" class="btn btn-danger btn-sm" value="N"><i class="fa fa-remove"></i> Rejected </button>';
+	html += '<button type="button" onclick="BtnReload(this)" class="btn btn-warning btn-sm"><i class="fa fa-refresh">  </i></button> '
+
+	div.html(html);
+}
+
+
+
+function submitConfirmation(th) {
+
+		var no_spb = th;
+		var note = $('#noteTPB').val();
+
+
+		var arry = [];
+		$('input[name~="hasilConfirm[]"]').each(function(){
+		var confirm = $(this).val();
+		arry.push(confirm);
+		});
+
+
+		var arry1 = [];
+		$('input[name~="line_id[]"]').each(function(){
+		var line_id = $(this).val();
+		arry1.push(line_id);
+		});
+
+		if (note == '') {
+			Swal.fire({
+			  type: 'error',
+			  title: 'Harap Masukkan Note!',
+			  showConfirmButton: false,
+			  timer: 1500
+			})
+		}else if (note !== '') {
+
+		$.ajax({
+		type: "POST",
+		url: baseurl+"TrackingPengirimanBarang/OnProcess/submitConfirmation",
+		data:{
+			confirm_status:arry,
+			line_id:arry1,
+			note:note,
+			no_spb:no_spb
+		},
+		success: function (response) {
+						Swal.fire({
+						  type: 'success',
+						  title: 'Data has been updated!',
+						  showConfirmButton: false,
+						  timer: 1500
+						})
+				window.location.replace(baseurl+"TrackingPengirimanBarang/OnProcess")
+			 		}
+
+				});
+			
+		}
+		
+}
+
