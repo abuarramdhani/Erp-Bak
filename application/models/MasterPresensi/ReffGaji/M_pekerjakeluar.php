@@ -471,15 +471,8 @@ class M_pekerjakeluar extends CI_Model
 							WHERE c.noind = a.noind
 							AND c.tanggal between '$awal'::date AND to_char(a.tglkeluar,'yyyy-mm-01')::date - interval '1 day'
 							AND (
-									(
-										(c.kd_ket = 'PSK' or c.kd_ket = 'PRM')
-										and (
-											c.noind like 'K%'
-											or c.noind like 'P%'
-											or c.noind like 'F%'
-											or c.noind like 'Q%'
-										)
-									)
+									c.kd_ket = 'PSK' 
+									or c.kd_ket = 'PRM'
 									or c.kd_ket = 'PIP'
 									or left(c.kd_ket,1) = 'C'
 								)
@@ -806,15 +799,8 @@ class M_pekerjakeluar extends CI_Model
 							WHERE c.noind = a.noind
 							AND c.tanggal between '$awal'::date AND to_char(a.tglkeluar,'yyyy-mm-01')::date - interval '1 day'
 							AND (
-									(
-										(c.kd_ket = 'PSK' or c.kd_ket = 'PRM')
-										and (
-											c.noind like 'K%'
-											or c.noind like 'P%'
-											or c.noind like 'F%'
-											or c.noind like 'Q%'
-										)
-									)
+									c.kd_ket = 'PSK' 
+									or c.kd_ket = 'PRM'
 									or c.kd_ket = 'PIP'
 									or left(c.kd_ket,1) = 'C'
 								)
