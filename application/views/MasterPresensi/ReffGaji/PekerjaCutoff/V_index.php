@@ -51,32 +51,32 @@
 																<td class="text-center"><?=$nomor ?></td>
 																<td class="text-center"><?php echo $bulan[intval($tgl['1'])].' '.$tgl['0'] ?></td>
 																<td class="text-center"><?php echo $key['jumlah'] ?></td>
-																<td class="text-center" style="font-size: 18pt">
+																<td class="text-center" style="font-size: 10pt">
 																	<a 
 																		href="<?php echo base_url('MasterPresensi/ReffGaji/PekerjaCutoffReffGaji/d/'.$key['tanggal_proses']) ?>" 
-																		title="Lihat Detail">
-																		<span class="glyphicon glyphicon-search"></span>
+																		title="Lihat Detail" class="btn btn-primary">
+																		<span class="glyphicon glyphicon-search"></span>&nbsp;Detail
 																	</a>
 																	<a 
 																		href="<?php echo base_url('MasterPresensi/ReffGaji/PekerjaCutoffReffGaji/pdf/p/'.$key['tanggal_proses']) ?>"
 																		title="cetak PDF" 
-																		style="color: red"
-																		target="_blank" >
-																		<span class="fa fa-file-pdf-o"></span>
+																		target="_blank" 
+																		class="btn btn-danger">
+																		<span class="fa fa-file-pdf-o"></span>&nbsp;PDF
 																	</a>
 																	<a 
 																		href="<?php echo base_url('MasterPresensi/ReffGaji/PekerjaCutoffReffGaji/xls/p/'.$key['tanggal_proses']) ?>"
 																		title="cetak excel" 
-																		style="color: green" 
-																		target="_blank">
-																		<span class="fa fa-file-excel-o"></span>
+																		target="_blank" 
+																		class="btn btn-success">
+																		<span class="fa fa-file-excel-o"></span>&nbsp;Excel
 																	</a>
 																	<a 
 																		href="<?php echo base_url('MasterPresensi/ReffGaji/PekerjaCutoffReffGaji/memo/'.$key['tanggal_proses']) ?>"
 																		title="Cetak Memo" 
-																		style="color: grey" 
-																		target="_blank">
-																		<span class="fa fa-cogs"></span>
+																		target="_blank"
+																		 class="btn btn-default">
+																		<span class="fa fa-file-text-o"></span>&nbsp;Memo
 																	</a>
 																</td>
 															</tr>

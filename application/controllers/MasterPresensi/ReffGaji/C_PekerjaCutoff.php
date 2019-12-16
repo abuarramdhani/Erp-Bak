@@ -131,11 +131,11 @@ class C_PekerjaCutoff extends CI_Controller
 			$data['periode'] = $value;
 
 			$pdf = $this->pdf->load();
-			$pdf = new mPDF('utf-8', 'A4', 8, '', 12, 15, 15, 15, 20, 20);
+			$pdf = new mPDF('utf-8', 'A4', 8, '', 12, 15, 15, 15, 10, 5);
 			$filename = 'Pekerja Cutoff periode '.$value.'.pdf';
 			// $this->load->view('MasterPresensi/ReffGaji/PekerjaCutoff/V_pcetak', $data);
 			$html = $this->load->view('MasterPresensi/ReffGaji/PekerjaCutoff/V_pcetak', $data, true);
-			$pdf->SetHTMLFooter("<i style='font-size: 8pt'>Halaman ini dicetak melalui Aplikasi QuickERP-MasterPresensi oleh ".$this->session->user." pada tgl. ".date('d/m/Y H:i:s').". Halaman {PAGENO} dari {nb}</i>");
+			$pdf->SetHTMLFooter("<i style='font-size: 8pt'>Halaman ini dicetak melalui Aplikasi QuickERP-MasterPresensi oleh ".$this->session->user." pada tgl. ".strftime('%d/%h/%Y %H:%M:%S').". Halaman {PAGENO} dari {nb}</i>");
 			$pdf->WriteHTML($html, 2);
 			$pdf->Output($filename, 'I');
 		}elseif ($key == "n") {
@@ -143,11 +143,11 @@ class C_PekerjaCutoff extends CI_Controller
 			$data['pekerja'] = $this->M_pekerjacutoff->getDetailPekerja($value);
 
 			$pdf = $this->pdf->load();
-			$pdf = new mPDF('utf-8', 'A4', 8, '', 10, 10, 10, 10, 20, 20);
+			$pdf = new mPDF('utf-8', 'A4', 8, '', 10, 10, 10, 10, 10, 5);
 			$filename = 'Pekerja Cutoff noind '.$value.'.pdf';
 			// $this->load->view('MasterPresensi/ReffGaji/PekerjaCutoff/V_ncetak', $data);
 			$html = $this->load->view('MasterPresensi/ReffGaji/PekerjaCutoff/V_ncetak', $data, true);
-			$pdf->SetHTMLFooter("<i style='font-size: 8pt'>Halaman ini dicetak melalui Aplikasi QuickERP-MasterPresensi oleh ".$this->session->user." pada tgl. ".date('d/m/Y H:i:s').". Halaman {PAGENO} dari {nb}</i>");
+			$pdf->SetHTMLFooter("<i style='font-size: 8pt'>Halaman ini dicetak melalui Aplikasi QuickERP-MasterPresensi oleh ".$this->session->user." pada tgl. ".strftime('%d/%h/%Y %H:%M:%S').". Halaman {PAGENO} dari {nb}</i>");
 			$pdf->WriteHTML($html, 2);
 			$pdf->Output($filename, 'I');
 		}else{
@@ -309,20 +309,19 @@ class C_PekerjaCutoff extends CI_Controller
 	}
 
 	public function hitung($periode){
-		// echo "<pre>";print_r($_POST);exit();
+		// echo "<pre>";print_r($_SESSION);exit();
 		$waktu = time();
 		$output = "";
 		$output_2 = "";
 		$jumlah_staff = 0;
 		$jumlah_nonstaff = 0;
-		$jumlah_os = 0;
 		
 		$nomor_surat = $this->input->post('cutoff_nomor_surat');
 		$mengetahui = $this->input->post('cutoff_mengetahui');
 		$to_staff = $this->input->post('cutoff_kepada_staff');
 		$to_nonstaff = $this->input->post('cutoff_kepada_nonstaff');
 		$dibuat = $this->session->user;
-
+		$dibuat_oleh = $this->session->employee;
 		$data_memo = array(
 			'nomor_surat' 		=> $nomor_surat,
 			'mengetahui' 		=> $this->M_pekerjacutoff->getNamaByNoind($mengetahui),
@@ -333,6 +332,8 @@ class C_PekerjaCutoff extends CI_Controller
 			'jabatan_2' 		=> $this->M_pekerjacutoff->getJabByNoind($dibuat),
 			'periode'			=> $periode,
 			'seksi'				=> $this->M_pekerjacutoff->getSeksiByNoind($dibuat),
+			'cutawal'			=> $this->M_pekerjacutoff->getCutoffAwal($periode),
+			'akhirbulan'		=> $this->M_pekerjacutoff->getAkhirbulan($periode)
 		);
 		$data['memo'] = $data_memo;
 		
@@ -341,6 +342,7 @@ class C_PekerjaCutoff extends CI_Controller
 		$data_staff = $this->M_pekerjacutoff->getPekerjaCufOffAktif($periode,"'B','D','J','T'");
 		// echo "<pre>";print_r($data_staff);exit();
 		if (!empty($data_staff)) {
+			
 			$table3 = new XBase\WritableTable(FCPATH."assets/upload/TransferReffGaji/lv_info2.dbf");
 			$table3->openWrite(FCPATH."assets/upload/TransferReffGaji/Cutoff_STAFF".$periode.$waktu.".dbf");
 			foreach ($data_staff as $ds) {
@@ -514,22 +516,26 @@ class C_PekerjaCutoff extends CI_Controller
 			$table3->close();
 			
 			$data['data'] = $data_staff;
+			$data['cut'] = $this->M_pekerjacutoff->getCutoffDetail($periode);
 			$data['jenis'] = "staff";
 			$pdf = $this->pdf->load();
 			$pdf = new mPDF('utf-8', 'A4', 8, '', 10, 10, 10, 10, 10, 5);
 			$filename = 'STAFF'.$periode.$waktu.'.pdf';
 			// $this->load->view('MasterPresensi/ReffGaji/PekerjaCutoff/V_cetak', $data);
 			$html = $this->load->view('MasterPresensi/ReffGaji/PekerjaCutoff/V_cetak', $data, true);
-			$pdf->SetHTMLFooter("<i style='font-size: 8pt'>Halaman ini dicetak melalui Aplikasi QuickERP-MasterPresensi oleh ".$this->session->user." pada tgl. ".date('d/m/Y H:i:s').". Halaman {PAGENO} dari {nb}</i>");
+			$html2 = $this->load->view('MasterPresensi/ReffGaji/PekerjaCutoff/V_cetak_lampiran', $data, true);
+			$pdf->SetHTMLFooter("<i style='font-size: 8pt'>Halaman ini dicetak melalui Aplikasi QuickERP-MasterPresensi oleh ".$this->session->user." ".$this->session->employee." pada tgl. ".strftime('%d/%h/%Y %H:%M:%S').". Halaman {PAGENO} dari {nb}</i>");
 			$pdf->WriteHTML($html, 2);
+			$pdf->AddPage('L','','','','', 10, 10, 10, 10, 10, 5);
+			$pdf->WriteHTML($html2, 2);
 			$pdf->Output(FCPATH."assets/upload/TransferReffGaji/Cutoff_".$filename, 'F');
 			// $pdf->Output($filename, 'I');
-			$output .= '<div class="col-lg-4"><a href="'.site_url("MasterPresensi/ReffGaji/PekerjaCutoffReffGaji/download?file=Cutoff_STAFF".$periode."&time=".$waktu."&ext=dbf") .'" class="btn btn-info">STAFF_'.date('my',strtotime($periode)).'</a></div>';
-			$output_2 .= '<div class="col-lg-4"><a href="'.site_url("MasterPresensi/ReffGaji/PekerjaCutoffReffGaji/download?file=Cutoff_STAFF".$periode."&time=".$waktu."&ext=pdf") .'" class="btn btn-danger">STAFF_'.date('my',strtotime($periode)).'</a></div>';
+			$output .= '<div class="col-lg-6" style="text-align: right">DBF : <a href="'.site_url("MasterPresensi/ReffGaji/PekerjaCutoffReffGaji/download?file=Cutoff_STAFF".$periode."&time=".$waktu."&ext=dbf") .'" class="btn btn-info">STAFF_'.date('my',strtotime($periode)).'</a></div>';
+			$output_2 .= '<div class="col-lg-6" style="text-align: right">PDF : <a href="'.site_url("MasterPresensi/ReffGaji/PekerjaCutoffReffGaji/download?file=Cutoff_STAFF".$periode."&time=".$waktu."&ext=pdf") .'" class="btn btn-danger">STAFF_'.date('my',strtotime($periode)).'</a></div>';
 			$file_staff = "Cutoff_STAFF".$periode.$waktu;
 		}else{
-			$output .= '<div class="col-lg-4">-</div>';
-			$output_2 .= '<div class="col-lg-4">-</div>';
+			$output .= '<div class="col-lg-6">-</div>';
+			$output_2 .= '<div class="col-lg-6">-</div>';
 			$file_staff = "-";
 		}
 		
@@ -719,151 +725,29 @@ class C_PekerjaCutoff extends CI_Controller
 			$table4->close();
 			
 			$data['data'] = $data_nonstaff;
+			$data['cut'] = $this->M_pekerjacutoff->getCutoffDetail($periode);
 			$data['jenis'] = "nonstaff";
 			$pdf = $this->pdf->load();
 			$pdf = new mPDF('utf-8', 'A4', 8, '', 10, 10, 10, 10, 10, 5);
 			$filename = 'NONSTAFF'.$periode.$waktu.'.pdf';
 			// $this->load->view('MasterPresensi/ReffGaji/PekerjaCutoff/V_cetak', $data);
 			$html = $this->load->view('MasterPresensi/ReffGaji/PekerjaCutoff/V_cetak', $data, true);
-			$pdf->SetHTMLFooter("<i style='font-size: 8pt'>Halaman ini dicetak melalui Aplikasi QuickERP-MasterPresensi oleh ".$this->session->user." pada tgl. ".date('d/m/Y H:i:s').". Halaman {PAGENO} dari {nb}</i>");
+			$html2 = $this->load->view('MasterPresensi/ReffGaji/PekerjaCutoff/V_cetak_lampiran', $data, true);
+			$pdf->SetHTMLFooter("<i style='font-size: 8pt'>Halaman ini dicetak melalui Aplikasi QuickERP-MasterPresensi oleh ".$this->session->user." ".$this->session->employee." pada tgl. ".strftime('%d/%h/%Y %H:%M:%S').". Halaman {PAGENO} dari {nb}</i>");
 			$pdf->WriteHTML($html, 2);
+			$pdf->AddPage('L','','','','', 10, 10, 10, 10, 10, 5);
+			$pdf->WriteHTML($html2, 2);
 			// $pdf->Output($filename, 'I');
 			$pdf->Output(FCPATH."assets/upload/TransferReffGaji/Cutoff_".$filename, 'F');
-			$output .= '<div class="col-lg-4"><a href="'.site_url("MasterPresensi/ReffGaji/PekerjaCutoffReffGaji/download?file=Cutoff_NONSTAFF".$periode."&time=".$waktu."&ext=dbf") .'" class="btn btn-info">NONSTAFF_'.date('my',strtotime($periode)).'</a></div>';
-			$output_2 .= '<div class="col-lg-4"><a href="'.site_url("MasterPresensi/ReffGaji/PekerjaCutoffReffGaji/download?file=Cutoff_NONSTAFF".$periode."&time=".$waktu."&ext=pdf") .'" class="btn btn-danger">NONSTAFF_'.date('my',strtotime($periode)).'</a></div>';
+			$output .= '<div class="col-lg-6" style="text-align: left"><a href="'.site_url("MasterPresensi/ReffGaji/PekerjaCutoffReffGaji/download?file=Cutoff_NONSTAFF".$periode."&time=".$waktu."&ext=dbf") .'" class="btn btn-info">NONSTAFF_'.date('my',strtotime($periode)).'</a></div>';
+			$output_2 .= '<div class="col-lg-6" style="text-align: left"><a href="'.site_url("MasterPresensi/ReffGaji/PekerjaCutoffReffGaji/download?file=Cutoff_NONSTAFF".$periode."&time=".$waktu."&ext=pdf") .'" class="btn btn-danger">NONSTAFF_'.date('my',strtotime($periode)).'</a></div>';
 			$file_nonstaff = "Cutoff_NONSTAFF".$periode.$waktu;
 		}else{
-			$output .= '<div class="col-lg-4">-</div>';
-			$output_2 .= '<div class="col-lg-4">-</div>';
+			$output .= '<div class="col-lg-6">-</div>';
+			$output_2 .= '<div class="col-lg-6">-</div>';
 			$file_nonstaff = "-";
 		}
 		
-		//os
-		$data_os = $this->M_pekerjacutoff->getPekerjaCufOffAktif($periode,"'K','P'");
-		if (!empty($data_os)) {
-			$table5 = new XBase\WritableTable(FCPATH."assets/upload/TransferReffGaji/lv_info3.dbf");
-			$table5->openWrite(FCPATH."assets/upload/TransferReffGaji/Cutoff_OS".$periode.$waktu.".dbf");
-
-			foreach ($data_os as $do) {
-				if (empty($dn['upamk']) or trim($do['upamk']) == "") {
-					$upamk_ = "0";
-				}else{
-					$upamk_ = $do['upamk'];
-				}
-				if (empty($do['um']) or trim($do['um']) == "") {
-					$um = "0";
-				}else{
-					$um = $do['um'];
-				}
-				if (empty($do['ims']) or trim($do['ims']) == "") {
-					$ims = "0";
-				}else{
-					$ims = $do['ims'];
-				}
-				if (empty($do['imm']) or trim($do['imm']) == "") {
-					$imm = "0";
-				}else{
-					$imm = $do['imm'];
-				}
-				if (empty($do['jam_lembur']) or trim($do['jam_lembur']) == "") {
-					$jam_lembur = "0";
-				}else{
-					$jam_lembur = $do['jam_lembur'];
-				}
-				if (empty($do['ipe']) or trim($do['ipe']) == "") {
-					$ipe = "0";
-				}else{
-					$ipe = $do['ipe'];
-				}
-				if (empty($do['ika']) or trim($do['ika']) == "") {
-					$ika = "0";
-				}else{
-					$ika = $do['ika'];
-				}
-				if (empty($do['ief']) or trim($do['ief']) == "") {
-					$ief = "0";
-				}else{
-					$ief = $do['ief'];
-				}
-				if (empty($do['ubt']) or trim($do['ubt']) == "") {
-					$ubt = "0";
-				}else{
-					$ubt = $do['ubt'];
-				}
-				if (empty($do['ubs']) or trim($do['ubs']) == "") {
-					$ubs = "0";
-				}else{
-					$ubs = $do['ubs'];
-				}
-				if (empty($do['um_puasa']) or trim($do['um_puasa']) == "") {
-					$um_puasa = "0";
-				}else{
-					$um_puasa = $do['um_puasa'];
-				}
-
-				$sk_ct_susul = "0";
-				if (substr($do['noind'], 0,1) == "A" or substr($do['noind'], 0,1) == "H") {
-					if (trim($do['ket']) !== "-") {
-						$sk_ct_susul = substr(trim($do['ket']), 0,strlen($do['ket']) - 2);
-					}else{
-						$sk_ct_susul = "";
-					}
-				}
-				$potkop = $do['putkop'] + $do['pikop'];
-
-				$tpribadi = $this->M_transferreffgaji->getPribadi($do['noind']);
-				$seksi = $this->M_transferreffgaji->getSeksi($do['kodesie']);
-				if (!empty($tpribadi)) {
-					$asalOS = trim($tpribadi->asal_outsourcing);
-					if ($tpribadi->keluar == "t") {
-						$tgl_keluar = $tpribadi->tglkeluar;
-					}else{
-						$tgl_keluar = '0000-00-00';
-					}
-					$record = $table5->appendRecord();
-					$record->NOIND = $do['noind'];
-					$record->NAMAOPR =  $do['nama'];
-					$record->KODESIE =  $do['kodesie'];
-					$record->SEKSI =  $seksi->seksi;
-					$record->TGL_GJ = '0000-00-00';
-					$record->JLB =  round($jam_lembur,2) ;
-					$record->HMM =  round($imm,2) ;
-					$record->IFUNG =  round($ief,2) ;
-					$record->IK =  round($do['ijin'],2) ;
-					$record->ABS =  round($do['htm'],2) ;
-					$record->UM_PUASA =  $um_puasa ;
-					$record->ASAL_OS =  $asalOS;
-					$record->TGL_KELUAR =  $tgl_keluar ;
-					$record->KD_LKS =  $do['lokasi_krj'];
-					$record->POTONGAN = round($do['plain']);
-					$record->JKN =  $do['jml_jkn'] ;
-					$record->JHT =  $do['jml_jht'] ;
-					$record->JP =  $do['jml_jp'] ;
-					$table5->writeRecord();
-					$jumlah_os++;
-				}
-			}
-			$table5->close();
-
-			$data['data'] = $data_os;
-			$data['jenis'] = "os";
-			$pdf = $this->pdf->load();
-			$pdf = new mPDF('utf-8', 'A4', 8, '', 10, 10, 10, 10, 10, 5);
-			$filename = 'OS'.$periode.$waktu.'.pdf';
-			// $this->load->view('MasterPresensi/ReffGaji/PekerjaCutoff/V_cetak', $data);
-			$html = $this->load->view('MasterPresensi/ReffGaji/PekerjaCutoff/V_cetak', $data, true);
-			$pdf->SetHTMLFooter("<i style='font-size: 8pt'>Halaman ini dicetak melalui Aplikasi QuickERP-MasterPresensi oleh ".$this->session->user." pada tgl. ".date('d/m/Y H:i:s').". Halaman {PAGENO} dari {nb}</i>");
-			$pdf->WriteHTML($html, 2);
-			$pdf->Output(FCPATH."assets/upload/TransferReffGaji/Cutoff_".$filename, 'F');
-			$output .= '<div class="col-lg-4"><a href="'.site_url("MasterPresensi/ReffGaji/PekerjaCutoffReffGaji/download?file=Cutoff_OS".$periode."&time=".$waktu."&ext=dbf") .'" class="btn btn-info">OS_'.date('my',strtotime($periode)).'</a></div>';
-			$output_2 .= '<div class="col-lg-4"><a href="'.site_url("MasterPresensi/ReffGaji/PekerjaCutoffReffGaji/download?file=Cutoff_OS".$periode."&time=".$waktu."&ext=pdf") .'" class="btn btn-danger">OS_'.date('my',strtotime($periode)).'</a></div>';
-			$file_os = "Cutoff_NONSTAFF".$periode.$waktu;
-		}else{
-			$output .= '<div class="col-lg-4">-</div>';
-			$output_2 .= '<div class="col-lg-4">-</div>';
-			$file_os = "-";
-		}
-
 		$data_insert = array(
 			'nomor_surat' 		=> $nomor_surat,
 			'mengetahui' 		=> $mengetahui,
@@ -872,7 +756,6 @@ class C_PekerjaCutoff extends CI_Controller
 			'created_by' 		=> $dibuat,
 			'file_staff' 		=> $file_staff,
 			'file_nonstaff' 	=> $file_nonstaff,
-			'file_os' 			=> $file_os,
 			'periode'			=> $periode
 		);
 
@@ -893,7 +776,6 @@ class C_PekerjaCutoff extends CI_Controller
 		$data['output_2'] = $output_2;
 		$data['jumlah_staff'] = $jumlah_staff;
 		$data['jumlah_nonstaff'] = $jumlah_nonstaff;
-		$data['jumlah_os'] = $jumlah_os;
 		$data['periode'] = $periode;
 		$this->load->view('V_Header',$data);
 		$this->load->view('V_Sidemenu',$data);

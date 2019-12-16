@@ -5,6 +5,12 @@
 </head>
 <body>
 	<?php 
+		$noind_cut = array();
+		if (!empty($cut)) {
+			foreach ($cut as $value) {
+				$noind_cut[] = $value['noind'];
+			}
+		}
 		if($jenis == "staff"){ ?>
 			<table style="width: 100%;border-bottom: 1px solid black">
 				<tbody>
@@ -44,16 +50,15 @@
 			<h1 style="text-align: center">MEMO</h1>
 			<table style="width: 100%;font-size: 12pt;">
 				<tr>
-					<td>No</td>
-					<td>:</td>
-					<td><?php echo $memo['nomor_surat']; ?></td>
-					<td><?php echo strftime('%d %B %Y'); ?></td>
+					<td style="width: 10%">No</td>
+					<td style="width: 3%">:</td>
+					<td style="width: 62%"><?php echo $memo['nomor_surat']; ?></td>
+					<td style="width: 25%"><?php echo strftime('%d %B %Y'); ?></td>
 				</tr>
 				<tr>
 					<td>Hal</td>
 					<td>:</td>
-					<td>Memo Gaji Staff yang Dibayar Cut Off</td>
-					<td></td>
+					<td colspan="2">Memo Gaji Staff yang Dibayar Cut Off dan Pekerja Keluar <?php echo $memo['cutawal'] !== "-" ? strftime("%d %B %Y",strtotime($memo['cutawal'])) : "-" ?> s.d <?php echo $memo['akhirbulan'] !== "-" ? strftime("%d %B %Y",strtotime($memo['akhirbulan'])) : "-" ?></td>
 				</tr>
 				<tr>
 					<td colspan="4">&nbsp;</td>
@@ -61,55 +66,17 @@
 				<tr>
 					<td><b>Dari</b></td>
 					<td><b>:</b></td>
-					<td><b>Seksi <?php echo ucwords(strtolower($memo['seksi'])); ?></b></td>
-					<td></td>
+					<td colspan="2"><b>Seksi <?php echo ucwords(strtolower($memo['seksi'])); ?></b></td>
 				</tr>
 				<tr>
 					<td><b>kepada</b></td>
 					<td><b>:</b></td>
-					<td><b><?php echo $memo['kepada_staff']; ?></b></td>
-					<td></td>
+					<td colspan="2"><b><?php echo $memo['kepada_staff']; ?></b></td>
 				</tr>
 			</table>
 			<br>
 			<p style="font-size: 12pt;">Dengan Hormat, </p>
-			<p style="font-size: 12pt;">Mohon diperhitungkan dan dibayarkan pada tanggal 10 <?php echo strftime('%B %Y',strtotime($memo['periode'])) ?> Gaji Staff yang kami Cut Off di bulan <?php echo strftime('%B %Y',strtotime($memo['periode']." - 1 month")) ?>. Data sebagai berikut.</p>
-			<table style="border-collapse: collapse;border: 1px solid black;width: 100%;font-size: 10pt;">
-				<thead>
-					<tr>
-						<th style="border: 1px solid black;" rowspan="2">NO</th>
-						<th style="border: 1px solid black;" rowspan="2">NO INDUK</th>
-						<th style="border: 1px solid black;" rowspan="2">NAMA</th>
-						<th style="border: 1px solid black;" rowspan="2">SEKSI</th>
-						<th style="border: 1px solid black;" colspan="2">Komponen</th>
-						<th style="border: 1px solid black;" rowspan="2">Pot. JHT,JKN & JP</th>
-					</tr>
-					<tr>
-						<th style="border: 1px solid black;">GP</th>
-						<th style="border: 1px solid black;">IF</th>
-					</tr>
-				</thead>
-				<tbody>
-					<?php 
-					if (isset($data) and !empty($data)) {
-						$nomor = 1;
-						foreach ($data as $key) { ?>
-							<tr>
-								<td style="border: 1px solid black;padding-left: 10px;padding-right: 10px;text-align: center"><?=$nomor ?></td>
-								<td style="border: 1px solid black;padding-left: 10px;padding-right: 10px;text-align: center"><?=$key['noind'] ?></td>
-								<td style="border: 1px solid black;padding-left: 10px;padding-right: 10px;"><?=$key['nama'] ?></td>
-								<td style="border: 1px solid black;padding-left: 10px;padding-right: 10px;"><?=$key['seksi'] ?></td>
-								<td style="border: 1px solid black;padding-left: 10px;padding-right: 10px;text-align: center"><?=$key['ief'] ?></td>
-								<td style="border: 1px solid black;padding-left: 10px;padding-right: 10px;text-align: center"><?=$key['ief'] ?></td>
-								<td style="border: 1px solid black;padding-left: 10px;padding-right: 10px;text-align: center">Tidak dipotong</td>
-							</tr>
-							<?php 
-							$nomor++;
-						}
-					}
-					?>
-				</tbody>
-			</table>
+			<p style="font-size: 12pt;">Mohon diperhitungkan dan dibayarkan pada tanggal 10 <?php echo strftime('%B %Y',strtotime($memo['periode']." + 1 month")) ?> Gaji Staff yang kami Cut Off di bulan <?php echo strftime('%B %Y',strtotime($memo['periode'])) ?> dan Pekerja Keluar antara <?php echo $memo['cutawal'] !== "-" ? strftime("%d %B %Y",strtotime($memo['cutawal'])) : "-" ?> s.d <?php echo $memo['akhirbulan'] !== "-" ? strftime("%d %B %Y",strtotime($memo['akhirbulan'])) : "-" ?>. Data pekerja terlampir.</p>
 			<p style="font-size: 12pt;">Demikian permohonan ini kami sampaikan. Atas perhatian dan kerjasamanya kami ucapkan terima kasih.</p>
 			<br>
 			<table style="width: 100%;font-size: 12pt;">
@@ -173,16 +140,15 @@
 			<h1 style="text-align: center">MEMO</h1>
 			<table style="width: 100%;font-size: 12pt;">
 				<tr>
-					<td>No</td>
-					<td>:</td>
-					<td><?php echo $memo['nomor_surat']; ?></td>
-					<td><?php echo strftime('%d %B %Y'); ?></td>
+					<td style="width: 10%">No</td>
+					<td style="width: 3%">:</td>
+					<td style="width: 62%"><?php echo $memo['nomor_surat']; ?></td>
+					<td style="width: 25%"><?php echo strftime('%d %B %Y'); ?></td>
 				</tr>
 				<tr>
 					<td>Hal</td>
 					<td>:</td>
-					<td>Memo Gaji Non Staff yang Dibayar Cut Off</td>
-					<td></td>
+					<td colspan="2">Memo Gaji Non Staff yang Dibayar Cut Off dan Pekerja Keluar <?php echo $memo['cutawal'] !== "-" ? strftime("%d %B %Y",strtotime($memo['cutawal'])) : "-" ?> s.d <?php echo $memo['akhirbulan'] !== "-" ? strftime("%d %B %Y",strtotime($memo['akhirbulan'])) : "-" ?></td>
 				</tr>
 				<tr>
 					<td colspan="4">&nbsp;</td>
@@ -190,19 +156,17 @@
 				<tr>
 					<td><b>Dari</b></td>
 					<td><b>:</b></td>
-					<td><b>Seksi <?php echo ucwords(strtolower($memo['seksi'])); ?></b></td>
-					<td></td>
+					<td colspan="2"><b>Seksi <?php echo ucwords(strtolower($memo['seksi'])); ?></b></td>
 				</tr>
 				<tr>
 					<td><b>kepada</b></td>
 					<td><b>:</b></td>
-					<td><b><?php echo $memo['kepada_staff']; ?></b></td>
-					<td></td>
+					<td colspan="2"><b><?php echo $memo['kepada_staff']; ?></b></td>
 				</tr>
 			</table>
 			<br>
 			<p style="font-size: 12pt;">Dengan Hormat, </p>
-			<p style="font-size: 12pt;">Mohon diperhitungkan dan dibayarkan pada tanggal 10 <?php echo strftime('%B %Y',strtotime($memo['periode'])) ?> Gaji Staff yang kami Cut Off di bulan <?php echo strftime('%B %Y',strtotime($memo['periode']." - 1 month")) ?>. Data pekerja terlampir.</p>
+			<p style="font-size: 12pt;">Mohon diperhitungkan dan dibayarkan pada tanggal 10 <?php echo strftime('%B %Y',strtotime($memo['periode']." + 1 month")) ?> Gaji Staff yang kami Cut Off di bulan <?php echo strftime('%B %Y',strtotime($memo['periode'])) ?> dan Pekerja Keluar antara <?php echo $memo['cutawal'] !== "-" ? strftime("%d %B %Y",strtotime($memo['cutawal'])) : "-" ?> s.d <?php echo $memo['akhirbulan'] !== "-" ? strftime("%d %B %Y",strtotime($memo['akhirbulan'])) : "-" ?>. Data pekerja terlampir.</p>
 			<p style="font-size: 12pt;">Demikian permohonan ini kami sampaikan. Atas perhatian dan kerjasamanya kami ucapkan terima kasih.</p>
 			<br>
 			<table style="width: 100%;font-size: 12pt;">
@@ -226,40 +190,6 @@
 					<td style="width: 50%;text-align: center;"><?php echo ucwords(strtolower($memo['jabatan_1'])) ?></td>
 					<td style="width: 50%;text-align: center;"><?php echo ucwords(strtolower($memo['jabatan_2'])) ?></td>
 				</tr>
-			</table>
-			<pagebreak>
-			<h2>Lampiran</h2>
-			<h2>Gaji Non Staff yang di-cut off pada penggajian bulan <?php echo strftime('%B %Y',strtotime($memo['periode']." - 1 month")) ?></h2>
-			<table style="border-collapse: collapse;border: 1px solid black;width: 100%">
-				<thead>
-					<tr>
-						<th style="border: 1px solid black;">NO</th>
-						<th style="border: 1px solid black;">NO INDUK</th>
-						<th style="border: 1px solid black;">NAMA</th>
-						<th style="border: 1px solid black;">SEKSI</th>
-						<th style="border: 1px solid black;">Potongan HTM</th>
-						<th style="border: 1px solid black;">Pot. JHT, JKN & JP</th>
-					</tr>
-				</thead>
-				<tbody>
-					<?php 
-					if (isset($data) and !empty($data)) {
-						$nomor = 1;
-						foreach ($data as $key) { ?>
-							<tr>
-								<td style="border: 1px solid black;padding-left: 10px;padding-right: 10px;text-align: center"><?=$nomor ?></td>
-								<td style="border: 1px solid black;padding-left: 10px;padding-right: 10px;text-align: center"><?=$key['noind'] ?></td>
-								<td style="border: 1px solid black;padding-left: 10px;padding-right: 10px;"><?=$key['nama'] ?></td>
-								<td style="border: 1px solid black;padding-left: 10px;padding-right: 10px;"><?=$key['seksi'] ?></td>
-								<td style="border: 1px solid black;padding-left: 10px;padding-right: 10px;text-align: center"><?=$key['htm'] ?> hari</td>
-								<td style="border: 1px solid black;padding-left: 10px;padding-right: 10px;text-align: center">Tidak dipotong</td>
-							</tr>
-							<?php 
-							$nomor++;
-						}
-					}
-					?>
-				</tbody>
 			</table>			
 		<?php 
 		}
