@@ -43,6 +43,8 @@ class C_ComposeMessage extends CI_Controller {
 		$data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id);
         $data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id);
 
+$data['UserMenu'][0]['user_group_menu_name'] == 'WEB SEND PO BDL' ? $data['MenuName'] = 'WEB SEND PO BDL' : $data['MenuName'] = 'Purchase Management Send PO';
+
 		$this->load->view('V_Header',$data);
 		$this->load->view('V_Sidemenu',$data);
         $this->load->view('PurchaseManagementSendPO/MainMenu/V_ComposeMessage',$data);
@@ -51,6 +53,9 @@ class C_ComposeMessage extends CI_Controller {
 
   public function SendEmail()
 	{
+		$user_id = $this->session->userid;
+		$data['UserMenu'] 		= $this->M_user->getUserMenu($user_id,$this->session->responsibility_id);
+
 		// Delete temporary files
 		$TempFTPDir = glob('./assets/upload/PurchaseManagementSendPO/Temporary/FTPDocument/*');
 		$TempPDFDir = glob('./assets/upload/PurchaseManagementSendPO/Temporary/PDFDocument/*');
@@ -91,7 +96,7 @@ class C_ComposeMessage extends CI_Controller {
 	   	}
 
 		// Get Vendor Name
-		if (substr($poQuery,2,3)=='999') {
+		if ($data['UserMenu'][0]['user_group_menu_name'] == 'WEB SEND PO BDL') {
 			$data['VendorName'] = $this->M_composemessage->getVendorNameGabungan($poQuery);
 		} else {
 			$data['VendorName'] = $this->M_composemessage->getVendorName($poQuery);
@@ -123,7 +128,7 @@ class C_ComposeMessage extends CI_Controller {
 				case 'CAHAYA CITRASURYA INDOPRIMA, CV':
 				case 'DHARMA POLIMETAL, PT':
 
-				if (substr($poQuery,2,3)=='999') {
+				if ($data['UserMenu'][0]['user_group_menu_name'] == 'WEB SEND PO BDL') {
 					$this->PurchaseManagementDocumentGabungan($po_number);
 				} else {
 					$this->PurchaseManagementDocument($po_number);
@@ -136,17 +141,30 @@ class C_ComposeMessage extends CI_Controller {
 		}
 
 		// Directory var
-		$doc_dir		= './assets/upload/PurchaseManagementSendPO/Attachment/';
-		$doc_filename	= 'Pedoman Kerjasama Vendor Rev 7 (Quick Reference PO)';
-
 		$pdf_dir		= './assets/upload/PurchaseManagementSendPO/Temporary/PDFDocument/';
 		$pdf_filename	= 'Surat Pengiriman Barang PO '.$po_number;
 		$pdf_format		= '.pdf';
 
-		if (file_exists($doc_dir.preg_replace('/[^a-zA-Z0-9]/', '', $doc_filename).$pdf_format) == TRUE && file_exists($doc_dir.$doc_filename.$pdf_format) == FALSE)
-		{
-			rename($doc_dir.preg_replace('/[^a-zA-Z0-9]/', '', $doc_filename).$pdf_format , $doc_dir.$doc_filename.$pdf_format);
-		};
+		// ketika bukan web send po bdl
+		if ($data['UserMenu'][0]['user_group_menu_name'] != 'WEB SEND PO BDL') {
+			$doc_dir		= './assets/upload/PurchaseManagementSendPO/Attachment/';
+			$doc_filename	= 'Pedoman Kerjasama Vendor Rev 7 (Quick Reference PO)';
+
+			if (file_exists($doc_dir.preg_replace('/[^a-zA-Z0-9]/', '', $doc_filename).$pdf_format) == TRUE && file_exists($doc_dir.$doc_filename.$pdf_format) == FALSE)
+			{
+				rename($doc_dir.preg_replace('/[^a-zA-Z0-9]/', '', $doc_filename).$pdf_format , $doc_dir.$doc_filename.$pdf_format);
+			};
+
+			// Zip get Document Vendor
+			if ( $format_message != 'English' ) {
+				if( file_exists($doc_dir.$doc_filename.$pdf_format) == TRUE ) {
+					$this->zip->read_file($doc_dir.$doc_filename.$pdf_format,$doc_filename.$pdf_format);
+				} else {
+					echo json_encode('Lampiran '.$doc_filename.' tidak ditemukan.');
+					exit;
+				}
+			}
+		}
 
 		// FTP //
 			// Initialise the connection parameters
@@ -154,7 +172,12 @@ class C_ComposeMessage extends CI_Controller {
 			$ftp_username	 = 'SENDPO';
 			$ftp_password 	 = '123456';
 			$ftp_local_dir	 = './assets/upload/PurchaseManagementSendPO/Temporary/FTPDocument/';
-			$ftp_server_dir	 = './1.PEMBELIAN_SEKSI/03. PURCHASE RECORD/04. PO (Scan)/7. PO DAN KONFIRMASI 2019/1. Dokumen PO 2019/';
+			if ($data['UserMenu'][0]['user_group_menu_name'] == 'WEB SEND PO BDL') {
+					$ftp_server_dir	 = './1.PEMBELIAN_SEKSI/03. PURCHASE RECORD/04. PO (Scan)/7. PO DAN KONFIRMASI 2019/5. PO BDL/';
+		  }
+			else {
+					$ftp_server_dir	 = './1.PEMBELIAN_SEKSI/03. PURCHASE RECORD/04. PO (Scan)/7. PO DAN KONFIRMASI 2019/1. Dokumen PO 2019/';
+			}
 			$ftp_file_format = '.pdf';
 
 			// Create an FTP connection
@@ -205,16 +228,6 @@ class C_ComposeMessage extends CI_Controller {
 				if( file_exists($pdf_dir.$pdf_filename.$pdf_format) == TRUE ) {
 					$this->zip->read_file($pdf_dir.$pdf_filename.$pdf_format,$pdf_filename.$pdf_format);
 				};
-
-				// Zip get Document Vendor
-				if ( $format_message != 'English' ) {
-					if( file_exists($doc_dir.$doc_filename.$pdf_format) == TRUE ) {
-						$this->zip->read_file($doc_dir.$doc_filename.$pdf_format,$doc_filename.$pdf_format);
-					} else {
-						echo json_encode('Lampiran '.$doc_filename.' tidak ditemukan.');
-						exit;
-					}
-				}
 
 				// Zip get additional attachment
 				if ( isset($_FILES['file_attach1']) && $_FILES['file_attach1']['error'] == UPLOAD_ERR_OK ) {
@@ -280,15 +293,19 @@ class C_ComposeMessage extends CI_Controller {
 			{
 				$mail->addAttachment($pdf_dir.$pdf_filename.$pdf_format);
 			};
-			if ($format_message != 'English') {
-				if (file_exists($doc_dir.$doc_filename.$pdf_format) == TRUE)
-				{
-					$mail->addAttachment($doc_dir.$doc_filename.$pdf_format);
-				}else{
-					echo json_encode('Lampiran '.$doc_filename.' tidak ditemukan.');
-					exit;
+
+			// ketika bukan web send po bdl
+			if ($data['UserMenu'][0]['user_group_menu_name'] != 'WEB SEND PO BDL') {
+				if ($format_message != 'English') {
+					if (file_exists($doc_dir.$doc_filename.$pdf_format) == TRUE)
+					{
+						$mail->addAttachment($doc_dir.$doc_filename.$pdf_format);
+					}else{
+						echo json_encode('Lampiran '.$doc_filename.' tidak ditemukan.');
+						exit;
+					};
 				};
-			};
+		  }
 
 			if (isset($_FILES['file_attach1']) && $_FILES['file_attach1']['error'] == UPLOAD_ERR_OK)
 			{
@@ -312,9 +329,11 @@ class C_ComposeMessage extends CI_Controller {
 
 	public function getUserEmail($id)
 	{
+		$user_id = $this->session->userid;
+		$data['UserMenu'] 		= $this->M_user->getUserMenu($user_id,$this->session->responsibility_id);
 		$idEx  = explode('-', $id);
 		$idQuery	   = $idEx[0];
-		if (substr($idQuery,2,3)=='999') {
+		if ($data['UserMenu'][0]['user_group_menu_name'] == 'WEB SEND PO BDL') {
 			$email = $this->M_composemessage->getEmailAddressGabungan($idQuery);
 			$site = $this->M_composemessage->getVendorSite($idQuery);
 		} else {
