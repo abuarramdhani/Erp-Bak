@@ -73,19 +73,7 @@ class C_monitoringakuntansi extends CI_Controller{
 
 	public function SaveEdit($invoice_id)
 	{
-		// echo "<pre>";print_r($_POST);
-    // [txtNoPO] => 18023883
-    // [vendor_number] => BUDI BERLIAN MOTOR, PT
-    // [hdnTxtVendor] => 
-    // [txtToP] => 30 Net
-    // [invoice_date] => 06-Nov-2019
-    // [invoice_number] => 06NOV2019-3
-    // [invoice_amount] => Rp. 1.800.000,00-
-    // [invoice_category] => BARANG
-    // [tax_invoice_number] => 010.005-9909
-    // [nominal_dpp] => 899,000.00
-    // [nominalPPN] => 89,900.00
-    // [note_admin] => trial ict 
+		
 
 		$invoice_number = $this->input->post('invoice_number');//**
 		$invoice_date = $this->input->post('invoice_date');//**
@@ -94,16 +82,13 @@ class C_monitoringakuntansi extends CI_Controller{
 		$vendor_number = $this->input->post('vendor_number');//**
 		$cariNamaVendor = $this->M_monitoringakuntansi->getNamaVendor($vendor_number);
 		$vendor_name = $cariNamaVendor[0]['VENDOR_NAME'];
-		// $nominal_ppn_lama = $this->input->post('nominalPPN');//**
 		$po_number = $this->input->post('txtNoPO');//**
 		$top = $this->input->post('txtToP');//**
 		$last_admin_date = date('d-m-Y H:i:s');
 		$action_date = date('d-m-Y H:i:s');
 		$note_admin = $this->input->post('note_admin');//**
 		$invoice_category = $this->input->post('invoice_category');//**
-		// $nominal_dpp_lama = $this->input->post('nominal_dpp');//**
-		// $jenis_jasa = $this->input->post('jenis_jasa');//
-		// ini fungsi login, hak ases
+		
 		$noinduk = $this->session->userdata['user'];
 		// echo $noinduk;exit();
 		$cek_login = $this->M_monitoringakuntansi->checkLoginInAkuntansi($noinduk);
@@ -963,30 +948,34 @@ class C_monitoringakuntansi extends CI_Controller{
 	}
 
 	public function saveActionAkuntansi(){
-		$alasan = $this->input->post('reason_finance[]');
-		$id = $this->input->post('id_reason[]');
-		$prosesTerima = $this->input->post('hdnTerima[]');
-		$prosesTolak = $this->input->post('hdnTolak[]');
+		$alasan = $this->input->post('reason_finance');
+		// $id = $this->input->post('id_reason[]');
+		$prosesTerima = $this->input->post('hdnTerima');
+		$prosesTolak = $this->input->post('hdnTolak');
 		$saveDate = date('d-m-Y H:i:s');
 
-		if ($prosesTerima=='') {
-			$prosesTerima=array();
-		}
+		// echo "<pre>"; print_r($_POST);
 
-		if ($prosesTolak=='') {
-			$prosesTolak=array();
-		}
+		// if ($prosesTerima=='') {
+		// 	$prosesTerima=array();
+		// }
+
+		// if ($prosesTolak=='') {
+		// 	$prosesTolak=array();
+		// }
 
 			foreach ($prosesTerima as $p => $value) {
-				$this->M_monitoringakuntansi->saveProsesTerimaAkuntansi($saveDate,$prosesTerima[$p]);
-				$this->M_monitoringakuntansi->insertprosesAkuntansi($prosesTerima[$p],$saveDate);
+				$this->M_monitoringakuntansi->saveProsesTerimaAkuntansi($saveDate,$value);
+				$this->M_monitoringakuntansi->insertprosesAkuntansiTerima($value,$saveDate);
 			}
 			foreach ($prosesTolak as $p => $value) {
-				$this->M_monitoringakuntansi->saveProsesTolakAkuntansi($saveDate,$prosesTolak[$p],$alasan[$p]);
-				$this->M_monitoringakuntansi->insertprosesAkuntansi($prosesTolak[$p],$saveDate);
+				$this->M_monitoringakuntansi->saveProsesTolakAkuntansi($saveDate,$value,$alasan[$p]);
+				$this->M_monitoringakuntansi->insertprosesAkuntansiTolak($value,$saveDate);
 			}
 
-		redirect('AccountPayables/MonitoringInvoice/Finish');
+
+		redirect('AccountPayables/MonitoringInvoice/Unprocess/');
+		// exit();
 	}
 
 	public function finishBatchInvoice(){
