@@ -62,7 +62,14 @@ class M_presensiharian extends Ci_Model
 	    		where left(a.kodesie,5) in ('10101','10102')
 	    		and a.keluar = false
 				order by a.kodesie,a.noind;";
-	    }  else{
+	    }elseif ($noind == 'J1338') { //Order #456799 (Pembuatan Login ERP)
+	    	 $sql = "select a.noind,a.nama, b.seksi
+				from hrd_khs.tpribadi a
+				left join hrd_khs.tseksi b on a.kodesie=b.kodesie
+	    		where left(a.kodesie,3) in ('302','324','325')
+	    		and a.keluar = false
+				order by a.kodesie,a.noind;";
+	    }else{
 			    if('306030'==substr($kd,0,6)) //ada diticket
 			    {
 			    $sql = "select a.noind,a.nama, b.seksi
