@@ -37,7 +37,7 @@ class M_monitoringakuntansi extends CI_Model {
         return ($result)?$result:NULL;
     }
 
-    //-----------------------------------------------------------------------------tambahan menu start from here-----------------------//
+    //---------------------------------------------------tambahan menu start from here-----------------------//
 
 public function UpdatePoNumber2($invoice_id,$invoice_number, $invoice_date, $amount, $tax_invoice_number,$vendor_name,$vendor_number,$last_admin_date,$note_admin,$invoice_category,$source_login,$top)
 
@@ -758,7 +758,8 @@ public function editInvData($invoice_id)
 				SET last_finance_invoice_status = 2,
 				last_status_finance_date = to_date('$finance_date', 'DD/MM/YYYY HH24:MI:SS')
 				WHERE invoice_id = $id";
-		$erp_db->query($sql);
+        // echo "<pre>"; echo $sql;
+		$runQuery = $erp_db->query($sql);
 		// oci_commit($erp_db);
 	}
 
@@ -770,15 +771,26 @@ public function editInvData($invoice_id)
                 last_status_finance_date = to_date('$finance_date', 'DD/MM/YYYY HH24:MI:SS'),
                 reason = '$reason'
                 WHERE invoice_id = $id";
-        $erp_db->query($sql);
+        $runQuery = $erp_db->query($sql);
         // oci_commit($erp_db);
     }
 
-    public function insertprosesAkuntansi($invoice_id,$action_date)
+    public function insertprosesAkuntansiTerima($invoice_id,$action_date)
+    {
+        $erp_db = $this->load->database('oracle',true);
+        $sql = "INSERT INTO khs_ap_invoice_action_detail (invoice_id,action_date,purchasing_status,finance_status)
+                VALUES($invoice_id, to_date('$action_date', 'DD/MM/YYYY HH24:MI:SS'),'2','2')";
+        $runQuery = $erp_db->query($sql);
+    }
+
+      public function insertprosesAkuntansiTolak($invoice_id,$action_date)
     {
         $oracle = $this->load->database('oracle',true);
         $sql = "INSERT INTO khs_ap_invoice_action_detail (invoice_id,action_date,purchasing_status,finance_status)
-                VALUES($invoice_id, to_date('$action_date', 'DD/MM/YYYY HH24:MI:SS'),'2','2')";
+                VALUES($invoice_id, to_date('$action_date', 'DD/MM/YYYY HH24:MI:SS'),'2','3')";
+       // echo "<pre>";  echo $sql;
+        // exit();
+
         $run = $oracle->query($sql);
     }
 

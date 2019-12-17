@@ -640,23 +640,28 @@ function invBermasalah(th) {
 	})
 	
 });
+
 var simpanHtml = new Array();
 function prosesInvMI(th){
+	var row = $(th).closest('tr')
+	var td = row.find('.kasihInputInvoice');
 	var invoice_id = $(th).attr('data-id');
 	var proses = $(th).attr('value');
 	var prnt = $(th).parent();
 	// prnt.html('<img src="'+baseurl+'assets/img/gif/loading5.gif" id="gambarloading">');
 	simpanHtml[invoice_id]= $('.ganti_'+invoice_id+'').html();
-	console.log(simpanHtml)
+	// console.log(simpanHtml)
 	if (proses == 2) {
 		prnt.html('<span class="btn btn-success" style="cursor: none;font-size: 10pt;" >Diterima<input type="hidden" name="hdnTerima[]" class="hdnProses" value="'+invoice_id+'"></span><a class="btn btn-sm btn-primary" onclick="reloadTerimaInnvoice('+invoice_id+');"><i class="fa fa-refresh"></i></a>');
 	} else {
 		prnt.html('<span class="btn btn-danger" style="font-size: 8pt ;cursor: none;">Ditolak (Isikan Alasan)<input type="hidden" name="hdnTolak[]" class="hdnProses" value="'+invoice_id+'"></span><a class="btn btn-sm btn-primary" onclick="reloadTolakInnvoice('+invoice_id+');"><i class="fa fa-refresh"></i></a>');
-		prnt.siblings('td').children('.reason_finance_class'+invoice_id+'').show();
-		prnt.siblings('td').children('.reason_finance_class'+invoice_id+'').attr('required',true);
+		td.html('<input type="text" class="reason_finance_class'+invoice_id+'" name="reason_finance[]">')
+		// prnt.siblings('td').children('.reason_finance_class'+invoice_id+'').show();
+		// prnt.siblings('td').children('.reason_finance_class'+invoice_id+'').attr('required',true);
 		alert('Alasan harus diisi');
 	}
 }
+
 function reloadTerimaInnvoice(th) {
 	var id = th;
 	$('.ganti_'+id+'').html(simpanHtml[id]);

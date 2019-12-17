@@ -23,7 +23,7 @@
 						<div class="box box-primary box-solid">
 							<div class="box-body">
 								<!-- <div style="overflow: auto;"> -->
-								<table id="unprocessTabel" class="table table-striped table-bordered table-hover text-center tblMI">
+								<table id="unprocessTabel" class="table table-striped table-bordered table-hover text-center">
 									<thead>
 										<tr class="bg-primary">
 											<th class="text-center">No</th>
@@ -42,7 +42,7 @@
 											<th class="text-center">PIC</th>
 										</tr>
 									</thead>
-									<tbody>
+									<tbody class="tbodyUnproses">
 										<?php $no=1; foreach($unprocess as $u){?>
 										<tr>
 											<td><?php echo $no ?></td>
@@ -79,8 +79,9 @@
 								          	</td>
 											<td><?php echo $u['PO_NUMBER']?></td>
 											<td><?php echo $u['LAST_STATUS_PURCHASING_DATE']?></td>
-											<td>
-												 <input type="text" style="display: none" name="reason_finance[]" class="reason_finance_class<?= $u['INVOICE_ID'] ?>"> <input type="hidden" name="id_reason[]" value="<?php echo $u['INVOICE_ID']?>">
+											<td class="kasihInputInvoice">
+												 
+												<input type="hidden" name="id_reason[]" value="<?php echo $u['INVOICE_ID']?>">
 											</td>
 											<td><?php echo $u['SOURCE']?></td>
 										</tr>
