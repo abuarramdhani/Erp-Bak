@@ -1,54 +1,15 @@
 $(document).ready(function(){
 
-    var EnglishMessageFormat =
-    '\
-        <div style="  font-family: Times New Roman, Times, serif;">\
-            <p>Dear Mr./Ms.,</p>\
-                <br>\
-            <p>\
-                Hereby we attached our Purchase Order (PO), please confirm your abilty to supply <b> by copying the template\
-                below as a reply</b> to this email no later than <b>1x24 hours </b>and please provide invoice to process the\
-                payment.\
-            </p>\
-            <p>Templates (copied from <b>"PO Confirmation"</b> to <b>"Signature Name")</b> : </p>\
-            <p>\
-                <b>PO CONFIRMATION</b> : <em>(Corresponding PO number)</em><br>\
-                <b>UNIT PRICE </b>: <em>(OK / NOT OK)</em><br>\
-                <b>QUANTITY</b> : <em>(OK / NOT OK)</em><br>\
-                <b>RECEIVED DATE</b> : <em>(OK / NOT OK)</em><br>\
-                <b>SHIP TO LOCATION</b> : <em>(OK / NOT OK)</em><br>\
-                <b>VENDOR DATA</b> : <em>(OK / NOT OK)</em><br>\
-                <b>SIGNATURE NAME</b> : <em>(Name and Position of PIC of Vendor)<br></em>\
-            </p>\
-            <p>\
-                Please notice that the date that is filled as <b>"Date Received" </b>in the Purchase Order (PO) is <b>\
-                Estmated Arrival Time date</b> at specified destination as written in Purchase Order.\
-            </p>\
-                <br>\
-            <p>Thank you for your cooperation.</p>\
-                <br>\
-            <p>\
-                Regards,<br>\
-                Ms. Rika<br>\
-                Admin Purchasing<br>\
-                <b>CV Karya Hidup Sentosa (QUICK)</b><br>\
-                Jalan Magelang No 144 Yogyakarta - Indonesia<br>\
-                Telp. <a href="https://m.quick.com/callto:+62-274-512095"><u>+62-274-512095</u></a> ext 211<br>\
-                Fax. <a href="https://m.quick.com/callto:+62-274-563523"><u>+62-274-563523</u></a><br>\
-                Website : <a href="http://www.quick.co.id/"><u>www.quick.co.id</u></a>\
-            </p>\
-        </div>\
-    ';
-
-    var IndonesiaMessageFormat =
-    '\
-    <div style="  font-family: Times New Roman, Times, serif;">\
-        <p>Selamat Siang,</p>\
+    if ($('.PurchaseManagementSendPOTitle').html() == 'WEB SEND PO BDL') {
+      var IndonesiaMessageFormat =
+      '\
+      <div style="  font-family: Times New Roman, Times, serif;">\
+        <p>Dengan hormat,</p>\
             <br>\
         <p>\
-            Terlampir Purchase Order (PO) dan Pedoman Kerjasama Vendor dari kami, dimohon konfirmasi kesanggupan <b>\
+            Terlampir Purchase Order (PO) dari kami, dimohon konfirmasi kesanggupan <b>\
             dengan menyalin template balasan dibawah ini kemudian mengirim balik</b> ke alamat email ini \
-            selambat-lambatnya <b>1x24 jam </b>sejak email ini diterima.\
+            selambat-lambatnya <b>1x24 jam </b>sejak email ini diterima.\
         </p>\
         <p>Template Balasan (disalin dari <b>"PO Confirmation"</b> hingga <b>"Sign Name")</b> : </p>\
         <p>\
@@ -70,16 +31,99 @@ $(document).ready(function(){
             <br>\
         <p>\
             Salam,<br>\
-            Ms. Rika<br>\
+            Ms. Astri<br>\
             Admin Purchasing<br>\
             <b>CV Karya Hidup Sentosa (QUICK)</b><br>\
             Jalan Magelang No 144 Yogyakarta - Indonesia<br>\
-            Telp. <a href="https://m.quick.com/callto:+62-274-512095"><u>+62-274-512095</u></a> ext 211<br>\
+            Telp. <a href="https://m.quick.com/callto:+62-274-512095"><u>+62-274-512095</u></a> ext 204<br>\
             Fax. <a href="https://m.quick.com/callto:+62-274-563523"><u>+62-274-563523</u></a><br>\
             Website : <a href="http://www.quick.co.id/"><u>www.quick.co.id</u></a>\
         </p>\
-    </div>\
-    ';
+      </div>\
+      ';
+    } else {
+      var IndonesiaMessageFormat =
+      '\
+      <div style="  font-family: Times New Roman, Times, serif;">\
+          <p>Selamat Siang,</p>\
+              <br>\
+          <p>\
+              Terlampir Purchase Order (PO) dan Pedoman Kerjasama Vendor dari kami, dimohon konfirmasi kesanggupan <b>\
+              dengan menyalin template balasan dibawah ini kemudian mengirim balik</b> ke alamat email ini \
+              selambat-lambatnya <b>1x24 jam </b>sejak email ini diterima.\
+          </p>\
+          <p>Template Balasan (disalin dari <b>"PO Confirmation"</b> hingga <b>"Sign Name")</b> : </p>\
+          <p>\
+              <b>PO CONFIRMATION</b> : <em>(diisi dengan nomor PO terkait)</em><br>\
+              <b>UNIT PRICE </b>: <em>(diisi OK/NOT OK)</em><br>\
+              <b>QUANTITY</b> : <em>(diisi OK/NOT OK)</em><br>\
+              <b>RECEIVED DATE</b> : <em>(diisi OK/NOT OK)</em><br>\
+              <b>SHIP TO LOCATION</b> : <em>(diisi OK/NOT OK)</em><br>\
+              <b>VENDOR DATA</b> : <em>(diisi OK/NOT OK)</em><br>\
+              <b>SIGN NAME</b> : <em>(diisi Nama dan Jabatan penerima dan konfirmasi PO)<br></em>\
+          </p>\
+          <p>\
+              Mohon perhatiannya, bahwa tanggal yang tercantum sebagai <b>"Received Date" </b>pada Purchase Order \
+              (PO) adalah <b>tanggal diterimanya barang/jasa terkait di alamat tujuan </b>(Gudang Tujuan) yang ditentukan/\
+              dituliskan pada masing-masing Purchase Order.\
+          </p>\
+              <br>\
+          <p>Terima kasih atas kerjasamanya</p>\
+              <br>\
+          <p>\
+              Salam,<br>\
+              Ms. Rika<br>\
+              Admin Purchasing<br>\
+              <b>CV Karya Hidup Sentosa (QUICK)</b><br>\
+              Jalan Magelang No 144 Yogyakarta - Indonesia<br>\
+              Telp. <a href="https://m.quick.com/callto:+62-274-512095"><u>+62-274-512095</u></a> ext 211<br>\
+              Fax. <a href="https://m.quick.com/callto:+62-274-563523"><u>+62-274-563523</u></a><br>\
+              Website : <a href="http://www.quick.co.id/"><u>www.quick.co.id</u></a>\
+          </p>\
+      </div>\
+      ';
+    }
+
+
+          var EnglishMessageFormat =
+          '\
+              <div style="  font-family: Times New Roman, Times, serif;">\
+                  <p>Dear Mr./Ms.,</p>\
+                      <br>\
+                  <p>\
+                      Hereby we attached our Purchase Order (PO), please confirm your abilty to supply <b> by copying the template\
+                      below as a reply</b> to this email no later than <b>1x24 hours </b>and please provide invoice to process the\
+                      payment.\
+                  </p>\
+                  <p>Templates (copied from <b>"PO Confirmation"</b> to <b>"Signature Name")</b> : </p>\
+                  <p>\
+                      <b>PO CONFIRMATION</b> : <em>(Corresponding PO number)</em><br>\
+                      <b>UNIT PRICE </b>: <em>(OK / NOT OK)</em><br>\
+                      <b>QUANTITY</b> : <em>(OK / NOT OK)</em><br>\
+                      <b>RECEIVED DATE</b> : <em>(OK / NOT OK)</em><br>\
+                      <b>SHIP TO LOCATION</b> : <em>(OK / NOT OK)</em><br>\
+                      <b>VENDOR DATA</b> : <em>(OK / NOT OK)</em><br>\
+                      <b>SIGNATURE NAME</b> : <em>(Name and Position of PIC of Vendor)<br></em>\
+                  </p>\
+                  <p>\
+                      Please notice that the date that is filled as <b>"Date Received" </b>in the Purchase Order (PO) is <b>\
+                      Estmated Arrival Time date</b> at specified destination as written in Purchase Order.\
+                  </p>\
+                      <br>\
+                  <p>Thank you for your cooperation.</p>\
+                      <br>\
+                  <p>\
+                      Regards,<br>\
+                      Ms. Rika<br>\
+                      Admin Purchasing<br>\
+                      <b>CV Karya Hidup Sentosa (QUICK)</b><br>\
+                      Jalan Magelang No 144 Yogyakarta - Indonesia<br>\
+                      Telp. <a href="https://m.quick.com/callto:+62-274-512095"><u>+62-274-512095</u></a> ext 211<br>\
+                      Fax. <a href="https://m.quick.com/callto:+62-274-563523"><u>+62-274-563523</u></a><br>\
+                      Website : <a href="http://www.quick.co.id/"><u>www.quick.co.id</u></a>\
+                  </p>\
+              </div>\
+          ';
 
     $('#txaPMSPOEmailBody').redactor({
         //   imageUpload: baseurl,

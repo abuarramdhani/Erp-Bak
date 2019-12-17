@@ -1,8 +1,6 @@
     <!-- Content Header (Page header) -->
     <section class="content-header">
-      <h1>
-        Purchase Management Send PO
-      </h1>
+      <h1 class="PurchaseManagementSendPOTitle"><?= $MenuName ?></h1>
     </section>
 
     <!-- Main content -->
