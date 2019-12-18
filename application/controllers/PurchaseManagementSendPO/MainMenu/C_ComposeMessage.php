@@ -173,10 +173,10 @@ $data['UserMenu'][0]['user_group_menu_name'] == 'WEB SEND PO BDL' ? $data['MenuN
 			$ftp_password 	 = '123456';
 			$ftp_local_dir	 = './assets/upload/PurchaseManagementSendPO/Temporary/FTPDocument/';
 			if ($data['UserMenu'][0]['user_group_menu_name'] == 'WEB SEND PO BDL') {
-					$ftp_server_dir	 = './1.PEMBELIAN_SEKSI/03. PURCHASE RECORD/04. PO (Scan)/7. PO DAN KONFIRMASI 2019/5. PO BDL/';
+					$ftp_server_dir	 = './1.PEMBELIAN_SEKSI/03. PURCHASE RECORD/04. PO (Scan)/11. PO DAN KONFIRMASI 2019/5. PO BDL/';
 		  }
 			else {
-					$ftp_server_dir	 = './1.PEMBELIAN_SEKSI/03. PURCHASE RECORD/04. PO (Scan)/7. PO DAN KONFIRMASI 2019/1. Dokumen PO 2019/';
+					$ftp_server_dir	 = './1.PEMBELIAN_SEKSI/03. PURCHASE RECORD/04. PO (Scan)/11. PO DAN KONFIRMASI 2019/1. Dokumen PO 2019/';
 			}
 			$ftp_file_format = '.pdf';
 
