@@ -85,12 +85,10 @@ class C_trackingInvoice extends CI_Controller{
 		$this->load->view('TrackingInvoice/V_searchInvoice',$data);
 		$this->load->view('V_Footer',$data);
 
-		// $this->output->cache(1);
 	}
 
 	public function btn_search(){
 
-		// echo "<pre>";print_r($_POST);exit();
 		$nama_vendor = $this->input->post('nama_vendor');
 		$po_number = $this->input->post('po_number');
 		$any_keyword = $this->input->post('any_keyword');
@@ -99,7 +97,6 @@ class C_trackingInvoice extends CI_Controller{
 		$invoice_date_from = $this->input->post('invoice_date_from');
 		$action_date = $this->input->post('action_date');
 		$sumber = $this->input->post('sumber');
-		// $action_status = $this->input->post('')
 
 		$param_inv = '';
 
@@ -160,6 +157,7 @@ class C_trackingInvoice extends CI_Controller{
 		//print_r($tabel);exit;
 		$status = array();
 		foreach ($tabel as $tb => $value) {
+			
 			$po_detail = $value['PO_DETAIL'];
 			
 			if ($po_detail) {
@@ -176,32 +174,70 @@ class C_trackingInvoice extends CI_Controller{
 						$line_num = $explode_lagi[1];
 						$lppb_num = $explode_lagi[2];
 
-						if ($line_num == '') {
-						$match = $this->M_trackingInvoice->checkStatusLPPB2($po_num);
-						} else if ($line_num !== ''){
-						$match = $this->M_trackingInvoice->checkStatusLPPB($po_num,$line_num);	
-						}
+							if ($line_num == '') {
+							$match = $this->M_trackingInvoice->checkStatusLPPB2($po_num);
+							// echo "<pre>";print_r($match);	
+							} else if ($line_num !== ''){
+							$match = $this->M_trackingInvoice->checkStatusLPPB($po_num,$line_num);
+							// echo "<pre>";print_r($match[0]['STATUS']);	
+							}
 
-
-						if ($match[0]['STATUS']=='' || $match[0]['STATUS']==NULL) {
-							$statusLppb = 'No Status';
-						}else{
-							$statusLppb = $match[0]['STATUS'];
-						}
+									foreach ($match as $key => $value) {
+									if ($value =='' || $value == NULL) {
+										$statusLppb = 'No Status';
+									}else{
+										$statusLppb = $match[0]['STATUS'];
+									}
+									}
 
 						$po_detail2[$po] = $value2.' - '.$statusLppb;
 					}
+					// echo "<pre>";print_r($status[$value['INVOICE_ID']]);
+					if (array_key_exists('INVOICE_ID',$value) == TRUE) {
 					$status[$value['INVOICE_ID']] = $po_detail2;
+					} else {
+					$status = $po_detail2;
+					}
 					$n++;
-					
+		// 		$status = array();
+		// foreach ($tabel as $tb => $value) {
+		// 	$po_detail = $value['PO_DETAIL'];
+			
+		// 	if ($po_detail) {
+		// 		$explode_po_detail = explode('<br>', $po_detail);
+		// 		if (!$explode_po_detail) {
+		// 			$po_detail = $value['PO_DETAIL'];
+		// 		}else{
+		// 			$n = 0;
+		// 			$po_detail2 = array();
+		// 			foreach ($explode_po_detail as $po => $value2) {
+		// 				$explode_lagi = explode('-', $value2);
+		// 				$po_num = $explode_lagi[0];
+		// 				$line_num = $explode_lagi[1];
+		// 				$lppb_num = $explode_lagi[2];
+		// 				if ($line_num == '') {
+		// 				$match = $this->M_trackingInvoice->checkStatusLPPB2($po_num);
+		// 				} else if ($line_num !== ''){
+		// 				$match = $this->M_trackingInvoice->checkStatusLPPB($po_num,$line_num);	
+		// 				}
+		// 				if ($match[0]['STATUS']=='' || $match[0]['STATUS']==NULL) {
+		// 					$statusLppb = 'No Status';
+		// 				}else{
+		// 					$statusLppb = $match[0]['STATUS'];
+		// 				}
+		// 				$po_detail2[$po] = $value2.' - '.$statusLppb;
+		// 			}
+		// 			$status[$value['INVOICE_ID']] = $po_detail2;
+		// 			$n++;
+
 				}
 
 			}	
 		}
 
-		// echo "<pre>";print_r($status);exit();
+					
+
 		
-		// $data['historyinvoice'] = $this->M_trackingInvoice->detailHistoryInvoice($invoice_id);
 		$data['invoice'] = $tabel;
 		$data['status'] = $status;
 
@@ -213,27 +249,13 @@ class C_trackingInvoice extends CI_Controller{
 
 	public function DetailInvoice(){ 
 
-		// $this->checkSession();
-		// $user_id = $this->session->userid;
-		
-		// $data['Menu'] = 'Dashboard';
-		// $data['SubMenuOne'] = '';
-		
-		// $data['UserMenu'] = $this->M_user->getUserMenu($user_id,$this->session->responsibility_id);
-		// $data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id);
-		// $data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id);
-
 		$invoice_id = $this->input->post('id');
 
 		$data['invoice'] = $this->M_trackingInvoice->detailInvoice($invoice_id);
 		$data['historyinvoice'] = $this->M_trackingInvoice->detailHistoryInvoice($invoice_id);
 
-		// $this->load->view('V_Header',$data);
-		// $this->load->view('V_Sidemenu',$data);
 		$this->load->view('TrackingInvoice/V_detailTrackingInvoice',$data);
-		// $this->load->view('V_Footer',$data);
 
-		// $this->output->cache(1);
 	}
 
 	public function exportExcelTrackingInvoice(){
@@ -246,7 +268,6 @@ class C_trackingInvoice extends CI_Controller{
 		$invoice_date_to = $this->input->post('invoice_date_to');
 		$invoice_date_from = $this->input->post('invoice_date_from');
 		$action_date = $this->input->post('action_date');
-		// $action_status = $this->input->post('')
 
 		$param_inv = '';
 
@@ -297,7 +318,6 @@ class C_trackingInvoice extends CI_Controller{
 			$tabel = $this->M_trackingInvoice->searchMonitoringInvoice($param_inv,$param_akses);
 		}
 
-		//print_r($tabel);exit;
 		$status = array();
 		foreach ($tabel as $tb => $value) {
 			$po_detail = $value['PO_DETAIL'];
@@ -444,9 +464,5 @@ class C_trackingInvoice extends CI_Controller{
 
 	}
 
-	// public function test(){
-	//   echo "test";
-	//   exit();
-	// }
-
+	
 }

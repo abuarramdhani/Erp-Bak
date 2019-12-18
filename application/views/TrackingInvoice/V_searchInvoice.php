@@ -85,8 +85,8 @@
 													<br>
 													<br>
 													<div class="pull-left">
-														<!-- * Dalam Pengembangan<br> -->
-														<!-- ** Gunakan <strong>% di belakang no.PO </strong>untuk pencarian wildcard -->
+														* Gunakan lebih dari satu parameter untuk mempersingkat waktu pencarian<br>
+														** (tips) Pencarian Source Akuntansi, tambahkan Nama Vendor untuk mempersingkat waktu pencarian
 													</div><div class="pull-right">
 														<button type="button" class="btn btn-primary" id="btn_search_invoice" style="margin-top: 10px; margin-right: 10px;">Search</button>
 														<div class="pull-right">

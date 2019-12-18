@@ -138,8 +138,8 @@ class M_trackingInvoice extends CI_Model {
                             AND poh.segment1 = '$po_number'
                             AND pol.line_num = '$line_num'";
 
-                            // echo "<pre>";
-        // print_r($query);exit();
+        // echo "<pre>";
+        // print_r($query);
         $runQuery = $oracle->query($query);
         return $runQuery->result_array();
     }
@@ -183,8 +183,9 @@ class M_trackingInvoice extends CI_Model {
                             AND pol.po_line_id(+) = pll.po_line_id
                             AND poh.segment1 = '$po_number'";
 
-                            // echo "<pre>";
-        // print_r($query);exit();
+        // echo "<pre>";
+        // print_r($query);
+        // exit();
         $runQuery = $oracle->query($query);
         return $runQuery->result_array();
     }
