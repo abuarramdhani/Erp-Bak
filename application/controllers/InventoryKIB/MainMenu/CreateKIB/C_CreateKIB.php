@@ -157,7 +157,34 @@ class C_CreateKIB extends CI_Controller
 	{
 		$n = 0;
 		$org = 'odm';
+		echo "<pre>";
+		// print_r($org);print_r($status);print_r($no_batch);print_r($kib,$n);
+		// exit();
 		$this->printpdf($org,$status,$no_batch,$kib,$n);
+	}
+
+	public function cetakserial($serial)
+	{
+
+		$this->printpdf2($serial);
+	}
+
+	public function cetakserial2()
+	{
+		$this->checkSession();
+		$user_id = $this->session->userid;
+		$data['Menu'] = 'Dashboard';
+		$data['SubMenuOne'] = '';
+		$data['UserMenu'] = $this->M_user->getUserMenu($user_id,$this->session->responsibility_id);
+		$data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id);
+		$data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id);
+
+		$this->load->view('V_Header',$data);
+		$this->load->view('V_Sidemenu',$data);
+		$this->load->view('InventoryKIB/MainMenu/CreateKIB/V_Cetak',$data);
+		$this->load->view('V_Footer',$data);
+
+		// $this->printpdf2($serial);
 	}
 
 	public function pdf3($nomorset)
@@ -262,9 +289,9 @@ class C_CreateKIB extends CI_Controller
 		endif;
 
 		$data['dataKIB'] = $dataKIBKelompok;
-		// echo "<pre>";
-		// print_r($data);
-		// exit();
+		echo "<pre>";
+		print_r($data);
+		exit();
 		$filename			= 'KIB_'.time().'.pdf';
 		$html = $this->load->view('InventoryKIB/MainMenu/CreateKIB/V_Pdf3',$data,true);
 		// echo "$html";
@@ -282,11 +309,156 @@ class C_CreateKIB extends CI_Controller
 
 	}
 
+	public function printpdf2($serial){
+		$this->load->library('ciqrcode');
+		$this->load->library('Pdf');
+		$pdf 			= $this->pdf->load();
+		$pdf = new mPDF('utf-8',array(80,110), 0, '', 13, 13, 0, 20, 0, 0);
+
+		$data['serial'] = $serial;
+		// echo "<pre>";
+		// print_r($data);
+		// exit();
+		$serialku = $serial;
+		$serialku .= "\t";
+		$serialku .= "\t";
+		$serialku .= "\t";
+
+		if(!is_dir('./assets/img'))
+			{
+				mkdir('./assets/img', 0777, true);
+				chmod('./assets/img', 0777);
+			}
+
+		$temp_filename = array();
+			
+				$params['data']		= $serialku;
+				$params['level']	= 'H';
+				$params['size']		= 3;
+				$config['black']	= array(224,255,255);
+				$config['white']	= array(70,130,180);
+				$params['savename'] = './assets/img/'.$serial.'.png';
+				$this->ciqrcode->generate($params);
+				array_push($temp_filename, $params['savename']);
+
+		$filename			= 'KIB_'.time().'.pdf';
+		$html = $this->load->view('InventoryKIB/MainMenu/CreateKIB/V_Pdf_Serial',$data,true);
+		$pdf->WriteHTML($html,0);
+		$pdf->Output($filename, 'I');
+
+		if (!empty($temp_filename)) {
+				foreach ($temp_filename as $tf) {
+					if(is_file($tf)){
+						unlink($tf);
+					}
+				}
+			}
+			
+	}
+
+public function printpdf99(){
+
+	require_once APPPATH.'third_party/Excel/PHPExcel.php';
+    require_once APPPATH.'third_party/Excel/PHPExcel/IOFactory.php';
+     
+		$file_data  = array();
+		 // load excel
+		  $file = $_FILES['excel_file']['tmp_name'];
+		  $load = PHPExcel_IOFactory::load($file);
+		  $sheets = $load->getActiveSheet()->toArray(null,true,true,true);
+
+		//   echo "<pre>";
+		//   print_r($sheets);
+		//   exit();
+
+		$i=0;
+	  	foreach($sheets as $row) {
+		   	// if ($i != 0) {
+		   		$file_dataA[] = $row['A'];
+		   	// }
+		   	$i++;
+		  }
+		  
+
+	// $serial1 = $this->input->post('txtserial1[]');	
+	// $serial2 = $this->input->post('txtserial2[]');
+	// $serial3 = $this->input->post('txtserial3[]');
+	// $serial4 = $this->input->post('txtserial4[]');
+	// $serial5 = $this->input->post('txtserial5[]');
+	// // echo "<pre>"; print_r($serial1); exit();
+
+	// $serial = array('0' => $serial1[0], '1' => $serial2[0], '2' => $serial3[0],	'3' => $serial4[0],	'4' => $serial5[0]);
+		// for ($i=0; $i <count($serial1) ; $i++) { 
+		// 	$array = array(
+		// 		'0'		=> $serial1[0],
+		// 		'1' 	=> $serial2[0],
+		// 		'2' 	=> $serial3[0],
+		// 		'3' 	=> $serial4[0],
+		// 		'4' 	=> $serial5[0],
+		// 	);
+		// 	array_push($serial, $array);
+		// }
+		// echo "<pre>"; print_r($serial); exit();
+
+		$this->load->library('ciqrcode');
+		$this->load->library('Pdf');
+		$pdf 			= $this->pdf->load();
+		$pdf = new mPDF('utf-8',array(80,110), 0, '', 13, 13, 0, 20, 0, 0);
+
+		// $data['serial'] = $serial;
+		// echo "<pre>";
+		// print_r($data);
+		// exit();
+		// $serialku = $serial;
+		// $serialku .= "\t";
+		// $serialku .= "\t";
+		// $serialku .= "\t";
+		$data['serial'] 	= $file_dataA;
+
+		for ($i=0; $i < count($file_dataA) ; $i++) { 
+			$item[$i] = $this->M_createkib->getItemdesc($file_dataA[$i]);
+		}
+		$data['item'] = $item;
+
+		if(!is_dir('./assets/img'))
+			{
+				mkdir('./assets/img', 0777, true);
+				chmod('./assets/img', 0777);
+			}
+
+	$temp_filename = array();
+		for ($i=0; $i < count($file_dataA) ; $i++) { 
+				$params['data']		= $file_dataA[$i];
+				$params['level']	= 'H';
+				$params['size']		= 3;
+				$config['black']	= array(224,255,255);
+				$config['white']	= array(70,130,180);
+				$params['savename'] = './assets/img/'.$file_dataA[$i]													.'.png';
+				$this->ciqrcode->generate($params);
+				array_push($temp_filename, $params['savename']);
+	}
+	
+				
+
+		$filename			= 'KIB_'.time().'.pdf';
+		$html = $this->load->view('InventoryKIB/MainMenu/CreateKIB/V_Pdf_Serial99',$data,true);
+		$pdf->WriteHTML($html,0);
+		$pdf->Output($filename, 'I');
+
+		if (!empty($temp_filename)) {
+				foreach ($temp_filename as $tf) {
+					if(is_file($tf)){
+						unlink($tf);
+					}
+				}
+			}
+			
+	}
 
 	public function printpdf($org,$status,$no_batch,$kib,$n){
 		$length = 370;
 		if ($status == 1 || $n == 1) {
-			$length = 300;
+			$length = 310;
 		}
 		$this->load->library('ciqrcode');
 		$this->load->library('Pdf');
@@ -305,7 +477,7 @@ class C_CreateKIB extends CI_Controller
 		if ($status == '0') {
 			$status = null;
 		}
-		// echo "<pre>";
+		echo "<pre>";
 		$dataKIBKelompok  =array();
 		$arrayREQNUM = array();
 		if ($org == 'opm') {
@@ -396,7 +568,11 @@ class C_CreateKIB extends CI_Controller
 		
 
 		$filename			= 'KIB_'.time().'.pdf';
-		$html = $this->load->view('InventoryKIB/MainMenu/CreateKIB/V_Pdf',$data,true);
+		if ($org == 'odm') {
+			$html = $this->load->view('InventoryKIB/MainMenu/CreateKIB/V_Odm',$data,true);
+		} else {
+			$html = $this->load->view('InventoryKIB/MainMenu/CreateKIB/V_Pdf',$data,true);
+		}
 		$pdf->WriteHTML($html,0);
 		$pdf->Output($filename, 'I');
 
