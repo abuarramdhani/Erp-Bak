@@ -37,9 +37,14 @@
 			<td><?php echo $i['TAX_INVOICE_NUMBER']?></td>
 			<td><?php echo 'Rp. '. number_format(round($i['INVOICE_AMOUNT']),0,'.','.').',00-';
 			?></td>
-			<td><?php if($status[$i['INVOICE_ID']]){foreach ($status[$i['INVOICE_ID']] as $k) { ?>
-											<?php echo  $k ."<br>" ?>
-										<?php }} ?></td>
+			<td>
+			<?php 
+				foreach ($status as $k){ ?>
+					<?php echo  $k ."<br>" ?>
+				<?php }
+			 ?>
+				
+			</td>
 			<td><?php echo $i['STATUS_PAYMENT']?></td>
 			<td><?php echo $i['SOURCE']?></td>
 		</tr>
