@@ -1,7 +1,12 @@
-<form method="POST" action="<?php echo base_url('MonitoringLppbKasieGudang/Unprocess/saveActionLppbNumber')?>">
+<!-- <form method="POST" action="<?php echo base_url('MonitoringLppbKasieGudang/Unprocess/saveActionLppbNumber')?>"> -->
+	<style type="text/css">
+		.sembunyi {
+			display: none;
+		}
+	</style>
 	<div class="box box-primary box-solid">
  		<div class="box-body">
-			<input type="hidden" name="batch_number" value="<?php echo $lppb[0]['BATCH_NUMBER']?>">
+			<input type="hidden" class="batch_number_save" name="batch_number" value="<?php echo $lppb[0]['BATCH_NUMBER']?>">
 				<div class="box-body">
 					<table class="col-md-12" style="margin-bottom: 20px">
 						<tr>
@@ -53,22 +58,51 @@
 						<td class="batchdid_<?php echo $p['BATCH_DETAIL_ID']?>"><span class="tglTerimaTolak"></span></td>
 						<td class="batchdid_<?php echo $p['BATCH_DETAIL_ID']?>">
 															<?php echo $p['REASON']?>
-						<input type="text" value="<?php echo $p['REASON']?>" style="display: none; width: 100px" class="form-control txtAlasan" name="alasan_reject[]" id="txtTolak_<?php echo $p['BATCH_DETAIL_ID']?>">
-						<input type="hidden" name="id[]" value="<?php echo $p['BATCH_DETAIL_ID']?>"></td>
+						<input type="text" value="<?php echo $p['REASON']?>" style="display: none; width: 100px" class="form-control txtAlasan alasan_reject_save" name="alasan_reject[]" id="txtTolak_<?php echo $p['BATCH_DETAIL_ID']?>">
+						<input type="hidden" class="id_save" name="id[]" value="<?php echo $p['BATCH_DETAIL_ID']?>"></td>
 						</tr>
 						<?php $no++; } ?>
 					</tbody>
 			</table>
 				<div class="col-md-3">
-					<button type="button" class="btn btn-danger pull-left " value="4" style="margin-top: 10px" onclick="approveLppbByKasie(4);">Reject</button>
-					<button type="button" class="btn btn-success pull-right " value="3" style="margin-top: 10px" onclick="approveLppbByKasie(3);">Approve</button>
+					<button type="button" class="btn btn-danger pull-left " value="4" style="margin-top: 10px; margin-left:15px" onclick="approveLppbByKasie(4);">Reject</button>
+					<button type="button" class="btn btn-success pull-right " value="3" style="margin-top: 10px; margin-right:20px" onclick="approveLppbByKasie(3);">Approve</button>
 				</div>
+				<div class="col-md-3 pull-right">
+				<label> * Harap save terlebih dahulu </label>
 			</div>
-		<div class="col-md-2 pull-right">
-	<button id="btnsavekasie" type="submit" name="submit_action" class="btn btn-primary pull-right" style="margin-top: 10px" >Save</button>
+			</div>
+		<div class="col-md-4 pull-right">
+<?php if ($lppb[0]['STATUS'] == 2) { ?>
+	<button id="btnsavekasie" onclick="saveActionLppbNumber(this)" type="submit" name="submit_action" class="btn btn-primary pull-right" style="margin-top: 10px" ><i class="fa fa-check"></i> Save</button>
+<?php } ?>
+	<button title="Submit to Kasie Akuntansi" id="btnSubmitCheckingToAkuntansi" onclick="submitToKasie(this)" data-id="<?php echo $lppb[0]['BATCH_NUMBER']?>" style="margin-top:10px;margin-right:5px" data-batch="<?php echo $lppb[0]['GROUP_BATCH']?>" class="btn btn-success pull-right"><i class="fa fa-paper-plane"></i> Submit</button>
 	</div>
 		</div>
-</form>
+<!-- </form> -->
+
+<div id="mdlSubmitToKasieAkuntansi" class="modal fade" role="dialog">
+	<div class="modal-dialog" role="document">
+		<div class="modal-content"  id="content1" >
+		  <div class="modal-header">
+		    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+		    <h5 class="modal-title">Submit For Checking Confirmation</h5>
+		  </div>
+		  <div class="modal-body">
+		    <div class="row">
+		      <div class="col-md-12">Apakah Anda yakin akan melakukan Submit ke Kasie Batch Number Akuntansi : <b id="group_batch"></b> ?</div>
+		    </div>
+		  </div>
+		  <div class="modal-footer">
+		    <button type="button" class="btn btn-default" data-dismiss="modal">No</button>
+		    <button type="button" class="btn btn-primary" id="mdlYesAkt" >Yes</button>
+		  </div>
+		</div>
+ 	</div>
+</div>
+<script type="text/javascript">
+	var id_gd;
+</script>
 
 <script type="text/javascript">
 	$('.chkAllLppb').iCheck({

@@ -38,7 +38,7 @@
 									<tr>
 										<td><?php echo $no?></td>
 										<td>
-											<a title="Detail Lppb ..." onclick="MdlRejectKasie(<?php echo $lb['BATCH_NUMBER']?>)" data-toggle="modal" data-target="mdlRejectKasieGudang" class="btn btn-default btn-xs"><i class="fa fa-file-text-o"></i></a>
+											<button title="Detail Lppb ..." onclick="MdlRejectKasie(<?php echo $lb['BATCH_NUMBER']?>)" data-toggle="modal" data-target="mdlRejectKasieGudang" class="btn btn-default btn-sm"><i class="fa fa-file-text-o"></i> Detail</button>
 										</td>
 										<td><?php echo $lb['GROUP_BATCH']?></td>
 										<td><?php echo $lb['CREATE_DATE']?></td>

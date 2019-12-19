@@ -13,14 +13,14 @@
 							<th class="text-center">Status Detail</th>
 						</tr>
 					</thead>
-					<tbody>
+					<tbody class="coba">
 					<?php $no=1; if ($lppb) { foreach($lppb as $lb){ ?>
 					<tr>
 						<td><?php echo $no?></td>
 						<td>
-							<a title="Detail Lppb" href="<?php echo base_url('MonitoringLppbAkuntansi/Unprocess/detailLppbAkuntansi/'.$lb['BATCH_NUMBER'])?>" class="btn btn-default btn-xs"><i class="fa fa-file-text-o"></i></a>
+							<button title="Detail Lppb" href="<?php echo base_url('MonitoringLppbAkuntansi/Unprocess/detailLppbAkuntansi/'.$lb['BATCH_NUMBER'])?>" class="btn btn-default btn-sm"><i class="fa fa-file-text-o"></i> Detail</button>
 						</td>
-						<td><?php echo $lb['GROUP_BATCH']?></td>
+						<td class="coba"><?php echo $lb['GROUP_BATCH']?></td>
 						<td><?php echo $lb['CREATE_DATE']?></td>
 						<td><?php echo $lb['JUMLAH_LPPB']?></td>
 						<td>
