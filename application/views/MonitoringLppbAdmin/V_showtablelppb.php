@@ -44,7 +44,7 @@
 			</tbody>
 		</table>
 		<div class="pull-right">
-			<button type="button" id="addLppbNumber" class="btn btn-primary" style="margin-top: 10px">Add</button>
+			<button type="button" id="addLppbNumber" class="btn btn-primary zoom" style="margin-top: 10px">Add</button>
 		</div>
 <script type="text/javascript">
 	var id_gd;

@@ -21,7 +21,7 @@
 					<div class="col-lg-12">
 						<div class="box box-primary box-solid">
 							<div class="box-body">
-								<table class="table text-center dtTableMl">
+								<table class="table text-center dtFinishYa">
 									<thead>
 										<tr class="bg-primary">
 											<th width="5%" class="text-center">No</th>
@@ -37,7 +37,7 @@
 									<tr>
 										<td><?php echo $no?></td>
 										<td>
-											<a title="Detail Lppb" onclick="ModalFinishAdmin(<?php echo $lb['BATCH_NUMBER']?>)" data-target="mdlFinishAdminGudang" data-toggle="modal" class="btn btn-default btn-xs"><i class="fa fa-file-text-o"></i></a>
+											<button title="Detail Lppb" onclick="ModalFinishAdmin(<?php echo $lb['BATCH_NUMBER']?>)" data-target="mdlFinishAdminGudang" data-toggle="modal" class="btn btn-default btn-sm"><i class="fa fa-file-text-o"></i> Detail</button>
 										</td>
 										<td><?php echo $lb['GROUP_BATCH']?></td>
 										<td><?php echo $lb['CREATE_DATE']?></td>
@@ -76,6 +76,17 @@
 </section>
 <script type="text/javascript">
 	var id_gd;
+
+	$(document).ready(function(){
+	$('.dtFinishYa').DataTable({
+		"paging": true,
+		"info":     false,
+		"language" : {
+			"zeroRecords": " "             
+		}
+	})
+
+	})
 </script>
 
 <!-- Modal Baru -->

@@ -3,6 +3,16 @@
 	.text-left span {
 		font-size: 36px
 	}
+	.zoom {
+  transition: transform .2s;
+}
+
+.zoom:hover {
+  -ms-transform: scale(1.3); /* IE 9 */
+  -webkit-transform: scale(1.3); /* Safari 3-8 */
+  transform: scale(1.3); 
+  box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2);
+}
 </style>
 <section class="content">
 	<div class="inner" >
@@ -11,9 +21,9 @@
 				<div class="row">
 					<div class="col-lg-12">
 						<div class="text-left ">
-							<span><b>List Data Batch LPPB</b></span>
+							<span style="font-family: 'Source Sans Pro',sans-serif;font-size: 30px"><b>LIST DATA BATCH LPPB</b></span>
 							<a href="<?php echo base_url('MonitoringLPPB/ListBatch/newLppbNumber');?>">
-							<button type="button"  class="btn btn-lg btn-primary pull-right"><i class="glyphicon glyphicon-plus"></i></button>
+							<button type="button"  class="btn btn-lg btn-primary pull-right zoom"><i class="glyphicon glyphicon-plus"></i></button>
 							</a>
 						</div>
 					</div>
@@ -29,6 +39,7 @@
 						</select>
 					</div>
 				</div>
+				<input type="hidden" name="hdn" id="hdnText" class="hdnClass" value="">
 				<br />
 				<div id="showOptionLppb">
 					

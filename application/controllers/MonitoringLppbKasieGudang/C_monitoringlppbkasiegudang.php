@@ -105,29 +105,41 @@ class C_monitoringlppbkasiegudang extends CI_Controller{
  									text: 'Data Kosong',
 									}) </script>";
 			echo "<script>$('#mdlSubmitToKasieGudang').modal('hide')</script>";
+
 			}
 	}
 
 	public function saveActionLppbNumber(){
+
+		// echo "<pre>";print_r($_POST);exit();
 		
-		$proses = $this->input->post('hdnProses');
-		$alasan = $this->input->post('alasan_reject');
+		$batch_number = $this->input->post('batch_number'); //
+		$proses = $this->input->post('hdnProses');//
+		$date = $this->input->post('tglTerimaTolak');//
+		$alasan = $this->input->post('alasan_reject'); //
 		$id = $this->input->post('id');
-		$date = $this->input->post('tglTerimaTolak');
-		$batch_number = $this->input->post('batch_number');
-		$batch_detail_id = $this->input->post('batch_detail_id');
+		// $batch_detail_id = $this->input->post('batch_detail_id');
 
 		foreach ($proses as $p => $value) {
 			if (empty($alasan[$p])) {
-				
 			$this->M_monitoringlppbkasiegudang->saveProsesLppbNumber($proses[$p],$date[$p],$batch_number,$id[$p]);
 			}else{
 			$this->M_monitoringlppbkasiegudang->saveProsesLppbNumber2($proses[$p],$alasan[$p],$date[$p],$id[$p]);
 			$this->M_monitoringlppbkasiegudang->saveProsesLppbNumber3($batch_number,$id[$p],$date[$p]);
 			}
 		}
+	
+		$test = print "<script>$('#cobahimahimabatchnumber').text()</script>";
 
-		redirect('MonitoringLppbKasieGudang/Unprocess');
+		if($batch_number == $test ){
+			echo "<script> hapusrow = $('#cobahimahima'); 
+						   hapusrow.remove() </script>";
+		}
+	
+		echo "<script> console.log("+$batch_number+"hueee"+$test+") </script>";
+		echo "<script> console.log('kok gjln') </script>";
+		print "<script> console.log('kok gjln prnt') </script>";
+		// redirect('MonitoringLppbKasieGudang/Unprocess');
 	}
 
 	public function SubmitKeAKuntansi(){
