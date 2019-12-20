@@ -12,8 +12,8 @@ class M_requisition extends CI_Model
 
     public function getItem($string)
     {
-        $oracle = $this->load->database("oracle", true);
-        $query = $oracle->query(
+        $oracle_dev = $this->load->database("oracle", true);
+        $query = $oracle_dev->query(
             "SELECT
             msib.INVENTORY_ITEM_ID -- ini yang disimpan di database
             ,msib.ALLOW_ITEM_DESC_UPDATE_FLAG ALLOW_DESC
@@ -46,28 +46,28 @@ class M_requisition extends CI_Model
 
     // public function saveHeader($head)
     // {
-    //     $oracle = $this->load->database('trial', true);
-    //     $oracle->insert('t_head', $head);
-    //     $last_insert_id = $oracle->insert_id();
+    //     $oracle_dev = $this->load->database('trial', true);
+    //     $oracle_dev->insert('t_head', $head);
+    //     $last_insert_id = $oracle_dev->insert_id();
 
     //     return $last_insert_id;
     // }
 
     public function saveLine($line, $nbd)
     {
-        $oracle = $this->load->database('oracle', true);
-        $oracle->set('NEED_BY_DATE',"TO_DATE('$nbd','YYYY-MM-DD')",false);
-        $oracle->set('ORDER_DATE',"SYSDATE",false);
-        $oracle->insert('KHS.KHS_OKBJ_ORDER_HEADER', $line);
-        $order_id = $oracle->query("SELECT MAX(ORDER_ID) ORDER_ID FROM KHS.KHS_OKBJ_ORDER_HEADER");
+        $oracle_dev = $this->load->database('oracle_dev', true);
+        $oracle_dev->set('NEED_BY_DATE',"TO_DATE('$nbd','YYYY-MM-DD')",false);
+        $oracle_dev->set('ORDER_DATE',"SYSDATE",false);
+        $oracle_dev->insert('KHS.KHS_OKBJ_ORDER_HEADER', $line);
+        $order_id = $oracle_dev->query("SELECT MAX(ORDER_ID) ORDER_ID FROM KHS.KHS_OKBJ_ORDER_HEADER");
 
         return $order_id->result_array();
     }
 
     public function getListDataOrder($noind)
     {
-        $oracle = $this->load->database('oracle', true);
-        $query = $oracle->query("SELECT DISTINCT
+        $oracle_dev = $this->load->database('oracle_dev', true);
+        $query = $oracle_dev->query("SELECT DISTINCT
         ooh.*,
         msib.SEGMENT1,
         msib.DESCRIPTION,
@@ -90,8 +90,8 @@ class M_requisition extends CI_Model
 
     public function getPersonId($noind)
     {
-        $oracle = $this->load->database('oracle', true);
-        $query = $oracle->query("SELECT ppf.ATTRIBUTE3,
+        $oracle_dev = $this->load->database('oracle_dev', true);
+        $query = $oracle_dev->query("SELECT ppf.ATTRIBUTE3,
         ppf.PERSON_ID  --ini yang disimpan di database order
         ,ppf.FULL_NAME
         from
@@ -104,8 +104,8 @@ class M_requisition extends CI_Model
 
     public function setApproverItem($noind, $itemCode)
     {
-        $oracle = $this->load->database('oracle', true);
-        $query = $oracle->query("SELECT
+        $oracle_dev = $this->load->database('oracle_dev', true);
+        $query = $oracle_dev->query("SELECT
         ppf.PERSON_ID ,
         ppf.FULL_NAME ,
         koah.APPROVER_LEVEL ,
@@ -167,8 +167,8 @@ class M_requisition extends CI_Model
 
     public function setApproverItemUrgent($noind, $itemCode)
     {
-        $oracle = $this->load->database('oracle', true);
-        $query = $oracle->query("SELECT
+        $oracle_dev = $this->load->database('oracle_dev', true);
+        $query = $oracle_dev->query("SELECT
         ppf.PERSON_ID
         ,ppf.FULL_NAME
         ,koah.APPROVER_LEVEL
@@ -221,22 +221,22 @@ class M_requisition extends CI_Model
 
     public function ApproveOrder($approve)
     {
-        $oracle = $this->load->database('oracle', true);
-        $oracle->insert('KHS.KHS_OKBJ_ORDER_APPROVAL', $approve);
+        $oracle_dev = $this->load->database('oracle_dev', true);
+        $oracle_dev->insert('KHS.KHS_OKBJ_ORDER_APPROVAL', $approve);
     }
 
     public function getDestination($itemkode)
     {
-        $oracle = $this->load->database('oracle', true);
-        $query = $oracle->query("SELECT distinct prla.DESTINATION_TYPE_CODE from po_requisition_lines_all prla, mtl_system_items_b msib where prla.ITEM_ID = msib.INVENTORY_ITEM_ID and msib.INVENTORY_ITEM_ID = '$itemkode'");
+        $oracle_dev = $this->load->database('oracle_dev', true);
+        $query = $oracle_dev->query("SELECT distinct prla.DESTINATION_TYPE_CODE from po_requisition_lines_all prla, mtl_system_items_b msib where prla.ITEM_ID = msib.INVENTORY_ITEM_ID and msib.INVENTORY_ITEM_ID = '$itemkode'");
 
         return $query->result_array();
     }
 
     public function getOrganization($itemkode)
     {
-        $oracle = $this->load->database('oracle', true);
-        $query = $oracle->query("SELECT DISTINCT ood.organization_name, ood.organization_code io, ood.organization_id FROM mtl_system_items_b msib, org_organization_definitions ood WHERE msib.inventory_item_id = '$itemkode' AND ood.organization_id = msib.organization_id AND msib.organization_id <> 81
+        $oracle_dev = $this->load->database('oracle_dev', true);
+        $query = $oracle_dev->query("SELECT DISTINCT ood.organization_name, ood.organization_code io, ood.organization_id FROM mtl_system_items_b msib, org_organization_definitions ood WHERE msib.inventory_item_id = '$itemkode' AND ood.organization_id = msib.organization_id AND msib.organization_id <> 81
         ORDER BY io");
 
         return $query->result_array();
@@ -244,8 +244,8 @@ class M_requisition extends CI_Model
 
     public function getLocation()
     {
-        $oracle = $this->load->database('oracle', true);
-        $query = $oracle->query("SELECT  hla.location_code loc, hla.description, hla.location_id, br.branch
+        $oracle_dev = $this->load->database('oracle_dev', true);
+        $query = $oracle_dev->query("SELECT  hla.location_code loc, hla.description, hla.location_id, br.branch
         FROM hr_locations_all hla, (select SUBSTR(hou.attribute30, 1, 2) branch, hou.location_id from hr_all_organization_units hou where hou.attribute30 is not null) br
            WHERE hla.description IS NULL AND hla.inactive_date IS NULL
          AND hla.location_id = br.location_id (+)
@@ -256,8 +256,8 @@ class M_requisition extends CI_Model
 
     public function getSubinventory($organization)
     {
-        $oracle = $this->load->database('oracle', true);
-        $query = $oracle->query("SELECT
+        $oracle_dev = $this->load->database('oracle_dev', true);
+        $query = $oracle_dev->query("SELECT
                                 msi.SECONDARY_INVENTORY_NAME subinv, msi.description
                                 from
                                 mtl_secondary_inventories msi
@@ -270,8 +270,8 @@ class M_requisition extends CI_Model
 
     public function getHistoryOrder($order_id)
     {
-        $oracle = $this->load->database('oracle', true);
-        $query  = $oracle->query("SELECT
+        $oracle_dev = $this->load->database('oracle_dev', true);
+        $query  = $oracle_dev->query("SELECT
                                     kooa.*
                                     ,ppf.FULL_NAME
                                     ,ppf.NATIONAL_IDENTIFIER 
@@ -288,8 +288,8 @@ class M_requisition extends CI_Model
 
     public function getAtasan($string)
     {
-        $oracle = $this->load->database('oracle', true);
-        $query  = $oracle->query("SELECT ppf.ATTRIBUTE3,
+        $oracle_dev = $this->load->database('oracle_dev', true);
+        $query  = $oracle_dev->query("SELECT ppf.ATTRIBUTE3,
                             ppf.PERSON_ID
                             ,ppf.FULL_NAME
                             from
@@ -303,14 +303,14 @@ class M_requisition extends CI_Model
 
     public function setAtasan($atasan)
     {
-        $oracle = $this->load->database('oracle', true);
-        $oracle->insert("KHS.KHS_OKBJ_APPROVE_HIR",$atasan);
+        $oracle_dev = $this->load->database('oracle_dev', true);
+        $oracle_dev->insert("KHS.KHS_OKBJ_APPROVE_HIR",$atasan);
     }
 
     public function getRequsterAdmin($noind)
     {
-        $oracle = $this->load->database('oracle', true);
-        $query =  $oracle->query("SELECT
+        $oracle_dev = $this->load->database('oracle_dev', true);
+        $query =  $oracle_dev->query("SELECT
         ppf.PERSON_ID
         ,ppf.FULL_NAME
         ,koah.APPROVER_LEVEL
@@ -335,23 +335,23 @@ class M_requisition extends CI_Model
 
     public function getNoind($cond)
     {
-        $oracle = $this->load->database('oracle', true);
-        $query =  $oracle->query("SELECT ppf.NATIONAL_IDENTIFIER, ppf.PERSON_ID FROM PER_PEOPLE_F ppf $cond");
+        $oracle_dev = $this->load->database('oracle_dev', true);
+        $query =  $oracle_dev->query("SELECT ppf.NATIONAL_IDENTIFIER, ppf.PERSON_ID FROM PER_PEOPLE_F ppf $cond");
         
         return $query->result_array();
     }
 
     public function uploadFiles($upload)
     {
-        $oracle = $this->load->database('oracle', true);
-        $oracle->set('CREATION_DATE',"SYSDATE",false);
-        $oracle->insert("KHS.KHS_OKBJ_ORDER_ATTACHMENTS",$upload);
+        $oracle_dev = $this->load->database('oracle_dev', true);
+        $oracle_dev->set('CREATION_DATE',"SYSDATE",false);
+        $oracle_dev->insert("KHS.KHS_OKBJ_ORDER_ATTACHMENTS",$upload);
     }
 
     public function getApprover($person_id, $level)
     {
-        $oracle = $this->load->database('oracle', true);
-        $query = $oracle->query("SELECT
+        $oracle_dev = $this->load->database('oracle_dev', true);
+        $query = $oracle_dev->query("SELECT
                     oah.*, ppf.FULL_NAME
                 FROM
                     KHS.KHS_OKBJ_APPROVE_HIR oah,
@@ -367,26 +367,26 @@ class M_requisition extends CI_Model
     public function setDeactiveApprover($approver,$person_id)
     {
         $cond = array('ACTIVE_FLAG' => 'N');
-        $oracle = $this->load->database('oracle', true);
-        $oracle->where('APPROVER != ', "$approver");
-        $oracle->where('APPROVER_LEVEL', "5");
-        $oracle->where('PERSON_ID', $person_id);
-        $oracle->update('KHS.KHS_OKBJ_APPROVE_HIR', $cond);
+        $oracle_dev = $this->load->database('oracle_dev', true);
+        $oracle_dev->where('APPROVER != ', "$approver");
+        $oracle_dev->where('APPROVER_LEVEL', "5");
+        $oracle_dev->where('PERSON_ID', $person_id);
+        $oracle_dev->update('KHS.KHS_OKBJ_APPROVE_HIR', $cond);
     }
     
     public function setActiveApprover($approver,$person_id)
     {
-        $oracle = $this->load->database('oracle', true);
+        $oracle_dev = $this->load->database('oracle_dev', true);
         $cond = array('ACTIVE_FLAG' => 'Y');
-        $oracle->where('APPROVER = ', "$approver");
-        $oracle->where('PERSON_ID', $person_id);
-        $oracle->update('KHS.KHS_OKBJ_APPROVE_HIR', $cond);
+        $oracle_dev->where('APPROVER = ', "$approver");
+        $oracle_dev->where('PERSON_ID', $person_id);
+        $oracle_dev->update('KHS.KHS_OKBJ_APPROVE_HIR', $cond);
     }
 
     public function getRequestor($person_id)
     {
-        $oracle = $this->load->database('oracle', true);
-        $query = $oracle->query("SELECT
+        $oracle_dev = $this->load->database('oracle_dev', true);
+        $query = $oracle_dev->query("SELECT
                             oah.*, ppf.FULL_NAME
                         FROM
                             KHS.KHS_OKBJ_APPROVE_HIR oah,
@@ -401,22 +401,22 @@ class M_requisition extends CI_Model
 
     public function removeRequestor($person_id)
     {
-        $oracle = $this->load->database('oracle', true);
-        $oracle->where('APPROVER_LEVEL', "3");
-        $oracle->where('PERSON_ID', "$person_id");
-        $oracle->delete('KHS.KHS_OKBJ_APPROVE_HIR');
+        $oracle_dev = $this->load->database('oracle_dev', true);
+        $oracle_dev->where('APPROVER_LEVEL', "3");
+        $oracle_dev->where('PERSON_ID', "$person_id");
+        $oracle_dev->delete('KHS.KHS_OKBJ_APPROVE_HIR');
     }
 
     public function setRequestor($data)
     {
-        $oracle = $this->load->database('oracle', true);
-        $oracle->insert('KHS.KHS_OKBJ_APPROVE_HIR', $data);
+        $oracle_dev = $this->load->database('oracle_dev', true);
+        $oracle_dev->insert('KHS.KHS_OKBJ_APPROVE_HIR', $data);
     }
 
     public function getInfoOrderPR($order_id)
     {
-        $oracle = $this->load->database('oracle', true);
-        $query = $oracle->query("SELECT
+        $oracle_dev = $this->load->database('oracle_dev', true);
+        $query = $oracle_dev->query("SELECT
                     prha.SEGMENT1 PR_NUM
                     ,prha.CREATION_DATE PR_CREATION_DATE
                     ,prla.LINE_NUM PR_LINE_NUM

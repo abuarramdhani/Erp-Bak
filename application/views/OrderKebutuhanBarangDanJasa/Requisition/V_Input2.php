@@ -153,7 +153,7 @@
                                     </div>
                                 </div>
                                 <!-- untuk admin -->
-                                <?php if ($this->session->responsibility_id == 2683) { ?>
+                                <?php if ($this->session->responsibility_id == 2678) { ?>
                                     <label for="txtOKBOrderRequesterName" style="font-weight:normal" class="col-sm-3 control-label text-right">Requester</label>
                                     <div class="col-sm-3">
                                         <div class="input-group">

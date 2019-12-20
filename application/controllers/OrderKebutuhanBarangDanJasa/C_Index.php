@@ -47,7 +47,7 @@ class C_Index extends CI_Controller {
      
 		$this->load->view('V_Header',$data);
 		$this->load->view('V_Sidemenu',$data);
-		if ($this->session->responsibility_id == 2664 || $this->session->responsibility_id == 2665) {
+		if ($this->session->responsibility_id == 2679 || $this->session->responsibility_id == 2681) {
 			$allOrder = $this->M_approver->getListDataOrder();
 			
 			foreach ($allOrder as $key => $order) {
@@ -176,7 +176,7 @@ class C_Index extends CI_Controller {
      
 		$this->load->view('V_Header',$data);
 		$this->load->view('V_Sidemenu',$data);
-		// if ($this->session->responsibility_id == 2664 || $this->session->responsibility_id == 2665) {
+		// if ($this->session->responsibility_id == 2679 || $this->session->responsibility_id == 2681) {
 			$allOrder = $this->M_approver->getListDataOrder();
 			
 			foreach ($allOrder as $key => $order) {

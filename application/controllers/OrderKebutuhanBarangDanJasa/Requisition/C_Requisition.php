@@ -73,7 +73,7 @@ class C_Requisition extends CI_Controller {
 		
 		$data['pengorder'] = $this->M_requisition->getPersonId($noind);
 		
-		if ($this->session->responsibility_id == 2683) { //set admin atau bukan
+		if ($this->session->responsibility_id == 2678) { //set admin atau bukan
 			$data['requester'] = $this->M_requisition->getRequsterAdmin($noind);
 		} else {
 			$data['requester'] = $data['pengorder'];
@@ -461,7 +461,7 @@ class C_Requisition extends CI_Controller {
 		
 		$this->load->view('V_Header',$data);
 		$this->load->view('V_Sidemenu',$data);
-		if ($this->session->responsibility_id == 2683) {
+		if ($this->session->responsibility_id == 2678) {
 			$data['activeRequestor'] = $this->M_requisition->getRequestor($person_id);
 
 			$this->load->view('OrderKebutuhanBarangDanJasa/Requisition/V_SetupRequestor',$data);

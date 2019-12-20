@@ -11,8 +11,8 @@ class M_purchasing extends CI_Model
 
     public function getReleasedOrder()
     {
-        $oracle = $this->load->database('oracle', true);
-        $query = $oracle->query("SELECT
+        $oracle_dev = $this->load->database('oracle_dev', true);
+        $query = $oracle_dev->query("SELECT
                                 oprh.*
                                 ,ppf.NATIONAL_IDENTIFIER noind
                                 ,ppf.full_name creator
@@ -30,25 +30,25 @@ class M_purchasing extends CI_Model
 
     public function updateReleasedOrder($pre_req_id, $order)
     {
-        $oracle = $this->load->database('oracle', true);
-        $oracle->set('APPROVED_DATE',"SYSDATE",false);
-        $oracle->where('PRE_REQ_ID', $pre_req_id);
-        $oracle->update('KHS.KHS_OKBJ_PRE_REQ_HEADER', $order);
+        $oracle_dev = $this->load->database('oracle_dev', true);
+        $oracle_dev->set('APPROVED_DATE',"SYSDATE",false);
+        $oracle_dev->where('PRE_REQ_ID', $pre_req_id);
+        $oracle_dev->update('KHS.KHS_OKBJ_PRE_REQ_HEADER', $order);
     }
 
     public function getOrder($pre_req_id)
     {
-        $oracle = $this->load->database('oracle', true);
-        $oracle->where('PRE_REQ_ID', $pre_req_id);
-        $query = $oracle->get('KHS.KHS_OKBJ_ORDER_HEADER');
+        $oracle_dev = $this->load->database('oracle_dev', true);
+        $oracle_dev->where('PRE_REQ_ID', $pre_req_id);
+        $query = $oracle_dev->get('KHS.KHS_OKBJ_ORDER_HEADER');
 
         return $query->result_array();
     }
 
     public function getActOrder($person_id,$cond)
     {
-        $oracle = $this->load->database('oracle', true);
-        $query = $oracle->query("SELECT
+        $oracle_dev = $this->load->database('oracle_dev', true);
+        $query = $oracle_dev->query("SELECT
                     oprh.* ,
                     ppf.NATIONAL_IDENTIFIER noind ,
                     ppf.full_name creator ,
