@@ -6,10 +6,10 @@ $(document).ready(function () {
             LastDataRow   = Number($('.trOKBNewOrderListDataRow:last').attr('data-row'))
 
         var html = '<tr class="trOKBNewOrderListDataRow" data-row="'+(LastDataRow+1)+'">'+
-                        '<td>'+(LastDataRow+1)+'</td>'+
-                        '<td class="text-center"> <select class="select2 slcOKBNewOrderList" name="slcOKBinputCode[]" required style="width:200px"></select> </td>'+
-                        '<td> <input class="form-control txtOKBNewOrderListItemName" name="txtOKBitemName[]" readonly> </td>'+
-                        '<td> <textarea style="height: 34px;" class="form-control txaOKBNewOrderDescription" name="txtOKBinputDescription[]"></textarea> </td>'+
+                        '<td class="OKB-sticky-col" style="height:55px;">'+(LastDataRow+1)+'</td>'+
+                        '<td class="text-center OKB-sticky-col2"> <select class="select2 slcOKBNewOrderList" name="slcOKBinputCode[]" required style="width:200px"></select> </td>'+
+                        '<td class="OKB-sticky-col3"> <input class="form-control txtOKBNewOrderListItemName" name="txtOKBitemName[]" readonly> </td>'+
+                        '<td class="OKB-sticky-col4"> <textarea style="height: 34px;" class="form-control txaOKBNewOrderDescription" name="txtOKBinputDescription[]" readonly></textarea> </td>'+
                         '<td> <input type="text" class="form-control txtOKBNewOrderListQty" name="txtOKBinputQty[]" required style="background-color: #fbfb5966;"> </td>'+
                         '<td class="text-center"> <select class="form-control select2 slcOKBNewUomList" name="slcOKBuom[]" required style="width:120px"></select> </td>'+
                         '<td> <input type="text" class="form-control leadtimeOKB" name="txtOKBLeadtime[]" id="" readonly> </td>'+
@@ -17,7 +17,7 @@ $(document).ready(function () {
                         '<td><input type="text" class="form-control txtDestLineOKB" placeholder="Click Here!" data-row="'+(LastDataRow+1)+'" required style="background-color: #fbfb5966;"></td>'+
                         '<td> <textarea style="height: 34px; background-color: #fbfb5966;" class="form-control txaOKBNewOrderListReason" name="txtOKBinputReason[]" required></textarea> </td>'+
                         '<td> <textarea style="height: 34px;" class="form-control txaOKBNewOrderListUrgentReason" name="txtOKBinputUrgentReason[]" required></textarea> </td>'+
-                        '<td> <textarea style="height: 34px;" class="form-control txaOKBNewOrderListNote" name="txtOKBinputNote[]" required></textarea> </td>'+
+                        '<td> <textarea style="height: 34px;" class="form-control txaOKBNewOrderListNote" name="txtOKBinputNote[]"></textarea> </td>'+
                         '<td><input type="file" name="fileOKBAttachment'+(LastDataRow+1)+'[]" multiple></td>'+
                         '<td class="text-center">'+
                             '<button type="button" class="btn btn-success btnOKBNewOrderListCancel" title="Batal">'+
@@ -32,6 +32,7 @@ $(document).ready(function () {
                         '<td style="display:none;"><input type="hidden" class=" hdnLocOKB" name="hdnLocationOKB[]"></td>'+
                         '<td style="display:none;"><input type="hidden" class=" hdnSubinvOKB" name="hdnSubinventoyOKB[]"></td>'+
                         '<td style="display:none;"><input type="hidden" class="hdUrgentFlagOKB" name="hdnUrgentFlagOKB[]"></td>'+
+                        '<td style="display:none;"><input type="hidden" class="hdnItemCodeOKB" name="hdnItemCodeOKB[]"></td>'+
                     '</tr>';
             
         var modal ='<div class="modal fade" id="modal-destination-okb" data-row="'+(LastDataRow+1)+'">'+
@@ -116,7 +117,9 @@ $(document).ready(function () {
                                 title: item.DESCRIPTION,
                                 uom1: item.PRIMARY_UOM,
                                 uom2: item.SECONDARY_UOM,
-                                leadtime : item.LEAD_TIME
+                                leadtime : item.LEAD_TIME,
+                                allow_desc : item.ALLOW_DESC,
+                                txt : item.SEGMENT1,
                             }
                         })
                     };
@@ -134,10 +137,53 @@ $(document).ready(function () {
         });
         
         $('.slcOKBNewUomList').select2();
-
         $('.organizationOKB').select2();
         $('.locationOKB').select2();
         $('.subinventoryOKB').select2();
+    })
+
+    $(document).on('click', '.btnAddUser', function () {
+        $('.btnOKBNewUserDelete:first').removeAttr('disabled');
+        let LastUserList = $('.trOKBNewSetupUserDataRow:last').clone(),
+            LastDataRowUser   = Number($('.trOKBNewSetupUserDataRow:last').attr('data-row'))
+
+        var html = '<tr class="trOKBNewSetupUserDataRow" data-row="'+(LastDataRowUser+1)+'">'+
+                        '<td><select class="select2 slcAtasanOKB" style="width:200px" name="slcAtasanOKB[]" required></td>'+
+                        '<td><select class="select2 slcAtasanOKB okbSFA1" jenis="1" style="width:200px" name="slcAtasanUnit1OKB[]" required></td>'+
+                        '<td><select class="select2 slcAtasanOKB" style="width:200px" name="slcAtasanUnit2OKB[]"></td>'+
+                        '<td><select class="select2 slcAtasanOKB" style="width:200px" name="slcAtasanDepartmentOKB[]" required></td>'+
+                        // '<td><input type="text" class="form-control" name="" value="Hendro Wijayanto" readonly></td>'+
+                        '<td><button type="button" class="btn btn-danger btnOKBNewUserDelete" title="Hapus"><i class="fa fa-trash"></i></button></td>'+
+                    '</tr>';
+        
+        $('.trOKBNewSetupUserDataRow').parent().append(html);
+
+        $('.slcAtasanOKB').select2({
+            ajax: {
+                url: baseurl + 'OrderKebutuhanBarangDanJasa/Requisition/searchAtasan',
+                dataType: 'json',
+                delay: 250,
+                data: function(params) {
+                    return {
+                        q: params.term,
+                    };
+                },
+                processResults: function(data) {
+                    return {
+                        results: $.map(data, function(item) {
+                            return {
+                                id: item.PERSON_ID,
+                                text: item.FULL_NAME,
+                                title: item.FULL_NAME
+                            }
+                        })
+                    };
+                },
+                cache: true,
+            },
+            minimumInputLength: 4,
+            placeholder: 'Search Name',
+        })
     })
     
     $('.mdlOKBStatusOrder').modal('show');
@@ -179,7 +225,9 @@ $(document).ready(function () {
                             title: item.DESCRIPTION,
                             uom1: item.PRIMARY_UOM,
                             uom2: item.SECONDARY_UOM,
-                            leadtime : item.LEAD_TIME
+                            leadtime : item.LEAD_TIME,
+                            allow_desc : item.ALLOW_DESC,
+                            txt : item.SEGMENT1,
                         }
                     })
                 };
@@ -190,34 +238,7 @@ $(document).ready(function () {
         placeholder: 'Kode / deskripsi barang',
     })
 
-    $('.slcAtasanUnitOKB').select2({
-        ajax: {
-            url: baseurl + 'OrderKebutuhanBarangDanJasa/Requisition/searchAtasan',
-            dataType: 'json',
-            delay: 250,
-            data: function(params) {
-                return {
-                    q: params.term,
-                };
-            },
-            processResults: function(data) {
-                return {
-                    results: $.map(data, function(item) {
-                        return {
-                            id: item.PERSON_ID,
-                            text: item.FULL_NAME,
-                            title: item.FULL_NAME
-                        }
-                    })
-                };
-            },
-            cache: true,
-        },
-        minimumInputLength: 4,
-        placeholder: 'Search Name',
-    })
-
-    $('.slcAtasanDepartmentOKB').select2({
+    $('.slcAtasanOKB').select2({
         ajax: {
             url: baseurl + 'OrderKebutuhanBarangDanJasa/Requisition/searchAtasan',
             dataType: 'json',
@@ -269,37 +290,57 @@ $(document).ready(function () {
         }
     });
 
-    $('.checkAllApproveOKB').on('ifChecked ifUnchecked', function(event) {
-        if (event.type == 'ifChecked') {
-            $('.checkApproveOKB').iCheck('check');
-        } else {
-            $('.checkApproveOKB').iCheck('uncheck');
-        }
-
-        $('.checkApproveOKB').on('ifChanged', function(event) {
-            if ($('.checkApproveOKB').filter(':checked').length == $('.checkApproveOKB').length) {
-                $('.checkAllApproveOKB').prop('checked', 'checked');
-            } else {
-                $('.checkAllApproveOKB').prop('checked', false);
-            }
-            $('.checkAllApproveOKB').iCheck('update');
-        });
-    });
-
+    
     $('.nbdOKB').datepicker({
         autoclose: true,
         todayHighlight: true,
         format: 'dd-M-yyyy'
     });
-
+    
     $('.tblOKBOrderListPengorder').DataTable({
+        scrollY: "370px",
         scrollX: true,
         scrollCollapse: true,
+        fixedColumns:   {
+            leftColumns: 5
+        }
     });
-
+    
     $('.tblOKBReleasedOrderList').DataTable({
         scrollX: true,
         scrollCollapse: true,
+    });
+    
+    var tableOKB = $('.tblOKBOrderList').DataTable({
+        scrollY: "370px",
+        // fixedColumns:   {
+        //     leftColumns: 5
+        // },
+        scrollX: true,
+        scrollCollapse: true,
+        columnDefs: [ {
+            "targets": 0,
+            "orderable": false
+        } ],
+        order: [[1, 'asc']],
+    });
+    $('.checkAllApproveOKB').on('ifChecked ifUnchecked', function(event) {
+        if (event.type == 'ifChecked') {
+            $('.checkApproveOKB').iCheck('check');
+            // alert('benith my skins');
+        } else {
+            $('.checkApproveOKB').iCheck('uncheck');
+        }
+                                                    
+        $('.checkApproveOKB').on('ifChanged', function(event) {
+            if ($('.checkApproveOKB').filter(':checked').length == $('.checkApproveOKB').length) {
+                // alert('benith my skins');
+                $('.checkAllApproveOKB').prop('checked', 'checked');
+            } else {
+                $('.checkAllApproveOKB').prop('checked', false);
+            }
+                $('.checkAllApproveOKB').iCheck('update');
+            });
     });
 
     $(document).on('click', '.btnOKBListOrderHistory', function () {
@@ -355,7 +396,7 @@ $(document).ready(function () {
                                     <span class="'+order_class+'"><label class="control-label"><i class="'+icon_class+'"></i><b> '+status+' </b></label> - '+explain+' </span>\
                                 </p>'
                             );
-                        } else if ( index > 0 && resp[index-1].JUDGEMENT != null ) {
+                        } else if ( index > 0 && resp[index-1].JUDGEMENT != null && resp[index-1].JUDGEMENT != 'R' ) {
                             $('.divOKBListOrderHistory-'+orderid).find('span:first').append(
                                 '<p>\
                                     <b>'+date+'</b>\
@@ -423,7 +464,7 @@ $(document).ready(function () {
                                     <span class="'+order_class+'"><label class="control-label"><i class="'+icon_class+'"></i><b> '+status+' </b></label> - '+explain+' </span>\
                                 </p>'
                             );
-                        } else if ( index > 0 && resp[index-1].JUDGEMENT != null ) {
+                        } else if ( index > 0 && resp[index-1].JUDGEMENT != null && resp[index-1].JUDGEMENT != 'R' ) {
                             $('.divOKBListRequisitionHistory-'+orderid).find('span:first').append(
                                 '<p>\
                                     <b>'+date+'</b>\
@@ -437,24 +478,15 @@ $(document).ready(function () {
         }   
     });
 
-    var tableOKB = $('.tblOKBOrderList').DataTable({
-        // scrollY: "370px",
-        scrollX: true,
-        scrollCollapse: true,
-        columnDefs: [ {
-            "targets": 0,
-            "orderable": false
-        } ],
-       order: [[1, 'asc']]
-    });
     
-
     $('.slcTindakanOKB').select2({
         placeholder: '--tindakan untuk semua yang ditandai--'
     });
 
 
     $('.slcOKBNewUomList').select2();
+
+    $('.slcApproverUnitOKB').select2();
 
     $('.organizationOKB').select2();
     $('.locationOKB').select2();
@@ -468,15 +500,29 @@ $(document).ready(function () {
     $(document)
         .on('change','.slcOKBNewOrderList', function(){
             let ItemName = $(this).select2('data')[0]['title'];
+            var itemkode = $(this).select2('data')[0]['txt'];
 
             $(this).parentsUntil('tbody').find('.txtOKBNewOrderListItemName').val(ItemName);
             
             ////bondan start/////
             leadtime = $(this).select2('data')[0]['leadtime'];
+            allow_desc = $(this).select2('data')[0]['allow_desc'];
             // alert(leadtime)
             $(this).parentsUntil('tbody').find('.leadtimeOKB').val(leadtime);
             primary_uom = $(this).select2('data')[0]['uom1'];
             secondary_uom = $(this).select2('data')[0]['uom2'];
+            
+
+            var desc = $(this).parentsUntil('tbody').find('.txaOKBNewOrderDescription');
+            if (allow_desc == 'Y') {
+                desc.removeAttr('readonly');
+                desc.attr('required','required');
+                desc.attr({
+                    style: 'height: 34px; background-color :#fbfb5966;'
+                });
+            }else if(allow_desc == 'N'){
+                desc.val(ItemName);
+            }
 
             // console.log(primary_uom);
 
@@ -487,6 +533,8 @@ $(document).ready(function () {
 
             $(this).parentsUntil('tbody').find('.slcOKBNewUomList').html(html);
             $(this).parentsUntil('tbody').find('.slcOKBNewUomList').val(primary_uom).trigger('change.select2');
+
+            $(this).parentsUntil('tbody').find('.hdnItemCodeOKB').val(itemkode+' - '+ItemName);
             ////bondan end/////
         })
         .on('click', '.btnOKBNewOrderListCancel', function(){
@@ -500,6 +548,15 @@ $(document).ready(function () {
 
             if (count == 2) {
                 $('.btnOKBNewOrderListDelete').attr('disabled','disabled')
+            }
+        })
+        .on('click', '.btnOKBNewUserDelete', function(){
+            var count = $('.trOKBNewSetupUserDataRow').length;
+            // alert(count);
+            $(this).parentsUntil('tbody').remove();
+
+            if (count == 2) {
+                $('.btnOKBNewUserDelete').attr('disabled','disabled')
             }
         })
         ///Bondan Start/////
@@ -723,6 +780,7 @@ $(document).ready(function () {
                                         })
                                     };                
                                     $('.imgOKBLoading').fadeOut();            
+                                    $('.btnOKBPengelolaAct').removeAttr('disabled');
                                     $('.btnOKBApproverAct').removeAttr('disabled');
                                 }
                             });
@@ -1294,9 +1352,9 @@ $(document).ready(function () {
                 }
     
                 if (tahunBaru == 1 || (tahunBaru == 0.5 && bulanBaru == 1) || (tahunBaru == 0.5 && bulanBaru == 0.5 && tanggalBaru == 1) || (tahunBaru == 0.5 && bulanBaru == 0.5 && tanggalBaru == 0.5)) {
-                    $(this).attr('style', 'background-color : #00bf024d');
+                    $(this).attr('style', 'background-color : #00bf024d; min-width:120px;');
                     urgentReason.removeAttr('required');
-                    urgentReason.css('background-color', '#FFFFFF;');
+                    urgentReason.css('background-color', '#FFFFFF; min-width:150px;');
                     urgentFlag.val('N');
                 }else{
                     Swal.fire({
@@ -1304,10 +1362,10 @@ $(document).ready(function () {
                         title: 'Peringatan',
                         text: 'Order ini berstatus urgent, Silahkan mengisi alasan urgensi !',
                     });
-                    $(this).attr('style', 'background-color : #ff00004d');
+                    $(this).attr('style', 'background-color : #ff00004d; min-width:120px;');
                     urgentReason.attr('required','required');
                     urgentReason.attr({
-                        style: 'height: 34px; background-color :#fbfb5966;'
+                        style: 'height: 34px; background-color :#fbfb5966; min-width:150px;'
                     });
                     urgentFlag.val('Y');
                 }
@@ -1317,6 +1375,7 @@ $(document).ready(function () {
         .on('click','.btnOKBReleaseOrderPulling', function () {
             $(this).attr('disabled','disabled');
             var checkbox = $('.checkApproveOKB').filter(':checked');
+            $('.imgOKBLoading').fadeIn();
 
             if (checkbox.length == 0) {
                 Swal.fire({
@@ -1346,7 +1405,8 @@ $(document).ready(function () {
                                 title: 'Berhasil',
                                 text: 'Order berhasil direlease !',
                             });
-                            checkbox.parentsUntil('tbody').remove();
+                            // checkbox.parentsUntil('tbody').remove();
+                            tableOKB.rows(checkbox.parentsUntil('tbody')).remove().draw();
                         }else{
                             Swal.fire({
                                 type: 'error',
@@ -1355,6 +1415,7 @@ $(document).ready(function () {
                             });
                         }
                         $('.btnOKBReleaseOrderPulling').removeAttr('disabled');
+                        $('.imgOKBLoading').hide();
                     }
                 });
             }
@@ -1512,6 +1573,144 @@ $(document).ready(function () {
                 });
             }
             
+        })
+        .on('click','.btnSetApproverOKB', function () {
+            var appUnit = $('.slcApproverUnitOKB').val();
+            var person = $('.hdnPersonIdOKB').val();
+
+            $('.imgOKBLoading').fadeIn();
+            $(this).attr('disabled','disabled');
+
+            $.ajax({
+                type: "POST",
+                url: baseurl+"OrderKebutuhanBarangDanJasa/Requisition/SetActiveApprover",
+                data: {
+                    approver : appUnit,
+                    person_id : person
+                },
+                success: function (response) {
+                    if(response == 1){
+                        Swal.fire({
+                            type: 'success',
+                            title: 'Berhasil',
+                            text: 'Data berhasil diupdate!',
+                        })
+                        $('.imgOKBLoading').fadeOut();
+                        $('.btnSetApproverOKB').removeAttr('disabled');
+                    }else{
+                        Swal.fire({
+                            type: 'error',
+                            title: 'Gagal',
+                            text: 'Data gagal diupdate!',
+                        })
+                        $('.imgOKBLoading').fadeOut();
+                        $('.btnSetApproverOKB').removeAttr('disabled');
+                    }
+                }
+            });
+        })
+        .on('click','.btnSetRequestorOKB', function () {
+            $('.imgOKBLoading').fadeIn();
+            $(this).attr('disabled','disabled');
+            var requestor = $('.slcRequestorOKB').val();
+            var person = $('.hdnPersonIdOKB').val();
+            
+            var namaRequestor = $('.slcRequestorOKB').select2('data')[0]['title'];
+
+            $.ajax({
+                type: "POST",
+                url: baseurl+"OrderKebutuhanBarangDanJasa/Requisition/SetRequestor",
+                data: {
+                    person_id : person,
+                    requestor : requestor
+                },
+                success: function (response) {
+                    if(response == 1){
+                        Swal.fire({
+                            type: 'success',
+                            title: 'Berhasil',
+                            text: 'Data berhasil diupdate!',
+                        })
+                        $('.imgOKBLoading').fadeOut();
+                        $('.btnSetRequestorOKB').removeAttr('disabled');
+                        $('.txtRequestoractOKB').val(namaRequestor);
+                    }else{
+                        Swal.fire({
+                            type: 'error',
+                            title: 'Gagal',
+                            text: 'Data gagal diupdate!',
+                        })
+                        $('.imgOKBLoading').fadeOut();
+                        $('.btnSetRequestorOKB').removeAttr('disabled');
+                    }
+                }
+            });
+
+        })
+        .on('click','.btnAttachmentOKB', function () {
+            var orderid = $(this).parentsUntil('tbody').find('.tdOKBListOrderId').html();
+
+            $('.mdlOKBListOrderAttachment-'+orderid).modal('show');
+
+            if ($('.divAttachmentOKB-'+orderid).html() == '') {
+                $('.divOKBListOrderAttachmentLoading-'+orderid).fadeIn();
+
+                $.ajax({
+                    type: "POST",
+                    url: baseurl+"OrderKebutuhanBarangDanJasa/Approver/getAttachment",
+                    data: {
+                        order_id : orderid
+                    },
+                    dataType: 'JSON',
+                    success: function (response) {
+                        $('.divOKBListOrderAttachmentLoading-'+orderid).hide();
+                        console.log(response);
+                        var html = '';
+                            html += '<center>';
+                            for (let i = 0; i < response.length; i++) {
+                                const elm = response[i];
+                                if (elm['FILE_NAME'] == null) {
+                                    html+='<span><i class="fa fa-warning"></i>Tidak ada attachment</span><br>';
+                                }else{
+                                    if (response.length == 1) {
+                                        html += '<a href="'+baseurl+elm['ADDRESS']+elm['FILE_NAME']+'" target="_blank" rel="noopener noreferrer"><img style="max-width:500px; max-height:500px;" src="'+baseurl+elm['ADDRESS']+elm['FILE_NAME']+'" alt="'+elm['FILE_NAME']+'"></a><br>';
+                                    }else{
+
+                                        html += '<a href="'+baseurl+elm['ADDRESS']+elm['FILE_NAME']+'" target="_blank" rel="noopener noreferrer"><img style="max-width:200px; max-height:200px;" src="'+baseurl+elm['ADDRESS']+elm['FILE_NAME']+'" alt="'+elm['FILE_NAME']+'"></a><br>';
+                                    }
+                                }
+                                
+                            }
+                            html += '</center>';
+                        
+
+                        $('.divAttachmentOKB-'+orderid).html(html);
+                    }
+                });
+            }
+
+        })
+        .on('click','.btnOKBInfoPR', function () {
+            var order_id = $(this).parentsUntil('tbody').find('.tdOKBListOrderId').html();
+
+            $('.mdlOKBOrderPR-'+order_id).modal();
+            if ($('.divOKBOrderPR-'+order_id).html() == '') {
+                
+                $('.divOKBOrderPRLoading-'+order_id).fadeIn();
+    
+                $.ajax({
+                    type: "POST",
+                    url: baseurl+"OrderKebutuhanBarangDanJasa/Requisition/InfoOrderPR",
+                    data: {
+                        order_id : order_id
+                    },
+                    success: function (response) {
+                        $('.divOKBOrderPR-'+order_id).fadeIn();
+                        $('.divOKBOrderPR-'+order_id).html(response);
+                        $('.divOKBOrderPRLoading-'+order_id).hide();
+                    }
+                });
+            }
         })
         ////Bondan End/////
 
