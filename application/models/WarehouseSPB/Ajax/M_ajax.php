@@ -139,6 +139,7 @@ class M_ajax extends CI_Model {
         $sql = "DELETE FROM KHS_PACKINGLIST_TRANSACT_TEMP kmtt WHERE kmtt.IP = '$ip'";
         
         $query = $this->oracle->query($sql);
+        $query2 = $this->oracle->query('commit');
     }
     
     
