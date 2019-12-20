@@ -120,9 +120,9 @@ thead.toscahead tr th {
 												
 											<?php }else if ($k['status'] == 'Open') { ?> 
 												<?php if ($k['entry'] == 1) { ?>
-												<a target="_blank" href="<?php echo base_url('MonitoringPengirimanPesananLuar/RekapPengiriman/editPeng/'.$k['id_rekap_pengiriman'])?>" ><button type="button" class="btn btn-warning zoom btn-sm zoom btn_satu" id="btn_detail_pr"><i class="fa fa-pencil"></i> Edit</button></a>
+												<a href="<?php echo base_url('MonitoringPengirimanPesananLuar/RekapPengiriman/editPeng/'.$k['id_rekap_pengiriman'])?>" ><button type="button" class="btn btn-warning zoom btn-sm zoom btn_satu" id="btn_detail_pr"><i class="fa fa-pencil"></i> Edit</button></a>
 											<?php }else if ($k['entry'] > 1) {?>
-											<a target="_blank" href="<?php echo base_url('MonitoringPengirimanPesananLuar/RekapPengiriman/editPeng2/'.$k['id_rekap_pengiriman'])?>" ><button type="button" class="btn btn-warning zoom btn-sm zoom btn_dua" id="btn_detail_pr"><i class="fa fa-pencil"></i> Edit</button></a>
+											<a href="<?php echo base_url('MonitoringPengirimanPesananLuar/RekapPengiriman/editPeng2/'.$k['id_rekap_pengiriman'])?>" ><button type="button" class="btn btn-warning zoom btn-sm zoom btn_dua" id="btn_detail_pr"><i class="fa fa-pencil"></i> Edit</button></a>
 										<?php } ?>
 											<?php } ?>
 											<button type="button" class="btn btn-danger zoom btn-sm zoom" onclick="onDeletePengiriman(<?php echo $k['id_rekap_pengiriman']?>)" id="btnDeletePO"><i class="fa fa-trash"></i> Delete</button></td>
