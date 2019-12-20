@@ -7,12 +7,13 @@ class M_puller extends CI_Model
     {
         parent::__construct();
         $this->load->database();
+        $this->oracle = $this->load->database('oracle',TRUE);
     }
 
-    public function getOrderToPulled()
+    public function getOrderToPulled($cond)
     {
-        $oracle_dev = $this->load->database('oracle_dev', true);
-        $query = $oracle_dev->query("SELECT DISTINCT
+        $oracle = $this->load->database('oracle', true);
+        $query = $oracle->query("SELECT DISTINCT
                     ooh.*,
                     msib.SEGMENT1,
                     msib.DESCRIPTION,
@@ -27,6 +28,7 @@ class M_puller extends CI_Model
                     ooh.CREATE_BY = ppf.PERSON_ID
                     AND ooh.INVENTORY_ITEM_ID = msib.INVENTORY_ITEM_ID
                     AND ooh.ORDER_STATUS_ID = '3'
+                    $cond
                     AND ooh.PRE_REQ_ID is null
         ");
 
@@ -35,25 +37,25 @@ class M_puller extends CI_Model
 
     public function releaseOrder($pre_req)
     {
-        $oracle_dev = $this->load->database('oracle_dev', true);
-        $oracle_dev->set('CREATION_DATE',"SYSDATE",false);
-        $oracle_dev->insert('KHS.KHS_OKBJ_PRE_REQ_HEADER', $pre_req);
-        $pre_req_id = $oracle_dev->query("SELECT MAX(PRE_REQ_ID) PRE_REQ_ID FROM KHS.KHS_OKBJ_PRE_REQ_HEADER");
+        $oracle = $this->load->database('oracle', true);
+        $oracle->set('CREATION_DATE',"SYSDATE",false);
+        $oracle->insert('KHS.KHS_OKBJ_PRE_REQ_HEADER', $pre_req);
+        $pre_req_id = $oracle->query("SELECT MAX(PRE_REQ_ID) PRE_REQ_ID FROM KHS.KHS_OKBJ_PRE_REQ_HEADER");
 
         return $pre_req_id->result_array();
     }
 
     public function updateOrder($orderid, $order)
     {
-        $oracle_dev = $this->load->database('oracle_dev', true);
-        $oracle_dev->where('ORDER_ID', $orderid);
-        $oracle_dev->update('KHS.KHS_OKBJ_ORDER_HEADER', $order);
+        $oracle = $this->load->database('oracle', true);
+        $oracle->where('ORDER_ID', $orderid);
+        $oracle->update('KHS.KHS_OKBJ_ORDER_HEADER', $order);
     }
 
     public function getReleasedOrder($person_id)
     {
-        $oracle_dev = $this->load->database('oracle_dev', true);
-        $query = $oracle_dev->query("SELECT
+        $oracle = $this->load->database('oracle', true);
+        $query = $oracle->query("SELECT
                     oprh.* ,
                     ppf.NATIONAL_IDENTIFIER noind ,
                     ppf.full_name creator ,
@@ -72,8 +74,8 @@ class M_puller extends CI_Model
 
     public function getDetailReleasedOrder($pre_req_id)
     {
-        $oracle_dev = $this->load->database('oracle_dev', true);
-        $query = $oracle_dev->query("SELECT
+        $oracle = $this->load->database('oracle', true);
+        $query = $oracle->query("SELECT
                                     DISTINCT ooh.*,
                                     msib.SEGMENT1,
                                     msib.DESCRIPTION,

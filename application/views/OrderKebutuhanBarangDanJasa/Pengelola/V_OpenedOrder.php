@@ -76,9 +76,9 @@
                                                     <th class="bg-primary" style="text-align:center;"><input type="checkbox" class="minimal checkAllApproveOKB"></th>
                                                     <!-- <th class="bg-primary" style="width:10px;">No</th> -->
                                                     <th class="bg-primary" style="width:60px;">Order_id</th>
-                                                    <th class="bg-primary" style="width:100px;">Tanggal Order</th>
+                                                    <!-- <th class="bg-primary" style="width:100px;">Tanggal Order</th> -->
                                                     <th class="bg-primary" style="width:100px;">Nama Pembuat Order</th>
-                                                    <th class="bg-primary" style="width:100px;">Saksi Pembuat Order</th>
+                                                    <!-- <th class="bg-primary" style="width:100px;">Saksi Pembuat Order</th> -->
                                                     <th class="bg-primary" style="width:100px;">Kode Barang</th>
                                                     <th style="width:100px;">Deskripsi Item</th>
                                                     <th style="width:50px;">Qty + UOM</th>
@@ -102,17 +102,17 @@
                                                         $tag = 'normal';
 
                                                     }?>
-                                                    <td class="tdOKBListOrderId"><?php echo $order['ORDER_ID']; ?></td>
-                                                    <td><?php echo date("d-M-Y",strtotime($order['ORDER_DATE'])); ?><br><label class="label <?= $flag; ?>"><?= $tag; ?></label> </td>
-                                                    <td><?php echo $order['NATIONAL_IDENTIFIER'].'-'.$order['FULL_NAME'];?></td>
-                                                    <td><?php echo $order['ATTRIBUTE3'];?></td>
+                                                    <td><span class="tdOKBListOrderId"><?php echo $order['ORDER_ID']; ?></span><br><?php echo date("d-M-Y",strtotime($order['ORDER_DATE'])); ?></td>
+                                                    <!-- <td><?php echo date("d-M-Y",strtotime($order['ORDER_DATE'])); ?></td> -->
+                                                    <td><?php echo $order['NATIONAL_IDENTIFIER'].'-'.$order['FULL_NAME'].'<br>'.$order['ATTRIBUTE3'];?></td>
+                                                    <!-- <td><?php echo $order['ATTRIBUTE3'];?></td> -->
                                                     <td><button type="button" class=" btn btn-xs btn-default checkStokOKB"><?php echo $order['SEGMENT1'].'-'.$order['DESCRIPTION'];?></button></td>
-                                                    <td><?php echo $order['ITEM_DESCRIPTION'];?></td>
+                                                    <td><?php echo $order['ITEM_DESCRIPTION'];?><br><button type="button" class="btn btn-info btn-xs btnAttachmentOKB">view attachment</button></td>
                                                     <td><?php echo $order['QUANTITY'].' '.$order['UOM'];?></td>
                                                     <td><?php echo date("d-M-Y", strtotime($order['NEED_BY_DATE'])); ?></td>
                                                     <td><?php echo $order['ORDER_PURPOSE'];?></td>
                                                     <td><?php echo $order['NOTE_TO_PENGELOLA'];?></td>
-                                                    <td><textArea class="form-control noteBuyerOKB" style="width:200px; height:34px;"></textArea></td>
+                                                    <td><textArea class="form-control noteBuyerOKB" style="width:200px;"></textArea></td>
                                                     <?php if ($order['ORDER_STATUS_ID'] == '2') { 
                                                         $status = "WIP APPROVE ORDER";
                                                     }else if ($order['ORDER_STATUS_ID'] == '3') {
@@ -157,6 +157,27 @@
                                                                     </div>
                                                                 </center>
                                                                     <div class="row divStockOKB-<?php echo $order['ORDER_ID'];?>"></div>
+                                                            </div>
+                                                            <div class="modal-footer">
+                                                                <button type="button" class="btn btn-default" data-dismiss="modal">Tutup</button>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="modal fade mdlOKBListOrderAttachment-<?php echo $order['ORDER_ID']; ?>" role="dialog" aria-labelledby="modalDelete" aria-hidden="true">
+                                                    <div class="modal-dialog">
+                                                        <div class="modal-content">
+                                                            <div class="modal-header">
+                                                                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                                                                <h4><i style="vertical-align: middle;" class="fa fa-check-circle-o"></i><b> Attachment</b></h4>
+                                                            </div>
+                                                            <div class="modal-body" style="height: 400px;">
+                                                                <center>
+                                                                    <div class="row text-primary divOKBListOrderAttachmentLoading-<?php echo $order['ORDER_ID']; ?>" style="width: 400px; margin-top: 25px; display: none;">
+                                                                        <label class="control-label"> <h4><img src="<? echo base_url('assets/img/gif/loading5.gif') ?>" style="width:30px"> <b>Sedang Mengambil Data ...</b></h4> </label>
+                                                                    </div>
+                                                                </center>
+                                                                    <div class="row divAttachmentOKB-<?php echo $order['ORDER_ID'];?>"></div>
                                                             </div>
                                                             <div class="modal-footer">
                                                                 <button type="button" class="btn btn-default" data-dismiss="modal">Tutup</button>

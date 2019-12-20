@@ -45,7 +45,7 @@
                     <div class="box box-primary">
 
                         <div class="box-header with-border">
-                            <h3 class="box-title">List Order</h3>
+                            <h3 class="box-title">List Order <?= $statOrder;?></h3>
                         </div>
 
                         <div class="box-body">
@@ -71,7 +71,7 @@
                             </div> <br><br>
 
                             <div class="box-body table-responsive no-padding">
-                                <div class="panel panel-success">
+                                <div class="panel <?= $panelStatOrder; ?>">
 									<div class="panel-heading">
                                         <p class="bold">Order List</p>
   								    </div>
@@ -80,11 +80,11 @@
                                             <thead class="bg-primary">
                                                 <tr>
                                                     <th><input type="checkbox" class="minimal checkAllApproveOKB"></th>
-                                                    <th>No</th>
-                                                    <th style="width:100px;">Order_id</th>
-                                                    <th style="width:100px;">Tanggal Order</th>
+                                                    <!-- <th>No</th> -->
+                                                    <th style="width:100px;">Order id</th>
+                                                    <!-- <th style="width:100px;">Tanggal Order</th> -->
                                                     <th style="width:100px;">Nama Pembuat Order</th>
-                                                    <th style="width:100px;">Seksi Pembuat Order</th>
+                                                    <!-- <th style="width:100px;">Seksi Pembuat Order</th> -->
                                                     <th style="width:100px;">Kode Barang</th>
                                                     <!-- <th style="width:100px;">NAMA Barang</th> -->
                                                     <th style="width:100px;">Qty + UOM</th>
@@ -100,11 +100,11 @@
                                             <?php $no=0; foreach ($listOrder as $key => $list) { $no++; ?>
                                                 <tr>
                                                     <td style="text-align:center;"><input type="checkbox" class="minimal checkApproveOKB" value="<?php echo $list['ORDER_ID']; ?>"></td>
-                                                    <td><?php echo $no; ?></td>
-                                                    <td class="tdOKBListOrderId"><?php echo $list['ORDER_ID']; ?></td>
-                                                    <td><?php echo date("d-M-Y",strtotime($list['ORDER_DATE'])); ?></td>
-                                                    <td><?php echo $list['NATIONAL_IDENTIFIER'].'-'.$list['FULL_NAME'];?></td>
-                                                    <td><?php echo $list['ATTRIBUTE3'];?></td>
+                                                    <!-- <td><?php echo $no; ?></td> -->
+                                                    <td><span class="tdOKBListOrderId"><?php echo $list['ORDER_ID']; ?></span><br><?= date("d-M-Y",strtotime($list['ORDER_DATE']));?></td>
+                                                    <!-- <td><?php echo date("d-M-Y",strtotime($list['ORDER_DATE'])); ?></td> -->
+                                                    <td><?php echo $list['NATIONAL_IDENTIFIER'].'-'.$list['FULL_NAME'].'<br>'.$list['ATTRIBUTE3'];?></td>
+                                                    <!-- <td><?php echo $list['ATTRIBUTE3'];?></td> -->
                                                     <td><?php echo $list['SEGMENT1'].'-'.$list['DESCRIPTION']; ?></td>
                                                     <!-- <td><?php echo $list['DESCRIPTION']; ?></td> -->
                                                     <td><?php echo $list['QUANTITY'].' '.$list['UOM']; ?></td>

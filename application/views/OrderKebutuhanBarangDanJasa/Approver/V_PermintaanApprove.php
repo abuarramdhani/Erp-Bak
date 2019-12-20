@@ -76,15 +76,15 @@
                                         <p class="bold">List <?php echo $statOrder; ?> Order</p>
   								    </div>
                                     <div class="panel-body">
-                                        <table class="table table-bordered table-hover table-striped tblOKBOrderList text-center">
+                                        <table class="table table-bordered table-hover table-striped tblOKBOrderList">
                                             <thead class="bg-primary">
                                                 <tr>
                                                     <th class="bg-primary"><input type="checkbox" class="minimal checkAllApproveOKB"></th>
                                                     <!-- <th class="bg-primary">No</th> -->
-                                                    <th class="bg-primary">Order id</th>
-                                                    <th class="bg-primary" style="width:60px;">Tanggal Order</th>
+                                                    <th class="bg-primary" style="width:60px;">Order id</th>
+                                                    <!-- <th class="bg-primary" style="width:60px;">Tanggal Order</th> -->
                                                     <th class="bg-primary" style="width:100px;">Nama Pembuat Order</th>
-                                                    <th style="width:100px;">Seksi Pembuat Order</th>
+                                                    <!-- <th style="width:100px;">Seksi Pembuat Order</th> -->
                                                     <th class="bg-primary" style="width:100px;">Kode Barang</th>
                                                     <th style="width:100px;">Deskripsi Item</th>
                                                     <th class="bg-primary">Qty + UOM</th>
@@ -102,12 +102,13 @@
                                                 <tr>
                                                     <td style="text-align:center;"><input type="checkbox" class="minimal checkApproveOKB" value="<?php echo $list['ORDER_ID']; ?>"></td>
                                                     <!-- <td><?php echo $no; ?></td> -->
-                                                    <td class="tdOKBListOrderId"><?php echo $list['ORDER_ID']; ?></td>
-                                                    <td><?php echo date("d-M-Y",strtotime($list['ORDER_DATE'])); ?></td>
-                                                    <td><?php echo $list['NATIONAL_IDENTIFIER'].'-'.$list['FULL_NAME'];?></td>
-                                                    <td><span style="font-size:11px;"><?php echo $list['ATTRIBUTE3'];?></span></td>
+                                                    <td><span class="tdOKBListOrderId"><?php echo $list['ORDER_ID']; ?></span><br><?= date("d-M-Y",strtotime($list['ORDER_DATE'])); ?>
+                                                    </td>
+                                                    <!-- <td><?php echo date("d-M-Y",strtotime($list['ORDER_DATE'])); ?></td> -->
+                                                    <td><?php echo $list['NATIONAL_IDENTIFIER'].'-'.$list['FULL_NAME'].'<br>'.$list['ATTRIBUTE3'];?></td>
+                                                    <!-- <td><span style="font-size:11px;"><?php echo $list['ATTRIBUTE3'];?></span></td> -->
                                                     <td><button type="button" class="btn btn-xs btn-default checkStokOKB"><?php echo $list['SEGMENT1'].'-'.$list['DESCRIPTION']; ?></button></td>
-                                                    <td><?php echo $list['ITEM_DESCRIPTION']; ?></td>
+                                                    <td><?php echo $list['ITEM_DESCRIPTION']; ?><br><button type="button" class="btn btn-info btn-xs btnAttachmentOKB">view attachment</button></td>
                                                     <td><?php echo $list['QUANTITY'].' '.$list['UOM']; ?></td>
                                                     <!-- <td><?php echo $list['UOM']; ?></td> -->
                                                     <td><?php echo date("d-M-Y", strtotime($list['NEED_BY_DATE'])); ?></td>
@@ -156,6 +157,27 @@
                                                                     </div>
                                                                 </center>
                                                                     <div class="row divStockOKB-<?php echo $list['ORDER_ID'];?>"></div>
+                                                            </div>
+                                                            <div class="modal-footer">
+                                                                <button type="button" class="btn btn-default" data-dismiss="modal">Tutup</button>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="modal fade mdlOKBListOrderAttachment-<?php echo $list['ORDER_ID']; ?>" role="dialog" aria-labelledby="modalDelete" aria-hidden="true">
+                                                    <div class="modal-dialog">
+                                                        <div class="modal-content">
+                                                            <div class="modal-header">
+                                                                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                                                                <h4><i style="vertical-align: middle;" class="fa fa-check-circle-o"></i><b> Attachment</b></h4>
+                                                            </div>
+                                                            <div class="modal-body" style="height: 400px;">
+                                                                <center>
+                                                                    <div class="row text-primary divOKBListOrderAttachmentLoading-<?php echo $list['ORDER_ID']; ?>" style="width: 400px; margin-top: 25px; display: none;">
+                                                                        <label class="control-label"> <h4><img src="<? echo base_url('assets/img/gif/loading5.gif') ?>" style="width:30px"> <b>Sedang Mengambil Data ...</b></h4> </label>
+                                                                    </div>
+                                                                </center>
+                                                                    <div class="row divAttachmentOKB-<?php echo $list['ORDER_ID'];?>"></div>
                                                             </div>
                                                             <div class="modal-footer">
                                                                 <button type="button" class="btn btn-default" data-dismiss="modal">Tutup</button>

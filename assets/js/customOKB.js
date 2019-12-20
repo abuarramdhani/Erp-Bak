@@ -6,10 +6,10 @@ $(document).ready(function () {
             LastDataRow   = Number($('.trOKBNewOrderListDataRow:last').attr('data-row'))
 
         var html = '<tr class="trOKBNewOrderListDataRow" data-row="'+(LastDataRow+1)+'">'+
-                        '<td class="OKB-sticky-col" style="height:55px;">'+(LastDataRow+1)+'</td>'+
-                        '<td class="text-center OKB-sticky-col2"> <select class="select2 slcOKBNewOrderList" name="slcOKBinputCode[]" required style="width:200px"></select> </td>'+
-                        '<td class="OKB-sticky-col3"> <input class="form-control txtOKBNewOrderListItemName" name="txtOKBitemName[]" readonly> </td>'+
-                        '<td class="OKB-sticky-col4"> <textarea style="height: 34px;" class="form-control txaOKBNewOrderDescription" name="txtOKBinputDescription[]"></textarea> </td>'+
+                        '<td>'+(LastDataRow+1)+'</td>'+
+                        '<td class="text-center"> <select class="select2 slcOKBNewOrderList" name="slcOKBinputCode[]" required style="width:200px"></select> </td>'+
+                        '<td> <input class="form-control txtOKBNewOrderListItemName" name="txtOKBitemName[]" readonly> </td>'+
+                        '<td> <textarea style="height: 34px;" class="form-control txaOKBNewOrderDescription" name="txtOKBinputDescription[]"></textarea> </td>'+
                         '<td> <input type="text" class="form-control txtOKBNewOrderListQty" name="txtOKBinputQty[]" required style="background-color: #fbfb5966;"> </td>'+
                         '<td class="text-center"> <select class="form-control select2 slcOKBNewUomList" name="slcOKBuom[]" required style="width:120px"></select> </td>'+
                         '<td> <input type="text" class="form-control leadtimeOKB" name="txtOKBLeadtime[]" id="" readonly> </td>'+
@@ -17,7 +17,7 @@ $(document).ready(function () {
                         '<td><input type="text" class="form-control txtDestLineOKB" placeholder="Click Here!" data-row="'+(LastDataRow+1)+'" required style="background-color: #fbfb5966;"></td>'+
                         '<td> <textarea style="height: 34px; background-color: #fbfb5966;" class="form-control txaOKBNewOrderListReason" name="txtOKBinputReason[]" required></textarea> </td>'+
                         '<td> <textarea style="height: 34px;" class="form-control txaOKBNewOrderListUrgentReason" name="txtOKBinputUrgentReason[]" required></textarea> </td>'+
-                        '<td> <textarea style="height: 34px;" class="form-control txaOKBNewOrderListNote" name="txtOKBinputNote[]"></textarea> </td>'+
+                        '<td> <textarea style="height: 34px;" class="form-control txaOKBNewOrderListNote" name="txtOKBinputNote[]" required></textarea> </td>'+
                         '<td><input type="file" name="fileOKBAttachment'+(LastDataRow+1)+'[]" multiple></td>'+
                         '<td class="text-center">'+
                             '<button type="button" class="btn btn-success btnOKBNewOrderListCancel" title="Batal">'+
@@ -134,53 +134,10 @@ $(document).ready(function () {
         });
         
         $('.slcOKBNewUomList').select2();
+
         $('.organizationOKB').select2();
         $('.locationOKB').select2();
         $('.subinventoryOKB').select2();
-    })
-
-    $(document).on('click', '.btnAddUser', function () {
-        $('.btnOKBNewUserDelete:first').removeAttr('disabled');
-        let LastUserList = $('.trOKBNewSetupUserDataRow:last').clone(),
-            LastDataRowUser   = Number($('.trOKBNewSetupUserDataRow:last').attr('data-row'))
-
-        var html = '<tr class="trOKBNewSetupUserDataRow" data-row="'+(LastDataRowUser+1)+'">'+
-                        '<td><select class="select2 slcAtasanOKB" style="width:200px" name="slcAtasanOKB[]" required></td>'+
-                        '<td><select class="select2 slcAtasanOKB okbSFA1" jenis="1" style="width:200px" name="slcAtasanUnit1OKB[]" required></td>'+
-                        '<td><select class="select2 slcAtasanOKB" style="width:200px" name="slcAtasanUnit2OKB[]"></td>'+
-                        '<td><select class="select2 slcAtasanOKB" style="width:200px" name="slcAtasanDepartmentOKB[]" required></td>'+
-                        // '<td><input type="text" class="form-control" name="" value="Hendro Wijayanto" readonly></td>'+
-                        '<td><button type="button" class="btn btn-danger btnOKBNewUserDelete" title="Hapus"><i class="fa fa-trash"></i></button></td>'+
-                    '</tr>';
-        
-        $('.trOKBNewSetupUserDataRow').parent().append(html);
-
-        $('.slcAtasanOKB').select2({
-            ajax: {
-                url: baseurl + 'OrderKebutuhanBarangDanJasa/Requisition/searchAtasan',
-                dataType: 'json',
-                delay: 250,
-                data: function(params) {
-                    return {
-                        q: params.term,
-                    };
-                },
-                processResults: function(data) {
-                    return {
-                        results: $.map(data, function(item) {
-                            return {
-                                id: item.PERSON_ID,
-                                text: item.FULL_NAME,
-                                title: item.FULL_NAME
-                            }
-                        })
-                    };
-                },
-                cache: true,
-            },
-            minimumInputLength: 4,
-            placeholder: 'Search Name',
-        })
     })
     
     $('.mdlOKBStatusOrder').modal('show');
@@ -233,7 +190,34 @@ $(document).ready(function () {
         placeholder: 'Kode / deskripsi barang',
     })
 
-    $('.slcAtasanOKB').select2({
+    $('.slcAtasanUnitOKB').select2({
+        ajax: {
+            url: baseurl + 'OrderKebutuhanBarangDanJasa/Requisition/searchAtasan',
+            dataType: 'json',
+            delay: 250,
+            data: function(params) {
+                return {
+                    q: params.term,
+                };
+            },
+            processResults: function(data) {
+                return {
+                    results: $.map(data, function(item) {
+                        return {
+                            id: item.PERSON_ID,
+                            text: item.FULL_NAME,
+                            title: item.FULL_NAME
+                        }
+                    })
+                };
+            },
+            cache: true,
+        },
+        minimumInputLength: 4,
+        placeholder: 'Search Name',
+    })
+
+    $('.slcAtasanDepartmentOKB').select2({
         ajax: {
             url: baseurl + 'OrderKebutuhanBarangDanJasa/Requisition/searchAtasan',
             dataType: 'json',
@@ -285,57 +269,37 @@ $(document).ready(function () {
         }
     });
 
-    
+    $('.checkAllApproveOKB').on('ifChecked ifUnchecked', function(event) {
+        if (event.type == 'ifChecked') {
+            $('.checkApproveOKB').iCheck('check');
+        } else {
+            $('.checkApproveOKB').iCheck('uncheck');
+        }
+
+        $('.checkApproveOKB').on('ifChanged', function(event) {
+            if ($('.checkApproveOKB').filter(':checked').length == $('.checkApproveOKB').length) {
+                $('.checkAllApproveOKB').prop('checked', 'checked');
+            } else {
+                $('.checkAllApproveOKB').prop('checked', false);
+            }
+            $('.checkAllApproveOKB').iCheck('update');
+        });
+    });
+
     $('.nbdOKB').datepicker({
         autoclose: true,
         todayHighlight: true,
         format: 'dd-M-yyyy'
     });
-    
+
     $('.tblOKBOrderListPengorder').DataTable({
-        scrollY: "370px",
         scrollX: true,
         scrollCollapse: true,
-        fixedColumns:   {
-            leftColumns: 5
-        }
     });
-    
+
     $('.tblOKBReleasedOrderList').DataTable({
         scrollX: true,
         scrollCollapse: true,
-    });
-    
-    var tableOKB = $('.tblOKBOrderList').DataTable({
-        scrollY: "370px",
-        // fixedColumns:   {
-        //     leftColumns: 5
-        // },
-        scrollX: true,
-        scrollCollapse: true,
-        columnDefs: [ {
-            "targets": 0,
-            "orderable": false
-        } ],
-        order: [[1, 'asc']],
-    });
-    $('.checkAllApproveOKB').on('ifChecked ifUnchecked', function(event) {
-        if (event.type == 'ifChecked') {
-            $('.checkApproveOKB').iCheck('check');
-            // alert('benith my skins');
-        } else {
-            $('.checkApproveOKB').iCheck('uncheck');
-        }
-                                                    
-        $('.checkApproveOKB').on('ifChanged', function(event) {
-            if ($('.checkApproveOKB').filter(':checked').length == $('.checkApproveOKB').length) {
-                // alert('benith my skins');
-                $('.checkAllApproveOKB').prop('checked', 'checked');
-            } else {
-                $('.checkAllApproveOKB').prop('checked', false);
-            }
-                $('.checkAllApproveOKB').iCheck('update');
-            });
     });
 
     $(document).on('click', '.btnOKBListOrderHistory', function () {
@@ -391,7 +355,7 @@ $(document).ready(function () {
                                     <span class="'+order_class+'"><label class="control-label"><i class="'+icon_class+'"></i><b> '+status+' </b></label> - '+explain+' </span>\
                                 </p>'
                             );
-                        } else if ( index > 0 && resp[index-1].JUDGEMENT != null && resp[index-1].JUDGEMENT != 'R' ) {
+                        } else if ( index > 0 && resp[index-1].JUDGEMENT != null ) {
                             $('.divOKBListOrderHistory-'+orderid).find('span:first').append(
                                 '<p>\
                                     <b>'+date+'</b>\
@@ -459,7 +423,7 @@ $(document).ready(function () {
                                     <span class="'+order_class+'"><label class="control-label"><i class="'+icon_class+'"></i><b> '+status+' </b></label> - '+explain+' </span>\
                                 </p>'
                             );
-                        } else if ( index > 0 && resp[index-1].JUDGEMENT != null && resp[index-1].JUDGEMENT != 'R' ) {
+                        } else if ( index > 0 && resp[index-1].JUDGEMENT != null ) {
                             $('.divOKBListRequisitionHistory-'+orderid).find('span:first').append(
                                 '<p>\
                                     <b>'+date+'</b>\
@@ -473,15 +437,24 @@ $(document).ready(function () {
         }   
     });
 
+    var tableOKB = $('.tblOKBOrderList').DataTable({
+        // scrollY: "370px",
+        scrollX: true,
+        scrollCollapse: true,
+        columnDefs: [ {
+            "targets": 0,
+            "orderable": false
+        } ],
+       order: [[1, 'asc']]
+    });
     
+
     $('.slcTindakanOKB').select2({
         placeholder: '--tindakan untuk semua yang ditandai--'
     });
 
 
     $('.slcOKBNewUomList').select2();
-
-    $('.slcApproverUnitOKB').select2();
 
     $('.organizationOKB').select2();
     $('.locationOKB').select2();
@@ -527,15 +500,6 @@ $(document).ready(function () {
 
             if (count == 2) {
                 $('.btnOKBNewOrderListDelete').attr('disabled','disabled')
-            }
-        })
-        .on('click', '.btnOKBNewUserDelete', function(){
-            var count = $('.trOKBNewSetupUserDataRow').length;
-            // alert(count);
-            $(this).parentsUntil('tbody').remove();
-
-            if (count == 2) {
-                $('.btnOKBNewUserDelete').attr('disabled','disabled')
             }
         })
         ///Bondan Start/////
@@ -1330,9 +1294,9 @@ $(document).ready(function () {
                 }
     
                 if (tahunBaru == 1 || (tahunBaru == 0.5 && bulanBaru == 1) || (tahunBaru == 0.5 && bulanBaru == 0.5 && tanggalBaru == 1) || (tahunBaru == 0.5 && bulanBaru == 0.5 && tanggalBaru == 0.5)) {
-                    $(this).attr('style', 'background-color : #00bf024d; min-width:120px;');
+                    $(this).attr('style', 'background-color : #00bf024d');
                     urgentReason.removeAttr('required');
-                    urgentReason.css('background-color', '#FFFFFF; min-width:150px;');
+                    urgentReason.css('background-color', '#FFFFFF;');
                     urgentFlag.val('N');
                 }else{
                     Swal.fire({
@@ -1340,10 +1304,10 @@ $(document).ready(function () {
                         title: 'Peringatan',
                         text: 'Order ini berstatus urgent, Silahkan mengisi alasan urgensi !',
                     });
-                    $(this).attr('style', 'background-color : #ff00004d; min-width:120px;');
+                    $(this).attr('style', 'background-color : #ff00004d');
                     urgentReason.attr('required','required');
                     urgentReason.attr({
-                        style: 'height: 34px; background-color :#fbfb5966; min-width:150px;'
+                        style: 'height: 34px; background-color :#fbfb5966;'
                     });
                     urgentFlag.val('Y');
                 }
@@ -1548,79 +1512,6 @@ $(document).ready(function () {
                 });
             }
             
-        })
-        .on('click','.btnSetApproverOKB', function () {
-            var appUnit = $('.slcApproverUnitOKB').val();
-            var person = $('.hdnPersonIdOKB').val();
-
-            $('.imgOKBLoading').fadeIn();
-            $(this).attr('disabled','disabled');
-
-            $.ajax({
-                type: "POST",
-                url: baseurl+"OrderKebutuhanBarangDanJasa/Requisition/SetActiveApprover",
-                data: {
-                    approver : appUnit,
-                    person_id : person
-                },
-                success: function (response) {
-                    if(response == 1){
-                        Swal.fire({
-                            type: 'success',
-                            title: 'Berhasil',
-                            text: 'Data berhasil diupdate!',
-                        })
-                        $('.imgOKBLoading').fadeOut();
-                        $('.btnSetApproverOKB').removeAttr('disabled');
-                    }else{
-                        Swal.fire({
-                            type: 'error',
-                            title: 'Gagal',
-                            text: 'Data gagal diupdate!',
-                        })
-                        $('.imgOKBLoading').fadeOut();
-                        $('.btnSetApproverOKB').removeAttr('disabled');
-                    }
-                }
-            });
-        })
-        .on('click','.btnSetRequestorOKB', function () {
-            $('.imgOKBLoading').fadeIn();
-            $(this).attr('disabled','disabled');
-            var requestor = $('.slcRequestorOKB').val();
-            var person = $('.hdnPersonIdOKB').val();
-            
-            var namaRequestor = $('.slcRequestorOKB').select2('data')[0]['title'];
-
-            $.ajax({
-                type: "POST",
-                url: baseurl+"OrderKebutuhanBarangDanJasa/Requisition/SetRequestor",
-                data: {
-                    person_id : person,
-                    requestor : requestor
-                },
-                success: function (response) {
-                    if(response == 1){
-                        Swal.fire({
-                            type: 'success',
-                            title: 'Berhasil',
-                            text: 'Data berhasil diupdate!',
-                        })
-                        $('.imgOKBLoading').fadeOut();
-                        $('.btnSetRequestorOKB').removeAttr('disabled');
-                        $('.txtRequestoractOKB').val(namaRequestor);
-                    }else{
-                        Swal.fire({
-                            type: 'error',
-                            title: 'Gagal',
-                            text: 'Data gagal diupdate!',
-                        })
-                        $('.imgOKBLoading').fadeOut();
-                        $('.btnSetRequestorOKB').removeAttr('disabled');
-                    }
-                }
-            });
-
         })
         ////Bondan End/////
 
