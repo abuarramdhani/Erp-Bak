@@ -10,7 +10,6 @@ class M_composemessage extends CI_Model
         $this->oracle = $this->load->database('oracle',TRUE);
     }
 
-    //EMAIL ADDRESS PO
 		public function getEmailAddress($id)
 		{
 				$sql =
@@ -114,7 +113,7 @@ class M_composemessage extends CI_Model
 				return $query->result_array();
 		}
 
-    //VENDOR SITE PO UNITY KUBOTA
+
     public function getVendorSite($id)
 		{
 				$sql =
@@ -188,6 +187,7 @@ class M_composemessage extends CI_Model
 				$query = $this->oracle->query($sql);
 				return $query->result_array();
 		}
+
 
     // PO NUMBER UNTUK PO UNITY KUBOTA
     public function getPONumber($id)
@@ -342,7 +342,6 @@ class M_composemessage extends CI_Model
 				return $query->result_array();
 		}
 
-    //VENDOR NAME PO
 		public function getVendorName($id)
 		{
 				$sql = "SELECT DISTINCT
@@ -358,7 +357,7 @@ class M_composemessage extends CI_Model
 				$query = $this->oracle->query($sql);
 				return $query->result_array();
 		}
-    //VENDOR NAME PO UNITY KUBOTA
+    // PO UNITY KUBOTA
     public function getVendorNameGabungan($id)
     {
         $sql = "SELECT DISTINCT pv.vendor_name
@@ -367,98 +366,6 @@ class M_composemessage extends CI_Model
                 ";
         $query = $this->oracle->query($sql);
         return $query->result_array();
-    }
-
-    //SHIP TO LOCATION PO WEB SEND PO BDL
-    public function getShipToLocation($id){
-      $sql =
-          "select pha.segment1, hlat.location_code
-             from po_headers_all pha
-                 ,hr_locations_all_tl hlat
-            where pha.ship_to_location_id = hlat.LOCATION_ID
-              and (upper(hlat.location_code) like '%YOGYAKARTA%'
-                   or upper(hlat.location_code) like '%TUKSONO%'
-                   or upper(hlat.location_code) like '%MLATI-DM%')
-              and pha.segment1 = $id
-          ";
-      $query = $this->oracle->query($sql);
-      return $query->result_array();
-    }
-
-    //SHIP TO LOCATION WEB SEND PO BDL
-    public function getShipToLocationGabungan($id){
-      $sql =
-          "select distinct hlat.location_code
-             from po_headers_all pha
-                 ,hr_locations_all_tl hlat
-                 ,(SELECT kppu.po_unity_id, po_unity_number, po_num01 po_num
-                              FROM apps.khs_pur_po_unity kppu
-                             WHERE kppu.po_unity_number = $id
-                            UNION
-                            SELECT kppu.po_unity_id, po_unity_number, po_num02
-                              FROM apps.khs_pur_po_unity kppu
-                             WHERE kppu.po_unity_number = $id
-                            UNION
-                            SELECT kppu.po_unity_id, po_unity_number, po_num03
-                              FROM apps.khs_pur_po_unity kppu
-                             WHERE kppu.po_unity_number = $id
-                            UNION
-                            SELECT kppu.po_unity_id, po_unity_number, po_num04
-                              FROM apps.khs_pur_po_unity kppu
-                             WHERE kppu.po_unity_number = $id
-                            UNION
-                            SELECT kppu.po_unity_id, po_unity_number, po_num05
-                              FROM apps.khs_pur_po_unity kppu
-                             WHERE kppu.po_unity_number = $id
-                            UNION
-                            SELECT kppu.po_unity_id, po_unity_number, po_num06
-                              FROM apps.khs_pur_po_unity kppu
-                             WHERE kppu.po_unity_number = $id
-                            UNION
-                            SELECT kppu.po_unity_id, po_unity_number, po_num07
-                              FROM apps.khs_pur_po_unity kppu
-                             WHERE kppu.po_unity_number = $id
-                            UNION
-                            SELECT kppu.po_unity_id, po_unity_number, po_num08
-                              FROM apps.khs_pur_po_unity kppu
-                             WHERE kppu.po_unity_number = $id
-                            UNION
-                            SELECT kppu.po_unity_id, po_unity_number, po_num09
-                              FROM apps.khs_pur_po_unity kppu
-                             WHERE kppu.po_unity_number = $id
-                            UNION
-                            SELECT kppu.po_unity_id, po_unity_number, po_num10
-                              FROM apps.khs_pur_po_unity kppu
-                             WHERE kppu.po_unity_number = $id
-                            UNION
-                            SELECT kppu.po_unity_id, po_unity_number, po_num11
-                              FROM apps.khs_pur_po_unity kppu
-                             WHERE kppu.po_unity_number = $id
-                            UNION
-                            SELECT kppu.po_unity_id, po_unity_number, po_num12
-                              FROM apps.khs_pur_po_unity kppu
-                             WHERE kppu.po_unity_number = $id
-                            UNION
-                            SELECT kppu.po_unity_id, po_unity_number, po_num13
-                              FROM apps.khs_pur_po_unity kppu
-                             WHERE kppu.po_unity_number = $id
-                            UNION
-                            SELECT kppu.po_unity_id, po_unity_number, po_num14
-                              FROM apps.khs_pur_po_unity kppu
-                             WHERE kppu.po_unity_number = $id
-                            UNION
-                            SELECT kppu.po_unity_id, po_unity_number, po_num15
-                              FROM apps.khs_pur_po_unity kppu
-                             WHERE kppu.po_unity_number = $id
-                             ) kppu
-            where pha.ship_to_location_id = hlat.LOCATION_ID(+)
-              and (upper(hlat.location_code) like '%YOGYAKARTA%'
-                   or upper(hlat.location_code) like '%TUKSONO%'
-                   or upper(hlat.location_code) like '%MLATI-DM%')
-              and pha.segment1 = kppu.po_num
-          ";
-      $query = $this->oracle->query($sql);
-      return $query->result_array();
     }
 }
 ?>

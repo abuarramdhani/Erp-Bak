@@ -96,8 +96,7 @@ $data['UserMenu'][0]['user_group_menu_name'] == 'WEB SEND PO BDL' ? $data['MenuN
 	   	}
 
 		// Get Vendor Name
-		// if ($data['UserMenu'][0]['user_group_menu_name'] == 'WEB SEND PO BDL') {
-		if (substr($poQuery,2,3)=='999') {
+		if ($data['UserMenu'][0]['user_group_menu_name'] == 'WEB SEND PO BDL') {
 			$data['VendorName'] = $this->M_composemessage->getVendorNameGabungan($poQuery);
 		} else {
 			$data['VendorName'] = $this->M_composemessage->getVendorName($poQuery);
@@ -130,20 +129,7 @@ $data['UserMenu'][0]['user_group_menu_name'] == 'WEB SEND PO BDL' ? $data['MenuN
 				case 'DHARMA POLIMETAL, PT':
 
 				if ($data['UserMenu'][0]['user_group_menu_name'] == 'WEB SEND PO BDL') {
-					if (substr($poQuery,2,3)=='999') {
-						$data['ShipToLocation'] = $this->M_composemessage->getShipToLocationGabungan($poQuery);
-					} else {
-						$data['ShipToLocation'] = $this->M_composemessage->getShipToLocation($poQuery);
-					}
-
-					if ($data['ShipToLocation'] != NULL){
-						if (substr($poQuery,2,3)=='999') {
-							$this->PurchaseManagementDocumentGabungan($po_number);
-						} else {
-							$this->PurchaseManagementDocument($po_number);
-						}
-					}
-
+					$this->PurchaseManagementDocumentGabungan($po_number);
 				} else {
 					$this->PurchaseManagementDocument($po_number);
 				}
@@ -347,7 +333,7 @@ $data['UserMenu'][0]['user_group_menu_name'] == 'WEB SEND PO BDL' ? $data['MenuN
 		$data['UserMenu'] 		= $this->M_user->getUserMenu($user_id,$this->session->responsibility_id);
 		$idEx  = explode('-', $id);
 		$idQuery	   = $idEx[0];
-		if ($data['UserMenu'][0]['user_group_menu_name'] == 'WEB SEND PO BDL' && substr($idQuery,2,3)=='999') {
+		if ($data['UserMenu'][0]['user_group_menu_name'] == 'WEB SEND PO BDL') {
 			$email = $this->M_composemessage->getEmailAddressGabungan($idQuery);
 			$site = $this->M_composemessage->getVendorSite($idQuery);
 		} else {
