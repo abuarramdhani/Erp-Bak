@@ -2,7 +2,8 @@ $(document).ready(function(){
 	$('.tblPurcOrderClass').DataTable({
 		"paging":   true,
 		"ordering": true,
-		"info":     false
+		"info":     false,
+		"pageLength": 50
 	});
 })
 
