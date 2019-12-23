@@ -9,7 +9,6 @@
 
         $('.tblpelayanan2').dataTable({
             "scrollX": true,
-            scrollY: 500,
             ordering: false
         });
     
@@ -88,20 +87,38 @@
                                                     <td class="<?= $td?>" style="font-size:17px; font-weight: bold"><input type="hidden" id="no_doc<?= $no?>" value="<?= $val['NO_DOKUMEN']?>"><?= $val['NO_DOKUMEN']?></td>
                                                     <td class="<?= $td?>"><input type="hidden" id="jml_item<?= $no?>" value="<?= $val['JUMLAH_ITEM']?>"><?= $val['JUMLAH_ITEM']?></td>
                                                     <td class="<?= $td?>"><input type="hidden" id="jml_pcs<?= $no?>" value="<?= $val['JUMLAH_PCS']?>"><?= $val['JUMLAH_PCS']?></td>
-                                                    <td class="<?= $td?>"><select id="pic<?= $no?>" name="pic" class="form-control select2 select2-hidden-accessible" style="width:100%;" required>
+                                                    <td class="<?= $td?>">
+                                                        <?php if (!empty($val['PIC_PELAYAN'])) { ?>
+                                                            <select id="pic<?= $no?>" name="pic" class="form-control select2 select2-hidden-accessible" style="width:100%;" disabled>
+                                                            <option value="<?= $val['PIC_PELAYAN']?>"><?= $val['PIC_PELAYAN']?></option>
+                                                        </select></td>
+                                                        <?php }else{?>
+                                                            <select id="pic<?= $no?>" name="pic" class="form-control select2 select2-hidden-accessible" style="width:100%;" required>
                                                             <option></option>
                                                             <option value="SYAMSUL">SYAMSUL</option>
                                                             <option value="ALIF">ALIF</option>
                                                             <option value="IHSAN">IHSAN</option>
                                                             <option value="TRI">TRI</option>
                                                         </select></td>
-                                                    <td class="<?= $td?>"><input type="hidden" id="mulai<?= $no?>" value=""><?= $status[$i]?></td>
+                                                        <?php }?>
+                                                    <td class="<?= $td?>"><?= $status[$i]?>
+                                                        <?php if (!empty($val['MULAI_PELAYANAN'])) { ?>
+                                                            <input type="hidden" id="mulai<?= $no?>" value="<?= $val['MULAI_PELAYANAN']?>">
+                                                        <?php }else{?><input type="hidden" id="mulai<?= $no?>" value=""> <?php }?>
+                                                    </td>
                                                     <td class="<?= $td?>"><?= $val['URGENT']?></td>
                                                     <td class="<?= $td?>">
-                                                        <p id="timer<?= $no?>" style="">
-                                                            <label id="hours<?= $no?>" >00</label>:<label id="minutes<?= $no?>">00</label>:<label id="seconds<?= $no?>">00</label>
-                                                        </p>
-                                                        <input type="button" class="btn btn-md btn-success" id="btnPelayanan<?= $no?>" onclick="btnPelayananSPB(<?= $no?>)" value="Mulai">
+                                                        <?php if (!empty($val['MULAI_PELAYANAN'])) { ?>
+                                                            <p id="timer<?= $no?>" style="">
+                                                                Mulai <?= $val['MULAI_PELAYANAN'] ?>
+                                                            </p>
+                                                            <input type="button" class="btn btn-md btn-danger" id="btnPelayanan<?= $no?>" onclick="btnPelayananSPB(<?= $no?>)" value="Selesai">
+                                                        <?php }else{?>
+                                                            <p id="timer<?= $no?>" style="">
+                                                                <label id="hours<?= $no?>" >00</label>:<label id="minutes<?= $no?>">00</label>:<label id="seconds<?= $no?>">00</label>
+                                                            </p>
+                                                            <input type="button" class="btn btn-md btn-success" id="btnPelayanan<?= $no?>" onclick="btnPelayananSPB(<?= $no?>)" value="Mulai"> 
+                                                        <?php }?>
                                                     </td>
                                                 </tr>
                                             <?php $no++; $i++; } ?>
