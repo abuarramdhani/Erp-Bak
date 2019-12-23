@@ -9,7 +9,7 @@ class M_pelayanan extends CI_Model
     }
 
     public function tampilhariini() {
-        $oracle = $this->load->database('oracle_dev', true);
+        $oracle = $this->load->database('oracle', true);
         $sql = "select to_char(jam_input, 'DD/MM/YYYY HH24:MI:SS') as jam_input, 
                 tgl_dibuat, to_char(mulai_pelayanan, 'HH24:MI:SS') as mulai_pelayanan, pic_pelayan,
                 jenis_dokumen, no_dokumen, jumlah_item, jumlah_pcs, selesai_pelayanan, urgent
@@ -22,7 +22,7 @@ class M_pelayanan extends CI_Model
     }
 
     public function dataPelayanan($date) {
-        $oracle = $this->load->database('oracle_dev', true);
+        $oracle = $this->load->database('oracle', true);
         $sql = "select to_char(jam_input, 'DD/MM/YYYY HH24:MM:SS') as jam_input, 
                 tgl_dibuat,
                 jenis_dokumen, no_dokumen, jumlah_item, jumlah_pcs,
@@ -40,7 +40,7 @@ class M_pelayanan extends CI_Model
     }
 
     public function SavePelayanan($date, $jenis, $nospb, $pic){
-        $oracle = $this->load->database('oracle_dev', true);
+        $oracle = $this->load->database('oracle', true);
         $sql="update khs_tampung_spb set mulai_pelayanan = TO_TIMESTAMP('$date', 'DD-MM-YYYY HH24:MI:SS'), pic_pelayan = '$pic'
                 where jenis_dokumen = '$jenis' and no_dokumen = '$nospb'";
         $query = $oracle->query($sql);         
@@ -49,7 +49,7 @@ class M_pelayanan extends CI_Model
     }
 
     public function SelesaiPelayanan($date, $jenis, $nospb, $wkt, $pic){
-        $oracle = $this->load->database('oracle_dev', true);
+        $oracle = $this->load->database('oracle', true);
         $sql="update khs_tampung_spb set selesai_pelayanan = TO_TIMESTAMP('$date', 'DD-MM-YYYY HH24:MI:SS'), waktu_pelayanan = '$wkt', pic_pelayan = '$pic'
                 where jenis_dokumen = '$jenis' and no_dokumen = '$nospb'";
         $query = $oracle->query($sql);            
@@ -58,7 +58,7 @@ class M_pelayanan extends CI_Model
     }
 
     public function saveWaktu($jenis, $nospb, $query){
-        $oracle = $this->load->database('oracle_dev', true);
+        $oracle = $this->load->database('oracle', true);
         $sql="update khs_tampung_spb $query
                 where jenis_dokumen = '$jenis' and no_dokumen = '$nospb'";
         $query = $oracle->query($sql);  
@@ -67,7 +67,7 @@ class M_pelayanan extends CI_Model
     }
 
     public function getStatus($noSPB) {
-        $oracle = $this->load->database('oracle_dev', true);
+        $oracle = $this->load->database('oracle', true);
         $sql = " SELECT mtrh.request_number no_do_spb, msib.segment1 item, msib.description,
         mtrl.uom_code, mmtt.transaction_quantity qty_allocate,
         (SELECT DECODE (wdd.released_status,
