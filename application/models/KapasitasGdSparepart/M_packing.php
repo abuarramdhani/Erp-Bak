@@ -50,9 +50,9 @@ class M_packing extends CI_Model
         // echo $sql; 
     }
 
-    public function SelesaiPacking($date, $jenis, $nospb, $wkt){
+    public function SelesaiPacking($date, $jenis, $nospb, $wkt, $pic){
         $oracle = $this->load->database('oracle', true);
-        $sql="update khs_tampung_spb set selesai_packing = TO_TIMESTAMP('$date', 'DD-MM-YYYY HH24:MI:SS'), waktu_packing = '$wkt'
+        $sql="update khs_tampung_spb set selesai_packing = TO_TIMESTAMP('$date', 'DD-MM-YYYY HH24:MI:SS'), waktu_packing = '$wkt', pic_pelayan = '$pic'
                 where jenis_dokumen = '$jenis' and no_dokumen = '$nospb'";
         $query = $oracle->query($sql);      
         $query2 = $oracle->query('commit');             
