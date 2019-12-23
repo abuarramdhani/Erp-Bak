@@ -197,6 +197,7 @@
                                                     <th>Jumlah Item</th>
                                                     <th>Jumlah Pcs</th>
                                                     <th>Keterangan</th>
+                                                    <th>Action</th>
                                                 </tr>
                                             </thead>
                                             <tbody>
@@ -207,14 +208,15 @@
                                                         $td = '';
                                                     }
                                                     ?>
-                                                <tr>
+                                                <tr id="baris<?= $no?>">
                                                     <td class="<?= $td?>" style="width: 5px"><?= $no; ?></td>
                                                     <td class="<?= $td?>"><input type="hidden" name="jam[]" value="<?= $val['TGL_DIBUAT']?>"><?= $val['TGL_DIBUAT']?></td>
-                                                    <td class="<?= $td?>"><input type="hidden" name="jenis_doc[]" value="<?= $val['JENIS_DOKUMEN']?>"><?= $val['JENIS_DOKUMEN']?></td>
-                                                    <td class="<?= $td?>" style="font-size:17px; font-weight: bold" ><input type="hidden" name="no_doc[]" value="<?= $val['NO_DOKUMEN']?>"><?= $val['NO_DOKUMEN']?></td>
+                                                    <td class="<?= $td?>"><input type="hidden" id="jenis<?= $no; ?>" name="jenis_doc[]" value="<?= $val['JENIS_DOKUMEN']?>"><?= $val['JENIS_DOKUMEN']?></td>
+                                                    <td class="<?= $td?>" style="font-size:17px; font-weight: bold" ><input type="hidden" id="nodoc<?= $no; ?>" name="no_doc[]" value="<?= $val['NO_DOKUMEN']?>"><?= $val['NO_DOKUMEN']?></td>
                                                     <td class="<?= $td?>"><input type="hidden" name="jml_item[]" value="<?= $val['JUMLAH_ITEM']?>"><?= $val['JUMLAH_ITEM']?></td>
                                                     <td class="<?= $td?>"><input type="hidden" name="jml_pcs[]" value="<?= $val['JUMLAH_PCS']?>"><?= $val['JUMLAH_PCS']?></td>
                                                     <td class="<?= $td?>" style="width: 15px"><input type="hidden" name="ket[]" value="<?= $val['URGENT']?>"><?= $val['URGENT']?></td>
+                                                    <td class="<?= $td?>"><input type="button" class="btn btn-xs btn-danger" id="btncancle" value="Cancel" onclick="btnCancelKGS(<?= $no?>)"></td>
                                                 </tr>
                                                 <?php $no++; } ?>
                                             </tbody>

@@ -55,9 +55,9 @@ class M_monitoring extends CI_Model {
         return $query->result_array();
     }
 
-    public function getjmlGd() {
+    public function getjmlGd($date) {
         $oracle = $this->load->database('oracle', true);
-        $sql ="SELECT count(*) as jumlah FROM KHS_MONITORING_GD_SP";
+        $sql ="SELECT distinct no_document FROM KHS_MONITORING_GD_SP WHERE TO_CHAR(CREATION_DATE,'DD/MM/YYYY') between '$date' and '$date'";
         $query = $oracle->query($sql);
         return $query->result_array();
         // echo $sql;
@@ -65,9 +65,9 @@ class M_monitoring extends CI_Model {
 
     public function getjmlGd2($date) {
         $oracle = $this->load->database('oracle', true);
-        $sql ="SELECT count(*) as jumlah 
+        $sql ="SELECT distinct no_document 
                 FROM KHS_MONITORING_GD_SP
-                where trunc(creation_date) <= '$date'";
+                where TO_CHAR(CREATION_DATE,'DD/MM/YYYY') between '$date' and '$date'";
         $query = $oracle->query($sql);
         return $query->result_array();
         // echo $sql;

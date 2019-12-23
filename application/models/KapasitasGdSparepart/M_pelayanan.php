@@ -11,7 +11,7 @@ class M_pelayanan extends CI_Model
     public function tampilhariini() {
         $oracle = $this->load->database('oracle', true);
         $sql = "select to_char(jam_input, 'DD/MM/YYYY HH24:MI:SS') as jam_input, 
-                tgl_dibuat,
+                tgl_dibuat, to_char(mulai_pelayanan, 'HH24:MI:SS') as mulai_pelayanan, pic_pelayan,
                 jenis_dokumen, no_dokumen, jumlah_item, jumlah_pcs, selesai_pelayanan, urgent
                 from khs_tampung_spb
                 where selesai_pelayanan is null
@@ -39,18 +39,18 @@ class M_pelayanan extends CI_Model
         // echo $sql;
     }
 
-    public function SavePelayanan($date, $jenis, $nospb){
+    public function SavePelayanan($date, $jenis, $nospb, $pic){
         $oracle = $this->load->database('oracle', true);
-        $sql="update khs_tampung_spb set mulai_pelayanan = TO_TIMESTAMP('$date', 'DD-MM-YYYY HH24:MI:SS')
+        $sql="update khs_tampung_spb set mulai_pelayanan = TO_TIMESTAMP('$date', 'DD-MM-YYYY HH24:MI:SS'), pic_pelayan = '$pic'
                 where jenis_dokumen = '$jenis' and no_dokumen = '$nospb'";
         $query = $oracle->query($sql);         
         $query2 = $oracle->query('commit');          
         // echo $sql; 
     }
 
-    public function SelesaiPelayanan($date, $jenis, $nospb, $wkt, $pic){
+    public function SelesaiPelayanan($date, $jenis, $nospb, $wkt){
         $oracle = $this->load->database('oracle', true);
-        $sql="update khs_tampung_spb set selesai_pelayanan = TO_TIMESTAMP('$date', 'DD-MM-YYYY HH24:MI:SS'), waktu_pelayanan = '$wkt', pic_pelayan = '$pic'
+        $sql="update khs_tampung_spb set selesai_pelayanan = TO_TIMESTAMP('$date', 'DD-MM-YYYY HH24:MI:SS'), waktu_pelayanan = '$wkt'
                 where jenis_dokumen = '$jenis' and no_dokumen = '$nospb'";
         $query = $oracle->query($sql);            
         $query2 = $oracle->query('commit');       

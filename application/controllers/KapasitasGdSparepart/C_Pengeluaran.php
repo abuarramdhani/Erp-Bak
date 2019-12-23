@@ -76,15 +76,15 @@ class C_Pengeluaran extends CI_Controller
 		$date 	= $this->input->post('date');
 		$jenis	= $this->input->post('jenis');
 		$nospb 	= $this->input->post('no_spb');
+		$pic 	= $this->input->post('pic');
 		
-		$this->M_pengeluaran->SavePengeluaran($date, $jenis, $nospb);
+		$this->M_pengeluaran->SavePengeluaran($date, $jenis, $nospb, $pic);
 	}
 
 	public function updateSelesai(){
 		$date 	= $this->input->post('date');
 		$jenis	= $this->input->post('jenis');
 		$nospb 	= $this->input->post('no_spb');
-		$pic 	= $this->input->post('pic');
 		$mulai 	= $this->input->post('mulai');
 		$selesai 	= $this->input->post('wkt');
 
@@ -99,6 +99,6 @@ class C_Pengeluaran extends CI_Controller
 		// $query = "set waktu_pengeluaran = '$slsh'"; 
 		// $saveselisih = $this->M_pengeluaran->saveWaktu($jenis, $nospb, $query);
 		
-		$this->M_pengeluaran->SelesaiPengeluaran($date, $jenis, $nospb, $slsh, $pic);
+		$this->M_pengeluaran->SelesaiPengeluaran($date, $jenis, $nospb, $slsh);
 	}
 }
