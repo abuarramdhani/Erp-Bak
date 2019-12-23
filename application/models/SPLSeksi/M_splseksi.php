@@ -323,17 +323,17 @@ class M_splseksi extends CI_Model{
 						tsp.tanggal::date,
 						cast(concat(tsp.tanggal::date,' ',tsp.jam_msk) as timestamp) as jam_msk,
 						case when tsp.jam_plg::time < tsp.jam_msk::time then 
-							cast(concat(tdp.tanggal::date + interval '1 day')::date,' ',tsp.jam_plg) as timestamp)
+							cast(concat((tsp.tanggal::date + interval '1 day')::date,' ',tsp.jam_plg) as timestamp)
 						else 
 							cast(concat(tsp.tanggal::date,' ',tsp.jam_plg) as timestamp)
 						end as jam_plg,
 						case when tsp.ist_mulai::time < tsp.jam_msk::time then 
-							cast(concat(tdp.tanggal::date + interval '1 day')::date,' ',tsp.ist_mulai) as timestamp)
+							cast(concat((tsp.tanggal::date + interval '1 day')::date,' ',tsp.ist_mulai) as timestamp)
 						else 
 							cast(concat(tsp.tanggal::date,' ',tsp.ist_mulai) as timestamp)
 						end as ist_mulai ,
 						case when tsp.ist_selesai::time < tsp.jam_msk::time then 
-							cast(concat(tdp.tanggal::date + interval '1 day')::date,' ',tsp.ist_selesai) as timestamp)
+							cast(concat((tsp.tanggal::date + interval '1 day')::date,' ',tsp.ist_selesai) as timestamp)
 						else 
 							cast(concat(tsp.tanggal::date,' ',tsp.ist_selesai) as timestamp)
 						end as ist_selesai  
