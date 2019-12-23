@@ -27,6 +27,15 @@ class M_lelayu extends CI_Model
     return $this->personalia->query($sql)->result_array();
   }
 
+  public function getCutoffBulanIni(){
+    $sql = "select tanggal_awal::date from \"Presensi\".tcutoff where to_char(tanggal_awal,'yyyy-mm') = to_char(current_date,'yyyy-mm') limit 1";
+    if(isset($this->personalia->query($sql)->row()->tanggal_awal)){
+      return  $this->personalia->query($sql)->row()->tanggal_awal;
+    }else{
+      return date('Y-m-21');      
+    }
+  }
+
   public function getSPSI($bulancutoff, $tanggalcutoff, $bulanlalu)
   {
     $selectcutoff = $this->personalia->query('SELECT tanggal_awal::date from "Presensi".tcutoff order by id_cutoff desc limit 1')->row()->tanggal_awal;
