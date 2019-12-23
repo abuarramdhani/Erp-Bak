@@ -218,7 +218,7 @@ function btnPelayananSPB(no) {
         
         $.ajax ({
         url : baseurl + "KapasitasGdSparepart/Pelayanan/updateSelesai",
-        data: { date : date,jenis : jenis, no_spb : no_spb, mulai : mulai, wkt : wkt},
+        data: { date : date,jenis : jenis, no_spb : no_spb, mulai : mulai, wkt : wkt, pic : pic},
         type : "POST",
         dataType: "html"
         });
@@ -291,7 +291,7 @@ function btnPengeluaranSPB(no) {
         
         $.ajax ({
         url : baseurl + "KapasitasGdSparepart/Pengeluaran/updateSelesai",
-        data: { date : date,jenis : jenis, no_spb : no_spb, wkt : wkt, mulai : mulai},
+        data: { date : date,jenis : jenis, no_spb : no_spb, wkt : wkt, mulai : mulai, pic : pic},
         type : "POST",
         dataType: "html"
         });
@@ -363,7 +363,7 @@ function btnPackingSPB(no) {
         
         $.ajax ({
         url : baseurl + "KapasitasGdSparepart/Packing/updateSelesai",
-        data: { date : date,jenis : jenis, no_spb : no_spb, wkt : wkt, mulai : mulai},
+        data: { date : date,jenis : jenis, no_spb : no_spb, wkt : wkt, mulai : mulai, pic : pic},
         type : "POST",
         dataType: "html"
         });

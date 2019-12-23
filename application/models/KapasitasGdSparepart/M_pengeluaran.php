@@ -50,9 +50,9 @@ class M_pengeluaran extends CI_Model
         // echo $sql; 
     }
 
-    public function SelesaiPengeluaran($date, $jenis, $nospb, $wkt){
+    public function SelesaiPengeluaran($date, $jenis, $nospb, $wkt, $pic){
         $oracle = $this->load->database('oracle', true);
-        $sql="update khs_tampung_spb set selesai_pengeluaran = TO_TIMESTAMP('$date', 'DD-MM-YYYY HH24:MI:SS'), waktu_pengeluaran = '$wkt'
+        $sql="update khs_tampung_spb set selesai_pengeluaran = TO_TIMESTAMP('$date', 'DD-MM-YYYY HH24:MI:SS'), waktu_pengeluaran = '$wkt', pic_pelayan = '$pic'
                 where jenis_dokumen = '$jenis' and no_dokumen = '$nospb'";
         $query = $oracle->query($sql);             
         $query2 = $oracle->query('commit');      

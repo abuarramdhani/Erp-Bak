@@ -86,6 +86,7 @@ class C_Pelayanan extends CI_Controller
 		$nospb 	= $this->input->post('no_spb');
 		$mulai 	= $this->input->post('mulai');
 		$selesai = $this->input->post('wkt');
+		$pic 	= $this->input->post('pic');
 
 		$waktu1 	= strtotime($mulai);
 		$waktu2 	= strtotime($selesai);
@@ -98,7 +99,7 @@ class C_Pelayanan extends CI_Controller
 		// $query = "set waktu_pelayanan = '$slsh'"; 
 		// $saveselisih = $this->M_pelayanan->saveWaktu($jenis, $nospb, $query);
 		
-		$this->M_pelayanan->SelesaiPelayanan($date, $jenis, $nospb, $slsh);
+		$this->M_pelayanan->SelesaiPelayanan($date, $jenis, $nospb, $slsh, $pic);
 	}
 
 }
