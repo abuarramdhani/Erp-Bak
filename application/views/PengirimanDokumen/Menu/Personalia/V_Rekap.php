@@ -79,7 +79,7 @@
                                     <td>Seksi</td>
                                     <td>Keterangan</td>
                                     <td>Status</td>
-                                    <td>Tgl Approve</td>
+                                    <td>Tgl Terima</td>
                                 </tr>
                             </thead>
                             <tbody>
