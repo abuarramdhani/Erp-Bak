@@ -11,7 +11,7 @@ class M_transposition extends CI_Model
   {
     parent::__construct();
     $this->personalia 	= 	$this->load->database('personalia', TRUE);
-		$this->load->database();
+	$this->load->database();
   }
 
   public function getTpribadi()
@@ -36,7 +36,7 @@ class M_transposition extends CI_Model
 
   public function saveMasterPekerja($save)
   {
-    $this->db->insert('hr.hr_transposisi_pekerja', $save);
+    $this->personalia->insert('hrd_khs.ttransposisi_pekerja', $save);
     return;
   }
 
