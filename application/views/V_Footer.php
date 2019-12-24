@@ -24,6 +24,7 @@
 		<script src="<?= base_url('assets/plugins/input-mask/3.x') ?>/dist/inputmask/phone-codes/phone-be.js"></script>
 		<script src="<?= base_url('assets/plugins/input-mask/3.x') ?>/dist/inputmask/phone-codes/phone-ru.js"></script>
 		<script src="<?= base_url('assets/plugins/input-mask/3.x') ?>/dist/inputmask/bindings/inputmask.binding.js"></script>
+		<script src="<?= base_url('assets/plugins/intro.js-2.9.3/intro.js') ?>"></script>
 		<script src="<?= base_url('assets/plugins/multiselect/js/bootstrap-multiselect.js') ?>"></script>
 		<script src="<?= base_url('assets/plugins/touchspin/jquery.bootstrap-touchspin.min.js')?>"></script>
 		<script src="<?= base_url('assets/plugins/fine-uploader/jquery.fine-uploader.min.js') ?>"></script>
@@ -46,7 +47,7 @@
 		<script src="<?= base_url('assets/plugins/dropzone/dropzone.min.js') ?>"></script>
 		<script src="<?= base_url('assets/plugins/daterangepicker-master/moment.min.js') ?>"></script>
 		<script src="<?= base_url('assets/plugins/datepicker/js/bootstrap-datepicker.js') ?>"></script>
-		<script src="<?= base_url('assets/plugins/daterangepicker-master/daterangepicker.js') ?>"></script>
+		<script src="<?= base_url('assets/plugins/daterangepicker-master/daterangepicker.min.js') ?>"></script>
 		<script src="<?= base_url('assets/plugins/timepicker/js/bootstrap-timepicker.min.js') ?>"></script>
 		<script src="<?= base_url('assets/plugins/datetimepicker/build/jquery.datetimepicker.full.js') ?>"></script>
 		<script src="<?= base_url('assets/plugins/datetimepicker/build/jquery.datetimepicker.full.min.js') ?>"></script>
@@ -106,6 +107,8 @@
 		<script src="<?= base_url('assets/js/customGA.js') ?>"></script>
 		<script src="<?= base_url('assets/js/customGRR.js') ?>"></script>
 		<script src="<?= base_url('assets/js/customLKH.js') ?>"></script>
+		<script src="<?= base_url('assets/js/customLK.js') ?>"></script>
+		<script src="<?= base_url('assets/js/customCDP.js') ?>"></script>
 		<script src="<?= base_url('assets/js/customOC.js') ?>"></script>
 		<script src="<?= base_url('assets/js/customOJT.js') ?>"></script>
 		<script src="<?= base_url('assets/js/customDS.js') ?>"></script>
@@ -142,7 +145,6 @@
 		<script src="<?= base_url('assets/js/customKMK.js') ?>"></script>
 		<script src="<?= base_url('assets/js/customPD.js') ?>"></script>
 		<script src="<?= base_url('assets/js/customMPO.js') ?>"></script>
-		<script src="<?= base_url('assets/js/customSMM.js') ?>"></script>
 		<script src="<?= base_url('assets/js/customME.js') ?>"></script>
 		<script src="<?= base_url('assets/js/customOR.js') ?>"></script>
 		<script src="<?= base_url('assets/js/customMOA.js') ?>"></script>
@@ -180,12 +182,25 @@
 		<script src="<?= base_url('assets/js/customRL.js');?>"></script>
 		<script src="<?= base_url('assets/js/customTPB.js');?>"></script>
 		<script src="<?= base_url('assets/js/customPUM.js');?>"></script>
-		<script type="text/javascript" src="<?= base_url('assets/js/customBD.js') ?>"></script>
+		<script src="<?= base_url('assets/js/customFPD.js');?>"></script>
+		<script src="<?= base_url('assets/js/customBD.js'); ?>"></script>
+		<script src="<?= base_url('assets/js/customMSB.js'); ?>"></script>
+		<script src="<?= base_url('assets/js/customOKB.js'); ?>"></script>
+		<script src="<?= base_url('assets/js/customMPL.js');?>"></script>
+		<script src="<?= base_url('assets/js/customSMS.js');?>"></script>
+		<script src="<?= base_url('assets/js/customPDP.js');?>"></script>
+		<script src="<?= base_url('assets/js/customKGS.js');?>"></script>
+		<script type="text/javascript" src="<?= base_url('assets/js/customKTR.js') ?>"></script>
+
+
+
+
 		<!-- <script src="<?= base_url('assets/js/customMO.js') ?>"></script> -->
 		<!-- <script src="<?= base_url('assets/js/customPR.js') ?>"></script> -->
 		<!-- <script src="<?= base_url('assets/js/customOSP.js') ?>"></script> -->
 		<!-- <script src="<?= base_url('assets/js/customHWM.js') ?>"></script> -->
 		<script type="text/javascript" src="<?= base_url('assets/js/customCKM.js') ?>"></script>
+		<script src="<?= base_url('assets/js/customSMM.js') ?>"></script>
 		<!-- END OF CUSTOM JAVASCRIPT | DO NOT EDIT!! -->
 
 
