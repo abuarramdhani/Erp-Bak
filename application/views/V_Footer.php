@@ -47,7 +47,7 @@
 		<script src="<?= base_url('assets/plugins/dropzone/dropzone.min.js') ?>"></script>
 		<script src="<?= base_url('assets/plugins/daterangepicker-master/moment.min.js') ?>"></script>
 		<script src="<?= base_url('assets/plugins/datepicker/js/bootstrap-datepicker.js') ?>"></script>
-		<script src="<?= base_url('assets/plugins/daterangepicker-master/daterangepicker.js') ?>"></script>
+		<script src="<?= base_url('assets/plugins/daterangepicker-master/daterangepicker.min.js') ?>"></script>
 		<script src="<?= base_url('assets/plugins/timepicker/js/bootstrap-timepicker.min.js') ?>"></script>
 		<script src="<?= base_url('assets/plugins/datetimepicker/build/jquery.datetimepicker.full.js') ?>"></script>
 		<script src="<?= base_url('assets/plugins/datetimepicker/build/jquery.datetimepicker.full.min.js') ?>"></script>
