@@ -122,7 +122,8 @@ class M_ajax extends CI_Model {
 
 	public function delTemp($ip){
 		$this->oracle->where('IP',$ip);
-		$this->oracle->delete('KHS_PACKINGLIST_TRANSACT_TEMP');
+        $this->oracle->delete('KHS_PACKINGLIST_TRANSACT_TEMP');
+        $query2 = $this->oracle->query('commit');        
     }
     
     public function insertError($ip){
@@ -136,10 +137,11 @@ class M_ajax extends CI_Model {
     }
 
     public function delTable($ip){
-        $sql = "DELETE FROM KHS_PACKINGLIST_TRANSACT_TEMP kmtt WHERE kmtt.IP = '$ip'";
-        
-        $query = $this->oracle->query($sql);
-        $query2 = $this->oracle->query('commit');
+        // $sql = "DELETE FROM KHS_PACKINGLIST_TRANSACT_TEMP kmtt WHERE kmtt.IP = '$ip'";
+        // $query = $this->oracle->query($sql);
+		$this->oracle->where('IP',$ip);
+        $this->oracle->delete('KHS_PACKINGLIST_TRANSACT_TEMP');
+        $query2 = $this->oracle->query('commit');        
     }
     
     
