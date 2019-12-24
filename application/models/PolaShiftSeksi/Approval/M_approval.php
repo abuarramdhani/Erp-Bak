@@ -206,21 +206,39 @@ class M_approval extends CI_Model
     {
     	$tgl = date('Y-m-d');
     	$sql = "select
-					*,
-					(select employee_name from er.er_employee_all where employee_code = noind1) nama1,
-    				(select employee_name from er.er_employee_all where employee_code = noind2) nama2,
-					tanggal1::date - '$tgl'::date beda
-				from
-					ips.tinput_tukar_shift
-				where
-					(noind1 = '$noind'
+                    group_id,
+                    min(tanggal1) tanggal_min,
+                    max(tanggal1) tanggal_max,
+                    noind1,
+                    noind2,
+                    status,
+                    optpekerja,
+                    create_timestamp,
+                    approve_timestamp,
+                    (select employee_name from er.er_employee_all where employee_code = noind1) nama1,
+                    (select employee_name from er.er_employee_all where employee_code = noind2) nama2,
+                    min(tanggal1)::date - '$tgl'::date beda
+                from
+                    ips.tinput_tukar_shift
+                where
+                	(noind1 = '$noind'
 					and approve1_tgl is null and status != '03')
 					or (noind2 = '$noind'
 					and approve2_tgl is null and status != '03')
 					or (appr_ = '$noind'
 					and approve1_tgl is not null
 					and approve2_tgl is not null
-					and approve_timestamp = '9999-12-12 00:00:00' and status != '03') order by tanggal1 desc";
+					and approve_timestamp = '9999-12-12 00:00:00' and status != '03')
+                group by
+                    group_id,
+                    noind1,
+                    noind2,
+                    status,
+                    optpekerja,
+                    approve_timestamp,
+                    create_timestamp
+                order by 
+                    create_timestamp desc";
 		$query = $this->db->query($sql);
 		return $query->result_array();
     }
@@ -228,34 +246,74 @@ class M_approval extends CI_Model
     public function getListId($id)
     {
     	$sql = "select
-					*,
-					(select employee_name from er.er_employee_all where employee_code = tts.noind1) nama1,
-					(select employee_name from er.er_employee_all where employee_code = tts.noind2) nama2,
-					(select employee_name from er.er_employee_all where employee_code = tts.appr_) nama3
+					substring(min(tanggal1)::text,0,11) min,
+					substring(max(tanggal1)::text,0,11) max,
+					string_agg(shift1, ';') shift1,
+					string_agg(shift2, ';') shift2,
+					string_agg(substring(tanggal1::text,0,11), ';') tgl_arr,
+					noind1,
+					noind2,
+					status,
+					optpekerja,
+					create_timestamp,
+					reject_by,
+					appr_,
+					approve1_tgl,
+					approve2_tgl,
+					approve_timestamp,
+					group_id,
+					alasan,
+					(select employee_name from er.er_employee_all where employee_code = noind1) nama1,
+				    (select employee_name from er.er_employee_all where employee_code = noind2) nama2,
+				    (select employee_name from er.er_employee_all where employee_code = appr_) nama3
 				from
-					ips.tinput_tukar_shift tts
+					ips.tinput_tukar_shift
 				where
-					tukar_id = '$id'";
+					group_id = '$id'
+				group by
+					group_id,
+					noind1,
+					noind2,
+					status,
+					optpekerja,
+					reject_by,
+					appr_,
+					approve1_tgl,
+					approve2_tgl,
+					approve_timestamp,
+					group_id,
+					alasan,
+					create_timestamp
+				order by 
+					create_timestamp desc";
 		$query = $this->db->query($sql);
-		return $query->result_array();
+		return $query->row_array();
     }
 
     public function upTS($l, $id, $duo, $tgl)
     {
     	
-    	$sql = "update ips.tinput_tukar_shift set $l = '$tgl' $duo where tukar_id = '$id'";
+    	$sql = "update ips.tinput_tukar_shift set $l = '$tgl' $duo where group_id = '$id'";
     	$query = $this->db->query($sql);
     }
 
     public function upTS_rej($noind, $tgl, $id, $alasan)
     {
-    	$sql = "update ips.tinput_tukar_shift set approve_timestamp = '$tgl', reject_by = '$noind', status = '03', alasan='$alasan'  where tukar_id = '$id'";
+    	$sql = "update ips.tinput_tukar_shift set approve_timestamp = '$tgl', reject_by = '$noind', status = '03', alasan='$alasan'  where group_id = '$id'";
     	$query = $this->db->query($sql);
     }
 
     public function getTukar($id)
     {
     	$sql = "select * from ips.tinput_tukar_shift where tukar_id = '$id' limit 1";
+
+    	$query = $this->db->query($sql);
+		return $query->result_array();
+    }
+
+    public function getTukarGroup($id)
+    {
+    	$sql = "select * from ips.tinput_tukar_shift where group_id = '$id'";
 
     	$query = $this->db->query($sql);
 		return $query->result_array();
@@ -275,7 +333,8 @@ class M_approval extends CI_Model
 
     public function upPkj($tgl, $noind, $kd)
     {
-    	$sql = "update \"Presensi\".tshiftpekerja set kd_shift = '$kd' where rtrim(noind) = '$noind' and tanggal = '$tgl'";
+    	$now = date('Y-m-d H:i:s');
+    	$sql = "update \"Presensi\".tshiftpekerja set kd_shift = '$kd', last_action = 'UPDATE', last_action_date = '$now' where rtrim(noind) = '$noind' and tanggal = '$tgl'";
     	$query = $this->personalia->query($sql);
     }
 

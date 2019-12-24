@@ -35,7 +35,7 @@
                                                 <label style="margin-top: 5px;">Tanggal</label>
                                             </div>
                                             <div class="col-md-4">
-                                                <input class="form-control" value="<?php echo substr($tukar[0]['tanggal1'], 0, 11) ?>" disabled />
+                                                <input class="form-control" value="<?php echo $tukar['min'].' - '.$tukar['max'] ?>" disabled />
                                             </div>
                                         </div>
                                         <div class="col-md-12" style="margin-top: 10px;">
@@ -44,10 +44,10 @@
                                             </div>
                                             <div class="col-md-4">
                                                 <label class="col-md-5">
-                                                    <input type="radio" class="form-control" <?= strlen(rtrim($tukar[0]['noind2'])) >= 5 ? 'checked':'disabled' ?>/> Ya
+                                                    <input type="radio" class="form-control" <?= $tukar['noind2'] != $tukar['noind1'] ? 'checked':'disabled' ?>/> Ya
                                                 </label>
                                                 <label class="col-md-5">
-                                                    <input type="radio" class="form-control" <?= strlen(rtrim($tukar[0]['noind2'])) < 5 ? 'checked':'disabled' ?> /> Tidak
+                                                    <input type="radio" class="form-control" <?= $tukar['noind2'] == $tukar['noind1'] ? 'checked':'disabled' ?> /> Tidak
                                                 </label>
                                             </div>
                                         </div>
@@ -57,10 +57,10 @@
                                             </div>
                                             <div class="col-md-4">
                                                 <label class="col-md-5">
-                                                    <input type="radio" class="form-control" <?= $tukar[0]['optperusahaan'] == 't' ? 'checked':'disabled' ?> /> Perusahaan
+                                                    <input type="radio" class="form-control" <?= $tukar['optpekerja'] == 'f' ? 'checked':'disabled' ?> /> Perusahaan
                                                 </label>
                                                 <label class="col-md-5">
-                                                    <input type="radio" class="form-control pss_dis_ch" <?= $tukar[0]['optpekerja'] == 't' ? 'checked':'disabled' ?>/> Pribadi
+                                                    <input type="radio" class="form-control pss_dis_ch" <?= $tukar['optpekerja'] == 't' ? 'checked':'disabled' ?>/> Pribadi
                                                 </label>
                                             </div>
                                         </div>
@@ -74,7 +74,7 @@
                                                         <label style="margin-top: 5px;">Noind</label>
                                                     </div>
                                                     <div class="col-md-9">
-                                                        <input disabled="" class="form-control" value="<?php echo $tukar[0]['noind1'] ?>">
+                                                        <input disabled="" class="form-control" value="<?php echo $tukar['noind1'] ?>">
                                                     </div>
                                                 </div>
                                                 <div class="col-md-12" style="margin-top: 10px;">
@@ -82,34 +82,31 @@
                                                         <label style="margin-top: 5px;">Nama</label>
                                                     </div>
                                                     <div class="col-md-9">
-                                                        <input class="form-control pss_nama" placeholder="Nama" readonly="" value="<?php echo $tukar[0]['nama1'] ?>"/>
+                                                        <input class="form-control pss_nama" placeholder="Nama" readonly="" value="<?php echo $tukar['nama1'] ?>"/>
                                                     </div>
                                                 </div>
+                                                <?php for ($i=0; $i < $tukar['jumlah']; $i++) { ?>
                                                 <div class="col-md-12" style="margin-top: 10px;">
                                                     <div class="col-md-3">
-                                                        <label style="margin-top: 5px;">Tanggal</label>
+                                                        <label style="margin-top: 5px;">Tanggal <?= $i+1 ?></label>
                                                     </div>
-                                                    <div class="col-md-9">
-                                                        <input class="form-control pss_tgl" placeholder="Tanggal" readonly="" value="<?php echo substr($tukar[0]['tanggal1'], 0, 11) ?>"/>
+                                                    <div class="col-md-3" style="padding-right: 0px;">
+                                                        <input class="form-control pss_tgl" placeholder="Tanggal" readonly="" value="<?php echo $tukar['tgl_arr'][$i] ?>"/>
                                                     </div>
-                                                </div>
-                                                <div class="col-md-12" style="margin-top: 10px;">
-                                                    <div class="col-md-3">
-                                                        <label style="margin-top: 5px;">Shift</label>
-                                                    </div>
-                                                    <div class="col-md-9">
-                                                        <input class="form-control pss_shift" placeholder="Shift" readonly="" value="<?php echo $tukar[0]['shift1'] ?>"/>
+                                                    <div class="col-md-6">
+                                                        <input class="form-control pss_shift" placeholder="Shift" readonly="" value="<?php echo $tukar['shift1'][$i] ?>"/>
                                                     </div>
                                                 </div>
+                                                <?php } ?>
                                                 <div class="col-md-12 text-center" style="margin-top: 10px; margin-bottom: 10px;">
-                                                <?php if ($tukar[0]['status'] == '03'): ?>
-                                                    <label style="color: red">Rejected by <?= $tukar[0]['reject_by'] ?></label>
+                                                <?php if ($tukar['status'] == '03'): ?>
+                                                    <label style="color: red">Rejected by <?= $tukar['reject_by'] ?></label>
                                                 <?php else: ?>
-                                                    <?php if (empty($tukar[0]['approve1_tgl']) && $tukar[0]['noind1'] == $user): ?>
-                                                        <button class="btn btn-success pss_app_now" level="1" isduo="<?php echo empty(rtrim($tukar[0]['noind2'])) ? 'y':'n'; ?>"><i class="fa fa-check"></i> Approve</button>
+                                                    <?php if (empty($tukar['approve1_tgl']) && $tukar['noind1'] == $user): ?>
+                                                        <button class="btn btn-success pss_app_now" level="1" isduo="<?php echo $tukar['noind1'] == $tukar['noind2'] ? 'y':'n'; ?>"><i class="fa fa-check"></i> Approve</button>
                                                         <button class="btn btn-danger pss_rej_now"><i class="fa fa-times"></i> Reject</button>
                                                     <?php else: ?>
-                                                        <?php if (empty($tukar[0]['approve1_tgl'])): ?>
+                                                        <?php if (empty($tukar['approve1_tgl'])): ?>
                                                             <label style="color: #7f7f7f">Menunggu Approval</label>
                                                         <?php else: ?>
                                                             <label style="color: #00a65a">Sudah di Approve</label>
@@ -127,7 +124,7 @@
                                                         <label style="margin-top: 5px;">Noind</label>
                                                     </div>
                                                     <div class="col-md-9">
-                                                        <input class="form-control" disabled="" value="<?php echo strlen(rtrim($tukar[0]['noind2'])) >= 5 ? $tukar[0]['noind2']:$tukar[0]['noind1'] ?>">
+                                                        <input class="form-control" disabled="" value="<?php echo $tukar['noind2'] ?>">
                                                     </div>
                                                 </div>
                                                 <div class="col-md-12" style="margin-top: 10px;">
@@ -135,34 +132,31 @@
                                                         <label style="margin-top: 5px;">Nama</label>
                                                     </div>
                                                     <div class="col-md-9">
-                                                        <input class="form-control pss_nama" placeholder="Nama" readonly="" value="<?php echo strlen(rtrim($tukar[0]['noind2'])) >= 5 ? $tukar[0]['nama2']:$tukar[0]['nama1'] ?>" />
+                                                        <input class="form-control pss_nama" placeholder="Nama" readonly="" value="<?php echo $tukar['nama2'] ?>" />
                                                     </div>
                                                 </div>
+                                                <?php for ($i=0; $i < $tukar['jumlah']; $i++) { ?>
                                                 <div class="col-md-12" style="margin-top: 10px;">
                                                     <div class="col-md-3">
-                                                        <label style="margin-top: 5px;">Tanggal</label>
+                                                        <label style="margin-top: 5px;">Tanggal <?= $i+1 ?></label>
                                                     </div>
-                                                    <div class="col-md-9">
-                                                        <input class="form-control pss_tgl" placeholder="Tanggal" readonly="" value="<?php echo substr($tukar[0]['tanggal1'], 0, 11) ?>" />
+                                                    <div class="col-md-3" style="padding-right: 0px;">
+                                                        <input class="form-control pss_tgl" placeholder="Tanggal" readonly="" value="<?php echo $tukar['tgl_arr'][$i] ?>" />
                                                     </div>
-                                                </div>
-                                                <div class="col-md-12" style="margin-top: 10px;">
-                                                    <div class="col-md-3">
-                                                        <label style="margin-top: 5px;">Shift</label>
-                                                    </div>
-                                                    <div class="col-md-9">
-                                                        <input class="form-control pss_shift" placeholder="Shift" readonly="" value="<?php echo $tukar[0]['shift2'] ?>" />
+                                                    <div class="col-md-6">
+                                                        <input class="form-control pss_shift" placeholder="Shift" readonly="" value="<?php echo $tukar['shift2'][$i] ?>" />
                                                     </div>
                                                 </div>
+                                                <?php } ?>
                                                 <div class="col-md-12 text-center" style="margin-top: 10px; margin-bottom: 10px;">
-                                               <?php if ($tukar[0]['status'] == '03'): ?>
-                                                    <label style="color: red">Rejected by <?= $tukar[0]['reject_by'] ?></label>
+                                               <?php if ($tukar['status'] == '03'): ?>
+                                                    <label style="color: red">Rejected by <?= $tukar['reject_by'] ?></label>
                                                 <?php else: ?>
-                                                    <?php if (empty($tukar[0]['approve1_tg2']) && $tukar[0]['noind2'] == $user): ?>
+                                                    <?php if (empty($tukar['approve2_tgl']) && $tukar['noind2'] == $user && $tukar['noind1'] != $tukar['noind2']): ?>
                                                         <button class="btn btn-success pss_app_now" level="2"><i class="fa fa-check"></i> Approve</button>
                                                         <button class="btn btn-danger pss_rej_now"><i class="fa fa-times"></i> Reject</button>
                                                     <?php else: ?>
-                                                        <?php if (empty($tukar[0]['approve2_tgl'])): ?>
+                                                        <?php if (empty($tukar['approve2_tgl'])): ?>
                                                             <label style="color: #7f7f7f">Menunggu Approval</label>
                                                         <?php else: ?>
                                                             <label style="color: #00a65a">Sudah di Approve</label>
@@ -174,18 +168,18 @@
                                         </div>
                                         <div class="col-md-12 text-center" style="margin-top: 30px;">
                                         <label>
-                                            <input style="width: 300px" class="form-control" readonly="" value="<?php echo $tukar[0]['appr_'].' - '.$tukar[0]['nama3'] ?>">
+                                            <input style="width: 300px" class="form-control" readonly="" value="<?php echo $tukar['appr_'].' - '.$tukar['nama3'] ?>">
                                         </label>
                                         </div>
                                         <div class="col-md-12 text-center" style="margin-top: 10px; margin-bottom: 10px;">
-                                        <?php if ($tukar[0]['status'] == '03'): ?>
-                                            <label style="color: red">Rejected by <?= $tukar[0]['reject_by'] ?></label>
+                                        <?php if ($tukar['status'] == '03'): ?>
+                                            <label style="color: red">Rejected by <?= $tukar['reject_by'] ?></label>
                                         <?php else: ?>
-                                            <?php if ($tukar[0]['approve_timestamp'] == '9999-12-12 00:00:00' && $tukar[0]['appr_'] == $user && !empty($tukar[0]['approve1_tgl']) && !empty($tukar[0]['approve2_tgl'])): ?>
+                                            <?php if ($tukar['approve_timestamp'] == '9999-12-12 00:00:00' && $tukar['appr_'] == $user && !empty($tukar['approve1_tgl']) && !empty($tukar['approve2_tgl'])): ?>
                                                 <button class="btn btn-success pss_app_now" level="3"><i class="fa fa-check"></i> Approve</button>
                                                 <button class="btn btn-danger pss_rej_now"><i class="fa fa-times"></i> Reject</button>
                                             <?php else: ?>
-                                                <?php if ($tukar[0]['approve_timestamp'] ==  '9999-12-12 00:00:00'): ?>
+                                                <?php if ($tukar['approve_timestamp'] ==  '9999-12-12 00:00:00'): ?>
                                                     <label style="color: #7f7f7f">Menunggu Approval</label>
                                                 <?php else: ?>
                                                     <label style="color: #00a65a">Sudah di Approve</label>
@@ -193,7 +187,7 @@
                                             <?php endif ?>
                                         <?php endif ?>
                                         </div>
-                                        <input hidden="" id="pss_tukar" value="<?php echo $tukar[0]['tukar_id'] ?>">
+                                        <input hidden="" id="pss_tukar" value="<?php echo $tukar['group_id'] ?>">
                                     </div>
                                 </div>
                             </div>

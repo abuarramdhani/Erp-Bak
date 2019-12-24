@@ -38,7 +38,8 @@
                                                 <thead class="bg-primary">
                                                     <tr>
                                                         <td width="5%">No</td>
-                                                        <td>Tanggal</td>
+                                                        <td>Tanggal Min</td>
+                                                        <td>Tanggal Max</td>
                                                         <td>Pekerja 1</td>
                                                         <td>Pekerja 2</td>
                                                         <td>Inisiatif</td>
@@ -51,7 +52,8 @@
                                                     <?php $i = 1; foreach ($listTukar as $key): ?>
                                                         <tr>
                                                             <td><?= $i ?></td>
-                                                            <td data-order="<?php echo substr($key['tanggal1'], 0,10) ?>"><?= date('d-M-Y', strtotime(substr($key['tanggal1'], 0,10))) ?></td>
+                                                            <td data-order="<?php echo substr($key['tanggal_min'], 0,10) ?>"><?= date('d-M-Y', strtotime(substr($key['tanggal_min'], 0,10))) ?></td>
+                                                            <td data-order="<?php echo substr($key['tanggal_max'], 0,10) ?>"><?= date('d-M-Y', strtotime(substr($key['tanggal_max'], 0,10))) ?></td>
                                                             <td><?= $key['noind1'].' - '.$key['nama1'] ?></td>
                                                             <td><?= $key['noind2'].' - '.$key['nama2'] ?></td>
                                                             <?php if ($key['optpekerja'] == 't'): ?>
@@ -70,7 +72,7 @@
                                                              ?></td>
                                                              <td><?= $key['create_timestamp'] ?></td>
                                                             <td class="text-center">
-                                                                <a href="<?php echo base_url('PolaShiftSeksi/TukarShift/lihatView/'.$key['tukar_id']) ?>" title="View" class="btn btn-primary btn-md"><i class="fa fa-file-text-o"></i></a>
+                                                                <a href="<?php echo base_url('PolaShiftSeksi/TukarShift/lihatView/'.$key['group_id']) ?>" title="View" class="btn btn-primary btn-md"><i class="fa fa-file-text-o"></i></a>
                                                             </td>
                                                         </tr>
                                                     <?php $i++; endforeach ?>
