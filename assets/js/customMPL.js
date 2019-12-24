@@ -8,6 +8,15 @@ $(document).ready(function(){
 })
 
 $(document).ready(function(){
+	$('#tabelPengirimanMPL').DataTable({
+		"paging":   true,
+		"ordering": true,
+		"info":     false,
+		"pageLength": 50
+	});
+})
+
+$(document).ready(function(){
 	$('.tblSetting').DataTable({
 		"paging":   true,
 		"ordering": true,
