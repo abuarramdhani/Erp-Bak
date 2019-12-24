@@ -2327,6 +2327,11 @@ $route['InventoryManagement/CreateMoveOrder'] = 'Inventory/MainMenu/MoveOrder/C_
 $route['InventoryManagement/CreateMoveOrder/search/(:any)'] = 'Inventory/MainMenu/MoveOrder/C_MoveOrder/search/$1';
 $route['InventoryManagement/CreateMoveOrder/(:any)'] = 'Inventory/MainMenu/MoveOrder/C_MoveOrder/$1';
 
+$route['InventoryManagement/ExportMoveOrder'] = 'Inventory/MainMenu/MoveOrder/C_Export';
+$route['InventoryManagement/ExportMoveOrder/search'] = 'Inventory/MainMenu/MoveOrder/C_Export/search';
+$route['InventoryManagement/ExportMoveOrder/export'] = 'Inventory/MainMenu/MoveOrder/C_Export/export';
+$route['InventoryManagement/ExportMoveOrder/(:any)/(:any)'] = 'Inventory/MainMenu/MoveOrder/C_Export/$1/$2';
+
 //KIB
 $route['InventoryManagement/CreateKIB'] = 'InventoryKIB/MainMenu/CreateKIB/C_CreateKIB';
 $route['InventoryManagement/CreateKIB/(:any)'] = 'InventoryKIB/MainMenu/CreateKIB/C_CreateKIB/$1';
