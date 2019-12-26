@@ -33,6 +33,7 @@ class M_ajax extends CI_Model {
                 msib.segment1 item_code, msib.description item_desc,msib.ATTRIBUTE26 quantity_standard,
                 mtrl.quantity quantity_normal,
                 mtrl.quantity_detailed quantity_allocate,
+                mtrl.quantity_delivered quantity_transact,
                 (  mtrl.quantity_delivered
                  - NVL ((SELECT SUM (NVL (kpt.packing_qty, 0))
                            FROM khs_packinglist_transactions kpt
@@ -40,7 +41,7 @@ class M_ajax extends CI_Model {
                             AND kpt.inventory_item_id = mtrl.inventory_item_id),
                         0
                        )
-                ) quantity_transact,
+                ) quantity_packing,
                 khs_inv_qty_att (mtrl.organization_id,
                                  mtrl.inventory_item_id,
                                  '$subInv',
