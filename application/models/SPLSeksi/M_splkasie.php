@@ -1,6 +1,6 @@
 <?php
 class M_splkasie extends CI_Model{
-	
+
 	function __construct(){
 		parent::__construct();
 		$this->load->database();
@@ -32,10 +32,10 @@ class M_splkasie extends CI_Model{
 
 		$sql = "select a.*, b.nama, d.kodesie, d.seksi, d.unit, d.dept, e.nama_lembur, c.Deskripsi
 			from splseksi.tspl a
-			inner join hrd_khs.tpribadi b ON a.noind = b.noind 
-			inner join splseksi.tjenislembur e ON a.kd_lembur = e.kd_lembur 
-			inner join splseksi.tstatus_spl c ON a.status = c.id_status 
-			inner join hrd_khs.tseksi d ON b.kodesie = d.kodesie 
+			inner join hrd_khs.tpribadi b ON a.noind = b.noind
+			inner join splseksi.tjenislembur e ON a.kd_lembur = e.kd_lembur
+			inner join splseksi.tstatus_spl c ON a.status = c.id_status
+			inner join hrd_khs.tseksi d ON b.kodesie = d.kodesie
 			where a.status like '%$status%' $periode
 				and a.perbantuan='N' and d.kodesie like '$kodesie%' $akses
 				and b.noind like '$noind%' and b.lokasi_kerja like '%$lokasi%'
@@ -45,35 +45,35 @@ class M_splkasie extends CI_Model{
 	}
 
 	public function show_spl_byid($id){
-		$sql = "select 	a.tgl_lembur, 
-						a.jam_mulai_lembur, 
+		$sql = "select 	a.tgl_lembur,
+						a.jam_mulai_lembur,
 						a.Jam_Akhir_Lembur,
-						a.Kd_Lembur, 
+						a.Kd_Lembur,
 						a.Pekerjaan,
 						a.Break,
 						a.Istirahat,
 						b.Noind,
-						b.nama, 
-						d.kodesie, 
-						d.seksi, 
-						d.unit, 
-						d.dept, 
+						b.nama,
+						d.kodesie,
+						d.seksi,
+						d.unit,
+						d.dept,
 						e.nama_lembur,
 						a.alasan_lembur,
 						a.target,
 						a.realisasi
 				from splseksi.tspl a
-				inner join hrd_khs.tpribadi b 
-					ON a.noind = b.noind 
-				inner join splseksi.tjenislembur e 
-					ON a.kd_lembur = e.kd_lembur 
-				inner join hrd_khs.tseksi d 
-					ON b.kodesie = d.kodesie 
+				inner join hrd_khs.tpribadi b
+					ON a.noind = b.noind
+				inner join splseksi.tjenislembur e
+					ON a.kd_lembur = e.kd_lembur
+				inner join hrd_khs.tseksi d
+					ON b.kodesie = d.kodesie
 				where a.ID_SPL in ($id)
-				order by 	a.tgl_lembur, 
-							a.jam_mulai_lembur, 
+				order by 	a.tgl_lembur,
+							a.jam_mulai_lembur,
 							a.Jam_Akhir_Lembur,
-							a.Kd_Lembur, 
+							a.Kd_Lembur,
 							a.Pekerjaan,
 							a.Break,
 							a.Istirahat,
@@ -85,36 +85,36 @@ class M_splkasie extends CI_Model{
 
 	public function show_spl_byid_2($id){
 		$sql = "select 	a.user_,
-						a.tgl_lembur, 
-						a.jam_mulai_lembur, 
+						a.tgl_lembur,
+						a.jam_mulai_lembur,
 						a.Jam_Akhir_Lembur,
-						a.Kd_Lembur, 
+						a.Kd_Lembur,
 						a.Pekerjaan,
 						a.Break,
 						a.Istirahat,
 						b.Noind,
-						b.nama, 
-						d.kodesie, 
-						d.seksi, 
-						d.unit, 
-						d.dept, 
+						b.nama,
+						d.kodesie,
+						d.seksi,
+						d.unit,
+						d.dept,
 						e.nama_lembur,
 						a.alasan_lembur,
 						a.target,
 						a.realisasi
 				from splseksi.tspl a
-				inner join hrd_khs.tpribadi b 
-					ON a.noind = b.noind 
-				inner join splseksi.tjenislembur e 
-					ON a.kd_lembur = e.kd_lembur 
-				inner join hrd_khs.tseksi d 
-					ON b.kodesie = d.kodesie 
+				inner join hrd_khs.tpribadi b
+					ON a.noind = b.noind
+				inner join splseksi.tjenislembur e
+					ON a.kd_lembur = e.kd_lembur
+				inner join hrd_khs.tseksi d
+					ON b.kodesie = d.kodesie
 				where a.ID_SPL in ($id)
 				order by 	a.user_,
-							a.tgl_lembur, 
-							a.jam_mulai_lembur, 
+							a.tgl_lembur,
+							a.jam_mulai_lembur,
 							a.Jam_Akhir_Lembur,
-							a.Kd_Lembur, 
+							a.Kd_Lembur,
 							a.Pekerjaan,
 							a.Break,
 							a.Istirahat,
@@ -126,7 +126,7 @@ class M_splkasie extends CI_Model{
 
 	public function show_email_addres($sie){
 		$user = $this->session->user; //untuk trial
-		$sql = "select eea.employee_code, eea.internal_mail, sugm.user_group_menu_name 
+		$sql = "select eea.employee_code, eea.internal_mail, sugm.user_group_menu_name
 			from er.er_employee_all eea
 			inner join sys.sys_user su on eea.employee_id=su.employee_id
 			inner join sys.sys_user_application sua on su.user_id = sua.user_id
@@ -150,7 +150,7 @@ class M_splkasie extends CI_Model{
 	}
 
 	public function getEmailAddress($noind){
-		$sql = "select ea.internal_mail as mail 
+		$sql = "select ea.internal_mail as mail
 				from er.er_employee_all ea
 				where employee_code = '$noind'";
 		$query = $this->db->query($sql);
@@ -161,6 +161,10 @@ class M_splkasie extends CI_Model{
 		$sql = "select jari from fp_distribusi.tb_jari where id_finger = '$jari'";
 		$query = $this->spl->query($sql);
 		return $query->row()->jari;
+	}
+
+	public function getName($noind){
+		return $this->prs->query("SELECT nama FROM hrd_khs.tpribadi WHERE noind='$noind' and keluar='0'")->row()->nama;
 	}
 
 }
