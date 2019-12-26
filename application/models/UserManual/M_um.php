@@ -16,7 +16,8 @@ class M_um extends CI_Model
 
 	public function tabel()
 	{
-		$sql =  "select um.*, sm.* from um.um_manual um inner join sys.sys_user_group_menu sm on sm.module_id = um.module_id";
+		$sql =  "select um.*, sm.* from um.um_manual um inner join sys.sys_user_group_menu sm on sm.module_id = um.module_id
+				order by sm.user_group_menu_name asc";
 		$query = $this->db->query($sql);
 
 		return $query->result_array();
