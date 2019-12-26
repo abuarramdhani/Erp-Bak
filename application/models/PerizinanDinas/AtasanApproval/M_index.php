@@ -16,7 +16,8 @@ class M_index extends CI_Model
 
    public function GetIzin($no_induk)
 	{
-		$sql = "SELECT * FROM \"Surat\".tperizinan WHERE atasan_aproval LIKE '%$no_induk%' order by status";
+		$sql = "SELECT * FROM \"Surat\".tperizinan WHERE atasan_aproval LIKE '%$no_induk%'
+                order by status, izin_id DESC";
 
 		$query = $this->personalia->query($sql);
 		return $query->result_array();
@@ -24,7 +25,8 @@ class M_index extends CI_Model
 
 	 public function IzinApprove($no_induk)
 	{
-		$sql = "SELECT * FROM \"Surat\".tperizinan WHERE atasan_aproval = '$no_induk' and status = '1' order by created_date DESC";
+		$sql = "SELECT * FROM \"Surat\".tperizinan WHERE atasan_aproval = '$no_induk' and status = '1'
+                order by created_date DESC";
 
 		$query = $this->personalia->query($sql);
 		return $query->result_array();
@@ -32,7 +34,8 @@ class M_index extends CI_Model
 
 	 public function IzinUnApprove($no_induk)
 	{
-		$sql = "SELECT * FROM \"Surat\".tperizinan WHERE atasan_aproval LIKE '%$no_induk%' and status = '0' order by created_date DESC";
+		$sql = "SELECT * FROM \"Surat\".tperizinan WHERE atasan_aproval LIKE '%$no_induk%' and status = '0'
+                order by created_date DESC";
 
 		$query = $this->personalia->query($sql);
 		return $query->result_array();
@@ -40,7 +43,8 @@ class M_index extends CI_Model
 
 	 public function IzinReject($no_induk)
 	{
-		$sql = "SELECT * FROM \"Surat\".tperizinan WHERE atasan_aproval LIKE '%$no_induk%' and status = '2' order by created_date DESC";
+		$sql = "SELECT * FROM \"Surat\".tperizinan WHERE atasan_aproval LIKE '%$no_induk%' and status = '2'
+                order by created_date DESC";
 
 		$query = $this->personalia->query($sql);
 		return $query->result_array();
@@ -54,9 +58,33 @@ class M_index extends CI_Model
         $query = $this->personalia->query($sql);
     }
 
+	public function updatePekerja($status, $idizin)
+    {
+        $sql = "update \"Surat\".tpekerja_izin
+                set status_jalan ='$status'
+                WHERE izin_id ='$idizin'";
+        $query = $this->personalia->query($sql);
+    }
+
+    public function update_tperizinan($noind, $status, $id, $imPlace)
+    {
+        $sql = "update \"Surat\".tperizinan
+        set status ='$status', noind = '$noind', tujuan = '$imPlace'
+        WHERE izin_id ='$id'";
+        $query = $this->personalia->query($sql);
+    }
+
+	public function updatePekerjaBerangkat($noind, $status, $idizin)
+    {
+        $sql = "UPDATE \"Surat\".tpekerja_izin
+                set status_jalan ='$status'
+                WHERE izin_id ='$idizin' AND noind = '$noind'";
+        $query = $this->personalia->query($sql);
+    }
+
     public function taktual_izin($pekerja)
     {
-         $this->personalia->insert('Surat.taktual_izin',$pekerja);
+        $this->personalia->insert('Surat.taktual_izin',$pekerja);
         return;
     }
 
@@ -78,8 +106,35 @@ class M_index extends CI_Model
 
     public function getTujuanMakan($idizin)
     {
-      $sql = "SELECT * FROM \"Surat\".tpekerja_izin WHERE izin_id = '$idizin'";
+        $sql = "SELECT * FROM \"Surat\".tpekerja_izin WHERE izin_id = '$idizin'";
+        return $this->personalia->query($sql)->result_array();
+    }
+
+    public function getTujuan($id, $noind, $param)
+    {
+        $new = '';
+        if ($param == true) {
+            $new = "AND noind IN ('$noind')";
+        }else {
+            $new = "AND noind = '$noind'";
+        }
+        $sql = "SELECT trim(tujuan) as tujuan FROM \"Surat\".tpekerja_izin WHERE izin_id = '$id' $new";
+        return $this->personalia->query($sql)->result_array();
+    }
+
+    public function getPekerjaEdit($idizin)
+    {
+        $sql = "SELECT ti.*, (SELECT trim(nama) FROM hrd_khs.tpribadi where noind = ti.noind and keluar = '0') as nama, tper.keterangan, cast(tper.created_date as date)
+                FROM \"Surat\".tpekerja_izin ti
+                LEFT JOIN \"Surat\".tperizinan tper ON tper.izin_id = ti.izin_id::int
+                WHERE ti.izin_id = '$idizin'";
       return $this->personalia->query($sql)->result_array();
+    }
+
+    public function getDataPekerja($a, $b)
+    {
+        $sql = "SELECT * FROM \"Surat\".tpekerja_izin WHERE izin_id = '$b' AND noind = '$a'";
+        return $this->personalia->query($sql)->result_array();
     }
 
 } ?>
