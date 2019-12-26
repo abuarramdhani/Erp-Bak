@@ -46,30 +46,34 @@ class C_InputData extends CI_Controller
             $nama       = $res['nama'];
             $ket        = $res['keterangan'];
             $tgl_input  = $res['tgl_input'];
-            $tanggal    = $res['tanggal'];
+            $tanggal1   = $res['tanggal_start'];
+            $tanggal2   = $res['tanggal_end'];
             $status     = $res['status'];
+            $appTime    = $res['app_time'];
             $alasan     = $res['alasan'];
             $approver1  = $res['approver1'];
             $approver2  = $res['approver2'];
+
+            $tanggal    = ($tanggal1 == $tanggal2)? $tanggal1 : $tanggal1." - ".$tanggal2;
 
             switch($status){
                 case '0':
                     $status = '<td class="bg-yellow">Pending</td>';
                     break;
                 case '1':
-                    $status = '<td class="bg-blue">Approve by '.ucwords(strtolower($approver1)).'</td>';
+                    $status = '<td class="bg-blue">Diterima oleh seksi '.ucwords(strtolower($approver1))." pada tanggal ".$appTime.'</td>';
                     if($approver2 === ''){
-                        $status = '<td class="bg-green">Approve by '.ucwords(strtolower($approver1)).'</td>';
+                        $status = '<td class="bg-green">Diterima oleh seksi  '.ucwords(strtolower($approver1))." pada tanggal ".$appTime.'</td>';
                     }
                     break;
                 case '2':
-                    $status = '<td class="bg-red">Reject by '.ucwords(strtolower($approver1)).'</td>';
+                    $status = '<td class="bg-red">Ditolak oleh seksi '.ucwords(strtolower($approver1))." pada tanggal ".$appTime.'</td>';
                     break;
                 case '3':
-                    $status = '<td class="bg-green">Approve by '.ucwords(strtolower($approver2)).'</td>';
+                    $status = '<td class="bg-green">Diterima oleh seksi  '.ucwords(strtolower($approver2))." pada tanggal ".$appTime.'</td>';
                     break;
                 case '4':
-                    $status = '<td class="bg-red">Reject by '.ucwords(strtolower($approver2)).'</td>';
+                    $status = '<td class="bg-red">Ditolak oleh seksi '.ucwords(strtolower($approver2))." pada tanggal ".$appTime.'</td>';
                     break;
                 default:
                     $status = 'null';
@@ -128,12 +132,23 @@ class C_InputData extends CI_Controller
 
     function ajaxInputData(){
         $noind      = $_POST['noind'];
-        
+        $date       = $_POST['date'];
+
+        $dt = explode(' - ', $date);
+
+        if(count($dt) > 1){
+            $tgl1 = $dt['0'];
+            $tgl2 = $dt['1'];
+        }else{
+            $tgl1 = $date;
+            $tgl2 = $date;
+        }
+
         $allNoind   = explode(',', $noind);
         
         foreach($allNoind as $noind){
             $id_master  = $_POST['ket'];
-            $date       = $_POST['date'];
+            $date       = [$tgl1, $tgl2];
     
             $this->M_inputdata->ajaxInputData($noind,$id_master,$date);
         }

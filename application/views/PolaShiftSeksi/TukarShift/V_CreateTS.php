@@ -58,10 +58,10 @@
                                             </div>
                                             <div class="col-md-4">
                                                 <label class="col-md-5">
-                                                    <input type="radio" class="form-control" name="inisiatif" value="perusahaan" /> Perusahaan
+                                                    <input type="radio" class="form-control pss_set_range" name="inisiatif" value="perusahaan" /> Perusahaan
                                                 </label>
                                                 <label class="col-md-5">
-                                                    <input checked type="radio" class="form-control pss_dis_ch" name="inisiatif" value="pribadi" /> Pribadi
+                                                    <input checked type="radio" class="form-control pss_dis_ch pss_set_range" name="inisiatif" value="pribadi" /> Pribadi
                                                 </label>
                                             </div>
                                         </div>

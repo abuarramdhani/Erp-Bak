@@ -254,6 +254,18 @@ class C_Approval extends CI_Controller
 		$data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id);
 		
 		$data['tukar']	=	$this->M_approval->getListId($id);
+		$data['tukar']['min'] = date('d-m-Y', strtotime($data['tukar']['min']));
+		$data['tukar']['max'] = date('d-m-Y', strtotime($data['tukar']['max']));
+		if (empty(rtrim($data['tukar']['noind2']))) {
+			$data['tukar']['noind2'] = $data['tukar']['noind1'];
+			$data['tukar']['nama2'] = $data['tukar']['nama1'];
+		}
+		$data['tukar']['shift1'] = explode(';', $data['tukar']['shift1']);
+		$data['tukar']['shift2'] = explode(';', $data['tukar']['shift2']);
+		$data['tukar']['tgl_arr'] = explode(';', $data['tukar']['tgl_arr']);
+		$data['tukar']['jumlah'] = count($data['tukar']['tgl_arr']);
+		// echo "<pre>";
+		// print_r($data['tukar']);exit();
 		$data['user'] = $no_induk;
 
 		$this->load->view('V_Header',$data);
@@ -264,6 +276,8 @@ class C_Approval extends CI_Controller
 
 	public function ApproveTS_button()
 	{
+		// echo "<pre>";
+		// print_r($_POST);exit();
 		$level = $this->input->post('level');
 		$id = $this->input->post('id');
 		$isduo = $this->input->post('duo');
@@ -284,21 +298,25 @@ class C_Approval extends CI_Controller
 			exit();
 		}
 		$up = $this->M_approval->upTS($kolom, $id, $duo, $tgl);
+		//update di personalia
 		if ($level == '3') {
-			$get = $this->M_approval->getTukar($id);
-			foreach ($get as $key) {
-				$up_Pers = $this->M_approval->up_pers($get[0]['tanggal1'], $get[0]['noind1'], $get[0]['noind2'], $get[0]['create_timestamp'], $tgl, '02');
-				if (strlen(rtrim($key['noind2'])) < 5) {
-					$getKd = $this->M_approval->getKD(rtrim($key['shift2']));
-					$upPkj = $this->M_approval->upPkj($key['tanggal1'], $key['noind1'], $getKd);// update pekerja 1 saja
-				}else{
-					$getKd = $this->M_approval->getKD(rtrim($key['shift2']));// ini sshift 2
-					$upPkj = $this->M_approval->upPkj($key['tanggal1'], $key['noind1'], $getKd);// update pekerja 1
-
-					$getKd = $this->M_approval->getKD(rtrim($key['shift1']));// ini shift 1
-					$upPkj = $this->M_approval->upPkj($key['tanggal2'], $key['noind2'], $getKd);// update pekerja 2
+				$getGroup = $this->M_approval->getTukarGroup($id);
+			foreach ($getGroup as $gg) {
+					$get = $this->M_approval->getTukar($gg['tukar_id']);
+				foreach ($get as $key) {
+						$up_Pers = $this->M_approval->up_pers($key['tanggal1'], $key['noind1'], $key['noind2'], $key['create_timestamp'], $tgl, '02');
+					if (strlen(rtrim($key['noind2'])) < 5) {
+						$getKd = $this->M_approval->getKD(rtrim($key['shift2']));
+						$upPkj = $this->M_approval->upPkj($key['tanggal1'], $key['noind1'], $getKd);// update pekerja 1 saja
+					}else{
+						$getKd = $this->M_approval->getKD(rtrim($key['shift2']));// ini sshift 2
+						$upPkj = $this->M_approval->upPkj($key['tanggal1'], $key['noind1'], $getKd);// update pekerja 1
+						//tanggal1 dan 2 kan sama
+						$getKd = $this->M_approval->getKD(rtrim($key['shift1']));// ini shift 1
+						$upPkj = $this->M_approval->upPkj($key['tanggal2'], $key['noind2'], $getKd);// update pekerja 2 
+					}
+					$insertLog = $this->M_approval->insTlog($tgl, $key['vno'], $key['shift1'], $key['shift2'], $key['appr_']);// insert tlog 1 aja
 				}
-				$insertLog = $this->M_approval->insTlog($tgl, $key['vno'], $key['shift1'], $key['shift2'], $key['appr_']);// insert tlog 1 aja
 			}
 		}
 	}
@@ -311,8 +329,11 @@ class C_Approval extends CI_Controller
 		$tgl = date('Y-m-d H:i:s');
 
 		$up_r = $this->M_approval->upTS_rej($noind, $tgl, $id, $alasan);// update di erp
-		$get  =	$this->M_approval->getTukar($id);// dapatkan data di erp untuk update di personalia karena disana tidak ada idnya
-		$up_Pers = $this->M_approval->up_pers($get[0]['tanggal1'], $get[0]['noind1'], $get[0]['noind2'], $get[0]['create_timestamp'], $tgl, '03');
+		$getGroup = $this->M_approval->getTukarGroup($id);
+			foreach ($getGroup as $gg) {
+				$get  =	$this->M_approval->getTukar($gg['tukar_id']);// dapatkan data di erp untuk update di personalia karena disana tidak ada idnya
+				$up_Pers = $this->M_approval->up_pers($get[0]['tanggal1'], $get[0]['noind1'], $get[0]['noind2'], $get[0]['create_timestamp'], $tgl, '03');
+			}
 
 	}
 }

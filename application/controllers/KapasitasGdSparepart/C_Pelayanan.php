@@ -75,17 +75,18 @@ class C_Pelayanan extends CI_Controller
 		$date 	= $this->input->post('date');
 		$jenis	= $this->input->post('jenis');
 		$nospb 	= $this->input->post('no_spb');
+		$pic 	= $this->input->post('pic');
 		
-		$this->M_pelayanan->SavePelayanan($date, $jenis, $nospb);
+		$this->M_pelayanan->SavePelayanan($date, $jenis, $nospb, $pic);
 	}
 
 	public function updateSelesai(){
 		$date 	= $this->input->post('date');
 		$jenis	= $this->input->post('jenis');
 		$nospb 	= $this->input->post('no_spb');
-		$pic 	= $this->input->post('pic');
 		$mulai 	= $this->input->post('mulai');
 		$selesai = $this->input->post('wkt');
+		$pic 	= $this->input->post('pic');
 
 		$waktu1 	= strtotime($mulai);
 		$waktu2 	= strtotime($selesai);

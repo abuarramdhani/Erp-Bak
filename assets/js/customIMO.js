@@ -252,3 +252,42 @@ $('.checkedAllIMO1, .ch_komp_imo1').on('click',function(){
 
 });
 
+
+function getExportMO(th){
+	var dept = $('select[name="slcDeptIMO"]').val();
+	var date1 = $('input[name="tglAwl"]').val();
+	var date2 = $('input[name="tglAkh"]').val();
+	// console.log(date2);
+	// if (nojob != "") {
+		// $('#NoJob').css("border-color","#d2d6de");
+	var request = $.ajax({
+		url: baseurl+'InventoryManagement/ExportMoveOrder/search/',
+		data: {
+			dept : dept, date1 : date1, date2 : date2
+		},
+		type: "POST",
+		datatype: 'html', 
+	});
+		$('#ResultExport').html('');
+		$('#ResultExport').html('<center><img style="width:130px; height:auto" src="'+baseurl+'assets/img/gif/loading10.gif"></center>' );
+
+	request.done(function(result){
+			$('#ResultExport').html(result);
+			$('#tblExportMO').dataTable({
+				"scrollX": true,
+				dom:"lfrtBip", 
+				buttons: [{
+					extend: 'excel',
+					className: "btn btn-success",
+					text: '<i class="fa fa-download"></i> Download',
+					title: 'Rekap Move Order',
+					message: date1+' - '+date2,
+				}
+			]
+			});
+		})
+
+	// }else{
+	// 	$('#NoJob').css("border-color","red");
+	// }
+}

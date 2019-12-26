@@ -120,11 +120,22 @@ class M_monitoringpengpesananluar extends CI_Model
                   dvrpo.lampiran,
                   dvrp.no_so,
                   TO_CHAR(dvrpo.last_update_date :: DATE, 'DD Mon YYYY') last_update_date ,
+                  dvrpo.last_update_date,
                   dvrpo.id_rekap_po
                       from om.om_mppl_rekap_po dvrpo
                       left join om.om_mppl_customer dvc on dvc.id_customer = dvrpo.id_customer
                       left join om.om_mppl_rekap_pengiriman dvrp on dvrp.no_po = dvrpo.no_po
-                      order by last_update_date desc";
+                      group by 
+                            dvc.nama_customer,
+                            dvrpo.no_po,
+                            dvrpo.tanggal_issued,
+                            dvrpo.need_by_date,
+                            dvrpo.status,
+                            dvrpo.lampiran,
+                            dvrp.no_so,
+                            dvrpo.last_update_date,
+                            dvrpo.id_rekap_po
+                                    order by dvrpo.last_update_date desc";
         $runQuery = $this->db->query($sql);
         return $runQuery->result_array();
       
@@ -653,6 +664,7 @@ $parameter
               drp.keterangan,
               de.nama_ekspedisi,
               drp.id_rekap_pengiriman,
+              drp.last_update_date,
               (select count(dcp.no_po) from om.om_mppl_count_pengiriman dcp where dcp.no_po = drp.no_po) count
               from om.om_mppl_rekap_pengiriman drp
               left join om.om_mppl_rekap_po drpo on drpo.no_po = drp.no_po
@@ -669,9 +681,10 @@ $parameter
               drp.keterangan,
               de.nama_ekspedisi,
               drp.id_rekap_pengiriman,
+              drp.last_update_date,
               dad.entry,
               drpo.status
-              order by delivery_date desc
+              order by last_update_date desc
               ";
       $runQuery = $this->db->query($sql);
       return $runQuery->result_array();

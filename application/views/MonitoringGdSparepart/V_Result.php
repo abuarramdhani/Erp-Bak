@@ -81,7 +81,7 @@
                                                 echo '';
                                             } ?>
                                     /></td>
-                                    <td style="text-align:left"><input type="text" style="width:100%" name="action[]" id="action<?=$no?><?= $nomor ?>" onchange="saveAction(<?=$no?>,<?= $nomor ?>)" value="<?= $v['ACTION'] ?>"
+                                    <td style="text-align:left"><input type="text" style="width:100%" name="aktion[]" id="action<?=$no?><?= $nomor ?>" onchange="saveAction(<?=$no?>,<?= $nomor ?>)" value="<?= $v['ACTION'] ?>"
                                     <?php if($row['header']['statusket']== 'Sudah terlayani') 
                                             { ?>
                                             readonly

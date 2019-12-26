@@ -287,26 +287,26 @@ class M_splseksi extends CI_Model{
 		$sql = "select 	tdp.noind,
 						tdp.tanggal::date,
 						cast(concat(tdp.tanggal::date,' ',tdp.masuk) as timestamp) as masuk,
-						case when tdp.keluar::time < tdp.masuk::time then
+						case when tdp.keluar::time < tdp.masuk::time then 
 							cast(concat((tdp.tanggal::date + interval '1 day')::date,' ',tdp.keluar) as timestamp)
-						else
+						else 
 							cast(concat(tdp.tanggal::date,' ',tdp.keluar) as timestamp)
 						end as keluar,
 						tdp.kd_ket,
 						cast(concat(tdp.tanggal::date,' ',tsp.jam_msk) as timestamp) as jam_msk,
-						case when tsp.jam_plg::time < tsp.jam_msk::time then
+						case when tsp.jam_plg::time < tsp.jam_msk::time then 
 							cast(concat((tdp.tanggal::date + interval '1 day')::date,' ',tsp.jam_plg) as timestamp)
-						else
+						else 
 							cast(concat(tdp.tanggal::date,' ',tsp.jam_plg) as timestamp)
 						end as jam_plg,
-						case when tsp.ist_mulai::time < tsp.jam_msk::time then
+						case when tsp.ist_mulai::time < tsp.jam_msk::time then 
 							cast(concat((tdp.tanggal::date + interval '1 day')::date,' ',tsp.ist_mulai) as timestamp)
-						else
+						else 
 							cast(concat(tdp.tanggal::date,' ',tsp.ist_mulai) as timestamp)
 						end as ist_mulai ,
-						case when tsp.ist_selesai::time < tsp.jam_msk::time then
+						case when tsp.ist_selesai::time < tsp.jam_msk::time then 
 							cast(concat((tdp.tanggal::date + interval '1 day')::date,' ',tsp.ist_selesai) as timestamp)
-						else
+						else 
 							cast(concat(tdp.tanggal::date,' ',tsp.ist_selesai) as timestamp)
 						end as ist_selesai
 				from \"Presensi\".tdatapresensi tdp
@@ -323,19 +323,19 @@ class M_splseksi extends CI_Model{
 		$sql = "select 	tsp.noind,
 						tsp.tanggal::date,
 						cast(concat(tsp.tanggal::date,' ',tsp.jam_msk) as timestamp) as jam_msk,
-						case when tsp.jam_plg::time < tsp.jam_msk::time then
-							cast(concat(tsp.tanggal::date + interval '1 day')::date,' ',tsp.jam_plg) as timestamp)
-						else
+						case when tsp.jam_plg::time < tsp.jam_msk::time then 
+							cast(concat((tsp.tanggal::date + interval '1 day')::date,' ',tsp.jam_plg) as timestamp)
+						else 
 							cast(concat(tsp.tanggal::date,' ',tsp.jam_plg) as timestamp)
 						end as jam_plg,
-						case when tsp.ist_mulai::time < tsp.jam_msk::time then
-							cast(concat(tsp.tanggal::date + interval '1 day')::date,' ',tsp.ist_mulai) as timestamp)
-						else
+						case when tsp.ist_mulai::time < tsp.jam_msk::time then 
+							cast(concat((tsp.tanggal::date + interval '1 day')::date,' ',tsp.ist_mulai) as timestamp)
+						else 
 							cast(concat(tsp.tanggal::date,' ',tsp.ist_mulai) as timestamp)
 						end as ist_mulai ,
-						case when tsp.ist_selesai::time < tsp.jam_msk::time then
-							cast(concat(tsp.tanggal::date + interval '1 day')::date,' ',tsp.ist_selesai) as timestamp)
-						else
+						case when tsp.ist_selesai::time < tsp.jam_msk::time then 
+							cast(concat((tsp.tanggal::date + interval '1 day')::date,' ',tsp.ist_selesai) as timestamp)
+						else 
 							cast(concat(tsp.tanggal::date,' ',tsp.ist_selesai) as timestamp)
 						end as ist_selesai
 				from \"Presensi\".tshiftpekerja tsp

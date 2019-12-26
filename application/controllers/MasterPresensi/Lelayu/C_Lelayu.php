@@ -38,7 +38,8 @@ class C_Lelayu extends CI_Controller
     $user = $this->session->username;
     $user_id = $this->session->userid;
     $today = date('d M Y');
-    $bulancutoff = date('Y-m-21');
+    // $bulancutoff = date('Y-m-21');
+    $bulancutoff = $this->M_lelayu->getCutoffBulanIni();
     $bulanlalu = date('Y-m-d', strtotime($bulancutoff. ' -1 month'));
     $tanggalcutoff = date('d');
 
@@ -102,7 +103,7 @@ class C_Lelayu extends CI_Controller
     );
     $this->M_lelayu->insertAll($array);
 
-    $bulancutoff = date('Y-m-21');
+    $bulancutoff = $this->M_lelayu->getCutoffBulanIni();
     $tanggalcutoff = date('d');
     $bulanlalu = date('Y-m-d', strtotime($bulancutoff. ' -1 month'));
 

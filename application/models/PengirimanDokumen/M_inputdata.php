@@ -16,8 +16,11 @@ class M_inputdata extends CI_Model
                          where id_data = td.id_data and status='0'
                          ) 
                      tgl_input,
-                     tm.keterangan, td.tanggal::date, 
-                     td.status, 
+                     tm.keterangan,
+                     td.tanggal_start::date,
+                     td.tanggal_end::date, 
+                     td.status,
+                     (select tgl_update from ps.triwayat where id_data = td.id_data and status = td.status limit 1) app_time,
                      td.alasan,
                      (select string_agg(kodesie, '|') from ps.tappr where id = tm.id) as approval
                 FROM ps.tdata td 
@@ -34,6 +37,10 @@ class M_inputdata extends CI_Model
             $approval = explode('|', $res['approval']);
             $approver1= $this->getNameSeksi($approval['0']);
             $result[$i]['approver1'] = $approver1;
+            $result[$i]['app_time']  = date('d/m/Y H:i:s', strtotime($res['app_time']));
+            $result[$i]['tgl_input'] = date('Y/m/d H:i:s', strtotime($res['tgl_input']));
+            $result[$i]['tanggal_start'] = date('Y/m/d', strtotime($res['tanggal_start']));
+            $result[$i]['tanggal_end']   = date('Y/m/d', strtotime($res['tanggal_end']));
 
             if($approval['1'] !== 'kosong'){
                 $approver2= $this->getNameSeksi($approval['1']);
@@ -69,9 +76,10 @@ class M_inputdata extends CI_Model
 
     function ajaxInputData($noind,$id_master,$date){
         $inputData = array(
-            'noind'     => $noind,
-            'id_master' => $id_master,
-            'tanggal'   => $date
+            'noind'         => $noind,
+            'id_master'     => $id_master,
+            'tanggal_start' => $date['0'],
+            'tanggal_end'   => $date['1']
         );
 
         $this->db->insert('ps.tdata', $inputData);
@@ -92,11 +100,19 @@ class M_inputdata extends CI_Model
         return $this->personalia->query($sql)->row()->seksi;
     }
 
+    function getNameSeksiByNoind($noind){
+        $sql = "SELECT kodesie FROM hrd_khs.tpribadi WHERE noind ='$noind' and keluar='0'";
+        $kodesie = substr($this->personalia->query($sql)->row()->kodesie, 0, 7);
+
+        $sql = "SELECT distinct seksi FROM hrd_khs.tseksi where substr(kodesie,0,8) = '$kodesie'";
+        return $this->personalia->query($sql)->row()->seksi;
+    }
+
     function ajaxShowDetail($id){
         $sql = "SELECT id_riwayat, id_data, status, tgl_update, level, 
         (case when level = '0' then (select noind from ps.tdata where id_data = tr.id_data) else tr.user end ) as user,
         (select id_master from ps.tdata where id_data = tr.id_data) as id_master
-        FROM ps.triwayat tr WHERE id_data='$id'";
+        FROM ps.triwayat tr WHERE id_data='$id' order by level";
 
         return $this->db->query($sql)->result_array();
     }

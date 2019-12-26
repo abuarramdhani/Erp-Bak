@@ -88,7 +88,7 @@ class C_monitoringlppbadmin extends CI_Controller{
 		$data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id);
 		$data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id);
 		$data['inventory'] = $this->M_monitoringlppbadmin->getInventory();
-		$data['status'] = $this->M_monitoringlppbadmin->getStatus();
+		// $data['status'] = $this->M_monitoringlppbadmin->getStatus();
 		$data['gudang'] = $this->M_monitoringlppbadmin->getOpsiGudang2();
 		$this->load->view('V_Header',$data);
 		$this->load->view('V_Sidemenu',$data);
@@ -164,7 +164,30 @@ class C_monitoringlppbadmin extends CI_Controller{
 	}
 	public function saveLppbNumber() //FUNGSI SAVE DI SUBMIT LPPB
 	{
-		// echo"<pre>";print_r($_POST);
+// 		Array
+// (
+//     [lppb_info] => test
+//     [id_gudang] => 1
+//     [lppb_number] =>  127 , 128 , 105 , 158 
+//     [organization_id] =>  102 , 102 , 124 , 124 
+//     [po_number] => Array
+//         (
+//             [0] =>  11000381 
+//             [1] =>  11000381 
+//             [2] =>  11001566 
+//             [3] =>  11001350 
+//         )
+
+//     [po_header_id] => Array
+//         (
+//             [0] =>  1547 
+//             [1] =>  1547 
+//             [2] =>  3027 
+//             [3] =>  2773 
+//         )
+
+// )
+		// echo"<pre>";print_r($_POST);exit();
 		$lppb_number = str_replace(' ', '', $this->input->post('lppb_number'));
 		$status = $this->input->post('status');
 		$lppb_info = $this->input->post('lppb_info');
@@ -186,7 +209,7 @@ class C_monitoringlppbadmin extends CI_Controller{
 		$dataid = $this->M_monitoringlppbadmin->saveLppbNumber($date,$lppb_info,$batch,$group_batch,$id_gudang);
 		$id = $dataid[0]['BATCH_NUMBER'];
 		$exp_lppb_num = explode(',', $lppb_number);
-		$exp_org_id = explode(',', $organization_id);
+		$exp_org_id = explode(',', $organization_id);//bikin array
 		// $exp_po_num = explode(',',$po_number);
 		// $exp_header_id = explode(',',$po_header_id);
 		foreach ($exp_lppb_num as $key => $value) {
@@ -211,18 +234,13 @@ class C_monitoringlppbadmin extends CI_Controller{
 		$data['UserMenu'] = $this->M_user->getUserMenu($user_id,$this->session->responsibility_id);
 		$data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id);
 		$data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id);
-		$data['inventory'] = $this->M_monitoringlppbadmin->getInventory();
-		$data['status'] = $this->M_monitoringlppbadmin->getStatus();
+
 		$id = $this->input->post('batch_number');
-		$match = $this->M_monitoringlppbadmin->getBatchDetailId($id);
-		$lppb_number1 = $match[0]['LPPB_NUMBER'];
-		foreach ($match as $key => $value) {
-			$lppb_number2 = $match[$key]['LPPB_NUMBER'];
-		}
-		$rangeLppb = "AND rsh.receipt_num between '".$lppb_number1."' and '".$lppb_number2."'";
-		$kondisi = "";
-		$searchLppb = $this->M_monitoringlppbadmin->lppbBatchDetail($id,$rangeLppb);
-		$jumlahData = $this->M_monitoringlppbadmin->cekJumlahData($id,$kondisi);
+		$searchLppb = $this->M_monitoringlppbadmin->lppbBatchDetail($id); //,$rangeLppb
+		$jumlahData = $this->M_monitoringlppbadmin->cekJumlahData($id); //,$kondisi
+		$gudang = $this->M_monitoringlppbadmin->getInventory();
+		
+		$data['inventory'] = $gudang;
 		$data['lppb'] = $searchLppb;
 		$data['jml'] = $jumlahData;
 
