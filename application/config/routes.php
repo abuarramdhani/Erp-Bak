@@ -2543,6 +2543,7 @@ $route['SPL/ListLembur'] = 'SPLSeksi/C_splseksi/data_spl';
 $route['SPL/RekapLembur'] = 'SPLSeksi/C_splseksi/rekap_spl';
 $route['SPL/EditLembur/(:any)'] = 'SPLSeksi/C_splseksi/edit_spl/$1';
 $route['SPL/HapusLembur/(:any)'] = 'SPLSeksi/C_splseksi/hapus_spl/$1';
+$route['SPL/Pusat/ajax_count_overtime'] = 'SPLSeksi/Pusat/C_splseksi/ajax_count_overtime';
 
 $route['ALK/ListLembur'] = 'SPLSeksi/C_splkasie/data_spl';
 $route['ALK/Approve/(:any)'] = 'SPLSeksi/C_splkasie/$1';
