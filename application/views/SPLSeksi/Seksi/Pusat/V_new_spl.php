@@ -11,7 +11,7 @@
 						<div class="text-right hidden-md hidden-sm hidden-xs">
 							<a class="btn btn-default btn-lg" href="<?php echo site_url('SPL/Pusat/InputLembur');?>">
 								<i class="icon-wrench icon-2x"></i>
-								<span><br/></span>	
+								<span><br/></span>
 							</a>
 						</div>
 					</div>
@@ -22,10 +22,23 @@
 		<div class="row">
 			<section class="col-lg-12 connectedSortable">
 				<?php if(!empty($result)){ ?>
-					<div class="callout callout-success">
-						<h4>Sukses!</h4>
-						<p>Data berhasil di simpan</p>
-					</div>
+					<?php if($result == 1): ?>
+						<div class="callout callout-success">
+							<h4>Sukses!</h4>
+							<p>Data berhasil di simpan</p>
+						</div>
+						<?php if(!empty($exist)): ?>
+							<div class="callout callout-danger">
+								<h4>Gagal!</h4>
+								<p>Noind <?=$exist ?> Sudah memiliki SPL di tanggal tersebut</p>
+							</div>
+						<?php endif; ?>
+					<?php else: ?>
+						<div class="callout callout-danger">
+							<h4>Gagal!</h4>
+							<p>Noind <?=$exist ?> Sudah memiliki SPL di tanggal tersebut</p>
+						</div>
+					<?php endif; ?>
 				<?php } ?>
 
 				<form class="form-horizontal" action="<?php echo site_URL('SPLSeksi/Pusat/C_splseksi/new_spl_submit'); ?>" method="post" enctype="multipart/form-data">
@@ -85,20 +98,32 @@
 									<div class="form-group">
 										<label class="col-sm-2 control-label">Istirahat</label>
 										<div class="col-sm-2">
-											<label style="margin-left:2%; top:+3;"><input type="radio" id="istirahat-ya" class="" name="istirahat" value="1" style="transform: scale(1.5); vertical-align:top;" checked> Ya</label>
+											<label style="margin-left:2%; top:+3;">
+												<input type="radio" id="istirahat-ya" class="" name="istirahat" value="1" style="transform: scale(1.5); vertical-align:top;" checked>
+												Ya
+											</label>
 										</div>
 										<div class="col-sm-8">
-											<label style="margin-left:5%; vertical-align:bottom;"><input id="istirahat-no" class="" type="radio" name="istirahat" value="2" style="transform: scale(1.5); vertical-align:top;"> Tidak</label>
+											<label style="margin-left:5%; vertical-align:bottom;">
+												<input id="istirahat-no" class="" type="radio" name="istirahat" value="2" style="transform: scale(1.5); vertical-align:top;">
+												Tidak
+											</label>
 										</div>
 									</div>
 
 									<div class="form-group">
 										<label class="col-sm-2 control-label">Break</label>
 										<div class="col-sm-2">
-											<label style="margin-left:2%; top:+3;"><input class="" id="break-ya" type="radio" name="break" value="1" style="transform: scale(1.5); vertical-align:top;" checked> Ya</label>
+											<label style="margin-left:2%; top:+3;">
+												<input class="" id="break-ya" type="radio" name="break" value="1" style="transform: scale(1.5); vertical-align:top;" checked>
+											 	Ya
+										 	</label>
 										</div>
 										<div class="col-sm-8">
-											<label style="margin-left:5%; vertical-align:bottom;"><input id="break-no" class="" type="radio" name="break" value="2" style="transform: scale(1.5); vertical-align:top;"> Tidak</label>
+											<label style="margin-left:5%; vertical-align:bottom;">
+												<input id="break-no" class="" type="radio" name="break" value="2" style="transform: scale(1.5); vertical-align:top;">
+												Tidak
+											</label>
 										</div>
 									</div>
 
@@ -108,6 +133,13 @@
 											<textarea class="form-control" rows="3" name="pekerjaan" class="" required></textarea>
 										</div>
 									</div>
+
+									<!-- <div class="form-group">
+										<label class="col-sm-2 control-label">Estimasi</label>
+										<div class="col-sm-10">
+											<span id="estJamLembur">Isi data dengan lengkap</span>
+										</div>
+									</div> -->
 
 								</div>
 							</div>
@@ -128,12 +160,15 @@
 											<table id="example11" class="table table-bordered table-striped text-center">
 												<thead style="background:#3c8dbc; color:#fff">
 													<th width="5%">No.</th>
-													<th width="40%">Pekerja</th>
-													<th width="10%">Awal Lembur Aktual</th>
-													<th width="10%">Akhir Lembur Aktual</th>
-													<th width="5%">Target/Pcs/%</th>
-													<th width="5%">Realisasi/Pcs/%</th>
-													<th width="40%">Alasan Lembur</th>
+													<th width="30%">Pekerja</th>
+													<th width="8%">Awal Lembur Aktual</th>
+													<th width="8%">Akhir Lembur Aktual</th>
+													<th width="5%">Estimasi Lembur</th>
+													<th width="10%">Target</th>
+													<th width="10%">Satuan</th>
+													<th width="10%">Realisasi</th>
+													<th width="10%">Satuan</th>
+													<th width="20%">Alasan Lembur</th>
 													<th width="5%">
 														<i id="spl_pkj_add" class="fa fa-fw fa-plus-square-o"></i>
 													</th>
@@ -152,28 +187,44 @@
 															<input type="text" class="form-control" name="lbrakhir[]" disabled>
 															<input type="hidden" class="form-control" name="lembur_akhir[]" >
 														</td>
+														<td>
+															<input type="text" class="form-control" name="overtime" disabled>
+														</td>
 														<td><input type="number" class="form-control" name="target[]"></td>
+														<td>
+															<select class="form-control" name="target_satuan[]">
+																<option value="Pcs">Pcs</option>
+																<option value="%">%</option>
+															</select>
+														</td>
 														<td><input type="number" class="form-control" name="realisasi[]"></td>
+														<td>
+															<select class="form-control" name="realisasi_satuan[]">
+																<option value="Pcs">Pcs</option>
+																<option value="%">%</option>
+															</select>
+														</td>
 														<td colspan="2"><textarea class="form-control" rows="1" name="alasan[]"></textarea></td></tr>
 												</tbody>
 											</table>
 										</div>
 									</div>
-									
+
 									<div class="form-group">
 										<div class="col-sm-12 pull-left">
 											<button type="reset" style="margin-right:3px" class="btn btn-primary" onclick="location.reload()"> <i class="fa fa-refresh"></i> Reset</button>
 											<button type="submit" class="btn btn-primary"> <i class="fa fa-save"></i> Submit</button>
+											<a href="<?=base_url('SPL/Pusat')?>" class="btn btn-warning"> <i class="fa fa-arrow-circle-left"></i> Kembali</a>
 										</div>
 									</div>
-									
+
 								</div>
-								
+
 							</div>
 						</div>
 					</div>
 				</form>
-				
+
 			</section>
 		</div>
 	</div>
@@ -183,34 +234,34 @@
 		//   console.log('Got focus');
 		//   window.location.reload();
 		// }
-		
+
 		var timeoutInMiliseconds = 120000;
-		var timeoutId; 
-		  
-		function startTimer() { 
+		var timeoutId;
+
+		function startTimer() {
 		    // window.setTimeout returns an Id that can be used to start and stop a timer
 		    timeoutId = window.setTimeout(doInactive, timeoutInMiliseconds)
 		}
-		  
+
 		function doInactive() {
 		    // does whatever you need it to actually do - probably signs them out or stops polling the server for info
 		    window.location.reload();
 		}
 
-		function resetTimer() { 
+		function resetTimer() {
 		    window.clearTimeout(timeoutId)
 		    startTimer();
 		}
-		 
+
 		function setupTimers () {
 		    document.addEventListener("mousemove", resetTimer(), false);
 		    document.addEventListener("mousedown", resetTimer(), false);
 		    document.addEventListener("keypress", resetTimer(), false);
 		    document.addEventListener("touchmove", resetTimer(), false);
-		     
+
 		    startTimer();
 		}
-		 
+
 		// document.addEventListener("DOMContentLoaded",function(e){
 		// 	setupTimers();
 		// });

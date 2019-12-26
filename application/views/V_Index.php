@@ -72,10 +72,33 @@
                   <?php
                     }
                   ?>
-                  
+
                 </ul>
                 <!-- -------------------- Menu Level 1 -------------------- -->
                     <?php } ?>
           </div>
    </section><!-- /.content -->
- 
+
+   <!-- notificatin when password is default 123456 -->
+<?php if($this->session->pass_is_default): ?>
+   <script src="<?= base_url('assets/plugins/sweetalert2.all.min.js');?>"></script>
+   <script src="<?= base_url('assets/plugins/lottie/lottie-player.js');?>"></script>
+   <script type="text/javascript">
+	const host_address = '<?= base_url() ?>'
+		swal.fire({
+			title: 'Password kamu masih default ?',
+			html: `<lottie-player src="${host_address}assets/plugins/lottie/lottie_unlocked.json"  background="transparent" speed="1"  style="width: 300px; height: 300px;" loop autoplay ></lottie-player>
+			<br>
+			<div>
+				<span>Segera ubah password untuk mengamankan akun</span>
+			</div>
+			<br>
+			<div>
+				<a class="btn btn-warning" href="${host_address}ChangePassword">ubah password</a>
+			</div>`,
+			backdrop: `rgba(0,0,0,0.8)`,
+			showCancelButton: false,
+  			showConfirmButton: false
+		})
+   </script>
+<?php endif ?>

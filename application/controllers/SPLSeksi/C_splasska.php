@@ -92,7 +92,8 @@ class C_splasska extends CI_Controller {
 				$index[] = $sls['realisasi'];
 				$index[] = $sls['alasan_lembur'];
 				$index[] = $sls['Tgl_Berlaku'];
-				
+				$index[] = $this->hitung_jam_lembur($sls['Noind'], $sls['Kd_Lembur'], $sls['Tgl_Lembur'], $sls['Jam_Mulai_Lembur'], $sls['Jam_Akhir_Lembur'], $sls['Break'], $sls['Istirahat']);
+
 				$data_spl[] = $index;
 			}
 			$data['data'] = $data_spl;
@@ -101,6 +102,75 @@ class C_splasska extends CI_Controller {
 		$this->load->view('V_Sidemenu',$data);
 		$this->load->view('SPLSeksi/AssKa/V_data_spl',$data);
 		$this->load->view('V_Footer',$data);
+	}
+
+	public function hitung_jam_lembur($noind, $kode_lembur, $tgl, $mulai, $selesai, $break, $istirahat){
+		$day   = date('w', strtotime($tgl));
+
+		$hari_indo = "Minggu Senin Selasa Rabu Kamis Jumat Sabtu";
+		$array_hari = explode(' ', $hari_indo);
+		//--------------------core variable
+		$KET  		= $this->M_splseksi->getKeteranganJamLembur($noind);
+		$JENIS_HARI	= $this->M_splseksi->getJenisHari($tgl);
+		$HARI 		= $array_hari[$day];
+		//-----------------------
+		$treffjamlembur = $this->M_splseksi->treffjamlembur($KET, $JENIS_HARI, $HARI);
+
+		//----cari berapa menit lemburnya
+		$first = explode(':', $mulai);
+		$second = explode(':', $selesai);
+
+		$a = $first[0]*60+$first[1];
+		$b = $second[0]*60+$second[1];
+
+		if($a>$b){
+		 	$zero = 24*60; // jam sehari dalam menit
+		 	$z = $zero - $a;
+		 	$lama_lembur = $z+$b;
+		}else{
+			$lama_lembur = $b-$a;
+		}
+
+		if($kode_lembur == '005'){
+			$shift = $this->M_splseksi->selectShift($noind, $tgl);
+			$shift = (strtotime('15:30:00') - strtotime('07:20:00'));
+			$shift = $shift/60;
+		 	$result = $lama_lembur-$shift;
+		}else{
+		 	$result = $lama_lembur;
+		}
+		//-----end cari menit lembur
+
+		//-----------------------core variable
+		$MENIT_LEMBUR = $result;
+		$BREAK = $break == 'Y' ? 15 : 0;
+		$ISTIRAHAT = $istirahat == 'Y' ? 45 : 0;
+		//----------------------
+
+		$estimasi = 0;
+		if(!empty($treffjamlembur)):
+			$total_lembur = $MENIT_LEMBUR-($BREAK+$ISTIRAHAT);
+
+			$i = 0;
+			while($total_lembur > 0){
+				$jml_jam = $treffjamlembur[$i]['jml_jam'] * 60;
+				$pengali = $treffjamlembur[$i]['pengali'];
+
+				if($total_lembur > $jml_jam){
+					$estimasi = $jml_jam * $pengali/60;
+					$total_lembur = $total_lembur - $jml_jam;
+				}else{
+					$estimasi = $estimasi + ($total_lembur * $pengali/60);
+					$estimasi = number_format($estimasi,2);
+					$total_lembur = 0;
+				}
+				$i++;
+			}
+		else:
+			$estimasi = "tdk bisa diproses";
+		endif;
+
+		return $estimasi;
 	}
 
 	public function cut_kodesie($id){
@@ -140,14 +210,14 @@ class C_splasska extends CI_Controller {
 				$akses_sie[] = $this->cut_kodesie($as['kodesie']);
 			}
 		}
-		
+
 		$data_spl = array();
 		$show_list_spl = $this->M_splasska->show_spl($dari, $sampai, $status, $lokasi, $noind, $akses_sie, $kodesie);
 		foreach($show_list_spl as $sls){
 			$index = array();
-			
+
 			if($sls['Status'] == "21"){
-				$index[] = '<input type="checkbox" name="splid[]" class="spl-chk-data" 
+				$index[] = '<input type="checkbox" name="splid[]" class="spl-chk-data"
 					value="'.$sls['ID_SPL'].'" style="width:20px; height:20px; vertical-align:bottom;">';
 			}else{
 				$index[] = "";
@@ -167,9 +237,10 @@ class C_splasska extends CI_Controller {
 			$index[] = $sls['target'];
 			$index[] = $sls['realisasi'];
 			$index[] = $sls['alasan_lembur'];
-			$index[] = $sls['Deskripsi']." ".$sls['User_'];
+			$index[] = $sls['Deskripsi']." ".$sls['User_']." - ".$this->M_splkasie->getName($sls['User_']);
 			$index[] = $sls['Tgl_Berlaku'];
-			
+			$index[] = $this->hitung_jam_lembur($sls['Noind'], $sls['Kd_Lembur'], $sls['Tgl_Lembur'], $sls['Jam_Mulai_Lembur'], $sls['Jam_Akhir_Lembur'], $sls['Break'], $sls['Istirahat']);
+
 			$data_spl[] = $index;
 		}
 		echo json_encode($data_spl);
@@ -187,7 +258,7 @@ class C_splasska extends CI_Controller {
 			if(empty($maxid)){
 				$splr_id = "0000000001";
 			}else{
-				$splr_id = $maxid->id;	
+				$splr_id = $maxid->id;
 				$splr_id = substr("0000000000", 0, 10-strlen($splr_id)).$splr_id;
 			}
 
@@ -218,7 +289,7 @@ class C_splasska extends CI_Controller {
 				"Status" => $stat,
 				"User_" => $user);
 			$to_spl = $this->M_splseksi->update_spl($data_spl, $id);
-			
+
 			$data_splr = array(
 				"ID_Riwayat" => $splr_id,
 				"ID_SPL" => $id,
@@ -370,7 +441,7 @@ class C_splasska extends CI_Controller {
 											<td style='border: 1px solid black'>".$key['alasan_lembur']."</td>
 										</tr>";
 			$no++;
-			$tgl_lembur = $key['tgl_lembur'] ;  
+			$tgl_lembur = $key['tgl_lembur'] ;
 			$pkj_lembur = $key['Pekerjaan'] ;
 			$brk_lembur = $key['Break'] ;
 			$ist_lembur = $key['Istirahat'] ;
@@ -385,7 +456,7 @@ class C_splasska extends CI_Controller {
 			foreach ($data as $dt) {
 				$message = "<h4>Lembur</h4><hr>
 							Kepada Yth Bapak/Ibu<br><br>
-							
+
 							Kami informasikan bahwa SPL yang anda inputkan<br>
 							telah di <b>Approve</b> oleh Ass. Ka. Unit.<br>
 							Berikut ini daftar yang telah di Approve oleh : <b>$user</b><br>
@@ -429,7 +500,7 @@ class C_splasska extends CI_Controller {
 			foreach ($data as $dt) {
 				$message = "<h4>Lembur</h4><hr>
 							Kepada Yth Bapak/Ibu<br><br>
-							
+
 							Kami informasikan bahwa SPL yang anda inputkan<br>
 							telah di <b>Reject</b> oleh Ass. Ka. Unit.<br>
 							Berikut ini daftar yang telah di Reject oleh : <b>$user</b><br>
@@ -441,7 +512,7 @@ class C_splasska extends CI_Controller {
 
 							<small>Email ini digenerate melalui sistem erp.quick.com pada ".date('d-m-Y H:i:s').".<br>
 							Apabila anda mengalami kendala dapat menghubungi Seksi ICT (12300)</small>";
-							
+
 				$mail = new PHPMailer;
 				$mail->isSMTP();
 				$mail->SMTPDebug = 0;
@@ -499,14 +570,14 @@ class C_splasska extends CI_Controller {
 		$vStamp = $data[1];
 		$time = $data[2];
 		$sn = $data[3];
-		
+
 		$filter 	= array("SN" => $sn);
 		$kd_finger = $this->input->get('finger_id');
 		$fingerData = $this->M_splasska->show_finger_user(array('user_id' => $user_id, 'kd_finger' => $kd_finger));
 		$device 	= $this->M_splasska->show_finger_activation($filter);
-		
+
 		$salt = md5($sn.$fingerData->finger_data.$device->Verification_Code.$time.$user_id.$device->VKEY);
-		
+
 		if (strtoupper($vStamp) == strtoupper($salt)) {
 			$status = $_GET['status'];
 			$spl_id = $_GET['spl_id'];
@@ -538,7 +609,7 @@ class C_splasska extends CI_Controller {
 				}
 			}
 		}
-		
+
 		$this->send_email_2($status,$spl_id,$ket);
 		$this->session->spl_validasi_waktu_asska = time();
 		redirect(site_url("ALA/Approve/result_reject/".$reject));
@@ -549,7 +620,7 @@ class C_splasska extends CI_Controller {
 	function result_reject($spl_id = FALSE){
 		$data = $this->menu('', '', '');
 		$data_spl = array();
-		$number = 0; 
+		$number = 0;
 		if ($spl_id !== FALSE) {
 			foreach (explode(".", $spl_id) as $si) {
 				$jml_lembur = 0;
@@ -598,7 +669,7 @@ class C_splasska extends CI_Controller {
 					'lembur_2' => $tdatapresensi->total_lembur
 				);
 			}
-			
+
 		}
 		$data['data']	= $data_spl;
 		$this->load->view('V_Header',$data);

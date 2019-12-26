@@ -44,6 +44,7 @@ class C_Index extends CI_Controller {
 	public function index()
 	{
 		if($this->session->is_logged){
+
 			//$usr = "D1178";
 			$user_id = $this->session->userid;
 			//$data['user'] = $usr;
@@ -173,6 +174,10 @@ class C_Index extends CI_Controller {
 							'kodesie' 			=> $kodesie,
 							'kode_lokasi_kerja'	=> $kode_lokasi_kerja,
 						);
+
+			$isDefaultPass = $this->M_Index->getPassword($username);
+			$ses['pass_is_default'] = $isDefaultPass;
+
 			$this->session->set_userdata($ses);
 
 			$aksi = 'Login';
@@ -236,7 +241,7 @@ class C_Index extends CI_Controller {
 				}
 				$this->M_user->updateUser($data,$user_id);
 				//print_r($data);
-				redirect();
+				redirect(base_url('logout'));
 			}else{
 				$aksi = 'Error Change Password';
 				$detail = 'Error Change Password';
