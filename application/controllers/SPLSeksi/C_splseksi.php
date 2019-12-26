@@ -251,7 +251,7 @@ class C_splseksi extends CI_Controller {
 		$akses_kue = $this->M_splseksi->show_pekerja('', $user, '');
 		$akses_spl = $this->M_splseksi->show_akses_seksi($user);
 		foreach($akses_kue as $ak){
-			$akses_sie[] = $this->cut_kodesie($ak['kodesie']);
+			$akses_sie[] = $this->cut_kodesie(substr($ak['kodesie'],0,7).'00');
 			foreach($akses_spl as $as){
 				$akses_sie[] = $this->cut_kodesie($as['kodesie']);
 			}
@@ -366,7 +366,7 @@ class C_splseksi extends CI_Controller {
 		$akses_kue = $this->M_splseksi->show_pekerja('', $user, '');
 		$akses_spl = $this->M_splseksi->show_akses_seksi($user);
 		foreach($akses_kue as $ak){
-			$akses_sie[] = $this->cut_kodesie($ak['kodesie']);
+			$akses_sie[] = $this->cut_kodesie(substr($ak['kodesie'],0,7).'00');
 			foreach($akses_spl as $as){
 				$akses_sie[] = $this->cut_kodesie($as['kodesie']);
 			}
@@ -425,7 +425,7 @@ class C_splseksi extends CI_Controller {
 		$akses_kue = $this->M_splseksi->show_pekerja('', $user, '');
 		$akses_spl = $this->M_splseksi->show_akses_seksi($user);
 		foreach($akses_kue as $ak){
-			$akses_sie[] = $this->cut_kodesie($ak['kodesie']);
+			$akses_sie[] = $this->cut_kodesie(substr($ak['kodesie'],0,7).'00');
 			foreach($akses_spl as $as){
 				$akses_sie[] = $this->cut_kodesie($as['kodesie']);
 			}
@@ -990,7 +990,7 @@ class C_splseksi extends CI_Controller {
 		$akses_kue = $this->M_splseksi->show_pekerja('', $user, '');
 		$akses_spl = $this->M_splseksi->show_akses_seksi($user);
 		foreach($akses_kue as $ak){
-			$akses_sie[] = $this->cut_kodesie($ak['kodesie']);
+			$akses_sie[] = $this->cut_kodesie(substr($ak['kodesie'],0,7).'00');
 			foreach($akses_spl as $as){
 				$akses_sie[] = $this->cut_kodesie($as['kodesie']);
 			}
