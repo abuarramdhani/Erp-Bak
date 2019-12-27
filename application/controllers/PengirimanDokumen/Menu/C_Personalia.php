@@ -125,11 +125,11 @@ class C_Personalia extends CI_Controller
         $this->data['table'] = $data;
         $this->data['lv']    = $level;
 
-        $i=0;
-        foreach($this->data['table'] as $key){
-            $this->data['table'][$i]['seksi_name'] = $this->M_inputdata->getNameSeksi($key['seksi']);
-            $i++;
-        }
+        //$i=0;
+        //foreach($this->data['table'] as $key){
+        //    $this->data['table'][$i]['seksi_name'] = $this->M_inputdata->getNameSeksi($key['seksi']);
+        //    $i++;
+        //}
 
         $this->load->view('V_Header', $this->data);
 		$this->load->view('V_Sidemenu',$this->data);
