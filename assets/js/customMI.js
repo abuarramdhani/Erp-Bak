@@ -14,27 +14,9 @@ nom_dpp.moneyFormat();
 } else if (coba === 'N'){
 nominal_ppn.val('0');
 nominal_ppn.trigger('change');
-// nom_dpp.val('0');
-// nom_dpp.trigger('change');
-// tax.val('');
-// tax.trigger('change');
-}
-}
 
-// function caution() {
-// 	Swal.fire({
-//   title: 'Jika Tax Invoice, Nominal DPP, dan Faktur Pajak tidak diisi <br>'
-// 'Harap masukkan Keterangan di kolom Info',
-//   showConfirmButton: false,
-//   showClass: {
-//     popup: 'animated fadeInDown faster'
-//   },
-//   hideClass: {
-//     popup: 'animated fadeOutUp faster'
-//   }
-// })
-	
-// }
+}
+}
 
 
 	$('.idDateInvoiceTambahInvBer').datepicker({
@@ -78,6 +60,87 @@ function iniVendor() {
 	$('#hdnTxt').val(nama_vendor).trigger('change');
 
 }
+
+//tiket delete rejected mon invoice------------------------------------------------------------//
+
+function deleteRejectedInv(th) {
+
+	var arry = [];
+		$('input[name="rejectedChckBox[]"]').each(function(){
+			if ($(this).parent().hasClass('checked')) {
+				var id_invoice = $(this).val();
+				arry.push(id_invoice);
+			}
+		});
+
+
+	const swalWithBootstrapButtons = Swal.mixin({
+		  customClass: {
+		    confirmButton: 'btn btn-success',
+		    cancelButton: 'btn btn-danger'
+		  },
+		  buttonsStyling: true
+		})
+
+	swalWithBootstrapButtons.fire({
+		  title: 'Invoice akan dihapus!',
+		  text: 'Yakin ingin menghapus Invoice ini ?',
+		  type: 'warning',
+		  showCancelButton: true,
+		  confirmButtonText: 'Yes, delete it!',
+		  cancelButtonText: 'No, cancel!',
+		  reverseButtons: true
+	}).then((result) => {
+  if (result.value) {
+	  	$.ajax({
+					type: "POST",
+					url: baseurl+"AccountPayables/MonitoringInvoice/Invoice/deleteInvoice",
+					dataType: 'JSON',
+					data:{
+						invoice_id:arry,
+					},
+					success: function(response) {
+
+				$.each(response, (i, item) => {
+					$('tr.'+item+'').remove();
+				})
+						  swalWithBootstrapButtons.fire(
+					      'Finished!',
+					      'Invoice berhasil dihapus!',
+					      'success'
+					    	)
+			 		}
+
+
+				});
+  } else if (
+    result.dismiss === Swal.DismissReason.cancel
+  ) {
+    swalWithBootstrapButtons.fire(
+      'Cancelled',
+      'Invoice batal dihapus',
+      'error'
+    )
+  }
+})
+}
+
+$(document).on('ifChanged','.submit_checking_all_rejected', function() {
+		if ($('.submit_checking_all_rejected').iCheck('update')[0].checked) {
+			$('.chckInvoice_rejected').each(function () {
+				var a = $(this).parent().parent().closest('tr').find('input[class~="chckInvoice_rejected"]');
+				if (a) {
+					$(this).iCheck('check');
+				}
+			});
+		}else{
+			$('.chckInvoice_rejected').each(function () {
+				$(this).iCheck('uncheck');
+			});
+		};
+	})
+
+//tiket delete rejected mon invoice------------------------------------------------------------//
 
 
 $('#btnCariTop').click(function() { 
@@ -156,29 +219,13 @@ $('#btnCariTop').click(function() {
 					val5 += '<option value="N"> N </option>'         
 					tax_status.html(val5);
 					tax_status.trigger('change');
-				// nominal.prop('disabled', false);
-				// nominal.trigger('change');
-
-				// nom_dpp.prop('disabled', false);
-				// nom_dpp.val('0').trigger('change');
-
-				// tax.prop('disabled', false);
-				// tax.val('010.005-').trigger('change');
 
 				}else if (coba === 'N') {
 					val4 += '<option value="N"> N </option>'
 					val4 += '<option value="Y"> Y </option>'
 					tax_status.html(val4);
 					tax_status.trigger('change');
-				// nominal.prop('disabled', true);
-				// nominal.trigger('change');
-				// nominal.val(null).trigger('change')
-				// nom_dpp.prop('disabled', true);
-				// nom_dpp.trigger('change');
-				// nom_dpp.val(null).trigger('change')
-				// tax.prop('disabled', true);
-				// tax.trigger('change');
-				// tax.val(null).trigger('change')
+				
 				}
 
 
