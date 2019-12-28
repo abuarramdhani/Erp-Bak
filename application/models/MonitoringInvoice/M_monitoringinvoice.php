@@ -236,6 +236,7 @@ SELECT DISTINCT pol.po_line_id line_id,
         $runQuery = $oracle->query($query);
         return $runQuery->result_array();
     }
+    
     public function deleteInvoice($invoice_id){
         $oracle = $this->load->database('oracle',true);
         $query1 = "DELETE 
@@ -246,7 +247,7 @@ SELECT DISTINCT pol.po_line_id line_id,
                     FROM khs_ap_monitoring_invoice
                     WHERE invoice_id = '$invoice_id' ";
         $runQuery2 = $oracle->query($query2);
-        oci_commit($oracle);
+        // oci_commit($oracle);
     }
     public function showEditList1($invoice_id){
         $oracle = $this->load->database('oracle',true);
