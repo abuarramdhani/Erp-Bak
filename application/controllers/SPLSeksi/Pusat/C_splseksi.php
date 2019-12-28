@@ -513,6 +513,8 @@ class C_splseksi extends CI_Controller {
 		$akhir_lembur = "";
 		$mulai_ist = "";
 		$selesai_ist = "";
+		$masuk_absen = "";
+		$keluar_absen = "";
 
 		$waktu0 = $this->input->post("waktu0");
 		$waktu1 = $this->input->post("waktu1");
@@ -521,122 +523,270 @@ class C_splseksi extends CI_Controller {
 		$tanggal = $this->input->post("tanggal");
 		$tanggal = date_format(date_create($tanggal), 'Y-m-d');
 
-		
-		$presensi = $this->M_splseksi->getPresensiPusat($noind,$tanggal);
+		if(strtotime($tanggal) < strtotime(date('Y-m-d'))){
+			$tim = $this->M_splseksi->getTim($noind,$tanggal);
+			if (!empty($tim) && count($tim) > 0) {
+				foreach ($tim as $tm) {
+					if ($tm['point'] == '1') {
+						$error = "1";
+						$errortext = "Jam Absen Tidak Lengkap. <a target='_blank' href='".site_url('SPLSeksi/C_splseksi/create_memo?noind='.$noind.'&tanggal='.$tanggal)."'>klik disini</a> untuk membuat memo";
+					}else{
+						$error = "1";
+						$errortext = "Kirim SPL Manual ke Seksi Hubungan Kerja";
+					}
+				}
+			}else{
+				$presensi = $this->M_splseksi->getPresensi($noind,$tanggal);
+				if (!empty($presensi) && count($presensi) > 0) {
+					foreach ($presensi as $datapres) {
+						$masuk_shift = date_format(date_create($datapres['jam_msk']), 'Y-m-d H:i:s');
+						$keluar_shift = date_format(date_create($datapres['jam_plg']), 'Y-m-d H:i:s');
+						$masuk_absen = date_format(date_create($datapres['masuk']), 'Y-m-d H:i:s');
+						$keluar_absen = date_format(date_create($datapres['keluar']), 'Y-m-d H:i:s');
+						$awal_lembur = date_format(date_create($tanggal), "Y-m-d")." ".$waktu0;
+						$awal_lembur = date_format(date_create($awal_lembur), 'Y-m-d H:i:s');
+						$akhir_lembur = date_format(date_create($tanggal), "Y-m-d")." ".$waktu1;
+						$akhir_lembur = date_format(date_create($akhir_lembur), 'Y-m-d H:i:s');
+						$mulai_ist = date_format(date_create($datapres['ist_mulai']), 'Y-m-d H:i:s');
+						$selesai_ist = date_format(date_create($datapres['ist_selesai']), 'Y-m-d H:i:s');
 
-		if (!empty($presensi) && count($presensi) > 0) {
-			foreach ($presensi as $datapres) {
-				$masuk_shift = date_format(date_create($datapres['jam_msk']), 'Y-m-d H:i:s');
-				$keluar_shift = date_format(date_create($datapres['jam_plg']), 'Y-m-d H:i:s');
-				$awal_lembur = date_format(date_create($tanggal), "Y-m-d")." ".$waktu0;
-				$awal_lembur = date_format(date_create($awal_lembur), 'Y-m-d H:i:s');
-				$akhir_lembur = date_format(date_create($tanggal), "Y-m-d")." ".$waktu1;
-				$akhir_lembur = date_format(date_create($akhir_lembur), 'Y-m-d H:i:s');
-				$mulai_ist = date_format(date_create($datapres['ist_mulai']), 'Y-m-d H:i:s');
-				$selesai_ist = date_format(date_create($datapres['ist_selesai']), 'Y-m-d H:i:s');
-
-				if ($lembur == '001') { // lembur istirahat
-					if ($mulai_ist <= $awal_lembur && $awal_lembur <= $selesai_ist) {
-						$aktual_awal = $awal_lembur;
-						if ($mulai_ist <= $akhir_lembur && $akhir_lembur <= $selesai_ist) {
-							$aktual_akhir = $akhir_lembur;
-						}elseif($akhir_lembur > $selesai_ist){
-							$aktual_akhir = $selesai_ist;
+						if ($lembur == '001') { // lembur istirahat
+							if ($mulai_ist <= $awal_lembur && $awal_lembur <= $selesai_ist) {
+								$aktual_awal = $awal_lembur;
+								if ($mulai_ist <= $akhir_lembur && $akhir_lembur <= $selesai_ist) {
+									$aktual_akhir = $akhir_lembur;
+								}elseif($akhir_lembur > $selesai_ist){
+									$aktual_akhir = $selesai_ist;
+								}else{
+									$error = "1";
+									$errortext = "Jam Akhir Lembur Tidak Sesuai";
+								}
+							}elseif($awal_lembur < $ist_mulai){
+								$aktual_awal = $ist_mulai;
+								if ($mulai_ist <= $akhir_lembur && $akhir_lembur <= $selesai_ist) {
+									$aktual_akhir = $akhir_lembur;
+								}elseif($akhir_lembur > $selesai_ist){
+									$aktual_akhir = $selesai_ist;
+								}else{
+									$error = "1";
+									$errortext = "Jam Akhir Lembur Tidak Sesuai";
+								}
+							}else{
+								$error = "1";
+								$errortext = "Jam Awal Lembur Tidak Sesuai";
+							}
+						}elseif ($lembur == '002') { // lembur pulang
+							if ($keluar_shift <= $awal_lembur && $awal_lembur <= $keluar_absen) {
+								$aktual_awal = $awal_lembur;
+								if ($keluar_shift <= $akhir_lembur && $akhir_lembur <= $keluar_absen) {
+									$aktual_akhir = $akhir_lembur;
+								}elseif($akhir_lembur > $keluar_absen){
+									$aktual_akhir = $keluar_absen;
+								}else{
+									$error = "1";
+									$errortext = "Jam Akhir Lembur Tidak Sesuai";
+								}
+							}elseif($awal_lembur < $keluar_shift){
+								$aktual_awal = $keluar_shift;
+								if ($keluar_shift <= $akhir_lembur && $akhir_lembur <= $keluar_absen) {
+									$aktual_akhir = $akhir_lembur;
+								}elseif($akhir_lembur > $keluar_absen){
+									$aktual_akhir = $keluar_absen;
+								}else{
+									$error = "1";
+									$errortext = "Jam Akhir Lembur Tidak Sesuai";
+								}
+							}else{
+								$error = "1";
+								$errortext = "Jam Awal Lembur Tidak Sesuai";
+							}
+						}elseif ($lembur == '003') { //lembur datang
+							if ($masuk_absen <= $awal_lembur && $awal_lembur <= $masuk_shift) {
+								$aktual_awal = $awal_lembur;
+								if ($masuk_absen <= $akhir_lembur && $akhir_lembur <= $masuk_shift) {
+									$aktual_akhir = $akhir_lembur;
+								}elseif($akhir_lembur > $masuk_shift){
+									$aktual_akhir = $masuk_shift;
+								}else{
+									$error = "1";
+									$errortext = "Jam Akhir Lembur Tidak Sesuai";
+								}
+							}elseif($awal_lembur <= $masuk_absen){
+								$aktual_awal = $masuk_absen;
+								if ($masuk_absen <= $akhir_lembur && $akhir_lembur <= $masuk_shift) {
+									$aktual_akhir = $akhir_lembur;
+								}elseif($akhir_lembur > $masuk_shift){
+									$aktual_akhir = $masuk_shift;
+								}else{
+									$error = "1";
+									$errortext = "Jam Akhir Lembur Tidak Sesuai";
+								}
+							}else{
+								$error = "1";
+								$errortext = "Jam Awal Lembur Tidak Sesuai";
+							}
+						}elseif ($lembur == '005') { // lembur datang dan pulang
+							if ($masuk_absen <= $awal_lembur && $awal_lembur <= $masuk_shift) {
+								$aktual_awal = $awal_lembur;
+								if ($keluar_shift <= $akhir_lembur && $akhir_lembur <= $keluar_absen) {
+									$aktual_akhir = $akhir_lembur;
+								}elseif($akhir_lembur > $keluar_absen){
+									$aktual_akhir = $keluar_absen;
+								}else{
+									$error = "1";
+									$errortext = "Jam Akhir Lembur Tidak Sesuai";
+								}
+							}elseif($awal_lembur <= $masuk_absen){
+								$aktual_awal = $masuk_absen;
+								if ($keluar_shift <= $akhir_lembur && $akhir_lembur <= $keluar_absen) {
+									$aktual_akhir = $akhir_lembur;
+								}elseif($akhir_lembur > $keluar_absen){
+									$aktual_akhir = $keluar_absen;
+								}else{
+									$error = "1";
+									$errortext = "Jam Akhir Lembur Tidak Sesuai";
+								}
+							}else{
+								$error = "1";
+								$errortext = "Jam Awal Lembur Tidak Sesuai";
+							}
 						}else{
 							$error = "1";
-							$errortext = "Jam Akhir Lembur Tidak Sesuai Jam Istirahat Shift Pekerja ($mulai_ist - $selesai_ist)";
+							$errortext = "Bukan Merupakan Hari Libur ";
 						}
-					}elseif($awal_lembur < $mulai_ist){
-						$aktual_awal = $mulai_ist;
-						if ($mulai_ist <= $akhir_lembur && $akhir_lembur <= $selesai_ist) {
-							$aktual_akhir = $akhir_lembur;
-						}elseif($akhir_lembur > $selesai_ist){
-							$aktual_akhir = $selesai_ist;
-						}else{
-							$error = "1";
-							$errortext = "Jam Akhir Lembur Tidak Sesuai Jam Istirahat Shift Pekerja ($mulai_ist - $selesai_ist)";
-						}
-					}else{
-						$error = "1";
-						$errortext = "Jam Awal Lembur Tidak Sesuai Jam Istirahat Shift Pekerja ($mulai_ist - $selesai_ist)";
-					}
-				}elseif ($lembur == '002') { // lembur pulang
-					if ($keluar_shift <= $awal_lembur) {
-						$aktual_awal = $awal_lembur;
-						if ($keluar_shift <= $akhir_lembur) {
-							$aktual_akhir = $akhir_lembur;
-						}else{
-							$error = "1";
-							$errortext = "Jam Akhir Lembur Tidak Sesuai Jam Pulang Shift Pekerja ($keluar_shift)";
-						}
-					}elseif($awal_lembur < $keluar_shift){
-						$aktual_awal = $keluar_shift;
-						if ($keluar_shift <= $akhir_lembur) {
-							$aktual_akhir = $akhir_lembur;
-						}else{
-							$error = "1";
-							$errortext = "Jam Akhir Lembur Tidak Sesuai Jam Pulang Shift Pekerja ($keluar_shift)";
-						}
-					}else{
-						$error = "1";
-						$errortext = "Jam Awal Lembur Tidak Sesuai Jam Pulang Shift Pekerja ($keluar_shift)";
-					}
-				}elseif ($lembur == '003') { //lembur datang
-					if ($awal_lembur <= $masuk_shift) {
-						$aktual_awal = $awal_lembur;
-						if ( $akhir_lembur <= $masuk_shift) {
-							$aktual_akhir = $akhir_lembur;
-						}elseif($akhir_lembur > $masuk_shift){
-							$aktual_akhir = $masuk_shift;
-						}else{
-							$error = "1";
-							$errortext = "Jam Akhir Lembur Tidak Sesuai Jam Masuk Shift Pekerja ($masuk_shift)";
-						}
-					}else{
-						$error = "1";
-						$errortext = "Jam Awal Lembur Tidak Sesuai Jam Masuk Shift Pekerja ($masuk_shift)";
-					}
-				}elseif ($lembur == '005') { // lembur datang dan pulang
-					if ($awal_lembur <= $masuk_shift) {
-						$aktual_awal = $awal_lembur;
-						if ($keluar_shift <= $akhir_lembur) {
-							$aktual_akhir = $akhir_lembur;
-						}else{
-							$error = "1";
-							$errortext = "Jam Akhir Lembur Tidak Sesuai Jam Masuk & Pulang Shift Pekerja ($masuk_shift - $keluar_shift)";
-						}
-					}else{
-						$error = "1";
-						$errortext = "Jam Awal Lembur Tidak Sesuai Jam Masuk & Pulang Shift Pekerja ($masuk_shift - $keluar_shift)";
 					}
 				}else{
-					$error = "1";
-					$errortext = "Bukan Merupakan Hari Libur Pekerja, Pekerja Memiliki Jam Shift ($masuk_shift - $keluar_shift)";
+					if ($lembur == '004') {
+						$shiftpekerja = $this->M_splseksi->getShiftpekerja($noind,$tanggal);
+						if ($shiftpekerja == 0) {
+							$aktual_awal = $awal_lembur;
+							$aktual_akhir = $akhir_lembur;
+						}else{
+							$error = "1";
+							$errortext = "Lembur Tidak Valid";
+						}
+					}else{
+						$error = "1";
+						$errortext = "Tidak Bisa Input Lembur";
+					}
 				}
 			}
 		}else{
-			if ($lembur == '004') {
-				
-				$shiftpekerja = $this->M_splseksi->getShiftpekerja($noind,$tanggal);
-				
-				$awal_lembur = date_format(date_create($tanggal), "Y-m-d")." ".$waktu0;
-				$awal_lembur = date_format(date_create($awal_lembur), 'Y-m-d H:i:s');
-				$akhir_lembur = date_format(date_create($tanggal), "Y-m-d")." ".$waktu1;
-				$akhir_lembur = date_format(date_create($akhir_lembur), 'Y-m-d H:i:s');
+			$presensi = $this->M_splseksi->getPresensiPusat($noind,$tanggal);
 
-				if ($shiftpekerja == 0) {
-					$aktual_awal = $awal_lembur;
-					$aktual_akhir = $akhir_lembur;
-				}else{
-					$error = "1";
-					$errortext = "Lembur Tidak Valid";
+			if (!empty($presensi) && count($presensi) > 0) {
+				foreach ($presensi as $datapres) {
+					$masuk_shift = date_format(date_create($datapres['jam_msk']), 'Y-m-d H:i:s');
+					$keluar_shift = date_format(date_create($datapres['jam_plg']), 'Y-m-d H:i:s');
+					$awal_lembur = date_format(date_create($tanggal), "Y-m-d")." ".$waktu0;
+					$awal_lembur = date_format(date_create($awal_lembur), 'Y-m-d H:i:s');
+					$akhir_lembur = date_format(date_create($tanggal), "Y-m-d")." ".$waktu1;
+					$akhir_lembur = date_format(date_create($akhir_lembur), 'Y-m-d H:i:s');
+					$mulai_ist = date_format(date_create($datapres['ist_mulai']), 'Y-m-d H:i:s');
+					$selesai_ist = date_format(date_create($datapres['ist_selesai']), 'Y-m-d H:i:s');
+
+					if ($lembur == '001') { // lembur istirahat
+						if ($mulai_ist <= $awal_lembur && $awal_lembur <= $selesai_ist) {
+							$aktual_awal = $awal_lembur;
+							if ($mulai_ist <= $akhir_lembur && $akhir_lembur <= $selesai_ist) {
+								$aktual_akhir = $akhir_lembur;
+							}elseif($akhir_lembur > $selesai_ist){
+								$aktual_akhir = $selesai_ist;
+							}else{
+								$error = "1";
+								$errortext = "Jam Akhir Lembur Tidak Sesuai Jam Istirahat Shift Pekerja ($mulai_ist - $selesai_ist)";
+							}
+						}elseif($awal_lembur < $mulai_ist){
+							$aktual_awal = $mulai_ist;
+							if ($mulai_ist <= $akhir_lembur && $akhir_lembur <= $selesai_ist) {
+								$aktual_akhir = $akhir_lembur;
+							}elseif($akhir_lembur > $selesai_ist){
+								$aktual_akhir = $selesai_ist;
+							}else{
+								$error = "1";
+								$errortext = "Jam Akhir Lembur Tidak Sesuai Jam Istirahat Shift Pekerja ($mulai_ist - $selesai_ist)";
+							}
+						}else{
+							$error = "1";
+							$errortext = "Jam Awal Lembur Tidak Sesuai Jam Istirahat Shift Pekerja ($mulai_ist - $selesai_ist)";
+						}
+					}elseif ($lembur == '002') { // lembur pulang
+						if ($keluar_shift <= $awal_lembur) {
+							$aktual_awal = $awal_lembur;
+							if ($keluar_shift <= $akhir_lembur) {
+								$aktual_akhir = $akhir_lembur;
+							}else{
+								$error = "1";
+								$errortext = "Jam Akhir Lembur Tidak Sesuai Jam Pulang Shift Pekerja ($keluar_shift)";
+							}
+						}elseif($awal_lembur < $keluar_shift){
+							$aktual_awal = $keluar_shift;
+							if ($keluar_shift <= $akhir_lembur) {
+								$aktual_akhir = $akhir_lembur;
+							}else{
+								$error = "1";
+								$errortext = "Jam Akhir Lembur Tidak Sesuai Jam Pulang Shift Pekerja ($keluar_shift)";
+							}
+						}else{
+							$error = "1";
+							$errortext = "Jam Awal Lembur Tidak Sesuai Jam Pulang Shift Pekerja ($keluar_shift)";
+						}
+					}elseif ($lembur == '003') { //lembur datang
+						if ($awal_lembur <= $masuk_shift) {
+							$aktual_awal = $awal_lembur;
+							if ( $akhir_lembur <= $masuk_shift) {
+								$aktual_akhir = $akhir_lembur;
+							}elseif($akhir_lembur > $masuk_shift){
+								$aktual_akhir = $masuk_shift;
+							}else{
+								$error = "1";
+								$errortext = "Jam Akhir Lembur Tidak Sesuai Jam Masuk Shift Pekerja ($masuk_shift)";
+							}
+						}else{
+							$error = "1";
+							$errortext = "Jam Awal Lembur Tidak Sesuai Jam Masuk Shift Pekerja ($masuk_shift)";
+						}
+					}elseif ($lembur == '005') { // lembur datang dan pulang
+						if ($awal_lembur <= $masuk_shift) {
+							$aktual_awal = $awal_lembur;
+							if ($keluar_shift <= $akhir_lembur) {
+								$aktual_akhir = $akhir_lembur;
+							}else{
+								$error = "1";
+								$errortext = "Jam Akhir Lembur Tidak Sesuai Jam Masuk & Pulang Shift Pekerja ($masuk_shift - $keluar_shift)";
+							}
+						}else{
+							$error = "1";
+							$errortext = "Jam Awal Lembur Tidak Sesuai Jam Masuk & Pulang Shift Pekerja ($masuk_shift - $keluar_shift)";
+						}
+					}else{
+						$error = "1";
+						$errortext = "Bukan Merupakan Hari Libur Pekerja, Pekerja Memiliki Jam Shift ($masuk_shift - $keluar_shift)";
+					}
 				}
 			}else{
-				$error = "1";
-				$errortext = "Tidak Bisa Input Lembur";
+				if ($lembur == '004') {
+					
+					$shiftpekerja = $this->M_splseksi->getShiftpekerja($noind,$tanggal);
+					
+					$awal_lembur = date_format(date_create($tanggal), "Y-m-d")." ".$waktu0;
+					$awal_lembur = date_format(date_create($awal_lembur), 'Y-m-d H:i:s');
+					$akhir_lembur = date_format(date_create($tanggal), "Y-m-d")." ".$waktu1;
+					$akhir_lembur = date_format(date_create($akhir_lembur), 'Y-m-d H:i:s');
+
+					if ($shiftpekerja == 0) {
+						$aktual_awal = $awal_lembur;
+						$aktual_akhir = $akhir_lembur;
+					}else{
+						$error = "1";
+						$errortext = "Lembur Tidak Valid";
+					}
+				}else{
+					$error = "1";
+					$errortext = "Tidak Bisa Input Lembur";
+				}
 			}
 		}
-
 			
 		$presensi = array(
 			'awal' 	=> date_format(date_create($aktual_awal),"H:i:s"),
@@ -645,6 +795,8 @@ class C_splseksi extends CI_Controller {
 			'text'	=> $errortext,
 			'masuk_shift' => $masuk_shift,
 			'keluar_shift' => $keluar_shift,
+			'masuk_absen' => $masuk_absen,
+			'keluar_absen' => $keluar_absen,
 			'awal_lembur' => $awal_lembur,
 			'akhir_lembur' => $akhir_lembur,
 			'mulai_ist' => $mulai_ist,
