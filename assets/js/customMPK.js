@@ -126,22 +126,60 @@ $(document).ready(function() {
     });
 
     //Untuk Rekap Perizinan Dinas
-    $('.tabel_izin').DataTable({
-     "ordering" : false,
-     "paging" : false,
-     "searching": false
-       });
+    $('#PD_Cari').on('click', function () {
+        let tanggal = $('#periodeRekap').val()
+        let jenis = $("input:radio[class=RD_radioDinas]:checked").val()
+        var loading = baseurl + 'assets/img/gif/loadingquick.gif';
+        console.log(jenis);
 
-     $('.tabel_rekap').DataTable({
-     "dom": 'Bfrtip',
-         "buttons": [
-             'excel', 'pdf'
-         ],
-         scrollX: true,
-         fixedColumns:{
-           leftColumns:4
-         }
-     });
+        if (jenis == '' || jenis == null) {
+            swal.fire({
+                title: 'Peringatan',
+                text: 'Harap Memilih Jenis Rekap !',
+                type: 'warning',
+                allowOutsideClick: false
+            })
+        }else {
+            $.ajax({
+                type: 'POST',
+                data:{
+                    periodeRekap: tanggal,
+                    jenis: jenis
+                },
+                url: baseurl + 'MasterPekerja/RekapPerizinanDinas/rekapbulanan',
+                beforeSend: function () {
+                    swal.fire({
+                        html : "<img style='width: 320px; height: auto;'src='"+loading+"'>",
+                        text : 'Loading...',
+                        customClass: 'swal-wide',
+                        showConfirmButton:false,
+                        allowOutsideClick: false
+                    })
+                },
+                success: function (result) {
+                    swal.close()
+                    $('#areaRekapIzin').html(result)
+
+                    $('.tabel_rekap').DataTable({
+                        "dom": 'Bfrtip',
+                        "buttons": [
+                            'excel', 'pdf'
+                        ],
+                        scrollX: true,
+                        fixedColumns:{
+                            leftColumns:4
+                        }
+                    });
+                }
+            })
+        }
+    })
+
+    $('.tabel_izin').DataTable({
+         "ordering" : false,
+         "paging" : false,
+         "searching": false
+       });
 
      $("input.periodeRekap").daterangepicker({
        autoUpdateInput: false,

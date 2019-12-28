@@ -17,6 +17,7 @@ class C_Index extends CI_Controller
 		$this->load->model('MasterPekerja/RekapPerizinanDinas/M_index');
 
 		$this->checkSession();
+		date_default_timezone_set("Asia/Jakarta");
 	}
 
 	/* CHECK SESSION */
@@ -62,40 +63,36 @@ class C_Index extends CI_Controller
 		$user_id = $this->session->userid;
 		$no_induk = $this->session->user;
 
-		$data['Title'] = 'REKAP DATA PERIZINAN DINAS';
-		$data['Menu'] = 'Rekap Perizinan Dinas ';
-		$data['SubMenuOne'] = '';
-		$data['SubMenuTwo'] = '';
-
-		$data['UserMenu'] = $this->M_user->getUserMenu($user_id,$this->session->responsibility_id);
-		$data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id);
-		$data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id);
-
-		$perioderekap 		=	$this->input->post('periodeRekap');
+		$perioderekap 	= $this->input->post('periodeRekap');
+		$jenis			= $this->input->post('jenis');
 		if (!empty($perioderekap)) {
 			$explode = explode(' - ', $perioderekap);
 			$periode1 = str_replace('/', '-', date('Y-m-d', strtotime($explode[0])));
 			$periode2 = str_replace('/', '-', date('Y-m-d', strtotime($explode[1])));
 
 			if ($periode1 == $periode2) {
-				$periode = "and cast(created_date as date) = '$periode1'";
+				$periode = "cast(ti.created_date as date) = '$periode1'";
 				$data['IzinApprove'] = $this->M_index->IzinApprove($periode);
+				$data['pekerja'] = $this->M_index->getPekerja($periode);
 			}else if($periode1 != $periode2){
-				$periode = "and cast(created_date as date) between '$periode1' and '$periode2'";
+				$periode = "cast(ti.created_date as date) between '$periode1' and '$periode2'";
+				$data['pekerja'] = $this->M_index->getPekerja($periode);
 				$data['IzinApprove'] = $this->M_index->IzinApprove($periode);
 			}
 		}else {
+			$data['pekerja'] = $this->M_index->getPekerja($perioderekap);
 			$data['IzinApprove'] = $this->M_index->IzinApprove($perioderekap);
 		}
 
 		$data['nama'] = $this->M_index->getAllNama();
 		$today = date('Y-m-d');
 
-		$this->load->view('V_Header',$data);
-		$this->load->view('V_Sidemenu',$data);
-		$this->load->view('MasterPekerja/RekapPerizinanDinas/V_Process',$data);
-		$this->load->view('V_Footer',$data);
-
+		if ($jenis == '1') {
+			$view = $this->load->view('MasterPekerja/RekapPerizinanDinas/V_Process',$data);
+		}else {
+			$view = $this->load->view('MasterPekerja/RekapPerizinanDinas/V_Human',$data);
+		}
+		echo json_encode($view);
 	}
 
 }
