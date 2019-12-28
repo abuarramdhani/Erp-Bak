@@ -89,6 +89,14 @@ class M_input extends CI_Model
         // echo $sql;
     }
 
+    public function cancelSPB($jenis, $nomor){
+        $oracle = $this->load->database('oracle', true);
+        $sql = "delete from khs_tampung_spb where jenis_dokumen = '$jenis' and no_dokumen = '$nomor'";
+        $query = $oracle->query($sql);
+        $query2 = $oracle->query('commit');
+        // echo $sql;
+    }
+
     // public function update($tgl, $nomor){
     //     $oracle = $this->load->database('oracle', true);
     //     $sql="update khs_tampung_spb set tgl_dibuat = TO_TIMESTAMP('$tgl', 'DD-MM-YYYY')

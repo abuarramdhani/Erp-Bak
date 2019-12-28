@@ -71,8 +71,8 @@ class C_Monitoring extends CI_Controller
 		$data['krgpacking'] = $this->M_monitoring->dataKurang($kurang);
 		$data['krg_packing'] = count($data['krgpacking']);
 
-		$jml_gd = $this->M_monitoring->getjmlGd();
-		$data['jml_gd'] = $jml_gd['0']['JUMLAH'];
+		$jml_gd = $this->M_monitoring->getjmlGd($date);
+		$data['jml_gd'] = count($jml_gd);
 		
 		
 		// echo "<pre>"; print_r($data['krgpengeluaran']); exit();
@@ -144,8 +144,8 @@ class C_Monitoring extends CI_Controller
 			$hasil[$a]['krgpacking'] = $this->M_monitoring->dataKurang($kurang);
 			$hasil[$a]['krg_packing'] = count($hasil[$a]['krgpacking']);
 
-			$jml_gd = $this->M_monitoring->getjmlGd2($tgl[$a]);
-			$hasil[$a]['jml_gd'] = $jml_gd['0']['JUMLAH'];
+			$jml_gd = $this->M_monitoring->getjmlGd2($date);
+			$hasil[$a]['jml_gd'] = count($jml_gd);
 		}
 		$data['hasil'] = $hasil;
 		

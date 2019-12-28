@@ -28,7 +28,7 @@ foreach($data_spl as $d){
 						</td></tr>
 				</table>
 			</div>
-			
+
 			<div style="height:70%">	<!-- body -->
 				<div style="width:100%; padding:3px; font-size:14px; font-weight:bold; text-align:center">
 					SURAT PERINTAH LEMBUR (SPL)<br>PROGRAM INPUT LEMBUR SEKSI
@@ -77,10 +77,10 @@ foreach($data_spl as $d){
 							<th style="width:3%; padding:3px; font-size:12px; text-align:center">I</th>
 							<th style="width:40%; padding:3px; font-size:12px; text-align:center">Uraian Pekerjaan / Hambatan / Keterangan</th></tr>
 
-						<?php 
-							$x = 1; 
+						<?php
+							$x = 1;
 							$tmp_tgl = "";
-							foreach($data_spl as $ds){ 
+							foreach($data_spl as $ds){
 								if($ds['Tgl_Lembur'] == $d['Tgl_Lembur']){
 						?>
 						<tr><td style="padding:3px; font-size:12px; text-align:center"><?php echo $x; ?></td>
@@ -93,15 +93,15 @@ foreach($data_spl as $d){
 							<td style="padding:3px; font-size:12px; text-align:center"><?php echo $ds['Jam_Mulai_Lembur']." - ".$ds['Jam_Akhir_Lembur']; ?></td>
 							<td style="padding:3px; font-size:12px; text-align:center"><?php echo $ds['Break']; ?></td>
 							<td style="padding:3px; font-size:12px; text-align:center"><?php echo $ds['Istirahat']; ?></td>
-							<td style="padding:3px; font-size:12px; text-align:left"><?php echo $ds['alasan_lembur']; ?></td></tr>
-						<?php 
+							<td style="padding:3px; font-size:12px; text-align:left"><?php echo $ds['Pekerjaan']; ?></td></tr>
+						<?php
 									$tmp_tgl = $ds['Tgl_Lembur'];
 									$lst_tgl = $ds['Tgl_Lembur'];
-									$x++; 
+									$x++;
 								}
 							}
 						?>
-							
+
 					</table><br>
 				</div>
 			</div>
@@ -121,9 +121,9 @@ foreach($data_spl as $d){
 					** B = Break ; I = Istirahat ; Y = Pakai break / istirahat ; N = Tanpa break / istirahat
 				</div>
 			</div>
-		
+
 	</body>
-	
+
 </html>
 
 <?php
@@ -136,4 +136,3 @@ foreach($data_spl as $d){
 	}
 }
 ?>
-

@@ -20,11 +20,15 @@
 					<div class="col-lg-12">
 						<div class="box box-primary box-solid">
 							<div class="box-body">
+								<div class="box-body">
+      								<button type="button" class="btn btn-danger btn-m pull-left" onclick="deleteRejectedInv(this)" style="margin-bottom:10px;width:150px" ><i class="fa fa-trash"></i> Delete Invoice</button>
+     							</div>   
 								<div style="overflow-x: auto;">
 								<table id="rejectinvoice" class="table-striped table-bordered table-hover text-center tblMI" style="width: 150%;">
 									<thead>
 										<tr class="bg-primary">
 											<th class="text-center">No</th>
+											<th class="text-center"><input type="checkbox" class="submit_checking_all_rejected"></th>
 											<th class="text-center">Action</th>
 											<th class="text-center">Supplier</th>
 											<th class="text-center">Invoice Number</th>
@@ -43,14 +47,17 @@
 									</thead>
 									<tbody>
 										<?php $no=1; if($invoice){foreach($invoice as $f){?>
-										<tr>
+										<tr class="<?php echo $f['INVOICE_ID']?>">
 											<td style="width:3%;"><?php echo $no ?></td>
+											<td style="width: 5%">
+											<input  type="checkbox" class="chckInvoice_rejected" value="<?php echo $f['INVOICE_ID']?>" name="rejectedChckBox[]">
+											</td>
 											<td style="width:8%;">
+												
 											<a title="Detail ..." href="<?php echo base_url('AccountPayables/MonitoringInvoice/Invoice/Rejected/Detail/'.$f['INVOICE_ID']);?>" class="btn btn-info btn-xs"><i class="fa fa-pencil-square-o" ></i>
 											</a>
+
 											<a href="<?php echo base_url('AccountPayables/MonitoringInvoice/Invoice/viewEditReject/'.$f['INVOICE_ID'])?>" class="btn btn-success btn-xs"><i class="fa fa-pencil-square-o"></i>
-											</a>
-											<a href="<?php echo base_url('AccountPayables/MonitoringInvoice/Invoice/deleteInvoice/'.$f['INVOICE_ID'])?>" onclick="return confirm('Yakin untuk menghapusnya?')" class="btn btn-danger btn-xs"><i class='fa fa-trash'></i>
 											</a>
 
 											</td>

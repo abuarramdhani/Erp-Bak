@@ -43,13 +43,13 @@ class C_Personalia extends CI_Controller
                 $where = "ap.kodesie='$kodesie' and ap.tingkat='$level' and tr.status='$stat' and td.status='$stat'";
             }
 
-            $selecta = "SELECT td.id_data, td.noind, emp.employee_name nama, tm.keterangan, td.tanggal::date,tr.status, max(tr.tgl_update)::date tgl_update, ap.kodesie, td.alasan
+            $selecta = "SELECT td.id_data, td.noind, emp.employee_name nama, tm.keterangan, td.tanggal_start::date, td.tanggal_end::date,tr.status, max(tr.tgl_update)::date tgl_update, ap.kodesie, td.alasan
                         FROM ps.tdata td inner join ps.tappr ap on td.id_master = ap.id 
                                     inner join ps.tmaster tm on tm.id = td.id_master
                                     inner join ps.triwayat tr on tr.id_data = td.id_data
                                     inner join er.er_employee_all emp on emp.employee_code = td.noind 
                         WHERE $where
-                        GROUP BY td.id_data,td.noind, emp.employee_name, tm.keterangan, td.tanggal,tr.status, ap.kodesie, td.alasan
+                        GROUP BY td.id_data,td.noind, emp.employee_name, tm.keterangan, td.tanggal_start, td.tanggal_end, tr.status, ap.kodesie, td.alasan
             ;";
         }else{
             if ($status == 'approved') {
@@ -66,13 +66,13 @@ class C_Personalia extends CI_Controller
                 }
             }
 
-            $selecta = "SELECT td.id_data, td.noind, emp.employee_name nama, tm.keterangan, td.tanggal::date,tr.status, max(tr.tgl_update)::date tgl_update, tr.seksi,td.alasan
+            $selecta = "SELECT td.id_data, td.noind, emp.employee_name nama, tm.keterangan, td.tanggal_start::date, td.tanggal_end::date, tr.status, max(tr.tgl_update)::date tgl_update, tr.seksi,td.alasan
                         FROM ps.tdata td
                         inner join ps.tmaster tm on tm.id = td.id_master 
                         inner join ps.triwayat tr on tr.id_data = td.id_data 
                         inner join er.er_employee_all emp on emp.employee_code = td.noind 
                         WHERE tr.seksi='$kodesie' and tr.status = '$stat' and tr.level='$level' 
-                        GROUP BY td.id_data,td.noind, emp.employee_name, tm.keterangan, td.tanggal,tr.status, tr.seksi, td.alasan ;
+                        GROUP BY td.id_data,td.noind, emp.employee_name, tm.keterangan, td.tanggal_start, td.tanggal_end, tr.status, tr.seksi, td.alasan ;
                         ";
         }
         return $this->db->query($selecta);
@@ -125,6 +125,12 @@ class C_Personalia extends CI_Controller
         $this->data['table'] = $data;
         $this->data['lv']    = $level;
 
+        //$i=0;
+        //foreach($this->data['table'] as $key){
+        //    $this->data['table'][$i]['seksi_name'] = $this->M_inputdata->getNameSeksi($key['seksi']);
+        //    $i++;
+        //}
+
         $this->load->view('V_Header', $this->data);
 		$this->load->view('V_Sidemenu',$this->data);
         $this->load->view('PengirimanDokumen/Menu/Personalia/V_NewData', $this->data);
@@ -138,6 +144,7 @@ class C_Personalia extends CI_Controller
         }else{
             $data = $this->queryApproval('pending',2)->result_array();
         }
+        
 
         echo json_encode($data);
     }
@@ -151,6 +158,11 @@ class C_Personalia extends CI_Controller
 
         $this->data['table'] = $data;
         $this->data['lv']    = $level;
+        $i=0;
+        foreach($this->data['table'] as $key){
+            $this->data['table'][$i]['seksi_name'] = $this->M_inputdata->getNameSeksiByNoind($key['noind']);
+            $i++;
+        }
 
         $this->load->view('V_Header', $this->data);
 		$this->load->view('V_Sidemenu',$this->data);
@@ -167,7 +179,12 @@ class C_Personalia extends CI_Controller
 
         $this->data['table'] = $data;
         $this->data['lv']    = $level;
-
+        $i=0;
+        foreach($this->data['table'] as $key){
+            $this->data['table'][$i]['seksi_name'] = $this->M_inputdata->getNameSeksiByNoind($key['noind']);
+            $i++;
+        }
+        
         $this->load->view('V_Header', $this->data);
 		$this->load->view('V_Sidemenu',$this->data);
         $this->load->view('PengirimanDokumen/Menu/Personalia/V_Rejected', $this->data);
@@ -214,17 +231,18 @@ class C_Personalia extends CI_Controller
         endforeach;
     }
 
+    //Menu Rekap
     function rekapAll($periode=false, $kodedokumen=false, $kodeseksi=false){
         $this->load->model('PengirimanDokumen/M_inputdata');
         $this->load->model('PengirimanDokumen/M_masterdata');
 
         $start = $end = date('Y-m-d');
-        $info_periode = date('Y/m/d');
+        $info_periode = date('Y/m/d')." (Hari ini)";
         if(isset($_GET['periode'])){
             $range = explode(' - ', $_GET['periode']);
             $start = date('Y/m/d', strtotime($range['0']));
             $end   = date('Y/m/d', strtotime($range['1']));
-            $info_periode = $start." - ".$end;
+            $info_periode = ($start == $end)? $start : $start." - ".$end;
         }
 
         $dokumen = '';
@@ -247,22 +265,25 @@ class C_Personalia extends CI_Controller
                 tm.id, 
                 tm.keterangan, 
                 td.status, 
-                td.tanggal::date, 
-                tr.seksi as approver
+                td.tanggal_start::date, 
+                td.tanggal_end::date, 
+                tr.seksi as approver,
+                tr.tgl_update as app_time
         FROM ps.tdata td 
             inner join er.er_employee_all emp on td.noind = emp.employee_code 
             inner join ps.tmaster tm on td.id_master = tm.id 
             inner join ps.triwayat tr on tr.id_data = td.id_data
-        WHERE tanggal between '$start' and '$end' 
+        WHERE tanggal_end between '$start' and '$end' 
             and td.status not in ('0','2','4') 
             and tr.level = (select max(level) from ps.triwayat where id_data = td.id_data) 
-        ORDER BY tanggal asc"; 
+        ORDER BY tanggal_end asc"; 
         
         $table = $this->db->query($selectRekap)->result_array();
 
         for($i=0; $i < count($table); $i++){
             $table[$i]['kodesie'] = $this->M_inputdata->getNameSeksi($table[$i]['kodesie']);
-            $table[$i]['status'] = 'Approved by '.$this->M_inputdata->getNameSeksi($table[$i]['approver']);;
+            $table[$i]['status'] = 'Diterima oleh seksi '.$this->M_inputdata->getNameSeksi($table[$i]['approver']);
+            $table[$i]['tgl_app'] = date('d/m/Y H:i:s', strtotime($table[$i]['app_time']));
         }
 
         $this->data['listDocument'] = $this->M_inputdata->ajaxListMaster();
@@ -272,8 +293,41 @@ class C_Personalia extends CI_Controller
 
         $this->load->view('V_Header', $this->data);
 		$this->load->view('V_Sidemenu',$this->data);
-        $this->load->view('PengirimanDokumen/Menu/Personalia/V_All', $this->data);
+        $this->load->view('PengirimanDokumen/Menu/Personalia/V_Rekap', $this->data);
         $this->load->view('V_Footer', $this->data);
+    }
+
+    function changeApproval(){ ///// thisss errooor
+        $id         = $_POST['id']; 
+        $approval   = $_POST['app'];
+        $alasan     = $_POST['alasan'];
+        $kodesie    = substr($this->session->kodesie,0,7);
+        $user       = $this->session->user_id;
+
+        $sql = "SELECT level FROM ps.triwayat WHERE id_data = '$id' AND seksi = '$kodesie' AND level <> '0' ;";
+        $level = $this->db->query($sql)->row()->level;
+        if($level == 1){
+            if($approval == 'true'){ //true
+                $sql  = "UPDATE ps.tdata SET status='1', alasan='' where id_data='$id';";
+                $sql .= "UPDATE ps.triwayat SET status='1' WHERE id_data='$id' AND level = '$level';";
+            }else{
+                $sql  = "UPDATE ps.tdata set status='2', alasan='$alasan' where id_data='$id';";
+                $sql .= "UPDATE ps.triwayat SET status = '2' WHERE id_data='$id' AND level = '1';";
+                $sql .= "UPDATE ps.triwayat SET status = '4' WHERE id_data='$id' AND level = '2';";
+            }
+        }else{
+            if($approval == 'true'){ //true
+                $sql  = "UPDATE ps.tdata set status='3', alasan='' where id_data='$id';";
+                $sql .= "UPDATE ps.triwayat SET status = '3' WHERE id_data='$id' AND level = '$level';";
+            }else{
+                $sql  = "UPDATE ps.tdata SET status='4', alasan='$alasan' where id_data='$id';";
+                $sql .= "UPDATE ps.triwayat SET status = '2' WHERE id_data='$id' AND level = '1';";
+                $sql .= "UPDATE ps.triwayat SET status = '4' WHERE id_data='$id' AND level = '2';";
+            }
+        }
+
+        $this->db->query($sql);
+        echo true;
     }
 
 }

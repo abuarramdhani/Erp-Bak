@@ -35,11 +35,37 @@ $(document).ready(function(){
 
 	$('#um-table').DataTable( {
 		"scrollX": true,
-		responsive: {
-        details: false
-    }
-	} );
+	});
+
+	$('.um_copyclip').click(function(){
+		let vall = $(this).val();
+		copyToClipboard(vall);
+		const Toast = Swal.mixin({
+			toast: true,
+			position: 'top-end',
+			showConfirmButton: false,
+			timer: 3000,
+			timerProgressBar: true,
+			onOpen: (toast) => {
+				toast.addEventListener('mouseenter', Swal.stopTimer)
+				toast.addEventListener('mouseleave', Swal.resumeTimer)
+			}
+		})
+
+		Toast.fire({
+			icon: 'success',
+			title: 'Coppied !!'
+		})
+	});
 });
+
+function copyToClipboard(vallue) {
+    var $temp = $("<input>");
+    $("body").append($temp);
+    $temp.val(vallue).select();
+    document.execCommand("copy");
+    $temp.remove();
+}
 
 $(document).on('change', '#erp-um', function(){
 	// alert('a');

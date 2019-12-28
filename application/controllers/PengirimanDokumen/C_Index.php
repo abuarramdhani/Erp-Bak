@@ -31,7 +31,7 @@ class C_Index extends CI_Controller
     }
 
     function index(){
-        $this->data['Menu'] = 'Dashboard Pengiriman Dokumen';
+        $this->data['Menu'] = 'Dashboard '.$this->data['UserMenu']['0']['user_group_menu_name'];
         $this->load->view('V_Header', $this->data);
 		$this->load->view('V_Sidemenu',$this->data);
         $this->load->view('PengirimanDokumen/V_Index', $this->data);

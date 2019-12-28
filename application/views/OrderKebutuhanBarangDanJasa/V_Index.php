@@ -24,7 +24,11 @@
 						$normalBelum = count($normal);
 						$totalNormal = count($normalOrder);
 						$normalSelesai = $totalNormal - $normalBelum;
-						$persenNormal = $normalSelesai / $totalNormal * 100;
+						if ($normalSelesai == 0 && $totalNormal == 0) {
+							$persenNormal = '100';
+						}else {
+							$persenNormal = $normalSelesai / $totalNormal * 100;
+						}
 					?>
 					<div class="info-box bg-green <?= $classNormal;?>">
 						<span class="info-box-icon"><i class="fa fa-thumbs-o-up"></i></span>
@@ -56,7 +60,11 @@
 						$susulanBelum = count($susulan);
 						$totalSusulan = count($susulanOrder);
 						$susulanSelesai = $totalSusulan - $susulanBelum;
-						$persenSusulan = $susulanSelesai / $totalSusulan * 100;
+						if ($susulanSelesai == 0 && $totalSusulan == 0) {
+							$persenSusulan = '100';
+						}else {
+							$persenSusulan = $susulanSelesai / $totalSusulan * 100;
+						}
 					?>
 					<div class="info-box bg-yellow <?= $classSusulan;?>">
 						<span class="info-box-icon"><i style="transform: rotate(270deg) scaleX(-1);" class="fa fa-mail-reply-all  fa-flip-horizontal"></i></span>
@@ -88,7 +96,11 @@
 						$urgentBelum = count($urgent);
 						$totalUrgent = count($urgentOrder);
 						$urgentSelesai = $totalUrgent - $urgentBelum;
-						$persenUrgent = $urgentSelesai / $totalUrgent * 100;
+						if ($urgentSelesai == 0 && $totalUrgent == 0) {
+							$persenUrgent = '100';
+						}else {
+							$persenUrgent = $urgentSelesai / $totalUrgent * 100;
+						}
 					?>
 					<div class="info-box bg-red <?= $classUrgent;?>">
 						<span class="info-box-icon"><i class="fa fa-warning"></i></span>

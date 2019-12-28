@@ -54,9 +54,9 @@
 					// exit();
 
 					$totalQtyMinta=0; $no=1; foreach ($spb as $value) {
-						if ($value['QUANTITY_TRANSACT'] == NULL) {
+						if ($value['QUANTITY_PACKING'] == NULL) {
 							$a = 'class="bg-danger" title="Data belum transact!"';
-						}elseif ($value['QUANTITY_TRANSACT'] == 0){
+						}elseif ($value['QUANTITY_PACKING'] == 0){
 							$a = 'class="bg-success"';
 						}else{
 							$a = '';
@@ -102,7 +102,7 @@
 								</button>
 							</td>
 						</tr>
-						<?php $totalQtyMinta+=$value['QUANTITY_TRANSACT']; ?>
+						<?php $totalQtyMinta+=$value['QUANTITY_PACKING']; ?>
 					<?php } ?>
 				</tbody>
 			</table>
@@ -117,7 +117,7 @@
 	<div class="row">
 		<div class="col-md-12">
 			<button type="button" class="btn btn-warning pull-right" disabled="" id="btnSubmitPacking" data-toggle="modal" data-target="#submitPacking">PACKING <i class="fa fa-arrow-right"></i></button>
-			<button onclick="delTemp()" type="button" class="btn btn-success pull-right"  id="cetakPackingList" <?php if ($totalQtyMinta > 0 || $spb[0]['QUANTITY_TRANSACT']==NULL ) {echo 'disabled';} ?> >VERIFIKASI <i class="fa fa-file-pdf-o"></i></button>
+			<button onclick="delTemp()" type="button" class="btn btn-success pull-right"  id="cetakPackingList" <?php if ($totalQtyMinta > 0) {echo 'disabled';} ?> >VERIFIKASI <i class="fa fa-file-pdf-o"></i></button>
 			<!-- <a class="btn btn-danger pull-right" id="reset" data-toggle="modal" data-target="#resetPacking">RESET <i class="fa fa-trash"></i></a> -->
 		</div>
 	</div>

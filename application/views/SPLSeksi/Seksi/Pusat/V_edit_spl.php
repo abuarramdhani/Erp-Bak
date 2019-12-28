@@ -11,7 +11,7 @@
 						<div class="text-right hidden-md hidden-sm hidden-xs">
 							<a class="btn btn-default btn-lg" href="#">
 								<i class="icon-wrench icon-2x"></i>
-								<span><br/></span>	
+								<span><br/></span>
 							</a>
 						</div>
 					</div>
@@ -28,7 +28,7 @@
 					</div>
 				<?php } ?>
 
-				<?php if(!empty($lembur)){ foreach($lembur as $l){ 
+				<?php if(!empty($lembur)){ foreach($lembur as $l){
 					$status = "";
 					if ($l['Status'] == '21' or $l['Status'] == '25') {
 						$status = "disabled";
@@ -53,7 +53,7 @@
 												<div class="input-group-addon">
 													<i class="fa fa-calendar"></i>
 												</div>
-												<input type="text" class="form-control pull-right spl-date" name="tanggal" 
+												<input type="text" class="form-control pull-right spl-date" name="tanggal"
 													value="<?php echo date_format(date_create($l['Tgl_Lembur']), "d-m-Y"); ?>" <?php echo $status ?>>
 											</div>
 										</div>
@@ -67,7 +67,7 @@
 													<div class="input-group-addon">
 														<i class="fa fa-clock-o"></i>
 													</div>
-													<input type="text" class="form-control spl-time-mask" name="waktu_0" 
+													<input type="text" class="form-control spl-time-mask" name="waktu_0"
 														value="<?php echo $l['Jam_Mulai_Lembur']; ?>" required <?php echo $status ?>>
 												</div>
 											</div>
@@ -78,7 +78,7 @@
 													<div class="input-group-addon">
 														<i class="fa fa-clock-o"></i>
 													</div>
-													<input type="text" class="form-control spl-time-mask" name="waktu_1" 
+													<input type="text" class="form-control spl-time-mask" name="waktu_1"
 														value="<?php echo $l['Jam_Akhir_Lembur']; ?>" required <?php echo $status ?>>
 												</div>
 											</div>
@@ -91,12 +91,12 @@
 											<select class="form-control select2" name="kd_lembur" <?php echo $status ?>>
 												<option value="">-- silahkan pilih --</option>
 												<?php foreach($jenis_lembur as $jl){ ?>
-													<?php 
-													if($jl['kd_Lembur'] == $l['Kd_Lembur']){ 
-														$selected="selected"; 
-													}else{ 
-														$selected=""; 
-													} 
+													<?php
+													if($jl['kd_Lembur'] == $l['Kd_Lembur']){
+														$selected="selected";
+													}else{
+														$selected="";
+													}
 													?>
 
 													<option value="<?php echo $jl['kd_Lembur']; ?>" <?php echo $selected; ?>>
@@ -111,20 +111,24 @@
 									<div class="form-group">
 										<label class="col-sm-2 control-label">Istirahat</label>
 										<div class="col-sm-2">
-											<label style="margin-left:2%; top:+3;"><input type="radio" name="istirahat" value="1" style="transform: scale(1.5); vertical-align:top;" <?php if($l['Istirahat']=="Y"){ echo "checked"; } ?> <?php echo $status ?>> Ya</label>
+											<label style="margin-left:2%; top:+3;">
+											<input type="radio" name="istirahat" value="1" style="transform: scale(1.5); vertical-align:top;" <?php if($l['Istirahat']=="Y"){ echo "checked"; } ?> <?php echo $status ?>> Ya</label>
 										</div>
 										<div class="col-sm-8">
-											<label style="margin-left:5%; vertical-align:bottom;"><input type="radio" name="istirahat" value="2" style="transform: scale(1.5); vertical-align:top;" <?php if($l['Istirahat']=="N"){ echo "checked"; } ?> <?php echo $status ?>> Tidak</label>
+											<label style="margin-left:5%; vertical-align:bottom;">
+											<input type="radio" name="istirahat" value="2" style="transform: scale(1.5); vertical-align:top;" <?php if($l['Istirahat']=="N"){ echo "checked"; } ?> <?php echo $status ?>> Tidak</label>
 										</div>
 									</div>
 
 									<div class="form-group">
 										<label class="col-sm-2 control-label">Break</label>
 										<div class="col-sm-2">
-											<label style="margin-left:2%; top:+3;"><input type="radio" name="break" value="1" style="transform: scale(1.5); vertical-align:top;" <?php if($l['Break']=="Y"){ echo "checked"; } ?> <?php echo $status ?>> Ya</label>
+											<label style="margin-left:2%; top:+3;">
+											<input type="radio" name="break" value="1" style="transform: scale(1.5); vertical-align:top;" <?php if($l['Break']=="Y"){ echo "checked"; } ?> <?php echo $status ?>> Ya</label>
 										</div>
 										<div class="col-sm-8">
-											<label style="margin-left:5%; vertical-align:bottom;"><input type="radio" name="break" value="2" style="transform: scale(1.5); vertical-align:top;" <?php if($l['Break']=="N"){ echo "checked"; } ?> <?php echo $status ?>> Tidak</label>
+											<label style="margin-left:5%; vertical-align:bottom;">
+											<input type="radio" name="break" value="2" style="transform: scale(1.5); vertical-align:top;" <?php if($l['Break']=="N"){ echo "checked"; } ?> <?php echo $status ?>> Tidak</label>
 										</div>
 									</div>
 
@@ -132,6 +136,13 @@
 										<label class="col-sm-2 control-label">Pekerjaan</label>
 										<div class="col-sm-10">
 											<textarea class="form-control" rows="3" name="pekerjaan" <?php echo $status ?>><?php echo $l['Pekerjaan']; ?></textarea>
+										</div>
+									</div>
+
+									<div class="form-group">
+										<label class="col-sm-2 control-label">Estimasi</label>
+										<div class="col-sm-10">
+											<span id="estJamLembur">...</span>
 										</div>
 									</div>
 
@@ -160,32 +171,33 @@
 																</option>
 															</select>
 														</td>
-														<td><input type="number" class="form-control" name="target[]" 
+														<td><input type="number" class="form-control" name="target[]"
 															value="<?php echo $l['target']; ?>" <?php echo $status ?>></td>
-														<td><input type="number" class="form-control" name="realisasi[]" 
+														<td><input type="number" class="form-control" name="realisasi[]"
 															value="<?php echo $l['realisasi']; ?>" <?php echo $status ?>></td>
 														<td><textarea class="form-control" rows="1" name="alasan[]" <?php echo $status ?>><?php echo $l['alasan_lembur']; ?></textarea></td></tr>
 												</tbody>
 											</table>
 										</div>
 									</div>
-									
+
 									<div class="form-group">
 										<div class="col-sm-12 pull-left">
 											<button type="reset" style="margin-right:3px" class="btn btn-primary" onclick="location.reload()" <?php echo $status ?>> <i class="fa fa-refresh"></i> Reset</button>
 											<button type="submit" class="btn btn-primary" <?php echo $status ?>> <i class="fa fa-save"></i> Submit</button>
+											<button type="button" onclick="javascript:history.go(-1)" class="btn btn-warning"> <i class="fa fa-arrow-circle-left"></i> Kembali</button>
 										</div>
 									</div>
-									
+
 								</div>
-								
+
 							</div>
 						</div>
 					</div>
 				</form>
 
 				<?php } } ?>
-				
+
 			</section>
 		</div>
 	</div>
@@ -193,36 +205,36 @@
 		// need some idea
 		window.onfocus = function() {
 		  console.log('Got focus');
-		  window.location.reload();
+		 // window.location.reload(); this is hell
 		}
-		
+
 		var timeoutInMiliseconds = 120000;
-		var timeoutId; 
-		  
-		function startTimer() { 
+		var timeoutId;
+
+		function startTimer() {
 		    // window.setTimeout returns an Id that can be used to start and stop a timer
 		    timeoutId = window.setTimeout(doInactive, timeoutInMiliseconds)
 		}
-		  
+
 		function doInactive() {
 		    // does whatever you need it to actually do - probably signs them out or stops polling the server for info
 		    window.location.reload();
 		}
 
-		function resetTimer() { 
+		function resetTimer() {
 		    window.clearTimeout(timeoutId)
 		    startTimer();
 		}
-		 
+
 		function setupTimers () {
 		    document.addEventListener("mousemove", resetTimer(), false);
 		    document.addEventListener("mousedown", resetTimer(), false);
 		    document.addEventListener("keypress", resetTimer(), false);
 		    document.addEventListener("touchmove", resetTimer(), false);
-		     
+
 		    startTimer();
 		}
-		 
+
 		document.addEventListener("DOMContentLoaded",function(e){
 			setupTimers();
 		});

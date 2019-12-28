@@ -11,7 +11,7 @@ class M_pengeluaran extends CI_Model
     public function tampilhariini() {
         $oracle = $this->load->database('oracle', true);
         $sql = "select to_char(jam_input, 'DD/MM/YYYY HH24:MM:SS') as jam_input,
-                tgl_dibuat,
+                tgl_dibuat, to_char(mulai_pengeluaran, 'HH24:MI:SS') as mulai_pengeluaran,  pic_pengeluaran,
                 jenis_dokumen, no_dokumen, jumlah_item, jumlah_pcs, selesai_pengeluaran,
                 selesai_pelayanan, urgent
                 from khs_tampung_spb
@@ -41,9 +41,9 @@ class M_pengeluaran extends CI_Model
         // echo $sql;
     }
 
-    public function SavePengeluaran($date, $jenis, $nospb){
+    public function SavePengeluaran($date, $jenis, $nospb,$pic){
         $oracle = $this->load->database('oracle', true);
-        $sql="update khs_tampung_spb set mulai_pengeluaran = TO_TIMESTAMP('$date', 'DD-MM-YYYY HH24:MI:SS')
+        $sql="update khs_tampung_spb set mulai_pengeluaran = TO_TIMESTAMP('$date', 'DD-MM-YYYY HH24:MI:SS'), pic_pengeluaran = '$pic'
                 where jenis_dokumen = '$jenis' and no_dokumen = '$nospb'";
         $query = $oracle->query($sql);              
         $query2 = $oracle->query('commit');     

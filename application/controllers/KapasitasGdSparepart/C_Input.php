@@ -122,5 +122,12 @@ class C_Input extends CI_Controller
 		$this->load->view('V_Footer',$data);
 	}
 
+	function cancelSPB(){
+		$jenis = $this->input->post('jenis');
+		$nodoc = $this->input->post('nodoc');
+		// echo "<pre>"; print_r($jenis);exit();
+		$cancel = $this->M_input->cancelSPB($jenis, $nodoc);
+	}
+
 
 }

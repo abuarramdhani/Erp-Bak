@@ -2,6 +2,10 @@
     .center {
         text-align: center;
     }
+
+    table{
+        width: 100% !important;
+    }
     
     tbody>tr>td {
         text-align: center;
@@ -124,6 +128,7 @@
                                             </tr>
                                         </tfoot>
                                     </table>
+                                    <small style="color: red;">*klik data untuk melihat detail</small>
                                 </div>
                             </div>
                         </div>
@@ -217,7 +222,7 @@
         <div class="modal-content">
             <div class="modal-header modal-detail">
                 <button type="button" class="close" data-dismiss="modal">&times;</button>
-                <h3 class="modal-title center"><b>Info</b></h3>
+                <h3 class="modal-title center"><b>Detail</b></h3>
             </div>
             <div class="modal-body">
                 <form>
@@ -274,6 +279,7 @@
             action = "Add"
             $('.modal-title').html(title)
             $('.modal-footer #action').html(action)
+            $('.table-info-data tbody').html('')
         })
 
         //Listener add Data
@@ -336,9 +342,6 @@
 
             let jsonNoind = allNoind.join(',')
 
-            console.log(jsonNoind);
-
-
             let ket = $('#modalInputInformation').val(),
                 date = $('#modalDate').val()
 
@@ -386,6 +389,9 @@
 
         //listener row on click
         showDetailRow()
+
+        //remove close button header modal
+        $('.modal-header > button').remove()
     })
 
     const showTableInput = () => {
@@ -394,7 +400,7 @@
             dataType: 'json',
             beforeSend: () => {
                 let loading = `<tr><td colspan="8"><center><img src="${baseurl + 'assets/img/gif/spinner.gif'}" /></center></td></tr>`
-                $('table > tbody').html(loading)
+                $('table > tbody').first().html(loading)
             },
             success: res => {
                 let row
@@ -406,7 +412,7 @@
 								<td>${item.nama}</td>
 								<td class='detail' data-id='${item.id_data}' data-app1='${item.approver1}' data-app2='${item.approver2}'>${item.keterangan}</td>
 								<td>${item.tgl_input}</td>
-								<td>${item.tanggal}</td>
+								<td>${(item.tanggal_start == item.tanggal_end) ? item.tanggal_start : item.tanggal_start+" - "+item.tanggal_end}</td>
 								${getStatus(item.status, item.approver1, item.approver2)}
 								<td>${getAlasan(item.alasan)}</td>
 							</tr>`
@@ -424,16 +430,16 @@
                 status = '<td class="bg-yellow">Pending</td>'
                 break
             case '1':
-                status = `<td class="bg-green">Approve by ${ap1}</td>`
+                status = `<td class="${(ap2 === '')? 'bg-green':'bg-blue'}">Diterima oleh seksi ${ap1}</td>`
                 break
             case '2':
-                status = `<td class="bg-red">Reject by ${ap1}</td>`
+                status = `<td class="bg-red">Ditolak oleh seksi ${ap1}</td>`
                 break
             case '3':
-                status = `<td class="bg-green">Approve by ${ap2}</td>`
+                status = `<td class="bg-green">Diterima oleh seksi ${ap2}</td>`
                 break
             case '4':
-                status = `<td class="bg-red">Reject by ${ap2}</td>`
+                status = `<td class="bg-red">Ditolak oleh seksi ${ap2}</td>`
                 break
             default:
                 status = 'null'
@@ -446,8 +452,8 @@
         if (val == null) {
             return ''
         }
-        if (val.length > 10) {
-            return val.substr(0, 10) + '...'
+        if (val.length > 20) {
+            return val.substr(0, 20) + '...'
         }
         return val
     }

@@ -23,6 +23,9 @@
                     <div class="col-lg-12">
                         <div class="box box-primary box-solid">
                             <div class="box-header with-border">
+                                <div>
+                                    <marquee><label style="font-size: 18px;">Harap dilakukan verifikasi terlebih dahulu sebelum klik APPROVE</label></marquee>
+                                </div>
                             </div>
                             <div class="box-body">
                             <div class="nav-tabs-custom">
@@ -56,14 +59,15 @@
                                     <tr>
                                       <td style="white-space: nowrap; text-align: center;"><?php echo $no; ?></td>
                                       <td style="white-space: nowrap; text-align: center;"><?php  if ($row['status'] == 0) { ?>
-                                        <button class="btn btn-success cm_btn_approve" onclick="getApproval('1', <?php echo $row['izin_id'] ?>)" ><span style="color: white" class='fa fa-check'></span></button>
-                                        <button class="btn btn-danger cm_btn_reject" onclick="getApproval('2', <?php echo $row['izin_id'] ?>)"><span style="color: white" class='fa fa-close'></span></button>
-                                       <?php }elseif ($row['status'] == 1) { ?>
-                                              <a><span style="color: green" class='fa fa-check fa-2x'></span></a>
-                                       <?php }elseif ($row['status'] == 2) { ?>
-                                              <a><span style="color: red" class='fa fa-close fa-2x'></span></a>
-                                       <?php } ?>
-                                            </td>
+                                            <button class="btn btn-warning" onclick="edit_pkj_dinas(<?php echo $row['izin_id'] ?>)"><span style="color: white" class='fa fa-edit'></button>
+                                            <button class="btn btn-success cm_btn_approve" onclick="getApproval('1', <?php echo $row['izin_id'] ?>)" ><span style="color: white" class='fa fa-check'></span></button>
+                                            <button class="btn btn-danger cm_btn_reject" onclick="getApproval('2', <?php echo $row['izin_id'] ?>)"><span style="color: white" class='fa fa-close'></span></button>
+                                           <?php }elseif ($row['status'] == 1) { ?>
+                                                  <a><span style="color: green" class='fa fa-check fa-2x'></span></a>
+                                           <?php }elseif ($row['status'] == 2) { ?>
+                                                  <a><span style="color: red" class='fa fa-close fa-2x'></span></a>
+                                           <?php } ?>
+                                                </td>
                                       <td style="white-space: nowrap; text-align: center;"><?php echo $row['izin_id'] ?></td>
                                       <td style="white-space: nowrap"><?= date("d - M - Y", strtotime($row['created_date'])); ?></td>
                                       <td style="white-space: nowrap"><?php $noind = explode(', ', $row['noind']);
@@ -124,13 +128,8 @@
                                     ?>
                                     <tr>
                                       <td style="text-align: center;"><?php echo $no; ?></td>
-                                      <td style="text-align: center;"><?php  if ($row['status'] == 0) { ?>
-                                        <button class="btn btn-success cm_btn_approve" onclick="getApproval('1', <?php echo $row['izin_id'] ?>)" ><span style="color: white" class='fa fa-check'></span></button>
-                                        <button class="btn btn-danger cm_btn_reject" onclick="getApproval('2', <?php echo $row['izin_id'] ?>)"><span style="color: white" class='fa fa-close'></span></button>
-                                       <?php }elseif ($row['status'] == 1) { ?>
+                                      <td style="text-align: center;"><?php if ($row['status'] == 1) { ?>
                                               <a><span style="color: green" class='fa fa-check fa-2x'></span></a>
-                                       <?php }elseif ($row['status'] == 2) { ?>
-                                              <a><span style="color: red" class='fa fa-close fa-2x'></span></a>
                                        <?php } ?>
                                             </td>
                                       <td style="text-align: center;"><?php echo $row['izin_id'] ?></td>
@@ -194,6 +193,7 @@
                                     <tr>
                                       <td style="text-align: center;"><?php echo $no; ?></td>
                                       <td style="text-align: center; "><?php  if ($row['status'] == 0) { ?>
+                                        <button class="btn btn-warning" onclick="edit_pkj_dinas(<?php echo $row['izin_id'] ?>)"><span style="color: white" class='fa fa-edit'></button>
                                         <button class="btn btn-success cm_btn_approve" onclick="getApproval('1', <?php echo $row['izin_id'] ?>)" ><span style="color: white" class='fa fa-check'></span></button>
                                         <button class="btn btn-danger cm_btn_reject" onclick="getApproval('2', <?php echo $row['izin_id'] ?>)"><span style="color: white" class='fa fa-close'></span></button>
                                        <?php }elseif ($row['status'] == 1) { ?>
@@ -261,12 +261,7 @@
                                     ?>
                                    <tr>
                                       <td style="text-align: center;"><?php echo $no; ?></td>
-                                      <td style="text-align: center;"><?php  if ($row['status'] == 0) { ?>
-                                        <button class="btn btn-success cm_btn_approve" onclick="getApproval('1', <?php echo $row['izin_id'] ?>)" ><span style="color: white" class='fa fa-check'></span></button>
-                                        <button class="btn btn-danger cm_btn_reject" onclick="getApproval('2', <?php echo $row['izin_id'] ?>)"><span style="color: white" class='fa fa-close'></span></button>
-                                       <?php }elseif ($row['status'] == 1) { ?>
-                                              <a><span style="color: green" class='fa fa-check fa-2x'></span></a>
-                                       <?php }elseif ($row['status'] == 2) { ?>
+                                      <td style="text-align: center;"><?php if ($row['status'] == 2) { ?>
                                               <a><span style="color: red" class='fa fa-close fa-2x'></span></a>
                                          <?php } ?>
                                             </td>
@@ -319,8 +314,66 @@
         </div>
     </div>
 </section>
+
+<!-- Modal -->
+<div class="modal fade" id="modal-approve-dinas" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document" style="width: 600px">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <button type="button" class="close hover" data-dismiss="modal">&times;</button>
+        <h3>Approval Perizinan Dinas</h3>
+      </div>
+      <div class="modal-body" style="width: 100%; text-align: center;">
+        <div class="row">
+          <div class="col-lg-12">
+            <label class="col-lg-3 text-right">ID Dinas</label><label class="col-lg-1">:</label>
+            <input  class="form-control col-lg-8" name="id_dinas" id="modal-id_dinas" readonly  style="width: 55%">
+          </div>
+        </div>
+        <br>
+        <div class="row">
+          <div class="col-lg-12">
+            <label class="col-lg-3 text-right">Tanggal</label><label class="col-lg-1">:</label>
+            <input  class="form-control col-lg-8" name="tgl_dinas" id="modal-tgl_dinas" readonly  style="width: 55%">
+          </div>
+        </div>
+        <br>
+        <div class="row">
+          <div class="col-lg-12">
+            <label class="col-lg-3 text-right">Keperluan</label><label class="col-lg-1">:</label>
+            <textarea class="form-control col-lg-8" name="kep_dinas" id="modal-kep_dinas" readonly  style="width: 55%"></textarea>
+          </div>
+        </div>
+        <br>
+        <div class="row">
+            <table border="1" width="500px" style="margin-left: 50px;">
+                <thead>
+                    <th style="text-align: center; white-space: nowrap;"><input type="checkbox" id="checkAll_edit"></th>
+                    <th style="text-align: center; white-space: nowrap;">No. Induk</th>
+                    <th style="text-align: center; white-space: nowrap;">Nama</th>
+                    <th style="text-align: center; white-space: nowrap;">Tujuan</th>
+                </thead>
+                <tbody class="eachPekerjaEdit">
+
+                </tbody>
+            </table>
+        </div>
+        <br>
+          <div class="modal-footer" style="text-align: center;">
+            <div>
+              <button type="button" class="btn btn-success" id="app_edit_Dinas" value="1">Approve</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+</div>
+</div>
+
+<!-- selesai -->
 <script type="text/javascript">
   $(document).ready(function () {
+
     $('a[data-toggle="tab"]').on( 'shown.bs.tab', function (e) {
         $.fn.dataTable.tables( { api: true} ).columns.adjust();
         setTimeout(

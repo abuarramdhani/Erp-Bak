@@ -10,13 +10,13 @@ $(function () {
                   extend: 'excel',
                   className: 'btn btn-success'
                 },
-                {
-                  text: 'Proses',
-                  className: 'btn btn-primary disabled',
-                  action: function(e, dt, node, config){
-                    $('#btn-ProsesSPL').click();
-                  }
-                }
+                // {
+                //   text: 'Proses',
+                //   className: 'btn btn-primary disabled',
+                //   action: function(e, dt, node, config){
+                //     $('#btn-ProsesSPL').click();
+                //   }
+                // }
     ],
     "ordering": false,
     "retrieve": true,
@@ -34,7 +34,7 @@ $(function () {
 
   $('.spl-date').daterangepicker({
     singleDatePicker: true,
-    timePicker: false, 
+    timePicker: false,
     autoclose: true,
     locale: {
       format: 'DD-MM-YYYY'
@@ -42,8 +42,8 @@ $(function () {
   });
 
   $('.spl-date-time').daterangepicker({
-    timePicker: true, 
-    timePickerIncrement: 1, 
+    timePicker: true,
+    timePickerIncrement: 1,
     timePicker24Hour: true,
     singleDatePicker: true,
     locale: {
@@ -220,9 +220,9 @@ $(function () {
       url: alamate,
       type: "POST",
       data: {
-        dari:$('#tgl_mulai').val(), 
-        sampai:$('#tgl_selesai').val(), 
-        status:$('#status').val(), 
+        dari:$('#tgl_mulai').val(),
+        sampai:$('#tgl_selesai').val(),
+        status:$('#status').val(),
         lokasi:$('#lokasi').val(),
         noind:$('#noind').val()},
       success: function(data) {
@@ -234,7 +234,7 @@ $(function () {
           // alert('Data tidak di temukan');
         }
       }
-    }); 
+    });
   });
 
   $('#example11').on('click','.spl-pkj-del',function(){
@@ -304,14 +304,14 @@ $(function () {
   //           // $(".spl-error").remove();
   //           parentSelect.find(".spl-new-error").remove();
   //           parentSelect.append("<p class='spl-new-error' style='color: red'><br><i style='color:#ed2b1f' class='fa fa-lg fa-info-circle spl-error' title='"+data+"'></i>  Peringatan : "+data+"</p>");
-             
+
   //         }else{
   //           parentSelect.css("background", "#ffffff");
   //           $("button[type*=button]").attr("type", "submit").attr("class", "btn btn-primary");
   //           // $(".spl-error").remove();
   //           parentSelect.find(".spl-new-error").remove();
   //         }
-  //       }, 
+  //       },
   //       error : function() {
   //         alert("error code : spl-cek");
   //       }
@@ -340,6 +340,7 @@ $(function () {
     var parentTr = $(this).closest('tr');
     var splLink = window.location.href;
     var ajaxlink = "";
+
     if (splLink.search("Pusat") !== -1) {
       ajaxlink = baseurl+"SPLSeksi/Pusat/C_splseksi/cek_anonymous2";
       $('input[name=tanggal]').attr("disabled","disabled");
@@ -391,23 +392,30 @@ $(function () {
             parentTr.find('input[name*=lembur_akhir]').val(obj['akhir']);
             parentSelect.css("background", "#ffffff");
             parentSelect.find(".spl-new-error").remove();
+			if(noindSPL != null){
+				summon_count_overtime(noindSPL).then(overtime=>{
+					parentTr.find('input[name*=overtime]').val(overtime);
+					console.log(overtime);
+				})
+			}
             chk = "0";
             $('.spl-new-error').each(function(){
               chk = "1";
-            }); 
+            });
             if(chk == "0") {
-              $("button[type*=button]").attr("type", "submit").attr("class", "btn btn-primary");
+              //$("button[type*=button]").attr("type", "submit").attr("class", "btn btn-primary");
+			  // what is this ?
             }
-            
-            
+
+
           }
-        }, 
+        },
         error : function() {
           alert("error code : spl-cek");
         }
       });
     }
-      
+
   });
 
   $('#spl-rekap').on('click', function(e) {
@@ -420,9 +428,9 @@ $(function () {
       url: alamate,
       type: "POST",
       data: {
-        dari:$('#tgl_mulai').val(), 
-        sampai:$('#tgl_selesai').val(), 
-        noi:$('#noi').val(), 
+        dari:$('#tgl_mulai').val(),
+        sampai:$('#tgl_selesai').val(),
+        noi:$('#noi').val(),
         noind:$('#noind').val()},
       success: function(data) {
         if(data != "[]"){
@@ -474,9 +482,9 @@ $(function () {
         url: alamate,
         type: "POST",
         data: {
-          dari:$('#tgl_mulai').val(), 
-          sampai:$('#tgl_selesai').val(), 
-          status:$('#status').val(), 
+          dari:$('#tgl_mulai').val(),
+          sampai:$('#tgl_selesai').val(),
+          status:$('#status').val(),
           lokasi:$('#lokasi').val(),
           noind:$('#noind').val(),
           kodesie:$('#kodesie').val()},
@@ -489,7 +497,7 @@ $(function () {
             // alert('Data tidak di temukan');
           }
         }
-      }); 
+      });
     });
 
   }
@@ -508,7 +516,7 @@ $(function () {
     }else{
       tmp = "finspot:FingerspotVer;"+btoa(baseurl+'ALA/Approve/fp_proces?userid='+usr);
     }
-    
+
     chk = "";
     $('.spl-chk-data').each(function(){
       if(this.checked) {chk += '.'+$(this).val();}
@@ -552,7 +560,7 @@ $(function () {
     }else{
       tmp = "finspot:FingerspotVer;"+btoa(baseurl+'ALA/Approve/fp_proces?userid='+usr+'&finger_id='+finger);
     }
-    
+
     chk = "";
     $('.spl-chk-data').each(function(){
       if(this.checked) {chk += '.'+$(this).val();}
@@ -586,7 +594,7 @@ $(function () {
     }else{
       tmp = "finspot:FingerspotVer;"+btoa(baseurl+'ALA/Approve/fp_proces?userid='+usr+'&finger_id='+finger);
     }
-    
+
     chk = "";
     $('.spl-chk-data').each(function(){
       if(this.checked) {chk += '.'+$(this).val();}
@@ -639,7 +647,7 @@ $(document).ready(function(){
         }else if(value.length > 2){
           value = valjam.concat(':',valmenit);
         }
-        
+
       }else{
         value = "00:00:00";
       }
@@ -681,9 +689,9 @@ $(document).ready(function(){
         if (valdetik.length == 0) {
           valdetik = "00";
         }
-          
+
         value = valjam.concat(':',valmenit,':',valdetik);
-        
+
       }else{
         value = "00:00:00";
       }
@@ -800,7 +808,7 @@ $(document).ready(function(){
           alert(request.responseText);
         }
       });
-    } 
+    }
   });
 
   $('.spl-fingertemp-modal-select-noind').select2({
@@ -831,7 +839,7 @@ $(document).ready(function(){
 
   $('#spl-fingertemp-modal-add-user-triger').on('click',function(){
     $('.spl-fingertemp-modal-select-noind').select2("val","");
-    $('#spl-fingertemp-modal-user').modal({backdrop: 'static', keyboard: false});  
+    $('#spl-fingertemp-modal-user').modal({backdrop: 'static', keyboard: false});
     $('#spl-fingertemp-modal-user').modal("show");
   });
 
@@ -895,7 +903,7 @@ $(document).ready(function(){
           alert(request.responseText);
         }
       });
-    } 
+    }
   });
 
   $('#spl-fingertemp-modal-finger').on('click','.spl-fingertemp-modal-finger-delete', function(e){
@@ -927,7 +935,7 @@ $(document).ready(function(){
         }
       });
     }
-  }); 
+  });
 
   $('#spl-fingertemp-modal-finger').on('click','.spl-fingertemp-modal-finger-add', function(e){
     jari = $(this).attr('data-fid');
@@ -984,3 +992,61 @@ function generateFingertempTable(){
     }
   });
 }
+
+const summon_count_overtime = (noind) => {
+	let tgl = $('.spl-date').val(),
+		start = $('input[name=waktu_0]').val()
+		end = $('input[name=waktu_1]').val()
+		type = $('select[name=kd_lembur]').val()
+		isbreak = $('input[name*=break]:checked').val() == 1 ? 'Y' : 'N'
+		isrest = $('input[name*=istirahat]:checked').val() == 1 ? 'Y' : 'N',
+
+		console.log(noind, tgl, start, end, type, isbreak, isrest);
+
+		if(tgl == '' || start == '' || end == '' || type == ''){
+			$('#estJamLembur').text("Isi semua data")
+		}else{
+			return count_overtime(tgl,start,end,type,isbreak,isrest,noind).then(res => res)
+		}
+}
+
+const count_overtime = (...args) => {
+
+	return new Promise((resolve)=>{
+		let params = {
+			date: args[0],
+			start: args[1],
+			end: args[2],
+			type: args[3],
+			isbreak: args[4],
+			isrest: args[5],
+			noind: args[6]
+		}
+
+		$.ajax({
+			method: 'POST',
+			data: params,
+			url: baseurl+'SPL/Pusat/ajax_count_overtime',
+			success: res =>{
+				$('#estJamLembur').text(res)
+				resolve(res)
+			}
+		})
+	})
+}
+
+$(document).on('ifChecked','input[name=break], input[name=istirahat]',e => {
+	let noind = $('.spl-pkj-select2').val()
+	summon_count_overtime(noind)
+})
+
+$(document).ready(()=>{
+	//estimasi jam lembur /menu input dan edit
+	let noind = $('.spl-pkj-select2').val()
+	summon_count_overtime(noind)
+	$('.spl-date, input[name=waktu_0], input[name=waktu_1], select[name=kd_lembur], input[type=radio][name=istirahat], input[type=radio][name=break]').change(()=>{
+		let noind = $('.spl-pkj-select2').val()
+
+		summon_count_overtime(noind)
+	})
+})

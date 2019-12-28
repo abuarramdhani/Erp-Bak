@@ -6,7 +6,7 @@ class M_index extends CI_Model {
                 $this->load->database();
 				$this->load->library('encrypt');
         }
-		
+
 		 function login($usr, $pwd)
 		{
 		  $sql = "
@@ -24,7 +24,13 @@ class M_index extends CI_Model {
 			  return false;
 		  }
 		}
-		
+
+		function getPassword($user){
+			$user = strtoupper($user);
+			$sql = "SELECT * FROM sys.sys_user WHERE user_name='$user' and user_password=md5('123456')";
+			return $this->db->query($sql)->num_rows() > 0 ? true : false;
+		}
+
 		function getDetail($usr)
 		{
           $sql = "	select 	su.*,
@@ -38,7 +44,7 @@ class M_index extends CI_Model {
           $query = $this->db->query($sql);
 		  return $query->result();
 		}
-		
+
 		public function table_columns($table_schema, $table_name)
 		{
 			$columns_not_included 	=	array

@@ -371,7 +371,7 @@ class C_Monitoring extends CI_Controller
 			$jok 		= $this->input->post('qty_ok[]');
 			$not 		= $this->input->post('qty_not[]');
 			$asal 		= $this->input->post('gd_asal[]');
-			$ket 		= $this->input->post('ktrgn[]');
+			$ket 		= $this->input->post('ketr[]');
 			$action 	= $this->input->post('aktion[]');
 
 			$dataMGS = array();
@@ -468,9 +468,9 @@ class C_Monitoring extends CI_Controller
 			$excel->setActiveSheetIndex(0)->setCellValue('I3', "STATUS");
 			$excel->setActiveSheetIndex(0)->setCellValue('I4', "OK");
 			$excel->setActiveSheetIndex(0)->setCellValue('J4', "NOT OK");
-			$excel->setActiveSheetIndex(0)->setCellValue('K3', "ASAL");
-			$excel->setActiveSheetIndex(0)->setCellValue('L3', "ACTION");
-			$excel->setActiveSheetIndex(0)->setCellValue('M3', "KETERANGAN");
+			$excel->setActiveSheetIndex(0)->setCellValue('K3', "KETERANGAN");
+			$excel->setActiveSheetIndex(0)->setCellValue('L3', "ASAL");
+			$excel->setActiveSheetIndex(0)->setCellValue('M3', "ACTION");
 			$excel->getActiveSheet()->mergeCells('A3:A4'); 
 			$excel->getActiveSheet()->mergeCells('B3:B4'); 
 			$excel->getActiveSheet()->mergeCells('C3:C4'); 
@@ -552,9 +552,9 @@ class C_Monitoring extends CI_Controller
 						$excel->setActiveSheetIndex(0)->setCellValue('H'.$numrow, $dM['satuan']);
 						$excel->setActiveSheetIndex(0)->setCellValue('I'.$numrow, $dM['status_ok']);
 						$excel->setActiveSheetIndex(0)->setCellValue('J'.$numrow, $dM['not_ok']);
-						$excel->setActiveSheetIndex(0)->setCellValue('K'.$numrow, $dM['asal']);
-						$excel->setActiveSheetIndex(0)->setCellValue('L'.$numrow, $dM['action']);
-						$excel->setActiveSheetIndex(0)->setCellValue('M'.$numrow, $dM['ket']);
+						$excel->setActiveSheetIndex(0)->setCellValue('K'.$numrow, $dM['ket']);
+						$excel->setActiveSheetIndex(0)->setCellValue('L'.$numrow, $dM['asal']);
+						$excel->setActiveSheetIndex(0)->setCellValue('M'.$numrow, $dM['action']);
 
 						$excel->getActiveSheet()->getStyle('A'.$numrow)->applyFromArray($style2);
 						$excel->getActiveSheet()->getStyle('B'.$numrow)->applyFromArray($style2);
