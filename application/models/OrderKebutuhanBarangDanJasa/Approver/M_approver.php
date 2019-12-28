@@ -126,6 +126,28 @@ class M_approver extends CI_Model
         return $query->result_array();
     }
 
+    public function getOrderToApprove1($orderid)
+    {
+        $oracle_dev = $this->load->database('oracle_dev', true);
+        $query = $oracle_dev->query("SELECT DISTINCT
+        ooh.*,
+        msib.SEGMENT1,
+        msib.DESCRIPTION,
+        ppf.NATIONAL_IDENTIFIER,
+        ppf.FULL_NAME,
+        ppf.ATTRIBUTE3
+    FROM
+        KHS.KHS_OKBJ_ORDER_HEADER ooh,
+        PER_PEOPLE_F ppf,
+        mtl_system_items_b msib
+    WHERE
+        ooh.REQUESTER = ppf.PERSON_ID
+        AND ooh.INVENTORY_ITEM_ID = msib.INVENTORY_ITEM_ID
+        AND ooh.ORDER_ID = '$orderid'");
+
+        return $query->result_array();
+    }
+
     public function checkApproval($orderid, $approverType)
     {
         $oracle_dev = $this->load->database('oracle_dev', true);
@@ -355,6 +377,68 @@ class M_approver extends CI_Model
                     and msib.SEGMENT1 = nvl('$itemkode',msib.SEGMENT1)
                     order by item
                     ,moqd.SUBINVENTORY_CODE");
+
+        return $query->result_array();
+    }
+
+    public function getAttachment($order_id)
+    {
+        $oracle_dev = $this->load->database('oracle_dev', true);
+        $query = $oracle_dev->get_where('KHS.KHS_OKBJ_ORDER_ATTACHMENTS',array('ORDER_ID' => $order_id, ));
+
+        return $query->result_array();
+    }
+
+    public function getNextApproval($order_id)
+    {
+        $oracle_dev = $this->load->database('oracle_dev', true);
+        $query = $oracle_dev->query("SELECT
+        APPROVER_TYPE
+        ,APPROVER_ID
+        ,NATIONAL_IDENTIFIER
+        FROM
+        (SELECT 
+           ooa.APPROVER_TYPE
+           ,ooa.APPROVER_ID
+           ,ppf.NATIONAL_IDENTIFIER
+           FROM
+           khs.KHS_OKBJ_ORDER_HEADER ooh
+           ,khs.KHS_OKBJ_ORDER_APPROVAL ooa
+           ,PER_PEOPLE_F ppf
+           WHERE
+           ooh.ORDER_ID = '$order_id'
+           AND ooa.APPROVER_ID = ppf.PERSON_ID
+           AND ooh.ORDER_ID = ooa.ORDER_ID
+           AND ooa.JUDGEMENT is null
+           AND
+           (      
+              (
+               SELECT
+               ooa1.JUDGEMENT
+               FROM
+               khs.KHS_OKBJ_ORDER_HEADER ooh1
+               ,khs.KHS_OKBJ_ORDER_APPROVAL ooa1
+               WHERE
+               ooh1.ORDER_ID = ooa1.ORDER_ID
+               and ooh1.APPROVE_LEVEL_POS = ooa1.APPROVER_TYPE
+               and ooh1.ORDER_ID = '$order_id'
+               ) = 'A'
+               OR
+               (
+               SELECT
+               ooa1.JUDGEMENT
+               FROM
+               khs.KHS_OKBJ_ORDER_HEADER ooh1
+               ,khs.KHS_OKBJ_ORDER_APPROVAL ooa1
+               WHERE
+               ooh1.ORDER_ID = ooa1.ORDER_ID
+               and ooh1.APPROVE_LEVEL_POS = ooa1.APPROVER_TYPE
+               and ooh1.ORDER_ID = '$order_id'
+               ) is null
+           ) 
+           ORDER BY ooa.APPROVER_TYPE ASC)   
+        WHERE
+        ROWNUM=1");
 
         return $query->result_array();
     }

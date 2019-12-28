@@ -115,7 +115,7 @@
                                                         $tag = 'normal';
                                                     }
                                                     ?>
-                                                    <td class="tdOKBListOrderId"><?php echo $list['ORDER_ID']; ?></td>
+                                                    <td><span class="tdOKBListOrderId" style="display: none;"><?php echo $list['ORDER_ID']; ?></span><button type="button" class="btn btn-sm btn-default btnOKBInfoPR"><?php echo $list['ORDER_ID']; ?></button></td>
                                                     <td><?php echo date("d-M-Y",strtotime($list['ORDER_DATE'])); ?><br><label class="label <?= $flag; ?>"><?= $tag; ?></label></td>
                                                     <td><?php echo $list['SEGMENT1'].'-'.$list['DESCRIPTION']; ?></td>
                                                     <!-- <td><?php echo $list['DESCRIPTION']; ?></td> -->
@@ -147,6 +147,27 @@
                                                                 <div class="col-lg-12 divOKBListOrderHistory-<?php echo $list['ORDER_ID']; ?>" style="overflow: auto; height: 400px; display: none;">
                                                                     <span></span>
                                                                 </div>
+                                                            </div>
+                                                            <div class="modal-footer">
+                                                                <button type="button" class="btn btn-default" data-dismiss="modal">Tutup</button>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="modal fade mdlOKBOrderPR-<?php echo $list['ORDER_ID']; ?>" role="dialog" aria-labelledby="modalDelete" aria-hidden="true">
+                                                    <div class="modal-dialog modal-lg" role="document">
+                                                        <div class="modal-content">
+                                                            <div class="modal-header">
+                                                                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                                                                <h4><i style="vertical-align: middle;" class="fa fa-check-circle-o"> </i> Info <b>Order</b></h4>
+                                                            </div>
+                                                            <div class="modal-body">
+                                                                <center>
+                                                                    <div class="row text-primary divOKBOrderPRLoading-<?php echo $list['ORDER_ID']; ?>" style="margin-top: 25px; display: none;">
+                                                                        <label class="control-label"> <h4><img src="<? echo base_url('assets/img/gif/loading5.gif') ?>" style="width:30px"> <b>Sedang Mengambil Data ...</b></h4> </label>
+                                                                    </div>
+                                                                </center>
+                                                                <div class="col-lg-12 divOKBOrderPR-<?php echo $list['ORDER_ID']; ?>" style="overflow: auto; display: none;"></div>
                                                             </div>
                                                             <div class="modal-footer">
                                                                 <button type="button" class="btn btn-default" data-dismiss="modal">Tutup</button>

@@ -7,9 +7,10 @@ class M_puller extends CI_Model
     {
         parent::__construct();
         $this->load->database();
+        $this->oracle = $this->load->database('oracle',TRUE);
     }
 
-    public function getOrderToPulled()
+    public function getOrderToPulled($cond)
     {
         $oracle_dev = $this->load->database('oracle_dev', true);
         $query = $oracle_dev->query("SELECT DISTINCT
@@ -27,6 +28,7 @@ class M_puller extends CI_Model
                     ooh.CREATE_BY = ppf.PERSON_ID
                     AND ooh.INVENTORY_ITEM_ID = msib.INVENTORY_ITEM_ID
                     AND ooh.ORDER_STATUS_ID = '3'
+                    $cond
                     AND ooh.PRE_REQ_ID is null
         ");
 
