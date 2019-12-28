@@ -157,7 +157,7 @@ class C_splkasie extends CI_Controller {
 				$pengali = $treffjamlembur[$i]['pengali'];
 
 				if($total_lembur > $jml_jam){
-					$estimasi = $jml_jam * $pengali/60;
+					$estimasi = $estimasi + $jml_jam * $pengali/60;
 					$total_lembur = $total_lembur - $jml_jam;
 				}else{
 					$estimasi = $estimasi + ($total_lembur * $pengali/60);
