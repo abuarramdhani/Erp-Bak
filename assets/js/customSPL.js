@@ -1040,7 +1040,7 @@ $(document).on('ifChecked','input[name=break], input[name=istirahat]',e => {
 	summon_count_overtime(noind)
 })
 
-$(document).ready(()=>{
+$(document).ready(function(){
 	//estimasi jam lembur /menu input dan edit
 	let noind = $('.spl-pkj-select2').val()
 	summon_count_overtime(noind)
@@ -1049,4 +1049,242 @@ $(document).ready(()=>{
 
 		summon_count_overtime(noind)
 	})
+
+	//-------PERSONALIA PAGE---------------------------------
+
+	$('.lembur-personalia-pekerja').select2({
+	  ajax:{
+		url: baseurl+"SPL/AccessSection/ajax/showpekerja",
+		dataType: 'json',
+		method: 'GET',
+		data: a => {
+		  return {
+			  key: a.term,
+		  };
+		},
+		processResults: data => {
+		  return {
+			results: $.map(data, item => {
+			  return {
+				id: item.noind,
+				text: item.noind+' - '+item.nama,
+			  }
+			})
+		  };
+		},
+	  },
+	  minimumInputLength: 2,
+	  placeholder: 'Silahkan pilih',
+	  allowClear: true,
+	});
+
+	$('.lembur-personalia-seksi').select2({
+	  ajax:{
+		url: baseurl+"SPL/AccessSection/ajax/showallsection",
+		dataType: 'json',
+		method: 'GET',
+		data: a => {
+		  return {
+			  key: a.term,
+		  };
+		},
+		processResults: data => {
+		  return {
+			results: $.map(data, item => {
+			  return {
+				id: item.kodesie+' - '+item.nama,
+				text: item.kodesie+' - '+item.nama,
+			  }
+			})
+		  };
+		},
+	  },
+	  minimumInputLength: 2,
+	  placeholder: 'Silahkan pilih',
+	  allowClear: true,
+	});
+
+	//listener button modal add row access section
+	$('#btnAddRowAccessSection').click(function(){
+		btnAddRowListener()
+	})
+
+	//table with datatable plugin
+	$('#tabel-access-section').DataTable()
+
+	//listener button delete row on table access section
+	btnDelRowListener()
+
+	//-----END PERSONALIA PAGE-----------------------------------
 })
+
+const clearModalTable = () => {
+	$('#deleteAccessSection').hide()
+	$('.lembur-personalia-pekerja').select2('val','')
+	$('.lembur-personalia-pekerja').prop('disabled',false)
+	$('.lembur-personalia-seksi').select2('val', '')
+	$('#overtime_table_access_section > tbody').html('')
+}
+
+const btnEditListener = e => {
+	//show delete buttons
+
+	let noind = e.data('noind')
+	let nama = e.data('nama')
+	e.click(() => {
+		//clear modal table
+		clearModalTable()
+		$('#deleteAccessSection').show()
+		let option = $("<option selected></option>").val(noind).text(noind+' - '+nama);
+		$('.lembur-personalia-pekerja').append(option).trigger('change')
+		$('.lembur-personalia-pekerja').prop('disabled',true)
+		$.ajax({
+			method: 'GET',
+			url: baseurl+'SPL/AccessSection/ajax/getInfoNoind',
+			beforeSend: () => {
+				$('#overtime_table_access_section > tbody').html('<tr><td colspan="4"><center>loading...</center></td></tr>')
+			},
+			data: {
+				noind
+			},
+			dataType: 'json',
+			success: res => {
+				let tableHTML
+				let num = 1
+				res.forEach(item => {
+					tableHTML += `
+						<tr>
+							<td>${num++}</td>
+							<td>${item.kodesie}</td>
+							<td>${item.nama_seksi}</td>
+							<td><button class="btn btn-danger btn-sm delSelf"><i class="fa fa-minus"></i></button></td>
+						</tr>
+					`
+				})
+				$('#overtime_table_access_section > tbody').html(tableHTML)
+				btnDelRowListener()
+			},
+			error: () => {
+				console.log("error custom SPL function btnEditListener");
+			}
+		})
+	})
+}
+
+const btnDeleteAccessListener = () => {
+	let noind = $('.lembur-personalia-pekerja').val()
+	swal.fire({
+		title: 'Yakin untuk menghapus akses ?',
+		text: 'Akses akun akan terhapus',
+		type: 'warning',
+		showCancelButton: !0,
+	}).then(res => {
+		if(res.value){
+			//do ajax delete
+			$.ajax({
+				method: 'POST',
+				url: baseurl+'SPL/AccessSection/ajax/deleteAccess',
+				data: {
+					noind
+				},
+				success: res => {
+					swal.fire(`Akses noind  <b>${noind}</b>  telah dihapus`, '', 'success').then(res => location.reload())
+				}
+			})
+		}
+	})
+}
+
+const btnAddRowListener = () => {
+	let elemSection = $('.lembur-personalia-seksi')
+
+	let section = elemSection.val()
+
+	if(section == '' || section == null){
+		swal.fire('Isi Seksi terlebih dahulu','','warning')
+		return
+	}
+
+	let arrayOfExistKodesie = []
+	let getExistVal = $('#overtime_table_access_section tbody > tr').each(function(){
+		let kodesie = $(this).find('td:eq(1)').text().trim()
+		arrayOfExistKodesie.push(kodesie)
+	})
+
+	console.log(arrayOfExistKodesie);
+
+	let section_number = section.split('-')[0].trim()
+	let section_name = section.split('-')[1].trim()
+
+	if(arrayOfExistKodesie.includes(section_number)){
+		swal.fire('Kodesie tidak boleh ganda','','warning')
+		return
+	}
+
+	let lastNum = $('#overtime_table_access_section > tbody > tr').length + 1
+
+	let rowElement = `
+		<tr>
+			<td>${lastNum++}</td>
+			<td>${section_number}</td>
+			<td>${section_name}</td>
+			<td><button class="btn btn-danger btn-sm delSelf"><i class="fa fa-minus"></i></button></td>
+		</tr>
+	`
+	$('#overtime_table_access_section > tbody').append(rowElement)
+	btnDelRowListener()
+}
+
+const btnDelRowListener = () => {
+	$('#overtime_table_access_section > tbody > tr > td > button.delSelf').each(function(){
+		$(this).click(() => {
+			$(this).closest('tr').remove()
+			reNumberingTable()
+		})
+	})
+}
+
+const reNumberingTable = () => {
+	let row = $('#overtime_table_access_section > tbody > tr')
+	let num = 1
+
+	row.each(function(){
+		$(this).find('td').first().text(num++)
+	})
+}
+
+const saveAccessSection = () => {
+	let noind = $('.lembur-personalia-pekerja').val()
+	if(noind == null || noind == '') {
+		swal.fire('Tidak ada pekerja yang ditambahkan', '', 'warning')
+		return
+	}
+
+	let arrayOfExistKodesie = []
+	let getExistVal = $('#overtime_table_access_section tbody > tr').each(function(){
+		let kodesie = $(this).find('td:eq(1)').text().trim()
+		arrayOfExistKodesie.push(kodesie)
+	})
+
+	if(arrayOfExistKodesie.length == 0){
+		swal.fire('Seksi masih kosong','','warning')
+	}else{
+		// do insert with ajax
+		$.ajax({
+			method: 'POST',
+			url: baseurl+'SPL/AccessSection/ajax/insertAccessSection',
+			data: {
+				noind,
+				kodesie: arrayOfExistKodesie
+			},
+			success: res => {
+				// after it just reload the page
+				swal.fire('sukses menyimpan akses noind '+noind, '', 'success').then(res => location.reload())
+			},
+			error: res => {
+				swal.fire('System error, Tidak bisa input data','','error')
+			}
+		})
+
+	}
+}
