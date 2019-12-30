@@ -274,7 +274,10 @@ function getExportMO(th){
 	request.done(function(result){
 			$('#ResultExport').html(result);
 			$('#tblExportMO').dataTable({
-				"scrollX": true,
+				"scrollX": false,
+				"paging": false,
+				"searching": false,
+				"bInfo" : false,
 				dom:"lfrtBip", 
 				buttons: [{
 					extend: 'excel',
