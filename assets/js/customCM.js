@@ -220,6 +220,18 @@ $(document).ready(function(){
 	}
 
 	//Untuk Catering Tambahan Rekap Dinas
+	$("#prosesTambahanDinas").on('click', function () {
+		window.location.href = baseurl + "ApprovalTambahan/PemrosesCatering";
+		let loading = 'assets/img/gif/loadingquick.gif'
+		swal.fire({
+				html : "<img style='width: 320px; height: auto;'src='"+loading+"'>",
+				text : 'Loading...',
+				customClass: 'swal-wide',
+				showConfirmButton:false,
+				allowOutsideClick: false
+			});
+	})
+
 	$("input.tanggalRekapDinas").daterangepicker({
 		autoUpdateInput: false,
 		locale: {
@@ -241,11 +253,12 @@ $(document).ready(function(){
 
 		$.ajax({
 			type: 'post',
+			dataType: 'json',
 			data: { tanggal: tanggal},
 			url: baseurl + 'ApprovalTambahan/rekapDinas',
 			beforeSend: function(){
 					swal.fire({
-							html : "<img style='width: 100px; height: auto;'src='"+loading+"'>",
+							html : "<img style='width: 320px; height: auto;'src='"+loading+"'>",
 							text : 'Loading...',
 							customClass: 'swal-wide',
 							showConfirmButton:false,
@@ -253,10 +266,127 @@ $(document).ready(function(){
 						});
 					},
 			success: function (data) {
-				swal.close()
-				$('#gantiHariRekap').html(data).find('.approveCatering').dataTable()
+				console.log(data);
+				if (data == 'Kosong') {
+					swal.fire({
+						title: "Peringatan !",
+						text: "Mohon Maaf Data Tidak Ditemukan",
+						type: 'warning',
+						allowOutsideClick: false
+					})
+				}else {
+					swal.close()
+					$('#gantiHariRekap').html(data).find('.approveCatering').dataTable()
+					$('.detailPekerjaDinasPlus').on('click', function () {
+						let detail = $(this).attr('value')
+						console.log(detail);
+
+						$.ajax({
+							type: 'post',
+							data: {
+								value: detail
+							},
+							url: baseurl + 'ApprovalTambahan/getDetailPekerjaDinasPlus',
+							beforeSend: function () {
+								swal.fire({
+									html: "<img style='width: 320px; height: auto;' src='"+loading+"'>",
+									showConfirmButton: false,
+									allowOutsideClick: false
+								})
+							},
+							success: function (data) {
+								swal.close()
+								$('#detailPekerjaDinas').modal('show')
+								$('#Dinas_result').html(data)
+							}
+						})
+					})
+					$('.detailPekerjaDinasMin').on('click', function () {
+						let detail = $(this).attr('value')
+						$.ajax({
+							type: 'post',
+							data: {
+								value: detail
+							},
+							url: baseurl + 'ApprovalTambahan/getDetailPekerjaDinasMin',
+							beforeSend: function () {
+								swal.fire({
+									html: "<img style='width: 320px; height: auto;' src='"+loading+"'>",
+									showConfirmButton: false,
+									allowOutsideClick: false
+								})
+							},
+							success: function (data) {
+								swal.close()
+								$('#detailPekerjaDinas').modal('show')
+								$('#Dinas_result').html(data)
+							}
+						})
+					})
+				}
 			}
 		})
+	})
+
+	$('.detailPekerjaDinasPlus').on('click', function () {
+		let detail = $(this).attr('value')
+		let loading = 'assets/img/gif/loadingquick.gif'
+
+		$.ajax({
+			type: 'post',
+			data: {
+				value: detail
+			},
+			url: baseurl + 'RekapTambahan/getDetailPekerjaDinasPlus',
+			beforeSend: function () {
+				swal.fire({
+					html: "<img style='width: 320px; height: auto;' src='"+loading+"'>",
+					showConfirmButton: false,
+					allowOutsideClick: false
+				})
+			},
+			success: function (data) {
+				swal.close()
+				$('#detailPekerjaDinas').modal('show')
+				$('#Dinas_result').html(data)
+			}
+		})
+	})
+
+	$('.detailPekerjaDinasMin').on('click', function () {
+		let detail = $(this).attr('value')
+		console.log(detail);
+		let loading = 'assets/img/gif/loadingquick.gif'
+
+		$.ajax({
+			type: 'post',
+			data: {
+				value: detail
+			},
+			url: baseurl + 'RekapTambahan/getDetailPekerjaDinasMin',
+			beforeSend: function () {
+				swal.fire({
+					html: "<img style='width: 320px; height: auto;' src='"+loading+"'>",
+					showConfirmButton: false,
+					allowOutsideClick: false
+				})
+			},
+			success: function (data) {
+				swal.close()
+				$('#detailPekerjaDinas').modal('show')
+				$('#Dinas_result').html(data)
+			}
+		})
+	})
+
+	$('#Rekap_Dinas1').on('click', function () {
+		let tanggal = $('#tanggalRekapDinas').val()
+		window.location.href = baseurl+ 'RekapTambahan/exportDinas?jenis=Excel&tanggal='+tanggal
+	})
+
+	$('#Rekap_Dinas2').on('click', function () {
+		let tanggal = $('#tanggalRekapDinas').val()
+		window.location.href = baseurl+ 'RekapTambahan/exportDinas?jenis=PDF&tanggal='+tanggal
 	})
 	//Selesai
 });
