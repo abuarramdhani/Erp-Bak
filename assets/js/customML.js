@@ -425,54 +425,43 @@ function getBtch(th) {
 	
 }
 
-var hapus ='';
 function submitToKasie(th){
+	const swalWithBootstrapButtons = Swal.mixin({
+		  customClass: {
+		    confirmButton: 'btn btn-success',
+		    cancelButton: 'btn btn-danger'
+		  },
+		  buttonsStyling: true
+		})
+						  
+
 	var batch_number = $(th).attr('data-id');
 	var group_batch = $(th).attr('data-batch');
 	var alasan_reject = $('.txtAlasan').val();
-	// $('#group_batch').text(group_batch);
-	// $('#mdlSubmitToKasieAkuntansi').modal('show');
-	// $('#mdlYesAkt').click(function(){
+	
 		$.ajax({
 			type: "post",
 			url: baseurl+"MonitoringLppbKasieGudang/Unprocess/SubmitKeAKuntansi",
+			dataType: 'JSON',
 			data:{
 				batch_number: batch_number,
 				alasan_reject: alasan_reject
 			},
 			success: function(response){
-				
-				Swal.fire({
-			  // position: 'top-end',
-			  type: 'success',
-			  title: 'Batch '+batch_number+' sudah disubmit ke Akuntansi',
-			  showConfirmButton: false,
-			  timer: 1500
-				})
 
-					
-				var himahima = $('#cobahimahimabatchnumber').text();
-				if (batch_number == himahima){
-					$('#cobahimahima').remove();
-				}
-				
+					$('tr.'+response+'').remove();
+
+				swalWithBootstrapButtons.fire(
+					      'Sent!',
+					      'LPPB berhasil dikirim!',
+					      'success'
+					    	)
 				$('#mdlSubmitToKasieGudang').modal('hide');
-				// $('#mdlSubmitToKasieAkuntansi').modal('hide');
-				// hapus = row_yang_hilang.find('tr.tr'+batch_number+'');
-				// hapus.remove()
-				// jadi, row yang
-				// console.log(hapus)
+
 			}
 		})
-	// })
 }
 
-// console.log(hapus)
-// $(document).ready(function(){
-// function cobahapusrow(th) {
-// 	// th.css('display','none')
-// 	hapus.remove();
-// }
 
 
 function getOptionGudang(th){

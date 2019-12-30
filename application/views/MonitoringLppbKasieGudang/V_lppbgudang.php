@@ -24,7 +24,8 @@
 					</thead>
 					<tbody class="coba cobateros">
 					<?php $no=1; if ($lppb) { foreach($lppb as $lb){ ?>
-					<tr class="tr_<?php echo $lb['BATCH_NUMBER']?>" id="cobahimahima" > 
+					<tr class="<?php echo $lb['BATCH_NUMBER']?>" id="cobahimahima">
+
 						<td><?php echo $no?></td>
 						<td>
 							<input type="hidden" name="hdnTxt" class="iniHidden" value="<?php echo $lb['BATCH_NUMBER']?>">

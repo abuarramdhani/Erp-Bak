@@ -50,7 +50,7 @@
 												</tr>
 												<tr>
 													<td>
-														<span><label>Opsi Gudang</label></span>
+														<span><label>Opsi Gudang</label><i> (wajib diisi)</i></span>
 													</td>
 													<td>
 														<select id="id_gudang" name="id_gudang" class="form-control select2 select2-hidden-accessible" style="width:100%;">
@@ -59,6 +59,11 @@
 															<option value="<?php echo $gd['SECTION_ID'] ?>"><?php echo $gd['SECTION_NAME'] ?></option>
 															<?php } ?>
 														</select>
+													</td>
+												</tr>
+												<tr>
+													<td>
+														<span><i>Masukkan parameter pencarian LPPB</i></span>
 													</td>
 												</tr>
 												<tr>
