@@ -38,10 +38,10 @@
                   <label> Piih Tanggal </label>
                 </div>
                 <div class="col-md-2">
-                    <input type="text" class="form-control pull-right datepicktgl" id="tglAwl" name="tglAwl" placeholder="Start Date..">
+                    <input type="text" class="form-control pull-right datepicktgl" id="tglAwl" name="tglAwl" autocomplete="off" placeholder="Start Date..">
                 </div>
                 <div class="col-md-2">
-                    <input type="text" class="form-control pull-right datepicktgl" id="tglAkh" name="tglAkh" placeholder="End Date..">
+                    <input type="text" class="form-control pull-right datepicktgl" id="tglAkh" name="tglAkh" autocomplete="off" placeholder="End Date..">
                 </div>
               </div>
                <div class="form-group">

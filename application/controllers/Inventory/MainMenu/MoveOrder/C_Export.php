@@ -72,6 +72,7 @@ class C_Export extends CI_Controller
 		$date2 = strtoupper(date('d-M-y', strtotime($datenew2)));
 
 		$data['data'] = $this->M_exportmo->search($date1, $date2,$dept);
+		$data['export'] = $this->M_exportmo->getDetail($date1, $date2,$dept);
 		
 		// echo "<pre>";
 		// print_r($dateAkh);
@@ -131,10 +132,5 @@ class C_Export extends CI_Controller
 		$this->load->view('Inventory/MainMenu/MoveOrder/V_TblExport',$data);
 	}
 
-	public function export(){
-        $nojob = $this->input->post('nojob[]');
-        echo "<pre>";; print_r($nojob);exit();
-		
-	}
 	
 }
