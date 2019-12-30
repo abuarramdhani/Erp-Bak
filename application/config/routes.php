@@ -2554,6 +2554,12 @@ $route['SPL/Daftarjari'] = 'SPLSeksi/C_splpersonalia/finger';
 $route['SPL/Daftarjari/(:any)'] = 'SPLSeksi/C_splpersonalia/$1';
 $route['SPL/DaftarFingerspot'] = 'SPLSeksi/C_splpersonalia/fingerspot';
 $route['SPL/DaftarFingerspot/(:any)'] = 'SPLSeksi/C_splpersonalia/$1';
+$route['SPL/AccessSection'] = 'SPLSeksi/C_splpersonalia/AccessSection';
+$route['SPL/AccessSection/ajax/showpekerja'] = 'SPLSeksi/C_splpersonalia/showpekerja';
+$route['SPL/AccessSection/ajax/showallsection'] = 'SPLSeksi/C_splpersonalia/ajaxGetAllSection';
+$route['SPL/AccessSection/ajax/insertAccessSection'] = 'SPLSeksi/C_splpersonalia/ajaxInsertAccessSection';
+$route['SPL/AccessSection/ajax/getInfoNoind'] = 'SPLSeksi/C_splpersonalia/ajaxGetInfoNoind';
+$route['SPL/AccessSection/ajax/deleteAccess'] = 'SPLSeksi/C_splpersonalia/ajaxDeleteAccess';
 
 $route['SPL/Pusat'] = 'SPLSeksi/Pusat/C_splseksi';
 $route['SPL/Pusat/InputLembur'] = 'SPLSeksi/Pusat/C_splseksi/new_spl';
