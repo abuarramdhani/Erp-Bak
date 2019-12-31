@@ -286,7 +286,6 @@ class C_Approval extends CI_Controller
       $rekapDinas1 = $this->M_pesanan->getRekapAllDinas($lok, $param);
       $kurang = $this->M_pesanan->getPekerjaAsal($param, $lokasiAsal);
 	}
-    // echo "<pre>";
 
     if (!empty($rekapDinas1) || !empty($kurang)) {
         $nuRekap = array();
@@ -314,8 +313,6 @@ class C_Approval extends CI_Controller
                         <br>';
             $i = 0 ;
             foreach ($nuRekap as $key) {
-                // print_r($key);
-                // die;
                 $table .= '<b>Tanggal : '.array_keys($nuRekap)[$i].'</b>';
                 $table .= '<table class="datatable approveCatering table table-striped table-bordered table-hover text-left" style="font-size:12px; width: 100%">
                             <thead class="bg-primary">
@@ -613,7 +610,7 @@ class C_Approval extends CI_Controller
             }
         }else {
             echo "<script type='text/javascript'>
-                    alert('kosong')
+                    alert('Mohon Maaf Data Tidak Ada')
                     window.location.href = 'index_Rekap'
                     </script>";
         }

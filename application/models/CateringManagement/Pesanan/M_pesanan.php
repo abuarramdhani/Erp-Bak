@@ -399,8 +399,8 @@ class M_pesanan extends CI_Model
     {
       $sql="SELECT DISTINCT * FROM \"Catering\".tpesanantambahan_erp_detail ted
             LEFT JOIN \"Catering\".tpesanantambahan_erp tpt ON tpt.id_tambahan = ted.id_tambahan
-            LEFT JOIN \"Surat\".tperizinan tp ON tp.created_date::date = '2019-12-11'
-            WHERE ted.fs_noind = '$noind' AND ted.fs_ket = tp.keterangan AND tp.created_date::date = '2019-12-11' $lok";
+            LEFT JOIN \"Surat\".tperizinan tp ON tp.created_date::date = current_date
+            WHERE ted.fs_noind = '$noind' AND ted.fs_ket = tp.keterangan AND tp.created_date::date = current_date $lok";
       return $this->personalia->query($sql)->result_array();
     }
 
@@ -408,9 +408,9 @@ class M_pesanan extends CI_Model
     {
       $sql="SELECT DISTINCT * FROM \"Catering\".tpenguranganpesanan_erp_detail ted
             LEFT JOIN \"Catering\".tpenguranganpesanan_erp tpt ON tpt.id_pengurangan = ted.id_pengurangan
-            LEFT JOIN \"Surat\".tperizinan tp ON tp.created_date::date = '2019-12-11'
+            LEFT JOIN \"Surat\".tperizinan tp ON tp.created_date::date = current_date
             LEFT JOIN hrd_khs.tpribadi tpri on tpri.noind = ted.fs_noind
-            WHERE fs_noind = '$noind' AND ted.fs_ket = tp.keterangan AND tp.created_date::date = '2019-12-11' $lok";
+            WHERE fs_noind = '$noind' AND ted.fs_ket = tp.keterangan AND tp.created_date::date = current_date $lok";
       return $this->personalia->query($sql)->result_array();
     }
 
@@ -418,9 +418,9 @@ class M_pesanan extends CI_Model
     {
       $sql="SELECT DISTINCT ted.*, tpt.fd_tanggal, tpt.fs_tempat_makan FROM \"Catering\".tpesanantambahan_erp_detail ted
               LEFT JOIN \"Catering\".tpesanantambahan_erp tpt ON tpt.id_tambahan = ted.id_tambahan
-              LEFT JOIN \"Surat\".tperizinan tp ON tp.created_date::date = '2019-12-11'
+              LEFT JOIN \"Surat\".tperizinan tp ON tp.created_date::date = current_date
               LEFT JOIN hrd_khs.tpribadi tpri on tpri.noind = ted.fs_noind
-              WHERE ted.fs_ket = tp.keterangan AND tp.created_date::date = '2019-12-11' $lok $param
+              WHERE ted.fs_ket = tp.keterangan $lok $param
               ORDER BY fd_tanggal DESC, fs_tempat_makan, fs_noind";
       return $this->personalia->query($sql)->result_array();
     }
@@ -429,9 +429,9 @@ class M_pesanan extends CI_Model
     {
         $sql = "SELECT DISTINCT ted.*, tpt.fd_tanggal, tpt.fs_tempat_makan FROM \"Catering\".tpesanantambahan_erp_detail ted
                 LEFT JOIN \"Catering\".tpesanantambahan_erp tpt ON tpt.id_tambahan = ted.id_tambahan
-                LEFT JOIN \"Surat\".tperizinan tp ON tp.created_date::date = '2019-12-11'
+                LEFT JOIN \"Surat\".tperizinan tp ON tp.created_date::date = current_date
                 LEFT JOIN hrd_khs.tpribadi tpri on tpri.noind = ted.fs_noind
-                WHERE ted.fs_ket = tp.keterangan AND tp.created_date::date = '2019-12-11' AND tpt.fd_tanggal::date = current_date AND tpt.fs_tempat_makan = '$isi' $lok
+                WHERE ted.fs_ket = tp.keterangan AND tp.created_date::date = current_date AND tpt.fd_tanggal::date = current_date AND tpt.fs_tempat_makan = '$isi' $lok
                 ORDER BY fs_noind";
         return $this->personalia->query($sql)->result_array();
     }
@@ -440,9 +440,9 @@ class M_pesanan extends CI_Model
     {
         $sql = "SELECT DISTINCT ted.*, tpt.fd_tanggal, tpt.fs_tempat_makan FROM \"Catering\".tpenguranganpesanan_erp_detail ted
                 LEFT JOIN \"Catering\".tpenguranganpesanan_erp tpt ON tpt.id_pengurangan = ted.id_pengurangan
-                LEFT JOIN \"Surat\".tperizinan tp ON tp.created_date::date = '2019-12-11'
+                LEFT JOIN \"Surat\".tperizinan tp ON tp.created_date::date = current_date
                 LEFT JOIN hrd_khs.tpribadi tpri on tpri.noind = ted.fs_noind
-                WHERE ted.fs_ket = tp.keterangan AND tp.created_date::date = '2019-12-11' AND tpt.fd_tanggal::date = current_date AND tpt.fs_tempat_makan = '$isi' $lok
+                WHERE ted.fs_ket = tp.keterangan AND tp.created_date::date = current_date AND tpt.fd_tanggal::date = current_date AND tpt.fs_tempat_makan = '$isi' $lok
                 ORDER BY fs_noind";
         return $this->personalia->query($sql)->result_array();
     }
@@ -451,9 +451,9 @@ class M_pesanan extends CI_Model
     {
         $sql = "SELECT DISTINCT ted.*, tpt.fd_tanggal, tpt.fs_tempat_makan FROM \"Catering\".tpenguranganpesanan_erp_detail ted
                 LEFT JOIN \"Catering\".tpenguranganpesanan_erp tpt ON tpt.id_pengurangan = ted.id_pengurangan
-                LEFT JOIN \"Surat\".tperizinan tp ON tp.created_date::date = '2019-12-11'
+                LEFT JOIN \"Surat\".tperizinan tp ON tp.created_date::date = current_date
                 LEFT JOIN hrd_khs.tpribadi tpri on tpri.noind = ted.fs_noind
-                WHERE ted.fs_ket = tp.keterangan AND tp.created_date::date = '2019-12-11' $lokasi $today
+                WHERE ted.fs_ket = tp.keterangan AND tp.created_date::date = current_date $lokasi $today
                 ORDER BY fd_tanggal DESC, fs_tempat_makan, fs_noind";
         return $this->personalia->query($sql)->result_array();
     }
@@ -482,7 +482,7 @@ class M_pesanan extends CI_Model
                      on tai.izin_id::int = tp.izin_id
                      left join hrd_khs.tpribadi tpri
                      on tpri.noind = tai.noinduk
-                     Where tai.created_date:: Date = '2019-12-11'
+                     Where tai.created_date:: Date = current_date
                      and tpi.makan = '1' AND cast(tai.created_date as time) <= '09:30:00' AND tai.tujuan not in ('', ' ', 'null') $lok
                  ) as tbl
                  order by diproses,jenis_dinas,tujuan,izin_id,noind";
@@ -500,17 +500,17 @@ class M_pesanan extends CI_Model
                                 INNER JOIN \"Catering\".tpresensi tpres ON tpres.noind = hrd_khs.tpribadi.noind
                                     AND LEFT(tpres.waktu, 5) >= '03:59:59'
                                     AND LEFT(tpres.waktu, 5) <= '08:30:00'
-                                    AND tpres.tanggal = '2019-12-11'
+                                    AND tpres.tanggal::date = current_date
                                 WHERE tpres.noind NOT IN
                                     (SELECT fs_noind FROM \"Catering\".tpuasa
-                                        WHERE (fd_tanggal = '2019-12-11')
+                                        WHERE (fd_tanggal::date = current_date)
                                         AND (fb_status = '1')
                                         )
                                     AND tpres.noind NOT IN
                                         (
                                             SELECT noind
                                             FROM \"Presensi\".tshiftPekerja
-                                            WHERE tanggal IN ( '2019-12-10', '2019-12-11')
+                                            WHERE tanggal::date IN (current_date - interval '1 day', current_date)
                                             AND kd_shift IN ('3', '12')
                                         )
                                     AND LEFT(hrd_khs.tpribadi.noind, 1) NOT IN ('M', 'Z')
@@ -520,7 +520,7 @@ class M_pesanan extends CI_Model
                                 FROM hrd_khs.tpribadi a
                                 inner join \"Presensi\".tshiftpekerja b on a.noind=b.noind
                                 left join \"Catering\".tpuasa p on b.tanggal=p.fd_tanggal and b.noind=p.fs_noind
-                                where b.tanggal = '2019-12-11'
+                                where b.tanggal::date = current_date
                                     and (p.fb_status is null or p.fb_status<>'1')
                                     and b.kd_shift in('5','8','18')
                                 GROUP BY a.tempat_makan, a.Nama,a.noind,b.jam_msk,a.kodesie,b.tanggal
