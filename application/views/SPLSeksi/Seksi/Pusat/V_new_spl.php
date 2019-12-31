@@ -128,7 +128,7 @@
 									</div>
 
 									<div class="form-group">
-										<label class="col-sm-2 control-label">Pekerjaan</label>
+										<label class="col-sm-2 control-label">Alasan</label>
 										<div class="col-sm-10">
 											<textarea class="form-control" rows="3" name="pekerjaan" class="" required></textarea>
 										</div>
@@ -168,7 +168,7 @@
 													<th width="10%">Satuan</th>
 													<th width="10%">Realisasi</th>
 													<th width="10%">Satuan</th>
-													<th width="20%">Alasan Lembur</th>
+													<th width="20%">Pekerjaan</th>
 													<th width="5%">
 														<i id="spl_pkj_add" class="fa fa-fw fa-plus-square-o"></i>
 													</th>
