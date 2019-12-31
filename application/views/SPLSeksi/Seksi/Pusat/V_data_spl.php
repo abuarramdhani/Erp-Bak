@@ -91,7 +91,9 @@
 									</div>
 
 								</div>
-
+								<div class="col-lg-6">
+									<button style="float: right;" onclick="sendReminder()" type="button" name="reminderSPLSeksi" class="btn btn-warning"><i class="fa fa-bullhorn"></i></button>
+								</div>
 							</div>
 						</div>
 					</div>
@@ -176,4 +178,24 @@
 		document.addEventListener("DOMContentLoaded",function(e){
 			setupTimers();
 		});
+
+		//set cache
+		let exist = window.localStorage.getItem('alert-SPL')
+		const d = new Date()
+
+		let today = d.getFullYear()+'-'+d.getMonth()+'-'+d.getDate()
+
+		let json = JSON.parse(exist)
+
+		if(exist == null || json.today != today){
+			let data = {
+				count: 0,
+				lastTime: null,
+				today
+			}
+
+			window.localStorage.setItem('alert-SPL', JSON.stringify(data))
+			console.log("spl-alert storage has been created")
+		}
+
 	</script>

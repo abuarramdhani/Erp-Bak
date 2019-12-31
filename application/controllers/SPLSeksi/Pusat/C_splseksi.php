@@ -813,9 +813,9 @@ class C_splseksi extends CI_Controller {
 								$error = "1";
 								$errortext = "Jam Akhir Lembur Tidak Sesuai Jam Pulang Shift Pekerja ($keluar_shift)";
 							}
-						}elseif($awal_lembur < $keluar_shift){
+						}elseif($awal_lembur <= $keluar_shift){
 							$aktual_awal = $keluar_shift;
-							if ($keluar_shift <= $akhir_lembur) {
+							if ($keluar_shift < $akhir_lembur) {
 								$aktual_akhir = $akhir_lembur;
 							}else{
 								$error = "1";
@@ -1304,6 +1304,35 @@ class C_splseksi extends CI_Controller {
 		$pdf->Output($filename, 'I');
 
 		// $this->load->view('SPLSeksi/Seksi/V_pdf_memo', $data);
+	}
+
+	public function ajaxSendReminderEmail(){
+		// digunakan untuk mengirim reminder email ke atasan seksi dimana SPL belum di approve
+		// menggunakan api dari cronjob
+		$is_login = $this->session->kodesie == '';
+		if($is_login){
+			echo "this api cannot accessed without login";
+			die;
+		}
+
+		//lets execute the code
+		$ch = curl_init();
+
+		$endpoint = 'http://personalia.quick.com/cronjob/mysql_database.quick.com_API_notifikasi_lembur_per_seksi.php';
+		$params = array(
+			'kodesie' => $this->session->kodesie
+		);
+		$url = $endpoint . '?' . http_build_query($params);
+
+		$a = curl_setopt($ch, CURLOPT_URL, $url);
+		$result = curl_exec($ch);
+
+		$res = array(
+			'success' => true
+		);
+
+		echo json_encode($res);
+
 	}
 
 }

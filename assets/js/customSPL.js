@@ -1313,3 +1313,77 @@ const deleteLembur = (e) => {
 		}
 	})
 }
+
+const configStorageAlert = () => {
+	let lastData = window.localStorage.getItem('alert-SPL')
+	let json = JSON.parse(lastData)
+	let count = json.count+1
+
+	let now = d.getHours()+':'+d.getMinutes()
+	let today = d.getFullYear()+'-'+d.getMonth()+'-'+d.getDate()
+
+	data = {
+		count,
+		lastTime: now,
+		today
+	}
+
+	window.localStorage.setItem('alert-SPL', JSON.stringify(data))
+}
+//dk
+const sendReminder = () => {
+	let lastData = window.localStorage.getItem('alert-SPL')
+	let json = JSON.parse(lastData)
+	// button di click lg cek dulu lastime apakah jam skrng > lastime+1hours
+	const d = new Date()
+
+	let now = d.getHours()+':'+d.getMinutes()
+	let today = d.getFullYear()+'-'+d.getMonth()+'-'+d.getDate()
+
+	if(json.count == 1){
+		let lastTime = new Date(today+' '+json.lastTime)
+		let thisnow = today+' '+now
+		lastTime = today+' '+(lastTime.getHours()+1)+':'+lastTime.getMinutes()
+
+		let anow = new Date(thisnow)
+		let alast= new Date(lastTime)
+
+		if( anow < alast){
+			let waiting = (alast-anow)/1000/60
+			Swal.fire(`Silahkan menunggu ${waiting} menit`,'untuk mengirimkan notifkasi lagi','warning')
+			return
+		}
+	}else if(json.count == 2){
+		Swal.fire('Tidak bisa mengirim notifkasi lagi','maksimal sehari adalah 2x','warning')
+		return
+	}
+
+	swal.fire({
+		title: 'Kirim Email Reminder SPL yang belum di proses ke Atasan',
+		text: 'Notifikasi akan dikirimkan ke semua atasan seksi',
+		type: 'warning',
+		showCancelButton: !0
+	}).then(res => {
+		if(res.value){
+			//store the changes to localStorage
+			configStorageAlert()
+			//do deleting with ajax
+			$.ajax({
+				method: 'GET',
+				url: baseurl+'SPL/Pusat/ajax/sendReminderEmail',
+				beforeSend: () => {
+					Swal.fire({
+						html: 'loading....',
+						allowOutsideClick: !1,
+						showCancelButton: !1,
+						showConfirmButton: !1
+					})
+				},
+				success: () => {
+					Swal.close()
+					swal.fire('Sukses mengirimkan reminder Atasan','Silahkan menunggu 1 jam lagi untuk mengirimkan reminder','success')
+				}
+			})
+		}
+	})
+}
