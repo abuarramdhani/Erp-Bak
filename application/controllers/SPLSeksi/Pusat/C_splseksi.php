@@ -747,6 +747,10 @@ class C_splseksi extends CI_Controller {
 					}
 				}else{
 					if ($lembur == '004') {
+						$awal_lembur = date_format(date_create($tanggal), "Y-m-d")." ".$waktu0;
+						$awal_lembur = date_format(date_create($awal_lembur), 'Y-m-d H:i:s');
+						$akhir_lembur = date_format(date_create($tanggal), "Y-m-d")." ".$waktu1;
+						$akhir_lembur = date_format(date_create($akhir_lembur), 'Y-m-d H:i:s');
 						$shiftpekerja = $this->M_splseksi->getShiftpekerja($noind,$tanggal);
 						if ($shiftpekerja == 0) {
 							$aktual_awal = $awal_lembur;
