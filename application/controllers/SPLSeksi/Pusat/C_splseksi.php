@@ -911,7 +911,7 @@ class C_splseksi extends CI_Controller {
 		$lembur = $this->input->post('kd_lembur_simpan');
 		$istirahat = $this->input->post('istirahat_simpan');
 		$break = $this->input->post('break_simpan');
-		$pekerjaan = $this->input->post('pekerjaan_simpan');
+		$alasan = $this->input->post('pekerjaan_simpan');
 		$size = sizeof($this->input->post('noind'));
 		$sendmail_splid = "";
 
@@ -929,7 +929,7 @@ class C_splseksi extends CI_Controller {
 
 			$target = $this->input->post("target[$x]")." ".$this->input->post("target_satuan[$x]");
 			$realisasi = $this->input->post("realisasi[$x]")." ".$this->input->post("realisasi_satuan[$x]");;
-			$alasan = $this->input->post("alasan[$x]");
+			$pekerjaan = $this->input->post("alasan[$x]");
 			$mulai = $this->input->post("lembur_awal[$x]");
 			$selesai = $this->input->post("lembur_akhir[$x]");
 
