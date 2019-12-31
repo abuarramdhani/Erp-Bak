@@ -1288,3 +1288,28 @@ const saveAccessSection = () => {
 
 	}
 }
+
+//Seksi PAGE
+const deleteLembur = (e) => {
+	let id_spl = e.data('id')
+	let worker = e.data('noind')+' - '+e.data('nama')
+
+	swal.fire({
+		title: 'Yakin untuk menghapus SPL <br>'+worker,
+		text: 'pastikan tidak salah menghapus SPL',
+		type: 'warning',
+		showCancelButton: !0
+	}).then(res => {
+		if(res.value){
+			//do deleting with ajax
+			$.ajax({
+				method: 'GET',
+				url: baseurl+'SPL/Pusat/HapusLembur/'+id_spl,
+				success: () => {
+					swal.fire('Sukses menghapus SPL','','success')
+					e.closest('tr').remove()
+				}
+			})
+		}
+	})
+}
