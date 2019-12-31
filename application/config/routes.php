@@ -2567,6 +2567,7 @@ $route['SPL/Pusat/ListLembur'] = 'SPLSeksi/Pusat/C_splseksi/data_spl';
 $route['SPL/Pusat/RekapLembur'] = 'SPLSeksi/Pusat/C_splseksi/rekap_spl';
 $route['SPL/Pusat/EditLembur/(:any)'] = 'SPLSeksi/Pusat/C_splseksi/edit_spl/$1';
 $route['SPL/Pusat/HapusLembur/(:any)'] = 'SPLSeksi/Pusat/C_splseksi/hapus_spl/$1';
+$route['SPL/Pusat/ajax/sendReminderEmail'] = 'SPLSeksi/Pusat/C_splseksi/ajaxSendReminderEmail';
 
 //---------------------------------------------------- Booking Kendaraan --------------------------------------//
 // hati hati kadang any any gak bisa kepanggil
