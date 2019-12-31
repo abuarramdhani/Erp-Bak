@@ -358,25 +358,38 @@ class M_approver extends CI_Model
     function getStock($itemkode)
     {
         $oracle_dev = $this->load->database('oracle_dev', true);
-        $query = $oracle_dev->query("SELECT distinct
-                            msib.SEGMENT1 item
-                        ,msib.DESCRIPTION
-                        ,sum(moqd.PRIMARY_TRANSACTION_QUANTITY) over (partition by moqd.INVENTORY_ITEM_ID
-                                                                                    ,moqd.ORGANIZATION_ID
-                                                                                    ,moqd.SUBINVENTORY_CODE) onhand
-                        ,khs_inv_qty_att(moqd.ORGANIZATION_ID,moqd.INVENTORY_ITEM_ID,moqd.SUBINVENTORY_CODE,'','') att
-                        ,khs_inv_qty_atr(moqd.ORGANIZATION_ID,moqd.INVENTORY_ITEM_ID,moqd.SUBINVENTORY_CODE,'','') atr
-                        ,moqd.SUBINVENTORY_CODE
-                        ,mp.ORGANIZATION_CODE
-                    from mtl_onhand_quantities_detail moqd
-                        ,mtl_system_items_b msib
-                        ,mtl_parameters mp
-                    where msib.ORGANIZATION_ID = moqd.ORGANIZATION_ID
-                    and msib.INVENTORY_ITEM_ID = moqd.INVENTORY_ITEM_ID
-                    and mp.ORGANIZATION_ID = moqd.ORGANIZATION_ID
-                    and msib.SEGMENT1 = nvl('$itemkode',msib.SEGMENT1)
-                    order by item
-                    ,moqd.SUBINVENTORY_CODE");
+        $query = $oracle_dev->query("SELECT
+        DISTINCT msib.SEGMENT1 item ,
+        msib.DESCRIPTION ,
+        msib.MINIMUM_ORDER_QUANTITY moq,
+        msib.FIXED_LOT_MULTIPLIER flm,
+        SUM(moqd.PRIMARY_TRANSACTION_QUANTITY) OVER (PARTITION BY moqd.INVENTORY_ITEM_ID ,
+        moqd.ORGANIZATION_ID ,
+        moqd.SUBINVENTORY_CODE) onhand ,
+        khs_inv_qty_att(moqd.ORGANIZATION_ID,
+        moqd.INVENTORY_ITEM_ID,
+        moqd.SUBINVENTORY_CODE,
+        '',
+        '') att ,
+        khs_inv_qty_atr(moqd.ORGANIZATION_ID,
+        moqd.INVENTORY_ITEM_ID,
+        moqd.SUBINVENTORY_CODE,
+        '',
+        '') atr ,
+        moqd.SUBINVENTORY_CODE ,
+        mp.ORGANIZATION_CODE
+    FROM
+        mtl_onhand_quantities_detail moqd ,
+        mtl_system_items_b msib ,
+        mtl_parameters mp
+    WHERE
+        msib.ORGANIZATION_ID = moqd.ORGANIZATION_ID(+)
+        AND msib.INVENTORY_ITEM_ID = moqd.INVENTORY_ITEM_ID(+)
+        AND mp.ORGANIZATION_ID(+) = moqd.ORGANIZATION_ID
+        AND msib.SEGMENT1 = NVL('$itemkode', msib.SEGMENT1)
+    ORDER BY
+        item ,
+        moqd.SUBINVENTORY_CODE");
 
         return $query->result_array();
     }
