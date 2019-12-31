@@ -138,7 +138,7 @@ class C_splseksi extends CI_Controller {
 				$index = array();
 				$btn_hapus = "";
 				if ($sls['Status'] == '01' or $sls['Status'] == '31' or $sls['Status'] == '35') {
-					$btn_hapus = "<a href='".site_url('SPL/HapusLembur/'.$sls['ID_SPL'])."' title='Hapus'><i class='fa fa-fw fa-trash'></i></a>";
+					$btn_hapus = "<a data-id='{$sls['ID_SPL']}' data-noind='{$sls['Noind']}' data-nama='{$sls['nama']}' onclick='deleteLembur($(this))' title='Hapus'><i class='fa fa-fw fa-trash'></i></a>";
 				}
 				$index[] = "<a href='".site_url('SPL/EditLembur/'.$sls['ID_SPL'])."' title='Detail'><i class='fa fa-fw fa-search'></i></a>
 					$btn_hapus";
@@ -378,7 +378,7 @@ class C_splseksi extends CI_Controller {
 			$index = array();
 			$btn_hapus = "";
 			if ($sls['Status'] == '01' or $sls['Status'] == '31' or $sls['Status'] == '35') {
-				$btn_hapus = "<a href='".site_url('SPL/HapusLembur/'.$sls['ID_SPL'])."' title='Hapus'><i class='fa fa-fw fa-trash'></i></a>";
+				$btn_hapus = "<a data-id='{$sls['ID_SPL']}' data-noind='{$sls['Noind']}' data-nama='{$sls['nama']}' onclick='deleteLembur($(this))' title='Hapus'><i class='fa fa-fw fa-trash'></i></a>";
 			}
 			$index[] = "<a href='".site_url('SPL/EditLembur/'.$sls['ID_SPL'])."' title='Detail'><i class='fa fa-fw fa-search'></i></a>
 				$btn_hapus";

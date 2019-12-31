@@ -75,7 +75,7 @@ class C_splseksi extends CI_Controller {
 				$index = array();
 				$btn_hapus = "";
 				if ($sls['Status'] == '01' or $sls['Status'] == '31' or $sls['Status'] == '35') {
-					$btn_hapus = "<a href='".site_url('SPL/Pusat/HapusLembur/'.$sls['ID_SPL'])."' title='Hapus'><i class='fa fa-fw fa-trash'></i></a>";
+					$btn_hapus = "<a data-id='{$sls['ID_SPL']}' data-noind='{$sls['Noind']}' data-nama='{$sls['nama']}' onclick='deleteLembur($(this))' title='Hapus'><i class='fa fa-fw fa-trash'></i></a>";
 				}
 				$index[] = "<a href='".site_url('SPL/Pusat/EditLembur/'.$sls['ID_SPL'])."' title='Detail'><i class='fa fa-fw fa-search'></i></a>
 					$btn_hapus";
@@ -325,7 +325,7 @@ class C_splseksi extends CI_Controller {
 			$index = array();
 			$btn_hapus = "";
 			if ($sls['Status'] == '01' or $sls['Status'] == '31' or $sls['Status'] == '35') {
-				$btn_hapus = "<a href='".site_url('SPL/Pusat/HapusLembur/'.$sls['ID_SPL'])."' title='Hapus'><i class='fa fa-fw fa-trash'></i></a>";
+				$btn_hapus = "<a data-id='{$sls['ID_SPL']}' data-noind='{$sls['Noind']}' data-nama='{$sls['nama']}' onclick='deleteLembur($(this))' title='Hapus'><i class='fa fa-fw fa-trash'></i></a>";
 			}
 			$index[] = "<a href='".site_url('SPL/Pusat/EditLembur/'.$sls['ID_SPL'])."' title='Detail'><i class='fa fa-fw fa-search'></i></a>
 				$btn_hapus";
@@ -860,9 +860,9 @@ class C_splseksi extends CI_Controller {
 				}
 			}else{
 				if ($lembur == '004') {
-					
+
 					$shiftpekerja = $this->M_splseksi->getShiftpekerja($noind,$tanggal);
-					
+
 					$awal_lembur = date_format(date_create($tanggal), "Y-m-d")." ".$waktu0;
 					$awal_lembur = date_format(date_create($awal_lembur), 'Y-m-d H:i:s');
 					$akhir_lembur = date_format(date_create($tanggal), "Y-m-d")." ".$waktu1;
@@ -881,7 +881,7 @@ class C_splseksi extends CI_Controller {
 				}
 			}
 		}
-			
+
 		$presensi = array(
 			'awal' 	=> date_format(date_create($aktual_awal),"H:i:s"),
 			'akhir' => date_format(date_create($aktual_akhir),"H:i:s"),
