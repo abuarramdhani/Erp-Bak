@@ -29,7 +29,7 @@
 					<div class="col-lg-12">
 						<div class="box box-primary box-solid">
 							<div class="box-body">
-								<table class="table text-center dtTableMl">
+								<table id="tblLPPBUnproses" class="tblLPPBAkt table text-center">
 									<thead>
 										<tr class="bg-primary">
 											<th width="5%" class="text-center">No</th>
@@ -78,6 +78,15 @@
 </section>
 <script type="text/javascript">
 	var id_gd;
+	$(document).ready(function(){
+	$('#tblLPPBRejectList').DataTable({
+		"paging": true,
+		"info":     true,
+		"language" : {
+			"zeroRecords": " "             
+		}
+	})
+})
 </script>
 
 <div class="modal fade mdlDetailAkt"  id="mdlDetailAkt" tabindex="1" role="dialog" aria-labelledby="judulModal" aria-hidden="true">
