@@ -1,3 +1,13 @@
+$(document).ready(function(){
+	$('.tblLPPBAkt').DataTable({
+		"paging": true,
+		"info":     true,
+		"language" : {
+			"zeroRecords": " "             
+		}
+	})
+})
+
 function saveActionLppbNumber(th) {
 	var batch_number = $('.batch_number_save').val();
 	// console.log(batch_number)
