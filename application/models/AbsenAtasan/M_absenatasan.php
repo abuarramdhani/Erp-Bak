@@ -21,7 +21,7 @@ class M_absenatasan extends CI_Model
 	
 	public function getList($approver){
 		// print_r($approver);exit();	
-		$sql = "SELECT approval.approver, absen.*,jenis.* FROM at.at_absen_approval approval, at.at_absen absen,at.at_jenis_absen jenis WHERE approval.approver='$approver' AND approval.absen_id = absen.absen_id AND absen.jenis_absen_id = jenis.jenis_absen_id";
+		$sql = "SELECT approval.approver, absen.*,jenis.* FROM at.at_absen_approval approval, at.at_absen absen,at.at_jenis_absen jenis WHERE approval.approver='$approver' AND approval.absen_id = absen.absen_id AND absen.jenis_absen_id = jenis.jenis_absen_id ORDER BY approval.status desc";
 		$query = $this->db->query($sql);
 		// print_r($sql);exit();
 		return $query->result_array();
@@ -86,8 +86,7 @@ class M_absenatasan extends CI_Model
 	}
 
 	public function getEmailPersonalia(){
-		$sql = "SELECT * FROM er.er_employee_all WHERE section_code IN ('409010100','409010101','409010102','401010100','401010101','401010102','401010103',
-				'401010104','401010105','401010106','401010107')";
+		$sql = "SELECT * FROM er.er_employee_all WHERE employee_code IN ('B0697','B0696','B0720','J1260','J1237') ";
 		$query = $this->db->query($sql);
 		return $query->result_array();		
 	}

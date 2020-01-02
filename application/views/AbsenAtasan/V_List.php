@@ -43,10 +43,13 @@
 			 {
 			 	if($value['status'] == 0){
 					$status = "New Entry";
+					$classLabel = "label label-default";
 				}else if($value['status']==1){
 					$status = "Approved";
+					$classLabel = "label label-success";
 				}else{
 					$status = "Rejected";
+					$classLabel = "label label-danger";
 				}
 
 				$date = date_create($value['waktu']);
@@ -56,7 +59,7 @@
 			<tr>
 			<td class="text-center"><?php echo $no++; ?></td>
 			<td><center><a target="_blank" href="<?php echo base_url('AbsenAtasan/List/detail/'.$value['absen_id']); ?>" class="btn btn-primary">Detail</a></center></td>
-			<td id="dataStatus"><span id="textStatus" class=""><?php echo $status; ?></span></td>
+			<td id="dataStatus"><span id="textStatus" class="<?php  echo $classLabel;?>"><?php echo $status; ?></span></td>
 			<td><?php echo $value['noind']; ?></td>
 			<td><?php echo $value['nama']; ?></td>
 			<td><?php echo $value['jenis_absen']; ?></td>
@@ -96,17 +99,6 @@
 </section>
 <script type="text/javascript">
 	$(document).ready(function(){
-	$("#absenAtasanTable").DataTable({ 
-        "order": [[ 6, "desc" ]] 
-    });	
-	jQuery.each($('tbody tr td span'), function () {
-        if (this.textContent == "Approved") {
-            $(this).closest('span').addClass("label label-success");
-        }else if(this.textContent == "Rejected"){
-        	$(this).closest('span').addClass("label label-danger");
-        }else{
-        	$(this).closest('span').addClass("label label-default");
-        }
-    });
+	$("#absenAtasanTable").DataTable();
 });
 </script>
