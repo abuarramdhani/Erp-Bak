@@ -128,6 +128,66 @@ $data['UserMenu'][0]['user_group_menu_name'] == 'WEB SEND PO BDL' ? $data['MenuN
 				case 'TIRA AUSTENITE TBK, PT':
 				case 'CAHAYA CITRASURYA INDOPRIMA, CV':
 				case 'DHARMA POLIMETAL, PT':
+				case 'ALAM LESTARI UNGGUL, PT':
+				case 'ALFATAMA INTICIPTA, PT' :
+				case 'ALTAMA SURYA ANUGERAH, PT' :
+				case 'AMPLASINDO JATRA TAMA, PT' :
+				case 'ANUGRAH ELEKTRIC, CV' :
+				case 'ANUGRAH JAYA METAL, PT' :
+				case 'BAHTERAREJEKI SEJATI, PT' :
+				case 'BINA ADIDAYA, PT' :
+				case 'BUDI OBAMA SENTOSA,PT' :
+				case 'BUTRACO PRATAMAS, PT' :
+				case 'CAHAYA TIMUR OFFSET, PT' :
+				case 'CEMERLANG BARU, CV' :
+				case 'DWI SEKAWAN, CV' :
+				case 'ENO VARIA PROMOSI' :
+				case 'FLOTEK NUSAPRATAMA, PT' :
+				case 'GAYA STEEL, PT' :
+				case 'GELORA PUTRA PERKASA, PT' :
+				case 'GITAMULIA CEMERLANG, PT' :
+				case 'GLOBALINDO ANUGERAH JAYA ABADI, PT' :
+				case 'INDOBELTRACO JAYA SEMESTA, PT' :
+				case 'INDOPRIMA BAJARAKSA, PT' :
+				case 'INTAN METALINDO, PT' :
+				case 'JAYA SUKSES UTAMA,PT' :
+				case 'KARUNIA MULIA SARI, PT' :
+				case 'KARYA BENTENG BARU SEMESTA, PT' :
+				case 'KAWAN LAMA SEJAHTERA,PT (JAKARTA)' :
+				case 'KEKAL JAYA MULIA, PT' :
+				case 'KERTARAJASA RAYA, PT' :
+				case 'MANDALA ADHIPERKASA SEJATI, PT' :
+				case 'MANDIRI CITRA ABADI, CV' :
+				case 'MEGA PRATAMA FERINDO, PT' :
+				case 'MITRA PLASTINDO MAS, PT' :
+				case 'NACHI INDONESIA, PT' :
+				case 'NACHINDO TAPE INDUSTRY, PT' :
+				case 'NIPSEA PAINT AND CHEMICALS,PT' :
+				case 'NOK INDONESIA SALES, PT' :
+				case 'NOK INDONESIA, PT' :
+				case 'NSK INDONESIA, PT' :
+				case 'NTN BEARING INDONESIA, PT' :
+				case 'PANGLIMA PUTRA TEKNIK, CV' :
+				case 'PERTIWIMAS ADI KENCANA, PT' :
+				case 'PILAR HARTEK SENTOSA, CV' :
+				case 'PURINUSA EKAPERSADA,PT' :
+				case 'PUTRA JAYA ADI SENTOSA, PT' :
+				case 'RHEMAGRAPH' :
+				case 'RIASARANA PUTRAJAYA, PT' :
+				case 'RUKUN SEJAHTERA TEKNIK, PT' :
+				case 'SAINT GOBAIN ABRASIVES DIAMAS, PT' :
+				case 'SARANA SAFETY INDONESIA, CV' :
+				case 'SATYA ABADI, CV' :
+				case 'SINAR UNGGUL TEKNIKTAMA, PT' :
+				case 'SINARWAJA INDAH, PT' :
+				case 'SUJAMENTS, PT' :
+				case 'SURYA SARANA DINAMIKA, CV' :
+				case 'TIMUR RAYA ANUGERAH DAMAI, PT' :
+				case 'TOKO PLASTIK 40' :
+				case 'TRIMITRA SWADAYA, PT' :
+				case 'TUNGGAL DJAJA INDAH, PT. PABRIK CAT' :
+				case 'WAHYU MOJOKERTO' :
+				case 'YONTOMO SUKSES ABADI, PT' :
 
 				if ($data['UserMenu'][0]['user_group_menu_name'] == 'WEB SEND PO BDL') {
 					if (substr($poQuery,2,3)=='999') {
