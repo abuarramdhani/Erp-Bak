@@ -204,13 +204,17 @@ class C_Index extends CI_Controller
 			// print_r($atasan);exit();
 			$employeeEmailData['email'] = $this->M_absenatasan->getEmployeeEmail($noinduk);
 			// echo $employeeEmail['internal_mail'];exit();
+			// echo "<pre>";print_r($employeeEmailData);exit();
 			$internalMail = $employeeEmailData['email'][0]['internal_mail'];
 			$eksternalMail	= $employeeEmailData['email'][0]['external_mail'];
 			// print_r($internalMail);exit();
 
 			$dataPersonalia = $this->M_absenatasan->getEmailPersonalia();
+			// echo "<pre>";print_r($dataPersonalia);exit();
 
-			$this->kirim_email($internalMail,$eksternalMail,$namaPekerja,$jenisAbsen,$waktu,$lokasi,$latitude,$longitude,$status,$atasan,$noindukAtasan);
+			if($internalMail != null and $internalMail != ''){
+				$this->kirim_email($internalMail,$eksternalMail,$namaPekerja,$jenisAbsen,$waktu,$lokasi,$latitude,$longitude,$status,$atasan,$noindukAtasan);
+			}			
 
 			foreach ($dataPersonalia as $key => $personalia) {
 			$internalMailPersonalia = $personalia['internal_mail'];
