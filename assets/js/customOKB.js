@@ -130,11 +130,11 @@ $(document).ready(function () {
             placeholder: 'Kode / deskripsi barang',
         })
 
-        $('.nbdOKB').datepicker({
-            autoclose: true,
-            todayHighlight: true,
-            format: 'dd-M-yyyy'
-        });
+        // $('.nbdOKB').datepicker({
+        //     autoclose: true,
+        //     todayHighlight: true,
+        //     format: 'dd-M-yyyy'
+        // });
         
         $('.slcOKBNewUomList').select2();
         $('.organizationOKB').select2();
@@ -291,11 +291,11 @@ $(document).ready(function () {
     });
 
     
-    $('.nbdOKB').datepicker({
-        autoclose: true,
-        todayHighlight: true,
-        format: 'dd-M-yyyy'
-    });
+    // $('.nbdOKB').datepicker({
+    //     autoclose: true,
+    //     todayHighlight: true,
+    //     format: 'dd-M-yyyy'
+    // });
     
     $('.tblOKBOrderListPengorder').DataTable({
         scrollY: "370px",
@@ -535,6 +535,31 @@ $(document).ready(function () {
             $(this).parentsUntil('tbody').find('.slcOKBNewUomList').val(primary_uom).trigger('change.select2');
 
             $(this).parentsUntil('tbody').find('.hdnItemCodeOKB').val(itemkode+' - '+ItemName);
+
+            // nbd
+            var estArrival = new Date();
+            estArrival.setDate(estArrival.getDate() + Number(leadtime));
+            var year = estArrival.getFullYear();
+            var month = estArrival.getMonth();
+            var date = estArrival.getDate();
+
+            var monthNames = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+            
+            date = ("00" + date).slice(-2);
+
+            var tanggal = date + '-' + monthNames[month] + '-' + year;
+
+            console.log(tanggal)
+
+            $(this).parentsUntil('tbody').find('.nbdOKB').val(tanggal);
+
+            $(this).parentsUntil('tbody').find('.nbdOKB').attr('style', 'background-color : #00bf024d; min-width:120px;');
+
+            $('.nbdOKB').datepicker({
+                autoclose: true,
+                todayHighlight: true,
+                format: 'dd-M-yyyy'
+            });
             ////bondan end/////
         })
         .on('click', '.btnOKBNewOrderListCancel', function(){
