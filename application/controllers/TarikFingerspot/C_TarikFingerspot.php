@@ -63,12 +63,20 @@ class C_TarikFingerspot extends CI_Controller
 		$data['UserMenu'] = $this->M_user->getUserMenu($user_id,$this->session->responsibility_id);
 		$data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id);
 		$data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id);
+		
+		$data['listFingerspot'] = $this->M_tarikfingerspot->fingerspot_device();
 
 		$this->form_validation->set_rules('required');
 		if($this->form_validation->run() === TRUE){
 
 			$tanggal = $this->input->post('txtTanggalTarikFinger');
-			$data['table'] = $this->M_tarikfingerspot->getAttLog($tanggal,'');
+			$sn_device = empty($this->input->post('txtFingerspot')) ? null : $this->input->post('txtFingerspot');
+
+			$data['tgl'] = $tanggal;
+			$data['sn_device'] = $sn_device;
+
+			$data['table'] = $this->M_tarikfingerspot->getAttLog($tanggal,'', $sn_device);
+
 			$encrypted_string = $this->encrypt->encode($tanggal);
             $encrypted_string = str_replace(array('+', '/', '='), array('-', '_', '~'), $encrypted_string);
 			$data['tanggal'] = $encrypted_string;
