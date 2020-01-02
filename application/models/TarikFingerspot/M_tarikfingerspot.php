@@ -17,45 +17,38 @@ class M_tarikfingerspot extends CI_MODEL
 		$this->quick = $this->load->database('quick', TRUE);
 	}
 
-	public function getAttLog($periode, $status){
+	public function getAttLog($periode, $status, $device){
+		$filterDevice = '';
+		if($device != null){
+			$filterDevice = "and sn = '$device' ";
+		}
 
 		$data = array();
-		if ('Transfer'==$status || 'Transfer178'==$status || 'Transfer179'==$status  || 'Transfer207'==$status )
-		{
+		if ('Transfer'==$status || 'Transfer178'==$status || 'Transfer179'==$status  || 'Transfer207'==$status ){
 			$sql = "select cast(scan_date as date) tanggal, pin noind_baru,cast(scan_date as time) waktu, sn
-		from fin_pro.att_log
-		where cast(scan_date as date) >= cast('$periode' as date)
-		order by scan_date,pin";
-		}
-		else
-		{
+					from fin_pro.att_log
+					where cast(scan_date as date) >= cast('$periode' as date)
+					order by scan_date,pin";
+		}else{
 			$sql = "select cast(scan_date as date) tanggal, pin noind_baru,cast(scan_date as time) waktu, sn
-		from fin_pro.att_log
-		where cast(scan_date as date) = cast('$periode' as date)
-		order by scan_date,pin";
+					from fin_pro.att_log
+					where cast(scan_date as date) = cast('$periode' as date) $filterDevice
+					order by scan_date,pin";
 		}
-		if ('Transfer'==$status)
-		{
+
+		if ('Transfer'==$status){
 			$resultFinger = $this->finger->query($sql);
 			$resFinger = $resultFinger->result_array();
-		}
-		else if('Transfer178'==$status)
-		{
+		} else if('Transfer178'==$status){
 			$resultFinger = $this->finger178->query($sql);
 			$resFinger = $resultFinger->result_array();
-		}
-		else if('Transfer179'==$status)
-		{
+		} else if('Transfer179'==$status){
 			$resultFinger = $this->finger179->query($sql);
 			$resFinger = $resultFinger->result_array();
-		}
-		else if('Transfer207'==$status)
-		{
+		} else if('Transfer207'==$status){
 			$resultFinger = $this->finger207->query($sql);
 			$resFinger = $resultFinger->result_array();
-		}
-		else
-		{
+		} else {
 			$a = $this->finger178->query($sql);
 			$b = $this->finger179->query($sql);
 			$c = $this->finger207->query($sql);
@@ -68,6 +61,7 @@ class M_tarikfingerspot extends CI_MODEL
 
 			$resFinger=array_merge($a,$b,$c,$d);
 		}
+
 		if (!empty($resFinger)) {
 			$a = 0;
 			foreach ($resFinger as $key) {
@@ -103,7 +97,20 @@ class M_tarikfingerspot extends CI_MODEL
 						order by tglkeluar desc limit 1
 					";
 					$resultHrdkeluar = $this->personalia->query($sql);
-			    	$resHrdkeluar = $resultHrdkeluar->result_array();
+					$resHrdkeluar = $resultHrdkeluar->result_array();
+					
+					if(empty($resHrdkeluar)){
+						$data[$a] = array(
+							'tanggal' => 'unknown',
+							'waktu' => 'unknown',
+							'noind' => 'unknown',
+							'kodesie' => 'unknown',
+							'noind_baru' => $key['noind_baru'],
+							'nomor_sn' => 'unknown',
+							'tempat_makan' => 'unknown'
+						);
+					}
+
 			    	foreach ($resHrdkeluar as $value) {
 						$data[$a] = array(
 							'tanggal' => $key['tanggal'],
@@ -121,7 +128,7 @@ class M_tarikfingerspot extends CI_MODEL
 
 				$sql = "select *
 						from db_datapresensi.tb_device
-						where device_sn = '".$key['sn']."' ";
+						where device_sn = '{$key['sn']}' ";
 				$resultDev = $this->quick->query($sql);
 				$resDev = $resultDev->result_array();
 				if (!empty($resDev)) {
@@ -133,6 +140,7 @@ class M_tarikfingerspot extends CI_MODEL
 				$a++;
 			}
 		}
+
 		return $data;
 	}
 
@@ -203,5 +211,12 @@ class M_tarikfingerspot extends CI_MODEL
     	$sql = "select device_name,inisial_lokasi, 0 jumlah, server_ip,lokasi_server_tarik_data from db_datapresensi.tb_device order by 1";
     	$result = $this->quick->query($sql);
 		return $result->result_array();
-    }
+	}
+	
+	public function fingerspot_device()
+	{
+		$this->mysql->order_by('office', 'asc');
+		$this->mysql->from('db_datapresensi.tb_device');
+		return $this->quick->get()->result();
+	}
 }
