@@ -1084,85 +1084,91 @@ class C_splseksi extends CI_Controller {
 
 	public function send_email($spl_id) {
 		$this->checkSession();
-		$akses_sie = array();
 		$user = $this->session->user;
-		$akses_kue = $this->M_splseksi->show_pekerja('', $user, '');
-		$akses_spl = $this->M_splseksi->show_akses_seksi($user);
-		foreach($akses_kue as $ak){
-			$akses_sie[] = substr($this->cut_kodesie($ak['kodesie']), 0, 7);
 
-			foreach($akses_spl as $as){
-				$akses_sie[] = substr($this->cut_kodesie($as['kodesie']), 0, 7);
-			}
-		}
-
-		$data[] = "email atasan ???";
-		foreach($akses_sie as $as){
-			$e_asska = $this->M_splseksi->show_email_addres($as);
-			foreach($e_asska as $ea){
-				$data[] = $ea['internal_mail'];
-			}
-		}
-
-		$isiPesan = "<table style='border-collapse: collapse;width: 100%'>";
 		$pesan = $this->M_splseksi->show_spl_byid($spl_id);
-		$tgl_lembur = "";
-		$pkj_lembur = "";
-		$brk_lembur = "";
-		$ist_lembur	= "";
-		$jns_lembur = "";
-		$no = 1;
-		foreach ($pesan as $key) {
-			if ($tgl_lembur !== $key['tgl_lembur'] or $pkj_lembur !== $key['Pekerjaan'] or $brk_lembur !== $key['Break'] or $ist_lembur !== $key['Istirahat'] or $jns_lembur !== $key['Kd_Lembur']) {
-				$no = 1;
-				$isiPesan .= "	<tr><td>&nbsp;</td></tr><tr><td>Tanggal</td>
-								<td colspan='7'> : ".$key['tgl_lembur']."</td></tr>
-								<tr><td>jenis</td><td colspan='7'> : ".$key['nama_lembur']."</td></tr>
-								<tr><td>Istirahat</td><td colspan='7'> : ".$key['Istirahat']."</td></tr>
-								<tr><td>Break</td><td colspan='7'> : ".$key['Break']."</td></tr>
-								<tr><td>Pekerjaan</td><td colspan='7'> : ".$key['Pekerjaan']."</td></tr>
-								<tr>
-									<td style='border: 1px solid black'>No</td>
-									<td style='border: 1px solid black'>Pekerja</td>
-									<td style='border: 1px solid black'>Kodesie</td>
-									<td style='border: 1px solid black'>Seksi</td>
-									<td style='border: 1px solid black'>Unit</td>
-									<td style='border: 1px solid black'>Waktu Lembur</td>
-									<td style='border: 1px solid black'>Target</td>
-									<td style='border: 1px solid black'>Realisasi</td>
-									<td style='border: 1px solid black'>Alasan</td>
-								</tr>";
-			}
-			$isiPesan .= "<tr>
-			<td style='border: 1px solid black;text-align: center'>$no</td>
-			<td style='border: 1px solid black'>".$key['Noind']." ".$key['nama']."</td>
-			<td style='border: 1px solid black;text-align: center'>".$key['kodesie']."</td>
-			<td style='border: 1px solid black'>".$key['seksi']."</td>
-			<td style='border: 1px solid black'>".$key['unit']."</td>
-			<td style='border: 1px solid black'>".$key['jam_mulai_lembur']." - ".$key['Jam_Akhir_Lembur']."</td>
-			<td style='border: 1px solid black;text-align: center'>".$key['target']."</td>
-			<td style='border: 1px solid black;text-align: center'>".$key['realisasi']."</td>
-			<td style='border: 1px solid black'>".$key['alasan_lembur']."</td>
-			</tr>";
-			$no++;
-			$tgl_lembur = $key['tgl_lembur'] ;
-			$pkj_lembur = $key['Pekerjaan'] ;
-			$brk_lembur = $key['Break'] ;
-			$ist_lembur = $key['Istirahat'] ;
-			$jns_lembur = $key['Kd_Lembur'] ;
+
+		$group_kodesie = [];
+		foreach($pesan as $item){
+			$group_kodesie[substr($item['kodesie'],0, 7)][] = $item; 
 		}
-		$isiPesan .= "</table>";
 
-		$email[] = array(
-			"actn" => "offline",
-			"host" => "m.quick.com",
-			"port" => 465,
-			"user" => "no-reply",
-			"pass" => "123456",
-			"from" => "no-reply@quick.com",
-			"adrs" => "");
+		foreach($group_kodesie as $seksi){
+			$akses_kue = $this->M_splseksi->show_pekerja('', $seksi['0']['Noind'], ''); // array noind, nama, kodesie dr salah 1 seksi
+		
+			$akses_sie = array();
+			foreach($akses_kue as $ak){
+				$akses_sie[] = substr($this->cut_kodesie($ak['kodesie']), 0, 7);
+			}
+	
+			$data = [];
+			foreach($akses_sie as $as){
+				$e_asska = $this->M_splseksi->show_email_addres($as);
+				foreach($e_asska as $ea){
+					$data[] = $ea['internal_mail'];
+				}
+			}
 
-		foreach($email as $e){
+			$isiPesan = "<table style='border-collapse: collapse;width: 100%'>";
+			$pesan = $seksi;
+	
+			$tgl_lembur = "";
+			$pkj_lembur = "";
+			$brk_lembur = "";
+			$ist_lembur	= "";
+			$jns_lembur = "";
+			$no = 1;
+			foreach ($pesan as $key) {
+				if ($tgl_lembur !== $key['tgl_lembur'] or $pkj_lembur !== $key['Pekerjaan'] or $brk_lembur !== $key['Break'] or $ist_lembur !== $key['Istirahat'] or $jns_lembur !== $key['Kd_Lembur']) {
+					$no = 1;
+					$isiPesan .= "	<tr><td>&nbsp;</td></tr><tr><td>Tanggal</td>
+									<td colspan='7'> : ".$key['tgl_lembur']."</td></tr>
+									<tr><td>jenis</td><td colspan='7'> : ".$key['nama_lembur']."</td></tr>
+									<tr><td>Istirahat</td><td colspan='7'> : ".$key['Istirahat']."</td></tr>
+									<tr><td>Break</td><td colspan='7'> : ".$key['Break']."</td></tr>
+									<tr><td>Pekerjaan</td><td colspan='7'> : ".$key['Pekerjaan']."</td></tr>
+									<tr>
+										<td style='border: 1px solid black'>No</td>
+										<td style='border: 1px solid black'>Pekerja</td>
+										<td style='border: 1px solid black'>Kodesie</td>
+										<td style='border: 1px solid black'>Seksi</td>
+										<td style='border: 1px solid black'>Unit</td>
+										<td style='border: 1px solid black'>Waktu Lembur</td>
+										<td style='border: 1px solid black'>Target</td>
+										<td style='border: 1px solid black'>Realisasi</td>
+										<td style='border: 1px solid black'>Alasan</td>
+									</tr>";
+				}
+				$isiPesan .= "<tr>
+				<td style='border: 1px solid black;text-align: center'>$no</td>
+				<td style='border: 1px solid black'>".$key['Noind']." ".$key['nama']."</td>
+				<td style='border: 1px solid black;text-align: center'>".$key['kodesie']."</td>
+				<td style='border: 1px solid black'>".$key['seksi']."</td>
+				<td style='border: 1px solid black'>".$key['unit']."</td>
+				<td style='border: 1px solid black'>".$key['jam_mulai_lembur']." - ".$key['Jam_Akhir_Lembur']."</td>
+				<td style='border: 1px solid black;text-align: center'>".$key['target']."</td>
+				<td style='border: 1px solid black;text-align: center'>".$key['realisasi']."</td>
+				<td style='border: 1px solid black'>".$key['alasan_lembur']."</td>
+				</tr>";
+				$no++;
+				$tgl_lembur = $key['tgl_lembur'] ;
+				$pkj_lembur = $key['Pekerjaan'] ;
+				$brk_lembur = $key['Break'] ;
+				$ist_lembur = $key['Istirahat'] ;
+				$jns_lembur = $key['Kd_Lembur'] ;
+			}
+			$isiPesan .= "</table>";
+
+			$e = array(
+				"actn" => "offline",
+				"host" => "m.quick.com",
+				"port" => 465,
+				"user" => "no-reply",
+				"pass" => "123456",
+				"from" => "no-reply@quick.com",
+				"adrs" => ""
+			);
+	
 			$this->load->library('PHPMailerAutoload');
 			$mail = new PHPMailer;
 			//Tell PHPMailer to use SMTP
