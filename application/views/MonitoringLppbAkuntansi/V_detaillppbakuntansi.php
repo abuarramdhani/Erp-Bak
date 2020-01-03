@@ -92,13 +92,11 @@
 	var id_gd;
 	var txtTolak = "txtTolak_<?php echo $p['BATCH_DETAIL_ID']?>";
 
-	// $(document).ready(function(){
+	$(document).ready(function(){
 	$('#tblLPPBwew').DataTable({
-		"paging": true,
-		"info":     true,
-		"language" : {
-			"zeroRecords": " "             
-		}
+		"paging":   false,
+        "ordering": false,
+        "info":     false
 	})
-// })
+})
 </script>

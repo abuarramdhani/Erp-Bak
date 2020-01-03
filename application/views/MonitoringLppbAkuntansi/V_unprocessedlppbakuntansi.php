@@ -80,8 +80,9 @@
 	var id_gd;
 	$(document).ready(function(){
 	$('#tblLPPBRejectList').DataTable({
-		"paging": true,
-		"info":     true,
+		"filter" : true,
+		"info":  false,
+		"pagination": false,
 		"language" : {
 			"zeroRecords": " "             
 		}
