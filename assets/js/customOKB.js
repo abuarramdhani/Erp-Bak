@@ -1445,6 +1445,54 @@ $(document).ready(function () {
                 });
             }
         })
+        .on('click','.btnOKBReleaseOrderPullingBatch', function () {
+            $(this).attr('disabled','disabled');
+            var checkbox = $('.checkApproveOKB').filter(':checked');
+            $('.imgOKBLoading').fadeIn();
+
+            if (checkbox.length == 0) {
+                Swal.fire({
+                    type: 'error',
+                    title: 'Gagal',
+                    text: 'Anda belum memilih order !',
+                });
+            }else{
+                var itemcode = new Array();
+                if (checkbox) {
+                    $(checkbox).each(function () {
+                        var item_code = $(this).val();
+                            itemcode.push(item_code);
+                    })
+                }; 
+
+                $.ajax({
+                    type: "POST",
+                    url: baseurl+"OrderKebutuhanBarangDanJasa/Puller/ReleaseOrderBatch",
+                    data: {
+                        item_code : itemcode
+                    },
+                    success: function (response) {
+                        if (response == 1) {
+                            Swal.fire({
+                                type: 'success',
+                                title: 'Berhasil',
+                                text: 'Order berhasil direlease !',
+                            });
+                            // checkbox.parentsUntil('tbody').remove();
+                            tableOKB.rows(checkbox.parentsUntil('tbody')).remove().draw();
+                        }else{
+                            Swal.fire({
+                                type: 'error',
+                                title: 'Gagal',
+                                text: 'Order gagal direlease !',
+                            });
+                        }
+                        $('.btnOKBReleaseOrderPulling').removeAttr('disabled');
+                        $('.imgOKBLoading').hide();
+                    }
+                });
+            }
+        })
         .on('click','.btnOKBDetailReleasedOrder', function () {
             var orderid = $(this).parentsUntil('tbody').find('.tdOKBListOrderId').html();
             $('.modalDetailReleasedOrderOKB-'+orderid).modal('show');
