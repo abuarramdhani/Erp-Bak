@@ -2194,12 +2194,17 @@ $route['AccountPayables/MonitoringInvoice/InvoiceKasie/(:any)'] = 'MonitoringInv
 $route['AccountPayables/MonitoringInvoice/InvoiceKasie/(:any)/(:any)'] = 'MonitoringInvKasiePembelian/C_kasiepembelian/$1/$2';
 $route['AccountPayables/MonitoringInvoice/InvoiceKasie/(:any)/(:any)/(:any)'] = 'MonitoringInvKasiePembelian/C_kasiepembelian/$1/$2/$3';
 $route['AccountPayables/MonitoringInvoice/FinishBatch'] = 'MonitoringInvKasiePembelian/C_kasiepembelian/finishBatch';
+$route['AccountPayables/MonitoringInvoice/InvoiceBermasalahKasiePurc/(:any)'] = 'MonitoringInvKasiePembelian/C_kasiepembelian/$1';
 $route['AccountPayables/MonitoringInvoice/InvoiceBermasalahKasiePurc/List'] = 'MonitoringInvKasiePembelian/C_kasiepembelian/invBermasalahKasie';
 $route['AccountPayables/MonitoringInvoice/InvoiceBermasalahKasiePurc/List/(:any)'] = 'MonitoringInvKasiePembelian/C_kasiepembelian/$1';
 $route['AccountPayables/MonitoringInvoice/InvoiceBermasalahKasiePurc/List/(:any)/(:any)'] = 'MonitoringInvKasiePembelian/C_kasiepembelian/$1/$2';
 $route['AccountPayables/MonitoringInvoice/InvoiceBermasalahKasiePurc/Finish'] = 'MonitoringInvKasiePembelian/C_kasiepembelian/FinishInvBermasalah';
-$route['AccountPayables/MonitoringInvoice/InvoiceBermasalahKasiePurc/(:any)'] = 'MonitoringInvKasiePembelian/C_kasiepembelian/$1';
-$route['AccountPayables/MonitoringInvoice/InvoiceBermasalahKasiePurc/(:any)/(:any)'] = 'MonitoringInvKasiePembelian/C_kasiepembelian/$1/$2';
+$route['AccountPayables/MonitoringInvoice/InvoiceBermasalahBuyer/List'] = 'MonitoringInvKasiePembelian/C_kasiepembelian/invBermasalahBuyer';
+$route['AccountPayables/MonitoringInvoice/InvoiceBermasalahBuyer/List/(:any)'] = 'MonitoringInvKasiePembelian/C_kasiepembelian/$1';
+$route['AccountPayables/MonitoringInvoice/InvoiceBermasalahBuyer/List/(:any)/(:any)'] = 'MonitoringInvKasiePembelian/C_kasiepembelian/$1/$2';
+$route['AccountPayables/MonitoringInvoice/InvoiceBermasalahBuyer/Finish'] = 'MonitoringInvKasiePembelian/C_kasiepembelian/FinishInvBermasalahBuyer';
+$route['AccountPayables/MonitoringInvoice/InvoiceBermasalahBuyer/Finish/(:any)'] = 'MonitoringInvKasiePembelian/C_kasiepembelian/$1';
+$route['AccountPayables/MonitoringInvoice/InvoiceBermasalahBuyer/Sistem'] = 'MonitoringInvKasiePembelian/C_kasiepembelian/InvBermasalahBuyerSistem';
 
 //--------------------------------------------------- Monitoring Invoice Akuntansi --------------------------------------------------//
 $route['AccountPayables/MonitoringInvoice/NewInvoice'] = 'MonitoringInvoiceAkuntansi/C_monitoringakuntansi/newInvoiceAkt';

@@ -14,7 +14,7 @@
 				<div class="row">
 					<div class="col-lg-12">
 						<div class="text-left ">
-							<span><b>Detail Invoice Bermasalah</b></span>
+							<span><b>Detail Invoice Bermasalah Buyer <?php echo $detail[0]['NO_INDUK_BUYER']?> </b></span>
 						</div>
 					</div>
 				</div>
@@ -115,14 +115,6 @@
 											<input type="text" name="txtKategori" class="form-control" value="<?php echo $detail[0]['KATEGORI_INV_BERMASALAH']?>" readonly>
 										</td>
 									</tr>
-									<!-- <tr>
-										<td>
-											<span><label>Kelengkapan Dokumen</label></span>
-										</td>
-										<td>
-											<input type="text" name="txtKategori" class="form-control" value="<?php echo $detail[0]['KELENGKAPAN_DOC_INV_BERMASALAH']?>" readonly>
-										</td>
-									</tr> -->
 									<tr>
 										<td>
 											<span><label>Keterangan Akuntansi</label></span>
@@ -136,7 +128,15 @@
 											<span><label>Feedback Purchasing</label></span>
 										</td>
 									<td>
-										<textarea class="form-control" id="txaFbPurc" name="txaFbPurc" placeholder="Diisi oleh Kasie Purchasing"></textarea>
+										<textarea disabled class="form-control" id="txaFbPurc" name="txaFbPurc" placeholder="Diisi oleh Kasie Purchasing"><?php echo $detail[0]['FEEDBACK_PURCHASING']?></textarea>
+									</td>
+									</tr>
+									<tr>
+										<td>
+											<span><label>Feedback Buyer</label></span>
+										</td>
+									<td>
+										<textarea class="form-control" id="txaFbBuyer" name="txaFbBuyer" placeholder="Diisi oleh Buyer"></textarea>
 									</td>
 									</tr>
 								</table>
@@ -159,9 +159,9 @@
 								<tr>
 									<td class="text-center"><?php echo $no ?></td>
 									<td class="text-center"><?php echo $b?></td>
-									<td><button type="button" class="btn btn-success btn-sm" onclick="btnApproveBerkas(this)" id="btnApproved" style="margin-right: 5px"><i class="fa fa-check"></i></button>
-										<button type="button" onclick="btnRejectBerkas(this)" class="btn btn-danger btn-sm" id="btnApproved"><i class="fa fa-times"></i></button>
-									<td><input type="hidden" name="berkas_status_purc[]" id="pembelian_id"><div class="hasil_pembelian"></div></td>
+									<td><button type="button" class="btn btn-success btn-sm" onclick="btnApproveBuyer(this)" id="btnApproved" style="margin-right: 5px"><i class="fa fa-check"></i></button>
+										<button type="button" onclick="btnRejectBuyer(this)" class="btn btn-danger btn-sm" id="btnApproved"><i class="fa fa-times"></i></button>
+									<td><input type="hidden" name="berkas_status_purc[]" id="pembelian_id"><div class="hasil_pembelian"></div><span class="label label-success"><i class="fa fa-check"></i> Diterima<br></span></td>
 									<td><input type="hidden" name="berkas_status_buyer[]" id="buyer_id"><div class="hasil_buyer"></div></td>
 								</tr>
 								<?php $no++; }?>
@@ -169,7 +169,7 @@
 						</table>
 						</div>
 						<div class="col-md-1 pull-right">
-							<button id="btnKasieBermasalah" class="btn btn-success pull-right" data-target="mdlNotifikasiKasie" data-toggle="modal" onclick="KonfirmasiBerkasPurc(<?php echo $detail[0]['INVOICE_ID']?>)" style="margin-top: 10px" >Konfirmasi</button>
+							<button id="btnKasieBermasalah" class="btn btn-success pull-right" data-target="mdlNotifikasiBuyer" data-toggle="modal" onclick="KonfirmasiBerkasBuyer(<?php echo $detail[0]['INVOICE_ID']?>)" style="margin-top: 10px" >Konfirmasi</button>
 						</div>
 					</div>
 				</div>
@@ -179,7 +179,7 @@
 <!-- </form> -->
 </section>
 
-<div id="mdlNotifikasiKasie" class="modal fade" role="dialog">
+<div id="mdlNotifikasiBuyer" class="modal fade" role="dialog">
 	<div class="modal-dialog" role="document">
 		<div class="modal-content"  id="content1" >
 		  <div class="modal-header">
@@ -193,7 +193,7 @@
 		  </div>
 		  <div class="modal-footer">
 		    <button type="button" class="btn btn-default" data-dismiss="modal">No</button>
-		    <button type="button" class="btn btn-primary" id="mdlYesAkt" >Yes</button>
+		    <button type="button" class="btn btn-primary" id="mdlYesBuyer" >Yes</button>
 		  </div>
 		</div>
  	</div>
