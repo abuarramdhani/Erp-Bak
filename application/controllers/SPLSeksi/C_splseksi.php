@@ -171,7 +171,7 @@ class C_splseksi extends CI_Controller {
 		$this->load->view('V_Footer',$data);
 	}
 
-	public function hitung_jam_lembur($noind, $kode_lembur, $tgl, $mulai, $selesai, $break, $istirahat){
+	public function hitung_jam_lembur($noind, $kode_lembur, $tgl, $mulai, $selesai, $break, $istirahat){ //this is lastest
 		$day   = date('w', strtotime($tgl));
 
 		$hari_indo = "Minggu Senin Selasa Rabu Kamis Jumat Sabtu";
@@ -200,7 +200,7 @@ class C_splseksi extends CI_Controller {
 
 		if($kode_lembur == '005'){
 			$shift = $this->M_splseksi->selectShift($noind, $tgl);
-			$shift = (strtotime('15:30:00') - strtotime('07:20:00'));
+			$shift = (strtotime($shift->jam_plg) - strtotime($shift->jam_msk));
 			$shift = $shift/60;
 		 	$result = $lama_lembur-$shift;
 		}else{
