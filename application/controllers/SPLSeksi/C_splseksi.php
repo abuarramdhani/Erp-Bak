@@ -178,7 +178,7 @@ class C_splseksi extends CI_Controller {
 		$array_hari = explode(' ', $hari_indo);
 		//--------------------core variable
 		$KET  		= $this->M_splseksi->getKeteranganJamLembur($noind);
-		$JENIS_HARI	= $this->M_splseksi->getJenisHari($tgl);
+		$JENIS_HARI	= $this->M_splseksi->getJenisHari($tgl, $noind);
 		$HARI 		= $array_hari[$day];
 		//-----------------------
 		$treffjamlembur = $this->M_splseksi->treffjamlembur($KET, $JENIS_HARI, $HARI);
@@ -223,9 +223,11 @@ class C_splseksi extends CI_Controller {
 				$pengali = $treffjamlembur[$i]['pengali'];
 
 				if($total_lembur > $jml_jam){
+
 					$estimasi = $estimasi + $jml_jam * $pengali/60;
 					$total_lembur = $total_lembur - $jml_jam;
 				}else{
+
 					$estimasi = $estimasi + ($total_lembur * $pengali/60);
 					$estimasi = number_format($estimasi,2);
 					$total_lembur = 0;
@@ -485,7 +487,9 @@ class C_splseksi extends CI_Controller {
 		$pekerjaan = $this->input->post('pekerjaan');
 		$noind = $this->input->post("noind[0]");
 		$target = $this->input->post("target[0]");
+		$target_satuan = $this->input->post("target_satuan[0]");
 		$realisasi = $this->input->post("realisasi[0]");
+		$realisasi_satuan = $this->input->post("realisasi_satuan[0]");
 		$alasan = $this->input->post("alasan[0]");
 		$spl_id = $this->input->post('id_spl');
 		$old_spl = $this->M_splseksi->show_current_spl('', '', '', $spl_id);
@@ -531,8 +535,8 @@ class C_splseksi extends CI_Controller {
 			"Pekerjaan" => $pekerjaan,
 			"Status" => "01",
 			"User_" => $user_id,
-			"target" => $target,
-			"realisasi" => $realisasi,
+			"target" => $target." ".$target_satuan,
+			"realisasi" => $realisasi." ".$realisasi_satuan,
 			"alasan_lembur" => $alasan);
 		$to_spl = $this->M_splseksi->update_spl($data_spl, $spl_id);
 
@@ -554,8 +558,8 @@ class C_splseksi extends CI_Controller {
 			"User_" => $user_id,
 			"Revisi" => "0",
 			"Keterangan" => "(Ubah)",
-			"target" => $target,
-			"realisasi" => $realisasi,
+			"target" => $target." ".$target_satuan,
+			"realisasi" => $realisasi." ".$realisasi_satuan,
 			"alasan_lembur" => $alasan);
 		$to_splr = $this->M_splseksi->save_splr($data_splr);
 

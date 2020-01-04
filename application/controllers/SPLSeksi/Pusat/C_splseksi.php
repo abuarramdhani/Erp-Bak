@@ -138,7 +138,7 @@ class C_splseksi extends CI_Controller {
 
 		if($kode_lembur == '005'){
 			$shift = $this->M_splseksi->selectShift($noind, $tgl);
-			$shift = (strtotime('15:30:00') - strtotime('07:20:00'));
+			$shift = (strtotime($shift->jam_plg) - strtotime($shift->jam_msk));
 			$shift = $shift/60;
 		 	$result = $lama_lembur-$shift;
 		}else{

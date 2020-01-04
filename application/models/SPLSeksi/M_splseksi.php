@@ -581,20 +581,19 @@ class M_splseksi extends CI_Model{
 		return 'UMUM';
 	}
 
-	public function getJenisHari($tgl){
+	public function getJenisHari($tgl, $noind){
 		$name_hari = date('D', strtotime($tgl));
 		//cek minggu
 		if($name_hari == 'Sun'){
 			//cek shift
-			$sql = "SELECT * FROM \"Presensi\".tshiftpekerja WHERE tanggal='$tgl'";
+			$sql = "SELECT * FROM \"Presensi\".tshiftpekerja WHERE tanggal='$tgl' and noind ='$noind'";
 			$jenis = $this->prs->query($sql)->num_rows() > 0? 'Biasa' : 'Libur';
 		}else{
-			$jenis = 'Biasa';
+			//cek hari libur
+			$sql = "SELECT * FROM \"Dinas_Luar\".tlibur WHERE tanggal = '$tgl'";
+			$jenis =  $this->prs->query($sql)->num_rows() > 0? 'Libur' : 'Biasa';
 		}
 
-		//cek hari libur
-		$sql = "SELECT * FROM \"Dinas_Luar\".tlibur WHERE tanggal = '$tgl'";
-		$jenis =  $this->prs->query($sql)->num_rows() > 0? 'Libur' : 'Biasa';
 		return $jenis;
 	}
 
