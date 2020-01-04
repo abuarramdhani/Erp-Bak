@@ -183,7 +183,7 @@ class M_splseksi extends CI_Model{
 
 	public function show_email_addres($sie){
 		$user = $this->session->user; //untuk trial
-		$sql = "select eea.employee_code, eea.internal_mail, sugm.user_group_menu_name
+		$sql = "select eea.employee_code, eea.employee_name, eea.internal_mail, sugm.user_group_menu_name
 			from er.er_employee_all eea
 			inner join sys.sys_user su on eea.employee_id=su.employee_id
 			inner join sys.sys_user_application sua on su.user_id = sua.user_id
@@ -195,7 +195,8 @@ class M_splseksi extends CI_Model{
 	}
 
 	public function show_spl_byid($id){
-		$sql = "select 	a.tgl_lembur,
+		$sql = "select 	a.id_spl,
+						a.tgl_lembur,
 						a.jam_mulai_lembur,
 						a.Jam_Akhir_Lembur,
 						a.Kd_Lembur,
@@ -570,7 +571,7 @@ class M_splseksi extends CI_Model{
 	}
 
 	public function getKeteranganJamLembur($noind){
-		$sql = "SELECT kodesie FROM hrd_khs.tpribadi WHERE noind = '$noind' and keluar='0'";
+		$sql = "SELECT kodesie FROM hrd_khs.tpribadi WHERE noind = '$noind' and keluar = '0'";
 		$a = $this->prs->query($sql)->row()->kodesie;
 
 		if($a == '401010102' || $a == '401010102'){
@@ -605,5 +606,10 @@ class M_splseksi extends CI_Model{
 	public function checkSPL($noind, $tanggal){
 		$sql = "SELECT * FROM splseksi.tspl WHERE Tgl_Lembur ='$tanggal' AND noind='$noind'";
 		return $this->spl->query($sql)->num_rows() > 0 ? true : false;
+	}
+
+	public function selectShift($noind, $tanggal){
+		$sql = "SELECT jam_msk, jam_plg FROM \"Presensi\".tshiftpekerja where noind='$noind' and tanggal='$tanggal'";
+		return $this->prs->query($sql)->row();
 	}
 }
