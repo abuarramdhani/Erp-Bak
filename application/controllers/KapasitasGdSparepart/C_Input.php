@@ -125,8 +125,9 @@ class C_Input extends CI_Controller
 	function cancelSPB(){
 		$jenis = $this->input->post('jenis');
 		$nodoc = $this->input->post('nodoc');
-		// echo "<pre>"; print_r($jenis);exit();
-		$cancel = $this->M_input->cancelSPB($jenis, $nodoc);
+		$date  = gmdate('d/m/Y h:i:s', time()+60*60*7);
+		// echo "<pre>"; print_r($date);exit();
+		$cancel = $this->M_input->cancelSPB($jenis, $nodoc, $date);
 	}
 
 

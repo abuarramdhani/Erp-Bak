@@ -74,7 +74,7 @@
                                             <label class="text-right">Tanggal : <?php echo date("d F Y") ?></label>
                                         </div>
                                         <div class="col-md-6">
-                                            <label class="text-right">DO / SPB masuk hari ini : <?= $jml_spb ?> lembar</label>
+                                            <label class="text-right">DOSP / SPB masuk hari ini : <?= $jml_spb ?> lembar</label>
                                         </div>
                                         <div class="col-md-6">
                                             <button type="button" class="btn btn-xs btn-info" style="margin-left:166px" onclick="addDoSpb(this)">Rincian</button></td>
@@ -357,6 +357,9 @@
                                             </div>
                                         </div>
 
+                                        <div class="col-md-12">
+                                            <label class="text-right">DOSP / SPB cancel hari ini : <?= $cancel ?> lembar</label>
+                                        </div>
                                         <div class="col-md-12">
                                             <label class="text-right">Penerimaan Menyelesaikan : <?= $jml_gd ?> lembar</label>
                                         </div>

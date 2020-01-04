@@ -73,7 +73,9 @@ class C_Monitoring extends CI_Controller
 
 		$jml_gd = $this->M_monitoring->getjmlGd($date);
 		$data['jml_gd'] = count($jml_gd);
-		
+
+		$cancel = $this->M_monitoring->getcancel($date);
+		$data['cancel'] = count($cancel);
 		
 		// echo "<pre>"; print_r($data['krgpengeluaran']); exit();
 
@@ -146,6 +148,9 @@ class C_Monitoring extends CI_Controller
 
 			$jml_gd = $this->M_monitoring->getjmlGd2($date);
 			$hasil[$a]['jml_gd'] = count($jml_gd);
+
+			$cancel = $this->M_monitoring->getcancel($date);
+			$hasil[$a]['cancel'] = count($cancel);
 		}
 		$data['hasil'] = $hasil;
 		
