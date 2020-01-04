@@ -17,6 +17,7 @@ class M_packing extends CI_Model
                 from khs_tampung_spb
                 where selesai_pengeluaran is not null
                 and selesai_packing is null
+                and cancel is null
                 order by urgent, tgl_dibuat";
         $query = $oracle->query($sql);
         return $query->result_array();
@@ -35,6 +36,7 @@ class M_packing extends CI_Model
                 waktu_packing, urgent, pic_packing
                 from khs_tampung_spb
                 where TO_CHAR(selesai_packing,'DD/MM/YYYY') between '$date' and '$date'
+                and cancel is null
                 order by urgent, tgl_dibuat";
         $query = $oracle->query($sql);
         return $query->result_array();

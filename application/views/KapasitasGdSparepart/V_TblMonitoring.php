@@ -11,7 +11,7 @@
         </div>
         <!-- <div class="col-md-12"> -->
         <div class="col-md-6">
-            <label class="text-right">DO / SPB masuk : <?= $val['jml_spb'] ?> lembar</label>
+            <label class="text-right">DOSP / SPB masuk : <?= $val['jml_spb'] ?> lembar</label>
         </div>
         <div class="col-md-6">
             <button type="button" class="btn btn-xs btn-info" style="margin-left:160px" onclick="addDoSpb2(this, <?= $num?>)">Rincian</button></td>
@@ -320,6 +320,9 @@
             </div>
         </div>
 
+        <div class="col-md-12">
+            <label class="text-right">DOSP / SPB cancel : <?= $val['cancel'] ?> lembar</label>
+        </div>
         <div class="col-md-12">
             <label class="text-right">Penerimaan Menyelesaikan : <?= $val['jml_gd'] ?> lembar</label>
         </div>

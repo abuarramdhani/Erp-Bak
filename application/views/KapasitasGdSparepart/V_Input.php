@@ -216,7 +216,7 @@
                                                     <td class="<?= $td?>"><input type="hidden" name="jml_item[]" value="<?= $val['JUMLAH_ITEM']?>"><?= $val['JUMLAH_ITEM']?></td>
                                                     <td class="<?= $td?>"><input type="hidden" name="jml_pcs[]" value="<?= $val['JUMLAH_PCS']?>"><?= $val['JUMLAH_PCS']?></td>
                                                     <td class="<?= $td?>" style="width: 15px"><input type="hidden" name="ket[]" value="<?= $val['URGENT']?>"><?= $val['URGENT']?></td>
-                                                    <td class="<?= $td?>"><input type="button" class="btn btn-xs btn-danger" id="btncancle" value="Cancel" onclick="btnCancelKGS(<?= $no?>)"></td>
+                                                    <td class="<?= $td?>"><input type="button" class="btn btn-xs btn-danger" id="btncancelSPB" value="Cancel" onclick="btnCancelKGS(<?= $no?>)"></td>
                                                 </tr>
                                                 <?php $no++; } ?>
                                             </tbody>

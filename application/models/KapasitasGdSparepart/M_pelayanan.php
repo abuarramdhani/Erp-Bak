@@ -15,6 +15,7 @@ class M_pelayanan extends CI_Model
                 jenis_dokumen, no_dokumen, jumlah_item, jumlah_pcs, selesai_pelayanan, urgent
                 from khs_tampung_spb
                 where selesai_pelayanan is null
+                and cancel is null
                 order by urgent, tgl_dibuat";
         $query = $oracle->query($sql);
         return $query->result_array();
@@ -33,6 +34,7 @@ class M_pelayanan extends CI_Model
                 waktu_pelayanan, urgent, pic_pelayan
                 from khs_tampung_spb
                 where TO_CHAR(selesai_pelayanan,'DD/MM/YYYY') between '$date' and '$date'
+                and cancel is null
                 order by urgent, tgl_dibuat";
         $query = $oracle->query($sql);
         return $query->result_array();
