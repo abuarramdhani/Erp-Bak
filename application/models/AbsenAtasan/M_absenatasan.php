@@ -14,7 +14,7 @@ class M_absenatasan extends CI_Model
 	}
 
 	public function getListAbsenById($id){
-		$query = $this->db->query("SELECT absen.*,jenis.* FROM at.at_absen absen,at.at_jenis_absen jenis WHERE absen.absen_id='$id' AND absen.jenis_absen_id = jenis.jenis_absen_id");
+		$query = $this->db->query("SELECT absen.*,jenis.*,approval.approver FROM at.at_absen absen INNER JOIN at.at_jenis_absen jenis ON absen.jenis_absen_id = jenis.jenis_absen_id INNER JOIN at.at_absen_approval approval ON absen.absen_id = approval.absen_id WHERE absen.absen_id='$id' AND absen.jenis_absen_id = jenis.jenis_absen_id");
         return $query->result_array();
 	}
 
@@ -34,16 +34,9 @@ class M_absenatasan extends CI_Model
 	}
 
 	public function getEmployeeInfo($noinduk){
-		$sql = "SELECT * FROM er.vi_er_employee_data WHERE employee_code='$noinduk'";
+		$sql = "SELECT a.*,b.section_name,b.unit_name,b.field_name,b.department_name FROM er.er_employee_all a INNER JOIN er.er_section b ON a.section_code = b.section_code WHERE a.section_code = b.section_code AND a.employee_code = '$noinduk'";
 
 		$query = $this->db->query($sql);
-		return $query->result_array();
-	}
-
-	public function getFieldUnitInfo($sectionCode){
-		$sql = "SELECT * FROM er.er_section WHERE section_code='$sectionCode'";
-		$query = $this->db->query($sql);
-
 		return $query->result_array();
 	}
 

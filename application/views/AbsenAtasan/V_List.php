@@ -10,8 +10,14 @@
 	.Approved{
 		color: green;
 	}
-</style>
 
+	#rowT{
+	color: white;
+	background: #667db6;  /* fallback for old browsers */
+	background: -webkit-linear-gradient(to right, #667db6, #0082c8, #0082c8, #667db6);  /* Chrome 10-25, Safari 5.1-6 */
+	background: linear-gradient(to right, #667db6, #0082c8, #0082c8, #667db6); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+	}
+</style>
 	<div class="inner" >
 			<div class="box box-header"  style="padding-left:20px">
 				<h3 class="pull-left"><strong> Absen Pekerja Entry List </strong></h3>
@@ -23,7 +29,7 @@
 			
 				<table id="absenAtasanTable" class="table table-striped table-bordered table-hover" style="width:100%">
 			<thead>
-				<tr style="background-color:#367FA9; color:white ">
+				<tr id="rowT">
 						<th class="text-center " style="width:15px">No</th>
 						<th class="text-center ">Action</th>
 						<th class="text-center ">Status</th>
