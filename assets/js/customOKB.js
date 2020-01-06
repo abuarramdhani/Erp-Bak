@@ -1601,67 +1601,14 @@ $(document).ready(function () {
                     data: {
                         itemkode : item[0]
                     },
-                    dataType: "json",
+                    // dataType: "json",
                     success: function (response) {
                         $('.divOKBListOrderStockLoading-'+orderid).hide();
                         if (response == null || response =='') {
                             html = '<center><span><i class="fa fa-warning">No Data Found</i></span></center>';
                         }else{
-
-                            var html = '<div class="col-lg-12">'+
-                                '<table class="table table-bordered table-stripped text-center">'+
-                                    '<thead>'+
-                                    '<tr class="bg-primary">'+
-                                    '<th>No</th>'+
-                                    '<th>Item</th>'+
-                                    '<th>MOQ</th>'+
-                                    '<th>FLM</th>'+
-                                    '<th>OnHand</th>'+
-                                    '<th>ATT</th>'+
-                                    '<th>ATR</th>'+
-                                    '<th>Subinventory Code</th>'+
-                                    '<th>Organization Code</th>'+
-                                    '</tr>'+
-                                    '</thead>'+
-                                    '<tbody>';
-                                    
-                                    for (let i = 0; i < response.length; i++) {
-                                        const el = response[i];
-                                        if (el['MOQ'] == null) {
-                                            el['MOQ'] = '-';
-                                        }
-                                        if (el['FLM'] == null) {
-                                            el['FLM'] = '-';
-                                        }
-                                        if (el['ONHAND'] == null) {
-                                            el['ONHAND'] = '-';
-                                        }
-                                        if (el['SUBINVENTORY_CODE'] == null) {
-                                            el['SUBINVENTORY_CODE'] = '-';
-                                        }
-                                        if (el['ORGANIZATION_CODE'] == null) {
-                                            el['ORGANIZATION_CODE'] = '-';
-                                        }
-                                        html += '<tr>'+
-                                        '<td>'+Number(i+1)+'</td>'+
-                                        '<td>'+el['ITEM']+'</td>'+
-                                        '<td>'+el['MOQ']+'</td>'+
-                                        '<td>'+el['FLM']+'</td>'+
-                                        '<td>'+el['ONHAND']+'</td>'+
-                                        '<td>'+el['ATT']+'</td>'+
-                                        '<td>'+el['ATR']+'</td>'+
-                                        '<td>'+el['SUBINVENTORY_CODE']+'</td>'+
-                                        '<td>'+el['ORGANIZATION_CODE']+'</td>'+
-                                        '</tr>';
-                                        
-                                    }
-                                
-                                html += '</tbody>'+
-                                '</table>'+
-                            '</div>';
+                            html = response;
                         }
-                            // alert(response[0]['ONHAND'])
-                        // var stock = '<span>'+response[0]['ONHAND']+'</span>';
                         $('.divStockOKB-'+orderid).html(html);
                     }
                 });
