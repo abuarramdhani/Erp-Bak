@@ -225,7 +225,7 @@
 						// need some idea
 						window.onfocus = function() {
 						  console.log('Got focus');
-						  window.location.reload();
+						  //window.location.reload();
 						}
 
 						var timeoutInMiliseconds = 120000;
