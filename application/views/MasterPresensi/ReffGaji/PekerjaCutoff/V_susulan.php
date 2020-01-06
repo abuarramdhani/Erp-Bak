@@ -11,7 +11,6 @@
 					<div class="col-lg-12">
 						<div class="box box-solid box-primary">
 							<div class="box-header with-border">
-								<a class="btn btn-success pull-right" href="<?php echo base_url('MasterPresensi/ReffGaji/PekerjaCutoffReffGaji/pekerja') ?>">Cari Pekerja</a>
 							</div>
 							<div class="box-body">
 								<div class="row">
@@ -44,27 +43,28 @@
 																'November',
 																'Desember'
 															);
-															$tgl = explode("-", $key['tanggal_proses']);
+															$tgl1 = substr($key['periode'],0,4);
+															$tgl2 = substr($key['periode'],4,6);
 												?>
 															<tr>
 																<td class="text-center"><?=$nomor ?></td>
-																<td class="text-center"><?php echo $bulan[intval($tgl['1'])].' '.$tgl['0'] ?></td>
+																<td class="text-center"><?php echo $bulan[intval($tgl2)].' '.$tgl1 ?></td>
 																<td class="text-center"><?php echo $key['jumlah'] ?></td>
 																<td class="text-center" style="font-size: 10pt">
 																	<a 
-																		href="<?php echo base_url('MasterPresensi/ReffGaji/PekerjaCutoffReffGaji/d/'.$key['tanggal_proses']) ?>" 
+																		href="<?php echo base_url('MasterPresensi/ReffGaji/PekerjaCutoffReffGaji/detail_susulan/'.$key['periode']) ?>" 
 																		title="Lihat Detail" class="btn btn-primary">
 																		<span class="glyphicon glyphicon-search"></span>&nbsp;Detail
 																	</a>
 																	<a 
-																		href="<?php echo base_url('MasterPresensi/ReffGaji/PekerjaCutoffReffGaji/pdf/p/'.$key['tanggal_proses']) ?>"
+																		href="<?php echo base_url('MasterPresensi/ReffGaji/PekerjaCutoffReffGaji/cetak_susulan/pdf/'.$key['periode']) ?>"
 																		title="cetak PDF" 
 																		target="_blank" 
 																		class="btn btn-danger">
 																		<span class="fa fa-file-pdf-o"></span>&nbsp;PDF
 																	</a>
 																	<a 
-																		href="<?php echo base_url('MasterPresensi/ReffGaji/PekerjaCutoffReffGaji/xls/p/'.$key['tanggal_proses']) ?>"
+																		href="<?php echo base_url('MasterPresensi/ReffGaji/PekerjaCutoffReffGaji/cetak_susulan/xls/'.$key['periode']) ?>"
 																		title="cetak excel" 
 																		target="_blank" 
 																		class="btn btn-success">

@@ -1,6 +1,6 @@
 <div style="width: 100%;padding: 10px">
 	<div style="text-align: center;">
-		<h2>Pekerja Dibayar Cutoff</h2>
+		<h2>Pekerja Dibayar Cutoff (Susulan)</h2>
 		<?php 
 			$bulan = array (
 				1 =>   'Januari',
