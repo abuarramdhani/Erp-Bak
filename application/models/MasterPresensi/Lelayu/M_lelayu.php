@@ -593,6 +593,11 @@ class M_lelayu extends CI_Model
     return $this->db->query("SELECT * FROM hr.hr_uang_duka_spsi")->result_array();
   }
 
+  public function getCutoffBulanLalu(){
+    $sql = "select tanggal_awal::date from \"Presensi\".tcutoff where to_char(tanggal_awal,'yyyy-mm') = to_char(current_date - interval '1 month','yyyy-mm') limit 1";
+    return  $this->personalia->query($sql)->row()->tanggal_awal;
+  }
+
 }
 
  ?>
