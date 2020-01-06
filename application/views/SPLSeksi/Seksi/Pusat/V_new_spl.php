@@ -157,10 +157,13 @@
 									<div class="form-group">
 										<label class="col-sm-1 control-label">Pekerja</label>
 										<div class="col-sm-12">
-											<table id="example11" class="table table-bordered table-striped text-center">
+											<button type="button" class="btn btn-primary btn-sm" style="float: right; margin-bottom: 1em;">
+												<i id="spl_pkj_add" class="fa fa-plus"></i>
+											</button>
+											<table id="example11" class="table table-responsive table-bordered table-striped text-center">
 												<thead style="background:#3c8dbc; color:#fff">
 													<th width="5%">No.</th>
-													<th width="30%">Pekerja</th>
+													<th width="20%">Pekerja</th>
 													<th width="8%">Awal Lembur Aktual</th>
 													<th width="8%">Akhir Lembur Aktual</th>
 													<th width="5%">Estimasi Lembur</th>
@@ -168,10 +171,10 @@
 													<th width="10%">Satuan</th>
 													<th width="10%">Realisasi</th>
 													<th width="10%">Satuan</th>
-													<th width="20%">Pekerjaan</th>
-													<th width="5%">
+													<th width="30%">Pekerjaan</th>
+													<!-- <th width="5%">
 														<i id="spl_pkj_add" class="fa fa-fw fa-plus-square-o"></i>
-													</th>
+													</th> -->
 												</thead>
 												<tbody>
 													<tr class="multiinput"><td>-</td>
@@ -204,7 +207,7 @@
 																<option value="%">%</option>
 															</select>
 														</td>
-														<td colspan="2"><textarea class="form-control" rows="1" name="alasan[]"></textarea></td></tr>
+														<td colspan="2"><textarea style="resize: vertical; min-height: 30px;" class="form-control" rows="1" name="alasan[]"></textarea></td></tr>
 												</tbody>
 											</table>
 										</div>

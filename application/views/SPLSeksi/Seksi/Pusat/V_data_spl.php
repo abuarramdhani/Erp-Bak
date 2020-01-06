@@ -177,6 +177,7 @@
 
 		document.addEventListener("DOMContentLoaded",function(e){
 			setupTimers();
+			$('#spl-pencarian').trigger('click')
 		});
 
 		//set cache

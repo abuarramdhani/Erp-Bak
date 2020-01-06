@@ -407,7 +407,7 @@ class C_splseksi extends CI_Controller {
 		$this->load->view('V_Footer',$data);
 	}
 
-	public function edit_spl_submit(){ echo "Pusat";die;
+	public function edit_spl_submit(){
 		$this->checkSession();
 		$user_id = $this->session->user;
 		$tanggal = $this->input->post('tanggal');
