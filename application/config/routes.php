@@ -3618,3 +3618,9 @@ $route['KapasitasGdSparepart/Pengeluaran/(:any)/(:any)']= 'KapasitasGdSparepart/
 $route['KapasitasGdSparepart/Packing']					= 'KapasitasGdSparepart/C_Packing';
 $route['KapasitasGdSparepart/Packing/(:any)']			= 'KapasitasGdSparepart/C_Packing/$1';
 $route['KapasitasGdSparepart/Packing/(:any)/(:any)']	= 'KapasitasGdSparepart/C_Packing/$1/$2';
+
+//--------------------------------------Rekap jenis Pekerjaan ---------------------------------------//
+$route['RekapJenisPekerjaan'] 							= 'RekapJenisPekerjaan/C_Rjp';
+$route['RekapJenisPekerjaan/Rekap'] 					= 'RekapJenisPekerjaan/C_Rjp/Rekap';
+$route['RekapJenisPekerjaan/Rekap/(:any)'] 				= 'RekapJenisPekerjaan/C_Rjp/$1';
+$route['RekapJenisPekerjaan/Rekap/(:any)/(:any)'] 		= 'RekapJenisPekerjaan/C_Rjp/$1/$2';
