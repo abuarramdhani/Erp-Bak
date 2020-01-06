@@ -624,7 +624,7 @@ function rekap_datatable_detail() {
 
 					$('.RekapAbsensi-cmbDepartemen').select2(
 					{
-						minimumResultsForSearch: -1,
+						minimumResultsForSearch: 0,
 						allowClear: false,
 						ajax:
 						{
@@ -732,7 +732,7 @@ function rekap_datatable_detail() {
 
 							$('.RekapAbsensi-cmbBidang').select2(
 							{
-								minimumResultsForSearch: -1,
+								minimumResultsForSearch: 0,
 								ajax:
 								{
 									url: baseurl+'RekapTIMSPromosiPekerja/RekapAbsensiPekerja/daftarBidang',
@@ -784,7 +784,7 @@ function rekap_datatable_detail() {
 
 							$('.RekapAbsensi-cmbUnit').select2(
 							{
-								minimumResultsForSearch: -1,
+								minimumResultsForSearch: 0,
 								ajax:
 								{
 									url: baseurl+'RekapTIMSPromosiPekerja/RekapAbsensiPekerja/daftarUnit',
@@ -828,7 +828,7 @@ function rekap_datatable_detail() {
 
 							$('.RekapAbsensi-cmbSeksi').select2(
 							{
-								minimumResultsForSearch: -1,
+								minimumResultsForSearch: 0,
 								ajax:
 								{
 									url: baseurl+'RekapTIMSPromosiPekerja/RekapAbsensiPekerja/daftarSeksi',
