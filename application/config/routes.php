@@ -2194,12 +2194,17 @@ $route['AccountPayables/MonitoringInvoice/InvoiceKasie/(:any)'] = 'MonitoringInv
 $route['AccountPayables/MonitoringInvoice/InvoiceKasie/(:any)/(:any)'] = 'MonitoringInvKasiePembelian/C_kasiepembelian/$1/$2';
 $route['AccountPayables/MonitoringInvoice/InvoiceKasie/(:any)/(:any)/(:any)'] = 'MonitoringInvKasiePembelian/C_kasiepembelian/$1/$2/$3';
 $route['AccountPayables/MonitoringInvoice/FinishBatch'] = 'MonitoringInvKasiePembelian/C_kasiepembelian/finishBatch';
+$route['AccountPayables/MonitoringInvoice/InvoiceBermasalahKasiePurc/(:any)'] = 'MonitoringInvKasiePembelian/C_kasiepembelian/$1';
 $route['AccountPayables/MonitoringInvoice/InvoiceBermasalahKasiePurc/List'] = 'MonitoringInvKasiePembelian/C_kasiepembelian/invBermasalahKasie';
 $route['AccountPayables/MonitoringInvoice/InvoiceBermasalahKasiePurc/List/(:any)'] = 'MonitoringInvKasiePembelian/C_kasiepembelian/$1';
 $route['AccountPayables/MonitoringInvoice/InvoiceBermasalahKasiePurc/List/(:any)/(:any)'] = 'MonitoringInvKasiePembelian/C_kasiepembelian/$1/$2';
 $route['AccountPayables/MonitoringInvoice/InvoiceBermasalahKasiePurc/Finish'] = 'MonitoringInvKasiePembelian/C_kasiepembelian/FinishInvBermasalah';
-$route['AccountPayables/MonitoringInvoice/InvoiceBermasalahKasiePurc/(:any)'] = 'MonitoringInvKasiePembelian/C_kasiepembelian/$1';
-$route['AccountPayables/MonitoringInvoice/InvoiceBermasalahKasiePurc/(:any)/(:any)'] = 'MonitoringInvKasiePembelian/C_kasiepembelian/$1/$2';
+$route['AccountPayables/MonitoringInvoice/InvoiceBermasalahBuyer/List'] = 'MonitoringInvKasiePembelian/C_kasiepembelian/invBermasalahBuyer';
+$route['AccountPayables/MonitoringInvoice/InvoiceBermasalahBuyer/List/(:any)'] = 'MonitoringInvKasiePembelian/C_kasiepembelian/$1';
+$route['AccountPayables/MonitoringInvoice/InvoiceBermasalahBuyer/List/(:any)/(:any)'] = 'MonitoringInvKasiePembelian/C_kasiepembelian/$1/$2';
+$route['AccountPayables/MonitoringInvoice/InvoiceBermasalahBuyer/Finish'] = 'MonitoringInvKasiePembelian/C_kasiepembelian/FinishInvBermasalahBuyer';
+$route['AccountPayables/MonitoringInvoice/InvoiceBermasalahBuyer/Finish/(:any)'] = 'MonitoringInvKasiePembelian/C_kasiepembelian/$1';
+$route['AccountPayables/MonitoringInvoice/InvoiceBermasalahBuyer/Sistem'] = 'MonitoringInvKasiePembelian/C_kasiepembelian/InvBermasalahBuyerSistem';
 
 //--------------------------------------------------- Monitoring Invoice Akuntansi --------------------------------------------------//
 $route['AccountPayables/MonitoringInvoice/NewInvoice'] = 'MonitoringInvoiceAkuntansi/C_monitoringakuntansi/newInvoiceAkt';
@@ -2554,6 +2559,12 @@ $route['SPL/Daftarjari'] = 'SPLSeksi/C_splpersonalia/finger';
 $route['SPL/Daftarjari/(:any)'] = 'SPLSeksi/C_splpersonalia/$1';
 $route['SPL/DaftarFingerspot'] = 'SPLSeksi/C_splpersonalia/fingerspot';
 $route['SPL/DaftarFingerspot/(:any)'] = 'SPLSeksi/C_splpersonalia/$1';
+$route['SPL/AccessSection'] = 'SPLSeksi/C_splpersonalia/AccessSection';
+$route['SPL/AccessSection/ajax/showpekerja'] = 'SPLSeksi/C_splpersonalia/showpekerja';
+$route['SPL/AccessSection/ajax/showallsection'] = 'SPLSeksi/C_splpersonalia/ajaxGetAllSection';
+$route['SPL/AccessSection/ajax/insertAccessSection'] = 'SPLSeksi/C_splpersonalia/ajaxInsertAccessSection';
+$route['SPL/AccessSection/ajax/getInfoNoind'] = 'SPLSeksi/C_splpersonalia/ajaxGetInfoNoind';
+$route['SPL/AccessSection/ajax/deleteAccess'] = 'SPLSeksi/C_splpersonalia/ajaxDeleteAccess';
 
 $route['SPL/Pusat'] = 'SPLSeksi/Pusat/C_splseksi';
 $route['SPL/Pusat/InputLembur'] = 'SPLSeksi/Pusat/C_splseksi/new_spl';
@@ -2561,6 +2572,7 @@ $route['SPL/Pusat/ListLembur'] = 'SPLSeksi/Pusat/C_splseksi/data_spl';
 $route['SPL/Pusat/RekapLembur'] = 'SPLSeksi/Pusat/C_splseksi/rekap_spl';
 $route['SPL/Pusat/EditLembur/(:any)'] = 'SPLSeksi/Pusat/C_splseksi/edit_spl/$1';
 $route['SPL/Pusat/HapusLembur/(:any)'] = 'SPLSeksi/Pusat/C_splseksi/hapus_spl/$1';
+$route['SPL/Pusat/ajax/sendReminderEmail'] = 'SPLSeksi/Pusat/C_splseksi/ajaxSendReminderEmail';
 
 //---------------------------------------------------- Booking Kendaraan --------------------------------------//
 // hati hati kadang any any gak bisa kepanggil
@@ -3606,3 +3618,9 @@ $route['KapasitasGdSparepart/Pengeluaran/(:any)/(:any)']= 'KapasitasGdSparepart/
 $route['KapasitasGdSparepart/Packing']					= 'KapasitasGdSparepart/C_Packing';
 $route['KapasitasGdSparepart/Packing/(:any)']			= 'KapasitasGdSparepart/C_Packing/$1';
 $route['KapasitasGdSparepart/Packing/(:any)/(:any)']	= 'KapasitasGdSparepart/C_Packing/$1/$2';
+
+//--------------------------------------Rekap jenis Pekerjaan ---------------------------------------//
+$route['RekapJenisPekerjaan'] 							= 'RekapJenisPekerjaan/C_Rjp';
+$route['RekapJenisPekerjaan/Rekap'] 					= 'RekapJenisPekerjaan/C_Rjp/Rekap';
+$route['RekapJenisPekerjaan/Rekap/(:any)'] 				= 'RekapJenisPekerjaan/C_Rjp/$1';
+$route['RekapJenisPekerjaan/Rekap/(:any)/(:any)'] 		= 'RekapJenisPekerjaan/C_Rjp/$1/$2';
