@@ -3,7 +3,44 @@
 	.text-left span {
 		font-size: 36px
 	}
+
 </style>
+
+<?php 
+$alert = $status[0]['SATU'];
+
+	if ($alert !== '0' ) { ?>
+
+	<script type="text/javascript">
+		$(document).ready(function(){
+
+			$.ajax({
+					type: "POST",
+					url: baseurl+"AccountPayables/MonitoringInvoice/InvoiceBermasalahAkt/ambilAlert",
+					dataType: 'JSON',
+					success: function(response) {
+						console.log(response)
+					Swal.fire({
+  									type: 'error',
+  									title: 'Please Re-Check!',
+ 									text: 'Outstanding Check : Sejumlah '+response+' Invoice perlu direkonfirmasi dan diselesaikan!',
+									}) 
+								}
+			 				})
+		});
+		
+	</script>
+<?php }else if ($alert == '0' ) { ?>
+	<script type="text/javascript">
+		$(document).ready(function(){
+					Swal.fire({
+  									type: 'success',
+  									title: 'All Catched Up!',
+ 									text: 'Akuntansi : Seluruh invoice bermasalah sudah dikonfirmasi',
+									}) 
+								})
+	</script>
+<?php } ?>
 <section class="content">
 	<div class="inner" >
 		<div class="row">
@@ -63,12 +100,21 @@
 												<?php } ?>
 
 												<?php if ($u['STATUS_INV_BERMASALAH'] == 4 ) { ?>
-												<a title="Selesaikan Invoice..." style="width:100px;margin-bottom: 5px" onclick="selesaikanInvoice(<?php echo $u['INVOICE_ID']?>)" class="btn btn-success btn-sm"><i class="fa fa-check"></i> Selesaikan
+													<?php if ($u['RESTATUS_BERKAS_PURC'] == NULL ) { ?>
+												<a disabled title="Selesaikan Invoice..." style="width:100px;margin-bottom: 5px" onclick="selesaikanInvoice(<?php echo $u['INVOICE_ID']?>)" class="btn btn-success btn-sm"><i class="fa fa-check"></i> Selesaikan
 												</a>
+												<?php }else {?>
+													<a title="Selesaikan Invoice..." style="width:100px;margin-bottom: 5px" onclick="selesaikanInvoice(<?php echo $u['INVOICE_ID']?>)" class="btn btn-success btn-sm"><i class="fa fa-check"></i> Selesaikan
+												</a>
+												<?php } ?>
 												<?php } ?>
 
 												<?php if ($u['RESTATUS_BERKAS_AKT'] == NULL && $u['STATUS_INV_BERMASALAH'] == 4 ) { ?>
+													<?php if ($u['RESTATUS_BERKAS_PURC'] == NULL ) { ?>
+													<button disabled data-target="MdlAkuntansi" data-toggle="modal" title="Konfirmasi Kembali ..." style="width:100px;margin-top: 5px" onclick="konfirmasiKembaliAkt(<?php echo $u['INVOICE_ID'] ?>)" type="button" class="btn btn-primary btn-sm" id="submitToAkt"><i class="fa fa-exchange"></i> Re-Konfirmasi</button>
+												<?php }else {?>
 													<button data-target="MdlAkuntansi" data-toggle="modal" title="Konfirmasi Kembali ..." style="width:100px;margin-top: 5px" onclick="konfirmasiKembaliAkt(<?php echo $u['INVOICE_ID'] ?>)" type="button" class="btn btn-primary btn-sm" id="submitToAkt"><i class="fa fa-exchange"></i> Re-Konfirmasi</button>
+												<?php } ?>
 												<?php } ?>
 											</td>
 											<td><?php echo $u['VENDOR_NAME']?></td>

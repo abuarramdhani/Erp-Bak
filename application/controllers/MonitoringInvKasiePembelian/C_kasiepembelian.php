@@ -81,6 +81,23 @@ class C_kasiepembelian extends CI_Controller{
 		$submitKeBuyer = $this->M_kasiepembelian->ForwardToBuyer($invoice_id,$buyer);
 	}
 
+	public function ambilAlert()
+	{
+		$getStatusSatu = $this->M_kasiepembelian->getStatusSatu();
+		$status = $getStatusSatu[0]['SATU'];
+
+		echo json_encode($status);
+	}
+
+	public function ambilAlert2()
+	{
+		$user = $this->session->user;
+		$getStatusSatu = $this->M_kasiepembelian->getStatusBuyer($user);
+		$status = $getStatusSatu[0]['SATU'];
+
+		echo json_encode($status);
+	}
+
 	public function InputFeedback()
 	{
 		$invoice_id = $this->input->post('invoice_id');
@@ -526,7 +543,7 @@ class C_kasiepembelian extends CI_Controller{
 		$user = $this->session->user;
 		$bermasalah = $this->M_kasiepembelian->listInvBermasalahBuyer($user);
 		$listBuyer = $this->M_kasiepembelian->getBuyer();
-		$getStatusSatu = $this->M_kasiepembelian->getStatusBuyer();
+		$getStatusSatu = $this->M_kasiepembelian->getStatusBuyer($user);
 		
 		$no = 0;
 		foreach ($bermasalah as $inv => $value) {

@@ -11,12 +11,20 @@ $alert = $status[0]['SATU'];
 	if ($alert !== '0' ) { ?>
 	<script type="text/javascript">
 		$(document).ready(function(){
-		Swal.fire({
+		$.ajax({
+					type: "POST",
+					url: baseurl+"AccountPayables/MonitoringInvoice/InvoiceBermasalahBuyer/List/ambilAlert2",
+					dataType: 'JSON',
+					success: function(response) {
+						console.log(response)
+					Swal.fire({
   									type: 'error',
   									title: 'Please Re-Check!',
- 									text: 'Buyer : Invoice bermasalah ada yang belum dikonfirmasi!',
+ 									text: 'Outstanding Check : Sejumlah '+response+' Invoice bermasalah belum dikonfirmasi!',
 									}) 
-								})
+								}
+			 				})
+		})
 	</script>
 <?php }else if ($alert == '0' ) { ?>
 	<script type="text/javascript">

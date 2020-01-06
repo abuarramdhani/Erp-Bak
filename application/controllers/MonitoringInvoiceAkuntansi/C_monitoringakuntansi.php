@@ -71,6 +71,14 @@ class C_monitoringakuntansi extends CI_Controller{
 		// $this->output->cache(1);
 	}
 
+	public function ambilAlert()
+	{
+		$getStatusSatu = $this->M_monitoringakuntansi->getStatusSatu();
+		$status = $getStatusSatu[0]['SATU'];
+
+		echo json_encode($status);
+	}
+
 	public function EndStatus()
 	{
 		$invoice_id = $this->input->post('invoice_id');
@@ -608,6 +616,8 @@ class C_monitoringakuntansi extends CI_Controller{
 		$data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id);
 
 		$bermasalah = $this->M_monitoringakuntansi->listInvBermasalah();
+		$getStatusSatu = $this->M_monitoringakuntansi->getStatusSatu();
+		
 		
 		$no = 0;
 		foreach ($bermasalah as $inv => $value) {
@@ -658,6 +668,7 @@ class C_monitoringakuntansi extends CI_Controller{
 			$no++;
 		}
 		$data['bermasalah'] =$bermasalah;
+		$data['status'] = $getStatusSatu;
 		// $data['ppn'] = $ppn;
 
 		$this->load->view('V_Header',$data);
