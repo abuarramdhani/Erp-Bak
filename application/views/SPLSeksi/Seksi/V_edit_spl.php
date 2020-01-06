@@ -129,9 +129,9 @@
 									</div>
 
 									<div class="form-group">
-										<label class="col-sm-2 control-label">Pekerjaan</label>
+										<label class="col-sm-2 control-label">Alasan</label>
 										<div class="col-sm-10">
-											<textarea class="form-control" rows="3" name="pekerjaan" <?php echo $status ?>><?php echo $l['Pekerjaan']; ?></textarea>
+											<textarea class="form-control" rows="3" name="pekerjaan" <?php echo $status ?>><?php echo $l['alasan_lembur']; ?></textarea>
 										</div>
 									</div>
 
@@ -149,14 +149,16 @@
 
 									<div class="form-group">
 										<label class="col-sm-1 control-label">Pekerja</label>
-										<div class="col-sm-10">
+										<div class="col-sm-12">
 											<table id="example11" class="table table-bordered table-striped text-center">
 												<thead style="background:#3c8dbc; color:#fff">
 													<th width="5%">No.</th>
-													<th width="40%">Pekerja</th>
-													<th width="5%">Target/Pcs</th>
-													<th width="5%">Realisasi/Pcs</th>
-													<th width="45%">Alasan Lembur</th>
+													<th width="30%">Pekerja</th>
+													<th width="10%">Target</th>
+													<th width="10%">Satuan</th>
+													<th width="10%">Realisasi</th>
+													<th width="10%">Satuan</th>
+													<th width="45%">Pekerjaan</th>
 												</thead>
 												<tbody>
 													<tr class="multiinput"><td>-</td>
@@ -167,11 +169,57 @@
 																</option>
 															</select>
 														</td>
+														<?php
+															if($l['target'] == '-' ||$l['target'] == ''){
+																$target = '';
+																$target_satuan = '';
+															}else{
+																$isHaveUnit = explode(' ', trim($l['target']));
+																if(count($isHaveUnit) > 1){
+																	$target = $isHaveUnit[0];
+																	$target_satuan = $isHaveUnit[1];
+																}else{
+																	$target = $l['target'];
+																	$target_satuan = '';
+																}
+															}
+														?>
 														<td><input type="number" class="form-control" name="target[]"
-															value="<?php echo $l['target']; ?>" <?php echo $status ?>></td>
+															value="<?= $target ?>" <?php echo $status ?>>
+														</td>
+														<td>
+															<select class="form-control" name="target_satuan[]">
+																<option value="" <?= $target_satuan == '' ? 'selected' : '' ?>></option>
+																<option value="Pcs" <?= $target_satuan == 'Pcs' ? 'selected' : '' ?>>Pcs</option>
+																<option value="%" <?= $target_satuan == '%' ? 'selected' : '' ?>>%</option>
+															</select>
+														</td>
+														<?php
+															if($l['realisasi'] == '-' ||$l['realisasi'] == ''){
+																$target = '';
+																$target_satuan = '';
+															}else{
+																$isHaveUnit = explode(' ', trim($l['realisasi']));
+																if(count($isHaveUnit) > 1){
+																	$target = $isHaveUnit[0];
+																	$target_satuan = $isHaveUnit[1];
+																}else{
+																	$target = $l['realisasi'];
+																	$target_satuan = '';
+																}
+															}
+														?>
 														<td><input type="number" class="form-control" name="realisasi[]"
-															value="<?php echo $l['realisasi']; ?>" <?php echo $status ?>></td>
-														<td><textarea class="form-control" rows="1" name="alasan[]" <?php echo $status ?>><?php echo $l['alasan_lembur']; ?></textarea></td></tr>
+															value="<?php echo $target; ?>" <?php echo $status ?>>
+														</td>
+														<td>
+															<select class="form-control" name="realisasi_satuan[]">
+																<option value="" <?= $target_satuan == '' ? 'selected' : '' ?>></option>
+																<option value="Pcs" <?= $target_satuan == 'Pcs' ? 'selected' : '' ?>>Pcs</option>
+																<option value="%" <?= $target_satuan == '%' ? 'selected' : '' ?>>%</option>
+															</select>
+														</td>
+														<td><textarea style="resize: vertical; min-height: 30px;" class="form-control texarea-vertical" rows="1" name="alasan[]" <?php echo $status ?>><?php echo $l['Pekerjaan']; ?></textarea></td></tr>
 												</tbody>
 											</table>
 										</div>
