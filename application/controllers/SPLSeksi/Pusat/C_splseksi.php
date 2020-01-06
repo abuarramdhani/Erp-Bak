@@ -113,7 +113,6 @@ class C_splseksi extends CI_Controller {
 
 		$hari_indo = "Minggu Senin Selasa Rabu Kamis Jumat Sabtu";
 		$array_hari = explode(' ', $hari_indo);
-		$tgl = date('Y-m-d', strtotime($tgl));
 		//--------------------core variable
 		$KET  		= $this->M_splseksi->getKeteranganJamLembur($noind);
 		$JENIS_HARI	= $this->M_splseksi->getJenisHari($tgl, $noind);
@@ -151,7 +150,6 @@ class C_splseksi extends CI_Controller {
 		$BREAK = $break == 'Y' ? 15 : 0;
 		$ISTIRAHAT = $istirahat == 'Y' ? 45 : 0;
 		//----------------------
-
 		$estimasi = 0;
 		if(!empty($treffjamlembur)):
 			$total_lembur = $MENIT_LEMBUR-($BREAK+$ISTIRAHAT);
@@ -162,9 +160,11 @@ class C_splseksi extends CI_Controller {
 				$pengali = $treffjamlembur[$i]['pengali'];
 
 				if($total_lembur > $jml_jam){
+
 					$estimasi = $estimasi + $jml_jam * $pengali/60;
 					$total_lembur = $total_lembur - $jml_jam;
 				}else{
+
 					$estimasi = $estimasi + ($total_lembur * $pengali/60);
 					$estimasi = number_format($estimasi,2);
 					$total_lembur = 0;

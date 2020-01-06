@@ -111,7 +111,7 @@ class C_splasska extends CI_Controller {
 		$array_hari = explode(' ', $hari_indo);
 		//--------------------core variable
 		$KET  		= $this->M_splseksi->getKeteranganJamLembur($noind);
-		$JENIS_HARI	= $this->M_splseksi->getJenisHari($tgl);
+		$JENIS_HARI	= $this->M_splseksi->getJenisHari($tgl, $noind);
 		$HARI 		= $array_hari[$day];
 		//-----------------------
 		$treffjamlembur = $this->M_splseksi->treffjamlembur($KET, $JENIS_HARI, $HARI);
@@ -133,7 +133,7 @@ class C_splasska extends CI_Controller {
 
 		if($kode_lembur == '005'){
 			$shift = $this->M_splseksi->selectShift($noind, $tgl);
-			$shift = (strtotime('15:30:00') - strtotime('07:20:00'));
+			$shift = (strtotime($shift->jam_plg) - strtotime($shift->jam_msk));
 			$shift = $shift/60;
 		 	$result = $lama_lembur-$shift;
 		}else{
@@ -146,7 +146,6 @@ class C_splasska extends CI_Controller {
 		$BREAK = $break == 'Y' ? 15 : 0;
 		$ISTIRAHAT = $istirahat == 'Y' ? 45 : 0;
 		//----------------------
-
 		$estimasi = 0;
 		if(!empty($treffjamlembur)):
 			$total_lembur = $MENIT_LEMBUR-($BREAK+$ISTIRAHAT);
@@ -157,9 +156,11 @@ class C_splasska extends CI_Controller {
 				$pengali = $treffjamlembur[$i]['pengali'];
 
 				if($total_lembur > $jml_jam){
+
 					$estimasi = $estimasi + $jml_jam * $pengali/60;
 					$total_lembur = $total_lembur - $jml_jam;
 				}else{
+
 					$estimasi = $estimasi + ($total_lembur * $pengali/60);
 					$estimasi = number_format($estimasi,2);
 					$total_lembur = 0;
