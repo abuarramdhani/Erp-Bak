@@ -73,7 +73,7 @@ class C_Rjp extends CI_Controller
 		if ($statAll == 1) {
 			$kode = "tp.noind like '%%'";
 		}else{
-			$kode = implode(', ', $stathub);
+			$kode = implode("', '", $stathub);
 			$kode = "substring(tp.noind,1,1) in ('".$kode."')";
 		}
 
