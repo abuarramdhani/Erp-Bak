@@ -106,7 +106,7 @@ class C_Lelayu extends CI_Controller
 
     $bulancutoff = $this->M_lelayu->getCutoffBulanIni();
     $tanggalcutoff = date('d');
-    $bulanlalu = date('Y-m-d', strtotime($bulancutoff. ' -1 month'));
+    $bulanlalu = $this->M_lelayu->getCutoffBulanLalu();
 
     $id = $this->M_lelayu->getID();
     $noindAll = $this->M_lelayu->getNoindAll($bulancutoff, $tanggalcutoff, $bulanlalu);
