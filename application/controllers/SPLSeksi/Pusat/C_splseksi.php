@@ -116,7 +116,7 @@ class C_splseksi extends CI_Controller {
 		$tgl = date('Y-m-d', strtotime($tgl));
 		//--------------------core variable
 		$KET  		= $this->M_splseksi->getKeteranganJamLembur($noind);
-		$JENIS_HARI	= $this->M_splseksi->getJenisHari($tgl);
+		$JENIS_HARI	= $this->M_splseksi->getJenisHari($tgl, $noind);
 		$HARI 		= $array_hari[$day];
 		//-----------------------
 		$treffjamlembur = $this->M_splseksi->treffjamlembur($KET, $JENIS_HARI, $HARI);
@@ -407,7 +407,7 @@ class C_splseksi extends CI_Controller {
 		$this->load->view('V_Footer',$data);
 	}
 
-	public function edit_spl_submit(){
+	public function edit_spl_submit(){ echo "Pusat";die;
 		$this->checkSession();
 		$user_id = $this->session->user;
 		$tanggal = $this->input->post('tanggal');
