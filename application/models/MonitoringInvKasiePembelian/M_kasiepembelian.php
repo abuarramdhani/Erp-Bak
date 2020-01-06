@@ -723,15 +723,15 @@ class M_kasiepembelian extends CI_Model {
     public function getStatusSatu()
     {
         $oracle = $this->load->database('oracle',TRUE);
-        $sql = "SELECT COUNT(INVOICE_ID) SATU FROM khs_ap_monitoring_invoice WHERE STATUS_INV_BERMASALAH = 1";
+        $sql = "SELECT COUNT(INVOICE_ID) SATU FROM khs_ap_monitoring_invoice WHERE STATUS_INV_BERMASALAH IN (1,3)";
         $run = $oracle->query($sql);
         return $run->result_array();
     }
 
-    public function getStatusBuyer()
+    public function getStatusBuyer($user)
     {
         $oracle = $this->load->database('oracle',TRUE);
-        $sql = "SELECT COUNT(INVOICE_ID) SATU FROM khs_ap_monitoring_invoice WHERE STATUS_INV_BERMASALAH = 3";
+        $sql = "SELECT COUNT(INVOICE_ID) SATU FROM khs_ap_monitoring_invoice WHERE STATUS_INV_BERMASALAH = 3 AND NO_INDUK_BUYER = '$user'";
         $run = $oracle->query($sql);
         return $run->result_array();
     }

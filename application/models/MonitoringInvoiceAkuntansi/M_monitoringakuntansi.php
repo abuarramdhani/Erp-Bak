@@ -40,6 +40,14 @@ class M_monitoringakuntansi extends CI_Model {
 
     //---------------------------------------------------tambahan menu start from here-----------------------//
 
+   public function getStatusSatu()
+    {
+        $oracle = $this->load->database('oracle',TRUE);
+        $sql = "SELECT COUNT(INVOICE_ID) SATU FROM khs_ap_monitoring_invoice WHERE STATUS_INV_BERMASALAH IN (4)";
+        $run = $oracle->query($sql);
+        return $run->result_array();
+    }
+
      public function saveReconfirmInvBermasalah($invoice_id,$action_date,$status_berkas)
     {
         $erp_db = $this->load->database('oracle',true);
@@ -643,6 +651,7 @@ public function editInvData($invoice_id)
                 ami.purc_action_bermasalah,
                 ami.feedback_purchasing,
                 ami.RESTATUS_BERKAS_AKT,
+                ami.RESTATUS_BERKAS_PURC,
                 (SELECT COUNT (adi.status_document_purc) hasil_n
                    FROM khs_ap_dokumen_inv adi LEFT JOIN khs_ap_monitoring_invoice ami2
                      ON ami2.invoice_id = adi.invoice_id
