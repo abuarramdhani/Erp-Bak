@@ -241,6 +241,18 @@ $(function() {
         $(this).closest('tr').remove();
     });
 
+    $('button[type=submit]').on('click', function(e) {
+        let waktu1 = $('input[name=tanggal_0]') + ' ' + $('input[name=waktu_0]').val()
+        let waktu2 = $('input[name=tanggal_1]') + ' ' + $('input[name=waktu_1]').val()
+        let kd_lembur = $('input[name=kd_lembur]').val()
+
+        if (waktu1 == waktu2) {
+            swal.fire('Waktu lembur yang diambil tidak boleh sama !!!', '', 'danger')
+            e.preventDefault()
+            return
+        }
+    })
+
     $("#spl_pkj_add").click(function(e) {
         e.preventDefault();
         $('.multiinput select[name*=noind]').last().select2("destroy");

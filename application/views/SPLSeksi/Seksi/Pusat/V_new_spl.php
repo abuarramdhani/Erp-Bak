@@ -33,6 +33,11 @@
 								<p>Noind <?=$exist ?> Sudah memiliki SPL di tanggal tersebut</p>
 							</div>
 						<?php endif; ?>
+					<?php elseif($result == 3): ?>
+						<div class="callout callout-danger">
+							<h4>Gagal!</h4>
+							<p>Waktu lembur yang diambil tidak boleh sama !!!</p>
+						</div>
 					<?php else: ?>
 						<div class="callout callout-danger">
 							<h4>Gagal!</h4>
