@@ -608,6 +608,7 @@ class M_splseksi extends CI_Model{
 	}
 
 	public function selectShift($noind, $tanggal){
+		$tanggal = date('Y-m-d', strtotime($tanggal));
 		$sql = "SELECT jam_msk, jam_plg FROM \"Presensi\".tshiftpekerja where noind='$noind' and tanggal='$tanggal'";
 		return $this->prs->query($sql)->row();
 	}
