@@ -47,27 +47,15 @@
 							<div class="row">
 								<div class="col-lg-6">
 
-									<div class="form-group">
-										<label class="col-sm-2 control-label">Tanggal Bekerja</label>
-										<div class="col-sm-10">
-											<div class="input-group">
-												<div class="input-group-addon">
-													<i class="fa fa-calendar"></i>
-												</div>
-												<input type="text" class="form-control pull-right spl-date " name="tanggal" value="<?php echo date("d-m-Y"); ?>" required>
-											</div>
-										</div>
-									</div>
-
-									<div class="form-group">
+									<div class="form-group" style="margin-bottom: 0 !important;">
 										<label class="col-sm-2 control-label">Waktu Lembur</label>
 										<div class="col-sm-5">
 											<div class="bootstrap-timepicker">
 												<div class="input-group">
 													<div class="input-group-addon">
-														<i class="fa fa-clock-o"></i>
+														<i class="fa fa-calendar"></i>
 													</div>
-													<input type="text" class="form-control spl-time-mask " name="waktu_0" required>
+													<input type="text" class="form-control pull-right spl-date" name="tanggal_0" value="<?php echo date("d-m-Y"); ?>" required>
 												</div>
 											</div>
 										</div>
@@ -77,7 +65,30 @@
 													<div class="input-group-addon">
 														<i class="fa fa-clock-o"></i>
 													</div>
-													<input type="text" class="form-control spl-time-mask " name="waktu_1" required>
+													<input type="text" class="form-control spl-time-mask" name="waktu_0" required>
+												</div>
+											</div>
+										</div>
+									</div>
+									<div class="form-group">
+										<label class="col-sm-2 control-label"></label>
+										<div class="col-sm-5">
+											<div class="bootstrap-timepicker">
+												<div class="input-group">
+													<div class="input-group-addon">
+														<i class="fa fa-calendar"></i>
+													</div>
+													<input type="text" class="form-control pull-right spl-date" name="tanggal_1" value="<?php echo date("d-m-Y"); ?>" required>
+												</div>
+											</div>
+										</div>
+										<div class="col-sm-5">
+											<div class="bootstrap-timepicker">
+												<div class="input-group">
+													<div class="input-group-addon">
+														<i class="fa fa-clock-o"></i>
+													</div>
+													<input type="text" class="form-control spl-time-mask" name="waktu_1" required>
 												</div>
 											</div>
 										</div>
@@ -134,19 +145,14 @@
 										</div>
 									</div>
 
-									<!-- <div class="form-group">
-										<label class="col-sm-2 control-label">Estimasi</label>
-										<div class="col-sm-10">
-											<span id="estJamLembur">Isi data dengan lengkap</span>
-										</div>
-									</div> -->
-
 								</div>
 							</div>
 							<!-- hidden input start -->
-							<input type="hidden" name="tanggal_simpan">
+							<input type="hidden" name="tanggal_0_simpan">
+							<input type="hidden" name="tanggal_1_simpan">
 							<input type="hidden" name="waktu_0_simpan">
 							<input type="hidden" name="waktu_1_simpan">
+
 							<input type="hidden" name="kd_lembur_simpan">
 							<input type="hidden" name="istirahat_simpan">
 							<input type="hidden" name="break_simpan">
@@ -155,10 +161,10 @@
 							<div class="row">
 								<div class="col-lg-12">
 									<div class="form-group">
-										<label class="col-sm-1 control-label">Pekerja</label>
 										<div class="col-sm-12">
-											<button type="button" class="btn btn-primary btn-sm" style="float: right; margin-bottom: 1em;">
-												<i id="spl_pkj_add" class="fa fa-plus"></i>
+										<label class="col-sm-1 control-label">Pekerja</label>
+											<button id="spl_pkj_add" type="button" class="btn btn-primary btn-sm" style="float: right; margin-bottom: 1em;">
+												<i class="fa fa-plus"></i>
 											</button>
 											<table id="example11" class="table table-responsive table-bordered table-striped text-center">
 												<thead style="background:#3c8dbc; color:#fff">
@@ -196,6 +202,7 @@
 														<td><input type="number" class="form-control" name="target[]"></td>
 														<td>
 															<select class="form-control" name="target_satuan[]">
+																<option value=""></option>
 																<option value="Pcs">Pcs</option>
 																<option value="%">%</option>
 															</select>
@@ -203,6 +210,7 @@
 														<td><input type="number" class="form-control" name="realisasi[]"></td>
 														<td>
 															<select class="form-control" name="realisasi_satuan[]">
+																<option value=""></option>
 																<option value="Pcs">Pcs</option>
 																<option value="%">%</option>
 															</select>

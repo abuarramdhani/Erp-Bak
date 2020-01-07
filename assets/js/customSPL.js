@@ -282,44 +282,13 @@ $(function() {
         });
     });
 
-    // $('#example11').on('change',".spl-cek", function(e){
-    //   var noindSPL = $(this).val();
-    //   var parentSelect = $(this).closest('td');
-    //   if (noindSPL && noindSPL !== "") {
-    //     $.ajax({
-    //       url: baseurl+"SPLSeksi/C_splseksi/cek_anonymous",
-    //       type: "POST",
-    //       data: {
-    //         tanggal: $('input[name*=tanggal]').val(),
-    //         waktu0: $('input[name*=waktu_0]').val(),
-    //         waktu1: $('input[name*=waktu_1]').val(),
-    //         lembur: $('select[name*=kd_lembur]').val(),
-    //         noind: $(this).val()},
-    //       async: false,
-    //       success: function(data) {
-    //         if(data){
-    //           // alert("result code : "+data);
-    //           parentSelect.css("background", "#ffe6e6");
-    //           $("button[type*=submit]").attr("type", "button").attr("class", "btn btn-grey");
-    //           // $(".spl-error").remove();
-    //           parentSelect.find(".spl-new-error").remove();
-    //           parentSelect.append("<p class='spl-new-error' style='color: red'><br><i style='color:#ed2b1f' class='fa fa-lg fa-info-circle spl-error' title='"+data+"'></i>  Peringatan : "+data+"</p>");
-
-    //         }else{
-    //           parentSelect.css("background", "#ffffff");
-    //           $("button[type*=button]").attr("type", "submit").attr("class", "btn btn-primary");
-    //           // $(".spl-error").remove();
-    //           parentSelect.find(".spl-new-error").remove();
-    //         }
-    //       },
-    //       error : function() {
-    //         alert("error code : spl-cek");
-    //       }
-    //     });
-    //   }
+    $('#form-edit-spl').on('change', e => {
+        console.log("You're changing, I can't stand it")
+    })
 
     $('#example11').on('change', ".spl-cek", function(e) {
-        tanggal = $('input[name*=tanggal]').val();
+        tanggal0 = $('input[name*=tanggal_0]').val();
+        tanggal1 = $('input[name*=tanggal_1]').val();
         waktu0 = $('input[name*=waktu_0]').val();
         waktu1 = $('input[name*=waktu_1]').val();
         lembur = $('select[name*=kd_lembur]').val();
@@ -327,7 +296,8 @@ $(function() {
         break0 = $('input[name*=break]:checked').val();
         pekerjaan = $('textarea[name*=pekerjaan]').val();
 
-        $('input[name*=tanggal_simpan]').val(tanggal);
+        $('input[name*=tanggal_0_simpan]').val(tanggal0);
+        $('input[name*=tanggal_1_simpan]').val(tanggal1);
         $('input[name*=waktu_0_simpan]').val(waktu0);
         $('input[name*=waktu_1_simpan]').val(waktu1);
         $('input[name*=kd_lembur_simpan]').val(lembur);
@@ -343,7 +313,8 @@ $(function() {
 
         if (splLink.search("Pusat") !== -1) {
             ajaxlink = baseurl + "SPLSeksi/Pusat/C_splseksi/cek_anonymous2";
-            $('input[name=tanggal]').attr("disabled", "disabled");
+            $('input[name=tanggal_0]').attr("disabled", "disabled");
+            $('input[name=tanggal_1]').attr("disabled", "disabled");
             $('input[name=waktu_0]').attr("disabled", "disabled");
             $('input[name=waktu_1]').attr("disabled", "disabled");
             $('input[name=istirahat]').attr("disabled", "disabled");
@@ -351,21 +322,22 @@ $(function() {
             $('select[name=kd_lembur]').attr("disabled", "disabled");
             $('textarea[name=pekerjaan]').attr("disabled", "disabled");
         } else {
-            ajaxlink = baseurl + "SPLSeksi/C_splseksi/cek_anonymous2";
+            ajaxlink = baseurl + "SPLSeksi/Pusat/C_splseksi/cek_anonymous2";
         }
         if (noindSPL && noindSPL !== "") {
             $.ajax({
                 url: ajaxlink,
                 type: "POST",
                 data: {
-                    tanggal: tanggal,
+                    tanggal0: tanggal0,
+                    tanggal1: tanggal1,
                     waktu0: waktu0,
                     waktu1: waktu1,
                     lembur: lembur,
                     istirahat: istirahat,
                     break0: break0,
                     pekerjaan: pekerjaan,
-                    noind: $(this).val()
+                    noind: noindSPL
                 },
                 async: false,
                 success: function(data) {
@@ -1031,7 +1003,7 @@ const count_overtime = (...args) => {
             data: params,
             url: baseurl + 'SPL/Pusat/ajax_count_overtime',
             success: res => {
-                $('#estJamLembur').text(res)
+                $('#estJamLembur').text(res + ' jam')
                 resolve(res)
             }
         })
