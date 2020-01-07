@@ -69,7 +69,6 @@
                                                 <th>PIC</th>
                                                 <th>Status</th>
                                                 <th>Keterangan</th>
-                                                <th>Action</th>
                                                 <th></th>
                                             </tr>
                                         </thead>

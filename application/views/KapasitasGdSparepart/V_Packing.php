@@ -67,7 +67,6 @@
                                                     <th>Jumlah Pcs</th>
                                                     <th>PIC</th>
                                                     <th>Keterangan</th>
-                                                    <th>Action</th>
                                                     <th></th>
                                                 </tr>
                                             </thead>
