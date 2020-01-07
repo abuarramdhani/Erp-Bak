@@ -13,7 +13,8 @@ class C_Index extends CI_Controller
 			$this->load->helper('html');
 			$this->load->helper('file');
 
-			$this->load->library('form_validation');
+			$this->load->library('form_validation');			
+			$this->load->library('pdf');
 			$this->load->library('session');
 			$this->load->library('encrypt');
 			$this->load->library('email');
@@ -143,21 +144,10 @@ class C_Index extends CI_Controller
 
 		$data['dataEmployee'] = $this->M_absenatasan->getListAbsenById($id);
 
-		// echo "<pre>";
-		// print_r($data['dataEmployee']);exit();
-
 		$noinduk = $data['dataEmployee'][0]['noind'];
 
-		// echo "<pre>";	
-		// print_r($noinduk);exit();
-
 		$data['employeeInfo'] = $this->M_absenatasan->getEmployeeInfo($noinduk);
-		// echo "<pre>";
-		// print_r($data['employeeInfo']);exit();
-
-		$section_code = $data['employeeInfo'][0]['section_code'];
-		$data['bidangUnit'] = $this->M_absenatasan->getFieldUnitInfo($section_code);
-
+		// echo "<pre>";print_r($data['dataEmployee']);exit();
 		$this->load->view('V_Header',$data);
 		$this->load->view('V_Sidemenu',$data);
 		$this->load->view('AbsenAtasan/V_Approval',$data);
@@ -278,6 +268,26 @@ class C_Index extends CI_Controller
 			redirect('AbsenAtasan/List');
 		}
 
+		function cetakApproval($id){
+			$mpdf = $this->pdf->load();
+			$data['dataEmployee'] = $this->M_absenatasan->getListAbsenById($id);
+			// echo "<pre>";print_r($data['dataEmployee']);exit();
+			$noinduk = $data['dataEmployee'][0]['noind'];
+
+			$data['employeeInfo'] = $this->M_absenatasan->getEmployeeInfo($noinduk);
+
+			$stylesheet = file_get_contents(base_url('assets/plugins/bootstrap/3.3.7/css/bootstrap.css'));
+			$view 	= $this->load->view('AbsenAtasan/V_CetakPDFAbsen',$data,true);
+			$mpdf 	= new mPDF('','A4',0,'',10,10,10,10);
+			$mpdf->WriteHTML($stylesheet,1);
+			$mpdf->WriteHTML($view,2);
+			$mpdf->showImageErrors = true;
+			$mpdf->Output('DetailAbsen.pdf','I');
+			$mpdf->set_time_limit(0);
+
+
+		}
+
 		function kirim_email($internalMail,$eksternalMail,$namaPekerja,$jenisAbsen,$waktu,$lokasi,$latitude,$longitude,$status,$atasan,$noindukAtasan){
 			date_default_timezone_set("Asia/Jakarta");
 
@@ -335,63 +345,63 @@ class C_Index extends CI_Controller
 		}
 	}
 
-	function kirim_emailPersonalia($namaPekerja,$jenisAbsen,$waktu,$lokasi,$latitude,$longitude,$status,$atasan,$noindukAtasan,$internalMailPersonalia,$externalMailPersonalia,$namaPekerjaPersonalia){
-		date_default_timezone_set("Asia/Jakarta");
+			function kirim_emailPersonalia($namaPekerja,$jenisAbsen,$waktu,$lokasi,$latitude,$longitude,$status,$atasan,$noindukAtasan,$internalMailPersonalia,$externalMailPersonalia,$namaPekerjaPersonalia){
+			date_default_timezone_set("Asia/Jakarta");
 
-		if(!$internalMailPersonalia==null){
-			$this->load->library('PHPMailerAutoload');
-			$mail = new PHPMailer;
-			$mail->isSMTP();
-			$mail->SMTPDebug = 0;
-			$mail->Debugoutput = 'html';
-			$mail->Host = 'm.quick.com';
-			$mail->Port = 465;
-			$mail->SMTPAuth = true;
-			$mail->SMTPSecure = 'ssl';
-			$mail->SMTPOptions = array(
-			'ssl' => array(
-			'verify_peer' => false,
-			'verify_peer_name' => false,
-			'allow_self_signed' => true
-			));
-			$mail->Username = 'no-reply@quick.com';
-			$mail->Password = "123456";
-			$mail->setFrom('noreply@quick.co.id', 'Notifikasi Absensi Online');
-			$mail->addAddress($internalMailPersonalia, 'Absensi Online Pekerja');
-			if(!$externalMailPersonalia==null){
-				$mail->addAddress($externalMailPersonalia, 'Absensi Online Pekerja');
+			if(!$internalMailPersonalia==null){
+				$this->load->library('PHPMailerAutoload');
+				$mail = new PHPMailer;
+				$mail->isSMTP();
+				$mail->SMTPDebug = 0;
+				$mail->Debugoutput = 'html';
+				$mail->Host = 'm.quick.com';
+				$mail->Port = 465;
+				$mail->SMTPAuth = true;
+				$mail->SMTPSecure = 'ssl';
+				$mail->SMTPOptions = array(
+				'ssl' => array(
+				'verify_peer' => false,
+				'verify_peer_name' => false,
+				'allow_self_signed' => true
+				));
+				$mail->Username = 'no-reply@quick.com';
+				$mail->Password = "123456";
+				$mail->setFrom('noreply@quick.co.id', 'Notifikasi Absensi Online');
+				$mail->addAddress($internalMailPersonalia, 'Absensi Online Pekerja');
+				if(!$externalMailPersonalia==null){
+					$mail->addAddress($externalMailPersonalia, 'Absensi Online Pekerja');
+				}
+				$mail->Subject = 'Absensi Online';
+				$mail->msgHTML("
+				<h4>Absensi Online</h4><hr>
+				Kepada Yth.<br>
+				$namaPekerjaPersonalia<br><br>
+				
+				Kami informasikan bahwa terdapat pekerja yang melakukan absensi online dengan detail sbb :<br><br>
+				Pekerja 		: $namaPekerja<br>
+				Jenis Absen 	: $jenisAbsen<br>
+				Waktu 			: $waktu<br>
+				Lokasi 			: $lokasi , koordinat : ( $latitude , $longitude ) 
+				<a href='http://maps.google.com/maps?q=$latitude,$longitude''>Lihat Lokasi di Google Maps</a><br><br>
+
+				Status : Telah $status oleh $atasan<br><br>
+
+				Anda dapat melakukan pengecekan melalui :<br> 
+					1. Internet : aplikasi Quick ERP Mobile. Apabila belum memiliki aplikasinya dapat download <a href='https://quick.co.id/download'>Disini</a><br>
+					2. jaringan lokal : http://erp.quick.com (http://quick.co.id/dinas_luar) atau klik <a href='http://erp.quick.com/'><strong>Disini</strong></a><br><br>
+
+				<small>Email ini digenerate melalui QuickERP pada ".date('d-m-Y H:i:s').".<br>
+				Apabila anda mengalami kendala dapat menghubungi Seksi Hubker (15109 / 15106) atau ICT Support Center (08112545922) </small>");
+				//Replace the plain text body with one created manually
+				//send the message, check for errors
+				if (!$mail->send()) {
+					echo "Mailer Error: " . $mail->ErrorInfo;
+				} else {
+					//echo "Message sent!";
+				}
+
+				}
 			}
-			$mail->Subject = 'Absensi Online';
-			$mail->msgHTML("
-			<h4>Absensi Online</h4><hr>
-			Kepada Yth.<br>
-			$namaPekerjaPersonalia<br><br>
-			
-			Kami informasikan bahwa terdapat pekerja yang melakukan absensi online dengan detail sbb :<br><br>
-			Pekerja 		: $namaPekerja<br>
-			Jenis Absen 	: $jenisAbsen<br>
-			Waktu 			: $waktu<br>
-			Lokasi 			: $lokasi , koordinat : ( $latitude , $longitude ) 
-			<a href='http://maps.google.com/maps?q=$latitude,$longitude''>Lihat Lokasi di Google Maps</a><br><br>
-
-			Status : Telah $status oleh $atasan<br><br>
-
-			Anda dapat melakukan pengecekan melalui :<br> 
-				1. Internet : aplikasi Quick ERP Mobile. Apabila belum memiliki aplikasinya dapat download <a href='https://quick.co.id/download'>Disini</a><br>
-				2. jaringan lokal : http://erp.quick.com (http://quick.co.id/dinas_luar) atau klik <a href='http://erp.quick.com/'><strong>Disini</strong></a><br><br>
-
-			<small>Email ini digenerate melalui QuickERP pada ".date('d-m-Y H:i:s').".<br>
-			Apabila anda mengalami kendala dapat menghubungi Seksi Hubker (15109 / 15106) atau ICT Support Center (08112545922) </small>");
-			//Replace the plain text body with one created manually
-			//send the message, check for errors
-			if (!$mail->send()) {
-				echo "Mailer Error: " . $mail->ErrorInfo;
-			} else {
-				//echo "Message sent!";
-			}
-
-	}
-}
 
 			public function kirimEmailAtasanAndroid(){
 
