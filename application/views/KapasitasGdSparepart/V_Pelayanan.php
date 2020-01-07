@@ -110,9 +110,6 @@
                                                     </td>
                                                     <td class="<?= $td?>"><?= $val['URGENT']?></td>
                                                     <td class="<?= $td?>">
-                                                        <input type="button" class="btn btn-xs bg-orange" style="color:black" id="btncancelSPB" value="Cancel" onclick="btnCancelKGS(<?= $no?>)"><br/>
-                                                    </td>
-                                                    <td class="<?= $td?>">
                                                         <?php if (!empty($val['MULAI_PELAYANAN'])) { ?>
                                                             <p id="timer<?= $no?>" style="">
                                                                 Mulai <?= $val['MULAI_PELAYANAN'] ?>
