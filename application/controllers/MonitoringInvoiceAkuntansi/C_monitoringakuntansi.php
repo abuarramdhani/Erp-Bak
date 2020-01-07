@@ -238,6 +238,11 @@ class C_monitoringakuntansi extends CI_Controller{
 		$action_date = date('d-m-Y H:i:s');
 
 		$update = $this->M_monitoringakuntansi->saveInvBermasalah($imp_kategori,$imp_dokumen,$keterangan,$invoice_id,$action_date);
+		
+		foreach ($dokumen as $key => $value) {
+			$this->M_monitoringakuntansi->saveTableDokumen($invoice_id,$value,$action_date);
+		}
+
 		redirect('AccountPayables/MonitoringInvoice/InvoiceBermasalahAkt');
 
 	}
