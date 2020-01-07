@@ -874,6 +874,11 @@ class C_splseksi extends CI_Controller {
 		$size = sizeof($this->input->post('noind'));
 		$sendmail_splid = "";
 
+		if($mulai == $selesai){
+			redirect(base_url('SPL/Pusat/InputLembur?result=3'));
+			return false;
+		}
+
 		//checking pekerja yang ada spl di tanggal yg daiambil
 		$is_notvalid = [];
 

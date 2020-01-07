@@ -894,6 +894,16 @@ class C_splseksi extends CI_Controller {
 				}
 			}
 		}
+		
+		if($aktual_awal == $aktual_akhir){
+			$error = 1;
+			$errortext = 'Waktu lembur yang diambil tidak boleh sama !!!';
+		}
+
+		if(empty($lembur)){
+			$error = 1;
+			$errortext = 'Jenis Lembur belum diinput';
+		}
 
 		$presensi = array(
 			'awal' 	=> date_format(date_create($aktual_awal),"H:i:s"),
@@ -927,6 +937,11 @@ class C_splseksi extends CI_Controller {
 		$alasan = $this->input->post('pekerjaan_simpan');
 		$size = sizeof($this->input->post('noind'));
 		$sendmail_splid = "";
+
+		if($mulai == $selesai){
+			redirect(base_url('SPL/Pusat/InputLembur?result=3'));
+			return false;
+		}
 
 		//checking pekerja yang ada spl di tanggal yg daiambil
 		$is_notvalid = [];
