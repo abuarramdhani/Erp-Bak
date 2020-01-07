@@ -5,6 +5,19 @@
 	}
 
 </style>
+<style type="text/css">
+	#cover-spin {
+    position:fixed;
+    width:100%;
+    left:0;right:0;top:0;bottom:0;
+    z-index:9999;
+    display: none;
+    background: url(<?php echo base_url('assets/img/gif/loading11.gif'); ?>) 
+              50% 50% no-repeat rgba(0,0,0,0.7);
+}
+</style>
+<div id="cover-spin">
+</div>
 	<div class="inner" >
 			<div class="box box-header"  style="padding-left:20px">
 				<h3 class="pull-left"><strong>Detail Approval Absen</strong></h3>
@@ -50,7 +63,7 @@
 					<h5>Unit</h5>
 				</div>
 				<div class="col-md-8">
-					<input type="text" class="form-control" readonly value="<?php echo $bidangUnit[0]['unit_name'];?>" />	
+					<input type="text" class="form-control" readonly value="<?php echo $employeeInfo[0]['unit_name'];?>" />	
 				</div>
 			</div>
 			<div class="row margin-top">
@@ -58,7 +71,7 @@
 					<h5>Bidang</h5>
 				</div>
 				<div class="col-md-8">
-					<input type="text" class="form-control" readonly value="<?php echo $bidangUnit[0]['field_name'];?>" />	
+					<input type="text" class="form-control" readonly value="<?php echo $employeeInfo[0]['field_name'];?>" />	
 				</div>
 			</div>
 			<div class="row margin-top">
@@ -72,6 +85,37 @@
 			<div class="text-left">
 				<h4><strong>Detail Absen</strong></h4>
 			</div>
+			<div class="row margin-top">
+				<div class="col-md-2">
+					<h5>Status</h5>
+				</div>
+				<div class="col-md-8">
+				<?php
+					if($dataEmployee[0]['status'] == 1){
+						$status = "Approved";
+						$classLabel = "label label-success";
+					}elseif ($dataEmployee[0]['status'] == 2) {
+						$status = "Rejected";
+						$classLabel = "label label-dangre";
+					}else{
+						$status = "New Entry";
+						$classLabel = "label label-default";
+					}
+					 ?>
+					<p style="font-size: 18px;"><span class="<?= $classLabel ?>"><?= $status ?></span></p>
+				</div>
+			</div>
+			<?php if($dataEmployee[0]['status'] == 1): ?>
+			<div class="row margin-top">
+				<div class="col-md-2">
+					<h5>Approver</h5>
+				</div>
+				<div class="col-md-8">
+					<input type="text" class="form-control" readonly value="<?php echo $dataEmployee[0]['approver'];?>" />	
+				</div>
+			</div>	
+			<?php endif; ?>	
+
 			<div class="row margin-top">
 				<div class="col-md-2">
 					<h5>Waktu</h5>
@@ -110,14 +154,14 @@
 
 		<div class="panel box-footer" style="padding-left: 50px;">
 			<div class="row">
-				<div class="col-md-1">
-					<a id="btnApprove" class="btn btn-primary" href="<?php echo base_url('AbsenAtasan/List/approveApproval/'.$dataEmployee[0]['absen_id']); ?>" ><i class="fa fa-check"></i>   Approve</a>
+				<div class="col-sm-1" align="center" style="margin: 7px">
+					<a id="btnApprove" class="btn btn-primary btn-block" href="<?php echo base_url('AbsenAtasan/List/approveApproval/'.$dataEmployee[0]['absen_id']); ?>" ><i class="fa fa-check"></i>   Approve</a>
 				</div>
-				<div class="col-md-1">
-					
+				<div class="col-sm-1" align="center" style="margin: 7px">
+					<button data-toggle="modal" data-target="#rejectApproval" class="btn btn-danger btn-block"><i class="fa fa-close"></i>    Reject</button>
 				</div>
-				<div class="col-md-1">
-					<button data-toggle="modal" data-target="#rejectApproval" class="btn btn-danger"><i class="fa fa-close"></i>    Reject</button>
+				<div class="col-sm-1" align="center" style="margin: 7px">
+					<a id="btnCetak" class="btn btn-info btn-block" href="<?php echo base_url('AbsenAtasan/List/cetakApproval/'.$dataEmployee[0]['absen_id']); ?>" ><i class="fa fa-print"></i>   Cetak</a>
 				</div>
 			</div>
 		</div>
@@ -190,11 +234,17 @@
 </section>
 
 <script type="text/javascript">
-
 $(document).ready(function(){
+	$("#cover-spin").fadeIn();
+
+	$(window).on('load',function(){
+		setTimeout(function(){
+			$('#cover-spin').fadeOut();
+		},3000)
+		
+	})
+})
 
 
-	});
-});
 	
 </script>

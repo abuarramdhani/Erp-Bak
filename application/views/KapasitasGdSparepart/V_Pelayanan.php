@@ -80,11 +80,11 @@
                                                     $td = '';
                                                 }
                                             ?>
-                                                <tr>
+                                                <tr id="baris<?= $no?>">
                                                     <td class="<?= $td?>" width="20px"><?= $no; ?></td>
                                                     <td class="<?= $td?>"><input type="hidden" id="jam<?= $no?>" value="<?= $val['TGL_DIBUAT']?>"><?= $val['TGL_DIBUAT']?></td>
-                                                    <td class="<?= $td?>"><input type="hidden" id="jenis_doc<?= $no?>" value="<?= $val['JENIS_DOKUMEN']?>"><?= $val['JENIS_DOKUMEN']?></td>
-                                                    <td class="<?= $td?>" style="font-size:17px; font-weight: bold"><input type="hidden" id="no_doc<?= $no?>" value="<?= $val['NO_DOKUMEN']?>"><?= $val['NO_DOKUMEN']?></td>
+                                                    <td class="<?= $td?>"><input type="hidden" id="jenis<?= $no?>" value="<?= $val['JENIS_DOKUMEN']?>"><?= $val['JENIS_DOKUMEN']?></td>
+                                                    <td class="<?= $td?>" style="font-size:17px; font-weight: bold"><input type="hidden" id="nodoc<?= $no?>" value="<?= $val['NO_DOKUMEN']?>"><?= $val['NO_DOKUMEN']?></td>
                                                     <td class="<?= $td?>"><input type="hidden" id="jml_item<?= $no?>" value="<?= $val['JUMLAH_ITEM']?>"><?= $val['JUMLAH_ITEM']?></td>
                                                     <td class="<?= $td?>"><input type="hidden" id="jml_pcs<?= $no?>" value="<?= $val['JUMLAH_PCS']?>"><?= $val['JUMLAH_PCS']?></td>
                                                     <td class="<?= $td?>">
@@ -99,6 +99,7 @@
                                                             <option value="ALIF">ALIF</option>
                                                             <option value="IHSAN">IHSAN</option>
                                                             <option value="TRI">TRI</option>
+                                                            <option value="UDIN">UDIN</option>
                                                         </select></td>
                                                         <?php }?>
                                                     <td class="<?= $td?>"><?= $status[$i]?>
@@ -119,6 +120,7 @@
                                                             </p>
                                                             <input type="button" class="btn btn-md btn-success" id="btnPelayanan<?= $no?>" onclick="btnPelayananSPB(<?= $no?>)" value="Mulai"> 
                                                         <?php }?>
+                                                        <input type="button" class="btn btn-xs btn-info" id="btnrestartSPB<?= $no?>" value="Restart" onclick="btnRestartPelayanan(<?= $no?>)">
                                                     </td>
                                                 </tr>
                                             <?php $no++; $i++; } ?>

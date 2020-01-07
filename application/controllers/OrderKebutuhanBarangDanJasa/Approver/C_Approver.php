@@ -775,9 +775,12 @@ class C_Approver extends CI_Controller {
     public function getStock()
     {
         $itemkode = $_POST['itemkode'];
-        $data = $this->M_approver->getStock($itemkode);
+        $data['getStock'] = $this->M_approver->getStock($itemkode);
+        $data['outstandingPO'] = $this->M_approver->getStandingPO($itemkode);
 
-        echo json_encode($data);
+        $returnTable = $this->load->view('OrderKebutuhanBarangDanJasa/Approver/V_TableOfStock',$data,true);
+
+        echo $returnTable;
     }
 
     public function getAttachment()

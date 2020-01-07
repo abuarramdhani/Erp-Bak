@@ -28,7 +28,7 @@ class M_lelayu extends CI_Model
   }
 
   public function getCutoffBulanIni(){
-    $sql = "select tanggal_awal::date from \"Presensi\".tcutoff where to_char(tanggal_awal,'yyyy-mm') = to_char(current_date,'yyyy-mm') limit 1";
+    $sql = "select tanggal_awal::date from \"Presensi\".tcutoff where to_char(tanggal_akhir,'yyyy-mm') = to_char(current_date,'yyyy-mm') limit 1";
     if(isset($this->personalia->query($sql)->row()->tanggal_awal)){
       return  $this->personalia->query($sql)->row()->tanggal_awal;
     }else{
@@ -615,7 +615,7 @@ class M_lelayu extends CI_Model
     return $this->db->query("SELECT * FROM hr.hr_uang_duka_spsi")->result_array();
   }
 
-    public function getCutoffBulanLalu(){
+  public function getCutoffBulanLalu(){
     $sql = "select tanggal_awal::date from \"Presensi\".tcutoff where to_char(tanggal_awal,'yyyy-mm') = to_char(current_date - interval '1 month','yyyy-mm') limit 1";
     return  $this->personalia->query($sql)->row()->tanggal_awal;
   }

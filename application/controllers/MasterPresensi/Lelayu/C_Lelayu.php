@@ -38,9 +38,9 @@ class C_Lelayu extends CI_Controller
     $user = $this->session->username;
     $user_id = $this->session->userid;
     $today = date('d M Y');
-    // $bulancutoff = date('Y-m-19');
+    //$bulancutoff = date('Y-m-19');
     $bulancutoff = $this->M_lelayu->getCutoffBulanIni();
-    // $bulanlalu = date('Y-m-d', strtotime($bulancutoff. ' -1 month'));
+    //$bulanlalu = date('Y-m-d', strtotime($bulancutoff. ' -1 month'));
     $bulanlalu = $this->M_lelayu->getCutoffBulanLalu();
     $tanggalcutoff = date('d');
 

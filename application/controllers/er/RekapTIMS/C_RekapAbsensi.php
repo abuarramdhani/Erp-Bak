@@ -141,32 +141,36 @@ class C_RekapAbsensi extends CI_Controller
 
 	public function daftarDepartemen()
 	{
-		$resultDepartemen = 	$this->M_rekapabsensi->ambilDepartemen();
+		$term				=	strtoupper($this->input->get('term'));
+		$resultDepartemen 	= 	$this->M_rekapabsensi->ambilDepartemen($term);
 
 		echo json_encode($resultDepartemen);
 	}
 
 	public function daftarBidang()
 	{
+		$term 			=	strtoupper($this->input->get('term'));
 		$departemen 	=	$this->input->get('departemen');
 
-		$resultBidang 	=	$this->M_rekapabsensi->ambilBidang($departemen);
+		$resultBidang 	=	$this->M_rekapabsensi->ambilBidang($departemen, $term);
 		echo json_encode($resultBidang);
 	}
 
 	public function daftarUnit()
 	{
+		$term 			=	strtoupper($this->input->get('term'));
 		$bidang 		=	$this->input->get('bidang');
 
-		$resultUnit		=	$this->M_rekapabsensi->ambilUnit($bidang);
+		$resultUnit		=	$this->M_rekapabsensi->ambilUnit($bidang, $term);
 		echo json_encode($resultUnit);
 	}
 
 	public function daftarSeksi()
 	{
+		$term 			=	strtoupper($this->input->get('term'));
 		$unit 			=	$this->input->get('unit');
 
-		$resultSeksi	=	$this->M_rekapabsensi->ambilSeksi($unit);
+		$resultSeksi	=	$this->M_rekapabsensi->ambilSeksi($unit, $term);
 		echo json_encode($resultSeksi);
 	}
 

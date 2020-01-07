@@ -14,51 +14,25 @@ nom_dpp.moneyFormat();
 } else if (coba === 'N'){
 nominal_ppn.val('0');
 nominal_ppn.trigger('change');
-
 }
 }
 
-
-	$('.idDateInvoiceTambahInvBer').datepicker({
-		format: 'dd-M-yyyy',
-		autoclose: true,
-	});
-
-$('#btnCariInvId').click(function(){
-		Swal.fire({
-			  title: 'Please Wait ...',
-			  showConfirmButton: false,
-			  showClass: {
-			    popup: 'animated fadeInDown faster'
-			  },
-			  hideClass: {
-			    popup: 'animated fadeOutUp faster'
-			  }
-			})
-	})
-
-
-
-function cariInvoicebyId() {
-	var invoice_id = $('#invoice_id_nih').val();
-
-	$.ajax({
-		type : 'POST',
-		url: baseurl+'AccountPayables/MonitoringInvoice/Unprocess/invBermasalah',
-		data : {
-			invoice_id:invoice_id,
-		},
-		success:function(response) {
-			
-			window.location.replace(baseurl+"AccountPayables/MonitoringInvoice/Unprocess/invBermasalah/"+invoice_id)
-		}
-	})
-}
-
-function iniVendor() {
-	var nama_vendor = $('#slcVendor').val();
-	$('#hdnTxt').val(nama_vendor).trigger('change');
-
+function bukaHasilConf(th) {
+	var invoice_id = th;
+	$('#MdlAkuntansi').modal('show');
+	$('h5.modal-title').html('HASIL KONFIRMASI CEKLIST DOKUMEN PURCHASING')
+	$('modal-body').html("<center><img id='loading12' style='width:200px ;margin-top: 2%;' src='"+baseurl+"assets/img/gif/loadingquick.gif'/><br /></center><br />");
+		$.ajax({
+			type: "post",
+			url: baseurl+"AccountPayables/MonitoringInvoice/InvoiceBermasalahAkt/getHasilKonfirmasi",
+			data:{
+				invoice_id:invoice_id,
+			},
+			success: function(response){
+				$('.modal-body').html("");
+				$('.modal-body').html(response);
+			}
+		})
 }
 
 //tiket delete rejected mon invoice------------------------------------------------------------//
@@ -142,6 +116,740 @@ $(document).on('ifChanged','.submit_checking_all_rejected', function() {
 
 //tiket delete rejected mon invoice------------------------------------------------------------//
 
+function btnApproveBerkas(th) {
+	var row = $(th).closest('tr');
+	var div = row.find('.hasil_pembelian');
+	var div_date = row.find('.date_purc');
+	var input = row.find('#pembelian_id');
+	var date = row.find('#inputDatePurc');
+	var tanggal = moment().format('DD/MM/YYYY hh:mm:ss'); 
+
+	input.val('Y').trigger('change');
+	div.html('<span class="label label-success"><i class="fa fa-check"></i> Diterima<br></span>');
+	date.val(tanggal).trigger('change');
+	div_date.html('<span>'+tanggal+'</span>');
+
+}
+
+function btnReApproveBerkas(th) {
+	var row = $(th).closest('tr');
+	var div = row.find('.hasil_repurc');
+	var div_date = row.find('.date_repurc');
+	var input = row.find('#repurc_id');
+	var date = row.find('#inputDateRePurc');
+	var tanggal = moment().format('DD/MM/YYYY hh:mm:ss'); 
+
+	input.val('Y').trigger('change');
+	div.html('<span class="label label-success"><i class="fa fa-check"></i> Diterima<br></span>');
+	date.val(tanggal).trigger('change');
+	div_date.html('<span>'+tanggal+'</span>');
+}
+
+function btnReApproveBerkasAkt(th) {
+	var row = $(th).closest('tr');
+	var div = row.find('.hasil_akt');
+	var div_date = row.find('.date_reakt');
+	var input = row.find('#reakt_id');
+	var date = row.find('#inputDateReAkt');
+	var tanggal = moment().format('DD/MM/YYYY hh:mm:ss'); 
+
+	input.val('Y').trigger('change');
+	div.html('<span class="label label-success"><i class="fa fa-check"></i> Diterima<br></span>');
+	date.val(tanggal).trigger('change');
+	div_date.html('<span>'+tanggal+'</span>');
+}
+
+function btnRejectBerkas(th) {
+	var row = $(th).closest('tr');
+	var div = row.find('.hasil_pembelian');
+	var div_date = row.find('.date_purc');
+	var input = row.find('#pembelian_id');
+	var date = row.find('#inputDatePurc');
+	var tanggal = moment().format('DD/MM/YYYY hh:mm:ss'); 
+
+	input.val('N').trigger('change');
+	div.html('<span class="label label-danger label-sm"><i class="fa fa-times"></i> Ditolak<br></span>');
+	date.val(tanggal).trigger('change');
+	div_date.html('<span>'+tanggal+'</span>');
+}
+
+function btnReRejectBerkas(th) {
+	var row = $(th).closest('tr');
+	var div = row.find('.hasil_repurc');
+	var div_date = row.find('.date_repurc');
+	var input = row.find('#repurc_id');
+	var date = row.find('#inputDateRePurc');
+	var tanggal = moment().format('DD/MM/YYYY hh:mm:ss'); 
+
+	input.val('N').trigger('change');
+	div.html('<span class="label label-danger label-sm"><i class="fa fa-times"></i> Ditolak<br></span>');
+	date.val(tanggal).trigger('change');
+	div_date.html('<span>'+tanggal+'</span>');
+}
+
+function btnReRejectBerkasAkt(th) {
+	var row = $(th).closest('tr');
+	var div = row.find('.hasil_akt');
+	var div_date = row.find('.date_reakt');
+	var input = row.find('#reakt_id');
+	var date = row.find('#inputDateReAkt');
+	var tanggal = moment().format('DD/MM/YYYY hh:mm:ss'); 
+
+	input.val('N').trigger('change');
+	div.html('<span class="label label-danger label-sm"><i class="fa fa-times"></i> Ditolak<br></span>');
+	date.val(tanggal).trigger('change');
+	div_date.html('<span>'+tanggal+'</span>');
+}
+
+function btnApproveBuyer(th) {
+	var row = $(th).closest('tr');
+	var div = row.find('.hasil_buyer');
+	var div_date = row.find('.date_buyer');
+	var input = row.find('#buyer_id');
+	var date = row.find('#inputDateBuyer');
+	var tanggal = moment().format('DD/MM/YYYY hh:mm:ss'); 
+
+	input.val('Y').trigger('change');
+	div.html('<span class="label label-success"><i class="fa fa-check"></i> Diterima<br></span>')
+	date.val(tanggal).trigger('change');
+	div_date.html('<span>'+tanggal+'</span>');
+}
+
+function btnRejectBuyer(th) {
+	var row = $(th).closest('tr');
+	var div = row.find('.hasil_buyer');
+	var div_date = row.find('.date_buyer');
+	var input = row.find('#buyer_id');
+	var date = row.find('#inputDateBuyer');
+	var tanggal = moment().format('DD/MM/YYYY hh:mm:ss'); 
+
+	input.val('N').trigger('change');
+	div.html('<span class="label label-danger label-sm"><i class="fa fa-times"></i> Ditolak<br></span>')
+	date.val(tanggal).trigger('change');
+	div_date.html('<span>'+tanggal+'</span>');
+}
+
+function KonfirmasiBerkasPurc(th) {
+
+	var feedback = $('#txaFbPurc').val()
+	var invoice_id = th;
+	var arry = [];
+	$('input#pembelian_id').each(function(){
+	var tipe = $(this).val();
+	arry.push(tipe);
+	});
+
+	if (feedback == "") {
+		Swal.fire({
+			  type: 'error',
+			  title: 'Harap Masukkan Feedback!',
+			  showConfirmButton: false,
+			  timer: 1500
+			})
+	}else {
+
+	console.log(arry)
+	
+	$('#mdlNotifikasiKasie').modal('show');
+	$('#mdlYesAkt').click(function(){
+		$.ajax({
+			type: "post",
+			url: baseurl+"AccountPayables/MonitoringInvoice/InvoiceBermasalahKasiePurc/List/saveInvBermasalah",
+			data:{
+				invoice_id:invoice_id,
+				txaFbPurc:feedback,
+				status_berkas:arry
+			},
+			success: function(response){
+				Swal.fire(
+  					'Saved!',
+  					'Data sudah dikonfirmasi',
+  					'success'
+						);
+			$('#mdlNotifikasiKasie').modal('hide');
+			window.location.replace(baseurl+'AccountPayables/MonitoringInvoice/InvoiceBermasalahKasiePurc/List')
+			}
+		})
+	})
+}
+}
+
+function openMdlPurcConf(th) {
+
+	var invoice_id = th;
+	$('#MdlPurchasing').modal('show');
+	$('h5.modal-title').html('KONFIRMASI DOKUMEN BERMASALAH (PURCHASING)')
+	$('.modal-body').html("<center><img id='loading12' style='width:200px ;margin-top: 2%;' src='"+baseurl+"assets/img/gif/loadingquick.gif'/><br /></center><br />");
+		$.ajax({
+			type: "post",
+			url: baseurl+"AccountPayables/MonitoringInvoice/InvoiceBermasalahKasiePurc/List/getDataDokumen",
+			data:{
+				invoice_id:invoice_id,
+			},
+			success: function(response){
+				$('.modal-body').html("");
+				$('.modal-body').html(response);
+				$('.modal-footer').html('<button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button><button type="button" class="btn btn-success" onclick="saveBerkas('+th+')" id="btnSave"><i class="fa fa-check"></i> Save</button>');
+			}
+		})
+}
+
+function konfirmasiKembaliPurc(th) {
+
+	var invoice_id = th;
+	$('#MdlPurchasing').modal('show');
+	$('h5.modal-title').html('REKONFIRMASI DOKUMEN BERMASALAH DARI BUYER')
+	$('.modal-body').html("<center><img id='loading12' style='width:200px ;margin-top: 2%;' src='"+baseurl+"assets/img/gif/loadingquick.gif'/><br /></center><br />");
+		$.ajax({
+			type: "post",
+			url: baseurl+"AccountPayables/MonitoringInvoice/InvoiceBermasalahKasiePurc/List/getDataReKonfirmasi",
+			data:{
+				invoice_id:invoice_id,
+			},
+			success: function(response){
+				$('.modal-body').html("");
+				$('.modal-body').html(response);
+				$('.modal-footer').html('<button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button><button type="button" class="btn btn-success" onclick="saveBerkasRePurc('+th+')" id="btnSave"><i class="fa fa-check"></i> Save</button>');
+			}
+		})
+}
+
+function konfirmasiKembaliAkt(th) {
+
+	var invoice_id = th;
+	$('#MdlAkuntansi').modal('show');
+	$('h5.modal-title').html('REKONFIRMASI DOKUMEN BERMASALAH DARI PURCHASING')
+	$('.modal-body').html("<center><img id='loading12' style='width:200px ;margin-top: 2%;' src='"+baseurl+"assets/img/gif/loadingquick.gif'/><br /></center><br />");
+		$.ajax({
+			type: "post",
+			url: baseurl+"AccountPayables/MonitoringInvoice/InvoiceBermasalahAkt/getDataReKonfirmasi",
+			data:{
+				invoice_id:invoice_id,
+			},
+			success: function(response){
+				$('.modal-body').html("");
+				$('.modal-body').html(response);
+				$('.modal-footer').html('<button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button><button type="button" class="btn btn-success" onclick="saveBerkasReAkt('+th+')" id="btnSave"><i class="fa fa-check"></i> Save</button>');
+			}
+		})
+}
+
+function saveBerkasReAkt(th) {
+	Swal.fire({
+			  title: 'Please Wait ...',
+			  showConfirmButton: false,
+			  showClass: {
+			    popup: 'animated fadeInDown faster'
+			  },
+			  hideClass: {
+			    popup: 'animated fadeOutUp faster'
+			  }
+			})
+
+	var invoice_id = th;
+
+	var arry = [];
+	$('input#dokumen_id').each(function(){
+	var doc_id = $(this).val();
+	arry.push(doc_id);
+	});
+
+	var arry2 = [];
+	$('input#reakt_id').each(function(){
+	var hasil = $(this).val();
+	arry2.push(hasil);
+	});
+
+	var arry3 = [];
+	$('input#inputDateReAkt').each(function(){
+	var time = $(this).val();
+	arry3.push(time);
+	});
+// console.log(arry2);
+
+	  $.ajax({
+			type: "post",
+			url: baseurl+"AccountPayables/MonitoringInvoice/InvoiceBermasalahAkt/saveReconfirmInvBermasalah",
+			data:{
+				invoice_id:invoice_id,
+				// txaFbPurc:feedback,
+				status_berkas:arry2,
+				waktu_berkas:arry3,
+				doc_id:arry
+			},
+			success: function(response){
+				Swal.fire(
+  					'Saved!',
+  					'Data konfirmasi tersimpan',
+  					'success'
+						);
+			$('#MdlAkuntansi').modal('hide');
+			window.location.reload();
+			}
+})
+}
+
+function saveBerkasRePurc(th) {
+	Swal.fire({
+			  title: 'Please Wait ...',
+			  showConfirmButton: false,
+			  showClass: {
+			    popup: 'animated fadeInDown faster'
+			  },
+			  hideClass: {
+			    popup: 'animated fadeOutUp faster'
+			  }
+			})
+
+	var invoice_id = th;
+
+	var arry = [];
+	$('input#dokumen_id').each(function(){
+	var doc_id = $(this).val();
+	arry.push(doc_id);
+	});
+
+	var arry2 = [];
+	$('input#repurc_id').each(function(){
+	var hasil = $(this).val();
+	arry2.push(hasil);
+	});
+
+	var arry3 = [];
+	$('input#inputDateRePurc').each(function(){
+	var time = $(this).val();
+	arry3.push(time);
+	});
+
+	// console.log(arry2)
+
+
+	  $.ajax({
+			type: "post",
+			url: baseurl+"AccountPayables/MonitoringInvoice/InvoiceBermasalahKasiePurc/List/saveReconfirmInvBermasalah",
+			data:{
+				invoice_id:invoice_id,
+				// txaFbPurc:feedback,
+				status_berkas:arry2,
+				waktu_berkas:arry3,
+				doc_id:arry
+			},
+			success: function(response){
+				Swal.fire(
+  					'Saved!',
+  					'Data konfirmasi tersimpan',
+  					'success'
+						);
+			$('#MdlPurchasing').modal('hide');
+			window.location.reload();
+			}
+})
+}
+
+function saveBerkas(th) {
+
+	Swal.fire({
+			  title: 'Please Wait ...',
+			  showConfirmButton: false,
+			  showClass: {
+			    popup: 'animated fadeInDown faster'
+			  },
+			  hideClass: {
+			    popup: 'animated fadeOutUp faster'
+			  }
+			})
+
+	var invoice_id = th;
+
+	var arry = [];
+	$('input#dokumen_id').each(function(){
+	var doc_id = $(this).val();
+	arry.push(doc_id);
+	});
+
+	var arry2 = [];
+	$('input#pembelian_id').each(function(){
+	var hasil = $(this).val();
+	arry2.push(hasil);
+	});
+
+	var arry3 = [];
+	$('input#inputDatePurc').each(function(){
+	var time = $(this).val();
+	arry3.push(time);
+	});
+
+
+	  $.ajax({
+			type: "post",
+			url: baseurl+"AccountPayables/MonitoringInvoice/InvoiceBermasalahKasiePurc/List/saveInvBermasalah",
+			data:{
+				invoice_id:invoice_id,
+				status_berkas:arry2,
+				waktu_berkas:arry3,
+				doc_id:arry
+			},
+			success: function(response){
+				Swal.fire(
+  					'Saved!',
+  					'Data konfirmasi tersimpan',
+  					'success'
+						);
+			$('#MdlPurchasing').modal('hide');
+			window.location.reload();
+			}
+})
+}
+
+
+function KonfirmasiBuyer(th) {
+
+	var invoice_id = th;
+	$('#MdlBuyer').modal('show');
+	$('h5.modal-title').html('KONFIRMASI DOKUMEN BERMASALAH (BUYER)')
+	$('.modal-body').html("<center><img id='loading12' style='width:200px ;margin-top: 2%;' src='"+baseurl+"assets/img/gif/loadingquick.gif'/><br /></center><br />");
+		$.ajax({
+			type: "post",
+			url: baseurl+"AccountPayables/MonitoringInvoice/InvoiceBermasalahBuyer/List/KonfirmasiBuyer",
+			data: {
+					invoice_id:invoice_id
+			},
+			success: function(response){
+				$('.modal-body').html("");
+				$('.modal-body').html(response);
+				$('.modal-footer').html('<button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button><button type="button" class="btn btn-success" onclick="saveKonfirmasiBuyer('+th+')" id="btnForward"><i class="fa fa-check"></i> Save</button>');
+			}
+		})
+}
+
+function saveKonfirmasiBuyer(th) {
+	Swal.fire({
+			  title: 'Please Wait ...',
+			  showConfirmButton: false,
+			  showClass: {
+			    popup: 'animated fadeInDown faster'
+			  },
+			  hideClass: {
+			    popup: 'animated fadeOutUp faster'
+			  }
+			})
+
+	var invoice_id = th;
+	// var feedback = $('#txaFbPurc').val()
+
+	var arry = [];
+	$('input#dokumen_id').each(function(){
+	var doc_id = $(this).val();
+	arry.push(doc_id);
+	});
+
+	var arry2 = [];
+	$('input#buyer_id').each(function(){
+	var hasil = $(this).val();
+	arry2.push(hasil);
+	});
+
+	var arry3 = [];
+	$('input#inputDateBuyer').each(function(){
+	var time = $(this).val();
+	arry3.push(time);
+	});
+
+
+	  $.ajax({
+			type: "post",
+			url: baseurl+"AccountPayables/MonitoringInvoice/InvoiceBermasalahBuyer/List/saveInvBermasalahBuyer",
+			data:{
+				invoice_id:invoice_id,
+				status_berkas:arry2,
+				waktu_berkas:arry3,
+				doc_id:arry
+			},
+			success: function(response){
+				Swal.fire(
+  					'Saved!',
+  					'Data konfirmasi tersimpan',
+  					'success'
+						);
+			$('#MdlBuyer').modal('hide');
+			window.location.reload();
+			}
+})
+}
+
+function FeedbackBuyer(th) {
+	var invoice_id = th;
+
+	$('#MdlBuyer').modal('show');
+	$('h5.modal-title').html('MASUKKAN FEEDBACK INVOICE BERMASALAH UNTUK PURCHASING')
+	$('.modal-body').html("<center><img id='loading12' style='width:200px ;margin-top: 2%;' src='"+baseurl+"assets/img/gif/loadingquick.gif'/><br /></center><br />");
+		$.ajax({
+			type: "post",
+			url: baseurl+"AccountPayables/MonitoringInvoice/InvoiceBermasalahBuyer/List/InputFeedbackBuyer",
+			data : {
+				invoice_id:invoice_id
+			},
+			success: function(response){
+				$('.modal-body').html("");
+				$('.modal-body').html(response);
+				$('.modal-footer').html('<button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button><button type="button" class="btn btn-primary" onclick="sendFeedbackBuyer('+th+')" id="btnForward"><i class="fa fa-paper-plane"></i> Send</button>');
+			}
+		})
+	
+}
+
+function selesaikanInvoice(th) {
+	var invoice_id = th;
+
+	const swalWithBootstrapButtons = Swal.mixin({
+		  customClass: {
+		    confirmButton: 'btn btn-success',
+		    cancelButton: 'btn btn-danger'
+		  },
+		  buttonsStyling: true
+		})
+
+	swalWithBootstrapButtons.fire({
+		  title: 'Invoice akan diselesaikan',
+		  text: 'Yakin ingin menngakhiri Invoice ID.'+invoice_id+' dari status Bermasalah?',
+		  type: 'warning',
+		  showCancelButton: true,
+		  confirmButtonText: 'Yes, end it!',
+		  cancelButtonText: 'No, cancel!',
+		  reverseButtons: true
+	}).then((result) => {
+  if (result.value) {
+	  	$.ajax({
+					type: "POST",
+					url: baseurl+"AccountPayables/MonitoringInvoice/InvoiceBermasalahAkt/EndStatus",
+					data:{
+						invoice_id:invoice_id,
+					},
+					success: function(response) {
+						  swalWithBootstrapButtons.fire(
+					      'Finished!',
+					      'Invoice ID.'+invoice_id+' berhasil diselesaikan!',
+					      'success'
+					    	)
+						  window.location.reload();
+			 		}
+
+				});
+  } else if (
+    result.dismiss === Swal.DismissReason.cancel
+  ) {
+    swalWithBootstrapButtons.fire(
+      'Cancelled',
+      'Invoice ID.'+invoice_id+' batal diselesaikan',
+      'error'
+    )
+  }
+})
+
+}
+
+$( document ).ready(function() {
+	$('.selectBuyer').select2({
+		  placeholder: 'Pilih',
+		  allowClear: true,
+		});
+})
+
+function submitToBuyer(th) {
+
+const swalWithBootstrapButtons = Swal.mixin({
+		  customClass: {
+		    confirmButton: 'btn btn-success',
+		    cancelButton: 'btn btn-danger'
+		  },
+		  buttonsStyling: true
+		})
+
+ swalWithBootstrapButtons.fire(
+      'Peringatan!',
+      'Sebelum forward ke buyer, pastikan tidak ada berkas yang rejected!',
+      'error'
+    )
+
+
+	$('#MdlPurchasing').modal('show');
+	$('h5.modal-title').html('PILIH BUYER UNTUK FORWARD INVOICE')
+	$('.modal-body').html("<center><img id='loading12' style='width:200px ;margin-top: 2%;' src='"+baseurl+"assets/img/gif/loadingquick.gif'/><br /></center><br />");
+		$.ajax({
+			type: "post",
+			url: baseurl+"AccountPayables/MonitoringInvoice/InvoiceBermasalahKasiePurc/List/getDataBuyer",
+			success: function(response){
+				$('.modal-body').html("");
+				$('.modal-body').html(response);
+				$('.modal-footer').html('<button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button><button type="button" class="btn btn-primary" onclick="forwardAkt('+th+')" id="btnForward"><i class="fa fa-paper-plane"></i> Forward</button>');
+			}
+		})
+}
+
+function feedbackAkt(th) {
+	var invoice_id = th;
+
+	$('#MdlPurchasing').modal('show');
+	$('h5.modal-title').html('MASUKKAN FEEDBACK INVOICE BERMASALAH UNTUK AKUNTANSI')
+	$('.modal-body').html("<center><img id='loading12' style='width:200px ;margin-top: 2%;' src='"+baseurl+"assets/img/gif/loadingquick.gif'/><br /></center><br />");
+		$.ajax({
+			type: "post",
+			url: baseurl+"AccountPayables/MonitoringInvoice/InvoiceBermasalahKasiePurc/List/InputFeedback",
+			data : {
+				invoice_id:invoice_id
+			},
+			success: function(response){
+				$('.modal-body').html("");
+				$('.modal-body').html(response);
+				$('.modal-footer').html('<button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button><button type="button" class="btn btn-primary" onclick="sendFeedback('+th+')" id="btnForward"><i class="fa fa-paper-plane"></i> Send</button>');
+			}
+		})
+
+}
+
+function sendFeedback(th) {
+	var invoice_id = th;
+	var feedback = $('#txaFbPurc').val();
+
+	  	$.ajax({
+					type: "POST",
+					url: baseurl+"AccountPayables/MonitoringInvoice/InvoiceBermasalahKasiePurc/List/submitFeedback",
+					data:{
+						invoice_id:invoice_id,
+						feedback:feedback
+					},
+					success: function(response) {
+						 Swal.fire(
+  					'Sent!',
+  					'Data sudah diberi feedback',
+  					'success'
+						);
+						 $('#MdlPurchasing').modal('hide');
+						  window.location.reload();
+			 		}
+
+				});
+}
+
+function sendFeedbackBuyer(th) {
+	var invoice_id = th;
+	var feedback = $('#txaFbBuyer').val();
+
+	  	$.ajax({
+					type: "POST",
+					url: baseurl+"AccountPayables/MonitoringInvoice/InvoiceBermasalahBuyer/List/submitFeedbackBuyer",
+					data:{
+						invoice_id:invoice_id,
+						feedback:feedback
+					},
+					success: function(response) {
+						 Swal.fire(
+  					'Sent!',
+  					'Data sudah diberi feedback',
+  					'success'
+						);
+						 $('#MdlBuyer').modal('hide');
+						  window.location.reload();
+			 		}
+
+				});
+}
+
+function forwardAkt(th) {
+	var invoice_id = th;
+	var no_induk_buyer = $('select#selectBuyer').val();
+
+	const swalWithBootstrapButtons = Swal.mixin({
+		  customClass: {
+		    confirmButton: 'btn btn-success',
+		    cancelButton: 'btn btn-danger'
+		  },
+		  buttonsStyling: true
+		})
+
+	swalWithBootstrapButtons.fire({
+		  title: 'Invoice akan di forward',
+		  text: 'Yakin ingin memforward Invoice ID.'+invoice_id+' ke '+no_induk_buyer+'?',
+		  type: 'warning',
+		  showCancelButton: true,
+		  confirmButtonText: 'Yes, forward it!',
+		  cancelButtonText: 'No, cancel!',
+		  reverseButtons: true
+	}).then((result) => {
+  if (result.value) {
+	  	$.ajax({
+					type: "POST",
+					url: baseurl+"AccountPayables/MonitoringInvoice/InvoiceBermasalahKasiePurc/List/submitKeBuyer",
+					data:{
+						invoice_id:invoice_id,
+						no_induk_buyer:no_induk_buyer
+					},
+					success: function(response) {
+						  swalWithBootstrapButtons.fire(
+					      'Forwarded!',
+					      'Invoice ID.'+invoice_id+' berhasil dikirim!',
+					      'success'
+					    	)
+						  window.location.reload();
+			 		}
+
+				});
+  } else if (
+    result.dismiss === Swal.DismissReason.cancel
+  ) {
+    swalWithBootstrapButtons.fire(
+      'Cancelled',
+      'Invoice ID.'+invoice_id+' batal diforward',
+      'error'
+    )
+    $('#MdlPurchasing').modal('hide');
+  }
+})
+}
+
+
+	$('.idDateInvoiceTambahInvBer').datepicker({
+		format: 'dd-M-yyyy',
+		autoclose: true,
+	});
+
+$('#btnCariInvId').click(function(){
+		Swal.fire({
+			  title: 'Please Wait ...',
+			  showConfirmButton: false,
+			  showClass: {
+			    popup: 'animated fadeInDown faster'
+			  },
+			  hideClass: {
+			    popup: 'animated fadeOutUp faster'
+			  }
+			})
+	})
+
+
+
+function cariInvoicebyId() {
+	var invoice_id = $('#invoice_id_nih').val();
+
+	$.ajax({
+		type : 'POST',
+		url: baseurl+'AccountPayables/MonitoringInvoice/Unprocess/invBermasalah',
+		data : {
+			invoice_id:invoice_id,
+		},
+		success:function(response) {
+			
+			window.location.replace(baseurl+"AccountPayables/MonitoringInvoice/Unprocess/invBermasalah/"+invoice_id)
+		}
+	})
+}
+
+function iniVendor() {
+	var nama_vendor = $('#slcVendor').val();
+	$('#hdnTxt').val(nama_vendor).trigger('change');
+
+}
+
 
 $('#btnCariTop').click(function() { 
 	Swal.fire({
@@ -219,13 +927,29 @@ $('#btnCariTop').click(function() {
 					val5 += '<option value="N"> N </option>'         
 					tax_status.html(val5);
 					tax_status.trigger('change');
+				// nominal.prop('disabled', false);
+				// nominal.trigger('change');
+
+				// nom_dpp.prop('disabled', false);
+				// nom_dpp.val('0').trigger('change');
+
+				// tax.prop('disabled', false);
+				// tax.val('010.005-').trigger('change');
 
 				}else if (coba === 'N') {
 					val4 += '<option value="N"> N </option>'
 					val4 += '<option value="Y"> Y </option>'
 					tax_status.html(val4);
 					tax_status.trigger('change');
-				
+				// nominal.prop('disabled', true);
+				// nominal.trigger('change');
+				// nominal.val(null).trigger('change')
+				// nom_dpp.prop('disabled', true);
+				// nom_dpp.trigger('change');
+				// nom_dpp.val(null).trigger('change')
+				// tax.prop('disabled', true);
+				// tax.trigger('change');
+				// tax.val(null).trigger('change')
 				}
 
 

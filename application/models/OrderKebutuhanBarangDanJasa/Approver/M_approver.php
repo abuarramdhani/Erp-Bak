@@ -394,6 +394,48 @@ class M_approver extends CI_Model
         return $query->result_array();
     }
 
+    public function getStandingPO($itemcode)
+    {
+        $oracle_dev = $this->load->database('oracle_dev', true);
+        $query = $oracle_dev->query("SELECT DISTINCT
+                PHA.SEGMENT1 PO_NUMBER
+                ,PLA.LINE_NUM
+                ,plla.PROMISED_DATE
+                ,MSIB.DESCRIPTION NAMA_BARANG
+                ,PLLA.QUANTITY QTY
+                ,prha.segment1 pr_number
+                ,papf.full_name requestor
+            FROM
+                po_headers_all pha
+                ,po_lines_all pla
+                ,po_requisition_lines_all prla
+                ,po_requisition_headers_all prha
+                ,po_line_locations_all plla
+                ,mtl_system_items_b msib
+                ,per_all_people_f papf
+            where
+                pha.po_header_id = pla.po_header_Id(+)
+                and pla.po_line_id = plla.po_line_id(+)
+                and plla.line_location_id = prla.LINE_LOCATION_ID(+)
+                and prla.REQUISITION_HEADER_ID = prha.REQUISITION_HEADER_ID(+)
+                and pla.ITEM_ID = msib.INVENTORY_ITEM_ID(+)
+                and prla.to_person_id = papf.person_id(+)
+                and msib.segment1 = '$itemcode'
+                and (select 
+                    max(rt.transaction_date)
+                from
+                    rcv_transactions rt
+                where
+                    rt.PO_HEADER_ID = pha.po_header_id
+                    and rt.po_line_id = pla.po_line_id
+                    and rt.transaction_type = 'RECEIVE'
+                group by 
+                    pla.po_line_id) is null
+        ORDER BY PO_NUMBER");
+
+        return $query->result_array();
+    }
+
     public function getAttachment($order_id)
     {
         $oracle_dev = $this->load->database('oracle_dev', true);
