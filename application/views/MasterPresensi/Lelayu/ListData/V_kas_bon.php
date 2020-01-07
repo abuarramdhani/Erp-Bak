@@ -59,9 +59,15 @@
         }else{
           $b2 = '522525';
         }
+
+        if (!empty($key['cost_code'])) {
+          $seksinya = $key['cost_code'];
+        }else{
+          $seksinya = $key['seksi'];
+        }
        ?>
 			<td colspan="2" style="text-align: left; font-size: 12px;">
-        <b>Total ( <?= $b1.' - '.$b2.' - '.$key['seksi'] ?> )</b>
+        <b>Total ( <?= $b1.' - '.$b2.' - '.$seksinya ?> )</b>
       </td>
       <td colspan="2" style="border-right: 1px solid black; text-align: right; font-size: 12px;">
         Rp.&ensp;
@@ -136,15 +142,15 @@
       <td style=" border-bottom: 1px solid black;"></td>
 		</tr>
     <tr>
-      <td colspan="4" style="font-size: 12px; border-bottom: 1px solid black; border-right: 1px solid black;">&nbsp;Non Staf & Staf Pusat ( AA ­ 213205 ­ 000 ) </td>
+      <td colspan="4" style="font-size: 12px; border-bottom: 1px solid black; border-right: 1px solid black;">&nbsp;Non Staf & Staf Pusat ( AA - 213205 - 000 ) </td>
       <td style=" border-bottom: 1px solid black; text-align: right;"><?php echo number_format($sumAA,2,',','.'); ?>&emsp;</td>
     </tr>
     <tr>
-      <td colspan="4" style="font-size: 12px; border-bottom: 1px solid black; border-right: 1px solid black;">&nbsp;Non Staf & Staf Yogyakarta ( AB ­ 213205 ­ 000 ) </td>
+      <td colspan="4" style="font-size: 12px; border-bottom: 1px solid black; border-right: 1px solid black;">&nbsp;Non Staf & Staf Yogyakarta ( AB - 213205 - 000 ) </td>
       <td style=" border-bottom: 1px solid black; text-align: right;"><?php echo number_format($sumAB,2,',','.'); ?>&emsp;</td>
     </tr>
     <tr>
-      <td colspan="4" style="font-size: 12px; border-bottom: 1px solid black; border-right: 1px solid black;">&nbsp;Non Staf & Staf Tuksono ( AC ­ 213205 ­ 000 ) </td>
+      <td colspan="4" style="font-size: 12px; border-bottom: 1px solid black; border-right: 1px solid black;">&nbsp;Non Staf & Staf Tuksono ( AC - 213205 - 000 ) </td>
       <td style=" border-bottom: 1px solid black; text-align: right;"><?php echo number_format($sumAC,2,',','.'); ?>&emsp;</td>
     </tr>
 		<tr>
