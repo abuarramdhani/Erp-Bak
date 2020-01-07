@@ -2,7 +2,7 @@
 	.btn-success:hover, .btn-success:active, .btn-success.hover {
 		background-color: #008d4c !important;
 	}
-	table.DTFC_Cloned tr {
+	table.DTFC_Cloned thead tr {
 		background-color: #337ab7;
 	}
 </style>
