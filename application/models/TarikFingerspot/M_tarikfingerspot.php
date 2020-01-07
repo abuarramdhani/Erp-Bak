@@ -215,8 +215,8 @@ class M_tarikfingerspot extends CI_MODEL
 	
 	public function fingerspot_device()
 	{
-		$this->mysql->order_by('office', 'asc');
-		$this->mysql->from('db_datapresensi.tb_device');
+		$this->quick->order_by('office', 'asc');
+		$this->quick->from('db_datapresensi.tb_device');
 		return $this->quick->get()->result();
 	}
 }
