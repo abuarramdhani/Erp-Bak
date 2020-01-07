@@ -175,7 +175,6 @@ class C_List extends CI_Controller
     $date = $data['date'];
     $data['kasbon'] = $this->M_lelayu->getDataPDF($id);
     $nama = $data['kasbon'];
-
     $data['tertanda'] = $_POST['Penerima_kasbon'];
     $data['menyetujui'] = $_POST['Menyetujui_kasbon'];
 
@@ -183,6 +182,11 @@ class C_List extends CI_Controller
     $total1 = $nama[0]['spsi_nonmanajerial_nominal']+$nama[0]['spsi_spv_nominal']+$nama[0]['spsi_kasie_nominal']+$nama[0]['spsi_askanit_nominal'];
     $data['terbilang_total'] = $this->terbilang($total)." Rupiah";
     $data['terbilang_total1'] = $this->terbilang($total1)." Rupiah";
+
+    $data['sumAA'] = $this->M_lelayu->getPkjByLoc("(ee.location_code not in ('04', '02') or ee.location_code is null)", $id);
+    $data['sumAB'] = $this->M_lelayu->getPkjByLoc("ee.location_code in ('04')", $id);
+    $data['sumAC'] = $this->M_lelayu->getPkjByLoc("ee.location_code in ('02')", $id);
+    $data['sumTotal'] = $data['sumAA'] + $data['sumAB'] + $data['sumAC'];
 
     $this->load->library('pdf');
     $pdf = $this->pdf->load();
