@@ -583,10 +583,12 @@ class M_splseksi extends CI_Model{
 
 	public function getJenisHari($tgl, $noind){
 		$name_hari = date('D', strtotime($tgl));
+		$tanggal = date('Y-m-d', strtotime($tgl));
+
 		//cek minggu
 		if($name_hari == 'Sun'){
 			//cek shift
-			$sql = "SELECT * FROM \"Presensi\".tshiftpekerja WHERE tanggal='$tgl' and noind ='$noind'";
+			$sql = "SELECT * FROM \"Presensi\".tshiftpekerja WHERE tanggal='$tanggal' and noind ='$noind'";
 			$jenis = $this->prs->query($sql)->num_rows() > 0? 'Biasa' : 'Libur';
 		}else{
 			//cek hari libur
