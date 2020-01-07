@@ -154,7 +154,7 @@
 
 									<div class="form-group">
 										<label class="col-sm-2 control-label">Estimasi</label>
-										<div class="col-sm-10">
+										<div class="col-sm-3" style="border: 1px solid grey; margin-left: 1em; border-radius: 2px; padding-bottom: 5px; padding-top: 5px; width: 6em;">
 											<span id="estJamLembur">...</span>
 										</div>
 									</div>

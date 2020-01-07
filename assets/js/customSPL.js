@@ -1003,7 +1003,7 @@ const count_overtime = (...args) => {
             data: params,
             url: baseurl + 'SPL/Pusat/ajax_count_overtime',
             success: res => {
-                $('#estJamLembur').text(res)
+                $('#estJamLembur').text(res + ' jam')
                 resolve(res)
             }
         })
