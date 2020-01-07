@@ -442,3 +442,35 @@ $(document).ready(function(){
     });
 });
 
+$(document).ready(function(){
+    $('.slcKhususNoind').select2({
+        searching: true,
+        minimumInputLength: 3,
+        placeholder: "No. Induk / Nama Pekerja",
+        allowClear: false,
+        ajax: {
+            url: baseurl + 'MasterPresensi/ReffGaji/PekerjaKhusus/searchActiveEmployees',
+            dataType: 'json',
+            delay: 500,
+            type: 'GET',
+            data: function(params) {
+                return {
+                    term: params.term
+                }
+            },
+            processResults: function(data) {
+                return {
+                    results: $.map(data, function(obj) {
+                        return { id: obj.noind, text: obj.noind + " - " + obj.nama };
+                    })
+                }
+            }
+        }
+    });
+    $('#tblPekerjaKhusus').DataTable({
+        scrollX: true,
+        fixedColumns: {
+            leftColumns: 4
+        }
+    });
+});
