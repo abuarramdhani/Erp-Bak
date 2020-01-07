@@ -124,6 +124,14 @@ class C_splseksi extends CI_Controller {
 		$first = explode(':', $mulai);
 		$second = explode(':', $selesai);
 
+		if(count($first) == 1){
+			$first[1] = 00;
+		}
+
+		if(count($second) == 1){
+			$second[1] = 00;
+		}
+
 		$a = $first[0]*60+$first[1];
 		$b = $second[0]*60+$second[1];
 
@@ -410,7 +418,7 @@ class C_splseksi extends CI_Controller {
 	public function edit_spl_submit(){
 		$this->checkSession();
 		$user_id = $this->session->user;
-		$tanggal = $this->input->post('tanggal');
+		$tanggal = $this->input->post('tanggal_0');
 		$tanggal = date_format(date_create($tanggal), "Y-m-d");
 		$mulai = $this->input->post('waktu_0');
 		$mulai = date_format(date_create($mulai), "H:i:s");
@@ -606,13 +614,17 @@ class C_splseksi extends CI_Controller {
 		$masuk_absen = "";
 		$keluar_absen = "";
 
+		$tanggal = $this->input->post("tanggal0");
+		$tanggal = date_format(date_create($tanggal), 'Y-m-d');
+		$tanggal1 = $this->input->post("tanggal1");
+		$tanggal1 = date_format(date_create($tanggal1), 'Y-m-d');
 		$waktu0 = $this->input->post("waktu0");
 		$waktu1 = $this->input->post("waktu1");
+
 		$lembur = $this->input->post("lembur");
 		$noind = $this->input->post("noind");
-		$tanggal = $this->input->post("tanggal");
-		$tanggal = date_format(date_create($tanggal), 'Y-m-d');
 
+		//untuk tgl lembur kemarin (saat diinput)
 		if(strtotime($tanggal) < strtotime(date('Y-m-d'))){
 			$tim = $this->M_splseksi->getTim($noind,$tanggal);
 			if (!empty($tim) && count($tim) > 0) {
@@ -635,7 +647,7 @@ class C_splseksi extends CI_Controller {
 						$keluar_absen = date_format(date_create($datapres['keluar']), 'Y-m-d H:i:s');
 						$awal_lembur = date_format(date_create($tanggal), "Y-m-d")." ".$waktu0;
 						$awal_lembur = date_format(date_create($awal_lembur), 'Y-m-d H:i:s');
-						$akhir_lembur = date_format(date_create($tanggal), "Y-m-d")." ".$waktu1;
+						$akhir_lembur = date_format(date_create($tanggal1), "Y-m-d")." ".$waktu1;
 						$akhir_lembur = date_format(date_create($akhir_lembur), 'Y-m-d H:i:s');
 						$mulai_ist = date_format(date_create($datapres['ist_mulai']), 'Y-m-d H:i:s');
 						$selesai_ist = date_format(date_create($datapres['ist_selesai']), 'Y-m-d H:i:s');
@@ -749,7 +761,7 @@ class C_splseksi extends CI_Controller {
 					if ($lembur == '004') {
 						$awal_lembur = date_format(date_create($tanggal), "Y-m-d")." ".$waktu0;
 						$awal_lembur = date_format(date_create($awal_lembur), 'Y-m-d H:i:s');
-						$akhir_lembur = date_format(date_create($tanggal), "Y-m-d")." ".$waktu1;
+						$akhir_lembur = date_format(date_create($tanggal1), "Y-m-d")." ".$waktu1;
 						$akhir_lembur = date_format(date_create($akhir_lembur), 'Y-m-d H:i:s');
 						$shiftpekerja = $this->M_splseksi->getShiftpekerja($noind,$tanggal);
 						if ($shiftpekerja == 0) {
@@ -765,8 +777,8 @@ class C_splseksi extends CI_Controller {
 					}
 				}
 			}
-		}else{
-			$presensi = $this->M_splseksi->getPresensiPusat($noind,$tanggal);
+		}else{ //input lembur di kedepannya
+			$presensi = $this->M_splseksi->getPresensiPusat($noind,$tanggal); // cari shiftpekerja
 
 			if (!empty($presensi) && count($presensi) > 0) {
 				foreach ($presensi as $datapres) {
@@ -774,7 +786,7 @@ class C_splseksi extends CI_Controller {
 					$keluar_shift = date_format(date_create($datapres['jam_plg']), 'Y-m-d H:i:s');
 					$awal_lembur = date_format(date_create($tanggal), "Y-m-d")." ".$waktu0;
 					$awal_lembur = date_format(date_create($awal_lembur), 'Y-m-d H:i:s');
-					$akhir_lembur = date_format(date_create($tanggal), "Y-m-d")." ".$waktu1;
+					$akhir_lembur = date_format(date_create($tanggal1), "Y-m-d")." ".$waktu1;
 					$akhir_lembur = date_format(date_create($akhir_lembur), 'Y-m-d H:i:s');
 					$mulai_ist = date_format(date_create($datapres['ist_mulai']), 'Y-m-d H:i:s');
 					$selesai_ist = date_format(date_create($datapres['ist_selesai']), 'Y-m-d H:i:s');
@@ -807,12 +819,13 @@ class C_splseksi extends CI_Controller {
 					}elseif ($lembur == '002') { // lembur pulang
 						if ($keluar_shift <= $awal_lembur) {
 							$aktual_awal = $awal_lembur;
-							if ($keluar_shift <= $akhir_lembur) {
+							if ($keluar_shift <= $akhir_lembur) { // ini error buat shift 3
 								$aktual_akhir = $akhir_lembur;
 							}else{
 								$error = "1";
 								$errortext = "Jam Akhir Lembur Tidak Sesuai Jam Pulang Shift Pekerja ($keluar_shift)";
 							}
+							//echo $errortext;
 						}elseif($awal_lembur <= $keluar_shift){
 							$aktual_awal = $keluar_shift;
 							if ($keluar_shift < $akhir_lembur) {
@@ -859,13 +872,13 @@ class C_splseksi extends CI_Controller {
 					}
 				}
 			}else{
-				if ($lembur == '004') {
+				if ($lembur == '004') { // lembur hari libur
 
 					$shiftpekerja = $this->M_splseksi->getShiftpekerja($noind,$tanggal);
 
 					$awal_lembur = date_format(date_create($tanggal), "Y-m-d")." ".$waktu0;
 					$awal_lembur = date_format(date_create($awal_lembur), 'Y-m-d H:i:s');
-					$akhir_lembur = date_format(date_create($tanggal), "Y-m-d")." ".$waktu1;
+					$akhir_lembur = date_format(date_create($tanggal1), "Y-m-d")." ".$waktu1;
 					$akhir_lembur = date_format(date_create($akhir_lembur), 'Y-m-d H:i:s');
 
 					if ($shiftpekerja == 0) {
@@ -902,7 +915,7 @@ class C_splseksi extends CI_Controller {
 	public function new_spl_submit(){
 		$this->checkSession();
 		$user_id = $this->session->user;
-		$tanggal = $this->input->post('tanggal_simpan');
+		$tanggal = $this->input->post('tanggal_0_simpan');
 		$tanggal = date_format(date_create($tanggal), "Y-m-d");
 		$mulai = $this->input->post('waktu_0_simpan');
 		$mulai = date_format(date_create($mulai), "H:i:s");

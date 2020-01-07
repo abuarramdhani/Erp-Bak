@@ -35,7 +35,7 @@
 					}
 					?>
 
-				<form class="form-horizontal" action="<?php echo site_URL('SPLSeksi/C_splseksi/edit_spl_submit'); ?>" method="post" enctype="multipart/form-data">
+				<form class="form-horizontal" id="form-edit-spl" action="<?php echo site_URL('SPLSeksi/C_splseksi/edit_spl_submit'); ?>" method="post" enctype="multipart/form-data">
 
 					<!-- ID DPL DI EDIT -->
 					<input type="text" class="hidden" name="id_spl" value="<?php echo $l['ID_SPL']; ?>">
@@ -46,29 +46,47 @@
 							<div class="row">
 								<div class="col-lg-6">
 
-									<div class="form-group">
-										<label class="col-sm-2 control-label">Tanggal</label>
-										<div class="col-sm-10">
-											<div class="input-group">
-												<div class="input-group-addon">
-													<i class="fa fa-calendar"></i>
+								<div class="form-group" style="margin-bottom: 0 !important;">
+										<label class="col-sm-2 control-label">Waktu Lembur</label>
+										<div class="col-sm-5">
+											<div class="bootstrap-timepicker">
+												<div class="input-group">
+													<div class="input-group-addon">
+														<i class="fa fa-calendar"></i>
+													</div>
+													<input type="text" class="form-control pull-right spl-date" name="tanggal_0" value="<?php echo date_format(date_create($l['Tgl_Lembur']), "d-m-Y"); ?>" disabled>
 												</div>
-												<input type="text" class="form-control pull-right spl-date" name="tanggal"
-													value="<?php echo date_format(date_create($l['Tgl_Lembur']), "d-m-Y"); ?>" <?php echo $status ?>>
+											</div>
+										</div>
+										<div class="col-sm-5">
+											<div class="bootstrap-timepicker">
+												<div class="input-group">
+													<div class="input-group-addon">
+														<i class="fa fa-clock-o"></i>
+													</div>
+													<input type="text" class="form-control spl-time-mask" name="waktu_0" value="<?php echo $l['Jam_Mulai_Lembur']; ?>" <?php echo $status ?> required>
+												</div>
 											</div>
 										</div>
 									</div>
-
 									<div class="form-group">
-										<label class="col-sm-2 control-label">Waktu</label>
+										<label class="col-sm-2 control-label"></label>
 										<div class="col-sm-5">
 											<div class="bootstrap-timepicker">
 												<div class="input-group">
 													<div class="input-group-addon">
-														<i class="fa fa-clock-o"></i>
+														<i class="fa fa-calendar"></i>
 													</div>
-													<input type="text" class="form-control spl-time-mask" name="waktu_0"
-														value="<?php echo $l['Jam_Mulai_Lembur']; ?>" required <?php echo $status ?>>
+													<?php
+														//logic for tanggal2
+														$tanggal2 = date('d-m-Y', strtotime($l['Tgl_Lembur']));
+														$time1 = strtotime($l['Jam_Mulai_Lembur']);
+														$time2 = strtotime($l['Jam_Akhir_Lembur']);
+														if($time1 > $time2){
+															$tanggal2 = date('d-m-Y', strtotime($l['Tgl_Lembur']." +1 days"));
+														}
+													?>
+													<input type="text" class="form-control pull-right spl-date" name="tanggal_1" value="<?= $tanggal2 ?>" required>
 												</div>
 											</div>
 										</div>
@@ -78,8 +96,7 @@
 													<div class="input-group-addon">
 														<i class="fa fa-clock-o"></i>
 													</div>
-													<input type="text" class="form-control spl-time-mask" name="waktu_1"
-														value="<?php echo $l['Jam_Akhir_Lembur']; ?>" required <?php echo $status ?>>
+													<input type="text" class="form-control spl-time-mask" name="waktu_1" value="<?php echo $l['Jam_Akhir_Lembur']; ?>" <?php echo $status ?> required>
 												</div>
 											</div>
 										</div>
@@ -229,7 +246,7 @@
 										<div class="col-sm-12 pull-left">
 											<button type="reset" style="margin-right:3px" class="btn btn-primary" onclick="location.reload()" <?php echo $status ?>> <i class="fa fa-refresh"></i> Reset</button>
 											<button type="submit" class="btn btn-primary" <?php echo $status ?>> <i class="fa fa-save"></i> Submit</button>
-											<button type="button" onclick="javascript:history.go(-2)" class="btn btn-warning"> <i class="fa fa-arrow-circle-left"></i> Kembali</button>
+											<a href="<?= base_url('SPL/ListLembur') ?>"  class="btn btn-warning"> <i class="fa fa-arrow-circle-left"></i> Kembali</a>
 										</div>
 									</div>
 
@@ -280,6 +297,6 @@
 		}
 
 		document.addEventListener("DOMContentLoaded",function(e){
-			setupTimers();
+			//setupTimers();
 		});
 	</script>
