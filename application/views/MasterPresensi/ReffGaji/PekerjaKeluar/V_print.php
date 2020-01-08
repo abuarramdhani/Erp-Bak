@@ -46,6 +46,8 @@
                             <th style="text-align: center;font-size: 8pt;width: 5%">Jumlah JKN</th>
                             <th style="text-align: center;font-size: 8pt;width: 5%">Jumlah JHT</th>
                             <th style="text-align: center;font-size: 8pt;width: 5%">Jumlah JP</th>
+                            <th style="text-align: center;font-size: 8pt;width: 5%">Jumlah Duka</th>
+                            <th style="text-align: center;font-size: 8pt;width: 5%">Total Duka</th>
                         <?php   
                          }else{ ?>
                             <th style="text-align: center;font-size: 8pt;width: 3%">No</th>
@@ -73,6 +75,8 @@
                             <th style="text-align: center;font-size: 8pt;width: 5%">Jumlah JKN</th>
                             <th style="text-align: center;font-size: 8pt;width: 5%">Jumlah JHT</th>
                             <th style="text-align: center;font-size: 8pt;width: 5%">Jumlah JP</th>
+                            <th style="text-align: center;font-size: 8pt;width: 5%">Jumlah Duka</th>
+                            <th style="text-align: center;font-size: 8pt;width: 5%">Total Duka</th>
                         <?php 
                          } 
                         ?>
@@ -109,6 +113,8 @@
                                     <td style="text-align: center;font-size: 8pt"><?=$key['jml_jkn'] ?></td>
                                     <td style="text-align: center;font-size: 8pt"><?=$key['jml_jht'] ?></td>
                                     <td style="text-align: center;font-size: 8pt"><?=$key['jml_jp'] ?></td>
+                                    <td style="text-align: center;font-size: 8pt"><?=$key['jml_duka'] ?></td>
+                                    <td style="text-align: center;font-size: 8pt"><?=$key['nom_duka'] ?></td>
                                 </tr>
                         <?php }else{ ?>
                                 <tr>
@@ -137,6 +143,8 @@
                                     <td style="text-align: center;font-size: 8pt"><?=$key['jml_jkn'] ?></td>
                                     <td style="text-align: center;font-size: 8pt"><?=$key['jml_jht'] ?></td>
                                     <td style="text-align: center;font-size: 8pt"><?=$key['jml_jp'] ?></td>
+                                    <td style="text-align: center;font-size: 8pt"><?=$key['jml_duka'] ?></td>
+                                    <td style="text-align: center;font-size: 8pt"><?=$key['nom_duka'] ?></td>
                                 </tr>
                         <?php } 
                             $angka++;
