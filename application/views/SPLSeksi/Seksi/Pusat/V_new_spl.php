@@ -229,7 +229,7 @@
 									<div class="form-group">
 										<div class="col-sm-12 pull-left">
 											<button type="reset" style="margin-right:3px" class="btn btn-primary" onclick="location.reload()"> <i class="fa fa-refresh"></i> Reset</button>
-											<button type="submit" class="btn btn-primary"> <i class="fa fa-save"></i> Submit</button>
+											<button type="submit" id="submit_spl" class="btn btn-primary"> <i class="fa fa-save"></i> Submit</button>
 											<a href="<?=base_url('SPL/Pusat')?>" class="btn btn-warning"> <i class="fa fa-arrow-circle-left"></i> Kembali</a>
 										</div>
 									</div>

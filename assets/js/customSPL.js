@@ -241,9 +241,9 @@ $(function() {
         $(this).closest('tr').remove();
     });
 
-    $('button[type=submit]').on('click', function(e) {
-        let waktu1 = $('input[name=tanggal_0]') + ' ' + $('input[name=waktu_0]').val()
-        let waktu2 = $('input[name=tanggal_1]') + ' ' + $('input[name=waktu_1]').val()
+    $('#submit_spl').on('click', function(e) {
+        let waktu1 = $('input[name=tanggal_0_simpan]') + ' ' + $('input[name=waktu_0_simpan]').val()
+        let waktu2 = $('input[name=tanggal_1_simpan]') + ' ' + $('input[name=waktu_1_simpan]').val()
         let kd_lembur = $('input[name=kd_lembur]').val()
 
         if (waktu1 == waktu2) {
