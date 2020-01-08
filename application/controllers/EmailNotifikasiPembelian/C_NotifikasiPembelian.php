@@ -121,7 +121,7 @@ class C_NotifikasiPembelian extends CI_Controller {
         <br/>
         -----
         <br/>
-        <span style="font-size: x-small;"><em>Send by ICT Auto Notification System</em></span><br/>
+        <span style="font-size: x-small;"><em>Sent by ICT Auto Notification System</em></span><br/>
         <span style="font-size: x-small;"><em>VoIP: 12300</em></span><br/>
         <span style="font-size: x-small;"><em>MyGroup: 08112545922</em></span><br/>
         </div>';
