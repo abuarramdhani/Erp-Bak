@@ -247,7 +247,7 @@ $(function() {
         let kd_lembur = $('input[name=kd_lembur]').val()
 
         if (waktu1 == waktu2) {
-            swal.fire('Waktu lembur yang diambil tidak boleh sama !!!', '', 'danger')
+            swal.fire('Waktu lembur yang diambil tidak boleh sama !!!', '', 'error')
             e.preventDefault()
             return
         }
