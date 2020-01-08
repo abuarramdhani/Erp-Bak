@@ -119,6 +119,8 @@ class C_PekerjaKeluar extends CI_Controller
 			$gaji[$angka]['ket'] = "";
 			$gaji[$angka]['pot_susulan'] = "";
 			$gaji[$angka]['tam_susulan'] = "";
+			$gaji[$angka]['jml_duka'] = 0;
+			$gaji[$angka]['nom_duka'] = 0;
 
 			$kom_ip 		= 0;
 			$kom_ik 		= 0;
@@ -145,6 +147,8 @@ class C_PekerjaKeluar extends CI_Controller
 			$kom_ket		= "";
 			$kom_pot_susulan = "";
 			$kom_tam_susulan = "";
+			$kom_jml_duka  = 0;
+			$kom_nom_duka  = 0;
 
 			$tgl_bulan_awal = $this->M_pekerjakeluar->cekProsesGaji($pkj['noind'], $pkj['tglkeluar']);
 			$tgl_cut_awal = $this->M_pekerjakeluar->cekProsesGaji2($pkj['noind'], $pkj['tglkeluar']);
@@ -255,6 +259,9 @@ class C_PekerjaKeluar extends CI_Controller
 			$kom_jml_jp = $this->M_pekerjakeluar->jumlah_jp($pkj['noind']);
 
 			$kom_um_dl = $this->M_pekerjakeluar->get_uang_dl($pkj['noind'],$tgl_cut_awal,$pkj['tglkeluar']);
+
+			$kom_jml_duka = $this->M_pekerjakeluar->jumlah_duka($pkj['noind'],$tgl_cut_awal,$pkj['tglkeluar']);
+			$kom_nom_duka = $this->M_pekerjakeluar->nominal_duka($pkj['noind'],$tgl_cut_awal,$pkj['tglkeluar']);
 
 			//komponen utama end 
 
@@ -477,6 +484,8 @@ class C_PekerjaKeluar extends CI_Controller
 			$gaji[$angka]['ket'] = $kom_ket;
 			$gaji[$angka]['pot_susulan'] = $kom_pot_susulan;
 			$gaji[$angka]['tam_susulan'] = $kom_tam_susulan;
+			$gaji[$angka]['jml_duka'] = $kom_jml_duka;
+			$gaji[$angka]['nom_duka'] = $kom_nom_duka;
 
 			$this->M_pekerjakeluar->delete_reffgajikeluar($pkj['noind']);
 			
@@ -507,7 +516,9 @@ class C_PekerjaKeluar extends CI_Controller
 				'lokasi_krj'	 => $gaji[$angka]['lokasi_kerja'],
 				'dldobat'		 => $gaji[$angka]['um_dl'],
 				'tambahan_str'	 => $gaji[$angka]['tam_susulan'],
-				'potongan_str'	 => $gaji[$angka]['pot_susulan']
+				'potongan_str'	 => $gaji[$angka]['pot_susulan'],
+				'xduka'			 => $gaji[$angka]['jml_duka'],
+				'pduka'			 => $gaji[$angka]['nom_duka']
 			);
 			// echo "<pre>";print_r($array_insert);
 			$this->M_pekerjakeluar->insert_reffgajikeluar($array_insert);
@@ -630,7 +641,7 @@ class C_PekerjaKeluar extends CI_Controller
 				$record->P_I_KOP	= "";
 				$record->P_UT_KOP	= "";
 				$record->P_LAIN	= "";
-				$record->P_DUKA	= "";
+				$record->P_DUKA	= $dt['nom_duka'];
 				$record->P_SPSI	= "";
 				$record->T_GAJIP	= "";
 				$record->T_INSK	= "";
@@ -719,6 +730,7 @@ class C_PekerjaKeluar extends CI_Controller
 				$record->JKN 		= $dt['jkn'];
 				$record->JHT 		= $dt['jht'];
 				$record->JP 		= $dt['jp'];
+				$record->DUKA 		= $dt['nom_duka'];
 
 				$table->writeRecord();
 			}
@@ -783,6 +795,8 @@ class C_PekerjaKeluar extends CI_Controller
 		$objexcel->setCellValue('AB1','Jumlah JKN');
 		$objexcel->setCellValue('AC1','Jumlah JHT');
 		$objexcel->setCellValue('AD1','Jumlah JP');
+		$objexcel->setCellValue('AE1','Jumlah Duka');
+		$objexcel->setCellValue('AF1','Total Duka');
 
 		$num = 2;
 		$nomor = 1;
@@ -817,6 +831,8 @@ class C_PekerjaKeluar extends CI_Controller
 			$objexcel->setCellValue('AB'.$num,$gj['jml_jkn']);
 			$objexcel->setCellValue('AC'.$num,$gj['jml_jht']);
 			$objexcel->setCellValue('AD'.$num,$gj['jml_jp']);
+			$objexcel->setCellValue('AE'.$num,$gj['jml_duka']);
+			$objexcel->setCellValue('AF'.$num,$gj['nom_duka']);
 			$num++;
 			$nomor++;
 		}

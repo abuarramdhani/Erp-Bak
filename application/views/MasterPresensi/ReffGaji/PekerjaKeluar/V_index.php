@@ -192,6 +192,8 @@ background-color: #337ab7;
 													<th>Jumlah JKN</th>
 													<th>Jumlah JHT</th>
 													<th>Jumlah JP</th>
+													<th>Jumlah Duka</th>
+													<th>Total Duka</th>
 												</tr>
 											</thead>
 											<tbody>
@@ -229,6 +231,8 @@ background-color: #337ab7;
 															<td><?=$key['jml_jkn'] ?></td>
 															<td><?=$key['jml_jht'] ?></td>
 															<td><?=$key['jml_jp'] ?></td>
+															<td><?=$key['jml_duka'] ?></td>
+															<td><?=$key['nom_duka'] ?></td>
 														</tr>
 													<?php $angka++;
 													}

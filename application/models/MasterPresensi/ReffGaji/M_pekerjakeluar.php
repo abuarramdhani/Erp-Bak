@@ -9,6 +9,7 @@ class M_pekerjakeluar extends CI_Model
 	function __construct()
 	{
 		parent::__construct();
+		$this->load->database();
 		$this->personalia = $this->load->database('personalia', TRUE);
 		$this->oracle = $this->load->database('oracle', TRUE); 
 	}
@@ -6366,5 +6367,37 @@ class M_pekerjakeluar extends CI_Model
 		} 
  
 	} 
+
+	public function jumlah_duka($noind,$tgl_awal,$tgl_akhir){
+		$sql = "select hpd.noind,count(*) as jumlah
+				from hr.hr_lelayu hl 
+				inner join hr.hr_pekerja_dipotong hpd 
+				on hl.lelayu_id = hpd.lelayu_id
+				where hl.tgl_lelayu between '$tgl_awal' and '$tgl_akhir'
+				and hpd.noind = '$noind'
+				group by hpd.noind";
+		$result = $this->db->query($sql)->row();
+		if(!empty($result)){
+			return $result->jumlah;
+		}else{
+			return 0;
+		}
+	}
+
+	public function nominal_duka($noind,$tgl_awal,$tgl_akhir){
+		$sql = "select hpd.noind,sum(hpd.nominal) as total
+				from hr.hr_lelayu hl 
+				inner join hr.hr_pekerja_dipotong hpd 
+				on hl.lelayu_id = hpd.lelayu_id
+				where hl.tgl_lelayu between '$tgl_awal' and '$tgl_akhir'
+				and hpd.noind = '$noind'
+				group by hpd.noind";
+		$result = $this->db->query($sql)->row();
+		if(!empty($result)){
+			return $result->total;
+		}else{
+			return 0;
+		}
+	}
 }
 ?>
