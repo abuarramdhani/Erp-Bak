@@ -3631,3 +3631,7 @@ $route['RekapJenisPekerjaan/Rekap/(:any)/(:any)'] 		= 'RekapJenisPekerjaan/C_Rjp
 
 //--------------------------------------------------- Email Notifikasi Pembelian --------------------------------------------------//
 $route['EmailNotifikasiPembelian'] = 'EmailNotifikasiPembelian/C_NotifikasiPembelian';
+
+//--------------------------------------------------- Login Android API --------------------------------------------------//
+$route['LoginAndroidAPI'] = 'LoginAndroidAPI/C_LoginAndroid';
+$route['LoginAndroidAPI/loginAndroid'] = 'LoginAndroidAPI/C_LoginAndroid/loginAndroid';
