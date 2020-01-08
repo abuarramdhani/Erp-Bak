@@ -698,8 +698,8 @@ class M_lelayu extends CI_Model
               hpd.noind,
               hpd.nominal,
               hrd.nama,
-              hrd.jabatan;
-            order by hpd.noind";
+              hrd.jabatan
+            order by hpd.noind;";
               // echo $sql;exit();
     return  $this->db->query($sql)->result_array();
   }
