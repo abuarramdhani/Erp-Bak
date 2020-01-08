@@ -16,6 +16,7 @@ class C_Lelayu extends CI_Controller
     $this->load->library('form_validation');
     $this->load->library('session');
     $this->load->library('encrypt');
+    $this->load->library('General');
     $this->load->library('Log_Activity');
 
     $this->load->model('SystemAdministration/MainMenu/M_user');
@@ -155,6 +156,28 @@ class C_Lelayu extends CI_Controller
     $detail = 'Menambah Data Lelayu dengan id_lelayu '.$id_lelayu;
 
     $this->log_activity->activity_log($aksi, $detail);
+  }
+
+  public function RekapLelayu()
+  {
+    $data  = $this->general->loadHeaderandSidemenu('Master Presensi', 'Rekap Lelayu', 'Lelayu / Uang Duka', 'Rekap Data', '');
+
+    $this->load->view('V_Header',$data);
+    $this->load->view('V_Sidemenu',$data);
+    $this->load->view('MasterPresensi/Lelayu/Rekap/V_Rekap_Data');
+    $this->load->view('V_Footer',$data);
+  }
+
+  public function getRekap()
+  {
+    $awal = $this->input->post('awal');
+    $akhir = $this->input->post('akhir');
+
+    $data['list'] = $this->M_lelayu->getRekapData($awal, $akhir);
+    $data['awal'] = date('d-M-Y', strtotime($awal));
+    $data['akhir'] = date('d-M-Y', strtotime($akhir));
+    $html = $this->load->view('MasterPresensi/Lelayu/Rekap/V_Rekap_Table', $data);
+    echo json_encode($html);
   }
 }
 

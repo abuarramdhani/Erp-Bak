@@ -44,7 +44,34 @@
       <td style=" border-bottom: 1px solid black; text-align: right;"><p><?php echo number_format($key['kain_kafan_perusahaan'],2,',','.'); ?>&emsp;</p></td>
     </tr>
 		<tr>
-			<td colspan="5" style="border-right: 1px solid black; text-align: right; font-size: 12px;"><b>Total</b>&emsp;Rp.&ensp;</td>
+      <td></td>
+      <?php 
+        if ($key['lokasi_kerja'] == '02') {
+          $b1 = 'AC';
+        }elseif ($key['lokasi_kerja'] == '04' || in_array($key['kodesie'], $kodesie_yogya)) {
+          $b1 = 'AB';
+        }else{
+          $b1 = 'AA';
+        }
+
+        if (substr($key['kodesie'], 0,1) == '3') {
+          $b2 = '515528';
+        }else{
+          $b2 = '522525';
+        }
+
+        if (!empty($key['cost_code'])) {
+          $seksinya = $key['cost_code'];
+        }else{
+          $seksinya = $key['seksi'];
+        }
+       ?>
+			<td colspan="2" style="text-align: left; font-size: 12px;">
+        <b>Total ( <?= $b1.' - '.$b2.' - '.$seksinya ?> )</b>
+      </td>
+      <td colspan="2" style="border-right: 1px solid black; text-align: right; font-size: 12px;">
+        Rp.&ensp;
+      </td>
       <td style="border-bottom: 1px solid black; text-align: right;"><?php $total1 = $key['uang_duka_perusahaan']+$key['kain_kafan_perusahaan']; echo number_format($total1,2,',','.'); ?>&emsp;</td>
 		</tr>
 	</table>
@@ -106,7 +133,7 @@
       <td style=" border-bottom: 1px solid black;"></td>
 		</tr>
 		<tr>
-      <td rowspan="6" style="border-right: 1px solid black; border-bottom: 1px solid black;"></td>
+      <td rowspan="5" style="border-right: 1px solid black; border-bottom: 1px solid black;"></td>
       <td colspan="4" style="font-size: 12px;border-right: 1px solid black; border-bottom: 1px solid black;">&nbsp;<?php  echo ucwords(mb_strtolower($key['keterangan'].' - '))?>Seksi <?php echo ucwords(mb_strtolower($key['seksi'])); ?></td>
       <td style=" border-bottom: 1px solid black;"></td>
 		</tr>
@@ -115,36 +142,20 @@
       <td style=" border-bottom: 1px solid black;"></td>
 		</tr>
     <tr>
-      <td style="font-size: 12px; border-bottom: 1px solid black;">&nbsp;1. NonStaff dan Staff Non-Managerial </td>
-      <td style=" border-bottom: 1px solid black;">:</td>
-			<td style=" border-bottom: 1px solid black; text-align: right;"><?php echo $key['spsi_nonmanajerial_ket']; ?></td>
-			<td style=" border-right: 1px solid black;  border-bottom: 1px solid black; width: 150px;"></td>
-      <td style=" border-bottom: 1px solid black; text-align: right;"><?php echo number_format($key['spsi_nonmanajerial_nominal'],2,',','.'); ?>&emsp;</td>
+      <td colspan="4" style="font-size: 12px; border-bottom: 1px solid black; border-right: 1px solid black;">&nbsp;Non Staf & Staf Pusat ( AA - 213205 - 000 ) </td>
+      <td style=" border-bottom: 1px solid black; text-align: right;"><?php echo number_format($sumAA,2,',','.'); ?>&emsp;</td>
     </tr>
     <tr>
-      <td style="font-size: 12px; border-bottom: 1px solid black;">&nbsp;2. SPV & Kasie Pratama </td>
-      <td style=" border-bottom: 1px solid black;">:</td>
-			<td style=" border-bottom: 1px solid black; text-align: right;"><?php echo $key['spsi_spv_ket']; ?></td>
-			<td style=" border-right: 1px solid black;  border-bottom: 1px solid black; width: 150px;"></td>
-      <td style=" border-bottom: 1px solid black; text-align: right;"><?php echo number_format($key['spsi_spv_nominal'],2,',','.'); ?>&emsp;</td>
+      <td colspan="4" style="font-size: 12px; border-bottom: 1px solid black; border-right: 1px solid black;">&nbsp;Non Staf & Staf Yogyakarta ( AB - 213205 - 000 ) </td>
+      <td style=" border-bottom: 1px solid black; text-align: right;"><?php echo number_format($sumAB,2,',','.'); ?>&emsp;</td>
     </tr>
     <tr>
-      <td style="font-size: 12px; border-bottom: 1px solid black;">&nbsp;3. Kasie Madya & Kasie Utama </td>
-      <td style=" border-bottom: 1px solid black;">:</td>
-			<td style=" border-bottom: 1px solid black; text-align: right;"><?php echo $key['spsi_kasie_ket']; ?></td>
-			<td style=" border-right: 1px solid black;  border-bottom: 1px solid black; width: 150px;"></td>
-      <td style=" border-bottom: 1px solid black; text-align: right;"><?php echo number_format($key['spsi_kasie_nominal'],2,',','.'); ?>&emsp;</td>
-    </tr>
-    <tr>
-      <td style="font-size: 12px; border-bottom: 1px solid black;">&nbsp;4. Ass Ka-Unit keatas </td>
-      <td style=" border-bottom: 1px solid black;">:</td>
-			<td style=" border-bottom: 1px solid black; text-align: right;"><?php echo $key['spsi_askanit_ket']; ?></td>
-			<td style=" border-right: 1px solid black;  border-bottom: 1px solid black; width: 150px;"></td>
-      <td style=" border-bottom: 1px solid black; text-align: right;"><?php echo number_format($key['spsi_askanit_nominal'],2,',','.'); ?>&emsp;</td>
+      <td colspan="4" style="font-size: 12px; border-bottom: 1px solid black; border-right: 1px solid black;">&nbsp;Non Staf & Staf Tuksono ( AC - 213205 - 000 ) </td>
+      <td style=" border-bottom: 1px solid black; text-align: right;"><?php echo number_format($sumAC,2,',','.'); ?>&emsp;</td>
     </tr>
 		<tr>
 			<td colspan="5" style="border-right: 1px solid black; text-align: right; font-size: 12px;"><b>Total</b>&emsp;Rp.&ensp;</td>
-      <td style="border-bottom: 1px solid black; text-align: right;"><?php $total2 = $key['spsi_nonmanajerial_nominal']+$key['spsi_spv_nominal']+$key['spsi_kasie_nominal']+$key['spsi_askanit_nominal']; echo number_format($total2,2,',','.'); ?>&emsp;</td>
+      <td style="border-bottom: 1px solid black; text-align: right;"><?php echo number_format($sumTotal,2,',','.'); ?>&emsp;</td>
 		</tr>
 	</table>
   <table style="width: 100%; border-right: 1px solid black; border-left: 1px solid black; border-collapse: collapse;">

@@ -294,13 +294,13 @@ function MP_simpan_lelayu() {
               totNon: totNon
             },
             success:function(result){
-              window.location.reload();
               Swal.fire({
-        			  title:'Success',
-        			  text:'Lelayu telah di simpan',
-        			  type: 'success',
+                title:'Success',
+                text:'Lelayu telah di simpan',
+                type: 'success',
                 showConfirmButton:false
-        			});
+              });
+              // window.location.reload();
             }
           });
           return true;
@@ -366,3 +366,51 @@ $('ul.sidebar-menu a').filter(function() {
 $('ul.treeview-menu a').filter(function() {
 	 return this.href == url;
 }).parentsUntil(".sidebar-menu > .treeview-menu").addClass('active');
+
+$('.duka_dpicker').daterangepicker({
+  showDropdowns: true,
+ locale: {
+    format: 'YYYY-MM-DD'
+  },
+  singleDatePicker: true
+});
+
+$('#duka_prk').on('click', function(){
+  fakeLoading(0);
+  var awal = $('#duka_rekapBegin').val();
+  var akhir = $('#duka_rekapEnd').val();
+  $.ajax({
+    url: baseurl + 'MasterPresensi/Lelayu/getRekap',
+    type: "post",
+    data: {awal: awal, akhir: akhir},
+    success: function (response) {
+      $('#duka_table_rekap').html(response);
+      duka_init_rekap();
+      $('html, body').animate({
+        scrollTop: $("#duka_table_rekap").offset().top
+      }, 2000);
+      fakeLoading(1);
+    },
+    error: function(jqXHR, textStatus, errorThrown) {
+     console.log(textStatus, errorThrown);
+   }
+ });
+});
+
+function duka_init_rekap()
+{
+  var pr = $('#duka_pr_rekap').text();
+  $('.duka_tbl_rekap').DataTable({
+    dom: 'Bfrtip',
+    buttons: [
+    {
+      extend: 'excelHtml5',
+      title: 'Data Rekap '+pr
+    },
+    {
+      extend: 'print',
+      title: 'Data Rekap '+pr
+    }
+    ]
+  });
+}
