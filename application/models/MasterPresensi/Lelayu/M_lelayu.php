@@ -668,12 +668,13 @@ class M_lelayu extends CI_Model
 
   public function getRekapData($awal, $akhir)
   {
-    $CI =& get_instance();
-    $personalia = $CI->load->database('personalia');
-    echo $personalia->database;exit();
+    $hosP = $this->personalia->hostname;
+    $dbP = $this->personalia->database;
+    $usrP = $this->personalia->username;
+    $pasP = $this->personalia->password;
     $sql = "select
               hpd.noind,
-              eea.employee_name,
+              hrd.nama,
               hrd.jabatan,
               sum(hpd.nominal)
             from
@@ -686,18 +687,20 @@ class M_lelayu extends CI_Model
               select
                 *
               from
-                dblink('host=dev.quick.com user=postgres password=password dbname=Personalia',
-                'select tp.noind, tor.jabatan from hrd_khs.tpribadi tp
+                dblink('host=$hosP user=$usrP password=$pasP dbname=$dbP',
+                'select tp.noind, tp.nama, tor.jabatan from hrd_khs.tpribadi tp
             left join hrd_khs.torganisasi tor on tor.kd_jabatan = tp.kd_jabatan') as tb2(noind text,
-                jabatan text) ) hrd on
+                nama text, jabatan text) ) hrd on
               hrd.noind = hpd.noind
             where
               tgl_lelayu between '$awal' and '$akhir'
             group by
               hpd.noind,
               hpd.nominal,
-              eea.employee_name,
+              hrd.nama,
               hrd.jabatan;";
+              // echo $sql;exit();
+    return  $this->db->query($sql)->result_array();
   }
 
   public function getKsYogya()
