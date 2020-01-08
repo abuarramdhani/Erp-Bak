@@ -17,7 +17,7 @@ class M_tarikfingerspot extends CI_MODEL
 		$this->quick = $this->load->database('quick', TRUE);
 	}
 
-	public function getAttLog($periode, $status, $device){
+	public function getAttLog($periode, $status, $device=false){
 		$filterDevice = '';
 		if($device != null){
 			$filterDevice = "and sn = '$device' ";
