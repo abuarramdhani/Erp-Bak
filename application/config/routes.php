@@ -3628,3 +3628,6 @@ $route['RekapJenisPekerjaan'] 							= 'RekapJenisPekerjaan/C_Rjp';
 $route['RekapJenisPekerjaan/Rekap'] 					= 'RekapJenisPekerjaan/C_Rjp/Rekap';
 $route['RekapJenisPekerjaan/Rekap/(:any)'] 				= 'RekapJenisPekerjaan/C_Rjp/$1';
 $route['RekapJenisPekerjaan/Rekap/(:any)/(:any)'] 		= 'RekapJenisPekerjaan/C_Rjp/$1/$2';
+
+//--------------------------------------------------- Email Notifikasi Pembelian --------------------------------------------------//
+$route['EmailNotifikasiPembelian'] = 'EmailNotifikasiPembelian/C_NotifikasiPembelian';
