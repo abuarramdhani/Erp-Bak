@@ -622,6 +622,32 @@ class M_lelayu extends CI_Model
 
   public function getPkjByLoc($lokasi = false, $id)
   {
+    if ($lokasi == '02') {//AC
+      $sqlTambahan = "ee.location_code in ('02')";
+    }elseif ($lokasi == '04') {//AB
+      $sqlTambahan = "(ee.location_code in ('04')
+                      or ee.section_code in (
+                      select
+                        section_code
+                      from
+                        er.er_section
+                      where
+                        section_name like '%YOGYAKARTA%'
+                        or (unit_name like '%YOGYAKARTA%'
+                        and section_name = '-') ))";
+    }else{//AA
+      $sqlTambahan = "(ee.location_code not in ('04', '02') 
+                      and ee.section_code not in (
+                      select
+                        section_code
+                      from
+                        er.er_section
+                      where
+                        section_name like '%YOGYAKARTA%'
+                        or (unit_name like '%YOGYAKARTA%'
+                        and section_name = '-') ) or ee.location_code is null)";
+    }
+
     $sql = "select
               sum(nominal)
             from
@@ -636,8 +662,49 @@ class M_lelayu extends CI_Model
                 ee.employee_code = hpd.noind
               where
                 lelayu_id = $id
-                and $lokasi ) jumlah;";
+                and $sqlTambahan ) jumlah;";
     return  $this->db->query($sql)->row()->sum;
+  }
+
+  public function getRekapData($awal, $akhir)
+  {
+    $CI =& get_instance();
+    $personalia = $CI->load->database('personalia');
+    echo $personalia->database;exit();
+    $sql = "select
+              hpd.noind,
+              eea.employee_name,
+              hrd.jabatan,
+              sum(hpd.nominal)
+            from
+              hr.hr_lelayu hl
+            left join hr.hr_pekerja_dipotong hpd on
+              hpd.lelayu_id = hl.lelayu_id
+            left join er.er_employee_all eea on
+              eea.employee_code = hpd.noind
+            left join (
+              select
+                *
+              from
+                dblink('host=dev.quick.com user=postgres password=password dbname=Personalia',
+                'select tp.noind, tor.jabatan from hrd_khs.tpribadi tp
+            left join hrd_khs.torganisasi tor on tor.kd_jabatan = tp.kd_jabatan') as tb2(noind text,
+                jabatan text) ) hrd on
+              hrd.noind = hpd.noind
+            where
+              tgl_lelayu between '$awal' and '$akhir'
+            group by
+              hpd.noind,
+              hpd.nominal,
+              eea.employee_name,
+              hrd.jabatan;";
+  }
+
+  public function getKsYogya()
+  {
+    $sql = "select section_code from er.er_section where section_name like '%YOGYAKARTA%' 
+            or (unit_name like '%YOGYAKARTA%' and section_name='-');";
+    return  $this->db->query($sql)->result_array();
   }
 
 }

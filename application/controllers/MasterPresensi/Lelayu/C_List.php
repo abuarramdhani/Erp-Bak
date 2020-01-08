@@ -175,6 +175,13 @@ class C_List extends CI_Controller
     $date = $data['date'];
     $data['kasbon'] = $this->M_lelayu->getDataPDF($id);
     $nama = $data['kasbon'];
+    $getKsYogya = $this->M_lelayu->getKsYogya();
+    $newArray = array();
+    foreach ($getKsYogya as $ke) {
+      $newArray[] = $ke['section_code'];
+    }
+    $data['kodesie_yogya'] = $newArray;
+
     $data['tertanda'] = $_POST['Penerima_kasbon'];
     $data['menyetujui'] = $_POST['Menyetujui_kasbon'];
 
@@ -183,9 +190,9 @@ class C_List extends CI_Controller
     $data['terbilang_total'] = $this->terbilang($total)." Rupiah";
     $data['terbilang_total1'] = $this->terbilang($total1)." Rupiah";
 
-    $data['sumAA'] = $this->M_lelayu->getPkjByLoc("(ee.location_code not in ('04', '02') or ee.location_code is null)", $id);
-    $data['sumAB'] = $this->M_lelayu->getPkjByLoc("ee.location_code in ('04')", $id);
-    $data['sumAC'] = $this->M_lelayu->getPkjByLoc("ee.location_code in ('02')", $id);
+    $data['sumAA'] = $this->M_lelayu->getPkjByLoc(false, $id);
+    $data['sumAB'] = $this->M_lelayu->getPkjByLoc("04", $id);
+    $data['sumAC'] = $this->M_lelayu->getPkjByLoc("02", $id);
     $data['sumTotal'] = $data['sumAA'] + $data['sumAB'] + $data['sumAC'];
 
     $this->load->library('pdf');

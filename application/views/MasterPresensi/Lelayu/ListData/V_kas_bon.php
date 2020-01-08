@@ -48,7 +48,7 @@
       <?php 
         if ($key['lokasi_kerja'] == '02') {
           $b1 = 'AC';
-        }elseif ($key['lokasi_kerja'] == '04') {
+        }elseif ($key['lokasi_kerja'] == '04' || in_array($key['kodesie'], $kodesie_yogya)) {
           $b1 = 'AB';
         }else{
           $b1 = 'AA';
