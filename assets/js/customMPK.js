@@ -2408,3 +2408,47 @@ $(document).ready(function () {
   })
 
 })
+
+$(document).ready(function(){
+    $('#tblSuratResign').DataTable({
+        scrollX: true
+    });
+    $('.SuratResignTanggalResign').datepicker({
+        autoclose: true,
+        autoApply: true,
+        format: 'yyyy-mm-dd',
+    });
+
+    $('.SuratResignDiterimaHubker').datepicker({
+        autoclose: true,
+        autoApply: true,
+        format: 'yyyy-mm-dd',
+    });
+
+    $('.SuratResignPekerja').select2({
+        searching: true,
+        minimumInputLength: 3,
+        placeholder: "No. Induk / Nama Pekerja",
+        allowClear: false,
+        ajax: {
+            url: baseurl + 'MasterPekerja/Surat/SuratResign/pekerjaAktif',
+            dataType: 'json',
+            delay: 500,
+            type: 'GET',
+            data: function(params) {
+                return {
+                    term: params.term
+                }
+            },
+            processResults: function(data) {
+                return {
+                    results: $.map(data, function(obj) {
+                        return { id: obj.noind, text: obj.noind + " - " + obj.nama };
+                    })
+                }
+            }
+        }
+    });
+
+    
+});
