@@ -21,6 +21,7 @@ class C_NotifikasiPembelian extends CI_Controller {
         // Load Email Library
         $this->load->library('PHPMailerAutoload');
         $mail = new PHPMailer();
+        //clear address and bccs
         $mail->SMTPDebug = 0;
         $mail->Debugoutput = 'html';
 
@@ -46,6 +47,8 @@ class C_NotifikasiPembelian extends CI_Controller {
         // Alamat Email Target
 
         foreach ($data['ListReceiver'] as $key => $value) {           
+        $mail->ClearAddresses();
+        $mail->ClearBCCs();
         $mail->addAddress($value['EMAIL_INTERNAL']);
         $mail->addBCC('nugroho@quick.com');
         $mail->addBCC('fahima_choirun_n@quick.com');
@@ -130,9 +133,10 @@ class C_NotifikasiPembelian extends CI_Controller {
         if ( $mail->send() == FALSE ) {
             echo 'Pesan gagal terkirim. Berikut detailnya ' . $mail->ErrorInfo.'<br><br>';
         } else {
-            echo 'Pesan berhasil terkirim ke <b>'.$value['EMAIL_INTERNAL'].'</b>';
-              
+            echo 'Pesan berhasil terkirim ke <b>'.$value['EMAIL_INTERNAL'].'</b><br>';
         }
+
+
    }
 }
 
