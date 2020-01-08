@@ -242,9 +242,8 @@ $(function() {
     });
 
     $('#submit_spl').on('click', function(e) {
-        let waktu1 = $('input[name=tanggal_0_simpan]') + ' ' + $('input[name=waktu_0_simpan]').val()
-        let waktu2 = $('input[name=tanggal_1_simpan]') + ' ' + $('input[name=waktu_1_simpan]').val()
-        let kd_lembur = $('input[name=kd_lembur]').val()
+        let waktu1 = $('input[name=tanggal_0_simpan]').val() + ' ' + $('input[name=waktu_0_simpan]').val()
+        let waktu2 = $('input[name=tanggal_1_simpan]').val() + ' ' + $('input[name=waktu_1_simpan]').val()
 
         if (waktu1 == waktu2) {
             swal.fire('Waktu lembur yang diambil tidak boleh sama !!!', '', 'error')
