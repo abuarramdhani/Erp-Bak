@@ -98,7 +98,7 @@ class C_Index extends CI_Controller {
 	public function pingDomain($domain)
 	{
 		$starttime = microtime(true);
-		$file      = fsockopen ($domain, 80, $errno, $errstr, 10);
+		$file      = fsockopen ($domain, 53, $errno, $errstr, 10);
 		$stoptime  = microtime(true);
 		$status    = 0;
 	
