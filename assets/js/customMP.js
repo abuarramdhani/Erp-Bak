@@ -397,6 +397,27 @@ $('#duka_prk').on('click', function(){
  });
 });
 
+$('#dk_prk2').on('click', function(){
+  fakeLoading(0);
+  var awal = $('#duka_rekapBegin2').val();
+  var akhir = $('#duka_rekapEnd2').val();
+  $.ajax({
+    url: baseurl + 'MasterPresensi/Lelayu/getRekapAngelVer',
+    type: "post",
+    data: {awal: awal, akhir: akhir},
+    success: function (response) {
+      $('#duka_table_rekap2').html(response);
+      $('html, body').animate({
+        scrollTop: $("#duka_table_rekap2").offset().top
+      }, 2000);
+      fakeLoading(1);
+    },
+    error: function(jqXHR, textStatus, errorThrown) {
+     console.log(textStatus, errorThrown);
+   }
+ });
+});
+
 function duka_init_rekap()
 {
   var pr = $('#duka_pr_rekap').text();
@@ -413,4 +434,13 @@ function duka_init_rekap()
     }
     ]
   });
+  $('.buttons-excel').addClass('btn-success', 'btn').css('color', 'white').html('<i class="fa fa-file-excel-o"></i> Excel');
 }
+
+$('#duka_to_excel').on('click', function(){
+  var awal = $('#duka_rekapBegin').val();
+  var akhir = $('#duka_rekapEnd').val();
+  if (awal.length > 1 && akhir.length > 1) {
+       window.open(baseurl+"MasterPresensi/Lelayu/RekapLelayuExcel?awal="+awal+"&akhir="+akhir, '_blank');
+  }
+});
