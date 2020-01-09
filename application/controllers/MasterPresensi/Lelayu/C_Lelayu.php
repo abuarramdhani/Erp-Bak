@@ -316,16 +316,13 @@ class C_Lelayu extends CI_Controller
     $objPHPExcel->getActiveSheet()->setTitle('DAFTAR KEBUTUHAN P2K3');
 
     $objPHPExcel->setActiveSheetIndex(0);  
-    $filename = urlencode("Rekap_Potongan_Duka.xlsx");
+    $filename = urlencode("Rekap Potongan Duka.xlsx");
 
-              header("Cache-Control: must-revalidate, post-check=0, pre-check=0");
-              header("Content-Type: application/force-download");
-              header("Content-Type: application/octet-stream");
-              header("Content-Type: application/download");
+              header('Content-Type: application/vnd.ms-excel'); //mime type
               header('Content-Disposition: attachment;filename="'.$filename.'"'); //tell browser what's the file name
               header('Cache-Control: max-age=0'); //no cache
 
-              $objWriter = IOFactory::createWriter($objPHPExcel, 'Excel2007');                
+              $objWriter = IOFactory::createWriter($objPHPExcel, 'Excel5');                
               $objWriter->save('php://output');
   }
 }
