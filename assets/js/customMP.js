@@ -440,7 +440,10 @@ function duka_init_rekap()
 $('#duka_to_excel').on('click', function(){
   var awal = $('#duka_rekapBegin').val();
   var akhir = $('#duka_rekapEnd').val();
-  if (awal.length > 1 && akhir.length > 1) {
-       window.open(baseurl+"MasterPresensi/Lelayu/RekapLelayuExcel?awal="+awal+"&akhir="+akhir, '_blank');
+  var ttd = $('#Penerima_kasbon').val();
+  if (awal.length > 1 && akhir.length > 1 & ttd.length > 1) {
+       window.open(baseurl+"MasterPresensi/Lelayu/RekapLelayuExcel?awal="+awal+"&akhir="+akhir+"&ttd="+ttd, '_blank');
+  }else{
+    alert('Data Tidak Lengkap');
   }
 });

@@ -770,7 +770,7 @@ class M_lelayu extends CI_Model
     }else{
       $lokasi = 'Tuksono';
       $sql1 = "ee.location_code in ('02')) staff";
-      $sql2 = "substring(ee.employee_code, 1, 1) in ('B',
+      $sql2 = "substring(ee.employee_code, 1, 1) not in ('B',
               'J',
               'D') and ee.location_code in ('02')) non_staff";
     }
@@ -808,6 +808,12 @@ class M_lelayu extends CI_Model
   {
     $sql = "select string_agg(lelayu_id::text, ', ') id from hr.hr_lelayu where tgl_lelayu between '$awal' and '$akhir'";
     return  $this->db->query($sql)->row()->id;
+  }
+
+  public function getPkjPribadi($noind)
+  {
+    $this->personalia->where('noind',$noind);
+    return $this->personalia->get('hrd_khs.tpribadi');
   }
 
 }

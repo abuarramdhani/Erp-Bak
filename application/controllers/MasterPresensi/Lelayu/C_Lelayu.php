@@ -161,6 +161,7 @@ class C_Lelayu extends CI_Controller
   public function RekapLelayu()
   {
     $data  = $this->general->loadHeaderandSidemenu('Master Presensi', 'Rekap Lelayu', 'Lelayu / Uang Duka', 'Rekap Data', '');
+    $data['namaPekerja'] = $this->M_lelayu->getPekerja();
 
     $this->load->view('V_Header',$data);
     $this->load->view('V_Sidemenu',$data);
@@ -210,6 +211,9 @@ class C_Lelayu extends CI_Controller
   {
     $awal = $this->input->get('awal');
     $akhir = $this->input->get('akhir');
+    $tertanda = $this->input->get('ttd');
+
+    $namaTTD = $this->M_lelayu->getPkjPribadi($tertanda)->row()->nama;
 
     if (empty($awal) || empty($akhir))
       die('Error !! Harap Hubungi ICT atau Admin terkait');
@@ -219,7 +223,7 @@ class C_Lelayu extends CI_Controller
     if(empty($IdLelayu))
       die('Data Lelayu pada periode tersebut Kosong!!');
 
-    $AA = $this->M_lelayu->getRekapDataVer2($IdLelayu, 'AC');
+    $AA = $this->M_lelayu->getRekapDataVer2($IdLelayu, 'AA');
     $AB = $this->M_lelayu->getRekapDataVer2($IdLelayu, 'AB');
     $AC = $this->M_lelayu->getRekapDataVer2($IdLelayu, 'AC');
 
@@ -308,7 +312,7 @@ class C_Lelayu extends CI_Controller
     $objPHPExcel->setActiveSheetIndex(0)->setCellValue('E'.$x, $nonStafTotal)->getStyle('E'.$x)->applyFromArray($style_col)->getNumberFormat()->setFormatCode('#,#0.##;[Red]-#,#0.##');
 
     $objPHPExcel->setActiveSheetIndex(0)->setCellValue('B'.($x+2), 'Yogyakarta, ___________')->getStyle('B'.$x)->applyFromArray($style_col1);
-    $objPHPExcel->setActiveSheetIndex(0)->setCellValue('B'.($x+6), 'Oscar')->getStyle('B'.$x)->applyFromArray($style_col2);
+    $objPHPExcel->setActiveSheetIndex(0)->setCellValue('B'.($x+6), ucwords(rtrim(strtolower($namaTTD))))->getStyle('B'.$x)->applyFromArray($style_col2);
     $objPHPExcel->setActiveSheetIndex(0)->setCellValue('B'.($x+7), 'Hubker')->getStyle('B'.$x)->applyFromArray($style_col2);
 
     $objPHPExcel->getActiveSheet()->getPageSetup()->setOrientation(PHPExcel_Worksheet_PageSetup::ORIENTATION_LANDSCAPE);
