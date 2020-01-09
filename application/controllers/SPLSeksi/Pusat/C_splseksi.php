@@ -894,11 +894,11 @@ class C_splseksi extends CI_Controller {
 				}
 			}
 		}
-		
-		// if($aktual_awal == $aktual_akhir){
-		// 	$error = 1;
-		// 	$errortext = 'Waktu lembur yang diambil tidak boleh sama !!!';
-		// }
+
+		if($tanggal.$waktu0 === $tanggal1.$waktu1){
+			$error = 1;
+			$errortext = 'Waktu lembur yang diambil tidak boleh sama !!!';
+		}
 
 		if(empty($lembur)){
 			$error = 1;

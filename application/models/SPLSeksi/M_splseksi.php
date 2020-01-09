@@ -592,7 +592,7 @@ class M_splseksi extends CI_Model{
 			$jenis = $this->prs->query($sql)->num_rows() > 0? 'Biasa' : 'Libur';
 		}else{
 			//cek hari libur
-			$sql = "SELECT * FROM \"Dinas_Luar\".tlibur WHERE tanggal = '$tgl'";
+			$sql = "SELECT * FROM \"Dinas_Luar\".tlibur WHERE tanggal = '$tanggal'";
 			$jenis =  $this->prs->query($sql)->num_rows() > 0? 'Libur' : 'Biasa';
 		}
 
