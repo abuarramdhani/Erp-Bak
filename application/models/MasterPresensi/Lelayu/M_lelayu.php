@@ -711,6 +711,111 @@ class M_lelayu extends CI_Model
     return  $this->db->query($sql)->result_array();
   }
 
+  public function getRekapDataVer2($id, $branch)
+  {
+    if ($branch == 'AA') {
+      $lokasi = 'Pusat';
+      $sql1 = "(ee.location_code not in ('04',
+              '02')
+              and ee.section_code not in (
+              select
+                section_code
+              from
+                er.er_section
+              where
+                section_name like '%YOGYAKARTA%'
+                or (unit_name like '%YOGYAKARTA%'
+                and section_name = '-') )
+              or ee.location_code is null)) staff";
+      $sql2 = "( substring(ee.employee_code, 1, 1) not in ('B',
+              'J',
+              'D')
+              and ee.location_code not in ('04',
+              '02')
+              and ee.section_code not in (
+              select
+                section_code
+              from
+                er.er_section
+              where
+                section_name like '%YOGYAKARTA%'
+                or (unit_name like '%YOGYAKARTA%'
+                and section_name = '-') )
+              or ee.location_code is null)) non_staff";
+    }elseif ($branch == 'AB') {
+      $lokasi = 'Yogyakarta';
+      $sql1 = "(ee.location_code in ('04')
+                or ee.section_code in (
+                select
+                  section_code
+                from
+                  er.er_section
+                where
+                  section_name like '%YOGYAKARTA%'
+                  or (unit_name like '%YOGYAKARTA%'
+                  and section_name = '-') ))) staff";
+      $sql2 = "substring(ee.employee_code, 1, 1) not in ('B',
+              'J',
+              'D')
+              and (ee.location_code in ('04')
+                or ee.section_code in (
+                select
+                  section_code
+                from
+                  er.er_section
+                where
+                  section_name like '%YOGYAKARTA%'
+                  or (unit_name like '%YOGYAKARTA%'
+                  and section_name = '-') ))) non_staff";
+    }else{
+      $lokasi = 'Tuksono';
+      $sql1 = "ee.location_code in ('02')) staff";
+      $sql2 = "substring(ee.employee_code, 1, 1) not in ('B',
+              'J',
+              'D') and ee.location_code in ('02')) non_staff";
+    }
+    $sql = "select
+            '$lokasi' lokasi,
+            '$branch' branch,
+            (
+            select
+              sum(nominal)
+            from
+              hr.hr_pekerja_dipotong hp
+            left join er.er_employee_all ee on
+              ee.employee_code = hp.noind
+            where
+              hp.lelayu_id in ($id)
+              and substring(ee.employee_code, 1, 1) in ('B',
+              'J',
+              'D')
+              and $sql1,
+            (
+            select
+              sum(nominal)
+            from
+              hr.hr_pekerja_dipotong hp
+            left join er.er_employee_all ee on
+              ee.employee_code = hp.noind
+            where
+              hp.lelayu_id in ($id)
+              and $sql2;";
+              // echo $sql;exit();
+    return  $this->db->query($sql)->result_array();
+  }
+
+  public function getIdLelayuRange($awal, $akhir)
+  {
+    $sql = "select string_agg(lelayu_id::text, ', ') id from hr.hr_lelayu where tgl_lelayu between '$awal' and '$akhir'";
+    return  $this->db->query($sql)->row()->id;
+  }
+
+  public function getPkjPribadi($noind)
+  {
+    $this->personalia->where('noind',$noind);
+    return $this->personalia->get('hrd_khs.tpribadi');
+  }
+
 }
 
  ?>
