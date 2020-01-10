@@ -58,16 +58,16 @@ class M_trackingpengirimanbarang extends CI_Model {
         $db = $this->load->database('tpb_sql', true);
         $sql = "SELECT 
                 m.no_spb NO_SPB, 
-                m.no_so SO,
-                m.nama_customer CUST,
+                m.so SO,
+                m.cust CUST,
                 m.alamat ALAMAT, 
-                m.kode_item KODE_ITEM,
+                m.kode_item KODE_ITEM, 
                 m.nama_item NAMA_ITEM,
                 m.qty QTY,
-                m.uom UOM,
-                m.confirmation_id CON_ID,
-                m.line_id LINE_ID,
-                n.confirmation CON_HEAD,
+                m.uom UOM, 
+                m.confirmation_status CON_ID, 
+                m.line_id LINE_ID, 
+                n.confirmation CON_HEAD, 
                 n.note NOTE
                 from tpb_spb m
                 left join tpb n on n.no_SPB = m.no_spb
@@ -76,46 +76,14 @@ class M_trackingpengirimanbarang extends CI_Model {
         return $runQuery->result_array();
     }
 
-    // select distinct
-    //           dc.nama_customer,
-    //           (select max(dad.entry) from om.om_mppl_action_detail dad where dad.no_po = drp.no_po) entry,
-    //           drp.no_po, 
-    //           TO_CHAR(drpo.tanggal_issued :: DATE, 'DD Mon YYYY') tanggal_issued,
-    //           TO_CHAR(drpo.need_by_date :: DATE, 'DD Mon YYYY') need_by_date,
-    //           drpo.status, 
-    //           TO_CHAR(drp.delivery_date :: DATE, 'DD Mon YYYY') delivery_date,
-    //           drp.no_so, 
-    //           drp.no_dosp, 
-    //           drp.keterangan,
-    //           de.nama_ekspedisi,
-    //           drp.id_rekap_pengiriman,
-    //           (select count(dcp.no_po) from om.om_mppl_count_pengiriman dcp where dcp.no_po = drp.no_po) count
-    //           from om.om_mppl_rekap_pengiriman drp
-    //           left join om.om_mppl_rekap_po drpo on drpo.no_po = drp.no_po
-    //           left join om.om_mppl_customer dc on dc.id_customer = drp.id_customer
-    //           left join om.om_mppl_ekspedisi de on de.id_ekspedisi = drp.id_ekspedisi
-    //           left join om.om_mppl_action_detail dad on dad.id_rekap_pengiriman = drp.id_rekap_pengiriman
-    //     group by dc.nama_customer,
-    //           drp.no_po, 
-    //           drpo.tanggal_issued, 
-    //           drpo.need_by_date, 
-    //           drp.delivery_date, 
-    //           drp.no_so, 
-    //           drp.no_dosp, 
-    //           drp.keterangan,
-    //           de.nama_ekspedisi,
-    //           drp.id_rekap_pengiriman,
-    //           dad.entry,
-    //           drpo.status
-    //     order by delivery_date desc
 
-    public function ambilDataConfirmation($id)
+    public function ambilDataconfirmation_status($id)
     {
         $db = $this->load->database('tpb_sql', true);
         $sql = "SELECT 
                 no_spb NO_SPB, 
-                no_so SO,
-                nama_customer CUST,
+                so SO,
+                cust CUST,
                 alamat ALAMAT, 
                 kode_item KODE_ITEM,
                 nama_item NAMA_ITEM,
@@ -131,7 +99,7 @@ class M_trackingpengirimanbarang extends CI_Model {
     public function countN($id)
     {
         $db = $this->load->database('tpb_sql', true);
-        $sql = "select count(confirmation_id)count_N from tpb_spb where no_spb = '$id' and confirmation_id = 'N'";
+        $sql = "select count(confirmation_status)count_N from tpb_spb where no_spb = '$id' and confirmation_status = 'N'";
         $runQuery = $db->query($sql);
         return $runQuery->result_array();
     }
@@ -139,7 +107,7 @@ class M_trackingpengirimanbarang extends CI_Model {
     public function countY($id)
     {
         $db = $this->load->database('tpb_sql', true);
-        $sql = "select count(confirmation_id)count_Y from tpb_spb where no_spb = '$id' and confirmation_id = 'Y'";
+        $sql = "select count(confirmation_status)count_Y from tpb_spb where no_spb = '$id' and confirmation_status = 'Y'";
         $runQuery = $db->query($sql);
         return $runQuery->result_array();
     }
@@ -148,21 +116,19 @@ class M_trackingpengirimanbarang extends CI_Model {
     {
         $db = $this->load->database('tpb_sql', true);
         $sql = "update tpb 
-                set confirmation = '$headerStatus',
+                set confirmation_status = '$headerStatus',
                 note = '$note'
                 where no_spb = $no_spb";
         $runQuery = $db->query($sql);
-        echo "<pre>";echo $sql;
     }
 
     public function saveStatusLine($arry,$line_id)
     {
         $db = $this->load->database('tpb_sql', true);
         $sql = "update tpb_spb 
-                set confirmation_id = '$arry'
+                set confirmation_status = '$arry'
                 where line_id = $line_id";
         $runQuery = $db->query($sql);
-        echo "<pre>";echo $sql;
     }
 
     public function selectHeader($id)
@@ -170,7 +136,7 @@ class M_trackingpengirimanbarang extends CI_Model {
         $oracle = $this->load->database('oracle',true);
         $sql = "
           SELECT distinct
-                mtrh.REQUEST_NUMBER NO_SPB
+                 mtrh.REQUEST_NUMBER NO_SPB
                 ,mtrh.ATTRIBUTE7 SO
                 ,party.PARTY_NAME CUST
                 ,ship_loc.address1 ALAMAT
@@ -247,7 +213,7 @@ class M_trackingpengirimanbarang extends CI_Model {
                 tpb.nama_pekerja,
                 tpb.kendaraan,
                 tpb.status,
-                tpb.penerima,
+                tpb.confirmed_by,
                 tpl.username,
                 tpb.last_update_date,
                 tpb.start_date,
@@ -268,7 +234,7 @@ class M_trackingpengirimanbarang extends CI_Model {
                 tpb.nama_pekerja,
                 tpb.kendaraan,
                 tpb.status,
-                tpb.penerima,
+                tpb.confirmed_by penerima,
                 tpl.username,
                 tpb.last_update_date,
                 tpb.confirmation
@@ -288,7 +254,7 @@ class M_trackingpengirimanbarang extends CI_Model {
                 tpb.nama_pekerja,
                 tpb.kendaraan,
                 tpb.status,
-                tpb.penerima,
+                tpb.confirmed_by penerima,
                 tpl.username,
                 tpb.last_update_date,
                 tpb.start_date,
