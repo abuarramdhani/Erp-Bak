@@ -109,7 +109,7 @@ class M_tukar extends CI_Model
 
     public function getKodesie($noind)
     {
-    	$sql = "select * from hrd_khs.tpribadi where noind = '$noind'";
+    	$sql = "select * from hrd_khs.tpribadi where noind in ('$noind')";
     	$query = $this->personalia->query($sql);
     	return $query->result_array();
     }
