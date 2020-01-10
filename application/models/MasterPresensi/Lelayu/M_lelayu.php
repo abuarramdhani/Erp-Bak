@@ -687,7 +687,7 @@ class M_lelayu extends CI_Model
               select
                 *
               from
-                dblink('host=$hosP user=$usrP password=$pasP dbname=$dbP',
+                er.dblink('host=$hosP user=$usrP password=$pasP dbname=$dbP',
                 'select tp.noind, tp.nama, tor.jabatan from hrd_khs.tpribadi tp
             left join hrd_khs.torganisasi tor on tor.kd_jabatan = tp.kd_jabatan') as tb2(noind text,
                 nama text, jabatan text) ) hrd on
