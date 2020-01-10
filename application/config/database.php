@@ -269,8 +269,8 @@ $db['dpostgre'] = array(
 
 $db['tpb_sql'] = array(
 	'dsn'	=> '',
-	'hostname' => '192.168.168.159',
-	'username' => 'quick_tpb',
+	'hostname' => '192.168.168.164',
+	'username' => 'root',
 	'password' => '123456',
 	'database' => 'tracking_pengiriman',
 	'dbdriver' => 'mysqli',

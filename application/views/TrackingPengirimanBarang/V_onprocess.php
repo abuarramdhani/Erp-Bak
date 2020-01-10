@@ -103,21 +103,17 @@
                       <td><?php echo  $n['username'] ?> - <?php echo  $n['nama_pekerja'] ?></td>
                       <td><?php echo  $n['kendaraan'] ?></td>
                       <td><?php echo  $n['last_update_date'] ?></td>
-                      <?php if ($n['confirmation'] == NULL) { ?>
                       <td> 
                         <button title="detail..." rownum="<?php echo $no ?>" class="btn btn-warning btn-sm" data-target="MdlTPBNol" data-toggle="modal" onclick="OpenDetailSatu(<?php echo $n['no_spb'];?>)"><i class="fa fa-mouse-pointer"></i> Detail</button>
-                        <a target="_blank" title="confirmation..." class="btn btn-primary btn-sm" href="<?php echo base_url('TrackingPengirimanBarang/OnProcess/Confirmation/'.$n['no_spb']) ?>"><i class="fa fa-check"></i> Confirm</a>
+                        <!-- <a target="_blank" title="confirmation..." class="btn btn-primary btn-sm" href="<?php echo base_url('TrackingPengirimanBarang/OnProcess/Confirmation/'.$n['no_spb']) ?>"><i class="fa fa-check"></i> Confirm</a> -->
                       </td>
-                      <?php }else if ($n['confirmation'] !== NULL) { ?>
-                      <td>
-                          <button title="detail..." rownum="<?php echo $no ?>" class="btn btn-warning btn-sm" data-target="MdlTPBNol" data-toggle="modal" onclick="OpenDetailSatu(<?php echo $n['no_spb'];?>)"><i class="fa fa-mouse-pointer"></i> Detail</button>
-                      </td>
-                       <?php } ?> 
+                       <td>
                       <?php if ($n['confirmation'] == NULL) { ?>
-                        <td><span class="label label-danger">Belum Terkonfirmasi &nbsp;<br></span></td>
+                       <span class="label label-danger">Belum Terkonfirmasi &nbsp;<br></span>
                       <?php }else if ($n['confirmation'] !== NULL) { ?>
-                        <td><span class="label label-success">Sudah Terkonfirmasi &nbsp;<br></span></td>
+                       <span class="label label-success">Sudah Terkonfirmasi &nbsp;<br></span>
                       <?php } ?>
+                      </td>
                       </tr>
                     <?php $no++; } ?> 
                   </tbody>
