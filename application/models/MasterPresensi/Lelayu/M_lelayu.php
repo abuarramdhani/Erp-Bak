@@ -701,14 +701,8 @@ class M_lelayu extends CI_Model
               hrd.jabatan
             order by hpd.noind;";
               // echo $sql;exit();
-    @$query = $this->db->query($sql);
-    echo $query;
-    if (!$query) {
-      $this->db->query('create extension dblink');
-      $this->getRekapData($awal, $akhir);
-    }else{
+      $query = $this->db->query($sql);
       return  $query->result_array();
-    }
   }
 
   public function getKsYogya()
