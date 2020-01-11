@@ -48,14 +48,14 @@ class C_Pelayanan extends CI_Controller
 		$data['value'] 	= $this->M_pelayanan->tampilhariini();
 		$pelayanan 		= $this->M_pelayanan->dataPelayanan($date);
 		$data['data']	= $pelayanan;
-		for ($i=0; $i <count($data['value']); $i++) { 
-			$getstatus = $this->M_pelayanan->getStatus($data['value'][$i]['NO_DOKUMEN']);
-			if (empty($getstatus)) {
-				$data['status'][$i] = 'Belum Allocate';
-			}else {
-				$data['status'][$i] = 'Sudah Allocate';
-			}
-		}
+		// for ($i=0; $i <count($data['value']); $i++) { 
+		// 	$getstatus = $this->M_pelayanan->getStatus($data['value'][$i]['NO_DOKUMEN']);
+		// 	if (empty($getstatus)) {
+		// 		$data['status'][$i] = 'Belum Allocate';
+		// 	}else {
+		// 		$data['status'][$i] = 'Sudah Allocate';
+		// 	}
+		// }
 		
 		// echo "<pre>"; 
 		// print_r($menit);
