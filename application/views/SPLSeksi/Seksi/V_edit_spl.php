@@ -47,14 +47,14 @@
 								<div class="col-lg-6">
 
 								<div class="form-group" style="margin-bottom: 0 !important;">
-										<label class="col-sm-2 control-label">Waktu Lembur</label>
+										<label class="col-sm-2 control-label">Lembur Awal</label>
 										<div class="col-sm-5">
 											<div class="bootstrap-timepicker">
 												<div class="input-group">
 													<div class="input-group-addon">
 														<i class="fa fa-calendar"></i>
 													</div>
-													<input type="text" class="form-control pull-right spl-date" name="tanggal_0" value="<?php echo date_format(date_create($l['Tgl_Lembur']), "d-m-Y"); ?>" disabled>
+													<input type="text" class="form-control pull-right spl-date" name="tanggal_0" value="<?php echo date_format(date_create($l['Tgl_Lembur']), "d-m-Y"); ?>">
 												</div>
 											</div>
 										</div>
@@ -70,7 +70,7 @@
 										</div>
 									</div>
 									<div class="form-group">
-										<label class="col-sm-2 control-label"></label>
+										<label class="col-sm-2 control-label">Lembur Akhir</label>
 										<div class="col-sm-5">
 											<div class="bootstrap-timepicker">
 												<div class="input-group">
@@ -124,17 +124,7 @@
 											</select>
 										</div>
 									</div>
-
-									<div class="form-group">
-										<label class="col-sm-2 control-label">Istirahat</label>
-										<div class="col-sm-2">
-											<label style="margin-left:2%; top:+3;"><input type="radio" name="istirahat" value="1" style="transform: scale(1.5); vertical-align:top;" <?php if($l['Istirahat']=="Y"){ echo "checked"; } ?> <?php echo $status ?>> Ya</label>
-										</div>
-										<div class="col-sm-8">
-											<label style="margin-left:5%; vertical-align:bottom;"><input type="radio" name="istirahat" value="2" style="transform: scale(1.5); vertical-align:top;" <?php if($l['Istirahat']=="N"){ echo "checked"; } ?> <?php echo $status ?>> Tidak</label>
-										</div>
-									</div>
-
+									
 									<div class="form-group">
 										<label class="col-sm-2 control-label">Break</label>
 										<div class="col-sm-2">
@@ -146,9 +136,20 @@
 									</div>
 
 									<div class="form-group">
+										<label class="col-sm-2 control-label">Istirahat</label>
+										<div class="col-sm-2">
+											<label style="margin-left:2%; top:+3;"><input type="radio" name="istirahat" value="1" style="transform: scale(1.5); vertical-align:top;" <?php if($l['Istirahat']=="Y"){ echo "checked"; } ?> <?php echo $status ?>> Ya</label>
+										</div>
+										<div class="col-sm-8">
+											<label style="margin-left:5%; vertical-align:bottom;"><input type="radio" name="istirahat" value="2" style="transform: scale(1.5); vertical-align:top;" <?php if($l['Istirahat']=="N"){ echo "checked"; } ?> <?php echo $status ?>> Tidak</label>
+										</div>
+									</div>
+
+
+									<div class="form-group">
 										<label class="col-sm-2 control-label">Alasan</label>
 										<div class="col-sm-10">
-											<textarea class="form-control" rows="3" name="pekerjaan" <?php echo $status ?>><?php echo $l['alasan_lembur']; ?></textarea>
+											<textarea class="form-control" rows="3" name="alasan" <?php echo $status ?>><?php echo $l['alasan_lembur']; ?></textarea>
 										</div>
 									</div>
 
@@ -178,65 +179,187 @@
 													<th width="45%">Pekerjaan</th>
 												</thead>
 												<tbody>
+													<?php
+														$jobs = explode(';', trim($l['Pekerjaan']));
+														$target = explode(';', trim($l['target']));
+														$realisasi = explode(';', trim($l['realisasi']));
+
+														//target
+														if(count($target) > 0){
+															$target_type = 'number';
+															$target_disabled = '';
+															if($target[0] == '-' || $target[0] == ''){
+																$target_val = '';
+																$target_satuan = '';
+															}else{
+																$isHaveUnit = explode(' ', $target[0]);
+																if(count($isHaveUnit) > 1){
+																	$target_val = $isHaveUnit[0];
+																	$target_satuan = ucfirst(strtolower($isHaveUnit[1]));
+																}else{
+																	$target_val = $target[0];
+																	$target_satuan = '';
+																	$target_type = 'text';
+																	$target_disabled = 'disabled';
+																}
+															}
+														}
+
+														//realisasi
+														if(count($realisasi) > 0){
+															$realisasi_type = 'number';
+															$realisasi_disabled = '';
+															if($realisasi[0] == '-' || $realisasi[0] == ''){
+																$realisasi_val = '';
+																$realisasi_satuan = '';
+															}else{
+																$isHaveUnit = explode(' ', $realisasi[0]);
+																if(count($isHaveUnit) > 1){
+																	$realisasi_val = $isHaveUnit[0];
+																	$realisasi_satuan = ucfirst(strtolower($isHaveUnit[1]));
+																}else{
+																	$realisasi_val = $realisasi[0];
+																	$realisasi_satuan = '';
+																	$realisasi_type = 'text';
+																	$realisasi_disabled = 'disabled';
+																}
+															}
+														}else{
+															$realisasi_val = $realisasi[0];
+															$realisasi_satuan = '';
+															$realisasi_type = 'text';
+															$realisasi_disabled = 'disabled';
+														}
+													?>
 													<tr class="multiinput"><td>-</td>
-														<td style="">
+														<td>
 															<select class="form-control spl-pkj-select2 spl-cek" name="noind[]" <?php echo $status ?>>
 																<option value="<?php echo $l['Noind']; ?>" selected>
 																	<?php echo $l['Noind'].' - '.$l['nama']; ?>
 																</option>
 															</select>
 														</td>
-														<?php
-															if($l['target'] == '-' ||$l['target'] == ''){
-																$target = '';
-																$target_satuan = '';
-															}else{
-																$isHaveUnit = explode(' ', trim($l['target']));
-																if(count($isHaveUnit) > 1){
-																	$target = $isHaveUnit[0];
-																	$target_satuan = $isHaveUnit[1];
-																}else{
-																	$target = $l['target'];
-																	$target_satuan = '';
-																}
-															}
-														?>
-														<td><input type="number" class="form-control" name="target[]"
-															value="<?= $target ?>" <?php echo $status ?>>
+														<td>
+															<input type="<?= $target_type ?>" class="form-control" name="target[]"
+															value="<?= $target_val ?>" <?php echo $status ?> <?= $target_disabled ?>>
 														</td>
 														<td>
-															<select class="form-control" name="target_satuan[]">
+															<select class="form-control" name="target_satuan[]" <?= $target_disabled ?>>
 																<option value="" <?= $target_satuan == '' ? 'selected' : '' ?>></option>
 																<option value="Pcs" <?= $target_satuan == 'Pcs' ? 'selected' : '' ?>>Pcs</option>
 																<option value="%" <?= $target_satuan == '%' ? 'selected' : '' ?>>%</option>
+																<option value="Box" <?= $target_satuan == 'Box' ? 'selected' : '' ?>>Box</option>
+																<option value="Kg" <?= $target_satuan == 'Kg' ? 'selected' : '' ?>>Kg</option>
+																<option value="Unit" <?= $target_satuan == 'Unit' ? 'selected' : '' ?>>Unit</option>
+																<option value="Ton" <?= $target_satuan == 'Ton' ? 'selected' : '' ?>>Ton</option>
+																<option value="Flask" <?= $target_satuan == 'Flask' ? 'selected' : '' ?>>Flask</option>
 															</select>
 														</td>
-														<?php
-															if($l['realisasi'] == '-' ||$l['realisasi'] == ''){
-																$target = '';
-																$target_satuan = '';
-															}else{
-																$isHaveUnit = explode(' ', trim($l['realisasi']));
-																if(count($isHaveUnit) > 1){
-																	$target = $isHaveUnit[0];
-																	$target_satuan = $isHaveUnit[1];
-																}else{
-																	$target = $l['realisasi'];
-																	$target_satuan = '';
-																}
-															}
-														?>
-														<td><input type="number" class="form-control" name="realisasi[]"
-															value="<?php echo $target; ?>" <?php echo $status ?>>
+														<td>
+															<input type="<?= $realisasi_type ?>" class="form-control" name="realisasi[]"
+															value="<?= $realisasi_val; ?>" <?php echo $status ?> <?= $realisasi_disabled ?>>
 														</td>
 														<td>
-															<select class="form-control" name="realisasi_satuan[]">
+															<select class="form-control" name="realisasi_satuan[]" <?= $realisasi_disabled ?>>
+																<option value="" <?= $realisasi_satuan == '' ? 'selected' : '' ?>></option>
+																<option value="Pcs" <?= $realisasi_satuan == 'Pcs' ? 'selected' : '' ?>>Pcs</option>
+																<option value="%" <?= $realisasi_satuan == '%' ? 'selected' : '' ?>>%</option>
+																<option value="Box" <?= $realisasi_satuan == 'Box' ? 'selected' : '' ?>>Box</option>
+																<option value="Kg" <?= $realisasi_satuan == 'Kg' ? 'selected' : '' ?>>Kg</option>
+																<option value="Unit" <?= $realisasi_satuan == 'Unit' ? 'selected' : '' ?>>Unit</option>
+																<option value="Ton" <?= $realisasi_satuan == 'Ton' ? 'selected' : '' ?>>Ton</option>
+																<option value="Flask" <?= $realisasi_satuan == 'Flask' ? 'selected' : '' ?>>Flask</option>
+															</select>
+														</td>
+														<td>
+															<textarea style="resize: vertical; min-height: 30px;" class="form-control texarea-vertical" rows="1" name="pekerjaan[]" <?php echo $status ?>><?= str_replace("'", '', $jobs[0]) ?></textarea>
+														</td>
+														<td>
+															<button class="btn btn-sm" onclick="add_jobs_spl_edit($(this))" type="button"><i class="fa fa-plus"></i></button>
+														</td>
+													</tr>
+												<?php for($i = 1; $i < count($jobs); $i++):  ?>
+													<?php
+														// target
+														$target_type = 'number';
+														$target_disabled = '';
+														if($target[$i] == '-' || $target[$i] == ''){
+															$target_val = '';
+															$target_satuan = '';
+														}else{
+															$isHaveUnit = explode(' ', $target[$i]);
+															if(count($isHaveUnit) > 1){
+																$target_Val = $isHaveUnit[0];
+																$target_satuan = ucfirst(strtolower($isHaveUnit[1]));
+															}else{
+																$target_val = $target[$i];
+																$target_satuan = '';
+																$target_type = 'text';
+																$target_disabled = 'disabled';
+															}
+														}
+
+														//realiasi
+														$realisasi_type = 'number';
+															$realisasi_disabled = '';
+															if($realisasi[$i] == '-' || $realisasi[$i] == ''){
+																$realisasi_val = '';
+																$realisasi_satuan = '';
+															}else{
+																$isHaveUnit = explode(' ', $realisasi[$i]);
+																if(count($isHaveUnit) > 1){
+																	$realisasi_val = $isHaveUnit[0];
+																	$realisasi_satuan = ucfirst(strtolower($isHaveUnit[1]));
+																}else{
+																	$realisasi_Val = $realisasi[$i];
+																	$realisasi_satuan = '';
+																	$realisasi_type = 'text';
+																	$realisasi_disabled = 'disabled';
+																}
+															}
+													?>
+													<tr>
+														<td colspan="2"></td>
+														<td>
+															<input type="<?= $target_type ?>" class="form-control" name="target[]"
+															value="<?= $target_val ?>" <?php echo $status ?> <?= $target_disabled ?>>
+														</td>
+														<td>
+															<select class="form-control" name="target_satuan[]" <?= $target_disabled ?>>
 																<option value="" <?= $target_satuan == '' ? 'selected' : '' ?>></option>
 																<option value="Pcs" <?= $target_satuan == 'Pcs' ? 'selected' : '' ?>>Pcs</option>
 																<option value="%" <?= $target_satuan == '%' ? 'selected' : '' ?>>%</option>
+																<option value="Box" <?= $target_satuan == 'Box' ? 'selected' : '' ?>>Box</option>
+																<option value="Kg" <?= $target_satuan == 'Kg' ? 'selected' : '' ?>>Kg</option>
+																<option value="Unit" <?= $target_satuan == 'Unit' ? 'selected' : '' ?>>Unit</option>
+																<option value="Ton" <?= $target_satuan == 'Ton' ? 'selected' : '' ?>>Ton</option>
+																<option value="Flask" <?= $target_satuan == 'Flask' ? 'selected' : '' ?>>Flask</option>
 															</select>
 														</td>
-														<td><textarea style="resize: vertical; min-height: 30px;" class="form-control texarea-vertical" rows="1" name="alasan[]" <?php echo $status ?>><?php echo $l['Pekerjaan']; ?></textarea></td></tr>
+														<td>
+															<input type="<?= $realisasi_type ?>" class="form-control" name="realisasi[]"
+															value="<?= $realisasi_val; ?>" <?php echo $status ?> <?= $realisasi_disabled ?>>
+														</td>
+														<td>
+															<select class="form-control" name="realisasi_satuan[]" <?= $realisasi_disabled ?>>
+																<option value="" <?= $realisasi_satuan == '' ? 'selected' : '' ?>></option>
+																<option value="Pcs" <?= $realisasi_satuan == 'Pcs' ? 'selected' : '' ?>>Pcs</option>
+																<option value="%" <?= $realisasi_satuan == '%' ? 'selected' : '' ?>>%</option>
+																<option value="Box" <?= $realisasi_satuan == 'Box' ? 'selected' : '' ?>>Box</option>
+																<option value="Kg" <?= $realisasi_satuan == 'Kg' ? 'selected' : '' ?>>Kg</option>
+																<option value="Unit" <?= $realisasi_satuan == 'Unit' ? 'selected' : '' ?>>Unit</option>
+																<option value="Ton" <?= $realisasi_satuan == 'Ton' ? 'selected' : '' ?>>Ton</option>
+																<option value="Flask" <?= $realisasi_satuan == 'Flask' ? 'selected' : '' ?>>Flask</option>
+															</select>
+														</td>
+														<td>
+															<textarea style="resize: vertical; min-height: 30px;" class="form-control texarea-vertical" rows="1" name="pekerjaan[]"><?= str_replace("'", '', $jobs[$i]) ?></textarea>
+														</td>
+														<td>
+															<button class="btn btn-sm" onclick="del_jobs_spl($(this))" type="button"><i class="fa fa-minus"></i></button>
+														</td>
+													</tr>
+												<?php endfor ?>
 												</tbody>
 											</table>
 										</div>

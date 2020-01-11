@@ -54,10 +54,10 @@
 												<option value="">-- silahkan pilih --</option>
 												<option value="01">SPL Baru</option>
 												<option value="11">SPL Sudah diproses</option>
-												<option value="21">Approve by Kasie</option>
-												<option value="25">Approve by AssKa</option>
-												<option value="31">Cancel by Kasie</option>
-												<option value="35">Cancel by AssKa</option>
+												<option value="21">Approved by Kasie</option>
+												<option value="25">Approved by AssKa</option>
+												<option value="31">Canceled by Kasie</option>
+												<option value="35">Canceled by AssKa</option>
 											</select>
 										</div>
 									</div>

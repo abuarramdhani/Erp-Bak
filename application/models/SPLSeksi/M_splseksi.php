@@ -611,7 +611,14 @@ class M_splseksi extends CI_Model{
 
 	public function selectShift($noind, $tanggal){
 		$tanggal = date('Y-m-d', strtotime($tanggal));
-		$sql = "SELECT jam_msk, jam_plg FROM \"Presensi\".tshiftpekerja where noind='$noind' and tanggal='$tanggal'";
+		$sql = "SELECT jam_msk, jam_plg, break_mulai, break_selesai, ist_mulai, ist_selesai FROM \"Presensi\".tshiftpekerja where noind='$noind' and tanggal='$tanggal'";
 		return $this->prs->query($sql)->row();
+	}
+
+	public function selectAllShift($tanggal)
+	{
+		$numDay = date('w', strtotime($tanggal))+1;
+		$sql = "SELECT break_mulai, break_selesai, ist_mulai, ist_selesai FROM \"Presensi\".tjamshift WHERE numhari='$numDay' and kd_shift in('1','2','3','4')";
+		return $this->prs->query($sql)->result_array();
 	}
 }

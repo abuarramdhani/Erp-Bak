@@ -238,26 +238,37 @@ $(function() {
     });
 
     $('#example11').on('click', '.spl-pkj-del', function() {
+
+        let thisrow = $(this).closest('tr')
+        let nextrow = thisrow.next('.multiinput.parent')
+        thisrow.nextUntil(nextrow, 'tr.spl-jobs').remove()
         $(this).closest('tr').remove();
+
     });
 
     $('#submit_spl').on('click', function(e) {
         let waktu1 = $('input[name=tanggal_0_simpan]').val() + ' ' + $('input[name=waktu_0_simpan]').val()
         let waktu2 = $('input[name=tanggal_1_simpan]').val() + ' ' + $('input[name=waktu_1_simpan]').val()
 
-        if (waktu1 == waktu2) {
+        if (waktu1 == waktu2 && waktu1 != '' && waktu2 != '') {
             swal.fire('Waktu lembur yang diambil tidak boleh sama !!!', '', 'error')
             e.preventDefault()
             return
         }
+
+        //lets cooking time
+
+
     })
 
     $("#spl_pkj_add").click(function(e) {
         e.preventDefault();
         $('.multiinput select[name*=noind]').last().select2("destroy");
-        $('.multiinput').last().clone().appendTo('#example11 tbody');
+        $('.multiinput.parent').last().clone().appendTo('#example11 tbody');
         $(".multiinput:last .form-control").val("").change();
         $(".multiinput:last td:first").html("<button type='button' class='btn btn-danger spl-pkj-del'><span class='fa fa-trash'></span></button>");
+        let row = $('.multiinput.parent').length - 1
+        $('.multiinput:last').find('.pekerjaan').attr('name', `pekerjaan[${row}][]`)
         $(".multiinput:last select").val("").change();
         $(".multiinput:last .spl-new-error").remove();
         $(".multiinput:last select").closest("td").css("background", "#ffffff");
@@ -305,7 +316,7 @@ $(function() {
         lembur = $('select[name*=kd_lembur]').val();
         istirahat = $('input[name*=istirahat]:checked').val();
         break0 = $('input[name*=break]:checked').val();
-        pekerjaan = $('textarea[name*=pekerjaan]').val();
+        alasan = $('textarea[name*=alasan]').val();
 
         $('input[name*=tanggal_0_simpan]').val(tanggal0);
         $('input[name*=tanggal_1_simpan]').val(tanggal1);
@@ -314,7 +325,7 @@ $(function() {
         $('input[name*=kd_lembur_simpan]').val(lembur);
         $('input[name*=istirahat_simpan]').val(istirahat);
         $('input[name*=break_simpan]').val(break0);
-        $('input[name*=pekerjaan_simpan]').val(pekerjaan);
+        $('input[name*=alasan_simpan]').val(alasan);
 
         var noindSPL = $(this).val();
         var parentSelect = $(this).closest('td');
@@ -331,7 +342,7 @@ $(function() {
             $('input[name=istirahat]').attr("disabled", "disabled");
             $('input[name=break]').attr("disabled", "disabled");
             $('select[name=kd_lembur]').attr("disabled", "disabled");
-            $('textarea[name=pekerjaan]').attr("disabled", "disabled");
+            $('textarea[name=alasan]').attr("disabled", "disabled");
         } else {
             ajaxlink = baseurl + "SPLSeksi/Pusat/C_splseksi/cek_anonymous2";
         }
@@ -347,7 +358,6 @@ $(function() {
                     lembur: lembur,
                     istirahat: istirahat,
                     break0: break0,
-                    pekerjaan: pekerjaan,
                     noind: noindSPL
                 },
                 async: false,
@@ -365,11 +375,11 @@ $(function() {
                         parentTr.find('input[name*=lembur_akhir]').val("");
                         parentTr.find('input[name*=target]').prop('disabled', true);
                         parentTr.find('input[name*=realisasi]').prop('disabled', true);
-                        parentTr.find('textarea[name*=alasan]').prop('disabled', true);
+                        parentTr.find('textarea[name*=pekerjaan]').prop('disabled', true);
                     } else {
                         parentTr.find('input[name*=target]').prop('disabled', false);
                         parentTr.find('input[name*=realisasi]').prop('disabled', false);
-                        parentTr.find('textarea[name*=alasan]').prop('disabled', false);
+                        parentTr.find('textarea[name*=pekerjaan]').prop('disabled', false);
                         parentTr.find('input[name*=lbrawal]').val(obj['awal']);
                         parentTr.find('input[name*=lembur_awal]').val(obj['awal']);
                         parentTr.find('input[name*=lbrakhir]').val(obj['akhir']);
@@ -1101,6 +1111,14 @@ $(document).ready(function() {
     //listener button delete row on table access section
     btnDelRowListener()
 
+    //page input data & edit data
+    $('.pekerjaan, textarea[name=alasan]').keypress(function(e) {
+        var txt = String.fromCharCode(e.which);
+        if (!txt.match(/[A-Za-z0-9+#.%&-]/)) {
+            return false;
+        }
+    })
+
     //-----END PERSONALIA PAGE-----------------------------------
 })
 
@@ -1290,6 +1308,7 @@ const deleteLembur = (e) => {
             //do deleting with ajax
             $.ajax({
                 method: 'GET',
+                async: false,
                 url: baseurl + 'SPL/Pusat/HapusLembur/' + id_spl,
                 success: () => {
                     swal.fire('Sukses menghapus SPL', '', 'success')
@@ -1372,4 +1391,102 @@ const sendReminder = () => {
             })
         }
     })
+}
+
+const add_jobs_spl = (e) => {
+    let tr = e.closest('tr')
+    let row = $('.multiinput.parent').length - 1
+    console.log(row);
+    let jobsHTML = `
+    <tr class="spl-jobs">
+        <td colspan="5"></td>
+        <td>
+            <input type="number" class="form-control" name="target[${row}][]" required>
+        </td>
+        <td>
+            <select class="form-control" name="target_satuan[${row}][]" required>
+                <option value=""></option>
+                <option value="Pcs">Pcs</option>
+                <option value="%">%</option>
+                <option value="Box">Box</option>
+                <option value="Kg">Kg</option>
+                <option value="Unit">Unit</option>
+                <option value="Ton">Ton</option>
+                <option value="Flask">Flask</option>
+            </select>
+        </td>
+        <td>
+            <input type="number" class="form-control" name="realisasi[${row}][]" required>
+        </td>
+        <td>
+            <select class="form-control" name="realisasi_satuan[${row}][]" required>
+                <option value=""></option>
+                <option value="Pcs">Pcs</option>
+                <option value="%">%</option>
+                <option value="Box">Box</option>
+                <option value="Kg">Kg</option>
+                <option value="Unit">Unit</option>
+                <option value="Ton">Ton</option>
+                <option value="Flask">Flask</option>
+            </select>
+        </td>
+        <td>
+            <textarea style="resize: vertical; min-height: 30px;" class="form-control" rows="1" name="pekerjaan[${row}][]"></textarea>
+        </td>
+        <td colspan='2'>
+            <button type="button" onclick="del_jobs_spl($(this), ${row})" class="btn btn-sm btn-default"><i class="fa fa-minus"></i></button>
+        </td>
+    </tr>
+    `
+    tr.after(jobsHTML)
+}
+
+const add_jobs_spl_edit = e => {
+    let tr = e.closest('tr')
+    let jobsHTML = `
+    <tr>
+        <td colspan="2"></td>
+        <td>
+            <input type="number" class="form-control" name="target[]" required>
+        </td>
+        <td>
+            <select class="form-control" name="target_satuan[]" required>
+                <option value=""></option>
+                <option value="Pcs">Pcs</option>
+                <option value="%">%</option>
+                <option value="Box">Box</option>
+                <option value="Kg">Kg</option>
+                <option value="Unit">Unit</option>
+                <option value="Ton">Ton</option>
+                <option value="Flask">Flask</option>
+            </select>
+        </td>
+        <td>
+            <input type="number" class="form-control" name="realisasi[]" required>
+        </td>
+        <td>
+            <select class="form-control" name="realisasi_satuan[]" required>
+                <option value=""></option>
+                <option value="Pcs">Pcs</option>
+                <option value="%">%</option>
+                <option value="Box">Box</option>
+                <option value="Kg">Kg</option>
+                <option value="Unit">Unit</option>
+                <option value="Ton">Ton</option>
+                <option value="Flask">Flask</option>
+            </select>
+        </td>
+        <td>
+            <textarea style="resize: vertical; min-height: 30px;" class="form-control texarea-vertical" rows="1" name="pekerjaan[]"></textarea>
+        </td>
+        <td>
+            <button class="btn btn-sm" onclick="del_jobs_spl($(this))" type="button"><i class="fa fa-minus"></i></button>
+        </td>
+    </tr>
+    `
+    tr.after(jobsHTML)
+}
+
+const del_jobs_spl = (e) => {
+    e.closest('tr').remove()
 }
