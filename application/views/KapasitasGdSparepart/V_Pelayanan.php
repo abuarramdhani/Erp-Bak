@@ -67,7 +67,7 @@
                                                 <th>Jumlah Item</th>
                                                 <th>Jumlah Pcs</th>
                                                 <th>PIC</th>
-                                                <th>Status</th>
+                                                <!-- <th>Status</th> -->
                                                 <th>Keterangan</th>
                                                 <th></th>
                                             </tr>
@@ -102,12 +102,11 @@
                                                             <option value="UDIN">UDIN</option>
                                                         </select></td>
                                                         <?php }?>
-                                                    <td class="<?= $td?>"><?= $status[$i]?>
+                                                    <td class="<?= $td?>"><?= $val['URGENT']?>
                                                         <?php if (!empty($val['MULAI_PELAYANAN'])) { ?>
                                                             <input type="hidden" id="mulai<?= $no?>" value="<?= $val['MULAI_PELAYANAN']?>">
                                                         <?php }else{?><input type="hidden" id="mulai<?= $no?>" value=""> <?php }?>
                                                     </td>
-                                                    <td class="<?= $td?>"><?= $val['URGENT']?></td>
                                                     <td class="<?= $td?>">
                                                         <?php if (!empty($val['MULAI_PELAYANAN'])) { ?>
                                                             <p id="timer<?= $no?>" style="">
