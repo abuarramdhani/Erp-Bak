@@ -21,6 +21,7 @@ function bukaHasilConf(th) {
 	var invoice_id = th;
 	$('#MdlAkuntansi').modal('show');
 	$('h5.modal-title').html('HASIL KONFIRMASI CEKLIST DOKUMEN PURCHASING')
+	$('h5.modal-title-footer').html('<i>(*)Dokumen Ditolak Purchasing = Dokumen tidak tersedia/Dokumen tidak diturunkan</i>')
 	$('modal-body').html("<center><img id='loading12' style='width:200px ;margin-top: 2%;' src='"+baseurl+"assets/img/gif/loadingquick.gif'/><br /></center><br />");
 		$.ajax({
 			type: "post",

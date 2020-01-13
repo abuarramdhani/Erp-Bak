@@ -5,24 +5,6 @@
 			<div class="col-lg-12">
 				<div class="row">
 					<div class="col-lg-12">
-						<!-- <table>
-							<tr>
-								<td style="padding-right: 10px">
-									<span><label>Invoice ID</label></span>
-								</td>
-								<td style="padding-bottom:10px">
-									<input type="text" class="form-control" value="<?php echo $invoice ?>" disabled>
-								</td>
-							</tr>
-							<tr>
-								<td style="padding-right:10px">
-									<span><label>Feedback Purchasing</label></span>
-								</td>
-								<td>
-									<textarea id="txaFbPurc" class="form-control" style="width:300px; margin-bottom:10px"><?php echo $feedback[0]['FEEDBACK_PURCHASING']?></textarea>
-								</td>
-							</tr>
-						</table> -->
 						<br/>
 					  		<div id="tableHolder">
 						<div class="box box-primary">

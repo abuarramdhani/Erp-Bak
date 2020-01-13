@@ -78,6 +78,7 @@ $alert = $status[0]['SATU'];
 											<th class="text-center">Creation Date </th>
 											<th class="text-left">Masalah </th>
 											<th class="text-left">Feedback Purchasing</th>
+											<th class="text-center">Purchasing Date</th>
 											<th class="text-center">Tracking</th>
 											<th class="text-center">PIC</th>
 										</tr>
@@ -99,6 +100,14 @@ $alert = $status[0]['SATU'];
 												</a>
 												<?php } ?>
 
+												<?php if ($u['RESTATUS_BERKAS_AKT'] == NULL && $u['STATUS_INV_BERMASALAH'] == 4 ) { ?>
+													<?php if ($u['RESTATUS_BERKAS_PURC'] == NULL ) { ?>
+													<button disabled data-target="MdlAkuntansi" data-toggle="modal" title="Konfirmasi Kembali ..." style="width:100px;margin-bottom: 5px" onclick="konfirmasiKembaliAkt(<?php echo $u['INVOICE_ID'] ?>)" type="button" class="btn btn-primary btn-sm" id="submitToAkt"><i class="fa fa-exchange"></i> Re-Konfirmasi</button>
+												<?php }else {?>
+													<button data-target="MdlAkuntansi" data-toggle="modal" title="Konfirmasi Kembali ..." style="width:100px;margin-bottom: 5px" onclick="konfirmasiKembaliAkt(<?php echo $u['INVOICE_ID'] ?>)" type="button" class="btn btn-primary btn-sm" id="submitToAkt"><i class="fa fa-exchange"></i> Re-Konfirmasi</button>
+												<?php } ?>
+												<?php } ?>
+
 												<?php if ($u['STATUS_INV_BERMASALAH'] == 4 ) { ?>
 													<?php if ($u['RESTATUS_BERKAS_PURC'] == NULL ) { ?>
 												<a disabled title="Selesaikan Invoice..." style="width:100px;margin-bottom: 5px" onclick="selesaikanInvoice(<?php echo $u['INVOICE_ID']?>)" class="btn btn-success btn-sm"><i class="fa fa-check"></i> Selesaikan
@@ -109,13 +118,7 @@ $alert = $status[0]['SATU'];
 												<?php } ?>
 												<?php } ?>
 
-												<?php if ($u['RESTATUS_BERKAS_AKT'] == NULL && $u['STATUS_INV_BERMASALAH'] == 4 ) { ?>
-													<?php if ($u['RESTATUS_BERKAS_PURC'] == NULL ) { ?>
-													<button disabled data-target="MdlAkuntansi" data-toggle="modal" title="Konfirmasi Kembali ..." style="width:100px;margin-top: 5px" onclick="konfirmasiKembaliAkt(<?php echo $u['INVOICE_ID'] ?>)" type="button" class="btn btn-primary btn-sm" id="submitToAkt"><i class="fa fa-exchange"></i> Re-Konfirmasi</button>
-												<?php }else {?>
-													<button data-target="MdlAkuntansi" data-toggle="modal" title="Konfirmasi Kembali ..." style="width:100px;margin-top: 5px" onclick="konfirmasiKembaliAkt(<?php echo $u['INVOICE_ID'] ?>)" type="button" class="btn btn-primary btn-sm" id="submitToAkt"><i class="fa fa-exchange"></i> Re-Konfirmasi</button>
-												<?php } ?>
-												<?php } ?>
+												
 											</td>
 											<td><?php echo $u['VENDOR_NAME']?></td>
 											<td><strong><?php echo $u['INVOICE_NUMBER']?></strong></td>
@@ -131,6 +134,11 @@ $alert = $status[0]['SATU'];
 											<td><b>Purchasing</b> : <?php echo $u['FEEDBACK_PURCHASING']?></td>
 											<?php }else { ?>
 											<td><i>Not Yet Confirmed</i></td>
+											<?php } ?>
+											<?php if ($u['PURC_DATE'] == NULL) { ?>
+											<td><i>Not Yet Confirmed</i></b></td>
+											<?php }else{ ?>
+											<td><b><?php echo $u['PURC_DATE']?></b></td>
 											<?php } ?>
 											<?php if ($u['STATUS_INV_BERMASALAH'] == 1) { ?>
 											<td><span class="label label-default"><i class="fa fa-paper-plane"></i> Send to Purchasing &nbsp;</span></td>
@@ -202,7 +210,7 @@ $alert = $status[0]['SATU'];
 		    </div>
 		  </div>
 		  <div class="modal-footer">
-		    
+		  	<h5 class="modal-title-footer pull-left"></h5>
 		  </div>
 		</div>
  	</div>

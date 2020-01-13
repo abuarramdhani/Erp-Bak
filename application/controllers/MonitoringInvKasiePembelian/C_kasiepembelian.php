@@ -405,16 +405,18 @@ class C_kasiepembelian extends CI_Controller{
 	{
 		$invoice_id = $this->input->post('invoice_id');
 		$feedback = $this->input->post('feedback');
+		$action_date = date('d-m-Y H:i:s');
 
-		$update = $this->M_kasiepembelian->kirimFeedback($invoice_id,$feedback);
+		$update = $this->M_kasiepembelian->kirimFeedback($invoice_id,$feedback,$action_date);
 	}
 
 	public function submitFeedbackBuyer()
 	{
 		$invoice_id = $this->input->post('invoice_id');
 		$feedback = $this->input->post('feedback');
+		$action_date = date('d-m-Y H:i:s');
 
-		$update = $this->M_kasiepembelian->kirimFeedbackBuyer($invoice_id,$feedback);
+		$update = $this->M_kasiepembelian->kirimFeedbackBuyer($invoice_id,$feedback,$action_date);
 	}
 
 
