@@ -11,8 +11,11 @@
 					<div class="col-lg-12">
 						<div class="box box-primary box-solid">
 							<div class="box-header with-border">
-								<a href="<?php echo site_url('MasterPekerja/Surat/SuratResign/create') ?>" class="btn btn-primary">
+								<a href="<?php echo site_url('MasterPekerja/Surat/SuratResign/create') ?>" class="btn btn-success">
 									<span class="fa fa-plus fa-2x"></span>
+								</a>
+								<a href="<?php echo site_url('assets/video/surat_pengunduran_diri.webm') ?>" class="btn btn-warning">
+									<span class="fa fa-file-video-o fa-2x"></span>
 								</a>
 							</div>
 							<div class="box-body">
