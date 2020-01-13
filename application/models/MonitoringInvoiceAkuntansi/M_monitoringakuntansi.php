@@ -53,7 +53,7 @@ class M_monitoringakuntansi extends CI_Model {
         $erp_db = $this->load->database('oracle',true);
         $sql = "UPDATE KHS_AP_MONITORING_INVOICE 
                 SET 
-                AKT_ACTION_BERMASALAH = to_date('$action_date', 'DD/MM/YYYY HH24:MI:SS'),
+                AKT_RESTATUS_DATE = to_date('$action_date', 'DD/MM/YYYY HH24:MI:SS'),
                 RESTATUS_BERKAS_AKT = '$status_berkas',
                 SOURCE_BERMASALAH = 'AKUNTANSI'
                 WHERE INVOICE_ID = '$invoice_id'";
@@ -104,12 +104,13 @@ class M_monitoringakuntansi extends CI_Model {
         return $runQuery->result_array();
     }
 
-    public function EndInvoiceBermasalah($invoice_id)
+    public function EndInvoiceBermasalah($invoice_id,$end_date)
     {
          $erp_db = $this->load->database('oracle',true);
          $sql = "UPDATE khs_ap_monitoring_invoice SET 
                 status_inv_bermasalah = '5',
-                source_bermasalah = 'AKUNTANSI'
+                source_bermasalah = 'AKUNTANSI',
+                akt_finished_date = to_date('$end_date', 'DD/MM/YYYY HH24:MI:SS')
             WHERE invoice_id = '$invoice_id'";
          $runQuery = $erp_db->query($sql);
     }
@@ -640,6 +641,8 @@ public function editInvData($invoice_id)
                 ami.kelengkapan_doc_inv_bermasalah,
                 ami.keterangan_inv_bermasalah,
                 ami.akt_action_bermasalah akt_date,
+                ami.purc_action_bermasalah purc_date,
+                ami.akt_finished_date,
                 ami.source SOURCE,
                 ami.source_bermasalah,
                 ami.no_induk_buyer,
@@ -695,6 +698,7 @@ public function editInvData($invoice_id)
                 ami.akt_action_bermasalah akt_date,
                 ami.source SOURCE,
                 ami.source_bermasalah,
+                ami.akt_finished_date,
                 ami.no_induk_buyer,
                 ami.status_inv_bermasalah,
                 ami.feedback_buyer,

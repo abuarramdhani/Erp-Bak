@@ -9,15 +9,11 @@
 		<div class="row">
 			<div class="col-lg-12">
 				<div class="text-right ">
-					<a class="btn btn-info btn-lg" target="_blank" href="<?php echo site_url('AccountPayables/MonitoringInvoice/InvoiceBermasalahAkt/newInvBermasalah');?>">
-						<i class="icon-plus icon-2x"></i>
-							<span ><br /></span>
-					</a>
 				</div>
 				<div class="row">
 					<div class="col-lg-12">
 						<div class="text-left ">
-							<span><b>List Invoice Bermasalah</b></span>
+							<span><b>Finish Invoice Bermasalah</b></span>
 						</div>
 					</div>
 				</div>
@@ -39,6 +35,7 @@
 											<th class="text-center">PPN</th>
 											<th class="text-center">PO Number</th>
 											<th class="text-center">Creation Date </th>
+											<th class="text-center">Finished Date </th>
 											<th class="text-left">Masalah </th>
 											<th class="text-left">Feedback Purchasing</th>
 											<th class="text-center">Tracking</th>
@@ -73,6 +70,7 @@
 											<td><?php echo $u['PPN'] ?></td>
 											<td><?php echo $u['PO_NUMBER']?></td>
 											<td><b><?php echo $u['AKT_DATE']?></b></td>
+											<td><b><?php echo $u['AKT_FINISHED_DATE']?></b></td>
 											<td><b>KATEGORI : </b><?php echo $u['KATEGORI_INV_BERMASALAH']?> <br>
 												<b>KELENGKAPAN DOKUMEN : </b><?php echo $u['KELENGKAPAN_DOC_INV_BERMASALAH']?> <br>
 												<b>KETERANGAN : </b><?php echo $u['KETERANGAN_INV_BERMASALAH']?>	

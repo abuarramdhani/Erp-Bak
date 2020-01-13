@@ -82,7 +82,8 @@ class C_monitoringakuntansi extends CI_Controller{
 	public function EndStatus()
 	{
 		$invoice_id = $this->input->post('invoice_id');
-		$endInvoice = $this->M_monitoringakuntansi->EndInvoiceBermasalah($invoice_id);
+		$end_date = date('d-m-Y H:i:s');
+		$endInvoice = $this->M_monitoringakuntansi->EndInvoiceBermasalah($invoice_id,$end_date);
 	}
 
 	public function getHasilKonfirmasi()

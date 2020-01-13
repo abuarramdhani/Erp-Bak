@@ -437,17 +437,17 @@ class M_kasiepembelian extends CI_Model {
         return $runQuery->result_array();
     }
 
-    public function kirimFeedback($invoice_id,$feedback)
+    public function kirimFeedback($invoice_id,$feedback,$action_date)
     {
         $erp_db = $this->load->database('oracle',true);
-        $sql = "UPDATE KHS_AP_MONITORING_INVOICE SET FEEDBACK_PURCHASING = '$feedback', STATUS_INV_BERMASALAH = '4' WHERE INVOICE_ID = '$invoice_id'";
+        $sql = "UPDATE KHS_AP_MONITORING_INVOICE SET PURC_FINISHED_DATE = to_date('$action_date', 'DD/MM/YYYY HH24:MI:SS'), FEEDBACK_PURCHASING = '$feedback', STATUS_INV_BERMASALAH = '4' WHERE INVOICE_ID = '$invoice_id'";
         $runQuery = $erp_db->query($sql);
     }
 
-     public function kirimFeedbackBuyer($invoice_id,$feedback)
+     public function kirimFeedbackBuyer($invoice_id,$feedback,$action_date)
     {
         $erp_db = $this->load->database('oracle',true);
-        $sql = "UPDATE KHS_AP_MONITORING_INVOICE SET FEEDBACK_BUYER = '$feedback', STATUS_INV_BERMASALAH = '4' WHERE INVOICE_ID = '$invoice_id'";
+        $sql = "UPDATE KHS_AP_MONITORING_INVOICE SET BUYER_FINISHED_DATE = to_date('$action_date', 'DD/MM/YYYY HH24:MI:SS'), FEEDBACK_BUYER = '$feedback', STATUS_INV_BERMASALAH = '4' WHERE INVOICE_ID = '$invoice_id'";
         $runQuery = $erp_db->query($sql);
     }    
 
@@ -469,7 +469,7 @@ class M_kasiepembelian extends CI_Model {
         $erp_db = $this->load->database('oracle',true);
         $sql = "UPDATE KHS_AP_MONITORING_INVOICE 
                 SET 
-                PURC_ACTION_BERMASALAH = to_date('$action_date', 'DD/MM/YYYY HH24:MI:SS'),
+                PURC_RESTATUS_DATE = to_date('$action_date', 'DD/MM/YYYY HH24:MI:SS'),
                 RESTATUS_BERKAS_PURC = '$status_berkas',
                 SOURCE_BERMASALAH = 'PURCHASING'
                 WHERE INVOICE_ID = '$invoice_id'";
