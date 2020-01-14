@@ -101,21 +101,17 @@ class C_Index extends CI_Controller
 		}
 
 		public function getAtasan(){
-
-			// $atasan2 = $this->M_submit->getAtasan('F2335',2);
-			// print_r(json_encode($atasan2));	exit();
-
 			$noinduk = $this->input->post('noinduk');
 			$getKodeJabatan = $this->M_submit->getKodeJabatan($noinduk);
 
 			if($noinduk != null){
 					if (($getKodeJabatan >= 13) && ($getKodeJabatan != 19) && ($getKodeJabatan != 16)) {
-					$atasan1 = $this->M_submit->getAtasan($noinduk, 1);
-					$atasan2 = $this->M_submit->getAtasan($noinduk, 2);
+					$atasan1 = $this->M_absenatasan->getAtasanApprover($noinduk, 1,$getKodeJabatan);
+					$atasan2 = $this->M_absenatasan->getAtasanApprover($noinduk, 2,$getKodeJabatan);
 					$data['atasan1'] = $atasan1;
 					$data['atasan2'] = $atasan2;
 				}else{
-					$atasan2 = $this->M_submit->getAtasan($noinduk, 2);
+					$atasan2 = $this->M_absenatasan->getAtasanApprover($noinduk, 2,$getKodeJabatan);
 					$data['atasan2'] = $atasan2;
 				}
 

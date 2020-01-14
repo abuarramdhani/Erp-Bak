@@ -84,6 +84,144 @@ class M_absenatasan extends CI_Model
 		return $query->result_array();		
 	}
 
+	public function getAtasanApprover($noind , $jabatan,$KdJabatan) {
+		$this->load->model('SystemIntegration/M_submit');
+		$data = array();
+		$kodesie = $this->session->kodesie;
+		if(!empty($kodesie)){
+			$kodesie = $kodesie;
+		}else{
+			$kodesie = $this->personalia->query("select * from hrd_khs.trefjabatan where noind='$noind'")->result_array()[0]['kodesie'];
+		}
+		$kodesie_subs = substr($kodesie, 0, 4);
+		$kodesie_5 = substr($kodesie,0,5);
+			
+		$personalia = $this->load->database('personalia',true);
+		$sql1 = "SELECT kd_jabatan FROM hrd_khs.tpribadi WHERE noind = '$noind'";
+		$query1 = $personalia->query($sql1);
+		$result1 = $query1->result_array();
+		$jabatan_user = $result1[0]['kd_jabatan'];
+		
+		if($jabatan == '1') {
+			$jabatan2 = str_pad($jabatan_user - 1, 2, "0", STR_PAD_LEFT);
+			$where = "c.kd_jabatan between '01' and '$jabatan2'";
+		} else if($jabatan == '2') {
+			$jabatan2 = str_pad($jabatan_user - 2, 2, "0", STR_PAD_LEFT);
+			$where = "c.kd_jabatan between '01' and '$jabatan2'";
+		} else if($jabatan == '3') { // 3 untuk level department
+			$where = "c.kd_jabatan in ('02','03','04')";
+		} else if($jabatan == '4') {
+			$where = "c.kd_jabatan = '01'";
+		}
+		
+		if ($jabatan == '1') {
+			$sql2 = "SELECT 
+						a.noind employee_code, a.nama employee_name
+					FROM hrd_khs.tpribadi a 
+						INNER JOIN hrd_khs.tseksi b on a.kodesie=b.kodesie
+						INNER JOIN hrd_khs.torganisasi c on a.kd_jabatan=c.kd_jabatan
+					WHERE
+						$where
+						and substring(a.kodesie, 1, 4) = (
+							SELECT substring( kodesie, 1, 4 )
+							FROM hrd_khs.tpribadi d
+							WHERE d.noind = '$noind'
+								and d.keluar = '0'
+						)
+						and a.keluar ='0'
+					ORDER BY a.noind,a.nama";
+			$query2 = $personalia->query($sql2);
+			$result2 = $query2->result_array();
+		} else if ($jabatan == '2') {
+			$sql2 = "SELECT 
+						a.noind employee_code, a.nama employee_name
+					FROM hrd_khs.tpribadi a 
+						INNER JOIN hrd_khs.tseksi b on a.kodesie=b.kodesie
+						INNER JOIN hrd_khs.torganisasi c on a.kd_jabatan=c.kd_jabatan
+					WHERE
+						$where
+						and substring(a.kodesie, 1, 4) = (
+							SELECT substring( kodesie, 1, 4 )
+							FROM hrd_khs.tpribadi d
+							WHERE d.noind = '$noind'
+								and d.keluar = '0'
+						)
+						and a.keluar ='0'
+					ORDER BY a.noind,a.nama";
+			$result2 = $personalia->query($sql2)->result_array();
+			$sql3 = "SELECT su.user_name employee_code, su.employee_name FROM si.si_approver_khusus ak 
+					LEFT JOIN sys.vi_sys_user su ON su.user_name =  ak.no_induk
+					WHERE ak.kodesie = '$kodesie_subs'";
+			$result3 = $this->db->query($sql3)->result_array();
+
+			$sqlPosShowroom = "select * from hrd_khs.trefjabatan where substr(kodesie,1,3) = '209' and kd_jabatan = '11' and substr(kodesie,7,1) != '1' order by substr(kodesie,7,1)";
+			$resultPosSR	 = $this->personalia->query($sqlPosShowroom)->result_array();
+
+			$arrPosSR = array();
+			foreach ($resultPosSR as $key => $dt) {
+				$arrPosSR[] = $dt['kodesie'];
+			}
+
+			if(in_array($kodesie, $arrPosSR)){
+				$sql4 = "select a.noind as employee_code ,a.nama as employee_name from hrd_khs.tpribadi a INNER JOIN hrd_khs.trefjabatan b ON a.noind = b.noind WHERE a.noind!='$noind' and a.keluar=false and b.kd_jabatan = '11' and substr(a.kodesie,1,5) = '$kodesie_5'";
+				$result4 = $this->personalia->query($sql4)->result_array();
+				$result2 = array_merge(array_values($result2),array_values($result3),array_values($result4));
+			}else{
+				$result2 = array_merge(array_values($result2),array_values($result3));
+			}
+
+		} else if ($jabatan == '3') {
+			$sql4 = "SELECT 
+						a.noind employee_code, a.nama employee_name
+					FROM hrd_khs.tpribadi a 
+						INNER JOIN hrd_khs.tseksi b on a.kodesie=b.kodesie
+						INNER JOIN hrd_khs.torganisasi c on a.kd_jabatan=c.kd_jabatan
+					WHERE $where
+						and substring( a.kodesie, 1, 2 ) = (
+							SELECT substring( kodesie, 1, 2 )
+							FROM hrd_khs.tpribadi d
+							WHERE d.noind = '$noind'
+								and d.keluar = '0'
+						)
+						and a.keluar ='0'
+					ORDER BY a.noind,a.nama";
+			$query4 = $personalia->query($sql4);
+			$result4 = $query4->result_array();
+			$result2 = $result4;
+		} elseif ($jabatan == '4') {
+			$sql5 = "SELECT
+						a.noind employee_code, a.nama employee_name
+					FROM hrd_khs.tpribadi a 
+						INNER JOIN hrd_khs.tseksi b on a.kodesie=b.kodesie
+						INNER JOIN hrd_khs.torganisasi c on a.kd_jabatan=c.kd_jabatan
+					WHERE $where
+						and substring( a.kodesie, 0, 1 ) = (
+							SELECT substring( kodesie, 0, 1 )
+							FROM hrd_khs.tpribadi d
+							WHERE d.noind = '$noind'
+								and d.keluar = '0'
+						)
+						and a.keluar ='0'
+					ORDER BY a.noind,a.nama";
+			$query5 = $personalia->query($sql5);
+			$result5 = $query5->result_array();
+			$result2 = $result5;
+		}
+
+		$allAtasan = $this->M_submit->getAllUser();
+		foreach ($allAtasan as $key => $value) {
+			$arrayUser[] = $value['user_name'];
+		}
+
+		foreach ($result2 as $key => $value) {
+			if (in_array($value['employee_code'], $arrayUser) === true) {
+				$data[] = $value;
+			}
+		}
+
+		return $data;
+	}
+
 
 
 
@@ -92,4 +230,4 @@ class M_absenatasan extends CI_Model
 }
 
 
-?>	
+?>
