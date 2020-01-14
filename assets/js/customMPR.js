@@ -55,11 +55,20 @@ $(document).ready(function() {
 });
 
 $(document).ready(function() {
-    $('#txtPuasaPKJKeluar').on('ifChecked', function() {
+    $(document).on('ifChecked','#txtPuasaPKJKeluar', function() {
         $('#txtPeriodePuasaPKJKeluar').prop("disabled", false);
     });
-    $('#txtPuasaPKJKeluar').on('ifUnchecked', function() {
+    $(document).on('ifUnchecked','#txtPuasaPKJKeluar', function() {
         $('#txtPeriodePuasaPKJKeluar').prop("disabled", true);
+    }); 
+    $(document).on('ifChecked','#txtKhususPKJKeluarCheckList', function() {
+        $('input[name=txtKhususPKJKeluar]').parents('.disabled').removeClass("disabled");
+        $('input[name=txtKhususPKJKeluar]').prop("disabled", false);
+    });
+    $(document).on('ifUnchecked','#txtKhususPKJKeluarCheckList', function() {
+        $('input[name=txtKhususPKJKeluar]').val("");
+        $('input[name=txtKhususPKJKeluar]').iCheck('uncheck');
+        $('input[name=txtKhususPKJKeluar]').prop("disabled", true);
     });
 
     $('.slcPekerjaGajiPKJKeluar').select2({
