@@ -40,6 +40,7 @@ class C_NotifikasiPembelian extends CI_Controller {
         $mail->Username = 'no-reply@quick.com';
         $mail->Password = "123456";
         $mail->WordWrap = 50;
+        
 
         //Alamat Pengirim Email
         $mail->setFrom('system-oracle@quick.com ', 'ICT Auto Notification System');
@@ -74,7 +75,7 @@ class C_NotifikasiPembelian extends CI_Controller {
         <table style="width:auto;">
         <tr>
             <td><b>Nomor PP</b></td>
-            <td style="width:100px"><b>: '.$value['NO_PP'].'</b></td>
+            <td style="width:auto"><b>: '.$value['NO_PP'].'</b></td>
         </tr>
         <tr>
             <td><b>Nomor PR</b></td>
@@ -121,7 +122,7 @@ class C_NotifikasiPembelian extends CI_Controller {
         <br/>
         -----
         <br/>
-        <span style="font-size: x-small;"><em>Send by ICT Auto Notification System</em></span><br/>
+        <span style="font-size: x-small;"><em>Sent by ICT Auto Notification System</em></span><br/>
         <span style="font-size: x-small;"><em>VoIP: 12300</em></span><br/>
         <span style="font-size: x-small;"><em>MyGroup: 08112545922</em></span><br/>
         </div>';
