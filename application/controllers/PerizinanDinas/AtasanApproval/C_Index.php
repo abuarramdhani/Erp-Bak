@@ -43,11 +43,17 @@ class C_Index extends CI_Controller
 		$data['SubMenuOne'] = '';
 		$data['SubMenuTwo'] = '';
 
-		$data['UserMenu'] = $this->M_user->getUserMenu($user_id,$this->session->responsibility_id);
+		$datamenu = $this->M_user->getUserMenu($user_id,$this->session->responsibility_id);
 		$data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id);
 		$data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id);
 
-		$data['nama'] = $this->M_index->getAllNama();
+		if ($no_induk == 'B0898' || $no_induk == 'B0720' || $no_induk == 'B0819' || $no_induk == 'B0697' || $no_induk == 'B0696' || $no_induk == 'J1293' || $no_induk == 'B0307') {
+			$data['UserMenu'] = $datamenu;
+		}else {
+			unset($datamenu[1]);
+			$data['UserMenu'] = $datamenu;
+		}
+
 		$data['izin'] = $this->M_index->GetIzin($no_induk);
 		$data['IzinApprove'] = $this->M_index->IzinApprove($no_induk);
 		$data['IzinUnApprove'] = $this->M_index->IzinUnApprove($no_induk);
