@@ -421,3 +421,292 @@ function submitConfirmation(th) {
 		
 }
 
+function cekKacab(th) {
+	Swal.fire({
+			  title: 'Please Wait ...',
+			  showConfirmButton: false,
+			  showClass: {
+			    popup: 'animated fadeInDown faster'
+			  },
+			  hideClass: {
+			    popup: 'animated fadeOutUp faster'
+			  }
+			})
+
+
+	var nomor_induk = $('#txtIdPekerja').val();
+
+	$.ajax({
+			method: "POST",
+			url: baseurl+"TrackingPengirimanBarang/Setting/KepalaCabang/cekNoInd",
+			dataType: 'JSON',
+			data:{
+					nomor_induk:nomor_induk,
+				},
+			success: function(response) {
+				console.log(response)
+
+				if (response !== '0') {
+						var employee_code = '';
+						var employee_name = '';	
+						var section_name = '';
+							$.each(response, (i, item) => {
+								employee_code = item.employee_code
+								employee_name = item.employee_name
+								section_name = item.section_name
+							})
+						$('#txtNamaPekerja').val(employee_name).trigger('change');
+						$('#txtSectionName').val(section_name).trigger('change');
+						$('#slcStatusKacab option[value=Y]').attr('selected', 'selected').trigger('change');
+						Swal.fire({
+									  type: 'success',
+									  title: 'User ditemukan!',
+									  showConfirmButton: false,
+									  timer: 1500
+									})
+				}else if (response == '0'){
+						$('#txtNamaPekerja').val('').trigger('change');
+						$('#txtSectionName').val('').trigger('change');
+						$('#slcStatusKacab').val('').trigger('change');
+						Swal.fire({
+									  type: 'error',
+									  title: 'Maaf, user yang sudah pernah ditambahkan tidak bisa ditambahkan kembali',
+									  showConfirmButton: false,
+									  timer: 1500
+									})
+				}
+			}
+		})
+}
+
+function addKacab(th) {
+	var nomor_induk = $('#txtIdPekerja').val();
+	var nama_kacab = $('#txtNamaPekerja').val();
+	var section_name = $('#txtSectionName').val();
+	var status = $('#slcStatusKacab').val();
+	var alamat_cabang = $('#txaAlamatCabang').val();
+
+$.ajax({
+			method: "POST",
+			url: baseurl+"TrackingPengirimanBarang/Setting/KepalaCabang/addKacab",
+			data:{
+					nomor_induk:nomor_induk,
+					nama_kacab:nama_kacab,
+					section_name:section_name,
+					status:status,
+					alamat_cabang:alamat_cabang
+				},
+			success: function(response) {
+				Swal.fire({
+						  type: 'success',
+						  title: 'User has been added!',
+						  showConfirmButton: false,
+						  timer: 1500
+						})
+				window.location.reload();
+
+}
+})
+}
+
+function deleteKacab(th) {
+	var id_login = th;
+
+	const swalWithBootstrapButtons = Swal.mixin({
+		  customClass: {
+		    confirmButton: 'btn btn-success',
+		    cancelButton: 'btn btn-danger'
+		  },
+		  buttonsStyling: true
+		})
+
+	swalWithBootstrapButtons.fire({
+		  title: 'User Akan Dihapus',
+		  text: 'Yakin akan menghapus user ini?',
+		  type: 'warning',
+		  showCancelButton: true,
+		  confirmButtonText: 'Yes, delete it!',
+		  cancelButtonText: 'No, cancel!',
+		  reverseButtons: true
+	}).then((result) => {
+  if (result.value) {
+	  	$.ajax({
+					type: "POST",
+					url: baseurl+"TrackingPengirimanBarang/Setting/KepalaCabang/deleteKacab",
+					data:{
+						id_login:id_login,
+					},
+					success: function(response) {
+						$('tr.'+id_login+'').remove()
+						  swalWithBootstrapButtons.fire(
+					      'Deleted!',
+					      'User berhasil dihapus!',
+					      'success'
+					    	)
+			 		}
+
+				});
+  } else if (
+    result.dismiss === Swal.DismissReason.cancel
+  ) {
+    swalWithBootstrapButtons.fire(
+      'Cancelled',
+      'User batal dihapus',
+      'error'
+    )
+  }
+})
+}
+
+function DiactivatedUser(th) {
+	var id_login = th;
+
+	const swalWithBootstrapButtons = Swal.mixin({
+		  customClass: {
+		    confirmButton: 'btn btn-success',
+		    cancelButton: 'btn btn-danger'
+		  },
+		  buttonsStyling: true
+		})
+
+	swalWithBootstrapButtons.fire({
+		  title: 'User Akan Dinon-aktifkan',
+		  text: 'Yakin akan menon-aktifkan user ini?',
+		  type: 'warning',
+		  showCancelButton: true,
+		  confirmButtonText: 'Ya, non-aktifkan!',
+		  cancelButtonText: 'Tidak, batalkan!',
+		  reverseButtons: true
+	}).then((result) => {
+  if (result.value) {
+	  	$.ajax({
+					type: "POST",
+					url: baseurl+"TrackingPengirimanBarang/Setting/KepalaCabang/DiactivatedUser",
+					data:{
+						id_login:id_login,
+					},
+					success: function(response) {
+						$('.status'+id_login+'').html('<span><label class="label label-danger" style="width: 80px">Tidak Aktif</label></span>')
+						$('.btnActivating'+id_login+'').html('<button id="btnDiactivated" onclick="activatedUser('+id_login+')" class="btn btn-primary btn-sm" style="width: 100px"><i class="fa fa-check"></i> Aktifkan</button>')
+						  swalWithBootstrapButtons.fire(
+					      'Berhasil!',
+					      'User berhasil dinon-aktifkan!',
+					      'success'
+					    	)
+			 		}
+
+				});
+  } else if (
+    result.dismiss === Swal.DismissReason.cancel
+  ) {
+    swalWithBootstrapButtons.fire(
+      'Cancelled',
+      'User batal Dinon-aktifkan',
+      'error'
+    )
+  }
+})
+}
+
+function activatedUser(th) {
+	var id_login = th;
+
+	const swalWithBootstrapButtons = Swal.mixin({
+		  customClass: {
+		    confirmButton: 'btn btn-success',
+		    cancelButton: 'btn btn-danger'
+		  },
+		  buttonsStyling: true
+		})
+
+	swalWithBootstrapButtons.fire({
+		  title: 'User Akan Diaktifkan',
+		  text: 'Yakin akan mengaktifkan user ini?',
+		  type: 'warning',
+		  showCancelButton: true,
+		  confirmButtonText: 'Ya, aktifkan!',
+		  cancelButtonText: 'Tidak, batalkan!',
+		  reverseButtons: true
+	}).then((result) => {
+  if (result.value) {
+	  	$.ajax({
+					type: "POST",
+					url: baseurl+"TrackingPengirimanBarang/Setting/KepalaCabang/activatedUser",
+					data:{
+						id_login:id_login,
+					},
+					success: function(response) {
+						$('.status'+id_login+'').html('<span><label class="label label-primary" style="width:80px">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Aktif&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</label></span>')
+						$('.btnActivating'+id_login+'').html('<button id="btnDiactivated" onclick="DiactivatedUser('+id_login+')" class="btn btn-primary btn-sm" style="width: 100px"><i class="fa fa-times"></i> Non-Aktifkan</button>')
+						  swalWithBootstrapButtons.fire(
+					      'Berhasil!',
+					      'User berhasil diaktifkan!',
+					      'success'
+					    	)
+			 		}
+
+				});
+  } else if (
+    result.dismiss === Swal.DismissReason.cancel
+  ) {
+    swalWithBootstrapButtons.fire(
+      'Cancelled',
+      'User batal Diaktifkan',
+      'error'
+    )
+  }
+})
+
+}
+
+function editKacab(th) {
+	var id_login = th;
+
+	$('#mdlKacab').modal('show');
+	$('.modal-tabel').html("<center><img id='loading12' style='margin-top: 2%;' src='"+baseurl+"assets/img/gif/loading12.gif'/><br /></center><br />");
+		$.ajax({
+			type: "POST",
+			url: baseurl+"TrackingPengirimanBarang/Setting/KepalaCabang/EditKacab",
+			data:{
+				id_login:id_login
+			},
+			success: function(response) {
+				$('.modal-tabel').html("");
+				$('.modal-tabel').html(response);
+
+			}
+		})
+}
+
+function btnEditKacab(th) {
+	var id_login = th;
+	var alamat_cabang = $('#txaAlamatCabangEd').val()
+	var status = $('#slcStatusKacabEd').val()
+	var section_name = $('#txtSectionNameEd').val()
+	var nama_kacab = $('#txtNamaKacabEd').val()
+	var nomor_induk = $('#txtNomorIndukEd').val()
+ 
+	$.ajax({
+					type: "POST",
+					url: baseurl+"TrackingPengirimanBarang/Setting/KepalaCabang/updateKacab",
+					data:{
+						id_login:id_login,
+						alamat_cabang:alamat_cabang,
+						status:status,
+						section_name:section_name,
+						nama_kacab:nama_kacab,
+						nomor_induk:nomor_induk
+					},
+					success: function(response) {
+						$('#mdlKacab').modal('hide');
+						Swal.fire({
+						  type: 'success',
+						  title: 'User has been updated!',
+						  showConfirmButton: false,
+						  timer: 1500
+						})
+
+						window.location.reload();
+			 		}
+				});
+}
