@@ -115,11 +115,11 @@
 								<th width="20%" style="vertical-align: middle;text-align: center">Selesai</th>
 								<th width="20%" style="vertical-align: middle;text-align: center">Break</th>
 								<th width="20%" style="vertical-align: middle;text-align: center">Istirahat</th>
+								<th width="20%" style="vertical-align: middle;text-align: center">Estimasi</th>
 								<th width="20%" style="vertical-align: middle;text-align: center">Target/Pcs/%</th>
 								<th width="20%" style="vertical-align: middle;text-align: center">Realisasi/Pcs/%</th>
 								<th width="20%" style="vertical-align: middle;text-align: center">Alasan Lembur</th>
 								<th width="20%" style="vertical-align: middle;text-align: center">Tanggal Proses</th>
-								<th width="20%" style="vertical-align: middle;text-align: center">Estimasi</th>
 								</tr>
 							</thead>
 							<?php if (isset($data) and !empty($data)) { ?>

@@ -102,7 +102,7 @@
 
 									<div class="form-group">
 										<div class="col-sm-12">
-											<!-- <button type="submit" class="btn btn-primary pull-right"> <i class="fa fa-save"></i> Proses</button> -->
+											<button type="submit" class="btn btn-primary pull-right"> <i class="fa fa-save"></i> Proses</button>
 											<input type="text" id="txt_ses" value="<?php echo $this->session->userid; ?>" hidden>
 											<button type="button" hidden data-toggle="modal" data-target="#ProsesDialog" id="btn-ProsesSPL"><i class="fa fa-save"></i> Proses</button>
 											<button type="button" id="spl-approval-0" style="margin-right:3px" class="btn btn-primary pull-right"> <i class="fa fa-search"></i> Cari</button>
@@ -133,12 +133,12 @@
 									<th width="20%">Selesai</th>
 									<th width="20%">Break</th>
 									<th width="20%">Istirahat</th>
+									<th width="20%">Estimasi</th>
 									<th width="20%">Target(%)</th>
 									<th width="20%">Realisasi(%)</th>
 									<th width="20%">Alasan Lembur</th>
 									<th width="20%">Status</th>
 									<th width="20%">Tanggal Proses</th>
-									<th width="20%">Estimasi</th>
 									</tr>
 								</thead>
 								<?php if (isset($data) and !empty($data)) { ?>
