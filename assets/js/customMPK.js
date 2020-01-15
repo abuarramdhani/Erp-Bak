@@ -2557,6 +2557,15 @@ function edit_pkj_dinas(id) {
             $('#modal-approve-dinas').modal('show')
             $('#modal-id_dinas').val(data[0]['izin_id'])
             $('#modal-tgl_dinas').val(data[0]['created_date'])
+            $('#modal-keluar_dinas').val(function () {
+                if (data[0]['berangkat'] == null) {
+                    return '-'
+                }else if (data[0]['berangkat'] < '12:00:00') {
+                    return data[0]['berangkat']+' AM'
+                }else {
+                    return data[0]['berangkat']+' PM'
+                }
+            })
             $('#modal-kep_dinas').val(data[0]['keterangan'])
 
             let row
