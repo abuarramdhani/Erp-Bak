@@ -798,6 +798,8 @@ class C_splseksi extends CI_Controller {
 									$aktual_akhir = $akhir_lembur;
 								}elseif($akhir_lembur > $masuk_shift){
 									$aktual_akhir = $masuk_shift;
+								}elseif($awal_lembur < $masuk_absen && $akhir_lembur <= $masuk_absen){
+									$aktual_akhir = $akhir_lembur;
 								}else{
 									$error = "1";
 									$errortext = "Jam Akhir Lembur Tidak Sesuai";
@@ -856,7 +858,7 @@ class C_splseksi extends CI_Controller {
 					}
 				}
 			}
-		}else{ //input lembur di kedepannya
+		}else{ //input lembur di kedepannya || tgl lembur == tgl input
 			$presensi = $this->M_splseksi->getPresensiPusat($noind,$tanggal); // cari shiftpekerja
 
 			if (!empty($presensi) && count($presensi) > 0) {
