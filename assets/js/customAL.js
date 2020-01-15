@@ -4,6 +4,8 @@ $(document).ready(function(){
 	$('.erp-androedit').select2({
 		allowClear: false,
 		searching: true,
+		minimumInputLength: 2,
+		placeholder: 'No. Induk dan Nama Karyawan',
 		ajax: 
 		{
 			url: baseurl+'SystemAdministration/Android/listPekerja',
@@ -19,7 +21,7 @@ $(document).ready(function(){
 				return {
 					results: $.map(data, function(obj){
 						// return {id: obj.employee_name, text: obj.employee_name};
-						return {id: obj.employee_code+" - "+obj.employee_name, text: obj.employee_code+" - "+obj.employee_name};
+						return {id: obj.noind+" - "+obj.nama, text: obj.noind+" - "+obj.nama};
 					})
 				};
 			}
