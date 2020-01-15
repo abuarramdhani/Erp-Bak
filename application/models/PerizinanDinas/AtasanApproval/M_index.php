@@ -9,15 +9,12 @@ class M_index extends CI_Model
         $this->personalia = $this->load->database('personalia',TRUE);
     }
 
-    public function getAllNama()
-    {
-      return $this->personalia->query("SELECT DISTINCT noind, trim(nama) as nama FROM hrd_khs.tpribadi")->result_array();
-    }
-
    public function GetIzin($no_induk)
 	{
-		$sql = "SELECT * FROM \"Surat\".tperizinan WHERE atasan_aproval LIKE '%$no_induk%'
-                order by status, izin_id DESC";
+		$sql = "SELECT a.*,
+                (select string_agg(concat(noind,' - ',trim(nama)),'<br>') from hrd_khs.tpribadi b where position(b.noind in a.noind)>0) as pekerja
+                FROM \"Surat\".tperizinan a WHERE a.atasan_aproval LIKE '%$no_induk%'
+                order by a.status, a.izin_id DESC";
 
 		$query = $this->personalia->query($sql);
 		return $query->result_array();
@@ -25,8 +22,10 @@ class M_index extends CI_Model
 
 	 public function IzinApprove($no_induk)
 	{
-		$sql = "SELECT * FROM \"Surat\".tperizinan WHERE atasan_aproval = '$no_induk' and status = '1'
-                order by created_date DESC";
+		$sql = "SELECT a.*,
+                (select string_agg(concat(noind,' - ',trim(nama)),'<br>') from hrd_khs.tpribadi b where position(b.noind in a.noind)>0) as pekerja
+                FROM \"Surat\".tperizinan a WHERE a.atasan_aproval LIKE '%$no_induk%' and status = '1'
+                order by a.created_date DESC";
 
 		$query = $this->personalia->query($sql);
 		return $query->result_array();
@@ -34,8 +33,11 @@ class M_index extends CI_Model
 
 	 public function IzinUnApprove($no_induk)
 	{
-		$sql = "SELECT * FROM \"Surat\".tperizinan WHERE atasan_aproval LIKE '%$no_induk%' and status = '0'
-                order by created_date DESC";
+        $today = date('Y-m-d');
+		$sql = "SELECT a.*,
+                (select string_agg(concat(noind,' - ',trim(nama)),'<br>') from hrd_khs.tpribadi b where position(b.noind in a.noind)>0) as pekerja
+                FROM \"Surat\".tperizinan a WHERE a.atasan_aproval LIKE '%$no_induk%' and status = '0' AND created_date::date = '$today'
+                order by a.created_date DESC";
 
 		$query = $this->personalia->query($sql);
 		return $query->result_array();
@@ -43,8 +45,11 @@ class M_index extends CI_Model
 
 	 public function IzinReject($no_induk)
 	{
-		$sql = "SELECT * FROM \"Surat\".tperizinan WHERE atasan_aproval LIKE '%$no_induk%' and status = '2'
-                order by created_date DESC";
+        $today = date('Y-m-d');
+		$sql = "SELECT a.*,
+                (select string_agg(concat(noind,' - ',trim(nama)),'<br>') from hrd_khs.tpribadi b where position(b.noind in a.noind)>0) as pekerja
+                FROM \"Surat\".tperizinan a WHERE a.atasan_aproval LIKE '%$no_induk%' and status IN ('2', '5') OR (status = '0' AND created_date::date < '$today')
+                order by a.created_date DESC";
 
 		$query = $this->personalia->query($sql);
 		return $query->result_array();
@@ -124,7 +129,7 @@ class M_index extends CI_Model
 
     public function getPekerjaEdit($idizin)
     {
-        $sql = "SELECT ti.*, (SELECT trim(nama) FROM hrd_khs.tpribadi where noind = ti.noind and keluar = '0') as nama, tper.keterangan, cast(tper.created_date as date)
+        $sql = "SELECT ti.*, (SELECT trim(nama) FROM hrd_khs.tpribadi where noind = ti.noind and keluar = '0') as nama, tper.keterangan, cast(tper.created_date as date), tper.berangkat
                 FROM \"Surat\".tpekerja_izin ti
                 LEFT JOIN \"Surat\".tperizinan tper ON tper.izin_id = ti.izin_id::int
                 WHERE ti.izin_id = '$idizin'";

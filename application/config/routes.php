@@ -1935,13 +1935,25 @@ $route['PenerimaanPO/cek/loadDataCek']         = 'PenerimaanPO/C_Pengecekan/load
 
 //------------------------------------Perizinan Dinas----------------------------------------
 $route['PerizinanDinas']					= 'PerizinanDinas/C_Index';
-// $route['PerizinanDinas/(:any)']				= 'PerizinanDinas/C_Index/$1';
-// $route['PerizinanDinas/(:any)/(:any)']		= 'PerizinanDinas/C_Index/$1/$2';
-
 $route['PerizinanDinas/AtasanApproval']								= 'PerizinanDinas/AtasanApproval/C_Index';
 $route['PerizinanDinas/AtasanApproval/(:any)']						= 'PerizinanDinas/AtasanApproval/C_Index/$1';
 $route['PerizinanDinas/AtasanApproval/(:any)/(:any)']				= 'PerizinanDinas/AtasanApproval/C_Index/$1/$2';
 $route['PerizinanDinas/AtasanApproval/(:any)/(:any)/(:any)']		= 'PerizinanDinas/AtasanApproval/C_Index/$1/$2/$3';
+
+//--------------------------------------------------- Cetak Rekap Perizinan Dinas -----------------------------------//
+$route['PD/RekapPerizinanDinas'] 		= 'PerizinanDinas/RekapPerizinanDinas/C_Index';
+$route['PD/RekapPerizinanDinas/(:any)'] = 'PerizinanDinas/RekapPerizinanDinas/C_Index/$1';
+$route['PD/RekapPerizinanDinas/(:any)/(:any)'] = 'PerizinanDinas/RekapPerizinanDinas/C_Index/$1/$2';
+
+//------------------------------------Perizinan Pribadi----------------------------------------
+$route['IzinKeluarPribadi']					= 'PerizinanPribadi/C_Index';
+$route['IKP/ApprovalAtasan']				= 'PerizinanPribadi/C_Index/index1';
+$route['IKP/ApprovalAtasan/(:any)']			= 'PerizinanPribadi/C_Index/$1';
+$route['IKP/ApprovalAtasan/(:any)/(:any)']	= 'PerizinanPribadi/C_Index/$1/$2';
+$route['RPP/RekapIKP'] 						= 'PerizinanPribadi/C_Rekap';
+$route['RPP/RekapIKP/(:any)'] 				= 'PerizinanPribadi/C_Rekap/$1';
+$route['RPP/RekapIKP/(:any)/(:any)'] 		= 'PerizinanPribadi/C_Rekap/$1/$2';
+
 //------------------------------------------------Product Cost-------------------------------------------------------//
 $route['ProductCost']										= 'ProductCost/C_Index';
 $route['ProductCost/BppbgAccount']							= 'ProductCost/MainMenu/C_BppbgAccount';

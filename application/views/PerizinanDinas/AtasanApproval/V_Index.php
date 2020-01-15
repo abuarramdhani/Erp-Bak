@@ -18,7 +18,7 @@
                     </div>
                 </div>
                 <br/>
-
+<?php  $today = date('Y-m-d'); ?>
                  <div class="row" style="">
                     <div class="col-lg-12">
                         <div class="box box-primary box-solid">
@@ -45,11 +45,13 @@
                                     <th class="text-center" style="white-space: nowrap">Keputusan Anda</th>
                                     <th class="text-center" style="white-space: nowrap">ID Izin</th>
                                     <th class="text-center" style="white-space: nowrap">Tanggal Pengajuan</th>
+                                    <th class="text-center" style="white-space: nowrap">Akan Keluar</th>
                                     <th class="text-center" style="white-space: nowrap">Nama Pekerja</th>
                                     <th class="text-center" style="white-space: nowrap">Jenis Izin</th>
                                     <th class="text-center" style="white-space: nowrap">Tujuan</th>
                                     <th class="text-center" style="white-space: nowrap">Keterangan</th>
                                     <th class="text-center" style="white-space: nowrap">Status</th>
+                                    <th class="text-center" style="white-space: nowrap" hidden>Order</th>
                                   </tr>
                                 </thead>
                                 <tbody>
@@ -58,7 +60,7 @@
                                     ?>
                                     <tr>
                                       <td style="white-space: nowrap; text-align: center;"><?php echo $no; ?></td>
-                                      <td style="white-space: nowrap; text-align: center;"><?php  if ($row['status'] == 0) { ?>
+                                      <td style="white-space: nowrap; text-align: center;"><?php  if ($row['status'] == 0 && date('Y-m-d', strtotime($row['created_date'])) == $today) { ?>
                                             <button class="btn btn-warning" onclick="edit_pkj_dinas(<?php echo $row['izin_id'] ?>)"><span style="color: white" class='fa fa-edit'></button>
                                             <button class="btn btn-success cm_btn_approve" onclick="getApproval('1', <?php echo $row['izin_id'] ?>)" ><span style="color: white" class='fa fa-check'></span></button>
                                             <button class="btn btn-danger cm_btn_reject" onclick="getApproval('2', <?php echo $row['izin_id'] ?>)"><span style="color: white" class='fa fa-close'></span></button>
@@ -66,18 +68,20 @@
                                                   <a><span style="color: green" class='fa fa-check fa-2x'></span></a>
                                            <?php }elseif ($row['status'] == 2) { ?>
                                                   <a><span style="color: red" class='fa fa-close fa-2x'></span></a>
+                                           <?php }elseif (($row['status'] == 0 && date('Y-m-d', strtotime($row['created_date'])) < date('Y-m-d')) || $row['status'] == 5) {  ?>
+                                               <span class="fa fa-2x fa-exclamation-circle" style="color: grey"></span>
                                            <?php } ?>
                                                 </td>
                                       <td style="white-space: nowrap; text-align: center;"><?php echo $row['izin_id'] ?></td>
                                       <td style="white-space: nowrap"><?= date("d - M - Y", strtotime($row['created_date'])); ?></td>
-                                      <td style="white-space: nowrap"><?php $noind = explode(', ', $row['noind']);
-                                      foreach ($noind as $na) {
-                                        foreach ($nama as $lue) {
-                                          if ($na == $lue['noind']) {
-                                            echo $lue['noind'].' - '.$lue['nama'].'<br>';
-                                          }
-                                        }
-                                      }  ?></td>
+                                      <td style="white-space: nowrap; text-align: center;"><?php if ($row['berangkat'] == '' || $row['berangkat'] == null) {
+                                          echo '-';
+                                      }elseif ($row['berangkat'] < '12:00:00') {
+                                          echo date('H:i:s', strtotime($row['berangkat'])).' AM';
+                                      }else {
+                                          echo date('H:i:s', strtotime($row['berangkat'])).' PM';
+                                      } ?></td>
+                                      <td style="white-space: nowrap"><?php echo $row['pekerja'];  ?></td>
                                       <td style="white-space: nowrap; text-align: center;"><?php if ( $row['jenis_izin'] == '1') {
                                                                                       echo "DINAS PUSAT";
                                                                                     }elseif ( $row['jenis_izin'] == '2') {
@@ -93,7 +97,7 @@
                                                                         }  ?></td>
                                       <td style="white-space: nowrap"><?php echo $row['keterangan'] ?></td>
                                       <td style="text-align: center;"><?php
-                                            if ($row['status'] == 0) { ?>
+                                            if ($row['status'] == 0 || $row['status'] == 5) { ?>
                                                 <span class="label" style="background-color: #E0E0E0; color: black">Unapproved</span>
                                             <?php } elseif ($row['status'] == 1) { ?>
                                                  <span class="label label-success">Approved</span>
@@ -101,6 +105,7 @@
                                                 <span class="label label-danger">Rejected</span>
                                             <?php } ?>
                                       </td>
+                                      <td hidden></td>
                                     </tr>
                                     <?php $no++; } ?>
                                 </tbody>
@@ -115,11 +120,13 @@
                                     <th class="text-center" style="white-space: nowrap">Keputusan Anda</th>
                                     <th class="text-center" style="white-space: nowrap">ID Izin</th>
                                     <th class="text-center" style="white-space: nowrap">Tanggal Pengajuan</th>
+                                    <th class="text-center" style="white-space: nowrap">Akan Keluar</th>
                                     <th class="text-center" style="white-space: nowrap">Nama Pekerja</th>
                                     <th class="text-center" style="white-space: nowrap">Jenis Izin</th>
                                     <th class="text-center" style="white-space: nowrap">Tujuan</th>
                                     <th class="text-center" style="white-space: nowrap">Keterangan</th>
                                     <th class="text-center" style="white-space: nowrap">Status</th>
+                                    <th class="text-center" style="white-space: nowrap" hidden>Order</th>
                                   </tr>
                                 </thead>
                                 <tbody>
@@ -130,18 +137,17 @@
                                       <td style="text-align: center;"><?php echo $no; ?></td>
                                       <td style="text-align: center;"><?php if ($row['status'] == 1) { ?>
                                               <a><span style="color: green" class='fa fa-check fa-2x'></span></a>
-                                       <?php } ?>
-                                            </td>
+                                       <?php } ?></td>
                                       <td style="text-align: center;"><?php echo $row['izin_id'] ?></td>
                                       <td style="white-space: nowrap"><?= date("d - M - Y", strtotime($row['created_date'])); ?></td>
-                                     <td style="white-space: nowrap"><?php $noind = explode(', ', $row['noind']);
-                                     foreach ($noind as $na) {
-                                       foreach ($nama as $lue) {
-                                         if ($na == $lue['noind']) {
-                                           echo $lue['noind'].' - '.$lue['nama'].'<br>';
-                                         }
-                                       }
-                                     }  ?></td>
+                                      <td style="white-space: nowrap; text-align: center;"><?php if ($row['berangkat'] == '' || $row['berangkat'] == null) {
+                                          echo '-';
+                                      }elseif ($row['berangkat'] < '12:00:00') {
+                                          echo date('H:i:s', strtotime($row['berangkat'])).' AM';
+                                      }else {
+                                          echo date('H:i:s', strtotime($row['berangkat'])).' PM';
+                                      } ?></td>
+                                     <td style="white-space: nowrap"><?php echo $row['pekerja'];  ?></td>
                                       <td style="white-space: nowrap; text-align: center;"><?php if ( $row['jenis_izin'] == '1') {
                                                                                       echo "DINAS PUSAT";
                                                                                     }elseif ( $row['jenis_izin'] == '2') {
@@ -156,15 +162,10 @@
                                                                           echo $row['tujuan'];
                                                                         }  ?></td>
                                       <td style="white-space: nowrap"><?php echo $row['keterangan'] ?></td>
-                                      <td style="text-align: center;"><?php
-                                              if ($row['status'] == 0) { ?>
-                                                  <span class="label" style="background-color: #E0E0E0; color: black">Unapproved</span>
-                                              <?php } elseif ($row['status'] == 1) { ?>
-                                                   <span class="label label-success">Approved</span>
-                                              <?php } elseif ($row['status'] == 2) { ?>
-                                                  <span class="label label-danger">Rejected</span>
-                                              <?php } ?>
-                                        </td>
+                                      <td style="text-align: center;"><?php if ($row['status'] == 1) { ?>
+                                           <span class="label label-success">Approved</span>
+                                      <?php } ?></td>
+                                      <td hidden></td>
                                     </tr>
                                     <?php $no++; } ?>
                                 </tbody>
@@ -179,11 +180,13 @@
                                     <th class="text-center" style="white-space: nowrap">Keputusan Anda</th>
                                     <th class="text-center" style="white-space: nowrap">ID Izin</th>
                                     <th class="text-center" style="white-space: nowrap">Tanggal Pengajuan</th>
+                                    <th class="text-center" style="white-space: nowrap">Akan Keluar</th>
                                     <th class="text-center" style="white-space: nowrap">Nama Pekerja</th>
                                     <th class="text-center" style="white-space: nowrap">Jenis Izin</th>
                                     <th class="text-center" style="white-space: nowrap">Tujuan</th>
                                     <th class="text-center" style="white-space: nowrap">Keterangan</th>
                                     <th class="text-center" style="white-space: nowrap">Status</th>
+                                    <th class="text-center" style="white-space: nowrap" hidden>Order</th>
                                   </tr>
                                 </thead>
                                 <tbody>
@@ -192,51 +195,43 @@
                                     ?>
                                     <tr>
                                       <td style="text-align: center;"><?php echo $no; ?></td>
-                                      <td style="text-align: center; "><?php  if ($row['status'] == 0) { ?>
+                                      <td style="text-align: center; "><?php  if ($row['status'] == 0 && date('Y-m-d', strtotime($row['created_date'])) == $today) { ?>
                                         <button class="btn btn-warning" onclick="edit_pkj_dinas(<?php echo $row['izin_id'] ?>)"><span style="color: white" class='fa fa-edit'></button>
                                         <button class="btn btn-success cm_btn_approve" onclick="getApproval('1', <?php echo $row['izin_id'] ?>)" ><span style="color: white" class='fa fa-check'></span></button>
                                         <button class="btn btn-danger cm_btn_reject" onclick="getApproval('2', <?php echo $row['izin_id'] ?>)"><span style="color: white" class='fa fa-close'></span></button>
-                                       <?php }elseif ($row['status'] == 1) { ?>
-                                              <a><span style="color: green" class='fa fa-check fa-2x'></span></a>
-                                       <?php }elseif ($row['status'] == 2) { ?>
-                                              <a><span style="color: red" class='fa fa-close fa-2x'></span></a>
-                                         <?php } ?>
+                                       <?php } ?>
                                             </td>
                                       <td style="text-align: center;"><?php echo $row['izin_id'] ?></td>
                                       <td style="white-space: nowrap"><?= date("d - M - Y", strtotime($row['created_date'])); ?></td>
-                                      <td style="white-space: nowrap"><?php $noind = explode(', ', $row['noind']);
-                                      foreach ($noind as $na) {
-                                        foreach ($nama as $lue) {
-                                          if ($na == $lue['noind']) {
-                                            echo $lue['noind'].' - '.$lue['nama'].'<br>';
-                                          }
-                                        }
-                                      }  ?></td>
-                                     <td style="white-space: nowrap; text-align: center;"><?php if ( $row['jenis_izin'] == '1') {
-                                                                                      echo "DINAS PUSAT";
-                                                                                    }elseif ( $row['jenis_izin'] == '2') {
-                                                                                      echo "DINAS TUKSONO";
-                                                                                    }elseif ( $row['jenis_izin'] == '3') {
-                                                                                      echo "DINAS MLATI";
-                                                                                    } ?>
-                                      </td>
-                                      <td style="white-space: nowrap"><?php if ($row['tujuan'] == null || $row['tujuan'] == '') {
-                                                                          echo " - ";
-                                                                        }else {
-                                                                          echo $row['tujuan'];
-                                                                        }  ?></td>
-                                      <td style="white-space: nowrap"><?php echo $row['keterangan'] ?></td>
-                                      <td style="text-align: center;"><?php
-                                              if ($row['status'] == 0) { ?>
-                                                  <span class="label" style="background-color: #E0E0E0; color: black">Unapproved</span>
-                                              <?php } elseif ($row['status'] == 1) { ?>
-                                                   <span class="label label-success">Approved</span>
-                                              <?php } elseif ($row['status'] == 2) { ?>
-                                                  <span class="label label-danger">Rejected</span>
-                                              <?php } ?>
-                                        </td>
-                                    </tr>
-                                    <?php $no++; } ?>
+                                      <td style="white-space: nowrap; text-align: center;"><?php if ($row['berangkat'] == '' || $row['berangkat'] == null) {
+                                          echo '-';
+                                      }elseif ($row['berangkat'] < '12:00:00') {
+                                          echo date('H:i:s', strtotime($row['berangkat'])).' AM';
+                                      }else {
+                                          echo date('H:i:s', strtotime($row['berangkat'])).' PM';
+                                      } ?></td>
+                                      <td style="white-space: nowrap"><?php echo $row['pekerja'];  ?></td>
+                                      <td style="white-space: nowrap; text-align: center;"><?php if ( $row['jenis_izin'] == '1') {
+                                                                                echo "DINAS PUSAT";
+                                                                                }elseif ( $row['jenis_izin'] == '2') {
+                                                                                    echo "DINAS TUKSONO";
+                                                                                }elseif ( $row['jenis_izin'] == '3') {
+                                                                                    echo "DINAS MLATI";
+                                                                                } ?>
+                                                                            </td>
+                                    <td style="white-space: nowrap"><?php if ($row['tujuan'] == null || $row['tujuan'] == '') {
+                                        echo " - ";
+                                    }else {
+                                        echo $row['tujuan'];
+                                    }  ?></td>
+                                    <td style="white-space: nowrap"><?php echo $row['keterangan'] ?></td>
+                                    <td style="text-align: center;"><?php
+                                    if ($row['status'] == 0 && date('Y-m-d', strtotime($row['created_date'])) == $today) { ?>
+                                        <span class="label" style="background-color: #E0E0E0; color: black">Unapproved</span>
+                                    <?php } ?></td>
+                                    <td hidden></td>
+                                </tr>
+                                <?php $no++; } ?>
                                 </tbody>
                               </table>
                               </div>
@@ -248,11 +243,13 @@
                                     <th class="text-center" style="white-space: nowrap">Keputusan Anda</th>
                                     <th class="text-center" style="white-space: nowrap">ID Izin</th>
                                     <th class="text-center" style="white-space: nowrap">Tanggal Pengajuan</th>
+                                    <th class="text-center" style="white-space: nowrap">Akan Keluar</th>
                                     <th class="text-center" style="white-space: nowrap">Nama Pekerja</th>
                                     <th class="text-center" style="white-space: nowrap">Jenis Izin</th>
                                     <th class="text-center" style="white-space: nowrap">Tujuan</th>
                                     <th class="text-center" style="white-space: nowrap">Keterangan</th>
                                     <th class="text-center" style="white-space: nowrap">Status</th>
+                                    <th class="text-center" style="white-space: nowrap" hidden>Order</th>
                                   </tr>
                                 </thead>
                                 <tbody>
@@ -263,18 +260,20 @@
                                       <td style="text-align: center;"><?php echo $no; ?></td>
                                       <td style="text-align: center;"><?php if ($row['status'] == 2) { ?>
                                               <a><span style="color: red" class='fa fa-close fa-2x'></span></a>
+                                         <?php }elseif (($row['status'] == 0 && date('Y-m-d', strtotime($row['created_date'])) < $today) || $row['status'] == 5) {  ?>
+                                             <span class="fa fa-2x fa-exclamation-circle" style="color: grey"></span>
                                          <?php } ?>
                                             </td>
                                       <td style="text-align: center;"><?php echo $row['izin_id'] ?></td>
                                       <td style="white-space: nowrap"><?= date("d - M - Y", strtotime($row['created_date'])); ?></td>
-                                      <td style="white-space: nowrap"><?php $noind = explode(', ', $row['noind']);
-                                          foreach ($noind as $na) {
-                                            foreach ($nama as $lue) {
-                                              if ($na == $lue['noind']) {
-                                                echo $lue['noind'].' - '.$lue['nama'].'<br>';
-                                              }
-                                            }
-                                          }  ?></td>
+                                      <td style="white-space: nowrap; text-align: center;"><?php if ($row['berangkat'] == '' || $row['berangkat'] == null) {
+                                          echo '-';
+                                      }elseif ($row['berangkat'] < '12:00:00') {
+                                          echo date('H:i:s', strtotime($row['berangkat'])).' AM';
+                                      }else {
+                                          echo date('H:i:s', strtotime($row['berangkat'])).' PM';
+                                      } ?></td>
+                                      <td style="white-space: nowrap"><?php echo $row['pekerja'];  ?></td>
                                       <td style="white-space: nowrap; text-align: center;"><?php if ( $row['jenis_izin'] == '1') {
                                                                                       echo "DINAS PUSAT";
                                                                                     }elseif ( $row['jenis_izin'] == '2') {
@@ -291,14 +290,13 @@
                                       <td style="white-space: nowrap"><?php echo $row['keterangan'] ?></td>
                                       <td style="text-align: center;">
                                           <?php
-                                            if ($row['status'] == 0) { ?>
+                                            if (($row['status'] == 0 && date('Y-m-d', strtotime($row['created_date'])) < $today) || $row['status'] == 5) { ?>
                                               <span class="label" style="background-color: #E0E0E0; color: black">Unapproved</span>
-                                          <?php } elseif ($row['status'] == 1) { ?>
-                                               <span class="label label-success">Approved</span>
                                           <?php } elseif ($row['status'] == 2) { ?>
                                               <span class="label label-danger">Rejected</span>
                                           <?php } ?>
                                       </td>
+                                      <td hidden></td>
                                     </tr>
                                     <?php $no++; } ?>
                                 </tbody>
@@ -335,6 +333,13 @@
           <div class="col-lg-12">
             <label class="col-lg-3 text-right">Tanggal</label><label class="col-lg-1">:</label>
             <input  class="form-control col-lg-8" name="tgl_dinas" id="modal-tgl_dinas" readonly  style="width: 55%">
+          </div>
+        </div>
+        <br>
+        <div class="row">
+          <div class="col-lg-12">
+            <label class="col-lg-3 text-right">Akan Keluar</label><label class="col-lg-1">:</label>
+            <input  class="form-control col-lg-8" name="keluar_dinas" id="modal-keluar_dinas" readonly  style="width: 55%">
           </div>
         </div>
         <br>
@@ -378,7 +383,7 @@
         $.fn.dataTable.tables( { api: true} ).columns.adjust();
         setTimeout(
           function () {
-            $('th:contains(No)').click()
+            $('th:contains(Order)').click()
           }, 200
         )
     } );
