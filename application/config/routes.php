@@ -3401,6 +3401,8 @@ $route['TrackingPengirimanBarang/OnProcess/(:any)'] = 'TrackingPengirimanBarang/
 $route['TrackingPengirimanBarang/OnProcess/(:any)/(:any)'] = 'TrackingPengirimanBarang/C_TrackingPengirimanBarang/$1/$2';
 $route['TrackingPengirimanBarang/Delivered'] = 'TrackingPengirimanBarang/C_TrackingPengirimanBarang/delivered';
 $route['TrackingPengirimanBarang/Delivered/(:any)'] = 'TrackingPengirimanBarang/C_TrackingPengirimanBarang/$1';
+$route['TrackingPengirimanBarang/Setting/KepalaCabang'] = 'TrackingPengirimanBarang/C_TrackingPengirimanBarang/settingKacab';
+$route['TrackingPengirimanBarang/Setting/KepalaCabang/(:any)'] = 'TrackingPengirimanBarang/C_TrackingPengirimanBarang/$1';
 $route['TrackingPengirimanBarang/Setting/KurirKendaraan'] = 'TrackingPengirimanBarang/C_TrackingPengirimanBarang/setting';
 $route['TrackingPengirimanBarang/Setting/KurirKendaraan/(:any)'] = 'TrackingPengirimanBarang/C_TrackingPengirimanBarang/$1';
 

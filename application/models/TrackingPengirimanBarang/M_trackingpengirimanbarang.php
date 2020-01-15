@@ -16,6 +16,82 @@ class M_trackingpengirimanbarang extends CI_Model {
         return $runQuery->result_array();
     }
 
+
+    public function cekSource($nomor_ind)
+    {
+        $db = $this->load->database();
+        $sql = "select 
+                eea.employee_code, 
+                eea.employee_name, 
+                es.section_name
+                    from er.er_employee_all eea, er.er_section es
+                    where eea.section_code = es.section_code
+                    and eea.employee_code = '$nomor_ind'";
+        $runQuery = $this->db->query($sql);
+        return $runQuery->result_array();
+    }
+
+    public function filterUser($id_login)
+    {
+        $db = $this->load->database('tpb_sql', true);
+        $sql = "select username from tp_login where username = '$id_login'";
+        $runQuery = $db->query($sql);
+        return $runQuery->num_rows();
+        // return $runQuery->result_array();
+    }
+    public function addKacab($nomor_induk,$nama_kacab,$section_name,$status,$alamat_cabang,$password)
+    {
+        $db = $this->load->database('tpb_sql', true);
+        $sql = "insert into tp_login 
+                    (nik, 
+                    nama_pekerja, 
+                    username, 
+                    password, 
+                    last_update_date, 
+                    kacab, 
+                    alamat_cabang,
+                    section_name)
+                values 
+                    ('$nomor_induk',
+                    '$nama_kacab',
+                    '$nomor_induk',
+                    '$password', 
+                    now(), 
+                    '$status', 
+                    '$alamat_cabang',
+                    '$section_name')";
+        $runQuery = $db->query($sql);
+    }
+
+    public function getKacabData()
+    {
+        $db = $this->load->database('tpb_sql', true);
+        $sql = "select id_login, nik, username, nama_pekerja, last_update_date, kacab, alamat_cabang, section_name from tp_login";
+        $runQuery = $db->query($sql);
+        return $runQuery->result_array();
+    }
+
+    public function deleteKacab($id_login)
+    {
+        $db = $this->load->database('tpb_sql', true);
+        $sql = "delete from tp_login where id_login = '$id_login'";
+        $runQuery = $db->query($sql);
+    }
+
+    public function DiactivatedUser($id_login)
+    {
+        $db = $this->load->database('tpb_sql', true);
+        $sql = "update tp_login set kacab = 'N' where id_login = '$id_login'";
+        $runQuery = $db->query($sql);
+    }
+
+    public function activatedUser($id_login)
+    {
+        $db = $this->load->database('tpb_sql', true);
+        $sql = "update tp_login set kacab = 'Y' where id_login = '$id_login'";
+        $runQuery = $db->query($sql);
+    }
+
     public function getSPBDetail($id)
     {
         $oracle = $this->load->database('oracle',true);
@@ -322,9 +398,24 @@ class M_trackingpengirimanbarang extends CI_Model {
     public function getData($id_login)
     {
         $db = $this->load->database('tpb_sql', true);
-        $sql = " select id_login, nik, username, nama_pekerja, kendaraan, nomor_kendaraan from tp_login where id_login = '$id_login'";
+        $sql = " select id_login, section_name, kacab, nik, username, nama_pekerja, kendaraan, nomor_kendaraan, alamat_cabang from tp_login where id_login = '$id_login'";
         $runQuery = $db->query($sql);
         return $runQuery->result_array();
+    }
+
+    public function updateDataKacab($id_login,$nama_kacab,$alamat_cabang,$status,$section_name,$nomor_induk)
+    {
+        $db = $this->load->database('tpb_sql', true);
+        $sql = "update tp_login
+                set username = '$nomor_induk',
+                    nama_pekerja='$nama_kacab',
+                    nik ='$nomor_induk',
+                    kacab ='$status',
+                    last_update_date = now(),
+                    section_name='$section_name',
+                    alamat_cabang = '$alamat_cabang'
+                where id_login = $id_login";
+        $runQuery = $db->query($sql);
     }
 
     public function updateData($id_login,$nama_pekerja,$kendaraan,$no_kendaraan,$username)
