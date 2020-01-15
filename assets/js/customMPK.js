@@ -130,7 +130,6 @@ $(document).ready(function() {
         let tanggal = $('#periodeRekap').val()
         let jenis = $("input:radio[class=RD_radioDinas]:checked").val()
         var loading = baseurl + 'assets/img/gif/loadingquick.gif';
-        console.log(jenis);
 
         if (jenis == '' || jenis == null) {
             swal.fire({
@@ -320,7 +319,7 @@ function getApprovalIKP(a, b) {
 
 function edit_pkj_ikp(id) {
     let table = $('.eachPekerjaEditIKP')
-    console.log(id);
+
     $.ajax({
         type: 'post',
         data: {
@@ -332,7 +331,6 @@ function edit_pkj_ikp(id) {
         },
         dataType: 'json',
         success: function (data) {
-            console.log(data);
             $('#modal-approve-ikp').modal('show')
             $('#modal-id_ikp').val(data[0]['id'])
             $('#modal-tgl_ikp').val(data[0]['created_date'])
@@ -450,7 +448,6 @@ $('#RPP_Cari').on('click', function () {
     let tanggal = $('#periodeRekap').val()
     let jenis = $("input:radio[class=RPP_radioIKP]:checked").val()
     var loading = baseurl + 'assets/img/gif/loadingquick.gif';
-    console.log(jenis);
 
     if (jenis == '' || jenis == null) {
         swal.fire({
@@ -2259,7 +2256,6 @@ $('#monthpickerq').on('change', function(){
             success: function(result)
             {
               $('.btn_save_info').prop("disabled", false);
-              console.log(result);
               var result = JSON.parse(result);
               $('#MPK_txtaIsi').redactor('set', result['isi_txt_memo_cutoff']);
               $('#surat-loading').attr('hidden', true);
@@ -2305,7 +2301,6 @@ function nextInfo() {
     success: function (data) {
       $('#surat-loading').attr('hidden', true);
       $('#groupAtasanInfo').html(data);
-      console.log(data);
       $(document).ready(function () {
         $('.classkuhehe').select2({
           allowClear: true,
@@ -2541,7 +2536,7 @@ function getApproval(a, b) {
 
 function edit_pkj_dinas(id) {
     let table = $('.eachPekerjaEdit')
-    console.log(id);
+
     $.ajax({
         type: 'post',
         data: {
@@ -2553,10 +2548,18 @@ function edit_pkj_dinas(id) {
         },
         dataType: 'json',
         success: function (data) {
-            console.log(data);
             $('#modal-approve-dinas').modal('show')
             $('#modal-id_dinas').val(data[0]['izin_id'])
             $('#modal-tgl_dinas').val(data[0]['created_date'])
+            $('#modal-keluar_dinas').val(function () {
+                if (data[0]['berangkat'] == null) {
+                    return '-'
+                }else if (data[0]['berangkat'] < '12:00:00') {
+                    return data[0]['berangkat']+' AM'
+                }else {
+                    return data[0]['berangkat']+' PM'
+                }
+            })
             $('#modal-kep_dinas').val(data[0]['keterangan'])
 
             let row
