@@ -51,7 +51,7 @@ class M_list extends CI_Model
     }
 
     public function listPekerja($id,$keyword){
-        $sql = "select * from hrd_khs.tpribadi where nama like '%$keyword%' or upper(nama) like '%$keyword%' or noind like '%$keyword%' order by noind asc";
+        $sql = "select * from hrd_khs.tpribadi where keluar=false and (nama like '%$keyword%' or upper(nama) like '%$keyword%' or noind like '%$keyword%') order by noind asc";
 
         $query = $this->personalia->query($sql);
         return $query->result_array();
