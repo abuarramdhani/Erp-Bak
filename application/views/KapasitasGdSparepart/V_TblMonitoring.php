@@ -51,7 +51,6 @@
         <div class="col-md-12">
             <label class="text-right">Pelayanan</label>
         </div>
-        <div class="col-md-12">
         <div class="col-md-4">
             Terselesaikan : <?= $val['jml_pelayanan'] ?> lembar
         </div>
@@ -60,7 +59,6 @@
         </div>
         <div class="col-md-4">
             <button type="button" class="btn btn-xs btn-info" onclick="addRinPelayanan2(this, <?= $num?>)">Rincian</button>
-        </div>
         </div>
         <div class="col-md-12">
             <div id="RinPelayanan1<?= $num?>" style="display:none">
@@ -140,7 +138,6 @@
         <div class="col-md-12">
             <label class="text-right">Pengeluaran</label>
         </div>
-        <div class="col-md-12">
         <div class="col-md-4">
             Terselesaikan : <?= $val['jml_pengeluaran'] ?> lembar
         </div>
@@ -149,7 +146,6 @@
         </div>
         <div class="col-md-4">
             <button type="button" class="btn btn-xs btn-info" onclick="addRinPengeluaran2(this, <?= $num?>)">Rincian</button></td>
-        </div>
         </div>
         <div class="col-md-12">
             <div id="RinPengeluaran1<?= $num?>" style="display:none">
@@ -232,7 +228,6 @@
         <div class="col-md-12">
             <label class="text-right">Packing</label>
         </div>
-        <div class="col-md-12">
         <div class="col-md-4">
             Terselesaikan : <?= $val['jml_packing'] ?> lembar
         </div>
@@ -241,7 +236,6 @@
         </div>
         <div class="col-md-4">
             <button type="button" class="btn btn-xs btn-info" onclick="addRinPacking2(this, <?= $num?>)">Rincian</button></td>
-        </div>
         </div>
         <div class="col-md-12">
             <div id="RinPacking1<?= $num?>" style="display:none">
@@ -320,6 +314,9 @@
             </div>
         </div>
 
+        <div class="col-md-12">
+            <label class="text-right">Jumlah DOSP/SPB selesai : <?= $val['jml_selesai'] ?> pcs</label>
+        </div>
         <div class="col-md-12">
             <label class="text-right">DOSP / SPB cancel : <?= $val['cancel'] ?> lembar</label>
         </div>
