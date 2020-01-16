@@ -36,7 +36,7 @@ class C_InputData extends CI_Controller
         $data = $this->ajaxShowInput('array');
         $kodesie = substr($this->session->kodesie,0,7);
         $this->data['seksi'] = ucwords(strtolower($this->M_inputdata->getNameSeksi($kodesie)));
-// echo "<pre>";print_r($data);die;
+
         $table = '';
         $i = 0;
         foreach($data as $res){
@@ -85,6 +85,11 @@ class C_InputData extends CI_Controller
                 $alasan =  substr($alasan,0,20).'...';
             }
 
+            $editButton = '';
+            if($status == 0){
+                $editButton = "<button class='btn btn-sm btn-success changeDocument' data-toggle='modal' data-target='#modalEdit' type='button'><i class='fa fa-edit'></i> ubah</button>";
+            }
+
             $table .=   "<tr>
                             <td>$i</td>
                             <td>$noind</td>
@@ -94,6 +99,9 @@ class C_InputData extends CI_Controller
                             <td>$tanggal</td>
                             $status
                             <td>$alasan</td>
+                            <td>
+                                $editButton
+                            </td>
                         </tr>";
         }
 
@@ -134,14 +142,14 @@ class C_InputData extends CI_Controller
         $noind      = $_POST['noind'];
         $date       = $_POST['date'];
 
-        $dt = explode(' - ', $date);
-
+        $dt = str_replace('/', '-', $date);
+        $dt = explode(' - ', $dt);
         if(count($dt) > 1){
-            $tgl1 = $dt['0'];
-            $tgl2 = $dt['1'];
+            $tgl1 = date('Y-m-d', strtotime($dt['0']));
+            $tgl2 = date('Y-m-d', strtotime($dt['1']));
         }else{
-            $tgl1 = $date;
-            $tgl2 = $date;
+            $tgl1 = date('Y-m-d', strtotime($dt['0']));
+            $tgl2 = date('Y-m-d', strtotime($dt['0']));
         }
 
         $allNoind   = explode(',', $noind);
@@ -153,6 +161,31 @@ class C_InputData extends CI_Controller
             $this->M_inputdata->ajaxInputData($noind,$id_master,$date);
         }
 
+    }
+
+    function ajaxUpdateData(){
+        $id         = $_POST['id'];
+        $noind      = $_POST['noind'];
+        $date       = $_POST['date'];
+
+        $dt = str_replace('/', '-', $date);
+        $dt = explode(' - ', $dt);
+        if(count($dt) > 1){
+            $tgl1 = date('Y-m-d', strtotime($dt['0']));
+            $tgl2 = date('Y-m-d', strtotime($dt['1']));
+        }else{
+            $tgl1 = date('Y-m-d', strtotime($dt['0']));
+            $tgl2 = date('Y-m-d', strtotime($dt['0']));
+        }
+
+        $allNoind   = explode(',', $noind);
+        
+        foreach($allNoind as $noind){
+            $id_master  = $_POST['inform'];
+            $date       = [$tgl1, $tgl2];
+    
+            $this->M_inputdata->ajaxUpdateData($id, $noind,$id_master,$date);
+        }
     }
 
     function ajaxShowDetail(){
@@ -195,5 +228,15 @@ class C_InputData extends CI_Controller
             $htmlHistory .= "<p $font>($time) -> $ket $user - $name $action</p>";
         }
         echo $htmlHistory;
+    }
+
+    function ajaxShowData(){
+        $id = $this->input->post('id');
+        $res = $this->M_inputdata->ajaxShowData($id);
+        echo json_encode($res);
+    }
+
+    function ajaxDeleteData(){
+
     }
 }

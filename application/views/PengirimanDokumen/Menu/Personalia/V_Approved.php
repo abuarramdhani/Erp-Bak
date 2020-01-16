@@ -30,6 +30,7 @@
                                     <td>Nomor Induk</td>
                                     <td>Nama</td>
                                     <td>Keterangan</td>
+                                    <td>Seksi</td>
                                     <td>Tanggal</td>
                                     <td>Tanggal Approve</td>
                                     <td>Edit</td>
@@ -42,6 +43,7 @@
                                         <td class="personal" data-seksi="<?= $row['seksi_name'] ?>"><?= $row['noind'] ?></td>
                                         <td class="name"><?= $row['nama'] ?></td>
                                         <td class="ket"><?= $row['keterangan'] ?></td>
+                                        <td><?= $row['seksi_name'] ?></td>
                                         <td>
                                         <?php echo 
                                             ($row['tanggal_start'] == $row['tanggal_end'])? 

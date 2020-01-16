@@ -38,9 +38,9 @@ class M_inputdata extends CI_Model
             $approver1= $this->getNameSeksi($approval['0']);
             $result[$i]['approver1'] = $approver1;
             $result[$i]['app_time']  = date('d/m/Y H:i:s', strtotime($res['app_time']));
-            $result[$i]['tgl_input'] = date('Y/m/d H:i:s', strtotime($res['tgl_input']));
-            $result[$i]['tanggal_start'] = date('Y/m/d', strtotime($res['tanggal_start']));
-            $result[$i]['tanggal_end']   = date('Y/m/d', strtotime($res['tanggal_end']));
+            $result[$i]['tgl_input'] = date('d/m/Y H:i:s', strtotime($res['tgl_input']));
+            $result[$i]['tanggal_start'] = date('d/m/Y', strtotime($res['tanggal_start']));
+            $result[$i]['tanggal_end']   = date('d/m/Y', strtotime($res['tanggal_end']));
 
             if($approval['1'] !== 'kosong'){
                 $approver2= $this->getNameSeksi($approval['1']);
@@ -95,6 +95,19 @@ class M_inputdata extends CI_Model
         $this->db->insert('ps.triwayat', $inputriwayat);
     }
 
+    function ajaxUpdateData($id, $noind,$id_master,$date){
+        $updateData = array(
+            'noind'         => $noind,
+            'id_master'     => $id_master,
+            'tanggal_start' => $date['0'],
+            'tanggal_end'   => $date['1']
+        );
+
+        $this->db->set($updateData);
+        $this->db->where('id_data', $id);
+        $this->db->update('ps.tdata');
+    }
+
     function getNameSeksi($kodesie){
         $sql = "SELECT distinct seksi FROM hrd_khs.tseksi where substr(kodesie,0,8) = '$kodesie'";
         return $this->personalia->query($sql)->row()->seksi;
@@ -125,5 +138,18 @@ class M_inputdata extends CI_Model
     function countApproval($id){
         $sql ="SELECT kodesie from ps.tappr where id='$id' and kodesie <> 'kosong'";
         return $this->db->query($sql)->num_rows();
+    }
+
+    function ajaxShowData($id){
+        $sql = "SELECT td.id_data, td.noind, (select trim(employee_name) from er.er_employee_all where employee_code = td.noind) as name, td.id_master, td.tanggal_start, td.tanggal_end
+                FROM ps.tdata td
+                WHERE id_data = '$id'";
+        $data = $this->db->query($sql)->result_array();
+
+        $data[0]['seksi'] = $this->getNameSeksiByNoind($data['0']['noind']);
+        $data[0]['tanggal_start'] = date('Y/m/d', strtotime($data[0]['tanggal_start']));
+        $data[0]['tanggal_end'] = date('Y/m/d', strtotime($data[0]['tanggal_end']));
+
+        return $data;
     }
 }

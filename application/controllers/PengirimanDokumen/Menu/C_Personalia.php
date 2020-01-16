@@ -16,6 +16,7 @@ class C_Personalia extends CI_Controller
 
         $user_id = $this->session->userid;
         $this->load->model('PengirimanDokumen/M_inputdata');
+        $this->personalia = $this->load->database('personalia', true);
 
         $this->data['SubMenuOne'] = '';
         $this->data['UserMenu'] = $this->M_user->getUserMenu($user_id,$this->session->responsibility_id);
@@ -43,13 +44,27 @@ class C_Personalia extends CI_Controller
                 $where = "ap.kodesie='$kodesie' and ap.tingkat='$level' and tr.status='$stat' and td.status='$stat'";
             }
 
-            $selecta = "SELECT td.id_data, td.noind, emp.employee_name nama, tm.keterangan, td.tanggal_start::date, td.tanggal_end::date,tr.status, max(tr.tgl_update)::date tgl_update, ap.kodesie, td.alasan
-                        FROM ps.tdata td inner join ps.tappr ap on td.id_master = ap.id 
-                                    inner join ps.tmaster tm on tm.id = td.id_master
-                                    inner join ps.triwayat tr on tr.id_data = td.id_data
-                                    inner join er.er_employee_all emp on emp.employee_code = td.noind 
+            $selecta = "SELECT td.id_data, 
+                                td.noind, 
+                                emp.employee_name nama, 
+                                tm.keterangan, 
+                                td.tanggal_start::date, 
+                                td.tanggal_end::date,tr.status, 
+                                max(tr.tgl_update)::date tgl_update, 
+                                ap.kodesie, 
+                                td.alasan,
+                                ( select distinct coalesce(nullif(section_name, '-'), nullif(unit_name, '-'), nullif(field_name, '-'), nullif(department_name, '-')) 
+                                  from er.er_section
+                                  where substring(section_code,0,8) = tr.seksi
+                                ) 
+                                seksi_name
+                        FROM ps.tdata td 
+                                inner join ps.tappr ap on td.id_master = ap.id 
+                                inner join ps.tmaster tm on tm.id = td.id_master
+                                inner join ps.triwayat tr on tr.id_data = td.id_data
+                                inner join er.er_employee_all emp on emp.employee_code = td.noind 
                         WHERE $where
-                        GROUP BY td.id_data,td.noind, emp.employee_name, tm.keterangan, td.tanggal_start, td.tanggal_end, tr.status, ap.kodesie, td.alasan
+                        GROUP BY td.id_data,td.noind, emp.employee_name, tm.keterangan, td.tanggal_start, td.tanggal_end, tr.status, ap.kodesie, td.alasan, seksi_name
             ;";
         }else{
             if ($status == 'approved') {
@@ -66,16 +81,39 @@ class C_Personalia extends CI_Controller
                 }
             }
 
-            $selecta = "SELECT td.id_data, td.noind, emp.employee_name nama, tm.keterangan, td.tanggal_start::date, td.tanggal_end::date, tr.status, max(tr.tgl_update)::date tgl_update, tr.seksi,td.alasan
+            $selecta = "SELECT td.id_data,
+                                td.noind, 
+                                emp.employee_name nama, 
+                                tm.keterangan, 
+                                td.tanggal_start::date, 
+                                td.tanggal_end::date, 
+                                tr.status,
+                                max(tr.tgl_update)::date tgl_update, 
+                                tr.seksi,
+                                td.alasan,
+                                ( select distinct coalesce(nullif(section_name, '-'), nullif(unit_name, '-'), nullif(field_name, '-'), nullif(department_name, '-')) 
+                                  from er.er_section
+                                  where substring(section_code,0,8) = tr.seksi 
+                                ) 
+                                seksi_name
                         FROM ps.tdata td
-                        inner join ps.tmaster tm on tm.id = td.id_master 
-                        inner join ps.triwayat tr on tr.id_data = td.id_data 
-                        inner join er.er_employee_all emp on emp.employee_code = td.noind 
+                            inner join ps.tmaster tm on tm.id = td.id_master 
+                            inner join ps.triwayat tr on tr.id_data = td.id_data 
+                            inner join er.er_employee_all emp on emp.employee_code = td.noind 
                         WHERE tr.seksi='$kodesie' and tr.status = '$stat' and tr.level='$level' 
-                        GROUP BY td.id_data,td.noind, emp.employee_name, tm.keterangan, td.tanggal_start, td.tanggal_end, tr.status, tr.seksi, td.alasan ;
+                        GROUP BY td.id_data,td.noind, emp.employee_name, tm.keterangan, td.tanggal_start, td.tanggal_end, tr.status, tr.seksi, td.alasan, seksi_name ;
                         ";
         }
+        
         return $this->db->query($selecta);
+    }
+
+    function getNameSeksiByNoind($noind){
+        $sql = "SELECT kodesie FROM hrd_khs.tpribadi WHERE noind ='$noind' and keluar='0'";
+        $kodesie = substr($this->personalia->query($sql)->row()->kodesie, 0, 7);
+
+        $sql = "SELECT distinct seksi FROM hrd_khs.tseksi where substr(kodesie,0,8) = '$kodesie'";
+        return $this->personalia->query($sql)->row()->seksi;
     }
 
     function PersonaliaOne(){
