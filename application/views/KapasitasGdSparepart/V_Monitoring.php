@@ -55,12 +55,12 @@
                                 <div class="panel-body">
                                     <div class="col-md-3">
                                         <label class="text-right">Tanggal Awal</label>
-                                        <input id="tglAwal" name="tglAwal" class="form-control pull-right datepicktgl" placeholder="yyyy-mm-dd" >
+                                        <input id="tglAwal" name="tglAwal" class="form-control pull-right datepicktgl" placeholder="yyyy-mm-dd" autocomplete="off">
                                     </div>
                                     <div class="col-md-3">
                                         <label class="text-right">Tanggal Akhir</label>
                                         <div class="input-group">
-                                        <input id="tglAkhir" name="tglAkhir" class="form-control pull-right datepicktgl" placeholder="yyyy-mm-dd" >
+                                        <input id="tglAkhir" name="tglAkhir" class="form-control pull-right datepicktgl" placeholder="yyyy-mm-dd" autocomplete="off">
                                         <span class="input-group-btn">
                                             <button type="button" onclick="schMonitoringSPB(this)" class="btn btn-flat" style="background:inherit; text-align:left;padding:0px;padding-left:10px;"><i class="fa fa-2x fa-arrow-circle-right" ></i></button>    
                                         </span>
@@ -357,6 +357,9 @@
                                             </div>
                                         </div>
 
+                                        <div class="col-md-12">
+                                            <label class="text-right">Jumlah DOSP/SPB selesai : <?= $jml_selesai ?> pcs</label>
+                                        </div>
                                         <div class="col-md-12">
                                             <label class="text-right">DOSP / SPB cancel hari ini : <?= $cancel ?> lembar</label>
                                         </div>
