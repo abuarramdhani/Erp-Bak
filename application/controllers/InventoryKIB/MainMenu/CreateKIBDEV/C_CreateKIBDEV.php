@@ -289,11 +289,16 @@ class C_CreateKIBDEV extends CI_Controller
 		endif;
 
 		$data['dataKIB'] = $dataKIBKelompok;
-		echo "<pre>";
-		print_r($data);
-		exit();
+		// echo "<pre>";
+		// print_r($data);
+		// exit();
 		$filename			= 'KIB_'.time().'.pdf';
 		$html = $this->load->view('InventoryKIB/MainMenu/CreateKIB/V_Pdf3',$data,true);
+
+		foreach ($dataKIBKelompok as $key => $value) {
+			$dataKIB = $this->M_createkib->updateFlagPrint3($value['NOMORSET']);
+			// print_r($value['NOMORSET']);
+		}
 		// echo "$html";
 		// exit();
 		$pdf->WriteHTML($html,0);

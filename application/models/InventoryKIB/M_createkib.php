@@ -800,6 +800,13 @@ class M_createkib extends CI_Model
 		$query = $oracle->query($sql);
 	}
 
+	function updateFlagPrint3($nomorset){
+		// print_r($nomorset);
+		$oracle = $this->load->database('oracle',TRUE);
+		$sql = "UPDATE KHS_KIB_KANBAN SET PRINT_FLAG = 'Y' WHERE KIBCODE = '$nomorset' ";
+		$query = $oracle->query($sql);
+	}
+
 
 }
 
