@@ -3394,6 +3394,8 @@ $route['RekapLppbView/RekapTahunan/(:any)/(:any)'] 	= 'RekapLppb/RekapLppbView/C
 //-------------------------------------------------TrackingPengirimanBarang---------------------------------------------------------------//
 $route['TrackingPengirimanBarang'] = 'TrackingPengirimanBarang/C_TrackingPengirimanBarang/sortingcenter';
 $route['TrackingPengirimanBarang/(:any)'] = 'TrackingPengirimanBarang/C_TrackingPengirimanBarang/$1';
+$route['TrackingPengirimanBarang/api'] = 'TrackingPengirimanBarang/C_Api';
+$route['TrackingPengirimanBarang/api/(:any)'] = 'TrackingPengirimanBarang/C_Api/$1';
 $route['TrackingPengirimanBarang/SortingCenter'] = 'TrackingPengirimanBarang/C_TrackingPengirimanBarang/sortingcenter';
 $route['TrackingPengirimanBarang/SortingCenter/(:any)'] = 'TrackingPengirimanBarang/C_TrackingPengirimanBarang/$1';
 $route['TrackingPengirimanBarang/OnProcess'] = 'TrackingPengirimanBarang/C_TrackingPengirimanBarang/onprocess';
