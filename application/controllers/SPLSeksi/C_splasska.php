@@ -410,7 +410,7 @@ class C_splasska extends CI_Controller {
 		// print_r($cek_tspl);exit();
 		if(floatval($cek_tspl->jml_lembur) > 0){
 			if ($cek_tspl->kode == '004') {
-				$wkt_pkj = $this->M_splasska->get_wkt_pkj($cek_tspl->noind,$cek_stpl->$tanggal);
+				$wkt_pkj = $this->M_splasska->get_wkt_pkj($cek_tspl->noind,$cek_tspl->tanggal);
 				$jml_lembur = floatval($cek_tspl->jml_lembur) - $wkt_pkj;
 			}else{
 				$jml_lembur = floatval($cek_tspl->jml_lembur);
@@ -715,7 +715,7 @@ class C_splasska extends CI_Controller {
 				// print_r($cek_tspl);exit();
 				if(floatval($cek_tspl->jml_lembur) > 0){
 					if ($cek_tspl->kode == '004') {
-						$wkt_pkj = $this->M_splasska->get_wkt_pkj($cek_tspl->noind,$cek_stpl->$tanggal);
+						$wkt_pkj = $this->M_splasska->get_wkt_pkj($cek_tspl->noind,$cek_tspl->tanggal);
 						$jml_lembur = floatval($cek_tspl->jml_lembur) - $wkt_pkj;
 					}else{
 						$jml_lembur = floatval($cek_tspl->jml_lembur);
