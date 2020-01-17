@@ -638,8 +638,8 @@ class C_splseksi extends CI_Controller {
 			"Pekerjaan" => $pekerjaan,
 			"Status" => "01",
 			"User_" => $user_id,
-			"target" => $target." ".$target_satuan,
-			"realisasi" => $realisasi." ".$realisasi_satuan,
+			"target" => $target,
+			"realisasi" => $realisasi,
 			"alasan_lembur" => $alasan);
 		$to_spl = $this->M_splseksi->update_spl($data_spl, $spl_id);
 
@@ -661,8 +661,8 @@ class C_splseksi extends CI_Controller {
 			"User_" => $user_id,
 			"Revisi" => "0",
 			"Keterangan" => "(Ubah)",
-			"target" => $target." ".$target_satuan,
-			"realisasi" => $realisasi." ".$realisasi_satuan,
+			"target" => $target,
+			"realisasi" => $realisasi,
 			"alasan_lembur" => $alasan);
 		$to_splr = $this->M_splseksi->save_splr($data_splr);
 

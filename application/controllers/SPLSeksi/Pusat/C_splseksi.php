@@ -881,7 +881,7 @@ class C_splseksi extends CI_Controller {
 								$aktual_akhir = $selesai_ist;
 							}else{
 								$error = "1";
-								$errortext = "Jam Akhir Lembur Tidak Sesuai Jam Istirahat Shift Pekerja ($mulai_ist - $selesai_ist)";
+								$errortext = "Jam Akhir Lembur Tidak Sesuai Jam Istirahat Shift Pekerja, SHIFT {$datapres['kd_shift']} (".date('H:i:s', strtotime($mulai_ist))." - ".date('H:i:s', strtotime($selesai_ist)).")";
 							}
 						}elseif($awal_lembur < $mulai_ist){
 							$aktual_awal = $mulai_ist;
@@ -891,11 +891,11 @@ class C_splseksi extends CI_Controller {
 								$aktual_akhir = $selesai_ist;
 							}else{
 								$error = "1";
-								$errortext = "Jam Akhir Lembur Tidak Sesuai Jam Istirahat Shift Pekerja ($mulai_ist - $selesai_ist)";
+								$errortext = "Jam Akhir Lembur Tidak Sesuai Jam Istirahat Shift Pekerja, SHIFT {$datapres['kd_shift']} (".date('H:i:s', strtotime($mulai_ist))." - ".date('H:i:s', strtotime($selesai_ist)).")";
 							}
 						}else{
 							$error = "1";
-							$errortext = "Jam Awal Lembur Tidak Sesuai Jam Istirahat Shift Pekerja ($mulai_ist - $selesai_ist)";
+							$errortext = "Jam Awal Lembur Tidak Sesuai Jam Istirahat Shift Pekerja, SHIFT {$datapres['kd_shift']} (".date('H:i:s', strtotime($mulai_ist))." - ".date('H:i:s', strtotime($selesai_ist)).")";
 						}
 					}elseif ($lembur == '002') { // lembur pulang
 						if ($keluar_shift <= $awal_lembur) {
@@ -904,7 +904,7 @@ class C_splseksi extends CI_Controller {
 								$aktual_akhir = $akhir_lembur;
 							}else{
 								$error = "1";
-								$errortext = "Jam Akhir Lembur Tidak Sesuai Jam Pulang Shift Pekerja ($keluar_shift)";
+								$errortext = "Jam Akhir Lembur Tidak Sesuai Jam Pulang Shift Pekerja, SHIFT {$datapres['kd_shift']} (".date('H:i:s', strtotime($keluar_shift)).")";
 							}
 							//echo $errortext;
 						}elseif($awal_lembur <= $keluar_shift){
@@ -913,11 +913,11 @@ class C_splseksi extends CI_Controller {
 								$aktual_akhir = $akhir_lembur;
 							}else{
 								$error = "1";
-								$errortext = "Jam Akhir Lembur Tidak Sesuai Jam Pulang Shift Pekerja ($keluar_shift)";
+								$errortext = "Jam Akhir Lembur Tidak Sesuai Jam Pulang Shift Pekerja, SHIFT {$datapres['kd_shift']} (".date('H:i:s', strtotime($keluar_shift)).")";
 							}
 						}else{
 							$error = "1";
-							$errortext = "Jam Awal Lembur Tidak Sesuai Jam Pulang Shift Pekerja ($keluar_shift)";
+							$errortext = "Jam Awal Lembur Tidak Sesuai Jam Pulang Shift Pekerja, SHIFT {$datapres['kd_shift']} (".date('H:i:s', strtotime($keluar_shift)).")";
 						}
 					}elseif ($lembur == '003') { //lembur datang
 						if ($awal_lembur <= $masuk_shift) {
@@ -928,11 +928,11 @@ class C_splseksi extends CI_Controller {
 								$aktual_akhir = $masuk_shift;
 							}else{
 								$error = "1";
-								$errortext = "Jam Akhir Lembur Tidak Sesuai Jam Masuk Shift Pekerja ($masuk_shift)";
+								$errortext = "Jam Akhir Lembur Tidak Sesuai Jam Masuk Shift Pekerja, SHIFT {$datapres['kd_shift']} (".date('H:i:s', strtotime($masuk_shift)).")";
 							}
 						}else{
 							$error = "1";
-							$errortext = "Jam Awal Lembur Tidak Sesuai Jam Masuk Shift Pekerja ($masuk_shift)";
+							$errortext = "Jam Awal Lembur Tidak Sesuai Jam Masuk Shift Pekerja, SHIFT {$datapres['kd_shift']} (".date('H:i:s', strtotime($masuk_shift)).")";
 						}
 					}elseif ($lembur == '005') { // lembur datang dan pulang
 						if ($awal_lembur <= $masuk_shift) {
@@ -941,15 +941,15 @@ class C_splseksi extends CI_Controller {
 								$aktual_akhir = $akhir_lembur;
 							}else{
 								$error = "1";
-								$errortext = "Jam Akhir Lembur Tidak Sesuai Jam Masuk & Pulang Shift Pekerja ($masuk_shift - $keluar_shift)";
+								$errortext = "Jam Akhir Lembur Tidak Sesuai Jam Masuk & Pulang Shift Pekerja, SHIFT {$datapres['kd_shift']} (".date('H:i:s', strtotime($masuk_shift))." - ".date('H:i:s', strtotime($keluar_shift)).")";
 							}
 						}else{
 							$error = "1";
-							$errortext = "Jam Awal Lembur Tidak Sesuai Jam Masuk & Pulang Shift Pekerja ($masuk_shift - $keluar_shift)";
+							$errortext = "Jam Awal Lembur Tidak Sesuai Jam Masuk & Pulang Shift Pekerja, SHIFT {$datapres['kd_shift']} (".date('H:i:s', strtotime($masuk_shift))." - ".date('H:i:s', strtotime($keluar_shift)).")";
 						}
 					}else{
 						$error = "1";
-						$errortext = "Bukan Merupakan Hari Libur Pekerja, Pekerja Memiliki Jam Shift ($masuk_shift - $keluar_shift)";
+						$errortext = "Bukan Merupakan Hari Libur Pekerja, Pekerja Memiliki Jam Shift, SHIFT {$datapres['kd_shift']} (".date('H:i:s', strtotime($masuk_shift))." - ".date('H:i:s', strtotime($keluar_shift)).")";
 					}
 				}
 			}else{
@@ -1208,7 +1208,7 @@ class C_splseksi extends CI_Controller {
 			return false;
 		}
 
-		//$this->send_email($sendmail_splid);
+		$this->send_email($sendmail_splid);
 
 		redirect(base_url('SPL/Pusat/InputLembur?result=1'));
 	}

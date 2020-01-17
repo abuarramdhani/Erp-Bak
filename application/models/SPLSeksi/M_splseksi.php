@@ -286,6 +286,7 @@ class M_splseksi extends CI_Model{
 
 	public function getPresensi($noind,$tanggal){
 		$sql = "select 	tdp.noind,
+						tsp.kd_shift,
 						tdp.tanggal::date,
 						cast(concat(tdp.tanggal::date,' ',tdp.masuk) as timestamp) as masuk,
 						case when tdp.keluar::time < tdp.masuk::time then 
@@ -322,6 +323,7 @@ class M_splseksi extends CI_Model{
 
 	public function getPresensiPusat($noind,$tanggal){
 		$sql = "select 	tsp.noind,
+						tsp.kd_shift,
 						tsp.tanggal::date,
 						cast(concat(tsp.tanggal::date,' ',tsp.jam_msk) as timestamp) as jam_msk,
 						case when tsp.jam_plg::time < tsp.jam_msk::time then 

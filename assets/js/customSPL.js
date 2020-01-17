@@ -1114,7 +1114,7 @@ $(document).ready(function() {
     //page input data & edit data
     $('.pekerjaan, textarea[name=alasan]').keypress(function(e) {
         var txt = String.fromCharCode(e.which);
-        if (!txt.match(/[A-Za-z0-9+#.%&-]/)) {
+        if (!txt.match(/[A-Za-z0-9 +#.%&-]/)) {
             return false;
         }
     })

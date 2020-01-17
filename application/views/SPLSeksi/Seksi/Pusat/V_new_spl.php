@@ -102,7 +102,7 @@
 									<div class="form-group">
 										<label class="col-sm-2 control-label">Jenis</label>
 										<div class="col-sm-10">
-											<select class="form-control select2 " name="kd_lembur" required>
+											<select class="form-control select2" style="width: 100% !important;" name="kd_lembur" required>
 												<option value="">-- silahkan pilih --</option>
 												<?php foreach($jenis_lembur as $jl){ ?>
 													<option value="<?php echo $jl['kd_Lembur']; ?>"><?php echo $jl['nama_lembur']; ?></option>

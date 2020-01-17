@@ -1,3 +1,12 @@
+<style>
+	.select2 {
+		width: 100% !important;
+	}
+	.select2-container {
+	width: 100% !important;
+	padding: 0;
+	}
+</style>
 	<section class="content">
 		<div class="row">
 			<div class="col-lg-12">
