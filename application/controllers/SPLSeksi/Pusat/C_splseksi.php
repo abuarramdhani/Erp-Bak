@@ -1103,6 +1103,9 @@ class C_splseksi extends CI_Controller {
 					}
 				}
 			}
+
+			$target = [];
+			$realisasi = [];
 			
 			$j = 0;
 			for($j; $j < count($this->input->post("target[$x]")); $j++){
