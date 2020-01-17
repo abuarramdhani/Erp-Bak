@@ -121,6 +121,18 @@ const deleteMaster = a => {
     showSweetAlert = a => {
         swal.fire(a)
     },
+    showSweetAlertQuestion = (a, b, c) => {
+        return swal.fire({
+            title: a,
+            text: b,
+            type: c,
+            showCancelButton: !0,
+            confirmButtonColor: "#3085d6",
+            cancelButtonColor: "#d33",
+            confirmButtonText: "<i class='fa fa-check'> Ya</i>",
+            cancelButtonText: "<i class='fa fa-close'> Tidak</i>"
+        })
+    },
     appDocument = (a, e) => {
         let t = e ? "Cek ke-valid an data !" : "Isikan alasan";
         let n = e ? "" : "textarea";

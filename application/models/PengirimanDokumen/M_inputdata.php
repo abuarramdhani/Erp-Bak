@@ -152,4 +152,11 @@ class M_inputdata extends CI_Model
 
         return $data;
     }
+
+    function ajaxDeleteData($id){
+        $this->db->delete('ps.tdata', array('id_data' => $id));
+        $this->db->delete('ps.triwayat', array('id_data' => $id));
+
+        return true;
+    }
 }

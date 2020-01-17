@@ -56,6 +56,11 @@ class C_InputData extends CI_Controller
 
             $tanggal    = ($tanggal1 == $tanggal2)? $tanggal1 : $tanggal1." - ".$tanggal2;
 
+            $editButton = '';
+            if($status == 0){
+                $editButton = "<button class='btn btn-sm btn-success changeDocument' data-toggle='modal' data-target='#modalEdit' type='button'><i class='fa fa-edit'></i> ubah</button>";
+            }
+
             switch($status){
                 case '0':
                     $status = '<td class="bg-yellow">Pending</td>';
@@ -83,11 +88,6 @@ class C_InputData extends CI_Controller
                 $alasan =  '';
             }else if(strlen($alasan) > 20){
                 $alasan =  substr($alasan,0,20).'...';
-            }
-
-            $editButton = '';
-            if($status == 0){
-                $editButton = "<button class='btn btn-sm btn-success changeDocument' data-toggle='modal' data-target='#modalEdit' type='button'><i class='fa fa-edit'></i> ubah</button>";
             }
 
             $table .=   "<tr>
@@ -237,6 +237,9 @@ class C_InputData extends CI_Controller
     }
 
     function ajaxDeleteData(){
-
+        $id = $this->input->post('id');
+        $res = $this->M_inputdata->ajaxDeleteData($id);
+        
+        return $res;
     }
 }

@@ -294,7 +294,7 @@
                 </form>
             </div>
             <div class="modal-footer">
-                <button class="btn btn-danger pull-left"> <i class="fa fa-trash"></i> hapus</button>
+                <button onclick="deleteDokumen()" class="btn btn-danger pull-left"> <i class="fa fa-trash"></i> hapus</button>
                 <button onclick="updateDataDokumen()" class="btn btn-success"> <i class="fa fa-save"></i> simpan perubahan</button>
             </div>
         </div>
@@ -617,6 +617,29 @@
             error: e => {
                 swal.fire('error','','error')
             }
+        })
+    }
+
+    const deleteDokumen = () => {
+        let id = $('#modalIdData').val()
+        showSweetAlertQuestion('Yakin untuk menghapus dokumen ?', '', 'warning').then(a => {
+            if(a.value){
+                $.ajax({
+                    method: 'POST',
+                    url: baseurl + 'PengirimanDokumen/ajax/deleteData',
+                    data: {
+                        id
+                    },
+                    success: a => {
+                        $('#modalEdit').modal('toggle')
+                        $("td[data-id="+id+"]").parent().css({
+                                background: '#dd4b39'
+                            }).fadeOut(2000, () => {
+                                $(this).remove()
+                            })
+                    }
+                })
+            } 
         })
     }
 </script>
