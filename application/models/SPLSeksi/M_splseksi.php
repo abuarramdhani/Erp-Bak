@@ -10,7 +10,8 @@ class M_splseksi extends CI_Model{
 	}
 
 	public function show_noind(){
-		$query = $this->spl->get('hrd_khs.tnoind');
+		$this->prs->order_by('fs_noind', 'asc');
+		$query = $this->prs->get('hrd_khs.tnoind');
 		return $query->result_array();
 	}
 
