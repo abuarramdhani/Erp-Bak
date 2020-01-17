@@ -2,10 +2,10 @@
 <head>
 </head>
 <body>
-<?php 
+<?php
 		set_time_limit(0);
 		ini_set("memory_limit", "2048M");
-							
+
 	?>
 <div style="width: 100%;padding-right: 30px;">
 	<table style="width:100%;font-size: 18px;text-align: center;padding-left: 20px;">
@@ -25,7 +25,7 @@
 		</tr>
 	</table>
 	<div style="width: 100%; height: 4px; font-size: 15px ;background-color: grey;">
-		
+
 	</div>
 	<br>
 		<p>Kepada Yth.<br><?php echo ucwords(strtolower($penerima['0']['penerima'])) ?> <br>di Seksi Akuntansi</p>
@@ -164,7 +164,7 @@
 						<td style="width: 30px">GP</td>
 					</tr>
 				</table>
-				
+
 			</td>
 			<td style="border-right: 1px solid black;border-left: 1px solid black;border-bottom: 1px solid black;width: 10%;padding-left: 20px"></td>
 		</tr>
@@ -244,20 +244,20 @@
 			<td style="border-right: 1px solid black;border-left: 1px solid black;border-bottom: 1px solid black;width: 10%;padding-left: 20px"></td>
 		</tr>
 
-	
-	
-	
+
+
+
 	</table>
 	<br>
 	<p>Atas perhatian dan kerjasamanya kami ucapkan terimakasih.</p>
-	 
+
 <table style="width: 100%; font-size: 17px;margin-top: 45px;text-align: center;">
 		<tr>
-		
-			<td>Yogyakarta, 
-			<?php 
-				echo date('d');
-				$month=date('m');
+
+			<td>Yogyakarta,
+			<?php
+				echo $tglCetak[2];
+				$month=$tglCetak[1];
 				if ($month=='01') {
 					echo " Januari ";
 				}elseif ($month=='02') {
@@ -283,7 +283,7 @@
 				}elseif ($month=='12') {
 					echo " Desember ";
 				};
-				echo date('Y');
+				echo $tglCetak[0];
 			?></td>
 			<td>Mengetahui</td>
 		</tr>
@@ -295,14 +295,14 @@
 	</table>
 	<table style="width: 100%;font-size: 17px;text-align: center; margin-top: 45px;">
 		<tr>
-		    <td style="width: 60%"><u><?php echo ucwords(strtolower($pengirim['0']['pengirim'])) ?> </u></td>
-			<td style="width: 60%"><u>Bambang Yudhosuseno</u></td>
+		    <td style="width: 60%"><u><?php echo ucwords(strtolower($approver1['0']['nama'])) ?> </u></td>
+			<td style="width: 60%"><u><?php echo ucwords(strtolower($approver2['0']['nama'])) ?></u></td>
 
 		</tr>
 
 		<tr>
-		    <td><?php echo ucwords(strtolower($pengirim['0']['jabatan'])) ?> </td>
-			<td>Ass.Ka Dept.Personalia</td>
+		    <td><?php echo ucwords(strtolower($approver1['0']['jabatan'])) ?></td>
+			<td><?php echo ucwords(strtolower($approver2['0']['jabatan'])) ?></td>
 
 		</tr>
 	</table>

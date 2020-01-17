@@ -2064,6 +2064,23 @@ $('.nyobaaja').click(function() {
   $('#id_sangu').val($(this).attr('value'));
 });
 
+$('.prevSangu').click(function() {
+    let a = $(this).attr('value')
+    $.ajax({
+        type: 'get',
+        dataType: 'json',
+        url: baseurl + 'MasterPekerja/PerhitunganPesangon/getDataPreview/'+a,
+        success: function (result) {
+            console.log(result.dataPreview[0].pengirim);
+            $('#Psg_approver1').val(result.dataPreview[0].pengirim).trigger('change')
+            $('#id_prev_sangu').val(result.dataPreview[0].id).trigger('change')
+            $('#psg_tglCetak').val(result.dataPreview[0].tgl_cetak_prev).trigger('change')
+            $('#Modal_Tertanda_Pesangon').modal('show')
+        }
+    })
+});
+
+
 $('#perjanjianPHK').click(function(){
   let saksi1      = $('#Saksi_Janji1').val(),
       saksi2      = $('#Saksi_Janji2').val()
@@ -2710,6 +2727,12 @@ $(document).ready(function () {
 })
 
 $(document).ready(function(){
+    $('#psg_tglCetak').datepicker({
+        autoclose: true,
+        autoApply: true,
+        format: 'yyyy-mm-dd',
+        todayHighlight: true
+    });
     $('#tblSuratResign').DataTable({
         scrollX: true
     });
