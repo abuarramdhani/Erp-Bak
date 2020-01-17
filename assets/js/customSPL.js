@@ -1046,6 +1046,13 @@ $(document).ready(function() {
         summon_count_overtime(noind)
     })
 
+    //-------INPUT PAGE--------------------------------------
+    $('#example11').on('change', '.target-satuan', function() {
+            let unit = $(this).val()
+            $(this).closest('tr').find('.realisasi-satuan').val(unit)
+        })
+        //-------END INPUT PAGE----------------------------------
+
     //-------PERSONALIA PAGE---------------------------------
 
     $('.lembur-personalia-pekerja').select2({
@@ -1404,7 +1411,7 @@ const add_jobs_spl = (e) => {
             <input type="number" class="form-control" name="target[${row}][]" required>
         </td>
         <td>
-            <select class="form-control" name="target_satuan[${row}][]" required>
+            <select class="form-control target-satuan" name="target_satuan[${row}][]" required>
                 <option value=""></option>
                 <option value="Pcs">Pcs</option>
                 <option value="%">%</option>
@@ -1419,7 +1426,7 @@ const add_jobs_spl = (e) => {
             <input type="number" class="form-control" name="realisasi[${row}][]" required>
         </td>
         <td>
-            <select class="form-control" name="realisasi_satuan[${row}][]" required>
+            <select class="form-control realisasi-satuan" name="realisasi_satuan[${row}][]" disabled>
                 <option value=""></option>
                 <option value="Pcs">Pcs</option>
                 <option value="%">%</option>

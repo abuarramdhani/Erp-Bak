@@ -217,7 +217,7 @@
 															<input type="number" class="form-control" name="target[0][]" required>
 														</td>
 														<td>
-															<select class="form-control" name="target_satuan[0][]" required>
+															<select class="form-control target-satuan" name="target_satuan[0][]" required>
 																<option value=""></option>
 																<option value="Pcs">Pcs</option>
 																<option value="%">%</option>
@@ -232,7 +232,7 @@
 															<input type="number" class="form-control" name="realisasi[0][]" required>
 														</td>
 														<td>
-															<select class="form-control" name="realisasi_satuan[0][]" required>
+															<select class="form-control realisasi-satuan" name="realisasi_satuan[0][]" disabled>
 																<option value=""></option>
 																<option value="Pcs">Pcs</option>
 																<option value="%">%</option>
