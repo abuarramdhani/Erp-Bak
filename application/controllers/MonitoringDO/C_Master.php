@@ -89,42 +89,44 @@ class C_Master extends CI_Controller
       echo json_encode($data);
     }
 
-    public function GetSetting()
+  public function GetSetting()
     {
       $datag = $this->M_monitoringdo->getDO();
-      foreach ($datag as $g) {
-          $dataku[] = $g['DO/SPB'];
-      }
-      $no = 0;
-      foreach ($dataku as $k) {
-          $datakau[] = $this->M_monitoringdo->getDetailDataPengecekan($k);
-          $no++;
+      if (!empty($datag[0]['DO/SPB'])) {
+        foreach ($datag as $g) {
+            $dataku[] = $g['DO/SPB'];
+        }
+        $no = 0;
+        foreach ($dataku as $k) {
+            $datakau[] = $this->M_monitoringdo->getDetailDataPengecekan($k);
+            $no++;
+        }
+
+        $final = [];
+        foreach ($datakau as $f) {
+            for ($i=0; $i < sizeof($f); $i++) {
+                if ($f[$i]['QUANTITY']>$f[$i]['AV_TO_RES']) {
+                    $var = 'false';
+                    break;
+                } else {
+                    $var = 'true';
+                }
+            }
+            array_push($final, $var);
+        }
+
+        $finaldestination = [];
+        $number = 0;
+        foreach ($datag as $d) {
+            $d['CHECK'] = $final[$number];
+            $number++;
+            array_push($finaldestination, $d);
+        }
+        $data['get'] = $finaldestination;
+      }else {
+        $data['get'] = $this->M_monitoringdo->getDO();
       }
 
-      $final = [];
-      foreach ($datakau as $f) {
-          for ($i=0; $i < sizeof($f); $i++) {
-              if ($f[$i]['QUANTITY']>$f[$i]['AV_TO_RES']) {
-                  $var = 'false';
-                  break;
-              } else {
-                  $var = 'true';
-              }
-          }
-          array_push($final, $var);
-      }
-
-      $finaldestination = [];
-      $number = 0;
-      foreach ($datag as $d) {
-          $d['CHECK'] = $final[$number];
-          $number++;
-          array_push($finaldestination, $d);
-      }
-      $data['get'] = $finaldestination;
-      // echo "<pre>";
-      // print_r($finaldestination);
-      // die;
       $this->load->view('MonitoringDO/V_Ajax_Setting', $data);
     }
 

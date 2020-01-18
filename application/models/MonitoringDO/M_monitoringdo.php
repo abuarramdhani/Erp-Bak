@@ -253,10 +253,7 @@ class M_monitoringdo extends CI_Model
         order by kpd.PERSON_ID
         ,mtrh.REQUEST_NUMBER")->result_array();
         if (empty($response)) {
-            $response = array(
-                'success' => true,
-                'message' => 'there is no data available.'
-            );
+            $response = null;
         }
         return $response;
     }
