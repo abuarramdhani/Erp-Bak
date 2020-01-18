@@ -271,8 +271,8 @@ $(function() {
         $('.multiinput:last').find('.pekerjaan').attr('name', `pekerjaan[${row}][]`)
         $('.multiinput:last').find('input[name^=target]').attr('name', `target[${row}][]`)
         $('.multiinput:last').find('input[name^=realisasi]').attr('name', `realisasi[${row}][]`)
-        $('.multiinput:last').find('.target-satuan').attr('name', `target-satuan[${row}][]`)
-        $('.multiinput:last').find('.realisasi-satuan').attr('name', `realisasi-satuan[${row}][]`)
+        $('.multiinput:last').find('.target-satuan').attr('name', `target_satuan[${row}][]`)
+        $('.multiinput:last').find('.realisasi-satuan').attr('name', `realisasi_satuan[${row}][]`)
         $('.multiinput:last').attr('data-row', row)
         $(".multiinput:last select").val("").change();
         $(".multiinput:last .spl-new-error").remove();
