@@ -59,7 +59,7 @@
 									<div class="form-group">
 										<label class="col-sm-2 control-label">Status</label>
 										<div class="col-sm-10">
-											<select class="form-control select2" data-placeholder="silahkan pilih" name="status" id="status">
+											<select class="form-control select2"  name="status" id="status" data-placeholder="Silahkan pilih">
 												<option value=""></option>
 												<option value="01">SPL Baru</option>
 												<option value="11">SPL Sudah diproses</option>
@@ -102,7 +102,9 @@
 									</div>
 
 								</div>
-
+								<div class="col-lg-6">
+									<button style="float: right;" onclick="sendReminder()" type="button" name="reminderSPLSeksi" class="btn btn-warning"><i class="fa fa-bullhorn"></i></button>
+								</div>
 							</div>
 						</div>
 					</div>
@@ -154,7 +156,7 @@
 		// need some idea
 		window.onfocus = function() {
 		  console.log('Got focus');
-		  //window.location.reload();
+		 // window.location.reload();
 		}
 
 		var timeoutInMiliseconds = 120000;
@@ -167,7 +169,7 @@
 
 		function doInactive() {
 		    // does whatever you need it to actually do - probably signs them out or stops polling the server for info
-		    window.location.reload();
+		    //window.location.reload();
 		}
 
 		function resetTimer() {
@@ -185,7 +187,27 @@
 		}
 
 		document.addEventListener("DOMContentLoaded",function(e){
+			// $('#spl-pencarian').click()
 			setupTimers();
-			// $('#spl-pencarian').trigger('click')
 		});
+
+		//set cache
+		let exist = window.localStorage.getItem('alert-SPL')
+		const d = new Date()
+
+		let today = d.getFullYear()+'-'+(d.getMonth()+1)+'-'+d.getDate()
+
+		let json = JSON.parse(exist)
+
+		if(exist == null || json.today != today){
+			let data = {
+				count: 0,
+				lastTime: null,
+				today
+			}
+
+			window.localStorage.setItem('alert-SPL', JSON.stringify(data))
+			console.log("spl-alert storage has been created")
+		}
+
 	</script>

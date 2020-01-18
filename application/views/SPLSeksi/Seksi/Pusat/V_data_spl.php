@@ -195,7 +195,7 @@
 		let exist = window.localStorage.getItem('alert-SPL')
 		const d = new Date()
 
-		let today = d.getFullYear()+'-'+d.getMonth()+'-'+d.getDate()
+		let today = d.getFullYear()+'-'+(d.getMonth()+1)+'-'+d.getDate()
 
 		let json = JSON.parse(exist)
 

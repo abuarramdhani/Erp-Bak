@@ -1342,7 +1342,7 @@ const configStorageAlert = () => {
         let count = json.count + 1
 
         let now = d.getHours() + ':' + d.getMinutes()
-        let today = d.getFullYear() + '-' + d.getMonth() + '-' + d.getDate()
+        let today = d.getFullYear() + '-' + (d.getMonth() + 1) + '-' + d.getDate()
 
         data = {
             count,
@@ -1360,7 +1360,7 @@ const sendReminder = () => {
     const d = new Date()
 
     let now = d.getHours() + ':' + d.getMinutes()
-    let today = d.getFullYear() + '-' + d.getMonth() + '-' + d.getDate()
+    let today = d.getFullYear() + '-' + (d.getMonth() + 1) + '-' + d.getDate()
 
     if (json.count == 1) {
         let lastTime = new Date(today + ' ' + json.lastTime)
