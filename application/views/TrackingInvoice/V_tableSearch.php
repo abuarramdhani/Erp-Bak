@@ -4,6 +4,7 @@
 	<thead style="vertical-align: middle;"> 
 		<tr class="bg-primary">
 			<td class="text-center">No</td>
+			<td class="text-center">Invoice ID</td>
 			<td class="text-center">Action</td>
 			<td class="text-center">Vendor name</td>
 			<td class="text-center">Invoice Number</td>
@@ -25,6 +26,7 @@
 			foreach($invoice as $i) { ?>
 		<tr>
 			<td><?php echo $no?></td>
+			<td><b><?php echo $i['INVOICE_ID']?></b></td>
 			<td><a class="btn btn-success" data-target="MdlTrackInv" data-toggle="modal" onclick="mdlDetailTI(<?php echo $i['INVOICE_ID']?>)" invoice="<?php echo $i['INVOICE_ID']?>">
 				 Detail
 				</a>

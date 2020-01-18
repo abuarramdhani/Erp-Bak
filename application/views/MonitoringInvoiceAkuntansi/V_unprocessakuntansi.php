@@ -60,7 +60,7 @@
 												<a title="Tolak" type="sumbit" data-id="<?= $u['INVOICE_ID'] ?>" onclick="prosesInvMI(this)" class="btn btn-danger btn-sm" value="3" name="proses"> <i class="glyphicon glyphicon-remove"></i>
 												</a>
 											</td>
-											<td><?php echo date('d-M-Y',strtotime($u['INVOICE_DATE']))?></td>
+											<td data-order="<?php echo date('Y-m-d', strtotime($u['INVOICE_DATE']))?>"><?php echo date('d-M-Y',strtotime($u['INVOICE_DATE']))?></td>
 											<td><?php echo $u['PPN'] ?></td>
 											<td><?php echo $u['TAX_INVOICE_NUMBER']?></td>
 											<td class="inv_amount" >
