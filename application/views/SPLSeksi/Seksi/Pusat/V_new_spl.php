@@ -193,7 +193,7 @@
 													</tr>
 												</thead>
 												<tbody>
-													<tr class="multiinput parent">
+													<tr class="multiinput parent" data-row="0">
 														<td>
 															-
 														</td>
@@ -232,16 +232,7 @@
 															<input type="number" class="form-control" name="realisasi[0][]" required>
 														</td>
 														<td>
-															<select class="form-control realisasi-satuan" name="realisasi_satuan[0][]" disabled>
-																<option value=""></option>
-																<option value="Pcs">Pcs</option>
-																<option value="%">%</option>
-																<option value="Box">Box</option>
-																<option value="Kg">Kg</option>
-																<option value="Unit">Unit</option>
-																<option value="Ton">Ton</option>
-																<option value="Flask">Flask</option>
-															</select>
+															<input type="text" class="form-control realisasi-satuan" name="realisasi_satuan[0][]" readonly>
 														</td>
 														<td colspan="2">
 															<textarea style="resize: vertical; min-height: 30px;" class="form-control pekerjaan" rows="1" name="pekerjaan[0][]" required></textarea>
@@ -307,7 +298,7 @@
 		    startTimer();
 		}
 
-		// document.addEventListener("DOMContentLoaded",function(e){
-		// 	setupTimers();
-		// });
+		document.addEventListener("DOMContentLoaded",function(e){
+			// setupTimers();
+		});
 	</script>

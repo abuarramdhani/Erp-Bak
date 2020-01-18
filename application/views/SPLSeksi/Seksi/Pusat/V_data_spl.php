@@ -3,8 +3,8 @@
 		width: 100% !important;
 	}
 	.select2-container {
-	width: 100% !important;
-	padding: 0;
+		width: 100% !important;
+		padding: 0;
 	}
 </style>
 	<section class="content">
@@ -187,6 +187,7 @@
 		}
 
 		document.addEventListener("DOMContentLoaded",function(e){
+			// $('#spl-pencarian').click()
 			setupTimers();
 		});
 

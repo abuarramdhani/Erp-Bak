@@ -269,6 +269,11 @@ $(function() {
         $(".multiinput:last td:first").html("<button type='button' class='btn btn-danger spl-pkj-del'><span class='fa fa-trash'></span></button>");
         let row = $('.multiinput.parent').length - 1
         $('.multiinput:last').find('.pekerjaan').attr('name', `pekerjaan[${row}][]`)
+        $('.multiinput:last').find('input[name^=target]').attr('name', `target[${row}][]`)
+        $('.multiinput:last').find('input[name^=realisasi]').attr('name', `realisasi[${row}][]`)
+        $('.multiinput:last').find('.target-satuan').attr('name', `target-satuan[${row}][]`)
+        $('.multiinput:last').find('.realisasi-satuan').attr('name', `realisasi-satuan[${row}][]`)
+        $('.multiinput:last').attr('data-row', row)
         $(".multiinput:last select").val("").change();
         $(".multiinput:last .spl-new-error").remove();
         $(".multiinput:last select").closest("td").css("background", "#ffffff");
@@ -1048,10 +1053,15 @@ $(document).ready(function() {
 
     //-------INPUT PAGE--------------------------------------
     $('#example11').on('change', '.target-satuan', function() {
-            let unit = $(this).val()
-            $(this).closest('tr').find('.realisasi-satuan').val(unit)
-        })
-        //-------END INPUT PAGE----------------------------------
+        let unit = $(this).val()
+        $(this).closest('tr').find('.realisasi-satuan').val(unit)
+    })
+
+    $('#example11').on('input', '.pekerjaan', function(e) {
+        $(this).css('height', this.scrollHeight + 'px')
+    })
+
+    //-------END INPUT PAGE----------------------------------
 
     //-------PERSONALIA PAGE---------------------------------
 
@@ -1401,9 +1411,13 @@ const sendReminder = () => {
 }
 
 const add_jobs_spl = (e) => {
+
     let tr = e.closest('tr')
-    let row = $('.multiinput.parent').length - 1
-    console.log(row);
+
+    let nextrow = tr.next('.multiinput.parent')
+    let jobsrow = tr.nextUntil(nextrow, 'tr.spl-jobs')
+
+    let row = tr.data('row')
     let jobsHTML = `
     <tr class="spl-jobs">
         <td colspan="5"></td>
@@ -1426,30 +1440,27 @@ const add_jobs_spl = (e) => {
             <input type="number" class="form-control" name="realisasi[${row}][]" required>
         </td>
         <td>
-            <select class="form-control realisasi-satuan" name="realisasi_satuan[${row}][]" disabled>
-                <option value=""></option>
-                <option value="Pcs">Pcs</option>
-                <option value="%">%</option>
-                <option value="Box">Box</option>
-                <option value="Kg">Kg</option>
-                <option value="Unit">Unit</option>
-                <option value="Ton">Ton</option>
-                <option value="Flask">Flask</option>
-            </select>
+            <input type="text" class="form-control realisasi-satuan" name="realisasi_satuan[${row}][]" readonly>
         </td>
         <td>
-            <textarea style="resize: vertical; min-height: 30px;" class="form-control" rows="1" name="pekerjaan[${row}][]"></textarea>
+            <textarea style="resize: vertical; min-height: 30px;" class="form-control pekerjaan" rows="1" name="pekerjaan[${row}][]"></textarea>
         </td>
         <td colspan='2'>
             <button type="button" onclick="del_jobs_spl($(this), ${row})" class="btn btn-sm btn-default"><i class="fa fa-minus"></i></button>
         </td>
     </tr>
     `
-    tr.after(jobsHTML)
+
+    if (jobsrow.length == 0) {
+        tr.after(jobsHTML)
+    } else {
+        jobsrow.last().after(jobsHTML)
+    }
+
 }
 
 const add_jobs_spl_edit = e => {
-    let tr = e.closest('tr')
+    let tr = e.closest('tbody')
     let jobsHTML = `
     <tr>
         <td colspan="2"></td>
@@ -1457,7 +1468,7 @@ const add_jobs_spl_edit = e => {
             <input type="number" class="form-control" name="target[]" required>
         </td>
         <td>
-            <select class="form-control" name="target_satuan[]" required>
+            <select class="form-control target-satuan" name="target_satuan[]" required>
                 <option value=""></option>
                 <option value="Pcs">Pcs</option>
                 <option value="%">%</option>
@@ -1472,26 +1483,17 @@ const add_jobs_spl_edit = e => {
             <input type="number" class="form-control" name="realisasi[]" required>
         </td>
         <td>
-            <select class="form-control" name="realisasi_satuan[]" required>
-                <option value=""></option>
-                <option value="Pcs">Pcs</option>
-                <option value="%">%</option>
-                <option value="Box">Box</option>
-                <option value="Kg">Kg</option>
-                <option value="Unit">Unit</option>
-                <option value="Ton">Ton</option>
-                <option value="Flask">Flask</option>
-            </select>
+            <input type="text" class="form-control realisasi-satuan" name="realisasi_satuan[]" readonly>
         </td>
         <td>
-            <textarea style="resize: vertical; min-height: 30px;" class="form-control texarea-vertical" rows="1" name="pekerjaan[]"></textarea>
+            <textarea style="resize: vertical; min-height: 30px;" class="form-control texarea-vertical pekerjaan" rows="1" name="pekerjaan[]"></textarea>
         </td>
         <td>
             <button class="btn btn-sm" onclick="del_jobs_spl($(this))" type="button"><i class="fa fa-minus"></i></button>
         </td>
     </tr>
     `
-    tr.after(jobsHTML)
+    tr.append(jobsHTML)
 }
 
 const del_jobs_spl = (e) => {

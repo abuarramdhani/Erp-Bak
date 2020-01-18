@@ -200,7 +200,7 @@
 																	$target_val = $target[0];
 																	$target_satuan = '';
 																	$target_type = 'text';
-																	$target_disabled = 'disabled';
+																	$target_disabled = 'readonly';
 																}
 															}
 														}
@@ -221,14 +221,14 @@
 																	$realisasi_val = $realisasi[0];
 																	$realisasi_satuan = '';
 																	$realisasi_type = 'text';
-																	$realisasi_disabled = 'disabled';
+																	$realisasi_disabled = 'readonly';
 																}
 															}
 														}else{
 															$realisasi_val = $realisasi[0];
 															$realisasi_satuan = '';
 															$realisasi_type = 'text';
-															$realisasi_disabled = 'disabled';
+															$realisasi_disabled = 'readonly';
 														}
 													?>
 													<tr class="multiinput"><td>-</td>
@@ -244,7 +244,7 @@
 															value="<?= $target_val ?>" <?php echo $status ?> <?= $target_disabled ?>>
 														</td>
 														<td>
-															<select class="form-control" name="target_satuan[]" <?= $target_disabled ?>>
+															<select class="form-control target-satuan" name="target_satuan[]" <?= $target_disabled ?>>
 																<option value="" <?= $target_satuan == '' ? 'selected' : '' ?>></option>
 																<option value="Pcs" <?= $target_satuan == 'Pcs' ? 'selected' : '' ?>>Pcs</option>
 																<option value="%" <?= $target_satuan == '%' ? 'selected' : '' ?>>%</option>
@@ -260,19 +260,10 @@
 															value="<?= $realisasi_val; ?>" <?php echo $status ?> <?= $realisasi_disabled ?>>
 														</td>
 														<td>
-															<select class="form-control" name="realisasi_satuan[]" <?= $realisasi_disabled ?>>
-																<option value="" <?= $realisasi_satuan == '' ? 'selected' : '' ?>></option>
-																<option value="Pcs" <?= $realisasi_satuan == 'Pcs' ? 'selected' : '' ?>>Pcs</option>
-																<option value="%" <?= $realisasi_satuan == '%' ? 'selected' : '' ?>>%</option>
-																<option value="Box" <?= $realisasi_satuan == 'Box' ? 'selected' : '' ?>>Box</option>
-																<option value="Kg" <?= $realisasi_satuan == 'Kg' ? 'selected' : '' ?>>Kg</option>
-																<option value="Unit" <?= $realisasi_satuan == 'Unit' ? 'selected' : '' ?>>Unit</option>
-																<option value="Ton" <?= $realisasi_satuan == 'Ton' ? 'selected' : '' ?>>Ton</option>
-																<option value="Flask" <?= $realisasi_satuan == 'Flask' ? 'selected' : '' ?>>Flask</option>
-															</select>
+															<input type="text" class="form-control realisasi-satuan" value="<?= $realisasi_satuan ?>" name="realisasi_satuan[]" readonly>
 														</td>
 														<td>
-															<textarea style="resize: vertical; min-height: 30px;" class="form-control texarea-vertical" rows="1" name="pekerjaan[]" <?php echo $status ?>><?= str_replace("'", '', $jobs[0]) ?></textarea>
+															<textarea style="resize: vertical; min-height: 30px;" class="form-control texarea-vertical pekerjaan" rows="1" name="pekerjaan[]" <?php echo $status ?>><?= str_replace("'", '', $jobs[0]) ?></textarea>
 														</td>
 														<td>
 															<button class="btn btn-sm" onclick="add_jobs_spl_edit($(this))" type="button"><i class="fa fa-plus"></i></button>
@@ -325,7 +316,7 @@
 															value="<?= $target_val ?>" <?php echo $status ?> <?= $target_disabled ?>>
 														</td>
 														<td>
-															<select class="form-control" name="target_satuan[]" <?= $target_disabled ?>>
+															<select class="form-control target-satuan" name="target_satuan[]" <?= $target_disabled ?>>
 																<option value="" <?= $target_satuan == '' ? 'selected' : '' ?>></option>
 																<option value="Pcs" <?= $target_satuan == 'Pcs' ? 'selected' : '' ?>>Pcs</option>
 																<option value="%" <?= $target_satuan == '%' ? 'selected' : '' ?>>%</option>
@@ -341,19 +332,10 @@
 															value="<?= $realisasi_val; ?>" <?php echo $status ?> <?= $realisasi_disabled ?>>
 														</td>
 														<td>
-															<select class="form-control" name="realisasi_satuan[]" <?= $realisasi_disabled ?>>
-																<option value="" <?= $realisasi_satuan == '' ? 'selected' : '' ?>></option>
-																<option value="Pcs" <?= $realisasi_satuan == 'Pcs' ? 'selected' : '' ?>>Pcs</option>
-																<option value="%" <?= $realisasi_satuan == '%' ? 'selected' : '' ?>>%</option>
-																<option value="Box" <?= $realisasi_satuan == 'Box' ? 'selected' : '' ?>>Box</option>
-																<option value="Kg" <?= $realisasi_satuan == 'Kg' ? 'selected' : '' ?>>Kg</option>
-																<option value="Unit" <?= $realisasi_satuan == 'Unit' ? 'selected' : '' ?>>Unit</option>
-																<option value="Ton" <?= $realisasi_satuan == 'Ton' ? 'selected' : '' ?>>Ton</option>
-																<option value="Flask" <?= $realisasi_satuan == 'Flask' ? 'selected' : '' ?>>Flask</option>
-															</select>
+															<input class="form-control realisasi-satuan" value="<?= $realisasi_satuan ?>" name="realisasi_satuan[]" readonly>
 														</td>
 														<td>
-															<textarea style="resize: vertical; min-height: 30px;" class="form-control texarea-vertical" rows="1" name="pekerjaan[]"><?= str_replace("'", '', $jobs[$i]) ?></textarea>
+															<textarea style="resize: vertical; min-height: 30px;" class="form-control texarea-vertical pekerjaan" rows="1" name="pekerjaan[]"><?= str_replace("'", '', $jobs[$i]) ?></textarea>
 														</td>
 														<td>
 															<button class="btn btn-sm" onclick="del_jobs_spl($(this))" type="button"><i class="fa fa-minus"></i></button>
