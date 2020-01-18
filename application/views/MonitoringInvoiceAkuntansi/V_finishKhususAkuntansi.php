@@ -63,7 +63,7 @@
 								          	};?>
 								          	</td>
 											<td><?php echo $f['TOP']?></td>
-											<td><?php echo $f['LAST_STATUS_FINANCE_DATE']?></td>
+											<td data-order="<?php echo date('Y-m-d', strtotime($f['LAST_STATUS_FINANCE_DATE']))?>"><?php echo $f['LAST_STATUS_FINANCE_DATE']?></td>
 											<td><?php echo $f['BATCH_NUMBER']?></td>
 											<td><?php echo $f['SOURCE']?></td>
 										</tr>
