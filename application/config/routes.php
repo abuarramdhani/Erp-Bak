@@ -3678,3 +3678,25 @@ $route['MonitoringDO/InputDO'] = 'MonitoringDO/C_Master/InputDO';
 $route['MonitoringDO/CetakDO'] = 'MonitoringDO/C_Master/CetakDO';
 $route['MonitoringDO/PDF/(:any)'] = 'MonitoringDO/C_Master/CetakPDF/$1';
 $route['MonitoringDO/cekapi/(:any)'] = 'MonitoringDO/C_Master/cekapi/$1';
+
+// --------------------------------------- Approval Delivery Order --------------------------------------- //
+$route['ApprovalDO'] = 'ApprovalDO/C_Index';
+
+$route['ApprovalDO/List'] = 'ApprovalDO/MainMenu/C_List';
+$route['ApprovalDO/List/(:any)'] = 'ApprovalDO/MainMenu/C_List/$1';
+$route['ApprovalDO/List/(:any)/(:any)'] = 'ApprovalDO/MainMenu/C_List/$1/$2';
+
+$route['ApprovalDO/Approval'] = 'ApprovalDO/MainMenu/C_Approval';
+$route['ApprovalDO/Approval/(:any)'] = 'ApprovalDO/MainMenu/C_Approval/$1';
+$route['ApprovalDO/Approval/(:any)/(:any)'] = 'ApprovalDO/MainMenu/C_Approval/$1/$2';
+
+$route['ApprovalDO/ListBackorder'] = 'ApprovalDO/MainMenu/C_ListBackorder';
+$route['ApprovalDO/ListBackorder/(:any)'] = 'ApprovalDO/MainMenu/C_ListBackorder/$1';
+$route['ApprovalDO/ListBackorder/(:any)/(:any)'] = 'ApprovalDO/MainMenu/C_ListBackorder/$1/$2';
+
+$route['ApprovalDO/LaunchPickRelease'] = 'ApprovalDO/MainMenu/C_LaunchPickRelease';
+$route['ApprovalDO/LaunchPickRelease/(:any)'] = 'ApprovalDO/MainMenu/C_LaunchPickRelease/$1';
+$route['ApprovalDO/LaunchPickRelease/(:any)/(:any)'] = 'ApprovalDO/MainMenu/C_LaunchPickRelease/$1/$2';
+
+$route['ApprovalDO/Detail/(:any)'] = 'ApprovalDO/MainMenu/C_Detail/checkDetailDO/$1';
+$route['ApprovalDO/History/(:any)'] = 'ApprovalDO/MainMenu/C_History/$1';

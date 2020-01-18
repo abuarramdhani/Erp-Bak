@@ -193,6 +193,7 @@
 		<script src="<?= base_url('assets/js/customKGS.js');?>"></script>
 		<script src="<?= base_url('assets/js/customRJP.js');?>"></script>
 		<script src="<?= base_url('assets/js/customMD.js');?>"></script>
+		<script src="<?= base_url('assets/js/customADO.js');?>"></script>
 		<script type="text/javascript" src="<?= base_url('assets/js/customKTR.js') ?>"></script>
 
 
