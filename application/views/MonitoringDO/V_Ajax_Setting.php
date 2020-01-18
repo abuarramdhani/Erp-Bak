@@ -14,37 +14,40 @@
       </tr>
     </thead>
     <tbody>
-      <?php $no = 1;
-      foreach ($get as $g):
-        if ($g['CHECK'] == 'false') {
-          $styleSetting = 'style="background:rgba(210, 90, 90, 0.49)"';
-        }else {
-          $styleSetting = '';
-        }
-      ?>
-        <tr row-id="<?php echo $no ?>" <?php echo $styleSetting ?>>
-          <input type="hidden" name="cekdodo" id="checkDODO" value="<?php echo $g['CHECK'] ?>">
-          <td><center><?php echo $no ?></center></td>
-          <td><center><?php echo $g['DO/SPB'] ?></center></td>
-          <td><center><?php echo $g['TUJUAN'] ?></center></td>
-          <td><center><?php echo $g['KOTA'] ?></center></td>
-          <td>
-            <center>
-              <div class="form-group">
-                <input class="form-control uppercaseDO" type="text" id="person_id" name="person_id" placeholder="Assign">
-              </div>
-            </center>
-          </td>
-          <td><center>Proses Assign</center></td>
-          <td><center>Pelayanan Android</center></td>
-          <td><center><button type="button" class="btn btn-info" name="button" style="font-weight:bold;" onclick="detail(<?php echo $g['DO/SPB'] ?>, <?php echo $g['HEADER_ID'] ?>, <?php echo $no ?>, <?php echo $g['ORDER_NUMBER'] ?>)" data-toggle="modal" data-target="#MyModal2">
-            <i class="fa fa-eye"></i></button> </center></td>
+      <?php
+      if (!empty($get[0]['DO/SPB'])) {
+          $no = 1;
+          foreach ($get as $g){
+            if ($g['CHECK'] == 'false') {
+              $styleSetting = 'style="background:rgba(210, 90, 90, 0.49)"';
+            }else {
+              $styleSetting = '';
+            }
+       ?>
 
-        </tr>
-      <?php $no++; endforeach; ?>
-    </tbody>
-  </table>
+       <tr row-id="<?php echo $no ?>" <?php echo $styleSetting ?>>
+         <input type="hidden" name="cekdodo" id="checkDODO" value="<?php echo $g['CHECK'] ?>">
+         <td><center><?php echo $no ?></center></td>
+         <td><center><?php echo $g['DO/SPB'] ?></center></td>
+         <td><center><?php echo $g['TUJUAN'] ?></center></td>
+         <td><center><?php echo $g['KOTA'] ?></center></td>
+         <td>
+           <center>
+             <div class="form-group">
+               <input class="form-control uppercaseDO" type="text" id="person_id" name="person_id" placeholder="Assign">
+             </div>
+           </center>
+         </td>
+         <td><center>Proses Assign</center></td>
+         <td><center>Pelayanan Android</center></td>
+         <td><center><button type="button" class="btn btn-info" name="button" style="font-weight:bold;" onclick="detail(<?php echo $g['DO/SPB'] ?>, <?php echo $g['HEADER_ID'] ?>, <?php echo $no ?>, <?php echo $g['ORDER_NUMBER'] ?>)" data-toggle="modal" data-target="#MyModal2">
+           <i class="fa fa-eye"></i></button> </center></td>
+
+       </tr>
+     <?php $no++; } }?>
+   </tbody>
+ </table>
 </div>
 <script type="text/javascript">
-  $('#tblMonitoringDO').DataTable();
+ $('#tblMonitoringDO').DataTable();
 </script>
