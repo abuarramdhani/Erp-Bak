@@ -3666,3 +3666,15 @@ $route['EmailNotifikasiPembelian'] = 'EmailNotifikasiPembelian/C_NotifikasiPembe
 //--------------------------------------------------- Login Android API --------------------------------------------------//
 $route['LoginAndroidAPI'] = 'LoginAndroidAPI/C_LoginAndroid';
 $route['LoginAndroidAPI/loginAndroid'] = 'LoginAndroidAPI/C_LoginAndroid/loginAndroid';
+
+//-------------------------------------------Monitoring DO---------------------------------------//
+$route['MonitoringDO'] = 'MonitoringDO/C_Master';
+
+$route['MonitoringDO/SettingDO'] = 'MonitoringDO/C_Master/SettingDO';
+$route['MonitoringDO/SettingDO/(:any)'] = 'MonitoringDO/C_Master/$1';
+$route['MonitoringDO/SettingDO/(:any)/(:any)'] = 'MonitoringDO/C_Master/$1/$2';
+
+$route['MonitoringDO/InputDO'] = 'MonitoringDO/C_Master/InputDO';
+$route['MonitoringDO/CetakDO'] = 'MonitoringDO/C_Master/CetakDO';
+$route['MonitoringDO/PDF/(:any)'] = 'MonitoringDO/C_Master/CetakPDF/$1';
+$route['MonitoringDO/cekapi/(:any)'] = 'MonitoringDO/C_Master/cekapi/$1';
