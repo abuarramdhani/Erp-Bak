@@ -798,7 +798,7 @@ class M_moveorder extends CI_Model
 	}
 
 
-	function createMO($ip_address,$job_id,$subInv,$locator,$subInvFrom,$locatorFrom,$user_id)
+	function createMO($ip_address,$job_id,$subInv,$locator,$subInvFrom,$locatorFrom,$user_id,$nomor_mo)
 	{
 		// if ($locator) {
 		// 	$locator = null;
@@ -826,7 +826,9 @@ class M_moveorder extends CI_Model
 		// echo ':P_PARAM5 = '.$username.'<br>';
 		// echo ':P_PARAM6 = '.$ip_address.'<br>';
 		// echo ':P_PARAM7 = '.$jan.'<br>';
-		// echo ':P_PARAM8 = '.$job_id.'<br>';
+		// echo ':P_PARAM8 = '.$job_id.'<br>';		
+		// echo ':P_PARAM9 = '.$nomor_mo.'<br>';
+
 		// exit();
 		// $conn = oci_connect('APPS', 'APPS', '192.168.7.3:1522/DEV');
 		$conn = oci_connect('APPS', 'APPS', '192.168.7.1:1521/PROD');
@@ -835,7 +837,7 @@ class M_moveorder extends CI_Model
 	    		trigger_error(htmlentities($e['message'], ENT_QUOTES), E_USER_ERROR);
 			}
 		  
-		$sql =  "BEGIN APPS.KHS_CREATE_MO_JOB(:P_PARAM1,:P_PARAM2,:P_PARAM3,:P_PARAM4,:P_PARAM5,:P_PARAM6,:P_PARAM7,:P_PARAM8); END;";
+		$sql =  "BEGIN APPS.KHS_CREATE_MO_JOB_TRIAL3(:P_PARAM1,:P_PARAM2,:P_PARAM3,:P_PARAM4,:P_PARAM5,:P_PARAM6,:P_PARAM7,:P_PARAM8,:P_PARAM9); END;";
 
 		// $param4 = '';
 
@@ -850,7 +852,7 @@ class M_moveorder extends CI_Model
 		oci_bind_by_name($stmt,':P_PARAM6',$ip_address);
 		oci_bind_by_name($stmt,':P_PARAM7',$jan);
 		oci_bind_by_name($stmt,':P_PARAM8',$job_id);
-		// oci_bind_by_name($stmt,':P_PARAM9',$user_id);
+		oci_bind_by_name($stmt,':P_PARAM9',$nomor_mo);
 
 		
 		// if (!$data) {
@@ -972,5 +974,13 @@ class M_moveorder extends CI_Model
 		return $query->result_array();
 		// return $sql;
 	}
+
+
+	// function checkJob($job_id) {
+	// 	$oracle = $this->load->database('oracle',TRUE);
+	// 	$sql = "SELECT distinct we.WIP_ENTITY_NAME from wip_entities we where we.WIP_ENTITY_ID = $job_id ";
+	// 	$query = $oracle->query($sql);
+	// 	return $query->result_array();
+	// }
 
 }
