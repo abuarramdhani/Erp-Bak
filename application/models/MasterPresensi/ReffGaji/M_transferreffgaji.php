@@ -223,4 +223,108 @@ class M_transferreffgaji extends CI_Model
 		$this->personalia->query($sql);
 	}
 
+	public function getPekerjaKhusus($key){
+		$sql = "select tp.noind,tp.nama
+				from \"Presensi\".t_komponen_gaji_reffgaji tkgr
+				inner join hrd_khs.tpribadi tp 
+				on tkgr.noind = tp.noind
+				where tp.noind like upper('%$key%') or tp.nama like upper('%$key%')";
+		return $this->personalia->query($sql)->result_array();
+	}
+
+	public function getPekerjaAktif($key){
+		$sql = "select noind,nama from hrd_khs.tpribadi where noind like (upper('%$key%') or nama like upper('%$key%')) and keluar = '0'";
+		return $this->personalia->query($sql)->result_array();
+	}
+
+	public function getDetailPekerjaKhusus($noind,$periode){
+		$sql = "select dates.dates,
+					case extract(dow from dates.dates)
+						when 0 then 'Minggu'
+						when 1 then 'Senin'
+						when 2 then 'Selasa'
+						when 3 then 'Rabu'
+						when 4 then 'Kamis'
+						when 5 then 'Jumat'
+						when 6 then 'Sabtu'
+						end as nama_hari,
+					tk.keterangan,
+					trk.masuk,
+					trk.keluar,
+					coalesce(trk.jumlah,0) as jumlah,
+					coalesce(trk.ttl_pot_ist,0) as ttl_pot_ist,
+					coalesce(trk.ttl_jam,0) as ttl_jam,
+					coalesce(trk.jam_kerja,tjs.jam_kerja) as jam_kerja,
+					coalesce(trk.ttl_hari,0) as ttl_hari
+				from generate_series(
+				(select tanggal_awal
+				from \"Presensi\".tcutoff t
+				where to_char(tanggal_akhir,'mmyy') = '$periode'
+				and os='0'
+				and periode = to_char(tanggal_akhir,'yyyymm')),
+				(select tanggal_akhir
+				from \"Presensi\".tcutoff t
+				where to_char(tanggal_akhir,'mmyy') = '$periode'
+				and os='0'
+				and periode = to_char(tanggal_akhir,'yyyymm')),
+				interval '1 day'
+				) as dates
+				left join \"Presensi\".treffgaji_khusus trk 
+				on trk.tanggal = dates.dates and trk.noind = '$noind'
+				left join \"Presensi\".tketerangan tk 
+				on tk.kd_ket = trk.kd_ket
+				left join \"Presensi\".tjamshift tjs
+				on (case extract(dow from dates.dates)
+					when 0 then 'Minggu'
+					when 1 then 'Senin'
+					when 2 then 'Selasa'
+					when 3 then 'Rabu'
+					when 4 then 'Kamis'
+					when 5 then 'Jumat'
+					when 6 then 'Sabtu'
+					end) = tjs.hari 
+					and tjs.kd_shift = '4'";
+		return $this->personalia->query($sql)->result_array();
+	}
+
+	public function getNamaTerang($atasan,$user,$pekerja){
+		$sql = "select 	(select trim(nama) from hrd_khs.tpribadi where noind = '$atasan') as nama_atasan, 
+				(select trim(jabatan) from hrd_khs.tpribadi where noind = '$atasan') as jabatan_atasan, 
+				(select trim(nama) from hrd_khs.tpribadi where noind = '$user') as nama_user, 
+				(select trim(jabatan) from hrd_khs.tpribadi where noind = '$user') as jabatan_user,
+				(select trim(nama) from hrd_khs.tpribadi where noind = '$pekerja') as nama_pekerja, 
+				(select trim(jabatan) from hrd_khs.tpribadi where noind = '$pekerja') as jabatan_pekerja";	
+		return $this->personalia->query($sql)->row();																	
+	}
+
+	public function getseksiPekerja($noind){
+		$sql = "select noind,nama,
+					case when trim(ts.seksi) <> '-' then 'Seksi'
+					when trim(ts.unit) <> '-' then 'Unit'
+					when trim(ts.bidang) <> '-' then 'Bidang'
+					when trim(ts.dept) <> '-' then 'Departemen'
+					else '-'
+					end as jab,
+					case when trim(ts.seksi) <> '-' then ts.seksi
+					when trim(ts.unit) <> '-' then ts.unit
+					when trim(ts.bidang) <> '-' then ts.bidang
+					when trim(ts.dept) <> '-' then ts.dept
+					else '-'
+					end as jab_2
+				from hrd_khs.tpribadi tp 
+				left join hrd_khs.tseksi ts 
+				on tp.kodesie = ts.kodesie
+				where noind = '$noind' ";
+		return $this->personalia->query($sql)->row();	
+	}
+
+	public function getFormulaKhususPekerja($noind){
+		$sql = "select gf.*
+				from \"Presensi\".t_komponen_gaji_reffgaji gr
+				left join \"Presensi\".t_komponen_gaji_formula gf 
+				on gr.formula_id = gf.formula_id
+				where noind = '$noind'";
+		return $this->personalia->query($sql)->row();	
+	}
+
 } ?>
