@@ -7,6 +7,13 @@
                         <div class="text-right"><h1><b><?= $Title ?></b></h1></div>
                     </div>
                     <div class="col-lg-1">
+                        <div class="text-right hidden-md hidden-sm hidden-xs">
+                            <!-- Ganti yang di dalam site url dengan alamat main menu yang diinginkan -->
+                            <a class="btn btn-default btn-lg" href="<?php echo site_url('RekapTIMSPromosiPekerja/RiwayatMutasi');?>">
+                                <i class="icon-wrench icon-2x"></i>
+                                <br/>
+                            </a>
+                        </div>
                     </div>
                 </div>
 <style>
@@ -33,20 +40,20 @@
                                         <div class="form-group">
                                             <label for="radioJenisPencarian" class="control-label col-lg-2">Jenis Pencarian</label>
                                             <div class="col-md-2">
-                                                <input style="display: none" type="radio" class="form-check-input1" name="radioJenisPencarian" value="noind" ></input>
-                                                <input type="button" class="btn btn-default mencoba" name="radioJenisPencarian" value="noind" id="RekapRiwayatMutasi-radioJenisPencarian-noind"></input>
+                                                <input style="display: none" type="checkbox" class="form-check-input1" name="radioJenisPencarian[]" value="noind"></input>
+                                                <input type="button" class="btn btn-default mencoba" name="radioJenisPencarian[]" value="noind" id="RekapRiwayatMutasi-radioJenisPencarian-noind"></input>
                                             </div>
                                             <div class="col-md-2">
-                                                <input style="display: none" type="radio" class="form-check-input2" name="radioJenisPencarian" value="seksi" ></input>
-                                                <input type="button" class="btn btn-default mencoba2" name="radioJenisPencarian" value="seksi" id="RekapRiwayatMutasi-radioJenisPencarian-seksi"></input>
+                                                <input style="display: none" type="checkbox" class="form-check-input2" name="radioJenisPencarian[]" value="seksi" ></input>
+                                                <input type="button" class="btn btn-default mencoba2" name="radioJenisPencarian[]" value="seksi" id="RekapRiwayatMutasi-radioJenisPencarian-seksi"></input>
                                             </div>
                                             <div class="col-md-2">
-                                                <input style="display: none" type="radio" class="form-check-input3" name="radioJenisPencarian" value="lokasikerja"></input>
-                                                <input type="button" class="btn btn-default mencoba3" name="radioJenisPencarian" value="lokasikerja" id="RekapRiwayatMutasi-radioJenisPencarian-lokasikerja"></input>
+                                                <input style="display: none" type="checkbox" class="form-check-input3" name="radioJenisPencarian[]" value="lokasikerja"></input>
+                                                <input type="button" class="btn btn-default mencoba3" name="radioJenisPencarian[]" value="lokasikerja" id="RekapRiwayatMutasi-radioJenisPencarian-lokasikerja"></input>
                                             </div>
                                             <div class="col-md-2">
-                                                <input style="display: none" type="radio" class="form-check-input4" name="radioJenisPencarian" value="periode"></input>
-                                                <input type="button" class="btn btn-default mencoba4" name="radioJenisPencarian" value="periode" id="RekapRiwayatMutasi-radioJenisPencarian-periode"></input>
+                                                <input style="display: none" type="checkbox" class="form-check-input4" name="radioJenisPencarian[]" value="periode"></input>
+                                                <input type="button" class="btn btn-default mencoba4" name="radioJenisPencarian[]" value="periode" id="RekapRiwayatMutasi-radioJenisPencarian-periode"></input>
                                             </div>
                                         </div>
                                         <div id="RekapRiwayatMutasi-parameterNoind">
@@ -148,7 +155,7 @@
                                     </div>
                                     <div class="panel-footer">
                                         <div class="row text-right">
-                                            <button class="btn btn-info btn-lg" type="submit">
+                                            <button class="btn btn-info btn-lg" type="button" id="TIMS_SubmitRekapMutasi">
                                                 Proses
                                             </button>
                                         </div>
@@ -156,72 +163,9 @@
                                 </form>
                             </div>
                         </div>
-                        <?php
-                            if(isset($rekapRiwayatMutasi))
-                                // print_r($rekapRiwayatMutasi);
-                            {
-                        ?>
-                        <div class="box box-primary box-solid">
-                            <div class="box-header with-border">
-                                <h3 class="box-title">Hasil Rekap Riwayat Mutasi</h3>
-                                <div class="box-tools pull-right">
-                                    <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i>
-                                    </button>
-                                </div>
-                            </div>
-                            <div class="box-body">
-                                <div class="row">
-                                    <div class="col-lg-12">
-                                        <table class="table table-bordered" id="RekapRiwayatMutasi-hasil" style="width: 100%">
-                                            <thead>
-                                                <tr>
-                                                    <th style="text-align: center; vertical-align: middle;">No.</th>
-                                                    <th style="text-align: center; vertical-align: middle;">Tanggal Berlaku</th>
-                                                    <th style="text-align: center; vertical-align: middle;">No Induk</th>
-                                                    <th style="text-align: center; vertical-align: middle;">Nama</th>
-                                                    <th style="text-align: center; vertical-align: middle;">No BPJS Kesehatan</th>
-                                                    <th style="text-align: center; vertical-align: middle;">No BPJS Ketenagakerjaan</th>
-                                                    <th style="text-align: center; vertical-align: middle;">NIK</th>
-                                                    <th style="text-align: center; vertical-align: middle;">Tgl Lahir</th>
-                                                    <th style="text-align: center; vertical-align: middle;">Seksi Asal</th>
-                                                    <th style="text-align: center; vertical-align: middle;">Lokasi Kerja Asal</th>
-                                                    <th style="text-align: center; vertical-align: middle;">Seksi Baru</th>
-                                                    <th style="text-align: center; vertical-align: middle;">Lokasi Kerja Baru</th>
-                                                </tr>
-                                            </thead>
-                                            <tbody>
-                                                <?php
-                                                    $no     =   1;
-                                                    foreach ($rekapRiwayatMutasi as $hasil)
-                                                    {
-                                                ?>
-                                                <tr>
-                                                     <td style="white-space: nowrap; text-align: center; vertical-align: middle;"><?php echo $no;?></td>
-                                                     <td style="white-space: nowrap; text-align: center; vertical-align: middle;"><?php echo $hasil['tglberlaku'];?></td>
-                                                     <td style="white-space: nowrap; vertical-align: middle;"><?php echo $hasil['noind'];?></td>
-                                                     <td style="white-space: nowrap; vertical-align: middle;"><?php echo $hasil['nama'];?></td>
-                                                     <td style="white-space: nowrap; vertical-align: middle;"><?php echo $hasil['bpjskes'];?></td>
-                                                     <td style="white-space: nowrap; vertical-align: middle;"><?php echo $hasil['bpjstk'];?></td>
-                                                     <td style="white-space: nowrap; vertical-align: middle;"><?php echo $hasil['nik'];?></td>
-                                                     <td style="white-space: nowrap; vertical-align: middle;"><?php echo date('d-m-Y', strtotime($hasil['lahir']));?></td>
-                                                     <td style="white-space: nowrap; vertical-align: middle;"><?php echo $hasil['seksi_asal'];?></td>
-                                                     <td style="white-space: nowrap; vertical-align: middle;"><?php echo $hasil['lokasi_kerja_asal'];?></td>
-                                                     <td style="white-space: nowrap; vertical-align: middle;"><?php echo $hasil['seksi_baru'];?></td>
-                                                     <td style="white-space: nowrap; vertical-align: middle;"><?php echo $hasil['lokasi_kerja_baru'];?></td>
-                                                </tr>
-                                                <?php
-                                                        $no++;
-                                                    }
-                                                ?>
-                                            </tbody>
-                                        </table>
-                                    </div>
-                                </div>
-                            </div>
+                        <div id="TIMS_addResult">
+
                         </div>
-                        <?php
-                            } //else {echo "kosong";}
-                        ?>
                     </div>
                 </div>
             </div>
