@@ -217,7 +217,7 @@ class C_MoveOrder extends CI_Controller
 					// echo "<pre>";
 					// print_r($data);
 					// exit();
-					echo "<pre>";
+					// echo "<pre>";
 					$x = 1; 
 					foreach ($data as $key => $value) {
 						$i = 1;
@@ -227,6 +227,7 @@ class C_MoveOrder extends CI_Controller
 							$dataNew = $value2;
 							$dataNew['NO_URUT'] = $i;
 							//create TEMP
+							// echo "insert<br>";
 							// print_r($dataNew);echo "<br>";
 							$this->M_MoveOrder->createTemp($dataNew);
 							$i++;
