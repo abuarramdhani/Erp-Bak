@@ -27,7 +27,7 @@ class M_inputdata extends CI_Model
                     inner join er.er_employee_all emp on td.noind = emp.employee_code 
                     inner join ps.tmaster tm on tm.id = td.id_master
                     inner join ps.triwayat tr on td.id_data = tr.id_data
-                WHERE '$kodesie' = tr.seksi and tr.status = '0' 
+                WHERE ('$kodesie' = tr.seksi OR substring(emp.section_code,0,8) = '$kodesie') and tr.status = '0' 
                 ORDER BY td.id_data";
 
         $result = $this->db->query($sql)->result_array();

@@ -32,7 +32,7 @@ class C_Personalia extends CI_Controller
         }
     }
 
-    function queryApproval($status, $level){ //ambyaar
+    function queryApproval($status, $level){ //nak ngene aku yo rakuat
         $kodesie = substr($this->session->kodesie, 0, 7);
 
         if($status == 'pending'){
@@ -46,7 +46,8 @@ class C_Personalia extends CI_Controller
 
             $selecta = "SELECT td.id_data, 
                                 td.noind, 
-                                emp.employee_name nama, 
+                                emp.employee_name nama,
+                                substring(emp.section_code,0,8) kd_sie,
                                 tm.keterangan, 
                                 td.tanggal_start::date, 
                                 td.tanggal_end::date,tr.status, 
@@ -54,8 +55,8 @@ class C_Personalia extends CI_Controller
                                 ap.kodesie, 
                                 td.alasan,
                                 ( select distinct coalesce(nullif(section_name, '-'), nullif(unit_name, '-'), nullif(field_name, '-'), nullif(department_name, '-')) 
-                                  from er.er_section
-                                  where substring(section_code,0,8) = tr.seksi
+                                  from er.er_section es inner join er.er_employee_all emp on substring(emp.section_code, 0,8) = substring(es.section_code,0,8)
+                                  where emp.employee_code = td.noind
                                 ) 
                                 seksi_name
                         FROM ps.tdata td 
@@ -64,7 +65,7 @@ class C_Personalia extends CI_Controller
                                 inner join ps.triwayat tr on tr.id_data = td.id_data
                                 inner join er.er_employee_all emp on emp.employee_code = td.noind 
                         WHERE $where
-                        GROUP BY td.id_data,td.noind, emp.employee_name, tm.keterangan, td.tanggal_start, td.tanggal_end, tr.status, ap.kodesie, td.alasan, seksi_name
+                        GROUP BY td.id_data,td.noind, emp.employee_name, emp.section_code, tm.keterangan, td.tanggal_start, td.tanggal_end, tr.status, ap.kodesie, td.alasan, seksi_name
             ;";
         }else{
             if ($status == 'approved') {
@@ -83,7 +84,8 @@ class C_Personalia extends CI_Controller
 
             $selecta = "SELECT td.id_data,
                                 td.noind, 
-                                emp.employee_name nama, 
+                                emp.employee_name nama,
+                                substring(emp.section_code, 0,8) kd_sie, 
                                 tm.keterangan, 
                                 td.tanggal_start::date, 
                                 td.tanggal_end::date, 
@@ -92,8 +94,8 @@ class C_Personalia extends CI_Controller
                                 tr.seksi,
                                 td.alasan,
                                 ( select distinct coalesce(nullif(section_name, '-'), nullif(unit_name, '-'), nullif(field_name, '-'), nullif(department_name, '-')) 
-                                  from er.er_section
-                                  where substring(section_code,0,8) = tr.seksi 
+                                  from er.er_section es inner join er.er_employee_all emp on substring(emp.section_code, 0,8) = substring(es.section_code,0,8)
+                                  where emp.employee_code = td.noind
                                 ) 
                                 seksi_name
                         FROM ps.tdata td
@@ -101,7 +103,7 @@ class C_Personalia extends CI_Controller
                             inner join ps.triwayat tr on tr.id_data = td.id_data 
                             inner join er.er_employee_all emp on emp.employee_code = td.noind 
                         WHERE tr.seksi='$kodesie' and tr.status = '$stat' and tr.level='$level' 
-                        GROUP BY td.id_data,td.noind, emp.employee_name, tm.keterangan, td.tanggal_start, td.tanggal_end, tr.status, tr.seksi, td.alasan, seksi_name ;
+                        GROUP BY td.id_data,td.noind, emp.employee_name, emp.section_code, tm.keterangan, td.tanggal_start, td.tanggal_end, tr.status, tr.seksi, td.alasan, seksi_name ;
                         ";
         }
         
@@ -153,6 +155,21 @@ class C_Personalia extends CI_Controller
         $this->load->view('V_Footer', $this->data);
     }
 
+    function filter_dokumen_seksi($data){
+        function filter_seksi($item){
+            $kodesie = $_GET['seksi'];
+            return $item['kd_sie'] == substr($kodesie, 0,7);
+        }
+
+        $filtered = array_filter($data, 'filter_seksi');
+        return $filtered;
+    }
+
+    function allSection(){
+		$sql = "select kodesie, coalesce(nullif(trim(seksi), '-'), nullif(trim(unit),'-'), nullif(trim(bidang),'-'), dept) as nama from hrd_khs.tseksi where substring(kodesie, 8,11) = '00' and trim(seksi) <> '-' order by 1";
+        return $this->personalia->query($sql)->result_object();
+    }
+
     function NewData($level){
         if($level == 1){
             $data = $this->queryApproval('pending',1)->result_array();
@@ -160,14 +177,19 @@ class C_Personalia extends CI_Controller
             $data = $this->queryApproval('pending',2)->result_array();
         }
 
+        // filter seksi
+        $this->data['is_get'] = false;
+        $this->data['selected'] = false;
+        if($this->input->get('seksi')){
+            $data = $this->filter_dokumen_seksi($data);
+            $this->data['is_get'] = true;
+            $this->data['selected'] = substr($this->input->get('seksi'), 0, 7);
+        }
+
+        $this->data['seksi'] = $this->allSection();
+
         $this->data['table'] = $data;
         $this->data['lv']    = $level;
-
-        //$i=0;
-        //foreach($this->data['table'] as $key){
-        //    $this->data['table'][$i]['seksi_name'] = $this->M_inputdata->getNameSeksi($key['seksi']);
-        //    $i++;
-        //}
 
         $this->load->view('V_Header', $this->data);
 		$this->load->view('V_Sidemenu',$this->data);
@@ -194,13 +216,20 @@ class C_Personalia extends CI_Controller
             $data = $this->queryApproval('approved',2)->result_array();
         }
 
+        // filter seksi
+        $this->data['is_get'] = false;
+        $this->data['selected'] = false;
+        if($this->input->get('seksi')){
+            $data = $this->filter_dokumen_seksi($data);
+            $this->data['is_get'] = true;
+            $this->data['selected'] = substr($this->input->get('seksi'), 0, 7);
+        }
+
+        $this->data['seksi'] = $this->allSection();
+
         $this->data['table'] = $data;
         $this->data['lv']    = $level;
         $i=0;
-        foreach($this->data['table'] as $key){
-            $this->data['table'][$i]['seksi_name'] = $this->M_inputdata->getNameSeksiByNoind($key['noind']);
-            $i++;
-        }
 
         $this->load->view('V_Header', $this->data);
 		$this->load->view('V_Sidemenu',$this->data);
@@ -215,13 +244,20 @@ class C_Personalia extends CI_Controller
             $data = $this->queryApproval('rejected',2)->result_array();
         }
 
+        // filter seksi
+        $this->data['is_get'] = false;
+        $this->data['selected'] = false;
+        if($this->input->get('seksi')){
+            $data = $this->filter_dokumen_seksi($data);
+            $this->data['is_get'] = true;
+            $this->data['selected'] = substr($this->input->get('seksi'), 0, 7);
+        }
+
+        $this->data['seksi'] = $this->allSection();
+
         $this->data['table'] = $data;
         $this->data['lv']    = $level;
         $i=0;
-        foreach($this->data['table'] as $key){
-            $this->data['table'][$i]['seksi_name'] = $this->M_inputdata->getNameSeksiByNoind($key['noind']);
-            $i++;
-        }
         
         $this->load->view('V_Header', $this->data);
 		$this->load->view('V_Sidemenu',$this->data);

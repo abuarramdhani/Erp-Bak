@@ -3,7 +3,7 @@
 class M_personalia extends CI_Model
 {
     function __construnct(){
-        parent::__construnct();
+        parent::__construct();
 
 
     }

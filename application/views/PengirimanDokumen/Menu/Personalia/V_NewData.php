@@ -10,15 +10,16 @@
     thead>tr {
         font-weight: bold;
     }
-
-    .fixed_header tbody{
-        overflow:auto;
-        height:400px;
-        width:100%;
+    .outline{
+        border: 2px solid white;
+        border-radius: 5px;
+        background-color: #f39c12;
+        transition: 0.3s;
     }
 
-    ::-webkit-scrollbar {
-        display: none;
+    .outline:hover {
+        background-color: white !important;
+        color: #f39c12 !important; 
     }
 </style>
 <section class="content">
@@ -26,7 +27,25 @@
         <div class="row">
             <div class="box box-warning box-solid">
                 <div class="box-header with-border">
-                    <h2><b>Data Baru - Personalia <?= $lv ?></b></h2>
+                    <div class="col-lg-6">
+                        <h2><b>Data Baru - Personalia <?= $lv ?></b></h2>
+                    </div>
+                    <div class="col-lg-6 pull-right">
+                        <form action="">
+                            <label class="label-control col-lg-12 text-right" for="all-seksi-document">Seksi</label>
+                            <div class="col-lg-8 pull-right">
+                                <select name="seksi" id="all-seksi-document" class="select2 form-control">
+                                    <option value="">---pilih semua---</option>
+                                    <?php foreach($seksi as $item): ?>
+                                        <option <?php echo ($is_get && substr($item->kodesie,0,7) == $selected) ? 'selected'  : '' ?> value="<?= substr($item->kodesie,0,7) ?>"><?=$item->kodesie." - ".$item->nama ?></option>
+                                    <?php endforeach ?>
+                                </select>
+                            </div>
+                            <div class="col-lg-2 pull-right">
+                                <button type="submit" class="btn outline">filter <i class="fa fa-filter"></i></button>
+                            </div>
+                        </form>
+                    </div>
                 </div>
                 <div class="box-body">
                     <div class="table-responsive">
@@ -62,12 +81,12 @@
                                     <td>
                                         <?php echo 
                                             ($row['tanggal_start'] == $row['tanggal_end'])? 
-                                            date('Y/m/d', strtotime($row['tanggal_start'])) : 
-                                            date('Y/m/d', strtotime($row['tanggal_start']))." - ".date('Y/m/d',strtotime($row['tanggal_end'])) 
+                                            date('d/m/Y', strtotime($row['tanggal_start'])) : 
+                                            date('d/m/Y', strtotime($row['tanggal_start']))." - ".date('d/m/Y',strtotime($row['tanggal_end'])) 
                                         ?>
                                     </td>
                                     <td>
-                                        <?= date('Y/m/d', strtotime($row['tgl_update'])) ?>
+                                        <?= date('d/m/Y', strtotime($row['tgl_update'])) ?>
                                     </td>
                                     <td>
                                         <button onclick="accData(<?php echo $row['id_data'].','.$lv ?>)" class="btn btn-sm btn-success acc_btn">accept</button>&nbsp
@@ -181,7 +200,7 @@
         })
     }
 
-    const loadTableDraft = () => {
+    const loadTableDraft = () => { //maybe will useless
         let lv = '<?=$lv?>'
 
         $.ajax({
