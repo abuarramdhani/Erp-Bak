@@ -837,7 +837,7 @@ class M_moveorder extends CI_Model
 	    		trigger_error(htmlentities($e['message'], ENT_QUOTES), E_USER_ERROR);
 			}
 		  
-		$sql =  "BEGIN APPS.KHS_CREATE_MO_JOB_TRIAL3(:P_PARAM1,:P_PARAM2,:P_PARAM3,:P_PARAM4,:P_PARAM5,:P_PARAM6,:P_PARAM7,:P_PARAM8,:P_PARAM9); END;";
+		$sql =  "BEGIN APPS.KHS_CREATE_MO_JOB(:P_PARAM1,:P_PARAM2,:P_PARAM3,:P_PARAM4,:P_PARAM5,:P_PARAM6,:P_PARAM7,:P_PARAM8,:P_PARAM9); END;";
 
 		// $param4 = '';
 
