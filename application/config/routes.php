@@ -3666,6 +3666,7 @@ $route['EmailNotifikasiPembelian'] = 'EmailNotifikasiPembelian/C_NotifikasiPembe
 //--------------------------------------------------- Login Android API --------------------------------------------------//
 $route['LoginAndroidAPI'] = 'LoginAndroidAPI/C_LoginAndroid';
 $route['LoginAndroidAPI/loginAndroid'] = 'LoginAndroidAPI/C_LoginAndroid/loginAndroid';
+$route['LoginAndroidAPI/logUser'] = 'LoginAndroidAPI/C_LoginAndroid/loginAPI';
 
 //-------------------------------------------Monitoring DO---------------------------------------//
 $route['MonitoringDO'] = 'MonitoringDO/C_Master';
