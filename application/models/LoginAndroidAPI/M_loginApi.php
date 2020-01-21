@@ -1,5 +1,5 @@
 <?php
-class M_loginApi extends CI_Model {
+class M_loginapi extends CI_Model {
 
         public function __construct()
         {
