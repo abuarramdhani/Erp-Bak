@@ -13,7 +13,7 @@ class C_LoginAndroid extends CI_Controller
         $this->load->library('session');
         $this->load->library('encrypt');
         $this->load->model('M_Index');
-        $this->load->model('LoginAndroidApi/M_loginapi');
+        $this->load->model('LoginAndroidAPI/M_loginapi');
         $this->load->model('SystemAdministration/MainMenu/M_user');
     }
 
