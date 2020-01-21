@@ -13,9 +13,31 @@ class C_LoginAndroid extends CI_Controller
         $this->load->library('session');
         $this->load->library('encrypt');
         $this->load->model('M_Index');
+        $this->load->model('LoginAndroidApi/M_loginApi');
         $this->load->model('SystemAdministration/MainMenu/M_user');
-
     }
+
+    public function loginAPI()
+	{
+		$username = $this->input->post('username');
+		// $password = $this->input->post('password');
+		// $password_md5 = md5($password);
+		$login = $this->M_loginApi->loginApi($username);
+
+		// lah di komen 
+		if($login){
+			$session = array(
+				'error' 			=> false,
+			);
+		}else{
+			$session = array(
+				'error' 			=> true,
+				);
+			// $this->session->set_userdata($ses);
+		}
+
+		echo json_encode($session);
+		}
 
     public function loginAndroid()
 	{
