@@ -13,7 +13,7 @@ class C_LoginAndroid extends CI_Controller
         $this->load->library('session');
         $this->load->library('encrypt');
         $this->load->model('M_Index');
-        $this->load->model('LoginAndroidApi/M_loginApi');
+        $this->load->model('LoginAndroidApi/M_loginapi');
         $this->load->model('SystemAdministration/MainMenu/M_user');
     }
 
@@ -22,7 +22,7 @@ class C_LoginAndroid extends CI_Controller
 		$username = $this->input->post('username');
 		// $password = $this->input->post('password');
 		// $password_md5 = md5($password);
-		$login = $this->M_loginApi->loginApi($username);
+		$login = $this->M_loginapi->loginApi($username);
 
 		// lah di komen 
 		if($login){
