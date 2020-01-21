@@ -220,6 +220,21 @@ class M_pekerjacutoff extends CI_Model
 		// echo $jam_ijin."<br>";
 		return $jam_ijin;
 	}
+	
+	public function cek_bebas_denda_if($keluar,$masuk,$ist_mulai,$ist_selesai){
+		$hasil = false;
+		if ($keluar < $ist_mulai && $keluar < $ist_selesai) {
+			if($masuk <= $ist_selesai) {
+				$hit = $ist_selesai - $keluar;
+				if ($hit <= 1800) {
+					$hasil = true;
+				}else{
+					$hasil = false;
+				}
+			}
+		}
+		return $hasil;
+	}
 
 	public function insertMemo($data){
 		$this->personalia->insert('"Presensi".tcutoff_custom_memo',$data);
