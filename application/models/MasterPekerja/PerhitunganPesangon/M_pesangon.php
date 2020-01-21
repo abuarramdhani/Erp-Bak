@@ -129,6 +129,20 @@ class M_pesangon extends CI_Model {
 	    return $this->personalia->query($sql)->result_array();
 	  }
 
+		public function getdataNama($noind)
+		{
+			$sql = "SELECT tp.noind, trim(tp.nama) as nama, tr.jabatan FROM hrd_khs.tpribadi tp
+			 		LEFT JOIN hrd_khs.trefjabatan tr ON tr.kodesie = tp.kodesie AND tr.noind = tp.noind AND tr.kd_jabatan = tp.kd_jabatan
+					WHERE tp.noind = '$noind' ORDER BY tp.noind";
+			return $this->personalia->query($sql)->result_array();
+		}
+
+		public function UpdateDate($id, $tgl)
+		{
+			$sql = "UPDATE hrd_khs.t_pesangon SET tgl_cetak_prev = '$tgl' WHERE id_pesangon = '$id'";
+			return $this->personalia->query($sql);
+		}
+
 		public function getAlasanKeluar($noind)
 		{
 			$sql = "SELECT trim(a.alasan_tampil) as alasan_tampil from hrd_khs.t_alasan_pesangon a
@@ -153,7 +167,8 @@ class M_pesangon extends CI_Model {
 	  public function lihat()
 		{
 		 	$lihat = "select * from hrd_khs.t_pesangon as hit
-		 			join 		hrd_khs.tpribadi as pri on hit.noinduk=pri.noind";
+		 			join 		hrd_khs.tpribadi as pri on hit.noinduk=pri.noind
+					ORDER BY id_pesangon desc";
 		 	$query = $this->personalia->query($lihat);
 		 	return $query->result_array();
 		 }
@@ -287,7 +302,7 @@ class M_pesangon extends CI_Model {
 							and date_part('year', age(tglkeluar::date,  diangkat::date )) >= pesangon.batas_tahun_kerja_awal
 							and date_part('year', age(tglkeluar::date,  diangkat::date )) < pesangon.batas_tahun_kerja_akhir
 							join 	hrd_khs.tlokasi_kerja as lokker on 	lokker.id_=pri.lokasi_kerja
-							where 		tpes.id_pesangon='$id' and cuti.periode=extract(year from current_date)::varchar";
+							where 		tpes.id_pesangon='$id' and cuti.periode=extract(year from pri.tglkeluar)::varchar";
 	 		$query 	=	$this->personalia->query($editHitungPesangon);
 			return $query->result_array();
         }
@@ -314,6 +329,8 @@ class M_pesangon extends CI_Model {
 				end
 			) as pekerjaan,
 			tpes.id_pesangon as id,
+			tpes.pengirim as pengirim,
+			tpes.tgl_cetak_prev as tgl_cetak_prev,
 			tpes.no_rekening as no_rek,
 			tpes.nama_rekening as nama_rek,
 			tpes.bank as bank,
@@ -405,7 +422,7 @@ class M_pesangon extends CI_Model {
 							and date_part('year', age(tglkeluar::date,  diangkat::date )) >= pesangon.batas_tahun_kerja_awal
 							and date_part('year', age(tglkeluar::date,  diangkat::date )) < pesangon.batas_tahun_kerja_akhir
 							join 	hrd_khs.tlokasi_kerja as lokker on 	lokker.id_=pri.lokasi_kerja
-							where 		tpes.id_pesangon='$id' and cuti.periode=extract(year from current_date)::varchar";
+							where 		tpes.id_pesangon='$id' and cuti.periode=extract(year from pri.tglkeluar)::varchar";
 	 		$query 	=	$this->personalia->query($cetak);
 			return $query->result_array();
         }
