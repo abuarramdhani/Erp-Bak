@@ -55,7 +55,7 @@ class C_PekerjaKeluar extends CI_Controller
 		$this->load->view('V_Footer',$data);
 	}
 
-	public function proses_hitung($puasa,$tgl_puasa,$prd_gaji,$status_pekerja,$noind,$pot_seragam){
+	public function proses_hitung($puasa,$tgl_puasa,$prd_gaji,$status_pekerja,$noind,$pot_seragam,$chk_khusus,$khusus){
 		$noind_ = "";
 		if(!empty($noind)){
 			foreach ($noind as $key) {
@@ -75,9 +75,9 @@ class C_PekerjaKeluar extends CI_Controller
 		}else{
 			$noind_pekerja = "and noind in ($noind_)";
 		}
-		// echo $noind_pekerja;exit();
+		
 		$pekerja_keluar = $this->M_pekerjakeluar->getPekerjaKeluar($prd_gaji, $noind_pekerja);
-		// echo "<pre>";print_r($pekerja_keluar);exit();
+		
 		$gaji = array();
 		$angka = 0;
 		foreach ($pekerja_keluar as $pkj) {
@@ -152,113 +152,148 @@ class C_PekerjaKeluar extends CI_Controller
 
 			$tgl_bulan_awal = $this->M_pekerjakeluar->cekProsesGaji($pkj['noind'], $pkj['tglkeluar']);
 			$tgl_cut_awal = $this->M_pekerjakeluar->cekProsesGaji2($pkj['noind'], $pkj['tglkeluar']);
+			$tgl_cut_awal_ = $tgl_cut_awal;
 			$tgl_bulan_berjalan_awal = $this->M_pekerjakeluar->cekProsesGaji3($pkj['noind'], $pkj['tglkeluar']);
-
+			$tgl_keluar = $pkj['tglkeluar'];
+			
+			if($chk_khusus == "khusus"){
+				if ($khusus == "sebelum") {
+					$tgl_keluar = date('Y-m-d',strtotime($tgl_bulan_berjalan_awal.' -1 day'));
+				}else{
+					$tgl_cut_awal = $tgl_bulan_berjalan_awal;
+					$tgl_bulan_awal = $tgl_bulan_berjalan_awal;
+				}
+			}
+			
 			// komponen utama start
 			if ($status_pekerja == 'A' || $status_pekerja == 'B' || $status_pekerja == 'D') {
-				$kom_ip = $this->M_pekerjakeluar->set_Ip($pkj['noind'],$tgl_bulan_awal,$pkj['tglkeluar']);
+				$kom_ip = $this->M_pekerjakeluar->set_Ip($pkj['noind'],$tgl_bulan_awal,$tgl_keluar);
 			}
 
 			if ($status_pekerja == 'A' || $status_pekerja == 'B') {
-				$kom_ubt = $this->M_pekerjakeluar->hitung_Ubt($pkj['noind'],$tgl_bulan_awal,$pkj['tglkeluar']);
+				$kom_ubt = $this->M_pekerjakeluar->hitung_Ubt($pkj['noind'],$tgl_bulan_awal,$tgl_keluar);
 				if($pkj['upamk'] == 'Ya'){
-					$kom_upamk = $this->M_pekerjakeluar->hitung_Upamk($pkj['noind'],$tgl_bulan_awal,$pkj['tglkeluar']);
+					$kom_upamk = $this->M_pekerjakeluar->hitung_Upamk($pkj['noind'],$tgl_bulan_awal,$tgl_keluar);
 				}
 			}
 
 			if ($status_pekerja == 'A' || $status_pekerja == 'B' || $status_pekerja == 'D' || $status_pekerja == 'T' || $status_pekerja == 'E' || $status_pekerja == 'H') {
 				if ($status_pekerja == 'H' || $status_pekerja == 'T') {
-					$tgl_diangkat_3_bulan = date('Y-m-d', strtotime( $pkj['diangkat']."+3 months"));
+					$tgl_diangkat_3_bulan = date('Y-m-d', strtotime( $pkj['diangkat']." +3 months"));
 					if($pkj['tglkeluar'] >= $tgl_diangkat_3_bulan){
-						$kom_ip = $this->M_pekerjakeluar->set_Ik($pkj['noind'],$tgl_bulan_awal,$pkj['tglkeluar']);
+						$kom_ip = $this->M_pekerjakeluar->set_Ik($pkj['noind'],$tgl_bulan_awal,$tgl_keluar);
 					}else{
 						$kom_ip = 0;
 					}
 				}else{
-					$kom_ik = $this->M_pekerjakeluar->set_Ik($pkj['noind'],$tgl_bulan_awal,$pkj['tglkeluar']);
+					$kom_ik = $this->M_pekerjakeluar->set_Ik($pkj['noind'],$tgl_bulan_awal,$tgl_keluar);
 				}
 			}
 
 			if ($status_pekerja == 'D' || $status_pekerja == 'E') {
 				$cek_noind_berubah = $this->M_pekerjakeluar->cek_noind_berubah($pkj['noind']);
 				if($cek_noind_berubah > 0){
-					$kom_htm = $this->M_pekerjakeluar->hitung_Htm_diangkat($pkj['noind'],$tgl_cut_awal,$pkj['tglkeluar']);
-					$kom_tik = $this->M_pekerjakeluar->hitung_tik_diangkat($pkj['noind'],$tgl_cut_awal,$pkj['tglkeluar']);
-					$kom_tm  = $this->M_pekerjakeluar->hitung_tm_diangkat($pkj['noind'],$tgl_cut_awal,$pkj['tglkeluar']);
+					$kom_htm = $this->M_pekerjakeluar->hitung_Htm_diangkat($pkj['noind'],$tgl_cut_awal,$tgl_keluar);
+					$kom_tik = $this->M_pekerjakeluar->hitung_tik_diangkat($pkj['noind'],$tgl_cut_awal,$tgl_keluar);
+					$kom_tm  = $this->M_pekerjakeluar->hitung_tm_diangkat($pkj['noind'],$tgl_cut_awal,$tgl_keluar);
 				}else{
 					$cek_cutoff = $this->M_pekerjakeluar->cek_cutoff_custom($pkj['noind']);
 					if($cek_cutoff == "0"){
-						$kom_htm = $this->M_pekerjakeluar->hitung_Htm_tdk_cutoff($pkj['noind'],$tgl_cut_awal,$pkj['tglkeluar']);
-						$kom_tik = $this->M_pekerjakeluar->hitung_tik_tdk_cutoff($pkj['noind'],$tgl_cut_awal,$pkj['tglkeluar']);
-						$kom_tm  = $this->M_pekerjakeluar->hitung_tm_tdk_cutoff($pkj['noind'],$tgl_cut_awal,$pkj['tglkeluar']);
+						$kom_htm = $this->M_pekerjakeluar->hitung_Htm_tdk_cutoff($pkj['noind'],$tgl_cut_awal,$pkj['tglkeluar'],$chk_khusus,$khusus);
+						$kom_tik = $this->M_pekerjakeluar->hitung_tik_tdk_cutoff($pkj['noind'],$tgl_cut_awal,$pkj['tglkeluar'],$chk_khusus,$khusus);
+						$kom_tm  = $this->M_pekerjakeluar->hitung_tm_tdk_cutoff($pkj['noind'],$tgl_cut_awal,$pkj['tglkeluar'],$chk_khusus,$khusus);
 					}else{
-						$kom_htm = $this->M_pekerjakeluar->hitung_Htm($pkj['noind'],$tgl_cut_awal,$pkj['tglkeluar']);
-						$kom_tik = $this->M_pekerjakeluar->hitung_tik($pkj['noind'],$tgl_cut_awal,$pkj['tglkeluar']);
-						$kom_tm  = $this->M_pekerjakeluar->hitung_tm($pkj['noind'],$tgl_cut_awal,$pkj['tglkeluar']);
+						$kom_htm = $this->M_pekerjakeluar->hitung_Htm($pkj['noind'],$tgl_cut_awal,$pkj['tglkeluar'],$chk_khusus,$khusus);
+						$kom_tik = $this->M_pekerjakeluar->hitung_tik($pkj['noind'],$tgl_cut_awal,$pkj['tglkeluar'],$chk_khusus,$khusus);
+						$kom_tm  = $this->M_pekerjakeluar->hitung_tm($pkj['noind'],$tgl_cut_awal,$pkj['tglkeluar'],$chk_khusus,$khusus);
 					}
 				}
 			}else{
 				$cek_cutoff = $this->M_pekerjakeluar->cek_cutoff_custom($pkj['noind']);
 				if($cek_cutoff == "0"){
-					$kom_htm = $this->M_pekerjakeluar->hitung_Htm_tdk_cutoff($pkj['noind'],$tgl_cut_awal,$pkj['tglkeluar']);
-					$kom_tik = $this->M_pekerjakeluar->hitung_tik_tdk_cutoff($pkj['noind'],$tgl_cut_awal,$pkj['tglkeluar']);
-					$kom_tm  = $this->M_pekerjakeluar->hitung_tm_tdk_cutoff($pkj['noind'],$tgl_cut_awal,$pkj['tglkeluar']);
+					$kom_htm = $this->M_pekerjakeluar->hitung_Htm_tdk_cutoff($pkj['noind'],$tgl_cut_awal,$pkj['tglkeluar'],$chk_khusus,$khusus);
+					$kom_tik = $this->M_pekerjakeluar->hitung_tik_tdk_cutoff($pkj['noind'],$tgl_cut_awal,$pkj['tglkeluar'],$chk_khusus,$khusus);
+					$kom_tm  = $this->M_pekerjakeluar->hitung_tm_tdk_cutoff($pkj['noind'],$tgl_cut_awal,$pkj['tglkeluar'],$chk_khusus,$khusus);
 				}else{
-					$kom_htm = $this->M_pekerjakeluar->hitung_Htm($pkj['noind'],$tgl_cut_awal,$pkj['tglkeluar']);
-					$kom_tik = $this->M_pekerjakeluar->hitung_tik($pkj['noind'],$tgl_cut_awal,$pkj['tglkeluar']);
-					$kom_tm  = $this->M_pekerjakeluar->hitung_tm($pkj['noind'],$tgl_cut_awal,$pkj['tglkeluar']);
+					$kom_htm = $this->M_pekerjakeluar->hitung_Htm($pkj['noind'],$tgl_cut_awal,$pkj['tglkeluar'],$chk_khusus,$khusus);
+					$kom_tik = $this->M_pekerjakeluar->hitung_tik($pkj['noind'],$tgl_cut_awal,$pkj['tglkeluar'],$chk_khusus,$khusus);
+					$kom_tm  = $this->M_pekerjakeluar->hitung_tm($pkj['noind'],$tgl_cut_awal,$pkj['tglkeluar'],$chk_khusus,$khusus);
 				}
 			}
 
-			$kom_sisa_cuti = $this->M_pekerjakeluar->get_sisa_cuti($pkj['noind'],$pkj['tglkeluar']);
+			$kom_sisa_cuti = $this->M_pekerjakeluar->get_sisa_cuti($pkj['noind'],$tgl_keluar);
 
-			if ($puasa == 'on' || $puasa == '1' || $puasa == 'true') {
-				$kom_um_puasa = $this->M_pekerjakeluar->getKomUmPuasa($pkj['noind'],$tgl_bulan_awal,$pkj['tglkeluar'],$tgl_puasa);
+			if ($puasa == 'puasa') {
+				$kom_um_puasa = $this->M_pekerjakeluar->getKomUmPuasa($pkj['noind'],$tgl_bulan_awal,$tgl_keluar,$tgl_puasa);
 			}
 
 			if ($status_pekerja == 'A' || ($status_pekerja == 'B' && $pkj['kd_jabatan'] >= 14 && $pkj['kd_jabatan'] <= 12) || ($status_pekerja == 'D' && $pkj['kd_jabatan'] == 13) || $status_pekerja == 'E' || $status_pekerja == 'T' || $status_pekerja == 'H' || ($status_pekerja == 'J' && $pkj['kd_jabatan'] >= 14 && $pkj['kd_jabatan'] <= 12) ) {
-				$kom_lembur = $this->M_pekerjakeluar->hitung_lembur($pkj['noind'],$tgl_cut_awal,$pkj['tglkeluar']);
+				$kom_lembur = $this->M_pekerjakeluar->hitung_lembur($pkj['noind'],$tgl_cut_awal,$tgl_keluar);
 			}
 
-			$kom_ims = $this->M_pekerjakeluar->hitung_ims($pkj['noind'],$tgl_cut_awal,$pkj['tglkeluar']);
-			$kom_imm = $this->M_pekerjakeluar->hitung_imm($pkj['noind'],$tgl_cut_awal,$pkj['tglkeluar']);
+			$kom_ims = $this->M_pekerjakeluar->hitung_ims($pkj['noind'],$tgl_cut_awal,$tgl_keluar);
+			$kom_imm = $this->M_pekerjakeluar->hitung_imm($pkj['noind'],$tgl_cut_awal,$tgl_keluar);
 
 			if ($pkj['id_lokasi_kerja'] !== '01' && $pkj['id_lokasi_kerja'] !== '02' && $pkj['id_lokasi_kerja'] !== '03' && $pkj['id_lokasi_kerja'] !== '04' && (substr($pkj['noind'], 0, 1) == 'B' || substr($pkj['noind'], 0, 1) == 'D') ) {
-				$kom_um_cabang = $this->M_pekerjakeluar->hitung_um_cabang($pkj['noind'],$tgl_cut_awal,$pkj['tglkeluar']);
+				$kom_um_cabang = $this->M_pekerjakeluar->hitung_um_cabang($pkj['noind'],$tgl_cut_awal,$tgl_keluar);
 			}
 
 			if ($pkj['id_lokasi_kerja'] == '02') {
 				if($status_pekerja == 'B' || $status_pekerja == 'D' || $status_pekerja == 'T' || $status_pekerja == 'J'){
-					$kom_ipt = $this->M_pekerjakeluar->set_ipt($pkj['noind'],$tgl_bulan_awal,$pkj['tglkeluar']);
+					$kom_ipt = $this->M_pekerjakeluar->set_ipt($pkj['noind'],$tgl_bulan_awal,$tgl_keluar);
 				}
 
 			}
 			
-			$kom_tambahan = $this->M_pekerjakeluar->hitung_tambahan($pkj['noind'],$pkj['tglkeluar']);
+			$kom_tambahan = $this->M_pekerjakeluar->hitung_tambahan($pkj['noind'],$tgl_keluar);
 
 			if ($status_pekerja == 'B' || $status_pekerja == 'D' || $status_pekerja == 'J') {
 				if($cek_cutoff == 0){
-					$kom_if = $this->M_pekerjakeluar->hitung_If_tdk_cutoff($pkj['noind'],$tgl_cut_awal,$pkj['tglkeluar']);
+					$kom_if = $this->M_pekerjakeluar->hitung_If_tdk_cutoff($pkj['noind'],$tgl_cut_awal,$pkj['tglkeluar'],$chk_khusus,$khusus);
 				}else{
-					$kom_if = $this->M_pekerjakeluar->hitung_If($pkj['noind'],$tgl_cut_awal,$pkj['tglkeluar']);
+					$kom_if = $this->M_pekerjakeluar->hitung_If($pkj['noind'],$tgl_cut_awal,$pkj['tglkeluar'],$chk_khusus,$khusus);
 				}
 			}
 
-			if($status_pekerja == 'H'){
-				$kom_pot_seragam = $this->M_pekerjakeluar->get_pot_seragam($pkj['noind'],$pot_seragam);
-			}
-			$kom_pot_lain = $this->M_pekerjakeluar->potongan($pkj['noind']);
+			
+			if ($chk_khusus == "khusus") {
+				if ($khusus == "sesudah") {
+					if($status_pekerja == 'H'){
+						$kom_pot_seragam = $this->M_pekerjakeluar->get_pot_seragam($pkj['noind'],$pot_seragam);
+					}	
 
-			$pot_bpjs = $this->M_pekerjakeluar->get_bpjs($pkj['noind']);
-			$kom_jkn = $pot_bpjs->jkn;
-			$kom_jht = $pot_bpjs->jht;
-			$kom_jp = $pot_bpjs->jp;
+					$kom_pot_lain = $this->M_pekerjakeluar->potongan($pkj['noind']);
 
-			$kom_jml_jkn = $this->M_pekerjakeluar->jumlah_jkn($pkj['noind']);
-			$kom_jml_jht = $this->M_pekerjakeluar->jumlah_jht($pkj['noind']);
-			$kom_jml_jp = $this->M_pekerjakeluar->jumlah_jp($pkj['noind']);
+					$pot_bpjs = $this->M_pekerjakeluar->get_bpjs($pkj['noind']);
+					$kom_jkn = $pot_bpjs->jkn;
+					$kom_jht = $pot_bpjs->jht;
+					$kom_jp = $pot_bpjs->jp;
 
-			$kom_um_dl = $this->M_pekerjakeluar->get_uang_dl($pkj['noind'],$tgl_cut_awal,$pkj['tglkeluar']);
+					$kom_jml_jkn = $this->M_pekerjakeluar->jumlah_jkn($pkj['noind']);
+					$kom_jml_jht = $this->M_pekerjakeluar->jumlah_jht($pkj['noind']);
+					$kom_jml_jp = $this->M_pekerjakeluar->jumlah_jp($pkj['noind']);
+
+					$kom_um_dl = $this->M_pekerjakeluar->get_uang_dl($pkj['noind'],$tgl_cut_awal_,$tgl_keluar);
+				}
+			}else{
+				if($status_pekerja == 'H'){
+					$kom_pot_seragam = $this->M_pekerjakeluar->get_pot_seragam($pkj['noind'],$pot_seragam);
+				}
+
+				$kom_pot_lain = $this->M_pekerjakeluar->potongan($pkj['noind']);
+
+				$pot_bpjs = $this->M_pekerjakeluar->get_bpjs($pkj['noind']);
+				$kom_jkn = $pot_bpjs->jkn;
+				$kom_jht = $pot_bpjs->jht;
+				$kom_jp = $pot_bpjs->jp;
+
+				$kom_jml_jkn = $this->M_pekerjakeluar->jumlah_jkn($pkj['noind']);
+				$kom_jml_jht = $this->M_pekerjakeluar->jumlah_jht($pkj['noind']);
+				$kom_jml_jp = $this->M_pekerjakeluar->jumlah_jp($pkj['noind']);
+
+				$kom_um_dl = $this->M_pekerjakeluar->get_uang_dl($pkj['noind'],$tgl_cut_awal,$tgl_keluar);
+			}			
+
 
 			$kom_jml_duka = $this->M_pekerjakeluar->jumlah_duka($pkj['noind'],$tgl_cut_awal,$pkj['tglkeluar']);
 			$kom_nom_duka = $this->M_pekerjakeluar->nominal_duka($pkj['noind'],$tgl_cut_awal,$pkj['tglkeluar']);
@@ -269,7 +304,7 @@ class C_PekerjaKeluar extends CI_Controller
 			$kom_sk_susulan = $this->M_pekerjakeluar->get_sk_susulan($pkj['noind']);
 			$kom_cuti_susulan = $this->M_pekerjakeluar->get_cuti_susulan($pkj['noind']);
 
-			$susulan = $this->M_pekerjakeluar->get_kom_susulan($pkj['noind'],$pkj['tglkeluar']);
+			$susulan = $this->M_pekerjakeluar->get_kom_susulan($pkj['noind'],$tgl_keluar);
 			if (!empty($susulan)) {
 				$ifsusulan = "0";
                 $gpsusulan = "0";
@@ -405,25 +440,25 @@ class C_PekerjaKeluar extends CI_Controller
                 }else{
                 	if($gpsusulantotal != "0"){
                 		if ($gpsusulantotal < 0) {
-                			$pot_susulan .= round($gpsusulantotal,2)."GP";
+                			$kom_pot_susulan .= round($gpsusulantotal,2)."GP";
                 		}else{
-                			$tam_susulan .= round($gpsusulantotal,2)."GP";
+                			$kom_tam_susulan .= round($gpsusulantotal,2)."GP";
                 		}
                 	}
 
                 	if($ipsusulantotal != "0"){
                 		if ($ipsusulantotal < 0) {
-                			$pot_susulan .= round($ipsusulantotal,2)."IP";
+                			$kom_pot_susulan .= round($ipsusulantotal,2)."IP";
                 		}else{
-                			$tam_susulan .= round($ipsusulantotal,2)."IP";
+                			$kom_tam_susulan .= round($ipsusulantotal,2)."IP";
                 		}
                 	}
 
                 	if($iksusulantotal != "0"){
                 		if ($iksusulantotal < 0) {
-                			$pot_susulan .= round($iksusulantotal,2)."IK";
+                			$kom_pot_susulan .= round($iksusulantotal,2)."IK";
                 		}else{
-                			$tam_susulan .= round($iksusulantotal,2)."IK";
+                			$kom_tam_susulan .= round($iksusulantotal,2)."IK";
                 		}
                 	}
 
@@ -535,24 +570,24 @@ class C_PekerjaKeluar extends CI_Controller
 	}
 
 	public function Proses(){
+		// echo "<pre>";print_r($_POST);exit();
 		if(!isset($_POST) or empty($_POST)){
 			redirect(site_url('MasterPresensi/ReffGaji/PekerjaKeluar/'));
 		}
 		$user_id = $this->session->userid;
-		$tgl_cetak 		= $this->input->post('txtTglCetak');
 		$puasa 			= $this->input->post('txtPuasa');
 		$tgl_puasa = "";
-		if ($puasa == 'on' || $puasa == '1' || $puasa == 'true') {
+		if ($puasa == 'puasa') {
 			$tgl_puasa 		= $this->input->post('txtPeriodePuasa');
 		}
 		$prd_gaji 		= $this->input->post('txtPeriodeGaji');
 		$status_pekerja = $this->input->post('slcStatusPekerja');
 		$noind 			= $this->input->post('slcPekerja');
 		$pot_seragam 	= $this->input->post('txtPotSeragam');
-		// echo "<pre>";print_r($_POST);exit();
-		$gaji = $this->proses_hitung($puasa,$tgl_puasa,$prd_gaji,$status_pekerja,$noind,$pot_seragam);
-
-		// echo "<pre>";print_r($gaji);exit();
+		$chk_khusus 	= $this->input->post('txtKhususPKJKeluarCheckList');
+		$khusus  		= $this->input->post('txtKhususPKJKeluar');
+		
+		$gaji = $this->proses_hitung($puasa,$tgl_puasa,$prd_gaji,$status_pekerja,$noind,$pot_seragam,$chk_khusus,$khusus);
 
 		$data['Title']			=	'Pekerja Keluar';
 		$data['Menu'] 			= 	'Reff Gaji';
@@ -584,10 +619,9 @@ class C_PekerjaKeluar extends CI_Controller
 			redirect(site_url('MasterPresensi/ReffGaji/PekerjaKeluar/'));
 		}
 		$user_id = $this->session->userid;
-		$tgl_cetak 		= $this->input->post('txtTglCetak2');
 		$puasa 			= $this->input->post('txtPuasa2');
 		$tgl_puasa = "";
-		if ($puasa == 'on' || $puasa == '1' || $puasa == 'true') {
+		if ($puasa == 'puasa') {
 			$tgl_puasa 		= $this->input->post('txtPeriodePuasa2');
 		}
 		$prd_gaji 		= $this->input->post('txtPeriodeGaji2');
@@ -745,10 +779,9 @@ class C_PekerjaKeluar extends CI_Controller
 			redirect(site_url('MasterPresensi/ReffGaji/PekerjaKeluar/'));
 		}
 		$user_id = $this->session->userid;
-		$tgl_cetak 		= $this->input->post('txtTglCetak2');
 		$puasa 			= $this->input->post('txtPuasa2');
 		$tgl_puasa = "";
-		if ($puasa == 'on' || $puasa == '1' || $puasa == 'true') {
+		if ($puasa == 'puasa') {
 			$tgl_puasa 		= $this->input->post('txtPeriodePuasa2');
 		}
 		$prd_gaji 		= $this->input->post('txtPeriodeGaji2');
@@ -854,10 +887,9 @@ class C_PekerjaKeluar extends CI_Controller
 			redirect(site_url('MasterPresensi/ReffGaji/PekerjaKeluar/'));
 		}
 		$user_id = $this->session->userid;
-		$tgl_cetak 		= $this->input->get('txtTglCetak2');
 		$puasa 			= $this->input->get('txtPuasa2');
 		$tgl_puasa = "";
-		if ($puasa == 'on' || $puasa == '1' || $puasa == 'true') {
+		if ($puasa == 'puasa') {
 			$tgl_puasa 		= $this->input->get('txtPeriodePuasa2');
 		}
 		$prd_gaji 		= $this->input->get('txtPeriodeGaji2');
