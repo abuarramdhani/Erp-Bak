@@ -32,7 +32,7 @@
 											<span><label>Nomor PO</label></span>
 										</td>
 										<td>
-											<input value="0" placeholder="Nomor PO" type="text" name="txtNoPO" class="ininopo form-control" size="40" id="nomorPOID">
+											<input data-toggle="tooltip" data-placement="top" title="Jika Nomor PO tidak dicantumkan, harap isi dengan 0" placeholder="Nomor PO" type="text" name="txtNoPO" class="ininopo form-control" size="40" id="nomorPOID">
 		                     			</td>
 		                     			<td>
 		                     				<button type="button" id="btnCariTop" class="btn btn-success"> Cari </button>
@@ -167,7 +167,7 @@
 </section>
 </form>
 
-<div class="modal fade in show" id="loadingRequest" tabindex="-1" role="dialog" aria-labelledby="loadMeLabel">
+<!-- <div class="modal fade in show" id="loadingRequest" tabindex="-1" role="dialog" aria-labelledby="loadMeLabel">
   <div style="transform: translateY(50%);" class="modal-dialog modal-sm">
     <div class="">
       <div class="modal-body">
@@ -181,23 +181,23 @@
       </div>
     </div>
   </div>
-</div>
+</div> -->
 
 
 <script type="text/javascript">
 
 $( window ).load(function() { 
-	$('#loadingRequest').modal({
-      backdrop: "static",
-      show: true,
-      keyboard: false
-    });
-    setTimeout(function() {
-      $('#loadingRequest').modal('hide');
-    }, 200);
-    setTimeout(function() {
+	// $('#loadingRequest').modal({
+ //      backdrop: "static",
+ //      show: true,
+ //      keyboard: false
+ //    });
+ //    setTimeout(function() {
+ //      $('#loadingRequest').modal('hide');
+ //    }, 200);
+ //    setTimeout(function() {
 	  $("#nomorPOID").focus();
-    }, 500);
+    // }, 500);
 
   // setTimeout(function(){console.log('yenk'); $("#nomorPOID").focus();},3000);
   // alert("yenk");
