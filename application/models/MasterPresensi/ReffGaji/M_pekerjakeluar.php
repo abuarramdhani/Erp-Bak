@@ -1666,7 +1666,7 @@ class M_pekerjakeluar extends CI_Model
 			$result1 = $this->personalia->query($sql)->result_array();
 			$nilai = $result1['0']['total'];
 
-			if($chk_khusus !== "khusus" or ($chk_khusus == "khusus" && $khusus = "sesudah")){
+			if($chk_khusus !== "khusus" or ($chk_khusus == "khusus" && $khusus == "sesudah")){
 				$sql = "SELECT a.tanggal, a.noind,
 								concat(a.tanggal::date,' ',a.keluar)::timestamp as keluar,
 								case when a.masuk::time < a.keluar::time then
@@ -1731,7 +1731,7 @@ class M_pekerjakeluar extends CI_Model
 				}				
 			}
 
-			if($chk_khusus !== "khusus" or ($chk_khusus == "khusus" && $khusus = "sebelum")){
+			if($chk_khusus !== "khusus" or ($chk_khusus == "khusus" && $khusus == "sebelum")){
 				$sql = "SELECT a.tanggal, a.noind,
 								concat(a.tanggal::date,' ',a.keluar)::timestamp as keluar,
 								case when a.masuk::time < a.keluar::time then
@@ -2046,7 +2046,7 @@ class M_pekerjakeluar extends CI_Model
 			$result1 = $this->personalia->query($sql)->result_array();
 			$nilai = $result1['0']['total'];
 
-			if($chk_khusus !== "khusus" or ($chk_khusus == "khusus" && $khusus = "sesudah")){
+			if($chk_khusus !== "khusus" or ($chk_khusus == "khusus" && $khusus == "sesudah")){
 				$sql = "SELECT a.tanggal, a.noind,
 								concat(a.tanggal::date,' ',a.keluar)::timestamp as keluar,
 								case when a.masuk::time < a.keluar::time then
@@ -2111,7 +2111,7 @@ class M_pekerjakeluar extends CI_Model
 				}
 			}
 
-			if($chk_khusus !== "khusus" or ($chk_khusus == "khusus" && $khusus = "sesudah")){
+			if($chk_khusus !== "khusus" or ($chk_khusus == "khusus" && $khusus == "sesudah")){
 				$sql = "SELECT a.tanggal, a.noind,
 								concat(a.tanggal::date,' ',a.keluar)::timestamp as keluar,
 								case when a.masuk::time < a.keluar::time then
@@ -3516,7 +3516,7 @@ class M_pekerjakeluar extends CI_Model
 		if ($pilih == "awal") {
 			$nilai = 0;
 
-			if($chk_khusus !== "khusus" or ($chk_khusus == "khusus" && $khusus = "sesudah")){
+			if($chk_khusus !== "khusus" or ($chk_khusus == "khusus" && $khusus == "sesudah")){
 				$sql = "SELECT a.tanggal, a.noind,
 								concat(a.tanggal::date,' ',a.keluar)::timestamp as keluar,
 								case when a.masuk::time < a.keluar::time then
@@ -3579,7 +3579,7 @@ class M_pekerjakeluar extends CI_Model
 					$simpan_tgl = $tik['tanggal'];
 				}
 			}
-			if($chk_khusus !== "khusus" or ($chk_khusus == "khusus" && $khusus = "sebelum")){
+			if($chk_khusus !== "khusus" or ($chk_khusus == "khusus" && $khusus == "sebelum")){
 				$sql = "SELECT a.tanggal, a.noind,
 								concat(a.tanggal::date,' ',a.keluar)::timestamp as keluar,
 								case when a.masuk::time < a.keluar::time then
@@ -3726,7 +3726,7 @@ class M_pekerjakeluar extends CI_Model
 		if ($pilih == "awal") {
 			$nilai = 0;
 
-			if($chk_khusus !== "khusus" or ($chk_khusus == "khusus" && $khusus = "sesudah")){
+			if($chk_khusus !== "khusus" or ($chk_khusus == "khusus" && $khusus == "sesudah")){
 				$sql = "SELECT a.tanggal, a.noind,
 								concat(a.tanggal::date,' ',a.keluar)::timestamp as keluar,
 								case when a.masuk::time < a.keluar::time then
@@ -3789,7 +3789,7 @@ class M_pekerjakeluar extends CI_Model
 				}
 			}
 
-			if($chk_khusus !== "khusus" or ($chk_khusus == "khusus" && $khusus = "sebelum")){
+			if($chk_khusus !== "khusus" or ($chk_khusus == "khusus" && $khusus == "sebelum")){
 				$sql = "SELECT a.tanggal, a.noind,
 								concat(a.tanggal::date,' ',a.keluar)::timestamp as keluar,
 								case when a.masuk::time < a.keluar::time then
