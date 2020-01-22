@@ -481,7 +481,6 @@ public function GetSudahCetak()
             ,khs_person_delivery kpd
             --
             ,khs_delivery_temp kdt
-            ,khs_cetak_do kcd
         where ooha.HEADER_ID = oola.HEADER_ID
           --
           and wdd.SOURCE_HEADER_NUMBER = ooha.ORDER_NUMBER
