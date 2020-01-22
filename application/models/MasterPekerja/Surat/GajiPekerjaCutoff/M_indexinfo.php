@@ -39,11 +39,6 @@ class M_indexinfo extends CI_Model
     return $this->personalia->query("SELECT isi_surat FROM \"Surat\".tisi_surat Where id_isi = '26' and jenis_surat = 'A CUT OFF' AND staf =  '1' LIMIT 1")->row()->isi_surat;
   }
 
-  public function getAlasanNStaf()
-  {
-    return $this->personalia->query("SELECT isi_surat FROM \"Surat\".tisi_surat Where id_isi = '25' and jenis_surat = 'A CUT OFF NSTAF' AND staf = '0' LIMIT 1")->row()->isi_surat;
-  }
-
   public function getDetailTambahanPrev($param, $noind)
   {
     if ($param == true) {
@@ -150,7 +145,7 @@ class M_indexinfo extends CI_Model
     }else {
       $noindNew = "= '$noind'";
     }
-    $sql = "SELECT tp.noind, trim(tp.nama) as nama, trim(ts.seksi) as seksi , tp.kd_jabatan, left(tp.kodesie, 7) as kodesie
+    $sql = "SELECT tp.noind, trim(tp.nama) as nama, trim(ts.seksi) as seksi , tp.kd_jabatan, left(tp.kodesie, 7) as kodesie, (select ket from \"Presensi\".tcutoff_custom where noind = tp.noind) as ket
             FROM hrd_khs.tpribadi tp
             LEFT JOIN hrd_khs.tseksi ts ON tp.kodesie = ts.kodesie
             WHERE tp.noind $noindNew AND tp.keluar = '0'
