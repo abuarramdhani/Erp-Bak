@@ -1024,12 +1024,27 @@ class C_splseksi extends CI_Controller {
 			return false;
 		}
 
+		$target = array();
+		$target_satuan = array();
+		$realisasi = array();
+		$realisasi_satuan = array();
+
+		// reindexing array
+		$target_post_0 = $this->input->post('target');
+		foreach($target_post_0 as $key => $value){
+			$target_post[] = $_POST['target'][$key];
+			$target_satuan_post[] = $_POST['target_satuan'][$key];
+			$realisasi_post[] = $_POST['realisasi'][$key];
+			$realisasi_satuan_post[] = $_POST['realisasi_satuan'][$key];
+			$pekerjaan_post[] = $_POST['pekerjaan'][$key];
+		}
+
 		$is_notvalid = [];
 		
 		for($x=0; $x<$size; $x++){
 			$noind = $this->input->post("noind[$x]");
 		
-			//checking pekerja yang ada spl di tanggal yg daiambil
+			//checking pekerja yang ada spl di tanggal yg diambil
 			$checkSPL = $this->M_splseksi->checkSPL($noind, $tanggal);
 			if($checkSPL){
 				$is_notvalid[] = $noind;
@@ -1062,7 +1077,7 @@ class C_splseksi extends CI_Controller {
 						$overtime_end   = strtotime($selesai);
 
 						if ($rest_start >= $overtime_start && $rest_end < $overtime_end) { // jika jam istirahat masuk range lembur
-							//jika ditemukan istirhat,
+							//jika ditemukan istirahat,
 							$istirahat = '1';
 							break;
 						}else{
@@ -1106,18 +1121,20 @@ class C_splseksi extends CI_Controller {
 
 			$target = array();
 			$realisasi = array();
-			
 			$j = 0;
-			for($j; $j < count($this->input->post("target[$x]")); $j++){
-				$target[] = $this->input->post("target[$x][$j]")." ".$this->input->post("target_satuan[$x][$j]");
-				$realisasi[] = $this->input->post("realisasi[$x][$j]")." ".$this->input->post("realisasi_satuan[$x][$j]");
+			for($j; $j < count($target_post[$x]); $j++){
+				$target[] = $target_post[$x][$j]." ".$target_satuan_post[$x][$j];
+				$realisasi[] = $realisasi_post[$x][$j]." ".$realisasi_satuan_post[$x][$j];
 			}
 
 			$target = implode(';', $target);
 			$realisasi = implode(';', $realisasi);
 
-			$pekerjaan = $this->input->post("pekerjaan[$x]");
+			// FIXME: reindex the pekerjaan
+			// TODO: trial this, pekerjaan null ?
+			$pekerjaan = $pekerjaan_post[$x];
 			$pekerjaan = str_replace("'", '', implode(';', $pekerjaan));
+
 			$mulai = $this->input->post("lembur_awal[$x]");
 			$selesai = $this->input->post("lembur_akhir[$x]");
 

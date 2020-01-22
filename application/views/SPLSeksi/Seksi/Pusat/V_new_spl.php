@@ -195,7 +195,7 @@
 												<tbody>
 													<tr class="multiinput parent" data-row="0">
 														<td>
-															-
+															<button disabled type='button' class='btn btn-danger spl-pkj-del'><span class='fa fa-trash'></span></button>
 														</td>
 														<td>
 															<select class="spl-new-pkj-select2 spl-cek" name="noind[]" style="width: 100%" required>
@@ -238,7 +238,7 @@
 															<textarea style="resize: vertical; min-height: 30px;" class="form-control pekerjaan" rows="1" name="pekerjaan[0][]" required></textarea>
 														</td>
 														<td>
-															<button type="button" onclick="add_jobs_spl($(this), 0)" class="btn btn-sm btn-default"><i class="fa fa-plus"></i></button>
+															<button type="button" onclick="add_jobs_spl($(this))" class="btn btn-sm btn-default"><i class="fa fa-plus"></i></button>
 														</td>
 													</tr>
 												</tbody>

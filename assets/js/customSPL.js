@@ -238,12 +238,16 @@ $(function() {
     });
 
     $('#example11').on('click', '.spl-pkj-del', function() {
+        let totalRow = $('.multiinput').length
 
         let thisrow = $(this).closest('tr')
         let nextrow = thisrow.next('.multiinput.parent')
         thisrow.nextUntil(nextrow, 'tr.spl-jobs').remove()
         $(this).closest('tr').remove();
 
+        if (totalRow == 2) {
+            $('.multiinput').find('.spl-pkj-del').prop('disabled', true)
+        }
     });
 
     $('#submit_spl').on('click', function(e) {
@@ -255,28 +259,67 @@ $(function() {
             e.preventDefault()
             return
         }
-
-        //lets cooking time
-
-
     })
 
     $("#spl_pkj_add").click(function(e) {
         e.preventDefault();
-        $('.multiinput select[name*=noind]').last().select2("destroy");
-        $('.multiinput.parent').last().clone().appendTo('#example11 tbody');
-        $(".multiinput:last .form-control").val("").change();
-        $(".multiinput:last td:first").html("<button type='button' class='btn btn-danger spl-pkj-del'><span class='fa fa-trash'></span></button>");
-        let row = $('.multiinput.parent').length - 1
-        $('.multiinput:last').find('.pekerjaan').attr('name', `pekerjaan[${row}][]`)
-        $('.multiinput:last').find('input[name^=target]').attr('name', `target[${row}][]`)
-        $('.multiinput:last').find('input[name^=realisasi]').attr('name', `realisasi[${row}][]`)
-        $('.multiinput:last').find('.target-satuan').attr('name', `target_satuan[${row}][]`)
-        $('.multiinput:last').find('.realisasi-satuan').attr('name', `realisasi_satuan[${row}][]`)
-        $('.multiinput:last').attr('data-row', row)
-        $(".multiinput:last select").val("").change();
-        $(".multiinput:last .spl-new-error").remove();
-        $(".multiinput:last select").closest("td").css("background", "#ffffff");
+
+        let row = $('.multiinput.parent')
+        row = (row.length == 0) ? row.length : (row.last().data('row') + 1)
+        let TrHTML = `
+        <tr class="multiinput parent" data-row="${row}">
+            <td>
+                <button type='button' class='btn btn-danger spl-pkj-del'><span class='fa fa-trash'></span></button>
+            </td>
+            <td>
+                <select class="spl-new-pkj-select2 spl-cek" name="noind[]" style="width: 100%" required>
+                    <!-- select2 -->
+                </select>
+            </td>
+            <td>
+                <input type="text" class="form-control" name="lbrawal[]" disabled>
+                <input type="hidden" class="form-control" name="lembur_awal[]" >
+            </td>
+            <td>
+                <input type="text" class="form-control" name="lbrakhir[]" disabled>
+                <input type="hidden" class="form-control" name="lembur_akhir[]" >
+            </td>
+            <td>
+                <input type="text" class="form-control" name="overtime" disabled>
+            </td>
+            <td>
+                <input type="number" class="form-control" name="target[${row}][]" required>
+            </td>
+            <td>
+                <select class="form-control target-satuan" name="target_satuan[${row}][]" required>
+                    <option value=""></option>
+                    <option value="Pcs">Pcs</option>
+                    <option value="%">%</option>
+                    <option value="Box">Box</option>
+                    <option value="Kg">Kg</option>
+                    <option value="Unit">Unit</option>
+                    <option value="Ton">Ton</option>
+                    <option value="Flask">Flask</option>
+                </select>
+            </td>
+            <td>
+                <input type="number" class="form-control" name="realisasi[${row}][]" required>
+            </td>
+            <td>
+                <input type="text" class="form-control realisasi-satuan" name="realisasi_satuan[${row}][]" readonly>
+            </td>
+            <td colspan="2">
+                <textarea style="resize: vertical; min-height: 30px;" class="form-control pekerjaan" rows="1" name="pekerjaan[${row}][]" required></textarea>
+            </td>
+            <td>
+                <button type="button" onclick="add_jobs_spl($(this))" class="btn btn-sm btn-default"><i class="fa fa-plus"></i></button>
+            </td>
+        </tr>
+        `
+        $('.multiinput').first().find('.spl-pkj-del').prop('disabled', false)
+        $('#example11 tbody').append(TrHTML)
+
+        // make new select2 ajax on new dom select pekerja 
         $('.multiinput select[name*=noind]').select2({
             ajax: {
                 url: baseurl + "SPLSeksi/Pusat/C_splseksi/show_pekerja3",
