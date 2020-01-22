@@ -240,6 +240,24 @@ class M_pekerjacutoff extends CI_Model
 		$this->personalia->insert('"Presensi".tcutoff_custom_memo',$data);
 	}
 
+	public function insertMemoDetail($data){
+		$this->personalia->insert('"Presensi".tcutoff_custom_memo_detail',$data);
+	}
+
+	public function getMemoID($dibuat,$periode,$nomor_surat,$mengetahui,$to_staff,$to_nonstaff,$file_staff,$file_nonstaff){
+		$sql = "select * 
+				from \"Presensi\".tcutoff_custom_memo 
+				where nomor_surat = '$nomor_surat' and 
+				mengetahui = '$mengetahui' and 
+				kepada_staff = '$to_staff' and 
+				kepada_nonstaff = '$to_nonstaff' and 
+				created_by = '$dibuat' and 
+				file_staff = '$file_staff' and 
+				file_nonstaff = '$file_nonstaff' and 
+				periode = '$periode'";
+		return $this->personalia->query($sql)->row()->id_memo;
+	}
+
 	public function deleteMemo($id){
 		$sql = "update \"Presensi\".tcutoff_custom_memo set status = 2 where id_memo = $id ";
 		$this->personalia->query($sql);

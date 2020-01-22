@@ -1504,8 +1504,7 @@ class M_pekerjakeluar extends CI_Model
 							case when '$chk_khusus' = 'khusus' then
 								case when '$khusus' = 'sebelum' then 
 									(
-										30 -
-										(extract(day from a.tglkeluar) - 1) +
+										30 +
 										(select count(tanggal) as jml from
 											(
 												SELECT b.tanggal FROM \"Presensi\".TDataTIM b
@@ -1885,8 +1884,7 @@ class M_pekerjakeluar extends CI_Model
 							case when '$chk_khusus' = 'khusus' then
 								case when '$khusus' = 'sebelum' then 
 									(
-										30 -
-										(extract(day from a.tglkeluar) - 1) +
+										30 +
 										(select count(tanggal) as jml from
 											(
 												SELECT b.tanggal FROM \"Presensi\".TDataTIM b
@@ -3980,8 +3978,7 @@ class M_pekerjakeluar extends CI_Model
 							case when '$chk_khusus' = 'khusus' then
 								case when '$khusus' = 'sebelum' then 
 									(
-										30 -
-										(extract(day from a.tglkeluar) - 1) +
+										30 +
 										(select count(tanggal) as jml from
 											(
 												SELECT b.tanggal FROM \"Presensi\".TDataTIM b
@@ -4179,8 +4176,7 @@ class M_pekerjakeluar extends CI_Model
 							case when '$chk_khusus' = 'khusus' then
 								case when '$khusus' = 'sebelum' then 
 									(
-										30 -
-										(extract(day from a.tglkeluar) - 1) +
+										30  +
 										(select count(tanggal) as jml from
 											(
 												SELECT b.tanggal FROM \"Presensi\".TDataTIM b
