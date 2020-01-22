@@ -1278,7 +1278,7 @@ class M_pekerjakeluar extends CI_Model
 
 				$simpan_tgl = $tik['tanggal'];
 			}
-			 
+			 // echo $akhir;exit();
 		}else{
 			$sql = "select noind,
 						case when (select count(*) from \"Presensi\".tcutoff_custom c where a.noind = c.noind ) > 0 then
@@ -2111,7 +2111,7 @@ class M_pekerjakeluar extends CI_Model
 				}
 			}
 
-			if($chk_khusus !== "khusus" or ($chk_khusus == "khusus" && $khusus == "sesudah")){
+			if($chk_khusus !== "khusus" or ($chk_khusus == "khusus" && $khusus == "sebelum")){
 				$sql = "SELECT a.tanggal, a.noind,
 								concat(a.tanggal::date,' ',a.keluar)::timestamp as keluar,
 								case when a.masuk::time < a.keluar::time then
