@@ -769,7 +769,7 @@ function rekap_datatable_detail() {
 							$('.RekapAbsensi-cmbUnit').attr('disabled','true');
 							$('.RekapAbsensi-cmbSeksi').attr('disabled','true');
 						}
-						else if(bidang.length - 2 == '00')
+						else if(bidang.substr(bidang.length - 2) == '00')
 						{
 							$('.RekapAbsensi-cmbUnit').each(function () { //added a each loop here
 						        $(this).select2('destroy').val("").select2();
@@ -828,7 +828,7 @@ function rekap_datatable_detail() {
 
 							$('.RekapAbsensi-cmbSeksi').attr('disabled','true');
 						}
-						else if(unit.length - 2 == '00')
+						else if(unit.substr(unit.length - 2) == '00')
 						{
 							$('.RekapAbsensi-cmbSeksi').each(function () { //added a each loop here
 						        $(this).select2('destroy').val("").select2();
