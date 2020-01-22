@@ -41,112 +41,155 @@ class M_monitoringdo extends CI_Model
       return $response;
     }
 
-    public function GetSudahCetak()
+public function GetSudahCetak()
     {
           $sql = "SELECT distinct
-               mtrh.REQUEST_NUMBER --\"DO/SPB\"
-              ,hzp.PARTY_NAME tujuan
-              ,hzl.CITY kota
-              ,kpd.PERSON_ID petugas
-        from hz_cust_site_uses_all hcsua
-            ,hz_party_sites hps
-            ,hz_locations hzl
-            ,hz_cust_acct_sites_all hcas
-            ,hz_parties hzp
-            ,hz_cust_accounts hca
+                 mtrh.REQUEST_NUMBER
+                ,hzp.PARTY_NAME tujuan
+                ,hzl.CITY kota
+                ,kpd.PERSON_ID petugas
+          from hz_cust_site_uses_all hcsua
+              ,hz_party_sites hps
+              ,hz_locations hzl
+              ,hz_cust_acct_sites_all hcas
+              ,hz_parties hzp
+              ,hz_cust_accounts hca
+              --
+              ,oe_order_headers_all ooha
+              ,oe_order_lines_all oola
+              ,wsh_delivery_details wdd
+              --
+              ,mtl_txn_request_headers mtrh
+              ,mtl_txn_request_lines mtrl
+              ,khs_approval_do kad
+              ,khs_person_delivery kpd
+              --
+              ,khs_delivery_temp kdt
+              ,khs_cetak_do kcd
+          where ooha.HEADER_ID = oola.HEADER_ID
             --
-            ,oe_order_headers_all ooha
-            ,oe_order_lines_all oola
-            ,wsh_delivery_details wdd
+            and wdd.SOURCE_HEADER_NUMBER = ooha.ORDER_NUMBER
             --
-            ,mtl_txn_request_headers mtrh
-            ,mtl_txn_request_lines mtrl
-            ,khs_approval_do kad
-            ,khs_person_delivery kpd
+            and kad.NO_DO = mtrh.REQUEST_NUMBER
             --
-            ,khs_delivery_temp kdt
-            ,khs_cetak_do kcd
-        where ooha.HEADER_ID = oola.HEADER_ID
-          --
-          and wdd.SOURCE_HEADER_NUMBER = ooha.ORDER_NUMBER
-          --
-          and kad.NO_DO = mtrh.REQUEST_NUMBER
-          and kad.NO_DO = kpd.REQUEST_NUMBER
-          --
-          and kdt.HEADER_ID = kpd.HEADER_ID
-          and 1 = case when kdt.SERIAL_STATUS in ('NON SERIAL','SERIAL')
-                        and kpd.DELIVERY_FLAG = 'Y'
-                        and kdt.FLAG = 'S'
-                       then 1 --'SUDAH MUAT'
-                  end
-          --
-          and mtrh.HEADER_ID = mtrl.HEADER_ID
-          and mtrh.REQUEST_NUMBER = to_char(wdd.BATCH_ID)
-          --
-          and ooha.SOLD_TO_ORG_ID = hca.CUST_ACCOUNT_ID(+)
-          and hca.PARTY_ID = hzp.PARTY_ID(+)
-          and ooha.SHIP_TO_ORG_ID = hcsua.SITE_USE_ID(+)
-          and hcsua.CUST_ACCT_SITE_ID = hcas.CUST_ACCT_SITE_ID(+)
-          and hcas.PARTY_SITE_ID = hps.PARTY_SITE_ID(+)
-          and hps.LOCATION_ID = hzl.LOCATION_ID(+)
-          --
-          and mtrh.REQUEST_NUMBER = kcd.REQUEST_NUMBER
-        order by kpd.PERSON_ID
-                ,mtrh.REQUEST_NUMBER";
+            and kdt.HEADER_ID = kpd.HEADER_ID
+            and kcd.REQUEST_NUMBER = kpd.REQUEST_NUMBER
+            and kcd.REQUEST_NUMBER = mtrh.REQUEST_NUMBER
+            and 1 = case when kdt.SERIAL_STATUS in ('NON SERIAL','SERIAL')
+                         and kpd.DELIVERY_FLAG = 'Y'
+                         and kdt.FLAG = 'S'
+                    then 1 --'SUDAH MUAT'
+                    end
+            --
+            and mtrh.HEADER_ID = mtrl.HEADER_ID
+            and mtrh.REQUEST_NUMBER = to_char(wdd.BATCH_ID)
+            --
+            and ooha.SOLD_TO_ORG_ID = hca.CUST_ACCOUNT_ID(+)
+            and hca.PARTY_ID = hzp.PARTY_ID(+)
+            and ooha.SHIP_TO_ORG_ID = hcsua.SITE_USE_ID(+)
+            and hcsua.CUST_ACCT_SITE_ID = hcas.CUST_ACCT_SITE_ID(+)
+            and hcas.PARTY_SITE_ID = hps.PARTY_SITE_ID(+)
+            and hps.LOCATION_ID = hzl.LOCATION_ID(+)
+          order by kpd.PERSON_ID
+                  ,mtrh.REQUEST_NUMBER";
           $query = $this->oracle->query($sql);
           return $query->result_array();
     }
 
+    public function GetSudahCetakDetail($data)
+    {
+        if (!empty($data)) {
+            $response = $this->oracle->query("SELECT distinct
+                   mtrh.HEADER_ID
+                  ,mtrh.REQUEST_NUMBER \"DO/SPB\"
+                  ,msib.SEGMENT1
+                  ,msib.DESCRIPTION
+                  ,kdt.ALLOCATED_QUANTITY quantity
+                  ,khs_stock_delivery(mtrl.INVENTORY_ITEM_ID,102,'FG-TKS') stock
+                  ,kpd.PERSON_ID petugas
+            from mtl_txn_request_lines mtrl
+                ,mtl_txn_request_headers mtrh
+                ,mtl_system_items_b msib
+                ,khs_approval_do kad
+                ,khs_person_delivery kpd
+                ,khs_delivery_temp kdt
+                ,khs_cetak_do kcd
+            where mtrh.HEADER_ID = mtrl.HEADER_ID
+              and kad.NO_DO = mtrh.REQUEST_NUMBER
+              and kad.NO_DO = kpd.REQUEST_NUMBER
+              and kcd.REQUEST_NUMBER = mtrh.REQUEST_NUMBER
+              --
+              and kdt.INVENTORY_ITEM_ID = mtrl.INVENTORY_ITEM_ID
+              and kdt.HEADER_ID = kpd.HEADER_ID
+              and 1 = case when kdt.SERIAL_STATUS in ('NON SERIAL','SERIAL')
+                            and kpd.DELIVERY_FLAG = 'Y'
+                            and kdt.FLAG = 'S'
+                           then 1 --'SUDAH MUAT'
+                      end
+              --
+              and msib.INVENTORY_ITEM_ID = mtrl.INVENTORY_ITEM_ID
+              and msib.ORGANIZATION_ID = mtrl.ORGANIZATION_ID
+              and mtrh.REQUEST_NUMBER = '$data'
+            order by msib.SEGMENT1")->result_array();
+        } else {
+            $response = array(
+            'success' => false,
+            'message' => 'requests_number is empty, cannot do this action'
+        );
+        }
+        return $response;
+    }
+
+
     public function GetSudahCetakCekFoCount()
     {
           $sql = "SELECT distinct
-               mtrh.REQUEST_NUMBER --\"DO/SPB\"
-              ,kpd.PERSON_ID petugas
-        from hz_cust_site_uses_all hcsua
-            ,hz_party_sites hps
-            ,hz_locations hzl
-            ,hz_cust_acct_sites_all hcas
-            ,hz_parties hzp
-            ,hz_cust_accounts hca
+                 mtrh.REQUEST_NUMBER
+                ,kpd.PERSON_ID petugas
+          from hz_cust_site_uses_all hcsua
+              ,hz_party_sites hps
+              ,hz_locations hzl
+              ,hz_cust_acct_sites_all hcas
+              ,hz_parties hzp
+              ,hz_cust_accounts hca
+              --
+              ,oe_order_headers_all ooha
+              ,oe_order_lines_all oola
+              ,wsh_delivery_details wdd
+              --
+              ,mtl_txn_request_headers mtrh
+              ,mtl_txn_request_lines mtrl
+              ,khs_approval_do kad
+              ,khs_person_delivery kpd
+              --
+              ,khs_delivery_temp kdt
+              ,khs_cetak_do kcd
+          where ooha.HEADER_ID = oola.HEADER_ID
             --
-            ,oe_order_headers_all ooha
-            ,oe_order_lines_all oola
-            ,wsh_delivery_details wdd
+            and wdd.SOURCE_HEADER_NUMBER = ooha.ORDER_NUMBER
             --
-            ,mtl_txn_request_headers mtrh
-            ,mtl_txn_request_lines mtrl
-            ,khs_approval_do kad
-            ,khs_person_delivery kpd
+            and kad.NO_DO = mtrh.REQUEST_NUMBER
             --
-            ,khs_delivery_temp kdt
-            ,khs_cetak_do kcd
-        where ooha.HEADER_ID = oola.HEADER_ID
-          --
-          and wdd.SOURCE_HEADER_NUMBER = ooha.ORDER_NUMBER
-          --
-          and kad.NO_DO = mtrh.REQUEST_NUMBER
-          and kad.NO_DO = kpd.REQUEST_NUMBER
-          --
-          and kdt.HEADER_ID = kpd.HEADER_ID
-          and 1 = case when kdt.SERIAL_STATUS in ('NON SERIAL','SERIAL')
-                        and kpd.DELIVERY_FLAG = 'Y'
-                        and kdt.FLAG = 'S'
-                       then 1 --'SUDAH MUAT'
-                  end
-          --
-          and mtrh.HEADER_ID = mtrl.HEADER_ID
-          and mtrh.REQUEST_NUMBER = to_char(wdd.BATCH_ID)
-          --
-          and ooha.SOLD_TO_ORG_ID = hca.CUST_ACCOUNT_ID(+)
-          and hca.PARTY_ID = hzp.PARTY_ID(+)
-          and ooha.SHIP_TO_ORG_ID = hcsua.SITE_USE_ID(+)
-          and hcsua.CUST_ACCT_SITE_ID = hcas.CUST_ACCT_SITE_ID(+)
-          and hcas.PARTY_SITE_ID = hps.PARTY_SITE_ID(+)
-          and hps.LOCATION_ID = hzl.LOCATION_ID(+)
-          --
-          and mtrh.REQUEST_NUMBER = kcd.REQUEST_NUMBER
-        order by kpd.PERSON_ID
-                ,mtrh.REQUEST_NUMBER";
+            and kdt.HEADER_ID = kpd.HEADER_ID
+            and kcd.REQUEST_NUMBER = kpd.REQUEST_NUMBER
+            and kcd.REQUEST_NUMBER = mtrh.REQUEST_NUMBER
+            and 1 = case when kdt.SERIAL_STATUS in ('NON SERIAL','SERIAL')
+                         and kpd.DELIVERY_FLAG = 'Y'
+                         and kdt.FLAG = 'S'
+                    then 1 --'SUDAH MUAT'
+                    end
+            --
+            and mtrh.HEADER_ID = mtrl.HEADER_ID
+            and mtrh.REQUEST_NUMBER = to_char(wdd.BATCH_ID)
+            --
+            and ooha.SOLD_TO_ORG_ID = hca.CUST_ACCOUNT_ID(+)
+            and hca.PARTY_ID = hzp.PARTY_ID(+)
+            and ooha.SHIP_TO_ORG_ID = hcsua.SITE_USE_ID(+)
+            and hcsua.CUST_ACCT_SITE_ID = hcas.CUST_ACCT_SITE_ID(+)
+            and hcas.PARTY_SITE_ID = hps.PARTY_SITE_ID(+)
+            and hps.LOCATION_ID = hzl.LOCATION_ID(+)
+          order by kpd.PERSON_ID
+                  ,mtrh.REQUEST_NUMBER";
           $query = $this->oracle->query($sql);
           return $query->result_array();
     }

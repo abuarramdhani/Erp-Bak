@@ -248,6 +248,13 @@ class C_Master extends CI_Controller
        $this->load->view('MonitoringDO/V_Ajax_SudahCetak', $data);
     }
 
+    public function GetSudahCetakDetail()
+    {
+        $id = $this->input->post('requests_number');
+        $data['get'] = $this->M_monitoringdo->GetSudahCetakDetail($id);
+        $this->load->view('MonitoringDO/V_Ajax_Transact_detail', $data);
+    }
+
     public function GetAssign()
     {
         $data['get'] = $this->M_monitoringdo->sudahdiAssign();
