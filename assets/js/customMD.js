@@ -441,6 +441,29 @@ function detailTransact(rm, rowID) {
   })
 }
 
+function GetSudahCetakDetail(rm, rowID) {
+  $.ajax({
+    url: baseurl + 'MonitoringDO/SettingDO/GetSudahCetakDetail',
+    type: 'POST',
+    data: {
+      requests_number: rm,
+    },
+    beforeSend: function() {
+      $('#loadingArea_Muat').show();
+      $('div#table-area_Muat').hide();
+    },
+    success: function(result) {
+      // console.log(result);
+      $('#loadingArea_Muat').hide();
+      $('div#table-area_Muat').show();
+      $('div#table-area_Muat').html(result);
+    },
+    error: function(XMLHttpRequest, textStatus, errorThrown) {
+      console.error();
+    }
+  })
+}
+
 function dodo4() {
   // dodo0().ajaxStop(function())
   $.ajax({
