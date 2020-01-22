@@ -899,8 +899,8 @@ class C_PekerjaKeluar extends CI_Controller
 		$status_pekerja = $this->input->get('slcStatusPekerja2');
 		$noind 			= $this->input->get('slcPekerja2');
 		$pot_seragam 	= $this->input->get('txtPotSeragam2');
-		$chk_khusus 	= $this->input->post('txtKhususPKJKeluarCheckList2');
-		$khusus  		= $this->input->post('txtKhususPKJKeluar2');
+		$chk_khusus 	= $this->input->get('txtKhususPKJKeluarCheckList2');
+		$khusus  		= $this->input->get('txtKhususPKJKeluar2');
 		$gaji = $this->proses_hitung($puasa,$tgl_puasa,$prd_gaji,$status_pekerja,$noind,$pot_seragam,$chk_khusus,$khusus);
 
 		$data['data'] = $gaji;
