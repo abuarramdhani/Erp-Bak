@@ -5,7 +5,7 @@
                 <div class="row">
                     <div class="col-lg-12">
                         <div class="col-lg-11">
-                            <div class="text-right"><h1><b>Rekap Perizinan Dinas Keluar</b></h1></div>
+                            <div class="text-right"><h1><b>Rekap Perizinan Dinas Perusahaan</b></h1></div>
                         </div>
                         <div class="col-lg-1">
                             <div class="text-right hidden-md hidden-sm hidden-xs">
