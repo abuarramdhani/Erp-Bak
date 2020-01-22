@@ -129,7 +129,7 @@ class M_rekapjp extends CI_Model
 					hrd_khs.tnoind tn
 				where
 					a.kodesie = ts.kodesie
-					and a.kodesie like '%$kodesie%'
+					and a.kodesie like '$kodesie%'
 					and a.lokasi_kerja like '%$lokasi%'
 					and a.lokasi_kerja = tlk.id_
 					and a.kode_status_kerja = tn.fs_noind
