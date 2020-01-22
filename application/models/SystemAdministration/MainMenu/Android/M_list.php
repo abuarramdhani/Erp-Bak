@@ -86,7 +86,7 @@ class M_list extends CI_Model
     }
 
     public function getEmailICT(){
-        $sql = "SELECT * FROM er.er_employee_all WHERE section_code='101030100'";
+        $sql = "SELECT * FROM er.er_employee_all WHERE section_code='101030100' and resign=0";
         $query = $this->db->query($sql);
         return $query->result_array();      
     } 
