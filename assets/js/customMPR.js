@@ -66,7 +66,6 @@ $(document).ready(function() {
         $('input[name=txtKhususPKJKeluar]').prop("disabled", false);
     });
     $(document).on('ifUnchecked','#txtKhususPKJKeluarCheckList', function() {
-        $('input[name=txtKhususPKJKeluar]').val("");
         $('input[name=txtKhususPKJKeluar]').iCheck('uncheck');
         $('input[name=txtKhususPKJKeluar]').prop("disabled", true);
     });
