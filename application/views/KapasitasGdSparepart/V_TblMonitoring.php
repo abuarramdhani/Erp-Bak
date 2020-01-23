@@ -14,7 +14,7 @@
             <label class="text-right">DOSP / SPB masuk : <?= $val['jml_spb'] ?> lembar</label>
         </div>
         <div class="col-md-6">
-            <button type="button" class="btn btn-xs btn-info" style="margin-left:160px" onclick="addDoSpb2(this, <?= $num?>)">Rincian</button></td>
+            <button type="button" class="btn btn-xs btn-info" onclick="addDoSpb2(this, <?= $num?>)">Rincian</button></td>
         </div>
         <!-- </div> -->
         <div class="col-md-12">
@@ -51,10 +51,10 @@
         <div class="col-md-12">
             <label class="text-right">Pelayanan</label>
         </div>
-        <div class="col-md-4">
+        <div class="col-md-3">
             Terselesaikan : <?= $val['jml_pelayanan'] ?> lembar
         </div>
-        <div class="col-md-4">
+        <div class="col-md-3">
             Tanggungan : <?= $val['krg_pelayanan'] ?> lembar
         </div>
         <div class="col-md-4">
@@ -138,10 +138,10 @@
         <div class="col-md-12">
             <label class="text-right">Pengeluaran</label>
         </div>
-        <div class="col-md-4">
+        <div class="col-md-3">
             Terselesaikan : <?= $val['jml_pengeluaran'] ?> lembar
         </div>
-        <div class="col-md-4">
+        <div class="col-md-3">
             Tanggungan : <?= $val['krg_pengeluaran'] ?> lembar
         </div>
         <div class="col-md-4">
@@ -228,10 +228,10 @@
         <div class="col-md-12">
             <label class="text-right">Packing</label>
         </div>
-        <div class="col-md-4">
+        <div class="col-md-3">
             Terselesaikan : <?= $val['jml_packing'] ?> lembar
         </div>
-        <div class="col-md-4">
+        <div class="col-md-3">
             Tanggungan : <?= $val['krg_packing'] ?> lembar
         </div>
         <div class="col-md-4">
@@ -314,14 +314,27 @@
             </div>
         </div>
 
-        <div class="col-md-12">
-            <label class="text-right">Jumlah DOSP/SPB selesai : <?= $val['jml_selesai'] ?> pcs</label>
-        </div>
-        <div class="col-md-12">
-            <label class="text-right">DOSP / SPB cancel : <?= $val['cancel'] ?> lembar</label>
-        </div>
-        <div class="col-md-12">
-            <label class="text-right">Penerimaan Menyelesaikan : <?= $val['jml_gd'] ?> lembar</label>
+        <div>
+            <table style="width: 50%;table-layout:fixed">
+                <tbody>
+                    <tr>
+                        <th width="53.5%" style="padding-left:15px">Jumlah DOSP/SPB selesai</th>
+                        <th>: <?= $val['jml_selesai'] ?> pcs</th>
+                    </tr>
+                    <tr>
+                        <th style="padding-left:15px">Kekurangan DOSP/SPB selesai</th>
+                        <th>: <?= $val['krg_selesai'] ?> pcs</th>
+                    </tr>
+                    <tr>
+                        <th style="padding-left:15px">DOSP / SPB cancel hari ini</th>
+                        <th>: <?= $val['cancel'] ?> lembar</th>
+                    </tr>
+                    <tr>
+                        <th style="padding-left:15px">Penerimaan menyelesaikan</th>
+                        <th>: <?= $val['jml_gd'] ?> lembar</th>
+                    </tr>
+                </tbody>
+            </table>
         </div>
     </div> 
 </div> 

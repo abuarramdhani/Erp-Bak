@@ -110,7 +110,7 @@ class M_monitoring extends CI_Model {
                     AND mtrl.organization_id = msib.organization_id
                     AND mmt.move_order_line_id = mtrl.line_id
                     AND mmt.inventory_item_id = mtrl.inventory_item_id
-                    AND mmt.SUBINVENTORY_CODE like 'KLR%'";
+                    AND (mmt.SUBINVENTORY_CODE like 'KLR%' OR mmt.SUBINVENTORY_CODE like 'STAGE%')";
         $query = $oracle->query($sql);
         return $query->result_array();
         // echo $sql;

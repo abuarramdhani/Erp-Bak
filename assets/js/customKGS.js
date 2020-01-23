@@ -52,14 +52,26 @@ function btnUrgent(no) {
 function btnCancelKGS(no) {
     var jenis = $('#jenis'+no).val();
     var nodoc = $('#nodoc'+no).val();
-    $('#baris'+no).css('display', 'none');
     console.log(jenis);
-    $.ajax ({
-        url : baseurl + "KapasitasGdSparepart/Input/cancelSPB",
-        data: { no : no , jenis : jenis, nodoc : nodoc},
-        type : "POST",
-        dataType: "html"
-        });
+    Swal.fire({
+        title: 'Apakah Anda Yakin?',
+        type: 'question',
+        showCancelButton: true,
+        allowOutsideClick: false
+    }).then(result => {
+        if (result.value) {  
+            $('#baris'+no).css('display', 'none');
+            $.ajax ({
+                url : baseurl + "KapasitasGdSparepart/Input/cancelSPB",
+                data: { no : no , jenis : jenis, nodoc : nodoc},
+                type : "POST",
+                dataType: "html",
+                success: function(data){
+                    swal.fire("Berhasil!", "", "success");
+                    }
+                });
+    }})   
+    
 }
 
 //----------------------------------------------------------ADMIN----------------------------------------------------------------------------------
@@ -152,12 +164,6 @@ function saveJmlSpb(th) {
 
 
 //---------------------------------------------------------PELAYANAN---------------------------------------------------------------------------
-// function picplyn(no) {
-//     $('#pic'+no).change(function() {
-//     $('#btnPelayanan'+no).removeAttr("disabled");
-// })
-// }
-
 
 function btnPelayananSPB(no) {
     var valBtn = $('#btnPelayanan'+no).val();
@@ -220,7 +226,6 @@ function btnPelayananSPB(no) {
             });
         
     }else if(valBtn == 'Selesai'){
-        $('#btnPelayanan'+no).on('click',function() {
             $('#btnPelayanan'+no).attr("disabled", "disabled"); 
             $('#btnrestartSPB'+no).attr("disabled", "disabled"); 
             var mulai  = $('#mulai'+no).val();
@@ -232,7 +237,6 @@ function btnPelayananSPB(no) {
             type : "POST",
             dataType: "html"
             });
-            })
     }
     
 }
@@ -246,27 +250,85 @@ function btnRestartPelayanan(no) {
     var wkt  = d.getHours()+':'+d.getMinutes()+':'+d.getSeconds();
      console.log(jenis, no_spb);
 
-    $("#btnrestartSPB"+no).on('click',function() {
-        $('#btnPelayanan'+no).each(function() {
-            $('#mulai'+no).val(wkt); 
-            $("#btnrestartSPB"+no).val('Sudah Restart')
-        })
-    
         // console.log(jenis);
-        $.ajax ({
-            url : baseurl + "KapasitasGdSparepart/Pelayanan/updateMulai",
-            data: {jenis : jenis, no_spb : no_spb, date : date, pic : pic},
-            type : "POST",
-            dataType: "html"
-            });
-    });    
+        Swal.fire({
+            title: 'Apakah Anda Yakin?',
+            text : 'Restart akan dilakukan...',
+            type: 'question',
+            showCancelButton: true,
+            allowOutsideClick: false
+        }).then(result => {
+            if (result.value) {  
+                $('#mulai'+no).val(wkt); 
+                $("#btnrestartSPB"+no).removeClass('btn-info').addClass('btn-warning');
+                $.ajax ({
+                    url : baseurl + "KapasitasGdSparepart/Pelayanan/updateMulai",
+                    data: {jenis : jenis, no_spb : no_spb, date : date, pic : pic},
+                    type : "POST",
+                    dataType: "html",
+                    success: function(data){
+                        swal.fire("Berhasil!", "Restart telah dilakukan.", "success");
+                    }
+                });
+        }})  
 }
 
-//----------------------------------------------------------PENGELUARAN--------------------------------------------------------------------------
+function btnPausePelayanan(no) {
+    var jenis  = $('#jenis'+no).val();
+    var no_spb = $('#nodoc'+no).val();
+    var mulai  = $('#mulai'+no).val();
+    var d    = new Date();
+    var wkt  = d.getHours()+':'+d.getMinutes()+':'+d.getSeconds();   
 
-// $('#pic'+no).change(function() {
-//     $('#btnPengeluaran'+no).removeAttr("disabled");
-// })
+    Swal.fire({
+        title: 'Apakah Anda Yakin?',
+        text : 'Pause akan dilakukan...',
+        type: 'question',
+        showCancelButton: true,
+        allowOutsideClick: false
+    }).then(result => {
+        if (result.value) {  
+            $('#timer'+no).css('display','none');  
+            $.ajax ({
+                url : baseurl + "KapasitasGdSparepart/Pelayanan/pauseSPB",
+                data: {jenis : jenis, no_spb : no_spb, wkt : wkt, mulai : mulai},
+                type : "POST",
+                dataType: "html",
+                success: function(data){
+                    swal.fire("Berhasil!", "Waktu telah ditunda.", "success");
+                }
+            });
+    }})
+}
+
+$(document).ready(function () {
+	$(".picSPB").select2({
+        allowClear: false,
+        placeholder: "",
+        minimumInputLength: 2,
+        ajax: {
+            url: baseurl + "KapasitasGdSparepart/Pelayanan/getPIC",
+            dataType: 'json',
+            type: "GET",
+            data: function (params) {
+                var queryParameters = {
+                        term: params.term,
+                }
+                return queryParameters;
+            },
+            processResults: function (data) {
+                // console.log(data);
+                return {
+                    results: $.map(data, function (obj) {
+                        return {id:obj.pic, text:obj.pic};
+                    })
+                };
+            }
+		}
+	});
+});
+
+//----------------------------------------------------------PENGELUARAN--------------------------------------------------------------------------
 
 function btnPengeluaranSPB(no) {
     var valBtn = $('#btnPengeluaran'+no).val();
@@ -329,7 +391,6 @@ function btnPengeluaranSPB(no) {
             });
         
     }else if(valBtn == 'Selesai'){
-        $('#btnPengeluaran'+no).on('click',function() {
             $('#btnPengeluaran'+no).attr("disabled", "disabled"); 
             $('#btnrestartSPB'+no).attr("disabled", "disabled"); 
             var mulai  = $('#mulai'+no).val();
@@ -341,7 +402,6 @@ function btnPengeluaranSPB(no) {
             type : "POST",
             dataType: "html"
             });
-            })
     }
 }
 
@@ -354,27 +414,57 @@ function btnRestartPengeluaran(no) {
     var wkt  = d.getHours()+':'+d.getMinutes()+':'+d.getSeconds();
      console.log(jenis, no_spb);
 
-    $("#btnrestartSPB"+no).on('click',function() {
-        $('#btnPengeluaran'+no).each(function() {
+     Swal.fire({
+        title: 'Apakah Anda Yakin?',
+        text: 'Restart akan dilakukan...',
+        type: 'question',
+        showCancelButton: true,
+        allowOutsideClick: false
+    }).then(result => {
+        if (result.value) {  
             $('#mulai'+no).val(wkt); 
-            $("#btnrestartSPB"+no).val('Sudah Restart')
-        })
-        // console.log(jenis);
-        $.ajax ({
-            url : baseurl + "KapasitasGdSparepart/Pengeluaran/updateMulai",
-            data: {jenis : jenis, no_spb : no_spb, date : date, pic : pic},
-            type : "POST",
-            dataType: "html"
+            $("#btnrestartSPB"+no).removeClass('btn-info').addClass('btn-warning');
+            $.ajax ({
+                url : baseurl + "KapasitasGdSparepart/Pengeluaran/updateMulai",
+                data: {jenis : jenis, no_spb : no_spb, date : date, pic : pic},
+                type : "POST",
+                dataType: "html",
+                success: function(data){
+                    swal.fire("Berhasil!", "Restart telah dilakukan.", "success");
+                }
             });
-    });    
+    }})  
 }
 
+function btnPausePengeluaran(no) {
+    var jenis  = $('#jenis'+no).val();
+    var no_spb = $('#nodoc'+no).val();
+    var mulai  = $('#mulai'+no).val();
+    var d      = new Date();
+    var wkt    = d.getHours()+':'+d.getMinutes()+':'+d.getSeconds();
+
+    Swal.fire({
+        title: 'Apakah Anda Yakin?',
+        type: 'question',
+        showCancelButton: true,
+        allowOutsideClick: false
+    }).then(result => {
+        if (result.value) {  
+            $('#timer'+no).css('display','none');  
+            $.ajax ({
+                url : baseurl + "KapasitasGdSparepart/Pengeluaran/pauseSPB",
+                data: {jenis : jenis, no_spb : no_spb, wkt : wkt, mulai : mulai},
+                type : "POST",
+                dataType: "html",
+                success: function(data){
+                    swal.fire("Berhasil!", "Waktu telah ditunda.", "success");
+                    }
+            });
+    }})    
+}
 
 //----------------------------------------------------------PACKING--------------------------------------------------------------------------------
 
-// $('#pic'+no).change(function() {
-//     $('#btnPacking'+no).removeAttr("disabled");
-// })
 
 function btnPackingSPB(no) {
     var valBtn = $('#btnPacking'+no).val();
@@ -437,7 +527,6 @@ function btnPackingSPB(no) {
             });
         
     }else if(valBtn == 'Selesai'){
-        $('#btnPacking'+no).on('click',function() {
             $('#btnPacking'+no).attr("disabled", "disabled"); 
             $('#btnrestartSPB'+no).attr("disabled", "disabled"); 
             var mulai  = $('#mulai'+no).val();
@@ -449,7 +538,6 @@ function btnPackingSPB(no) {
             type : "POST",
             dataType: "html"
             });
-        })
     }
 
 }
@@ -463,20 +551,53 @@ function btnRestartPacking(no) {
     var wkt  = d.getHours()+':'+d.getMinutes()+':'+d.getSeconds();
      console.log(jenis, no_spb);
 
-    $("#btnrestartSPB"+no).on('click',function() {
-        $('#btnPacking'+no).each(function() {
+     Swal.fire({
+        title: 'Apakah Anda Yakin?',
+        type: 'question',
+        showCancelButton: true,
+        allowOutsideClick: false
+    }).then(result => {
+        if (result.value) {  
             $('#mulai'+no).val(wkt); 
-            $("#btnrestartSPB"+no).val('Sudah Restart')
-        })
-    
-        // console.log(jenis);
-        $.ajax ({
-            url : baseurl + "KapasitasGdSparepart/Packing/updateMulai",
-            data: {jenis : jenis, no_spb : no_spb, date : date, pic : pic},
-            type : "POST",
-            dataType: "html"
+            $("#btnrestartSPB"+no).removeClass('btn-info').addClass('btn-warning');
+            $.ajax ({
+                url : baseurl + "KapasitasGdSparepart/Packing/updateMulai",
+                data: {jenis : jenis, no_spb : no_spb, date : date, pic : pic},
+                type : "POST",
+                dataType: "html",
+                success: function(data){
+                    swal.fire("Berhasil!", "Restart telah dilakukan.", "success");
+                }
             });
-    });    
+    }})  
+}
+
+function btnPausePacking(no) {
+    var jenis  = $('#jenis'+no).val();
+    var no_spb = $('#nodoc'+no).val();
+    var mulai  = $('#mulai'+no).val();
+    var d    = new Date();
+    var wkt  = d.getHours()+':'+d.getMinutes()+':'+d.getSeconds();
+
+    Swal.fire({
+        title: 'Apakah Anda Yakin?',
+        type: 'question',
+        showCancelButton: true,
+        allowOutsideClick: false
+    }).then(result => {
+        if (result.value) {  
+            $('#timer'+no).css('display','none');  
+            $.ajax ({
+                url : baseurl + "KapasitasGdSparepart/Packing/pauseSPB",
+                data: {jenis : jenis, no_spb : no_spb, wkt : wkt, mulai : mulai},
+                type : "POST",
+                dataType: "html",
+                success: function(data){
+                    swal.fire("Berhasil!", "Waktu telah ditunda.", "success");
+                    }
+                });
+    }})   
+    
 }
 
 //----------------------------------------------------MONITORING-------------------------------------------------------------------------

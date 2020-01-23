@@ -85,7 +85,10 @@ class C_Packing extends CI_Controller
 		$nospb 	= $this->input->post('no_spb');
 		$pic 	= $this->input->post('pic');
 		
-		$this->M_packing->SavePacking($date, $jenis, $nospb, $pic);
+		$cek = $this->M_packing->cekMulai($nospb, $jenis);
+		if ($cek[0]['WAKTU_PACKING'] == '') {
+			$this->M_packing->SavePacking($date, $jenis, $nospb, $pic);
+		}
 	}
 
 	public function updateSelesai(){
@@ -96,18 +99,52 @@ class C_Packing extends CI_Controller
 		$selesai = $this->input->post('wkt');
 		$pic 	= $this->input->post('pic');
 
-		$waktu1 = strtotime($mulai);
-		$waktu2 = strtotime($selesai);
-		$selisih = ($waktu2 - $waktu1);
-		$jam = floor($selisih/(60*60));
-		$menit = $selisih - $jam * (60 * 60);
-		$htgmenit = floor($menit/60) * 60;
-		$detik = $menit - $htgmenit;
-		$slsh = $jam.':'.floor($menit/60).':'.$detik;
-		// $query = "set waktu_packing = '$slsh'"; 
-		// $saveselisih = $this->M_packing->saveWaktu($jenis, $nospb, $query);
+		$cek = $this->M_packing->cekMulai($nospb, $jenis);
+		if ($cek[0]['WAKTU_PACKING'] == '') {
+			$waktu1 	= strtotime($mulai);
+			$waktu2 	= strtotime($selesai);
+			$selisih 	= ($waktu2 - $waktu1);
+			$jam 		= floor($selisih/(60*60));
+			$menit 		= $selisih - $jam * (60 * 60);
+			$htgmenit 	= floor($menit/60) * 60;
+			$detik 		= $menit - $htgmenit;
+			$slsh 		= $jam.':'.floor($menit/60).':'.$detik;	
+		}else {
+			$a = explode(':', $cek[0]['WAKTU_PACKING']);
+			$jamA 	= $a[0] * 3600;
+			$menitA = $a[1] * 60;
+			$waktuA = $jamA + $menitA + $a[2];
+
+			$waktu1 = strtotime($mulai);
+			$waktu2 = strtotime($selesai);
+			$waktuB = $waktu2 - $waktu1;
+			$jumlah = $waktuA + $waktuB;
+			$jam 	= floor($jumlah/(60*60));
+			$menit 	= $jumlah - $jam * (60 * 60);
+			$htgmenit = floor($menit/60) * 60;
+			$detik 	= $menit - $htgmenit;
+			$slsh 	= $jam.':'.floor($menit/60).':'.$detik;
+		}
 		
 		$this->M_packing->SelesaiPacking($date, $jenis, $nospb, $slsh, $pic);
+	}
+
+	public function pauseSPB(){
+		$nospb = $this->input->post('no_spb');
+		$jenis = $this->input->post('jenis');
+		$mulai = $this->input->post('mulai');
+		$selesai = $this->input->post('wkt');
+
+		$waktu1		= strtotime($mulai);
+		$waktu2 	= strtotime($selesai);
+		$selisih 	= $waktu2 - $waktu1;
+		$jam 		= floor($selesai/(60*60));
+		$menit 		= $selesai - $jam * (60*60);
+		$htgmenit 	= floor($menit/60) * 60;
+		$detik 		= $menit - $htgmenit;
+		$slsh 		= $jam.':'.floor($menit/60).':'.$detik;
+
+		$this->M_packing->waktuPacking($nospb, $jenis, $slsh);
 	}
 
 	
