@@ -9,64 +9,99 @@ class C_Index extends CI_Controller {
 		$this->load->helper('form');
 		$this->load->helper('url');
 		$this->load->helper('html');
-		// $this->load->model('M_index');
+		$this->load->model('SystemAdministration/MainMenu/M_user');
+		$this->load->model('PingChecker/M_index');
+
+		date_default_timezone_set("Asia/Bangkok");
+	}
+
+	public function checkSession()
+	{
+		if($this->session->is_logged){
+			
+		}else{
+			redirect();
+		}
+	}
+
+	public function index()
+	{
+		$this->checkSession();
+		$user_id = $this->session->userid;
+
+		$data['Menu'] = 'Monitoring';
+		$data['SubMenuOne'] = 'Dashboard';
+
+		$user = $this->session->user;
+
+		$data['UserMenu'] = $this->M_user->getUserMenu($user_id,$this->session->responsibility_id);
+		$data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id);
+		$data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id);
+
+		$data['ip'] = $this->M_index->getDataIPDown();
+
+		$this->load->view('V_Header',$data);
+		$this->load->view('V_Sidemenu',$data);
+		$this->load->view('PingChecker/V_Dashboard',$data);
+		$this->load->view('V_Footer',$data);
 	}
 
 	public function check()
 	{
+		// echo date('d-m-Y H:i:s');exit;
 		$ipName = array(
 					array(
-						'name' => 'ICON PLUS pusat-banjarmasin',
+						'name' => 'IconPlus PUSAT-BANJARMASIN',
 						'ip' => '172.16.100.94',
 					),
 					array(
-						'name' => 'ICON PLUS pusat-jakarta',
+						'name' => 'IconPlus PUSAT-JAKARTA',
 						'ip' => '172.16.100.26',
 					),
 					array(
-						'name' => 'ICON PLUS pusat-lampung',
+						'name' => 'IconPlus PUSAT-LAMPUNG',
 						'ip' => '172.16.100.14',
 					),
 					array(
-						'name' => 'ICON PLUS pusat-langkapura',
+						'name' => 'IconPlus PUSAT-LANGKAPURA',
 						'ip' => '172.16.100.62',
 					),
 					array(
-						'name' => 'ICON PLUS pusat-makassar',
+						'name' => 'IconPlus PUSAT-MAKASSAR',
 						'ip' => '172.16.100.30',
 					),
 					array(
-						'name' => 'ICON PLUS pusat-medan',
+						'name' => 'IconPlus PUSAT-MEDAN',
 						'ip' => '172.16.100.18',
 					),
 					array(
-						'name' => 'ICON PLUS pusat-mlati',
+						'name' => 'IconPlus PUSAT-MLATI',
 						'ip' => '172.16.100.22',
 					),
 					array(
-						'name' => 'ICON PLUS pusat-palu',
+						'name' => 'IconPlus PUSAT-PALU',
 						'ip' => '172.16.100.102',
 					),
 					array(
-						'name' => 'ICON PLUS pusat-pekanbaru',
+						'name' => 'IconPlus PUSAT-PEKANBARU',
 						'ip' => '172.16.100.90',
 					),
 					array(
-						'name' => 'ICON PLUS pusat-pontianak',
+						'name' => 'IconPlus PUSAT-PONTIANAK',
 						'ip' => '172.16.100.50',
 					),
 					array(
-						'name' => 'ICON PLUS pusat-surabaya',
+						'name' => 'IconPlus PUSAT-SURABAYA',
 						'ip' => '172.16.100.10',
 					),
 					array(
-						'name' => 'ICON PLUS pusat-tuksono',
+						'name' => 'IconPlus PUSAT-TUKSONO',
 						'ip' => '172.16.100.6',
 					),
 					array(
-						'name' => 'LDP pusat-tuksono',
+						'name' => 'LDP PUSAT-TUKSONO',
 						'ip' => '172.18.22.2',
-					),
+					)
 		);
 		
 		foreach ($ipName as $key => $ip) {
@@ -83,22 +118,65 @@ class C_Index extends CI_Controller {
 				echo "<tr><td>http://$domainbase is DOWN</td><tr>";
 				$message = "http://$domainbase is DOWN ($status ms)";
 				
-				$subject = "".strtoupper($ip['name'])." is Down";
+				$status = $this->M_index->checkStatusAction($domainbase);
+
+				if ($status == null) {
+					$stat = array(
+									'creation_date' => 'now()',
+									'ip' => $domainbase,
+								 );
+					$this->M_index->setStatus($stat);
+					$time = date('d-m-Y H:i:s');
+					$st = "OPEN";
+
+					$message .="<br> STATUS : $st";
+					$message .="<br> TIME : $time";
+				}else {
+					if ($status[0]['action'] == null) {
+						$stat = array(
+										'creation_date' => 'now()',
+										'ip' => $domainbase,
+								);
+						$this->M_index->setStatus($stat);
+						$time = date('d-m-Y H:i:s');
+						$st = "OPEN";
+						$message .="<br> STATUS : $st";
+						$message .="<br> TIME : $time";
+					}else {
+						$action = $status[0]['action'];
+						$actBy = $status[0]['action_by'];
+						$noticket = $status[0]['no_ticket'];
+								$stat = array(
+									'creation_date' => 'now()',
+									'ip' => $domainbase,
+									'action' => $action,
+									'action_by' => $actBy,
+									'no_ticket' => $noticket,
+							);
+						$this->M_index->setStatus($stat);
+
+						$time = date('d-m-Y H:i:s');
+						$st = "WIP";
+						$message .="<br> STATUS : $st";
+						$message .="<br> TIME : $time";
+						$message .="<br> Action : <b>$action</b>";
+						$message .="<br> Action By : $actBy";
+					}
+				}
+				
+				$subject = "($st) ".$ip['name']." is Down";
                 $this->EmailAlert($subject, $message);
 	            
 			}
             
 		}
 
-
-
-
 	}
 
 	public function pingDomain($domain)
 	{
 		$starttime = microtime(true);
-		$file      = fsockopen ($domain, 53, $errno, $errstr, 10);
+		$file      = fsockopen ($domain, 82, $errno, $errstr, 10);
 		$stoptime  = microtime(true);
 		$status    = 0;
 	
@@ -114,11 +192,10 @@ class C_Index extends CI_Controller {
 	public function EmailAlert($subject , $body)
 	{
 		//email
-		// $emailUser = 'suryabondan@gmail.com';
         
         $akun = array("quick.tractor@gmail.com", "it.sec1@quick.co.id", "it1.quick@gmail.com", "nugroho.mail1@gmail.com", "ict.hardware.khs@gmail.com", "it.asst.u1@quick.co.id", "khoerulamri.id@gmail.com");
         
-        // $akun = array("nugroho.mail1@gmail.com", "suryabondan@gmail.com");
+        // $akun = array("suryabondan@gmail.com");
         
 		//send Email
 
