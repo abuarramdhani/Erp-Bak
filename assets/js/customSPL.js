@@ -2,21 +2,42 @@
 $(function() {
     // Initialize Elements
     /////////////////////////////////////////////////////////////////////////////////
-    $(".spl-table").DataTable({
+    $(".spl-table.aska, .spl-table.kasie").DataTable({
         "scrollX": true,
         "dom": 'Bfrtip',
         "buttons": [{
                 extend: 'excel',
                 className: 'btn btn-success'
             },
-            // {
-            //   text: 'Proses',
-            //   className: 'btn btn-primary disabled',
-            //   action: function(e, dt, node, config){
-            //     $('#btn-ProsesSPL').click();
-            //   }
-            // }
+            {
+                text: 'Proses',
+                className: 'btn btn-primary disabled',
+                action: function(e, dt, node, config) {
+                    $('#btn-ProsesSPL').click();
+                }
+            }
         ],
+        "ordering": false,
+        "retrieve": true,
+        "initComplete": function() {
+            if ($('#btn-ProsesSPL').attr('id') == undefined) {
+                $('#example11_wrapper').find('a.dt-button:last').hide();
+                $('#example11_wrapper').find('button.dt-button:last').hide();
+            };
+            $('#example11_wrapper').find('a.dt-button').removeClass('dt-button');
+            $('#example11_wrapper').find('button.dt-button').removeClass('dt-button');
+            $('#example11_wrapper').find('a.btn').css("margin-right", "10px");
+            $('#example11_wrapper').find('button.btn').css("margin-right", "10px");
+        }
+    });
+
+    $(".spl-table").DataTable({
+        "scrollX": true,
+        "dom": 'Bfrtip',
+        "buttons": [{
+            extend: 'excel',
+            className: 'btn btn-success'
+        }, ],
         "ordering": false,
         "retrieve": true,
         "initComplete": function() {
