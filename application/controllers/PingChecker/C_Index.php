@@ -221,7 +221,7 @@ class C_Index extends CI_Controller {
         $mail->WordWrap = 50;
 		
         // set email content
-        $mail->setFrom('quick.tractor@gmail.com', 'ERP PING-CHECKER');
+        $mail->setFrom('quick.tractor@gmail.com', 'ERP Ping-Checker');
         foreach ($akun as $key => $akn) {
             $mail->addAddress($akn);
         }
