@@ -317,10 +317,10 @@ $(document).ready(function () {
                 return queryParameters;
             },
             processResults: function (data) {
-                // console.log(data);
+                console.log(data);
                 return {
                     results: $.map(data, function (obj) {
-                        return {id:obj.pic, text:obj.pic};
+                        return {id:obj.PIC, text:obj.PIC};
                     })
                 };
             }
