@@ -89,7 +89,34 @@ $(document).ready(function() {
     $('.SendDocument').dataTable({
         scrollY: '350px'
     })
-});
+
+    $('.lembur-personalia-seksi').select2({
+        ajax: {
+            url: baseurl + "SPL/AccessSection/ajax/showallsection",
+            dataType: 'json',
+            method: 'GET',
+            data: a => {
+                return {
+                    key: a.term,
+                };
+            },
+            processResults: data => {
+                return {
+                    results: $.map(data, item => {
+                        return {
+                            id: item.kodesie + ' - ' + item.nama,
+                            text: item.kodesie + ' - ' + item.nama,
+                        }
+                    })
+                };
+            },
+        },
+        minimumInputLength: 2,
+        placeholder: 'Silahkan pilih',
+        allowClear: true,
+    })
+})
+
 const deleteMaster = a => {
         swal.fire({
             title: "Apakah anda yakin",
