@@ -95,26 +95,21 @@
                                                             <option><?= $val['PIC_PACKING']?></option>
                                                         </select></td>
                                                         <?php }else{?>
-                                                        <select id="pic<?= $no?>" name="pic" class="form-control select2 select2-hidden-accessible" style="width:100%;" required>
+                                                        <select id="pic<?= $no?>" name="picSPB" class="form-control select2 select2-hidden-accessible  picSPB" style="width:100%;" required>
                                                             <option></option>
-                                                            <option value="MUJIMAN">MUJIMAN</option>
-                                                            <option value="JOKO">JOKO</option>
-                                                            <option value="FENDI">FENDI</option>
-                                                            <option value="MUSLIH">MUSLIH</option>
-                                                            <option value="UDIN">UDIN</option>
-                                                            <option value="SYAMSUL">SYAMSUL</option>
                                                         </select><?php }?>
                                                         </td>
                                                         <td class="<?= $td?>"><?= $val['URGENT']?></td>
                                                         <td class="<?= $td?>">
-                                                            <?php if (!empty($val['MULAI_PACKING'])) { ?>
+                                                            <?php if (!empty($val['MULAI_PACKING']) && empty($val['WAKTU_PACKING'])) { ?>
                                                                 <p id="timer<?= $no?>" style="">Mulai <?= $val['MULAI_PACKING']?></p>
                                                                 <input type="button" class="btn btn-md btn-danger" id="btnPacking<?= $no?>" onclick="btnPackingSPB(<?= $no?>)" value="Selesai">
                                                             <?php }else{?>
                                                                 <p id="timer<?= $no?>" style=""><label id="hours<?= $no?>" >00</label>:<label id="minutes<?= $no?>">00</label>:<label id="seconds<?= $no?>">00</label></p>
                                                                 <input type="button" class="btn btn-md btn-success" id="btnPacking<?= $no?>" onclick="btnPackingSPB(<?= $no?>)" value="Mulai">
-                                                            <?php }?>
-                                                            <input type="button" class="btn btn-xs btn-info" id="btnrestartSPB<?= $no?>" value="Restart" onclick="btnRestartPacking(<?= $no?>)">
+                                                            <?php }?><br>
+                                                            <button type="button" class="btn btn-xs btn-info" id="btnrestartSPB<?= $no?>" onclick="btnRestartPacking(<?= $no?>)"><i class="fa fa-refresh"></i></button>
+                                                            <button type="button" class="btn btn-xs btn-primary" id="btnpauseSPB<?= $no?>" onclick="btnPausePacking(<?= $no?>)"><i class="fa fa-pause"></i></button>
                                                         </td>
                                                     </tr>
                                                 <?php $no++; }?>

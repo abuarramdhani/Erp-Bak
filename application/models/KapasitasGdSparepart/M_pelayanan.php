@@ -12,7 +12,7 @@ class M_pelayanan extends CI_Model
         $oracle = $this->load->database('oracle', true);
         $sql = "select to_char(jam_input, 'DD/MM/YYYY HH24:MI:SS') as jam_input, 
                 tgl_dibuat, to_char(mulai_pelayanan, 'HH24:MI:SS') as mulai_pelayanan, pic_pelayan,
-                jenis_dokumen, no_dokumen, jumlah_item, jumlah_pcs, selesai_pelayanan, urgent
+                jenis_dokumen, no_dokumen, jumlah_item, jumlah_pcs, selesai_pelayanan, urgent, waktu_pelayanan
                 from khs_tampung_spb
                 where selesai_pelayanan is null
                 and cancel is null
@@ -47,7 +47,7 @@ class M_pelayanan extends CI_Model
                 where jenis_dokumen = '$jenis' and no_dokumen = '$nospb'";
         $query = $oracle->query($sql);         
         $query2 = $oracle->query('commit');          
-        // echo $sql; 
+        echo $sql; 
     }
 
     public function SelesaiPelayanan($date, $jenis, $nospb, $wkt, $pic){
@@ -56,16 +56,7 @@ class M_pelayanan extends CI_Model
                 where jenis_dokumen = '$jenis' and no_dokumen = '$nospb'";
         $query = $oracle->query($sql);            
         $query2 = $oracle->query('commit');       
-        // echo $sql; 
-    }
-
-    public function saveWaktu($jenis, $nospb, $query){
-        $oracle = $this->load->database('oracle', true);
-        $sql="update khs_tampung_spb $query
-                where jenis_dokumen = '$jenis' and no_dokumen = '$nospb'";
-        $query = $oracle->query($sql);  
-        $query2 = $oracle->query('commit');                 
-        // echo $sql; 
+        echo $sql; 
     }
 
     public function getStatus($noSPB) {
@@ -104,6 +95,28 @@ class M_pelayanan extends CI_Model
         $query = $oracle->query($sql);
         return $query->result_array();
         // echo $sql;
+    }
+
+    public function cekMulai($nospb, $jenis) {
+        $oracle = $this->load->database('oracle', true);
+        $sql = "select * from khs_tampung_spb where no_dokumen = '$nospb' and jenis_dokumen = '$jenis'";
+        $query = $oracle->query($sql);
+        return $query->result_array();
+    }
+
+    public function WaktuPelayanan($jenis, $nospb, $slsh){
+        $oracle = $this->load->database('oracle', true);
+        $sql="update khs_tampung_spb set waktu_pelayanan = '$slsh'
+                where jenis_dokumen = '$jenis' and no_dokumen = '$nospb'";
+        $query = $oracle->query($sql);            
+        $query2 = $oracle->query('commit');       
+    }
+
+    public function getPIC($term){
+        $sql = "select * from kgs.kgs_tabel_user
+                where pic like '%$term%'";
+        $query = $this->db->query($sql);
+        return $query->result_array();
     }
 
 }
