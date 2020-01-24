@@ -3701,3 +3701,14 @@ $route['ApprovalDO/LaunchPickRelease/(:any)/(:any)'] = 'ApprovalDO/MainMenu/C_La
 
 $route['ApprovalDO/Detail/(:any)'] = 'ApprovalDO/MainMenu/C_Detail/checkDetailDO/$1';
 $route['ApprovalDO/History/(:any)'] = 'ApprovalDO/MainMenu/C_History/$1';
+
+// ----------------------------------------------- Pelaporan SPT ----------------------------------------------- //
+$route['PendampinganSPT'] = 'PendampinganSPT/C_Index';
+
+$route['PendampinganSPT/Daftar'] = 'PendampinganSPT/MainMenu/C_Daftar';
+$route['PendampinganSPT/Daftar/(:any)'] = 'PendampinganSPT/MainMenu/C_Daftar/$1';
+$route['PendampinganSPT/Daftar/(:any)/(:any)'] = 'PendampinganSPT/MainMenu/C_Daftar/$1/$2';
+
+$route['PendampinganSPT/Data'] = 'PendampinganSPT/MainMenu/C_Data';
+$route['PendampinganSPT/Data/(:any)'] = 'PendampinganSPT/MainMenu/C_Data/$1';
+$route['PendampinganSPT/Data/(:any)/(:any)'] = 'PendampinganSPT/MainMenu/C_Data/$1/$2';
