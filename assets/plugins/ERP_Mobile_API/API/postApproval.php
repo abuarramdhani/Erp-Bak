@@ -23,18 +23,17 @@ if(!empty($noinduk) && !empty($longitude) && !empty($latitude) && !empty($lokasi
 		}
 
 		if ($total==0) {
+
+			$ambilWaktu = json_decode(getWaktu($latitude,$longitude),true);
+	    	$wktAPI = $ambilWaktu['date_time'];
 			$sql="INSERT INTO at.at_absen 
 	        (noind, longitude, latitude, lokasi,tgl,waktu,jenis_absen_id,gambar,status,tgl_status,nama)
 
-	        VALUES ('".$noinduk."', '".$longitude."', '".$latitude."', '".$lokasi."','".$tanggal."','".$waktu."','".$jenis_absen_id."','".$gambar."','".$status."','".$tanggal_status."','".$nama."')";    
-
+	        VALUES ('".$noinduk."', '".$longitude."', '".$latitude."', '".$lokasi."','".$tanggal."','".$wktAPI."','".$jenis_absen_id."','".$gambar."','".$status."','".$tanggal_status."','".$nama."')";
 	        $gas = pg_query($conn,$sql);
 
-	        $sql2 	= "INSERT INTO at.at_absen_approval (approver,absen_id) VALUES('".$atasan."',(SELECT currval('at.at_absen_absen_id_seq')))";			
+	        $sql2 	= "INSERT INTO at.at_absen_approval (approver,absen_id) VALUES('".$atasan."',(SELECT currval('at.at_absen_absen_id_seq')))";
 	    	$gas2	= pg_query($conn,$sql2);
-
-	    	// $sql3	="INSERT INTO at.at_absen_approval(approver) VALUES('".$atasan."')";
-	    	// $gas3 	= pg_query($conn,$sql2);
 
 	        $data['status'] = true;
 	        $data['result'][] = "Berhasil Menambah Data";
@@ -46,6 +45,37 @@ if(!empty($noinduk) && !empty($longitude) && !empty($latitude) && !empty($lokasi
 }else{
     $data['status'] = false;
     $data['result'][] = "Attribute Harus terisi semua";
+}
+
+function getWaktu($lat,$long){
+	$url = "https://api.ipgeolocation.io/timezone?apiKey=af5a18596b654244816c78e33229c006&lat=".$lat."&long=".$long."";
+	$curl = curl_init();
+	set_time_limit(0);
+	curl_setopt_array($curl, array(
+		CURLOPT_URL => $url,
+		CURLOPT_RETURNTRANSFER => true,
+		CURLOPT_ENCODING => "",
+		CURLOPT_MAXREDIRS => 10,
+		CURLOPT_TIMEOUT => 0,
+		CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+		CURLOPT_CUSTOMREQUEST => "GET",
+		CURLOPT_HTTPHEADER => array(
+			"cache-control: no-cache",
+			"content-type: application/x-www-form-urlencoded"
+			),
+		)
+	);
+	$response = curl_exec($curl);
+	$err = curl_error($curl);
+	curl_close($curl);
+	if ($err) {
+		$response = ("Error #:" . $err);
+	}
+	else
+	{
+		$response;
+	}
+	return $response;
 }
 
 print_r(json_encode($data));
