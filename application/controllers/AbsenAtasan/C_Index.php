@@ -166,14 +166,14 @@ class C_Index extends CI_Controller
 
 			$employee = $this->M_absenatasan->getListAbsenById($id);
 			$noinduk 	 	= $employee[0]['noind'];
-			$namaPekerja 	= $employee[0]['nama'];
+			$namaPekerja 	= $employee[0]['nama'].' ('.$employee[0]['noind'].')';
 			$jenisAbsen  	= $employee[0]['jenis_absen'];
 			$waktu		 	= $employee[0]['waktu'];
 			$lokasi		 	= $employee[0]['lokasi'];
 			$latitude	 	= $employee[0]['latitude'];
 			$longitude	 	= $employee[0]['longitude'];
 			$status 	    = "DiApprove";
-			$atasan 	 	= trim($this->session->employee);
+			$atasan 	 	= trim($this->session->employee).' ('.trim($this->session->user).')';
 
 			$noindukAtasan	= $this->session->user;
 			// $dataAtasan	 = $this->M_absenatasan->getAtasan($id);
@@ -226,14 +226,14 @@ class C_Index extends CI_Controller
 
 			$employee = $this->M_absenatasan->getListAbsenById($id);
 			$noinduk 	 	= $employee[0]['noind'];
-			$namaPekerja 	= $employee[0]['nama'];
+			$namaPekerja 	= $employee[0]['nama'].' ('.$employee[0]['noind'].')';
 			$jenisAbsen  	= $employee[0]['jenis_absen'];
 			$waktu		 	= $employee[0]['waktu'];
 			$lokasi		 	= $employee[0]['lokasi'];
 			$latitude	 	= $employee[0]['latitude'];
 			$longitude	 	= $employee[0]['longitude'];
 			$status 	 	= "DiTolak";
-			$atasan 	 	= trim($this->session->employee);
+			$atasan 	 	= trim($this->session->employee).' ('.$employee[0]['noind'].')';
 			$noindukAtasan	= $this->session->user;
 
 			// $dataAtasan	 = $this->M_absenatasan->getAtasan($id);
