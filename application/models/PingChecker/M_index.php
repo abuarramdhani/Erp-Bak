@@ -11,7 +11,7 @@ class M_index extends CI_Model
 
     public function checkStatusAction($ip)
     {
-        $query = $this->db->query("SELECT * from si.network_monitoring where ip ='$ip' and creation_date < NOW() - INTERVAL '17 minutes'
+        $query = $this->db->query("SELECT * from si.network_monitoring where ip ='$ip' and creation_date > NOW() - INTERVAL '17 minutes'
         order by creation_date
         DESC LIMIT 1");
 
