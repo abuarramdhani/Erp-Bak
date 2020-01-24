@@ -13,8 +13,8 @@ class C_Index extends CI_Controller
 			$this->load->helper('html');
 			$this->load->helper('file');
 
-			$this->load->library('form_validation');
 			$this->load->library('Log_Activity');
+			$this->load->library('form_validation');
 			$this->load->library('pdf');
 			$this->load->library('session');
 			$this->load->library('encrypt');
@@ -66,6 +66,7 @@ class C_Index extends CI_Controller
 		$data['listData'] = $this->M_absenatasan->getList($nama);
 
 		// $data['jenisAbsen'] = $this->M_absenatasan->getJenisAbsen();
+
 		// $data['listData'] = $this->M_absenatasan->getList();
 
 		// $info = array();
@@ -140,12 +141,8 @@ class C_Index extends CI_Controller
 		$this->load->view('V_Footer',$data);
 		}
 
+
 		public function approveApproval($id){
-			//insert to t_log
-				$aksi = 'ABSEN ATASAN';
-				$detail = 'APPROVE ID='.$id;
-				$this->log_activity->activity_log($aksi, $detail);
-			//
 			$status = 1;
 			date_default_timezone_set('Asia/Jakarta');
 			$tgl_approval = date('Y-m-d H:i:s');
@@ -174,13 +171,13 @@ class C_Index extends CI_Controller
 			$longitude	 	= $employee[0]['longitude'];
 			$status 	    = "DiApprove";
 			$atasan 	 	= trim($this->session->employee).' ('.trim($this->session->user).')';
-
 			$noindukAtasan	= $this->session->user;
 			// $dataAtasan	 = $this->M_absenatasan->getAtasan($id);
 			// $atasan 	 = $dataAtasan[0]['approver'];
 			$employeeEmailData['email'] = $this->M_absenatasan->getEmployeeEmail($noinduk);
 			$internalMail = $employeeEmailData['email'][0]['internal_mail'];
 			$eksternalMail	= $employeeEmailData['email'][0]['external_mail'];
+
 			$dataPersonalia = $this->M_absenatasan->getEmailPersonalia();
 
 			if($internalMail != null and $internalMail != ''){
@@ -188,24 +185,24 @@ class C_Index extends CI_Controller
 			}
 
 			foreach ($dataPersonalia as $key => $personalia) {
-				$internalMailPersonalia = $personalia['internal_mail'];
-				$externalMailPersonalia	= $personalia['external_mail'];
-				$namaPekerjaPersonalia	= $personalia['employee_name'];
+			$internalMailPersonalia = $personalia['internal_mail'];
+			$externalMailPersonalia	= $personalia['external_mail'];
+			$namaPekerjaPersonalia	= $personalia['employee_name'];
 
-				$this->kirim_emailPersonalia($namaPekerja,$jenisAbsen,$waktu,$lokasi,$latitude,$longitude,$status,$atasan,$noindukAtasan,$internalMailPersonalia,$externalMailPersonalia,$namaPekerjaPersonalia);
+			$this->kirim_emailPersonalia($namaPekerja,$jenisAbsen,$waktu,$lokasi,$latitude,$longitude,$status,$atasan,$noindukAtasan,$internalMailPersonalia,$externalMailPersonalia,$namaPekerjaPersonalia);
 			}
 
 			$this->session->set_flashdata('msg','sukses');
+			//insert to t_log
+				$aksi = 'ABSEN ATASAN';
+				$detail = 'APPROVE ID='.$id;
+				$this->log_activity->activity_log($aksi, $detail);
+			//
 			redirect('AbsenAtasan/List');
 		}
 
 
 		public function rejectApproval($id){
-			//insert to t_log
-				$aksi = 'ABSEN ATASAN';
-				$detail = 'REJECT ID='.$id;
-				$this->log_activity->activity_log($aksi, $detail);
-			//
 			$status = 2;
 			date_default_timezone_set('Asia/Jakarta');
 			$tgl_approval = date('Y-m-d H:i:s');
@@ -233,31 +230,38 @@ class C_Index extends CI_Controller
 			$latitude	 	= $employee[0]['latitude'];
 			$longitude	 	= $employee[0]['longitude'];
 			$status 	 	= "DiTolak";
-			$atasan 	 	= trim($this->session->employee).' ('.$employee[0]['noind'].')';
+			$atasan 	 	= trim($this->session->employee).' ('.trim($this->session->user).')';
 			$noindukAtasan	= $this->session->user;
 
 			// $dataAtasan	 = $this->M_absenatasan->getAtasan($id);
 			// $atasan 	 = $dataAtasan[0]['approver'];
+
+
 			$employeeEmailData['email'] = $this->M_absenatasan->getEmployeeEmail($noinduk);
+
 			$internalMail = $employeeEmailData['email'][0]['internal_mail'];
 			$eksternalMail	= $employeeEmailData['email'][0]['external_mail'];
 
 			$this->kirim_email($internalMail,$eksternalMail,$namaPekerja,$jenisAbsen,$waktu,$lokasi,$latitude,$longitude,$status,$atasan,$noindukAtasan);
-
+			//insert to t_log
+				$aksi = 'ABSEN ATASAN';
+				$detail = 'REJECT ID='.$id;
+				$this->log_activity->activity_log($aksi, $detail);
+			//
 			redirect('AbsenAtasan/List');
 		}
 
 		function cetakApproval($id){
-			//insert to t_log
-				$aksi = 'ABSEN ATASAN';
-				$detail = 'CETAK ID='.$id;
-				$this->log_activity->activity_log($aksi, $detail);
-			//
 			$mpdf = $this->pdf->load();
 			$data['dataEmployee'] = $this->M_absenatasan->getListAbsenById($id);
 			$noinduk = $data['dataEmployee'][0]['noind'];
 
 			$data['employeeInfo'] = $this->M_absenatasan->getEmployeeInfo($noinduk);
+			//insert to t_log
+			$aksi = 'ABSEN ATASAN';
+			$detail = 'CETAK ID='.$id;
+			$this->log_activity->activity_log($aksi, $detail);
+			//
 
 			$stylesheet = file_get_contents(base_url('assets/plugins/bootstrap/3.3.7/css/bootstrap.css'));
 			$view 	= $this->load->view('AbsenAtasan/V_CetakPDFAbsen',$data,true);
@@ -446,11 +450,6 @@ class C_Index extends CI_Controller
 				} else {
 					//echo "Message sent!";
 				}
-
 			}
-
-
-
 	}
-
 ?>
