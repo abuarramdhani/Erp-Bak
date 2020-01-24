@@ -63,9 +63,13 @@ class C_Index extends CI_Controller
 
 		$employee = $this->session->employee;
 		$nama = trim($employee);
+		// print_r($approver);exit();
 		$data['listData'] = $this->M_absenatasan->getList($nama);
 
 		// $data['jenisAbsen'] = $this->M_absenatasan->getJenisAbsen();
+
+		// echo "<pre>";
+		// print_r($data['listData']);exit();
 
 		// $data['listData'] = $this->M_absenatasan->getList();
 
@@ -81,7 +85,12 @@ class C_Index extends CI_Controller
 
 		// $noinduk = $data['listData'][0]['noind'];
 
+		// echo "<pre>";
+		// print_r($noinduk);exit();
+
 		// $data['employeeInfo'] = $this->M_absenatasan->getEmployeeInfo($noinduk);
+		// echo "<pre>";
+		// print_r($data['employeeInfo']);exit();
 
 		// $section_code = $data['employeeInfo'][0]['section_code'];
 		// $data['bidangUnit'] = $this->M_absenatasan->getFieldUnitInfo($section_code);
@@ -135,6 +144,7 @@ class C_Index extends CI_Controller
 		$noinduk = $data['dataEmployee'][0]['noind'];
 
 		$data['employeeInfo'] = $this->M_absenatasan->getEmployeeInfo($noinduk);
+		// echo "<pre>";print_r($data['dataEmployee']);exit();
 		$this->load->view('V_Header',$data);
 		$this->load->view('V_Sidemenu',$data);
 		$this->load->view('AbsenAtasan/V_Approval',$data);
@@ -147,6 +157,7 @@ class C_Index extends CI_Controller
 			date_default_timezone_set('Asia/Jakarta');
 			$tgl_approval = date('Y-m-d H:i:s');
 
+			// echo $tgl_approval;exit();
 			$data1 =
 			['status' => $status,
 			 'tgl_approval' => $tgl_approval
@@ -162,6 +173,8 @@ class C_Index extends CI_Controller
 			$this->M_absenatasan->approveAbsen($id,$data2);
 
 			$employee = $this->M_absenatasan->getListAbsenById($id);
+			// echo "<pre>";
+			// print_r($employee);exit();
 			$noinduk 	 	= $employee[0]['noind'];
 			$namaPekerja 	= $employee[0]['nama'].' ('.$employee[0]['noind'].')';
 			$jenisAbsen  	= $employee[0]['jenis_absen'];
@@ -171,14 +184,20 @@ class C_Index extends CI_Controller
 			$longitude	 	= $employee[0]['longitude'];
 			$status 	    = "DiApprove";
 			$atasan 	 	= trim($this->session->employee).' ('.trim($this->session->user).')';
+			// print_r($atasan);exit();
 			$noindukAtasan	= $this->session->user;
 			// $dataAtasan	 = $this->M_absenatasan->getAtasan($id);
 			// $atasan 	 = $dataAtasan[0]['approver'];
+			// print_r($atasan);exit();
 			$employeeEmailData['email'] = $this->M_absenatasan->getEmployeeEmail($noinduk);
+			// echo $employeeEmail['internal_mail'];exit();
+			// echo "<pre>";print_r($employeeEmailData);exit();
 			$internalMail = $employeeEmailData['email'][0]['internal_mail'];
 			$eksternalMail	= $employeeEmailData['email'][0]['external_mail'];
+			// print_r($internalMail);exit();
 
 			$dataPersonalia = $this->M_absenatasan->getEmailPersonalia();
+			// echo "<pre>";print_r($dataPersonalia);exit();
 
 			if($internalMail != null and $internalMail != ''){
 				$this->kirim_email($internalMail,$eksternalMail,$namaPekerja,$jenisAbsen,$waktu,$lokasi,$latitude,$longitude,$status,$atasan,$noindukAtasan);
@@ -207,6 +226,7 @@ class C_Index extends CI_Controller
 			date_default_timezone_set('Asia/Jakarta');
 			$tgl_approval = date('Y-m-d H:i:s');
 
+			// echo $this->input->post('reason');exit();
 			$data1 =
 			['status' => $status,
 			'tgl_approval' => $tgl_approval,
@@ -238,9 +258,11 @@ class C_Index extends CI_Controller
 
 
 			$employeeEmailData['email'] = $this->M_absenatasan->getEmployeeEmail($noinduk);
-
+			// echo $employeeEmail['internal_mail'];exit();
 			$internalMail = $employeeEmailData['email'][0]['internal_mail'];
 			$eksternalMail	= $employeeEmailData['email'][0]['external_mail'];
+			// print_r($internalMail);exit();
+
 
 			$this->kirim_email($internalMail,$eksternalMail,$namaPekerja,$jenisAbsen,$waktu,$lokasi,$latitude,$longitude,$status,$atasan,$noindukAtasan);
 			//insert to t_log
@@ -399,6 +421,7 @@ class C_Index extends CI_Controller
 				$latitude			= $this->input->post('latitude');
 				$longitude			= $this->input->post('longitude');
 				$dataAtasan 		= $this->M_absenatasan->getEmployeeEmailByNama($atasan);
+				// print_r($dataAtasan);exit();
 				$internalMailAtasan = $dataAtasan[0]['internal_mail'];
 				$externalMailAtasan = $dataAtasan[0]['external_mail'];
 
@@ -450,6 +473,11 @@ class C_Index extends CI_Controller
 				} else {
 					//echo "Message sent!";
 				}
+
 			}
+
+
+
 	}
+
 ?>
