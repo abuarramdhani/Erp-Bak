@@ -155,7 +155,7 @@ $( _ => {
                             seksi          : $('#txtPSPTSection').val(),
                             nomor_npwp     : $('#txtPSPTTRN').val(),
                             lokasi_kerja   : $('#slcPSPTWorkLocation').val(),
-                            tanggal_lapor  : `${datePSPTYear}-${datePSPTMonth}-${datePSPTDay}`
+                            tanggal_daftar : `${datePSPTYear}-${datePSPTMonth}-${datePSPTDay}`
                         },
                         dataType : 'json'
                     }).done( (resp) => {
@@ -182,6 +182,11 @@ $( _ => {
         } else {
             swalPSPTToastrAlert('error', 'Silahkan mengisi informasi yang masih kosong.')
         }
+    })
+
+    $('.linkPSPTDetailSchedule').on('click', function (e) {
+        e.preventDefault()
+        $('#mdlPSPTDetailSchedule').modal('show')
     })
 
 })
