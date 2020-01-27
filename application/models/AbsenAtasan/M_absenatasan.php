@@ -222,7 +222,70 @@ class M_absenatasan extends CI_Model
 		return $data;
 	}
 
+	public function getAbsenCRONJ(){
+		$sql = "
+			select a.employee_code as noind , 
+				rtrim(a.employee_name) as nama ,
+				a.new_employee_code as noind_baru , 
+				a.section_code as kodesie , 
+				b.tgl, 
+				b.lokasi,
+				b.longitude,
+				b.latitude,
+				b.waktu::time as wkt,
+				c.jenis_absen,
+				d.approver,
+				d.tgl_approval
+							FROM er.er_employee_all a INNER JOIN at.at_absen B ON a.employee_code = b.noind 
+							INNER JOIN at.at_jenis_absen c ON b.jenis_absen_id = c.jenis_absen_id  
+				                        INNER JOIN at.at_absen_approval d ON b.absen_id = d.absen_id
+							WHERE b.status = 1 AND b.tgl >= now() - INTERVAL '10 DAY' AND b.tgl <= now() AND b.jenis_absen_id BETWEEN 1 AND 4 order by b.waktu
+			";
+			// b.status = 1 and
+		return $this->db->query($sql)->result_array();
+	}
 
+	public function insert_presensi($table_schema, $table_name, $insert){
+    	$this->personalia->insert($table_schema.".".$table_name, $insert);
+    }
+
+    public function cekPresensiL($data){
+		$sql = "select * from \"Presensi\".tprs_shift2
+				where noind = '".$data['noind']."'
+				and tanggal = '".$data['tanggal']."'
+				and waktu = '".$data['waktu']."' ";
+		$result = $this->personalia->query($sql);
+		$n = $result->num_rows();
+		return $n;
+
+	}
+
+	public function cekPresensi($data){
+		$sql = "select * from \"FrontPresensi\".tpresensi
+				where noind = '".$data['noind']."'
+				and tanggal = '".$data['tanggal']."'
+				and waktu = '".$data['waktu']."' ";
+		$result = $this->personalia->query($sql);
+		$n = $result->num_rows();
+		return $n;
+
+	}
+
+	public function cekPresensiRill($data)
+	{
+		$sql = "select * from \"Presensi\".tpresensi_riil
+				where noind = '".$data['noind']."'
+				and tanggal = '".$data['tanggal']."'
+				and waktu = '".$data['waktu']."' ";
+		$result = $this->personalia->query($sql);
+		$n = $result->num_rows();
+		return $n;
+	}
+
+	public function deleteTrial($table_schema, $table_name){
+		$this->personalia->where('user_ =','ABSON');
+		$this->personalia->delete($table_schema.".".$table_name);
+	}
 
 
 	
