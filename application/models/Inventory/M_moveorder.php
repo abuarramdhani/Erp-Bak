@@ -589,6 +589,7 @@ class M_moveorder extends CI_Model
 				bd.DEPARTMENT_CLASS_CODE department, --Produk
 				mtrh.request_number move_order_no,
 				we.WIP_ENTITY_NAME job_no,
+				khs_inv_qty_att(wdj.ORGANIZATION_ID,wro.INVENTORY_ITEM_ID,bic.ATTRIBUTE1,bic.ATTRIBUTE2,'') att,
 				wdj.start_quantity, -- ntar di sum
 				--component
 				msib_compnt.SEGMENT1 kode_komponen,
@@ -692,6 +693,7 @@ class M_moveorder extends CI_Model
 				mtl_system_items_b msib_produk, --shift
 				BOM_SHIFT_TIMES bst,
 				BOM_CALENDAR_SHIFTS bcs
+				,bom_inventory_components bic
 				where
 				mtrh.header_id = mtrl.header_id
 				and mtrh.ATTRIBUTE1 = we.WIP_ENTITY_ID
@@ -700,6 +702,7 @@ class M_moveorder extends CI_Model
 				and wdj.ORGANIZATION_ID = msib_produk.ORGANIZATION_ID -- wro
 				and msib_compnt.INVENTORY_ITEM_ID = wro.INVENTORY_ITEM_ID
 				and msib_compnt.ORGANIZATION_ID = wro.ORGANIZATION_ID
+				and bic.COMPONENT_ITEM_ID = msib_compnt.INVENTORY_ITEM_ID
 				and wro.WIP_ENTITY_ID = wdj.WIP_ENTITY_ID
 				and wro.ORGANIZATION_ID = wdj.ORGANIZATION_ID
 				and wro.wip_entity_id = wo.WIP_ENTITY_ID
@@ -709,6 +712,7 @@ class M_moveorder extends CI_Model
 				and bst.SHIFT_NUM = khs_shift(wdj.SCHEDULED_START_DATE)
 				and bst.CALENDAR_CODE = bcs.CALENDAR_CODE
 				and bcs.SHIFT_NUM = bst.SHIFT_NUM --hard_code
+				and bic.ATTRIBUTE1 is not null
 				and mtrh.request_number = '$moveOrderAwal'
 				-- and mtrl.FROM_SUBINVENTORY_CODE not like 'INT%'
 				and wro.INVENTORY_ITEM_ID = mtrl.INVENTORY_ITEM_ID

@@ -357,6 +357,7 @@ class C_MoveOrder extends CI_Controller
 			$line		= array();
 			$pdf->SetTitle('Picklist_'.date('d/m/Y H/i/s').'.pdf');
 			foreach ($dataall as $key => $value) {
+				// echo "<pre>";print_r($value);exit();
 				$pdf->AliasNbPageGroups('[pagetotal]');
 					foreach ($value['head'] as $key2 => $value2) {
 						$judulAssembly = strlen($value2['PRODUK_DESC']);
