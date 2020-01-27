@@ -19,10 +19,12 @@
 
         <!-- Custom Style -->
         <style>
+            html {
+                scroll-behavior: smooth;
+            }
             label {
                 font-weight: normal;
             }
-
             .form-group {
                 margin-bottom: 3px !important;
             }    
@@ -78,7 +80,7 @@
                 <div class="col-md-1"></div>
                 <!-- /.col -->
                 <div class="col-md-10">
-                        <div class="box box-primary container-fluid ">
+                        <div class="box box-primary container-fluid">
                             <div class="box-header with-border text-center">
                                 <h4><b>PENDAFTARAN PELAPORAN SPT TAHUNAN 2019 ORANG PRIBADI</b></h3>
                                 <h5>- KHUSUS UNTUK PEKERJA CV. KARYA HIDUP SENTOSA YANG MEMILIKI NPWP -</h4>
@@ -88,12 +90,17 @@
                                 <div class="text-justify">
                                     <h4 class="text-center"><span class="bd-content-title text-red"><b>PERHATIAN !</b></span></h4>
                                     <dl>
-                                        <dd>Mohon membaca informasi berikut sebelum Anda melakukan pendaftaran pendampingan pengisian SPT Tahunan 2019.</dd>
-                                        <dd>Pendaftaran pendampingan pengsisian SPT Tahunan Orang Pribadi tahun 2019 ini hanya diperuntukan kepada <b>Pekerja CV. Karya Hidup Sentosa (bukan OS) yang memiliki NPWP</b>.</dd>
+                                        <dt>Mohon membaca informasi berikut sebelum Anda melakukan pendaftaran pendampingan pengisian SPT Tahunan 2019.</dt>
+                                        <dd>1. Pendaftaran pendampingan pengisian SPT Tahunan Orang Pribadi Tahun 2019 ini hanya di peruntukan kepada Pekerja CV Karya Hidup Sentosa (bukan OS) yang memiliki NPWP.</dd>
+                                        <dd>2. Pendaftaran pendampingan SPT akan dibuka mulai tanggal 31 Januari 2020 - 8 Februari 2020 (lebih dari tanggal tersebut tidak  mendapat jadwal).</dd>
+                                        <dd>3. Jadwal pendampingan dapat di lihat di menu <a href="#divPSPTDetailSchedule">"Jadwal Pendampingan"</a> yang ada di bagian bawah halaman ini pada tanggal 10 Februari 2020.</dd>
+                                        <dd>4. Pendampingan akan diberikan selama jam kerja pada hari yang akan ditentukan kemudian</dd>                                        
+                                        <ol type="a">
+                                            <li>Tuksono &nbsp;= Pk 09.30 - 15.20 WIB</li>
+                                            <li>Pusat &emsp;&nbsp; = Pk 08.00 - 15.20 WIB</li>
+                                        </ol>  
                                     </dl>
-                                    <p class="text-center"><b>Jadwal pendampingan akan disusulkan kemudian, dan akan diinformasikan melalui email pekerja dan email seksi.</b></p>
                                 </div>
-                                <br>
                                 <div class="PSPTRegisterFormField">
                                     <div class="form-group">
                                         <label for="txtPSPTIdentityNumber" class="col-sm-2 control-label">No. Induk</label>
@@ -138,7 +145,6 @@
                                 </div>
                                 <div class="text-justify">
                                     <p>Mohon dicek kembali data di atas, jika belum sesuai silahkan diperbaiki sesuai data yang benar dan jika sudah sesuai klik "<b>Kirim</b>".</p>
-                                    <a href="" class="linkPSPTDetailSchedule"><p>Untuk melihat jadwal dan lokasi pendampingan, silahkan klik link berikut.</p></a>
                                 </div>
                             </div>
                             <!-- /.box-body -->
@@ -149,6 +155,11 @@
                                 <button type="reset" class="btn btn-default btnPSPTRefresh"><i class="fa fa-refresh"></i> Refresh</button>
                             </div>
                             <!-- /.box-footer -->
+                            <div id="divPSPTDetailSchedule" class="text-center box-footer" style="padding: 3rem;">
+                                <p>Untuk melihat jadwal pendampingan silahkan klik link dibawah ini</p>
+                                <button class="btn btn-primary btnPSPTDetailSchedule"><i class="fa fa-calendar"></i> &nbsp;Jadwal Pendampingan</button>
+                            </div>
+                            
                         </div>
                         <!-- /. box -->
                     </form>

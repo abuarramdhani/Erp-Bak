@@ -184,8 +184,7 @@ $( _ => {
         }
     })
 
-    $('.linkPSPTDetailSchedule').on('click', function (e) {
-        e.preventDefault()
+    $('.btnPSPTDetailSchedule').on('click', function () {
         $('#mdlPSPTDetailSchedule').modal('show')
     })
 
