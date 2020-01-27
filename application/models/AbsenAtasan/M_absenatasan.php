@@ -239,7 +239,7 @@ class M_absenatasan extends CI_Model
 							FROM er.er_employee_all a INNER JOIN at.at_absen B ON a.employee_code = b.noind 
 							INNER JOIN at.at_jenis_absen c ON b.jenis_absen_id = c.jenis_absen_id  
 				                        INNER JOIN at.at_absen_approval d ON b.absen_id = d.absen_id
-							WHERE b.status = 1 AND b.tgl >= now() - INTERVAL '6 DAY' AND b.tgl <= now() AND b.jenis_absen_id BETWEEN 1 AND 4
+							WHERE b.status = 1 AND b.tgl >= now() - INTERVAL '10 DAY' AND b.tgl <= now() AND b.jenis_absen_id BETWEEN 1 AND 4 order by b.waktu
 			";
 			// b.status = 1 and
 		return $this->db->query($sql)->result_array();
