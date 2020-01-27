@@ -513,14 +513,15 @@ class C_Index extends CI_Controller
 
 							}
 
-							echo '<b style="color: green;">'.$value['noind'].' - '.$value['nama'].'</b><br>';
+							echo '<b style="color: green;">'.$value['noind'].' - '.$value['nama'].' - '.$value['jenis_absen'].$value['tgl'].' '.$value['wkt'].' - '.$value['lokasi']."<br>(".$value['longitude'].",".$value['latitude'].")".' - '.$value['approver']." ( ".$value['tgl_approval'].') - '.'</b><br><br>';
 
 							$row .= "<tr>";
 							$row .= "<td style='border: 1px solid black;width: 5%'>".$norow++."</td>";
 							$row .= "<td style='border: 1px solid black;'>".$value['noind']."</td>";
 							$row .= "<td style='border: 1px solid black;'>".$value['nama']."</td>";
+							$row .= "<td style='border: 1px solid black;'>".$value['jenis_absen']."</td>";
 							$row .= "<td style='border: 1px solid black;'>".$value['tgl']." ".$value['wkt']."</td>";
-							$row .= "<td style='border: 1px solid black;'>".$value['lokasi']."</td>";
+							$row .= "<td style='border: 1px solid black;'>".$value['lokasi']."<br>(".$value['longitude'].",".$value['latitude'].")"."</td>";
 							$row .= "<td style='border: 1px solid black;'>".$value['approver']." ( ".$value['tgl_approval']." )</td>";
 							$row .= "</tr>";
 						}
@@ -561,6 +562,7 @@ class C_Index extends CI_Controller
 						<th style='border: 1px solid black;'>No</th>
 						<th style='border: 1px solid black;'>Nomor Induk</th>
 						<th style='border: 1px solid black;'>Nama</th>
+						<th style='border: 1px solid black;'>Jenis Absen</th>
 						<th style='border: 1px solid black;'>Waktu Absen</th>
 						<th style='border: 1px solid black;'>Lokasi</th>
 						<th style='border: 1px solid black;'>Approver</th>
