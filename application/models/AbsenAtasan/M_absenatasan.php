@@ -230,7 +230,7 @@ class M_absenatasan extends CI_Model
 				a.section_code as kodesie , 
 				b.tgl, 
 				b.lokasi,
-				to_char(b.	waktu,'HH24:MM:SS') as wkt,
+				b.	waktu as wkt,
 				 c.jenis_absen,
 				d.approver,
 				d.tgl_approval
