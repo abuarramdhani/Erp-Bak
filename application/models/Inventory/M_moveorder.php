@@ -571,157 +571,303 @@ class M_moveorder extends CI_Model
 			$moveOrder = "AND mtrh.request_number BETWEEN NVL('$moveOrderAwal', mtrh.request_number ) AND NVL('$moveOrderAkhir', mtrh.request_number )";
 		}
 
-		$sql = "
-				SELECT DISTINCT
-				msib_produk.segment1 PRODUK,
-				msib_produk.description PRODUK_DESC,
-				msib_produk.inventory_item_id,
-				msib_produk.organization_id,
-				KHS_INV_UTILITIES_PKG.GET_KLMPK_PRODUCT(msib_produk.inventory_item_id) kategori_produk,
-				to_char(
-				sysdate,
-				'DD/MM/YYYY HH24:MI:SS'
-				) Print_date,
-				to_char(
-				NVL(wdj.DATE_RELEASED,wdj.SCHEDULED_START_DATE),
-				'DD/MM/YYYY HH24:MI:SS'
-				) DATE_REQUIRED,
-				bd.DEPARTMENT_CLASS_CODE department, --Produk
-				mtrh.request_number move_order_no,
-				we.WIP_ENTITY_NAME job_no,
-				khs_inv_qty_att(wdj.ORGANIZATION_ID,wro.INVENTORY_ITEM_ID,bic.ATTRIBUTE1,bic.ATTRIBUTE2,'') att,
-				wdj.start_quantity, -- ntar di sum
-				--component
-				msib_compnt.SEGMENT1 kode_komponen,
-				msib_compnt.description kode_desc,
-				msib_compnt.inventory_item_id item_id_komponen,
-				msib_compnt.organization_id org_id_komponen,
-				wro.QUANTITY_PER_ASSEMBLY Qty_UNIT,
-				mtrl.QUANTITY qty_minta,
-				mtrl.FROM_SUBINVENTORY_CODE lokasi,
-				bcs.DESCRIPTION || '(' || to_char(
-				to_date(
-				bst.FROM_TIME,
-				'SSSSS'
-				),
-				'HH24:MI:SS'
-				)|| ' s/d ' || to_char(
-				to_date(
-				bst.to_TIME,
-				'SSSSS'
-				),
-				'HH24:MI:SS'
-				)|| ')' SCHEDULE,
-				mtrl.UOM_CODE UoM,
-				mtrh.CREATION_DATE,
-				(
-				case
-				when(
-				select
-				lokasi
-				from
-				khsinvlokasisimpan kls
-				where
-				subinv = mtrl.FROM_SUBINVENTORY_CODE
-				and inventory_item_id = mtrl.inventory_item_id
-				and kls.KELOMPOK = KHS_INV_UTILITIES_PKG.GET_KLMPK_PRODUCT(msib_produk.inventory_item_id)
-				and rownum = 1
-				) is null then(
-				case
-				when(
-				select
-				lokasi
-				from
-				khsinvlokasisimpan kls
-				where
-				subinv = mtrl.FROM_SUBINVENTORY_CODE
-				and inventory_item_id = mtrl.inventory_item_id
-				and kls.KELOMPOK is not null
-				and rownum = 1
-				) is null then(
-				select
-				lokasi
-				from
-				khsinvlokasisimpan kls
-				where
-				subinv = mtrl.FROM_SUBINVENTORY_CODE
-				and inventory_item_id = mtrl.inventory_item_id
-				and rownum = 1
-				)
-				else(
-				select
-				lokasi
-				from
-				khsinvlokasisimpan kls
-				where
-				subinv = mtrl.FROM_SUBINVENTORY_CODE
-				and inventory_item_id = mtrl.inventory_item_id
-				and kls.KELOMPOK is not null
-				and rownum = 1
-				)
-				end
-				)
-				else(
-				select
-				lokasi
-				from
-				khsinvlokasisimpan kls
-				where
-				subinv = mtrl.FROM_SUBINVENTORY_CODE
-				and inventory_item_id = mtrl.inventory_item_id
-				and kls.KELOMPOK = KHS_INV_UTILITIES_PKG.GET_KLMPK_PRODUCT(msib_produk.inventory_item_id)
-				and rownum = 1
-				)
-				end
-				) loc,
-				khs_inv_qty_atr(
-				msib_compnt.organization_id,
-				msib_compnt.inventory_item_id,
-				mtrl.FROM_SUBINVENTORY_CODE,
-				'',
-				''
-				) ATR
-				from
-				mtl_txn_request_headers mtrh,
-				mtl_txn_request_lines mtrl,
-				mtl_system_items_b msib_compnt, --JOB
-				wip_entities we,
-				wip_discrete_jobs wdj,
-				wip_requirement_operations wro,
-				wip_operations wo,
-				BOM_DEPARTMENTS bd, -- produk
-				mtl_system_items_b msib_produk, --shift
-				BOM_SHIFT_TIMES bst,
-				BOM_CALENDAR_SHIFTS bcs
-				,bom_inventory_components bic
-				where
-				mtrh.header_id = mtrl.header_id
-				and mtrh.ATTRIBUTE1 = we.WIP_ENTITY_ID
-				and we.WIP_ENTITY_ID = wdj.WIP_ENTITY_ID
-				and wdj.primary_item_id = msib_produk.INVENTORY_ITEM_ID
-				and wdj.ORGANIZATION_ID = msib_produk.ORGANIZATION_ID -- wro
-				and msib_compnt.INVENTORY_ITEM_ID = wro.INVENTORY_ITEM_ID
-				and msib_compnt.ORGANIZATION_ID = wro.ORGANIZATION_ID
-				and bic.COMPONENT_ITEM_ID = msib_compnt.INVENTORY_ITEM_ID
-				and wro.WIP_ENTITY_ID = wdj.WIP_ENTITY_ID
-				and wro.ORGANIZATION_ID = wdj.ORGANIZATION_ID
-				and wro.wip_entity_id = wo.WIP_ENTITY_ID
-				and wro.OPERATION_SEQ_NUM = wo.OPERATION_SEQ_NUM
-				and wo.DEPARTMENT_ID = bd.DEPARTMENT_ID -- shift
-				and bcs.CALENDAR_CODE = 'KHS_CAL'
-				and bst.SHIFT_NUM = khs_shift(wdj.SCHEDULED_START_DATE)
-				and bst.CALENDAR_CODE = bcs.CALENDAR_CODE
-				and bcs.SHIFT_NUM = bst.SHIFT_NUM --hard_code
-				and bic.ATTRIBUTE1 is not null
-				and mtrh.request_number = '$moveOrderAwal'
-				-- and mtrl.FROM_SUBINVENTORY_CODE not like 'INT%'
-				and wro.INVENTORY_ITEM_ID = mtrl.INVENTORY_ITEM_ID
-				-- order by
-				-- mtrl.LINE_ID,
-				-- we.WIP_ENTITY_NAME,
-				-- mtrl.FROM_SUBINVENTORY_CODE,
-				-- msib_compnt.SEGMENT1
-		";
+		// $sql = "
+		// 		SELECT DISTINCT
+		// 		msib_produk.segment1 PRODUK,
+		// 		msib_produk.description PRODUK_DESC,
+		// 		msib_produk.inventory_item_id,
+		// 		msib_produk.organization_id,
+		// 		KHS_INV_UTILITIES_PKG.GET_KLMPK_PRODUCT(msib_produk.inventory_item_id) kategori_produk,
+		// 		to_char(
+		// 		sysdate,
+		// 		'DD/MM/YYYY HH24:MI:SS'
+		// 		) Print_date,
+		// 		to_char(
+		// 		NVL(wdj.DATE_RELEASED,wdj.SCHEDULED_START_DATE),
+		// 		'DD/MM/YYYY HH24:MI:SS'
+		// 		) DATE_REQUIRED,
+		// 		bd.DEPARTMENT_CLASS_CODE department, --Produk
+		// 		mtrh.request_number move_order_no,
+		// 		we.WIP_ENTITY_NAME job_no,
+		// 		khs_inv_qty_att(wdj.ORGANIZATION_ID,wro.INVENTORY_ITEM_ID,bic.ATTRIBUTE1,bic.ATTRIBUTE2,'') att,
+		// 		wdj.start_quantity, -- ntar di sum
+		// 		--component
+		// 		msib_compnt.SEGMENT1 kode_komponen,
+		// 		msib_compnt.description kode_desc,
+		// 		msib_compnt.inventory_item_id item_id_komponen,
+		// 		msib_compnt.organization_id org_id_komponen,
+		// 		wro.QUANTITY_PER_ASSEMBLY Qty_UNIT,
+		// 		mtrl.QUANTITY qty_minta,
+		// 		mtrl.FROM_SUBINVENTORY_CODE lokasi,
+		// 		bcs.DESCRIPTION || '(' || to_char(
+		// 		to_date(
+		// 		bst.FROM_TIME,
+		// 		'SSSSS'
+		// 		),
+		// 		'HH24:MI:SS'
+		// 		)|| ' s/d ' || to_char(
+		// 		to_date(
+		// 		bst.to_TIME,
+		// 		'SSSSS'
+		// 		),
+		// 		'HH24:MI:SS'
+		// 		)|| ')' SCHEDULE,
+		// 		mtrl.UOM_CODE UoM,
+		// 		mtrh.CREATION_DATE,
+		// 		(
+		// 		case
+		// 		when(
+		// 		select
+		// 		lokasi
+		// 		from
+		// 		khsinvlokasisimpan kls
+		// 		where
+		// 		subinv = mtrl.FROM_SUBINVENTORY_CODE
+		// 		and inventory_item_id = mtrl.inventory_item_id
+		// 		and kls.KELOMPOK = KHS_INV_UTILITIES_PKG.GET_KLMPK_PRODUCT(msib_produk.inventory_item_id)
+		// 		and rownum = 1
+		// 		) is null then(
+		// 		case
+		// 		when(
+		// 		select
+		// 		lokasi
+		// 		from
+		// 		khsinvlokasisimpan kls
+		// 		where
+		// 		subinv = mtrl.FROM_SUBINVENTORY_CODE
+		// 		and inventory_item_id = mtrl.inventory_item_id
+		// 		and kls.KELOMPOK is not null
+		// 		and rownum = 1
+		// 		) is null then(
+		// 		select
+		// 		lokasi
+		// 		from
+		// 		khsinvlokasisimpan kls
+		// 		where
+		// 		subinv = mtrl.FROM_SUBINVENTORY_CODE
+		// 		and inventory_item_id = mtrl.inventory_item_id
+		// 		and rownum = 1
+		// 		)
+		// 		else(
+		// 		select
+		// 		lokasi
+		// 		from
+		// 		khsinvlokasisimpan kls
+		// 		where
+		// 		subinv = mtrl.FROM_SUBINVENTORY_CODE
+		// 		and inventory_item_id = mtrl.inventory_item_id
+		// 		and kls.KELOMPOK is not null
+		// 		and rownum = 1
+		// 		)
+		// 		end
+		// 		)
+		// 		else(
+		// 		select
+		// 		lokasi
+		// 		from
+		// 		khsinvlokasisimpan kls
+		// 		where
+		// 		subinv = mtrl.FROM_SUBINVENTORY_CODE
+		// 		and inventory_item_id = mtrl.inventory_item_id
+		// 		and kls.KELOMPOK = KHS_INV_UTILITIES_PKG.GET_KLMPK_PRODUCT(msib_produk.inventory_item_id)
+		// 		and rownum = 1
+		// 		)
+		// 		end
+		// 		) loc,
+		// 		khs_inv_qty_atr(
+		// 		msib_compnt.organization_id,
+		// 		msib_compnt.inventory_item_id,
+		// 		mtrl.FROM_SUBINVENTORY_CODE,
+		// 		'',
+		// 		''
+		// 		) ATR
+		// 		from
+		// 		mtl_txn_request_headers mtrh,
+		// 		mtl_txn_request_lines mtrl,
+		// 		mtl_system_items_b msib_compnt, --JOB
+		// 		wip_entities we,
+		// 		wip_discrete_jobs wdj,
+		// 		wip_requirement_operations wro,
+		// 		wip_operations wo,
+		// 		BOM_DEPARTMENTS bd, -- produk
+		// 		mtl_system_items_b msib_produk, --shift
+		// 		BOM_SHIFT_TIMES bst,
+		// 		BOM_CALENDAR_SHIFTS bcs
+		// 		,bom_inventory_components bic
+		// 		where
+		// 		mtrh.header_id = mtrl.header_id
+		// 		and mtrh.ATTRIBUTE1 = we.WIP_ENTITY_ID
+		// 		and we.WIP_ENTITY_ID = wdj.WIP_ENTITY_ID
+		// 		and wdj.primary_item_id = msib_produk.INVENTORY_ITEM_ID
+		// 		and wdj.ORGANIZATION_ID = msib_produk.ORGANIZATION_ID -- wro
+		// 		and msib_compnt.INVENTORY_ITEM_ID = wro.INVENTORY_ITEM_ID
+		// 		and msib_compnt.ORGANIZATION_ID = wro.ORGANIZATION_ID
+		// 		and bic.COMPONENT_ITEM_ID = msib_compnt.INVENTORY_ITEM_ID
+		// 		and wro.WIP_ENTITY_ID = wdj.WIP_ENTITY_ID
+		// 		and wro.ORGANIZATION_ID = wdj.ORGANIZATION_ID
+		// 		and wro.wip_entity_id = wo.WIP_ENTITY_ID
+		// 		and wro.OPERATION_SEQ_NUM = wo.OPERATION_SEQ_NUM
+		// 		and wo.DEPARTMENT_ID = bd.DEPARTMENT_ID -- shift
+		// 		and bcs.CALENDAR_CODE = 'KHS_CAL'
+		// 		and bst.SHIFT_NUM = khs_shift(wdj.SCHEDULED_START_DATE)
+		// 		and bst.CALENDAR_CODE = bcs.CALENDAR_CODE
+		// 		and bcs.SHIFT_NUM = bst.SHIFT_NUM --hard_code
+		// 		and bic.ATTRIBUTE1 is not null
+		// 		and mtrh.request_number = '$moveOrderAwal'
+		// 		-- and mtrl.FROM_SUBINVENTORY_CODE not like 'INT%'
+		// 		and wro.INVENTORY_ITEM_ID = mtrl.INVENTORY_ITEM_ID
+		// 		-- order by
+		// 		-- mtrl.LINE_ID,
+		// 		-- we.WIP_ENTITY_NAME,
+		// 		-- mtrl.FROM_SUBINVENTORY_CODE,
+		// 		-- msib_compnt.SEGMENT1
+		// ";
+
+		$sql = "SELECT
+							msib_produk.segment1 PRODUK,
+							msib_produk.description PRODUK_DESC,
+							msib_produk.inventory_item_id,
+							msib_produk.organization_id,
+							KHS_INV_UTILITIES_PKG.GET_KLMPK_PRODUCT(msib_produk.inventory_item_id) kategori_produk,
+							to_char(
+							sysdate,
+							'DD/MM/YYYY HH24:MI:SS'
+							) Print_date,
+							to_char(
+							NVL(wdj.DATE_RELEASED,wdj.SCHEDULED_START_DATE),
+							'DD/MM/YYYY HH24:MI:SS'
+							) DATE_REQUIRED,
+							bd.DEPARTMENT_CLASS_CODE department, --Produk
+							mtrh.request_number move_order_no,
+							we.WIP_ENTITY_NAME job_no,
+							wdj.start_quantity, -- ntar di sum
+							--component
+							msib_compnt.SEGMENT1 kode_komponen,
+							msib_compnt.description kode_desc,
+							msib_compnt.inventory_item_id item_id_komponen,
+							msib_compnt.organization_id org_id_komponen,
+							wro.QUANTITY_PER_ASSEMBLY Qty_UNIT,
+							mtrl.QUANTITY qty_minta,
+							mtrl.FROM_SUBINVENTORY_CODE lokasi,
+							bcs.DESCRIPTION || '(' || to_char(
+							to_date(
+							bst.FROM_TIME,
+							'SSSSS'
+							),
+							'HH24:MI:SS'
+							)|| ' s/d ' || to_char(
+							to_date(
+							bst.to_TIME,
+							'SSSSS'
+							),
+							'HH24:MI:SS'
+							)|| ')' SCHEDULE,
+							mtrl.UOM_CODE UoM,
+							mtrh.CREATION_DATE,
+							(
+							case
+							when(
+							select
+							lokasi
+							from
+							khsinvlokasisimpan kls
+							where
+							subinv = mtrl.FROM_SUBINVENTORY_CODE
+							and inventory_item_id = mtrl.inventory_item_id
+							and kls.KELOMPOK = KHS_INV_UTILITIES_PKG.GET_KLMPK_PRODUCT(msib_produk.inventory_item_id)
+							and rownum = 1
+							) is null then(
+							case
+							when(
+							select
+							lokasi
+							from
+							khsinvlokasisimpan kls
+							where
+							subinv = mtrl.FROM_SUBINVENTORY_CODE
+							and inventory_item_id = mtrl.inventory_item_id
+							and kls.KELOMPOK is not null
+							and rownum = 1
+							) is null then(
+							select
+							lokasi
+							from
+							khsinvlokasisimpan kls
+							where
+							subinv = mtrl.FROM_SUBINVENTORY_CODE
+							and inventory_item_id = mtrl.inventory_item_id
+							and rownum = 1
+							)
+							else(
+							select
+							lokasi
+							from
+							khsinvlokasisimpan kls
+							where
+							subinv = mtrl.FROM_SUBINVENTORY_CODE
+							and inventory_item_id = mtrl.inventory_item_id
+							and kls.KELOMPOK is not null
+							and rownum = 1
+							)
+							end
+							)
+							else(
+							select
+							lokasi
+							from
+							khsinvlokasisimpan kls
+							where
+							subinv = mtrl.FROM_SUBINVENTORY_CODE
+							and inventory_item_id = mtrl.inventory_item_id
+							and kls.KELOMPOK = KHS_INV_UTILITIES_PKG.GET_KLMPK_PRODUCT(msib_produk.inventory_item_id)
+							and rownum = 1
+							)
+							end
+							) loc,
+							khs_inv_qty_atr(
+							msib_compnt.organization_id,
+							msib_compnt.inventory_item_id,
+							mtrl.FROM_SUBINVENTORY_CODE,
+							'',
+							''
+							) ATR
+							from
+							mtl_txn_request_headers mtrh,
+							mtl_txn_request_lines mtrl,
+							mtl_system_items_b msib_compnt, --JOB
+							wip_entities we,
+							wip_discrete_jobs wdj,
+							wip_requirement_operations wro,
+							wip_operations wo,
+							BOM_DEPARTMENTS bd, -- produk
+							mtl_system_items_b msib_produk, --shift
+							BOM_SHIFT_TIMES bst,
+							BOM_CALENDAR_SHIFTS bcs
+							where
+							mtrh.header_id = mtrl.header_id
+							and mtrh.ATTRIBUTE1 = we.WIP_ENTITY_ID
+							and we.WIP_ENTITY_ID = wdj.WIP_ENTITY_ID
+							and wdj.primary_item_id = msib_produk.INVENTORY_ITEM_ID
+							and wdj.ORGANIZATION_ID = msib_produk.ORGANIZATION_ID -- wro
+							and msib_compnt.INVENTORY_ITEM_ID = wro.INVENTORY_ITEM_ID
+							and msib_compnt.ORGANIZATION_ID = wro.ORGANIZATION_ID
+							and wro.WIP_ENTITY_ID = wdj.WIP_ENTITY_ID
+							and wro.ORGANIZATION_ID = wdj.ORGANIZATION_ID
+							and wro.wip_entity_id = wo.WIP_ENTITY_ID
+							and wro.OPERATION_SEQ_NUM = wo.OPERATION_SEQ_NUM
+							and wo.DEPARTMENT_ID = bd.DEPARTMENT_ID -- shift
+							and bcs.CALENDAR_CODE = 'KHS_CAL'
+							and bst.SHIFT_NUM = khs_shift(wdj.SCHEDULED_START_DATE)
+							and bst.CALENDAR_CODE = bcs.CALENDAR_CODE
+							and bcs.SHIFT_NUM = bst.SHIFT_NUM --hard_code
+							and mtrh.request_number = '$moveOrderAwal'
+							-- and mtrl.FROM_SUBINVENTORY_CODE not like 'INT%'
+							and wro.INVENTORY_ITEM_ID = mtrl.INVENTORY_ITEM_ID
+							order by
+							mtrl.LINE_ID,
+							we.WIP_ENTITY_NAME,
+							mtrl.FROM_SUBINVENTORY_CODE,
+							msib_compnt.SEGMENT1";
 		
 		// echo "<pre>";
 		// echo "$sql";
