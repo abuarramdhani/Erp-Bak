@@ -1,7 +1,7 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
 
-class C_List extends CI_Controller {
+class C_ListSPB extends CI_Controller {
 
 	public function __construct()
 	{
@@ -14,7 +14,7 @@ class C_List extends CI_Controller {
         $this->load->model('SystemAdministration/MainMenu/M_user');
     }
     
-    public function checkSession()
+    private function checkSession()
     {
         if ( ! $this->session->is_logged ) {
             redirect();
@@ -26,30 +26,29 @@ class C_List extends CI_Controller {
         $user_id = $this->session->userid;
         $resp_id = $this->session->responsibility_id;
 
-		$data['Menu']           = 'List DO';
+		$data['Menu']           = 'List SPB';
 		$data['SubMenuOne']     = '';
 		$data['UserMenu']       = $this->M_user->getUserMenu($user_id, $resp_id);
 		$data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id, $resp_id);
         $data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id, $resp_id);
-        $data['DOList']         = $this->M_list->getDOList();
+        $data['SPBList']        = $this->M_list->getSPBList();
 
         $this->session->set_userdata('last_menu', $data['Menu']);
 
 		$this->load->view('V_Header', $data);
 		$this->load->view('V_Sidemenu', $data);
-        $this->load->view('ApprovalDO/MainMenu/V_ListDO', $data);
+        $this->load->view('ApprovalDO/MainMenu/V_ListSPB', $data);
         $this->load->view('V_Footer', $data);
     }
 
-    public function requestApproveDO()
+    public function requestApproveSPB()
     {
-        $do_number    = $this->input->post('doNumber');
-        $so_number    = $this->input->post('soNumber');
+        $spb_number   = $this->input->post('spbNumber');
         $approver     = $this->input->post('approver');
         $requested_by = $this->session->user;
 
-        $this->M_list->createApprovalDO($do_number, $so_number);
-        $this->M_list->updateStatusDO($do_number, $requested_by, $approver);
+        $this->M_list->createApprovalSPB($spb_number);
+        $this->M_list->updateStatusSPB($spb_number, $requested_by, $approver);
 
         echo json_encode('Success!');
     }

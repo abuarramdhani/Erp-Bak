@@ -70,20 +70,29 @@ class C_Detail extends CI_Controller {
             case 'LaunchPickRelease' :
                 $data['DetailDO'] = $this->M_detail->getDetailLaunchPickRelease($exp_id[2]);
                 break;
+            case 'ApprovalSPB':
+            case 'ListSPB' :
+            case 'RequestedSPB':
+            case 'ApprovedSPB':
+            case 'RejectedSPB':
+            case 'PendingSPB':
+                $data['DetailDO'] = $this->M_detail->getDetailSPB($exp_id[1]);
+                break;
             default:
                 $data['DetailDO'] = $this->M_detail->getDetailDO($exp_id[1]);
                 break;
         }
 
         switch ($exp_id[0]) {
-            case 'List':
+            case 'ListDO':
+            case 'ListSPB':
                 $data['ButtonType'] = 
-                    '<button type="button" title="Select Approver" class="btn btn-primary pull-right btnADOSelectApprover"
-                    data-toggle="modal" data-target="#mdlADOAssignApprover">
+                    '<button type="button" title="Select Approver" class="btn btn-primary pull-right btnADOSelectApprover">
                         <i class="fa fa-location-arrow"></i>&nbsp; Select Approver
                     </button>';
                 break;
             case 'Approval':
+            case 'ApprovalSPB':
                 $data['ButtonType'] = 
                     '<button type="button" title="Pending" class="btn btn-default pull-right btnADOPending">
                         <i class="fa fa-clock-o"></i>&nbsp; Pending
@@ -95,24 +104,28 @@ class C_Detail extends CI_Controller {
                         <i class="fa fa-check-square-o"></i>&nbsp; Approve
                     </button>';
                 break;
+            case 'RequestedSPB':
             case 'Requested':
                 $data['ButtonType'] = 
                     '<button type="button" title="Approval Requested" class="btn btn-primary pull-right" disabled>
                         <i class="fa fa-check"></i>&nbsp; Approval Requested
                     </button>';
                 break;
+            case 'ApprovedSPB':
             case 'Approved':
                 $data['ButtonType'] = 
                     '<button type="button" title="Approved" class="btn btn-success pull-right" disabled>
                         <i class="fa fa-check-circle-o"></i>&nbsp; Approved
                     </button>';
                 break;
+            case 'RejectedSPB':
             case 'Rejected':
                 $data['ButtonType'] = 
                     '<button type="button" title="Rejected" class="btn btn-danger pull-right" disabled>
                         <i class="fa fa-remove"></i>&nbsp; Rejected
                     </button>';
                 break;
+            case 'PendingSPB':
             case 'Pending':
                 if ( $data['UserMenu'][0]['user_group_menu_name'] === 'Approval DO KACAB' ) {
                     $data['ButtonType'] = 

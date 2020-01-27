@@ -67,9 +67,15 @@
                                                 <td width="14%" class="text-right"><?= $val['PENDING_DATE'] ?></td>
                                                 <td width="13%"><?= $val['PENDING_BY'] ?></td>
                                                 <td width="10%" class="text-center">
-                                                    <a href="<?= base_url('ApprovalDO/Detail/Pending-'.$val['NO_DO'].'-'.$val['NO_SO']) ?>" target="_blank" title="Detail" class="btn btn-default">
-                                                        <i class="fa fa-book"></i>&nbsp; Detail
-                                                    </a>
+                                                    <?php if ($val['NO_SO']) : ?>
+                                                        <a href='<?= base_url("ApprovalDO/Detail/Pending-{$val['NO_DO']}-{$val['NO_SO']}") ?>' target="_blank" title="Detail" class="btn btn-default">
+                                                            <i class="fa fa-book"></i>&nbsp; Detail
+                                                        </a>
+                                                    <?php else : ?>
+                                                        <a href='<?= base_url("ApprovalDO/Detail/PendingSPB-{$val['NO_DO']}-") ?>' target="_blank" title="Detail" class="btn btn-default">
+                                                            <i class="fa fa-book"></i>&nbsp; Detail
+                                                        </a>
+                                                    <?php endif ?>
                                                 </td>
                                                 <td width="10%" class="text-center">
                                                     <span class="label label-default">Pending</span>

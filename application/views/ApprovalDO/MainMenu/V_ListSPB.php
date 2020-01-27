@@ -28,13 +28,13 @@
         <div class="col-md-12">
             <div class="box box-primary">
                 <div class="box-header with-border">
-                    <h3 class="box-title">List Delivery Order</h3>
+                    <h3 class="box-title">List SPB</h3>
                 </div>
                 <div class="box-body">
                     <div class="box-body table-responsive no-padding">
                         <div class="panel panel-info">
                             <div class="panel-heading">
-                                <p class="bold">List DO</p>
+                                <p class="bold">List SPB</p>
                             </div>
                             <div class="panel-body">
                                 <div class="col-sm-12 text-center divADOLoadingTable">
@@ -46,24 +46,24 @@
                                     <thead >
                                         <tr class="bg-primary" height="50px">
                                             <th width="10%" class="text-center">No</th>
-                                            <th width="22%" class="text-center">No DO</th>
-                                            <th width="22%" class="text-center">No SO</th>
+                                            <th width="22%" class="text-center">No SPB</th>
+                                            <th width="22%" class="text-center">Lokasi Gudang Asal</th>
+                                            <th width="22%" class="text-center">Lokasi Gudang Tujuan</th>
                                             <th width="22%" class="text-center no-orderable">Action</th>
-                                            <th width="22%" class="text-center">Status</th>
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        <?php foreach ($DOList as $key => $val) : ?>
+                                        <?php foreach ($SPBList as $key => $val) : ?>
                                             <tr>
                                                 <td width="10%" class="text-right"><?= $key+1 ?></td>
-                                                <td width="22%" class="text-right tdADODONumber"><?= $val['BATCH_ID'] ?></td>
-                                                <td width="22%" class="text-right tdASODONumber"><?= $val['SOURCE_HEADER_NUMBER'] ?></td>
+                                                <td width="22%" class="text-right"><?= $val['NO_SPB'] ?></td>
+                                                <td width="22%" class="text-left"><?= $val['FROM_SUBINV'] ?></td>
+                                                <td width="22%" class="text-left"><?= $val['TO_SUBINV'] ?></td>
                                                 <td width="22%" class="text-center">
-                                                    <a href="<?= base_url('ApprovalDO/Detail/ListDO-'.$val['BATCH_ID'].'-'.$val['SOURCE_HEADER_NUMBER']) ?>" target="_blank" title="Detail" class="btn btn-default">
+                                                    <a href="<?= base_url('ApprovalDO/Detail/ListSPB-'.$val['NO_SPB'].'-') ?>" target="_blank" title="Detail" class="btn btn-default">
                                                         <i class="fa fa-book"></i>&nbsp; Detail
                                                     </a>
                                                 </td>
-                                                <td width="22%" class="text-center"></td>
                                             </tr>
                                         <?php endforeach ?>
                                     </tbody>

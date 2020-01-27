@@ -92,6 +92,32 @@ class M_detail extends CI_Model
         $query = $this->oracle->query($sql);
         return $query->result_array();
     }
+    
+    public function getDetailSPB()
+    {
+        $sql = "SELECT mtrh.REQUEST_NUMBER          no_spb
+                        ,msib.SEGMENT1                kode_barang           
+                        ,msib.DESCRIPTION             nama_barang
+                        ,mtrl.QUANTITY                req_qty
+                        ,mtrl.UOM_CODE                uom
+                        ,mtrh.FROM_SUBINVENTORY_CODE  from_subinv
+                        ,mtrh.TO_SUBINVENTORY_CODE    to_subinv
+                from mtl_txn_request_headers mtrh
+                    ,mtl_txn_request_lines mtrl
+                    ,mtl_system_items_b msib
+                where mtrh.HEADER_ID = mtrl.HEADER_ID
+                    and mtrl.TRANSACTION_TYPE_ID = 327     
+                    and mtrl.LINE_STATUS in (3,7)
+                    and mtrh.HEADER_STATUS in (3,7)
+                    and nvl(mtrl.QUANTITY_DETAILED,0) = 0
+                    and nvl(mtrl.QUANTITY_DELIVERED,0) = 0
+                    and msib.INVENTORY_ITEM_ID = mtrl.INVENTORY_ITEM_ID
+                    and msib.ORGANIZATION_ID = mtrl.ORGANIZATION_ID
+                    and mtrh.FROM_SUBINVENTORY_CODE = 'FG-TKS'";
+                    
+        $query = $this->oracle->query($sql);
+        return $query->result_array();
+    }
 
     public function getDetailBackorder($so_number)
     {
