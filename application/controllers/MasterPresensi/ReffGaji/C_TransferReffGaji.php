@@ -1108,13 +1108,14 @@ class C_TransferReffGaji extends CI_Controller
 			$awal_minggu = 11;
 			$jam_seminggu = 0;
 			$dihitung_bulanlalu = $this->M_transferreffgaji->getDetailGiovanBulanLalu($noind,date("Y-m-d",strtotime($data[0]['dates'])));
+			
 			foreach($data as $gj){
 				if($minggu == $gj['minggu']){
 					$ttl_minggu += $gj['ttl_jam'];
 				}else{
 					if($minggu !== 0){
 						$jam_seminggu = 0;
-						if($awal_minggu == 0){
+						if($awal_minggu == 11){
 							if ($dihitung_bulanlalu > 32) {
 								$jam_seminggu = 0;
 							}else{
@@ -1134,6 +1135,8 @@ class C_TransferReffGaji extends CI_Controller
 						$objexcel->setCellValue('H'.($awal_minggu),$jam_seminggu);
 						$objexcel->mergeCells("H$awal_minggu:H".($num - 2));
 						$awal_minggu = $num;
+						$ttl_minggu = $gj['ttl_jam'];
+					}else{
 						$ttl_minggu = $gj['ttl_jam'];
 					}
 				}
