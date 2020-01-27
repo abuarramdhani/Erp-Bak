@@ -9,6 +9,7 @@ class C_FleetCetakSpk extends CI_Controller
 		$this->load->helper('url');
 		$this->load->helper('html');
 
+		$this->load->library('Log_Activity');
 		$this->load->library('form_validation');
 		$this->load->library('session');
 		$this->load->library('encrypt');
@@ -212,6 +213,11 @@ class C_FleetCetakSpk extends CI_Controller
 
 			$data['isi'] = $dataMain;
 			$data['tabel'] = $JenisMaintnce;
+			//insert to t_log
+			$aksi = 'MANAGEMENT KENDARAAN';
+			$detail = 'Proses_Cetak SPK ID '.$header_id;
+			$this->log_activity->activity_log($aksi, $detail);
+			//
 
 			// echo "<pre>";print_r($data['tabel']);print_r($data['jenisMaintenance']);exit();
 
@@ -344,6 +350,11 @@ class C_FleetCetakSpk extends CI_Controller
 						$this->M_fleetcetakspk->updateFleetCetakSpkDetail($lines, $id_lines);
 					}
 			}
+			//insert to t_log
+			$aksi = 'MANAGEMENT KENDARAAN';
+			$detail = 'Proses_Update SPK ID '.$plaintext_string;
+			$this->log_activity->activity_log($aksi, $detail);
+			//
 
 			redirect(site_url('GeneralAffair/FleetCetakSpk'));
 		}
@@ -429,6 +440,11 @@ class C_FleetCetakSpk extends CI_Controller
 
 		$this->M_fleetcetakspk->deleteFleetCetakSpk($plaintext_string);
 		$this->M_fleetcetakspk->deleteAllFleetSPKMaintenance($plaintext_string);
+		//insert to t_log
+		$aksi = 'MANAGEMENT KENDARAAN';
+		$detail = 'Proses_Delete SPK ID '.$plaintext_string;
+		$this->log_activity->activity_log($aksi, $detail);
+		//
 
 		redirect(site_url('GeneralAffair/FleetCetakSpk'));
     }
@@ -439,6 +455,11 @@ class C_FleetCetakSpk extends CI_Controller
 		$lineId = $this->encrypt->decode($lineId);
 
 		$this->M_fleetcetakspk->deleteFleetCetakSpkDetail($lineId);
+		//insert to t_log
+		$aksi = 'MANAGEMENT KENDARAAN';
+		$detail = 'Proses_Delete SPK_Detail ID '.$lineId;
+		$this->log_activity->activity_log($aksi, $detail);
+		//
 
 		echo json_encode('true');
 	}
@@ -457,6 +478,11 @@ class C_FleetCetakSpk extends CI_Controller
 		$tanggal = explode('-', $tgl);
 		$data['tanggal'] = $tanggal;
 		$data['FleetLineSpkDetail'] 	= $this->M_fleetcetakspk->getFleetSPKDetailMaintenance($plaintext_string);
+		//insert to t_log
+		$aksi = 'MANAGEMENT KENDARAAN';
+		$detail = 'Proses_Cetak SPK ID '.$plaintext_string;
+		$this->log_activity->activity_log($aksi, $detail);
+		//
 
 		$pdf = $this->pdf->load();
 		$pdf = new mPDF('utf-8', 'A4', 8, '', 5, 5, 10, 15, 0, 0, 'P');
