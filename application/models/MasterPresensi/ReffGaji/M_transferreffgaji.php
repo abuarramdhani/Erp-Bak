@@ -233,7 +233,7 @@ class M_transferreffgaji extends CI_Model
 	}
 
 	public function getPekerjaAktif($key){
-		$sql = "select noind,nama from hrd_khs.tpribadi where noind like (upper('%$key%') or nama like upper('%$key%')) and keluar = '0'";
+		$sql = "select noind,nama from hrd_khs.tpribadi where (noind like upper('%$key%') or nama like upper('%$key%')) and keluar = '0'";
 		return $this->personalia->query($sql)->result_array();
 	}
 
@@ -248,6 +248,7 @@ class M_transferreffgaji extends CI_Model
 						when 5 then 'Jumat'
 						when 6 then 'Sabtu'
 						end as nama_hari,
+					extract(week from dates.dates) as minggu,
 					tk.keterangan,
 					trk.masuk,
 					trk.keluar,
@@ -325,6 +326,21 @@ class M_transferreffgaji extends CI_Model
 				on gr.formula_id = gf.formula_id
 				where noind = '$noind'";
 		return $this->personalia->query($sql)->row();	
+	}
+
+	public function getDetailGiovanBulanLalu($noind,$tanggal){
+		$sql = "select sum(ttl_jam) as jumlah
+				from \"Presensi\".treffgaji_khusus tk 
+				where noind  = '$noind'
+				and tanggal < '$tanggal'
+				and extract(week from tanggal) = extract(week from '$tanggal'::date)
+				and tanggal  > '$tanggal'::date - interval '7 day'";
+		$result = $this->personalia->query($sql)->row();
+		if (!empty($result)) {
+			return $result->jumlah;
+		}else{
+			return 0;
+		}
 	}
 
 } ?>
