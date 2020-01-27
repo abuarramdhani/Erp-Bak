@@ -57,7 +57,7 @@
                                 </a>
                             </li>
                             <li class="hidden-xs hidden-sm">
-                                <a href="<?= base_url('PelaporanSPT/Daftar') ?>">
+                                <a href="<?= base_url('PendampinganSPT/Daftar') ?>">
                                     <i class="fa fa-envelope-square"></i> Daftar Pendampingan SPT
                                 </a>
                             </li>
@@ -138,6 +138,7 @@
                                 </div>
                                 <div class="text-justify">
                                     <p>Mohon dicek kembali data di atas, jika belum sesuai silahkan diperbaiki sesuai data yang benar dan jika sudah sesuai klik "<b>Kirim</b>".</p>
+                                    <a href="" class="linkPSPTDetailSchedule"><p>Untuk melihat jadwal dan lokasi pendampingan, silahkan klik link berikut.</p></a>
                                 </div>
                             </div>
                             <!-- /.box-body -->
@@ -207,12 +208,28 @@
             </div>
         </div>
 
+        <div id="mdlPSPTDetailSchedule" class="modal fade" data-keyboard="false" data-backdrop="static">
+            <div class="modal-dialog modal-slg">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h4 class="modal-title"><i class="fa fa-info"></i> Informasi</h4>
+                    </div>
+                    <div class="modal-body" style="word-wrap: break-word">
+                        <p class="text-center text-red">Jadwal dan lokasi pendampingan belum tersedia.</p><br>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-primary pull-right" data-dismiss="modal"><i class="fa fa-remove"></i> Tutup</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
         <footer class="main-footer" style="margin:0;">
-			<div class="pull-right hidden-xs">
-				Page rendered in <strong>{elapsed_time}</strong> seconds.
-				<strong>Copyright &copy; Quick 2015<?php if(date('Y')>2015) { echo '-'.date('Y'); } ?>.</strong> All rights reserved.
-			</div>
-			<b>Version</b> 1.0.0
+            <div class="pull-right hidden-xs">
+                Page rendered in <strong>{elapsed_time}</strong> seconds.
+                <strong>Copyright &copy; Quick 2015<?php if ( date('Y') > 2015 ) { echo '-'.date('Y'); } ?>.</strong> All rights reserved.
+            </div>
+            <b>Version</b> 1.0.0
         </footer>
 
         <script>
@@ -221,10 +238,10 @@
         <script src="<?= base_url('assets/plugins/jquery-2.1.4.min.js') ?>" type="text/javascript"></script>
         <script src="<?= base_url('assets/plugins/jQueryUI/jquery-ui.min.js') ?>" type="text/javascript"></script>
         <script src="<?= base_url('assets/plugins/bootstrap/3.3.7/js/bootstrap.min.js') ?>"></script>
-    	<script src="<?= base_url('assets/plugins/sweetalert2.all.min.js');?>"></script>
-    	<script src="<?= base_url('assets/plugins/sweetalert2.all.js');?>"></script>
-		<script src="<?= base_url('assets/plugins/sweetAlert/sweetalert.js') ?>"></script>
-		<script src="<?= base_url('assets/plugins/select2/select2.full.min.js') ?>"></script>
-		<script src="<?= base_url('assets/js/customPSPT.js');?>"></script>
+        <script src="<?= base_url('assets/plugins/sweetalert2.all.min.js');?>"></script>
+        <script src="<?= base_url('assets/plugins/sweetalert2.all.js');?>"></script>
+        <script src="<?= base_url('assets/plugins/sweetAlert/sweetalert.js') ?>"></script>
+        <script src="<?= base_url('assets/plugins/select2/select2.full.min.js') ?>"></script>
+        <script src="<?= base_url('assets/js/customPSPT.js');?>"></script>
     </body>
 </html>
