@@ -23,8 +23,9 @@
                     <div class="col-lg-12">
                         <div class="box box-primary box-solid">
                             <div class="box-header with-border">
-                                <div>
-                                    <marquee><label style="font-size: 18px;">Harap dilakukan verifikasi terlebih dahulu sebelum klik APPROVE</label></marquee>
+                                <div class="col-lg-12">
+                                    <a href="<?php echo site_url('assets/video/approve_perizinan_dinas.webm');?>" class="btn btn-warning col-lg-1"><span style="color: white" class='fa fa-2x fa-video-camera'></a>
+                                    <marquee class="col-lg-11"><label style="font-size: 18px;">Harap dilakukan verifikasi terlebih dahulu sebelum klik APPROVE</label></marquee>
                                 </div>
                             </div>
                             <div class="box-body">
