@@ -52,6 +52,7 @@
                                             <thead class="btn-info" style="color:black">
                                                 <tr>
                                                     <th>No</th>
+                                                    <th></th>
                                                     <th>Tanggal</th>
                                                     <th>Jenis Dokumen</th>
                                                     <th>No Dokumen</th>
@@ -79,6 +80,7 @@
                                                     ?>
                                                     <tr id="baris<?= $no?>">
                                                         <td class="<?= $td?>" ><?= $no; ?></td>
+                                                        <td class="<?= $td?>"><button type="button" style="color:black" class="btn btn-xs" id="detail<?= $val['NO_DOKUMEN'] ?>" data-toggle="modal" data-target="#mdl<?= $val['NO_DOKUMEN']?>"><i class="fa fa-eye"></i></button></td>
                                                         <td class="<?= $td?>"><input type="hidden" id="jam<?= $no?>" value="<?= $val['TGL_DIBUAT']?>"><?= $val['TGL_DIBUAT']?></td>
                                                         <td class="<?= $td?>"><input type="hidden" id="jenis<?= $no?>" value="<?= $val['JENIS_DOKUMEN']?>"><?= $val['JENIS_DOKUMEN']?></td>
                                                         <td class="<?= $td?>" style="font-size:17px; font-weight: bold"><input type="hidden" id="nodoc<?= $no?>" value="<?= $val['NO_DOKUMEN']?>"><?= $val['NO_DOKUMEN']?></td>
@@ -86,7 +88,7 @@
                                                         <td class="<?= $td?>"><input type="hidden" id="jml_pcs<?= $no?>" value="<?= $val['JUMLAH_PCS']?>"><?= $val['JUMLAH_PCS']?></td>
                                                         <td class="<?= $td?>"><?= $val['URGENT'] ?></td>
                                                         <td class="<?= $td?>"><?= $status ?></td>
-                                                        <td class="<?= $td?>"><input type="button" class="btn btn-xs btn-danger" id="btncancelSPB" value="Cancel" onclick="btnCancelKGS(<?= $no?>)"></td>
+                                                        <td class="<?= $td?>"><button type="button" class="btn btn-danger" id="btncancelSPB" onclick="btnCancelKGS(<?= $no?>)"><i class="fa fa-close"></i></button></td>
                                                     </tr>
                                                 <?php $no++; $i++; }?>
                                                 
@@ -103,3 +105,49 @@
         </div>
     </div>
 </section>
+
+<?php foreach ($data as $key) {?>
+<div class="modal fade" id="mdl<?= $key['NO_DOKUMEN']?>" tabindex="-1" role="dialog" aria-labelledby="myModalDetail">
+	<div class="modal-dialog" role="document">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+				<h4 class="modal-title" style="text-align:center;">Detail <br> <b> No Dokumen : <?= $key['NO_DOKUMEN']?></b></h4>
+			</div>
+			<div class="modal-body">
+				<div class="panel-body">
+                <div class="table-responsive">
+                    <table class="table table-bordered table-hover text-center" style="width:100%" id="">
+                        <thead>
+                            <tr class="bg-info">
+                                <th colspan="2">Pelayanan</th>
+                                <th colspan="2">Pengeluaran</th>
+                                <th colspan="2">Packing</th>
+                            </tr>
+                            <tr class="bg-info">
+                                <td>Mulai</td>
+                                <td>Selesai</td>
+                                <td>Mulai</td>
+                                <td>Selesai</td>
+                                <td>Mulai</td>
+                                <td>Selesai</td>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><?php echo $key['MULAI_PELAYANAN']?></td>
+                                <td><?php echo $key['SELESAI_PELAYANAN']?></td>
+                                <td><?php echo $key['MULAI_PENGELUARAN']?></td>
+                                <td><?php echo $key['SELESAI_PENGELUARAN']?></td>
+                                <td><?php echo $key['MULAI_PACKING']?></td>
+                                <td><?php echo $key['SELESAI_PACKING']?></td>
+                            </tr>  
+                        </tbody>
+                    </table>
+				</div>
+			</div>
+		</div>
+		</div>
+	</div>
+</div>
+<?php }?>

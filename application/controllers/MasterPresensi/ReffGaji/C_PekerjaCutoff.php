@@ -572,10 +572,10 @@ class C_PekerjaCutoff extends CI_Controller
 		//non-staff
 		$data_nonstaff = $this->M_pekerjacutoff->getPekerjaCufOffAktif($periode,"'A','H','E'",$noind_text);
 		// echo "<pre>";print_r($data_nonstaff);exit();
-		if(!empty($data_staff)){
+		if(!empty($data_nonstaff)){
 			$index = 0;
-			foreach ($data_staff as $dt_staff) {
-				$data_staff[$index]['htm'] = $this->M_pekerjacutoff->hitung_htm_dipilih($periode,$dt_staff['noind']);
+			foreach ($data_nonstaff as $dt_nonstaff) {
+				$data_nonstaff[$index]['htm'] = $this->M_pekerjacutoff->hitung_htm_dipilih($periode,$dt_nonstaff['noind']);
 				$index++;
 			}
 		}
@@ -798,6 +798,28 @@ class C_PekerjaCutoff extends CI_Controller
 		);
 
 		$this->M_pekerjacutoff->insertMemo($data_insert);
+
+		$data_id = $this->M_pekerjacutoff->getMemoID($dibuat,$periode,$nomor_surat,$mengetahui,$to_staff,$to_nonstaff,$file_staff,$file_nonstaff);
+		
+		foreach ($data_staff as $ds) {
+			$data_insert_staff = array(
+				'id_memo' => $data_id,
+				'noind' => $ds['noind'],
+				'htm' => $ds['htm'],
+				'ief' => $ds['ief']
+			);
+			$this->M_pekerjacutoff->insertMemoDetail($data_insert_staff);
+		}
+
+		foreach ($data_nonstaff as $dn) {
+			$data_insert_nonstaff = array(
+				'id_memo' => $data_id,
+				'noind' => $dn['noind'],
+				'htm' => $dn['htm'],
+				'ief' => $dn['ief']
+			);
+			$this->M_pekerjacutoff->insertMemoDetail($data_insert_nonstaff);
+		}
 
 		$user_id = $this->session->userid;
 		$user = $this->session->user;

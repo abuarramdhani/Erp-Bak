@@ -1,11 +1,11 @@
 <?php
 defined('BASEPATH') or exit('No Direct Script Access Allowed');
 /**
- * 
+ *
  */
 class C_Overtime extends CI_Controller
 {
-	
+
 	function __construct()
 	{
 		parent::__construct();
@@ -14,6 +14,7 @@ class C_Overtime extends CI_Controller
 		$this->load->helper('html');
 		$this->load->helper('file');
 
+		$this->load->library('Log_Activity');
 		$this->load->library('form_validation');
 		$this->load->library('session');
 		$this->load->library('encrypt');
@@ -62,7 +63,7 @@ class C_Overtime extends CI_Controller
 		$data['UserMenu'] = $this->M_user->getUserMenu($user_id,$this->session->responsibility_id);
 		$data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id);
 		$data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id);
-		
+
 		$periode = $this->input->post('periode');
 		$prd = explode(" - ", $periode);
 
@@ -87,13 +88,11 @@ class C_Overtime extends CI_Controller
 					$array[$angka]['data'][$angka2]['overtime'] 	= '0';
 					$array[$angka]['data'][$angka2]['tanggal']	= $tgl['tanggal'];
 				}
-				$angka2++;			
+				$angka2++;
 			}
 			$angka++;
 		}
-		// echo "<pre>";
-		// print_r($array);
-		// exit();
+
 		$data['data'] = $array;
 		$data['tanggal'] = $tanggal;
 		$data['linkExport'] = base_url('HitungHlcm/DataOvertimePHL/Excel/'.$periode);
@@ -146,7 +145,7 @@ class C_Overtime extends CI_Controller
 		$kolom_total = PHPExcel_Cell::stringFromColumnIndex($num);
 		$objPHPExcel->setCellValue($kolom_total.'4','Total');
 		$objPHPExcel->mergeCells($kolom_total."4".":".$kolom_total."5");
-		
+
 		$angka = 1;
 		foreach ($pekerja as $pkj) {
 			$array[$angka] = array(
@@ -171,7 +170,7 @@ class C_Overtime extends CI_Controller
 				}else{
 					$objPHPExcel->setCellValue($kolom2.($angka+5),'0');
 				}
-				$angka2++;			
+				$angka2++;
 			}
 			$kolom2 = PHPExcel_Cell::stringFromColumnIndex($angka2);
 			$objPHPExcel->setCellValue($kolom2.($angka+5),number_format($total,2));

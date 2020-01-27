@@ -23,10 +23,11 @@ class C_ProsesGaji extends CI_Controller {
 	public function __construct()
     {
         parent::__construct();
-		  
+
         $this->load->helper('form');
         $this->load->helper('url');
         $this->load->helper('html');
+		$this->load->library('Log_Activity');
         $this->load->library('form_validation');
           //load the login model
 		$this->load->library('session');
@@ -35,7 +36,7 @@ class C_ProsesGaji extends CI_Controller {
 		$this->load->model('M_Index');
 		$this->load->model('SystemAdministration/MainMenu/M_user');
 		$this->load->model('UpahHlCm/M_prosesgaji');
-		  
+
 		if($this->session->userdata('logged_in')!=TRUE) {
 			$this->load->helper('url');
 			$this->session->set_userdata('last_page', current_url());
@@ -45,33 +46,33 @@ class C_ProsesGaji extends CI_Controller {
 		  //$this->load->model('CustomerRelationship/M_Index');
 		date_default_timezone_set('Asia/Jakarta');
     }
-	
+
 	//HALAMAN INDEX
 	public function index(){
 		$this->checkSession();
 		$user_id = $this->session->userid;
-		
+
 		$data['Menu'] = 'Dashboard';
 		$data['SubMenuOne'] = '';
 		$data['SubMenuTwo'] = '';
-		
+
 		$data['UserMenu'] = $this->M_user->getUserMenu($user_id,$this->session->responsibility_id);
 		$data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id);
 		$data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id);
 
 		$data['periodeGaji'] = $this->M_prosesgaji->getCutOffGaji();
 		$data['hasil'] = array();
-		
+
 		$this->load->view('V_Header',$data);
 		$this->load->view('V_Sidemenu',$data);
 		$this->load->view('UpahHlCm/ProsesGaji/V_Index',$data);
 		$this->load->view('V_Footer',$data);
-		
+
 	}
-	
+
 	public function checkSession(){
 		if($this->session->is_logged){
-			
+
 		}else{
 			redirect('');
 		}
@@ -102,15 +103,15 @@ class C_ProsesGaji extends CI_Controller {
 
 		$this->checkSession();
 		$user_id = $this->session->userid;
-		
+
 		$data['Menu'] = 'Dashboard';
 		$data['SubMenuOne'] = '';
 		$data['SubMenuTwo'] = '';
-		
+
 		$data['UserMenu'] = $this->M_user->getUserMenu($user_id,$this->session->responsibility_id);
 		$data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id);
 		$data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id);
-		
+
 		$data['periodeGaji'] = $this->M_prosesgaji->getCutOffGaji();
 		$data['periodeGajiSelected'] = $this->input->post('periodeData');
 		$data['gaji']	= $this->M_prosesgaji->ambilNominalGaji();
@@ -120,14 +121,11 @@ class C_ProsesGaji extends CI_Controller {
 			$data['data'] 	= $this->M_prosesgaji->prosesHitung($tanggalawal,$tanggalakhir,$lokasi_kerja,$keluar);
 		}
 
-		// echo "<pre>";print_r($data['data']);
-		// exit();
-		
 		$data['valLink'] = $link;
-		
+
 		$arrData = array();
 		$angka = 0;
-		
+
 		foreach ($data['data'] as $key) {
 			$gpokok = $key['gpokok'];
 			$um = ($key['um'] - $key['ump']);
@@ -148,10 +146,10 @@ class C_ProsesGaji extends CI_Controller {
 			$cekUbahPekerjaan = $this->M_prosesgaji->getUbahPekerjaan($key['noind'],$key['kdpekerjaan'],$tglawal,$tglakhir,'cek');
 			if ($cekUbahPekerjaan == 1) {
 				$tanggalPerubahan = $this->M_prosesgaji->getUbahPekerjaan($key['noind'],$key['kdpekerjaan'],$tglawal,$tglakhir,'tanggal');
-				
+
 				foreach ($tanggalPerubahan as$val) {
 					$dataPerubahanSebelum = $this->M_prosesgaji->getNominalPerubahan($tglawal,$val['tanggal_akhir_berlaku'],$key['noind']);
-					for ($i=0; $i < 8; $i++) { 
+					for ($i=0; $i < 8; $i++) {
 						if ($val['lokasi_kerja']==$data['gaji'][$i]['lokasi_kerja'] and $val['kode_pekerjaan2']==$data['gaji'][$i]['kode_pekerjaan']) {
 							$nominalgpokok = $data['gaji'][$i]['nominal'];
 						}
@@ -168,7 +166,7 @@ class C_ProsesGaji extends CI_Controller {
 							$uangmakanpuasa1 = $value['ump']*$nominalum;
 						}
 						$uangmakan1 	= ($value['um'] - $value['ump'])*$nominalum;
-						
+
 						$gajilembur1 = $value['lembur']*($nominalgpokok/7);
 						$total 		= $gajipokok1+$gajilembur1+$uangmakan1+$uangmakanpuasa1;
 
@@ -193,15 +191,25 @@ class C_ProsesGaji extends CI_Controller {
 						);
 
 						$cek = $this->M_prosesgaji->getHlcmProsesDetail($thnbln,$key['noind'],$val['kode_pekerjaan2']);
-			
+
 						if ($cek !== 0) {
 							$this->M_prosesgaji->updateHlcmProsesDetail($arrdetail);
+							//insert to t_log
+								$aksi = 'UPAH HLCM';
+								$detail = 'UPDATE data sebelum di hlcm_proses_detail noind='.$key['noind'];
+								$this->log_activity->activity_log($aksi, $detail);
+							//
 						}else{
 							$this->M_prosesgaji->insertHlcmProsesDetail($arrdetail);
+							//insert to t_log
+							$aksi = 'UPAH HLCM';
+							$detail = 'INSERT data sebelum di hlcm_proses_detail noind='.$key['noind'];
+							$this->log_activity->activity_log($aksi, $detail);
+							//
 						}
 					}
 					$dataPerubahanSesudah = $this->M_prosesgaji->getNominalPerubahan($val['tanggal_mulai_berlaku'],$tglakhir,$key['noind']);
-					for ($i=0; $i < 8; $i++) { 
+					for ($i=0; $i < 8; $i++) {
 						if ($val['lokasi_kerja']==$data['gaji'][$i]['lokasi_kerja'] and $val['kode_pekerjaan']==$data['gaji'][$i]['kode_pekerjaan']) {
 							$nominalgpokok = $data['gaji'][$i]['nominal'];
 						}
@@ -218,7 +226,7 @@ class C_ProsesGaji extends CI_Controller {
 						}else{
 							$uangmakanpuasa2 = $value['ump']*$nominalum;
 						}
-						
+
 						$gajilembur2 = $value['lembur']*($nominalgpokok/7);
 						$total 		+= $gajipokok2+$gajilembur2+$uangmakan2+$uangmakanpuasa2;
 						$gajipokok 	= $gajipokok1+$gajipokok2;
@@ -249,16 +257,26 @@ class C_ProsesGaji extends CI_Controller {
 						);
 
 						$cek = $this->M_prosesgaji->getHlcmProsesDetail($thnbln,$key['noind'],$val['kode_pekerjaan']);
-			
+
 						if ($cek !== 0) {
 							$this->M_prosesgaji->updateHlcmProsesDetail($arrdetail);
+							//insert to t_log
+							$aksi = 'UPAH HLCM';
+							$detail = 'UPDATE data sesudah di hlcm_proses_detail noind='.$key['noind'];
+							$this->log_activity->activity_log($aksi, $detail);
+							//
 						}else{
 							$this->M_prosesgaji->insertHlcmProsesDetail($arrdetail);
+							//insert to t_log
+							$aksi = 'UPAH HLCM';
+							$detail = 'INSERT data sesudah di hlcm_proses_detail noind='.$key['noind'];
+							$this->log_activity->activity_log($aksi, $detail);
+							//
 						}
 					}
 				}
 			}else{
-				for ($i=0; $i < 8; $i++) { 
+				for ($i=0; $i < 8; $i++) {
 					if ($key['lokasi_kerja']==$data['gaji'][$i]['lokasi_kerja'] and $key['kdpekerjaan']==$data['gaji'][$i]['kode_pekerjaan']) {
 						$nominalgpokok = $data['gaji'][$i]['nominal'];
 					}
@@ -276,14 +294,14 @@ class C_ProsesGaji extends CI_Controller {
 					$uangmakan 	= ($um*$nominalum);
 					$uangmakanpuasa = ($ump*$nominalum);
 				}
-				
+
 				$gajilembur = $lembur*($nominalgpokok/7);
 				$gajilembur = number_format($gajilembur,'0','.','');
 				$total 		= $gajipokok+$gajilembur+$uangmakan+$uangmakanpuasa;
 				$total 		= number_format($total,'0','.','');
 			}
-			
-			
+
+
 			$createDate = date('Y-m-d H:i:s');
 
 			if ($cekUbahPekerjaan == 1) {
@@ -313,31 +331,37 @@ class C_ProsesGaji extends CI_Controller {
 			);
 
 			$cek = $this->M_prosesgaji->getHlcmProses($thnbln,$key['noind']);
-			
+
 			if ($cek !== 0) {
 				$this->M_prosesgaji->updateHlcmProses($arrData[$angka]);
+				//insert to t_log
+				$aksi = 'UPAH HLCM';
+				$detail = 'UPDATE data di hlcm_proses noind='.$key['noind'];
+				$this->log_activity->activity_log($aksi, $detail);
+				//
 			}else{
 				$this->M_prosesgaji->insertHlcmProses($arrData[$angka]);
+				//insert to t_log
+				$aksi = 'UPAH HLCM';
+				$detail = 'INSERT data di hlcm_proses noind='.$key['noind'];
+				$this->log_activity->activity_log($aksi, $detail);
+				//
 			}
 			$arrData[$angka]['nama'] = $key['nama'];
 			$arrData[$angka]['pekerjaan'] = $key['pekerjaan'];
 			$arrData[$angka]['lokasi'] = $this->M_prosesgaji->getLocationCode($key['noind']);
 			$arrData[$angka]['tambahan'] = $this->M_prosesgaji->getTambahan($key['noind'],$tglawal,$tglakhir);
 			$arrData[$angka]['potongan'] = $this->M_prosesgaji->getPotongan($key['noind'],$tglawal,$tglakhir);
-			// echo $puasa."<p style='color: red;'>".$key['noind']."</p><br>";
 			$angka++;
 		}
-		// echo "<pre>";
-		// print_r($arrData);
-		// exit();
 		$data['hasil'] = $arrData;
 
 		$this->load->view('V_Header',$data);
 		$this->load->view('V_Sidemenu',$data);
 		$this->load->view('UpahHlCm/ProsesGaji/V_Index',$data);
 		$this->load->view('V_Footer',$data);
-		
-		
+
+
 	}
 
 	public function printProses($cetak,$periode,$keluar = FALSE,$lokasi = FALSE){
@@ -352,7 +376,7 @@ class C_ProsesGaji extends CI_Controller {
 				$data['periode'] = $cut['bulan']." ".$cut['tahun'];
 			}
 		}
-		
+
 		if (isset($lokasi) and !empty($lokasi)) {
 			if (isset($keluar) and !empty($keluar)) {
 				$data['data'] = $this->M_prosesgaji->getHlcmProsesPrint($periode,$keluar,$lokasi);
@@ -366,9 +390,6 @@ class C_ProsesGaji extends CI_Controller {
 				$data['data'] = $this->M_prosesgaji->getHlcmProsesPrint($periode);
 			}
 		}
-		// echo "<pre>";
-		// print_r($data['data']);
-		// exit();
 		$angka = 0;
 		foreach ($data['data'] as $key) {
 			$data['data'][$angka]['tambahan'] = $this->M_prosesgaji->getTambahan($key['noind'],$key['tgl_awal_periode'],$key['tgl_akhir_periode']);
@@ -376,18 +397,18 @@ class C_ProsesGaji extends CI_Controller {
 			$data['data'][$angka]['lokasi'] = $this->M_prosesgaji->getLocationCode($key['noind']);
 			$angka++;
 		}
-		// echo "<pre>";
-		// print_r($data['data']);
-		// exit();
 
 		if ($cetak == 'pdf') {
+			//insert to t_log
+			$aksi = 'UPAH HLCM';
+			$detail = 'EXPORT PDF Proses Gaji';
+			$this->log_activity->activity_log($aksi, $detail);
+			//
 			$this->load->library('pdf');
 			$pdf = $this->pdf->load();
 			$pdf = new mPDF('','A4-L');
 			$filename = "Penggajian HLCM Periode - ".$data['periode'].".pdf";
 			$html = $this->load->view('UpahHlCm/ProsesGaji/V_cetak', $data, true);
-			// print_r($data['data']);exit();
-			// $this->load->view('UpahHlCm/ProsesGaji/V_cetak', $data);exit();
 
 			$stylesheet1 = file_get_contents(base_url('assets/plugins/bootstrap/3.3.7/css/bootstrap.css'));
 			$pdf->SetHTMLFooter("<i style='font-size: 8pt'>Halaman ini dicetak melalui Aplikasi QuickERP-HLCM pada oleh ".$this->session->user." tgl. ".date('d/m/Y H:i:s').". Halaman {PAGENO} dari {nb}</i> ");
@@ -395,6 +416,11 @@ class C_ProsesGaji extends CI_Controller {
 			$pdf->WriteHTML($html, 2);
 			$pdf->Output($filename, 'I');
 		}elseif ($cetak == 'xls'){
+			//insert to t_log
+			$aksi = 'UPAH HLCM';
+			$detail = 'EXPORT EXCEL Proses Gaji';
+			$this->log_activity->activity_log($aksi, $detail);
+			//
 			$this->load->library('excel');
 			$this->excel->getActiveSheet()->setCellValue('A1','No');
 			$this->excel->getActiveSheet()->setCellValue('B1','No. Induk');
@@ -449,7 +475,7 @@ class C_ProsesGaji extends CI_Controller {
 			$this->excel->getActiveSheet()->mergeCells('W2:Y2');
 
 			$this->excel->getActiveSheet()->setCellValue('Z1','Total Gaji');
-			$this->excel->getActiveSheet()->mergeCells('Z1:Z3');			
+			$this->excel->getActiveSheet()->mergeCells('Z1:Z3');
 
 			$a = 2;
 			foreach ($data['data'] as $val) {
@@ -573,21 +599,21 @@ class C_ProsesGaji extends CI_Controller {
 		}else{
 			$this->checkSession();
 			$user_id = $this->session->userid;
-			
+
 			$data['Title'] = 'View Arsip';
 			$data['Menu'] = 'Menu Cetak';
 			$data['SubMenuOne'] = 'Cetak Arsip';
 			$data['SubMenuTwo'] = '';
-			
+
 			$data['UserMenu'] = $this->M_user->getUserMenu($user_id,$this->session->responsibility_id);
 			$data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id);
 			$data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id);
-			
+
 			$this->load->view('V_Header',$data);
 			$this->load->view('V_Sidemenu',$data);
 			$this->load->view('UpahHlCm/MenuCetak/V_viewarsip',$data);
 			$this->load->view('V_Footer',$data);
 		}
 	}
-	
+
 }

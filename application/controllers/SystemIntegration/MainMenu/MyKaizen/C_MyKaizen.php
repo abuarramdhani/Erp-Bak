@@ -1,13 +1,14 @@
 <?php defined('BASEPATH')OR die('No direct script access allowed');
 
 class C_MyKaizen extends CI_Controller {
-	
+
 	function __construct() {
 		parent::__construct();
 		date_default_timezone_set('Asia/Jakarta');
 		$this->load->helper('form');
 		$this->load->helper('url');
 		$this->load->helper('html');
+		$this->load->library('Log_Activity');
 		$this->load->library('form_validation');
 		// load the login model
 		$this->load->library('session');
@@ -17,7 +18,7 @@ class C_MyKaizen extends CI_Controller {
 		$this->load->model('SystemIntegration/M_mykaizen');
 		// $this->load->model('SystemIntegration/M_mykaizen','Mine');
 		$this->load->model('SystemIntegration/M_log');
-			
+
 		if($this->session->userdata('logged_in')!=TRUE) {
 			$this->load->helper('url');
 			$this->session->set_userdata('last_page', current_url());
@@ -130,7 +131,7 @@ class C_MyKaizen extends CI_Controller {
 		}
 
 		//rejected
-		$i = 0; 
+		$i = 0;
 		foreach ($data['kaizen_rejected'] as $key => $value) {
 			$getAllApprover = $this->M_mykaizen->getApprover($value['kaizen_id'],FALSE);
 			$a = 0; foreach ($getAllApprover as $key => $value) {
@@ -145,7 +146,7 @@ class C_MyKaizen extends CI_Controller {
 			}
 			$i++;
 		}
-		
+
 		$this->load->view('V_Header',$data);
 		$this->load->view('V_Sidemenu',$data);
 		$this->load->view('SystemIntegration/MainMenu/MyKaizen/V_Index',$data);
@@ -160,10 +161,15 @@ class C_MyKaizen extends CI_Controller {
 		$approval_level = $this->input->post('approval_level');
 		$typeApproval = $this->input->post('typeApp');
 		$approverPertama = "";
+		//insert to t_log
+			$aksi = 'KAIZEN GENERATOR';
+			$detail = 'Save Kaizen id='.$kaizen_id;
+			$this->log_activity->activity_log($aksi, $detail);
+		//
 		if ($typeApproval == 1) {
 			foreach ($approval_level as $key => $value) {
 				$approvernya = ($value == '1') ? $level1 : $level2;
-				$data = array(	
+				$data = array(
 							'approver' => $approvernya,
 							'level' => $value,
 							'kaizen_id' => $kaizen_id
@@ -249,7 +255,7 @@ class C_MyKaizen extends CI_Controller {
 		}
 		redirect(base_url('SystemIntegration/KaizenGenerator/MyKaizen/index'));
 	}
-	
+
 	public function EmailAlert($user, $kaizen_id) {
 		//email
 		$getEmail = $this->M_submit->getEmail($user);
@@ -269,7 +275,7 @@ class C_MyKaizen extends CI_Controller {
 			$mail = new PHPMailer();
 			$mail->SMTPDebug = 0;
 			$mail->Debugoutput = 'html';
-			
+
 			// set smtp
 			$mail->isSMTP();
 			$mail->Host = 'm.quick.com';
@@ -285,13 +291,13 @@ class C_MyKaizen extends CI_Controller {
 			$mail->Username = 'no-reply';
 			$mail->Password = '123456';
 			$mail->WordWrap = 50;
-			
+
 			// set email content
 			$mail->setFrom('no-reply@quick.com', 'Email Sistem');
 			$mail->addAddress($emailUser);
 			$mail->Subject = $subject;
 			$mail->msgHTML($body);
-				
+
 			// check error
 			if (!$mail->send()) {
 				echo "Mailer Error: ".$mail->ErrorInfo;

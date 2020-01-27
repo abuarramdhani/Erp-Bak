@@ -21,10 +21,11 @@ class C_DataPekerja extends CI_Controller {
 	public function __construct()
     {
         parent::__construct();
-		  
+
         $this->load->helper('form');
         $this->load->helper('url');
         $this->load->helper('html');
+		$this->load->library('Log_Activity');
         $this->load->library('form_validation');
           //load the login model
 		$this->load->library('session');
@@ -32,7 +33,7 @@ class C_DataPekerja extends CI_Controller {
 		$this->load->model('M_Index');
 		$this->load->model('SystemAdministration/MainMenu/M_user');
 		$this->load->model('UpahHlCm/M_upahphl');
-		  
+
 		if($this->session->userdata('logged_in')!=TRUE) {
 			$this->load->helper('url');
 			$this->session->set_userdata('last_page', current_url());
@@ -41,17 +42,15 @@ class C_DataPekerja extends CI_Controller {
 		}
 		  //$this->load->model('CustomerRelationship/M_Index');
     }
-	
+
 	//HALAMAN INDEX
 	public function index(){
 		$this->checkSession();
 		$user_id = $this->session->userid;
-		
+
 		$tpri = $this->M_upahphl->ambilPekerjaHL();
 		$tdat = $this->M_upahphl->ambilDataPekerjaHL();
-		// echo "<pre>";
-		// print_r($tpri);
-		// exit();
+
 		foreach ($tpri as $key) {
 			$noind = $key['noind'];
 			$nama  = $key['nama'];
@@ -86,27 +85,24 @@ class C_DataPekerja extends CI_Controller {
 			}
 		}
 
-		// exit();
-
 		$data['Menu'] = 'Dashboard';
 		$data['SubMenuOne'] = '';
 		$data['SubMenuTwo'] = '';
-		
+
 		$data['UserMenu'] = $this->M_user->getUserMenu($user_id,$this->session->responsibility_id);
 		$data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id);
 		$data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id);
 
-		
 		$this->load->view('V_Header',$data);
 		$this->load->view('V_Sidemenu',$data);
 		$this->load->view('UpahHlCm/MasterData/V_DataPekerja',$data);
 		$this->load->view('V_Footer',$data);
-		
+
 	}
-	
+
 	public function checkSession(){
 		if($this->session->is_logged){
-			
+
 		}else{
 			redirect('');
 		}
@@ -120,7 +116,7 @@ class C_DataPekerja extends CI_Controller {
 		$tr = "";
 		$pekerja ="";
 		$puasa = "";
-	
+
 		foreach ($data as $key) {
 			$id = $key['id_pekerja'];
 			 if($key['kode_pekerjaan'] == '405010110') {
@@ -163,12 +159,12 @@ class C_DataPekerja extends CI_Controller {
 	{
 		$this->checkSession();
 		$user_id = $this->session->userid;
-		
+
 		$data['id'] = $id;
 		$data['Menu'] = 'Dashboard';
 		$data['SubMenuOne'] = '';
 		$data['SubMenuTwo'] = '';
-		
+
 		$data['UserMenu'] = $this->M_user->getUserMenu($user_id,$this->session->responsibility_id);
 		$data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id);
 		$data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id);
@@ -181,11 +177,11 @@ class C_DataPekerja extends CI_Controller {
 		if ($er[0]['bank'] != null or $er[0]['bank'] != "") {
 			$kdbank = $er[0]['bank'];
 			$bank = $this->M_upahphl->ambilnamaBank($kdbank);
-			$data['bank'] = $bank[0]['nama_bank'];			
+			$data['bank'] = $bank[0]['nama_bank'];
 		}else {
 			$data['bank'] = "";
 		}
-		
+
 		$this->load->view('V_Header',$data);
 		$this->load->view('V_Sidemenu',$data);
 		$this->load->view('UpahHlCm/MasterData/V_EditDataPekerja',$data);
@@ -203,9 +199,6 @@ class C_DataPekerja extends CI_Controller {
 		$bank= $this->input->post('bankpekerja');
 		$cabang= $this->input->post('cabangbank');
 
-		// echo $bank;
-		// exit();
-		
 		$p = $this->M_upahphl->pekerjaan($pekerjaan);
 		$kdpkj = $p[0]['kdpekerjaan'];
 
@@ -217,16 +210,26 @@ class C_DataPekerja extends CI_Controller {
 						'no_rekening' => $norek,
 						'atas_nama' => $atas_nama,
 						'bank' => $bank,
-						'cabang' => $cabang,						
+						'cabang' => $cabang,
 						'last_updated' => date('Y-m-d H:i:s'),
 					);
 		$this->M_upahphl->updateDataPekerja($array,$id);
+		//insert to t_log
+			$aksi = 'UPAH HLCM';
+			$detail = 'UPDATE DATA PEKERJA ID='.$id;
+			$this->log_activity->activity_log($aksi, $detail);
+		//
 		redirect ('HitungHlcm/DataPekerja');
 	}
 
 	public function deleteData($id)
 	{
 		$this->M_upahphl->deleteDataPekerja($id);
+		//insert to t_log
+			$aksi = 'UPAH HLCM';
+			$detail = 'DELETE DATA PEKERJA ID='.$id;
+			$this->log_activity->activity_log($aksi, $detail);
+		//
 		redirect('HitungHlcm/DataPekerja');
 	}
 
@@ -256,7 +259,7 @@ class C_DataPekerja extends CI_Controller {
 					);
 
 		echo json_encode($array);
-	
+
 	}
 
 	public function batalkan()
@@ -288,6 +291,12 @@ class C_DataPekerja extends CI_Controller {
 						'cabang' => $cabang,
 					);
 		$this->M_upahphl->simpanDataPekerja($array);
+
+		//insert to t_log
+			$aksi = 'UPAH HLCM';
+			$detail = 'SAVE DATA PEKERJA NOIND='.$noind;
+			$this->log_activity->activity_log($aksi, $detail);
+		//
 
 		redirect('HitungHlcm/DataPekerja');
 	}

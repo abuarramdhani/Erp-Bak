@@ -3582,7 +3582,9 @@ $route['ShipmentMonitoringSystem/Gudang/TitipBarang/(:any)'] = 'ShipmentMonitori
 
 // -------------------------------------------------PingChecker------------------------------------------------
 
+$route['PingChecker'] = 'PingChecker/C_Index';
 $route['PingChecker/check'] = 'PingChecker/C_Index/check';
+$route['PingChecker/Monitoring/(:any)'] = 'PingChecker/C_Monitoring/$1';
 
 // ------------------------------------ Aplikasi Cetak Kanban Tool Room------------------------------------------//
 $route['CetakKanbanToolRoom'] 		= 'CetakKanbanToolRoom/C_Index';
@@ -3693,9 +3695,13 @@ $route['MonitoringDO/cekapi/(:any)'] = 'MonitoringDO/C_Master/cekapi/$1';
 // --------------------------------------- Approval Delivery Order --------------------------------------- //
 $route['ApprovalDO'] = 'ApprovalDO/C_Index';
 
-$route['ApprovalDO/List'] = 'ApprovalDO/MainMenu/C_List';
-$route['ApprovalDO/List/(:any)'] = 'ApprovalDO/MainMenu/C_List/$1';
-$route['ApprovalDO/List/(:any)/(:any)'] = 'ApprovalDO/MainMenu/C_List/$1/$2';
+$route['ApprovalDO/ListDO'] = 'ApprovalDO/MainMenu/C_ListDO';
+$route['ApprovalDO/ListDO/(:any)'] = 'ApprovalDO/MainMenu/C_ListDO/$1';
+$route['ApprovalDO/ListDO/(:any)/(:any)'] = 'ApprovalDO/MainMenu/C_ListDO/$1/$2';
+
+$route['ApprovalDO/ListSPB'] = 'ApprovalDO/MainMenu/C_ListSPB';
+$route['ApprovalDO/ListSPB/(:any)'] = 'ApprovalDO/MainMenu/C_ListSPB/$1';
+$route['ApprovalDO/ListSPB/(:any)/(:any)'] = 'ApprovalDO/MainMenu/C_ListSPB/$1/$2';
 
 $route['ApprovalDO/Approval'] = 'ApprovalDO/MainMenu/C_Approval';
 $route['ApprovalDO/Approval/(:any)'] = 'ApprovalDO/MainMenu/C_Approval/$1';
@@ -3711,3 +3717,14 @@ $route['ApprovalDO/LaunchPickRelease/(:any)/(:any)'] = 'ApprovalDO/MainMenu/C_La
 
 $route['ApprovalDO/Detail/(:any)'] = 'ApprovalDO/MainMenu/C_Detail/checkDetailDO/$1';
 $route['ApprovalDO/History/(:any)'] = 'ApprovalDO/MainMenu/C_History/$1';
+
+// ----------------------------------------------- Pendampingan SPT ----------------------------------------------- //
+$route['PendampinganSPT'] = 'PendampinganSPT/C_Index';
+
+$route['PendampinganSPT/Daftar'] = 'PendampinganSPT/MainMenu/C_Daftar';
+$route['PendampinganSPT/Daftar/(:any)'] = 'PendampinganSPT/MainMenu/C_Daftar/$1';
+$route['PendampinganSPT/Daftar/(:any)/(:any)'] = 'PendampinganSPT/MainMenu/C_Daftar/$1/$2';
+
+$route['PendampinganSPT/Data'] = 'PendampinganSPT/MainMenu/C_Data';
+$route['PendampinganSPT/Data/(:any)'] = 'PendampinganSPT/MainMenu/C_Data/$1';
+$route['PendampinganSPT/Data/(:any)/(:any)'] = 'PendampinganSPT/MainMenu/C_Data/$1/$2';

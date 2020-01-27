@@ -436,7 +436,7 @@ class C_MoveOrder extends CI_Controller
 		$subinv_to 	  = $this->input->post('subinvto');
 		$locator_to 	  = $this->input->post('locatorto');
 		$subinv_from 	  = $this->input->post('subinvfrom');
-		$locator_from 	  = $this->input->post('locatorfrom');
+		$locator_from 	  = $this->input->post('locatorfromid');
 		$selected = $this->input->post('selectedPicklistIMO');
 		$piklis = $this->input->post('piklis');
 		$arraySelected = explode('+', $selected);
@@ -483,18 +483,24 @@ class C_MoveOrder extends CI_Controller
 
 						if (!in_array(1, $errQty)) {
 							// START
+							$inv = array();
 								foreach ($no_job2 as $k => $v) {
-									$data[$subinv_from2[$k]][] = array('NO_URUT' => '',
+									if (in_array($invID2[$k], $inv)) {
+										
+									}else {
+										array_push($inv, $invID2[$k]);
+										$data[$v][$subinv_from2[$k]][] = array('NO_URUT' => '',
 													'INVENTORY_ITEM_ID' => $invID2[$k],
 													'QUANTITY' => $qty2[$k],
 													'UOM' => $uom2[$k],
 													'IP_ADDRESS' => $ip_address,
 													'JOB_ID' => $job_id2[$k]);
-									$data2[$subinv_from2[$k]] = $locator_from2[$k];
+										$data2[$v][$subinv_from2[$k]] = $locator_from2[$k];
+									}
 
 								}
-								$x = 1;	
-								foreach ($data as $kSub => $vSub) {
+								$x = 1; 
+								foreach ($data[$no_job2[0]] as $kSub => $vSub) {
 									$i = 1; 
 									foreach ($vSub as $key2 => $value2) {
 										$nomor_mo = $no_job2[0].'-'.$x;
@@ -506,7 +512,7 @@ class C_MoveOrder extends CI_Controller
 										$i++;
 									}
 										//create MO       
-										$this->M_MoveOrder->createMO($ip_address,$job_id2[0],$subinv_to2[0],$locator_to2[0],$kSub,$data2[$kSub],$user_id,$nomor_mo);
+										$this->M_MoveOrder->createMO($ip_address,$job_id2[0],$subinv_to2[0],$locator_to2[0],$kSub,$data2[$no_job2[0]][$kSub],$user_id,$nomor_mo);
 
 										//delete
 										// echo "delete<br>";

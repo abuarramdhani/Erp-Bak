@@ -18,22 +18,22 @@ $(document).ready(function() {
         console.error();
       }
     }).then(function () {
-      $.ajax({
-        url: baseurl + 'MonitoringDO/SettingDO/countDO',
-        type: 'POST',
-        dataType: 'json',
-        success: function(result) {
-          $('#jumlah0').html('(' + result[0] + ')');
-          $('#jumlah1').html('(' + result[1] + ')');
-          $('#jumlah2').html('(' + result[2] + ')');
-          $('#jumlah3').html('(' + result[3] + ')');
-          $('#jumlah4').html('(' + result[4] + ')');
-
-        },
-        error: function(XMLHttpRequest, textStatus, errorThrown) {
-          console.error();
-        }
-      })
+      // $.ajax({
+      //   url: baseurl + 'MonitoringDO/SettingDO/countDO',
+      //   type: 'POST',
+      //   dataType: 'json',
+      //   success: function(result) {
+      //     $('#jumlah0').html('(' + result[0] + ')');
+      //     $('#jumlah1').html('(' + result[1] + ')');
+      //     $('#jumlah2').html('(' + result[2] + ')');
+      //     $('#jumlah3').html('(' + result[3] + ')');
+      //     $('#jumlah4').html('(' + result[4] + ')');
+      // 
+      //   },
+      //   error: function(XMLHttpRequest, textStatus, errorThrown) {
+      //     console.error();
+      //   }
+      // })
     })
 
 
@@ -125,22 +125,22 @@ function approveMD() {
                   console.error();
                 }
               }).then(function() {
-                $.ajax({
-                  url: baseurl + 'MonitoringDO/SettingDO/countDO',
-                  type: 'POST',
-                  dataType: 'json',
-                  success: function(result) {
-                    $('#jumlah0').html('(' + result[0] + ')');
-                    $('#jumlah1').html('(' + result[1] + ')');
-                    $('#jumlah2').html('(' + result[2] + ')');
-                    $('#jumlah3').html('(' + result[3] + ')');
-                    $('#jumlah4').html('(' + result[4] + ')');
-
-                  },
-                  error: function(XMLHttpRequest, textStatus, errorThrown) {
-                    console.error();
-                  }
-                })
+                // $.ajax({
+                //   url: baseurl + 'MonitoringDO/SettingDO/countDO',
+                //   type: 'POST',
+                //   dataType: 'json',
+                //   success: function(result) {
+                //     $('#jumlah0').html('(' + result[0] + ')');
+                //     $('#jumlah1').html('(' + result[1] + ')');
+                //     $('#jumlah2').html('(' + result[2] + ')');
+                //     $('#jumlah3').html('(' + result[3] + ')');
+                //     $('#jumlah4').html('(' + result[4] + ')');
+                // 
+                //   },
+                //   error: function(XMLHttpRequest, textStatus, errorThrown) {
+                //     console.error();
+                //   }
+                // })
               })
             })
           }
@@ -226,22 +226,22 @@ function approveMD() {
                 console.error();
               }
             })
-            $.ajax({
-              url: baseurl + 'MonitoringDO/SettingDO/countDO',
-              type: 'POST',
-              dataType: 'json',
-              success: function(result) {
-                $('#jumlah0').html('(' + result[0] + ')');
-                $('#jumlah1').html('(' + result[1] + ')');
-                $('#jumlah2').html('(' + result[2] + ')');
-                $('#jumlah3').html('(' + result[3] + ')');
-                $('#jumlah4').html('(' + result[4] + ')');
-
-              },
-              error: function(XMLHttpRequest, textStatus, errorThrown) {
-                console.error();
-              }
-            })
+            // $.ajax({
+            //   url: baseurl + 'MonitoringDO/SettingDO/countDO',
+            //   type: 'POST',
+            //   dataType: 'json',
+            //   success: function(result) {
+            //     $('#jumlah0').html('(' + result[0] + ')');
+            //     $('#jumlah1').html('(' + result[1] + ')');
+            //     $('#jumlah2').html('(' + result[2] + ')');
+            //     $('#jumlah3').html('(' + result[3] + ')');
+            //     $('#jumlah4').html('(' + result[4] + ')');
+            // 
+            //   },
+            //   error: function(XMLHttpRequest, textStatus, errorThrown) {
+            //     console.error();
+            //   }
+            // })
           })
         } else {
           Swal.fire({
@@ -278,21 +278,21 @@ function dodo1() {
       console.error();
     }
   })
-  $.ajax({
-    url: baseurl + 'MonitoringDO/SettingDO/countDO',
-    type: 'POST',
-    dataType: 'json',
-    success: function(result) {
-      $('#jumlah0').html('(' + result[0] + ')');
-      $('#jumlah1').html('(' + result[1] + ')');
-      $('#jumlah2').html('(' + result[2] + ')');
-      $('#jumlah3').html('(' + result[3] + ')');
-      $('#jumlah4').html('(' + result[4] + ')');
-    },
-    error: function(XMLHttpRequest, textStatus, errorThrown) {
-      console.error();
-    }
-  })
+  // $.ajax({
+  //   url: baseurl + 'MonitoringDO/SettingDO/countDO',
+  //   type: 'POST',
+  //   dataType: 'json',
+  //   success: function(result) {
+  //     $('#jumlah0').html('(' + result[0] + ')');
+  //     $('#jumlah1').html('(' + result[1] + ')');
+  //     $('#jumlah2').html('(' + result[2] + ')');
+  //     $('#jumlah3').html('(' + result[3] + ')');
+  //     $('#jumlah4').html('(' + result[4] + ')');
+  //   },
+  //   error: function(XMLHttpRequest, textStatus, errorThrown) {
+  //     console.error();
+  //   }
+  // })
 }
 
 function detailAssign(rm, rowID) {
@@ -342,21 +342,21 @@ function dodo2() {
       console.error();
     }
   })
-  $.ajax({
-    url: baseurl + 'MonitoringDO/SettingDO/countDO',
-    type: 'POST',
-    dataType: 'json',
-    success: function(result) {
-      $('#jumlah0').html('(' + result[0] + ')');
-      $('#jumlah1').html('(' + result[1] + ')');
-      $('#jumlah2').html('(' + result[2] + ')');
-      $('#jumlah3').html('(' + result[3] + ')');
-      $('#jumlah4').html('(' + result[4] + ')');
-    },
-    error: function(XMLHttpRequest, textStatus, errorThrown) {
-      console.error();
-    }
-  })
+  // $.ajax({
+  //   url: baseurl + 'MonitoringDO/SettingDO/countDO',
+  //   type: 'POST',
+  //   dataType: 'json',
+  //   success: function(result) {
+  //     $('#jumlah0').html('(' + result[0] + ')');
+  //     $('#jumlah1').html('(' + result[1] + ')');
+  //     $('#jumlah2').html('(' + result[2] + ')');
+  //     $('#jumlah3').html('(' + result[3] + ')');
+  //     $('#jumlah4').html('(' + result[4] + ')');
+  //   },
+  //   error: function(XMLHttpRequest, textStatus, errorThrown) {
+  //     console.error();
+  //   }
+  // })
 }
 
 function detailAllocate(rm, rowID) {
@@ -401,16 +401,39 @@ function dodo3() {
       console.error();
     }
   })
+  // $.ajax({
+  //   url: baseurl + 'MonitoringDO/SettingDO/countDO',
+  //   type: 'POST',
+  //   dataType: 'json',
+  //   success: function(result) {
+  //     $('#jumlah0').html('(' + result[0] + ')');
+  //     $('#jumlah1').html('(' + result[1] + ')');
+  //     $('#jumlah2').html('(' + result[2] + ')');
+  //     $('#jumlah3').html('(' + result[3] + ')');
+  //     $('#jumlah4').html('(' + result[4] + ')');
+  //   },
+  //   error: function(XMLHttpRequest, textStatus, errorThrown) {
+  //     console.error();
+  //   }
+  // })
+}
+
+function detailTransact(rm, rowID) {
   $.ajax({
-    url: baseurl + 'MonitoringDO/SettingDO/countDO',
+    url: baseurl + 'MonitoringDO/SettingDO/GetTransactDetail',
     type: 'POST',
-    dataType: 'json',
+    data: {
+      requests_number: rm,
+    },
+    beforeSend: function() {
+      $('#loadingArea_Muat').show();
+      $('div#table-area_Muat').hide();
+    },
     success: function(result) {
-      $('#jumlah0').html('(' + result[0] + ')');
-      $('#jumlah1').html('(' + result[1] + ')');
-      $('#jumlah2').html('(' + result[2] + ')');
-      $('#jumlah3').html('(' + result[3] + ')');
-      $('#jumlah4').html('(' + result[4] + ')');
+      // console.log(result);
+      $('#loadingArea_Muat').hide();
+      $('div#table-area_Muat').show();
+      $('div#table-area_Muat').html(result);
     },
     error: function(XMLHttpRequest, textStatus, errorThrown) {
       console.error();
@@ -418,9 +441,9 @@ function dodo3() {
   })
 }
 
-function detailTransact(rm, rowID) {
+function GetSudahCetakDetail(rm, rowID) {
   $.ajax({
-    url: baseurl + 'MonitoringDO/SettingDO/GetTransactDetail',
+    url: baseurl + 'MonitoringDO/SettingDO/GetSudahCetakDetail',
     type: 'POST',
     data: {
       requests_number: rm,
@@ -461,21 +484,21 @@ function dodo4() {
       console.error();
     }
   })
-  $.ajax({
-      url: baseurl + 'MonitoringDO/SettingDO/countDO',
-      type: 'POST',
-      dataType: 'json',
-      success: function(result) {
-        $('#jumlah0').html('(' + result[0] + ')');
-        $('#jumlah1').html('(' + result[1] + ')');
-        $('#jumlah2').html('(' + result[2] + ')');
-        $('#jumlah3').html('(' + result[3] + ')');
-        $('#jumlah4').html('(' + result[4] + ')');
-      },
-      error: function(XMLHttpRequest, textStatus, errorThrown) {
-        console.error();
-      }
-    })
+  // $.ajax({
+  //     url: baseurl + 'MonitoringDO/SettingDO/countDO',
+  //     type: 'POST',
+  //     dataType: 'json',
+  //     success: function(result) {
+  //       $('#jumlah0').html('(' + result[0] + ')');
+  //       $('#jumlah1').html('(' + result[1] + ')');
+  //       $('#jumlah2').html('(' + result[2] + ')');
+  //       $('#jumlah3').html('(' + result[3] + ')');
+  //       $('#jumlah4').html('(' + result[4] + ')');
+  //     },
+  //     error: function(XMLHttpRequest, textStatus, errorThrown) {
+  //       console.error();
+  //     }
+  //   })
 }
 
 
@@ -497,21 +520,21 @@ function dodo0() {
       console.error();
     }
   })
-  $.ajax({
-    url: baseurl + 'MonitoringDO/SettingDO/countDO',
-    type: 'POST',
-    dataType: 'json',
-    success: function(result) {
-      $('#jumlah0').html('(' + result[0] + ')');
-      $('#jumlah1').html('(' + result[1] + ')');
-      $('#jumlah2').html('(' + result[2] + ')');
-      $('#jumlah3').html('(' + result[3] + ')');
-      $('#jumlah4').html('(' + result[4] + ')');
-    },
-    error: function(XMLHttpRequest, textStatus, errorThrown) {
-      console.error();
-    }
-  })
+  // $.ajax({
+  //   url: baseurl + 'MonitoringDO/SettingDO/countDO',
+  //   type: 'POST',
+  //   dataType: 'json',
+  //   success: function(result) {
+  //     $('#jumlah0').html('(' + result[0] + ')');
+  //     $('#jumlah1').html('(' + result[1] + ')');
+  //     $('#jumlah2').html('(' + result[2] + ')');
+  //     $('#jumlah3').html('(' + result[3] + ')');
+  //     $('#jumlah4').html('(' + result[4] + ')');
+  //   },
+  //   error: function(XMLHttpRequest, textStatus, errorThrown) {
+  //     console.error();
+  //   }
+  // })
 }
 
 //punya dodo0

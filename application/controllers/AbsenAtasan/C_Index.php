@@ -13,7 +13,8 @@ class C_Index extends CI_Controller
 			$this->load->helper('html');
 			$this->load->helper('file');
 
-			$this->load->library('form_validation');			
+			$this->load->library('Log_Activity');
+			$this->load->library('form_validation');
 			$this->load->library('pdf');
 			$this->load->library('session');
 			$this->load->library('encrypt');
@@ -38,7 +39,7 @@ class C_Index extends CI_Controller
 		$data['Menu'] = 'Dashboard';
 		$data['SubMenuOne'] = '';
 		$data['SubMenuTwo'] = '';
-		
+
 		$data['UserMenu'] = $this->M_user->getUserMenu($user_id,$this->session->responsibility_id);
 		$data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id);
 		$data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id);
@@ -55,7 +56,7 @@ class C_Index extends CI_Controller
 		$data['Menu'] = 'Dashboard';
 		$data['SubMenuOne'] = '';
 		$data['SubMenuTwo'] = '';
-		
+
 		$data['UserMenu'] = $this->M_user->getUserMenu($user_id,$this->session->responsibility_id);
 		$data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id);
 		$data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id);
@@ -71,7 +72,7 @@ class C_Index extends CI_Controller
 		// print_r($data['listData']);exit();
 
 		// $data['listData'] = $this->M_absenatasan->getList();
-		
+
 		// $info = array();
 		// foreach ($listData as $key => $data) {
 		// $noinduk = $data['noind'];
@@ -124,7 +125,7 @@ class C_Index extends CI_Controller
 				$data['result']	= "Gagal";
 			}
 				print_r(json_encode($data));
-			
+
 		}
 
 		public function detail($id){
@@ -133,7 +134,7 @@ class C_Index extends CI_Controller
 		$data['Menu'] = 'Dashboard';
 		$data['SubMenuOne'] = '';
 		$data['SubMenuTwo'] = '';
-		
+
 		$data['UserMenu'] = $this->M_user->getUserMenu($user_id,$this->session->responsibility_id);
 		$data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id);
 		$data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id);
@@ -157,14 +158,14 @@ class C_Index extends CI_Controller
 			$tgl_approval = date('Y-m-d H:i:s');
 
 			// echo $tgl_approval;exit();
-			$data1 = 
+			$data1 =
 			['status' => $status,
-			 'tgl_approval' => $tgl_approval	
+			 'tgl_approval' => $tgl_approval
 			];
 
 			$this->M_absenatasan->approveAbsenApproval($id,$data1);
 
-			$data2 = 
+			$data2 =
 			['status' => $status,
 			 'tgl_status' => $tgl_approval
 			];
@@ -175,14 +176,14 @@ class C_Index extends CI_Controller
 			// echo "<pre>";
 			// print_r($employee);exit();
 			$noinduk 	 	= $employee[0]['noind'];
-			$namaPekerja 	= $employee[0]['nama'];
+			$namaPekerja 	= $employee[0]['nama'].' ('.$employee[0]['noind'].')';
 			$jenisAbsen  	= $employee[0]['jenis_absen'];
 			$waktu		 	= $employee[0]['waktu'];
 			$lokasi		 	= $employee[0]['lokasi'];
 			$latitude	 	= $employee[0]['latitude'];
 			$longitude	 	= $employee[0]['longitude'];
 			$status 	    = "DiApprove";
-			$atasan 	 	= trim($this->session->employee);
+			$atasan 	 	= trim($this->session->employee).' ('.trim($this->session->user).')';
 			// print_r($atasan);exit();
 			$noindukAtasan	= $this->session->user;
 			// $dataAtasan	 = $this->M_absenatasan->getAtasan($id);
@@ -200,7 +201,7 @@ class C_Index extends CI_Controller
 
 			if($internalMail != null and $internalMail != ''){
 				$this->kirim_email($internalMail,$eksternalMail,$namaPekerja,$jenisAbsen,$waktu,$lokasi,$latitude,$longitude,$status,$atasan,$noindukAtasan);
-			}			
+			}
 
 			foreach ($dataPersonalia as $key => $personalia) {
 			$internalMailPersonalia = $personalia['internal_mail'];
@@ -209,10 +210,14 @@ class C_Index extends CI_Controller
 
 			$this->kirim_emailPersonalia($namaPekerja,$jenisAbsen,$waktu,$lokasi,$latitude,$longitude,$status,$atasan,$noindukAtasan,$internalMailPersonalia,$externalMailPersonalia,$namaPekerjaPersonalia);
 			}
-				
-			$this->session->set_flashdata('msg','sukses');
-			redirect('AbsenAtasan/List');
 
+			$this->session->set_flashdata('msg','sukses');
+			//insert to t_log
+				$aksi = 'ABSEN ATASAN';
+				$detail = 'APPROVE ID='.$id;
+				$this->log_activity->activity_log($aksi, $detail);
+			//
+			redirect('AbsenAtasan/List');
 		}
 
 
@@ -222,7 +227,7 @@ class C_Index extends CI_Controller
 			$tgl_approval = date('Y-m-d H:i:s');
 
 			// echo $this->input->post('reason');exit();
-			$data1 = 
+			$data1 =
 			['status' => $status,
 			'tgl_approval' => $tgl_approval,
 			'reason' => $this->input->post('reason')
@@ -238,20 +243,20 @@ class C_Index extends CI_Controller
 
 			$employee = $this->M_absenatasan->getListAbsenById($id);
 			$noinduk 	 	= $employee[0]['noind'];
-			$namaPekerja 	= $employee[0]['nama'];
+			$namaPekerja 	= $employee[0]['nama'].' ('.$employee[0]['noind'].')';
 			$jenisAbsen  	= $employee[0]['jenis_absen'];
 			$waktu		 	= $employee[0]['waktu'];
 			$lokasi		 	= $employee[0]['lokasi'];
 			$latitude	 	= $employee[0]['latitude'];
 			$longitude	 	= $employee[0]['longitude'];
 			$status 	 	= "DiTolak";
-			$atasan 	 	= trim($this->session->employee);
+			$atasan 	 	= trim($this->session->employee).' ('.trim($this->session->user).')';
 			$noindukAtasan	= $this->session->user;
 
 			// $dataAtasan	 = $this->M_absenatasan->getAtasan($id);
 			// $atasan 	 = $dataAtasan[0]['approver'];
 
-			
+
 			$employeeEmailData['email'] = $this->M_absenatasan->getEmployeeEmail($noinduk);
 			// echo $employeeEmail['internal_mail'];exit();
 			$internalMail = $employeeEmailData['email'][0]['internal_mail'];
@@ -260,17 +265,25 @@ class C_Index extends CI_Controller
 
 
 			$this->kirim_email($internalMail,$eksternalMail,$namaPekerja,$jenisAbsen,$waktu,$lokasi,$latitude,$longitude,$status,$atasan,$noindukAtasan);
-
+			//insert to t_log
+				$aksi = 'ABSEN ATASAN';
+				$detail = 'REJECT ID='.$id;
+				$this->log_activity->activity_log($aksi, $detail);
+			//
 			redirect('AbsenAtasan/List');
 		}
 
 		function cetakApproval($id){
 			$mpdf = $this->pdf->load();
 			$data['dataEmployee'] = $this->M_absenatasan->getListAbsenById($id);
-			// echo "<pre>";print_r($data['dataEmployee']);exit();
 			$noinduk = $data['dataEmployee'][0]['noind'];
 
 			$data['employeeInfo'] = $this->M_absenatasan->getEmployeeInfo($noinduk);
+			//insert to t_log
+			$aksi = 'ABSEN ATASAN';
+			$detail = 'CETAK ID='.$id;
+			$this->log_activity->activity_log($aksi, $detail);
+			//
 
 			$stylesheet = file_get_contents(base_url('assets/plugins/bootstrap/3.3.7/css/bootstrap.css'));
 			$view 	= $this->load->view('AbsenAtasan/V_CetakPDFAbsen',$data,true);
@@ -280,8 +293,6 @@ class C_Index extends CI_Controller
 			$mpdf->showImageErrors = true;
 			$mpdf->Output('DetailAbsen.pdf','I');
 			$mpdf->set_time_limit(0);
-
-
 		}
 
 		function kirim_email($internalMail,$eksternalMail,$namaPekerja,$jenisAbsen,$waktu,$lokasi,$latitude,$longitude,$status,$atasan,$noindukAtasan){
@@ -315,16 +326,16 @@ class C_Index extends CI_Controller
 				<h4>Absensi Online</h4><hr>
 				Kepada Yth.<br>
 				$namaPekerja<br><br>
-				
+
 				Kami informasikan bahwa request approval Absen Online Anda, detail sbb :<br><br>
 				Jenis Absen : $jenisAbsen<br>
 				Waktu : $waktu<br>
-				Lokasi : $lokasi , koordinat : ( $latitude , $longitude ) 
+				Lokasi : $lokasi , koordinat : ( $latitude , $longitude )
 				<a href='http://maps.google.com/maps?q=$latitude,$longitude''>Lihat Lokasi di Google Maps</a><br><br>
 
 				Status : Telah $status oleh $atasan<br><br>
 
-				Anda dapat melakukan pengecekan melalui :<br> 
+				Anda dapat melakukan pengecekan melalui :<br>
 				1. Internet : aplikasi Quick ERP Mobile. Apabila belum memiliki dapat menghubungi ICT di +62812545922 (Klik <a href='https://wa.me/62812545922' target='_blank'><strong>Disini</strong></a> untuk menghubungi via Whatsapp)<br>
 				2. jaringan lokal : <a href='http://erp.quick.com' target='_blank'>http://erp.quick.com</a> atau klik <a href='http://erp.quick.com/'><strong>Disini</strong></a><br><br>
 
@@ -372,17 +383,17 @@ class C_Index extends CI_Controller
 				<h4>Absensi Online</h4><hr>
 				Kepada Yth.<br>
 				$namaPekerjaPersonalia<br><br>
-				
+
 				Kami informasikan bahwa terdapat pekerja yang melakukan absensi online dengan detail sbb :<br><br>
 				Pekerja 		: $namaPekerja<br>
 				Jenis Absen 	: $jenisAbsen<br>
 				Waktu 			: $waktu<br>
-				Lokasi 			: $lokasi , koordinat : ( $latitude , $longitude ) 
+				Lokasi 			: $lokasi , koordinat : ( $latitude , $longitude )
 				<a href='http://maps.google.com/maps?q=$latitude,$longitude''>Lihat Lokasi di Google Maps</a><br><br>
 
 				Status : Telah $status oleh $atasan<br><br>
 
-				Anda dapat melakukan pengecekan melalui :<br> 
+				Anda dapat melakukan pengecekan melalui :<br>
 				1. Internet : aplikasi Quick ERP Mobile. Apabila belum memiliki dapat menghubungi ICT di +62812545922 (Klik <a href='https://wa.me/62812545922' target='_blank'><strong>Disini</strong></a> untuk menghubungi via Whatsapp)<br>
 				2. jaringan lokal : <a href='http://erp.quick.com' target='_blank'>http://erp.quick.com</a> atau klik <a href='http://erp.quick.com/'><strong>Disini</strong></a><br><br>
 
@@ -442,14 +453,14 @@ class C_Index extends CI_Controller
 				<h4>Absensi Online</h4><hr>
 				Kepada Yth.<br>
 				$atasan<br><br>
-				
+
 				Kami informasikan bahwa $noindukPekerja - $namaPekerja telah melakukan request approval Absen Online, dengan detail sbb :<br><br>
 				Jenis Absen : $jenisAbsen<br>
 				Waktu : $waktu<br>
-				Lokasi : $lokasi , koordinat : ( $latitude , $longitude ) 
+				Lokasi : $lokasi , koordinat : ( $latitude , $longitude )
 				<a href='http://maps.google.com/maps?q=$latitude,$longitude''>Lihat Lokasi di Google Maps</a><br><br>
 
-				Anda dapat melakukan pengecekan melalui :<br> 
+				Anda dapat melakukan pengecekan melalui :<br>
 				1. Internet : aplikasi Quick ERP Mobile. Apabila belum memiliki dapat menghubungi ICT di +62812545922 (Klik <a href='https://wa.me/62812545922' target='_blank'><strong>Disini</strong></a> untuk menghubungi via Whatsapp)<br>
 				2. jaringan lokal : <a href='http://erp.quick.com' target='_blank'>http://erp.quick.com</a> atau klik <a href='http://erp.quick.com/'><strong>Disini</strong></a><br><br>
 
@@ -593,5 +604,5 @@ class C_Index extends CI_Controller
 
 			}		
 	}
-	
-?>		
+
+?>

@@ -67,6 +67,10 @@ class C_Monitoring extends CI_Controller
 		$packing = $this->M_monitoring->getDataSPB($query4);
 		$data['packing'] = $packing;
 		$data['jml_packing'] = count($packing);
+		$total = 0;
+		for ($i=0; $i < $data['jml_packing'] ; $i++) { 
+			$total += $packing[$i]['JUMLAH_PCS'];
+		}
 		$kurang = "where selesai_pengeluaran is not null and selesai_packing is null";
 		$data['krgpacking'] = $this->M_monitoring->dataKurang($kurang);
 		$data['krg_packing'] = count($data['krgpacking']);
@@ -85,6 +89,7 @@ class C_Monitoring extends CI_Controller
 			}
 		}
 		$data['jml_selesai'] = array_sum($jumlah);
+		$data['krg_selesai'] = $total - $data['jml_selesai'];
 		
 		// echo "<pre>"; print_r($data['krgpengeluaran']); exit();
 
@@ -147,6 +152,10 @@ class C_Monitoring extends CI_Controller
 			$packing = $this->M_monitoring->getDataSPB($query4);
 			$hasil[$a]['packing'] = $packing;
 			$hasil[$a]['jml_packing'] = count($packing);
+			$total = 0;
+			for ($i=0; $i < $hasil[$a]['jml_packing'] ; $i++) { 
+				$total += $packing[$i]['JUMLAH_PCS'];
+			}
 			if ($date == date('d/m/Y')) {
 				$kurang = "where selesai_pengeluaran is not null and selesai_packing is null";
 			}else {
@@ -169,6 +178,7 @@ class C_Monitoring extends CI_Controller
 				}
 			}
 			$hasil[$a]['jml_selesai'] = array_sum($jumlah);
+			$hasil[$a]['krg_selesai'] = $total - $hasil[$a]['jml_selesai'];
 		}
 		$data['hasil'] = $hasil;
 		

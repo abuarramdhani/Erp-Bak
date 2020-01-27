@@ -1,6 +1,6 @@
 <?php defined('BASEPATH')OR die('No direct script access allowed');
 class C_Submit extends CI_Controller {
-	
+
 	function __construct() {
 		parent::__construct();
 		date_default_timezone_set('Asia/Jakarta');
@@ -12,6 +12,7 @@ class C_Submit extends CI_Controller {
 		$this->load->helper('form');
 		$this->load->helper('url');
 		$this->load->helper('html');
+		$this->load->library('Log_Activity');
 		$this->load->library('form_validation');
 		$this->load->library('session');
 		$this->load->model('M_Index');
@@ -46,12 +47,12 @@ class C_Submit extends CI_Controller {
 		}
 
 
-   public function upload() 
+   public function upload()
 		 {
 		   $config = array('upload_path' => './assets/upload_kaizen/',
 		                'upload_url' => base_url()  . './assets/upload_kaizen/',
 		                'allowed_types' => 'jpg|gif|png',
-		                'overwrite' => false,         
+		                'overwrite' => false,
 		    );
 
 		    $this->load->library('upload', $config);
@@ -60,7 +61,7 @@ class C_Submit extends CI_Controller {
 		        $data = $this->upload->data();
 		        $array = array(
 		            'filelink' => $config['upload_url'] . $data['file_name']
-		        );            
+		        );
 		        echo stripslashes(json_encode($array));
 		    } else {
 		        echo json_encode(array('error' => $this->upload->display_errors('', '')));
@@ -131,10 +132,15 @@ class C_Submit extends CI_Controller {
 				'waktu' => date('Y-m-d h:i:s'),
 				 );
 			$this->M_log->save_log($datalog);
+			//insert to t_log
+				$aksi = 'KAIZEN GENERATOR';
+				$detail = 'Membuat Kaizen id='.$kaizen_id;
+				$this->log_activity->activity_log($aksi, $detail);
+			//
 			//helper_log($kaizen_id,0,$detail,date('Y-m-d h:i:s'));
 			redirect('SystemIntegration/KaizenGenerator/View/'.$kaizen_id);
-		}		
-	}	
+		}
+	}
 
 	public function view($id) {
 		$this->checkSession();
@@ -149,7 +155,7 @@ class C_Submit extends CI_Controller {
 		$data['user'] = $this->session->userdata('logged_in');
 		$data['kaizen'] = $this->M_submit->getKaizen($id, FALSE);
 		$data['thread'] = $this->M_log->ShowLog($id);
-		
+
 		//get form input approval
 		$form_approval = array();
 		if ($data['kaizen'] && in_array($data['kaizen'][0]['status'], $needthisform = array(0, 1))) {
@@ -201,7 +207,7 @@ class C_Submit extends CI_Controller {
 		$reason_rej = array();
 		$data['kaizen'][0]['status_app'] = '';
 
-		// $a = 0; for ($i=1; $i < 3; $i++) { 
+		// $a = 0; for ($i=1; $i < 3; $i++) {
 		// 	$getApprovalLvl = $this->M_submit->getApprover($data['kaizen'][0]['kaizen_id'], $i);
 		// 	$data['kaizen'][0]['status_app']['level'.$i] = $getApprovalLvl ? $getApprovalLvl[0]['status'] : 0;
 		// 	$data['kaizen'][0]['status_app']['staff'.$i] = $getApprovalLvl ? $getApprovalLvl[0]['employee_name'] : '';
@@ -248,6 +254,11 @@ class C_Submit extends CI_Controller {
 
 	public function edit($id)
 		{
+			//insert to t_log
+				$aksi = 'KAIZEN GENERATOR';
+				$detail = 'Edit Kaizen id='.$id;
+				$this->log_activity->activity_log($aksi, $detail);
+			//
 			$this->checkSession();
 			$user_id = $this->session->userid;
 			$data['Menu'] = 'View Kaizen';
@@ -344,6 +355,11 @@ class C_Submit extends CI_Controller {
 
 	public function delete($id)
 		{
+			//insert to t_log
+			$aksi = 'KAIZEN GENERATOR';
+			$detail = 'Delete Kaizen id='.$id;
+			$this->log_activity->activity_log($aksi, $detail);
+			//
 			$this->M_submit->UpdateStatus($id,8);
 			redirect(base_url('SystemIntegration/KaizenGenerator/MyKaizen/index'));
 		}
@@ -358,10 +374,15 @@ class C_Submit extends CI_Controller {
 
 	public function pdf($id)
 	{
+		//insert to t_log
+		$aksi = 'KAIZEN GENERATOR';
+		$detail = 'Export PDF Kaizen id='.$id;
+		$this->log_activity->activity_log($aksi, $detail);
+		//
 		$this->checkSession();
 		$this->load->library('pdf');
 		$this->load->model('SystemIntegration/M_approvalkaizen');
-			
+
 		$data['kaizen'] = $this->M_submit->getKaizen($id, FALSE);
 		if ($data['kaizen'][0]['komponen']) {
 				$arrayKomponen = explode(',', $data['kaizen'][0]['komponen']);
@@ -375,7 +396,7 @@ class C_Submit extends CI_Controller {
 				$data['kaizen'][0]['komponen'] = $komponen;
 			}
 
-		
+
 		$data['kaizen_id'] =$this->M_submit->getKaizen($id, FALSE);
 		$data['section_user'] = $this->M_approvalkaizen->getSectAll($data['kaizen'][0]['noinduk']);
 		$data['set_approve'] = $this->M_log->ShowLogByTitle($id,'(Set Approver)');
@@ -397,7 +418,7 @@ class C_Submit extends CI_Controller {
 				$i++;
 			}
 		}
-		
+
 		if (strpos($data['kaizen'][0]['kondisi_awal'], '<img') !== FALSE) {
 			$data['kaizen'][0]['kondisi_awal'] = str_replace('<img', '<br><img class="img img-responsive"', $data['kaizen'][0]['kondisi_awal']);
 		} else {
@@ -452,7 +473,11 @@ class C_Submit extends CI_Controller {
 
 	public function realisasi($id)
 	{
-
+		//insert to t_log
+		$aksi = 'KAIZEN GENERATOR';
+		$detail = 'Realisasi Kaizen id='.$id;
+		$this->log_activity->activity_log($aksi, $detail);
+		//
 		$this->checkSession();
 		$user_id = $this->session->userid;
 		$data['Menu'] = 'Realisasi Kaizen';
@@ -523,7 +548,7 @@ class C_Submit extends CI_Controller {
 						'waktu' => date('Y-m-d h:i:s'),
 						 );
 					$this->M_log->save_log($datalog);
-					
+
 			}else{
 					$data = array(
 							'kondisi_akhir' => $this->input->post('txtKondisiAkhir'),
@@ -532,7 +557,7 @@ class C_Submit extends CI_Controller {
 						);
 					$this->M_submit->saveUpdate($id,$data);
 			}
-			
+
 			redirect(base_url("SystemIntegration/KaizenGenerator/View/$id"));
 		}
 

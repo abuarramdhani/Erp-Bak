@@ -13,6 +13,7 @@ class C_Approval extends CI_Controller
     $this->load->helper('url');
     $this->load->helper('html');
 
+    $this->load->library('Log_Activity');
     $this->load->library('form_validation');
     $this->load->library('session');
     $this->load->library('encrypt');
@@ -196,15 +197,24 @@ class C_Approval extends CI_Controller
 
     if ($status == '2') {
       $alert = "Telah di <b>Approve</b>";
+      //insert to t_log
+          $aksi = 'CATERING MANAGEMENT';
+          $detail = 'APPROVE PESANAN DI='.$tempat_makan.' PEMOHON='.$pemohon;
+          $this->log_activity->activity_log($aksi, $detail);
+      //
     }elseif ($status == '3') {
       $alert = "Telah di <b>Reject</b>";
+      //insert to t_log
+          $aksi = 'CATERING MANAGEMENT';
+          $detail = 'REJECT PESANAN DI='.$tempat_makan.' PEMOHON='.$pemohon;
+          $this->log_activity->activity_log($aksi, $detail);
+      //
     }elseif ($status == '4') {
       $alert = "<b>Tidak Terbaca</b>";
     }
 
     $update_erp = $this->M_pesanan->editTotalPesanan($jmltotal, $kd_shift, $tempat_makan, $jumlah);
     $this->sendMail($imail, $link, $alert);
-
   }
 
   public function index_Rekap()

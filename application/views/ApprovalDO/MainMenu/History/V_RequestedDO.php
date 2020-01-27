@@ -65,9 +65,15 @@
                                                 <td width="18%" ><?= $val['REQUEST_BY'] ?></td>
                                                 <td width="18%" ><?= $val['REQUEST_TO'] ?></td>
                                                 <td width="10%" class="text-center">
-                                                    <a href="<?= base_url('ApprovalDO/Detail/Requested-'.$val['NO_DO'].'-'.$val['NO_SO']) ?>" target="_blank" title="Detail" class="btn btn-default">
-                                                        <i class="fa fa-book"></i>&nbsp; Detail
-                                                    </a>
+                                                    <?php if ($val['NO_SO']) : ?>
+                                                        <a href='<?= base_url("ApprovalDO/Detail/Requested-{$val['NO_DO']}-{$val['NO_SO']}") ?>' target="_blank" title="Detail" class="btn btn-default">
+                                                            <i class="fa fa-book"></i>&nbsp; Detail
+                                                        </a>
+                                                    <?php else : ?>
+                                                        <a href='<?= base_url("ApprovalDO/Detail/RequestedSPB-{$val['NO_DO']}-") ?>' target="_blank" title="Detail" class="btn btn-default">
+                                                            <i class="fa fa-book"></i>&nbsp; Detail
+                                                        </a>
+                                                    <?php endif ?>
                                                 </td>
                                                 <td width="10%" class="text-center">
                                                     <span class="label label-primary">Req. Approval</span>

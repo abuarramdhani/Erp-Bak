@@ -76,16 +76,16 @@ class C_Master extends CI_Controller
 
     public function countDO()
     {
-      // $data[0] = '';
-      // $data[1] = '';
-      // $data[2] = '';
-      // $data[3] = '';
-      // $data[4] = '';
-      $data[0] = sizeof($this->M_monitoringdo->getDO());
-      $data[1] = sizeof($this->M_monitoringdo->sudahdiAssign());
-      $data[2] = sizeof($this->M_monitoringdo->sudahdiLayani());
-      $data[3] = sizeof($this->M_monitoringdo->sudahdiMuat());
-      $data[4] = sizeof($this->M_monitoringdo->GetSudahCetakCekFoCount());
+       $data[0] = '';
+       $data[1] = '';
+       $data[2] = '';
+       $data[3] = '';
+       $data[4] = '';
+    //   $data[0] = sizeof($this->M_monitoringdo->getDO());
+    //   $data[1] = sizeof($this->M_monitoringdo->sudahdiAssign());
+    //   $data[2] = sizeof($this->M_monitoringdo->sudahdiLayani());
+    //   $data[3] = sizeof($this->M_monitoringdo->sudahdiMuat());
+    //   $data[4] = sizeof($this->M_monitoringdo->GetSudahCetakCekFoCount());
       echo json_encode($data);
     }
 
@@ -246,6 +246,13 @@ class C_Master extends CI_Controller
        // $data['get'] = $this->M_monitoringdo->sudahCetak();
        $data['get'] = $this->M_monitoringdo->GetSudahCetak();
        $this->load->view('MonitoringDO/V_Ajax_SudahCetak', $data);
+    }
+
+    public function GetSudahCetakDetail()
+    {
+        $id = $this->input->post('requests_number');
+        $data['get'] = $this->M_monitoringdo->GetSudahCetakDetail($id);
+        $this->load->view('MonitoringDO/V_Ajax_Transact_detail', $data);
     }
 
     public function GetAssign()

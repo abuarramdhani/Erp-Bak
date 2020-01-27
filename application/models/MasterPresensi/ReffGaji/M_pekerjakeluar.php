@@ -456,6 +456,18 @@ class M_pekerjakeluar extends CI_Model
 									on tl.tanggal = dt.dt
 									where tl.tanggal is null 
 									and extract(isodow from dt.dt) != 7
+								) -
+								(
+									sELECT count(*) from \"Presensi\".TDataPresensi c
+									WHERE c.noind = a.noind
+									AND c.tanggal between '$awal'::date AND to_char(a.tglkeluar,'yyyy-mm-01')::date - interval '1 day'
+									AND (
+											c.kd_ket = 'PSK' 
+											or c.kd_ket = 'PRM'
+											or c.kd_ket = 'PIP'
+											or left(c.kd_ket,1) = 'C'
+											or c.kd_ket = 'PCZ'
+										)
 								)
 							else
 								(
@@ -464,7 +476,19 @@ class M_pekerjakeluar extends CI_Model
 									where b.noind = a.noind
 									and b.tanggal between to_char(a.tglkeluar,'yyyy-mm-01')::date and a.tglkeluar
 									and trim(b.kd_ket) in ('PKJ','PDL','PDB','PLB','PID','PSK', 'PSP', 'CT', 'CB', 'CBA', 'CD', 'CH', 'CIK', 'CIM', 'CK', 'CM', 'CPA', 'CPP', 'CS', 'PCZ', 'PRM', 'PKK' )
-								) 
+								)  -
+								(
+									sELECT count(*) from \"Presensi\".TDataPresensi c
+									WHERE c.noind = a.noind
+									AND c.tanggal between to_char(a.tglkeluar,'yyyy-mm-01')::date AND a.tglkeluar
+									AND (
+											c.kd_ket = 'PSK' 
+											or c.kd_ket = 'PRM'
+											or c.kd_ket = 'PIP'
+											or left(c.kd_ket,1) = 'C'
+											or c.kd_ket = 'PCZ'
+										)
+								)
 							end
 						else
 							(
@@ -568,7 +592,7 @@ class M_pekerjakeluar extends CI_Model
 								WHERE (a.tanggal >= to_char('$akhir'::date,'yyyy-mm-01')::date) AND (a.kd_ket = 'PSP') AND (a.noind = '$noind') AND (a.tanggal <= '$akhir')
 						ORDER BY tanggal";			
 			}else{
-				if ($chk_khusus == "khusus" && $khusus = "sebelum") {
+				if ($chk_khusus == "khusus" && $khusus == "sebelum") {
 					$sql = "SELECT a.tanggal, a.noind,
 								concat(a.tanggal::date,' ',a.keluar)::timestamp as keluar,
 								case when a.masuk::time < a.keluar::time then
@@ -938,6 +962,18 @@ class M_pekerjakeluar extends CI_Model
 									on tl.tanggal = dt.dt
 									where tl.tanggal is null 
 									and extract(isodow from dt.dt) != 7
+								) -
+								(
+									sELECT count(*) from \"Presensi\".TDataPresensi c
+									WHERE c.noind = a.noind
+									AND c.tanggal between '$awal'::date AND to_char(a.tglkeluar,'yyyy-mm-01')::date - interval '1 day'
+									AND (
+											c.kd_ket = 'PSK' 
+											or c.kd_ket = 'PRM'
+											or c.kd_ket = 'PIP'
+											or left(c.kd_ket,1) = 'C'
+											or c.kd_ket = 'PCZ'
+										)
 								)
 							else
 								(
@@ -946,7 +982,19 @@ class M_pekerjakeluar extends CI_Model
 									where b.noind = a.noind
 									and b.tanggal between to_char(a.tglkeluar,'yyyy-mm-01')::date and a.tglkeluar
 									and trim(b.kd_ket) in ('PKJ','PDL','PDB','PLB','PID','PSK', 'PSP', 'CT', 'CB', 'CBA', 'CD', 'CH', 'CIK', 'CIM', 'CK', 'CM', 'CPA', 'CPP', 'CS', 'PCZ', 'PRM', 'PKK' )
-								) 
+								)  -
+								(
+									sELECT count(*) from \"Presensi\".TDataPresensi c
+									WHERE c.noind = a.noind
+									AND c.tanggal between to_char(a.tglkeluar,'yyyy-mm-01')::date and a.tglkeluar
+									AND (
+											c.kd_ket = 'PSK' 
+											or c.kd_ket = 'PRM'
+											or c.kd_ket = 'PIP'
+											or left(c.kd_ket,1) = 'C'
+											or c.kd_ket = 'PCZ'
+										)
+								)
 							end
 						else
 							(
@@ -1050,7 +1098,7 @@ class M_pekerjakeluar extends CI_Model
 								WHERE (a.tanggal >= '$awal'::date) AND (a.kd_ket = 'PSP') AND (a.noind = '$noind') AND (a.tanggal <= '$akhir')
 						ORDER BY tanggal";
 			}else{
-				if ($chk_khusus == "khusus" && $khusus = "sebelum") {
+				if ($chk_khusus == "khusus" && $khusus == "sebelum") {
 					$sql = "SELECT a.tanggal, a.noind,
 								concat(a.tanggal::date,' ',a.keluar)::timestamp as keluar,
 								case when a.masuk::time < a.keluar::time then
@@ -1230,7 +1278,7 @@ class M_pekerjakeluar extends CI_Model
 
 				$simpan_tgl = $tik['tanggal'];
 			}
-			 
+			 // echo $akhir;exit();
 		}else{
 			$sql = "select noind,
 						case when (select count(*) from \"Presensi\".tcutoff_custom c where a.noind = c.noind ) > 0 then
@@ -1504,8 +1552,7 @@ class M_pekerjakeluar extends CI_Model
 							case when '$chk_khusus' = 'khusus' then
 								case when '$khusus' = 'sebelum' then 
 									(
-										30 -
-										(extract(day from a.tglkeluar) - 1) +
+										30 +
 										(select count(tanggal) as jml from
 											(
 												SELECT b.tanggal FROM \"Presensi\".TDataTIM b
@@ -1619,7 +1666,7 @@ class M_pekerjakeluar extends CI_Model
 			$result1 = $this->personalia->query($sql)->result_array();
 			$nilai = $result1['0']['total'];
 
-			if($chk_khusus !== "khusus" or ($chk_khusus == "khusus" && $khusus = "sesudah")){
+			if($chk_khusus !== "khusus" or ($chk_khusus == "khusus" && $khusus == "sesudah")){
 				$sql = "SELECT a.tanggal, a.noind,
 								concat(a.tanggal::date,' ',a.keluar)::timestamp as keluar,
 								case when a.masuk::time < a.keluar::time then
@@ -1684,7 +1731,7 @@ class M_pekerjakeluar extends CI_Model
 				}				
 			}
 
-			if($chk_khusus !== "khusus" or ($chk_khusus == "khusus" && $khusus = "sebelum")){
+			if($chk_khusus !== "khusus" or ($chk_khusus == "khusus" && $khusus == "sebelum")){
 				$sql = "SELECT a.tanggal, a.noind,
 								concat(a.tanggal::date,' ',a.keluar)::timestamp as keluar,
 								case when a.masuk::time < a.keluar::time then
@@ -1885,8 +1932,7 @@ class M_pekerjakeluar extends CI_Model
 							case when '$chk_khusus' = 'khusus' then
 								case when '$khusus' = 'sebelum' then 
 									(
-										30 -
-										(extract(day from a.tglkeluar) - 1) +
+										30 +
 										(select count(tanggal) as jml from
 											(
 												SELECT b.tanggal FROM \"Presensi\".TDataTIM b
@@ -2000,7 +2046,7 @@ class M_pekerjakeluar extends CI_Model
 			$result1 = $this->personalia->query($sql)->result_array();
 			$nilai = $result1['0']['total'];
 
-			if($chk_khusus !== "khusus" or ($chk_khusus == "khusus" && $khusus = "sesudah")){
+			if($chk_khusus !== "khusus" or ($chk_khusus == "khusus" && $khusus == "sesudah")){
 				$sql = "SELECT a.tanggal, a.noind,
 								concat(a.tanggal::date,' ',a.keluar)::timestamp as keluar,
 								case when a.masuk::time < a.keluar::time then
@@ -2065,7 +2111,7 @@ class M_pekerjakeluar extends CI_Model
 				}
 			}
 
-			if($chk_khusus !== "khusus" or ($chk_khusus == "khusus" && $khusus = "sesudah")){
+			if($chk_khusus !== "khusus" or ($chk_khusus == "khusus" && $khusus == "sebelum")){
 				$sql = "SELECT a.tanggal, a.noind,
 								concat(a.tanggal::date,' ',a.keluar)::timestamp as keluar,
 								case when a.masuk::time < a.keluar::time then
@@ -3470,7 +3516,7 @@ class M_pekerjakeluar extends CI_Model
 		if ($pilih == "awal") {
 			$nilai = 0;
 
-			if($chk_khusus !== "khusus" or ($chk_khusus == "khusus" && $khusus = "sesudah")){
+			if($chk_khusus !== "khusus" or ($chk_khusus == "khusus" && $khusus == "sesudah")){
 				$sql = "SELECT a.tanggal, a.noind,
 								concat(a.tanggal::date,' ',a.keluar)::timestamp as keluar,
 								case when a.masuk::time < a.keluar::time then
@@ -3533,7 +3579,7 @@ class M_pekerjakeluar extends CI_Model
 					$simpan_tgl = $tik['tanggal'];
 				}
 			}
-			if($chk_khusus !== "khusus" or ($chk_khusus == "khusus" && $khusus = "sebelum")){
+			if($chk_khusus !== "khusus" or ($chk_khusus == "khusus" && $khusus == "sebelum")){
 				$sql = "SELECT a.tanggal, a.noind,
 								concat(a.tanggal::date,' ',a.keluar)::timestamp as keluar,
 								case when a.masuk::time < a.keluar::time then
@@ -3680,7 +3726,7 @@ class M_pekerjakeluar extends CI_Model
 		if ($pilih == "awal") {
 			$nilai = 0;
 
-			if($chk_khusus !== "khusus" or ($chk_khusus == "khusus" && $khusus = "sesudah")){
+			if($chk_khusus !== "khusus" or ($chk_khusus == "khusus" && $khusus == "sesudah")){
 				$sql = "SELECT a.tanggal, a.noind,
 								concat(a.tanggal::date,' ',a.keluar)::timestamp as keluar,
 								case when a.masuk::time < a.keluar::time then
@@ -3743,7 +3789,7 @@ class M_pekerjakeluar extends CI_Model
 				}
 			}
 
-			if($chk_khusus !== "khusus" or ($chk_khusus == "khusus" && $khusus = "sebelum")){
+			if($chk_khusus !== "khusus" or ($chk_khusus == "khusus" && $khusus == "sebelum")){
 				$sql = "SELECT a.tanggal, a.noind,
 								concat(a.tanggal::date,' ',a.keluar)::timestamp as keluar,
 								case when a.masuk::time < a.keluar::time then
@@ -3980,8 +4026,7 @@ class M_pekerjakeluar extends CI_Model
 							case when '$chk_khusus' = 'khusus' then
 								case when '$khusus' = 'sebelum' then 
 									(
-										30 -
-										(extract(day from a.tglkeluar) - 1) +
+										30 +
 										(select count(tanggal) as jml from
 											(
 												SELECT b.tanggal FROM \"Presensi\".TDataTIM b
@@ -4179,8 +4224,7 @@ class M_pekerjakeluar extends CI_Model
 							case when '$chk_khusus' = 'khusus' then
 								case when '$khusus' = 'sebelum' then 
 									(
-										30 -
-										(extract(day from a.tglkeluar) - 1) +
+										30  +
 										(select count(tanggal) as jml from
 											(
 												SELECT b.tanggal FROM \"Presensi\".TDataTIM b
