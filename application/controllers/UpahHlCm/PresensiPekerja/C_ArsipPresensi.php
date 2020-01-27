@@ -1,13 +1,13 @@
 <?php
 defined('BASEPATH') or exit('No Direct Script Access Allowed');
 /**
- * 
+ *
  */
 date_default_timezone_set('Asia/Jakarta');
 
 class C_ArsipPresensi extends CI_Controller
 {
-	
+
 	function __construct()
 	{
 		parent::__construct();
@@ -16,6 +16,7 @@ class C_ArsipPresensi extends CI_Controller
 		$this->load->helper('html');
 		$this->load->helper('file');
 
+		$this->load->library('Log_Activity');
 		$this->load->library('form_validation');
 		$this->load->library('session');
 		$this->load->library('encrypt');
@@ -58,15 +59,13 @@ class C_ArsipPresensi extends CI_Controller
 	}
 
 	public function detail_arsip(){
-		// print_r($_GET);
 		$id_encrypted = $this->input->get('data');
 		$method = $this->input->get('method');
 		$plaintext_string = str_replace(array('-', '_', '~'), array('+', '/', '='), $id_encrypted);
 		$plaintext_string = $this->encrypt->decode($plaintext_string);
 		$id = $plaintext_string;
 		$data_array = $this->M_presensipekerja->getArsipPresensiDetail($id);
-		// echo "<pre>";print_r($data_array);exit();
-		// print_r(json_decode($data_array->isi));
+
 		if ($data_array->asal == "Rekap Presensi") {
 			if ($method == "view") {
 				$RekapPresensi = json_decode($data_array->isi,true);
@@ -328,7 +327,7 @@ class C_ArsipPresensi extends CI_Controller
 							$worksheet->setCellValueByColumnAndRow ($kolom_header_bulan, 3, $bulan[$dt_bulan['bulan']]." ".$dt_bulan['tahun']);
 							$kolom_1 = PHPExcel_Cell::stringFromColumnIndex($simpan_index);
 							$kolom_2 = PHPExcel_Cell::stringFromColumnIndex($kolom_header_bulan);
-							$worksheet->mergeCells($kolom_1.'3:'.$kolom_2.'3');	
+							$worksheet->mergeCells($kolom_1.'3:'.$kolom_2.'3');
 							$simpan_index = $kolom_header_bulan;
 						}else{
 							$worksheet->setCellValueByColumnAndRow ($kolom_header_bulan, 3, $bulan[$dt_bulan['bulan']]." ".$dt_bulan['tahun']);
@@ -342,8 +341,8 @@ class C_ArsipPresensi extends CI_Controller
 				}
 				$kolom_1 = PHPExcel_Cell::stringFromColumnIndex($simpan_index);
 				$kolom_2 = PHPExcel_Cell::stringFromColumnIndex($kolom_header_bulan - 1);
-				$worksheet->mergeCells($kolom_1.'3:'.$kolom_2.'3');	
-				
+				$worksheet->mergeCells($kolom_1.'3:'.$kolom_2.'3');
+
 				$kolom_header_tanggal = 2;
 				foreach ($data['tanggal'] as $dt_tanggal) {
 					$worksheet->setCellValueByColumnAndRow ($kolom_header_tanggal, 4,$dt_tanggal['hari']);
@@ -373,7 +372,7 @@ class C_ArsipPresensi extends CI_Controller
 						}else{
 							$worksheet->setCellValueByColumnAndRow ($kolom_body_tanggal,$row_body, $keterangan);
 						}
-						
+
 						$kolom_body_tanggal++;
 					}
 					$row_body++;
@@ -381,7 +380,7 @@ class C_ArsipPresensi extends CI_Controller
 
 				$worksheet->getColumnDimension('A')->setWidth('10');
 				$worksheet->getColumnDimension('B')->setWidth('20');
-				for ($i=2; $i < $kolom_body_tanggal; $i++) { 
+				for ($i=2; $i < $kolom_body_tanggal; $i++) {
 					$nama_kolom = PHPExcel_Cell::stringFromColumnIndex($i);
 					$worksheet->getColumnDimension($nama_kolom)->setWidth('5');
 				}

@@ -1,11 +1,11 @@
 <?php
 Defined('BASEPATH') or exit('No Direct Sekrip Akses Allowed');
 /**
- * 
+ *
  */
 class C_Input extends CI_Controller
 {
-	
+
 	function __construct()
 	{
 		parent::__construct();
@@ -14,6 +14,7 @@ class C_Input extends CI_Controller
 		$this->load->helper('html');
 		$this->load->helper('file');
 
+		$this->load->library('Log_Activity');
 		$this->load->library('form_validation');
 		$this->load->library('session');
 		$this->load->library('encrypt');
@@ -74,6 +75,11 @@ class C_Input extends CI_Controller
 		);
 
 		$this->M_input->insertData($arrdata);
+		//insert to t_log
+		$aksi = 'MANAGEMENT ADMIN';
+		$detail = 'Save Data Pekerja ID='.$pekerja;
+		$this->log_activity->activity_log($aksi, $detail);
+		//
 
 		redirect(site_url('ManagementAdmin/Input'));
 	}
