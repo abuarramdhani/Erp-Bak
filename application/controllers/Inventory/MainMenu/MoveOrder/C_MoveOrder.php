@@ -348,7 +348,7 @@ class C_MoveOrder extends CI_Controller
 			}
 
 			// echo "<pre>";
-			// print_r($data);
+			// print_r($dataall);
 			// exit();
 
 			$head		= array();

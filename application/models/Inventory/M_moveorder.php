@@ -572,7 +572,7 @@ class M_moveorder extends CI_Model
 		}
 
 		$sql = "
-				SELECT
+				SELECT DISTINCT
 				msib_produk.segment1 PRODUK,
 				msib_produk.description PRODUK_DESC,
 				msib_produk.inventory_item_id,
@@ -716,12 +716,16 @@ class M_moveorder extends CI_Model
 				and mtrh.request_number = '$moveOrderAwal'
 				-- and mtrl.FROM_SUBINVENTORY_CODE not like 'INT%'
 				and wro.INVENTORY_ITEM_ID = mtrl.INVENTORY_ITEM_ID
-				order by
-				mtrl.LINE_ID,
-				we.WIP_ENTITY_NAME,
-				mtrl.FROM_SUBINVENTORY_CODE,
-				msib_compnt.SEGMENT1
+				-- order by
+				-- mtrl.LINE_ID,
+				-- we.WIP_ENTITY_NAME,
+				-- mtrl.FROM_SUBINVENTORY_CODE,
+				-- msib_compnt.SEGMENT1
 		";
+		
+		// echo "<pre>";
+		// echo "$sql";
+		// exit();
 
 		$query = $oracle->query($sql);
 		return $query->result_array();
