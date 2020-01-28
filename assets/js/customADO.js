@@ -104,9 +104,11 @@ $(document).ready( _ => {
 
     $('.btnADORequestApproveDO').on('click', function () {
         let data     = {
-            doNumber : $('.spnADODONumber').html(),
-            soNumber : $('.spnADOSONumber').html(),
-            approver : $('.slcADOAssignerList').val()
+            doNumber        : $('.spnADODONumber').html(),
+            soNumber        : $('.spnADOSONumber').html(),
+            approver        : $('.slcADOAssignerList').val(),
+            approverName    : $('.slcADOAssignerList').find(':selected').text().split(' - ').slice(-1).pop(),
+            approverAddress : $('.slcADOAssignerList').find(':selected').attr('address')
         }
         let url      = `${baseurl}ApprovalDO/ListDO/requestApproveDO`
         let question = `Request Approve DO Ini ke ${data.approver} ?`
@@ -126,8 +128,10 @@ $(document).ready( _ => {
 
     $('.btnADORequestApproveSPB').on('click', function () {
         let data     = {
-            spbNumber : $('.spnADODONumber').html(),
-            approver  : $('.slcADOAssignerList').val()
+            spbNumber       : $('.spnADODONumber').html(),
+            approver        : $('.slcADOAssignerList').val(),
+            approverName    : $('.slcADOAssignerList').find(':selected').text().split(' - ').slice(-1).pop(),
+            approverAddress : $('.slcADOAssignerList').find(':selected').attr('address')
         }
         let url      = `${baseurl}ApprovalDO/ListSPB/requestApproveSPB`
         let question = `Request Approve SPB Ini ke ${data.approver} ?`

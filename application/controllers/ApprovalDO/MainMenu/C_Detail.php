@@ -14,7 +14,7 @@ class C_Detail extends CI_Controller {
         $this->load->model('SystemAdministration/MainMenu/M_user');
     }
     
-    public function checkSession()
+    private function checkSession()
     {
         if ( ! $this->session->is_logged ) {
             redirect();
@@ -39,28 +39,34 @@ class C_Detail extends CI_Controller {
         $data['DetailType']     = $exp_id[0];
         $data['ApproverList']   = [
             [
-                'name' => 'B0354 - Wawan Kartika Hadi',
-                'id'   => 'B0354'
+                'name'          => 'B0354 - Wawan Kartika Hadi',
+                'id'            => 'B0354',
+                'email_address' => 'wawan_kartika@quick.com'
             ],
             [
-                'name' => 'B0377 - Y. Dadang Senoaji',
-                'id'   => 'B0377'
+                'name'          => 'B0377 - Y. Dadung Senoaji',
+                'id'            => 'B0377',
+                'email_address' => 'y_dadung@quick.com'
             ],
             [
-                'name' => 'B0621 - Ricky Setyawan',
-                'id'   => 'B0621'
+                'name'          => 'B0621 - Ricky Setyawan',
+                'id'            => 'B0621',
+                'email_address' => 'ricky_setyawan@quick.com'
             ],
             [
-                'name' => 'B0342 - Gatot Sutrisno',
-                'id'   => 'B0342'
+                'name'          => 'B0342 - Gatot Sutrisno',
+                'id'            => 'B0342',
+                'email_address' => 'gatot_sutrisno@quick.com'
             ],
             [
-                'name' => 'B0543 - Cahyono Hadi',
-                'id'   => 'B0543'
+                'name'          => 'B0543 - Cahyono Hadi',
+                'id'            => 'B0543',
+                'email_address' => 'cahyono_hadi@quick.com'
             ],
             [
-                'name' => 'B0328 - Bambang Pudjijono',
-                'id'   => 'B0328'
+                'name'          => 'B0328 - Bambang Pudjijono',
+                'id'            => 'B0328',
+                'email_address' => 'bambang_pudjijono@quick.com'
             ]
         ];
         switch ($exp_id[0]) {
