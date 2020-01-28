@@ -97,6 +97,7 @@
                                             <option value="IHSAN">IHSAN</option>
                                             <option value="ARI">ARI</option>
                                             <option value="IRWAN">IRWAN</option>
+                                            <option value="AVAN">AVAN</option>
                                         </select>
                                         </div>
                                     </div>
