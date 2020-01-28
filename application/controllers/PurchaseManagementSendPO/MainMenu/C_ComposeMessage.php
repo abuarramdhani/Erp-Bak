@@ -431,7 +431,8 @@ $data['UserMenu'][0]['user_group_menu_name'] == 'WEB SEND PO BDL' ? $data['MenuN
 				case 'KARYA BENTENG BARU SEMESTA, PT' :
 				case 'SINAR AGUNG' :
 				case 'SINARWAJA INDAH, PT' :
-					$cc_address = 'purchasing.khsjkt@gmail.vom';
+				case 'GITAMULIA CEMERLANG, PT' :
+					$cc_address = 'purchasing.khsjkt@gmail.com';
 					break;
 				default:
 					$cc_address = NULL;
