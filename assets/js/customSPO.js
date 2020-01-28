@@ -181,6 +181,7 @@ $(document).ready(function(){
             $('.PMSPOimgLoadAddr').hide();
             $('#txtPMSPOSubject').val('');
             $('#txtPMSPOToEmailAddr').val('');
+            $('#txtPMSPOCCEmailAddr').val('');
             $('.divPMSPOSite').fadeOut();
         }
     });
