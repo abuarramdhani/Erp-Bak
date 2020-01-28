@@ -193,7 +193,7 @@
                             <span class="input-group-addon"><i style="width:15px;" class="fa fa-user"></i></span>
                             <select class="slcADOAssignerList form-control" name="slcADOAssignerList" style="width: 100%;">
                                 <?php foreach ($ApproverList as $key => $val) : ?>
-                                    <option value="<?= $val['id'] ?>"><?= $val['name'] ?></option>
+                                    <option address="<?= $val['email_address'] ?>" value="<?= $val['id'] ?>"><?= $val['name'] ?></option>
                                 <?php endforeach ?>
                             </select>
                         </div>
