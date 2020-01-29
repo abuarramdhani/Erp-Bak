@@ -129,8 +129,18 @@ class C_Index extends CI_Controller {
 					$time = date('d-m-Y H:i:s');
 					$st = "OPEN";
 
-					$message .="<br> STATUS : $st";
-					$message .="<br> TIME : $time";
+					$message .="<table>
+								 <tr>
+								 	<th align='left'>STATUS</th>
+									<th>:</th>
+									<td>$st</td>
+								 </tr>
+								 <tr>
+								 	<th align='left'>TIME</th>
+									<th>:</th>
+									<td>$time</td>
+								 </tr>
+								</table>";
 				}else {
 					if ($status[0]['action'] == null) {
 						$stat = array(
@@ -140,8 +150,18 @@ class C_Index extends CI_Controller {
 						$this->M_index->setStatus($stat);
 						$time = date('d-m-Y H:i:s');
 						$st = "OPEN";
-						$message .="<br> STATUS : $st";
-						$message .="<br> TIME : $time";
+						$message .="<table>
+								 <tr>
+								 	<th align='left'>STATUS</th>
+									<th>:</th>
+									<td>$st</td>
+								 </tr>
+								 <tr>
+								 	<th align='left'>TIME</th>
+									<th>:</th>
+									<td>$time</td>
+								 </tr>
+								</table>";
 					}else {
 						$action = $status[0]['action'];
 						$actBy = $status[0]['action_by'];
@@ -157,10 +177,33 @@ class C_Index extends CI_Controller {
 
 						$time = date('d-m-Y H:i:s');
 						$st = "WIP";
-						$message .="<br> STATUS : $st";
-						$message .="<br> TIME : $time";
-						$message .="<br> Action : <b>$action</b>";
-						$message .="<br> Action By : $actBy";
+						$message .="<table>
+								 <tr>
+								 	<th align='left'>STATUS</th>
+									<th>:</th>
+									<td>$st</td>
+								 </tr>
+								 <tr>
+								 	<th align='left'>TIME</th>
+									<th>:</th>
+									<td>$time</td>
+								 </tr>
+								 <tr>
+								 	<th align='left'>NO TICKET</th>
+									<th>:</th>
+									<td>$noticket</td>
+								 </tr>
+								 <tr>
+								 	<th align='left'>ACTION</th>
+									<th>:</th>
+									<td>$action</td>
+								 </tr>
+								 <tr>
+								 	<th align='left'>ACTION BY</th>
+									<th>:</th>
+									<td>$actBy</td>
+								 </tr>
+								</table>";
 					}
 				}
 				
