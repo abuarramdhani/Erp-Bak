@@ -140,8 +140,7 @@ class C_Detail extends CI_Controller {
                         </button>';
                 } else if ( $data['UserMenu'][0]['user_group_menu_name'] === 'Approval DO Admin' ) {
                     $data['ButtonType'] = 
-                        '<button type="button" title="Select Approver" class="btn btn-primary pull-right btnADOSelectApprover"
-                          data-toggle="modal" data-target="#mdlADOAssignApprover">
+                        '<button type="button" title="Select Approver" class="btn btn-primary pull-right btnADOSelectApprover">
                             <i class="fa fa-location-arrow"></i>&nbsp; Select Approver
                         </button>
                         <button type="button" title="Pending" class="btn btn-default pull-right" style="margin-right: 10px" disabled>

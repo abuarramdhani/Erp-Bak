@@ -22,6 +22,7 @@ class M_detail extends CI_Model
                         ,aa.QUANTITY                req_qty
                         ,aa.qty_atr                 qty_atr
                         ,aa.PRIMARY_UOM_CODE        uom
+                        ,aa.name                    order_type
                         ,REPLACE
                         ((RTRIM
                             (XMLAGG (XMLELEMENT (e, TO_CHAR (aa.lokasi) || '@')).EXTRACT
@@ -46,6 +47,7 @@ class M_detail extends CI_Model
                         ,khs_stock_delivery(mtrl.INVENTORY_ITEM_ID,102,'FG-TKS') qty_atr
                         ,msib.PRIMARY_UOM_CODE
                         ,ooo.LOKASI
+                        ,ot.name
                     from mtl_txn_request_lines mtrl
                         ,mtl_txn_request_headers mtrh
                         ,mtl_system_items_b msib
@@ -62,6 +64,7 @@ class M_detail extends CI_Model
                         ,hz_cust_acct_sites_all ship_cas
                         --
                         ,khsinvlokasisimpan ooo
+                        ,oe_transaction_types_tl ot
                     where mtrh.HEADER_ID = mtrl.HEADER_ID
                     and kad.NO_DO(+) = mtrh.REQUEST_NUMBER
                     and msib.INVENTORY_ITEM_ID = mtrl.INVENTORY_ITEM_ID
@@ -77,6 +80,7 @@ class M_detail extends CI_Model
                     AND ship_cas.party_site_id = ship_ps.party_site_id(+)
                     AND ship_loc.location_id(+) = ship_ps.location_id
                     and msib.INVENTORY_ITEM_ID = ooo.INVENTORY_ITEM_ID(+)
+                    and ooha.ORDER_TYPE_ID = ot.transaction_type_id
                     and wdd.BATCH_ID = $do_number
                     )aa
                 group by aa.REQUEST_NUMBER
@@ -87,7 +91,8 @@ class M_detail extends CI_Model
                 ,aa.DESCRIPTION
                 ,aa.QUANTITY
                 ,aa.qty_atr
-                ,aa.PRIMARY_UOM_CODE";
+                ,aa.PRIMARY_UOM_CODE
+                ,aa.name";
 
         $query = $this->oracle->query($sql);
         return $query->result_array();
