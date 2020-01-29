@@ -86,13 +86,8 @@
                                 <div class="panel-body" style="display:none" id="slcPIC">
                                     <div class="col-md-3">
                                         <label class="control-label">PIC</label>
-                                        <select id="pic" name="pic" class="form-control select2 select2-hidden-accessible" style="width:100%;" required>
+                                        <select id="pic" name="pic" class="form-control select2 select2-hidden-accessible picGDSP" style="width:100%;" required>
                                             <option></option>
-                                            <option value="SEFIAN">SEFIAN</option>
-                                            <option value="IHSAN">IHSAN</option>
-                                            <option value="ARI">ARI</option>
-                                            <option value="IRWAN">IRWAN</option>
-                                            <option value="AVAN">AVAN</option>
                                         </select>
                                     </div>
                                 </div>
