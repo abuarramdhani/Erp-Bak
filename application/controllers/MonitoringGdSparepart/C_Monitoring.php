@@ -148,6 +148,13 @@ class C_Monitoring extends CI_Controller
 		$this->load->view('V_Footer',$data);
 	}
 
+	public function getPIC(){
+		$term = $this->input->get('term',TRUE);
+		$term = strtoupper($term);
+		$data = $this->M_monitoring->getPIC($term);
+		echo json_encode($data);
+	}
+
 	public function search() {
 		$search			= $this->input->post('search_by');
 		$no_document	= $this->input->post('no_document');
