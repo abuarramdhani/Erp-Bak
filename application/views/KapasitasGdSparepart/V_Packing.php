@@ -95,11 +95,8 @@
                                                             <option><?= $val['PIC_PACKING']?></option>
                                                         </select></td>
                                                         <?php }else{?>
-                                                        <select id="pic<?= $no?>" name="pic" class="form-control select2 select2-hidden-accessible" style="width:100%;" required>
+                                                        <select id="pic<?= $no?>" name="pic" class="form-control select2 select2-hidden-accessible picSPB" style="width:100%;" required>
                                                             <option></option>
-                                                            <option value="ADI">ADI</option>
-                                                            <option value="RIZAL">RIZAL</option>
-                                                            <option value="DIKA">DIKA</option>
                                                         </select><?php }?>
                                                         </td>
                                                         <td class="<?= $td?>"><?= $val['URGENT']?></td>
