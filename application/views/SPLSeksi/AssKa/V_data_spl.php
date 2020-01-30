@@ -168,7 +168,7 @@
 								</div>
 								<div class="modal-body">
 									Berikan alasan anda :
-									<textarea class="form-control" style="min-width: 75%" id="spl_tex_proses"></textarea>
+									<textarea class="form-control" style="resize: vertical; min-height: 100px" style="min-width: 75%" id="spl_tex_proses"></textarea>
 								</div>
 								<div class="modal-footer">
 									<a href="finspot:FingerspotVer;<?php echo base64_encode(base_url().'ALA/Approve/fp_proces?userid='.$this->session->userid.'&stat=35&data=&ket='); ?>" type="submit" id="spl_proses_reject" class="hidden"><i class="fa fa-exclamation-circle"></i> Reject</a>
@@ -257,7 +257,7 @@
 						}
 
 						document.addEventListener("DOMContentLoaded",function(e){
-							setupTimers();
+							// setupTimers();
 						});
 					</script>
 
