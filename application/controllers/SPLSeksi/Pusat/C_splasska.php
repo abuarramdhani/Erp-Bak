@@ -70,12 +70,12 @@ class C_splasska extends CI_Controller {
 			}
 			foreach($show_list_spl as $sls){
 				$index = array();
-				$btn_hapus = "";
-				if ($sls['Status'] == '01' or $sls['Status'] == '31' or $sls['Status'] == '35') {
-					$btn_hapus = "<a href='".site_url('SPL/HapusLembur/'.$sls['ID_SPL'])."' title='Hapus'><i class='fa fa-fw fa-trash'></i></a>";
+				if($sls['Status'] == "21"){
+					$index[] = '<input type="checkbox" name="splid[]" class="spl-chk-data"
+						value="'.$sls['ID_SPL'].'" style="width:20px; height:20px; vertical-align:bottom;">';
+				}else{
+					$index[] = "";
 				}
-				$index[] = "<a href='".site_url('SPL/EditLembur/'.$sls['ID_SPL'])."' title='Detail'><i class='fa fa-fw fa-search'></i></a>
-					$btn_hapus";
 				$index[] = $sls['Tgl_Lembur'];
 				$index[] = $sls['Noind'];
 				$index[] = $sls['nama'];
