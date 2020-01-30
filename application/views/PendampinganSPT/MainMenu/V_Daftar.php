@@ -92,13 +92,24 @@
                                     <dl>
                                         <dt>Mohon membaca informasi berikut sebelum Anda melakukan pendaftaran pendampingan pengisian SPT Tahunan 2019.</dt>
                                         <dd>1. Pendaftaran pendampingan pengisian SPT Tahunan Orang Pribadi Tahun 2019 ini hanya di peruntukan kepada Pekerja CV Karya Hidup Sentosa (bukan OS) yang memiliki NPWP.</dd>
-                                        <dd>2. Pendaftaran pendampingan SPT akan dibuka mulai tanggal 31 Januari 2020 - 8 Februari 2020 (lebih dari tanggal tersebut tidak  mendapat jadwal).</dd>
-                                        <dd>3. Jadwal pendampingan dapat di lihat di menu <a href="#divPSPTDetailSchedule">"Jadwal Pendampingan"</a> yang ada di bagian bawah halaman ini pada tanggal 10 Februari 2020.</dd>
-                                        <dd>4. Pendampingan akan diberikan selama jam kerja pada hari yang akan ditentukan kemudian</dd>                                        
-                                        <ol type="a">
-                                            <li>Tuksono &nbsp;= Pk 09.30 - 15.20 WIB</li>
-                                            <li>Pusat &emsp;&nbsp; = Pk 08.00 - 15.20 WIB</li>
-                                        </ol>  
+                                        <dd>2. Pendaftaran pendampingan SPT akan dibuka mulai tanggal <b>31 Januari 2020 - 8 Februari 2020 (lebih dari tanggal tersebut maka tidak dibuatkan jadwal susulan).</b></dd>
+                                        <dd>3. Untuk jadwal dan tempat pendampingan ditentukan oleh Kasie Perpajakan dengan mempertimbangkan kapasitas tempat pendampingan dan jumlah pendaftar. Jadwal dapat dilihat di <a href="http://quick.com">Quick.com</a> - <a href="<?= base_url('PendampinganSPT/Daftar') ?>">Menu Pendampingan SPT</a> - <a href="#divPSPTDetailSchedule">Jadwal Pendampingan</a> <b>mulai tanggal 10 Februari 2020.</b></dd>
+                                        <dd>4. Pendampingan akan diberikan selama jam kerja dengan perkiraan tanggal sebagai berikut:
+                                            <ol type="a" style="margin-bottom: 0px;">
+                                                <li>Tuksono &nbsp;=&nbsp; Rabu - Kamis, 12-13 Februari 2020 (Pk 09.30 - 15.20 WIB)</li>
+                                                <li>Pusat &emsp;&nbsp; =&nbsp; Senin - Rabu, 17-19 Februari 2020 (Pk 08.00 - 15.20 WIB)</li>
+                                            </ol>
+                                        </dd>
+                                        <dd>5. <b>Mohon Bpk/Ibu menyiapkan dokumen berikut ketika pendampingan:</b>
+                                            <ol type="a" style="margin-bottom: 0px;">
+                                                <li>Bukti Potong A1 Th 2019 (Bukti Potong dari CV KHS)</li>
+                                                <li>Alamat email, password email, password djp online yang pernah di daftarkan</li>
+                                                <li>EFIN (bagi Bpk/Ibu yang lupa password djp online-nya)</li>
+                                                <li>Handphone</li>
+                                                <li>FC KK (untuk menginput data tanggungan)</li>
+                                                <li>Menyiapkan data harta dan hutang tahun 2019</li>
+                                            </ol>
+                                        </dd>
                                     </dl>
                                 </div>
                                 <div class="PSPTRegisterFormField">
@@ -181,7 +192,7 @@
                         <div class="form-group">
                             <div class="col-sm-1"></div>
                             <div class="input-group col-sm-10">
-                                <span class="input-group-addon"><i style="width:15px;" class="fa fa-sort-numeric-asc "></i></span>
+                                <span class="input-group-addon"><i style="width:15px;" class="fa fa-list-ol"></i></span>
                                 <input class="form-control" id="txtPSPTTRN" placeholder="Nomor Pokok Wajib Pajak">
                             </div>
                             <div class="col-sm-1"></div>
@@ -206,7 +217,7 @@
                         <div class="form-group">
                             <div class="col-sm-1"></div>
                             <div class="input-group col-sm-10">
-                                <span class="input-group-addon"><i style="width:15px;" class="fa fa-sort-numeric-desc"></i></span>
+                                <span class="input-group-addon"><i style="width:15px;" class="fa fa-list-ol"></i></span>
                                 <input class="form-control" id="txtPSPTRegisterId" placeholder="Nomor Pendaftaran" readonly>
                             </div>
                             <div class="col-sm-1"></div>
@@ -226,7 +237,8 @@
                         <h4 class="modal-title"><i class="fa fa-info"></i> Informasi</h4>
                     </div>
                     <div class="modal-body" style="word-wrap: break-word">
-                        <p class="text-center text-red">Jadwal dan lokasi pendampingan belum tersedia.</p><br>
+                        <p class="text-center text-red">Jadwal Pendampingan belum tersedia.</p>
+                        <p class="text-center text-red">Jadwal Pendampingan dapat dilihat mulai tanggal 10 Februari 2020.</p>
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-primary pull-right" data-dismiss="modal"><i class="fa fa-remove"></i> Tutup</button>
