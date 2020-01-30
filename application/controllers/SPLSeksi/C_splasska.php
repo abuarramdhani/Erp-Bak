@@ -546,7 +546,7 @@ class C_splasska extends CI_Controller {
 
 							Kami informasikan bahwa SPL yang anda inputkan<br>
 							telah di <b>Approve</b> oleh Ass. Ka. Unit.<br>
-							Berikut ini daftar yang telah di Approve oleh : <b>$user</b><br>
+							Berikut ini daftar yang telah di Approve oleh : <b>$user - {$this->session->employee}</b><br>
 							dengan keterangan : <b>$ket</b><br><br>
 							".$dt['isiPesan']."
 							<br>
@@ -590,7 +590,7 @@ class C_splasska extends CI_Controller {
 
 							Kami informasikan bahwa SPL yang anda inputkan<br>
 							telah di <b>Reject</b> oleh Ass. Ka. Unit.<br>
-							Berikut ini daftar yang telah di Reject oleh : <b>$user</b><br>
+							Berikut ini daftar yang telah di Reject oleh : <b>$user - {$this->session->employee}</b><br>
 							dengan keterangan : <b>$ket</b><br><br>
 							".$dt['isiPesan']."
 							<br>

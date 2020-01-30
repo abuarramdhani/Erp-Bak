@@ -537,7 +537,7 @@ class C_splkasie extends CI_Controller {
 
 			Kami informasikan bahwa anda telah menerima permintaan<br>
 			approval untuk keperluan lembur pekerja.<br>
-			Berikut ini daftar yang telah di Approve oleh : <b>$user</b><br>
+			Berikut ini daftar yang telah di Approve oleh : <b>$user - {$this->session->employee}</b><br>
 			dengan keterangan : <b>$ket</b><br><br>
 			$isiPesan
 			<br>
@@ -640,7 +640,7 @@ class C_splkasie extends CI_Controller {
 
 							Kami informasikan bahwa SPL yang anda inputkan<br>
 							telah di <b>Approve</b> oleh Kasie.<br>
-							Berikut ini daftar yang telah di Approve oleh : <b>$user</b><br>
+							Berikut ini daftar yang telah di Approve oleh : <b>$user - {$this->session->employee}</b><br>
 							dengan keterangan : <b>$ket</b><br><br>
 							".$dt['isiPesan']."
 							<br>
@@ -684,7 +684,7 @@ class C_splkasie extends CI_Controller {
 
 							Kami informasikan bahwa SPL yang anda inputkan<br>
 							telah di <b>Reject</b> oleh Kasie.<br>
-							Berikut ini daftar yang telah di Reject oleh : <b>$user</b><br>
+							Berikut ini daftar yang telah di Reject oleh : <b>$user - {$this->session->employee}</b><br>
 							dengan keterangan : <b>$ket</b><br><br>
 							".$dt['isiPesan']."
 							<br>
@@ -746,29 +746,29 @@ class C_splkasie extends CI_Controller {
 	}
 
 	function fp_verification(){
-		$data = explode(";",$_POST['VerPas']);
-		$user_id = $data[0];
-		$vStamp = $data[1];
-		$time = $data[2];
-		$sn = $data[3];
+        $data = explode(";", $_POST['VerPas']);
+        $user_id = $data[0];
+        $vStamp = $data[1];
+        $time = $data[2];
+        $sn = $data[3];
 
-		$filter 	= array("SN" => $sn);
-		$kd_finger = $this->input->get('finger_id');
-		$fingerData = $this->M_splkasie->show_finger_user(array('user_id' => $user_id, 'kd_finger' => $kd_finger));
-		$device 	= $this->M_splkasie->show_finger_activation($filter);
+        $filter 	= array("SN" => $sn);
+        $kd_finger = $this->input->get('finger_id');
+        $fingerData = $this->M_splkasie->show_finger_user(array('user_id' => $user_id, 'kd_finger' => $kd_finger));
+        $device 	= $this->M_splkasie->show_finger_activation($filter);
 
-		$salt = md5($sn.$fingerData->finger_data.$device->Verification_Code.$time.$user_id.$device->VKEY);
+        $salt = md5($sn.$fingerData->finger_data.$device->Verification_Code.$time.$user_id.$device->VKEY);
 
-		if (strtoupper($vStamp) == strtoupper($salt)) {
-			$status = $_GET['status'];
-			$spl_id = $_GET['spl_id'];
-			$ket = $_GET['ket'];
+        if (strtoupper($vStamp) == strtoupper($salt)) {
+            $status = $_GET['status'];
+            $spl_id = $_GET['spl_id'];
+            $ket = $_GET['ket'];
 
-			echo site_url("ALK/Approve/fp_succes?status=$status&spl_id=$spl_id&ket=$ket");
-		}else{
-			echo "Parameter invalid..";
-		}
-	}
+            echo site_url("ALK/Approve/fp_succes?status=$status&spl_id=$spl_id&ket=$ket");
+        } else {
+            echo "Parameter invalid..";
+        }
+    }
 
 	function fp_succes(){
 		$status = $_GET['status'];

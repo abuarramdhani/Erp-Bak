@@ -537,7 +537,7 @@ class C_splkasie extends CI_Controller {
 
 			Kami informasikan bahwa anda telah menerima permintaan<br>
 			approval untuk keperluan lembur pekerja.<br>
-			Berikut ini daftar yang telah di Approve oleh : <b>$user</b><br>
+			Berikut ini daftar yang telah di Approve oleh : <b>$user - {$this->session->employee}</b><br>
 			dengan keterangan : <b>$ket</b><br><br>
 			$isiPesan
 			<br>
@@ -640,7 +640,7 @@ class C_splkasie extends CI_Controller {
 
 							Kami informasikan bahwa SPL yang anda inputkan<br>
 							telah di <b>Approve</b> oleh Kasie.<br>
-							Berikut ini daftar yang telah di Approve oleh : <b>$user</b><br>
+							Berikut ini daftar yang telah di Approve oleh : <b>$user - {$this->session->employee}</b><br>
 							dengan keterangan : <b>$ket</b><br><br>
 							".$dt['isiPesan']."
 							<br>
@@ -684,7 +684,7 @@ class C_splkasie extends CI_Controller {
 
 							Kami informasikan bahwa SPL yang anda inputkan<br>
 							telah di <b>Reject</b> oleh Kasie.<br>
-							Berikut ini daftar yang telah di Reject oleh : <b>$user</b><br>
+							Berikut ini daftar yang telah di Reject oleh : <b>$user - {$this->session->employee}</b><br>
 							dengan keterangan : <b>$ket</b><br><br>
 							".$dt['isiPesan']."
 							<br>
