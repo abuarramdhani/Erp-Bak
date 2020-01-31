@@ -79,7 +79,7 @@ class M_absenatasan extends CI_Model
 	}
 
 	public function getEmailPersonalia(){
-		$sql = "SELECT * FROM er.er_employee_all WHERE employee_code IN ('B0697','B0696','B0720','J1260','J1237') ";
+		$sql = "SELECT * FROM er.er_employee_all WHERE employee_code IN ('B0697','B0696','B0720','B0898') ";
 		$query = $this->db->query($sql);
 		return $query->result_array();		
 	}

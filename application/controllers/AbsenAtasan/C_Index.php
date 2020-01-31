@@ -318,9 +318,6 @@ class C_Index extends CI_Controller
 				$mail->Password = "123456";
 				$mail->setFrom('noreply@quick.co.id', 'Notifikasi Absensi Online');
 				$mail->addAddress($internalMail, 'Absensi Online Pekerja');
-				if(!$eksternalMail==null){
-					$mail->addAddress($eksternalMail, 'Absensi Online Pekerja');
-				}
 				$mail->Subject = 'Status Absensi Online Anda';
 				$mail->msgHTML("
 				<h4>Absensi Online</h4><hr>
@@ -344,7 +341,53 @@ class C_Index extends CI_Controller
 				//Replace the plain text body with one created manually
 				//send the message, check for errors
 				if (!$mail->send()) {
-					echo "Mailer Error: " . $mail->ErrorInfo;
+					echo "Mailer Error Internal: " . $mail->ErrorInfo;
+				} else {
+					//echo "Message sent!";
+				}
+
+		}
+
+		if(!$eksternalMail==null){
+				$this->load->library('PHPMailerAutoload');
+				$mail = new PHPMailer;
+				$mail->isSMTP();
+				$mail->SMTPDebug = 2;
+				$mail->Debugoutput = 'html';
+				$mail->Host = 'smtp.gmail.com';
+				$mail->Port = 587;
+				$mail->SMTPAuth = true;
+				$mail->SMTPSecure = 'tls';
+				$mail->Username = 'notification.hrd.khs1@gmail.com';
+				$mail->Password = "tes123123123";
+				$mail->setFrom('noreply@quick.co.id', 'Email Sistem');
+				$mail->IsHTML(true);
+				$mail->AltBody = 'This is a plain-text message body';
+				$mail->addAddress($eksternalMail, $namaPekerja);
+				$mail->Subject = 'Status Absensi Online Anda';
+				$mail->msgHTML("
+				<h4>Absensi Online</h4><hr>
+				Kepada Yth.<br>
+				$namaPekerja<br><br>
+
+				Kami informasikan bahwa request approval Absen Online Anda, detail sbb :<br><br>
+				Jenis Absen : $jenisAbsen<br>
+				Waktu : $waktu<br>
+				Lokasi : $lokasi , koordinat : ( $latitude , $longitude )
+				<a href='http://maps.google.com/maps?q=$latitude,$longitude''>Lihat Lokasi di Google Maps</a><br><br>
+
+				Status : Telah $status oleh $atasan<br><br>
+
+				Anda dapat melakukan pengecekan melalui :<br>
+				1. Internet : aplikasi Quick ERP Mobile. Apabila belum memiliki dapat menghubungi ICT di +62812545922 (Klik <a href='https://wa.me/62812545922' target='_blank'><strong>Disini</strong></a> untuk menghubungi via Whatsapp)<br>
+				2. jaringan lokal : <a href='http://erp.quick.com' target='_blank'>http://erp.quick.com</a> atau klik <a href='http://erp.quick.com/'><strong>Disini</strong></a><br><br>
+
+				<small>Email ini digenerate melalui QuickERP pada ".date('d-m-Y H:i:s').".<br>
+				Apabila anda mengalami kendala dapat menghubungi Seksi Hubker (15109 / 15106) atau ICT Support Center (08112545922) </small>");
+				//Replace the plain text body with one created manually
+				//send the message, check for errors
+				if (!$mail->send()) {
+					echo "Mailer Error Eksternal: " . $mail->ErrorInfo;
 				} else {
 					//echo "Message sent!";
 				}
@@ -375,9 +418,6 @@ class C_Index extends CI_Controller
 				$mail->Password = "123456";
 				$mail->setFrom('noreply@quick.co.id', 'Notifikasi Absensi Online');
 				$mail->addAddress($internalMailPersonalia, 'Absensi Online Pekerja');
-				if(!$externalMailPersonalia==null){
-					$mail->addAddress($externalMailPersonalia, 'Absensi Online Pekerja');
-				}
 				$mail->Subject = 'Absensi Online';
 				$mail->msgHTML("
 				<h4>Absensi Online</h4><hr>
@@ -402,7 +442,53 @@ class C_Index extends CI_Controller
 				//Replace the plain text body with one created manually
 				//send the message, check for errors
 				if (!$mail->send()) {
-					echo "Mailer Error: " . $mail->ErrorInfo;
+					echo "Mailer Error Internal: " . $mail->ErrorInfo;
+				} else {
+					//echo "Message sent!";
+				}
+
+				}
+
+			if(!$externalMailPersonalia==null){
+				$this->load->library('PHPMailerAutoload');
+				$mail = new PHPMailer;
+				$mail->SMTPDebug = 2;
+				$mail->Debugoutput = 'html';
+				$mail->Host = 'smtp.gmail.com';
+				$mail->Port = 587;
+				$mail->SMTPAuth = true;
+				$mail->SMTPSecure = 'tls';
+				$mail->Username = 'notification.hrd.khs1@gmail.com';
+				$mail->Password = "tes123123123";
+				$mail->setFrom('noreply@quick.co.id', 'Email Sistem');
+				$mail->IsHTML(true);
+				$mail->AltBody = 'This is a plain-text message body';
+				$mail->addAddress($externalMailPersonalia, $namaPekerjaPersonalia);
+				$mail->Subject = 'Absensi Online';
+				$mail->msgHTML("
+				<h4>Absensi Online</h4><hr>
+				Kepada Yth.<br>
+				$namaPekerjaPersonalia<br><br>
+
+				Kami informasikan bahwa terdapat pekerja yang melakukan absensi online dengan detail sbb :<br><br>
+				Pekerja 		: $namaPekerja<br>
+				Jenis Absen 	: $jenisAbsen<br>
+				Waktu 			: $waktu<br>
+				Lokasi 			: $lokasi , koordinat : ( $latitude , $longitude )
+				<a href='http://maps.google.com/maps?q=$latitude,$longitude''>Lihat Lokasi di Google Maps</a><br><br>
+
+				Status : Telah $status oleh $atasan<br><br>
+
+				Anda dapat melakukan pengecekan melalui :<br>
+				1. Internet : aplikasi Quick ERP Mobile. Apabila belum memiliki dapat menghubungi ICT di +62812545922 (Klik <a href='https://wa.me/62812545922' target='_blank'><strong>Disini</strong></a> untuk menghubungi via Whatsapp)<br>
+				2. jaringan lokal : <a href='http://erp.quick.com' target='_blank'>http://erp.quick.com</a> atau klik <a href='http://erp.quick.com/'><strong>Disini</strong></a><br><br>
+
+				<small>Email ini digenerate melalui QuickERP pada ".date('d-m-Y H:i:s').".<br>
+				Apabila anda mengalami kendala dapat menghubungi Seksi Hubker (15109 / 15106) atau ICT Support Center (08112545922) </small>");
+				//Replace the plain text body with one created manually
+				//send the message, check for errors
+				if (!$mail->send()) {
+					echo "Mailer Error Eksternal: " . $mail->ErrorInfo;
 				} else {
 					//echo "Message sent!";
 				}
@@ -445,9 +531,6 @@ class C_Index extends CI_Controller
 				$mail->Password = "123456";
 				$mail->setFrom('noreply@quick.co.id', 'Notifikasi Absensi Online');
 				$mail->addAddress($internalMailAtasan, 'Absensi Online Pekerja');
-				if(!$eksternalMail==null){
-					$mail->addAddress($externalMailAtasan, 'Absensi Online Pekerja');
-				}
 				$mail->Subject = 'Absensi Online';
 				$mail->msgHTML("
 				<h4>Absensi Online</h4><hr>
@@ -469,7 +552,49 @@ class C_Index extends CI_Controller
 				//Replace the plain text body with one created manually
 				//send the message, check for errors
 				if (!$mail->send()) {
-					echo "Mailer Error: " . $mail->ErrorInfo;
+					echo "Mailer Error Internal: " . $mail->ErrorInfo;
+				} else {
+					//echo "Message sent!";
+				}
+
+
+				$this->load->library('PHPMailerAutoload');
+				$mail = new PHPMailer;
+				$mail->isSMTP();
+				$mail->SMTPDebug = 2;
+				$mail->Debugoutput = 'html';
+				$mail->Host = 'smtp.gmail.com';
+				$mail->Port = 587;
+				$mail->SMTPAuth = true;
+				$mail->SMTPSecure = 'tls';
+				$mail->Username = 'notification.hrd.khs1@gmail.com';
+				$mail->Password = "tes123123123";
+				$mail->setFrom('noreply@quick.co.id', 'Email Sistem');
+				$mail->IsHTML(true);
+				$mail->AltBody = 'This is a plain-text message body';
+				$mail->addAddress($externalMailAtasan, $atasan);
+				$mail->Subject = 'Absensi Online';
+				$mail->msgHTML("
+				<h4>Absensi Online</h4><hr>
+				Kepada Yth.<br>
+				$atasan<br><br>
+
+				Kami informasikan bahwa $noindukPekerja - $namaPekerja telah melakukan request approval Absen Online, dengan detail sbb :<br><br>
+				Jenis Absen : $jenisAbsen<br>
+				Waktu : $waktu<br>
+				Lokasi : $lokasi , koordinat : ( $latitude , $longitude )
+				<a href='http://maps.google.com/maps?q=$latitude,$longitude''>Lihat Lokasi di Google Maps</a><br><br>
+
+				Anda dapat melakukan pengecekan melalui :<br>
+				1. Internet : aplikasi Quick ERP Mobile. Apabila belum memiliki dapat menghubungi ICT di +62812545922 (Klik <a href='https://wa.me/62812545922' target='_blank'><strong>Disini</strong></a> untuk menghubungi via Whatsapp)<br>
+				2. jaringan lokal : <a href='http://erp.quick.com' target='_blank'>http://erp.quick.com</a> atau klik <a href='http://erp.quick.com/'><strong>Disini</strong></a><br><br>
+
+				<small>Email ini digenerate melalui QuickERP pada ".date('d-m-Y H:i:s').".<br>
+				pabila anda mengalami kendala dapat menghubungi Seksi Hubker (15109 / 15106) atau ICT Support Center (08112545922) </small>");
+				//Replace the plain text body with one created manually
+				//send the message, check for errors
+				if (!$mail->send()) {
+					echo "Mailer Error Eksternal: " . $mail->ErrorInfo;
 				} else {
 					//echo "Message sent!";
 				}
@@ -559,7 +684,9 @@ class C_Index extends CI_Controller
 					$mail->Username = 'no-reply@quick.com';
 					$mail->Password = "123456";
 					$mail->setFrom('noreply@quick.co.id', 'Cronjob Transfer Presensi Online');
-					$mail->addAddress('kasie_ict_hrd@quick.com', 'Absensi Online Pekerja');
+					$mail->addAddress('kasie_ict_hrd@quick.com', 'Kasie ICT HRD');
+					$mail->addAddress('edp@quick.com', 'Seksi EDP');
+					$mail->addAddress('hbk@quick.com', 'Seksi Hubker');
 					$mail->Subject = 'Transfer Presensi Online';
 					$mail->msgHTML("
 					<h4>Absensi Online</h4><hr>
