@@ -8,6 +8,7 @@ class C_Index extends CI_Controller {
   {
     parent::__construct();
 
+	$this->load->library('Log_Activity');
     $this->load->library('General');
     $this->load->library('encrypt');
 		$this->load->library('session');
@@ -169,7 +170,11 @@ class C_Index extends CI_Controller {
 									);
 
 		$this->M_pesangon->inputHitungPesangon($inputHitungPesangon);
-
+		//insert to t_log
+		$aksi = 'MASTER PEKERJA';
+		$detail = 'Add Data Pesangon Noind='.$noind;
+		$this->log_activity->activity_log($aksi, $detail);
+		//
 
 		redirect('MasterPekerja/PerhitunganPesangon');
 
@@ -208,7 +213,11 @@ class C_Index extends CI_Controller {
 
 										);
 		$this->M_pesangon->update($id,$updateHitungPesangon);
-
+		//insert to t_log
+		$aksi = 'MASTER PEKERJA';
+		$detail = 'Update Data Pesangon ID='.$id;
+		$this->log_activity->activity_log($aksi, $detail);
+		//
 
 		redirect('MasterPekerja/PerhitunganPesangon');
 	}
@@ -218,6 +227,11 @@ class C_Index extends CI_Controller {
 			$id	=	str_replace(array('-', '_', '~'), array('+', '/', '='), $id);
 			$id	=	$this->encrypt->decode($id);
 			$this->M_pesangon->delete($id);
+			//insert to t_log
+			$aksi = 'MASTER PEKERJA';
+			$detail = 'Delete Data Pesangon ID='.$id;
+			$this->log_activity->activity_log($aksi, $detail);
+			//
 
 			redirect('MasterPekerja/PerhitunganPesangon');
 
@@ -268,6 +282,11 @@ class C_Index extends CI_Controller {
 		 public function getPDF()
 		 {
 			 $id 	 				= $this->input->post('id_sangu');
+			 //insert to t_log
+	 		$aksi = 'MASTER PEKERJA';
+	 		$detail = 'Cetak PDF Pesangon ID='.$id;
+	 		$this->log_activity->activity_log($aksi, $detail);
+	 		//
 			 $data['personalia'] 	= $this->input->post('Wakil_Personalia');
 			 $data['spsi'] 			= $this->input->post('Wakil_SPSI');
 			 $data['saksi1'] 		= $this->input->post('Saksi_Janji1');

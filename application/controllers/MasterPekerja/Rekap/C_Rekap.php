@@ -1,7 +1,7 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
 
-class C_Rekap extends CI_Controller 
+class C_Rekap extends CI_Controller
 {
 
 	function __construct()
@@ -11,6 +11,7 @@ class C_Rekap extends CI_Controller
 		$this->load->helper('url');
 		$this->load->helper('html');
 
+		$this->load->library('Log_Activity');
 		$this->load->library('form_validation');
 		$this->load->library('session');
 		$this->load->library('encrypt');
@@ -36,19 +37,19 @@ class C_Rekap extends CI_Controller
 	function index()
 	{
 		$user_id = $this->session->userid;
-		
+
 		$data['Header']			=	'Master Pekerja - Quick ERP';
 		$data['Title']			=	'Master Pekerja';
 		$data['Menu'] 			= 	'';
 		$data['SubMenuOne'] 	= 	'';
 		$data['SubMenuTwo'] 	= 	'';
-		
+
 		$data['UserMenu'] 		= $this->M_user->getUserMenu($user_id,$this->session->responsibility_id);
 		$data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id);
 		$data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id);
 
 		$data['lapkun']			= $this->M_lapkunjungan->getDataLapkun();
-		
+
 		$this->load->view('V_Header',$data);
 		$this->load->view('V_Sidemenu',$data);
 		$this->load->view('MasterPekerja/Rekap/V_Index_Lapkun',$data);
@@ -58,27 +59,27 @@ class C_Rekap extends CI_Controller
 	public function getInfoPekerja(){
 		$keyword 	 = strtoupper($this->input->get('term'));
 		$infoPekerja = $this->M_lapkunjungan->getInfoPekerja($keyword);
-		echo json_encode($infoPekerja); 
+		echo json_encode($infoPekerja);
 	}
 
 	public function addLaporanKunjungan(){
 		$user_id = $this->session->userid;
-		
+
 		$data['Header']			=	'Master Pekerja - Quick ERP';
 		$data['Title']			=	'Master Pekerja';
 		$data['Menu'] 			= 	'';
 		$data['SubMenuOne'] 	= 	'';
 		$data['SubMenuTwo'] 	= 	'';
-		
+
 		$data['UserMenu'] 		= $this->M_user->getUserMenu($user_id,$this->session->responsibility_id);
 		$data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id);
 		$data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id);
-		
+
 		$this->load->view('V_Header',$data);
 		$this->load->view('V_Sidemenu',$data);
 		$this->load->view('MasterPekerja/Rekap/V_LapKunjungan');
 		$this->load->view('V_Footer',$data);
-		
+
 	}
 
 	public function previewLaporanKunjungan(){
@@ -110,8 +111,8 @@ class C_Rekap extends CI_Controller
 			$namaPetugas 	= $petugas[1];
 			$seksiPetugas 	= $petugas[2];
 		}
-		
-		
+
+
 		if(!empty($pekerja)){
 			$pekerja 		= explode(' - ', $pekerja);
 			$noindPekerja 	= $pekerja[0];
@@ -166,7 +167,7 @@ class C_Rekap extends CI_Controller
 		}else{
 			$data['nama_atasan']		= "";
 		}
-		
+
 		if($jabatanAtasan != "null"){
 			$data['jabatan_atasan']		= $jabatanAtasan;
 		}else{
@@ -184,7 +185,7 @@ class C_Rekap extends CI_Controller
 		}else{
 			$data['nama_petugas']		= "";
 		}
-		
+
 		if($seksiPetugas != "null"){
 			$data['seksi_petugas']		= $seksiPetugas;
 		}else{
@@ -214,7 +215,7 @@ class C_Rekap extends CI_Controller
 		}else{
 			$data['alamat_pekerja']		= "";
 		}
-		
+
 		if($latar_belakang != "null"){
 			$data['latar_belakang']		= $latar_belakang;
 		}else{
@@ -254,8 +255,8 @@ class C_Rekap extends CI_Controller
 			$namaPetugas 	= $petugas[1];
 			$seksiPetugas 	= $petugas[2];
 		}
-		
-		
+
+
 		if(!empty($pekerja)){
 			$pekerja 		= explode(' - ', $pekerja);
 			$noindPekerja 	= $pekerja[0];
@@ -274,12 +275,6 @@ class C_Rekap extends CI_Controller
 		}else{
 			$no_surat 		 = str_pad(1 ,3,"0",STR_PAD_LEFT);
 		}
-		
-
-
-		// echo"<pre>";print_r($no_surat);exit();
-		// $no_surat 		 = $this->M_lapkunjungan->getNomorSurat($bulan_laporan);
-		// $no_surat 		+= 1;
 
 		$bulan = date('m');
 		if($bulan == "01"){
@@ -324,7 +319,7 @@ class C_Rekap extends CI_Controller
 		}else{
 			$data['nama_atasan']		= "";
 		}
-		
+
 		if($jabatanAtasan != "null"){
 			$data['jabatan_atasan']		= $jabatanAtasan;
 		}else{
@@ -343,7 +338,7 @@ class C_Rekap extends CI_Controller
 		}else{
 			$data['nama_petugas']		= "";
 		}
-		
+
 		if($seksiPetugas != "null"){
 			$data['seksi_petugas']		= $seksiPetugas;
 		}else{
@@ -373,7 +368,7 @@ class C_Rekap extends CI_Controller
 		}else{
 			$data['alamat_pekerja']		= "";
 		}
-		
+
 		if($latar_belakang != "null"){
 			$data['latar_belakang']		= $latar_belakang;
 		}else{
@@ -403,15 +398,22 @@ class C_Rekap extends CI_Controller
 
 		$this->M_lapkunjungan->saveLaporan($simpanLaporan);
 
+		//insert to t_log
+		$aksi = 'MASTER PEKERJA';
+		$detail = 'Save Laporan Kunjungan Nomor Surat='.$save_no_surat;
+		$this->log_activity->activity_log($aksi, $detail);
+		//
+
 		redirect('MasterPekerja/LaporanKunjungan/index');
 	}
 
 	function cetakPDF($id_laporan){
+		//insert to t_log
+		$aksi = 'MASTER PEKERJA';
+		$detail = 'Cetak PDF Laporan Kunjungan ID='.$id_laporan;
+		$this->log_activity->activity_log($aksi, $detail);
+		//
 		$data_pdf 				= $this->M_lapkunjungan->getDataPDF($id_laporan);
-		// echo "<pre>";
-		// print_r($data_pdf);exit();
-
-
 		$save_latar_belakang	= "";
 		for($i=0;$i < count($latar_belakang);$i++){
 			$save_latar_belakang .= ' , '.$latar_belakang[$i];
@@ -435,14 +437,9 @@ class C_Rekap extends CI_Controller
 		$diagnosa		= $data_pdf[0]['diagnosa'];
 
 		$latar_belakang = explode(' , ', $data_pdf[0]['latar_belakang']);
-		// echo "<pre>";
-		// print_r($latar_belakang);exit();
-
 		$hasil_laporan 	= $data_pdf[0]['hasil_laporan'];
-
 		$tanggal_laporan = date('Y-m-d');
 		$bulan_laporan	 = substr($tanggal_laporan, 0, 7);
-		
 		$no_surat 		 = $$data_pdf[0]['no_surat'];
 
 		$bulan = date('m');
@@ -488,7 +485,7 @@ class C_Rekap extends CI_Controller
 		}else{
 			$data['nama_atasan']		= "";
 		}
-		
+
 		if($jabatanAtasan != "null"){
 			$data['jabatan_atasan']		= $jabatanAtasan;
 		}else{
@@ -506,7 +503,7 @@ class C_Rekap extends CI_Controller
 		}else{
 			$data['nama_petugas']		= "";
 		}
-		
+
 		if($seksiPetugas != "null"){
 			$data['seksi_petugas']		= $seksiPetugas;
 		}else{
@@ -536,7 +533,7 @@ class C_Rekap extends CI_Controller
 		}else{
 			$data['alamat_pekerja']		= "";
 		}
-		
+
 		if($latar_belakang != "null"){
 			$data['latar_belakang']		= $latar_belakang;
 		}else{
@@ -585,7 +582,7 @@ class C_Rekap extends CI_Controller
 		$stylesheet = file_get_contents(base_url('assets/plugins/bootstrap/3.3.7/css/bootstrap.css'));
 		$pdf->WriteHTML($stylesheet,1);
 		$pdf->AddPage();
-		
+
 		$pdf->WriteHTML($html,2);
 		$pdf->setTitle("Laporan Kunjungan");
 		$pdf->Output("Laporan Kunjungan", 'I');
@@ -593,19 +590,19 @@ class C_Rekap extends CI_Controller
 
 	public function ExportRekap(){
 		$user_id = $this->session->userid;
-		
+
 		$data['Header']			=	'Master Pekerja - Quick ERP';
 		$data['Title']			=	'Master Pekerja';
 		$data['Menu'] 			= 	'';
 		$data['SubMenuOne'] 	= 	'';
 		$data['SubMenuTwo'] 	= 	'';
-		
+
 		$data['UserMenu'] 		= $this->M_user->getUserMenu($user_id,$this->session->responsibility_id);
 		$data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id);
 		$data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id);
 
 		$data['lapkun']			= $this->M_lapkunjungan->getDataLapkun();
-		
+
 		$this->load->view('V_Header',$data);
 		$this->load->view('V_Sidemenu',$data);
 		$this->load->view('MasterPekerja/Rekap/V_ExportRekap',$data);
@@ -615,26 +612,25 @@ class C_Rekap extends CI_Controller
 	public function cetakExcel(){
 		$this->load->library('Excel');
 		$periode 		= $this->input->get('periode');
-		// echo $periode;exit();
+		//insert to t_log
+		$aksi = 'MASTER PEKERJA';
+		$detail = 'Cetak Excel Laporan Kunjungan Periode='.$periode;
+		$this->log_activity->activity_log($aksi, $detail);
+		//
 		$periode 		= explode(' - ', $periode);
-
 
 		$tanggal_awal 	= $periode[0];
 		$tanggal_akhir 	= $periode[1];
-
 		$tanggal_awal	= str_replace('/', '-', $tanggal_awal);
 		$tanggal_akhir	= str_replace('/', '-', $tanggal_akhir);
 
 		$tanggal_awal= date('Y-m-d',strtotime($tanggal_awal));
 		$tanggal_akhir= date('Y-m-d',strtotime($tanggal_akhir));
-		// echo $tanggal_awal;exit();
 
 		$data['rekap'] = $this->M_lapkunjungan->getLapkunPeriode($tanggal_awal,$tanggal_akhir);
-		// echo "<pre>";
-		// print_r($data['rekap']);exit();
 		$data['tanggal_awal'] 	= $tanggal_awal;
 		$data['tanggal_akhir']	= $tanggal_akhir;
-		
+
 		$this->load->view('MasterPekerja/Rekap/V_Cetak_Excel_LaporanKunjungan.php',$data);
 	}
 
@@ -646,14 +642,12 @@ class C_Rekap extends CI_Controller
 		$data['Menu'] 			= 	'';
 		$data['SubMenuOne'] 	= 	'';
 		$data['SubMenuTwo'] 	= 	'';
-		
+
 		$data['UserMenu'] 		= $this->M_user->getUserMenu($user_id,$this->session->responsibility_id);
 		$data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id);
 		$data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id);
 
 		$detail 					= $this->M_lapkunjungan->getDataPDF($id_laporan);
-		// echo "<pre>";
-		// print_r($detail);exit();
 
 		$data['id_laporan']			= $detail[0]['id_laporan'];
 		$data['hal_laporan']		= $detail[0]['hal_laporan'];
@@ -708,8 +702,8 @@ class C_Rekap extends CI_Controller
 			$namaPetugas 	= $petugas[1];
 			$seksiPetugas 	= $petugas[2];
 		}
-		
-		
+
+
 		if(!empty($pekerja)){
 			$pekerja 		= explode(' - ', $pekerja);
 			$noindPekerja 	= $pekerja[0];
@@ -764,7 +758,7 @@ class C_Rekap extends CI_Controller
 		}else{
 			$data['nama_atasan']		= "";
 		}
-		
+
 		if($jabatanAtasan != "null"){
 			$data['jabatan_atasan']		= $jabatanAtasan;
 		}else{
@@ -783,7 +777,7 @@ class C_Rekap extends CI_Controller
 		}else{
 			$data['nama_petugas']		= "";
 		}
-		
+
 		if($seksiPetugas != "null"){
 			$data['seksi_petugas']		= $seksiPetugas;
 		}else{
@@ -813,7 +807,7 @@ class C_Rekap extends CI_Controller
 		}else{
 			$data['alamat_pekerja']		= "";
 		}
-		
+
 		if($latar_belakang != "null"){
 			$data['latar_belakang']		= $latar_belakang;
 		}else{
@@ -839,21 +833,22 @@ class C_Rekap extends CI_Controller
 			'jabatan_atasan'		=> $jabatanAtasan
 		];
 
-		// echo "<pre>";
-		// print_r($simpanLaporan);
-		// exit();
-
 		$this->M_lapkunjungan->updateLaporanKunjungan($id_laporan,$simpanLaporan);
+		//insert to t_log
+		$aksi = 'MASTER PEKERJA';
+		$detail = 'Update Laporan Kunjungan ID='.$id_laporan;
+		$this->log_activity->activity_log($aksi, $detail);
+		//
 		redirect('MasterPekerja/LaporanKunjungan/index');
 	}
 
 	function hapusLaporan(){
 		$id_laporan 		= $this->input->post('id_laporan');
 		$hapus 				= $this->M_lapkunjungan->deleteLaporan($id_laporan);
-	}
-
-	function saveLaporan($hal,$namaPetugas,$noindPetugas,$seksiPetugas,$namaPekerja,$noindPekerja,$seksiPekerja,$alamatPekerja,$diagnosa,$latar_belakang,$hasil_laporan,$tanggal_laporan)
-	{
-
+		//insert to t_log
+		$aksi = 'MASTER PEKERJA';
+		$detail = 'Delete Laporan Kunjungan ID='.$id_laporan;
+		$this->log_activity->activity_log($aksi, $detail);
+		//
 	}
 }
