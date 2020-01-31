@@ -103,7 +103,7 @@
 									<div class="form-group">
 										<div class="col-sm-12">
 											<input type="text" id="txt_ses" value="<?php echo $this->session->userid; ?>" hidden>
-											<button class="hidden" type="button" data-toggle="modal" data-target="#ProsesDialog" id="btn-ProsesSPL"><i class="fa fa-save"></i> Proses</button>
+											<button type="button" class="btn btn-primary hidden" data-toggle="modal" data-target="#ProsesDialog" id="btn-ProsesSPL"><i class="fa fa-save"></i> Proses</button>
 											<button type="button" id="spl-approval-1" style="margin-right:3px" class="btn btn-primary pull-right"> <i class="fa fa-search"></i> Cari</button>
 											<button type="reset" style="margin-right:3px" class="btn btn-primary pull-right" onclick="location.reload()"> <i class="fa fa-refresh"></i> Reset</button>
 											<img src="<?php echo base_url('assets/img/gif/loading6.gif') ?>" class="pull-right spl-loading hidden" width="33px" height="33px" style="margin-right:3px">
@@ -119,6 +119,7 @@
 					<div class="box box-primary">
 						<div class="box-body">
 							<link rel="stylesheet" href="<?php echo base_url('assets/plugins/bootstrap/3.3.7/css/bootstrap.css');?>" />
+							<div class="table-responsive">
 							<table id="example11" class="table table-bordered table-striped spl-table aska">
 								<thead style="background:#3c8dbc; color:#fff">
 									<tr>
@@ -134,12 +135,12 @@
 									<th width="20%">Selesai</th>
 									<th width="20%">Break</th>
 									<th width="20%">Istirahat</th>
+									<th width="20%">Estimasi</th>
 									<th width="20%">Target(%)</th>
 									<th width="20%">Realisasi(%)</th>
 									<th width="20%">Alasan Lembur</th>
 									<th width="20%">Status</th>
 									<th width="20%">Tanggal Proses</th>
-									<th width="20%">Estimasi</th>
 									</tr>
 								</thead>
 								<?php if (isset($data) and !empty($data)) { ?>
@@ -154,6 +155,7 @@
 									</tbody>
 								<?php } ?>
 							</table>
+							</div>
 						</div>
 					</div>
 
@@ -166,7 +168,7 @@
 								</div>
 								<div class="modal-body">
 									Berikan alasan anda :
-									<textarea class="form-control" style="min-width: 75%" id="spl_tex_proses"></textarea>
+									<textarea class="form-control" style="resize: vertical; min-height: 100px" style="min-width: 75%" id="spl_tex_proses"></textarea>
 								</div>
 								<div class="modal-footer">
 									<a href="finspot:FingerspotVer;<?php echo base64_encode(base_url().'ALA/Approve/fp_proces?userid='.$this->session->userid.'&stat=35&data=&ket='); ?>" type="submit" id="spl_proses_reject" class="hidden"><i class="fa fa-exclamation-circle"></i> Reject</a>
@@ -255,7 +257,7 @@
 						}
 
 						document.addEventListener("DOMContentLoaded",function(e){
-							setupTimers();
+							// setupTimers();
 						});
 					</script>
 
