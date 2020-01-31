@@ -11,6 +11,7 @@ class C_KantorAsal extends CI_Controller
 		$this->load->helper('url');
 		$this->load->helper('html');
 
+		$this->load->library('Log_Activity');
 		$this->load->library('form_validation');
 		$this->load->library('session');
 		$this->load->library('encrypt');
@@ -89,6 +90,11 @@ class C_KantorAsal extends CI_Controller
 			);
 
 			$this->M_kantorasal->insertMasterKantor($arrdata);
+			//insert to t_log
+			$aksi = 'MASTER PEKERJA';
+			$detail = 'Create Kantor Asal ID='.$kodeKantor;
+			$this->log_activity->activity_log($aksi, $detail);
+			//
 			$updatelog = $this->M_kantorasal->insertLog($user,$kodeKantor,$masterKantor);
 			redirect(site_url('MasterPekerja/SetupKantorAsal'));
 		}
@@ -97,6 +103,7 @@ class C_KantorAsal extends CI_Controller
 	public function Edit($kd){
 		$plain_text = str_replace(array('-','_','~'), array('+','/','='), $kd);
 		$plain_text = $this->encrypt->decode($plain_text);
+
 
 		$user_id = $this->session->userid;
 		$user = $this->session->user;
@@ -135,8 +142,12 @@ class C_KantorAsal extends CI_Controller
 				'kantor_asal' 	=> $data['MasterKode']['0']['kantor_asal']
 			);
 
-
 			$this->M_kantorasal->updateMasterKantor($arrdata,$arr);
+			//insert to t_log
+			$aksi = 'MASTER PEKERJA';
+			$detail = 'Update Kantor Asal ID='.$plain_text;
+			$this->log_activity->activity_log($aksi, $detail);
+			//
 			$updatelog = $this->M_kantorasal->insertLoga($user,$kodeKantor,$kodeKantor1,$masterKantor,$masterKantor1);
 			redirect(site_url('MasterPekerja/SetupKantorAsal'));
 		}
