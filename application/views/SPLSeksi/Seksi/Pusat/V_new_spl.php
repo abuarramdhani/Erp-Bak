@@ -238,7 +238,7 @@
 															<textarea style="resize: vertical; min-height: 30px;" class="form-control pekerjaan" rows="1" name="pekerjaan[0][]" required></textarea>
 														</td>
 														<td>
-															<button type="button" onclick="add_jobs_spl($(this))" class="btn btn-sm btn-default"><i class="fa fa-plus"></i></button>
+															<!-- <button type="button" onclick="add_jobs_spl($(this))" class="btn btn-sm btn-default"><i class="fa fa-plus"></i></button> -->
 														</td>
 													</tr>
 												</tbody>

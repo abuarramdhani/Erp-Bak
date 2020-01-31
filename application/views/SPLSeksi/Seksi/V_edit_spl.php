@@ -266,7 +266,7 @@
 															<textarea style="resize: vertical; min-height: 30px;" class="form-control texarea-vertical pekerjaan" rows="1" name="pekerjaan[]" <?php echo $status ?>><?= str_replace("'", '', $jobs[0]) ?></textarea>
 														</td>
 														<td>
-															<button class="btn btn-sm" onclick="add_jobs_spl_edit($(this))" type="button"><i class="fa fa-plus"></i></button>
+															<!-- <button class="btn btn-sm" onclick="add_jobs_spl_edit($(this))" type="button"><i class="fa fa-plus"></i></button> -->
 														</td>
 													</tr>
 												<?php for($i = 1; $i < count($jobs); $i++):  ?>
@@ -338,7 +338,7 @@
 															<textarea style="resize: vertical; min-height: 30px;" class="form-control texarea-vertical pekerjaan" rows="1" name="pekerjaan[]"><?= str_replace("'", '', $jobs[$i]) ?></textarea>
 														</td>
 														<td>
-															<button class="btn btn-sm" onclick="del_jobs_spl($(this))" type="button"><i class="fa fa-minus"></i></button>
+															<!-- <button class="btn btn-sm" onclick="del_jobs_spl($(this))" type="button"><i class="fa fa-minus"></i></button> -->
 														</td>
 													</tr>
 												<?php endfor ?>
