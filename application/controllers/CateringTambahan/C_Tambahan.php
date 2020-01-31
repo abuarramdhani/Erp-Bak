@@ -9,6 +9,7 @@ class C_Tambahan extends CI_Controller
 		$this->load->helper('url');
 		$this->load->helper('html');
 
+		$this->load->library('Log_Activity');
 		$this->load->library('form_validation');
 		$this->load->library('session');
 		$this->load->library('encrypt');
@@ -32,7 +33,7 @@ class C_Tambahan extends CI_Controller
 	/* LIST DATA */
 	public function index()
 	{
-		$user = $this->session->username;
+		$user = $this->session->user;
 		$user_id = $this->session->userid;
 
 		$data['Title'] = 'Pesanan Tambah Makan';
@@ -75,6 +76,12 @@ class C_Tambahan extends CI_Controller
 		$ket = $this->input->post('ketnoind');
 		$implode = $this->input->post('implode');
 
+		//insert to t_log
+			$aksi = 'CATERING TAMBAHAN';
+			$detail = 'TAMBAH MAKAN DI='.$tempat_makan.' PEMOHON='.$user;
+			$this->log_activity->activity_log($aksi, $detail);
+		//
+
 		if($implode == 1){
 			$in = implode("', '", $ket);
 			$newin = "'$in'";
@@ -84,9 +91,6 @@ class C_Tambahan extends CI_Controller
 			$in = $ket[0];
 			$tmp_makan_tpribadi = $this->M_pesanan->getTempatMakanTpribadi(false, $in);
 		}
-		  // echo "<pre>";
-		  // print_r($tmp_makan_tpribadi);exit();
-
 
 		if ((($kd_shift == '1' || $kd_shift == '2' || $kd_shift == '3') && $keperluan == 'SELEKSI') || (($kd_shift == '1' || $kd_shift == '2' || $kd_shift == '3') && $keperluan == 'T/V')) {
 			$array = array(
@@ -161,8 +165,6 @@ class C_Tambahan extends CI_Controller
 				}
 			}
 		}
-		//echo "<pre>";
-		 //print_r($tmp_makan_tpribadi);die;
 
 		$noind = $shift_validasi = $lokasi = array();
 		if ($keperluan == 'LEMBUR_PULANG') {
@@ -243,7 +245,7 @@ class C_Tambahan extends CI_Controller
 			$notif[1] = '';
 		}
 
-		echo json_encode($notif); //liat ini dulu
+		echo json_encode($notif);
 	}
 
 	public function sendMail($object, $link, $seksi, $tambahan){
@@ -260,8 +262,12 @@ class C_Tambahan extends CI_Controller
 		];
 		$this->load->library('email', $Quick);
 		$this->email->from('no-reply', 'Permohonan Catering Tambahan');
-			// $this->email->to($address);
-		$this->email->to('rosyidatun_nur_r@quick.com');
+		$getMail = $this->M_pesanan->getInMail();
+		if (empty($getMail) || $getMail == '-') {
+			$this->email->to('ayu_yuliana@quick.com');
+		}else {
+			$this->email->to($getMail);
+		}
 		$this->email->subject('Permintaan Approval Catering Tambahan');
 		$this->email->message("Anda mendapat pengajuan approval <b>Tambahan Catering</b> dari <b>".$object."</b>, dengan rincian : <br><br>
 			Jumlah : ".$tambahan." <br>

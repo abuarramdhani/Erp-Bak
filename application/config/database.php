@@ -269,10 +269,10 @@ $db['dpostgre'] = array(
 
 $db['tpb_sql'] = array(
 	'dsn'	=> '',
-	'hostname' => '192.168.168.159',
-	'username' => 'quick_tpb',
-	'password' => '123456',
-	'database' => 'tracking_pengiriman',
+	'hostname' => 'database.quick.com',
+	'username' => 'erp',
+	'password' => 'qu1ck1953',
+	'database' => 'quickc01_trackingpengirimanbarang',
 	'dbdriver' => 'mysqli',
 	'dbprefix' => '',
 	'pconnect' => FALSE,
@@ -289,6 +289,7 @@ $db['tpb_sql'] = array(
 	'save_queries' => TRUE,
 	// 'port' => 5432
 );
+
 
 $db['dinas_luar'] = array(
 	'dsn'	=> '',

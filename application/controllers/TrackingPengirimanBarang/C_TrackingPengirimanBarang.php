@@ -47,6 +47,36 @@ class C_TrackingPengirimanBarang extends CI_Controller{
 		$this->load->view('V_Footer',$data);
 	}
 
+	public function cekNoInd()
+	{
+		$nomor_induk = $this->input->post('nomor_induk');
+		$filterUser = $this->M_trackingpengirimanbarang->filterUser($nomor_induk);
+		// echo $filterUser;exit();
+
+		if ($filterUser == 0) {
+		$cekNoInd = $this->M_trackingpengirimanbarang->cekSource($nomor_induk);
+		echo json_encode($cekNoInd);
+		}else {
+		echo json_encode('0');
+		}
+		// // $array = array('no_induk' => $cekNoInd, 'user' => $filterUser);
+
+	}
+
+	public function addKacab()
+	{
+		$nomor_induk = strtoupper($this->input->post('nomor_induk'));
+		$nama_kacab = strtoupper($this->input->post('nama_kacab'));
+		$section_name = strtoupper($this->input->post('section_name'));
+		$status = strtoupper($this->input->post('status'));
+		$alamat_cabang = strtoupper($this->input->post('alamat_cabang'));
+		$password = md5('123456');
+		// echo $password;exit();
+		$addKacab = $this->M_trackingpengirimanbarang->addKacab($nomor_induk,$nama_kacab,$section_name,$status,$alamat_cabang,$password);
+
+		
+	}
+
 	public function sortingcenter()
 	{
 		$this->checkSession();
@@ -159,6 +189,72 @@ class C_TrackingPengirimanBarang extends CI_Controller{
 		$this->load->view('V_Sidemenu',$data);
 		$this->load->view('TrackingPengirimanBarang/V_confirmation',$data);
 		$this->load->view('V_Footer',$data);
+	}
+
+	public function settingKacab()
+	{
+		$this->checkSession();
+		$user_id = $this->session->userid;
+
+		$data['Menu'] = 'Dashboard';
+		$data['SubMenuOne'] = '';
+
+		$data['UserMenu'] = $this->M_user->getUserMenu($user_id,$this->session->responsibility_id);
+		$data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id);
+		$data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id);
+
+		
+		$selectDataKacab = $this->M_trackingpengirimanbarang->getKacabData();
+		$data['kcb'] = $selectDataKacab;
+		
+		// echo "<pre>";print_r($cariSPBOracle);exit();
+
+		$this->load->view('V_Header',$data);
+		$this->load->view('V_Sidemenu',$data);
+		$this->load->view('TrackingPengirimanBarang/V_settingKacab',$data);
+		$this->load->view('V_Footer',$data);
+	}
+
+	public function deleteKacab()
+	{
+		$id_login = $this->input->post('id_login');
+
+		$delete = $this->M_trackingpengirimanbarang->deleteKacab($id_login);
+	}
+
+	public function DiactivatedUser()
+	{
+		$id_login = $this->input->post('id_login');
+
+		$DiactivatedUser = $this->M_trackingpengirimanbarang->DiactivatedUser($id_login);
+	}
+
+	public function activatedUser()
+	{
+		$id_login = $this->input->post('id_login');
+
+		$activatedUser = $this->M_trackingpengirimanbarang->activatedUser($id_login);
+	}
+
+	public function EditKacab()
+	{
+		$id_login = $this->input->post('id_login');
+		$getData = $this->M_trackingpengirimanbarang->getData($id_login);
+
+		$data['detail'] = $getData;
+		$this->load->view('TrackingPengirimanBarang/V_mdlSettingKacab', $data);
+	}
+
+	public function updateKacab()
+	{
+		$id_login = strtoupper($this->input->post('id_login'));
+		$nama_kacab = strtoupper($this->input->post('nama_kacab'));
+		$alamat_cabang = strtoupper($this->input->post('alamat_cabang'));
+		$status = strtoupper($this->input->post('status'));
+		$section_name = strtoupper($this->input->post('section_name'));
+		$nomor_induk = strtoupper($this->input->post('nomor_induk'));
+
+		$update = $this->M_trackingpengirimanbarang->updateDataKacab($id_login,$nama_kacab,$alamat_cabang,$status,$section_name,$nomor_induk);
 	}
 
 	public function submitConfirmation()
@@ -350,7 +446,6 @@ class C_TrackingPengirimanBarang extends CI_Controller{
 		$no_spb = $this->input->post('no_spb');
 		$deleteSPB = $this->M_trackingpengirimanbarang->delSPB($no_spb);
 	}
-
 
 }
 ?>

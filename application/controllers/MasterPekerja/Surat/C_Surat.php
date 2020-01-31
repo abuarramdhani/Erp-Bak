@@ -170,11 +170,12 @@
 					$noind 			=	$this->input->post('noind');
 					$detail_pekerja	=	$this->M_surat->detail_pekerja($noind);
 					$kodelokasi 	= $this->M_surat->kodefinger($noind);
-					if ($kodelokasi == '0') {
-						$lokasi_finger[0]['id_lokasi']   = "LOKASI TIDAK DIKETAHUI";
-						$lokasi_finger[0]['device_name'] = "DEVICE TIDAK DIKETAHUI";
+					$lokasi_finger = $this->M_surat->lokasifinger($kodelokasi);
+					if (empty($lokasi_finger) || $kodelokasi == '0') {
+						$lokasi_finger[0]['id_lokasi']   = "Lebih dari satu finger";
+						$lokasi_finger[0]['device_name'] = "";
 					}else{
-						$lokasi_finger = $this->M_surat->lokasifinger($kodelokasi);
+						$lokasi_finger = $lokasi_finger;
 					}
 					// echo "<pre>"; print_r($lokasi_finger); exit();
 					$data['kodesie'] 					= 	$detail_pekerja[0]['kodesie'];

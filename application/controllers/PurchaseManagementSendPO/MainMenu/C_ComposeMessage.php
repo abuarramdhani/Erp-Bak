@@ -128,6 +128,66 @@ $data['UserMenu'][0]['user_group_menu_name'] == 'WEB SEND PO BDL' ? $data['MenuN
 				case 'TIRA AUSTENITE TBK, PT':
 				case 'CAHAYA CITRASURYA INDOPRIMA, CV':
 				case 'DHARMA POLIMETAL, PT':
+				case 'ALAM LESTARI UNGGUL, PT':
+				case 'ALFATAMA INTICIPTA, PT' :
+				case 'ALTAMA SURYA ANUGERAH, PT' :
+				case 'AMPLASINDO JATRA TAMA, PT' :
+				case 'ANUGRAH ELEKTRIC, CV' :
+				case 'ANUGRAH JAYA METAL, PT' :
+				case 'BAHTERAREJEKI SEJATI, PT' :
+				case 'BINA ADIDAYA, PT' :
+				case 'BUDI OBAMA SENTOSA,PT' :
+				case 'BUTRACO PRATAMAS, PT' :
+				case 'CAHAYA TIMUR OFFSET, PT' :
+				case 'CEMERLANG BARU, CV' :
+				case 'DWI SEKAWAN, CV' :
+				case 'ENO VARIA PROMOSI' :
+				case 'FLOTEK NUSAPRATAMA, PT' :
+				case 'GAYA STEEL, PT' :
+				case 'GELORA PUTRA PERKASA, PT' :
+				case 'GITAMULIA CEMERLANG, PT' :
+				case 'GLOBALINDO ANUGERAH JAYA ABADI, PT' :
+				case 'INDOBELTRACO JAYA SEMESTA, PT' :
+				case 'INDOPRIMA BAJARAKSA, PT' :
+				case 'INTAN METALINDO, PT' :
+				case 'JAYA SUKSES UTAMA,PT' :
+				case 'KARUNIA MULIA SARI, PT' :
+				case 'KARYA BENTENG BARU SEMESTA, PT' :
+				case 'KAWAN LAMA SEJAHTERA,PT (JAKARTA)' :
+				case 'KEKAL JAYA MULIA, PT' :
+				case 'KERTARAJASA RAYA, PT' :
+				case 'MANDALA ADHIPERKASA SEJATI, PT' :
+				case 'MANDIRI CITRA ABADI, CV' :
+				case 'MEGA PRATAMA FERINDO, PT' :
+				case 'MITRA PLASTINDO MAS, PT' :
+				case 'NACHI INDONESIA, PT' :
+				case 'NACHINDO TAPE INDUSTRY, PT' :
+				case 'NIPSEA PAINT AND CHEMICALS,PT' :
+				case 'NOK INDONESIA SALES, PT' :
+				case 'NOK INDONESIA, PT' :
+				case 'NSK INDONESIA, PT' :
+				case 'NTN BEARING INDONESIA, PT' :
+				case 'PANGLIMA PUTRA TEKNIK, CV' :
+				case 'PERTIWIMAS ADI KENCANA, PT' :
+				case 'PILAR HARTEK SENTOSA, CV' :
+				case 'PURINUSA EKAPERSADA,PT' :
+				case 'PUTRA JAYA ADI SENTOSA, PT' :
+				case 'RHEMAGRAPH' :
+				case 'RIASARANA PUTRAJAYA, PT' :
+				case 'RUKUN SEJAHTERA TEKNIK, PT' :
+				case 'SAINT GOBAIN ABRASIVES DIAMAS, PT' :
+				case 'SARANA SAFETY INDONESIA, CV' :
+				case 'SATYA ABADI, CV' :
+				case 'SINAR UNGGUL TEKNIKTAMA, PT' :
+				case 'SINARWAJA INDAH, PT' :
+				case 'SUJAMENTS, PT' :
+				case 'SURYA SARANA DINAMIKA, CV' :
+				case 'TIMUR RAYA ANUGERAH DAMAI, PT' :
+				case 'TOKO PLASTIK 40' :
+				case 'TRIMITRA SWADAYA, PT' :
+				case 'TUNGGAL DJAJA INDAH, PT. PABRIK CAT' :
+				case 'WAHYU MOJOKERTO' :
+				case 'YONTOMO SUKSES ABADI, PT' :
 
 				if ($data['UserMenu'][0]['user_group_menu_name'] == 'WEB SEND PO BDL') {
 					if (substr($poQuery,2,3)=='999') {
@@ -187,10 +247,10 @@ $data['UserMenu'][0]['user_group_menu_name'] == 'WEB SEND PO BDL' ? $data['MenuN
 			$ftp_password 	 = '123456';
 			$ftp_local_dir	 = './assets/upload/PurchaseManagementSendPO/Temporary/FTPDocument/';
 			if ($data['UserMenu'][0]['user_group_menu_name'] == 'WEB SEND PO BDL') {
-					$ftp_server_dir	 = './1.PEMBELIAN_SEKSI/03. PURCHASE RECORD/04. PO (Scan)/11. PO DAN KONFIRMASI 2019/5. PO BDL/';
-		  }
+					$ftp_server_dir	 = './1.PEMBELIAN_SEKSI/03. PURCHASE RECORD/04. PO (Scan)/12. PO DAN KONFIRMASI 2020/5. PO BDL/';
+		  	}
 			else {
-					$ftp_server_dir	 = './1.PEMBELIAN_SEKSI/03. PURCHASE RECORD/04. PO (Scan)/11. PO DAN KONFIRMASI 2019/1. Dokumen PO 2019/';
+					$ftp_server_dir	 = './1.PEMBELIAN_SEKSI/03. PURCHASE RECORD/04. PO (Scan)/12. PO DAN KONFIRMASI 2020/1. Dokumen PO 2020/';
 			}
 			$ftp_file_format = '.pdf';
 
@@ -343,23 +403,55 @@ $data['UserMenu'][0]['user_group_menu_name'] == 'WEB SEND PO BDL' ? $data['MenuN
 
 	public function getUserEmail($id)
 	{
-		$user_id = $this->session->userid;
-		$data['UserMenu'] 		= $this->M_user->getUserMenu($user_id,$this->session->responsibility_id);
-		$idEx  = explode('-', $id);
-		$idQuery	   = $idEx[0];
-		if ($data['UserMenu'][0]['user_group_menu_name'] == 'WEB SEND PO BDL' && substr($idQuery,2,3)=='999') {
-			$email = $this->M_composemessage->getEmailAddressGabungan($idQuery);
-			$site = $this->M_composemessage->getVendorSite($idQuery);
+		$user_id    = $this->session->userid;
+		$user_menu  = $this->M_user->getUserMenu($user_id, $this->session->responsibility_id);
+		$menu_name  = $user_menu[0]['user_group_menu_name'];
+		$po_explode = explode('-', $id);
+		$po_number  = $po_explode[0];
+
+		if ( $menu_name === 'WEB SEND PO BDL' && substr($po_number, 2, 3) === '999' ) {
+			$email       = $this->M_composemessage->getEmailAddressGabungan($po_number);
+			$site        = $this->M_composemessage->getVendorSite($po_number);
 		} else {
-			$email = $this->M_composemessage->getEmailAddress($idQuery);
-			$site[0]['SITE']= NULL;
+			$vendor_name = $this->M_composemessage->getVendorName($po_number);
+			$email       = $this->M_composemessage->getEmailAddress($po_number);
+			$site        = [
+				['SITE' => NULL]
+			];
 		}
-		if ( !empty($email) && $email[0]['EMAIL'] != '' ){
-			$data['email']  = str_replace(' /', ',', $email[0]['EMAIL']);
-			$data['site']   = $site[0]['SITE'];
+
+		if ( $menu_name != 'WEB SEND PO BDL' && ! empty($vendor_name[0]['VENDOR_NAME']) ) {
+			switch ($vendor_name[0]['VENDOR_NAME']) {
+				case 'BUTRACO PRATAMAS, PT' :
+				case 'CAHAYA BEKASI BAJATAMA, PT' :
+				case 'GAYA STEEL, PT' :
+				case 'GLOBALINDO ANUGERAH JAYA ABADI, PT' :
+				case 'INTAN METALINDO, PT' :
+				case 'JAYA SUKSES UTAMA,PT' :
+				case 'KARYA BENTENG BARU SEMESTA, PT' :
+				case 'SINAR AGUNG' :
+				case 'SINARWAJA INDAH, PT' :
+				case 'GITAMULIA CEMERLANG, PT' :
+					$cc_address = 'purchasing.khsjkt@gmail.com';
+					break;
+				default:
+					$cc_address = NULL;
+					break;
+			}
+		} else {
+			$cc_address = NULL;
+		}
+
+		if ( ! empty($email) && $email[0]['EMAIL'] != '' ) {
+			$data['email']      = str_replace(' /', ', ', $email[0]['EMAIL']);
+			$data['site']       = $site[0]['SITE'];
+			$data['cc_address'] = $cc_address;
 			echo json_encode($data);
 		} else {
-			echo json_encode(null);
+			$data['email']      = NULL;
+			$data['site']       = NULL;
+			$data['cc_address'] = NULL;
+			echo json_encode($data);
 		}
 	}
 

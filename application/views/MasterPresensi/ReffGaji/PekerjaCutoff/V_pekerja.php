@@ -53,7 +53,7 @@
 									</div>
 									<div class="col-lg-2">
 										<button type="button" class="btn btn-danger" id="btn-pekerjaCutoff-pekerja-pdf" data-noind="<?php echo (isset($pekerja) and !empty($pekerja)) ? $pekerja['0']['noind'] : "-"; ?>" ><span class="fa fa-file-pdf-o"></span> Pdf</button>
-										<button type="button" class="btn btn-success" id="btn-pekerjaCutoff-pekerja-xls" data-noind="<?php echo (isset($pekerja) and !empty($pekerja)) ? $pekerja['0']['noind'] : "-"; ?>" ><span class="fa fa-file-excel-o"></span> Pdf</button>
+										<button type="button" class="btn btn-success" id="btn-pekerjaCutoff-pekerja-xls" data-noind="<?php echo (isset($pekerja) and !empty($pekerja)) ? $pekerja['0']['noind'] : "-"; ?>" ><span class="fa fa-file-excel-o"></span> Excel</button>
 									</div>
 								</div>
 								<div class="row">

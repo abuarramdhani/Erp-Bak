@@ -67,13 +67,29 @@ class C_Monitoring extends CI_Controller
 		$packing = $this->M_monitoring->getDataSPB($query4);
 		$data['packing'] = $packing;
 		$data['jml_packing'] = count($packing);
+		$total = 0;
+		for ($i=0; $i < $data['jml_packing'] ; $i++) { 
+			$total += $packing[$i]['JUMLAH_PCS'];
+		}
 		$kurang = "where selesai_pengeluaran is not null and selesai_packing is null";
 		$data['krgpacking'] = $this->M_monitoring->dataKurang($kurang);
 		$data['krg_packing'] = count($data['krgpacking']);
 
 		$jml_gd = $this->M_monitoring->getjmlGd($date);
 		$data['jml_gd'] = count($jml_gd);
+
+		$cancel = $this->M_monitoring->getcancel($date);
+		$data['cancel'] = count($cancel);
 		
+		$jumlah = array();
+		for ($i=0; $i < $data['jml_packing'] ; $i++) { 
+			$cari = $this->M_monitoring->getTransact($packing[$i]['NO_DOKUMEN']);
+			for ($a=0; $a < count($cari) ; $a++) { 
+				array_push($jumlah, $cari[$a]['TRANSACTION_QUANTITY']);
+			}
+		}
+		$data['jml_selesai'] = array_sum($jumlah);
+		$data['krg_selesai'] = $total - $data['jml_selesai'];
 		
 		// echo "<pre>"; print_r($data['krgpengeluaran']); exit();
 
@@ -136,6 +152,10 @@ class C_Monitoring extends CI_Controller
 			$packing = $this->M_monitoring->getDataSPB($query4);
 			$hasil[$a]['packing'] = $packing;
 			$hasil[$a]['jml_packing'] = count($packing);
+			$total = 0;
+			for ($i=0; $i < $hasil[$a]['jml_packing'] ; $i++) { 
+				$total += $packing[$i]['JUMLAH_PCS'];
+			}
 			if ($date == date('d/m/Y')) {
 				$kurang = "where selesai_pengeluaran is not null and selesai_packing is null";
 			}else {
@@ -146,6 +166,19 @@ class C_Monitoring extends CI_Controller
 
 			$jml_gd = $this->M_monitoring->getjmlGd2($date);
 			$hasil[$a]['jml_gd'] = count($jml_gd);
+
+			$cancel = $this->M_monitoring->getcancel($date);
+			$hasil[$a]['cancel'] = count($cancel);
+
+			$jumlah = array();
+			for ($i=0; $i < $hasil[$a]['jml_packing'] ; $i++) { 
+				$cari = $this->M_monitoring->getTransact($packing[$i]['NO_DOKUMEN']);
+				for ($b=0; $b < count($cari) ; $b++) { 
+					array_push($jumlah, $cari[$b]['TRANSACTION_QUANTITY']);
+				}
+			}
+			$hasil[$a]['jml_selesai'] = array_sum($jumlah);
+			$hasil[$a]['krg_selesai'] = $total - $hasil[$a]['jml_selesai'];
 		}
 		$data['hasil'] = $hasil;
 		

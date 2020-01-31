@@ -156,9 +156,7 @@ class C_MoveOrder extends CI_Controller
 
 		$checkPicklist = $this->M_MoveOrder->checkPicklist($job);
 		$array_mo = array();
-		// echo "<pre>";
-		// print_r($checkPicklist);
-		// exit();
+
 		if (count($checkPicklist) > 0) {
 			foreach ($checkPicklist as $key => $value) {
 				$no_mo = $value['REQUEST_NUMBER'];
@@ -220,23 +218,31 @@ class C_MoveOrder extends CI_Controller
 					// print_r($data);
 					// exit();
 					// echo "<pre>";
+					$x = 1; 
 					foreach ($data as $key => $value) {
-						$i = 1; 
+						$i = 1;
+						$nomor_mo = $job.'-'.$x;
 						// echo "PROSES SUB INV $key { ";
 						foreach ($value as $key2 => $value2) {
 							$dataNew = $value2;
 							$dataNew['NO_URUT'] = $i;
 							//create TEMP
-							// print_r($dataNew);
+							// echo "insert<br>";
+							// print_r($dataNew);echo "<br>";
 							$this->M_MoveOrder->createTemp($dataNew);
 							$i++;
 
 						}
-							//create MO         
-							$this->M_MoveOrder->createMO($ip_address,$job_id[0],$subinv_to[0],$locator_to[0],$key,$data2[$key],$user_id);
+							// //create MO       
+							// print_r($ip_address);echo "<br>";print_r($job_id[0]);echo "<br>";print_r($subinv_to[0]);echo "<br>";
+							// print_r($locator_to[0]);echo "<br>";print_r($key);echo "<br>";print_r($data2[key]);echo "<br>";print_r($user_id);
+							// echo "<br>";
+							$this->M_MoveOrder->createMO($ip_address,$job_id[0],$subinv_to[0],$locator_to[0],$key,$data2[$key],$user_id,$nomor_mo);
 
 							//delete
+							// echo "<br>";echo "menjalankan perintah delete";echo "<br>";
 							$this->M_MoveOrder->deleteTemp($ip_address,$job_id[0]);
+							$x++;
 					}
 
 					$checkPicklist = $this->M_MoveOrder->checkPicklist($job);
@@ -342,7 +348,7 @@ class C_MoveOrder extends CI_Controller
 			}
 
 			// echo "<pre>";
-			// print_r($data);
+			// print_r($dataall);
 			// exit();
 
 			$head		= array();
@@ -351,6 +357,7 @@ class C_MoveOrder extends CI_Controller
 			$line		= array();
 			$pdf->SetTitle('Picklist_'.date('d/m/Y H/i/s').'.pdf');
 			foreach ($dataall as $key => $value) {
+				// echo "<pre>";print_r($value);exit();
 				$pdf->AliasNbPageGroups('[pagetotal]');
 					foreach ($value['head'] as $key2 => $value2) {
 						$judulAssembly = strlen($value2['PRODUK_DESC']);
@@ -430,7 +437,7 @@ class C_MoveOrder extends CI_Controller
 		$subinv_to 	  = $this->input->post('subinvto');
 		$locator_to 	  = $this->input->post('locatorto');
 		$subinv_from 	  = $this->input->post('subinvfrom');
-		$locator_from 	  = $this->input->post('locatorfrom');
+		$locator_from 	  = $this->input->post('locatorfromid');
 		$selected = $this->input->post('selectedPicklistIMO');
 		$piklis = $this->input->post('piklis');
 		$arraySelected = explode('+', $selected);
@@ -477,31 +484,41 @@ class C_MoveOrder extends CI_Controller
 
 						if (!in_array(1, $errQty)) {
 							// START
+							$inv = array();
 								foreach ($no_job2 as $k => $v) {
-									$data[$subinv_from2[$k]][] = array('NO_URUT' => '',
+									if (in_array($invID2[$k], $inv)) {
+										
+									}else {
+										array_push($inv, $invID2[$k]);
+										$data[$v][$subinv_from2[$k]][] = array('NO_URUT' => '',
 													'INVENTORY_ITEM_ID' => $invID2[$k],
 													'QUANTITY' => $qty2[$k],
 													'UOM' => $uom2[$k],
 													'IP_ADDRESS' => $ip_address,
 													'JOB_ID' => $job_id2[$k]);
-									$data2[$subinv_from2[$k]] = $locator_from2[$k];
+										$data2[$v][$subinv_from2[$k]] = $locator_from2[$k];
+									}
 
 								}
-
-								foreach ($data as $kSub => $vSub) {
+								$x = 1; 
+								foreach ($data[$no_job2[0]] as $kSub => $vSub) {
 									$i = 1; 
 									foreach ($vSub as $key2 => $value2) {
+										$nomor_mo = $no_job2[0].'-'.$x;
 										$dataNew = $value2;
 										$dataNew['NO_URUT'] = $i;
 										//create TEMP
+										// echo "insert<br>";
 										$this->M_MoveOrder->createTemp($dataNew);
 										$i++;
 									}
 										//create MO       
-										$this->M_MoveOrder->createMO($ip_address,$job_id2[0],$subinv_to2[0],$locator_to2[0],$kSub,$data2[$kSub],$user_id);
+										$this->M_MoveOrder->createMO($ip_address,$job_id2[0],$subinv_to2[0],$locator_to2[0],$kSub,$data2[$no_job2[0]][$kSub],$user_id,$nomor_mo);
 
 										//delete
+										// echo "delete<br>";
 										$this->M_MoveOrder->deleteTemp($ip_address,$job_id2[0]);
+										$x++;
 								}
 							// END
 								$checkPicklist = $this->M_MoveOrder->checkPicklist($no_job2[0]);
@@ -536,7 +553,8 @@ class C_MoveOrder extends CI_Controller
 							$errQty[] = $err;
 						}
 						// echo "masuk kesini<br>";
-
+						$x=1;
+						$nomor_mo = $$no_job.'-'.$x;
 						if (!in_array(1, $errQty)) {
 							$data = array('NO_URUT' => 1,
 									'INVENTORY_ITEM_ID' => $invID[$key],
@@ -547,13 +565,17 @@ class C_MoveOrder extends CI_Controller
 							$data2[$subinv_from2[$k]] = $locator_from2[$k];
 							//create TEMP
 
+							// echo "insert1<br>";
 							$this->M_MoveOrder->createTemp($data);
 
+
 							//create MO
-							$this->M_MoveOrder->createMO($ip_address,$job_id[$key],$subinv_to[$key],$locator_to[$key],$subinv_from[$key],$locator_from[$key],$user_id);
+							$this->M_MoveOrder->createMO($ip_address,$job_id[$key],$subinv_to[$key],$locator_to[$key],$subinv_from[$key],$locator_from[$key],$user_id,$nomor_mo);
 
 							//delete TEMP
+							// echo "delete1<br>";
 							$this->M_MoveOrder->deleteTemp($ip_address,$job_id[$key]);
+
 
 							$checkPicklist = $this->M_MoveOrder->checkPicklist($value);
 

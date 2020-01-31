@@ -82,6 +82,7 @@
 		<script src="<?= base_url('assets/js/formValidation.js') ?>"></script>
 		<script src="<?= base_url('assets/js/jquery-maskmoney.js') ?>"></script>
 		<script src="<?= base_url('assets/plugins/howler/howler.js') ?>"></script>
+		<script src="<?= base_url('assets/plugins/fakeLoading/fakeLoading.js') ?>"></script>
 
 
 		<!-- CUSTOM JAVASCRIPT FOR APPLICATION | DO NOT EDIT!! -->
@@ -190,6 +191,10 @@
 		<script src="<?= base_url('assets/js/customSMS.js');?>"></script>
 		<script src="<?= base_url('assets/js/customPDP.js');?>"></script>
 		<script src="<?= base_url('assets/js/customKGS.js');?>"></script>
+		<script src="<?= base_url('assets/js/customRJP.js');?>"></script>
+		<script src="<?= base_url('assets/js/customMD.js');?>"></script>
+		<script src="<?= base_url('assets/js/customADO.js');?>"></script>
+		<script src="<?= base_url('assets/js/customIPM.js');?>"></script>
 		<script type="text/javascript" src="<?= base_url('assets/js/customKTR.js') ?>"></script>
 
 

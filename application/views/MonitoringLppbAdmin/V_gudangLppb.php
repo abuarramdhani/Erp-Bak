@@ -33,25 +33,23 @@
 						<td><?php echo $no?></td>
 						<td>
 							<input name="batch_number" id="batch_number" value="<?php echo $lb['BATCH_NUMBER']?>" type="hidden">
-						<!-- 	<a target="_blank" onclick="ModalDetailAdmin(<?php echo $lb['BATCH_NUMBER']?>)" data-toggle="modal" data-target="mdlDetailAdminGudang" title="Detail Lppb ..." class="btn btn-default btn-xs" ><i class="fa fa-file-text-o detailIcon"></i></a> -->
+						
 							<button onclick="ModalDetailAdmin(<?php echo $lb['BATCH_NUMBER']?>)" data-toggle="modal" data-target="mdlDetailAdminGudang" title="Detail Lppb ..." class="btn btn-default btn-sm zoom"><i class="fa fa-file-text-o detailIcon"></i> Detail</button>
 
 						<?php if($lb['NEW_DRAF'] > 0 and $lb['ADMIN_EDIT'] > 0 or $lb['NEW_DRAF'] > 0){ ?>
-							<!-- <a title="Submit to Kasie Gudang" id="btnSubmitChecking" data-id="<?= $lb['BATCH_NUMBER'] ?>" data-batch="<?php echo $lb['GROUP_BATCH']?>" onclick="getBtch(this)" class="btn btn-primary btn-xs"><i class="fa fa-paper-plane"></i>
-							</a> -->
+							
 							<button title="Submit to Kasie Gudang" id="btnSubmitChecking" data-id="<?= $lb['BATCH_NUMBER'] ?>" data-batch="<?php echo $lb['GROUP_BATCH']?>" onclick="getBtch(this)" class="btn btn-primary btn-sm zoom"><i class="fa fa fa-paper-plane detailIcon"></i> Submit </button>
-
-							<!-- <a title="Delete" onclick="del_batch_number($(this))" row_id="<?php echo $no?>" class="btn btn-danger btn-xs"><i class="fa fa-trash"></i>
-									<input type="hidden" name="batch_number" class="batch_number_<?php echo $no?>" value="<?php echo $lb['BATCH_NUMBER']?>"></a> -->
 
 							<button title="Delete" onclick="del_batch_number($(this))" row_id="<?php echo $no?>" class="btn btn-danger btn-sm zoom"><i class="fa fa-trash detailIcon"></i> Delete </button>
 
+							<input type="hidden" name="batch_number" class="batch_number_<?php echo $no?>" value="<?php echo $lb['BATCH_NUMBER']?>"></a>
+
 							<?php }
 							else{ ?>
-								<!-- <a title="Submit to Kasie Gudang" id="btnSubmitChecking" data-id="<?= $lb['BATCH_NUMBER'] ?>" data-batch="<?php echo $lb['GROUP_BATCH']?>" onclick="getBtch(this)" class="btn btn-primary btn-xs"><i class="fa fa-paper-plane"></i></a> -->
+								
 								<button title="Submit to Kasie Gudang" id="btnSubmitChecking" data-id="<?= $lb['BATCH_NUMBER'] ?>" data-batch="<?php echo $lb['GROUP_BATCH']?>" onclick="getBtch(this)" class="btn btn-primary btn-sm zoom"><i class="fa fa fa-paper-plane detailIcon"></i> Submit </button>
 
-								<!-- <a title="Delete" onclick="del_batch_number($(this))" row_id="<?php echo $no?>" class="btn btn-danger btn-xs"><i class="fa fa-trash"></i> -->
+								
 								<button title="Delete" onclick="del_batch_number($(this))" row_id="<?php echo $no?>" class="btn btn-danger btn-sm zoom"><i class="fa fa-trash detailIcon"></i> Delete </button>
 
 								<input type="hidden" name="batch_number" class="batch_number_<?php echo $no?>" value="<?php echo $lb['BATCH_NUMBER']?>"></a>

@@ -231,19 +231,23 @@ class C_List extends CI_Controller {
 				$imei 				= $this->input->post('imei');
 				$hardware_serial	= $this->input->post('hwserial');
 				$gsf 				= $this->input->post('gsf');
-				
+
+				if(empty($namaPekerja) and empty($noindukPekerja)){
+					$data['status'] = false;
+					$data['message'] = 'Value Empty!';
+					print_r(json_encode($data));
+				}else{				
 				$dataICT 			= $this->M_list->getEmailICT();
 				// echo "<pre>";
 				// print_r($dataICT);exit();
+				$internalMailICT = "";
+				$externalMailICT = "";
+				$namaSeksiICT = "";
 				foreach ($dataICT as $key => $emailICT) {
 			
 				$internalMailICT = $emailICT['internal_mail'];
 				$externalMailICT = $emailICT['external_mail'];
 				$namaSeksiICT	 = $emailICT['employee_name'];
-				// echo "<pre>";
-				// print_r($internalMailICT);
-				// print_r($emailICT);
-				
 
 				$this->load->library('PHPMailerAutoload');
 				$mail = new PHPMailer;
@@ -263,9 +267,9 @@ class C_List extends CI_Controller {
 				$mail->Username = 'no-reply@quick.com';
 				$mail->Password = "123456";
 				$mail->setFrom('noreply@quick.co.id', 'ERP Mobile');
-				$mail->addAddress($internalMailICT, 'Seksi ICT');
-				if(!$externalMailICT==null || !$externalMailICT==""){
-					$mail->addAddress($externalMailICT, 'Seksi ICT');
+				$mail->addAddress($emailICT['internal_mail'], 'Seksi ICT');
+				if(!$emailICT['external_mail']==null || !$emailICT['external_mail']==""){
+					$mail->addAddress($emailICT['external_mail'], 'Seksi ICT');
 				}
 				$mail->Subject = 'ERP Mobile Registrasi Android Baru';
 				$mail->msgHTML("
@@ -280,8 +284,8 @@ class C_List extends CI_Controller {
 				GSF 					: $gsf<br><br>
 
 				Anda dapat melakukan pengecekan melalui :<br> 
-				1. Internet : aplikasi Quick ERP Mobile. Apabila belum memiliki aplikasinya dapat download <a href='https://quick.co.id/download'>Disini</a><br>
-				2. jaringan lokal : http://erp.quick.com (http://quick.co.id/dinas_luar) atau klik <a href='http://erp.quick.com/'><strong>Disini</strong></a><br><br>
+				1. Internet : aplikasi Quick ERP Mobile. Apabila belum memiliki dapat menghubungi ICT di +62812545922 (Klik <a href='https://wa.me/62812545922' target='_blank'><strong>Disini</strong></a> untuk menghubungi via Whatsapp)<br>
+				2. jaringan lokal : <a href='http://erp.quick.com' target='_blank'>http://erp.quick.com</a> atau klik <a href='http://erp.quick.com/'><strong>Disini</strong></a><br><br>
 
 				<small>Email ini digenerate melalui QuickERP pada ".date('d-m-Y H:i:s').".<br>
 				Apabila anda mengalami kendala dapat menghubungi ICT Support Center (08112545922) </small>");
@@ -293,7 +297,8 @@ class C_List extends CI_Controller {
 					//echo "Message sent!";
 				}
 			}
-			}
+		}
+	}
 
 
 	function kirim_email($internalMail,$eksternalMail,$namaPekerja,$status,$approver,$noindukApprover,$android_id,$imei,$hardware_serial,$gsf){
@@ -337,8 +342,8 @@ class C_List extends CI_Controller {
 				Status : $status oleh $approver<br><br>
 
 				Anda dapat melakukan pengecekan melalui :<br> 
-				1. Internet : aplikasi Quick ERP Mobile. Apabila belum memiliki aplikasinya dapat download <a href='https://quick.co.id/download'>Disini</a><br>
-				2. jaringan lokal : http://erp.quick.com (http://quick.co.id/dinas_luar) atau klik <a href='http://erp.quick.com/'><strong>Disini</strong></a><br><br>
+				1. Internet : aplikasi Quick ERP Mobile. Apabila belum memiliki dapat menghubungi ICT di +62812545922 (Klik <a href='https://wa.me/62812545922' target='_blank'><strong>Disini</strong></a> untuk menghubungi via Whatsapp)<br>
+				2. jaringan lokal : <a href='http://erp.quick.com' target='_blank'>http://erp.quick.com</a> atau klik <a href='http://erp.quick.com/'><strong>Disini</strong></a><br><br>
 
 				<small>Email ini digenerate melalui QuickERP pada ".date('d-m-Y H:i:s').".<br>
 				Apabila anda mengalami kendala dapat menghubungi ICT Support Center (08112545922) </small>");

@@ -111,14 +111,11 @@ class C_monitoringlppbkasiegudang extends CI_Controller{
 
 	public function saveActionLppbNumber(){
 
-		// echo "<pre>";print_r($_POST);exit();
-		
 		$batch_number = $this->input->post('batch_number'); //
 		$proses = $this->input->post('hdnProses');//
 		$date = $this->input->post('tglTerimaTolak');//
 		$alasan = $this->input->post('alasan_reject'); //
 		$id = $this->input->post('id');
-		// $batch_detail_id = $this->input->post('batch_detail_id');
 
 		foreach ($proses as $p => $value) {
 			if (empty($alasan[$p])) {
@@ -129,32 +126,16 @@ class C_monitoringlppbkasiegudang extends CI_Controller{
 			}
 		}
 	
-		$test = print "<script>$('#cobahimahimabatchnumber').text()</script>";
-
-		if($batch_number == $test ){
-			echo "<script> hapusrow = $('#cobahimahima'); 
-						   hapusrow.remove() </script>";
-		}
-	
-		echo "<script> console.log("+$batch_number+"hueee"+$test+") </script>";
-		echo "<script> console.log('kok gjln') </script>";
-		print "<script> console.log('kok gjln prnt') </script>";
-		// redirect('MonitoringLppbKasieGudang/Unprocess');
+		
 	}
 
 	public function SubmitKeAKuntansi(){
-		// print_r($_POST);
 		$date = date('d-m-Y H:i:s');
 		$batch_number = $this->input->post('batch_number');
 		$status = $this->M_monitoringlppbkasiegudang->detailUnprocess($batch_number);
-		// $data['status'] = $status[0]['STATUS'];
-		// $alasan_reject = $this->input->post('alasan_reject');
-		// echo "<pre>";
-		// print_r($data);
-		// exit();
+		
 
 		$this->M_monitoringlppbkasiegudang->submitToKasieAkuntansi($date,$batch_number);
-		// $batch_detail_id  = $this->M_monitoringlppbkasiegudang->getBatchDetailId($batch_number);
 
 		foreach ($status as $key => $value) {
 			if ($value['STATUS'] = 3 ) {
@@ -162,6 +143,7 @@ class C_monitoringlppbkasiegudang extends CI_Controller{
 				$this->M_monitoringlppbkasiegudang->submitToKasieAkuntansi2($date,$id);
 			}
 		}
+		echo json_encode($batch_number);
 
 	}
 

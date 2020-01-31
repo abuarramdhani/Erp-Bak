@@ -69,7 +69,7 @@
 										<td style="width: 8%">
 											<a href="<?php echo base_url('AccountPayables/MonitoringInvoice/Invoice/editListInv/'.$inv['INVOICE_ID'])?>" title="Detail invoice ..." class="btn btn-success btn-xs"><i class="fa fa-pencil-square-o" ></i>
 											</a>
-											<a href="<?php echo base_url('AccountPayables/MonitoringInvoice/Invoice/deleteInvoice/'.$inv['INVOICE_ID'])?>" title="Delete invoice ..." onclick="return confirm('Yakin untuk menghapusnya?')" class="btn btn-danger btn-xs"><i class='fa fa-trash'></i>
+											<a href="<?php echo base_url('AccountPayables/MonitoringInvoice/Invoice/deleteInvoiceManual/'.$inv['INVOICE_ID'])?>" title="Delete invoice ..." onclick="return confirm('Yakin untuk menghapusnya?')" class="btn btn-danger btn-xs"><i class='fa fa-trash'></i>
 											</a>
 										</td>
 										<td style="width: 7%"><?php echo $inv['INVOICE_CATEGORY']?></td>

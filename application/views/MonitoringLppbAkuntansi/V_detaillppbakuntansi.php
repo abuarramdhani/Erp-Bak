@@ -29,8 +29,8 @@
 									<span>Jumlah Data  : <b><?php echo $jml[0]['JUMLAH_DATA']?></b></span><br>
 									<span>Batch Number : <b><?php echo $detailLppb[0]['BATCH_NUMBER']?></b></span>
 									<div ><!-- //class="table-responsive text-nowrap" -->
-											<table style="overflow:auto;" class="table table-striped table-bordered table-hover text-center dtTableMl dataTable no-footer">
-												<thead style="vertical-align: middle;"> 
+											<table id="tblLPPBwew" style="width: 100%;" class="table table-bordered text-center">
+												<thead> 
 													<tr class="bg-primary">
 														<td class="text-center">No</td>
 														<td class="text-center">IO</td>
@@ -38,7 +38,7 @@
 														<td class="text-center" style="width:10%;">Vendor name</td>
 														<td class="text-center">Tanggal LPPB</td>
 														<td class="text-center">Nomor PO</td>
-														<td class="text-center">Action</td>
+														<td class="text-center" style="width:20%;">Action</td>
 														<td class="text-center" style="width:10%;">Tanggal Diterima/Ditolak</td>
 														<td class="text-center" style="width:30%;">Alasan</td>
 													</tr>
@@ -65,7 +65,7 @@
 															<?php } ?>
 														</td>
 														<td><span class="tglTerimaTolak"></span></td>
-														<td><input id="txtTolak_<?php echo $p['BATCH_DETAIL_ID'] ?>" type="text" value="<?php echo $p['REASON']?>" style="display: none;width: %;"  class="form-control txtAlasan" name="alasan_reject[]">
+														<td><input id="txtTolak_<?php echo $p['BATCH_DETAIL_ID'] ?>" type="text" value="<?php echo $p['REASON']?>" style="display: none;width:200px;"  class="form-control txtAlasan" name="alasan_reject[]">
 															<input type="hidden" name="id[]" value="<?php echo $p['BATCH_DETAIL_ID']?>"></td>
 													</tr>
 												<?php $no++; } ?>
@@ -91,4 +91,12 @@
 <script type="text/javascript">
 	var id_gd;
 	var txtTolak = "txtTolak_<?php echo $p['BATCH_DETAIL_ID']?>";
+
+	$(document).ready(function(){
+	$('#tblLPPBwew').DataTable({
+		"paging":   false,
+        "ordering": false,
+        "info":     false
+	})
+})
 </script>

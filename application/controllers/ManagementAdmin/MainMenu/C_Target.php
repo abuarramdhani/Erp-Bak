@@ -1,11 +1,11 @@
 <?php
 Defined('BASEPATH') or exit('No Direct Sekrip Akses Allowed');
 /**
- * 
+ *
  */
 class C_Target extends CI_Controller
 {
-	
+
 	function __construct()
 	{
 		parent::__construct();
@@ -14,6 +14,7 @@ class C_Target extends CI_Controller
 		$this->load->helper('html');
 		$this->load->helper('file');
 
+		$this->load->library('Log_Activity');
 		$this->load->library('form_validation');
 		$this->load->library('session');
 		$this->load->library('encrypt');
@@ -56,13 +57,18 @@ class C_Target extends CI_Controller
 
 	public function Create(){
 		$arrData = array(
-			'target_waktu' => $this->input->post('target'), 
-			'pekerjaan' => $this->input->post('pekerjaan'), 
+			'target_waktu' => $this->input->post('target'),
+			'pekerjaan' => $this->input->post('pekerjaan'),
 			'created_by' => $this->session->user,
 			'no_urut' => $this->input->post('urut')
 		);
 
 		$this->M_target->insertTarget($arrData);
+		//insert to t_log
+		$aksi = 'MANAGEMENT ADMIN';
+		$detail = 'Target_Create Data Kode='.$this->input->post('urut');
+		$this->log_activity->activity_log($aksi, $detail);
+		//
 		redirect(site_url('ManagementAdmin/Target'));
 	}
 
@@ -71,17 +77,27 @@ class C_Target extends CI_Controller
 		$plaintext_string = $this->encrypt->decode($plaintext_string);
 
 		$this->M_target->deleteTarget($plaintext_string);
+		//insert to t_log
+		$aksi = 'MANAGEMENT ADMIN';
+		$detail = 'Target_Delete Target ID='.$plaintext_string;
+		$this->log_activity->activity_log($aksi, $detail);
+		//
 		redirect(site_url('ManagementAdmin/Target'));
 	}
 
 	public function Update(){
 		$id = $this->input->post('id');
 		$arrData = array(
-			'target_waktu' => $this->input->post('target'), 
+			'target_waktu' => $this->input->post('target'),
 			'pekerjaan' => $this->input->post('pekerjaan')
 		);
 
 		$this->M_target->updateTarget($id,$arrData);
+		//insert to t_log
+		$aksi = 'MANAGEMENT ADMIN';
+		$detail = 'Target_Update Target ID='.$id;
+		$this->log_activity->activity_log($aksi, $detail);
+		//
 		redirect(site_url('ManagementAdmin/Target'));
 	}
 }

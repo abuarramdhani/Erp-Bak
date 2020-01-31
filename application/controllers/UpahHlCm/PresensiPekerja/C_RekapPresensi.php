@@ -23,10 +23,11 @@ class C_RekapPresensi extends CI_Controller {
 	public function __construct()
     {
         parent::__construct();
-		  
+
         $this->load->helper('form');
         $this->load->helper('url');
         $this->load->helper('html');
+		$this->load->library('Log_Activity');
         $this->load->library('form_validation');
           //load the login model
 		$this->load->library('session');
@@ -35,7 +36,7 @@ class C_RekapPresensi extends CI_Controller {
 		$this->load->model('SystemAdministration/MainMenu/M_user');
 		$this->load->model('UpahHlCm/M_presensipekerja');
 		$this->load->model('UpahHlCm/M_prosesgaji');
-		  
+
 		if($this->session->userdata('logged_in')!=TRUE) {
 			$this->load->helper('url');
 			$this->session->set_userdata('last_page', current_url());
@@ -44,37 +45,37 @@ class C_RekapPresensi extends CI_Controller {
 		}
 		  //$this->load->model('CustomerRelationship/M_Index');
     }
-	
+
 	//HALAMAN INDEX
 	public function index(){
 		$this->checkSession();
 		$user_id = $this->session->userid;
-		
+
 		$data['Menu'] = 'Dashboard';
 		$data['SubMenuOne'] = '';
 		$data['SubMenuTwo'] = '';
-		
+
 		$data['UserMenu'] = $this->M_user->getUserMenu($user_id,$this->session->responsibility_id);
 		$data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id);
 		$data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id);
-		
+
 		$data['periodeGaji'] = $this->M_prosesgaji->getCutOffGaji();
 
 		$this->load->view('V_Header',$data);
 		$this->load->view('V_Sidemenu',$data);
 		$this->load->view('UpahHlCm/PresensiPekerja/V_indexRekap',$data);
 		$this->load->view('V_Footer',$data);
-		
+
 	}
-	
+
 	public function checkSession(){
 		if($this->session->is_logged){
-			
+
 		}else{
 			redirect('');
 		}
 	}
-	
+
 	public function cetakpdf()
 	{
 		$this->load->library('pdf');
@@ -89,7 +90,11 @@ class C_RekapPresensi extends CI_Controller {
 		// echo "<pre>";print_r($data['RekapPresensi']);exit();
 		$submit = $this->input->post('txtSubmit');
 		if ($submit == 'Cetak Pdf') {
-			
+			//insert to t_log
+			$aksi = 'UPAH HLCM';
+			$detail = 'Rekap Presensi Cetak PDF '.$data['periode'];
+			$this->log_activity->activity_log($aksi, $detail);
+			//
 			$pdf = $this->pdf->load();
 			$pdf = new mPDF('utf-8', 'A4', 8, '', 12, 15, 15, 15, 10, 20);
 			$filename = 'Rekap-'.$tgl.'.pdf';
@@ -107,24 +112,35 @@ class C_RekapPresensi extends CI_Controller {
 	    		'isi' => json_encode($data),
 	    		'asal' => 'Rekap Presensi',
 	    		'keterangan' => $this->input->post('txtKeterangan')
-	    	); 
+	    	);
 	    	$this->M_presensipekerja->insertArsip($data_simpan);
-	    	
+
+			//insert to t_log
+			$aksi = 'UPAH HLCM';
+			$detail = 'Rekap Presensi INSERT data di hlcm_proses_detail';
+			$this->log_activity->activity_log($aksi, $detail);
+			//
+
 	    	$user_id = $this->session->userid;
-		
+
 			$data['Menu'] = 'Dashboard';
 			$data['SubMenuOne'] = '';
 			$data['SubMenuTwo'] = '';
-			
+
 			$data['UserMenu'] = $this->M_user->getUserMenu($user_id,$this->session->responsibility_id);
 			$data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id);
 			$data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id);
-		
+
 	    	$this->load->view('V_Header',$data);
 			$this->load->view('V_Sidemenu',$data);
 			$this->load->view('UpahHlCm/PresensiPekerja/V_simpanRekapPresensi',$data);
 			$this->load->view('V_Footer',$data);
 		}else{
+			//insert to t_log
+			$aksi = 'UPAH HLCM';
+			$detail = 'Rekap Presensi Cetak Excel '.$data['periode'];
+			$this->log_activity->activity_log($aksi, $detail);
+			//
 			$this->load->library('excel');
 			$worksheet = $this->excel->getActiveSheet();
 

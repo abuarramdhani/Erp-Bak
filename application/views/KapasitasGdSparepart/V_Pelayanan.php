@@ -67,7 +67,6 @@
                                                 <th>Jumlah Item</th>
                                                 <th>Jumlah Pcs</th>
                                                 <th>PIC</th>
-                                                <th>Status</th>
                                                 <th>Keterangan</th>
                                                 <th></th>
                                             </tr>
@@ -80,11 +79,11 @@
                                                     $td = '';
                                                 }
                                             ?>
-                                                <tr>
+                                                <tr id="baris<?= $no?>">
                                                     <td class="<?= $td?>" width="20px"><?= $no; ?></td>
                                                     <td class="<?= $td?>"><input type="hidden" id="jam<?= $no?>" value="<?= $val['TGL_DIBUAT']?>"><?= $val['TGL_DIBUAT']?></td>
-                                                    <td class="<?= $td?>"><input type="hidden" id="jenis_doc<?= $no?>" value="<?= $val['JENIS_DOKUMEN']?>"><?= $val['JENIS_DOKUMEN']?></td>
-                                                    <td class="<?= $td?>" style="font-size:17px; font-weight: bold"><input type="hidden" id="no_doc<?= $no?>" value="<?= $val['NO_DOKUMEN']?>"><?= $val['NO_DOKUMEN']?></td>
+                                                    <td class="<?= $td?>"><input type="hidden" id="jenis<?= $no?>" value="<?= $val['JENIS_DOKUMEN']?>"><?= $val['JENIS_DOKUMEN']?></td>
+                                                    <td class="<?= $td?>" style="font-size:17px; font-weight: bold"><input type="hidden" id="nodoc<?= $no?>" value="<?= $val['NO_DOKUMEN']?>"><?= $val['NO_DOKUMEN']?></td>
                                                     <td class="<?= $td?>"><input type="hidden" id="jml_item<?= $no?>" value="<?= $val['JUMLAH_ITEM']?>"><?= $val['JUMLAH_ITEM']?></td>
                                                     <td class="<?= $td?>"><input type="hidden" id="jml_pcs<?= $no?>" value="<?= $val['JUMLAH_PCS']?>"><?= $val['JUMLAH_PCS']?></td>
                                                     <td class="<?= $td?>">
@@ -93,22 +92,17 @@
                                                             <option value="<?= $val['PIC_PELAYAN']?>"><?= $val['PIC_PELAYAN']?></option>
                                                         </select></td>
                                                         <?php }else{?>
-                                                            <select id="pic<?= $no?>" name="pic" class="form-control select2 select2-hidden-accessible" style="width:100%;" required>
+                                                            <select id="pic<?= $no?>" name="picSPB" class="form-control select2 select2-hidden-accessible picSPB" style="width:100%;" required>
                                                             <option></option>
-                                                            <option value="SYAMSUL">SYAMSUL</option>
-                                                            <option value="ALIF">ALIF</option>
-                                                            <option value="IHSAN">IHSAN</option>
-                                                            <option value="TRI">TRI</option>
                                                         </select></td>
                                                         <?php }?>
-                                                    <td class="<?= $td?>"><?= $status[$i]?>
+                                                    <td class="<?= $td?>"><?= $val['URGENT']?>
                                                         <?php if (!empty($val['MULAI_PELAYANAN'])) { ?>
                                                             <input type="hidden" id="mulai<?= $no?>" value="<?= $val['MULAI_PELAYANAN']?>">
                                                         <?php }else{?><input type="hidden" id="mulai<?= $no?>" value=""> <?php }?>
                                                     </td>
-                                                    <td class="<?= $td?>"><?= $val['URGENT']?></td>
                                                     <td class="<?= $td?>">
-                                                        <?php if (!empty($val['MULAI_PELAYANAN'])) { ?>
+                                                        <?php if (!empty($val['MULAI_PELAYANAN']) && empty($val['WAKTU_PELAYANAN'])) { ?>
                                                             <p id="timer<?= $no?>" style="">
                                                                 Mulai <?= $val['MULAI_PELAYANAN'] ?>
                                                             </p>
@@ -118,7 +112,9 @@
                                                                 <label id="hours<?= $no?>" >00</label>:<label id="minutes<?= $no?>">00</label>:<label id="seconds<?= $no?>">00</label>
                                                             </p>
                                                             <input type="button" class="btn btn-md btn-success" id="btnPelayanan<?= $no?>" onclick="btnPelayananSPB(<?= $no?>)" value="Mulai"> 
-                                                        <?php }?>
+                                                        <?php }?><br>
+                                                        <button type="button" class="btn btn-xs btn-info" id="btnrestartSPB<?= $no?>" onclick="btnRestartPelayanan(<?= $no?>)"><i class="fa fa-refresh"></i></button>
+                                                        <button type="button" class="btn btn-xs btn-primary" id="btnpauseSPB<?= $no?>" onclick="btnPausePelayanan(<?= $no?>)"><i class="fa fa-pause"></i></button>
                                                     </td>
                                                 </tr>
                                             <?php $no++; $i++; } ?>

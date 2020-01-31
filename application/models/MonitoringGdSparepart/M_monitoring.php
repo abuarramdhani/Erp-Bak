@@ -185,5 +185,13 @@ class M_monitoring extends CI_Model {
         // echo $sql;
     }
 
+    public function getPIC($term){
+        $oracle = $this->load->database('oracle_dev', true);
+        $sql = "select * from khs_tabel_user
+                where pic like '%$term%'";
+        $query = $oracle->query($sql);
+        return $query->result_array();
+    }
+
 }
 

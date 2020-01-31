@@ -35,6 +35,37 @@ class M_puller extends CI_Model
         return $query->result_array();
     }
 
+    public function getOrderToReleased()
+    {
+        $oracle_dev = $this->load->database('oracle_dev', true);
+        $query = $oracle_dev->query("SELECT              
+            sum(ooh.QUANTITY),
+            msib.INVENTORY_ITEM_ID,
+            msib.SEGMENT1,
+            msib.DESCRIPTION
+        FROM
+            KHS.KHS_OKBJ_ORDER_HEADER ooh,
+            mtl_system_items_b msib
+        WHERE
+            ooh.INVENTORY_ITEM_ID = msib.INVENTORY_ITEM_ID
+            AND msib.ORGANIZATION_ID = 81
+            AND ooh.ORDER_STATUS_ID = '3'
+            AND ooh.URGENT_FLAG ='N' AND ooh.IS_SUSULAN ='N'
+            AND ooh.PRE_REQ_ID is null
+        GROUP BY
+            msib.INVENTORY_ITEM_ID,
+            msib.SEGMENT1,
+            msib.DESCRIPTION,
+            msib.MINIMUM_ORDER_QUANTITY,
+            msib.FIXED_LOT_MULTIPLIER
+        HAVING 
+            sum(ooh.QUANTITY) >= nvl(msib.MINIMUM_ORDER_QUANTITY,0)
+            and MOD(sum(ooh.QUANTITY), nvl(msib.FIXED_LOT_MULTIPLIER,1)) = 0 
+            ");
+
+        return $query->result_array();
+    }
+
     public function releaseOrder($pre_req)
     {
         $oracle_dev = $this->load->database('oracle_dev', true);
@@ -49,6 +80,17 @@ class M_puller extends CI_Model
     {
         $oracle_dev = $this->load->database('oracle_dev', true);
         $oracle_dev->where('ORDER_ID', $orderid);
+        $oracle_dev->update('KHS.KHS_OKBJ_ORDER_HEADER', $order);
+    }
+
+    public function updateOrderBatch($itemcode, $order)
+    {
+        $oracle_dev = $this->load->database('oracle_dev', true);
+        $oracle_dev->where('IS_SUSULAN', 'N');
+        $oracle_dev->where('URGENT_FLAG', 'N');
+        $oracle_dev->where('PRE_REQ_ID', null);
+        $oracle_dev->where('ORDER_STATUS_ID', '3');
+        $oracle_dev->where('INVENTORY_ITEM_ID', $itemcode);
         $oracle_dev->update('KHS.KHS_OKBJ_ORDER_HEADER', $order);
     }
 

@@ -572,7 +572,11 @@ class C_Mutasi extends CI_Controller
 				'nama_jabatan_upah_lama'=> 	$nama_jabatan_upah_lama,
 				'nama_jabatan_upah_baru'=>	$nama_jabatan_upah_baru,
 				'kd_status_lama'		=> 	$kd_status_lama,
-				'kd_status_baru' 		=>	$kd_status_baru
+				'kd_status_baru' 		=>	$kd_status_baru,
+				'created_by'			=>  $this->session->user ,
+				'created_date'			=> 	date('Y-m-d H:i:s'),
+				'last_update_by'		=> NULL,
+				'last_update_date'		=> NULL
 				);
 			// echo "<pre>";print_r($inputSuratMutasi);exit();
 											// foreach ($inputSuratMutasi as $row) {
@@ -813,7 +817,9 @@ class C_Mutasi extends CI_Controller
 				'nama_jabatan_upah_baru'=>	$nama_jabatan_upah_baru,
 				'kd_status_lama'		=> 	$kd_status_lama,
 				'kd_status_baru' 		=>	$kd_status_baru,
-				'status_update'			=> '0'
+				'status_update'			=> '0',
+				'last_update_by'			=>  $this->session->user ,
+				'last_update_date'			=> 	date('Y-m-d H:i:s')
 				);
 			$this->M_surat->updateSuratMutasi($updateSuratMutasi, $nomor_surat, $kodeSurat, $tanggal_cetak_asli);
 

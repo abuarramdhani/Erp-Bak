@@ -39,20 +39,23 @@
 
 			if ($andro['validation'] ==0) {
 							$status = "New Entry";
+							$classLabel = "label label-default";
 						}
 						elseif ($andro['validation'] ==1) {
 							$status = "Approved";
+							$classLabel = "label label-success";
 						}
 						elseif($andro['validation'] ==2)
 						{
 							$status = "Rejected";
+							$classLabel = "label label-danger";
 						}
 
 			?>
 			
 					<tr>
 					<td><?php echo $no ?></td>
-					<td>
+					<td class="text-center">
 						<a href="<?php echo base_url('SystemAdministration/Android/edit/'.$andro['gadget_id']) ?>" class="btn btn-success btn-edit"><i class="fa fa-edit"></i> 
 						Edit
 						</a>
@@ -67,7 +70,7 @@
 					<td><?php echo $andro['hardware_serial']?></td>
 					<td><?php echo $andro['gsf']?></td>
 					<td><?php echo $andro['info_1']?></td>
-					<td id="tdStatus"><span id="spanStatus" class=""><?php echo $status;?></span></td>
+					<td class="text-center" id="tdStatus"><span class="<?=$classLabel ?>"><?php echo $status;?></span></td>
 											
 					</tr>
 					<?php } ?>
