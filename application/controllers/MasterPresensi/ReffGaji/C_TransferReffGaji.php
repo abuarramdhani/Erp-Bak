@@ -1091,6 +1091,139 @@ class C_TransferReffGaji extends CI_Controller
 							)
 						),'A11:I'.(9 + $nomor));
 
+		}elseif ($frm->formula_id == 3) { // G Pak Giovan
+			$objexcel->setCellValue('A10','TANGGAL');
+			$objexcel->setCellValue('B10','HARI');
+			$objexcel->setCellValue('C10','WAKTU');
+			$objexcel->mergeCells('C10:D10');
+			$objexcel->setCellValue('E10','JML');
+			$objexcel->setCellValue('F10','IST');
+			$objexcel->setCellValue('G10','TTL JAM');
+			$objexcel->setCellValue('H10','TTL JAM/MINGGU');
+
+			$num = 11;
+			$nomor = 1;
+			$ttl_minggu = 0;
+			$minggu = 0;
+			$awal_minggu = 11;
+			$jam_seminggu = 0;
+			$dihitung_bulanlalu = $this->M_transferreffgaji->getDetailGiovanBulanLalu($noind,date("Y-m-d",strtotime($data[0]['dates'])));
+			
+			foreach($data as $gj){
+				if($minggu == $gj['minggu']){
+					$ttl_minggu += $gj['ttl_jam'];
+				}else{
+					if($minggu !== 0){
+						$jam_seminggu = 0;
+						if($awal_minggu == 11){
+							if ($dihitung_bulanlalu > 32) {
+								$jam_seminggu = 0;
+							}else{
+								$jam_seminggu = $ttl_minggu + $dihitung_bulanlalu;
+								if($jam_seminggu > 32){							
+									$jam_seminggu = 32 - $dihitung_bulanlalu;							
+								}else{
+									$jam_seminggu = $ttl_minggu;
+								}								
+							}
+						}else{
+							$jam_seminggu = $ttl_minggu;
+							if($jam_seminggu > 32){							
+								$jam_seminggu = 32;							
+							}
+						}
+						$objexcel->setCellValue('H'.($awal_minggu),$jam_seminggu);
+						$objexcel->mergeCells("H$awal_minggu:H".($num - 2));
+						$awal_minggu = $num;
+						$ttl_minggu = $gj['ttl_jam'];
+					}else{
+						$ttl_minggu = $gj['ttl_jam'];
+					}
+				}
+				$minggu = $gj['minggu'];
+
+				$objexcel->setCellValue('A'.$num,date("Y-m-d",strtotime($gj['dates'])));
+				$objexcel->setCellValue('B'.$num,$gj['nama_hari']);
+				if($gj['masuk'] == "00:00:00" and $gj['keluar'] == "00:00:00"){
+					$objexcel->setCellValue('C'.$num,$gj['keterangan']);
+					$objexcel->mergeCells("C$num:D$num");
+				}else{
+					$objexcel->setCellValue('C'.$num,$gj['masuk']);
+					$objexcel->setCellValue('D'.$num,$gj['keluar']);				
+				}
+				if ($gj['jumlah'] == '0' and $gj['nama_hari'] == 'Minggu') {
+
+				}else{
+					$objexcel->setCellValue('E'.$num,$gj['jumlah']);
+					$objexcel->setCellValue('F'.$num,$gj['ttl_pot_ist']);
+					$objexcel->setCellValue('G'.$num,$gj['ttl_jam']);					
+				}
+				$num++;
+				$nomor++;
+			}
+			if($minggu !== 0){
+				if($ttl_minggu > 32){
+					$objexcel->setCellValue('H'.($awal_minggu),32);							
+				}else{
+					$objexcel->setCellValue('H'.($awal_minggu),$ttl_minggu);
+				}
+				$objexcel->mergeCells("H$awal_minggu:H".($num - 1));
+			}
+			$objexcel->setCellValue('C2','=A'.($num-1));
+			$objexcel->setCellValue('H'.$num,'=SUM(H11:H'.($num-1).')');
+			$objexcel->setCellValue('I'.$num,'JAM');
+
+			$num += 2;
+			$objexcel->setCellValue('F'.$num,"Yogyakarta, ".strftime("%d %B %Y"));
+			$objexcel->mergeCells("F$num:H$num");
+			$num += 1;
+			$objexcel->setCellValue('B'.$num,"Mengetahui,");
+			$objexcel->mergeCells("B$num:D$num");
+			$objexcel->setCellValue('F'.$num,"Dicetak Oleh,");
+			$objexcel->mergeCells("F$num:H$num");
+			$num += 3;
+			$objexcel->setCellValue('B'.$num,$ttd->nama_atasan);
+			$objexcel->mergeCells("B$num:D$num");
+			$objexcel->setCellValue('F'.$num,$ttd->nama_user);
+			$objexcel->mergeCells("F$num:H$num");
+			$num += 1;
+			$objexcel->setCellValue('B'.$num,$ttd->jabatan_atasan);
+			$objexcel->mergeCells("B$num:D$num");
+			$objexcel->setCellValue('F'.$num,$ttd->jabatan_user);
+			$objexcel->mergeCells("F$num:H$num");
+
+			$objexcel->duplicateStyleArray(
+						array(
+							'alignment' => array(
+								'horizontal' => PHPExcel_Style_Alignment::HORIZONTAL_CENTER,
+								'vertical' => PHPExcel_Style_Alignment::VERTICAL_CENTER
+							),
+							'borders' => array(
+								'allborders' => array(
+									'style' => PHPExcel_Style_Border::BORDER_THIN)
+							),
+							'fill' =>array(
+								'type' => PHPExcel_Style_Fill::FILL_SOLID,
+								'startcolor' => array(
+									'argb' => '00C0C0C0')
+							),
+							'font' => array(
+								'bold' => true
+							)
+						),'A10:H10');
+			$objexcel->duplicateStyleArray(
+						array(
+							'font' => array(
+								'bold' => true
+							)
+						),'A1:H9');
+			$objexcel->duplicateStyleArray(
+						array(
+							'borders' => array(
+								'allborders' => array(
+									'style' => PHPExcel_Style_Border::BORDER_THIN)
+							)
+						),'A11:H'.(9 + $nomor));
 		}			
 
 			
