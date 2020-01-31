@@ -8,11 +8,12 @@ class C_Index extends CI_Controller {
   {
     parent::__construct();
 
-    $this->load->library('General');
+	$this->load->library('General');
+	$this->load->library('Log_Activity');
 
     $this->load->model('M_Index');
-		$this->load->model('SystemAdministration/MainMenu/M_user');
-		$this->load->model('MasterPekerja/Pekerja/PekerjaKeluar/M_pekerjakeluar');
+	$this->load->model('SystemAdministration/MainMenu/M_user');
+	$this->load->model('MasterPekerja/Pekerja/PekerjaKeluar/M_pekerjakeluar');
 
   	if($this->session->userdata('logged_in')!=TRUE) {
   		$this->load->helper('url');
@@ -285,6 +286,11 @@ class C_Index extends CI_Controller {
 								);*/
 
 		$this->M_pekerjakeluar->updateDataPekerja($data,$noind);
+		//insert to t_log
+		$aksi = 'MASTER PEKERJA';
+		$detail = 'Update Data Pekerja Keluar Noind = '.$noind;
+		$this->log_activity->activity_log($aksi, $detail);
+		//
 		/*$this->M_pekerjakeluar->updateDataPekerjaa($mail,$noind);*/
 		$history 	= array(
 							'noind' 		=> $this->input->post('txt_noindukLama'),

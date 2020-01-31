@@ -11,6 +11,7 @@ class C_Index extends CI_Controller
 		$this->load->helper('url');
 		$this->load->helper('html');
 
+		$this->load->library('Log_Activity');
 		$this->load->library('form_validation');
 		$this->load->library('session');
 		$this->load->library('encrypt');
@@ -94,7 +95,7 @@ class C_Index extends CI_Controller
 
 
       	// $data['DaftarPekerja']	=	$this->M_pengangkatan->getAmbilPekerjaAktif() ;
-      	// $data['DaftarSeksi']    =   $this->M_pengangkatan->getSeksi(); 
+      	// $data['DaftarSeksi']    =   $this->M_pengangkatan->getSeksi();
       	// $data['DaftarPekerjaan'] = $this->M_pengangkatan->DetailPekerjaan();
 		$data['DaftarGolongan'] = $this->M_pengangkatan->DetailGolongan();
       	$data['DaftarLokasiKerja'] = $this->M_pengangkatan->DetailLokasiKerja();
@@ -404,7 +405,7 @@ class C_Index extends CI_Controller
 		$status_lama				= 	$this->input->post('txtStatusJabatanlama');
 
 		$status_baru				= 	$this->input->post('txtStatusjabatanBaru');
-		
+
 		if($status_baru != null or $status_baru != "" ){
 			$status_baru 			= 	explode(' - ', $status_baru);
 		}else{
@@ -514,6 +515,12 @@ class C_Index extends CI_Controller
 		$this->M_pengangkatan->inputNomorSurat($inputNomorSurat);
       	$this->M_pengangkatan->inserttlogbaru($nomor_induk, $nomor_induk_baru);
 
+		//insert to t_log
+	    $aksi = 'MASTER PEKERJA';
+	    $detail = 'Input Surat Pengangkatan Nomor Surat='.$nomor_surat.'/'.$kodeSurat.'/'.$bulan_surat.'/'.$tahun_surat.' Noind Baru='.$nomor_induk_baru;
+	    $this->log_activity->activity_log($aksi, $detail);
+	    //
+
       	$inputFingerPengangkatan			= 	array
 			(
 				'no_surat'				=>	$nomor_surat,
@@ -529,7 +536,7 @@ class C_Index extends CI_Controller
 				'noind_baru'			=> 	$noind_baru
 
 				);
-			
+
 			$inputFingerPindah = $this->M_pengangkatan->inputFingerPengangkatan($inputFingerPengangkatan);
 			if($finger_pindah == 't'){
 				$this->kirim_email_ict($noind_baru,$nomor_induk,substr($finger_awal, 7),substr($finger_akhir, 7),'PENGANGKATAN');
@@ -546,7 +553,11 @@ class C_Index extends CI_Controller
 	{
 		$no_surat_decode 	=	str_replace(array('-', '_', '~'), array('+', '/', '='), $no_surat);
 		$no_surat_decode 	=	$this->encrypt->decode($no_surat_decode);
-
+		//insert to t_log
+	    $aksi = 'MASTER PEKERJA';
+	    $detail = 'Cetak PDF Surat Pengangkatan Nomor Surat='.$no_surat_decode;
+	    $this->log_activity->activity_log($aksi, $detail);
+	    //
 		$data['isiSuratPengangkatan']		=	$this->M_pengangkatan->ambilIsiSuratPengangkatan($no_surat_decode);
 
 		$this->load->library('pdf');
@@ -609,6 +620,12 @@ class C_Index extends CI_Controller
 		$no_surat_decode 	=	str_replace(array('-', '_', '~'), array('+', '/', '='), $no_surat);
 		$no_surat_decode 	=	$this->encrypt->decode($no_surat_decode);
 
+		//insert to t_log
+	    $aksi = 'MASTER PEKERJA';
+	    $detail = 'Update Surat Pengangkatan Nomor Surat='.$no_surat_decode;
+	    $this->log_activity->activity_log($aksi, $detail);
+	    //
+
 		$nomor_induk 				=	$this->input->post('txtNoind');
 		$nomor_induk_baru			=	$this->input->post('txtNoindBaru');
 		$seksi_lama 				=	substr($this->input->post('txtKodesieLama'), 0, 9);
@@ -638,13 +655,13 @@ class C_Index extends CI_Controller
 		$status_lama				= 	$this->input->post('txtStatusJabatanlama');
 
 		$status_baru				= 	$this->input->post('txtStatusjabatanBaru');
-		
+
 		if($status_baru != null or $status_baru != "" ){
 			$status_baru 			= 	explode(' - ', $status_baru);
 		}else{
 			$status_baru 			= 	explode(' - ', $status_lama);
 		}
-		
+
 		$status_lama 				= 	explode(' - ', $status_lama);
 		$kd_status_lama				= 	$status_lama[0];
 		$nama_status_lama			= 	$status_lama[1];
@@ -744,9 +761,9 @@ class C_Index extends CI_Controller
 				'lokasifinger_akhir'  	=>	substr($finger_akhir, 7),
 				'created_date'			=>  $tanggal_cetak,
 				'noind_baru'			=> 	$noind_baru
-				
+
 				);
-			
+
 			$inputFingerPindah = $this->M_pengangkatan->inputFingerPengangkatan($inputFingerPengangkatan);
 			if($finger_pindah == 't'){
 				$this->kirim_email_ict($noind_baru,$nomor_induk,substr($finger_awal, 7),substr($finger_akhir, 7),'PENGANGKATAN');
@@ -760,6 +777,12 @@ class C_Index extends CI_Controller
 				'finger_akhir'  		=>	substr($finger_akhir, 0,5),
 				'lokasifinger_akhir'  	=>	substr($finger_akhir, 7),
 			);
+
+			//insert to t_log
+		    $aksi = 'MASTER PEKERJA';
+		    $detail = 'Pindah Finger melalui Surat Pengangkatan Nomor Surat='.$no_surat_decode;
+		    $this->log_activity->activity_log($aksi, $detail);
+		    //
 
 			$this->M_pengangkatan->updateFingerSuratPengangkatan($updateFingerSuratPengangkatan, $nomor_surat, $kodeSurat, $tanggal_cetak_asli);
 			$updateFingerPindah =  $this->M_pengangkatan->updateFingerSuratPengangkatan($updateFingerSuratPengangkatan, $nomor_surat, $kodeSurat, $tanggal_cetak_asli);
@@ -779,7 +802,11 @@ class C_Index extends CI_Controller
 	{
 		$no_surat_decode 	=	str_replace(array('-', '_', '~'), array('+', '/', '='), $no_surat);
 		$no_surat_decode 	=	$this->encrypt->decode($no_surat_decode);
-		// echo $no_surat_decode;exit();
+		//insert to t_log
+	    $aksi = 'MASTER PEKERJA';
+	    $detail = 'Delete Surat Pengangkatan Nomor Surat='.$no_surat_decode;
+	    $this->log_activity->activity_log($aksi, $detail);
+	    //
 
 		$this->M_pengangkatan->deleteSuratPengangkatan($no_surat_decode);
 		$this->M_pengangkatan->deleteFingerSuratPengangkatan($no_surat_decode);
