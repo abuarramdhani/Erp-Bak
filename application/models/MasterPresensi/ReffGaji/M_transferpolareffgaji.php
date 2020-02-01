@@ -14,7 +14,7 @@ class M_transferpolareffgaji extends CI_Model
 
 	public function getPola($awal,$akhir){
 		$sql = "select * from (
-				SELECT LEFT(a.noind, 1), a.tanggal::date as tanggal, a.noind, a.kodesie, trim(kd_ket) as kd_ket, nama, trim(inisial) as inisial 
+				SELECT LEFT(a.noind, 1), a.tanggal::date as tanggal, a.noind, b.kodesie, trim(kd_ket) as kd_ket, nama, trim(inisial) as inisial 
 				 FROM \"Presensi\".tdatatim a 
 				   INNER JOIN hrd_khs.TPribadi b ON b.noind=a.noind 
 				   INNER JOIN \"Presensi\".tshiftpekerja c ON a.noind = c.noind 
@@ -25,7 +25,7 @@ class M_transferpolareffgaji extends CI_Model
 				  AND (a.noind like 'A%' or a.noind like 'H%' or a.noind like 'E%' 
 				       or a.noind like 'K%' or a.noind like 'P%') 
 				UNION 
-				SELECT LEFT(a.noind, 1),a.tanggal::date as tanggal, a.noind, a.kodesie, trim(kd_ket) as kd_ket, nama, trim(inisial) as inisial  
+				SELECT LEFT(a.noind, 1),a.tanggal::date as tanggal, a.noind, b.kodesie, trim(kd_ket) as kd_ket, nama, trim(inisial) as inisial  
 				 FROM \"Presensi\".tdatapresensi a 
 				   INNER JOIN hrd_khs.TPribadi b ON b.noind=a.noind 
 				   INNER JOIN \"Presensi\".tshiftpekerja c ON a.noind = c.noind 
@@ -42,7 +42,7 @@ class M_transferpolareffgaji extends CI_Model
 
 	public function getCountNumber($awal,$akhir){
 		$sql = "select count(distinct noind) as jumlah from (
-				SELECT LEFT(a.noind, 1), a.tanggal::date as tanggal, a.noind, a.kodesie, trim(kd_ket) as kd_ket, nama, trim(inisial) as inisial 
+				SELECT LEFT(a.noind, 1), a.tanggal::date as tanggal, a.noind, b.kodesie, trim(kd_ket) as kd_ket, nama, trim(inisial) as inisial 
 				 FROM \"Presensi\".tdatatim a 
 				   INNER JOIN hrd_khs.TPribadi b ON b.noind=a.noind 
 				   INNER JOIN \"Presensi\".tshiftpekerja c ON a.noind = c.noind 
@@ -53,7 +53,7 @@ class M_transferpolareffgaji extends CI_Model
 				  AND (a.noind like 'A%' or a.noind like 'H%' or a.noind like 'E%' 
 				       or a.noind like 'K%' or a.noind like 'P%') 
 				UNION 
-				SELECT LEFT(a.noind, 1),a.tanggal::date as tanggal, a.noind, a.kodesie, trim(kd_ket) as kd_ket, nama, trim(inisial) as inisial  
+				SELECT LEFT(a.noind, 1),a.tanggal::date as tanggal, a.noind, b.kodesie, trim(kd_ket) as kd_ket, nama, trim(inisial) as inisial  
 				 FROM \"Presensi\".tdatapresensi a 
 				   INNER JOIN hrd_khs.TPribadi b ON b.noind=a.noind 
 				   INNER JOIN \"Presensi\".tshiftpekerja c ON a.noind = c.noind 
