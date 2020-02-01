@@ -34,7 +34,7 @@
 			<td style="border-bottom: 1px solid black;border-right: 1px solid black;width:15%;font-size:10px;padding:5px;text-align:center">Tgl. Barang Dikirim: <br> <?php echo date('d-M-Y') ?> </td>
 			<td style="border-bottom: 1px solid black;border-right: 1px solid black;width:15%;font-size:11px;padding:5px;text-align:center">
 				<center>
-					<img style="width: 20mm; height: auto;" src="<?php echo base_url('assets/img/monitoringDOQRCODE/'.$get_header[0]['NO_DO'].'.png') ?>">
+					<img style="width: 20mm; height: auto;" src="<?php echo base_url('assets/img/'.$get_header[0]['NO_DO'].'.png') ?>">
 				</center>
 				<?php echo $get_header[0]['NO_DO'] ?>
 			</td>
