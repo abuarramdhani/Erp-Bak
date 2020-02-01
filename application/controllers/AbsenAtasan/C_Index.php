@@ -199,14 +199,12 @@ class C_Index extends CI_Controller
 			$dataPersonalia = $this->M_absenatasan->getEmailPersonalia();
 			// echo "<pre>";print_r($dataPersonalia);exit();
 
-			if($internalMail != null and $internalMail != ''){
-				$this->kirim_email($internalMail,$eksternalMail,$namaPekerja,$jenisAbsen,$waktu,$lokasi,$latitude,$longitude,$status,$atasan,$noindukAtasan);
-			}
+			$this->kirim_email($internalMail,$eksternalMail,$namaPekerja,$jenisAbsen,$waktu,$lokasi,$latitude,$longitude,$status,$atasan,$noindukAtasan);
 
 			foreach ($dataPersonalia as $key => $personalia) {
-			$internalMailPersonalia = $personalia['internal_mail'];
-			$externalMailPersonalia	= $personalia['external_mail'];
-			$namaPekerjaPersonalia	= $personalia['employee_name'];
+				$internalMailPersonalia = $personalia['internal_mail'];
+				$externalMailPersonalia	= $personalia['external_mail'];
+				$namaPekerjaPersonalia	= $personalia['employee_name'];
 
 			$this->kirim_emailPersonalia($namaPekerja,$jenisAbsen,$waktu,$lokasi,$latitude,$longitude,$status,$atasan,$noindukAtasan,$internalMailPersonalia,$externalMailPersonalia,$namaPekerjaPersonalia);
 			}
@@ -298,7 +296,7 @@ class C_Index extends CI_Controller
 		function kirim_email($internalMail,$eksternalMail,$namaPekerja,$jenisAbsen,$waktu,$lokasi,$latitude,$longitude,$status,$atasan,$noindukAtasan){
 			date_default_timezone_set("Asia/Jakarta");
 
-			if(!$internalMail==null){
+			if(!empty($internalMail) and $internalMail != null and trim($internalMail) != '' and trim($internalMail) != '-'){
 				$this->load->library('PHPMailerAutoload');
 				$mail = new PHPMailer;
 				$mail->isSMTP();
@@ -348,7 +346,7 @@ class C_Index extends CI_Controller
 
 		}
 
-		if(!$eksternalMail==null){
+		if(!empty($eksternalMail) and $eksternalMail != null and trim($eksternalMail) != '' and trim($eksternalMail) != '-'){
 				$this->load->library('PHPMailerAutoload');
 				$mail = new PHPMailer;
 				$mail->isSMTP();
@@ -398,7 +396,7 @@ class C_Index extends CI_Controller
 			function kirim_emailPersonalia($namaPekerja,$jenisAbsen,$waktu,$lokasi,$latitude,$longitude,$status,$atasan,$noindukAtasan,$internalMailPersonalia,$externalMailPersonalia,$namaPekerjaPersonalia){
 			date_default_timezone_set("Asia/Jakarta");
 
-			if(!$internalMailPersonalia==null){
+			if(!empty($internalMailPersonalia) and $internalMailPersonalia != null and trim($internalMailPersonalia) != '' and trim($internalMailPersonalia) != '-'){
 				$this->load->library('PHPMailerAutoload');
 				$mail = new PHPMailer;
 				$mail->isSMTP();
@@ -449,7 +447,7 @@ class C_Index extends CI_Controller
 
 				}
 
-			if(!$externalMailPersonalia==null){
+			if(!empty($externalMailPersonalia) and $externalMailPersonalia != null and trim($externalMailPersonalia) != '' and trim($externalMailPersonalia) != '-'){
 				$this->load->library('PHPMailerAutoload');
 				$mail = new PHPMailer;
 				$mail->SMTPDebug = 2;
