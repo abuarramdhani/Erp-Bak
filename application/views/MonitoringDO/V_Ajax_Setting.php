@@ -2,7 +2,7 @@
 <div class="table-responsive">
   <table class="table table-striped table-bordered table-hover text-left " id="tblMonitoringDO" style="font-size:12px;">
     <thead>
-      <tr class="bg-primary">
+      <!-- <tr class="bg-primary">
         <th><center>NO</center></th>
         <th><center>NOMOR</center></th>
         <th><center>TUJUAN</center></th>
@@ -10,6 +10,16 @@
         <th><center>USER</center></th>
         <th><center>STATUS</center></th>
         <th><center>NEXT PROCESS</center></th>
+        <th><center>DETAIL</center></th>
+      </tr> -->
+      <tr class="bg-primary">
+        <th><center>NO</center></th>
+        <th><center>NOMOR DO</center></th>
+        <th><center>NOMOR SO</center></th>
+        <th><center>TUJUAN</center></th>
+        <th><center>KOTA</center></th>
+        <th><center>PLAT NOMOR</center></th>
+        <th><center>ASSIGN</center></th>
         <th><center>DETAIL</center></th>
       </tr>
     </thead>
@@ -29,6 +39,25 @@
          <input type="hidden" name="cekdodo" id="checkDODO" value="<?php echo $g['CHECK'] ?>">
          <td><center><?php echo $no ?></center></td>
          <td><center><?php echo $g['DO/SPB'] ?></center></td>
+         <td><center><?php echo $g['NO_SO'] ?></center></td>
+         <td><center><?php echo $g['TUJUAN'] ?></center></td>
+         <td><center><?php echo $g['KOTA'] ?></center></td>
+         <td><center><?php echo $g['PLAT_NUMBER'] ?></center></td>
+         <td>
+           <center>
+             <div class="form-group">
+               <input class="form-control uppercaseDO" type="text" id="person_id" name="person_id" placeholder="Assign">
+             </div>
+           </center>
+         </td>
+         <td><center><button type="button" class="btn btn-info" name="button" style="font-weight:bold;" onclick="detail(<?php echo $g['DO/SPB'] ?>, <?php echo $g['HEADER_ID'] ?>, <?php echo $no ?>, <?php echo $g['ORDER_NUMBER'] ?>)" data-toggle="modal" data-target="#MyModal2">
+           <i class="fa fa-eye"></i></button> </center></td>
+       </tr>
+
+       <!-- <tr row-id="<?php echo $no ?>" <?php echo $styleSetting ?>>
+         <input type="hidden" name="cekdodo" id="checkDODO" value="<?php echo $g['CHECK'] ?>">
+         <td><center><?php echo $no ?></center></td>
+         <td><center><?php echo $g['DO/SPB'] ?></center></td>
          <td><center><?php echo $g['TUJUAN'] ?></center></td>
          <td><center><?php echo $g['KOTA'] ?></center></td>
          <td>
@@ -42,8 +71,8 @@
          <td><center>Pelayanan Android</center></td>
          <td><center><button type="button" class="btn btn-info" name="button" style="font-weight:bold;" onclick="detail(<?php echo $g['DO/SPB'] ?>, <?php echo $g['HEADER_ID'] ?>, <?php echo $no ?>, <?php echo $g['ORDER_NUMBER'] ?>)" data-toggle="modal" data-target="#MyModal2">
            <i class="fa fa-eye"></i></button> </center></td>
+       </tr> -->
 
-       </tr>
      <?php $no++; } }?>
    </tbody>
  </table>
