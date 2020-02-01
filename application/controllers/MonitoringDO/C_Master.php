@@ -367,9 +367,9 @@ class C_Master extends CI_Controller
             $pdf 		= new mPDF('utf-8', array(210 , 297), 0, '', 3, 3, 3, 0, 0, 3);
 
             // ------ GENERATE QRCODE ------
-            if (!is_dir('./assets/img/monitoringDOQRCODE')) {
-                mkdir('./assets/img/monitoringDOQRCODE', 0777, true);
-                chmod('./assets/img/monitoringDOQRCODE', 0777);
+            if (!is_dir('./assets/img')) {
+                mkdir('./assets/img', 0777, true);
+                chmod('./assets/img', 0777);
             }
 
             $params['data']		= $data['get_header'][0]['NO_DO'];
@@ -377,7 +377,7 @@ class C_Master extends CI_Controller
             $params['size']		= 4;
             $params['black']	= array(255,255,255);
             $params['white']	= array(0,0,0);
-            $params['savename'] = './assets/img/monitoringDOQRCODE/'.$data['get_header'][0]['NO_DO'].'.png';
+            $params['savename'] = './assets/img/'.$data['get_header'][0]['NO_DO'].'.png';
             $this->ciqrcode->generate($params);
 
             ob_end_clean() ;
@@ -475,9 +475,9 @@ class C_Master extends CI_Controller
             $pdf 		= new mPDF('utf-8', array(210 , 297), 0, '', 3, 3, 3, 0, 0, 3);
 
             // ------ GENERATE QRCODE ------
-            if (!is_dir('./assets/img/monitoringDOQRCODE')) {
-                mkdir('./assets/img/monitoringDOQRCODE', 0777, true);
-                chmod('./assets/img/monitoringDOQRCODE', 0777);
+            if (!is_dir('./assets/img')) {
+                mkdir('./assets/img', 0777, true);
+                chmod('./assets/img', 0777);
             }
 
             $params['data']		= $data['get_header'][0]['NO_DO'];
@@ -485,7 +485,7 @@ class C_Master extends CI_Controller
             $params['size']		= 4;
             $params['black']	= array(255,255,255);
             $params['white']	= array(0,0,0);
-            $params['savename'] = './assets/img/monitoringDOQRCODE/'.$data['get_header'][0]['NO_DO'].'.png';
+            $params['savename'] = './assets/img/'.$data['get_header'][0]['NO_DO'].'.png';
             $this->ciqrcode->generate($params);
 
             ob_end_clean() ;
