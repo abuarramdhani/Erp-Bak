@@ -3728,3 +3728,12 @@ $route['PendampinganSPT/Daftar/(:any)/(:any)'] = 'PendampinganSPT/MainMenu/C_Daf
 $route['PendampinganSPT/Data'] = 'PendampinganSPT/MainMenu/C_Data';
 $route['PendampinganSPT/Data/(:any)'] = 'PendampinganSPT/MainMenu/C_Data/$1';
 $route['PendampinganSPT/Data/(:any)/(:any)'] = 'PendampinganSPT/MainMenu/C_Data/$1/$2';
+
+// -------------------------------------------------- Koperasi --------------------------------------------------//
+$route['Koperasi'] = 'Koperasi/C_Index/index';
+$route['Koperasi/api/getList'] = 'Koperasi/C_Index/getList';
+$route['Koperasi/api/getListDetail'] = 'Koperasi/C_Index/getListDetail';
+$route['Koperasi/api/delList'] = 'Koperasi/C_Index/delList';
+$route['Koperasi/api/previewDBF'] = 'Koperasi/C_Index/previewDBF';
+$route['Koperasi/api/uploadData'] = 'Koperasi/C_Index/uploadFile';
+$route['Koperasi/api/saveData'] = 'Koperasi/C_Index/saveToDatabase';
