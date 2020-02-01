@@ -12,8 +12,8 @@
 		if(isset($Header)){
 			$header = $Header;
 		}else {	
-			if($this->session->module_name != '') {
-				$header = ucwords(strtolower($this->session->module_name))." - Quick ERP";
+			if($this->session->responsibility != '') {
+				$header = ucwords(strtolower($this->session->responsibility))." - Quick ERP";
 			}else {
 				$header = 'Quick ERP';
 			}
