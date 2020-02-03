@@ -114,7 +114,7 @@
 		</thead>
 		<tbody style="vertical-align:top!important;">
 		<tr style="border-bottom:1px solid black;">
-			<td style="vertical-align:top;border-right:1px solid black;border-left:1px solid black;height: 702px;font-size:10px;padding:5px">
+			<td style="vertical-align:top;border-right:1px solid black;border-left:1px solid black;height: 587px;font-size:10px;padding:5px">
 				<center>
 					<!-- <?php $no = 1; foreach ($get_body as $key => $gb){ ?>
 						<?php echo $no ?> <br /><br />
