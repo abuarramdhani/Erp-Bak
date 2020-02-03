@@ -208,7 +208,7 @@ class C_Index extends CI_Controller {
 				}
 				
 				$subject = "($st) ".$ip['name']." is Down";
-				if($ip['name'] != "172.16.100.62"){
+				if($ip['ip'] != "172.16.100.62"){
                 $this->EmailAlert($subject, $message);
                 $this->EmailAlertInternal($subject, $message);
 				}
