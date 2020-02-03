@@ -323,7 +323,7 @@ class M_monitoringdo extends CI_Model
                   ,mtrl.INVENTORY_ITEM_ID
                   ,msib.DESCRIPTION
                   ,mtrl.QUANTITY
-                  ,khs_stock_delivery(mtrl.INVENTORY_ITEM_ID,102,'FG-TKS') AV_TO_RES
+                  ,khs_stock_delivery(mtrl.INVENTORY_ITEM_ID,102,'FG-TKS') + mtrl.quantity AV_TO_RES
                   ,kpd.PERSON_ID petugas
             from mtl_txn_request_lines mtrl
                 ,mtl_txn_request_headers mtrh
@@ -444,7 +444,7 @@ class M_monitoringdo extends CI_Model
                   ,msib.DESCRIPTION
                   ,mtrl.QUANTITY qty_req
                   ,khs_stock_delivery(mtrl.INVENTORY_ITEM_ID,102,'FG-TKS') stock
-                  ,khs_inv_qty_atr(102,mtrl.INVENTORY_ITEM_ID,'FG-TKS','','') atr
+                  ,khs_inv_qty_atr(102,mtrl.INVENTORY_ITEM_ID,'FG-TKS','','') + mtrl.quantity atr
                   ,kpd.PERSON_ID petugas
             from mtl_txn_request_lines mtrl
                 ,mtl_txn_request_headers mtrh
