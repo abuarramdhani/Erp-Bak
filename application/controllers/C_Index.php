@@ -44,7 +44,7 @@ class C_Index extends CI_Controller {
 	public function index()
 	{
 		if($this->session->is_logged){
-			$this->session->set_userdata('module_name', 'Dashboard');
+			$this->session->set_userdata('responsbility', 'Dashboard');
 
 			//$usr = "D1178";
 			$user_id = $this->session->userid;
@@ -62,7 +62,7 @@ class C_Index extends CI_Controller {
 			$this->load->view('V_Index',$data);
 			$this->load->view('V_Footer',$data);
 		}else{
-			$this->session->set_userdata('module_name', 'Login');
+			$this->session->set_userdata('responsbility', 'Login');
 			if($this->session->gagal){
 				$data['error'] = "Login error, please enter correct username and password";
 				$aksi = 'Login';
@@ -97,7 +97,6 @@ class C_Index extends CI_Controller {
 					// $UserResponsibility_item['user_group_menu_id'] = 0;
 				// }
 				$this->session->set_userdata('responsibility_id', $UserResponsibility_item['user_group_menu_id']);
-				$this->session->set_userdata('module_name', $UserResponsibility_item['module_name']);
 				$this->session->set_userdata('module_link', $UserResponsibility_item['module_link']);
 				$this->session->set_userdata('org_id', $UserResponsibility_item['org_id']);
 			}
@@ -115,7 +114,7 @@ class C_Index extends CI_Controller {
 				$data['error'] = "";
 			}
 
-			$this->session->set_userdata('module_name', 'Login');
+			$this->session->set_userdata('responsbility', 'Login');
 			$this->load->view('V_Login',$data);
 			$this->session->unset_userdata('gagal');
 		}
