@@ -350,7 +350,7 @@ class C_Index extends CI_Controller
 				$this->load->library('PHPMailerAutoload');
 				$mail = new PHPMailer;
 				$mail->isSMTP();
-				$mail->SMTPDebug = 2;
+				$mail->SMTPDebug = 0;
 				$mail->Debugoutput = 'html';
 				$mail->Host = 'smtp.gmail.com';
 				$mail->Port = 587;
@@ -450,7 +450,7 @@ class C_Index extends CI_Controller
 			if(!empty($externalMailPersonalia) and $externalMailPersonalia != null and trim($externalMailPersonalia) != '' and trim($externalMailPersonalia) != '-'){
 				$this->load->library('PHPMailerAutoload');
 				$mail = new PHPMailer;
-				$mail->SMTPDebug = 2;
+				$mail->SMTPDebug = 0;
 				$mail->Debugoutput = 'html';
 				$mail->Host = 'smtp.gmail.com';
 				$mail->Port = 587;
@@ -559,7 +559,7 @@ class C_Index extends CI_Controller
 				$this->load->library('PHPMailerAutoload');
 				$mail = new PHPMailer;
 				$mail->isSMTP();
-				$mail->SMTPDebug = 2;
+				$mail->SMTPDebug = 0;
 				$mail->Debugoutput = 'html';
 				$mail->Host = 'smtp.gmail.com';
 				$mail->Port = 587;
