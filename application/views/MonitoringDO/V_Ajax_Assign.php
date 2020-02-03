@@ -34,7 +34,7 @@
             }
              ?>
           <td>
-            <input <?php echo $atribut ?> type="text" style="float:left;margin-right:7px;width:80%;height:28px;" name="inputAsiap" id="plat_nomer" value="<?php echo $g['PLAT_NUMBER'] ?>">
+            <input <?php echo $atribut ?> type="text" style="float:left;margin-right:7px;width:70%;height:28px;" name="inputAsiap" id="plat_nomer" value="<?php echo $g['PLAT_NUMBER'] ?>">
             <button <?php echo $attr ?> type="button" class="btn btn-success uppercaseDO" name="buttonAsiap" style="float:left;font-size:10px;" onclick="updateFlag(<?php echo $g['DO/SPB'] ?>, <?php echo $g['HEADER_ID'] ?>, <?php echo $no; ?>)"><i class="fa fa-rocket"></i></button>
           </td>
           <td><center><?php echo $g['PETUGAS'] ?></center></td>
