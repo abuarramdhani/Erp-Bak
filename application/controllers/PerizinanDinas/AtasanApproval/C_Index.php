@@ -259,7 +259,7 @@ class C_Index extends CI_Controller
 
 				// set email content
 				$mail->setFrom('no-reply@quick.com', 'Email Sistem');
-				$mail->addAddress('rosyidatun_nur_r@quick.com');
+				$mail->addAddress($imel);
 				$mail->Subject = $subject;
 				$mail->msgHTML($body);
 
@@ -326,7 +326,7 @@ class C_Index extends CI_Controller
 
 				// set email content
 				$mail->setFrom('no-reply@quick.com', 'Email Sistem');
-				$mail->addAddress('rosyidatun_nur_r@quick.com');
+				$mail->addAddress($imel);
 				$mail->Subject = $subject;
 				$mail->msgHTML($body);
 
