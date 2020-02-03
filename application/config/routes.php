@@ -3729,6 +3729,10 @@ $route['PendampinganSPT/Data'] = 'PendampinganSPT/MainMenu/C_Data';
 $route['PendampinganSPT/Data/(:any)'] = 'PendampinganSPT/MainMenu/C_Data/$1';
 $route['PendampinganSPT/Data/(:any)/(:any)'] = 'PendampinganSPT/MainMenu/C_Data/$1/$2';
 
+$route['PendampinganSPT/Jadwal'] = 'PendampinganSPT/MainMenu/C_Jadwal';
+$route['PendampinganSPT/Jadwal/(:any)'] = 'PendampinganSPT/MainMenu/C_Jadwal/$1';
+$route['PendampinganSPT/Jadwal/(:any)/(:any)'] = 'PendampinganSPT/MainMenu/C_Jadwal/$1/$2';
+
 // -------------------------------------------------- Koperasi --------------------------------------------------//
 $route['Koperasi'] = 'Koperasi/C_Index/index';
 $route['Koperasi/api/getList'] = 'Koperasi/C_Index/getList';
