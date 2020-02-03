@@ -144,7 +144,7 @@
 				<div class="col-md-2">
 					
 				</div>
-				<?php if(strpos(base_url(),"erp.quick.com")): ?>
+				<?php if(!strpos(base_url(),"erp.quick.com")): ?>
 			 	<div class="col-md-2">
 			 		<button data-toggle="modal" data-target="#locationModal" class="btn btn-success" href="#"><i class="fa fa-map-marker"></i>  Lihat di Google Maps</button>
 			 	</div>
