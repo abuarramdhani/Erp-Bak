@@ -364,7 +364,7 @@ class C_Master extends CI_Controller
 
             $pdf 		= $this->pdf->load();
             $this->load->library('ciqrcode');
-            $pdf 		= new mPDF('utf-8', array(210 , 297), 0, '', 3, 3, 3, 0, 0, 3);
+            $pdf 		= new mPDF('utf-8', array(210 , 267), 0, '', 3, 3, 3, 0, 0, 3);
 
             // ------ GENERATE QRCODE ------
             if (!is_dir('./assets/img')) {
