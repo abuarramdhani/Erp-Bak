@@ -43,11 +43,27 @@ class C_Index extends CI_Controller
 		$data['SubMenuOne'] = '';
 		$data['SubMenuTwo'] = '';
 
+		$datamenu = $this->M_user->getUserMenu($user_id,$this->session->responsibility_id);
 		$data['UserMenu'] = $this->M_user->getUserMenu($user_id,$this->session->responsibility_id);
 		$data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id);
 		$data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id);
 
+		if ($no_induk == 'B0898' || $no_induk == 'B0720' || $no_induk == 'B0819' || $no_induk == 'B0697' || $no_induk == 'B0696' || $no_induk == 'J1293' || $no_induk == 'B0307') {
+			if($no_induk == 'B0898' || $no_induk == 'B0720' || $no_induk == 'B0819'){
+				$data['UserMenu'] = $datamenu;
+			}else {
+				unset($datamenu[1]);
+				$data['UserMenu'] = $datamenu;
+			}
+		}else {
+			unset($datamenu[1]);
+			unset($datamenu[2]);
+			$data['UserMenu'] = $datamenu;
+		}
+
 		$today = date('Y-m-d');
+		$data['Izin_id'] = $this->M_index->getIDIzin();
+		$data['noind'] = $this->M_index->getNoind();
 
 		$this->load->view('V_Header',$data);
 		$this->load->view('V_Sidemenu',$data);
@@ -65,33 +81,51 @@ class C_Index extends CI_Controller
 
 		$perioderekap 	= $this->input->post('periodeRekap');
 		$jenis			= $this->input->post('jenis');
+		$id				= $this->input->post('id');
+		$noind 			= $this->input->post('noind');
+
 		if (!empty($perioderekap)) {
 			$explode = explode(' - ', $perioderekap);
 			$periode1 = str_replace('/', '-', date('Y-m-d', strtotime($explode[0])));
 			$periode2 = str_replace('/', '-', date('Y-m-d', strtotime($explode[1])));
 
 			if ($periode1 == $periode2) {
-				$periode = "cast(ti.created_date as date) = '$periode1'";
-				$periodea = "cast(tp.created_date as date) = '$periode1'";
-				$data['IzinApprove'] = $this->M_index->IzinApprove($periode);
-				$data['pekerja'] = $this->M_index->getPekerja($periodea);
+				$periode = "WHERE cast(ti.created_date as date) = '$periode1'";
+				$periodea = "WHERE cast(tp.created_date as date) = '$periode1'";
 			}else if($periode1 != $periode2){
-				$periode = "cast(ti.created_date as date) between '$periode1' and '$periode2'";
-				$periodea = "cast(tp.created_date as date) between '$periode1' and '$periode2'";
-				$data['pekerja'] = $this->M_index->getPekerja($periodea);
-				$data['IzinApprove'] = $this->M_index->IzinApprove($periode);
+				$periode = "WHERE cast(ti.created_date as date) between '$periode1' and '$periode2'";
+				$periodea = "WHERE cast(tp.created_date as date) between '$periode1' and '$periode2'";
 			}
-		}else {
-			$data['pekerja'] = $this->M_index->getPekerja($perioderekap);
-			$data['IzinApprove'] = $this->M_index->IzinApprove($perioderekap);
+
+			if (!empty($id)) {
+				$id 			= implode("', '", $id);
+				$periode .= " AND ti.izin_id IN ('$id')";
+			}
+
+			if (!empty($noind)) {
+				$noind 			= implode("', '", $noind);
+				$periodea .= " AND ti.noind IN ('$noind')";
+			}
+		}else{
+			$periode = $perioderekap;
+			$periodea = $perioderekap;
+
+			if (!empty($id)) {
+				$id 			= implode("', '", $id);
+				$periode .= "WHERE ti.izin_id IN ('$id')";
+			}
+
+			if (!empty($noind)) {
+				$noind 			= implode("', '", $noind);
+				$periodea .= "WHERE ti.noind IN ('$noind')";
+			}
 		}
 
-		$data['nama'] = $this->M_index->getAllNama();
-		$today = date('Y-m-d');
-
 		if ($jenis == '1') {
+			$data['IzinApprove'] = $this->M_index->IzinApprove($periode);
 			$view = $this->load->view('PerizinanDinas/RekapPerizinanDinas/V_Process',$data);
 		}else {
+			$data['pekerja'] = $this->M_index->getPekerja($periodea);
 			$view = $this->load->view('PerizinanDinas/RekapPerizinanDinas/V_Human',$data);
 		}
 		echo json_encode($view);

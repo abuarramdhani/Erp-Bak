@@ -1940,6 +1940,12 @@ $route['PerizinanDinas/AtasanApproval/(:any)']						= 'PerizinanDinas/AtasanAppr
 $route['PerizinanDinas/AtasanApproval/(:any)/(:any)']				= 'PerizinanDinas/AtasanApproval/C_Index/$1/$2';
 $route['PerizinanDinas/AtasanApproval/(:any)/(:any)/(:any)']		= 'PerizinanDinas/AtasanApproval/C_Index/$1/$2/$3';
 
+//------------------------------------Rotasi Perizinan Dinas----------------------------------------
+$route['PerizinanDinas/ApproveAll']								= 'PerizinanDinas/ApprovalAll/C_Index';
+$route['PerizinanDinas/ApproveAll/(:any)']						= 'PerizinanDinas/ApprovalAll/C_Index/$1';
+$route['PerizinanDinas/ApproveAll/(:any)/(:any)']				= 'PerizinanDinas/ApprovalAll/C_Index/$1/$2';
+$route['PerizinanDinas/ApproveAll/(:any)/(:any)/(:any)']		= 'PerizinanDinas/ApprovalAll/C_Index/$1/$2/$3';
+
 //--------------------------------------------------- Cetak Rekap Perizinan Dinas -----------------------------------//
 $route['PD/RekapPerizinanDinas'] 		= 'PerizinanDinas/RekapPerizinanDinas/C_Index';
 $route['PD/RekapPerizinanDinas/(:any)'] = 'PerizinanDinas/RekapPerizinanDinas/C_Index/$1';
