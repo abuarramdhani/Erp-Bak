@@ -128,6 +128,8 @@ $(document).ready(function() {
     //Untuk Rekap Perizinan Dinas
     $('#PD_Cari').on('click', function () {
         let tanggal = $('#periodeRekap').val()
+        let id = $('.RPD_id_rekap').val()
+        let noind = $('.RPD_perNoind').val()
         let jenis = $("input:radio[class=RD_radioDinas]:checked").val()
         var loading = baseurl + 'assets/img/gif/loadingquick.gif';
 
@@ -143,13 +145,14 @@ $(document).ready(function() {
                 type: 'POST',
                 data:{
                     periodeRekap: tanggal,
-                    jenis: jenis
+                    jenis: jenis,
+                    id: id,
+                    noind: noind
                 },
                 url: baseurl + 'PD/RekapPerizinanDinas/rekapbulanan',
                 beforeSend: function () {
                     swal.fire({
-                        html : "<img style='width: 320px; height: auto;'src='"+loading+"'>",
-                        text : 'Loading...',
+                        html : "<div><img style='width: 320px; height: auto;'src='"+loading+"'><br><p>Sedang Proses....</p></div>",
                         customClass: 'swal-wide',
                         showConfirmButton:false,
                         allowOutsideClick: false
@@ -174,6 +177,21 @@ $(document).ready(function() {
         }
     })
 
+    $(document).ready(function () {
+        $('#RPD_ID').prop('hidden', true)
+        $('#RPD_Noind').prop('hidden', true)
+        $('.RD_radioDinas').on('ifChecked', function(event){
+            if ($(this).val() == '1') {
+                $('#RPD_ID').prop('hidden', false)
+                $('#RPD_Noind').prop('hidden', true)
+            }
+            if ($(this).val() == '2'){
+                $('#RPD_ID').prop('hidden', true)
+                $('#RPD_Noind').prop('hidden', false)
+            }
+        });
+    })
+
     $('.tabel_izin').DataTable({
          "ordering" : false,
          "paging" : false,
@@ -195,9 +213,21 @@ $(document).ready(function() {
      $('input.periodeRekap').on('cancel.daterangepicker', function(ev, picker) {
          $(this).val('');
      });
-  //Selesai
-
 });
+
+
+
+// function RPD_Hidden(a) {
+//     alert('aa')
+//     if (a == '1') {
+//         $('#RPD_Surat').prop('hidden', false)
+//         $('#RPD_Noind').prop('hidden', true)
+//     }else {
+//         $('#RPD_Surat').prop('hidden', true)
+//         $('#RPD_Noind').prop('hidden', false)
+//     }
+// }
+//Selesai
 
 //Untuk Approve IKP
 $(document).ready(function () {
@@ -2338,6 +2368,8 @@ $(document).ready(function(){
         var loading = baseurl + 'assets/img/gif/loadingquick.gif';
         let jenis = $(this).val()
         let id = $('#modal-id_dinas').val()
+        let ket = $('#modal-kep_dinas').val()
+        let out = $('#modal-keluar_dinas').val()
         let ma = []
         let checkbox = $("input:checkbox[class=checkAll_edit_class]:checked")
         checkbox.each(function(){
@@ -2379,7 +2411,9 @@ $(document).ready(function(){
                             data: {
                                 jenis: jenis,
                                 id: id,
-                                pekerja: ma
+                                pekerja: ma,
+                                keluar: out,
+                                ket: ket
                             },
                             beforeSend: function(){
                               Swal.fire({
@@ -2495,44 +2529,45 @@ function getApproval(a, b) {
       confirmButtonText: 'OK',
       allowOutsideClick: false
     }).then(result => {
-      if (result.value) {
-        $.ajax({
-          beforeSend: function(){
-            Swal.fire({
-              html : "<img style='width: 320px; height: auto;'src='"+loading+"'>",
-              text : 'Loading...',
-              customClass: 'swal-wide',
-              showConfirmButton:false,
-              allowOutsideClick: false
-            });
-          },
-          data: {
-            keputusan: a,
-            id: b
-          },
-          type: 'post',
-          url: baseurl + 'PerizinanDinas/AtasanApproval/update',
-          success: function (data) {
-            Swal.fire({
-              title: 'Izin Telah di Reject',
-              type: 'error',
-              showCancelButton: false,
-              allowOutsideClick: false
-            }).then( result => {
-                Swal.fire({
-                  html : "<img style='width: 320px; height: auto;'src='"+loading+"'>",
-                  text : 'Loading...',
-                  customClass: 'swal-wide',
-                  showConfirmButton:false,
-                  allowOutsideClick: false
-              }).then(window.location.reload())
+        if (result.value) {
+            $.ajax({
+                beforeSend: function(){
+                    Swal.fire({
+                        html : "<img style='width: 320px; height: auto;'src='"+loading+"'>",
+                        text : 'Loading...',
+                        customClass: 'swal-wide',
+                        showConfirmButton:false,
+                        allowOutsideClick: false
+                    });
+                },
+                data: {
+                    keputusan: a,
+                    id: b
+                },
+                type: 'post',
+                url: baseurl + 'PerizinanDinas/AtasanApproval/update',
+                success: function (data) {
+                    Swal.fire({
+                        title: 'Izin Telah di Reject',
+                        type: 'error',
+                        showCancelButton: false,
+                        allowOutsideClick: false
+                    }).then( result => {
+                        Swal.fire({
+                            html : "<img style='width: 320px; height: auto;'src='"+loading+"'>",
+                            text : 'Loading...',
+                            customClass: 'swal-wide',
+                            showConfirmButton:false,
+                            allowOutsideClick: false
+                        }).then(window.location.reload())
+                    })
+                }
             })
-          }
-        })
-      }
+        }
     })
   }
 }
+
 
 function edit_pkj_dinas(id) {
     let table = $('.eachPekerjaEdit')
@@ -2577,6 +2612,152 @@ function edit_pkj_dinas(id) {
                 $('.checkAll_edit_class').prop('checked', (event.type == 'ifChecked') ? true : false )
                 $(this).prop('checked', (event.type == 'ifChecked') ? true : false )
             })
+        }
+    })
+}
+
+//Perizinan Dinas ALL
+$(document).ready(function () {
+    $("#modal-approve-dinas-All").on("hidden.bs.modal", function () {
+        $('.icheckbox_flat-blue').removeClass('checked')
+    });
+
+    $('#modal-Atasan_dinasAll').select2({
+        'searching': true
+    })
+
+    $('#app_edit_DinasAll').on('click', function () {
+        let loading = baseurl + 'assets/img/gif/loadingquick.gif';
+        let jenis = $(this).val()
+        let id = $('#modal-id_dinasAll').val()
+        let atasan = $('#modal-Atasan_dinasAll').val()
+        let ket = $('#modal-kep_dinasAll').val()
+        let out = $('#modal-keluar_dinasAll').val()
+        let tanggal = $('#modal-tgl_dinasAll').val()
+        let alasan = $('#modal-AlasanAll').val()
+
+        if (alasan == '' || alasan == null) {
+            swal.fire({
+                title: 'Peringatan',
+                text: 'Alasan harap diisi !',
+                type: 'warning',
+                allowOutsideClick: false
+            })
+        }else if (atasan == null || atasan == '') {
+            swal.fire({
+                title: 'Peringatan',
+                text: 'Harap Pilih Atasan !',
+                type: 'warning',
+                allowOutsideClick: false
+            })
+        }else{
+            swal.fire({
+                title: 'Peringatan',
+                text: "Anda yakin akan menyimpan perubahan ?",
+                type: 'question',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'OK',
+                allowOutsideClick: false
+            }).then(result => {
+                if (result.value) {
+                    $.ajax({
+                        type: 'post',
+                        data: {
+                            jenis: jenis,
+                            id: id,
+                            atasan: atasan,
+                            ket: ket,
+                            keluar: out,
+                            tgl: tanggal,
+                            alasan: alasan
+                        },
+                        beforeSend: function(){
+                            Swal.fire({
+                                html : "<img style='width: 320px; height: auto;'src='"+loading+"'>",
+                                text : 'Loading...',
+                                customClass: 'swal-wide',
+                                showConfirmButton:false,
+                                allowOutsideClick: false
+                            });
+                        },
+                        url: baseurl + 'PerizinanDinas/ApproveAll/updatePekerja',
+                        success: function (data) {
+                            console.log(data);
+                            if (data == 'sama') {
+                                swal.fire({
+                                    title: 'Pemberitahuan',
+                                    text: 'Atasan Masih Sama',
+                                    type: 'info',
+                                    allowOutsideClick: false
+                                })
+                            }else {
+                                Swal.fire({
+                                    title: 'Approver Perizinan Telah Dialihkan',
+                                    type: 'success',
+                                    showCancelButton: false,
+                                    allowOutsideClick: false
+                                }).then( result => {
+                                    Swal.fire({
+                                        html : "<img style='width: 320px; height: auto;'src='"+loading+"'>",
+                                        text : 'Loading...',
+                                        customClass: 'swal-wide',
+                                        showConfirmButton:false,
+                                        allowOutsideClick: false
+                                    }).then(window.location.reload())
+                                })
+
+                            }
+                        }
+                    })
+                }
+            })
+        }
+    })
+
+})
+
+
+function edit_pkj_dinas_all(id) {
+    let table = $('.eachPekerjaEditAll')
+
+    $.ajax({
+        type: 'post',
+        data: {
+            id: id
+        },
+        url: baseurl + 'PerizinanDinas/ApproveAll/editPekerjaDinas',
+        beforeSend: a =>{
+            table.html('<tr><td colspan="4">loading....</td></tr>')
+        },
+        dataType: 'json',
+        success: function (data) {
+            $('#modal-id_dinasAll').val(data[0]['izin_id'])
+            $('#modal-tgl_dinasAll').val(data[0]['created_date'])
+            $('#modal-keluar_dinasAll').val(function () {
+                if (data[0]['berangkat'] == null) {
+                    return '-'
+                }else if (data[0]['berangkat'] < '12:00:00') {
+                    return data[0]['berangkat']+' AM'
+                }else {
+                    return data[0]['berangkat']+' PM'
+                }
+            })
+            $('#modal-kep_dinasAll').val(data[0]['keterangan'])
+            $('#modal-AlasanAll').val('Atasan tidak berada ditempat')
+            $('#modal-Atasan_dinasAll').val(data[0]['atasan_aproval']).trigger('change')
+            $('#modal-approve-dinas-All').modal('show')
+
+            let row
+            data.forEach( a => {
+                row += `<tr>
+                            <td>${a.noind}</td>
+                            <td>${a.nama}</td>
+                            <td>${a.tujuan == '' ? '-' : a.tujuan}</td>
+                        </tr>`
+            })
+            table.html(row)
         }
     })
 }

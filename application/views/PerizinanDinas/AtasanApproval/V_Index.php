@@ -83,14 +83,7 @@
                                           echo date('H:i:s', strtotime($row['berangkat'])).' PM';
                                       } ?></td>
                                       <td style="white-space: nowrap"><?php echo $row['pekerja'];  ?></td>
-                                      <td style="white-space: nowrap; text-align: center;"><?php if ( $row['jenis_izin'] == '1') {
-                                                                                      echo "DINAS PUSAT";
-                                                                                    }elseif ( $row['jenis_izin'] == '2') {
-                                                                                      echo "DINAS TUKSONO";
-                                                                                    }elseif ( $row['jenis_izin'] == '3') {
-                                                                                      echo "DINAS MLATI";
-                                                                                    } ?>
-                                      </td>
+                                      <td style="white-space: nowrap; text-align: center;"><?php echo $row['to_dinas'] ?></td>
                                       <td style="white-space: nowrap"><?php if ($row['tujuan'] == null || $row['tujuan'] == '') {
                                                                           echo " - ";
                                                                         }else {
@@ -373,7 +366,6 @@
         </div>
       </div>
     </div>
-</div>
 </div>
 
 <!-- selesai -->
