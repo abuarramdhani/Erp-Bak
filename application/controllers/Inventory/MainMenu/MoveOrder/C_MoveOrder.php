@@ -100,7 +100,7 @@ class C_MoveOrder extends CI_Controller
 				}else {
 					// EDIT LUTFI
 					$atr = ",khs_inv_qty_att(wdj.ORGANIZATION_ID,wro.INVENTORY_ITEM_ID,bic.ATTRIBUTE1,bic.ATTRIBUTE2,'') atr";	
-					$getBody = $this->M_MoveOrder->getBody($value['WIP_ENTITY_NAME'],$atr,$dept);	
+					$getBody = $this->M_MoveOrder->getBody($value['WIP_ENTITY_NAME'],$atr,$dept);
 				}
 				$array_terkelompok[$value['WIP_ENTITY_NAME']]['header'] = $value; 
 				$array_terkelompok[$value['WIP_ENTITY_NAME']]['body'] = $getBody; 
@@ -177,10 +177,10 @@ class C_MoveOrder extends CI_Controller
 
 			//CHECK QTY VS ATR
 			if ($departement == 'SUBKT') {
-					$atr = ",khs_inv_qty_att(wdj.ORGANIZATION_ID,wro.INVENTORY_ITEM_ID,bic.ATTRIBUTE1,bic.ATTRIBUTE2,'') atr";	
+					$atr = ",khs_inv_qty_att(wdj.ORGANIZATION_ID,wro.INVENTORY_ITEM_ID,wro.ATTRIBUTE1,wro.ATTRIBUTE2,'') atr";	
 					$getQuantityActual = $this->M_MoveOrder->getQuantityActual($job,$atr);	
 			}else {
-					$atr = ",khs_inv_qty_att(wdj.ORGANIZATION_ID,wro.INVENTORY_ITEM_ID,bic.ATTRIBUTE1,bic.ATTRIBUTE2,'') atr";	
+					$atr = ",khs_inv_qty_att(wdj.ORGANIZATION_ID,wro.INVENTORY_ITEM_ID,wro.ATTRIBUTE1,wro.ATTRIBUTE2,'') atr";	
 					$getQuantityActual = $this->M_MoveOrder->getQuantityActual($job,$atr);	
 			}
 			// echo "<pre>";
