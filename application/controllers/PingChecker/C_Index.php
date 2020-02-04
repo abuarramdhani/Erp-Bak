@@ -121,9 +121,11 @@ class C_Index extends CI_Controller {
 				$status = $this->M_index->checkStatusAction($domainbase);
 
 				if ($status == null) {
+					$statusNow = 0;
 					$stat = array(
 									'creation_date' => 'now()',
 									'ip' => $domainbase,
+									'status' => 0,
 								 );
 					$this->M_index->setStatus($stat);
 					$time = date('d-m-Y H:i:s');
@@ -143,9 +145,11 @@ class C_Index extends CI_Controller {
 								</table>";
 				}else {
 					if ($status[0]['action'] == null) {
+						$statusNow = $status[0]['status'];
 						$stat = array(
 										'creation_date' => 'now()',
 										'ip' => $domainbase,
+										'status' => 0,
 								);
 						$this->M_index->setStatus($stat);
 						$time = date('d-m-Y H:i:s');
@@ -166,12 +170,20 @@ class C_Index extends CI_Controller {
 						$action = $status[0]['action'];
 						$actBy = $status[0]['action_by'];
 						$noticket = $status[0]['no_ticket'];
-								$stat = array(
-									'creation_date' => 'now()',
-									'ip' => $domainbase,
-									'action' => $action,
-									'action_by' => $actBy,
-									'no_ticket' => $noticket,
+						$sts = $status[0]['status'];
+						$statusNow = $sts +1;
+						$downtime = $statusNow * 15 / 60;
+
+						$getNamaCreator = $this->M_index->getNamaCreator($actBy);
+						$creator = RTRIM($getNamaCreator[0]['employee_name']);
+						
+							$stat = array(
+								'creation_date' => 'now()',
+								'ip' => $domainbase,
+								'action' => $action,
+								'action_by' => $actBy,
+								'no_ticket' => $noticket,
+								'status' => $statusNow,
 							);
 						$this->M_index->setStatus($stat);
 
@@ -201,19 +213,30 @@ class C_Index extends CI_Controller {
 								 <tr>
 								 	<th align='left'>ACTION BY</th>
 									<th>:</th>
-									<td>$actBy</td>
+									<td>$actBy - $creator</td>
+								 </tr>
+								 <tr>
+								 	<th align='left'>DOWN TIME</th>
+									<th>:</th>
+									<td>$downtime Jam</td>
 								 </tr>
 								</table>";
 					}
 				}
 				
 				$subject = "($st) ".$ip['name']." is Down";
-				if($ip['ip'] != "172.16.100.62"){
-                $this->EmailAlert($subject, $message);
-                $this->EmailAlertInternal($subject, $message);
+
+				if ($statusNow%48 == 0) {
+					$emailUser = array("quick.tractor@gmail.com", "it.sec1@quick.co.id", "it1.quick@gmail.com", "nugroho.mail1@gmail.com", "ict.hardware.khs@gmail.com", "it.asst.u1@quick.co.id", "khoerulamri.id@gmail.com","suryabondan@gmail.com");
+					$emailUserInternal = array("johannes_andri@quick.com","yohanes_budi@quick.com","rheza_egha@quick.com","amelia_ayu@quick.com","khoerul_amri@quick.com","nugroho@quick.com","bondan_surya_n@quick.com");
+				}else {
+					$emailUser = array("quick.tractor@gmail.com", "nugroho.mail1@gmail.com", "ict.hardware.khs@gmail.com","suryabondan@gmail.com");
+					$emailUserInternal = array("yohanes_budi@quick.com","rheza_egha@quick.com","amelia_ayu@quick.com","nugroho@quick.com","bondan_surya_n@quick.com");
 				}
-                
-	            
+
+                $this->EmailAlert($subject, $message, $emailUser);
+                $this->EmailAlertInternal($subject, $message, $emailUserInternal);
+
 			}
             
 		}
@@ -236,11 +259,11 @@ class C_Index extends CI_Controller {
 		return $status;
 	}
 
-	public function EmailAlert($subject , $body)
+	public function EmailAlert($subject , $body, $akun)
 	{
 		//email
         
-        $akun = array("quick.tractor@gmail.com", "it.sec1@quick.co.id", "it1.quick@gmail.com", "nugroho.mail1@gmail.com", "ict.hardware.khs@gmail.com", "it.asst.u1@quick.co.id", "khoerulamri.id@gmail.com");
+        // $akun = array("quick.tractor@gmail.com", "it.sec1@quick.co.id", "it1.quick@gmail.com", "nugroho.mail1@gmail.com", "ict.hardware.khs@gmail.com", "it.asst.u1@quick.co.id", "khoerulamri.id@gmail.com");
         
         // $akun = array("suryabondan@gmail.com");
         
@@ -248,7 +271,7 @@ class C_Index extends CI_Controller {
 
 		$this->load->library('PHPMailerAutoload');
 		$mail = new PHPMailer();
-        $mail->SMTPDebug = 2;
+        $mail->SMTPDebug = 0;
         $mail->Debugoutput = 'html';
 		
         // set smtp
@@ -284,9 +307,9 @@ class C_Index extends CI_Controller {
 		}
 	}
 	
-	public function EmailAlertInternal($subject , $body)
+	public function EmailAlertInternal($subject , $body, $akun)
 	{
-		$akun = array("johannes_andri@quick.com","yohanes_budi@quick.com","rheza_egha@quick.com","amelia_ayu@quick.com","khoerul_amri@quick.com","nugroho@quick.com");
+		// $akun = array("johannes_andri@quick.com","yohanes_budi@quick.com","rheza_egha@quick.com","amelia_ayu@quick.com","khoerul_amri@quick.com","nugroho@quick.com");
 		
 		//send Email
 

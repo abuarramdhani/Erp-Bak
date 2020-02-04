@@ -48,7 +48,8 @@ class C_Monitoring extends CI_Controller {
 
     public function saveData()
     {
-        $ip = $this->input->post('slcIPIPM');
+		$ip = $this->input->post('slcIPIPM');
+		$ipName = $this->input->post('ipNameIPM');
         $action = $this->input->post('actionIPM');
         $ticket = $this->input->post('ticketIPM');
         $noind = $this->session->user;
@@ -58,12 +59,144 @@ class C_Monitoring extends CI_Controller {
                         'ip' => $ip,
                         'action' => $action,
                         'no_ticket' => $ticket,
-                        'action_by' => $noind,
+						'action_by' => $noind,
+						'status' => 1,
                      );
         
-        $this->M_index->setStatus($data);
+		$this->M_index->setStatus($data);
+		
+		$getNamaCreator = $this->M_index->getNamaCreator($noind);
+		$creator = RTRIM($getNamaCreator[0]['employee_name']);
+		
+		$message = "http://$ip is DOWN (-1 ms)";
+		$time = date('d-m-Y H:i:s');
+		$st = "WIP";
+		$message .="<table>
+						<tr>
+							<th align='left'>STATUS</th>
+							<th>:</th>
+							<td>$st</td>
+							</tr>
+							<tr>
+							<th align='left'>TIME</th>
+							<th>:</th>
+							<td>$time</td>
+							</tr>
+						<tr>
+							<th align='left'>NO TICKET</th>
+							<th>:</th>
+							<td>$ticket</td>
+						</tr>
+						<tr>
+							<th align='left'>ACTION</th>
+							<th>:</th>
+							<td>$action</td>
+						</tr>
+						<tr>
+							<th align='left'>ACTION BY</th>
+							<th>:</th>
+							<td>$noind - $creator</td>
+						</tr>
+					</table>";
+		
+		$subject = "($st) ".$ipName." is Down";
+
+		$this->EmailAlert($subject, $message);
+		$this->EmailAlertInternal($subject, $message);
 
 		redirect('PingChecker/Monitoring/Penanganan', 'refresh');
 
-    }
-}
+	}
+	
+	public function EmailAlert($subject , $body)
+	{
+		//email
+        
+        $akun = array("quick.tractor@gmail.com", "it.sec1@quick.co.id", "it1.quick@gmail.com", "nugroho.mail1@gmail.com", "ict.hardware.khs@gmail.com", "it.asst.u1@quick.co.id", "khoerulamri.id@gmail.com","suryabondan@gmail.com");
+        
+        // $akun = array("suryabondan@gmail.com");
+        
+		//send Email
+
+		$this->load->library('PHPMailerAutoload');
+		$mail = new PHPMailer();
+        $mail->SMTPDebug = 0;
+        $mail->Debugoutput = 'html';
+		
+        // set smtp
+        $mail->isSMTP();
+        $mail->Host = 'smtp.gmail.com';
+        $mail->Port = 587;
+        $mail->SMTPAuth = true;
+		$mail->SMTPSecure = 'tls';
+		$mail->SMTPOptions = array(
+				'ssl' => array(
+				'verify_peer' => false,
+				'verify_peer_name' => false,
+				'allow_self_signed' => true)
+				);
+        $mail->Username = 'quick.tractor@gmail.com';
+        $mail->Password = 'quick1953';
+        $mail->WordWrap = 50;
+		
+        // set email content
+        $mail->setFrom('quick.tractor@gmail.com', 'ERP Ping-Checker');
+        foreach ($akun as $key => $akn) {
+            $mail->addAddress($akn);
+        }
+        $mail->Subject = $subject;
+		$mail->msgHTML($body);
+
+		
+		if (!$mail->send()) {
+			echo "Mailer Error: " . $mail->ErrorInfo;
+			exit();
+		} else {
+			echo "Message sent!";
+		}
+	}
+	
+	public function EmailAlertInternal($subject , $body)
+	{
+		$akun = array("johannes_andri@quick.com","yohanes_budi@quick.com","rheza_egha@quick.com","amelia_ayu@quick.com","khoerul_amri@quick.com","nugroho@quick.com","bondan_surya_n@quick.com");
+		
+		//send Email
+
+		$this->load->library('PHPMailerAutoload');
+		$mail = new PHPMailer();
+        $mail->SMTPDebug = 0;
+        $mail->Debugoutput = 'html';
+		
+        // set smtp
+        $mail->isSMTP();
+        $mail->Host = 'm.quick.com';
+        $mail->Port = 465;
+        $mail->SMTPAuth = true;
+		$mail->SMTPSecure = 'ssl';
+		$mail->SMTPOptions = array(
+				'ssl' => array(
+				'verify_peer' => false,
+				'verify_peer_name' => false,
+				'allow_self_signed' => true)
+				);
+        $mail->Username = 'no-reply';
+        $mail->Password = '123456';
+        $mail->WordWrap = 50;
+		
+        // set email content
+        $mail->setFrom('no-reply@quick.com', 'ERP Ping-Checker');
+        foreach ($akun as $key => $akn) {
+            $mail->addAddress($akn);
+        }
+        $mail->Subject = $subject;
+		$mail->msgHTML($body);
+
+		
+		if (!$mail->send()) {
+			echo "Mailer Error: " . $mail->ErrorInfo;
+			exit();
+		} else {
+			echo "Message sent!";
+		}
+	}
+} ?>

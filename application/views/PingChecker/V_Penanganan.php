@@ -14,20 +14,21 @@
                                 <td>
                                     <select class="slcIPIPM" style="width:350px;" name="slcIPIPM" tabindex="1" required>
                                         <option></option>
-                                        <option value="172.16.100.94">172.16.100.94 - IconPlus PUSAT-BANJARMASIN</option>
-                                        <option value="172.16.100.26">172.16.100.26 - IconPlus PUSAT-JAKARTA</option>
-                                        <option value="172.16.100.14">172.16.100.14 - IconPlus PUSAT-LAMPUNG</option>
-                                        <option value="172.16.100.62">172.16.100.62 - IconPlus PUSAT-LANGKAPURA</option>
-                                        <option value="172.16.100.30">172.16.100.30 - IconPlus PUSAT-MAKASSAR</option>
-                                        <option value="172.16.100.18">172.16.100.18 - IconPlus PUSAT-MEDAN</option>
-                                        <option value="172.16.100.22">172.16.100.22 - IconPlus PUSAT-MLATI</option>
-                                        <option value="172.16.100.102">172.16.100.102 - IconPlus PUSAT-PALU</option>
-                                        <option value="172.16.100.90">172.16.100.90 - IconPlus PUSAT-PEKANBARU</option>
-                                        <option value="172.16.100.50">172.16.100.50 - IconPlus PUSAT-PONTIANAK</option>
-                                        <option value="172.16.100.10">172.16.100.10 - IconPlus PUSAT-SURABAYA</option>
-                                        <option value="172.16.100.6">172.16.100.6 - IconPlus PUSAT-TUKSONO</option>
-                                        <option value="172.18.22.2">172.18.22.2 - LDP PUSAT-TUKSONO</option>
+                                        <option value="172.16.100.94" title="IconPlus PUSAT-BANJARMASIN">172.16.100.94 - IconPlus PUSAT-BANJARMASIN</option>
+                                        <option value="172.16.100.26" title="IconPlus PUSAT-JAKARTA">172.16.100.26 - IconPlus PUSAT-JAKARTA</option>
+                                        <option value="172.16.100.14" title="IconPlus PUSAT-LAMPUNG">172.16.100.14 - IconPlus PUSAT-LAMPUNG</option>
+                                        <option value="172.16.100.62" title="IconPlus PUSAT-LANGKAPURA">172.16.100.62 - IconPlus PUSAT-LANGKAPURA</option>
+                                        <option value="172.16.100.30" title="IconPlus PUSAT-MAKASSAR">172.16.100.30 - IconPlus PUSAT-MAKASSAR</option>
+                                        <option value="172.16.100.18" title="IconPlus PUSAT-MEDAN">172.16.100.18 - IconPlus PUSAT-MEDAN</option>
+                                        <option value="172.16.100.22" title="IconPlus PUSAT-MLATI">172.16.100.22 - IconPlus PUSAT-MLATI</option>
+                                        <option value="172.16.100.102" title="IconPlus PUSAT-PALU">172.16.100.102 - IconPlus PUSAT-PALU</option>
+                                        <option value="172.16.100.90" title="IconPlus PUSAT-PEKANBARU">172.16.100.90 - IconPlus PUSAT-PEKANBARU</option>
+                                        <option value="172.16.100.50" title="IconPlus PUSAT-PONTIANAK">172.16.100.50 - IconPlus PUSAT-PONTIANAK</option>
+                                        <option value="172.16.100.10" title="IconPlus PUSAT-SURABAYA">172.16.100.10 - IconPlus PUSAT-SURABAYA</option>
+                                        <option value="172.16.100.6" title="IconPlus PUSAT-TUKSONO">172.16.100.6 - IconPlus PUSAT-TUKSONO</option>
+                                        <option value="172.18.22.2" title="LDP PUSAT-TUKSONO">172.18.22.2 - LDP PUSAT-TUKSONO</option>
                                     </select>
+                                    <input type="hidden" class="form-control ipnameIPM" name="ipNameIPM">
                                 </td>
                             </tr>
                             <tr>
