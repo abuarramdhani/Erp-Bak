@@ -96,7 +96,7 @@ class C_Index extends CI_Controller
 			$tujuan = $this->M_index->getTujuanMakan($idizin);
 			$updatePekerja = $this->M_index->updatePekerja($no, $idizin);
 
-			if (date('H:i:s') >= '09:30:00') {
+			if (date('H:i:s') <= date('H:i:s', strtotime('09:30:00'))) {
 				for ($i=0; $i < count($nama); $i++) {
 					for ($j=0; $j < count($tujuan) ; $j++) {
 						if ($nama[$i] == $tujuan[$j]['noind']) {
@@ -181,7 +181,7 @@ class C_Index extends CI_Controller
 			$update_tperizinan = $this->M_index->update_tperizinan($pekerja, '1', $id, $place1);
 		}
 
-		if (date('H:i:s') <= '09:30:00') {
+		if (date('H:i:s') <= date('H:i:s', strtotime('09:30:00'))) {
 			for ($i=0; $i < count($pekerja); $i++) {
 				$newEmployee = $this->M_index->getDataPekerja($pekerja[$i], $id);
 					if ($pekerja[$i] == $newEmployee[0]['noind']) {
