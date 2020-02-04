@@ -13,6 +13,7 @@ class C_PekerjaKhusus extends CI_Controller
 		$this->load->helper('url');
 		$this->load->helper('html');
 
+		$this->load->library('Log_Activity');
 		$this->load->library('session');
 		$this->load->library('General');
 		$this->load->model('SystemAdministration/MainMenu/M_user');
@@ -103,8 +104,13 @@ class C_PekerjaKhusus extends CI_Controller
 			'khusus' 		=> $this->input->post('txtKhususKhusus'),
 			'umc'			=> $this->input->post('txtKhususUMC')
 		);
-		
+
 		$this->M_pekerjakhusus->savePekerjaKhusus($data);
+		//insert to t_log
+		$aksi = 'MASTER PRESENSI';
+		$detail = 'Insert Gaji Pekerja Khusus noind='.$noind;
+		$this->log_activity->activity_log($aksi, $detail);
+		//
 		redirect(site_url('MasterPresensi/ReffGaji/PekerjaKhusus'));
 	}
 
@@ -115,6 +121,11 @@ class C_PekerjaKhusus extends CI_Controller
  		$noind_baru = $txt['0'];
  		$noind = $txt['1'];
  		$this->M_pekerjakhusus->deletePekerjaKhusus($noind,$noind_baru);
+		//insert to t_log
+		$aksi = 'MASTER PRESENSI';
+		$detail = 'Delete Pekerja Khusus noind='.$noind.' Noind baru='.$noind_baru;
+		$this->log_activity->activity_log($aksi, $detail);
+		//
  		redirect(site_url('MasterPresensi/ReffGaji/PekerjaKhusus'));
 	}
 
@@ -177,6 +188,12 @@ class C_PekerjaKhusus extends CI_Controller
 		// echo $noind.'-'.$noind_baru."<pre>";print_r($data);exit();
 
 		$this->M_pekerjakhusus->updatePekerjaKhusus($noind,$noind_baru,$data);
+
+		//insert to t_log
+		$aksi = 'MASTER PRESENSI';
+		$detail = 'Update Gaji Pekerja Khusus noind='.$noind.' Noind baru='.$noind_baru;
+		$this->log_activity->activity_log($aksi, $detail);
+		//
 
 		redirect(site_url('MasterPresensi/ReffGaji/PekerjaKhusus'));
 	}

@@ -22,6 +22,7 @@ class C_PekerjaCutoff extends CI_Controller
 		require_once APPPATH . 'third_party/phpxbase/Table.php';
 		require_once APPPATH . 'third_party/phpxbase/WritableTable.php';
 
+		$this->load->library('Log_Activity');
 		$this->load->library('session');
 		$this->load->library('encrypt');
 		$this->load->library('General');
@@ -183,7 +184,7 @@ class C_PekerjaCutoff extends CI_Controller
 			$worksheet->setCellValue('D4','Seksi');
 
 			$nomor = 1;
-			if(!empty($data)){				
+			if(!empty($data)){
 				foreach ($data as $key) {
 					$worksheet->setCellValue('A'.($nomor + 4),$nomor);
 					$worksheet->setCellValue('B'.($nomor + 4),$key['noind']);
@@ -245,7 +246,7 @@ class C_PekerjaCutoff extends CI_Controller
 		}elseif ($key == "n" and !empty($value)) {
 			$data = $this->M_pekerjacutoff->getCutoffDetailPekerja($value);
 			$pekerja = $this->M_pekerjacutoff->getDetailPekerja($value);
-			
+
 			$this->load->library('excel');
 			$worksheet = $this->excel->getActiveSheet();
 
@@ -323,7 +324,7 @@ class C_PekerjaCutoff extends CI_Controller
 		$output_2 = "";
 		$jumlah_staff = 0;
 		$jumlah_nonstaff = 0;
-		
+
 		$nomor_surat = $this->input->post('cutoff_nomor_surat');
 		$mengetahui = $this->input->post('cutoff_mengetahui');
 		$to_staff = $this->input->post('cutoff_kepada_staff');
@@ -347,7 +348,7 @@ class C_PekerjaCutoff extends CI_Controller
 			'akhirbulan'		=> $this->M_pekerjacutoff->getAkhirbulan($periode)
 		);
 		$data['memo'] = $data_memo;
-		
+
 		$noind_text = "''";
 		if (!empty($noind)) {
 			foreach ($noind as $ni) {
@@ -356,7 +357,7 @@ class C_PekerjaCutoff extends CI_Controller
 		}
 
 		//staff
-		
+
 		$data_staff = $this->M_pekerjacutoff->getPekerjaCufOffAktif($periode,"'B','D','J','T'",$noind_text);
 		// echo "<pre>";print_r($data_staff);exit();
 		if(!empty($data_staff)){
@@ -372,7 +373,7 @@ class C_PekerjaCutoff extends CI_Controller
 		}
 
 		if (!empty($data_staff)) {
-			
+
 			$table3 = new XBase\WritableTable(FCPATH."assets/upload/TransferReffGaji/lv_info2.dbf");
 			$table3->openWrite(FCPATH."assets/upload/TransferReffGaji/Cutoff_STAFF".$periode.$waktu.".dbf");
 			foreach ($data_staff as $ds) {
@@ -544,7 +545,7 @@ class C_PekerjaCutoff extends CI_Controller
 				$jumlah_staff++;
 			}
 			$table3->close();
-			
+
 			$data['data'] = $data_staff;
 			$data['cut'] = $this->M_pekerjacutoff->getCutoffDetail($periode);
 			$data['jenis'] = "staff";
@@ -568,7 +569,7 @@ class C_PekerjaCutoff extends CI_Controller
 			$output_2 .= '<div class="col-lg-6">-</div>';
 			$file_staff = "-";
 		}
-		
+
 		//non-staff
 		$data_nonstaff = $this->M_pekerjacutoff->getPekerjaCufOffAktif($periode,"'A','H','E'",$noind_text);
 		// echo "<pre>";print_r($data_nonstaff);exit();
@@ -579,7 +580,7 @@ class C_PekerjaCutoff extends CI_Controller
 				$index++;
 			}
 		}
-		
+
 		if (!empty($data_nonstaff)) {
 			$table4 = new XBase\WritableTable(FCPATH."assets/upload/TransferReffGaji/lv_info.dbf");
 			$table4->openWrite(FCPATH."assets/upload/TransferReffGaji/Cutoff_NONSTAFF".$periode.$waktu.".dbf");
@@ -761,7 +762,7 @@ class C_PekerjaCutoff extends CI_Controller
 				$jumlah_nonstaff++;
 			}
 			$table4->close();
-			
+
 			$data['data'] = $data_nonstaff;
 			$data['cut'] = $this->M_pekerjacutoff->getCutoffDetail($periode);
 			$data['jenis'] = "nonstaff";
@@ -785,7 +786,7 @@ class C_PekerjaCutoff extends CI_Controller
 			$output_2 .= '<div class="col-lg-6">-</div>';
 			$file_nonstaff = "-";
 		}
-		
+
 		$data_insert = array(
 			'nomor_surat' 		=> $nomor_surat,
 			'mengetahui' 		=> $mengetahui,
@@ -800,7 +801,7 @@ class C_PekerjaCutoff extends CI_Controller
 		$this->M_pekerjacutoff->insertMemo($data_insert);
 
 		$data_id = $this->M_pekerjacutoff->getMemoID($dibuat,$periode,$nomor_surat,$mengetahui,$to_staff,$to_nonstaff,$file_staff,$file_nonstaff);
-		
+
 		foreach ($data_staff as $ds) {
 			$data_insert_staff = array(
 				'id_memo' => $data_id,
@@ -841,18 +842,18 @@ class C_PekerjaCutoff extends CI_Controller
 		$this->load->view('V_Sidemenu',$data);
 		$this->load->view('MasterPresensi/ReffGaji/PekerjaCutoff/V_hitung',$data);
 		$this->load->view('V_Footer',$data);
-		
+
 	}
 
 	public function download(){
 		$file = $this->input->get('file');
 		$waktu = $this->input->get('time');
 		$extensi = $this->input->get('ext');
-		
+
 		$data = file_get_contents(site_url('assets/upload/TransferReffGaji/'.$file.$waktu.".".$extensi));
-		
+
 		header('Content-disposition: attachment; filename='.$file.".".$extensi);
-		
+
 		echo $data;
 	}
 
@@ -887,7 +888,7 @@ class C_PekerjaCutoff extends CI_Controller
 		$data['UserMenu'] = $this->M_user->getUserMenu($user_id,$this->session->responsibility_id);
 		$data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id);
 		$data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id);
-		
+
 		$data['data'] = $this->M_pekerjacutoff->getMemoList();
 
 		$this->load->view('V_Header',$data);
@@ -905,7 +906,7 @@ class C_PekerjaCutoff extends CI_Controller
 
 		if(!empty($cekCutoff) and !empty($cekCutoffPlus1)){
 			$dataarray = $this->M_pekerjacutoff->getPekerjaCutoffAll($periode);
-			
+
 			$datastring = "<table class='table table-bordered table-hover table-striped'>
 							<thead>
 								<tr>
@@ -930,7 +931,7 @@ class C_PekerjaCutoff extends CI_Controller
 								</tr>
 							</thead>
 							<tbody>";
-			
+
 			foreach ($dataarray as $key) {
 				$datastring.= " <tr>
 									<td>
@@ -946,7 +947,7 @@ class C_PekerjaCutoff extends CI_Controller
 
 			$datastring .= "</tbody></table>";
 
-			echo $datastring;			
+			echo $datastring;
 		}else{
 			if (empty($cekCutoff)) {
 				echo "Tidak Ada Periode Cutoff";
@@ -961,6 +962,11 @@ class C_PekerjaCutoff extends CI_Controller
 		$decrypted_String = str_replace(array('-', '_', '~'), array('+', '/', '='), $id);
 		$decrypted_String = $this->encrypt->decode($decrypted_String);
 		$this->M_pekerjacutoff->deleteMemo($decrypted_String);
+		//insert to t_log
+		$aksi = 'MASTER PRESENSI';
+		$detail = 'Delete Memo Pekerja Cutoff ID='.$decrypted_String;
+		$this->log_activity->activity_log($aksi, $detail);
+		//
 		redirect(site_url('MasterPresensi/ReffGaji/PekerjaCutoffMemo'));
 	}
 
@@ -1012,14 +1018,18 @@ class C_PekerjaCutoff extends CI_Controller
 	public function hapus_susulan($periode,$noind){
 
 		$this->M_pekerjacutoff->hapusPekerjaCutoffSusulan($periode,$noind);
-
+		//insert to t_log
+		$aksi = 'MASTER PRESENSI';
+		$detail = 'Delete Memo susulan noind='.$noind.' periode='.$periode;
+		$this->log_activity->activity_log($aksi, $detail);
+		//
 		redirect(site_url('MasterPresensi/ReffGaji/PekerjaCutoffReffGaji/detail_susulan/'.$periode));
 	}
 
 	public function cetak_susulan($jenis,$periode){
 		if ($jenis == "xls") {
 			$data = $this->M_pekerjacutoff->getDetailCutoffSusulan($periode);
-			
+
 			$this->load->library('excel');
 			$worksheet = $this->excel->getActiveSheet();
 
@@ -1034,7 +1044,7 @@ class C_PekerjaCutoff extends CI_Controller
 			$worksheet->setCellValue('D4','Seksi');
 
 			$nomor = 1;
-			if(!empty($data)){				
+			if(!empty($data)){
 				foreach ($data as $key) {
 					$worksheet->setCellValue('A'.($nomor + 4),$nomor);
 					$worksheet->setCellValue('B'.($nomor + 4),$key['noind']);
@@ -1114,6 +1124,11 @@ class C_PekerjaCutoff extends CI_Controller
 		$cek = $this->M_pekerjacutoff->cekCutoffSusulan($noind,$periode);
 		if(count($cek) == 0){
 			$this->M_pekerjacutoff->insertCutOffSusulan($noind,$periode,$user);
+			//insert to t_log
+			$aksi = 'MASTER PRESENSI';
+			$detail = 'Menambah memo susulan noind='.$noind.' periode='.$periode;
+			$this->log_activity->activity_log($aksi, $detail);
+			//
 		}
 		redirect(site_url('MasterPresensi/ReffGaji/PekerjaCutoffReffGaji/detail_susulan/'.$periode));
 	}
