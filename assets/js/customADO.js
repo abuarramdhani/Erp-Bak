@@ -240,11 +240,11 @@ $(document).ready( _ => {
         }, 300000)
     }
 
-    if ( window.location.href.indexOf('ApprovalDO/Detail/ListDO') > -1 ) {
-        $('.tdADOQtyATR').each( function () {
-            if ( $(this).html() === '0' )
-                $(this).parents('tr').addClass('bg-red trADOQtyZero')
-        })
-    }
+    // if ( window.location.href.indexOf('ApprovalDO/Detail/ListDO') > -1 ) {
+    //     $('.tdADOQtyATR').each( function () {
+    //         if ( $(this).html() === '0' )
+    //             $(this).parents('tr').addClass('bg-red trADOQtyZero')
+    //     })
+    // }
 
 })
