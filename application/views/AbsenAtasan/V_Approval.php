@@ -31,7 +31,9 @@
 				<div class="col-md-2">
 				</div>
 				<div class="col-md-8">
-					<img src="<?php echo $dataEmployee[0]['gambar'];?>" style="width: 200px;height: 200px;margin-bottom: 15px;"/> 
+						<a href="<?php echo $dataEmployee[0]['gambar'];?>">
+							<img src="<?php echo $dataEmployee[0]['gambar'];?>" style="width: 300px;height: 300px;margin-bottom: 15px;"/> 
+						</a>
 				</div>
 			</div>
 			<div class="row margin-top">
