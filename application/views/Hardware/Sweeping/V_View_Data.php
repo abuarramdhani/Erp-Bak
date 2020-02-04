@@ -57,8 +57,10 @@
                     <td data-order="<?= ($data['remark'] == 1) ? 1:0 ?>">
                       <?php if ($data['remark'] == 1): ?>
                         <label style="color: #55b055"><i data-or class="fa fa-check fa-2x" title="Sudah di Verifikasi"></i></label>
+                        <p hidden="">Sudah</p>
                       <?php else: ?>
                         <i data-or class="fa fa-remove fa-2x" title="Belum di Verifikasi"></i>
+                        <p hidden="">Belum</p>
                       <?php endif ?>
                     </td>
                     <td>
