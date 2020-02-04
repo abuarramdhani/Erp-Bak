@@ -50,12 +50,7 @@ class C_Index extends CI_Controller
 		$data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id);
 
 		if ($no_induk == 'B0898' || $no_induk == 'B0720' || $no_induk == 'B0819' || $no_induk == 'B0697' || $no_induk == 'B0696' || $no_induk == 'J1293' || $no_induk == 'B0307') {
-			if($no_induk == 'B0898' || $no_induk == 'B0720' || $no_induk == 'B0819'){
-				$data['UserMenu'] = $datamenu;
-			}else {
-				unset($datamenu[1]);
-				$data['UserMenu'] = $datamenu;
-			}
+			$data['UserMenu'] = $datamenu;
 		}else {
 			unset($datamenu[1]);
 			unset($datamenu[2]);
