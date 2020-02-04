@@ -56,10 +56,10 @@
                   foreach ($det['SERIAL_NUMBER'] as $number){
                       if($i%5==0 && $i!=0)
                       {
-                       echo '</tr><tr><td> <input type="text" class="form-control" id="serial<?= $no ?>" name="serial<?=$no?>" value='.$number['SERIAL_NUMBER'].'></td>';
+                       echo '</tr><tr><td> <input type="text" class="form-control"id="serial '.$no.'" name="serial'.$no.'"  value='.$number['SERIAL_NUMBER'].'></td>';
                       }
                      else
-                      echo '<td><input type="text" class="form-control" id="serial<?= $no ?>" name="serial<?=$no?>" value='.$number['SERIAL_NUMBER'].'></td>';
+                      echo '<td><input type="text" class="form-control" id="serial '.$no.'" name="serial'.$no.'" value='.$number['SERIAL_NUMBER'].'></td>';
                     $i++;
                   }
             echo '</tr></table><br>'; ?>
