@@ -158,7 +158,7 @@ class C_Index extends CI_Controller {
             $this->checkSession();
         $user_id = $this->session->userid;
         $user = $this->session->user;
-            // $this->M_reffjamlembur->delete($id);
+            $this->M_reffjamlembur->delete($id);
             //insert to t_log
             $aksi = 'MASTER PRESENSI';
             $detail = "Delete reff jam lembur ID = $id";
