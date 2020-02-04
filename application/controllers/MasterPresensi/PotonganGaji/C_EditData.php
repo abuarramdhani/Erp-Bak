@@ -1,14 +1,15 @@
 <?php defined('BASEPATH') OR exit('No direct script access allowed');
 
 class C_EditData extends CI_Controller {
-	
+
 	function __construct() {
 		parent::__construct();
         if(!$this->session->is_logged){ redirect('index'); }
+		$this->load->library('Log_Activity');
 		$this->load->model('SystemAdministration/MainMenu/M_user');
 		$this->load->model('MasterPresensi/PotonganGaji/M_editdata');
     }
-    
+
 	public function index() {
         $potonganId = $this->input->post('potonganId');
         if(empty($potonganId)) { echo '<b>Tidak dapat menerima ID potongan...</b>'; die; }
@@ -84,6 +85,11 @@ class C_EditData extends CI_Controller {
 				);
 			}
 			$response['success'] = $this->M_editdata->updateData($potonganId, $dataPotongan, $dataPotonganDetail);
+			//insert to t_log
+			$aksi = 'MASTER PRESENSI';
+			$detail = 'Update Potongan Gaji Noind='.$pekerja;
+			$this->log_activity->activity_log($aksi, $detail);
+			//
 		}
 		echo json_encode($response);
 	}

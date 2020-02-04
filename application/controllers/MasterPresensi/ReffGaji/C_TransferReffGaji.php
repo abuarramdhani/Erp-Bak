@@ -19,6 +19,7 @@ class C_TransferReffGaji extends CI_Controller
 		require_once APPPATH . 'third_party/phpxbase/Table.php';
 		require_once APPPATH . 'third_party/phpxbase/WritableTable.php';
 
+		$this->load->library('Log_Activity');
 		$this->load->library('session');
 		$this->load->library('General');
 		$this->load->model('SystemAdministration/MainMenu/M_user');
@@ -306,6 +307,11 @@ class C_TransferReffGaji extends CI_Controller
 
 							$progres +=1;
 							$this->M_transferreffgaji->updateProgres($user,$progres);
+							//insert to t_log
+							$aksi = 'MASTER PRESENSI';
+							$detail = 'Update reff gaji pkl non staf noind='.$dppn['noind'];
+							$this->log_activity->activity_log($aksi, $detail);
+							//
 							session_write_close();
 							flush();
 						}
@@ -523,6 +529,11 @@ class C_TransferReffGaji extends CI_Controller
 
 				$progres +=1;
 				$this->M_transferreffgaji->updateProgres($user,$progres);
+				//insert to t_log
+				$aksi = 'MASTER PRESENSI';
+				$detail = 'Update reff gaji staf noind='.$ds['noind'];
+				$this->log_activity->activity_log($aksi, $detail);
+				//
 				session_write_close();
 				flush();
 
@@ -714,6 +725,11 @@ class C_TransferReffGaji extends CI_Controller
 
 				$progres +=1;
 				$this->M_transferreffgaji->updateProgres($user,$progres);
+				//insert to t_log
+				$aksi = 'MASTER PRESENSI';
+				$detail = 'Update reff gaji non staf noind='.$dn['noind'];
+				$this->log_activity->activity_log($aksi, $detail);
+				//
 				session_write_close();
 				flush();
 			}
@@ -825,6 +841,11 @@ class C_TransferReffGaji extends CI_Controller
 
 					$progres +=1;
 					$this->M_transferreffgaji->updateProgres($user,$progres);
+					//insert to t_log
+					$aksi = 'MASTER PRESENSI';
+					$detail = 'Update reff gaji noind='.$do['noind'];
+					$this->log_activity->activity_log($aksi, $detail);
+					//
 					session_write_close();
 					flush();
 				}
@@ -851,6 +872,11 @@ class C_TransferReffGaji extends CI_Controller
 		if (!empty($data)) {
 			if ($data->progress == $data->total) {
 				$this->M_transferreffgaji->deleteProgres($user);
+				//insert to t_log
+				$aksi = 'MASTER PRESENSI';
+				$detail = "Delete \"Presensi\".progress_transfer_reffgaji where user_ = '$user' and menu = 'transferreffgaji'";
+				$this->log_activity->activity_log($aksi, $detail);
+				//
 			}
 			echo round(($data->progress/$data->total)*100);
 		}else{
@@ -929,7 +955,7 @@ class C_TransferReffGaji extends CI_Controller
 					$objexcel->mergeCells("C$num:D$num");
 				}else{
 					$objexcel->setCellValue('C'.$num,$gj['masuk']);
-					$objexcel->setCellValue('D'.$num,$gj['keluar']);				
+					$objexcel->setCellValue('D'.$num,$gj['keluar']);
 				}
 				if ($gj['jumlah'] == '0' and $gj['nama_hari'] == 'Minggu') {
 					$objexcel->setCellValue('H'.$num,$gj['jam_kerja']);
@@ -1019,7 +1045,7 @@ class C_TransferReffGaji extends CI_Controller
 					$objexcel->mergeCells("C$num:D$num");
 				}else{
 					$objexcel->setCellValue('C'.$num,$gj['masuk']);
-					$objexcel->setCellValue('D'.$num,$gj['keluar']);				
+					$objexcel->setCellValue('D'.$num,$gj['keluar']);
 				}
 				if ($gj['jumlah'] == '0' and $gj['nama_hari'] == 'Minggu') {
 					$objexcel->setCellValue('H'.$num,$gj['jam_kerja']);
@@ -1091,9 +1117,9 @@ class C_TransferReffGaji extends CI_Controller
 							)
 						),'A11:I'.(9 + $nomor));
 
-		}			
+		}
 
-			
+
 		//save our workbook as this file name
 		$filename = "PekerjaKhusus$periode$noind.xls";
 		//mime type

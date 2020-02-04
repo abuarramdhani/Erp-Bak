@@ -11,6 +11,7 @@ class C_Index extends CI_Controller
 		$this->load->helper('url');
 		$this->load->helper('html');
 
+		$this->load->library('Log_Activity');
 		$this->load->library('form_validation');
 		$this->load->library('session');
 		$this->load->library('encrypt');
@@ -65,7 +66,7 @@ class C_Index extends CI_Controller
 		$data['Title']			=	'Surat Mutasi';
 		$data['Menu'] 			= 	'Surat-Surat';
 		$data['SubMenuOne'] 	= 	'Surat Mutasi';
-		$data['SubMenuTwo'] 	= 	''; 
+		$data['SubMenuTwo'] 	= 	'';
 
 		$data['UserMenu'] = $this->M_user->getUserMenu($user_id,$this->session->responsibility_id);
 		$data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id);
@@ -457,6 +458,12 @@ class C_Index extends CI_Controller
 											'jenis_surat'			=>	'MUTASI',
 										);
 		$this->M_surat->inputNomorSurat($inputNomorSurat);
+
+		//insert to t_log
+	    $aksi = 'MASTER PEKERJA';
+	    $detail = 'Input Surat Mutasi Nomor Surat='.$nomor_surat.' Noind= '.$nomor_induk;
+	    $this->log_activity->activity_log($aksi, $detail);
+	    //
 		redirect('MasterPekerja/Surat/SuratMutasi');
 	}
 
@@ -464,6 +471,12 @@ class C_Index extends CI_Controller
 	{
 		$no_surat_decode 	=	str_replace(array('-', '_', '~'), array('+', '/', '='), $no_surat);
 		$no_surat_decode 	=	$this->encrypt->decode($no_surat_decode);
+
+		//insert to t_log
+	    $aksi = 'MASTER PEKERJA';
+	    $detail = 'Cetak Surat Mutasi Nomor Surat='.$no_surat_decode;
+	    $this->log_activity->activity_log($aksi, $detail);
+	    //
 
 		$data['isiSuratMutasi']		=	$this->M_surat->ambilIsiSuratMutasi($no_surat_decode);
 
@@ -594,6 +607,11 @@ class C_Index extends CI_Controller
 											'status_staf' 			=>	$staf,
 										);
 		$this->M_surat->updateSuratMutasi($updateSuratMutasi, $nomor_surat, $kodeSurat);
+		//insert to t_log
+	    $aksi = 'MASTER PEKERJA';
+	    $detail = 'Update Surat Mutasi Nomor Surat='.$no_surat_decode;
+	    $this->log_activity->activity_log($aksi, $detail);
+	    //
 		redirect('MasterPekerja/Surat/SuratMutasi');
 	}
 
@@ -610,6 +628,11 @@ class C_Index extends CI_Controller
 		$bulan_surat 			= 	'20'.$no_surat_decode[4].'-'.$no_surat_decode[3];
 
 		$this->M_surat->deleteArsipSuratMutasi($bulan_surat, $kode_surat, $no_surat);
+		//insert to t_log
+	    $aksi = 'MASTER PEKERJA';
+	    $detail = 'Delete Surat Mutasi Nomor Surat='.$no_surat_decode;
+	    $this->log_activity->activity_log($aksi, $detail);
+	    //
 
 		redirect('MasterPekerja/Surat/SuratMutasi');
 
