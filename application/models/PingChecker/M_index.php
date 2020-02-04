@@ -37,4 +37,11 @@ class M_index extends CI_Model
         return $query->result_array();
     }
 
+    public function UpdateData($id,$up)
+    {
+        $this->db->where('id',$id);
+        $this->db->update('si.network_monitoring',$up);
+        
+    }
+
 }

@@ -199,4 +199,21 @@ class C_Monitoring extends CI_Controller {
 			echo "Message sent!";
 		}
 	}
+
+	public function update()
+	{
+		$this->load->view('PingChecker/V_updateData');
+	}
+
+	public function UpdateData()
+	{
+		$id = $this->input->post('idIPM');
+		$status = $this->input->post('statusIPM');
+
+		$up = array(
+					'status' => $status, );
+
+		$this->M_index->UpdateData($id,$up);
+		redirect('PingChecker/Monitoring/update', 'refresh');
+	}
 } ?>
