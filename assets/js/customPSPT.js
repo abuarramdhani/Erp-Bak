@@ -395,15 +395,44 @@ $( _ => {
         scrollY     : '425px'
     })
 
-    $('#slcPSPTSearchBy').select2()
+    $('#slcPSPTSearchBy, #slcPSPTSearchByLocation').select2()
+
+    $('#txtPSPTSearchBySchedule').datepicker({
+        autoclose : true,
+        format    : 'yyyy-mm-dd'
+    })
 
     $('#slcPSPTSearchBy').on('change', function () {
+        let searchBy = $(this).val()
+        if ( searchBy === 'Lokasi' ) {
+            $('#slcPSPTSearchByLocation').show()
+            $('#slcPSPTSearchByLocation').next().show().css('display', 'inline-block')
+        } else {
+            $('#slcPSPTSearchByLocation').hide()
+            $('#slcPSPTSearchByLocation').val('').trigger('change')
+            $('#slcPSPTSearchByLocation').next().hide()
+        }
+        if ( searchBy === 'Jadwal' ) {
+            $('#txtPSPTSearchBySchedule').show()
+        } else {
+            $('#txtPSPTSearchBySchedule').datepicker('setDate', null)
+            $('#txtPSPTSearchBySchedule').hide()
+        }
+        if ( searchBy === 'Nama' || searchBy === 'No. Pendaftaran' || searchBy === 'Seksi' ) {
+            $('#txtPSPTSearchBy').show()
+        } else {
+            $('#txtPSPTSearchBy').hide()
+        }
         $('#txtPSPTSearchBy').val(null)
-        dataTablePSPTSchedule
-            .columns(4).search('')
-            .columns(2).search('')
-            .columns(3).search('')
-            .draw()
+        dataTablePSPTSchedule.columns([1, 2, 4, 5, 6]).search('').draw()
+    })
+
+    $('#slcPSPTSearchByLocation').on('change', function () {
+        dataTablePSPTSchedule.columns(1).search($(this).val()).draw()
+    })
+
+    $('#txtPSPTSearchBySchedule').on('change', function () {
+        dataTablePSPTSchedule.columns(6).search($(this).val()).draw()
     })
 
     $('#txtPSPTSearchBy').on('input', function () {
