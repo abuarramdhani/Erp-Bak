@@ -53,6 +53,34 @@ class C_Monitoring extends CI_Controller {
         $action = $this->input->post('actionIPM');
         $ticket = $this->input->post('ticketIPM');
         $noind = $this->session->user;
+        
+        if($ip == '172.16.100.94') {
+            $link = 'IconPlus PUSAT-BANJARMASIN';
+        }else if($ip == '172.16.100.26') {
+            $link = 'IconPlus PUSAT-JAKARTA';
+        }else if($ip == '172.16.100.14') {
+            $link = 'IconPlus PUSAT-LAMPUNG';
+        }else if($ip == '172.16.100.62') {
+            $link = 'IconPlus PUSAT-LANGKAPURA';
+        }else if($ip == '172.16.100.30') {
+            $link = 'IconPlus PUSAT-MAKASSAR';
+        }else if($ip == '172.16.100.18') {
+            $link = 'IconPlus PUSAT-MEDAN';
+        }else if($ip == '172.16.100.22') {
+            $link = 'IconPlus PUSAT-MLATI';
+        }else if($ip == '172.16.100.102') {
+            $link = 'IconPlus PUSAT-PALU';
+        }else if($ip == '172.16.100.90') {
+            $link = 'IconPlus PUSAT-PEKANBARU';
+        }else if($ip == '172.16.100.50') {
+            $link = 'IconPlus PUSAT-PONTIANAK';
+        }else if($ip == '172.16.100.10') {
+            $link = 'IconPlus PUSAT-SURABAYA';
+        }else if($ip == '172.16.100.6') {
+            $link = 'IconPlus PUSAT-TUKSONO';
+        }else if($ip == '172.18.22.2') {
+            $link = 'LDP PUSAT-TUKSONO';
+        }
 
         $data = array(
                         'creation_date' => 'now()',
@@ -99,7 +127,7 @@ class C_Monitoring extends CI_Controller {
 						</tr>
 					</table>";
 		
-		$subject = "($st) ".$ipName." is Down";
+		$subject = "($st) ".$link." is Down";
 
 		$this->EmailAlert($subject, $message);
 		$this->EmailAlertInternal($subject, $message);
