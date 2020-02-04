@@ -218,7 +218,7 @@ class C_Index extends CI_Controller {
 								 <tr>
 								 	<th align='left'>DOWN TIME</th>
 									<th>:</th>
-									<td>$downtime Jam</td>
+									<td>WIP selama $downtime Jam</td>
 								 </tr>
 								</table>";
 					}
