@@ -9,6 +9,7 @@ class C_Index extends CI_Controller
 		$this->load->helper('url');
 		$this->load->helper('html');
 
+		$this->load->library('Log_Activity');
 		$this->load->library('form_validation');
 		$this->load->library('upload');
 		$this->load->library('session');
@@ -49,12 +50,7 @@ class C_Index extends CI_Controller
 		$data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id);
 
 		if ($no_induk == 'B0898' || $no_induk == 'B0720' || $no_induk == 'B0819' || $no_induk == 'B0697' || $no_induk == 'B0696' || $no_induk == 'J1293' || $no_induk == 'B0307') {
-			if($no_induk == 'B0898' || $no_induk == 'B0720' || $no_induk == 'B0819'){
-				$data['UserMenu'] = $datamenu;
-			}else {
-				unset($datamenu[1]);
-				$data['UserMenu'] = $datamenu;
-			}
+			$data['UserMenu'] = $datamenu;
 		}else {
 			unset($datamenu[1]);
 			unset($datamenu[2]);
@@ -92,6 +88,11 @@ class C_Index extends CI_Controller
 		$update= $this->M_index->update($status, $idizin);
 
 		if ($status == 1) {
+			//insert to t_log
+			$aksi = 'PERIZINAN DINAS';
+			$detail = 'Approve Izin ID='.$idizin;
+			$this->log_activity->activity_log($aksi, $detail);
+			//
 			$no = '0';
 			$tujuan = $this->M_index->getTujuanMakan($idizin);
 			$updatePekerja = $this->M_index->updatePekerja($no, $idizin);
@@ -122,6 +123,11 @@ class C_Index extends CI_Controller
 			}
 			$this->EmailAlertAll($getnama, $status, $idizin, $tanggal, $ket, $berangkat);
 		}elseif ($status == 2) {
+			//insert to t_log
+			$aksi = 'PERIZINAN DINAS';
+			$detail = 'Reject Izin ID='.$idizin;
+			$this->log_activity->activity_log($aksi, $detail);
+			//
 			$no = '5';
 			$updatePekerja = $this->M_index->updatePekerja($no, $idizin);
 			$this->EmailAlertAll($getnama, $status, $idizin, $tanggal, $ket, $berangkat);
@@ -163,11 +169,21 @@ class C_Index extends CI_Controller
 		if (!empty($result)) {
 			foreach ($result as $key) {
 				$update2_tpekerja_izin = $this->M_index->updatePekerjaBerangkat($key, '5', $id);
+				//insert to t_log
+				$aksi = 'PERIZINAN DINAS';
+				$detail = 'Reject Izin ID='.$id.' noind='.$key;
+				$this->log_activity->activity_log($aksi, $detail);
+				//
 			}
 		}
 
 		foreach ($pekerja as $key) {
 			$update_tpekerja_izin = $this->M_index->updatePekerjaBerangkat($key, '0', $id);
+			//insert to t_log
+			$aksi = 'PERIZINAN DINAS';
+			$detail = 'Approve Izin ID='.$id.' noind='.$key;
+			$this->log_activity->activity_log($aksi, $detail);
+			//
 		}
 
 		if ($pekerja > 1) {
@@ -288,7 +304,7 @@ class C_Index extends CI_Controller
 			$newArr .= '</table>';
 
 			foreach ($noinde as $key) {
-			$imel = $this->M_index->getImel($key);
+			$imel = $this->M_index->getImel($key[0]['noind']);
 			$nama = $this->M_index->pekerja($key);
 
 			$subject = "New!!! Konfirmasi Perizinan Dinas";
