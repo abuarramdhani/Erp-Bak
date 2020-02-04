@@ -196,6 +196,7 @@
 		<script src="<?= base_url('assets/js/customADO.js');?>"></script>
 		<script src="<?= base_url('assets/js/customIPM.js');?>"></script>
 		<script type="text/javascript" src="<?= base_url('assets/js/customKTR.js') ?>"></script>
+		<script src="<?= base_url('assets/js/customHW.js') ?>"></script>
 
 
 

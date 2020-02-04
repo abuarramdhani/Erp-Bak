@@ -3728,3 +3728,11 @@ $route['PendampinganSPT/Daftar/(:any)/(:any)'] = 'PendampinganSPT/MainMenu/C_Daf
 $route['PendampinganSPT/Data'] = 'PendampinganSPT/MainMenu/C_Data';
 $route['PendampinganSPT/Data/(:any)'] = 'PendampinganSPT/MainMenu/C_Data/$1';
 $route['PendampinganSPT/Data/(:any)/(:any)'] = 'PendampinganSPT/MainMenu/C_Data/$1/$2';
+
+// ----------------------------------------------- Hardware ----------------------------------------------- //
+$route['hardware'] = 'Hardware/Sweeping/C_Sweep/index';
+$route['hardware/input-data'] = 'Hardware/Sweeping/C_Sweep/inputData';
+$route['hardware/input-data/(:any)'] = 'Hardware/Sweeping/C_Sweep/$1';
+$route['hardware/view-data'] = 'Hardware/Sweeping/C_Sweep/viewData';
+$route['hardware/view-data/(:any)'] = 'Hardware/Sweeping/C_Sweep/$1';
+$route['hardware/view-data/(:any)/(:any)'] = 'Hardware/Sweeping/C_Sweep/$1/$2';
