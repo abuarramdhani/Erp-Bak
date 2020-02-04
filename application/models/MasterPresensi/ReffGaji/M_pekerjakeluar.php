@@ -2682,7 +2682,6 @@ class M_pekerjakeluar extends CI_Model
 				 AND tglberlaku >= '$awal'
 				 AND tglberlaku <= '$akhir'
 				 AND lokasibr = '02'
-				 AND lokasilm = '01'
 				 ORDER BY tglberlaku desc
 				 LIMIT 1";
 		$result0 = $this->personalia->query($sql)->result_array();
