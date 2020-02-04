@@ -97,9 +97,10 @@ $(document).ready( _ => {
     })
 
     $('.btnADOSelectApprover').on('click', function () {
-        $('.trADOQtyZero').length === 0 || $('.txtADOOrderType').val() === 'HO-Perlengkapan-DN' ?
-            $('#mdlADOAssignApprover').modal('show') :
-            swalADOMixinToast('error', 'Quantity on hand tidak memenuhi. Silahkan dilakukan pengecekan ulang')
+        // $('.trADOQtyZero').length === 0 || $('.txtADOOrderType').val() === 'HO-Perlengkapan-DN' ?
+        //     $('#mdlADOAssignApprover').modal('show') :
+        //     swalADOMixinToast('error', 'Quantity on hand tidak memenuhi. Silahkan dilakukan pengecekan ulang')
+        $('#mdlADOAssignApprover').modal('show')
     })
 
     $('.btnADORequestApproveDO').on('click', function () {
