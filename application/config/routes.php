@@ -3747,3 +3747,9 @@ $route['Koperasi/api/delList'] = 'Koperasi/C_Index/delList';
 $route['Koperasi/api/previewDBF'] = 'Koperasi/C_Index/previewDBF';
 $route['Koperasi/api/uploadData'] = 'Koperasi/C_Index/uploadFile';
 $route['Koperasi/api/saveData'] = 'Koperasi/C_Index/saveToDatabase';
+// ------------------------------------------------ Receive PO ------------------------------------------------------//
+$route['ReceivePO'] = 'ReceivePO/C_Index';
+$route['ReceivePO/History'] = 'ReceivePO/C_History';
+$route['ReceivePO/History/(:any)'] = 'ReceivePO/C_History/$1';
+$route['ReceivePO/History/(:any)/(:any)/(:any)'] = 'ReceivePO/C_History/$1/$2/$3';
+
