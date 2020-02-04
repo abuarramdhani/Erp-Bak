@@ -33,7 +33,11 @@
 										<tr>
 											<td>No Induk</td>
 											<td>:</td>
-											<td><!-- <input type="text" class="form-control" name="txtNoInduk" required> --><input type="text" class="form-control" name="slcNoInduk" value="<?php echo $data['no_ind']; ?>" style="width: 250px;" disabled required></td>
+											<td>
+												<select class="select2 noInduk form-control" name="slcNoInduk" style="width: 100%;" required>
+													<option value="<?php echo $data['no_ind']; ?>"><?php echo $data['no_ind']; ?></option>
+												</select>
+											</td>
 										</tr>
 										<tr>
 											<td>Nama</td>

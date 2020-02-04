@@ -48,6 +48,7 @@ class C_Sweep extends CI_Controller
 		$this->load->view('V_Sidemenu',$data);
 		$this->load->view('Hardware/Sweeping/V_Input',$data);
 		$this->load->view('V_Footer',$data);
+		$this->session->unset_userdata('saved_hardware');
 	}
 
 	public function getDataUser()
@@ -167,6 +168,7 @@ class C_Sweep extends CI_Controller
 			);
 
 		$this->M_sweep->saveDataUmum($dataUmum);
+		$this->session->set_userdata('saved_hardware', '1');
 
 		redirect('hardware/input-data');
 	}
@@ -183,6 +185,7 @@ class C_Sweep extends CI_Controller
 		$this->load->view('V_Sidemenu',$data);
 		$this->load->view('Hardware/Sweeping/V_View_Data',$data);
 		$this->load->view('V_Footer',$data);
+		$this->session->unset_userdata('saved_hardware');
 	}
 
 	public function viewDetailData($id)
@@ -191,6 +194,17 @@ class C_Sweep extends CI_Controller
 		
 		$data  = $this->general->loadHeaderandSidemenu('Hardware', 'Hardware', 'View Data', '', '');
 		$data['detailData'] = $this->M_sweep->getDetailData($id);
+
+		if ($data['detailData'][0]['remark'] == 1) {
+			if (!empty($data['detailData'][0]['last_update_by'])) {
+				$pkj = $this->M_sweep->getDataUser($data['detailData'][0]['last_update_by']);
+				$noind = $data['detailData'][0]['last_update_by'];
+			}else{
+				$pkj = $this->M_sweep->getDataUser($data['detailData'][0]['petugas_input']);
+				$noind = $data['detailData'][0]['petugas_input'];
+			}
+			$data['detailData'][0]['verifikasi_oleh'] = $noind.' - '.rtrim($pkj[0]['nama']);
+		}
 		
 		$this->load->view('V_Header',$data);
 		$this->load->view('V_Sidemenu',$data);
@@ -243,9 +257,9 @@ class C_Sweep extends CI_Controller
 		$user = $this->session->userdata('user');
 
 		// $noAsset = $this->input->post('txtNoAsset');
-		// $noind = $this->input->post('slcNoInduk');
-		// $nama = $this->input->post('txtNama');
-		// $seksi = $this->input->post('txtSeksi');
+		$noind = $this->input->post('slcNoInduk');
+		$nama = $this->input->post('txtNama');
+		$seksi = $this->input->post('txtSeksi');
 		//$lokasi = $this->input->post('slcLokasi');
 		$ipAddress = $this->input->post('txtIpAddress');
 		//$sistemOperasi = $this->input->post('txtOS');
@@ -310,9 +324,9 @@ class C_Sweep extends CI_Controller
 
 		$dataUmum = array(
 			//'no_asset' 		=> $noAsset,	 
-			// 'no_ind'	 		=> $noind,
-			// 'nama'	 	 	=> $nama,
-			// 'seksi'	 		=> $seksi,
+			'no_ind'	 		=> $noind,
+			'nama'	 	 	=> $nama,
+			'seksi'	 		=> $seksi,
 			//'lokasi' 			=> $lokasi,
 			'ip_address' 		=> $ipAddress,
 			//'sistem_operasi' 	=>	$sistemOperasi, 
@@ -397,6 +411,7 @@ class C_Sweep extends CI_Controller
 		$this->M_sweep->insertHistory($imArr, $values);
 
 		$this->M_sweep->updateDataUmum($checkId, $dataUmum);
+		$this->session->set_userdata('saved_hardware', '1');
 
 		redirect('hardware/view-data');
 	}

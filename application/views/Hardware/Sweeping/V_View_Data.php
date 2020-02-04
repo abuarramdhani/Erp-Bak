@@ -1,3 +1,22 @@
+<style>
+  .dataTables_filter{
+    float: right;
+  }
+  .dataTables_info{
+    float: left;
+  }
+  .dataTables_length{
+    float: left;
+  }
+  .dataTables_info{
+    margin-left: 20%;
+  }
+  .buttons-excel{
+    font-weight: bold;
+    background-color: #55b055;
+    color: #fff;
+  }
+</style>
 <section class="content">
   <div class="box box-default color-palette-box">
     <div class="box-body">
@@ -17,6 +36,7 @@
                     <th class="text-center">Sistem Operasi</th>
                     <th class="text-center">Windows Key</th>
                     <th class="text-center">Tanggal Input</th>
+                    <th class="text-center">Verifikasi</th>
                     <th class="text-center" style="width: 55px;">Action</th>
                   </tr>
                 </thead>
@@ -34,6 +54,13 @@
                     <td><?php echo $data['windows_key']?></td>
                     <?php $data['tgl_input'] = substr($data['tgl_input'], 0,19);?>
                     <td><?php echo $data['tgl_input']?></td>
+                    <td data-order="<?= ($data['remark'] == 1) ? 1:0 ?>">
+                      <?php if ($data['remark'] == 1): ?>
+                        <label style="color: #55b055"><i data-or class="fa fa-check fa-2x" title="Sudah di Verifikasi"></i></label>
+                      <?php else: ?>
+                        <i data-or class="fa fa-remove fa-2x" title="Belum di Verifikasi"></i>
+                      <?php endif ?>
+                    </td>
                     <td>
                       <a target="_blank" href="<?= base_url('hardware/view-data/viewDetailData/'.$data['check_id']); ?>" class="btn btn-xs btn-success" title="view data"><i class="fa fa-eye"></i></a>
                       <a href="<?= base_url('hardware/view-data/editData/'.$data['check_id']); ?>" class="btn btn-xs btn-primary" title="edit data"><i class="fa fa-edit"></i></a>
@@ -54,5 +81,8 @@
   window.addEventListener('load', function () {
     $('#show_me_the_money').show();
     $('#delet_this').remove();
+    <?php if ($this->session->userdata('saved_hardware')): ?>
+    notif_save_hardware('edit');
+   <?php endif ?>
   });
 </script>

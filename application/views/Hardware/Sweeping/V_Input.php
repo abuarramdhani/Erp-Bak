@@ -309,3 +309,10 @@
 		</form>
 	</div>
 </section>
+<?php if ($this->session->userdata('saved_hardware')): ?>
+<script>
+	window.addEventListener('load', function () {
+		notif_save_hardware('save');
+	});
+</script>
+<?php endif ?>

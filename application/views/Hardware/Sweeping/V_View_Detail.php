@@ -357,7 +357,9 @@
 								</div>
 								<div class="col-md-12 text-center">
 								<?php if ($data['remark'] == 1): ?>
-									<label style="color: #00a65a"><i class="fa fa-check"></i> Data Sudah di Verifikasi</label>
+									<label style="color: #00a65a"><i class="fa fa-check"></i> Data Sudah di Verifikasi oleh :<br>
+									<?= $data['verifikasi_oleh'] ?>
+									</label>
 								<?php else: ?>
 									<label style="color: #da251d"><i class="fa fa-remove"></i> Data Belum di Verifikasi</label>
 								<?php endif ?>

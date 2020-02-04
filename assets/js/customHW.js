@@ -69,7 +69,17 @@ $(document).ready(function(){
 
 
   $('[data-mask]').inputmask();
-  $('#tbl_sweeping').DataTable();
+  $('#tbl_sweeping').DataTable({
+    dom: 'Bfrtlip',
+    buttons: [
+    {
+      extend: 'excelHtml5',
+      title: 'Data export'
+    }
+    ]
+  });
+
+  $('.buttons-excel').prepend('<i class="fa fa-file-excel-o "></i> ');
 
   $('#form-update').keypress(
     function(event){
@@ -82,3 +92,29 @@ $(document).ready(function(){
    tags: true
  });
 });
+
+function notif_save_hardware(status){
+  const Toast = Swal.mixin({
+    toast: true,
+    position: 'top-end',
+    showConfirmButton: false,
+    timer: 3000,
+    timerProgressBar: true,
+    onOpen: (toast) => {
+      toast.addEventListener('mouseenter', Swal.stopTimer)
+      toast.addEventListener('mouseleave', Swal.resumeTimer)
+    }
+  })
+
+  var judul;
+  if (status == 'save') {
+    judul = 'Berhasil Menyimpan Data!'
+  }else{
+    judul = 'Berhasil Mengupdate Data!'
+  }
+
+  Toast.fire({
+    icon: 'success',
+    title: 'Berhasil Menyimpan Data :D'
+  })
+}
