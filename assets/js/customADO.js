@@ -97,9 +97,10 @@ $(document).ready( _ => {
     })
 
     $('.btnADOSelectApprover').on('click', function () {
-        $('.trADOQtyZero').length === 0 || $('.txtADOOrderType').val() === 'HO-Perlengkapan-DN' ?
-            $('#mdlADOAssignApprover').modal('show') :
-            swalADOMixinToast('error', 'Quantity on hand tidak memenuhi. Silahkan dilakukan pengecekan ulang')
+        // $('.trADOQtyZero').length === 0 || $('.txtADOOrderType').val() === 'HO-Perlengkapan-DN' ?
+        //     $('#mdlADOAssignApprover').modal('show') :
+        //     swalADOMixinToast('error', 'Quantity on hand tidak memenuhi. Silahkan dilakukan pengecekan ulang')
+        $('#mdlADOAssignApprover').modal('show')
     })
 
     $('.btnADORequestApproveDO').on('click', function () {
@@ -240,11 +241,11 @@ $(document).ready( _ => {
         }, 300000)
     }
 
-    // if ( window.location.href.indexOf('ApprovalDO/Detail/ListDO') > -1 ) {
-    //     $('.tdADOQtyATR').each( function () {
-    //         if ( $(this).html() === '0' )
-    //             $(this).parents('tr').addClass('bg-red trADOQtyZero')
-    //     })
-    // }
+    if ( window.location.href.indexOf('ApprovalDO/Detail/ListDO') > -1 ) {
+        $('.tdADOQtyATR').each( function () {
+            if ( $(this).html() === '0' )
+                $(this).parents('tr').addClass('bg-red trADOQtyZero')
+        })
+    }
 
 })
