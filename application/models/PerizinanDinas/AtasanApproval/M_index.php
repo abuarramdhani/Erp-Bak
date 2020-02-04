@@ -12,6 +12,7 @@ class M_index extends CI_Model
    public function GetIzin($no_induk)
 	{
 		$sql = "SELECT a.*,
+                (case when a.jenis_izin = '1' then 'DINAS PUSAT' when a.jenis_izin = '2' then 'DINAS TUKSONO' else 'DINAS MLATI' end) as to_dinas,
                 (select string_agg(concat(noind,' - ',trim(nama)),'<br>') from hrd_khs.tpribadi b where position(b.noind in a.noind)>0) as pekerja
                 FROM \"Surat\".tperizinan a WHERE a.atasan_aproval LIKE '%$no_induk%'
                 order by a.status, a.izin_id DESC";
@@ -140,6 +141,18 @@ class M_index extends CI_Model
     {
         $sql = "SELECT * FROM \"Surat\".tpekerja_izin WHERE izin_id = '$b' AND noind = '$a'";
         return $this->personalia->query($sql)->result_array();
+    }
+
+    public function pekerja($noind)
+    {
+        $sql = "SELECT noind, trim(nama) as nama from hrd_khs.tpribadi where noind in ('$noind') ";
+        return $this->personalia->query($sql)->result_array();
+    }
+
+    public function getImel($key)
+    {
+        $sql = "SELECT email_internal from hrd_khs.tpribadi where noind in ('$key')";
+        return $this->personalia->query($sql)->row()->email_internal;
     }
 
 } ?>

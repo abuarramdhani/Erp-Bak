@@ -23,8 +23,9 @@
                     <div class="col-lg-12">
                         <div class="box box-primary box-solid">
                             <div class="box-header with-border">
-                                <div>
-                                    <marquee><label style="font-size: 18px;">Harap dilakukan verifikasi terlebih dahulu sebelum klik APPROVE</label></marquee>
+                                <div class="col-lg-12">
+                                    <a href="<?php echo site_url('assets/video/approve_perizinan_dinas.webm');?>" class="btn btn-warning col-lg-1"><span style="color: white" class='fa fa-2x fa-video-camera'></a>
+                                    <marquee class="col-lg-11"><label style="font-size: 18px;">Harap dilakukan verifikasi terlebih dahulu sebelum klik APPROVE</label></marquee>
                                 </div>
                             </div>
                             <div class="box-body">
@@ -82,14 +83,7 @@
                                           echo date('H:i:s', strtotime($row['berangkat'])).' PM';
                                       } ?></td>
                                       <td style="white-space: nowrap"><?php echo $row['pekerja'];  ?></td>
-                                      <td style="white-space: nowrap; text-align: center;"><?php if ( $row['jenis_izin'] == '1') {
-                                                                                      echo "DINAS PUSAT";
-                                                                                    }elseif ( $row['jenis_izin'] == '2') {
-                                                                                      echo "DINAS TUKSONO";
-                                                                                    }elseif ( $row['jenis_izin'] == '3') {
-                                                                                      echo "DINAS MLATI";
-                                                                                    } ?>
-                                      </td>
+                                      <td style="white-space: nowrap; text-align: center;"><?php echo $row['to_dinas'] ?></td>
                                       <td style="white-space: nowrap"><?php if ($row['tujuan'] == null || $row['tujuan'] == '') {
                                                                           echo " - ";
                                                                         }else {
@@ -372,7 +366,6 @@
         </div>
       </div>
     </div>
-</div>
 </div>
 
 <!-- selesai -->

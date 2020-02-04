@@ -76,22 +76,25 @@ class C_Master extends CI_Controller
 
     public function countDO()
     {
-      // $data[0] = '';
-      // $data[1] = '';
-      // $data[2] = '';
-      // $data[3] = '';
-      // $data[4] = '';
-      $data[0] = sizeof($this->M_monitoringdo->getDO());
-      $data[1] = sizeof($this->M_monitoringdo->sudahdiAssign());
-      $data[2] = sizeof($this->M_monitoringdo->sudahdiLayani());
-      $data[3] = sizeof($this->M_monitoringdo->sudahdiMuat());
-      $data[4] = sizeof($this->M_monitoringdo->GetSudahCetakCekFoCount());
+      $data[0] = '';
+      $data[1] = '';
+      $data[2] = '';
+      $data[3] = '';
+      $data[4] = '';
+      // $data[0] = sizeof($this->M_monitoringdo->getDO());
+      // $data[1] = sizeof($this->M_monitoringdo->sudahdiAssign());
+      // $data[2] = sizeof($this->M_monitoringdo->sudahdiLayani());
+      // $data[3] = sizeof($this->M_monitoringdo->sudahdiMuat());
+      // $data[4] = sizeof($this->M_monitoringdo->GetSudahCetakCekFoCount());
       echo json_encode($data);
     }
 
-  public function GetSetting()
+    public function GetSetting()
     {
       $datag = $this->M_monitoringdo->getDO();
+      // echo "<pre>";
+      // print_r($datag);
+      // die;
       if (!empty($datag[0]['DO/SPB'])) {
         foreach ($datag as $g) {
             $dataku[] = $g['DO/SPB'];
@@ -159,7 +162,7 @@ class C_Master extends CI_Controller
           'HEADER_ID' => $data[0]['HEADER_ID'],
           'REQUEST_NUMBER' => $id,
           'PERSON_ID' => $user,
-          'DELIVERY_FLAG'=> 'Y'
+          'DELIVERY_FLAG'=> 'N'
       )));
     }
 
@@ -169,8 +172,21 @@ class C_Master extends CI_Controller
             'HEADER_ID' => $this->input->post('header_id'),
             'REQUEST_NUMBER' => $this->input->post('requests_number'),
             'PERSON_ID' => strtoupper($this->input->post('person_id')),
-            'DELIVERY_FLAG'=> 'Y'
+            'DELIVERY_FLAG'=> 'N'
         )));
+    }
+
+    public function insertPlatnumber()
+    {
+      $plat = strtoupper($this->input->post('plat_nomer'));
+      $rm = $this->input->post('rm');
+      $hi = $this->input->post('hi');
+      $data = [
+        'PLAT_NUMBER' => $plat,
+        'DELIVERY_FLAG'=> 'Y',
+      ];
+      $this->M_monitoringdo->updatePlatnumber($data, $rm, $hi);
+      echo json_encode('sukses');
     }
 
     public function insertDOtampung()
@@ -208,7 +224,7 @@ class C_Master extends CI_Controller
         $this->M_monitoringdo->insertDOtampung($data);
       }
 
-      $this->M_monitoringdo->runAPIDO($rm);
+      // $this->M_monitoringdo->runAPIDO($rm);
       $this->M_monitoringdo->DeleteDOtampung($rm, get_client_ip());
 
       echo json_encode('sukses!!!');
@@ -348,12 +364,12 @@ class C_Master extends CI_Controller
 
             $pdf 		= $this->pdf->load();
             $this->load->library('ciqrcode');
-            $pdf 		= new mPDF('utf-8', array(210 , 297), 0, '', 3, 3, 3, 0, 0, 3);
+            $pdf 		= new mPDF('utf-8', array(210 , 267), 0, '', 3, 3, 3, 0, 0, 3);
 
             // ------ GENERATE QRCODE ------
-            if (!is_dir('./assets/img/monitoringDOQRCODE')) {
-                mkdir('./assets/img/monitoringDOQRCODE', 0777, true);
-                chmod('./assets/img/monitoringDOQRCODE', 0777);
+            if (!is_dir('./assets/img')) {
+                mkdir('./assets/img', 0777, true);
+                chmod('./assets/img', 0777);
             }
 
             $params['data']		= $data['get_header'][0]['NO_DO'];
@@ -361,7 +377,7 @@ class C_Master extends CI_Controller
             $params['size']		= 4;
             $params['black']	= array(255,255,255);
             $params['white']	= array(0,0,0);
-            $params['savename'] = './assets/img/monitoringDOQRCODE/'.$data['get_header'][0]['NO_DO'].'.png';
+            $params['savename'] = './assets/img/'.$data['get_header'][0]['NO_DO'].'.png';
             $this->ciqrcode->generate($params);
 
             ob_end_clean() ;
@@ -559,8 +575,10 @@ class C_Master extends CI_Controller
       $data['get'] = $finaldestination;
 
       $cekaja = $this->M_monitoringdo->getDetailDataPengecekan('3408360');
+
+      $data['get_header'] = $this->M_monitoringdo->headerSurat('3749115');
       echo "<pre>";
-      print_r($cekaja);
+      print_r($data['get_header']);
       die;
     }
 }

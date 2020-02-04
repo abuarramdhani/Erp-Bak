@@ -28,7 +28,13 @@ class M_lelayu extends CI_Model
   }
 
   public function getCutoffBulanIni(){
-    $sql = "select tanggal_awal::date from \"Presensi\".tcutoff where to_char(tanggal_akhir,'yyyy-mm') = to_char(current_date,'yyyy-mm') limit 1";
+    $sql = "select
+              tanggal_awal::date
+            from
+              \"Presensi\".tcutoff
+            where
+              current_date between tanggal_awal and tanggal_akhir
+              limit 1";
     if(isset($this->personalia->query($sql)->row()->tanggal_awal)){
       return  $this->personalia->query($sql)->row()->tanggal_awal;
     }else{

@@ -39,9 +39,40 @@
                                                 <input type="radio" name="PerSurat" class="RD_radioDinas" value="2" required>Rekap Per Pekerja
                                             </div>
                                         </div>
+                                        <div class="col-lg-12" id="RPD_ID">
+                                            <label for="id_rekap" class="col-lg-2">ID Izin :</label>
+                                            <!-- <div class="form-group col-lg-5"> -->
+                                                <!-- <input type="number" name="id_rekap[]" class="form-control RPD_id_rekap" multiple> -->
+                                                <!-- <p style="color: red;">*kosongkan kolom ID Izin, untuk menampilkan semua data</p>
+                                            </div> -->
+                                            <div class="form-group col-lg-5">
+                                                <select name="id_rekap[]" class="form-control select select2 RPD_id_rekap" multiple>
+                                                    <option></option>
+                                                    <?php foreach ($Izin_id as $key): ?>
+                                                        <option value="<?php echo $key['izin_id'] ?>"><?php echo $key['izin_id'] ?></option>
+                                                    <?php endforeach; ?>
+                                                </select>
+                                                <p style="color: red;">*kosongkan ID Izin, untuk menampilkan semua data</p>
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-12" id="RPD_Noind">
+                                            <label for="perNoind" class="col-lg-2">Nomor Induk :</label>
+                                            <div class="form-group col-lg-5">
+                                                <select name="perNoind[]" class="form-control select select2 RPD_perNoind" multiple>
+                                                    <option></option>
+                                                    <?php foreach ($noind as $key): ?>
+                                                        <option value="<?php echo $key['noind'] ?>"><?php echo $key['noind']." - ".$key['nama'] ?></option>
+                                                    <?php endforeach; ?>
+                                                </select>
+                                                <p style="color: red;">*kosongkan Nomor Induk, untuk menampilkan semua data</p>
+                                            </div>
+                                        </div>
                                         <div class="col-lg-12">
-                                            <div class="col-lg-5 text-center">
+                                            <div class="col-lg-3 text-right">
                                                 <button class="btn btn-primary" id="PD_Cari">Cari</button>
+                                            </div>
+                                            <div class="col-lg-5 text-left">
+                                                <button class="btn btn-danger" onclick="window.location.reload()">Reset</button>
                                             </div>
                                         </div>
                                     </div>

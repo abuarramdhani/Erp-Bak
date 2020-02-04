@@ -1,13 +1,31 @@
 $(document).ready( _ => {
 
     const dataTableADOList = $('.tblADOList').DataTable({
-		scrollY 	  : '350px',
-        fixedHeader   : true,
         columnDefs    : [{
             orderable   : false,
             targets     : 'no-orderable'
-        }]
+        }],
+        fixedHeader   : true,
+		scrollY 	  : '350px'
     })
+
+    const dataTableADODetailList = $('.tblADODetailList').DataTable({
+        columnDefs    : [{
+            orderable   : false,
+            targets     : 'no-orderable'
+        }],
+        drawCallback  : function () {
+            $('.chkADOPickedRelease, .chkADOPickedReleaseAll').iCheck({
+                checkboxClass: 'icheckbox_square-blue',
+                radioClass: 'iradio_flat-blue'
+            })        
+        },
+        fixedHeader   : true,
+        pageLength    : 25,
+		scrollY 	  : '350px'
+    })
+
+    const dataTableADODetailAllPageList = dataTableADODetailList.cells().nodes()
 
     const swalADOQuestionAjax = ( title, success, fail, url, data ) => {
         return new Promise( (response) => {
@@ -35,29 +53,11 @@ $(document).ready( _ => {
                         url      : url,
                         data     : data,
                         dataType : 'JSON',
-                    }).done( (resp) => {           
-                        Swal.mixin({
-                            toast             : true,
-                            position          : 'top-end',
-                            showConfirmButton : false,
-                            timer             : 3000
-                        }).fire({
-                            customClass : 'swal-font-small',
-                            type        : 'success',
-                            title       : success
-                        })
+                    }).done( (resp) => {
+                        swalADOMixinToast('success', success)
                         response(resp)
-                    }).fail( () => {      
-                        Swal.mixin({
-                            toast             : true,
-                            position          : 'top-end',
-                            showConfirmButton : false,
-                            timer             : 3000
-                        }).fire({
-                            customClass : 'swal-font-small',
-                            type        : 'error',
-                            title       : fail
-                        })
+                    }).fail( () => {
+                        swalADOMixinToast('error', fail)
                         response('Fail')
                     })
                 } else {
@@ -67,9 +67,22 @@ $(document).ready( _ => {
         })
     }
 
+    const swalADOMixinToast = ( type, title ) => {
+        Swal.mixin({
+            toast             : true,
+            position          : 'top-end',
+            showConfirmButton : false,
+            timer             : 3000
+        }).fire({
+            customClass : 'swal-font-small',
+            type        : type,
+            title       : title
+        })
+    }
+
     $('.divADOLoadingTable').fadeOut('slow').promise().done( _ => {
-        $('.tblADOList').fadeIn( _ => {
-            dataTableADOList.draw()
+        $('.tblADOList, .tblADODetailList').fadeIn( _ => {
+            $($.fn.dataTable.tables(true)).DataTable().draw()
         })
     })
 
@@ -77,15 +90,27 @@ $(document).ready( _ => {
         width : 'resolve'
     })
 
-    $('.chkADOPickedRelease').iCheck('checkboxClass', 'icheckbox_flat')
+    $(document).on('ifChanged', '.chkADOPickedReleaseAll', function (e) {
+        e.target.checked ?
+            $(dataTableADODetailAllPageList).find('.chkADOPickedRelease').iCheck('check') :
+            $(dataTableADODetailAllPageList).find('.chkADOPickedRelease').iCheck('uncheck')
+    })
 
-    $(document).on('click', '.btnADORequestApprove', function () {
+    $('.btnADOSelectApprover').on('click', function () {
+        $('.trADOQtyZero').length === 0 || $('.txtADOOrderType').val() === 'HO-Perlengkapan-DN' ?
+            $('#mdlADOAssignApprover').modal('show') :
+            swalADOMixinToast('error', 'Quantity on hand tidak memenuhi. Silahkan dilakukan pengecekan ulang')
+    })
+
+    $('.btnADORequestApproveDO').on('click', function () {
         let data     = {
-            doNumber : $('.spnADODONumber').html(),
-            soNumber : $('.spnADOSONumber').html(),
-            approver : $('.slcADOAssignerList').val()
+            doNumber        : $('.spnADODONumber').html(),
+            soNumber        : $('.spnADOSONumber').html(),
+            approver        : $('.slcADOAssignerList').val(),
+            approverName    : $('.slcADOAssignerList').find(':selected').text().split(' - ').slice(-1).pop(),
+            approverAddress : $('.slcADOAssignerList').find(':selected').attr('address')
         }
-        let url      = `${baseurl}ApprovalDO/List/requestApproveDO`
+        let url      = `${baseurl}ApprovalDO/ListDO/requestApproveDO`
         let question = `Request Approve DO Ini ke ${data.approver} ?`
         let success  = 'Berhasil Request Approve DO'
         let fail     = 'Gagal Request Approve DO'
@@ -96,6 +121,30 @@ $(document).ready( _ => {
                     '<i class="fa fa-check"></i>&nbsp; Approval Requested'
                 )
                 $('#mdlADOAssignApprover').modal('hide')
+                $('.btnADOPending').remove()
+            }
+        })
+    })
+
+    $('.btnADORequestApproveSPB').on('click', function () {
+        let data     = {
+            spbNumber       : $('.spnADODONumber').html(),
+            approver        : $('.slcADOAssignerList').val(),
+            approverName    : $('.slcADOAssignerList').find(':selected').text().split(' - ').slice(-1).pop(),
+            approverAddress : $('.slcADOAssignerList').find(':selected').attr('address')
+        }
+        let url      = `${baseurl}ApprovalDO/ListSPB/requestApproveSPB`
+        let question = `Request Approve SPB Ini ke ${data.approver} ?`
+        let success  = 'Berhasil Request Approve SPB'
+        let fail     = 'Gagal Request Approve SPB'
+        swalADOQuestionAjax(question, success, fail, url, data).then( (resp) => {
+            if ( resp != 'Cancelled' && resp != 'Fail' ) {
+                $('.btnADOSelectApprover').attr('disabled', '')
+                $('.btnADOSelectApprover').html(
+                    '<i class="fa fa-check"></i>&nbsp; Approval Requested'
+                )
+                $('#mdlADOAssignApprover').modal('hide')
+                $('.btnADOPending').remove()
             }
         })
     })
@@ -105,7 +154,10 @@ $(document).ready( _ => {
             doNumber : $('.spnADODONumber').html()
         }
         let url      = `${baseurl}ApprovalDO/Approval/approveDO`
-        let question = 'Approve DO Ini?'
+        let question
+        $('.spnADODetailType').html().includes('SPB') ? 
+            question = 'Approve SPB Ini?' :
+            question = 'Approve DO Ini?'
         let success  = 'Berhasil Melakukan Approve DO'
         let fail     = 'Gagal Melakukan Approve DO'
         swalADOQuestionAjax(question, success, fail, url, data).then( (resp) => {
@@ -124,7 +176,10 @@ $(document).ready( _ => {
             doNumber : $('.spnADODONumber').html()
         }
         let url      = `${baseurl}ApprovalDO/Approval/rejectDO`
-        let question = 'Reject DO Ini?'
+        let question
+        $('.spnADODetailType').html().includes('SPB') ? 
+            question = 'Reject SPB Ini?' :
+            question = 'Reject DO Ini?'
         let success  = 'Berhasil Melakukan Reject DO'
         let fail     = 'Gagal Melakukan Reject DO'
         swalADOQuestionAjax(question, success, fail, url, data).then( (resp) => {
@@ -133,7 +188,7 @@ $(document).ready( _ => {
                 $(this).removeClass('btn-primary').addClass('btn-danger').html(
                     '<i class="fa fa-remove"></i>&nbsp; Rejected'
                 )
-                $('.btnADOApprove').remove()
+                $('.btnADOApprove, .btnADOPending').remove()
             }
         })
     })
@@ -143,7 +198,10 @@ $(document).ready( _ => {
             doNumber : $('.spnADODONumber').html() 
         }
         let url      = `${baseurl}ApprovalDO/Approval/pendingDO`
-        let question = 'Pending DO Ini?'
+        let question
+        $('.spnADODetailType').html().includes('SPB') ? 
+            question = 'Pending SPB Ini?' :
+            question = 'Pending DO Ini?'
         let success  = 'Berhasil Melakukan Pending DO'
         let fail     = 'Gagal Melakukan Pending DO'
         swalADOQuestionAjax(question, success, fail, url, data).then( (resp) => {
@@ -157,38 +215,36 @@ $(document).ready( _ => {
         })
     })
 
-    $(document).on('click', '.btnADOLaunchRelease', function () {
+    $('.btnADOLaunchRelease').on('click', function () {
         let data     = {
             deliveryId : ( _ => {
-                let data = []
-                $('.chkADOPickedRelease:checked').each( function () {
-                    data.push($(this).parents('tr').find('.spnADODeliveryID').html())
+                let checkedVal = []
+                $(dataTableADODetailAllPageList).find('.chkADOPickedRelease:checked').each( function () {
+                    checkedVal.push($(this).parents('tr').find('.spnADODeliveryID').html())
                 })
-                return data
+                return checkedVal
             }) ()
         }
         let url      = `${baseurl}ApprovalDO/LaunchPickRelease/releaseDO`
-        let question = 'Anda Yakin Melakukan Launch Pick Release?'
+        let question = 'Lakukan Launch Pick Release?'
         let success  = 'Berhasil Melakukan Launch Pick Release'
         let fail     = 'Gagal Melakukan Launch Pick Release'
         $('.chkADOPickedRelease:checked').length != 0 ?
             swalADOQuestionAjax(question, success, fail, url, data) :
-            Swal.mixin({
-                toast             : true,
-                position          : 'top-end',
-                showConfirmButton : false,
-                timer             : 3000
-            }).fire({
-                customClass : 'swal-font-small',
-                type        : 'error',
-                title       : 'Anda Belum Menchecklist Apapun.'
-            })
+            swalADOMixinToast('error', 'Anda Belum Menchecklist Apapun.')
     })
 
-    if ( window.location.href.indexOf('ApprovalDO/List') > -1 ) {
+    if ( window.location.href.indexOf('ApprovalDO/ListDO') > -1 ) {
         setTimeout( _ => {
             window.location.reload(1)
         }, 300000)
+    }
+
+    if ( window.location.href.indexOf('ApprovalDO/Detail/ListDO') > -1 ) {
+        $('.tdADOQtyATR').each( function () {
+            if ( $(this).html() === '0' )
+                $(this).parents('tr').addClass('bg-red trADOQtyZero')
+        })
     }
 
 })

@@ -24,27 +24,9 @@
                   <td style="white-space: nowrap;"><?php echo $no; ?></td>
                   <td style="white-space: nowrap;"><?php echo $row['izin_id'] ?></td>
                   <td style="white-space: nowrap;"><?= date("d F Y", strtotime($row['created_date'])); ?></td>
-                  <td style="white-space: nowrap;"><?php $noind = explode(', ', $row['noind']);
-                   foreach ($noind as $kalue) {
-                     foreach ($nama as $kuy) {
-                       if ($kalue == $kuy['noind']) {
-                         echo $kuy['noind'].' - '.$kuy['nama'].'<br>';
-                       }
-                     }
-                   } ?></td>
-                  <td style="text-align: center; white-space: nowrap;"><?php if ( $row['jenis_izin'] == '1') {
-                                                                  echo "DINAS PUSAT";
-                                                                }elseif ( $row['jenis_izin'] == '2') {
-                                                                  echo "DINAS TUKSONO";
-                                                                }elseif ( $row['jenis_izin'] == '3') {
-                                                                  echo "DINAS MLATI";
-                                                                } ?>
-                  </td>
-                  <td style="white-space: nowrap;"><?php foreach ($nama as $key) {
-                    if ($row['atasan_aproval'] == $key['noind']) {
-                      echo $key['noind'].' - '.$key['nama'];
-                    }
-                  } ?></td>
+                  <td style="white-space: nowrap;"><?php echo $row['pekerja'] ?></td>
+                  <td style="text-align: center; white-space: nowrap;"><?php echo $row['to_dinas'] ?></td>
+                  <td style="white-space: nowrap;"><?php echo $row['atasan'] ?></td>
                   <td style="white-space: nowrap;"><?php $tempat_makan = explode(',', $row['tujuan']);
                   foreach ($tempat_makan as $lue) {
                     if (empty($lue)) {

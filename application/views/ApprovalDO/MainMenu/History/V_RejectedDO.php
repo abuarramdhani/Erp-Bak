@@ -67,9 +67,15 @@
                                                 <td width="14%" class="text-right"><?= $val['REJECT_DATE'] ?></td>
                                                 <td width="13%"><?= $val['APPROVED_BY'] ?></td>
                                                 <td width="10%" class="text-center">
-                                                    <a href="<?= base_url('ApprovalDO/Detail/Rejected-'.$val['NO_DO'].'-'.$val['NO_SO']) ?>" target="_blank" title="Detail" class="btn btn-default">
-                                                        <i class="fa fa-book"></i>&nbsp; Detail
-                                                    </a>
+                                                    <?php if ($val['NO_SO']) : ?>
+                                                        <a href='<?= base_url("ApprovalDO/Detail/Rejected-{$val['NO_DO']}-{$val['NO_SO']}") ?>' target="_blank" title="Detail" class="btn btn-default">
+                                                            <i class="fa fa-book"></i>&nbsp; Detail
+                                                        </a>    
+                                                    <?php else : ?>
+                                                        <a href='<?= base_url("ApprovalDO/Detail/RejectedSPB-{$val['NO_DO']}-") ?>' target="_blank" title="Detail" class="btn btn-default">
+                                                            <i class="fa fa-book"></i>&nbsp; Detail
+                                                        </a>  
+                                                    <?php endif ?>
                                                 </td>
                                                 <td width="10%" class="text-center">
                                                     <span class="label label-danger">Rejected</span>

@@ -267,3 +267,30 @@ $("#frmMGS").keypress(function(e) {   //Enter key
         });
 
     }
+
+    $(document).ready(function () {
+        $(".picGDSP").select2({
+            allowClear: false,
+            placeholder: "",
+            minimumInputLength: 3,
+            ajax: {
+                url: baseurl + "MonitoringGdSparepart/Monitoring/getPIC",
+                dataType: 'json',
+                type: "GET",
+                data: function (params) {
+                    var queryParameters = {
+                            term: params.term,
+                    }
+                    return queryParameters;
+                },
+                processResults: function (data) {
+                    console.log(data);
+                    return {
+                        results: $.map(data, function (obj) {
+                            return {id:obj.PIC, text:obj.PIC};
+                        })
+                    };
+                }
+            }
+        });
+    });

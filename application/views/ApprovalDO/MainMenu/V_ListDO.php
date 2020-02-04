@@ -59,7 +59,7 @@
                                                 <td width="22%" class="text-right tdADODONumber"><?= $val['BATCH_ID'] ?></td>
                                                 <td width="22%" class="text-right tdASODONumber"><?= $val['SOURCE_HEADER_NUMBER'] ?></td>
                                                 <td width="22%" class="text-center">
-                                                    <a href="<?= base_url('ApprovalDO/Detail/List-'.$val['BATCH_ID'].'-'.$val['SOURCE_HEADER_NUMBER']) ?>" target="_blank" title="Detail" class="btn btn-default">
+                                                    <a href="<?= base_url('ApprovalDO/Detail/ListDO-'.$val['BATCH_ID'].'-'.$val['SOURCE_HEADER_NUMBER']) ?>" target="_blank" title="Detail" class="btn btn-default">
                                                         <i class="fa fa-book"></i>&nbsp; Detail
                                                     </a>
                                                 </td>

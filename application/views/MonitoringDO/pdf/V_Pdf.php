@@ -61,9 +61,25 @@
 			<td style="vertical-align:top;border-bottom: 1px solid black;border-left: 1px solid black;font-size:10px;padding:5px">Berat : <br><br> </td>
 			<td style="vertical-align:top;border-bottom: 1px solid black;border-left: 1px solid black;font-size:10px;padding:5px">Syarat Pembayaran : <br><br> </td>
 			<td style="vertical-align:top;width:30%;border-bottom: 1px solid black;border-left: 1px solid black;font-size:10px;padding:5px">Expedisi : <br><br> </td>
-			<td style="vertical-align:top;width:20%;border-bottom: 1px solid black;border-left: 1px solid black;border-right: 1px solid black;font-size:10px;padding:5px">No Polisi : <br><br> </td>
+			<td style="vertical-align:top;width:20%;border-bottom: 1px solid black;border-left: 1px solid black;border-right: 1px solid black;font-size:10px;padding:5px">No Polisi : <br><?php echo $get_header[0]['PLAT_NUMBER'] ?><br> </td>
 		</tr>
 	</table>
+
+<!-- coba  coba  -->
+<div style="position:absolute;">
+	<table style="width:78%; margin-top:49px;">
+		<?php $no = 1; foreach ($get_body as $key => $gb){ ?>
+			<tr>
+				<td style="font-size:10px;padding:5px;width:8%;text-align:center"><?php echo $no ?></td>
+				<td style="font-size:10px;padding:5px;width:8%;text-align:center"><?php echo $gb['QUANTITY'] ?></td>
+				<td style="font-size:10px;padding:5px;width:9%;text-align:center"><?php echo $gb['QTY_TERLAYANI'] ?></td>
+				<td style="font-size:10px;padding:5px 5px 5px 10px;width:11%;text-align:left"><?php echo $gb['UOM_CODE'] ?></td>
+				<td style="font-size:10px;padding:5px;width:30%;"><?php echo $gb['ITEM'] ?></td>
+				<td style="font-size:10px;padding:5px;width:35%;"><?php echo $gb['DESCRIPTION'] ?></td>
+			</tr>
+		<?php $no++; } ?>
+	</table>
+</div>
 
 	<table style="width:100%;border-collapse: collapse !important; margin-top:-1px;page-break-inside:avoid">
 		<thead>
@@ -98,43 +114,43 @@
 		</thead>
 		<tbody style="vertical-align:top!important;">
 		<tr style="border-bottom:1px solid black;">
-			<td style="vertical-align:top;border-right:1px solid black;border-left:1px solid black;height: 702px;font-size:10px;padding:5px">
+			<td style="vertical-align:top;border-right:1px solid black;border-left:1px solid black;height: 587px;font-size:10px;padding:5px">
 				<center>
-					<?php $no = 1; foreach ($get_body as $key => $gb){ ?>
+					<!-- <?php $no = 1; foreach ($get_body as $key => $gb){ ?>
 						<?php echo $no ?> <br /><br />
-					<?php $no++; } ?>
+					<?php $no++; } ?> -->
 				</center>
 			</td>
 			<td style="vertical-align:top;border-right:1px solid black;font-size:10px;padding:5px">
 				<center>
-					<?php $no = 1; foreach ($get_body as $key => $gb){ ?>
+					<!-- <?php $no = 1; foreach ($get_body as $key => $gb){ ?>
 						<?php echo $gb['QUANTITY'] ?> <br /><br />
-					<?php $no++; } ?>
+					<?php $no++; } ?> -->
 				</center>
 			</td>
 			<td style="vertical-align:top;border-right:1px solid black;font-size:10px;padding:5px">
 				<center>
-					<?php $no = 1; foreach ($get_body as $key => $gb){ ?>
+					<!-- <?php $no = 1; foreach ($get_body as $key => $gb){ ?>
 						<?php echo $gb['QTY_TERLAYANI'] ?> <br /><br />
-					<?php $no++; } ?>
+					<?php $no++; } ?> -->
 				</center>
 			</td>
 			<td style="vertical-align:top;border-right:1px solid black;font-size:10px;padding:5px">
 				<center>
-					<?php $no = 1; foreach ($get_body as $key => $gb){ ?>
+					<!-- <?php $no = 1; foreach ($get_body as $key => $gb){ ?>
 						<?php echo $gb['UOM_CODE'] ?> <br /><br />
-					<?php $no++; } ?>
+					<?php $no++; } ?> -->
 				</center>
 			</td>
 			<td style="vertical-align:top;border-right:1px solid black;font-size:10px;padding:5px">
-				<?php $no = 1; foreach ($get_body as $key => $gb){ ?>
+				<!-- <?php $no = 1; foreach ($get_body as $key => $gb){ ?>
 					<?php echo $gb['ITEM'] ?> <br /><br />
-				<?php $no++; } ?>
+				<?php $no++; } ?> -->
 			</td>
 			<td style="vertical-align:top;border-right:1px solid black;border-left:1px solid black;font-size:10px;padding:5px">
-				<?php $no = 1; foreach ($get_body as $key => $gb){ ?>
+				<!-- <?php $no = 1; foreach ($get_body as $key => $gb){ ?>
 					<?php echo $gb['DESCRIPTION'] ?> <br /><br />
-				<?php $no++; } ?>
+				<?php $no++; } ?> -->
 				<!-- coba <br>
 				coba <br>
 				coba <br> -->

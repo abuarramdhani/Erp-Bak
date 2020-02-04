@@ -14,7 +14,7 @@ class C_Detail extends CI_Controller {
         $this->load->model('SystemAdministration/MainMenu/M_user');
     }
     
-    public function checkSession()
+    private function checkSession()
     {
         if ( ! $this->session->is_logged ) {
             redirect();
@@ -39,28 +39,34 @@ class C_Detail extends CI_Controller {
         $data['DetailType']     = $exp_id[0];
         $data['ApproverList']   = [
             [
-                'name' => 'B0354 - Wawan Kartika Hadi',
-                'id'   => 'B0354'
+                'name'          => 'B0354 - Wawan Kartika Hadi',
+                'id'            => 'B0354',
+                'email_address' => 'wawan_kartika@quick.com'
             ],
             [
-                'name' => 'B0377 - Y. Dadang Senoaji',
-                'id'   => 'B0377'
+                'name'          => 'B0377 - Y. Dadung Senoaji',
+                'id'            => 'B0377',
+                'email_address' => 'y_dadung@quick.com'
             ],
             [
-                'name' => 'B0621 - Ricky Setyawan',
-                'id'   => 'B0621'
+                'name'          => 'B0621 - Ricky Setyawan',
+                'id'            => 'B0621',
+                'email_address' => 'ricky_setyawan@quick.com'
             ],
             [
-                'name' => 'B0342 - Gatot Sutrisno',
-                'id'   => 'B0342'
+                'name'          => 'B0342 - Gatot Sutrisno',
+                'id'            => 'B0342',
+                'email_address' => 'gatot_sutrisno@quick.com'
             ],
             [
-                'name' => 'B0543 - Cahyono Hadi',
-                'id'   => 'B0543'
+                'name'          => 'B0543 - Cahyono Hadi',
+                'id'            => 'B0543',
+                'email_address' => 'cahyono_hadi@quick.com'
             ],
             [
-                'name' => 'B0328 - Bambang Pudjijono',
-                'id'   => 'B0328'
+                'name'          => 'B0328 - Bambang Pudjijono',
+                'id'            => 'B0328',
+                'email_address' => 'bambang_pudjijono@quick.com'
             ]
         ];
         switch ($exp_id[0]) {
@@ -70,20 +76,29 @@ class C_Detail extends CI_Controller {
             case 'LaunchPickRelease' :
                 $data['DetailDO'] = $this->M_detail->getDetailLaunchPickRelease($exp_id[2]);
                 break;
+            case 'ApprovalSPB':
+            case 'ListSPB' :
+            case 'RequestedSPB':
+            case 'ApprovedSPB':
+            case 'RejectedSPB':
+            case 'PendingSPB':
+                $data['DetailDO'] = $this->M_detail->getDetailSPB($exp_id[1]);
+                break;
             default:
                 $data['DetailDO'] = $this->M_detail->getDetailDO($exp_id[1]);
                 break;
         }
 
         switch ($exp_id[0]) {
-            case 'List':
+            case 'ListDO':
+            case 'ListSPB':
                 $data['ButtonType'] = 
-                    '<button type="button" title="Select Approver" class="btn btn-primary pull-right btnADOSelectApprover"
-                    data-toggle="modal" data-target="#mdlADOAssignApprover">
+                    '<button type="button" title="Select Approver" class="btn btn-primary pull-right btnADOSelectApprover">
                         <i class="fa fa-location-arrow"></i>&nbsp; Select Approver
                     </button>';
                 break;
             case 'Approval':
+            case 'ApprovalSPB':
                 $data['ButtonType'] = 
                     '<button type="button" title="Pending" class="btn btn-default pull-right btnADOPending">
                         <i class="fa fa-clock-o"></i>&nbsp; Pending
@@ -95,24 +110,28 @@ class C_Detail extends CI_Controller {
                         <i class="fa fa-check-square-o"></i>&nbsp; Approve
                     </button>';
                 break;
+            case 'RequestedSPB':
             case 'Requested':
                 $data['ButtonType'] = 
                     '<button type="button" title="Approval Requested" class="btn btn-primary pull-right" disabled>
                         <i class="fa fa-check"></i>&nbsp; Approval Requested
                     </button>';
                 break;
+            case 'ApprovedSPB':
             case 'Approved':
                 $data['ButtonType'] = 
                     '<button type="button" title="Approved" class="btn btn-success pull-right" disabled>
                         <i class="fa fa-check-circle-o"></i>&nbsp; Approved
                     </button>';
                 break;
+            case 'RejectedSPB':
             case 'Rejected':
                 $data['ButtonType'] = 
                     '<button type="button" title="Rejected" class="btn btn-danger pull-right" disabled>
                         <i class="fa fa-remove"></i>&nbsp; Rejected
                     </button>';
                 break;
+            case 'PendingSPB':
             case 'Pending':
                 if ( $data['UserMenu'][0]['user_group_menu_name'] === 'Approval DO KACAB' ) {
                     $data['ButtonType'] = 
@@ -121,8 +140,7 @@ class C_Detail extends CI_Controller {
                         </button>';
                 } else if ( $data['UserMenu'][0]['user_group_menu_name'] === 'Approval DO Admin' ) {
                     $data['ButtonType'] = 
-                        '<button type="button" title="Select Approver" class="btn btn-primary pull-right btnADOSelectApprover"
-                          data-toggle="modal" data-target="#mdlADOAssignApprover">
+                        '<button type="button" title="Select Approver" class="btn btn-primary pull-right btnADOSelectApprover">
                             <i class="fa fa-location-arrow"></i>&nbsp; Select Approver
                         </button>
                         <button type="button" title="Pending" class="btn btn-default pull-right" style="margin-right: 10px" disabled>

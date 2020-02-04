@@ -9,7 +9,7 @@
               <a class="nav-link" onclick="dodo0()" id="pills-home-tab" data-toggle="pill" href="#pills-home" role="tab" aria-controls="pills-home" aria-selected="true">SIAP ASSIGN <span id="jumlah0"></span> </a>
             </li>
             <li class="nav-item" style="background:#e7e7e7">
-              <a class="nav-link" onclick="dodo1()" id="pills-profile-tab" data-toggle="pill" href="#pills-profile" role="tab" aria-controls="pills-profile" aria-selected="false">ASSIGN <span id="jumlah1"></span></a>
+              <a class="nav-link" onclick="dodo1()" id="pills-profile-tab" data-toggle="pill" href="#pills-profile" role="tab" aria-controls="pills-profile" aria-selected="false">SUDAH ASSIGN <span id="jumlah1"></span></a>
             </li>
             <li class="nav-item" style="background:#e7e7e7">
               <a class="nav-link" onclick="dodo2()" id="pills-contact-tab" data-toggle="pill" href="#pills-contact" role="tab" aria-controls="pills-contact" aria-selected="false">SUDAH ALLOCATE <span id="jumlah2"></span></a>

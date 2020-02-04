@@ -8,13 +8,42 @@
 	thead>tr{
 		font-weight: bold;
 	}
+    .outline{
+        border: 2px solid white;
+        border-radius: 5px;
+        background-color: #dd4b39;
+        transition: 0.3s;
+    }
+
+    .outline:hover {
+        background-color: white !important;
+        color: #dd4b39 !important; 
+    }
 </style>
 <section class="content">
     <div class="panel-body">
         <div class="row">
             <div class="box box-danger box-solid">
                 <div class="box-header with-border">
-                    <h2><b>Data Rejected - Personalia <?=$lv?></b></h2>
+                    <div class="col-lg-6">
+                        <h2><b>Data Rejected - Personalia <?=$lv?></b></h2>
+                    </div>
+                    <div class="col-lg-6 pull-right">
+                        <form action="">
+                            <label class="label-control col-lg-12 text-right" for="all-seksi-document">Seksi</label>
+                            <div class="col-lg-8 pull-right">
+                                <select name="seksi" id="all-seksi-document" class="select2 form-control">
+                                    <option value="">---pilih semua---</option>
+                                    <?php foreach($seksi as $item): ?>
+                                        <option <?php echo ($is_get && substr($item->kodesie,0,7) == $selected) ? 'selected'  : '' ?> value="<?= substr($item->kodesie,0,7) ?>"><?=$item->kodesie." - ".$item->nama ?></option>
+                                    <?php endforeach ?>
+                                </select>
+                            </div>
+                            <div class="col-lg-2 pull-right">
+                                <button type="submit" class="btn outline">filter <i class="fa fa-filter"></i></button>
+                            </div>
+                        </form>
+                    </div>
                 </div>
                 <div class="box-body">
                     <div class="table-responsive">
@@ -25,6 +54,7 @@
                                     <td>Nomor Induk</td>
                                     <td>Nama</td>
                                     <td>Keterangan</td>
+                                    <td>Seksi</td>
                                     <td>Tanggal</td>
                                     <td>Tanggal Reject</td>
                                     <td>Alasan</td>
@@ -38,14 +68,15 @@
                                         <td class="personal" data-seksi="<?= $row['seksi_name'] ?>"><?= $row['noind'] ?></td>
                                         <td class="name"><?= $row['nama'] ?></td>
                                         <td class="ket"><?= $row['keterangan'] ?></td>
+                                        <td><?= $row['seksi_name'] ?></td>
                                         <td>
                                         <?php echo 
                                             ($row['tanggal_start'] == $row['tanggal_end'])? 
-                                            date('Y/m/d', strtotime($row['tanggal_start'])) : 
-                                            date('Y/m/d', strtotime($row['tanggal_start']))." - ".date('Y/m/d',strtotime($row['tanggal_end'])) 
+                                            date('d/m/Y', strtotime($row['tanggal_start'])) : 
+                                            date('d/m/Y', strtotime($row['tanggal_start']))." - ".date('d/m/Y',strtotime($row['tanggal_end'])) 
                                         ?>
                                         </td>
-                                        <td><?= $row['tgl_update'] ?></td>
+                                        <td><?= date('d/m/Y', strtotime($row['tgl_update'])) ?></td>
                                         <td><?= $row['alasan'] ?></td>
                                         <td><button data-id="<?= $row['id_data'] ?>" data-toggle="modal" data-target="#modalChange" class="btn btn-sm btn-success btn-change"><i class="fa fa-edit"></button></td>
                                     </tr>
