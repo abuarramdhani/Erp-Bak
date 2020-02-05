@@ -3753,3 +3753,10 @@ $route['ReceivePO/History'] = 'ReceivePO/C_History';
 $route['ReceivePO/History/(:any)'] = 'ReceivePO/C_History/$1';
 $route['ReceivePO/History/(:any)/(:any)/(:any)'] = 'ReceivePO/C_History/$1/$2/$3';
 
+// ----------------------------------------------- Hardware ----------------------------------------------- //
+$route['hardware'] = 'Hardware/Sweeping/C_Sweep/index';
+$route['hardware/input-data'] = 'Hardware/Sweeping/C_Sweep/inputData';
+$route['hardware/input-data/(:any)'] = 'Hardware/Sweeping/C_Sweep/$1';
+$route['hardware/view-data'] = 'Hardware/Sweeping/C_Sweep/viewData';
+$route['hardware/view-data/(:any)'] = 'Hardware/Sweeping/C_Sweep/$1';
+$route['hardware/view-data/(:any)/(:any)'] = 'Hardware/Sweeping/C_Sweep/$1/$2';
