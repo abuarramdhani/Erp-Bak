@@ -28,6 +28,7 @@
 			</div>
 	</div>
 		<div class="panel box-body">
+		<div class="table-responsive">
 		<table id="tblLatestVersion" class="table table-striped table-bordered">
 			<thead>
 				<tr style="background-color:#367FA9; color:white ">
@@ -44,10 +45,7 @@
 				<tr>
 
 					<td class="text-center">
-						<div class="input-group">
-	                     <span class="input-group-addon">ERP Mobile Versi</span>
-					<input id="versiTerbaru" disabled class="form-control text-center" type="number" value="<?= $value['versi_terbaru'] ?>"></input></td>
-						</div>
+					<input style="width: 100%;" id="versiTerbaru" disabled class="form-control text-center" type="number" value="<?= $value['versi_terbaru'] ?>"></input></td>
 					<td>
 					  <select disabled class="form-control" id="mandUpdate" name="frcupdate">
 					    <option value="1" <?php if($value['mandatory_update'] == 't') echo "selected"; ?> >True</option>
@@ -76,6 +74,7 @@
 			<?php endforeach; ?>
 			</tbody>
 		</table>
+		</div>
 
 		</div>
 
