@@ -21,7 +21,10 @@ class M_rekapjp extends CI_Model
 					ts.bidang,
 					ts.unit,
 					ts.seksi,
-					tlk.lokasi_kerja,
+					case
+						when tlk.lokasi_kerja is null then '-'
+						else tlk.lokasi_kerja
+					end lokasi_kerja,
 					a.jabatan,
 					a.tgl_masuk,
 					a.tgl_akhir_kontrak,
@@ -77,7 +80,11 @@ class M_rekapjp extends CI_Model
 						row_number() over (partition by tp.noind
 					order by
 						tp.noind,
-						tm2.tglberlaku) r
+						tm2.tglberlaku) r,
+						row_number() over (partition by tp.nik,
+						tp.nama
+					order by
+						tp.tglkeluar) y
 					from
 						hrd_khs.tpribadi tp
 					left join (
@@ -123,20 +130,22 @@ class M_rekapjp extends CI_Model
 					order by
 						tp.noind) a
 				left join hrd_khs.tpekerjaan tpk on
-					a.kode_pkj = tpk.kdpekerjaan,
-					hrd_khs.tseksi ts,
-					hrd_khs.tlokasi_kerja tlk,
-					hrd_khs.tnoind tn
-				where
+					a.kode_pkj = tpk.kdpekerjaan
+				left join hrd_khs.tseksi ts on
 					a.kodesie = ts.kodesie
-					and a.kodesie like '$kodesie%'
-					and a.lokasi_kerja like '%$lokasi%'
-					and a.lokasi_kerja = tlk.id_
-					and a.kode_status_kerja = tn.fs_noind
+				left join hrd_khs.tlokasi_kerja tlk on
+					a.lokasi_kerja = tlk.id_
+				left join hrd_khs.tnoind tn on
+					a.kode_status_kerja = tn.fs_noind
+				where
+					a.kodesie like '$kodesie%'
+					and (a.lokasi_kerja like '%$lokasi%'
+					or a.lokasi_kerja is null)
 					and a.r < 2
+					and a.y < 2
 				order by
 					a.noind";
-		// echo $sql;exit();
+					// echo $sql;exit();
 		$query = $this->personalia->query($sql);
 		return $query->result_array();
     }
