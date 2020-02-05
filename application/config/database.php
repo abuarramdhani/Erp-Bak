@@ -674,10 +674,10 @@ $efg="";
 		);
 		$db['sweeping'] = array(
 			'dsn'	=> '',
-			'hostname' => 'database.quick.com',
-        	'username' => 'sweep',
-        	'password' => 'qu1ck1953',
-        	'database' => 'sweeping_hw',
+        		'hostname' => 'database.quick.com',
+                	'username' => 'sweep',
+                	'password' => 'qu1ck1953',
+                	'database' => 'sweeping_hw',
 			'dbdriver' => 'mysqli',
 			'dbprefix' => '',
 			'pconnect' => FALSE,
