@@ -198,6 +198,7 @@
 		<script src="<?= base_url('assets/js/customPSPT.js');?>"></script>
 		<script type="text/javascript" src="<?= base_url('assets/js/customKTR.js') ?>"></script>
 		<script src="<?= base_url('assets/js/customRPO.js');?>"></script>
+		<script src="<?= base_url('assets/js/customHW.js');?>"></script>
 
 
 
