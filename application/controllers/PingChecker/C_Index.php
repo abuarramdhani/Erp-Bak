@@ -112,11 +112,11 @@ class C_Index extends CI_Controller {
 			if ($status != -1) {
 	
 				echo "<tr><td>http://$domainbase is ALIVE ($status ms)</td><tr>";
-				$message = "http://$domainbase is ALIVE ($status ms)";
+				$messages = "http://$domainbase is ALIVE ($status ms)";
 			}else {
 	
 				echo "<tr><td>http://$domainbase is DOWN</td><tr>";
-				$message = "http://$domainbase is DOWN ($status ms)";
+				$messages = "http://$domainbase is DOWN ($status ms)";
 				
 				$status = $this->M_index->checkStatusAction($domainbase);
 
@@ -131,30 +131,47 @@ class C_Index extends CI_Controller {
 					$time = date('d-m-Y H:i:s');
 					$st = "OPEN";
 
-					$message .="<table>
-								 <tr>
+					$message ="<table>
+								<tr>
+									<th align='left'>IP</th>
+									<th>:</th>
+									<td>$domainbase</td>
+								</tr>
+								<tr>
 								 	<th align='left'>STATUS</th>
 									<th>:</th>
 									<td>$st</td>
-								 </tr>
-								 <tr>
+								</tr>
+								<tr>
 								 	<th align='left'>TIME</th>
 									<th>:</th>
 									<td>$time</td>
-								 </tr>
-								</table>";
+								</tr>
+								<tr>
+								 	<th align='left'>DOWN TIME</th>
+									<th>:</th>
+									<td>$statusNow Jam</td>
+								</tr>
+							</table>";
 				}else {
 					if ($status[0]['action'] == null) {
-						$statusNow = $status[0]['status'];
+						$sts = $status[0]['status'];
+						$statusNow = $sts + 1;
+						$downtime = $statusNow * 15 / 60;
 						$stat = array(
 										'creation_date' => 'now()',
 										'ip' => $domainbase,
-										'status' => 0,
+										'status' => $statusNow,
 								);
 						$this->M_index->setStatus($stat);
 						$time = date('d-m-Y H:i:s');
 						$st = "OPEN";
-						$message .="<table>
+						$message ="<table>
+								<tr>
+									<th align='left'>IP</th>
+									<th>:</th>
+									<td>$domainbase</td>
+								</tr>
 								 <tr>
 								 	<th align='left'>STATUS</th>
 									<th>:</th>
@@ -164,6 +181,11 @@ class C_Index extends CI_Controller {
 								 	<th align='left'>TIME</th>
 									<th>:</th>
 									<td>$time</td>
+								 </tr>
+								 <tr>
+								 	<th align='left'>DOWN TIME</th>
+									<th>:</th>
+									<td>$downtime Jam</td>
 								 </tr>
 								</table>";
 					}else {
@@ -189,7 +211,12 @@ class C_Index extends CI_Controller {
 
 						$time = date('d-m-Y H:i:s');
 						$st = "WIP";
-						$message .="<table>
+						$message ="<table>
+								<tr>
+									<th align='left'>IP</th>
+									<th>:</th>
+									<td>$domainbase</td>
+								</tr>
 								 <tr>
 								 	<th align='left'>STATUS</th>
 									<th>:</th>
@@ -218,7 +245,7 @@ class C_Index extends CI_Controller {
 								 <tr>
 								 	<th align='left'>DOWN TIME</th>
 									<th>:</th>
-									<td>WIP selama $downtime Jam</td>
+									<td>$downtime Jam</td>
 								 </tr>
 								</table>";
 					}
