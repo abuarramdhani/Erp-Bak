@@ -41,7 +41,7 @@ class M_approval extENDs CI_Model
                     APPROVED_BY = '$approved_by',
                     APPROVED_DATE = SYSDATE
                 WHERE
-                    no_do = nvl($do_number, no_do)";
+                    no_do = '$do_number'";
         $query = $this->oracle->query($sql);
     }
 
@@ -54,7 +54,7 @@ class M_approval extENDs CI_Model
                     APPROVED_BY = '$approved_by',
                     APPROVED_DATE = SYSDATE
                 WHERE
-                    no_do = nvl($do_number, no_do)";
+                    no_do = '$do_number'";
         $query = $this->oracle->query($sql);
     }
 
@@ -67,7 +67,7 @@ class M_approval extENDs CI_Model
                     APPROVED_BY = '$approved_by',
                     APPROVED_DATE = SYSDATE
                 WHERE
-                    no_do = nvl($do_number, no_do)";
+                    no_do = '$do_number'";
         $query = $this->oracle->query($sql);
     }
 

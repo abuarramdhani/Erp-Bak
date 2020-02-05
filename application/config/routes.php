@@ -3721,6 +3721,10 @@ $route['ApprovalDO/LaunchPickRelease'] = 'ApprovalDO/MainMenu/C_LaunchPickReleas
 $route['ApprovalDO/LaunchPickRelease/(:any)'] = 'ApprovalDO/MainMenu/C_LaunchPickRelease/$1';
 $route['ApprovalDO/LaunchPickRelease/(:any)/(:any)'] = 'ApprovalDO/MainMenu/C_LaunchPickRelease/$1/$2';
 
+$route['ApprovalDO/DPB'] = 'ApprovalDO/MainMenu/C_DPB';
+$route['ApprovalDO/DPB/(:any)'] = 'ApprovalDO/MainMenu/C_DPB/$1';
+$route['ApprovalDO/DPB/(:any)/(:any)'] = 'ApprovalDO/MainMenu/C_DPB/$1/$2';
+
 $route['ApprovalDO/Detail/(:any)'] = 'ApprovalDO/MainMenu/C_Detail/checkDetailDO/$1';
 $route['ApprovalDO/History/(:any)'] = 'ApprovalDO/MainMenu/C_History/$1';
 
