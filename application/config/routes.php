@@ -3727,3 +3727,4 @@ $route['PendampinganSPT/Daftar/(:any)/(:any)'] = 'PendampinganSPT/MainMenu/C_Daf
 
 $route['PendampinganSPT/Data'] = 'PendampinganSPT/MainMenu/C_Data';
 $route['PendampinganSPT/Data/(:any)'] = 'PendampinganSPT/MainMenu/C_Data/$1';
+$route['PendampinganSPT/Data/(:any)/(:any)'] = 'PendampinganSPT/MainMenu/C_Data/$1/$2';
