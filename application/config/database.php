@@ -64,7 +64,7 @@ $query_builder = TRUE;
 
 $db['default'] = array(
 	'dsn'	=> '',
-	'hostname' => 'dev.quick.com',
+	'hostname' => 'database.quick.com',
 	'username' => 'postgres',
 	'password' => 'password',
 	'database' => 'erp',
@@ -109,7 +109,7 @@ $db['oracle'] = array(
 
 $db['personalia'] = array(
 	'dsn'	=> '',
-	'hostname' => 'dev.quick.com',
+	'hostname' => 'database.quick.com',
 	'username' => 'postgres',
 	'password' => 'password',
 	'database' => 'Personalia',
@@ -338,7 +338,7 @@ $db['daerah'] = array(
 
 $db['erp_db'] = array(
 	'dsn'	=> '',
-	'hostname' => 'dev.quick.com',
+	'hostname' => 'database.quick.com',
 	'username' => 'postgres',
 	'password' => 'password',
 	'database' => 'erp',
