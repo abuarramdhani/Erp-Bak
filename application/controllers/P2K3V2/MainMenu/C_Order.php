@@ -183,9 +183,6 @@ class C_Order extends CI_Controller
 			);
 
 		$this->M_order->save_dataPeriode($data);
-				// $header_id = $this->db->insert_id();
-				// print_r($header_id);
-				// exit();
 
 //=============================================k3.k3_kebutuhan_detail=======================================
 		$ttl_baris	= sizeof($this->input->post('txtJenisAPD'));
@@ -230,7 +227,7 @@ class C_Order extends CI_Controller
 				'create_date'	=>  date('Y-m-d H:i:s')
 				);
 			$this->M_order->save_data_apd($lines);
-							// $id = $this->db->insert_id();
+
 //=============================================k3.k3_kebutuhan_pekerja=======================================
 			$id_pekerja						= $id;
 			$jml_apd 						= implode(',', $jumlah1);
