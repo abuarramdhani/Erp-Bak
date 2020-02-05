@@ -14,20 +14,19 @@ class M_list extends CI_Model
 
     public function getDOList()
     {
-        $sql = "SELECT DISTINCT
-                    wdd.BATCH_ID,
-                    wdd.SOURCE_HEADER_NUMBER,
-                    kad.status
-                FROM
-                    wsh_delivery_details wdd,
-                    khs_approval_do kad
-                WHERE
-                    wdd.batch_id = kad.no_do(+)
+        $sql = "SELECT DISTINCT wdd.BATCH_ID, wdd.SOURCE_HEADER_NUMBER, kad.status 
+                FROM wsh_delivery_details wdd, khs_approval_do kad 
+                WHERE to_char(wdd.batch_id) = kad.no_do(+) 
+                AND wdd.ORG_ID = 82 
                     AND wdd.ORG_ID = 82
+                AND wdd.ORG_ID = 82 
+                AND wdd.RELEASED_STATUS = 'S' 
                     AND wdd.RELEASED_STATUS = 'S'
+                AND wdd.RELEASED_STATUS = 'S' 
+                AND kad.status IS NULL 
                     AND kad.status IS NULL
-                ORDER BY
-                    SOURCE_HEADER_NUMBER";
+                AND kad.status IS NULL 
+                ORDER BY SOURCE_HEADER_NUMBER";
 
         $query = $this->oracle->query($sql);
         return $query->result_array();
