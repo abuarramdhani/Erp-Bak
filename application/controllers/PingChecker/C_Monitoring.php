@@ -80,7 +80,11 @@ class C_Monitoring extends CI_Controller {
             $link = 'IconPlus PUSAT-TUKSONO';
         }else if($ip == '172.18.22.2') {
             $link = 'LDP PUSAT-TUKSONO';
-        }
+		}
+		
+		$status = $this->M_index->checkStatusAction($ip);
+		$sts = $status[0]['status'];
+		$statusNow = $sts * 15 / 60;
 
         $data = array(
                         'creation_date' => 'now()',
@@ -88,7 +92,7 @@ class C_Monitoring extends CI_Controller {
                         'action' => $action,
                         'no_ticket' => $ticket,
 						'action_by' => $noind,
-						'status' => 1,
+						'status' => $sts,
                      );
         
 		$this->M_index->setStatus($data);
@@ -96,10 +100,10 @@ class C_Monitoring extends CI_Controller {
 		$getNamaCreator = $this->M_index->getNamaCreator($noind);
 		$creator = RTRIM($getNamaCreator[0]['employee_name']);
 		
-		$message = "http://$ip is DOWN (-1 ms)";
+		$messages = "http://$ip is DOWN (-1 ms)";
 		$time = date('d-m-Y H:i:s');
 		$st = "WIP";
-		$message .="<table>
+		$message ="<table>
 						<tr>
 							<th align='left'>STATUS</th>
 							<th>:</th>
@@ -124,6 +128,11 @@ class C_Monitoring extends CI_Controller {
 							<th align='left'>ACTION BY</th>
 							<th>:</th>
 							<td>$noind - $creator</td>
+						</tr>
+						<tr>
+							<th align='left'>DOWN TIME</th>
+							<th>:</th>
+							<td>$statusNow Jam</td>
 						</tr>
 					</table>";
 		
