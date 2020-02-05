@@ -1,7 +1,7 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
 
-class C_PekerjaMasuk extends CI_Controller 
+class C_PekerjaMasuk extends CI_Controller
 {
 
 	function __construct()
@@ -11,6 +11,7 @@ class C_PekerjaMasuk extends CI_Controller
 		$this->load->helper('url');
 		$this->load->helper('html');
 
+		$this->load->library('Log_Activity');
 		$this->load->library('form_validation');
 		$this->load->library('session');
 		$this->load->library('encrypt');
@@ -48,17 +49,17 @@ class C_PekerjaMasuk extends CI_Controller
 	function index()
 	{
 		$user_id = $this->session->userid;
-		
+
 		$data['Header']			=	'Master Pekerja - Quick ERP';
 		$data['Title']			=	'Master Pekerja';
 		$data['Menu'] 			= 	'';
 		$data['SubMenuOne'] 	= 	'';
 		$data['SubMenuTwo'] 	= 	'';
-		
+
 		$data['UserMenu'] 		= $this->M_user->getUserMenu($user_id,$this->session->responsibility_id);
 		$data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id);
 		$data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id);
-		
+
 		$this->load->view('V_Header',$data);
 		$this->load->view('V_Sidemenu',$data);
 		$this->load->view('MasterPekerja/CetakDataPekerja/V_IndexPekerjaMasuk',$data);
@@ -70,6 +71,12 @@ class C_PekerjaMasuk extends CI_Controller
 		$periode 		= $this->input->post('periode');
 		$lokasiKerja	= $this->input->post('lokasi');
 		$petugas 		= $this->input->post('petugas');
+
+		//insert to t_log
+		$aksi = 'MASTER PEKERJA';
+		$detail = 'Export Excel Data Pekerja Masuk Periode ='.$periode;
+		$this->log_activity->activity_log($aksi, $detail);
+		//
 
 		$periode 		= explode(' - ', $periode);
 		$tanggal_awal 	= $periode[0];
@@ -136,7 +143,7 @@ class C_PekerjaMasuk extends CI_Controller
 		// print_r($getPekerjaMasuk);
 		// exit();
 
-		
+
 		$objPHPExcel 	= new PHPExcel();
 		$worksheet 		= $objPHPExcel->getActiveSheet();
 		$sheet 			= $objPHPExcel->setActiveSheetIndex(0);
@@ -213,7 +220,7 @@ class C_PekerjaMasuk extends CI_Controller
 		       'vertical' => PHPExcel_Style_Alignment::VERTICAL_CENTER,
 			   )
 			);
-			
+
 
 
 		$worksheet->getStyle('A1:A3')->applyFromArray($bold);
@@ -431,13 +438,13 @@ class C_PekerjaMasuk extends CI_Controller
 			redirect('MasterPekerja/CetakPekerjaMasuk');
 		}else{
 			$user_id = $this->session->userid;
-		
+
 			$data['Header']			=	'Master Pekerja - Quick ERP';
 			$data['Title']			=	'Master Pekerja';
 			$data['Menu'] 			= 	'';
 			$data['SubMenuOne'] 	= 	'';
 			$data['SubMenuTwo'] 	= 	'';
-			
+
 			$data['UserMenu'] 		= $this->M_user->getUserMenu($user_id,$this->session->responsibility_id);
 			$data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id);
 			$data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id);

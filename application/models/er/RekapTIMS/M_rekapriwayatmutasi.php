@@ -148,12 +148,12 @@
 															select kes.no_peserta
 															from hrd_khs.tbpjskes kes
 															where kes.noind = pri.noind
-														) as bpjskes,
+														limit 1) as bpjskes,
 														(
 															select no_peserta
 															from hrd_khs.tbpjstk tk
 															where tk.noind = pri.noind
-														) as bpjstk,
+														limit 1) as bpjstk,
 														tmutasi.tglberlaku::date,
 														(
 															select		(
@@ -174,12 +174,12 @@
 																		)
 															from 		hrd_khs.tseksi as tseksi
 															where 		tseksi.kodesie=tmutasi.kodesielm
-														) as seksi_asal,
+														limit 1) as seksi_asal,
 														(
 															select 		tlokasikerja.lokasi_kerja
 															from 		hrd_khs.tlokasi_kerja as tlokasikerja
 															where 		tlokasikerja.id_=trim(tmutasi.lokasilm)
-														) as lokasi_kerja_asal,
+														limit 1) as lokasi_kerja_asal,
 														(
 															select		(
 																			case 	when 	rtrim(tseksi.seksi)='-'
@@ -199,12 +199,12 @@
 																		)
 															from 		hrd_khs.tseksi as tseksi
 															where 		tseksi.kodesie=tmutasi.kodesiebr
-														) as seksi_baru,
+														limit 1) as seksi_baru,
 														(
 															select 		tlokasikerja.lokasi_kerja
 															from 		hrd_khs.tlokasi_kerja as tlokasikerja
 															where 		tlokasikerja.id_=trim(tmutasi.lokasibr)
-														) as lokasi_kerja_baru
+														limit 1) as lokasi_kerja_baru
 											from 		hrd_khs.tmutasi as tmutasi
 														join 	hrd_khs.v_hrd_khs_tpribadi as pri
 																on 	pri.noind=tmutasi.noind

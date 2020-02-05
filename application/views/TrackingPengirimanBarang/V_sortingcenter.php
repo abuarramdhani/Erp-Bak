@@ -104,7 +104,7 @@
                       <td><?php echo  $n['username'] ?> - <?php echo  $n['nama_pekerja'] ?></td>
                       <td><?php echo  $n['kendaraan'] ?></td>
                       <td><?php echo  $n['last_update_date'] ?></td>
-                      <td><a title="detail..." rownum="<?php echo $no ?>" class="btn btn-warning btn-sm" data-target="MdlTPBNol" data-toggle="modal" onclick="OpenDetailNol(<?php echo $n['no_spb'];?>)"><i class="fa fa-hand-pointer-o"></i></a></td>
+                      <td><a title="detail..." rownum="<?php echo $no ?>" style="width:100px" class="btn btn-warning btn-sm" data-target="MdlTPBNol" data-toggle="modal" onclick="OpenDetailNol(<?php echo $n['no_spb'];?>)"><i class="fa fa-mouse-pointer"></i></i> Detail</a></td>
                       </tr>
                     <?php $no++; } ?> 
                   </tbody>

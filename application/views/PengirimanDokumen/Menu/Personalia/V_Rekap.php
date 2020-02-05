@@ -89,8 +89,8 @@
                                     <td>
                                     <?php echo 
                                         ($row['tanggal_start'] == $row['tanggal_end'])? 
-                                        date('Y/m/d', strtotime($row['tanggal_start'])) : 
-                                        date('Y/m/d', strtotime($row['tanggal_start']))." - ".date('Y/m/d',strtotime($row['tanggal_end'])) 
+                                        date('d/m/Y', strtotime($row['tanggal_start'])) : 
+                                        date('d/m/Y', strtotime($row['tanggal_start']))." - ".date('d/m/Y',strtotime($row['tanggal_end'])) 
                                     ?>
                                     </td>
                                     <td><?= $row['noind'] ?></td>

@@ -3,17 +3,18 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 class C_Index extends CI_Controller {
 
- 
+
 	public function __construct()
     {
         parent::__construct();
-		  
+
+        $this->load->library('Log_Activity');
         $this->load->library('General');
         $this->load->library('excel');
         $this->load->model('M_Index');
 		$this->load->model('SystemAdministration/MainMenu/M_user');
 		$this->load->model('MasterPekerja/CetakBPJS/M_cetakttbpjs');
-		  
+
 		if($this->session->userdata('logged_in')!=TRUE) {
 			$this->load->helper('url');
 			$this->load->helper('terbilang_helper');
@@ -27,7 +28,7 @@ class C_Index extends CI_Controller {
 	public function checkSession()
 	{
 		if($this->session->is_logged){
-			
+
 		}else{
 			redirect('');
 		}
@@ -36,18 +37,18 @@ class C_Index extends CI_Controller {
     {
     	$this->checkSession();
     	$user_id = $this->session->userid;
-    	
+
     	$data['Menu'] = 'Lain-lain';
     	$data['SubMenuOne'] = 'Tanda Terima BPJS';
     	$data['SubMenuTwo'] = '';
-    	
+
     	$data['UserMenu'] = $this->M_user->getUserMenu($user_id,$this->session->responsibility_id);
     	$data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id);
     	$data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id);
 
     	$data['data'] = $this->M_cetakttbpjs->ambilData();
-    	
-    	$this->load->view('V_Header',$data); 
+
+    	$this->load->view('V_Header',$data);
     	$this->load->view('V_Sidemenu',$data);
     	$this->load->view('MasterPekerja/CetakBPJS/V_Index',$data);
     	$this->load->view('V_Footer',$data);
@@ -79,6 +80,11 @@ class C_Index extends CI_Controller {
 							'created_user' => $this->session->user
 						);
 		$this->M_cetakttbpjs->insertData($array_data);
+        //insert to t_log
+        $aksi = 'MASTER PEKERJA';
+        $detail = 'Add Data BPJS Noind='.$noind;
+        $this->log_activity->activity_log($aksi, $detail);
+        //
 		redirect('MasterPekerja/TanTerBPJS');
 	}
 
@@ -86,14 +92,29 @@ class C_Index extends CI_Controller {
 	{
 		if ($id == "All") {
 			$this->M_cetakttbpjs->deleteDataAll();
+            //insert to t_log
+            $aksi = 'MASTER PEKERJA';
+            $detail = 'Update kk_cetaktanterbpjs status_Cetak All set= 1';
+            $this->log_activity->activity_log($aksi, $detail);
+            //
 		}else{
 			$this->M_cetakttbpjs->deleteData($id);
+            //insert to t_log
+            $aksi = 'MASTER PEKERJA';
+            $detail = 'Update kk_cetaktanterbpjs status_Cetak set= 1 ID='.$id;
+            $this->log_activity->activity_log($aksi, $detail);
+            //
 		}
 		redirect('MasterPekerja/TanTerBPJS');
 	}
 
 	public function export_excel()
 	{
+        //insert to t_log
+        $aksi = 'MASTER PEKERJA';
+        $detail = 'Export Excel Data BPJS';
+        $this->log_activity->activity_log($aksi, $detail);
+        //
 		$tgl = date('Y-m-d');
 		$data['data'] = $this->M_cetakttbpjs->ambilData();
 		$data['filename'] = "Tanda_Terima_BPJS_".$tgl.".xls";

@@ -6,11 +6,14 @@
 	#tbFilterPO tr td,#tbInvoice tr td{padding: 5px}
 </style>
 
+<!-- <div style="background-color: black; width: 100%; height: 100%">
+</div> -->
+
 <form method="post" action="<?php echo base_url('AccountPayables/MonitoringInvoice/NewInvoice/addPoNumberAkt') ?>">
 <section class="content">
 	<div class="inner" >
 		<div class="row">
-			<div class="col-lg-12">
+			<div class="col-lg-12 div_loading">
 				<div class="row">
 					<div class="col-lg-12">
 						<div class="text-left ">
@@ -29,14 +32,7 @@
 											<span><label>Nomor PO</label></span>
 										</td>
 										<td>
-											<input value="0" placeholder="Nomor PO" type="text" name="txtNoPO" class="ininopo form-control" size="40" id="nomorPOID">
-		                     				<!-- <select id="slcNomorPO" onchange="cariNomorPO()" name="nomor_po" class="form-control select2 select2-hidden-accessible" style="width:320px;">
-												<option value="" > Cari No. PO </option>
-												<?php foreach ($nomor_po as $av) { ?>
-												<option value="<?php echo $av['PO_NUMBER'] ?>"><?php echo $av['PO_NUMBER'] ?></option>
-												<?php } ?> -->
-
-											<!-- </select> -->
+											<input data-toggle="tooltip" data-placement="top" title="Jika Nomor PO tidak dicantumkan, harap isi dengan 0" placeholder="Nomor PO" type="text" name="txtNoPO" class="ininopo form-control" size="40" id="nomorPOID">
 		                     			</td>
 		                     			<td>
 		                     				<button type="button" id="btnCariTop" class="btn btn-success"> Cari </button>
@@ -104,7 +100,7 @@
 											<span><label>Invoice Amount</label></span>
 										</td>
 										<td>
-										<!-- 	data-toggle="tooltip" data-placement="top" title=" Masukkan nominal PO Amount secara manual, lalu tekan 'Tab' -->
+										
 											<input placeholder="Wajib diisi" class="form-control" size="40" type="text" name="invoice_amount" placeholder="Invoice Amount" id="inv_amount_akt">
 										</td>
 									</tr>
@@ -122,49 +118,23 @@
 												<!-- reupload -->
 											</select>
 										</td>
-										<!-- <td id="jenis_jasa" style="display: none">
-											<select name="jenis_jasa" class="form-control select2 select2-hidden-accessible" style="width:320px;">
-												<option></option>
-												<option>RECEIPT</option>
-												<option>RECEIPT DAN PEMBAYARAN</option>
-												<option>RECEIPT DAN REASLISASI PREPAYMENT</option>
-											</select>
-										</td> -->
+										
 									</tr>
 									<tr>
 										<td>
 											<span><label>Tax Invoice Number</label></span>
 										</td>
 										<td>
-											<!-- <input value ="010.005-" class="form-control tax_class" size="40" type="text" id="tax_id_inv" name="tax_invoice_number" data-toggle="tooltip" data-placement="top" title="Jika Tax Invoice, Nominal DPP, dan Faktur Pajak tidak diisi. Harap masukkan Alasan di kolom Info" placeholder="Tax Invoice Number" > -->
+											
 											<select name="tax_invoice_number" id="tax_status" class="form-control select2 select2-hidden-accessible" style="width:320px;">
 												<option value="">Pilih</option>
 												<option value="Y">YES</option>
 												<option value="N">NO</option>
 											</select>
 										</td>
-										<!-- <td>
-											<span><b>(*)Jika Tax Invoice, Nominal DPP, dan Nominal PPN tidak diisi. <br>Harap masukkan Alasan di kolom Info</b></span>
-										</td> -->
+										
 									</tr>
-									<!-- <tr>
-										<td>
-											<span><label>Nominal DPP Faktur Pajak</label></span>
-										</td>
-										<td>
-											<input value="0" class="form-control nomdppfaktur" size="40" id="idNominalDpp" type="text" name="nominal_dpp" placeholder="Nominal DPP Faktur Pajak" onchange="ambilNominalPPPN()" data-toggle="tooltip" data-placement="top"title="tekan 'Tab' untuk memunculkan Nominal PPN">
-
-											
-										</td>
-									</tr>
-									<tr>
-										<td>
-											<span><label>Nominal PPN</label></span>
-										</td>
-										<td>
-											<input value="0" class="form-control nomppn" size="40" id="nominalPPN" type="text" name="nominalPPN" placeholder="Nominal PPN Otomatis" >
-										</td>
-									</tr> -->
+									
 									<tr>
 										<td>
 											<span><label>Info</label></span>
@@ -174,76 +144,15 @@
 										</td>
 									</tr>
 								</table>
-						<!-- <div class="box box-primary box-solid"> -->
-							<!-- <div class="box-body"> -->
-								<!-- <div class="box-header with-border">
-								PO Data
-								</div> -->
+						
 								<div class="col-md-12">
 									<div class="col-md-12">
 										<div class="col-md-6">
-									<!-- 		<table id="filter" class="col-md-12" style="margin-bottom: 20px">
-												<tr>
-													<td>
-														<span class="text-center"><label>Po Number</label></span>
-													</td>
-												<td>
-														<div class="col-md-12" id="divPoNumber">
-															<div class="col-md-12">
-																<input name="slcPoNumberInv" placeholder="Masukkan PO Number" id="slcPoNumberMonitoring" class="form-control" style="width:100%;">
-																</input>
-															</div>
-														</div>
-													</td>
-													<td>
-														<div><button class="btn btn-md btn-success pull-left btn_search" type="button" id="btnSearchPoNumber">Search</button>
-														</div>
-													</td>
-												</tr>
-											</table>
-										</div>
-									</div>
-									<div id="tablePoLines">
-										
-									</div> -->
+									
 								</div>
 							</div>
 						</div>
-						<!-- <span><b>Invoice PO Detail</b></span>
-						<div style="overflow:auto;">
-							<table class="table table-bordered table-hover table-striped text-center" style="min-width:200%;">
-								<thead>
-									<tr class="bg-primary">
-										<th class="text-center">No</th>
-										<th class="text-center">Line Number</th>
-										<th class="text-center">Vendor Name</th>
-										<th class="text-center">PO Number</th>
-										<th class="text-center">LPPB Number</th>
-										<th class="text-center">Status LPPB</th>
-										<th class="text-center">Shipment Number</th>
-										<th class="text-center">Receive Date</th>
-										<th class="text-center">Item Code</th>
-										<th class="text-center">Item Description</th>
-										<th class="text-center">Qty Amount</th>
-										<th class="text-center">Qty Billed</th>
-										<th class="text-center">Qty Reject</th>
-										<th class="text-center">Currency</th>
-										<th class="text-center">Unit Price</th>
-										<th class="text-center">Qty Po</th>
-										<th class="text-center">Qty Invoice</th>
-										<th class="text-center">Action</th>
-									</tr>
-								</thead>
-								<tbody id="tbodyPoDetailAll">
-
-								</tbody>
-							</table>
-						</div>
-						<div class="col-md-4 pull-left">
-							<label>Po Amount : </label><span id="AmountOtomatis" ></span><span id="currency"></span>
-						</div> -->
-						<!-- <label>Po Amount : </label><span><?php echo 'Rp. '. number_format(round($po_amount),0,'.','.').',00-';
-								          ?></span> -->
+						
 						<div class="col-lg-8">
 							<!-- <a href="<?php echo base_url('AccountPayables/MonitoringInvoice/Invoice')?>"> -->
 							<button type="reset" id="btnMICancel" class="btn btn-danger pull-left" style="margin-top: 10px;">Clear</button>
@@ -257,3 +166,43 @@
 	</div>
 </section>
 </form>
+
+<!-- <div class="modal fade in show" id="loadingRequest" tabindex="-1" role="dialog" aria-labelledby="loadMeLabel">
+  <div style="transform: translateY(50%);" class="modal-dialog modal-sm">
+    <div class="">
+      <div class="modal-body">
+        <div class="loader"></div>
+        <div clas="loader-txt">
+          	<center>
+          		<img id='loading12' style='width:200px ;margin-top: 2%;' src='<?php echo base_url('assets/img/gif/loadingquick.gif')?>'/>
+          		<br />
+          	</center><br />
+        </div>
+      </div>
+    </div>
+  </div>
+</div> -->
+
+
+<script type="text/javascript">
+
+$( window ).load(function() { 
+	// $('#loadingRequest').modal({
+ //      backdrop: "static",
+ //      show: true,
+ //      keyboard: false
+ //    });
+ //    setTimeout(function() {
+ //      $('#loadingRequest').modal('hide');
+ //    }, 200);
+ //    setTimeout(function() {
+	  $("#nomorPOID").focus();
+    // }, 500);
+
+  // setTimeout(function(){console.log('yenk'); $("#nomorPOID").focus();},3000);
+  // alert("yenk");
+});
+
+
+
+</script>

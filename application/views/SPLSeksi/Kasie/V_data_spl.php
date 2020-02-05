@@ -102,9 +102,8 @@
 
 									<div class="form-group">
 										<div class="col-sm-12">
-											<button type="submit" class="btn btn-primary pull-right"> <i class="fa fa-save"></i> Proses</button>
 											<input type="text" id="txt_ses" value="<?php echo $this->session->userid; ?>" hidden>
-											<button type="button" hidden data-toggle="modal" data-target="#ProsesDialog" id="btn-ProsesSPL"><i class="fa fa-save"></i> Proses</button>
+											<button type="button" class="btn btn-primary hidden" style="margin-left: 1em;" data-toggle="modal" data-target="#ProsesDialog" id="btn-ProsesSPL"><i class="fa fa-save"></i> Proses</button>
 											<button type="button" id="spl-approval-0" style="margin-right:3px" class="btn btn-primary pull-right"> <i class="fa fa-search"></i> Cari</button>
 											<button type="reset" style="margin-right:3px" class="btn btn-primary pull-right" onclick="location.reload()"> <i class="fa fa-refresh"></i> Reset</button>
 											<img src="<?php echo base_url('assets/img/gif/loading6.gif') ?>" class="pull-right spl-loading hidden" width="33px" height="33px" style="margin-right:3px">
@@ -118,7 +117,7 @@
 
 					<div class="box box-primary">
 						<div class="box-body">
-							<table id="example11" class="table table-bordered table-striped spl-table">
+							<table id="example11" class="table table-bordered table-striped spl-table kasie">
 								<thead style="background:#3c8dbc; color:#fff">
 									<tr>
 									<th width="10%">Action</th>
@@ -133,12 +132,12 @@
 									<th width="20%">Selesai</th>
 									<th width="20%">Break</th>
 									<th width="20%">Istirahat</th>
+									<th width="20%">Estimasi</th>
 									<th width="20%">Target(%)</th>
 									<th width="20%">Realisasi(%)</th>
 									<th width="20%">Alasan Lembur</th>
 									<th width="20%">Status</th>
 									<th width="20%">Tanggal Proses</th>
-									<th width="20%">Estimasi</th>
 									</tr>
 								</thead>
 								<?php if (isset($data) and !empty($data)) { ?>

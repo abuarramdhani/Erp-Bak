@@ -51,9 +51,9 @@ class M_list extends CI_Model
     }
 
     public function listPekerja($id,$keyword){
-        $sql = "select * from sys.vi_sys_user where user_name like '%$keyword%' or upper(employee_name) like '%$keyword%' order by user_id asc";
+        $sql = "select * from hrd_khs.tpribadi where keluar=false and (nama like '%$keyword%' or upper(nama) like '%$keyword%' or noind like '%$keyword%') order by noind asc";
 
-        $query = $this->db->query($sql);
+        $query = $this->personalia->query($sql);
         return $query->result_array();
     }   
 
@@ -86,7 +86,7 @@ class M_list extends CI_Model
     }
 
     public function getEmailICT(){
-        $sql = "SELECT * FROM er.er_employee_all WHERE section_code='101030100'";
+        $sql = "SELECT * FROM er.er_employee_all WHERE section_code='101030100' and resign=0";
         $query = $this->db->query($sql);
         return $query->result_array();      
     } 

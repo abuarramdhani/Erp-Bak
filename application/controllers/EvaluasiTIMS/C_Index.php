@@ -2,11 +2,11 @@
 defined('BASEPATH') OR exit('No direct script access allowed');
 
 /**
-* 
+*
 */
 class C_Index extends CI_Controller
 {
-	
+
 	function __construct()
 	{
 		parent::__construct();
@@ -14,6 +14,7 @@ class C_Index extends CI_Controller
 		$this->load->helper('form');
 		$this->load->helper('html');
 
+		$this->load->library('Log_Activity');
 		$this->load->library('form_validation');
 		$this->load->library('session');
 		$this->load->library('personalia');
@@ -92,7 +93,6 @@ class C_Index extends CI_Controller
 
 	public function SubmitJenisPenilaian()
 	{
-		// print_r($_POST);exit();
 		$this->checkSession();
 		$user_id = $this->session->userid;
 		$noind = $this->session->user;
@@ -104,6 +104,11 @@ class C_Index extends CI_Controller
 			);
 		$inputjp = $this->M_index->inputjp($data);
 		if ($inputjp) {
+			//insert to t_log
+	            $aksi = 'EVALUASI TIMS';
+	            $detail = 'ADD JENIS PENILAIAN '.$jp;
+	            $this->log_activity->activity_log($aksi, $detail);
+	        //
 			redirect('EvaluasiTIMS/Setup/JenisPenilaian');
 		}
 	}
@@ -129,26 +134,21 @@ class C_Index extends CI_Controller
 	public function getPenilaian()
 	{
 		$term = strtoupper($this->input->get('s'));
-		// echo $term;exit();
 		$listJp = $this->M_index->listJp2($term);
 
 		echo json_encode($listJp);
 	}
 	public function getPenilaian2()
 	{
-		// print_r($_POST);exit();
 		$term = $this->input->post('s');
-		// echo $term;exit();
 		$listJp = $this->M_index->listJp3($term);
 
 		echo json_encode($listJp);
-		// header('Content-Type: application/json');
 	}
 
 	public function SubmitStandarPenilaian()
 	{
 		$noind = $this->session->user;
-		// print_r($_POST);exit();
 		$id = $this->input->post('et_select_jp');
 		$t = $this->input->post('et_input_t');
 		$tim = $this->input->post('et_input_tim');
@@ -163,6 +163,11 @@ class C_Index extends CI_Controller
 
 		$updateJp = $this->M_index->updateJp($id, $data);
 		if ($updateJp) {
+			//insert to t_log
+	            $aksi = 'EVALUASI TIMS';
+	            $detail = 'UPDATE JENIS PENILAIAN ID='.$id;
+	            $this->log_activity->activity_log($aksi, $detail);
+	        //
 			redirect('EvaluasiTIMS/Setup/JenisPenilaian');
 		}
 	}
@@ -184,17 +189,14 @@ class C_Index extends CI_Controller
 		$a = '';
 		$jp = '';
 		$lh = $this->input->post('et_s_harian');
-		// echo $lh;exit();
 		if (!empty($lh)) {
 			$jp = $this->M_index->listJp3($lh);
 			$t = $jp[0]['std_m'];
 			$tim = $jp[0]['std_tim'];
 			$tims = $jp[0]['std_tims'];
-			// print_r($jp);exit();
 			$val = '1';
 			$a = array();
 			$vali = $this->M_index->getVal2($lh);
-			// print_r($vali);exit();
 			if ($lh == '1') {
 				$listHarian = $this->M_index->listHarian($t, $tim, $tims, $vali);
 			}elseif ($lh == '2') {
@@ -216,18 +218,12 @@ class C_Index extends CI_Controller
 					$a[] = '0';
 				}
 			}
-			// print_r($listHarian);
-			// exit();
-			// print_r($a);
 		}
-			// echo "<pre>";
 		$data['val'] = $val;
-		// print_r($last_col);exit();
 		$data['jumlah'] = $a;
 		$data['jp'] = $jp;
 		$data['idi'] = $lh;
 		$data['LamaEvaluasi'] = $this->M_index->getVal();
-		// print_r($data['LamaEvaluasi']);exit();
 
 		$this->load->view('V_Header',$data);
 		$this->load->view('V_Sidemenu',$data);
@@ -246,7 +242,7 @@ class C_Index extends CI_Controller
 		$data['Menu'] = 'TIMS Harian';
 		$data['SubMenuOne'] = '';
 		$data['SubMenuTwo'] = '';
-		// echo $b;exit();
+
 		$vali = $this->M_index->getVal2($a);
 		if ($b == '1') {
 			$b = 'KEUANGAN';
@@ -262,7 +258,6 @@ class C_Index extends CI_Controller
 		$tim = $jp[0]['std_tim'];
 		$tims = $jp[0]['std_tims'];
 
-		// print_r($jp);exit();
 		if ($a == '1') {
 			$data['listLt'] = $this->M_index->listLt($b, $t, $tim, $tims, $vali);
 		}elseif ($a == '2') {
@@ -272,7 +267,7 @@ class C_Index extends CI_Controller
 		$data['jpi'] = $a;
 		$data['dept'] = 'Departemen '.$b;
 		$data['LamaEvaluasi'] = $this->M_index->getVal();
-		
+
 		$this->load->view('V_Header',$data);
 		$this->load->view('V_Sidemenu',$data);
 		$this->load->view('EvaluasiTIMS/V_TIMS_harian_lihat',$data);
@@ -281,8 +276,6 @@ class C_Index extends CI_Controller
 
 	public function Bulanan()
 	{
-		// echo "<pre>";
-		// print_r($_POST);exit();
 		$this->checkSession();
 		$user_id = $this->session->userid;
 		$data['UserMenu'] = $this->M_user->getUserMenu($user_id,$this->session->responsibility_id);
@@ -310,7 +303,6 @@ class C_Index extends CI_Controller
 			}
 			$val = '1';
 			$jp = $this->M_index->listJp3($jenisPenilaian);
-			// echo $jenisPenilaian;exit();
 			$t = $jp[0]['std_m'];
 			$tim = $jp[0]['std_tim'];
 			$tims = $jp[0]['std_tims'];
@@ -344,7 +336,6 @@ class C_Index extends CI_Controller
 			}else{
 				$s = "et.seksi like '%%'";
 			}
-			// echo $s;exit();
 
 			$tanggal = explode(' - ', $pr);
 			$tgl1 = $tanggal[0];
@@ -354,14 +345,12 @@ class C_Index extends CI_Controller
 			}elseif ($jenisPenilaian == '2') {
 				$getlist = $this->M_index->listBl2($tgl1, $tgl2, $t, $tim, $tims, $vali, $s);
 			}
-			// echo "<pre>"; print_r($getlist);exit();
 			$data['listLt'] = $getlist;
 		}
 		$data['val'] = $val;
 		$data['pr'] = $pr;
 		$data['nama'] = $namaPilihan.' '.$listSeksi;
 		$data['s'] = $s;
-
 
 		$this->load->view('V_Header',$data);
 		$this->load->view('V_Sidemenu',$data);
@@ -371,7 +360,6 @@ class C_Index extends CI_Controller
 
 	public function LamaEvaluasi()
 	{
-		// print_r($_POST);exit();
 		$this->checkSession();
 		$user_id = $this->session->userid;
 		$data['UserMenu'] = $this->M_user->getUserMenu($user_id,$this->session->responsibility_id);
@@ -383,9 +371,7 @@ class C_Index extends CI_Controller
 		$data['SubMenuTwo'] = '';
 
 		$val = $this->M_index->getVal();
-		// print_r($val);exit();
 		$data['sesi'] = $val;
-      	// print_r($data['sesi']);exit();
 
 		$this->load->view('V_Header',$data);
 		$this->load->view('V_Sidemenu',$data);
@@ -395,18 +381,21 @@ class C_Index extends CI_Controller
 
 	public function InputLamaEvaluasi()
 	{
-		// echo "<pre>";
-		// print_r($_POST);exit();
 		$val = $this->input->post('et_rd_le');
 		$val2 = $this->input->post('et_rd_le2');
 		$arr = array(
 			$val, $val2
 			);
-		for ($i=0; $i < count($arr) ; $i++) { 
+		for ($i=0; $i < count($arr) ; $i++) {
 			$send = $this->M_index->saveLama(($i+1), $arr[$i]);
 		}
 
 		if ($send) {
+			//insert to t_log
+	            $aksi = 'EVALUASI TIMS';
+	            $detail = 'UPDATE LAMA PENILAIAN ID='.($i+1);
+	            $this->log_activity->activity_log($aksi, $detail);
+	        //
 			redirect('EvaluasiTIMS/Setup/LamaEvaluasi');
 		}
 		echo "error occurred";
@@ -423,7 +412,7 @@ class C_Index extends CI_Controller
 		$data['Menu'] = 'Memo';
 		$data['SubMenuOne'] = 'Memo';
 		$data['SubMenuTwo'] = '';
-		
+
 		$data['listMemo'] = $this->M_index->getListMemo();
 
 		$this->load->view('V_Header',$data);
@@ -453,11 +442,9 @@ class C_Index extends CI_Controller
 
 	public function previewcetak($no_surat)
 	{
-		// exit();
 		$this->load->library('pdf');
 		$pdf 	=	$this->pdf->load();
 		$pdf 	=	new mPDF('utf-8', array(216,330), 11, "timesnewroman", 10, 10, 55, 30, 0, 0, 'P');
-		// $pdf 	=	new mPDF();
 		$isi = $this->M_index->getMemo($no_surat);
 		$judul = $this->M_index->getMemo2($no_surat);
 		$filename	=	'EvaluasiTIMS-'.str_replace('/', '_', 'Memo').'.pdf';
@@ -471,7 +458,6 @@ class C_Index extends CI_Controller
 
 	public function getKadept()
 	{
-		// print_r($_GET);exit();
 		$term = $this->input->get('s');
 		$term = strtoupper($term);
 		$id = $this->input->get('id');
@@ -495,7 +481,7 @@ class C_Index extends CI_Controller
 		$getNamaKadept = $this->M_index->getNamaKadept($id, $texts, $ks);
 		// $hit = count($getNamaKadept);
 		// if ($hit > 1) {
-		// 	for ($i=0; $i < $hit; $i++) { 
+		// 	for ($i=0; $i < $hit; $i++) {
 		// 		if ($i == ($hit-1)) {
 		// 			$text .= $getNamaKadept[$i]['nama'];
 		// 		}else{
@@ -526,7 +512,6 @@ class C_Index extends CI_Controller
 
 	public function previewMemo()
 	{
-		// print_r($_POST);exit();
 		$no_surat = $this->input->post('evt_no_surat');
 		$pilih = $this->input->post('evt_pilih');
 		$bagian = $this->input->post('evt_departemen');
@@ -536,7 +521,7 @@ class C_Index extends CI_Controller
 		$kepada = $this->input->post('evt_kepada');
 		$isi = $this->input->post('evt_isi');
 		$alasan = $this->input->post('evt_alasan');
-		// print_r(gettype($bagian));exit();
+
 		if (empty($no_surat)) {
 			echo "Nomor Surat Kosong";
 			exit();
@@ -564,7 +549,7 @@ class C_Index extends CI_Controller
 			$bagian = explode(' | ', $bagian);
 			$bagian = $bagian[0];
 		}else{
-			for ($i=0; $i < count($bagian); $i++) { 
+			for ($i=0; $i < count($bagian); $i++) {
 				$x = explode(' | ', $bagian[$i]);
 				if ($i == (count($bagian)-1)) {
 					$var .=	$x[0];
@@ -597,7 +582,6 @@ class C_Index extends CI_Controller
 		if ($lampiran_s == '-') {
 			$templateMemo = str_replace('[jml_lampiran] ([satuan_lampiran])&nbsp;lembar', '-', $templateMemo);
 		}
-		// echo $pdev;exit();
 
 		$parameterUbah = array(
 				'[nomor_surat]',
@@ -634,8 +618,6 @@ class C_Index extends CI_Controller
 
 	public function saveMemo()
 	{
-		// echo "<pre>";
-		// print_r($_POST);exit();
 		$noind = $this->session->user;
 		$no_surat = $this->input->post('evt_no_surat');
 		$departemen = $this->input->post('evt_departemen');
@@ -657,7 +639,6 @@ class C_Index extends CI_Controller
 		$alasan = $this->input->post('evt_alasan');
 		$pilih = $this->input->post('evt_pilih');
 		$tanggal = date('Y-m-d');
-		// echo $potongan;exit();
 
 		$data = array(
 				'nomor_surat' => $no_surat,
@@ -676,6 +657,11 @@ class C_Index extends CI_Controller
 			);
 		$save = $this->M_index->saveMemo($data);
 		if ($save) {
+			//insert to t_log
+				$aksi = 'EVALUASI TIMS';
+				$detail = 'Save Memo Nomor Surat='.$no_surat.' Dibuat oleh='.$noind;
+				$this->log_activity->activity_log($aksi, $detail);
+			//
 			redirect('EvaluasiTIMS/Setup/Memo');
 		}
 	}
@@ -695,8 +681,6 @@ class C_Index extends CI_Controller
 		$data['memo'] = $this->M_index->getRowMemo($id);
         $y = explode(',', $data['memo'][0]['potongan_kodesie']);
 		$data['namaKadept'] = $this->M_index->getNamaKadept2($data['memo'][0]['pilih'], $y[0], $data['memo'][0]['kepada']);
-		// echo "<pre>";
-		// print_r($data['namaKadept']);exit();
 
 		$this->load->view('V_Header',$data);
 		$this->load->view('V_Sidemenu',$data);
@@ -706,8 +690,6 @@ class C_Index extends CI_Controller
 
 	public function saveEditMemo()
 	{
-		// echo "<pre>";
-		// print_r($_POST);exit();
 		$noind = $this->session->user;
 		$no_surat = $this->input->post('evt_no_surat');
 		$id = $this->input->post('evt_id');
@@ -747,6 +729,11 @@ class C_Index extends CI_Controller
 			);
 		$save = $this->M_index->saveEditMemo($data, $id);
 		if ($save) {
+			//insert to t_log
+				$aksi = 'EVALUASI TIMS';
+				$detail = 'Update Memo Nomor Surat='.$no_surat.' Dibuat oleh='.$noind;
+				$this->log_activity->activity_log($aksi, $detail);
+			//
 			redirect('EvaluasiTIMS/Setup/Memo');
 		}
 	}
@@ -778,7 +765,6 @@ class C_Index extends CI_Controller
 
 	public function exportBulanan()
 	{
-		// print_r($_POST);exit();
 		$jenisPenilaian = $this->input->post('jp');
 		$tanggal = $this->input->post('tgl');
 		$nama = $this->input->post('nama');
@@ -790,7 +776,6 @@ class C_Index extends CI_Controller
 		$jp = $this->M_index->listJp3($jenisPenilaian);
 		$kdu = $this->M_index->getKDU();
 		$data['kdu'] = $kdu->row()->no_kdu;
-		// echo $jenisPenilaian;exit();
 		$t = $jp[0]['std_m'];
 		$tim = $jp[0]['std_tim'];
 		$tims = $jp[0]['std_tims'];
@@ -809,7 +794,6 @@ class C_Index extends CI_Controller
 		}elseif ($jenisPenilaian == '2') {
 			$getlist = $this->M_index->listBl2($tgl1, $tgl2, $t, $tim, $tims, $vali, $s);
 		}
-		// echo "<pre>"; print_r($getlist);exit();
 		$data['listLt'] = $getlist;
 		$data['tgl1'] = $this->personalia->konversitanggalIndonesia(date('Y-m-d', strtotime($tgl1)));
 		$data['tgl2'] = $this->personalia->konversitanggalIndonesia(date('Y-m-d', strtotime($tgl2)));
@@ -819,7 +803,6 @@ class C_Index extends CI_Controller
 		$this->load->library('pdf');
 		$pdf 	=	$this->pdf->load();
 		$pdf 	=	new mPDF('utf-8', array(216,330), 11, "timesnewroman", 5, 5, 10, 10, 0, 0, 'L');
-		// $pdf 	=	new mPDF();
 		$filename	=	'Evaluasi TIMS Bulanan '.$jp[0]['jenis_penilaian'].' '.$this->input->post('tgl').'.pdf';
 		if ($jenisPenilaian == '1') {
 			$html = $this->load->view('EvaluasiTIMS/V_Export_Php',$data, true);
@@ -837,7 +820,6 @@ class C_Index extends CI_Controller
 
 	public function exportHarian()
 	{
-		// print_r($_POST);exit();
 		$jenisPenilaian = $this->input->post('jp');
 		$tanggal = $this->input->post('tgl');
 		$nama = $this->input->post('nama');
@@ -858,13 +840,12 @@ class C_Index extends CI_Controller
 			$t,$tim,$tims
 			);
 
-		// print_r($b);exit();
 		if ($jenisPenilaian == '1') {
 			$getlist = $this->M_index->listLt($b, $t, $tim, $tims, $vali);
 		}elseif ($jenisPenilaian == '2') {
 			$getlist = $this->M_index->listLt2($b, $t, $tim, $tims, $vali);
 		}
-		// echo "<pre>"; print_r($getlist);exit();
+
 		$data['tgl2'] = $this->personalia->konversitanggalIndonesia(date('Y-m-d'));
 		$data['listLt'] = $getlist;
 		header('Content-type: application/pdf');
@@ -911,19 +892,24 @@ class C_Index extends CI_Controller
 
 	public function SubmitKdu()
 	{
+		$noind = $this->session->user;
 		$kdu = $this->input->post('et_kdu');
 		$data = array(
 			'no_kdu'	=>	$kdu,
 			);
 		$save = $this->M_index->saveKdu($data);
 		if ($save) {
+			//insert to t_log
+				$aksi = 'EVALUASI TIMS';
+				$detail = 'Update KDU Nomor='.$kdu.' oleh='.$noind;
+				$this->log_activity->activity_log($aksi, $detail);
+			//
 			redirect('EvaluasiTIMS/Setup/EditNomorKDU');
 		}
 	}
 
 	public function detail_perpanjangan()
 	{
-		// print_r($_POST);
 		$noind = $_POST['noind'];
 		$nilai = $_POST['nilai'];
 
@@ -984,8 +970,6 @@ class C_Index extends CI_Controller
 		}else{
 			echo '<center><ul class="list-group"><li class="list-group-item">'.'Data Kosong'.'</li></ul></center>';
 		}
-		// print_r($perpanjangan);
-
 	}
 
 	public function getLamaEval()

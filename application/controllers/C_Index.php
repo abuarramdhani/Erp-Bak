@@ -44,6 +44,7 @@ class C_Index extends CI_Controller {
 	public function index()
 	{
 		if($this->session->is_logged){
+			$this->session->set_userdata('responsbility', 'Dashboard');
 
 			//$usr = "D1178";
 			$user_id = $this->session->userid;
@@ -61,6 +62,7 @@ class C_Index extends CI_Controller {
 			$this->load->view('V_Index',$data);
 			$this->load->view('V_Footer',$data);
 		}else{
+			$this->session->set_userdata('responsbility', 'Login');
 			if($this->session->gagal){
 				$data['error'] = "Login error, please enter correct username and password";
 				$aksi = 'Login';
@@ -112,6 +114,7 @@ class C_Index extends CI_Controller {
 				$data['error'] = "";
 			}
 
+			$this->session->set_userdata('responsbility', 'Login');
 			$this->load->view('V_Login',$data);
 			$this->session->unset_userdata('gagal');
 		}

@@ -148,6 +148,13 @@ class C_Monitoring extends CI_Controller
 		$this->load->view('V_Footer',$data);
 	}
 
+	public function getPIC(){
+		$term = $this->input->get('term',TRUE);
+		$term = strtoupper($term);
+		$data = $this->M_monitoring->getPIC($term);
+		echo json_encode($data);
+	}
+
 	public function search() {
 		$search			= $this->input->post('search_by');
 		$no_document	= $this->input->post('no_document');
@@ -373,6 +380,7 @@ class C_Monitoring extends CI_Controller
 			$asal 		= $this->input->post('gd_asal[]');
 			$ket 		= $this->input->post('ketr[]');
 			$action 	= $this->input->post('aktion[]');
+			$keterangan	= $this->input->post('ktrgn[]');
 
 			$dataMGS = array();
 			for ($i=0; $i < count($kode) ; $i++) { 
@@ -389,6 +397,7 @@ class C_Monitoring extends CI_Controller
 					'asal' 			=> $asal[$i],
 					'ket' 			=> $ket[$i],
 					'action' 		=> $action[$i],
+					'keterangan'	=> $keterangan[$i],
 				);
 				array_push($dataMGS, $array);
 			}
@@ -454,7 +463,7 @@ class C_Monitoring extends CI_Controller
 			);
 
 			$excel->setActiveSheetIndex(0)->setCellValue('A1', "Monitoring Gudang Sparepart"); 
-			$excel->getActiveSheet()->mergeCells('A1:M1'); 
+			$excel->getActiveSheet()->mergeCells('A1:N1'); 
 			$excel->getActiveSheet()->getStyle('A1')->applyFromArray($style_title);
 
 			$excel->setActiveSheetIndex(0)->setCellValue('A3', "NO.");
@@ -471,6 +480,7 @@ class C_Monitoring extends CI_Controller
 			$excel->setActiveSheetIndex(0)->setCellValue('K3', "KETERANGAN");
 			$excel->setActiveSheetIndex(0)->setCellValue('L3', "ASAL");
 			$excel->setActiveSheetIndex(0)->setCellValue('M3', "ACTION");
+			$excel->setActiveSheetIndex(0)->setCellValue('N3', "");
 			$excel->getActiveSheet()->mergeCells('A3:A4'); 
 			$excel->getActiveSheet()->mergeCells('B3:B4'); 
 			$excel->getActiveSheet()->mergeCells('C3:C4'); 
@@ -483,6 +493,7 @@ class C_Monitoring extends CI_Controller
 			$excel->getActiveSheet()->mergeCells('K3:K4'); 
 			$excel->getActiveSheet()->mergeCells('L3:L4'); 
 			$excel->getActiveSheet()->mergeCells('M3:M4'); 
+			$excel->getActiveSheet()->mergeCells('N3:N4'); 
 
 			$excel->getActiveSheet()->getStyle('A3')->applyFromArray($style_col);
 			$excel->getActiveSheet()->getStyle('A4')->applyFromArray($style_col);
@@ -510,6 +521,8 @@ class C_Monitoring extends CI_Controller
 			$excel->getActiveSheet()->getStyle('L4')->applyFromArray($style_col);
 			$excel->getActiveSheet()->getStyle('M3')->applyFromArray($style_col);
 			$excel->getActiveSheet()->getStyle('M4')->applyFromArray($style_col);
+			$excel->getActiveSheet()->getStyle('N3')->applyFromArray($style_col);
+			$excel->getActiveSheet()->getStyle('N4')->applyFromArray($style_col);
 
 			if (count($dataMGS) == 0){
 				$excel->setActiveSheetIndex(0)->setCellValue('A3');
@@ -524,6 +537,7 @@ class C_Monitoring extends CI_Controller
 				$excel->setActiveSheetIndex(0)->setCellValue('K3');
 				$excel->setActiveSheetIndex(0)->setCellValue('L3');
 				$excel->setActiveSheetIndex(0)->setCellValue('M3');
+				$excel->setActiveSheetIndex(0)->setCellValue('N3');
 
 				$excel->getActiveSheet()->getStyle('A3')->applyFromArray($style_col);
 				$excel->getActiveSheet()->getStyle('B3')->applyFromArray($style_col);
@@ -538,6 +552,7 @@ class C_Monitoring extends CI_Controller
 				$excel->getActiveSheet()->getStyle('K3')->applyFromArray($style_col);
 				$excel->getActiveSheet()->getStyle('L3')->applyFromArray($style_col);
 				$excel->getActiveSheet()->getStyle('M3')->applyFromArray($style_col);
+				$excel->getActiveSheet()->getStyle('N3')->applyFromArray($style_col);
 			}else {
 				$no=1;
 				$numrow = 5;
@@ -555,6 +570,7 @@ class C_Monitoring extends CI_Controller
 						$excel->setActiveSheetIndex(0)->setCellValue('K'.$numrow, $dM['ket']);
 						$excel->setActiveSheetIndex(0)->setCellValue('L'.$numrow, $dM['asal']);
 						$excel->setActiveSheetIndex(0)->setCellValue('M'.$numrow, $dM['action']);
+						$excel->setActiveSheetIndex(0)->setCellValue('N'.$numrow, $dM['keterangan']);
 
 						$excel->getActiveSheet()->getStyle('A'.$numrow)->applyFromArray($style2);
 						$excel->getActiveSheet()->getStyle('B'.$numrow)->applyFromArray($style2);
@@ -569,6 +585,7 @@ class C_Monitoring extends CI_Controller
 						$excel->getActiveSheet()->getStyle('K'.$numrow)->applyFromArray($style2);
 						$excel->getActiveSheet()->getStyle('L'.$numrow)->applyFromArray($style_row);
 						$excel->getActiveSheet()->getStyle('M'.$numrow)->applyFromArray($style2);
+						$excel->getActiveSheet()->getStyle('N'.$numrow)->applyFromArray($style2);
 					$numrow++;
 					$no++; 
 					}
@@ -587,6 +604,7 @@ class C_Monitoring extends CI_Controller
 			$excel->getActiveSheet()->getColumnDimension('K')->setWidth(20);
 			$excel->getActiveSheet()->getColumnDimension('L')->setWidth(20);
 			$excel->getActiveSheet()->getColumnDimension('M')->setWidth(20);
+			$excel->getActiveSheet()->getColumnDimension('N')->setWidth(20);
 
 			// Set height semua kolom menjadi auto (mengikuti height isi dari kolommnya, jadi otomatis)
 			$excel->getActiveSheet()->getDefaultRowDimension()->setRowHeight(-1);

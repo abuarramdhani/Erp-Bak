@@ -95,7 +95,7 @@
 	$(document).ready(function(){
 	$('#tblLPPBwew').DataTable({
 		"paging":   false,
-        "ordering": false,
+        "ordering": true,
         "info":     false
 	})
 })

@@ -185,7 +185,7 @@
                                      }else{
                                        $no=1;
                                        foreach ($dataDinas as $key) { ?>
-                                         <tr title="Click for Detail" type="button" class="detailPekerjaDinasPlus" value="<?php echo $key['0'].'|2019-12-11'; ?>">
+                                         <tr title="Click for Detail" type="button" class="detailPekerjaDinasPlus" value="<?php echo $key['0'].'|'.date('Y-m-d'); ?>">
                                            <td><?php echo $no; ?></td>
                                            <td><?php echo $key['0']; ?></td>
                                            <td><?php echo count($key); ?></td>
@@ -218,7 +218,7 @@
                                        }else{
                                            $no=1;
                                            foreach ($kurang as $key) { ?>
-                                               <tr title="Click for Detail" type="button" class="detailPekerjaDinasMin" value="<?php echo $key['0'].'|2019-12-11|min'; ?>">
+                                               <tr title="Click for Detail" type="button" class="detailPekerjaDinasMin" value="<?php echo $key['0'].'|'.date('Y-m-d').'|min'; ?>">
                                                    <td><?php echo $no; ?></td>
                                                    <td><?php echo $key['0']; ?></td>
                                                    <td><?php echo count($key); ?></td>
@@ -342,9 +342,8 @@
 <script type="text/javascript">
 $(document).ready(function(){
   var noind = '<?=$user?>';
-  console.log(noind);
 
-  if(noind != 'J1256' && noind != 'F2324' && noind != 'B0720' && noind != 'B0799')
+  if(noind != 'J1350' && noind != 'F2324' && noind != 'B0720' && noind != 'B0799')
   {
     $('#page').hide();
     Swal.fire({

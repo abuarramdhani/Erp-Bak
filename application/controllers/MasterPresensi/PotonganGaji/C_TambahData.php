@@ -1,15 +1,16 @@
 <?php defined('BASEPATH') OR exit('No direct script access allowed');
 
 class C_tambahdata extends CI_Controller {
-	
+
 	function __construct() {
 		parent::__construct();
         if(!$this->session->is_logged){ redirect('index'); }
+		$this->load->library('Log_Activity');
 		$this->load->model('SystemAdministration/MainMenu/M_user');
 		$this->load->model('MasterPresensi/PotonganGaji/M_tambahdata');
     }
-    
-	public function index() { 
+
+	public function index() {
 		$data['UserMenu'] = $this->M_user->getUserMenu($this->session->userid, $this->session->responsibility_id);
 		$data['UserSubMenuOne'] = $this->M_user->getMenuLv2($this->session->userid, $this->session->responsibility_id);
 		$data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($this->session->userid, $this->session->responsibility_id);
@@ -38,7 +39,7 @@ class C_tambahdata extends CI_Controller {
 			echo json_encode($this->M_tambahdata->searchJenisPotongan(strtolower($term)));
 		}
 	}
-	
+
 	function saveData() {
         $pekerja = $this->input->post('pekerja');
         $jenisPotongan = $this->input->post('jenisPotongan');
@@ -72,6 +73,11 @@ class C_tambahdata extends CI_Controller {
 					));
 				}
 			}
+			//insert to t_log
+			$aksi = 'MASTER PRESENSI';
+			$detail = 'Create Potongan Gaji Noind='.$pekerja;
+			$this->log_activity->activity_log($aksi, $detail);
+			//
 		}
 		echo json_encode($response);
 	}

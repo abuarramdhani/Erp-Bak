@@ -29,12 +29,12 @@
                                         <?php 
 
                                                 $bithdayDate = substr($PekerjaUsiaLanjut[0]['tgllahir'], 0, 10);
-                                                $date = new DateTime($bithdayDate);    
-                                                $now = new DateTime();    
-                                                $interval = $now->diff($date);    
+                                                $date = new DateTime($bithdayDate);
+                                                $yearEnd = date('Y-m-d', strtotime('12/31'));
+                                                $now = new DateTime($yearEnd);
+                                                $interval = $now->diff($date);
                                                 $age = $interval->y;    
                                                 $usia = $age;
-
                                                         
                                                 $date1 = $PekerjaUsiaLanjut[0]['tglkeluar'];
                                                 $date2 =  date('Y-m-d');

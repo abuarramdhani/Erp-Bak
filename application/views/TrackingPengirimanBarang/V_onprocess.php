@@ -91,7 +91,7 @@
                       <th class="text-center" style="width: 20%">ID Kurir</th>
                       <th class="text-center" style="width: 10%">Kendaraan</th>
                       <th class="text-center" style="width: 10%">Last Update Date</th>
-                      <th class="text-center" style="width: 20%">Detail SPB</th>
+                      <th class="text-center" style="width: 10%">Detail SPB</th>
                       <th class="text-center" style="width: 10%">Status SPB</th>
                     </tr>
                   </thead>
@@ -104,7 +104,7 @@
                       <td><?php echo  $n['kendaraan'] ?></td>
                       <td><?php echo  $n['last_update_date'] ?></td>
                       <td> 
-                        <button title="detail..." rownum="<?php echo $no ?>" class="btn btn-warning btn-sm" data-target="MdlTPBNol" data-toggle="modal" onclick="OpenDetailSatu(<?php echo $n['no_spb'];?>)"><i class="fa fa-mouse-pointer"></i> Detail</button>
+                        <button title="detail..." rownum="<?php echo $no ?>" class="btn btn-warning btn-sm" style="width: 100px" data-target="MdlTPBNol" data-toggle="modal" onclick="OpenDetailSatu(<?php echo $n['no_spb'];?>)"><i class="fa fa-mouse-pointer"></i> Detail</button>
                         <!-- <a target="_blank" title="confirmation..." class="btn btn-primary btn-sm" href="<?php echo base_url('TrackingPengirimanBarang/OnProcess/Confirmation/'.$n['no_spb']) ?>"><i class="fa fa-check"></i> Confirm</a> -->
                       </td>
                        <td>

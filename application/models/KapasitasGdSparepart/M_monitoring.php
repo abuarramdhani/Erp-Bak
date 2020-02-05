@@ -97,5 +97,24 @@ class M_monitoring extends CI_Model {
         // echo $sql;
     }
 
+    public function getTransact($nospb) {
+        $oracle = $this->load->database('oracle', true);
+        $sql ="SELECT mtrh.request_number no_spb, msib.segment1 item, msib.description, mmt.transaction_quantity, mmt.transaction_uom, mmt.SUBINVENTORY_CODE
+                FROM mtl_txn_request_headers mtrh,
+                    mtl_txn_request_lines mtrl,
+                    mtl_system_items_b msib,
+                    mtl_material_transactions mmt
+                WHERE mtrh.request_number = '$nospb'
+                    AND mtrl.header_id = mtrh.header_id
+                    AND mtrl.inventory_item_id = msib.inventory_item_id
+                    AND mtrl.organization_id = msib.organization_id
+                    AND mmt.move_order_line_id = mtrl.line_id
+                    AND mmt.inventory_item_id = mtrl.inventory_item_id
+                    AND (mmt.SUBINVENTORY_CODE like 'KLR%' OR mmt.SUBINVENTORY_CODE like 'STAGE%')";
+        $query = $oracle->query($sql);
+        return $query->result_array();
+        // echo $sql;
+    }
+
 }
 

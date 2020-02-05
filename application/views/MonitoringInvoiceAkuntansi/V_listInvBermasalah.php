@@ -122,10 +122,10 @@ $alert = $status[0]['SATU'];
 											</td>
 											<td><?php echo $u['VENDOR_NAME']?></td>
 											<td><strong><?php echo $u['INVOICE_NUMBER']?></strong></td>
-											<td><?php echo date('d-M-Y',strtotime($u['INVOICE_DATE']))?></td>
+											<td data-order="<?php echo date('Y-m-d', strtotime($u['INVOICE_DATE']))?>"><?php echo date('d-M-Y',strtotime($u['INVOICE_DATE']))?></td>
 											<td><?php echo $u['PPN'] ?></td>
 											<td><?php echo $u['PO_NUMBER']?></td>
-											<td><b><?php echo $u['AKT_DATE']?></b></td>
+											<td data-order="<?php echo date('Y-m-d', strtotime($u['AKT_DATE']))?>"><b><?php echo $u['AKT_DATE']?></b></td>
 											<td><b>KATEGORI : </b><?php echo $u['KATEGORI_INV_BERMASALAH']?> <br>
 												<b>KELENGKAPAN DOKUMEN : </b><?php echo $u['KELENGKAPAN_DOC_INV_BERMASALAH']?> <br>
 												<b>KETERANGAN : </b><?php echo $u['KETERANGAN_INV_BERMASALAH']?>	
@@ -138,7 +138,7 @@ $alert = $status[0]['SATU'];
 											<?php if ($u['PURC_DATE'] == NULL) { ?>
 											<td><i>Not Yet Confirmed</i></b></td>
 											<?php }else{ ?>
-											<td><b><?php echo $u['PURC_DATE']?></b></td>
+											<td data-order="<?php echo date('Y-m-d', strtotime($u['PURC_DATE']))?>"><b><?php echo $u['PURC_DATE']?></b></td>
 											<?php } ?>
 											<?php if ($u['STATUS_INV_BERMASALAH'] == 1) { ?>
 											<td><span class="label label-default"><i class="fa fa-paper-plane"></i> Send to Purchasing &nbsp;</span></td>
