@@ -1,6 +1,10 @@
 	//------------------------REKAP TIMS.begin------------------
 	//Date Picker
 	$( document ).ready(function() {
+		$('input').iCheck({
+			checkboxClass: 'icheckbox_flat-blue',
+			radioClass: 'iradio_flat-blue'
+		});
 		//-------begin.REKAP TIMS---------------
 		$('#rekapBegin').daterangepicker({
 			"singleDatePicker": true,
