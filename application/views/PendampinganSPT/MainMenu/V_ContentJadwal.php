@@ -20,9 +20,17 @@
                                     <select id="slcPSPTSearchBy" class="form-control" style="width: 35%;">
                                         <option>Nama</option>
                                         <option>No. Pendaftaran</option>
+                                        <option>Jadwal</option>
+                                        <option>Lokasi</option>
                                         <option>Seksi</option>
                                     </select>
-                                    <input id="txtPSPTSearchBy" type="text" class="form-control pull-right" style="width: 65%">
+                                    <input id="txtPSPTSearchBy" type="text" class="form-control pull-right" style="width: 65%;">
+                                    <input id="txtPSPTSearchBySchedule" type="text" class="form-control pull-right" style="width: 65%; display: none;">
+                                    <select id="slcPSPTSearchByLocation" class="form-control hidden" style="width: 55%;">
+                                        <option value="">All</option>
+                                        <option>Pusat</option>
+                                        <option>Tuksono</option>
+                                    </select>
                                 </div>
                             </div>
                         </div>
