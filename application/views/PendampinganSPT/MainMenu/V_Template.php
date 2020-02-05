@@ -16,6 +16,7 @@
         <link type="text/css" rel="stylesheet" href="{BaseUrl}assets/plugins/Font-Awesome/4.3.0/css/font-awesome-animation.css" />
         <link type="text/css" rel="stylesheet" href="{BaseUrl}assets/theme/css/AdminLTE.min.css" />
         <link type="text/css" rel="stylesheet" href="{BaseUrl}assets/theme/css/skins/_all-skins.min.css" />
+        <link type="text/css" rel="stylesheet" href="{BaseUrl}assets/plugins/datepicker/css/datepicker.css" />
         <link type="text/css" rel="stylesheet" href="{BaseUrl}assets/plugins/datatables-latest/datatables.min.css" />
 
         <!-- Custom Style -->
@@ -34,6 +35,10 @@
             }
             .swal2-shown {
                 padding-right: 0px !important;
+            }
+            #slcPSPTSearchByLocation + .select2 {
+                display: none;
+                width: 55%;
             }
         </style>
     </head>        
@@ -92,6 +97,7 @@
         <script src="{BaseUrl}assets/plugins/jQueryUI/jquery-ui.min.js" type="text/javascript"></script>
         <script src="{BaseUrl}assets/plugins/bootstrap/3.3.7/js/bootstrap.min.js"></script>
         <script src="{BaseUrl}assets/plugins/datatables-latest/datatables.min.js"></script>
+        <script src="{BaseUrl}assets/plugins/datepicker/js/bootstrap-datepicker.js"></script>
         <script src="{BaseUrl}assets/plugins/sweetalert2.all.min.js"></script>
         <script src="{BaseUrl}assets/plugins/sweetalert2.all.js"></script>
         <script src="{BaseUrl}assets/plugins/sweetAlert/sweetalert.js"></script>
