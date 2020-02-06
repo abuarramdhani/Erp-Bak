@@ -210,24 +210,7 @@ class C_Master extends CI_Controller
               $ipaddress = 'UNKNOWN';
           return $ipaddress;
       }
-      $tampungan = $this->input->post('array_atr');
-      array_pop($tampungan);
-      $rm = $this->input->post('requests_number');
-      foreach ($tampungan as $t) {
-        $data = [
-          'HEADER_ID' => $this->input->post('header_id'),
-          'REQUEST_NUMBER' => $rm,
-          'INVENTORY_ITEM_ID' => $t,
-          'ORDER_NUMBER' => $this->input->post('order_number'),
-          'IP_ADDRESS' => get_client_ip()
-        ];
-        $this->M_monitoringdo->insertDOtampung($data);
-      }
-
-      // $this->M_monitoringdo->runAPIDO($rm);
-      $this->M_monitoringdo->DeleteDOtampung($rm, get_client_ip());
-
-      echo json_encode('sukses!!!');
+      // function non active
     }
 
     public function GetDetail()

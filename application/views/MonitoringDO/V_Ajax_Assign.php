@@ -3,7 +3,7 @@
     <thead>
       <tr class="bg-primary">
         <th><center>NO</center></th>
-        <th><center>NOMOR DO</center></th>
+        <th><center>NO.DOK</center></th>
         <th><center>NOMOR SO</center></th>
         <th><center>TUJUAN</center></th>
         <th><center>KOTA</center></th>
@@ -35,10 +35,10 @@
              ?>
           <td>
             <input <?php echo $atribut ?> type="text" style="float:left;margin-right:7px;width:70%;height:28px;" name="inputAsiap" id="plat_nomer" value="<?php echo $g['PLAT_NUMBER'] ?>">
-            <button <?php echo $attr ?> type="button" class="btn btn-success uppercaseDO" name="buttonAsiap" style="float:left;font-size:10px;" onclick="updateFlag(<?php echo $g['DO/SPB'] ?>, <?php echo $g['HEADER_ID'] ?>, <?php echo $no; ?>)"><i class="fa fa-rocket"></i></button>
+            <button <?php echo $attr ?> type="button" class="btn btn-success uppercaseDO" name="buttonAsiap" style="float:left;font-size:10px;" onclick="updateFlag('<?php echo $g['DO/SPB'] ?>', <?php echo $g['HEADER_ID'] ?>, <?php echo $no; ?>)"><i class="fa fa-rocket"></i></button>
           </td>
           <td><center><?php echo $g['PETUGAS'] ?></center></td>
-          <td><center><button type="button" class="btn btn-info" name="button" style="font-weight:bold;" onclick="detailAssign(<?php echo $g['DO/SPB'] ?>, <?php echo $no ?>)" data-toggle="modal" data-target="#MyModalAssign"><i class="fa fa-eye"></i></button> </center></td>
+          <td><center><button type="button" class="btn btn-info" name="button" style="font-weight:bold;" onclick="detailAssign('<?php echo $g['DO/SPB'] ?>', <?php echo $no ?>)" data-toggle="modal" data-target="#MyModalAssign"><i class="fa fa-eye"></i></button> </center></td>
         </tr>
 
       <?php $no++; endforeach; ?>

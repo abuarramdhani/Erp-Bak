@@ -140,6 +140,9 @@ function approveMD() {
           requests_number: rm,
           person_id: personid
         },
+        beforeSend: function() {
+          Swal.showLoading()
+        },
         success: function(result) {
           // console.log(result);
           if (result != '') {
@@ -166,23 +169,6 @@ function approveMD() {
                 error: function(XMLHttpRequest, textStatus, errorThrown) {
                   console.error();
                 }
-              }).then(function() {
-                // $.ajax({
-                //   url: baseurl + 'MonitoringDO/SettingDO/countDO',
-                //   type: 'POST',
-                //   dataType: 'json',
-                //   success: function(result) {
-                //     $('#jumlah0').html('(' + result[0] + ')');
-                //     $('#jumlah1').html('(' + result[1] + ')');
-                //     $('#jumlah2').html('(' + result[2] + ')');
-                //     $('#jumlah3').html('(' + result[3] + ')');
-                //     $('#jumlah4').html('(' + result[4] + ')');
-                //
-                //   },
-                //   error: function(XMLHttpRequest, textStatus, errorThrown) {
-                //     console.error();
-                //   }
-                // })
               })
             })
           }
@@ -218,38 +204,19 @@ function approveMD() {
             },
             success: function(result) {
               console.log(result);
-
+              Swal.fire({
+                position: 'middle',
+                type: 'success',
+                title: 'Success inserting data',
+                showConfirmButton: false,
+                timer: 1500
+              }).then(function() {
+                $('#MyModal2').modal('hide')
+              })
             },
             error: function(XMLHttpRequest, textStatus, errorThrown) {
               console.error();
             }
-          }).then(function() {
-            $.ajax({
-              url: baseurl + 'MonitoringDO/SettingDO/insertDOtampung',
-              type: 'POST',
-              data: {
-                header_id: id,
-                requests_number: rm,
-                order_number: order_number,
-                array_atr: atr_tampung_gan.split(',')
-              },
-              success: function(result) {
-                console.log(result);
-                if (result != '') {
-                  Swal.fire({
-                    position: 'middle',
-                    type: 'success',
-                    title: 'Success inserting data',
-                    showConfirmButton: false,
-                    timer: 1500
-                  })
-                  $('#MyModal2').modal('hide');
-                }
-              },
-              error: function(XMLHttpRequest, textStatus, errorThrown) {
-                console.error();
-              }
-            })
           }).then(function() {
             $.ajax({
               url: baseurl + 'MonitoringDO/SettingDO/GetSetting',
@@ -268,22 +235,6 @@ function approveMD() {
                 console.error();
               }
             })
-            // $.ajax({
-            //   url: baseurl + 'MonitoringDO/SettingDO/countDO',
-            //   type: 'POST',
-            //   dataType: 'json',
-            //   success: function(result) {
-            //     $('#jumlah0').html('(' + result[0] + ')');
-            //     $('#jumlah1').html('(' + result[1] + ')');
-            //     $('#jumlah2').html('(' + result[2] + ')');
-            //     $('#jumlah3').html('(' + result[3] + ')');
-            //     $('#jumlah4').html('(' + result[4] + ')');
-            //
-            //   },
-            //   error: function(XMLHttpRequest, textStatus, errorThrown) {
-            //     console.error();
-            //   }
-            // })
           })
         } else {
           Swal.fire({
@@ -300,6 +251,7 @@ function approveMD() {
 
   }
 }
+
 
 function dodo1() {
   // dodo01.abort();
