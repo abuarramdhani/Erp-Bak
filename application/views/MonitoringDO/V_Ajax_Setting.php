@@ -4,7 +4,7 @@
     <thead>
       <tr class="bg-primary">
         <th><center>NO</center></th>
-        <th><center>NOMOR DO</center></th>
+        <th><center>NO.DOK</center></th>
         <th><center>NOMOR SO</center></th>
         <th><center>TUJUAN</center></th>
         <th><center>KOTA</center></th>
