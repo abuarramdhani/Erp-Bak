@@ -35,11 +35,13 @@ function getHistory(th) {
 
 function Detail(no) {
 	$(document).ready(function(){
-		var buttonpo = $('#buttonpo'+no).val(); 	
+		var buttonpo = $('#buttonpo'+no).val(); 
+		var suratjalan = $('#suratjalan'+no).val();	
 		var request = $.ajax({
 			url: baseurl+'ReceivePO/History/Detail/',
 			data: {
-			    buttonpo,buttonpo
+			    buttonpo : buttonpo,
+			    suratjalan : suratjalan
 			},
 			type: "POST",
 			datatype: 'html'
