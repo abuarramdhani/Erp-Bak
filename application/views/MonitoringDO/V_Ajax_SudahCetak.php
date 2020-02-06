@@ -3,7 +3,7 @@
     <thead>
       <tr class="bg-primary">
         <th style="width:5%"><center>NO</center></th>
-        <th style="width:15%"><center>NOMOR DO</center></th>
+        <th style="width:15%"><center>NO.DOK</center></th>
         <th style="width:25%"><center>TUJUAN</center></th>
         <th style="width:15%"><center>KOTA</center></th>
         <th><center>PETUGAS</center></th>
