@@ -156,12 +156,13 @@ class C_Index extends CI_Controller {
 				}else {
 					if ($status[0]['action'] == null) {
 						$sts = $status[0]['status'];
-						$statusNow = $sts + 1;
-						$downtime = $statusNow * 15 / 60;
+						$statusNow = 0;
+						$statusNows = $sts + 1;
+						$downtime = $statusNows * 15 / 60;
 						$stat = array(
 										'creation_date' => 'now()',
 										'ip' => $domainbase,
-										'status' => $statusNow,
+										'status' => $statusNows,
 								);
 						$this->M_index->setStatus($stat);
 						$time = date('d-m-Y H:i:s');
@@ -254,11 +255,11 @@ class C_Index extends CI_Controller {
 				$subject = "($st) ".$ip['name']." is Down";
 
 				if ($statusNow%48 == 0) {
-					$emailUser = array("quick.tractor@gmail.com", "it.sec1@quick.co.id", "it1.quick@gmail.com", "nugroho.mail1@gmail.com", "ict.hardware.khs@gmail.com", "it.asst.u1@quick.co.id", "khoerulamri.id@gmail.com","suryabondan@gmail.com");
-					$emailUserInternal = array("johannes_andri@quick.com","yohanes_budi@quick.com","rheza_egha@quick.com","amelia_ayu@quick.com","khoerul_amri@quick.com","nugroho@quick.com","bondan_surya_n@quick.com");
+					$emailUser = array("quick.tractor@gmail.com", "it.sec1@quick.co.id", "it1.quick@gmail.com", "nugroho.mail1@gmail.com", "ict.hardware.khs@gmail.com", "it.asst.u1@quick.co.id", "khoerulamri.id@gmail.com");
+					$emailUserInternal = array("johannes_andri@quick.com","yohanes_budi@quick.com","rheza_egha@quick.com","amelia_ayu@quick.com","khoerul_amri@quick.com","nugroho@quick.com");
 				}else {
-					$emailUser = array("quick.tractor@gmail.com", "nugroho.mail1@gmail.com", "ict.hardware.khs@gmail.com","suryabondan@gmail.com");
-					$emailUserInternal = array("yohanes_budi@quick.com","rheza_egha@quick.com","amelia_ayu@quick.com","nugroho@quick.com","bondan_surya_n@quick.com");
+					$emailUser = array("quick.tractor@gmail.com", "nugroho.mail1@gmail.com", "ict.hardware.khs@gmail.com");
+					$emailUserInternal = array("yohanes_budi@quick.com","rheza_egha@quick.com","amelia_ayu@quick.com","nugroho@quick.com");
 				}
 
                 $this->EmailAlert($subject, $message, $emailUser);
