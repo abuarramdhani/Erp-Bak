@@ -104,6 +104,11 @@ class C_Monitoring extends CI_Controller {
 		$time = date('d-m-Y H:i:s');
 		$st = "WIP";
 		$message ="<table>
+		                <tr>
+							<th align='left'>IP</th>
+							<th>:</th>
+							<td>$ip</td>
+						</tr>
 						<tr>
 							<th align='left'>STATUS</th>
 							<th>:</th>
@@ -149,7 +154,7 @@ class C_Monitoring extends CI_Controller {
 	{
 		//email
         
-        $akun = array("quick.tractor@gmail.com", "it.sec1@quick.co.id", "it1.quick@gmail.com", "nugroho.mail1@gmail.com", "ict.hardware.khs@gmail.com", "it.asst.u1@quick.co.id", "khoerulamri.id@gmail.com","suryabondan@gmail.com");
+        $akun = array("quick.tractor@gmail.com", "it.sec1@quick.co.id", "it1.quick@gmail.com", "nugroho.mail1@gmail.com", "ict.hardware.khs@gmail.com", "it.asst.u1@quick.co.id", "khoerulamri.id@gmail.com");
         
         // $akun = array("suryabondan@gmail.com");
         
@@ -195,7 +200,7 @@ class C_Monitoring extends CI_Controller {
 	
 	public function EmailAlertInternal($subject , $body)
 	{
-		$akun = array("johannes_andri@quick.com","yohanes_budi@quick.com","rheza_egha@quick.com","amelia_ayu@quick.com","khoerul_amri@quick.com","nugroho@quick.com","bondan_surya_n@quick.com");
+		$akun = array("johannes_andri@quick.com","yohanes_budi@quick.com","rheza_egha@quick.com","amelia_ayu@quick.com","khoerul_amri@quick.com","nugroho@quick.com");
 		
 		//send Email
 
