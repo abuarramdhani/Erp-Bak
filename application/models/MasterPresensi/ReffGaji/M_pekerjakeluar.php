@@ -425,7 +425,7 @@ class M_pekerjakeluar extends CI_Model
 		return $nilai;
 	}
 
-	public function hitung_if($noind,$awal,$akhir,$chk_khusus,$khusus){
+	public function hitung_if($noind,$awal,$akhir,$chk_khusus,$khusus,$hitung_cutoff){
 		$sql = "select case when tanggal_akhir >= '$akhir'::timestamp then
 					'awal'
 				else
@@ -442,33 +442,43 @@ class M_pekerjakeluar extends CI_Model
 			$sql = "select noind,
 						case when '$chk_khusus' = 'khusus' then
 							case when '$khusus' = 'sebelum' then
-								(
-									select count(distinct tanggal)
-									from \"Presensi\".tdatapresensi b
-									where b.noind = a.noind
-									and b.tanggal between '$awal'::date AND to_char(a.tglkeluar,'yyyy-mm-01')::date - interval '1 day'
-									and trim(b.kd_ket) in ('PKJ','PDL','PDB','PLB','PID','PSK', 'PSP', 'CT', 'CB', 'CBA', 'CD', 'CH', 'CIK', 'CIM', 'CK', 'CM', 'CPA', 'CPP', 'CS', 'PCZ', 'PRM', 'PKK' )
-								) -
-								(
-									select count(*)
-									from generate_series('$awal',to_char(a.tglkeluar,'yyyy-mm-01')::date - interval '1 day',interval '1 day') as dt
-									left join \"Dinas_Luar\".tlibur tl 
-									on tl.tanggal = dt.dt
-									where tl.tanggal is null 
-									and extract(isodow from dt.dt) != 7
-								) -
-								(
-									sELECT count(*) from \"Presensi\".TDataPresensi c
-									WHERE c.noind = a.noind
-									AND c.tanggal between '$awal'::date AND to_char(a.tglkeluar,'yyyy-mm-01')::date - interval '1 day'
-									AND (
-											c.kd_ket = 'PSK' 
-											or c.kd_ket = 'PRM'
-											or c.kd_ket = 'PIP'
-											or left(c.kd_ket,1) = 'C'
-											or c.kd_ket = 'PCZ'
-										)
-								)
+								case when $hitung_cutoff > 0 then
+									(
+										select count(distinct tanggal)
+										from \"Presensi\".tdatapresensi b
+										where b.noind = a.noind
+										and b.tanggal between '$awal'::date AND to_char(a.tglkeluar,'yyyy-mm-01')::date - interval '1 day'
+										and trim(b.kd_ket) in ('PKJ','PDL','PDB','PLB','PID','PSK', 'PSP', 'CT', 'CB', 'CBA', 'CD', 'CH', 'CIK', 'CIM', 'CK', 'CM', 'CPA', 'CPP', 'CS', 'PCZ', 'PRM', 'PKK' )
+									) -
+									(
+										select count(*)
+										from generate_series('$awal',to_char(a.tglkeluar,'yyyy-mm-01')::date - interval '1 day',interval '1 day') as dt
+										left join \"Dinas_Luar\".tlibur tl 
+										on tl.tanggal = dt.dt
+										where tl.tanggal is null 
+										and extract(isodow from dt.dt) != 7
+									) -
+									(
+										sELECT count(*) from \"Presensi\".TDataPresensi c
+										WHERE c.noind = a.noind
+										AND c.tanggal between '$awal'::date AND to_char(a.tglkeluar,'yyyy-mm-01')::date - interval '1 day'
+										AND (
+												c.kd_ket = 'PSK' 
+												or c.kd_ket = 'PRM'
+												or c.kd_ket = 'PIP'
+												or left(c.kd_ket,1) = 'C'
+												or c.kd_ket = 'PCZ'
+											)
+									)
+								else
+ 									(
+ 										select count(distinct tanggal)
+ 										from \"Presensi\".tdatapresensi b
+ 										where b.noind = a.noind
+ 										and b.tanggal between '$awal'::date AND to_char(a.tglkeluar,'yyyy-mm-01')::date - interval '1 day'
+ 										and trim(b.kd_ket) in ('PKJ','PDL','PDB','PLB','PID','PSK', 'PSP', 'CT', 'CB', 'CBA', 'CD', 'CH', 'CIK', 'CIM', 'CK', 'CM', 'CPA', 'CPP', 'CS', 'PCZ', 'PRM', 'PKK' )
+ 									)
+ 								end
 							else
 								(
 									select count(distinct tanggal)
@@ -932,7 +942,7 @@ class M_pekerjakeluar extends CI_Model
 		return $nilai;
 	}
 
-	public function hitung_if_tdk_cutoff($noind,$awal,$akhir,$chk_khusus,$khusus){
+	public function hitung_if_tdk_cutoff($noind,$awal,$akhir,$chk_khusus,$khusus,$hitung_cutoff){
 		$sql = "select case when tanggal_akhir >= '$akhir'::timestamp then
 					'awal'
 				else
@@ -948,33 +958,43 @@ class M_pekerjakeluar extends CI_Model
 			$sql = "select noind,
 						case when '$chk_khusus' = 'khusus' then
 							case when '$khusus' = 'sebelum' then
-								(
-									select count(distinct tanggal)
-									from \"Presensi\".tdatapresensi b
-									where b.noind = a.noind
-									and b.tanggal between '$awal'::date AND to_char(a.tglkeluar,'yyyy-mm-01')::date - interval '1 day'
-									and trim(b.kd_ket) in ('PKJ','PDL','PDB','PLB','PID','PSK', 'PSP', 'CT', 'CB', 'CBA', 'CD', 'CH', 'CIK', 'CIM', 'CK', 'CM', 'CPA', 'CPP', 'CS', 'PCZ', 'PRM', 'PKK' )
-								) -
-								(
-									select count(*)
-									from generate_series('$awal',to_char(a.tglkeluar,'yyyy-mm-01')::date - interval '1 day',interval '1 day') as dt
-									left join \"Dinas_Luar\".tlibur tl 
-									on tl.tanggal = dt.dt
-									where tl.tanggal is null 
-									and extract(isodow from dt.dt) != 7
-								) -
-								(
-									sELECT count(*) from \"Presensi\".TDataPresensi c
-									WHERE c.noind = a.noind
-									AND c.tanggal between '$awal'::date AND to_char(a.tglkeluar,'yyyy-mm-01')::date - interval '1 day'
-									AND (
-											c.kd_ket = 'PSK' 
-											or c.kd_ket = 'PRM'
-											or c.kd_ket = 'PIP'
-											or left(c.kd_ket,1) = 'C'
-											or c.kd_ket = 'PCZ'
-										)
-								)
+								case when $hitung_cutoff > 0 then
+									(
+										select count(distinct tanggal)
+										from \"Presensi\".tdatapresensi b
+										where b.noind = a.noind
+										and b.tanggal between '$awal'::date AND to_char(a.tglkeluar,'yyyy-mm-01')::date - interval '1 day'
+										and trim(b.kd_ket) in ('PKJ','PDL','PDB','PLB','PID','PSK', 'PSP', 'CT', 'CB', 'CBA', 'CD', 'CH', 'CIK', 'CIM', 'CK', 'CM', 'CPA', 'CPP', 'CS', 'PCZ', 'PRM', 'PKK' )
+									) -
+									(
+										select count(*)
+										from generate_series('$awal',to_char(a.tglkeluar,'yyyy-mm-01')::date - interval '1 day',interval '1 day') as dt
+										left join \"Dinas_Luar\".tlibur tl 
+										on tl.tanggal = dt.dt
+										where tl.tanggal is null 
+										and extract(isodow from dt.dt) != 7
+									) -
+									(
+										sELECT count(*) from \"Presensi\".TDataPresensi c
+										WHERE c.noind = a.noind
+										AND c.tanggal between '$awal'::date AND to_char(a.tglkeluar,'yyyy-mm-01')::date - interval '1 day'
+										AND (
+												c.kd_ket = 'PSK' 
+												or c.kd_ket = 'PRM'
+												or c.kd_ket = 'PIP'
+												or left(c.kd_ket,1) = 'C'
+												or c.kd_ket = 'PCZ'
+											)
+									)
+								else
+ 									(
+ 										select count(distinct tanggal)
+ 										from \"Presensi\".tdatapresensi b
+ 										where b.noind = a.noind
+ 										and b.tanggal between '$awal'::date AND to_char(a.tglkeluar,'yyyy-mm-01')::date - interval '1 day'
+ 										and trim(b.kd_ket) in ('PKJ','PDL','PDB','PLB','PID','PSK', 'PSP', 'CT', 'CB', 'CBA', 'CD', 'CH', 'CIK', 'CIM', 'CK', 'CM', 'CPA', 'CPP', 'CS', 'PCZ', 'PRM', 'PKK' )
+ 									)
+ 								end
 							else
 								(
 									select count(distinct tanggal)
@@ -1535,7 +1555,7 @@ class M_pekerjakeluar extends CI_Model
 		return ($result1['0']['jml'] + $result2['0']['jml'] + $result3['0']['jml'] + $result4['0']['jml']);
 	}
 
-	public function hitung_Htm($noind,$awal,$akhir,$chk_khusus,$khusus){
+	public function hitung_Htm($noind,$awal,$akhir,$chk_khusus,$khusus,$hitung_cutoff){
 		$sql = "select case when tanggal_akhir >= '$akhir'::timestamp then
 					'awal'
 				else
@@ -1551,33 +1571,51 @@ class M_pekerjakeluar extends CI_Model
 			$sql = "select noind,
 							case when '$chk_khusus' = 'khusus' then
 								case when '$khusus' = 'sebelum' then 
-									(
-										30 +
-										(select count(tanggal) as jml from
-											(
-												SELECT b.tanggal FROM \"Presensi\".TDataTIM b
-												WHERE b.noind = a.noind
-												AND b.tanggal between '$awal' AND to_char(a.tglkeluar,'yyyy-mm-01')::date - interval '1 day'
-												AND (b.kd_ket = 'TM')
-												UNION
-												SELECT c.tanggal from \"Presensi\".TDataPresensi c
-												WHERE c.noind = a.noind
-												AND c.tanggal between '$awal' AND to_char(a.tglkeluar,'yyyy-mm-01')::date - interval '1 day'
-												AND (
-														(
-															(c.kd_ket = 'PSK' or c.kd_ket = 'PRM')
-															and (
-																c.noind like 'K%'
-																or c.noind like 'P%'
-																or c.noind like 'F%'
-																or c.noind like 'Q%'
+									case when $hitung_cutoff > 0 then
+										(
+											30 +
+											(select count(tanggal) as jml from
+												(
+													SELECT b.tanggal FROM \"Presensi\".TDataTIM b
+													WHERE b.noind = a.noind
+													AND b.tanggal between '$awal' AND to_char(a.tglkeluar,'yyyy-mm-01')::date - interval '1 day'
+													AND (b.kd_ket = 'TM')
+													UNION
+													SELECT c.tanggal from \"Presensi\".TDataPresensi c
+													WHERE c.noind = a.noind
+													AND c.tanggal between '$awal' AND to_char(a.tglkeluar,'yyyy-mm-01')::date - interval '1 day'
+													AND (
+															(
+																(c.kd_ket = 'PSK' or c.kd_ket = 'PRM')
+																and (
+																	c.noind like 'K%'
+																	or c.noind like 'P%'
+																	or c.noind like 'F%'
+																	or c.noind like 'Q%'
+																)
 															)
+															or c.kd_ket = 'PIP'
 														)
-														or c.kd_ket = 'PIP'
-													)
-											) as DERIVEDTBL
+												) as DERIVEDTBL
+											)
 										)
-									)
+									else
+ 										30 -
+ 										(
+ 											select count(distinct tanggal)
+ 											from \"Presensi\".tdatapresensi b
+ 											where b.noind = a.noind
+ 											and b.tanggal between '$awal'::date and to_char(a.tglkeluar,'yyyy-mm-01')::date - interval '1 day'
+ 											and trim(b.kd_ket) in ('PKJ','PDL','PDB','PLB','PID','PSK', 'PSP', 'CT', 'CB', 'CBA', 'CD', 'CH', 'CIK', 'CIM', 'CK', 'CM', 'CPA', 'CPP', 'CS', 'PCZ', 'PRM', 'PKK' )
+ 										) -
+ 										(
+ 											select count(*)
+ 											from generate_series('$awal',to_char(a.tglkeluar,'yyyy-mm-01')::date - interval '1 day',interval '1 day') as dates
+ 											left join \"Presensi\".tshiftpekerja d on dates.dates = d.tanggal
+ 											and a.noind = d.noind
+ 											where d.tanggal is null
+ 										)
+ 									end
 								else
 									(
 										30 -
@@ -1915,7 +1953,7 @@ class M_pekerjakeluar extends CI_Model
 		return $nilai;
 	}
 
-	public function hitung_Htm_tdk_cutoff($noind,$awal,$akhir,$chk_khusus,$khusus){
+	public function hitung_Htm_tdk_cutoff($noind,$awal,$akhir,$chk_khusus,$khusus,$hitung_cutoff){
 		$sql = "select case when tanggal_akhir >= '$akhir'::timestamp then
 					'awal'
 				else
@@ -1931,33 +1969,51 @@ class M_pekerjakeluar extends CI_Model
 			$sql = "select noind,
 							case when '$chk_khusus' = 'khusus' then
 								case when '$khusus' = 'sebelum' then 
-									(
-										30 +
-										(select count(tanggal) as jml from
-											(
-												SELECT b.tanggal FROM \"Presensi\".TDataTIM b
-												WHERE b.noind = a.noind
-												AND b.tanggal between '$awal' AND to_char(a.tglkeluar,'yyyy-mm-01')::date - interval '1 day'
-												AND (b.kd_ket = 'TM')
-												UNION
-												SELECT c.tanggal from \"Presensi\".TDataPresensi c
-												WHERE c.noind = a.noind
-												AND c.tanggal between '$awal' AND to_char(a.tglkeluar,'yyyy-mm-01')::date - interval '1 day'
-												AND (
-														(
-															(c.kd_ket = 'PSK' or c.kd_ket = 'PRM')
-															and (
-																c.noind like 'K%'
-																or c.noind like 'P%'
-																or c.noind like 'F%'
-																or c.noind like 'Q%'
+									case when $hitung_cutoff > 0 then
+										(
+											30 +
+											(select count(tanggal) as jml from
+												(
+													SELECT b.tanggal FROM \"Presensi\".TDataTIM b
+													WHERE b.noind = a.noind
+													AND b.tanggal between '$awal' AND to_char(a.tglkeluar,'yyyy-mm-01')::date - interval '1 day'
+													AND (b.kd_ket = 'TM')
+													UNION
+													SELECT c.tanggal from \"Presensi\".TDataPresensi c
+													WHERE c.noind = a.noind
+													AND c.tanggal between '$awal' AND to_char(a.tglkeluar,'yyyy-mm-01')::date - interval '1 day'
+													AND (
+															(
+																(c.kd_ket = 'PSK' or c.kd_ket = 'PRM')
+																and (
+																	c.noind like 'K%'
+																	or c.noind like 'P%'
+																	or c.noind like 'F%'
+																	or c.noind like 'Q%'
+																)
 															)
+															or c.kd_ket = 'PIP'
 														)
-														or c.kd_ket = 'PIP'
-													)
-											) as DERIVEDTBL
+												) as DERIVEDTBL
+											)
 										)
-									)
+									else
+ 										30 -
+ 										(
+ 											select count(distinct tanggal)
+ 											from \"Presensi\".tdatapresensi b
+ 											where b.noind = a.noind
+ 											and b.tanggal between '$awal'::date and to_char(a.tglkeluar,'yyyy-mm-01')::date - interval '1 day'
+ 											and trim(b.kd_ket) in ('PKJ','PDL','PDB','PLB','PID','PSK', 'PSP', 'CT', 'CB', 'CBA', 'CD', 'CH', 'CIK', 'CIM', 'CK', 'CM', 'CPA', 'CPP', 'CS', 'PCZ', 'PRM', 'PKK' )
+ 										) -
+ 										(
+ 											select count(*)
+ 											from generate_series('$awal',to_char(a.tglkeluar,'yyyy-mm-01')::date - interval '1 day',interval '1 day') as dates
+ 											left join \"Presensi\".tshiftpekerja d on dates.dates = d.tanggal
+ 											and a.noind = d.noind
+ 											where d.tanggal is null
+ 										)
+ 									end
 								else
 									(
 										30 -
@@ -3501,7 +3557,7 @@ class M_pekerjakeluar extends CI_Model
 		return $this->personalia->query($sql)->row();
 	}
 
-	public function hitung_tik($noind,$awal,$akhir,$chk_khusus,$khusus){
+	public function hitung_tik($noind,$awal,$akhir,$chk_khusus,$khusus,$hitung_cutoff){
 		$sql = "select case when tanggal_akhir >= '$akhir'::timestamp then
 					'awal'
 				else
@@ -3710,7 +3766,7 @@ class M_pekerjakeluar extends CI_Model
 		return $nilai;
 	}
 
-	public function hitung_tik_tdk_cutoff($noind,$awal,$akhir,$chk_khusus,$khusus){
+	public function hitung_tik_tdk_cutoff($noind,$awal,$akhir,$chk_khusus,$khusus,$hitung_cutoff){
 		$sql = "select case when tanggal_akhir >= '$akhir'::timestamp then
 					'awal'
 				else
@@ -4007,7 +4063,7 @@ class M_pekerjakeluar extends CI_Model
  		}
 	}
 
-	public function hitung_tm($noind,$awal,$akhir,$chk_khusus,$khusus){
+	public function hitung_tm($noind,$awal,$akhir,$chk_khusus,$khusus,$hitung_cutoff){
 		$sql = "select case when tanggal_akhir >= '$akhir'::timestamp then
 					'awal'
 				else
@@ -4024,33 +4080,51 @@ class M_pekerjakeluar extends CI_Model
 			$sql = "select noind,
 							case when '$chk_khusus' = 'khusus' then
 								case when '$khusus' = 'sebelum' then 
-									(
-										30 +
-										(select count(tanggal) as jml from
-											(
-												SELECT b.tanggal FROM \"Presensi\".TDataTIM b
-												WHERE b.noind = a.noind
-												AND b.tanggal between '$awal' AND to_char(a.tglkeluar,'yyyy-mm-01')::date - interval '1 day'
-												AND (b.kd_ket = 'TM')
-												UNION
-												SELECT c.tanggal from \"Presensi\".TDataPresensi c
-												WHERE c.noind = a.noind
-												AND c.tanggal between '$awal' AND to_char(a.tglkeluar,'yyyy-mm-01')::date - interval '1 day'
-												AND (
-														(
-															(c.kd_ket = 'PSK' or c.kd_ket = 'PRM')
-															and (
-																c.noind like 'K%'
-																or c.noind like 'P%'
-																or c.noind like 'F%'
-																or c.noind like 'Q%'
+									case when $hitung_cutoff > 0 then
+										(
+											30 +
+											(select count(tanggal) as jml from
+												(
+													SELECT b.tanggal FROM \"Presensi\".TDataTIM b
+													WHERE b.noind = a.noind
+													AND b.tanggal between '$awal' AND to_char(a.tglkeluar,'yyyy-mm-01')::date - interval '1 day'
+													AND (b.kd_ket = 'TM')
+													UNION
+													SELECT c.tanggal from \"Presensi\".TDataPresensi c
+													WHERE c.noind = a.noind
+													AND c.tanggal between '$awal' AND to_char(a.tglkeluar,'yyyy-mm-01')::date - interval '1 day'
+													AND (
+															(
+																(c.kd_ket = 'PSK' or c.kd_ket = 'PRM')
+																and (
+																	c.noind like 'K%'
+																	or c.noind like 'P%'
+																	or c.noind like 'F%'
+																	or c.noind like 'Q%'
+																)
 															)
+															or c.kd_ket = 'PIP'
 														)
-														or c.kd_ket = 'PIP'
-													)
-											) as DERIVEDTBL
+												) as DERIVEDTBL
+											)
 										)
-									)
+									else
+ 										30 -
+ 										(
+ 											select count(distinct tanggal)
+ 											from \"Presensi\".tdatapresensi b
+ 											where b.noind = a.noind
+ 											and b.tanggal between '$awal'::date and to_char(a.tglkeluar,'yyyy-mm-01')::date - interval '1 day'
+ 											and trim(b.kd_ket) in ('PKJ','PDL','PDB','PLB','PID','PSK', 'PSP', 'CT', 'CB', 'CBA', 'CD', 'CH', 'CIK', 'CIM', 'CK', 'CM', 'CPA', 'CPP', 'CS', 'PCZ', 'PRM', 'PKK' )
+ 										) -
+ 										(
+ 											select count(*)
+ 											from generate_series('$awal',to_char(a.tglkeluar,'yyyy-mm-01')::date - interval '1 day',interval '1 day') as dates
+ 											left join \"Presensi\".tshiftpekerja d on dates.dates = d.tanggal
+ 											and a.noind = d.noind
+ 											where d.tanggal is null
+ 										)
+ 									end
 								else
 									(
 										30 -
@@ -4205,7 +4279,7 @@ class M_pekerjakeluar extends CI_Model
 		return $result1['0']['total'];
 	}
 
-	public function hitung_tm_tdk_cutoff($noind,$awal,$akhir,$chk_khusus,$khusus){
+	public function hitung_tm_tdk_cutoff($noind,$awal,$akhir,$chk_khusus,$khusus,$hitung_cutoff){
 		$sql = "select case when tanggal_akhir >= '$akhir'::timestamp then
 					'awal'
 				else
@@ -4222,33 +4296,51 @@ class M_pekerjakeluar extends CI_Model
 			$sql = "select noind,
 							case when '$chk_khusus' = 'khusus' then
 								case when '$khusus' = 'sebelum' then 
-									(
-										30  +
-										(select count(tanggal) as jml from
-											(
-												SELECT b.tanggal FROM \"Presensi\".TDataTIM b
-												WHERE b.noind = a.noind
-												AND b.tanggal between '$awal' AND to_char(a.tglkeluar,'yyyy-mm-01')::date - interval '1 day'
-												AND (b.kd_ket = 'TM')
-												UNION
-												SELECT c.tanggal from \"Presensi\".TDataPresensi c
-												WHERE c.noind = a.noind
-												AND c.tanggal between '$awal' AND to_char(a.tglkeluar,'yyyy-mm-01')::date - interval '1 day'
-												AND (
-														(
-															(c.kd_ket = 'PSK' or c.kd_ket = 'PRM')
-															and (
-																c.noind like 'K%'
-																or c.noind like 'P%'
-																or c.noind like 'F%'
-																or c.noind like 'Q%'
+									case when $hitung_cutoff > 0 then
+										(
+											30  +
+											(select count(tanggal) as jml from
+												(
+													SELECT b.tanggal FROM \"Presensi\".TDataTIM b
+													WHERE b.noind = a.noind
+													AND b.tanggal between '$awal' AND to_char(a.tglkeluar,'yyyy-mm-01')::date - interval '1 day'
+													AND (b.kd_ket = 'TM')
+													UNION
+													SELECT c.tanggal from \"Presensi\".TDataPresensi c
+													WHERE c.noind = a.noind
+													AND c.tanggal between '$awal' AND to_char(a.tglkeluar,'yyyy-mm-01')::date - interval '1 day'
+													AND (
+															(
+																(c.kd_ket = 'PSK' or c.kd_ket = 'PRM')
+																and (
+																	c.noind like 'K%'
+																	or c.noind like 'P%'
+																	or c.noind like 'F%'
+																	or c.noind like 'Q%'
+																)
 															)
+															or c.kd_ket = 'PIP'
 														)
-														or c.kd_ket = 'PIP'
-													)
-											) as DERIVEDTBL
+												) as DERIVEDTBL
+											)
 										)
-									)
+									else
+ 										30 -
+ 										(
+ 											select count(distinct tanggal)
+ 											from \"Presensi\".tdatapresensi b
+ 											where b.noind = a.noind
+ 											and b.tanggal between '$awal'::date and to_char(a.tglkeluar,'yyyy-mm-01')::date - interval '1 day'
+ 											and trim(b.kd_ket) in ('PKJ','PDL','PDB','PLB','PID','PSK', 'PSP', 'CT', 'CB', 'CBA', 'CD', 'CH', 'CIK', 'CIM', 'CK', 'CM', 'CPA', 'CPP', 'CS', 'PCZ', 'PRM', 'PKK' )
+ 										) -
+ 										(
+ 											select count(*)
+ 											from generate_series('$awal',to_char(a.tglkeluar,'yyyy-mm-01')::date - interval '1 day',interval '1 day') as dates
+ 											left join \"Presensi\".tshiftpekerja d on dates.dates = d.tanggal
+ 											and a.noind = d.noind
+ 											where d.tanggal is null
+ 										)
+ 									end
 								else
 									(
 										30 -
@@ -4430,6 +4522,21 @@ class M_pekerjakeluar extends CI_Model
 		$sql = "select * from \"Presensi\".tcutoff_custom where noind = '$noind'";
 		return $this->personalia->query($sql)->num_rows();
 	}
+
+	public function cek_cutoff_custom_hitung($noind,$tgl_keluar){
+ 		$sql = "select *
+ 				from \"Presensi\".tcutoff_custom_memo tcm
+ 				inner join \"Presensi\".tcutoff_custom_memo_detail tcmd 
+ 				on tcm.id_memo = tcmd.id_memo
+ 				inner join \"Presensi\".tcutoff tc 
+ 				on to_char(tc.tanggal_awal,'yyyymm') = to_char(tcm.periode,'yyyymm')
+ 				and to_char(tc.tanggal_akhir,'yyyymm') = tc.periode
+ 				and tc.os = '0'
+ 				where tcmd.noind = '$noind'
+ 				and tc.status = '1'
+ 				and '$tgl_keluar' between tc.tanggal_awal and tc.tanggal_akhir";
+ 		return $this->personalia->query($sql)->num_rows();
+ 	}
 
 	public function getPribadi($noind){
 		$sql = "select * from hrd_khs.tpribadi a left join hrd_khs.tseksi b on a.kodesie = b.kodesie where noind = '$noind'";
