@@ -2,11 +2,11 @@
 Defined('BASEPATH') or exit('No Direct Sekrip Akses Allowed');
 set_time_limit(0);
 /**
- * 
+ *
  */
 class C_PresensiBulanan extends CI_Controller
 {
-	
+
 	function __construct()
 	{
 		parent::__construct();
@@ -34,7 +34,7 @@ class C_PresensiBulanan extends CI_Controller
 	}
 
 	public function index(){
-		
+
 		$user_id = $this->session->userid;
 		$kodesie = $this->session->kodesie;
 
@@ -65,7 +65,7 @@ class C_PresensiBulanan extends CI_Controller
 		$tims = $this->M_presensibulanan->rekapTIMS($tanggal,$kodesie);
 
 		$this->excel->getActiveSheet()->setCellValueByColumnAndRow(0,1,'Data Pegawai Periode '.$tanggal);
-			
+
 
 		$this->excel->getActiveSheet()->setCellValueByColumnAndRow(0,3,'No Induk');
 		$this->excel->getActiveSheet()->setCellValueByColumnAndRow(1,3,'Nama');
@@ -77,7 +77,7 @@ class C_PresensiBulanan extends CI_Controller
 		foreach ($tgl as $value) {
 			if ($simpanBulan !== $value['bulan']) {
 				$this->excel->getActiveSheet()->setCellValueByColumnAndRow($h,3,$value['bulan']);
-				
+
 				if (isset($coorCellBulan2) and isset($coorCellBulan1)) {
 					$this->excel->getActiveSheet()->mergeCells($coorCellSimpanBulan2.':'.$coorCellSimpanBulan1);
 				}
@@ -115,7 +115,7 @@ class C_PresensiBulanan extends CI_Controller
 		$this->excel->getActiveSheet()->setCellValueByColumnAndRow($h+7,4,'SP');
 		$coorCellTanggal1 = $this->excel->getActiveSheet()->getCellByColumnAndRow($h+7,4);
 		$coorCellSimpanTanggal1 = $coorCellTanggal1->getCoordinate();
-		
+
 		$h += 8;
 		$this->excel->getActiveSheet()->setCellValueByColumnAndRow($h,3,'Persentase');
 		$coorCellBulan1 = $this->excel->getActiveSheet()->getCellByColumnAndRow($h,3);
@@ -144,7 +144,7 @@ class C_PresensiBulanan extends CI_Controller
 			$this->excel->getActiveSheet()->setCellValueByColumnAndRow(0,$i,$val['noind']);
 			$this->excel->getActiveSheet()->setCellValueByColumnAndRow(1,$i,$val['nama']);
 			$j = 2;
-			
+
 			foreach ($tgl as $key) {
 				$presensi = $this->M_presensibulanan->getPresensiByNoind($val['noind'],$key['tanggal']);
 				if (!empty($presensi)) {
@@ -189,17 +189,18 @@ class C_PresensiBulanan extends CI_Controller
 						$this->excel->getActiveSheet()->setCellValueByColumnAndRow($j+5,$i,number_format(($value['frekip']+$value['frekips'])/ ($value['totalhk']+$value['totalhks']) * 100,2).' %');
 						$this->excel->getActiveSheet()->setCellValueByColumnAndRow($j+6,$i,number_format(($value['frekct']+$value['frekcts'])/ ($value['totalhk']+$value['totalhks']) * 100,2).' %');
 						$this->excel->getActiveSheet()->setCellValueByColumnAndRow($j+7,$i,number_format(($value['freksp']+$value['freksps'])/ ($value['totalhk']+$value['totalhks']) * 100,2).' %');
-						$total_masuk = (	($value['totalhk']+$value['totalhks']) - 
+						$total_masuk = (	($value['totalhk']+$value['totalhks']) -
 											(
-												($value['freki']+$value['frekis']) + 
-												($value['frekm']+$value['frekms']) + 
-												($value['freksk']+$value['freksks']) +  
-												($value['frekpsp']+$value['frekpsps']) + 
-												($value['frekip']+$value['frekips']) + 
-												($value['frekct']+$value['frekcts'])
+												($value['freki']+$value['frekis']) +
+												($value['frekm']+$value['frekms']) +
+												($value['freksk']+$value['freksks']) +
+												($value['frekpsp']+$value['frekpsps']) +
+												($value['frekip']+$value['frekips']) +
+												($value['frekct']+$value['frekcts']) +
+												($value['frekmnon']+$value['frekmsnon'])
 											)
-										) / 
-										(($value['totalhk']+$value['totalhks']) - ($value['frekct']+$value['frekcts'])) * 
+										) /
+										(($value['totalhk']+$value['totalhks']) - ($value['frekct']+$value['frekcts']) - ($value['frekmnon']+$value['frekmsnon'])) *
 										100;
 						$this->excel->getActiveSheet()->setCellValueByColumnAndRow($j+8,$i,number_format(($total_masuk),2).' %');
 					}else{
@@ -213,7 +214,7 @@ class C_PresensiBulanan extends CI_Controller
 						$this->excel->getActiveSheet()->setCellValueByColumnAndRow($j+7,$i,'0.00 %');
 						$this->excel->getActiveSheet()->setCellValueByColumnAndRow($j+8,$i,'0.00 %');
 					}
-						
+
 
 					$coorCellIsi1 = $this->excel->getActiveSheet()->getCellByColumnAndRow($j+8,$i);
 					$coorCellSimpanIsi1 = $coorCellIsi1->getCoordinate();
@@ -263,7 +264,7 @@ class C_PresensiBulanan extends CI_Controller
 						)
 					),'B5:'.$coorCellSimpanPekerja1);
 
-		for ($k=2; $k <= ($j-10); $k++) { 
+		for ($k=2; $k <= ($j-10); $k++) {
 			$clm = PHPExcel_Cell::stringFromColumnIndex($k);
 			$this->excel->getActiveSheet()->getColumnDimension($clm)->setAutoSize(false);
 			$this->excel->getActiveSheet()->getColumnDimension($clm)->setWidth(5);
