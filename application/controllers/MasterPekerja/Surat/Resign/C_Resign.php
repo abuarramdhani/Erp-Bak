@@ -1,9 +1,9 @@
-<?php 
+<?php
 defined('BASEPATH') OR exit('No direct script access allowed');
 
 setlocale(LC_TIME, "id_ID.utf8");
 
-class C_Resign extends CI_Controller 
+class C_Resign extends CI_Controller
 {
 
 	function __construct()
@@ -13,6 +13,7 @@ class C_Resign extends CI_Controller
 		$this->load->helper('url');
 		$this->load->helper('html');
 
+		$this->load->library('Log_Activity');
 		$this->load->library('form_validation');
 		$this->load->library('session');
 		$this->load->library('encrypt');
@@ -37,13 +38,13 @@ class C_Resign extends CI_Controller
 
 	public function index(){
 		$user_id = $this->session->userid;
-		
+
 		$data['Header']			=	'Master Pekerja - Quick ERP';
 		$data['Title']			=	'Surat Pengunduran Diri';
 		$data['Menu'] 			= 	'Surat';
 		$data['SubMenuOne'] 	= 	'Surat Pengunduran Diri';
 		$data['SubMenuTwo'] 	= 	'';
-		
+
 		$data['UserMenu'] = $this->M_user->getUserMenu($user_id,$this->session->responsibility_id);
 		$data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id);
 		$data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id);
@@ -58,13 +59,13 @@ class C_Resign extends CI_Controller
 
 	public function create(){
 		$user_id = $this->session->userid;
-		
+
 		$data['Header']			=	'Master Pekerja - Quick ERP';
 		$data['Title']			=	'Surat Pengunduran Diri';
 		$data['Menu'] 			= 	'Surat';
 		$data['SubMenuOne'] 	= 	'Surat Pengunduran Diri';
 		$data['SubMenuTwo'] 	= 	'';
-		
+
 		$data['UserMenu'] = $this->M_user->getUserMenu($user_id,$this->session->responsibility_id);
 		$data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id);
 		$data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id);
@@ -94,6 +95,11 @@ class C_Resign extends CI_Controller
 		);
 
 		$this->M_resign->insertResignMail($data);
+		//insert to t_log
+		$aksi = 'MASTER PEKERJA';
+		$detail = 'Create Surat Resign Noind='.$noind;
+		$this->log_activity->activity_log($aksi, $detail);
+		//
 
 		redirect(site_url('MasterPekerja/Surat/SuratResign'));
 	}
@@ -103,16 +109,17 @@ class C_Resign extends CI_Controller
  		$decrypted_String = $this->encrypt->decode($decrypted_String);
 
  		$user_id = $this->session->userid;
-		
+
 		$data['Header']			=	'Master Pekerja - Quick ERP';
 		$data['Title']			=	'Surat Pengunduran Diri';
 		$data['Menu'] 			= 	'Surat';
 		$data['SubMenuOne'] 	= 	'Surat Pengunduran Diri';
 		$data['SubMenuTwo'] 	= 	'';
-		
+
 		$data['UserMenu'] = $this->M_user->getUserMenu($user_id,$this->session->responsibility_id);
 		$data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id);
 		$data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id);
+
 
 		$data['data'] = $this->M_resign->getResignMailByID($decrypted_String);
 		$data['link_id'] = $id;
@@ -133,8 +140,13 @@ class C_Resign extends CI_Controller
 			'sebab' => $this->input->post('SuratResignSebabResign'),
 			'tgl_diterima' => $this->input->post('SuratResignDiterimaHubker')
 		);
-		
+
 		$this->M_resign->updateResignMailByID($data,$decrypted_String);
+		//insert to t_log
+		$aksi = 'MASTER PEKERJA';
+		$detail = 'Update Surat Resign ID='.$decrypted_String;
+		$this->log_activity->activity_log($aksi, $detail);
+		//
 
 		redirect(site_url('MasterPekerja/Surat/SuratResign'));
 	}
@@ -144,6 +156,11 @@ class C_Resign extends CI_Controller
  		$decrypted_String = $this->encrypt->decode($decrypted_String);
 
  		$this->M_resign->deleteResignMailByID($decrypted_String);
+		//insert to t_log
+		$aksi = 'MASTER PEKERJA';
+		$detail = 'Delete Surat Resign ID='.$decrypted_String;
+		$this->log_activity->activity_log($aksi, $detail);
+		//
  		redirect(site_url('MasterPekerja/Surat/SuratResign'));
 	}
 

@@ -71,13 +71,23 @@ class C_Pelayanan extends CI_Controller
 		$this->load->view('V_Footer',$data);
 	}
 
+	public function getPIC(){
+		$term = $this->input->get('term',TRUE);
+		$term = strtoupper($term);
+		$data = $this->M_pelayanan->getPIC($term);
+		echo json_encode($data);
+	}
+
 	public function updateMulai(){
 		$date 	= $this->input->post('date');
 		$jenis	= $this->input->post('jenis');
 		$nospb 	= $this->input->post('no_spb');
 		$pic 	= $this->input->post('pic');
 		
-		$this->M_pelayanan->SavePelayanan($date, $jenis, $nospb, $pic);
+		$cek = $this->M_pelayanan->cekMulai($nospb, $jenis);
+		if ($cek[0]['WAKTU_PELAYANAN'] == '') {
+			$this->M_pelayanan->SavePelayanan($date, $jenis, $nospb, $pic);
+		}
 	}
 
 	public function updateSelesai(){
@@ -88,6 +98,42 @@ class C_Pelayanan extends CI_Controller
 		$selesai = $this->input->post('wkt');
 		$pic 	= $this->input->post('pic');
 
+		$cek = $this->M_pelayanan->cekMulai($nospb, $jenis);
+		if ($cek[0]['WAKTU_PELAYANAN'] == '') {
+			$waktu1 	= strtotime($mulai);
+			$waktu2 	= strtotime($selesai);
+			$selisih 	= ($waktu2 - $waktu1);
+			$jam 		= floor($selisih/(60*60));
+			$menit 		= $selisih - $jam * (60 * 60);
+			$htgmenit 	= floor($menit/60) * 60;
+			$detik 		= $menit - $htgmenit;
+			$slsh 		= $jam.':'.floor($menit/60).':'.$detik;
+		}else {
+			$a 			= explode(':', $cek[0]['WAKTU_PELAYANAN']);
+			$jamA 		= $a[0] * 3600;
+			$menitA 	= $a[1] * 60;
+			$waktuA 	= $jamA + $menitA + $a[2];
+
+			$waktu1 	= strtotime($mulai);
+			$waktu2 	= strtotime($selesai);
+			$waktuB 	= ($waktu2 - $waktu1);
+			$jumlah 	= $waktuA + $waktuB;
+			$jam 		= floor($jumlah/(60*60));
+			$menit 		= $jumlah - $jam * (60 * 60);
+			$htgmenit 	= floor($menit/60) * 60;
+			$detik 		= $menit - $htgmenit;
+			$slsh 		= $jam.':'.floor($menit/60).':'.$detik;
+		}
+		
+		$this->M_pelayanan->SelesaiPelayanan($date, $jenis, $nospb, $slsh, $pic);
+	}
+
+	public function pauseSPB(){
+		$jenis	= $this->input->post('jenis');
+		$nospb 	= $this->input->post('no_spb');
+		$mulai 	= $this->input->post('mulai');
+		$selesai = $this->input->post('wkt');
+
 		$waktu1 	= strtotime($mulai);
 		$waktu2 	= strtotime($selesai);
 		$selisih 	= ($waktu2 - $waktu1);
@@ -96,10 +142,8 @@ class C_Pelayanan extends CI_Controller
 		$htgmenit 	= floor($menit/60) * 60;
 		$detik 		= $menit - $htgmenit;
 		$slsh 		= $jam.':'.floor($menit/60).':'.$detik;
-		// $query = "set waktu_pelayanan = '$slsh'"; 
-		// $saveselisih = $this->M_pelayanan->saveWaktu($jenis, $nospb, $query);
 		
-		$this->M_pelayanan->SelesaiPelayanan($date, $jenis, $nospb, $slsh, $pic);
+		$this->M_pelayanan->WaktuPelayanan($jenis, $nospb, $slsh);
 	}
 
 }

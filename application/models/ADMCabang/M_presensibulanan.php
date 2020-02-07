@@ -47,7 +47,7 @@ class M_presensibulanan extends Ci_Model
 	    	 $sql = "select a.noind,a.nama, b.seksi
 				from hrd_khs.tpribadi a
 				left join hrd_khs.tseksi b on a.kodesie=b.kodesie
-	    		where left(a.kodesie,7) in ('3070103','3070104')
+	    		where left(a.kodesie,7) in (select left(kodesie,7) from hrd_khs.trefjabatan where noind = 'B0717')
 	    		and a.keluar = false
 				order by a.kodesie,a.noind;";
 	    }elseif ($noind == 'J1378') { //Order #112817 (Pembuatan Login ERP)

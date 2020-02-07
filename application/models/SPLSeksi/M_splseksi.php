@@ -10,7 +10,8 @@ class M_splseksi extends CI_Model{
 	}
 
 	public function show_noind(){
-		$query = $this->spl->get('hrd_khs.tnoind');
+		$this->prs->order_by('fs_noind', 'asc');
+		$query = $this->prs->get('hrd_khs.tnoind');
 		return $query->result_array();
 	}
 
@@ -286,6 +287,7 @@ class M_splseksi extends CI_Model{
 
 	public function getPresensi($noind,$tanggal){
 		$sql = "select 	tdp.noind,
+						tsp.kd_shift,
 						tdp.tanggal::date,
 						cast(concat(tdp.tanggal::date,' ',tdp.masuk) as timestamp) as masuk,
 						case when tdp.keluar::time < tdp.masuk::time then 
@@ -322,6 +324,7 @@ class M_splseksi extends CI_Model{
 
 	public function getPresensiPusat($noind,$tanggal){
 		$sql = "select 	tsp.noind,
+						tsp.kd_shift,
 						tsp.tanggal::date,
 						cast(concat(tsp.tanggal::date,' ',tsp.jam_msk) as timestamp) as jam_msk,
 						case when tsp.jam_plg::time < tsp.jam_msk::time then 
@@ -611,7 +614,14 @@ class M_splseksi extends CI_Model{
 
 	public function selectShift($noind, $tanggal){
 		$tanggal = date('Y-m-d', strtotime($tanggal));
-		$sql = "SELECT jam_msk, jam_plg FROM \"Presensi\".tshiftpekerja where noind='$noind' and tanggal='$tanggal'";
+		$sql = "SELECT jam_msk, jam_plg, break_mulai, break_selesai, ist_mulai, ist_selesai FROM \"Presensi\".tshiftpekerja where noind='$noind' and tanggal='$tanggal'";
 		return $this->prs->query($sql)->row();
+	}
+
+	public function selectAllShift($tanggal)
+	{
+		$numDay = date('w', strtotime($tanggal))+1;
+		$sql = "SELECT break_mulai, break_selesai, ist_mulai, ist_selesai FROM \"Presensi\".tjamshift WHERE numhari='$numDay' and kd_shift in('1','2','3','4')";
+		return $this->prs->query($sql)->result_array();
 	}
 }

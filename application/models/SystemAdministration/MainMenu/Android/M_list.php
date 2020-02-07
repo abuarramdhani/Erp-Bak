@@ -24,6 +24,10 @@ class M_list extends CI_Model
 		return $query->result_array();
     }
 
+    public function getLatestVersion(){
+        return $this->db->query("select * from sys.sys_android_version_control")->result_array();
+    }
+
     public function getDataAndroidById($id){
         $query = $this->db->query("SELECT * FROM sys.sys_android WHERE gadget_id=$id");
         return $query->result_array();
@@ -86,7 +90,10 @@ class M_list extends CI_Model
     }
 
     public function getEmailICT(){
-        $sql = "SELECT * FROM er.er_employee_all WHERE section_code='101030100'";
+        $sql = "SELECT * FROM er.er_employee_all a 
+                INNER JOIN sys.sys_user b ON a.employee_id = b.employee_id 
+                INNER JOIN sys.sys_user_application c ON b.user_id = c.user_id 
+                WHERE c.user_group_menu_id = '2485' and a.section_code='101030100' and a.resign=0";
         $query = $this->db->query($sql);
         return $query->result_array();      
     } 
@@ -96,6 +103,12 @@ class M_list extends CI_Model
         $query = $this->db->query($sql);
         return $query->result_array();
     }   
+
+    public function updateVersionControl($versiTerbaru,$mandUpdate){
+        date_default_timezone_set("Asia/Jakarta");
+        $sql = "update sys.sys_android_version_control set versi_terbaru='$versiTerbaru', mandatory_update= cast($mandUpdate as boolean), last_update_date='".date('Y-m-d H:i:s')."' , last_update_by='".$this->session->user."' ";
+        $this->db->query($sql);
+    }
 
     // public function getValidUntil($id){
     //     $query = "select valid_until from sys.sys_android WHERE gadget_id=$id";

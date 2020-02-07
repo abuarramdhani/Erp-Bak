@@ -115,7 +115,6 @@
 											<span id="estJamLembur">Isi data dengan lengkap</span>
 										</div>
 									</div>
-
 								</div>
 							</div>
 							<div class="row">
@@ -138,7 +137,7 @@
 												</thead>
 												<tbody>
 													<tr class="multiinput"><td>-</td>
-														<td style="">
+														<td>
 															<select class="spl-new-pkj-select2 spl-cek" name="noind[]" style="width: 100%" required>
 															</select>
 														</td>

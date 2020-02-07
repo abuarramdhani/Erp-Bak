@@ -10,6 +10,7 @@ class C_DataMasuk extends CI_Controller
 		$this->load->helper('html');
 
 		$this->load->library('form_validation');
+		$this->load->library('Log_Activity');
 		$this->load->library('session');
 		$this->load->library('encrypt');
 		$this->load->library('ciqrcode');
@@ -155,7 +156,7 @@ class C_DataMasuk extends CI_Controller
         #detail {
                 border: 1px solid black;
                 text-align: justify;
-                border-collapse: collapse;          
+                border-collapse: collapse;
             }
 
           </style>
@@ -163,7 +164,7 @@ class C_DataMasuk extends CI_Controller
         <body>
             <h3 style="text-decoration: underline;">P2K3 SEKSI V.2</h3>
           <hr/>
-        
+
           <p>Permintaan update standar kebutuhan APD seksi Anda untuk item :</p>
           '.$barang.'
           <p>telah di - <b style="color:'.$color.'">'.strtoupper($actt).'</b> oleh TIM</p>
@@ -171,12 +172,12 @@ class C_DataMasuk extends CI_Controller
           <p>
           Untuk melihat/mengelola, silahkan login ke ERP
           </p>
-          
+
         </body>
         </html>';
     // print_r($arr); exit();
 
-        $mail = new PHPMailer(); 
+        $mail = new PHPMailer();
         $mail->SMTPDebug = 0;
         $mail->Debugoutput = 'html';
 
@@ -207,12 +208,14 @@ class C_DataMasuk extends CI_Controller
       show_error($this->email->print_debugger());
       exit();
     }
-    // echo "<pre>";
-    // print_r($emailSeksi);
-    // exit();
 
     foreach ($id as $key) {
       $update = $this->M_dtmasuk->updateTIM($key, $action, $noind);
+	  //insert to sys.t_log_activity
+	  $aksi = 'P2K3 V2';
+	  $detail = "Update TIM ID= ".$key;
+	  $this->log_activity->activity_log($aksi, $detail);
+	  //
     }
 
     redirect('p2k3adm_V2/datamasuk/');
@@ -237,19 +240,19 @@ class C_DataMasuk extends CI_Controller
  }
 
  public function export()
- {   
+ {
   $this->load->library(array('Excel','Excel/PHPExcel/IOFactory'));
-        // echo "<pre>";
   $tanggalex = $this->input->post('txtTanggalex');
+  //insert to sys.t_log_activity
+  $aksi = 'P2K3 V2';
+  $detail = "Export Excel Periode= ".$tanggalex;
+  $this->log_activity->activity_log($aksi, $detail);
+  //
   $tanggalex = explode(' - ', $tanggalex);
   $tgl = $tanggalex[0];
   $tahun = $tanggalex[1];
   $daftar_seksi = $this->M_dtmasuk->daftar_seksi($tgl, $tahun);
   $daftar_apd = $this->M_dtmasuk->daftar_apd($daftar_seksi, $tgl, $tahun);
-
-        // print_r($daftar_apd); exit();
-        // print_r($tanggalex); exit();
-        // echo $tgl; exit();
 
   $objPHPExcel = new PHPExcel();
 
@@ -277,7 +280,7 @@ class C_DataMasuk extends CI_Controller
             'type' => PHPExcel_Style_Fill::FILL_SOLID,
             'color' => array('rgb' => 'bababa')
             )
-          );  
+          );
 
   $style_col1 = array(
           'font' => array('bold' => true), // Set font nya jadi bold
@@ -452,7 +455,7 @@ class C_DataMasuk extends CI_Controller
         $a = count($daftar_seksi);
         $c = 1;
         $horizontal = 5;
-        for ($i=0; $i < $a; $i++) { 
+        for ($i=0; $i < $a; $i++) {
           $vertical = 6;
           foreach ($daftar_apd as $daftarh) {
            $kolom_new = PHPExcel_Cell::stringFromColumnIndex($horizontal);
@@ -479,7 +482,7 @@ class C_DataMasuk extends CI_Controller
        foreach ($daftar_seksi as $otherSheet) {
          $phpExcelSheet = $objPHPExcel->createSheet();
 
-         
+
 
          //content
 
@@ -608,14 +611,14 @@ class C_DataMasuk extends CI_Controller
 
 
 
-      $objPHPExcel->setActiveSheetIndex(0);  
+      $objPHPExcel->setActiveSheetIndex(0);
       $filename = urlencode("Daftar Kebutuhan P2K3".date("Y-m-d").".xls");
 
           header('Content-Type: application/vnd.ms-excel'); //mime type
           header('Content-Disposition: attachment;filename="'.$filename.'"'); //tell browser what's the file name
           header('Cache-Control: max-age=0'); //no cache
 
-          $objWriter = IOFactory::createWriter($objPHPExcel, 'Excel5');                
+          $objWriter = IOFactory::createWriter($objPHPExcel, 'Excel5');
           $objWriter->save('php://output');
         // redirect('p2k3adm_V2/datamasuk/');
         }

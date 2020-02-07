@@ -11,6 +11,7 @@ class C_Index extends CI_Controller
 		$this->load->helper('url');
 		$this->load->helper('html');
 
+		$this->load->library('Log_Activity');
 		$this->load->library('form_validation');
 		$this->load->library('session');
 		$this->load->library('encrypt');
@@ -81,7 +82,7 @@ class C_Index extends CI_Controller
       	$data['DaftarTempatMakan2'] = $this->M_perbantuan->DetailTempatMakan2();
 		// echo "<pre>";
 		// print_r($data['DaftarKdJabatan']);
-		// echo "</pre>"; 
+		// echo "</pre>";
 		// exit();
 
 		$this->load->view('V_Header',$data);
@@ -428,7 +429,7 @@ class C_Index extends CI_Controller
 		$status_lama				= 	$this->input->post('txtStatusJabatanlama');
 
 		$status_baru				= 	$this->input->post('txtStatusjabatanBaru');
-		
+
 		if($status_baru != null or $status_baru != "" ){
 			$status_baru 			= 	explode(' - ', $status_baru);
 		}else{
@@ -547,15 +548,19 @@ class C_Index extends CI_Controller
 				'lokasifinger_akhir'  	=>	substr($finger_akhir, 7),
 				'created_date'			=>  $tanggal_cetak,
 				'noind_baru'			=> 	$noind_baru
-				
+
 				);
-			
+
 			$this->M_perbantuan->inputFingerPerbantuan($inputFingerPerbantuan);
 			$inputFingerPindah = $this->M_perbantuan->inputFingerPerbantuan($inputFingerPerbantuan);
 			if($finger_pindah == 't'){
 				$this->kirim_email_ict($noind_baru,$nomor_induk,substr($finger_awal, 7),substr($finger_akhir, 7),'PERBANTUAN');
 			}
-			
+			//insert to t_log
+		    $aksi = 'MASTER PEKERJA';
+		    $detail = 'Create Surat Perbantuan Nomor Surat='.$nomor_surat.'/'.$kodeSurat.'/'.$bulan_surat.'/'.$tahun_surat;
+		    $this->log_activity->activity_log($aksi, $detail);
+		    //
 		redirect('MasterPekerja/Surat/SuratPerbantuan');
 	}
 
@@ -563,6 +568,11 @@ class C_Index extends CI_Controller
 	{
 		$no_surat_decode 	=	str_replace(array('-', '_', '~'), array('+', '/', '='), $no_surat);
 		$no_surat_decode 	=	$this->encrypt->decode($no_surat_decode);
+		//insert to t_log
+		$aksi = 'MASTER PEKERJA';
+		$detail = 'Cetak PDF Surat Perbantuan Nomor Surat='.$no_surat_decode;
+		$this->log_activity->activity_log($aksi, $detail);
+		//
 
 		$data['isiSuratPerbantuan']		=	$this->M_perbantuan->ambilIsiSuratPerbantuan($no_surat_decode);
 
@@ -654,13 +664,13 @@ class C_Index extends CI_Controller
 		$status_lama				= 	$this->input->post('txtStatusJabatanlama');
 
 		$status_baru				= 	$this->input->post('txtStatusjabatanBaru');
-		
+
 		if($status_baru != null or $status_baru != "" ){
 			$status_baru 			= 	explode(' - ', $status_baru);
 		}else{
 			$status_baru 			= 	explode(' - ', $status_lama);
 		}
-		
+
 		$status_lama 				= 	explode(' - ', $status_lama);
 		$kd_status_lama				= 	$status_lama[0];
 		$nama_status_lama			= 	$status_lama[1];
@@ -759,7 +769,7 @@ class C_Index extends CI_Controller
 				'created_date'			=>  $tanggal_cetak,
 				'noind_baru'			=> 	$noind_baru
 				);
-			
+
 			$this->M_perbantuan->inputFingerPerbantuan($inputFingerPerbantuan);
 			$inputFingerPindah = $this->M_perbantuan->inputFingerPerbantuan($inputFingerPerbantuan);
 			if($finger_pindah == 't'){
@@ -774,12 +784,22 @@ class C_Index extends CI_Controller
 				'finger_akhir'  		=>	substr($finger_akhir, 0,5),
 				'lokasifinger_akhir'  	=>	substr($finger_akhir, 7),
 			);
+			//insert to t_log
+			$aksi = 'MASTER PEKERJA';
+			$detail = 'Pindah Finger melalui Surat Perbantuan Nomor Surat='.$no_surat_decode;
+			$this->log_activity->activity_log($aksi, $detail);
+			//
 
 			$updateFingerPindah =  $this->M_perbantuan->updateFingerSuratPerbantuan($updateFingerSuratPerbantuan, $nomor_surat, $kodeSurat, $tanggal_cetak_asli);
 			if($updateFingerPindah > 0){
 				$this->kirim_email_ict($noind_baru,$nomor_induk,substr($finger_awal, 7),substr($finger_akhir, 7),'PERBANTUAN');
 			}
 		}
+		//insert to t_log
+		$aksi = 'MASTER PEKERJA';
+		$detail = 'Update Surat Perbantuan Noind='.$nomor_induk;
+		$this->log_activity->activity_log($aksi, $detail);
+		//
 		redirect('MasterPekerja/Surat/SuratPerbantuan');
 	}
 
@@ -787,7 +807,11 @@ class C_Index extends CI_Controller
 	{
 		$no_surat_decode 	=	str_replace(array('-', '_', '~'), array('+', '/', '='), $no_surat);
 		$no_surat_decode 	=	$this->encrypt->decode($no_surat_decode);
-		// echo $no_surat_decode;exit();
+		//insert to t_log
+		$aksi = 'MASTER PEKERJA';
+		$detail = 'Delete Surat, Finger & Arsip Perbantuan Nomor Surat='.$no_surat_decode;
+		$this->log_activity->activity_log($aksi, $detail);
+		//
 
 		$this->M_perbantuan->deleteSuratPerbantuan($no_surat_decode);
 		$this->M_perbantuan->deleteFingerSuratPerbantuan($no_surat_decode);

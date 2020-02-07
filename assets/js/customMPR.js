@@ -55,11 +55,19 @@ $(document).ready(function() {
 });
 
 $(document).ready(function() {
-    $('#txtPuasaPKJKeluar').on('ifChecked', function() {
+    $(document).on('ifChecked','#txtPuasaPKJKeluar', function() {
         $('#txtPeriodePuasaPKJKeluar').prop("disabled", false);
     });
-    $('#txtPuasaPKJKeluar').on('ifUnchecked', function() {
+    $(document).on('ifUnchecked','#txtPuasaPKJKeluar', function() {
         $('#txtPeriodePuasaPKJKeluar').prop("disabled", true);
+    }); 
+    $(document).on('ifChecked','#txtKhususPKJKeluarCheckList', function() {
+        $('input[name=txtKhususPKJKeluar]').parents('.disabled').removeClass("disabled");
+        $('input[name=txtKhususPKJKeluar]').prop("disabled", false);
+    });
+    $(document).on('ifUnchecked','#txtKhususPKJKeluarCheckList', function() {
+        $('input[name=txtKhususPKJKeluar]').iCheck('uncheck');
+        $('input[name=txtKhususPKJKeluar]').prop("disabled", true);
     });
 
     $('.slcPekerjaGajiPKJKeluar').select2({
@@ -179,6 +187,56 @@ $(document).on('ready',function(){
                },5000);
             }
         })
+    });
+    $('#MPR-transferreffgaji-khusus-noind').select2({
+        searching: true,
+        minimumInputLength: 3,
+        placeholder: "No. Induk / Nama Pekerja",
+        allowClear: false,
+        ajax: {
+            url: baseurl + 'MasterPresensi/ReffGaji/TransferReffGaji/search',
+            dataType: 'json',
+            delay: 500,
+            type: 'GET',
+            data: function(params) {
+                return {
+                    term: params.term,
+                    jenis: 'khusus'
+                }
+            },
+            processResults: function(data) {
+                return {
+                    results: $.map(data, function(obj) {
+                        return { id: obj.noind, text: obj.noind + " - " + obj.nama };
+                    })
+                }
+            }
+        }
+    });
+    $('#MPR-transferreffgaji-khusus-noind-atasan').select2({
+        searching: true,
+        minimumInputLength: 3,
+        placeholder: "No. Induk / Nama Pekerja",
+        allowClear: false,
+        ajax: {
+            url: baseurl + 'MasterPresensi/ReffGaji/TransferReffGaji/search',
+            dataType: 'json',
+            delay: 500,
+            type: 'GET',
+            data: function(params) {
+                return {
+                    term: params.term,
+                    jenis: 'atasan'
+                }
+            },
+            processResults: function(data) {
+                return {
+                    results: $.map(data, function(obj) {
+                        return { id: obj.noind, text: obj.noind + " - " + obj.nama };
+                    })
+                }
+            }
+        }
     });
 });
 
@@ -379,7 +437,16 @@ function BPJS_refreshtableutama(){
 }
 
 $(document).ready(function(){
+    $('#txtPeriodeCutoff').datepicker({
+      "autoclose": true,
+      "todayHiglight": true,
+      "format":'yyyymm - MM yyyy',
+      "viewMode":'months',
+      "minViewMode":'months'
+    });
+
     $('.dataTable-pekerjaCutoff').dataTable();
+
     $('.slc-pekerjaCutoff').select2({
         searching: true,
         minimumInputLength: 3,
@@ -404,6 +471,32 @@ $(document).ready(function(){
             }
         }
     });
+
+    $('.slc-pekerjaCutoff-aktif').select2({
+        searching: true,
+        minimumInputLength: 3,
+        placeholder: "No. Induk / Nama Pekerja",
+        allowClear: false,
+        ajax: {
+            url: baseurl + 'MasterPresensi/ReffGaji/PekerjaCutoffReffGaji/searchAktif',
+            dataType: 'json',
+            delay: 500,
+            type: 'GET',
+            data: function(params) {
+                return {
+                    term: params.term
+                }
+            },
+            processResults: function(data) {
+                return {
+                    results: $.map(data, function(obj) {
+                        return { id: obj.noind, text: obj.noind + " - " + obj.nama };
+                    })
+                }
+            }
+        }
+    });
+
     $('#btn-PekerjaCutoff-search').on('click',function(){
         noind = $('.slc-pekerjaCutoff').val();
         $.ajax({
@@ -428,18 +521,52 @@ $(document).ready(function(){
             }
         });
     });
+
     $('#btn-pekerjaCutoff-pekerja-pdf').on('click',function(){
         noind = $(this).attr('data-noind');
         if(noind !== "-"){
             window.open(baseurl + "MasterPresensi/ReffGaji/PekerjaCutoffReffGaji/pdf/n/" + noind, "_blank");    
         }        
     });
+
     $('#btn-pekerjaCutoff-pekerja-xls').on('click',function(){
         noind = $(this).attr('data-noind');
         if(noind !== "-"){
             window.open(baseurl + "MasterPresensi/ReffGaji/PekerjaCutoffReffGaji/xls/n/" + noind, "_blank");    
         }        
     });
+
+    $('#txtPeriodeCutoff').on('change',function(){
+        periode = $('#txtPeriodeCutoff').val();
+        $.ajax({
+            data: {periode: periode},
+            url: baseurl + 'MasterPresensi/ReffGaji/PekerjaCutoffMemo/getPekerjaCutoffMemo',
+            type: 'GET',
+            success: function(data){
+                if (data !== "Tidak Ada Periode Cutoff" && data !== "Tidak Ada Periode Cutoff + 1" ) {
+                    $('#boxCutoff').html(data);
+                    $('#boxCutoff table').DataTable({
+                        "paging":   false,
+                        "ordering": false,
+                        "info":     false
+                    });    
+                    $('#btnPekerjaCutoffMemoSubmit').attr('disabled',false);
+                }else{
+                    $('#boxCutoff').html("<h1 style='color: red;text-align: center'>" + data + "</h1>");
+                    $('#btnPekerjaCutoffMemoSubmit').attr('disabled',true);
+                }
+            }
+        })
+    });
+
+    $(document).on('ifChecked','input[name=txtPilihPekerjaCutoff]',function(){
+        isi = $(this).val();
+        if(isi == "Semua"){
+            $('.txtNoindPekerjaCutoff').iCheck('check');
+        }else{
+            $('.txtNoindPekerjaCutoff').iCheck('uncheck');
+        }
+    })
 });
 
 $(document).ready(function(){

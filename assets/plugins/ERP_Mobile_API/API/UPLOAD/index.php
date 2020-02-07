@@ -14,14 +14,18 @@ if (!file_exists($file_path)) {
 }
 
 if(!$image){
-  echo json_encode(array('message'=>'required file is empty.'));
-  $result = array("fail" => "error uploading file");
+		$data['status'] = false;
+  		$data['message'] = "Gambar tidak ditemukan";
 }
 else{
-  $newname = uniqid() . '.jpg';
-  move_uploaded_file($image, $file_path.'/'.$imagename);
-  $result = array("success" => "File successfully uploaded");
-}
-echo json_encode($result, JSON_PRETTY_PRINT);
+	if(move_uploaded_file($image, $file_path.'/'.$imagename)){
+		$data['status'] = true;
+		$data['message'] = "Sukses Upload Gambar";
+	}else{
+		$data['status'] = false;
+		$data['message'] = 'Gagal Upload Gambar';
+	}
+ }
+print_r(json_encode($data));
 
 ?>

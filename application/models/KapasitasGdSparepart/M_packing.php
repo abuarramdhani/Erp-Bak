@@ -13,7 +13,7 @@ class M_packing extends CI_Model
         $sql = "select to_char(jam_input, 'DD/MM/YYYY HH24:MI:SS') as jam_input, 
                 tgl_dibuat, to_char(mulai_packing, 'HH24:MI:SS') as mulai_packing, pic_packing,
                 jenis_dokumen, no_dokumen, jumlah_item, jumlah_pcs, selesai_packing,
-                selesai_pengeluaran, urgent
+                selesai_pengeluaran, urgent, waktu_packing
                 from khs_tampung_spb
                 where selesai_pengeluaran is not null
                 and selesai_packing is null
@@ -68,5 +68,20 @@ class M_packing extends CI_Model
         $query = $oracle->query($sql);       
         $query2 = $oracle->query('commit');            
         // echo $sql; 
+    }
+
+    public function cekMulai($nospb, $jenis){
+        $oracle = $this->load->database('oracle', true);
+        $sql = "select * from khs_tampung_spb where no_dokumen = '$nospb' and jenis_dokumen = '$jenis'";
+        $query = $oracle->query($sql);
+        return $query->result_array();
+    }
+
+    public function waktuPacking($nospb, $jenis, $waktu){
+        $oracle = $this->load->database('oracle', true);
+        $sql = "update khs_tampung_spb set waktu_packing = '$waktu'
+                    where no_dokumen = '$nospb' and jenis_dokumen = '$jenis'";
+        $query = $oracle->query($sql);      
+        $query2 = $oracle->query('commit');          
     }
 }

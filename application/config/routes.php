@@ -3721,6 +3721,10 @@ $route['ApprovalDO/LaunchPickRelease'] = 'ApprovalDO/MainMenu/C_LaunchPickReleas
 $route['ApprovalDO/LaunchPickRelease/(:any)'] = 'ApprovalDO/MainMenu/C_LaunchPickRelease/$1';
 $route['ApprovalDO/LaunchPickRelease/(:any)/(:any)'] = 'ApprovalDO/MainMenu/C_LaunchPickRelease/$1/$2';
 
+$route['ApprovalDO/DPB'] = 'ApprovalDO/MainMenu/C_DPB';
+$route['ApprovalDO/DPB/(:any)'] = 'ApprovalDO/MainMenu/C_DPB/$1';
+$route['ApprovalDO/DPB/(:any)/(:any)'] = 'ApprovalDO/MainMenu/C_DPB/$1/$2';
+
 $route['ApprovalDO/Detail/(:any)'] = 'ApprovalDO/MainMenu/C_Detail/checkDetailDO/$1';
 $route['ApprovalDO/History/(:any)'] = 'ApprovalDO/MainMenu/C_History/$1';
 
@@ -3747,3 +3751,16 @@ $route['Koperasi/api/delList'] = 'Koperasi/C_Index/delList';
 $route['Koperasi/api/previewDBF'] = 'Koperasi/C_Index/previewDBF';
 $route['Koperasi/api/uploadData'] = 'Koperasi/C_Index/uploadFile';
 $route['Koperasi/api/saveData'] = 'Koperasi/C_Index/saveToDatabase';
+// ------------------------------------------------ Receive PO ------------------------------------------------------//
+$route['ReceivePO'] = 'ReceivePO/C_Index';
+$route['ReceivePO/History'] = 'ReceivePO/C_History';
+$route['ReceivePO/History/(:any)'] = 'ReceivePO/C_History/$1';
+$route['ReceivePO/History/(:any)/(:any)/(:any)'] = 'ReceivePO/C_History/$1/$2/$3';
+
+// ----------------------------------------------- Hardware ----------------------------------------------- //
+$route['hardware'] = 'Hardware/Sweeping/C_Sweep/index';
+$route['hardware/input-data'] = 'Hardware/Sweeping/C_Sweep/inputData';
+$route['hardware/input-data/(:any)'] = 'Hardware/Sweeping/C_Sweep/$1';
+$route['hardware/view-data'] = 'Hardware/Sweeping/C_Sweep/viewData';
+$route['hardware/view-data/(:any)'] = 'Hardware/Sweeping/C_Sweep/$1';
+$route['hardware/view-data/(:any)/(:any)'] = 'Hardware/Sweeping/C_Sweep/$1/$2';

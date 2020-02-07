@@ -58,7 +58,7 @@
 				<tr>
 					<td>Hal</td>
 					<td>:</td>
-					<td colspan="2">Memo Gaji Staff yang Dibayar Cut Off dan Pekerja Keluar <?php echo $memo['cutawal'] !== "-" ? strftime("%d %B %Y",strtotime($memo['cutawal'])) : "-" ?> s.d <?php echo $memo['akhirbulan'] !== "-" ? strftime("%d %B %Y",strtotime($memo['akhirbulan'])) : "-" ?></td>
+					<td colspan="2">Memo Gaji Staff yang Dibayar Cut Off </td>
 				</tr>
 				<tr>
 					<td colspan="4">&nbsp;</td>
@@ -76,7 +76,7 @@
 			</table>
 			<br>
 			<p style="font-size: 12pt;">Dengan Hormat, </p>
-			<p style="font-size: 12pt;">Mohon diperhitungkan dan dibayarkan pada tanggal 10 <?php echo strftime('%B %Y',strtotime($memo['periode']." + 1 month")) ?> Gaji Staff yang kami Cut Off di bulan <?php echo strftime('%B %Y',strtotime($memo['periode'])) ?> dan Pekerja Keluar antara <?php echo $memo['cutawal'] !== "-" ? strftime("%d %B %Y",strtotime($memo['cutawal'])) : "-" ?> s.d <?php echo $memo['akhirbulan'] !== "-" ? strftime("%d %B %Y",strtotime($memo['akhirbulan'])) : "-" ?>. Data pekerja terlampir.</p>
+			<p style="font-size: 12pt;">Mohon diperhitungkan dan dibayarkan pada tanggal 10 <?php echo strftime('%B %Y',strtotime($memo['periode']." + 1 month")) ?> Gaji Staff yang kami Cut Off di bulan <?php echo strftime('%B %Y',strtotime($memo['periode'])) ?>. Data pekerja terlampir.</p>
 			<p style="font-size: 12pt;">Demikian permohonan ini kami sampaikan. Atas perhatian dan kerjasamanya kami ucapkan terima kasih.</p>
 			<br>
 			<table style="width: 100%;font-size: 12pt;">
@@ -148,7 +148,7 @@
 				<tr>
 					<td>Hal</td>
 					<td>:</td>
-					<td colspan="2">Memo Gaji Non Staff yang Dibayar Cut Off dan Pekerja Keluar <?php echo $memo['cutawal'] !== "-" ? strftime("%d %B %Y",strtotime($memo['cutawal'])) : "-" ?> s.d <?php echo $memo['akhirbulan'] !== "-" ? strftime("%d %B %Y",strtotime($memo['akhirbulan'])) : "-" ?></td>
+					<td colspan="2">Memo Gaji Non Staff yang Dibayar Cut Off </td>
 				</tr>
 				<tr>
 					<td colspan="4">&nbsp;</td>
@@ -166,7 +166,7 @@
 			</table>
 			<br>
 			<p style="font-size: 12pt;">Dengan Hormat, </p>
-			<p style="font-size: 12pt;">Mohon diperhitungkan dan dibayarkan pada tanggal 10 <?php echo strftime('%B %Y',strtotime($memo['periode']." + 1 month")) ?> Gaji Staff yang kami Cut Off di bulan <?php echo strftime('%B %Y',strtotime($memo['periode'])) ?> dan Pekerja Keluar antara <?php echo $memo['cutawal'] !== "-" ? strftime("%d %B %Y",strtotime($memo['cutawal'])) : "-" ?> s.d <?php echo $memo['akhirbulan'] !== "-" ? strftime("%d %B %Y",strtotime($memo['akhirbulan'])) : "-" ?>. Data pekerja terlampir.</p>
+			<p style="font-size: 12pt;">Mohon diperhitungkan dan dibayarkan pada tanggal 10 <?php echo strftime('%B %Y',strtotime($memo['periode']." + 1 month")) ?> Gaji Staff yang kami Cut Off di bulan <?php echo strftime('%B %Y',strtotime($memo['periode'])) ?>. Data pekerja terlampir.</p>
 			<p style="font-size: 12pt;">Demikian permohonan ini kami sampaikan. Atas perhatian dan kerjasamanya kami ucapkan terima kasih.</p>
 			<br>
 			<table style="width: 100%;font-size: 12pt;">

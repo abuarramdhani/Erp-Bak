@@ -42,7 +42,7 @@
 												</a>
 											</td>
 											<td><?php echo $b['BATCH_NUMBER']?></td>
-											<td><?php echo date('d-M-Y',strtotime($b['SUBMITED_DATE']))?></td>
+											<td data-order="<?php echo date('Y-m-d', strtotime($b['SUBMITED_DATE']))?>"><?php echo date('d-M-Y',strtotime($b['SUBMITED_DATE']))?></td>
 											<td><?php echo $b['jml_invoice']?></td>
 											<td><?php echo $b['SOURCE']?></td>
 										</tr>

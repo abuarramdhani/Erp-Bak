@@ -22,7 +22,7 @@
 					<div class="col-lg-12">
 						<div class="box box-primary box-solid">
 							<div class="box-body">
-								<!-- <div style="overflow: auto;"> -->
+								<div style="overflow: auto;">
 								<table id="unprocessTabel" class="table table-striped table-bordered table-hover text-center tblMI">
 									<thead>
 										<tr class="bg-primary">
@@ -66,11 +66,11 @@
 											</td>
 											<td><?php echo $u['VENDOR_NAME']?></td>
 											<td><strong><?php echo $u['INVOICE_NUMBER']?></strong></td>
-											<td><?php echo date('d-M-Y',strtotime($u['INVOICE_DATE']))?></td>
+											<td data-order="<?php echo date('Y-m-d', strtotime($u['INVOICE_DATE']))?>"><?php echo date('d-M-Y',strtotime($u['INVOICE_DATE']))?></td>
 											<td><?php echo $u['PPN'] ?></td>
 											<td><?php echo $u['PO_NUMBER']?></td>
-											<td><b><?php echo $u['AKT_DATE']?></b></td>
-											<td><b><?php echo $u['AKT_FINISHED_DATE']?></b></td>
+											<td data-order="<?php echo date('Y-m-d', strtotime($u['AKT_DATE']))?>"><b><?php echo $u['AKT_DATE']?></b></td>
+											<td data-order="<?php echo date('Y-m-d', strtotime($u['AKT_FINISHED_DATE']))?>"><b><?php echo $u['AKT_FINISHED_DATE']?></b></td>
 											<td><b>KATEGORI : </b><?php echo $u['KATEGORI_INV_BERMASALAH']?> <br>
 												<b>KELENGKAPAN DOKUMEN : </b><?php echo $u['KELENGKAPAN_DOC_INV_BERMASALAH']?> <br>
 												<b>KETERANGAN : </b><?php echo $u['KETERANGAN_INV_BERMASALAH']?>	

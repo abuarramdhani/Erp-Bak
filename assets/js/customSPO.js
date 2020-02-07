@@ -155,7 +155,7 @@ $(document).ready(function(){
                         setTimeout(function() {
                             $('#txtPMSPOSubject').val('KHS PURCHASE ORDER '+PONumber);
                         }, 500);
-                    }else{
+                    } else {
                         $('.spnPMSPOWarnAddrNotFound').html(' Tidak ditemukan Email Address dengan PO Number '+PONumber+'. ');
                         $('.divPMSPOWarnAddrNotFound').fadeIn();
                         $('#txtPMSPOToEmailAddr').val('');
@@ -164,7 +164,11 @@ $(document).ready(function(){
                             $('#txtPMSPOSubject').val('KHS PURCHASE ORDER '+PONumber);
                         }, 500);
                     }
-
+                    if (result.cc_address != null) {
+                        $('#txtPMSPOCCEmailAddr').val(result.cc_address)
+                    } else {
+                        $('#txtPMSPOCCEmailAddr').val(null)
+                    }
                     if (result.site != null) {
                       $('.divPMSPOSite').fadeIn();
                       $('#txtPMSPONoPOSite').val(result.site);
@@ -177,6 +181,7 @@ $(document).ready(function(){
             $('.PMSPOimgLoadAddr').hide();
             $('#txtPMSPOSubject').val('');
             $('#txtPMSPOToEmailAddr').val('');
+            $('#txtPMSPOCCEmailAddr').val('');
             $('.divPMSPOSite').fadeOut();
         }
     });

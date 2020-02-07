@@ -148,17 +148,17 @@ class C_splseksi extends CI_Controller {
 				$index[] = $sls['nama'];
 				// $index[] = $sls['kodesie'];
 				// $index[] = $sls['seksi'];
-				$index[] = $sls['Pekerjaan'];
+				$index[] = $this->convertUnOrderedlist($sls['Pekerjaan']);
 				$index[] = $sls['nama_lembur'];
 				$index[] = $sls['Jam_Mulai_Lembur'];
 				$index[] = $sls['Jam_Akhir_Lembur'];
+				$index[] = $this->hitung_jam_lembur($sls['Noind'], $sls['Kd_Lembur'], $sls['Tgl_Lembur'], $sls['Jam_Mulai_Lembur'], $sls['Jam_Akhir_Lembur'], $sls['Break'], $sls['Istirahat']);
 				$index[] = $sls['Break'];
 				$index[] = $sls['Istirahat'];
-				$index[] = $sls['target'];
-				$index[] = $sls['realisasi'];
+				$index[] = $this->convertUnOrderedlist($sls['target']);
+				$index[] = $this->convertUnOrderedlist($sls['realisasi']);
 				$index[] = $sls['alasan_lembur'];
 				$index[] = $sls['Tgl_Berlaku'];
-				$index[] = $this->hitung_jam_lembur($sls['Noind'], $sls['Kd_Lembur'], $sls['Tgl_Lembur'], $sls['Jam_Mulai_Lembur'], $sls['Jam_Akhir_Lembur'], $sls['Break'], $sls['Istirahat']);
 
 				$data_spl[] = $index;
 			}
@@ -171,7 +171,7 @@ class C_splseksi extends CI_Controller {
 		$this->load->view('V_Footer',$data);
 	}
 
-	public function hitung_jam_lembur($noind, $kode_lembur, $tgl, $mulai, $selesai, $break, $istirahat){
+	public function hitung_jam_lembur($noind, $kode_lembur, $tgl, $mulai, $selesai, $break, $istirahat){ //latest
 		$day   = date('w', strtotime($tgl));
 
 		$hari_indo = "Minggu Senin Selasa Rabu Kamis Jumat Sabtu";
@@ -187,6 +187,14 @@ class C_splseksi extends CI_Controller {
 		$first = explode(':', $mulai);
 		$second = explode(':', $selesai);
 
+		if(count($first) == 1){
+			$first[1] = 00;
+		}
+
+		if(count($second) == 1){
+			$second[1] = 00;
+		}
+
 		$a = $first[0]*60+$first[1];
 		$b = $second[0]*60+$second[1];
 
@@ -198,8 +206,8 @@ class C_splseksi extends CI_Controller {
 			$lama_lembur = $b-$a;
 		}
 
+		$shift = $this->M_splseksi->selectShift($noind, $tgl);
 		if($kode_lembur == '005'){
-			$shift = $this->M_splseksi->selectShift($noind, $tgl);
 			$shift = (strtotime($shift->jam_plg) - strtotime($shift->jam_msk));
 			$shift = $shift/60;
 		 	$result = $lama_lembur-$shift;
@@ -210,8 +218,75 @@ class C_splseksi extends CI_Controller {
 
 		//-----------------------core variable
 		$MENIT_LEMBUR = $result;
+		//buat jaga jaga error
 		$BREAK = $break == 'Y' ? 15 : 0;
 		$ISTIRAHAT = $istirahat == 'Y' ? 45 : 0;
+
+		$allShift = $this->M_splseksi->selectAllShift($tgl);
+
+		if(!empty($allShift)){
+			if ($istirahat == 'Y') { //jika pekerja memilih istirahat
+				$ISTIRAHAT = 0;
+				$distinct_start = [];
+
+				foreach($allShift as $shift){
+					$rest_start = strtotime($shift['ist_mulai']);
+					$rest_end   = strtotime($shift['ist_selesai']);
+
+					if($rest_start == $rest_end){
+						continue;
+					}
+
+					//biar jam break tidak terdouble
+					if(in_array($rest_start, $distinct_start)){
+						continue;
+					}else{
+						$distinct_start[] = $rest_start;
+					}
+
+					$overtime_start = strtotime($mulai);
+					$overtime_end   = strtotime($selesai);
+
+					if (($rest_start > $overtime_start && $rest_end < $overtime_end)) { // jika jam istirahat masuk range lembur
+						$ISTIRAHAT = $ISTIRAHAT + 45;
+					}else if($rest_start > $overtime_start && $rest_end > $overtime_end && $rest_start < $overtime_end){
+						$ISTIRAHAT = $ISTIRAHAT + (45 + ($overtime_end - $rest_end)/60);
+					}
+				}
+			}
+			
+			if ($break == 'Y') { //jika pekerja memilih istirahat
+				$BREAK = 0;
+				$distinct_start = [];
+
+				foreach($allShift as $shift){
+					$break_start = strtotime($shift['break_mulai']);
+					$break_end   = strtotime($shift['break_selesai']);
+
+					//jika tidak ada istirahat, lewati
+					if($break_start == $break_end){
+						continue;
+					}
+
+					//biar jam break tidak terdouble
+					if(in_array($break_start, $distinct_start)){
+						continue;
+					}else{
+						$distinct_start[] = $break_start;
+					}
+
+					$overtime_start = strtotime($mulai);
+					$overtime_end   = strtotime($selesai);
+				
+					if ($break_start > $overtime_start && $break_end < $overtime_end) { // jika jam istirahat masuk range lembur
+						$BREAK = $BREAK + 15;
+					}else if($break_start > $overtime_start && $break_end > $overtime_end && $break_start < $overtime_end){
+						$BREAK = $BREAK + (15 + ($overtime_end - $break_end)/60);
+					}
+				}
+			}
+		}
+
 		//----------------------
 		$estimasi = 0;
 		if(!empty($treffjamlembur)):
@@ -390,21 +465,32 @@ class C_splseksi extends CI_Controller {
 			$index[] = $sls['nama'];
 			// $index[] = $sls['kodesie'];
 			// $index[] = $sls['seksi'];
-			$index[] = $sls['Pekerjaan'];
+			$index[] = $this->convertUnOrderedlist($sls['Pekerjaan']);
 			$index[] = $sls['nama_lembur'];
 			$index[] = $sls['Jam_Mulai_Lembur'];
 			$index[] = $sls['Jam_Akhir_Lembur'];
 			$index[] = $sls['Break'];
 			$index[] = $sls['Istirahat'];
-			$index[] = $sls['target'];
-			$index[] = $sls['realisasi'];
+			$index[] = $this->hitung_jam_lembur($sls['Noind'], $sls['Kd_Lembur'], $sls['Tgl_Lembur'], $sls['Jam_Mulai_Lembur'], $sls['Jam_Akhir_Lembur'], $sls['Break'], $sls['Istirahat']);
+			$index[] = $this->convertUnOrderedlist($sls['target']);
+			$index[] = $this->convertUnOrderedlist($sls['realisasi']);
 			$index[] = $sls['alasan_lembur'];
 			$index[] = $sls['Tgl_Berlaku'];
-			$index[] = $this->hitung_jam_lembur($sls['Noind'], $sls['Kd_Lembur'], $sls['Tgl_Lembur'], $sls['Jam_Mulai_Lembur'], $sls['Jam_Akhir_Lembur'], $sls['Break'], $sls['Istirahat']);
 
 			$data_spl[] = $index;
 		}
 		echo json_encode($data_spl);
+	}
+
+	function convertUnOrderedlist($data){
+		//separator ; (semicolon)
+		$item = explode(';', $data);
+		$html = "<ul>";
+			foreach($item as $key){
+				$html .= "<li>$key</li>";
+			}
+		$html .= "</ul>";
+		return $html;
 	}
 
 	public function data_spl_cetak(){
@@ -475,7 +561,7 @@ class C_splseksi extends CI_Controller {
 		$this->checkSession();
 		$this->session->spl_validasi_waktu_operator = time();
 		$user_id = $this->session->user;
-		$tanggal = $this->input->post('tanggal');
+		$tanggal = $this->input->post('tanggal_0');
 		$tanggal = date_format(date_create($tanggal), "Y-m-d");
 		$mulai = $this->input->post('waktu_0');
 		$mulai = date_format(date_create($mulai), "H:i:s");
@@ -484,13 +570,30 @@ class C_splseksi extends CI_Controller {
 		$lembur = $this->input->post('kd_lembur');
 		$istirahat = $this->input->post('istirahat');
 		$break = $this->input->post('break');
-		$alasan = $this->input->post('pekerjaan');
+		$alasan = str_replace("'",'', $this->input->post('alasan'));
 		$noind = $this->input->post("noind[0]");
-		$target = $this->input->post("target[0]");
-		$target_satuan = $this->input->post("target_satuan[0]");
-		$realisasi = $this->input->post("realisasi[0]");
-		$realisasi_satuan = $this->input->post("realisasi_satuan[0]");
-		$pekerjaan = $this->input->post("alasan[0]");
+		$target_arr = $this->input->post("target");
+		$target_satuan_arr = $this->input->post("target_satuan");
+
+		//menyatukan target
+		$i=0;
+		for($i; $i < count($target_arr); $i++){
+			$target[] = $target_arr[$i]." ".$target_satuan_arr[$i]; 
+		}
+		$target = implode(';', $target);
+
+		$realisasi_arr = $this->input->post("realisasi");
+		$realisasi_satuan_arr = $this->input->post("realisasi_satuan");
+
+		//menyatukan realisasi
+		$i = 0;
+		for($i; $i < count($target_arr); $i++){
+			$realisasi[] = $realisasi_arr[$i]." ".$realisasi_satuan_arr[$i]; 
+		}
+		$realisasi = implode(';', $realisasi);
+
+		$pekerjaan = $this->input->post("pekerjaan");
+		$pekerjaan = str_replace("'",'',implode(';', $pekerjaan));
 		$spl_id = $this->input->post('id_spl');
 		$old_spl = $this->M_splseksi->show_current_spl('', '', '', $spl_id);
 
@@ -535,8 +638,8 @@ class C_splseksi extends CI_Controller {
 			"Pekerjaan" => $pekerjaan,
 			"Status" => "01",
 			"User_" => $user_id,
-			"target" => $target." ".$target_satuan,
-			"realisasi" => $realisasi." ".$realisasi_satuan,
+			"target" => $target,
+			"realisasi" => $realisasi,
 			"alasan_lembur" => $alasan);
 		$to_spl = $this->M_splseksi->update_spl($data_spl, $spl_id);
 
@@ -558,8 +661,8 @@ class C_splseksi extends CI_Controller {
 			"User_" => $user_id,
 			"Revisi" => "0",
 			"Keterangan" => "(Ubah)",
-			"target" => $target." ".$target_satuan,
-			"realisasi" => $realisasi." ".$realisasi_satuan,
+			"target" => $target,
+			"realisasi" => $realisasi,
 			"alasan_lembur" => $alasan);
 		$to_splr = $this->M_splseksi->save_splr($data_splr);
 
@@ -723,8 +826,8 @@ class C_splseksi extends CI_Controller {
 								$error = "1";
 								$errortext = "Jam Akhir Lembur Tidak Sesuai";
 							}
-						}elseif($awal_lembur < $ist_mulai){
-							$aktual_awal = $ist_mulai;
+						}elseif($awal_lembur < $mulai_ist){
+							$aktual_awal = $mulai_ist;
 							if ($mulai_ist <= $akhir_lembur && $akhir_lembur <= $selesai_ist) {
 								$aktual_akhir = $akhir_lembur;
 							}elseif($akhir_lembur > $selesai_ist){

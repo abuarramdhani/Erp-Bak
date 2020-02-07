@@ -10,6 +10,7 @@ class C_Index extends CI_Controller
   function __construct()
   {
     parent::__construct();
+    $this->load->library('Log_Activity');
     $this->load->library('General');
     $this->load->library('pdf');
     $this->load->library('session');
@@ -373,6 +374,11 @@ class C_Index extends CI_Controller
     $isi      = $this->input->post('MPK_txtaIsi');
     $alasan   = $this->input->post('txtaAlasan');
     $tertanda = $this->input->post('cmbtertandaCutoff');
+    //insert to t_log
+    $aksi = 'MASTER PEKERJA';
+    $detail = 'Create Memo Gaji Pekerja Cutoff Periode= '.$periode;
+    $this->log_activity->activity_log($aksi, $detail);
+    //
     if ($jenis == 'staf') {
       if (!empty($isi)) {
         $saveMemo = array
@@ -404,6 +410,11 @@ class C_Index extends CI_Controller
 
   public function exportPDF($id)
   {
+      //insert to t_log
+      $aksi = 'MASTER PEKERJA';
+      $detail = 'Export PDF Memo Gaji Pekerja Cutoff ID='.$id;
+      $this->log_activity->activity_log($aksi, $detail);
+      //
     $date = date('Y-m-d');
 
     $this->load->library('pdf');
@@ -443,6 +454,11 @@ class C_Index extends CI_Controller
   public function deleteMemo($id)
   {
     $this->M_indexinfo->deleteMemo($id);
+    //insert to t_log
+    $aksi = 'MASTER PEKERJA';
+    $detail = 'Delete Memo Gaji Pekerja Cutoff ID='.$id;
+    $this->log_activity->activity_log($aksi, $detail);
+    //
     redirect('MasterPekerja/Surat/gajipekerjacutoff');
   }
 

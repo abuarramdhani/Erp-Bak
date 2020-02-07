@@ -392,6 +392,7 @@ function btnDeleteLppb(th){
 function del_batch_number(th){
 	var num = th.attr('row_id');
 	var batch_number = $('.batch_number_'+num).val();
+	console.log(batch_number)
 	var conf = confirm('Yakin untuk menghapusnya?');
 	if (conf == true) {
 		$.ajax({

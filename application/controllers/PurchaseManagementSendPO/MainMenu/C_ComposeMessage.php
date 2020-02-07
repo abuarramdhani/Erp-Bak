@@ -403,23 +403,55 @@ $data['UserMenu'][0]['user_group_menu_name'] == 'WEB SEND PO BDL' ? $data['MenuN
 
 	public function getUserEmail($id)
 	{
-		$user_id = $this->session->userid;
-		$data['UserMenu'] 		= $this->M_user->getUserMenu($user_id,$this->session->responsibility_id);
-		$idEx  = explode('-', $id);
-		$idQuery	   = $idEx[0];
-		if ($data['UserMenu'][0]['user_group_menu_name'] == 'WEB SEND PO BDL' && substr($idQuery,2,3)=='999') {
-			$email = $this->M_composemessage->getEmailAddressGabungan($idQuery);
-			$site = $this->M_composemessage->getVendorSite($idQuery);
+		$user_id    = $this->session->userid;
+		$user_menu  = $this->M_user->getUserMenu($user_id, $this->session->responsibility_id);
+		$menu_name  = $user_menu[0]['user_group_menu_name'];
+		$po_explode = explode('-', $id);
+		$po_number  = $po_explode[0];
+
+		if ( $menu_name === 'WEB SEND PO BDL' && substr($po_number, 2, 3) === '999' ) {
+			$email       = $this->M_composemessage->getEmailAddressGabungan($po_number);
+			$site        = $this->M_composemessage->getVendorSite($po_number);
 		} else {
-			$email = $this->M_composemessage->getEmailAddress($idQuery);
-			$site[0]['SITE']= NULL;
+			$vendor_name = $this->M_composemessage->getVendorName($po_number);
+			$email       = $this->M_composemessage->getEmailAddress($po_number);
+			$site        = [
+				['SITE' => NULL]
+			];
 		}
-		if ( !empty($email) && $email[0]['EMAIL'] != '' ){
-			$data['email']  = str_replace(' /', ',', $email[0]['EMAIL']);
-			$data['site']   = $site[0]['SITE'];
+
+		if ( $menu_name != 'WEB SEND PO BDL' && ! empty($vendor_name[0]['VENDOR_NAME']) ) {
+			switch ($vendor_name[0]['VENDOR_NAME']) {
+				case 'BUTRACO PRATAMAS, PT' :
+				case 'CAHAYA BEKASI BAJATAMA, PT' :
+				case 'GAYA STEEL, PT' :
+				case 'GLOBALINDO ANUGERAH JAYA ABADI, PT' :
+				case 'INTAN METALINDO, PT' :
+				case 'JAYA SUKSES UTAMA,PT' :
+				case 'KARYA BENTENG BARU SEMESTA, PT' :
+				case 'SINAR AGUNG' :
+				case 'SINARWAJA INDAH, PT' :
+				case 'GITAMULIA CEMERLANG, PT' :
+					$cc_address = 'purchasing.khsjkt@gmail.com';
+					break;
+				default:
+					$cc_address = NULL;
+					break;
+			}
+		} else {
+			$cc_address = NULL;
+		}
+
+		if ( ! empty($email) && $email[0]['EMAIL'] != '' ) {
+			$data['email']      = str_replace(' /', ', ', $email[0]['EMAIL']);
+			$data['site']       = $site[0]['SITE'];
+			$data['cc_address'] = $cc_address;
 			echo json_encode($data);
 		} else {
-			echo json_encode(null);
+			$data['email']      = NULL;
+			$data['site']       = NULL;
+			$data['cc_address'] = NULL;
+			echo json_encode($data);
 		}
 	}
 

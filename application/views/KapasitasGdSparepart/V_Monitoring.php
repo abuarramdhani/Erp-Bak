@@ -77,7 +77,7 @@
                                             <label class="text-right">DOSP / SPB masuk hari ini : <?= $jml_spb ?> lembar</label>
                                         </div>
                                         <div class="col-md-6">
-                                            <button type="button" class="btn btn-xs btn-info" style="margin-left:166px" onclick="addDoSpb(this)">Rincian</button></td>
+                                            <button type="button" class="btn btn-xs btn-info" onclick="addDoSpb(this)">Rincian</button></td>
                                         </div>
                                         <div class="col-md-12">
                                             <div id="DoSpb" class="table-responsive" style="display:none">
@@ -113,10 +113,10 @@
                                         <div class="col-md-12">
                                             <label class="text-right">Pelayanan</label>
                                         </div>
-                                        <div class="col-md-4">
+                                        <div class="col-md-3">
                                             Terselesaikan : <?= $jml_pelayanan ?> lembar
                                         </div>
-                                        <div class="col-md-4">
+                                        <div class="col-md-3">
                                             Tanggungan : <?= $krg_pelayanan ?> lembar
                                         </div>
                                         <div class="col-md-4">
@@ -194,10 +194,10 @@
                                         <div class="col-md-12">
                                             <label class="text-right">Pengeluaran</label>
                                         </div>
-                                        <div class="col-md-4">
+                                        <div class="col-md-3">
                                             Terselesaikan : <?= $jml_pengeluaran ?> lembar
                                         </div>
-                                        <div class="col-md-4">
+                                        <div class="col-md-3">
                                             Tanggungan : <?= $krg_pengeluaran ?> lembar
                                         </div>
                                         <div class="col-md-4">
@@ -277,10 +277,10 @@
                                         <div class="col-md-12">
                                             <label class="text-right">Packing</label>
                                         </div>
-                                        <div class="col-md-4">
+                                        <div class="col-md-3">
                                         Terselesaikan : <?= $jml_packing ?> lembar
                                         </div>
-                                        <div class="col-md-4">
+                                        <div class="col-md-3">
                                         Tanggungan : <?= $krg_packing ?> lembar
                                         </div>
                                         <div class="col-md-4">
@@ -357,14 +357,27 @@
                                             </div>
                                         </div>
 
-                                        <div class="col-md-12">
-                                            <label class="text-right">Jumlah DOSP/SPB selesai : <?= $jml_selesai ?> pcs</label>
-                                        </div>
-                                        <div class="col-md-12">
-                                            <label class="text-right">DOSP / SPB cancel hari ini : <?= $cancel ?> lembar</label>
-                                        </div>
-                                        <div class="col-md-12">
-                                            <label class="text-right">Penerimaan Menyelesaikan : <?= $jml_gd ?> lembar</label>
+                                        <div>
+                                            <table style="width: 50%;table-layout:fixed">
+                                                <tbody>
+                                                    <tr>
+                                                       <th width="53.5%" style="padding-left:15px">Jumlah DOSP/SPB selesai</th>
+                                                       <th>: <?= $jml_selesai ?> pcs</th>
+                                                    </tr>
+                                                    <tr>
+                                                       <th style="padding-left:15px">Kekurangan DOSP/SPB selesai</th>
+                                                       <th>: <?= $krg_selesai ?> pcs</th>
+                                                    </tr>
+                                                    <tr>
+                                                       <th style="padding-left:15px">DOSP / SPB cancel hari ini</th>
+                                                       <th>: <?= $cancel ?> lembar</th>
+                                                    </tr>
+                                                    <tr>
+                                                       <th style="padding-left:15px">Penerimaan menyelesaikan</th>
+                                                       <th>: <?= $jml_gd ?> lembar</th>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
                                         </div>
                                     </div>
                                 </div>

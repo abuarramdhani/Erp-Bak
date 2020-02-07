@@ -33,6 +33,7 @@ class C_List extends CI_Controller {
 		$data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id);
 
 		$data['android'] = $this->M_list->getDataAndroid();
+		$data['versi'] = $this->M_list->getLatestVersion();
 
 		$this->load->view('V_Header',$data);
 		$this->load->view('V_Sidemenu',$data);
@@ -231,19 +232,23 @@ class C_List extends CI_Controller {
 				$imei 				= $this->input->post('imei');
 				$hardware_serial	= $this->input->post('hwserial');
 				$gsf 				= $this->input->post('gsf');
-				
+
+				if(empty($namaPekerja) and empty($noindukPekerja)){
+					$data['status'] = false;
+					$data['message'] = 'Value Empty!';
+					print_r(json_encode($data));
+				}else{				
 				$dataICT 			= $this->M_list->getEmailICT();
 				// echo "<pre>";
 				// print_r($dataICT);exit();
+				$internalMailICT = "";
+				$externalMailICT = "";
+				$namaSeksiICT = "";
 				foreach ($dataICT as $key => $emailICT) {
 			
 				$internalMailICT = $emailICT['internal_mail'];
 				$externalMailICT = $emailICT['external_mail'];
 				$namaSeksiICT	 = $emailICT['employee_name'];
-				// echo "<pre>";
-				// print_r($internalMailICT);
-				// print_r($emailICT);
-				
 
 				$this->load->library('PHPMailerAutoload');
 				$mail = new PHPMailer;
@@ -263,9 +268,9 @@ class C_List extends CI_Controller {
 				$mail->Username = 'no-reply@quick.com';
 				$mail->Password = "123456";
 				$mail->setFrom('noreply@quick.co.id', 'ERP Mobile');
-				$mail->addAddress($internalMailICT, 'Seksi ICT');
-				if(!$externalMailICT==null || !$externalMailICT==""){
-					$mail->addAddress($externalMailICT, 'Seksi ICT');
+				$mail->addAddress($emailICT['internal_mail'], 'Seksi ICT');
+				if(!$emailICT['external_mail']==null || !$emailICT['external_mail']==""){
+					$mail->addAddress($emailICT['external_mail'], 'Seksi ICT');
 				}
 				$mail->Subject = 'ERP Mobile Registrasi Android Baru';
 				$mail->msgHTML("
@@ -293,7 +298,8 @@ class C_List extends CI_Controller {
 					//echo "Message sent!";
 				}
 			}
-			}
+		}
+	}
 
 
 	function kirim_email($internalMail,$eksternalMail,$namaPekerja,$status,$approver,$noindukApprover,$android_id,$imei,$hardware_serial,$gsf){
@@ -351,6 +357,18 @@ class C_List extends CI_Controller {
 				}
 
 		}
+	}
+
+	public function updateVersi(){
+		$getPost = json_decode(file_get_contents('php://input'));
+		$versiTerbaru = $getPost->versiTerbaru;
+		$mandUpdate = $getPost->mandUpdate;
+
+		$this->M_list->updateVersionControl($versiTerbaru,$mandUpdate);
+
+		$data = $this->M_list->getLatestVersion();
+
+		print_r(json_encode($data[0]));
 	}
 
 	
