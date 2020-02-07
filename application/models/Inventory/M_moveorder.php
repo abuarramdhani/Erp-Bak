@@ -327,6 +327,7 @@ class M_moveorder extends CI_Model
                         ,msib2.DESCRIPTION                      komp_desc
                         ,msib2.INVENTORY_ITEM_ID
                         ,wro.REQUIRED_QUANTITY
+            			,wro.QUANTITY_PER_ASSEMBLY
                         ,msib2.PRIMARY_UOM_CODE
                         ,wro.ATTRIBUTE1                           gudang_asal
                         ,mil.INVENTORY_LOCATION_ID locator_asal_id
