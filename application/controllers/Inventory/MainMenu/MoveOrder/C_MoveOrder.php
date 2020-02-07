@@ -102,6 +102,16 @@ class C_MoveOrder extends CI_Controller
 					$atr = ",khs_inv_qty_att(wdj.ORGANIZATION_ID,wro.INVENTORY_ITEM_ID,bic.ATTRIBUTE1,bic.ATTRIBUTE2,'') atr";	
 					$getBody = $this->M_MoveOrder->getBody($value['WIP_ENTITY_NAME'],$atr,$dept);
 				}
+
+				for ($i=0; $i < count($getBody); $i++) { 
+					$bagi = $getBody[$i]['ATR'] / $getBody[$i]['QUANTITY_PER_ASSEMBLY'];
+					$getBody[$i]['BAGI'] = $bagi;
+				}
+
+				usort($getBody, function($a, $b) {
+					return $a['BAGI'] - $b['BAGI'];
+				});
+
 				$array_terkelompok[$value['WIP_ENTITY_NAME']]['header'] = $value; 
 				$array_terkelompok[$value['WIP_ENTITY_NAME']]['body'] = $getBody; 
 			}
