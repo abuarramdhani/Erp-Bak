@@ -88,25 +88,28 @@ class C_Index extends CI_Controller
 		foreach ($nama as $key) {
 			$getnama[] = $this->M_index->pekerja($key);
 		}
+		echo "<pre>";
 
-		$update= $this->M_index->update($status, $idizin);
+		// $update= $this->M_index->update($status, $idizin);
 
 		if ($status == 1) {
 			$no = '0';
 			$tujuan = $this->M_index->getTujuanMakan($idizin);
-			$updatePekerja = $this->M_index->updatePekerja($no, $idizin);
+			// $updatePekerja = $this->M_index->updatePekerja($no, $idizin);
 
 			if (date('H:i:s') >= '09:30:00') {
 				for ($i=0; $i < count($nama); $i++) {
 					for ($j=0; $j < count($tujuan) ; $j++) {
 						if ($nama[$i] == $tujuan[$j]['noind']) {
+							print_r($tujuan[$j]['tujuan']);
+							die;
 							$data = array(
 								'izin_id'	=> $idizin,
 								'noinduk' 	=> $nama[$i],
 								'tujuan' => $tujuan[$j]['tujuan'],
 								'created_date' => date('Y-m-d H:i:s')
 							);
-							$insert = $this->M_index->taktual_izin($data);
+							// $insert = $this->M_index->taktual_izin($data);
 						}
 					}
 				}
@@ -117,13 +120,13 @@ class C_Index extends CI_Controller
 						'noinduk' 	=> $nama[$i],
 						'created_date' => date('Y-m-d H:i:s')
 					);
-					$insert = $this->M_index->taktual_izin($data);
+					// $insert = $this->M_index->taktual_izin($data);
 				}
 			}
 			$this->EmailAlertAll($getnama, $status, $idizin, $tanggal, $ket, $berangkat);
 		}elseif ($status == 2) {
 			$no = '5';
-			$updatePekerja = $this->M_index->updatePekerja($no, $idizin);
+			// $updatePekerja = $this->M_index->updatePekerja($no, $idizin);
 			$this->EmailAlertAll($getnama, $status, $idizin, $tanggal, $ket, $berangkat);
 			redirect('PerizinanDinas/AtasanApproval');
 		}else{
@@ -162,26 +165,26 @@ class C_Index extends CI_Controller
 
 		if (!empty($result)) {
 			foreach ($result as $key) {
-				$update2_tpekerja_izin = $this->M_index->updatePekerjaBerangkat($key, '5', $id);
+				// $update2_tpekerja_izin = $this->M_index->updatePekerjaBerangkat($key, '5', $id);
 			}
 		}
 
 		foreach ($pekerja as $key) {
-			$update_tpekerja_izin = $this->M_index->updatePekerjaBerangkat($key, '0', $id);
+			// $update_tpekerja_izin = $this->M_index->updatePekerjaBerangkat($key, '0', $id);
 		}
 
 		if ($pekerja > 1) {
 			$place = $this->M_index->getTujuan($id, $implode, true);
 			$place1 = array_column($place, 'tujuan');
 			$imPlace = implode(", ", $place1);
-			$update_tperizinan = $this->M_index->update_tperizinan($implode1, '1', $id, $imPlace);
+			// $update_tperizinan = $this->M_index->update_tperizinan($implode1, '1', $id, $imPlace);
 		}else {
 			$place = $this->M_index->getTujuan($id, $pekerja, false);
 			$place1 = array_column($place, 'tujuan');
-			$update_tperizinan = $this->M_index->update_tperizinan($pekerja, '1', $id, $place1);
+			// $update_tperizinan = $this->M_index->update_tperizinan($pekerja, '1', $id, $place1);
 		}
 
-		if (date('H:i:s') <= '09:30:00') {
+		if (date('H:i:s') >= '09:30:00') {
 			for ($i=0; $i < count($pekerja); $i++) {
 				$newEmployee = $this->M_index->getDataPekerja($pekerja[$i], $id);
 					if ($pekerja[$i] == $newEmployee[0]['noind']) {
@@ -191,7 +194,7 @@ class C_Index extends CI_Controller
 							'tujuan' => $newEmployee[0]['tujuan'],
 							'created_date' => date('Y-m-d H:i:s')
 						);
-						$insert = $this->M_index->taktual_izin($data);
+						// $insert = $this->M_index->taktual_izin($data);
 					}
 			}
 		}else {
@@ -201,11 +204,20 @@ class C_Index extends CI_Controller
 					'noinduk' 	=> $pekerja[$i],
 					'created_date' => date('Y-m-d H:i:s')
 				);
-				$insert = $this->M_index->taktual_izin($data);
+				// $insert = $this->M_index->taktual_izin($data);
 			}
 		}
 
-		$this->EmailAlert($noinde, $getnamaApprove, $getnamareject, $id, $tanggal, $keterangan, $berangkat);
+		if (date('H:i:s') > date('H:i:s', strtotime('09:30:00'))) {
+			$data11 = 'me';
+		}else {
+			$data11= 'hm';
+		}
+		echo "<pre>";
+		print_r($data11);
+		die;
+
+		// $this->EmailAlert($noinde, $getnamaApprove, $getnamareject, $id, $tanggal, $keterangan, $berangkat);
 	}
 
 	public function EmailAlert($noinde, $pekerja, $pekerja1, $id, $tanggal, $keterangan, $berangkat) {

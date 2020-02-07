@@ -6,7 +6,7 @@ class C_Rekap extends CI_Controller {
 	public function __construct()
     {
         parent::__construct();
-		  
+
         $this->load->helper('form');
         $this->load->helper('url');
         $this->load->helper('html');
@@ -18,7 +18,7 @@ class C_Rekap extends CI_Controller {
 		$this->load->model('SystemAdministration/MainMenu/M_user');
 		$this->load->model('er/RekapTIMS/M_rekapmssql');
 		$this->load->model('er/RekapTIMS/M_rekaptims');
-		  
+
 		if($this->session->userdata('logged_in')!=TRUE) {
 			$this->load->helper('url');
 			$this->session->set_userdata('last_page', current_url());
@@ -27,45 +27,45 @@ class C_Rekap extends CI_Controller {
 		}
 		  //$this->load->model('CustomerRelationship/M_Index');
     }
-	
+
 	public function checkSession(){
 		if($this->session->is_logged){
-			
+
 		}else{
 			redirect();
 		}
 	}
-	
+
 	//------------------------show the dashboard-----------------------------
 	public function index()
 	{
 		$this->checkSession();
 		$user_id = $this->session->userid;
-		
+
 		$data['Menu'] = 'Dashboard';
 		$data['SubMenuOne'] = '';
-		
+
 		$data['UserMenu'] = $this->M_user->getUserMenu($user_id,$this->session->responsibility_id);
 		$data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id);
 		$data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id);
-		
+
 		$this->load->view('V_Header',$data);
 		$this->load->view('V_Sidemenu',$data);
 		$this->load->view('er/RekapTIMS/V_index',$data);
 		$this->load->view('V_Footer',$data);
-		
+
 	}
 
 	//------------------------show the filtering menu-----------------------------
 	public function rekapMenu()
 	{
-		
+
 		$this->checkSession();
 		$user_id = $this->session->userid;
-		
+
 		$data['Title'] = 'Filter TIMS';
 		$data['Menu'] = 'Rekap TIMS Per Area Kerja';
-		
+
 		$data['UserMenu'] = $this->M_user->getUserMenu($user_id,$this->session->responsibility_id);
 		$data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id);
 		$data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id);
@@ -76,7 +76,7 @@ class C_Rekap extends CI_Controller {
 		$this->load->view('V_Header',$data);
 		$this->load->view('V_Sidemenu',$data);
 		$this->load->view('er/RekapTIMS/V_filter',$data);
-		$this->load->view('V_Footer',$data);		
+		$this->load->view('V_Footer',$data);
 	}
 
 	//------------------------automatically post value to select section-----------------------------
@@ -115,10 +115,10 @@ class C_Rekap extends CI_Controller {
 		// print_r($_POST);exit();
 		$this->checkSession();
 		$user_id = $this->session->userid;
-		
+
 		$data['Title'] = 'Filter TIMS';
 		$data['Menu'] = 'Rekap TIMS Per Area Kerja';
-		
+
 		$data['UserMenu'] = $this->M_user->getUserMenu($user_id,$this->session->responsibility_id);
 		$data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id);
 		$data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id);
@@ -191,7 +191,7 @@ class C_Rekap extends CI_Controller {
 		else
 		{
 			$ambilSeksi 	= 	$this->M_rekapmssql->ambilInfoSeksi($kodesie);
-			
+
 			$data['departemen'] 	=	$ambilSeksi[0]['departemen'];
 			$data['bidang']			=	$ambilSeksi[0]['bidang'];
 			$data['unit']			=	$ambilSeksi[0]['unit'];
@@ -248,6 +248,9 @@ class C_Rekap extends CI_Controller {
 			$data['periode2']	= $period2;
 			/*$data['rekap'] = $this->M_rekapmssql->dataRekap($period1,$period2,$status,$departemen,$bidang,$unit,$section);*/
 			$data['rekap'] 		= $this->M_rekaptims->rekapTIMS($periode1, $periode2, FALSE, FALSE, $status, $departemen, $bidang, $unit, $section, $lokasi);
+			// echo "<pre>";
+			// print_r($data['rekap']);
+			// die;
 			/*$data['rekap_masakerja'] = $this->M_rekapmssql->data_rekap_masakerja($period2,$status,$departemen,$bidang,$unit,$section);*/
 			$this->load->view('er/RekapTIMS/V_detail_rekap_table',$data);
 		}
@@ -369,7 +372,7 @@ class C_Rekap extends CI_Controller {
 			$periodeDate = date('d-m-Y', strtotime($periode1)).' - '.date('d-m-Y', strtotime($periode2));
 		}
 		$worksheet->setCellValue('C1', $periodeDate, PHPExcel_Cell_DataType::TYPE_STRING);
-		
+
 		foreach ($rekap_all as $rekap_info) {}
 
 		$worksheet->setCellValue('C2', $rekap_info['kode_status_kerja'].' - '.$rekap_info['fs_ket']);
@@ -500,7 +503,7 @@ class C_Rekap extends CI_Controller {
 			$worksheet->setCellValue('E'.$highestRow, $rekap_data['dept']);
 			$worksheet->setCellValue('F'.$highestRow, $rekap_data['bidang']);
 			$worksheet->setCellValue('G'.$highestRow, $rekap_data['unit']);
-			$worksheet->setCellValue('H'.$highestRow, $rekap_data['seksi']);			
+			$worksheet->setCellValue('H'.$highestRow, $rekap_data['seksi']);
 
 			$col = 8;
 			if ($detail == 1) {
@@ -594,18 +597,18 @@ class C_Rekap extends CI_Controller {
 			{
 				$worksheet->setCellValue
 						(
-							$P_Tot.$highestRow, 
+							$P_Tot.$highestRow,
 							(
 								0
 							),
 							PHPExcel_Cell_DataType::TYPE_STRING
-						);	
+						);
 			}
 			else
 			{
 				$worksheet->setCellValue
 						(
-							$P_Tot.$highestRow, 
+							$P_Tot.$highestRow,
 							(
 								substr(
 									round(
@@ -640,7 +643,7 @@ class C_Rekap extends CI_Controller {
 								.'%'
 							),
 							PHPExcel_Cell_DataType::TYPE_STRING
-						);				
+						);
 			}
 			$highestRow++;
 		}
@@ -698,10 +701,10 @@ class C_Rekap extends CI_Controller {
 
 		$this->checkSession();
 		$user_id = $this->session->userid;
-		
+
 		$data['Title'] = 'Filter TIMS';
 		$data['Menu'] = 'Rekap TIMS Per Area Kerja';
-		
+
 		$data['UserMenu'] = $this->M_user->getUserMenu($user_id,$this->session->responsibility_id);
 		$data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id);
 		$data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id);
@@ -761,7 +764,7 @@ class C_Rekap extends CI_Controller {
 		);
 
 		$section = str_replace('-', ' ', $section);
-		
+
 		$periode1 = date('Y-m-01 00:00:00', strtotime($periode));
 		$periode2 = date('Y-m-t 23:59:59', strtotime($periode));
 		$rekap_masakerja = $this->M_rekapmssql->data_rekap_masakerja($periode2,$status,NULL,NULL,NULL,$section);
@@ -807,7 +810,7 @@ class C_Rekap extends CI_Controller {
 		$worksheet->setCellValue('A3', 'Seksi');
 
 		$worksheet->setCellValue('C1', date('F Y', strtotime($periode1)), PHPExcel_Cell_DataType::TYPE_STRING);
-		
+
 		foreach ($rekap_all as $rekap_info) {}
 
 		$worksheet->setCellValue('C2', $rekap_info['kode_status_kerja'].' - '.$rekap_info['fs_ket']);
@@ -824,7 +827,7 @@ class C_Rekap extends CI_Controller {
 		$worksheet->setCellValue('D6', 'MASA KERJA');
 
 		$col = '4';
-		
+
 			foreach ($p as $d) {
 				$T = PHPExcel_Cell::stringFromColumnIndex($col);
 				$I = PHPExcel_Cell::stringFromColumnIndex($col+1);
@@ -854,7 +857,7 @@ class C_Rekap extends CI_Controller {
 				$worksheet->setCellValue($SP.'7', 'SP');
 				$col=$col+7;
 			}
-		
+
 
 		$T = PHPExcel_Cell::stringFromColumnIndex($col);
 		$I = PHPExcel_Cell::stringFromColumnIndex($col+1);
@@ -890,7 +893,7 @@ class C_Rekap extends CI_Controller {
 			$index_masakerja = 0;
 			foreach ($rekap_masakerja as $row) {
 				if ($row['nama'] == $rekap_data['nama'] AND $row['nik'] == $row['nik']) {
-					
+
 					if ($row['masukkerja'] != $masukkerja_s) {
 						$masukkerja = new DateTime($row['masukkerja']);
 						$tglkeluar = new DateTime($row['tglkeluar']);
@@ -919,7 +922,7 @@ class C_Rekap extends CI_Controller {
 			$worksheet->setCellValue('D'.$highestRow, $total_masa_kerja);
 
 			$col = 4;
-			
+
 				foreach ($p as $d) {
 					$dateName = $d->format('d_M_y');
 					foreach (${'rekap_'.$dateName} as ${'rek'.$dateName}) {
@@ -973,7 +976,7 @@ class C_Rekap extends CI_Controller {
 
 					$col=$col+7;
 				}
-			
+
 
 			$T = PHPExcel_Cell::stringFromColumnIndex($col);
 			$I = PHPExcel_Cell::stringFromColumnIndex($col+1);
@@ -996,7 +999,7 @@ class C_Rekap extends CI_Controller {
 
 		$highestColumn = $worksheet->getHighestColumn();
 		$highestRow = $worksheet->getHighestRow();
-		
+
 			$worksheet->getStyle('A6:'.$highestColumn.'7')->applyFromArray($styleArray);
 			$worksheet	->getStyle('A6:'.$highestColumn.'7')
 						->getFill()
@@ -1005,14 +1008,14 @@ class C_Rekap extends CI_Controller {
 						->setARGB('0099ff');
 			$worksheet->getStyle('A6:'.$highestColumn.'7')->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
 			$worksheet->getStyle('A6:'.$highestColumn.'7')->getAlignment()->setVertical(PHPExcel_Style_Alignment::VERTICAL_CENTER);
-		
+
 		$worksheet->freezePaneByColumnAndRow(4, 8);
 
 		$worksheet->getStyle('D8:'.$highestColumn.$highestRow)->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
 
-		
+
 			$fileName = 'Rekap_Monthly';
-		
+
 
 		$worksheet->setTitle('Rekap TIMS');
 		$objWriter = PHPExcel_IOFactory::createWriter($objPHPExcel, 'Excel2007');
