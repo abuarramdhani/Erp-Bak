@@ -839,18 +839,32 @@ class C_splseksi extends CI_Controller {
 						}
 					}
 				}else{
-					if ($lembur == '004') {
+					if ($lembur == '004') { // lembur hari libur
 						$awal_lembur = date_format(date_create($tanggal), "Y-m-d")." ".$waktu0;
 						$awal_lembur = date_format(date_create($awal_lembur), 'Y-m-d H:i:s');
 						$akhir_lembur = date_format(date_create($tanggal1), "Y-m-d")." ".$waktu1;
 						$akhir_lembur = date_format(date_create($akhir_lembur), 'Y-m-d H:i:s');
+
 						$shiftpekerja = $this->M_splseksi->getShiftpekerja($noind,$tanggal);
 						if ($shiftpekerja == 0) {
-							$aktual_awal = $awal_lembur;
-							$aktual_akhir = $akhir_lembur;
+							$absensi = $this->M_splseksi->getAbsensi($noind, $tanggal);
+							$absen = $absensi->result_array();
+							if($absensi->num_rows()%2 == 1) {
+								$error = "1";
+								$errortext = "Absen pada tanggal ".date('d-m-Y', strtotime($tanggal))." tidak lengkap mohon membuat memo absen, jam absen({$absen['0']['waktu']})";
+							} elseif ($absensi->num_rows() == 0) {
+								$error = "1";
+								$errortext = "Tidak ada absen pada tanggal ".date('d-m-Y', strtotime($tanggal));
+							} else if( (strtotime($awal_lembur) < strtotime(date('Y-m-d', strtotime($absen[0]['tanggal']))." ".$absen[0]['waktu'])) ) {
+								$error = "1";
+								$errortext = "Jam lembur tidak sesuai, jam absen ({$absen[0]['waktu']} - {$absen[1]['waktu']})";
+							}else {
+								$aktual_awal = $awal_lembur;
+								$aktual_akhir = $absen[1]['waktu'];
+							}
 						}else{
 							$error = "1";
-							$errortext = "Lembur Tidak Valid";
+							$errortext = "Lembur Tidak Valid (Terdapat Shift)";
 						}
 					}else{
 						$error = "1";

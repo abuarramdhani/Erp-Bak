@@ -437,7 +437,7 @@ $(function() {
                     // console.log(obj);
                     if (obj['error'] == '1') {
                         parentSelect.css("background", "#ffe6e6");
-                        $("button[type*=submit]").attr("type", "button").attr("class", "btn btn-grey");
+                        $("button#submit_spl").attr("type", "button").attr("class", "btn btn-grey");
                         parentSelect.find(".spl-new-error").remove();
                         parentSelect.append("<p class='spl-new-error' style='color: red'><br><i style='color:#ed2b1f' class='fa fa-lg fa-info-circle spl-error'></i>  Peringatan : " + obj['text'] + "</p>");
                         parentTr.find('input[name*=lbrawal]').val("");
@@ -468,8 +468,7 @@ $(function() {
                             chk = "1";
                         });
                         if (chk == "0") {
-                            //$("button[type*=button]").attr("type", "submit").attr("class", "btn btn-primary");
-                            // what is this ?
+                            $("button#submit_spl").attr("type", "submit").attr("class", "btn btn-primary");
                         }
 
 
