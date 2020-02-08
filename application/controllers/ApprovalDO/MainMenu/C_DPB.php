@@ -52,6 +52,31 @@ class C_DPB extends CI_Controller {
 		$data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id, $resp_id);
         $data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id, $resp_id);
         $data['DPBDetail']      = $this->M_dpb->getDPBDetail($data['NO_PR']);
+        $data['UserAccess']     = [   
+            'jenis_kendaraan'  => 'readonly',
+            'no_kendaraan'     => 'readonly',
+            'nama_supir'       => 'readonly',
+            'vendor_ekspedisi' => 'readonly',
+            'lain_lain'        => 'readonly'
+        ];
+
+        if ( $this->session->user === 'B0747' ) {
+            $data['UserAccess']     = [   
+                'jenis_kendaraan'  => 'readonly',
+                'no_kendaraan'     => '',
+                'nama_supir'       => '',
+                'vendor_ekspedisi' => '',
+                'lain_lain'        => ''
+            ];
+        } else if ( $this->session->user === 'B0445' ) {
+            $data['UserAccess']     = [   
+                'jenis_kendaraan'  => '',
+                'no_kendaraan'     => 'readonly',
+                'nama_supir'       => 'readonly',
+                'vendor_ekspedisi' => 'readonly',
+                'lain_lain'        => ''
+            ];
+        }
 
 		$this->load->view('V_Header', $data);
 		$this->load->view('V_Sidemenu', $data);
@@ -66,12 +91,12 @@ class C_DPB extends CI_Controller {
         }
 
         $data = [
-            'NO_PR'           => $this->input->post('prNumber'),
-            'JENIS_KENDARAAN' => $this->input->post('vehicleCategory'),
-            'NO_KENDARAAN'    => $this->input->post('vehicleId'),
-            'NAMA_SUPIR'      => $this->input->post('driverName'),
-            'NO_HP'           => $this->input->post('driverPhone') === '' ?  NULL : $this->input->post('driverPhone'),
-            'LAIN'            => $this->input->post('additionalInformation')
+            'NO_PR'            => $this->input->post('prNumber'),
+            'JENIS_KENDARAAN'  => $this->input->post('vehicleCategory'),
+            'NO_KENDARAAN'     => $this->input->post('vehicleId'),
+            'NAMA_SUPIR'       => $this->input->post('driverName'),
+            'VENDOR_EKSPEDISI' => $this->input->post('driverPhone'),
+            'LAIN'             => $this->input->post('additionalInformation')
         ];
 
         if ( count($this->M_dpb->checkIsExist($data['NO_PR'])) === 0 ) {

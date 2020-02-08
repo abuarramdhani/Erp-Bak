@@ -51,7 +51,7 @@
                                             <th class="text-center text-nowrap">Jenis Kendaraan</th>
                                             <th class="text-center text-nowrap">No. Kendaraan</th>
                                             <th class="text-center text-nowrap">Nama Supir</th>
-                                            <th class="text-center text-nowrap">No. HP Supir</th>
+                                            <th class="text-center text-nowrap">Vendor Ekspedisi</th>
                                             <th class="text-center no-orderable">Action</th>
                                         </tr>
                                     </thead>
@@ -64,7 +64,7 @@
                                                 <td class="text-left"><?= $val['JENIS_KENDARAAN'] ?></td>
                                                 <td class="text-left"><?= $val['NO_KENDARAAN'] ?></td>
                                                 <td class="text-left"><?= $val['NAMA_SUPIR'] ?></td>
-                                                <td class="text-right"><?= $val['NO_HP'] ?></td>
+                                                <td class="text-left"><?= $val['VENDOR_EKSPEDISI'] ?></td>
                                                 <td class="text-center">
                                                     <form action="<?= base_url('ApprovalDO/DPB/Detail') ?>" method="post" target="_blank">
                                                         <input type="hidden" name="data-pr" value="<?= $val['NO_PR'] ?>">

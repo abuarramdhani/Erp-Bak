@@ -240,7 +240,7 @@ $(document).ready( _ => {
             vehicleCategory       : $('.txtADOVehicleCategory').val(),
             vehicleId             : $('.txtADOVehicleIdentity').val(),
             driverName            : $('.txtADODriverName').val(),
-            driverPhone           : $('.txtADODriverPhoneNumber').val(),
+            driverPhone           : $('.txtADOExpeditionVendor').val(),
             additionalInformation : $('.txtADOAdditionalInformation').val()
         }
         let url      = `${baseurl}ApprovalDO/DPB/saveDetail`
