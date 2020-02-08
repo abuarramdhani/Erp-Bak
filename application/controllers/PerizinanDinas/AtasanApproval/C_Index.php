@@ -84,7 +84,6 @@ class C_Index extends CI_Controller
 		foreach ($nama as $key) {
 			$getnama[] = $this->M_index->pekerja($key);
 		}
-		//echo "<pre>";
 
 		$update= $this->M_index->update($status, $idizin);
 
@@ -102,8 +101,6 @@ class C_Index extends CI_Controller
 				for ($i=0; $i < count($nama); $i++) {
 					for ($j=0; $j < count($tujuan) ; $j++) {
 						if ($nama[$i] == $tujuan[$j]['noind']) {
-							print_r($tujuan[$j]['tujuan']);
-							die;
 							$data = array(
 								'izin_id'	=> $idizin,
 								'noinduk' 	=> $nama[$i],
@@ -223,15 +220,6 @@ class C_Index extends CI_Controller
 				$insert = $this->M_index->taktual_izin($data);
 			}
 		}
-
-		if (date('H:i:s') > date('H:i:s', strtotime('09:30:00'))) {
-			$data11 = 'me';
-		}else {
-			$data11= 'hm';
-		}
-		echo "<pre>";
-		print_r($data11);
-		die;
 
 		$this->EmailAlert($noinde, $getnamaApprove, $getnamareject, $id, $tanggal, $keterangan, $berangkat);
 	}
