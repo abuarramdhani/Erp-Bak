@@ -23,12 +23,19 @@ class M_dpb extends CI_Model
                         end jenis_kendaraan
                         ,dpb.NO_KENDARAAN
                         ,dpb.NAMA_SUPIR
-                        ,dpb.NO_HP
+                        ,dpb.VENDOR_EKSPEDISI
+                --            ,msib.SEGMENT1
                 FROM po_requisition_headers_all prha,
-                KHS_DPB_KENDARAAN dpb
+                PO_REQUISITION_LINES_ALL prla,
+                KHS_DPB_KENDARAAN dpb,
+                mtl_system_items_b msib
                 where prha.SEGMENT1 = dpb.NO_PR(+)
+                and msib.inventory_item_id(+) = prla.item_id
+                and prha.REQUISITION_HEADER_ID = prla.REQUISITION_HEADER_ID
                 and prha.AUTHORIZATION_STATUS not in ('REJECTED','CANCELLED')
-                and prha.CREATION_DATE between ('31-DEC-2019') and sysdate";
+                and msib.SEGMENT1 in ('JASA01','JASA57')
+                and prha.CREATION_DATE between ('01-FEB-2020') and sysdate
+                order by tgl_pr desc";
         
         $query = $this->oracle->query($sql);
         return $query->result_array();
@@ -52,7 +59,7 @@ class M_dpb extends CI_Model
                         end jenis_kendaraan
                     , dpb.NO_KENDARAAN
                     , dpb.NAMA_SUPIR
-                    , dpb.NO_HP
+                    , dpb.VENDOR_EKSPEDISI
                     , dpb.LAIN
                 from WSH_DELIVERY_DETAILS wdd
                     , MTL_SYSTEM_ITEMS_B msib
@@ -103,7 +110,7 @@ class M_dpb extends CI_Model
                     , poh.ATTRIBUTE3
                     , dpb.NO_KENDARAAN
                     , dpb.NAMA_SUPIR
-                    , dpb.NO_HP
+                    , dpb.VENDOR_EKSPEDISI
                     , dpb.LAIN
                     , dpb.jenis_kendaraan)
                 union
@@ -123,7 +130,7 @@ class M_dpb extends CI_Model
                         end jenis_kendaraan
                     , dpb.NO_KENDARAAN
                     , dpb.NAMA_SUPIR
-                    , dpb.NO_HP
+                    , dpb.VENDOR_EKSPEDISI
                     , dpb.LAIN
                 from WSH_DELIVERY_DETAILS wdd
                     , OE_ORDER_LINES_ALL l
@@ -192,7 +199,7 @@ class M_dpb extends CI_Model
                         end jenis_kendaraan
                     , dpb.NO_KENDARAAN
                     , dpb.NAMA_SUPIR
-                    , dpb.NO_HP
+                    , dpb.VENDOR_EKSPEDISI
                     , dpb.LAIN
                 from KHS_INV_MTLTRANSACTIONS kim
                     , MTL_SYSTEM_ITEMS_B msib
@@ -234,7 +241,7 @@ class M_dpb extends CI_Model
                     , poh.ATTRIBUTE3
                     , dpb.NO_KENDARAAN
                     , dpb.NAMA_SUPIR
-                    , dpb.NO_HP
+                    , dpb.VENDOR_EKSPEDISI
                     , dpb.LAIN
                     , dpb.jenis_kendaraan
                 -- non go live -- 
@@ -264,7 +271,7 @@ class M_dpb extends CI_Model
                         end jenis_kendaraan
                     , dpb.NO_KENDARAAN
                     , dpb.NAMA_SUPIR
-                    , dpb.NO_HP
+                    , dpb.VENDOR_EKSPEDISI
                     , dpb.LAIN
                 from KHS_INV_MTLTRANSACTIONS kim
                     , MTL_SYSTEM_ITEMS_B msib
@@ -300,7 +307,7 @@ class M_dpb extends CI_Model
                     , poh.ATTRIBUTE3
                     , dpb.NO_KENDARAAN
                     , dpb.NAMA_SUPIR
-                    , dpb.NO_HP
+                    , dpb.VENDOR_EKSPEDISI
                     , dpb.LAIN
                     , dpb.jenis_kendaraan)
                 union
@@ -320,7 +327,7 @@ class M_dpb extends CI_Model
                         end jenis_kendaraan
                     , dpb.NO_KENDARAAN
                     , dpb.NAMA_SUPIR
-                    , dpb.NO_HP
+                    , dpb.VENDOR_EKSPEDISI
                     , dpb.LAIN
                 from khs_mo_from_so_header_tab kmf
                     , MTL_SYSTEM_ITEMS_B msib
@@ -334,7 +341,7 @@ class M_dpb extends CI_Model
                     and kmf.mtrh_request_number = mtrh.REQUEST_NUMBER
                     and mtrh.ATTRIBUTE3 is null
                     and pol.REQUISITION_HEADER_ID = poh.REQUISITION_HEADER_ID
-                    and poh.SEGMENT1 = $id
+                    and poh.SEGMENT1 =$id
                     and poh.SEGMENT1 = dpb.NO_PR (+)
                     and (pol.ATTRIBUTE1 = to_char(kmf.mtrh_request_number)
                         or pol.ATTRIBUTE2 = to_char(kmf.mtrh_request_number)
@@ -374,7 +381,7 @@ class M_dpb extends CI_Model
                         end jenis_kendaraan
                     , dpb.NO_KENDARAAN
                     , dpb.NAMA_SUPIR
-                    , dpb.NO_HP
+                    , dpb.VENDOR_EKSPEDISI
                     , dpb.LAIN
                 from MTL_TXN_REQUEST_HEADERS mtrh
                     , MTL_TXN_REQUEST_LINES mtrl
@@ -432,7 +439,7 @@ class M_dpb extends CI_Model
                         end jenis_kendaraan
                     , dpb.NO_KENDARAAN
                     , dpb.NAMA_SUPIR
-                    , dpb.NO_HP
+                    , dpb.VENDOR_EKSPEDISI
                     , dpb.LAIN
                 from MTL_TXN_REQUEST_HEADERS mtrh
                     , MTL_TXN_REQUEST_LINES mtrl

@@ -31,7 +31,7 @@
                             <div class="col-sm-5">
                                 <div class="input-group">
                                     <span class="input-group-addon"><i style="width:15px;" class="fa fa-car"></i></span>
-                                    <input class="form-control txtADOVehicleCategory" value="<?php if (isset($DPBDetail[0]['JENIS_KENDARAAN'])) echo $DPBDetail[0]['JENIS_KENDARAAN'] ?>">
+                                    <input class="form-control txtADOVehicleCategory" <?= $UserAccess['jenis_kendaraan'] ?> value="<?php if (isset($DPBDetail[0]['JENIS_KENDARAAN'])) echo $DPBDetail[0]['JENIS_KENDARAAN'] ?>">
                                 </div>
                             </div>
                         </div>
@@ -41,7 +41,7 @@
                             <div class="col-sm-5">
                                 <div class="input-group">
                                     <span class="input-group-addon"><i style="width:15px;" class="fa fa-list-ol"></i></span>
-                                    <input class="form-control txtADOVehicleIdentity" value="<?php if (isset($DPBDetail[0]['NO_KENDARAAN'])) echo $DPBDetail[0]['NO_KENDARAAN'] ?>">
+                                    <input class="form-control txtADOVehicleIdentity" <?= $UserAccess['no_kendaraan'] ?> value="<?php if (isset($DPBDetail[0]['NO_KENDARAAN'])) echo $DPBDetail[0]['NO_KENDARAAN'] ?>">
                                 </div>
                             </div>
                         </div>
@@ -51,17 +51,17 @@
                             <div class="col-sm-5">
                                 <div class="input-group">
                                     <span class="input-group-addon"><i style="width:15px;" class="fa fa-user"></i></span>
-                                    <input class="form-control txtADODriverName" value="<?php if (isset($DPBDetail[0]['NAMA_SUPIR'])) echo $DPBDetail[0]['NAMA_SUPIR'] ?>">
+                                    <input class="form-control txtADODriverName" <?= $UserAccess['nama_supir'] ?> value="<?php if (isset($DPBDetail[0]['NAMA_SUPIR'])) echo $DPBDetail[0]['NAMA_SUPIR'] ?>">
                                 </div>
                             </div>
                         </div>
                         <br />
                         <div class="form-group">
-                            <label class="col-sm-2 control-label">No. HP Supir</label>
+                            <label class="col-sm-2 control-label">Vendor Ekspedisi</label>
                             <div class="col-sm-5">
                                 <div class="input-group">
-                                    <span class="input-group-addon"><i style="width:15px;" class="fa fa-phone"></i></span>
-                                    <input class="form-control txtADODriverPhoneNumber" value="<?php if (isset($DPBDetail[0]['NO_HP'])) echo $DPBDetail[0]['NO_HP'] ?>">
+                                    <span class="input-group-addon"><i style="width:15px;" class="fa fa-truck"></i></span>
+                                    <input class="form-control txtADOExpeditionVendor" <?= $UserAccess['vendor_ekspedisi'] ?> value="<?php if (isset($DPBDetail[0]['VENDOR_EKSPEDISI'])) echo $DPBDetail[0]['VENDOR_EKSPEDISI'] ?>">
                                 </div>
                             </div>
                         </div>
@@ -71,7 +71,7 @@
                             <div class="col-sm-8">
                                 <div class="input-group">
                                     <span class="input-group-addon"><i style="width:15px;" class="fa fa-plus"></i></span>
-                                    <input class="form-control txtADOAdditionalInformation" value="<?php if (isset($DPBDetail[0]['LAIN'])) echo $DPBDetail[0]['LAIN'] ?>">
+                                    <input class="form-control txtADOAdditionalInformation" <?= $UserAccess['lain_lain'] ?> value="<?php if (isset($DPBDetail[0]['LAIN'])) echo $DPBDetail[0]['LAIN'] ?>">
                                 </div>
                             </div>
                         </div>
