@@ -84,9 +84,9 @@ class C_Index extends CI_Controller
 		foreach ($nama as $key) {
 			$getnama[] = $this->M_index->pekerja($key);
 		}
-		echo "<pre>";
+		//echo "<pre>";
 
-		// $update= $this->M_index->update($status, $idizin);
+		$update= $this->M_index->update($status, $idizin);
 
 		if ($status == 1) {
 			//insert to t_log
@@ -96,7 +96,7 @@ class C_Index extends CI_Controller
 			//
 			$no = '0';
 			$tujuan = $this->M_index->getTujuanMakan($idizin);
-			// $updatePekerja = $this->M_index->updatePekerja($no, $idizin);
+			$updatePekerja = $this->M_index->updatePekerja($no, $idizin);
 
 			if (date('H:i:s') <= date('H:i:s', strtotime('09:30:00'))) {
 				for ($i=0; $i < count($nama); $i++) {
@@ -110,7 +110,7 @@ class C_Index extends CI_Controller
 								'tujuan' => $tujuan[$j]['tujuan'],
 								'created_date' => date('Y-m-d H:i:s')
 							);
-							// $insert = $this->M_index->taktual_izin($data);
+							$insert = $this->M_index->taktual_izin($data);
 						}
 					}
 				}
@@ -121,7 +121,7 @@ class C_Index extends CI_Controller
 						'noinduk' 	=> $nama[$i],
 						'created_date' => date('Y-m-d H:i:s')
 					);
-					// $insert = $this->M_index->taktual_izin($data);
+					$insert = $this->M_index->taktual_izin($data);
 				}
 			}
 			$this->EmailAlertAll($getnama, $status, $idizin, $tanggal, $ket, $berangkat);
@@ -132,7 +132,7 @@ class C_Index extends CI_Controller
 			$this->log_activity->activity_log($aksi, $detail);
 			//
 			$no = '5';
-			// $updatePekerja = $this->M_index->updatePekerja($no, $idizin);
+			$updatePekerja = $this->M_index->updatePekerja($no, $idizin);
 			$this->EmailAlertAll($getnama, $status, $idizin, $tanggal, $ket, $berangkat);
 			redirect('PerizinanDinas/AtasanApproval');
 		}else{
@@ -193,11 +193,11 @@ class C_Index extends CI_Controller
 			$place = $this->M_index->getTujuan($id, $implode, true);
 			$place1 = array_column($place, 'tujuan');
 			$imPlace = implode(", ", $place1);
-			// $update_tperizinan = $this->M_index->update_tperizinan($implode1, '1', $id, $imPlace);
+			$update_tperizinan = $this->M_index->update_tperizinan($implode1, '1', $id, $imPlace);
 		}else {
 			$place = $this->M_index->getTujuan($id, $pekerja, false);
 			$place1 = array_column($place, 'tujuan');
-			// $update_tperizinan = $this->M_index->update_tperizinan($pekerja, '1', $id, $place1);
+			$update_tperizinan = $this->M_index->update_tperizinan($pekerja, '1', $id, $place1);
 		}
 
 		if (date('H:i:s') <= date('H:i:s', strtotime('09:30:00'))) {
@@ -210,7 +210,7 @@ class C_Index extends CI_Controller
 							'tujuan' => $newEmployee[0]['tujuan'],
 							'created_date' => date('Y-m-d H:i:s')
 						);
-						// $insert = $this->M_index->taktual_izin($data);
+						$insert = $this->M_index->taktual_izin($data);
 					}
 			}
 		}else {
@@ -220,7 +220,7 @@ class C_Index extends CI_Controller
 					'noinduk' 	=> $pekerja[$i],
 					'created_date' => date('Y-m-d H:i:s')
 				);
-				// $insert = $this->M_index->taktual_izin($data);
+				$insert = $this->M_index->taktual_izin($data);
 			}
 		}
 
@@ -233,7 +233,7 @@ class C_Index extends CI_Controller
 		print_r($data11);
 		die;
 
-		// $this->EmailAlert($noinde, $getnamaApprove, $getnamareject, $id, $tanggal, $keterangan, $berangkat);
+		$this->EmailAlert($noinde, $getnamaApprove, $getnamareject, $id, $tanggal, $keterangan, $berangkat);
 	}
 
 	public function EmailAlert($noinde, $pekerja, $pekerja1, $id, $tanggal, $keterangan, $berangkat) {
