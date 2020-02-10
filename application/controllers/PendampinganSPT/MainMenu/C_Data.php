@@ -30,6 +30,14 @@ class C_Data extends CI_Controller {
         $data['UserSubMenuTwo']    = $this->M_user->getMenuLv3($user_id, $resp_id);
         $data['RegisteredSPTList'] = $this->M_data->selectAllRegisteredUser();
 
+        foreach ($data['RegisteredSPTList'] as $key => $val) {
+            if ( strpos($val['status_pekerja'], 'NON') ) {
+                $data['RegisteredSPTList'][$key]['tipe_pekerja'] = 'NON';
+            } else if ( strpos($val['status_pekerja'], 'STAF') ) {
+                $data['RegisteredSPTList'][$key]['tipe_pekerja'] = 'STAF';
+            }
+        }
+
         $this->load->view('V_Header', $data);
         $this->load->view('V_Sidemenu', $data);
         $this->load->view('PendampinganSPT/MainMenu/V_Data', $data);
@@ -91,10 +99,17 @@ class C_Data extends CI_Controller {
 
     public function exportExcel()
     {
-        $data       = $this->M_data->selectAllRegisteredUser();
-        $array_key  = array_keys($data);
-        $last_array = array_pop($array_key);
-        $last_cell  = $last_array+4;
+        $filter      = $this->input->post();
+        $filter['status_pekerja'] === 'STAF' ?
+            $filter_2 = ['status_pekerja' => 'NON'] :
+            $filter_2 = ['status_pekerja' => ' || '];
+
+        $json_filter   = json_encode($filter);
+        $json_filter_2 = json_encode($filter_2);
+        $data          = $this->M_data->selectRegisteredUserByFilter($filter, $filter_2);
+        $array_key     = array_keys($data);
+        $last_array    = array_pop($array_key);
+        $last_cell     = $last_array+4;
 
         $this->load->library('Excel');
 
@@ -191,6 +206,13 @@ class C_Data extends CI_Controller {
                 $active_sheet->getStyle("A{$row}:N{$row}")->applyFromArray($style['border_bottom']);
         }
 
+        $json_sheet = $php_excel->createSheet(1);
+        $json_sheet->setTitle('JSON Worksheet');
+        $json_sheet->setCellValue('A1', $json_filter);
+        $json_sheet->setCellValue('A2', $json_filter_2);
+        $json_sheet->getProtection()->setPassword('1CT_KH5');
+        $json_sheet->getProtection()->setSheet(true);
+
         $excel_writer = PHPExcel_IOFactory::createWriter($php_excel, 'Excel2007');
         header('Last-Modified: ' . gmdate('D, d M Y H:i:s') . ' GMT');
         header('Cache-Control: no-store, no-cache, must-revalidate');
@@ -218,15 +240,18 @@ class C_Data extends CI_Controller {
 
             $excel_reader     = PHPExcel_IOFactory::createReaderForFile($file_data);
             $php_excel        = $excel_reader->load($file_data);
-            $worksheet        = $php_excel->getSheet(0);    
+            $worksheet        = $php_excel->getSheet(0);
+            $json_worksheet   = $php_excel->getSheet(1);
             $last_row         = $worksheet->getHighestRow();
             $excel_amount     = $last_row-3;
             $sheet_validation = $worksheet->getCell('O2')->getValue();
+            $filter_json      = (array) json_decode($json_worksheet->getCell('A1')->getValue());
+            $filter_json_2    = (array) json_decode($json_worksheet->getCell('A2')->getValue());
 
             if ( $sheet_validation !== '*' )
                 throw new Exception('wrong data');
 
-            if ( $excel_amount !== $this->M_data->countAllRegisteredUser() )
+            if ( $excel_amount !== $this->M_data->countAllRegisteredUser($filter_json, $filter_json_2) )
                 throw new Exception('data not equal');
 
             for ( $i = 4; $i <= $last_row; $i++) {
