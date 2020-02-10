@@ -36,26 +36,6 @@ $(document).ready(function() {
       // })
     })
 
-    // setInterval(reloadAjaxMD, 20000);
-    // function reloadAjaxMD() {
-    //   $.ajax({
-    //     url: baseurl+'MonitoringDO/SettingDO/countDO',
-    //     type: 'POST',
-    //     dataType:'json',
-    //     success: function(result) {
-    //       $('#jumlah0').html('('+result[0]+')');
-    //       $('#jumlah1').html('('+result[1]+')');
-    //       $('#jumlah2').html('('+result[2]+')');
-    //       $('#jumlah3').html('('+result[3]+')');
-    //       $('#jumlah4').html('(' + result[4] + ')');
-
-    //     },
-    //     error: function(XMLHttpRequest, textStatus, errorThrown) {
-    //       console.error();
-    //     }
-    //   })
-    // }
-
   }
 })
 
@@ -115,6 +95,7 @@ function approveMD() {
   var rm = $('#rm_mdo').val();
   var rowID = $('#row_id').val();
   var order_number = $('#order_number').val();
+  var plat_number = $('#plat_number').val();
   var atr_tampung_gan = $('#atr_tampung_gan').val();
 
   var pengecekan = $('tr[row-id="' + rowID + '"] input[name="cekdodo"]').val()
@@ -138,7 +119,8 @@ function approveMD() {
         data: {
           header_id: id,
           requests_number: rm,
-          person_id: personid
+          person_id: personid,
+          plat_number:plat_number
         },
         beforeSend: function() {
           Swal.showLoading()
@@ -200,7 +182,8 @@ function approveMD() {
             data: {
               header_id: id,
               requests_number: rm,
-              person_id: personid
+              person_id: personid,
+              plat_number:plat_number
             },
             success: function(result) {
               console.log(result);
@@ -533,7 +516,7 @@ function dodo0() {
 }
 
 //punya dodo0
-function detail(rm, id_header, rowID, order_number) {
+function detail(rm, id_header, rowID, order_number, plat_number) {
   var personid = $('tr[row-id="' + rowID + '"] input[name="person_id"]').val();
 
   $.ajax({
@@ -557,12 +540,14 @@ function detail(rm, id_header, rowID, order_number) {
       $('#rm_mdo').val(rm);
       $('#row_id').val(rowID);
       $('#order_number').val(order_number);
+      $('#plat_number').val(plat_number);
     },
     error: function(XMLHttpRequest, textStatus, errorThrown) {
       console.error();
     }
   })
 }
+
 
 function insertManual() {
   var rm = $('#nomorDO').val();
