@@ -377,8 +377,11 @@ class C_Rekap extends CI_Controller
 
 		$dt = $this->M_monitoringpresensi->getGrafikPiePerPekerja($noinduk,$tanggalAwal,$tanggalAkhir,$kodesie);
 
+		// echo "<pre>";print_r($dt[0]);exit();
+
 		$label = array();
 		$presensi = array();
+		$dt[0]['bekerja'] -= $dt[0]['izin_pribadi'];
 		foreach ($dt[0] as $key => $value) {
 			if($key != "noind" and $key != "nama" and $key != "seksi" and $key != "masukkerja"){
 				if($key == "terlambat")
@@ -403,7 +406,6 @@ class C_Rekap extends CI_Controller
 		$data['inf'] = $dt[0];
 		$data['label'] = $label;
 		$data['data'] = $presensi;
-
 		print_r(json_encode($data));
 
 	}
