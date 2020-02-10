@@ -92,7 +92,7 @@
                     <!-- /.box-footer -->
                     <div id="divPSPTDetailSchedule" class="text-center box-footer" style="padding: 3rem;">
                         <p>Untuk melihat jadwal pendampingan silahkan klik link dibawah ini</p>
-                        <button class="btn btn-primary btnPSPTDetailSchedule"><i class="fa fa-calendar"></i> &nbsp;Jadwal Pendampingan</button>
+                        <a href="{BaseUrl}PendampinganSPT/Jadwal" class="btn btn-primary"><i class="fa fa-calendar"></i> &nbsp;Jadwal Pendampingan</a>
                     </div>
                     
                 </div>
