@@ -12,7 +12,7 @@ class M_jadwal extends CI_Model {
     public function selectAllUserSchedule()
     {
         return $this->db
-            ->select('row_number() OVER () AS no, status_pekerja, nama, seksi, lokasi_kerja, nomor_pendaftaran, jadwal, lokasi')
+            ->select('row_number() OVER () AS no, status_pekerja, nomor_induk, nama, seksi, lokasi_kerja, nomor_pendaftaran, jadwal, lokasi')
             ->from('ap.ap_spt')
             ->get()
             ->result_array();

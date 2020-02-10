@@ -249,7 +249,7 @@ $( _ => {
         buttons: [
             {
                 action    : _ => {
-                    window.location = `${baseurl}PendampinganSPT/Data/exportExcel`
+                    $('#frmPSPTExportExcel').submit()
                 },
                 className : 'btn btn-default',
                 text      : '<i class="fa fa-cloud-download"></i> Export'
@@ -392,7 +392,8 @@ $( _ => {
         dom :  `<'row' <'col-sm-12 col-md-4'l> <'col-sm-12 col-md-4 text-center'B> <'col-sm-12 col-md-4'f> >
                 <'row' <'col-sm-12'tr> >
                 <'row' <'col-sm-12 col-md-5'i> <'col-sm-12 col-md-7'p> >`,
-        scrollY     : '425px'
+        scrollX : true,
+        scrollY : '425px'
     })
 
     $('#slcPSPTSearchBy, #slcPSPTSearchByLocation').select2()
@@ -418,13 +419,13 @@ $( _ => {
             $('#txtPSPTSearchBySchedule').datepicker('setDate', null)
             $('#txtPSPTSearchBySchedule').hide()
         }
-        if ( searchBy === 'Nama' || searchBy === 'No. Pendaftaran' || searchBy === 'Seksi' ) {
+        if ( searchBy === 'Nama' || searchBy === 'No. Pendaftaran' || searchBy === 'Seksi' || searchBy === 'No. Induk' ) {
             $('#txtPSPTSearchBy').show()
         } else {
             $('#txtPSPTSearchBy').hide()
         }
         $('#txtPSPTSearchBy').val(null)
-        dataTablePSPTSchedule.columns([1, 2, 4, 5, 6]).search('').draw()
+        dataTablePSPTSchedule.columns([1, 2, 4, 5, 6, 7]).search('').draw()
     })
 
     $('#slcPSPTSearchByLocation').on('change', function () {
@@ -432,17 +433,19 @@ $( _ => {
     })
 
     $('#txtPSPTSearchBySchedule').on('change', function () {
-        dataTablePSPTSchedule.columns(6).search($(this).val()).draw()
+        dataTablePSPTSchedule.columns(7).search($(this).val()).draw()
     })
 
     $('#txtPSPTSearchBy').on('input', function () {
         let searchBy = $('#slcPSPTSearchBy').val()
-        if ( searchBy === 'Nama' ) {
+        if ( searchBy === 'No. Induk' ) {
             dataTablePSPTSchedule.columns(4).search($(this).val()).draw()
+        } else if ( searchBy === 'Nama' ) {
+            dataTablePSPTSchedule.columns(5).search($(this).val()).draw()
         } else if ( searchBy === 'No. Pendaftaran' ) {
             dataTablePSPTSchedule.columns(2).search($(this).val()).draw()
         } else if ( searchBy === 'Seksi' ) {
-            dataTablePSPTSchedule.columns(5).search($(this).val()).draw()
+            dataTablePSPTSchedule.columns(6).search($(this).val()).draw()
         }
     })
 

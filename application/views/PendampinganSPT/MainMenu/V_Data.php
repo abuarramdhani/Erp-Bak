@@ -32,28 +32,30 @@
                     <!-- /.box-header -->
                     <div class="box-body">
                         <div class="panel panel-body">
-                            <div class="form-group">
-                                <label for="slcPSPTDataWorkerStats" class="col-sm-2 control-label">Status Pekerja</label>
-                                <div class="input-group col-sm-5">
-                                    <span class="input-group-addon"><i style="width:15px;" class="fa fa-user"></i></span>
-                                    <select id="slcPSPTDataWorkerStats" class="form-control" style="width: 100%;" required>
-                                        <option value="">All</option>
-                                        <option value="STAFF">Staff</option>
-                                        <option value="NON">Non Staff</option>
-                                    </select>
+                            <form id="frmPSPTExportExcel" action="<?= base_url('PendampinganSPT/Data/exportExcel') ?>" method="post">
+                                <div class="form-group">
+                                    <label for="slcPSPTDataWorkerStats" class="col-sm-2 control-label">Status Pekerja</label>
+                                    <div class="input-group col-sm-5">
+                                        <span class="input-group-addon"><i style="width:15px;" class="fa fa-user"></i></span>
+                                        <select id="slcPSPTDataWorkerStats" name="status_pekerja" class="form-control" style="width: 100%;" required>
+                                            <option value="">All</option>
+                                            <option value="STAF">Staff</option>
+                                            <option value="NON">Non Staff</option>
+                                        </select>
+                                    </div>
                                 </div>
-                            </div>
-                            <div class="form-group">
-                                <label for="slcPSPTDataWorkLocation" class="col-sm-2 control-label">Lokasi Kerja</label>
-                                <div class="input-group col-sm-5">
-                                    <span class="input-group-addon"><i style="width:15px;" class="fa fa-map-marker"></i></span>
-                                    <select id="slcPSPTDataWorkLocation" class="form-control" style="width: 100%;" required>
-                                        <option value="">All</option>
-                                        <option value="PUSAT">Pusat</option>
-                                        <option value="TUKSONO">Tuksono</option>
-                                    </select>
+                                <div class="form-group">
+                                    <label for="slcPSPTDataWorkLocation" class="col-sm-2 control-label">Lokasi Kerja</label>
+                                    <div class="input-group col-sm-5">
+                                        <span class="input-group-addon"><i style="width:15px;" class="fa fa-map-marker"></i></span>
+                                        <select id="slcPSPTDataWorkLocation" name="lokasi_kerja" class="form-control" style="width: 100%;" required>
+                                            <option value="">All</option>
+                                            <option value="PUSAT">Pusat</option>
+                                            <option value="TUKSONO">Tuksono</option>
+                                        </select>
+                                    </div>
                                 </div>
-                            </div>
+                            </form>
                         </div>
                         <div class="panel panel-body">
                             <div class="panel panel-default">
@@ -106,13 +108,7 @@
                                                                 <!-- <button type="button" data-toggle="tooltipPSPT" data-placement="top" title="Delete" class="btn btn-danger btnPSPTDelete"><i class="fa fa-remove"></i></button> -->
                                                             </form>
                                                         </td>
-                                                        <td class="text-left hidden">
-                                                            <?php if ( strpos($val['status_pekerja'], 'NON') ) :
-                                                                echo 'NON';
-                                                            elseif ( strpos($val['status_pekerja'], 'STAF') ) :
-                                                                echo 'STAFF';
-                                                            endif ?>
-                                                        </td>
+                                                        <td class="text-left hidden"><?= $val['tipe_pekerja'] ?></td>
                                                     </tr>
                                                 <?php endforeach ?>
                                             </tbody>
