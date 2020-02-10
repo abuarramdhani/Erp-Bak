@@ -379,8 +379,8 @@
 	                                    + '<td>' + res[i].sakit  + '</td>'
 	                                    + '<td>' + res[i].izin_pamit  + '</td>'
 	                                    + '<td>' + res[i].izin_perusahaan  + '</td>'
-	                                    + '<td>' + res[i].bekerja  + '</td>'
-	                                    + '<td>' + (res[i].bekerja / selisihHari * 100 ).toFixed(2)  + '</td>'
+	                                    + '<td>' + (res[i].bekerja - res[i].izin_pribadi) + '</td>'
+	                                    + '<td>' + ((res[i].bekerja - res[i].izin_pribadi) / selisihHari * 100 ).toFixed(2)  + '</td>'
 	                                    + '<td style="width: 3%" >' + '<button data-id='+res[i].noind+' class="btn btn-info btn-grafik" ><i class="fa fa-pie-chart"></i>  Lihat Grafik</button>'  + '</td>'
 	                                    + '</tr>';
 	                    }
