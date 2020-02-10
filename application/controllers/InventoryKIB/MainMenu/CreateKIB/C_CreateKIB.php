@@ -301,6 +301,15 @@ class C_CreateKIB extends CI_Controller
 			$dataKIB = $this->M_createkib->updateFlagPrint3($value['NOMORSET']);
 			// print_r($value['NOMORSET']);
 		}
+		$cekKIB = $this->M_createkib->cekKIB($nomorset);
+		if (!empty($cekKIB)) {
+			$getKode = $this->M_createkib->getKode($nomorset);
+			foreach ($getKode as $val) {
+				$insertKIB = $this->M_createkib->insertMTI($val);
+			}
+			$update = $this->M_createkib->updateKKFlag($nomorset);
+			$api 		= $this->M_createkib->runApi();	
+		}
 		// exit();
 		$pdf->WriteHTML($html,0);
 		$pdf->Output($filename, 'I');
