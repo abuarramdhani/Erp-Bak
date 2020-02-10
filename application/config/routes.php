@@ -3764,3 +3764,9 @@ $route['hardware/input-data/(:any)'] = 'Hardware/Sweeping/C_Sweep/$1';
 $route['hardware/view-data'] = 'Hardware/Sweeping/C_Sweep/viewData';
 $route['hardware/view-data/(:any)'] = 'Hardware/Sweeping/C_Sweep/$1';
 $route['hardware/view-data/(:any)/(:any)'] = 'Hardware/Sweeping/C_Sweep/$1/$2';
+
+// ----------------------------------------------- Master Cost Center ----------------------------------------------- //
+$route['MasterCC'] = 'MasterCostCenter/C_Index';
+$route['MasterCC/ListCC'] = 'MasterCostCenter/C_Index/ListCC';
+$route['MasterCC/ListCC/(:any)'] = 'MasterCostCenter/C_Index/$1';
+$route['MasterCC/ListCC/(:any)/(:any)'] = 'MasterCostCenter/C_Index/$1/$2';
