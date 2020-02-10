@@ -2488,6 +2488,11 @@ $route['AdmCabang/PresensiHarian/(:any)'] = 'ADMCabang/C_PresensiHarian/$1';
 $route['AdmCabang/PresensiBulanan'] = 'ADMCabang/C_PresensiBulanan';
 $route['AdmCabang/PresensiBulanan/(:any)'] = 'ADMCabang/C_PresensiBulanan/$1';
 
+$route['AdmCabang/Monitoring/(:any)'] = 'ADMCabang/Monitoring/C_Monitoring/$1';
+
+$route['AdmCabang/Rekap/(:any)'] = 'ADMCabang/Rekap/C_Rekap/$1';
+$route['AdmCabang/Rekap/(:any)/(:any)'] = 'ADMCabang/Rekap/C_Rekap/$1/$2';
+
 //--------------------------------------------- Branch Item --------------------------------------------
 $route['BranchItem'] = 'BarangCabang/C_branchitem';
 $route['BranchItem/PemindahanBarang/Input'] = 'BarangCabang/C_branchitem/InputBarang';

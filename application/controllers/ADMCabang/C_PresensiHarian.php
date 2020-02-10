@@ -48,6 +48,10 @@ class C_PresensiHarian extends CI_Controller
 		$data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id);
 		$data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id);
 		$data['seksi'] = $this->M_presensiharian->getSeksiByKodesie($kodesie);
+		if($this->session->user != "J1338"){
+			unset($data['UserMenu'][2]);
+			unset($data['UserMenu'][3]);
+		}
 
 		$this->load->view('V_Header',$data);
 		$this->load->view('V_Sidemenu',$data);
@@ -371,6 +375,11 @@ class C_PresensiHarian extends CI_Controller
 		$data['presensi'] = $this->M_presensiharian->getPresensiArrayNoind($noind,$tanggal);
 		$data['tim'] = $this->M_presensiharian->getTIMArrayNoind($noind,$tanggal);
 		$data['ket'] = $this->M_presensiharian->getKeteranganArrayNoind($noind,$tanggal);
+		
+
+		// echo "<pre>";
+		// print_r($data['presensi']);
+		// exit();
 
 		$angka1 = 1;
 		$simpan2 = 0;
