@@ -452,8 +452,8 @@ class C_HitungGajiPersonalia extends CI_Controller {
 					$worksheet->setCellValue('I'.($nomor + 4),$key['jml_ump']);
 					if (!empty($key['tambahan'])) {
 					$worksheet->setCellValue('J'.($nomor + 4),$key['tambahan']->gp);
-					$worksheet->setCellValue('K'.($nomor + 4),$key['tambahan']->um);
-					$worksheet->setCellValue('L'.($nomor + 4),$key['um_tambahan']->lembur);
+					$worksheet->setCellValue('K'.($nomor + 4),$key['tambahan']->lembur);
+					$worksheet->setCellValue('L'.($nomor + 4),$key['tambahan']->um);
 					}else{
 					$worksheet->setCellValue('J'.($nomor + 4),0);
 					$worksheet->setCellValue('K'.($nomor + 4),0);
@@ -461,8 +461,8 @@ class C_HitungGajiPersonalia extends CI_Controller {
 					}
 					if (!empty($key['potongan'])) {
 					$worksheet->setCellValue('M'.($nomor + 4),$key['potongan']->gp);
-					$worksheet->setCellValue('N'.($nomor + 4),$key['potongan']->um);
-					$worksheet->setCellValue('O'.($nomor + 4),$key['potongan']->lembur);
+					$worksheet->setCellValue('N'.($nomor + 4),$key['potongan']->lembur);
+					$worksheet->setCellValue('O'.($nomor + 4),$key['potongan']->um);
 					}else{
 					$worksheet->setCellValue('M'.($nomor + 4),0);
 					$worksheet->setCellValue('N'.($nomor + 4),0);
