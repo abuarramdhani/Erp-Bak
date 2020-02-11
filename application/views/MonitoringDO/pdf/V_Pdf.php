@@ -21,6 +21,7 @@
 			<td style="border-bottom: 1px solid black;border-right: 1px solid black;border-top: 1px solid black;;width:60%;padding:5px" rowspan="2">
 				<b style="font-size:16px;">CV. KARYA HIDUP SENTOSA YOGYAKARTA</b><br>
 				<span style="border-bottom:1px solid black;font-size:12px;">PABRIK MESIN ALAT PERTANIAAN-PENGECORAN LOGAM-DEALER KUBOTA</span><br><br>
+
 				<span style="font-size: 12px;">
 					KHS PUSAT<br>
 					JL. MAGELANG 144, YOGYAKARTA 55241 - INDONESIA,<br> Email : operator1@quick.co.id <br>
@@ -76,12 +77,12 @@
 	<table style="width:78%; margin-top:49px;">
 		<?php $no = 1; foreach ($get_body as $key => $gb){ ?>
 			<tr>
-				<td style="font-size:10px;padding:5px;width:8%;text-align:center"><?php echo $no ?></td>
-				<td style="font-size:10px;padding:5px;width:8%;text-align:center"><?php echo $gb['QUANTITY'] ?></td>
-				<td style="font-size:10px;padding:5px;width:9%;text-align:center"><?php echo $gb['QTY_TERLAYANI'] ?></td>
-				<td style="font-size:10px;padding:5px 5px 5px 10px;width:11%;text-align:left"><?php echo $gb['UOM_CODE'] ?></td>
-				<td style="font-size:10px;padding:5px;width:30%;"><?php echo $gb['ITEM'] ?></td>
-				<td style="font-size:10px;padding:5px;width:35%;"><?php echo $gb['DESCRIPTION'] ?></td>
+				<td style="font-size:9.7px;padding:3.5px;width:8%;text-align:center"><?php echo $no ?></td>
+				<td style="font-size:9.7px;padding:3.5px;width:8%;text-align:center"><?php echo $gb['QUANTITY'] ?></td>
+				<td style="font-size:9.7px;padding:3.5px;width:8%;text-align:center"><?php echo $gb['QTY_TERLAYANI'] ?></td>
+				<td style="font-size:9.7px;padding:3.5px 3.5px 3.5px 10px;width:10%;text-align:left"><?php echo $gb['UOM_CODE'] ?></td>
+				<td style="font-size:9.7px;padding:3.5px;width:24.5%;"><?php echo $gb['ITEM'] ?></td>
+				<td style="font-size:9.7px;padding:3.5px;width:48%;"><?php echo $gb['DESCRIPTION'] ?></td>
 			</tr>
 		<?php $no++; } ?>
 	</table>
@@ -99,13 +100,13 @@
 				<td rowspan="2" style="width:5%;border-left:1px solid black;border-bottom: 1px solid black;font-size:10px;padding:5px;border-top:1px solid black;">
 					<center>Satuan</center>
 				</td>
-				<td rowspan="2" style="width:19%;border-left:1px solid black;border-bottom: 1px solid black;font-size:10px;padding:5px;border-top:1px solid black;">
+				<td rowspan="2" style="width:16%;border-left:1px solid black;border-bottom: 1px solid black;font-size:10px;padding:5px;border-top:1px solid black;">
 					<center>Kode Barang</center>
 				</td>
-				<td rowspan="2" style="width:25%;border-left:1px solid black;border-bottom: 1px solid black;font-size:10px;padding:5px;border-top:1px solid black;">
+				<td rowspan="2" style="width:32%;border-left:1px solid black;border-bottom: 1px solid black;font-size:10px;padding:5px;border-top:1px solid black;">
 					<center>Nama Barang</center>
 				</td>
-				<td rowspan="2" style="width:35%;border-right:1px solid black;border-left:1px solid black;border-bottom: 1px solid black;font-size:10px;padding:5px;border-top:1px solid black;">
+				<td rowspan="2" style="width:30%;border-right:1px solid black;border-left:1px solid black;border-bottom: 1px solid black;font-size:10px;padding:5px;border-top:1px solid black;">
 					<center>Nomor Barang</center>
 				</td>
 			</tr>
@@ -120,7 +121,7 @@
 		</thead>
 		<tbody style="vertical-align:top!important;">
 		<tr style="border-bottom:1px solid black;">
-			<td style="vertical-align:top;border-right:1px solid black;border-left:1px solid black;height: 588px;font-size:10px;padding:5px">
+			<td style="vertical-align:top;border-right:1px solid black;border-left:1px solid black;height: 585.2px;font-size:10px;padding:5px">
 				<center>
 					<!-- <?php $no = 1; foreach ($get_body as $key => $gb){ ?>
 						<?php echo $no ?> <br /><br />
@@ -168,14 +169,14 @@
 						<thead>
 							<tr>
 								<?php foreach ($header_sub as $h): ?>
-									<th style="padding: 5px;font-size:10.5px;"><?php echo $h ?></th>
+									<th style="padding: 5px;font-size:10px;"><?php echo $h ?></th>
 								<?php endforeach; ?>
 							</tr>
 						</thead>
 						<tbody>
 							<tr>
 								<?php foreach ($check_header_sub as $h): ?>
-									<td style="padding: 5px;font-size:11.5px;">
+									<td style="padding: 5px;font-size:10px;">
 										<?php foreach ($get_serial as $gs) { ?>
 											<?php if ($gs['DESCRIPTION'] == $h){
 												echo $gs['SERIAL_NUMBER'].'<br />';

@@ -32,6 +32,7 @@
 <input type="hidden" name="" id="rm_mdo">
 <input type="hidden" name="" id="row_id">
 <input type="hidden" name="" id="order_number">
+<input type="hidden" name="" id="plat_number">
 
 <input type="hidden" name="" id="atr_tampung_gan" value="<?php $no = 1; $atr = 1; foreach ($get as $g){
   if ($g['AV_TO_RES'] == '0' || $g['AV_TO_RES'] < '0') {
