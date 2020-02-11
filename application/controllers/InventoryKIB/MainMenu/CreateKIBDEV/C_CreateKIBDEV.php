@@ -256,7 +256,7 @@ class C_CreateKIBDEV extends CI_Controller
 
 		$data['dataKIB'] = $dataKIBKelompok;
 		// echo "<pre>";
-		$length = sizeof($data['dataKIB'][0]['KOMPONEN']);
+		$length = sizeof($data['dataKIB'][0]['KOMPONEN']) + 13;
 		if ($length != 0) {
 			$size = $length * 51 ;
 		} else {
