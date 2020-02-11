@@ -6,6 +6,7 @@ class C_RiwayatTarifJkk extends CI_Controller
     {
         parent::__construct();
         $this->load->library('session');
+        $this->load->library('Log_Activity');
         $this->load->helper('url');
         $this->load->library('csvimport');
         $this->load->model('SystemAdministration/MainMenu/M_user');
@@ -21,7 +22,7 @@ class C_RiwayatTarifJkk extends CI_Controller
     {
         $this->checkSession();
         $user_id = $this->session->userid;
-        
+
         $data['Menu'] = 'Payroll Management';
         $data['SubMenuOne'] = '';
         $data['SubMenuTwo'] = '';
@@ -47,7 +48,7 @@ class C_RiwayatTarifJkk extends CI_Controller
     {
         $this->checkSession();
         $user_id = $this->session->userid;
-        
+
         $row = $this->M_riwayattarifjkk->get_by_id($id);
         if ($row) {
             $data = array(
@@ -57,7 +58,7 @@ class C_RiwayatTarifJkk extends CI_Controller
             	'UserMenu' => $this->M_user->getUserMenu($user_id,$this->session->responsibility_id),
             	'UserSubMenuOne' => $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id),
             	'UserSubMenuTwo' => $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id),
-            
+
 				'id_tarif_jkk' => $row->id_tarif_jkk,
 				'tgl_berlaku' => $row->tgl_berlaku,
 				'tgl_tberlaku' => $row->tgl_tberlaku,
@@ -121,7 +122,7 @@ class C_RiwayatTarifJkk extends CI_Controller
     {
         $this->formValidation();
 
-        
+
             $data = array(
 				'tgl_berlaku' => $this->input->post('txtTglBerlaku',TRUE),
 				'tgl_tberlaku' => $this->input->post('txtTglTberlaku',TRUE),
@@ -132,6 +133,11 @@ class C_RiwayatTarifJkk extends CI_Controller
 				'tgl_rec' => $this->input->post('txtTglRec',TRUE),
 				'status_aktif' => $this->input->post('txtStatusAktif',TRUE),
 			);
+            //insert to sys.log_activity
+            $aksi = 'Payroll Management';
+            $detail = "Add set Tarif JKK id_kantor=".$this->input->post('cmbIdKantorAsal')." tarif JKK=".$this->input->post('txtTarifJkk');
+            $this->log_activity->activity_log($aksi, $detail);
+            //
 
             $this->M_riwayattarifjkk->insert($data);
             $this->session->set_flashdata('message', 'Create Record Success');
@@ -140,7 +146,7 @@ class C_RiwayatTarifJkk extends CI_Controller
 				);
 			$this->session->set_userdata($ses);
             redirect(site_url('PayrollManagement/RiwayatTarifJkk'));
-        
+
     }
 
     public function update($id)
@@ -200,7 +206,11 @@ class C_RiwayatTarifJkk extends CI_Controller
 				'tgl_rec' => $this->input->post('txtTglRec',TRUE),
 				'status_aktif' => $this->input->post('txtStatusAktif',TRUE),
 			);
-
+            //insert to sys.log_activity
+            $aksi = 'Payroll Management';
+            $detail = "Update set Tarif JKK ID=".$this->input->post('txtIdTarifJkk');
+            $this->log_activity->activity_log($aksi, $detail);
+            //
             $this->M_riwayattarifjkk->update($this->input->post('txtIdTarifJkk', TRUE), $data);
             $this->session->set_flashdata('message', 'Update Record Success');
 			$ses=array(
@@ -216,6 +226,11 @@ class C_RiwayatTarifJkk extends CI_Controller
 
         if ($row) {
             $this->M_riwayattarifjkk->delete($id);
+            //insert to sys.log_activity
+            $aksi = 'Payroll Management';
+            $detail = "Delete set Tarif JKK ID=".$id;
+            $this->log_activity->activity_log($aksi, $detail);
+            //
             $this->session->set_flashdata('message', 'Delete Record Success');
 			$ses=array(
 					 "success_delete" => 1
@@ -234,7 +249,7 @@ class C_RiwayatTarifJkk extends CI_Controller
 
     public function checkSession(){
         if($this->session->is_logged){
-            
+
         }else{
             redirect(site_url());
         }

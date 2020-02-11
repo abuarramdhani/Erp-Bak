@@ -6,6 +6,7 @@ class C_StandartJamTkpw extends CI_Controller
     {
         parent::__construct();
         $this->load->library('session');
+        $this->load->library('Log_Activity');
         $this->load->helper('url');
         $this->load->model('SystemAdministration/MainMenu/M_user');
         $this->load->model('PayrollManagement/SetStandartJamTKPW/M_standartjamtkpw');
@@ -20,7 +21,7 @@ class C_StandartJamTkpw extends CI_Controller
     {
         $this->checkSession();
         $user_id = $this->session->userid;
-        
+
         $data['Menu'] = 'Set Parameter';
         $data['SubMenuOne'] = 'Set Standart Jam TKPW';
         $data['SubMenuTwo'] = '';
@@ -46,7 +47,7 @@ class C_StandartJamTkpw extends CI_Controller
     {
         $this->checkSession();
         $user_id = $this->session->userid;
-        
+
         $row = $this->M_standartjamtkpw->get_by_id($id);
         if ($row) {
             $data = array(
@@ -56,7 +57,7 @@ class C_StandartJamTkpw extends CI_Controller
             	'UserMenu' => $this->M_user->getUserMenu($user_id,$this->session->responsibility_id),
             	'UserSubMenuOne' => $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id),
             	'UserSubMenuTwo' => $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id),
-            
+
 				'kode_standart_jam' => $row->kode_standart_jam,
 				'jml_std_jam_per_bln' => $row->jml_std_jam_per_bln,
 			);
@@ -101,7 +102,7 @@ class C_StandartJamTkpw extends CI_Controller
     }
 
     public function save(){
-        
+
 		$this->formValidation();
 
 		//MASTER INSERT NEW
@@ -109,7 +110,7 @@ class C_StandartJamTkpw extends CI_Controller
 			'kode_standart_jam' 	=> date('YmdHis'),
 			'jml_std_jam_per_bln'	=> $this->input->post('txtJmlStdJamPerBln',TRUE),
 		);
-		
+
 		//RIWAYAT CHANGE CURRENT
 		$ru_where = array(
 			'tgl_tberlaku' 			=> '9999-12-31',
@@ -117,7 +118,7 @@ class C_StandartJamTkpw extends CI_Controller
 		$ru_data = array(
 			'tgl_tberlaku' 			=> date('Y-m-d'),
 		);
-		
+
 		//RIWAYAT INSERT NEW
 		$ri_data = array(
 			'kode_standart_jam'		=> date('YmdHis'),
@@ -127,6 +128,12 @@ class C_StandartJamTkpw extends CI_Controller
 			'kd_petugas' 			=> $this->session->userdata('userid'),
 			'tgl_rec' 				=> date('Y-m-d H:i:s'),
 		);
+
+        //insert to sys.log_activity
+        $aksi = 'Payroll Management';
+        $detail = "Create set Jam Umum TKPW Kode=".date('YmdHis')." jumlah standar jam =". $this->input->post('txtJmlStdJamPerBln');
+        $this->log_activity->activity_log($aksi, $detail);
+        //
 
 		$this->M_standartjamtkpw->master_delete();
 		$this->M_standartjamtkpw->insert($data);
@@ -181,7 +188,11 @@ class C_StandartJamTkpw extends CI_Controller
         $data = array(
 			'jml_std_jam_per_bln' => $this->input->post('txtJmlStdJamPerBln',TRUE),
 		);
-
+        //insert to sys.log_activity
+        $aksi = 'Payroll Management';
+        $detail = "Update set Jam Umum TKPW Jumlah=".$this->input->post('txtJmlStdJamPerBln');
+        $this->log_activity->activity_log($aksi, $detail);
+        //
         $this->M_standartjamtkpw->update($data);
         $this->session->set_flashdata('message', 'Update Record Success');
 		$ses=array(
@@ -197,6 +208,11 @@ class C_StandartJamTkpw extends CI_Controller
 
         if ($row) {
             $this->M_standartjamtkpw->delete($id);
+            //insert to sys.log_activity
+            $aksi = 'Payroll Management';
+            $detail = "Delete set Jam Umum TKPW ID=$id";
+            $this->log_activity->activity_log($aksi, $detail);
+            //
             $this->session->set_flashdata('message', 'Delete Record Success');
 			$ses=array(
 					 "success_delete" => 1
@@ -215,7 +231,7 @@ class C_StandartJamTkpw extends CI_Controller
 
     public function checkSession(){
         if($this->session->is_logged){
-            
+
         }else{
             redirect(site_url());
         }

@@ -6,6 +6,7 @@ class C_LokasiKerja extends CI_Controller
     {
         parent::__construct();
         $this->load->library('session');
+        $this->load->library('Log_Activity');
         $this->load->helper('url');
         $this->load->model('SystemAdministration/MainMenu/M_user');
         $this->load->model('PayrollManagement/MasterLokasiKerja/M_lokasikerja');
@@ -21,7 +22,7 @@ class C_LokasiKerja extends CI_Controller
     {
         $this->checkSession();
         $user_id = $this->session->userid;
-        
+
         $data['Menu'] = 'Master Data';
         $data['SubMenuOne'] = 'Master Lokasi Kerja';
         $data['SubMenuTwo'] = '';
@@ -47,7 +48,7 @@ class C_LokasiKerja extends CI_Controller
     {
         $this->checkSession();
         $user_id = $this->session->userid;
-        
+
         $row = $this->M_lokasikerja->get_by_id($id);
         if ($row) {
             $data = array(
@@ -57,7 +58,7 @@ class C_LokasiKerja extends CI_Controller
             	'UserMenu' => $this->M_user->getUserMenu($user_id,$this->session->responsibility_id),
             	'UserSubMenuOne' => $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id),
             	'UserSubMenuTwo' => $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id),
-            
+
 				'id_lokasi_kerja' => $row->id_lokasi_kerja,
 				'lokasi_kerja' => $row->lokasi_kerja,
 			);
@@ -108,6 +109,11 @@ class C_LokasiKerja extends CI_Controller
 			'id_lokasi_kerja' => strtoupper($this->input->post('txtIdLokasiKerjaNew',TRUE)),
 			'lokasi_kerja' => strtoupper($this->input->post('txtLokasiKerja',TRUE)),
 		);
+        //insert to sys.log_activity
+        $aksi = 'Payroll Management';
+        $detail = "Save master lokasi kerja ID=".strtoupper($this->input->post('txtIdLokasiKerjaNew'));
+        $this->log_activity->activity_log($aksi, $detail);
+        //
 
         $this->M_lokasikerja->insert($data);
         $this->session->set_flashdata('message', 'Create Record Success');
@@ -160,6 +166,11 @@ class C_LokasiKerja extends CI_Controller
 			'id_lokasi_kerja' => strtoupper($this->input->post('txtIdLokasiKerjaNew',TRUE)),
 			'lokasi_kerja' => strtoupper($this->input->post('txtLokasiKerja',TRUE)),
 		);
+        //insert to sys.log_activity
+        $aksi = 'Payroll Management';
+        $detail = "Update master lokasi kerja ID=".strtoupper($this->input->post('txtIdLokasiKerja'));
+        $this->log_activity->activity_log($aksi, $detail);
+        //
 
 		$this->M_lokasikerja->update(strtoupper($this->input->post('txtIdLokasiKerja', TRUE)), $data);
         $this->session->set_flashdata('message', 'Update Record Success');
@@ -168,7 +179,7 @@ class C_LokasiKerja extends CI_Controller
 			);
 		$this->session->set_userdata($ses);
         redirect(site_url('PayrollManagement/LokasiKerja'));
-        
+
     }
 
     public function delete($id)
@@ -177,6 +188,11 @@ class C_LokasiKerja extends CI_Controller
 
         if ($row) {
             $this->M_lokasikerja->delete($id);
+            //insert to sys.log_activity
+            $aksi = 'Payroll Management';
+            $detail = "Delete master lokasi kerja ID=$id";
+            $this->log_activity->activity_log($aksi, $detail);
+            //
             $this->session->set_flashdata('message', 'Delete Record Success');
 			$ses=array(
 					 "success_delete" => 1
@@ -192,25 +208,25 @@ class C_LokasiKerja extends CI_Controller
             redirect(site_url('PayrollManagement/LokasiKerja'));
         }
     }
-	
+
 	  public function import() {
         $config['upload_path'] = 'assets/upload/importPR/lokasikerja/';
         $config['allowed_types'] = 'csv';
         $config['max_size'] = '1000';
         $this->load->library('upload', $config);
- 
+
         if (!$this->upload->do_upload('importfile')) { echo $this->upload->display_errors();}
         else {  $file_data  = $this->upload->data();
                 $filename   = $file_data['file_name'];
                 $file_path  = 'assets/upload/importPR/lokasikerja/'.$file_data['file_name'];
-                
+
             if ($this->csvimport->get_array($file_path)) {
-                
+
                 $csv_array  = $this->csvimport->get_array($file_path);
 
                 foreach ($csv_array as $row) {
 					$check = $this->M_lokasikerja->get_by_id($row['ID_']);
-                    if($check){ 
+                    if($check){
                         $data = array(
                             'lokasi_kerja'      => $row['LOKASI_KERJA'],
                         );
@@ -239,7 +255,7 @@ class C_LokasiKerja extends CI_Controller
 
     public function checkSession(){
         if($this->session->is_logged){
-            
+
         }else{
             redirect(site_url());
         }
