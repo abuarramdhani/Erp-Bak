@@ -172,6 +172,7 @@
         <table id="tblDtl" class="table table-striped table-bordered table-hovered">
         	<thead>
         		<tr id="rowT">
+        			<th>Tanggal</th>
         			<th>No. Induk</th>
         			<th>Nama</th>
         			<th>Seksi</th>
@@ -432,6 +433,7 @@
 							                    for(i=0;i < res.length ; i++){
 							                        no++;
 							                        html = html + '<tr>'
+							                        			+ '<td>' + res[i].tanggal  + '</td>'
 							                                    + '<td>' + res[i].noind  + '</td>'
 							                                    + '<td>' + res[i].nama  + '</td>'
 							                                    + '<td>' + res[i].seksi  + '</td>'
