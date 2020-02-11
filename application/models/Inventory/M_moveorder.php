@@ -1067,8 +1067,7 @@ class M_moveorder extends CI_Model
                 -- INT THE TRUTH IT WILL USED --
                 and wro.ATTRIBUTE1 is not null
                 -- INT THE TRUTH ABOVE IT WILL USED --
-                and we.WIP_ENTITY_NAME = '$job'--'D191103750'
---                and bd.DEPARTMENT_CLASS_CODE = '$dept'";
+                and we.WIP_ENTITY_NAME = '$job'--'D191103750'";
 		$query = $oracle->query($sql);
 		return $query->result_array();
 	}
