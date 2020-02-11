@@ -6,6 +6,7 @@ class C_MasterSekolahAsal extends CI_Controller
     {
         parent::__construct();
         $this->load->library('session');
+        $this->load->library('Log_Activity');
         $this->load->helper('url');
         $this->load->model('SystemAdministration/MainMenu/M_user');
         $this->load->model('PayrollManagement/MasterSekolahAsal/M_mastersekolahasal');
@@ -20,7 +21,7 @@ class C_MasterSekolahAsal extends CI_Controller
     {
         $this->checkSession();
         $user_id = $this->session->userid;
-        
+
         $data['Menu'] = 'Master Data';
         $data['SubMenuOne'] = 'Master Sekolah Asal';
         $data['SubMenuTwo'] = '';
@@ -29,7 +30,7 @@ class C_MasterSekolahAsal extends CI_Controller
         $data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id);
         $data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id);
         $masterSekolahAsal = $this->M_mastersekolahasal->get_all();
-		
+
         $data['masterSekolahAsal_data'] = $masterSekolahAsal;
         $this->load->view('V_Header',$data);
         $this->load->view('V_Sidemenu',$data);
@@ -46,7 +47,7 @@ class C_MasterSekolahAsal extends CI_Controller
     {
         $this->checkSession();
         $user_id = $this->session->userid;
-        
+
         $row = $this->M_mastersekolahasal->get_by_id($id);
         if ($row) {
             $data = array(
@@ -56,7 +57,7 @@ class C_MasterSekolahAsal extends CI_Controller
             	'UserMenu' => $this->M_user->getUserMenu($user_id,$this->session->responsibility_id),
             	'UserSubMenuOne' => $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id),
             	'UserSubMenuTwo' => $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id),
-            
+
 				'noind' => $row->noind,
 				'pendidikan' => $row->pendidikan,
 				'sekolah' => $row->sekolah,
@@ -115,6 +116,11 @@ class C_MasterSekolahAsal extends CI_Controller
 			'jurusan' => $this->input->post('txtJurusan',TRUE),
 		);
 
+        //insert to sys.log_activity
+        $aksi = 'Payroll Management';
+        $detail = "Add master sekolah asal noind=".$this->input->post('txtNoindNew');
+        $this->log_activity->activity_log($aksi, $detail);
+        //
         $this->M_mastersekolahasal->insert($data);
         $this->session->set_flashdata('message', 'Create Record Success');
 		$ses=array(
@@ -122,7 +128,7 @@ class C_MasterSekolahAsal extends CI_Controller
 			);
 		$this->session->set_userdata($ses);
         redirect(site_url('PayrollManagement/MasterSekolahAsal'));
-        
+
     }
 
     public function update($id)
@@ -169,6 +175,11 @@ class C_MasterSekolahAsal extends CI_Controller
 			'sekolah' => $this->input->post('txtSekolah',TRUE),
 			'jurusan' => $this->input->post('txtJurusan',TRUE),
 		);
+        //insert to sys.log_activity
+        $aksi = 'Payroll Management';
+        $detail = "Update master sekolah asal noind=".$this->input->post('txtNoind')." noind_new=".$this->input->post('txtNoindNew');
+        $this->log_activity->activity_log($aksi, $detail);
+        //
 
         $this->M_mastersekolahasal->update($this->input->post('txtNoind', TRUE), $data);
         $this->session->set_flashdata('message', 'Update Record Success');
@@ -177,7 +188,7 @@ class C_MasterSekolahAsal extends CI_Controller
 			);
 		$this->session->set_userdata($ses);
         redirect(site_url('PayrollManagement/MasterSekolahAsal'));
-    
+
     }
 
     public function delete($id)
@@ -186,6 +197,11 @@ class C_MasterSekolahAsal extends CI_Controller
 
         if ($row) {
             $this->M_mastersekolahasal->delete($id);
+            //insert to sys.log_activity
+            $aksi = 'Payroll Management';
+            $detail = "Delete master sekolah asal ID=$id";
+            $this->log_activity->activity_log($aksi, $detail);
+            //
             $this->session->set_flashdata('message', 'Delete Record Success');
 			$ses=array(
 					 "success_delete" => 1
@@ -204,7 +220,7 @@ class C_MasterSekolahAsal extends CI_Controller
 
     public function checkSession(){
         if($this->session->is_logged){
-            
+
         }else{
             redirect(site_url());
         }

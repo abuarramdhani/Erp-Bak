@@ -6,6 +6,7 @@ class C_RiwayatParamKoperasi extends CI_Controller
     {
         parent::__construct();
         $this->load->library('session');
+        $this->load->library('Log_Activity');
         $this->load->helper('url');
         $this->load->model('SystemAdministration/MainMenu/M_user');
         $this->load->model('PayrollManagement/SetIuranKoperasi/M_riwayatparamkoperasi');
@@ -20,7 +21,7 @@ class C_RiwayatParamKoperasi extends CI_Controller
     {
         $this->checkSession();
         $user_id = $this->session->userid;
-        
+
         $data['Menu'] = 'Set Parameter';
         $data['SubMenuOne'] = 'Set Iuran Koperasi';
         $data['SubMenuTwo'] = '';
@@ -46,7 +47,7 @@ class C_RiwayatParamKoperasi extends CI_Controller
     {
         $this->checkSession();
         $user_id = $this->session->userid;
-        
+
         $row = $this->M_riwayatparamkoperasi->get_by_id($id);
         if ($row) {
             $data = array(
@@ -56,7 +57,7 @@ class C_RiwayatParamKoperasi extends CI_Controller
             	'UserMenu' => $this->M_user->getUserMenu($user_id,$this->session->responsibility_id),
             	'UserSubMenuOne' => $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id),
             	'UserSubMenuTwo' => $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id),
-            
+
 				'id_riwayat' => $row->id_riwayat,
 				'tgl_berlaku' => $row->tgl_berlaku,
 				'tgl_tberlaku' => $row->tgl_tberlaku,
@@ -120,10 +121,15 @@ class C_RiwayatParamKoperasi extends CI_Controller
 				'kode_petugas' => $this->session->userdata('userid'),
 				'tgl_record' => date('Y-m-d H:i:s'),
 			);
-			
+
 			$data_update = array(
 				'tgl_tberlaku' => $this->input->post('txtTglBerlaku',TRUE),
 			);
+            //insert to sys.log_activity
+            $aksi = 'Payroll Management';
+            $detail = "Create set Iuran Koperasi ID=".date('YmdHis')." tgl_berlaku=".$this->input->post('txtTglBerlaku');
+            $this->log_activity->activity_log($aksi, $detail);
+            //
 			$exp = '9999-12-31';
             $this->M_riwayatparamkoperasi->update_riwayat($exp,$data_update);
             $this->M_riwayatparamkoperasi->insert($data);
@@ -185,6 +191,12 @@ class C_RiwayatParamKoperasi extends CI_Controller
 				'tgl_record' => date('Y-m-d H:i:s'),
 			);
 
+            //insert to sys.log_activity
+            $aksi = 'Payroll Management';
+            $detail = "Update set Iuran Koperasi ID=".$this->input->post('txtIdRiwayat');
+            $this->log_activity->activity_log($aksi, $detail);
+            //
+
             $this->M_riwayatparamkoperasi->update($this->input->post('txtIdRiwayat', TRUE), $data);
             $this->session->set_flashdata('message', 'Update Record Success');
 			$ses=array(
@@ -200,6 +212,11 @@ class C_RiwayatParamKoperasi extends CI_Controller
 
         if ($row) {
             $this->M_riwayatparamkoperasi->delete($id);
+            //insert to sys.log_activity
+            $aksi = 'Payroll Management';
+            $detail = "Delete set Iuran Koperasi ID=$id";
+            $this->log_activity->activity_log($aksi, $detail);
+            //
             $this->session->set_flashdata('message', 'Delete Record Success');
 			$ses=array(
 					 "success_delete" => 1
@@ -218,7 +235,7 @@ class C_RiwayatParamKoperasi extends CI_Controller
 
     public function checkSession(){
         if($this->session->is_logged){
-            
+
         }else{
             redirect(site_url());
         }

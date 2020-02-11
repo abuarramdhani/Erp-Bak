@@ -6,6 +6,7 @@ class C_MasterParamKompUmum extends CI_Controller
     {
         parent::__construct();
         $this->load->library('session');
+        $this->load->library('Log_Activity');
         $this->load->helper('url');
         $this->load->model('SystemAdministration/MainMenu/M_user');
         $this->load->model('PayrollManagement/SetKomponenGajiUmum/M_masterparamkompumum');
@@ -20,7 +21,7 @@ class C_MasterParamKompUmum extends CI_Controller
     {
         $this->checkSession();
         $user_id = $this->session->userid;
-        
+
         $data['Menu'] = 'Set Parameter';
         $data['SubMenuOne'] = 'Set Komponen Gaji Umum';
         $data['SubMenuTwo'] = '';
@@ -46,7 +47,7 @@ class C_MasterParamKompUmum extends CI_Controller
     {
         $this->checkSession();
         $user_id = $this->session->userid;
-        
+
         $row = $this->M_masterparamkompumum->get_by_id($id);
         if ($row) {
             $data = array(
@@ -56,7 +57,7 @@ class C_MasterParamKompUmum extends CI_Controller
             	'UserMenu' => $this->M_user->getUserMenu($user_id,$this->session->responsibility_id),
             	'UserSubMenuOne' => $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id),
             	'UserSubMenuTwo' => $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id),
-            
+
 				'um' => $row->um,
 				'ubt' => $row->ubt,
 			);
@@ -107,7 +108,7 @@ class C_MasterParamKompUmum extends CI_Controller
 				'um' => str_replace('.','',$this->input->post('txtUmNew',TRUE)),
 				'ubt' => str_replace('.','',$this->input->post('txtUbt',TRUE)),
 			);
-			
+
 			$data_riwayat = array(
 				'id_riwayat' => date('YmdHis'),
 				'tgl_berlaku' => date('Y-m-d'),
@@ -117,19 +118,29 @@ class C_MasterParamKompUmum extends CI_Controller
 				'kode_petugas' => $this->session->userdata('userid'),
 				'tgl_record' => date('Y-m-d H:i:s'),
 			);
-			
+
 			$check	= $this->M_masterparamkompumum->check();
 			if($check){
 				$this->M_masterparamkompumum->update($data);
+                //insert to sys.log_activity
+                $aksi = 'Payroll Management';
+                $detail = "Update set komponen gaji Umum um=".$this->input->post('txtUmNew');
+                $this->log_activity->activity_log($aksi, $detail);
+                //
 			}else{
 				$this->M_masterparamkompumum->insert($data);
+                //insert to sys.log_activity
+                $aksi = 'Payroll Management';
+                $detail = "Add set komponen gaji Umum um=".$this->input->post('txtUmNew');
+                $this->log_activity->activity_log($aksi, $detail);
+                //
 			}
-            
+
 			$last_insert_id = $this->M_masterparamkompumum->check_riwayat();
 			foreach($last_insert_id as $row){
 				$last_id = $row->id_riwayat;
 			}
-			
+
 			$data_update = array(
 				'tgl_tberlaku' => date('Y-m-d'),
 			);
@@ -185,6 +196,11 @@ class C_MasterParamKompUmum extends CI_Controller
 			);
 
             $this->M_masterparamkompumum->update($data);
+            //insert to sys.log_activity
+            $aksi = 'Payroll Management';
+            $detail = "Update set komponen gaji Umum um=".$this->input->post('txtUmNew');
+            $this->log_activity->activity_log($aksi, $detail);
+            //
             $this->session->set_flashdata('message', 'Update Record Success');
 			$ses=array(
 				 "success_update" => 1
@@ -198,6 +214,11 @@ class C_MasterParamKompUmum extends CI_Controller
 
         if ($row) {
             $this->M_masterparamkompumum->delete($id);
+            //insert to sys.log_activity
+            $aksi = 'Payroll Management';
+            $detail = "Delete set komponen gaji Umum ID=".$id;
+            $this->log_activity->activity_log($aksi, $detail);
+            //
             $this->session->set_flashdata('message', 'Delete Record Success');
 			$ses=array(
 				 "success_delete" => 1
@@ -214,7 +235,7 @@ class C_MasterParamKompUmum extends CI_Controller
 
     public function checkSession(){
         if($this->session->is_logged){
-            
+
         }else{
             redirect(site_url());
         }

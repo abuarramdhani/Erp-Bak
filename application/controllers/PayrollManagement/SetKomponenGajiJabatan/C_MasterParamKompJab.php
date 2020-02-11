@@ -6,6 +6,7 @@ class C_MasterParamKompJab extends CI_Controller
     {
         parent::__construct();
         $this->load->library('session');
+        $this->load->library('Log_Activity');
         $this->load->helper('url');
         $this->load->model('SystemAdministration/MainMenu/M_user');
         $this->load->model('PayrollManagement/SetKomponenGajiJabatan/M_masterparamkompjab');
@@ -21,7 +22,7 @@ class C_MasterParamKompJab extends CI_Controller
     {
         $this->checkSession();
         $user_id = $this->session->userid;
-        
+
         $data['Menu'] = 'Set Parameter';
         $data['SubMenuOne'] = 'Set Komponen Gaji Jabatan';
         $data['SubMenuTwo'] = '';
@@ -47,7 +48,7 @@ class C_MasterParamKompJab extends CI_Controller
     {
         $this->checkSession();
         $user_id = $this->session->userid;
-        
+
         $row = $this->M_masterparamkompjab->get_by_id($id);
         if ($row) {
             $data = array(
@@ -57,7 +58,7 @@ class C_MasterParamKompJab extends CI_Controller
             	'UserMenu' => $this->M_user->getUserMenu($user_id,$this->session->responsibility_id),
             	'UserSubMenuOne' => $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id),
             	'UserSubMenuTwo' => $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id),
-            
+
 				'id_komp_jab' => $row->id_komp_jab,
 				'kd_status_kerja' => $row->kd_status_kerja,
 				'kd_jabatan' => $row->kd_jabatan,
@@ -120,7 +121,7 @@ class C_MasterParamKompJab extends CI_Controller
     public function save()
     {
         $this->formValidation();
-		
+
 		$check = $this->M_masterparamkompjab->get_by_id($this->input->post('txtIdKompJabNew',TRUE));
 		if($check){
 			$data = array(
@@ -133,6 +134,11 @@ class C_MasterParamKompJab extends CI_Controller
 				'pot_duka' => str_replace(",","",$this->input->post('txtPotDuka',TRUE)),
 				'spsi' => str_replace(",","",$this->input->post('txtSpsi',TRUE)),
 			);
+            //insert to sys.log_activity
+            $aksi = 'Payroll Management';
+            $detail = "Update set komponen gaji jabatan ID=".$this->input->post('txtIdKompJabNew');
+            $this->log_activity->activity_log($aksi, $detail);
+            //
 			$this->M_masterparamkompjab->update($this->input->post('txtIdKompJabNew',TRUE),$data);
 		}else{
 			$data = array(
@@ -146,18 +152,23 @@ class C_MasterParamKompJab extends CI_Controller
 				'pot_duka' => str_replace(",","",$this->input->post('txtPotDuka',TRUE)),
 				'spsi' => str_replace(",","",$this->input->post('txtSpsi',TRUE)),
 			);
+            //insert to sys.log_activity
+            $aksi = 'Payroll Management';
+            $detail = "Add set komponen gaji jabatan ID=".$this->input->post('txtIdKompJabNew');
+            $this->log_activity->activity_log($aksi, $detail);
+            //
 			$this->M_masterparamkompjab->insert($data);
 		}
-		
+
 		$ru_where = array(
 			'tgl_tberlaku' => '9999-12-31',
-			'id_komp_jab' => $this->input->post('txtIdKompJabNew',TRUE),			
+			'id_komp_jab' => $this->input->post('txtIdKompJabNew',TRUE),
 		);
-		
+
 		$ru_data = array(
 			'tgl_tberlaku' => $this->input->post('txtPeriodeKompJabatan',TRUE),
 		);
-        
+
 		$ri_data = array(
 			'kd_status_kerja' => $this->input->post('cmbKdStatusKerja',TRUE),
 			'tgl_berlaku' => $this->input->post('txtPeriodeKompJabatan',TRUE),
@@ -173,7 +184,7 @@ class C_MasterParamKompJab extends CI_Controller
 			'kode_petugas' => $this->session->userdata('userid'),
 			'tgl_record' => date('Y-m-d H:i:s'),
 		);
-		
+
 		$this->M_masterparamkompjab->update_riwayat($ru_where,$ru_data);
 		$this->M_masterparamkompjab->insert_riwayat($ri_data);
         $this->session->set_flashdata('message', 'Create Record Success');
@@ -203,7 +214,7 @@ class C_MasterParamKompJab extends CI_Controller
                 'action' => site_url('PayrollManagement/MasterParamKompJab/saveUpdate'),
 				'pr_master_status_kerja_data' => $this->M_masterparamkompjab->get_pr_master_status_kerja_data(),
 				'pr_master_jabatan_data' => $this->M_masterparamkompjab->get_pr_master_jabatan_data(),
-			
+
 				'id_komp_jab' => set_value('txtIdKompJab', $row->id_komp_jab),
 				'kd_status_kerja' => set_value('txtKdStatusKerja', $row->kd_status_kerja),
 				'kd_jabatan' => set_value('txtKdJabatan', $row->kd_jabatan),
@@ -242,7 +253,11 @@ class C_MasterParamKompJab extends CI_Controller
 			'pot_duka' => $this->input->post('txtPotDuka',TRUE),
 			'spsi' => $this->input->post('txtSpsi',TRUE),
 		);
-
+        //insert to sys.log_activity
+        $aksi = 'Payroll Management';
+        $detail = "Update set komponen gaji jabatan ID=".$this->input->post('txtIdKompJabNew');
+        $this->log_activity->activity_log($aksi, $detail);
+        //
         $this->M_masterparamkompjab->update($this->input->post('txtIdKompJab', TRUE), $data);
         $this->session->set_flashdata('message', 'Update Record Success');
 		$ses=array(
@@ -258,6 +273,11 @@ class C_MasterParamKompJab extends CI_Controller
 
         if ($row) {
             $this->M_masterparamkompjab->delete($id);
+            //insert to sys.log_activity
+            $aksi = 'Payroll Management';
+            $detail = "Delete set komponen gaji jabatan ID=$id";
+            $this->log_activity->activity_log($aksi, $detail);
+            //
             $this->session->set_flashdata('message', 'Delete Record Success');
 			$ses=array(
 					 "success_delete" => 1
@@ -273,20 +293,20 @@ class C_MasterParamKompJab extends CI_Controller
             redirect(site_url('PayrollManagement/MasterParamKompJab'));
         }
     }
-	
+
 	  public function import() {
         $config['upload_path'] = 'assets/upload/importPR/masterparamkompjab/';
         $config['allowed_types'] = 'csv';
         $config['max_size'] = '1000';
         $this->load->library('upload', $config);
- 
+
         if (!$this->upload->do_upload('importfile')) { echo $this->upload->display_errors();}
         else {  $file_data  = $this->upload->data();
                 $filename   = $file_data['file_name'];
                 $file_path  = 'assets/upload/importPR/masterparamkompjab/'.$file_data['file_name'];
-                
+
             if ($this->csvimport->get_array($file_path)) {
-                
+
                 $csv_array  = $this->csvimport->get_array($file_path);
 
                 foreach ($csv_array as $row) {
@@ -337,7 +357,7 @@ class C_MasterParamKompJab extends CI_Controller
 
     public function checkSession(){
         if($this->session->is_logged){
-            
+
         }else{
             redirect(site_url());
         }
