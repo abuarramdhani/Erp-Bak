@@ -11,13 +11,14 @@ class M_receive extends CI_Model
   public function historyPO($datefrom,$dateto) {
     $oracle = $this->load->database('oracle_dev', true);
     $sql = " select distinct
-                  kpr.PO_NUMBER
-                ,kpr.SHIPMENT_NUMBER
-                ,kpr.INPUT_DATE
-                 from khs_po_receive kpr
-                  where  (kpr.FLAG = 'D' OR kpr.FLAG = 'O')
-                and  to_char(kpr.INPUT_DATE,'DD/MM/YY') between nvl('$datefrom',to_char(kpr.INPUT_DATE,'DD/MM/YY'))
-                                                       and nvl('$dateto',to_char(kpr.INPUT_DATE,'DD/MM/YY'))  ";
+               kpr.PO_NUMBER
+              ,kpr.SHIPMENT_NUMBER
+              ,kpr.LPPB_NUMBER
+              ,kpr.INPUT_DATE
+              from khs_po_receive kpr
+              where (kpr.FLAG = 'D' OR kpr.FLAG = 'O')
+            and kpr.input_date between to_date('$datefrom') and to_date('$dateto')
+            ORDER BY INPUT_DATE ASC ";
 
 
 
