@@ -412,20 +412,20 @@ class C_Monitoring extends CI_Controller
 			}, $statusKerja);
 			$statusKerja = implode(",", $statusKerja);
 
-			$q_status = "AND left(b.noind,1) IN ($statusKerja) ";
+			$q_status = "AND left(a.noind,1) IN ($statusKerja) ";
 		}else{
 			$q_status = "";
 		}
 
 		if(!empty($unitKerja)){
-			$q_unit = "AND left(b.kodesie,5) = '$unitKerja'";
+			$q_unit = "AND left(a.kodesie,5) = '$unitKerja'";
 		}else{
 			$q_unit = "";
 		}
 
 		if(!empty($seksiKerja)){
 			$seksiKerja = explode(' - ', $seksiKerja)[0];
-			$q_seksi = "AND left(b.kodesie,7) = '$seksiKerja' ";
+			$q_seksi = "AND left(a.kodesie,7) = '$seksiKerja' ";
 		}else{
 			$q_seksi = "";
 		}

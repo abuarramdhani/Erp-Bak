@@ -202,7 +202,7 @@
       </div>
       <div class="modal-body">
       <div style="position:relative;right: 0;height: 500px !important;width: 100%%;overflow: auto">
-      <div id="wadah-grafik"  style="height: 100% !important;width: 48%;float: left;"></div>
+
       <div id="wadah-pekerja" style="height: 100% !important;width: 48%;float: right;">
       	<div style="width: 100%;" align="center">
       		<img id="gmbrPkj" src="" style="width: 3cm;height: 4cm">
@@ -222,6 +222,7 @@
       			</tr>
       		</table>
       </div>
+      <div id="wadah-grafik"  style="height: 100% !important;width: 48%;float: left"></div>
       </div>
       </div>
       <div class="modal-footer">
@@ -436,6 +437,7 @@
 				dataType: 'json',
 				data: {tanggalAwal: tanggalAwal,tanggalAkhir:tanggalAkhir,noinduk: noinduk},
 				success: res =>{
+					console.log('data ' + res.data)
 					setTimeout(() => {
 					$("#cover-spin").fadeOut();
 					$('#detailGrafikModal').modal('show');
@@ -462,7 +464,84 @@
 					  },
 					  options: {
 				        responsive: true,
-   						maintainAspectRatio: false
+   						maintainAspectRatio: false,
+   						tooltips: {
+					                enabled: true,
+					                mode: 'nearest',
+					                callbacks: {
+					                    label: function(tooltipItems, data) {
+					                    	console.log(tooltipItems)	
+					                       var multistringText = [tooltipItems.yLabel];
+					                       switch(tooltipItems.index){
+					                       	case 0:
+					                       	multistringText[0] = "Terlambat : "+ res.data[0];
+					                       	if(res.tanggalPresensi['tgl_terlambat'] != "-"){
+					                       		let tanggal = res.tanggalPresensi['tgl_terlambat'].split(' , ');
+					                       		multistringText.push("Terlambat pada tanggal :");
+					                       		for(var i = 0;i < tanggal.length ; i ++){
+					                       			multistringText.push(tanggal[i])
+					                       		}
+					                       		
+					                       	}
+					                       	break;
+					                       	case 1:
+					                       	multistringText[0] = "Izin Pribadi : "+res.data[1];
+					                       	if(res.tanggalPresensi['tgl_izin_pribadi'] != "-"){
+					                       		let tanggal = res.tanggalPresensi['tgl_izin_pribadi'].split(' , ');
+					                       		multistringText.push("Izin Pribadi pada tanggal : ")
+					                       		for(var i = 0;i < tanggal.length ; i ++){
+					                       			multistringText.push(tanggal[i])
+					                       		}
+					                       	}					                       	
+					                       	break;
+					                       	case 2:
+					                       	multistringText[0] = "Mangkir : " + res.data[2];
+					                       	if(res.tanggalPresensi['tgl_mangkir'] != "-"){
+					                       		let tanggal = res.tanggalPresensi['tgl_mangkir'].split(' , ');
+					                     	  	multistringText.push("Mangkir pada tanggal : ")
+					                     	  	for(var i = 0;i < tanggal.length ; i ++){
+					                       			multistringText.push(tanggal[i])
+					                       		}                     		
+					                       	}
+					                       	break;
+					                       	case 3:
+					                       	multistringText[0] = "Sakit : " +res.data[3];
+					                       	if(res.tanggalPresensi['tgl_sakit'] != "-"){
+					                       		let tanggal = res.tanggalPresensi['tgl_sakit'].split(' , ');
+					                       		multistringText.push("Sakit pada tanggal : ")
+					                       		for(var i = 0;i < tanggal.length ; i ++){
+					                       			multistringText.push(tanggal[i])
+					                       		}
+					                       	}
+					                       	break;
+					                       	case 4:
+					                       	multistringText[0] = "Izin Pamit : "+res.data[4];
+					                       	if(res.tanggalPresensi['tgl_izin_pamit'] != "-"){
+					                       		let tanggal = res.tanggalPresensi['tgl_izin_pamit'].split(' , ');
+					                       		multistringText.push("Izin Pamit pada tanggal : ")
+					                       		for(var i = 0;i < tanggal.length ; i ++){
+					                       			multistringText.push(tanggal[i])
+					                       		}
+					                       	}
+					                       	break;
+					                       	case 5:
+					                       	multistringText[0] = "Izin Perusahaan : " + res.data[5];
+					                       	if(res.tanggalPresensi['tgl_izin_perusahaan'] != "-"){
+					                       		let tanggal = res.tanggalPresensi['tgl_izin_perusahaan'].split(' , ');
+					                       		multistringText.push("Izin Perusahaan pada tanggal : ")
+					                       		for(var i = 0;i < tanggal.length ; i ++){
+					                       			multistringText.push(tanggal[i])
+					                       		}
+					                       	}					                       	
+					                       	break;
+					                       	case 6:
+					                       	multistringText[0] = "Bekerja : "+res.data[6];
+					                       	break;
+					                       }
+					                        return multistringText;
+					                    }
+					                }
+					            }
 					  }
 					});//end chart
 
@@ -476,6 +555,9 @@
 					$("#gmbrPkj").attr('src','http://quick.com/aplikasi/photo/'+res.inf.noind+' ')
 					},1500) //end timeout
 					
+				},
+				error: (res) =>{
+					$("#cover-spin").fadeOut();
 				}
 			})
 		})
