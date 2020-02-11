@@ -68,7 +68,7 @@ function Detail(no) {
 
 $(document).ready(function() {
 	$('.tanggalan').datepicker({
-	    format: 'dd/mm/yy'
+	    format: 'dd/M/yy'
 	});
 });
 
