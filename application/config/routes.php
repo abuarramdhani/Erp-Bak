@@ -3294,6 +3294,9 @@ $route['StockGudangAlat/Stock/(:any)/(:any)'] 					= 'StockGudangAlat/C_StockGud
 $route['StockGudangAlat/Stock/(:any)/(:any)/(:any)'] 			= 'StockGudangAlat/C_StockGudangAlat/$1/$2/$3';
 $route['StockGudangAlat/Stock/search_input']					= 'StockGudangAlat/C_StockGudangAlat/search_input';
 
+$route['StockGudangAlat/Api/(:any)'] 							= 'StockGudangAlat/C_api_SGA/$1';
+$route['StockGudangAlat/Api/(:any)/(:any)'] 		        	= 'StockGudangAlat/C_api_SGA/$1/$2';
+
 //---------------------------Perkiraan Barang Datang-------------------------------//
 $route['PerkiraanBarangDatang'] 								= 'PerkiraanBarangDatang/C_Index';
 $route['PerkiraanBarangDatang/Monitoring'] 						= 'PerkiraanBarangDatang/MainMenu/Monitoring/C_Monitoring';
