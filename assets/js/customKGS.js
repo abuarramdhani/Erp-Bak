@@ -1,38 +1,20 @@
 //---------------------------------------------------------INPUT--------------------------------------------------------------------------------- 
 function inputPSPB(th) {
 	$(document).ready(function(){
-	var noSpb1  = $('#noSpb1').val();
-	var noSpb2  = $('#noSpb2').val();
-	var noSpb3  = $('#noSpb3').val();
-	var noSpb4  = $('#noSpb4').val();
-	var noSpb5  = $('#noSpb5').val();
-	var noSpb6  = $('#noSpb6').val();
-	var noSpb7  = $('#noSpb7').val();
-	var noSpb8  = $('#noSpb8').val();
-	var noSpb9  = $('#noSpb9').val();
-	var noSpb10 = $('#noSpb10').val();
-	var btn1    = $('#btn1').val();
-	var btn2    = $('#btn2').val();
-	var btn3    = $('#btn3').val();
-	var btn4    = $('#btn4').val();
-	var btn5    = $('#btn5').val();
-	var btn6    = $('#btn6').val();
-	var btn7    = $('#btn7').val();
-	var btn8    = $('#btn8').val();
-	var btn9    = $('#btn9').val();
-	var btn10   = $('#btn10').val();
-	// var pic   = $('#pic').val();
+    var no_spb      = $('input[name="no_spb[]"]').map(function(){return $(this).val();}).get();
+    var btn_urgent  = $('input[name="btn_urgent[]"]').map(function(){return $(this).val();}).get();
+    var btn_bon     = $('input[name="btn_bon[]"]').map(function(){return $(this).val();}).get();
+    var btn_langsung = $('input[name="btn_langsung[]"]').map(function(){return $(this).val();}).get();
 	// console.log(btn1);
 	var request = $.ajax({
         url: baseurl+'KapasitasGdSparepart/Input/',
-        data: {	noSpb1 : noSpb1, noSpb2 : noSpb2, noSpb3 : noSpb3, noSpb4 : noSpb4, noSpb5 : noSpb5,
-                noSpb6 : noSpb6, noSpb7 : noSpb7, noSpb8 : noSpb8, noSpb9 : noSpb9, noSpb10 : noSpb10,
-                btn1 : btn1, btn2 : btn2, btn3 : btn3, btn4 : btn4, btn5 : btn5, btn6 : btn6,
-                btn7 : btn7, btn8 : btn8, btn9 : btn9, btn10 : btn10},
+        data: {no_spb : no_spb, btn_urgent : btn_urgent, btn_bon : btn_bon, btn_langsung : btn_langsung},
         type: "POST",
-        datatype: 'html'
+        datatype: 'html',
+        success: function(data){
+			window.location.reload();
+	    }
 	});
-    window.location.reload();
 	});
 }
 
@@ -46,6 +28,28 @@ function btnUrgent(no) {
         $('#btn'+no).val('Urgent');
         $('#btn'+no).removeClass('btn-success').addClass('btn-warning');
         document.getElementById('btn'+no).style.color = 'black';
+    }
+}
+
+function btnBonKgs(no) {
+    var valbon = $('#btnbon'+no).val();
+    if (valbon == 'Bon') {
+        $('#btnbon'+no).val('Batal');
+        $('#btnbon'+no).removeClass('btn-default').addClass('btn-danger');
+    }else if (valbon == 'Batal') {
+        $('#btnbon'+no).val('Bon');
+        $('#btnbon'+no).removeClass('btn-danger').addClass('btn-default');
+    }
+}
+
+function btnLangsungKgs(no) {
+    var langsung = $('#btnlangsung'+no).val();
+    if (langsung == 'Langsung') {
+        $('#btnlangsung'+no).val('Batal');
+        $('#btnlangsung'+no).removeClass('btn-info').addClass('btn-danger');
+    }else if (langsung == 'Batal') {
+        $('#btnlangsung'+no).val('Langsung');
+        $('#btnlangsung'+no).removeClass('btn-danger').addClass('btn-info');
     }
 }
 

@@ -86,7 +86,7 @@
                                                         <td class="<?= $td?>" style="font-size:17px; font-weight: bold"><input type="hidden" id="nodoc<?= $no?>" value="<?= $val['NO_DOKUMEN']?>"><?= $val['NO_DOKUMEN']?></td>
                                                         <td class="<?= $td?>"><input type="hidden" id="jml_item<?= $no?>" value="<?= $val['JUMLAH_ITEM']?>"><?= $val['JUMLAH_ITEM']?></td>
                                                         <td class="<?= $td?>"><input type="hidden" id="jml_pcs<?= $no?>" value="<?= $val['JUMLAH_PCS']?>"><?= $val['JUMLAH_PCS']?></td>
-                                                        <td class="<?= $td?>"><?= $val['URGENT'] ?></td>
+                                                        <td class="<?= $td?>"><?= $val['URGENT'] ?>  <?= $val['BON'] ?></td>
                                                         <td class="<?= $td?>"><?= $status ?></td>
                                                         <td class="<?= $td?>"><button type="button" class="btn btn-danger" id="btncancelSPB" onclick="btnCancelKGS(<?= $no?>)"><i class="fa fa-close"></i></button></td>
                                                     </tr>

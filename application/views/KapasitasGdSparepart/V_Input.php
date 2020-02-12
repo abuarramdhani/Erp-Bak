@@ -52,11 +52,13 @@
                                         <div class="col-md-2">
                                             <label class="control-label">No. SPB / DOSP</label>
                                         </div>
-                                        <div class="col-md-3">
+                                        <div class="col-md-5">
                                             <div class="input-group input-group-sm">
-                                            <input id="noSpb1" class="form-control pull-right" placeholder="Masukan Nomor" >
+                                            <input id="noSpb1" name="no_spb[]" class="form-control pull-right" placeholder="Masukan Nomor" >
                                             <span class="input-group-btn">
-                                                <input type="button" class="btn btn-xs btn-warning" id="btn1" value="Urgent" style="color:black" onclick="btnUrgent(1)">
+                                                <input type="button" class="btn btn-xs btn-warning" id="btn1" name="btn_urgent[]" value="Urgent" style="color:black" onclick="btnUrgent(1)">
+                                                <input type="button" class="btn btn-xs btn-default" id="btnbon1" name="btn_bon[]" value="Bon" style="color:black;margin-left:10px;width:50px" onclick="btnBonKgs(1)">
+                                                <input type="button" class="btn btn-xs btn-info" id="btnlangsung1" name="btn_langsung[]" value="Langsung" style="color:black;margin-left:10px;width:70px" onclick="btnLangsungKgs(1)">
                                             </span>
                                             </div>
                                         </div>
@@ -65,11 +67,13 @@
                                         <div class="col-md-2">
                                             
                                         </div>
-                                        <div class="col-md-3">
+                                        <div class="col-md-5">
                                             <div class="input-group input-group-sm">
-                                            <input id="noSpb2" class="form-control pull-right" placeholder="Masukan Nomor" >
+                                            <input id="noSpb2" name="no_spb[]" class="form-control pull-right" placeholder="Masukan Nomor" >
                                             <span class="input-group-btn">
-                                                <input type="button" class="btn btn-xs btn-warning" id="btn2" value="Urgent" style="color:black" onclick="btnUrgent(2)">
+                                                <input type="button" class="btn btn-xs btn-warning" id="btn2" name="btn_urgent[]" value="Urgent" style="color:black" onclick="btnUrgent(2)">
+                                                <input type="button" class="btn btn-xs btn-default" id="btnbon2" name="btn_bon[]" value="Bon" style="color:black;margin-left:10px;width:50px" onclick="btnBonKgs(2)">
+                                                <input type="button" class="btn btn-xs btn-info" id="btnlangsung2" name="btn_langsung[]" value="Langsung" style="color:black;margin-left:10px;width:70px" onclick="btnLangsungKgs(2)">
                                             </span>
                                             </div>
                                         </div>
@@ -78,11 +82,13 @@
                                         <div class="col-md-2">
                                             
                                         </div>
-                                        <div class="col-md-3">
+                                        <div class="col-md-5">
                                             <div class="input-group input-group-sm">
-                                            <input id="noSpb3" class="form-control pull-right" placeholder="Masukan Nomor" >
+                                            <input id="noSpb3" name="no_spb[]" class="form-control pull-right" placeholder="Masukan Nomor" >
                                             <span class="input-group-btn">
-                                                <input type="button" class="btn btn-xs btn-warning" id="btn3" value="Urgent" style="color:black" onclick="btnUrgent(3)">
+                                                <input type="button" class="btn btn-xs btn-warning" id="btn3" name="btn_urgent[]" value="Urgent" style="color:black" onclick="btnUrgent(3)">
+                                                <input type="button" class="btn btn-xs btn-default" id="btnbon3" name="btn_bon[]" value="Bon" style="color:black;margin-left:10px;width:50px" onclick="btnBonKgs(3)">
+                                                <input type="button" class="btn btn-xs btn-info" id="btnlangsung3" name="btn_langsung[]" value="Langsung" style="color:black;margin-left:10px;width:70px" onclick="btnLangsungKgs(3)">
                                             </span>
                                             </div>
                                         </div>
@@ -91,11 +97,13 @@
                                         <div class="col-md-2">
                                             
                                         </div>
-                                        <div class="col-md-3">
+                                        <div class="col-md-5">
                                             <div class="input-group input-group-sm">
-                                            <input id="noSpb4" class="form-control pull-right" placeholder="Masukan Nomor" >
+                                            <input id="noSpb4" name="no_spb[]" class="form-control pull-right" placeholder="Masukan Nomor" >
                                             <span class="input-group-btn">
-                                                <input type="button" class="btn btn-xs btn-warning" id="btn4" value="Urgent" style="color:black" onclick="btnUrgent(4)">
+                                                <input type="button" class="btn btn-xs btn-warning" id="btn4" name="btn_urgent[]" value="Urgent" style="color:black" onclick="btnUrgent(4)">
+                                                <input type="button" class="btn btn-xs btn-default" id="btnbon4" name="btn_bon[]" value="Bon" style="color:black;margin-left:10px;width:50px" onclick="btnBonKgs(4)">
+                                                <input type="button" class="btn btn-xs btn-info" id="btnlangsung4" name="btn_langsung[]" value="Langsung" style="color:black;margin-left:10px;width:70px" onclick="btnLangsungKgs(4)">
                                             </span>
                                             </div>
                                         </div>
@@ -104,11 +112,13 @@
                                         <div class="col-md-2">
                                             
                                         </div>
-                                        <div class="col-md-3">
+                                        <div class="col-md-5">
                                             <div class="input-group input-group-sm">
-                                            <input id="noSpb5" class="form-control pull-right" placeholder="Masukan Nomor" >
+                                            <input id="noSpb5" name="no_spb[]" class="form-control pull-right" placeholder="Masukan Nomor" >
                                             <span class="input-group-btn">
-                                                <input type="button" class="btn btn-xs btn-warning" id="btn5" value="Urgent" style="color:black" onclick="btnUrgent(5)">
+                                                <input type="button" class="btn btn-xs btn-warning" id="btn5" name="btn_urgent[]" value="Urgent" style="color:black" onclick="btnUrgent(5)">
+                                                <input type="button" class="btn btn-xs btn-default" id="btnbon5" name="btn_bon[]" value="Bon" style="color:black;margin-left:10px;width:50px" onclick="btnBonKgs(5)">
+                                                <input type="button" class="btn btn-xs btn-info" id="btnlangsung5" name="btn_langsung[]" value="Langsung" style="color:black;margin-left:10px;width:70px" onclick="btnLangsungKgs(5)">
                                             </span>
                                             </div>
                                         </div>
@@ -117,11 +127,13 @@
                                         <div class="col-md-2">
                                             
                                         </div>
-                                        <div class="col-md-3">
+                                        <div class="col-md-5">
                                             <div class="input-group input-group-sm">
-                                            <input id="noSpb6" class="form-control pull-right" placeholder="Masukan Nomor" >
+                                            <input id="noSpb6" name="no_spb[]" class="form-control pull-right" placeholder="Masukan Nomor" >
                                             <span class="input-group-btn">
-                                                <input type="button" class="btn btn-xs btn-warning" id="btn6" value="Urgent" style="color:black" onclick="btnUrgent(6)">
+                                                <input type="button" class="btn btn-xs btn-warning" id="btn6" name="btn_urgent[]" value="Urgent" style="color:black" onclick="btnUrgent(6)">
+                                                <input type="button" class="btn btn-xs btn-default" id="btnbon6" name="btn_bon[]" value="Bon" style="color:black;margin-left:10px;width:50px" onclick="btnBonKgs(6)">
+                                                <input type="button" class="btn btn-xs btn-info" id="btnlangsung6" name="btn_langsung[]" value="Langsung" style="color:black;margin-left:10px;width:70px" onclick="btnLangsungKgs(6)">
                                             </span>
                                             </div>
                                         </div>
@@ -130,11 +142,13 @@
                                         <div class="col-md-2">
                                             
                                         </div>
-                                        <div class="col-md-3">
+                                        <div class="col-md-5">
                                             <div class="input-group input-group-sm">
-                                            <input id="noSpb7" class="form-control pull-right" placeholder="Masukan Nomor" >
+                                            <input id="noSpb7" name="no_spb[]" class="form-control pull-right" placeholder="Masukan Nomor" >
                                             <span class="input-group-btn">
-                                                <input type="button" class="btn btn-xs btn-warning" id="btn7" value="Urgent" style="color:black" onclick="btnUrgent(7)">
+                                                <input type="button" class="btn btn-xs btn-warning" id="btn7" name="btn_urgent[]" value="Urgent" style="color:black" onclick="btnUrgent(7)">
+                                                <input type="button" class="btn btn-xs btn-default" id="btnbon7" name="btn_bon[]" value="Bon" style="color:black;margin-left:10px;width:50px" onclick="btnBonKgs(7)">
+                                                <input type="button" class="btn btn-xs btn-info" id="btnlangsung7" name="btn_langsung[]" value="Langsung" style="color:black;margin-left:10px;width:70px" onclick="btnLangsungKgs(7)">
                                             </span>
                                             </div>
                                         </div>
@@ -143,11 +157,13 @@
                                         <div class="col-md-2">
                                             
                                         </div>
-                                        <div class="col-md-3">
+                                        <div class="col-md-5">
                                             <div class="input-group input-group-sm">
-                                            <input id="noSpb8" class="form-control pull-right" placeholder="Masukan Nomor" >
+                                            <input id="noSpb8" name="no_spb[]" class="form-control pull-right" placeholder="Masukan Nomor" >
                                             <span class="input-group-btn">
-                                                <input type="button" class="btn btn-xs btn-warning" id="btn8" value="Urgent" style="color:black" onclick="btnUrgent(8)">
+                                                <input type="button" class="btn btn-xs btn-warning" id="btn8" name="btn_urgent[]" value="Urgent" style="color:black" onclick="btnUrgent(8)">
+                                                <input type="button" class="btn btn-xs btn-default" id="btnbon8" name="btn_bon[]" value="Bon" style="color:black;margin-left:10px;width:50px" onclick="btnBonKgs(8)">
+                                                <input type="button" class="btn btn-xs btn-info" id="btnlangsung8" name="btn_langsung[]" value="Langsung" style="color:black;margin-left:10px;width:70px" onclick="btnLangsungKgs(8)">
                                             </span>
                                             </div>
                                         </div>
@@ -156,11 +172,13 @@
                                         <div class="col-md-2">
                                             
                                         </div>
-                                        <div class="col-md-3">
+                                        <div class="col-md-5">
                                             <div class="input-group input-group-sm">
-                                            <input id="noSpb9" class="form-control pull-right" placeholder="Masukan Nomor" >
+                                            <input id="noSpb9" name="no_spb[]" class="form-control pull-right" placeholder="Masukan Nomor" >
                                             <span class="input-group-btn">
-                                                <input type="button" class="btn btn-xs btn-warning" id="btn9" value="Urgent" style="color:black" onclick="btnUrgent(9)">
+                                                <input type="button" class="btn btn-xs btn-warning" id="btn9" name="btn_urgent[]" value="Urgent" style="color:black" onclick="btnUrgent(9)">
+                                                <input type="button" class="btn btn-xs btn-default" id="btnbon9" name="btn_bon[]" value="Bon" style="color:black;margin-left:10px;width:50px" onclick="btnBonKgs(9)">
+                                                <input type="button" class="btn btn-xs btn-info" id="btnlangsung9" name="btn_langsung[]" value="Langsung" style="color:black;margin-left:10px;width:70px" onclick="btnLangsungKgs(9)">
                                             </span>
                                             </div>
                                         </div>
@@ -169,11 +187,13 @@
                                         <div class="col-md-2">
                                             
                                         </div>
-                                        <div class="col-md-3">
+                                        <div class="col-md-5">
                                             <div class="input-group input-group-sm">
-                                            <input id="noSpb10" class="form-control pull-right" placeholder="Masukan Nomor" >
+                                            <input id="noSpb10" name="no_spb[]" class="form-control pull-right" placeholder="Masukan Nomor" >
                                             <span class="input-group-btn">
-                                                <input type="button" class="btn btn-xs btn-warning" id="btn10" value="Urgent"  style="color:black"onclick="btnUrgent(10)">
+                                                <input type="button" class="btn btn-xs btn-warning" id="btn10" name="btn_urgent[]" value="Urgent"  style="color:black"onclick="btnUrgent(10)">
+                                                <input type="button" class="btn btn-xs btn-default" id="btnbon10" name="btn_bon[]" value="Bon" style="color:black;margin-left:10px;width:50px" onclick="btnBonKgs(10)">
+                                                <input type="button" class="btn btn-xs btn-info" id="btnlangsung10" name="btn_langsung[]" value="Langsung" style="color:black;margin-left:10px;width:70px" onclick="btnLangsungKgs(10)">
                                             </span>
                                             </div>
                                         </div>
@@ -197,7 +217,6 @@
                                                     <th>Jumlah Item</th>
                                                     <th>Jumlah Pcs</th>
                                                     <th>Keterangan</th>
-                                                    <th>Action</th>
                                                 </tr>
                                             </thead>
                                             <tbody>
@@ -215,8 +234,7 @@
                                                     <td class="<?= $td?>" style="font-size:17px; font-weight: bold" ><input type="hidden" id="nodoc<?= $no; ?>" name="no_doc[]" value="<?= $val['NO_DOKUMEN']?>"><?= $val['NO_DOKUMEN']?></td>
                                                     <td class="<?= $td?>"><input type="hidden" name="jml_item[]" value="<?= $val['JUMLAH_ITEM']?>"><?= $val['JUMLAH_ITEM']?></td>
                                                     <td class="<?= $td?>"><input type="hidden" name="jml_pcs[]" value="<?= $val['JUMLAH_PCS']?>"><?= $val['JUMLAH_PCS']?></td>
-                                                    <td class="<?= $td?>" style="width: 15px"><input type="hidden" name="ket[]" value="<?= $val['URGENT']?>"><?= $val['URGENT']?></td>
-                                                    <td class="<?= $td?>"><input type="button" class="btn btn-xs btn-danger" id="btncancelSPB" value="Cancel" onclick="btnCancelKGS(<?= $no?>)"></td>
+                                                    <td class="<?= $td?>" style="width: 15px"><input type="hidden" name="ket[]" value="<?= $val['URGENT']?>"><?= $val['URGENT']?> <?= $val['BON']?></td>
                                                 </tr>
                                                 <?php $no++; } ?>
                                             </tbody>
