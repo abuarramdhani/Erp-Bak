@@ -148,35 +148,25 @@ class C_Report extends CI_Controller {
 			);
 
 			$cols = array("A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N");
+			
+			$val = array("Vendor Name"
+						,"Invoice Type"
+						,"Batch Number"
+						,"Invoice Date"
+						,"Invoice Number"
+						,"Payment Date"
+						,"DPP"
+						,"PPN"
+						,"Total"
+						,"No. Faktur"
+						);
 			if($status == 3){
-				$val = array("Vendor Name"
-							,"Invoice Type"
-							,"Batch Number"
-							,"Invoice Date"
-							,"Invoice Number"
-							,"Payment Date"
-							,"DPP"
-							,"PPN"
-							,"Total"
-							,"No. Faktur"
-							,"No. PO"
-							,"No. Receipt"
-							,"Tgl Receipt"
-							,"GL Date"
-							);
-			} else {
-				$val = array("Vendor Name"
-							,"Invoice Type"
-							,"Batch Number"
-							,"Invoice Date"
-							,"Invoice Number"
-							,"Payment Date"
-							,"DPP"
-							,"PPN"
-							,"Total"
-							,"No. Faktur"
-				);
-			} 
+				array_push($val
+						,"No. PO"
+						,"No. Receipt"
+						,"Tgl Receipt"
+						,"GL Date");
+			}
 			
 			if($status == 3){ $colCount = '14'; } else { $colCount = '10'; };
 			for ($a=0;$a<$colCount; $a++) {
