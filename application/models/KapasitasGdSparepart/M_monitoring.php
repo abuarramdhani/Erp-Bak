@@ -31,7 +31,7 @@ class M_monitoring extends CI_Model {
                 to_char(mulai_packing, 'HH24:MI:SS') as jam_mulai_packing, 
                 to_char(selesai_packing, 'DD/MM/YYYY') as tgl_selesai_packing,
                 to_char(selesai_packing, 'HH24:MI:SS') as jam_selesai_packing,
-                urgent, pic_pelayan, pic_pengeluaran, pic_packing
+                urgent, pic_pelayan, pic_pengeluaran, pic_packing, bon
                 from khs_tampung_spb
                 $query
                 and cancel is null
@@ -44,7 +44,7 @@ class M_monitoring extends CI_Model {
     public function dataKurang($querykrg){
         $oracle = $this->load->database('oracle', true);
         $sql="select to_char(jam_input, 'DD/MM/YYYY HH24:MI:SS') as jam_input, 
-                tgl_dibuat, 
+                tgl_dibuat, bon,
                 to_char(jam_input, 'DD/MM/YYYY') as tgl_input, 
                 to_char(jam_input, 'HH24:MI:SS') as jam_input2,
                 jenis_dokumen, no_dokumen, jumlah_item, jumlah_pcs, selesai_pengeluaran,
@@ -99,7 +99,14 @@ class M_monitoring extends CI_Model {
 
     public function getTransact($nospb) {
         $oracle = $this->load->database('oracle', true);
-        $sql ="SELECT mtrh.request_number no_spb, msib.segment1 item, msib.description, mmt.transaction_quantity, mmt.transaction_uom, mmt.SUBINVENTORY_CODE
+        $sql ="SELECT mtrh.request_number no_spb, msib.segment1 item, msib.description, mtrl.quantity,
+                mmt.transaction_quantity, mmt.transaction_uom, mmt.SUBINVENTORY_CODE,
+                (CASE
+                        WHEN mtrl.quantity > mmt.transaction_quantity
+                            THEN 'U'
+                        ELSE NULL
+                        END
+                    ) ket
                 FROM mtl_txn_request_headers mtrh,
                     mtl_txn_request_lines mtrl,
                     mtl_system_items_b msib,

@@ -103,7 +103,7 @@
                                                             <option value="DIKA">DIKA</option>
                                                         </select> <?php }?>
                                                         </td>
-                                                        <td class="<?= $td?>"><?= $val['URGENT']?></td>
+                                                        <td class="<?= $td?>"><?= $val['URGENT']?>  <?= $val['BON'] ?></td>
                                                         <td class="<?= $td?>">
                                                             <?php if (!empty($val['MULAI_PENGELUARAN']) && empty($val['WAKTU_PENGELUARAN'])){ ?>
                                                                 <p id="timer<?= $no?>" style="">Mulai <?= $val['MULAI_PENGELUARAN']?></p>
@@ -111,7 +111,7 @@
                                                             <?php }else{?>
                                                                 <p id="timer<?= $no?>" style=""><label id="hours<?= $no?>" >00</label>:<label id="minutes<?= $no?>">00</label>:<label id="seconds<?= $no?>">00</label></p>
                                                                 <input type="button" class="btn btn-md btn-success" id="btnPengeluaran<?= $no?>" onclick="btnPengeluaranSPB(<?= $no?>)" value="Mulai"> 
-                                                            <?php }?><br>
+                                                            <?php }?><br><br>
                                                             <button type="button" class="btn btn-xs btn-info" id="btnrestartSPB<?= $no?>" onclick="btnRestartPengeluaran(<?= $no?>)"><i class="fa fa-refresh"></i></button>
                                                             <button type="button" class="btn btn-xs btn-primary" id="btnpauseSPB<?= $no?>" onclick="btnPausePengeluaran(<?= $no?>)"><i class="fa fa-pause"></i></button>
                                                         </td>
@@ -161,7 +161,7 @@
                                                         <td class="<?= $td?>"><input type="hidden" id="selesai_pengeluaran<?= $no?>" value="<?= $val['SELESAI_PENGELUARAN']?>"><?= $val['SELESAI_PENGELUARAN']?></td>
                                                         <td class="<?= $td?>"><input type="hidden" id="waktu_pengeluaran<?= $no?>" value="<?= $val['WAKTU_PENGELUARAN'] ?>"><?= $val['WAKTU_PENGELUARAN'] ?></td>
                                                         <td class="<?= $td?>"><?= $val['PIC_PENGELUARAN'] ?></td>
-                                                        <td class="<?= $td?>"><?= $val['URGENT'] ?></td>
+                                                        <td class="<?= $td?>"><?= $val['URGENT'] ?> <?= $val['BON'] ?></td>
                                                     </tr>
                                                 <?php $no++; $i++; }?>
                                                 

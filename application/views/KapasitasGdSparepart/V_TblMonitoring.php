@@ -8,6 +8,7 @@
     <div class="panel-body">
         <div class="col-md-12">
             <label class="text-right">Tanggal : <?php echo $val['tanggal'] ?></label>
+            <input type="hidden" name="tanggalnya[]" value="<?= $val['tanggal']?>">
         </div>
         <!-- <div class="col-md-12"> -->
         <div class="col-md-6">
@@ -40,7 +41,7 @@
                                 <td><input type="hidden" name="no_dospb[]" value="<?= $do['NO_DOKUMEN']?>"><?= $do['NO_DOKUMEN']?></td>
                                 <td><input type="hidden" name="jml_item_dospb[]" value="<?= $do['JUMLAH_ITEM']?>"><?= $do['JUMLAH_ITEM']?></td>
                                 <td><input type="hidden" name="jml_pcs_dospb[]" value="<?= $do['JUMLAH_PCS']?>"><?= $do['JUMLAH_PCS']?></td>
-                                <td><input type="hidden" name="urgent_dospb[]" value="<?= $do['URGENT']?>"><?= $do['URGENT']?></td>
+                                <td><input type="hidden" name="urgent_dospb[]" value="<?= $do['URGENT']?> <?= $do['BON'] ?>"><?= $do['URGENT']?> <?= $do['BON'] ?></td>
                             </tr>
                         <?php $no++; $a++;}?>
                     </tbody>
@@ -98,7 +99,7 @@
                                 </td>
                                 <td><input type="hidden" name="waktu_pelayanan[]" value="<?= $plyn['WAKTU_PELAYANAN']?>"><?= $plyn['WAKTU_PELAYANAN']?></td>
                                 <td><input type="hidden" name="pic_plyn[]" value="<?= $plyn['PIC_PELAYAN']?>"><?= $plyn['PIC_PELAYAN']?></td>
-                                <td><input type="hidden" name="urgent_plyn[]" value="<?= $plyn['URGENT']?>"><?= $plyn['URGENT']?></td>
+                                <td><input type="hidden" name="urgent_plyn[]" value="<?= $plyn['URGENT']?> <?= $plyn['BON'] ?>"><?= $plyn['URGENT']?> <?= $plyn['BON'] ?></td>
                             </tr>
                         <?php $no++;}?>
                     </tbody>
@@ -127,7 +128,7 @@
                                 <td><input type="hidden" name="no_krgplyn[]" value="<?= $kplyn['NO_DOKUMEN']?>"><?= $kplyn['NO_DOKUMEN']?></td>
                                 <td><input type="hidden" name="jml_item_krgplyn[]" value="<?= $kplyn['JUMLAH_ITEM']?>"><?= $kplyn['JUMLAH_ITEM']?></td>
                                 <td><input type="hidden" name="jml_pcs_krgplyn[]" value="<?= $kplyn['JUMLAH_PCS']?>"><?= $kplyn['JUMLAH_PCS']?></td>
-                                <td><input type="hidden" name="urgent_krgplyn[]" value="<?= $kplyn['URGENT']?>"><?= $kplyn['URGENT']?></td>
+                                <td><input type="hidden" name="urgent_krgplyn[]" value="<?= $kplyn['URGENT']?> <?= $kplyn['BON'] ?>"><?= $kplyn['URGENT']?> <?= $kplyn['BON'] ?></td>
                             </tr>
                         <?php $no++; }?>
                     </tbody>
@@ -185,7 +186,7 @@
                                 </td>
                                 <td><input type="hidden" name="waktu_pengeluaran[]" value="<?= $pglr['WAKTU_PENGELUARAN']?>"><?= $pglr['WAKTU_PENGELUARAN']?></td>
                                 <td><input type="hidden" name="pic_pglr[]" value="<?= $pglr['PIC_PENGELUARAN']?>"><?= $pglr['PIC_PENGELUARAN']?></td>
-                                <td><input type="hidden" name="urgent_pglr[]" value="<?= $pglr['URGENT']?>"><?= $pglr['URGENT']?></td>
+                                <td><input type="hidden" name="urgent_pglr[]" value="<?= $pglr['URGENT']?> <?= $pglr['BON'] ?>"><?= $pglr['URGENT']?> <?= $pglr['BON'] ?></td>
                             </tr>
                         <?php $no++;} ?>
                         
@@ -217,7 +218,7 @@
                                 <td><input type="hidden" name="jml_item_krgpglr[]" value="<?= $kpglr['JUMLAH_ITEM']?>"><?= $kpglr['JUMLAH_ITEM']?></td>
                                 <td><input type="hidden" name="jml_pcs_krgpglr[]" value="<?= $kpglr['JUMLAH_PCS']?>"><?= $kpglr['JUMLAH_PCS']?></td>
                                 <td><input type="hidden" name="pic_krgpglr[]" value="<?= $kpglr['PIC_PELAYAN']?>"><?= $kpglr['PIC_PELAYAN']?></td>
-                                <td><input type="hidden" name="urgent_krgpglr[]" value="<?= $kpglr['URGENT']?>"><?= $kpglr['URGENT']?></td>
+                                <td><input type="hidden" name="urgent_krgpglr[]" value="<?= $kpglr['URGENT']?> <?= $kpglr['BON'] ?>"><?= $kpglr['URGENT']?> <?= $kpglr['BON'] ?></td>
                             </tr>
                         <?php $no++; } ?>
                     </tbody>
@@ -275,7 +276,7 @@
                                 </td>
                                 <td><input type="hidden" name="waktu_packing[]" value="<?= $pck['WAKTU_PACKING']?>"><?= $pck['WAKTU_PACKING']?></td>
                                 <td><input type="hidden" name="pic_pck[]" value="<?= $pck['PIC_PACKING']?>"><?= $pck['PIC_PACKING']?></td>
-                                <td><input type="hidden" name="urgent_pck[]" value="<?= $pck['URGENT']?>"><?= $pck['URGENT']?></td>
+                                <td><input type="hidden" name="urgent_pck[]" value="<?= $pck['URGENT']?> <?= $pck['BON'] ?>"><?= $pck['URGENT']?> <?= $pck['BON'] ?></td>
                             </tr>
                         <?php $no++;} ?>
                     </tbody>
@@ -306,7 +307,7 @@
                                 <td><input type="hidden" name="jml_item_krgpck[]" value="<?= $kpck['JUMLAH_ITEM']?>"><?= $kpck['JUMLAH_ITEM']?></td>
                                 <td><input type="hidden" name="jml_pcs_krgpck[]" value="<?= $kpck['JUMLAH_PCS']?>"><?= $kpck['JUMLAH_PCS']?></td>
                                 <td><input type="hidden" name="pic_krgpck[]" value="<?= $kpck['PIC_PENGELUARAN']?>"><?= $kpck['PIC_PENGELUARAN']?></td>
-                                <td><input type="hidden" name="urgent_krgpck[]" value="<?= $kpck['URGENT']?>"><?= $kpck['URGENT']?></td>
+                                <td><input type="hidden" name="urgent_krgpck[]" value="<?= $kpck['URGENT']?> <?= $kpck['BON'] ?>"><?= $kpck['URGENT']?> <?= $kpck['BON'] ?></td>
                             </tr>
                         <?php $no++; } ?>
                     </tbody>
@@ -319,11 +320,11 @@
                 <tbody>
                     <tr>
                         <th width="53.5%" style="padding-left:15px">Jumlah DOSP/SPB selesai</th>
-                        <th>: <?= $val['jml_selesai'] ?> pcs</th>
+                        <th><input type="hidden" name="jml_selesai[]" value="<?= $val['jml_selesai']?>">: <?= $val['jml_selesai'] ?> pcs</th>
                     </tr>
                     <tr>
                         <th style="padding-left:15px">Kekurangan DOSP/SPB selesai</th>
-                        <th>: <?= $val['krg_selesai'] ?> pcs</th>
+                        <th><input type="hidden" name="krg_selesai[]" value="<?= $val['krg_selesai']?>">: <?= $val['krg_selesai'] ?> pcs</th>
                     </tr>
                     <tr>
                         <th style="padding-left:15px">DOSP / SPB cancel hari ini</th>

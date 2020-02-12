@@ -59,7 +59,7 @@ class C_Monitoring extends CI_Controller
 		$pengeluaran = $this->M_monitoring->getDataSPB($query3);
 		$data['pengeluaran'] = $pengeluaran;
 		$data['jml_pengeluaran'] = count($pengeluaran);
-		$kurang = "where selesai_pelayanan is not null and selesai_pengeluaran is null";
+		$kurang = "where selesai_pelayanan is not null and selesai_pengeluaran is null and (bon != 'LANGSUNG' or bon is null)";
 		$data['krgpengeluaran'] = $this->M_monitoring->dataKurang($kurang);
 		$data['krg_pengeluaran'] = count($data['krgpengeluaran']);
 
@@ -71,7 +71,7 @@ class C_Monitoring extends CI_Controller
 		for ($i=0; $i < $data['jml_packing'] ; $i++) { 
 			$total += $packing[$i]['JUMLAH_PCS'];
 		}
-		$kurang = "where selesai_pengeluaran is not null and selesai_packing is null";
+		$kurang = "where selesai_pengeluaran is not null and selesai_packing is null and bon is null";
 		$data['krgpacking'] = $this->M_monitoring->dataKurang($kurang);
 		$data['krg_packing'] = count($data['krgpacking']);
 
@@ -141,9 +141,9 @@ class C_Monitoring extends CI_Controller
 			$hasil[$a]['pengeluaran'] = $pengeluaran;
 			$hasil[$a]['jml_pengeluaran'] = count($pengeluaran);
 			if ($date == date('d/m/Y')) {
-				$kurang = "where selesai_pelayanan is not null and selesai_pengeluaran is null";
+				$kurang = "where selesai_pelayanan is not null and selesai_pengeluaran is null and (bon != 'LANGSUNG' or bon is null)";
 			}else {
-				$kurang = "where TO_CHAR(selesai_pelayanan,'DD/MM/YYYY') between '$date' and '$date' and trunc(selesai_pengeluaran) > '$tgl[$a]'";
+				$kurang = "where (bon != 'LANGSUNG' or bon is null) and TO_CHAR(selesai_pelayanan,'DD/MM/YYYY') between '$date' and '$date' and trunc(selesai_pengeluaran) > '$tgl[$a]'";
 			}
 			$hasil[$a]['krgpengeluaran'] = $this->M_monitoring->dataKurang($kurang);
 			$hasil[$a]['krg_pengeluaran'] = count($hasil[$a]['krgpengeluaran']);
@@ -157,9 +157,9 @@ class C_Monitoring extends CI_Controller
 				$total += $packing[$i]['JUMLAH_PCS'];
 			}
 			if ($date == date('d/m/Y')) {
-				$kurang = "where selesai_pengeluaran is not null and selesai_packing is null";
+				$kurang = "where selesai_pengeluaran is not null and selesai_packing is null and bon is null";
 			}else {
-				$kurang = "where TO_CHAR(selesai_pengeluaran,'DD/MM/YYYY') between '$date' and '$date' and trunc(selesai_packing) > '$tgl[$a]'";
+				$kurang = "where bon is null and TO_CHAR(selesai_pengeluaran,'DD/MM/YYYY') between '$date' and '$date' and trunc(selesai_packing) > '$tgl[$a]'";
 			}
 			$hasil[$a]['krgpacking'] = $this->M_monitoring->dataKurang($kurang);
 			$hasil[$a]['krg_packing'] = count($hasil[$a]['krgpacking']);
@@ -372,8 +372,52 @@ class C_Monitoring extends CI_Controller
 			);
 			array_push($dataKrgPck, $array);
 		}
+
+		$tanggal 		= $this->input->post('tanggalnya[]');
+		$jml_selesai 	= $this->input->post('jml_selesai');
+		$krg_selesai 	= $this->input->post('krg_selesai');
+
+		$dataselesai = array();
+		for ($i=0; $i < count($tanggal); $i++) { 
+			$array = array(
+				'tanggal'		=> $tanggal[$i],
+				'jml_selesai' 	=> $jml_selesai[$i],
+				'krg_selesai' 	=> $krg_selesai[$i],
+				'total_selesai' => $jml_selesai[$i] + $krg_selesai[$i],
+			);
+			array_push($dataselesai, $array);
+		}
+		$kekurangan = array();
+		$itemkurang = array();
+		for ($i=0; $i < count($no_pck) ; $i++) { 
+			$kurang = $this->M_monitoring->getTransact($no_pck[$i]);
+			for ($a=0; $a < count($kurang); $a++) { 
+				if($kurang[$a]['KET'] == 'U'){
+					$array = array(
+						'no_spb'		=> $kurang[$a]['NO_SPB'],
+						'item' 			=> $kurang[$a]['ITEM'],
+						'description' 	=> $kurang[$a]['DESCRIPTION'],
+						'qty' 			=> $kurang[$a]['QUANTITY'] - $kurang[$a]['TRANSACTION_QUANTITY'],
+					);
+					array_push($kekurangan, $array);
+
+					if (!in_array($kurang[$a]['ITEM'], $itemkurang)) {
+						array_push($itemkurang, $kurang[$a]['ITEM']);
+					}
+				}
+			}
+		}
 		
-		// echo "<pre>"; print_r($dataKrgPglr); exit();
+		$dataKurang = array();
+		for ($i=0; $i < count($itemkurang) ; $i++) { 
+			foreach($kekurangan as $val) { 
+				if ($itemkurang[$i] == $val['item']) {
+					array_push($dataKurang, $val);
+				}
+			}
+		}
+		
+		// echo "<pre>"; print_r($dataKurang); exit();
 
 		include APPPATH.'third_party/Excel/PHPExcel.php';
 			$excel = new PHPExcel();
@@ -421,6 +465,18 @@ class C_Monitoring extends CI_Controller
 					'horizontal' => PHPExcel_Style_Alignment::HORIZONTAL_CENTER, 
 					'vertical'	 => PHPExcel_Style_Alignment::VERTICAL_CENTER,
 					'wrap'		 => true
+				),
+				'borders' => array(
+					'top' 		=> array('style'  => PHPExcel_Style_Border::BORDER_THIN), 
+					'right' 	=> array('style'  => PHPExcel_Style_Border::BORDER_THIN),  
+					'bottom' 	=> array('style'  => PHPExcel_Style_Border::BORDER_THIN),
+					'left' 		=> array('style'  => PHPExcel_Style_Border::BORDER_THIN) 
+				)
+			);
+
+			$style3 = array(
+				'alignment' => array(
+					'vertical'	 => PHPExcel_Style_Alignment::VERTICAL_CENTER,
 				),
 				'borders' => array(
 					'top' 		=> array('style'  => PHPExcel_Style_Border::BORDER_THIN), 
@@ -1026,6 +1082,110 @@ class C_Monitoring extends CI_Controller
 					}
 			}
 
+			$sls = $noKPck + count($dataKrgPck) + 4;
+			$head = $noKPck + count($dataKrgPck) + 5;
+			// Tabel data selesai
+			$excel->setActiveSheetIndex(0)->setCellValue("A$sls", "DATA DOSP/SPB SELESAI");
+			$excel->setActiveSheetIndex(0)->setCellValue("A$head", "NO.");
+			$excel->setActiveSheetIndex(0)->setCellValue("B$head", "TANGGAL");
+			$excel->setActiveSheetIndex(0)->setCellValue("D$head", "JUMLAH SELESAI");
+			$excel->setActiveSheetIndex(0)->setCellValue("F$head", "JUMLAH KEKURANGAN");
+			$excel->setActiveSheetIndex(0)->setCellValue("H$head", "TOTAL");
+			$excel->getActiveSheet()->mergeCells("B$head:C$head"); 
+			$excel->getActiveSheet()->mergeCells("D$head:E$head"); 
+			$excel->getActiveSheet()->mergeCells("F$head:G$head"); 
+			$excel->getActiveSheet()->mergeCells("H$head:I$head"); 
+			$excel->getActiveSheet()->getStyle("A$sls")->applyFromArray($style1);
+			$excel->getActiveSheet()->getStyle("A$head")->applyFromArray($style_col);
+			$excel->getActiveSheet()->getStyle("B$head")->applyFromArray($style_col);
+			$excel->getActiveSheet()->getStyle("C$head")->applyFromArray($style_col);
+			$excel->getActiveSheet()->getStyle("D$head")->applyFromArray($style_col);
+			$excel->getActiveSheet()->getStyle("E$head")->applyFromArray($style_col);
+			$excel->getActiveSheet()->getStyle("F$head")->applyFromArray($style_col);
+			$excel->getActiveSheet()->getStyle("G$head")->applyFromArray($style_col);
+			$excel->getActiveSheet()->getStyle("H$head")->applyFromArray($style_col);
+			$excel->getActiveSheet()->getStyle("I$head")->applyFromArray($style_col);
+			$no2=1;
+			$numrow2 = $head + 1;
+			foreach ($dataselesai as $val) {
+				$excel->setActiveSheetIndex(0)->setCellValue('A'.$numrow2, $no2);
+				$excel->setActiveSheetIndex(0)->setCellValue('B'.$numrow2, $val['tanggal']);
+				$excel->setActiveSheetIndex(0)->setCellValue('D'.$numrow2, $val['jml_selesai']);
+				$excel->setActiveSheetIndex(0)->setCellValue('F'.$numrow2, $val['krg_selesai']);
+				$excel->setActiveSheetIndex(0)->setCellValue('H'.$numrow2, $val['total_selesai']);
+				$excel->getActiveSheet()->mergeCells("B$numrow2:C$numrow2"); 
+				$excel->getActiveSheet()->mergeCells("D$numrow2:E$numrow2"); 
+				$excel->getActiveSheet()->mergeCells("F$numrow2:G$numrow2"); 
+				$excel->getActiveSheet()->mergeCells("H$numrow2:I$numrow2"); 
+				$excel->getActiveSheet()->getStyle('A'.$numrow2)->applyFromArray($style2);
+				$excel->getActiveSheet()->getStyle('B'.$numrow2)->applyFromArray($style2);
+				$excel->getActiveSheet()->getStyle('C'.$numrow2)->applyFromArray($style2);
+				$excel->getActiveSheet()->getStyle('D'.$numrow2)->applyFromArray($style2);
+				$excel->getActiveSheet()->getStyle('E'.$numrow2)->applyFromArray($style2);
+				$excel->getActiveSheet()->getStyle('F'.$numrow2)->applyFromArray($style2);
+				$excel->getActiveSheet()->getStyle('G'.$numrow2)->applyFromArray($style2);
+				$excel->getActiveSheet()->getStyle('H'.$numrow2)->applyFromArray($style2);
+				$excel->getActiveSheet()->getStyle('I'.$numrow2)->applyFromArray($style2);
+			$numrow2++;
+			$no2++; 
+			}
+
+			$krg = $head + count($dataselesai) + 4;
+			$krgselesai = $head + count($dataselesai) + 5;
+			// Tabel data kekurangan
+			$excel->setActiveSheetIndex(0)->setCellValue("A$krg", "KEKURANGAN DATA SELESAI");
+			$excel->setActiveSheetIndex(0)->setCellValue("A$krgselesai", "NO.");
+			$excel->setActiveSheetIndex(0)->setCellValue("B$krgselesai", "NO SPB");
+			$excel->setActiveSheetIndex(0)->setCellValue("D$krgselesai", "ITEM");
+			$excel->setActiveSheetIndex(0)->setCellValue("F$krgselesai", "DESCRIPTION");
+			$excel->setActiveSheetIndex(0)->setCellValue("L$krgselesai", "JUMLAH");
+			$excel->getActiveSheet()->mergeCells("B$krgselesai:C$krgselesai"); 
+			$excel->getActiveSheet()->mergeCells("D$krgselesai:E$krgselesai"); 
+			$excel->getActiveSheet()->mergeCells("F$krgselesai:K$krgselesai"); 
+			$excel->getActiveSheet()->mergeCells("L$krgselesai:M$krgselesai"); 
+			$excel->getActiveSheet()->getStyle("A$krg")->applyFromArray($style1);
+			$excel->getActiveSheet()->getStyle("A$krgselesai")->applyFromArray($style_col);
+			$excel->getActiveSheet()->getStyle("B$krgselesai")->applyFromArray($style_col);
+			$excel->getActiveSheet()->getStyle("C$krgselesai")->applyFromArray($style_col);
+			$excel->getActiveSheet()->getStyle("D$krgselesai")->applyFromArray($style_col);
+			$excel->getActiveSheet()->getStyle("E$krgselesai")->applyFromArray($style_col);
+			$excel->getActiveSheet()->getStyle("F$krgselesai")->applyFromArray($style_col);
+			$excel->getActiveSheet()->getStyle("G$krgselesai")->applyFromArray($style_col);
+			$excel->getActiveSheet()->getStyle("H$krgselesai")->applyFromArray($style_col);
+			$excel->getActiveSheet()->getStyle("I$krgselesai")->applyFromArray($style_col);
+			$excel->getActiveSheet()->getStyle("J$krgselesai")->applyFromArray($style_col);
+			$excel->getActiveSheet()->getStyle("K$krgselesai")->applyFromArray($style_col);
+			$excel->getActiveSheet()->getStyle("L$krgselesai")->applyFromArray($style_col);
+			$excel->getActiveSheet()->getStyle("M$krgselesai")->applyFromArray($style_col);
+			$no3=1;
+			$numrow3 = $krgselesai + 1;
+			foreach ($dataKurang as $val) {
+				$excel->setActiveSheetIndex(0)->setCellValue('A'.$numrow3, $no3);
+				$excel->setActiveSheetIndex(0)->setCellValue('B'.$numrow3, $val['no_spb']);
+				$excel->setActiveSheetIndex(0)->setCellValue('D'.$numrow3, $val['item']);
+				$excel->setActiveSheetIndex(0)->setCellValue('F'.$numrow3, $val['description']);
+				$excel->setActiveSheetIndex(0)->setCellValue('L'.$numrow3, $val['qty']);
+				$excel->getActiveSheet()->mergeCells("B$numrow3:C$numrow3"); 
+				$excel->getActiveSheet()->mergeCells("D$numrow3:E$numrow3"); 
+				$excel->getActiveSheet()->mergeCells("F$numrow3:K$numrow3"); 
+				$excel->getActiveSheet()->mergeCells("L$numrow3:M$numrow3"); 
+				$excel->getActiveSheet()->getStyle('A'.$numrow3)->applyFromArray($style2);
+				$excel->getActiveSheet()->getStyle('B'.$numrow3)->applyFromArray($style2);
+				$excel->getActiveSheet()->getStyle('C'.$numrow3)->applyFromArray($style2);
+				$excel->getActiveSheet()->getStyle('D'.$numrow3)->applyFromArray($style2);
+				$excel->getActiveSheet()->getStyle('E'.$numrow3)->applyFromArray($style2);
+				$excel->getActiveSheet()->getStyle('F'.$numrow3)->applyFromArray($style3);
+				$excel->getActiveSheet()->getStyle('G'.$numrow3)->applyFromArray($style3);
+				$excel->getActiveSheet()->getStyle('H'.$numrow3)->applyFromArray($style3);
+				$excel->getActiveSheet()->getStyle('I'.$numrow3)->applyFromArray($style3);
+				$excel->getActiveSheet()->getStyle('J'.$numrow3)->applyFromArray($style3);
+				$excel->getActiveSheet()->getStyle('K'.$numrow3)->applyFromArray($style3);
+				$excel->getActiveSheet()->getStyle('L'.$numrow3)->applyFromArray($style2);
+				$excel->getActiveSheet()->getStyle('M'.$numrow3)->applyFromArray($style2);
+			$numrow3++;
+			$no3++; 
+			}
+			
 			$excel->getActiveSheet()->getColumnDimension('A')->setWidth(5); 
 			$excel->getActiveSheet()->getColumnDimension('B')->setWidth(13); 
 			$excel->getActiveSheet()->getColumnDimension('C')->setWidth(13); 
