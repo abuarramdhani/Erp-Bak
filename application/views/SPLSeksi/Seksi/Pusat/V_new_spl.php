@@ -70,7 +70,7 @@
 													<div class="input-group-addon">
 														<i class="fa fa-clock-o"></i>
 													</div>
-													<input type="text" class="form-control spl-time-mask" name="waktu_0" required>
+													<input type="text" class="form-control spl-time-mask" placeholder="Jam awal" name="waktu_0" required>
 												</div>
 											</div>
 										</div>
@@ -93,7 +93,7 @@
 													<div class="input-group-addon">
 														<i class="fa fa-clock-o"></i>
 													</div>
-													<input type="text" class="form-control spl-time-mask" name="waktu_1" required>
+													<input type="text" class="form-control spl-time-mask" placeholder="Jam akhir" name="waktu_1" required>
 												</div>
 											</div>
 										</div>
@@ -146,7 +146,7 @@
 									<div class="form-group">
 										<label class="col-sm-2 control-label">Alasan</label>
 										<div class="col-sm-10">
-											<textarea class="form-control" rows="3" name="alasan" class="" required></textarea>
+											<textarea class="form-control" rows="3" name="alasan" placeholder="Alasan kenapa lembur" class="" required></textarea>
 										</div>
 									</div>
 

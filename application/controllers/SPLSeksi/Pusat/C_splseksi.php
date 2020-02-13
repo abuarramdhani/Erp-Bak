@@ -757,6 +757,7 @@ class C_splseksi extends CI_Controller {
 								$errortext = "Jam Awal Lembur Tidak Sesuai";
 							}
 						}elseif ($lembur == '002') { // lembur pulang
+							// FIXMME :
 							if ($keluar_shift <= $awal_lembur && $awal_lembur <= $keluar_absen) {
 								$aktual_awal = $awal_lembur;
 								if ($keluar_shift <= $akhir_lembur && $akhir_lembur <= $keluar_absen) {
