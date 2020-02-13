@@ -50,10 +50,10 @@ class C_splasska extends CI_Controller {
 	public function data_spl(){
 		$this->checkSession();
 		$wkt_validasi = $this->session->spl_validasi_waktu_asska;
-		if (time() - $wkt_validasi > 120) {
-			$this->session->spl_validasi_asska = FALSE;
-			redirect(site_url('SPL'));
-		}
+		// if (time() - $wkt_validasi > 120) {
+		// 	$this->session->spl_validasi_asska = FALSE;
+		// 	redirect(site_url('SPL'));
+		// }
 		$this->session->spl_validasi_waktu_asska = time();
 		$data = $this->menu('', '', '');
 		$data['lokasi'] = $this->M_splseksi->show_lokasi();
@@ -677,6 +677,7 @@ class C_splasska extends CI_Controller {
 	}
 
 	function fp_succes(){
+		echo "edadad";die;
 		$status = $_GET['status'];
 		$spl_id = $_GET['spl_id'];
 		$ket = $_GET['ket'];
