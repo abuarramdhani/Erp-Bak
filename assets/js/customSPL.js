@@ -557,7 +557,7 @@ $(function() {
                     kodesie: $('#kodesie').val()
                 },
                 success: function(data) {
-                    if (data != "[]") {
+                    if (data.length) {
                         var send = $.parseJSON(data);
                         table.rows.add(send);
                         table.draw();
