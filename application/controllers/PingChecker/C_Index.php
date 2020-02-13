@@ -52,55 +52,55 @@ class C_Index extends CI_Controller {
 		$ipName = array(
 					array(
 						'name' => 'IconPlus PUSAT-BANJARMASIN',
-						'ip' => '172.16.100.94',
+						'ip' => '172.16.100.93',
 					),
 					array(
 						'name' => 'IconPlus PUSAT-JAKARTA',
-						'ip' => '172.16.100.26',
+						'ip' => '172.16.100.25',
 					),
 					array(
 						'name' => 'IconPlus PUSAT-LAMPUNG',
-						'ip' => '172.16.100.14',
+						'ip' => '172.16.100.13',
 					),
 					array(
 						'name' => 'IconPlus PUSAT-LANGKAPURA',
-						'ip' => '172.16.100.62',
+						'ip' => '172.16.100.61',
 					),
 					array(
 						'name' => 'IconPlus PUSAT-MAKASSAR',
-						'ip' => '172.16.100.30',
+						'ip' => '172.16.100.29',
 					),
 					array(
 						'name' => 'IconPlus PUSAT-MEDAN',
-						'ip' => '172.16.100.18',
+						'ip' => '172.16.100.17',
 					),
 					array(
 						'name' => 'IconPlus PUSAT-MLATI',
-						'ip' => '172.16.100.22',
+						'ip' => '172.16.100.21',
 					),
 					array(
 						'name' => 'IconPlus PUSAT-PALU',
-						'ip' => '172.16.100.102',
+						'ip' => '172.16.100.101',
 					),
 					array(
 						'name' => 'IconPlus PUSAT-PEKANBARU',
-						'ip' => '172.16.100.90',
+						'ip' => '172.16.100.89',
 					),
 					array(
 						'name' => 'IconPlus PUSAT-PONTIANAK',
-						'ip' => '172.16.100.50',
+						'ip' => '172.16.100.49',
 					),
 					array(
 						'name' => 'IconPlus PUSAT-SURABAYA',
-						'ip' => '172.16.100.10',
+						'ip' => '172.16.100.9',
 					),
 					array(
 						'name' => 'IconPlus PUSAT-TUKSONO',
-						'ip' => '172.16.100.6',
+						'ip' => '172.16.100.5',
 					),
 					array(
 						'name' => 'LDP PUSAT-TUKSONO',
-						'ip' => '172.18.22.2',
+						'ip' => '172.18.22.1',
 					)
 		);
 		
@@ -271,7 +271,213 @@ class C_Index extends CI_Controller {
 
 	}
 
+	public function checkSide()
+	{
+		$ipName = array(
+			array(
+				'name' => 'IconPlus PUSAT-BANJARMASIN',
+				'ip' => '172.16.100.94',
+			),
+			array(
+				'name' => 'IconPlus PUSAT-JAKARTA',
+				'ip' => '172.16.100.26',
+			),
+			array(
+				'name' => 'IconPlus PUSAT-LAMPUNG',
+				'ip' => '172.16.100.14',
+			),
+			array(
+				'name' => 'IconPlus PUSAT-LANGKAPURA',
+				'ip' => '172.16.100.62',
+			),
+			array(
+				'name' => 'IconPlus PUSAT-MAKASSAR',
+				'ip' => '172.16.100.30',
+			),
+			array(
+				'name' => 'IconPlus PUSAT-MEDAN',
+				'ip' => '172.16.100.18',
+			),
+			array(
+				'name' => 'IconPlus PUSAT-MLATI',
+				'ip' => '172.16.100.22',
+			),
+			array(
+				'name' => 'IconPlus PUSAT-PALU',
+				'ip' => '172.16.100.102',
+			),
+			array(
+				'name' => 'IconPlus PUSAT-PEKANBARU',
+				'ip' => '172.16.100.90',
+			),
+			array(
+				'name' => 'IconPlus PUSAT-PONTIANAK',
+				'ip' => '172.16.100.50',
+			),
+			array(
+				'name' => 'IconPlus PUSAT-SURABAYA',
+				'ip' => '172.16.100.10',
+			),
+			array(
+				'name' => 'IconPlus PUSAT-TUKSONO',
+				'ip' => '172.16.100.6',
+			),
+			array(
+				'name' => 'LDP PUSAT-TUKSONO',
+				'ip' => '172.18.22.2',
+			)
+		);
+
+		foreach ($ipName as $key => $ip) {
+			$domainbase = $ip['ip'];
+
+			$status = $this->pingDomainSide($domainbase);
+	
+			if ($status != -1) {
+	
+				echo "<tr><td>http://$domainbase is ALIVE ($status ms)</td><tr>";
+				$messages = "http://$domainbase is ALIVE ($status ms)";
+			}else {
+	
+				echo "<tr><td>http://$domainbase is DOWN</td><tr>";
+				$messages = "http://$domainbase is DOWN ($status ms)";
+
+				$status = $this->M_index->checkStatusAction($domainbase);
+
+				if ($status == null) {
+					$statusNow = 0;
+					$time = date('d-m-Y H:i:s');
+					$st = "OPEN";
+
+					$message ="<table>
+								<tr>
+									<th align='left'>IP</th>
+									<th>:</th>
+									<td>$domainbase</td>
+								</tr>
+								<tr>
+								 	<th align='left'>STATUS</th>
+									<th>:</th>
+									<td>$st</td>
+								</tr>
+								<tr>
+								 	<th align='left'>TIME</th>
+									<th>:</th>
+									<td>$time</td>
+								</tr>
+								<tr>
+								 	<th align='left'>DOWN TIME</th>
+									<th>:</th>
+									<td>$statusNow Jam</td>
+								</tr>
+							</table>";
+				}else {
+					if ($status[0]['action'] == null) {
+						$sts = $status[0]['status'];
+						$statusNow = 0;
+						$statusNows = $sts + 1;
+						$downtime = $statusNows * 15 / 60;
+
+						$time = date('d-m-Y H:i:s');
+						$st = "OPEN";
+						$message ="<table>
+								<tr>
+									<th align='left'>IP</th>
+									<th>:</th>
+									<td>$domainbase</td>
+								</tr>
+								 <tr>
+								 	<th align='left'>STATUS</th>
+									<th>:</th>
+									<td>$st</td>
+								 </tr>
+								 <tr>
+								 	<th align='left'>TIME</th>
+									<th>:</th>
+									<td>$time</td>
+								 </tr>
+								 <tr>
+								 	<th align='left'>DOWN TIME</th>
+									<th>:</th>
+									<td>$downtime Jam</td>
+								 </tr>
+								</table>";
+					}else {
+						$action = $status[0]['action'];
+						$actBy = $status[0]['action_by'];
+						$noticket = $status[0]['no_ticket'];
+						$sts = $status[0]['status'];
+						$statusNow = $sts +1;
+						$downtime = $statusNow * 15 / 60;
+
+						$getNamaCreator = $this->M_index->getNamaCreator($actBy);
+						$creator = RTRIM($getNamaCreator[0]['employee_name']);
+						
+						$time = date('d-m-Y H:i:s');
+						$st = "WIP";
+						$message ="<table>
+								<tr>
+									<th align='left'>IP</th>
+									<th>:</th>
+									<td>$domainbase</td>
+								</tr>
+								 <tr>
+								 	<th align='left'>STATUS</th>
+									<th>:</th>
+									<td>$st</td>
+								 </tr>
+								 <tr>
+								 	<th align='left'>TIME</th>
+									<th>:</th>
+									<td>$time</td>
+								 </tr>
+								 <tr>
+								 	<th align='left'>NO TICKET</th>
+									<th>:</th>
+									<td>$noticket</td>
+								 </tr>
+								 <tr>
+								 	<th align='left'>ACTION</th>
+									<th>:</th>
+									<td>$action</td>
+								 </tr>
+								 <tr>
+								 	<th align='left'>ACTION BY</th>
+									<th>:</th>
+									<td>$actBy - $creator</td>
+								 </tr>
+								 <tr>
+								 	<th align='left'>DOWN TIME</th>
+									<th>:</th>
+									<td>$downtime Jam</td>
+								 </tr>
+								</table>";
+					}
+				}
+				$subject = "ver.Lama($st) ".$ip['name']." is Down";
+
+				$emailUser = array("nugroho.mail1@gmail.com",);
+				$emailUserInternal = array("nugroho@quick.com",);
+
+				$this->EmailAlert($subject, $message, $emailUser);
+                $this->EmailAlertInternal($subject, $message, $emailUserInternal);
+			}
+		}
+	}
+
 	public function pingDomain($domain)
+	{
+		$check = exec('ping -c 1 -w 1 '.$domain);
+		if ($check) {
+			$status = 0;
+		}else {
+			$status = -1;
+		}
+
+		return $status;
+	}
+
+	public function pingDomainSide($domain)
 	{
 		$starttime = microtime(true);
 		$file      = fsockopen ($domain, 53, $errno, $errstr, 10);
