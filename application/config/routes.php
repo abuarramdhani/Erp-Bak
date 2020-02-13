@@ -3598,6 +3598,7 @@ $route['ShipmentMonitoringSystem/Gudang/TitipBarang/(:any)'] = 'ShipmentMonitori
 
 $route['PingChecker'] = 'PingChecker/C_Index';
 $route['PingChecker/check'] = 'PingChecker/C_Index/check';
+$route['PingChecker/checkSide'] = 'PingChecker/C_Index/checkSide';
 $route['PingChecker/Monitoring/(:any)'] = 'PingChecker/C_Monitoring/$1';
 
 // ------------------------------------ Aplikasi Cetak Kanban Tool Room------------------------------------------//
