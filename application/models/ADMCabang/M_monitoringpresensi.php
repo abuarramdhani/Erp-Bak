@@ -493,7 +493,7 @@ $q_seksi)";
 		     (select count(*) from \"Presensi\".tdatatim c WHERE c.tanggal BETWEEN '$tanggal1' AND '$tanggal2' and c.noind = a.noind and c.kd_ket = 'TIK' and c.point > 0 ) as izin_pribadi,
 		     (select count(*) from \"Presensi\".tdatatim c WHERE c.tanggal BETWEEN '$tanggal1' AND '$tanggal2' and c.noind = a.noind and c.kd_ket = 'TM' ) as mangkir,
 		    (select count(*) from \"Presensi\".tdatapresensi c WHERE c.tanggal BETWEEN '$tanggal1' AND '$tanggal2' and c.noind = a.noind and c.kd_ket IN ('PSP','PSK') ) as sakit,
-		    (select count(*) from \"Presensi\".tdatapresensi c WHERE c.tanggal BETWEEN '$tanggal1' AND '$tanggal2' and c.noind = a.noind and c.kd_ket = 'PIP' ) as izin_pamit,
+		    (select count(*) from \"Presensi\".tdatapresensi c WHERE c.tanggal BETWEEN '$tanggal1' AND '$tanggal2' and c.noind = a.noind and c.kd_ket IN ('PIP','CT') ) as izin_pamit,
 		     (select count(*) from \"Surat\".taktual_izin c WHERE c.waktu1 BETWEEN '$tanggal1' AND '$tanggal2' and c.noinduk = a.noind and c.status = 1 ) as izin_perusahaan,
 		(select count(*) from \"Presensi\".tdatapresensi c WHERE c.tanggal BETWEEN '$tanggal1' AND '$tanggal2' and c.noind = a.noind and c.kd_ket IN ('PKJ','PLB') ) as bekerja
 		    from hrd_khs.tpribadi a INNER JOIN hrd_khs.tseksi b ON a.kodesie = b.kodesie 
@@ -538,14 +538,14 @@ $q_seksi)";
 		     (select count(*) from \"Presensi\".tdatatim c WHERE c.tanggal BETWEEN '$tanggal1' AND '$tanggal2' and c.noind = a.noind and c.kd_ket = 'TIK' and c.point > 0 ) as izin_pribadi,
 		     (select count(*) from \"Presensi\".tdatatim c WHERE c.tanggal BETWEEN '$tanggal1' AND '$tanggal2' and c.noind = a.noind and c.kd_ket = 'TM' ) as mangkir,
 		    (select count(*) from \"Presensi\".tdatapresensi c WHERE c.tanggal BETWEEN '$tanggal1' AND '$tanggal2' and c.noind = a.noind and c.kd_ket IN ('PSP','PSK') ) as sakit,
-		    (select count(*) from \"Presensi\".tdatapresensi c WHERE c.tanggal BETWEEN '$tanggal1' AND '$tanggal2' and c.noind = a.noind and c.kd_ket = 'PIP' ) as izin_pamit,
+		    (select count(*) from \"Presensi\".tdatapresensi c WHERE c.tanggal BETWEEN '$tanggal1' AND '$tanggal2' and c.noind = a.noind and c.kd_ket in ('PIP','CT') ) as izin_pamit,
 		    (select count(*) from \"Surat\".taktual_izin c WHERE c.waktu1 BETWEEN '$tanggal1' AND '$tanggal2' and c.noinduk = a.noind and c.status = 1 ) as izin_perusahaan,
 		(select count(*) from \"Presensi\".tdatapresensi c WHERE c.tanggal BETWEEN '$tanggal1' AND '$tanggal2' and c.noind = a.noind and c.kd_ket IN ('PKJ','PLB') ) as bekerja,
 		(select coalesce(string_agg(to_char(c.tanggal,'YYYY-MM-DD'),' , '),'-') from \"Presensi\".tdatatim c WHERE c.tanggal BETWEEN '$tanggal1' AND '$tanggal2' and c.noind = a.noind and c.kd_ket = 'TT' ) as tgl_terlambat,
 		(select coalesce(string_agg(to_char(c.tanggal,'YYYY-MM-DD'),' , '),'-') from \"Presensi\".tdatatim c WHERE c.tanggal BETWEEN '$tanggal1' AND '$tanggal2' and c.noind = a.noind and c.kd_ket = 'TIK' and c.point > 0 ) as tgl_izin_pribadi,
 		(select coalesce(string_agg(to_char(c.tanggal,'YYYY-MM-DD'),' , '),'-') from \"Presensi\".tdatatim c WHERE c.tanggal BETWEEN '$tanggal1' AND '$tanggal2' and c.noind = a.noind and c.kd_ket = 'TM' ) as tgl_mangkir,
 		(select coalesce(string_agg(to_char(c.tanggal,'YYYY-MM-DD'),' , '),'-') from \"Presensi\".tdatapresensi c WHERE c.tanggal BETWEEN '$tanggal1' AND '$tanggal2' and c.noind = a.noind and c.kd_ket IN ('PSP','PSK') ) as tgl_sakit,
-		(select coalesce(string_agg(to_char(c.tanggal,'YYYY-MM-DD'),' , '),'-') from \"Presensi\".tdatapresensi c WHERE c.tanggal BETWEEN '$tanggal1' AND '$tanggal2' and c.noind = a.noind and c.kd_ket = 'PIP' ) as tgl_izin_pamit,
+		(select coalesce(string_agg(to_char(c.tanggal,'YYYY-MM-DD'),' , '),'-') from \"Presensi\".tdatapresensi c WHERE c.tanggal BETWEEN '$tanggal1' AND '$tanggal2' and c.noind = a.noind and c.kd_ket in ('PIP','CT') ) as tgl_izin_pamit,
 		(select coalesce(string_agg(to_char(c.waktu1,'YYYY-MM-DD'),' , '),'-') from \"Surat\".taktual_izin c WHERE c.waktu1 BETWEEN '$tanggal1' AND '$tanggal2' and c.noinduk = a.noind and c.status = 1 ) as tgl_izin_perusahaan
 		    from hrd_khs.tpribadi a INNER JOIN hrd_khs.tseksi b ON a.kodesie = b.kodesie 
 		    WHERE $whrKodesie AND a.keluar = false AND a.noind='$noinduk') as tbl order by seksi
