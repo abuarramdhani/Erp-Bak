@@ -2261,6 +2261,7 @@ $route['AccountPayables/MonitoringInvoice/InvoiceBermasalahAkt'] = 'MonitoringIn
 $route['AccountPayables/MonitoringInvoice/InvoiceBermasalahAkt/(:any)'] = 'MonitoringInvoiceAkuntansi/C_monitoringakuntansi/$1';
 $route['AccountPayables/MonitoringInvoice/InvoiceBermasalahAkt/(:any)/(:any)'] = 'MonitoringInvoiceAkuntansi/C_monitoringakuntansi/$1/$2';
 $route['AccountPayables/MonitoringInvoice/InvoiceBermasalahAkt/Finish'] = 'MonitoringInvoiceAkuntansi/C_monitoringakuntansi/finishInvBermasalah';
+$route['AccountPayables/MonitoringInvoice/ReturnedInvoice'] = 'MonitoringInvoiceAkuntansi/C_monitoringakuntansi/returnedInvoice';
 
 //------------------------------------ System Integration ----------------------------------------//
 $route['SystemIntegration'] = 'SystemIntegration/C_Index/index';
