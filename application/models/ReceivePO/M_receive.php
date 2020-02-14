@@ -10,16 +10,6 @@ class M_receive extends CI_Model
 
   public function historyPO($datefrom,$dateto) {
     $oracle = $this->load->database('oracle_dev', true);
-    // $sql = " select distinct
-    //            kpr.PO_NUMBER
-    //           ,kpr.SHIPMENT_NUMBER
-    //           ,kpr.LPPB_NUMBER
-    //           ,kpr.INPUT_DATE
-    //           from khs_po_receive kpr
-    //           where (kpr.FLAG = 'D' OR kpr.FLAG = 'O')
-    //         and kpr.input_date between to_date('$datefrom') and to_date('$dateto')
-    //         ORDER BY INPUT_DATE ASC ";
-
     $sql = " select distinct
                kpr.PO_NUMBER
               ,kpr.SHIPMENT_NUMBER
@@ -79,11 +69,26 @@ where krs.ORGANIZATION_ID = kpr.ORGANIZATION_ID
     return $query->result_array();
          // return $sql;
   }
+   public function lppb_number($po,$sj) {
+    $oracle = $this->load->database('oracle_dev', true);
+    $sql = "select DISTINCT rsh.RECEIPT_NUM
+    from rcv_shipment_lines rsl
+        ,rcv_shipment_headers rsh
+        ,po_headers_all pha
+    where pha.SEGMENT1 = '$po'
+      and rsh.SHIPMENT_NUM = nvl('$sj',rsh.SHIPMENT_NUM)
+      and rsl.PO_HEADER_ID = pha.PO_HEADER_ID
+      and rsl.SHIPMENT_HEADER_ID = rsh.SHIPMENT_HEADER_ID
+      and rsh.CREATION_DATE IN (select rsh.CREATION_DATE
+                                 from rcv_shipment_headers rsh
+                                     ,rcv_shipment_lines rsl
+                                where rsh.SHIPMENT_HEADER_ID = rsl.SHIPMENT_HEADER_ID
+                                  and rsl.PO_HEADER_ID = pha.PO_HEADER_ID)";
 
-
-
-
-
+    $query = $oracle->query($sql);
+    return $query->result_array();
+         // return $sql;
+  }
   
 
 }

@@ -4,11 +4,19 @@
 
 <tbody >
   <tr>
-    <td><input type="hidden" name="porecipt[]" value="<?=$detail[$i]['PO_NUMBER'] ?>" >PO <?=$detail[$i]['PO_NUMBER'] ?> <br><input type="hidden" name="sujarecipt[]" value="<?=$detail[$i]['SHIPMENT_NUMBER'] ?>" ><?=$detail[$i]['SHIPMENT_NUMBER'] ?></td>
+    <td><input type="hidden" name="porecipt[]" value="<?=$detail[$i]['PO_NUMBER'] ?>" >PO : <?=$detail[$i]['PO_NUMBER'] ?> <br><input type="hidden" name="sujarecipt[]" value="<?=$detail[$i]['SHIPMENT_NUMBER'] ?>" >Surat Jalan : <?=$detail[$i]['SHIPMENT_NUMBER'] ?></td>
   </tr>   
   <tr>
-    <td><input type="hidden" name="lppbrecipt[]" value="<?=$detail[$i]['LPPB_NUMBER'] ?>" > NO LPPB <?=$detail[$i]['LPPB_NUMBER'] ?></td>
-  </tr>           
+    <td><?php if ($detail[$i]['LPPB_NUMBERS'] == null) {  ?>
+      <input type="hidden" name="lppbrecipt[]" value="-" > NO LPPB :  -
+    <?php } else if ($detail[$i]['LPPB_NUMBERS'] != null) { ?>
+      <input type="hidden" name="lppbrecipt[]" value="<?=$detail[$i]['LPPB_NUMBERS'][0]['RECEIPT_NUM'] ?>" > NO LPPB : <?=$detail[$i]['LPPB_NUMBERS'][0]['RECEIPT_NUM'] ?>
+      <?php } ?>
+    </td>
+  </tr>   
+  <tr>
+    <td><input type="text" class="form-control"  id="Ket" placeholder="Masukan keterangan"></td>
+  </tr>        
 </tbody>
 </table>
 <?php }?>

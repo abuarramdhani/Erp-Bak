@@ -38,9 +38,10 @@
             <br>
             Nomor Seri :
             <br>
-            <br>
             <center><img style="width: 80px;height: 80px;" src="<?= base_url("/img/$serial[$i].png") ;?>"></center>
-            <p style="font-style: italic;"><?=$serial[$i]?></p>
+            <p style="font-style: italic; font-size: 12pt"><?=$serial[$i]?></p>
+            <br>
+            <h3 style="font-weight:bold; color: red "><?=$ket?></h3>
             <br>
           <?php echo date("d M y") ?>
 

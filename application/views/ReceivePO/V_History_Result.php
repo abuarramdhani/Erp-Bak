@@ -1,7 +1,4 @@
-<!-- <form name="Orderform" class="form-horizontal" 
-		onsubmit="return validasi();window.location.reload();"
-		action="<?php echo base_url('ConsumablePart/Rekap/createLaporan'); ?>" method="post"> -->
-     <?php
+<?php
       if ($result == null) { ?>
         <div class="col-md-12">
         <h3 style="font-weight: bold;text-align: center;">No Data History</h3>
@@ -21,7 +18,7 @@
           <tbody >
 
            <tr>	
-            <td><button onclick="Detail(<?=$angka?>)" id="buttonpo<?=$angka?>" class="btn btn-default btn-flat btn-sm" style ="width:100%; " value="<?=$list['PO_NUMBER'] ?>" ><?=$list['PO_NUMBER'] ?> <br><?=$list['SHIPMENT_NUMBER'] ?></button></td>
+            <td><button onclick="Detail(<?=$angka?>)" id="buttonpo<?=$angka?>" class="btn btn-default btn-flat btn-sm" style ="width:100%; " value="<?=$list['PO_NUMBER'] ?>" >Nomor PO : <?=$list['PO_NUMBER'] ?> <br> Surat jalan : <?=$list['SHIPMENT_NUMBER'] ?></button></td>
             <input type="hidden" name="suratjalan" id="suratjalan<?=$angka?>" value = "<?=$list['SHIPMENT_NUMBER'] ?>" >
           </tr>
         </tbody>
@@ -32,5 +29,3 @@
   <div class="col-md-8" id="detail" >
 
   </div>
-
-  <!-- </form> -->

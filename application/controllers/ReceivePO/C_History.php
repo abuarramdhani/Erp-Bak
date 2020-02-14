@@ -99,8 +99,9 @@ class C_History extends CI_Controller
 
 		$i=0;
 		foreach ($detail as $value) {
-
 			$detail[$i]['SERIAL_NUMBER'] =  $this->M_receive->serial_number($value['PO_NUMBER'],$value['ID'],$value['SHIPMENT_NUMBER']);
+			$detail[$i]['LPPB_NUMBERS'] =  $this->M_receive->lppb_number($value['PO_NUMBER'],$value['SHIPMENT_NUMBER']);
+
 			
 
 		$i++;
@@ -118,6 +119,8 @@ class C_History extends CI_Controller
 		$serial	= $this->input->post('serial');
 		$descrecipt	= $this->input->post('descrecipt');
 		$itemrecipt	= $this->input->post('itemrecipt');
+		$ket	= $this->input->post('ket');
+
 
 
 		
@@ -156,6 +159,8 @@ class C_History extends CI_Controller
 			$data['itemrecipt'] = $itemrecipt;
 			$data['descrecipt'] = $descrecipt;
 			$data['serial'] = $serial;
+			$data['ket'] = $ket;
+
 
     	$pdf_dir = './assets/upload/KartuReceivePo/';
     	if (preg_match("/diesel/i", $descrecipt)) {

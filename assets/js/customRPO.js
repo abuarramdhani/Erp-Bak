@@ -83,6 +83,8 @@ function CetakKartu(no) {
 
 		var descrecipt = $('#descrecipt'+no).val(); 	
 		var itemrecipt = $('#itemrecipt'+no).val(); 	
+		var ket = $('#Ket').val(); 	
+
 		// var serial = $('input[name="serial[]"]').val();
 
 		var serial = [];
@@ -96,7 +98,8 @@ function CetakKartu(no) {
 			data: {
 				descrecipt:descrecipt,
 				itemrecipt:itemrecipt,
-			    serial:serial
+			    serial:serial,
+			    ket:ket
 			},
 			type: "POST",
 			// datatype: 'json'
@@ -107,9 +110,6 @@ function CetakKartu(no) {
 			var win = window.open(result, '_blank');
   			win.focus()
 			console.log("sukses2");
-				// window.open(baseurl+"ReceivePO/History/CetakKartu/"+data['url'],'_blank');
-				// window.open(baseurl+'ReceivePO/History/CetakKartu/''_blank');
-				// window.location.replace (baseurl+"ReceivePO/History/CetakKartu/");
 				
 			});
 		});		
