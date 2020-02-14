@@ -166,7 +166,7 @@ class C_PekerjaKeluar extends CI_Controller
 				}
 			}
 
-			$cek_cutoff = $this->M_pekerjakeluar->cek_cutoff_custom($pkj['noind']);
+			$cek_cutoff = $this->M_pekerjakeluar->cek_cutoff_custom($pkj['noind'],$pkj['tglkeluar']);
 +			$hitung_cutoff = $this->M_pekerjakeluar->cek_cutoff_custom_hitung($pkj['noind'],$pkj['tglkeluar']);
 
 			// komponen utama start
@@ -197,29 +197,29 @@ class C_PekerjaKeluar extends CI_Controller
 			if ($status_pekerja == 'D' || $status_pekerja == 'E') {
 				$cek_noind_berubah = $this->M_pekerjakeluar->cek_noind_berubah($pkj['noind']);
 				if($cek_noind_berubah > 0){
-					$kom_htm = $this->M_pekerjakeluar->hitung_Htm_diangkat($pkj['noind'],$tgl_cut_awal,$tgl_keluar);
 					$kom_tik = $this->M_pekerjakeluar->hitung_tik_diangkat($pkj['noind'],$tgl_cut_awal,$tgl_keluar);
 					$kom_tm  = $this->M_pekerjakeluar->hitung_tm_diangkat($pkj['noind'],$tgl_cut_awal,$tgl_keluar);
+					$kom_htm = $kom_tik + $kom_tm;
 				}else{
 					if($cek_cutoff == "0"){
-						$kom_htm = $this->M_pekerjakeluar->hitung_Htm_tdk_cutoff($pkj['noind'],$tgl_cut_awal,$pkj['tglkeluar'],$chk_khusus,$khusus,$hitung_cutoff);
 						$kom_tik = $this->M_pekerjakeluar->hitung_tik_tdk_cutoff($pkj['noind'],$tgl_cut_awal,$pkj['tglkeluar'],$chk_khusus,$khusus,$hitung_cutoff);
 						$kom_tm  = $this->M_pekerjakeluar->hitung_tm_tdk_cutoff($pkj['noind'],$tgl_cut_awal,$pkj['tglkeluar'],$chk_khusus,$khusus,$hitung_cutoff);
+						$kom_htm = $kom_tik + $kom_tm;
 					}else{
-						$kom_htm = $this->M_pekerjakeluar->hitung_Htm($pkj['noind'],$tgl_cut_awal,$pkj['tglkeluar'],$chk_khusus,$khusus,$hitung_cutoff);
 						$kom_tik = $this->M_pekerjakeluar->hitung_tik($pkj['noind'],$tgl_cut_awal,$pkj['tglkeluar'],$chk_khusus,$khusus,$hitung_cutoff);
 						$kom_tm  = $this->M_pekerjakeluar->hitung_tm($pkj['noind'],$tgl_cut_awal,$pkj['tglkeluar'],$chk_khusus,$khusus,$hitung_cutoff);
+						$kom_htm = $kom_tik + $kom_tm;
 					}
 				}
 			}else{
 				if($cek_cutoff == "0"){
-					$kom_htm = $this->M_pekerjakeluar->hitung_Htm_tdk_cutoff($pkj['noind'],$tgl_cut_awal,$pkj['tglkeluar'],$chk_khusus,$khusus,$hitung_cutoff);
 					$kom_tik = $this->M_pekerjakeluar->hitung_tik_tdk_cutoff($pkj['noind'],$tgl_cut_awal,$pkj['tglkeluar'],$chk_khusus,$khusus,$hitung_cutoff);
 					$kom_tm  = $this->M_pekerjakeluar->hitung_tm_tdk_cutoff($pkj['noind'],$tgl_cut_awal,$pkj['tglkeluar'],$chk_khusus,$khusus,$hitung_cutoff);
+					$kom_htm = $kom_tik + $kom_tm;
 				}else{
-					$kom_htm = $this->M_pekerjakeluar->hitung_Htm($pkj['noind'],$tgl_cut_awal,$pkj['tglkeluar'],$chk_khusus,$khusus,$hitung_cutoff);
 					$kom_tik = $this->M_pekerjakeluar->hitung_tik($pkj['noind'],$tgl_cut_awal,$pkj['tglkeluar'],$chk_khusus,$khusus,$hitung_cutoff);
 					$kom_tm  = $this->M_pekerjakeluar->hitung_tm($pkj['noind'],$tgl_cut_awal,$pkj['tglkeluar'],$chk_khusus,$khusus,$hitung_cutoff);
+					$kom_htm = $kom_tik + $kom_tm;
 				}
 			}
 
@@ -276,6 +276,9 @@ class C_PekerjaKeluar extends CI_Controller
 					$kom_jml_jp = $this->M_pekerjakeluar->jumlah_jp($pkj['noind']);
 
 					$kom_um_dl = $this->M_pekerjakeluar->get_uang_dl($pkj['noind'],$tgl_cut_awal_,$tgl_keluar);
+					
+					$kom_jml_duka = $this->M_pekerjakeluar->jumlah_duka($pkj['noind'],$tgl_cut_awal_,$tgl_keluar);
+					$kom_nom_duka = $this->M_pekerjakeluar->nominal_duka($pkj['noind'],$tgl_cut_awal_,$tgl_keluar);
 				}
 			}else{
 				if($status_pekerja == 'H'){
@@ -294,11 +297,12 @@ class C_PekerjaKeluar extends CI_Controller
 				$kom_jml_jp = $this->M_pekerjakeluar->jumlah_jp($pkj['noind']);
 
 				$kom_um_dl = $this->M_pekerjakeluar->get_uang_dl($pkj['noind'],$tgl_cut_awal,$tgl_keluar);
+				
+				$kom_jml_duka = $this->M_pekerjakeluar->jumlah_duka($pkj['noind'],$tgl_cut_awal,$tgl_keluar);
+				$kom_nom_duka = $this->M_pekerjakeluar->nominal_duka($pkj['noind'],$tgl_cut_awal,$tgl_keluar);
 			}
 
 
-			$kom_jml_duka = $this->M_pekerjakeluar->jumlah_duka($pkj['noind'],$tgl_cut_awal,$pkj['tglkeluar']);
-			$kom_nom_duka = $this->M_pekerjakeluar->nominal_duka($pkj['noind'],$tgl_cut_awal,$pkj['tglkeluar']);
 
 			//komponen utama end
 
