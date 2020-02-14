@@ -55,7 +55,8 @@ $alert = $status[0]['SATU'];
 					<div class="col-lg-12">
 						<div class="box box-primary box-solid">
 							<div class="box-body">
-								<table id="unprocessTabel" class="table table-striped table-bordered table-hover text-center tblMI">
+								<div style="overflow: auto;">
+								<table id="unprocessTabel" style="width: 100%" class="table table-striped table-bordered table-hover text-center tblMI">
 									<thead>
 										<tr class="bg-primary">
 											<th class="text-center">No</th>
@@ -77,7 +78,7 @@ $alert = $status[0]['SATU'];
 										<?php $no=1; foreach($bermasalah as $u){?>
 										<tr>
 											<td><?php echo $no ?></td>
-											<td><?php echo $u['INVOICE_ID'] ?></td>
+											<td><b><?php echo $u['INVOICE_ID'] ?></b></td>
 											<td> 
 												<a title="Konfirmasi..." style="width:100px;margin-bottom: 5px" onclick="KonfirmasiBuyer(<?php echo $u['INVOICE_ID'];?>)" data-target="MdlBuyer" data-toggle="modal" class="btn btn-info btn-sm"><i class="fa fa-file-text-o"></i> Konfirmasi
 												</a>
@@ -92,7 +93,8 @@ $alert = $status[0]['SATU'];
 											<td><?php echo $u['AKT_DATE']?></td>
 											<td><b>KATEGORI : </b><?php echo $u['KATEGORI_INV_BERMASALAH']?> <br>
 												<b>KELENGKAPAN DOKUMEN : </b><?php echo $u['KELENGKAPAN_DOC_INV_BERMASALAH']?> <br>
-												<b>KETERANGAN AKUNTANSI : </b><?php echo $u['KETERANGAN_INV_BERMASALAH']?>	
+												<b>KETERANGAN AKUNTANSI : </b><?php echo $u['KETERANGAN_INV_BERMASALAH']?> <br>
+												<b>KETERANGAN PURCHASING : </b><?php echo $u['NOTE_BUYER']?> 
 											</td>
 											<?php if ($u['PURC_ACTION_BERMASALAH'] == NULL) { ?>
 											<td  style="background-color: #ff7a7a47;"><i>Not Yet Set</i></td>

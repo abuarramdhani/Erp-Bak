@@ -52,20 +52,32 @@ class M_kasiepembelian extends CI_Model {
         return $run->result_array();
       }
 
+       public function returnToAkuntansi($invoice_id, $action_date)
+      {
+        $erp_db = $this->load->database('oracle',true);
+        $sql = "update khs_ap_monitoring_invoice set 
+                    returned_date_purc = to_date('$action_date', 'DD/MM/YYYY HH24:MI:SS'),
+                    source_bermasalah = 'PURCHASING' 
+                    where invoice_id = '$invoice_id'";
+        $run = $erp_db->query($sql);
+      }
+
       public function getDokumenBermasalah($invoice_id)
       {
         $erp_db = $this->load->database('oracle',true);
         $sql = "SELECT 
-                    DOCUMENT_ID, 
-                    INVOICE_ID, 
-                    DOCUMENT_NAME, 
-                    STATUS_DOCUMENT_PURC, 
-                    STATUS_DOCUMENT_BUYER, 
-                    DATE_CONFIRMATION_PURC, 
-                    DATE_CONFIRMATION_BUYER, 
-                    CREATION_DATE 
-                FROM KHS_AP_DOKUMEN_INV
-                WHERE INVOICE_ID = $invoice_id";
+                    adi.DOCUMENT_ID, 
+                    adi.INVOICE_ID, 
+                    adi.DOCUMENT_NAME, 
+                    adi.STATUS_DOCUMENT_PURC, 
+                    adi.STATUS_DOCUMENT_BUYER, 
+                    adi.DATE_CONFIRMATION_PURC, 
+                    adi.DATE_CONFIRMATION_BUYER, 
+                    adi.CREATION_DATE,
+                    ami.restatus_berkas_purc
+                FROM KHS_AP_DOKUMEN_INV adi, khs_ap_monitoring_invoice ami
+                WHERE adi.INVOICE_ID = ami.invoice_id       
+                and adi.INVOICE_ID = $invoice_id";
         $runQuery = $erp_db->query($sql);
         return $runQuery->result_array();
       }
@@ -197,10 +209,54 @@ class M_kasiepembelian extends CI_Model {
         return $runQuery->result_array();
     }
 
-    public function ForwardToBuyer($invoice_id,$no_induk)
+    public function getStatusPurc($invoice_id)
     {
         $erp_db = $this->load->database('oracle',true);
-        $sql = "UPDATE KHS_AP_MONITORING_INVOICE SET NO_INDUK_BUYER = '$no_induk', STATUS_INV_BERMASALAH = 3
+        $sql = "SELECT STATUS_BERKAS_PURC, NOTE_BUYER FROM KHS_AP_MONITORING_INVOICE WHERE INVOICE_ID = '$invoice_id'";
+        $runQuery = $erp_db->query($sql);
+        return $runQuery->result_array();
+    }
+
+    public function getPoandBuyer($invoice_id)
+    {
+        $erp_db = $this->load->database('oracle',true);
+        $sql = "SELECT DISTINCT po_number FROM khs_ap_invoice_purchase_order WHERE invoice_id = $invoice_id";
+        $runQuery = $erp_db->query($sql);
+        return $runQuery->result_array();
+    }
+
+    public function cariBuyerDefault($po_number)
+    {
+        $erp_db = $this->load->database('oracle',true);
+        $sql = "SELECT DISTINCT  
+                         pha.SEGMENT1 NO_PO
+                        ,ppf.full_name buyer 
+                        ,po_headers_sv3.get_po_status(pha.po_header_id) status
+                    FROM
+                        po_headers_all pha
+                        ,ap_terms_tl att
+                        ,po_vendors pv
+                        ,per_people_f ppf
+                    WHERE
+                        pha.TERMS_ID = att.TERM_ID
+                        AND pha.agent_id = ppf.person_id
+                        and pha.VENDOR_ID = pv.VENDOR_ID
+                        AND pha.SEGMENT1 = $po_number";
+        $runQuery = $erp_db->query($sql);
+        return $runQuery->result_array();
+    }
+
+    public function isiNote($invoice_id,$note)
+    {
+        $erp_db = $this->load->database('oracle',true);
+        $sql = "INSERT INTO KHS_AP_DOKUMEN_INV (INVOICE_ID, NOTE_BUYER, CREATION_DATE) VALUES ($invoice_id, '$note', sysdate)";
+        $runQuery = $erp_db->query($sql);
+    }
+
+    public function ForwardToBuyer($invoice_id,$no_induk,$note)
+    {
+        $erp_db = $this->load->database('oracle',true);
+        $sql = "UPDATE KHS_AP_MONITORING_INVOICE SET NO_INDUK_BUYER = '$no_induk', STATUS_INV_BERMASALAH = 3, NOTE_BUYER = '$note'
                 WHERE invoice_id = '$invoice_id'";
         $runQuery = $erp_db->query($sql);
     }
@@ -237,6 +293,10 @@ class M_kasiepembelian extends CI_Model {
                 ami.STATUS_BERKAS_BUYER,
                 mib.NAMA_BUYER,
                 ami.status_inv_bermasalah,
+                ami.returned_flag,
+                ami.returned_date_akt,
+                ami.returned_date_purc,
+                ami.note_buyer,
                         (SELECT COUNT (adi.status_document_buyer) hasil_n
                             FROM khs_ap_dokumen_inv adi LEFT JOIN khs_ap_monitoring_invoice ami3
                               ON ami3.invoice_id = adi.invoice_id
@@ -287,6 +347,7 @@ class M_kasiepembelian extends CI_Model {
                 ami.STATUS_BERKAS_BUYER,
                 ami.NO_INDUK_BUYER,
                 ami.SOURCE_BERMASALAH,
+                ami.NOTE_BUYER,
                 mib.NAMA_BUYER
                     FROM khs_ap_monitoring_invoice ami
                     LEFT JOIN khs_ap_mon_inv_buyer mib ON mib.NO_INDUK = ami.NO_INDUK_BUYER
@@ -424,7 +485,7 @@ class M_kasiepembelian extends CI_Model {
     public function getFeedback($invoice_id)
     {
         $erp_db = $this->load->database('oracle',true);
-        $sql = "SELECT FEEDBACK_PURCHASING from KHS_AP_MONITORING_INVOICE WHERE INVOICE_ID = '$invoice_id'";
+        $sql = "SELECT FEEDBACK_PURCHASING, STATUS_BERKAS_PURC, RESTATUS_BERKAS_PURC, NOTE_BUYER from KHS_AP_MONITORING_INVOICE WHERE INVOICE_ID = '$invoice_id'";
         $runQuery = $erp_db->query($sql);
         return $runQuery->result_array();
     }
@@ -432,7 +493,7 @@ class M_kasiepembelian extends CI_Model {
     public function getFeedbackBuyer($invoice_id)
     {
         $erp_db = $this->load->database('oracle',true);
-        $sql = "SELECT FEEDBACK_BUYER from KHS_AP_MONITORING_INVOICE WHERE INVOICE_ID = '$invoice_id'";
+        $sql = "SELECT FEEDBACK_BUYER, STATUS_BERKAS_BUYER from KHS_AP_MONITORING_INVOICE WHERE INVOICE_ID = '$invoice_id'";
         $runQuery = $erp_db->query($sql);
         return $runQuery->result_array();
     }
@@ -723,7 +784,7 @@ class M_kasiepembelian extends CI_Model {
     public function getStatusSatu()
     {
         $oracle = $this->load->database('oracle',TRUE);
-        $sql = "SELECT COUNT(INVOICE_ID) SATU FROM khs_ap_monitoring_invoice WHERE STATUS_INV_BERMASALAH IN (1,3)";
+        $sql = "SELECT COUNT(INVOICE_ID) SATU FROM khs_ap_monitoring_invoice WHERE STATUS_INV_BERMASALAH IN (1,3) OR RETURNED_FLAG = 'Y'";
         $run = $oracle->query($sql);
         return $run->result_array();
     }
