@@ -394,7 +394,7 @@ class C_Rekap extends CI_Controller
 				if($key == "sakit")
 					$key = "Sakit";
 				if($key == "izin_pamit")
-					$key = "Izin Pamit";
+					$key = "Izin Pamit (Cuti)";
 				if($key == "bekerja")
 					$key = "Bekerja";
 				if($key == "izin_perusahaan")
