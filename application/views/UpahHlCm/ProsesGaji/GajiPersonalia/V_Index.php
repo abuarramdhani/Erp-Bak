@@ -7,7 +7,7 @@
 			</div>
 			<div class="panel-body">
 				<br>
-				<form method="POST" action="<?php echo base_url('HitungHlcm/HitungGaji/getData')?>">
+				<form method="POST" action="<?php echo base_url('HitungHlcm/GajiPersonalia/getData')?>">
 				<div class="row">
 					<div class="col-lg-4">
 						<div class="col-lg-3">
@@ -73,8 +73,8 @@
 					<div class="col-lg-8 text-center">
 						<button type="submit" class="btn btn-primary">Proses</button>
 						<?php if (isset($valLink)): ?>
-							<a target="_blank" href="<?php echo site_url('HitungHlcm/HitungGaji/printProses/xls/'.$valLink); ?>" class="btn btn-success">Excel</a>
-							<a target="_blank" href="<?php echo site_url('HitungHlcm/HitungGaji/printProses/pdf/'.$valLink); ?>" class="btn btn-danger">PDF</a>
+							<a target="_blank" href="<?php echo site_url('HitungHlcm/GajiPersonalia/printProses/xls/'.$valLink); ?>" class="btn btn-success">Excel</a>
+							<a target="_blank" href="<?php echo site_url('HitungHlcm/GajiPersonalia/printProses/pdf/'.$valLink); ?>" class="btn btn-danger">PDF</a>
 						<?php endif ?>
 					</div>
 				</div>
@@ -88,43 +88,29 @@
 							<th style="text-align: center; vertical-align: middle;" rowspan="3">Nama</th>
 							<th style="text-align: center; vertical-align: middle;" rowspan="3">Status</th>
 							<th style="text-align: center; vertical-align: middle;" rowspan="3">Lokasi Kerja</th>
-							<th style="text-align: center;" colspan="8">Proses Gaji</th>
-							<th style="text-align: center;" colspan="6">Tambahan</th>
-							<th style="text-align: center;" colspan="6">Potongan</th>
-							<th style="text-align: center; vertical-align: middle;" rowspan="3">Total Gaji</th>
+							<th style="text-align: center;" colspan="4">Proses Gaji</th>
+							<th style="text-align: center;" colspan="3">Tambahan</th>
+							<th style="text-align: center;" colspan="3">Potongan</th>
 						</tr>
 						<tr style="background-color: #00ccff;">
 							<th style="text-align: center;" colspan="4">Komponen</th>
-							<th style="text-align: center;" colspan="4">Nominal</th>
 							<th style="text-align: center;" colspan="3">Komponen</th>
-							<th style="text-align: center;" colspan="3">Nominal</th>
 							<th style="text-align: center;" colspan="3">Komponen</th>
-							<th style="text-align: center;" colspan="3">Nominal</th>
 						</tr>
 						<tr style="background-color: #00ccff;">
 							<!-- Proses Gaji -->
 							<th style="text-align: center;">Gaji Pokok</th>
-							<th style="text-align: center;">Uang Makan</th>
-							<th style="text-align: center;">Uang Makan Puasa</th>
 							<th style="text-align: center;">Lembur</th>
-							<th style="text-align: center;">Gaji Pokok</th>
 							<th style="text-align: center;">Uang Makan</th>
-							<th style="text-align: center;">Uang Makan Puasa</th>
-							<th style="text-align: center;">Lembur</th>
+							<th style="text-align: center;">Uang Makan Puasa</th>							
 							<!-- Tambahan -->
 							<th style="text-align: center;">Gaji Pokok</th>
-							<th style="text-align: center;">Uang Makan</th>
 							<th style="text-align: center;">Lembur</th>
-							<th style="text-align: center;">Gaji Pokok</th>
-							<th style="text-align: center;">Uang Makan</th>
-							<th style="text-align: center;">Lembur</th>
+							<th style="text-align: center;">Uang Makan</th>							
 							<!-- Potongan -->
 							<th style="text-align: center;">Gaji Pokok</th>
-							<th style="text-align: center;">Uang Makan</th>
 							<th style="text-align: center;">Lembur</th>
-							<th style="text-align: center;">Gaji Pokok</th>
-							<th style="text-align: center;">Uang Makan</th>
-							<th style="text-align: center;">Lembur</th>
+							<th style="text-align: center;">Uang Makan</th>							
 						</tr>
 					</thead>
 					<tbody>
@@ -139,29 +125,19 @@
 								<td style="text-align: center;"><?php echo $key['pekerjaan'];?></td>
 								<td style="text-align: center;"><?php echo $key['lokasi'];?></td>
 								<td style="text-align: center;"><?php echo $key['jml_gp'];?></td>
-								<td style="text-align: center;"><?php echo $key['jml_um'];?></td>
-								<td style="text-align: center;"><?php echo $key['jml_ump'];?></td>
 								<td style="text-align: center;"><?php echo $key['jml_lbr'];?></td>
-								<td style="text-align: center;"><?php echo number_format($key['gp'],0,',','.');?></td>
-								<td style="text-align: center;"><?php echo number_format($key['um'],0,',','.');?></td>
-								<td style="text-align: center;"><?php echo number_format($key['ump'],0,',','.');?></td>
-								<td style="text-align: center;"><?php echo number_format($key['lmbr'],0,',','.');?></td>
+								<td style="text-align: center;"><?php echo $key['jml_um'];?></td>
+								<td style="text-align: center;"><?php echo $key['jml_ump'];?></td>								
 								<?php 
 								if (!empty($key['tambahan'])) {
 									?>
 									<td style="text-align: center;"><?php echo $key['tambahan']->gp ?></td>
-									<td style="text-align: center;"><?php echo $key['tambahan']->um ?></td>
 									<td style="text-align: center;"><?php echo $key['tambahan']->lembur ?></td>
-									<td style="text-align: center;"><?php echo number_format($key['tambahan']->nominal_gp,0,',','.') ?></td>
-									<td style="text-align: center;"><?php echo number_format($key['tambahan']->nominal_um,0,',','.') ?></td>
-									<td style="text-align: center;"><?php echo number_format($key['tambahan']->nominal_lembur,0,',','.') ?></td>
+									<td style="text-align: center;"><?php echo $key['tambahan']->um ?></td>	
 									<?php
 									$key['total_bayar'] += ($key['tambahan']->nominal_gp + $key['tambahan']->nominal_um + $key['tambahan']->nominal_lembur);
 								}else{
 									?>
-									<td style="text-align: center;">0</td>
-									<td style="text-align: center;">0</td>
-									<td style="text-align: center;">0</td>
 									<td style="text-align: center;">0</td>
 									<td style="text-align: center;">0</td>
 									<td style="text-align: center;">0</td>
@@ -171,11 +147,9 @@
 								if (!empty($key['potongan'])) {
 									?>
 									<td style="text-align: center;"><?php echo $key['potongan']->gp ?></td>
+									<td style="text-align: center;"><?php echo $key['potongan']->lembur ?></td>	
 									<td style="text-align: center;"><?php echo $key['potongan']->um ?></td>
-									<td style="text-align: center;"><?php echo $key['potongan']->lembur ?></td>
-									<td style="text-align: center;"><?php echo number_format($key['potongan']->nominal_gp,0,',','.') ?></td>
-									<td style="text-align: center;"><?php echo number_format($key['potongan']->nominal_um,0,',','.') ?></td>
-									<td style="text-align: center;"><?php echo number_format($key['potongan']->nominal_lembur,0,',','.') ?></td>
+									
 									<?php
 									$key['total_bayar'] -= ($key['potongan']->nominal_gp + $key['potongan']->nominal_um + $key['potongan']->nominal_lembur);
 								}else{
@@ -183,12 +157,8 @@
 									<td style="text-align: center;">0</td>
 									<td style="text-align: center;">0</td>
 									<td style="text-align: center;">0</td>
-									<td style="text-align: center;">0</td>
-									<td style="text-align: center;">0</td>
-									<td style="text-align: center;">0</td>
 									<?php
 								} ?>
-								<td style="text-align: center;"><?php echo number_format($key['total_bayar'],0,',','.');?></td>
 							</tr>
 							<?php
 							$no++;

@@ -10,10 +10,10 @@
 <div style="width: 100%; height: 100%; padding: 0px;">
 	<table style="width: 100%; font-size: 14px;border-top: 1px solid black;border-left: 1px solid black;border-right: 1px solid black">
 		<tr>
-			<td height="30px" colspan="2" style="text-align: center;">PEMBAYARAN UPAH PEKERJA HARIAN KHS PUSAT & KHS TUKSONO</td>
+			<td height="30px" colspan="2" style="text-align: center;">PENGGAJIAN HARIAN LEPAS</td>
 		</tr>
 		<tr>
-			<td style="width: 30%;">PERIODE TANGGAL :</td>
+			<td style="width: 30%;">PERIODE BULAN TAHUN :</td>
 			<td><?php $period=explode(" - ", $periode);echo date('d F Y',strtotime($period[0]));echo " - ";echo date('d F Y',strtotime($period[1]));;?></td>
 		</tr>
 	</table>
