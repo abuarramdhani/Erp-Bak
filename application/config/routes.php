@@ -2404,6 +2404,10 @@ $route['InventoryManagement/CreateKIBDEV/pdf1/(:any)/(:any)/(:any)'] = 'Inventor
 $route['InventoryManagement/CreateKIBDEV/pdf2/(:any)/(:any)/(:any)'] = 'InventoryKIB/MainMenu/CreateKIBDEV/C_CreateKIBDEV/pdf2/$1/$2/$3';
 $route['InventoryManagement/CreateKIBDEV/pdf3/(:any)'] = 'InventoryKIB/MainMenu/CreateKIBDEV/C_CreateKIBDEV/pdf3/$1';
 
+$route['InventoryManagement/Monitoring'] = 'Inventory/MainMenu/MoveOrder/C_Monitoringassy';
+$route['InventoryManagement/Monitoring/(:any)'] = 'Inventory/MainMenu/MoveOrder/C_Monitoringassy/$1';
+
+
 //------------------------------------ Manufacturing Operation ----------------------------------------
 $route['ManufacturingOperationUP2L']								= 'ManufacturingOperationUP2L/C_Index/index';
 $route['ManufacturingOperationUP2L/Core']							= 'ManufacturingOperationUP2L/MainMenu/C_Core';
