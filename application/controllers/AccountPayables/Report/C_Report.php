@@ -163,7 +163,7 @@ class C_Report extends CI_Controller {
 						,"Tgl Receipt"
 						,"GL Date");
 			
-			for ($a=0;$a<$14; $a++) {
+			for ($a=0;$a<14; $a++) {
 				$objset->setCellValue($cols[$a].'1',$val[$a]);
 				$objPHPExcel->getActiveSheet()->getColumnDimension('A')->setWidth(45);
 				$objPHPExcel->getActiveSheet()->getColumnDimension('B')->setWidth(13);
