@@ -6,6 +6,7 @@ class C_MasterPekerja extends CI_Controller
     {
         parent::__construct();
         $this->load->library('session');
+        $this->load->library('Log_Activity');
         $this->load->helper('url');
         $this->load->model('SystemAdministration/MainMenu/M_user');
         $this->load->model('PayrollManagement/MasterPekerja/M_masterpekerja');
@@ -22,7 +23,7 @@ class C_MasterPekerja extends CI_Controller
     {
         $this->checkSession();
         $user_id = $this->session->userid;
-        
+
         $data['Menu'] = 'Master Pekerja';
         $data['SubMenuOne'] = 'Master Pekerja';
         $data['SubMenuTwo'] = '';
@@ -43,10 +44,10 @@ class C_MasterPekerja extends CI_Controller
 		$this->session->unset_userdata('success_insert');
 		$this->session->unset_userdata('not_found');
     }
-	
+
 	public function search()
     {
-		
+
 		$statKerja = $this->input->post('txtKodeStatusKerja',TRUE);
 		$prefix = $statusKerja = '';
 		foreach ($statKerja as $t){
@@ -55,7 +56,7 @@ class C_MasterPekerja extends CI_Controller
 		}
         $this->checkSession();
         $user_id = $this->session->userid;
-        
+
         $data['Menu'] = 'Master Pekerja';
         $data['SubMenuOne'] = 'Master Pekerja';
         $data['SubMenuTwo'] = '';
@@ -78,7 +79,7 @@ class C_MasterPekerja extends CI_Controller
     {
         $this->checkSession();
         $user_id = $this->session->userid;
-        
+
         $row = $this->M_masterpekerja->get_by_id($id);
         if ($row) {
             $data = array(
@@ -88,7 +89,7 @@ class C_MasterPekerja extends CI_Controller
             	'UserMenu' => $this->M_user->getUserMenu($user_id,$this->session->responsibility_id),
             	'UserSubMenuOne' => $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id),
             	'UserSubMenuTwo' => $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id),
-            
+
 				'noind' => $row->noind,
 				'kd_hubungan_kerja' => $row->kd_hubungan_kerja,
 				'kd_status_kerja' => $row->kd_status_kerja,
@@ -289,6 +290,12 @@ class C_MasterPekerja extends CI_Controller
 				'noind_baru' => $this->input->post('noinD_baru',TRUE),
 			);
 
+            //insert to sys.log_activity
+            $aksi = 'Payroll Management';
+            $detail = "Create Master Pekerja nik=".$this->input->post('txtNik');
+            $this->log_activity->activity_log($aksi, $detail);
+            //
+
             $this->M_masterpekerja->insert($data);
             $this->session->set_flashdata('message', 'Create Record Success');
 			$ses=array(
@@ -296,7 +303,7 @@ class C_MasterPekerja extends CI_Controller
 				);
 			$this->session->set_userdata($ses);
             redirect(site_url('PayrollManagement/MasterPekerja'));
-        
+
     }
 
     public function update($id)
@@ -316,12 +323,12 @@ class C_MasterPekerja extends CI_Controller
                 'UserSubMenuOne' => $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id),
                 'UserSubMenuTwo' => $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id),
                 'action' => site_url('PayrollManagement/MasterPekerja/saveUpdate'),
-				
+
 				'pr_master_status_kerja_data' => $this->M_masterpekerja->get_pr_master_status_kerja_data(),
 				'pr_kantor_asal_data' => $this->M_masterpekerja->get_pr_kantor_asal_data(),
 				'pr_lokasi_kerja_data' => $this->M_masterpekerja->get_pr_lokasi_kerja_data(),
 				'pr_master_jabatan_data' => $this->M_masterpekerja->get_pr_master_jabatan_data(),
-				
+
 				'noind' => set_value('txtNoind', $row->noind),
 				'kd_hubungan_kerja' => set_value('txtKdHubunganKerja', $row->kd_hubungan_kerja),
 				'kd_status_kerja' => set_value('txtKdStatusKerja', $row->kd_status_kerja),
@@ -444,6 +451,12 @@ class C_MasterPekerja extends CI_Controller
 				'noind_baru' => $this->input->post('noinD_baru',TRUE),
 			);
 
+            //insert to sys.log_activity
+            $aksi = 'Payroll Management';
+            $detail = "Update Master Pekerja noind=".$this->input->post('txtNoind');
+            $this->log_activity->activity_log($aksi, $detail);
+            //
+
             $this->M_masterpekerja->update($this->input->post('txtNoind', TRUE), $data);
             $this->session->set_flashdata('message', 'Update Record Success');
 			$ses=array(
@@ -459,6 +472,11 @@ class C_MasterPekerja extends CI_Controller
 
         if ($row) {
             $this->M_masterpekerja->delete($id);
+            //insert to sys.log_activity
+            $aksi = 'Payroll Management';
+            $detail = "Delete Master Pekerja ID=$id";
+            $this->log_activity->activity_log($aksi, $detail);
+            //
             $this->session->set_flashdata('message', 'Delete Record Success');
 			$ses=array(
 					 "success_delete" => 1
@@ -474,7 +492,7 @@ class C_MasterPekerja extends CI_Controller
             redirect(site_url('PayrollManagement/MasterPekerja'));
         }
     }
-	
+
    // public function doImport(){
 
 		// $fileName = time().'-'.trim(addslashes($_FILES['file']['name']));
@@ -576,10 +594,10 @@ class C_MasterPekerja extends CI_Controller
 			// echo $this->upload->display_errors();
 		// }
 	// }
-	
-	
+
+
 	// +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ IMPORT V1 ++++++++++++++++++++++++++++++++++++++++++++
-	
+
 	  public function import() {
 		ini_set('max_execution_time', 300);
 		ini_set('memory_limit', '-1');
@@ -589,15 +607,15 @@ class C_MasterPekerja extends CI_Controller
         $config['file_name'] = $filename;
         $config['allowed_types'] = 'xls|xlsx|csv';
         $config['max_size'] = 10000;
-		
+
 		$this->load->library('upload');
         $this->upload->initialize($config);
-		
+
 		if(! $this->upload->do_upload('file') )
         $this->upload->display_errors();
-		
+
 		$media = $this->upload->data('file');
-	
+
         $inputFileName = './assets/upload/importPR/masterpekerja/'.$filename;
 		try {
                 $inputFileType = IOFactory::identify($inputFileName);
@@ -606,13 +624,13 @@ class C_MasterPekerja extends CI_Controller
             } catch(Exception $e) {
                 die('Error loading file "'.pathinfo($inputFileName,PATHINFO_BASENAME).'": '.$e->getMessage());
             }
-			
+
 		 $sheet = $objPHPExcel->getSheet(0);
 		 if($sheet){
 			$highestRow = $sheet->getHighestRow();
             $highestColumn = $sheet->getHighestColumn();
-             
-            for ($row = 2; $row <= $highestRow; $row++){                  //  Read a row of data into an array                 
+
+            for ($row = 2; $row <= $highestRow; $row++){                  //  Read a row of data into an array
                 $rowData = $sheet->rangeToArray('A' . $row . ':' . $highestColumn . $row,
                                                 NULL,
                                                 TRUE,
@@ -793,7 +811,7 @@ class C_MasterPekerja extends CI_Controller
 		$tgl_keluar = $this->input->post('txtTglKeluar');
 		$kd_pkj = $this->input->post('txtKdPkj');
 		$angg_jkn = $this->input->post('txtAnggJkn');
-    	
+
     	$i=0;
     	foreach($noind as $loop){
 				$data_exist[$i] = array(
@@ -847,7 +865,7 @@ class C_MasterPekerja extends CI_Controller
 					'kd_pkj'			=> $kd_pkj[$i],
 					'angg_jkn' 			=> $angg_jkn[$i],
 				);
-				
+
 				if($replace[$i] == 'yes'){
 					$id = $noind[$i];
 					$this->M_masterpekerja->delete($noind[$i]);
@@ -861,15 +879,15 @@ class C_MasterPekerja extends CI_Controller
 			redirect(site_url('PayrollManagement/MasterPekerja'));
 
     }
-	
+
 	 // public function upload() {
-       
+
         // $config['upload_path'] = 'assets/upload/importPR/masterPekerja/';
         // $config['file_name'] = 'MasterPekerja-'.time();
         // $config['allowed_types'] = 'csv';
         // $config['max_size'] = '1000';
         // $this->load->library('upload', $config);
- 
+
         // if (!$this->upload->do_upload('importfile')) {
             // echo $this->upload->display_errors();
         // }
@@ -877,7 +895,7 @@ class C_MasterPekerja extends CI_Controller
             // $file_data  = $this->upload->data();
             // $filename   = $file_data['file_name'];
             // $file_path  = 'assets/upload/importPR/MasterPekerja/'.$file_data['file_name'];
-            
+
             // if ($this->csvimport->get_array($file_path)){
                 // $data = $this->csvimport->get_array($file_path);
                 // $this->import($data, $filename);
@@ -887,17 +905,17 @@ class C_MasterPekerja extends CI_Controller
             // }
         // }
     // }
-	
+
 	// +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ IMPORT V1 ++++++++++++++++++++++++++++++++++++++++++++
-	
+
     public function checkSession(){
         if($this->session->is_logged){
-            
+
         }else{
             redirect(site_url());
         }
     }
-	
+
 	public function getNoind(){
 		$string = strtoupper($this->input->get('term'));
 		$data = $this->M_masterpekerja->get_noind($string);

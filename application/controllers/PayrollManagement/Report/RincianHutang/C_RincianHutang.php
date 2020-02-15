@@ -6,10 +6,11 @@ class C_RincianHutang extends CI_Controller
     {
         parent::__construct();
         $this->load->library('session');
+        $this->load->library('Log_Activity');
         $this->load->helper('url');
         $this->load->model('SystemAdministration/MainMenu/M_user');
         $this->load->model('PayrollManagement/TransaksiHutangKaryawan/M_hutangkaryawan');
-         $this->load->model('PayrollManagement/Report/RincianHutang/M_reportrincianhutang'); 
+         $this->load->model('PayrollManagement/Report/RincianHutang/M_reportrincianhutang');
         if($this->session->userdata('logged_in')!=TRUE) {
             $this->load->helper('url');
             $this->session->set_userdata('last_page', current_url());
@@ -21,7 +22,7 @@ class C_RincianHutang extends CI_Controller
     {
         $this->checkSession();
         $user_id = $this->session->userid;
-        
+
         $data['Menu'] = 'Laporan Penggajian';
         $data['SubMenuOne'] = 'Lap. Rincian Hutang';
         $data['SubMenuTwo'] = '';
@@ -42,7 +43,7 @@ class C_RincianHutang extends CI_Controller
     {
         $this->checkSession();
         $user_id = $this->session->userid;
-        
+
         $row = $this->M_hutangkaryawan->get_by_id($id);
         if ($row) {
             $data = array(
@@ -52,7 +53,7 @@ class C_RincianHutang extends CI_Controller
             	'UserMenu' => $this->M_user->getUserMenu($user_id,$this->session->responsibility_id),
             	'UserSubMenuOne' => $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id),
             	'UserSubMenuTwo' => $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id),
-            
+
 				'no_hutang' => $row->no_hutang,
 				'noind' => $row->noind,
 				'tgl_pengajuan' => $row->tgl_pengajuan,
@@ -136,7 +137,11 @@ class C_RincianHutang extends CI_Controller
 			$this->M_hutangkaryawan->insert_transaksi($data_transaksi);
 			$no_id++;
 		}
-		
+        //insert to sys.log_activity
+        $aksi = 'Payroll Management';
+        $detail = "Create Rincian hutang no=".str_replace(' ','', $this->input->post('txtNoind')).date('Ymd');
+        $this->log_activity->activity_log($aksi, $detail);
+        //
         $this->session->set_flashdata('message', 'Create Record Success');
         redirect(site_url('PayrollManagement/HutangKaryawan'));
     }
@@ -191,11 +196,15 @@ class C_RincianHutang extends CI_Controller
 			'kode_petugas' => $this->input->post('txtKodePetugas',TRUE),
 			'tgl_record' => $this->input->post('txtTglRecord',TRUE),
 		);
-
+        //insert to sys.log_activity
+        $aksi = 'Payroll Management';
+        $detail = "Update rincian hutang no=".$this->input->post('txtNoHutang');
+        $this->log_activity->activity_log($aksi, $detail);
+        //
         $this->M_hutangkaryawan->update($this->input->post('txtNoHutang', TRUE), $data);
         $this->session->set_flashdata('message', 'Update Record Success');
         redirect(site_url('PayrollManagement/HutangKaryawan'));
-        
+
     }
 
     public function delete($id)
@@ -204,6 +213,11 @@ class C_RincianHutang extends CI_Controller
 
         if ($row) {
             $this->M_hutangkaryawan->delete($id);
+            //insert to sys.log_activity
+            $aksi = 'Payroll Management';
+            $detail = "Delete rincian hutang id=$id";
+            $this->log_activity->activity_log($aksi, $detail);
+            //
             $this->session->set_flashdata('message', 'Delete Record Success');
             redirect(site_url('PayrollManagement/HutangKaryawan'));
         } else {
@@ -220,13 +234,13 @@ class C_RincianHutang extends CI_Controller
 
         $maxHutang = $this->M_hutangkaryawan->getMaxHutang($data_where);
         $maxHutang = 2 * $maxHutang;
-        
+
         echo $maxHutang;
     }
 
     public function checkSession(){
         if($this->session->is_logged){
-            
+
         }else{
             redirect(site_url());
         }
@@ -252,6 +266,11 @@ class C_RincianHutang extends CI_Controller
 
         $noind = $this->input->get('noind');
         $no_hutang = $this->input->get('no_hutang');
+        //insert to sys.log_activity
+        $aksi = 'Payroll Management';
+        $detail = "Export PDF rincian hutang no=".$no_hutang;
+        $this->log_activity->activity_log($aksi, $detail);
+        //
 
         $data['Employee'] = $this->M_reportrincianhutang->getEmployeeData($noind);
         $data['Loan'] = $this->M_reportrincianhutang->getLoanData($no_hutang);

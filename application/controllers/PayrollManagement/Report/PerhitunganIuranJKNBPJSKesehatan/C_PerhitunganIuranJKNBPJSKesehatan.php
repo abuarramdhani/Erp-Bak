@@ -6,6 +6,7 @@ class C_PerhitunganIuranJKNBPJSKesehatan extends CI_Controller
     {
         parent::__construct();
         $this->load->library('session');
+        $this->load->library('Log_Activity');
         $this->load->helper('url');
         $this->load->model('SystemAdministration/MainMenu/M_user');
         $this->load->model('PayrollManagement/Report/PerhitunganIuranJKNBPJSKesehatan/M_perhitunganiuranjknbpjskesehatan');
@@ -20,7 +21,7 @@ class C_PerhitunganIuranJKNBPJSKesehatan extends CI_Controller
     {
         $this->checkSession();
         $user_id = $this->session->userid;
-        
+
         $data['Menu'] = 'Laporan Penggajian';
         $data['SubMenuOne'] = 'Lap. Penghitungan JKN / BPJS';
         $data['SubMenuTwo'] = '';
@@ -41,7 +42,7 @@ class C_PerhitunganIuranJKNBPJSKesehatan extends CI_Controller
     {
         $this->checkSession();
         $user_id = $this->session->userid;
-        			
+
         $data['Menu'] = 'Laporan Penggajian';
         $data['SubMenuOne'] = 'Lap. Penghitungan JKN / BPJS';
         $data['SubMenuTwo'] = '';
@@ -66,7 +67,7 @@ class C_PerhitunganIuranJKNBPJSKesehatan extends CI_Controller
         $this->load->view('V_Footer',$data);
     }
 
-	public function generatePDF() 
+	public function generatePDF()
     {
         $this->checkSession();
 
@@ -74,11 +75,16 @@ class C_PerhitunganIuranJKNBPJSKesehatan extends CI_Controller
         $pdf = $this->pdf->load();
         $pdf = new mPDF('utf-8', 'A4', 9, '', 10, 10, 10, 10, 0, 0, 'L');
         $pdf->AddPage('L', '', '', '', '', 10, 10, 10, 10, 8 , 8);
-        
+
         $filename = 'Perhitungan Iuran JKN BPJS Kesehatan.pdf';
 
         $year	 = $this->input->get('year');
 		$month	 = $this->input->get('month');
+        //insert to sys.log_activity
+        $aksi = 'Payroll Management';
+        $detail = "Export PDF Laporan Perhitungan JKN/BPJS bulan=$month tahun=$year";
+        $this->log_activity->activity_log($aksi, $detail);
+        //
 
         $data['perhitungan_iuran'] = $this->M_perhitunganiuranjknbpjskesehatan->get_all($year, $month);
         $data['total'] = $this->M_perhitunganiuranjknbpjskesehatan->get_sum($year, $month);
@@ -95,7 +101,7 @@ class C_PerhitunganIuranJKNBPJSKesehatan extends CI_Controller
 
     public function checkSession(){
         if($this->session->is_logged){
-            
+
         }else{
             redirect(site_url());
         }
