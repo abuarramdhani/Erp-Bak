@@ -18,14 +18,6 @@ class M_report extends CI_Model {
 				$attribute = 'and aia.attribute3 is NULL ';
 			}
 
-			if($status == 1){
-				$plus = '';
-			} else if($status == 2){
-				$plus = '';
-			} else if($status == 3){
-				$plus = '(+)';
-			}
-
 			$oracle = $this->load->database("oracle",true);
 
 			if ($user == 'B0541' OR $user == 'B0727') {
@@ -135,12 +127,12 @@ class M_report extends CI_Model {
 				where
 					1=1
 					and aia.invoice_date between to_date('$startDate','DD-MM-YYYY') and to_date('$endDate','DD-MM-YYYY')
-					and aipa.check_id = aca.check_id$plus
+					and aipa.check_id = aca.check_id(+)
 					and aia.vendor_id = asa.vendor_id(+)
-					and aia.invoice_id = aipa.invoice_id$plus
+					and aia.invoice_id = aipa.invoice_id(+)
 					and aia.invoice_id = apsa.invoice_id(+)
 					and aba.batch_id(+) = aia.batch_id
-					and aca.status_lookup_code$plus != 'VOIDED'
+					and aca.status_lookup_code(+) != 'VOIDED'
 					and aia.terms_id = att.term_id
 					and att.enabled_flag = 'Y'
 					and aia.org_id = 82
