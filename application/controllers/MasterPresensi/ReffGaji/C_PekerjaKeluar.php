@@ -4,6 +4,7 @@ Defined('BASEPATH') or exit('NO DIrect Script Access Allowed');
  *
  */
 setlocale(LC_TIME, "id_ID.utf8");
+date_default_timezone_set("Asia/Jakarta");
 
 class C_PekerjaKeluar extends CI_Controller
 {
@@ -902,6 +903,8 @@ class C_PekerjaKeluar extends CI_Controller
 	}
 
 	public function print_pdf(){
+		$waktu = strftime('%d/%h/%Y %H:%M:%S');
+		// echo strftime('%d/%h/%Y %H:%M:%S');exit();
 		if(!isset($_GET) or empty($_GET)){
 			redirect(site_url('MasterPresensi/ReffGaji/PekerjaKeluar/'));
 		}
@@ -924,13 +927,30 @@ class C_PekerjaKeluar extends CI_Controller
 		$this->load->library('pdf');
 
 		$pdf = $this->pdf->load();
-		$pdf = new mPDF('','A4-L',0,'',10,10,10,10,0,5);
+		$pdf = new mPDF('','A4-L',0,'',5,5,5,5,0,5);
 		$filename = 'Gaji.pdf';
 
 		$html = $this->load->view('MasterPresensi/ReffGaji/PekerjaKeluar/V_print',$data, true);
-
 		$stylesheet1 = file_get_contents(base_url('assets/plugins/bootstrap/3.3.7/css/bootstrap.css'));
-		$pdf->SetHTMLFooter("<i style='font-size: 8pt'>Halaman ini dicetak melalui Aplikasi QuickERP-MasterPresensi oleh ".$this->session->user." ".$this->session->employee." pada tgl. ".strftime('%d/%h/%Y %H:%M:%S').". Halaman {PAGENO} dari {nb}</i>");
+		$pdf->SetHTMLFooter("<table style='width: 100%'>
+			<tr>
+				<td></td>
+				<td style='text-align: center'>Di Cetak oleh,</td>
+			</tr>
+			<tr>
+				<td></td>
+				<td>&nbsp;</td>
+			</tr><tr>
+				<td></td>
+				<td>&nbsp;</td>
+			</tr>
+			<tr>
+				<td>
+					<i style='font-size: 8pt'>Halaman ini dicetak melalui Aplikasi QuickERP-MasterPresensi oleh ".$this->session->user." ".$this->session->employee." pada tgl. ".$waktu.". Halaman {PAGENO} dari {nb}</i>
+				</td>
+				<td style='text-align: center'>(".$this->session->employee.")</td>
+			</tr>
+			</table>");
 		$pdf->WriteHTML($stylesheet1,1);
 		$pdf->WriteHTML($html, 2);
 		$pdf->Output($filename, 'I');
