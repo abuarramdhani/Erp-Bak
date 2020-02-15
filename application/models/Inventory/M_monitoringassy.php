@@ -20,6 +20,7 @@ class M_monitoringassy extends CI_Model
 					,bic.SUPPLY_SUBINVENTORY pull_subinv
 					,mil.SEGMENT1 pull_locator
 					,khs_inv_qty_att(msib2.ORGANIZATION_ID,msib2.INVENTORY_ITEM_ID,bic.ATTRIBUTE1 ,bic.ATTRIBUTE2,'') onhand
+					,msib.PRIMARY_UOM_CODE
 					,bd.DEPARTMENT_CLASS_CODE dept_class
 					from bom_operational_routings bor
 					,bom_operation_sequences bos
