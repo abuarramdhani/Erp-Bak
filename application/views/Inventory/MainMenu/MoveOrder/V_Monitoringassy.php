@@ -11,6 +11,7 @@
 			<th>PULL SUBINVENTORY</th>
 			<th>PULL LOCATOR</th>
 			<th>ONHAND</th>
+			<th>PRIMARY UOM CODE</th>
 			<th>DEPT CLASS</th>
 		</tr>
 	</thead>
@@ -29,6 +30,7 @@
 			<td><?=$mon['PULL_SUBINV']?></td>
 			<td><?=$mon['PULL_LOCATOR']?></td>
 			<td><?=$mon['ONHAND']?></td>
+			<td><?=$mon['PRIMARY_UOM_CODE']?></td>
 			<td><?=$mon['DEPT_CLASS']?></td>
 		</tr>
 	<?php 
