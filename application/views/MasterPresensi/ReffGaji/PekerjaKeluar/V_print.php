@@ -38,14 +38,14 @@
                             <th style="color: black;padding: 3px;text-align: center;border: 1px solid black;font-size: 15pt;width: 5%">UBT</th>
                             <th style="color: black;padding: 3px;text-align: center;border: 1px solid black;font-size: 15pt;width: 5%">UPAMK</th>
                             <th style="color: black;padding: 3px;text-align: center;border: 1px solid black;font-size: 15pt;width: 5%">Sisa Cuti</th>
-                            <th style="color: black;padding: 3px;text-align: center;border: 1px solid black;font-size: 15pt;width: 5%">Keterangan</th>
+                            <th style="color: black;padding: 3px;text-align: center;border: 1px solid black;font-size: 15pt;width: 5%">Ket.</th>
                             <th style="color: black;padding: 3px;text-align: center;border: 1px solid black;font-size: 15pt;width: 5%">DL & Obat</th>
                             <th style="color: black;padding: 3px;text-align: center;border: 1px solid black;font-size: 15pt;width: 5%">I & ABS</th>
                             <th style="color: black;padding: 3px;text-align: center;border: 1px solid black;font-size: 15pt;width: 8%">Pot. Lain</th>
                             <th style="color: black;padding: 3px;text-align: center;border: 1px solid black;font-size: 15pt;width: 8%">Pot. Seragam</th>
-                            <th style="color: black;padding: 3px;text-align: center;border: 1px solid black;font-size: 15pt;width: 5%">Jumlah JKN</th>
-                            <th style="color: black;padding: 3px;text-align: center;border: 1px solid black;font-size: 15pt;width: 5%">Jumlah JHT</th>
-                            <th style="color: black;padding: 3px;text-align: center;border: 1px solid black;font-size: 15pt;width: 5%">Jumlah JP</th>
+                            <th style="color: black;padding: 3px;text-align: center;border: 1px solid black;font-size: 15pt;width: 5%">JKN</th>
+                            <th style="color: black;padding: 3px;text-align: center;border: 1px solid black;font-size: 15pt;width: 5%">JHT</th>
+                            <th style="color: black;padding: 3px;text-align: center;border: 1px solid black;font-size: 15pt;width: 5%">JP</th>
                             <th style="color: black;padding: 3px;text-align: center;border: 1px solid black;font-size: 15pt;width: 5%">Jumlah Duka</th>
                             <th style="color: black;padding: 3px;text-align: center;border: 1px solid black;font-size: 15pt;width: 5%">Total Duka</th>
                         <?php   
@@ -66,15 +66,15 @@
                             <th style="color: black;padding: 3px;text-align: center;border: 1px solid black;font-size: 15pt;width: 5%">LEMBUR</th>
                             <th style="color: black;padding: 3px;text-align: center;border: 1px solid black;font-size: 15pt;width: 5%">UM Puasa</th>
                             <th style="color: black;padding: 3px;text-align: center;border: 1px solid black;font-size: 15pt;width: 5%">Sisa Cuti</th>
-                            <th style="color: black;padding: 3px;text-align: center;border: 1px solid black;font-size: 15pt;width: 5%">Keterangan</th>
+                            <th style="color: black;padding: 3px;text-align: center;border: 1px solid black;font-size: 15pt;width: 5%">Ket.</th>
                             <th style="color: black;padding: 3px;text-align: center;border: 1px solid black;font-size: 15pt;width: 5%">DL & Obat</th>
                             <th style="color: black;padding: 3px;text-align: center;border: 1px solid black;font-size: 15pt;width: 8%">Pot. Lain</th>
                             <th style="color: black;padding: 3px;text-align: center;border: 1px solid black;font-size: 15pt;width: 8%">Pot. Seragam</th>
-                            <th style="color: black;padding: 3px;text-align: center;border: 1px solid black;font-size: 15pt;width: 8%">Tambahan</th>
-                            <th style="color: black;padding: 3px;text-align: center;border: 1px solid black;font-size: 15pt;width: 8%">Potongan</th>
-                            <th style="color: black;padding: 3px;text-align: center;border: 1px solid black;font-size: 15pt;width: 5%">Jumlah JKN</th>
-                            <th style="color: black;padding: 3px;text-align: center;border: 1px solid black;font-size: 15pt;width: 5%">Jumlah JHT</th>
-                            <th style="color: black;padding: 3px;text-align: center;border: 1px solid black;font-size: 15pt;width: 5%">Jumlah JP</th>
+                            <th style="color: black;padding: 3px;text-align: center;border: 1px solid black;font-size: 15pt;width: 8%">Tam.</th>
+                            <th style="color: black;padding: 3px;text-align: center;border: 1px solid black;font-size: 15pt;width: 8%">Pot.</th>
+                            <th style="color: black;padding: 3px;text-align: center;border: 1px solid black;font-size: 15pt;width: 5%">JKN</th>
+                            <th style="color: black;padding: 3px;text-align: center;border: 1px solid black;font-size: 15pt;width: 5%">JHT</th>
+                            <th style="color: black;padding: 3px;text-align: center;border: 1px solid black;font-size: 15pt;width: 5%">JP</th>
                             <th style="color: black;padding: 3px;text-align: center;border: 1px solid black;font-size: 15pt;width: 5%">Jumlah Duka</th>
                             <th style="color: black;padding: 3px;text-align: center;border: 1px solid black;font-size: 15pt;width: 5%">Total Duka</th>
                         <?php 
