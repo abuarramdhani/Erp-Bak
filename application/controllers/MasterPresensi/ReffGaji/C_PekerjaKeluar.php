@@ -927,7 +927,7 @@ class C_PekerjaKeluar extends CI_Controller
 		$this->load->library('pdf');
 
 		$pdf = $this->pdf->load();
-		$pdf = new mPDF('','A4-L',0,'',5,5,5,5,0,5);
+		$pdf = new mPDF('','A4-L',0,'',5,5,5,25,0,5);
 		$filename = 'Gaji.pdf';
 
 		$html = $this->load->view('MasterPresensi/ReffGaji/PekerjaKeluar/V_print',$data, true);

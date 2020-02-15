@@ -47,7 +47,7 @@
                             <th style="color: black;padding: 3px;text-align: center;border: 1px solid black;font-size: 15pt;width: 5%">JHT</th>
                             <th style="color: black;padding: 3px;text-align: center;border: 1px solid black;font-size: 15pt;width: 5%">JP</th>
                             <th style="color: black;padding: 3px;text-align: center;border: 1px solid black;font-size: 15pt;width: 5%">Jumlah Duka</th>
-                            <th style="color: black;padding: 3px;text-align: center;border: 1px solid black;font-size: 15pt;width: 5%">Total Duka</th>
+                            <th style="color: black;padding: 3px;text-align: center;border: 1px solid black;font-size: 15pt;width: 10%">Total Duka</th>
                         <?php   
                          }else{ ?>
                             <th style="color: black;padding: 3px;text-align: center;border: 1px solid black;font-size: 15pt;width: 3%">No</th>
@@ -76,7 +76,7 @@
                             <th style="color: black;padding: 3px;text-align: center;border: 1px solid black;font-size: 15pt;width: 5%">JHT</th>
                             <th style="color: black;padding: 3px;text-align: center;border: 1px solid black;font-size: 15pt;width: 5%">JP</th>
                             <th style="color: black;padding: 3px;text-align: center;border: 1px solid black;font-size: 15pt;width: 5%">Jumlah Duka</th>
-                            <th style="color: black;padding: 3px;text-align: center;border: 1px solid black;font-size: 15pt;width: 5%">Total Duka</th>
+                            <th style="color: black;padding: 3px;text-align: center;border: 1px solid black;font-size: 15pt;width: 10%">Total Duka</th>
                         <?php 
                          } 
                         ?>
@@ -109,7 +109,7 @@
                                     <td style="color: black;padding: 3px;border: 1px solid black;text-align: center;font-size: 15pt"><?=$key['um_dl'] ?></td>
                                     <td style="color: black;padding: 3px;border: 1px solid black;text-align: center;font-size: 15pt"><?=$key['htm'] ?></td>
                                     <td style="color: black;padding: 3px;border: 1px solid black;text-align: center;font-size: 15pt"><?=number_format($key['pot_lain']) ?></td>
-                                    <td style="color: black;padding: 3px;border: 1px solid black;text-align: center;font-size: 15pt"><?=number_format($key['pot_seragam']) ?></td>
+                                    <td style="color: black;padding: 3px;border: 1px solid black;text-align: center;font-size: 15pt"><?=number_format(intval($key['pot_seragam'])) ?></td>
                                     <td style="color: black;padding: 3px;border: 1px solid black;text-align: center;font-size: 15pt"><?=$key['jml_jkn'] ?></td>
                                     <td style="color: black;padding: 3px;border: 1px solid black;text-align: center;font-size: 15pt"><?=$key['jml_jht'] ?></td>
                                     <td style="color: black;padding: 3px;border: 1px solid black;text-align: center;font-size: 15pt"><?=$key['jml_jp'] ?></td>
@@ -137,7 +137,7 @@
                                     <td style="color: black;padding: 3px;border: 1px solid black;text-align: center;font-size: 15pt"><?=$key['ket'] ?></td>
                                     <td style="color: black;padding: 3px;border: 1px solid black;text-align: center;font-size: 15pt"><?=$key['um_dl'] ?></td>
                                     <td style="color: black;padding: 3px;border: 1px solid black;text-align: center;font-size: 15pt"><?=number_format($key['pot_lain']) ?></td>
-                                    <td style="color: black;padding: 3px;border: 1px solid black;text-align: center;font-size: 15pt"><?=number_format($key['pot_seragam']) ?></td>
+                                    <td style="color: black;padding: 3px;border: 1px solid black;text-align: center;font-size: 15pt"><?=number_format(intval($key['pot_seragam'])) ?></td>
                                     <td style="color: black;padding: 3px;border: 1px solid black;text-align: center;font-size: 15pt"><?=$key['tam_susulan'] ?></td>
                                     <td style="color: black;padding: 3px;border: 1px solid black;text-align: center;font-size: 15pt"><?=$key['pot_susulan'] ?></td>
                                     <td style="color: black;padding: 3px;border: 1px solid black;text-align: center;font-size: 15pt"><?=$key['jml_jkn'] ?></td>
