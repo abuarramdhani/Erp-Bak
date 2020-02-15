@@ -9,15 +9,15 @@ class M_receive extends CI_Model
   }
 
   public function historyPO($datefrom,$dateto) {
-    $oracle = $this->load->database('oracle_dev', true);
+    $oracle = $this->load->database('oracle', true);
     $sql = " select distinct
                kpr.PO_NUMBER
               ,kpr.SHIPMENT_NUMBER
               ,kpr.LPPB_NUMBER
               ,kpr.INPUT_DATE
         from khs_po_receive kpr
-        where (kpr.FLAG = 'D' OR kpr.FLAG = 'O')
-      and kpr.input_date between TO_DATE('$datefrom"." 00:00:00', 'DD/MM/YYYY HH24:MI:SS') and TO_DATE('$dateto"." 23:59:59', 'DD/MM/YYYY HH24:MI:SS')
+        -- where (kpr.FLAG = 'D' OR kpr.FLAG = 'O')
+         where kpr.input_date between TO_DATE('$datefrom"." 00:00:00', 'DD/MM/YYYY HH24:MI:SS') and TO_DATE('$dateto"." 23:59:59', 'DD/MM/YYYY HH24:MI:SS')
       ORDER BY INPUT_DATE ASC";
 
 
@@ -28,7 +28,7 @@ class M_receive extends CI_Model
   }
 
     public function detailPO($po,$sj) {
-    $oracle = $this->load->database('oracle_dev', true);
+    $oracle = $this->load->database('oracle', true);
     $sql = " select distinct  kpr.PO_NUMBER
                 ,kpr.SHIPMENT_NUMBER
                 ,kpr.QUANTITY_RECEIPT qty_recipt
@@ -50,7 +50,7 @@ class M_receive extends CI_Model
          // return $sql;
   }
     public function serial_number($po,$id,$sj) {
-    $oracle = $this->load->database('oracle_dev', true);
+    $oracle = $this->load->database('oracle', true);
     $sql = " select distinct krs.PO_NUMBER
       ,krs.INVENTORY_ITEM_ID
       ,krs.SERIAL_NUMBER
@@ -70,7 +70,7 @@ where krs.ORGANIZATION_ID = kpr.ORGANIZATION_ID
          // return $sql;
   }
    public function lppb_number($po,$sj) {
-    $oracle = $this->load->database('oracle_dev', true);
+    $oracle = $this->load->database('oracle', true);
     $sql = "select DISTINCT rsh.RECEIPT_NUM
     from rcv_shipment_lines rsl
         ,rcv_shipment_headers rsh
