@@ -42,7 +42,6 @@
                             <th style="color: black;padding: 3px;text-align: center;border: 1px solid black;font-size: 15pt;width: 5%">DL & Obat</th>
                             <th style="color: black;padding: 3px;text-align: center;border: 1px solid black;font-size: 15pt;width: 5%">I & ABS</th>
                             <th style="color: black;padding: 3px;text-align: center;border: 1px solid black;font-size: 15pt;width: 8%">Pot. Lain</th>
-                            <th style="color: black;padding: 3px;text-align: center;border: 1px solid black;font-size: 15pt;width: 8%">Pot. Seragam</th>
                             <th style="color: black;padding: 3px;text-align: center;border: 1px solid black;font-size: 15pt;width: 5%">JKN</th>
                             <th style="color: black;padding: 3px;text-align: center;border: 1px solid black;font-size: 15pt;width: 5%">JHT</th>
                             <th style="color: black;padding: 3px;text-align: center;border: 1px solid black;font-size: 15pt;width: 5%">JP</th>
@@ -69,7 +68,9 @@
                             <th style="color: black;padding: 3px;text-align: center;border: 1px solid black;font-size: 15pt;width: 5%">Ket.</th>
                             <th style="color: black;padding: 3px;text-align: center;border: 1px solid black;font-size: 15pt;width: 5%">DL & Obat</th>
                             <th style="color: black;padding: 3px;text-align: center;border: 1px solid black;font-size: 15pt;width: 8%">Pot. Lain</th>
-                            <th style="color: black;padding: 3px;text-align: center;border: 1px solid black;font-size: 15pt;width: 8%">Pot. Seragam</th>
+                            <?php  if ($pos['slcStatusPekerja2'] == "H") { ?>
+                            <th style="color: black;padding: 3px;text-align: center;border: 1px solid black;font-size: 15pt;width: 8%">Pot. Seragam</th>                                    
+                            <?php } ?>
                             <th style="color: black;padding: 3px;text-align: center;border: 1px solid black;font-size: 15pt;width: 8%">Tam.</th>
                             <th style="color: black;padding: 3px;text-align: center;border: 1px solid black;font-size: 15pt;width: 8%">Pot.</th>
                             <th style="color: black;padding: 3px;text-align: center;border: 1px solid black;font-size: 15pt;width: 5%">JKN</th>
@@ -109,7 +110,6 @@
                                     <td style="color: black;padding: 3px;border: 1px solid black;text-align: center;font-size: 15pt"><?=$key['um_dl'] ?></td>
                                     <td style="color: black;padding: 3px;border: 1px solid black;text-align: center;font-size: 15pt"><?=$key['htm'] ?></td>
                                     <td style="color: black;padding: 3px;border: 1px solid black;text-align: center;font-size: 15pt"><?=number_format($key['pot_lain']) ?></td>
-                                    <td style="color: black;padding: 3px;border: 1px solid black;text-align: center;font-size: 15pt"><?=number_format(intval($key['pot_seragam'])) ?></td>
                                     <td style="color: black;padding: 3px;border: 1px solid black;text-align: center;font-size: 15pt"><?=$key['jml_jkn'] ?></td>
                                     <td style="color: black;padding: 3px;border: 1px solid black;text-align: center;font-size: 15pt"><?=$key['jml_jht'] ?></td>
                                     <td style="color: black;padding: 3px;border: 1px solid black;text-align: center;font-size: 15pt"><?=$key['jml_jp'] ?></td>
@@ -137,7 +137,9 @@
                                     <td style="color: black;padding: 3px;border: 1px solid black;text-align: center;font-size: 15pt"><?=$key['ket'] ?></td>
                                     <td style="color: black;padding: 3px;border: 1px solid black;text-align: center;font-size: 15pt"><?=$key['um_dl'] ?></td>
                                     <td style="color: black;padding: 3px;border: 1px solid black;text-align: center;font-size: 15pt"><?=number_format($key['pot_lain']) ?></td>
+                                     <?php if ($pos['slcStatusPekerja2'] == "H") { ?>
                                     <td style="color: black;padding: 3px;border: 1px solid black;text-align: center;font-size: 15pt"><?=number_format(intval($key['pot_seragam'])) ?></td>
+                                    <?php  } ?>
                                     <td style="color: black;padding: 3px;border: 1px solid black;text-align: center;font-size: 15pt"><?=$key['tam_susulan'] ?></td>
                                     <td style="color: black;padding: 3px;border: 1px solid black;text-align: center;font-size: 15pt"><?=$key['pot_susulan'] ?></td>
                                     <td style="color: black;padding: 3px;border: 1px solid black;text-align: center;font-size: 15pt"><?=$key['jml_jkn'] ?></td>
