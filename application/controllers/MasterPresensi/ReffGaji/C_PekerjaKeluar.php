@@ -932,25 +932,7 @@ class C_PekerjaKeluar extends CI_Controller
 
 		$html = $this->load->view('MasterPresensi/ReffGaji/PekerjaKeluar/V_print',$data, true);
 		$stylesheet1 = file_get_contents(base_url('assets/plugins/bootstrap/3.3.7/css/bootstrap.css'));
-		$pdf->SetHTMLFooter("<table style='width: 100%'>
-			<tr>
-				<td></td>
-				<td style='text-align: center'>Di Cetak oleh,</td>
-			</tr>
-			<tr>
-				<td></td>
-				<td>&nbsp;</td>
-			</tr><tr>
-				<td></td>
-				<td>&nbsp;</td>
-			</tr>
-			<tr>
-				<td>
-					<i style='font-size: 8pt'>Halaman ini dicetak melalui Aplikasi QuickERP-MasterPresensi oleh ".$this->session->user." ".$this->session->employee." pada tgl. ".$waktu.". Halaman {PAGENO} dari {nb}</i>
-				</td>
-				<td style='text-align: center'>(".$this->session->employee.")</td>
-			</tr>
-			</table>");
+		$pdf->SetHTMLFooter("<i style='font-size: 8pt'>Halaman ini dicetak melalui Aplikasi QuickERP-MasterPresensi oleh ".$this->session->user." ".$this->session->employee." pada tgl. ".$waktu.". Halaman {PAGENO} dari {nb}</i>");
 		$pdf->WriteHTML($stylesheet1,1);
 		$pdf->WriteHTML($html, 2);
 		$pdf->Output($filename, 'I');

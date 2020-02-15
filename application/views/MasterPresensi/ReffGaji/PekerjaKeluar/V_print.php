@@ -15,7 +15,7 @@
             <h4 style="color: black;">Periode Pekerja Keluar : <?php echo $prd_awal[2]." ".$bulan_pendek[intval($prd_awal[1])]." ".$prd_awal[0]." - ".$prd_akhir[2]." ".$bulan_pendek[intval($prd_akhir[1])]." ".$prd_akhir[0] ?></h4>
         </div>
         <div>
-        <table style="width:100%" >
+            <table style="width:100%" >
                 <thead class=" bg-primary">
                     <tr>
                         <?php 
@@ -153,6 +153,31 @@
                         }
                     } ?>
                 </tbody>
+            </table>
+            <br>
+            <table style='width: 100%'>
+            <tr>
+                <td style="width: 75%"></td>
+                <td style='text-align: center'>Di Cetak oleh,</td>
+            </tr>
+            <tr>
+                <td></td>
+                <td>&nbsp;</td>
+            </tr>
+            <tr>
+                <td></td>
+                <td>&nbsp;</td>
+            </tr>
+            <tr>
+                <td></td>
+                <td>&nbsp;</td>
+            </tr>
+            <tr>
+                <td>
+                   
+                </td>
+                <td style='text-align: center'>(<?php echo $this->session->employee ?>)</td>
+            </tr>
             </table>
         </div>
     </body>
