@@ -108,13 +108,13 @@
                                     <td style="padding: 5px;border: 1px solid black;text-align: center;font-size: 15pt"><?=$key['ket'] ?></td>
                                     <td style="padding: 5px;border: 1px solid black;text-align: center;font-size: 15pt"><?=$key['um_dl'] ?></td>
                                     <td style="padding: 5px;border: 1px solid black;text-align: center;font-size: 15pt"><?=$key['htm'] ?></td>
-                                    <td style="padding: 5px;border: 1px solid black;text-align: center;font-size: 15pt"><?=$key['pot_lain'] ?></td>
-                                    <td style="padding: 5px;border: 1px solid black;text-align: center;font-size: 15pt"><?=$key['pot_seragam'] ?></td>
+                                    <td style="padding: 5px;border: 1px solid black;text-align: center;font-size: 15pt"><?=number_format($key['pot_lain']) ?></td>
+                                    <td style="padding: 5px;border: 1px solid black;text-align: center;font-size: 15pt"><?=number_format($key['pot_seragam']) ?></td>
                                     <td style="padding: 5px;border: 1px solid black;text-align: center;font-size: 15pt"><?=$key['jml_jkn'] ?></td>
                                     <td style="padding: 5px;border: 1px solid black;text-align: center;font-size: 15pt"><?=$key['jml_jht'] ?></td>
                                     <td style="padding: 5px;border: 1px solid black;text-align: center;font-size: 15pt"><?=$key['jml_jp'] ?></td>
                                     <td style="padding: 5px;border: 1px solid black;text-align: center;font-size: 15pt"><?=$key['jml_duka'] ?></td>
-                                    <td style="padding: 5px;border: 1px solid black;text-align: center;font-size: 15pt"><?=$key['nom_duka'] ?></td>
+                                    <td style="padding: 5px;border: 1px solid black;text-align: center;font-size: 15pt"><?=number_format($key['nom_duka']) ?></td>
                                 </tr>
                         <?php }else{ ?>
                                 <tr>
@@ -136,15 +136,15 @@
                                     <td style="padding: 5px;border: 1px solid black;text-align: center;font-size: 15pt"><?=$key['sisa_cuti'] ?></td>
                                     <td style="padding: 5px;border: 1px solid black;text-align: center;font-size: 15pt"><?=$key['ket'] ?></td>
                                     <td style="padding: 5px;border: 1px solid black;text-align: center;font-size: 15pt"><?=$key['um_dl'] ?></td>
-                                    <td style="padding: 5px;border: 1px solid black;text-align: center;font-size: 15pt"><?=$key['pot_lain'] ?></td>
-                                    <td style="padding: 5px;border: 1px solid black;text-align: center;font-size: 15pt"><?=$key['pot_seragam'] ?></td>
+                                    <td style="padding: 5px;border: 1px solid black;text-align: center;font-size: 15pt"><?=number_format($key['pot_lain']) ?></td>
+                                    <td style="padding: 5px;border: 1px solid black;text-align: center;font-size: 15pt"><?=number_format($key['pot_seragam']) ?></td>
                                     <td style="padding: 5px;border: 1px solid black;text-align: center;font-size: 15pt"><?=$key['tam_susulan'] ?></td>
                                     <td style="padding: 5px;border: 1px solid black;text-align: center;font-size: 15pt"><?=$key['pot_susulan'] ?></td>
                                     <td style="padding: 5px;border: 1px solid black;text-align: center;font-size: 15pt"><?=$key['jml_jkn'] ?></td>
                                     <td style="padding: 5px;border: 1px solid black;text-align: center;font-size: 15pt"><?=$key['jml_jht'] ?></td>
                                     <td style="padding: 5px;border: 1px solid black;text-align: center;font-size: 15pt"><?=$key['jml_jp'] ?></td>
                                     <td style="padding: 5px;border: 1px solid black;text-align: center;font-size: 15pt"><?=$key['jml_duka'] ?></td>
-                                    <td style="padding: 5px;border: 1px solid black;text-align: center;font-size: 15pt"><?=$key['nom_duka'] ?></td>
+                                    <td style="padding: 5px;border: 1px solid black;text-align: center;font-size: 15pt"><?=number_format($key['nom_duka']) ?></td>
                                 </tr>
                         <?php } 
                             $angka++;
