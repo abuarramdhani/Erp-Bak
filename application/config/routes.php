@@ -3795,3 +3795,9 @@ $route['MasterCC'] = 'MasterCostCenter/C_Index';
 $route['MasterCC/ListCC'] = 'MasterCostCenter/C_Index/ListCC';
 $route['MasterCC/ListCC/(:any)'] = 'MasterCostCenter/C_Index/$1';
 $route['MasterCC/ListCC/(:any)/(:any)'] = 'MasterCostCenter/C_Index/$1/$2';
+
+//-------------------------------------------- Rencana Lembur ------------------------------------------------ //
+ $route['RencanaLembur'] = 'RencanaLembur/C_index';
+ $route['RencanaLembur/ListRencanaLembur'] = 'RencanaLembur/C_ListRencanaLembur';
+ $route['RencanaLembur/ListRencanaLembur/(:any)'] = 'RencanaLembur/C_ListRencanaLembur/$1';
+ $route['RencanaLembur/ListRencanaLembur/(:any)/(:any)'] = 'RencanaLembur/C_ListRencanaLembur/$1/$2';
