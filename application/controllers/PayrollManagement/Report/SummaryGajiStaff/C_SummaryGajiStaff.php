@@ -6,6 +6,7 @@ class C_SummaryGajiStaff extends CI_Controller
     {
         parent::__construct();
         $this->load->library('session');
+        $this->load->library('Log_Activity');
         $this->load->helper('url');
         $this->load->model('SystemAdministration/MainMenu/M_user');
         $this->load->model('PayrollManagement/Report/SummaryGajiStaff/M_summarygajistaff');
@@ -20,7 +21,7 @@ class C_SummaryGajiStaff extends CI_Controller
     {
         $this->checkSession();
         $user_id = $this->session->userid;
-        
+
         $data['Menu'] = 'Laporan Penggajian';
         $data['SubMenuOne'] = 'Lap. Summary Gaji Staff';
         $data['SubMenuTwo'] = '';
@@ -41,7 +42,7 @@ class C_SummaryGajiStaff extends CI_Controller
 	    {
 	        $this->checkSession();
 	        $user_id = $this->session->userid;
-	        			
+
 	        $data['Menu'] = 'Laporan Penggajian';
 	        $data['SubMenuOne'] = 'Lap. Summary Gaji Staff';
 	        $data['SubMenuTwo'] = '';
@@ -72,15 +73,20 @@ class C_SummaryGajiStaff extends CI_Controller
         $this->load->library('pdf');
         $pdf = $this->pdf->load();
         $pdf = new mPDF('utf-8', 'A4', 10, '', 10, 10, 15, 15, 0, 0, 'P');
-        
+
         $filename = 'Summary Gaji Staff';
 
         $year = $this->input->get('year');
         $month = $this->input->get('month');
+        //insert to sys.log_activity
+        $aksi = 'Payroll Management';
+        $detail = "Export PDF Laporan Summary gaji staf bulan=$month tahun=$year";
+        $this->log_activity->activity_log($aksi, $detail);
+        //
 
         $data['summary'] = $this->generateDataArray($year, $month);
         $data['year'] = $year;
-        $data['month'] = $month;        
+        $data['month'] = $month;
 
         $stylesheet = file_get_contents(base_url('assets/css/custom.css'));
         $html = $this->load->view('PayrollManagement/Report/SummaryGajiStaff/V_report', $data, true);
@@ -92,7 +98,7 @@ class C_SummaryGajiStaff extends CI_Controller
 
     public function checkSession(){
         if($this->session->is_logged){
-            
+
         }else{
             redirect(site_url());
         }

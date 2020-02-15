@@ -6,6 +6,7 @@ class C_RekapPembayaranJHT extends CI_Controller
     {
         parent::__construct();
         $this->load->library('session');
+        $this->load->library('Log_Activity');
         $this->load->helper('url');
         $this->load->model('SystemAdministration/MainMenu/M_user');
         $this->load->model('PayrollManagement/Report/RekapPembayaranJHT/M_rekappembayaranjht');
@@ -20,7 +21,7 @@ class C_RekapPembayaranJHT extends CI_Controller
     {
         $this->checkSession();
         $user_id = $this->session->userid;
-        
+
         $data['Menu'] = 'Laporan Penggajian';
         $data['SubMenuOne'] = 'Lap. Rekap Pembayaran JHT';
         $data['SubMenuTwo'] = '';
@@ -41,7 +42,7 @@ class C_RekapPembayaranJHT extends CI_Controller
     {
         $this->checkSession();
         $user_id = $this->session->userid;
-        			
+
         $data['Menu'] = 'Laporan Penggajian';
         $data['SubMenuOne'] = 'Lap. Rekap Pembayaran JHT';
         $data['SubMenuTwo'] = '';
@@ -67,18 +68,23 @@ class C_RekapPembayaranJHT extends CI_Controller
         $this->load->view('V_Footer',$data);
     }
 
-	public function generatePDF() 
+	public function generatePDF()
     {
         $this->checkSession();
 
         $this->load->library('pdf');
         $pdf = $this->pdf->load();
         $pdf = new mPDF('utf-8', 'A4', 9, '', 15, 15, 15, 15, 0, 0, 'P');
-        
+
         $filename = 'Rekap Pembayaran JHT.pdf';
 
         $no_induk = $this->input->get('no_induk');
         $year	 = $this->input->get('year');
+        //insert to sys.log_activity
+        $aksi = 'Payroll Management';
+        $detail = "Export PDF Laporan Rekap Pembayaran JHT noind=$no_induk tahun=$year";
+        $this->log_activity->activity_log($aksi, $detail);
+        //
 
         $data['data_karyawan'] = $this->M_rekappembayaranjht->get_employee_data($no_induk);
         $data['pembayaran_jht'] = $this->M_rekappembayaranjht->get_jht_year($no_induk, $year);
@@ -95,7 +101,7 @@ class C_RekapPembayaranJHT extends CI_Controller
 
     public function checkSession(){
         if($this->session->is_logged){
-            
+
         }else{
             redirect(site_url());
         }
