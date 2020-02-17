@@ -4,18 +4,18 @@
 
 <tbody >
   <tr>
-    <td><input type="hidden" name="porecipt[]" value="<?=$detail[$i]['PO_NUMBER'] ?>" >PO : <?=$detail[$i]['PO_NUMBER'] ?> <br><input type="hidden" name="sujarecipt[]" value="<?=$detail[$i]['SHIPMENT_NUMBER'] ?>" >Surat Jalan : <?=$detail[$i]['SHIPMENT_NUMBER'] ?></td>
+    <td><input type="hidden" name="porecipt[]" value="<?=$detail[$i]['PO_NUMBER'] ?>" ><b>PO :</b> <?=$detail[$i]['PO_NUMBER'] ?> <br><input type="hidden" name="sujarecipt[]" value="<?=$detail[$i]['SHIPMENT_NUMBER'] ?>" ><b>Surat Jalan : </b><?=$detail[$i]['SHIPMENT_NUMBER'] ?></td>
   </tr>   
   <tr>
     <td><?php if ($detail[$i]['LPPB_NUMBERS'] == null) {  ?>
-      <input type="hidden" name="lppbrecipt[]" value="-" > NO LPPB :  -
+      <input type="hidden" name="lppbrecipt[]" value="-" > <b>NO LPPB :</b>  -
     <?php } else if ($detail[$i]['LPPB_NUMBERS'] != null) { ?>
-      <input type="hidden" name="lppbrecipt[]" value="<?=$detail[$i]['LPPB_NUMBERS'][0]['RECEIPT_NUM'] ?>" > NO LPPB : <?=$detail[$i]['LPPB_NUMBERS'][0]['RECEIPT_NUM'] ?>
+      <input type="hidden" name="lppbrecipt[]" value="<?=$detail[$i]['LPPB_NUMBERS'][0]['RECEIPT_NUM'] ?>" > <b>NO LPPB : </b><?=$detail[$i]['LPPB_NUMBERS'][0]['RECEIPT_NUM'] ?>
       <?php } ?>
     </td>
   </tr>   
   <tr>
-    <td><input type="text" class="form-control"  id="Ket" placeholder="Masukan keterangan"></td>
+    <td><input type="text" class="form-control"  id="keterangandong" placeholder="Masukan keterangan" ></td>
   </tr>        
 </tbody>
 </table>
@@ -23,6 +23,8 @@
 </div>
 <div class="col-md-7">
 <h2  style="text-align: center"  >RINCIAN PO</h2>
+<h3  style="text-align: center"  >Standart Warna Hijau</h3>
+
 </div>
 
 <div class="col-md-12">
@@ -62,7 +64,7 @@
               <?php echo '<table class="table table-bordered  table-responsive " style="width: 100%;"><tr>';
                   $i=0;
                   foreach ($det['SERIAL_NUMBER'] as $number){
-                      if($i%5==0 && $i!=0)
+                      if($i%4==0 && $i!=0)
                       {
                        echo '</tr><tr><td> <input type="text" class="form-control"id="serial '.$no.'" name="serial'.$no.'"  value='.$number['SERIAL_NUMBER'].'></td>';
                       }
