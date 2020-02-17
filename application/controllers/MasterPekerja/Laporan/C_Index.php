@@ -751,7 +751,7 @@ class C_Index extends CI_Controller {
 										'jabatan_peserta'	=> $dataPribadi[0]['jabatan'],
 										'unit_peserta'		=> $unit[0]['unit'],
 										'upah_status'		=> $upah[0]['upah_status'],
-										'upah_nominal'		=> $dataLKK1[0]['upah_nominal'],
+										'upah_nominal'		=> ltrim($dataLKK1[0]['upah_nominal'], 'Rp '),
 										'terbilang'			=> number_to_words($dataLKK1[0]['upah_nominal']),
 										'tempat_kecelakaan'	=> $tempat_kecelakaan[0]['lokasi_kejadian'],
 										'alamat_kecelakaan'	=> $dataLKK1[0]['alamat_kk'],
@@ -785,10 +785,10 @@ class C_Index extends CI_Controller {
 
 		$html = $this->load->view('MasterPekerja/Laporan/V_Pdf', $data, true);
 		// $stylesheet1 = file_get_contents(base_url('assets/plugins/bootstrap/3.3.7/css/bootstrap.css'));
-		$pdf->WriteHTML($stylesheet1,1);
+		// $pdf->WriteHTML($stylesheet1,1);
 		$pdf->WriteHTML($html, 0);
-    $pdf->setTitle($filename);
-		$pdf->Output($filename, 'D');
+    	$pdf->setTitle($filename);
+		$pdf->Output($filename, 'I');
 
 		// $this->load->view('MasterPekerja/Laporan/V_Pdf', $dataLKK1_all);
 	}
