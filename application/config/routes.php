@@ -3644,6 +3644,7 @@ $route['PengirimanDokumen/ajax/showInput']				= 'PengirimanDokumen/Menu/C_InputD
 $route['PengirimanDokumen/ajax/noind']					= 'PengirimanDokumen/Menu/C_InputData/ajaxNoind';
 $route['PengirimanDokumen/ajax/listMaster']				= 'PengirimanDokumen/Menu/C_InputData/ajaxListMaster';
 $route['PengirimanDokumen/ajax/addData']['post']		= 'PengirimanDokumen/Menu/C_InputData/ajaxInputData';
+$route['PengirimanDokumen/ajax/showData']               = 'PengirimanDokumen/Menu/C_InputData/ajaxShowData';
 
 $route['PengirimanDokumen/ajax/showMaster']				= 'PengirimanDokumen/Menu/C_MasterData/ajaxShowMaster';
 $route['PengirimanDokumen/ajax/seksi']					= 'PengirimanDokumen/Menu/C_MasterData/ajaxSeksi';
@@ -3662,6 +3663,7 @@ $route['PengirimanDokumen/PersonaliaTwo/rejected']		= 'PengirimanDokumen/Menu/C_
 $route['PengirimanDokumen/Personalia/ajax/sendapproval']['post'] = 'PengirimanDokumen/Menu/C_Personalia/ApprovalData';
 $route['PengirimanDokumen/Personalia/ajax/changeapp'] 	= 'PengirimanDokumen/Menu/C_Personalia/changeApproval';
 $route['PengirimanDokumen/Personalia/ajax/newData'] 	= 'PengirimanDokumen/Menu/C_Personalia/ajaxNewData';
+
 
 $route['PengirimanDokumen/Personalia/RekapAll']			= 'PengirimanDokumen/Menu/C_Personalia/rekapAll';
 $route['PengirimanDokumen/Personalia/RekapAll/(:any)'] 	= 'PengirimanDokumen/Menu/C_Personalia/rekapAll/$1';
