@@ -384,20 +384,20 @@
     $('.tabel_izin_dinas_all').DataTable({
       scrollX: true,
       fixedColumns:   {
-        leftColumns: 5,
+        leftColumns: 1,
       }
     });
     $('.tabel_izin_dinas_approve').DataTable({
       scrollX: true,
       fixedColumns:   {
-        leftColumns: 5,
+        leftColumns: 1,
       }
     });
     $('.tabel_izin_dinas_check').DataTable();
     $('.tabel_izin_dinas_reject').DataTable({
       scrollX: true,
       fixedColumns:   {
-        leftColumns: 5,
+        leftColumns: 1,
       }
     });
   })
