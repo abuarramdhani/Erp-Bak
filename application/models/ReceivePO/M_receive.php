@@ -63,7 +63,8 @@ where krs.ORGANIZATION_ID = kpr.ORGANIZATION_ID
   and krs.PO_LINE_ID = kpr.PO_LINE_ID
   and krs.PO_NUMBER = '$po'
   and krs.SHIPMENT_NUMBER ='$sj'
-  and krs.INVENTORY_ITEM_ID ='$id'";
+  and krs.INVENTORY_ITEM_ID ='$id'
+  ORDER BY SERIAL_NUMBER";
 
     $query = $oracle->query($sql);
     return $query->result_array();

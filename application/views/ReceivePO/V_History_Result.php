@@ -18,7 +18,7 @@
           <tbody >
 
            <tr>	
-            <td><button onclick="Detail(<?=$angka?>)" id="buttonpo<?=$angka?>" class="btn btn-default btn-flat btn-sm" style ="width:100%; " value="<?=$list['PO_NUMBER'] ?>" >Nomor PO : <?=$list['PO_NUMBER'] ?> <br> Surat jalan : <?=$list['SHIPMENT_NUMBER'] ?></button></td>
+            <td><button onclick="Detail(<?=$angka?>)" id="buttonpo<?=$angka?>" class="btn btn-default btn-flat btn-sm" style ="width:100%; " value="<?=$list['PO_NUMBER'] ?>" ><b>Nomor PO : </b> <?=$list['PO_NUMBER'] ?> <br><b>Surat jalan : </b><?=$list['SHIPMENT_NUMBER'] ?></button></td>
             <input type="hidden" name="suratjalan" id="suratjalan<?=$angka?>" value = "<?=$list['SHIPMENT_NUMBER'] ?>" >
           </tr>
         </tbody>

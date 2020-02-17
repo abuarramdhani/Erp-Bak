@@ -65,22 +65,6 @@ class C_History extends CI_Controller
 		$datefrom	= $this->input->post('datefrom');
 		$dateto	= $this->input->post('dateto');
 		$result =  $this->M_receive->historyPO($datefrom,$dateto);
-		// dummy array 
-		// $date = array( '17/01/20','17/01/20',  '17/01/20',  '17/01/20');
-		// $shipment_number = array('SJ123', 'SJ456', 'SJ789',  'SJ101112');
-		// $po_number = array('1901000', '1901001', '1901002',  '1901003');
-
-		// $result=array();
-		// for ($i=0; $i < sizeof($po_number) ; $i++) { 
-		// 	if ($date[$i] == $datefrom || $date[$i] ==  $dateto) {
-		// 	$result[$i]['PO_NUMBER'] = $po_number[$i];
-		// 	$result[$i]['SHIPMENT_NUMBER'] = $shipment_number[$i];
-		// 	$result[$i]['DATE'] = $date[$i];
-
-		// 	}
-		// }
-
-
 		// echo"<pre>";print_r($result);exit();
 
 		$data['result'] = $result;
@@ -133,7 +117,7 @@ class C_History extends CI_Controller
 
 		$this->load->library('pdf');
 		$pdf = $this->pdf->load();
-    	$pdf = new mPDF('utf-8',array(210,297), 0, '', 3, 3, 3, 3, 3, 3); //----- A5-L
+    	$pdf = new mPDF('utf-8',array(210,310), 0, '', 1, 1, 5, 1, 1, 1); 
 		// $tglNama = date("d/m/Y");
 
 		$this->load->library('ciqrcode');

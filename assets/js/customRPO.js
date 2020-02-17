@@ -23,7 +23,7 @@ function getHistory(th) {
 			$('#hasil').html(result);
 				$('#uwuuwu').DataTable({
 					scrollX: false,
-					scrollY:  300,
+					scrollY:  400,
 					scrollCollapse: true,
 					paging:false,
                     info:false,
@@ -56,7 +56,7 @@ function Detail(no) {
 			$('#detail').html(result);
 				$('#detaillist').DataTable({
 					scrollX: false,
-					scrollY:  145,
+					scrollY:  100,
 					scrollCollapse: true,
 					paging:false,
                     info:false,
@@ -79,11 +79,18 @@ function intine(th, no)
 }
 
 function CetakKartu(no) {
-	$(document).ready(function(){
+
+		var ket = $('#keterangandong').val();
+		if (ket == '') {
+			Swal.fire(
+			  'Mohon Isikan keterangan',
+			  '',
+			  'warning'
+			)
+		} else if (ket != '') {
 
 		var descrecipt = $('#descrecipt'+no).val(); 	
-		var itemrecipt = $('#itemrecipt'+no).val(); 	
-		var ket = $('#Ket').val(); 	
+		var itemrecipt = $('#itemrecipt'+no).val(); 
 
 		// var serial = $('input[name="serial[]"]').val();
 
@@ -110,7 +117,9 @@ function CetakKartu(no) {
 			var win = window.open(result, '_blank');
   			win.focus()
 			console.log("sukses2");
+			console.log(ket)
+
 				
 			});
-		});		
+	}
 }
