@@ -3804,3 +3804,50 @@ $route['MasterCC/ListCC/(:any)/(:any)'] = 'MasterCostCenter/C_Index/$1/$2';
  $route['RencanaLembur/ListRencanaLembur'] = 'RencanaLembur/C_ListRencanaLembur';
  $route['RencanaLembur/ListRencanaLembur/(:any)'] = 'RencanaLembur/C_ListRencanaLembur/$1';
  $route['RencanaLembur/ListRencanaLembur/(:any)/(:any)'] = 'RencanaLembur/C_ListRencanaLembur/$1/$2';
+
+ //-----------------------------------------------------Generator TSKK------------------------------------------------------------//
+$route['GeneratorTSKK'] = 'GeneratorTSKK/C_GenTSKK/index';
+$route['GeneratorTSKK/ReCreateTSKK/(:any)'] = 'GeneratorTSKK/C_EditTSKK/ReCreateTSKK/$1';
+$route['GeneratorTSKK/Generate'] = 'GeneratorTSKK/C_GenTSKK/Display';
+$route['GeneratorTSKK/Generate/(:any)/'] = 'GeneratorTSKK/C_GenTSKK/$1';
+$route['GeneratorTSKK/Generate/(:any)/(:any)'] = 'GeneratorTSKK/C_GenTSKK/$1/$2';
+$route['GeneratorTSKK/Generate/(:any)/(:any)/(:any)'] = 'GeneratorTSKK/C_GenTSKK/$1/$2/$3';
+$route['GeneratorTSKK/Generate/(:any)/(:any)/(:any)/(:any)'] = 'GeneratorTSKK/C_GenTSKK/$1/$2/$3/$4';
+$route['GeneratorTSKK/Generate/(:any)/(:any)/(:any)/(:any)/(:any)'] = 'GeneratorTSKK/C_GenTSKK/$1/$2/$3/$4/$5';
+
+$route['GeneratorTSKK/saveObservation'] = 'GeneratorTSKK/C_GenTSKK/saveObservation';
+$route['GeneratorTSKK/resaveObservation'] = 'GeneratorTSKK/C_GenTSKK/resaveObservation';
+$route['GeneratorTSKK/Generate/CreateTSKK'] = 'GeneratorTSKK/C_GenTSKK/CreateTSKK';
+$route['GeneratorTSKK/resaveEditObservation/(:any)'] = 'GeneratorTSKK/C_EditTSKK/resaveEditObservation/$1';
+$route['GeneratorTSKK/Generate/ReCreateTSKK'] = 'GeneratorTSKK/C_EditTSKK/ReCreateTSKK';
+
+$route['GeneratorTSKK/exportExcel'] = 'GeneratorTSKK/C_GenTSKK/exportExcel';
+$route['GeneratorTSKK/exportAgain/(:any)'] = 'GeneratorTSKK/C_Regenerate/exportAgain/$1';
+$route['GeneratorTSKK/exportEdit/(:any)'] = 'GeneratorTSKK/C_GenTSKK/exportEdit/$1';
+$route['GeneratorTSKK/exportObservation/(:any)'] = 'GeneratorTSKK/C_Observation/exportObservation/$1';
+
+$route['GeneratorTSKK/InputStandarElemen'] = 'GeneratorTSKK/C_GenTSKK/Input';
+$route['GeneratorTSKK/InputStandarElemen/(:any)/'] = 'GeneratorTSKK/C_GenTSKK/$1';
+$route['GeneratorTSKK/InputStandarElemen/(:any)/(:any)'] = 'GeneratorTSKK/C_GenTSKK/$1/$2';
+$route['GeneratorTSKK/InputStandarElemen/(:any)/(:any)/(:any)'] = 'GeneratorTSKK/C_GenTSKK/$1/$2/$3';
+$route['GeneratorTSKK/InputStandarElemen/(:any)/(:any)/(:any)/(:any)'] = 'GeneratorTSKK/C_GenTSKK/$1/$2/$3/$4';
+
+$route['GeneratorTSKK/InputLembarObservasi'] = 'GeneratorTSKK/C_Observation/DisplayLO';
+$route['GeneratorTSKK/InputLembarObservasi/(:any)/'] = 'GeneratorTSKK/C_Observation/$1';
+$route['GeneratorTSKK/InputLembarObservasi/(:any)/(:any)'] = 'GeneratorTSKK/C_Observation/$1/$2';
+$route['GeneratorTSKK/InputLembarObservasi/(:any)/(:any)/(:any)'] = 'GeneratorTSKK/C_Observation/$1/$2/$3';
+$route['GeneratorTSKK/InputLembarObservasi/(:any)/(:any)/(:any)/(:any)'] = 'GeneratorTSKK/C_Observation/$1/$2/$3/$4';
+
+$route['GeneratorTSKK/ViewEdit'] = 'GeneratorTSKK/C_GenTSKK/ViewEdit';
+$route['GeneratorTSKK/ViewEdit/(:any)/'] = 'GeneratorTSKK/C_GenTSKK/$1';
+$route['GeneratorTSKK/ViewEdit/(:any)/(:any)'] = 'GeneratorTSKK/C_GenTSKK/$1/$2';
+$route['GeneratorTSKK/ViewEdit/(:any)/(:any)/(:any)'] = 'GeneratorTSKK/C_GenTSKK/$1/$2/$3';
+$route['GeneratorTSKK/ViewEdit/(:any)/(:any)/(:any)/(:any)'] = 'GeneratorTSKK/C_GenTSKK/$1/$2/$3/$4';
+
+$route['GeneratorTSKK/EditTSKK'] = 'GeneratorTSKK/C_GenTSKK/EditTSKK';
+$route['GeneratorTSKK/EditTSKK/(:any)/'] = 'GeneratorTSKK/C_GenTSKK/$1';
+$route['GeneratorTSKK/EditTSKK/(:any)/(:any)'] = 'GeneratorTSKK/C_GenTSKK/$1/$2';
+$route['GeneratorTSKK/EditTSKK/(:any)/(:any)/(:any)'] = 'GeneratorTSKK/C_GenTSKK/$1/$2/$3';
+$route['GeneratorTSKK/EditTSKK/(:any)/(:any)/(:any)/(:any)'] = 'GeneratorTSKK/C_GenTSKK/$1/$2/$3/$4';
+
+$route['GeneratorTSKK/EditTSKK'] = 'GeneratorTSKK/C_GenTSKK/EditTSKK';
