@@ -1113,7 +1113,7 @@ class C_Order extends CI_Controller
       	$data['inputStandar'] = $this->M_order->getInputstd2($tgl, $kodesie);
       	// print_r($data['inputStandar']);exit();
       	$n = substr($noind, 0,1);
-      	if ($n == 'B' || $n == 'D' || $n == 'J' || $noind == 'F2229') {
+      	if ($n == 'B' || $n == 'D' || $n == 'J' || $noind == 'T0007') {
       		$this->load->view('V_Header',$data);
       		$this->load->view('V_Sidemenu',$data);
       		$this->load->view('P2K3V2/Order/V_Approve_standar', $data);
@@ -1262,7 +1262,7 @@ class C_Order extends CI_Controller
       	$data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id);
 
       	$n = substr($noind, 0,1);
-      	if ($n == 'B' || $n == 'D' || $n == 'J' || $noind == 'F2229') {
+      	if ($n == 'B' || $n == 'D' || $n == 'J' || $noind == 'T0007') {
       		$this->load->view('V_Header',$data);
       		$this->load->view('V_Sidemenu',$data);
       		$this->load->view('P2K3V2/Order/V_Approve_Order', $data);
@@ -1549,9 +1549,10 @@ class C_Order extends CI_Controller
 
   public function SubmitInputBon()
   {
-  	// echo "<pre>";
-  	// print_r($_POST);
-  	// exit();
+  	if (empty($_POST)) {
+  		echo "Data Kosong";
+  		exit();
+  	}
 
   	$tgl = date('Y-m-d H:i:s');
   	$tanggal = date('d M Y');
@@ -1610,7 +1611,7 @@ class C_Order extends CI_Controller
   		$input = $this->M_dtmasuk->insertBon($data);
 		//insert to sys.t_log_activity
 		$aksi = 'P2K3 V2';
-		$detail = "Submit Order periode= $periode, nomor surat = $noBon ";
+		$detail = "Submit Order periode= $pr, nomor bon = $noBon ";
 		$this->log_activity->activity_log($aksi, $detail);
 		//
 
