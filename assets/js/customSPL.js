@@ -269,6 +269,17 @@ $(function() {
         thisrow.nextUntil(nextrow, 'tr.spl-jobs').remove()
         $(this).closest('tr').remove();
 
+        let existError = false;
+        $('.spl-new-error').each(function() {
+            existError = true;
+        })
+
+        if (existError) {
+            $("button#submit_spl").attr("type", "button").attr("class", "btn btn-default");
+        } else {
+            $("button#submit_spl").attr("type", "submit").attr("class", "btn btn-primary");
+        }
+
         if (totalRow == 2) {
             $('.multiinput').find('.spl-pkj-del').prop('disabled', true)
         }
@@ -556,9 +567,9 @@ $(function() {
                     noind: $('#noind').val(),
                     kodesie: $('#kodesie').val()
                 },
-                success: function(data) {
+                success: data => {
                     if (data.length) {
-                        var send = $.parseJSON(data);
+                        let send = JSON.parse(data);
                         table.rows.add(send);
                         table.draw();
                     } else {
