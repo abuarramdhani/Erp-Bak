@@ -594,6 +594,7 @@ and tahun_surat = '$tahun' and bulan_surat = '$bulan'";
 
 	 	public function ambilTembusan($kodesie, $kd_jabatan_i, $kd_jabatan, $lokasi_kerja)
 	 	{
+			$kd_jabatan_i = $kd_jabatan_i < 10 ? "0".$kd_jabatan_i : $kd_jabatan_i;
 	 		$ambilTembusan		= "	select 		trefjabatan.kd_jabatan,
 			upper(rtrim(torg.jabatan)) as jabatan,
 			(
@@ -661,7 +662,6 @@ where 		pri.keluar=false
 						and 	trefjabatan.kd_jabatan::numeric
 								<
 								'$kd_jabatan'
-						and 	(pri.lokasi_kerja ='$lokasi_kerja' or pri.lokasi_kerja = '01')
 					)
 group by 	trefjabatan.kd_jabatan,
 			rtrim(torg.jabatan),
