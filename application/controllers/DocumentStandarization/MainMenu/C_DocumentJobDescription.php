@@ -10,6 +10,7 @@ class C_DocumentJobDescription extends CI_Controller
 		$this->load->helper('html');
 
 		$this->load->library('form_validation');
+		$this->load->library('Log_Activity');
 		$this->load->library('session');
 		$this->load->library('encrypt');
 
@@ -81,18 +82,23 @@ class C_DocumentJobDescription extends CI_Controller
 			$this->load->view('V_Header',$data);
 			$this->load->view('V_Sidemenu',$data);
 			$this->load->view('DocumentStandarization/DocumentJobDescription/V_create', $data);
-			$this->load->view('V_Footer',$data);	
+			$this->load->view('V_Footer',$data);
 		} else {
 			$jobdescID 					= 	$this->input->post('cmbJD');
 			$dokumenJobDescription 		= 	$this->input->post('cmbDokumenJobDescription');
 
-			foreach ($dokumenJobDescription as $dokumenJD) 
+			foreach ($dokumenJobDescription as $dokumenJD)
 			{
 				$data 	= 	array(
 						'jd_id' 		=> 	$jobdescID,
 						'document_id' 	=> 	$dokumenJD
 					);
 				$this->M_jobdeskdocument->setJobdeskDocument($data);
+				//insert to sys.log_activity
+				$aksi = 'DOC STANDARIZATION';
+				$detail = "Set Jobdesk id=$jobdescID";
+				$this->log_activity->activity_log($aksi, $detail);
+				//
 			}
 
 			redirect(site_url('DocumentStandarization/DocumentJobDescription'));
@@ -133,20 +139,20 @@ class C_DocumentJobDescription extends CI_Controller
 
 		if ($this->form_validation->run() === FALSE) {
 			$data['ambilDepartemen'] 	= 	$this->M_general->ambilDepartemen();
-			
+
 			$this->load->view('V_Header',$data);
 			$this->load->view('V_Sidemenu',$data);
 			$this->load->view('DocumentStandarization/DocumentJobDescription/V_update', $data);
-			$this->load->view('V_Footer',$data);	
+			$this->load->view('V_Footer',$data);
 		} else {
 			$jobdescID 					= 	$this->input->post('cmbJD');
 
 			$dokumenJobDescription			= $this->input->post('cmbDokumenJobDescription'); // inputan
 			$detailIDDokumenJobDescription 	= $this->input->post('hdndetailDokumenJobDesc'); //value detail hidden
-			
+
 			$jumlahIndexDetailIDDokumenJD	= 	count($detailIDDokumenJobDescription);
-			for ($i=0; $i < $jumlahIndexDetailIDDokumenJD; $i++) 
-			{ 
+			for ($i=0; $i < $jumlahIndexDetailIDDokumenJD; $i++)
+			{
 				$detailIDDokumenJobDescription[$i] 	= 	$this->encrypt->decode(str_replace(array('-', '_', '~'), array('+', '/', '='), $detailIDDokumenJobDescription[$i]));
 			}
 
@@ -157,25 +163,30 @@ class C_DocumentJobDescription extends CI_Controller
 			$this->M_jobdeskdocument->deleteUnusedDocumentJD($jobdescID, $detailIDDokumenJD);
 
 			// 2. Update data yang sudah ada
-			foreach ($dokumenJobDescription as $i => $loop) 
+			foreach ($dokumenJobDescription as $i => $loop)
 			{
-				if($detailIDDokumenJobDescription[$i] != NULL OR $detailIDDokumenJobDescription[$i] != '') 
+				if($detailIDDokumenJobDescription[$i] != NULL OR $detailIDDokumenJobDescription[$i] != '')
 				{
 					$dataUpdate[$i] = array(
 						'document_id' 	=> 	$dokumenJobDescription[$i]
 					);
 					$this->M_jobdeskdocument->updateExistDocumentJD($dataUpdate[$i], $detailIDDokumenJobDescription[$i]);
-				} 
+				}
 				elseif($detailIDDokumenJobDescription[$i] == NULL OR $detailIDDokumenJobDescription == '')
 				{
 			// 3. Inputkan data baru yang belum ada sebelumnya di database
 					$dataInsert[$i] = array(
 						'jd_id' 		=> 	$jobdescID,
 						'document_id' 	=> 	$dokumenJobDescription[$i]
-					);	
+					);
 					$this->M_jobdeskdocument->setJobdeskDocument($dataInsert[$i]);
 				}
 			}
+			//insert to sys.log_activity
+			$aksi = 'DOC STANDARIZATION';
+			$detail = "Update Jobdesk id=$jobdescID";
+			$this->log_activity->activity_log($aksi, $detail);
+			//
 
 			redirect(site_url('DocumentStandarization/DocumentJobDescription'));
 		}
@@ -219,6 +230,11 @@ class C_DocumentJobDescription extends CI_Controller
 		$plaintext_string = $this->encrypt->decode($plaintext_string);
 
 		$this->M_jobdeskdocument->deleteJobdeskDocument($plaintext_string);
+		//insert to sys.log_activity
+		$aksi = 'DOC STANDARIZATION';
+		$detail = "Delete Jobdesk id=$plaintext_string";
+		$this->log_activity->activity_log($aksi, $detail);
+		//
 
 		redirect(site_url('DocumentStandarization/DocumentJobDescription'));
     }

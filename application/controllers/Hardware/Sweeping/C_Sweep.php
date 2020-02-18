@@ -1,10 +1,10 @@
 <?php if (!defined('BASEPATH')) exit('No direct script access allowed');
 /**
-* 
+*
 */
 class C_Sweep extends CI_Controller
 {
-	
+
 	function __construct() {
 		parent::__construct();
 		$this->load->model('SystemAdministration/MainMenu/M_user');
@@ -15,6 +15,7 @@ class C_Sweep extends CI_Controller
 		$this->load->helper('html');
 
 		$this->load->library('form_validation');
+		$this->load->library('Log_Activity');
 		$this->load->library('session');
 		$this->load->library('encrypt');
 		$this->load->library('General');
@@ -29,9 +30,9 @@ class C_Sweep extends CI_Controller
 	public function index()
 	{
 		$user_id = $this->session->userid;
-		
+
 		$data  = $this->general->loadHeaderandSidemenu('Hardware', 'Hardware', 'Hardware', '', '');
-		
+
 		$this->load->view('V_Header',$data);
 		$this->load->view('V_Sidemenu',$data);
 		$this->load->view('Hardware/V_Index',$data);
@@ -41,9 +42,9 @@ class C_Sweep extends CI_Controller
 	public function inputData()
 	{
 		$user_id = $this->session->userid;
-		
+
 		$data  = $this->general->loadHeaderandSidemenu('Hardware', 'Hardware', 'Input Data', '', '');
-		
+
 		$this->load->view('V_Header',$data);
 		$this->load->view('V_Sidemenu',$data);
 		$this->load->view('Hardware/Sweeping/V_Input',$data);
@@ -59,7 +60,7 @@ class C_Sweep extends CI_Controller
 	}
 
 	public function getDescriptionUser()
-	{	
+	{
 		$noInduk = $_GET['noind'];
 		$data = $this->M_sweep->getDescriptionUser($noInduk);
 		echo json_encode($data);
@@ -126,7 +127,7 @@ class C_Sweep extends CI_Controller
 			'seksi'	 			=> strtoupper($seksi),
 			'lokasi' 			=> strtoupper($lokasi),
 			'ip_address' 		=> strtoupper($ipAddress),
-			'sistem_operasi' 	=> strtoupper($sistemOperasi), 
+			'sistem_operasi' 	=> strtoupper($sistemOperasi),
 			'windows_key' 		=> strtoupper($windowsKey),
 			'merk' 				=> strtoupper($merk),
 			'mainboard'	 		=> strtoupper($mainboard),
@@ -169,6 +170,11 @@ class C_Sweep extends CI_Controller
 
 		$this->M_sweep->saveDataUmum($dataUmum);
 		$this->session->set_userdata('saved_hardware', '1');
+		//insert to sys.log_activity
+		$aksi = 'HARDWARE';
+		$detail = "Input Asset noind = $noind no_asset=$noAsset";
+		$this->log_activity->activity_log($aksi, $detail);
+		//
 
 		redirect('hardware/input-data');
 	}
@@ -176,11 +182,11 @@ class C_Sweep extends CI_Controller
 	public function viewData()
 	{
 		$user_id = $this->session->userid;
-		
+
 		$data  = $this->general->loadHeaderandSidemenu('Hardware', 'Hardware', 'View Data', '', '');
 		$data['user'] = $this->session->userdata('user');
 		$data['listdata'] = $this->M_sweep->getData();
-		
+
 		$this->load->view('V_Header',$data);
 		$this->load->view('V_Sidemenu',$data);
 		$this->load->view('Hardware/Sweeping/V_View_Data',$data);
@@ -191,7 +197,7 @@ class C_Sweep extends CI_Controller
 	public function viewDetailData($id)
 	{
 		$user_id = $this->session->userid;
-		
+
 		$data  = $this->general->loadHeaderandSidemenu('Hardware', 'Hardware', 'View Data', '', '');
 		$data['detailData'] = $this->M_sweep->getDetailData($id);
 
@@ -205,7 +211,7 @@ class C_Sweep extends CI_Controller
 			}
 			$data['detailData'][0]['verifikasi_oleh'] = $noind.' - '.rtrim($pkj[0]['nama']);
 		}
-		
+
 		$this->load->view('V_Header',$data);
 		$this->load->view('V_Sidemenu',$data);
 		$this->load->view('Hardware/Sweeping/V_View_Detail',$data);
@@ -215,13 +221,18 @@ class C_Sweep extends CI_Controller
 	public function deleteKey($id)
 	{
 		$hasil = $this->M_sweep->deleteKey($id);
+		//insert to sys.log_activity
+		$aksi = 'HARDWARE';
+		$detail = "Delete dataAsset id=$id";
+		$this->log_activity->activity_log($aksi, $detail);
+		//
 		redirect('hardware/view-data');
 	}
 
 	public function editData($id)
 	{
 		$user_id = $this->session->userid;
-		
+
 		$data  = $this->general->loadHeaderandSidemenu('Hardware', 'Hardware', 'View Data', '', '');
 
 		$data['detailData'] = $this->M_sweep->getDetailData($id);
@@ -229,7 +240,7 @@ class C_Sweep extends CI_Controller
 		$arr =array();
 		$a = 0; foreach ($getslc as $slc) {
 			// $arr[$a++] = $value;
-			for ($i=1; $i < 11; $i++) { 
+			for ($i=1; $i < 11; $i++) {
 				$nama = 'bajakan_'.$i;
 				if ($slc[$nama] != "") {
 					$arr[$i] = $slc[$nama];
@@ -242,8 +253,6 @@ class C_Sweep extends CI_Controller
 		$arr4 = explode(',', $arr3);
 		$slc = array_map("unserialize", array_unique(array_map("serialize", $arr4)));
 		$data['slc'] = $slc;
-		// echo "<pre>";
-		// print_r($data['detailData']);exit();
 
 		$this->load->view('V_Header',$data);
 		$this->load->view('V_Sidemenu',$data);
@@ -323,13 +332,13 @@ class C_Sweep extends CI_Controller
 		$verifikasi_state	= $this->input->post('verifikasi_state');
 
 		$dataUmum = array(
-			//'no_asset' 		=> $noAsset,	 
+			//'no_asset' 		=> $noAsset,
 			'no_ind'	 		=> $noind,
 			'nama'	 	 	=> $nama,
 			'seksi'	 		=> $seksi,
 			//'lokasi' 			=> $lokasi,
 			'ip_address' 		=> $ipAddress,
-			//'sistem_operasi' 	=>	$sistemOperasi, 
+			//'sistem_operasi' 	=>	$sistemOperasi,
 			'windows_key' 		=> $windowsKey,
 			'merk' 				=> $merk,
 			'mainboard'	 		=> $mainboard,
@@ -403,12 +412,17 @@ class C_Sweep extends CI_Controller
 		}
 
 		$detailData = $this->M_sweep->getDetailData($checkId);
-		for ($i=0; $i < count($detailData); $i++) { 
+		for ($i=0; $i < count($detailData); $i++) {
 			$imArr = implode(', ', array_keys($detailData[$i]));
 			$escaped_values = array_map('pg_escape_string', array_values($detailData[$i]));
 			$values  = implode("', '", $escaped_values);
 		}
 		$this->M_sweep->insertHistory($imArr, $values);
+		//insert to sys.log_activity
+		$aksi = 'HARDWARE';
+		$detail = "Update Asset id = $id detail ada di db sweeping";
+		$this->log_activity->activity_log($aksi, $detail);
+		//
 
 		$this->M_sweep->updateDataUmum($checkId, $dataUmum);
 		$this->session->set_userdata('saved_hardware', '1');
