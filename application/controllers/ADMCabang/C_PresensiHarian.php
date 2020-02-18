@@ -2,11 +2,11 @@
 Defined('BASEPATH') or exit('No Direct Sekrip Akses Allowed');
 set_time_limit(0);
 /**
- * 
+ *
  */
 class C_PresensiHarian extends CI_Controller
 {
-	
+
 	function __construct()
 	{
 		parent::__construct();
@@ -15,6 +15,7 @@ class C_PresensiHarian extends CI_Controller
 		$this->load->helper('html');
 		$this->load->helper('file');
 
+		$this->load->library('Log_Activity');
 		$this->load->library('form_validation');
 		$this->load->library('session');
 		$this->load->library('encrypt');
@@ -35,7 +36,7 @@ class C_PresensiHarian extends CI_Controller
 	}
 
 	public function index(){
-		
+
 		$user_id = $this->session->userid;
 		$kodesie = $this->session->kodesie;
 
@@ -66,7 +67,7 @@ class C_PresensiHarian extends CI_Controller
 		$pekerja = $this->M_presensiharian->getPekerjaByKodesie($kodesie);
 		$seksi = $this->M_presensiharian->getSeksiByKodesie($kodesie);
 		$tanggal = $this->input->post('txtPeriodePresensiHarian');
-		
+
 		$this->excel->getActiveSheet()->setCellValueByColumnAndRow(0,1,'Data Presensi');
 		$this->excel->getActiveSheet()->setCellValueByColumnAndRow(0,2,'Kodesie');
 		$this->excel->getActiveSheet()->setCellValueByColumnAndRow(0,3,'Seksi');
@@ -74,7 +75,7 @@ class C_PresensiHarian extends CI_Controller
 		$this->excel->getActiveSheet()->setCellValueByColumnAndRow(1,2,': '.$seksi['0']['kodesie']);
 		$this->excel->getActiveSheet()->setCellValueByColumnAndRow(1,3,': '.$seksi['0']['seksi']);
 		$this->excel->getActiveSheet()->setCellValueByColumnAndRow(1,4,': '.$tanggal);
-		
+
 		$i = 6;
 		foreach ($pekerja as $val) {
 			$i = $i+1;
@@ -138,7 +139,11 @@ class C_PresensiHarian extends CI_Controller
 		$pekerja = $this->M_presensiharian->getPekerjaByKodesie($kodesie);
 		$seksi = $this->M_presensiharian->getSeksiByKodesie($kodesie);
 		$tanggal = $this->input->post('txtPeriodePresensiHarian');
-		
+		//insert to sys.log_activity
+		$aksi = 'Presensi';
+		$detail = "Export Excel lv2 tanggal=$tanggal kodesie=$kodesie";
+		$this->log_activity->activity_log($aksi, $detail);
+		//
 		$this->excel->getActiveSheet()->setCellValueByColumnAndRow(0,1,'Data Presensi');
 		$this->excel->getActiveSheet()->setCellValueByColumnAndRow(0,2,'Kodesie');
 		$this->excel->getActiveSheet()->setCellValueByColumnAndRow(0,3,'Seksi');
@@ -146,7 +151,7 @@ class C_PresensiHarian extends CI_Controller
 		$this->excel->getActiveSheet()->setCellValueByColumnAndRow(1,2,': '.$seksi['0']['kodesie']);
 		$this->excel->getActiveSheet()->setCellValueByColumnAndRow(1,3,': '.$seksi['0']['seksi']);
 		$this->excel->getActiveSheet()->setCellValueByColumnAndRow(1,4,': '.$tanggal);
-		
+
 		$i = 6;
 		$i = $i+1;
 		$this->excel->getActiveSheet()->setCellValueByColumnAndRow(0,$i,'Noind');
@@ -214,14 +219,16 @@ class C_PresensiHarian extends CI_Controller
 		$data['seksi'] = $this->M_presensiharian->getSeksiByKodesie($kodesie);
 		$tanggal = $this->input->post('txtPeriodePresensiHarian');
 		$data['tanggal'] = $tanggal;
-		// echo "<pre>";
-		// print_r($data['pekerja']);
-		// exit();
+		//insert to sys.log_activity
+		$aksi = 'Presensi';
+		$detail = "Export PDF tanggal=".$data['tanggal']." kodesie=".$data['kodesie'];
+		$this->log_activity->activity_log($aksi, $detail);
+		//
 		$pekerja = $data['pekerja'];
 		$seksi = $data['seksi'];
 		$jmlpekerja = count($pekerja);
 		$noind = "";
-		for ($i=0; $i < $jmlpekerja; $i++) { 
+		for ($i=0; $i < $jmlpekerja; $i++) {
 			if ($i == 0) {
 				if ($jmlpekerja == 1) {
 					$noind = "'".$pekerja[$i]['noind']."'";
@@ -252,7 +259,7 @@ class C_PresensiHarian extends CI_Controller
 			$shift = $this->M_presensiharian->getShiftByNoind($val['noind'],$tanggal);
 			$angka2 = 0;
 			$simpan = 0;
-			foreach ($shift as $key) {	
+			foreach ($shift as $key) {
 				$presensi = $this->M_presensiharian->getPresensiByNoind($val['noind'],$key['tanggal']);
 				$tim = $this->M_presensiharian->getTIMByNoind($val['noind'],$key['tanggal']);
 				$ket = $this->M_presensiharian->getKeteranganByNoind($val['noind'],$key['tanggal']);
@@ -349,14 +356,16 @@ class C_PresensiHarian extends CI_Controller
 		$data['seksi'] = $this->M_presensiharian->getSeksiByKodesie($kodesie);
 		$tanggal = $this->input->post('txtPeriodePresensiHarian');
 		$data['tanggal'] = $tanggal;
-		// echo "<pre>";
-		// print_r($data['pekerja']);
-		// exit();
+		//insert to sys.log_activity
+		$aksi = 'Presensi';
+		$detail = "Export PDF lv2 tanggal=".$data['tanggal']." kodesie=".$data['kodesie'];
+		$this->log_activity->activity_log($aksi, $detail);
+		//
 		$pekerja = $data['pekerja'];
 		$seksi = $data['seksi'];
 		$jmlpekerja = count($pekerja);
 		$noind = "";
-		for ($i=0; $i < $jmlpekerja; $i++) { 
+		for ($i=0; $i < $jmlpekerja; $i++) {
 			if ($i == 0) {
 				if ($jmlpekerja == 1) {
 					$noind = "'".$pekerja[$i]['noind']."'";
@@ -394,7 +403,7 @@ class C_PresensiHarian extends CI_Controller
 			$angka2 = 0;
 			$simpan = 0;
 
-			foreach ($shift as $key) {	
+			foreach ($shift as $key) {
 				$presensi = $this->M_presensiharian->getPresensiByNoind($val['noind'],$key['tanggal']);
 				$tim = $this->M_presensiharian->getTIMByNoind($val['noind'],$key['tanggal']);
 				$ket = $this->M_presensiharian->getKeteranganByNoind($val['noind'],$key['tanggal']);

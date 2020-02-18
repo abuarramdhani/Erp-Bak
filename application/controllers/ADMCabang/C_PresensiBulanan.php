@@ -15,6 +15,7 @@ class C_PresensiBulanan extends CI_Controller
 		$this->load->helper('html');
 		$this->load->helper('file');
 
+		$this->load->library('Log_Activity');
 		$this->load->library('form_validation');
 		$this->load->library('session');
 		$this->load->library('encrypt');
@@ -67,7 +68,11 @@ class C_PresensiBulanan extends CI_Controller
 		$tanggal = $this->input->post('txtPeriodePresensiHarian');
 		$tgl = $this->M_presensibulanan->getTanggal($tanggal);
 		$tims = $this->M_presensibulanan->rekapTIMS($tanggal,$kodesie);
-
+		//insert to sys.log_activity
+		$aksi = 'Presensi';
+		$detail = "Export excel tanggal=".$this->input->post('txtPeriodePresensiHarian')." kodesie=$kodesiel";
+		$this->log_activity->activity_log($aksi, $detail);
+		//
 		$this->excel->getActiveSheet()->setCellValueByColumnAndRow(0,1,'Data Pegawai Periode '.$tanggal);
 
 
