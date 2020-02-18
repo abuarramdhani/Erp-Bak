@@ -40,8 +40,8 @@ class C_RekapBon extends CI_Controller
 		$user_id = $this->session->userid;
 
 
-		$data['Title'] = 'asdasd';
-		$data['Menu'] = 'zxczxc';
+		$data['Title'] = 'Rekap Bon Pekerja';
+		$data['Menu'] = 'Rekap Bon Pekerja';
 		$data['SubMenuOne'] = '';
 		$data['SubMenuTwo'] = '';
 
@@ -102,4 +102,60 @@ class C_RekapBon extends CI_Controller
 		$table = $this->load->view('WorkRelationship/RekapBon/V_table', $data);
 		return $table;
 	}
+
+	public function Pekerjakeluar(){
+		$user_id = $this->session->userid;
+
+		$data['Title'] = 'Rekap Bon Pekerja Keluar';
+		$data['Menu'] = 'Rekap Bon Pekerja Keluar';
+		$data['SubMenuOne'] = '';
+		$data['SubMenuTwo'] = '';
+
+		$data['UserMenu'] = $this->M_user->getUserMenu($user_id,$this->session->responsibility_id);
+		$data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id);
+		$data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id);
+		
+		$this->load->view('V_Header',$data);
+		$this->load->view('V_Sidemenu',$data);
+		$this->load->view('WorkRelationship/RekapBon/V_keluar', $data);
+		$this->load->view('V_Footer',$data);
+	}
+
+	public function ProsesKeluar(){
+		// echo "<pre>";print_r($_POST);exit();
+		$user_id = $this->session->userid;
+
+		$data['Title'] = 'Rekap Bon Pekerja Keluar';
+		$data['Menu'] = 'Rekap Bon Pekerja Keluar';
+		$data['SubMenuOne'] = '';
+		$data['SubMenuTwo'] = '';
+
+		$data['UserMenu'] = $this->M_user->getUserMenu($user_id,$this->session->responsibility_id);
+		$data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id);
+		$data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id);
+		
+		$tanggals = $this->input->post('txtTanggalKeluarWR');
+		$data['tanggal'] = $tanggals;
+		$tgl = explode(" - ", $tanggals);
+		$data['pekerja'] = $this->M_rekapbon->getPekerjaKeluar($tgl['0'],$tgl['1']);
+		$noind = "";
+		foreach ($data['pekerja'] as $key) {
+			if ($noind == "") {
+				$noind = "'".$key['noind']."'";
+			}else{
+				$noind .= ",'".$key['noind']."'";
+			}
+		}
+
+		if ($noind !== "") {
+			$data['bon'] = $this->M_rekapbon->getBill2($noind);
+		}
+
+		// echo "<pre>";print_r($data['pekerja']);print_r($data['bon']);exit();
+
+		$this->load->view('V_Header',$data);
+		$this->load->view('V_Sidemenu',$data);
+		$this->load->view('WorkRelationship/RekapBon/V_keluar', $data);
+		$this->load->view('V_Footer',$data);
+	}	
 }

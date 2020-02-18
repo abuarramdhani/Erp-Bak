@@ -6437,131 +6437,287 @@ class M_pekerjakeluar extends CI_Model
 
 	public function get_uang_dl($noind,$tanggal_awal,$tanggal_akhir){ 
 		$tgl_awal = strtoupper(date('d-M-Y', strtotime($tanggal_awal))); 
-		$tgl_akhir = strtoupper(date('d-M-Y', strtotime($tanggal_akhir))); 
- 
-		$sql = "select no_induk, num, nama, sum(total_um_mggu) UM_MGGU, sum(total_umdl) UMDL, status, org_id 
-				FROM (SELECT 
-				                 case 
-				                    when aps.vendor_name <> 'KHS Employee' then assa.vendor_site_code || ' ' || substr(aps.vendor_name, 5)  
-				                    else assa.vendor_site_code || ' ' || assa.address_line1 
-				                 END no_induk, 
-				                 case 
-				                    when aps.vendor_name <> 'KHS Employee' then substr(aps.vendor_name, 5)  
-				                    else assa.address_line1 
-				                 END num, 
-				                 assa.vendor_site_code nama, 
-				                 0 total_um_mggu, round(SUM (aila.amount * nvl(aia.exchange_rate,1))) total_umdl, 
-				                 DECODE (SUBSTR (UPPER(assa.vendor_site_code), 0, 1), 
-				                         'B', 'STAFF', 
-				                         'D', 'STAFF', 
-				                         'G', 'STAFF', 
-				                         'J', 'STAFF', 
-				                         'L', 'STAFF', 
-				                         'Z', 'STAFF', 
-				                         'Q', 'STAFF', 
-				                         'C','CABANG', 
-				                         'P','OS', 
-				                         'K','OS', 
-				                         'F','PKL', 
-				                         'NON STAFF' 
-				                        ) status, 
-				                 aila.org_id 
-				            FROM ap_invoice_lines_all aila, 
-				                 ap_invoices_all aia, 
-				                 ap_supplier_sites_all assa, 
-				                 gl_code_combinations gcc, 
-				                 ap_suppliers aps 
-				           WHERE aila.invoice_id = aia.invoice_id(+) 
-				             AND assa.vendor_id = aps.vendor_id 
-				             AND assa.vendor_site_id = aia.vendor_site_id 
-				             AND aila.default_dist_ccid = gcc.code_combination_id 
-				             AND gcc.segment3 IN (521107, 512107, 514107) 
-				             AND SUBSTR (assa.vendor_site_code, 0, 1) NOT IN ('N', 'K') 
-				             AND aila.amount != 0 
-				             AND (assa.vendor_id = 2 or aps.vendor_name like 'KHS_%') 
-				             AND DECODE (SUBSTR (UPPER(assa.vendor_site_code), 0, 1), 
-				                         'B', 'STAFF', 
-				                         'D', 'STAFF', 
-				                         'G', 'STAFF', 
-				                         'J', 'STAFF', 
-				                         'L', 'STAFF', 
-				                         'Z', 'STAFF', 
-				                         'Q', 'STAFF', 
-				                         'C','CABANG', 
-				                         'P','OS', 
-				                         'K','OS', 
-				                         'F','PKL', 
-				                         'NON STAFF' 
-				                        ) in ('STAFF','NON STAFF','OS','CABANG') 
-				             AND aia.gl_date >= '$tgl_awal' 
-				             AND aia.gl_date <= '$tgl_akhir' 
-				             AND aila.org_id = 82 
-				             AND assa.vendor_site_code = '$noind' 
-				        GROUP BY assa.vendor_site_code, assa.address_line1, aila.org_id,assa.address_line1, 
-				                 assa.vendor_site_code, aps.vendor_name 
-				        UNION ALL 
-				        SELECT 
-				                 case 
-				                    when aps.vendor_name <> 'KHS Employee' then assa.vendor_site_code || ' ' || substr(aps.vendor_name, 5)  
-				                    else assa.vendor_site_code || ' ' || assa.address_line1 
-				                 END no_induk, 
-				                 case 
-				                    when aps.vendor_name <> 'KHS Employee' then substr(aps.vendor_name, 5)  
-				                    else assa.address_line1 
-				                 END num,                 
-				                 assa.vendor_site_code nama, 
-				                 ROUND(SUM (aila.amount)) total_um_mggu, 0 total_umdl, 
-				                 DECODE (SUBSTR (UPPER(assa.vendor_site_code), 0, 1), 
-				                          'B', 'STAFF', 
-				                         'D', 'STAFF', 
-				                         'G', 'STAFF', 
-				                         'J', 'STAFF', 
-				                         'L', 'STAFF', 
-				                         'Z', 'STAFF', 
-				                         'C','CABANG', 
-				                         'Q','STAFF', 
-				                         'P','OS', 
-				                         'K','OS', 
-				                         'F','PKL', 
-				                         'NON STAFF' 
-				                        ) status, 
-				                 aila.org_id 
-				            FROM ap_invoice_lines_all aila, 
-				                 ap_invoices_all aia, 
-				                 ap_supplier_sites_all assa, 
-				                 gl_code_combinations gcc, 
-				                 ap_suppliers aps 
-				           WHERE aila.invoice_id = aia.invoice_id(+) 
-				             AND assa.vendor_id = aps.vendor_id 
-				             AND assa.vendor_site_id = aia.vendor_site_id 
-				             AND aila.default_dist_ccid = gcc.code_combination_id 
-				             AND gcc.segment3 IN (521103) 
-				             AND SUBSTR (assa.vendor_site_code, 0, 1) NOT IN ('N', 'K') 
-				             AND aila.amount != 0 
-				             AND (assa.vendor_id = 2 or aps.vendor_name like 'KHS_%') 
-				             AND DECODE (SUBSTR (UPPER(assa.vendor_site_code), 0, 1), 
-				                          'B', 'STAFF', 
-				                         'D', 'STAFF', 
-				                         'G', 'STAFF', 
-				                         'J', 'STAFF', 
-				                         'L', 'STAFF', 
-				                         'Z', 'STAFF', 
-				                         'Q', 'STAFF', 
-				                         'C','CABANG', 
-				                         'P','OS', 
-				                         'K','OS', 
-				                         'F','PKL', 
-				                         'NON STAFF' 
-				                        ) in ('STAFF','NON STAFF','OS','CABANG') 
-				             AND aia.gl_date >= '$tgl_awal' 
-				             AND aia.gl_date <= '$tgl_akhir' 
-				             AND aila.org_id = 82 
-				             AND assa.vendor_site_code = '$noind'        
-				             AND aps.vendor_name not like '%GAJI%' 
-				        GROUP BY assa.vendor_site_code, assa.address_line1, aila.org_id,assa.address_line1, 
-				                 assa.vendor_site_code, aps.vendor_name) 
-				GROUP BY no_induk, status, org_id,num,nama 
-				ORDER BY no_induk "; 
+		$tgl_akhir = strtoupper(date('d-M-Y', strtotime($tanggal_akhir)));  
+
+		$sql = "SELECT no_induk, num, nama, supplier, name, city, sum(total_um_mggu) UM_MGGU, sum(total_umdl) UMDL, status, org_id
+			  FROM (SELECT
+			--AIA.INVOICE_ID
+			                 case
+			                    when aps.vendor_name <> 'KHS Employee' then assa.vendor_site_code || ' ' || substr(aps.vendor_name, 5) 
+			                    else assa.vendor_site_code || ' ' || assa.address_line1
+			                 END no_induk,
+			                 case
+			                    when aps.vendor_name <> 'KHS Employee' then substr(aps.vendor_name, 5) 
+			                    else assa.address_line1
+			                 END num,
+			                 aps.vendor_name supplier,
+			--                 aps.VENDOR_ID,
+			--      (select string_agg( hl.city)
+			--        from ap_suppliers aps, hz_party_sites hps, hz_locations hl
+			--        where  hl.location_id(+) = hps.LOCATION_ID
+			--        and hps.party_id = aps.party_id 
+			--        and rownum = 1) cabang,
+			                 hou.name name,
+			                 hl.city,
+			                 assa.vendor_site_code nama,
+			                 0 total_um_mggu, SUM (aila.amount * nvl(aia.exchange_rate,1)) total_umdl,
+			                 DECODE (SUBSTR (UPPER(assa.vendor_site_code), 0, 1),
+			                          'B', 'STAFF',
+			                         'D', 'STAFF',
+			                         'G', 'STAFF',
+			                         'J', 'STAFF',
+			--                         'L', 'STAFF',
+			--                         'Z', 'STAFF',
+			                         'Q', 'STAFF',
+			                         'N', 'STAFF',
+			                         'T', 'STAFF',
+			                         'C','CABANG',
+			                         'P','OS',
+			                         'K','OS',
+			                         'F','PKL',
+			                         'A','NON STAFF',
+			                         'H','NON STAFF',
+			                         'F','NON STAFF',
+			                         'E','NON STAFF',
+			                         'R','NON STAFF',
+			                         'LAIN'
+			--                         'NON STAFF'
+			                        ) status,
+			                 aila.org_id
+			            FROM ap_invoice_lines_all aila,
+			                 ap_invoices_all aia,
+			                 ap_supplier_sites_all assa,
+			                 gl_code_combinations gcc,
+			                 ap_suppliers aps
+			                 ,hr_all_organization_units hou
+			                 ,hz_party_sites hps
+			                 ,hz_locations hl
+			           WHERE aila.invoice_id = aia.invoice_id(+)
+			             and hl.location_id(+) = hps.LOCATION_ID
+			             and hps.party_id = aps.party_id
+			             and hps.PARTY_SITE_ID = assa.PARTY_SITE_ID
+			             AND assa.vendor_id = aps.vendor_id
+			             AND assa.vendor_site_id = aia.vendor_site_id
+			             AND aila.default_dist_ccid = gcc.code_combination_id
+			             AND gcc.segment3 IN (521107, 512107, 514107)
+			             AND SUBSTR (assa.vendor_site_code, 0, 1) NOT IN ('N', 'K')
+			             AND aila.amount != 0
+			             AND (assa.vendor_id = 2 or aps.vendor_name like 'KHS_%')
+			             AND DECODE (SUBSTR (UPPER(assa.vendor_site_code), 0, 1),
+			                          'B', 'STAFF',
+			                         'D', 'STAFF',
+			                         'G', 'STAFF',
+			                         'J', 'STAFF',
+			--                         'L', 'STAFF',
+			--                         'Z', 'STAFF',
+			                         'Q', 'STAFF',
+			                         'N', 'STAFF',
+			                         'T', 'STAFF',
+			                         'C','CABANG',
+			                         'P','OS',
+			                         'K','OS',
+			                         'F','PKL',
+			                         'A','NON STAFF',
+			                         'H','NON STAFF',
+			                         'F','NON STAFF',
+			                         'E','NON STAFF',
+			                         'R','NON STAFF',
+			                         'LAIN'
+			--                         'NON STAFF'
+			                        ) in ('STAFF','NON STAFF','OS','CABANG') 
+			             AND aia.gl_date >= '$tgl_awal' 
+						 AND aia.gl_date <= '$tgl_akhir' 
+			             AND aila.org_id = 82
+			             AND assa.vendor_site_code = '$noind' 
+			             AND aila.org_id = hou.organization_id
+			        GROUP BY assa.vendor_site_code, assa.address_line1, aila.org_id,assa.address_line1,
+			                 assa.vendor_site_code, aps.vendor_name,hou.name
+			                 ,hl.city
+			--                 ,aps.VENDOR_ID
+			--order by no_induk
+			        UNION ALL
+			        SELECT
+			--AIA.INVOICE_ID
+			--                 assa.vendor_site_code || ' ' || assa.address_line1 no_induk,
+			                 case
+			                    when aps.vendor_name <> 'KHS Employee' then assa.vendor_site_code || ' ' || substr(aps.vendor_name, 5) 
+			                    else assa.vendor_site_code || ' ' || assa.address_line1
+			                 END no_induk,
+			                 case
+			                    when aps.vendor_name <> 'KHS Employee' then substr(aps.vendor_name, 5) 
+			                    else assa.address_line1
+			                 END num,                 
+			--                 assa.address_line1 num,
+			                 aps.vendor_name supplier,
+			--                 aps.VENDOR_ID,
+			--      (select string_agg( hl.city)
+			--        from ap_suppliers aps, hz_party_sites hps, hz_locations hl
+			--        where  hl.location_id(+) = hps.LOCATION_ID
+			--        and hps.party_id = aps.party_id 
+			----        and rownum = 1
+			--        ) cabang,
+			                 hou.name name,
+			                 hl.city CITY,
+			                 assa.vendor_site_code nama,
+			                 SUM (aila.amount) total_um_mggu, 0 total_umdl,
+			                 DECODE (SUBSTR (UPPER(assa.vendor_site_code), 0, 1),
+			                          'B', 'STAFF',
+			                         'D', 'STAFF',
+			                         'G', 'STAFF',
+			                         'J', 'STAFF',
+			--                         'L', 'STAFF',
+			--                         'Z', 'STAFF',
+			                         'Q', 'STAFF',
+			                         'N', 'STAFF',
+			                         'T', 'STAFF',
+			                         'C','CABANG',
+			                         'P','OS',
+			                         'K','OS',
+			                         'F','PKL',
+			                         'A','NON STAFF',
+			                         'H','NON STAFF',
+			                         'F','NON STAFF',
+			                         'E','NON STAFF',
+			                         'R','NON STAFF',
+			                         'LAIN'
+			--                         'NON STAFF'
+			                        ) status,
+			                 aila.org_id
+			            FROM ap_invoice_lines_all aila,
+			                 ap_invoices_all aia,
+			                 ap_supplier_sites_all assa,
+			                 gl_code_combinations gcc,
+			                 ap_suppliers aps
+			                 ,hr_all_organization_units hou
+			                 ,hz_party_sites hps
+			                 ,hz_locations hl
+			           WHERE aila.invoice_id = aia.invoice_id(+)
+			             and hl.location_id(+) = hps.LOCATION_ID
+			             and hps.party_id = aps.party_id(+)
+			             and hps.PARTY_SITE_ID = assa.PARTY_SITE_ID
+			             AND assa.vendor_id = aps.vendor_id
+			             AND assa.vendor_site_id = aia.vendor_site_id
+			             AND aila.default_dist_ccid = gcc.code_combination_id
+			             AND gcc.segment3 IN (521103)
+			             AND SUBSTR (assa.vendor_site_code, 0, 1) NOT IN ('N', 'K')
+			             AND aila.amount != 0
+			             AND (assa.vendor_id = 2 or aps.vendor_name like 'KHS_%')
+			             AND DECODE (SUBSTR (UPPER(assa.vendor_site_code), 0, 1),
+			                          'B', 'STAFF',
+			                         'D', 'STAFF',
+			                         'G', 'STAFF',
+			                         'J', 'STAFF',
+			--                         'L', 'STAFF',
+			--                         'Z', 'STAFF',
+			                         'Q', 'STAFF',
+			                         'N', 'STAFF',
+			                         'T', 'STAFF',
+			                         'C','CABANG',
+			                         'P','OS',
+			                         'K','OS',
+			                         'F','PKL',
+			                         'A','NON STAFF',
+			                         'H','NON STAFF',
+			                         'F','NON STAFF',
+			                         'E','NON STAFF',
+			                         'R','NON STAFF',
+			                         'LAIN'
+			--                         'NON STAFF'
+			                        ) in ('STAFF','NON STAFF','OS','CABANG') 
+			             AND aia.gl_date >= '$tgl_awal' 
+						 AND aia.gl_date <= '$tgl_akhir' 
+			             AND aila.org_id = 82 
+			             AND assa.vendor_site_code = '$noind' 
+			             AND aila.org_id = hou.organization_id          
+			             -- KARENA ADA GAJI STAFF YANG MUNCUL
+			             -- SEHARUSNYA GAJI TIDAK IKUT MUNCUL
+			             AND aps.vendor_name not like '%GAJI%'
+			        GROUP BY assa.vendor_site_code, assa.address_line1, aila.org_id,assa.address_line1,
+			                 assa.vendor_site_code, aps.vendor_name
+			                 ,hou.name
+			                 ,hl.city
+			--                 ,aps.VENDOR_ID
+			        UNION ALL 
+			        SELECT           case
+			                 when aps.vendor_name <> 'KHS Employee' then aila.attribute7 || ' ' || substr(aila.attribute8,5)
+			                 else null
+			                 END no_induk,
+			                 case
+			                    when aps.vendor_name <> 'KHS Employee' then SUBSTR(aila.attribute8,5)
+			                    else null
+			                 END num,
+			                 aila.attribute8 supplier,
+			                 hou.name name,
+			                 hl.city,
+			                 aila.attribute7 nama, 
+			                 SUM (aila.amount * nvl(aia.exchange_rate,1)) total_um_mggu ,0 total_umdl,
+			                 DECODE (SUBSTR (UPPER(aila.attribute7), 0, 1),
+			                         'B', 'STAFF',
+			                         'D', 'STAFF',
+			                         'G', 'STAFF',
+			                         'J', 'STAFF',
+			                         'Q', 'STAFF',
+			                         'N', 'STAFF',
+			                         'T', 'STAFF',
+			                         'C', 'CABANG',
+			                         'P', 'OS',
+			                         'K', 'OS',
+			                         'F', 'PKL',
+			                         'A', 'NON STAFF',
+			                         'H', 'NON STAFF',
+			                         'F', 'NON STAFF',
+			                         'E', 'NON STAFF',
+			                         'R', 'NON STAFF',
+			                         'LAIN'
+			                        ) status,
+			                  aila.org_id
+			            from ap_invoice_lines_all aila
+			                 , ap_invoices_all aia
+			                 , ap_supplier_sites_all assa
+			                 , ap_suppliers aps
+			                 , hr_all_organization_units hou
+			                 , hz_party_sites hps
+			                 , hz_locations hl
+			                 , gl_code_combinations gcc
+			                 where aila.INVOICE_ID = aia.invoice_id(+) 
+			--                 and aila.attribute6 = 'B0730'
+			                 and aila.attribute8 like 'KHS%'
+			                 and aps.vendor_name <> 'KHS Employee'
+			                 and aila.attribute7 = assa.VENDOR_SITE_CODE
+			                 and assa.vendor_id(+) = aps.vendor_id
+			                 AND aila.org_id = hou.organization_id
+			                 and assa.PARTY_SITE_ID = hps.PARTY_SITE_ID
+			                 and hps.location_id = hl.location_id(+)
+			                 AND aila.default_dist_ccid = gcc.code_combination_id
+			                 AND DECODE (SUBSTR (UPPER(aila.attribute7), 0, 1),
+			                         'B', 'STAFF',
+			                         'D', 'STAFF',
+			                         'G', 'STAFF',
+			                         'J', 'STAFF',
+			                         'Q', 'STAFF',
+			                         'N', 'STAFF',
+			                         'T', 'STAFF',
+			                         'C', 'CABANG',
+			                         'P', 'OS',
+			                         'K', 'OS',
+			                         'F', 'PKL',
+			                         'A', 'NON STAFF',
+			                         'H', 'NON STAFF',
+			                         'F', 'NON STAFF',
+			                         'E', 'NON STAFF',
+			                         'R', 'NON STAFF',
+			                         'LAIN'
+			                        ) in ('STAFF','NON STAFF','OS','CABANG') 
+			             AND aia.gl_date >= '$tgl_awal' 
+						 AND aia.gl_date <= '$tgl_akhir' 
+			             AND aila.org_id = 82
+			             AND assa.vendor_site_code = '$noind' 
+			             GROUP BY assa.vendor_site_code, assa.address_line1, aila.org_id,assa.address_line1,
+			                 assa.vendor_site_code, aps.vendor_name,hou.name,
+			                 hl.city, aila.attribute7, aila.attribute8, aia.gl_date, assa.VENDOR_ID, assa.vendor_site_id
+			                 )
+			GROUP BY no_induk, status, org_id,num,nama,supplier,name,city
+			ORDER BY no_induk";
 		$result = $this->oracle->query($sql)->row(); 
  
 		if (!empty($result) and !empty($result->UMDL)) { 
