@@ -9,6 +9,7 @@ class C_MasterPekerja extends CI_Controller
 		$this->load->helper('url');
 		$this->load->helper('html');
 
+		$this->load->library('Log_Activity');
 		$this->load->library('form_validation');
 		$this->load->library('session');
 		$this->load->library('encrypt');
@@ -90,6 +91,11 @@ class C_MasterPekerja extends CI_Controller
 		$plaintext_string = $this->encrypt->decode($plaintext_string);
 
 		$this->M_masterpekerja->deleteTargetBenda($plaintext_string);
+		//insert to sys.log_activity
+		$aksi = 'Payroll Management NStaf';
+		$detail = "Delete Master Data Pekerja id=$plaintext_string";
+		$this->log_activity->activity_log($aksi, $detail);
+		//
 
 		redirect(site_url('PayrollManagementNonStaff/MasterData/TargetBenda'));
     }
@@ -127,6 +133,11 @@ class C_MasterPekerja extends CI_Controller
 
 		$data['upload_data'] = '';
 		if ($this->upload->do_upload('file')) {
+			//insert to sys.log_activity
+			$aksi = 'Payroll Management NStaf';
+			$detail = "Import Master Data Pekerja filename=$fileName";
+			$this->log_activity->activity_log($aksi, $detail);
+			//
 			$uploadData = $this->upload->data();
 			$inputFileName = 'assets/upload/PayrollNonstaff/MasterPekerja/'.$uploadData['file_name'];
 			$inputFileType = $uploadData['file_type'];
@@ -150,9 +161,9 @@ class C_MasterPekerja extends CI_Controller
 
 			$db_record = array();
 
-			for ($row=0; $row <= $highestRow - 2 ; $row++) { 
+			for ($row=0; $row <= $highestRow - 2 ; $row++) {
 				$a = array();
-				for ($column=0; $column <= $columnCount - 1; $column++) { 
+				for ($column=0; $column <= $columnCount - 1; $column++) {
 					$headTitle = explode(',', $sheetHead[0][$column]);
 					$a[$headTitle[0]] = $sheetData[$row][$column];
 				}
@@ -212,7 +223,7 @@ class C_MasterPekerja extends CI_Controller
 
 		// print_r($requestData);exit;
 
-		$columns = array(   
+		$columns = array(
 			0 => 'employee_code',
 			1 => 'employee_code',
 			2 => 'employee_code',
@@ -250,7 +261,7 @@ class C_MasterPekerja extends CI_Controller
 		$data = array();
 		$no = 1;
 		$data_array = $data_table->result_array();
-		
+
 		$json = "{";
 		$json .= '"draw":'.intval( $requestData['draw'] ).',';
 		$json .= '"recordsTotal":'.intval( $totalData ).',';
@@ -278,11 +289,16 @@ class C_MasterPekerja extends CI_Controller
 	public function downloadExcel()
     {
 		$filter = $this->input->get('filter');
-		$column_table = array('', 'employee_code', 'employee_name', 'sex', 'address', 'telephone', 'handphone', 'worker_recruited_date', 
-			'worker_start_working_date', 'section_code', 'section_name', 'resign', 'resign_date', 'new_employee_code', 
+		//insert to sys.log_activity
+		$aksi = 'Payroll Management NStaf';
+		$detail = "Export Excel Master Data Pekerja filter=$filter";
+		$this->log_activity->activity_log($aksi, $detail);
+		//
+		$column_table = array('', 'employee_code', 'employee_name', 'sex', 'address', 'telephone', 'handphone', 'worker_recruited_date',
+			'worker_start_working_date', 'section_code', 'section_name', 'resign', 'resign_date', 'new_employee_code',
 			'worker_status_code', 'location_code', 'worker_code');
-		$column_view = array('No', 'Employee Code', 'Employee Name', 'Sex', 'Address', 'Telephone', 'Handphone', 'Recruited Date', 
-			'Start Working', 'Section Code', 'Section Name', 'Resign?', 'Resign Date', 'New Employee Code', 'Worker Status', 
+		$column_view = array('No', 'Employee Code', 'Employee Name', 'Sex', 'Address', 'Telephone', 'Handphone', 'Recruited Date',
+			'Start Working', 'Section Code', 'Section Name', 'Resign?', 'Resign Date', 'New Employee Code', 'Worker Status',
 			'Location Code', 'Worker Code');
 		$data_table = $this->M_masterpekerja->getMasterPekerjaSearch($filter)->result_array();
 
@@ -309,10 +325,10 @@ class C_MasterPekerja extends CI_Controller
 			}
 			$excel_row++;
 		}
-		
-		$objPHPExcel->getActiveSheet()->setTitle('Quick ERP');      
+
+		$objPHPExcel->getActiveSheet()->setTitle('Quick ERP');
 		$objWriter = PHPExcel_IOFactory::createWriter($objPHPExcel, 'Excel2007');
- 
+
 		header("Last-Modified: " . gmdate("D, d M Y H:i:s") . " GMT");
 		header("Cache-Control: no-store, no-cache, must-revalidate");
 		header("Cache-Control: post-check=0, pre-check=0", false);

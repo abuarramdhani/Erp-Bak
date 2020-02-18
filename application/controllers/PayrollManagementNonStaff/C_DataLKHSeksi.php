@@ -9,6 +9,7 @@ class C_DataLKHSeksi extends CI_Controller
 		$this->load->helper('url');
 		$this->load->helper('html');
 
+		$this->load->library('Log_Activity');
 		$this->load->library('form_validation');
 		$this->load->library('session');
 		$this->load->library('encrypt');
@@ -17,7 +18,7 @@ class C_DataLKHSeksi extends CI_Controller
 		$this->load->model('PayrollManagementNonStaff/M_datalkhseksi');
 
 		$this->checkSession();
-		ini_set('max_execution_time', 0); 
+		ini_set('max_execution_time', 0);
 	}
 
 	/* CHECK SESSION */
@@ -114,6 +115,11 @@ class C_DataLKHSeksi extends CI_Controller
 
 		$data['upload_data'] = '';
 		if ($this->upload->do_upload('file')) {
+			//insert to sys.log_activity
+			$aksi = 'Payroll Management NStaf';
+			$detail = "Import data LKH Seksi periode=$thn_gaji $bln_gaji";
+			$this->log_activity->activity_log($aksi, $detail);
+			//
 			$uploadData = $this->upload->data();
 			$inputFileName = 'assets/upload/'.$uploadData['file_name'];
 			// $inputFileName = 'assets/upload/1490405144-PROD0117_(copy).dbf';
@@ -180,6 +186,11 @@ class C_DataLKHSeksi extends CI_Controller
 
 		$firstdate = date('Y-m-01', strtotime($thn_gaji.'-'.$bln_gaji.'-01'));
 		$lastdate = date('Y-m-t', strtotime($thn_gaji.'-'.$bln_gaji.'-01'));
+		//insert to sys.log_activity
+		$aksi = 'Payroll Management NStaf';
+		$detail = "Delete data LKH Seksi periode=$thn_gaji $bln_gaji";
+		$this->log_activity->activity_log($aksi, $detail);
+		//
 
 		$this->M_datalkhseksi->clearData($firstdate, $lastdate);
 	}
@@ -189,7 +200,7 @@ class C_DataLKHSeksi extends CI_Controller
 
 		// print_r($requestData);exit;
 
-		$columns = array(   
+		$columns = array(
 			0 => 'noind',
 			1 => 'tgl',
 			2 => 'noind',
@@ -224,7 +235,7 @@ class C_DataLKHSeksi extends CI_Controller
 		$data = array();
 		$no = 1;
 		$data_array = $data_table->result_array();
-		
+
 		$json = "{";
 		$json .= '"draw":'.intval( $requestData['draw'] ).',';
 		$json .= '"recordsTotal":'.intval( $totalData ).',';
@@ -274,7 +285,7 @@ class C_DataLKHSeksi extends CI_Controller
 		$kontrak = array("H", "J");
 		$os = array("K", "P");
 
-		$grp_per_status = ""; $grp_per_sentase = ""; $grp_per_seksi = ""; 
+		$grp_per_status = ""; $grp_per_sentase = ""; $grp_per_seksi = "";
 		$grp_per_noind = "";  $grp_per_seksi2 = "";
 
 		for($x=1; $x<=3; $x++){
@@ -370,7 +381,7 @@ class C_DataLKHSeksi extends CI_Controller
 		$grp_per_status .= "{name: 'TOTAL', data:[".$tjan.", ".$tfeb.", ".$tmar.", ".$tapr.", ".$tmei.",
 			 ".$tjun.", ".$tjul.", ".$taug.", ".$tsep.", ".$toct.", ".$tnov.", ".$tdec."]},";
 
-		
+
 		////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 		$tmp = "";
 		$jan = 0; $feb = 0; $mar = 0; $apr = 0; $mei = 0; $jun = 0;
@@ -435,7 +446,7 @@ class C_DataLKHSeksi extends CI_Controller
 				 ".$jun.", ".$jul.", ".$aug.", ".$sep.", ".$oct.", ".$nov.", ".$dec."]},";
 		$grp_per_seksi .= "{name: 'TOTAL', data:[".$tjan.", ".$tfeb.", ".$tmar.", ".$tapr.", ".$tmei.",
 			 ".$tjun.", ".$tjul.", ".$taug.", ".$tsep.", ".$toct.", ".$tnov.", ".$tdec."]},";
-		
+
 		////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 		$data['data_kasus_ott'] = $this->M_datalkhseksi->get_ott_data($periode, 2);
 
@@ -507,14 +518,14 @@ class C_DataLKHSeksi extends CI_Controller
 		$data['data_kasus_ott'] = $this->M_datalkhseksi->get_ott_data($periode, 3);
 
 		$tmp = "";
-		$sm = 0; $ma = 0; $mb = 0; $mc = 0; $md = 0; 
+		$sm = 0; $ma = 0; $mb = 0; $mc = 0; $md = 0;
 		$pa = 0; $pb = 0; $pc = 0; $pp = 0; $cp = 0;
 		foreach($data['data_kasus_ott'] as $dko){
 			if($tmp != "" && $tmp != $dko['bln']){
 				$grp_per_seksi2 .= "{name:'".$tmp."', data:[".$sm.", ".$ma.", ".$mb.", ".$mc.", ".$md.",
 				 ".$pa.", ".$pb.", ".$pc.", ".$pp.", ".$cp."]},";
 
-				$sm = 0; $ma = 0; $mb = 0; $mc = 0; $md = 0; 
+				$sm = 0; $ma = 0; $mb = 0; $mc = 0; $md = 0;
 				$pa = 0; $pb = 0; $pc = 0; $pp = 0; $cp = 0;
 			}
 			$tmp = $dko['bln'];
@@ -579,11 +590,11 @@ class C_DataLKHSeksi extends CI_Controller
 		$data['ott_per_noind'] = $to_proses_data['ott_per_noind'];
 		$data['grp_per_noind'] = $to_proses_data['grp_per_noind'];
 		$data['grp_per_seksi2'] = $to_proses_data['grp_per_seksi2'];
-		
+
 		//echo $grp_per_seksi."<br><br>";
 		//echo $grp_per_seksi2;
 		//exit;
-		
+
 		$user = $this->session->username;
 		$user_id = $this->session->userid;
 
@@ -635,9 +646,9 @@ class C_DataLKHSeksi extends CI_Controller
 	public function downloadExcel()
     {
 		$filter = $this->input->get('filter');
-		$column_table = array('', 'tgl', 'noind', 'employee_name', 'kode_barang', 'kode_proses', 'jml_barang', 'afmat', 'afmch', 'repair', 
+		$column_table = array('', 'tgl', 'noind', 'employee_name', 'kode_barang', 'kode_proses', 'jml_barang', 'afmat', 'afmch', 'repair',
 			'reject', 'setting_time', 'shift', 'status', 'kode_barang_target_sementara', 'kode_proses_target_sementara');
-		$column_view = array('No', 'Tanggal', 'No Induk', 'Nama', 'Kode Barang', 'Kode Proses', 'Jml Barang', 'Afmat', 'Afmch', 'Repair', 
+		$column_view = array('No', 'Tanggal', 'No Induk', 'Nama', 'Kode Barang', 'Kode Proses', 'Jml Barang', 'Afmat', 'Afmch', 'Repair',
 			'Reject', 'Setting Time', 'Shift', 'Status', 'Kode Barang Target Sementara', 'Kode Proses Target Sementara');
 		$data_table = $this->M_datalkhseksi->getLKHSeksiSearch($filter)->result_array();
 
@@ -664,10 +675,10 @@ class C_DataLKHSeksi extends CI_Controller
 			}
 			$excel_row++;
 		}
-		
-		$objPHPExcel->getActiveSheet()->setTitle('Quick ERP');      
+
+		$objPHPExcel->getActiveSheet()->setTitle('Quick ERP');
 		$objWriter = PHPExcel_IOFactory::createWriter($objPHPExcel, 'Excel2007');
- 
+
 		header("Last-Modified: " . gmdate("D, d M Y H:i:s") . " GMT");
 		header("Cache-Control: no-store, no-cache, must-revalidate");
 		header("Cache-Control: post-check=0, pre-check=0", false);
