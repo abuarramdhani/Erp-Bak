@@ -10,6 +10,7 @@ class C_CodeOfPractice extends CI_Controller
 		$this->load->helper('html');
 
 		$this->load->library('form_validation');
+		$this->load->library('Log_Activity');
 		$this->load->library('session');
 		$this->load->library('encryption');
 		$this->load->library('General');
@@ -93,10 +94,10 @@ class C_CodeOfPractice extends CI_Controller
 			$this->load->view('V_Header',$data);
 			$this->load->view('V_Sidemenu',$data);
 			$this->load->view('DocumentStandarization/CodeOfPractice/V_create', $data);
-			$this->load->view('V_Footer',$data);	
+			$this->load->view('V_Footer',$data);
 		} else {
 			$namaCOP 				= 	strtoupper($this->input->post('txtCopNameHeader'));
-			$SOP 					= 	$this->input->post('cmbSOP');			
+			$SOP 					= 	$this->input->post('cmbSOP');
 			$nomorKontrol 			= 	strtoupper($this->input->post('txtNoDocHeader'));
 			$nomorRevisi	  		= 	$this->input->post('txtNoRevisiHeader');
 			$tanggalRevisi 			= 	$this->general->konversiTanggalkeDatabase(($this->input->post('txtTanggalHeader')),'tanggal');
@@ -144,7 +145,7 @@ class C_CodeOfPractice extends CI_Controller
 			else
 			{
 				$ContextDiagram 	= 	$this->general->cekContextDiagram($SOP);
-				$BusinessProcess 	= 	$this->general->cekBusinessProcess($ContextDiagram);				
+				$BusinessProcess 	= 	$this->general->cekBusinessProcess($ContextDiagram);
 			}
 			$data = array(
 				'cop_name' 			=> $namaCOP,
@@ -166,6 +167,11 @@ class C_CodeOfPractice extends CI_Controller
     		);
 			$this->M_codeofpractice->setCodeOfPractice($data);
 			$header_id = $this->db->insert_id();
+			//insert to sys.log_activity
+			$aksi = 'DOC STANDARIZATION';
+			$detail = "Set document COP id=$header_id";
+			$this->log_activity->activity_log($aksi, $detail);
+			//
 
 			redirect(site_url('DocumentStandarization/COP'));
 		}
@@ -212,14 +218,14 @@ class C_CodeOfPractice extends CI_Controller
 		if ($this->form_validation->run() === FALSE) {
 
 			$data['daftarSOP'] 		= 	$this->M_general->ambilDaftarStandardOperatingProcedure();
-			
+
 			$this->load->view('V_Header',$data);
 			$this->load->view('V_Sidemenu',$data);
 			$this->load->view('DocumentStandarization/CodeOfPractice/V_update', $data);
-			$this->load->view('V_Footer',$data);	
+			$this->load->view('V_Footer',$data);
 		} else {
 			$namaCOP 				= 	strtoupper($this->input->post('txtCopNameHeader'));
-			$SOP 					= 	$this->input->post('cmbSOP');			
+			$SOP 					= 	$this->input->post('cmbSOP');
 			$nomorKontrol 			= 	strtoupper($this->input->post('txtNoDocHeader'));
 			$nomorRevisi	  		= 	$this->input->post('txtNoRevisiHeader');
 			$tanggalRevisi 			= 	$this->general->konversiTanggalkeDatabase(($this->input->post('txtTanggalHeader')),'tanggal');
@@ -340,7 +346,7 @@ class C_CodeOfPractice extends CI_Controller
 				if(($revisiBaru==0 || $fileDokumen!=NULL) && $inputfile==NULL)
 				{
 					$fileDokumen = $this->general->cekFile($namaBusinessProcess, $nomorRevisi, $nomorKontrol, $fileDokumen, direktoriUpload);
-				}					
+				}
 			}
 			$ContextDiagram;
 			$BusinessProcess;
@@ -352,9 +358,9 @@ class C_CodeOfPractice extends CI_Controller
 			else
 			{
 				$ContextDiagram 	= 	$this->general->cekContextDiagram($SOP);
-				$BusinessProcess 	= 	$this->general->cekBusinessProcess($ContextDiagram);				
+				$BusinessProcess 	= 	$this->general->cekBusinessProcess($ContextDiagram);
 			}
-			
+
 			$data = array(
 				'cop_name' 		=> $namaCOP,
 				'cop_file' 		=> $fileDokumen,
@@ -376,6 +382,11 @@ class C_CodeOfPractice extends CI_Controller
 			print_r($data);
 			echo '</pre>';
 			$this->M_codeofpractice->updateCodeOfPractice($data, $plaintext_string);
+			//insert to sys.log_activity
+			$aksi = 'DOC STANDARIZATION';
+			$detail = "Update document COP id=$plaintext_string";
+			$this->log_activity->activity_log($aksi, $detail);
+			//
 
 			redirect(site_url('DocumentStandarization/COP'));
 		}
@@ -418,6 +429,11 @@ class C_CodeOfPractice extends CI_Controller
 		$plaintext_string = $this->encrypt->decode($plaintext_string);
 
 		$this->M_codeofpractice->deleteCodeOfPractice($plaintext_string);
+		//insert to sys.log_activity
+		$aksi = 'DOC STANDARIZATION';
+		$detail = "Delete document COP id=$plaintext_string";
+		$this->log_activity->activity_log($aksi, $detail);
+		//
 
 		redirect(site_url('DocumentStandarization/COP'));
     }

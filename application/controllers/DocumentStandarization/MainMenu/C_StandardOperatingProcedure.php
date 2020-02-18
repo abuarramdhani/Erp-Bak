@@ -10,6 +10,7 @@ class C_StandardOperatingProcedure extends CI_Controller
 		$this->load->helper('html');
 
 		$this->load->library('form_validation');
+		$this->load->library('Log_Activity');
 		$this->load->library('session');
 		$this->load->library('encrypt');
 		$this->load->library('General');
@@ -95,10 +96,10 @@ class C_StandardOperatingProcedure extends CI_Controller
 			$this->load->view('V_Header',$data);
 			$this->load->view('V_Sidemenu',$data);
 			$this->load->view('DocumentStandarization/StandardOperatingProcedure/V_create', $data);
-			$this->load->view('V_Footer',$data);	
+			$this->load->view('V_Footer',$data);
 		} else {
 			$namaSOP 				= 	strtoupper($this->input->post('txtSopNameHeader'));
-			$ContextDiagram 		= 	$this->input->post('cmbContextDiagram');			
+			$ContextDiagram 		= 	$this->input->post('cmbContextDiagram');
 			$nomorKontrol 			= 	strtoupper($this->input->post('txtNoDocHeader'));
 			$nomorRevisi	  		= 	strtoupper($this->input->post('txtNoRevisiHeader'));
 			$tanggalRevisi 			= 	$this->general->konversiTanggalkeDatabase(($this->input->post('txtTanggalHeader')),'tanggal');
@@ -169,6 +170,11 @@ class C_StandardOperatingProcedure extends CI_Controller
     		*/
 			$this->M_standardoperatingprocedure->setStandardOperatingProcedure($data);
 			$header_id = $this->db->insert_id();
+			//insert to sys.log_activity
+			$aksi = 'DOC STANDARIZATION';
+			$detail = "Set SOP id=$header_id";
+			$this->log_activity->activity_log($aksi, $detail);
+			//
 
 			redirect(site_url('DocumentStandarization/SOP'));
 		}
@@ -218,10 +224,10 @@ class C_StandardOperatingProcedure extends CI_Controller
 			$this->load->view('V_Header',$data);
 			$this->load->view('V_Sidemenu',$data);
 			$this->load->view('DocumentStandarization/StandardOperatingProcedure/V_update', $data);
-			$this->load->view('V_Footer',$data);	
+			$this->load->view('V_Footer',$data);
 		} else {
 			$namaSOP 				= 	strtoupper($this->input->post('txtSopNameHeader', TRUE));
-			$ContextDiagram 		= 	$this->input->post('cmbContextDiagram', TRUE);			
+			$ContextDiagram 		= 	$this->input->post('cmbContextDiagram', TRUE);
 			$nomorKontrol 			= 	strtoupper($this->input->post('txtNoDocHeader', TRUE));
 			$nomorRevisi	  		= 	strtoupper($this->input->post('txtNoRevisiHeader', TRUE));
 			$tanggalRevisi 			= 	$this->general->konversiTanggalkeDatabase(($this->input->post('txtTanggalHeader')),'tanggal');
@@ -345,14 +351,14 @@ class C_StandardOperatingProcedure extends CI_Controller
 				if(($revisiBaru==0 || $fileDokumen!=NULL) && $inputfile==NULL)
 				{
 					$fileDokumen = $this->general->cekFile($namaSOP, $nomorRevisi, $nomorKontrol, $fileDokumen, direktoriUpload);
-				}					
+				}
 
 			}
 			else
 			{
 				$tanggalUpload 		=  	$this->general->ambilWaktuEksekusi();
-			
-			}	
+
+			}
 
 			$BusinessProcess 	= 	$this->general->cekBusinessProcess($ContextDiagram);
 
@@ -401,14 +407,15 @@ class C_StandardOperatingProcedure extends CI_Controller
 					'sop_ruang_lingkup' => $ruanglingkupSOP,
 					'sop_referensi' 	=> $referensiSOP,
 					'sop_definisi' 		=> $definisiSOP,
-    			);    			
+    			);
     		}
-    		// echo '<pre>';
-    		// print_r($data);
-    		// echo "</pre>";
-    		// exit();
-    					
+
 			$this->M_standardoperatingprocedure->updateStandardOperatingProcedure($data, $plaintext_string);
+			//insert to sys.log_activity
+			$aksi = 'DOC STANDARIZATION';
+			$detail = "Update SOP id=$plaintext_string";
+			$this->log_activity->activity_log($aksi, $detail);
+			//
 
 			redirect(site_url('DocumentStandarization/SOP'));
 		}
@@ -451,6 +458,11 @@ class C_StandardOperatingProcedure extends CI_Controller
 		$plaintext_string = $this->encrypt->decode($plaintext_string);
 
 		$this->M_standardoperatingprocedure->deleteStandardOperatingProcedure($plaintext_string);
+		//insert to sys.log_activity
+		$aksi = 'DOC STANDARIZATION';
+		$detail = "Delete SOP id=$plaintext_string";
+		$this->log_activity->activity_log($aksi, $detail);
+		//
 
 		redirect(site_url('DocumentStandarization/SOP'));
     }
