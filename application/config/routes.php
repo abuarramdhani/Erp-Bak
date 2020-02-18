@@ -3645,6 +3645,7 @@ $route['PengirimanDokumen/ajax/listMaster']				= 'PengirimanDokumen/Menu/C_Input
 $route['PengirimanDokumen/ajax/addData']['post']		= 'PengirimanDokumen/Menu/C_InputData/ajaxInputData';
 $route['PengirimanDokumen/ajax/showData']               = 'PengirimanDokumen/Menu/C_InputData/ajaxShowData';
 $route['PengirimanDokumen/ajax/updateData']             = 'PengirimanDokumen/Menu/C_InputData/ajaxUpdateData';
+$route['PengirimanDokumen/ajax/deleteData']			    = 'PengirimanDokumen/Menu/C_MasterData/ajaxDeleteData';
 
 $route['PengirimanDokumen/ajax/showMaster']				= 'PengirimanDokumen/Menu/C_MasterData/ajaxShowMaster';
 $route['PengirimanDokumen/ajax/seksi']					= 'PengirimanDokumen/Menu/C_MasterData/ajaxSeksi';
