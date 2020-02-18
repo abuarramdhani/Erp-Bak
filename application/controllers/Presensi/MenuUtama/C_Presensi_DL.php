@@ -7,12 +7,13 @@ class C_Presensi_DL extends CI_Controller {
 		$this->load->helper('url');
         $this->load->helper('html');
           //load the login model
+		$this->load->library('Log_Activity');
 		$this->load->library('session');
 		  //$this->load->library('Database');
 		$this->load->model('M_Index');
 		$this->load->model('Presensi/MainMenu/M_presensi_dl');
 		$this->load->model('SystemAdministration/MainMenu/M_user');
-		  
+
 		if($this->session->userdata('logged_in')!=TRUE) {
 			$this->load->helper('url');
 			$this->session->set_userdata('last_page', current_url());
@@ -20,20 +21,20 @@ class C_Presensi_DL extends CI_Controller {
 			$this->session->set_userdata('Responsbility', 'some_value');
 		}
 	}
-	
+
 	public function checkSession(){
 		if($this->session->is_logged){
-			
+
 		}else{
 			redirect();
 		}
 	}
-	
+
 public function Index()
 	{
 		$this->checkSession();
 		$user_id = $this->session->userid;
-		
+
 		$noind = $this->input->get('noind');
 		$awl = $this->input->get('awl');
 		$akh = $this->input->get('akh');
@@ -63,19 +64,19 @@ public function Index()
 		$data['SubMenuTwo'] = 'Presensi DL';
 		$data['SubMenuOne'] = 'Presensi DL';
 		$data['Title'] = 'Monitoring Presensi Dinas Luar';
-		
+
 		$data['UserMenu'] = $this->M_user->getUserMenu($user_id,$this->session->responsibility_id);
 		$data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id);
 		$data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id);
 
 		$data['tspdl'] 		= $this->M_presensi_dl->ambilPekerjaDL($where_dl);
-		$data['presensidl'] = $this->M_presensi_dl->cekPresensiDL($where_prs);	
-		
+		$data['presensidl'] = $this->M_presensi_dl->cekPresensiDL($where_prs);
+
 		$this->load->view('V_Header',$data);
 		$this->load->view('V_Sidemenu',$data);
 		$this->load->view('Presensi/MainMenu/PresensiDL/V_index', $data);
 		$this->load->view('V_Footer',$data);
-		
+
 	}
 
 public function get_js_pekerja()
@@ -152,11 +153,11 @@ public function CariDataDinasLuar(){
 		$data['SubMenuTwo'] = 'Presensi DL';
 		$data['SubMenuOne'] = 'Presensi DL';
 		$data['Title'] = 'Monitoring Presensi Dinas Luar';
-		
+
 		$data['UserMenu'] = $this->M_user->getUserMenu($user_id,$this->session->responsibility_id);
 		$data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id);
 		$data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id);
-		
+
 		$this->load->view('V_Header',$data);
 		$this->load->view('V_Sidemenu',$data);
 		$this->load->view('Presensi/MainMenu/PresensiDL/V_data', $data);
@@ -166,6 +167,11 @@ public function CariDataDinasLuar(){
 
 	public function fileDinasLuar($spdl){
 			$data['SuratTugas'] 		= $this->M_presensi_dl->getSuratTugas($spdl);
+			//insert to sys.log_activity
+			$aksi = 'Presensi DL';
+			$detail = "Preview Surat Tugas spdl=$spdl";
+			$this->log_activity->activity_log($aksi, $detail);
+			//
 			$this->load->library('pdf');
 			$pdf = $this->pdf->load();
 			$pdf = new mPDF('utf-8', 'A4', 8, '', 5, 5, 5, 5, 0, 0, 'P');
@@ -200,18 +206,18 @@ public function CariDataDinasLuar(){
 	                    	$bidang = "and left(kodesie,3)='$bidang'";
 	                	}else {
 		                    $dept = "";
-		                    $bidang = "left(kodesie,3)='$bidang'";	                		
+		                    $bidang = "left(kodesie,3)='$bidang'";
 	                	}
 	                }
 	            }else{
 	            	if ($tanggal1!=null || $noind!=null) {
 		                $dept = "";
 		                $bidang = "";
-		                $unit = "and left(kodesie,5)='$unit'";	            		
+		                $unit = "and left(kodesie,5)='$unit'";
 	            	}else{
 	            		$dept = "";
 		                $bidang = "";
-		                $unit = "left(kodesie,5)='$unit'";	
+		                $unit = "left(kodesie,5)='$unit'";
 	            	}
 	            }
 	        }else{
@@ -225,7 +231,7 @@ public function CariDataDinasLuar(){
 		            $bidang = "";
 		            $unit = "";
 		            $seksi = "left(kodesie,7)='$seksi'";
-	        		
+
 	        	}
 	        }
 	        if($tanggal1!=null){
@@ -248,7 +254,7 @@ public function CariDataDinasLuar(){
 	public function editTanggalRealisasi($spdl){
 		$this->checkSession();
 		$user_id = $this->session->userid;
-		
+
 		$id = $this->input->get('id');
 
 		$data['Menu'] = 'Presensi';
@@ -256,7 +262,7 @@ public function CariDataDinasLuar(){
 		$data['SubMenuTwo'] = 'Presensi DL';
 		$data['SubMenuOne'] = 'Presensi DL';
 		$data['Title'] = 'Monitoring Presensi Dinas Luar';
-		
+
 		$data['item_spdl'] = $this->M_presensi_dl->editSDPL($spdl);
 		$data['item_pekerja'] = $this->M_presensi_dl->dataPekerja($id);
 		$data['UserMenu'] = $this->M_user->getUserMenu($user_id,$this->session->responsibility_id);
@@ -283,6 +289,11 @@ public function CariDataDinasLuar(){
 	          $stat = 1;
 	        }
 			$update = $this->M_presensi_dl->updateRealisasi($spdl,$tanggal[$i],$waktu[$i],$stat);
+			//insert to sys.log_activity
+			$aksi = 'Presensi DL';
+			$detail = "Update tanggal realisasi id=$id menjadi tanggal=$tanggal";
+			$this->log_activity->activity_log($aksi, $detail);
+			//
 		}
 		redirect(site_url('Presensi/PresensiDL/editTanggalRealisasi/'.$spdl."?id=".$id));
 	    exit;
@@ -303,15 +314,30 @@ public function CariDataDinasLuar(){
 		$kodesie = $getKodesie->kodesie;
 			if($tglBerangkat != null and $tglPulang != null){
 				$stat = "and stat in ('0','1')";
+				//insert to sys.log_activity
+				$aksi = 'Presensi';
+				$detail = "Delete presensi SPDL=$spdl & Insert Presensi manual id=$id";
+				$this->log_activity->activity_log($aksi, $detail);
+				//
 				$this->M_presensi_dl->deletePresensi($spdl,$stat);
 				$this->M_presensi_dl->insertPresensi($date_now,$id,$kodesie,$time_now,$userid,null,0,$spdl,0,$tglBerangkat,$timeBerangkat);
 				$this->M_presensi_dl->insertPresensi($date_now,$id,$kodesie,$time_now,$userid,null,0,$spdl,1,$tglPulang,$timePulang);
 			}elseif($tglBerangkat != null and $tglPulang == null){
-				$stat = "and stat in ('0')";	
+				$stat = "and stat in ('0')";
+				//insert to sys.log_activity
+				$aksi = 'Presensi';
+				$detail = "Delete presensi SPDL=$spdl & Insert Presensi manual id=$id";
+				$this->log_activity->activity_log($aksi, $detail);
+				//
 				$this->M_presensi_dl->deletePresensi($spdl,$stat);
 				$this->M_presensi_dl->insertPresensi($date_now,$id,$kodesie,$time_now,$userid,null,0,$spdl,0,$tglBerangkat,$timeBerangkat);
 			}elseif($tglPulang != null and $tglBerangkat == null){
 				$stat = "and stat in ('1')";
+				//insert to sys.log_activity
+				$aksi = 'Presensi DL';
+				$detail = "Delete presensi SPDL=$spdl & Insert Presensi manual id=$id";
+				$this->log_activity->activity_log($aksi, $detail);
+				//
 				$this->M_presensi_dl->deletePresensi($spdl,$stat);
 				$this->M_presensi_dl->insertPresensi($date_now,$id,$kodesie,$time_now,$userid,null,0,$spdl,1,$tglPulang,$timePulang);
 			}else{
@@ -328,9 +354,15 @@ public function CariDataDinasLuar(){
 		$kmberangkat = $this->input->post('txtKmBerangkat');
 		$kmpulang = $this->input->post('txtKmPulang');
 		$getKendaraan = $this->M_presensi_dl->getKendaraan($noind);
-		
+
 		$user_id = $this->session->userid;
-		
+
+		//insert to sys.log_activity
+		$aksi = 'Presensi DL';
+		$detail = "Insert Kendaraan Manual nopol=$nopol spdl=$spdl noind=$noind";
+		$this->log_activity->activity_log($aksi, $detail);
+		//
+
 		if($kmberangkat!=null){
 			$deleteKendaraan = $this->M_presensi_dl->deleteKendaraan($spdl,$noind,0);
 			$insertBerangkat = $this->M_presensi_dl->insertKilometerKendaraan($nopol,date('Y-m-d'),date('H:i:s'),0,$noind,'-',0,$spdl,0,$user_id,$kmberangkat);
@@ -347,7 +379,7 @@ public function CariDataDinasLuar(){
 		$tgl = $this->input->post('prs_tglfilterdl');
 		$nama = $this->input->post('prs_pekerjaDL');
 		$split_tanggal = explode("-", $tgl);
-		
+
 		redirect('Presensi/PresensiDL?noind='.$nama.'&awl='.date("Y-m-d",strtotime($split_tanggal[0])).'&akh='.date("Y-m-d",strtotime($split_tanggal[1])));
 	}
 }

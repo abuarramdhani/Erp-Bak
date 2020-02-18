@@ -1,26 +1,27 @@
 <?php
 	defined('BASEPATH') OR exit('No direct script access allowed');
 
-	class C_SinkronisasiKonversiPresensi extends CI_Controller 
+	class C_SinkronisasiKonversiPresensi extends CI_Controller
 	{
 		public function __construct()
 	    {
 	        parent::__construct();
-			  
+
 	        $this->load->library('General');
+			$this->load->library('Log_Activity');
 	        $this->load->library('Lib_SinkronisasiKonversiPresensi');
 
 			$this->load->model('M_Index');
 			$this->load->model('SystemAdministration/MainMenu/M_user');
 			$this->load->model('er/M_sinkronisasikonversipresensi');
-			  
-			if($this->session->userdata('logged_in')!=TRUE) 
+
+			if($this->session->userdata('logged_in')!=TRUE)
 			{
 				$this->session->set_userdata('last_page', current_url());
 			}
 			set_time_limit(0);
 	    }
-		
+
 		public function checkSession()
 		{
 			if(!($this->session->is_logged))
@@ -193,7 +194,7 @@
 															$parameter_kodesie,
 															$parameter_lokasi_kerja,
 															$parameter_kode_jabatan
-														), 
+														),
 														$query_tb_konversi_presensi
 													);
 				$hasil_konversi_presensi		=	$this->M_sinkronisasikonversipresensi->tb_konversi_presensi($query_tb_konversi_presensi);
@@ -282,13 +283,18 @@
 									}
 
 									$update[$columns['column_name']] 	=	rtrim($hasil[$columns['column_name']]);
-								}				
+								}
 							}
 						}
 						$update['last_update_timestamp']	=	date('Y-m-d H:i:s');
 						$update['last_update_user']			=	$this->session->user;
 
 						$this->M_sinkronisasikonversipresensi->update($update, $id_konversi_presensi);
+						//insert to sys.log_activity
+						$aksi = 'REKAP TIMS';
+						$detail = "Update Konversi presensi id=$id_konversi_presensi";
+						$this->log_activity->activity_log($aksi, $detail);
+						//
 						$this->lib_sinkronisasikonversipresensi->history('"Presensi"', 'tb_konversi_presensi', array('id_konversi_presensi' => $id_konversi_presensi), 'UPDATE');
 					}
 					$id_konversi_presensi_array[$indeks_id_konversi_presensi]	=	$id_konversi_presensi;
@@ -343,7 +349,7 @@
 														$parameter_kodesie,
 														$parameter_lokasi_kerja,
 														$parameter_kode_jabatan
-													), 
+													),
 													$query_tb_konversi_presensi
 												);
 			$hasil_konversi_presensi		=	$this->M_sinkronisasikonversipresensi->tb_konversi_presensi($query_tb_konversi_presensi);
@@ -429,13 +435,18 @@
 								}
 
 								$update[$columns['column_name']] 	=	rtrim($hasil[$columns['column_name']]);
-							}				
+							}
 						}
 					}
 					$update['last_update_timestamp']	=	date('Y-m-d H:i:s');
 					$update['last_update_user']			=	'CRON';
 
 					$this->M_sinkronisasikonversipresensi->update($update, $id_konversi_presensi);
+					//insert to sys.log_activity
+					$aksi = 'REKAP TIMS';
+					$detail = "Update Konversi presensi id=$id_konversi_presensi";
+					$this->log_activity->activity_log($aksi, $detail);
+					//
 					$this->lib_sinkronisasikonversipresensi->history('"Presensi"', 'tb_konversi_presensi', array('id_konversi_presensi' => $id_konversi_presensi), 'UPDATE');
 
 				}
@@ -483,7 +494,7 @@
 					$lokasi_kerja 		=	$this->M_sinkronisasikonversipresensi->lokasi_kerja($keyword);
 					echo json_encode($lokasi_kerja);
 				}
-				
+
 				public function jabatan()
 				{
 					$keyword 			=	strtoupper($this->input->get('term'));
