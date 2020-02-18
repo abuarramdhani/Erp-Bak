@@ -116,7 +116,7 @@ class M_presensibulanan extends Ci_Model
 				where tp.noind = '$noind'
 				and tp.tanggal = '$tgl'
 				union
-				select kd_ket
+				select (case when tt.kd_ket = 'TIK' and tt.point = '0' then '/' when tt.kd_ket = 'TM' and tt.point = '0' then 'TMT' else tt.kd_ket end) as kd_ket
 				from \"Presensi\".tdatatim tt
 				inner join \"Presensi\".tshiftpekerja ts
 				on ts.noind = tt.noind and ts.tanggal = tt.tanggal
@@ -340,6 +340,33 @@ class M_presensibulanan extends Ci_Model
 																					and 	pri2.noind!=pri.noind
 																	)
 											) as bobotms,
+											/*Mangkir Tidak Berpoint - Status Pekerja Aktif*/
+											(
+												select 		coalesce(count(tim.tanggal)) as total_frekuensi
+												from 		\"Presensi\".tdatatim as tim
+												where 		tim.tanggal between param.tgl1 and param.tgl2
+															and 	trim(tim.kd_ket)='TM'
+															and 	tim.point=0
+															and 	trim(tim.noind)=pri.noind
+											) as frekmnon,
+											/*Mangkir Tidak Berpoint - Status Pekerja Nonaktif*/
+											(
+												select 		coalesce(count(tim.tanggal)) as total_frekuensi
+												from 		\"Presensi\".tdatatim as tim
+												where 		tim.tanggal between param.tgl1 and param.tgl2
+															and 	trim(tim.kd_ket)='TM'
+															and 	tim.point=0
+															and 	trim(tim.noind)
+																	in
+																	(
+																		select 		pri2.noind
+																		from 		hrd_khs.v_hrd_khs_tpribadi as pri2
+																		where 		pri2.keluar=true
+																					and 	pri2.nik=pri.nik
+																					and 	pri2.tgllahir=pri.tgllahir
+																					and 	pri2.noind!=pri.noind
+																	)
+											) as frekmsnon,
 											/*Sakit Keterangan Dokter - Status Pekerja Aktif*/
 											(
 												select 		coalesce(count(datapres.tanggal)) as total_frekuensi

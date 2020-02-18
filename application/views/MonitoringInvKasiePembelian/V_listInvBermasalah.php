@@ -60,35 +60,38 @@ $alert = $status[0]['SATU'];
 						<div class="box box-primary box-solid">
 							<div class="box-body">
 								<div style="overflow: auto;">
-								<table id="unprocessTabel" class="table table-striped table-bordered table-hover text-center tblMI">
+								<table id="unprocessTabel" style="min-width:110%" class="table table-striped table-bordered table-hover text-center tblMI">
 									<thead>
 										<tr class="bg-primary">
 											<th class="text-center">No</th>
+											<th class="text-center" style="display: none">Important</th>
 											<th class="text-center">Invoice ID</th>
 											<th class="text-center" style="width: 10%">Action</th>
 											<th class="text-center">Vendor Name</th>
 											<th class="text-center">Invoice Number</th>
 											<th class="text-center">PO Number</th>
 											<th class="text-center">Creation Date</th>
-											<th class="text-center">Masalah</th>
+											<th class="text-left"  style="width: 30%">Masalah</th>
 											<th class="text-center">Purchasing Date</th>
-											<th class="text-center">Feedback Purchasing</th>
-											<th class="text-center">Buyer Date</th>
-											<th class="text-center">Feedback Buyer</th>
+											<th class="text-left" style="width: 30%">Feedback Purchasing</th>
+											<th class="text-center" style="width: 10%">Buyer Date</th>
+											<th class="text-center" style="width: 30%">Feedback Buyer</th>
 											<th class="text-center">PIC</th>
 											<th class="text-center">Forwarded To</th>
 										</tr>
 									</thead>
 									<tbody> 
 										<?php $no=1; foreach($bermasalah as $u){?>
-											<?php if ($u['JMLH_N'] != 0) { ?>
+											<?php if ($u['JMLH_N'] != 0 && $u['RETURNED_FLAG'] !== 'Y') { ?>
 										<tr style="background-color: #ff7a7a47;">
-											
-											<?php }else {?> 
+											<?php }else if ($u['RETURNED_FLAG'] == 'Y') {?> 
+										<tr style="background-color: #91d6fab3;">
+											<?php }else{ ?>
 										<tr>
 											<?php } ?>
 											<td><?php echo $no ?></td>
-											<td><?php echo $u['INVOICE_ID'] ?></td>
+											<td style="display: none;"></td>
+											<td><b><?php echo $u['INVOICE_ID'] ?></b></td>
 											<td> 
 												<a title="Konfirmasi..." style="width:100px;margin-bottom: 5px" onclick="openMdlPurcConf(<?php echo $u['INVOICE_ID'] ?>)" data-target="mdlPurchasing" data-toggle="modal" class="btn btn-info btn-sm"><i class="fa fa-file-text-o"></i> Konfirmasi</a>
 
@@ -99,6 +102,10 @@ $alert = $status[0]['SATU'];
 												<?php if ($u['BUYER_ACTION_BERMASALAH'] !== NULL) { ?>
 												<button data-target="mdlPurchasing" data-toggle="modal" title="Konfirmasi Kembali ..." style="width:100px;margin-top: 5px" onclick="konfirmasiKembaliPurc(<?php echo $u['INVOICE_ID'] ?>)" type="button" class="btn btn-primary btn-sm" id="submitToAkt"><i class="fa fa-exchange"></i> Re-Konfirmasi</button>
 												<?php } ?>
+
+												<?php if ($u['RETURNED_FLAG'] == 'Y') { ?>
+												<button title="Returned Confirmation..." data-target="mdlPurchasing" data-toggle="modal" style="width:100px;margin-top: 5px" onclick="returnedConfirmation(<?php echo $u['INVOICE_ID'] ?>)" type="button" class="btn btn-danger btn-sm" id="returnToAkt"><i class="fa fa-external-link"></i> Return</button>
+												<?php }?>
 												
 											</td>
 											<td><?php echo $u['VENDOR_NAME']?></td>
@@ -123,7 +130,8 @@ $alert = $status[0]['SATU'];
 											<?php if ($u['FEEDBACK_PURCHASING'] == NULL) { ?>
 											<td  style="background-color: #ff7a7a47;"><i>Not Yet Confirmed</i></td>
 											<?php }else{ ?> 
-											<td><b>Purchasing</b> : <?php echo $u['FEEDBACK_PURCHASING']?></td>
+											<td><b>Purchasing to AKT</b> : <?php echo $u['FEEDBACK_PURCHASING']?><br>
+												<b>Purchasing to Buyer</b> : <?php echo $u['NOTE_BUYER']?></td>
 											<?php } ?>
 
 											<?php if ($u['BUYER_ACTION_BERMASALAH'] == NULL) { ?>
@@ -139,20 +147,43 @@ $alert = $status[0]['SATU'];
 											<?php } ?>
 										
 											<td><?php echo $u['SOURCE_BERMASALAH']?></td>
+
+
 											<?php if ($u['NO_INDUK_BUYER'] == NULL && $u['STATUS_BERKAS_BUYER'] == NULL) { ?>
-											<td><span class="label label-default"> UNFORWARDED </span></td>
+											<td><span class="label label-default"> UNFORWARDED </span>
+												<?php if ($u['RETURNED_DATE_PURC'] == '' && $u['RETURNED_FLAG'] == 'Y' ){ ?> 
+												<br><span class="label label-danger"> Invoice Returned </span>
+												<?php }else if ($u['RETURNED_DATE_PURC'] !== '' && $u['RETURNED_FLAG'] == 'Y' ){ ?>
+												<br><span class="label label-success"> Invoice Returned (Confirmed)</span>
+												<?php } ?>
+											</td>
 											<?php }else if ($u['NO_INDUK_BUYER'] !== NULL && $u['STATUS_BERKAS_BUYER'] == NULL) { ?>
-											<td><span class="label label-primary"> <?php echo $u['NO_INDUK_BUYER']?> - <?php echo $u['NAMA_BUYER']?></span>
-												<br> <span class="label label-danger"><i class="fa fa-times" ></i> BELUM DIKONFIRMASI </span> </td>
-											<?php } else {?>
-											<td><span class="label label-primary"> <?php echo $u['NO_INDUK_BUYER']?> - <?php echo $u['NAMA_BUYER']?></span>
-												<br><span class="label label-success"><i class="fa fa-check" ></i> TELAH DIKONFIRMASI </span>
+											<td>
+												<span class="label label-primary"> <?php echo $u['NO_INDUK_BUYER']?> - <?php echo $u['NAMA_BUYER']?></span>
 												<br>
+												<span class="label label-danger"><i class="fa fa-times" ></i> BELUM DIKONFIRMASI </span>
+												<?php if ($u['RETURNED_DATE_PURC'] == '' && $u['RETURNED_FLAG'] == 'Y' ){ ?> 
+												<br><span class="label label-danger"> Invoice Returned </span>
+												<?php }else if ($u['RETURNED_DATE_PURC'] !== '' && $u['RETURNED_FLAG'] == 'Y' ){ ?>
+												<br><span class="label label-success"> Invoice Returned (Confirmed)</span>
+												<?php } ?> 
+											</td>
+											<?php }else {?>
+											<td><span class="label label-primary"> <?php echo $u['NO_INDUK_BUYER']?> - <?php echo $u['NAMA_BUYER']?></span>
+											<br><span class="label label-success"><i class="fa fa-check" ></i> TELAH DIKONFIRMASI </span>
+											<br>
 												<?php if ($u['JMLH_N'] != 0) { ?>
 												<br><span class="label label-danger"> REJECTED BY BUYER   : <b><?php echo $u['JMLH_N']?></b></span><?php }else { ?> 
 												<?php } ?>
+												<?php if ($u['RETURNED_DATE_PURC'] == '' && $u['RETURNED_FLAG'] == 'Y' ){ ?> 
+												<br><span class="label label-danger"> Invoice Returned </span>
+												<?php }else if ($u['RETURNED_DATE_PURC'] !== '' && $u['RETURNED_FLAG'] == 'Y' ){ ?>
+												<br><span class="label label-success"> Invoice Returned (Confirmed)</span>
+												<?php } ?>
+
 											</td>
 											<?php } ?>
+
 										</tr>
 										<?php $no++; } ?>
 									</tbody>

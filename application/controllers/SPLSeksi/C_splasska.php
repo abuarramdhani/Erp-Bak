@@ -50,10 +50,10 @@ class C_splasska extends CI_Controller {
 	public function data_spl(){	
 		$this->checkSession();
 		$wkt_validasi = $this->session->spl_validasi_waktu_asska;
-		if (time() - $wkt_validasi > 120) {
-			$this->session->spl_validasi_asska = FALSE;
-			redirect(site_url('SPL'));
-		}
+		// if (time() - $wkt_validasi > 120) {
+		// 	$this->session->spl_validasi_asska = FALSE;
+		// 	redirect(site_url('SPL'));
+		// }
 		$this->session->spl_validasi_waktu_asska = time();
 		$data = $this->menu('', '', '');
 		$data['lokasi'] = $this->M_splseksi->show_lokasi();
@@ -353,10 +353,10 @@ class C_splasska extends CI_Controller {
 			// Approv or Cancel
 			if($stat == "25"){
 				$log_jenis = "Approve";
-				$spl_ket = $ket." (Approve By AssKa)";
+				$spl_ket = $ket." (Approved By AssKa)";
 			}else{
 				$log_jenis = "Cancel";
-				$spl_ket = $ket." (Cancel By AssKa)";
+				$spl_ket = $ket." (Canceled By AssKa)";
 			}
 
 			// Insert data
@@ -444,7 +444,7 @@ class C_splasska extends CI_Controller {
 			}
 		}
 		$lembur = $lembur1 + $lembur2 + $lembur3;
-		// echo $lembur;print_r($cek_tspl);exit();
+
 		if($cek_tspl->kode == '004'){
 			$cek_hl = $this->M_splasska->cek_hl($cek_tspl->noind,$cek_tspl->tanggal);
 			if ($cek_hl == 0) {
@@ -453,6 +453,7 @@ class C_splasska extends CI_Controller {
 			}
 		}else{
 			$cek_tdatapresensi = $this->M_splasska->cek_tdatapresensi($cek_tspl->noind,$cek_tspl->tanggal);
+
 			if ($cek_tdatapresensi->kd_ket == 'PKJ') {
 				$this->M_splasska->update_tdatapresensi('PLB',$cek_tspl->noind,$cek_tspl->tanggal,$lembur);
 			}elseif($cek_tdatapresensi->kd_ket == 'PDL'){
@@ -641,8 +642,7 @@ class C_splasska extends CI_Controller {
 		$ket = $this->input->get('ket');
 		$spl_id = $this->input->get('data');
 
-		echo "
-		$user_id;".$finger->finger_data.";SecurityKey;".$time_limit_ver.";".site_url("ALA/Approve/fp_verification?status=$status&spl_id=$spl_id&ket=$ket&finger_id=$kd_finger").";".site_url("ALA/Approve/fp_activation").";extraParams";
+		echo "$user_id;".$finger->finger_data.";SecurityKey;".$time_limit_ver.";".site_url("ALA/Approve/fp_verification?status=$status&spl_id=$spl_id&ket=$ket&finger_id=$kd_finger").";".site_url("ALA/Approve/fp_activation").";extraParams";
 		// variabel yang di tmpilkan belum bisa di ubah
 	}
 
@@ -673,7 +673,7 @@ class C_splasska extends CI_Controller {
 
 			echo site_url("ALA/Approve/fp_succes?status=$status&spl_id=$spl_id&ket=$ket");
 		}else{
-			echo "Parameter invalid..";
+			echo "Parameter invalid...";
 		}
 	}
 
@@ -681,39 +681,32 @@ class C_splasska extends CI_Controller {
 		$status = $_GET['status'];
 		$spl_id = $_GET['spl_id'];
 		$ket = $_GET['ket'];
-		$reject = "";
 		foreach(explode('.', $spl_id) as $si){
-			if($status == '35'){
-				$recheck_spl = $this->M_splasska->recheck_spl($si);
-				if($recheck_spl == 0){
-					$this->data_spl_approv($si, $status, $ket);
-					$this->update_datapresensi($si);
-				}else{
-					if ($reject == "") {
-						$reject .= $si;
-					}else{
-						$reject .= ".".$si;
-					}
-				}
+			if(empty(trim($si))) {
+				continue;
+			}
+
+			if($status == '35' || $status == '25'){
+				$this->data_spl_approv($si, $status, $ket);
 			}
 		}
 
 		$this->send_email_2($status,$spl_id,$ket);
 		$this->session->spl_validasi_waktu_asska = time();
-		redirect(site_url("ALA/Approve/result_reject/".$reject));
-		// echo "Memproses data lembur<br>";
-		// echo "<script>window.close();</script>";
+
+		echo "<script>localStorage.setItem('resultApproveSPL', true);window.close();</script>";
 	}
 
-	function result_reject($spl_id = FALSE){
+	function result_reject_UNUSED($spl_id = FALSE){
 		$data = $this->menu('', '', '');
 		$data_spl = array();
 		$number = 0;
+		
 		if ($spl_id !== FALSE) {
 			foreach (explode(".", $spl_id) as $si) {
 				$jml_lembur = 0;
 				$cek_tspl = $this->M_splasska->cek_spl($si);
-				// print_r($cek_tspl);exit();
+				
 				if(floatval($cek_tspl->jml_lembur) > 0){
 					if ($cek_tspl->kode == '004') {
 						$wkt_pkj = $this->M_splasska->get_wkt_pkj($cek_tspl->noind,$cek_tspl->tanggal);
@@ -748,8 +741,10 @@ class C_splasska extends CI_Controller {
 						$lembur3 = 0;
 					}
 				}
+
 				$lembur = $lembur1 + $lembur2 + $lembur3;
 				$tdatapresensi = $this->M_splasska->get_tdatapresensi($cek_tspl->noind,$cek_tspl->tanggal);
+
 				$data_spl[$number] = array(
 					'tanggal' => $cek_tspl->tanggal,
 					'noind' => $cek_tspl->noind,
@@ -757,8 +752,8 @@ class C_splasska extends CI_Controller {
 					'lembur_2' => $tdatapresensi->total_lembur
 				);
 			}
-
 		}
+
 		$data['data']	= $data_spl;
 		$this->load->view('V_Header',$data);
 		$this->load->view('V_Sidemenu',$data);

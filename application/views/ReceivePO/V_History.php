@@ -39,12 +39,12 @@
 
 									<div class="col-md-3">
 							                    
-											<input type="text" class="form-control tanggalan"  id="datefrom" name="datefrom" placeholder="Tanggal Receive" auto-complete="off" >
+											<input autocomplete="off" type="text" class="form-control tanggalan"  id="datefrom" name="datefrom" placeholder="Tanggal Receive" >
 										
 									</div>
 									<div class="col-md-1" align="center"><label> s/d </label></div>
 									<div class="col-md-3">
-							              <input type="text" class="form-control tanggalan"  id="dateto" name="dateto" placeholder="Tanggal Receive" auto-complete="off" >
+							              <input autocomplete="off" type="text" class="form-control tanggalan"  id="dateto" name="dateto" placeholder="Tanggal Receive">
 									</div>
                                     <div style="text-align: left;" ><button onclick="getHistory(this)" class="btn btn-flat" style="background-color: inherit;text-align:center;padding:0px;padding-left:0px"><i class="fa fa-arrow-right fa-2x" ></i></button></div>
                                     

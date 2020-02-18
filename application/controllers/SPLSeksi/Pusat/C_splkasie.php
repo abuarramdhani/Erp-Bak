@@ -787,8 +787,7 @@ class C_splkasie extends CI_Controller {
 
 		$this->session->spl_validasi_waktu_kasie = time();
 
-		echo "Memproses data lembur<br>";
-		echo "<script>window.close();</script>";
+		echo "<script>localStorage.setItem('resultApproveSPL', true);window.close();</script>";
 	}
 
 	//validasi user kasie & asska

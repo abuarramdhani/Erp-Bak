@@ -98,11 +98,20 @@
 											<span><label>Kategori</label></span>
 										</td>
 											<td>
-											<select name="slcKategori[]" id="slcKategori" class="form-control select2 select2-hidden-accessible" multiple style="width:100%;">
+											<select onchange="kategoriBermasalah(this)" name="slcKategori[]" id="slcKategori" class="form-control select2 select2-hidden-accessible" multiple style="width:100%;">
 												<option value="Beda Harga">Beda Harga</option>
 												<option value="Dokumen Tidak Lengkap">Dokumen Tidak Lengkap</option>
 												<option value="Identitas Tidak Jelas">Identitas Tidak Jelas</option>
+												<option value="LainLain">Lain Lain</option>
 											 </select>
+											</td>
+											<td>
+												<i>Keterangan</i>
+											</td>
+											<td>
+											<div class="customDiv">
+											
+											</div>
 										</td>
 									</tr>
 									<tr>
@@ -110,13 +119,22 @@
 											<span><label>Kelengkapan Dokumen</label></span>
 										</td>
 										<td>
-											<select name="slcKelengkapanDokumen[]" id="slcKelengkapanDokumen" multiple class="form-control select2 select2-hidden-accessible" style="width:100%;">
+											<select onchange="kelengkapanDokumen(this)" name="slcKelengkapanDokumen[]" id="slcKelengkapanDokumen" multiple class="form-control select2 select2-hidden-accessible" style="width:100%;">
 												<option value="Invoice">Invoice</option>
 												<option value="FP">FP</option>
 												<option value="LPPB">LPPB</option>
 												<option value="SJ">SJ</option> 
-												<option value="Dokumen Lain">Dokumen Lain</option> 
+												<option value="Without Document">Without Document</option> 
+												<option value="DokumenLain">Dokumen Lain</option> 
 											 </select>
+										</td>
+										<td>
+											<i>Keterangan</i>
+										</td>
+										<td>
+											<div class="customDoc">
+											
+											</div>
 										</td>
 									</tr>
 									<tr>

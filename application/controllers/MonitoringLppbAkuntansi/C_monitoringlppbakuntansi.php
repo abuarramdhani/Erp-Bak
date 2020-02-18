@@ -106,6 +106,48 @@ class C_monitoringlppbakuntansi extends CI_Controller{
 		// $this->load->view('V_Footer',$data);
 	}
 
+	public function openDetailLppb($batch_number)
+	{
+		$this->checkSession();
+		$user_id = $this->session->userid;
+		
+		$data['Menu'] = 'Dashboard';
+		$data['SubMenuOne'] = '';
+		
+		$data['UserMenu'] = $this->M_user->getUserMenu($user_id,$this->session->responsibility_id);
+		$data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id);
+		$data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id);
+		// $batch_number = $this->input->post('batch_number');
+		$detailLppb = $this->M_monitoringlppbakuntansi->getBatchDetailId($batch_number);
+		
+		$lppb_number1 = $detailLppb[0]['LPPB_NUMBER'];
+		foreach ($detailLppb as $key => $value) {
+			$lppb_number2 = $detailLppb[$key]['LPPB_NUMBER'];
+		}
+		$kondisi = "AND klbd.status = 5";
+		$searchLppb = $this->M_monitoringlppbakuntansi->detailLppbAkuntansi($batch_number);
+		$jumlahData = $this->M_monitoringlppbakuntansi->cekJumlahData($batch_number,$kondisi);
+		$data['detailLppb'] = $searchLppb;
+		$data['jml'] = $jumlahData;
+
+		// if (!empty($data['detailLppb'])) {
+				
+
+			// }else{
+			// echo "<script> Swal.fire({
+  	// 								type: 'error',
+  	// 								title: 'Maaf...',
+ 		// 							text: 'Data Kosong',
+			// 						}) </script>";
+			// echo "<script>$('#mdlDetailAkt').modal('hide')</script>";
+			// }
+
+		$this->load->view('V_Header',$data);
+		$this->load->view('V_Sidemenu',$data);
+		$this->load->view('MonitoringLppbAkuntansi/V_detaillppbakuntansi',$data);
+		$this->load->view('V_Footer',$data);
+	}
+
 	public function saveActionLppbNumber(){
 		$proses = $this->input->post('hdnProses[]');
 		$alasan = $this->input->post('alasan_reject[]');

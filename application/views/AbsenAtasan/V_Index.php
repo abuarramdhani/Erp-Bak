@@ -6,25 +6,8 @@
 		</div>
 		<div class="panel box-body" >
 			<div class="row">
-                <div class="col-lg-12">
-                    <div class="col-lg-12 text-right reup">    
-                        <h4><small>You are logged in as : <?php echo $this->session->user;?></small></h4>
-                    </div>  
-                        
-                        <center> 
-                            
-                            <img  src="<?php echo base_url("assets/img/cs.png");?>" style="max-width:27%;" />
-                        
-                        </center>
-                        <br /><br />
-                        <center>
-                        <?php $load = microtime();
-                            echo '<p style="font: normal 15px courier">Halaman ini dimuat dalam ';
-                            echo round($load, 3);
-                            echo ' detik';
-                        ?>
-                        </center>
-                    
+                <div class="col-lg-12" style="height: 500px;">
+                    <a href="<?= base_url('AbsenAtasan/List') ?>" class="btn btn-success btn-block" style="padding: 50px;font-weight: bold;font-size: 25px"><span><i class="fa fa-server"></i></span>&nbsp;List Data</a>
                 </div>
             </div>
 		</div>

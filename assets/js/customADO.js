@@ -5,7 +5,6 @@ $(document).ready( _ => {
             orderable   : false,
             targets     : 'no-orderable'
         }],
-        fixedHeader   : true,
 		scrollY 	  : '350px'
     })
 
@@ -97,9 +96,10 @@ $(document).ready( _ => {
     })
 
     $('.btnADOSelectApprover').on('click', function () {
-        $('.trADOQtyZero').length === 0 || $('.txtADOOrderType').val() === 'HO-Perlengkapan-DN' ?
-            $('#mdlADOAssignApprover').modal('show') :
-            swalADOMixinToast('error', 'Quantity on hand tidak memenuhi. Silahkan dilakukan pengecekan ulang')
+        // $('.trADOQtyZero').length === 0 || $('.txtADOOrderType').val() === 'HO-Perlengkapan-DN' ?
+        //     $('#mdlADOAssignApprover').modal('show') :
+        //     swalADOMixinToast('error', 'Quantity on hand tidak memenuhi. Silahkan dilakukan pengecekan ulang')
+        $('#mdlADOAssignApprover').modal('show')
     })
 
     $('.btnADORequestApproveDO').on('click', function () {
@@ -232,6 +232,22 @@ $(document).ready( _ => {
         $('.chkADOPickedRelease:checked').length != 0 ?
             swalADOQuestionAjax(question, success, fail, url, data) :
             swalADOMixinToast('error', 'Anda Belum Menchecklist Apapun.')
+    })
+
+    $('.btnADOSave').on('click', function () {
+        let data = {
+            prNumber              : $('.spnADOPRNumber').html(),
+            vehicleCategory       : $('.txtADOVehicleCategory').val(),
+            vehicleId             : $('.txtADOVehicleIdentity').val(),
+            driverName            : $('.txtADODriverName').val(),
+            driverPhone           : $('.txtADOExpeditionVendor').val(),
+            additionalInformation : $('.txtADOAdditionalInformation').val()
+        }
+        let url      = `${baseurl}ApprovalDO/DPB/saveDetail`
+        let question = 'Simpan Data Ini?'
+        let success  = 'Berhasil Menyimpan Data'
+        let fail     = 'Gagal Menyimpan Data'
+        swalADOQuestionAjax(question, success, fail, url, data)
     })
 
     if ( window.location.href.indexOf('ApprovalDO/ListDO') > -1 ) {

@@ -529,10 +529,12 @@ class C_RekapPerPekerja extends CI_Controller {
 													($rekap_data['frekip']+$rekap_data['frekips'])
 													+
 													($rekap_data['frekct']+$rekap_data['frekcts'])
+													+
+													($rekap_data['frekmnon']+$rekap_data['frekmsnon'])
 												)
 											)
 											/
-											(($rekap_data['totalhk']+$rekap_data['totalhks']) - ($rekap_data['frekct']+$rekap_data['frekcts']))
+											(($rekap_data['totalhk']+$rekap_data['totalhks']) - ($rekap_data['frekct']+$rekap_data['frekcts']) - ($rekap_data['frekmnon']+$rekap_data['frekmsnon']))
 										)
 										*100
 									),

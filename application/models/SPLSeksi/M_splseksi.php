@@ -624,4 +624,10 @@ class M_splseksi extends CI_Model{
 		$sql = "SELECT break_mulai, break_selesai, ist_mulai, ist_selesai FROM \"Presensi\".tjamshift WHERE numhari='$numDay' and kd_shift in('1','2','3','4')";
 		return $this->prs->query($sql)->result_array();
 	}
+
+	function getAbsensi($noind, $tanggal) {
+		$sql = "SELECT * FROM \"Presensi\".tprs_shift where noind = '$noind' and tanggal = '$tanggal' order by waktu asc";
+		$result = $this->prs->query($sql);
+		return $result;
+	}
 }

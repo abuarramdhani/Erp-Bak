@@ -294,3 +294,95 @@ function getExportMO(th){
 	// 	$('#NoJob').css("border-color","red");
 	// }
 }
+
+$(document).ready(function () {
+	$("#masukkanassy").select2({
+		allowClear: true,
+		minimumInputLength: 1,
+		ajax: {
+			url: baseurl + "InventoryManagement/Monitoring/sugestion",
+			dataType: 'json',
+			type: "GET",
+			data: function (params) {
+				var queryParameters = {
+					term: params.term,
+				}
+				return queryParameters;
+			},
+			processResults: function (data) {
+				// console.log(data);
+				return {
+					results: $.map(data, function (obj) {
+						return {
+							id: obj.SEGMENT1,
+							text: obj.SEGMENT1
+						};
+					})
+				};
+			}
+		}
+	});
+});
+$(document).ready(function () {
+	$("#pilihdept").select2({
+		allowClear: true,
+		minimumInputLength: 1,
+		ajax: {
+			url: baseurl + "InventoryManagement/Monitoring/sugestiondept",
+			dataType: 'json',
+			type: "GET",
+			data: function (params) {
+				var queryParameters = {
+					term: params.term,
+				}
+				return queryParameters;
+			},
+			processResults: function (data) {
+				// console.log(data);
+				return {
+					results: $.map(data, function (obj) {
+						return {
+							id: obj.DEPT,
+							text: obj.DEPT+' - '+obj.DESCRIPTION
+						};
+					})
+				};
+			}
+		}
+	});
+});
+function getAssy(th) {
+	$(document).ready(function(){
+		var dept = $('#pilihdept').val();
+		var assy = $('#masukkanassy').val();
+
+		console.log(dept,assy)
+		
+		var request = $.ajax({
+			url: baseurl+"InventoryManagement/Monitoring/Searchmonitoringassy",
+			data: {
+			    dept : dept,
+			    assy : assy
+			},
+			type: "POST",
+			datatype: 'html'
+		});
+		
+		
+			$('#tb_monitorassy').html('');
+			$('#tb_monitorassy').html('<center><img style="width:100px; height:auto" src="'+baseurl+'assets/img/gif/loading12.gif"></center>' );
+			
+
+		request.done(function(result){
+			// console.log("sukses2");
+			$('#tb_monitorassy').html(result);
+				$('#tb_assy').DataTable({
+					scrollX: true,
+					scrollCollapse: true,
+					paging:true,
+                    info:false,
+                    searching : true,
+				});
+			});
+		});		
+}

@@ -136,8 +136,8 @@
 									<th width="20%">Break</th>
 									<th width="20%">Istirahat</th>
 									<th width="20%">Estimasi</th>
-									<th width="20%">Target(%)</th>
-									<th width="20%">Realisasi(%)</th>
+									<th width="20%">Target</th>
+									<th width="20%">Realisasi</th>
 									<th width="20%">Alasan Lembur</th>
 									<th width="20%">Status</th>
 									<th width="20%">Tanggal Proses</th>
@@ -168,16 +168,16 @@
 								</div>
 								<div class="modal-body">
 									Berikan alasan anda :
-									<textarea class="form-control" style="resize: vertical; min-height: 100px" style="min-width: 75%" id="spl_tex_proses"></textarea>
+									<textarea class="form-control" style="resize: vertical; min-height: 100px; min-width: 75%; border-radius: 6px;" id="spl_tex_proses"></textarea>
 								</div>
 								<div class="modal-footer">
 									<a href="finspot:FingerspotVer;<?php echo base64_encode(base_url().'ALA/Approve/fp_proces?userid='.$this->session->userid.'&stat=35&data=&ket='); ?>" type="submit" id="spl_proses_reject" class="hidden"><i class="fa fa-exclamation-circle"></i> Reject</a>
 									<a href="finspot:FingerspotVer;<?php echo base64_encode(base_url().'ALA/Approve/fp_proces?userid='.$this->session->userid.'&stat=25&data=&ket='); ?>" type="submit" id="spl_proses_approve" class="hidden"><i class="fa fa-check-square"></i> Approve</a>
-									<button class="btn btn-danger" type="button" data-toggle="modal" data-target="#FingerDialogReject">
+									<button class="btn btn-danger" id="rejectSPL" type="button">
 										<i class="fa fa-exclamation-circle"></i>
 										Reject
 									</button>
-									<button class="btn btn-primary" type="button" data-toggle="modal" data-target="#FingerDialogApprove">
+									<button class="btn btn-primary" id="approveSPL" type="button">
 										<i class="fa fa-check-square"></i>
 										Approve
 									</button>
@@ -193,7 +193,7 @@
 									<button type="button" class="close" data-dismiss="modal">&times;</button>
 									<h4 class="modal-title">Pilih Jari untuk Approve</h4>
 								</div>
-								<div class="modal-body">
+								<div class="modal-body text-center">
 									<?php if (isset($jari) and !empty($jari)) {
 										foreach ($jari as $val) { ?>
 											<button type="button" class="btn btn-primary spl_finger_proses" data="<?php echo $val['kd_finger'] ?>"><?php echo $val['jari'] ?></button>
@@ -211,7 +211,7 @@
 									<button type="button" class="close" data-dismiss="modal">&times;</button>
 									<h4 class="modal-title">Pilih Jari untuk Reject</h4>
 								</div>
-								<div class="modal-body">
+								<div class="modal-body text-center">
 									<?php if (isset($jari) and !empty($jari)) {
 										foreach ($jari as $val) { ?>
 											<button type="button" class="btn btn-danger spl_finger_proses" data="<?php echo $val['kd_finger'] ?>"><?php echo $val['jari'] ?></button>

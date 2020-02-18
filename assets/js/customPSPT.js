@@ -249,7 +249,7 @@ $( _ => {
         buttons: [
             {
                 action    : _ => {
-                    window.location = `${baseurl}PendampinganSPT/Data/exportExcel`
+                    $('#frmPSPTExportExcel').submit()
                 },
                 className : 'btn btn-default',
                 text      : '<i class="fa fa-cloud-download"></i> Export'
@@ -392,28 +392,60 @@ $( _ => {
         dom :  `<'row' <'col-sm-12 col-md-4'l> <'col-sm-12 col-md-4 text-center'B> <'col-sm-12 col-md-4'f> >
                 <'row' <'col-sm-12'tr> >
                 <'row' <'col-sm-12 col-md-5'i> <'col-sm-12 col-md-7'p> >`,
-        scrollY     : '425px'
+        scrollX : true,
+        scrollY : '425px'
     })
 
-    $('#slcPSPTSearchBy').select2()
+    $('#slcPSPTSearchBy, #slcPSPTSearchByLocation').select2()
+
+    $('#txtPSPTSearchBySchedule').datepicker({
+        autoclose : true,
+        format    : 'yyyy-mm-dd'
+    })
 
     $('#slcPSPTSearchBy').on('change', function () {
+        let searchBy = $(this).val()
+        if ( searchBy === 'Lokasi' ) {
+            $('#slcPSPTSearchByLocation').show()
+            $('#slcPSPTSearchByLocation').next().show().css('display', 'inline-block')
+        } else {
+            $('#slcPSPTSearchByLocation').hide()
+            $('#slcPSPTSearchByLocation').val('').trigger('change')
+            $('#slcPSPTSearchByLocation').next().hide()
+        }
+        if ( searchBy === 'Jadwal' ) {
+            $('#txtPSPTSearchBySchedule').show()
+        } else {
+            $('#txtPSPTSearchBySchedule').datepicker('setDate', null)
+            $('#txtPSPTSearchBySchedule').hide()
+        }
+        if ( searchBy === 'Nama' || searchBy === 'No. Pendaftaran' || searchBy === 'Seksi' || searchBy === 'No. Induk' ) {
+            $('#txtPSPTSearchBy').show()
+        } else {
+            $('#txtPSPTSearchBy').hide()
+        }
         $('#txtPSPTSearchBy').val(null)
-        dataTablePSPTSchedule
-            .columns(4).search('')
-            .columns(2).search('')
-            .columns(3).search('')
-            .draw()
+        dataTablePSPTSchedule.columns([1, 2, 4, 5, 6, 7]).search('').draw()
+    })
+
+    $('#slcPSPTSearchByLocation').on('change', function () {
+        dataTablePSPTSchedule.columns(1).search($(this).val()).draw()
+    })
+
+    $('#txtPSPTSearchBySchedule').on('change', function () {
+        dataTablePSPTSchedule.columns(7).search($(this).val()).draw()
     })
 
     $('#txtPSPTSearchBy').on('input', function () {
         let searchBy = $('#slcPSPTSearchBy').val()
-        if ( searchBy === 'Nama' ) {
+        if ( searchBy === 'No. Induk' ) {
             dataTablePSPTSchedule.columns(4).search($(this).val()).draw()
+        } else if ( searchBy === 'Nama' ) {
+            dataTablePSPTSchedule.columns(5).search($(this).val()).draw()
         } else if ( searchBy === 'No. Pendaftaran' ) {
             dataTablePSPTSchedule.columns(2).search($(this).val()).draw()
         } else if ( searchBy === 'Seksi' ) {
-            dataTablePSPTSchedule.columns(5).search($(this).val()).draw()
+            dataTablePSPTSchedule.columns(6).search($(this).val()).draw()
         }
     })
 

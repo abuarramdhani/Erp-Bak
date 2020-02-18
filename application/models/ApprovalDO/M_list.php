@@ -14,20 +14,13 @@ class M_list extends CI_Model
 
     public function getDOList()
     {
-        $sql = "SELECT DISTINCT
-                    wdd.BATCH_ID,
-                    wdd.SOURCE_HEADER_NUMBER,
-                    kad.status
-                FROM
-                    wsh_delivery_details wdd,
-                    khs_approval_do kad
-                WHERE
-                    wdd.batch_id = kad.no_do(+)
-                    AND wdd.ORG_ID = 82
-                    AND wdd.RELEASED_STATUS = 'S'
-                    AND kad.status IS NULL
-                ORDER BY
-                    SOURCE_HEADER_NUMBER";
+        $sql = "SELECT DISTINCT wdd.BATCH_ID, wdd.SOURCE_HEADER_NUMBER, kad.status 
+                FROM wsh_delivery_details wdd, khs_approval_do kad 
+                WHERE to_char(wdd.batch_id) = kad.no_do(+) 
+                AND wdd.ORG_ID = 82 
+                AND wdd.RELEASED_STATUS = 'S' 
+                AND kad.status IS NULL 
+                ORDER BY SOURCE_HEADER_NUMBER";
 
         $query = $this->oracle->query($sql);
         return $query->result_array();
@@ -52,7 +45,7 @@ class M_list extends CI_Model
                     REQUEST_TO = '$approver',
                     REQUEST_DATE = SYSDATE
                 WHERE
-                    no_do = nvl($do_number, no_do)";
+                    no_do = '$do_number'";
         $query = $this->oracle->query($sql);
     }
 
@@ -98,7 +91,7 @@ class M_list extends CI_Model
                     REQUEST_TO = '$approver',
                     REQUEST_DATE = SYSDATE
                 WHERE
-                    no_do = nvl($spb_number, no_do)";
+                    no_do = '$spb_number'";
         $query = $this->oracle->query($sql);
     }
 

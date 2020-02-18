@@ -23,7 +23,7 @@ function getHistory(th) {
 			$('#hasil').html(result);
 				$('#uwuuwu').DataTable({
 					scrollX: false,
-					scrollY:  300,
+					scrollY:  400,
 					scrollCollapse: true,
 					paging:false,
                     info:false,
@@ -35,11 +35,13 @@ function getHistory(th) {
 
 function Detail(no) {
 	$(document).ready(function(){
-		var buttonpo = $('#buttonpo'+no).val(); 	
+		var buttonpo = $('#buttonpo'+no).val(); 
+		var suratjalan = $('#suratjalan'+no).val();	
 		var request = $.ajax({
 			url: baseurl+'ReceivePO/History/Detail/',
 			data: {
-			    buttonpo,buttonpo
+			    buttonpo : buttonpo,
+			    suratjalan : suratjalan
 			},
 			type: "POST",
 			datatype: 'html'
@@ -54,7 +56,7 @@ function Detail(no) {
 			$('#detail').html(result);
 				$('#detaillist').DataTable({
 					scrollX: false,
-					scrollY:  145,
+					scrollY:  100,
 					scrollCollapse: true,
 					paging:false,
                     info:false,
@@ -66,7 +68,7 @@ function Detail(no) {
 
 $(document).ready(function() {
 	$('.tanggalan').datepicker({
-	    format: 'dd/mm/yy'
+	    format: 'dd/M/yyyy'
 	});
 });
 
@@ -77,10 +79,19 @@ function intine(th, no)
 }
 
 function CetakKartu(no) {
-	$(document).ready(function(){
+
+		var ket = $('#keterangandong').val();
+		if (ket == '') {
+			Swal.fire(
+			  'Mohon Isikan keterangan',
+			  '',
+			  'warning'
+			)
+		} else if (ket != '') {
 
 		var descrecipt = $('#descrecipt'+no).val(); 	
-		var itemrecipt = $('#itemrecipt'+no).val(); 	
+		var itemrecipt = $('#itemrecipt'+no).val(); 
+
 		// var serial = $('input[name="serial[]"]').val();
 
 		var serial = [];
@@ -94,7 +105,8 @@ function CetakKartu(no) {
 			data: {
 				descrecipt:descrecipt,
 				itemrecipt:itemrecipt,
-			    serial:serial
+			    serial:serial,
+			    ket:ket
 			},
 			type: "POST",
 			// datatype: 'json'
@@ -105,10 +117,9 @@ function CetakKartu(no) {
 			var win = window.open(result, '_blank');
   			win.focus()
 			console.log("sukses2");
-				// window.open(baseurl+"ReceivePO/History/CetakKartu/"+data['url'],'_blank');
-				// window.open(baseurl+'ReceivePO/History/CetakKartu/''_blank');
-				// window.location.replace (baseurl+"ReceivePO/History/CetakKartu/");
+			console.log(ket)
+
 				
 			});
-		});		
+	}
 }

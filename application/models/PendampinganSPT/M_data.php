@@ -16,6 +16,15 @@ class M_data extends CI_Model {
             ->get('ap.ap_spt')
             ->result_array();
     }
+    
+    public function selectRegisteredUserByFilter($filter, $filter_2)
+    {
+        return $this->db
+            ->like($filter)
+            ->not_like($filter_2)
+            ->get('ap.ap_spt')
+            ->result_array();
+    }
 
     public function selectRegisteredUser($id)
     {
@@ -24,9 +33,13 @@ class M_data extends CI_Model {
             ->result_array();
     }
 
-    public function countAllRegisteredUser()
+    public function countAllRegisteredUser($filter, $filter_2)
     {
-        return $this->db->count_all_results('ap.ap_spt');
+        return $this->db
+            ->like($filter)
+            ->not_like($filter_2)
+            ->from('ap.ap_spt')
+            ->count_all_results();
     }
 
     public function updateRegisteredUser($id, $data)

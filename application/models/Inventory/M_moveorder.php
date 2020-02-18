@@ -327,6 +327,7 @@ class M_moveorder extends CI_Model
                         ,msib2.DESCRIPTION                      komp_desc
                         ,msib2.INVENTORY_ITEM_ID
                         ,wro.REQUIRED_QUANTITY
+            			,wro.QUANTITY_PER_ASSEMBLY
                         ,msib2.PRIMARY_UOM_CODE
                         ,wro.ATTRIBUTE1                           gudang_asal
                         ,mil.INVENTORY_LOCATION_ID locator_asal_id
@@ -1066,8 +1067,7 @@ class M_moveorder extends CI_Model
                 -- INT THE TRUTH IT WILL USED --
                 and wro.ATTRIBUTE1 is not null
                 -- INT THE TRUTH ABOVE IT WILL USED --
-                and we.WIP_ENTITY_NAME = '$job'--'D191103750'
---                and bd.DEPARTMENT_CLASS_CODE = '$dept'";
+                and we.WIP_ENTITY_NAME = '$job'--'D191103750'";
 		$query = $oracle->query($sql);
 		return $query->result_array();
 	}

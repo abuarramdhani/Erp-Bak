@@ -672,3 +672,24 @@ $efg="";
 			'save_queries'		=> TRUE,
 			'port' 				=> 3306
 		);
+		$db['sweeping'] = array(
+			'dsn'	=> '',
+        		'hostname' => 'database.quick.com',
+                	'username' => 'sweep',
+                	'password' => 'qu1ck1953',
+                	'database' => 'sweeping_hw',
+			'dbdriver' => 'mysqli',
+			'dbprefix' => '',
+			'pconnect' => FALSE,
+			'db_debug' => FALSE,
+			'cache_on' => FALSE,
+			'cachedir' => '',
+			'char_set' => 'utf8',
+			'dbcollat' => 'utf8_general_ci',
+			'swap_pre' => '',
+			'encrypt' => FALSE,
+			'compress' => FALSE,
+			'stricton' => FALSE,
+			'failover' => array(),
+			'save_queries' => TRUE,
+		);

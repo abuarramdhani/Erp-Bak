@@ -21,6 +21,7 @@
 			<td style="border-bottom: 1px solid black;border-right: 1px solid black;border-top: 1px solid black;;width:60%;padding:5px" rowspan="2">
 				<b style="font-size:16px;">CV. KARYA HIDUP SENTOSA YOGYAKARTA</b><br>
 				<span style="border-bottom:1px solid black;font-size:12px;">PABRIK MESIN ALAT PERTANIAAN-PENGECORAN LOGAM-DEALER KUBOTA</span><br><br>
+
 				<span style="font-size: 12px;">
 					KHS PUSAT<br>
 					JL. MAGELANG 144, YOGYAKARTA 55241 - INDONESIA,<br> Email : operator1@quick.co.id <br>
@@ -28,7 +29,13 @@
 				</span>
 
 			</td>
-			<td colspan="2" style="text-align: center;border-bottom: 1px solid black;border-right: 1px solid black;border-top: 1px solid black;"><b style="font-size:16px;">DELIVERY ORDER</b></td>
+			<td colspan="2" style="text-align: center;border-bottom: 1px solid black;border-right: 1px solid black;border-top: 1px solid black;">
+				<?php if ($get_header[0]['NO_SO'] == ''){ ?>
+					<b style="font-size:14px;padding:8px">SURAT PENGIRIMAN BARANG</b>
+				<?php }else { ?>
+					<b style="font-size:16px;">DELIVERY ORDER</b>
+				<?php } ?>
+			</td>
 		</tr>
 		<tr>
 			<td style="border-bottom: 1px solid black;border-right: 1px solid black;width:15%;font-size:10px;padding:5px;text-align:center">Tgl. Barang Dikirim: <br> <?php echo date('d-M-Y') ?> </td>
@@ -70,12 +77,12 @@
 	<table style="width:78%; margin-top:49px;">
 		<?php $no = 1; foreach ($get_body as $key => $gb){ ?>
 			<tr>
-				<td style="font-size:10px;padding:5px;width:8%;text-align:center"><?php echo $no ?></td>
-				<td style="font-size:10px;padding:5px;width:8%;text-align:center"><?php echo $gb['QUANTITY'] ?></td>
-				<td style="font-size:10px;padding:5px;width:9%;text-align:center"><?php echo $gb['QTY_TERLAYANI'] ?></td>
-				<td style="font-size:10px;padding:5px 5px 5px 10px;width:11%;text-align:left"><?php echo $gb['UOM_CODE'] ?></td>
-				<td style="font-size:10px;padding:5px;width:30%;"><?php echo $gb['ITEM'] ?></td>
-				<td style="font-size:10px;padding:5px;width:35%;"><?php echo $gb['DESCRIPTION'] ?></td>
+				<td style="font-size:9.7px;padding:3.5px;width:8%;text-align:center"><?php echo $no ?></td>
+				<td style="font-size:9.7px;padding:3.5px;width:8%;text-align:center"><?php echo $gb['QUANTITY'] ?></td>
+				<td style="font-size:9.7px;padding:3.5px;width:8%;text-align:center"><?php echo $gb['QTY_TERLAYANI'] ?></td>
+				<td style="font-size:9.7px;padding:3.5px 3.5px 3.5px 10px;width:10%;text-align:left"><?php echo $gb['UOM_CODE'] ?></td>
+				<td style="font-size:9.7px;padding:3.5px;width:24.5%;"><?php echo $gb['ITEM'] ?></td>
+				<td style="font-size:9.7px;padding:3.5px;width:48%;"><?php echo $gb['DESCRIPTION'] ?></td>
 			</tr>
 		<?php $no++; } ?>
 	</table>
@@ -93,13 +100,13 @@
 				<td rowspan="2" style="width:5%;border-left:1px solid black;border-bottom: 1px solid black;font-size:10px;padding:5px;border-top:1px solid black;">
 					<center>Satuan</center>
 				</td>
-				<td rowspan="2" style="width:19%;border-left:1px solid black;border-bottom: 1px solid black;font-size:10px;padding:5px;border-top:1px solid black;">
+				<td rowspan="2" style="width:16%;border-left:1px solid black;border-bottom: 1px solid black;font-size:10px;padding:5px;border-top:1px solid black;">
 					<center>Kode Barang</center>
 				</td>
-				<td rowspan="2" style="width:25%;border-left:1px solid black;border-bottom: 1px solid black;font-size:10px;padding:5px;border-top:1px solid black;">
+				<td rowspan="2" style="width:32%;border-left:1px solid black;border-bottom: 1px solid black;font-size:10px;padding:5px;border-top:1px solid black;">
 					<center>Nama Barang</center>
 				</td>
-				<td rowspan="2" style="width:35%;border-right:1px solid black;border-left:1px solid black;border-bottom: 1px solid black;font-size:10px;padding:5px;border-top:1px solid black;">
+				<td rowspan="2" style="width:30%;border-right:1px solid black;border-left:1px solid black;border-bottom: 1px solid black;font-size:10px;padding:5px;border-top:1px solid black;">
 					<center>Nomor Barang</center>
 				</td>
 			</tr>
@@ -114,7 +121,7 @@
 		</thead>
 		<tbody style="vertical-align:top!important;">
 		<tr style="border-bottom:1px solid black;">
-			<td style="vertical-align:top;border-right:1px solid black;border-left:1px solid black;height: 587px;font-size:10px;padding:5px">
+			<td style="vertical-align:top;border-right:1px solid black;border-left:1px solid black;height: 585.2px;font-size:10px;padding:5px">
 				<center>
 					<!-- <?php $no = 1; foreach ($get_body as $key => $gb){ ?>
 						<?php echo $no ?> <br /><br />
@@ -162,14 +169,14 @@
 						<thead>
 							<tr>
 								<?php foreach ($header_sub as $h): ?>
-									<th style="padding: 5px;font-size:10.5px;"><?php echo $h ?></th>
+									<th style="padding: 5px;font-size:10px;"><?php echo $h ?></th>
 								<?php endforeach; ?>
 							</tr>
 						</thead>
 						<tbody>
 							<tr>
 								<?php foreach ($check_header_sub as $h): ?>
-									<td style="padding: 5px;font-size:11.5px;">
+									<td style="padding: 5px;font-size:10px;">
 										<?php foreach ($get_serial as $gs) { ?>
 											<?php if ($gs['DESCRIPTION'] == $h){
 												echo $gs['SERIAL_NUMBER'].'<br />';
@@ -190,39 +197,6 @@
 		</tr>
 		</tbody>
 	</table>
-
-	<!-- <table style="width:100%; border-collapse: collapse !important; margin-top:2px;">
-	<tr>
-		<td rowspan="2" style="vertical-align:top;width:40.5%;border-top: 1px solid black; border-bottom: 1px solid black; border-left: 1px solid black;font-size:10px;padding:5px">Catatan :
-			<br><br><br><br><br><br><br>
-		 </td>
-		<td rowspan="3" style="vertical-align:top;width:13%;border-top: 1px solid black; border-bottom: 1px solid black; border-left: 1px solid black;font-size:10px;padding:5px">Penerima Barang :
-			<br><br>
-			Tgl. ________
-			<br><br><br><br><br><br><br><br>
-		</td>
-		<td rowspan="3" style="vertical-align:top;width:12%;border-top: 1px solid black; border-bottom: 1px solid black; border-left: 1px solid black;font-size:10px;padding:5px">Pengirim : <br> <br>
-			Tgl. _______
-			<br><br><br><br><br><br><br><br>
-		</td>
-		<td rowspan="3" style="vertical-align:top;width:11%;border-top: 1px solid black; border-bottom: 1px solid black; border-left: 1px solid black;font-size:10px;padding:5px">Gudang : <br><br>
-			Tgl. _______
-			<br><br><br><br><br><br><?php echo $get_footer['get_footer'][0]['GUDANG'] ?>
-		</td>
-		<td colspan="2" style="vertical-align:top;border-right: 1px solid black; border-top: 1px solid black;border-left: 1px solid black;font-size:10px;padding:5px;height:20px!important;">Pemasaran :</td>
-	</tr>
-	<tr>
-		<td rowspan="2" style="vertical-align:top;width:12%;border-top: 1px solid black; border-bottom: 1px solid black; border-left: 1px solid black;font-size:10px;padding:5px">Mengetahui :
-			<br><br><br><br><br><br><?php echo $get_footer['get_footer'][0]['ADMIN'] ?>
-		</td>
-		<td rowspan="2" style="vertical-align:top;width:12%;border-top: 1px solid black; border-bottom: 1px solid black; border-left: 1px solid black;border-right: 1px solid black;font-size:10px;padding:5px">Tgl. _______
-			<br><br><br><br><br><br><?php echo $get_footer['get_footer'][0]['KEPALA'] ?>
-		</td>
-	</tr>
-	<tr>
-		<td style="vertical-align:top;border-left: 1px solid black;border-bottom: 1px solid black;font-size:10px;padding:5px">Perhatian : Barang yang dibeli tidak dapat dikembalikan, <br> kecuali ada perjanjian sebelumnya.</td>
-	</tr>
-</table> -->
 	<br>
 </body>
 </html>

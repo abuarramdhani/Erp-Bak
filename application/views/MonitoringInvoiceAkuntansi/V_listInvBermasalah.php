@@ -64,10 +64,11 @@ $alert = $status[0]['SATU'];
 						<div class="box box-primary box-solid">
 							<div class="box-body">
 								<div style="overflow: auto;">
-								<table id="unprocessTabel" class="table table-striped table-bordered table-hover text-center tblMI">
+								<table id="unprocessTabel" style="min-width:110%" class="table table-striped table-bordered table-hover text-center tblMI">
 									<thead>
 										<tr class="bg-primary">
 											<th class="text-center">No</th>
+											<th class="text-center" style="display: none">Parameter</th>
 											<th class="text-center">Invoice ID</th>
 											<th class="text-center" style="width: 10%">Action</th>
 											<th class="text-center">Vendor Name</th>
@@ -76,8 +77,8 @@ $alert = $status[0]['SATU'];
 											<th class="text-center">PPN</th>
 											<th class="text-center">PO Number</th>
 											<th class="text-center">Creation Date </th>
-											<th class="text-left">Masalah </th>
-											<th class="text-left">Feedback Purchasing</th>
+											<th class="text-left" style="width: 30%">Masalah </th>
+											<th class="text-left" style="width: 30%">Feedback Purchasing</th>
 											<th class="text-center">Purchasing Date</th>
 											<th class="text-center">Tracking</th>
 											<th class="text-center">PIC</th>
@@ -91,35 +92,58 @@ $alert = $status[0]['SATU'];
 										<tr>
 											<?php }?>
 											<td><?php echo $no ?></td>
-											<td><?php echo $u['INVOICE_ID'] ?></td>
+											<td style="display: none"><input type="hidden" id="hdnRestatus" value="<?php echo $u['RESTATUS_BERKAS_AKT'] ?>"></td>
+											<td><b><?php echo $u['INVOICE_ID'] ?></b></td>
 											<td data-id="<?= $u['INVOICE_ID'] ?>" batch_number="<?= $u['BATCH_NUMBER'] ?>" class="ganti_<?= $u['INVOICE_ID'] ?>">
+
+												<!-- DETAIL INVOICE -->
 												<a title="Detail..." style="width:100px;margin-bottom: 5px" target="_blank" href="<?php echo base_url('AccountPayables/MonitoringInvoice/Unprocess/DetailInvBermasalah/'.$u['INVOICE_ID']);?>" class="btn btn-info btn-sm"><i class="fa fa-file-text-o"></i> Detail
 												</a>
+												<?php if ($u['SOURCE_BERMASALAH'] == 'AKUNTANSI'){ ?>
+												<a title="Delete..." style="width:100px;margin-bottom: 5px" onclick="resetInvBermasalah(<?php echo $u['INVOICE_ID']?>)" class="btn btn-default btn-sm"><i class="fa fa-trash"></i> Delete
+												</a>
+												<?php } ?>
+
+												<!-- HASIL KONFIRMASI -->
 												<?php if ($u['STATUS_INV_BERMASALAH'] != 1) { ?>
 												<a title="Hasil Konfirmasi..." style="width:100px;margin-bottom: 5px" onclick="bukaHasilConf(<?php echo $u['INVOICE_ID']?>)" class="btn btn-warning btn-sm" data-target="MdlAkuntansi" data-toggle="modal"><i class="fa fa-external-link"></i> Checklist
 												</a>
 												<?php } ?>
 
-												<?php if ($u['RESTATUS_BERKAS_AKT'] == NULL && $u['STATUS_INV_BERMASALAH'] == 4 ) { ?>
-													<?php if ($u['RESTATUS_BERKAS_PURC'] == NULL ) { ?>
-													<button disabled data-target="MdlAkuntansi" data-toggle="modal" title="Konfirmasi Kembali ..." style="width:100px;margin-bottom: 5px" onclick="konfirmasiKembaliAkt(<?php echo $u['INVOICE_ID'] ?>)" type="button" class="btn btn-primary btn-sm" id="submitToAkt"><i class="fa fa-exchange"></i> Re-Konfirmasi</button>
-												<?php }else {?>
-													<button data-target="MdlAkuntansi" data-toggle="modal" title="Konfirmasi Kembali ..." style="width:100px;margin-bottom: 5px" onclick="konfirmasiKembaliAkt(<?php echo $u['INVOICE_ID'] ?>)" type="button" class="btn btn-primary btn-sm" id="submitToAkt"><i class="fa fa-exchange"></i> Re-Konfirmasi</button>
-												<?php } ?>
-												<?php } ?>
+												<!-- REKONFIRMASI -->
+												<?php if ($u['RESTATUS_BERKAS_AKT'] == NULL && $u['NO_INDUK_BUYER'] !== '' ) { ?>
 
-												<?php if ($u['STATUS_INV_BERMASALAH'] == 4 ) { ?>
 													<?php if ($u['RESTATUS_BERKAS_PURC'] == NULL ) { ?>
-												<a disabled title="Selesaikan Invoice..." style="width:100px;margin-bottom: 5px" onclick="selesaikanInvoice(<?php echo $u['INVOICE_ID']?>)" class="btn btn-success btn-sm"><i class="fa fa-check"></i> Selesaikan
-												</a>
-												<?php }else {?>
-													<a title="Selesaikan Invoice..." style="width:100px;margin-bottom: 5px" onclick="selesaikanInvoice(<?php echo $u['INVOICE_ID']?>)" class="btn btn-success btn-sm"><i class="fa fa-check"></i> Selesaikan
-												</a>
-												<?php } ?>
-												<?php } ?>
-
+													<!-- JIKA PURCHASING TIDAK MEMBERI RESTATUS -->
 												
+													<?php }else {?>
+													<button data-target="MdlAkuntansi" data-toggle="modal" title="Konfirmasi Kembali ..." style="width:100px;margin-bottom: 5px" onclick="konfirmasiKembaliAkt(<?php echo $u['INVOICE_ID'] ?>)" type="button" class="btn btn-primary btn-sm" id="submitToAkt"><i class="fa fa-exchange"></i> Re-Konfirmasi</button>
+													<?php } ?>
+
+												<?php } ?>
+
+												<!-- SELESAIKAN DAN KEMBALIKAN INVOICE -->
+												<?php if ($u['STATUS_INV_BERMASALAH'] == 4 || $u['STATUS_INV_BERMASALAH'] == 2 ) { ?>
+
+													<?php if ($u['FEEDBACK_PURCHASING'] == '' || $u['FEEDBACK_PURCHASING'] == NULL ) { ?>
+														<a disabled title="Selesaikan Invoice..." style="width:100px;margin-bottom: 5px" onclick="selesaikanInvoice(<?php echo $u['INVOICE_ID']?>)" class="btn btn-success btn-sm"><i class="fa fa-check"></i> Selesaikan
+														</a>
+
+														<a data-target="MdlAkuntansi" data-toggle="modal" disabled title="Kembalikan Invoice..." style="width:100px;margin-bottom: 5px" onclick="returnedInvoice(<?php echo $u['INVOICE_ID']?>)" class="btn btn-danger btn-sm"><i class="fa fa-times"></i> Kembalikan
+													</a>
+													<?php } else {?>
+														<a title="Selesaikan Invoice..." style="width:100px;margin-bottom: 5px" onclick="selesaikanInvoice(<?php echo $u['INVOICE_ID']?>)" class="btn btn-success btn-sm"><i class="fa fa-check"></i> Selesaikan
+														</a>
+
+														<a data-target="MdlAkuntansi" data-toggle="modal" title="Kembalikan Invoice..." style="width:100px;margin-bottom: 5px" onclick="returnedInvoice(<?php echo $u['INVOICE_ID']?>)" class="btn btn-danger btn-sm"><i class="fa fa-times"></i> Kembalikan
+													</a>
+													<?php } ?>
+
+													
+
+												<?php } ?>
 											</td>
+
 											<td><?php echo $u['VENDOR_NAME']?></td>
 											<td><strong><?php echo $u['INVOICE_NUMBER']?></strong></td>
 											<td data-order="<?php echo date('Y-m-d', strtotime($u['INVOICE_DATE']))?>"><?php echo date('d-M-Y',strtotime($u['INVOICE_DATE']))?></td>
@@ -130,23 +154,29 @@ $alert = $status[0]['SATU'];
 												<b>KELENGKAPAN DOKUMEN : </b><?php echo $u['KELENGKAPAN_DOC_INV_BERMASALAH']?> <br>
 												<b>KETERANGAN : </b><?php echo $u['KETERANGAN_INV_BERMASALAH']?>	
 											</td>
+
 											<?php if ($u['FEEDBACK_PURCHASING'] !== NULL) { ?>
 											<td><b>Purchasing</b> : <?php echo $u['FEEDBACK_PURCHASING']?></td>
 											<?php }else { ?>
 											<td><i>Not Yet Confirmed</i></td>
 											<?php } ?>
+
 											<?php if ($u['PURC_DATE'] == NULL) { ?>
 											<td><i>Not Yet Confirmed</i></b></td>
 											<?php }else{ ?>
 											<td data-order="<?php echo date('Y-m-d', strtotime($u['PURC_DATE']))?>"><b><?php echo $u['PURC_DATE']?></b></td>
 											<?php } ?>
+
+											<!-- STATUS INVOICE BERMASALAG 1, 2, 3, 4, 5, 6 -->
 											<?php if ($u['STATUS_INV_BERMASALAH'] == 1) { ?>
 											<td><span class="label label-default"><i class="fa fa-paper-plane"></i> Send to Purchasing &nbsp;</span></td>
-
 											<?php } else if ($u['STATUS_INV_BERMASALAH'] == 2  ) { ?>
 											<td><span class="label label-primary" style="padding-bottom: 5px;"><i class="fa fa-check"></i> Checked by Purchasing &nbsp;</span>
 												<?php if ($u['JMLH_N'] != 0) {?>
 												 	<br><br><span class="label label-danger" style="padding-bottom: 5px;"> Document Rejected   : <b><?php echo $u['JMLH_N']?></b></span>
+												<?php } ?>
+												<?php if ($u['RESTATUS_BERKAS_AKT'] !== NULL){ ?>
+													<br><br><span class="label label-default" style="padding-bottom: 5px;"> Akuntansi sudah rekonfirmasi berkas </b></span>
 												<?php } ?>
 											</td>
 
@@ -156,14 +186,21 @@ $alert = $status[0]['SATU'];
 												 <?php if ($u['JMLH_N'] != 0) {?>
 												 	<br><br><span class="label label-danger" style="padding-bottom: 5px;"> Document Rejected   : <b><?php echo $u['JMLH_N']?></b></span>
 												<?php } ?>
+												<?php if ($u['RESTATUS_BERKAS_AKT'] !== NULL){ ?>
+													<br><br><span class="label label-default" style="padding-bottom: 5px;"> Akuntansi sudah rekonfirmasi berkas </b></span>
+												<?php } ?>
 											</td>
 
 											<?php } else if ($u['STATUS_INV_BERMASALAH'] == 4) {?>
-											<td><span class="label label-success"><i class="fa fa-check"></i> Approved by Purchasing &nbsp;</span>
+											<td><span class="label label-primary"><i class="fa fa-check"></i> Checked by Purchasing &nbsp;</span>
 												 
 												 <?php if ($u['JMLH_N'] != 0) {?>
 												 	<br><br><span class="label label-danger" style="padding-bottom: 5px;"> Document Rejected   : <b><?php echo $u['JMLH_N']?></b></span>
 												<?php } ?>
+												<?php if ($u['RESTATUS_BERKAS_AKT'] !== NULL){ ?>
+													<br><br><span class="label label-default" style="padding-bottom: 5px;"> Akuntansi sudah rekonfirmasi berkas </b></span>
+												<?php } ?>
+
 											</td>
 
 											<?php } else if ($u['STATUS_INV_BERMASALAH'] == 5) {?>
@@ -172,13 +209,32 @@ $alert = $status[0]['SATU'];
 												<?php if ($u['JMLH_N'] != 0) {?>
 												 	<br><br><span class="label label-danger" style="padding-bottom: 5px;"> Document Rejected   : <b><?php echo $u['JMLH_N']?></b></span>
 												<?php } ?>
+												<?php if ($u['RESTATUS_BERKAS_AKT'] !== NULL){ ?>
+													<br><br><span class="label label-default" style="padding-bottom: 5px;"> Akuntansi sudah rekonfirmasi berkas </b></span>
+												<?php } ?>
+
+											</td>
+											<?php } else if ($u['STATUS_INV_BERMASALAH'] == 6){ ?>
+												<td><span class="label label-success"><i class="fa fa-check"></i> Returned to Purchasing &nbsp;</span>
+												
+												<?php if ($u['JMLH_N'] != 0) {?>
+												 	<br><br><span class="label label-danger" style="padding-bottom: 5px;"> Document Rejected   : <b><?php echo $u['JMLH_N']?></b></span>
+												<?php } ?>
+												<?php if ($u['RESTATUS_BERKAS_AKT'] !== NULL){ ?>
+													<br><br><span class="label label-default" style="padding-bottom: 5px;"> Akuntansi sudah rekonfirmasi berkas </b></span>
+												<?php } ?>
+
 											</td>
 											<?php } ?>
+
+
 											<?php if ($u['SOURCE_BERMASALAH'] !== 'BUYER') { ?>  
 											<td><?php echo $u['SOURCE_BERMASALAH']?></td>
 											<?php }else { ?>
 											<td>PURCHASING</td>
 											<?php } ?>
+
+
 										</tr>
 										<?php $no++; } ?>
 									</tbody>

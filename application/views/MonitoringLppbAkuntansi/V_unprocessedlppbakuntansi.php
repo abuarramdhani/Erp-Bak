@@ -45,7 +45,9 @@
 									<tr>
 										<td><?php echo $no?></td>
 										<td>
-											<button title="Detail Lppb" data-toggle="modal" data-target="mdlDetailAkt" onclick="ModalDetailAkt(<?php echo $lb['BATCH_NUMBER']?>)"  class="btn btn-default btn-sm"><i class="fa fa-file-text-o"></i> Detail</button>
+											<a target="_blank" href="<?php echo base_url('MonitoringLppbAkuntansi/Unprocess/openDetailLppb/'.$lb['BATCH_NUMBER']) ?>">
+											<button title="Detail Lppb"  class="btn btn-default btn-sm"><i class="fa fa-file-text-o"></i> Detail</button>
+											</a>
 										</td>
 										<td class="coba"><?php echo $lb['GROUP_BATCH']?></td>
 										<td><?php echo $lb['CREATE_DATE']?></td>

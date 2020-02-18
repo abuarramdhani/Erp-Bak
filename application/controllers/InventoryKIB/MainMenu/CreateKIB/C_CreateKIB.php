@@ -256,7 +256,7 @@ class C_CreateKIB extends CI_Controller
 
 		$data['dataKIB'] = $dataKIBKelompok;
 		// echo "<pre>";
-		$length = sizeof($data['dataKIB'][0]['KOMPONEN']);
+		$length = sizeof($data['dataKIB'][0]['KOMPONEN']) + 13;
 		if ($length != 0) {
 			$size = $length * 51 ;
 		} else {
@@ -300,6 +300,15 @@ class C_CreateKIB extends CI_Controller
 		foreach ($dataKIBKelompok as $key => $value) {
 			$dataKIB = $this->M_createkib->updateFlagPrint3($value['NOMORSET']);
 			// print_r($value['NOMORSET']);
+		}
+		$cekKIB = $this->M_createkib->cekKIB($nomorset);
+		if (!empty($cekKIB)) {
+			$getKode = $this->M_createkib->getKode($nomorset);
+			foreach ($getKode as $val) {
+				$insertKIB = $this->M_createkib->insertMTI($val);
+			}
+			$update = $this->M_createkib->updateKKFlag($nomorset);
+			$api 		= $this->M_createkib->runApi();	
 		}
 		// exit();
 		$pdf->WriteHTML($html,0);

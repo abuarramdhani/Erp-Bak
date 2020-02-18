@@ -4,6 +4,7 @@ Defined('BASEPATH') or exit('NO DIrect Script Access Allowed');
  *
  */
 setlocale(LC_TIME, "id_ID.utf8");
+date_default_timezone_set("Asia/Jakarta");
 
 class C_PekerjaKeluar extends CI_Controller
 {
@@ -20,6 +21,7 @@ class C_PekerjaKeluar extends CI_Controller
 		require_once APPPATH . 'third_party/phpxbase/Table.php';
 		require_once APPPATH . 'third_party/phpxbase/WritableTable.php';
 
+		$this->load->library('Log_Activity');
 		$this->load->library('session');
 		$this->load->library('General');
 		$this->load->model('SystemAdministration/MainMenu/M_user');
@@ -75,9 +77,9 @@ class C_PekerjaKeluar extends CI_Controller
 		}else{
 			$noind_pekerja = "and noind in ($noind_)";
 		}
-		
+
 		$pekerja_keluar = $this->M_pekerjakeluar->getPekerjaKeluar($prd_gaji, $noind_pekerja);
-		
+
 		$gaji = array();
 		$angka = 0;
 		foreach ($pekerja_keluar as $pkj) {
@@ -155,7 +157,7 @@ class C_PekerjaKeluar extends CI_Controller
 			$tgl_cut_awal_ = $tgl_cut_awal;
 			$tgl_bulan_berjalan_awal = $this->M_pekerjakeluar->cekProsesGaji3($pkj['noind'], $pkj['tglkeluar']);
 			$tgl_keluar = $pkj['tglkeluar'];
-			
+
 			if($chk_khusus == "khusus"){
 				if ($khusus == "sebelum") {
 					$tgl_keluar = date('Y-m-d',strtotime($tgl_bulan_berjalan_awal.' -1 day'));
@@ -164,7 +166,10 @@ class C_PekerjaKeluar extends CI_Controller
 					$tgl_bulan_awal = $tgl_bulan_berjalan_awal;
 				}
 			}
-			
+
+			$cek_cutoff = $this->M_pekerjakeluar->cek_cutoff_custom($pkj['noind'],$pkj['tglkeluar']);
++			$hitung_cutoff = $this->M_pekerjakeluar->cek_cutoff_custom_hitung($pkj['noind'],$pkj['tglkeluar']);
+
 			// komponen utama start
 			if ($status_pekerja == 'A' || $status_pekerja == 'B' || $status_pekerja == 'D') {
 				$kom_ip = $this->M_pekerjakeluar->set_Ip($pkj['noind'],$tgl_bulan_awal,$tgl_keluar);
@@ -193,31 +198,29 @@ class C_PekerjaKeluar extends CI_Controller
 			if ($status_pekerja == 'D' || $status_pekerja == 'E') {
 				$cek_noind_berubah = $this->M_pekerjakeluar->cek_noind_berubah($pkj['noind']);
 				if($cek_noind_berubah > 0){
-					$kom_htm = $this->M_pekerjakeluar->hitung_Htm_diangkat($pkj['noind'],$tgl_cut_awal,$tgl_keluar);
 					$kom_tik = $this->M_pekerjakeluar->hitung_tik_diangkat($pkj['noind'],$tgl_cut_awal,$tgl_keluar);
 					$kom_tm  = $this->M_pekerjakeluar->hitung_tm_diangkat($pkj['noind'],$tgl_cut_awal,$tgl_keluar);
+					$kom_htm = $kom_tik + $kom_tm;
 				}else{
-					$cek_cutoff = $this->M_pekerjakeluar->cek_cutoff_custom($pkj['noind']);
 					if($cek_cutoff == "0"){
-						$kom_htm = $this->M_pekerjakeluar->hitung_Htm_tdk_cutoff($pkj['noind'],$tgl_cut_awal,$pkj['tglkeluar'],$chk_khusus,$khusus);
-						$kom_tik = $this->M_pekerjakeluar->hitung_tik_tdk_cutoff($pkj['noind'],$tgl_cut_awal,$pkj['tglkeluar'],$chk_khusus,$khusus);
-						$kom_tm  = $this->M_pekerjakeluar->hitung_tm_tdk_cutoff($pkj['noind'],$tgl_cut_awal,$pkj['tglkeluar'],$chk_khusus,$khusus);
+						$kom_tik = $this->M_pekerjakeluar->hitung_tik_tdk_cutoff($pkj['noind'],$tgl_cut_awal,$pkj['tglkeluar'],$chk_khusus,$khusus,$hitung_cutoff);
+						$kom_tm  = $this->M_pekerjakeluar->hitung_tm_tdk_cutoff($pkj['noind'],$tgl_cut_awal,$pkj['tglkeluar'],$chk_khusus,$khusus,$hitung_cutoff);
+						$kom_htm = $kom_tik + $kom_tm;
 					}else{
-						$kom_htm = $this->M_pekerjakeluar->hitung_Htm($pkj['noind'],$tgl_cut_awal,$pkj['tglkeluar'],$chk_khusus,$khusus);
-						$kom_tik = $this->M_pekerjakeluar->hitung_tik($pkj['noind'],$tgl_cut_awal,$pkj['tglkeluar'],$chk_khusus,$khusus);
-						$kom_tm  = $this->M_pekerjakeluar->hitung_tm($pkj['noind'],$tgl_cut_awal,$pkj['tglkeluar'],$chk_khusus,$khusus);
+						$kom_tik = $this->M_pekerjakeluar->hitung_tik($pkj['noind'],$tgl_cut_awal,$pkj['tglkeluar'],$chk_khusus,$khusus,$hitung_cutoff);
+						$kom_tm  = $this->M_pekerjakeluar->hitung_tm($pkj['noind'],$tgl_cut_awal,$pkj['tglkeluar'],$chk_khusus,$khusus,$hitung_cutoff);
+						$kom_htm = $kom_tik + $kom_tm;
 					}
 				}
 			}else{
-				$cek_cutoff = $this->M_pekerjakeluar->cek_cutoff_custom($pkj['noind']);
 				if($cek_cutoff == "0"){
-					$kom_htm = $this->M_pekerjakeluar->hitung_Htm_tdk_cutoff($pkj['noind'],$tgl_cut_awal,$pkj['tglkeluar'],$chk_khusus,$khusus);
-					$kom_tik = $this->M_pekerjakeluar->hitung_tik_tdk_cutoff($pkj['noind'],$tgl_cut_awal,$pkj['tglkeluar'],$chk_khusus,$khusus);
-					$kom_tm  = $this->M_pekerjakeluar->hitung_tm_tdk_cutoff($pkj['noind'],$tgl_cut_awal,$pkj['tglkeluar'],$chk_khusus,$khusus);
+					$kom_tik = $this->M_pekerjakeluar->hitung_tik_tdk_cutoff($pkj['noind'],$tgl_cut_awal,$pkj['tglkeluar'],$chk_khusus,$khusus,$hitung_cutoff);
+					$kom_tm  = $this->M_pekerjakeluar->hitung_tm_tdk_cutoff($pkj['noind'],$tgl_cut_awal,$pkj['tglkeluar'],$chk_khusus,$khusus,$hitung_cutoff);
+					$kom_htm = $kom_tik + $kom_tm;
 				}else{
-					$kom_htm = $this->M_pekerjakeluar->hitung_Htm($pkj['noind'],$tgl_cut_awal,$pkj['tglkeluar'],$chk_khusus,$khusus);
-					$kom_tik = $this->M_pekerjakeluar->hitung_tik($pkj['noind'],$tgl_cut_awal,$pkj['tglkeluar'],$chk_khusus,$khusus);
-					$kom_tm  = $this->M_pekerjakeluar->hitung_tm($pkj['noind'],$tgl_cut_awal,$pkj['tglkeluar'],$chk_khusus,$khusus);
+					$kom_tik = $this->M_pekerjakeluar->hitung_tik($pkj['noind'],$tgl_cut_awal,$pkj['tglkeluar'],$chk_khusus,$khusus,$hitung_cutoff);
+					$kom_tm  = $this->M_pekerjakeluar->hitung_tm($pkj['noind'],$tgl_cut_awal,$pkj['tglkeluar'],$chk_khusus,$khusus,$hitung_cutoff);
+					$kom_htm = $kom_tik + $kom_tm;
 				}
 			}
 
@@ -244,23 +247,23 @@ class C_PekerjaKeluar extends CI_Controller
 				}
 
 			}
-			
+
 			$kom_tambahan = $this->M_pekerjakeluar->hitung_tambahan($pkj['noind'],$tgl_keluar);
 
 			if ($status_pekerja == 'B' || $status_pekerja == 'D' || $status_pekerja == 'J') {
 				if($cek_cutoff == 0){
-					$kom_if = $this->M_pekerjakeluar->hitung_If_tdk_cutoff($pkj['noind'],$tgl_cut_awal,$pkj['tglkeluar'],$chk_khusus,$khusus);
+					$kom_if = $this->M_pekerjakeluar->hitung_If_tdk_cutoff($pkj['noind'],$tgl_cut_awal,$pkj['tglkeluar'],$chk_khusus,$khusus,$hitung_cutoff);
 				}else{
-					$kom_if = $this->M_pekerjakeluar->hitung_If($pkj['noind'],$tgl_cut_awal,$pkj['tglkeluar'],$chk_khusus,$khusus);
+					$kom_if = $this->M_pekerjakeluar->hitung_If($pkj['noind'],$tgl_cut_awal,$pkj['tglkeluar'],$chk_khusus,$khusus,$hitung_cutoff);
 				}
 			}
 
-			
+
 			if ($chk_khusus == "khusus") {
 				if ($khusus == "sesudah") {
 					if($status_pekerja == 'H'){
 						$kom_pot_seragam = $this->M_pekerjakeluar->get_pot_seragam($pkj['noind'],$pot_seragam);
-					}	
+					}
 
 					$kom_pot_lain = $this->M_pekerjakeluar->potongan($pkj['noind']);
 
@@ -274,6 +277,9 @@ class C_PekerjaKeluar extends CI_Controller
 					$kom_jml_jp = $this->M_pekerjakeluar->jumlah_jp($pkj['noind']);
 
 					$kom_um_dl = $this->M_pekerjakeluar->get_uang_dl($pkj['noind'],$tgl_cut_awal_,$tgl_keluar);
+					
+					$kom_jml_duka = $this->M_pekerjakeluar->jumlah_duka($pkj['noind'],$tgl_cut_awal_,$tgl_keluar);
+					$kom_nom_duka = $this->M_pekerjakeluar->nominal_duka($pkj['noind'],$tgl_cut_awal_,$tgl_keluar);
 				}
 			}else{
 				if($status_pekerja == 'H'){
@@ -292,13 +298,14 @@ class C_PekerjaKeluar extends CI_Controller
 				$kom_jml_jp = $this->M_pekerjakeluar->jumlah_jp($pkj['noind']);
 
 				$kom_um_dl = $this->M_pekerjakeluar->get_uang_dl($pkj['noind'],$tgl_cut_awal,$tgl_keluar);
-			}			
+				
+				$kom_jml_duka = $this->M_pekerjakeluar->jumlah_duka($pkj['noind'],$tgl_cut_awal,$tgl_keluar);
+				$kom_nom_duka = $this->M_pekerjakeluar->nominal_duka($pkj['noind'],$tgl_cut_awal,$tgl_keluar);
+			}
 
 
-			$kom_jml_duka = $this->M_pekerjakeluar->jumlah_duka($pkj['noind'],$tgl_cut_awal,$pkj['tglkeluar']);
-			$kom_nom_duka = $this->M_pekerjakeluar->nominal_duka($pkj['noind'],$tgl_cut_awal,$pkj['tglkeluar']);
 
-			//komponen utama end 
+			//komponen utama end
 
 			//susulan start
 			$kom_sk_susulan = $this->M_pekerjakeluar->get_sk_susulan($pkj['noind']);
@@ -316,7 +323,7 @@ class C_PekerjaKeluar extends CI_Controller
                 $iptsusulan = "0";
                 $immsusulan = "0";
                 $imssusulan = "0";
-                
+
                 $gpsusulantotal = "0";
                 $ifsusulantotal = "0";
                 $ipsusulantotal = "0";
@@ -338,60 +345,60 @@ class C_PekerjaKeluar extends CI_Controller
                         $ifsusulan = $this->M_pekerjakeluar->if_susulan($pkj['noind'], $ssl['tanggal']);
                         $ifsusulan = round($ifsusulan, 2);
                         $ifsusulantotal = $ifsusulantotal + ($ifsusulan - $ssl['if_']);
-                	}                		                  
-                    
+                	}
+
                     $gpsusulan = 1 - $this->M_pekerjakeluar->htm_susulan($pkj['noind'], $ssl['tanggal'], $ssl['tanggal']);
                     $gpsusulan = round($gpsusulan, 2);
                     $gpsusulantotal = $gpsusulantotal + ($gpsusulan - $ssl['gp']);
-                    
+
                     If (($status_pekerja == "B" Or $status_pekerja == "D" Or $status_pekerja == "J") And $totalselisih > 1) {
                         $iptsusulan = $this->M_pekerjakeluar->ipt_susulan($pkj['noind'], $ssl['tanggal']);
                         $iptsusulan = round($iptsusulan, 2);
                         $iptsusulantotal = $iptsusulantotal + ($iptsusulan - $ssl['ipt']);
                     }
-                    
+
                     If ($status_pekerja == "B" Or $status_pekerja == "D" ){
                         $umcsusulan = $this->M_pekerjakeluar->um_cabang_susulan($pkj['noind'], $ssl['tanggal']);
                         $umcsusulan = round($umcsusulan, 2);
                         $umcsusulantotal = $umcsusulantotal + ($umcsusulan - $ssl['umc']);
                     }
-                    
+
                     If (($status_pekerja == "B" Or $status_pekerja == "D") And $totalselisih > 1) {
                         $ipsusulan = $this->M_pekerjakeluar->ip_susulan($pkj['noind'], $ssl['tanggal']);
                         $ipsusulan = round($ipsusulan, 2);
                         $ipsusulantotal = $ipsusulantotal + ($ipsusulan - $ssl['ip_']);
                     }
-                    
+
                     If (($status_pekerja == "B" Or $status_pekerja == "A") And $totalselisih > 1) {
                         $upamksusulan = $this->M_pekerjakeluar->upamk_susulan($pkj['noind'], $ssl['tanggal']);
                         $upamksusulan = round($upamksusulan, 2);
                         $upamksusulantotal = $upamksusulantotal + ($upamksusulan - $ssl['upamk']);
-                        
+
                         $ubtsusulan = $this->M_pekerjakeluar->ubt_susulan($pkj['noind'], $ssl['tanggal']);
                         $ubtsusulan = round($ubtsusulan, 2);
                         $ubtsusulantotal = $ubtsusulantotal + ($ubtsusulan - $ssl['ubt']);
                     }
-                    
+
                     If (($status_pekerja == "B" Or $status_pekerja == "D") And $totalselisih > 1) {
                         $iksusulan = $this->M_pekerjakeluar->ik_susulan($pkj['noind'], $ssl['tanggal']);
                         $iksusulan = round($iksusulan, 2);
                         $iksusulantotal = $iksusulantotal + ($iksusulan - $ssl['Ik_']);
                    	}
-                    
+
                     If ($status_pekerja == "T" And $totalselisih > 1) {
                         $ipsusulan = $this->M_pekerjakeluar->iph_susulan($pkj['noind'], $ssl['tanggal']);
                         $ipsusulan = round($ipsusulan, 2);
                         $ipsusulantotal = $ipsusulantotal + ($ipsusulan - $ssl['ip_']);
-					}                   	
+					}
 
                     $immsusulan = $this->M_pekerjakeluar->imm_susulan($pkj['noind'], $ssl['tanggal']);
                     $immsusulan = round($immsusulan, 2);
                     $immsusulantotal = $immsusulantotal + ($immsusulan - $ssl['imm']);
-                    
+
                     $imssusulan = $this->M_pekerjakeluar->ims_susulan($pkj['noind'], $ssl['tanggal']);
                     $imssusulan = round($imssusulan, 2);
                     $imssusulantotal = $imssusulantotal + ($imssusulan - $ssl['ims']);
-                                        
+
                 }
 
 
@@ -477,7 +484,7 @@ class C_PekerjaKeluar extends CI_Controller
                 	if($imssusulantotal != "0"){
                 		$kom_ims += round($imssusulantotal,2);
                 	}
-                } 
+                }
 			}
 
 			if($kom_ket == ""){
@@ -485,7 +492,7 @@ class C_PekerjaKeluar extends CI_Controller
 					$kom_ket = ($kom_sk_susulan  +  $kom_cuti_susulan).'GP';
 				}else{
 					$kom_ket = "-";
-				}				
+				}
 			}
 			//susulan end
 
@@ -523,7 +530,12 @@ class C_PekerjaKeluar extends CI_Controller
 			$gaji[$angka]['nom_duka'] = $kom_nom_duka;
 
 			$this->M_pekerjakeluar->delete_reffgajikeluar($pkj['noind']);
-			
+			//insert to t_log
+			$aksi = 'MASTER PRESENSI';
+			$detail = 'Delete Reff Gaji Pekerja Keluar noind='.$pkj['noind'];
+			$this->log_activity->activity_log($aksi, $detail);
+			//
+
 			$array_insert = array(
 				'tanggal_keluar' => $gaji[$angka]['tgl_keluar'] ,
 				'noind' 		 => $gaji[$angka]['noind'] ,
@@ -557,6 +569,11 @@ class C_PekerjaKeluar extends CI_Controller
 			);
 			// echo "<pre>";print_r($array_insert);
 			$this->M_pekerjakeluar->insert_reffgajikeluar($array_insert);
+			//insert to t_log
+			$aksi = 'MASTER PRESENSI';
+			$detail = 'Insert Reff Gaji Pekerja Keluar noind='.$gaji[$angka]['noind'];
+			$this->log_activity->activity_log($aksi, $detail);
+			//
 
 			$cek_noind_berubah = $this->M_pekerjakeluar->cek_noind_berubah($pkj['noind']);
 			if($cek_noind_berubah > 0){
@@ -586,7 +603,7 @@ class C_PekerjaKeluar extends CI_Controller
 		$pot_seragam 	= $this->input->post('txtPotSeragam');
 		$chk_khusus 	= $this->input->post('txtKhususPKJKeluarCheckList');
 		$khusus  		= $this->input->post('txtKhususPKJKeluar');
-		
+
 		$gaji = $this->proses_hitung($puasa,$tgl_puasa,$prd_gaji,$status_pekerja,$noind,$pot_seragam,$chk_khusus,$khusus);
 
 		$data['Title']			=	'Pekerja Keluar';
@@ -886,6 +903,8 @@ class C_PekerjaKeluar extends CI_Controller
 	}
 
 	public function print_pdf(){
+		$waktu = strftime('%d/%h/%Y %H:%M:%S');
+		// echo strftime('%d/%h/%Y %H:%M:%S');exit();
 		if(!isset($_GET) or empty($_GET)){
 			redirect(site_url('MasterPresensi/ReffGaji/PekerjaKeluar/'));
 		}
@@ -908,13 +927,12 @@ class C_PekerjaKeluar extends CI_Controller
 		$this->load->library('pdf');
 
 		$pdf = $this->pdf->load();
-		$pdf = new mPDF('','A4-L',0,'',10,10,10,10,0,5);
+		$pdf = new mPDF('','A4-L',0,'',5,5,5,25,0,5);
 		$filename = 'Gaji.pdf';
 
 		$html = $this->load->view('MasterPresensi/ReffGaji/PekerjaKeluar/V_print',$data, true);
-
 		$stylesheet1 = file_get_contents(base_url('assets/plugins/bootstrap/3.3.7/css/bootstrap.css'));
-		$pdf->SetHTMLFooter("<i style='font-size: 8pt'>Halaman ini dicetak melalui Aplikasi QuickERP-MasterPresensi oleh ".$this->session->user." ".$this->session->employee." pada tgl. ".strftime('%d/%h/%Y %H:%M:%S').". Halaman {PAGENO} dari {nb}</i>");
+		$pdf->SetHTMLFooter("<i style='font-size: 8pt'>Halaman ini dicetak melalui Aplikasi QuickERP-MasterPresensi oleh ".$this->session->user." ".$this->session->employee." pada tgl. ".$waktu.". Halaman {PAGENO} dari {nb}</i>");
 		$pdf->WriteHTML($stylesheet1,1);
 		$pdf->WriteHTML($html, 2);
 		$pdf->Output($filename, 'I');

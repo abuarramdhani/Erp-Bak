@@ -30,4 +30,18 @@ class M_index extends CI_Model
         return $query->result_array();
     }
 
+    public function getNamaCreator($actBy)
+    {
+        $this->db->where('employee_code',$actBy);
+        $query = $this->db->get('er.er_employee_all');
+        return $query->result_array();
+    }
+
+    public function UpdateData($id,$up)
+    {
+        $this->db->where('id',$id);
+        $this->db->update('si.network_monitoring',$up);
+        
+    }
+
 }

@@ -16,7 +16,7 @@ class M_index extends CI_Model
 
   	public function IzinApprove($periode)
   	{
-  		$sql = "SELECT ti.*,
+  		$sql = "SELECT distinct ti.*,
                 (case when ti.jenis_izin = '1' then 'DINAS PUSAT' when ti.jenis_izin = '2' then 'DINAS TUKSONO' else 'DINAS MLATI' end) as to_dinas,
                 (select string_agg(concat(noind,' - ',trim(nama)),'<br>') from hrd_khs.tpribadi b where position(b.noind in ti.noind)>0) as pekerja,
                 (select string_agg(concat(noind,' - ',trim(nama)),'<br>') from hrd_khs.tpribadi b where position(b.noind in ti.atasan_aproval)>0) as atasan
@@ -28,8 +28,8 @@ class M_index extends CI_Model
 
     public function getPekerja($tanggal)
 	{
-		$sql = "SELECT ti.izin_id,
-                (case when ti.status_jalan = '-'
+		$sql = "SELECT distinct ti.izin_id,
+                (case when ti.status_jalan = '-' or ti.status_jalan = ''
                         then 'Unapprove'
                     when ti.status_jalan = '0'
                         then 'Belum Berangkat'
@@ -43,14 +43,16 @@ class M_index extends CI_Model
                         then 'Dinas Telah Selesai'
                     when ti.status_jalan = '5'
                         then 'Reject'
-                    else 'DINAS MLATI'
+                    else 'Data_Lama'
                     end) as jalan_aja,
                 (case when tp.jenis_izin = '1' then 'DINAS PUSAT' when tp.jenis_izin = '2' then 'DINAS TUKSONO' else 'DINAS MLATI' end) as to_dinas,
                 (select string_agg(concat(noind,' - ',trim(nama)),'<br>') from hrd_khs.tpribadi b where position(b.noind in ti.noind)>0) as pekerja,
                 (select string_agg(concat(noind,' - ',trim(nama)),'<br>') from hrd_khs.tpribadi b where position(b.noind in tp.atasan_aproval)>0) as atasan,
-                tp.keterangan, tp.created_date
+                tp.keterangan, tp.created_date,
+                (case when tai.tujuan = ti.tujuan and tai.izin_id::int = ti.izin_id::int and tai.noinduk = ti.noind then tai.tujuan else ti.tujuan end) as tujuan
 				FROM \"Surat\".tpekerja_izin ti
-                LEFT JOIN \"Surat\".tperizinan tp ON tp.izin_id = ti.izin_id::int $tanggal
+                LEFT JOIN \"Surat\".tperizinan tp ON tp.izin_id = ti.izin_id::int
+                LEFT JOIN \"Surat\".taktual_izin tai ON tai.izin_id::int = ti.izin_id::int $tanggal
 				ORDER BY ti.izin_id DESC";
 		return $this->personalia->query($sql)->result_array();
 	}

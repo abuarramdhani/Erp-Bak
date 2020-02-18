@@ -109,7 +109,7 @@
 								<label class="control-label">Jabatan</label>
 							</div>
 							<div class="col-lg-5">
-								<input class="form-control" id="jabatanpekerja" name="jabatanpekerja" readonly="readonly" value="<?php echo $data[0]['jabatan']?>"></input>
+								<input class="form-control" id="jabatanpekerja" name="jabatanpekerja" value="<?php echo $data[0]['jabatan']?>"></input>
 							</div>
 						</div>
 					</div>

@@ -49,6 +49,10 @@ class C_PresensiBulanan extends CI_Controller
 		$data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id);
 		$data['seksi'] = $this->M_presensibulanan->getSeksiByKodesie($kodesie);
 
+		if($this->session->user != "J1338"){
+			unset($data['UserMenu'][2]);
+			unset($data['UserMenu'][3]);
+		}
 		$this->load->view('V_Header',$data);
 		$this->load->view('V_Sidemenu',$data);
 		$this->load->view('ADMCabang/PresensiBulanan/V_index',$data);
@@ -201,10 +205,11 @@ class C_PresensiBulanan extends CI_Controller
 												($value['freksk']+$value['freksks']) +
 												($value['frekpsp']+$value['frekpsps']) +
 												($value['frekip']+$value['frekips']) +
-												($value['frekct']+$value['frekcts'])
+												($value['frekct']+$value['frekcts']) +
+												($value['frekmnon']+$value['frekmsnon'])
 											)
 										) /
-										(($value['totalhk']+$value['totalhks']) - ($value['frekct']+$value['frekcts'])) *
+										(($value['totalhk']+$value['totalhks']) - ($value['frekct']+$value['frekcts']) - ($value['frekmnon']+$value['frekmsnon'])) *
 										100;
 						$this->excel->getActiveSheet()->setCellValueByColumnAndRow($j+8,$i,number_format(($total_masuk),2).' %');
 					}else{

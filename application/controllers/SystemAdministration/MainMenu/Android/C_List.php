@@ -33,6 +33,7 @@ class C_List extends CI_Controller {
 		$data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id);
 
 		$data['android'] = $this->M_list->getDataAndroid();
+		$data['versi'] = $this->M_list->getLatestVersion();
 
 		$this->load->view('V_Header',$data);
 		$this->load->view('V_Sidemenu',$data);
@@ -356,6 +357,18 @@ class C_List extends CI_Controller {
 				}
 
 		}
+	}
+
+	public function updateVersi(){
+		$getPost = json_decode(file_get_contents('php://input'));
+		$versiTerbaru = $getPost->versiTerbaru;
+		$mandUpdate = $getPost->mandUpdate;
+
+		$this->M_list->updateVersionControl($versiTerbaru,$mandUpdate);
+
+		$data = $this->M_list->getLatestVersion();
+
+		print_r(json_encode($data[0]));
 	}
 
 	

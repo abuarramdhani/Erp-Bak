@@ -139,7 +139,7 @@ class C_Rekap extends CI_Controller {
 			$filename = 'Rekap-'.$tgl.'.pdf';
 			// $this->load->view('UpahHlCm/MenuCetak/V_cetakRekap', $data);
 			$html = $this->load->view('UpahHlCm/MenuCetak/V_cetakRekap', $data, true);
-			$pdf->SetHTMLFooter("<i style='font-size: 8pt'>Halaman ini dicetak melalui Aplikasi QuickERP-HLCM pada oleh ".$this->session->user." tgl. ".date('d/m/Y H:i:s').". Halaman {PAGENO} dari {nb}</i>");
+			$pdf->SetHTMLFooter("<i style='font-size: 8pt'>Halaman ini dicetak melalui Aplikasi QuickERP-HLCM oleh ".$this->session->user." - ".ucwords(strtolower($this->session->employee))." pada tgl. ".date('d/m/Y H:i:s').". Halaman {PAGENO} dari {nb}</i>");
 			$pdf->WriteHTML($html, 2);
 			$pdf->Output($filename, 'I');
 		}else{

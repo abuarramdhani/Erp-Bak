@@ -371,7 +371,7 @@ class C_Mutasi extends CI_Controller
 			}
 			$kd_jabatan_lama = explode(' - ', $kd_jabatan_lama);
 			$kd_jabatan_lama = $kd_jabatan_lama[0];
-			$tembusan 	=	$this->personalia->tembusanDuaPihak($kd_jabatan_lama, $seksi_lama, $kd_lokasi_lama, $kd_jabatan_baru, $seksi_baru, $kd_lokasi_baru);
+			$tembusan 	=	$this->personalia->tembusanDuaPihak($kd_jabatan_lama, $seksi_lama, $kd_lokasi_lama, $kd_jabatan_baru, $seksi_baru, $kd_lokasi_baru, $nomor_induk);
 
 
 			$tembusan_HTML 	=	'';
@@ -385,7 +385,7 @@ class C_Mutasi extends CI_Controller
 			// echo $tembusan_HTML;
 
 			$templateMutasi 			=	$templateMutasi[0]['isi_surat'];
-
+			
 			$seksiBaru = ' ';
 			$unitBaru = ' ';
 			$deptBaru = ' ';

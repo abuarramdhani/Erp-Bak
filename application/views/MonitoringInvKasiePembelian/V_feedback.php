@@ -16,6 +16,7 @@
 								</td>
 								<td>
 									<textarea id="txaFbPurc" class="form-control" style="width:300px; margin-bottom:10px"><?php echo $feedback[0]['FEEDBACK_PURCHASING']?></textarea>
+									<input id="hdnBerkasPurc" type="hidden" value="<?php echo $feedback[0]['STATUS_BERKAS_PURC']?>">
 								</td>
 							</tr>
 						</table>

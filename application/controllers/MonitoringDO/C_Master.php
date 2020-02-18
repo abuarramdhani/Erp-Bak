@@ -210,24 +210,7 @@ class C_Master extends CI_Controller
               $ipaddress = 'UNKNOWN';
           return $ipaddress;
       }
-      $tampungan = $this->input->post('array_atr');
-      array_pop($tampungan);
-      $rm = $this->input->post('requests_number');
-      foreach ($tampungan as $t) {
-        $data = [
-          'HEADER_ID' => $this->input->post('header_id'),
-          'REQUEST_NUMBER' => $rm,
-          'INVENTORY_ITEM_ID' => $t,
-          'ORDER_NUMBER' => $this->input->post('order_number'),
-          'IP_ADDRESS' => get_client_ip()
-        ];
-        $this->M_monitoringdo->insertDOtampung($data);
-      }
-
-      // $this->M_monitoringdo->runAPIDO($rm);
-      $this->M_monitoringdo->DeleteDOtampung($rm, get_client_ip());
-
-      echo json_encode('sukses!!!');
+      // function non active
     }
 
     public function GetDetail()
@@ -472,7 +455,7 @@ class C_Master extends CI_Controller
 
             $pdf 		= $this->pdf->load();
             $this->load->library('ciqrcode');
-            $pdf 		= new mPDF('utf-8', array(210 , 297), 0, '', 3, 3, 3, 0, 0, 3);
+            $pdf 		= new mPDF('utf-8', array(210 , 267), 0, '', 3, 3, 3, 0, 0, 3);
 
             // ------ GENERATE QRCODE ------
             if (!is_dir('./assets/img')) {

@@ -27,13 +27,13 @@ $coba = 0;
             <td width="5px"  >1</td>
             <td >Kode Brg</td>
             <td colspan="3" > <?=$itemrecipt?></td>
-            <td rowspan="3"  style="color: white">blabla</td>
+            <td rowspan="3" style="font-size: 7pt" >Sudah dilengkapi</td>
           </tr>
 
           <tr>
             <td></td>
             <td>Nama Brg</td>
-            <td colspan="3" style="color: red" ><b><?=$descrecipt?></b></td>
+            <td colspan="3"><b><?=$descrecipt?></b></td>
             
             
           </tr>
@@ -41,12 +41,12 @@ $coba = 0;
            <tr>
             <td></td>
             <td>Type</td>
-            <td colspan="3" style="font-size: 16pt;color: red"><b>........</b></td>
+            <td colspan="3" style="font-size: 16pt;"><b>QTBC</b></td>
           </tr>
 
             <tr>
            <td style="text-align: center;" colspan="5" >Untuk Produk ....... </td>
-            <td style="color: white">blabla</td>
+            <td style="font-size: 7pt">Opr.Penermn.</td>
           </tr>
       </tbody>
     </table>
@@ -85,7 +85,7 @@ $coba = 0;
             </tr>
               <tr>
                 <td>Type</td>
-                <td style="text-align: center; background-color: orange;font-size: 16pt" ><b>........</b></td>
+                <td style="text-align: center;font-size: 16pt" ><b>QTBC</b></td>
             </tr>
              <tr>
                 <td>No Seri</td>

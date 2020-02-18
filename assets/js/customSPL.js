@@ -13,8 +13,9 @@ $(function() {
             },
             {
                 text: 'Proses',
-                className: 'btn btn-primary disabled',
+                className: 'btn btn-proses btn-primary disabled',
                 action: function(e, dt, node, config) {
+                    $('#spl_tex_proses').val('')
                     $('#btn-ProsesSPL').click();
                 }
             }
@@ -268,6 +269,17 @@ $(function() {
         thisrow.nextUntil(nextrow, 'tr.spl-jobs').remove()
         $(this).closest('tr').remove();
 
+        let existError = false;
+        $('.spl-new-error').each(function() {
+            existError = true;
+        })
+
+        if (existError) {
+            $("button#submit_spl").attr("type", "button").attr("class", "btn btn-default");
+        } else {
+            $("button#submit_spl").attr("type", "submit").attr("class", "btn btn-primary");
+        }
+
         if (totalRow == 2) {
             $('.multiinput').find('.spl-pkj-del').prop('disabled', true)
         }
@@ -437,7 +449,7 @@ $(function() {
                     // console.log(obj);
                     if (obj['error'] == '1') {
                         parentSelect.css("background", "#ffe6e6");
-                        $("button[type*=submit]").attr("type", "button").attr("class", "btn btn-grey");
+                        $("button#submit_spl").attr("type", "button").attr("class", "btn btn-grey");
                         parentSelect.find(".spl-new-error").remove();
                         parentSelect.append("<p class='spl-new-error' style='color: red'><br><i style='color:#ed2b1f' class='fa fa-lg fa-info-circle spl-error'></i>  Peringatan : " + obj['text'] + "</p>");
                         parentTr.find('input[name*=lbrawal]').val("");
@@ -468,8 +480,7 @@ $(function() {
                             chk = "1";
                         });
                         if (chk == "0") {
-                            //$("button[type*=button]").attr("type", "submit").attr("class", "btn btn-primary");
-                            // what is this ?
+                            $("button#submit_spl").attr("type", "submit").attr("class", "btn btn-primary");
                         }
 
 
@@ -534,6 +545,7 @@ $(function() {
     for (x = 0; x < 2; x++) {
         $('#spl-approval-' + x).on('click', { id: x }, function(e) {
             e.preventDefault();
+            $('.btn-proses').addClass('disabled')
             var id = e.data.id;
             var table = $('.spl-table').DataTable();;
 
@@ -555,9 +567,9 @@ $(function() {
                     noind: $('#noind').val(),
                     kodesie: $('#kodesie').val()
                 },
-                success: function(data) {
-                    if (data != "[]") {
-                        var send = $.parseJSON(data);
+                success: data => {
+                    if (data.length) {
+                        let send = JSON.parse(data);
                         table.rows.add(send);
                         table.draw();
                     } else {
@@ -588,14 +600,14 @@ $(function() {
         $('.spl-chk-data').each(function() {
             if (this.checked) { chk += '.' + $(this).val(); }
         });
-        console.log(chk);
+
         if (chk == "") {
             $('#example11_wrapper').find('a.btn-primary').addClass("disabled");
             $('#example11_wrapper').find('button.btn-primary').addClass("disabled");
             console.log("tidak ada");
         } else {
-            $('#example11_wrapper').find('a.btn-primary').removeClass("disabled");
-            $('#example11_wrapper').find('button.btn-primary').removeClass("disabled");
+            $('#example11_wrapper').find('a.btn-primary').removeClass("disabled btn-default");
+            $('#example11_wrapper').find('button.btn-primary').removeClass("disabled btn-default");
             console.log("ada");
         };
 
@@ -615,6 +627,68 @@ $(function() {
     $(document).on('input', '#spl_tex_proses', function(e) {
         spl_load_data();
     });
+
+    function waitingFingerPrint(params) {
+        window.addEventListener('storage', () => {
+            let isSuccess = localStorage.getItem('resultApproveSPL')
+
+            if (isSuccess) {
+                $('#ProsesDialog').modal('hide')
+                $('#FingerDialogApprove').modal('hide')
+                $('#FingerDialogReject').modal('hide')
+
+                swal.fire({
+                    title: `Sukses ${params} lembur pekerja`,
+                    text: '',
+                    type: 'success'
+                }).then(() => {
+                    $('#spl-approval-1').click()
+                    $('#spl-approval-0').click()
+                })
+            } else {
+                swal.fire({
+                    title: `Gagal memproses, coba lagi`,
+                    text: '',
+                    type: 'error'
+                })
+            }
+
+            isSuccess = localStorage.setItem('resultApproveSPL', false)
+        })
+    }
+
+    $('#approveSPL, #rejectSPL').on('click', e => {
+
+        let reason = $('#spl_tex_proses')
+        reason.on('change', () => {
+            reason.css({
+                "border": "1px solid #ccc"
+            })
+        })
+        if (!reason.val()) {
+            reason.css({
+                "border": "1px solid red"
+            })
+            Swal.mixin({
+                toast: true,
+                position: 'top-end',
+                showConfirmButton: false,
+                timer: 3000
+            }).fire({
+                customClass: 'swal-font-small',
+                type: 'error',
+                title: 'Masukkan alasan terlebih dahulu!'
+            });
+            return
+        }
+
+        if (e.target.id == 'approveSPL') {
+            $('#FingerDialogApprove').modal('show')
+        } else {
+            $('#FingerDialogReject').modal('show')
+        }
+
+    })
 
     $(document).on('click', '#FingerDialogReject .spl_finger_proses', function(e) {
         finger = $(this).attr('data');
@@ -647,7 +721,12 @@ $(function() {
             $('#spl_proses_approve').attr('href', tmp + btoa('&stat=25&data=' + chk + '&ket=' + ket));
         }
 
-        window.location.href = $('#spl_proses_reject').attr('href');
+        localStorage.setItem('resultApproveSPL', false)
+
+        let apiProcess = $('#spl_proses_reject').attr('href');
+        window.location.href = apiProcess
+
+        waitingFingerPrint('Reject')
     });
 
     $(document).on('click', '#FingerDialogApprove .spl_finger_proses', function(e) {
@@ -681,9 +760,12 @@ $(function() {
             $('#spl_proses_approve').attr('href', tmp + btoa('&stat=25&data=' + chk + '&ket=' + ket));
         }
 
-        window.location.href = $('#spl_proses_approve').attr('href');
-    });
+        localStorage.setItem('resultApproveSPL', false)
+        let apiProcess = $('#spl_proses_approve').attr('href')
+        window.location.href = apiProcess
 
+        waitingFingerPrint('Approve')
+    });
 });
 
 $(document).ready(function() {
@@ -721,6 +803,7 @@ $(document).ready(function() {
         }
         $(this).val(value);
     });
+
     $('.spl-time-mask').on('focusout', function(e) {
         value = $(this).val();
         if (value.length > 0) {

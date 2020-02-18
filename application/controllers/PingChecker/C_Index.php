@@ -52,55 +52,55 @@ class C_Index extends CI_Controller {
 		$ipName = array(
 					array(
 						'name' => 'IconPlus PUSAT-BANJARMASIN',
-						'ip' => '172.16.100.94',
+						'ip' => '172.16.100.93',
 					),
 					array(
 						'name' => 'IconPlus PUSAT-JAKARTA',
-						'ip' => '172.16.100.26',
+						'ip' => '172.16.100.25',
 					),
 					array(
 						'name' => 'IconPlus PUSAT-LAMPUNG',
-						'ip' => '172.16.100.14',
+						'ip' => '172.16.100.13',
 					),
 					array(
 						'name' => 'IconPlus PUSAT-LANGKAPURA',
-						'ip' => '172.16.100.62',
+						'ip' => '172.16.100.61',
 					),
 					array(
 						'name' => 'IconPlus PUSAT-MAKASSAR',
-						'ip' => '172.16.100.30',
+						'ip' => '172.16.100.29',
 					),
 					array(
 						'name' => 'IconPlus PUSAT-MEDAN',
-						'ip' => '172.16.100.18',
+						'ip' => '172.16.100.17',
 					),
 					array(
 						'name' => 'IconPlus PUSAT-MLATI',
-						'ip' => '172.16.100.22',
+						'ip' => '172.16.100.21',
 					),
 					array(
 						'name' => 'IconPlus PUSAT-PALU',
-						'ip' => '172.16.100.102',
+						'ip' => '172.16.100.101',
 					),
 					array(
 						'name' => 'IconPlus PUSAT-PEKANBARU',
-						'ip' => '172.16.100.90',
+						'ip' => '172.16.100.89',
 					),
 					array(
 						'name' => 'IconPlus PUSAT-PONTIANAK',
-						'ip' => '172.16.100.50',
+						'ip' => '172.16.100.49',
 					),
 					array(
 						'name' => 'IconPlus PUSAT-SURABAYA',
-						'ip' => '172.16.100.10',
+						'ip' => '172.16.100.9',
 					),
 					array(
 						'name' => 'IconPlus PUSAT-TUKSONO',
-						'ip' => '172.16.100.6',
+						'ip' => '172.16.100.5',
 					),
 					array(
 						'name' => 'LDP PUSAT-TUKSONO',
-						'ip' => '172.18.22.2',
+						'ip' => '172.18.22.1',
 					)
 		);
 		
@@ -112,45 +112,67 @@ class C_Index extends CI_Controller {
 			if ($status != -1) {
 	
 				echo "<tr><td>http://$domainbase is ALIVE ($status ms)</td><tr>";
-				$message = "http://$domainbase is ALIVE ($status ms)";
+				$messages = "http://$domainbase is ALIVE ($status ms)";
 			}else {
 	
 				echo "<tr><td>http://$domainbase is DOWN</td><tr>";
-				$message = "http://$domainbase is DOWN ($status ms)";
+				$messages = "http://$domainbase is DOWN ($status ms)";
 				
 				$status = $this->M_index->checkStatusAction($domainbase);
 
 				if ($status == null) {
+					$statusNow = 0;
 					$stat = array(
 									'creation_date' => 'now()',
 									'ip' => $domainbase,
+									'status' => 0,
 								 );
 					$this->M_index->setStatus($stat);
 					$time = date('d-m-Y H:i:s');
 					$st = "OPEN";
 
-					$message .="<table>
-								 <tr>
+					$message ="<table>
+								<tr>
+									<th align='left'>IP</th>
+									<th>:</th>
+									<td>$domainbase</td>
+								</tr>
+								<tr>
 								 	<th align='left'>STATUS</th>
 									<th>:</th>
 									<td>$st</td>
-								 </tr>
-								 <tr>
+								</tr>
+								<tr>
 								 	<th align='left'>TIME</th>
 									<th>:</th>
 									<td>$time</td>
-								 </tr>
-								</table>";
+								</tr>
+								<tr>
+								 	<th align='left'>DOWN TIME</th>
+									<th>:</th>
+									<td>$statusNow Jam</td>
+								</tr>
+							</table>";
 				}else {
 					if ($status[0]['action'] == null) {
+						$sts = $status[0]['status'];
+						$statusNow = 0;
+						$statusNows = $sts + 1;
+						$downtime = $statusNows * 15 / 60;
 						$stat = array(
 										'creation_date' => 'now()',
 										'ip' => $domainbase,
+										'status' => $statusNows,
 								);
 						$this->M_index->setStatus($stat);
 						$time = date('d-m-Y H:i:s');
 						$st = "OPEN";
-						$message .="<table>
+						$message ="<table>
+								<tr>
+									<th align='left'>IP</th>
+									<th>:</th>
+									<td>$domainbase</td>
+								</tr>
 								 <tr>
 								 	<th align='left'>STATUS</th>
 									<th>:</th>
@@ -160,24 +182,42 @@ class C_Index extends CI_Controller {
 								 	<th align='left'>TIME</th>
 									<th>:</th>
 									<td>$time</td>
+								 </tr>
+								 <tr>
+								 	<th align='left'>DOWN TIME</th>
+									<th>:</th>
+									<td>$downtime Jam</td>
 								 </tr>
 								</table>";
 					}else {
 						$action = $status[0]['action'];
 						$actBy = $status[0]['action_by'];
 						$noticket = $status[0]['no_ticket'];
-								$stat = array(
-									'creation_date' => 'now()',
-									'ip' => $domainbase,
-									'action' => $action,
-									'action_by' => $actBy,
-									'no_ticket' => $noticket,
+						$sts = $status[0]['status'];
+						$statusNow = $sts +1;
+						$downtime = $statusNow * 15 / 60;
+
+						$getNamaCreator = $this->M_index->getNamaCreator($actBy);
+						$creator = RTRIM($getNamaCreator[0]['employee_name']);
+						
+							$stat = array(
+								'creation_date' => 'now()',
+								'ip' => $domainbase,
+								'action' => $action,
+								'action_by' => $actBy,
+								'no_ticket' => $noticket,
+								'status' => $statusNow,
 							);
 						$this->M_index->setStatus($stat);
 
 						$time = date('d-m-Y H:i:s');
 						$st = "WIP";
-						$message .="<table>
+						$message ="<table>
+								<tr>
+									<th align='left'>IP</th>
+									<th>:</th>
+									<td>$domainbase</td>
+								</tr>
 								 <tr>
 								 	<th align='left'>STATUS</th>
 									<th>:</th>
@@ -201,26 +241,243 @@ class C_Index extends CI_Controller {
 								 <tr>
 								 	<th align='left'>ACTION BY</th>
 									<th>:</th>
-									<td>$actBy</td>
+									<td>$actBy - $creator</td>
+								 </tr>
+								 <tr>
+								 	<th align='left'>DOWN TIME</th>
+									<th>:</th>
+									<td>$downtime Jam</td>
 								 </tr>
 								</table>";
 					}
 				}
 				
 				$subject = "($st) ".$ip['name']." is Down";
-				if($ip['ip'] != "172.16.100.62"){
-                $this->EmailAlert($subject, $message);
-                $this->EmailAlertInternal($subject, $message);
+
+				if ($statusNow%48 == 0) {
+					$emailUser = array("quick.tractor@gmail.com", "it.sec1@quick.co.id", "it1.quick@gmail.com", "nugroho.mail1@gmail.com", "ict.hardware.khs@gmail.com", "it.asst.u1@quick.co.id", "khoerulamri.id@gmail.com");
+					$emailUserInternal = array("johannes_andri@quick.com","yohanes_budi@quick.com","rheza_egha@quick.com","amelia_ayu@quick.com","khoerul_amri@quick.com","nugroho@quick.com");
+				}else {
+					$emailUser = array("quick.tractor@gmail.com", "ict.hardware.khs@gmail.com");
+					$emailUserInternal = array("yohanes_budi@quick.com","rheza_egha@quick.com","amelia_ayu@quick.com");
 				}
-                
-	            
+
+                $this->EmailAlert($subject, $message, $emailUser);
+                $this->EmailAlertInternal($subject, $message, $emailUserInternal);
+
 			}
             
 		}
 
 	}
 
+	public function checkSide()
+	{
+		$ipName = array(
+			array(
+				'name' => 'IconPlus PUSAT-BANJARMASIN',
+				'ip' => '172.16.100.94',
+			),
+			array(
+				'name' => 'IconPlus PUSAT-JAKARTA',
+				'ip' => '172.16.100.26',
+			),
+			array(
+				'name' => 'IconPlus PUSAT-LAMPUNG',
+				'ip' => '172.16.100.14',
+			),
+			array(
+				'name' => 'IconPlus PUSAT-LANGKAPURA',
+				'ip' => '172.16.100.62',
+			),
+			array(
+				'name' => 'IconPlus PUSAT-MAKASSAR',
+				'ip' => '172.16.100.30',
+			),
+			array(
+				'name' => 'IconPlus PUSAT-MEDAN',
+				'ip' => '172.16.100.18',
+			),
+			array(
+				'name' => 'IconPlus PUSAT-MLATI',
+				'ip' => '172.16.100.22',
+			),
+			array(
+				'name' => 'IconPlus PUSAT-PALU',
+				'ip' => '172.16.100.102',
+			),
+			array(
+				'name' => 'IconPlus PUSAT-PEKANBARU',
+				'ip' => '172.16.100.90',
+			),
+			array(
+				'name' => 'IconPlus PUSAT-PONTIANAK',
+				'ip' => '172.16.100.50',
+			),
+			array(
+				'name' => 'IconPlus PUSAT-SURABAYA',
+				'ip' => '172.16.100.10',
+			),
+			array(
+				'name' => 'IconPlus PUSAT-TUKSONO',
+				'ip' => '172.16.100.6',
+			),
+			array(
+				'name' => 'LDP PUSAT-TUKSONO',
+				'ip' => '172.18.22.2',
+			)
+		);
+
+		foreach ($ipName as $key => $ip) {
+			$domainbase = $ip['ip'];
+
+			$status = $this->pingDomainSide($domainbase);
+	
+			if ($status != -1) {
+	
+				echo "<tr><td>http://$domainbase is ALIVE ($status ms)</td><tr>";
+				$messages = "http://$domainbase is ALIVE ($status ms)";
+			}else {
+	
+				echo "<tr><td>http://$domainbase is DOWN</td><tr>";
+				$messages = "http://$domainbase is DOWN ($status ms)";
+
+				$status = $this->M_index->checkStatusAction($domainbase);
+
+				if ($status == null) {
+					$statusNow = 0;
+					$time = date('d-m-Y H:i:s');
+					$st = "OPEN";
+
+					$message ="<table>
+								<tr>
+									<th align='left'>IP</th>
+									<th>:</th>
+									<td>$domainbase</td>
+								</tr>
+								<tr>
+								 	<th align='left'>STATUS</th>
+									<th>:</th>
+									<td>$st</td>
+								</tr>
+								<tr>
+								 	<th align='left'>TIME</th>
+									<th>:</th>
+									<td>$time</td>
+								</tr>
+								<tr>
+								 	<th align='left'>DOWN TIME</th>
+									<th>:</th>
+									<td>$statusNow Jam</td>
+								</tr>
+							</table>";
+				}else {
+					if ($status[0]['action'] == null) {
+						$sts = $status[0]['status'];
+						$statusNow = 0;
+						$statusNows = $sts + 1;
+						$downtime = $statusNows * 15 / 60;
+
+						$time = date('d-m-Y H:i:s');
+						$st = "OPEN";
+						$message ="<table>
+								<tr>
+									<th align='left'>IP</th>
+									<th>:</th>
+									<td>$domainbase</td>
+								</tr>
+								 <tr>
+								 	<th align='left'>STATUS</th>
+									<th>:</th>
+									<td>$st</td>
+								 </tr>
+								 <tr>
+								 	<th align='left'>TIME</th>
+									<th>:</th>
+									<td>$time</td>
+								 </tr>
+								 <tr>
+								 	<th align='left'>DOWN TIME</th>
+									<th>:</th>
+									<td>$downtime Jam</td>
+								 </tr>
+								</table>";
+					}else {
+						$action = $status[0]['action'];
+						$actBy = $status[0]['action_by'];
+						$noticket = $status[0]['no_ticket'];
+						$sts = $status[0]['status'];
+						$statusNow = $sts +1;
+						$downtime = $statusNow * 15 / 60;
+
+						$getNamaCreator = $this->M_index->getNamaCreator($actBy);
+						$creator = RTRIM($getNamaCreator[0]['employee_name']);
+						
+						$time = date('d-m-Y H:i:s');
+						$st = "WIP";
+						$message ="<table>
+								<tr>
+									<th align='left'>IP</th>
+									<th>:</th>
+									<td>$domainbase</td>
+								</tr>
+								 <tr>
+								 	<th align='left'>STATUS</th>
+									<th>:</th>
+									<td>$st</td>
+								 </tr>
+								 <tr>
+								 	<th align='left'>TIME</th>
+									<th>:</th>
+									<td>$time</td>
+								 </tr>
+								 <tr>
+								 	<th align='left'>NO TICKET</th>
+									<th>:</th>
+									<td>$noticket</td>
+								 </tr>
+								 <tr>
+								 	<th align='left'>ACTION</th>
+									<th>:</th>
+									<td>$action</td>
+								 </tr>
+								 <tr>
+								 	<th align='left'>ACTION BY</th>
+									<th>:</th>
+									<td>$actBy - $creator</td>
+								 </tr>
+								 <tr>
+								 	<th align='left'>DOWN TIME</th>
+									<th>:</th>
+									<td>$downtime Jam</td>
+								 </tr>
+								</table>";
+					}
+				}
+				$subject = "ver.Lama($st) ".$ip['name']." is Down";
+
+				$emailUser = array("nugroho.mail1@gmail.com",);
+				$emailUserInternal = array("nugroho@quick.com",);
+
+				$this->EmailAlert($subject, $message, $emailUser);
+                $this->EmailAlertInternal($subject, $message, $emailUserInternal);
+			}
+		}
+	}
+
 	public function pingDomain($domain)
+	{
+		$check = exec('ping -c 1 -w 1 '.$domain);
+		if ($check) {
+			$status = 0;
+		}else {
+			$status = -1;
+		}
+
+		return $status;
+	}
+
+	public function pingDomainSide($domain)
 	{
 		$starttime = microtime(true);
 		$file      = fsockopen ($domain, 53, $errno, $errstr, 10);
@@ -236,11 +493,11 @@ class C_Index extends CI_Controller {
 		return $status;
 	}
 
-	public function EmailAlert($subject , $body)
+	public function EmailAlert($subject , $body, $akun)
 	{
 		//email
         
-        $akun = array("quick.tractor@gmail.com", "it.sec1@quick.co.id", "it1.quick@gmail.com", "nugroho.mail1@gmail.com", "ict.hardware.khs@gmail.com", "it.asst.u1@quick.co.id", "khoerulamri.id@gmail.com");
+        // $akun = array("quick.tractor@gmail.com", "it.sec1@quick.co.id", "it1.quick@gmail.com", "nugroho.mail1@gmail.com", "ict.hardware.khs@gmail.com", "it.asst.u1@quick.co.id", "khoerulamri.id@gmail.com");
         
         // $akun = array("suryabondan@gmail.com");
         
@@ -248,7 +505,7 @@ class C_Index extends CI_Controller {
 
 		$this->load->library('PHPMailerAutoload');
 		$mail = new PHPMailer();
-        $mail->SMTPDebug = 2;
+        $mail->SMTPDebug = 0;
         $mail->Debugoutput = 'html';
 		
         // set smtp
@@ -284,9 +541,9 @@ class C_Index extends CI_Controller {
 		}
 	}
 	
-	public function EmailAlertInternal($subject , $body)
+	public function EmailAlertInternal($subject , $body, $akun)
 	{
-		$akun = array("johannes_andri@quick.com","yohanes_budi@quick.com","rheza_egha@quick.com","amelia_ayu@quick.com","khoerul_amri@quick.com","nugroho@quick.com");
+		// $akun = array("johannes_andri@quick.com","yohanes_budi@quick.com","rheza_egha@quick.com","amelia_ayu@quick.com","khoerul_amri@quick.com","nugroho@quick.com");
 		
 		//send Email
 

@@ -18,11 +18,20 @@
                                 <div class="input-group col-sm-6">
                                     <span class="input-group-addon"><i style="width:15px;" class="fa fa-search"></i></span>
                                     <select id="slcPSPTSearchBy" class="form-control" style="width: 35%;">
+                                        <option>No. Induk</option>
                                         <option>Nama</option>
                                         <option>No. Pendaftaran</option>
+                                        <option>Jadwal</option>
+                                        <option>Lokasi</option>
                                         <option>Seksi</option>
                                     </select>
-                                    <input id="txtPSPTSearchBy" type="text" class="form-control pull-right" style="width: 65%">
+                                    <input id="txtPSPTSearchBy" type="text" class="form-control pull-right" style="width: 65%;">
+                                    <input id="txtPSPTSearchBySchedule" type="text" class="form-control pull-right" style="width: 65%; display: none;">
+                                    <select id="slcPSPTSearchByLocation" class="form-control hidden" style="width: 55%;">
+                                        <option value="">All</option>
+                                        <option>Pusat</option>
+                                        <option>Tuksono</option>
+                                    </select>
                                 </div>
                             </div>
                         </div>
@@ -43,6 +52,7 @@
                                                     <th class="bg-primary text-center text-nowrap">Lokasi</th>
                                                     <th class="bg-primary text-center text-nowrap">No. Pendaftaran</th>
                                                     <th class="bg-primary text-center text-nowrap">Status Pekerja</th>
+                                                    <th class="bg-primary text-center text-nowrap">No. Induk</th>
                                                     <th class="bg-primary text-center text-nowrap">Nama</th>
                                                     <th class="bg-primary text-center text-nowrap">Seksi</th>
                                                     <th class="bg-primary text-center text-nowrap">Tanggal Pendampingan</th>
@@ -56,6 +66,7 @@
                                                         <td class="text-left">{lokasi_kerja}</td>
                                                         <td class="text-left">{nomor_pendaftaran}</td>
                                                         <td class="text-left">{status_pekerja}</td>
+                                                        <td class="text-right">{nomor_induk}</td>
                                                         <td class="text-left">{nama}</td>
                                                         <td class="text-left">{seksi}</td>
                                                         <td class="text-right">{jadwal}</td>

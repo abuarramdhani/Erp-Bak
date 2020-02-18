@@ -60,7 +60,7 @@ class M_lelayu extends CI_Model
       }
     }
     if(!isset($alert)){
-      $sql1 = "SELECT count(noind) as noind FROM (
+      $sql1 = "SELECT count(distinct(noind)) as noind FROM (
                 select a.noind, nik, a.nama, c.kd_jabatan, c.jabatan, masukkerja, tglkeluar, keluar,
                 b.dept, b.bidang, b.unit
                 from hrd_khs.tpribadi a
@@ -119,7 +119,7 @@ class M_lelayu extends CI_Model
       }
     }
     if(!isset($alert)){
-    $sql1 = "SELECT count(noind) as noind FROM (
+    $sql1 = "SELECT count(distinct(noind)) as noind FROM (
               select a.noind, nik, a.nama, c.kd_jabatan, c.jabatan, masukkerja, tglkeluar, keluar,
               b.dept, b.bidang, b.unit
               from hrd_khs.tpribadi a
@@ -177,7 +177,7 @@ class M_lelayu extends CI_Model
       }
     }
     if(!isset($alert)){
-    $sql1 = "SELECT count(noind) as noind FROM (
+    $sql1 = "SELECT count(distinct(noind)) as noind FROM (
               select a.noind, nik, a.nama, c.kd_jabatan, c.jabatan, masukkerja, tglkeluar, keluar,
               b.dept, b.bidang, b.unit
               from hrd_khs.tpribadi a
@@ -235,7 +235,7 @@ class M_lelayu extends CI_Model
       }
     }
     if(!isset($alert)){
-    $sql1 = "SELECT count(noind) as noind FROM (
+    $sql1 = "SELECT count(distinct(noind)) as noind FROM (
               select a.noind, nik, a.nama, c.kd_jabatan, c.jabatan, masukkerja, tglkeluar, keluar,
               b.dept, b.bidang, b.unit
               from hrd_khs.tpribadi a
