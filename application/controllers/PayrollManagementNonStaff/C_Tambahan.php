@@ -9,6 +9,7 @@ class C_Tambahan extends CI_Controller
 		$this->load->helper('url');
 		$this->load->helper('html');
 
+		$this->load->library('Log_Activity');
 		$this->load->library('form_validation');
 		$this->load->library('session');
 		$this->load->library('encrypt');
@@ -75,7 +76,7 @@ class C_Tambahan extends CI_Controller
 		$this->load->view('V_Header',$data);
 		$this->load->view('V_Sidemenu',$data);
 		$this->load->view('PayrollManagementNonStaff/Tambahan/V_create', $data);
-		$this->load->view('V_Footer',$data);	
+		$this->load->view('V_Footer',$data);
 	}
 
 	public function Import()
@@ -99,7 +100,7 @@ class C_Tambahan extends CI_Controller
 		$this->load->view('V_Header',$data);
 		$this->load->view('V_Sidemenu',$data);
 		$this->load->view('PayrollManagementNonStaff/Tambahan/V_import', $data);
-		$this->load->view('V_Footer',$data);	
+		$this->load->view('V_Footer',$data);
 	}
 
 	public function doCreate(){
@@ -115,6 +116,11 @@ class C_Tambahan extends CI_Controller
 			'lain_lain' => $this->input->post('txtLainLainHeader'),
 		);
 		$this->M_tambahan->setTambahan($data);
+		//insert to sys.log_activity
+		$aksi = 'Payroll Management NStaf';
+		$detail = "Create Tambahan noind=$noind";
+		$this->log_activity->activity_log($aksi, $detail);
+		//
 		$header_id = $this->db->insert_id();
 
 		redirect(site_url('PayrollManagementNonStaff/ProsesGaji/Tambahan'));
@@ -135,6 +141,11 @@ class C_Tambahan extends CI_Controller
 
 		$data['upload_data'] = '';
 		if ($this->upload->do_upload('file')) {
+			//insert to sys.log_activity
+			$aksi = 'Payroll Management NStaf';
+			$detail = "Import Tambahan noind=$noind";
+			$this->log_activity->activity_log($aksi, $detail);
+			//
 			$uploadData = $this->upload->data();
 			$inputFileName = 'assets/upload/PayrollNonStaff/Tambahan/'.$uploadData['file_name'];
 			$inputFileType = $uploadData['file_type'];
@@ -158,9 +169,9 @@ class C_Tambahan extends CI_Controller
 
 			$db_record = array();
 
-			for ($row=0; $row <= $highestRow - 2 ; $row++) { 
+			for ($row=0; $row <= $highestRow - 2 ; $row++) {
 				$a = array();
-				for ($column=0; $column <= $columnCount - 1; $column++) { 
+				for ($column=0; $column <= $columnCount - 1; $column++) {
 					$headTitle = explode(',', $sheetHead[0][$column]);
 					$a[$headTitle[0]] = $sheetData[$row][$column];
 				}
@@ -188,7 +199,7 @@ class C_Tambahan extends CI_Controller
 
 				$ImportProgress = ($i/($highestRow - 2))*100;
 				$ImportProgress = round($ImportProgress);
-				
+
 				$cek_data = $this->M_dataabsensi->getProgress($user,'Import Tambahan');
 				if ($cek_data == 0) {
 					$this->M_dataabsensi->setProgress('Import Tambahan',$ImportProgress,$user);
@@ -238,7 +249,7 @@ class C_Tambahan extends CI_Controller
 		$this->load->view('V_Header',$data);
 		$this->load->view('V_Sidemenu',$data);
 		$this->load->view('PayrollManagementNonStaff/Tambahan/V_update', $data);
-		$this->load->view('V_Footer',$data);	
+		$this->load->view('V_Footer',$data);
 	}
 
 	public function doUpdate($id){
@@ -251,7 +262,7 @@ class C_Tambahan extends CI_Controller
 		$explode = explode(' - ', $noind_kodesie);
 		$noind = $explode[0];
 		$kodesie = $explode[1];
-		
+
 		$data = array(
 			'noind' => $noind,
 			'bulan_gaji' => $this->input->post('txtBulanGajiHeader',TRUE),
@@ -301,6 +312,11 @@ class C_Tambahan extends CI_Controller
 		$plaintext_string = $this->encrypt->decode($plaintext_string);
 
 		$this->M_tambahan->deleteTambahan($plaintext_string);
+		//insert to sys.log_activity
+		$aksi = 'Payroll Management NStaf';
+		$detail = "Delete Tambahan Id=$plaintext_string";
+		$this->log_activity->activity_log($aksi, $detail);
+		//
 
 		redirect(site_url('PayrollManagementNonStaff/ProsesGaji/Tambahan'));
     }
@@ -310,7 +326,7 @@ class C_Tambahan extends CI_Controller
 
 		// print_r($requestData);exit;
 
-		$columns = array(   
+		$columns = array(
 			0=> 'noind',
 			1=> 'noind',
 			2=> 'noind',
@@ -338,7 +354,7 @@ class C_Tambahan extends CI_Controller
 		$data = array();
 		$no = 1;
 		$data_array = $data_table->result_array();
-		
+
 		$json = "{";
 		$json .= '"draw":'.intval( $requestData['draw'] ).',';
 		$json .= '"recordsTotal":'.intval( $totalData ).',';
@@ -397,10 +413,10 @@ class C_Tambahan extends CI_Controller
 			}
 			$excel_row++;
 		}
-		
-		$objPHPExcel->getActiveSheet()->setTitle('Quick ERP');      
+
+		$objPHPExcel->getActiveSheet()->setTitle('Quick ERP');
 		$objWriter = PHPExcel_IOFactory::createWriter($objPHPExcel, 'Excel2007');
- 
+
 		header("Last-Modified: " . gmdate("D, d M Y H:i:s") . " GMT");
 		header("Cache-Control: no-store, no-cache, must-revalidate");
 		header("Cache-Control: post-check=0, pre-check=0", false);
