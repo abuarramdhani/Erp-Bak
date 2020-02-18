@@ -202,6 +202,7 @@
 		<script src="<?= base_url('assets/js/customRPO.js');?>"></script>
 		<script src="<?= base_url('assets/js/customHW.js');?>"></script>
 		<script src="<?= base_url('assets/js/customMCC.js');?>"></script>
+		<script src="<?= base_url('assets/js/customGTSKK.js');?>"></script>
 
 
 
