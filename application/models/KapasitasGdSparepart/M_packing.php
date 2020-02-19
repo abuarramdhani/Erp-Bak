@@ -85,4 +85,12 @@ class M_packing extends CI_Model
         $query = $oracle->query($sql);      
         $query2 = $oracle->query('commit');          
     }
+
+    public function insertColly($nospb, $jml_colly, $kardus_kecil, $kardus_sdg, $kardus_bsr, $karung){
+        $oracle = $this->load->database('oracle', true);
+        $sql = "insert into khs_sp_packaging (no_dokumen, jml_colly, kardus_kecil, kardus_sedang, kardus_besar, karung)
+                values('$nospb', '$jml_colly', '$kardus_kecil', '$kardus_sdg', '$kardus_bsr', '$karung')";
+        $query = $oracle->query($sql);      
+        $query2 = $oracle->query('commit');   
+    }
 }

@@ -57,7 +57,7 @@
                                     <div class="panel-body">
                                         <div class="table-responsive" >
                                         <table class="datatable table table-bordered table-hover table-striped text-center tblpacking" style="width: 100%;table-layout:fixed">
-                                            <thead class="btn-warning" style="color:black">
+                                            <thead style="background-color:#ffbd73;color:black">
                                                 <tr>
                                                     <th width="20px">No</th>
                                                     <th>Tanggal</th>
@@ -123,7 +123,7 @@
                                 <div class="panel-body">
                                     <div class="table-responsive" >
                                     <table class="datatable table table-bordered table-hover table-striped text-center tblpacking2" style="width: 100%;table-layout:fixed">
-                                            <thead class="btn-warning" style="color:black">
+                                            <thead style="background-color:#ffbd73;color:black">
                                                 <tr>
                                                     <th width="20px">No</th>
                                                     <th>Tanggal</th>
@@ -172,3 +172,63 @@
         </div>
     </div>
 </section>
+
+
+<div class="modal fade" id="mdlcolly" tabindex="-1" role="dialog" aria-labelledby="myModalDetail">
+	<div class="modal-dialog" role="document">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+			</div>
+			<div class="modal-body">
+            <div class="panel-body">
+                <div class="col-md-12">
+                    <center><label>JUMLAH COLLY</label><center>
+                    <input type="number" class="form-control text-center" id="jml_colly" style="width:45%" name="jml_colly">
+                </div>
+            </div>
+            <div class="panel-body">
+                <div class="col-md-12">
+                    <div class="col-md-3 text-right">
+                        KARDUS KECIL : 
+                    </div>
+                    <div class="col-md-3">
+                        <input type="number" class="form-control text-center" id="kardus_kecil" name="kardus_kecil">
+                    </div>
+                    <div class="col-md-3 text-right">
+                        KARDUS SEDANG : 
+                    </div>
+                    <div class="col-md-3">
+                        <input type="number" class="form-control text-center" id="kardus_sdg" name="kardus_sdg">
+                    </div>
+                </div>
+            </div>
+            <div class="panel-body">
+                <div class="col-md-12">
+                    <div class="col-md-3 text-right">
+                        KARDUS PANJANG :
+                    </div>
+                    <div class="col-md-3">
+                        <input type="number" class="form-control text-center" id="kardus_bsr" name="kardus_bsr">
+                    </div>
+                    <div class="col-md-3 text-right">
+                        KARUNG :
+                    </div>
+                    <div class="col-md-3">
+                        <input type="number" class="form-control text-center" id="karung" name="karung">
+                    </div>
+                </div>
+            </div>
+            <center><span id="peringatan" style="color: red"></span></center>
+            <div id="datahidden"></div>
+            <div class="panel-body">
+                <div class="col-md-12 text-center">
+                    <button type="button" class="btn btn-danger" onclick="savePacking(this)">SAVE</button>
+                </div>
+            </div>
+		    </div>
+            <div class="modal-footer">
+		</div>
+		</div>
+	</div>
+</div>
