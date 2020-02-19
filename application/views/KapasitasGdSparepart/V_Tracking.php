@@ -77,6 +77,11 @@
                                                     }elseif ($val['SELESAI_PELAYANAN'] != '' && $val['SELESAI_PENGELUARAN'] != '' && $val['SELESAI_PACKING'] == '') {
                                                         $status = "PACKING";
                                                     }
+                                                    if ($val['BON'] == 'BON' && $val['SELESAI_PELAYANAN'] != '') {
+                                                    
+                                                    }elseif ($val['BON'] == 'LANGSUNG' && $val['SELESAI_PENGELUARAN'] != '') {
+                                                        
+                                                    }else{
                                                     ?>
                                                     <tr id="baris<?= $no?>">
                                                         <td class="<?= $td?>" ><?= $no; ?></td>
@@ -90,7 +95,7 @@
                                                         <td class="<?= $td?>"><?= $status ?></td>
                                                         <td class="<?= $td?>"><button type="button" class="btn btn-danger" id="btncancelSPB" onclick="btnCancelKGS(<?= $no?>)"><i class="fa fa-close"></i></button></td>
                                                     </tr>
-                                                <?php $no++; $i++; }?>
+                                                <?php $no++; $i++; } }?>
                                                 
                                             </tbody>
                                         </table>

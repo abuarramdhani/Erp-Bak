@@ -249,3 +249,17 @@
         </div>
     </div>
 </section>
+
+<div class="modal fade" id="mdlloading" tabindex="-1" role="dialog" aria-labelledby="myModalLoading">
+	<div class="modal-dialog" role="document" style="padding-top:200px;width:20%">
+		<div class="modal-content">
+			<div class="modal-header">
+				<!-- <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button> -->
+				<!-- <h3 class="modal-title" style="text-align:center;"><b>Konfirmasi Penerimaan Komponen</b></h3> -->
+			</div>
+			<div class="modal-body">
+            <h3 class="modal-title" style="text-align:center;"><b>Mohon Tunggu Sebentar...</b></h3>
+		    </div>
+		</div>
+	</div>
+</div>

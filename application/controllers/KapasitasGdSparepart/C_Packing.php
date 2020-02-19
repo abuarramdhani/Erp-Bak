@@ -98,6 +98,12 @@ class C_Packing extends CI_Controller
 		$mulai 	= $this->input->post('mulai');
 		$selesai = $this->input->post('wkt');
 		$pic 	= $this->input->post('pic');
+		$jml_colly 		= $this->input->post('jml_colly');
+		$kardus_kecil 	= $this->input->post('kardus_kecil');
+		$kardus_sdg 	= $this->input->post('kardus_sdg');
+		$kardus_bsr 	= $this->input->post('kardus_bsr');
+		$karung 		= $this->input->post('karung');
+		// echo "<pre>";print_r($karung);exit();
 
 		$cek = $this->M_packing->cekMulai($nospb, $jenis);
 		if ($cek[0]['WAKTU_PACKING'] == '') {
@@ -127,6 +133,7 @@ class C_Packing extends CI_Controller
 		}
 		
 		$this->M_packing->SelesaiPacking($date, $jenis, $nospb, $slsh, $pic);
+		$this->M_packing->insertColly($nospb, $jml_colly, $kardus_kecil, $kardus_sdg, $kardus_bsr, $karung);
 	}
 
 	public function pauseSPB(){
@@ -145,6 +152,26 @@ class C_Packing extends CI_Controller
 		$slsh 		= $jam.':'.floor($menit/60).':'.$detik;
 
 		$this->M_packing->waktuPacking($nospb, $jenis, $slsh);
+	}
+
+	public function modalColly(){
+		$date 	= $this->input->post('date');
+		$jenis	= $this->input->post('jenis');
+		$nospb 	= $this->input->post('no_spb');
+		$mulai 	= $this->input->post('mulai');
+		$selesai = $this->input->post('wkt');
+		$pic 	= $this->input->post('pic');
+		$no 	= $this->input->post('no');
+
+		$tbl = '<input type="hidden" id="date" value="'.$date.'">
+		<input type="hidden" id="jenis" value="'.$jenis.'">
+		<input type="hidden" id="no_spb" value="'.$nospb.'">
+		<input type="hidden" id="mulai" value="'.$mulai.'">
+		<input type="hidden" id="selesai" value="'.$selesai.'">
+		<input type="hidden" id="pic" value="'.$pic.'">
+		<input type="hidden" id="no" value="'.$no.'">';
+
+		echo $tbl;
 	}
 
 	
