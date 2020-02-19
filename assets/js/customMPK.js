@@ -2954,5 +2954,17 @@ $(document).ready(function(){
         }
     });
 
-
+    $('#tbl_mpkSt').DataTable({
+       dom: 'Bfrtip',
+        buttons: [
+            {
+                extend: 'excel',
+                title:'',
+                filename: 'Daftar Seksi',
+                exportOptions: {
+                    columns: [ 0, 1, 2, 3, 4 ]
+                }
+            }
+        ]
+    });
 });
