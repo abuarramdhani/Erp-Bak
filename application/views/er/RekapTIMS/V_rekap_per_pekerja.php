@@ -18,7 +18,7 @@ foreach ($rekap as $rekap_data) {}
 			<div class="box box-primary">
 						<div class="box-body with-border">-->
 						<form target="_blank" id="export_form" method="post" action="<?php echo base_url("RekapTIMSPromosiPekerja/RekapPerPekerja/export-rekap-detail") ?>">
-							<input type="hidden" name="txtDetail" value="0">
+							<input type="hidden" name="txtDetail" value="<?php echo $detail ?>">
 							<input type="hidden" name="txtPeriode1_export" value="<?php echo $periode1 ?>">
 							<input type="hidden" name="txtPeriode2_export" value="<?php echo $periode2 ?>">
 							<input type="hidden" name="txtStatus" value="<?php echo $status ?>">
@@ -28,7 +28,7 @@ foreach ($rekap as $rekap_data) {}
 							</button>
 						</form>
 						<form target="_blank" id="export_detail_form" method="post" action="<?php echo base_url("RekapTIMSPromosiPekerja/RekapPerPekerja/export-rekap-detail-pdf") ?>">
-							<input type="hidden" name="txtDetail" value="0">
+							<input type="hidden" name="txtDetail" value="<?php echo $detail ?>">
 							<input type="hidden" name="txtPeriode1_export" value="<?php echo $periode1 ?>">
 							<input type="hidden" name="txtPeriode2_export" value="<?php echo $periode2 ?>">
 							<input type="hidden" name="txtStatus" value="<?php echo $status ?>">

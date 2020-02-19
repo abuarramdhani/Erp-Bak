@@ -117,6 +117,7 @@ class C_RekapPerPekerja extends CI_Controller {
 		if ($detail==0) {
 			$data['periode1']	= $periode1;
 			$data['periode2']	= $periode2;
+			$data['detail']	= $detail;
 			$data['status']	= $status;
 			/*$data['rekap_masakerja'] = $this->M_rekap_per_pekerja->data_rekap_masakerja($periode2,$nomer_induk, $status);
 			$data['rekap'] = $this->M_rekap_per_pekerja->data_per_pekerja($periode1,$periode2,$nomer_induk, $status);*/
@@ -164,6 +165,7 @@ class C_RekapPerPekerja extends CI_Controller {
 			$data['periode2']	= $period2;
 
 			$data['status']	= $status;
+			$data['detail']	= $detail;
 			/*$data['rekap'] = $this->M_rekap_per_pekerja->data_per_pekerja($periode1,$period2,$nomer_induk,$status);
 			$data['rekap_masakerja'] = $this->M_rekap_per_pekerja->data_rekap_masakerja($period2,$nomer_induk,$status);*/
 
@@ -181,8 +183,8 @@ class C_RekapPerPekerja extends CI_Controller {
 		$status = $this->input->post("txtStatus");
 		//insert to sys.log_activity
 		$aksi = 'REKAP TIMS';
-		$detail = "Export Excel perpekerja tanggal=".$periode1." - ".$periode2;
-		$this->log_activity->activity_log($aksi, $detail);
+		$detail_log = "Export Excel perpekerja tanggal=".$periode1." - ".$periode2;
+		$this->log_activity->activity_log($aksi, $detail_log);
 		//
 
 		$this->load->library('Excel');
@@ -670,8 +672,8 @@ class C_RekapPerPekerja extends CI_Controller {
 		}
 		//insert to sys.log_activity
 		$aksi = 'REKAP TIMS';
-		$detail = "Export PDF per pekerja noind=$NoInduk tanggal=".$periode1." - ".$periode2;
-		$this->log_activity->activity_log($aksi, $detail);
+		$detail_log = "Export PDF per pekerja noind=$NoInduk tanggal=".$periode1." - ".$periode2;
+		$this->log_activity->activity_log($aksi, $detail_log);
 		//
 		$this->load->library('pdf');
 
