@@ -79,7 +79,7 @@ $(document).ready(function(){
     ]
   });
 
-  $('.buttons-excel').prepend('<i class="fa fa-file-excel-o "></i> ');
+  // $('.buttons-excel').prepend('<i class="fa fa-file-excel-o "></i> ');
 
   $('#form-update').keypress(
     function(event){
@@ -115,6 +115,6 @@ function notif_save_hardware(status){
 
   Toast.fire({
     icon: 'success',
-    title: 'Berhasil Menyimpan Data :D'
+    title: judul
   })
 }
