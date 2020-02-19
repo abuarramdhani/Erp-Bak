@@ -391,8 +391,10 @@ class M_trackingpengirimanbarang extends CI_Model {
     public function deleteUser($id_login)
     {
         $db = $this->load->database('tpb_sql', true);
-        $sql = "delete from tp_login where id_login = '$id_login'";
+        $sql = "delete from tp_position where id_login = '$id_login'";
         $runQuery = $db->query($sql);
+        $sql2 = "delete from tp_login where id_login = '$id_login'";
+        $runQuery2 = $db->query($sql2);
     }
 
     public function getData($id_login)
