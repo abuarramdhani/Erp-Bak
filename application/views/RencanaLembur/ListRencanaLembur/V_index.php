@@ -43,6 +43,7 @@
 					<div class="col-lg-12">
 						<div class="box box-primary box-solid">
 							<div class="box-header with-border">
+								<a target="_blank" href="<?php echo base_url('assets/video/approval_rencana_lembur.webm') ?>" class="btn btn-success btn-sm" id="btnTutorial"><span class="fa fa-video"></span> Video Panduan</a>
 							</div>
 							<div class="box-body">
 								<div class="row">
