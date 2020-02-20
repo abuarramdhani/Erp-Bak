@@ -16,6 +16,7 @@ class M_pelayanan extends CI_Model
                 from khs_tampung_spb
                 where selesai_pelayanan is null
                 and cancel is null
+                and (bon != 'PENDING' or bon is null)
                 order by urgent, tgl_dibuat";
         $query = $oracle->query($sql);
         return $query->result_array();

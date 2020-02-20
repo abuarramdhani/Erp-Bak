@@ -9,6 +9,8 @@
         <div class="col-md-12">
             <label class="text-right">Tanggal : <?php echo $val['tanggal'] ?></label>
             <input type="hidden" name="tanggalnya[]" value="<?= $val['tanggal']?>">
+            <input type="hidden" name="tglAwal[]" value="<?= $tglAwal?>">
+            <input type="hidden" name="tglAkhir[]" value="<?= $tglAkhir?>">
         </div>
         <!-- <div class="col-md-12"> -->
         <div class="col-md-6">

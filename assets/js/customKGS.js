@@ -87,25 +87,48 @@ function btnCancelKGS(no) {
 function btnPendingSpb(no) {
     var jenis = $('#jenis'+no).val();
     var nodoc = $('#nodoc'+no).val();
+    var bon = $('#bon'+no).val();
     console.log(jenis);
-    Swal.fire({
-        title: 'Apakah Anda Yakin Akan Melakukan Pending?',
-        type: 'question',
-        showCancelButton: true,
-        allowOutsideClick: false
-    }).then(result => {
-        if (result.value) {  
-            $('#baris'+no).css('display', 'none');
-            $.ajax ({
-                url : baseurl + "KapasitasGdSparepart/Tracking/pendingSPB",
-                data: { no : no , jenis : jenis, nodoc : nodoc},
-                type : "POST",
-                dataType: "html",
-                success: function(data){
-                    swal.fire("Berhasil!", "", "success");
-                    }
-                });
-    }})   
+    if (bon == 'PENDING') {
+        Swal.fire({
+            title: 'Apakah Anda Yakin Akan Menghapus Pending?',
+            type: 'question',
+            showCancelButton: true,
+            allowOutsideClick: false
+        }).then(result => {
+            if (result.value) {  
+                $.ajax ({
+                    url : baseurl + "KapasitasGdSparepart/Tracking/deletependingSPB",
+                    data: { no : no , jenis : jenis, nodoc : nodoc},
+                    type : "POST",
+                    dataType: "html",
+                    success: function(data){
+                        swal.fire("Berhasil!", "", "success");
+                        window.location.reload();
+                        }
+                    });
+        }}) 
+    }else {
+        Swal.fire({
+            title: 'Apakah Anda Yakin Akan Melakukan Pending?',
+            type: 'question',
+            showCancelButton: true,
+            allowOutsideClick: false
+        }).then(result => {
+            if (result.value) {  
+                $.ajax ({
+                    url : baseurl + "KapasitasGdSparepart/Tracking/pendingSPB",
+                    data: { no : no , jenis : jenis, nodoc : nodoc},
+                    type : "POST",
+                    dataType: "html",
+                    success: function(data){
+                        swal.fire("Berhasil!", "", "success");
+                        window.location.reload();
+                        }
+                    });
+        }}) 
+    }
+      
     
 }
 
@@ -612,7 +635,9 @@ function savePacking(th) {
     var sum = parseInt(kardus_kecil) + parseInt(kardus_sdg) + parseInt(kardus_bsr) + parseInt(karung);
     console.log(sum);  
 
-    if (jml_colly != sum) {
+    if (jml_colly == '') {
+        $('#peringatan').html('Mohon Isi Jumlah Colly..');
+    }else if (jml_colly != sum) {
         $('#peringatan').html('Jumlah tidak sesuai. Tolong cek kembali!!');
     }else{
         $.ajax ({
@@ -758,4 +783,24 @@ function schMonitoringSPB(th) {
         
         })
 	});
+}
+
+//------------------------------------------------------------ PENYERAHAN ---------------------------------------------------------------------
+
+function getDataPenyerahan(th) {
+    var tglAwal = $('#tglAwal').val();
+
+    var request = $.ajax({
+        url: baseurl+'KapasitasGdSparepart/Penyerahan/getData',
+        data: {tglAwal : tglAwal },
+        type: "POST",
+        datatype: 'html'
+	});
+	$('#tb_penyerahan').html('');
+	$('#tb_penyerahan').html('<center><img style="width:130px; height:auto" src="'+baseurl+'assets/img/gif/loading10.gif"></center>' );
+	request.done(function(result){
+        $('#tb_penyerahan').html('');
+        $('#tb_penyerahan').html(result);
+        
+    })
 }

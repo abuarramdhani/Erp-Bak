@@ -59,7 +59,7 @@
                                     <div class="panel-body">
                                         <div class="table-responsive" >
                                         <table class="datatable table table-bordered table-hover table-striped text-center tblpengeluaran" style="width: 100%;table-layout:fixed">
-                                            <thead class="btn-success" style="color:yellow">
+                                            <thead style="background-color:#38d95e;color:black">
                                                 <tr>
                                                     <th width="20px">No</th>
                                                     <th>Tanggal</th>
@@ -127,7 +127,7 @@
                                 <div class="panel-body">
                                     <div class="table-responsive" >
                                     <table class="datatable table table-bordered table-hover table-striped text-center tblpengeluaran2" style="width: 100%;">
-                                            <thead class="btn-success" style="color:yellow">
+                                            <thead style="background-color:#38d95e;color:black">
                                                 <tr>
                                                     <th>No</th>
                                                     <th>Tanggal</th>
