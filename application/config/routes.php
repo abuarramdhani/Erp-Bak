@@ -3855,3 +3855,9 @@ $route['GeneratorTSKK/EditTSKK/(:any)/(:any)/(:any)'] = 'GeneratorTSKK/C_GenTSKK
 $route['GeneratorTSKK/EditTSKK/(:any)/(:any)/(:any)/(:any)'] = 'GeneratorTSKK/C_GenTSKK/$1/$2/$3/$4';
 
 $route['GeneratorTSKK/EditTSKK'] = 'GeneratorTSKK/C_GenTSKK/EditTSKK';
+
+//------------------------------------------------Cetak Kartu Body--------------------------------------------------------//
+$route['CetakKartuBody'] 							= 'CetakKartuBody/C_Index';
+$route['CetakKartuBody/Cetak'] 						= 'CetakKartuBody/C_Cetak';
+$route['CetakKartuBody/Cetak/(:any)'] 				= 'CetakKartuBody/C_Cetak/$1';
+$route['CetakKartuBody/Cetak/(:any)/(:any)'] 		= 'CetakKartuBody/C_Cetak/$1/$2';
