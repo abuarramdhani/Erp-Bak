@@ -49,4 +49,18 @@ class C_Tracking extends CI_Controller
 		$this->load->view('V_Footer',$data);
 	}
 
+	public function pendingSPB(){
+		$jenis = $this->input->post('jenis');
+		$no_spb = $this->input->post('nodoc');
+
+		$this->M_tracking->savePending($jenis, $no_spb);
+	}
+
+	public function deletependingSPB(){
+		$jenis = $this->input->post('jenis');
+		$no_spb = $this->input->post('nodoc');
+
+		$this->M_tracking->deletePending($jenis, $no_spb);
+	}
+
 }

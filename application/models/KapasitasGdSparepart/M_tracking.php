@@ -41,5 +41,19 @@ class M_tracking extends CI_Model {
         // echo $sql;
     }
 
+    public function savePending($jenis, $nospb){
+        $oracle = $this->load->database('oracle', true);
+        $sql = "update khs_tampung_spb set BON = 'PENDING' where no_dokumen = '$nospb' and jenis_dokumen = '$jenis'";
+        $query = $oracle->query($sql);
+        $query2 = $oracle->query('commit');
+    }
+
+    public function deletePending($jenis, $nospb){
+        $oracle = $this->load->database('oracle', true);
+        $sql = "update khs_tampung_spb set BON = '' where no_dokumen = '$nospb' and jenis_dokumen = '$jenis'";
+        $query = $oracle->query($sql);
+        $query2 = $oracle->query('commit');
+    }
+
 }
 

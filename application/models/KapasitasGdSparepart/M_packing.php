@@ -18,7 +18,7 @@ class M_packing extends CI_Model
                 where selesai_pengeluaran is not null
                 and selesai_packing is null
                 and cancel is null
-                and bon is null
+                and (bon != 'PENDING' or bon is null)
                 order by urgent, tgl_dibuat";
         $query = $oracle->query($sql);
         return $query->result_array();
