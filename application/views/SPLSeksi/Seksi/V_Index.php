@@ -67,15 +67,7 @@
 											SPL BARU
 										</div>
 										<div class="box-body text-center" style="font-size: 25pt">
-											<?php 
-												$nilai = '0';
-												foreach ($rekap_spl as $rkp) {
-													if ($rkp['status'] == '0') {
-														$nilai = $rkp['jumlah'];
-													}
-												} 
-												echo $nilai;
-											?>
+											<?= $baru ?>
 										</div>
 									</a>
 								</div>
@@ -87,15 +79,7 @@
 											SPL DITOLAK
 										</div>
 										<div class="box-body text-center" style="font-size: 25pt">
-											<?php 
-												$nilai = '0';
-												foreach ($rekap_spl as $rkp) {
-													if ($rkp['status'] == '3') {
-														$nilai = $rkp['jumlah'];
-													}
-												} 
-												echo $nilai;
-											?>
+											<?= $reject ?>
 										</div>
 									</a>
 								</div>
@@ -107,13 +91,7 @@
 											SPL TOTAL
 										</div>
 										<div class="box-body text-center" style="font-size: 25pt">
-											<?php 
-												$nilai = 0;
-												foreach ($rekap_spl as $rkp) {
-													$nilai += $rkp['jumlah'];
-												} 
-												echo $nilai;
-											?>
+											<?= $total ?>
 										</div>
 									</a>
 								</div>

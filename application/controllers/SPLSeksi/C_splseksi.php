@@ -33,7 +33,7 @@ class C_splseksi extends CI_Controller {
 		$data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id);
 		$data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id);
 		return $data;
-    }
+	}
 
     public function index(){
     	$this->checkSession();
@@ -41,8 +41,6 @@ class C_splseksi extends CI_Controller {
 		$data = $this->menu('', '', '');
 		$data['responsibility_id'] = $this->session->responsibility_id;
 		$data['jari'] = $this->M_splseksi->getJari($this->session->userid);
-		// $this->session->spl_validasi_operator = FALSE;
-		// echo "<pre>";print_r($_SESSION);exit();
 
 		if ($this->session->spl_validasi_kasie !== TRUE) {
 			 $this->session->spl_validasi_kasie = FALSE;
@@ -69,8 +67,25 @@ class C_splseksi extends CI_Controller {
 			}
 		}
 
-		if ($data['responsibility_id'] == 2592) {
-			$data['rekap_spl'] = $this->M_splseksi->getRekapSpl($this->session->user,'7');
+		// echo $data['responsibility_id']; die;
+		$akses_sie = array();
+		$akses_kue = $this->M_splseksi->show_pekerja('', $this->session->user, '');
+		$akses_spl = $this->M_splseksi->show_akses_seksi($this->session->user);
+		foreach($akses_kue as $ak){
+			$akses_sie[] = $this->cut_kodesie($ak['kodesie']);
+			foreach($akses_spl as $as){
+				$akses_sie[] = $this->cut_kodesie($as['kodesie']);
+			}
+		}
+
+		if ($data['responsibility_id'] == 2592) { // KASIE
+			// $data['rekap_spl'] = $this->M_splseksi->getRekapSpl($this->session->user,'7');
+			$data['baru'] = $this->M_splseksi->getCountDashboard($akses_sie, "'01'");
+			$data['reject'] = $this->M_splseksi->getCountDashboard($akses_sie, "'35'");
+			$data['total'] = $this->M_splseksi->getCountDashboard($akses_sie);
+				// get akses seksi
+
+
 			if ($this->session->spl_validasi_kasie == TRUE) {
 				$this->load->view('V_Header',$data);
 				$this->load->view('V_Sidemenu',$data);
@@ -81,8 +96,12 @@ class C_splseksi extends CI_Controller {
 				$this->load->view('SPLSeksi/Seksi/V_Index',$data);
 				$this->load->view('V_Footer',$data);
 			}
-		}elseif ($data['responsibility_id'] == 2593){
-			$data['rekap_spl'] = $this->M_splseksi->getRekapSpl($this->session->user,'5');
+		}elseif ($data['responsibility_id'] == 2593){ // ASKA
+			// $data['rekap_spl'] = $this->M_splseksi->getRekapSpl($this->session->user,'5');
+			$data['baru'] = $this->M_splseksi->getCountDashboard($akses_sie, "'01','21'");
+			$data['reject'] = $this->M_splseksi->getCountDashboard($akses_sie, "'35'");
+			$data['total'] = $this->M_splseksi->getCountDashboard($akses_sie);
+
 			if ($this->session->spl_validasi_asska == TRUE) {
 				$this->load->view('V_Header',$data);
 				$this->load->view('V_Sidemenu',$data);
@@ -93,7 +112,7 @@ class C_splseksi extends CI_Controller {
 				$this->load->view('SPLSeksi/Seksi/V_Index',$data);
 				$this->load->view('V_Footer',$data);
 			}
-		}elseif($data['responsibility_id'] == 2587){
+		}elseif($data['responsibility_id'] == 2587){ 
 			$data['rekap_spl'] = $this->M_splseksi->getRekapSpl($this->session->user,'7');
 			if ($this->session->spl_validasi_operator == TRUE) {
 				$this->load->view('V_Header',$data);

@@ -757,7 +757,7 @@ class C_splseksi extends CI_Controller {
 								$errortext = "Jam Awal Lembur Tidak Sesuai";
 							}
 						}elseif ($lembur == '002') { // lembur pulang
-							// FIXMME :
+							// FIXME : // let's see this code work or not
 							if ($keluar_shift <= $awal_lembur && $awal_lembur <= $keluar_absen) {
 								$aktual_awal = $awal_lembur;
 								if ($keluar_shift <= $akhir_lembur && $akhir_lembur <= $keluar_absen) {
@@ -793,7 +793,7 @@ class C_splseksi extends CI_Controller {
 									$error = "1";
 									$errortext = "Jam Akhir Lembur Tidak Sesuai";
 								}
-							}elseif($awal_lembur <= $masuk_absen){
+							}elseif($awal_lembur <= $masuk_absen){	
 								$aktual_awal = $masuk_absen;
 								if ($masuk_absen <= $akhir_lembur && $akhir_lembur <= $masuk_shift) {
 									$aktual_akhir = $akhir_lembur;
@@ -847,23 +847,30 @@ class C_splseksi extends CI_Controller {
 						$akhir_lembur = date_format(date_create($akhir_lembur), 'Y-m-d H:i:s');
 
 						$shiftpekerja = $this->M_splseksi->getShiftpekerja($noind,$tanggal);
+
 						if ($shiftpekerja == 0) {
 							$absensi = $this->M_splseksi->getAbsensi($noind, $tanggal);
 							$absen = $absensi->result_array();
-							if($absensi->num_rows()%2 == 1) {
+							if ($absensi->num_rows()%2 == 1) {
 								$error = "1";
 								$errortext = "Absen pada tanggal ".date('d-m-Y', strtotime($tanggal))." tidak lengkap mohon membuat memo absen, jam absen({$absen['0']['waktu']})";
 							} elseif ($absensi->num_rows() == 0) {
 								$error = "1";
 								$errortext = "Tidak ada absen pada tanggal ".date('d-m-Y', strtotime($tanggal));
-							} else if( (strtotime($awal_lembur) < strtotime(date('Y-m-d', strtotime($absen[0]['tanggal']))." ".$absen[0]['waktu'])) ) {
-								$error = "1";
-								$errortext = "Jam lembur tidak sesuai, jam absen ({$absen[0]['waktu']} - {$absen[1]['waktu']})";
-							}else {
-								$aktual_awal = $awal_lembur;
-								$aktual_akhir = $absen[1]['waktu'];
+								
+							// diilangi karena kalau aktual absen masuk > awal lembur masiih bisa input, dan masuk kondisi dibawah
+							// } else if( (strtotime($awal_lembur) < strtotime(date('Y-m-d', strtotime($absen[0]['tanggal']))." ".$absen[0]['waktu'])) ) {
+							// 	$error = "1";
+							// 	$errortext = "Jam lembur tidak sesuai, jam absen ({$absen[0]['waktu']} - {$absen[1]['waktu']})";
+							} else {	
+								$absenMasuk = date('Y-m-d', strtotime($absen[0]['tanggal']))." ".$absen[0]['waktu'];
+								$absenPulang = date('Y-m-d', strtotime($absen[1]['tanggal']))." ".$absen[1]['waktu'];
+								// jika aktual absen < input akhir lembur, maka jam aktual akhir lembur ngikut absen
+								// kalau lebih, maka ngikut inputan
+								$aktual_awal = (strtotime($absenMasuk) > strtotime($awal_lembur)) ? $absen[0]['waktu'] : $awal_lembur;
+								$aktual_akhir = (strtotime($absenPulang) < strtotime($akhir_lembur)) ? $absen[1]['waktu'] : $akhir_lembur;
 							}
-						}else{
+						} else {
 							$error = "1";
 							$errortext = "Lembur Tidak Valid (Terdapat Shift)";
 						}
@@ -991,6 +998,13 @@ class C_splseksi extends CI_Controller {
 			}
 		}
 
+		// Pengecekan sudah punya SPL belum  pada hari dimana lembur ?
+		$checkSPL= $this->M_splseksi->checkingExistSPL($noind, $tanggal, $tanggal.$waktu0, $tanggal1.$waktu1);
+		if($checkSPL['exist'] && $error == 0) {
+			$error = 1;
+			$errortext = "Sudah ada SPL di tanggal {$checkSPL['message']['tanggal']} ({$checkSPL['message']['jam']})";
+		}
+
 		if($tanggal.$waktu0 === $tanggal1.$waktu1){
 			$error = 1;
 			$errortext = 'Waktu lembur yang diambil tidak boleh sama !!!';
@@ -1059,8 +1073,9 @@ class C_splseksi extends CI_Controller {
 		for($x=0; $x<$size; $x++){
 			$noind = $this->input->post("noind[$x]");
 		
-			//checking pekerja yang ada spl di tanggal yg diambil
-			$checkSPL = $this->M_splseksi->checkSPL($noind, $tanggal);
+			// dicomment karena pengecekan melalui frontend
+			// $checkSPL = $this->M_splseksi->checkSPL($noind, $tanggal);
+			$checkSPL = false;
 			if($checkSPL){
 				$is_notvalid[] = $noind;
 				continue;
@@ -1145,8 +1160,6 @@ class C_splseksi extends CI_Controller {
 			$target = implode(';', $target);
 			$realisasi = implode(';', $realisasi);
 
-			// FIXME: reindex the pekerjaan
-			// TODO: trial this, pekerjaan null ?
 			$pekerjaan = $pekerjaan_post[$x];
 			$pekerjaan = str_replace("'", '', implode(';', $pekerjaan));
 

@@ -54,13 +54,13 @@
 										<label class="col-sm-2 control-label">Status</label>
 										<div class="col-sm-10">
 											<select class="form-control select2"  name="status" id="status">
-												<option value="">-- silahkan pilih --</option>
+												<option value="" <?= ($parameter == 'Total') ? 'selected' : '' ?>>-- silahkan pilih --</option>
 												<option value="01">SPL Baru</option>
 												<option value="11">SPL Sudah diproses</option>
-												<option value="21" selected>Approved by Kasie</option>
+												<option value="21" <?= ($parameter == 'Baru') ? 'selected' : '' ?>>Approved by Kasie</option>
 												<option value="25">Approved by AssKa</option>
 												<option value="31">Canceled by Kasie</option>
-												<option value="35">Canceled by AssKa</option>
+												<option value="35" <?= ($parameter == 'Tolak') ? 'selected' : '' ?>>Canceled by AssKa</option>
 											</select>
 										</div>
 									</div>
@@ -143,17 +143,9 @@
 									<th width="20%">Tanggal Proses</th>
 									</tr>
 								</thead>
-								<?php if (isset($data) and !empty($data)) { ?>
-									<tbody>
-										<?php foreach ($data as $key) {
-											echo "<tr>";
-											foreach ($key as $val) {
-												echo "<td>".$val."</td>";
-											}
-											echo "</tr>";
-										} ?>
-									</tbody>
-								<?php } ?>
+								<tbody>
+									<!-- ajax -->
+								</tbody>
 							</table>
 							</div>
 						</div>
@@ -168,7 +160,7 @@
 								</div>
 								<div class="modal-body">
 									Berikan alasan anda :
-									<textarea class="form-control" style="resize: vertical; min-height: 100px; min-width: 75%; border-radius: 6px;" id="spl_tex_proses"></textarea>
+									<textarea class="form-control" placeholder="Wajib diisi jika reject" style="resize: vertical; max-height: 200px; min-height: 100px; min-width: 75%; border-radius: 6px;" id="spl_tex_proses"></textarea>
 								</div>
 								<div class="modal-footer">
 									<a href="finspot:FingerspotVer;<?php echo base64_encode(base_url().'ALA/Approve/fp_proces?userid='.$this->session->userid.'&stat=35&data=&ket='); ?>" type="submit" id="spl_proses_reject" class="hidden"><i class="fa fa-exclamation-circle"></i> Reject</a>
@@ -258,6 +250,9 @@
 
 						document.addEventListener("DOMContentLoaded",function(e){
 							// setupTimers();
+							<?php if(!empty($parameter)): ?>
+								$('#spl-approval-1').trigger('click')
+							<?php endif; ?>
 						});
 					</script>
 

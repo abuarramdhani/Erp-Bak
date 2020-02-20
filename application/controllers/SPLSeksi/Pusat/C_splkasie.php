@@ -57,47 +57,11 @@ class C_splkasie extends CI_Controller {
 		$data = $this->menu('', '', '');
 		$data['lokasi'] = $this->M_splseksi->show_lokasi();
 		$data['jari'] = $this->M_splseksi->getJari($this->session->userid);
-		if ($this->input->get('stat')) {
-			$status = $this->input->get('stat');
-			$data_spl = array();
-			if ($status == 'Baru') {
-				$show_list_spl = $this->M_splseksi->show_spl2('0%',$this->session->user,'7');
-			}elseif ($status == 'Tolak') {
-				$show_list_spl = $this->M_splseksi->show_spl2('2%',$this->session->user,'7');
-			}else{
-				$show_list_spl = $this->M_splseksi->show_spl2('%',$this->session->user,'7');
-			}
-			foreach($show_list_spl as $sls){
-				$index = array();
-				if($sls['Status'] == "01"){
-				$index[] = '<input type="checkbox" name="splid[]" class="spl-chk-data"
-					value="'.$sls['ID_SPL'].'" style="width:20px; height:20px; vertical-align:bottom;">';
-				}else{
-					$index[] = "";
-				}
+		
+		$status = $this->input->get('stat');
+		
+		$data['parameter'] = $status;
 
-				$index[] = $sls['Tgl_Lembur'];
-				$index[] = $sls['Noind'];
-				$index[] = $sls['nama'];
-				$index[] = $sls['kodesie'];
-				$index[] = $sls['seksi'];
-				$index[] = $this->convertUnOrderedlist($sls['Pekerjaan']);
-				$index[] = $sls['nama_lembur'];
-				$index[] = $sls['Jam_Mulai_Lembur'];
-				$index[] = $sls['Jam_Akhir_Lembur'];
-				$index[] = $sls['Break'];
-				$index[] = $sls['Istirahat'];
-				$index[] = $this->hitung_jam_lembur($sls['Noind'], $sls['Kd_Lembur'], $sls['Tgl_Lembur'], $sls['Jam_Mulai_Lembur'], $sls['Jam_Akhir_Lembur'], $sls['Break'], $sls['Istirahat']);
-				$index[] = $this->convertUnOrderedlist($sls['target']);
-				$index[] = $this->convertUnOrderedlist($sls['realisasi']);
-				$index[] = $sls['alasan_lembur'];
-				$index[] = $sls['Deskripsi']." ".$sls['User_'];
-				$index[] = $sls['Tgl_Berlaku'];
-
-				$data_spl[] = $index;
-			}
-			$data['data'] = $data_spl;
-		}
 		$this->load->view('V_Header',$data);
 		$this->load->view('V_Sidemenu',$data);
 		$this->load->view('SPLSeksi/Kasie/V_data_spl',$data);
@@ -784,10 +748,14 @@ class C_splkasie extends CI_Controller {
 		}
 
 		$this->send_email_2($status,$spl_id,$ket);
-
+		
 		$this->session->spl_validasi_waktu_kasie = time();
-
-		echo "<script>localStorage.setItem('resultApproveSPL', true);window.close();</script>";
+		
+		if(!empty($status) && !empty($spl_id)) {
+			echo "<script>localStorage.setItem('resultApproveSPL', true);window.close();</script>";
+		}else {
+			echo "<script>localStorage.setItem('resultApproveSPL', 3);window.close();</script>"; //result error
+		}
 	}
 
 	//validasi user kasie & asska

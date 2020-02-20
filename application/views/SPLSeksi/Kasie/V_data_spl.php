@@ -62,13 +62,13 @@
 										<label class="col-sm-2 control-label">Status</label>
 										<div class="col-sm-10">
 											<select class="form-control select2"  name="status" id="status">
-												<option value="">-- silahkan pilih --</option>
-												<option value="01" selected>SPL Baru</option>
+												<option value="" <?= ($parameter == 'Total') ? 'selected' : '' ?>>-- silahkan pilih --</option>
+												<option value="01" <?= ($parameter == 'Baru') ? 'selected' : '' ?>>SPL Baru</option>
 												<option value="11">SPL Sudah diproses</option>
 												<option value="21">Approved by Kasie</option>
 												<option value="25">Approved by AssKa</option>
 												<option value="31">Canceled by Kasie</option>
-												<option value="35">Canceled by AssKa</option>
+												<option value="35" <?= ($parameter == 'Tolak') ? 'selected' : '' ?>>Canceled by AssKa</option>
 											</select>
 										</div>
 									</div>
@@ -263,6 +263,13 @@
 						// document.addEventListener("DOMContentLoaded",function(e){
 						// 	setupTimers();
 						// });
+						document.addEventListener("DOMContentLoaded",function(e){
+							// setupTimers();
+							<?php if(!empty($parameter)): ?>
+								$('#spl-approval-0').trigger('click')
+							<?php endif; ?>
+						});
+
 					</script>
 
 				</form>
