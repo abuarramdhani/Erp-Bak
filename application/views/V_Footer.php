@@ -203,6 +203,7 @@
 		<script src="<?= base_url('assets/js/customMCC.js');?>"></script>
 		<script src="<?= base_url('assets/js/customGTSKK.js');?>"></script>
 		<script src="<?= base_url('assets/js/customCKB.js');?>"></script>
+		<script src="<?= base_url('assets/js/customME.js') ?>"></script>
 
 
 
