@@ -1,3 +1,11 @@
+	<style>
+		#example11_paginate {
+			float: right;
+		}
+		#example11_info {
+			float: left;
+		}
+	</style>
 	<section class="content">
 		<div class="row">
 			<div class="col-lg-12">

@@ -5,6 +5,12 @@
 		.btn-default {
 			color: white !important;
 		}
+		#example11_paginate {
+			float: right;
+		}
+		#example11_info {
+			float: left;
+		}
 	</style>
 	<section class="content">
 		<div class="row">

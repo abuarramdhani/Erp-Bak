@@ -2,7 +2,7 @@
 $(function() {
     $(".spl-table.kasie, .spl-table.aska").DataTable({
         "scrollX": true,
-        "dom": '<"top"Bfpi<"clear">>rt<"bottom"ip<"clear">>',
+        "dom": '<"top"Bfpi>rt<"bottom"ip>',
         "buttons": [{
                 extend: 'excel',
                 className: 'btn btn-success'
@@ -10,7 +10,7 @@ $(function() {
             {
                 text: 'Proses',
                 className: 'btn btn-proses btn-primary disabled',
-                action: function(e, dt, node, config) {
+                action: (e, dt, node, config) => {
                     $('#spl_tex_proses').val('')
                     $('#btn-ProsesSPL').click();
                 }
@@ -18,11 +18,12 @@ $(function() {
         ],
         "ordering": false,
         "retrieve": true,
-        "initComplete": function() {
+        "initComplete": () => {
             if ($('#btn-ProsesSPL').attr('id') == undefined) {
                 $('#example11_wrapper').find('a.dt-button:last').hide();
                 $('#example11_wrapper').find('button.dt-button:last').hide();
             };
+
             $('#example11_wrapper').find('a.dt-button').removeClass('dt-button');
             $('#example11_wrapper').find('button.dt-button').removeClass('dt-button');
             $('#example11_wrapper').find('a.btn').css("margin-right", "10px");
@@ -44,6 +45,7 @@ $(function() {
                 $('#example11_wrapper').find('a.dt-button:last').hide();
                 $('#example11_wrapper').find('button.dt-button:last').hide();
             };
+
             $('#example11_wrapper').find('a.dt-button').removeClass('dt-button');
             $('#example11_wrapper').find('button.dt-button').removeClass('dt-button');
             $('#example11_wrapper').find('a.btn').css("margin-right", "10px");
