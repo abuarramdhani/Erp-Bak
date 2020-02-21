@@ -66,7 +66,7 @@ class C_Index extends CI_Controller {
 		$this->load->view('V_Header',$data);
 		$this->load->view('V_Sidemenu',$data);
 		$this->load->view('PerizinanDinas/V_Index',$data);
-		$this->load->view('V_Footer',$data);
+		$this->load->view('PerizinanDinas/V_Footer',$data);
 
 	}
 

@@ -13,15 +13,25 @@ class M_index extends CI_Model
 	{
 		$sql = "SELECT a.*,
                 (case when a.jenis_izin = '1' then 'DINAS PUSAT' when a.jenis_izin = '2' then 'DINAS TUKSONO' else 'DINAS MLATI' end) as to_dinas,
-                (select string_agg(concat(noind,' - ',trim(nama)),'<br>') from hrd_khs.tpribadi b where position(b.noind in a.noind)>0) as pekerja,
                 (select string_agg(concat(noind,' - ',trim(nama)),'<br>') from hrd_khs.tpribadi b where position(b.noind in a.atasan_aproval)>0) as atasan
                 FROM \"Surat\".tperizinan a
-                WHERE a.created_date::date = '$today' AND a.status = '0'
+                WHERE a.created_date::date = '$today'
+                AND a.status = '0'
                 order by a.status, a.izin_id DESC";
 
 		$query = $this->personalia->query($sql);
 		return $query->result_array();
 	}
+
+    public function getTujuanA($today)
+    {
+        $sql="SELECT ti.izin_id, (select concat(noind, ' - ', trim(nama)) from hrd_khs.tpribadi where ti.noind = noind) as pekerja, ti.tujuan
+                FROM \"Surat\".tperizinan a
+                LEFT JOIN \"Surat\".tpekerja_izin ti on ti.izin_id::int = a.izin_id::int
+                WHERE a.created_date::date = '$today'
+                AND a.status = '0'";
+        return $this->personalia->query($sql)->result_array();
+    }
 
 	public function update($status, $idizin)
     {

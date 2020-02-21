@@ -64,7 +64,7 @@ class C_Index extends CI_Controller
 		$this->load->view('V_Header',$data);
 		$this->load->view('V_Sidemenu',$data);
 		$this->load->view('PerizinanDinas/RekapPerizinanDinas/V_Index',$data);
-		$this->load->view('V_Footer',$data);
+		$this->load->view('PerizinanDinas/V_Footer',$data);
 
 	}
 
@@ -123,7 +123,52 @@ class C_Index extends CI_Controller
 		}
 
 		if ($jenis == '1') {
-			$data['IzinApprove'] = $this->M_index->IzinApprove($periode);
+			$izin = $this->M_index->IzinApprove($periode);
+			//untuk nyari pekerja
+			$a = $this->M_index->getTujuanA($periode);
+			$b = array();
+			$output = array();
+			$data['izin'] = array();
+			foreach ($a as $key) {
+				$b[$key['izin_id']][] = $key['pekerja'];
+			}
+			foreach($b as $type => $label)
+			{
+				$output[] = array(
+					'izin_id' => $type,
+					'pekerja' => $label
+				);
+			}
+			// untuk nyari makan
+			$makan = array();
+			$ot_makan = array();
+			foreach ($a as $key) {
+				$makan[$key['izin_id']][] = $key['tujuan'];
+			}
+			foreach($makan as $type => $label)
+			{
+				$ot_makan[] = array(
+					'izin_id' => $type,
+					'tujuan' => $label
+				);
+			}
+			//menggabungkan data dengan makan
+			$c = array();
+			foreach ($izin as $key) {
+				foreach ($ot_makan as $value) {
+					if ($key['izin_id'] == $value['izin_id']) {
+						$c[] = array_merge($key, $value);
+					}
+				}
+			}
+			//menggabungkan data dengan pekerja
+			foreach ($c as $key) {
+				foreach ($output as $value) {
+					if ($key['izin_id'] == $value['izin_id']) {
+						$data['IzinApprove'][] = array_merge($key, $value);
+					}
+				}
+			}
 			$view = $this->load->view('PerizinanDinas/RekapPerizinanDinas/V_Process',$data);
 		}else {
 			$data['pekerja'] = $this->M_index->getPekerja($periodea);

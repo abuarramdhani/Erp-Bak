@@ -82,13 +82,21 @@
                                       }else {
                                           echo date('H:i:s', strtotime($row['berangkat'])).' PM';
                                       } ?></td>
-                                      <td style="white-space: nowrap"><?php echo $row['pekerja'];  ?></td>
+                                      <td style="white-space: nowrap"><?php foreach ($row['pekerja'] as $val) {
+                                             if ($val == null || $val == '') {
+                                               echo " - <br>";
+                                             }else {
+                                               echo $val.'<br>';
+                                             }
+                                       }  ?></td>
                                       <td style="white-space: nowrap; text-align: center;"><?php echo $row['to_dinas'] ?></td>
-                                      <td style="white-space: nowrap"><?php if ($row['tujuan'] == null || $row['tujuan'] == '') {
-                                                                          echo " - ";
-                                                                        }else {
-                                                                          echo $row['tujuan'];
-                                                                        }  ?></td>
+                                      <td style="white-space: nowrap"><?php foreach ($row['tujuan'] as $key) {
+                                            if ($key == null || $key == '') {
+                                              echo " - <br>";
+                                            }else {
+                                              echo $key.'<br>';
+                                            }
+                                      }  ?></td>
                                       <td style="white-space: nowrap"><?php echo $row['keterangan'] ?></td>
                                       <td style="text-align: center;"><?php
                                             if ($row['status'] == 0 || $row['status'] == 5) { ?>
@@ -141,7 +149,13 @@
                                       }else {
                                           echo date('H:i:s', strtotime($row['berangkat'])).' PM';
                                       } ?></td>
-                                     <td style="white-space: nowrap"><?php echo $row['pekerja'];  ?></td>
+                                     <td style="white-space: nowrap"><?php foreach ($row['pekerja'] as $val) {
+                         if ($val == null || $val == '') {
+                           echo " - <br>";
+                         }else {
+                           echo $val.'<br>';
+                         }
+                   }  ?></td>
                                       <td style="white-space: nowrap; text-align: center;"><?php if ( $row['jenis_izin'] == '1') {
                                                                                       echo "DINAS PUSAT";
                                                                                     }elseif ( $row['jenis_izin'] == '2') {
@@ -150,11 +164,13 @@
                                                                                       echo "DINAS MLATI";
                                                                                     } ?>
                                       </td>
-                                      <td style="white-space: nowrap"><?php if ($row['tujuan'] == null || $row['tujuan'] == '') {
-                                                                          echo " - ";
-                                                                        }else {
-                                                                          echo $row['tujuan'];
-                                                                        }  ?></td>
+                                      <td style="white-space: nowrap"><?php foreach ($row['tujuan'] as $key) {
+                                                               if ($key == null || $key == '') {
+                                                                 echo " - <br>";
+                                                               }else {
+                                                                 echo $key.'<br>';
+                                                               }
+                                                         }  ?></td>
                                       <td style="white-space: nowrap"><?php echo $row['keterangan'] ?></td>
                                       <td style="text-align: center;"><?php if ($row['status'] == 1) { ?>
                                            <span class="label label-success">Approved</span>
@@ -204,7 +220,13 @@
                                       }else {
                                           echo date('H:i:s', strtotime($row['berangkat'])).' PM';
                                       } ?></td>
-                                      <td style="white-space: nowrap"><?php echo $row['pekerja'];  ?></td>
+                                      <td style="white-space: nowrap"><?php foreach ($row['pekerja'] as $val) {
+                         if ($val == null || $val == '') {
+                           echo " - <br>";
+                         }else {
+                           echo $val.'<br>';
+                         }
+                   }  ?></td>
                                       <td style="white-space: nowrap; text-align: center;"><?php if ( $row['jenis_izin'] == '1') {
                                                                                 echo "DINAS PUSAT";
                                                                                 }elseif ( $row['jenis_izin'] == '2') {
@@ -213,11 +235,13 @@
                                                                                     echo "DINAS MLATI";
                                                                                 } ?>
                                                                             </td>
-                                    <td style="white-space: nowrap"><?php if ($row['tujuan'] == null || $row['tujuan'] == '') {
-                                        echo " - ";
-                                    }else {
-                                        echo $row['tujuan'];
-                                    }  ?></td>
+                                    <td style="white-space: nowrap"><?php foreach ($row['tujuan'] as $key) {
+                                                             if ($key == null || $key == '') {
+                                                               echo " - <br>";
+                                                             }else {
+                                                               echo $key.'<br>';
+                                                             }
+                                                       }  ?></td>
                                     <td style="white-space: nowrap"><?php echo $row['keterangan'] ?></td>
                                     <td style="text-align: center;"><?php
                                     if ($row['status'] == 0 && date('Y-m-d', strtotime($row['created_date'])) == $today) { ?>
@@ -267,7 +291,13 @@
                                       }else {
                                           echo date('H:i:s', strtotime($row['berangkat'])).' PM';
                                       } ?></td>
-                                      <td style="white-space: nowrap"><?php echo $row['pekerja'];  ?></td>
+                                      <td style="white-space: nowrap"><?php foreach ($row['pekerja'] as $val) {
+                         if ($val == null || $val == '') {
+                           echo " - <br>";
+                         }else {
+                           echo $val.'<br>';
+                         }
+                   }  ?></td>
                                       <td style="white-space: nowrap; text-align: center;"><?php if ( $row['jenis_izin'] == '1') {
                                                                                       echo "DINAS PUSAT";
                                                                                     }elseif ( $row['jenis_izin'] == '2') {
@@ -276,11 +306,13 @@
                                                                                       echo "DINAS MLATI";
                                                                                     } ?>
                                       </td>
-                                      <td style="white-space: nowrap"><?php if ($row['tujuan'] == null || $row['tujuan'] == '') {
-                                                                          echo " - ";
-                                                                        }else {
-                                                                          echo $row['tujuan'];
-                                                                        }  ?></td>
+                                      <td style="white-space: nowrap"><?php foreach ($row['tujuan'] as $key) {
+                                                               if ($key == null || $key == '') {
+                                                                 echo " - <br>";
+                                                               }else {
+                                                                 echo $key.'<br>';
+                                                               }
+                                                         }  ?></td>
                                       <td style="white-space: nowrap"><?php echo $row['keterangan'] ?></td>
                                       <td style="text-align: center;">
                                           <?php

@@ -21,10 +21,19 @@ class M_index extends CI_Model
                 (select string_agg(concat(noind,' - ',trim(nama)),'<br>') from hrd_khs.tpribadi b where position(b.noind in ti.noind)>0) as pekerja,
                 (select string_agg(concat(noind,' - ',trim(nama)),'<br>') from hrd_khs.tpribadi b where position(b.noind in ti.atasan_aproval)>0) as atasan
                 FROM \"Surat\".tperizinan ti $periode order by ti.created_date DESC, ti.status ";
-
   		$query = $this->personalia->query($sql);
   		return $query->result_array();
   	}
+
+    public function getTujuanA($periode)
+    {
+        $sql="SELECT a.izin_id, (select concat(noind, ' - ', trim(nama)) from hrd_khs.tpribadi where a.noind = noind) as pekerja,
+                (case when ti.izin_id::int = ta.izin_id::int then ta.tujuan else a.tujuan end) tujuan
+                FROM \"Surat\".tperizinan ti
+                LEFT JOIN \"Surat\".tpekerja_izin a on a.izin_id::int = ti.izin_id::int
+                LEFT JOIN \"Surat\".taktual_izin ta on ta.izin_id::int = ti.izin_id::int and ta.created_date::date = ti.created_date::date and a.noind = ta.noinduk $periode";
+        return $this->personalia->query($sql)->result_array();
+    }
 
     public function getPekerja($tanggal)
 	{
