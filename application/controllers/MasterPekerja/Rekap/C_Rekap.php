@@ -118,7 +118,11 @@ class C_Rekap extends CI_Controller
 			$noindPekerja 	= $pekerja[0];
 			$namaPekerja 	= $pekerja[1];
 			$seksiPekerja 	= $pekerja[2];
-			$alamatPekerja 	= $pekerja[3];
+			if ($pekerja[3] == 'TKS') {
+				$alamatPekerja 	= $pekerja[4];
+			}else {
+				$alamatPekerja 	= $pekerja[3];
+			}
 		}
 		$tanggal_laporan = date('Y-m-d');
 		$bulan_laporan	 = substr($tanggal_laporan, 0, 7);
@@ -262,7 +266,11 @@ class C_Rekap extends CI_Controller
 			$noindPekerja 	= $pekerja[0];
 			$namaPekerja 	= $pekerja[1];
 			$seksiPekerja 	= $pekerja[2];
-			$alamatPekerja 	= $pekerja[3];
+			if ($pekerja[3] == 'TKS') {
+				$alamatPekerja 	= $pekerja[4];
+			}else {
+				$alamatPekerja 	= $pekerja[3];
+			}
 		}
 		$tanggal_laporan = date('Y-m-d');
 		$bulan_laporan	 = substr($tanggal_laporan, 0, 7);
@@ -709,7 +717,11 @@ class C_Rekap extends CI_Controller
 			$noindPekerja 	= $pekerja[0];
 			$namaPekerja 	= $pekerja[1];
 			$seksiPekerja 	= $pekerja[2];
-			$alamatPekerja 	= $pekerja[3];
+			if ($pekerja[3] == 'TKS') {
+				$alamatPekerja 	= $pekerja[4];
+			}else {
+				$alamatPekerja 	= $pekerja[3];
+			}
 		}
 		$tanggal_laporan = date('Y-m-d');
 		$bulan_laporan	 = substr($tanggal_laporan, 0, 7);
