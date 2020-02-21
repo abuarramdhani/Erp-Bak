@@ -54,31 +54,31 @@ class C_Monitoring extends CI_Controller {
         $ticket = $this->input->post('ticketIPM');
         $noind = $this->session->user;
         
-        if($ip == '172.16.100.94') {
+        if($ip == '172.16.100.93') {
             $link = 'IconPlus PUSAT-BANJARMASIN';
-        }else if($ip == '172.16.100.26') {
+        }else if($ip == '172.16.100.25') {
             $link = 'IconPlus PUSAT-JAKARTA';
-        }else if($ip == '172.16.100.14') {
+        }else if($ip == '172.16.100.13') {
             $link = 'IconPlus PUSAT-LAMPUNG';
-        }else if($ip == '172.16.100.62') {
+        }else if($ip == '172.16.100.61') {
             $link = 'IconPlus PUSAT-LANGKAPURA';
-        }else if($ip == '172.16.100.30') {
+        }else if($ip == '172.16.100.29') {
             $link = 'IconPlus PUSAT-MAKASSAR';
-        }else if($ip == '172.16.100.18') {
+        }else if($ip == '172.16.100.17') {
             $link = 'IconPlus PUSAT-MEDAN';
-        }else if($ip == '172.16.100.22') {
+        }else if($ip == '172.16.100.21') {
             $link = 'IconPlus PUSAT-MLATI';
-        }else if($ip == '172.16.100.102') {
+        }else if($ip == '172.16.100.101') {
             $link = 'IconPlus PUSAT-PALU';
-        }else if($ip == '172.16.100.90') {
+        }else if($ip == '172.16.100.89') {
             $link = 'IconPlus PUSAT-PEKANBARU';
-        }else if($ip == '172.16.100.50') {
+        }else if($ip == '172.16.100.49') {
             $link = 'IconPlus PUSAT-PONTIANAK';
-        }else if($ip == '172.16.100.10') {
+        }else if($ip == '172.16.100.9') {
             $link = 'IconPlus PUSAT-SURABAYA';
-        }else if($ip == '172.16.100.6') {
+        }else if($ip == '172.16.100.5') {
             $link = 'IconPlus PUSAT-TUKSONO';
-        }else if($ip == '172.18.22.2') {
+        }else if($ip == '172.18.22.1') {
             $link = 'LDP PUSAT-TUKSONO';
 		}
 		
