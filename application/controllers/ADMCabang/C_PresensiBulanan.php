@@ -70,7 +70,7 @@ class C_PresensiBulanan extends CI_Controller
 		$tims = $this->M_presensibulanan->rekapTIMS($tanggal,$kodesie);
 		//insert to sys.log_activity
 		$aksi = 'Presensi';
-		$detail = "Export excel tanggal=".$this->input->post('txtPeriodePresensiHarian')." kodesie=$kodesiel";
+		$detail = "Export excel tanggal=".$this->input->post('txtPeriodePresensiHarian')." kodesie=$kodesie";
 		$this->log_activity->activity_log($aksi, $detail);
 		//
 		$this->excel->getActiveSheet()->setCellValueByColumnAndRow(0,1,'Data Pegawai Periode '.$tanggal);
