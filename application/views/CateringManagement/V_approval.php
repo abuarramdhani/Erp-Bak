@@ -2,6 +2,22 @@
   .hover:hover {
     color: red;
   }
+
+  html {
+      scroll-behavior: smooth;
+      overflow-y: scroll;
+  }
+
+  .blinkblink{
+		background: linear-gradient(#cf455c, white);
+		background-size: 1800% 1800%;
+		animation: danger_position 5s ease-in infinite;
+	 }
+    @-webkit-keyframes danger_position {
+		 0%{background-position:10% 70%}
+		 50%{background-position:70% 10%}
+		 100%{background-position:10% 80%}
+	}
 </style>
 <section class="content <?=$hidden ?>" id="page">
     <div class="inner" >
@@ -112,16 +128,52 @@
 
                              </div>
                              <div class="tab-pane fade" role="tabpanel" id="yesterday">
+                                 <?php if (empty($BelumProses)){ ?>
+                                     <div class="box box-success box-solid col-lg-12 text-center">
+                                         <label  style="font-size: 20px;">Data Sudah Terproses :)</label>
+                                     </div>
+                                 <?php }elseif (!empty($BelumProses)) { ?>
+                                 <div class="box box-danger box-solid col-lg-12" style="height: 350px; overflow: auto;">
+                                     <div class="text-center" style="font-size: 18px;">
+                                         <label>Data Belum Di Proses</label>
+                                     </div>
+                                         <table class="table table-striped table-bordered table-hover text-left" style="font-size:12px; width: 100%;">
+                                             <thead>
+                                                 <th>No</th>
+                                                 <th>No. Induk</th>
+                                                 <th>Nama</th>
+                                                 <th>Tujuan</th>
+                                                 <th>Jenis Dinas</th>
+                                                 <th>Keperluan</th>
+                                             </thead>
+                                             <tbody>
+                                                 <?php $i = 1; foreach ($BelumProses as $key): ?>
+                                                 <tr>
+                                                     <td><?php echo $i++; ?></td>
+                                                     <td><?php echo $key['noind'] ?></td>
+                                                     <td><?php echo $key['nama'] ?></td>
+                                                     <td><?php echo $key['tujuan'] ?></td>
+                                                     <td><?php echo $key['jenis_dinas'] ?></td>
+                                                     <td><?php echo $key['keterangan'] ?></td>
+                                                 </tr>
+                                             <?php endforeach; ?>
+                                             </tbody>
+                                         </table>
+                                         <div class="text-center col-lg-12" style="padding-bottom: 10px">
+                                             <button class="btn btn-success" id="prosesTambahanDinas">Proses</button>
+                                         </div>
+                                 </div>
+                             <?php } ?>
                                <br>
                                <center>
                                  <label style="font-size:18px; text-align:center" class="bg-warning">Tambahan Pesanan Makan Pekerja Dinas</label><br>
-                                 <label style="font-size:14px; text-align:center">Data Tambahan Catering Untuk Perizinan Dinas Sebelum Jam 09:00:00</label>
+                                 <label style="font-size:14px; text-align:center">Data Tambahan Catering Untuk Perizinan Dinas Sebelum Jam 09:30:00</label>
                                </center>
                                <br>
                                <table class="datatable approveCatering table table-striped table-bordered table-hover text-left" style="font-size:12px; width: 100%">
                                  <thead class="bg-warning">
                                    <tr>
-                                     <th style="width: 30px;">No</th>
+                                     <th style="width: 5%;">No</th>
                                      <th>Tempat Makan</th>
                                      <th>Tambahan</th>
                                    </tr>
@@ -133,7 +185,7 @@
                                      }else{
                                        $no=1;
                                        foreach ($dataDinas as $key) { ?>
-                                         <tr>
+                                         <tr title="Click for Detail" type="button" class="detailPekerjaDinasPlus" value="<?php echo $key['0'].'|'.date('Y-m-d'); ?>">
                                            <td><?php echo $no; ?></td>
                                            <td><?php echo $key['0']; ?></td>
                                            <td><?php echo count($key); ?></td>
@@ -143,6 +195,39 @@
                                        } } ?>
                                  </tbody>
                                </table>
+                               <br>
+                               <hr>
+                               <br>
+                               <center>
+                                   <label style="font-size:18px; text-align:center" class="bg-danger">Pengurangan Pesanan Makan Pekerja Dinas</label><br>
+                                   <label style="font-size:14px; text-align:center">Data Pengurangan Catering Untuk Perizinan Dinas Sebelum Jam 09:30:00</label>
+                               </center>
+                               <br>
+                               <table class="datatable approveCatering table table-striped table-bordered table-hover text-left" style="font-size:12px; width: 100%">
+                                   <thead class="bg-danger">
+                                       <tr>
+                                           <th style="width: 5%;">No</th>
+                                           <th>Tempat Makan</th>
+                                           <th>Pengurangan</th>
+                                       </tr>
+                                   </thead>
+                                   <tbody>
+                                       <?php
+                                       if (empty($kurang)) {
+                                           # code...
+                                       }else{
+                                           $no=1;
+                                           foreach ($kurang as $key) { ?>
+                                               <tr title="Click for Detail" type="button" class="detailPekerjaDinasMin" value="<?php echo $key['0'].'|'.date('Y-m-d').'|min'; ?>">
+                                                   <td><?php echo $no; ?></td>
+                                                   <td><?php echo $key['0']; ?></td>
+                                                   <td><?php echo count($key); ?></td>
+                                               </tr>
+                                               <?php
+                                               $no++;
+                                           } } ?>
+                                       </tbody>
+                                   </table>
                                 </div>
                                 </div>
                               </div>
@@ -241,13 +326,24 @@
       </div>
     </div>
   </div>
-
+</div>
+<div class="modal fade" id="detailPekerjaDinas" tabindex="-1" role="dialog" aria-labelledby="basicModal" aria-hidden="true" style="margin-top: -20px;">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div id="Dinas_result"></div>
+            <div class='modal-footer'>
+                <button type='button' class='btn btn-default' data-dismiss='modal'>Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+<a href="#" id="buttonGoTop" class="fa fa-arrow-up" style="display: none;  position: fixed;  bottom: 48px;  right: 26px;  z-index: 99;  font-size: 18px;  border: none; outline: none; background-color: red;  color: white; cursor: pointer; padding: 15px; border-radius: 4px;" title="Go to top"></a>
+<script src="<?php echo base_url('assets/plugins/ckeditor/ckeditor.js');?>"></script>
 <script type="text/javascript">
 $(document).ready(function(){
   var noind = '<?=$user?>';
-  console.log(noind);
 
-  if(noind != 'J1256' && noind != 'F2324' && noind != 'B0720' && noind != 'B0799')
+  if(noind != 'J1350' && noind != 'F2324' && noind != 'B0720' && noind != 'B0799')
   {
     $('#page').hide();
     Swal.fire({
@@ -258,6 +354,15 @@ $(document).ready(function(){
       showConfirmButton: false
     })
     window.location.href= baseurl+"CateringManagement";
+  }
+
+  CKEDITOR.disableAutoInline = true
+  window.onscroll = _ => {
+      if (document.body.scrollTop > 200 || document.documentElement.scrollTop > 200) {
+          document.getElementById("buttonGoTop").style.display = "block";
+      } else {
+          document.getElementById("buttonGoTop").style.display = "none";
+      }
   }
 })
 </script>

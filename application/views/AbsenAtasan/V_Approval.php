@@ -5,6 +5,8 @@
 	}
 
 </style>
+<div id="cover-spin">
+</div>
 	<div class="inner" >
 			<div class="box box-header"  style="padding-left:20px">
 				<h3 class="pull-left"><strong>Detail Approval Absen</strong></h3>
@@ -18,7 +20,9 @@
 				<div class="col-md-2">
 				</div>
 				<div class="col-md-8">
-					<img src="<?php echo $dataEmployee[0]['gambar'];?>" style="width: 200px;height: 200px;margin-bottom: 15px;"/> 
+						<a href="<?php echo $dataEmployee[0]['gambar'];?>">
+							<img src="<?php echo $dataEmployee[0]['gambar'];?>" style="width: 300px;height: 300px;margin-bottom: 15px;"/> 
+						</a>
 				</div>
 			</div>
 			<div class="row margin-top">
@@ -50,7 +54,7 @@
 					<h5>Unit</h5>
 				</div>
 				<div class="col-md-8">
-					<input type="text" class="form-control" readonly value="<?php echo $bidangUnit[0]['unit_name'];?>" />	
+					<input type="text" class="form-control" readonly value="<?php echo $employeeInfo[0]['unit_name'];?>" />	
 				</div>
 			</div>
 			<div class="row margin-top">
@@ -58,7 +62,7 @@
 					<h5>Bidang</h5>
 				</div>
 				<div class="col-md-8">
-					<input type="text" class="form-control" readonly value="<?php echo $bidangUnit[0]['field_name'];?>" />	
+					<input type="text" class="form-control" readonly value="<?php echo $employeeInfo[0]['field_name'];?>" />	
 				</div>
 			</div>
 			<div class="row margin-top">
@@ -72,6 +76,37 @@
 			<div class="text-left">
 				<h4><strong>Detail Absen</strong></h4>
 			</div>
+			<div class="row margin-top">
+				<div class="col-md-2">
+					<h5>Status</h5>
+				</div>
+				<div class="col-md-8">
+				<?php
+					if($dataEmployee[0]['status'] == 1){
+						$status = "Approved";
+						$classLabel = "label label-success";
+					}elseif ($dataEmployee[0]['status'] == 2) {
+						$status = "Rejected";
+						$classLabel = "label label-dangre";
+					}else{
+						$status = "New Entry";
+						$classLabel = "label label-default";
+					}
+					 ?>
+					<p style="font-size: 18px;"><span class="<?= $classLabel ?>"><?= $status ?></span></p>
+				</div>
+			</div>
+			<?php if($dataEmployee[0]['status'] == 1): ?>
+			<div class="row margin-top">
+				<div class="col-md-2">
+					<h5>Approver</h5>
+				</div>
+				<div class="col-md-8">
+					<input type="text" class="form-control" readonly value="<?php echo $dataEmployee[0]['approver'];?>" />	
+				</div>
+			</div>	
+			<?php endif; ?>	
+
 			<div class="row margin-top">
 				<div class="col-md-2">
 					<h5>Waktu</h5>
@@ -100,9 +135,11 @@
 				<div class="col-md-2">
 					
 				</div>
+				<?php if(!strpos(base_url(),"erp.quick.com")): ?>
 			 	<div class="col-md-2">
 			 		<button data-toggle="modal" data-target="#locationModal" class="btn btn-success" href="#"><i class="fa fa-map-marker"></i>  Lihat di Google Maps</button>
-			 	</div>			 
+			 	</div>
+			 	<?php endif; ?>	 
 			 </div>
 
 
@@ -110,14 +147,14 @@
 
 		<div class="panel box-footer" style="padding-left: 50px;">
 			<div class="row">
-				<div class="col-md-1">
-					<a id="btnApprove" class="btn btn-primary" href="<?php echo base_url('AbsenAtasan/List/approveApproval/'.$dataEmployee[0]['absen_id']); ?>" ><i class="fa fa-check"></i>   Approve</a>
+				<div class="col-sm-1" align="center" style="margin: 7px">
+					<a id="btnApprove" class="btn btn-primary btn-block" href="<?php echo base_url('AbsenAtasan/List/approveApproval/'.$dataEmployee[0]['absen_id']); ?>" ><i class="fa fa-check"></i>   Approve</a>
 				</div>
-				<div class="col-md-1">
-					
+				<div class="col-sm-1" align="center" style="margin: 7px">
+					<button data-toggle="modal" data-target="#rejectApproval" class="btn btn-danger btn-block"><i class="fa fa-close"></i>    Reject</button>
 				</div>
-				<div class="col-md-1">
-					<button data-toggle="modal" data-target="#rejectApproval" class="btn btn-danger"><i class="fa fa-close"></i>    Reject</button>
+				<div class="col-sm-1" align="center" style="margin: 7px">
+					<a id="btnCetak" class="btn btn-info btn-block" href="<?php echo base_url('AbsenAtasan/List/cetakApproval/'.$dataEmployee[0]['absen_id']); ?>" ><i class="fa fa-print"></i>   Cetak</a>
 				</div>
 			</div>
 		</div>
@@ -173,8 +210,12 @@
 					  frameborder="1" 
 					  scrolling="yes" 
 					  marginheight="0" 
-					  marginwidth="0" 
+					  marginwidth="0"
+					  <?php if(!strpos(base_url(),"erp.quick.com")): ?>
 					  src="https://maps.google.com/maps?q=<?php echo $dataEmployee[0]['latitude'];?>,<?php echo $dataEmployee[0]	['longitude']; ?>&hl=es;z=14&amp;output=embed"
+					<?php else: ?>
+						src=""
+					<?php endif; ?>
 					 >
 					 </iframe>
 					 </center>
@@ -188,13 +229,3 @@
 		</div>
 
 </section>
-
-<script type="text/javascript">
-
-$(document).ready(function(){
-
-
-	});
-});
-	
-</script>

@@ -10,6 +10,7 @@ class C_Index extends CI_Controller
   function __construct()
   {
     parent::__construct();
+    $this->load->library('Log_Activity');
     $this->load->library('General');
     $this->load->library('pdf');
     $this->load->library('session');
@@ -88,9 +89,7 @@ class C_Index extends CI_Controller
   public function getAlasan()
   {
     $jenis = $this->input->post('jenis');
-    if ($jenis == 'nonstaf') {
-      $data = $this->M_indexinfo->getAlasanNStaf();
-    }elseif ($jenis == 'staf') {
+    if (!empty($jenis)) {
       $data = $this->M_indexinfo->getAlasan();
     }else {
       $data = '';
@@ -300,15 +299,20 @@ class C_Index extends CI_Controller
                                   Nama
                                   </strong>
                                   </td>
-                                  <td style="text-align: center; width: 40%; border: 1px solid black; background-color: grey;">
+                                  <td style="text-align: center; width: 25%; border: 1px solid black; background-color: grey;">
                                   <strong>
                                   Seksi
+                                  </strong>
+                                  </td>
+                                  <td style="text-align: center; width: 25%; border: 1px solid black; background-color: grey;">
+                                  <strong>
+                                  Keterangan
                                   </strong>
                                   </td>
                                   </tr>';
               $unik = 1;
               foreach ($keya as $key) {
-                $tabelPeserta[$k] .= "<tr><td style='text-align: center; border: 1px solid black;'>{$unik}</td><td style='text-align: center; border: 1px solid black;'>{$key['noind']}</td><td style='text-align: center; border: 1px solid black;'>{$key['nama']}</td><td style='text-align: center; border: 1px solid black;'>{$key['seksi']}</td></tr>";
+                $tabelPeserta[$k] .= "<tr><td style='text-align: center; border: 1px solid black;'>{$unik}</td><td style='text-align: center; border: 1px solid black;'>{$key['noind']}</td><td style='text-align: center; border: 1px solid black;'>{$key['nama']}</td><td style='text-align: center; border: 1px solid black;'>{$key['seksi']}</td><td style='text-align: center; border: 1px solid black;'>{$key['ket']}</td></tr>";
                 $unik++;
               }
               $tabelPeserta[$k] .= "</tbody></table>";
@@ -370,6 +374,11 @@ class C_Index extends CI_Controller
     $isi      = $this->input->post('MPK_txtaIsi');
     $alasan   = $this->input->post('txtaAlasan');
     $tertanda = $this->input->post('cmbtertandaCutoff');
+    //insert to t_log
+    $aksi = 'MASTER PEKERJA';
+    $detail = 'Create Memo Gaji Pekerja Cutoff Periode= '.$periode;
+    $this->log_activity->activity_log($aksi, $detail);
+    //
     if ($jenis == 'staf') {
       if (!empty($isi)) {
         $saveMemo = array
@@ -401,6 +410,11 @@ class C_Index extends CI_Controller
 
   public function exportPDF($id)
   {
+      //insert to t_log
+      $aksi = 'MASTER PEKERJA';
+      $detail = 'Export PDF Memo Gaji Pekerja Cutoff ID='.$id;
+      $this->log_activity->activity_log($aksi, $detail);
+      //
     $date = date('Y-m-d');
 
     $this->load->library('pdf');
@@ -440,6 +454,11 @@ class C_Index extends CI_Controller
   public function deleteMemo($id)
   {
     $this->M_indexinfo->deleteMemo($id);
+    //insert to t_log
+    $aksi = 'MASTER PEKERJA';
+    $detail = 'Delete Memo Gaji Pekerja Cutoff ID='.$id;
+    $this->log_activity->activity_log($aksi, $detail);
+    //
     redirect('MasterPekerja/Surat/gajipekerjacutoff');
   }
 

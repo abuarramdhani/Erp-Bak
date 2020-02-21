@@ -9,6 +9,7 @@ class C_TargetBenda extends CI_Controller
 		$this->load->helper('url');
 		$this->load->helper('html');
 
+		$this->load->library('Log_Activity');
 		$this->load->library('form_validation');
 		$this->load->library('session');
 		$this->load->library('encrypt');
@@ -75,7 +76,7 @@ class C_TargetBenda extends CI_Controller
 		$this->load->view('V_Header',$data);
 		$this->load->view('V_Sidemenu',$data);
 		$this->load->view('PayrollManagementNonStaff/TargetBenda/V_create', $data);
-		$this->load->view('V_Footer',$data);	
+		$this->load->view('V_Footer',$data);
 	}
 
 	public function doCreate(){
@@ -98,6 +99,11 @@ class C_TargetBenda extends CI_Controller
 		);
 		$this->M_targetbenda->setTargetBenda($data);
 		$header_id = $this->db->insert_id();
+		//insert to sys.log_activity
+		$aksi = 'Payroll Management NStaf';
+		$detail = "Create Data Target benda kode_barang=".$this->input->post('txtKodeBarangHeader');
+		$this->log_activity->activity_log($aksi, $detail);
+		//
 
 		redirect(site_url('PayrollManagementNonStaff/MasterData/TargetBenda'));
 	}
@@ -134,7 +140,7 @@ class C_TargetBenda extends CI_Controller
 		$this->load->view('V_Header',$data);
 		$this->load->view('V_Sidemenu',$data);
 		$this->load->view('PayrollManagementNonStaff/TargetBenda/V_update', $data);
-		$this->load->view('V_Footer',$data);	
+		$this->load->view('V_Footer',$data);
 	}
 
 	public function doUpdate($id){
@@ -160,7 +166,11 @@ class C_TargetBenda extends CI_Controller
 			'tgl_berlaku' => $this->input->post('txtTglBerlakuHeader',TRUE),
 			);
 		$this->M_targetbenda->updateTargetBenda($data, $plaintext_string);
-
+		//insert to sys.log_activity
+		$aksi = 'Payroll Management NStaf';
+		$detail = "Update Data Target benda id=$plaintext_string";
+		$this->log_activity->activity_log($aksi, $detail);
+		//
 		redirect(site_url('PayrollManagementNonStaff/MasterData/TargetBenda'));
 
 	}
@@ -202,6 +212,11 @@ class C_TargetBenda extends CI_Controller
 		$plaintext_string = $this->encrypt->decode($plaintext_string);
 
 		$this->M_targetbenda->deleteTargetBenda($plaintext_string);
+		//insert to sys.log_activity
+		$aksi = 'Payroll Management NStaf';
+		$detail = "Delete Data Target benda id=$plaintext_string";
+		$this->log_activity->activity_log($aksi, $detail);
+		//
 
 		redirect(site_url('PayrollManagementNonStaff/MasterData/TargetBenda'));
     }
@@ -246,6 +261,11 @@ class C_TargetBenda extends CI_Controller
 
 		$data['upload_data'] = '';
 		if ($this->upload->do_upload('file')) {
+			//insert to sys.log_activity
+			$aksi = 'Payroll Management NStaf';
+			$detail = "Import Data Target benda filename=$fileName";
+			$this->log_activity->activity_log($aksi, $detail);
+			//
 			$uploadData = $this->upload->data();
 			$inputFileName = 'assets/upload/'.$uploadData['file_name'];
 			// $inputFileName = 'assets/upload/1490405144-PROD0117_(copy).dbf';
@@ -270,10 +290,12 @@ class C_TargetBenda extends CI_Controller
 					'tgl_berlaku' => utf8_encode($db_record['TG_LAKU']),
 					'tgl_input' => utf8_encode($db_record['TG_INPUT'])
 				);
-
-				// print_r($data);
-
 				$this->M_targetbenda->setTargetBenda($data);
+				//insert to sys.log_activity
+				$aksi = 'Payroll Management NStaf';
+				$detail = "Set Data Target benda kode_barang=".utf8_encode($db_record['KODEBRG']);
+				$this->log_activity->activity_log($aksi, $detail);
+				//
 			}
 			// exit;
 			unlink($inputFileName);
@@ -289,7 +311,7 @@ class C_TargetBenda extends CI_Controller
 
 		// print_r($requestData);exit;
 
-		$columns = array(   
+		$columns = array(
 			0 => 'kodesie',
 			1 => 'kodesie',
 			2 => 'kodesie',
@@ -324,7 +346,7 @@ class C_TargetBenda extends CI_Controller
 		$data = array();
 		$no = 1;
 		$data_array = $data_table->result_array();
-		
+
 		$json = "{";
 		$json .= '"draw":'.intval( $requestData['draw'] ).',';
 		$json .= '"recordsTotal":'.intval( $totalData ).',';
@@ -354,9 +376,14 @@ class C_TargetBenda extends CI_Controller
 	public function downloadExcel()
     {
 		$filter = $this->input->get('filter');
-		$column_table = array('', 'kodesie', 'unit_name', 'kode_barang', 'nama_barang', 'kode_proses', 'nama_proses', 
-			'jumlah_operator', 'target_utama_senin_kamis', 'target_utama_senin_kamis_4', 'target_sementara_senin_kamis', 
-			'target_utama_jumat_sabtu', 'target_utama_jumat_sabtu_4', 'target_sementara_jumat_sabtu', 'waktu_setting', 
+		//insert to sys.log_activity
+		$aksi = 'Payroll Management NStaf';
+		$detail = "Export Excel Data Target benda filter=$filter";
+		$this->log_activity->activity_log($aksi, $detail);
+		//
+		$column_table = array('', 'kodesie', 'unit_name', 'kode_barang', 'nama_barang', 'kode_proses', 'nama_proses',
+			'jumlah_operator', 'target_utama_senin_kamis', 'target_utama_senin_kamis_4', 'target_sementara_senin_kamis',
+			'target_utama_jumat_sabtu', 'target_utama_jumat_sabtu_4', 'target_sementara_jumat_sabtu', 'waktu_setting',
 			'tgl_berlaku', 'tgl_input');
 		$column_view = array('No','Kodesie','Nama Unit','Kode Barang','Nama Barang','Kode Proses','Nama Proses','Jumlah Operator',
 			'Target Utama Senin Kamis','Target Utama Senin Kamis 4','Target Sementara Senin Kamis','Target Utama Jumat Sabtu',
@@ -386,10 +413,10 @@ class C_TargetBenda extends CI_Controller
 			}
 			$excel_row++;
 		}
-		
-		$objPHPExcel->getActiveSheet()->setTitle('Quick ERP');      
+
+		$objPHPExcel->getActiveSheet()->setTitle('Quick ERP');
 		$objWriter = PHPExcel_IOFactory::createWriter($objPHPExcel, 'Excel2007');
- 
+
 		header("Last-Modified: " . gmdate("D, d M Y H:i:s") . " GMT");
 		header("Cache-Control: no-store, no-cache, must-revalidate");
 		header("Cache-Control: post-check=0, pre-check=0", false);

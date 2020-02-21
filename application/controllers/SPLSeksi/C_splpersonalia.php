@@ -8,6 +8,7 @@ class C_splpersonalia extends CI_Controller {
         $this->load->library('session');
 
 		$this->load->model('SPLSeksi/M_splseksi');
+		$this->load->model('SPLSeksi/M_splpersonalia');
 		$this->load->model('SystemAdministration/MainMenu/M_user');
 
 		date_default_timezone_set('Asia/Jakarta');
@@ -87,7 +88,7 @@ class C_splpersonalia extends CI_Controller {
 		$regTemp 	= $data[3];
 
 		$device = $this->M_splseksi->getDeviceBySn($sn);
-		
+
 		$salt = md5($device->ac.$device->vkey.$regTemp.$sn.$user_id);
 
 		if (strtoupper($vStamp) == strtoupper($salt)) {
@@ -108,7 +109,7 @@ class C_splpersonalia extends CI_Controller {
 			// $msg = "Berhasil";
 			// echo base_url("SPL/DaftarFingerspot/finger_register_error?msg=".$msg);
 		}else {
-			
+
 			$msg = "Parameter Invalid ... :: ".strtoupper($vStamp)." tidak sama dengan ".strtoupper($salt);
 			echo base_url("SPL/DaftarFingerspot/finger_register_error?msg=".$msg);
 		}
@@ -121,7 +122,7 @@ class C_splpersonalia extends CI_Controller {
     public function finger_register_get_ac(){
     	$vc = $_GET['vc'];
     	$data = $this->M_splseksi->getAcSnByVc($vc);
-		
+
 		echo $data->ac.$data->sn;
     }
 
@@ -149,7 +150,7 @@ class C_splpersonalia extends CI_Controller {
         $this->checkSession();
     	$fingertemp = $this->M_splseksi->gettfingerphp();
     	$data = "";
-    	$number = 1; 
+    	$number = 1;
     	foreach ($fingertemp as $temp) {
     	$data .= "<tr>
 				<td>
@@ -239,7 +240,7 @@ class C_splpersonalia extends CI_Controller {
         $this->checkSession();
     	$fingerprint = $this->M_splseksi->gettcodefingerprint();
 
-    	$number = 1; 
+    	$number = 1;
     	$data = "";
     	foreach ($fingerprint as $finger) {
     		$data .="<tr>
@@ -271,6 +272,57 @@ class C_splpersonalia extends CI_Controller {
 		}
 		echo $data;
     }
+
+	public function AccessSection(){
+		$this->checkSession();
+    	$data = $this->menu('Akses Seksi', '', '');
+
+		$all_access = $this->M_splpersonalia->getAllAccessSection();
+
+		$data['all_access'] = $all_access;
+
+    	$this->load->view('V_Header',$data);
+    	$this->load->view('V_Sidemenu',$data);
+    	$this->load->view('SPLSeksi/Personalia/V_AccessSection',$data);
+    	$this->load->view('V_Footer',$data);
+	}
+
+	function showpekerja(){
+		$key = strtoupper($_GET['key']);
+
+		$data = $this->M_splpersonalia->showpekerja($key);
+
+		echo json_encode($data);
+	}
+
+	function ajaxGetAllSection(){
+		$params = strtoupper($_GET['key']);
+		$data = $this->M_splpersonalia->getAllSection($params);
+		echo json_encode($data);
+	}
+
+	function ajaxInsertAccessSection(){
+		$noind = $_POST['noind'];
+		$kodesie = $_POST['kodesie'];
+		echo $this->M_splpersonalia->addAccessSection($noind, $kodesie) ? 'ok' : 'no';
+	}
+
+	function ajaxGetInfoNoind(){
+		$noind = $_GET['noind'];
+		$data = $this->M_splpersonalia->ajaxGetInfoNoind($noind);
+		echo json_encode($data);
+	}
+
+	function ajaxDeleteAccess(){
+		$noind = $_POST['noind'];
+		$this->M_splpersonalia->ajaxDeleteAccess($noind);
+
+		$response = array(
+			'response' => 200,
+			'status' => 'ok'
+		);
+		echo json_encode($response);
+	}
 }
 
 ?>

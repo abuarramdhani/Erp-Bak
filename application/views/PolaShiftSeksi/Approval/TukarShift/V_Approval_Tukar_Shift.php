@@ -35,7 +35,8 @@
                                                 <thead class="bg-primary">
                                                     <tr>
                                                         <td width="5%">No</td>
-                                                        <td>Tanggal</td>
+                                                        <td>Tanggal Awal</td>
+                                                        <td>Tanggal Akhir</td>
                                                         <td>Pekerja 1</td>
                                                         <td>Pekerja 2</td>
                                                         <td>Inisiatif</td>
@@ -44,13 +45,11 @@
                                                 </thead>
                                                 <tbody>
                                                     <?php $i = 1; foreach ($listApprove as $key): 
-                                                    	if ($key['beda'] < 1) {
-                                                    		// continue;
-                                                    	}
                                                     ?>
                                                         <tr>
                                                             <td><?= $i ?></td>
-                                                            <td data-order="<?php echo substr($key['tanggal1'], 0,10) ?>"><?= date('d-M-Y', strtotime(substr($key['tanggal1'], 0,10))) ?></td>
+                                                            <td data-order="<?php echo substr($key['tanggal_min'], 0,10) ?>"><?= date('d-M-Y', strtotime(substr($key['tanggal_min'], 0,10))) ?></td>
+                                                            <td data-order="<?php echo substr($key['tanggal_max'], 0,10) ?>"><?= date('d-M-Y', strtotime(substr($key['tanggal_max'], 0,10))) ?></td>
                                                             <td><?= $key['noind1'].' - '.$key['nama1'] ?></td>
                                                             <td><?= $key['noind2'].' - '.$key['nama2'] ?></td>
                                                             <?php if ($key['optpekerja'] == 't'): ?>
@@ -62,7 +61,7 @@
                                                             <?php if ($key['beda'] < 1): ?>
                                                             	<label style="color: red">Expired</label>
                                                             <?php else: ?>
-                                                            	<a href="<?php echo base_url('PolaShiftSeksi/Approval/ApproveTS/'.$key['tukar_id']) ?>" class="btn btn-success"><i class="fa fa-eye"></i></a>
+                                                            	<a href="<?php echo base_url('PolaShiftSeksi/Approval/ApproveTS/'.$key['group_id']) ?>" class="btn btn-success"><i class="fa fa-eye"></i></a>
                                                             <?php endif ?>
                                                             </td>
                                                         </tr>

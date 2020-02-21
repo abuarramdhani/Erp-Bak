@@ -8,6 +8,7 @@ class C_Transposition extends CI_Controller {
   	{
     	parent::__construct();
 
+		$this->load->library('Log_Activity');
     	$this->load->library('General');
     	$this->load->library('KonversiBulan');
 
@@ -68,6 +69,11 @@ class C_Transposition extends CI_Controller {
 		$bulan = $this->konversibulan->KonversiBulanInggrisKeAngka($date[1]);
 		$tgl_berubah = $date[2].'-'.$bulan.'-'.$date[0];
 		$today = date('Y-m-d');
+		//insert to t_log sys
+		$aksi = 'MASTER PEKERJA';
+		$detail = 'Transposisi Plotting Job Noind='.$noind;
+		$this->log_activity->activity_log($aksi, $detail);
+		//
 
 		if ($tgl_berubah <= $today) {
 			$save = array

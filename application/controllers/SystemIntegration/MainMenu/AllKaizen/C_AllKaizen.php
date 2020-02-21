@@ -1,7 +1,7 @@
 <?php defined('BASEPATH')OR die('No direct script access allowed');
 class C_AllKaizen extends CI_Controller
 {
-	
+
 	function __construct()
 		{
 			parent::__construct();
@@ -9,13 +9,14 @@ class C_AllKaizen extends CI_Controller
 			$this->load->helper('form');
 	        $this->load->helper('url');
 	        $this->load->helper('html');
+			$this->load->library('Log_Activity');
 	        $this->load->library('form_validation');
 	          //load the login model
 			$this->load->library('session');
 			$this->load->model('M_Index');
 			$this->load->model('SystemAdministration/MainMenu/M_user');
 			$this->load->model('SystemIntegration/M_allkaizen');
-			  
+
 			if($this->session->userdata('logged_in')!=TRUE) {
 				$this->load->helper('url');
 				$this->session->set_userdata('last_page', current_url());
@@ -54,7 +55,7 @@ class C_AllKaizen extends CI_Controller
 
 			//all
 			// $i = 0; foreach ($data['kaizen'] as $key => $value) {
-			// 	$a = 0; for ($x=1; $x < 4; $x++) { 
+			// 	$a = 0; for ($x=1; $x < 4; $x++) {
 			// 	$getApprovalLvl = $this->M_allkaizen->getApprover($value['kaizen_id'], $x);
 			// 	$data['kaizen'][$i]['status_app'][$a]['level'.$x] = $getApprovalLvl ? $getApprovalLvl[0]['status'] : 0;
 			// 	$data['kaizen'][$i]['status_app'][$a]['staff'.$x] = $getApprovalLvl ? $getApprovalLvl[0]['employee_name'] : '';
@@ -66,7 +67,7 @@ class C_AllKaizen extends CI_Controller
 			// }
 			// // unchecked
 			// $i = 0; foreach ($data['kaizen_unchecked'] as $key => $value) {
-			// 	$a = 0; for ($x=1; $x < 4; $x++) { 
+			// 	$a = 0; for ($x=1; $x < 4; $x++) {
 			// 	$getApprovalLvl = $this->M_allkaizen->getApprover($value['kaizen_id'], $x);
 			// 	$data['kaizen_unchecked'][$i]['status_app'][$a]['level'.$x] = $getApprovalLvl ? $getApprovalLvl[0]['status'] : 0;
 			// 	$data['kaizen_unchecked'][$i]['status_app'][$a]['staff'.$x] = $getApprovalLvl ? $getApprovalLvl[0]['employee_name'] : '';
@@ -79,7 +80,7 @@ class C_AllKaizen extends CI_Controller
 
 			// //approved
 			// $i = 0; foreach ($data['kaizen_approved'] as $key => $value) {
-			// 	$a = 0; for ($x=1; $x < 4; $x++) { 
+			// 	$a = 0; for ($x=1; $x < 4; $x++) {
 			// 	$getApprovalLvl = $this->M_allkaizen->getApprover($value['kaizen_id'], $x);
 			// 	$data['kaizen_approved'][$i]['status_app'][$a]['level'.$x] = $getApprovalLvl ? $getApprovalLvl[0]['status'] : 0;
 			// 	$data['kaizen_approved'][$i]['status_app'][$a]['staff'.$x] = $getApprovalLvl ? $getApprovalLvl[0]['employee_name'] : '';
@@ -92,7 +93,7 @@ class C_AllKaizen extends CI_Controller
 
 			// //revised
 			// $i = 0; foreach ($data['kaizen_revised'] as $key => $value) {
-			// 	$a = 0; for ($x=1; $x < 4; $x++) { 
+			// 	$a = 0; for ($x=1; $x < 4; $x++) {
 			// 	$getApprovalLvl = $this->M_allkaizen->getApprover($value['kaizen_id'], $x);
 			// 	$data['kaizen_approved'][$i]['status_app'][$a]['level'.$x] = $getApprovalLvl ? $getApprovalLvl[0]['status'] : 0;
 			// 	$data['kaizen_approved'][$i]['status_app'][$a]['staff'.$x] = $getApprovalLvl ? $getApprovalLvl[0]['employee_name'] : '';
@@ -105,7 +106,7 @@ class C_AllKaizen extends CI_Controller
 
 			// //rejected
 			// $i = 0; foreach ($data['kaizen_rejected'] as $key => $value) {
-			// 	$a = 0; for ($x=1; $x < 4; $x++) { 
+			// 	$a = 0; for ($x=1; $x < 4; $x++) {
 			// 	$getApprovalLvl = $this->M_allkaizen->getApprover($value['kaizen_id'], $x);
 			// 	$data['kaizen_rejected'][$i]['status_app'][$a]['level'.$x] = $getApprovalLvl ? $getApprovalLvl[0]['status'] : 0;
 			// 	$data['kaizen_rejected'][$i]['status_app'][$a]['staff'.$x] = $getApprovalLvl ? $getApprovalLvl[0]['employee_name'] : '';

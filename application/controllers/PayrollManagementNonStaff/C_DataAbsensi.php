@@ -10,6 +10,7 @@ class C_DataAbsensi extends CI_Controller
 		$this->load->helper('url');
 		$this->load->helper('html');
 
+		$this->load->library('Log_Activity');
 		$this->load->library('form_validation');
 		$this->load->library('session');
 		$this->load->library('encrypt');
@@ -73,7 +74,7 @@ class C_DataAbsensi extends CI_Controller
 		$data['data'] = $this->M_dataabsensi->getDataPresensi();
 
 		$this->M_dataabsensi->updateProgress('Download Absensi',0,$user);
-		
+
 		$this->load->view('V_Header',$data);
 		$this->load->view('V_Sidemenu',$data);
 		$this->load->view('PayrollManagementNonStaff/DataAbsensi/V_copy', $data);
@@ -83,7 +84,7 @@ class C_DataAbsensi extends CI_Controller
 	public function doDownload(){
 		$user = $this->session->user;
 		$this->M_dataabsensi->updateProgress('Download Absensi',0,$user);
-		
+
 		$periode = $this->input->post('checkPenggajian');
 
 		$column_view = array('NO','NOIND','NAMA','KODESIE','BLN_GAJI','THN_GAJI','HM01','HM02','HM03','HM04','HM05','HM06','HM07','HM08','HM09','HM10','HM11','HM12','HM13','HM14','HM15','HM16','HM17','HM18','HM19','HM20','HM21','HM22','HM23','HM24','HM25','HM26','HM27','HM28','HM29','HM30','HM31','JAM_LEMBUR','HMP','HMU','HMS','HMM','HM','UBT','HUPAMK','IK','IKSKP','IKSKU','IKSKS','IKSKM','IKJSP','IKJSU','IKJSS','IKJSM','ABS','T','SKD','CUTI','HL','PT','PI','PM','DL','TAMBAHAN','DUKA','POTONGAN','HC','JML_UM','CICIL','POTONGAN_KOPERASI','UBS','UM_PUASA','SK_CT','POT_2','TAMB_2','KODE_LOKASI','JML_IZIN','JML_MANGKIR','KET');
@@ -95,6 +96,11 @@ class C_DataAbsensi extends CI_Controller
 		header('Cache-Control: max-age=0');
 
 		if ($periode) {
+			//insert to sys.log_activity
+			$aksi = 'Payroll Management NStaf';
+			$detail = "Download data absensi periode=$periode";
+			$this->log_activity->activity_log($aksi, $detail);
+			//
 			$this->load->library("excel");
 			$objPHPExcel = $this->excel;
 			$objPHPExcel->setActiveSheetIndex(0);
@@ -111,7 +117,7 @@ class C_DataAbsensi extends CI_Controller
 				$record = array();
 				$dt = explode("-", $key);
 				$record = $this->M_dataabsensi->getDetailDataPresensi($dt['0'],$dt['1'],$dt['2']);
-				
+
 				foreach ($record as $rec) {
 					$column = 0;
 					foreach ($rec as $val) {
@@ -124,7 +130,7 @@ class C_DataAbsensi extends CI_Controller
 						}else{
 							$objPHPExcel->getActiveSheet()->setCellValueByColumnAndRow($column+1, $row, $val);
 						}
-						
+
 						$column++;
 					}
 					$row++;
@@ -132,7 +138,7 @@ class C_DataAbsensi extends CI_Controller
 				$selesai++;
 				$persentase = ($selesai/$persen)*100;
 				$persentase = round($persentase);
-				
+
 				$cek_data = $this->M_dataabsensi->getProgress($user,'Import Absensi');
 				if ($cek_data == 0) {
 					$this->M_dataabsensi->setProgress('Download Absensi',$persentase,$user);
@@ -144,7 +150,7 @@ class C_DataAbsensi extends CI_Controller
 				flush();
 			}
 			// exit();
-			
+
 
 			$writer = PHPExcel_IOFactory::createWriter($this->excel,'Excel5');
 			$writer->save('php://output');
@@ -223,6 +229,11 @@ class C_DataAbsensi extends CI_Controller
 
 		$data['upload_data'] = '';
 		if ($this->upload->do_upload('file')) {
+			//insert to sys.log_activity
+			$aksi = 'Payroll Management NStaf';
+			$detail = "Import data absensi periode=$thn_gaji $bln_gaji";
+			$this->log_activity->activity_log($aksi, $detail);
+			//
 			$uploadData = $this->upload->data();
 			$inputFileName = 'assets/upload/PayrollNonstaff/DataAbsensi/'.$uploadData['file_name'];
 			$inputFileType = $uploadData['file_type'];
@@ -249,9 +260,9 @@ class C_DataAbsensi extends CI_Controller
 
 			$db_record = array();
 
-			for ($row=0; $row <= $highestRow - 2 ; $row++) { 
+			for ($row=0; $row <= $highestRow - 2 ; $row++) {
 				$a = array();
-				for ($column=0; $column <= $columnCount - 1; $column++) { 
+				for ($column=0; $column <= $columnCount - 1; $column++) {
 					$headTitle = explode(',', $sheetHead[0][$column]);
 					$a[$headTitle[0]] = $sheetData[$row][$column];
 				}
@@ -379,7 +390,7 @@ class C_DataAbsensi extends CI_Controller
 				}else{
 					$this->M_dataabsensi->updateAbsensi($data,$where);
 				}
-				
+
 
 				$ImportProgress = ($i/($highestRow - 2))*100;
 				$ImportProgress = round($ImportProgress);
@@ -437,6 +448,11 @@ class C_DataAbsensi extends CI_Controller
 			'bln_gaji' => $bln_gaji,
 			'thn_gaji' => $thn_gaji,
 		);
+		//insert to sys.log_activity
+		$aksi = 'Payroll Management NStaf';
+		$detail = "Clear data absensi periode=$thn_gaji $bln_gaji";
+		$this->log_activity->activity_log($aksi, $detail);
+		//
 
 		$this->M_dataabsensi->clearAbsensi($data);
 	}
@@ -446,10 +462,10 @@ class C_DataAbsensi extends CI_Controller
 
 		// print_r($requestData);exit;
 
-		$columns = array(  
-			0 => 'noind', 
-			1 => 'noind', 
-			2 => 'employee_name', 
+		$columns = array(
+			0 => 'noind',
+			1 => 'noind',
+			2 => 'employee_name',
 			3 => 'kodesie',
 			4 => 'unit_name',
 			5 => 'bln_gaji',
@@ -546,7 +562,7 @@ class C_DataAbsensi extends CI_Controller
 		$data = array();
 		$no = 1;
 		$data_array = $data_table->result_array();
-		
+
 		$json = "{";
 		$json .= '"draw":'.intval( $requestData['draw'] ).',';
 		$json .= '"recordsTotal":'.intval( $totalData ).',';
@@ -574,21 +590,26 @@ class C_DataAbsensi extends CI_Controller
 
 	public function downloadExcel()
     {
+		//insert to sys.log_activity
+		$aksi = 'Payroll Management NStaf';
+		$detail = "Download Excel data absensi";
+		$this->log_activity->activity_log($aksi, $detail);
+		//
 		$filter = $this->input->get('filter');
 		$datafilter = $this->input->get('data');
-		$column_table = array('', 'noind', 'employee_name', 'kodesie', 'unit_name', 'bln_gaji', 'thn_gaji', 'hm01', 'hm02', 'hm03', 
-			'hm04', 'hm05', 'hm06', 'hm07', 'hm08', 'hm09', 'hm10', 'hm11', 'hm12', 'hm13', 'hm14', 'hm15', 'hm16', 'hm17', 'hm18', 'hm19', 
-			'hm20', 'hm21', 'hm22', 'hm23', 'hm24', 'hm25', 'hm26', 'hm27', 'hm28', 'hm29', 'hm30', 'hm31', 'jam_lembur', 'hmp', 
-			'hmu', 'hms', 'hmm', 'hm', 'ubt', 'hupamk', 'ik', 'ikskp', 'iksku', 'iksks', 'ikskm', 'ikjsp', 'ikjsu', 'ikjss', 
-			'ikjsm', 'abs', 't', 'skd', 'cuti', 'hl', 'pt', 'pi', 'pm', 'dl', 'tambahan', 'duka', 'potongan', 'hc', 'jml_um', 
-			'cicil', 'potongan_koperasi', 'ubs', 'um_puasa', 'sk_ct', 'pot_2', 'tamb_2', 'kode_lokasi', 'jml_izin', 
+		$column_table = array('', 'noind', 'employee_name', 'kodesie', 'unit_name', 'bln_gaji', 'thn_gaji', 'hm01', 'hm02', 'hm03',
+			'hm04', 'hm05', 'hm06', 'hm07', 'hm08', 'hm09', 'hm10', 'hm11', 'hm12', 'hm13', 'hm14', 'hm15', 'hm16', 'hm17', 'hm18', 'hm19',
+			'hm20', 'hm21', 'hm22', 'hm23', 'hm24', 'hm25', 'hm26', 'hm27', 'hm28', 'hm29', 'hm30', 'hm31', 'jam_lembur', 'hmp',
+			'hmu', 'hms', 'hmm', 'hm', 'ubt', 'hupamk', 'ik', 'ikskp', 'iksku', 'iksks', 'ikskm', 'ikjsp', 'ikjsu', 'ikjss',
+			'ikjsm', 'abs', 't', 'skd', 'cuti', 'hl', 'pt', 'pi', 'pm', 'dl', 'tambahan', 'duka', 'potongan', 'hc', 'jml_um',
+			'cicil', 'potongan_koperasi', 'ubs', 'um_puasa', 'sk_ct', 'pot_2', 'tamb_2', 'kode_lokasi', 'jml_izin',
 			'jml_mangkir');
-		$column_view = array('no', 'no induk', 'nama', 'kodesie', 'nama unit', 'bulan gaji', 'tahun gaji', 'hm01', 'hm02', 'hm03', 'hm04', 
-			'hm05', 'hm06', 'hm07', 'hm08', 'hm09', 'hm10', 'hm11', 'hm12', 'hm13', 'hm14', 'hm15', 'hm16', 'hm17', 
-			'hm18', 'hm19', 'hm20', 'hm21', 'hm22', 'hm23', 'hm24', 'hm25', 'hm26', 'hm27', 'hm28', 'hm29', 'hm30', 
-			'hm31', 'jam lembur', 'hmp', 'hmu', 'hms', 'hmm', 'hm', 'ubt', 'hupamk', 'ik', 'ikskp', 'iksku', 
-			'iksks', 'ikskm', 'ikjsp', 'ikjsu', 'ikjss', 'ikjsm', 'abs', 't', 'skd', 'cuti', 'hl', 'pt', 'pi', 
-			'pm', 'dl', 'tambahan', 'duka', 'potongan', 'hc', 'jumlah um', 'cicil', 'potongan koperasi', 'ubs', 
+		$column_view = array('no', 'no induk', 'nama', 'kodesie', 'nama unit', 'bulan gaji', 'tahun gaji', 'hm01', 'hm02', 'hm03', 'hm04',
+			'hm05', 'hm06', 'hm07', 'hm08', 'hm09', 'hm10', 'hm11', 'hm12', 'hm13', 'hm14', 'hm15', 'hm16', 'hm17',
+			'hm18', 'hm19', 'hm20', 'hm21', 'hm22', 'hm23', 'hm24', 'hm25', 'hm26', 'hm27', 'hm28', 'hm29', 'hm30',
+			'hm31', 'jam lembur', 'hmp', 'hmu', 'hms', 'hmm', 'hm', 'ubt', 'hupamk', 'ik', 'ikskp', 'iksku',
+			'iksks', 'ikskm', 'ikjsp', 'ikjsu', 'ikjss', 'ikjsm', 'abs', 't', 'skd', 'cuti', 'hl', 'pt', 'pi',
+			'pm', 'dl', 'tambahan', 'duka', 'potongan', 'hc', 'jumlah um', 'cicil', 'potongan koperasi', 'ubs',
 			'um puasa', 'sk ct', 'pot 2', 'tamb 2', 'kode lokasi', 'jml izin', 'jml mangkir');
 		$data_table = $this->M_dataabsensi->getAbsensiSearch($filter,$datafilter)->result_array();
 
@@ -619,9 +640,9 @@ class C_DataAbsensi extends CI_Controller
 			$excel_row++;
 		}
 		// exit();
-		$objPHPExcel->getActiveSheet()->setTitle('Quick ERP');      
+		$objPHPExcel->getActiveSheet()->setTitle('Quick ERP');
 		$objWriter = PHPExcel_IOFactory::createWriter($objPHPExcel, 'Excel2007');
- 
+
 		header("Last-Modified: " . gmdate("D, d M Y H:i:s") . " GMT");
 		header("Cache-Control: no-store, no-cache, must-revalidate");
 		header("Cache-Control: post-check=0, pre-check=0", false);

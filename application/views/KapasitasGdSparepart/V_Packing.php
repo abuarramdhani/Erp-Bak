@@ -57,7 +57,7 @@
                                     <div class="panel-body">
                                         <div class="table-responsive" >
                                         <table class="datatable table table-bordered table-hover table-striped text-center tblpacking" style="width: 100%;table-layout:fixed">
-                                            <thead class="btn-warning" style="color:black">
+                                            <thead style="background-color:#ffbd73;color:black">
                                                 <tr>
                                                     <th width="20px">No</th>
                                                     <th>Tanggal</th>
@@ -78,25 +78,38 @@
                                                         $td = '';
                                                     }
                                                     ?>
-                                                    <tr>
-                                                        <td width="20px" class="<?= $td?>"><input type="hidden" id="mulai<?= $no?>" value=""><?= $no; ?></td>
+                                                    <tr id="baris<?= $no?>">
+                                                        <td width="20px" class="<?= $td?>"><?= $no; ?>
+                                                        <?php if (!empty($val['MULAI_PACKING'])) { ?>
+                                                            <input type="hidden" id="mulai<?= $no?>" value="<?= $val['MULAI_PACKING']?>">
+                                                        <?php }else{?><input type="hidden" id="mulai<?= $no?>" value=""> <?php }?>
+                                                        </td>
                                                         <td class="<?= $td?>"><input type="hidden" id="jam<?= $no?>" value="<?= $val['TGL_DIBUAT']?>"><?= $val['TGL_DIBUAT']?></td>
-                                                        <td class="<?= $td?>"><input type="hidden" id="jenis_doc<?= $no?>" value="<?= $val['JENIS_DOKUMEN']?>"><?= $val['JENIS_DOKUMEN']?></td>
-                                                        <td class="<?= $td?>" style="font-size:17px; font-weight: bold"><input type="hidden" id="no_doc<?= $no?>" value="<?= $val['NO_DOKUMEN']?>"><?= $val['NO_DOKUMEN']?></td>
+                                                        <td class="<?= $td?>"><input type="hidden" id="jenis<?= $no?>" value="<?= $val['JENIS_DOKUMEN']?>"><?= $val['JENIS_DOKUMEN']?></td>
+                                                        <td class="<?= $td?>" style="font-size:17px; font-weight: bold"><input type="hidden" id="nodoc<?= $no?>" value="<?= $val['NO_DOKUMEN']?>"><?= $val['NO_DOKUMEN']?></td>
                                                         <td class="<?= $td?>"><input type="hidden" id="jml_item<?= $no?>" value="<?= $val['JUMLAH_ITEM']?>"><?= $val['JUMLAH_ITEM']?></td>
                                                         <td class="<?= $td?>"><input type="hidden" id="jml_pcs<?= $no?>" value="<?= $val['JUMLAH_PCS']?>"><?= $val['JUMLAH_PCS']?></td>
-                                                        <td class="<?= $td?>"><select id="pic<?= $no?>" name="pic" class="form-control select2 select2-hidden-accessible" style="width:100%;" required>
-                                                            <option></option>
-                                                            <option value="MUJIMAN">MUJIMAN</option>
-                                                            <option value="JOKO">JOKO</option>
-                                                            <option value="FENDI">FENDI</option>
-                                                            <option value="MUSLIH">MUSLIH</option>
-                                                            <option value="UDIN">UDIN</option>
-                                                        </select></td>
-                                                        <td class="<?= $td?>"><?= $val['URGENT']?></td>
                                                         <td class="<?= $td?>">
-                                                            <p id="timer<?= $no?>" style=""><label id="hours<?= $no?>" >00</label>:<label id="minutes<?= $no?>">00</label>:<label id="seconds<?= $no?>">00</label></p>
-                                                            <input type="button" class="btn btn-md btn-success" id="btnPacking<?= $no?>" onclick="btnPackingSPB(<?= $no?>)" value="Mulai">
+                                                        <?php if (!empty($val['PIC_PACKING'])) { ?>
+                                                            <select id="pic<?= $no?>" name="pic" class="form-control select2 select2-hidden-accessible" style="width:100%;" disabled>
+                                                            <option><?= $val['PIC_PACKING']?></option>
+                                                        </select></td>
+                                                        <?php }else{?>
+                                                        <select id="pic<?= $no?>" name="pic" class="form-control select2 select2-hidden-accessible picSPB" style="width:100%;" required>
+                                                            <option></option>
+                                                        </select><?php }?>
+                                                        </td>
+                                                        <td class="<?= $td?>"><?= $val['URGENT']?>  <?= $val['BON'] ?></td>
+                                                        <td class="<?= $td?>">
+                                                            <?php if (!empty($val['MULAI_PACKING']) && empty($val['WAKTU_PACKING'])) { ?>
+                                                                <p id="timer<?= $no?>" style="">Mulai <?= $val['MULAI_PACKING']?></p>
+                                                                <input type="button" class="btn btn-md btn-danger" id="btnPacking<?= $no?>" onclick="btnPackingSPB(<?= $no?>)" value="Selesai">
+                                                            <?php }else{?>
+                                                                <p id="timer<?= $no?>" style=""><label id="hours<?= $no?>" >00</label>:<label id="minutes<?= $no?>">00</label>:<label id="seconds<?= $no?>">00</label></p>
+                                                                <input type="button" class="btn btn-md btn-success" id="btnPacking<?= $no?>" onclick="btnPackingSPB(<?= $no?>)" value="Mulai">
+                                                            <?php }?><br><br>
+                                                            <button type="button" class="btn btn-xs btn-info" id="btnrestartSPB<?= $no?>" onclick="btnRestartPacking(<?= $no?>)"><i class="fa fa-refresh"></i></button>
+                                                            <button type="button" class="btn btn-xs btn-primary" id="btnpauseSPB<?= $no?>" onclick="btnPausePacking(<?= $no?>)"><i class="fa fa-pause"></i></button>
                                                         </td>
                                                     </tr>
                                                 <?php $no++; }?>
@@ -110,7 +123,7 @@
                                 <div class="panel-body">
                                     <div class="table-responsive" >
                                     <table class="datatable table table-bordered table-hover table-striped text-center tblpacking2" style="width: 100%;table-layout:fixed">
-                                            <thead class="btn-warning" style="color:black">
+                                            <thead style="background-color:#ffbd73;color:black">
                                                 <tr>
                                                     <th width="20px">No</th>
                                                     <th>Tanggal</th>
@@ -144,7 +157,7 @@
                                                         <td class="<?= $td?>"><input type="hidden" id="selesai_packing<?= $no?>" value="<?= $val['SELESAI_PACKING']?>"><?= $val['SELESAI_PACKING']?></td>
                                                         <td class="<?= $td?>"><input type="hidden" id="waktu_packing<?= $no?>" value="<?= $val['WAKTU_PACKING'] ?>"><?= $val['WAKTU_PACKING'] ?></td>
                                                         <td class="<?= $td?>"><?= $val['PIC_PACKING']?></td>
-                                                        <td class="<?= $td?>"><?= $val['URGENT']?></td>
+                                                        <td class="<?= $td?>"><?= $val['URGENT']?> <?= $val['BON'] ?></td>
                                                     </tr>
                                                 <?php $no++; $i++; }?>
                                             </tbody>
@@ -159,3 +172,63 @@
         </div>
     </div>
 </section>
+
+
+<div class="modal fade" id="mdlcolly" tabindex="-1" role="dialog" aria-labelledby="myModalDetail">
+	<div class="modal-dialog" role="document">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+			</div>
+			<div class="modal-body">
+            <div class="panel-body">
+                <div class="col-md-12">
+                    <center><label>JUMLAH COLLY</label><center>
+                    <input type="number" class="form-control text-center" id="jml_colly" style="width:45%" name="jml_colly">
+                </div>
+            </div>
+            <div class="panel-body">
+                <div class="col-md-12">
+                    <div class="col-md-3 text-right">
+                        KARDUS KECIL : 
+                    </div>
+                    <div class="col-md-3">
+                        <input type="number" class="form-control text-center" id="kardus_kecil" name="kardus_kecil">
+                    </div>
+                    <div class="col-md-3 text-right">
+                        KARDUS SEDANG : 
+                    </div>
+                    <div class="col-md-3">
+                        <input type="number" class="form-control text-center" id="kardus_sdg" name="kardus_sdg">
+                    </div>
+                </div>
+            </div>
+            <div class="panel-body">
+                <div class="col-md-12">
+                    <div class="col-md-3 text-right">
+                        KARDUS PANJANG :
+                    </div>
+                    <div class="col-md-3">
+                        <input type="number" class="form-control text-center" id="kardus_bsr" name="kardus_bsr">
+                    </div>
+                    <div class="col-md-3 text-right">
+                        KARUNG :
+                    </div>
+                    <div class="col-md-3">
+                        <input type="number" class="form-control text-center" id="karung" name="karung">
+                    </div>
+                </div>
+            </div>
+            <center><span id="peringatan" style="color: red"></span></center>
+            <div id="datahidden"></div>
+            <div class="panel-body">
+                <div class="col-md-12 text-center">
+                    <button type="button" class="btn btn-danger" onclick="savePacking(this)">SAVE</button>
+                </div>
+            </div>
+		    </div>
+            <div class="modal-footer">
+		</div>
+		</div>
+	</div>
+</div>

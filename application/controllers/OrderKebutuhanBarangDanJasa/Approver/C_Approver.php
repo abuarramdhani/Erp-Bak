@@ -24,6 +24,8 @@ class C_Approver extends CI_Controller {
         if($this->session->is_logged == FALSE){
             redirect();
         }
+
+        date_default_timezone_set("Asia/Bangkok");
     }
     
     public function index()
@@ -215,9 +217,13 @@ class C_Approver extends CI_Controller {
 
     public function ApproveOrder()
     {
+        $noind = $this->session->user;
         $orderid = $_POST['orderid'];
         $judgment = $_POST['judgment'];
         $person_id = $_POST['person_id'];
+
+        $emailBatch = array();
+        $emailBackRequester = array();
 
         for ($i=0; $i < count($orderid); $i++) { 
             $approval_position = $this->M_approver->checkPositionApprover($orderid[$i],$person_id);
@@ -228,6 +234,7 @@ class C_Approver extends CI_Controller {
                     'JUDGEMENT' => $judgment,
                     'NOTE' => $_POST['note'],
                  );
+                $note = $_POST['note'];
             }else {
                 $approve = array(                           
                                     'JUDGEMENT' => $judgment,
@@ -242,15 +249,331 @@ class C_Approver extends CI_Controller {
                     'APPROVE_LEVEL_POS' => $approval_position[0]['APPROVER_TYPE'],
                     'ORDER_STATUS_ID' => '3',
                  );
+                 $stat = 1;
             }else {
                 
                 $orderPos = array(
                                     'APPROVE_LEVEL_POS' => $approval_position[0]['APPROVER_TYPE'],
                                  );
+                $stat = 0;
             }
             
             $this->M_approver->updatePosOrder($orderid[$i],$orderPos);
+
+            if ($stat == 0 && $judgment == 'A') {
+
+                $order = $this->M_approver->getOrderToApprove1($orderid[$i]);
+    
+                $getNextApproval = $this->M_approver->getNextApproval($orderid[$i]);
+    
+                if (!isset($emailBatch[$getNextApproval[0]['NATIONAL_IDENTIFIER']])) {
+                    $emailBatch[$getNextApproval[0]['NATIONAL_IDENTIFIER']] = array();
+                }
+    
+                array_push($emailBatch[$getNextApproval[0]['NATIONAL_IDENTIFIER']], $order[0]);
+            }
+
+
+                $order = $this->M_approver->getOrderToApprove1($orderid[$i]);
+
+                if (!isset($emailBackRequester[$order[0]['NATIONAL_IDENTIFIER']])) {
+                    $emailBackRequester[$order[0]['NATIONAL_IDENTIFIER']] = array();
+                }
+
+                array_push($emailBackRequester[$order[0]['NATIONAL_IDENTIFIER']], $order[0]);
+
+
+            
         }
+            if ($stat == 0 && $judgment == 'A') {
+
+                foreach ($emailBatch as $key => $pesan) {
+                    $normal = array();
+                    $urgent = array();
+                    $susulan = array();
+                        
+                    $nApprover = $this->M_requisition->getNamaUser($key);
+                    $namaApprover = $nApprover[0]['nama'];
+        
+                    $encrypt = $this->encrypt->encode($key);
+                    $encrypt = str_replace(array('+', '/', '='), array('-', '_', '~'), $encrypt);
+
+                    $link = "<a href='".base_url("OrderKebutuhanBarangDanJasa/directEmail/$encrypt/")."'>Disini</a>";
+                        
+                    if ($nApprover[0]['jenkel'][0]=='L') {
+                        $jklApprover = 'Bapak ';
+                    }else {
+                        $jklApprover = 'Ibu ';
+                    };
+        
+                    $cond = "WHERE ppf.NATIONAL_IDENTIFIER = '$key'";
+                    
+                    $getNoindFromOracle = $this->M_requisition->getNoind($cond);
+        
+                    $allOrder = $this->M_approver->getListDataOrder();
+        
+                    foreach ($allOrder as $key => $order) {
+                        $checkOrder = $this->M_approver->checkOrder($order['ORDER_ID']);
+                        if (isset($checkOrder[0])) {
+                            if ($checkOrder[0]['APPROVER_ID'] == $getNoindFromOracle[0]['PERSON_ID']) {
+                                $orderSiapTampil = $this->M_approver->getOrderToApprove($order['ORDER_ID']);
+                                if ($orderSiapTampil[0]['ORDER_CLASS'] != '2') {
+                                    if ($orderSiapTampil[0]['URGENT_FLAG'] == 'N' && $orderSiapTampil[0]['IS_SUSULAN'] =='N') {
+                                        array_push($normal, $orderSiapTampil[0]);
+                                    }elseif ($orderSiapTampil[0]['URGENT_FLAG'] == 'Y' && $orderSiapTampil[0]['IS_SUSULAN'] =='N') {
+                                        array_push($urgent, $orderSiapTampil[0]);
+                                    }elseif ($orderSiapTampil[0]['IS_SUSULAN'] =='Y') {
+                                        array_push($susulan, $orderSiapTampil[0]);
+                                    }
+                                }
+                            }
+                        }
+                    }
+        
+                    $create = $pesan[0]['NATIONAL_IDENTIFIER'];
+                    // $getNoindFromOracle = $this->M_requisition->getNoind($create);
+                    $nCreator = $this->M_requisition->getNamaUser($create);
+                    $namaCreator = $nCreator[0]['nama'];
+                    
+                    if ($nCreator[0]['jenkel'][0]=='L') {
+                        $jklCreator = 'Bapak ';
+                    }else {
+                        $jklCreator = 'Ibu ';
+                    };
+    
+                    $subject = '[TRIAL]Persetujuan Order Kebutuhan Barang Dan jasa';
+                    $body = "<b>Yth. $jklApprover $namaApprover</b>,<br><br>";
+                    $body .= "$jklCreator $namaCreator meminta approval Anda terkait order barang-barang berikut : <br><br>";
+                    $body .= "	<table border='1' style=' border-collapse: collapse;'>
+                                    <thead>
+                                        <tr>
+                                            <th>Kode Barang</th>
+                                            <th>Deskripsi Barang</th>
+                                            <th>Quantity</th>
+                                            <th>UOM</th>
+                                            <th>Status Order</th>
+                                            <th>Alasan Pengadaan</th>
+                                            <th>Alasan Urgensi</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>";
+                                for ($i=0; $i < count($pesan); $i++) { 
+                                    if ($pesan[$i]['URGENT_FLAG']=='Y' && $pesan[$i]['IS_SUSULAN'] =='N') {
+                                        $statusOrder = 'Urgent';
+                                    }else if($pesan[$i]['URGENT_FLAG']=='N' && $pesan[$i]['IS_SUSULAN'] =='N'){
+                                        $statusOrder = 'Normal';
+                                    }elseif ($pesan[$i]['IS_SUSULAN'] =='Y') {
+                                        $statusOrder = 'Susulan';
+                                    }
+    
+                                    if ($pesan[$i]['URGENT_REASON']=='') {
+                                        $urgentReason = '-';
+                                    }else{
+                                        $urgentReason = $pesan[$i]['URGENT_REASON'];
+                                    }
+    
+                                    $emailSendDate = date("d-M-Y");
+                                    $pukul = date("h:i:sa");
+                                    
+                                    $itemDanDeskripsi = $pesan[$i]['SEGMENT1'].' - '.$pesan[$i]['DESCRIPTION'];
+                                    $kodeBarang = $itemDanDeskripsi;
+                                    $deskripsi = $pesan[$i]['ITEM_DESCRIPTION'];
+                                    $qty = $pesan[$i]['QUANTITY'];
+                                    $uom = $pesan[$i]['UOM'];
+                                    $alasanPengadaan = $pesan[$i]['ORDER_PURPOSE'];
+    
+                                    $body .="<tr>
+                                                <td>$kodeBarang</td>
+                                                <td>$deskripsi</td>
+                                                <td>$qty</td>
+                                                <td>$uom</td>
+                                                <td>$statusOrder</td>
+                                                <td>$alasanPengadaan</td>
+                                                <td>$urgentReason</td>
+                                            </tr>";
+                                }
+                                $body .= "</body>";
+                                $body .= "</table> <br><br>";
+                                $body .= "<b>INFO :</b><br>";
+                                $body .= "Terdapat <b>".count($normal)." order normal, ".count($susulan)." order susulan, dan ". count($urgent)." order urgent</b> menunggu keputusan Anda!<br>";
+                                $body .= "Apabila Anda ingin mengambil tindakan terhadap Order tersebut, Anda dapat klik link <b>$link</b> <br><br>";
+                                $body .= "Demikian yang dapat kami sampaikan. Atas perhatian dan kerjasamanya kami ucapkan terima kasih. <br><br>";
+                                $body .= "<span style='font-size:10px;'>*Email ini dikirimkan secara otomatis oleh aplikasi <b>Order Kebutuhan Barang Dan Jasa</b> pada $emailSendDate pukul $pukul<br>";
+                                $body .= "*Apabila Anda menemukan kendala atau kesulitan maka dapat menghubungi Call Center ICT <b>12300 extensi 1. </span>";
+    
+    
+                        $this->EmailAlert($subject,$body);
+        
+                }
+
+            }
+
+            if ($judgment == 'R') {
+                foreach ($emailBackRequester as $key => $pesanRequester) {
+                    $nRequester = $this->M_requisition->getNamaUser($key);
+                    $namaRequester = $nRequester[0]['nama'];
+    
+                    if ($nRequester[0]['jenkel'][0]=='L') {
+                        $jklRequester = 'Bapak ';
+                    }else {
+                        $jklRequester = 'Ibu ';
+                    };
+    
+                    $nApprover = $this->M_requisition->getNamaUser($noind);
+                    $namaApprover = $nApprover[0]['nama'];
+    
+                    if ($nApprover[0]['jenkel'][0]=='L') {
+                        $jklApprover = 'Bapak ';
+                    }else {
+                        $jklApprover = 'Ibu ';
+                    };
+    
+                    $subject = '[TRIAL] Order Ditolak';
+                    $body = "<b>Yth. $jklRequester $namaRequester</b>,<br><br>";
+                    $body .= "Order anda terkait barang - barang berikut :<br><br>";
+                    $body .= "<table border='1' style=' border-collapse: collapse;'>
+                                <thead>
+                                    <tr>
+                                        <th>Kode Barang</th>
+                                        <th>Deskripsi Barang</th>
+                                        <th>Quantity</th>
+                                        <th>UOM</th>
+                                        <th>Status Order</th>
+                                        <th>Alasan Pengadaan</th>
+                                        <th>Alasan Urgensi</th>
+                                    </tr>
+                                </thead>
+                                <tbody>";
+                                    for ($i=0; $i < count($pesanRequester); $i++) { 
+                                        if ($pesanRequester[$i]['URGENT_FLAG']=='Y' && $pesanRequester[$i]['IS_SUSULAN'] =='N') {
+                                            $statusOrder = 'Urgent';
+                                        }else if($pesanRequester[$i]['URGENT_FLAG']=='N' && $pesanRequester[$i]['IS_SUSULAN'] =='N'){
+                                            $statusOrder = 'Normal';
+                                        }elseif ($pesanRequester[$i]['IS_SUSULAN'] =='Y') {
+                                            $statusOrder = 'Susulan';
+                                        }
+    
+                                        if ($pesanRequester[$i]['URGENT_REASON']=='') {
+                                            $urgentReason = '-';
+                                        }else{
+                                            $urgentReason = $pesanRequester[$i]['URGENT_REASON'];
+                                        }
+    
+                                        $emailSendDate = date("d-M-Y");
+                                        $pukul = date("h:i:sa");
+                                        
+                                        $itemDanDeskripsi = $pesanRequester[$i]['SEGMENT1'].' - '.$pesanRequester[$i]['DESCRIPTION'];
+                                        $kodeBarang = $itemDanDeskripsi;
+                                        $deskripsi = $pesanRequester[$i]['ITEM_DESCRIPTION'];
+                                        $qty = $pesanRequester[$i]['QUANTITY'];
+                                        $uom = $pesanRequester[$i]['UOM'];
+                                        $alasanPengadaan = $pesanRequester[$i]['ORDER_PURPOSE'];
+    
+                                        $body .="<tr>
+                                                    <td>$kodeBarang</td>
+                                                    <td>$deskripsi</td>
+                                                    <td>$qty</td>
+                                                    <td>$uom</td>
+                                                    <td>$statusOrder</td>
+                                                    <td>$alasanPengadaan</td>
+                                                    <td>$urgentReason</td>
+                                                </tr>";
+                                    }
+                    $body .= "</body>";
+                    $body .= "</table> <br><br>";
+                    $body .= "Tidak Disetujui oleh $jklApprover $namaApprover dengan alasan : <b>$note</b><br><br>";
+    
+                    $body .= "<span style='font-size:10px;'>*Email ini dikirimkan secara otomatis oleh aplikasi <b>Order Kebutuhan Barang Dan Jasa</b> pada $emailSendDate pukul $pukul<br>";
+                    $body .= "*Apabila Anda menemukan kendala atau kesulitan maka dapat menghubungi Call Center ICT <b>12300 extensi 1. </span>";
+        
+        
+                    $this->EmailAlert($subject,$body);
+                }
+            }
+
+            if ($judgment == 'A') {
+                foreach ($emailBackRequester as $key => $pesanRequester) {
+                    $nRequester = $this->M_requisition->getNamaUser($key);
+                    $namaRequester = $nRequester[0]['nama'];
+    
+                    if ($nRequester[0]['jenkel'][0]=='L') {
+                        $jklRequester = 'Bapak ';
+                    }else {
+                        $jklRequester = 'Ibu ';
+                    };
+    
+                    $nApprover = $this->M_requisition->getNamaUser($noind);
+                    $namaApprover = $nApprover[0]['nama'];
+    
+                    if ($nApprover[0]['jenkel'][0]=='L') {
+                        $jklApprover = 'Bapak ';
+                    }else {
+                        $jklApprover = 'Ibu ';
+                    };
+    
+                    $subject = '[TRIAL] Order Disetujui';
+                    $body = "<b>Yth. $jklRequester $namaRequester</b>,<br><br>";
+                    $body .= "Order anda terkait barang - barang berikut :<br><br>";
+                    $body .= "<table border='1' style=' border-collapse: collapse;'>
+                                <thead>
+                                    <tr>
+                                        <th>Kode Barang</th>
+                                        <th>Deskripsi Barang</th>
+                                        <th>Quantity</th>
+                                        <th>UOM</th>
+                                        <th>Status Order</th>
+                                        <th>Alasan Pengadaan</th>
+                                        <th>Alasan Urgensi</th>
+                                    </tr>
+                                </thead>
+                                <tbody>";
+                                    for ($i=0; $i < count($pesanRequester); $i++) { 
+                                        if ($pesanRequester[$i]['URGENT_FLAG']=='Y' && $pesanRequester[$i]['IS_SUSULAN'] =='N') {
+                                            $statusOrder = 'Urgent';
+                                        }else if($pesanRequester[$i]['URGENT_FLAG']=='N' && $pesanRequester[$i]['IS_SUSULAN'] =='N'){
+                                            $statusOrder = 'Normal';
+                                        }elseif ($pesanRequester[$i]['IS_SUSULAN'] =='Y') {
+                                            $statusOrder = 'Susulan';
+                                        }
+    
+                                        if ($pesanRequester[$i]['URGENT_REASON']=='') {
+                                            $urgentReason = '-';
+                                        }else{
+                                            $urgentReason = $pesanRequester[$i]['URGENT_REASON'];
+                                        }
+    
+                                        $emailSendDate = date("d-M-Y");
+                                        $pukul = date("h:i:sa");
+                                        
+                                        $itemDanDeskripsi = $pesanRequester[$i]['SEGMENT1'].' - '.$pesanRequester[$i]['DESCRIPTION'];
+                                        $kodeBarang = $itemDanDeskripsi;
+                                        $deskripsi = $pesanRequester[$i]['ITEM_DESCRIPTION'];
+                                        $qty = $pesanRequester[$i]['QUANTITY'];
+                                        $uom = $pesanRequester[$i]['UOM'];
+                                        $alasanPengadaan = $pesanRequester[$i]['ORDER_PURPOSE'];
+    
+                                        $body .="<tr>
+                                                    <td>$kodeBarang</td>
+                                                    <td>$deskripsi</td>
+                                                    <td>$qty</td>
+                                                    <td>$uom</td>
+                                                    <td>$statusOrder</td>
+                                                    <td>$alasanPengadaan</td>
+                                                    <td>$urgentReason</td>
+                                                </tr>";
+                                    }
+                    $body .= "</body>";
+                    $body .= "</table> <br><br>";
+                    $body .= "Telah Disetujui oleh $jklApprover $namaApprover <br><br>";
+    
+                    $body .= "<span style='font-size:10px;'>*Email ini dikirimkan secara otomatis oleh aplikasi <b>Order Kebutuhan Barang Dan Jasa</b> pada $emailSendDate pukul $pukul<br>";
+                    $body .= "*Apabila Anda menemukan kendala atau kesulitan maka dapat menghubungi Call Center ICT <b>12300 extensi 1. </span>";
+        
+        
+                    $this->EmailAlert($subject,$body);
+                }
+            }
+
 
         echo 1;
     }
@@ -452,9 +775,67 @@ class C_Approver extends CI_Controller {
     public function getStock()
     {
         $itemkode = $_POST['itemkode'];
-        $data = $this->M_approver->getStock($itemkode);
+        $data['getStock'] = $this->M_approver->getStock($itemkode);
+        $data['outstandingPO'] = $this->M_approver->getStandingPO($itemkode);
+
+        $returnTable = $this->load->view('OrderKebutuhanBarangDanJasa/Approver/V_TableOfStock',$data,true);
+
+        echo $returnTable;
+    }
+
+    public function getAttachment()
+    {
+        $order_id = $_POST['order_id'];
+
+        $data = $this->M_approver->getAttachment($order_id);
 
         echo json_encode($data);
     }
+
+    public function EmailAlert($subject , $body)
+	{
+		//email
+		// $getEmail = $this->M_ApprovalRequisition->getEmail($user_id);
+		// $emailUser = $getEmail[0]['internal_mail'];
+		// echo 
+		$emailUser = 'bondan_surya_n@quick.com';
+		
+		//send Email
+
+		$this->load->library('PHPMailerAutoload');
+		$mail = new PHPMailer();
+        $mail->SMTPDebug = 0;
+        $mail->Debugoutput = 'html';
+		
+        // set smtp
+        $mail->isSMTP();
+        $mail->Host = 'm.quick.com';
+        $mail->Port = 465;
+        $mail->SMTPAuth = true;
+		$mail->SMTPSecure = 'ssl';
+		$mail->SMTPOptions = array(
+				'ssl' => array(
+				'verify_peer' => false,
+				'verify_peer_name' => false,
+				'allow_self_signed' => true)
+				);
+        $mail->Username = 'no-reply';
+        $mail->Password = '123456';
+        $mail->WordWrap = 50;
+		
+        // set email content
+        $mail->setFrom('no-reply@quick.com', 'ERP OKEBAJA');
+        $mail->addAddress($emailUser);
+        $mail->Subject = $subject;
+		$mail->msgHTML($body);
+
+		
+		if (!$mail->send()) {
+			// echo "Mailer Error: " . $mail->ErrorInfo;
+			exit();
+		} else {
+			// echo "Message sent!";
+		}
+	}
 	
 }

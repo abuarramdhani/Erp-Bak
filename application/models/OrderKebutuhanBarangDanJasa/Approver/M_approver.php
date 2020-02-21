@@ -126,6 +126,28 @@ class M_approver extends CI_Model
         return $query->result_array();
     }
 
+    public function getOrderToApprove1($orderid)
+    {
+        $oracle_dev = $this->load->database('oracle_dev', true);
+        $query = $oracle_dev->query("SELECT DISTINCT
+        ooh.*,
+        msib.SEGMENT1,
+        msib.DESCRIPTION,
+        ppf.NATIONAL_IDENTIFIER,
+        ppf.FULL_NAME,
+        ppf.ATTRIBUTE3
+    FROM
+        KHS.KHS_OKBJ_ORDER_HEADER ooh,
+        PER_PEOPLE_F ppf,
+        mtl_system_items_b msib
+    WHERE
+        ooh.REQUESTER = ppf.PERSON_ID
+        AND ooh.INVENTORY_ITEM_ID = msib.INVENTORY_ITEM_ID
+        AND ooh.ORDER_ID = '$orderid'");
+
+        return $query->result_array();
+    }
+
     public function checkApproval($orderid, $approverType)
     {
         $oracle_dev = $this->load->database('oracle_dev', true);
@@ -336,25 +358,142 @@ class M_approver extends CI_Model
     function getStock($itemkode)
     {
         $oracle_dev = $this->load->database('oracle_dev', true);
-        $query = $oracle_dev->query("SELECT distinct
-                            msib.SEGMENT1 item
-                        ,msib.DESCRIPTION
-                        ,sum(moqd.PRIMARY_TRANSACTION_QUANTITY) over (partition by moqd.INVENTORY_ITEM_ID
-                                                                                    ,moqd.ORGANIZATION_ID
-                                                                                    ,moqd.SUBINVENTORY_CODE) onhand
-                        ,khs_inv_qty_att(moqd.ORGANIZATION_ID,moqd.INVENTORY_ITEM_ID,moqd.SUBINVENTORY_CODE,'','') att
-                        ,khs_inv_qty_atr(moqd.ORGANIZATION_ID,moqd.INVENTORY_ITEM_ID,moqd.SUBINVENTORY_CODE,'','') atr
-                        ,moqd.SUBINVENTORY_CODE
-                        ,mp.ORGANIZATION_CODE
-                    from mtl_onhand_quantities_detail moqd
-                        ,mtl_system_items_b msib
-                        ,mtl_parameters mp
-                    where msib.ORGANIZATION_ID = moqd.ORGANIZATION_ID
-                    and msib.INVENTORY_ITEM_ID = moqd.INVENTORY_ITEM_ID
-                    and mp.ORGANIZATION_ID = moqd.ORGANIZATION_ID
-                    and msib.SEGMENT1 = nvl('$itemkode',msib.SEGMENT1)
-                    order by item
-                    ,moqd.SUBINVENTORY_CODE");
+        $query = $oracle_dev->query("SELECT
+        DISTINCT msib.SEGMENT1 item ,
+        msib.DESCRIPTION ,
+        msib.MINIMUM_ORDER_QUANTITY moq,
+        msib.FIXED_LOT_MULTIPLIER flm,
+        SUM(moqd.PRIMARY_TRANSACTION_QUANTITY) OVER (PARTITION BY moqd.INVENTORY_ITEM_ID ,
+        moqd.ORGANIZATION_ID ,
+        moqd.SUBINVENTORY_CODE) onhand ,
+        khs_inv_qty_att(moqd.ORGANIZATION_ID,
+        moqd.INVENTORY_ITEM_ID,
+        moqd.SUBINVENTORY_CODE,
+        '',
+        '') att ,
+        khs_inv_qty_atr(moqd.ORGANIZATION_ID,
+        moqd.INVENTORY_ITEM_ID,
+        moqd.SUBINVENTORY_CODE,
+        '',
+        '') atr ,
+        moqd.SUBINVENTORY_CODE ,
+        mp.ORGANIZATION_CODE
+    FROM
+        mtl_onhand_quantities_detail moqd ,
+        mtl_system_items_b msib ,
+        mtl_parameters mp
+    WHERE
+        msib.ORGANIZATION_ID = moqd.ORGANIZATION_ID(+)
+        AND msib.INVENTORY_ITEM_ID = moqd.INVENTORY_ITEM_ID(+)
+        AND mp.ORGANIZATION_ID(+) = moqd.ORGANIZATION_ID
+        AND msib.SEGMENT1 = NVL('$itemkode', msib.SEGMENT1)
+    ORDER BY
+        item ,
+        moqd.SUBINVENTORY_CODE");
+
+        return $query->result_array();
+    }
+
+    public function getStandingPO($itemcode)
+    {
+        $oracle_dev = $this->load->database('oracle_dev', true);
+        $query = $oracle_dev->query("SELECT DISTINCT
+                PHA.SEGMENT1 PO_NUMBER
+                ,PLA.LINE_NUM
+                ,plla.PROMISED_DATE
+                ,MSIB.DESCRIPTION NAMA_BARANG
+                ,PLLA.QUANTITY QTY
+                ,prha.segment1 pr_number
+                ,papf.full_name requestor
+            FROM
+                po_headers_all pha
+                ,po_lines_all pla
+                ,po_requisition_lines_all prla
+                ,po_requisition_headers_all prha
+                ,po_line_locations_all plla
+                ,mtl_system_items_b msib
+                ,per_all_people_f papf
+            where
+                pha.po_header_id = pla.po_header_Id(+)
+                and pla.po_line_id = plla.po_line_id(+)
+                and plla.line_location_id = prla.LINE_LOCATION_ID(+)
+                and prla.REQUISITION_HEADER_ID = prha.REQUISITION_HEADER_ID(+)
+                and pla.ITEM_ID = msib.INVENTORY_ITEM_ID(+)
+                and prla.to_person_id = papf.person_id(+)
+                and msib.segment1 = '$itemcode'
+                and (select 
+                    max(rt.transaction_date)
+                from
+                    rcv_transactions rt
+                where
+                    rt.PO_HEADER_ID = pha.po_header_id
+                    and rt.po_line_id = pla.po_line_id
+                    and rt.transaction_type = 'RECEIVE'
+                group by 
+                    pla.po_line_id) is null
+        ORDER BY PO_NUMBER");
+
+        return $query->result_array();
+    }
+
+    public function getAttachment($order_id)
+    {
+        $oracle_dev = $this->load->database('oracle_dev', true);
+        $query = $oracle_dev->get_where('KHS.KHS_OKBJ_ORDER_ATTACHMENTS',array('ORDER_ID' => $order_id, ));
+
+        return $query->result_array();
+    }
+
+    public function getNextApproval($order_id)
+    {
+        $oracle_dev = $this->load->database('oracle_dev', true);
+        $query = $oracle_dev->query("SELECT
+        APPROVER_TYPE
+        ,APPROVER_ID
+        ,NATIONAL_IDENTIFIER
+        FROM
+        (SELECT 
+           ooa.APPROVER_TYPE
+           ,ooa.APPROVER_ID
+           ,ppf.NATIONAL_IDENTIFIER
+           FROM
+           khs.KHS_OKBJ_ORDER_HEADER ooh
+           ,khs.KHS_OKBJ_ORDER_APPROVAL ooa
+           ,PER_PEOPLE_F ppf
+           WHERE
+           ooh.ORDER_ID = '$order_id'
+           AND ooa.APPROVER_ID = ppf.PERSON_ID
+           AND ooh.ORDER_ID = ooa.ORDER_ID
+           AND ooa.JUDGEMENT is null
+           AND
+           (      
+              (
+               SELECT
+               ooa1.JUDGEMENT
+               FROM
+               khs.KHS_OKBJ_ORDER_HEADER ooh1
+               ,khs.KHS_OKBJ_ORDER_APPROVAL ooa1
+               WHERE
+               ooh1.ORDER_ID = ooa1.ORDER_ID
+               and ooh1.APPROVE_LEVEL_POS = ooa1.APPROVER_TYPE
+               and ooh1.ORDER_ID = '$order_id'
+               ) = 'A'
+               OR
+               (
+               SELECT
+               ooa1.JUDGEMENT
+               FROM
+               khs.KHS_OKBJ_ORDER_HEADER ooh1
+               ,khs.KHS_OKBJ_ORDER_APPROVAL ooa1
+               WHERE
+               ooh1.ORDER_ID = ooa1.ORDER_ID
+               and ooh1.APPROVE_LEVEL_POS = ooa1.APPROVER_TYPE
+               and ooh1.ORDER_ID = '$order_id'
+               ) is null
+           ) 
+           ORDER BY ooa.APPROVER_TYPE ASC)   
+        WHERE
+        ROWNUM=1");
 
         return $query->result_array();
     }

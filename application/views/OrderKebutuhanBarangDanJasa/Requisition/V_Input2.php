@@ -217,7 +217,7 @@
                                                             <td class="OKB-sticky-col" style="height:55px;"> 1 </td>
                                                             <td class="text-center OKB-sticky-col2"><select class="select2 slcOKBNewOrderList" name="slcOKBinputCode[]" required style="width:200px"></select> </td>
                                                             <td class="OKB-sticky-col3"><input class="form-control txtOKBNewOrderListItemName" readonly name="txtOKBitemName[]"> </td>
-                                                            <td class="OKB-sticky-col4"><textarea style="height: 34px;" class="form-control txaOKBNewOrderDescription" name="txtOKBinputDescription[]"></textarea> </td>
+                                                            <td class="OKB-sticky-col4"><textarea style="height: 34px;" class="form-control txaOKBNewOrderDescription" name="txtOKBinputDescription[]" readonly></textarea> </td>
                                                             <td><input type="text" class="form-control txtOKBNewOrderListQty" name="txtOKBinputQty[]" required style="background-color: #fbfb5966; min-width:70px;"></td>
                                                             <td class="text-center"> <select class="form-control select2 slcOKBNewUomList" name="slcOKBuom[]" required style="width:120px"></select> </td>
                                                             <td><input type="text" class="form-control leadtimeOKB" name="txtOKBLeadtime[]" id="" readonly> </td>
@@ -240,6 +240,7 @@
                                                             <td style="display:none;"><input type="hidden" class="hdnLocOKB" name="hdnLocationOKB[]"></td>
                                                             <td style="display:none;"><input type="hidden" class="hdnSubinvOKB" name="hdnSubinventoyOKB[]"></td>
                                                             <td style="display:none;"><input type="hidden" class="hdUrgentFlagOKB" name="hdnUrgentFlagOKB[]"></td>
+                                                            <td style="display:none;"><input type="hidden" class="hdnItemCodeOKB" name="hdnItemCodeOKB[]"></td>
                                                         </tr>
                                                     </tbody>
                                                 </table>

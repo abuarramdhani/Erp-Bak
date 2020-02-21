@@ -15,6 +15,20 @@ class M_monitoringinvoice extends CI_Model {
         $runQuery = $oracle->query($query);
         return $runQuery->result_array();
     }
+
+    public function deleteInvoice2($invoice_id){
+        $oracle = $this->load->database('oracle',true);
+        $query1 = "DELETE 
+                    FROM khs_ap_invoice_purchase_order
+                    WHERE invoice_id = '$invoice_id' ";
+        $runQuery1 = $oracle->query($query1);
+        $query2 = "DELETE 
+                    FROM khs_ap_monitoring_invoice
+                    WHERE invoice_id = '$invoice_id' ";
+        $runQuery2 = $oracle->query($query2);
+        // oci_commit($oracle);
+    }
+    
   public function getInvNumber($po_numberInv){
     $oracle = $this->load->database("oracle",TRUE);
     $query = $oracle->query("SELECT DISTINCT 
@@ -236,6 +250,7 @@ SELECT DISTINCT pol.po_line_id line_id,
         $runQuery = $oracle->query($query);
         return $runQuery->result_array();
     }
+    
     public function deleteInvoice($invoice_id){
         $oracle = $this->load->database('oracle',true);
         $query1 = "DELETE 
@@ -246,7 +261,7 @@ SELECT DISTINCT pol.po_line_id line_id,
                     FROM khs_ap_monitoring_invoice
                     WHERE invoice_id = '$invoice_id' ";
         $runQuery2 = $oracle->query($query2);
-        oci_commit($oracle);
+        // oci_commit($oracle);
     }
     public function showEditList1($invoice_id){
         $oracle = $this->load->database('oracle',true);

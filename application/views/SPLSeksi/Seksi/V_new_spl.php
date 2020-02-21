@@ -11,7 +11,7 @@
 						<div class="text-right hidden-md hidden-sm hidden-xs">
 							<a class="btn btn-default btn-lg" href="<?php echo site_url('SPL/InputLembur');?>">
 								<i class="icon-wrench icon-2x"></i>
-								<span><br/></span>	
+								<span><br/></span>
 							</a>
 						</div>
 					</div>
@@ -109,6 +109,12 @@
 										</div>
 									</div>
 
+									<div class="form-group">
+										<label class="col-sm-2 control-label">Estimasi</label>
+										<div class="col-sm-10">
+											<span id="estJamLembur">Isi data dengan lengkap</span>
+										</div>
+									</div>
 								</div>
 							</div>
 							<div class="row">
@@ -131,7 +137,7 @@
 												</thead>
 												<tbody>
 													<tr class="multiinput"><td>-</td>
-														<td style="">
+														<td>
 															<select class="spl-new-pkj-select2 spl-cek" name="noind[]" style="width: 100%" required>
 															</select>
 														</td>
@@ -150,21 +156,21 @@
 											</table>
 										</div>
 									</div>
-									
+
 									<div class="form-group">
 										<div class="col-sm-12 pull-left">
 											<button type="reset" style="margin-right:3px" class="btn btn-primary" onclick="location.reload()"> <i class="fa fa-refresh"></i> Reset</button>
 											<button type="submit" class="btn btn-primary"> <i class="fa fa-save"></i> Submit</button>
 										</div>
 									</div>
-									
+
 								</div>
-								
+
 							</div>
 						</div>
 					</div>
 				</form>
-				
+
 			</section>
 		</div>
 	</div>
@@ -174,34 +180,34 @@
 		//   console.log('Got focus');
 		//   window.location.reload();
 		// }
-		
+
 		var timeoutInMiliseconds = 120000;
-		var timeoutId; 
-		  
-		function startTimer() { 
+		var timeoutId;
+
+		function startTimer() {
 		    // window.setTimeout returns an Id that can be used to start and stop a timer
 		    timeoutId = window.setTimeout(doInactive, timeoutInMiliseconds)
 		}
-		  
+
 		function doInactive() {
 		    // does whatever you need it to actually do - probably signs them out or stops polling the server for info
 		    window.location.reload();
 		}
 
-		function resetTimer() { 
+		function resetTimer() {
 		    window.clearTimeout(timeoutId)
 		    startTimer();
 		}
-		 
+
 		function setupTimers () {
 		    document.addEventListener("mousemove", resetTimer(), false);
 		    document.addEventListener("mousedown", resetTimer(), false);
 		    document.addEventListener("keypress", resetTimer(), false);
 		    document.addEventListener("touchmove", resetTimer(), false);
-		     
+
 		    startTimer();
 		}
-		 
+
 		// document.addEventListener("DOMContentLoaded",function(e){
 		// 	setupTimers();
 		// });

@@ -10,6 +10,7 @@ class C_CetakCard extends CI_Controller
 		$this->load->helper('html');
 		$this->load->helper('file');
 
+		$this->load->library('Log_Activity');
 		$this->load->library('form_validation');
 		$this->load->library('session');
 		$this->load->library('encrypt');
@@ -65,6 +66,11 @@ class C_CetakCard extends CI_Controller
 		for($i=0;$i<$count;$i++){
 			$Card = $this->M_cetakcard->getWorker($noind[$i],$nick[$i]);
 			array_push($data['worker'], $Card);
+			//insert to t_log
+			$aksi = 'MASTER PEKERJA';
+			$detail = 'Cetak ID CARD Noind='.$noind[$i];
+			$this->log_activity->activity_log($aksi, $detail);
+			//
 		}
 
 		$this->load->library('pdf');

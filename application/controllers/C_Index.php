@@ -44,6 +44,8 @@ class C_Index extends CI_Controller {
 	public function index()
 	{
 		if($this->session->is_logged){
+			$this->session->set_userdata('responsibility', 'Dashboard');
+
 			//$usr = "D1178";
 			$user_id = $this->session->userid;
 			//$data['user'] = $usr;
@@ -60,6 +62,7 @@ class C_Index extends CI_Controller {
 			$this->load->view('V_Index',$data);
 			$this->load->view('V_Footer',$data);
 		}else{
+			$this->session->set_userdata('responsibility', 'Login');
 			if($this->session->gagal){
 				$data['error'] = "Login error, please enter correct username and password";
 				$aksi = 'Login';
@@ -111,6 +114,7 @@ class C_Index extends CI_Controller {
 				$data['error'] = "";
 			}
 
+			$this->session->set_userdata('responsibility', 'Login');
 			$this->load->view('V_Login',$data);
 			$this->session->unset_userdata('gagal');
 		}
@@ -173,6 +177,10 @@ class C_Index extends CI_Controller {
 							'kodesie' 			=> $kodesie,
 							'kode_lokasi_kerja'	=> $kode_lokasi_kerja,
 						);
+
+			$isDefaultPass = $this->M_Index->getPassword($username);
+			$ses['pass_is_default'] = $isDefaultPass;
+
 			$this->session->set_userdata($ses);
 
 			$aksi = 'Login';
@@ -236,7 +244,7 @@ class C_Index extends CI_Controller {
 				}
 				$this->M_user->updateUser($data,$user_id);
 				//print_r($data);
-				redirect();
+				redirect(base_url('logout'));
 			}else{
 				$aksi = 'Error Change Password';
 				$detail = 'Error Change Password';

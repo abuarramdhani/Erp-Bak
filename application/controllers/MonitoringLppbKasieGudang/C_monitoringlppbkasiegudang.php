@@ -105,44 +105,37 @@ class C_monitoringlppbkasiegudang extends CI_Controller{
  									text: 'Data Kosong',
 									}) </script>";
 			echo "<script>$('#mdlSubmitToKasieGudang').modal('hide')</script>";
+
 			}
 	}
 
 	public function saveActionLppbNumber(){
-		
-		$proses = $this->input->post('hdnProses');
-		$alasan = $this->input->post('alasan_reject');
+
+		$batch_number = $this->input->post('batch_number'); //
+		$proses = $this->input->post('hdnProses');//
+		$date = $this->input->post('tglTerimaTolak');//
+		$alasan = $this->input->post('alasan_reject'); //
 		$id = $this->input->post('id');
-		$date = $this->input->post('tglTerimaTolak');
-		$batch_number = $this->input->post('batch_number');
-		$batch_detail_id = $this->input->post('batch_detail_id');
 
 		foreach ($proses as $p => $value) {
 			if (empty($alasan[$p])) {
-				
 			$this->M_monitoringlppbkasiegudang->saveProsesLppbNumber($proses[$p],$date[$p],$batch_number,$id[$p]);
 			}else{
 			$this->M_monitoringlppbkasiegudang->saveProsesLppbNumber2($proses[$p],$alasan[$p],$date[$p],$id[$p]);
 			$this->M_monitoringlppbkasiegudang->saveProsesLppbNumber3($batch_number,$id[$p],$date[$p]);
 			}
 		}
-
-		redirect('MonitoringLppbKasieGudang/Unprocess');
+	
+		
 	}
 
 	public function SubmitKeAKuntansi(){
-		// print_r($_POST);
 		$date = date('d-m-Y H:i:s');
 		$batch_number = $this->input->post('batch_number');
 		$status = $this->M_monitoringlppbkasiegudang->detailUnprocess($batch_number);
-		// $data['status'] = $status[0]['STATUS'];
-		// $alasan_reject = $this->input->post('alasan_reject');
-		// echo "<pre>";
-		// print_r($data);
-		// exit();
+		
 
 		$this->M_monitoringlppbkasiegudang->submitToKasieAkuntansi($date,$batch_number);
-		// $batch_detail_id  = $this->M_monitoringlppbkasiegudang->getBatchDetailId($batch_number);
 
 		foreach ($status as $key => $value) {
 			if ($value['STATUS'] = 3 ) {
@@ -150,6 +143,7 @@ class C_monitoringlppbkasiegudang extends CI_Controller{
 				$this->M_monitoringlppbkasiegudang->submitToKasieAkuntansi2($date,$id);
 			}
 		}
+		echo json_encode($batch_number);
 
 	}
 

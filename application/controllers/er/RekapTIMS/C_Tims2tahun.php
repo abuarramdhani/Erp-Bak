@@ -2,11 +2,11 @@
 Defined('BASEPATH') or exit('No Direct Sekrip Akses Allowed');
 set_time_limit(0);
 /**
- * 
+ *
  */
 class C_Tims2tahun extends CI_Controller
 {
-	
+
 	function __construct()
 	{
 		parent::__construct();
@@ -15,6 +15,7 @@ class C_Tims2tahun extends CI_Controller
 		$this->load->helper('html');
 		$this->load->helper('file');
 
+		$this->load->library('Log_Activity');
 		$this->load->library('form_validation');
 		$this->load->library('session');
 		$this->load->library('encrypt');
@@ -46,7 +47,7 @@ class C_Tims2tahun extends CI_Controller
 		$data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id);
 		$data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id);
 
-		$this->form_validation->set_rules('required');	
+		$this->form_validation->set_rules('required');
 		if($this->form_validation->run() === FALSE){
 			$data['periode'] = $this->M_tims2tahun->getperiode();
 			$this->load->view('V_Header',$data);
@@ -57,7 +58,11 @@ class C_Tims2tahun extends CI_Controller
 			$periode = $this->input->post('txtPeriodeRekap');
 			$prd = explode(" - ", $periode);
 			$detail = $this->input->post('txtDetailDataTIMS');
-			// print_r($prd);exit();
+			//insert to sys.log_activity
+			$aksi = 'REKAP TIMS';
+			$detail = "Export Excel tims 2tahun periode=$periode";
+			$this->log_activity->activity_log($aksi, $detail);
+			//
 			$this->load->library('Excel');
 
 			$objPHPExcel = new PHPExcel();
@@ -105,11 +110,11 @@ class C_Tims2tahun extends CI_Controller
 			$worksheet->setCellValue('A2', 'Status Hubungan Kerja');
 			$worksheet->setCellValue('A3', 'Seksi');
 
-			
+
 			// $periodeDate = date('d-m-Y', strtotime($periode1)).' - '.date('d-m-Y', strtotime($periode2));
-			
-			
-			
+
+
+
 			foreach ($rekap_all as $rekap_info) {}
 			$worksheet->setCellValue('C1', $rekap_info['tanggal_awal_rekap'].' - '.$rekap_info['tanggal_akhir_rekap'], PHPExcel_Cell_DataType::TYPE_STRING);
 			$worksheet->setCellValue('C2', "All (selain 'F','R','Q','L','Z','M')");
@@ -134,9 +139,9 @@ class C_Tims2tahun extends CI_Controller
 			$worksheet->setCellValue('H6', 'SEKSI');
 
 			$col = '8';
-			
+
 			if (isset($detail) and !empty($detail) and $detail == 'withDetail') {
-				
+
 				foreach ($dataBln as $key) {
 					$T = PHPExcel_Cell::stringFromColumnIndex($col);
 					$I = PHPExcel_Cell::stringFromColumnIndex($col+1);
@@ -157,7 +162,7 @@ class C_Tims2tahun extends CI_Controller
 					$head_merge = $col+7;
 					$headCol = PHPExcel_Cell::stringFromColumnIndex($head_merge);
 					$worksheet->mergeCells($T.'6:'.$headCol.'6');
-					
+
 					$worksheet->setCellValue($T.'6', ucwords($key['tanggal']));
 					$worksheet->setCellValue($T.'7', 'T');
 					$worksheet->setCellValue($I.'7', 'I');
@@ -242,7 +247,7 @@ class C_Tims2tahun extends CI_Controller
 				$worksheet->setCellValue('E'.$highestRow, $rekap_data['dept']);
 				$worksheet->setCellValue('F'.$highestRow, $rekap_data['bidang']);
 				$worksheet->setCellValue('G'.$highestRow, $rekap_data['unit']);
-				$worksheet->setCellValue('H'.$highestRow, $rekap_data['seksi']);			
+				$worksheet->setCellValue('H'.$highestRow, $rekap_data['seksi']);
 
 				$col = 8;
 
@@ -332,18 +337,18 @@ class C_Tims2tahun extends CI_Controller
 				{
 					$worksheet->setCellValue
 							(
-								$P_Tot.$highestRow, 
+								$P_Tot.$highestRow,
 								(
 									0
 								),
 								PHPExcel_Cell_DataType::TYPE_STRING
-							);	
+							);
 				}
 				else
 				{
 					$worksheet->setCellValue
 							(
-								$P_Tot.$highestRow, 
+								$P_Tot.$highestRow,
 								(
 									substr(
 										round(
@@ -378,7 +383,7 @@ class C_Tims2tahun extends CI_Controller
 									.'%'
 								),
 								PHPExcel_Cell_DataType::TYPE_STRING
-							);				
+							);
 				}
 				$highestRow++;
 			}
@@ -409,14 +414,14 @@ class C_Tims2tahun extends CI_Controller
 
 			$worksheet->getStyle('D8:'.$highestColumn.$highestRow)->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
 
-			
+
 			if (isset($detail) and !empty($detail) and $detail == 'withDetail') {
 				$fileName = 'Rekap_With_Detail';
 			}
 			else{
 				$fileName = 'Rekap_Without_Detail';
 			}
-			
+
 
 			$worksheet->setTitle('Rekap TIMS');
 			$objWriter = PHPExcel_IOFactory::createWriter($objPHPExcel, 'Excel2007');

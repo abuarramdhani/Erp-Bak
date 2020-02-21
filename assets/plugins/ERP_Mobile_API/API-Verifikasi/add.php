@@ -9,6 +9,7 @@ $nama = $_POST['info_1'];
 $noInduk = $_POST['info_2'];
 $tanggalRequest = $_POST['register_request_date'];
 $validation = $_POST['validation'];
+$versi_aplikasi = $_POST['versi_aplikasi'];
 if(!empty($android_id) || !empty($imei) || !empty($hardware_serial) || !empty($gsf)|| !empty($nama)|| !empty($noInduk)|| !empty($tanggalRequest)|| !empty($validation)){
 		$sql="SELECT COUNT(*) FROM sys.sys_android WHERE android_id='".$android_id."' AND imei='".$imei."' AND hardware_serial='".$hardware_serial."' AND gsf='".$gsf."'";
 		$d = pg_query($conn,$sql);
@@ -19,9 +20,9 @@ if(!empty($android_id) || !empty($imei) || !empty($hardware_serial) || !empty($g
 
 		if ($total==0) {
 			$sql="INSERT INTO sys.sys_android 
-	        (android_id, imei, hardware_serial, gsf,info_1,info_2,register_request_date,validation)
+	        (android_id, imei, hardware_serial, gsf,info_1,info_2,register_request_date,validation,versi_aplikasi)
 
-	        VALUES ('".$android_id."', '".$imei."', '".$hardware_serial."', '".$gsf."','".$nama."','".$noInduk."','".$tanggalRequest."','".$validation."')";    
+	        VALUES ('".$android_id."', '".$imei."', '".$hardware_serial."', '".$gsf."','".$nama."','".$noInduk."','".$tanggalRequest."','".$validation."','".$versi_aplikasi."') ";    
 
 	        $gas = pg_query($conn,$sql);
 	        if(pg_affected_rows($gas)>0){

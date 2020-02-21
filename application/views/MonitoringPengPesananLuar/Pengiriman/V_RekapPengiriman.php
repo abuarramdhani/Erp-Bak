@@ -40,7 +40,7 @@ thead.toscahead tr th {
 .zoom:hover {
   -ms-transform: scale(1.3); /* IE 9 */
   -webkit-transform: scale(1.3); /* Safari 3-8 */
-  transform: scale(1.3);
+  transform: scale(1.3); 
   box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2);
 }
 
@@ -86,7 +86,7 @@ thead.toscahead tr th {
 					  		<div id="tableHolder">
 								<div class="box-body">
 									<div style="overflow:auto;">
-									<table id="tblPengirimanMPL" style="min-width:155%;" class="tblPurcOrderClass table table-striped table-bordered table-hover text-center">
+									<table id="tabelPengirimanMPL" style="min-width:155%;" class="table table-striped table-bordered table-hover text-center">
 									<thead class="toscahead">
 										<tr class="bg-primary">
 											<th class="text-center" style="width: 2%;">No</th>
@@ -97,10 +97,10 @@ thead.toscahead tr th {
 											<th class="text-center" style="width: 6%;">Delivery Date</th>
 											<th class="text-center" style="width: 8%;">No. SO</th>
 											<th class="text-center" style="width: 8%;">No. DOSP</th>
+											<th class="text-center" style="width: 25%;">Action</th>
 											<th class="text-center" style="width: 10%;">Keterangan</th>
 											<th class="text-center" style="width: 8%;">Ekspedisi</th>
 											<th class="text-center" style="width: 8%;">Entry</th>
-											<th class="text-center" style="width: 25%;">Action</th>
 										</tr>
 									</thead>
 									<tbody>
@@ -113,15 +113,12 @@ thead.toscahead tr th {
 											<td><?php echo  $k['delivery_date'] ?></td>
 											<td><?php echo  $k['no_so'] ?></td>
 											<td><?php echo  $k['no_dosp'] ?></td>
-											<td><?php echo  $k['keterangan'] ?> </td>
-											<td><?php echo $k['nama_ekspedisi'] ?> </td>
-											<td><span class="label label-primary"><?php echo $k['count'] ?> Pengiriman &nbsp;<br></span></td>
 											<td>
 											<button type="button" data-toggle="modal" data-target="mdlPengiriman" class="btn btn-default zoom btn-sm zoom" onclick="openHistoryPengiriman(<?php echo $k['id_rekap_pengiriman']?>)" class="btnMdlHis" id="btnMdlHis"><i class="fa fa-clock-o"></i> History</button>
 											<button type="button" data-toggle="modal" data-target="mdlPengiriman" class="btn btn-success zoom btn-sm zoom" onclick="openModalPengiriman(<?php echo $k['id_rekap_pengiriman']?>)" class="btnMdlPeng" id="btnMdlPeng"><i class="fa fa-search"></i> Detail</button>
 											<?php if ($k['status'] == 'Close') { ?>
-
-											<?php }else if ($k['status'] == 'Open') { ?>
+												
+											<?php }else if ($k['status'] == 'Open') { ?> 
 												<?php if ($k['entry'] == 1) { ?>
 												<a href="<?php echo base_url('MonitoringPengirimanPesananLuar/RekapPengiriman/editPeng/'.$k['id_rekap_pengiriman'])?>" ><button type="button" class="btn btn-warning zoom btn-sm zoom btn_satu" id="btn_detail_pr"><i class="fa fa-pencil"></i> Edit</button></a>
 											<?php }else if ($k['entry'] > 1) {?>
@@ -129,6 +126,9 @@ thead.toscahead tr th {
 										<?php } ?>
 											<?php } ?>
 											<button type="button" class="btn btn-danger zoom btn-sm zoom" onclick="onDeletePengiriman(<?php echo $k['id_rekap_pengiriman']?>)" id="btnDeletePO"><i class="fa fa-trash"></i> Delete</button></td>
+											<td><?php echo  $k['keterangan'] ?> </td>
+											<td><?php echo $k['nama_ekspedisi'] ?> </td>
+											<td><span class="label label-primary"><?php echo $k['count'] ?> Pengiriman &nbsp;<br></span></td>
 										</tr>
 										<?php $no++; } ?>
 									</tbody>
@@ -155,7 +155,7 @@ thead.toscahead tr th {
                 <div class="modal-body" style="width: 100%;">
                 	<div class="modal-tabel" >
 					</div>
-
+                   
                     	<div class="modal-footer">
                     		<div class="col-md-2 pull-left">
                     		</div>

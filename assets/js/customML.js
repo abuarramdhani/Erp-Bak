@@ -1,12 +1,97 @@
 $(document).ready(function(){
-	$('.dtTableMl').DataTable({
-		"paging": false,
-		"info":     false,
+	$('.tblLPPBAkt').DataTable({
+		"paging": true,
+		"info":     true,
 		"language" : {
 			"zeroRecords": " "             
 		}
 	})
+})
+
+function saveActionLppbNumber(th) {
+	var batch_number = $('.batch_number_save').val();
+	// console.log(batch_number)
+
+		var arry = [];
+		$('.hdnProses_save').each(function(){
+		var proses = $(this).val();
+		arry.push(proses);
+		});
+
+		// console.log(arry)
+
+		var arry2 = [];
+		$('.tglTerimaTolak_save').each(function(){
+		var tanggal = $(this).val();
+		arry2.push(tanggal);
+		});
+
+		// console.log(arry2)
+
+		var arry3 = [];
+		$('.alasan_reject_save').each(function(){
+		var alasan = $(this).val();
+		arry3.push(alasan);
+		});
+
+		// console.log(arry3)
+
+		var arry4 = [];
+		$('.id_save').each(function(){
+		var id = $(this).val();
+		arry4.push(id);
+		});
+
+		// console.log(arry4)
+		$.ajax({
+			type: "POST",
+			url: baseurl+"MonitoringLppbKasieGudang/Unprocess/saveActionLppbNumber",
+			data: {
+				batch_number:batch_number,
+				hdnProses:arry,
+				tglTerimaTolak:arry2,
+				alasan_reject:arry3,
+				id:arry4
+			},
+			success: function (response) {
+
+				Swal.fire({
+			  // position: 'top-end',
+			  type: 'success',
+			  title: 'Data has been saved!',
+			  showConfirmButton: false,
+			  timer: 1500
+				})
+
+				$('#btnSubmitCheckingToAkuntansi').removeClass("sembunyi");
+				$('#btnsavekasie').addClass("sembunyi");
+			}
+		});
+
+}
+
+$(document).ready(function(){
+	$('.dtTableMl').DataTable({
+		"paging": true,
+		"info":     true,
+		"language" : {
+			"zeroRecords": " "             
+		}
+	})
+
 	
+$('#btnsavekasie').click(function(){
+	Swal.fire({
+			  // position: 'top-end',
+			  type: 'success',
+			  title: 'Data has been saved!',
+			  showConfirmButton: false,
+			  timer: 1500
+			})
+
+			$('#btnSubmitCheckingToAkuntansi').prop('disabled', false)
+	})
+
 	//autoload gudang di admin gudang
 	$.ajax({
 		type: "post",
@@ -50,7 +135,7 @@ $(document).ready(function(){
 		}
 	})
 	$('#btn_search_lppb').click(function(){
-		$('#loading_lppb').html("<center><img id='loading12' style='margin-top: 2%;' src='"+baseurl+"assets/img/gif/loading99.gif'/><br /></center><br />");
+		$('#loading_lppb').html("<center><img id='loading12' style='margin-top: 2%;width: 200px' src='"+baseurl+"assets/img/gif/loadingquick.gif'/><br /></center><br />");
 		var nama_vendor = $('#nama_vendor').val();
 		var nomor_lppb = $('#nomor_lppb').val();
 		var dateFrom = $('#dateFromUw').val();
@@ -139,7 +224,7 @@ $(document).ready(function(){
 
 });
 function searchNumberLppb(th){
-	$('#loading_search').html("<center><img id='loading12' style='margin-top: 2%;' src='"+baseurl+"assets/img/gif/loading3.gif'/><br /></center><br />");
+	$('#loading_search').html("<center><img id='loading12' style='margin-top: 2%;width: 200px' src='"+baseurl+"assets/img/gif/loadingquick.gif'/><br /></center><br />");
 	var lppb_number =  $('#lppb_number').val();
 	var lppb_numberFrom =  $('#lppb_numberFrom').val();
 	var inventory_organization = $('#inventory').val();
@@ -226,11 +311,11 @@ function actionLppbKasieGudang(th){
 	var tanggal = moment().format('DD/MM/YYYY hh:mm:ss'); 
 	prnt.html('<img src="'+baseurl+'assets/img/gif/loading5.gif" id="gambarloading">');
 	if (proses == 3) {
-		prnt.html('<span class="btn btn-primary" style="cursor: none;font-size: 10pt;" >Approve<input type="hidden" name="hdnProses[]" class="hdnProses" value="3"></span>');
-		prnt.siblings('td').children('.tglTerimaTolak').html('<input type="text" style="display:none" name="tglTerimaTolak[]" value="'+tanggal+'"><span>'+tanggal+'</span>');
+		prnt.html('<span class="btn btn-primary" style="cursor: none;font-size: 10pt;" >Approve<input type="hidden" name="hdnProses[]" class="hdnProses hdnProses_save" value="3"></span>');
+		prnt.siblings('td').children('.tglTerimaTolak').html('<input type="text" class="tglTerimaTolak_save" style="display:none" name="tglTerimaTolak[]" value="'+tanggal+'"><span>'+tanggal+'</span>');
 	} else {
-		prnt.html('<span class="btn btn-danger" style="font-size: 8pt ;cursor: none;">Ditolak (Isikan Alasan)<input type="hidden" name="hdnProses[]" class="hdnProses" value="4"></span>');
-		prnt.siblings('td').children('.tglTerimaTolak').html('<input type="text" style="display:none" name="tglTerimaTolak[]" value="'+tanggal+'"><span>'+tanggal+'</span>');
+		prnt.html('<span class="btn btn-danger" style="font-size: 8pt ;cursor: none;">Ditolak (Isikan Alasan)<input type="hidden" name="hdnProses[]" class="hdnProses hdnProses_save" value="4"></span>');
+		prnt.siblings('td').children('.tglTerimaTolak').html('<input type="text" class="tglTerimaTolak_save" style="display:none" name="tglTerimaTolak[]" value="'+tanggal+'"><span>'+tanggal+'</span>');
 		prnt.siblings('td').children('.txtAlasan').show().attr('required', true);
 	}
 }
@@ -246,11 +331,11 @@ function actionLppbNumber(th){
 	
 	prnt.html('<img src="'+baseurl+'assets/img/gif/loading5.gif" id="gambarloading">');
 	if (proses == 6) {
-		prnt.html('<span id="btn_'+batch_detail_id+'" class="btn btn-primary" style="cursor: none;font-size: 10pt;" >Diterima<input type="hidden" name="hdnProses[]" class="hdnProses" value="6"></span> <a id="reload_'+batch_detail_id+'" class="btn btn-sm btn-primary" onclick="reloadAktTerima('+batch_detail_id+');"><i class="fa fa-refresh"></i></a>');
-		prnt.siblings('td').children('.tglTerimaTolak').html('<input id="tgl_'+batch_detail_id+'" type="text" style="display:none" name="tglTerimaTolak[]" value="'+tanggal+'"><span id="span_'+batch_detail_id+'">'+tanggal+'</span>');
+		prnt.html('<span id="btn_'+batch_detail_id+'" class="btn btn-primary" style="cursor: none;font-size: 10pt;" >Diterima<input type="hidden" name="hdnProses[]" class="hdnProses hdnProses_save" value="6"></span> <a id="reload_'+batch_detail_id+'" class="btn btn-sm btn-primary" onclick="reloadAktTerima('+batch_detail_id+');"><i class="fa fa-refresh"></i></a>');
+		prnt.siblings('td').children('.tglTerimaTolak').html('<input id="tgl_'+batch_detail_id+'" type="text" class="tglTerimaTolak_save" style="display:none" name="tglTerimaTolak[]" value="'+tanggal+'"><span id="span_'+batch_detail_id+'">'+tanggal+'</span>');
 	} else {
-		prnt.html('<span id="btntlk_'+batch_detail_id+'"class="btn btn-danger" style="font-size: 8pt ;cursor: none;">Ditolak (Isikan Alasan)<input type="hidden" name="hdnProses[]" class="hdnProses" value="7"></span><br><a id="reload_'+batch_detail_id+'" class="btn btn-sm btn-primary" onclick="reloadAktTolak('+batch_detail_id+');"><i class="fa fa-refresh"></i></a>');
-		prnt.siblings('td').children('.tglTerimaTolak').html('<input id="tgltlk_'+batch_detail_id+'"type="text" style="display:none" name="tglTerimaTolak[]" value="'+tanggal+'"><span id="spantlk_'+batch_detail_id+'">'+tanggal+'</span>');
+		prnt.html('<span id="btntlk_'+batch_detail_id+'"class="btn btn-danger" style="font-size: 8pt ;cursor: none;">Ditolak (Isikan Alasan)<input type="hidden" name="hdnProses[]" class="hdnProses hdnProses_save" value="7"></span><br><a id="reload_'+batch_detail_id+'" class="btn btn-sm btn-primary" onclick="reloadAktTolak('+batch_detail_id+');"><i class="fa fa-refresh"></i></a>');
+		prnt.siblings('td').children('.tglTerimaTolak').html('<input id="tgltlk_'+batch_detail_id+'"type="text" style="display:none" class="tglTerimaTolak_save" name="tglTerimaTolak[]" value="'+tanggal+'"><span id="spantlk_'+batch_detail_id+'">'+tanggal+'</span>');
 		prnt.siblings('td').children('.txtAlasan').show().attr('required', true);
 	}
 }
@@ -307,6 +392,7 @@ function btnDeleteLppb(th){
 function del_batch_number(th){
 	var num = th.attr('row_id');
 	var batch_number = $('.batch_number_'+num).val();
+	console.log(batch_number)
 	var conf = confirm('Yakin untuk menghapusnya?');
 	if (conf == true) {
 		$.ajax({
@@ -349,35 +435,70 @@ function getBtch(th) {
 	})
 	
 }
+
 function submitToKasie(th){
+	const swalWithBootstrapButtons = Swal.mixin({
+		  customClass: {
+		    confirmButton: 'btn btn-success',
+		    cancelButton: 'btn btn-danger'
+		  },
+		  buttonsStyling: true
+		})
+						  
+
 	var batch_number = $(th).attr('data-id');
 	var group_batch = $(th).attr('data-batch');
 	var alasan_reject = $('.txtAlasan').val();
-	$('#group_batch').text(group_batch);
-	$('#mdlSubmitToKasieAkuntansi').modal('show');
-	$('#mdlYesAkt').click(function(){
+	
 		$.ajax({
 			type: "post",
 			url: baseurl+"MonitoringLppbKasieGudang/Unprocess/SubmitKeAKuntansi",
+			dataType: 'JSON',
 			data:{
 				batch_number: batch_number,
 				alasan_reject: alasan_reject
 			},
 			success: function(response){
-				window.location.reload();
+
+					$('tr.'+response+'').remove();
+
+				swalWithBootstrapButtons.fire(
+					      'Sent!',
+					      'LPPB berhasil dikirim!',
+					      'success'
+					    	)
+				$('#mdlSubmitToKasieGudang').modal('hide');
+
 			}
 		})
-	})
 }
+
+
+
 function getOptionGudang(th){
+	Swal.fire({
+	  title: 'Please Wait ...',
+	  showConfirmButton: false,
+	  showClass: {
+	    popup: 'animated fadeInDown faster'
+	  },
+	  hideClass: {
+	    popup: 'animated fadeOutUp faster'
+	  }
+	})
+	
 	var id_gudang = $(th).val();
-	$.ajax({
+$.ajax({
 		type: "post",
 		url: baseurl+"MonitoringLPPB/ListBatch/showGudang",
 		data:{
 			id_gudang: id_gudang
 		},
 		success: function(response){
+			// console.log(response)
+			// var id = $(hh).closest('tr').find('input#txtKodeItem'). 
+  // 172    attr('data-id'); 
+			// console.log(row)
 			//menampilkan gudang yang dipilih
 			$('#showOptionLppb').html(response);
 			$('#tabel_list_batch').DataTable({
@@ -387,10 +508,39 @@ function getOptionGudang(th){
 					"zeroRecords": " "             
 				}
 			});
+	var row = $('#tbodyCoba tr td.coba').text();
+	console.log(row)
+			if (($('#tbodyCoba tr td.coba').text()) == '') {
+									Swal.fire({
+									  type: 'error',
+									  title: 'Data tidak ditemukan!',
+									  showConfirmButton: false,
+									  timer: 1500
+									})
+
+			} else if (($('#tbodyCoba tr td.coba').text()) !== "") {
+
+									Swal.fire({
+									  type: 'success',
+									  title: 'Data ditemukan!',
+									  showConfirmButton: false,
+									  timer: 1500
+									})
+										}
 		}
 	})
 }
 function getOptionKasieGudang(th){
+	Swal.fire({
+			  title: 'Please Wait ...',
+			  showConfirmButton: false,
+			  showClass: {
+			    popup: 'animated fadeInDown faster'
+			  },
+			  hideClass: {
+			    popup: 'animated fadeOutUp faster'
+			  }
+			})
 	var id_gudang = $(th).val();
 	$.ajax({
 		type: "post",
@@ -408,10 +558,39 @@ function getOptionKasieGudang(th){
 					"zeroRecords": " "             
 				}
 			});
+			var row = $('.coba tr td.coba').text();
+	// console.log(row)
+			if (($('.coba tr td.coba').text()) == '') {
+											Swal.fire({
+									  type: 'error',
+									  title: 'Data tidak ditemukan!',
+									  showConfirmButton: false,
+									  timer: 1500
+									})
+
+			} else if (($('.coba tr td.coba').text()) !== "") {
+
+									Swal.fire({
+									  type: 'success',
+									  title: 'Data ditemukan!',
+									  showConfirmButton: false,
+									  timer: 1500
+									})
+										}
 		}
 	})
 }
 function getOptionKasieAkt(th){
+		Swal.fire({
+  title: 'Please Wait ...',
+  showConfirmButton: false,
+  showClass: {
+    popup: 'animated fadeInDown faster'
+  },
+  hideClass: {
+    popup: 'animated fadeOutUp faster'
+  }
+})
 	var id_gudang = $(th).val();
 	$.ajax({
 		type: "post",
@@ -429,6 +608,25 @@ function getOptionKasieAkt(th){
 					"zeroRecords": " "             
 				}
 			});
+				var row = $('.coba tr td.coba').text();
+	// console.log(row)
+			if (($('.coba tr td.coba').text()) == '') {
+											Swal.fire({
+									  type: 'error',
+									  title: 'Data tidak ditemukan!',
+									  showConfirmButton: false,
+									  timer: 1500
+									})
+
+			} else if (($('.coba tr td.coba').text()) !== "") {
+
+									Swal.fire({
+									  type: 'success',
+									  title: 'Data ditemukan!',
+									  showConfirmButton: false,
+									  timer: 1500
+									})
+										}
 		}
 	})
 }
@@ -473,13 +671,13 @@ function saveLPPBNumber(th){
 		// dataType: "json",
 		success: function(response){
 			// console.log(lppb_info,id_gudang,str_arry,str_arry2,str_arry3,str_arry5);
-			// window.location.reload();
 			Swal.fire(
   					'Saved!',
   					'Data sudah disimpan',
   					'success'
 						);
 
+			// window.location.reload();
 		}
 	})
 	
@@ -584,15 +782,14 @@ function saveEditLPPBNumber(th){
   					'success'
 						);
 		$('#mdlDetailAdminGudang').modal('hide');
-
-			// window.location.reload();
+			window.location.reload();
 			// alert('Data sudah disimpan');
 		// 	console.log(lppb_number,organization_id,po_number,po_header_id,batch_number,id_lppb);
 		}
 	})
 }
 function searchLppb(th){ //ini fungsi add bawah detail
-	$('#loading_search').html("<center><img id='loading12' style='margin-top: 2%;' src='"+baseurl+"assets/img/gif/loading3.gif'/><br /></center><br />");
+	$('#loading_search').html("<center><img id='loading12' style='margin-top: 2%;width: 200px' src='"+baseurl+"assets/img/gif/loadingquick.gif'/><br /></center><br />");
 	var lppb_numberFrom =  $('#lppb_numberFrom').val();
 	var lppb_number =  $('#lppb_numberTo').val();
 	var inventory_organization = $('#inventory').val();
@@ -742,6 +939,7 @@ function chkAllLppb() {
 		});
 	};
 }
+
 var valueId = "";
 function approveLppbByKasie(th) { 
 	// console.log(th);
@@ -765,12 +963,12 @@ function approveLppbByKasie(th) {
 		hasilsplit[i]
 	
 		if (status == 3) {
-			$('td.batchdid_'+hasilsplit[i]).children('.btnApproveReject').html('<span class="btn btn-primary" id="btn_'+hasilsplit[i]+'" style="cursor: none;font-size: 10pt; value="3" >Diterima<input type="hidden" name="hdnProses[]" class="hdnProses" value="3"></span><a id="reload_'+hasilsplit[i]+'" class="btn btn-sm btn-primary" onclick="reloadTerima('+hasilsplit[i]+');"><i class="fa fa-refresh"></i></a>');
-			$('td.batchdid_'+hasilsplit[i]).children('.tglTerimaTolak').html('<input type="text" id="tgl_'+hasilsplit[i]+'" style="display:none" name="tglTerimaTolak[]" value="'+tanggal+'"><span id="span_'+hasilsplit[i]+'">'+tanggal+'</span>');
+			$('td.batchdid_'+hasilsplit[i]).children('.btnApproveReject').html('<span class="btn btn-primary" id="btn_'+hasilsplit[i]+'" style="cursor: none;font-size: 10pt; value="3" >Diterima<input type="hidden" name="hdnProses[]" class="hdnProses hdnProses_save" value="3"></span><a id="reload_'+hasilsplit[i]+'" class="btn btn-sm btn-primary" onclick="reloadTerima('+hasilsplit[i]+');"><i class="fa fa-refresh"></i></a>');
+			$('td.batchdid_'+hasilsplit[i]).children('.tglTerimaTolak').html('<input type="text" class="tglTerimaTolak_save" id="tgl_'+hasilsplit[i]+'" style="display:none" name="tglTerimaTolak[]" value="'+tanggal+'"><span id="span_'+hasilsplit[i]+'">'+tanggal+'</span>');
 			$('.chkAllLppbNumber').iCheck('uncheck');
 		} else {
-			$('td.batchdid_'+hasilsplit[i]).children('.btnApproveReject').html('<span class="btn btn-danger" id="btntlk_'+hasilsplit[i]+'" style="font-size: 8pt ;cursor: none;" value="4">Ditolak<input type="hidden" name="hdnProses[]" class="hdnProses" value="4"></span><a id="reloadtlk_'+hasilsplit[i]+'" class="btn btn-sm btn-primary" onclick="reloadTolak('+hasilsplit[i]+');"><i class="fa fa-refresh"></i></a>');
-			$('td.batchdid_'+hasilsplit[i]).children('.tglTerimaTolak').html('<input type="text" style="display:none"  id="tgltlk_'+hasilsplit[i]+'" name="tglTerimaTolak[]" value="'+tanggal+'"><span id="spantlk_'+hasilsplit[i]+'">'+tanggal+'</span>');
+			$('td.batchdid_'+hasilsplit[i]).children('.btnApproveReject').html('<span class="btn btn-danger" id="btntlk_'+hasilsplit[i]+'" style="font-size: 8pt ;cursor: none;" value="4">Ditolak<input type="hidden" name="hdnProses[]" class="hdnProses hdnProses_save" value="4"></span><a id="reloadtlk_'+hasilsplit[i]+'" class="btn btn-sm btn-primary" onclick="reloadTolak('+hasilsplit[i]+');"><i class="fa fa-refresh"></i></a>');
+			$('td.batchdid_'+hasilsplit[i]).children('.tglTerimaTolak').html('<input type="text" class="tglTerimaTolak_save" style="display:none"  id="tgltlk_'+hasilsplit[i]+'" name="tglTerimaTolak[]" value="'+tanggal+'"><span id="spantlk_'+hasilsplit[i]+'">'+tanggal+'</span>');
 			$('td.batchdid_'+hasilsplit[i]).children('.txtAlasan').show().attr('required', true);
 			$('.chkAllLppbNumber').iCheck('uncheck');
 			// console.log("check : "+hasilsplit[i]);
@@ -820,7 +1018,7 @@ type: "POST",
 datatype: 'html', 
 });
 
-request.done(function(result){
+request.done(function(
 console.log("Done";
 })
 }
@@ -839,7 +1037,7 @@ function bukaMdl(th) {
 
 	$('#group_batch').text(group_batch);	
 	$('#mdlSubmitToKasieGudang').modal('show');
-	$('.modal-tabel').html("<center><img id='loading12' style='margin-top: 2%;' src='"+baseurl+"assets/img/gif/loading99.gif'/><br /></center><br />");
+	$('.modal-tabel').html("<center><img id='loading12' style='margin-top: 2%;width: 200px' src='"+baseurl+"assets/img/gif/loadingquick.gif'/><br /></center><br />");
 		$.ajax({
 			type: "POST",
 			url: baseurl+"MonitoringLppbKasieGudang/Unprocess/detailLppbKasieGudang",
@@ -873,7 +1071,7 @@ function MdlRejectKasie(th) {
 
 	$('#group_batch').text(group_batch);	
 	$('#mdlRejectKasieGudang').modal('show');
-	$('.modal-tabel').html("<center><img id='loading12' style='margin-top: 2%;' src='"+baseurl+"assets/img/gif/loading99.gif'/><br /></center><br />");
+	$('.modal-tabel').html("<center><img id='loading12' style='margin-top: 2%;width: 200px' src='"+baseurl+"assets/img/gif/loadingquick.gif'/><br /></center><br />");
 		$.ajax({
 			type: "POST",
 			url: baseurl+"MonitoringLppbKasieGudang/Reject/RejectLppb/",
@@ -907,7 +1105,7 @@ function MdlFinishKasie(th) {
 
 	$('#group_batch').text(group_batch);	
 	$('#mdlFinishKasieGudang').modal('show');
-	$('.modal-tabel').html("<center><img id='loading12' style='margin-top: 2%;' src='"+baseurl+"assets/img/gif/loading99.gif'/><br /></center><br />");
+	$('.modal-tabel').html("<center><img id='loading12' style='margin-top: 2%;width: 200px' src='"+baseurl+"assets/img/gif/loadingquick.gif'/><br /></center><br />");
 		$.ajax({
 			type: "POST",
 			url: baseurl+"MonitoringLppbKasieGudang/Finish/detailFinishKasie",
@@ -942,7 +1140,7 @@ function ModalRejectAdmin(th) {
 
 	$('#group_batch').text(group_batch);	
 	$('#mdlRejectAdminGudang').modal('show');
-	$('.modal-tabel').html("<center><img id='loading12' style='margin-top: 2%;' src='"+baseurl+"assets/img/gif/loading99.gif'/><br /></center><br />");
+	$('.modal-tabel').html("<center><img id='loading12' style='margin-top: 2%;width: 200px' src='"+baseurl+"assets/img/gif/loadingquick.gif'/><br /></center><br />");
 		$.ajax({
 			type: "POST",
 			url: baseurl+"MonitoringLPPB/RejectLppb/detailRejectLppb",
@@ -976,7 +1174,7 @@ function ModalFinishAdmin(th) {
 
 	$('#group_batch').text(group_batch);	
 	$('#mdlFinishAdminGudang').modal('show');
-	$('.modal-tabel').html("<center><img id='loading12' style='margin-top: 2%;' src='"+baseurl+"assets/img/gif/loading99.gif'/><br /></center><br />");
+	$('.modal-tabel').html("<center><img id='loading12' style='margin-top: 2%;width: 200px' src='"+baseurl+"assets/img/gif/loadingquick.gif'/><br /></center><br />");
 		$.ajax({
 			type: "POST",
 			url: baseurl+"MonitoringLPPB/Finish/FinishDetail",
@@ -1011,7 +1209,7 @@ function ModalDetailAdmin(th) {
 
 	$('#group_batch').text(group_batch);	
 	$('#mdlDetailAdminGudang').modal('show');
-	$('.modal-tabel').html("<center><img id='loading12' style='margin-top: 2%;' src='"+baseurl+"assets/img/gif/loading99.gif'/><br /></center><br />");
+	$('.modal-tabel').html("<center><img id='loading12' style='margin-top: 2%;width: 200px' src='"+baseurl+"assets/img/gif/loadingquick.gif'/><br /></center><br />");
 		$.ajax({
 			type: "POST",
 			url: baseurl+"MonitoringLPPB/ListBatch/detailLppb",
@@ -1038,7 +1236,7 @@ function ModalDetailAkt(th) {
 
 	$('#group_batch').text(group_batch);	
 	$('#mdlDetailAkt').modal('show');
-	$('.modal-tabel').html("<center><img id='loading12' style='margin-top: 2%;' src='"+baseurl+"assets/img/gif/loading99.gif'/><br /></center><br />");
+	$('.modal-tabel').html("<center><img id='loading12' style='margin-top: 2%;width: 200px' src='"+baseurl+"assets/img/gif/loadingquick.gif'/><br /></center><br />");
 		$.ajax({
 			type: "POST",
 			url: baseurl+"MonitoringLppbAkuntansi/Unprocess/detailLppbAkuntansi",
@@ -1065,7 +1263,7 @@ function ModalRejectAkt(th) {
 
 	$('#group_batch').text(group_batch);	
 	$('#mdlRejectAkt').modal('show');
-	$('.modal-tabel').html("<center><img id='loading12' style='margin-top: 2%;' src='"+baseurl+"assets/img/gif/loading99.gif'/><br /></center><br />");
+	$('.modal-tabel').html("<center><img id='loading12' style='margin-top: 2%;width: 200px' src='"+baseurl+"assets/img/gif/loadingquick.gif'/><br /></center><br />");
 		$.ajax({
 			type: "POST",
 			url: baseurl+"MonitoringLppbAkuntansi/Reject/RejectLppb",
@@ -1092,7 +1290,7 @@ function ModalFinishAkt(th) {
 
 	$('#group_batch').text(group_batch);	
 	$('#mdlFinishAkt').modal('show');
-	$('.modal-tabel').html("<center><img id='loading12' style='margin-top: 2%;' src='"+baseurl+"assets/img/gif/loading99.gif'/><br /></center><br />");
+	$('.modal-tabel').html("<center><img id='loading12' style='margin-top: 2%;width: 200px' src='"+baseurl+"assets/img/gif/loadingquick.gif'/><br /></center><br />");
 		$.ajax({
 			type: "POST",
 			url: baseurl+"MonitoringLppbAkuntansi/Finish/finishDetail",
@@ -1118,7 +1316,7 @@ function ModalTrackingLppb(th,th2) {
 	console.log(section_id)
 
 	$('#mdlDetailTrackingLppb').modal('show');
-	$('.modal-tabel').html("<center><img id='loading12' style='margin-top: 2%;' src='"+baseurl+"assets/img/gif/loading99.gif'/><br /></center><br />");
+	$('.modal-tabel').html("<center><img id='loading12' style='margin-top: 2%;width: 200px' src='"+baseurl+"assets/img/gif/loadingquick.gif'/><br /></center><br />");
 		$.ajax({
 			type: "POST",
 			url: baseurl+"TrackingLppb/Tracking/detail",

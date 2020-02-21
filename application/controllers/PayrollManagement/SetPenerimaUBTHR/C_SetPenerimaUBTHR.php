@@ -6,6 +6,7 @@ class C_SetPenerimaUBTHR extends CI_Controller
     {
         parent::__construct();
         $this->load->library('session');
+        $this->load->library('Log_Activity');
         $this->load->helper('url');
         $this->load->model('SystemAdministration/MainMenu/M_user');
         $this->load->model('PayrollManagement/SetPenerimaUBTHR/M_setpenerimaubthr');
@@ -20,7 +21,7 @@ class C_SetPenerimaUBTHR extends CI_Controller
     {
         $this->checkSession();
         $user_id = $this->session->userid;
-        
+
         $data['Menu'] = 'Set Parameter';
         $data['SubMenuOne'] = 'Set Penerima UBTHR';
         $data['SubMenuTwo'] = '';
@@ -46,7 +47,7 @@ class C_SetPenerimaUBTHR extends CI_Controller
     {
         $this->checkSession();
         $user_id = $this->session->userid;
-        
+
         $row = $this->M_setpenerimaubthr->get_by_id($id);
         if ($row) {
             $data = array(
@@ -56,7 +57,7 @@ class C_SetPenerimaUBTHR extends CI_Controller
             	'UserMenu' => $this->M_user->getUserMenu($user_id,$this->session->responsibility_id),
             	'UserSubMenuOne' => $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id),
             	'UserSubMenuTwo' => $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id),
-            
+
 				'id_setting' => $row->id_setting,
 				'tgl_berlaku' => $row->tgl_berlaku,
 				'tgl_tberlaku' => $row->tgl_tberlaku,
@@ -98,7 +99,7 @@ class C_SetPenerimaUBTHR extends CI_Controller
 			'pr_master_status_kerja' => $this->M_setpenerimaubthr->get_pr_master_status_kerja(),
             'action' => site_url('PayrollManagement/SetPenerimaUBTHR/save'),
 			'pg' => 'a',
-			
+
 			'id_setting' => set_value(''),
 			'tgl_berlaku' => set_value(''),
 			'tgl_tberlaku' => set_value(''),
@@ -118,7 +119,7 @@ class C_SetPenerimaUBTHR extends CI_Controller
     public function save(){
         $this->formValidation();
         $data = array(
-		
+
 			'tgl_berlaku' => $this->input->post('txtTglBerlaku',TRUE),
 			'tgl_tberlaku' => '9999-12-31',
 			'kd_status_kerja' => $this->input->post('cmbKdStatusKerja',TRUE),
@@ -127,15 +128,21 @@ class C_SetPenerimaUBTHR extends CI_Controller
 			'kd_petugas' => $this->session->userdata('userid'),
 			'tgl_record' => date('Y-m-d H:i:s'),
 		);
-		
+
 		$ru_where = array(
 			'tgl_tberlaku' => '9999-12-31',
 			'kd_status_kerja' => $this->input->post('cmbKdStatusKerja',TRUE),
 		);
-		
+
 		$ru_data = array(
 			'tgl_tberlaku' => $this->input->post('txtTglBerlaku',TRUE),
 		);
+
+        //insert to sys.log_activity
+        $aksi = 'Payroll Management';
+        $detail = "Create set UBTHR tgl_berlaku=".$this->input->post('txtTglBerlaku')." kd_status_kerja=".$this->input->post('cmbKdStatusKerja');
+        $this->log_activity->activity_log($aksi, $detail);
+        //
 
         $this->M_setpenerimaubthr->update_data($ru_where,$ru_data);
         $this->M_setpenerimaubthr->insert($data);
@@ -166,7 +173,7 @@ class C_SetPenerimaUBTHR extends CI_Controller
                 'pr_master_status_kerja' => $this->M_setpenerimaubthr->get_pr_master_status_kerja(),
 				'action' => site_url('PayrollManagement/SetPenerimaUBTHR/saveUpdate'),
 				'pg' => 'c',
-				
+
 				'id_setting' => $row->id_setting,
 				'tgl_berlaku' => $row->tgl_berlaku,
 				'tgl_tberlaku' => $row->tgl_tberlaku,
@@ -194,7 +201,7 @@ class C_SetPenerimaUBTHR extends CI_Controller
         $this->formValidation();
 
         $data = array(
-		
+
 			'tgl_berlaku' => $this->input->post('txtTglBerlaku',TRUE),
 			'tgl_tberlaku' => '9999-12-31',
 			'kd_status_kerja' => $this->input->post('cmbKdStatusKerja',TRUE),
@@ -202,8 +209,14 @@ class C_SetPenerimaUBTHR extends CI_Controller
 			'persentase_ubthr' => $this->input->post('txtPersentaseUBTHR',TRUE),
 			'kd_petugas' => $this->session->userdata('userid'),
 			'tgl_record' => $this->input->post('txtTanggalRecord',TRUE),
-				
+
 		);
+
+        //insert to sys.log_activity
+        $aksi = 'Payroll Management';
+        $detail = "Update set UBTHR ID=".$this->input->post('txtIdSetting');
+        $this->log_activity->activity_log($aksi, $detail);
+        //
 
             $this->M_setpenerimaubthr->update($this->input->post('txtIdSetting', TRUE), $data);
             $this->session->set_flashdata('message', 'Update Record Success');
@@ -220,6 +233,11 @@ class C_SetPenerimaUBTHR extends CI_Controller
 
         if ($row) {
             $this->M_setpenerimaubthr->delete($id);
+            //insert to sys.log_activity
+            $aksi = 'Payroll Management';
+            $detail = "Delete set UBTHR ID=$id";
+            $this->log_activity->activity_log($aksi, $detail);
+            //
             $this->session->set_flashdata('message', 'Delete Record Success');
 			$ses=array(
 					 "success_delete" => 1
@@ -238,7 +256,7 @@ class C_SetPenerimaUBTHR extends CI_Controller
 
     public function checkSession(){
         if($this->session->is_logged){
-            
+
         }else{
             redirect(site_url());
         }

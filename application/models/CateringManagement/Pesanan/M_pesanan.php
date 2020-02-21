@@ -395,22 +395,265 @@ class M_pesanan extends CI_Model
       return $this->personalia->query($sql)->row()->lokasi_kerja;
     }
 
-    public function getDataDinas($lok)
+    public function getDataDinas($lok, $noind)
     {
-      $today = date('Y-m-d');
-      $sql="SELECT ti.tujuan FROM \"Surat\".taktual_izin ti left join \"Surat\".tperizinan tp on ti.izin_id::int = tp.izin_id
-            where ti.tujuan not in ('', ' ', 'null') AND cast(ti.created_date as time) < '09:00:00' $lok
-            AND cast(ti.created_date as date) IN ('$today')";
+      $sql="SELECT DISTINCT * FROM \"Catering\".tpesanantambahan_erp_detail ted
+            LEFT JOIN \"Catering\".tpesanantambahan_erp tpt ON tpt.id_tambahan = ted.id_tambahan
+            LEFT JOIN \"Surat\".tperizinan tp ON tp.created_date::date = current_date
+            WHERE ted.fs_noind = '$noind' AND ted.fs_ket = tp.keterangan AND tp.created_date::date = current_date $lok";
       return $this->personalia->query($sql)->result_array();
     }
 
-    public function getRekapAllDinas($today, $lok, $param)
+    public function getDataDinasMin($lok, $noind)
     {
-      $sql="SELECT ti.tujuan FROM \"Surat\".taktual_izin ti left join \"Surat\".tperizinan tp on ti.izin_id::int = tp.izin_id
-            where ti.tujuan not in ('', ' ', 'null') AND cast(ti.created_date as time) < '09:00:00' $lok $param
-            AND cast(ti.created_date as date) NOT IN ('$today')";
+      $sql="SELECT DISTINCT * FROM \"Catering\".tpenguranganpesanan_erp_detail ted
+            LEFT JOIN \"Catering\".tpenguranganpesanan_erp tpt ON tpt.id_pengurangan = ted.id_pengurangan
+            LEFT JOIN \"Surat\".tperizinan tp ON tp.created_date::date = current_date
+            LEFT JOIN hrd_khs.tpribadi tpri on tpri.noind = ted.fs_noind
+            WHERE fs_noind = '$noind' AND ted.fs_ket = tp.keterangan AND tp.created_date::date = current_date $lok";
       return $this->personalia->query($sql)->result_array();
     }
 
+    public function getRekapAllDinas($lok, $param)
+    {
+      $sql="SELECT DISTINCT ted.*, tpt.fd_tanggal, tpt.fs_tempat_makan FROM \"Catering\".tpesanantambahan_erp_detail ted
+              LEFT JOIN \"Catering\".tpesanantambahan_erp tpt ON tpt.id_tambahan = ted.id_tambahan
+              LEFT JOIN \"Surat\".tperizinan tp ON tp.created_date::date = current_date
+              LEFT JOIN hrd_khs.tpribadi tpri on tpri.noind = ted.fs_noind
+              WHERE ted.fs_ket = tp.keterangan $lok $param
+              ORDER BY fd_tanggal DESC, fs_tempat_makan, fs_noind";
+      return $this->personalia->query($sql)->result_array();
+    }
 
+    public function getDetailPekerjaDinasPlus($isi, $tanggal, $lok)
+    {
+        $sql = "SELECT DISTINCT ted.*, tpt.fd_tanggal, tpt.fs_tempat_makan FROM \"Catering\".tpesanantambahan_erp_detail ted
+                LEFT JOIN \"Catering\".tpesanantambahan_erp tpt ON tpt.id_tambahan = ted.id_tambahan
+                LEFT JOIN \"Surat\".tperizinan tp ON tp.created_date::date = current_date
+                LEFT JOIN hrd_khs.tpribadi tpri on tpri.noind = ted.fs_noind
+                WHERE ted.fs_ket = tp.keterangan AND tp.created_date::date = current_date AND tpt.fd_tanggal::date = current_date AND tpt.fs_tempat_makan = '$isi' $lok
+                ORDER BY fs_noind";
+        return $this->personalia->query($sql)->result_array();
+    }
+
+    public function getDetailPekerjaDinasMin($isi, $tanggal, $lok)
+    {
+        $sql = "SELECT DISTINCT ted.*, tpt.fd_tanggal, tpt.fs_tempat_makan FROM \"Catering\".tpenguranganpesanan_erp_detail ted
+                LEFT JOIN \"Catering\".tpenguranganpesanan_erp tpt ON tpt.id_pengurangan = ted.id_pengurangan
+                LEFT JOIN \"Surat\".tperizinan tp ON tp.created_date::date = current_date
+                LEFT JOIN hrd_khs.tpribadi tpri on tpri.noind = ted.fs_noind
+                WHERE ted.fs_ket = tp.keterangan AND tp.created_date::date = current_date AND tpt.fd_tanggal::date = current_date AND tpt.fs_tempat_makan = '$isi' $lok
+                ORDER BY fs_noind";
+        return $this->personalia->query($sql)->result_array();
+    }
+
+    public function getPekerjaAsal($today, $lokasi)
+    {
+        $sql = "SELECT DISTINCT ted.*, tpt.fd_tanggal, tpt.fs_tempat_makan FROM \"Catering\".tpenguranganpesanan_erp_detail ted
+                LEFT JOIN \"Catering\".tpenguranganpesanan_erp tpt ON tpt.id_pengurangan = ted.id_pengurangan
+                LEFT JOIN \"Surat\".tperizinan tp ON tp.created_date::date = current_date
+                LEFT JOIN hrd_khs.tpribadi tpri on tpri.noind = ted.fs_noind
+                WHERE ted.fs_ket = tp.keterangan AND tp.created_date::date = current_date $lokasi $today
+                ORDER BY fd_tanggal DESC, fs_tempat_makan, fs_noind";
+        return $this->personalia->query($sql)->result_array();
+    }
+
+    public function getDataBelumDiProses($lok)
+    {
+        $sql = "SELECT *
+                from (
+                    select tai.izin_id,tpi.noind,trim(tpri.nama) as nama,tpi.makan,tai.tujuan,trim(tpri.tempat_makan) as tempat_makan,tp.keterangan,
+                    case when tp.jenis_izin = '1' then 'PUSAT'
+                    when tp.jenis_izin = '2' then 'TUKSONO'
+                    when tp.jenis_izin = '3' then 'MLATI'
+                    else 'TIDAK DIKETAHUI'
+                    end as jenis_dinas,
+                    (select count(*)
+                    from \"Catering\".tpesanantambahan_erp_detail tptd
+                    inner join \"Catering\".tpesanantambahan_erp tpt
+                    on tptd.id_tambahan = tpt.id_tambahan
+                    Where tpt.fd_tanggal = current_date
+                    and tptd.fs_noind = tai.noinduk) as diproses
+                    from \"Surat\".taktual_izin tai
+                     inner join \"Surat\".tpekerja_izin tpi
+                     on tai.noinduk = tpi.noind
+                     and tai.izin_id = tpi.izin_id
+                     inner join \"Surat\".tperizinan tp
+                     on tai.izin_id::int = tp.izin_id
+                     left join hrd_khs.tpribadi tpri
+                     on tpri.noind = tai.noinduk
+                     Where tai.created_date:: Date = current_date
+                     and tpi.makan = '1' AND cast(tai.created_date as time) <= '09:30:00' AND tai.tujuan not in ('', ' ', 'null') $lok
+                 ) as tbl
+                 order by diproses,jenis_dinas,tujuan,izin_id,noind";
+
+        return $this->personalia->query($sql)->result_array();
+    }
+
+    public function checking($noind)
+    {
+        $sql = "SELECT * from (
+                                SELECT tpres.noind AS noind, hrd_khs.tpribadi.Nama AS nama, tpres.waktu,
+                                    hrd_khs.tpribadi.tempat_makan AS tempat_makan,
+                                    COUNT(hrd_khs.tpribadi.tempat_makan) AS jumlah_karyawan
+                                FROM hrd_khs.tpribadi
+                                INNER JOIN \"Catering\".tpresensi tpres ON tpres.noind = hrd_khs.tpribadi.noind
+                                    AND LEFT(tpres.waktu, 5) >= '03:59:59'
+                                    AND LEFT(tpres.waktu, 5) <= '08:30:00'
+                                    AND tpres.tanggal::date = current_date
+                                WHERE tpres.noind NOT IN
+                                    (SELECT fs_noind FROM \"Catering\".tpuasa
+                                        WHERE (fd_tanggal::date = current_date)
+                                        AND (fb_status = '1')
+                                        )
+                                    AND tpres.noind NOT IN
+                                        (
+                                            SELECT noind
+                                            FROM \"Presensi\".tshiftPekerja
+                                            WHERE tanggal::date IN (current_date - interval '1 day', current_date)
+                                            AND kd_shift IN ('3', '12')
+                                        )
+                                    AND LEFT(hrd_khs.tpribadi.noind, 1) NOT IN ('M', 'Z')
+                                    GROUP BY hrd_khs.tpribadi.tempat_makan, hrd_khs.tpribadi.Nama, tpres.noind, tpres.waktu,tpres.user_,hrd_khs.tpribadi.kodesie,tpres.tanggal
+                                union
+                                select a.noind,a.nama,b.jam_msk as waktu,a.tempat_makan,COUNT(a.tempat_makan) AS jumlah_karyawan
+                                FROM hrd_khs.tpribadi a
+                                inner join \"Presensi\".tshiftpekerja b on a.noind=b.noind
+                                left join \"Catering\".tpuasa p on b.tanggal=p.fd_tanggal and b.noind=p.fs_noind
+                                where b.tanggal::date = current_date
+                                    and (p.fb_status is null or p.fb_status<>'1')
+                                    and b.kd_shift in('5','8','18')
+                                GROUP BY a.tempat_makan, a.Nama,a.noind,b.jam_msk,a.kodesie,b.tanggal
+                            ) as tbl where noind = '$noind' ORDER BY tbl.tempat_makan, tbl.noind ";
+        return $this->personalia->query($sql)->result_array();
+    }
+
+
+//Tambahan Pesanan
+    public function getDataPEsanantoday($tempat_makan)
+    {
+        $sql = "SELECT * FROM \"Catering\".tpesanantambahan_erp
+                WHERE fd_tanggal::date = current_date AND fs_kd_shift = '1' AND fs_tempat_makan = '$tempat_makan'";
+        return $this->personalia->query($sql)->result_array();
+    }
+    public function insertTambahCateringDinas($data)
+    {
+        $this->personalia->insert('"Catering".tpesanantambahan_erp',$data);
+        return;
+    }
+    public function insertToDetail($data)
+    {
+        $this->personalia->insert('"Catering".tpesanantambahan_erp_detail',$data);
+        return;
+    }
+    public function getDetailPlus($id)
+    {
+        $sql = "SELECT count(*) FROM \"Catering\".tpesanantambahan_erp_detail
+                WHERE id_tambahan = '$id'";
+        return $this->personalia->query($sql)->row()->count;
+    }
+    public function updateDetailTambahan($id, $tujuan, $jumlah)
+    {
+        $sql = "UPDATE \"Catering\".tpesanantambahan_erp set fn_jumlah_pesanan = '$jumlah'
+                WHERE id_tambahan = '$id' AND fd_tanggal::date = current_date AND fs_kd_shift = '1' AND fs_tempat_makan = '$tujuan'";
+        return $this->personalia->query($sql);
+    }
+    public function checkingPekerjaDinas($id, $noind, $nama, $keterangan)
+    {
+        $sql = "SELECT * FROM \"Catering\".tpesanantambahan_erp_detail WHERE id_tambahan = '$id'::int AND fs_noind = '$noind' AND fs_nama = '$nama' AND fs_ket='$keterangan'";
+        // print_r($id);die;
+        return $this->personalia->query($sql)->result_array();
+    }
+    public function countPekerjaDinas($id)
+    {
+        $sql = "SELECT count(*) FROM \"Catering\".tpesanantambahan_erp_detail WHERE id_tambahan = '$id'";
+        // print_r($sql);die;
+        return $this->personalia->query($sql)->result_array();
+    }
+    public function updateJumlahCatering($id, $tempat, $jml)
+    {
+        $sql = "UPDATE \"Catering\".tpesanantambahan_erp set fn_jumlah_pesanan = '$jml' WHERE id_tambahan = '$id' AND fs_tempat_makan = '$tempat' AND fd_tanggal = current_date";
+        return $this->personalia->query($sql);
+    }
+
+//Pengurangan Pesanan
+    public function getDataPengurangantoday($tempat_makan)
+    {
+        $sql = "SELECT * FROM \"Catering\".tpenguranganpesanan_erp
+        WHERE fd_tanggal::date = current_date AND fs_kd_shift = '1' AND fs_tempat_makan = '$tempat_makan'";
+        return $this->personalia->query($sql)->result_array();
+    }
+    public function insertPenguranganCateringDinas($data)
+    {
+        $this->personalia->insert('"Catering".tpenguranganpesanan_erp',$data);
+        return;
+    }
+    public function insertToDetailKurang($data)
+    {
+        $this->personalia->insert('"Catering".tpenguranganpesanan_erp_detail',$data);
+        return;
+    }
+    public function getDetailMin($id)
+    {
+        $sql = "SELECT count(*) FROM \"Catering\".tpenguranganpesanan_erp_detail
+                WHERE id_pengurangan = '$id'";
+        return $this->personalia->query($sql)->result_array();
+    }
+    public function updateDetailPengurangan($id, $tujuan, $jumlah)
+    {
+        $sql = "UPDATE \"Catering\".tpenguranganpesanan_erp set fn_jml_tdkpesan = '$jumlah'
+                WHERE id_pengurangan = '$id' AND fd_tanggal::date = current_date AND fs_kd_shift = '1' AND fs_tempat_makan = '$tujuan'";
+        return $this->personalia->query($sql);
+    }
+    public function checkingPekerjaDinasMin($id, $noind)
+    {
+        $sql = "SELECT fs_noind as noind FROM \"Catering\".tpenguranganpesanan_erp_detail WHERE id_pengurangan = '$id' AND fs_noind = '$noind'";
+        return $this->personalia->query($sql)->result_array();
+    }
+    public function countPekerjaDinasMin($id)
+    {
+        $sql = "SELECT count(*) FROM \"Catering\".tpenguranganpesanan_erp_detail WHERE id_pengurangan = '$id'";
+        // print_r($sql);die;
+        return $this->personalia->query($sql)->result_array();
+    }
+    public function updateJumlahCateringMin($id, $tempat, $jml)
+    {
+        $sql = "UPDATE \"Catering\".tpenguranganpesanan_erp set fn_jml_tdkpesan = '$jml' WHERE id_pengurangan = '$id' AND fs_tempat_makan = '$tempat' AND fd_tanggal = current_date";
+        return $this->personalia->query($sql);
+    }
+
+//Untuk Update di Pesanan ERP
+    public function getDetailJumlah($tempat_makan)
+    {
+        $sql = "SELECT  SUM(
+                    jml_shift::int +
+                    jml_bukan_shift::int +
+                    coalesce((
+                    select fn_jumlah_pesanan
+                    from \"Catering\".tpesanantambahan_erp tpt
+                    Where tp.tgl_pesanan = tpt.fd_tanggal
+                    and tp.kd_shift = tpt.fs_kd_shift
+                    and tp.tempat_makan = tpt.fs_tempat_makan
+                    ),0) -
+                    coalesce((
+                    select fn_jml_tdkpesan
+                    from \"Catering\".tpenguranganpesanan_erp tpp
+                    Where tp.tgl_pesanan = tpp.fd_tanggal
+                    and tp.kd_shift = tpp.fs_kd_shift
+                    and tp.tempat_makan = tpp.fs_tempat_makan
+                    ),0)
+                    ) as pesanan
+                from \"Catering\".tpesanan_erp tp
+                Where tp.tgl_pesanan::date = current_date
+                and tp.kd_shift = '1'
+                and tp.tempat_makan = '$tempat_makan'";
+        return $this->personalia->query($sql)->result_array();
+    }
+
+    public function UpdatePesanan($tempat_makan, $jumlah)
+    {
+        $sql = "UPDATE \"Catering\".tpesanan_erp set jml_total = '$jumlah'
+                WHERE tgl_pesanan::date = current_date AND tempat_makan = '$tempat_makan' AND kd_shift = '1'";
+        return $this->personalia->query($sql);
+    }
 }

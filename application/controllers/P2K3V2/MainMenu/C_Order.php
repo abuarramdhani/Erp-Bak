@@ -10,6 +10,7 @@ class C_Order extends CI_Controller
 		$this->load->helper('html');
 
 		$this->load->library('form_validation');
+		$this->load->library('Log_Activity');
 		$this->load->library('session');
 		$this->load->library('encrypt');
 		$this->load->library('ciqrcode');
@@ -57,7 +58,7 @@ class C_Order extends CI_Controller
 		$this->load->view('V_Footer',$data);
 	}
 
-	
+
 	public function list_order()
 	{
 		$user = $this->session->username;
@@ -98,7 +99,7 @@ class C_Order extends CI_Controller
 	}
 
 	public function approve($id_kebutuhan,$id_kebutuhan_detail)
-	{	
+	{
 		$user_id					= $this->session->userid;
 		$kodesie 					= $this->session->kodesie;
 		$data['cek']	= $this->M_order->join_3($id_kebutuhan_detail);
@@ -113,7 +114,7 @@ class C_Order extends CI_Controller
 
 		$c_status			= 't';
 		$status2 = array(
-			'checked_status' => $c_status, 
+			'checked_status' => $c_status,
 			);
 		$this->M_order->update_c_status($id_kebutuhan,$status2);
 				// redirect('P2K3/Order/list_order');
@@ -125,7 +126,7 @@ class C_Order extends CI_Controller
 	}
 
 	public function reject($id_kebutuhan_detail)
-	{	
+	{
 		$user_id					= $this->session->userid;
 		$kodesie 					= $this->session->kodesie;
 		$data['cek']	= $this->M_order->join_3($id_kebutuhan_detail);
@@ -163,8 +164,8 @@ class C_Order extends CI_Controller
 		$this->load->view('V_Sidemenu',$data);
 		$this->load->view('P2K3V2/Order/V_Reset', $data);
 		$this->load->view('V_Footer',$data);
-		
-		
+
+
 	}
 
 	public function save_data(){
@@ -182,20 +183,17 @@ class C_Order extends CI_Controller
 			);
 
 		$this->M_order->save_dataPeriode($data);
-				// $header_id = $this->db->insert_id();
-				// print_r($header_id);
-				// exit();
 
 //=============================================k3.k3_kebutuhan_detail=======================================
 		$ttl_baris	= sizeof($this->input->post('txtJenisAPD'));
-		for ($i=0; $i < $ttl_baris; $i++) { 
+		for ($i=0; $i < $ttl_baris; $i++) {
 			$ttl_order	= 0;
 			$ttl_req	= 0;
 			$jumlah1 = array();
 			$jumlah2 = array();
 			$ttl_kolom	= sizeof($this->input->post("numJumlah[]"));
 
-			for ($a=0; $a < $ttl_kolom ; $a++) { 
+			for ($a=0; $a < $ttl_kolom ; $a++) {
 				$ttl_req	+= $this->input->post("numJumlah[$a][$i]") * $this->input->post("pkjJumlah[$a][$i]");
 				$jumlah = $this->input->post("numJumlah[$a][$i]");
 				$jumlah2x = $this->input->post("pkjJumlah[$a][$i]");
@@ -212,9 +210,9 @@ class C_Order extends CI_Controller
 				$panggil			= $this->M_order->getNamaApd($kode);
 				$namaApd 			= $panggil[0]['item'];
 				$ttl_kebutuhan		= $ttl_req;
-				$total 				= $ttl_order;		
+				$total 				= $ttl_order;
 				$kebutuhan 			= $this->input->post("txtKebutuhanUmum[$i]");
-				$keterangan			= $this->input->post("txtKeterangan[$i]");					
+				$keterangan			= $this->input->post("txtKeterangan[$i]");
 			}
 
 			$lines = array(
@@ -229,16 +227,16 @@ class C_Order extends CI_Controller
 				'create_date'	=>  date('Y-m-d H:i:s')
 				);
 			$this->M_order->save_data_apd($lines);
-							// $id = $this->db->insert_id();	
+
 //=============================================k3.k3_kebutuhan_pekerja=======================================
 			$id_pekerja						= $id;
 			$jml_apd 						= implode(',', $jumlah1);
 			$jml_pkj 						= implode(',', $jumlah2);
 			$data["kode_pekerjaan[$i][$a]"]	= $this->M_order->kode_pekerjaan($kodesie);
-			$kd_pkrj 						= $data["kode_pekerjaan[$i][$a]"];	
+			$kd_pkrj 						= $data["kode_pekerjaan[$i][$a]"];
 			$data_pkerja = array();
 			foreach ($kd_pkrj as $kd) {
-				$data_pkerja[]	= $kd['kdpekerjaan']; 
+				$data_pkerja[]	= $kd['kdpekerjaan'];
 			}
 			$kd_pkj = implode(',', $data_pkerja);
 
@@ -262,6 +260,11 @@ class C_Order extends CI_Controller
 				);
 
 			$this->M_order->history_log($history);
+			//insert to t_log
+			$aksi = 'P2K3 V2';
+			$detail = "Add Kebutuhan ID=$id_log ";
+			$this->log_activity->activity_log($aksi, $detail);
+			//
 		}
 
 		redirect('P2K3_V2/Order/list_order');
@@ -292,8 +295,8 @@ class C_Order extends CI_Controller
 		$this->load->view('P2K3V2/Order/V_Edit', $data);
 		$this->load->view('V_Footer',$data);
 	}
-	
-	public function update_data($id_kebutuhan_detail, $kodesie)	
+
+	public function update_data($id_kebutuhan_detail, $kodesie)
 	{
 			// echo "<pre>"; print_r($_POST); exit();
 		$user1 = $this->session->user;
@@ -305,14 +308,14 @@ class C_Order extends CI_Controller
 		$data['daftar_pekerjaan']	= $this->M_order->daftar_pekerjaan($kodesie);
 	//=============================================k3.k3_kebutuhan_detail=======================================
 		$ttl_baris	= sizeof($this->input->post('txtJenisAPD'));
-		for ($i=0; $i < $ttl_baris; $i++) { 
+		for ($i=0; $i < $ttl_baris; $i++) {
 			$ttl_order	= 0;
 			$ttl_req	= 0;
 			$jumlah1 	= array();
 			$jumlah2 	= array();
 			$ttl_kolom	= sizeof($this->input->post("numJumlah[]"));
 			$coba = "";
-			for ($a=0; $a < $ttl_kolom ; $a++) { 
+			for ($a=0; $a < $ttl_kolom ; $a++) {
 				$ttl_req	+= $this->input->post("numJumlah[$a][$i]") * $this->input->post("pkjJumlah[$a][$i]");
 				$jumlah = $this->input->post("numJumlah[$a][$i]");
 						// if (empty($jumlah)) {
@@ -336,9 +339,9 @@ class C_Order extends CI_Controller
 				$panggil			= $this->M_order->getNamaApd($kode);
 				$namaApd 			= $panggil[0]['item'];
 				$ttl_kebutuhan		= $ttl_req;
-				$total 				= $ttl_order;		
+				$total 				= $ttl_order;
 				$kebutuhan			= $this->input->post("txtKebutuhanUmum[$i]");
-				$keterangan			= $this->input->post("txtKeterangan[$i]");					
+				$keterangan			= $this->input->post("txtKeterangan[$i]");
 			}
 
 			$lines = array(
@@ -357,10 +360,10 @@ class C_Order extends CI_Controller
 				$jml_apd 						= implode(',',$jumlah1) ;
 				$jml_pkj 						= implode(',',$jumlah2) ;
 				$data["kode_pekerjaan[$i][$a]"]	= $this->M_order->kode_pekerjaan($kodesie);
-				$kd_pkrj 						= $data["kode_pekerjaan[$i][$a]"];	
+				$kd_pkrj 						= $data["kode_pekerjaan[$i][$a]"];
 				$data_pkerja = array();
 				foreach ($kd_pkrj as $kd) {
-					$data_pkerja[]	= $kd['kdpekerjaan']; 
+					$data_pkerja[]	= $kd['kdpekerjaan'];
 				}
 				$kd_pkj = implode(',', $data_pkerja);
 
@@ -384,6 +387,11 @@ class C_Order extends CI_Controller
 			'history_type'	=> 'update',
 			);
 		$this->M_order->history($history);
+		//insert to sys.tlog_activity
+		$aksi = 'P2K3 V2';
+		$detail = "Upate Kebutuhan ID= $id_hs ";
+		$this->log_activity->activity_log($aksi, $detail);
+		//
 							// header("location:javascript://history.go(-1)");
 		if ($data['approveString']  == 'f'){
 								// $this->list_order();
@@ -391,7 +399,7 @@ class C_Order extends CI_Controller
 		}else{
 			redirect('P2K3_V2/Order/listPerSie/'.$sie);
 		}
-		
+
 	}
 
 	public function delete_apd($id_kebutuhan_detail)
@@ -412,6 +420,11 @@ class C_Order extends CI_Controller
 		$this->M_order->history($history);
 		$this->M_order->delete_apd($id_kebutuhan_detail);
 		$this->M_order->delete_apd2($id_kebutuhan_detail);
+		//insert to sys.tlog_activity
+		$aksi = 'P2K3 V2';
+		$detail = "Delete APD Kebutuhan ID=$id_hs ";
+		$this->log_activity->activity_log($aksi, $detail);
+		//
 		redirect($_SERVER['HTTP_REFERER']);
 				// redirect('P2K3/Order/list_order');
 	}
@@ -485,19 +498,19 @@ class C_Order extends CI_Controller
 
 	//=============================================k3.k3_kebutuhan_detail=======================================
 		$ttl_baris	= sizeof($this->input->post('txtJenisAPD'));
-		for ($i=0; $i < $ttl_baris; $i++) { 
+		for ($i=0; $i < $ttl_baris; $i++) {
 				$ttl_order	= 0;
 				$ttl_req	= 0;
 				$jumlah1 = array();
 				$ttl_kolom	= sizeof($this->input->post("numJumlah[]"));
 
-				for ($a=0; $a < $ttl_kolom ; $a++) { 
+				for ($a=0; $a < $ttl_kolom ; $a++) {
 					$ttl_req	+= $this->input->post("numJumlah[$a][$i]");
 					$jumlah = $this->input->post("numJumlah[$a][$i]");
 					$jumlah1[] = $jumlah;
 				}
 					$ttl_order = $ttl_req + $this->input->post("txtKebutuhanUmum[$i]");
-					
+
 
 				$jenis_apd	= $this->input->post('txtJenisAPD[]');
 					foreach ($jenis_apd as $apd) {
@@ -507,9 +520,9 @@ class C_Order extends CI_Controller
 						$panggil			= $this->M_order->getNamaApd($kode);
 						$namaApd 			= $panggil[0]['item'];
 						$ttl_kebutuhan		= $ttl_req;
-						$total 				= $ttl_order;		
+						$total 				= $ttl_order;
 						$kebutuhan 			= $this->input->post("txtKebutuhanUmum[$i]");
-						$keterangan			= $this->input->post("txtKeterangan[$i]");					
+						$keterangan			= $this->input->post("txtKeterangan[$i]");
 						}
 
 							$lines = array(
@@ -524,15 +537,15 @@ class C_Order extends CI_Controller
 								'create_date'	=>	date('Y-m-d H:i:s')
 								);
 							$this->M_order->save_data_apd($lines);
-							$id = $this->db->insert_id();	
+							$id = $this->db->insert_id();
 	//=============================================k3.k3_kebutuhan_pekerja=======================================
 						$id_pekerja						= $id;
 						$jml_apd 						= implode(',', $jumlah1);
 						$data["kode_pekerjaan[$i][$a]"]	= $this->M_order->kode_pekerjaan($kodesie);
-						$kd_pkrj 						= $data["kode_pekerjaan[$i][$a]"];	
+						$kd_pkrj 						= $data["kode_pekerjaan[$i][$a]"];
 						$data_pkerja = array();
 						foreach ($kd_pkrj as $kd) {
-							$data_pkerja[]	= $kd['kdpekerjaan']; 
+							$data_pkerja[]	= $kd['kdpekerjaan'];
 							}
 						$kd_pkj = implode(',', $data_pkerja);
 
@@ -541,7 +554,7 @@ class C_Order extends CI_Controller
 								'kd_pekerjaan'			=> $kd_pkj,
 								'jml'					=> $jml_apd,
 							);
-		
+
 					$this->M_order->save_data_pekerja($tbl_pekerja);
 					$id_log	= $this->db->insert_id();
 	//===============================================k3.k3_log===================================================
@@ -593,7 +606,7 @@ class C_Order extends CI_Controller
           	'type' => PHPExcel_Style_Fill::FILL_SOLID,
           	'color' => array('rgb' => 'bababa')
           	)
-          );  
+          );
 
 					$style_col1 = array(
           'font' => array('bold' => true), // Set font nya jadi bold
@@ -670,7 +683,7 @@ class C_Order extends CI_Controller
 
         $tbl =0;
         $i_new = $i;
-    	for ($x=$hitung; $x <$statik ; $x++) { //$x=3 ; $x < 8 
+    	for ($x=$hitung; $x <$statik ; $x++) { //$x=3 ; $x < 8
     		$kolom_new = PHPExcel_Cell::stringFromColumnIndex($i_new);
     		$objPHPExcel->setActiveSheetIndex(0)->setCellValue($kolom_new.'8', $n[$tbl]);
     		$tbl++;
@@ -687,13 +700,13 @@ class C_Order extends CI_Controller
     	}
     	$tbl =0;
     	$i_new2 = $i;
-    	for ($x=$hitung; $x<$statik ; $x++) { 
+    	for ($x=$hitung; $x<$statik ; $x++) {
     		$kolom_new = PHPExcel_Cell::stringFromColumnIndex($i_new2);
     		$objPHPExcel->getActiveSheet()->getStyle($kolom_new.'8', $n[$tbl])->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
     		$tbl++;
     		$i_new2++;
     	}
-    	
+
 
         // PHPExcel_Shared_Font::setAutoSizeMethod(PHPExcel_Shared_Font::AUTOSIZE_METHOD_EXACT);
         // foreach(range('A', 'Z') as $columnID) {
@@ -721,25 +734,25 @@ class C_Order extends CI_Controller
 
     	$tbl = 0;
     	$i_new3 = $i;
-    	for ($x=$hitung; $x < $statik; $x++) { 
+    	for ($x=$hitung; $x < $statik; $x++) {
     		$kolom_new = PHPExcel_Cell::stringFromColumnIndex($i_new3);
     		$objPHPExcel->getActiveSheet()->getStyle($kolom_new.'8', $n[$tbl])->applyFromArray($style_col);
     		$tbl++;
     		$i_new3++;
-    	}	
+    	}
 
 
     	$export = $this->M_order->tampil_data($kodesie);
 
     	$no = 1;
-    	$numrow = 9; 
+    	$numrow = 9;
     	$r = range('D', 'Z');
     	$r2 = range('E', 'Z', 2);
     	$r3 = range('E', 'Z');
         	//menampilkan departement,bidang,unit
-    	$objPHPExcel->setActiveSheetIndex(0)->setCellValue('C4', ': '.$header[0]['dept']);	        
-    	$objPHPExcel->setActiveSheetIndex(0)->setCellValue('C5', ': '.$header[0]['bidang']);	        
-    	$objPHPExcel->setActiveSheetIndex(0)->setCellValue('C6', ': '.$header[0]['unit']);	        
+    	$objPHPExcel->setActiveSheetIndex(0)->setCellValue('C4', ': '.$header[0]['dept']);
+    	$objPHPExcel->setActiveSheetIndex(0)->setCellValue('C5', ': '.$header[0]['bidang']);
+    	$objPHPExcel->setActiveSheetIndex(0)->setCellValue('C6', ': '.$header[0]['unit']);
     	foreach($export as $dt){
     		$e = 0;
     		$search =array('0','1','2');
@@ -764,11 +777,11 @@ class C_Order extends CI_Controller
 
     			$tbl = 0;
     			$i_new = $i;
-    			for ($x=$hitung; $x < $statik; $x++) { 
+    			for ($x=$hitung; $x < $statik; $x++) {
     				$kolom_new = PHPExcel_Cell::stringFromColumnIndex($i_new);
     				$objPHPExcel->setActiveSheetIndex()->setCellValue($kolom_new.$numrow, $f[$tbl]);
     				$tbl++;
-    				$i_new++;}	
+    				$i_new++;}
 
 
     				$objPHPExcel->getActiveSheet()->getStyle('A'.$numrow)->applyFromArray($style_row);
@@ -778,7 +791,7 @@ class C_Order extends CI_Controller
 
     				$e = 0;
     				$i_new3 = 3;
-    				for ($x=0; $x < $hitung2; $x++) { 
+    				for ($x=0; $x < $hitung2; $x++) {
     					$kolom_new = PHPExcel_Cell::stringFromColumnIndex($i_new3);
     					$objPHPExcel->getActiveSheet()->getStyle($kolom_new.$numrow)->applyFromArray($style_row);
     					$e++;
@@ -787,11 +800,11 @@ class C_Order extends CI_Controller
 
     				$tbl = 0;
     				$i_new2 = $i;
-    				for ($x=$hitung; $x < $statik; $x++) { 
+    				for ($x=$hitung; $x < $statik; $x++) {
     					$kolom_new = PHPExcel_Cell::stringFromColumnIndex($i_new2);
     					$objPHPExcel->getActiveSheet()->getStyle($kolom_new.$numrow, $f[$tbl])->applyFromArray($style_row);
     					$tbl++;
-    					$i_new2++;}	
+    					$i_new2++;}
 
     					$no++;
     					$numrow++;
@@ -803,14 +816,14 @@ class C_Order extends CI_Controller
 
     				$objPHPExcel->getActiveSheet()->setTitle('DAFTAR KEBUTUHAN P2K3');
 
-    				$objPHPExcel->setActiveSheetIndex(0);  
+    				$objPHPExcel->setActiveSheetIndex(0);
     				$filename = urlencode("Daftar Kebutuhan P2K3 ".date("Y-m-d").".ods");
 
               header('Content-Type: application/vnd.ms-excel'); //mime type
               header('Content-Disposition: attachment;filename="'.$filename.'"'); //tell browser what's the file name
               header('Cache-Control: max-age=0'); //no cache
 
-              $objWriter = IOFactory::createWriter($objPHPExcel, 'Excel5');                
+              $objWriter = IOFactory::createWriter($objPHPExcel, 'Excel5');
               $objWriter->save('php://output');
 
               redirect('P2K3_V2/Order/list_order');
@@ -864,7 +877,7 @@ class C_Order extends CI_Controller
           }
           else {
           	echo '<center><ul class="list-group"><li class="list-group-item">'.'Data Kosong'.'</li></ul></center>';
-          }	
+          }
       }
 
       public function listAll()
@@ -992,11 +1005,11 @@ class C_Order extends CI_Controller
 
       		$this->upload->initialize($config);
 
-      		if ($this->upload->do_upload('k3_approval')) 
+      		if ($this->upload->do_upload('k3_approval'))
       		{
       			$this->upload->data();
-      		} 
-      		else 
+      		}
+      		else
       		{
 
       			$errorinfo = $this->upload->display_errors();
@@ -1005,6 +1018,11 @@ class C_Order extends CI_Controller
 
       		foreach ($data as $key) {
       			$this->M_order->updateDocumentApproval($nama_file,$key['id_kebutuhan']);
+				//insert to sys.t_log_activity
+				$aksi = 'P2K3 V2';
+				$detail = "Update Dokumen approval ID= ".$key['id_kebutuhan'];
+				$this->log_activity->activity_log($aksi, $detail);
+				//
     				// echo $key['id_kebutuhan'];
       		}
     			// echo $nama_file;exit();
@@ -1095,7 +1113,7 @@ class C_Order extends CI_Controller
       	$data['inputStandar'] = $this->M_order->getInputstd2($tgl, $kodesie);
       	// print_r($data['inputStandar']);exit();
       	$n = substr($noind, 0,1);
-      	if ($n == 'B' || $n == 'D' || $n == 'J' || $noind == 'F2229') {
+      	if ($n == 'B' || $n == 'D' || $n == 'J' || $noind == 'T0007') {
       		$this->load->view('V_Header',$data);
       		$this->load->view('V_Sidemenu',$data);
       		$this->load->view('P2K3V2/Order/V_Approve_standar', $data);
@@ -1128,6 +1146,11 @@ class C_Order extends CI_Controller
       	}
       	foreach ($id as $key) {
       		$update = $this->M_order->updateSt($st, $key, $noind);
+			//insert to sys.t_log_activity
+			$aksi = 'P2K3 V2';
+			$detail = "Update Standar ID= $key";
+			$this->log_activity->activity_log($aksi, $detail);
+			//
       	}
 
       	$message = '	<!DOCTYPE HTML">
@@ -1145,7 +1168,7 @@ class C_Order extends CI_Controller
 				#detail {
    	 						border: 1px solid black;
    	 						text-align: justify;
-   	 						border-collapse: collapse;					
+   	 						border-collapse: collapse;
 						}
 
 			  	</style>
@@ -1153,14 +1176,14 @@ class C_Order extends CI_Controller
 				<body>
 						<h3 style="text-decoration: underline;">P2K3 TIM V.2</h3>
 					<hr/>
-				
+
 					<p>Anda mendapatkan kiriman update standar kebutuhan APD dari seksi '.$seksi[0]['section'].'
 					</p>
 					<hr/>
 					<p>
 					Untuk melihat/mengelola, silahkan login ke ERP
 					</p>
-					
+
 				</body>
 				</html>';
 		$emel = $this->M_dtmasuk->getEmail();
@@ -1170,7 +1193,7 @@ class C_Order extends CI_Controller
 		}
 		// print_r($arr); exit();
 
-		$mail = new PHPMailer(); 
+		$mail = new PHPMailer();
         $mail->SMTPDebug = 0;
         $mail->Debugoutput = 'html';
 
@@ -1209,6 +1232,11 @@ class C_Order extends CI_Controller
       {
       	$noind = $this->session->user;
       	$update = $this->M_order->updateOr($st, $id, $noind);
+		//insert to sys.t_log_activity
+		$aksi = 'P2K3 V2';
+		$detail = "Submit Order ID= $id ";
+		$this->log_activity->activity_log($aksi, $detail);
+		//
 
       	redirect('P2K3_V2/Order/approveOrder');
       }
@@ -1234,7 +1262,7 @@ class C_Order extends CI_Controller
       	$data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id);
 
       	$n = substr($noind, 0,1);
-      	if ($n == 'B' || $n == 'D' || $n == 'J' || $noind == 'F2229') {
+      	if ($n == 'B' || $n == 'D' || $n == 'J' || $noind == 'T0007') {
       		$this->load->view('V_Header',$data);
       		$this->load->view('V_Sidemenu',$data);
       		$this->load->view('P2K3V2/Order/V_Approve_Order', $data);
@@ -1315,7 +1343,7 @@ class C_Order extends CI_Controller
       	$a = 0;
       	for ($i=0; $i < count($item); $i++) {
       		$getbulan = $this->M_dtmasuk->getBulan($item[$i]);
-      		for ($x=$a; $x < (count($daftar_pekerjaan)*($i+1)); $x++) { 
+      		for ($x=$a; $x < (count($daftar_pekerjaan)*($i+1)); $x++) {
       			$jml[$i][] = (round($jumlah[$x]/$getbulan,2));
       		}
 
@@ -1334,6 +1362,11 @@ class C_Order extends CI_Controller
 			// print_r($data);
 			// echo "<br>";
       		$input = $this->M_order->save_standar($data);
+			//insert to sys.t_log_activity
+			$aksi = 'P2K3 V2';
+			$detail = "Save input standar Kode_item= $item[$i], kd_pkj=$kd_pkj";
+			$this->log_activity->activity_log($aksi, $detail);
+			//
       	}
       	redirect('P2K3_V2/Order/inputStandarKebutuhan');
       }
@@ -1369,6 +1402,11 @@ class C_Order extends CI_Controller
       		'periode'	=>	$periode,
       		);
       	$inputPkj = $this->M_order->inputPkj($data);
+		//insert to sys.t_log_activity
+		$aksi = 'P2K3 V2';
+		$detail = "Input Data Pekerja kd_pkj= $kd_pkj, jumlah=$jml_pkj, periode=$periode ";
+		$this->log_activity->activity_log($aksi, $detail);
+		//
       	redirect('P2K3_V2/Order/list_order');
       }
 
@@ -1410,8 +1448,8 @@ class C_Order extends CI_Controller
       				$a = explode(',', $a);
       				$b = explode(',', $b);
       				$hit = count($a);
-      				for ($i=0; $i < $hit; $i++) { 
-      					$jml += ($a[$i]*$b[$i]); 
+      				for ($i=0; $i < $hit; $i++) {
+      					$jml += ($a[$i]*$b[$i]);
       				}
       				$jml = ceil($jml+$c+($d*$e));
       				echo '<tr>
@@ -1427,7 +1465,7 @@ class C_Order extends CI_Controller
       }
       else {
       	echo '<center><ul class="list-group"><li class="list-group-item">'.'Data Kosong'.'</li></ul></center>';
-      }	
+      }
   }
 
   public function InputBon()
@@ -1511,9 +1549,10 @@ class C_Order extends CI_Controller
 
   public function SubmitInputBon()
   {
-  	// echo "<pre>";
-  	// print_r($_POST);
-  	// exit();
+  	if (empty($_POST)) {
+  		echo "Data Kosong";
+  		exit();
+  	}
 
   	$tgl = date('Y-m-d H:i:s');
   	$tanggal = date('d M Y');
@@ -1554,7 +1593,7 @@ class C_Order extends CI_Controller
 		// $t = date('M', strtotime('-1 month'));
 		// print_r($account);exit();
 
-  	for ($i=0; $i < count($apd); $i++) { 
+  	for ($i=0; $i < count($apd); $i++) {
   		if ($bon[$i] == '0') {
   			// $data = '0';
   		}else{
@@ -1570,6 +1609,11 @@ class C_Order extends CI_Controller
   			'no_bon'	=>	$noBon,
   			);
   		$input = $this->M_dtmasuk->insertBon($data);
+		//insert to sys.t_log_activity
+		$aksi = 'P2K3 V2';
+		$detail = "Submit Order periode= $pr, nomor bon = $noBon ";
+		$this->log_activity->activity_log($aksi, $detail);
+		//
 
   		$idOr = $this->M_dtmasuk->getIdOr();
 
@@ -1595,7 +1639,14 @@ class C_Order extends CI_Controller
   			'EXP'			=>	'N',
   			);
   		$input2 = $this->M_dtmasuk->insertBonIm($data2);
-		// print_r($data2); 
+		if ($input2) {
+			//insert to sys.t_log_activity
+			$aksi = 'P2K3 V2';
+			$detail = "Insert Order ID= $id ";
+			$this->log_activity->activity_log($aksi, $detail);
+			//
+		}
+		// print_r($data2);
   		}
 		// exit();
   	}
@@ -1619,7 +1670,7 @@ class C_Order extends CI_Controller
   	$newSatuan_apd = $satuan_apd;
   	$newBon = $bon;
 
-  	for ($i=0; $i < count($bon); $i++) { 
+  	for ($i=0; $i < count($bon); $i++) {
   		if ($newBon[$i] == 0) {
   			unset($newBon[$i]);
   			unset($newNama_apd[$i]);
@@ -1650,13 +1701,13 @@ class C_Order extends CI_Controller
   					'kode' => '',
   					'nama' => '',
   					'satuan' => '',
-  					'diminta' => '', 
+  					'diminta' => '',
   					'ket' => '',
   					'account' => '',
   					'produk' => '',
   					'exp' =>'',
   					'lokasi_simpanku' => ''
-  					); 					
+  					);
   				}else{
   				$data_array_2[] = array(
   					'kode' => $newApd[$x],
@@ -1883,10 +1934,10 @@ public function MonitoringBon()
 	$data['monitorbon'] = $this->M_dtmasuk->monitorbonOracle($ks, $pr);
 	$count = count($data['monitorbon']);
 	$a = array();
-	for ($i=0; $i < $count; $i++) { 
+	for ($i=0; $i < $count; $i++) {
 		$a[] = array_change_key_case($data['monitorbon'][$i],CASE_LOWER);
 	}
-	$data['monitorbon'] = $a; 
+	$data['monitorbon'] = $a;
 	// print_r($data['monitorbon']);exit();
 
 	$this->load->view('V_Header',$data);

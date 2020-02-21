@@ -256,11 +256,25 @@ class C_monitoringinvoice extends CI_Controller{
 		$this->M_monitoringinvoice->savePoNumber3($add2['invoice'][0]['INVOICE_ID'],$action_date);
 		redirect('AccountPayables/MonitoringInvoice/Invoice/addListInv');
 	}
-	public function deleteInvoice($invoice_id){
-		$data['invoice'] = $this->M_monitoringinvoice->deleteInvoice($invoice_id);
+
+		public function deleteInvoice(){
+		$invoice_id = $this->input->post('invoice_id');
+
+		foreach ($invoice_id as $key => $value) {
+			$this->M_monitoringinvoice->deleteInvoice($value);
+		}
+
+		echo json_encode($invoice_id);
+		}
+
+		public function deleteInvoiceManual($invoice_id){
+
+		$data['invoice'] = $this->M_monitoringinvoice->deleteInvoice2($invoice_id);
 		$returnView = $this->load->view('MonitoringInvoice/V_invoice',$data,TRUE);
 		redirect('AccountPayables/MonitoringInvoice/Invoice');
-	}
+		
+		}
+		
 	public function editListInv($id){
 		$this->checkSession();
 		$user_id = $this->session->userid;

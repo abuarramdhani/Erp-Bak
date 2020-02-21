@@ -191,8 +191,9 @@ function updatePackingQty(event, th) {
         var qty         = Number($('#tblSPB tbody tr[data-row="'+value+'"] input[name="packingqty[]"]').val());
         var maxPack     = Number($('#tblSPB tbody tr[data-row="'+value+'"] input[name="maxPack[]"]').val());
         var maxOnhand   = Number($('#tblSPB tbody tr[data-row="'+value+'"] input[name="maxOnhand[]"]').val());
-        var qtyNow      = qty+1;
+        // var qtyNow      = qty+1;
         var kasih       = Number($('input[name="totalQtyKasih"]').val());
+        // console.log(qty);
 
 
 
@@ -208,6 +209,12 @@ function updatePackingQty(event, th) {
         //     kasih+=1;
         //     $('input[name="totalQtyKasih"]').val(kasih);
         // }
+        if (maxPack > 10) {
+            let foo = prompt('Masukan Quantity');
+            var qtyNow = 1*foo;
+        }else{
+            var qtyNow = qty+1;
+        }
 
         if (qtyNow>maxPack) {
             $.toaster('ERROR', 'JUMLAH ITEM TIDAK BOLEH MELEBIHI PERMINTAAN', 'danger');
@@ -218,7 +225,11 @@ function updatePackingQty(event, th) {
             kasih+=1;
             $('input[name="totalQtyKasih"]').val(kasih);
             if(qtyNow == maxPack){
+                // console.log(qtyNow);
                 $('#tblSPB tbody tr[data-row="'+value+'"]').addClass('bg-success');
+            }else{
+                // console.log(qtyNow, maxPack);
+                $('#tblSPB tbody tr[data-row="'+value+'"]').removeClass('bg-success');
             }
         }
 

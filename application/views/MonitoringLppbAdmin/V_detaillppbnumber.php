@@ -32,7 +32,8 @@
 																<span><label>LPPB Info</label></span>
 															</td>
 															<td>
-																<input type="text" name="" value="<?php echo $lppb[0]['LPPB_INFO']?>" class="form-control" style="width:100%;margin-bottom: 10px" readonly >
+																<!-- <input type="text" name="" value="" class="form-control" style="width:100%;margin-bottom: 10px" readonly > -->
+																<textarea class="form-control" style="width:100%;margin-bottom: 10px" disabled="disabled"><?php echo $lppb[0]['LPPB_INFO']?></textarea>
 															</td>
 														</tr>
 														<tr>
@@ -48,7 +49,7 @@
 																<span><label>IO</label></span>
 															</td>
 														<td style="padding:0 0 5px 0">
-															<select id="inventory" name="inventory" class="form-control select2 " style="width:100%;margin-bottom:10px">
+															<select id="inventory" name="inventory" class="form-control select2 lppb-selection" style="width:100%;margin-bottom:10px">
 																	<!-- ngeluarin data dari option pake foreach -->
 																<option value="" > Inventory Organization </option>
 																	<?php foreach ($inventory as $io) { 
@@ -68,11 +69,15 @@
 															<span><label>Status Detail</label></span>
 														</td>
 													<td style="padding:2px 0 0 0">
-														<select id="status_lppb" name="status_lppb" class="form-control select2 " style="width:100%;margin-bottom:10px">
+														<select id="status_lppb" name="status_lppb" class="form-control select2 lppb-selection" style="width:100%;margin-bottom:10px">
 															<option value="" > Pilih Status </option>
-																<?php foreach ($status as $st) { ?> 
-															<option value="<?php echo $st['STATUS_LPPB'] ?>"><?php echo $st['STATUS_LPPB'] ?></option>
-																<?php } ?>
+															<option value="RETURN TO VENDOR">RETURN TO VENDOR</option>
+															<option value="TRANSFER">TRANSFER</option>
+															<option value="RECEIVE">RECEIVE</option>
+															<option value="RETURN TO RECEIVING">RETURN TO RECEIVING</option>
+															<option value="ACCEPT">ACCEPT</option>
+															<option value="CORRECT">CORRECT</option>
+															<option value="DELIVER">DELIVER</option>
 														</select>
 													</td>
 													</tr>
@@ -224,5 +229,12 @@
 <script type="text/javascript">
 	var id_gd;
 	var batch_number = <?php echo $lppb[0]['BATCH_NUMBER']?>;
+
+	$( document ).ready(function() {
+	$('.lppb-selection').select2({
+		  placeholder: 'Pilih',
+		  allowClear: true,
+		});
+})
 	// var doneLppb = <?php echo $no ?>;
 </script>

@@ -21,7 +21,7 @@
 					<div class="col-lg-12">
 						<div class="box box-primary box-solid">
 							<div class="box-body">
-								<table class="table text-center dtTableMl">
+								<table id="tblLPPBRejectList" class="table table-bordered table-hover text-center">
 									<thead>
 										<tr class="bg-primary">
 											<th width="5%" class="text-center">No</th>
@@ -37,7 +37,7 @@
 									<tr>
 										<td><?php echo $no?></td>
 										<td>
-											<a title="Detail Lppb ..."data-toggle="modal" data-target="mdlRejectAkt" onclick="ModalRejectAkt(<?php echo $lb['BATCH_NUMBER']?>)" class="btn btn-default btn-xs"><i class="fa fa-file-text-o"></i></a>
+											<button class="btn btn-sm btn-default" title="Detail Lppb ..."data-toggle="modal" data-target="mdlRejectAkt" onclick="ModalRejectAkt(<?php echo $lb['BATCH_NUMBER']?>)" class="btn btn-default btn-xs"><i class="fa fa-file-text-o"></i> Detail</button>
 										</td>
 										<td><?php echo $lb['GROUP_BATCH']?></td>
 										<td><?php echo $lb['CREATE_DATE']?></td>
@@ -64,6 +64,15 @@
 </section>
 <script type="text/javascript">
 	var id_gd;
+	$(document).ready(function(){
+	$('#tblLPPBRejectList').DataTable({
+		"paging": true,
+		"info":     true,
+		"language" : {
+			"zeroRecords": " "             
+		}
+	})
+})
 </script>
 
 <div class="modal fade mdlRejectAkt"  id="mdlRejectAkt" tabindex="1" role="dialog" aria-labelledby="judulModal" aria-hidden="true">

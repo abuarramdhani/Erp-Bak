@@ -6,6 +6,7 @@ class C_TransaksiHitungThr extends CI_Controller
     {
         parent::__construct();
         $this->load->library('session');
+        $this->load->library('Log_Activity');
         $this->load->helper('url');
         $this->load->library('csvimport');
         $this->load->model('SystemAdministration/MainMenu/M_user');
@@ -21,13 +22,13 @@ class C_TransaksiHitungThr extends CI_Controller
     {
         $this->checkSession();
         $user_id = $this->session->userid;
-        
+
         $data['Menu'] = 'Komponen Penggajian';
         $data['SubMenuOne'] = 'THR';
         $data['SubMenuTwo'] = '';
-		
+
 		$enc_dt	= $this->input->get('id');
-		
+
         $data['UserMenu'] = $this->M_user->getUserMenu($user_id,$this->session->responsibility_id);
         $data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id);
         $data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id);
@@ -57,7 +58,7 @@ class C_TransaksiHitungThr extends CI_Controller
     {
         $this->checkSession();
         $user_id = $this->session->userid;
-        
+
         $row = $this->M_transaksihitungthr->get_by_id($id);
         if ($row) {
             $data = array(
@@ -67,7 +68,7 @@ class C_TransaksiHitungThr extends CI_Controller
             	'UserMenu' => $this->M_user->getUserMenu($user_id,$this->session->responsibility_id),
             	'UserSubMenuOne' => $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id),
             	'UserSubMenuTwo' => $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id),
-            
+
 				'id_transaksi_thr' => $row->id_transaksi_thr,
 				'tanggal' => $row->tanggal,
 				'periode' => $row->periode,
@@ -114,7 +115,7 @@ class C_TransaksiHitungThr extends CI_Controller
             'UserSubMenuTwo' => $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id),
 			'pr_master_status_kerja_data' => $this->M_transaksihitungthr->get_pr_master_status_kerja_data(),
             'action' => site_url('PayrollManagement/TransaksiHitungThr/save'),
-			
+
 			'id_transaksi_thr' 	=> set_value(''),
 			'tanggal' 			=> set_value('tanggal'),
 			'periode' 			=> set_value('periode'),
@@ -156,7 +157,11 @@ class C_TransaksiHitungThr extends CI_Controller
 			'kode_petugas' => $this->input->post('txtKodePetugas',TRUE),
 			'tgl_jam_record' => date('Y-m-d H:i:s'),
 		);
-
+        //insert to sys.log_activity
+        $aksi = 'Payroll Management';
+        $detail = "Create Komponen Transaksi THR noind=".$this->input->post('txtNoind');
+        $this->log_activity->activity_log($aksi, $detail);
+        //
             $this->M_transaksihitungthr->insert($data);
             $this->session->set_flashdata('message', 'Create Record Success');
 			$ses=array(
@@ -232,7 +237,11 @@ class C_TransaksiHitungThr extends CI_Controller
 			'kode_petugas' => $this->input->post('txtKodePetugas',TRUE),
 			'tgl_jam_record' => date('Y-m-d H:i:s'),
 		);
-
+        //insert to sys.log_activity
+        $aksi = 'Payroll Management';
+        $detail = "Update Komponen Transaksi THR ID=".$this->input->post('txtIdTransaksiThr');
+        $this->log_activity->activity_log($aksi, $detail);
+        //
         $this->M_transaksihitungthr->update($this->input->post('txtIdTransaksiThr', TRUE), $data);
         $this->session->set_flashdata('message', 'Update Record Success');
 			$ses=array(
@@ -248,6 +257,11 @@ class C_TransaksiHitungThr extends CI_Controller
 
         if ($row) {
             $this->M_transaksihitungthr->delete($id);
+            //insert to sys.log_activity
+            $aksi = 'Payroll Management';
+            $detail = "Delete Komponen Transaksi THR ID=$id";
+            $this->log_activity->activity_log($aksi, $detail);
+            //
             $this->session->set_flashdata('message', 'Delete Record Success');
 			$ses=array(
 					 "success_delete" => 1
@@ -269,14 +283,14 @@ class C_TransaksiHitungThr extends CI_Controller
         $config['allowed_types'] = 'csv';
         $config['max_size'] = '6000';
         $this->load->library('upload', $config);
- 
+
         if (!$this->upload->do_upload('importfile')) { echo $this->upload->display_errors();}
         else {  $file_data  = $this->upload->data();
                 $filename   = $file_data['file_name'];
                 $file_path  = 'assets/upload/importPR/transaksithr/'.$file_data['file_name'];
-                
+
             if ($this->csvimport->get_array($file_path)) {
-                
+
                 $csv_array  = $this->csvimport->get_array($file_path);
                 $data_exist = array();
                 $i = 0;
@@ -294,7 +308,7 @@ class C_TransaksiHitungThr extends CI_Controller
 							'kode_petugas' => $this->session->userdata('userid'),
 							'tgl_jam_record' => date('Y-m-d H:i:s'),
 	                    );
-						
+
 						$data_transaksi = array(
 	                    	'id_transaksi_thr' => $row['ID_THR'],
 							'periode' => $periode,
@@ -325,7 +339,7 @@ class C_TransaksiHitungThr extends CI_Controller
 	                    }else{
 	                    	$this->M_transaksihitungthr->insert_data($data);
 	                    }
-						
+
 						$check = $this->M_transaksihitungthr->check_transaksi($row['ID_THR']);
 						 if($check){
 	                    	$data_exist[$i] = $data;
@@ -349,7 +363,7 @@ class C_TransaksiHitungThr extends CI_Controller
                 //LOAD EXIST DATA VERIFICATION PAGE
                 $this->checkSession();
         		$user_id = $this->session->userid;
-        
+
         		$data['Menu'] = 'Komponen Penggajian';
         		$data['SubMenuOne'] = '';
         		$data['SubMenuTwo'] = '';
@@ -378,13 +392,13 @@ class C_TransaksiHitungThr extends CI_Controller
     }
 
     public function upload() {
-       
+
         $config['upload_path'] = 'assets/upload/importPR/transaksithr';
         $config['file_name'] = 'TransaksiTHR-'.time();
         $config['allowed_types'] = 'csv';
         $config['max_size'] = '2000';
         $this->load->library('upload', $config);
- 
+
         if (!$this->upload->do_upload('importfile')) {
             echo $this->upload->display_errors();
         }
@@ -392,7 +406,7 @@ class C_TransaksiHitungThr extends CI_Controller
             $file_data  = $this->upload->data();
             $filename   = $file_data['file_name'];
             $file_path  = 'assets/upload/importPR/transaksithr/'.$file_data['file_name'];
-            
+
             if ($this->csvimport->get_array($file_path)){
                 $data = $this->csvimport->get_array($file_path);
                 $this->import($data, $filename);
@@ -436,11 +450,11 @@ class C_TransaksiHitungThr extends CI_Controller
 		$dt = explode("/",$this->input->post('txtPeriodeHitung',TRUE));
 		$periode = $dt[1]."-".$dt[0];
         $hitung_data = $this->M_transaksihitungthr->get_hitung_data($periode);
-		
+
 		if(!empty($hitung_data)){
 			foreach ($hitung_data as $row) {
 				$ht_where = array(
-					'id_transaksi_thr' => $row['id_transaksi_thr'], 
+					'id_transaksi_thr' => $row['id_transaksi_thr'],
 				);
 
 				$lama_thn = $row['lama_thn'];
@@ -471,6 +485,11 @@ class C_TransaksiHitungThr extends CI_Controller
 				);
 
 				$this->M_transaksihitungthr->update_hitung($ht_where, $ht_data);
+                //insert to sys.log_activity
+                $aksi = 'Payroll Management';
+                $detail = "Update Data thr ID=".$row['id_transaksi_thr'];
+                $this->log_activity->activity_log($aksi, $detail);
+                //
 			}
 
 			$enc_str = $this->encrypt->encode($periode);
@@ -485,13 +504,13 @@ class C_TransaksiHitungThr extends CI_Controller
 			redirect(site_url('PayrollManagement/TransaksiHitungThr'));
 		}
 	}
-	
+
 	public function CetakStruk($id){
         $plaintext_string=str_replace(array('-', '_', '~'), array('+', '/', '='), $id);
 		$periode = $this->encrypt->decode($plaintext_string);
 		$this->checkSession();
 		if ($periode != '') {
-			
+
 			$data['strukData'] = $this->M_transaksihitungthr->getTransaksiTHR($periode);
 		}
 		else{
@@ -517,22 +536,22 @@ class C_TransaksiHitungThr extends CI_Controller
 
     public function checkSession(){
         if($this->session->is_logged){
-            
+
         }else{
             redirect(site_url());
         }
     }
-	
+
 	public function search(){
 		$this->checkSession();
         $user_id = $this->session->userid;
-        
+
         $data['Menu'] = 'Komponen Penggajian';
         $data['SubMenuOne'] = 'THR';
         $data['SubMenuTwo'] = '';
 		$dt = explode("/",$this->input->post('txtPeriodeHitung',TRUE));
 		$enc_dt = $dt[1]."-".$dt[0];
-		
+
         $data['UserMenu'] = $this->M_user->getUserMenu($user_id,$this->session->responsibility_id);
         $data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id);
         $data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id);

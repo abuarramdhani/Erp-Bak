@@ -2,6 +2,11 @@
   .hover:hover {
     color: red;
   }
+
+  html {
+      scroll-behavior: smooth;
+      overflow-y: scroll;
+  }
 </style>
 <section class="content <?=$hidden ?>" id="page">
     <div class="inner" >
@@ -111,30 +116,22 @@
                                <div class="col-lg-12 box">
                                   <center>
                                     <div class="form-group">
-                                      <label align="right" class="col-lg-4">Masukkan Tanggal Rekap Dinas: </label>
+                                      <label align="right" class="col-lg-3">Masukkan Tanggal Rekap Dinas: </label>
                                       <div class="col-lg-5">
                                         <input type="text" name="tanggalrekap" autocomplete="off" id="tanggalRekapDinas" class="tanggalRekapDinas form-control">
                                         <p align="left" style="color: red">*kosongkan kolom periode , untuk menampilkan semua data</p>
                                       </div>
-                                      <div class="col-lg-2">
-                                        <button type="button" name="button-cari" class="btn btn-primary from-control" id="cariRekapDinas">Cari</button>
+                                      <div class="col-lg-4 text-left">
+                                        <button class="btn fa fa-search btn-primary from-control btn-flat" name="button-cari" id="cariRekapDinas">Cari</button>&nbsp;
+                                        <button class="btn fa fa-file-excel-o btn-success from-control btn-flat" id="Rekap_Dinas1">Excel</i></button>&nbsp;
+                                        <button class="btn fa fa-file-pdf-o btn-danger from-control btn-flat" id="Rekap_Dinas2">PDF</i></button>&nbsp;
+                                        <button class="btn fa fa-2x fa-refresh from-control btn-flat" onclick="window.location.reload()"></i></button>
                                       </div>
                                     </div>
                                     <hr>
                                   </center>
                                 </div>
                                 <div class="form-group" id="gantiHariRekap">
-                                  <table class="datatable approveCatering table table-striped table-bordered table-hover text-left" style="font-size:12px; width: 100%">
-                                    <thead class="bg-primary">
-                                      <tr>
-                                        <th style="width: 30px;">No</th>
-                                        <th>Tempat Makan</th>
-                                        <th>Tambahan</th>
-                                      </tr>
-                                    </thead>
-                                    <tbody>
-                                    </tbody>
-                                  </table>
                                 </div>
                               </div>
                             </div>
@@ -233,7 +230,20 @@
       </div>
     </div>
   </div>
+</div>
+<div class="modal fade" id="detailPekerjaDinas" tabindex="-1" role="dialog" aria-labelledby="basicModal" aria-hidden="true" style="margin-top: -20px;">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div id="Dinas_result"></div>
+            <div class='modal-footer'>
+                <button type='button' class='btn btn-default' data-dismiss='modal'>Close</button>
+            </div>
+        </div>
+    </div>
+</div>
 
+<a href="#" id="buttonGoTop" class="fa fa-arrow-up" style="display: none;  position: fixed;  bottom: 48px;  right: 26px;  z-index: 99;  font-size: 18px;  border: none; outline: none; background-color: red;  color: white; cursor: pointer; padding: 15px; border-radius: 4px;" title="Go to top"></a>
+<script src="<?php echo base_url('assets/plugins/ckeditor/ckeditor.js');?>"></script>
 <script type="text/javascript">
 $(document).ready(function(){
   var noind = '<?=$user?>';
@@ -247,9 +257,17 @@ $(document).ready(function(){
       text: "Anda Tidak Berhak Mengakses Halaman Ini",
       type: 'warning',
       showCancelButton: false,
-      showConfirmButton: false
-    })
-    window.location.href= baseurl+"CateringManagement";
+      allowOutsideClick: false
+  }).then(window.location.href= baseurl+"CateringManagement")
+  }
+
+  CKEDITOR.disableAutoInline = true
+  window.onscroll = _ => {
+      if (document.body.scrollTop > 200 || document.documentElement.scrollTop > 200) {
+          document.getElementById("buttonGoTop").style.display = "block";
+      } else {
+          document.getElementById("buttonGoTop").style.display = "none";
+      }
   }
 })
 </script>

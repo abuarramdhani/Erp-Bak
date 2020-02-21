@@ -10,6 +10,7 @@ class C_WorkInstruction extends CI_Controller
 		$this->load->helper('html');
 
 		$this->load->library('form_validation');
+		$this->load->library('Log_Activity');
 		$this->load->library('session');
 		$this->load->library('encrypt');
 		$this->load->library('General');
@@ -92,10 +93,10 @@ class C_WorkInstruction extends CI_Controller
 			$this->load->view('V_Header',$data);
 			$this->load->view('V_Sidemenu',$data);
 			$this->load->view('DocumentStandarization/WorkInstruction/V_create', $data);
-			$this->load->view('V_Footer',$data);	
+			$this->load->view('V_Footer',$data);
 		} else {
 			$namaWI 				= 	strtoupper($this->input->post('txtWiNameHeader'));
-			$SOP 					= 	$this->input->post('cmbSOP');			
+			$SOP 					= 	$this->input->post('cmbSOP');
 			$nomorKontrol 			= 	strtoupper($this->input->post('txtNoDocHeader'));
 			$nomorRevisi	  		= 	$this->input->post('txtNoRevisiHeader');
 			$tanggalRevisi 			= 	$this->general->konversiTanggalkeDatabase(($this->input->post('txtTanggalHeader')),'tanggal');
@@ -143,7 +144,7 @@ class C_WorkInstruction extends CI_Controller
 			else
 			{
 				$ContextDiagram 	= 	$this->general->cekContextDiagram($SOP);
-				$BusinessProcess 	= 	$this->general->cekBusinessProcess($ContextDiagram);				
+				$BusinessProcess 	= 	$this->general->cekBusinessProcess($ContextDiagram);
 			}
 
 			if($revisiBaru==0)
@@ -170,12 +171,13 @@ class C_WorkInstruction extends CI_Controller
 					'sop_id' 		=> $SOP,
 	    		);
 
-    		// echo '<pre>';
-    		// print_r($data);
-    		// echo '</pre>';
-    		// exit();
 			$this->M_workinstruction->setWorkInstruction($data);
 			$header_id = $this->db->insert_id();
+			//insert to sys.log_activity
+			$aksi = 'DOC STANDARIZATION';
+			$detail = "Set WI id=$header_id";
+			$this->log_activity->activity_log($aksi, $detail);
+			//
 
 			redirect(site_url('DocumentStandarization/WI'));
 		}
@@ -225,10 +227,10 @@ class C_WorkInstruction extends CI_Controller
 			$this->load->view('V_Header',$data);
 			$this->load->view('V_Sidemenu',$data);
 			$this->load->view('DocumentStandarization/WorkInstruction/V_update', $data);
-			$this->load->view('V_Footer',$data);	
+			$this->load->view('V_Footer',$data);
 		} else {
 			$namaWI 				= 	strtoupper($this->input->post('txtWiNameHeader', TRUE));
-			$SOP 					= 	$this->input->post('cmbSOP', TRUE);			
+			$SOP 					= 	$this->input->post('cmbSOP', TRUE);
 			$nomorKontrol 			= 	strtoupper($this->input->post('txtNoDocHeader', TRUE));
 			$nomorRevisi	  		= 	$this->input->post('txtNoRevisiHeader', TRUE);
 			$tanggalRevisi 			= 	$this->general->konversiTanggalkeDatabase(($this->input->post('txtTanggalHeader', TRUE)),'tanggal');
@@ -340,7 +342,7 @@ class C_WorkInstruction extends CI_Controller
 				if(($revisiBaru==0 || $fileDokumen!=NULL) && $inputfile==NULL)
 				{
 					$fileDokumen = $this->general->cekFile($namaBusinessProcess, $nomorRevisi, $nomorKontrol, $fileDokumen, direktoriUpload);
-				}					
+				}
 			}
 			else
 			{
@@ -357,7 +359,7 @@ class C_WorkInstruction extends CI_Controller
 			else
 			{
 				$ContextDiagram 	= 	$this->general->cekContextDiagram($SOP);
-				$BusinessProcess 	= 	$this->general->cekBusinessProcess($ContextDiagram);				
+				$BusinessProcess 	= 	$this->general->cekBusinessProcess($ContextDiagram);
 			}
 
 			if($revisiBaru==0)
@@ -401,9 +403,14 @@ class C_WorkInstruction extends CI_Controller
 					'cd_id' 		=> $ContextDiagram,
 					'sop_id' 		=> $SOP,
 					'update_revisi'	=> $this->general->ambilWaktuEksekusi(),
-	    		);	    		
+	    		);
 	    	}
 			$this->M_workinstruction->updateWorkInstruction($data, $plaintext_string);
+			//insert to sys.log_activity
+			$aksi = 'DOC STANDARIZATION';
+			$detail = "Update WI id=$plaintext_string";
+			$this->log_activity->activity_log($aksi, $detail);
+			//
 
 			redirect(site_url('DocumentStandarization/WI'));
 		}
@@ -446,6 +453,11 @@ class C_WorkInstruction extends CI_Controller
 		$plaintext_string = $this->encrypt->decode($plaintext_string);
 
 		$this->M_workinstruction->deleteWorkInstruction($plaintext_string);
+		//insert to sys.log_activity
+		$aksi = 'DOC STANDARIZATION';
+		$detail = "Delete WI id=$plaintext_string";
+		$this->log_activity->activity_log($aksi, $detail);
+		//
 
 		redirect(site_url('DocumentStandarization/WI'));
     }

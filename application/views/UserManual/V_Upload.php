@@ -31,8 +31,8 @@
 												<label for="erp-um" style="margin-top: 5px" class="col-md-2 col-form-label">
 													Pilih Responsiboility
 												</label>
-												<div class="col-md-3">
-													<select required class="form-control erp-um" name="um-select" id="erp-um">
+												<div class="col-md-5">
+													<select style="width: 100%" required class="form-control erp-um" name="um-select" id="erp-um">
 														<option value=""></option>
 													</select>
 												</div>
@@ -41,7 +41,7 @@
 												<label class="col-md-2 col-control-label" style="margin-top: 5px">
 													Nama File User Manual
 												</label>
-												<div class="col-md-3">
+												<div class="col-md-5">
 													<input class="form-control" required type="text" name="um-input" id="erp-um-input">
 												</div>
 												<div class="col-md-4">
@@ -49,7 +49,7 @@
 													<p style="font-size: 12px">*File : PDF *Max Size 20MB</p>
 												</div>
 											</div>
-											<div class="col-md-5">
+											<div class="col-md-7">
 												<button style="float: right" type="submit" class="btn btn-primary">
 													Upload
 												</button>
@@ -61,7 +61,7 @@
 									<table class="table table-striped table-bordered text-center" style="width: 100%" id="um-table">
 										<thead style="background-color: #337ab7">
 											<tr style="color: white">
-												<th>No</th>
+												<th width="5%">No</th>
 												<th>Responsibility</th>
 												<th>File</th>
 												<th>Action</th>
@@ -83,12 +83,13 @@
 														</a>
 													</td>
 													<td>
-														<button class="btn btn-primary glyphicon glyphicon-edit btn-xs" style="color: white" data-toggle="modal" data-target="#umModal">
+														<button title="copy link" class="btn btn-default um_copyclip" value="<?= site_url('assets/upload/um/'.$link.'.pdf'); ?>"><i class="fa fa-clipboard "></i></button>
+														<button class="btn btn-primary glyphicon glyphicon-edit" style="color: white" data-toggle="modal" data-target="#umModal<?= $no ?>" title="edit">
 														</button>
-														<a href="<?php echo site_url('usermanual/upload/delete/'.$encripty); ?>"  onclick="return confirm('Hapus file <?php echo $row['path_file']; ?>');" class="btn btn-danger btn-xs glyphicon glyphicon-trash" style="color: white">
+														<a href="<?php echo site_url('usermanual/upload/delete/'.$encripty); ?>"  onclick="return confirm('Hapus file <?php echo $row['path_file']; ?>');" class="btn btn-danger glyphicon glyphicon-trash" style="color: white" title="delete">
 														</a>
-														<div class="modal fade bd-example-modal-sm" id="umModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-															<div class="modal-dialog modal-sm" role="document">
+														<div class="modal fade" id="umModal<?= $no ?>" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+															<div class="modal-dialog modal-md" role="document">
 																<div class="modal-content">
 																	<div class="modal-header">
 																		<h5 class="modal-title" id="exampleModalLabel">Update File</h5>
@@ -105,18 +106,18 @@
 																							Pilih Responsiboility
 																						</label>
 																						<div class="col-md-12">
-																							<select style="width: 200px;" required class="form-control erp-um" name="um-select-modal" id="erp-um-modal">
-																								<option selected value="<?php echo $row['user_group_menu_id'].' - '.$row['user_group_menu_name']; ?>"><?php echo $row['user_group_menu_id'].' - '.$row['user_group_menu_name']; ?></option>
+																							<select style="width: 100%;" required class="form-control erp-um" name="um-select-modal" id="erp-um-modal">
+																								<option selected value="<?php echo $row['module_id'].' - '.$row['user_group_menu_name']; ?>"><?php echo $row['module_id'].' - '.$row['user_group_menu_name']; ?></option>
 																								<input name="umRes" hidden value="<?php echo $row['path_file']; ?>">
 																							</select>
 																						</div>
 																					</div>
 																					<div class="row">
-																						<label class="col-md-12 col-control-label" style="margin-top: 5px">
+																						<label class="col-md-12 col-control-label" style="margin-top: 15px">
 																							Nama File User Manual
 																						</label>
 																						<div class="col-md-12">
-																							<input style="width: 200px;" class="form-control" required type="text" name="um-input-modal" id="erp-um-input-modal" value="<?php echo $row['path_file']; ?>">
+																							<input style="width: 100%;" class="form-control" required type="text" name="um-input-modal" id="erp-um-input-modal" value="<?php echo $row['path_file']; ?>">
 																							<input hidden name="um-id-modal" value="<?php echo $encripty; ?>">
 																						</div>
 																					</div>

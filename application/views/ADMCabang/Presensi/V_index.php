@@ -43,7 +43,7 @@
 											<div class="form-group">
 												<label class="control-label col-lg-4">Periode</label>
 												<div class="col-lg-4">
-													<input type="text" class="date form-control" name="txtPeriodePresensiHarian" id="txtPeriodePresensiHarian" required>
+													<input type="text" class="date form-control" name="txtPeriodePresensiHarian" id="txtPeriodePresensiHarian" autocomplete="off" required>
 												</div>
 											</div>
 											<div class="form-group">

@@ -6,6 +6,7 @@ class C_MasterParameterTarifPph extends CI_Controller
     {
         parent::__construct();
         $this->load->library('session');
+        $this->load->library('Log_Activity');
         $this->load->helper('url');
         $this->load->model('SystemAdministration/MainMenu/M_user');
         $this->load->model('PayrollManagement/SetTarifPPH/M_masterparametertarifpph');
@@ -20,7 +21,7 @@ class C_MasterParameterTarifPph extends CI_Controller
     {
         $this->checkSession();
         $user_id = $this->session->userid;
-        
+
         $data['Menu'] = 'Set Parameter';
         $data['SubMenuOne'] = 'Set Tarif PPH';
         $data['SubMenuTwo'] = '';
@@ -41,7 +42,7 @@ class C_MasterParameterTarifPph extends CI_Controller
     {
         $this->checkSession();
         $user_id = $this->session->userid;
-        
+
         $row = $this->M_masterparametertarifpph->get_by_id($id);
         if ($row) {
             $data = array(
@@ -51,7 +52,7 @@ class C_MasterParameterTarifPph extends CI_Controller
             	'UserMenu' => $this->M_user->getUserMenu($user_id,$this->session->responsibility_id),
             	'UserSubMenuOne' => $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id),
             	'UserSubMenuTwo' => $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id),
-            
+
 				'kd_pph' => $row->kd_pph,
 				'batas_bawah' => $row->batas_bawah,
 				'batas_atas' => $row->batas_atas,
@@ -98,12 +99,12 @@ class C_MasterParameterTarifPph extends CI_Controller
     public function save()
     {
         $this->formValidation();
-        
+
 		//MASTER DELETE CURRENT
 		$md_where = array(
 			'kd_pph' => $this->input->post('txtKdPphNew',TRUE),
 		);
-		
+
 		//MASTER INSERT NEW
 		$data = array(
 			'kd_pph' => $this->input->post('txtKdPphNew',TRUE),
@@ -111,7 +112,7 @@ class C_MasterParameterTarifPph extends CI_Controller
 			'batas_atas' => str_replace(',','',$this->input->post('txtBatasAtas',TRUE)),
 			'persen' => $this->input->post('txtPersen',TRUE),
 		);
-		
+
 		//RIWAYAT CHANGE CURRENT
 		$ru_where = array(
 			'kd_pph' => $this->input->post('txtKdPphNew',TRUE),
@@ -120,7 +121,7 @@ class C_MasterParameterTarifPph extends CI_Controller
 		$ru_data = array(
 			'tgl_tberlaku' 	=> date('Y-m-d'),
 		);
-		
+
 		//RIWAYAT INSERT NEW
 		$ri_data = array(
 			'tgl_berlaku' 		=> date('Y-m-d'),
@@ -132,12 +133,16 @@ class C_MasterParameterTarifPph extends CI_Controller
 			'kode_petugas' 		=> $this->session->userdata('userid'),
 			'tgl_jam_record' 	=> date('Y-m-d H:i:s'),
 		);
-		
+        //insert to sys.log_activity
+        $aksi = 'Payroll Management';
+        $detail = "Add set Tarif PPH kd_pph=".$this->input->post('txtKdPph');
+        $this->log_activity->activity_log($aksi, $detail);
+        //
 		$this->M_masterparametertarifpph->master_delete($md_where);
 		$this->M_masterparametertarifpph->insert($data);
 		$this->M_masterparametertarifpph->riwayat_update($ru_where,$ru_data);
 		$this->M_masterparametertarifpph->riwayat_insert($ri_data);
-		
+
         $this->session->set_flashdata('message', 'Create Record Success');
         redirect(site_url('PayrollManagement/MasterParameterTarifPph'));
     }
@@ -184,7 +189,7 @@ class C_MasterParameterTarifPph extends CI_Controller
 			'batas_atas' => str_replace(',','',$this->input->post('txtBatasAtas',TRUE)),
 			'persen' => $this->input->post('txtPersen',TRUE),
 		);
-		
+
 		$data_riwayat = array(
 			'batas_bawah' => str_replace(',','',$this->input->post('txtBatasBawah',TRUE)),
 			'batas_atas' => str_replace(',','',$this->input->post('txtBatasAtas',TRUE)),
@@ -193,7 +198,11 @@ class C_MasterParameterTarifPph extends CI_Controller
 			'kode_petugas' 		=> $this->session->userdata('userid'),
 			'tgl_jam_record' 	=> date('Y-m-d H:i:s'),
 		);
-
+        //insert to sys.log_activity
+        $aksi = 'Payroll Management';
+        $detail = "Update set Tarif PPH kd_pph=".$this->input->post('txtKdPph')." menjadi ".$this->input->post('txtKdPphNew');
+        $this->log_activity->activity_log($aksi, $detail);
+        //
         $this->M_masterparametertarifpph->update($this->input->post('txtKdPph', TRUE), $data);
         $this->M_masterparametertarifpph->update_riwayat($this->input->post('txtKdPphNew', TRUE), $data_riwayat);
         $this->session->set_flashdata('message', 'Update Record Success');
@@ -206,6 +215,11 @@ class C_MasterParameterTarifPph extends CI_Controller
 
         if ($row) {
             $this->M_masterparametertarifpph->delete($id);
+            //insert to sys.log_activity
+            $aksi = 'Payroll Management';
+            $detail = "Delete set Tarif PPH ID=".$id;
+            $this->log_activity->activity_log($aksi, $detail);
+            //
             $this->session->set_flashdata('message', 'Delete Record Success');
             redirect(site_url('PayrollManagement/MasterParameterTarifPph'));
         } else {
@@ -216,7 +230,7 @@ class C_MasterParameterTarifPph extends CI_Controller
 
     public function checkSession(){
         if($this->session->is_logged){
-            
+
         }else{
             redirect(site_url());
         }

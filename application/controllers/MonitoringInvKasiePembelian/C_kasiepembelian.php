@@ -73,6 +73,110 @@ class C_kasiepembelian extends CI_Controller{
 		$this->load->view('V_Footer',$data);
 	}
 
+	public function submitKeBuyer()
+	{
+		$invoice_id = $this->input->post('invoice_id');
+		$buyer = $this->input->post('no_induk_buyer');
+		$note = $this->input->post('note');
+
+		$submitKeBuyer = $this->M_kasiepembelian->ForwardToBuyer($invoice_id,$buyer,$note);
+		// $isiNote = $this->M_kasiepembelian->isiNote($invoice_id,$note);
+	}
+
+	public function ambilAlert()
+	{
+		$getStatusSatu = $this->M_kasiepembelian->getStatusSatu();
+		$status = $getStatusSatu[0]['SATU'];
+
+		echo json_encode($status);
+	}
+
+	public function ambilAlert2()
+	{
+		$user = $this->session->user;
+		$getStatusSatu = $this->M_kasiepembelian->getStatusBuyer($user);
+		$status = $getStatusSatu[0]['SATU'];
+
+		echo json_encode($status);
+	}
+
+	public function InputFeedback()
+	{
+		$invoice_id = $this->input->post('invoice_id');
+		$ambil_data_feedback = $this->M_kasiepembelian->getFeedback($invoice_id);
+
+		$data['feedback'] = $ambil_data_feedback;
+		$data['invoice'] = $invoice_id;
+
+		$this->load->view('MonitoringInvKasiePembelian/V_feedback', $data);
+	}
+
+	public function InputFeedbackBuyer()
+	{
+		$invoice_id = $this->input->post('invoice_id');
+		$ambil_data_feedback = $this->M_kasiepembelian->getFeedbackBuyer($invoice_id);
+
+		$data['feedback'] = $ambil_data_feedback;
+		$data['invoice'] = $invoice_id;
+
+		$this->load->view('MonitoringInvKasiePembelian/V_feedbackBuyer', $data);
+	}
+
+	public function getDataDokumen()
+	{
+		$invoice_id = $this->input->post('invoice_id');
+		$getAllBerkas = $this->M_kasiepembelian->getDokumenBermasalah($invoice_id);
+		$feedback = $this->M_kasiepembelian->getFeedback($invoice_id);
+
+		$data['berkas'] = $getAllBerkas;
+		$data['invoice'] = $invoice_id;
+		$data['feedback'] = $feedback;
+
+		// echo "<pre>";print_r($data['feedback']);exit();
+
+		$this->load->view('MonitoringInvKasiePembelian/V_TabelConfirmation', $data);
+	}
+
+	public function getDataReKonfirmasi()
+	{
+		$invoice_id = $this->input->post('invoice_id');
+		$getAllBerkas = $this->M_kasiepembelian->getDokumenRekonfirmasi($invoice_id);
+
+		$data['berkas'] = $getAllBerkas;
+		$data['invoice'] = $invoice_id;
+
+		$this->load->view('MonitoringInvKasiePembelian/V_TabelReConfirmation', $data);
+	}
+
+	public function KonfirmasiBuyer()
+	{
+		$invoice_id = $this->input->post('invoice_id');
+		$getAllBerkas = $this->M_kasiepembelian->getDokumenBermasalah($invoice_id);
+		// $feedback = $this->M_kasiepembelian->getFeedback($invoice_id);
+
+		$data['berkas'] = $getAllBerkas;
+		$data['invoice'] = $invoice_id;
+		// $data['feedback'] = $feedback;
+
+		$this->load->view('MonitoringInvKasiePembelian/V_TabelConfirmationBuyer', $data);
+	}
+
+	public function getDataBuyer()
+	{
+		$invoice_id = $this->input->post('invoice_id');
+		$getDataBuyer = $this->M_kasiepembelian->getBuyer();
+		$data_purchasing = $this->M_kasiepembelian->getStatusPurc($invoice_id);
+		$cariPo = $this->M_kasiepembelian->getPoandBuyer($invoice_id);
+		$po_number = $cariPo[0]['PO_NUMBER'];
+		$cariBuyer = $this->M_kasiepembelian->cariBuyerDefault($po_number);
+
+		$data['buyer'] = $getDataBuyer;
+		$data['param'] = $data_purchasing;
+		$data['default'] = $cariBuyer;
+
+		$this->load->view('MonitoringInvKasiePembelian/V_buyer', $data);
+	}
+
 	public function FinishInvBermasalah()
 	{
 		
@@ -93,10 +197,6 @@ class C_kasiepembelian extends CI_Controller{
 		foreach ($finish as $inv => $value) {
 
 			$invoice_id = $finish[$inv]['INVOICE_ID'];
-			// $string_id = $inv['PO_DETAIL'];
-			// echo "<pre>";
-			// print_r($unprocess);
-			// print_r($invoice_id);
 			
 			$po_amount = 0;
 			$unit = $this->M_kasiepembelian->poAmount($invoice_id);
@@ -110,8 +210,7 @@ class C_kasiepembelian extends CI_Controller{
 			$finish[$no]['PO_AMOUNT'] = $po_amount;
 
 			$po_numberr = $this->M_kasiepembelian->po_numberr($invoice_id);
-			// echo"<pre>";
-			// print_r($po_numberr);
+			
 			$finish[$inv]['PO_NUMBER'] = '';
 			$finish[$inv]['PPN'] = '';
 			foreach ($po_numberr as $key => $value) {
@@ -119,34 +218,67 @@ class C_kasiepembelian extends CI_Controller{
 				$finish[$inv]['PPN'] .= $value['PPN'].'<br>';
 			}
 
-			// if ($string_id) {
-			// 	$explodeId = explode('<br>', $string_id);
-			// 	if (!$explodeId) {
-			// 		$explodeId = $string_id;
-			// 	}
-
-			// 	// foreach ($explodeId as $exp => $value) {
-			// 	// 	$cekPPN = $this->M_monitoringakuntansi->checkPPN($value);
-			// 	// 	foreach ($cekPPN as $key => $value2) {
-			// 	// 		foreach ($value2 as $va2 => $value3) {
-			// 	// 			$ppn = $value3;
-			// 	// 		}
-			// 	// 	}
-			// 	// }
-			// }
-			
 			$no++;
 		}
 		$data['finish'] =$finish;
-
-		// echo"<pre>";print_r($data['finish']);exit();
-		// $data['ppn'] = $ppn;
 
 		$this->load->view('V_Header',$data);
 		$this->load->view('V_Sidemenu',$data);
 		$this->load->view('MonitoringInvKasiePembelian/V_finishInvBermasalah',$data);
 		$this->load->view('V_Footer',$data);
 	
+	}
+
+	public function InvBermasalahBuyerSistem()
+	{
+		$this->checkSession();
+		$user_id = $this->session->userid;
+		
+		$data['Menu'] = 'Dashboard';
+		$data['SubMenuOne'] = '';
+		
+		$data['UserMenu'] = $this->M_user->getUserMenu($user_id,$this->session->responsibility_id);
+		$data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id);
+		$data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id);
+
+		$user = $this->session->user;
+		$bermasalah = $this->M_kasiepembelian->listInvBermasalahBuyerSistem();
+		$listBuyer = $this->M_kasiepembelian->getBuyer();
+		
+		$no = 0;
+		foreach ($bermasalah as $inv => $value) {
+
+			$invoice_id = $bermasalah[$inv]['INVOICE_ID'];
+			
+			$po_amount = 0;
+			$unit = $this->M_kasiepembelian->poAmount($invoice_id);
+
+			foreach ($unit as $price) {
+				$total = $price['UNIT_PRICE'] * $price['QTY_INVOICE'];
+				$po_amount = $po_amount + $total;
+				
+			} 
+
+			$bermasalah[$no]['PO_AMOUNT'] = $po_amount;
+
+			$po_numberr = $this->M_kasiepembelian->po_numberr($invoice_id);
+			
+			$bermasalah[$inv]['PO_NUMBER'] = '';
+			$bermasalah[$inv]['PPN'] = '';
+			foreach ($po_numberr as $key => $value) {
+				$bermasalah[$inv]['PO_NUMBER'] .= $value['PO_NUMBER'].'<br>';
+				$bermasalah[$inv]['PPN'] .= $value['PPN'].'<br>';
+			}
+
+			$no++;
+		}
+		$data['bermasalah'] =$bermasalah;
+		$data['buyer'] = $listBuyer;
+
+		$this->load->view('V_Header',$data);
+		$this->load->view('V_Sidemenu',$data);
+		$this->load->view('MonitoringInvKasiePembelian/V_listInvBermasalahBuyerSistem',$data);
+		$this->load->view('V_Footer',$data);
 	}
 
 		public function DetailInvKasie($invoice_id)
@@ -176,26 +308,129 @@ class C_kasiepembelian extends CI_Controller{
 
 			$no++;
 		}
+		$berkas = $unprocess2[0]['KELENGKAPAN_DOC_INV_BERMASALAH'];
+		$exp_berkas = explode(',', $berkas);
+
+		$data['berkas'] = $exp_berkas;
 		$data['detail'] =$unprocess2;
-
-		// echo"<pre>";print_r($_POST);
-
+		
 		$this->load->view('V_Header',$data);
 		$this->load->view('V_Sidemenu',$data);
 		$this->load->view('MonitoringInvKasiePembelian/V_detailInvBermasalah', $data);
 		$this->load->view('V_Footer',$data);
 	}
 
-		public function saveInvBermasalah($invoice_id)
+	public function DetailInvBuyer($invoice_id)
 	{
+		$this->checkSession();
+		$user_id = $this->session->userid;
+		
+		$data['Menu'] = 'Dashboard';
+		$data['SubMenuOne'] = '';
+		
+		$data['UserMenu'] = $this->M_user->getUserMenu($user_id,$this->session->responsibility_id);
+		$data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id);
+		$data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id);
+
+		$unprocess2 = $this->M_kasiepembelian->invBermasalahBuyer($invoice_id);
+		$no = 0;
+		foreach ($unprocess2 as $key ) {
+			$invoice = $key['INVOICE_ID'];
+			
+			$hasil = 0;
+			$poAmount = $this->M_kasiepembelian->poAmount($invoice);
+			foreach ($poAmount as $p) {
+				$total = $p['UNIT_PRICE'] * $p['QTY_INVOICE'];
+				$hasil = $hasil + $total;
+			}
+			$unprocess2[$no]['PO_AMOUNT'] = $hasil;
+
+			$no++;
+		}
+		$berkas = $unprocess2[0]['KELENGKAPAN_DOC_INV_BERMASALAH'];
+
+		$exp_berkas = explode(',', $berkas);
+
+		$data['berkas'] = $exp_berkas;
+		$data['detail'] =$unprocess2;
 	
-		$feedback = $this->input->post('txaFbPurc');
+
+		$this->load->view('V_Header',$data);
+		$this->load->view('V_Sidemenu',$data);
+		$this->load->view('MonitoringInvKasiePembelian/V_detailInvBermasalahBuyer', $data);
+		$this->load->view('V_Footer',$data);
+	}
+
+	public function saveInvBermasalah()
+	{
+		$invoice_id = $this->input->post('invoice_id');
+		$action_date = date('d-m-Y H:i:s');
+		//array bellow
+		$waktu_berkas = $this->input->post('waktu_berkas');
+		$doc_id = $this->input->post('doc_id');
+		$status_berkas = $this->input->post('status_berkas');
+		$imp_status = implode(",", $status_berkas);
+
+		$update = $this->M_kasiepembelian->saveInvBermasalah($invoice_id,$action_date,$imp_status);
+
+		foreach ($status_berkas as $key => $value) {
+			$this->M_kasiepembelian->updateTabelBerkas($waktu_berkas[$key],$doc_id[$key],$value,$invoice_id);
+		}
+	}
+
+	public function saveReconfirmInvBermasalah()
+	{
+		$invoice_id = $this->input->post('invoice_id');
+		$action_date = date('d-m-Y H:i:s');
+		//array bellow
+		$waktu_berkas = $this->input->post('waktu_berkas');
+		$doc_id = $this->input->post('doc_id');
+		$status_berkas = $this->input->post('status_berkas');
+		$imp_status = implode(",", $status_berkas);
+
+		$update = $this->M_kasiepembelian->saveReconfirmInvBermasalah($invoice_id,$action_date,$imp_status);
+
+		foreach ($status_berkas as $key => $value) {
+			$this->M_kasiepembelian->ReupdateTabelBerkas($waktu_berkas[$key],$doc_id[$key],$value,$invoice_id);
+		}
+	}
+
+
+	public function saveInvBermasalahBuyer()
+	{
+		$invoice_id = $this->input->post('invoice_id');
+		$action_date = date('d-m-Y H:i:s');
+		//array bellow
+		$waktu_berkas = $this->input->post('waktu_berkas');
+		$doc_id = $this->input->post('doc_id');
+		$status_berkas = $this->input->post('status_berkas');
+		$imp_status = implode(",", $status_berkas);
+
+		$update = $this->M_kasiepembelian->saveInvBermasalahBuyer($invoice_id,$action_date,$imp_status);
+
+		foreach ($status_berkas as $key => $value) {
+			$this->M_kasiepembelian->updateTabelBerkasBuyer($waktu_berkas[$key],$doc_id[$key],$value,$invoice_id);
+		}
+	}
+
+	public function submitFeedback()
+	{
+		$invoice_id = $this->input->post('invoice_id');
+		$feedback = $this->input->post('feedback');
 		$action_date = date('d-m-Y H:i:s');
 
-		$update = $this->M_kasiepembelian->saveInvBermasalah($feedback,$invoice_id,$action_date);
-		redirect('AccountPayables/MonitoringInvoice/InvoiceBermasalahKasiePurc/List');
-
+		$update = $this->M_kasiepembelian->kirimFeedback($invoice_id,$feedback,$action_date);
 	}
+
+	public function submitFeedbackBuyer()
+	{
+		$invoice_id = $this->input->post('invoice_id');
+		$feedback = $this->input->post('feedback');
+		$action_date = date('d-m-Y H:i:s');
+
+		$update = $this->M_kasiepembelian->kirimFeedbackBuyer($invoice_id,$feedback,$action_date);
+	}
+
 
 
 	public function invBermasalahKasie()
@@ -210,16 +445,15 @@ class C_kasiepembelian extends CI_Controller{
 		$data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id);
 		$data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id);
 
+		$getStatusSatu = $this->M_kasiepembelian->getStatusSatu();
+		
 		$bermasalah = $this->M_kasiepembelian->listInvBermasalah();
+		$listBuyer = $this->M_kasiepembelian->getBuyer();
 		
 		$no = 0;
 		foreach ($bermasalah as $inv => $value) {
 
 			$invoice_id = $bermasalah[$inv]['INVOICE_ID'];
-			// $string_id = $inv['PO_DETAIL'];
-			// echo "<pre>";
-			// print_r($unprocess);
-			// print_r($invoice_id);
 			
 			$po_amount = 0;
 			$unit = $this->M_kasiepembelian->poAmount($invoice_id);
@@ -233,8 +467,7 @@ class C_kasiepembelian extends CI_Controller{
 			$bermasalah[$no]['PO_AMOUNT'] = $po_amount;
 
 			$po_numberr = $this->M_kasiepembelian->po_numberr($invoice_id);
-			// echo"<pre>";
-			// print_r($po_numberr);
+			
 			$bermasalah[$inv]['PO_NUMBER'] = '';
 			$bermasalah[$inv]['PPN'] = '';
 			foreach ($po_numberr as $key => $value) {
@@ -242,30 +475,126 @@ class C_kasiepembelian extends CI_Controller{
 				$bermasalah[$inv]['PPN'] .= $value['PPN'].'<br>';
 			}
 
-			// if ($string_id) {
-			// 	$explodeId = explode('<br>', $string_id);
-			// 	if (!$explodeId) {
-			// 		$explodeId = $string_id;
-			// 	}
-
-			// 	// foreach ($explodeId as $exp => $value) {
-			// 	// 	$cekPPN = $this->M_monitoringakuntansi->checkPPN($value);
-			// 	// 	foreach ($cekPPN as $key => $value2) {
-			// 	// 		foreach ($value2 as $va2 => $value3) {
-			// 	// 			$ppn = $value3;
-			// 	// 		}
-			// 	// 	}
-			// 	// }
-			// }
 			
 			$no++;
 		}
 		$data['bermasalah'] =$bermasalah;
-		// $data['ppn'] = $ppn;
+		$data['buyer'] = $listBuyer;
+		$data['status'] = $getStatusSatu;
 
 		$this->load->view('V_Header',$data);
 		$this->load->view('V_Sidemenu',$data);
 		$this->load->view('MonitoringInvKasiePembelian/V_listInvBermasalah',$data);
+		$this->load->view('V_Footer',$data);
+	}
+
+	public function FinishInvBermasalahBuyer()
+	{
+		$this->checkSession();
+		$user_id = $this->session->userid;
+		
+		$data['Menu'] = 'Dashboard';
+		$data['SubMenuOne'] = '';
+		
+		$data['UserMenu'] = $this->M_user->getUserMenu($user_id,$this->session->responsibility_id);
+		$data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id);
+		$data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id);
+
+		$user = $this->session->user;
+		$finish = $this->M_kasiepembelian->finishInvBermasalahBuyer($user);
+
+
+		$no = 0;
+		foreach ($finish as $inv => $value) {
+
+			$invoice_id = $finish[$inv]['INVOICE_ID'];
+			
+			$po_amount = 0;
+			$unit = $this->M_kasiepembelian->poAmount($invoice_id);
+
+			foreach ($unit as $price) {
+				$total = $price['UNIT_PRICE'] * $price['QTY_INVOICE'];
+				$po_amount = $po_amount + $total;
+				
+			} 
+
+			$finish[$no]['PO_AMOUNT'] = $po_amount;
+
+			$po_numberr = $this->M_kasiepembelian->po_numberr($invoice_id);
+			
+			$finish[$inv]['PO_NUMBER'] = '';
+			$finish[$inv]['PPN'] = '';
+			foreach ($po_numberr as $key => $value) {
+				$finish[$inv]['PO_NUMBER'] .= $value['PO_NUMBER'].'<br>';
+				$finish[$inv]['PPN'] .= $value['PPN'].'<br>';
+			}
+
+			
+			$no++;
+		}
+		$data['finish'] =$finish;
+
+
+		$this->load->view('V_Header',$data);
+		$this->load->view('V_Sidemenu',$data);
+		$this->load->view('MonitoringInvKasiePembelian/V_finishInvBermasalahBuyer',$data);
+		$this->load->view('V_Footer',$data);
+	}
+
+
+	public function invBermasalahBuyer()
+	{
+		$this->checkSession();
+		$user_id = $this->session->userid;
+		
+		$data['Menu'] = 'Dashboard';
+		$data['SubMenuOne'] = '';
+		
+		$data['UserMenu'] = $this->M_user->getUserMenu($user_id,$this->session->responsibility_id);
+		$data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id);
+		$data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id);
+
+		$user = $this->session->user;
+		$bermasalah = $this->M_kasiepembelian->listInvBermasalahBuyer($user);
+		$listBuyer = $this->M_kasiepembelian->getBuyer();
+		$getStatusSatu = $this->M_kasiepembelian->getStatusBuyer($user);
+		
+		$no = 0;
+		foreach ($bermasalah as $inv => $value) {
+
+			$invoice_id = $bermasalah[$inv]['INVOICE_ID'];
+			
+			$po_amount = 0;
+			$unit = $this->M_kasiepembelian->poAmount($invoice_id);
+
+			foreach ($unit as $price) {
+				$total = $price['UNIT_PRICE'] * $price['QTY_INVOICE'];
+				$po_amount = $po_amount + $total;
+				
+			} 
+
+			$bermasalah[$no]['PO_AMOUNT'] = $po_amount;
+
+			$po_numberr = $this->M_kasiepembelian->po_numberr($invoice_id);
+			
+			$bermasalah[$inv]['PO_NUMBER'] = '';
+			$bermasalah[$inv]['PPN'] = '';
+			foreach ($po_numberr as $key => $value) {
+				$bermasalah[$inv]['PO_NUMBER'] .= $value['PO_NUMBER'].'<br>';
+				$bermasalah[$inv]['PPN'] .= $value['PPN'].'<br>';
+			}
+
+			
+			
+			$no++;
+		}
+		$data['bermasalah'] =$bermasalah;
+		$data['buyer'] = $listBuyer;
+		$data['status'] = $getStatusSatu;
+
+		$this->load->view('V_Header',$data);
+		$this->load->view('V_Sidemenu',$data);
+		$this->load->view('MonitoringInvKasiePembelian/V_listInvBermasalahBuyer',$data);
 		$this->load->view('V_Footer',$data);
 		// $this->output->cache(1);
 	}
@@ -620,9 +949,9 @@ class C_kasiepembelian extends CI_Controller{
 		$invoice_id = $this->input->post('mi-check-list[]');
 		$saveDate = date('d-m-Y H:i:s');
 
-		echo "<pre>";
-		print_r($invoice_id);
-		exit();
+		// echo "<pre>";
+		// print_r($invoice_id);
+		// exit();
 	}
 		// $this->M_kasiepembelian->approveInvoice($invoice_id,$status,$saveDate);
 		// $this->M_kasiepembelian->inputstatuspurchasing($invoice_id,$saveDate,$status);
@@ -636,6 +965,20 @@ class C_kasiepembelian extends CI_Controller{
 
 	}
 
+	public function showReturnedfromAkuntansi()
+	{
+		$invoice_id = $this->input->post('invoice_id');
+		return $this->load->view('MonitoringInvKasiePembelian/V_returnedForm');
+	}
+
+	public function returnToAkuntansi()
+	{
+		$invoice_id = $this->input->post('invoice_id');
+		$action_date = date('d-m-Y H:i:s');
+		$this->M_kasiepembelian->returnToAkuntansi($invoice_id, $action_date);
+	}
+
 
 
 }
+?>

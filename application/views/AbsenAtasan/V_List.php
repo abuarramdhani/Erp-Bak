@@ -10,8 +10,14 @@
 	.Approved{
 		color: green;
 	}
-</style>
 
+	#rowT{
+	color: white;
+	background: #667db6;  /* fallback for old browsers */
+	background: -webkit-linear-gradient(to right, #667db6, #0082c8, #0082c8, #667db6);  /* Chrome 10-25, Safari 5.1-6 */
+	background: linear-gradient(to right, #667db6, #0082c8, #0082c8, #667db6); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+	}
+</style>
 	<div class="inner" >
 			<div class="box box-header"  style="padding-left:20px">
 				<h3 class="pull-left"><strong> Absen Pekerja Entry List </strong></h3>
@@ -23,7 +29,7 @@
 			
 				<table id="absenAtasanTable" class="table table-striped table-bordered table-hover" style="width:100%">
 			<thead>
-				<tr style="background-color:#367FA9; color:white ">
+				<tr id="rowT">
 						<th class="text-center " style="width:15px">No</th>
 						<th class="text-center ">Action</th>
 						<th class="text-center ">Status</th>
@@ -43,10 +49,13 @@
 			 {
 			 	if($value['status'] == 0){
 					$status = "New Entry";
+					$classLabel = "label label-default";
 				}else if($value['status']==1){
 					$status = "Approved";
+					$classLabel = "label label-success";
 				}else{
 					$status = "Rejected";
+					$classLabel = "label label-danger";
 				}
 
 				$date = date_create($value['waktu']);
@@ -56,7 +65,7 @@
 			<tr>
 			<td class="text-center"><?php echo $no++; ?></td>
 			<td><center><a target="_blank" href="<?php echo base_url('AbsenAtasan/List/detail/'.$value['absen_id']); ?>" class="btn btn-primary">Detail</a></center></td>
-			<td id="dataStatus"><span id="textStatus" class=""><?php echo $status; ?></span></td>
+			<td id="dataStatus"><span id="textStatus" class="<?php  echo $classLabel;?>"><?php echo $status; ?></span></td>
 			<td><?php echo $value['noind']; ?></td>
 			<td><?php echo $value['nama']; ?></td>
 			<td><?php echo $value['jenis_absen']; ?></td>
@@ -96,17 +105,6 @@
 </section>
 <script type="text/javascript">
 	$(document).ready(function(){
-	$("#absenAtasanTable").DataTable({ 
-        "order": [[ 6, "desc" ]] 
-    });	
-	jQuery.each($('tbody tr td span'), function () {
-        if (this.textContent == "Approved") {
-            $(this).closest('span').addClass("label label-success");
-        }else if(this.textContent == "Rejected"){
-        	$(this).closest('span').addClass("label label-danger");
-        }else{
-        	$(this).closest('span').addClass("label label-default");
-        }
-    });
+	$("#absenAtasanTable").DataTable();
 });
 </script>

@@ -1,4 +1,4 @@
-<?php 
+<?php
 defined('BASEPATH') OR exit('No direct script access allowed');
 
 date_default_timezone_set('Asia/Jakarta');
@@ -8,10 +8,11 @@ class C_DetailPresensi extends CI_Controller {
 	public function __construct()
     {
         parent::__construct();
-		  
+
         $this->load->helper('form');
         $this->load->helper('url');
         $this->load->helper('html');
+		$this->load->library('Log_Activity');
         $this->load->library('form_validation');
           //load the login model
 		$this->load->library('session');
@@ -20,7 +21,7 @@ class C_DetailPresensi extends CI_Controller {
 		$this->load->model('M_Index');
 		$this->load->model('SystemAdministration/MainMenu/M_user');
 		$this->load->model('UpahHlCm/M_presensipekerja');
-		  
+
 		if($this->session->userdata('logged_in')!=TRUE) {
 			$this->load->helper('url');
 			$this->session->set_userdata('last_page', current_url());
@@ -34,7 +35,7 @@ class C_DetailPresensi extends CI_Controller {
 
     public function checkSession(){
 		if($this->session->is_logged){
-			
+
 		}else{
 			redirect('');
 		}
@@ -42,17 +43,17 @@ class C_DetailPresensi extends CI_Controller {
 
 
     public function index(){
-    	
+
 		$user_id = $this->session->userid;
-		
+
 		$data['Menu'] = 'Presensi Pekerja';
 		$data['SubMenuOne'] = 'Detail Presensi';
 		$data['SubMenuTwo'] = '';
-		
+
 		$data['UserMenu'] = $this->M_user->getUserMenu($user_id,$this->session->responsibility_id);
 		$data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id);
 		$data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id);
-		
+
 		$data['tanggal'] = $this->M_presensipekerja->getTanggalDefault();
 		// echo "<pre>";print_r($datareal);exit();
 		$this->load->view('V_Header',$data);
@@ -124,7 +125,7 @@ class C_DetailPresensi extends CI_Controller {
 					}else{
 						$keterangan = $this->M_presensipekerja->getInisial($key['noind'],$key['tanggal']);
 					}
-					
+
 				}
 
 				if ($keterangan !== "") {
@@ -213,9 +214,9 @@ class C_DetailPresensi extends CI_Controller {
 						);
 				}
 
-				
+
 				$keterangan = round(floatval($key['total_lembur']),2);
-				
+
 				$datareal[$angka]['data'][$key['index_tanggal']] = $keterangan;
 
 				$simpan_noind = $key['noind'];
@@ -343,7 +344,7 @@ class C_DetailPresensi extends CI_Controller {
 					}else{
 						$keterangan = $this->M_presensipekerja->getInisial($key['noind'],$key['tanggal']);
 					}
-					
+
 				}
 
 				if ($keterangan !== "") {
@@ -353,7 +354,7 @@ class C_DetailPresensi extends CI_Controller {
 			}
 			$data['absen'] = $datareal;
 			$data['tanggal'] = $this->M_presensipekerja->getTanggalByParams($cutoff_awal,$cutoff_akhir);
-			
+
     	}else{
     		$absen = $this->M_presensipekerja->getLemburByParams($cutoff_awal,$cutoff_akhir,$pkjoff,$pkjoff_awal,$pkjoff_akhir);
 			$datareal = array();
@@ -372,9 +373,9 @@ class C_DetailPresensi extends CI_Controller {
 						);
 				}
 
-				
+
 				$keterangan = round(floatval($key['total_lembur']),2);
-				
+
 				$datareal[$angka]['data'][$key['index_tanggal']] = $keterangan;
 
 				$simpan_noind = $key['noind'];
@@ -450,18 +451,18 @@ class C_DetailPresensi extends CI_Controller {
 					}else{
 						$keterangan = $this->M_presensipekerja->getInisial($key['noind'],$key['tanggal']);
 					}
-					
+
 				}
 				if ($keterangan !== "") {
 					$datareal[$angka]['data'][$key['index_tanggal']] = $keterangan;
 				}
-				
+
 
 				$simpan_noind = $key['noind'];
 			}
 			$data['absen'] = $datareal;
 			$data['tanggal'] = $this->M_presensipekerja->getTanggalByParams($cutoff_awal,$cutoff_akhir);
-			
+
     	}else{
     		$absen = $this->M_presensipekerja->getLemburByParams($cutoff_awal,$cutoff_akhir,$pkjoff,$pkjoff_awal,$pkjoff_akhir);
 			$datareal = array();
@@ -480,9 +481,9 @@ class C_DetailPresensi extends CI_Controller {
 						);
 				}
 
-				
+
 				$keterangan = round(floatval($key['total_lembur']),2);
-				
+
 				$datareal[$angka]['data'][$key['index_tanggal']] = $keterangan;
 
 				$simpan_noind = $key['noind'];
@@ -503,9 +504,14 @@ class C_DetailPresensi extends CI_Controller {
     		'tgl_akhir_pekerja_keluar' => $pkjoff_akhir,
     		'asal' => 'Detail Presensi',
     		'keterangan' => $keterangan_detail
-    	); 
+    	);
 
     	$this->M_presensipekerja->insertArsip($data_simpan);
+		//insert to t_log
+		$aksi = 'UPAH HLCM';
+		$detail = 'INSERT data di hlcm_presensi';
+		$this->log_activity->activity_log($aksi, $detail);
+		//
 
     	echo "Selesai";
 

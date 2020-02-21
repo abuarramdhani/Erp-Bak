@@ -7,7 +7,7 @@
 </style>
 
 <section class="content">
-	<form method="post" action="<?php echo base_url('AccountPayables/MonitoringInvoice/InvoiceBermasalahKasiePurc/List/saveInvBermasalah/'.$detail[0]['INVOICE_ID']); ?>">
+<!-- 	<form method="post" action="<?php echo base_url('AccountPayables/MonitoringInvoice/InvoiceBermasalahKasiePurc/List/saveInvBermasalah/'.$detail[0]['INVOICE_ID']); ?>"> -->
 	<div class="inner" >
 		<div class="row">
 			<div class="col-lg-12">
@@ -37,6 +37,20 @@
 											<span><label>Invoice ID</label></span>
 										</td>
 										<td><input  class="form-control" size="40" type="text" value="<?php echo $detail[0]['INVOICE_ID']?>" readonly>
+										</td>
+									</tr>
+									<tr>
+										<td>
+											<span><label>Nomor PO</label></span>
+										</td>
+										<td><input  class="form-control" size="40" type="text" value="<?php echo $detail[0]['PO_NUMBER']?>" readonly>
+										</td>
+									</tr>
+									<tr>
+										<td>
+											<span><label>Vendor</label></span>
+										</td>
+										<td><input  class="form-control" size="40" type="text" value="<?php echo $detail[0]['VENDOR_NAME']?>" readonly>
 										</td>
 									</tr>
 									<tr>
@@ -101,17 +115,17 @@
 											<input type="text" name="txtKategori" class="form-control" value="<?php echo $detail[0]['KATEGORI_INV_BERMASALAH']?>" readonly>
 										</td>
 									</tr>
-									<tr>
+									<!-- <tr>
 										<td>
 											<span><label>Kelengkapan Dokumen</label></span>
 										</td>
 										<td>
 											<input type="text" name="txtKategori" class="form-control" value="<?php echo $detail[0]['KELENGKAPAN_DOC_INV_BERMASALAH']?>" readonly>
 										</td>
-									</tr>
+									</tr> -->
 									<tr>
 										<td>
-											<span><label>Keterangan</label></span>
+											<span><label>Keterangan Akuntansi</label></span>
 										</td>
 									<td>
 										<textarea class="form-control" id="txaKeterangan" name="txaKeterangan" placeholder="Keterangan" readonly><?php echo $detail[0]['KETERANGAN_INV_BERMASALAH']?></textarea>
@@ -130,55 +144,57 @@
 							</form>
 						<span><b>Invoice PO Detail</b></span>
 						<div style="overflow: auto">
-						<table id="detailUnprocessed" class="table table-bordered table-hover table-striped text-center tblMI" style="width: 200%">
+						<table id="detailUnprocessed" class="table table-bordered table-hover table-striped text-center tblMI" style="width: 100%">
 							<thead>
 								<tr class="bg-primary">
 									<th class="text-center">No</th>
-									<th class="text-center">Vendor</th>
-									<th class="text-center">PO Number</th>
-									<th class="text-center">LPPB Number</th>
-									<th class="text-center">Shipment Number</th>
-									<th class="text-center">Receive Date</th>
-									<th class="text-center">Item Code</th>
-									<th class="text-center">Item Description</th>
-									<th class="text-center">Qty Receipt</th>
-									<th class="text-center">Qty Reject</th>
-									<th class="text-center">Currency</th>
-									<th class="text-center">Unit Price</th>
-									<th class="text-center">Qty Invoice</th>
+									<th class="text-center">Kelengkapan Dokumen</th>
+									<th class="text-center">Action</th>
+									<th class="text-center">Hasil Konfirmasi Pembelian</th>
+									<th class="text-center">Hasil Konfirmasi Buyer</th>
 								</tr>
 							</thead>
 							<tbody>
-								<?php $no=1; $po_amount=0; foreach($detail as $b){?>
+								<?php $no=1; foreach($berkas as $b){?>
 								<tr>
 									<td class="text-center"><?php echo $no ?></td>
-									<td class="text-center"><?php echo $b['VENDOR_NAME']?></td>
-									<td class="text-center"><?php echo $b['PO_NUMBER']?></td>
-									<td class="text-center"><?php echo $b['LPPB_NUMBER']?></td>
-									<td class="text-center"><?php echo $b['SHIPMENT_NUMBER']?></td>
-									<td class="text-center"><?php echo $b['RECEIVED_DATE']?></td>
-									<td class="text-center"><?php echo $b['ITEM_CODE']?></td>
-									<td class="text-center"><?php echo $b['ITEM_DESCRIPTION']?></td>
-									<td class="text-center"><?php echo $b['QTY_RECEIPT']?></td>
-									<td class="text-center"><?php echo $b['QTY_REJECT']?></td>
-									<td class="text-center"><?php echo $b['CURRENCY']?></td>
-									<td class="text-center"><?php echo $b['UNIT_PRICE']?></td>
-									<td class="text-center"><?php echo $b['QTY_INVOICE']?></td>
+									<td class="text-center"><?php echo $b?></td>
+									<td><button type="button" class="btn btn-success btn-sm" onclick="btnApproveBerkas(this)" id="btnApproved" style="margin-right: 5px"><i class="fa fa-check"></i></button>
+										<button type="button" onclick="btnRejectBerkas(this)" class="btn btn-danger btn-sm" id="btnApproved"><i class="fa fa-times"></i></button>
+									<td><input type="hidden" name="berkas_status_purc[]" id="pembelian_id"><div class="hasil_pembelian"></div></td>
+									<td><input type="hidden" name="berkas_status_buyer[]" id="buyer_id"><div class="hasil_buyer"></div></td>
 								</tr>
-								<?php $no++; $po_amount=$po_amount+($b['UNIT_PRICE'] * $b['QTY_INVOICE']); }?>
+								<?php $no++; }?>
 							</tbody>
 						</table>
 						</div>
-						<div class="col-md-4 pull-left">
-							<label>Po Amount: <span><?php echo 'Rp. '. number_format(round($po_amount),0,'.','.').',00-';?></span></label>
-						</div>
 						<div class="col-md-1 pull-right">
-							<button id="btnKasieBermasalah" class="btn btn-success pull-right" style="margin-top: 10px" >Save</button>
+							<button id="btnKasieBermasalah" class="btn btn-success pull-right" data-target="mdlNotifikasiKasie" data-toggle="modal" onclick="KonfirmasiBerkasPurc(<?php echo $detail[0]['INVOICE_ID']?>)" style="margin-top: 10px" >Konfirmasi</button>
 						</div>
 					</div>
 				</div>
 			</div>
 		</div>
 	</div>
-</form>
+<!-- </form> -->
 </section>
+
+<div id="mdlNotifikasiKasie" class="modal fade" role="dialog">
+	<div class="modal-dialog" role="document">
+		<div class="modal-content"  id="content1" >
+		  <div class="modal-header">
+		    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+		    <h5 class="modal-title"> Notification for Confirmation </h5>
+		  </div>
+		  <div class="modal-body">
+		    <div class="row">
+		      <div class="col-md-12">Apakah Anda yakin akan melakukan Konfirmasi Invoice Bermasalah : <b><?php echo $detail[0]['INVOICE_ID']?></b> ?</div>
+		    </div>
+		  </div>
+		  <div class="modal-footer">
+		    <button type="button" class="btn btn-default" data-dismiss="modal">No</button>
+		    <button type="button" class="btn btn-primary" id="mdlYesAkt" >Yes</button>
+		  </div>
+		</div>
+ 	</div>
+</div>

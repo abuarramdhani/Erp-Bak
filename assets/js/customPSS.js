@@ -83,7 +83,7 @@ $(document).ready(function(){ //js untuk import polas shift
     $('.ips_get_atasan').select2({
         allowClear: false,
         placeholder: "Pilih Atasan",
-        minimumInputLength: -1,
+        minimumResultsForSearch: -1,
         ajax: {
             url: baseurl + 'PolaShiftSeksi/ImportPolaShift/daftar_atasan',
             dataType: 'json',
@@ -282,53 +282,18 @@ $(document).ready(function(){// js untuk tukar shift
 
     });
 
-    var date = new Date();
-    date.setDate(date.getDate() + 1);
-    $('.ts_datePick').datepicker({
-        startDate: date,
-        format: 'yyyy-mm-dd',
-        autoclose: true
-    });
-
-    // $('.pss_noind').select2({
-    //     placeholder: 'Pilih Noind',
-    //     minimumInputLength: 2,
-    //     allowClear: false,
-    //     ajax: {
-    //         url: baseurl + 'PolaShiftSeksi/TukarShift/getNoind',
-    //         dataType: 'json',
-    //         delay: 500,
-    //         type: "POST",
-    //         processResults: function(data) {
-    //             return {
-    //                 results: $.map(data, function(obj) {
-    //                     return { id: obj.noind, text: obj.noind };//+ ' - ' + obj.nama
-    //                 })
-    //             };
-    //         }
-    //     }
-    // });
-
-    // $('.pss_noind').change(function(){
-    //     var noind = $(this).val();
-    //     var tgl = $('.ts_datePick').val();
-    //     $.ajax({
-    //         url: baseurl + 'PolaShiftSeksi/TukarShift/getDetailNoind',
-    //         type: "post",
-    //         dataType: 'json',
-    //         data: {noind: noind, tanggal: tgl},
-    //         success: function (response) {
-    //             console.log(response);
-    //         },
-    //         error: function(jqXHR, textStatus, errorThrown) {
-    //             console.log(textStatus, errorThrown);
-    //         }
-    //     });
+    initTglPick(); //untuk menginisialisasi tanggalnya
+    
+    // $('.ts_datePick').datepicker({
+    //     startDate: date,
+    //     format: 'yyyy-mm-dd',
+    //     autoclose: true
     // });
 
     $('#btn_next_tukar').click(function(){
         var tgl_tukar = $('.ts_datePick').val();
         var tukar = $('input[name="tukarpekerja"]:checked').val();
+        var periode = $('input[name="tgl_tukar"]').val();
         var inisiatif = $('input[name="inisiatif"]:checked').val();
 
         if (tgl_tukar.length < 1 || !tukar || !inisiatif) {
@@ -342,7 +307,7 @@ $(document).ready(function(){// js untuk tukar shift
             $.ajax({
                 url: baseurl + 'PolaShiftSeksi/TukarShift/getFormPekerja',
                 type: "post",
-                data: {tukar: tukar},
+                data: {tukar: tukar, pr: periode},
                 success: function (response) {
                     $('.pss_formPekerja').html(response);
                     $('#surat-loading').attr('hidden', true);
@@ -379,7 +344,7 @@ function init_select_tukar()
 
     $('.pss_noind_to_all').select2({
         placeholder: 'Pilih Noind',
-        minimumInputLength: 2,
+        minimumInputLength: 3,
         allowClear: false,
         ajax: {
             url: baseurl + 'PolaShiftSeksi/TukarShift/getNoind',
@@ -397,8 +362,9 @@ function init_select_tukar()
     });
 
     $('.pss_noind_to_all').change(function(){
-        $('#surat-loading').attr('hidden', false);
         var noind = $(this).val();
+        if (noind.length < 2) { return false }//cegah loop
+        $('#surat-loading').attr('hidden', false);
         var tgl = $('.ts_datePick').val();
         var ini = $(this);
         $.ajax({
@@ -407,19 +373,10 @@ function init_select_tukar()
             dataType: 'json',
             data: {noind: noind, tanggal: tgl},
             success: function (response) {
-                if (response.length < 1) {
-                    alert_no_shift(ini);
-                    $('#surat-loading').attr('hidden', true);
-                }else{
-                    $('.pss_noind_input').val(response[0]['noind']);
-                    $('.pss_nama').val(response[0]['nama']);
-                    $('.pss_tgl').val(response[0]['tanggal']);
-                    $('.pss_shift').val(response[0]['shift']);
-                    $('.kd_sift').val(response[0]['kd_shift']);
-                    $('.pss_list_shift').attr('disabled', false);
-                     $('.pss_selc2').attr('disabled', false);
-                    $('#surat-loading').attr('hidden', true);
-                }
+                if(typeof response === 'string')
+                    alertNoShift(response, ini)
+                else
+                    setPerKolomAll(response);
             },
             error: function(jqXHR, textStatus, errorThrown) {
                 console.log(textStatus, errorThrown);
@@ -428,8 +385,11 @@ function init_select_tukar()
     });
 
     $('.pss_noind').change(function(){
-        $('#surat-loading').attr('hidden', false);
         var noind = $(this).val();
+        if (noind.length < 2) { return false }//cegah loop
+        $('#surat-loading').attr('hidden', false);
+        //cek apa sama
+        cekNoindnya();
         var tgl = $('.ts_datePick').val();
         var ini = $(this);
         $.ajax({
@@ -438,18 +398,10 @@ function init_select_tukar()
             dataType: 'json',
             data: {noind: noind, tanggal: tgl},
             success: function (response) {
-                if (response.length < 1) {
-                    alert_no_shift(ini);
-                    $('#surat-loading').attr('hidden', true);
-                }else{
-                    ini.closest('div.pss_data_pkj').find('.pss_nama').val(response[0]['nama']);
-                    ini.closest('div.pss_data_pkj').find('.pss_tgl').val(response[0]['tanggal']);
-                    ini.closest('div.pss_data_pkj').find('.pss_shift').val(response[0]['shift']);
-                    ini.closest('div.pss_data_pkj').find('.kd_sift').val(response[0]['kd_shift']);
-                    $('.pss_selc2').attr('disabled', false);
-                    
-                    $('#surat-loading').attr('hidden', true);
-                }
+                if(typeof response === 'string')
+                    alertNoShift(response, ini)
+                else
+                    setPerKolom(response, ini);
             },
             error: function(jqXHR, textStatus, errorThrown) {
                 console.log(textStatus, errorThrown);
@@ -480,7 +432,7 @@ function init_select_tukar()
             delay: 500,
             type: "POST",
             data: function(params) {
-                return { term: params.term, kd: $('.kd_sift').val() };
+                return { term: params.term, kd: getKD($(this)) };
             },
             processResults: function(data) {
                 return {
@@ -544,9 +496,10 @@ $(document).ready(function(){
                     type: "post",
                     data: {level: level, id: id, duo: isduo},
                     success: function (response) {
-                        window.history.back();
+                        window.location.replace(baseurl+"PolaShiftSeksi/Approval/ApprovalTukarShift");
                     },
                     error: function(jqXHR, textStatus, errorThrown) {
+                        alert('b');
                         console.log(textStatus, errorThrown);
                     }
                 });
@@ -569,7 +522,7 @@ $(document).ready(function(){
                     type: "post",
                     data: {id: id, alasan: result.value},
                     success: function (response) {
-                        window.history.back();
+                        window.location.replace(baseurl+"PolaShiftSeksi/Approval/ApprovalTukarShift");
                     },
                     error: function(jqXHR, textStatus, errorThrown) {
                         console.log(textStatus, errorThrown);
@@ -609,4 +562,100 @@ function alert_no_shift(ini)
             }
         }
     });
+}
+
+function initTglPick(tambahan = 2)
+{
+    var dates = new Date();
+    dates.setDate(dates.getDate() + 1);
+    $('.ts_datePick').daterangepicker({
+        "startDate": dates,
+        "endDate": dates,
+        minDate: dates,
+        maxSpan: {
+            days: tambahan
+        },
+        locale: {
+            format: 'DD-MM-YYYY'
+        }
+    });
+}
+
+$(document).on('ifChecked', '.pss_set_range', function(){
+    var a = $(this).val();
+    if (a == 'perusahaan')
+        initTglPick(5)
+    else
+        initTglPick(2)
+});
+
+function setPerKolomAll(response)
+{
+    console.log(response);
+    if (response.length < 1) {
+        alert_no_shift(ini);
+        $('#surat-loading').attr('hidden', true);
+    }else{
+        $('.pss_noind_input').val(response[0][0]['noind']);
+        $('.pss_nama').val(response[0][0]['nama']);
+        $('.pss_list_shift').attr('disabled', false);
+        $('.pss_selc2').attr('disabled', false);
+        $('#surat-loading').attr('hidden', true);
+    }
+    var mx = $('.pss_tgl').length/2;
+    for(let i = 0; i < mx; i++){
+        $('.pss_tgl').eq(i).val(response[i][0]['tanggal']);
+        $('.pss_shift').eq(i).val(response[i][0]['shift']);
+        $('.kd_sift').eq(i).val(response[i][0]['kd_shift']);
+    }
+    for(let i = mx; i < (mx*2); i++){
+        $('.pss_tgl').eq(i).val(response[i-mx][0]['tanggal']);
+    }
+}
+
+function setPerKolom(response, ini)
+{
+    if (response.length < 1) {
+        alert_no_shift(ini);
+        $('#surat-loading').attr('hidden', true);
+    }else{
+        ini.closest('div.pss_data_pkj').find('.pss_nama').val(response[0][0]['nama']);
+        $('.pss_selc2').attr('disabled', false);
+        $('#surat-loading').attr('hidden', true);
+    }
+    var mx = $('.pss_tgl').length/2;
+    for(let i = 0; i < mx; i++){
+        ini.closest('div.pss_data_pkj').find('.pss_tgl').eq(i).val(response[i][0]['tanggal']);
+        ini.closest('div.pss_data_pkj').find('.pss_shift').eq(i).val(response[i][0]['shift']);
+        ini.closest('div.pss_data_pkj').find('.kd_sift').eq(i).val(response[i][0]['kd_shift']);
+    }
+}
+
+function cekNoindnya()
+{
+    var th = $('.pss_noind');
+    if (th.eq(0).val() == th.eq(1).val()){
+        $('#pss_submit_tukar').attr('disabled', true);
+        alert('Pekerja Tidak boleh Sama');
+    }else{
+        $('#pss_submit_tukar').attr('disabled', false);
+    }
+}
+
+function getKD(ini)
+{
+    var i = ini.index('.pss_list_shift');
+    console.log(i);
+    return $('.kd_sift').eq(i).val();
+}
+
+function alertNoShift(res, ini)
+{
+    $('#surat-loading').attr('hidden', true);
+    Swal.fire({
+        title: 'Error !!',
+        text: res,
+        type: 'error',
+    });
+    ini.val(null).trigger("change");
 }

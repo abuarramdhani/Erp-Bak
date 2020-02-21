@@ -1,7 +1,7 @@
 <?php defined('BASEPATH')OR die('No direct script access allowed');
 class C_Report extends CI_Controller
 {
-	
+
 	function __construct()
 		{
 			parent::__construct();
@@ -9,6 +9,7 @@ class C_Report extends CI_Controller
 			$this->load->helper('form');
 	        $this->load->helper('url');
 	        $this->load->helper('html');
+			$this->load->library('Log_Activity');
 	        $this->load->library('form_validation');
 	        $this->load->library('Excel');
 	          //load the login model
@@ -16,7 +17,7 @@ class C_Report extends CI_Controller
 			$this->load->model('M_Index');
 			$this->load->model('SystemAdministration/MainMenu/M_user');
 			$this->load->model('SystemIntegration/M_report');
-			  
+
 			if($this->session->userdata('logged_in')!=TRUE) {
 				$this->load->helper('url');
 				$this->session->set_userdata('last_page', current_url());
@@ -43,7 +44,7 @@ class C_Report extends CI_Controller
 			$data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id);
 			$data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id);
 
-			
+
 			$start = $this->input->post('start');
 			$end   = $this->input->post('end');
 			if (empty($start)) {
@@ -55,7 +56,7 @@ class C_Report extends CI_Controller
 			$getpekerja = $this->M_report->getpekerja($this->session->kodesie, $start, $end);
 			$getseksi = $this->M_report->getseksi($this->session->kodesie, $start, $end);
 
-			
+
 			$data['start'] = $start;
 			$data['end'] = $end;
 
@@ -69,7 +70,7 @@ class C_Report extends CI_Controller
 			// print_r($getseksi); exit();
 			// print_r($getpekerja); exit();
 			$data['data_seksi'] = $getseksi;
-			$data['data_pekerja'] = $getpekerja;				
+			$data['data_pekerja'] = $getpekerja;
 			$this->load->view('V_Header',$data);
 			$this->load->view('V_Sidemenu',$data);
 			$this->load->view('SystemIntegration/MainMenu/Report/V_Index',$data);
@@ -80,6 +81,11 @@ class C_Report extends CI_Controller
 
 	public function exportKaizen()
 		{
+			//insert to t_log
+			$aksi = 'KAIZEN GENERATOR';
+			$detail = 'Mengakses Menu Export Kaizen';
+			$this->log_activity->activity_log($aksi, $detail);
+			//
 			$this->checkSession();
 			$user_id = $this->session->userid;
 			$data['Menu'] = 'Dashboard';
@@ -97,6 +103,11 @@ class C_Report extends CI_Controller
 
 	public function findexport()
 		{
+			//insert to t_log
+			$aksi = 'KAIZEN GENERATOR';
+			$detail = 'Find Export Kaizen';
+			$this->log_activity->activity_log($aksi, $detail);
+			//
 			$this->checkSession();
 			$user_id = $this->session->userid;
 			$data['Menu'] = 'Dashboard';
@@ -106,7 +117,7 @@ class C_Report extends CI_Controller
 			$data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id);
 			$this->input->post('txtStartDate');
 			$this->input->post('txtEndDate');
-			
+
 			$start = date("Y-m-d", strtotime($this->input->post('txtStartDate')));
 			$end   = date("Y-m-d", strtotime($this->input->post('txtEndDate')));
 			$data['find'] = $this->M_report->getKaizenExport($start, $end);
@@ -123,14 +134,14 @@ class C_Report extends CI_Controller
 	// {
 	// 	$start = date("Y-m-d", strtotime($this->input->post('txtStartDate')));
 	// 	$end   = date("Y-m-d", strtotime($this->input->post('txtEndDate')));
-		
+
 	// 	// $realisasi=$this->input->post('txtRealisasi');
 	// 	$data = $this->M_report->getKaizenExport($start, $end);
 
 	// 	$objPHPExcel = new PHPExcel();
 
 	// 	$objPHPExcel->getProperties()->setCreator("CV. KHS")->setTitle("QUICK");
- 
+
 	// 	$objset = $objPHPExcel->setActiveSheetIndex(0);
 	// 	$objget = $objPHPExcel->getActiveSheet();
 	// 	$objget->setTitle('Sample Sheet');
@@ -190,18 +201,23 @@ class C_Report extends CI_Controller
 
 	// 	$objPHPExcel->getActiveSheet()->setTitle('Data Export');
 
-	// 	$objPHPExcel->setActiveSheetIndex(0);  
+	// 	$objPHPExcel->setActiveSheetIndex(0);
 	// 	$filename = urlencode("Kaizen.xls");
 
 	// 	header('Content-Type: application/vnd.ms-excel');
 	// 	header('Content-Disposition: attachment;filename="'.$filename.'"');
 	// 	header('Cache-Control: max-age=0');
 
-	// 	$objWriter = IOFactory::createWriter($objPHPExcel, 'Excel5');                
+	// 	$objWriter = IOFactory::createWriter($objPHPExcel, 'Excel5');
 	// 	$objWriter->save('php://output');
 	// }
 
 	public function exportExcelKaizen(){
+		//insert to t_log
+		$aksi = 'KAIZEN GENERATOR';
+		$detail = 'Export Excel Kaizen';
+		$this->log_activity->activity_log($aksi, $detail);
+		//
 
 		$this->load->library('Excel');
 		$tglAwal = $this->input->post('txtStartDate');
@@ -216,7 +232,7 @@ class C_Report extends CI_Controller
           'font' => array('bold' => true),
           'alignment' => array(
             'horizontal' => PHPExcel_Style_Alignment::HORIZONTAL_CENTER,
-            'vertical' => PHPExcel_Style_Alignment::VERTICAL_CENTER 
+            'vertical' => PHPExcel_Style_Alignment::VERTICAL_CENTER
           ),
           'borders' => array(
             'top' => array('style'  => PHPExcel_Style_Border::BORDER_THIN),
@@ -228,13 +244,13 @@ class C_Report extends CI_Controller
 
         $style_row = array(
           'alignment' => array(
-            'vertical' => PHPExcel_Style_Alignment::VERTICAL_CENTER 
+            'vertical' => PHPExcel_Style_Alignment::VERTICAL_CENTER
           ),
           'borders' => array(
-            'top' => array('style'  => PHPExcel_Style_Border::BORDER_THIN), 
-            'right' => array('style'  => PHPExcel_Style_Border::BORDER_THIN), 
-            'bottom' => array('style'  => PHPExcel_Style_Border::BORDER_THIN), 
-            'left' => array('style'  => PHPExcel_Style_Border::BORDER_THIN) 
+            'top' => array('style'  => PHPExcel_Style_Border::BORDER_THIN),
+            'right' => array('style'  => PHPExcel_Style_Border::BORDER_THIN),
+            'bottom' => array('style'  => PHPExcel_Style_Border::BORDER_THIN),
+            'left' => array('style'  => PHPExcel_Style_Border::BORDER_THIN)
           )
         );
 
@@ -275,14 +291,14 @@ class C_Report extends CI_Controller
             $objPHPExcel->setActiveSheetIndex(0)->setCellValue('D'.$numrow, $data['kondisi_awal']);
             $objPHPExcel->setActiveSheetIndex(0)->setCellValue('E'.$numrow, $data['kondisi_akhir']);
             $objPHPExcel->setActiveSheetIndex(0)->setCellValue('F'.$numrow, $data['pencetus']);
-            
+
             $objPHPExcel->getActiveSheet()->getStyle('A'.$numrow)->applyFromArray($style_row);
             $objPHPExcel->getActiveSheet()->getStyle('B'.$numrow)->applyFromArray($style_row);
             $objPHPExcel->getActiveSheet()->getStyle('C'.$numrow)->applyFromArray($style_row);
             $objPHPExcel->getActiveSheet()->getStyle('D'.$numrow)->applyFromArray($style_row);
             $objPHPExcel->getActiveSheet()->getStyle('E'.$numrow)->applyFromArray($style_row);
             $objPHPExcel->getActiveSheet()->getStyle('F'.$numrow)->applyFromArray($style_row);
-            
+
             $no++;
             $numrow++;
         }

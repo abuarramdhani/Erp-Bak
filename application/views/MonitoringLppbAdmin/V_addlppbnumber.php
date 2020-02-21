@@ -4,6 +4,17 @@
 		font-size: 36px
 	}
 	#tbFilterPO tr td,#tbInvoice tr td{padding: 5px}
+
+	.zoom {
+  transition: transform .2s;
+}
+
+.zoom:hover {
+  -ms-transform: scale(1.3); /* IE 9 */
+  -webkit-transform: scale(1.3); /* Safari 3-8 */
+  transform: scale(1.3); 
+  box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2);
+}
 </style>
 
 <section class="content">
@@ -12,10 +23,12 @@
 			<div class="col-lg-12">
 				<div class="row">
 					<div class="col-lg-12">
+						<!-- <div class="box box-header"> -->
 						<div class="text-left ">
-							<span><b>Add LPPB Number </b></span>
+							<span style="font-family: 'Source Sans Pro',sans-serif;font-size: 30px;padding-left: 5px;"><b>ADD LPPB NUMBER</b></span>
 							<!-- <input type="hidden" id="batch_number" value="<?php echo $lppb[0]['BATCH_NUMBER']?>"> -->
 						</div>
+						<!-- </div> -->
 					</div>
 				</div>
 				<br />
@@ -37,7 +50,7 @@
 												</tr>
 												<tr>
 													<td>
-														<span><label>Opsi Gudang</label></span>
+														<span><label>Opsi Gudang</label><i> (wajib diisi)</i></span>
 													</td>
 													<td>
 														<select id="id_gudang" name="id_gudang" class="form-control select2 select2-hidden-accessible" style="width:100%;">
@@ -46,6 +59,11 @@
 															<option value="<?php echo $gd['SECTION_ID'] ?>"><?php echo $gd['SECTION_NAME'] ?></option>
 															<?php } ?>
 														</select>
+													</td>
+												</tr>
+												<tr>
+													<td>
+														<span><i>Masukkan parameter pencarian LPPB</i></span>
 													</td>
 												</tr>
 												<tr>
@@ -68,9 +86,13 @@
 													<td>
 														<select id="status_lppb" name="status_lppb" class="form-control select2 select2-hidden-accessible" style="width:100%;">
 															<option value="" > Pilih Status </option>
-															<?php foreach ($status as $st) { ?>
-															<option value="<?php echo $st['STATUS_LPPB'] ?>"><?php echo $st['STATUS_LPPB'] ?></option>
-															<?php } ?>
+															<option value="RETURN TO VENDOR">RETURN TO VENDOR</option>
+															<option value="TRANSFER">TRANSFER</option>
+															<option value="RECEIVE">RECEIVE</option>
+															<option value="RETURN TO RECEIVING">RETURN TO RECEIVING</option>
+															<option value="ACCEPT">ACCEPT</option>
+															<option value="CORRECT">CORRECT</option>
+															<option value="DELIVER">DELIVER</option>
 														</select>
 													</td>
 												</tr>
@@ -91,7 +113,7 @@
 												</td>
 												
 												<td>
-													<div><button class="btn btn-md btn-success pull-left" type="button" onclick="searchNumberLppb($(this))">Search</button>
+													<div><button class="btn btn-md btn-success pull-left zoom" type="button" onclick="searchNumberLppb($(this))">Search</button>
 													</div>
 												</td>
 												</tr>
@@ -127,7 +149,7 @@
 									</table>
 								</div>
 								<div class="col-md-2 pull-right">
-									<button onclick="saveLPPBNumber($(this));" type="button"class="btn btn-primary pull-right" style="margin-top: 10px" >Save</button>
+									<button onclick="saveLPPBNumber($(this));" type="button"class="btn btn-primary pull-right zoom" style="margin-top: 10px" >Save</button>
 								</div>
 								<!-- <div class="col-md-2 pull-left">
 									<label> Total LPPB Submitted : </label><span id="jml_LPPB"></span>

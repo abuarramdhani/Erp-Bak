@@ -68,8 +68,62 @@ class C_monitoringakuntansi extends CI_Controller{
 		$this->load->view('V_Sidemenu',$data);
 		$this->load->view('MonitoringInvoiceAkuntansi/V_akuntansi',$data);
 		$this->load->view('V_Footer',$data);
-		// $this->output->cache(1);
 	}
+
+	public function ambilAlert()
+	{
+		$getStatusSatu = $this->M_monitoringakuntansi->getStatusSatu();
+		$status = $getStatusSatu[0]['SATU'];
+
+		echo json_encode($status);
+	}
+
+	public function EndStatus()
+	{
+		$invoice_id = $this->input->post('invoice_id');
+		$end_date = date('d-m-Y H:i:s');
+		$endInvoice = $this->M_monitoringakuntansi->EndInvoiceBermasalah($invoice_id,$end_date);
+	}
+
+	public function getHasilKonfirmasi()
+	{
+		$invoice_id = $this->input->post('invoice_id');
+		$getDataConfimation = $this->M_monitoringakuntansi->getHasilKonfirmasi($invoice_id);
+		$data['berkas'] = $getDataConfimation;
+
+		$this->load->view('MonitoringInvoiceAkuntansi/V_hasilCeklist', $data);
+	}
+
+	public function getDataReKonfirmasi()
+	{
+		$invoice_id = $this->input->post('invoice_id');
+		$getAllBerkas = $this->M_monitoringakuntansi->getDokumenRekonfirmasi($invoice_id);
+
+		$data['berkas'] = $getAllBerkas;
+		$data['invoice'] = $invoice_id;
+
+		$this->load->view('MonitoringInvoiceAkuntansi/V_tabelReConfirmationAkt', $data);
+	}
+
+
+	public function saveReconfirmInvBermasalah()
+	{
+
+		$invoice_id = $this->input->post('invoice_id');
+		$action_date = date('d-m-Y H:i:s');
+		//array bellow
+		$waktu_berkas = $this->input->post('waktu_berkas');
+		$doc_id = $this->input->post('doc_id');
+		$status_berkas = $this->input->post('status_berkas');
+		$imp_status = implode(",", $status_berkas);
+
+		$update = $this->M_monitoringakuntansi->saveReconfirmInvBermasalah($invoice_id,$action_date,$imp_status);
+
+		foreach ($status_berkas as $key => $value) {
+			$this->M_monitoringakuntansi->ReupdateTabelBerkas($waktu_berkas[$key],$doc_id[$key],$value,$invoice_id);
+		}
+	}
+
 
 	public function SaveEdit($invoice_id)
 	{
@@ -90,29 +144,22 @@ class C_monitoringakuntansi extends CI_Controller{
 		$invoice_category = $this->input->post('invoice_category');//**
 		
 		$noinduk = $this->session->userdata['user'];
-		// echo $noinduk;exit();
 		$cek_login = $this->M_monitoringakuntansi->checkLoginInAkuntansi($noinduk);
 		if ($cek_login[0]['unit_name'] == 'AKUNTANSI') {
 			$source_login = 'AKUNTANSI';
 		} elseif ($cek_login[0]['unit_name'] == 'INFORMATION & COMMUNICATION TECHNOLOGY') {
 			$source_login = 'INFORMATION & COMMUNICATION TECHNOLOGY';
 		}
-		// tentang separator 'Rp. 26.590.90000-'
-		// $nominal_ppn_lama2 = str_replace('.00', '', $nominal_ppn_lama);
-		// $nominal_ppn = str_replace(',', '', $nominal_ppn_lama2);
-		// $nominal_dpp = str_replace('.00', '', $nominal_dpp_lama);
+	
 		$amount1 = str_replace('.', '', $invoice_amount);
 		$amount2 =  str_replace('00-', '', $amount1);//478636
 		$amount3 = str_replace('Rp', '', $amount2);
 		$amount = str_replace(',', '', $amount3);
-		// $vendor = str_replace("'", "", $vendor_name);
-		// $pajak = str_replace(",", "", $nominal_dpp);
+	
 		$add2['invoice'] = $this->M_monitoringakuntansi->UpdatePoNumber2($invoice_id,$invoice_number, $invoice_date, $amount, $tax_invoice_number,$vendor_name,$vendor_number,$last_admin_date,$note_admin,$invoice_category,$source_login,$top);
 		
-		// foreach ($po_number as $key => $value) {
 		$this->M_monitoringakuntansi->UpdatePoNumber($po_number,$invoice_id);
 		 
-		// }
 		$this->M_monitoringakuntansi->UpdatePoNumber3($invoice_id,$action_date);
 		redirect('AccountPayables/MonitoringInvoice/FinishInvoiceAkt');
 	}
@@ -131,9 +178,7 @@ class C_monitoringakuntansi extends CI_Controller{
 		
 		$invNumber = $this->input->post('slcPoNumberInv');
 		$query = $this->M_monitoringakuntansi->getInvNumber($invNumber);
-		// $nomor_po = $this->M_monitoringakuntansi->getPONum();
-
-		// $data['nomor_po'] = $nomor_po;
+		
 		$data['invoice'] = $query;
 		$data['allVendor'] = $this->M_monitoringakuntansi->getVendorName();
 		
@@ -148,19 +193,14 @@ class C_monitoringakuntansi extends CI_Controller{
 		$nomor_po = $this->input->post('nomor_po');
 		$cariData = $this->M_monitoringakuntansi->tarikDataPo($nomor_po);
 
-		// if (!empty($cariData)) {
-		
 		echo json_encode($cariData);
 
-		// }else {
-		// 	echo "<script> Swal.fire({
-  // 									type: 'error',
-  // 									title: 'Maaf...',
- 	// 								text: 'Data Kosong',
-		// 							}) </script>";
-		// 	echo "<script>$('#mdlDetailAdminGudang').modal('hide')</script>";
-		// 	}
+	}
 
+	public function resetInvoice()
+	{
+		$invoice_id = $this->input->post('invoice_id');
+		$this->M_monitoringakuntansi->resetInvoiceBermasalah($invoice_id);
 	}
 
 	public function newInvBermasalah()
@@ -188,14 +228,43 @@ class C_monitoringakuntansi extends CI_Controller{
 
 	public function saveInvBermasalah($invoice_id)
 	{
+		$lainnya = $this->input->post('txtLainLain');
+
 		$kategori = $this->input->post('slcKategori[]');
-		$imp_kategori = implode(', ', $kategori);
+		if (in_array('LainLain', $kategori)) {
+		$imp_kategori_calon = implode(', ', $kategori);
+		$imp_kategori = str_replace('LainLain', $lainnya, $imp_kategori_calon);
+		}else{
+		$imp_kategori = implode(', ', $kategori);	
+		}
+
 		$dokumen = $this->input->post('slcKelengkapanDokumen[]');
-		$imp_dokumen = implode(', ', $dokumen);
+		$lainnya_doc = $this->input->post('txtDokumenLain');
+		if (in_array('DokumenLain', $dokumen)) {
+		$imp_dokumen_calon = implode(', ', $dokumen);
+		$imp_dokumen = str_replace('DokumenLain', $lainnya_doc, $imp_dokumen_calon);
+		}else{
+		$imp_dokumen = implode(', ', $dokumen);	
+		}
+
+		if (in_array('DokumenLain', $dokumen)) {
+		$k = array_search('DokumenLain', $dokumen);
+		$replacement = array($k => $lainnya_doc);
+		$dokumen_baru = array_replace($dokumen, $replacement);
+		}else{
+		$dokumen_baru = $dokumen;
+		}
+
+		
 		$keterangan = $this->input->post('txaKeterangan');
 		$action_date = date('d-m-Y H:i:s');
 
 		$update = $this->M_monitoringakuntansi->saveInvBermasalah($imp_kategori,$imp_dokumen,$keterangan,$invoice_id,$action_date);
+		
+		foreach ($dokumen_baru as $key => $value) {
+			$this->M_monitoringakuntansi->saveTableDokumen($invoice_id,$value,$action_date);
+		}
+
 		redirect('AccountPayables/MonitoringInvoice/InvoiceBermasalahAkt');
 
 	}
@@ -219,10 +288,6 @@ class C_monitoringakuntansi extends CI_Controller{
 		foreach ($finish as $inv => $value) {
 
 			$invoice_id = $finish[$inv]['INVOICE_ID'];
-			// $string_id = $inv['PO_DETAIL'];
-			// echo "<pre>";
-			// print_r($unprocess);
-			// print_r($invoice_id);
 			
 			$po_amount = 0;
 			$unit = $this->M_monitoringakuntansi->poAmount($invoice_id);
@@ -236,8 +301,6 @@ class C_monitoringakuntansi extends CI_Controller{
 			$finish[$no]['PO_AMOUNT'] = $po_amount;
 
 			$po_numberr = $this->M_monitoringakuntansi->po_numberr($invoice_id);
-			// echo"<pre>";
-			// // print_r($po_numberr);
 			$finish[$inv]['PO_NUMBER'] = '';
 			$finish[$inv]['PPN'] = '';
 			foreach ($po_numberr as $key => $value) {
@@ -245,28 +308,10 @@ class C_monitoringakuntansi extends CI_Controller{
 				$finish[$inv]['PPN'] .= $value['PPN'].'<br>';
 			}
 
-			// if ($string_id) {
-			// 	$explodeId = explode('<br>', $string_id);
-			// 	if (!$explodeId) {
-			// 		$explodeId = $string_id;
-			// 	}
-
-			// 	// foreach ($explodeId as $exp => $value) {
-			// 	// 	$cekPPN = $this->M_monitoringakuntansi->checkPPN($value);
-			// 	// 	foreach ($cekPPN as $key => $value2) {
-			// 	// 		foreach ($value2 as $va2 => $value3) {
-			// 	// 			$ppn = $value3;
-			// 	// 		}
-			// 	// 	}
-			// 	// }
-			// }
 			
 			$no++;
 		}
 		$data['finish'] =$finish;
-
-		// echo"<pre>";print_r($data['finish']);exit();
-		// $data['ppn'] = $ppn;
 
 		$this->load->view('V_Header',$data);
 		$this->load->view('V_Sidemenu',$data);
@@ -396,9 +441,8 @@ class C_monitoringakuntansi extends CI_Controller{
 		$data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id);
 		$data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id);
 
-		// $invoice_id = $this->input->post('invoice_id');
-		// echo $invoice_id;exit();
-		$unprocess2 = $this->M_monitoringakuntansi->invBermasalah($invoice_id);
+		
+		$unprocess2 = $this->M_monitoringakuntansi->invBermasalahChecking($invoice_id);
 
 		$no = 0;
 		foreach ($unprocess2 as $key ) {
@@ -418,18 +462,13 @@ class C_monitoringakuntansi extends CI_Controller{
 
 			if (!empty($data['detail'])) {
 				
-		$this->load->view('V_Header',$data);
-		$this->load->view('V_Sidemenu',$data);
-		$this->load->view('MonitoringInvoiceAkuntansi/V_laporInvoice', $data);
-		$this->load->view('V_Footer',$data);
+			$this->load->view('V_Header',$data);
+			$this->load->view('V_Sidemenu',$data);
+			$this->load->view('MonitoringInvoiceAkuntansi/V_laporInvoice', $data);
+			$this->load->view('V_Footer',$data);
 			}else{
 			redirect('AccountPayables/MonitoringInvoice/InvoiceBermasalahAkt/newInvBermasalah');
-			// echo ;
-				echo "<script type='text/javascript'> Swal.fire({
-  									type: 'error',
-  									title: 'Maaf...',
- 									text: 'Data Kosong',
-									}) </script>";
+			echo "<script type='text/javascript'> alert('Maaf, invoice tidak bisa dijadikan invoice bermasalah')</script>";
 			}
 
 	}
@@ -439,28 +478,47 @@ class C_monitoringakuntansi extends CI_Controller{
 		$invoice_number = $this->input->post('invoice_number');//
 		$invoice_date = $this->input->post('invoice_date');//
 		$invoice_amount = $this->input->post('invoice_amount');//
-		// $tax_invoice_number = $this->input->post('tax_invoice_number');//
 		$vendor_number = $this->input->post('vendor_number');
 		$cariNamaVendor = $this->M_monitoringakuntansi->getNamaVendor($vendor_number);
 		$vendor_name = $cariNamaVendor[0]['VENDOR_NAME'];
-		// $nominal_ppn = $this->input->post('nominalPPN');
 		$po_number = $this->input->post('txtNoPO');//
 		$top = $this->input->post('txtToP');//
 		$last_admin_date = date('d-m-Y H:i:s');
 		$action_date = date('d-m-Y H:i:s');
 		$note_admin = $this->input->post('note_admin');//
 		$invoice_category = $this->input->post('invoice_category');
-		// $nominal_dpp = $this->input->post('nominal_dpp');//
 		$jenis_jasa = $this->input->post('jenis_jasa');//
+
 		$kategori = $this->input->post('slcKategori[]');
-		$imp_kategori = implode(', ', $kategori);
+		$lainnya = $this->input->post('txtLainLain');
+		if (in_array('LainLain', $kategori)) {
+		$imp_kategori_calon = implode(', ', $kategori);
+		$imp_kategori = str_replace('LainLain', $lainnya, $imp_kategori_calon);
+		}else{
+		$imp_kategori = implode(', ', $kategori);	
+		}
+
 		$dokumen = $this->input->post('slcKelengkapanDokumen[]');
-		$imp_dokumen = implode(', ', $dokumen);
+		$lainnya_doc = $this->input->post('txtDokumenLain');
+		if (in_array('DokumenLain', $dokumen)) {
+		$imp_dokumen_calon = implode(', ', $dokumen);
+		$imp_dokumen = str_replace('DokumenLain', $lainnya_doc, $imp_dokumen_calon);
+		}else{
+		$imp_dokumen = implode(', ', $dokumen);	
+		}
+
+		if (in_array('DokumenLain', $dokumen)) {
+		$k = array_search('DokumenLain', $dokumen);
+		$replacement = array($k => $lainnya_doc);
+		$dokumen_baru = array_replace($dokumen, $replacement);
+		}else{
+		$dokumen_baru = $dokumen;
+		}
+
+		// echo"<pre>";echo $imp_dokumen;print_r($_POST);exit();
+
 		$keterangan = $this->input->post('txaKeterangan');
-		// echo"<pre>";print_r($_POST);exit();
-		// ini fungsi login, hak ases
 		$noinduk = $this->session->userdata['user'];
-		// echo $noinduk;exit();
 		$cek_login = $this->M_monitoringakuntansi->checkLoginInAkuntansi($noinduk);
 		if ($cek_login[0]['unit_name'] == 'AKUNTANSI') {
 			$source_login = 'AKUNTANSI';
@@ -469,14 +527,15 @@ class C_monitoringakuntansi extends CI_Controller{
 		}
 		// tentang separator
 		$amount = str_replace(',', '', $invoice_amount); //478636
-		// $pajak = str_replace(",", "", $nominal_dpp);
 		$add2['invoice'] = $this->M_monitoringakuntansi->saveInvBermasalah2($invoice_number, $invoice_date, $amount,$vendor_name,$vendor_number,$last_admin_date,$invoice_category,$source_login,$jenis_jasa,$top,$imp_kategori,$imp_dokumen,$keterangan,$action_date);
 		
-		// foreach ($po_number as $key => $value) {
 		$this->M_monitoringakuntansi->savePoNumber($po_number,$add2['invoice'][0]['INVOICE_ID']);
 		 
-		// }
 		$this->M_monitoringakuntansi->savePoNumber3($add2['invoice'][0]['INVOICE_ID'],$action_date);
+
+		foreach ($dokumen_baru as $key => $value) {
+			$this->M_monitoringakuntansi->saveTableDokumen($add2['invoice'][0]['INVOICE_ID'],$value,$action_date);
+		}
 		//----------------------------------------------- gak bikin batch----------------------------------------------------//
 
 		redirect('AccountPayables/MonitoringInvoice/InvoiceBermasalahAkt/');
@@ -494,15 +553,13 @@ class C_monitoringakuntansi extends CI_Controller{
 		$vendor_number = $this->input->post('vendor_number');//00
 		$cariNamaVendor = $this->M_monitoringakuntansi->getNamaVendor($vendor_number);//00
 		$vendor_name = $cariNamaVendor[0]['VENDOR_NAME'];//00
-		// $nominal_ppn_lama = $this->input->post('nominalPPN');
 		$po_number = $this->input->post('txtNoPO');//00
 		$top = $this->input->post('txtToP');//00
 		$last_admin_date = date('d-m-Y H:i:s');//00
 		$action_date = date('d-m-Y H:i:s');//00
 		$note_admin = $this->input->post('note_admin');//00
 		$invoice_category = $this->input->post('invoice_category');//00
-		// $nominal_dpp_lama = $this->input->post('nominal_dpp');//
-		// $jenis_jasa = $this->input->post('jenis_jasa');//
+		
 		// ini fungsi login, hak ases
 		$noinduk = $this->session->userdata['user'];
 		// echo $noinduk;exit();
@@ -512,13 +569,9 @@ class C_monitoringakuntansi extends CI_Controller{
 		} elseif ($cek_login[0]['unit_name'] == 'INFORMATION & COMMUNICATION TECHNOLOGY') {
 			$source_login = 'INFORMATION & COMMUNICATION TECHNOLOGY';
 		}
-		// tentang separator
-		// $nominal_ppn_lama2 = str_replace('.00', '', $nominal_ppn_lama);
-		// $nominal_ppn = str_replace(',', '', $nominal_ppn_lama2);
-		// $nominal_dpp = str_replace('.00', '', $nominal_dpp_lama);
+		
 		$amount = str_replace(',', '', $invoice_amount); //478636
-		// $vendor = str_replace("'", "", $vendor_name);
-		// $pajak = str_replace(",", "", $nominal_dpp);
+		
 		$add2['invoice'] = $this->M_monitoringakuntansi->savePoNumber2($invoice_number, $invoice_date, $amount, $tax_invoice_number,$vendor_name,$vendor_number,$last_admin_date,$note_admin,$invoice_category,$source_login,$top);
 		
 		// foreach ($po_number as $key => $value) {
@@ -560,25 +613,25 @@ class C_monitoringakuntansi extends CI_Controller{
 		redirect('AccountPayables/MonitoringInvoice/NewInvoice');
 	}
 
-	public function invoiceBermasalahAkt()
-	{
-		$this->checkSession();
-		$user_id = $this->session->userid;
+	// public function invoiceBermasalahAkt()
+	// {
+	// 	$this->checkSession();
+	// 	$user_id = $this->session->userid;
 		
-		$data['Menu'] = 'Dashboard';
-		$data['SubMenuOne'] = '';
+	// 	$data['Menu'] = 'Dashboard';
+	// 	$data['SubMenuOne'] = '';
 		
-		$data['UserMenu'] = $this->M_user->getUserMenu($user_id,$this->session->responsibility_id);
-		$data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id);
-		$data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id);
+	// 	$data['UserMenu'] = $this->M_user->getUserMenu($user_id,$this->session->responsibility_id);
+	// 	$data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id);
+	// 	$data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id);
 
-		$data['allVendor'] = $this->M_monitoringakuntansi->getVendorName();
+	// 	$data['allVendor'] = $this->M_monitoringakuntansi->getVendorName();
 
-		$this->load->view('V_Header',$data);
-		$this->load->view('V_Sidemenu',$data);
-		$this->load->view('MonitoringInvoiceAkuntansi/V_invoiceBermasalah',$data);
-		$this->load->view('V_Footer',$data);
-	}
+	// 	$this->load->view('V_Header',$data);
+	// 	$this->load->view('V_Sidemenu',$data);
+	// 	$this->load->view('MonitoringInvoiceAkuntansi/V_invoiceBermasalah',$data);
+	// 	$this->load->view('V_Footer',$data);
+	// }
 
 	public function LaporInvoice()
 	{
@@ -603,15 +656,14 @@ class C_monitoringakuntansi extends CI_Controller{
 		$data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id);
 
 		$bermasalah = $this->M_monitoringakuntansi->listInvBermasalah();
+		$getStatusSatu = $this->M_monitoringakuntansi->getStatusSatu();
+		
 		
 		$no = 0;
 		foreach ($bermasalah as $inv => $value) {
 
 			$invoice_id = $bermasalah[$inv]['INVOICE_ID'];
-			// $string_id = $inv['PO_DETAIL'];
-			// echo "<pre>";
-			// print_r($unprocess);
-			// print_r($invoice_id);
+		
 			
 			$po_amount = 0;
 			$unit = $this->M_monitoringakuntansi->poAmount($invoice_id);
@@ -625,8 +677,7 @@ class C_monitoringakuntansi extends CI_Controller{
 			$bermasalah[$no]['PO_AMOUNT'] = $po_amount;
 
 			$po_numberr = $this->M_monitoringakuntansi->po_numberr($invoice_id);
-			// echo"<pre>";
-			// print_r($po_numberr);
+			
 			$bermasalah[$inv]['PO_NUMBER'] = '';
 			$bermasalah[$inv]['PPN'] = '';
 			foreach ($po_numberr as $key => $value) {
@@ -634,32 +685,17 @@ class C_monitoringakuntansi extends CI_Controller{
 				$bermasalah[$inv]['PPN'] .= $value['PPN'].'<br>';
 			}
 
-			// if ($string_id) {
-			// 	$explodeId = explode('<br>', $string_id);
-			// 	if (!$explodeId) {
-			// 		$explodeId = $string_id;
-			// 	}
-
-			// 	// foreach ($explodeId as $exp => $value) {
-			// 	// 	$cekPPN = $this->M_monitoringakuntansi->checkPPN($value);
-			// 	// 	foreach ($cekPPN as $key => $value2) {
-			// 	// 		foreach ($value2 as $va2 => $value3) {
-			// 	// 			$ppn = $value3;
-			// 	// 		}
-			// 	// 	}
-			// 	// }
-			// }
+			
 			
 			$no++;
 		}
 		$data['bermasalah'] =$bermasalah;
-		// $data['ppn'] = $ppn;
+		$data['status'] = $getStatusSatu;
 
 		$this->load->view('V_Header',$data);
 		$this->load->view('V_Sidemenu',$data);
 		$this->load->view('MonitoringInvoiceAkuntansi/V_listInvBermasalah',$data);
 		$this->load->view('V_Footer',$data);
-		// $this->output->cache(1);
 	}
 	
 	public function finishKhususAkt()
@@ -1018,5 +1054,132 @@ class C_monitoringakuntansi extends CI_Controller{
 		$this->load->view('V_Footer',$data);
 		// $this->output->cache(1);
 	}
+
+	public function EditInvBermasalah($invoice_id)
+	{
+		$this->checkSession();
+		$user_id = $this->session->userid;
+		
+		$data['Menu'] = 'Dashboard';
+		$data['SubMenuOne'] = '';
+		
+		$data['UserMenu'] = $this->M_user->getUserMenu($user_id,$this->session->responsibility_id);
+		$data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id);
+		$data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id);
+
+
+		$unprocess2 = $this->M_monitoringakuntansi->invBermasalahSuperEdit($invoice_id);
+		$po_number = $unprocess2[0]['PO_NUMBER'];
+		$no = 0;
+		foreach ($unprocess2 as $key ) {
+			$invoice = $key['INVOICE_ID'];
+			
+			$hasil = 0;
+			$poAmount = $this->M_monitoringakuntansi->poAmount($invoice);
+			foreach ($poAmount as $p) {
+				$total = $p['UNIT_PRICE'] * $p['QTY_INVOICE'];
+				$hasil = $hasil + $total;
+			}
+			$unprocess2[$no]['PO_AMOUNT'] = $hasil;
+
+			$no++;
+		}
+		$data['detail'] =$unprocess2;
+		$data['cari'] = $this->M_monitoringakuntansi->tarikDataPo($po_number);
+
+		
+		// $invNumber = $this->input->post('slcPoNumberInv');
+		// $query = $this->M_monitoringakuntansi->getInvNumber($invNumber);
+		// $data['invoice'] = $query;
+		$data['allVendor'] = $this->M_monitoringakuntansi->getVendorName();
+		// echo "<pre>";print_r($data['allVendor']);exit();
+		
+		$this->load->view('V_Header',$data);
+		$this->load->view('V_Sidemenu',$data);
+		$this->load->view('MonitoringInvoiceAkuntansi/V_editInvoiceBermasalah',$data);
+		$this->load->view('V_Footer',$data);
+	}
+
+	public function updatePONumberBermasalah()
+	{
+		$invoice_id = $this->input->post('invoice_id');
+		$nomor_po = $this->input->post('nomor_po');
+		$vendor_id = $this->input->post('vendor_id');
+		$cariNama = $this->M_monitoringakuntansi->namaVendor($vendor_id);
+		$vendor_name = $cariNama[0]['VENDOR_NAME'];
+		$top = $this->input->post('top');
+		$ppn = $this->input->post('ppn');
+
+		$update = $this->M_monitoringakuntansi->getUpdatePONumber($invoice_id,$nomor_po,$vendor_id,$vendor_name,$top,$ppn);
+	}
+
+	public function returnedInvoice()
+	{
+		
+		$this->checkSession();
+		$user_id = $this->session->userid;
+		
+		$data['Menu'] = 'Dashboard';
+		$data['SubMenuOne'] = '';
+		
+		$data['UserMenu'] = $this->M_user->getUserMenu($user_id,$this->session->responsibility_id);
+		$data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id);
+		$data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id);
+
+		$bermasalah = $this->M_monitoringakuntansi->listInvReturned();
+		$getStatusEnam = $this->M_monitoringakuntansi->getStatusEnam();
+		
+		$no = 0;
+		foreach ($bermasalah as $inv => $value) {
+
+			$invoice_id = $bermasalah[$inv]['INVOICE_ID'];
+		
+			
+			$po_amount = 0;
+			$unit = $this->M_monitoringakuntansi->poAmount($invoice_id);
+
+			foreach ($unit as $price) {
+				$total = $price['UNIT_PRICE'] * $price['QTY_INVOICE'];
+				$po_amount = $po_amount + $total;
+				
+			} 
+
+			$bermasalah[$no]['PO_AMOUNT'] = $po_amount;
+
+			$po_numberr = $this->M_monitoringakuntansi->po_numberr($invoice_id);
+			
+			$bermasalah[$inv]['PO_NUMBER'] = '';
+			$bermasalah[$inv]['PPN'] = '';
+			foreach ($po_numberr as $key => $value) {
+				$bermasalah[$inv]['PO_NUMBER'] .= $value['PO_NUMBER'].'<br>';
+				$bermasalah[$inv]['PPN'] .= $value['PPN'].'<br>';
+			}
+			
+			$no++;
+		}
+		$data['bermasalah'] =$bermasalah;
+		$data['status'] = $getStatusEnam;
+
+		$this->load->view('V_Header',$data);
+		$this->load->view('V_Sidemenu',$data);
+		$this->load->view('MonitoringInvoiceAkuntansi/V_returnedInvoice',$data);
+		$this->load->view('V_Footer',$data);
+	}
+
+	public function ambilAlertEnam()
+	{
+		$getStatusSatu = $this->M_monitoringakuntansi->getStatusEnam();
+		$status = $getStatusSatu[0]['ENAM'];
+
+		echo json_encode($status);
+	}
+
+	public function Returning()
+	{
+		$invoice_id = $this->input->post('invoice_id');
+		$action_date = date('d-m-Y H:i:s');
+		$this->M_monitoringakuntansi->returning($invoice_id,$action_date);
+	}
+
 
 }

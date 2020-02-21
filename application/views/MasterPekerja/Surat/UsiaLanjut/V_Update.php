@@ -29,8 +29,9 @@
                                         <?php 
 
                                                 $bithdayDate = substr($PekerjaUsiaLanjut[0]['tgllahir'], 0, 10);
-                                                $date = new DateTime($bithdayDate);    
-                                                $now = new DateTime();    
+                                                $date = new DateTime($bithdayDate);
+                                                $yearEnd = date('Y-m-d', strtotime('12/31'));
+                                                $now = new DateTime($yearEnd);
                                                 $interval = $now->diff($date);    
                                                 $age = $interval->y;    
                                                 $usia = $age;

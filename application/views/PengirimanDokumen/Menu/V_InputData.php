@@ -2,6 +2,10 @@
     .center {
         text-align: center;
     }
+
+    table{
+        width: 100% !important;
+    }
     
     tbody>tr>td {
         text-align: center;
@@ -20,7 +24,7 @@
     }
     
     .modal-content {
-        top: 7em !important;
+        top: 1em !important;
         border-radius: 10px !important;
         z-index: 1;
     }
@@ -114,6 +118,7 @@
                                                 <td>Tanggal</td>
                                                 <td>Status</td>
                                                 <td>Alasan</td>
+                                                <td>Action</td>
                                             </tr>
                                         </thead>
                                         <tbody>
@@ -124,6 +129,7 @@
                                             </tr>
                                         </tfoot>
                                     </table>
+                                    <small style="color: red;">*klik data untuk melihat detail</small>
                                 </div>
                             </div>
                         </div>
@@ -148,7 +154,7 @@
                     <div class="col-lg-6">
                         <form id="modalForm">
                             <div class="form-group row">
-                                <label class="col-sm-2 col-form-label" for="modalNoInduk">No Ind</label>
+                                <label class="col-sm-2 col-form-label" for="modalNoInduk">No Induk</label>
                                 <div class="col-sm-3">
                                     <select class="form-control multiselect" placeholder="noind" id="modalNoInduk">
                                     <!-- this is select 2 -->
@@ -217,7 +223,7 @@
         <div class="modal-content">
             <div class="modal-header modal-detail">
                 <button type="button" class="close" data-dismiss="modal">&times;</button>
-                <h3 class="modal-title center"><b>Info</b></h3>
+                <h3 class="modal-title center"><b>Detail</b></h3>
             </div>
             <div class="modal-body">
                 <form>
@@ -237,6 +243,59 @@
                         <!-- on js -->
                     </div>
                 </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal edit  -->
+<div class="modal fade" id="modalEdit" role="dialog">
+    <div class="modal-dialog">
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header modal-detail">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h3 class="modal-title center"><b>Edit</b></h3>
+            </div>
+            <div class="modal-body">
+                <form id="modalForm">
+                    <input type="hidden" class="form-control" type="text" id="modalIdData" readonly>
+                    <div class="form-group row">
+                        <label class="col-sm-2 col-form-label" for="modalEditNoInduk">No Induk</label>
+                        <div class="col-sm-3">
+                            <select class="form-control multiselect" placeholder="noind" id="modalEditNoInduk">
+                            <!-- this is select 2 -->
+                        </select>
+                        </div>
+                        <div class="col-sm-7">
+                            <input class="form-control" type="text" id="modalEditNameWorker" readonly>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label class="col-sm-2 col-form-label" for="modalEditSeksi">Seksi</label>
+                        <div class="col-sm-10">
+                            <input class="form-control" type="text" id="modalEditSeksi" readonly>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label class="col-sm-2 col-form-label" for="modalEditInformation">Keterangan</label>
+                        <div class="col-sm-10">
+                            <select class="form-control" placeholder="jenis keterangan" id="modalEditInformation">
+                            <!-- ajax -->
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label class="col-sm-2 col-form-label" for="modalEditDate">Tanggal</label>
+                        <div class="col-sm-10">
+                            <input class="form-control" type="text" placeholder="" id="modalEditDate">
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button onclick="deleteDokumen()" class="btn btn-danger pull-left"> <i class="fa fa-trash"></i> hapus</button>
+                <button onclick="updateDataDokumen()" class="btn btn-success"> <i class="fa fa-save"></i> simpan perubahan</button>
             </div>
         </div>
     </div>
@@ -274,6 +333,7 @@
             action = "Add"
             $('.modal-title').html(title)
             $('.modal-footer #action').html(action)
+            $('.table-info-data tbody').html('')
         })
 
         //Listener add Data
@@ -336,9 +396,6 @@
 
             let jsonNoind = allNoind.join(',')
 
-            console.log(jsonNoind);
-
-
             let ket = $('#modalInputInformation').val(),
                 date = $('#modalDate').val()
 
@@ -381,11 +438,15 @@
                     list += `<option value="${item.id}">${item.keterangan}</option>`
                 })
                 $('#modalInputInformation').html(list)
+                $('#modalEditInformation').html(list)
             }
         })
 
         //listener row on click
         showDetailRow()
+        buttonEditListener()
+        //remove close button header modal
+        $('.modal-header > button').remove()
     })
 
     const showTableInput = () => {
@@ -394,26 +455,31 @@
             dataType: 'json',
             beforeSend: () => {
                 let loading = `<tr><td colspan="8"><center><img src="${baseurl + 'assets/img/gif/spinner.gif'}" /></center></td></tr>`
-                $('table > tbody').html(loading)
+                $('table > tbody').first().html(loading)
             },
             success: res => {
                 let row
                 let i = 1
                 res.forEach(item => {
-                    row += `<tr">
+                    row += `<tr>
 								<td>${i++}</td>
 								<td>${item.noind}</td>
 								<td>${item.nama}</td>
 								<td class='detail' data-id='${item.id_data}' data-app1='${item.approver1}' data-app2='${item.approver2}'>${item.keterangan}</td>
 								<td>${item.tgl_input}</td>
-								<td>${item.tanggal}</td>
+								<td>${(item.tanggal_start == item.tanggal_end) ? item.tanggal_start : item.tanggal_start+" - "+item.tanggal_end}</td>
 								${getStatus(item.status, item.approver1, item.approver2)}
-								<td>${getAlasan(item.alasan)}</td>
+                                <td>${getAlasan(item.alasan)}</td>
+                                <td>
+                                    ${ (item.status == 0) ? `<button class="btn btn-sm btn-success changeDocument" data-toggle="modal" data-target="#modalEdit" type='button'><i class='fa fa-edit'></i> ubah</button>` : '' }
+                                </td>
 							</tr>`
                 })
                 $('.table-input-dokumen > tbody').html(row)
-                showDetailRow()
             }
+        }).done( a => {
+            showDetailRow()
+            buttonEditListener()
         })
     }
 
@@ -424,16 +490,16 @@
                 status = '<td class="bg-yellow">Pending</td>'
                 break
             case '1':
-                status = `<td class="bg-green">Approve by ${ap1}</td>`
+                status = `<td class="${(ap2 === '')? 'bg-green':'bg-blue'}">Diterima oleh seksi ${ap1}</td>`
                 break
             case '2':
-                status = `<td class="bg-red">Reject by ${ap1}</td>`
+                status = `<td class="bg-red">Ditolak oleh seksi ${ap1}</td>`
                 break
             case '3':
-                status = `<td class="bg-green">Approve by ${ap2}</td>`
+                status = `<td class="bg-green">Diterima oleh seksi ${ap2}</td>`
                 break
             case '4':
-                status = `<td class="bg-red">Reject by ${ap2}</td>`
+                status = `<td class="bg-red">Ditolak oleh seksi ${ap2}</td>`
                 break
             default:
                 status = 'null'
@@ -446,8 +512,8 @@
         if (val == null) {
             return ''
         }
-        if (val.length > 10) {
-            return val.substr(0, 10) + '...'
+        if (val.length > 20) {
+            return val.substr(0, 20) + '...'
         }
         return val
     }
@@ -462,7 +528,6 @@
             let app2 = elem.data('app2')
             
             $(this).click(function() {
-
                 $('#modalDetail').val(detail)
                 $('#modalApp1').val(app1)
                 $('#modalApp2').val(app2)
@@ -488,6 +553,93 @@
                 })
                 $('#modalInfo').modal()
             })
+        })
+    }
+
+    const buttonEditListener = () => {
+        $('button.changeDocument').each(function(e) {
+            let id = $(this).closest('tr').find('.detail').data('id')
+            let url = baseurl + 'PengirimanDokumen/ajax/showData'
+            $(this).click(function(e){
+                e.stopPropagation()
+                $.ajax({
+                    method: 'post',
+                    url,
+                    data: {
+                        id
+                    },
+                    dataType: 'json',
+                    success: data => {
+                        data.forEach(res => {
+                        //THIIIIIIIIIIIIISISSPARTAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+                            let option = $("<option selected></option>").val(res.noind).text(res.noind);
+                            $('#modalEditNoInduk').append(option).trigger('change')
+                            
+                            $('#modalIdData').val(res.id_data)
+                            $('#modalEditNameWorker').val(res.name)
+                            $('#modalEditSeksi').val(res.seksi)
+                            $('#modalEditInformation').val(res.id_master)
+                            $('#modalEditDate').daterangepicker({
+                                startDate: new Date(res.tanggal_start),
+                                endDate: new Date(res.tanggal_end),
+                                locale: {
+                                    format: 'DD/MM/YYYY'
+                                }
+                            })
+                        })
+                    }
+                })
+                $('#modalEdit').modal()
+            })
+        })
+    }
+
+    const updateDataDokumen = () => {
+        let id = $('#modalIdData').val()
+        let noind = $('#modalEditNoInduk').val()
+        let inform = $('#modalEditInformation').val()
+        let date  = $('#modalEditDate').val()
+
+        $.ajax({
+            method: 'POST',
+            url: baseurl + 'PengirimanDokumen/ajax/updateData',
+            data: {
+                id,
+                noind,
+                inform,
+                date
+            },
+            success: a => {
+                $('#modalEdit').modal('toggle')
+                swal.fire('sukses','','success')
+                showTableInput()
+            },
+            error: e => {
+                swal.fire('error','','error')
+            }
+        })
+    }
+
+    const deleteDokumen = () => {
+        let id = $('#modalIdData').val()
+        showSweetAlertQuestion('Yakin untuk menghapus dokumen ?', '', 'warning').then(a => {
+            if(a.value){
+                $.ajax({
+                    method: 'POST',
+                    url: baseurl + 'PengirimanDokumen/ajax/deleteData',
+                    data: {
+                        id
+                    },
+                    success: a => {
+                        $('#modalEdit').modal('toggle')
+                        $("td[data-id="+id+"]").parent().css({
+                                background: '#dd4b39'
+                            }).fadeOut(2000, () => {
+                                $(this).remove()
+                            })
+                    }
+                })
+            } 
         })
     }
 </script>

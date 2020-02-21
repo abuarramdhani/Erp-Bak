@@ -6,6 +6,7 @@ class C_TransaksiKlaimSisaCuti extends CI_Controller
     {
         parent::__construct();
         $this->load->library('session');
+        $this->load->library('Log_Activity');
         $this->load->helper('url');
         $this->load->model('SystemAdministration/MainMenu/M_user');
         $this->load->model('PayrollManagement/TransaksiKlaimSisaCuti/M_transaksiklaimsisacuti');
@@ -22,7 +23,7 @@ class C_TransaksiKlaimSisaCuti extends CI_Controller
     {
         $this->checkSession();
         $user_id = $this->session->userid;
-        
+
         $data['Menu'] = 'Komponen Penggajian';
         $data['SubMenuOne'] = 'Klaim Sisa Cuti';
         $data['SubMenuTwo'] = '';
@@ -48,7 +49,7 @@ class C_TransaksiKlaimSisaCuti extends CI_Controller
     {
         $this->checkSession();
         $user_id = $this->session->userid;
-        
+
         $row = $this->M_transaksiklaimsisacuti->get_by_id($id);
         if ($row) {
             $data = array(
@@ -58,7 +59,7 @@ class C_TransaksiKlaimSisaCuti extends CI_Controller
             	'UserMenu' => $this->M_user->getUserMenu($user_id,$this->session->responsibility_id),
             	'UserSubMenuOne' => $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id),
             	'UserSubMenuTwo' => $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id),
-            
+
 				'id_cuti' => $row->id_cuti,
 				'noind' => $row->noind,
 				'periode' => $row->periode,
@@ -126,7 +127,11 @@ class C_TransaksiKlaimSisaCuti extends CI_Controller
 			'tgl_jam_record' => date('Y-m-d H:i:s'),
 			'kd_jns_transaksi' => $this->input->post('cmbKdJnsTransaksi',TRUE),
 		);
-
+        //insert to sys.log_activity
+        $aksi = 'Payroll Management';
+        $detail = "Create Komponen Transaksi Sisa Cuti noind=".$this->input->post('txtNoind');
+        $this->log_activity->activity_log($aksi, $detail);
+        //
             $this->M_transaksiklaimsisacuti->insert($data);
             $this->session->set_flashdata('message', 'Create Record Success');
 			$ses=array(
@@ -190,7 +195,11 @@ class C_TransaksiKlaimSisaCuti extends CI_Controller
 				'tgl_jam_record' => date('Y-m-d H:i:s'),
 				'kd_jns_transaksi' => $this->input->post('cmbKdJnsTransaksi',TRUE),
 			);
-
+            //insert to sys.log_activity
+            $aksi = 'Payroll Management';
+            $detail = "Update Komponen Transaksi Sisa Cuti ID=".$this->input->post('txtIdCuti');
+            $this->log_activity->activity_log($aksi, $detail);
+            //
             $this->M_transaksiklaimsisacuti->update($this->input->post('txtIdCuti', TRUE), $data);
             $this->session->set_flashdata('message', 'Update Record Success');
 			$ses=array(
@@ -208,6 +217,11 @@ class C_TransaksiKlaimSisaCuti extends CI_Controller
 
         if ($row) {
             $this->M_transaksiklaimsisacuti->delete($id);
+            //insert to sys.log_activity
+            $aksi = 'Payroll Management';
+            $detail = "Delete Komponen Transaksi Sisa Cuti ID=$id";
+            $this->log_activity->activity_log($aksi, $detail);
+            //
             $this->session->set_flashdata('message', 'Delete Record Success');
 			$ses=array(
 					 "success_delete" => 1
@@ -225,19 +239,19 @@ class C_TransaksiKlaimSisaCuti extends CI_Controller
     }
 
     public function import() {
-       
+
         $config['upload_path'] = 'assets/upload/importPR/klaimsisacuti/';
         $config['allowed_types'] = 'csv';
         $config['max_size'] = '1000';
         $this->load->library('upload', $config);
- 
+
         if (!$this->upload->do_upload('importfile')) { echo $this->upload->display_errors();}
         else {  $file_data  = $this->upload->data();
                 $filename   = $file_data['file_name'];
                 $file_path  = 'assets/upload/importPR/klaimsisacuti/'.$file_data['file_name'];
-                
+
             if ($this->csvimport->get_array($file_path)) {
-                
+
                 $csv_array  = $this->csvimport->get_array($file_path);
 
                 foreach ($csv_array as $row) {
@@ -252,9 +266,9 @@ class C_TransaksiKlaimSisaCuti extends CI_Controller
 						if(empty($getGp)){
 							$sisaKlaim = '-';
 						}else{
-							$sisaKlaim = round($row['SISA_CUTI'] * ($getGp/30),0);	
+							$sisaKlaim = round($row['SISA_CUTI'] * ($getGp/30),0);
 						}
-						
+
 						$data_update = array(
 							'sisa_cuti' => $row['SISA_CUTI'],
 							'jumlah_klaim' => $sisaKlaim,
@@ -273,9 +287,9 @@ class C_TransaksiKlaimSisaCuti extends CI_Controller
 						if(empty($getGp)){
 							$sisaKlaim = '-';
 						}else{
-							$sisaKlaim = round($row['SISA_CUTI'] * ($getGp/30),0);	
+							$sisaKlaim = round($row['SISA_CUTI'] * ($getGp/30),0);
 						}
-						
+
 						$data = array(
 							'noind' => $row['NOIND'],
 							'periode' => $row['PERIODE'],
@@ -301,7 +315,7 @@ class C_TransaksiKlaimSisaCuti extends CI_Controller
             }
         }
     }
-	
+
 	public function getKlaimCuti(){
         $data_where = array(
             'noind' => $this->input->post('noind',TRUE),
@@ -314,13 +328,13 @@ class C_TransaksiKlaimSisaCuti extends CI_Controller
 		}else{
 			$sisaKlaim = round($this->input->post('cuti',TRUE) * ($getGp->gaji_pokok/30),0);
 		}
-        
+
         echo $sisaKlaim;
     }
 
     public function checkSession(){
         if($this->session->is_logged){
-            
+
         }else{
             redirect(site_url());
         }

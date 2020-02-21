@@ -21,7 +21,7 @@
 					<div class="col-lg-12">
 						<div class="box box-primary box-solid">
 							<div class="box-body">
-								<table class="table text-center dtTableMl">
+								<table id="tblLPPBFinishAkt" class="table text-center table-bordered table-hover">
 									<thead>
 										<tr class="bg-primary">
 											<th width="5%" class="text-center">No</th>
@@ -37,9 +37,9 @@
 									<tr>
 										<td><?php echo $no?></td>
 										<td>
-											<a title="Detail Lppb" data-toggle="modal" data-target="mdlFinishAkt" onclick="ModalFinishAkt(<?php echo $lb['BATCH_NUMBER']?>)" class="btn btn-default btn-xs"><i class="fa fa-file-text-o"></i></a>
+											<button title="Detail Lppb" data-toggle="modal" data-target="mdlFinishAkt" onclick="ModalFinishAkt(<?php echo $lb['BATCH_NUMBER']?>)" class="btn btn-default btn-sm"><i class="fa fa-file-text-o"></i> Detail</button>
 											<?php if ($lb['KASIE_GUDANG_APPROVED'] >= 1 and $lb['KASIE_GUDANG_REJECT'] == 0 AND $lb['CHECKING_KASIE_GUDANG'] == 0 and $lb['CHECKING_AKUNTANSI'] == 0) { ?>
-											<a title="Submit to Kasie Akuntansi" id="btnSubmitCheckingToAkuntansi" onclick="submitToKasie(this)" data-id="<?php echo $lb['BATCH_NUMBER']?>" class="btn btn-primary btn-xs"><i class="fa fa-paper-plane"></i></a>
+											<button title="Submit to Kasie Akuntansi" id="btnSubmitCheckingToAkuntansi" onclick="submitToKasie(this)" data-id="<?php echo $lb['BATCH_NUMBER']?>" class="btn btn-primary btn-sm"><i class="fa fa-paper-plane"></i> Submit</button>
 											<?php } ?>
 										</td>
 										<td><?php echo $lb['GROUP_BATCH']?></td>
@@ -67,6 +67,15 @@
 </section>
 <script type="text/javascript">
 	var id_gd;
+	$(document).ready(function(){
+	$('#tblLPPBFinishAkt').DataTable({
+		"paging": true,
+		"info":     true,
+		"language" : {
+			"zeroRecords": " "             
+		}
+	})
+})
 </script>
 
 <div class="modal fade mdlFinishAkt"  id="mdlFinishAkt" tabindex="1" role="dialog" aria-labelledby="judulModal" aria-hidden="true">

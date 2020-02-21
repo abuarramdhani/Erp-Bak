@@ -34,22 +34,6 @@
       <div class="box box-body box-solid box-success" style="height: 455px; width: 94%; margin-left: 30px">
         <h1 class="bg-info text-center">Daftar Pekerja Non Staf</h1>
         <div class="table-responsive" style="overflow: scroll; height: 320px">
-          <!-- <div class="col-lg-12" style="margin-top: 20px; position: relative;">
-            <div class="col-lg-3">
-              <h4>Tambah Pekerja</h4>
-            </div>
-            <div class="col-lg-7">
-              <select class="select select2 form-control getnoindnstaf" style="width: 100%;" id="getnoindnstaf" name="getnoindnstaf[]">
-                <option></option>
-                <?php //foreach ($tambahnonstaf as $k): ?>
-                  <option value="<?php// echo $k['noind'] ?>"><?php //echo $k['noind'].' - '.$k['nama'] ?></option>
-                <?php //endforeach; ?>
-              </select>
-            </div>
-            <div class="col-lg-2">
-              <button type="button" onclick="addRowTableNonStaf()" style="float: right; margin-right: 5px; margin-bottom: 5px;"><span style="color: #337AB7; margin-top: 2px;" id="selectnonstaf" class='fa fa-plus fa-2x' title="Tambah Row" alt="Tambah Row"></span></button>
-            </div>
-          </div> -->
             <table class="table table-bordered table-hover dataTable" style="width: 100%" id="tabelNonStafInfo">
               <thead style="background-color: #e6e6e6; font-size: 15px">
                 <tr>
@@ -57,6 +41,7 @@
                   <th style="width: 15%; text-align: center">Noind</th>
                   <th style="width: 20%; text-align: center">Nama</th>
                   <th style="width: 30%; text-align: center">Seksi</th>
+                  <th style="width: 30%; text-align: center">Keterangan</th>
                   <th style="width: 5%; text-align: center">Action</th>
                 </tr>
               </thead>
@@ -68,6 +53,7 @@
                   <td class="noind-nonstaff"><?php echo $j['noind'] ?></td>
                   <td style="text-align: center;"><?php echo $j['nama'] ?></td>
                   <td style="text-align: center;"><?php echo $j['seksi'] ?></td>
+                  <td style="text-align: center;"><?php echo $j['ket'] ?></td>
                   <td style="text-align: center;"><button type="button" class="deletenonstaf btn btn-danger"><i class="fa fa-close"  title="Hapus Row" alt="Hapus Row"></i></button></td>
                 </tr>
               <?php } ?>
@@ -86,22 +72,6 @@
       <div class="box box-body box-solid box-success" style="height: 430px; width: 94%; margin-left: 30px">
         <h1 class="bg-info text-center">Daftar Pekerja Staf</h1>
         <div class="table-responsive" style="overflow: scroll; height: 320px">
-          <!-- <div class="col-lg-12" style="margin-top: 20px; position: relative;">
-            <div class="col-lg-3">
-              <h4>Tambah Pekerja</h4>
-            </div>
-            <div class="col-lg-7">
-              <select class="select select2 form-control getnoindya" style="width: 100%;" id="getnoindya" name="getnoindya[]">
-                <option></option>
-                <?php //foreach ($tambahstaf as $key): ?>
-                  <option value="<?php //echo $key['noind'] ?>"><?php //echo $key['noind'].' - '.$key['nama'] ?></option>
-                <?php //endforeach; ?>
-              </select>
-            </div>
-            <div class="col-lg-2">
-              <button type="button" onclick="addRowTable()" style="float: right; margin-right: 5px; margin-bottom: 5px;"><span style="color: #337AB7; margin-top: 2px;" class='fa fa-plus fa-2x' title="Tambah Row" alt="Tambah Row"></span></button>
-            </div>
-          </div> -->
           <table class="table table-bordered table-hover dataTable" style="width: 100%" id="tabelStafInfo">
             <thead style="background-color: #e6e6e6; font-size: 15px">
               <tr>

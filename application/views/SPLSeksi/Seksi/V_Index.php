@@ -8,6 +8,9 @@
 			transform: scale(1.5);
 			--webkit--transform: scale(1.5);
 		}
+		.modal-content {
+			border-radius: 6px !important;
+		}
 	</style>
 		
 			<!-- Content Header (Page header) -->
@@ -129,10 +132,10 @@
 							  <div class="modal-dialog modal-dialog-centered" role="document">
 							    <div class="modal-content">
 							      <div class="modal-header">
-							        <h5 class="modal-title">Anda Login Sebagai :</h5>
+							        <h3 class="modal-title">Anda Login Sebagai :</h3>
 							      </div>
 							      <div class="modal-body">
-							        <p><?php echo $this->session->user ?> <?php echo $this->session->employee ?></p>
+							        <h1><?php echo $this->session->user ?> - <?php echo $this->session->employee ?></h1>
 							      </div>
 							      <div class="modal-footer">
 							      	<h5 class="modal-title" style="color: red">Pastikan Alat Fingerprint Terhubung ke Komputer</h5><br>
@@ -176,7 +179,7 @@
 											<div class="col-lg-12">
 										<?php foreach ($jari as $key) { ?>
 											<div class="col-lg-4" style="padding-bottom: 30px">
-												<a href="finspot:FingerspotVer;<?php echo base64_encode(base_url().'ALK/Approve/fp_proces_val?userid='.$this->session->userid.'&res_id='.$this->session->responsibility_id.'&finger_id='.$key['kd_finger']); ?>" id="spl_proses_approve" class="btn btn-primary"><i class="fa fa-check-square"></i><?php echo $key['jari'] ?></a>
+												<a href="finspot:FingerspotVer;<?php echo base64_encode(base_url().'ALK/Approve/fp_proces_val?userid='.$this->session->userid.'&res_id='.$this->session->responsibility_id.'&finger_id='.$key['kd_finger']); ?>" id="spl_proses_approve" class="btn btn-primary"><i class="fa fa-check-square"></i> <?php echo $key['jari'] ?></a>
 											</div>
 							      	<?php } ?>
 							      			</div>
@@ -194,14 +197,14 @@
 						}elseif ($responsibility_id == 2593) {
 							if ($this->session->spl_validasi_asska == FALSE) { ?>
 						<center>
-							<div class="modal show" tabindex="-1" role="dialog">
+						<div class="modal show" tabindex="-1" role="dialog">
 							  <div class="modal-dialog modal-dialog-centered" role="document">
 							    <div class="modal-content">
 							      <div class="modal-header">
-							        <h5 class="modal-title">Anda Login Sebagai :</h5>
+							        <h3 class="modal-title">Anda Login Sebagai :</h3>
 							      </div>
 							      <div class="modal-body">
-							        <p><?php echo $this->session->user ?> <?php echo $this->session->employee ?></p>
+							        <h1><?php echo $this->session->user ?> - <?php echo $this->session->employee ?></h1>
 							      </div>
 							      <div class="modal-footer">
 							      	<h5 class="modal-title" style="color: red">Pastikan Alat Fingerprint Terhubung ke Komputer</h5><br>
@@ -245,7 +248,7 @@
 											<div class="col-lg-12">
 										<?php foreach ($jari as $key) { ?>
 											<div class="col-lg-4" style="padding-bottom: 30px">
-							      				<a href="finspot:FingerspotVer;<?php echo base64_encode(base_url().'ALK/Approve/fp_proces_val?userid='.$this->session->userid.'&res_id='.$this->session->responsibility_id.'&finger_id='.$key['kd_finger']); ?>" id="spl_proses_approve" class="btn btn-primary"><i class="fa fa-check-square"></i><?php echo $key['jari'] ?></a>
+							      				<a href="finspot:FingerspotVer;<?php echo base64_encode(base_url().'ALK/Approve/fp_proces_val?userid='.$this->session->userid.'&res_id='.$this->session->responsibility_id.'&finger_id='.$key['kd_finger']); ?>" id="spl_proses_approve" class="btn btn-primary"><i class="fa fa-check-square"></i> <?php echo $key['jari'] ?></a>
 							      			</div>
 							      	<?php } ?>
 							      			</div>
@@ -267,10 +270,10 @@
 							  <div class="modal-dialog modal-dialog-centered" role="document">
 							    <div class="modal-content">
 							      <div class="modal-header">
-							        <h5 class="modal-title">Anda Login Sebagai :</h5>
+							        <h3 class="modal-title">Anda Login Sebagai :</h3>
 							      </div>
 							      <div class="modal-body">
-							        <p><?php echo $this->session->user ?> <?php echo $this->session->employee ?></p>
+							        <h1><?php echo $this->session->user ?> - <?php echo $this->session->employee ?></h1>
 							      </div>
 							      <div class="modal-footer">
 							      	<h5 class="modal-title" style="color: red">Pastikan Alat Fingerprint Terhubung ke Komputer</h5><br>
@@ -314,7 +317,7 @@
 											<div class="col-lg-12">
 										<?php foreach ($jari as $key) { ?>
 											<div class="col-lg-4" style="padding-bottom: 30px">
-							      				<a href="finspot:FingerspotVer;<?php echo base64_encode(base_url().'ALK/Approve/fp_proces_val?userid='.$this->session->userid.'&res_id='.$this->session->responsibility_id.'&finger_id='.$key['kd_finger']); ?>" id="spl_proses_approve" class="btn btn-primary"><i class="fa fa-check-square"></i><?php echo $key['jari'] ?></a>
+							      				<a href="finspot:FingerspotVer;<?php echo base64_encode(base_url().'ALK/Approve/fp_proces_val?userid='.$this->session->userid.'&res_id='.$this->session->responsibility_id.'&finger_id='.$key['kd_finger']); ?>" id="spl_proses_approve" class="btn btn-primary"><i class="fa fa-check-square"></i> <?php echo $key['jari'] ?></a>
 							      			</div>
 							      	<?php } ?>
 							      			</div>
@@ -428,7 +431,7 @@
 		// need some idea
 		window.onfocus = function() {
 		  console.log('Got focus');
-		  window.location.reload();
+		  //window.location.reload();
 		}
 
 

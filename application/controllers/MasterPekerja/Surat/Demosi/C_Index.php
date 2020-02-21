@@ -11,6 +11,7 @@ class C_Index extends CI_Controller
 		$this->load->helper('url');
 		$this->load->helper('html');
 
+		$this->load->library('Log_Activity');
 		$this->load->library('form_validation');
 		$this->load->library('session');
 		$this->load->library('encrypt');
@@ -71,19 +72,11 @@ class C_Index extends CI_Controller
 		$data['UserMenu'] = $this->M_user->getUserMenu($user_id,$this->session->responsibility_id);
 		$data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id);
 		$data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id);
-
-      	// $data['DaftarPekerja']	=	$this->M_demosi->getAmbilPekerjaAktif();
-      	// $data['DaftarSeksi']    =   $this->M_demosi->getSeksi(); 
-      	// $data['DaftarPekerjaan'] = $this->M_demosi->DetailPekerjaan();
 		$data['DaftarGolongan'] = $this->M_demosi->DetailGolongan();
       	$data['DaftarLokasiKerja'] = $this->M_demosi->DetailLokasiKerja();
       	$data['DaftarKdJabatan'] = $this->M_demosi->DetailKdJabatan();
       	$data['DaftarTempatMakan1'] = $this->M_demosi->DetailTempatMakan1();
       	$data['DaftarTempatMakan2'] = $this->M_demosi->DetailTempatMakan2();
-		// echo "<pre>";
-		// print_r($data['DaftarKdJabatan']);
-		// echo "</pre>";
-		// exit();
 
 		$this->load->view('V_Header',$data);
 		$this->load->view('V_Sidemenu',$data);
@@ -627,7 +620,7 @@ class C_Index extends CI_Controller
 		$status_lama				= 	$this->input->post('txtStatusJabatanlama');
 
 		$status_baru				= 	$this->input->post('txtStatusjabatanBaru');
-		
+
 		if($status_baru != null or $status_baru != "" ){
 			$status_baru 			= 	explode(' - ', $status_baru);
 		}else{
@@ -705,9 +698,18 @@ class C_Index extends CI_Controller
 											'nama_jabatan_upah_lama'=> 	$nama_jabatan_upah_lama,
 											'nama_jabatan_upah_baru'=>	$nama_jabatan_upah_baru,
 											'kd_status_lama'		=> 	$kd_status_lama,
-											'kd_status_baru' 		=>	$kd_status_baru
+											'kd_status_baru' 		=>	$kd_status_baru,
+											'created_by'			=>  $this->session->user ,
+											'created_date'			=> 	date('Y-m-d H:i:s'),
+											'last_update_by'		=> NULL,
+											'last_update_date'		=> NULL
 										);
 		$this->M_demosi->inputSuratDemosi($inputSuratDemosi);
+		//insert to t_log
+		$aksi = 'MASTER PEKERJA';
+		$detail = 'Add Surat Demosi Nomor Surat='.$nomor_surat.' Noind='.$nomor_induk;
+		$this->log_activity->activity_log($aksi, $detail);
+		//
 
 		$bulan_surat = date('m', strtotime($tanggal_cetak));
 		$bulan_surat = substr($bulan_surat, 0, 2);
@@ -730,6 +732,12 @@ class C_Index extends CI_Controller
 	{
 		$no_surat_decode 	=	str_replace(array('-', '_', '~'), array('+', '/', '='), $no_surat);
 		$no_surat_decode 	=	$this->encrypt->decode($no_surat_decode);
+
+		//insert to t_log
+		$aksi = 'MASTER PEKERJA';
+		$detail = 'Cetak Surat Demosi Nomor Surat='.$no_surat_decode;
+		$this->log_activity->activity_log($aksi, $detail);
+		//
 
 		$data['isiSuratDemosi']		=	$this->M_demosi->ambilIsiSuratDemosi($no_surat_decode);
 
@@ -785,6 +793,12 @@ class C_Index extends CI_Controller
 		$no_surat_decode 	=	str_replace(array('-', '_', '~'), array('+', '/', '='), $no_surat);
 		$no_surat_decode 	=	$this->encrypt->decode($no_surat_decode);
 
+		//insert to t_log
+		$aksi = 'MASTER PEKERJA';
+		$detail = 'Update Surat Demosi Nomor Surat='.$no_surat_decode;
+		$this->log_activity->activity_log($aksi, $detail);
+		//
+
 		$nomor_induk 				=	substr($this->input->post('txtNoind'), 0, 5);
 		$seksi_lama 				=	substr($this->input->post('txtKodesieLama'), 0, 9);
 		$golongan_pekerjaan_lama 	=	$this->input->post('txtGolonganPekerjaanLama');
@@ -813,13 +827,13 @@ class C_Index extends CI_Controller
 		$status_lama				= 	$this->input->post('txtStatusJabatanlama');
 
 		$status_baru				= 	$this->input->post('txtStatusjabatanBaru');
-		
+
 		if($status_baru != null or $status_baru != "" ){
 			$status_baru 			= 	explode(' - ', $status_baru);
 		}else{
 			$status_baru 			= 	explode(' - ', $status_lama);
 		}
-		
+
 		$status_lama 				= 	explode(' - ', $status_lama);
 		$kd_status_lama				= 	$status_lama[0];
 		$nama_status_lama			= 	$status_lama[1];
@@ -891,7 +905,9 @@ class C_Index extends CI_Controller
 											'nama_jabatan_upah_baru'=>	$nama_jabatan_upah_baru,
 											'kd_status_lama'		=> 	$kd_status_lama,
 											'kd_status_baru' 		=>	$kd_status_baru,
-											'status_update'			=> '0'
+											'status_update'			=> '0',
+											'last_update_by'			=>  $this->session->user ,
+											'last_update_date'			=> 	date('Y-m-d H:i:s')
 										);
 		$this->M_demosi->updateSuratDemosi($updateSuratDemosi, $nomor_surat, $kodeSurat, $tanggal_cetak_asli);
 		redirect('MasterPekerja/Surat/SuratDemosi');
@@ -901,7 +917,11 @@ class C_Index extends CI_Controller
 	{
 		$no_surat_decode 	=	str_replace(array('-', '_', '~'), array('+', '/', '='), $no_surat);
 		$no_surat_decode 	=	$this->encrypt->decode($no_surat_decode);
-		// echo $no_surat_decode;exit();
+		//insert to t_log
+		$aksi = 'MASTER PEKERJA';
+		$detail = 'Delete Surat Demosi Nomor Surat='.$no_surat_decode;
+		$this->log_activity->activity_log($aksi, $detail);
+		//
 
 		$this->M_demosi->deleteSuratDemosi($no_surat_decode);
 

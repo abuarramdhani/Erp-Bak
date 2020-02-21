@@ -47,7 +47,7 @@
 			<td>Kepada Yth:</td>
 		</tr>
 		<tr>
-			<td><b>Bp. Agus Wahyudi ( Keuangan )</b></td>
+			<td><b><?=$tujuan ?></b></td>
 		</tr>
 		<tr>
 			<td><b>Ditempat</b></td>

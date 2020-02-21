@@ -6,17 +6,18 @@ class C_Carimobil extends CI_Controller {
 	public function __construct()
     {
         parent::__construct();
-		  
+
         $this->load->helper('form');
         $this->load->helper('url');
         $this->load->helper('html');
         $this->load->library('form_validation');
           //load the login model
 		$this->load->library('session');
+		$this->load->library('Log_Activity');
 		$this->load->model('M_Index');
 		$this->load->model('SystemAdministration/MainMenu/M_user');
 		$this->load->model('BookingKendaraan/M_carimobil');
-		  
+
 		if($this->session->userdata('logged_in')!=TRUE) {
 			$this->load->helper('url');
 			$this->session->set_userdata('last_page', current_url());
@@ -27,7 +28,7 @@ class C_Carimobil extends CI_Controller {
 
 	public function checkSession()
 	{
-		if($this->session->is_logged){		
+		if($this->session->is_logged){
 		}else{
 			redirect();
 		}
@@ -38,14 +39,14 @@ class C_Carimobil extends CI_Controller {
 	{
 		$this->checkSession();
 		$user_id = $this->session->userid;
-		
+
 		$data['Menu'] = 'Dashboard';
 		$data['SubMenuOne'] = '';
-		
+
 		$data['UserMenu'] = $this->M_user->getUserMenu($user_id,$this->session->responsibility_id);
 		$data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id);
 		$data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id);
-		
+
 		$kendaraan = $this->M_carimobil->ambilKendaraan();
 
 		foreach ($kendaraan as $key) {
@@ -65,14 +66,14 @@ class C_Carimobil extends CI_Controller {
 		$tidak = $this->M_carimobil->ambilMobilBookingTidak($today);
 		$jum = count($tidak);
 		$id_ken = "";
-		for ($u=0; $u < $jum; $u++) { 
+		for ($u=0; $u < $jum; $u++) {
 			if ($u == 0) {
 				if ($jum == 1) {
 					$id_ken = "'".$tidak[$u]['kendaraan_id']."'";
 				}else{
 					$id_ken = "'".$tidak[$u]['kendaraan_id'];
 				}
-				
+
 			}else{
 				if ($u == $jum-1) {
 					$id_ken = $id_ken."','".$tidak[$u]['kendaraan_id']."'";
@@ -86,7 +87,7 @@ class C_Carimobil extends CI_Controller {
 		$p =$this->M_carimobil->selectNoind();
 		$jml = count($p);
 		$noind = "";
-		for ($i=0; $i < $jml; $i++) { 
+		for ($i=0; $i < $jml; $i++) {
 			if ($i == 0) {
 				if ($jml == 1) {
 					$noind = "'".$p[$i]['id']."'";
@@ -101,9 +102,6 @@ class C_Carimobil extends CI_Controller {
 				}
 			}
 		};
-		// echo "<pre>";
-		// print_r($data['mobil']);
-		// exit();
 		$data['pic'] = $this->M_carimobil->ambilPekerjaPIC($noind);
 		// $data['noind'] = $this->M_carimobil->selectNoind();
 		$this->load->view('V_Header',$data);
@@ -116,16 +114,16 @@ class C_Carimobil extends CI_Controller {
 	{
 		$this->checkSession();
 		$user_id = $this->session->userid;
-		
+
 		$data['Menu'] = 'Dashboard';
 		$data['SubMenuOne'] = '';
-		
+
 		$data['UserMenu'] = $this->M_user->getUserMenu($user_id,$this->session->responsibility_id);
 		$data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id);
 		$data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id);
 
 		$data['id'] = $id;
-		
+
 		$this->load->view('V_Header',$data);
 		$this->load->view('V_Sidemenu',$data);
 		$this->load->view('BookingKendaraan/V_isidata',$data);
@@ -154,7 +152,6 @@ class C_Carimobil extends CI_Controller {
 			$seksi = $row[0]['seksi'];
 			$voip = $data[0]['voip_pic'];
 		}
-		
 
 		if ($pemohon == "") {
 			$pemohon = $pengemudi;
@@ -169,7 +166,7 @@ class C_Carimobil extends CI_Controller {
 		$jml = $tanggal1->diff($tanggal2);
 		$jml = $jml->days;
 		$tanggal = $tgl1;
-		for ($i=0; $i <= $jml; $i++) { 
+		for ($i=0; $i <= $jml; $i++) {
 			$data_input = array(
 							'kendaraan_id' => $kendaraan_id,
 							'pengemudi' => $pengemudi,
@@ -185,9 +182,6 @@ class C_Carimobil extends CI_Controller {
 							'tanggal' => $tanggal,
 							'pic_voip' => $voip,
 						);
-			// echo "<pre>";
-			// print_r($data_input);
-			// exit();
 			$cek = $this->M_carimobil->cekNullorNot($kendaraan_id);
 			if ($cek == 0) {
 				$id  = $this->M_carimobil->simpanBooking($data_input);
@@ -196,12 +190,14 @@ class C_Carimobil extends CI_Controller {
 				$he = $this->M_carimobil->ambilIdBookingUpdated($kendaraan_id);
 				$id = $he[0]['id'];
 			}
-			
+			//insert to t_log
+				$aksi = 'BOOKING KENDARAAN';
+				$detail = 'BOOKING KENDARAAN ID='.$id.' PEMOHON='.$pemohon;
+				$this->log_activity->activity_log($aksi, $detail);
+			//
 			$tanggal = date('Y-m-d', strtotime('+1 days', strtotime($tanggal)));
 
 		}
-
-		// exit();
 		redirect('BookingKendaraan/CariMobil/konfirmasi'.'/'.$id);
 	}
 
@@ -209,10 +205,10 @@ class C_Carimobil extends CI_Controller {
 	{
 		$this->checkSession();
 		$user_id = $this->session->userid;
-		
+
 		$data['Menu'] = 'Dashboard';
 		$data['SubMenuOne'] = '';
-		
+
 		$data['UserMenu'] = $this->M_user->getUserMenu($user_id,$this->session->responsibility_id);
 		$data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id);
 		$data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id);
@@ -228,13 +224,7 @@ class C_Carimobil extends CI_Controller {
 		}else{
 			$data['pic'] = "";
 		}
-		
 
-		// echo "<pre>";
-		// // echo $noind;
-		// print_r($p);
-		// exit();
-		
 		$this->load->view('V_Header',$data);
 		$this->load->view('V_Sidemenu',$data);
 		$this->load->view('BookingKendaraan/V_konfirmasi',$data);
@@ -268,29 +258,29 @@ class C_Carimobil extends CI_Controller {
 
 		$this->checkSession();
 		$user_id = $this->session->userid;
-		
+
 		$data['Menu'] = 'Dashboard';
 		$data['SubMenuOne'] = '';
-		
+
 		$data['UserMenu'] = $this->M_user->getUserMenu($user_id,$this->session->responsibility_id);
 		$data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id);
 		$data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id);
-		
+
 		$kendaraan = $this->M_carimobil->ambilKendaraan();
 
-		
+
 		$day = $this->input->post('tgl_caribooking');
 		$tidak = $this->M_carimobil->ambilMobilBookingTidak($day);
 		$jum = count($tidak);
 		$id_ken = "";
-		for ($u=0; $u < $jum; $u++) { 
+		for ($u=0; $u < $jum; $u++) {
 			if ($u == 0) {
 				if ($jum == 1) {
 					$id_ken = "'".$tidak[$u]['kendaraan_id']."'";
 				}else{
 					$id_ken = "'".$tidak[$u]['kendaraan_id'];
 				}
-				
+
 			}else{
 				if ($u == $jum-1) {
 					$id_ken = $id_ken."','".$tidak[$u]['kendaraan_id']."'";
@@ -301,13 +291,10 @@ class C_Carimobil extends CI_Controller {
 		}
 
 		$data['mobil'] = $this->M_carimobil->ambilMobilBooking($id_ken);
-		// echo "<pre>";
-		// print_r($data['mobil']);
-		// exit();
-		$p =$this->M_carimobil->selectNoind(); 
+		$p =$this->M_carimobil->selectNoind();
 		$jml = count($p);
 		$noind = "";
-		for ($i=0; $i < $jml; $i++) { 
+		for ($i=0; $i < $jml; $i++) {
 			if ($i == 0) {
 				if ($jml == 1) {
 					$noind = "'".$p[$i]['id']."'";
@@ -322,8 +309,6 @@ class C_Carimobil extends CI_Controller {
 				}
 			}
 		};
-		// // echo $noind;
-		// // exit();
 		$data['pic'] = $this->M_carimobil->ambilPekerjaPIC($noind);
 		// $data['noind'] = $this->M_carimobil->selectNoind();
 		$this->load->view('V_Header',$data);

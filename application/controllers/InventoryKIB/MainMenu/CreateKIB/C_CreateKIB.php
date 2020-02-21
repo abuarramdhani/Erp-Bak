@@ -256,17 +256,17 @@ class C_CreateKIB extends CI_Controller
 
 		$data['dataKIB'] = $dataKIBKelompok;
 		// echo "<pre>";
-		$length = sizeof($data['dataKIB'][0]['KOMPONEN']);
+		$length = sizeof($data['dataKIB'][0]['KOMPONEN']) + 13;
 		if ($length != 0) {
-			$size = $length * 48 ;
+			$size = $length * 51 ;
 		} else {
-			$size = 48;
+			$size = 51;
 		} 
 		
 		// echo "$size";
 		// print_r($data['dataKIB']);
 		// exit();
-		$pdf = new mPDF('utf-8',array(210,$size), 0, '', 13, 13, 0, 20, 0, 0);
+		$pdf = new mPDF('utf-8',array(210,$size), 0, '', 13, 13, 0, 5, 0, 0);
 		if($data['dataKIB']):
 			// ------ GENERATE QRCODE ------
 			if(!is_dir('./assets/img'))
@@ -290,11 +290,26 @@ class C_CreateKIB extends CI_Controller
 
 		$data['dataKIB'] = $dataKIBKelompok;
 		echo "<pre>";
-		print_r($data);
-		exit();
+		// print_r($data);
+		// exit();
+		
 		$filename			= 'KIB_'.time().'.pdf';
 		$html = $this->load->view('InventoryKIB/MainMenu/CreateKIB/V_Pdf3',$data,true);
 		// echo "$html";
+		// -------------- update flag
+		foreach ($dataKIBKelompok as $key => $value) {
+			$dataKIB = $this->M_createkib->updateFlagPrint3($value['NOMORSET']);
+			// print_r($value['NOMORSET']);
+		}
+		$cekKIB = $this->M_createkib->cekKIB($nomorset);
+		if (!empty($cekKIB)) {
+			$getKode = $this->M_createkib->getKode($nomorset);
+			foreach ($getKode as $val) {
+				$insertKIB = $this->M_createkib->insertMTI($val);
+			}
+			$update = $this->M_createkib->updateKKFlag($nomorset);
+			$api 		= $this->M_createkib->runApi();	
+		}
 		// exit();
 		$pdf->WriteHTML($html,0);
 		$pdf->Output($filename, 'I');

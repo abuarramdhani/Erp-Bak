@@ -36,7 +36,7 @@ class C_InputData extends CI_Controller
         $data = $this->ajaxShowInput('array');
         $kodesie = substr($this->session->kodesie,0,7);
         $this->data['seksi'] = ucwords(strtolower($this->M_inputdata->getNameSeksi($kodesie)));
-// echo "<pre>";print_r($data);die;
+
         $table = '';
         $i = 0;
         foreach($data as $res){
@@ -46,30 +46,39 @@ class C_InputData extends CI_Controller
             $nama       = $res['nama'];
             $ket        = $res['keterangan'];
             $tgl_input  = $res['tgl_input'];
-            $tanggal    = $res['tanggal'];
+            $tanggal1   = $res['tanggal_start'];
+            $tanggal2   = $res['tanggal_end'];
             $status     = $res['status'];
+            $appTime    = $res['app_time'];
             $alasan     = $res['alasan'];
             $approver1  = $res['approver1'];
             $approver2  = $res['approver2'];
+
+            $tanggal    = ($tanggal1 == $tanggal2)? $tanggal1 : $tanggal1." - ".$tanggal2;
+
+            $editButton = '';
+            if($status == 0){
+                $editButton = "<button class='btn btn-sm btn-success changeDocument' data-toggle='modal' data-target='#modalEdit' type='button'><i class='fa fa-edit'></i> ubah</button>";
+            }
 
             switch($status){
                 case '0':
                     $status = '<td class="bg-yellow">Pending</td>';
                     break;
                 case '1':
-                    $status = '<td class="bg-blue">Approve by '.ucwords(strtolower($approver1)).'</td>';
+                    $status = '<td class="bg-blue">Diterima oleh seksi '.ucwords(strtolower($approver1))." pada tanggal ".$appTime.'</td>';
                     if($approver2 === ''){
-                        $status = '<td class="bg-green">Approve by '.ucwords(strtolower($approver1)).'</td>';
+                        $status = '<td class="bg-green">Diterima oleh seksi  '.ucwords(strtolower($approver1))." pada tanggal ".$appTime.'</td>';
                     }
                     break;
                 case '2':
-                    $status = '<td class="bg-red">Reject by '.ucwords(strtolower($approver1)).'</td>';
+                    $status = '<td class="bg-red">Ditolak oleh seksi '.ucwords(strtolower($approver1))." pada tanggal ".$appTime.'</td>';
                     break;
                 case '3':
-                    $status = '<td class="bg-green">Approve by '.ucwords(strtolower($approver2)).'</td>';
+                    $status = '<td class="bg-green">Diterima oleh seksi  '.ucwords(strtolower($approver2))." pada tanggal ".$appTime.'</td>';
                     break;
                 case '4':
-                    $status = '<td class="bg-red">Reject by '.ucwords(strtolower($approver2)).'</td>';
+                    $status = '<td class="bg-red">Ditolak oleh seksi '.ucwords(strtolower($approver2))." pada tanggal ".$appTime.'</td>';
                     break;
                 default:
                     $status = 'null';
@@ -90,6 +99,9 @@ class C_InputData extends CI_Controller
                             <td>$tanggal</td>
                             $status
                             <td>$alasan</td>
+                            <td>
+                                $editButton
+                            </td>
                         </tr>";
         }
 
@@ -128,16 +140,52 @@ class C_InputData extends CI_Controller
 
     function ajaxInputData(){
         $noind      = $_POST['noind'];
-        
+        $date       = $_POST['date'];
+
+        $dt = str_replace('/', '-', $date);
+        $dt = explode(' - ', $dt);
+        if(count($dt) > 1){
+            $tgl1 = date('Y-m-d', strtotime($dt['0']));
+            $tgl2 = date('Y-m-d', strtotime($dt['1']));
+        }else{
+            $tgl1 = date('Y-m-d', strtotime($dt['0']));
+            $tgl2 = date('Y-m-d', strtotime($dt['0']));
+        }
+
         $allNoind   = explode(',', $noind);
         
         foreach($allNoind as $noind){
             $id_master  = $_POST['ket'];
-            $date       = $_POST['date'];
+            $date       = [$tgl1, $tgl2];
     
             $this->M_inputdata->ajaxInputData($noind,$id_master,$date);
         }
 
+    }
+
+    function ajaxUpdateData(){
+        $id         = $_POST['id'];
+        $noind      = $_POST['noind'];
+        $date       = $_POST['date'];
+
+        $dt = str_replace('/', '-', $date);
+        $dt = explode(' - ', $dt);
+        if(count($dt) > 1){
+            $tgl1 = date('Y-m-d', strtotime($dt['0']));
+            $tgl2 = date('Y-m-d', strtotime($dt['1']));
+        }else{
+            $tgl1 = date('Y-m-d', strtotime($dt['0']));
+            $tgl2 = date('Y-m-d', strtotime($dt['0']));
+        }
+
+        $allNoind   = explode(',', $noind);
+        
+        foreach($allNoind as $noind){
+            $id_master  = $_POST['inform'];
+            $date       = [$tgl1, $tgl2];
+    
+            $this->M_inputdata->ajaxUpdateData($id, $noind,$id_master,$date);
+        }
     }
 
     function ajaxShowDetail(){
@@ -180,5 +228,18 @@ class C_InputData extends CI_Controller
             $htmlHistory .= "<p $font>($time) -> $ket $user - $name $action</p>";
         }
         echo $htmlHistory;
+    }
+
+    function ajaxShowData(){
+        $id = $this->input->post('id');
+        $res = $this->M_inputdata->ajaxShowData($id);
+        echo json_encode($res);
+    }
+
+    function ajaxDeleteData(){
+        $id = $this->input->post('id');
+        $res = $this->M_inputdata->ajaxDeleteData($id);
+        
+        return $res;
     }
 }

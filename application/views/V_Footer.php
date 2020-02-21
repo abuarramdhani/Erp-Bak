@@ -17,6 +17,7 @@
     	<script src="<?= base_url('assets/plugins/sweetalert2.all.js');?>"></script>
 		<script src="<?= base_url('assets/plugins/canvasjs/canvasjs.min.js') ?>"></script>
 		<script src="<?= base_url('assets/plugins/chartjs/Chart.js') ?>"></script>
+		<script src="<?= base_url('assets/plugins/moment.js') ?>"></script>
 		<script src="<?= base_url('assets/plugins/bootstrap-wysihtml5/bootstrap3-wysihtml5.all.js') ?>"></script>
 		<script src="<?= base_url('assets/plugins/bootstrap-wysihtml5/bootstrap3-wysihtml5.all.min.js') ?>"></script>
 		<script src="<?= base_url('assets/plugins/input-mask/3.x') ?>/dist/jquery.inputmask.bundle.js"></script>
@@ -46,8 +47,9 @@
 		<script src="<?= base_url('assets/plugins/validVal/js/jquery.validVal.min.js') ?>"></script>
 		<script src="<?= base_url('assets/plugins/dropzone/dropzone.min.js') ?>"></script>
 		<script src="<?= base_url('assets/plugins/daterangepicker-master/moment.min.js') ?>"></script>
+		<script src="<?= base_url('assets/plugins/daterangepicker-master/moment-precise-range.js') ?>"></script>
 		<script src="<?= base_url('assets/plugins/datepicker/js/bootstrap-datepicker.js') ?>"></script>
-		<script src="<?= base_url('assets/plugins/daterangepicker-master/daterangepicker.js') ?>"></script>
+		<script src="<?= base_url('assets/plugins/daterangepicker-master/daterangepicker.min.js') ?>"></script>
 		<script src="<?= base_url('assets/plugins/timepicker/js/bootstrap-timepicker.min.js') ?>"></script>
 		<script src="<?= base_url('assets/plugins/datetimepicker/build/jquery.datetimepicker.full.js') ?>"></script>
 		<script src="<?= base_url('assets/plugins/datetimepicker/build/jquery.datetimepicker.full.min.js') ?>"></script>
@@ -82,6 +84,7 @@
 		<script src="<?= base_url('assets/js/formValidation.js') ?>"></script>
 		<script src="<?= base_url('assets/js/jquery-maskmoney.js') ?>"></script>
 		<script src="<?= base_url('assets/plugins/howler/howler.js') ?>"></script>
+		<script src="<?= base_url('assets/plugins/fakeLoading/fakeLoading.js') ?>"></script>
 
 
 		<!-- CUSTOM JAVASCRIPT FOR APPLICATION | DO NOT EDIT!! -->
@@ -189,8 +192,17 @@
 		<script src="<?= base_url('assets/js/customSMS.js');?>"></script>
 		<script src="<?= base_url('assets/js/customPDP.js');?>"></script>
 		<script src="<?= base_url('assets/js/customKGS.js');?>"></script>
+		<script src="<?= base_url('assets/js/customRJP.js');?>"></script>
+		<script src="<?= base_url('assets/js/customMD.js');?>"></script>
+		<script src="<?= base_url('assets/js/customADO.js');?>"></script>
+		<script src="<?= base_url('assets/js/customIPM.js');?>"></script>
+		<script src="<?= base_url('assets/js/customPSPT.js');?>"></script>
 		<script type="text/javascript" src="<?= base_url('assets/js/customKTR.js') ?>"></script>
-		<script src="<?= base_url('assets/js/customME.js') ?>"></script>
+		<script src="<?= base_url('assets/js/customRPO.js');?>"></script>
+		<script src="<?= base_url('assets/js/customHW.js');?>"></script>
+		<script src="<?= base_url('assets/js/customMCC.js');?>"></script>
+		<script src="<?= base_url('assets/js/customGTSKK.js');?>"></script>
+		<script src="<?= base_url('assets/js/customCKB.js');?>"></script>
 
 
 

@@ -33,6 +33,7 @@ class M_ajax extends CI_Model {
                 msib.segment1 item_code, msib.description item_desc,msib.ATTRIBUTE26 quantity_standard,
                 mtrl.quantity quantity_normal,
                 mtrl.quantity_detailed quantity_allocate,
+                mtrl.quantity_delivered quantity_transact,
                 (  mtrl.quantity_delivered
                  - NVL ((SELECT SUM (NVL (kpt.packing_qty, 0))
                            FROM khs_packinglist_transactions kpt
@@ -40,7 +41,7 @@ class M_ajax extends CI_Model {
                             AND kpt.inventory_item_id = mtrl.inventory_item_id),
                         0
                        )
-                ) quantity_transact,
+                ) quantity_packing,
                 khs_inv_qty_att (mtrl.organization_id,
                                  mtrl.inventory_item_id,
                                  '$subInv',
@@ -122,7 +123,8 @@ class M_ajax extends CI_Model {
 
 	public function delTemp($ip){
 		$this->oracle->where('IP',$ip);
-		$this->oracle->delete('KHS_PACKINGLIST_TRANSACT_TEMP');
+        $this->oracle->delete('KHS_PACKINGLIST_TRANSACT_TEMP');
+        $query2 = $this->oracle->query('commit');        
     }
     
     public function insertError($ip){
@@ -136,9 +138,11 @@ class M_ajax extends CI_Model {
     }
 
     public function delTable($ip){
-        $sql = "DELETE FROM KHS_PACKINGLIST_TRANSACT_TEMP kmtt WHERE kmtt.IP = '$ip'";
-        
-        $query = $this->oracle->query($sql);
+        // $sql = "DELETE FROM KHS_PACKINGLIST_TRANSACT_TEMP kmtt WHERE kmtt.IP = '$ip'";
+        // $query = $this->oracle->query($sql);
+		$this->oracle->where('IP',$ip);
+        $this->oracle->delete('KHS_PACKINGLIST_TRANSACT_TEMP');
+        $query2 = $this->oracle->query('commit');        
     }
     
     

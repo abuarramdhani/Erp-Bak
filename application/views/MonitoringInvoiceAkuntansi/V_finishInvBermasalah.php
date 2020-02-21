@@ -8,6 +8,8 @@
 	<div class="inner" >
 		<div class="row">
 			<div class="col-lg-12">
+				<div class="text-right ">
+				</div>
 				<div class="row">
 					<div class="col-lg-12">
 						<div class="text-left ">
@@ -20,65 +22,98 @@
 					<div class="col-lg-12">
 						<div class="box box-primary box-solid">
 							<div class="box-body">
-								<!-- <div style="overflow: auto;"> -->
+								<div style="overflow: auto;">
 								<table id="unprocessTabel" class="table table-striped table-bordered table-hover text-center tblMI">
 									<thead>
 										<tr class="bg-primary">
 											<th class="text-center">No</th>
 											<th class="text-center">Invoice ID</th>
-											<th class="text-center">Detail</th>
+											<th class="text-center" style="width: 10%">Action</th>
 											<th class="text-center">Vendor Name</th>
 											<th class="text-center">Invoice Number</th>
 											<th class="text-center">Invoice Date</th>
 											<th class="text-center">PPN</th>
-											<th class="text-center">Tax Invoice Number</th>
-											<!-- <th class="text-center">Invoice Amount</th> -->
-											<!-- <th class="text-center">Po Amount</th> -->
 											<th class="text-center">PO Number</th>
-											<th class="text-center">Creation Date</th>
-											<th class="text-center">Masalah</th>
-											<th class="text-center">FeedBack Purchasing</th>
-											<th class="text-center">FeedBack Date</th>
+											<th class="text-center">Creation Date </th>
+											<th class="text-center">Finished Date </th>
+											<th class="text-left">Masalah </th>
+											<th class="text-left">Feedback Purchasing</th>
+											<th class="text-center">Tracking</th>
 											<th class="text-center">PIC</th>
 										</tr>
 									</thead>
 									<tbody>
 										<?php $no=1; foreach($finish as $u){?>
+											<?php if ($u['JMLH_N'] != 0) { ?>
+										<tr style="background-color: #ff7a7a47">
+											<?php }else { ?>
 										<tr>
+											<?php }?>
 											<td><?php echo $no ?></td>
 											<td><?php echo $u['INVOICE_ID'] ?></td>
 											<td data-id="<?= $u['INVOICE_ID'] ?>" batch_number="<?= $u['BATCH_NUMBER'] ?>" class="ganti_<?= $u['INVOICE_ID'] ?>">
-												<a title="Detail..." target="_blank" href="<?php echo base_url('AccountPayables/MonitoringInvoice/InvoiceBermasalahAkt/DetailFinishInvBermasalah/'.$u['INVOICE_ID']);?>" class="btn btn-info"><i class="fa fa-file-text-o"></i>
+												<a title="Detail..." style="width:100px;margin-bottom: 5px" target="_blank" href="<?php echo base_url('AccountPayables/MonitoringInvoice/Unprocess/DetailInvBermasalah/'.$u['INVOICE_ID']);?>" class="btn btn-info btn-sm"><i class="fa fa-file-text-o"></i> Detail
 												</a>
+												<?php if ($u['STATUS_INV_BERMASALAH'] != 1) { ?>
+												<a title="Hasil Konfirmasi..." style="width:100px;margin-bottom: 5px" onclick="bukaHasilConf(<?php echo $u['INVOICE_ID']?>)" class="btn btn-warning btn-sm" data-target="MdlAkuntansi" data-toggle="modal"><i class="fa fa-external-link"></i> Checklist
+												</a>
+												<?php } ?>
+
+												<?php if ($u['STATUS_INV_BERMASALAH'] == 4) { ?>
+												<a title="Selesaikan Invoice..." style="width:100px;margin-bottom: 5px" onclick="selesaikanInvoice(<?php echo $u['INVOICE_ID']?>)" class="btn btn-success btn-sm"><i class="fa fa-check"></i> Selesaikan
+												</a>
+												<?php } ?>
 											</td>
 											<td><?php echo $u['VENDOR_NAME']?></td>
 											<td><strong><?php echo $u['INVOICE_NUMBER']?></strong></td>
-											<td><?php echo date('d-M-Y',strtotime($u['INVOICE_DATE']))?></td>
+											<td data-order="<?php echo date('Y-m-d', strtotime($u['INVOICE_DATE']))?>"><?php echo date('d-M-Y',strtotime($u['INVOICE_DATE']))?></td>
 											<td><?php echo $u['PPN'] ?></td>
-											<td><?php echo $u['TAX_INVOICE_NUMBER']?></td>
-											<!-- <td class="inv_amount" >
-											<?php if($u['INVOICE_AMOUNT']==NULL) {
-								          	 echo 'Rp.'.' ,-';
-								          	}else{
-								          	 echo 'Rp. '. number_format($u['INVOICE_AMOUNT'],0,'.','.').',00-';
-								          	};?>
-								          	</td>
-											<td class="po_amount">
-											<?php if($u['PO_AMOUNT']==NULL) {
-								          	 echo 'Rp.'.' ,-';
-								          	}else{
-								          	 echo 'Rp. '. number_format(round($u['PO_AMOUNT']),0,'.','.').',00-';
-								          	};?>
-								          	</td> -->
 											<td><?php echo $u['PO_NUMBER']?></td>
-											<td><b><?php echo $u['AKT_DATE']?></b></b></td>
+											<td data-order="<?php echo date('Y-m-d', strtotime($u['AKT_DATE']))?>"><b><?php echo $u['AKT_DATE']?></b></td>
+											<td data-order="<?php echo date('Y-m-d', strtotime($u['AKT_FINISHED_DATE']))?>"><b><?php echo $u['AKT_FINISHED_DATE']?></b></td>
 											<td><b>KATEGORI : </b><?php echo $u['KATEGORI_INV_BERMASALAH']?> <br>
 												<b>KELENGKAPAN DOKUMEN : </b><?php echo $u['KELENGKAPAN_DOC_INV_BERMASALAH']?> <br>
 												<b>KETERANGAN : </b><?php echo $u['KETERANGAN_INV_BERMASALAH']?>	
 											</td>
-											<td><b><?php echo $u['FEEDBACK_PURCHASING']?></b></td>
-											<td><b><?php echo $u['PURC_DATE']?></b></td>
-											<td><?php echo $u['SOURCE']?></td>
+											<?php if ($u['FEEDBACK_PURCHASING'] !== NULL) { ?>
+											<td><b>Purchasing</b> : <?php echo $u['FEEDBACK_PURCHASING']?></td>
+											<?php }else { ?>
+											<td><i>Not Yet Confirmed</i></td>
+											<?php } ?>
+											<?php if ($u['STATUS_INV_BERMASALAH'] == 1) { ?>
+											<td><span class="label label-default"><i class="fa fa-paper-plane"></i> Send to Purchasing &nbsp;</span></td>
+
+											<?php } else if ($u['STATUS_INV_BERMASALAH'] == 2  ) { ?>
+											<td><span class="label label-primary" style="padding-bottom: 5px;"><i class="fa fa-check"></i> Checked by Purchasing &nbsp;</span>
+												<?php if ($u['JMLH_N'] != 0) {?>
+												 	<br><br><span class="label label-danger" style="padding-bottom: 5px;"> REJECTED BY PURC : <b><?php echo $u['JMLH_N']?></b></span>
+												<?php } ?>
+											</td>
+
+											<?php } else if ($u['STATUS_INV_BERMASALAH'] == 3) {?> 
+											<td><span class="label label-danger"><i class="fa fa-times"></i> Rejected by Purchasing &nbsp;</span>
+												
+												 <?php if ($u['JMLH_N'] != 0) {?>
+												 	<br><br><span class="label label-danger" style="padding-bottom: 5px;"> REJECTED BY PURC : <b><?php echo $u['JMLH_N']?></b></span>
+												<?php } ?>
+											</td>
+
+											<?php } else if ($u['STATUS_INV_BERMASALAH'] == 4) {?>
+											<td><span class="label label-success"><i class="fa fa-check"></i> Approved by Purchasing &nbsp;</span>
+												 
+												 <?php if ($u['JMLH_N'] != 0) {?>
+												 	<br><br><span class="label label-danger" style="padding-bottom: 5px;"> REJECTED BY PURC : <b><?php echo $u['JMLH_N']?></b></span>
+												<?php } ?>
+											</td>
+
+											<?php } else if ($u['STATUS_INV_BERMASALAH'] == 5) {?>
+											<td><span class="label label-success"><i class="fa fa-check"></i> Approved by Akuntansi &nbsp;</span></td>
+											<?php } ?>
+											<?php if ($u['SOURCE_BERMASALAH'] !== 'BUYER') { ?>  
+											<td><?php echo $u['SOURCE_BERMASALAH']?></td>
+											<?php }else { ?>
+											<td>PURCHASING</td>
+											<?php } ?>
 										</tr>
 										<?php $no++; } ?>
 									</tbody>
@@ -91,3 +126,27 @@
 		</div>
 	</div>
 </section>	
+
+<div id="MdlAkuntansi" class="modal fade" role="dialog">
+	<div class="modal-dialog" style="width:800px" role="document">
+		<div class="modal-content"  id="content1" >
+		  <div class="modal-header">
+		    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+		    <h5 class="modal-title"></h5>
+		  </div>
+		  <div class="modal-body">
+		    <div class="row">
+		      <div class="col-md-12">
+		      	<center>
+		      		
+		      	</select>
+		      	<center>
+		      </div>
+		    </div>
+		  </div>
+		  <div class="modal-footer">
+		    
+		  </div>
+		</div>
+ 	</div>
+</div>

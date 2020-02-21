@@ -1,38 +1,26 @@
 //---------------------------------------------------------INPUT--------------------------------------------------------------------------------- 
 function inputPSPB(th) {
 	$(document).ready(function(){
-	var noSpb1  = $('#noSpb1').val();
-	var noSpb2  = $('#noSpb2').val();
-	var noSpb3  = $('#noSpb3').val();
-	var noSpb4  = $('#noSpb4').val();
-	var noSpb5  = $('#noSpb5').val();
-	var noSpb6  = $('#noSpb6').val();
-	var noSpb7  = $('#noSpb7').val();
-	var noSpb8  = $('#noSpb8').val();
-	var noSpb9  = $('#noSpb9').val();
-	var noSpb10 = $('#noSpb10').val();
-	var btn1    = $('#btn1').val();
-	var btn2    = $('#btn2').val();
-	var btn3    = $('#btn3').val();
-	var btn4    = $('#btn4').val();
-	var btn5    = $('#btn5').val();
-	var btn6    = $('#btn6').val();
-	var btn7    = $('#btn7').val();
-	var btn8    = $('#btn8').val();
-	var btn9    = $('#btn9').val();
-	var btn10   = $('#btn10').val();
-	// var pic   = $('#pic').val();
-	// console.log(btn1);
+    var no_spb      = $('input[name="no_spb[]"]').map(function(){return $(this).val();}).get();
+    var btn_urgent  = $('input[name="btn_urgent[]"]').map(function(){return $(this).val();}).get();
+    var btn_bon     = $('input[name="btn_bon[]"]').map(function(){return $(this).val();}).get();
+    var btn_langsung = $('input[name="btn_langsung[]"]').map(function(){return $(this).val();}).get();
+    // console.log(btn1);
+    $("#mdlloading").modal({
+                backdrop: 'static',
+                keyboard: true, 
+                show: true
+        }); 
 	var request = $.ajax({
         url: baseurl+'KapasitasGdSparepart/Input/',
-        data: {	noSpb1 : noSpb1, noSpb2 : noSpb2, noSpb3 : noSpb3, noSpb4 : noSpb4, noSpb5 : noSpb5,
-                noSpb6 : noSpb6, noSpb7 : noSpb7, noSpb8 : noSpb8, noSpb9 : noSpb9, noSpb10 : noSpb10,
-                btn1 : btn1, btn2 : btn2, btn3 : btn3, btn4 : btn4, btn5 : btn5, btn6 : btn6,
-                btn7 : btn7, btn8 : btn8, btn9 : btn9, btn10 : btn10},
+        data: {no_spb : no_spb, btn_urgent : btn_urgent, btn_bon : btn_bon, btn_langsung : btn_langsung},
         type: "POST",
-        datatype: 'html'
+        datatype: 'html',
+        success: function(data){
+            $("#mdlloading").modal("hide"); 
+			window.location.reload();
+	    }
 	});
-    window.location.reload();
 	});
 }
 
@@ -47,6 +35,101 @@ function btnUrgent(no) {
         $('#btn'+no).removeClass('btn-success').addClass('btn-warning');
         document.getElementById('btn'+no).style.color = 'black';
     }
+}
+
+function btnBonKgs(no) {
+    var valbon = $('#btnbon'+no).val();
+    if (valbon == 'Bon') {
+        $('#btnbon'+no).val('Batal');
+        $('#btnbon'+no).removeClass('btn-default').addClass('btn-danger');
+    }else if (valbon == 'Batal') {
+        $('#btnbon'+no).val('Bon');
+        $('#btnbon'+no).removeClass('btn-danger').addClass('btn-default');
+    }
+}
+
+function btnLangsungKgs(no) {
+    var langsung = $('#btnlangsung'+no).val();
+    if (langsung == 'Langsung') {
+        $('#btnlangsung'+no).val('Batal');
+        $('#btnlangsung'+no).removeClass('btn-info').addClass('btn-danger');
+    }else if (langsung == 'Batal') {
+        $('#btnlangsung'+no).val('Langsung');
+        $('#btnlangsung'+no).removeClass('btn-danger').addClass('btn-info');
+    }
+}
+
+function btnCancelKGS(no) {
+    var jenis = $('#jenis'+no).val();
+    var nodoc = $('#nodoc'+no).val();
+    console.log(jenis);
+    Swal.fire({
+        title: 'Apakah Anda Yakin Akan Melakukan Cancel?',
+        type: 'question',
+        showCancelButton: true,
+        allowOutsideClick: false
+    }).then(result => {
+        if (result.value) {  
+            $('#baris'+no).css('display', 'none');
+            $.ajax ({
+                url : baseurl + "KapasitasGdSparepart/Input/cancelSPB",
+                data: { no : no , jenis : jenis, nodoc : nodoc},
+                type : "POST",
+                dataType: "html",
+                success: function(data){
+                    swal.fire("Berhasil!", "", "success");
+                    }
+                });
+    }})   
+    
+}
+
+function btnPendingSpb(no) {
+    var jenis = $('#jenis'+no).val();
+    var nodoc = $('#nodoc'+no).val();
+    var bon = $('#bon'+no).val();
+    console.log(jenis);
+    if (bon == 'PENDING') {
+        Swal.fire({
+            title: 'Apakah Anda Yakin Akan Menghapus Pending?',
+            type: 'question',
+            showCancelButton: true,
+            allowOutsideClick: false
+        }).then(result => {
+            if (result.value) {  
+                $.ajax ({
+                    url : baseurl + "KapasitasGdSparepart/Tracking/deletependingSPB",
+                    data: { no : no , jenis : jenis, nodoc : nodoc},
+                    type : "POST",
+                    dataType: "html",
+                    success: function(data){
+                        swal.fire("Berhasil!", "", "success");
+                        window.location.reload();
+                        }
+                    });
+        }}) 
+    }else {
+        Swal.fire({
+            title: 'Apakah Anda Yakin Akan Melakukan Pending?',
+            type: 'question',
+            showCancelButton: true,
+            allowOutsideClick: false
+        }).then(result => {
+            if (result.value) {  
+                $.ajax ({
+                    url : baseurl + "KapasitasGdSparepart/Tracking/pendingSPB",
+                    data: { no : no , jenis : jenis, nodoc : nodoc},
+                    type : "POST",
+                    dataType: "html",
+                    success: function(data){
+                        swal.fire("Berhasil!", "", "success");
+                        window.location.reload();
+                        }
+                    });
+        }}) 
+    }
+      
+    
 }
 
 //----------------------------------------------------------ADMIN----------------------------------------------------------------------------------
@@ -139,223 +222,496 @@ function saveJmlSpb(th) {
 
 
 //---------------------------------------------------------PELAYANAN---------------------------------------------------------------------------
-// function picplyn(no) {
-//     $('#pic'+no).change(function() {
-//     $('#btnPelayanan'+no).removeAttr("disabled");
-// })
-// }
-
 
 function btnPelayananSPB(no) {
     var valBtn = $('#btnPelayanan'+no).val();
-    var jenis  = $('#jenis_doc'+no).val();
-    var no_spb = $('#no_doc'+no).val();
+    var jenis  = $('#jenis'+no).val();
+    var no_spb = $('#nodoc'+no).val();
     var pic = $('#pic'+no).val();
-    //  console.log(valBtn);
+    var d    = new Date();
+    var date = d.getDate()+'/'+((d.getMonth()+1).toString().length==2?(d.getMonth()+1).toString():"0"+(d.getMonth()+1).toString())+'/'+d.getFullYear()+" "+d.getHours()+':'+d.getMinutes()+':'+d.getSeconds();
+    var wkt  = d.getHours()+':'+d.getMinutes()+':'+d.getSeconds();
+     console.log(jenis, no_spb);
+
+    var hoursLabel   = document.getElementById("hours"+no);
+    var minutesLabel = document.getElementById("minutes"+no);
+    var secondsLabel = document.getElementById("seconds"+no);
+    var totalSeconds = 0;
+    var timer = null;
+
+    $("#btnrestartSPB"+no).on('click',function() {
+        if (timer) {
+            totalSeconds = 0;
+            stop();
+        }
+    });
+
+    function setTime() {
+        totalSeconds++;
+        secondsLabel.innerHTML = pad(totalSeconds % 60);
+        minutesLabel.innerHTML = pad(parseInt(totalSeconds / 60));
+        hoursLabel.innerHTML = pad(parseInt(totalSeconds / 3600))
+    }
+    
+    function pad(val) {
+        var valString = val + "";
+        if (valString.length < 2) {
+        return "0" + valString;
+        } else {
+        return valString;
+        }
+    }
+     $('#btnPelayanan'+no).on('click',function() {
+            
+    })
+
     if (valBtn == 'Mulai') {
-        var d    = new Date();
-        var date = d.getDate()+'/'+((d.getMonth()+1).toString().length==2?(d.getMonth()+1).toString():"0"+(d.getMonth()+1).toString())+'/'+d.getFullYear()+" "+d.getHours()+':'+d.getMinutes()+':'+d.getSeconds();
-        var wkt  = d.getHours()+':'+d.getMinutes()+':'+d.getSeconds();
         $('#btnPelayanan'+no).each(function() {
             $('#btnPelayanan'+no).val('Selesai'); 
             $('#mulai'+no).val(wkt); 
-            var hoursLabel   = document.getElementById("hours"+no);
-            var minutesLabel = document.getElementById("minutes"+no);
-            var secondsLabel = document.getElementById("seconds"+no);
-            var totalSeconds = 0;
-            setInterval(setTime, 1000);
-
-            function setTime() {
-                ++totalSeconds;
-                secondsLabel.innerHTML = pad(totalSeconds%60);
-                minutesLabel.innerHTML = pad(parseInt(totalSeconds/60));
-                hoursLabel.innerHTML   = pad(parseInt(totalSeconds/(60*60)));
-            }
-
-            function pad(val) {
-                var valString = val + "";
-                if(valString.length < 2){
-                    return "0" + valString;
-                }else{
-                    return valString;
-                }
-            }
             $(this).removeClass('btn-success').addClass('btn-danger');
             $('#pic'+no).prop("disabled", true); 
 
+            if (!timer) {
+                timer = setInterval(setTime, 1000);
+            }
         })
-        // console.log(valBtn);
-
         $.ajax ({
             url : baseurl + "KapasitasGdSparepart/Pelayanan/updateMulai",
-            data: { date : date , jenis : jenis, no_spb : no_spb},
+            data: { date : date , jenis : jenis, no_spb : no_spb, pic : pic},
             type : "POST",
             dataType: "html"
             });
         
     }else if(valBtn == 'Selesai'){
-        var mulai  = $('#mulai'+no).val();
-        var d      = new Date();
-        var date   = d.getDate()+'/'+((d.getMonth()+1).toString().length==2?(d.getMonth()+1).toString():"0"+(d.getMonth()+1).toString())+'/'+d.getFullYear()+" "+d.getHours()+':'+d.getMinutes()+':'+d.getSeconds();
-        var wkt    = d.getHours()+':'+d.getMinutes()+':'+d.getSeconds();
-        $('#btnPelayanan'+no).each(function() {
             $('#btnPelayanan'+no).attr("disabled", "disabled"); 
-            $('#timer'+no).css('display','none');
-        })
-        
-        $.ajax ({
-        url : baseurl + "KapasitasGdSparepart/Pelayanan/updateSelesai",
-        data: { date : date,jenis : jenis, no_spb : no_spb, mulai : mulai, wkt : wkt, pic : pic},
-        type : "POST",
-        dataType: "html"
-        });
+            $('#btnrestartSPB'+no).attr("disabled", "disabled"); 
+            var mulai  = $('#mulai'+no).val();
+            $('#timer'+no).css('display','none');     
 
+            $.ajax ({
+            url : baseurl + "KapasitasGdSparepart/Pelayanan/updateSelesai",
+            data: { date : date,jenis : jenis, no_spb : no_spb, mulai : mulai, wkt : wkt, pic : pic},
+            type : "POST",
+            dataType: "html"
+            });
     }
     
 }
 
-//----------------------------------------------------------PENGELUARAN--------------------------------------------------------------------------
+function btnRestartPelayanan(no) {
+    var jenis  = $('#jenis'+no).val();
+    var no_spb = $('#nodoc'+no).val();
+    var pic = $('#pic'+no).val();
+    var d    = new Date();
+    var date = d.getDate()+'/'+((d.getMonth()+1).toString().length==2?(d.getMonth()+1).toString():"0"+(d.getMonth()+1).toString())+'/'+d.getFullYear()+" "+d.getHours()+':'+d.getMinutes()+':'+d.getSeconds();
+    var wkt  = d.getHours()+':'+d.getMinutes()+':'+d.getSeconds();
+     console.log(jenis, no_spb);
 
-// $('#pic'+no).change(function() {
-//     $('#btnPengeluaran'+no).removeAttr("disabled");
-// })
+        // console.log(jenis);
+        Swal.fire({
+            title: 'Apakah Anda Yakin?',
+            text : 'Restart akan dilakukan...',
+            type: 'question',
+            showCancelButton: true,
+            allowOutsideClick: false
+        }).then(result => {
+            if (result.value) {  
+                $('#mulai'+no).val(wkt); 
+                $("#btnrestartSPB"+no).removeClass('btn-info').addClass('btn-warning');
+                $.ajax ({
+                    url : baseurl + "KapasitasGdSparepart/Pelayanan/updateMulai",
+                    data: {jenis : jenis, no_spb : no_spb, date : date, pic : pic},
+                    type : "POST",
+                    dataType: "html",
+                    success: function(data){
+                        swal.fire("Berhasil!", "Restart telah dilakukan.", "success");
+                    }
+                });
+        }})  
+}
+
+function btnPausePelayanan(no) {
+    var jenis  = $('#jenis'+no).val();
+    var no_spb = $('#nodoc'+no).val();
+    var mulai  = $('#mulai'+no).val();
+    var d    = new Date();
+    var wkt  = d.getHours()+':'+d.getMinutes()+':'+d.getSeconds();   
+
+    Swal.fire({
+        title: 'Apakah Anda Yakin?',
+        text : 'Pause akan dilakukan...',
+        type: 'question',
+        showCancelButton: true,
+        allowOutsideClick: false
+    }).then(result => {
+        if (result.value) {  
+            $('#timer'+no).css('display','none');  
+            $('#btnrestartSPB'+no).attr("disabled", "disabled"); 
+            $.ajax ({
+                url : baseurl + "KapasitasGdSparepart/Pelayanan/pauseSPB",
+                data: {jenis : jenis, no_spb : no_spb, wkt : wkt, mulai : mulai},
+                type : "POST",
+                dataType: "html",
+                success: function(data){
+                    swal.fire("Berhasil!", "Waktu telah ditunda.", "success");
+                }
+            });
+    }})
+}
+
+$(document).ready(function () {
+	$(".picSPB").select2({
+        allowClear: false,
+        placeholder: "",
+        minimumInputLength: 2,
+        ajax: {
+            url: baseurl + "KapasitasGdSparepart/Pelayanan/getPIC",
+            dataType: 'json',
+            type: "GET",
+            data: function (params) {
+                var queryParameters = {
+                        term: params.term,
+                }
+                return queryParameters;
+            },
+            processResults: function (data) {
+                console.log(data);
+                return {
+                    results: $.map(data, function (obj) {
+                        return {id:obj.PIC, text:obj.PIC};
+                    })
+                };
+            }
+		}
+	});
+});
+
+//----------------------------------------------------------PENGELUARAN--------------------------------------------------------------------------
 
 function btnPengeluaranSPB(no) {
     var valBtn = $('#btnPengeluaran'+no).val();
-    var jenis  = $('#jenis_doc'+no).val();
-    var no_spb = $('#no_doc'+no).val();
+    var jenis  = $('#jenis'+no).val();
+    var no_spb = $('#nodoc'+no).val();
     var pic = $('#pic'+no).val();
-    //  console.log(valBtn);
+    var d    = new Date();
+    var date = d.getDate()+'/'+((d.getMonth()+1).toString().length==2?(d.getMonth()+1).toString():"0"+(d.getMonth()+1).toString())+'/'+d.getFullYear()+" "+d.getHours()+':'+d.getMinutes()+':'+d.getSeconds();
+    var wkt  = d.getHours()+':'+d.getMinutes()+':'+d.getSeconds();
+     console.log(jenis, no_spb);
+
+    var hoursLabel   = document.getElementById("hours"+no);
+    var minutesLabel = document.getElementById("minutes"+no);
+    var secondsLabel = document.getElementById("seconds"+no);
+    var totalSeconds = 0;
+    var timer = null;
+
+    $("#btnrestartSPB"+no).on('click',function() {
+        if (timer) {
+            totalSeconds = 0;
+            stop();
+        }
+    });
+
+    function setTime() {
+        totalSeconds++;
+        secondsLabel.innerHTML = pad(totalSeconds % 60);
+        minutesLabel.innerHTML = pad(parseInt(totalSeconds / 60));
+        hoursLabel.innerHTML = pad(parseInt(totalSeconds / 3600))
+    }
+    
+    function pad(val) {
+        var valString = val + "";
+        if (valString.length < 2) {
+        return "0" + valString;
+        } else {
+        return valString;
+        }
+    }
+     $('#btnPengeluaran'+no).on('click',function() {
+            
+    })
+
     if (valBtn == 'Mulai') {
-        var d       = new Date();
-        var date    = d.getDate()+'/'+((d.getMonth()+1).toString().length==2?(d.getMonth()+1).toString():"0"+(d.getMonth()+1).toString())+'/'+d.getFullYear()+" "+d.getHours()+':'+d.getMinutes()+':'+d.getSeconds();
-        var wkt     = d.getHours()+':'+d.getMinutes()+':'+d.getSeconds();
         $('#btnPengeluaran'+no).each(function() {
             $('#btnPengeluaran'+no).val('Selesai'); 
             $('#mulai'+no).val(wkt); 
             $(this).removeClass('btn-success').addClass('btn-danger');
             $('#pic'+no).prop("disabled", true); 
-            var hoursLabel   = document.getElementById("hours"+no);
-            var minutesLabel = document.getElementById("minutes"+no);
-            var secondsLabel = document.getElementById("seconds"+no);
-            var totalSeconds = 0;
-            setInterval(setTime, 1000);
 
-            function setTime() {
-                ++totalSeconds;
-                secondsLabel.innerHTML = pad(totalSeconds%60);
-                minutesLabel.innerHTML = pad(parseInt(totalSeconds/60));
-                hoursLabel.innerHTML   = pad(parseInt(totalSeconds/(60*60)));
-            }
-
-            function pad(val)
-            {
-                var valString = val + "";
-                if(valString.length < 2){
-                    return "0" + valString;
-                } else {
-                    return valString;
-                }
+            if (!timer) {
+                timer = setInterval(setTime, 1000);
             }
         })
-
         $.ajax ({
             url : baseurl + "KapasitasGdSparepart/Pengeluaran/updateMulai",
-            data: { date : date , jenis : jenis, no_spb : no_spb},
+            data: { date : date , jenis : jenis, no_spb : no_spb, pic : pic},
             type : "POST",
             dataType: "html"
             });
         
     }else if(valBtn == 'Selesai'){
-        var mulai   = $('#mulai'+no).val();
-        var d       = new Date();
-        var date    = d.getDate()+'/'+((d.getMonth()+1).toString().length==2?(d.getMonth()+1).toString():"0"+(d.getMonth()+1).toString())+'/'+d.getFullYear()+" "+d.getHours()+':'+d.getMinutes()+':'+d.getSeconds();
-        var wkt     = d.getHours()+':'+d.getMinutes()+':'+d.getSeconds();
-        $('#btnPengeluaran'+no).each(function() {
             $('#btnPengeluaran'+no).attr("disabled", "disabled"); 
-            $('#timer'+no).css('display','none');
-        })
-        
-        $.ajax ({
-        url : baseurl + "KapasitasGdSparepart/Pengeluaran/updateSelesai",
-        data: { date : date,jenis : jenis, no_spb : no_spb, wkt : wkt, mulai : mulai, pic : pic},
-        type : "POST",
-        dataType: "html"
-        });
+            $('#btnrestartSPB'+no).attr("disabled", "disabled"); 
+            var mulai  = $('#mulai'+no).val();
+            $('#timer'+no).css('display','none');      
 
+            $.ajax ({
+            url : baseurl + "KapasitasGdSparepart/Pengeluaran/updateSelesai",
+            data: { date : date,jenis : jenis, no_spb : no_spb, mulai : mulai, wkt : wkt, pic : pic},
+            type : "POST",
+            dataType: "html"
+            });
     }
-    
+}
+
+function btnRestartPengeluaran(no) {
+    var jenis  = $('#jenis'+no).val();
+    var no_spb = $('#nodoc'+no).val();
+    var pic = $('#pic'+no).val();
+    var d    = new Date();
+    var date = d.getDate()+'/'+((d.getMonth()+1).toString().length==2?(d.getMonth()+1).toString():"0"+(d.getMonth()+1).toString())+'/'+d.getFullYear()+" "+d.getHours()+':'+d.getMinutes()+':'+d.getSeconds();
+    var wkt  = d.getHours()+':'+d.getMinutes()+':'+d.getSeconds();
+     console.log(jenis, no_spb);
+
+     Swal.fire({
+        title: 'Apakah Anda Yakin?',
+        text: 'Restart akan dilakukan...',
+        type: 'question',
+        showCancelButton: true,
+        allowOutsideClick: false
+    }).then(result => {
+        if (result.value) {  
+            $('#mulai'+no).val(wkt); 
+            $("#btnrestartSPB"+no).removeClass('btn-info').addClass('btn-warning');
+            $.ajax ({
+                url : baseurl + "KapasitasGdSparepart/Pengeluaran/updateMulai",
+                data: {jenis : jenis, no_spb : no_spb, date : date, pic : pic},
+                type : "POST",
+                dataType: "html",
+                success: function(data){
+                    swal.fire("Berhasil!", "Restart telah dilakukan.", "success");
+                }
+            });
+    }})  
+}
+
+function btnPausePengeluaran(no) {
+    var jenis  = $('#jenis'+no).val();
+    var no_spb = $('#nodoc'+no).val();
+    var mulai  = $('#mulai'+no).val();
+    var d      = new Date();
+    var wkt    = d.getHours()+':'+d.getMinutes()+':'+d.getSeconds();
+
+    Swal.fire({
+        title: 'Apakah Anda Yakin?',
+        type: 'question',
+        showCancelButton: true,
+        allowOutsideClick: false
+    }).then(result => {
+        if (result.value) {  
+            $('#timer'+no).css('display','none'); 
+            $('#btnPengeluaran'+no).attr("disabled", "disabled");  
+            $.ajax ({
+                url : baseurl + "KapasitasGdSparepart/Pengeluaran/pauseSPB",
+                data: {jenis : jenis, no_spb : no_spb, wkt : wkt, mulai : mulai},
+                type : "POST",
+                dataType: "html",
+                success: function(data){
+                    swal.fire("Berhasil!", "Waktu telah ditunda.", "success");
+                    }
+            });
+    }})    
 }
 
 //----------------------------------------------------------PACKING--------------------------------------------------------------------------------
 
-// $('#pic'+no).change(function() {
-//     $('#btnPacking'+no).removeAttr("disabled");
-// })
 
 function btnPackingSPB(no) {
-    var valBtn  = $('#btnPacking'+no).val();
-    var jenis   = $('#jenis_doc'+no).val();
-    var no_spb  = $('#no_doc'+no).val();
-    var pic  = $('#pic'+no).val();
-    //  console.log(valBtn);
+    var valBtn = $('#btnPacking'+no).val();
+    var jenis  = $('#jenis'+no).val();
+    var no_spb = $('#nodoc'+no).val();
+    var pic = $('#pic'+no).val();
+    var d    = new Date();
+    var date = d.getDate()+'/'+((d.getMonth()+1).toString().length==2?(d.getMonth()+1).toString():"0"+(d.getMonth()+1).toString())+'/'+d.getFullYear()+" "+d.getHours()+':'+d.getMinutes()+':'+d.getSeconds();
+    var wkt  = d.getHours()+':'+d.getMinutes()+':'+d.getSeconds();
+     console.log(jenis, no_spb);
+
+    var hoursLabel   = document.getElementById("hours"+no);
+    var minutesLabel = document.getElementById("minutes"+no);
+    var secondsLabel = document.getElementById("seconds"+no);
+    var totalSeconds = 0;
+    var timer = null;
+
+    $("#btnrestartSPB"+no).on('click',function() {
+        if (timer) {
+            totalSeconds = 0;
+            stop();
+        }
+    });
+
+    function setTime() {
+        totalSeconds++;
+        secondsLabel.innerHTML = pad(totalSeconds % 60);
+        minutesLabel.innerHTML = pad(parseInt(totalSeconds / 60));
+        hoursLabel.innerHTML = pad(parseInt(totalSeconds / 3600))
+    }
+    
+    function pad(val) {
+        var valString = val + "";
+        if (valString.length < 2) {
+        return "0" + valString;
+        } else {
+        return valString;
+        }
+    }
+     $('#btnPacking'+no).on('click',function() {
+            
+    })
+
     if (valBtn == 'Mulai') {
-        var d       = new Date();
-        var date    = d.getDate()+'/'+((d.getMonth()+1).toString().length==2?(d.getMonth()+1).toString():"0"+(d.getMonth()+1).toString())+'/'+d.getFullYear()+" "+d.getHours()+':'+d.getMinutes()+':'+d.getSeconds();
-        var wkt     = d.getHours()+':'+d.getMinutes()+':'+d.getSeconds();
         $('#btnPacking'+no).each(function() {
             $('#btnPacking'+no).val('Selesai'); 
-            $('#mulai'+no).val(wkt);
+            $('#mulai'+no).val(wkt); 
             $(this).removeClass('btn-success').addClass('btn-danger');
             $('#pic'+no).prop("disabled", true); 
-            var hoursLabel   = document.getElementById("hours"+no);
-            var minutesLabel = document.getElementById("minutes"+no);
-            var secondsLabel = document.getElementById("seconds"+no);
-            var totalSeconds = 0;
-            setInterval(setTime, 1000);
 
-            function setTime(){
-                ++totalSeconds;
-                secondsLabel.innerHTML  = pad(totalSeconds%60);
-                minutesLabel.innerHTML  = pad(parseInt(totalSeconds/60));
-                hoursLabel.innerHTML    = pad(parseInt(totalSeconds/(60*60)));
-            }
-
-            function pad(val){
-                var valString = val + "";
-                if(valString.length < 2){
-                    return "0" + valString;
-                }else{
-                    return valString;
-                }
+            if (!timer) {
+                timer = setInterval(setTime, 1000);
             }
         })
-
         $.ajax ({
             url : baseurl + "KapasitasGdSparepart/Packing/updateMulai",
-            data: { date : date , jenis : jenis, no_spb : no_spb},
+            data: { date : date , jenis : jenis, no_spb : no_spb, pic : pic},
             type : "POST",
             dataType: "html"
             });
         
     }else if(valBtn == 'Selesai'){
-        var mulai   = $('#mulai'+no).val();
-        var d       = new Date();
-        var date    = d.getDate()+'/'+((d.getMonth()+1).toString().length==2?(d.getMonth()+1).toString():"0"+(d.getMonth()+1).toString())+'/'+d.getFullYear()+" "+d.getHours()+':'+d.getMinutes()+':'+d.getSeconds();
-        var wkt     = d.getHours()+':'+d.getMinutes()+':'+d.getSeconds();
-        $('#btnPacking'+no).each(function() {
-            $('#btnPacking'+no).attr("disabled", "disabled"); 
-            $('#timer'+no).css('display','none');
-        })
-        
-        $.ajax ({
-        url : baseurl + "KapasitasGdSparepart/Packing/updateSelesai",
-        data: { date : date,jenis : jenis, no_spb : no_spb, wkt : wkt, mulai : mulai, pic : pic},
-        type : "POST",
-        dataType: "html"
-        });
+            // $('#btnPacking'+no).attr("disabled", "disabled"); 
+            // $('#btnrestartSPB'+no).attr("disabled", "disabled"); 
+            // var mulai  = $('#mulai'+no).val();
+            // $('#timer'+no).css('display','none');     
+                   
+            // $.ajax ({
+            // url : baseurl + "KapasitasGdSparepart/Packing/updateSelesai",
+            // data: { date : date,jenis : jenis, no_spb : no_spb, mulai : mulai, wkt : wkt, pic : pic},
+            // type : "POST",
+            // dataType: "html"
+            // });
 
+            var mulai  = $('#mulai'+no).val();   
+                   
+            var request = $.ajax ({
+            url : baseurl + "KapasitasGdSparepart/Packing/modalColly",
+            data: { date : date,jenis : jenis, no_spb : no_spb, mulai : mulai, wkt : wkt, pic : pic, no : no},
+            type : "POST",
+            dataType: "html"
+            });
+            request.done(function(result){
+                $('#datahidden').html(result);
+                $('#mdlcolly').modal({
+                    backdrop: 'static',
+                    keyboard: true, 
+                    show: true
+            }); 
+        });
     }
+}
+
+function savePacking(th) {
+    var date         = $('#date').val();   
+    var jenis        = $('#jenis').val();   
+    var no_spb       = $('#no_spb').val();   
+    var mulai        = $('#mulai').val();   
+    var wkt          = $('#selesai').val();   
+    var pic          = $('#pic').val(); 
+    var jml_colly    = $('#jml_colly').val();   
+    var kardus_kecil = $('#kardus_kecil').val();   
+    var kardus_sdg   = $('#kardus_sdg').val();   
+    var kardus_bsr   = $('#kardus_bsr').val();   
+    var karung       = $('#karung').val();   
+    var no           = $('#no').val();   
+    
+    var sum = parseInt(kardus_kecil) + parseInt(kardus_sdg) + parseInt(kardus_bsr) + parseInt(karung);
+    console.log(sum);  
+
+    if (jml_colly == '') {
+        $('#peringatan').html('Mohon Isi Jumlah Colly..');
+    }else if (jml_colly != sum) {
+        $('#peringatan').html('Jumlah tidak sesuai. Tolong cek kembali!!');
+    }else{
+        $.ajax ({
+            url : baseurl + "KapasitasGdSparepart/Packing/updateSelesai",
+            data: { date : date,jenis : jenis, no_spb : no_spb, mulai : mulai, wkt : wkt, pic : pic, jml_colly : jml_colly, kardus_kecil : kardus_kecil,
+                     kardus_sdg : kardus_sdg, kardus_bsr : kardus_bsr, karung : karung},
+            type : "POST",
+            dataType: "html",
+            success: function(data){
+                $("#mdlcolly").modal("hide"); 
+                $('#btnPacking'+no).attr("disabled", "disabled"); 
+                $('#btnrestartSPB'+no).attr("disabled", "disabled"); 
+                $('#timer'+no).css('display','none');
+            }
+            });  
+    }
+}
+
+function btnRestartPacking(no) {
+    var jenis  = $('#jenis'+no).val();
+    var no_spb = $('#nodoc'+no).val();
+    var pic = $('#pic'+no).val();
+    var d    = new Date();
+    var date = d.getDate()+'/'+((d.getMonth()+1).toString().length==2?(d.getMonth()+1).toString():"0"+(d.getMonth()+1).toString())+'/'+d.getFullYear()+" "+d.getHours()+':'+d.getMinutes()+':'+d.getSeconds();
+    var wkt  = d.getHours()+':'+d.getMinutes()+':'+d.getSeconds();
+     console.log(jenis, no_spb);
+
+     Swal.fire({
+        title: 'Apakah Anda Yakin Akan Melakukan Restart?',
+        type: 'question',
+        showCancelButton: true,
+        allowOutsideClick: false
+    }).then(result => {
+        if (result.value) {  
+            $('#mulai'+no).val(wkt); 
+            $("#btnrestartSPB"+no).removeClass('btn-info').addClass('btn-warning');
+            $.ajax ({
+                url : baseurl + "KapasitasGdSparepart/Packing/updateMulai",
+                data: {jenis : jenis, no_spb : no_spb, date : date, pic : pic},
+                type : "POST",
+                dataType: "html",
+                success: function(data){
+                    swal.fire("Berhasil!", "Restart telah dilakukan.", "success");
+                }
+            });
+    }})  
+}
+
+function btnPausePacking(no) {
+    var jenis  = $('#jenis'+no).val();
+    var no_spb = $('#nodoc'+no).val();
+    var mulai  = $('#mulai'+no).val();
+    var d    = new Date();
+    var wkt  = d.getHours()+':'+d.getMinutes()+':'+d.getSeconds();
+
+    Swal.fire({
+        title: 'Apakah Anda Yakin Akan Melakukan Pause?',
+        type: 'question',
+        showCancelButton: true,
+        allowOutsideClick: false
+    }).then(result => {
+        if (result.value) {  
+            $('#btnPacking'+no).attr("disabled", "disabled"); 
+            $('#timer'+no).css('display','none');  
+            $.ajax ({
+                url : baseurl + "KapasitasGdSparepart/Packing/pauseSPB",
+                data: {jenis : jenis, no_spb : no_spb, wkt : wkt, mulai : mulai},
+                type : "POST",
+                dataType: "html",
+                success: function(data){
+                    swal.fire("Berhasil!", "Waktu telah ditunda.", "success");
+                    }
+                });
+    }})   
     
 }
 
@@ -427,4 +783,24 @@ function schMonitoringSPB(th) {
         
         })
 	});
+}
+
+//------------------------------------------------------------ PENYERAHAN ---------------------------------------------------------------------
+
+function getDataPenyerahan(th) {
+    var tglAwal = $('#tglAwal').val();
+
+    var request = $.ajax({
+        url: baseurl+'KapasitasGdSparepart/Penyerahan/getData',
+        data: {tglAwal : tglAwal },
+        type: "POST",
+        datatype: 'html'
+	});
+	$('#tb_penyerahan').html('');
+	$('#tb_penyerahan').html('<center><img style="width:130px; height:auto" src="'+baseurl+'assets/img/gif/loading10.gif"></center>' );
+	request.done(function(result){
+        $('#tb_penyerahan').html('');
+        $('#tb_penyerahan').html(result);
+        
+    })
 }

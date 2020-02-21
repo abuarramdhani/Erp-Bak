@@ -16,15 +16,18 @@ class M_inputdata extends CI_Model
                          where id_data = td.id_data and status='0'
                          ) 
                      tgl_input,
-                     tm.keterangan, td.tanggal::date, 
-                     td.status, 
+                     tm.keterangan,
+                     td.tanggal_start::date,
+                     td.tanggal_end::date, 
+                     td.status,
+                     (select tgl_update from ps.triwayat where id_data = td.id_data and status = td.status limit 1) app_time,
                      td.alasan,
                      (select string_agg(kodesie, '|') from ps.tappr where id = tm.id) as approval
                 FROM ps.tdata td 
                     inner join er.er_employee_all emp on td.noind = emp.employee_code 
                     inner join ps.tmaster tm on tm.id = td.id_master
                     inner join ps.triwayat tr on td.id_data = tr.id_data
-                WHERE '$kodesie' = tr.seksi and tr.status = '0' 
+                WHERE ('$kodesie' = tr.seksi OR substring(emp.section_code,0,8) = '$kodesie') and tr.status = '0' 
                 ORDER BY td.id_data";
 
         $result = $this->db->query($sql)->result_array();
@@ -34,6 +37,10 @@ class M_inputdata extends CI_Model
             $approval = explode('|', $res['approval']);
             $approver1= $this->getNameSeksi($approval['0']);
             $result[$i]['approver1'] = $approver1;
+            $result[$i]['app_time']  = date('d/m/Y H:i:s', strtotime($res['app_time']));
+            $result[$i]['tgl_input'] = date('d/m/Y H:i:s', strtotime($res['tgl_input']));
+            $result[$i]['tanggal_start'] = date('d/m/Y', strtotime($res['tanggal_start']));
+            $result[$i]['tanggal_end']   = date('d/m/Y', strtotime($res['tanggal_end']));
 
             if($approval['1'] !== 'kosong'){
                 $approver2= $this->getNameSeksi($approval['1']);
@@ -69,9 +76,10 @@ class M_inputdata extends CI_Model
 
     function ajaxInputData($noind,$id_master,$date){
         $inputData = array(
-            'noind'     => $noind,
-            'id_master' => $id_master,
-            'tanggal'   => $date
+            'noind'         => $noind,
+            'id_master'     => $id_master,
+            'tanggal_start' => $date['0'],
+            'tanggal_end'   => $date['1']
         );
 
         $this->db->insert('ps.tdata', $inputData);
@@ -87,7 +95,28 @@ class M_inputdata extends CI_Model
         $this->db->insert('ps.triwayat', $inputriwayat);
     }
 
+    function ajaxUpdateData($id, $noind,$id_master,$date){
+        $updateData = array(
+            'noind'         => $noind,
+            'id_master'     => $id_master,
+            'tanggal_start' => $date['0'],
+            'tanggal_end'   => $date['1']
+        );
+
+        $this->db->set($updateData);
+        $this->db->where('id_data', $id);
+        $this->db->update('ps.tdata');
+    }
+
     function getNameSeksi($kodesie){
+        $sql = "SELECT distinct seksi FROM hrd_khs.tseksi where substr(kodesie,0,8) = '$kodesie'";
+        return $this->personalia->query($sql)->row()->seksi;
+    }
+
+    function getNameSeksiByNoind($noind){
+        $sql = "SELECT kodesie FROM hrd_khs.tpribadi WHERE noind ='$noind' and keluar='0'";
+        $kodesie = substr($this->personalia->query($sql)->row()->kodesie, 0, 7);
+
         $sql = "SELECT distinct seksi FROM hrd_khs.tseksi where substr(kodesie,0,8) = '$kodesie'";
         return $this->personalia->query($sql)->row()->seksi;
     }
@@ -96,7 +125,7 @@ class M_inputdata extends CI_Model
         $sql = "SELECT id_riwayat, id_data, status, tgl_update, level, 
         (case when level = '0' then (select noind from ps.tdata where id_data = tr.id_data) else tr.user end ) as user,
         (select id_master from ps.tdata where id_data = tr.id_data) as id_master
-        FROM ps.triwayat tr WHERE id_data='$id'";
+        FROM ps.triwayat tr WHERE id_data='$id' order by level";
 
         return $this->db->query($sql)->result_array();
     }
@@ -109,5 +138,25 @@ class M_inputdata extends CI_Model
     function countApproval($id){
         $sql ="SELECT kodesie from ps.tappr where id='$id' and kodesie <> 'kosong'";
         return $this->db->query($sql)->num_rows();
+    }
+
+    function ajaxShowData($id){
+        $sql = "SELECT td.id_data, td.noind, (select trim(employee_name) from er.er_employee_all where employee_code = td.noind) as name, td.id_master, td.tanggal_start, td.tanggal_end
+                FROM ps.tdata td
+                WHERE id_data = '$id'";
+        $data = $this->db->query($sql)->result_array();
+
+        $data[0]['seksi'] = $this->getNameSeksiByNoind($data['0']['noind']);
+        $data[0]['tanggal_start'] = date('Y/m/d', strtotime($data[0]['tanggal_start']));
+        $data[0]['tanggal_end'] = date('Y/m/d', strtotime($data[0]['tanggal_end']));
+
+        return $data;
+    }
+
+    function ajaxDeleteData($id){
+        $this->db->delete('ps.tdata', array('id_data' => $id));
+        $this->db->delete('ps.triwayat', array('id_data' => $id));
+
+        return true;
     }
 }

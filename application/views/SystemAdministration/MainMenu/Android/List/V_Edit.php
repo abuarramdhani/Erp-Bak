@@ -2,14 +2,12 @@
 	<div class="inner" >
 			<div class="box box-header"  style="padding-left:20px">
 				<h3 class="pull-left"><strong> Edit Entry </strong> - Android</h3>
-				<div style="padding-top: 12px; padding-right:20px" class="pull-right">
-				<a href="<?php echo base_url('android/new') ?>"  class="fa fa-plus-square fa-3x"></a>
-				</div>
 			</div>
 		</div>
 		<div class="panel box-body" >
 		<form method="post" action="<?php echo base_url('SystemAdministration/Android/updateData/'.$id); ?>" autocomplete="off">
 		<table class="table table-striped table-bordered table-responsive table-hover dataTable no-footer">
+		<input id="valValidasi" type="hidden" value="<?=$android[0]['validation']?>"></input>
 				<tr>
 					<td>Android ID</td>
 					<td><input type="text" name="android_id" class="form-control" readonly value="<?php echo $android[0]['android_id']; ?>"></input> </td>
@@ -48,7 +46,7 @@
 						<label>Status</label>
 					</td>
 					<td>
-						<select id="status" class="form-control" name="andro-status" required>
+						<select id="status" class="form-control" name="andro-status" style="width: 100%" required>
 						<?php 
 						$new="";$approve="";$reject="";
 
@@ -78,14 +76,14 @@
 				<!-- </tr> -->
 
 
-				<tr id="row_valid_until">
+				<tr id="row_valid_until" style="display: none">
 				<?php
 					foreach ($akhirKontrak as $key => $valid) {
 				?>
 					<td>Valid Until (Default Akhir Kontrak)</td>
 					<td>
 						<div id="datepicker" class="input-group date" data-provide="datepicker">
-						   <input type="text" id="input_valid_until" class="form-control" name="valid-until" value="<?php echo date('Y/m/d', strtotime($valid['akhkontrak'])); ?>">
+						   <input type="text" id="input_valid_until" class="form-control" name="valid-until" value="<?php echo date('Y-m-d', strtotime($valid['akhkontrak'])); ?>">
 						<!-- </div> -->
 
 						    <div class="input-group-addon">
@@ -104,9 +102,18 @@
 <script type="text/javascript">
 	
 $(document).ready(function(){
-	$("#row_valid_until").hide();
+	$('#datepicker').datepicker({
+		    format: 'yyyy/mm/dd'
+		});
+
+let valid = $('#valValidasi').val();
+if(valid == 1){
+	$("#row_valid_until").show();
+}
+	
     $('#status').on('change', function() {
     	var value = $('#status').val();
+    	console.log(value)
       if ( value == 1)
       {
         $("#row_valid_until").show();
@@ -115,7 +122,7 @@ $(document).ready(function(){
       }
       else
       {
-        $("#valid_until").hide();
+        $("#row_valid_until").hide();
         $("#input_valid_until").attr('value','1000/01/01');
       }
     });

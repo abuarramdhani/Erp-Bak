@@ -14,11 +14,11 @@ foreach ($rekap as $rekap_data) {}
 </section>
 <section class="content">
 	<div class="row">
-		<div class="col-lg-12">	
+		<div class="col-lg-12">
 			<div class="box box-primary">
 						<div class="box-body with-border">-->
 						<form target="_blank" id="export_form" method="post" action="<?php echo base_url("RekapTIMSPromosiPekerja/RekapPerPekerja/export-rekap-detail") ?>">
-							<input type="hidden" name="txtDetail" value="0">
+							<input type="hidden" name="txtDetail" value="<?php echo $detail ?>">
 							<input type="hidden" name="txtPeriode1_export" value="<?php echo $periode1 ?>">
 							<input type="hidden" name="txtPeriode2_export" value="<?php echo $periode2 ?>">
 							<input type="hidden" name="txtStatus" value="<?php echo $status ?>">
@@ -28,7 +28,7 @@ foreach ($rekap as $rekap_data) {}
 							</button>
 						</form>
 						<form target="_blank" id="export_detail_form" method="post" action="<?php echo base_url("RekapTIMSPromosiPekerja/RekapPerPekerja/export-rekap-detail-pdf") ?>">
-							<input type="hidden" name="txtDetail" value="0">
+							<input type="hidden" name="txtDetail" value="<?php echo $detail ?>">
 							<input type="hidden" name="txtPeriode1_export" value="<?php echo $periode1 ?>">
 							<input type="hidden" name="txtPeriode2_export" value="<?php echo $periode2 ?>">
 							<input type="hidden" name="txtStatus" value="<?php echo $status ?>">
@@ -38,7 +38,7 @@ foreach ($rekap as $rekap_data) {}
 							</button>
 						</form>
 							<table id="rekap-tims" class="table table-bordered table-hover table-striped">
-								
+
 								<thead>
 									<tr class="bg-primary">
 										<th rowspan="2" style="text-align: center;vertical-align:middle;font-size:20px">NO</th>
@@ -48,7 +48,7 @@ foreach ($rekap as $rekap_data) {}
 										<th colspan="8" style="text-align: center">REKAP</th>
 										<th rowspan="2" style="text-align: center;vertical-align:middle;font-size:20px">TOTAL HARI KERJA<br>(Periode)</th>
 										<th colspan="8" style="text-align: center">PERSENTASE</th>
-										
+
 									</tr>
 									<tr class="bg-primary">
 										<th style="text-align: center">T</th>
@@ -70,7 +70,7 @@ foreach ($rekap as $rekap_data) {}
 									</tr>
 								</thead>
 								<tbody>
-									<?php $no=1; 
+									<?php $no=1;
 									foreach ($rekap as $rekap_data) { ?>
 										<tr>
 											<td style="text-align:center;"><?php echo $no++; ?></td>
@@ -105,9 +105,9 @@ foreach ($rekap as $rekap_data) {}
 											<td style="text-align:center;"><?php echo ((($rekap_data['totalhk']+$rekap_data['totalhks']) == 0 ) ? "-" : sprintf("%.2f%%", (($rekap_data['frekip']+$rekap_data['frekips']) / ($rekap_data['totalhk']+$rekap_data['totalhks']) * 100))) ?></td>
 											<td style="text-align:center;"><?php echo ((($rekap_data['totalhk']+$rekap_data['totalhks']) == 0 ) ? "-" : sprintf("%.2f%%", (($rekap_data['frekct']+$rekap_data['frekcts']) / ($rekap_data['totalhk']+$rekap_data['totalhks']) * 100))) ?></td>
 											<td style="text-align:center;">
-												<?php 
+												<?php
 													$totalRekap = (
-														(	
+														(
 															($rekap_data['totalhk']+$rekap_data['totalhks']) -
 															(
 																($rekap_data['freki']+$rekap_data['frekis']) +
@@ -115,12 +115,14 @@ foreach ($rekap as $rekap_data) {}
 																($rekap_data['freksk']+$rekap_data['freksks']) +
 																($rekap_data['frekpsp']+$rekap_data['frekpsps']) +
 																($rekap_data['frekip']+$rekap_data['frekips']) +
-																($rekap_data['frekct']+$rekap_data['frekcts'])
+																($rekap_data['frekct']+$rekap_data['frekcts']) +
+																($rekap_data['frekmnon']+$rekap_data['frekmsnon'])
 															)
-														) / 
+														) /
 														(
 															($rekap_data['totalhk']+$rekap_data['totalhks']) -
-															($rekap_data['frekct']+$rekap_data['frekcts'])
+															($rekap_data['frekct']+$rekap_data['frekcts']) -
+															($rekap_data['frekmnon']+$rekap_data['frekmsnon'])
 														) * 100
 													);
 													echo number_format($totalRekap,2).'%';

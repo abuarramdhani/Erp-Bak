@@ -8,6 +8,7 @@ class C_Index extends CI_Controller {
     {
         parent::__construct();
 
+		$this->load->library('Log_Activity');
         $this->load->library('General');
 
         $this->load->model('M_Index');
@@ -132,6 +133,11 @@ class C_Index extends CI_Controller {
 										);
 
 			$id_perusahaan 			=	$this->M_kecelakaan->insert_perusahaan($insert_perusahaan);
+			//insert to t_log
+			$aksi = 'MASTER PEKERJA';
+			$detail = 'Add Setting Kecelakaan Kerja ID='.$id_perusahaan;
+			$this->log_activity->activity_log($aksi, $detail);
+			//
 			$history 				=	array
 										(
 											'id_perusahaan'		=>	$id_perusahaan,
@@ -156,13 +162,12 @@ class C_Index extends CI_Controller {
 
 	public function editPerusahaan($id_perusahaan)
 	{
-
-
 		$this->checkSession();
 		$user_id = $this->session->userid;
 
 		$id_perusahaan_decode 	=	$this->general->dekripsi($id_perusahaan);
 		$data['edit'] = $this->M_kecelakaan->infoPerusahaan($id_perusahaan_decode);
+
 
 		$data['Menu'] = 'Dashboard';
 		$data['SubMenuOne'] = '';
@@ -171,8 +176,6 @@ class C_Index extends CI_Controller {
 		$data['UserMenu'] = $this->M_user->getUserMenu($user_id,$this->session->responsibility_id);
 		$data['UserSubMenuOne'] = $this->M_user->getMenuLv2($user_id,$this->session->responsibility_id);
 		$data['UserSubMenuTwo'] = $this->M_user->getMenuLv3($user_id,$this->session->responsibility_id);
-
-
 
 		$this->load->view('V_Header',$data);
 		$this->load->view('V_Sidemenu',$data);
@@ -209,6 +212,11 @@ class C_Index extends CI_Controller {
 										);
 			// $this->M_kecelakaan->update_perusahaan($update_perusahaan,$id);
 			$id_perusahaan 			=	$this->M_kecelakaan->update_perusahaan($update_perusahaan,$id);
+			//insert to t_log
+			$aksi = 'MASTER PEKERJA';
+			$detail = 'Update Setting Perusahaan ID='.$id_perusahaan;
+			$this->log_activity->activity_log($aksi, $detail);
+			//
 			$history 				=	array
 										(
 											'id_perusahaan'		=>	$id_perusahaan,
@@ -276,6 +284,11 @@ class C_Index extends CI_Controller {
 			$this->M_kecelakaan->kk_perusahaan_history($delete_data);
 		}
 		$this->M_kecelakaan->deletePerusahaan($id_a);
+		//insert to t_log
+		$aksi = 'MASTER PEKERJA';
+		$detail = 'Delete Setting Kecelakaan Kerja ID'.$id_a;
+		$this->log_activity->activity_log($aksi, $detail);
+		//
 		redirect('MasterPekerja/SettingKecelakaanKerja');//ini redirect ke halaman apa, misal kayak gitu
 	}
 
@@ -291,6 +304,11 @@ class C_Index extends CI_Controller {
 									'alamat' => $alamatfaskes,
 							);
 		$simpan_faskes = $this->M_kecelakaan->simpanfaskes($data_faskes);
+		//insert to t_log
+		$aksi = 'MASTER PEKERJA';
+		$detail = 'Add Fasilitas Kesehatan Nama = '.$namafaskes;
+		$this->log_activity->activity_log($aksi, $detail);
+		//
 	}
 
 	public function input()
@@ -432,6 +450,12 @@ class C_Index extends CI_Controller {
 						);
 			$this->M_kecelakaan->simpanHistoryTahap1($history);
 
+			//insert to t_log
+			$aksi = 'MASTER PEKERJA';
+			$detail = 'Add Record Kecelakaan Kerja ID='.$id_lkk1;
+			$this->log_activity->activity_log($aksi, $detail);
+			//
+
 			$desc1 = $this->input->post('desc1');
 			$desc2 = $this->input->post('desc2');
 			$desc3 = $this->input->post('desc3');
@@ -570,7 +594,11 @@ class C_Index extends CI_Controller {
 								'last_update_timestamp' => date('Y-m-d H:i:s'),
 								'last_update_user' 	=> $this->session->user,
 							);
-		$this->M_kecelakaan->updateTahap1($id,$updateThp1);
+		$this->M_kecelakaan->updateTahap1($id,$updateThp1);//insert to t_log
+		$aksi = 'MASTER PEKERJA';
+		$detail = 'Update Tahap 1 Kecelakaan Kerja ID='.$id;
+		$this->log_activity->activity_log($aksi, $detail);
+		//
 		$history   		= array(
 								'id_lkk_1'			=> $id,
 								'noind'				=> $noinduk,
@@ -602,6 +630,11 @@ class C_Index extends CI_Controller {
 
 
 		$this->M_kecelakaan->deleteKecelakaanDetailLama($id);
+		//insert to t_log
+		$aksi = 'MASTER PEKERJA';
+		$detail = 'Delete Kecelakaan Kerja ID='.$id;
+		$this->log_activity->activity_log($aksi, $detail);
+		//
 
 		$desc1 = $this->input->post('desc1');
 		$desc2 = $this->input->post('desc2');
@@ -718,7 +751,7 @@ class C_Index extends CI_Controller {
 										'jabatan_peserta'	=> $dataPribadi[0]['jabatan'],
 										'unit_peserta'		=> $unit[0]['unit'],
 										'upah_status'		=> $upah[0]['upah_status'],
-										'upah_nominal'		=> $dataLKK1[0]['upah_nominal'],
+										'upah_nominal'		=> ltrim($dataLKK1[0]['upah_nominal'], 'Rp '),
 										'terbilang'			=> number_to_words($dataLKK1[0]['upah_nominal']),
 										'tempat_kecelakaan'	=> $tempat_kecelakaan[0]['lokasi_kejadian'],
 										'alamat_kecelakaan'	=> $dataLKK1[0]['alamat_kk'],
@@ -752,10 +785,10 @@ class C_Index extends CI_Controller {
 
 		$html = $this->load->view('MasterPekerja/Laporan/V_Pdf', $data, true);
 		// $stylesheet1 = file_get_contents(base_url('assets/plugins/bootstrap/3.3.7/css/bootstrap.css'));
-		$pdf->WriteHTML($stylesheet1,1);
+		// $pdf->WriteHTML($stylesheet1,1);
 		$pdf->WriteHTML($html, 0);
-    $pdf->setTitle($filename);
-		$pdf->Output($filename, 'D');
+    	$pdf->setTitle($filename);
+		$pdf->Output($filename, 'I');
 
 		// $this->load->view('MasterPekerja/Laporan/V_Pdf', $dataLKK1_all);
 	}
@@ -814,9 +847,12 @@ class C_Index extends CI_Controller {
 	public function inputDataTahap2()
 	{
 		$user_id = $this->session->userid;
-
-
 		$id_lkk1_s  = $this->input->post('txt_id_lkk1');
+		//insert to t_log
+		$aksi = 'MASTER PEKERJA';
+		$detail = 'Add Data Tahap 2 Kecelakaan Kerja ID='.$id_lkk2;
+		$this->log_activity->activity_log($aksi, $detail);
+		//
 		$noind 		= $this->input->post('txt_noindPekerja');
 		$pekerja 	= $this->M_kecelakaan->ambilDataPribadi($noind);
 		$nama 		= $pekerja[0]['nama'];
@@ -1059,8 +1095,11 @@ class C_Index extends CI_Controller {
 	public function updateTahap2($id)
 	{
 		$user_id = $this->session->userid;
-
-
+		//insert to t_log
+		$aksi = 'MASTER PEKERJA';
+		$detail = 'Update Data Tahap 2 Kecelakaan Kerja ID='.$id;
+		$this->log_activity->activity_log($aksi, $detail);
+		//
 		$noind 		= $this->input->post('txt_noindPekerja');
 		$pekerja 	= $this->M_kecelakaan->ambilDataPribadi($noind);
 		$nama 		= $pekerja[0]['nama'];
@@ -1261,6 +1300,11 @@ class C_Index extends CI_Controller {
 		$lkk1 	 = 	$this->M_kecelakaan->getLKK1($id);
 		$id2 	 = 	$lkk1[0]['id_lkk_2'];
 		if ($id2 != null ) {
+			//insert to t_log
+			$aksi = 'MASTER PEKERJA';
+			$detail = 'Export PDF Data Tahap 2 Kecelakaan Kerja ID='.$id;
+			$this->log_activity->activity_log($aksi, $detail);
+			//
 			$this->load->library('pdf');
 			$kode_mitra		= $lkk1[0]['kode_mitra'];
 			$noind 			= $lkk1[0]['noind'];
