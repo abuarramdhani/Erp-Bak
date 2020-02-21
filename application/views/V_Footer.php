@@ -145,7 +145,6 @@
 		<script src="<?= base_url('assets/js/customKMK.js') ?>"></script>
 		<script src="<?= base_url('assets/js/customPD.js') ?>"></script>
 		<script src="<?= base_url('assets/js/customMPO.js') ?>"></script>
-		<script src="<?= base_url('assets/js/customME.js') ?>"></script>
 		<script src="<?= base_url('assets/js/customOR.js') ?>"></script>
 		<script src="<?= base_url('assets/js/customMOA.js') ?>"></script>
 		<script src="<?= base_url('assets/js/customET.js') ?>"></script>
@@ -191,6 +190,7 @@
 		<script src="<?= base_url('assets/js/customPDP.js');?>"></script>
 		<script src="<?= base_url('assets/js/customKGS.js');?>"></script>
 		<script type="text/javascript" src="<?= base_url('assets/js/customKTR.js') ?>"></script>
+		<script src="<?= base_url('assets/js/customME.js') ?>"></script>
 
 
 

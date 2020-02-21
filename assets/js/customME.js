@@ -2,9 +2,150 @@ var no = 1;
 var id = 1;
 
 $(document).ready(function(){
-	$(".preloader").fadeOut();
+	$(".loader").fadeOut();
 });
+let jenisPm = $("#jenisapahayo").val();
+$(document).ready(function(){
+	if (jenisPm == 'punyapembelian') {
 
+    $('.select2Pembelian').select2({
+      // minimumInputLength: 3,
+      placeholder: "Choose Option",
+      allowClear: true,
+      width: '100%',
+      tags: true,
+      ajax: {
+        url: baseurl + "MonitoringPembelian/Monitoring/getCodeItem",
+        dataType: "JSON",
+        type: "POST",
+        data: function(params) {
+          return {
+            term: params.term
+          };
+        },
+        processResults: function(data) {
+          return {
+            results: $.map(data, function(obj) {
+              return {
+                id: obj.UPDATE_ID,
+                text: obj.UPDATE_ID
+              };
+            })
+          };
+        }
+      }
+    });
+
+
+    var tableqwe = $('.tblHistoryPembelian').DataTable({
+      initComplete: function() {},
+      processing: true,
+      serverSide: true,
+      "order": [],
+      "ajax": {
+        url: baseurl + 'MonitoringPembelian/Monitoring/getAjaxPembelian',
+        type: "POST",
+      },
+      columnDefs: [{
+        targets: "_all",
+        orderable: false
+      }],
+    })
+
+    $('#filterStatus0').change(function() {
+      tableqwe.search($(this).val()).draw();
+    })
+    $('.select2Pembelian').change(function() {
+
+      if ($(this).val() == null) {
+        var final = ''
+      } else {
+        var final = $(this).val()
+      }
+      tableqwe.search(final).draw();
+    })
+
+  } else if (jenisPm == 'punyapembelianPE') {
+
+    $('.select2PembelianPE').select2({
+      // minimumInputLength: 3,
+      placeholder: "Choose Option",
+      allowClear: true,
+      width: '100%',
+      tags: true,
+      ajax: {
+        url: baseurl + "MonitoringPembelian/Monitoring/getCodeItem",
+        dataType: "JSON",
+        type: "POST",
+        data: function(params) {
+          return {
+            term: params.term
+          };
+        },
+        processResults: function(data) {
+          return {
+            results: $.map(data, function(obj) {
+              return {
+                id: obj.UPDATE_ID,
+                text: obj.UPDATE_ID
+              };
+            })
+          };
+        }
+      }
+    });
+
+    var tableqwe = $('#tblHistoryRequest').DataTable({
+      processing: true,
+      serverSide: true,
+      "order": [],
+      "ajax": {
+        url: baseurl + 'MonitoringPembelian/HistoryRequest/getAjaxPembelianHistory',
+        type: "POST",
+      },
+      columnDefs: [{
+        targets: "_all",
+        orderable: false
+      }],
+    })
+
+    $('#filterStatus0').change(function() {
+      tableqwe.search($(this).val()).draw();
+    })
+    $('.select2PembelianPE').change(function() {
+
+      if ($(this).val() == null) {
+        var final = ''
+      } else {
+        var final = $(this).val()
+      }
+      tableqwe.search(final).draw();
+    })
+
+  } else {
+    console.log('none');
+  }
+})
+
+$('#filterStatus').on('change', function() {
+  var stat = $('#filterStatus').val();
+  $('.tblHistoryPembelian2').DataTable({
+    processing: true,
+    serverSide: true,
+    "order": [],
+    "ajax": {
+      url: baseurl + 'MonitoringPembelian/Monitoring/getAjaxPembelianfilter2',
+      type: "POST",
+      data: {
+        status: stat,
+      }
+    },
+    columnDefs: [{
+      targets: "_all",
+      orderable: false
+    }],
+  });
+});
 $(document).ready(function(){
     $("#submitPE").attr("disabled", "disabled");
     $("#EmailPembelian").change(function(){
@@ -22,94 +163,94 @@ $(document).ready( function() {
 	$(".saveall").hide();
 });
 
-$(document).ready( function () {
-    $('#tblHistoryPembelian').DataTable(  {
-    	columnDefs: [
-    		{ targets: '_all', orderable: false}
-    	],
-        initComplete: function () {
-               	this.api().columns([19]).every( function () {
-                var column = this;
-                var select = $('<select style="background: transparent; line-height: 1; border: 0; padding: 0; border-radius: 0; width: 120%; position: relative; z-index: 10;font-size: 1em;"><option value="">--Show All--</option></select>')
-                    .appendTo("#filter")
-                    .on( 'change', function () {
-                        var val = $.fn.dataTable.util.escapeRegex(
-                            $(this).val()
-                        ); 
-                        column
-                            .search( val ? '^'+val+'$' : '', true, false )
-                            .draw();
-                    } );
-                 	column.data().unique().sort().each( function ( d, j ) {
-                    select.append( '<option value="'+d+'">'+d+'</option>' )
-                	} );
-            	} );
-            	this.api().columns([2]).every( function () {
-	                var column1 = this;
-	                var select1 = $('<select id="nodok" name="nodok" class="nodok" style="background: transparent; line-height: 1; border: 0; padding: 0; border-radius: 0; width: 120%; position: relative; z-index: 10;font-size: 1em;"><option value="">--Show All--</option></select>')
-	                    .appendTo("#filterid")
-	                    .on( 'change', function () {
-	                        var val1 = $.fn.dataTable.util.escapeRegex(
-	                            $(this).val()
-	                        ); 
-	                        column1
-	                            .search( val1 ? '^'+val1+'$' : '', true, false )
-	                            .draw();
-	                    } );
-	                	column1.data().unique().sort().each( function ( d, j ) {
-	                    select1.append( '<option value="'+d+'">'+d+'</option>' )
-	                } );
-            	} );
+// $(document).ready( function () {
+//     $('#tblHistoryPembelian').DataTable(  {
+//     	columnDefs: [
+//     		{ targets: '_all', orderable: false}
+//     	],
+//         initComplete: function () {
+//                	this.api().columns([19]).every( function () {
+//                 var column = this;
+//                 var select = $('<select style="background: transparent; line-height: 1; border: 0; padding: 0; border-radius: 0; width: 120%; position: relative; z-index: 10;font-size: 1em;"><option value="">--Show All--</option></select>')
+//                     .appendTo("#filter")
+//                     .on( 'change', function () {
+//                         var val = $.fn.dataTable.util.escapeRegex(
+//                             $(this).val()
+//                         ); 
+//                         column
+//                             .search( val ? '^'+val+'$' : '', true, false )
+//                             .draw();
+//                     } );
+//                  	column.data().unique().sort().each( function ( d, j ) {
+//                     select.append( '<option value="'+d+'">'+d+'</option>' )
+//                 	} );
+//             	} );
+//             	this.api().columns([2]).every( function () {
+// 	                var column1 = this;
+// 	                var select1 = $('<select id="nodok" name="nodok" class="nodok" style="background: transparent; line-height: 1; border: 0; padding: 0; border-radius: 0; width: 120%; position: relative; z-index: 10;font-size: 1em;"><option value="">--Show All--</option></select>')
+// 	                    .appendTo("#filterid")
+// 	                    .on( 'change', function () {
+// 	                        var val1 = $.fn.dataTable.util.escapeRegex(
+// 	                            $(this).val()
+// 	                        ); 
+// 	                        column1
+// 	                            .search( val1 ? '^'+val1+'$' : '', true, false )
+// 	                            .draw();
+// 	                    } );
+// 	                	column1.data().unique().sort().each( function ( d, j ) {
+// 	                    select1.append( '<option value="'+d+'">'+d+'</option>' )
+// 	                } );
+//             	} );
 
 
-        }
-    });
+//         }
+//     });
 
-} );
+// } );
 
-$(document).ready(function() {
-    $('#tblHistoryRequest').DataTable( {
-    	columnDefs: [
-    		{ targets: '_all', orderable: false}
-    	],
-        initComplete: function () {
-            	this.api().columns([18]).every( function () {
-                var column = this;
-                var select = $('<select style="background: transparent; line-height: 1; border: 0; padding: 0; border-radius: 0; width: 120%; position: relative; z-index: 10;font-size: 1em;"><option value="">--Show All--</option></select>')
-                    .appendTo("#filter")
-                    .on( 'change', function () {
-                        var val = $.fn.dataTable.util.escapeRegex(
-                            $(this).val()
-                        );
+// $(document).ready(function() {
+//     $('#tblHistoryRequest').DataTable( {
+//     	columnDefs: [
+//     		{ targets: '_all', orderable: false}
+//     	],
+//         initComplete: function () {
+//             	this.api().columns([18]).every( function () {
+//                 var column = this;
+//                 var select = $('<select style="background: transparent; line-height: 1; border: 0; padding: 0; border-radius: 0; width: 120%; position: relative; z-index: 10;font-size: 1em;"><option value="">--Show All--</option></select>')
+//                     .appendTo("#filter")
+//                     .on( 'change', function () {
+//                         var val = $.fn.dataTable.util.escapeRegex(
+//                             $(this).val()
+//                         );
  
-                        column
-                            .search( val ? '^'+val+'$' : '', true, false )
-                            .draw();
-                    } );
+//                         column
+//                             .search( val ? '^'+val+'$' : '', true, false )
+//                             .draw();
+//                     } );
  
-                	column.data().unique().sort().each( function ( d, j ) {
-                    select.append( '<option value="'+d+'">'+d+'</option>' )
-                	} );
-            	} );
-            	this.api().columns([1]).every( function () {
-	                var column1 = this;
-	                var select1 = $('<select style="background: transparent; line-height: 1; border: 0; padding: 0; border-radius: 0; width: 120%; position: relative; z-index: 10;font-size: 1em;"><option value="">--Show All--</option></select>')
-	                    .appendTo("#filterid")
-	                    .on( 'change', function () {
-	                        var val1 = $.fn.dataTable.util.escapeRegex(
-	                            $(this).val()
-	                        ); 
-	                        column1
-	                            .search( val1 ? '^'+val1+'$' : '', true, false )
-	                            .draw();
-	                    } );
-	                	column1.data().unique().sort().each( function ( d, j ) {
-	                    select1.append( '<option value="'+d+'">'+d+'</option>' )
-	                } );
-            	} );
-        }
-    } );
-} );
+//                 	column.data().unique().sort().each( function ( d, j ) {
+//                     select.append( '<option value="'+d+'">'+d+'</option>' )
+//                 	} );
+//             	} );
+//             	this.api().columns([1]).every( function () {
+// 	                var column1 = this;
+// 	                var select1 = $('<select style="background: transparent; line-height: 1; border: 0; padding: 0; border-radius: 0; width: 120%; position: relative; z-index: 10;font-size: 1em;"><option value="">--Show All--</option></select>')
+// 	                    .appendTo("#filterid")
+// 	                    .on( 'change', function () {
+// 	                        var val1 = $.fn.dataTable.util.escapeRegex(
+// 	                            $(this).val()
+// 	                        ); 
+// 	                        column1
+// 	                            .search( val1 ? '^'+val1+'$' : '', true, false )
+// 	                            .draw();
+// 	                    } );
+// 	                	column1.data().unique().sort().each( function ( d, j ) {
+// 	                    select1.append( '<option value="'+d+'">'+d+'</option>' )
+// 	                } );
+//             	} );
+//         }
+//     } );
+// } );
 
 $(document).ready( function () {
     $('#tblMonitoringPembelianPE').DataTable({
@@ -304,7 +445,9 @@ $("#search").change(function () {
 							'<td><input type="number"  step="0.01" title="Input dengan 2 angka dibelakang koma" style="background-color: bisque;" class="form-control-plaintext" name="flm[]" id="flm" value="'+ data.FIXED_LOT_MULTIPLIER +'" ></td>'+
 							'<td><select style="background-color: bisque;" name="attr18[]" id="attr18">'+ data.select +'</select></td>'+
 							'<td><input type="text" style="background-color: bisque;" class="form-control-plaintext" name="keterangan[]" id="keterangan"></td>'+
-							'<td><center><button type="button" onclick="deleteRowThisHehe(this)" class="btn btn-danger btn-xs hapus'+id+'" title="Delete" >'+
+							'<td><input type="number"  step="0.01" title="Input dengan 2 angka dibelakang koma" style="background-color: bisque;" class="form-control-plaintext receive_close_tolerance" name="receive_close_tolerance[]" id="receive_close_tolerance" value="' + data.RECEIVE_CLOSE_TOLERANCE + '" ></td>' +
+          '<td><input type="number"  step="0.01" title="Input dengan 2 angka dibelakang koma" style="background-color: bisque;" class="form-control-plaintext qty_rcv_tolerance" name="qty_rcv_tolerance[]" id="qty_rcv_tolerance" value="' + data.QTY_RCV_TOLERANCE + '" ></td>' +
+          '<td><center><button type="button" onclick="deleteRowThisHehe(this)" class="btn btn-danger btn-xs hapus'+id+'" title="Delete" >'+
 							'<span class="icon-trash"> Delete</span>'
 							'</button></center></td>'+
 						'</tr>';
