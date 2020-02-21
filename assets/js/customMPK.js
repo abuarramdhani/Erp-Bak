@@ -207,26 +207,13 @@ $(document).ready(function() {
 
 
      $('input.periodeRekap').on('apply.daterangepicker', function(ev, picker) {
-       $(this).val(picker.startDate.format('MM/DD/YYYY') + ' - ' + picker.endDate.format('MM/DD/YYYY'));
+       $(this).val(picker.startDate.format('DD/MM/YYYY') + ' - ' + picker.endDate.format('DD/MM/YYYY'));
      });
 
      $('input.periodeRekap').on('cancel.daterangepicker', function(ev, picker) {
          $(this).val('');
      });
 });
-
-
-
-// function RPD_Hidden(a) {
-//     alert('aa')
-//     if (a == '1') {
-//         $('#RPD_Surat').prop('hidden', false)
-//         $('#RPD_Noind').prop('hidden', true)
-//     }else {
-//         $('#RPD_Surat').prop('hidden', true)
-//         $('#RPD_Noind').prop('hidden', false)
-//     }
-// }
 //Selesai
 
 //Untuk Approve IKP
