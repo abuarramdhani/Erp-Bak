@@ -32,7 +32,7 @@
 												<div class="form-group">
 													<label class="control-label col-lg-4">Periode Cutoff</label>
 													<div class="col-lg-5">
-														<input type="text" class="monthpickerq form-control" name="monthpickerq" id="monthpickerq">
+														<input type="text" class="monthpickerq form-control" name="monthpickerq" id="monthpickerq" autocomplete="off">
 													</div>
 												</div>
 											</div>

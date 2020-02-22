@@ -14,7 +14,7 @@ class M_indexinfo extends CI_Model
 
   public function getDataAll()
   {
-    return $this->personalia->query("SELECT * FROM \"Surat\".t_memo_cutoff ORDER BY periode DESC")->result_array();
+    return $this->personalia->query("SELECT * FROM \"Surat\".t_memo_cutoff ORDER BY update_date DESC")->result_array();
   }
 
   public function getDataPrint($id)
@@ -65,7 +65,6 @@ class M_indexinfo extends CI_Model
             FROM hrd_khs.tseksi ts
             WHERE left(ts.kodesie, 7) $newkodesie
             ORDER BY kodesie";
-            // print_r($sql);die;
     return $this->personalia->query($sql)->result_array();
   }
 
@@ -217,7 +216,6 @@ class M_indexinfo extends CI_Model
              tp.kd_jabatan
             ORDER BY
              2";
-          // echo "<pre>";print_r($sql);die;
     return $this->personalia->query($sql)->result_array();
   }
 
