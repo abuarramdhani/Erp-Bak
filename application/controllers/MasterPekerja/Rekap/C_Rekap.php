@@ -100,32 +100,6 @@ class C_Rekap extends CI_Controller
 		$dataPekerja = $this->M_lapkunjungan->getDataPribadi($pekerja);
 		$dataPetugas = $this->M_lapkunjungan->getDataPribadi($petugas);
 		$dataAtasan = $this->M_lapkunjungan->getDataPribadi($atasan);
-		// echo "<pre>";
-		// print_r($dataAtasan[0]['nama']);
-		// die;
-
-		// if(!empty($atasan)){
-		// 	$atasan 		= explode(' - ', $atasan);
-		// 	$noindAtasan	= $atasan[0];
-			// $namaAtasan 	= $atasan[1];
-			// $jabatanAtasan 	= $atasan[2];
-		// }
-
-		// if(!empty($petugas)){
-		// 	$petugas 		= explode(' - ', $petugas);
-		// 	$noindPetugas	= $petugas[0];
-			// $namaPetugas 	= $petugas[1];
-			// $seksiPetugas 	= $petugas[2];
-		// }
-
-
-		// if(!empty($pekerja)){
-		// 	$pekerja 		= explode('  -  ', $pekerja);
-		// 	$noindPekerja 	= $pekerja[0];
-			// $namaPekerja 	= $pekerja[1];
-			// $seksiPekerja 	= $pekerja[2];
-			// $alamatPekerja 	= $pekerja[3];
-		// }
 
 		$tanggal_laporan = date('Y-m-d');
 		$bulan_laporan	 = substr($tanggal_laporan, 0, 7);
@@ -253,28 +227,6 @@ class C_Rekap extends CI_Controller
 		$dataPetugas = $this->M_lapkunjungan->getDataPribadi($petugas);
 		$dataAtasan = $this->M_lapkunjungan->getDataPribadi($atasan);
 
-		// if(!empty($atasan)){
-		// 	$atasan 		= explode(' - ', $atasan);
-		// 	$noindAtasan	= $atasan[0];
-		// 	$namaAtasan 	= $atasan[1];
-		// 	$jabatanAtasan 	= $atasan[2];
-		// }
-		//
-		// if(!empty($petugas)){
-		// 	$petugas 		= explode(' - ', $petugas);
-		// 	$noindPetugas	= $petugas[0];
-		// 	$namaPetugas 	= $petugas[1];
-		// 	$seksiPetugas 	= $petugas[2];
-		// }
-		//
-		//
-		// if(!empty($pekerja)){
-		// 	$pekerja 		= explode('  -  ', $pekerja);
-		// 	$noindPekerja 	= $pekerja[0];
-		// 	$namaPekerja 	= $pekerja[1];
-		// 	$seksiPekerja 	= $pekerja[2];
-		// 	$alamatPekerja 	= $pekerja[3];
-		// }
 		$tanggal_laporan = date('Y-m-d');
 		$bulan_laporan	 = substr($tanggal_laporan, 0, 7);
 
@@ -434,19 +386,6 @@ class C_Rekap extends CI_Controller
 		$dataPekerja = $this->M_lapkunjungan->getDataPribadi($data_pdf[0]['noinduk_pekerja']);
 		$dataPetugas = $this->M_lapkunjungan->getDataPribadi($data_pdf[0]['noinduk_petugas']);
 		$dataAtasan = $this->M_lapkunjungan->getDataPribadi($data_pdf[0]['noinduk_atasan']);
-
-		// $noindAtasan	= $data_pdf[0]['noinduk_atasan'];
-		// $namaAtasan 	= $data_pdf[0]['nama_atasan'];
-		// $jabatanAtasan 	= $data_pdf[0]['jabatan_atasan'];
-		//
-		// $noindPetugas	= $data_pdf[0]['noinduk_petugas'];
-		// $namaPetugas 	= $data_pdf[0]['nama_petugas'];
-		// $seksiPetugas 	= $data_pdf[0]['seksi_petugas'];
-		//
-		// $noindPekerja 	= $data_pdf[0]['noinduk_pekerja'];
-		// $namaPekerja 	= $data_pdf[0]['nama_pekerja'];
-		// $seksiPekerja 	= $data_pdf[0]['seksi_pekerja'];
-		// $alamatPekerja 	= $data_pdf[0]['alamat_pekerja'];
 
 		$hal 			= $data_pdf[0]['hal_laporan'];
 		$diagnosa		= $data_pdf[0]['diagnosa'];
@@ -711,28 +650,6 @@ class C_Rekap extends CI_Controller
 		$dataPetugas = $this->M_lapkunjungan->getDataPribadi($petugas);
 		$dataAtasan = $this->M_lapkunjungan->getDataPribadi($atasan);
 
-		// if(!empty($atasan)){
-		// 	$atasan 		= explode(' - ', $atasan);
-		// 	$noindAtasan	= $atasan[0];
-		// 	$namaAtasan 	= $atasan[1];
-		// 	$jabatanAtasan 	= $atasan[2];
-		// }
-		//
-		// if(!empty($petugas)){
-		// 	$petugas 		= explode(' - ', $petugas);
-		// 	$noindPetugas	= $petugas[0];
-		// 	$namaPetugas 	= $petugas[1];
-		// 	$seksiPetugas 	= $petugas[2];
-		// }
-		//
-		//
-		// if(!empty($pekerja)){
-		// 	$pekerja 		= explode('  -  ', $pekerja);
-		// 	$noindPekerja 	= $pekerja[0];
-		// 	$namaPekerja 	= $pekerja[1];
-		// 	$seksiPekerja 	= $pekerja[2];
-		// 	$alamatPekerja 	= $pekerja[3];
-		// }
 		$tanggal_laporan = date('Y-m-d');
 		$bulan_laporan	 = substr($tanggal_laporan, 0, 7);
 		$no_surat 		 = $this->input->post('no_surat');
