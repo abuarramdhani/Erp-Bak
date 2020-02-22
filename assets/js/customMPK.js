@@ -513,14 +513,11 @@ $('#RPP_Cari').on('click', function () {
 
 // 	-------Master Pekerja--------------------------------------------start
 $(function() {
-    // 	Surat-surat
-    // 	{
-    //	DateRangePicker
-    //	{
 
     $('.monthpickerq').monthpicker({
       Button: false ,
-      dateFormat: "MM yy"
+      dateFormat: "MM yy",
+      autocomplete: "off"
     });
 
     $('.monthpickerq1').monthpicker({

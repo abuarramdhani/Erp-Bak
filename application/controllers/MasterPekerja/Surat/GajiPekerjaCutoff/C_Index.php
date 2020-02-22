@@ -79,7 +79,7 @@ class C_Index extends CI_Controller
     $data['akhir']   = date('d', strtotime($getPeriode[0]['tanggal_akhir'])).' '.$akhirIndex.' '.date('Y', strtotime($getPeriode[0]['tanggal_akhir']));
     $data['staf']    = $this->M_indexinfo->getPekerjaStafSP3();
     $data['nonstaf'] = $this->M_indexinfo->getPekerjaNonStafSP3();
-    $data['hubker']         = $this->M_indexinfo->getHubker();
+    $data['hubker']  = $this->M_indexinfo->getHubker();
 
     $view = $this->load->view('MasterPekerja/Surat/GajiPekerjaCutoff/V_Periodik',$data);
 
@@ -133,6 +133,7 @@ class C_Index extends CI_Controller
     $explodeYear    = explode(' ', $periodeLayar);
     $thisMonth      = $explodeYear[0];
     $bulanAsli      = $this->konversibulan->KonversiKeBulanIndonesia($thisMonth);
+    $bulanNow      = $this->konversibulan->KonversiKeBulanIndonesia(date('F'));
 
     if ($thisMonth == 'January') {
       $bulane = 'Februari';
@@ -166,6 +167,10 @@ class C_Index extends CI_Controller
     }else {
       $bulanDepan = $bulane.' '.$explodeYear[1];
     }
+
+    $getPeriode    = $this->M_indexinfo->getPeriode(date('Ym', strtotime($periodeLayar)));
+    $akhir_periode = date('d', strtotime($getPeriode[0]['tanggal_akhir']));
+    $akhir_periode_plus = date('d', strtotime($getPeriode[0]['tanggal_akhir']. "+1 days"));
 
     if ($jenis == 'staf') {
         if ($staf > 1) {
@@ -203,7 +208,9 @@ class C_Index extends CI_Controller
             '[last_date]',
             '[today]',
             '[approval]',
-            '[jbtn_approval]'
+            '[jbtn_approval]',
+            '[akhir_periode]',
+            '[akhir_periode+1]'
           );
           $parameter_replace[$i] = array
           (
@@ -213,9 +220,11 @@ class C_Index extends CI_Controller
             $waktuBerjalan,
             $bulanDepan,
             date('t', strtotime($thisMonth)),
-            date('d').' '.$bulanAsli.' '.date('Y'),
+            date('d').' '.$bulanNow.' '.date('Y'),
             ucwords(mb_strtolower($tertanda[0]['nama'])),
-            ucwords(mb_strtolower($tertanda[0]['jabatan']))
+            ucwords(mb_strtolower($tertanda[0]['jabatan'])),
+            $akhir_periode,
+            $akhir_periode_plus
           );
           $cetakTemplate[$i] = str_replace($parameter_diubah[$i], $parameter_replace[$i], $template[$i]);
         }
@@ -337,7 +346,9 @@ class C_Index extends CI_Controller
                             '[last_date]',
                             '[today]',
                             '[approval]',
-                            '[jbtn_approval]'
+                            '[jbtn_approval]',
+                            '[akhir_periode]',
+                            '[akhir_periode+1]'
                           );
               $par_ganti[$k] = array
                             (
@@ -348,9 +359,11 @@ class C_Index extends CI_Controller
                               $waktuBerjalan,
                               $bulanDepan,
                               date('t', strtotime($thisMonth)),
-                              date('d').' '.$bulanAsli.' '.date('Y'),
+                              date('d').' '.$bulanNow.' '.date('Y'),
                               ucwords(mb_strtolower($tertanda[0]['nama'])),
-                              ucwords(mb_strtolower($tertanda[0]['jabatan']))
+                              ucwords(mb_strtolower($tertanda[0]['jabatan'])),
+                              $akhir_periode,
+                              $akhir_periode_plus
                             );
               $cetakTemplateNonStaf[$k] = str_replace($par_ubah[$k], $par_ganti[$k], $templateNonStaf[$k]);
               $k++;
@@ -435,7 +448,6 @@ class C_Index extends CI_Controller
 
     $data['getData'] = $this->M_indexinfo->getDataPrint($id);
     $data['hubker'] = $this->M_indexinfo->getHubker();
-    // print_r($data['getData']);die;
     $data['tahun'] = str_split($data['getData'][0]['periode'], 4);
     $bulan = $data['tahun'][1];
     $data['bulan'] = $this->konversibulan->KonversiAngkaKeBulan($bulan);
