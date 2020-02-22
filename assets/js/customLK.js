@@ -5,7 +5,7 @@ $(document).ready(function(){
 		minimumInputLength: 3,
 		allowClear: false,
 		searching: true,
-		ajax: 
+		ajax:
 		{
 			url: baseurl+'MasterPekerja/LaporanKunjungan/getInfoPekerja',
 			dataType: 'json',
@@ -19,7 +19,7 @@ $(document).ready(function(){
 			processResults: function(data) {
 				return {
 					results: $.map(data, function(obj){
-						return {id: obj.noind+" - "+obj.nama+" - "+obj.seksi+" - "+obj.alamat, text: obj.noind+" - "+obj.nama+" - "+obj.seksi+" - "+obj.alamat};
+						return {id: obj.noind, text: obj.noind+" - "+obj.nama+" - "+obj.seksi+" - "+obj.alamat};
 					})
 				};
 			}
@@ -31,7 +31,7 @@ $(document).ready(function(){
 		minimumInputLength: 3,
 		allowClear: false,
 		searching: true,
-		ajax: 
+		ajax:
 		{
 			url: baseurl+'MasterPekerja/LaporanKunjungan/getInfoPekerja',
 			dataType: 'json',
@@ -45,7 +45,7 @@ $(document).ready(function(){
 			processResults: function(data) {
 				return {
 					results: $.map(data, function(obj){
-						return {id: obj.noind+" - "+obj.nama+" - "+obj.seksi, text: obj.noind+" - "+obj.nama+" - "+obj.seksi};
+						return {id: obj.noind, text: obj.noind+" - "+obj.nama+" - "+obj.seksi};
 					})
 				};
 			}
@@ -57,7 +57,7 @@ $(document).ready(function(){
 		minimumInputLength: 3,
 		allowClear: false,
 		searching: true,
-		ajax: 
+		ajax:
 		{
 			url: baseurl+'MasterPekerja/LaporanKunjungan/getInfoPekerja',
 			dataType: 'json',
@@ -71,7 +71,7 @@ $(document).ready(function(){
 			processResults: function(data) {
 				return {
 					results: $.map(data, function(obj){
-						return {id: obj.noind+" - "+obj.nama+" - "+obj.jabatan, text: obj.noind+" - "+obj.nama+" - "+obj.jabatan};
+						return {id: obj.noind, text: obj.noind+" - "+obj.nama+" - "+obj.jabatan};
 					})
 				};
 			}
@@ -91,7 +91,7 @@ $(document).ready(function(){
 			var diagnosa 		= $("input[name='diagnosa']").val();
 			var hal_laporan 	= $("input[name='hal']").val();
 
-			latar_belakang		= [];	
+			latar_belakang		= [];
 			$("input.latbel").each(function(){
 				latar_belakang.push($(this).val());
 			});
@@ -109,7 +109,7 @@ $(document).ready(function(){
 					$("#PvinfoPetugas").text(response.noind_petugas+" / "+response.nama_petugas+" / "+response.seksi_petugas);
 					$("#PvnamaPekerja").text(response.nama_pekerja);
 					$("#PvnoIndukPekerja").text(response.noind_pekerja);
-					$("#PvseksiPekerja").text(response.seksi_pekerja);	
+					$("#PvseksiPekerja").text(response.seksi_pekerja);
 					$("#PvalamatPekerja").text(response.alamat_pekerja);
 					$("#Pvdiagnosa").text(response.diagnosa);
 					$("#Pvttdpetugas").text(response.nama_petugas);
@@ -121,12 +121,12 @@ $(document).ready(function(){
 									'<td>'+no+'. '+response.latar_belakang[i]+'</td>'+
 									'</tr>'
 									;
-						
+
 					}
 
 					$("#PvlatarBelakang").html(latbel);
 					$(".Pvhasil_laporan").html(response.hasil_laporan);
-					
+
 				},
 				complete: function(){
 					setTimeout(function(){
@@ -134,8 +134,8 @@ $(document).ready(function(){
 					$(".box-preview").show();
 					$("#divCetak").show();
 					},3000);
-					
-					
+
+
 				}
 			})
 		})
@@ -166,7 +166,7 @@ $(document).ready(function(){
 		 })
 
 		 $("#deleteLatarBelakang").on('click',function(){
-		 	
+
 		 	$("#formLap .latar-belakang:last").remove();
 		 	var inputLatarBelakang = $('.latar-belakang').length;
 		 	console.log("Delete "+inputLatarBelakang);
