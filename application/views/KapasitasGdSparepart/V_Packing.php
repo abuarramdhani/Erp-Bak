@@ -104,12 +104,14 @@
                                                             <?php if (!empty($val['MULAI_PACKING']) && empty($val['WAKTU_PACKING'])) { ?>
                                                                 <p id="timer<?= $no?>" style="">Mulai <?= $val['MULAI_PACKING']?></p>
                                                                 <input type="button" class="btn btn-md btn-danger" id="btnPacking<?= $no?>" onclick="btnPackingSPB(<?= $no?>)" value="Selesai">
+                                                                <button type="button" id="btnPack<?= $no?>" class="btn btn-warning" onclick="modalPacking(<?= $no?>)" style="margin-top:7px">Pack</button>
                                                             <?php }else{?>
                                                                 <p id="timer<?= $no?>" style=""><label id="hours<?= $no?>" >00</label>:<label id="minutes<?= $no?>">00</label>:<label id="seconds<?= $no?>">00</label></p>
                                                                 <input type="button" class="btn btn-md btn-success" id="btnPacking<?= $no?>" onclick="btnPackingSPB(<?= $no?>)" value="Mulai">
-                                                            <?php }?><br><br>
-                                                            <button type="button" class="btn btn-xs btn-info" id="btnrestartSPB<?= $no?>" onclick="btnRestartPacking(<?= $no?>)"><i class="fa fa-refresh"></i></button>
-                                                            <button type="button" class="btn btn-xs btn-primary" id="btnpauseSPB<?= $no?>" onclick="btnPausePacking(<?= $no?>)"><i class="fa fa-pause"></i></button>
+                                                                <button type="button" id="btnPack<?= $no?>" class="btn btn-warning" style="display:none;margin-top:7px" onclick="modalPacking(<?= $no?>)">Pack</button>
+                                                            <?php }?><br>
+                                                            <button type="button" class="btn btn-xs btn-info" id="btnrestartSPB<?= $no?>" onclick="btnRestartPacking(<?= $no?>)" style="margin-top:7px"><i class="fa fa-refresh"></i></button>
+                                                            <button type="button" class="btn btn-xs btn-primary" id="btnpauseSPB<?= $no?>" onclick="btnPausePacking(<?= $no?>)" style="margin-top:7px"><i class="fa fa-pause"></i></button>
                                                         </td>
                                                     </tr>
                                                 <?php $no++; }?>
@@ -179,47 +181,33 @@
 		<div class="modal-content">
 			<div class="modal-header">
 				<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h3 style="text-align:center">Konfirmasi Packing</h3>
 			</div>
 			<div class="modal-body">
             <div class="panel-body">
-                <div class="col-md-12">
-                    <center><label>JUMLAH COLLY</label><center>
-                    <input type="number" class="form-control text-center" id="jml_colly" style="width:45%" name="jml_colly">
+                <div class="col-md-4 text-right">
+                    <label>Pilih Kemasan</label>
+                </div>
+                <div class="col-md-5">
+                    <select class="form-control select2" id="jenis_kemasan" name="jenis_kemasan" style="width:100%" data-placeholder="pilih kemasan">
+                    <option></option>
+                    <option value="1">KARDUS KECIL</option>
+                    <option value="2">KARDUS SEDANG</option>
+                    <option value="3">KARDUS PANJANG</option>
+                    <option value="4">KARUNG</option>
+                    </select>
                 </div>
             </div>
+            
             <div class="panel-body">
-                <div class="col-md-12">
-                    <div class="col-md-3 text-right">
-                        KARDUS KECIL : 
-                    </div>
-                    <div class="col-md-3">
-                        <input type="number" class="form-control text-center" id="kardus_kecil" name="kardus_kecil">
-                    </div>
-                    <div class="col-md-3 text-right">
-                        KARDUS SEDANG : 
-                    </div>
-                    <div class="col-md-3">
-                        <input type="number" class="form-control text-center" id="kardus_sdg" name="kardus_sdg">
-                    </div>
+                <div class="col-md-4 text-right">
+                    <label>Berat</label>
+                </div>
+                <div class="col-md-5">
+                    <input type="text" class="form-control" id="berat" name="berat" placeholder="masukkan berat">
+                    <span style="text-align:center;font-size:12px">*Gunakan titik (.) bukan koma (,) jika dibutuhkan saat menulis berat.</span>
                 </div>
             </div>
-            <div class="panel-body">
-                <div class="col-md-12">
-                    <div class="col-md-3 text-right">
-                        KARDUS PANJANG :
-                    </div>
-                    <div class="col-md-3">
-                        <input type="number" class="form-control text-center" id="kardus_bsr" name="kardus_bsr">
-                    </div>
-                    <div class="col-md-3 text-right">
-                        KARUNG :
-                    </div>
-                    <div class="col-md-3">
-                        <input type="number" class="form-control text-center" id="karung" name="karung">
-                    </div>
-                </div>
-            </div>
-            <center><span id="peringatan" style="color: red"></span></center>
             <div id="datahidden"></div>
             <div class="panel-body">
                 <div class="col-md-12 text-center">
