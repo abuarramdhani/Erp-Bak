@@ -133,7 +133,7 @@ class C_Packing extends CI_Controller
 		}
 		
 		$this->M_packing->SelesaiPacking($date, $jenis, $nospb, $slsh, $pic);
-		$this->M_packing->insertColly($nospb, $jml_colly, $kardus_kecil, $kardus_sdg, $kardus_bsr, $karung);
+		// $this->M_packing->insertColly($nospb, $jml_colly, $kardus_kecil, $kardus_sdg, $kardus_bsr, $karung);
 	}
 
 	public function pauseSPB(){
@@ -172,6 +172,14 @@ class C_Packing extends CI_Controller
 		<input type="hidden" id="no" value="'.$no.'">';
 
 		echo $tbl;
+	}
+
+	public function saveberatPacking(){
+		$no_spb = $this->input->post('no_spb');
+		$jenis = $this->input->post('jenis_kemasan');
+		$berat = $this->input->post('berat');
+		$save = $this->M_packing->insertBerat($no_spb, $jenis, $berat);
+		// echo "<pre>";print_r($save);exit();
 	}
 
 	

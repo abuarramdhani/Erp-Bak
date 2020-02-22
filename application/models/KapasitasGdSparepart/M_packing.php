@@ -18,7 +18,7 @@ class M_packing extends CI_Model
                 where selesai_pengeluaran is not null
                 and selesai_packing is null
                 and cancel is null
-                and (bon != 'PENDING' or bon is null)
+                and bon is null
                 order by urgent, tgl_dibuat";
         $query = $oracle->query($sql);
         return $query->result_array();
@@ -92,5 +92,13 @@ class M_packing extends CI_Model
                 values('$nospb', '$jml_colly', '$kardus_kecil', '$kardus_sdg', '$kardus_bsr', '$karung')";
         $query = $oracle->query($sql);      
         $query2 = $oracle->query('commit');   
+    }
+
+    public function insertBerat($nospb, $jenis, $berat){
+        $mysqli = $this->load->database('khs_packing', true);
+        $sql = "insert into sp_packing_trx (nomor_do, kode_packing, berat)
+                values('$nospb', '$jenis', '$berat')";
+        $query = $mysqli->query($sql);
+        // echo $sql;
     }
 }
