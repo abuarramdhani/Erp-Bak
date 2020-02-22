@@ -1,12 +1,8 @@
 //--------------------- surat perintah lembur ----------------//
 $(function() {
-    // Initialize Elements
-    /////////////////////////////////////////////////////////////////////////////////
-
-    // FIXME: untuk halaman aska sama kasie aja ditampilin tombol proses
     $(".spl-table.kasie, .spl-table.aska").DataTable({
         "scrollX": true,
-        "dom": 'Bfrtip',
+        "dom": '<"top"Bfpi>rt<"bottom"ip>',
         "buttons": [{
                 extend: 'excel',
                 className: 'btn btn-success'
@@ -14,7 +10,7 @@ $(function() {
             {
                 text: 'Proses',
                 className: 'btn btn-proses btn-primary disabled',
-                action: function(e, dt, node, config) {
+                action: (e, dt, node, config) => {
                     $('#spl_tex_proses').val('')
                     $('#btn-ProsesSPL').click();
                 }
@@ -22,11 +18,12 @@ $(function() {
         ],
         "ordering": false,
         "retrieve": true,
-        "initComplete": function() {
+        "initComplete": () => {
             if ($('#btn-ProsesSPL').attr('id') == undefined) {
                 $('#example11_wrapper').find('a.dt-button:last').hide();
                 $('#example11_wrapper').find('button.dt-button:last').hide();
             };
+
             $('#example11_wrapper').find('a.dt-button').removeClass('dt-button');
             $('#example11_wrapper').find('button.dt-button').removeClass('dt-button');
             $('#example11_wrapper').find('a.btn').css("margin-right", "10px");
@@ -48,6 +45,7 @@ $(function() {
                 $('#example11_wrapper').find('a.dt-button:last').hide();
                 $('#example11_wrapper').find('button.dt-button:last').hide();
             };
+
             $('#example11_wrapper').find('a.dt-button').removeClass('dt-button');
             $('#example11_wrapper').find('button.dt-button').removeClass('dt-button');
             $('#example11_wrapper').find('a.btn').css("margin-right", "10px");
@@ -628,44 +626,17 @@ $(function() {
         spl_load_data();
     });
 
-    function waitingFingerPrint(params) {
-        window.addEventListener('storage', () => {
-            let isSuccess = localStorage.getItem('resultApproveSPL')
-
-            if (isSuccess) {
-                $('#ProsesDialog').modal('hide')
-                $('#FingerDialogApprove').modal('hide')
-                $('#FingerDialogReject').modal('hide')
-
-                swal.fire({
-                    title: `Sukses ${params} lembur pekerja`,
-                    text: '',
-                    type: 'success'
-                }).then(() => {
-                    $('#spl-approval-1').click()
-                    $('#spl-approval-0').click()
-                })
-            } else {
-                swal.fire({
-                    title: `Gagal memproses, coba lagi`,
-                    text: '',
-                    type: 'error'
-                })
-            }
-
-            isSuccess = localStorage.setItem('resultApproveSPL', false)
-        })
-    }
-
     $('#approveSPL, #rejectSPL').on('click', e => {
-
+        const button = e.target.id
         let reason = $('#spl_tex_proses')
+
         reason.on('change', () => {
             reason.css({
                 "border": "1px solid #ccc"
             })
         })
-        if (!reason.val()) {
+
+        if (!reason.val() && button == 'rejectSPL') {
             reason.css({
                 "border": "1px solid red"
             })
@@ -680,15 +651,54 @@ $(function() {
                 title: 'Masukkan alasan terlebih dahulu!'
             });
             return
+        } else {
+            reason.css({
+                "border": "1px solid #ccc"
+            })
         }
 
-        if (e.target.id == 'approveSPL') {
+        if (button == 'approveSPL') {
             $('#FingerDialogApprove').modal('show')
         } else {
             $('#FingerDialogReject').modal('show')
         }
-
     })
+
+    function waitingFingerPrint(params) {
+        localStorage.setItem('resultApproveSPL', false)
+
+        const resultStorage = () => {
+            window.removeEventListener('storage', resultStorage)
+            let isSuccess = localStorage.getItem('resultApproveSPL')
+
+            if (isSuccess === true) {
+                $('#ProsesDialog').modal('hide')
+                $('#FingerDialogApprove').modal('hide')
+                $('#FingerDialogReject').modal('hide')
+
+                swal.fire({
+                    title: `Sukses ${params} lembur pekerja`,
+                    text: '',
+                    type: 'success'
+                }).then(() => {
+                    $('#spl-approval-1').click()
+                    $('#spl-approval-0').click()
+                })
+                localStorage.removeItem('resultApproveSPL')
+            } else if (isSuccess === 3) { // error
+                swal.fire({
+                    title: `Gagal, error code 500`,
+                    text: '',
+                    type: 'error'
+                }).then(() => {
+                    $('#spl-approval-1').click()
+                    $('#spl-approval-0').click()
+                })
+            }
+        }
+
+        window.addEventListener('storage', resultStorage)
+    }
 
     $(document).on('click', '#FingerDialogReject .spl_finger_proses', function(e) {
         finger = $(this).attr('data');
@@ -720,8 +730,6 @@ $(function() {
             $('#spl_proses_reject').attr('href', tmp + btoa('&stat=35&data=' + chk + '&ket=' + ket));
             $('#spl_proses_approve').attr('href', tmp + btoa('&stat=25&data=' + chk + '&ket=' + ket));
         }
-
-        localStorage.setItem('resultApproveSPL', false)
 
         let apiProcess = $('#spl_proses_reject').attr('href');
         window.location.href = apiProcess
@@ -760,7 +768,6 @@ $(function() {
             $('#spl_proses_approve').attr('href', tmp + btoa('&stat=25&data=' + chk + '&ket=' + ket));
         }
 
-        localStorage.setItem('resultApproveSPL', false)
         let apiProcess = $('#spl_proses_approve').attr('href')
         window.location.href = apiProcess
 
